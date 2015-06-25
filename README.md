@@ -33,7 +33,7 @@ Makefile.pdlibbuilder at the end of the Makefile. Like so:
 
       class.sources = myclass1.c myclass2.c
 
-      datafiles = myclass1-help.pd myclass2-help.pd README.txt LICENCE.txt
+      datafiles = myclass1-help.pd myclass2-help.pd README.txt LICENSE.txt
 
       include Makefile.pdlibbuilder
 
