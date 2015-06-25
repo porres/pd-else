@@ -3,7 +3,7 @@
 ### Makefile.pdlibbuilder ###
 
 Helper makefile for Pure Data external libraries.
-Written by Katja Vetter March-June 2015 for the public domain.
+Written by Katja Vetter March-June 2015 for the public domain. No warranties.
 Inspired by Hans Christoph Steiner's Makefile Template and Stephan Beal's
 ShakeNMake.
 

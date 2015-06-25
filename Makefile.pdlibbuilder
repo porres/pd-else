@@ -1,7 +1,7 @@
-# Makefile.pdlibbuilder version 0.0.0, dated 2015-06-24
+# Makefile.pdlibbuilder version 0.0.0, dated 2015-06-25
 #
 # Helper makefile for Pure Data external libraries.
-# Written by Katja Vetter March-June 2015 for the public domain.
+# Written by Katja Vetter March-June 2015 for the public domain. No warranties.
 # Inspired by Hans Christoph Steiner's Makefile Template and Stephan Beal's
 # ShakeNMake.
 #
@@ -32,7 +32,7 @@
 #
 #     class.sources = myclass1.c myclass2.c
 #
-#     datafiles = myclass1-help.pd myclass2-help.pd
+#     datafiles = myclass1-help.pd myclass2-help.pd README.txt LICENCE.txt
 #
 #     include Makefile.pdlibbuilder
 #    ________________________________________________________________________
@@ -232,11 +232,7 @@
 # <sourcefile>.lst: make asm/source output file in current working directory
 #
 # install: install executables and data files
-# dist: make source package for distribution (not yet implemented)
-# dpkg-source: make debian source package (not yet implemented)
-#
 # clean: remove build products from source tree
-# distclean: not yet implemented
 #
 # help: print help text
 # vars: print makefile variables
@@ -286,9 +282,8 @@
 # - cygwin support
 # - android support
 # - Windows 64 bit support
-# - makefile template targets: dpkg-source dist libdir distclean tags
 # - figure out how to handle '$' in filenames
-#
+# - add makefile template targets dpkg-source dist libdir distclean tags?
 #
 #
 #=== end of documentation sections =============================================
