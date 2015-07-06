@@ -38,7 +38,7 @@ Makefile.pdlibbuilder at the end of the Makefile. Like so:
       include Makefile.pdlibbuilder
 
 
-For files in class.sources it is assumed that class basename == source file
+For files in class.sources it is assumed that class name == source file
 basename. The default target builds all classes as individual executables
 with Pd's default extension for the platform. For anything more than the
 most basic usage, read the documentation sections in Makefile.pdlibbuilder.
@@ -47,7 +47,9 @@ most basic usage, read the documentation sections in Makefile.pdlibbuilder.
 ### examples ###
 
 
-Here is one deployment example of the Makefile.pdlibbuilder approach:
+Here are two projects using the Makefile.pdlibbuilder approach:
+
+https://github.com/pure-data/helloworld
 
 http://sourceforge.net/p/pure-data/svn/HEAD/tree/trunk/externals/miXed/cyclone/Makefile.cyclone
 
