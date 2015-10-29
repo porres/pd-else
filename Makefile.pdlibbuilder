@@ -662,7 +662,7 @@ metafile := $(wildcard $(lib.name)-meta.pd)
 ifdef metafile
   lib.version := $(shell sed -n \
     's|^\#X text [0-9][0-9]* [0-9][0-9]* VERSION \(.*\);|\1|p' \
-    $(lib.name)-meta.pd)
+    $(metafile))
 endif
 
 
