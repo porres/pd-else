@@ -314,12 +314,26 @@ Makefile.pdlibbuilder = true
 
 
 ################################################################################
-### variables: files ###########################################################
+### variables: library name and version ########################################
 ################################################################################
 
 
 # strip possibles spaces from lib.name, they mess up calculated file names
 lib.name := $(strip $(lib.name))
+
+# if meta file exists, check library version 
+metafile := $(wildcard $(lib.name)-meta.pd)
+
+ifdef metafile
+  lib.version := $(shell sed -n \
+    's|^\#X text [0-9][0-9]* [0-9][0-9]* VERSION \(.*\);|\1|p' \
+    $(metafile))
+endif
+
+
+################################################################################
+### variables: files ###########################################################
+################################################################################
 
 
 #=== sources ===================================================================
@@ -649,20 +663,6 @@ ifeq ($(make-lib-executable),yes)
   executables := $(lib.name).$(extension)
 else
   executables := $(classes.executables) $(shared.lib)
-endif
-
-
-#=== library version ===========================================================
-
-
-# if meta file exists, check library version 
-
-metafile := $(wildcard $(lib.name)-meta.pd)
-
-ifdef metafile
-  lib.version := $(shell sed -n \
-    's|^\#X text [0-9][0-9]* [0-9][0-9]* VERSION \(.*\);|\1|p' \
-    $(metafile))
 endif
 
 
