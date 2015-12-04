@@ -66,6 +66,13 @@
 # - makefiledirs
 # - externalsdir
 #
+# Optional multiline defines evaluated per operating system:
+#
+# - forLinux
+# - forDarwin
+# - forWindows
+#
+#
 # Variables avaialable for (re)definition via command arguments:
 #
 # - pdbinpath (Windows only)
@@ -139,6 +146,13 @@
 # any other centralized build layout for multiple libraries. Default value
 # is '..', meaning the direct parent. The value is used in search paths for 
 # pd core components (header files, and executable in the case of Windows).
+#
+# forLinux, forDarwin, forWindows:
+# Shorthand for 'variable definitions for Linux only' etc. Use like:
+#    define forLinux
+#      cflags += -DLINUX
+#      class.sources += linuxthing.c
+#    endef
 #
 # makefiles and makefiledirs: 
 # Extra makefiles or directories with makefiles that should be made in sub-make
@@ -423,20 +437,25 @@ endif
 
 
 # The following systems are defined: Linux, Darwin, Windows. GNU and
-# GNU/kFreeBSD are treated as Linux to get the same options. 
+# GNU/kFreeBSD are treated as Linux to get the same options. System-specific
+# multiline defines (optionally set in library makefile) are conditionally
+# evaluated here.
 
 uname := $(shell uname)
 
 ifeq ($(findstring $(uname), Linux GNU GNU/kFreeBSD), $(uname))
   system = Linux
+  $(eval $(forLinux))
 endif
 
 ifeq ($(uname), Darwin)
   system = Darwin
+  $(eval $(forDarwin))
 endif
 
 ifeq ($(findstring MINGW, $(uname)), MINGW)
   system = Windows
+  $(eval $(forWindows))
 endif
 
 # TODO: Cygwin, Android
