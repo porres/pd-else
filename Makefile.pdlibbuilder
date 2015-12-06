@@ -193,19 +193,19 @@
 # Object (.o) files are built in the directory of their source files.
 # Executables are built in current working directory. 
 #
-# Variable 'pdincludepath' stores the location where m_pd.h was found.
+# Variable 'pdincludepath' stores a location where m_pd.h is expected to reside.
 # Locations where Makefile.pdlibbuilder tries to find it, in order of priority:
 #
-# any OS:   $(externalsdir)../pd/src/
+# any OS:   $(externalsdir)../pd/src
 #
-# Linux:    /usr/include/pdextended/
-#           /usr/include/pd/
+# Linux:    /usr/include/pdextended
+#           /usr/include/pd
 #
-# OSX:      /Applications/Pd-extended.app/Contents/Resources/include/pdextended/
-#           /Applications/Pd.app/Contents/Resources/src/
+# OSX:      /Applications/Pd-extended.app/Contents/Resources/include/pdextended
+#           /Applications/Pd.app/Contents/Resources/src
 #
-# Windows:  %PROGRAMFILES%/pd/include/pdextended/
-#           %PROGRAMFILES%/pd/src/
+# Windows:  %PROGRAMFILES%/pd/include/pdextended
+#           %PROGRAMFILES%/pd/src
 #
 # The path for installation of all library components is constructed as:
 #
@@ -449,10 +449,10 @@ ifeq ($(system), Linux)
   prefix = /usr/local
   libdir := $(prefix)/lib
   pkglibdir = $(libdir)/pd-externals
-  pdincludepath := $(firstword $(dir $(wildcard \
-    $(externalsdir)/../pd/src/m_pd.h \
-    /usr/include/pdextended/m_pd.h \
-    /usr/include/pd/m_pd.h)))
+  pdincludepath := $(firstword $(wildcard \
+    $(externalsdir)/../pd/src \
+    /usr/include/pdextended \
+    /usr/include/pd))
   extension = pd_linux
   cpp.flags := -DUNIX
   c.flags := -fpic
@@ -477,10 +477,10 @@ endif
 
 ifeq ($(system), Darwin)
   pkglibdir = $(HOME)/Library/Pd
-  pdincludepath := $(firstword $(dir $(wildcard \
-    $(externalsdir)/../pd/src/m_pd.h \
-    /Applications/Pd-extended.app/Contents/Resources/include/pdextended/m_pd.h \
-    /Applications/Pd.app/Contents/Resources/src/m_pd.h)))
+  pdincludepath := $(firstword $(wildcard \
+    $(externalsdir)/../pd/src \
+    /Applications/Pd-extended*.app/Contents/Resources/include/pdextended \
+    /Applications/Pd*.app/Contents/Resources/src))
   extension = pd_darwin
   arch.flags =
   cpp.flags := -DUNIX -DMACOSX -I /sw/include
@@ -517,16 +517,16 @@ endif
 # paths for 32-bit executables on 64-bit Windows aren't yet defined here (TODO)
 ifeq ($(system), Windows)
   pkglibdir := $(APPDATA)/Pd
-  pdbinpath := $(wildcard $(externalsdir)/../pd/bin/)
-  pdincludepath := $(wildcard $(externalsdir)/../pd/src/)
+  pdbinpath := $(wildcard $(externalsdir)/../pd/bin)
+  pdincludepath := $(wildcard $(externalsdir)/../pd/src)
   ifndef pdbinpath
-    pdbinpath := $(shell ls -d "$(PROGRAMFILES)/pd/bin/")
+    pdbinpath := $(shell ls -d "$(PROGRAMFILES)/pd/bin")
   endif
   ifndef pdincludepath
-    pdincludepath := $(shell ls -d "$(PROGRAMFILES)/pd/include/pdextended/")
+    pdincludepath := $(shell ls -d "$(PROGRAMFILES)/pd/include/pdextended")
   endif
   ifndef pdincludepath
-    pdincludepath := $(shell ls -d "$(PROGRAMFILES)/pd/src/")
+    pdincludepath := $(shell ls -d "$(PROGRAMFILES)/pd/src")
   endif
 endif
 
@@ -541,14 +541,14 @@ ifeq ($(system), Windows)
   cpp.flags := -DMSW -DNT
   c.flags :=
   c.ldflags := -static-libgcc -shared \
-    -Wl,--enable-auto-import "$(pdbinpath)pd.dll"
+    -Wl,--enable-auto-import "$(pdbinpath)/pd.dll"
   c.ldlibs :=
   cxx.flags := -fcheck-new
   cxx.ldflags := -static-libstdc++ -shared \
-    -Wl,--enable-auto-import "$(pdbinpath)pd.dll"
+    -Wl,--enable-auto-import "$(pdbinpath)/pd.dll"
   cxx.ldlibs :=
   shared.extension = dll
-  shared.ldflags := -static-libgcc -shared "$(pdbinpath)pd.dll"
+  shared.ldflags := -static-libgcc -shared "$(pdbinpath)/pd.dll"
   stripflags = --strip-unneeded -R .note -R .comment
 endif
 
@@ -637,10 +637,17 @@ else
   goals := all
 endif
 
-# check if m_pd.h is found and print info about it
-$(if $(shell ls "$(pdincludepath)m_pd.h"), \
-  $(info ++++ info: using Pd API $(pdincludepath)m_pd.h), \
-  $(warning Where is your m_pd.h? Do 'make help' for info.))
+# store path to Pd API m_pd.h if it is found
+ifdef pdincludepath
+  mpdh := $(shell ls "$(pdincludepath)/m_pd.h")
+endif
+
+# when making target all, check if m_pd.h is found and print info about it
+ifeq ($(goals), all)
+  $(if $(mpdh), \
+    $(info ++++ info: using Pd API $(mpdh)), \
+    $(warning Where is Pd API m_pd.h? Do 'make help' for info.))
+endif
 
 # print target info
 $(info ++++ info: making target $(goals) $(if $(lib.name),in lib $(lib.name)))
@@ -1094,9 +1101,11 @@ depend:
 
 # brief info about targets and paths
 
-mpdh := $(shell ls "$(pdincludepath)m_pd.h")
-mpdh := $(if $(mpdh), $(mpdh),  m_pd.h not found. Is Pd(-extended) installed?)
-
+ifdef mpdh
+  mpdhinfo := $(mpdh)
+else
+  mpdhinfo := m_pd.h was not found. Is Pd(-extended) installed?
+endif
 
 help:
 	@echo
@@ -1108,15 +1117,16 @@ help:
 	@echo "    help:    print this help text"
 	@echo
 	@echo "  Pd API m_pd.h:"
-	@echo "    $(shell ls "$(pdincludepath)m_pd.h")"
-	@echo "  You may specify your preferred include path as argument to"
+	@echo "    $(mpdhinfo)"
+	@echo "  You may specify your preferred Pd include path as argument to"
 	@echo "  the make command, like 'pdincludepath=path/to/pd/src'."
 	@echo
 	@echo "  Path for installation of your libdir(s):"
 	@echo "    $(objectsdir)"
 	@echo "  Alternatively you may specify your path for installation as argument"
 	@echo "  to the make command, like 'objectsdir=path/to/pd-externals'."
-	@echo "  For detailed info read the doc sections in Makefile.pdlibbuilder."
+	@echo
+	@echo "  Default paths are listed in the doc sections in Makefile.pdlibbuilder."
 	@echo
 
 
