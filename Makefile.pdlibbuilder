@@ -596,6 +596,9 @@ cpp.flags += -DPD -I "$(pdincludepath)" $(CPPFLAGS)
 # architecture specifications for linker are overridable by LDFLAGS
 LDFLAGS := $(arch.ld.flags)
 
+# now add the same ld flags to shared dynamic lib
+shared.ldflags := $(shared.ldflags) $(LDFLAGS)
+
 # accumulated flags for C compiler / linker
 c.flags := $(cpp.flags) $(c.flags) $(cflags) $(CFLAGS)
 c.ldflags := $(c.ldflags) $(ldflags) $(LDFLAGS)
