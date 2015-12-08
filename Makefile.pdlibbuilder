@@ -691,7 +691,7 @@ MAKEFLAGS += --no-builtin-rules
 
 .PRECIOUS:
 .SUFFIXES:
-.PHONY: all pre post build-classes build-lib \
+.PHONY: all pre post build-lib \
         $(classes) $(makefiledirs) $(makefiles) \
         install install-executables install-datafiles install-datadirs \
         force clean vars allvars depend help
