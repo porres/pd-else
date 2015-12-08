@@ -225,7 +225,9 @@
 #=== targets ===================================================================
 #
 #
-# all: build classes (default) or library blob (if make-lib-executable=true)
+# all: build $(executables) plus optional pre and post targets
+# pre: target to build before $(executables)
+# post: target to build after $(executables)
 # alldebug: build all with -g option turned on for debug symbols
 # <classname>: force clean build of an individual class
 # <sourcefile>.pre: make preprocessor output file in current working directory
@@ -239,6 +241,11 @@
 # allvars: print all variables
 # depend: print generated prerequisites
 # coffee: dummy target
+#
+# Variable $(executables) expands to class executables plus optional shared lib,
+# or alternatively to single lib executable when make-lib-executable=true.
+# Targets pre and post can be defined by library makefile. Make sure to include
+# Makefile.pdlibbuilder first so default target all will not be redefined.
 #
 #
 #=== Pd-extended libdir concept ================================================
@@ -684,7 +691,8 @@ MAKEFLAGS += --no-builtin-rules
 
 .PRECIOUS:
 .SUFFIXES:
-.PHONY: all build-classes build-lib $(classes) $(makefiledirs) $(makefiles)\
+.PHONY: all pre post build-classes build-lib \
+        $(classes) $(makefiledirs) $(makefiles) \
         install install-executables install-datafiles install-datadirs \
         force clean vars allvars depend help
 
@@ -694,10 +702,19 @@ MAKEFLAGS += --no-builtin-rules
 ################################################################################
 
 
-# target all builds class executables plus optional shared lib
-# or alternatively a single lib executable when make-lib-executable=true
-all: $(executables)
-	$(info ++++ info: $(if $(executables),executables in $(lib.name) completed))
+# Target all forces the build of targets [pre $(executables) post] in
+# deterministic order. Target $(executables) builds class executables plus 
+# optional shared lib or alternatively a single lib executable when 
+# make-lib-executable=true. Targets pre and post are optionally defined by
+# library makefile.
+
+all: post
+post: $(executables)
+$(executables): pre
+pre:
+
+all:
+	$(info ++++info: target all in lib $(lib.name) completed)
 
 # build all with -g option turned on for debug symbols
 alldebug: c.flags += -g
