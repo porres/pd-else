@@ -856,7 +856,7 @@ $(foreach v, $(classes), $(eval $(declare-class-executable-target)))
 # prerequisites rules so we do not evaluate them in that case.
 
 ifndef pdincludepathwithspaces
-  must-build-everything := $(filter all default lib, $(goals))
+  must-build-everything := $(filter all, $(goals))
   must-build-class := $(filter $(classes), $(goals))
   must-build-sources := $(foreach v, $(must-build-class), $($v.class.sources))
 endif
