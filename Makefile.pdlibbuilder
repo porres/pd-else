@@ -74,7 +74,9 @@
 # - prefix
 # - libdir
 # - pkglibdir
+# - CPPFLAGS
 # - CFLAGS
+# - LDFLAGS
 # - CC
 # - CXX
 # - INSTALL
@@ -161,9 +163,18 @@
 # Alias of pkglibdir. Can be defined in your makefile to enable project-
 # dependent relative install locations.
 #
+# CPPFLAGS:
+# Preprocessor flags which are not strictly required for building.
+#
 # CFLAGS:
-# Compiler (notably optimization) flags which are defined by 
-# Makefile.pdlibbuilder, but may be overriden via command argument.
+# Compiler flags which are not strictly required for building. Compiler flags
+# defined by Makefile.pdlibbuilder for warning, optimization and architecture
+# specification are overriden by CFLAGS.
+#
+# LDFLAGS:
+# Linker flags which are not strictly required for building. Linker flags
+# defined by Makefile.pdlibbuilder for architecture specification are overriden
+# by LDFLAGS.
 #
 # CC and CXX:
 # C and C++ compiler programs as defined in your build environment.
