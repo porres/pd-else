@@ -51,7 +51,7 @@ Here are three projects using the Makefile.pdlibbuilder approach:
 
 https://github.com/pure-data/helloworld
 
-http://sourceforge.net/p/pure-data/svn/HEAD/tree/trunk/externals/miXed/cyclone/Makefile.cyclone
+https://github.com/electrickery/pd-cyclone
 
 https://github.com/pure-data/xeq
 
