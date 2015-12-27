@@ -1,4 +1,4 @@
-# Makefile.pdlibbuilder version 0.2.0, dated 2015-12-19
+# Makefile.pdlibbuilder version 0.2.1, dated 2015-12-27
 #
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -81,7 +81,9 @@
 # - prefix
 # - libdir
 # - pkglibdir
+# - CPPFLAGS
 # - CFLAGS
+# - LDFLAGS
 # - CC
 # - CXX
 # - INSTALL
@@ -175,9 +177,18 @@
 # Alias of pkglibdir. Can be defined in your makefile to enable project-
 # dependent relative install locations.
 #
+# CPPFLAGS:
+# Preprocessor flags which are not strictly required for building.
+#
 # CFLAGS:
-# Compiler (notably optimization) flags which are defined by 
-# Makefile.pdlibbuilder, but may be overriden via command argument.
+# Compiler flags which are not strictly required for building. Compiler flags
+# defined by Makefile.pdlibbuilder for warning, optimization and architecture
+# specification are overriden by CFLAGS.
+#
+# LDFLAGS:
+# Linker flags which are not strictly required for building. Linker flags
+# defined by Makefile.pdlibbuilder for architecture specification are overriden
+# by LDFLAGS.
 #
 # CC and CXX:
 # C and C++ compiler programs as defined in your build environment.
@@ -414,29 +425,29 @@ endif
 #=== flags per architecture ====================================================
 
 
-# Set architecture-dependent flags, mainly for Linux. For Mac and Windows, 
-# arch.flags are overriden below.
+# Set architecture-dependent cflags, mainly for Linux. For Mac and Windows, 
+# arch.c.flags are overriden below.
 
 machine := $(shell uname -m)
 
 # Raspberry Pi 1st generation
 ifeq ($(machine), armv6l)
-  arch.flags = -march=armv6 -mfpu=vfp -mfloat-abi=hard
+  arch.c.flags = -march=armv6 -mfpu=vfp -mfloat-abi=hard
 endif
 
 # Beagle, Udoo, RPi2 etc.
 ifeq ($(machine), armv7l)
-  arch.flags = -march=armv7-a -mfpu=vfpv3 -mfloat-abi=hard
+  arch.c.flags = -march=armv7-a -mfpu=vfpv3 -mfloat-abi=hard
 endif
 
 # Intel 32 bit, build with SSE and SSE2 instructions
 ifeq ($(findstring $(machine), i386 i686), $(machine))
-  arch.flags = -march=pentium4 -mfpmath=sse -msse -msse2
+  arch.c.flags = -march=pentium4 -mfpmath=sse -msse -msse2
 endif
 
 # Intel/AMD 64 bit, build with SSE, SSE2 and SSE3 instructions
 ifeq ($(findstring $(machine), ia64 x86_64), $(machine))
-  arch.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3 
+  arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3 
 endif
 
 
@@ -508,7 +519,6 @@ ifeq ($(system), Darwin)
     /Applications/Pd-extended*.app/Contents/Resources/include/pdextended \
     /Applications/Pd*.app/Contents/Resources/src))
   extension = pd_darwin
-  arch.flags =
   cpp.flags := -DUNIX -DMACOSX -I /sw/include
   c.flags := 
   c.ldflags := -undefined suppress -flat_namespace -bundle
@@ -522,10 +532,12 @@ ifeq ($(system), Darwin)
   stripflags = -x
   ifeq ($(machine), i386)
     cxx.flags := -fcheck-new
-    arch.flags := -arch ppc -arch i386 -arch x86_64 -mmacosx-version-min=10.4
+    arch.c.flags := -arch ppc -arch i386 -arch x86_64 -mmacosx-version-min=10.4
+    arch.ld.flags := -arch ppc -arch i386 -arch x86_64 -mmacosx-version-min=10.4
   endif
   ifeq ($(machine), x86_64)
-    arch.flags := -arch i386 -arch x86_64 -mmacosx-version-min=10.5
+    arch.c.flags := -arch i386 -arch x86_64 -mmacosx-version-min=10.5
+    arch.ld.flags := -arch i386 -arch x86_64 -mmacosx-version-min=10.5
   endif
 endif
 
@@ -563,7 +575,7 @@ ifeq ($(system), Windows)
   extension = dll
   CC = gcc
   CXX = g++
-  arch.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
+  arch.c.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
   cpp.flags := -DMSW -DNT
   c.flags :=
   c.ldflags := -static-libgcc -shared \
@@ -600,9 +612,9 @@ pdincludepathwithspaces := $(if $(word 2, $(pdincludepath)), $(pdincludepath))
 
 
 # From GNU make docs: 'Users expect to be able to specify CFLAGS freely
-# themselves.' So we use CFLAGS to define platform-independent options which 
-# are not strictly required for compilation: optimizations and warnings. CFLAGS
-# can be safely overriden using a make command argument.
+# themselves.' So we use CFLAGS to define options which  are not strictly
+# required for compilation: optimizations, architecture specifications, and 
+# warnings. CFLAGS can be safely overriden using a make command argument.
 # Variables cflags, ldflags and ldlibs may be defined in including makefile.
 
 optimization.flags = -O3 -ffast-math -funroll-loops -fomit-frame-pointer
@@ -613,19 +625,25 @@ ifdef suppress-wunused
   warn.flags += $(addprefix -Wno-unused-, function parameter value variable)
 endif
 
-CFLAGS = $(warn.flags) $(optimization.flags)
+CFLAGS = $(warn.flags) $(optimization.flags) $(arch.c.flags)
 
 # preprocessor flags
-cpp.flags += -DPD -I "$(pdincludepath)"
+cpp.flags += -DPD -I "$(pdincludepath)" $(CPPFLAGS)
 
-# flags for C compiler / linker
+# architecture specifications for linker are overridable by LDFLAGS
+LDFLAGS := $(arch.ld.flags)
+
+# now add the same ld flags to shared dynamic lib
+shared.ldflags := $(shared.ldflags) $(LDFLAGS)
+
+# accumulated flags for C compiler / linker
 c.flags := $(cpp.flags) $(c.flags) $(cflags) $(CFLAGS)
-c.ldflags := $(c.ldflags) $(ldflags)
+c.ldflags := $(c.ldflags) $(ldflags) $(LDFLAGS)
 c.ldlibs := $(c.ldlibs) $(ldlibs)
 
-# flags for C++ compiler / linker
+# accumulated flags for C++ compiler / linker
 cxx.flags := $(cpp.flags) $(cxx.flags) $(cflags) $(CFLAGS)
-cxx.ldflags := $(cxx.ldflags) $(ldflags)
+cxx.ldflags := $(cxx.ldflags) $(ldflags) $(LDFLAGS)
 cxx.ldlibs := $(cxx.ldlibs) $(ldlibs)
 
 
@@ -749,7 +767,6 @@ alldebug: all
 # argument $2 = class basename
 define link-class
   $(compile-$1) \
-  $(arch.flags) \
   $($1.ldflags) $($2.class.ldflags) \
   -o $2.$(extension) \
   $(addsuffix .o, $(basename $($2.class.sources))) \
@@ -776,7 +793,6 @@ build-lib: $(lib.name).$(extension)
 # argument $1 = compiler type (c or cxx)
 define link-lib
   $(compile-$1) \
-  $(arch.flags) \
   $($1.ldflags) $(lib.ldflags) \
   -o $(lib.name).$(extension) $(all.objects) \
   $($1.ldlibs) $(lib.ldlibs)
@@ -799,7 +815,6 @@ endif
 # argument $1 = compiler type (c or cxx)
 define link-shared
   $(compile-$1) \
-  $(arch.flags) \
   $(shared.ldflags) \
   -o lib$(lib.name).$(shared.extension) $(shared.objects) \
   $($1.ldlibs) $(shared.ldlibs)
@@ -823,7 +838,7 @@ define make-object-file
   $(info ++++ info: making $@ in lib $(lib.name))
   $(compile-$1) \
   $($1.flags) \
-  $(arch.flags) -o $@ -c $<
+  -o $@ -c $<
 endef
 
 # Three rules to create .o files. These are double colon 'terminal' rules,
@@ -947,7 +962,6 @@ define make-assembly-file
   $(compile-$1) \
   -c -Wa,-a,-ad -fverbose-asm \
   $($1.flags) \
-  $(arch.flags) \
   $< > $(notdir $*.lst)
 endef
 
