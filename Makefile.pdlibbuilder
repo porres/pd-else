@@ -1,4 +1,4 @@
-# Makefile.pdlibbuilder version 0.2.1, dated 2015-12-27
+# Makefile.pdlibbuilder version 0.2.2, dated 2016-03-28
 #
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -250,8 +250,7 @@
 #=== targets ===================================================================
 #
 #
-# all: build $(executables) plus optional pre and post targets
-# pre: target to build before $(executables)
+# all: build $(executables) plus optional post target
 # post: target to build after $(executables)
 # alldebug: build all with -g option turned on for debug symbols
 # <classname>: force clean build of an individual class
