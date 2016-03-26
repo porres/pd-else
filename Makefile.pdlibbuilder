@@ -728,7 +728,7 @@ MAKEFLAGS += --no-builtin-rules
 
 .PRECIOUS:
 .SUFFIXES:
-.PHONY: all pre post build-lib \
+.PHONY: all post build-lib \
         $(classes) $(makefiledirs) $(makefiles) \
         install install-executables install-datafiles install-datadirs \
         force clean vars allvars depend help
@@ -739,16 +739,14 @@ MAKEFLAGS += --no-builtin-rules
 ################################################################################
 
 
-# Target all forces the build of targets [pre $(executables) post] in
+# Target all forces the build of targets [$(executables) post] in
 # deterministic order. Target $(executables) builds class executables plus 
 # optional shared lib or alternatively a single lib executable when 
-# make-lib-executable=true. Targets pre and post are optionally defined by
+# make-lib-executable=true. Target post is optionally defined by
 # library makefile.
 
 all: post
 post: $(executables)
-$(executables): pre
-pre:
 
 all:
 	$(info ++++info: target all in lib $(lib.name) completed)
