@@ -1,4 +1,4 @@
-# Makefile.pdlibbuilder version 0.2.2, dated 2016-03-28
+# Makefile.pdlibbuilder version 0.2.3, dated 2016-03-29
 #
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -884,9 +884,16 @@ $(foreach v, $(classes), $(eval $(declare-class-executable-target)))
 # which case implicit prerequisites are not checked.
 
 # When the Pd include path contains spaces it will mess up the implicit
-# prerequisites rules so we do not evaluate them in that case.
+# prerequisites rules. Also it is known that multiple arch flags are
+# incompatible with preprocessor option -MM on OSX <= 10.5. Dependency
+# tracking must be disabled in those cases.
 
-ifndef pdincludepathwithspaces
+oldfat := $(and $(filter ppc i386, $(machine)), \
+          $(filter-out 0 1, $(words $(filter -arch, $(c.flags)))))
+
+disable-dependency-tracking := pdincludepathwithspaces oldfat
+
+ifndef disable-dependency-tracking
   must-build-everything := $(filter all, $(goals))
   must-build-class := $(filter $(classes), $(goals))
   must-build-sources := $(foreach v, $(must-build-class), $($v.class.sources))
