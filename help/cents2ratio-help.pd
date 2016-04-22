@@ -1,0 +1,75 @@
+#N canvas 592 23 561 534 10;
+#X obj 3 4 cnv 15 552 40 empty empty cents2ratio 3 12 0 18 -204280
+-1 0;
+#X obj 3 327 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 405 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 442 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 82 414 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 83 335 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 110 451 (none);
+#X obj 3 483 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#N canvas 244 346 428 109 Related_objects 0;
+#X obj 0 0 cnv 15 425 20 empty empty empty 3 12 0 14 -204280 -1 0;
+#X text 6 1 Related Objects;
+#X restore 209 485 pd Related_objects;
+#N canvas 571 307 379 261 META 0;
+#X text 1 20 LICENSE SIBSD;
+#X text 0 101 VERSION;
+#X text 1 60 INLET_0 data;
+#X text 1 80 OUTLET_0 data;
+#X text 1 121 AUTHOR Porres;
+#X text 0 142 RELEASE_DATE 2016;
+#X text 1 163 WEBSITE: https://github.com/porres/Porres-ELS;
+#X text 1 0 KEYWORDS;
+#X text 1 40 DESCRIPTION;
+#X restore 505 485 pd META;
+#X obj 134 126 hsl 180 15 -1200 1200 0 0 empty empty empty -2 -8 0
+10 -228856 -1 -1 0 1;
+#X text 125 414 float/List;
+#X obj 179 182 bng 15 250 50 0 empty empty empty 17 7 0 10 -261682
+-1 -1;
+#X text 198 182 last output;
+#X text 253 212 sets next value to be converted via bang;
+#X text 161 356 bang;
+#X text 167 374 set;
+#X text 206 374 - sets next float value to be converted via bang;
+#X text 206 356 - outputs the last converted float value;
+#X floatatom 179 275 0 0 0 0 - - -;
+#X msg 104 189 0;
+#X text 125 337 float/list;
+#N canvas 126 23 450 300 lists 0;
+#X obj 113 187 cyclone/tosymbol;
+#X symbolatom 113 218 20 0 0 0 - - -, f 20;
+#X obj 113 101 loadbang;
+#X text 92 67 it also works with lists:;
+#X obj 113 155 cents2ratio;
+#X msg 113 127 0 600 1200;
+#X connect 0 0 1 0;
+#X connect 2 0 5 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 0;
+#X restore 394 265 pd lists;
+#X obj 179 246 cents2ratio;
+#X obj 131 154 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 -1200 256;
+#X msg 195 211 set 700;
+#X text 11 27 Convert cents to ratio;
+#X text 191 153 cents;
+#X text 206 337 - cents value(s);
+#X text 202 414 - converted ratio value(s);
+#X text 60 66 Use [cents2ratio] to cents to ratio.;
+#X text 60 86 Conversion expression: ratio = pow(2 \, (cents/1200))
+;
+#X text 233 277 ratio;
+#X connect 10 0 24 0;
+#X connect 12 0 23 0;
+#X connect 20 0 23 0;
+#X connect 23 0 19 0;
+#X connect 24 0 23 0;
+#X connect 25 0 23 0;
