@@ -1,0 +1,14 @@
+#N canvas 128 23 312 195 10;
+#X text 52 18 Cents;
+#X obj 38 38 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-233004 -1 -1 386.35 256;
+#X obj 146 117 nbx 9 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-261682 -1 -1 1.25003 256;
+#X obj 146 84 expr pow(2 \, $f1/1200);
+#X obj 38 84 cents2ratio;
+#X obj 38 119 nbx 9 14 -1e+37 1e+37 0 0 x empty empty 0 -8 0 10 -261682
+-1 -1 1.25003 256;
+#X connect 1 0 3 0;
+#X connect 1 0 4 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
