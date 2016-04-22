@@ -34,7 +34,6 @@ t_float convert(t_float f)
     if(f<0.f)
         f = 0.f;
   return log2(f) * 1200;
-    
 }
 
 void ratio2cents_list(t_ratio2cents *x, t_symbol *s, int argc, t_atom *argv)
