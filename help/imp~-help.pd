@@ -1,5 +1,6 @@
-#N canvas 829 31 561 534 10;
-#X obj 3 4 cnv 15 552 40 empty empty sh~ 3 12 0 18 -204280 -1 0;
+#N canvas 592 23 561 534 10;
+#X obj 3 4 cnv 15 552 40 empty empty ratio2cents 3 12 0 18 -204280
+-1 0;
 #X obj 3 327 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 405 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -33,22 +34,15 @@
 #X text 167 374 set;
 #X text 206 374 - sets next float value to be converted via bang;
 #X text 206 356 - outputs the last converted float value;
-#X msg 196 132 0;
 #X text 125 337 float/list;
 #X text 202 414 - converted cents value(s);
 #X text 206 337 - ratio value(s);
-#X text 195 206 cents;
-#X obj 313 111 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 241 112 noise~;
-#X floatatom 241 236 0 0 0 0 - - -;
-#X obj 241 172 sh~;
-#X obj 313 135 click~;
-#X obj 241 206 cyclone/snapshot~ 1;
-#X text 26 25 Sample and Hold;
-#X connect 15 0 23 0;
-#X connect 20 0 24 0;
-#X connect 21 0 23 0;
-#X connect 23 0 25 0;
-#X connect 24 0 23 1;
-#X connect 25 0 22 0;
+#X text 60 55 Use [ratio2cents] to convert an interval ratio to an
+interval represented in cents.;
+#X text 60 86 Conversion expression: cents = log2(ratio) * 1200;
+#X text 11 27 Convert ratio to cents;
+#X obj 186 210 dac~;
+#X obj 293 165 sig~ 4410;
+#X obj 199 173 imp~ 44100;
+#X connect 23 0 21 0;
+#X connect 23 0 21 1;

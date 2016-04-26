@@ -1,19 +1,17 @@
-/* Copyright (c) 2002-2003 krzYszcz and others.
- * For information on usage and redistribution, and for a DISCLAIMER OF ALL
- * WARRANTIES, see the file, "LICENSE.txt," in this distribution.  */
+// Porres 2016
 
 #include "m_pd.h"
+
+static t_class *sh_class;
 
 typedef struct _sh
 {
     t_object x_obj;
     t_float  x_threshold;
     t_float  x_lastin;
+    t_inlet  *x_triglet;
     t_float  x_lastout;
 } t_sh;
-
-static t_class *sh_class;
-
 
 static t_int *sh_perform(t_int *w)
 {
@@ -28,7 +26,7 @@ static t_int *sh_perform(t_int *w)
     while (nblock--)
     {
         float f = *in2++;
-        if (f > threshold)  /* CHECKME <=, > */
+        if (f > threshold)
             lastout = *in1;
         in1++;
         lastin = f;
@@ -50,14 +48,21 @@ static void sh_float(t_sh *x, t_float f)
     x->x_threshold = f;
 }
 
+
+static void *sh_free(t_sh *x)
+{
+    inlet_free(x->x_triglet);
+    return (void *)x;
+}
+
 static void *sh_new(t_floatarg f)
 {
     t_sh *x = (t_sh *)pd_new(sh_class);
     x->x_threshold = f;
+    x->x_triglet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+    outlet_new((t_object *)x, &s_signal);
     x->x_lastin = 0;
     x->x_lastout = 0;
-    inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    outlet_new((t_object *)x, &s_signal);
     return (x);
 }
 
@@ -65,12 +70,43 @@ void sh_tilde_setup(void)
 {
     sh_class = class_new(gensym("sh~"),
         (t_newmethod)sh_new,
-        0,
+        (t_method)sh_free,
         sizeof(t_sh),
         CLASS_DEFAULT,
         A_DEFFLOAT,
         0);
         class_addmethod(sh_class, nullfn, gensym("signal"), 0);
-    	class_addfloat(sh_class, (t_method)sh_float);
+        class_addmethod(sh_class, (t_method)sh_dsp, gensym("dsp"), A_CANT, 0);
+        class_addfloat(sh_class, (t_method)sh_float);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

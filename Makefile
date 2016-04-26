@@ -23,6 +23,10 @@ ratio2cents.class.sources := classes/ratio2cents.c
 cents2ratio~.class.sources := classes/cents2ratio_tilde.c
 ratio2cents~.class.sources := classes/ratio2cents_tilde.c
 sh~.class.sources := classes/sh_tilde.c
+
+imp~.class.sources := classes/imp.c
+
+
 # median~.class.sources := classes/median_tilde.c
 
 
