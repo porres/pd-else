@@ -23,6 +23,8 @@ hz2rad.class.sources := classes/hz2rad.c
 
 # signal:
 cents2ratio~.class.sources := classes/cents2ratio~.c
+hz2rad~.class.sources := classes/hz2rad~.c
+rad2hz~.class.sources := classes/rad2hz~.c
 ratio2cents~.class.sources := classes/ratio2cents~.c
 sh~.class.sources := classes/sh~.c
 
