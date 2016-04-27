@@ -28,7 +28,7 @@
 #X text 1 40 DESCRIPTION;
 #X restore 505 485 pd META;
 #X obj 134 126 hsl 180 15 0 44100 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 4600 1;
+-228856 -1 -1 0 1;
 #X text 125 414 float/List;
 #X text 161 356 bang;
 #X text 167 374 set;
@@ -37,16 +37,16 @@
 #X floatatom 131 215 0 0 0 0 - - -;
 #X text 125 337 float/list;
 #X obj 131 154 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 11333 256;
+-262144 -1 -1 6 256;
 #X text 206 337 - cents value(s);
 #X text 202 414 - converted ratio value(s);
-#X obj 131 186 hz2rad;
 #X text 101 155 hz;
 #X msg 75 82 set 44100;
 #X obj 217 155 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
+#X obj 131 186 rad2hz;
 #X connect 9 0 17 0;
-#X connect 17 0 20 0;
-#X connect 20 0 15 0;
-#X connect 22 0 20 0;
-#X connect 23 0 20 0;
+#X connect 17 0 23 0;
+#X connect 21 0 23 0;
+#X connect 22 0 23 0;
+#X connect 23 0 15 0;
