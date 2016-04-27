@@ -8,7 +8,7 @@ typedef struct _sh
 {
     t_object x_obj;
     t_float  x_threshold;
-    t_float  x_lastin;
+//  t_float  x_lastin;
     t_inlet  *x_triglet;
     t_float  x_lastout;
 } t_sh;
@@ -21,18 +21,18 @@ static t_int *sh_perform(t_int *w)
     t_float *in2 = (t_float *)(w[4]);
     t_float *out = (t_float *)(w[5]);
     t_float threshold = x->x_threshold;
-    t_float lastin = x->x_lastin;
+//  t_float lastin = x->x_lastin;
     t_float lastout = x->x_lastout;
     while (nblock--)
     {
-        float f = *in2++;
-        if (f > threshold)
-            lastout = *in1;
-        in1++;
-        lastin = f;
+        float input = *in1++;
+        float trigger = *in2++;
+        if (trigger > threshold)
+            lastout = input;
+//      lastin = trig;
         *out++ = lastout;
     }
-    x->x_lastin = lastin;
+//  x->x_lastin = lastin;
     x->x_lastout = lastout;
     return (w + 6);
 }
@@ -61,7 +61,7 @@ static void *sh_new(t_floatarg f)
     x->x_threshold = f;
     x->x_triglet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     outlet_new((t_object *)x, &s_signal);
-    x->x_lastin = 0;
+//  x->x_lastin = 0;
     x->x_lastout = 0;
     return (x);
 }
