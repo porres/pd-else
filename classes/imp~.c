@@ -18,15 +18,24 @@ static t_int *imp_perform(t_int *w)
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
-    t_float *out = (t_float *)(w[5]);
+    t_float *out1 = (t_float *)(w[5]);
     t_float phase = x->x_phase;
     t_float sr = x->x_sr;
     while (nblock--)
     {
         float hz = *in2++;
         float phase_step = hz / sr; // phase_step
-        *out++ = phase >= 1.;
-        phase = fmod(phase, 1.); // wrapped phase
+        if (hz >= 0)
+        {
+        *out1++ = phase >= 1.;
+        if (phase >= 1.) phase = phase - 1.; // wrapped phase
+        }
+        else
+        {
+            *out1++ = phase <= 0.;
+            if (phase <= 0.) phase = phase + 1.; // wrapped phase
+        }
+//      *out2++ = phase; // wrapped phase
         phase = phase + phase_step; // next phase
     }
     x->x_phase = phase;
@@ -48,7 +57,7 @@ static void *imp_free(t_imp *x)
 static void *imp_new(t_floatarg f)
 {
     t_imp *x = (t_imp *)pd_new(imp_class);
-    x->x_phase = 0;
+    x->x_phase = f >= 0.; // initial phase
     x->x_sr = sys_getsr(); // sample rate
     x->x_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet, f);
