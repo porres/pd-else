@@ -31,17 +31,15 @@
 #X text 161 356 bang;
 #X text 167 374 set;
 #X text 125 337 float/list;
-#X obj 165 219 output~;
+#X obj 161 221 output~;
 #X obj 76 219 print~;
 #X obj 70 111 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X msg 107 130 bang \; pd dsp 1;
-#X obj 321 154 sig~ 900;
-#X obj 259 115 sig~ -1;
-#X floatatom 269 143 5 0 0 0 - - -, f 5;
-#X obj 189 170 imp~ -1;
+#X floatatom 180 103 5 0 0 0 - - -, f 5;
+#X obj 189 170 imp~ 1;
 #X connect 16 0 14 0;
-#X connect 19 0 20 1;
-#X connect 20 0 13 0;
-#X connect 20 0 13 1;
-#X connect 20 0 14 0;
+#X connect 17 0 18 0;
+#X connect 18 0 13 0;
+#X connect 18 0 13 1;
+#X connect 18 0 14 0;
