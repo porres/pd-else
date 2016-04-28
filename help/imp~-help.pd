@@ -38,8 +38,15 @@
 #X msg 107 130 bang \; pd dsp 1;
 #X floatatom 180 103 5 0 0 0 - - -, f 5;
 #X obj 189 170 imp~ 1;
+#X obj 239 131 click~;
+#X obj 246 103 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 246 161 *~ 0.2;
 #X connect 16 0 14 0;
 #X connect 17 0 18 0;
 #X connect 18 0 13 0;
 #X connect 18 0 13 1;
 #X connect 18 0 14 0;
+#X connect 19 0 21 0;
+#X connect 20 0 19 0;
+#X connect 21 0 18 1;
