@@ -27,7 +27,7 @@ rad2hz.class.sources := classes/rad2hz.c
 
 cents2ratio~.class.sources := classes/cents2ratio~.c
 hz2rad~.class.sources := classes/hz2rad~.c
-imp~.class.sources := classes/imp~.c
+impulse~.class.sources := classes/impulse~.c
 rad2hz~.class.sources := classes/rad2hz~.c
 ratio2cents~.class.sources := classes/ratio2cents~.c
 sh~.class.sources := classes/sh~.c
