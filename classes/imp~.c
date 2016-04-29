@@ -29,12 +29,12 @@ static t_int *imp_perform(t_int *w)
         float trig = *in2++;
         if (hz >= 0)
         {
-        if (trig != 0) phase = trig;
+        if (trig > 0 && trig <= 1) phase = trig;
         *out1++ = phase >= 1.;
         if (phase >= 1.) phase = phase - 1.; // wrapped phase
         }
         else
-        {  if (trig != 0 && trig != 1) phase = trig;
+        {  if (trig > 0 && trig < 1) phase = trig;
            else if (trig == 1) phase = 0;
             *out1++ = phase <= 0.;
             if (phase <= 0.) phase = phase + 1.; // wrapped phase
