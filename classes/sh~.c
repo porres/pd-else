@@ -80,33 +80,3 @@ void sh_tilde_setup(void)
         class_addfloat(sh_class, (t_method)sh_float);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
