@@ -1,4 +1,4 @@
-# Makefile.pdlibbuilder version 0.2.3, dated 2016-03-29
+# Makefile.pdlibbuilder version 0.2.4, dated 2016-06-25
 #
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -891,7 +891,7 @@ $(foreach v, $(classes), $(eval $(declare-class-executable-target)))
 oldfat := $(and $(filter ppc i386, $(machine)), \
           $(filter-out 0 1, $(words $(filter -arch, $(c.flags)))))
 
-disable-dependency-tracking := pdincludepathwithspaces oldfat
+disable-dependency-tracking := $(strip $(pdincludepathwithspaces) $(oldfat))
 
 ifndef disable-dependency-tracking
   must-build-everything := $(filter all, $(goals))
