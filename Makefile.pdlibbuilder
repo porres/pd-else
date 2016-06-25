@@ -1,5 +1,7 @@
-# Makefile.pdlibbuilder version 0.2.4, dated 2016-06-25
-#
+# Makefile.pdlibbuilder dated 2016-06-25
+
+version = 0.2.4 
+
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
 # Inspired by Hans Christoph Steiner's Makefile Template and Stephan Beal's
@@ -684,6 +686,9 @@ endif
 ifdef pdincludepath
   mpdh := $(shell ls "$(pdincludepath)/m_pd.h")
 endif
+
+# print Makefile.pdlibbuilder version
+$(info ++++ info: using Makefile.pdlibbuilder version $(version))
 
 # when making target all, check if m_pd.h is found and print info about it
 ifeq ($(goals), all)
