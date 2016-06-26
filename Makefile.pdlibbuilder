@@ -1,6 +1,6 @@
-# Makefile.pdlibbuilder dated 2016-06-25
+# Makefile.pdlibbuilder dated 2016-06-26
 
-version = 0.2.4 
+version = 0.2.5
 
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -906,8 +906,9 @@ endif
 
 # declare implicit prerequisites rule like 'object.o: header1.h header2.h ...'
 # argument $1 is input source file(s)
+# dir is explicitly added because option -MM strips it by default
 define declare-object-target
-$(filter %.o: %.h, $(shell $(CPP) $(c.flags) -MM $1)) $(MAKEFILE_LIST)
+$(dir $1)$(filter %.o: %.h, $(shell $(CPP) $(c.flags) -MM $1)) $(MAKEFILE_LIST)
 endef
 
 # evaluate implicit prerequisite rules when rebuilding everything
