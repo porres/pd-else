@@ -1009,13 +1009,15 @@ install: $(if $(datadirs), install-datadirs)
 
 install-executables: all
 	$(INSTALL_DIR) -v "$(installpath)"
-	$(INSTALL_PROGRAM) $(executables) "$(installpath)"
+	$(foreach v, $(executables), \
+	$(INSTALL_PROGRAM) '$v' "$(installpath)";)
 	$(info ++++ info: executables of lib $(lib.name) installed \
         from $(CURDIR) to $(installpath))
 
 install-datafiles: all
 	$(INSTALL_DIR) -v "$(installpath)"
-	$(INSTALL_DATA) $(datafiles) "$(installpath)"
+	$(foreach v, $(datafiles), \
+	$(INSTALL_DATA) '$(v)' "$(installpath)";)
 	$(info ++++ info: data files of lib $(lib.name) installed \
         from $(CURDIR) to $(installpath))
 
