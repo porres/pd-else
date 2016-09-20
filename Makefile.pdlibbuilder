@@ -891,14 +891,8 @@ $(foreach v, $(classes), $(eval $(declare-class-executable-target)))
 # which case implicit prerequisites are not checked.
 
 # When the Pd include path contains spaces it will mess up the implicit
-# prerequisites rules. Also it is known that multiple arch flags are
-# incompatible with preprocessor option -MM on OSX <= 10.5. Dependency
-# tracking must be disabled in those cases.
-
-oldfat := $(and $(filter ppc i386, $(machine)), \
-          $(filter-out 0 1, $(words $(filter -arch, $(c.flags)))))
-
-disable-dependency-tracking := $(strip $(pdincludepathwithspaces) $(oldfat))
+# prerequisites rules.
+disable-dependency-tracking := $(strip $(pdincludepathwithspaces))
 
 ifndef disable-dependency-tracking
   must-build-everything := $(filter all, $(goals))
