@@ -1,6 +1,5 @@
-# Makefile.pdlibbuilder dated 2016-06-26
-
-version = 0.2.5
+# Makefile.pdlibbuilder dated 2016-09-20
+version = 0.2.6
 
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -629,7 +628,10 @@ endif
 CFLAGS = $(warn.flags) $(optimization.flags) $(arch.c.flags)
 
 # preprocessor flags
-cpp.flags += -DPD -I "$(pdincludepath)" $(CPPFLAGS)
+cpp.flags := -DPD -I "$(pdincludepath)" $(cpp.flags) $(CPPFLAGS)
+
+# flags for dependency checking (cflags from makefile may define -I options)
+depcheck.flags := $(cpp.flags) $(cflags)
 
 # architecture specifications for linker are overridable by LDFLAGS
 LDFLAGS := $(arch.ld.flags)
@@ -908,7 +910,7 @@ endif
 # argument $1 is input source file(s)
 # dir is explicitly added because option -MM strips it by default
 define declare-object-target
-$(dir $1)$(filter %.o: %.h, $(shell $(CPP) $(c.flags) -MM $1)) $(MAKEFILE_LIST)
+$(dir $1)$(filter %.o: %.h, $(shell $(CPP) $(depcheck.flags) -MM $1)) $(MAKEFILE_LIST)
 endef
 
 # evaluate implicit prerequisite rules when rebuilding everything
