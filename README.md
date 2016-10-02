@@ -47,10 +47,12 @@ most basic usage, read the documentation sections in Makefile.pdlibbuilder.
 ### examples ###
 
 
-Here are three projects using the Makefile.pdlibbuilder approach:
+Here are a few projects using the Makefile.pdlibbuilder approach:
 
 https://github.com/pure-data/helloworld
 
-https://github.com/porres/pd-cyclone
+https://github.com/electrickery/pd-cyclone (stable)
+
+https://github.com/porres/pd-cyclone (experimental)
 
 More examples will be referenced here when they are available. 
