@@ -55,4 +55,16 @@ https://github.com/electrickery/pd-cyclone (stable)
 
 https://github.com/porres/pd-cyclone (experimental)
 
+https://git.iem.at/pd/iemguts
+
+https://git.iem.at/pd/iemnet
+
+https://git.iem.at/pd/iem_ambi
+
+https://git.iem.at/pd/mediasettings
+
+https://git.iem.at/pd-gui/punish
+
+https://github.com/residuum/PuRestJson
+
 More examples will be referenced here when they are available. 
