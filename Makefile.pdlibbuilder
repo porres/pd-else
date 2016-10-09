@@ -1,5 +1,5 @@
 # Makefile.pdlibbuilder dated 2016-10-09
-version = 0.2.8
+version = 0.3.0
 
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -76,6 +76,7 @@ version = 0.2.8
 #
 # Variables avaialable for (re)definition via command arguments:
 #
+# - PD_PATH
 # - pdbinpath (Windows only)
 # - pdincludepath
 # - DESTDIR
@@ -160,6 +161,10 @@ version = 0.2.8
 # makefiles and makefiledirs: 
 # Extra makefiles or directories with makefiles that should be made in sub-make
 # processes.
+#
+# PD_PATH:
+# Root directory of portable pd installation where bin/ and src/ are direct
+# subdirs. 
 #
 # pdbinpath:
 # For Windows only. Directory where pd.dll can be found for linking.
@@ -566,17 +571,24 @@ ifeq ($(system), Windows)
     -Wl,--enable-auto-import "$(pdbinpath)/pd.dll"
   c.ldlibs :=
   cxx.flags := -fcheck-new
-  cxx.ldflags := -static-libstdc++ -shared \
+  cxx.ldflags = -static-libstdc++ -shared \
     -Wl,--enable-auto-import "$(pdbinpath)/pd.dll"
   cxx.ldlibs :=
   shared.extension = dll
-  shared.ldflags := -static-libgcc -shared "$(pdbinpath)/pd.dll"
+  shared.ldflags = -static-libgcc -shared "$(pdbinpath)/pd.dll"
   stripflags = --strip-unneeded -R .note -R .comment
 endif
 
 
 #=== paths =====================================================================
 
+
+# If PD_PATH is defined as make command argument or in the environment, override
+# the earlier platform-dependent default.
+ifdef PD_PATH
+  pdincludepath := $(PD_PATH)/src
+  pdbinpath := $(PD_PATH)/bin
+endif
 
 # Default pkglibdir is specified above per operating system. It is aliased as 
 # 'objectsdir' to retain compatibility with pd-extended template. Assignment
