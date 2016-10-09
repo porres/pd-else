@@ -503,6 +503,7 @@ endif
 # LLVM-clang doesn't support -fcheck-new, therefore this flag is omitted for
 # OSX x86_64.
 
+
 ifeq ($(system), Darwin)
   pkglibdir = $(HOME)/Library/Pd
   pdincludepath := $(firstword $(wildcard \
@@ -519,15 +520,18 @@ ifeq ($(system), Darwin)
     -install_name @loader_path/$(shared.lib) \
     -compatibility_version 1 -current_version 1.0
   stripflags = -x
+  version.flag := $(filter $(cflags), -mmacosx-version-min=%)
   ifeq ($(machine), i386)
     cxx.flags := -fcheck-new
-    arch.c.flags := -arch ppc -arch i386 -arch x86_64 -mmacosx-version-min=10.4
-    arch.ld.flags := -arch ppc -arch i386 -arch x86_64 -mmacosx-version-min=10.4
+    arch := ppc i386 x86_64
+    version.flag ?= -mmacosx-version-min=10.4
   endif
   ifeq ($(machine), x86_64)
-    arch.c.flags := -arch i386 -arch x86_64 -mmacosx-version-min=10.5
-    arch.ld.flags := -arch i386 -arch x86_64 -mmacosx-version-min=10.5
+    arch := i386 x86_64
+    version.flag ?= -mmacosx-version-min=10.5
   endif
+  arch.c.flags := $(addprefix -arch , $(arch)) $(version.flag)
+  arch.ld.flags := $(arch.c.flags)
 endif
 
 
