@@ -1,5 +1,5 @@
-# Makefile.pdlibbuilder dated 2016-10-13
-version = 0.3.1
+# Makefile.pdlibbuilder dated 2016-10-14
+version = 0.4.0
 
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -583,25 +583,27 @@ endif
 #=== paths =====================================================================
 
 
-# If PD_PATH is defined as make command argument or in the environment, override
-# the earlier platform-dependent default.
-ifdef PD_PATH
-  pdincludepath := $(PD_PATH)/src
-  pdbinpath := $(PD_PATH)/bin
+# Platform-dependent default paths are specified above, but overridable.
+# Path variables in upper case can be defined as make command argument or in the
+# environment. 'PD_PATH' and 'objectsdir' are supported for compatibility with
+# the build system that pd-l2ork has inherited from pd-extended.
+
+PDDIR ?= $(PD_PATH)
+PDINCLUDEDIR ?= $(pdincludepath)
+PDBINDIR ?= $(pdbinpath)
+PDLIBDIR ?= $(firstword $(objectsdir) $(pkglibdir))
+
+ifneq ($(PDDIR),)
+  PDINCLUDEDIR := $(wildcard $(PDDIR)/src)
+  PDBINDIR := $(wildcard $(PDDIR)/bin)
 endif
 
-# Default pkglibdir is specified above per operating system. It is aliased as 
-# 'objectsdir' to retain compatibility with pd-extended template. Assignment
-# operator '?=' is used to enable a project-relative path definition in the
-# including makefile.
-objectsdir ?= $(pkglibdir)
-
 # base path where all components of the lib will be installed by default
-installpath := $(DESTDIR)$(objectsdir)/$(lib.name)
+installpath := $(DESTDIR)$(PDLIBDIR)/$(lib.name)
 
-# check if pdincludepath contains spaces (as is often the case on Windows)
+# check if include path contains spaces (as is often the case on Windows)
 # if so, store the path so we can later do checks with it
-pdincludepathwithspaces := $(if $(word 2, $(pdincludepath)), $(pdincludepath))
+pdincludepathwithspaces := $(if $(word 2, $(PDINCLUDEDIR)), $(PDINCLUDEDIR))
 
 
 #=== accumulated build flags ===================================================
@@ -624,7 +626,7 @@ endif
 CFLAGS = $(warn.flags) $(optimization.flags) $(arch.c.flags)
 
 # preprocessor flags
-cpp.flags := -DPD -I "$(pdincludepath)" $(cpp.flags) $(CPPFLAGS)
+cpp.flags := -DPD -I "$(PDINCLUDEDIR)" $(cpp.flags) $(CPPFLAGS)
 
 # flags for dependency checking (cflags from makefile may define -I options)
 depcheck.flags := $(cpp.flags) $(cflags)
@@ -682,7 +684,7 @@ endif
 
 # store path to Pd API m_pd.h if it is found
 ifdef pdincludepath
-  mpdh := $(shell ls "$(pdincludepath)/m_pd.h")
+  mpdh := $(shell ls "$(PDINCLUDEDIR)/m_pd.h")
 endif
 
 # print Makefile.pdlibbuilder version
@@ -1172,13 +1174,13 @@ help:
 	@echo
 	@echo "  Pd API m_pd.h:"
 	@echo "    $(mpdhinfo)"
-	@echo "  You may specify your preferred Pd include path as argument to"
-	@echo "  the make command, like 'pdincludepath=path/to/pd/src'."
+	@echo "  You may specify your preferred Pd include directory as argument"
+	@echo "  to the make command, like 'PDINCLUDEDIR=path/to/pd/src'."
 	@echo
 	@echo "  Path for installation of your libdir(s):"
-	@echo "    $(objectsdir)"
+	@echo "    $(PDLIBDIR)"
 	@echo "  Alternatively you may specify your path for installation as argument"
-	@echo "  to the make command, like 'objectsdir=path/to/pd-externals'."
+	@echo "  to the make command, like 'PDLIBDIR=path/to/pd-externals'."
 	@echo
 	@echo "  Default paths are listed in the doc sections in Makefile.pdlibbuilder."
 	@echo
