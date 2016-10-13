@@ -1,5 +1,5 @@
-# Makefile.pdlibbuilder dated 2016-10-09
-version = 0.3.0
+# Makefile.pdlibbuilder dated 2016-10-13
+version = 0.3.1
 
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -567,7 +567,7 @@ ifeq ($(system), Windows)
   arch.c.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
   cpp.flags := -DMSW -DNT
   c.flags :=
-  c.ldflags := -static-libgcc -shared \
+  c.ldflags = -static-libgcc -shared \
     -Wl,--enable-auto-import "$(pdbinpath)/pd.dll"
   c.ldlibs :=
   cxx.flags := -fcheck-new
