@@ -73,31 +73,34 @@ version = 0.4.0
 # - forDarwin
 # - forWindows
 #
+# Variables available for your makefile or make command line:
 #
-# Variables avaialable for (re)definition via command arguments:
+# - make-lib-executable
+# - suppress-wunused
 #
-# - PD_PATH
-# - pdbinpath (Windows only)
-# - pdincludepath
-# - DESTDIR
-# - prefix
-# - libdir
-# - pkglibdir
+# Path variables for make command line or environment:
+#
+# - PDDIR
+# - PDINCLUDEDIR
+# - PDBINDIR
+# - PDLIBDIR
+#
+# Standard make variables for make command line or environment:
+#
 # - CPPFLAGS
 # - CFLAGS
 # - LDFLAGS
 # - CC
 # - CXX
 # - INSTALL
-# - INSTALL_PROGRAM
-# - INSTALL_DATA
-# - INSTALL_DIR
+# - DESTDIR
 #
-# Variables available for your makefile or as command argument:
+# Deprecated path variables:
 #
+# - PD_PATH
+# - pdincludepath
+# - pdbinpath
 # - objectsdir
-# - make-lib-executable
-# - suppress-wunused
 #
 #
 #=== descriptions of Makefile.pdlibbuilder API variables =======================
@@ -145,12 +148,6 @@ version = 0.4.0
 # files that should go into your lib rootdir and 'datadirs' for complete
 # directories you want to copy from source to distribution.
 #
-# externalsdir: 
-# Relative path to directory 'externals' in the context of pd-extended SVN, or
-# any other centralized build layout for multiple libraries. Default value
-# is '..', meaning the direct parent. The value is used in search paths for 
-# pd core components (header files, and executable in the case of Windows).
-#
 # forLinux, forDarwin, forWindows:
 # Shorthand for 'variable definitions for Linux only' etc. Use like:
 #    define forLinux
@@ -162,26 +159,37 @@ version = 0.4.0
 # Extra makefiles or directories with makefiles that should be made in sub-make
 # processes.
 #
-# PD_PATH:
-# Root directory of portable pd installation where bin/ and src/ are direct
-# subdirs. 
+# make-lib-executable:
+# When this variable is defined 'yes' in your makefile or as command argument,
+# Makefile.pdlibbuilder will try to build all classes into a single library
+# executable (but it will force exit if lib.setup.sources is undefined).
+# If your makefile defines 'make-lib-executable=yes' as the library default,
+# this can still be overriden with 'make-lib-executable=no' as command argument 
+# to build individual class executables (the Makefile.pdlibbuilder default.)
 #
-# pdbinpath:
-# For Windows only. Directory where pd.dll can be found for linking.
+# suppress-wunused:
+# When this variable is defined ('yes' or any other value), -Wunused-variable,
+# -Wunused-parameter, -Wunused-value and -Wunused-function are suppressed,
+# but the other warnings from -Wall are retained.
 #
-# pdincludepath:
-# Directory where Pd API m_pd.h can be found, and other Pd header files.
+# PDDIR:
+# Root directory of 'portable' pd package. When defined, PDINCLUDEDIR and 
+# PDBINDIR will be evaluated as $(PDDIR)/src and $(PDDIR)/bin.
 #
-# DESTDIR, prefix, libdir:
-# Components of the path for installation as conventionally used on Linux.
+# PDINCLUDEDIR:
+# Directory where Pd API m_pd.h should be found, and other Pd header files.
+# Overrides the default search path.
 #
-# pkglibdir:
-# Base path for installation of Pd library directories. Default is specified
-# per OS, see section about paths below.
+# PDBINDIR:
+# Directory where pd.dll should be found for linking (Windows only). Overrides
+# the default search path.
 #
-# objectsdir:
-# Alias of pkglibdir. Can be defined in your makefile to enable project-
-# dependent relative install locations.
+# PDLIBDIR:
+# Root directory for installation of Pd library directories. Overrides the
+# default install location.
+#
+# DESTDIR:
+# Prepended path component for staged install.
 #
 # CPPFLAGS:
 # Preprocessor flags which are not strictly required for building.
@@ -199,21 +207,21 @@ version = 0.4.0
 # CC and CXX:
 # C and C++ compiler programs as defined in your build environment.
 #
-# INSTALL, INSTALL_PROGRAM, INSTALL_DATA, INSTALL_DIR:
-# Definitions of install program, may be overriden via command argument.
+# INSTALL
+# Definition of install program.
 #
-# make-lib-executable:
-# When this variable is defined 'yes' in your makefile or as command argument,
-# Makefile.pdlibbuilder will try to build all classes into a single library
-# executable (but it will force exit if lib.setup.sources is undefined).
-# If your makefile defines 'make-lib-executable=yes' as the library default,
-# this can still be overriden with 'make-lib-executable=no' as command argument 
-# to build individual class executables (the Makefile.pdlibbuilder default.)
+# PD_PATH:
+# Equivalent to PDDIR. Supported for compatibility with pd-extended central
+# makefile, but deprecated otherwise.
 #
-# suppress-wunused:
-# When this variable is defined ('yes' or any other value), -Wunused-variable,
-# -Wunused-parameter, -Wunused-value and -Wunused-function are suppressed,
-# but the other warnings from -Wall are retained.
+# objectsdir:
+# Root directory for installation of Pd library directories, like PDLIBDIR but
+# not overridable by environment. Supported for compatibility with pd-extended
+# central makefile, but deprecated otherwise.
+#
+# pdincludepath, pdbinpath:
+# As PDINCLUDEDIR and PDBINDIR but not overridable by environment. Deprecated
+# as user variables.
 #
 #
 #=== paths =====================================================================
@@ -224,8 +232,8 @@ version = 0.4.0
 # Object (.o) files are built in the directory of their source files.
 # Executables are built in current working directory. 
 #
-# Variable 'pdincludepath' stores a location where m_pd.h is expected to reside.
-# Location where Makefile.pdlibbuilder tries to find it:
+# Default search path for m_pd.h and other API header files is platform 
+# dependent, and overridable by PDINCLUDEDIR:
 #
 # Linux:    /usr/include/pd
 #
@@ -233,17 +241,14 @@ version = 0.4.0
 #
 # Windows:  %PROGRAMFILES%/pd/src
 #
-# The path for installation of all library components is constructed as:
-#
-# installpath := $(DESTDIR)$(objectsdir)/$(lib.name)
-#
-# Default for 'objectsdir' is defined per platform and follows this convention:
-# https://puredata.info/docs/faq/how-do-i-install-externals-and-help-files
+# Default location to install pd libraries is platform dependent, and
+# overridable by PDLIBDIR:
 #
 # Linux:    /usr/local/lib/pd-externals
 # OSX:      ~/Library/Pd
 # Windows:  %APPDATA%/Pd
 #
+# https://puredata.info/docs/faq/how-do-i-install-externals-and-help-files
 # The rationale for not installing to ~/pd-externals by default on Linux
 # is that some people share the home dir between 32 and 64 bit installations.
 #
