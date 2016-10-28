@@ -77,6 +77,16 @@ paths, and targets. The internal documentation reflects the exact functionality
 of the particular version. A tips&tricks page is in the works. 
 
 
+### versioning ###
+
+
+The project is versioned in MAJOR.MINOR.BUGFIX format (see http://semver.org),
+and maintained at https://github.com/pure-data/pd-lib-builder. Pd lib developers
+are invited to regulary check for updates, and to contribute and discuss 
+improvements here. If you really need to distribute a personalized version with
+your library, rename Makefile.pdlibbuilder to avoid confusion.
+
+
 ### examples ###
 
 
