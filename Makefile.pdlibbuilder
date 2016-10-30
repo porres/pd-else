@@ -1,5 +1,5 @@
-# Makefile.pdlibbuilder dated 2016-10-27
-version = 0.4.1
+# Makefile.pdlibbuilder dated 2016-10-30
+version = 0.4.2
 
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -692,7 +692,7 @@ else
 endif
 
 # store path to Pd API m_pd.h if it is found
-ifdef pdincludepath
+ifdef PDINCLUDEDIR
   mpdh := $(shell ls "$(PDINCLUDEDIR)/m_pd.h")
 endif
 
