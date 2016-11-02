@@ -1,5 +1,5 @@
-# Makefile.pdlibbuilder dated 2016-10-30
-version = 0.4.2
+# Makefile.pdlibbuilder dated 2016-11-02
+version = 0.4.3
 
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -493,14 +493,14 @@ ifeq ($(system), Linux)
   pdincludepath := $(wildcard /usr/include/pd)
   extension = pd_linux
   cpp.flags := -DUNIX
-  c.flags := -fpic
-  c.ldflags := -rdynamic -shared -fpic -Wl,-rpath,"\$$ORIGIN",--enable-new-dtags
+  c.flags := -fPIC
+  c.ldflags := -rdynamic -shared -fPIC -Wl,-rpath,"\$$ORIGIN",--enable-new-dtags
   c.ldlibs := -lc -lm
-  cxx.flags := -fpic -fcheck-new
-  cxx.ldflags := -rdynamic -shared -fpic -Wl,-rpath,"\$$ORIGIN",--enable-new-dtags
+  cxx.flags := -fPIC -fcheck-new
+  cxx.ldflags := -rdynamic -shared -fPIC -Wl,-rpath,"\$$ORIGIN",--enable-new-dtags
   cxx.ldlibs := -lc -lm -lstdc++
   shared.extension = so
-  shared.ldflags := -rdynamic -fpic -shared -Wl,-soname,$(shared.lib)
+  shared.ldflags := -rdynamic -fPIC -shared -Wl,-soname,$(shared.lib)
   stripflags = --strip-unneeded -R .note -R .comment
 endif
 
