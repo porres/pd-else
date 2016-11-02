@@ -1,5 +1,12 @@
 Changelog for Makefile.pdlibbuilder.
 
+v0.4.3, dated 2016-11-02
+Replace flags '-fpic' by 'fPIC'.
+(bugfix, issue #29, commit 426b38b)
+
+v0.4.2, dated 2016-10-30
+Fix issue where incorrect message about m_pd.h is given.
+(bugfix, commit 2e13d8f)
 
 v0.4.1, dated 2016-10-27
 Respect cflag for minimum OSX version when defined by lib makefile.
