@@ -106,7 +106,7 @@ version = 0.4.3
 #=== descriptions of Makefile.pdlibbuilder API variables =======================
 #
 #
-# lib.name: 
+# lib.name:
 # Name of the library directory as it will be installed / distributed. Also the
 # name of the lib executable in the case where all classes are linked into
 # a single binary.
@@ -116,7 +116,7 @@ version = 0.4.3
 # into a single lib binary.
 #
 # class.sources:
-# All sources files (C or C++) for which the condition holds that 
+# All sources files (C or C++) for which the condition holds that
 # class name == source file basename.
 #
 # <classname>.class.sources:
@@ -135,13 +135,13 @@ version = 0.4.3
 # link libs) for the whole library. These flags are added to platform-specific
 # flags defined by Makefile.pdlibbuilder.
 #
-# <classname>.class.ldflags and <classname>.class.ldlibs: 
+# <classname>.class.ldflags and <classname>.class.ldlibs:
 # Define ldflags resp. ldlibs specific to class <classname>. These flags are
 # added to platform-specific flags defined by Makefile.pdlibbuilder, and flags
 # defined in your Makefile for the whole library. Note: cflags can not be
 # defined per class in the current implementation.
 #
-# datafiles and datadirs: 
+# datafiles and datadirs:
 # All extra files you want to include in binary distributions of the
 # library: abstractions and help patches, example patches, meta patch, readme
 # and license texts, manuals, sound files, etcetera. Use 'datafiles' for all
@@ -155,7 +155,7 @@ version = 0.4.3
 #      class.sources += linuxthing.c
 #    endef
 #
-# makefiles and makefiledirs: 
+# makefiles and makefiledirs:
 # Extra makefiles or directories with makefiles that should be made in sub-make
 # processes.
 #
@@ -164,7 +164,7 @@ version = 0.4.3
 # Makefile.pdlibbuilder will try to build all classes into a single library
 # executable (but it will force exit if lib.setup.sources is undefined).
 # If your makefile defines 'make-lib-executable=yes' as the library default,
-# this can still be overriden with 'make-lib-executable=no' as command argument 
+# this can still be overriden with 'make-lib-executable=no' as command argument
 # to build individual class executables (the Makefile.pdlibbuilder default.)
 #
 # suppress-wunused:
@@ -173,7 +173,7 @@ version = 0.4.3
 # but the other warnings from -Wall are retained.
 #
 # PDDIR:
-# Root directory of 'portable' pd package. When defined, PDINCLUDEDIR and 
+# Root directory of 'portable' pd package. When defined, PDINCLUDEDIR and
 # PDBINDIR will be evaluated as $(PDDIR)/src and $(PDDIR)/bin.
 #
 # PDINCLUDEDIR:
@@ -230,9 +230,9 @@ version = 0.4.3
 # Source files in directories other than current working directory must be
 # prefixed with their relative path. Do not rely on VPATH or vpath.
 # Object (.o) files are built in the directory of their source files.
-# Executables are built in current working directory. 
+# Executables are built in current working directory.
 #
-# Default search path for m_pd.h and other API header files is platform 
+# Default search path for m_pd.h and other API header files is platform
 # dependent, and overridable by PDINCLUDEDIR:
 #
 # Linux:    /usr/include/pd
@@ -301,7 +301,7 @@ version = 0.4.3
 # are upper case. Use target 'allvars' to print all variables and their values.
 #
 # 'Fields' in data variables are separated by dots, like in 'foo.class.sources'.
-# Words in variables expressing a function or command are separated by dashes, 
+# Words in variables expressing a function or command are separated by dashes,
 # like in 'make-lib-executable'.
 #
 #
@@ -325,7 +325,7 @@ version = 0.4.3
 #
 #=== end of documentation sections =============================================
 #
-# 
+#
 ################################################################################
 ################################################################################
 ################################################################################
@@ -340,7 +340,7 @@ ifneq ($(firstword $(sort 3.81 $(MAKE_VERSION))), 3.81)
   $(error GNU make version 3.81 or higher is required)
 endif
 
-# Relative path to externals root dir in multi-lib source tree like 
+# Relative path to externals root dir in multi-lib source tree like
 # pd-extended SVN. Default is parent of current working directory. May be
 # defined differently in including makefile.
 externalsdir ?= ..
@@ -357,7 +357,7 @@ Makefile.pdlibbuilder = true
 # strip possibles spaces from lib.name, they mess up calculated file names
 lib.name := $(strip $(lib.name))
 
-# if meta file exists, check library version 
+# if meta file exists, check library version
 metafile := $(wildcard $(lib.name)-meta.pd)
 
 ifdef metafile
@@ -429,7 +429,7 @@ endif
 #=== flags per architecture ====================================================
 
 
-# Set architecture-dependent cflags, mainly for Linux. For Mac and Windows, 
+# Set architecture-dependent cflags, mainly for Linux. For Mac and Windows,
 # arch.c.flags are overriden below.
 
 machine := $(shell uname -m)
@@ -451,7 +451,7 @@ endif
 
 # Intel/AMD 64 bit, build with SSE, SSE2 and SSE3 instructions
 ifeq ($(findstring $(machine), ia64 x86_64), $(machine))
-  arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3 
+  arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3
 endif
 
 
@@ -520,7 +520,7 @@ ifeq ($(system), Darwin)
     /Applications/Pd*.app/Contents/Resources/src))
   extension = pd_darwin
   cpp.flags := -DUNIX -DMACOSX -I /sw/include
-  c.flags := 
+  c.flags :=
   c.ldflags := -undefined suppress -flat_namespace -bundle
   c.ldlibs := -lc
   cxx.ldflags := -undefined suppress -flat_namespace -bundle
@@ -566,7 +566,7 @@ ifeq ($(system), Windows)
   endif
 endif
 
-# On Windows we build 32 bit by default to match Pd(-extended) binary 
+# On Windows we build 32 bit by default to match Pd(-extended) binary
 # distributions. This may change in the future.
 # TODO: decide whether -mms-bitfields should be specified.
 ifeq ($(system), Windows)
@@ -620,7 +620,7 @@ pdincludepathwithspaces := $(if $(word 2, $(PDINCLUDEDIR)), $(PDINCLUDEDIR))
 
 # From GNU make docs: 'Users expect to be able to specify CFLAGS freely
 # themselves.' So we use CFLAGS to define options which  are not strictly
-# required for compilation: optimizations, architecture specifications, and 
+# required for compilation: optimizations, architecture specifications, and
 # warnings. CFLAGS can be safely overriden using a make command argument.
 # Variables cflags, ldflags and ldlibs may be defined in including makefile.
 
@@ -679,7 +679,7 @@ compile-cxx := $(CXX)
 all:
 
 # To avoid unpredictable results, make sure the default target is not redefined
-# by including makefile. 
+# by including makefile.
 ifneq ($(.DEFAULT_GOAL), all)
   $(error Default target must be 'all'.)
 endif
@@ -753,8 +753,8 @@ MAKEFLAGS += --no-builtin-rules
 
 
 # Target all forces the build of targets [$(executables) post] in
-# deterministic order. Target $(executables) builds class executables plus 
-# optional shared lib or alternatively a single lib executable when 
+# deterministic order. Target $(executables) builds class executables plus
+# optional shared lib or alternatively a single lib executable when
 # make-lib-executable=true. Target post is optionally defined by
 # library makefile.
 
@@ -960,7 +960,7 @@ endef
 %.pre:: %.cc force
 	$(call make-preprocessor-file,cxx)
 
-%.pre:: %.cpp force 
+%.pre:: %.cpp force
 	$(call make-preprocessor-file,cxx)
 
 
