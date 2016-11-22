@@ -1,5 +1,5 @@
-# Makefile.pdlibbuilder dated 2016-11-02
-version = 0.4.3
+# Makefile.pdlibbuilder dated 2016-11-22
+version = 0.4.4
 
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -462,26 +462,25 @@ endif
 
 
 # The following systems are defined: Linux, Darwin, Windows. GNU and
-# GNU/kFreeBSD are treated as Linux to get the same options. System-specific
-# multiline defines (optionally set in library makefile) are conditionally
-# evaluated here.
+# GNU/kFreeBSD are treated as Linux to get the same options.
 
 uname := $(shell uname)
 
 ifeq ($(findstring $(uname), Linux GNU GNU/kFreeBSD), $(uname))
   system = Linux
-  $(eval $(forLinux))
 endif
 
 ifeq ($(uname), Darwin)
   system = Darwin
-  $(eval $(forDarwin))
 endif
 
 ifeq ($(findstring MINGW, $(uname)), MINGW)
   system = Windows
-  $(eval $(forWindows))
 endif
+
+# evaluate possible system-specific multiline defines from library makefile
+$(eval $(for$(system)))
+
 
 # TODO: Cygwin, Android
 
