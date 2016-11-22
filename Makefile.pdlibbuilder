@@ -6,6 +6,9 @@ version = 0.4.3
 # Inspired by Hans Christoph Steiner's Makefile Template and Stephan Beal's
 # ShakeNMake.
 #
+# Grab the newest version of Makefile.pdlibbuilder from
+#    https://github.com/pure-data/pd-lib-builder/
+#
 # GNU make version >= 3.81 required.
 #
 #
