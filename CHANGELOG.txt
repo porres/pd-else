@@ -1,5 +1,9 @@
 Changelog for Makefile.pdlibbuilder.
 
+v0.4.4, dated 2016-11-22
+Use variable 'system' when evaluating 'for{Linux,Darwin,Windows}'
+(bugfix, issue #31, commit 2c14110)
+
 v0.4.3, dated 2016-11-02
 Replace flags '-fpic' by 'fPIC'.
 (bugfix, issue #29, commit 426b38b)
