@@ -1,8 +1,0 @@
-#N canvas 50 176 200 200 10;
-#N canvas 50 92 420 300 META 1;
-#X text 10 10 VERSION 0;
-#X text 17 91 LICENSE GPL;
-#X text 10 25 AUTHOR your@email.here;
-#X text 11 69 NAME dbtoa;
-#X text 11 46 DESCRIPTION Your description here;
-#X restore 10 10 pd META;
