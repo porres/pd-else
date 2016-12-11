@@ -50,8 +50,8 @@
 #X connect 18 0 16 0;
 #X restore 159 77 pd set_GUI;
 #N canvas 965 168 332 251 GUI 0;
-#X obj 103 116 hsl 89 20 0 1 0 0 \$0-slider \$0-set-slider muted 23
-9 0 14 -91674 -262144 -262144 5000 1;
+#X obj 103 116 hsl 89 20 0 1 0 0 \$0-slider \$0-set-slider volume 17
+9 0 14 -228856 -1 -1 0 1;
 #N canvas 565 338 514 332 DSP 0;
 #X obj 100 100 tgl 16 0 \$0-dsp-toggle \$0-dsp-toggle-set empty 19
 8 0 12 -74965 -212593 -262144 1 1;
@@ -62,8 +62,8 @@
 #N canvas 335 32 409 332 mute 0;
 #X obj 101 101 cnv 5 34 14 empty \$0-cnv_mute mute 4 6 0 12 -228856
 -91542 0;
-#X obj 64 133 tgl 16 0 \$0-mute \$0-mute-set empty 19 7 0 12 -74965
--212593 -262144 1 1;
+#X obj 64 133 tgl 16 0 \$0-mute \$0-mute-set empty 19 7 0 12 -228856
+-128992 -262144 0 1;
 #X obj 130 162 select 0 1;
 #N canvas 612 446 324 271 set_tgl_color 0;
 #X obj 47 30 inlet;
@@ -427,7 +427,7 @@
 #X connect 13 1 7 0;
 #X restore 37 85 pd quartic;
 #X obj 116 239 outlet~;
-#N canvas 251 205 450 300 dB 0;
+#N canvas 743 262 450 300 dB 0;
 #X obj 129 110 line~;
 #X obj 129 76 inlet;
 #X obj 159 235 outlet~;
