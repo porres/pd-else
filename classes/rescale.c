@@ -180,16 +180,9 @@ void rescale_factor(t_rescale *x, t_floatarg f)
 
 void check(t_rescale *x)
 {
-  switch (x->flag) {
-  case 0:
-    ptrtoscaling = exp_scaling;
-    break;
-  default:
-    ptrtoscaling = clas_scaling;
-    break;
-  }
   if(x->expo==1)
     ptrtoscaling = scaling;
+  else ptrtoscaling = exp_scaling;
   return;
 }
 
