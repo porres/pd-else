@@ -19,6 +19,7 @@ rescale.class.sources := classes/rescale.c
 
 # signal:
 cents2ratio~.class.sources := classes/cents2ratio~.c
+downsample~.class.sources := classes/downsample~.c
 hz2rad~.class.sources := classes/hz2rad~.c
 impulse~.class.sources := classes/impulse~.c
 median~.class.sources := classes/median~.c
