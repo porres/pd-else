@@ -15,9 +15,6 @@ typedef struct _rescale
     t_object x_obj;
     t_inlet  *x_inlet_1;
     t_inlet  *x_inlet_2;
-    t_inlet  *x_inlet_3;
-    t_inlet  *x_inlet_4;
-    t_inlet  *x_inlet_5;
     t_int    x_classic;
 } t_rescale;
 
@@ -30,19 +27,16 @@ static t_int *rescale_perform(t_int *w)
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
     t_float *in3 = (t_float *)(w[5]);
-    t_float *in4 = (t_float *)(w[6]);
-    t_float *in5 = (t_float *)(w[7]);
-    t_float *in6 = (t_float *)(w[8]);
-    t_float *out = (t_float *)(w[9]);
+    t_float *out = (t_float *)(w[6]);
     t_int classic_flag = x->x_classic;
     while (nblock--)
     {
     float in = *in1++;
-    float il = *in2++; // Input LOW
-    float ih = *in3++; // Input HIGH
-    float ol = *in4++; // Output LOW
-    float oh = *in5++; // Output HIGH
-    float p = *in6++; // power (exponential) factor
+    float il = -1; // Input LOW
+    float ih = 1; // Input HIGH
+    float ol = *in2++; // Output LOW
+    float oh = *in3++; // Output HIGH
+    float p = 1; // power (exponential) factor
     float output;
     if (classic_flag != 0)
         {p = p <= 1 ? 1 : p;
@@ -64,22 +58,19 @@ static t_int *rescale_perform(t_int *w)
         }
     *out++ = output;
     }
-    return (w + 10);
+    return (w + 7);
 }
 
 static void rescale_dsp(t_rescale *x, t_signal **sp)
 {
-    dsp_add(rescale_perform, 9, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec,
-            sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec);
+    dsp_add(rescale_perform, 6, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec,
+            sp[2]->s_vec, sp[3]->s_vec);
 }
 
 static void *rescale_free(t_rescale *x)
 {
 		inlet_free(x->x_inlet_1);
         inlet_free(x->x_inlet_2);
-        inlet_free(x->x_inlet_3);
-        inlet_free(x->x_inlet_4);
-        inlet_free(x->x_inlet_5);
         return (void *)x;
 }
 
@@ -148,15 +139,9 @@ static void *rescale_new(t_symbol *s, int argc, t_atom *argv)
     };
     
 	x->x_inlet_1 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-	pd_float((t_pd *)x->x_inlet_1, min_in);
+	pd_float((t_pd *)x->x_inlet_1, min_out);
     x->x_inlet_2 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_2, max_in);
-    x->x_inlet_3 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_3, min_out);
-    x->x_inlet_4 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_4, max_out);
-    x->x_inlet_5 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_5, exponential);
+    pd_float((t_pd *)x->x_inlet_2, max_out);
 
     outlet_new((t_object *)x, &s_signal);
     
