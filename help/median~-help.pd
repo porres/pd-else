@@ -1,34 +1,19 @@
-#N canvas 581 112 559 437 10;
-#X obj 3 295 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 328 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 365 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
-0;
-#X obj 82 337 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 83 303 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X text 187 375 (none);
-#X obj 3 399 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
-0;
-#X obj 244 150 hsl 180 15 0 44100 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
-#X obj 3 4 cnv 15 301 42 empty empty rad2hz~ 20 20 2 37 -233017 -1
+#N canvas 647 178 559 451 10;
+#X obj 3 3 cnv 15 301 42 empty empty median~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
+#X obj 23 40 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
+#X obj 78 40 cnv 4 4 4 empty empty median 0 28 2 18 -233017 -1 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
-#X obj 23 40 cnv 4 4 4 empty empty Hertz/Radians_per_sample 0 28 2
-18 -233017 -1 0;
-#X obj 226 40 cnv 4 4 4 empty empty conversion 0 28 2 18 -233017 -1
 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
@@ -40,22 +25,8 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 241 270 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 241 177 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 310 61 (for signals);
-#N canvas 1046 306 123 217 snapshot~ 0;
-#X obj 29 107 snapshot~;
-#X obj 46 79 metro 100;
-#X obj 46 53 loadbang;
-#X obj 29 146 outlet;
-#X obj 29 25 inlet~;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
-#X connect 2 0 1 0;
-#X connect 4 0 0 0;
-#X restore 241 241 pd snapshot~;
+#X text 82 92 Thje [median~] objects finds the median of a number of
+samples (maximum number of samples is the block size).;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -159,18 +130,66 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 71 pd;
-#X text 113 305 float/signal;
-#X text 149 337 signal;
-#X obj 241 209 else/rad2hz~;
-#X text 326 176 Radians per sample;
-#X text 326 269 Hertz;
-#X text 206 305 - radians per sample value;
-#X text 202 337 - converted hertz value;
-#X text 71 88 Use [rad2hz~] to convert a signal representing a frequency
-in "Radians per Sample" to Hertz. This depends on the patch's sample
-rate (sr). The conversion formula is \; hz = rad * sr / 2pi;
-#X connect 7 0 21 0;
-#X connect 21 0 27 0;
-#X connect 23 0 20 0;
-#X connect 27 0 23 0;
+#X restore 505 61 pd;
+#X obj 3 288 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 341 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 378 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 112 350 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 113 296 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 3 409 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 112 318 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 180 350 signal -;
+#X text 164 387 1) float;
+#X text 223 386 - number of samples to perform the median;
+#X text 179 297 signal -;
+#X text 184 318 float -;
+#X text 242 298 the signal to perform the median on;
+#X text 242 319 number of samples to perform the median;
+#X text 241 351 the median of the input signal;
+#X msg 268 147 64;
+#X obj 350 160 cnv 15 198 108 empty empty empty 20 12 0 14 -233017
+-66577 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-median 64 float 3;
+#A 0 -0.041815 -0.104325 -0.166426 -0.227874 -0.288427 -0.347848 -0.4059
+-0.462355 -0.516994 -0.569602 -0.619973 -0.66791 -0.713224 -0.755737
+-0.795283 -0.831703 -0.864847 -0.894594 -0.920828 -0.943446 -0.962359
+-0.977493 -0.988789 -0.996202 -0.999701 -0.99926 -0.994895 -0.986623
+-0.974476 -0.958503 -0.938766 -0.915343 -0.888324 -0.857817 -0.823929
+-0.786805 -0.746591 -0.703445 -0.657537 -0.609047 -0.558165 -0.505091
+-0.450033 -0.393202 -0.334826 -0.275136 -0.214365 -0.152753 -0.0905406
+-0.0279727 0.0347054 0.0972479 0.159408 0.220941 0.281605 0.341163
+0.399381 0.456031 0.51089 0.563743 0.614383 0.662609 0.708224 0.751057
+;
+#X coords 0 1 64 -1 200 110 2 0 0;
+#X restore 349 159 graph;
+#X obj 167 186 nbx 5 14 1 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 1 256;
+#X obj 110 209 median~ 32;
+#N canvas 802 353 210 172 graph 0;
+#X obj 33 103 tabwrite~ \$0-median;
+#X obj 33 27 inlet~;
+#X obj 92 69 metro 500;
+#X obj 92 35 loadbang;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
+#X restore 110 249 pd graph;
+#X msg 167 147 8;
+#X msg 202 148 16;
+#X msg 233 147 32;
+#X obj 96 158 osc~ 440;
+#X connect 30 0 33 0;
+#X connect 33 0 34 1;
+#X connect 34 0 35 0;
+#X connect 36 0 33 0;
+#X connect 37 0 33 0;
+#X connect 38 0 33 0;
+#X connect 39 0 34 0;

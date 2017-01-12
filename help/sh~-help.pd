@@ -1,55 +1,170 @@
-#N canvas 829 31 561 534 10;
-#X obj 3 4 cnv 15 552 40 empty empty sh~ 3 12 0 18 -204280 -1 0;
-#X obj 3 327 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 829 31 559 503 10;
+#X obj 3 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 405 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 395 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 442 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 432 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 82 414 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 122 404 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 83 335 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 123 325 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 110 451 (none);
-#X obj 3 483 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 463 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#N canvas 244 346 428 109 Related_objects 0;
-#X obj 0 0 cnv 15 425 20 empty empty empty 3 12 0 14 -204280 -1 0;
-#X text 6 1 Related Objects;
-#X restore 209 485 pd Related_objects;
-#N canvas 571 307 379 261 META 0;
-#X text 1 20 LICENSE SIBSD;
-#X text 0 101 VERSION;
-#X text 1 60 INLET_0 data;
-#X text 1 80 OUTLET_0 data;
-#X text 1 121 AUTHOR Porres;
-#X text 0 142 RELEASE_DATE 2016;
-#X text 1 163 WEBSITE: https://github.com/porres/Porres-ELS;
-#X text 1 0 KEYWORDS;
-#X text 1 40 DESCRIPTION;
-#X restore 505 485 pd META;
-#X text 125 414 float/List;
-#X text 161 356 bang;
-#X text 167 374 set;
-#X text 206 374 - sets next float value to be converted via bang;
-#X text 206 356 - outputs the last converted float value;
-#X msg 196 132 0;
-#X text 125 337 float/list;
-#X text 202 414 - converted cents value(s);
-#X text 206 337 - ratio value(s);
-#X text 195 206 cents;
-#X obj 313 111 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 241 112 noise~;
-#X floatatom 241 236 0 0 0 0 - - -;
-#X obj 313 135 click~;
-#X obj 241 206 cyclone/snapshot~ 1;
-#X text 26 25 Sample and Hold;
-#X obj 317 168 sig~ 1;
-#X obj 241 172 sh~;
-#X connect 15 0 27 0;
-#X connect 20 0 23 0;
-#X connect 21 0 27 0;
-#X connect 23 0 27 1;
-#X connect 24 0 22 0;
-#X connect 27 0 24 0;
+#X obj 163 177 noise~;
+#X obj 3 3 cnv 15 301 42 empty empty sh~ 20 20 2 37 -233017 -1 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Sample 0 28 2 18 -233017 -1 0;
+#X obj 107 40 cnv 4 4 4 empty empty hold 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 83 40 cnv 4 4 4 empty empty & 0 28 2 18 -233017 -1 0;
+#X obj 123 355 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 163 283 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.460972 256;
+#N canvas 1046 306 123 217 snapshot~ 0;
+#X obj 29 107 snapshot~;
+#X obj 46 79 metro 100;
+#X obj 46 53 loadbang;
+#X obj 29 146 outlet;
+#X obj 29 25 inlet~;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 4 0 0 0;
+#X restore 163 253 pd snapshot~;
+#N canvas 207 34 366 264 (subpatch) 0;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
+#X obj 215 68 route dsp;
+#X obj 215 37 receive pd;
+#N canvas 977 77 379 291 set_color 0;
+#X obj 47 30 inlet;
+#X obj 147 200 s \$0-cnv;
+#X obj 47 83 select 0 1;
+#X obj 47 220 s \$0-tgl-r;
+#N canvas 0 22 712 637 off 0;
+#X obj 490 220 * -1;
+#X obj 424 300 +;
+#X obj 409 325 +;
+#X obj 347 219 * -65536;
+#X obj 424 220 * -256;
+#X obj 409 356 - 1;
+#X obj 390 189 unpack f f f;
+#X obj 225 295 +;
+#X obj 210 320 +;
+#X obj 148 214 * -65536;
+#X obj 225 215 * -256;
+#X obj 291 215 * -1;
+#X obj 210 351 - 1;
+#X obj 191 184 unpack f f f;
+#X obj 379 423 pack;
+#X msg 395 152 124 124 124;
+#X msg 203 154 220 220 220;
+#X obj 238 121 t b b;
+#X obj 238 81 inlet;
+#X obj 378 485 outlet;
+#X connect 0 0 1 1;
+#X connect 1 0 2 1;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 14 1;
+#X connect 6 0 3 0;
+#X connect 6 1 4 0;
+#X connect 6 2 0 0;
+#X connect 7 0 8 1;
+#X connect 8 0 12 0;
+#X connect 9 0 8 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 1;
+#X connect 12 0 14 0;
+#X connect 13 0 9 0;
+#X connect 13 1 10 0;
+#X connect 13 2 11 0;
+#X connect 14 0 19 0;
+#X connect 15 0 6 0;
+#X connect 16 0 13 0;
+#X connect 17 0 16 0;
+#X connect 17 1 15 0;
+#X connect 18 0 17 0;
+#X restore 47 113 pd off;
+#X msg 47 180 color \$1 \$2 0;
+#X msg 147 131 -4.86997e+06 -1.34937e+07;
+#X msg 147 171 color \$1 0 \$2;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 6 0;
+#X connect 4 0 5 0;
+#X connect 4 0 7 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 1 0;
+#X restore 215 165 pd set_color;
+#X obj 135 122 r \$0-tgl-s;
+#N canvas 121 482 450 300 (subpatch) 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+0;
+#X coords 0 -1 1 1 42 27 1 100 100;
+#X restore 51 144 pd;
+#X obj 226 139 s \$0-tgl-r;
+#X msg 226 115 set \$1;
+#X msg 135 177 \; pd dsp \$1;
+#N canvas 256 32 278 194 load_check 0;
+#X obj 136 53 sig~ 1;
+#X obj 74 24 loadbang;
+#X obj 136 86 snapshot~;
+#X obj 91 52 del 5;
+#X obj 136 151 outlet;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 74 126 switch~;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 1 0 5 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 3 0 5 0;
+#X connect 5 0 6 0;
+#X restore 51 72 pd load_check;
+#X connect 1 0 3 0;
+#X connect 1 0 7 0;
+#X connect 2 0 1 0;
+#X connect 4 0 8 0;
+#X connect 4 0 3 0;
+#X connect 7 0 6 0;
+#X connect 9 0 0 0;
+#X coords 0 -1 1 1 44 72 2 50 100;
+#X restore 504 62 pd;
+#X text 81 98 The [sh~] object samples and holds a value into the left
+inlet according to the second "gate" inlet. The values are sampled
+if the gate signal is greater than zero \, or held if lesser or equal
+to zero.;
+#X obj 267 183 else/impulse~ 2;
+#X obj 267 237 else/out~;
+#X text 150 327 signal - input signal;
+#X text 150 357 signal - gate signal;
+#X text 150 404 signal - sampoled and held signal;
+#X text 207 440 (none);
+#X obj 163 217 sh~, f 5;
+#X connect 6 0 29 0;
+#X connect 20 0 19 0;
+#X connect 23 0 24 0;
+#X connect 23 0 24 1;
+#X connect 23 0 29 1;
+#X connect 29 0 20 0;

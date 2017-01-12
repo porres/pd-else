@@ -1,75 +1,88 @@
-#N canvas 592 23 561 534 10;
-#X obj 3 4 cnv 15 552 40 empty empty ratio2cents 3 12 0 18 -204280
--1 0;
-#X obj 3 327 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 532 61 560 523 10;
+#X obj 4 337 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 405 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 415 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 442 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 452 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 82 414 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 83 424 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 83 335 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 84 345 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 110 451 (none);
-#X obj 3 483 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X text 201 461 (none);
+#X obj 4 485 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#N canvas 244 346 428 109 Related_objects 0;
-#X obj 0 0 cnv 15 425 20 empty empty empty 3 12 0 14 -204280 -1 0;
-#X text 6 1 Related Objects;
-#X restore 209 485 pd Related_objects;
-#N canvas 571 307 379 261 META 0;
-#X text 1 20 LICENSE SIBSD;
-#X text 0 101 VERSION;
-#X text 1 60 INLET_0 data;
-#X text 1 80 OUTLET_0 data;
-#X text 1 121 AUTHOR Porres;
-#X text 0 142 RELEASE_DATE 2016;
-#X text 1 163 WEBSITE: https://github.com/porres/Porres-ELS;
-#X text 1 0 KEYWORDS;
-#X text 1 40 DESCRIPTION;
-#X restore 505 485 pd META;
-#X obj 134 126 hsl 180 15 0.001 4 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
-#X text 125 414 float/List;
-#X obj 179 182 bng 15 250 50 0 empty empty empty 17 7 0 10 -261682
+#X obj 152 150 hsl 180 15 0.5 2 1 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 17900 1;
+#X obj 197 206 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 198 182 last output;
-#X text 253 212 sets next value to be converted via bang;
-#X text 161 356 bang;
-#X text 167 374 set;
-#X text 206 374 - sets next float value to be converted via bang;
-#X text 206 356 - outputs the last converted float value;
-#X floatatom 179 275 0 0 0 0 - - -;
-#X msg 104 189 0;
-#X text 125 337 float/list;
-#N canvas 126 23 450 300 lists 0;
-#X obj 113 187 cyclone/tosymbol;
-#X symbolatom 113 218 20 0 0 0 - - -, f 20;
-#X obj 113 101 loadbang;
-#X text 92 67 it also works with lists:;
-#X obj 113 155 ratio2cents;
-#X msg 113 127 0.5 1 2;
-#X connect 0 0 1 0;
-#X connect 2 0 5 0;
-#X connect 4 0 0 0;
-#X connect 5 0 4 0;
-#X restore 394 265 pd lists;
-#X obj 131 154 nbx 5 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 -262144
--1 -1 0.001 256;
-#X msg 195 211 set 700;
-#X obj 179 246 ratio2cents;
-#X text 202 414 - converted cents value(s);
-#X text 206 337 - ratio value(s);
-#X text 60 55 Use [ratio2cents] to convert an interval ratio to an
-interval represented in cents.;
-#X text 60 86 Conversion expression: cents = log2(ratio) * 1200;
-#X text 136 275 cents;
-#X text 191 153 ratio;
-#X text 11 27 Convert ratio to cents;
-#X connect 10 0 23 0;
-#X connect 12 0 25 0;
-#X connect 20 0 25 0;
-#X connect 23 0 25 0;
-#X connect 24 0 25 0;
-#X connect 25 0 19 0;
+#X text 216 206 last output;
+#X text 271 236 sets next value to be converted via bang;
+#X text 162 366 bang;
+#X text 168 384 set;
+#X text 207 384 - sets next float value to be converted via bang;
+#X text 207 366 - outputs the last converted float value;
+#X text 126 347 float/list;
+#N canvas 970 92 287 299 lists 0;
+#X obj 75 67 loadbang;
+#X text 54 33 it also works with lists:;
+#X obj 75 152 unpack f f f;
+#X obj 75 242 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -2400 256;
+#X obj 109 213 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 701.955 256;
+#X obj 144 183 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 2400 256;
+#X obj 75 121 else/ratio2cents;
+#X msg 75 93 0.25 1.5 4;
+#X connect 0 0 7 0;
+#X connect 2 0 3 0;
+#X connect 2 1 4 0;
+#X connect 2 2 5 0;
+#X connect 6 0 2 0;
+#X connect 7 0 6 0;
+#X restore 422 296 pd lists;
+#X obj 149 178 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 2 256;
+#X obj 197 302 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -2400 256;
+#X obj 3 3 cnv 15 301 42 empty empty ratio2cents 20 20 2 37 -233017
+-1 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Ratio/Cents 0 28 2 18 -233017 -1
+0;
+#X obj 113 40 cnv 4 4 4 empty empty conversion 0 28 2 18 -233017 -1
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 197 270 else/ratio2cents;
+#X text 107 177 ratio;
+#X text 157 299 cents;
+#X text 207 347 - ratio value(s);
+#X text 203 424 - converted cents value(s);
+#X text 61 86 Use [ratio2cents] to convert ratio intervals to intervals
+in cents. The conversion formula is \; cents = log2(ratio) * 1200;
+#X msg 213 235 set 0.25;
+#X text 126 424 float/list;
+#X connect 7 0 17 0;
+#X connect 8 0 31 0;
+#X connect 17 0 31 0;
+#X connect 31 0 18 0;
+#X connect 37 0 31 0;

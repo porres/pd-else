@@ -20,8 +20,7 @@ cents2ratio.class.sources := classes/cents2ratio.c
 ratio2cents.class.sources := classes/ratio2cents.c
 hz2rad.class.sources := classes/hz2rad.c
 rad2hz.class.sources := classes/rad2hz.c
-
-# rescale.class.sources := classes/rescale.c
+rescale.class.sources := classes/rescale.c
 
 # signal:
 
@@ -31,8 +30,7 @@ impulse~.class.sources := classes/impulse~.c
 rad2hz~.class.sources := classes/rad2hz~.c
 ratio2cents~.class.sources := classes/ratio2cents~.c
 sh~.class.sources := classes/sh~.c
-
-# median~.class.sources := classes/median_tilde.c
+median~.class.sources := classes/median~.c
 
 
 #########################################################################

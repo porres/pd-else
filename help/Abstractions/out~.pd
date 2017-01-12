@@ -1,4 +1,4 @@
-#N canvas 713 95 396 273 10;
+#N canvas 713 95 396 295 10;
 #X obj 53 36 inlet~;
 #X obj 53 193 *~;
 #X obj 105 36 inlet~;
@@ -54,7 +54,7 @@
 9 0 14 -228856 -1 -1 0 1;
 #N canvas 565 338 514 332 DSP 0;
 #X obj 100 100 tgl 16 0 \$0-dsp-toggle \$0-dsp-toggle-set empty 19
-8 0 12 -74965 -212593 -262144 1 1;
+8 0 12 -228856 -128992 -262144 0 1;
 #X obj 117 101 cnv 5 24 14 empty \$0-cnv_dsp dsp 2 6 0 12 -228856 -91542
 0;
 #X coords 0 -1 1 1 42 16 2 100 100;
@@ -592,6 +592,7 @@
 #X restore 120 152 pd gain-mute;
 #X text 167 215 Alexandre Torres Porres (2016);
 #X text 167 195 [out~]: Stereo Output;
+#X text 165 234 Part of ELSE \; https://github.com/porres/pd-else;
 #X connect 0 0 4 0;
 #X connect 1 0 11 0;
 #X connect 2 0 5 0;
