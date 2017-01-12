@@ -1,0 +1,292 @@
+#N canvas 736 23 560 511 10;
+#X obj 6 474 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 6 378 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 415 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 93 294 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 94 389 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 6 285 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 93 334 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 93 354 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 156 296 signal - value to perform the scaling function on;
+#X text 122 335 float/signal - sets the low end of the output range
+;
+#X text 122 354 float/signal - sets the high end of the output range
+;
+#N canvas 207 34 366 264 (subpatch) 0;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
+#X obj 215 68 route dsp;
+#X obj 215 37 receive pd;
+#N canvas 977 77 379 291 set_color 0;
+#X obj 47 30 inlet;
+#X obj 147 200 s \$0-cnv;
+#X obj 47 83 select 0 1;
+#X obj 47 220 s \$0-tgl-r;
+#N canvas 0 22 712 637 off 0;
+#X obj 490 220 * -1;
+#X obj 424 300 +;
+#X obj 409 325 +;
+#X obj 347 219 * -65536;
+#X obj 424 220 * -256;
+#X obj 409 356 - 1;
+#X obj 390 189 unpack f f f;
+#X obj 225 295 +;
+#X obj 210 320 +;
+#X obj 148 214 * -65536;
+#X obj 225 215 * -256;
+#X obj 291 215 * -1;
+#X obj 210 351 - 1;
+#X obj 191 184 unpack f f f;
+#X obj 379 423 pack;
+#X msg 395 152 124 124 124;
+#X msg 203 154 220 220 220;
+#X obj 238 121 t b b;
+#X obj 238 81 inlet;
+#X obj 378 485 outlet;
+#X connect 0 0 1 1;
+#X connect 1 0 2 1;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 14 1;
+#X connect 6 0 3 0;
+#X connect 6 1 4 0;
+#X connect 6 2 0 0;
+#X connect 7 0 8 1;
+#X connect 8 0 12 0;
+#X connect 9 0 8 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 1;
+#X connect 12 0 14 0;
+#X connect 13 0 9 0;
+#X connect 13 1 10 0;
+#X connect 13 2 11 0;
+#X connect 14 0 19 0;
+#X connect 15 0 6 0;
+#X connect 16 0 13 0;
+#X connect 17 0 16 0;
+#X connect 17 1 15 0;
+#X connect 18 0 17 0;
+#X restore 47 113 pd off;
+#X msg 47 180 color \$1 \$2 0;
+#X msg 147 131 -4.86997e+06 -1.34937e+07;
+#X msg 147 171 color \$1 0 \$2;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 6 0;
+#X connect 4 0 5 0;
+#X connect 4 0 7 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 1 0;
+#X restore 215 165 pd set_color;
+#X obj 135 122 r \$0-tgl-s;
+#N canvas 121 482 450 300 (subpatch) 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+0;
+#X coords 0 -1 1 1 42 27 1 100 100;
+#X restore 51 144 pd;
+#X obj 226 139 s \$0-tgl-r;
+#X msg 226 115 set \$1;
+#X msg 135 177 \; pd dsp \$1;
+#N canvas 256 32 278 194 load_check 0;
+#X obj 136 53 sig~ 1;
+#X obj 74 24 loadbang;
+#X obj 136 86 snapshot~;
+#X obj 91 52 del 5;
+#X obj 136 151 outlet;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 74 126 switch~;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 1 0 5 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 3 0 5 0;
+#X connect 5 0 6 0;
+#X restore 51 72 pd load_check;
+#X connect 1 0 3 0;
+#X connect 1 0 7 0;
+#X connect 2 0 1 0;
+#X connect 4 0 8 0;
+#X connect 4 0 3 0;
+#X connect 7 0 6 0;
+#X connect 9 0 0 0;
+#X coords 0 -1 1 1 44 72 2 50 100;
+#X restore 504 71 pd;
+#X text 146 424 1) float - output low (default 0);
+#X text 146 437 2) float - output high (default 1);
+#X text 146 450 3) float - exponential factor (default 1 - linear)
+;
+#X text 210 315 sets exponential factor;
+#X text 158 390 signal - the scaled values according to output range
+;
+#X obj 2 3 cnv 15 301 42 empty empty rescale~ 20 20 2 37 -233017 -1
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Rescale 0 28 2 18 -233017 -1 0;
+#X obj 88 40 cnv 4 4 4 empty empty audio 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X text 78 86 The [rescale~] object was designed to rescale audio input
+values from -1 to 1 into another range of values set by the first 2
+arguments or secondary inlets (0-1 by default). A third argument sets
+an exponential factor (1 by default - linear).;
+#X obj 205 160 osc~ 1;
+#X obj 205 190 else/rescale~;
+#X obj 205 251 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.0924458 256;
+#N canvas 894 346 167 187 snapshot~ 0;
+#X obj 42 107 snapshot~;
+#X obj 64 52 loadbang;
+#X obj 42 146 outlet;
+#X obj 42 26 inlet~;
+#X obj 64 78 metro 10;
+#X connect 0 0 2 0;
+#X connect 1 0 4 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X restore 205 221 pd snapshot~;
+#X text 66 249 rescaled to 0-1 range;
+#N canvas 846 65 417 527 exponential 0;
+#X obj 104 361 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
+-66577 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-exponential 441 float 0;
+#X coords 0 1 440 0 200 140 1 0 0;
+#X restore 103 360 graph;
+#X text 310 490 0;
+#X text 308 358 1;
+#X msg 225 224 factor \$1;
+#X text 37 24 The third argument or the "factor" message specify the
+exponential factor (must be greater than 0) where 1 gives you linear
+scaling (no exponential). It's like raising to the power of the given
+exponential \, try it below (with values from 0.1 to 10).;
+#X obj 120 297 tabwrite~ \$0-exponential;
+#X obj 135 268 else/rescale~;
+#X msg 135 202 -1 \, 1 10;
+#X floatatom 120 144 0 1 1.2 0 - - -;
+#X obj 123 120 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 3200 1;
+#X text 131 120 exponential factor;
+#X obj 120 169 trigger bang float;
+#X obj 135 231 vline~;
+#X connect 4 0 7 0;
+#X connect 7 0 6 0;
+#X connect 8 0 13 0;
+#X connect 9 0 12 0;
+#X connect 10 0 9 0;
+#X connect 12 0 8 0;
+#X connect 12 0 6 0;
+#X connect 12 1 4 0;
+#X connect 13 0 7 0;
+#X restore 450 217 pd exponential;
+#N canvas 695 23 457 614 advanced 0;
+#X obj 224 79 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 12700 1;
+#X obj 221 144 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1 256;
+#X obj 167 404 hsl 128 15 -127 127 0 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 12700 1;
+#X obj 164 432 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 127 256;
+#X text 49 323 If the input value is outside the input range \, [scale]
+will not clip the values to the output range but keep scaling outside
+that boundary with the same conversion parameters.;
+#X text 59 31 The scaling can be inverted by reversing one of the ranges
+(input or output);
+#X obj 100 140 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1 256;
+#X obj 100 166 sig~;
+#X obj 164 455 sig~;
+#X text 233 279 Inverted;
+#X obj 221 166 sig~;
+#X obj 221 259 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#N canvas 894 346 167 187 snapshot~ 0;
+#X obj 42 107 snapshot~;
+#X obj 64 52 loadbang;
+#X obj 42 146 outlet;
+#X obj 42 26 inlet~;
+#X obj 64 78 metro 10;
+#X connect 0 0 2 0;
+#X connect 1 0 4 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X restore 221 229 pd snapshot~;
+#X obj 100 257 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1 256;
+#N canvas 894 346 167 187 snapshot~ 0;
+#X obj 42 107 snapshot~;
+#X obj 64 52 loadbang;
+#X obj 42 146 outlet;
+#X obj 42 26 inlet~;
+#X obj 64 78 metro 10;
+#X connect 0 0 2 0;
+#X connect 1 0 4 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X restore 100 227 pd snapshot~;
+#X obj 100 194 else/rescale~ 0 1;
+#X obj 221 195 else/rescale~ 1 0;
+#X obj 164 539 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1270 256;
+#N canvas 894 346 167 187 snapshot~ 0;
+#X obj 42 107 snapshot~;
+#X obj 64 52 loadbang;
+#X obj 42 146 outlet;
+#X obj 42 26 inlet~;
+#X obj 64 78 metro 10;
+#X connect 0 0 2 0;
+#X connect 1 0 4 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X restore 164 509 pd snapshot~;
+#X obj 164 480 else/rescale~ -10 10;
+#X connect 0 0 1 0;
+#X connect 0 0 6 0;
+#X connect 1 0 10 0;
+#X connect 2 0 3 0;
+#X connect 3 0 8 0;
+#X connect 6 0 7 0;
+#X connect 7 0 15 0;
+#X connect 8 0 19 0;
+#X connect 10 0 16 0;
+#X connect 12 0 11 0;
+#X connect 14 0 13 0;
+#X connect 15 0 14 0;
+#X connect 16 0 12 0;
+#X connect 18 0 17 0;
+#X connect 19 0 18 0;
+#X restore 468 244 pd advanced;
+#X text 108 315 factor <float> -;
+#X connect 30 0 31 0;
+#X connect 31 0 33 0;
+#X connect 33 0 32 0;
