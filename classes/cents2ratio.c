@@ -15,7 +15,7 @@ typedef struct _cents2ratio
 } t_cents2ratio;
 
 
-void *cents2ratio_new(void);
+void *cents2ratio_new(t_floatarg f1, t_floatarg f2);
 void cents2ratio_free(t_cents2ratio *x);
 void cents2ratio_float(t_cents2ratio *x, t_floatarg f);
 void cents2ratio_bang(t_cents2ratio *x);
@@ -56,10 +56,11 @@ void cents2ratio_bang(t_cents2ratio *x)
 }
 
 
-void *cents2ratio_new(void)
+void *cents2ratio_new(t_floatarg f1, t_floatarg f2)
 {
   t_cents2ratio *x = (t_cents2ratio *) pd_new(cents2ratio_class);
-
+  x->f = f1;
+  int init = (int)f2;
   x->float_outlet = outlet_new(&x->x_obj, 0);
   x->bytes = sizeof(t_atom);
   x->output_list = (t_atom *)getbytes(x->bytes);
@@ -68,6 +69,9 @@ void *cents2ratio_new(void)
     return NULL;
   }
   return (x);
+    
+    if(init != 0)
+        outlet_float(x->float_outlet,convert(x->f));
 }
 
 void cents2ratio_free(t_cents2ratio *x)
@@ -78,7 +82,7 @@ void cents2ratio_free(t_cents2ratio *x)
 void cents2ratio_setup(void)
 {
   cents2ratio_class = class_new(gensym("cents2ratio"), (t_newmethod)cents2ratio_new,
-			  (t_method)cents2ratio_free,sizeof(t_cents2ratio),0,0);
+			  (t_method)cents2ratio_free,sizeof(t_cents2ratio),0, A_DEFFLOAT, A_DEFFLOAT, 0);
 
   class_addfloat(cents2ratio_class,(t_method)cents2ratio_float);
   class_addlist(cents2ratio_class,(t_method)cents2ratio_list);
