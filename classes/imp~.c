@@ -4,9 +4,9 @@
 #include "math.h"
 
 
-static t_class *pimp_class;
+static t_class *imp_class;
 
-typedef struct _pimp
+typedef struct _imp
 {
     t_object x_obj;
     double  x_phase;
@@ -15,19 +15,17 @@ typedef struct _pimp
     t_inlet  *x_inlet_phase;
     t_inlet  *x_inlet_sync;
     t_outlet *x_outlet_dsp_0;
-    t_outlet *x_outlet_dsp_1;
     t_float x_sr;
-} t_pimp;
+} t_imp;
 
-static t_int *pimp_perform(t_int *w)
+static t_int *imp_perform(t_int *w)
 {
-    t_pimp *x = (t_pimp *)(w[1]);
+    t_imp *x = (t_imp *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // phase
     t_float *in3 = (t_float *)(w[5]); // sync
     t_float *out1 = (t_float *)(w[6]);
-    t_float *out2 = (t_float *)(w[7]);
     double phase = x->x_phase;
     double last_phase_offset = x->x_last_phase_offset;
     double sr = x->x_sr;
@@ -49,7 +47,7 @@ static t_int *pimp_perform(t_int *w)
                         phase = phase + phase_dev;
                         if (phase <= 0) phase = phase + 1.; // wrap deviated phase
                     }
-                *out2++ = phase >= 1.;
+                *out1++ = phase >= 1.;
                 if (phase >= 1.) phase = phase - 1; // wrapped phase
             }
         else
@@ -61,36 +59,34 @@ static t_int *pimp_perform(t_int *w)
                     phase = phase + phase_dev;
                     if (phase >= 1) phase = phase - 1.; // wrap deviated phase
                 }
-                *out2++ = phase <= 0.;
+                *out1++ = phase <= 0.;
                 if (phase <= 0.) phase = phase + 1.; // wrapped phase
             }
-        *out1++ = phase; // wrapped phase
         phase = phase + phase_step; // next phase
         last_phase_offset = phase_offset; // last phase offset
     }
     x->x_phase = phase;
     x->x_last_phase_offset = last_phase_offset;
-    return (w + 8);
+    return (w + 7);
 }
 
-static void pimp_dsp(t_pimp *x, t_signal **sp)
+static void imp_dsp(t_imp *x, t_signal **sp)
 {
-    dsp_add(pimp_perform, 7, x, sp[0]->s_n,
-            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
+    dsp_add(imp_perform, 6, x, sp[0]->s_n,
+            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void *pimp_free(t_pimp *x)
+static void *imp_free(t_imp *x)
 {
     inlet_free(x->x_inlet_phase);
     inlet_free(x->x_inlet_sync);
     outlet_free(x->x_outlet_dsp_0);
-    outlet_free(x->x_outlet_dsp_1);
     return (void *)x;
 }
 
-static void *pimp_new(t_floatarg f1, t_floatarg f2)
+static void *imp_new(t_floatarg f1, t_floatarg f2)
 {
-    t_pimp *x = (t_pimp *)pd_new(pimp_class);
+    t_imp *x = (t_imp *)pd_new(imp_class);
     t_float init_freq = f1;
     t_float init_phase = f2;
     init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
@@ -104,15 +100,14 @@ static void *pimp_new(t_floatarg f1, t_floatarg f2)
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_sync, 0);
     x->x_outlet_dsp_0 = outlet_new(&x->x_obj, &s_signal);
-    x->x_outlet_dsp_1 = outlet_new(&x->x_obj, &s_signal);
     return (x);
 }
 
-void pimp_tilde_setup(void)
+void imp_tilde_setup(void)
 {
-    pimp_class = class_new(gensym("pimp~"),
-        (t_newmethod)pimp_new, (t_method)pimp_free,
-        sizeof(t_pimp), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
-    CLASS_MAINSIGNALIN(pimp_class, t_pimp, x_freq);
-    class_addmethod(pimp_class, (t_method)pimp_dsp, gensym("dsp"), A_CANT, 0);
+    imp_class = class_new(gensym("imp~"),
+        (t_newmethod)imp_new, (t_method)imp_free,
+        sizeof(t_imp), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
+    CLASS_MAINSIGNALIN(imp_class, t_imp, x_freq);
+    class_addmethod(imp_class, (t_method)imp_dsp, gensym("dsp"), A_CANT, 0);
 }
