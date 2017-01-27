@@ -28,6 +28,7 @@ rad2hz~.class.sources := classes/rad2hz~.c
 ratio2cents~.class.sources := classes/ratio2cents~.c
 rescale~.class.sources := classes/rescale~.c
 sh~.class.sources := classes/sh~.c
+square~.class.sources := classes/square~.c
 
 #########################################################################
 
