@@ -126,7 +126,7 @@ void rescale_ft(t_rescale *x, t_floatarg f)
 t_float scaling(t_rescale *x, t_float f)
 {
   f = (x->maxout - x->minout)*(f-x->minin)/(x->maxin-x->minin) + x->minout;
-  f < x->minout ? x->minout : f > x->maxout ? x->maxout : f;
+  f = f < x->minout ? x->minout : f > x->maxout ? x->maxout : f;
   return f;
 }
 
@@ -136,13 +136,13 @@ t_float exp_scaling(t_rescale *x, t_float f)
     ? x->minout : (((f-x->minin)/(x->maxin-x->minin)) > 0) 
     ? (x->minout + (x->maxout-x->minout) * pow((f-x->minin)/(x->maxin-x->minin),x->expo)) 
     : ( x->minout + (x->maxout-x->minout) * -(pow(((-f+x->minin)/(x->maxin-x->minin)),x->expo)));
-    f < x->minout ? x->minout : f > x->maxout ? x->maxout : f;
+    f = f < x->minout ? x->minout : f > x->maxout ? x->maxout : f;
   return f;
 }
 
 void rescale_bang(t_rescale *x)
 {
-  rescale_ft(x,x->in);
+  rescale_ft(x, x->in);
   return;
 }
 
