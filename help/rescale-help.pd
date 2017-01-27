@@ -1,46 +1,46 @@
-#N canvas 492 92 559 571 10;
-#X obj 4 337 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 492 92 559 558 10;
+#X obj 4 323 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 428 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 414 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 465 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 451 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 93 437 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 93 423 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 94 345 cnv 17 3 75 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 94 331 cnv 17 3 75 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 532 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 518 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 94 179 hsl 180 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 200 206 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 94 165 hsl 180 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 17900 1;
+#X obj 200 192 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 172 366 bang;
-#X text 178 384 set;
-#X text 136 347 float/list;
+#X text 172 352 bang;
+#X text 178 370 set;
+#X text 136 333 float/list;
 #N canvas 970 92 287 299 lists 0;
 #X obj 75 67 loadbang;
 #X text 54 33 it also works with lists:;
 #X obj 75 152 unpack f f f;
 #X obj 75 242 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -1 256;
+-228856 -1 -1 0.125984 256;
 #X obj 109 213 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.5 256;
+-228856 -1 -1 0.496063 256;
 #X obj 144 183 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 1 256;
 #X obj 75 121 else/rescale;
-#X msg 75 93 -127 63.5 127;
+#X msg 75 93 16 63 127;
 #X connect 0 0 7 0;
 #X connect 2 0 3 0;
 #X connect 2 1 4 0;
 #X connect 2 2 5 0;
 #X connect 6 0 2 0;
 #X connect 7 0 6 0;
-#X restore 485 299 pd lists;
-#X obj 91 207 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 200 302 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#X restore 485 285 pd lists;
+#X obj 91 193 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 127 256;
+#X obj 200 288 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1 256;
 #X obj 2 3 cnv 15 301 42 empty empty rescale 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -65,22 +65,16 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 136 437 float/list;
-#X text 217 347 - original value(s);
-#X text 217 437 - rescaled value(s);
-#X text 217 366 - outputs the last rescaled float value;
-#X text 217 384 - sets next float value to be rescaleded via bang;
-#X msg 216 235 set 63.5;
+#X text 136 423 float/list;
+#X text 217 333 - original value(s);
+#X text 217 423 - rescaled value(s);
+#X text 217 352 - outputs the last rescaled float value;
+#X text 217 370 - sets next float value to be rescaleded via bang;
+#X msg 216 221 set 63.5;
 #X obj 138 40 cnv 4 4 4 empty empty values 0 28 2 18 -233017 -1 0;
-#X text 75 89 The [rescale] object was designed to rescale MIDI input
-values from 0 to 127 into another range of values set by the first
-2 arguments or secondary inlets (0-1 by default). A third argument
-sets an exponential factor (1 by default - linear).;
-#X text 279 230 sets a value to be scaled via bang, f 18;
-#X text 219 206 convert setted value or send last output;
-#X text 163 510 3) float - exponential factor (default 1);
-#X text 163 491 2) float - maximum output value (default 1);
-#X text 163 473 1) float - minimum output value (default 0);
+#X text 163 496 3) float - exponential factor (default 1);
+#X text 163 477 2) float - maximum output value (default 1);
+#X text 163 459 1) float - minimum output value (default 0);
 #N canvas 695 23 438 438 advanced 0;
 #X obj 133 67 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
@@ -93,35 +87,33 @@ sets an exponential factor (1 by default - linear).;
 #X obj 244 164 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 261 182 Inverted;
-#X obj 187 296 hsl 128 15 -127 127 0 0 empty empty empty -2 -8 0 10
+#X obj 170 288 hsl 128 15 -127 256 0 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X obj 184 324 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 184 386 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 167 316 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -127 256;
+#X obj 167 378 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 43 18 The scaling can be inverted by reversing the min/max
 values;
 #X obj 244 130 else/rescale 1 0;
 #X obj 130 131 else/rescale 0 1;
-#X text 39 228 The input can actually be outside the input range (0-127)
-\, [rescale] will not clip the values to the output range but keep
-scaling outside that boundary with the same conversion parameters.
-;
-#X obj 184 351 else/rescale;
+#X obj 167 343 else/rescale;
+#X text 40 228 If the input is outside the input range (0-127) \, [rescale]
+will clip the values to the output range!;
 #X connect 0 0 1 0;
 #X connect 0 0 3 0;
 #X connect 1 0 11 0;
 #X connect 3 0 10 0;
 #X connect 6 0 7 0;
-#X connect 7 0 13 0;
+#X connect 7 0 12 0;
 #X connect 10 0 4 0;
 #X connect 11 0 2 0;
-#X connect 13 0 8 0;
-#X restore 468 272 pd advanced;
+#X connect 12 0 8 0;
+#X restore 468 258 pd advanced;
 #N canvas 846 65 417 527 exponential 0;
 #X floatatom 105 154 0 1 1.2 0 - - -;
 #X obj 108 130 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 7400 1;
 #X obj 94 361 cnv 15 198 138 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -168,12 +160,18 @@ exponential \, try it below (with values from 0.1 to 10).;
 #X connect 11 0 9 0;
 #X connect 11 1 7 0;
 #X connect 13 0 8 0;
-#X restore 450 244 pd exponential;
-#X text 112 403 factor <float>;
-#X text 217 403 - sets exponential value;
-#X obj 200 270 else/rescale -1 1;
+#X restore 450 230 pd exponential;
+#X text 112 389 factor <float>;
+#X text 217 389 - sets exponential value;
+#X obj 200 256 else/rescale -1 1;
+#X text 219 192 converts setted value or sends last output;
+#X text 75 88 The [rescale] object was designed to rescale MIDI input
+values from 0 to 127 (including floats) into another range of values
+(0-1 by default). A third argument sets an exponential factor (1 by
+default - linear).;
+#X text 280 216 sets value to be scaled (accepts floats), f 23;
 #X connect 6 0 12 0;
-#X connect 7 0 43 0;
-#X connect 12 0 43 0;
-#X connect 31 0 43 0;
-#X connect 43 0 13 0;
+#X connect 7 0 40 0;
+#X connect 12 0 40 0;
+#X connect 31 0 40 0;
+#X connect 40 0 13 0;

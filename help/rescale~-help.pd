@@ -1,24 +1,24 @@
-#N canvas 736 23 560 511 10;
-#X obj 6 474 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 427 57 560 500 10;
+#X obj 6 461 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 6 378 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 365 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 415 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 402 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 93 294 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 93 281 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 94 389 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 94 376 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 6 285 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 6 272 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 93 334 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 93 321 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 93 354 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 93 341 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 156 296 signal - value to perform the scaling function on;
-#X text 122 335 float/signal - sets the low end of the output range
+#X text 156 283 signal - value to perform the scaling function on;
+#X text 122 322 float/signal - sets the low end of the output range
 ;
-#X text 122 354 float/signal - sets the high end of the output range
+#X text 122 341 float/signal - sets the high end of the output range
 ;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
@@ -124,12 +124,12 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 504 71 pd;
-#X text 146 424 1) float - output low (default 0);
-#X text 146 437 2) float - output high (default 1);
-#X text 146 450 3) float - exponential factor (default 1 - linear)
+#X text 146 411 1) float - output low (default 0);
+#X text 146 424 2) float - output high (default 1);
+#X text 146 437 3) float - exponential factor (default 1 - linear)
 ;
-#X text 210 315 sets exponential factor;
-#X text 158 390 signal - the scaled values according to output range
+#X text 210 302 sets exponential factor;
+#X text 158 377 signal - the scaled values according to output range
 ;
 #X obj 2 3 cnv 15 301 42 empty empty rescale~ 20 20 2 37 -233017 -1
 0;
@@ -155,14 +155,10 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 78 86 The [rescale~] object was designed to rescale audio input
-values from -1 to 1 into another range of values set by the first 2
-arguments or secondary inlets (0-1 by default). A third argument sets
-an exponential factor (1 by default - linear).;
-#X obj 205 160 osc~ 1;
-#X obj 205 190 else/rescale~;
-#X obj 205 251 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.0924458 256;
+#X obj 235 147 osc~ 1;
+#X obj 235 177 else/rescale~;
+#X obj 235 238 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.566057 256;
 #N canvas 894 346 167 187 snapshot~ 0;
 #X obj 42 107 snapshot~;
 #X obj 64 52 loadbang;
@@ -173,8 +169,8 @@ an exponential factor (1 by default - linear).;
 #X connect 1 0 4 0;
 #X connect 3 0 0 0;
 #X connect 4 0 0 0;
-#X restore 205 221 pd snapshot~;
-#X text 66 249 rescaled to 0-1 range;
+#X restore 235 208 pd snapshot~;
+#X text 96 236 rescaled to 0-1 range;
 #N canvas 846 65 417 527 exponential 0;
 #X obj 104 361 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
 -66577 0;
@@ -185,51 +181,51 @@ an exponential factor (1 by default - linear).;
 #X text 310 490 0;
 #X text 308 358 1;
 #X msg 225 224 factor \$1;
-#X text 37 24 The third argument or the "factor" message specify the
-exponential factor (must be greater than 0) where 1 gives you linear
-scaling (no exponential). It's like raising to the power of the given
-exponential \, try it below (with values from 0.1 to 10).;
 #X obj 120 297 tabwrite~ \$0-exponential;
 #X obj 135 268 else/rescale~;
 #X msg 135 202 -1 \, 1 10;
 #X floatatom 120 144 0 1 1.2 0 - - -;
 #X obj 123 120 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 3200 1;
+-1 -1 0 1;
 #X text 131 120 exponential factor;
 #X obj 120 169 trigger bang float;
 #X obj 135 231 vline~;
-#X connect 4 0 7 0;
-#X connect 7 0 6 0;
-#X connect 8 0 13 0;
-#X connect 9 0 12 0;
-#X connect 10 0 9 0;
-#X connect 12 0 8 0;
+#X text 37 24 The third argument and the "factor" message specify the
+exponential factor (must be greater than 0) where 1 gives you linear
+scaling (no exponential). It's like raising to the power of the given
+exponential \, try it below (with values from 0.1 to 10).;
+#X connect 4 0 6 0;
+#X connect 6 0 5 0;
+#X connect 7 0 12 0;
+#X connect 8 0 11 0;
+#X connect 9 0 8 0;
+#X connect 11 0 7 0;
+#X connect 11 0 5 0;
+#X connect 11 1 4 0;
 #X connect 12 0 6 0;
-#X connect 12 1 4 0;
-#X connect 13 0 7 0;
-#X restore 450 217 pd exponential;
+#X restore 450 204 pd exponential;
 #N canvas 695 23 457 614 advanced 0;
 #X obj 224 79 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12700 1;
+-1 -1 0 1;
 #X obj 221 144 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+-228856 -1 -1 0 256;
 #X obj 167 404 hsl 128 15 -127 127 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 12700 1;
+-228856 -1 -1 0 1;
 #X obj 164 432 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 127 256;
+-228856 -1 -1 0 256;
 #X text 49 323 If the input value is outside the input range \, [scale]
 will not clip the values to the output range but keep scaling outside
 that boundary with the same conversion parameters.;
 #X text 59 31 The scaling can be inverted by reversing one of the ranges
 (input or output);
 #X obj 100 140 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+-228856 -1 -1 0 256;
 #X obj 100 166 sig~;
 #X obj 164 455 sig~;
 #X text 233 279 Inverted;
 #X obj 221 166 sig~;
 #X obj 221 259 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.5 256;
 #N canvas 894 346 167 187 snapshot~ 0;
 #X obj 42 107 snapshot~;
 #X obj 64 52 loadbang;
@@ -242,7 +238,7 @@ that boundary with the same conversion parameters.;
 #X connect 4 0 0 0;
 #X restore 221 229 pd snapshot~;
 #X obj 100 257 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+-228856 -1 -1 0.5 256;
 #N canvas 894 346 167 187 snapshot~ 0;
 #X obj 42 107 snapshot~;
 #X obj 64 52 loadbang;
@@ -257,7 +253,7 @@ that boundary with the same conversion parameters.;
 #X obj 100 194 else/rescale~ 0 1;
 #X obj 221 195 else/rescale~ 1 0;
 #X obj 164 539 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1270 256;
+-228856 -1 -1 0 256;
 #N canvas 894 346 167 187 snapshot~ 0;
 #X obj 42 107 snapshot~;
 #X obj 64 52 loadbang;
@@ -285,8 +281,11 @@ that boundary with the same conversion parameters.;
 #X connect 16 0 12 0;
 #X connect 18 0 17 0;
 #X connect 19 0 18 0;
-#X restore 468 244 pd advanced;
-#X text 108 315 factor <float> -;
-#X connect 30 0 31 0;
-#X connect 31 0 33 0;
-#X connect 33 0 32 0;
+#X restore 468 231 pd advanced;
+#X text 108 302 factor <float> -;
+#X text 78 86 The [rescale~] object was designed to rescale audio input
+values from -1 to 1 into another range (0-1 by default). A third argument
+sets an exponential factor (1 by default - linear).;
+#X connect 29 0 30 0;
+#X connect 30 0 32 0;
+#X connect 32 0 31 0;

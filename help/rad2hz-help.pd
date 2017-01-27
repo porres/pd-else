@@ -1,4 +1,4 @@
-#N canvas 632 102 560 504 10;
+#N canvas 698 100 560 504 10;
 #X obj 3 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 395 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -9,13 +9,10 @@
 ;
 #X obj 83 325 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 187 442 (none);
-#X obj 3 466 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 465 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 161 346 bang;
 #X text 167 364 set;
-#X text 206 364 - sets next float value to be converted via bang;
-#X text 206 346 - outputs the last converted float value;
 #X text 125 327 float/list;
 #X obj 3 4 cnv 15 301 42 empty empty rad2hz 20 20 2 37 -233017 -1 0
 ;
@@ -48,13 +45,13 @@
 #X text 54 33 it also works with lists:;
 #X obj 75 152 unpack f f f;
 #X obj 75 242 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 11019.4 256;
+-228856 -1 -1 11025 256;
 #X obj 109 213 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 22050 256;
 #X obj 144 183 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 44100 256;
 #X obj 75 121 else/rad2hz;
-#X msg 75 93 1.57 3.14 6.28;
+#X msg 75 93 1.5708 3.14159 6.28318;
 #X connect 0 0 7 0;
 #X connect 2 0 3 0;
 #X connect 2 1 4 0;
@@ -63,27 +60,34 @@
 #X connect 7 0 6 0;
 #X restore 478 280 pd lists;
 #X obj 234 148 hsl 180 15 0 6.28319 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 17900 1;
+-228856 -1 -1 0 1;
 #X obj 231 282 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 22050 256;
+-228856 -1 -1 0 256;
 #X obj 231 175 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 6.28319 256;
-#X obj 231 248 else/rad2hz;
+-228856 -1 -1 0 256;
 #X text 316 174 radians per sample;
 #X text 316 281 hertz;
-#X text 206 327 - radians per sample value(s);
-#X text 202 404 - converted hertz value(s);
+#X text 204 327 - radians per sample value(s);
+#X text 204 404 - converted hertz value(s);
 #X text 71 88 Use [rad2hz] to convert a signal representing a frequency
 in "Radians per Sample" to Hertz. This depends on the patch's sample
 rate (sr). The conversion formula is \; hz = rad * sr / 2pi;
 #X obj 205 208 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 127 207 last output;
-#X text 330 202 sets next value to be converted via bang, f 21;
-#X msg 250 209 set 3.14159;
 #X text 125 404 float/list;
-#X connect 25 0 27 0;
-#X connect 27 0 28 0;
-#X connect 28 0 26 0;
-#X connect 34 0 28 0;
-#X connect 37 0 28 0;
+#X obj 231 248 else/rad2hz 3.14159;
+#X msg 250 209 set 1.5708;
+#X text 321 202 sets next value to be converted, f 16;
+#X text 147 207 convert;
+#X text 204 346 - convert or output the last converted value (only
+float);
+#X text 204 364 - sets next value to be converted via bang (only float)
+;
+#X text 203 441 - initial cents value (default 0);
+#X text 137 440 1) float;
+#X text 145 225 (or send last output), f 12;
+#X connect 22 0 24 0;
+#X connect 24 0 32 0;
+#X connect 30 0 32 0;
+#X connect 32 0 23 0;
+#X connect 33 0 32 0;

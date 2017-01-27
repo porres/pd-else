@@ -1,28 +1,22 @@
-#N canvas 532 61 560 523 10;
+#N canvas 726 61 559 511 10;
 #X obj 4 337 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 415 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 402 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 452 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 439 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 83 424 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 83 411 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 84 345 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X text 201 461 (none);
-#X obj 4 485 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 472 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 152 150 hsl 180 15 0.5 2 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 17900 1;
+-1 -1 0 1;
 #X obj 197 206 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 216 206 last output;
 #X text 271 236 sets next value to be converted via bang;
-#X text 162 366 bang;
-#X text 168 384 set;
-#X text 207 384 - sets next float value to be converted via bang;
-#X text 207 366 - outputs the last converted float value;
-#X text 126 347 float/list;
+#X text 156 363 bang;
+#X text 162 379 set;
+#X text 120 347 float/list;
 #N canvas 970 92 287 299 lists 0;
 #X obj 75 67 loadbang;
 #X text 54 33 it also works with lists:;
@@ -43,9 +37,9 @@
 #X connect 7 0 6 0;
 #X restore 422 296 pd lists;
 #X obj 149 178 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 2 256;
+-228856 -1 -1 0.5 256;
 #X obj 197 302 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -2400 256;
+-228856 -1 -1 -1200 256;
 #X obj 3 3 cnv 15 301 42 empty empty ratio2cents 20 20 2 37 -233017
 -1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -72,17 +66,26 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 197 270 else/ratio2cents;
 #X text 107 177 ratio;
-#X text 157 299 cents;
-#X text 207 347 - ratio value(s);
-#X text 203 424 - converted cents value(s);
+#X text 157 301 cents;
+#X text 189 347 - ratio value(s);
+#X text 189 411 - converted cents value(s);
 #X text 61 86 Use [ratio2cents] to convert ratio intervals to intervals
 in cents. The conversion formula is \; cents = log2(ratio) * 1200;
 #X msg 213 235 set 0.25;
-#X text 126 424 float/list;
-#X connect 7 0 17 0;
-#X connect 8 0 31 0;
-#X connect 17 0 31 0;
-#X connect 31 0 18 0;
-#X connect 37 0 31 0;
+#X text 119 411 float/list;
+#X text 135 448 1) float - initial ratio value \, needs to be > 0 (default
+1);
+#X text 189 363 - convert or output the last converted value (only
+float);
+#X text 189 379 - sets next value to be converted via bang (only float)
+;
+#X obj 87 346 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 197 270 else/ratio2cents 1.5;
+#X text 216 206 converts setted value or sends last output;
+#X connect 5 0 12 0;
+#X connect 6 0 37 0;
+#X connect 12 0 37 0;
+#X connect 31 0 37 0;
+#X connect 37 0 13 0;
