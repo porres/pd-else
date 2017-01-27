@@ -34,7 +34,6 @@ void rescale_set(t_rescale *x, t_floatarg f);
 
 t_float scaling(t_rescale *x, t_float f);
 t_float exp_scaling(t_rescale *x, t_float f);
-t_float clas_scaling(t_rescale *x, t_float f);
 t_float (*ptrtoscaling)(t_rescale *x,t_float f);
 void check(t_rescale *x);
 
@@ -44,7 +43,6 @@ void *rescale_new(t_symbol *s, int argc, t_atom *argv)
   x->float_outlet = outlet_new(&x->obj, 0);
   floatinlet_new(&x->obj,&x->minout);
   floatinlet_new(&x->obj,&x->maxout);
-//  inlet_new(&x->obj,&x->obj.ob_pd,gensym("float"),gensym("factor"));
   x->minin = 0;
   x->maxin = 127;
   x->minout = 0;
@@ -115,17 +113,20 @@ void rescale_setup(void)
 
 void rescale_ft(t_rescale *x, t_floatarg f)
 {
+  if(f < 0) f = 0;
+  if(f > 127) f = 127;
   x->in = f;
   check(x);
-  t_float temp = ptrtoscaling(x,f);
-  SETFLOAT(x->output_list,temp);
-  outlet_list(x->float_outlet,0,x->ac,x->output_list);
+  t_float temp = ptrtoscaling(x, f);
+  SETFLOAT(x->output_list, temp);
+  outlet_list(x->float_outlet, 0, x->ac, x->output_list);
   return;
 }
 
 t_float scaling(t_rescale *x, t_float f)
 {
   f = (x->maxout - x->minout)*(f-x->minin)/(x->maxin-x->minin) + x->minout;
+  f < x->minout ? x->minout : f > x->maxout ? x->maxout : f;
   return f;
 }
 
@@ -135,14 +136,7 @@ t_float exp_scaling(t_rescale *x, t_float f)
     ? x->minout : (((f-x->minin)/(x->maxin-x->minin)) > 0) 
     ? (x->minout + (x->maxout-x->minout) * pow((f-x->minin)/(x->maxin-x->minin),x->expo)) 
     : ( x->minout + (x->maxout-x->minout) * -(pow(((-f+x->minin)/(x->maxin-x->minin)),x->expo)));
-  return f;
-}
-
-t_float clas_scaling(t_rescale *x, t_float f)
-{
-  f = (x->maxout-x->minout >= 0) ?
-    (x->minout + (x->maxout-x->minout) * ( (x->maxout - x->minout) * exp(-1*(x->maxin-x->minin)*log(x->expo)) * exp(f*log(x->expo)) )) :
-    (-1) * ( x->minout + (x->maxout-x->minout) * ( (x->maxout - x->minout) * exp(-1*(x->maxin-x->minin)*log(x->expo)) * exp(f*log(x->expo))));
+    f < x->minout ? x->minout : f > x->maxout ? x->maxout : f;
   return f;
 }
 
@@ -160,16 +154,19 @@ void rescale_list(t_rescale *x, t_symbol *s, int argc, t_atom *argv)
   x->a_bytes = argc*sizeof(t_atom);
   x->output_list = (t_atom *)t_resizebytes(x->output_list,old_a,x->a_bytes);
   check(x);
-  x->in = atom_getfloatarg(0,argc,argv);
+    x->in = atom_getfloatarg(0, argc, argv);
+    x->in = x->in < 0 ? 0 : x->in > 127 ? 127 : x->in;
   for(i=0;i<argc;i++)
-    SETFLOAT(x->output_list+i,ptrtoscaling(x,atom_getfloatarg(i,argc,argv)));
+    SETFLOAT(x->output_list+i, ptrtoscaling(x, atom_getfloatarg(i, argc, argv)));
   outlet_list(x->float_outlet,0,argc,x->output_list);
   return;
 }
 
 void rescale_set(t_rescale *x, t_float f)
 {
-  x->in = f;
+    x->in = f;
+    if(x->in < 0) x->in = 0;
+    if(x->in > 127) x->in = 127;
 }
 
 void rescale_factor(t_rescale *x, t_floatarg f)

@@ -23,8 +23,7 @@ static t_int * ratio2cents_perform(t_int *w)
   t_float *out = (t_float *)(w[4]);
     while(n--){
         float f = *in++;
-        if(f <= 0.f)
-            f = 1.f;
+        if(f < 0.f) f = 0;
         *out++ = log2(f) * 1200;
     }
     
