@@ -12,6 +12,7 @@ typedef struct _square
     double  x_phase;
     double  x_last_phase_offset;
     t_float  x_freq;
+    t_inlet  *x_inlet_width;
     t_inlet  *x_inlet_phase;
     t_inlet  *x_inlet_sync;
     t_outlet *x_outlet;
@@ -23,9 +24,10 @@ static t_int *square_perform(t_int *w)
     t_square *x = (t_square *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
-    t_float *in2 = (t_float *)(w[4]); // phase
-    t_float *in3 = (t_float *)(w[5]); // sync
-    t_float *out = (t_float *)(w[6]);
+    t_float *in2 = (t_float *)(w[4]); // width
+    t_float *in3 = (t_float *)(w[5]); // phase
+    t_float *in4 = (t_float *)(w[6]); // sync
+    t_float *out = (t_float *)(w[7]);
     double phase = x->x_phase;
     double last_phase_offset = x->x_last_phase_offset;
     double sr = x->x_sr;
@@ -33,8 +35,10 @@ static t_int *square_perform(t_int *w)
     while (nblock--)
     {
         double hz = *in1++;
-        double phase_offset = *in2++;
-        double trig = *in3++;
+        double width = *in2++;
+        width = width > 1. ? 1. : width < 0. ? 0. : width; // clipped
+        double phase_offset = *in3++;
+        double trig = *in4++;
         double phase_step = hz / sr; // phase_step
         phase_step = phase_step > 0.5 ? 0.5 : phase_step < -0.5 ? -0.5 : phase_step; // clipped to nyq
         double phase_dev = phase_offset - last_phase_offset;
@@ -54,7 +58,7 @@ static t_int *square_perform(t_int *w)
                         phase = phase - 1; // wrapped phase
                         }
                     else if (phase + phase_step >= 1) output = -1; // last sample is always -1
-                    else output = phase <= 0.5 ? 1 : -1;
+                    else output = phase <= width ? 1 : -1;
             }
         else
             {
@@ -71,7 +75,7 @@ static t_int *square_perform(t_int *w)
                         phase = phase + 1; // wrapped phase
                         }
                     else if (phase + phase_step <= 0) output = 1; // last sample is always 1
-                    else output = phase <= 0.5 ? 1 : -1;
+                    else output = phase <= width ? 1 : -1;
             }
         *out++ = output;
         phase = phase + phase_step; // next phase
@@ -79,17 +83,18 @@ static t_int *square_perform(t_int *w)
     }
     x->x_phase = phase;
     x->x_last_phase_offset = last_phase_offset;
-    return (w + 7);
+    return (w + 8);
 }
 
 static void square_dsp(t_square *x, t_signal **sp)
 {
-    dsp_add(square_perform, 6, x, sp[0]->s_n,
-            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+    dsp_add(square_perform, 7, x, sp[0]->s_n,
+            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
 static void *square_free(t_square *x)
 {
+    inlet_free(x->x_inlet_width);
     inlet_free(x->x_inlet_phase);
     inlet_free(x->x_inlet_sync);
     outlet_free(x->x_outlet);
@@ -107,6 +112,8 @@ static void *square_new(t_floatarg f1, t_floatarg f2)
     x->x_last_phase_offset = 0;
     x->x_freq = init_freq;
     x->x_sr = sys_getsr(); // sample rate
+    x->x_inlet_width = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+    pd_float((t_pd *)x->x_inlet_width, 0.5);
     x->x_inlet_phase = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_phase, init_phase);
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
