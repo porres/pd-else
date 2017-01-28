@@ -50,7 +50,7 @@ static t_int *par_perform(t_int *w)
             if(phase >= 1) phase = phase - 1;
             if(phase < 0) phase = phase + 1;
             }
-        *out++ = phase;
+        *out++ = (1 - pow(fmod(phase * 2, 1) * 2 - 1, 2)) * (phase <= 0.5 ? 1 : -1);
         phase = fmod(phase + phase_step, 1); // next phase (wrapped)
         last_phase_offset = phase_offset; // last phase offset
     }
