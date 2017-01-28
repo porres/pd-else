@@ -30,7 +30,7 @@ static t_int *par_perform(t_int *w)
     double last_phase_offset = x->x_last_phase_offset;
     double sr = x->x_sr;
     while (nblock--)
-        {
+    {
         double hz = *in1++;
         double phase_offset = *in2++;
         double trig = *in3++;
@@ -39,19 +39,24 @@ static t_int *par_perform(t_int *w)
         double phase_dev = phase_offset - last_phase_offset;
         if (phase_dev >= 1 || phase_dev <= -1)
             phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
-
-        if (trig > 0 && trig < 1) phase = trig;
-        else {
-            phase = phase + phase_dev;
-            if (phase <= 0) phase = phase + 1.;
-            if (phase >= 1.) phase = phase - 1; // wrapped phase
-             }
-        *out1++ = phase;
-        phase = phase + phase_step; // next phase
+            {
+                if (trig > 0 && trig <= 1)
+                    {
+                        phase = trig;
+                        if(phase == 1) phase = 0;
+                    }
+                else
+                    {
+                        phase = phase + phase_dev;
+                        if(phase >= 1) phase = phase - 1;
+                        if(phase < 0) phase = phase + 1;
+                    }
+                *out1++ = phase;
+            }
+        phase = fmod(phase + phase_step, 1); // next phase (wrapped)
         last_phase_offset = phase_offset; // last phase offset
-        }
     }
-    x->x_phase = phase; // next phase
+    x->x_phase = phase;
     x->x_last_phase_offset = last_phase_offset;
     return (w + 7);
 }

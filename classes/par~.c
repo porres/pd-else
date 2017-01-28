@@ -25,29 +25,33 @@ static t_int *par_perform(t_int *w)
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // phase
     t_float *in3 = (t_float *)(w[5]); // sync
-    t_float *out1 = (t_float *)(w[6]);
+    t_float *out = (t_float *)(w[6]);
     double phase = x->x_phase;
     double last_phase_offset = x->x_last_phase_offset;
     double sr = x->x_sr;
     while (nblock--)
     {
         double hz = *in1++;
-        double phase_offset = *in2++;
-        double trig = *in3++;
         double phase_step = hz / sr; // phase_step
         phase_step = phase_step > 1 ? 1. : phase_step < -1 ? -1 : phase_step; // clipped phase_step
-        double phase_dev = phase_offset - last_phase_offset;
-        if (phase_dev >= 1 || phase_dev <= -1)
-            phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
+        double phase_offset = *in2++;
+        double trig = *in3++;
+        if (trig > 0 && trig <= 1)
             {
-                if (trig > 0 && trig <= 1) phase = trig;
-                else
-                    {
-                        phase = fmod(phase + phase_dev, 1);
-                    }
-                *out1++ = phase;
+            phase = trig;
+            if(phase == 1) phase = 0;
             }
-        phase = phase + phase_step; // next phase
+        else
+            {
+            double phase_dev = phase_offset - last_phase_offset;
+            if (phase_dev >= 1 || phase_dev <= -1)
+                phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
+            phase = phase + phase_dev;
+            if(phase >= 1) phase = phase - 1;
+            if(phase < 0) phase = phase + 1;
+            }
+        *out++ = phase;
+        phase = fmod(phase + phase_step, 1); // next phase (wrapped)
         last_phase_offset = phase_offset; // last phase offset
     }
     x->x_phase = phase;
