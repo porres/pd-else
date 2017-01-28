@@ -31,6 +31,7 @@ rescale~.class.sources := classes/rescale~.c
 sh~.class.sources := classes/sh~.c
 sin~.class.sources := classes/sin~.c
 square~.class.sources := classes/square~.c
+zerocross~.class.sources := classes/zerocross~.c
 
 #########################################################################
 

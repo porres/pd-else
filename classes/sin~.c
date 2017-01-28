@@ -24,9 +24,10 @@ static t_int *sin_perform(t_int *w)
     t_float *out = (t_float *)(w[3]);
     while (nblock--)
     {
-        float f = *in++;
-        f = fmod(f, 1);
-        *out++ = sinf(f * TWO_PI);  
+        double f = *in++;
+        if(f >= 1 || f <= -1) f = fmod(f, 1);
+        if (f == 0.5) *out++ = 0;
+        else *out++ = sin(f * TWO_PI);
     }
     return (w + 4);
 }
