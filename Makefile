@@ -34,6 +34,7 @@ sh~.class.sources := classes/sh~.c
 sin~.class.sources := classes/sin~.c
 square~.class.sources := classes/square~.c
 toggleff~.class.sources := classes/toggleff~.c
+trigcount~.class.sources := classes/trigcount~.c
 zerocross~.class.sources := classes/zerocross~.c
 
 #########################################################################
