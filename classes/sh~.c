@@ -7,7 +7,6 @@ static t_class *sh_class;
 typedef struct _sh
 {
     t_object x_obj;
-    t_float  x_threshold;
     t_inlet  *x_triglet;
     t_float  x_lastout; // last out
 } t_sh;
@@ -19,14 +18,12 @@ static t_int *sh_perform(t_int *w)
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
     t_float *out = (t_float *)(w[5]);
-    t_float threshold = x->x_threshold;
     t_float lastout = x->x_lastout;
     while (nblock--)
     {
         float input = *in1++;
         float trigger = *in2++;
-        if (trigger > threshold)
-            lastout = input;
+        if (trigger > 0) lastout = input;
         *out++ = lastout;
     }
     x->x_lastout = lastout;
@@ -39,25 +36,17 @@ static void sh_dsp(t_sh *x, t_signal **sp)
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
 }
 
-static void sh_float(t_sh *x, t_float f)
-{
-    x->x_threshold = f;
-}
-
-
 static void *sh_free(t_sh *x)
 {
     inlet_free(x->x_triglet);
     return (void *)x;
 }
 
-static void *sh_new(t_floatarg f)
+static void *sh_new(void)
 {
     t_sh *x = (t_sh *)pd_new(sh_class);
-    x->x_threshold = f;
     x->x_triglet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     outlet_new((t_object *)x, &s_signal);
-//  x->x_lastin = 0;
     x->x_lastout = 0;
     return (x);
 }
@@ -69,10 +58,8 @@ void sh_tilde_setup(void)
         (t_method)sh_free,
         sizeof(t_sh),
         CLASS_DEFAULT,
-        A_DEFFLOAT,
         0);
         class_addmethod(sh_class, nullfn, gensym("signal"), 0);
         class_addmethod(sh_class, (t_method)sh_dsp, gensym("dsp"), A_CANT, 0);
-        class_addfloat(sh_class, (t_method)sh_float);
 }
 

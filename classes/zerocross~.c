@@ -1,17 +1,19 @@
 // Porres 2016
 
 #include "m_pd.h"
+#include "math.h"
+
 
 static t_class *zerocross_class;
 
 typedef struct _zerocross
 {
     t_object x_obj;
-    t_float  x_init;
-    t_float  x_lastout; // last out
     t_outlet *x_outlet_dsp_0;
     t_outlet *x_outlet_dsp_1;
     t_outlet *x_outlet_dsp_2;
+    t_float   x_lastout;
+    t_float   x_init;
 } t_zerocross;
 
 static t_int *zerocross_perform(t_int *w)
@@ -26,11 +28,15 @@ static t_int *zerocross_perform(t_int *w)
     while (nblock--)
     {
         float input = *in++;
-        if (x->x_init) *out1++ = *out2++ = *out3++ = x->x_init = 0;
-        else {
+        if (x->x_init)
+            {
+            x->x_init = *out1++ = *out2++ = *out3++ = 0;
+            }
+        else
+            {
             *out1++ = (input > 0 && lastout <= 0);
             *out2++ = (input < 0 && lastout >= 0);
-            *out3++ = *out1++ + *out2++;
+            *out3++ = (input > 0 && lastout <= 0) || (input < 0 && lastout >= 0);
             }
         lastout = input;
     }
@@ -52,27 +58,23 @@ static void *zerocross_free(t_zerocross *x)
     return (void *)x;
 }
 
-
-static void *zerocross_new(void)
+static void *zerocross_new(t_floatarg f)
 {
     t_zerocross *x = (t_zerocross *)pd_new(zerocross_class);
+    x->x_lastout = 0;
+    x->x_init = 1;
     x->x_outlet_dsp_0 = outlet_new(&x->x_obj, &s_signal);
     x->x_outlet_dsp_1 = outlet_new(&x->x_obj, &s_signal);
     x->x_outlet_dsp_2 = outlet_new(&x->x_obj, &s_signal);
-    x->x_init = 1;
-    x->x_lastout = 0;
     return (x);
 }
 
 void zerocross_tilde_setup(void)
 {
     zerocross_class = class_new(gensym("zerocross~"),
-        (t_newmethod)zerocross_new,
-        (t_method)zerocross_free,
-        sizeof(t_zerocross),
-        CLASS_DEFAULT,
-        0);
-        class_addmethod(zerocross_class, nullfn, gensym("signal"), 0);
-        class_addmethod(zerocross_class, (t_method)zerocross_dsp, gensym("dsp"), A_CANT, 0);
+        (t_newmethod)zerocross_new, (t_method)zerocross_free,
+        sizeof(t_zerocross), CLASS_DEFAULT, A_DEFFLOAT, 0);
+    class_addmethod(zerocross_class, nullfn, gensym("signal"), 0);
+    class_addmethod(zerocross_class, (t_method)zerocross_dsp, gensym("dsp"), A_CANT, 0);
+    
 }
-
