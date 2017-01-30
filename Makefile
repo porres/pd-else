@@ -25,6 +25,7 @@ downsample~.class.sources := classes/downsample~.c
 hz2rad~.class.sources := classes/hz2rad~.c
 pimp~.class.sources := classes/pimp~.c
 imp~.class.sources := classes/imp~.c
+lastvalue~.class.sources := classes/lastvalue~.c
 median~.class.sources := classes/median~.c
 par~.class.sources := classes/par~.c
 rad2hz~.class.sources := classes/rad2hz~.c
