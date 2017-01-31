@@ -1,0 +1,9 @@
+#N canvas 509 94 156 190 10;
+#X obj 52 50 inlet;
+#X obj 52 132 outlet;
+#X obj 52 109 f;
+#X obj 52 74 t f b;
+#X connect 0 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 1;
+#X connect 3 1 2 0;
