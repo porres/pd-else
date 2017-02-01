@@ -36,6 +36,7 @@ rescale~.class.sources := classes/rescale~.c
 sh~.class.sources := classes/sh~.c
 sin~.class.sources := classes/sin~.c
 square~.class.sources := classes/square~.c
+timer~.class.sources := classes/timer~.c
 toggleff~.class.sources := classes/toggleff~.c
 togedge~.class.sources := classes/togedge~.c
 trigcount~.class.sources := classes/trigcount~.c
