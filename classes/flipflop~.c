@@ -66,7 +66,7 @@ static void *flipflop_new(t_floatarg f)
     return (x);
 }
 
-void flipflop_tilde_setup(t_floatarg f)
+void flipflop_tilde_setup
 {
     flipflop_class = class_new(gensym("flipflop~"),
         (t_newmethod)flipflop_new,

@@ -1,4 +1,4 @@
-#N canvas 857 50 558 491 10;
+#N canvas 521 82 561 495 10;
 #X obj 4 321 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 384 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -49,7 +49,7 @@ inlet.;
 #X obj 319 204 else/trigate~;
 #X obj 226 232 else/accum~ 1000;
 #X obj 226 290 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1225 256;
+-228856 -1 -1 0 256;
 #N canvas 1046 306 123 217 snapshot~ 0;
 #X obj 29 107 snapshot~;
 #X obj 46 79 metro 100;

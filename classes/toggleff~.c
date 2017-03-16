@@ -55,7 +55,7 @@ static void *toggleff_new(t_floatarg f)
     return (x);
 }
 
-void toggleff_tilde_setup(t_floatarg f)
+void toggleff_tilde_setup
 {
     toggleff_class = class_new(gensym("toggleff~"),
         (t_newmethod)toggleff_new,

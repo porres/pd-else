@@ -63,7 +63,7 @@ static void *changed_new(t_floatarg f)
     return (x);
 }
 
-void changed_tilde_setup(t_floatarg f)
+void changed_tilde_setup
 {
     changed_class = class_new(gensym("changed~"),
         (t_newmethod)changed_new,
