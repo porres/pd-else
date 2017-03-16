@@ -25,8 +25,14 @@ static t_int *changed_perform(t_int *w)
     {
     float x1 = *in1++;
     float th = *in2++; // threshold
-    if (th < 0) th = 0;
-    *out++ = fabs(x1 - x1m1) > th;
+    if (th < 0)
+        {
+        *out++ = fabs(x1 - x1m1) > 0;
+        }
+    else
+        {
+        *out++ = fabs(x1 - x1m1) > th;
+        }
     x1m1 = x1;
     }
     x->x_x1m1 = x1m1;
