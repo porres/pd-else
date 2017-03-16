@@ -8,14 +8,13 @@ typedef struct _accum
 {
     t_object  x_obj;
     t_float   x_sum;
-    t_float   x_start;
     t_inlet  *x_triglet;
     t_outlet *x_outlet;
 } t_accum;
 
 static void accum_set(t_accum *x, t_floatarg f)
 {
-    x->x_start = f;
+    x->x_sum = f;
 }
 
 static t_int *accum_perform(t_int *w)
@@ -26,19 +25,11 @@ static t_int *accum_perform(t_int *w)
     t_float *in2 = (t_float *)(w[4]);
     t_float *out = (t_float *)(w[5]);
     t_float sum = x->x_sum;
-    t_float start = x->x_start;
     while (nblock--)
     {
         t_float in = *in1++;
         t_float trig = *in2++;
-        if (trig == 1)
-            {
-            *out++ = sum = start;
-            }
-        else
-            {
-            *out++ = sum;
-            }
+        *out++ = sum = sum * (trig == 0);
         sum += in;
     }
     x->x_sum = sum; // next
@@ -61,7 +52,7 @@ static void *accum_free(t_accum *x)
 static void *accum_new(t_floatarg f)
 {
     t_accum *x = (t_accum *)pd_new(accum_class);
-    x->x_sum = x->x_start = f;
+    x->x_sum = f;
     x->x_triglet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return (x);

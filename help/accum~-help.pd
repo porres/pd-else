@@ -1,0 +1,79 @@
+#N canvas 857 50 558 491 10;
+#X obj 4 321 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 384 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 419 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 86 393 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 87 328 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 452 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 167 345 set;
+#X obj 3 3 cnv 15 301 42 empty empty accum~ 20 20 2 37 -233017 -1 0
+;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
+#X obj 81 40 cnv 4 4 4 empty empty accumulator 0 28 2 18 -233017 -1
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 319 182 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 166 204 set 10;
+#X obj 226 187 else/imp~ 1;
+#X text 72 92 [accum~] starts accumulating from a starting point. Each
+input sample is added to the previous output for a running sum. The
+starting value can be set as an argument or the 'set' message. You
+can resset to the starting value with an impulse signal in the right
+inlet.;
+#X obj 319 206 else/trigate~;
+#X obj 226 234 else/accum~ 1000;
+#X obj 226 290 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1254 256;
+#N canvas 1046 306 123 217 snapshot~ 0;
+#X obj 29 107 snapshot~;
+#X obj 46 79 metro 100;
+#X obj 46 53 loadbang;
+#X obj 29 146 outlet;
+#X obj 29 25 inlet~;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 4 0 0 0;
+#X restore 226 260 pd snapshot~;
+#X text 149 328 signal;
+#X text 191 328 - value to accumulate;
+#X text 191 345 - sets the starting value;
+#X text 149 393 signal;
+#X text 191 393 - the accumulated value;
+#X text 137 428 1) float - starting value (default 0);
+#X obj 86 363 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 149 364 signal;
+#X text 191 364 - impulse ressets to starting value;
+#X connect 19 0 23 0;
+#X connect 20 0 24 0;
+#X connect 21 0 24 0;
+#X connect 23 0 24 1;
+#X connect 24 0 26 0;
+#X connect 26 0 25 0;
