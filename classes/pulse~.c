@@ -101,11 +101,24 @@ static void *pulse_free(t_pulse *x)
     return (void *)x;
 }
 
-static void *pulse_new(t_floatarg f1, t_floatarg f2)
+static void *pulse_new(t_symbol *s, int ac, t_atom *av)
 {
     t_pulse *x = (t_pulse *)pd_new(pulse_class);
+    t_float f1 = 0, f2 = 0.5, f3 = 0;
+    if (ac && av->a_type == A_FLOAT)
+    {
+        f1 = av->a_w.w_float;
+        ac--; av++;
+        if (ac && av->a_type == A_FLOAT)
+            f2 = av->a_w.w_float;
+            ac--; av++;
+            if (ac && av->a_type == A_FLOAT)
+                f3 = av->a_w.w_float;
+    }
     t_float init_freq = f1;
-    t_float init_phase = f2;
+    t_float init_width = f2;
+    init_width < 0 ? 0 : init_width >= 1 ? 0 : init_width; // clipping width input
+    t_float init_phase = f3;
     init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
     if (init_phase == 0 && init_freq > 0)
         x->x_phase = 1.;
@@ -113,7 +126,7 @@ static void *pulse_new(t_floatarg f1, t_floatarg f2)
     x->x_freq = init_freq;
     x->x_sr = sys_getsr(); // sample rate
     x->x_inlet_width = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_width, 0.5);
+    pd_float((t_pd *)x->x_inlet_width, init_width);
     x->x_inlet_phase = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_phase, init_phase);
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -126,7 +139,7 @@ void pulse_tilde_setup(void)
 {
     pulse_class = class_new(gensym("pulse~"),
         (t_newmethod)pulse_new, (t_method)pulse_free,
-        sizeof(t_pulse), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
+        sizeof(t_pulse), CLASS_DEFAULT, A_GIMME, 0);
     CLASS_MAINSIGNALIN(pulse_class, t_pulse, x_freq);
     class_addmethod(pulse_class, (t_method)pulse_dsp, gensym("dsp"), A_CANT, 0);
 }
