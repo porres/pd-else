@@ -101,23 +101,44 @@ static void *square_free(t_square *x)
     return (void *)x;
 }
 
-static void *square_new(t_floatarg f1, t_floatarg f2)
+static void *square_new(t_symbol *s, int ac, t_atom *av)
 {
     t_square *x = (t_square *)pd_new(square_class);
+    t_float f1 = 0, f2 = 0.5, f3 = 0;
+    if (ac && av->a_type == A_FLOAT)
+    {
+        f1 = av->a_w.w_float;
+        ac--; av++;
+        if (ac && av->a_type == A_FLOAT)
+            f2 = av->a_w.w_float;
+        ac--; av++;
+        if (ac && av->a_type == A_FLOAT)
+            f3 = av->a_w.w_float;
+    }
+    
     t_float init_freq = f1;
-    t_float init_phase = f2;
+    
+    t_float init_width = f2;
+    init_width < 0 ? 0 : init_width >= 1 ? 0 : init_width; // clipping width input
+    
+    t_float init_phase = f3;
     init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
     if (init_phase == 0 && init_freq > 0)
         x->x_phase = 1.;
+    
     x->x_last_phase_offset = 0;
     x->x_freq = init_freq;
     x->x_sr = sys_getsr(); // sample rate
+
     x->x_inlet_width = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_width, 0.5);
+    pd_float((t_pd *)x->x_inlet_width, init_width);
+    
     x->x_inlet_phase = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_phase, init_phase);
+    
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_sync, 0);
+    
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return (x);
 }
@@ -126,7 +147,7 @@ void square_tilde_setup(void)
 {
     square_class = class_new(gensym("square~"),
         (t_newmethod)square_new, (t_method)square_free,
-        sizeof(t_square), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
+        sizeof(t_square), CLASS_DEFAULT, A_GIMME, 0);
     CLASS_MAINSIGNALIN(square_class, t_square, x_freq);
     class_addmethod(square_class, (t_method)square_dsp, gensym("dsp"), A_CANT, 0);
 }

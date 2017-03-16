@@ -117,20 +117,27 @@ static void *pulse_new(t_symbol *s, int ac, t_atom *av)
     }
     t_float init_freq = f1;
     t_float init_width = f2;
+    
     init_width < 0 ? 0 : init_width >= 1 ? 0 : init_width; // clipping width input
+   
     t_float init_phase = f3;
     init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
     if (init_phase == 0 && init_freq > 0)
         x->x_phase = 1.;
+    
     x->x_last_phase_offset = 0;
     x->x_freq = init_freq;
     x->x_sr = sys_getsr(); // sample rate
+
     x->x_inlet_width = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_width, init_width);
+ 
     x->x_inlet_phase = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_phase, init_phase);
+    
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_sync, 0);
+    
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return (x);
 }
