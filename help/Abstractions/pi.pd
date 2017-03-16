@@ -7,10 +7,11 @@
 #X obj 156 181 * 4;
 #X obj 156 258 f;
 #X obj 156 288 outlet;
-#X obj 237 51 inlet;
+#X obj 217 51 inlet;
 #X obj 156 215 *;
-#X obj 237 180 f \$1;
+#X obj 217 140 f \$1;
 #X obj 156 103 t b b;
+#X obj 217 169 expr if($f1 <= 0 \, 1 \, $f1);
 #X connect 0 0 11 0;
 #X connect 1 0 6 0;
 #X connect 2 0 1 0;
@@ -20,6 +21,7 @@
 #X connect 6 0 7 0;
 #X connect 8 0 10 0;
 #X connect 9 0 6 0;
-#X connect 10 0 9 1;
+#X connect 10 0 12 0;
 #X connect 11 0 3 0;
 #X connect 11 1 10 0;
+#X connect 12 0 9 1;
