@@ -1,4 +1,4 @@
-#N canvas 570 53 560 376 10;
+#N canvas 206 173 560 376 10;
 #X obj 4 231 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 268 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -13,7 +13,7 @@
 0;
 #X text 141 241 bang;
 #X obj 220 192 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 22050 256;
+-228856 -1 -1 0 256;
 #X obj 3 3 cnv 15 301 42 empty empty nyquist~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -41,8 +41,6 @@
 #X obj 220 131 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 220 159 else/nyquist~;
-#X text 73 90 [nyquist~] reports nyquist frequency \, which is half
-the sample rate.;
 #X text 195 192 hz;
 #X text 135 277 float;
 #X obj 119 40 cnv 4 4 4 empty empty frequency 0 28 2 18 -233017 -1
@@ -50,5 +48,7 @@ the sample rate.;
 #X text 171 241 - get nyquist frequency;
 #X text 171 277 - nyquist frequency in hertz;
 #X text 137 312 (none);
+#X text 73 90 [nyquist~] reports nyquist frequency (which is half the
+sample rate) when loading the patch or when receiving a bang.;
 #X connect 20 0 21 0;
 #X connect 21 0 7 0;

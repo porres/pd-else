@@ -1,0 +1,11 @@
+#N canvas 509 94 317 185 10;
+#X obj 52 74 samplerate~;
+#X obj 52 27 inlet;
+#X obj 52 122 outlet;
+#X obj 52 99 / 1000;
+#X text 163 76 porres 2017 \, for else library, f 12;
+#X obj 94 50 loadbang;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 3 0 2 0;
+#X connect 5 0 0 0;
