@@ -6,6 +6,8 @@ EL Locus Solus offers a computer music tutorial with examples in Pure Data for i
 
 Even though extended has quite a large set of external libraries and objects, at some point there was the need of something "else". Thus, EL Locus Solus is now not only offering computer music examples, but also the "else" library, with extra objects for its didactic material.
 
-There are no releases available yet
+----------------
+
+The current library state is at alpha experimental releases, where drastic changes may occur and and backwards compatibility is not guaranteed for future releases
 
 Porres; 2017
