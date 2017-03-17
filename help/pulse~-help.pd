@@ -42,6 +42,7 @@
 #X text 200 345 signal -;
 #X text 200 379 signal -;
 #X text 184 415 1) float;
+#X text 243 415 - frequency in hertz;
 #X text 184 434 2) float;
 #X text 261 326 phase offset (modulation input);
 #X text 261 345 phase sync (ressets internal phase);
@@ -53,8 +54,8 @@
 -228856 -1 -1 0 256;
 #X text 274 140 <= hz;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -123,7 +124,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -248,14 +249,13 @@ feature is phase modulation.;
 #X restore 445 219 pd phase offset;
 #X text 262 305 pulse width (from 0 to 1);
 #X obj 197 209 out~;
+#X text 243 452 - initial phase offset;
 #X text 184 452 3) float;
+#X text 243 434 - initial pulse width;
 #X obj 214 174 else/pulse~ 1 0;
 #X text 60 87 [pulse~] is a pulse train oscillator (alternates between
 0 and 1 \, or off/on) that accepts negative frequencies \, has inlets
 for pulse width \, phase modulation and phase sync.;
-#X text 243 434 - initial pulse width (default 0.5);
-#X text 243 452 - initial phase offset (default 0);
-#X text 243 415 - frequency in hertz (default 0);
-#X connect 31 0 42 0;
-#X connect 42 0 40 0;
-#X connect 42 0 40 1;
+#X connect 32 0 45 0;
+#X connect 45 0 41 0;
+#X connect 45 0 41 1;

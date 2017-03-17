@@ -1,4 +1,4 @@
-#N canvas 629 57 561 425 10;
+#N canvas 447 77 561 425 10;
 #X obj 4 288 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 324 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -31,17 +31,6 @@
 #X obj 132 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
 #X obj 204 254 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#N canvas 1046 306 123 217 snapshot~ 0;
-#X obj 29 107 snapshot~;
-#X obj 46 79 metro 100;
-#X obj 46 53 loadbang;
-#X obj 29 146 outlet;
-#X obj 29 25 inlet~;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
-#X connect 2 0 1 0;
-#X connect 4 0 0 0;
-#X restore 204 225 pd snapshot~;
 #X obj 204 166 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 3 3 cnv 15 301 42 empty empty f2s~ 20 20 2 37 -233017 -1 0;
@@ -160,16 +149,17 @@
 #X obj 285 165 nbx 5 14 0 1000 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
 #X text 145 297 float;
-#X text 142 368 1) float - ramp time in ms (default 0);
 #X text 191 333 - conerted signal;
 #X text 191 297 - float value to convert to signal;
 #X obj 161 40 cnv 4 4 4 empty empty signal 0 28 2 18 -233017 -1 0;
 #X text 284 143 ramp time;
-#X obj 204 195 else/f2s~ 1000;
 #X text 61 88 [f2s~] coverts floats to signals. The conversion is smoothened
 by a ramp time in ms.;
-#X connect 17 0 16 0;
-#X connect 18 0 32 0;
-#X connect 24 0 18 0;
-#X connect 25 0 32 1;
-#X connect 32 0 17 0;
+#X obj 204 195 else/f2s~ 1000;
+#X obj 204 225 else/s2f~;
+#X text 142 368 1) float - ramp time in ms (default 0);
+#X connect 17 0 31 0;
+#X connect 23 0 17 0;
+#X connect 24 0 31 1;
+#X connect 31 0 32 0;
+#X connect 32 0 16 0;

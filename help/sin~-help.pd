@@ -46,22 +46,11 @@ two pi times its signal input.;
 #X text 212 330 - input to sine function;
 #X obj 195 196 sig~;
 #X obj 195 169 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.677165 256;
 #X obj 198 145 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 8600 1;
 #X obj 195 287 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#N canvas 1046 306 123 217 snapshot~ 0;
-#X obj 29 107 snapshot~;
-#X obj 46 79 metro 100;
-#X obj 46 53 loadbang;
-#X obj 29 146 outlet;
-#X obj 29 25 inlet~;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
-#X connect 2 0 1 0;
-#X connect 4 0 0 0;
-#X restore 195 258 pd snapshot~;
+-228856 -1 -1 -0.897101 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -166,8 +155,9 @@ two pi times its signal input.;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
-#X connect 18 0 30 0;
+#X obj 195 258 else/s2f~ 100;
+#X connect 18 0 31 0;
 #X connect 26 0 18 0;
 #X connect 27 0 26 0;
 #X connect 28 0 27 0;
-#X connect 30 0 29 0;
+#X connect 31 0 29 0;

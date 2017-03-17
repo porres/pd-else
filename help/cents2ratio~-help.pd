@@ -47,20 +47,9 @@
 #X obj 188 194 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 188 287 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.749154 256;
+-228856 -1 -1 1 256;
 #X text 146 286 Ratio;
 #X text 145 193 Cents;
-#N canvas 1046 306 123 217 snapshot~ 0;
-#X obj 29 107 snapshot~;
-#X obj 46 79 metro 100;
-#X obj 46 53 loadbang;
-#X obj 29 146 outlet;
-#X obj 29 25 inlet~;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
-#X connect 2 0 1 0;
-#X connect 4 0 0 0;
-#X restore 188 257 pd snapshot~;
 #X text 109 89 Use [cents2ratio~] to convert a signal representing
 an interval in cents to an interval ratio. The conversion formula is
 \; ratio = pow(2 \, (cents/1200));
@@ -188,7 +177,8 @@ an interval in cents to an interval ratio. The conversion formula is
 #X connect 5 0 6 0;
 #X connect 5 0 6 1;
 #X restore 462 286 pd example;
+#X obj 188 257 else/s2f~ 100;
 #X connect 7 0 24 0;
-#X connect 24 0 32 0;
-#X connect 28 0 25 0;
-#X connect 32 0 28 0;
+#X connect 24 0 31 0;
+#X connect 31 0 33 0;
+#X connect 33 0 25 0;

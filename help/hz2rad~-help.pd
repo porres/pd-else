@@ -41,9 +41,9 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 241 270 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.00698132 256;
+-228856 -1 -1 0 256;
 #X obj 241 177 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -49 256;
+-228856 -1 -1 0 256;
 #X text 326 176 Hertz;
 #X text 326 269 Radians per sample;
 #X text 310 61 (for signals);
@@ -51,17 +51,6 @@
 in Hertz to "Radians per Sample" - which depends on the patch's sample
 rate (sr). The conversion formula is \; rad = hz * 2*pi / sr;
 #X obj 241 209 else/hz2rad~;
-#N canvas 1046 306 123 217 snapshot~ 0;
-#X obj 29 107 snapshot~;
-#X obj 46 79 metro 100;
-#X obj 46 53 loadbang;
-#X obj 29 146 outlet;
-#X obj 29 25 inlet~;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
-#X connect 2 0 1 0;
-#X connect 4 0 0 0;
-#X restore 241 241 pd snapshot~;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -170,7 +159,8 @@ rate (sr). The conversion formula is \; rad = hz * 2*pi / sr;
 #X text 113 305 float/signal;
 #X text 149 337 signal;
 #X text 202 337 - converted radians per sample value;
+#X obj 241 241 else/s2f~ 100;
 #X connect 7 0 21 0;
 #X connect 21 0 26 0;
-#X connect 26 0 27 0;
-#X connect 27 0 20 0;
+#X connect 26 0 32 0;
+#X connect 32 0 20 0;

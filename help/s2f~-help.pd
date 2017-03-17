@@ -1,37 +1,23 @@
-#N canvas 463 87 559 465 10;
-#X obj 3 322 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 447 77 560 412 10;
+#X obj 4 273 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 360 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 309 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 397 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 344 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 112 370 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 106 318 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 113 331 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X text 198 407 (none);
-#X obj 3 428 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 374 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 231 165 hsl 180 15 0.5 2 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X text 145 333 float/signal;
-#X text 181 370 signal;
-#X obj 3 3 cnv 15 301 42 empty empty ratio2cents~ 20 20 2 37 -233017
--1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Ratio/Cents 0 28 2 18 -233017 -1
-0;
-#X obj 113 40 cnv 4 4 4 empty empty conversion 0 28 2 18 -233017 -1
-0;
+#X obj 23 40 cnv 4 4 4 empty empty Convert 0 28 2 18 -233017 -1 0;
+#X obj 160 40 cnv 4 4 4 empty empty float 0 28 2 18 -233017 -1 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -42,10 +28,13 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 228 194 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 228 287 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -1e+37 256;
+#X obj 139 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
+#X obj 189 241 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.382686 256;
+#X obj 3 3 cnv 15 301 42 empty empty s2f~ 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -150,17 +139,29 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X text 195 60 (for signals);
-#X text 109 89 Use [ratio2cents~] to convert a signal representing
-a ratio interval to an interval in cents. The conversion formula is
-\; cents = log2(ratio) * 1200;
-#X text 185 193 Ratio;
-#X text 186 285 Cents;
-#X text 232 333 - ratio value;
-#X text 232 370 - converted cents value;
-#X obj 228 226 else/ratio2cents~;
-#X obj 228 257 else/s2f~ 100;
-#X connect 7 0 22 0;
-#X connect 22 0 31 0;
-#X connect 31 0 32 0;
-#X connect 32 0 23 0;
+#X obj 106 282 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 264 179 nbx 5 14 0 1000 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0 256;
+#X obj 87 40 cnv 4 4 4 empty empty signal 0 28 2 18 -233017 -1 0;
+#X obj 189 169 noise~;
+#X obj 189 209 else/s2f~ 100;
+#X msg 294 231 start;
+#X msg 293 207 stop;
+#X text 61 88 [s2f~] coverts signals to floats. The conversion occurs
+at a time rate defined by the argument or right inlet. The time needs
+to be greater than 1 \, if 0 or less is given \, then it defaults to
+1! The right inlet can also 'stop' and 'restart' the conversion.;
+#X text 142 353 1) float - conversion time in ms (default 1);
+#X text 321 178 ms;
+#X text 261 158 convert time;
+#X text 145 282 signal;
+#X text 145 318 float;
+#X text 191 318 - conerted fllat;
+#X text 191 282 - signal value to convert to float;
+#X obj 382 222 Snapshot~;
+#X connect 21 0 24 1;
+#X connect 23 0 24 0;
+#X connect 24 0 16 0;
+#X connect 25 0 24 1;
+#X connect 26 0 24 1;

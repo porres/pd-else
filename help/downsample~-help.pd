@@ -1,4 +1,4 @@
-#N canvas 668 80 560 489 10;
+#N canvas 379 70 560 489 10;
 #X obj 187 178 noise~;
 #X obj 319 154 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
@@ -90,7 +90,7 @@ is that you can't go up to the sample rate - it stops sampling then.
 the left inlet at a frequency rate in hertz. No interpolation of the
 output is performed (yet \, as there are plans for adding this option).
 ;
-#X text 334 153 frequency in Hz;
+#X text 400 184 frequency in Hz;
 #X connect 0 0 30 0;
 #X connect 1 0 29 0;
 #X connect 29 0 30 1;
