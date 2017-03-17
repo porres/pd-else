@@ -1,0 +1,75 @@
+#N canvas 570 53 558 524 10;
+#X obj 4 337 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 374 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 453 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 96 383 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 486 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 3 3 cnv 15 301 42 empty empty zerocross~ 20 20 2 37 -233017
+-1 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Send 0 28 2 18 -233017 -1 0;
+#X obj 67 40 cnv 4 4 4 empty empty impulses 0 28 2 18 -233017 -1 0
+;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 141 40 cnv 4 4 4 empty empty at 0 28 2 18 -233017 -1 0;
+#X obj 163 40 cnv 4 4 4 empty empty zero 0 28 2 18 -233017 -1 0;
+#X obj 203 40 cnv 4 4 4 empty empty crossings 0 28 2 18 -233017 -1
+0;
+#X obj 129 263 out~;
+#X obj 128 153 osc~ 1;
+#X obj 129 202 else/zerocross~;
+#X obj 324 154 osc~ 1;
+#X obj 324 202 else/zerocross~;
+#X obj 388 255 out~;
+#X text 354 228 both;
+#X text 46 227 non-positive to positive, f 12;
+#X text 184 224 positive to non-positive, f 12;
+#X text 137 462 (none);
+#X text 61 86 [zerocross~] sens impulses when crossing from non-positive
+to positive (left outlet) \, from positive to non-positive (middle
+outlet) and both (right outlet).;
+#X obj 96 405 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 96 426 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 135 383 signal;
+#X text 177 383 - impulse when crossing from non-positive to positive
+;
+#X text 135 405 signal;
+#X text 177 405 - impulse when crossing from positive to non-positive
+;
+#X text 135 426 signal;
+#X text 177 426 - impulse when crossing either way;
+#X obj 96 347 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 135 347 signal;
+#X text 177 347 - signal to detect zero crossings;
+#X connect 21 0 22 0;
+#X connect 22 0 20 0;
+#X connect 22 1 20 1;
+#X connect 23 0 24 0;
+#X connect 24 2 25 0;
+#X connect 24 2 25 1;

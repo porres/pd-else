@@ -1,12 +1,10 @@
-#N canvas 719 314 200 200 10;
-#N canvas 714 397 404 181 META 0;
+#N canvas 635 97 403 179 10;
 #X text 26 111 AUTHOR: Alexandre Torres Porres, f 57;
 #X text 26 129 WEBSITE: https://github.com/porres/pd-else, f 57;
 #X text 26 10 LIBRARY NAME: ELSE (EL Locus Solus' Else) library for
 Pd, f 57;
-#X text 26 94 LICENSE: (?), f 57;
 #X text 26 28 DESCRIPTION: Extra objects for EL Locus Solus' didactic
 material., f 57;
-#X text 26 60 VERSION: 0.1, f 57;
-#X text 26 77 RELEASE_DATE: January 20th 2017, f 57;
-#X restore 10 10 pd META;
+#X text 26 94 LICENSE: SIBSD, f 57;
+#X text 26 77 RELEASE_DATE: March 20th 2017, f 57;
+#X text 26 60 VERSION: 1.0-alpha1, f 57;
