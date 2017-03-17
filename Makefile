@@ -23,7 +23,6 @@ cents2ratio~.class.sources := classes/cents2ratio~.c
 changed~.class.sources := classes/changed~.c
 downsample~.class.sources := classes/downsample~.c
 elapsed~.class.sources := classes/elapsed~.c
-flipflop~.class.sources := classes/flipflop~.c
 hz2rad~.class.sources := classes/hz2rad~.c
 pimp~.class.sources := classes/pimp~.c
 imp~.class.sources := classes/imp~.c
