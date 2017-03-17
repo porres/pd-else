@@ -1,31 +1,23 @@
-#N canvas 570 53 559 481 10;
-#X obj 4 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 629 57 561 425 10;
+#X obj 4 288 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 374 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 324 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 409 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 359 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 126 383 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 106 333 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 127 326 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 4 442 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 389 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 3 cnv 15 301 42 empty empty trigcount~ 20 20 2 37 -233017
--1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Count 0 28 2 18 -233017 -1 0;
-#X obj 76 40 cnv 4 4 4 empty empty triggers 0 28 2 18 -233017 -1 0
-;
+#X obj 23 40 cnv 4 4 4 empty empty Convert 0 28 2 18 -233017 -1 0;
+#X obj 90 40 cnv 4 4 4 empty empty float 0 28 2 18 -233017 -1 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -36,9 +28,9 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 197 219 else/trigcount~;
-#X obj 197 283 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 27 256;
+#X obj 132 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
+#X obj 204 254 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
 #N canvas 1046 306 123 217 snapshot~ 0;
 #X obj 29 107 snapshot~;
 #X obj 46 79 metro 100;
@@ -49,7 +41,13 @@
 #X connect 1 0 0 0;
 #X connect 2 0 1 0;
 #X connect 4 0 0 0;
-#X restore 197 254 pd snapshot~;
+#X restore 204 225 pd snapshot~;
+#X obj 204 166 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 3 3 cnv 15 301 42 empty empty f2s~ 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -153,25 +151,25 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 61 pd;
-#X obj 197 180 osc~ 1;
-#X obj 284 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 284 180 else/trigate~;
-#X text 154 417 (none);
-#X text 155 325 signal;
-#X obj 127 348 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X restore 505 71 pd;
+#X text 145 333 signal;
+#X obj 106 297 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 155 347 signal;
-#X text 61 86 [trigcount~] counts triggers. A trigger happens at transitions
-from non positive to positive. A trigger in the right inklet resets
-the counter to zero.;
-#X text 199 347 - a trigger resets counter to zero;
-#X text 199 325 - trigger signal to count;
-#X text 155 383 signal;
-#X text 199 383 - the trigger count;
-#X connect 18 0 20 0;
-#X connect 20 0 19 0;
-#X connect 22 0 18 0;
-#X connect 23 0 24 0;
-#X connect 24 0 18 1;
+#X obj 204 140 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 285 165 nbx 5 14 0 1000 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0 256;
+#X text 145 297 float;
+#X text 142 368 1) float - ramp time in ms (default 0);
+#X text 191 333 - conerted signal;
+#X text 191 297 - float value to convert to signal;
+#X obj 161 40 cnv 4 4 4 empty empty signal 0 28 2 18 -233017 -1 0;
+#X text 284 143 ramp time;
+#X obj 204 195 else/f2s~ 1000;
+#X text 61 88 [f2s~] coverts floats to signals. The conversion is smoothened
+by a ramp time in ms.;
+#X connect 17 0 16 0;
+#X connect 18 0 32 0;
+#X connect 24 0 18 0;
+#X connect 25 0 32 1;
+#X connect 32 0 17 0;

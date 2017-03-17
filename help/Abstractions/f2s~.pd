@@ -1,0 +1,15 @@
+#N canvas 844 45 338 233 10;
+#X obj 86 105 pack f \$1;
+#X obj 137 44 inlet;
+#X obj 86 142 line~;
+#X obj 86 180 outlet~;
+#X obj 54 45 inlet;
+#X text 207 98 porres 2017 \, for else library, f 12;
+#X obj 54 77 route float;
+#X obj 137 77 max 0;
+#X connect 0 0 2 0;
+#X connect 1 0 7 0;
+#X connect 2 0 3 0;
+#X connect 4 0 6 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 1;

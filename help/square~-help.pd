@@ -19,39 +19,38 @@
 0;
 #X obj 83 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
 0;
-#X obj 3 269 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 274 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 365 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 370 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 401 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 406 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 122 374 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 112 379 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 123 277 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 113 282 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 472 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 477 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 165 278 float/signal -;
-#X text 262 279 frequency in hz;
-#X obj 122 299 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 155 283 float/signal -;
+#X text 252 284 frequency in hz;
+#X obj 112 304 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 164 320 float/signal -;
-#X obj 122 319 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X text 154 325 float/signal -;
+#X obj 112 324 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 200 340 signal -;
-#X text 200 374 signal -;
-#X text 184 410 1) float;
-#X text 243 410 - frequency in hertz;
-#X text 184 429 2) float;
-#X text 261 321 phase offset (modulation input);
-#X text 261 340 phase sync (ressets internal phase);
-#X text 261 374 impulse signal;
-#X obj 122 340 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X text 190 345 signal -;
+#X text 190 379 signal -;
+#X text 174 415 1) float;
+#X text 174 434 2) float;
+#X text 251 326 phase offset (modulation input);
+#X text 251 345 phase sync (ressets internal phase);
+#X text 251 379 impulse signal;
+#X obj 112 345 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 165 299 float/signal -;
-#X obj 213 139 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 155 304 float/signal -;
+#X obj 213 144 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 273 135 <= hz;
+#X text 273 140 <= hz;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
 -262144 0 1;
@@ -191,7 +190,7 @@ internal of the object \, but the offset still remains.;
 #X connect 13 0 1 1;
 #X connect 14 0 7 0;
 #X connect 14 0 7 1;
-#X restore 494 239 pd sync;
+#X restore 494 244 pd sync;
 #N canvas 512 142 406 338 pulse 0;
 #X obj 138 250 else/out~;
 #X obj 190 94 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
@@ -211,7 +210,7 @@ largest (the entire period is 1 except the last sample which is -1).
 #X connect 4 0 5 1;
 #X connect 5 0 0 0;
 #X connect 5 0 0 1;
-#X restore 452 188 pd pulse width;
+#X restore 452 193 pd pulse width;
 #N canvas 534 204 778 275 phase 0;
 #X text 401 23 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 - where 1 is also the start of another
@@ -241,21 +240,23 @@ feature is phase modulation.;
 #X connect 12 0 2 0;
 #X connect 12 0 2 1;
 #X connect 13 0 12 2;
-#X restore 445 214 pd phase offset;
-#X text 262 300 pulse width (from 0 to 1);
-#X obj 196 207 out~;
-#X text 243 447 - initial phase offset;
-#X text 184 447 3) float;
-#X text 243 429 - initial pulse width;
-#X obj 213 172 else/square~ 220;
+#X restore 445 219 pd phase offset;
+#X text 252 305 pulse width (from 0 to 1);
+#X obj 196 212 out~;
+#X text 174 452 3) float;
+#X obj 213 177 else/square~ 220;
 #X obj 3 3 cnv 15 301 42 empty empty square~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 60 87 [square~] is a square oscillator that accepts negative
-frequencies \, has inlets for pulse width \, phase modulation and phase
-sync.;
-#X connect 31 0 42 0;
-#X connect 42 0 38 0;
-#X connect 42 0 38 1;
+#X text 158 60 (non bandlimited);
+#X text 60 87 [square~] is a non bandlimited square oscillator that
+accepts negative frequencies \, has inlets for pulse width \, phase
+modulation and phase sync.;
+#X text 233 434 - initial pulse width (default 0.5);
+#X text 233 415 - frequency in hertz (default 0);
+#X text 233 452 - initial phase offset (default 0);
+#X connect 30 0 39 0;
+#X connect 39 0 37 0;
+#X connect 39 0 37 1;

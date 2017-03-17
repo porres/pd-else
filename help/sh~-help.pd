@@ -35,7 +35,7 @@
 #X obj 123 351 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 163 283 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.00384936 256;
+-228856 -1 -1 -0.535158 256;
 #N canvas 1046 306 123 217 snapshot~ 0;
 #X obj 29 107 snapshot~;
 #X obj 46 79 metro 100;
@@ -158,14 +158,13 @@ to zero.;
 #X obj 267 237 else/out~;
 #X text 150 327 signal - input signal;
 #X text 150 353 signal - gate signal;
-#X text 150 388 signal - sampoled and held signal;
 #X text 207 424 (none);
 #X obj 163 217 sh~, f 5;
 #X obj 267 183 else/imp~ 2;
 #N canvas 870 127 423 465 gate 0;
 #X obj 138 163 noise~;
 #X obj 138 349 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.884501 256;
+-228856 -1 -1 -0.885795 256;
 #N canvas 1046 306 123 217 snapshot~ 0;
 #X obj 29 107 snapshot~;
 #X obj 46 79 metro 100;
@@ -237,9 +236,10 @@ to work, f 63;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X connect 6 0 28 0;
+#X text 150 388 signal - sampled and held signal;
+#X connect 6 0 27 0;
 #X connect 20 0 19 0;
-#X connect 28 0 20 0;
-#X connect 29 0 23 0;
-#X connect 29 0 23 1;
-#X connect 29 0 28 1;
+#X connect 27 0 20 0;
+#X connect 28 0 23 0;
+#X connect 28 0 23 1;
+#X connect 28 0 27 1;
