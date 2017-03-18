@@ -39,7 +39,7 @@
 #X obj 203 40 cnv 4 4 4 empty empty crossings 0 28 2 18 -233017 -1
 0;
 #X obj 129 263 out~;
-#X obj 128 153 osc~ 1;
+#X obj 129 155 osc~ 1;
 #X obj 129 202 else/zerocross~;
 #X obj 324 154 osc~ 1;
 #X obj 324 202 else/zerocross~;
@@ -67,6 +67,28 @@ outlet) and both (right outlet).;
 ;
 #X text 135 347 signal;
 #X text 177 347 - signal to detect zero crossings;
+#N canvas 281 159 450 300 estimating 1;
+#X obj 163 186 /~;
+#X obj 102 121 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 102 146 samplerate~;
+#X obj 163 224 else/s2f~;
+#X obj 178 105 else/zerocross~;
+#X floatatom 163 273 0 0 0 0 - - -;
+#X obj 244 192 else/s2f~;
+#X floatatom 244 241 0 0 0 0 - - -;
+#X obj 178 72 osc~ 1766;
+#X obj 178 146 else/elapsed~;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 5 0;
+#X connect 4 0 9 0;
+#X connect 6 0 7 0;
+#X connect 8 0 4 0;
+#X connect 9 0 0 1;
+#X connect 9 0 6 0;
+#X restore 426 159 pd estimating \; frequency;
 #X connect 21 0 22 0;
 #X connect 22 0 20 0;
 #X connect 22 1 20 1;
