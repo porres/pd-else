@@ -1,18 +1,18 @@
-#N canvas 412 55 561 411 10;
-#X obj 4 266 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 688 161 560 431 10;
+#X obj 4 256 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 303 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 323 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 338 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 358 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 106 312 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 106 332 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 107 276 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 107 266 cnv 17 3 52 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 371 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 391 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 141 276 bang;
-#X obj 220 235 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 141 266 bang;
+#X obj 210 227 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 44.1 256;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -33,49 +33,55 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 220 141 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 210 143 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 135 312 float;
+#X text 135 332 float;
 #X obj 119 40 cnv 4 4 4 empty empty rate 0 28 2 18 -233017 -1 0;
-#X text 137 347 (none);
-#X text 192 234 Khz;
 #X obj 3 3 cnv 15 301 42 empty empty sr~ 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 171 276 - get sample rate in Khz;
-#X text 171 312 - sample rate frequency in Khz;
 #N canvas 473 197 446 263 example 0;
 #X obj 97 133 /;
-#X obj 134 132 else/sr_khz~;
 #X obj 97 100 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 18 256;
 #X obj 97 169 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.408163 256;
 #X text 157 99 samples;
 #X text 160 166 ms;
-#X obj 295 133 else/sr_khz~;
 #X obj 258 101 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 18 256;
 #X obj 258 170 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 793.8 256;
 #X obj 258 134 *;
 #X text 318 100 ms;
 #X text 321 167 samples;
 #X text 56 34 convert between samples and ms.;
-#X connect 0 0 3 0;
-#X connect 1 0 0 1;
-#X connect 2 0 0 0;
-#X connect 6 0 9 1;
-#X connect 7 0 9 0;
-#X connect 9 0 8 0;
-#X restore 460 225 pd example;
-#X msg 298 169 hz;
-#X obj 220 204 else/sr~ khz;
-#X msg 254 160 khz;
-#X text 73 90 [sr~] reports the sample rate frequency in kilohertz
-when loading the patch or when receiving a bang.;
-#X connect 18 0 29 0;
-#X connect 28 0 29 0;
-#X connect 29 0 7 0;
-#X connect 30 0 29 0;
+#X obj 134 132 else/sr~ khz;
+#X obj 295 133 else/sr~ khz;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 5 0 7 0;
+#X connect 7 0 6 0;
+#X connect 11 0 0 1;
+#X connect 12 0 7 1;
+#X restore 471 228 pd example;
+#X msg 257 167 hz, f 2;
+#X obj 210 196 else/sr~ khz;
+#X msg 244 142 khz;
+#X text 171 332 - sample rate frequency in Hz or Khz;
+#X text 171 286 - get sample rate frequency in Hz;
+#X text 153 286 hz;
+#X text 171 266 - get last sample rate frequency (in Hz or Khz);
+#X text 147 304 khz;
+#X text 171 304 - get sample rate frequency in Khz;
+#X text 134 227 sample rate;
+#X text 110 367 1) symbol - 'hz' (default) or 'khz' for frequency value
+;
+#X text 73 90 [sr~] reports the sample rate frequency when loading
+the patch or when receiving a bang. It reports it either in hz or khz.
+;
+#X connect 18 0 25 0;
+#X connect 24 0 25 0;
+#X connect 25 0 7 0;
+#X connect 26 0 25 0;

@@ -6,7 +6,8 @@
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 25 40 cnv 4 4 4 empty empty Square 0 28 2 18 -233017 -1 0;
+#X obj 25 40 cnv 4 4 4 empty empty Variable 0 28 2 18 -233017 -1 0
+;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -17,40 +18,42 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 83 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
+#X obj 163 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
 0;
-#X obj 3 269 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 273 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 365 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 369 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 401 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 405 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 122 374 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 122 378 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 123 277 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 123 281 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 472 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 476 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 165 278 float/signal -;
-#X text 262 279 frequency in hz;
-#X obj 122 299 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 165 282 float/signal -;
+#X text 262 283 frequency in hz;
+#X obj 122 303 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 164 320 float/signal -;
-#X obj 122 319 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X text 164 324 float/signal -;
+#X obj 122 323 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 200 340 signal -;
-#X text 200 374 signal -;
-#X text 261 321 phase offset (modulation input);
-#X text 261 340 phase sync (ressets internal phase);
-#X obj 122 340 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X text 200 344 signal -;
+#X text 200 378 signal -;
+#X text 184 414 1) float;
+#X text 184 433 2) float;
+#X text 261 325 phase offset (modulation input);
+#X text 261 344 phase sync (ressets internal phase);
+#X obj 122 344 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 165 299 float/signal -;
-#X obj 213 136 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 165 303 float/signal -;
+#X obj 218 144 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 273 132 <= hz;
+#X text 278 140 <= hz;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -119,7 +122,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -152,7 +155,7 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#N canvas 354 88 811 327 sync 1;
+#N canvas 354 88 811 327 sync 0;
 #X obj 180 118 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 83 245 else/out~;
@@ -171,9 +174,9 @@ internal of the object \, but the offset still remains.;
 #X obj 590 88 else/imp~ 110;
 #X text 420 24 An impulse oscillator as the input forces "hard sync".
 ;
-#X obj 99 203 else/square~ 1;
-#X obj 497 122 else/square~ 200;
-#X text 15 15 The fourth inlet expects an impulse signal for syncing.
+#X obj 99 203 else/vartri~ 1;
+#X obj 497 122 else/vartri~ 200;
+#X text 15 14 The fourth inlet expects an impulse signal for syncing.
 The impulse values need to be > 0 and <= 1 (otherwise ignored) so the
 internal phase jumps imediately to the given impulse value. Because
 phase is cyclical \, the value of 1 represents the "phase 0" of the
@@ -188,30 +191,7 @@ below.;
 #X connect 13 0 6 0;
 #X connect 13 0 6 1;
 #X restore 494 239 pd sync;
-#N canvas 512 142 406 338 pulse 0;
-#X obj 138 250 else/out~;
-#X obj 190 94 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 187 119 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X msg 187 142 \$1 10;
-#X obj 187 164 line~;
-#X obj 156 199 else/square~ 1 0;
-#X text 23 22 A pulse width of 0 has the smallest size (a single sample
-equal to 1 while the rest is -1) \, while a pulse widht of 1 has the
-largest (the entire period is 1 except the last sample which is -1).
-;
-#X obj 113 145 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X connect 1 0 2 0;
-#X connect 2 0 3 0;
-#X connect 3 0 4 0;
-#X connect 4 0 5 1;
-#X connect 5 0 0 0;
-#X connect 5 0 0 1;
-#X connect 7 0 5 0;
-#X restore 452 188 pd pulse width;
-#N canvas 534 204 778 275 phase 0;
+#N canvas 430 175 777 299 phase 0;
 #X text 401 23 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 - where 1 is also the start of another
 cycle.;
@@ -223,42 +203,63 @@ cycle.;
 This is also settable with the third inlet. In such a way \, you have
 two objects with the same frequency falling out and back in sync. Another
 feature is phase modulation.;
-#X text 364 113 1;
-#X obj 102 203 else/out~;
-#X obj 226 113 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 223 138 0 0 0 0 - - -;
-#X text 204 113 0;
-#X obj 538 138 else/square~ 200;
+#X obj 538 138 else/vartri~ 200;
 #X obj 600 110 osc~ 50.01;
-#X obj 62 137 else/square~ 1 0 0;
-#X obj 145 168 else/square~ 1 0 0.5;
-#X connect 7 0 8 0;
-#X connect 8 0 13 2;
-#X connect 10 0 2 0;
-#X connect 10 0 2 1;
-#X connect 11 0 10 2;
-#X connect 12 0 6 0;
-#X connect 13 0 6 1;
+#X text 376 113 1;
+#X obj 112 231 else/out~;
+#X obj 242 113 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X floatatom 239 138 0 0 0 0 - - -;
+#X text 220 113 0;
+#X obj 62 137 else/vartri~ 220 0.5 0;
+#X obj 145 168 else/vartri~ 220 0.5 0.5;
+#X obj 130 195 +~;
+#X connect 5 0 2 0;
+#X connect 5 0 2 1;
+#X connect 6 0 5 2;
+#X connect 9 0 10 0;
+#X connect 10 0 13 2;
+#X connect 12 0 14 0;
+#X connect 13 0 14 1;
+#X connect 14 0 8 0;
+#X connect 14 0 8 1;
 #X restore 445 214 pd phase offset;
-#X text 262 300 pulse width (from 0 to 1);
-#X obj 196 204 out~;
-#X obj 213 169 else/square~ 220;
-#X obj 3 3 cnv 15 301 42 empty empty square~ 20 20 2 37 -233017 -1
+#X obj 201 212 out~;
+#X text 184 451 3) float;
+#X obj 3 3 cnv 15 301 42 empty empty vartri~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 60 87 [square~] is a square oscillator that accepts negative
-frequencies \, has inlets for pulse width \, phase modulation and phase
-sync.;
-#X text 184 413 1) float;
-#X text 184 432 2) float;
-#X text 184 450 3) float;
-#X text 243 450 - initial phase offset (default 0);
-#X text 243 432 - initial width (default 0.5);
-#X text 243 413 - frequency in hertz (default 0);
-#X text 261 374 square wave signal;
-#X connect 27 0 35 0;
-#X connect 35 0 34 0;
-#X connect 35 0 34 1;
+#X obj 218 177 else/vartri~ 220;
+#X text 262 304 width (from 0 to 1);
+#N canvas 512 142 406 338 width 0;
+#X obj 127 239 else/out~;
+#X obj 183 83 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 180 108 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X msg 180 131 \$1 10;
+#X obj 180 153 line~;
+#X obj 145 188 else/vartri~ 220 0;
+#X text 23 22 A width of 0 or 1 makes it a sawtooth like waveform \,
+while beteen 0 and 1 makes it a variable triangle waveform.;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 1;
+#X connect 5 0 0 0;
+#X connect 5 0 0 1;
+#X restore 486 188 pd width;
+#X text 243 451 - initial phase offset (default 0);
+#X text 243 433 - initial width (default 0.5);
+#X text 243 414 - frequency in hertz (default 0);
+#X obj 98 40 cnv 4 4 4 empty empty triangle 0 28 2 18 -233017 -1 0
+;
+#X text 261 378 triangle wave signal;
+#X text 60 87 [vartri~] is a variable triangle waveform oscillator
+that accepts negative frequencies \, has inlets for width \, phase
+modulation and phase sync.;
+#X connect 29 0 38 0;
+#X connect 38 0 34 0;
+#X connect 38 0 34 1;

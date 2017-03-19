@@ -33,12 +33,14 @@ pulse~.class.sources := classes/pulse~.c
 rad2hz~.class.sources := classes/rad2hz~.c
 ratio2cents~.class.sources := classes/ratio2cents~.c
 rescale~.class.sources := classes/rescale~.c
+sawtooth~.class.sources := classes/sawtooth~.c
 sh~.class.sources := classes/sh~.c
 sin~.class.sources := classes/sin~.c
 square~.class.sources := classes/square~.c
 toggleff~.class.sources := classes/toggleff~.c
 togedge~.class.sources := classes/togedge~.c
 trigcount~.class.sources := classes/trigcount~.c
+vartri~.class.sources := classes/vartri~.c
 zerocross~.class.sources := classes/zerocross~.c
 
 #########################################################################
