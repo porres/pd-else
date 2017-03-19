@@ -181,7 +181,7 @@ offset change to "0" will push back half the cycle.;
 #X connect 21 0 1 1;
 #X restore 494 242 pd sync;
 #X obj 209 141 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 9 256;
+-228856 -1 -1 0 256;
 #X obj 195 208 else/out~;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -233,7 +233,6 @@ in sync. Another feature is phase modulation.;
 #X text 243 419 - initial phase offset;
 #X text 261 310 phase offset (modulation input);
 #X text 261 329 phase sync (ressets internal phase);
-#X obj 209 169 else/imp~ 1, f 12;
 #X obj 23 40 cnv 4 4 4 empty empty Impulse 0 28 2 18 -233017 -1 0;
 #X obj 90 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
 0;
@@ -249,7 +248,7 @@ negative frequencies \, has inlets for phase modulation and phase sync.
 #X obj 95 133 else/sh~;
 #X obj 95 88 noise~;
 #X obj 95 216 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.953662 256;
+-228856 -1 -1 0.401708 256;
 #N canvas 1046 306 123 217 snapshot~ 0;
 #X obj 29 107 snapshot~;
 #X obj 46 79 metro 100;
@@ -262,7 +261,7 @@ negative frequencies \, has inlets for phase modulation and phase sync.
 #X connect 4 0 0 0;
 #X restore 95 186 pd snapshot~;
 #X obj 213 113 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -1 256;
+-228856 -1 -1 0 256;
 #X obj 216 88 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X text 241 87 frequency;
@@ -285,6 +284,7 @@ which also carries an extra outlet for phase output.;
 #X connect 8 0 9 1;
 #X restore 476 192 pd example;
 #X text 261 363 impulse signal;
-#X connect 18 0 32 0;
-#X connect 32 0 19 0;
-#X connect 32 0 19 1;
+#X obj 209 169 else/imp~, f 12;
+#X connect 18 0 40 0;
+#X connect 40 0 19 0;
+#X connect 40 0 19 1;

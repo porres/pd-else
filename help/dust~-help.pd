@@ -1,7 +1,7 @@
 #N canvas 634 27 560 453 10;
-#X obj 223 132 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 3100 1;
-#X obj 220 230 else/out~;
+#X obj 221 138 hsl 128 15 1 5000 1 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 218 236 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty dust~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -23,31 +23,31 @@
 0;
 #X obj 92 40 cnv 4 4 4 empty empty impulses 0 28 2 18 -233017 -1 0
 ;
-#X obj 3 409 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 413 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 300 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 304 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 336 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 340 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 373 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 377 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 106 345 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 106 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 105 309 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 105 313 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 173 345 signal;
-#X text 156 385 1) float;
-#X obj 220 161 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 173 349 signal;
+#X text 161 389 1) float;
+#X obj 218 167 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 1 256;
-#X text 136 309 float/signal;
-#X obj 220 187 else/dust~ 10;
-#X text 304 162 density;
-#X text 229 308 - density;
-#X text 222 346 - random impulses;
-#X text 223 385 - initial density (default 0);
-#X text 84 91 [dust~] sends impulses randomly according to a density
-parameter.;
+#X text 136 313 float/signal;
+#X text 302 168 density;
+#X text 222 350 - random impulses;
+#X text 92 89 [dust~] sends random impulse values at random times according
+to a density parameter.;
+#X text 222 312 - density (rate) of random impulses;
+#X text 222 388 - density (default 0);
+#X obj 218 193 else/dust~ 1;
 #X connect 0 0 20 0;
-#X connect 20 0 22 0;
-#X connect 22 0 1 0;
-#X connect 22 0 1 1;
+#X connect 20 0 27 0;
+#X connect 27 0 1 0;
+#X connect 27 0 1 1;

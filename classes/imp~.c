@@ -45,7 +45,7 @@ static t_int *imp_perform(t_int *w)
                 else
                     {
                         phase = phase + phase_dev;
-                        if (phase <= 0) phase = phase + 1.; // wrap deviated phase
+                        if (phase_dev != 0 && phase <= 0) phase = phase + 1.; // wrap deviated phase
                     }
                 *out1++ = phase >= 1.;
                 if (phase >= 1.) phase = phase - 1; // wrapped phase
@@ -90,8 +90,7 @@ static void *imp_new(t_floatarg f1, t_floatarg f2)
     t_float init_freq = f1;
     t_float init_phase = f2;
     init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
-    if (init_phase == 0 && init_freq > 0)
-        x->x_phase = 1.;
+    if (init_phase == 0 && init_freq >= 0) x->x_phase = 1.;
     x->x_last_phase_offset = 0;
     x->x_freq = init_freq;
     x->x_sr = sys_getsr(); // sample rate
