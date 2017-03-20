@@ -13,3 +13,59 @@ The current library state is at alpha experimental releases, where drastic chang
 latest release: 1.0-alpha2, from march 20th 2017
 
 Porres; 2017
+
+----------------------
+
+Objects:
+
+OSCILLATORS (7):
+- [imp~]
+- [imp2~]
+- [par~]
+- [pulse~]
+- [sawtooth~]
+- [square~]
+- [vartri~]
+
+CONVERSION (12):
+- [cents2rato]
+- [cents2ratio~]
+- [f2s~]
+- [hz2rad]
+- [hz2rad~]
+- [rad2hz]
+- [rad2hz~]
+- [ratio2cents]
+- [ratio2cents~]
+- [rescale]
+- [rescale~]
+- [s2f~]
+
+SIGNAL ANALYSIS (7):
+- [changed~]
+- [elapsed~]
+- [lastvalue~]
+- [median~]
+- [togedge~]
+- [trigcount~]
+- [zerocross~]
+
+TRIGGERS (5):
+- [dust~]
+- [pimp~]
+- [sh~]
+- [toggleff~]
+- [trigate~]
+
+CONSTANT VALUES (3):
+- [nyquist]
+- [pi]
+- [sr~]
+
+MISCELANEOUS (6):
+- [accum~]
+- [downsample~]
+- [lastvalue]
+- [lfnoise~]
+- [out~]
+- [sin~]
