@@ -5,9 +5,9 @@
 ;
 #X obj 3 390 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 122 363 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 363 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 123 286 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 130 286 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 3 441 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
@@ -115,25 +115,25 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X text 165 287 float/signal -;
-#X text 262 288 frequency in hz;
-#X obj 122 308 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 155 287 float/signal -;
+#X text 252 288 frequency in hz;
+#X obj 129 308 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 164 309 float/signal -;
-#X obj 122 328 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X text 154 309 float/signal -;
+#X obj 129 328 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 200 329 signal -;
-#X text 200 363 signal -;
-#X text 184 399 1) float;
-#X text 243 399 - frequency in hertz;
-#X text 184 419 2) float;
+#X text 190 329 signal -;
+#X text 190 363 signal -;
+#X text 174 399 1) float;
+#X text 233 399 - frequency in hertz;
+#X text 174 419 2) float;
 #N canvas 504 64 800 509 sync 0;
 #X obj 180 118 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 101 245 else/out~;
 #X text 46 141 impulse value of 1 =>;
 #X text 194 163 <== immediately jumps to the start of the cycle when
-receiving an impulse., f 27;
+receiving an impulse.;
 #X text 15 14 The third inlet expects an impulse signal for syncing.
 The impulse values need to be > 0 and <= 1 (otherwise ignored) so the
 internal phase jumps imediately to the given impulse value. Because
@@ -186,7 +186,7 @@ offset change to "0" will push back half the cycle.;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 100 100;
+#X coords 0 -1 1 1 252 42 1;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -230,15 +230,15 @@ in sync. Another feature is phase modulation.;
 #X connect 13 0 4 0;
 #X connect 13 0 4 1;
 #X restore 445 217 pd phase offset;
-#X text 243 419 - initial phase offset;
-#X text 261 310 phase offset (modulation input);
-#X text 261 329 phase sync (ressets internal phase);
+#X text 233 419 - initial phase offset;
+#X text 251 310 phase offset (modulation input);
+#X text 251 329 phase sync (ressets internal phase);
 #X obj 23 40 cnv 4 4 4 empty empty Impulse 0 28 2 18 -233017 -1 0;
 #X obj 90 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
 0;
 #X obj 3 4 cnv 15 301 42 empty empty imp~ 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
+#X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X text 63 89 The [imp~] object is an impulse oscillator that accepts
 negative frequencies \, has inlets for phase modulation and phase sync.
@@ -248,7 +248,7 @@ negative frequencies \, has inlets for phase modulation and phase sync.
 #X obj 95 133 else/sh~;
 #X obj 95 88 noise~;
 #X obj 95 216 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.401708 256;
+-228856 -1 -1 -0.838501 256;
 #N canvas 1046 306 123 217 snapshot~ 0;
 #X obj 29 107 snapshot~;
 #X obj 46 79 metro 100;
@@ -283,8 +283,8 @@ which also carries an extra outlet for phase output.;
 #X connect 8 0 9 0;
 #X connect 8 0 9 1;
 #X restore 476 192 pd example;
-#X text 261 363 impulse signal;
-#X obj 209 169 else/imp~, f 12;
+#X text 251 363 impulse signal;
+#X obj 209 169 else/imp~ 1;
 #X connect 18 0 40 0;
 #X connect 40 0 19 0;
 #X connect 40 0 19 1;

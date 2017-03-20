@@ -16,10 +16,10 @@
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
+#X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 100 100;
+#X coords 0 -1 1 1 252 42 1;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -35,10 +35,10 @@
 #X obj 123 351 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 163 283 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.25552 256;
+-228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -107,7 +107,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -149,13 +149,12 @@ to zero.;
 #X text 150 353 signal - gate signal;
 #X text 150 388 signal - sampoled and held signal;
 #X text 207 424 (none);
-#X obj 163 217 sh~, f 5;
+#X obj 163 217 sh~;
 #X obj 267 183 else/imp~ 2;
 #N canvas 870 127 423 465 gate 0;
 #X obj 138 163 noise~;
 #X obj 138 349 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.336588 256;
-#X obj 138 203 sh~, f 5;
+-228856 -1 -1 0 256;
 #X obj 207 165 osc~ 0.5;
 #X obj 155 242 else/out~;
 #X text 32 18 In the parent patch we have an example with an impulse
@@ -166,18 +165,18 @@ Now \, when values are greater than zero \, the gate is open and the
 signal passes through \, being held only when the gate value is less
 or equal to zero.;
 #X text 111 398 This object is analogous to the "Gate" object in SuperCollider!
-, f 32;
+;
 #X obj 138 319 else/s2f~ 100;
-#X connect 0 0 2 0;
-#X connect 2 0 4 0;
-#X connect 2 0 4 1;
-#X connect 2 0 8 0;
-#X connect 3 0 2 1;
-#X connect 8 0 1 0;
+#X obj 138 203 else/sh~;
+#X connect 0 0 8 0;
+#X connect 2 0 8 1;
+#X connect 7 0 1 0;
+#X connect 8 0 3 0;
+#X connect 8 0 3 1;
+#X connect 8 0 7 0;
 #X restore 492 251 pd gate;
-#N canvas 391 119 819 356 downsampling 0;
+#N canvas 391 119 819 356 downsampling 1;
 #X obj 121 129 noise~;
-#X obj 121 169 sh~, f 5;
 #X obj 195 136 else/imp~ 100;
 #X obj 103 215 else/out~;
 #X obj 198 87 hsl 128 15 100 44100 1 0 empty empty empty -2 -8 0 10
@@ -198,19 +197,20 @@ and hold" fashion) and raise it up to the sample rate.;
 because of the way they were designed. Change the slider up to the
 sample rate and check it out.;
 #X text 194 311 The sample rate must be 44100 in order for this example
-to work, f 63;
-#X connect 0 0 1 0;
-#X connect 1 0 3 0;
-#X connect 1 0 3 1;
-#X connect 2 0 1 1;
-#X connect 4 0 5 0;
-#X connect 5 0 2 0;
-#X connect 7 0 11 0;
-#X connect 9 0 10 0;
-#X connect 10 0 12 0;
-#X connect 11 0 8 0;
-#X connect 11 0 8 1;
-#X connect 12 0 11 1;
+to work;
+#X obj 121 169 else/sh~;
+#X connect 0 0 14 0;
+#X connect 1 0 14 1;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X connect 6 0 10 0;
+#X connect 8 0 9 0;
+#X connect 9 0 11 0;
+#X connect 10 0 7 0;
+#X connect 10 0 7 1;
+#X connect 11 0 10 1;
+#X connect 14 0 2 0;
+#X connect 14 0 2 1;
 #X restore 443 279 pd downsampling;
 #X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;

@@ -5,22 +5,22 @@
 ;
 #X obj 4 419 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 86 393 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 126 393 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 87 328 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 127 328 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 4 452 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 167 345 set;
+#X text 184 345 set;
 #X obj 3 3 cnv 15 301 42 empty empty accum~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
+#X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 100 100;
+#X coords 0 -1 1 1 252 42 1;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -49,28 +49,17 @@ inlet.;
 #X obj 319 204 else/trigate~;
 #X obj 226 232 else/accum~ 1000;
 #X obj 226 290 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1017 256;
-#N canvas 1046 306 123 217 snapshot~ 0;
-#X obj 29 107 snapshot~;
-#X obj 46 79 metro 100;
-#X obj 46 53 loadbang;
-#X obj 29 146 outlet;
-#X obj 29 25 inlet~;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
-#X connect 2 0 1 0;
-#X connect 4 0 0 0;
-#X restore 226 261 pd snapshot~;
-#X text 149 328 signal;
-#X text 191 328 - value to accumulate;
-#X text 191 345 - sets the starting value;
-#X text 149 393 signal;
-#X text 191 393 - the accumulated value;
-#X text 137 428 1) float - starting value (default 0);
-#X obj 86 363 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+-228856 -1 -1 1018 256;
+#X text 166 328 signal;
+#X text 208 328 - value to accumulate;
+#X text 208 345 - sets the starting value;
+#X text 166 393 signal;
+#X text 208 393 - the accumulated value;
+#X text 154 428 1) float - starting value (default 0);
+#X obj 126 363 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 149 364 signal;
-#X text 191 364 - impulse ressets to starting value;
+#X text 166 364 signal;
+#X text 208 364 - impulse ressets to starting value;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -175,9 +164,10 @@ inlet.;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
+#X obj 226 261 else/s2f~;
 #X connect 19 0 23 0;
 #X connect 20 0 24 0;
 #X connect 21 0 24 0;
 #X connect 23 0 24 1;
-#X connect 24 0 26 0;
-#X connect 26 0 25 0;
+#X connect 24 0 36 0;
+#X connect 36 0 25 0;

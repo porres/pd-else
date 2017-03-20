@@ -2,7 +2,7 @@
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 100 100;
+#X coords 0 -1 1 1 252 42 1;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -158,8 +158,6 @@
 -1 -1;
 #X obj 95 245 else/out~;
 #X text 46 141 impulse value of 1 =>;
-#X text 194 163 <== immediately jumps to the start of the cycle when
-receiving an impulse., f 27;
 #X text 688 88 Master;
 #X text 601 123 Slave;
 #X obj 485 177 else/out~;
@@ -180,21 +178,23 @@ cycle \, where the impulse occurs. Send it impulses and check the result
 below.;
 #X obj 111 203 else/imp2~ 1;
 #X obj 509 122 else/imp2~ 200;
-#X connect 0 0 9 0;
-#X connect 7 0 10 0;
+#X text 193 163 <== immediately jumps to the start \; of the cycle
+when receiving an impulse.;
+#X connect 0 0 8 0;
+#X connect 6 0 9 0;
+#X connect 8 0 12 3;
 #X connect 9 0 13 3;
-#X connect 10 0 14 3;
-#X connect 13 0 1 0;
-#X connect 13 0 1 1;
-#X connect 14 0 6 0;
-#X connect 14 0 6 1;
+#X connect 12 0 1 0;
+#X connect 12 0 1 1;
+#X connect 13 0 5 0;
+#X connect 13 0 5 1;
 #X restore 494 239 pd sync;
 #N canvas 512 142 406 338 pulse 0;
 #X obj 138 250 else/out~;
 #X obj 186 94 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 10500 1;
+-1 -1 0 1;
 #X obj 183 119 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.826772 256;
+-228856 -1 -1 0 256;
 #X msg 183 142 \$1 10;
 #X obj 183 164 line~;
 #X obj 113 145 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -243,11 +243,10 @@ feature is phase modulation.;
 #X connect 13 0 2 1;
 #X restore 445 214 pd phase offset;
 #X text 262 305 pulse width (from 0 to 1);
-#X obj 195 210 out~;
 #X obj 3 3 cnv 15 301 42 empty empty imp2~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
+#X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X text 184 418 1) float;
 #X text 184 437 2) float;
@@ -262,6 +261,7 @@ feature is phase modulation.;
 negative frequencies \, has inlets for pulse width \, phase modulation
 and phase sync.;
 #X obj 212 175 else/imp2~ 220;
-#X connect 27 0 46 0;
-#X connect 46 0 34 0;
-#X connect 46 0 34 1;
+#X obj 195 209 else/out~;
+#X connect 27 0 45 0;
+#X connect 45 0 46 0;
+#X connect 45 0 46 1;

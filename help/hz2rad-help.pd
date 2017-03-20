@@ -16,17 +16,17 @@
 #X text 155 346 bang;
 #X text 161 364 set;
 #X text 119 327 float/list;
-#X obj 202 207 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 202 205 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 3 4 cnv 15 301 42 empty empty hz2rad 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
+#X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 100 100;
+#X coords 0 -1 1 1 252 42 1;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -47,7 +47,7 @@
 #X text 71 88 Use [hz2rad] to convert a frequency in Hertz to "Radians
 per Sample" - which depends on the patch's sample rate (sr). The conversion
 formula is \; rad = hz * 2*pi / sr;
-#X text 196 327 - hertz value(s), f 58;
+#X text 196 327 - hertz value(s);
 #X text 196 397 - converted radians per sample value(s);
 #X obj 227 282 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -76,16 +76,17 @@ formula is \; rad = hz * 2*pi / sr;
 #X restore 474 280 pd lists;
 #X text 119 397 float/list;
 #X msg 247 208 set 44100;
-#X text 317 201 sets next value to be converted, f 16;
-#X text 146 206 convert;
+#X text 317 201 sets next value to be converted;
+#X text 146 199 convert;
 #X text 196 346 - convert or output the last converted value (only
-float), f 58;
+float);
 #X text 196 364 - sets next value to be converted via bang (only float)
-, f 58;
+;
 #X obj 227 248 else/hz2rad 22050;
 #X text 196 435 - initial cents value (default 0);
 #X text 131 434 1) float;
-#X text 143 223 (or send last output), f 12;
+#X text 142 214 (or send;
+#X text 134 229 last output);
 #X connect 6 0 27 0;
 #X connect 10 0 37 0;
 #X connect 27 0 37 0;

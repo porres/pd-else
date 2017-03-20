@@ -12,7 +12,7 @@
 #X obj 4 518 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 94 165 hsl 180 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 17900 1;
+-1 -1 0 1;
 #X obj 200 192 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 172 352 bang;
@@ -36,20 +36,20 @@
 #X connect 2 2 5 0;
 #X connect 6 0 2 0;
 #X connect 7 0 6 0;
-#X restore 485 285 pd lists;
+#X restore 485 296 pd lists;
 #X obj 91 193 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 127 256;
+-228856 -1 -1 0 256;
 #X obj 200 288 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+-228856 -1 -1 0 256;
 #X obj 2 3 cnv 15 301 42 empty empty rescale 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
+#X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 100 100;
+#X coords 0 -1 1 1 252 42 1;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -90,7 +90,7 @@
 #X obj 170 288 hsl 128 15 -127 256 0 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 167 316 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -127 256;
+-228856 -1 -1 0 256;
 #X obj 167 378 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 43 18 The scaling can be inverted by reversing the min/max
@@ -109,16 +109,16 @@ will clip the values to the output range!;
 #X connect 10 0 4 0;
 #X connect 11 0 2 0;
 #X connect 12 0 8 0;
-#X restore 468 258 pd advanced;
+#X restore 468 274 pd advanced;
 #N canvas 846 65 417 527 exponential 0;
 #X floatatom 105 154 0 1 1.2 0 - - -;
 #X obj 108 130 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 7400 1;
+-1 -1 0 1;
 #X obj 94 361 cnv 15 198 138 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-exponential 128 float 0;
-#X coords 0 1 127 0 200 140 1 0 0;
+#X coords 0 1 127 0 200 140 1;
 #X restore 93 360 graph;
 #X text 116 130 exponential factor;
 #X text 300 490 0;
@@ -145,7 +145,7 @@ will clip the values to the output range!;
 #X connect 6 0 7 0;
 #X restore 105 210 pd loop;
 #X obj 105 237 trigger float float;
-#X obj 105 178 trigger bang float, f 25;
+#X obj 105 178 trigger bang float;
 #X text 37 24 The third argument or the "factor" message specify the
 exponential factor (must be greater than 0) where 1 gives you linear
 scaling (no exponential). It's like raising to the power of the given
@@ -160,7 +160,7 @@ exponential \, try it below (with values from 0.1 to 10).;
 #X connect 11 0 9 0;
 #X connect 11 1 7 0;
 #X connect 13 0 8 0;
-#X restore 450 230 pd exponential;
+#X restore 450 250 pd exponential;
 #X text 112 389 factor <float>;
 #X text 217 389 - sets exponential value;
 #X obj 200 256 else/rescale -1 1;
@@ -169,7 +169,7 @@ exponential \, try it below (with values from 0.1 to 10).;
 values from 0 to 127 (including floats) into another range of values
 (0-1 by default). A third argument sets an exponential factor (1 by
 default - linear).;
-#X text 280 216 sets value to be scaled (accepts floats), f 23;
+#X text 280 216 sets value to be scaled (accepts floats);
 #X connect 6 0 12 0;
 #X connect 7 0 40 0;
 #X connect 12 0 40 0;

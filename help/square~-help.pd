@@ -2,7 +2,7 @@
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 100 100;
+#X coords 0 -1 1 1 252 42 1;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -49,8 +49,8 @@
 -228856 -1 -1 0 256;
 #X text 273 132 <= hz;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -119,7 +119,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -152,13 +152,11 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#N canvas 354 88 811 327 sync 1;
+#N canvas 354 88 811 327 sync 0;
 #X obj 180 118 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 83 245 else/out~;
 #X text 46 141 impulse value of 1 =>;
-#X text 194 163 <== immediately jumps to the start of the cycle when
-receiving an impulse., f 27;
 #X text 688 88 Master;
 #X text 601 123 Slave;
 #X obj 473 177 else/out~;
@@ -179,14 +177,16 @@ internal phase jumps imediately to the given impulse value. Because
 phase is cyclical \, the value of 1 represents the "phase 0" of the
 cycle \, where the impulse occurs. Send it impulses and check the result
 below.;
-#X connect 0 0 9 0;
-#X connect 7 0 10 0;
+#X text 194 163 <== immediately jumps to the start \; of the cycle
+when receiving an impulse.;
+#X connect 0 0 8 0;
+#X connect 6 0 9 0;
+#X connect 8 0 11 3;
 #X connect 9 0 12 3;
-#X connect 10 0 13 3;
-#X connect 12 0 1 0;
-#X connect 12 0 1 1;
-#X connect 13 0 6 0;
-#X connect 13 0 6 1;
+#X connect 11 0 1 0;
+#X connect 11 0 1 1;
+#X connect 12 0 5 0;
+#X connect 12 0 5 1;
 #X restore 494 239 pd sync;
 #N canvas 512 142 406 338 pulse 0;
 #X obj 138 250 else/out~;
@@ -242,12 +242,11 @@ feature is phase modulation.;
 #X connect 13 0 6 1;
 #X restore 445 214 pd phase offset;
 #X text 262 300 pulse width (from 0 to 1);
-#X obj 196 204 out~;
 #X obj 213 169 else/square~ 220;
 #X obj 3 3 cnv 15 301 42 empty empty square~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
+#X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X text 60 87 [square~] is a square oscillator that accepts negative
 frequencies \, has inlets for pulse width \, phase modulation and phase
@@ -259,6 +258,7 @@ sync.;
 #X text 243 432 - initial width (default 0.5);
 #X text 243 413 - frequency in hertz (default 0);
 #X text 261 374 square wave signal;
-#X connect 27 0 35 0;
-#X connect 35 0 34 0;
-#X connect 35 0 34 1;
+#X obj 198 205 else/out~;
+#X connect 27 0 34 0;
+#X connect 34 0 45 0;
+#X connect 34 0 45 1;

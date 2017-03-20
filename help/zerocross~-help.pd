@@ -14,10 +14,10 @@
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
+#X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 100 100;
+#X coords 0 -1 1 1 252 42 1;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -38,15 +38,11 @@
 #X obj 163 40 cnv 4 4 4 empty empty zero 0 28 2 18 -233017 -1 0;
 #X obj 203 40 cnv 4 4 4 empty empty crossings 0 28 2 18 -233017 -1
 0;
-#X obj 110 252 out~;
 #X obj 110 152 osc~ 1;
 #X obj 110 191 else/zerocross~;
 #X obj 275 152 osc~ 1;
 #X obj 275 200 else/zerocross~;
-#X obj 319 253 out~;
 #X text 374 227 both;
-#X text 29 215 non-positive to positive, f 12;
-#X text 162 213 positive to non-positive, f 12;
 #X text 137 445 (none);
 #X text 61 86 [zerocross~] sens impulses when crossing from non-positive
 to positive (left outlet) \, from positive to non-positive (middle
@@ -67,7 +63,7 @@ outlet) and both (right outlet).;
 ;
 #X text 135 330 signal;
 #X text 177 330 - signal to detect zero crossings;
-#N canvas 1067 127 363 334 estimating 1;
+#N canvas 1067 127 363 334 estimating 0;
 #X obj 96 195 /~;
 #X obj 96 233 else/s2f~;
 #X obj 177 117 else/zerocross~;
@@ -75,9 +71,9 @@ outlet) and both (right outlet).;
 #X obj 177 155 else/elapsed~;
 #X obj 96 134 else/sr~;
 #X obj 96 273 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 100 256;
+-228856 -1 -1 0 256;
 #X obj 177 224 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 441 256;
+-228856 -1 -1 0 256;
 #X text 158 273 <= frequency estimate;
 #X obj 177 81 osc~ 100;
 #X text 42 29 Estimating frequency with zero crossing count.;
@@ -91,8 +87,8 @@ outlet) and both (right outlet).;
 #X connect 9 0 2 0;
 #X restore 460 274 pd estimating \; frequency;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -161,7 +157,7 @@ outlet) and both (right outlet).;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -194,9 +190,15 @@ outlet) and both (right outlet).;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X connect 21 0 22 0;
-#X connect 22 0 20 0;
-#X connect 22 1 20 1;
-#X connect 23 0 24 0;
-#X connect 24 2 25 0;
-#X connect 24 2 25 1;
+#X obj 110 253 else/out~;
+#X obj 319 253 else/out~;
+#X text 30 213 non-positive;
+#X text 26 228 to positive;
+#X text 161 226 non-positive;
+#X text 163 213 positive to;
+#X connect 20 0 21 0;
+#X connect 21 0 40 0;
+#X connect 21 1 40 1;
+#X connect 22 0 23 0;
+#X connect 23 2 41 0;
+#X connect 23 2 41 1;

@@ -2,7 +2,7 @@
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 100 100;
+#X coords 0 -1 1 1 252 42 1;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -162,8 +162,6 @@
 -1 -1;
 #X obj 89 245 else/out~;
 #X text 46 141 impulse value of 1 =>;
-#X text 194 163 <== immediately jumps to the start of the cycle when
-receiving an impulse., f 27;
 #X text 15 14 The third inlet expects an impulse signal for syncing.
 The impulse values need to be > 0 and <= 1 (otherwise ignored) so the
 internal phase jumps imediately to the given impulse value. Because
@@ -184,14 +182,16 @@ internal of the object \, but the offset still remains.;
 ;
 #X obj 105 204 else/pulse~ 1;
 #X obj 503 122 else/pulse~ 200;
-#X connect 0 0 10 0;
-#X connect 8 0 11 0;
+#X text 194 163 <== immediately jumps to the start \; of the cycle
+when receiving an impulse.;
+#X connect 0 0 9 0;
+#X connect 7 0 10 0;
+#X connect 9 0 12 3;
 #X connect 10 0 13 3;
-#X connect 11 0 14 3;
-#X connect 13 0 1 0;
-#X connect 13 0 1 1;
-#X connect 14 0 7 0;
-#X connect 14 0 7 1;
+#X connect 12 0 1 0;
+#X connect 12 0 1 1;
+#X connect 13 0 6 0;
+#X connect 13 0 6 1;
 #X restore 494 244 pd sync;
 #N canvas 512 142 406 338 pulse 0;
 #X obj 120 250 else/out~;
@@ -215,7 +215,7 @@ period except the last sample).;
 #X obj 3 3 cnv 15 301 42 empty empty pulse~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
+#X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #N canvas 534 204 778 275 phase 0;
 #X text 401 23 The phase values are wrapped into the 0-1 range \, since
@@ -248,7 +248,6 @@ feature is phase modulation.;
 #X connect 13 0 12 2;
 #X restore 445 219 pd phase offset;
 #X text 262 305 pulse width (from 0 to 1);
-#X obj 197 209 out~;
 #X text 243 452 - initial phase offset;
 #X text 184 452 3) float;
 #X text 243 434 - initial pulse width;
@@ -256,6 +255,7 @@ feature is phase modulation.;
 #X text 60 87 [pulse~] is a pulse train oscillator (alternates between
 0 and 1 \, or off/on) that accepts negative frequencies \, has inlets
 for pulse width \, phase modulation and phase sync.;
-#X connect 32 0 45 0;
-#X connect 45 0 41 0;
-#X connect 45 0 41 1;
+#X obj 197 209 else/out~;
+#X connect 32 0 44 0;
+#X connect 44 0 46 0;
+#X connect 44 0 46 1;

@@ -2,7 +2,7 @@
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 100 100;
+#X coords 0 -1 1 1 252 42 1;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -160,8 +160,6 @@
 -1 -1;
 #X obj 83 245 else/out~;
 #X text 46 141 impulse value of 1 =>;
-#X text 194 163 <== immediately jumps to the start of the cycle when
-receiving an impulse., f 27;
 #X text 688 88 Master;
 #X text 601 123 Slave;
 #X obj 473 177 else/out~;
@@ -182,14 +180,16 @@ internal phase jumps imediately to the given impulse value. Because
 phase is cyclical \, the value of 1 represents the "phase 0" of the
 cycle \, where the impulse occurs. Send it impulses and check the result
 below.;
-#X connect 0 0 9 0;
-#X connect 7 0 10 0;
+#X text 194 163 <== immediately jumps to the \; start of the cycle
+when receiving an impulse.;
+#X connect 0 0 8 0;
+#X connect 6 0 9 0;
+#X connect 8 0 11 3;
 #X connect 9 0 12 3;
-#X connect 10 0 13 3;
-#X connect 12 0 1 0;
-#X connect 12 0 1 1;
-#X connect 13 0 6 0;
-#X connect 13 0 6 1;
+#X connect 11 0 1 0;
+#X connect 11 0 1 1;
+#X connect 12 0 5 0;
+#X connect 12 0 5 1;
 #X restore 494 239 pd sync;
 #N canvas 430 175 777 299 phase 0;
 #X text 401 23 The phase values are wrapped into the 0-1 range \, since
@@ -224,12 +224,11 @@ feature is phase modulation.;
 #X connect 14 0 8 0;
 #X connect 14 0 8 1;
 #X restore 445 214 pd phase offset;
-#X obj 201 212 out~;
 #X text 184 451 3) float;
 #X obj 3 3 cnv 15 301 42 empty empty vartri~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
+#X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X obj 218 177 else/vartri~ 220;
 #X text 262 304 width (from 0 to 1);
@@ -260,6 +259,7 @@ while beteen 0 and 1 makes it a variable triangle waveform.;
 #X text 60 87 [vartri~] is a variable triangle waveform oscillator
 that accepts negative frequencies \, has inlets for width \, phase
 modulation and phase sync.;
-#X connect 29 0 38 0;
-#X connect 38 0 34 0;
-#X connect 38 0 34 1;
+#X obj 201 212 else/out~;
+#X connect 29 0 37 0;
+#X connect 37 0 46 0;
+#X connect 37 0 46 1;
