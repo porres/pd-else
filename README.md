@@ -10,7 +10,7 @@ Even though extended has quite a large set of external libraries and objects, at
 
 The current library state is at alpha experimental releases, where drastic changes may occur and and backwards compatibility is not guaranteed for future releases
 
-latest release: 1.0-alpha2, from march 20th 2017
+latest release: 1.0-alpha2, from march 20th 2017 => https://github.com/porres/pd-else/releases
 
 Porres; 2017
 
