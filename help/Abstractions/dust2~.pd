@@ -1,6 +1,6 @@
-#N canvas 589 23 355 493 10;
+#N canvas 589 23 355 443 10;
 #X text 241 285 porres 2017 \, for else library, f 12;
-#X obj 45 432 outlet~;
+#X obj 45 412 outlet~;
 #X obj 60 63 noise~;
 #X obj 82 140 *~ 2400;
 #X obj 82 110 else/sh~;
@@ -13,7 +13,6 @@
 #X obj 127 84 delread~ \$0-fb 0;
 #X obj 45 367 *~;
 #X obj 82 233 *~;
-#X obj 45 398 abs~;
 #X connect 2 0 4 0;
 #X connect 2 0 12 1;
 #X connect 3 0 5 0;
@@ -25,6 +24,5 @@
 #X connect 8 0 13 1;
 #X connect 9 0 8 0;
 #X connect 11 0 4 1;
-#X connect 12 0 14 0;
+#X connect 12 0 1 0;
 #X connect 13 0 6 0;
-#X connect 14 0 1 0;

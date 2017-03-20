@@ -2,7 +2,7 @@
 #X obj 221 138 hsl 128 15 1 5000 1 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 218 236 else/out~;
-#X obj 2 3 cnv 15 301 42 empty empty dust~ 20 20 2 37 -233017 -1 0
+#X obj 2 3 cnv 15 301 42 empty empty dust2~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -45,8 +45,8 @@
 #X text 213 388 - density (default 0);
 #X obj 218 193 else/dust~ 1;
 #X text 170 313 float;
-#X text 92 89 [dust~] sends random impulse values (only positive values)
-at random times according to a density parameter.;
+#X text 92 90 [dust~] sends random impulse values (from -1 to 1) at
+random times according to a density parameter.;
 #X connect 0 0 20 0;
 #X connect 20 0 25 0;
 #X connect 25 0 1 0;
