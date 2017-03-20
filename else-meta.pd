@@ -6,5 +6,5 @@ Pd, f 57;
 #X text 26 28 DESCRIPTION: Extra objects for EL Locus Solus' didactic
 material., f 57;
 #X text 26 94 LICENSE: SIBSD, f 57;
-#X text 26 60 VERSION: 1.0-alpha1, f 57;
-#X text 25 77 RELEASE_DATE: March 17th 2017, f 57;
+#X text 26 60 VERSION: 1.0-alpha2, f 57;
+#X text 25 77 RELEASE_DATE: March 20th 2017, f 57;

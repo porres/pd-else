@@ -31,23 +31,23 @@
 ;
 #X obj 3 377 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 106 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 136 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 105 313 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 135 313 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 173 349 signal;
-#X text 161 389 1) float;
+#X text 164 349 signal;
+#X text 152 389 1) float;
 #X obj 218 167 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
-#X text 136 313 float/signal;
+-228856 -1 -1 0 256;
 #X text 302 168 density;
-#X text 222 350 - random impulses;
+#X text 213 350 - random impulses;
 #X text 92 89 [dust~] sends random impulse values at random times according
 to a density parameter.;
-#X text 222 312 - density (rate) of random impulses;
-#X text 222 388 - density (default 0);
+#X text 213 312 - density (rate) of random impulses;
+#X text 213 388 - density (default 0);
 #X obj 218 193 else/dust~ 1;
+#X text 170 313 float;
 #X connect 0 0 20 0;
-#X connect 20 0 27 0;
-#X connect 27 0 1 0;
-#X connect 27 0 1 1;
+#X connect 20 0 26 0;
+#X connect 26 0 1 0;
+#X connect 26 0 1 1;
