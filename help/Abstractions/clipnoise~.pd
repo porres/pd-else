@@ -1,0 +1,7 @@
+#N canvas 589 23 350 216 10;
+#X text 214 81 porres 2017 \, for else library, f 12;
+#X obj 45 142 outlet~;
+#X obj 45 33 noise~;
+#X obj 45 89 expr~ if($v1 > 0 \, 1 \, -1);
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
