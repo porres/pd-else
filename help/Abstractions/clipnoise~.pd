@@ -1,7 +1,8 @@
-#N canvas 589 23 350 216 10;
-#X text 214 81 porres 2017 \, for else library, f 12;
+#N canvas 589 23 490 211 10;
 #X obj 45 142 outlet~;
 #X obj 45 33 noise~;
 #X obj 45 89 expr~ if($v1 > 0 \, 1 \, -1);
-#X connect 2 0 3 0;
-#X connect 3 0 1 0;
+#X text 224 100 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 226 81 Alexandre Torres Porres (2017);
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;

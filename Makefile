@@ -42,6 +42,7 @@ toggleff~.class.sources := classes/toggleff~.c
 togedge~.class.sources := classes/togedge~.c
 trigcount~.class.sources := classes/trigcount~.c
 vartri~.class.sources := classes/vartri~.c
+xfade~.class.sources := classes/xfade~.c
 zerocross~.class.sources := classes/zerocross~.c
 
 #########################################################################

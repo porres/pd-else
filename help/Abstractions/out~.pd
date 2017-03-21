@@ -591,7 +591,6 @@
 #X connect 7 0 6 1;
 #X restore 120 152 pd gain-mute;
 #X text 167 215 Alexandre Torres Porres (2016);
-#X text 167 195 [out~]: Stereo Output;
 #X text 165 234 Part of ELSE \; https://github.com/porres/pd-else;
 #X connect 0 0 4 0;
 #X connect 1 0 11 0;
