@@ -1,31 +1,25 @@
-#N canvas 570 53 559 481 10;
-#X obj 4 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 363 23 560 615 10;
+#X obj 4 407 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 374 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 499 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 409 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 534 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 126 383 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 116 508 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 127 326 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 117 415 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 442 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 577 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 3 cnv 15 301 42 empty empty trigcount~ 20 20 2 37 -233017
--1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Count 0 28 2 18 -233017 -1 0;
-#X obj 76 40 cnv 4 4 4 empty empty triggers 0 28 2 18 -233017 -1 0
-;
+#X obj 23 40 cnv 4 4 4 empty empty Pulse 0 28 2 18 -233017 -1 0;
+#X obj 70 40 cnv 4 4 4 empty empty divider 0 28 2 18 -233017 -1 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -36,9 +30,6 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 197 219 else/trigcount~;
-#X obj 197 283 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 5 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -143,25 +134,64 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
-#X obj 197 180 osc~ 1;
-#X obj 284 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 191 256 osc~ 1;
+#X obj 286 207 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 284 180 else/trigate~;
-#X text 154 417 (none);
-#X text 155 325 signal;
-#X obj 127 348 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 286 234 else/trigate~;
+#X text 173 415 signal;
+#X obj 117 473 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 155 347 signal;
-#X text 61 86 [trigcount~] counts triggers. A trigger happens at transitions
-from non positive to positive. A trigger in the right inklet resets
-the counter to zero.;
-#X text 199 347 - a trigger resets counter to zero;
-#X text 199 325 - trigger signal to count;
-#X text 155 383 signal;
-#X text 199 383 - the trigger count;
-#X obj 197 254 else/s2f~ 100;
-#X connect 18 0 33 0;
-#X connect 21 0 18 0;
-#X connect 22 0 23 0;
-#X connect 23 0 18 1;
-#X connect 33 0 19 0;
+#X text 173 472 signal;
+#X text 145 508 signal;
+#X obj 3 3 cnv 15 301 42 empty empty pulsediv~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#X obj 309 349 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 218 256;
+#X text 222 415 - trigger signal to be divided;
+#X text 209 508 - divided triggers (impulse);
+#X text 144 542 1) float - divide value (default 1);
+#X text 143 432 div <float>;
+#X text 131 450 start <float>;
+#X obj 309 296 else/pulsecount~;
+#X obj 193 373 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 109 256;
+#X obj 193 350 else/s2f~;
+#X obj 309 322 else/s2f~;
+#X obj 193 327 else/pulsecount~;
+#X text 242 373 divided count;
+#X text 358 349 whole count;
+#X text 61 86 [pulsediv~] outputs impulses when receiving triggers
+(signal changes from non-positive to positive) \, but doesn't count
+a number of triggers corresponding to a division value.;
+#X msg 172 228 start \$1;
+#X msg 122 262 div \$1;
+#X floatatom 172 207 5 0 0 0 - - -, f 5;
+#X floatatom 122 242 5 0 0 0 - - -, f 5;
+#X text 60 131 The first trigger in the count is output. A starting
+value lets you start in the middle of a count. If the start value is
+negative \, it adds that many counts to the first time the output is
+triggered.;
+#X text 144 559 2) float - start count value (default 0);
+#X obj 172 296 else/pulsediv~ 2;
+#X text 222 450 - sets the start value;
+#X text 222 432 - sets the division value (minimum: 1);
+#X text 222 472 - an impulse resets the counter to the start value
+;
+#X connect 17 0 32 0;
+#X connect 17 0 46 0;
+#X connect 18 0 19 0;
+#X connect 19 0 32 1;
+#X connect 19 0 36 1;
+#X connect 19 0 46 1;
+#X connect 32 0 35 0;
+#X connect 34 0 33 0;
+#X connect 35 0 26 0;
+#X connect 36 0 34 0;
+#X connect 40 0 46 0;
+#X connect 41 0 46 0;
+#X connect 42 0 40 0;
+#X connect 43 0 41 0;
+#X connect 46 0 36 0;

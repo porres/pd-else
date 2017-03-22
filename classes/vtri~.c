@@ -4,9 +4,9 @@
 #include "math.h"
 
 
-static t_class *vartri_class;
+static t_class *vtri_class;
 
-typedef struct _vartri
+typedef struct _vtri
 {
     t_object x_obj;
     double  x_phase;
@@ -17,11 +17,11 @@ typedef struct _vartri
     t_inlet  *x_inlet_sync;
     t_outlet *x_outlet;
     t_float x_sr;
-} t_vartri;
+} t_vtri;
 
-static t_int *vartri_perform(t_int *w)
+static t_int *vtri_perform(t_int *w)
 {
-    t_vartri *x = (t_vartri *)(w[1]);
+    t_vtri *x = (t_vtri *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // width
@@ -73,13 +73,13 @@ static t_int *vartri_perform(t_int *w)
     return (w + 8);
 }
 
-static void vartri_dsp(t_vartri *x, t_signal **sp)
+static void vtri_dsp(t_vtri *x, t_signal **sp)
 {
-    dsp_add(vartri_perform, 7, x, sp[0]->s_n,
+    dsp_add(vtri_perform, 7, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
-static void *vartri_free(t_vartri *x)
+static void *vtri_free(t_vtri *x)
 {
     inlet_free(x->x_inlet_width);
     inlet_free(x->x_inlet_phase);
@@ -88,9 +88,9 @@ static void *vartri_free(t_vartri *x)
     return (void *)x;
 }
 
-static void *vartri_new(t_symbol *s, int ac, t_atom *av)
+static void *vtri_new(t_symbol *s, int ac, t_atom *av)
 {
-    t_vartri *x = (t_vartri *)pd_new(vartri_class);
+    t_vtri *x = (t_vtri *)pd_new(vtri_class);
     t_float f1 = 0, f2 = 0.5, f3 = 0;
     if (ac && av->a_type == A_FLOAT)
     {
@@ -130,11 +130,11 @@ static void *vartri_new(t_symbol *s, int ac, t_atom *av)
     return (x);
 }
 
-void vartri_tilde_setup(void)
+void vtri_tilde_setup(void)
 {
-    vartri_class = class_new(gensym("vartri~"),
-        (t_newmethod)vartri_new, (t_method)vartri_free,
-        sizeof(t_vartri), CLASS_DEFAULT, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(vartri_class, t_vartri, x_freq);
-    class_addmethod(vartri_class, (t_method)vartri_dsp, gensym("dsp"), A_CANT, 0);
+    vtri_class = class_new(gensym("vtri~"),
+        (t_newmethod)vtri_new, (t_method)vtri_free,
+        sizeof(t_vtri), CLASS_DEFAULT, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(vtri_class, t_vtri, x_freq);
+    class_addmethod(vtri_class, (t_method)vtri_dsp, gensym("dsp"), A_CANT, 0);
 }

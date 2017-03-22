@@ -15,7 +15,7 @@
 -1 -1;
 #X text 141 296 bang;
 #X obj 209 254 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 6.28319 256;
+-228856 -1 -1 2.71828 256;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -35,44 +35,44 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 260 191 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 242 191 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 139 192 get value;
 #X obj 85 40 cnv 4 4 4 empty empty value 0 28 2 18 -233017 -1 0;
 #X obj 133 40 cnv 4 4 4 empty empty of 0 28 2 18 -233017 -1 0;
-#X obj 159 40 cnv 4 4 4 empty empty Pi 0 28 2 18 -233017 -1 0;
-#X obj 3 3 cnv 15 301 42 empty empty pi 20 20 2 37 -233017 -1 0;
+#X obj 159 40 cnv 4 4 4 empty empty 'e' 0 28 2 18 -233017 -1 0;
+#X obj 3 3 cnv 15 301 42 empty empty e 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X text 302 191 muiltiplier;
+#X text 284 191 muiltiplier;
 #X text 135 333 float;
 #X text 137 368 1) float - multiplier (default 1);
-#X text 62 89 [pi] calculates and outputs the value of pi. It receives
-a multiplier value via the argument or second inlet \, which needs
-to be greater than 0 (otherwise it's considered as 1).;
-#X text 61 136 [pi] outputs the result when loading a patch and also
-when receiving a bang.;
-#X text 171 333 - the value of pi;
 #N canvas 757 104 410 312 expr 0;
 #X obj 176 112 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 3.14159 256;
+-228856 -1 -1 2.71828 256;
 #X obj 161 196 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 161 257 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 156 80 else/pi;
-#X obj 161 227 expr 2 * pi;
-#X obj 156 141 value pi;
 #X text 19 20 [pi] can be conveniently connected to a [value] object
 so it can be recalled in an [expr] object.;
-#X connect 1 0 4 0;
-#X connect 3 0 0 0;
-#X connect 3 0 5 0;
-#X connect 4 0 2 0;
+#X obj 156 141 value e;
+#X obj 156 80 else/e;
+#X obj 161 227 expr 2 * e;
+#X connect 1 0 6 0;
+#X connect 5 0 0 0;
+#X connect 5 0 4 0;
+#X connect 6 0 2 0;
 #X restore 431 236 pd expr and value;
-#X obj 209 222 else/pi 2;
+#X obj 209 222 else/e;
+#X text 61 89 [e] calculates and outputs the value of 'e'. It receives
+a multiplier value via the argument or second inlet \, which needs
+to be greater than 0 (otherwise it's considered as 1).;
+#X text 61 136 [e] outputs the result when loading a patch and also
+when receiving a bang.;
 #X text 171 296 - calculate or output the last calculated value;
-#X connect 6 0 33 0;
-#X connect 19 0 33 1;
-#X connect 33 0 8 0;
+#X text 171 333 - the value of e times the multiplier;
+#X connect 6 0 30 0;
+#X connect 19 0 30 1;
+#X connect 30 0 8 0;
