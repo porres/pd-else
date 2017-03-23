@@ -82,6 +82,10 @@ static t_int *peak_tilde_perform(t_int *w)
                 {
                 fp--;
                 sum += *hp++ * (*fp * *fp); // sum = hp * inˆ2
+                    
+                if (*fp > p) p = *fp;
+                else if (*fp < -p) p = *fp * -1;
+                    
                 }
         *sump = sum; // sum
         }
@@ -90,11 +94,12 @@ static t_int *peak_tilde_perform(t_int *w)
     if (x->x_phase < 0) // get result and reset
         {
 //        x->x_result = x->x_sumbuf[0];
-          x->x_result = 12;
+          x->x_result = p;
         for (count = x->x_realperiod, sump = x->x_sumbuf;
              count < x->x_npoints; count += x->x_realperiod, sump++)
             sump[0] = sump[1];
             sump[0] = 0;
+            p = 0;
             x->x_phase = x->x_realperiod - n;
             clock_delay(x->x_clock, 0L); // output?
         }
