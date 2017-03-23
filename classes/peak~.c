@@ -68,19 +68,17 @@ static t_int *peak_tilde_perform(t_int *w)
     int n = (int)(w[3]); // block
     int count;
     t_float p = x->x_value; // 'p' for 'peak'
-    in += n;
-        {
-            t_sample *f = in;
-            int i;
-            for (i = 0; i < n; i++) {
-                f--;
-                if (*f > p) p = *f;
-                else if (*f < -p) p = *f * -1; // try -*f
-                }
+    in += n;{
+        t_sample *f = in;
+        int i;
+        for (i = 0; i < n; i++) {
+            f--;
+            if (*f > p) p = *f;
+            else if (*f < -p) p = -*f;
+            }
         }
     x->x_phase -= n;
-    if (x->x_phase < 0) // get result and reset
-        {
+    if (x->x_phase < 0) { // get result and reset
           x->x_result = p;
             p = 0;
             x->x_phase = x->x_realperiod - n;
