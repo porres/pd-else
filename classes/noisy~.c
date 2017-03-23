@@ -34,8 +34,12 @@ static t_int *noisy_perform(t_int *w)
         phase_step = phase_step > 1 ? 1. : phase_step < 0 ? 0 : phase_step; // clipped phase_step
         
         t_float noise = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
-        *out++ = noise;
+        
+        if (phase >= 1.) lastout = noise;
+        *out++ = lastout;
+
         val = val * 435898247 + 382842987;
+        phase = fmod(phase, 1.) + phase_step;
     }
      *vp = val;
     x->x_phase = phase;
@@ -60,6 +64,7 @@ static void *noisy_new(t_floatarg f)
     t_noisy *x = (t_noisy *)pd_new(noisy_class);
     x->x_freq = f;
     x->x_sr = sys_getsr(); // sample rate
+    x->x_lastout = x->x_phase = 0;
     static int init = 307;
     x->x_val = (init *= 1319);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
@@ -71,7 +76,7 @@ void noisy_tilde_setup(void)
 {
     noisy_class = class_new(gensym("noisy~"),
         (t_newmethod)noisy_new, (t_method)noisy_free,
-        sizeof(t_noisy), 0, 0);
+        sizeof(t_noisy), 0, A_DEFFLOAT, 0);
     class_addmethod(noisy_class, nullfn, gensym("signal"), 0);
     class_addmethod(noisy_class, (t_method) noisy_dsp, gensym("dsp"), A_CANT, 0);
 }
