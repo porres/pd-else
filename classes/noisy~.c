@@ -45,6 +45,7 @@ static t_int *noisy_perform(t_int *w)
 
 static void noisy_dsp(t_noisy *x, t_signal **sp)
 {
+    x->x_sr = sp[0]->s_sr;
     dsp_add(noisy_perform, 5, x, sp[0]->s_n, &x->x_val, sp[0]->s_vec, sp[1]->s_vec);
 }
 
