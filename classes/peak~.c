@@ -73,41 +73,26 @@ static t_int *peak_tilde_perform(t_int *w)
     for (count = x->x_phase, sump = x->x_sumbuf; // sum it up
          count < x->x_npoints; count += x->x_realperiod, sump++)
         {
-            t_sample *hp = x->x_buf + count;
             t_sample *fp = in;
-            t_sample sum = *sump;
             int i;
         
             for (i = 0; i < n; i++)
                 {
                 fp--;
-                sum += *hp++ * (*fp * *fp); // sum = hp * inˆ2
-                    
                 if (*fp > p) p = *fp;
                 else if (*fp < -p) p = *fp * -1;
-                    
                 }
-        *sump = sum; // sum
         }
-    sump[0] = 0;
     x->x_phase -= n;
     if (x->x_phase < 0) // get result and reset
         {
-//        x->x_result = x->x_sumbuf[0];
           x->x_result = p;
         for (count = x->x_realperiod, sump = x->x_sumbuf;
              count < x->x_npoints; count += x->x_realperiod, sump++)
-            sump[0] = sump[1];
-            sump[0] = 0;
             p = 0;
             x->x_phase = x->x_realperiod - n;
             clock_delay(x->x_clock, 0L); // output?
         }
-    
-    
-    /* { if (*fp > p) p = *fp;
-     else if (*fp < -p) p = *fp * -1; } */
-    
     x->x_value = p;
     return (w+4);
 }
