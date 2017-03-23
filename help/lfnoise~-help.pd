@@ -32,23 +32,23 @@
 ;
 #X obj 3 363 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 126 336 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 96 336 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 125 299 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 95 299 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 157 337 signal;
-#X text 140 375 1) float;
+#X text 166 337 signal;
+#X text 153 375 1) float;
 #X obj 220 161 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 304 162 frequency in Hz;
 #X obj 220 187 else/lfnoise~ 400;
-#X text 207 375 - frequency in hertz (default 0);
+#X text 213 375 - frequency in hertz (default 0);
 #X text 213 298 - frequency in hertz;
-#X text 206 338 - low frequency noise;
+#X text 213 338 - low frequency noise;
 #X text 84 91 [lfnoise~] is a low frequency (band limited) noise with
 no interpolation.;
 #X text 188 61 (no interpolation);
-#X text 163 299 float;
+#X text 130 300 float/signal;
 #X connect 0 0 21 0;
 #X connect 21 0 23 0;
 #X connect 23 0 1 0;

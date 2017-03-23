@@ -9,7 +9,6 @@ typedef struct _elapsed
     t_object  x_obj;
     t_float   x_count;
     t_float   x_total;
-    t_float  x_lastin; // last out
     t_outlet *x_outlet;
 } t_elapsed;
 
@@ -21,11 +20,11 @@ static t_int *elapsed_perform(t_int *w)
     t_float *out = (t_float *)(w[4]);
     t_float count = x->x_count;
     t_float total = x->x_total;
-    t_float lastin = x->x_lastin;
     while (nblock--)
     {
         t_float input = *in++;
-        if (input > 0 && lastin <= 0) {
+        if (input > 0)
+            {
             total = count;
             *out++ = total;
             count = 1;
@@ -35,11 +34,9 @@ static t_int *elapsed_perform(t_int *w)
             *out++ = total;
             count += 1;
             }
-        lastin = input;
     }
     x->x_count = count;
     x->x_total = total;
-    x->x_lastin = lastin;
     return (w + 5);
 }
 
@@ -59,7 +56,7 @@ static void *elapsed_new(void)
 {
     t_elapsed *x = (t_elapsed *)pd_new(elapsed_class);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
-    x->x_count = x->x_total = x->x_lastin= 0;
+    x->x_count = x->x_total = 0;
     return (x);
 }
 

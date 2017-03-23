@@ -2,23 +2,23 @@
 
 #include "m_pd.h"
 
-static t_class *noisy_class;
+static t_class *lfnoise_class;
 
-typedef struct _noisy
+typedef struct _lfnoise
 {
     t_object  x_obj;
     int x_val;
     t_float  x_lastout;
     t_float  x_sr;
-    t_float  x_phase;
+    double  x_phase;
     t_float  x_freq;
     t_outlet *x_outlet;
-} t_noisy;
+} t_lfnoise;
 
 
-static t_int *noisy_perform(t_int *w)
+static t_int *lfnoise_perform(t_int *w)
 {
-    t_noisy *x = (t_noisy *)(w[1]);
+    t_lfnoise *x = (t_lfnoise *)(w[1]);
     int nblock = (t_int)(w[2]);
     int *vp = (int *)(w[3]);
     t_float *in = (t_float *)(w[4]);
@@ -47,21 +47,21 @@ static t_int *noisy_perform(t_int *w)
     return (w + 6);
 }
 
-static void noisy_dsp(t_noisy *x, t_signal **sp)
+static void lfnoise_dsp(t_lfnoise *x, t_signal **sp)
 {
     x->x_sr = sp[0]->s_sr;
-    dsp_add(noisy_perform, 5, x, sp[0]->s_n, &x->x_val, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(lfnoise_perform, 5, x, sp[0]->s_n, &x->x_val, sp[0]->s_vec, sp[1]->s_vec);
 }
 
-static void *noisy_free(t_noisy *x)
+static void *lfnoise_free(t_lfnoise *x)
 {
     outlet_free(x->x_outlet);
     return (void *)x;
 }
 
-static void *noisy_new(t_floatarg f)
+static void *lfnoise_new(t_floatarg f)
 {
-    t_noisy *x = (t_noisy *)pd_new(noisy_class);
+    t_lfnoise *x = (t_lfnoise *)pd_new(lfnoise_class);
     x->x_freq = f;
     x->x_sr = sys_getsr(); // sample rate
     x->x_lastout = x->x_phase = 0;
@@ -72,11 +72,11 @@ static void *noisy_new(t_floatarg f)
 }
 
 
-void noisy_tilde_setup(void)
+void lfnoise_tilde_setup(void)
 {
-    noisy_class = class_new(gensym("noisy~"),
-        (t_newmethod)noisy_new, (t_method)noisy_free,
-        sizeof(t_noisy), 0, A_DEFFLOAT, 0);
-    class_addmethod(noisy_class, nullfn, gensym("signal"), 0);
-    class_addmethod(noisy_class, (t_method) noisy_dsp, gensym("dsp"), A_CANT, 0);
+    lfnoise_class = class_new(gensym("lfnoise~"),
+        (t_newmethod)lfnoise_new, (t_method)lfnoise_free,
+        sizeof(t_lfnoise), 0, A_DEFFLOAT, 0);
+    CLASS_MAINSIGNALIN(lfnoise_class, t_lfnoise, x_freq);
+    class_addmethod(lfnoise_class, (t_method)lfnoise_dsp, gensym("dsp"), A_CANT, 0);
 }
