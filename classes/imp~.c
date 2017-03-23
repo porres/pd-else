@@ -72,6 +72,7 @@ static t_int *imp_perform(t_int *w)
 
 static void imp_dsp(t_imp *x, t_signal **sp)
 {
+    x->x_sr = sp[0]->s_sr;
     dsp_add(imp_perform, 6, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
