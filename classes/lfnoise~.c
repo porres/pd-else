@@ -31,15 +31,25 @@ static t_int *lfnoise_perform(t_int *w)
     {
         t_float hz = *in++;
         double phase_step = hz / sr; // phase_step
-        phase_step = phase_step > 1 ? 1. : phase_step < 0 ? 0 : phase_step; // clipped phase_step
-        
+        phase_step = phase_step > 1 ? 1. : phase_step < -1 ? -1 : phase_step; // clipped phase_step
+        int trig;
+        if (hz >= 0)
+            {
+            trig = phase >= 1.;
+            if (phase >= 1.) phase = phase - 1;
+            }
+        else
+            {
+            trig = (phase <= 0.);
+            if (phase <= 0.) phase = phase + 1.;
+            }
         t_float noise = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
-        
-        if (phase >= 1.) lastout = noise;
-        *out++ = lastout;
 
+        if (trig) lastout = noise;
+        *out++ = lastout;
+    
+        phase += phase_step;
         val = val * 435898247 + 382842987;
-        phase = fmod(phase, 1.) + phase_step;
     }
      *vp = val;
     x->x_phase = phase;
@@ -62,9 +72,10 @@ static void *lfnoise_free(t_lfnoise *x)
 static void *lfnoise_new(t_floatarg f)
 {
     t_lfnoise *x = (t_lfnoise *)pd_new(lfnoise_class);
-    x->x_freq = f;
-    x->x_sr = sys_getsr(); // sample rate
-    x->x_lastout = x->x_phase = 0;
+    if(f >= 0) x->x_phase = 1;
+    x->x_freq  = f;
+    x->x_sr = sys_getsr();
+    x->x_lastout = 0;
     static int init = 307;
     x->x_val = (init *= 1319);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
