@@ -1,14 +1,13 @@
-/* ---------------- rms~ - rmselope follower. ----------------- */
-/* based on msp's rms~-object: outputs both linear and dBFS rms */
+/* ---------------- peak~ - peakelope follower. ----------------- */
+/* based on msp's peak~-object: outputs both linear and dBFS peak */
 
 #include "m_pd.h"
 #include "math.h"
 
 #define MAXOVERLAP 32
 #define INITVSTAKEN 64
-#define LOGTEN 2.302585092994
 
-typedef struct sigrms
+typedef struct sigpeak
 {
     t_object x_obj;                 /* header */
     void *x_outlet;                 /* a "float" outlet */
@@ -22,69 +21,18 @@ typedef struct sigrms
     t_sample x_sumbuf[MAXOVERLAP];     /* summing buffer */
     int x_allocforvs;               /* extra buffer for DSP vector size */
     int x_block; // block size
-    int x_db;
-} t_sigrms;
+    t_float   x_value;
+} t_sigpeak;
 
-t_class *rms_tilde_class;
-static void rms_tilde_tick(t_sigrms *x);
-
-
-static void rms_db(t_sigrms *x)
-{
-    x->x_db = 1;
-}
-
-static void rms_linear(t_sigrms *x)
-{
-    x->x_db = 0;
-}
+t_class *peak_tilde_class;
+static void peak_tilde_tick(t_sigpeak *x);
 
 
-static void rms_set(t_sigrms *x, t_floatarg f1, t_floatarg f2)
-{
-    t_sample *buf;
-    int i;
-    int size = f1;
-    if (size < 1) size = 1024;
-    int hop = f2;
-    if (hop < 1)
-        hop = size/2;
-    if (hop < size / MAXOVERLAP + 1)
-        hop = size / MAXOVERLAP + 1;
-    if (!(buf = getbytes(sizeof(t_sample) * (size + INITVSTAKEN)))) {
-        error("rms: couldn't allocate buffer");
-        }
-    x->x_buf = buf;
-    x->x_phase = 0;
-    x->x_npoints = size;
-    x->x_period = hop;
-    for (i = 0; i < MAXOVERLAP; i++) x->x_sumbuf[i] = 0;
-    for (i = 0; i < size; i++)
-        buf[i] = (1. - cos((2 * 3.14159 * i) / size))/size;
-    for (; i < size+INITVSTAKEN; i++) buf[i] = 0;
-// from dsp
-    if (x->x_period % x->x_block) x->x_realperiod =
-        x->x_period + x->x_block - (x->x_period % x->x_block);
-    else x->x_realperiod = x->x_period;
-    if (x->x_block > x->x_allocforvs)
-        {
-        void *xx = resizebytes(x->x_buf,
-        (x->x_npoints + x->x_allocforvs) * sizeof(t_sample),
-        (x->x_npoints + x->x_block) * sizeof(t_sample));
-        if (!xx){
-            error("env~: out of memory");
-            }
-        x->x_buf = (t_sample *)xx;
-        x->x_allocforvs = x->x_block;
-        }
-}
-
-
-static void *rms_tilde_new(t_floatarg fnpoints, t_floatarg fperiod)
+static void *peak_tilde_new(t_floatarg fnpoints, t_floatarg fperiod)
 {
     int npoints = fnpoints;
     int period = fperiod;
-    t_sigrms *x;
+    t_sigpeak *x;
     t_sample *buf;
     int i;
     
@@ -94,31 +42,32 @@ static void *rms_tilde_new(t_floatarg fnpoints, t_floatarg fperiod)
         period = npoints / MAXOVERLAP + 1;
     if (!(buf = getbytes(sizeof(t_sample) * (npoints + INITVSTAKEN))))
     {
-        error("rms: couldn't allocate buffer");
+        error("peak: couldn't allocate buffer");
         return (0);
     }
-    x = (t_sigrms *)pd_new(rms_tilde_class);
+    x = (t_sigpeak *)pd_new(peak_tilde_class);
     x->x_buf = buf;
     x->x_npoints = npoints;
     x->x_phase = 0;
+    x->x_value = 0.;
     x->x_period = period;
     for (i = 0; i < MAXOVERLAP; i++) x->x_sumbuf[i] = 0;
     for (i = 0; i < npoints; i++)
         buf[i] = (1. - cos((2 * 3.14159 * i) / npoints))/npoints; // HANNING / npoints
     for (; i < npoints+INITVSTAKEN; i++) buf[i] = 0;
-    x->x_clock = clock_new(x, (t_method)rms_tilde_tick);
+    x->x_clock = clock_new(x, (t_method)peak_tilde_tick);
     x->x_outlet = outlet_new(&x->x_obj, gensym("float"));
     x->x_allocforvs = INITVSTAKEN;
-    x->x_db = 0;
     return (x);
 }
 
-static t_int *rms_tilde_perform(t_int *w)
+static t_int *peak_tilde_perform(t_int *w)
 {
-    t_sigrms *x = (t_sigrms *)(w[1]);
+    t_sigpeak *x = (t_sigpeak *)(w[1]);
     t_sample *in = (t_sample *)(w[2]); // input
     int n = (int)(w[3]); // block
     int count;
+    t_float p = x->x_value; // 'p' for 'peak'
     t_sample *sump; // defined sum variable
     in += n;
     for (count = x->x_phase, sump = x->x_sumbuf; // sum it up
@@ -133,6 +82,10 @@ static t_int *rms_tilde_perform(t_int *w)
                 {
                 fp--;
                 sum += *hp++ * (*fp * *fp); // sum = hp * inˆ2
+                    
+                if (*fp > p) p = *fp;
+                else if (*fp < -p) p = *fp * -1;
+                    
                 }
         *sump = sum; // sum
         }
@@ -140,18 +93,26 @@ static t_int *rms_tilde_perform(t_int *w)
     x->x_phase -= n;
     if (x->x_phase < 0) // get result and reset
         {
-        x->x_result = x->x_sumbuf[0];
+//        x->x_result = x->x_sumbuf[0];
+          x->x_result = p;
         for (count = x->x_realperiod, sump = x->x_sumbuf;
              count < x->x_npoints; count += x->x_realperiod, sump++)
             sump[0] = sump[1];
             sump[0] = 0;
+            p = 0;
             x->x_phase = x->x_realperiod - n;
             clock_delay(x->x_clock, 0L); // output?
         }
+    
+    
+    /* { if (*fp > p) p = *fp;
+     else if (*fp < -p) p = *fp * -1; } */
+    
+    x->x_value = p;
     return (w+4);
 }
 
-static void rms_tilde_dsp(t_sigrms *x, t_signal **sp)
+static void peak_tilde_dsp(t_sigpeak *x, t_signal **sp)
 {
    x->x_block = sp[0]->s_n;
     if (x->x_period % sp[0]->s_n) x->x_realperiod =
@@ -164,45 +125,31 @@ static void rms_tilde_dsp(t_sigrms *x, t_signal **sp)
             (x->x_npoints + sp[0]->s_n) * sizeof(t_sample));
         if (!xx)
             {
-            error("rms~: out of memory");
+            error("peak~: out of memory");
             return;
             }
         x->x_buf = (t_sample *)xx;
         x->x_allocforvs = sp[0]->s_n;
         }
-    dsp_add(rms_tilde_perform, 3, x, sp[0]->s_vec, sp[0]->s_n);
+    dsp_add(peak_tilde_perform, 3, x, sp[0]->s_vec, sp[0]->s_n);
 }
 
-static void rms_tilde_tick(t_sigrms *x) // clock callback function
+static void peak_tilde_tick(t_sigpeak *x) // clock callback function
 {
-    if (x->x_db) outlet_float(x->x_outlet, powtodb(x->x_result));
-    else outlet_float(x->x_outlet, sqrtf(x->x_result));
+    outlet_float(x->x_outlet, x->x_result);
 }
 
-t_float powtodb(t_float f)
-    {
-        if (f <= 0) return (-999);
-        else
-        {
-            t_float val = 10./LOGTEN * log(f);
-            return (val < -999 ? -999 : val);
-        }
-    }
-                              
-static void rms_tilde_free(t_sigrms *x)  // cleanup
+static void peak_tilde_free(t_sigpeak *x)  // cleanup
 {
     clock_free(x->x_clock);
     freebytes(x->x_buf, (x->x_npoints + x->x_allocforvs) * sizeof(*x->x_buf));
 }
 
 
-void rms_tilde_setup(void )
+void peak_tilde_setup(void )
 {
-    rms_tilde_class = class_new(gensym("rms~"), (t_newmethod)rms_tilde_new,
-                                (t_method)rms_tilde_free, sizeof(t_sigrms), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(rms_tilde_class, nullfn, gensym("signal"), 0);
-    class_addmethod(rms_tilde_class, (t_method)rms_tilde_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(rms_tilde_class, (t_method)rms_set, gensym("set"), A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(rms_tilde_class, (t_method)rms_db, gensym("db"), 0);
-    class_addmethod(rms_tilde_class, (t_method)rms_linear, gensym("linear"), 0);
+    peak_tilde_class = class_new(gensym("peak~"), (t_newmethod)peak_tilde_new,
+                                (t_method)peak_tilde_free, sizeof(t_sigpeak), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(peak_tilde_class, nullfn, gensym("signal"), 0);
+    class_addmethod(peak_tilde_class, (t_method)peak_tilde_dsp, gensym("dsp"), A_CANT, 0);
 }

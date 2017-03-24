@@ -46,6 +46,7 @@ square~.class.sources := classes/square~.c
 toggleff~.class.sources := classes/toggleff~.c
 togedge~.class.sources := classes/togedge~.c
 vtri~.class.sources := classes/vtri~.c
+vu~.class.sources := classes/vu~.c
 xfade~.class.sources := classes/xfade~.c
 zerocross~.class.sources := classes/zerocross~.c
 

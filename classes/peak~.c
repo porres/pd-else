@@ -5,6 +5,7 @@
 
 #define MAXOVERLAP 32
 #define INITVSTAKEN 64
+#define LOGTEN 2.302585092994
 
 typedef struct sigpeak
 {
@@ -19,10 +20,21 @@ typedef struct sigpeak
     int x_allocforvs;               /* extra buffer for DSP vector size */
     int x_block; // block size
     t_float   x_value;
+    int x_db;
 } t_sigpeak;
 
 t_class *peak_tilde_class;
 static void peak_tilde_tick(t_sigpeak *x);
+
+static void peak_db(t_sigpeak *x)
+{
+    x->x_db = 1;
+}
+
+static void peak_linear(t_sigpeak *x)
+{
+    x->x_db = 0;
+}
 
 
 static void *peak_tilde_new(t_floatarg fnpoints, t_floatarg fperiod)
@@ -44,6 +56,7 @@ static void *peak_tilde_new(t_floatarg fnpoints, t_floatarg fperiod)
     x->x_clock = clock_new(x, (t_method)peak_tilde_tick);
     x->x_outlet = outlet_new(&x->x_obj, gensym("float"));
     x->x_allocforvs = INITVSTAKEN;
+    x->x_db = 0;
     return (x);
 }
 
@@ -87,7 +100,18 @@ static void peak_tilde_dsp(t_sigpeak *x, t_signal **sp)
 
 static void peak_tilde_tick(t_sigpeak *x) // clock callback function
 {
-    outlet_float(x->x_outlet, x->x_result);
+    if (x->x_db) outlet_float(x->x_outlet, powtodb(x->x_result));
+    else outlet_float(x->x_outlet, sqrtf(x->x_result));
+}
+
+t_float powtodb(t_float f)
+{
+    if (f == 0) return (-999);
+    else
+    {
+        t_float val = 10./LOGTEN * log(f);
+        return (val < -999 ? -999 : val);
+    }
 }
 
 static void peak_tilde_free(t_sigpeak *x)  // cleanup
@@ -101,4 +125,6 @@ void peak_tilde_setup(void )
                                 (t_method)peak_tilde_free, sizeof(t_sigpeak), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(peak_tilde_class, nullfn, gensym("signal"), 0);
     class_addmethod(peak_tilde_class, (t_method)peak_tilde_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(peak_tilde_class, (t_method)peak_db, gensym("db"), 0);
+    class_addmethod(peak_tilde_class, (t_method)peak_linear, gensym("linear"), 0);
 }
