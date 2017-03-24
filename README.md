@@ -18,9 +18,10 @@ Porres; 2017
 
 Objects:
 
-OSCILLATORS (7):
+OSCILLATORS (8):
 - [imp~]
 - [imp2~]
+- [lfnoise~]
 - [par~]
 - [pulse~]
 - [sawtooth~]
@@ -62,10 +63,11 @@ CONSTANT VALUES (3):
 - [pi]
 - [sr~]
 
-MISCELANEOUS (6):
+GUI (1):
+- [out~]
+
+MISCELANEOUS (4):
 - [accum~]
 - [downsample~]
 - [lastvalue]
-- [lfnoise~]
-- [out~]
 - [sin~]
