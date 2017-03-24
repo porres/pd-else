@@ -51,7 +51,8 @@ static void rms_set(t_sigrms *x, t_floatarg f1, t_floatarg f2)
         hop = size/2;
     if (hop < size / MAXOVERLAP + 1)
         hop = size / MAXOVERLAP + 1;
-    if (!(buf = getbytes(sizeof(t_sample) * (size + INITVSTAKEN)))) {
+    if (!(buf = getbytes(sizeof(t_sample) * (size + INITVSTAKEN))))
+        {
         error("rms: couldn't allocate buffer");
         }
     x->x_buf = buf;

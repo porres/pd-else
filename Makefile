@@ -43,6 +43,7 @@ sawtooth~.class.sources := classes/sawtooth~.c
 sh~.class.sources := classes/sh~.c
 sin~.class.sources := classes/sin~.c
 square~.class.sources := classes/square~.c
+switcher~.class.sources := classes/switcher~.c
 toggleff~.class.sources := classes/toggleff~.c
 togedge~.class.sources := classes/togedge~.c
 vtri~.class.sources := classes/vtri~.c
