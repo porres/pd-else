@@ -1,0 +1,17 @@
+#N canvas 252 26 313 330 10;
+#X obj 51 116 cnv 15 50 132 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 54 122 vu 15 120 \$0-m empty -1 -8 0 10 -66577 -1 1 0;
+#X obj 117 65 inlet~;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 52 134 1 0 0;
+#X restore 50 115 graph;
+#X obj 117 168 s \$0-m;
+#X obj 117 141 pack;
+#X obj 117 113 else/vu~ \$1 \$2;
+#X obj 52 107 cnv 5 5 5 empty empty meter1~ 0 2 0 10 -262144 -1 0;
+#X connect 2 0 6 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X connect 6 1 5 1;
+#X coords 0 -1 1 1 52 149 2 50 100;
