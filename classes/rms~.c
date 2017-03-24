@@ -80,11 +80,51 @@ static void rms_set(t_sigrms *x, t_floatarg f1, t_floatarg f2)
 }
 
 
-static void *rms_tilde_new(t_floatarg fnpoints, t_floatarg fperiod)
+static void *rms_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
-    int npoints = fnpoints;
-    int period = fperiod;
     t_sigrms *x;
+    int npoints = 0;
+    int period = 0;
+    int dbstate = 0;
+/////////////////////////////////////////////////////////////////////////////////////
+    int argnum = 0;
+    while(argc > 0)
+    {
+        if(argv -> a_type == A_FLOAT)
+            { //if current argument is a float
+            t_float argval = atom_getfloatarg(0, argc, argv);
+            switch(argnum)
+                {
+                case 0:
+                    npoints = argval;
+                    break;
+                case 1:
+                    period = argval;
+                    break;
+                default:
+                    break;
+                };
+            argnum++;
+            argc--;
+            argv++;
+            }
+        else if (argv -> a_type == A_SYMBOL)
+            {
+            t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
+            if(strcmp(curarg->s_name, "-db")==0)
+                {
+                dbstate = 1;
+                argc -= 1;
+                argv += 1;
+                }
+            else
+                {
+                goto errstate;
+                };
+            }
+    };
+/////////////////////////////////////////////////////////////////////////////////////
+    
     t_sample *buf;
     int i;
     
@@ -101,6 +141,7 @@ static void *rms_tilde_new(t_floatarg fnpoints, t_floatarg fperiod)
     x->x_buf = buf;
     x->x_npoints = npoints;
     x->x_phase = 0;
+    x->x_db = dbstate;
     x->x_period = period;
     for (i = 0; i < MAXOVERLAP; i++) x->x_sumbuf[i] = 0;
     for (i = 0; i < npoints; i++)
@@ -109,8 +150,10 @@ static void *rms_tilde_new(t_floatarg fnpoints, t_floatarg fperiod)
     x->x_clock = clock_new(x, (t_method)rms_tilde_tick);
     x->x_outlet = outlet_new(&x->x_obj, gensym("float"));
     x->x_allocforvs = INITVSTAKEN;
-    x->x_db = 0;
     return (x);
+    errstate:
+        pd_error(x, "rms~: improper args");
+        return NULL;
 }
 
 static t_int *rms_tilde_perform(t_int *w)
@@ -182,10 +225,11 @@ static void rms_tilde_tick(t_sigrms *x) // clock callback function
 t_float powtodb(t_float f)
     {
         if (f <= 0) return (-999);
+        else if (f == 1) return (0);
         else
         {
-            t_float val = 10./LOGTEN * log(f);
-            return (val < -999 ? -999 : val);
+            t_float val = (100 + 10./LOGTEN * log(f)) ;
+            return (val < -999 ? -999 : val - 100); // ugly hack
         }
     }
                               
@@ -199,7 +243,7 @@ static void rms_tilde_free(t_sigrms *x)  // cleanup
 void rms_tilde_setup(void )
 {
     rms_tilde_class = class_new(gensym("rms~"), (t_newmethod)rms_tilde_new,
-                                (t_method)rms_tilde_free, sizeof(t_sigrms), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
+        (t_method)rms_tilde_free, sizeof(t_sigrms), 0, A_GIMME, 0);
     class_addmethod(rms_tilde_class, nullfn, gensym("signal"), 0);
     class_addmethod(rms_tilde_class, (t_method)rms_tilde_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(rms_tilde_class, (t_method)rms_set, gensym("set"), A_DEFFLOAT, A_DEFFLOAT, 0);
