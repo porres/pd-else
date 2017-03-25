@@ -265,32 +265,24 @@ static t_int *switcher_perform(t_int *w)
   t_switcher *x = (t_switcher *)(w[1]);
   int n = (int)(w[2]);
   float *out = (t_float *)(w[3+x->ninlets]);
-  if (x->actuallastchoice == 0 && x->choice == 0 && x->lastchoice == 0) // initial state
-    {
-      if(x->firsttick)
-	{
-	  int i;
-	  x->firsttick = 0;
-	}
+  if (x->actuallastchoice == 0 && x->choice == 0 && x->lastchoice == 0) { // init state
+      if(x->firsttick) {
+          int i;
+          x->firsttick = 0;
+          }
       while (n--)
-	*out++ = 0;
-    }
-  else if (x->actuallastchoice == 0 && x->choice != 0) // change from zero state to non-zero
-/*      outputfades(w, LINEAR); */
-    outputfades(w, x->fadetype);
-  else if(x->choice != 0) // change from non-zero to a different non-zero
-    outputfades(w, EPOWER);
-  else if (x->actuallastchoice != 0 && x->choice == 0) // change to zero state from non-zero
-/*      outputfades(w, LINEAR); */
-    outputfades(w, x->fadetype);
+      *out++ = 0;
+      }
+  else if (x->actuallastchoice == 0 && x->choice != 0) outputfades(w, x->fadetype); // change from 0 to non-0
+  else if(x->choice != 0) outputfades(w, EPOWER); // change from non-0 to another non-0
+  else if (x->actuallastchoice != 0 && x->choice == 0) outputfades(w, x->fadetype); // change from non-0 to 0
   checkswitchstatus(x);
   return (w+4+x->ninlets);
 }
 
 static void switcher_dsp(t_switcher *x, t_signal **sp)
 {
-  int n = sp[0]->s_n, i;
-  // must be a smarter way....
+  int n = sp[0]->s_n, i; // there must be a smarter way....
   switch (x->ninlets) 
     {
     case 1: dsp_add(switcher_perform, 4, x, n, sp[0]->s_vec, sp[1]->s_vec);
