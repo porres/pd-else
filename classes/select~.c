@@ -2,17 +2,17 @@
 #include "m_pd.h"
 #include <math.h>
 
-#define MIN_INPUT 1 //default number of sigputs (inlets without select inlet)
 #define MAX_INTPUT 500 //maximum number of channel inlets
 
 typedef struct _select
 {
     t_object   x_obj;
     int 	  x_sigputs; //inlets excluding select idx (1 indexed)
-	t_float   x_state; //0 = closed, nonzero = index of inlet to pass (1 indexed)
+    t_float   x_state; //0 = closed, nonzero = index of inlet to pass (1 indexed)
+    t_float   x_last_state;
     t_float  **x_ivecs; // copying from matrix
-    t_float  *x_ovec; // only should be single pointer since we're dealing with an array
-						//rather than an array of arrays
+    t_float  *x_ovec; // single pointer since it's an array rather than an array of arrays
+    t_float  x_time; // fade time
 } t_select;
 
 static t_class *select_class;
@@ -23,39 +23,42 @@ static void select_float(t_select *x, t_float f)
     int sigputs = x->x_sigputs;
     if (state < 0) state = 0;
     if (state > sigputs) state = sigputs;
-    x->x_state = state;
+    if (state != x->x_state){
+        x->x_last_state = x->x_state;
+        x->x_state = state;
+        }
+}
+
+static void select_time(t_select *x, t_floatarg f)
+{
+/*    int i;
+    x->x_time = (f < 0 ? 0. : f);
+    for (i = 0; i < x->x_ncells; i++)
+       x->x_ramps[i] = x->x_time; */
 }
 
 static t_int *select_perform(t_int *w)
 {
     t_select *x = (t_select *)(w[1]);
     int nblock = (int)(w[2]);
-	
-	t_float state = x->x_state;
     t_float **ivecs = x->x_ivecs;
     t_float *ovec = x->x_ovec;
-
+    t_float state = x->x_state;
+    int sigputs = x->x_sigputs;
 	int i,j;
-
-	int sigputs = x->x_sigputs;
-
 	for(i=0; i< nblock; i++){
         int curst = (int)state;
-        if (curst > sigputs){
-            curst = sigputs;
-        }
-		t_float output = 0;
-		if(curst != 0){
-			for(j=0; j<sigputs;j++){
-				if(curst == (j+1)){
-						output = ivecs[j][i];
- 				};
-			};
-		};
-		ovec[i] = output;
-	};
+        t_float output = 0;
+        if(curst != 0){
+            for(j=0; j<sigputs;j++){
+                if(curst == (j+1)) output = ivecs[j][i];
+                };
+            };
+        ovec[i] = output;
+        };
     return (w + 3);
 }
+
 
 
 static void select_dsp(t_select *x, t_signal **sp)
@@ -72,8 +75,8 @@ static void select_dsp(t_select *x, t_signal **sp)
 static void *select_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_select *x = (t_select *)pd_new(select_class);
-    t_float sigputs = (t_float) MIN_INPUT; //inlets not counting select input
-	t_float state = 0; //start off closed initially
+    t_float sigputs = 1;
+	t_float state = 0; // start off closed initially
     int i;
     int argnum = 0;
     while(argc > 0){
@@ -94,31 +97,19 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv)
             argnum++;
         };
     };
-
-	//bounds checking
-	if(sigputs < (t_float)MIN_INPUT){
-		sigputs = MIN_INPUT;
-	}
-    else if(sigputs > (t_float)MAX_INTPUT){
-    sigputs = MAX_INTPUT;
-    };
-    if(state < 0){
-		state = 0;
-	}
-	else if(state > sigputs){
-		state = sigputs;
-	};
-
+	if(sigputs < 1) sigputs = 1;
+    else if(sigputs > (t_float)MAX_INTPUT) sigputs = MAX_INTPUT;
+    if(state < 0) state = 0;
+	else if(state > sigputs) state = sigputs;
 	x->x_sigputs = (int)sigputs;
-	x->x_state = state; 
-	x->x_ivecs = getbytes(sigputs * sizeof(*x->x_ivecs));
-    
+	x->x_state = (int)state;
+    t_float   x_last_state = 0;
+    t_float  x_time = 0;
+    x->x_ivecs = getbytes(sigputs * sizeof(*x->x_ivecs));
 	for (i = 1; i < sigputs; i++){
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     };
-
     outlet_new((t_object *)x, &s_signal);
-    
     return (x);
 }
 
@@ -135,4 +126,5 @@ void select_tilde_setup(void)
     class_addmethod(select_class, nullfn, gensym("signal"), 0);
     class_addfloat(select_class, select_float);
     class_addmethod(select_class, (t_method)select_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(select_class, (t_method)select_time, gensym("time"), A_FLOAT, 0);
 }
