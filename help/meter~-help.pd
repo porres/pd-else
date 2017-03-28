@@ -13,8 +13,8 @@
 #X text 116 399 1) float;
 #X text 116 415 2) float;
 #X text 128 369 (none);
-#X obj 2 2 cnv 15 301 42 empty empty meter1~ 20 20 2 37 -233017 -1
-0;
+#X obj 2 2 cnv 15 301 42 empty empty meter~ 20 20 2 37 -233017 -1 0
+;
 #X obj 305 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -26,7 +26,7 @@
 #X obj 344 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
 #X obj 22 39 cnv 4 4 4 empty empty Mono 0 28 2 18 -233017 -1 0;
-#X obj 73 39 cnv 4 4 4 empty empty VU-meter 0 28 2 18 -233017 -1 0
+#X obj 71 39 cnv 4 4 4 empty empty VU-meter 0 28 2 18 -233017 -1 0
 ;
 #X obj 457 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
@@ -40,8 +40,8 @@
 0;
 #X text 178 334 - incoming mono signal to be vu-metered;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -110,7 +110,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -145,22 +145,26 @@
 #X restore 505 70 pd;
 #X text 178 399 - window size for the [vu~] object, f 60;
 #X text 178 415 - hop size for the [vu~] object, f 60;
-#X obj 215 133 osc~ 180;
-#X text 84 86 [meter1~] is a convenient mono VU-meter abstraction based
-on [else/vu~] and vanilla's [vu] GUI.;
-#N canvas 913 141 310 388 example 0;
-#X obj 85 81 adc~;
-#X obj 85 114 else/gain~;
-#X obj 85 170 else/meter1~;
-#X text 30 28 Use it in conjunction with [else/gain~];
+#N canvas 717 164 553 406 example 0;
+#X obj 111 69 adc~;
+#X obj 111 102 else/gain~;
+#X text 51 25 Using [else/meter~] in conjunction with [else/gain~]
+;
+#X obj 111 224 else/meter~;
+#X text 205 110 [else/meter~] is basically a wrapper of:;
+#X obj 277 187 else/vu~;
+#X obj 293 233 vu 15 120 empty empty -1 -8 0 10 -66577 -1 1 0;
+#X obj 277 156 osc~ 180;
 #X connect 0 0 1 0;
-#X connect 1 0 2 0;
-#X restore 461 291 pd example;
-#X obj 215 245 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 215 218 else/rms~ 8192;
-#X obj 215 167 else/gain~;
-#X connect 25 0 30 0;
-#X connect 29 0 28 0;
-#X connect 30 0 29 0;
+#X connect 1 0 3 0;
+#X connect 5 0 6 0;
+#X connect 5 1 6 1;
+#X connect 7 0 5 0;
+#X restore 461 286 pd example;
+#X obj 250 143 osc~ 180;
+#X text 84 86 [meter~] is a convenient mono VU-meter abstraction based
+on [else/vu~] and vanilla's [vu] GUI.;
+#X obj 250 172 else/meter~;
+#X text 129 232 [else/meter~] ==>;
+#X connect 26 0 28 0;
 #X coords 0 477 1 476 74 39 0;

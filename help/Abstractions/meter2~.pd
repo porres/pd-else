@@ -1,8 +1,8 @@
-#N canvas 799 31 425 411 10;
-#X obj 101 166 cnv 15 70 132 empty empty empty 20 12 0 14 -233017 -66577
+#N canvas 799 31 515 418 10;
+#X obj 101 153 cnv 15 70 131 empty empty empty 20 12 0 14 -233017 -66577
 0;
-#X obj 120 173 vu 15 120 \$0-R empty -1 -8 0 10 -66577 -1 1 0;
-#X obj 103 173 vu 15 120 \$0-L empty -1 -8 0 10 -66577 -1 0 0;
+#X obj 120 159 vu 15 120 \$0-R empty -1 -8 0 10 -1 -1 1 0;
+#X obj 103 159 vu 15 120 \$0-L empty -1 -8 0 10 -1 -1 0 0;
 #X obj 229 134 inlet~;
 #X obj 229 163 else/vu~;
 #X obj 290 134 inlet~;
@@ -11,11 +11,11 @@
 #X obj 290 194 pack;
 #X obj 229 221 s \$0-L;
 #X obj 290 221 s \$0-R;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 72 134 1 0 0;
-#X restore 100 165 graph;
-#X obj 102 157 cnv 5 5 5 empty empty meter2~ 0 2 0 10 -262144 -1 0
-;
+#X obj 108 151 cnv 1 56 1 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 221 292 Alexandre Torres Porres (2016);
+#X text 219 311 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 221 272 [meter2~]: Stereo Vu meter;
 #X connect 3 0 4 0;
 #X connect 4 0 7 0;
 #X connect 4 1 7 1;
@@ -24,4 +24,4 @@
 #X connect 6 1 8 1;
 #X connect 7 0 9 0;
 #X connect 8 0 10 0;
-#X coords 0 -1 1 1 72 149 2 100 150;
+#X coords 0 -1 1 1 72 135 2 100 150;
