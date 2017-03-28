@@ -36,14 +36,73 @@ static void peak_linear(t_sigpeak *x)
     x->x_db = 0;
 }
 
-
-static void *peak_tilde_new(t_floatarg fnpoints, t_floatarg fperiod)
+static void peak_set(t_sigpeak *x, t_floatarg f1, t_floatarg f2)
 {
-    int npoints = fnpoints;
-    int period = fperiod;
-    t_sigpeak *x;
+    t_sample *buf;
     int i;
-    
+    int size = f1;
+    if (size < 1) size = 1024;
+    else if (size < x->x_block) size = x->x_block;
+    int hop = f2;
+    if (hop < 1)
+        hop = size/2;
+    if (hop < size / MAXOVERLAP + 1)
+        hop = size / MAXOVERLAP + 1;
+    if (hop < x->x_block) hop = x->x_block;
+    x->x_phase = 0;
+    x->x_npoints = size;
+    x->x_period = hop;
+    // from dsp
+    if (x->x_period % x->x_block) x->x_realperiod =
+        x->x_period + x->x_block - (x->x_period % x->x_block);
+    else x->x_realperiod = x->x_period;
+}
+
+
+static void *peak_tilde_new(t_symbol *s, int argc, t_atom *argv)
+{
+    t_sigpeak *x;
+    int npoints = 0;
+    int period = 0;
+    int dbstate = 0;
+/////////////////////////////////////////////////////////////////////////////////////
+    int argnum = 0;
+    while(argc > 0)
+    {
+        if(argv -> a_type == A_FLOAT)
+        { //if current argument is a float
+            t_float argval = atom_getfloatarg(0, argc, argv);
+            switch(argnum)
+            {
+                case 0:
+                    npoints = argval;
+                    break;
+                case 1:
+                    period = argval;
+                    break;
+                default:
+                    break;
+            };
+            argnum++;
+            argc--;
+            argv++;
+        }
+        else if (argv -> a_type == A_SYMBOL)
+        {
+            t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
+            if(strcmp(curarg->s_name, "-db")==0)
+            {
+                dbstate = 1;
+                argc -= 1;
+                argv += 1;
+            }
+            else
+            {
+                goto errstate;
+            };
+        }
+    };
+/////////////////////////////////////////////////////////////////////////////////////
     if (npoints < 1) npoints = 1024;
     if (period < 1) period = npoints/2;
     if (period < npoints / MAXOVERLAP + 1)
@@ -56,9 +115,13 @@ static void *peak_tilde_new(t_floatarg fnpoints, t_floatarg fperiod)
     x->x_clock = clock_new(x, (t_method)peak_tilde_tick);
     x->x_outlet = outlet_new(&x->x_obj, gensym("float"));
     x->x_allocforvs = INITVSTAKEN;
-    x->x_db = 0;
+    x->x_db = dbstate;
     return (x);
+    errstate:
+        pd_error(x, "rms~: improper args");
+        return NULL;
 }
+
 
 static t_int *peak_tilde_perform(t_int *w)
 {
@@ -122,9 +185,10 @@ static void peak_tilde_free(t_sigpeak *x)  // cleanup
 void peak_tilde_setup(void )
 {
     peak_tilde_class = class_new(gensym("peak~"), (t_newmethod)peak_tilde_new,
-                                (t_method)peak_tilde_free, sizeof(t_sigpeak), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
+                                (t_method)peak_tilde_free, sizeof(t_sigpeak), 0, A_GIMME, 0);
     class_addmethod(peak_tilde_class, nullfn, gensym("signal"), 0);
     class_addmethod(peak_tilde_class, (t_method)peak_tilde_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(peak_tilde_class, (t_method)peak_set, gensym("set"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(peak_tilde_class, (t_method)peak_db, gensym("db"), 0);
     class_addmethod(peak_tilde_class, (t_method)peak_linear, gensym("linear"), 0);
 }
