@@ -1,44 +1,64 @@
-#N canvas 498 26 558 477 10;
-#X obj 1 439 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
-14 -228856 -66577 0;
-#X obj 1 326 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
--228856 -1 0;
-#X obj 1 361 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
-13 -228856 -1 0;
-#X obj 1 392 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
-0 13 -228856 -1 0;
-#X obj 100 334 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
--162280 0;
-#X text 128 334 signal;
-#X text 116 399 1) float;
-#X text 116 415 2) float;
-#X text 128 369 (none);
-#X obj 2 2 cnv 15 301 42 empty empty meter~ 20 20 2 37 -233017 -1 0
+#N canvas 575 59 559 458 10;
+#X obj 3 315 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 305 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 3 349 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 386 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 82 358 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 83 323 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 153 395 (none);
+#X obj 3 419 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 247 202 Linear Amplitude;
+#X obj 191 176 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 17900 1;
+#X obj 188 202 nbx 5 14 -100 100 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 1 256;
+#X text 78 131 Conversion expression: dbFS = log10(amp) * 20 \, see
+the implementation inside the abstraction.;
+#X obj 3 3 cnv 15 301 42 empty empty lin2db~ 20 20 2 37 -233017 -1
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 2 graph;
+#X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 304 2 pd;
-#X obj 344 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 22 39 cnv 4 4 4 empty empty Mono 0 28 2 18 -233017 -1 0;
-#X obj 71 39 cnv 4 4 4 empty empty VU-meter 0 28 2 18 -233017 -1 0
-;
-#X obj 457 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 40 cnv 4 4 4 empty empty Convert 0 28 2 18 -233017 -1 0;
+#X obj 94 40 cnv 4 4 4 empty empty linear 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 477 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 514 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 463 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 501 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 178 334 - incoming mono signal to be vu-metered;
+#X obj 145 40 cnv 4 4 4 empty empty amplitude 0 28 2 18 -233017 -1
+0;
+#X obj 227 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
+#X obj 249 40 cnv 4 4 4 empty empty dBFS 0 28 2 18 -233017 -1 0;
+#X text 206 325 - linear amplitude value;
+#X text 202 358 - converted dBFS amplitude value;
+#X text 78 85 [lin2db~] is a simple abstraction that converts amplitude
+values from linear to a deciBel Full Scale (dBFS). Minimum output value
+is "-999".;
+#X obj 188 230 else/lin2db~;
+#X obj 188 289 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 249 289 dBFS;
+#X text 156 325 signal;
+#X text 157 358 signal;
+#X obj 188 265 else/s2f~;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -142,29 +162,8 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 70 pd;
-#X text 178 399 - window size for the [vu~] object, f 60;
-#X text 178 415 - hop size for the [vu~] object, f 60;
-#N canvas 717 164 553 406 example 0;
-#X obj 111 69 adc~;
-#X obj 111 102 else/gain~;
-#X text 51 25 Using [else/meter~] in conjunction with [else/gain~]
-;
-#X obj 111 224 else/meter~;
-#X text 205 110 [else/meter~] is basically a wrapper of:;
-#X obj 277 187 else/vu~;
-#X obj 293 233 vu 15 120 empty empty -1 -8 0 10 -66577 -1 1 0;
-#X obj 277 156 osc~ 180;
-#X connect 0 0 1 0;
-#X connect 1 0 3 0;
-#X connect 5 0 6 0;
-#X connect 5 1 6 1;
-#X connect 7 0 5 0;
-#X restore 461 286 pd example;
-#X obj 250 143 osc~ 180;
-#X text 84 86 [meter~] is a convenient mono VU-meter abstraction based
-on [else/vu~] and vanilla's [vu] GUI.;
-#X obj 250 172 else/meter~;
-#X text 129 232 [else/meter~] ==>;
-#X connect 26 0 28 0;
-#X coords 0 477 1 476 74 39 0;
+#X restore 505 71 pd;
+#X connect 8 0 9 0;
+#X connect 9 0 29 0;
+#X connect 29 0 34 0;
+#X connect 34 0 30 0;

@@ -30,7 +30,7 @@
 0;
 #X obj 139 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
 #X obj 189 241 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.00116102 256;
+-228856 -1 -1 0.310357 256;
 #X obj 3 3 cnv 15 301 42 empty empty s2f~ 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -157,7 +157,6 @@ to be greater than 1 \, if 0 or less is given \, then it defaults to
 #X text 261 158 convert time;
 #X text 144 281 signal;
 #X text 144 368 float;
-#X text 190 368 - conerted fllat;
 #X text 190 281 - signal value to convert to float;
 #X obj 105 305 cnv 17 3 50 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
@@ -167,6 +166,7 @@ to be greater than 1 \, if 0 or less is given \, then it defaults to
 #X text 190 340 - restarts conversion;
 #X text 156 322 stop;
 #X text 150 340 start;
+#X text 190 368 - converted float;
 #X connect 21 0 24 1;
 #X connect 23 0 24 0;
 #X connect 24 0 16 0;

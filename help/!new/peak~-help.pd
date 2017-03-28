@@ -1,4 +1,4 @@
-#N canvas 447 77 560 466 10;
+#N canvas 538 71 560 466 10;
 #X obj 4 273 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 359 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -16,8 +16,6 @@
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Convert 0 28 2 18 -233017 -1 0;
-#X obj 160 40 cnv 4 4 4 empty empty float 0 28 2 18 -233017 -1 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -28,13 +26,8 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 139 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
 #X obj 189 241 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.00116102 256;
-#X obj 3 3 cnv 15 301 42 empty empty s2f~ 20 20 2 37 -233017 -1 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 3 graph;
+-228856 -1 -1 0.999164 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -141,20 +134,14 @@
 #X restore 505 71 pd;
 #X obj 105 281 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 264 179 nbx 5 14 0 1000 0 0 empty empty empty 0 -8 0 10 -228856
+#X obj 294 179 nbx 5 14 0 1000 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X obj 87 40 cnv 4 4 4 empty empty signal 0 28 2 18 -233017 -1 0;
 #X obj 189 169 noise~;
-#X obj 189 209 else/s2f~ 100;
-#X msg 294 231 start;
-#X msg 293 207 stop;
-#X text 61 88 [s2f~] coverts signals to floats. The conversion occurs
-at a time rate defined by the argument or right inlet. The time needs
-to be greater than 1 \, if 0 or less is given \, then it defaults to
-1! The right inlet can also 'stop' and 'restart' the conversion.;
+#X msg 324 231 start;
+#X msg 323 207 stop;
 #X text 141 403 1) float - conversion time in ms (default 1);
-#X text 321 178 ms;
-#X text 261 158 convert time;
+#X text 351 178 ms;
+#X text 291 158 convert time;
 #X text 144 281 signal;
 #X text 144 368 float;
 #X text 190 368 - conerted fllat;
@@ -167,8 +154,19 @@ to be greater than 1 \, if 0 or less is given \, then it defaults to
 #X text 190 340 - restarts conversion;
 #X text 156 322 stop;
 #X text 150 340 start;
-#X connect 21 0 24 1;
-#X connect 23 0 24 0;
-#X connect 24 0 16 0;
-#X connect 25 0 24 1;
-#X connect 26 0 24 1;
+#X obj 23 40 cnv 4 4 4 empty empty Detect 0 28 2 18 -233017 -1 0;
+#X obj 77 40 cnv 4 4 4 empty empty peak 0 28 2 18 -233017 -1 0;
+#X obj 120 40 cnv 4 4 4 empty empty amplitude 0 28 2 18 -233017 -1
+0;
+#X obj 3 3 cnv 15 301 42 empty empty peak~ 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#X text 61 88 [peak~] is similar to Pd Vanilla's [env~] \, but it reports
+the peak amplitude value in linear (default) or dBFS.;
+#X msg 244 164 db;
+#X obj 189 209 else/peak~;
+#X connect 17 0 41 0;
+#X connect 40 0 41 0;
+#X connect 41 0 13 0;

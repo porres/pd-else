@@ -1,0 +1,62 @@
+#N canvas 715 53 559 431 10;
+#X obj 3 286 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 320 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 357 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 82 329 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 83 294 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 151 366 (none);
+#X obj 3 390 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 276 253 Linear Amplitude;
+#X obj 191 171 hsl 180 15 -100 0 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 17900 1;
+#X obj 188 195 nbx 5 14 -100 100 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0 256;
+#X text 247 195 dBFS;
+#X text 157 296 float;
+#X text 157 329 float;
+#X obj 3 3 cnv 15 301 42 empty empty db2lin 20 20 2 37 -233017 -1 0
+;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 188 223 else/db2lin;
+#X obj 188 251 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1 256;
+#X text 206 296 - dBFS amplitude value;
+#X text 202 329 - converted linear amplitude value;
+#X text 78 85 [db2lin] is a simple abstraction that converts amplitude
+values from deciBel Full Scale (dBFS) to linear.;
+#X text 78 124 Conversion expression: amp = pow(10 \, dBFS / 20) \,
+see the implementation inside the abstraction.;
+#X obj 23 40 cnv 4 4 4 empty empty Convert 0 28 2 18 -233017 -1 0;
+#X obj 164 40 cnv 4 4 4 empty empty linear 0 28 2 18 -233017 -1 0;
+#X obj 215 40 cnv 4 4 4 empty empty amplitude 0 28 2 18 -233017 -1
+0;
+#X obj 140 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
+#X obj 92 40 cnv 4 4 4 empty empty dBFS 0 28 2 18 -233017 -1 0;
+#X connect 8 0 9 0;
+#X connect 9 0 23 0;
+#X connect 23 0 24 0;

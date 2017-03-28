@@ -35,8 +35,8 @@
 #X obj 501 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -105,7 +105,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -454,14 +454,6 @@ same as the output. We have then two non linear modes:;
 -1 -1 0 1;
 #X text 556 272 max gain;
 #X text 417 196 dB;
-#N canvas 264 70 391 161 db-to-linear 0;
-#X obj 52 69 expr pow(10 \, $f1 / 20);
-#X obj 52 30 inlet;
-#X obj 52 102 outlet;
-#X text 201 69 dBFS to linear amplitude;
-#X connect 0 0 2 0;
-#X connect 1 0 0 0;
-#X restore 441 225 pd db-to-linear;
 #X text 70 265 entry (slider) value;
 #X text 290 121 dB: This mode adopts a decibel scale with a range of
 100 dB (using the [dbtorms~] object)., f 55;
@@ -476,15 +468,16 @@ isn't loud enough \, if it is too high or even if you're using multiple
 [gain~] and they're all adding up to the same output.;
 #X obj 463 343 else/gain2~;
 #X obj 451 454 dac~;
-#X connect 23 0 35 0;
-#X connect 23 0 35 1;
-#X connect 24 0 35 2;
-#X connect 25 0 30 0;
+#X obj 441 225 else/db2lin;
+#X connect 23 0 34 0;
+#X connect 23 0 34 1;
+#X connect 24 0 34 2;
+#X connect 25 0 36 0;
 #X connect 26 0 24 0;
 #X connect 27 0 26 0;
-#X connect 30 0 26 0;
-#X connect 35 0 36 0;
-#X connect 35 1 36 1;
+#X connect 34 0 35 0;
+#X connect 34 1 35 1;
+#X connect 36 0 26 0;
 #X restore 461 275 pd scaling \; modes & gain;
 #X text 84 86 [gain2~] is a convenient stereo gain abstraction \, so
 you can adjust a stereo signal's gain. It has controls for ramp time

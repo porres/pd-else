@@ -46,11 +46,13 @@ static void rms_set(t_sigrms *x, t_floatarg f1, t_floatarg f2)
     int i;
     int size = f1;
     if (size < 1) size = 1024;
+    else if (size < x->x_block) size = x->x_block;
     int hop = f2;
     if (hop < 1)
         hop = size/2;
     if (hop < size / MAXOVERLAP + 1)
         hop = size / MAXOVERLAP + 1;
+    if (hop < x->x_block) hop = x->x_block;
     if (!(buf = getbytes(sizeof(t_sample) * (size + INITVSTAKEN))))
         {
         error("rms: couldn't allocate buffer");
@@ -59,25 +61,15 @@ static void rms_set(t_sigrms *x, t_floatarg f1, t_floatarg f2)
     x->x_phase = 0;
     x->x_npoints = size;
     x->x_period = hop;
+// from dsp part 1
+    if (x->x_period % x->x_block) x->x_realperiod =
+        x->x_period + x->x_block - (x->x_period % x->x_block);
+    else x->x_realperiod = x->x_period;
+// buffer
     for (i = 0; i < MAXOVERLAP; i++) x->x_sumbuf[i] = 0;
     for (i = 0; i < size; i++)
         buf[i] = (1. - cos((2 * 3.14159 * i) / size))/size;
     for (; i < size+INITVSTAKEN; i++) buf[i] = 0;
-// from dsp
-    if (x->x_period % x->x_block) x->x_realperiod =
-        x->x_period + x->x_block - (x->x_period % x->x_block);
-    else x->x_realperiod = x->x_period;
-    if (x->x_block > x->x_allocforvs)
-        {
-        void *xx = resizebytes(x->x_buf,
-        (x->x_npoints + x->x_allocforvs) * sizeof(t_sample),
-        (x->x_npoints + x->x_block) * sizeof(t_sample));
-        if (!xx){
-            error("env~: out of memory");
-            }
-        x->x_buf = (t_sample *)xx;
-        x->x_allocforvs = x->x_block;
-        }
 }
 
 

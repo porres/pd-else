@@ -350,21 +350,13 @@ same as the output. We have then two non linear modes:;
 #X obj 463 301 osc~ 440;
 #X msg 550 314 gain \$1;
 #X obj 441 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 -15 256;
 #X obj 550 291 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.177828 256;
 #X obj 550 177 vsl 15 80 0.1 2 0 0 empty empty empty 0 -9 0 10 -233017
 -1 -1 0 1;
 #X text 556 272 max gain;
 #X text 417 196 dB;
-#N canvas 264 70 391 161 db-to-linear 0;
-#X obj 52 69 expr pow(10 \, $f1 / 20);
-#X obj 52 30 inlet;
-#X obj 52 102 outlet;
-#X text 201 69 dBFS to linear amplitude;
-#X connect 0 0 2 0;
-#X connect 1 0 0 0;
-#X restore 441 225 pd db-to-linear;
 #X text 70 265 entry (slider) value;
 #X text 290 121 dB: This mode adopts a decibel scale with a range of
 100 dB (using the [dbtorms~] object)., f 55;
@@ -378,13 +370,14 @@ input amplitude \, and "0.5" half of it. This is useful if your input
 isn't loud enough \, if it is too high or even if you're using multiple
 [out~] objects as they all add to the same output.;
 #X obj 463 344 else/out~;
-#X connect 23 0 35 0;
-#X connect 23 0 35 1;
-#X connect 24 0 35 2;
-#X connect 25 0 30 0;
+#X obj 441 225 else/db2lin;
+#X connect 23 0 34 0;
+#X connect 23 0 34 1;
+#X connect 24 0 34 2;
+#X connect 25 0 35 0;
 #X connect 26 0 24 0;
 #X connect 27 0 26 0;
-#X connect 30 0 26 0;
+#X connect 35 0 26 0;
 #X restore 463 189 pd scaling \; modes & gain;
 #X obj 1 465 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 8 12
 0 13 -228856 -1 0;
