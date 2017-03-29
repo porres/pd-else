@@ -1,4 +1,4 @@
-#N canvas 416 23 559 579 10;
+#N canvas 590 23 559 579 10;
 #X obj 3 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 393 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -162,8 +162,6 @@
 #X obj 122 468 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
 #X text 189 468 signal;
-#X text 242 402 - Left-Front channel;
-#X text 242 424 - Right-Front channel;
 #X text 242 446 - Left-Back channel;
 #X text 242 468 - Right-Back channel;
 #X text 149 518 2) float - initial Y pan value (default 0);
@@ -178,37 +176,39 @@
 #X obj 280 238 env~;
 #X obj 319 238 env~;
 #X obj 319 263 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 89.4391 256;
+-228856 -1 -1 0 256;
 #X obj 202 138 noise~;
 #X obj 280 263 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 89.4391 256;
+-228856 -1 -1 0 256;
 #X obj 241 262 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 89.4391 256;
+-228856 -1 -1 0 256;
 #X obj 202 262 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 89.4391 256;
-#X text 202 280 left;
-#X text 200 294 front;
-#X text 240 294 front;
-#X text 242 280 right;
-#X text 282 280 left;
+-228856 -1 -1 94.996 256;
+#X text 244 281 left;
+#X text 242 295 front;
+#X text 279 294 front;
+#X text 281 280 right;
+#X text 201 279 left;
 #X text 322 280 right;
-#X text 282 294 back;
+#X text 201 293 back;
 #X text 324 294 back;
 #X text 73 88 [pan4~] is a 4-channel equal power (sin/cos) panner.
 ;
 #X text 245 176 X;
 #X text 305 189 Y;
 #X obj 202 211 else/pan4~, f 20;
-#X connect 40 0 43 0;
-#X connect 41 0 42 0;
-#X connect 42 0 64 1;
-#X connect 43 0 64 2;
-#X connect 44 0 52 0;
-#X connect 45 0 51 0;
-#X connect 46 0 50 0;
-#X connect 47 0 48 0;
-#X connect 49 0 64 0;
-#X connect 64 0 44 0;
-#X connect 64 1 45 0;
-#X connect 64 2 46 0;
-#X connect 64 3 47 0;
+#X text 242 402 - Left-Back channel;
+#X text 242 424 - Left-Front channel;
+#X connect 38 0 41 0;
+#X connect 39 0 40 0;
+#X connect 40 0 62 1;
+#X connect 41 0 62 2;
+#X connect 42 0 50 0;
+#X connect 43 0 49 0;
+#X connect 44 0 48 0;
+#X connect 45 0 46 0;
+#X connect 47 0 62 0;
+#X connect 62 0 42 0;
+#X connect 62 1 43 0;
+#X connect 62 2 44 0;
+#X connect 62 3 45 0;
