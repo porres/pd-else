@@ -1,0 +1,15 @@
+#N canvas 825 114 449 358 10;
+#X obj 164 86 cycle~ 440;
+#X obj 163 206 scope~ 201 105 2 3 128 0.701 0.713 200 0 0 0 205 229
+232 74 79 77 96 98 102 0;
+#X floatatom 292 136 5 0 0 0 - - -, f 5;
+#X msg 35 123 range 0.701 0.713;
+#X floatatom 305 170 5 0 0 0 - - -, f 5;
+#X msg 76 178 delay 200;
+#X obj 158 123 rms~;
+#X connect 0 0 6 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 1;
+#X connect 5 0 1 0;
+#X connect 6 0 1 0;

@@ -29,6 +29,7 @@ imp~.class.sources := classes/imp~.c
 imp2~.class.sources := classes/imp2~.c
 lastvalue~.class.sources := classes/lastvalue~.c
 median~.class.sources := classes/median~.c
+pan2~.class.sources := classes/pan2~.c
 par~.class.sources := classes/par~.c
 peak~.class.sources := classes/peak~.c
 pimp~.class.sources := classes/pimp~.c

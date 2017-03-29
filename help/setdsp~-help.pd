@@ -1,0 +1,49 @@
+#N canvas 429 61 559 442 10;
+#X obj 3 308 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 340 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 369 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 3 403 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 64 40 cnv 4 4 4 empty empty on/off 0 28 2 18 -233017 -1 0;
+#X obj 21 40 cnv 4 4 4 empty empty DSP 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 3 4 cnv 15 301 42 empty empty setdsp~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 4 graph;
+#X obj 120 40 cnv 4 4 4 empty empty interface 0 28 2 18 -233017 -1
+0;
+#X text 155 347 (none);
+#X text 155 317 (none);
+#X text 313 235 <= click to change the status;
+#X text 149 380 1) dsp status flag: -off or -on;
+#X text 74 88 [setdsp~] is a convenient abstraction to display and
+set Pd's audio engine (aka 'DSP') state. You can just click on it to
+change it to On/Off via it toggle interface. This object is commonly
+found in the documentation of the ELSE library audio objects \, at
+the top right corner.;
+#X text 76 163 By default \, the [setdsp~] object will check the current
+DSP state and load accordingly (on or off). But you can give it a flag
+to set the DSP state (-on/-off).;
+#X obj 261 224 else/setdsp~;
+#X text 119 272 [setdsp~] object ==>;
