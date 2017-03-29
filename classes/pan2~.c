@@ -1,6 +1,9 @@
 // Porres 2016
 
 #include "m_pd.h"
+#include <math.h>
+
+#define HALF_PI (M_PI * 0.5)
 
 static t_class *pan2_class;
 
@@ -25,8 +28,8 @@ static t_int *pan2_perform(t_int *w)
         if (pan < -1) pan = -1;
         if (pan > 1) pan = 1;
         pan = (pan + 1) * 0.5;
-        *out1++ = in * (1 - pan);
-        *out2++ = in * pan;
+        *out1++ = in * (pan == 1 ? 0 : cos(pan * HALF_PI));
+        *out2++ = in * sin(pan * HALF_PI);
     }
     return (w + 7);
 }
