@@ -24,8 +24,9 @@ static t_int *pan2_perform(t_int *w)
         float pan = *in2++;
         if (pan < -1) pan = -1;
         if (pan > 1) pan = 1;
-        *out1++ = in;
-        *out2++ = pan;
+        pan = (pan + 1) * 0.5;
+        *out1++ = in * (1 - pan);
+        *out2++ = in * pan;
     }
     return (w + 7);
 }
@@ -56,13 +57,8 @@ static void *pan2_new(t_floatarg f)
 
 void pan2_tilde_setup(void)
 {
-    pan2_class = class_new(gensym("pan2~"),
-        (t_newmethod)pan2_new,
-        (t_method)pan2_free,
-        sizeof(t_pan2),
-        CLASS_DEFAULT,
-        A_DEFFLOAT,
-        0);
+    pan2_class = class_new(gensym("pan2~"), (t_newmethod)pan2_new,
+        (t_method)pan2_free, sizeof(t_pan2), CLASS_DEFAULT, A_DEFFLOAT, 0);
         class_addmethod(pan2_class, nullfn, gensym("signal"), 0);
         class_addmethod(pan2_class, (t_method)pan2_dsp, gensym("dsp"), A_CANT, 0);
 }
