@@ -34,8 +34,8 @@
 #X connect 12 0 8 0;
 #X connect 13 0 9 0;
 #X connect 13 1 7 0;
-#X restore 57 146 pd quartic;
-#X obj 37 296 outlet~;
+#X restore 52 156 pd quartic;
+#X obj 37 276 outlet~;
 #N canvas 743 262 450 300 dB 0;
 #X obj 129 110 line~;
 #X obj 129 76 inlet;
@@ -66,7 +66,7 @@
 #X connect 11 0 2 0;
 #X connect 12 0 10 0;
 #X connect 13 0 7 0;
-#X restore 136 146 pd dB;
+#X restore 131 156 pd dB;
 #N canvas 251 205 450 300 linear 0;
 #X obj 136 65 line~;
 #X obj 136 31 inlet;
@@ -93,38 +93,22 @@
 #X connect 10 0 6 0;
 #X connect 10 1 4 0;
 #X connect 11 0 2 0;
-#X restore 192 146 pd linear;
-#N canvas 930 375 329 221 max_gain 0;
-#X obj 46 35 inlet~;
-#X obj 46 171 outlet~;
-#X obj 46 100 *~;
-#X obj 105 91 expr if($f1 <= 0 \, 1 \, $f1);
-#X obj 105 65 r \$0-max_gain;
-#X msg 105 116 \$1 15;
-#X obj 105 141 line~;
-#X connect 0 0 2 0;
-#X connect 2 0 1 0;
-#X connect 3 0 5 0;
-#X connect 4 0 3 0;
-#X connect 5 0 6 0;
-#X connect 6 0 2 1;
-#X restore 136 197 pd max_gain;
-#X obj 136 59 receive \$0-slider;
-#X obj 205 97 r \$0-ramp;
-#X obj 136 96 pack f 20;
-#X obj 35 21 inlet~;
-#X obj 37 252 *~;
-#X connect 0 0 4 0;
-#X connect 2 0 4 0;
-#X connect 3 0 4 0;
-#X connect 4 0 9 1;
-#X connect 5 0 7 0;
-#X connect 6 0 7 1;
-#X connect 7 0 2 0;
-#X connect 7 0 3 0;
-#X connect 7 0 0 0;
-#X connect 8 0 9 0;
-#X connect 9 0 1 0;
+#X restore 187 156 pd linear;
+#X obj 131 69 receive \$0-slider;
+#X obj 200 107 r \$0-ramp;
+#X obj 131 106 pack f 20;
+#X obj 35 31 inlet~;
+#X obj 37 232 *~;
+#X connect 0 0 8 1;
+#X connect 2 0 8 1;
+#X connect 3 0 8 1;
+#X connect 4 0 6 0;
+#X connect 5 0 6 1;
+#X connect 6 0 2 0;
+#X connect 6 0 3 0;
+#X connect 6 0 0 0;
+#X connect 7 0 8 0;
+#X connect 8 0 1 0;
 #X restore 356 187 pd gain~;
 #X obj 428 41 inlet~;
 #X obj 428 256 outlet~;
@@ -161,7 +145,7 @@
 #X connect 12 0 8 0;
 #X connect 13 0 9 0;
 #X connect 13 1 7 0;
-#X restore 57 146 pd quartic;
+#X restore 52 166 pd quartic;
 #X obj 37 296 outlet~;
 #N canvas 743 262 450 300 dB 0;
 #X obj 129 110 line~;
@@ -193,7 +177,7 @@
 #X connect 11 0 2 0;
 #X connect 12 0 10 0;
 #X connect 13 0 7 0;
-#X restore 136 146 pd dB;
+#X restore 131 166 pd dB;
 #N canvas 251 205 450 300 linear 0;
 #X obj 136 65 line~;
 #X obj 136 31 inlet;
@@ -220,104 +204,63 @@
 #X connect 10 0 6 0;
 #X connect 10 1 4 0;
 #X connect 11 0 2 0;
-#X restore 192 146 pd linear;
-#N canvas 930 375 329 221 max_gain 0;
-#X obj 46 35 inlet~;
-#X obj 46 171 outlet~;
-#X obj 46 100 *~;
-#X obj 105 91 expr if($f1 <= 0 \, 1 \, $f1);
-#X obj 105 65 r \$0-max_gain;
-#X msg 105 116 \$1 15;
-#X obj 105 141 line~;
-#X connect 0 0 2 0;
-#X connect 2 0 1 0;
-#X connect 3 0 5 0;
-#X connect 4 0 3 0;
-#X connect 5 0 6 0;
-#X connect 6 0 2 1;
-#X restore 136 197 pd max_gain;
-#X obj 205 97 r \$0-ramp;
-#X obj 136 96 pack f 20;
+#X restore 187 166 pd linear;
+#X obj 200 117 r \$0-ramp;
+#X obj 131 116 pack f 20;
 #X obj 35 21 inlet~;
 #X obj 37 252 *~;
-#X obj 136 58 receive \$0-slider2;
-#X connect 0 0 4 0;
-#X connect 2 0 4 0;
-#X connect 3 0 4 0;
-#X connect 4 0 8 1;
-#X connect 5 0 6 1;
-#X connect 6 0 2 0;
-#X connect 6 0 3 0;
-#X connect 6 0 0 0;
-#X connect 7 0 8 0;
-#X connect 8 0 1 0;
-#X connect 9 0 6 0;
+#X obj 131 78 receive \$0-slider2;
+#X connect 0 0 7 1;
+#X connect 2 0 7 1;
+#X connect 3 0 7 1;
+#X connect 4 0 5 1;
+#X connect 5 0 2 0;
+#X connect 5 0 3 0;
+#X connect 5 0 0 0;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;
+#X connect 8 0 5 0;
 #X restore 428 187 pd gain~;
 #X obj 154 103 hsl 82 8 0 127 0 0 \$0-djhd \$0-djhdahkadgkha empty
 -2 -8 0 10 -228856 -228856 -228856 0 1;
-#X obj 154 268 hsl 82 8 0 127 0 0 \$0-djhd \$0-djhdahkadgkha empty
--2 -8 0 10 -228856 -228856 -228856 0 1;
-#X obj 161 196 cnv 1 18 1 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 161 197 cnv 1 18 1 empty empty empty 20 12 0 14 -233017 -66577
 0;
-#X obj 151 260 nbx 4 14 -100 100 0 0 \$0-panL \$0-panL-set empty 0
--8 0 10 -228856 -1 -1 0 256;
-#X obj 194 260 nbx 4 14 -100 100 0 0 \$0-panL \$0-panL-set empty 0
--8 0 10 -228856 -1 -1 0 256;
-#X obj 151 107 vsl 43 150 0 1 0 0 \$0-slider \$0-set-slider empty 24
-9 0 14 -228856 -1 -1 6500 1;
+#X obj 151 107 vsl 43 150 0 1 0 0 \$0-slider1 \$0-set-slider1 empty
+24 9 0 14 -228856 -1 -1 0 1;
 #X obj 195 107 vsl 43 150 0 1 0 0 \$0-slider2 \$0-set-slider2 empty
-24 9 0 14 -228856 -1 -1 8400 1;
+24 9 0 14 -228856 -1 -1 0 1;
 #X obj 152 104 cnv 1 85 1 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X obj 192 261 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X obj 235 261 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X obj 237 261 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X obj 237 263 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X obj 152 274 cnv 1 86 1 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X obj 153 276 cnv 1 2 1 empty empty empty 20 12 0 14 -1 -66577 0;
-#X obj 158 276 cnv 1 73 1 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X obj 158 101 cnv 1 32 2 empty empty empty 20 12 0 14 -233017 -66577
 0;
-#X obj 194 101 cnv 1 1 176 empty empty empty 20 12 0 14 -1 -66577 0
-;
-#N canvas 119 196 423 259 set_GUI 0;
-#X obj 34 212 s \$0-set-slider;
+#N canvas 273 66 516 311 set_GUI 0;
 #X obj 59 20 inlet;
-#X obj 34 178 clip 0 1;
-#X obj 284 85 loadbang;
-#X obj 284 163 s \$0-max_gain;
-#X text 282 62 Load args;
-#X obj 59 54 route float mode gain ramp;
-#X obj 97 178 s \$0-mode;
-#X obj 135 151 s \$0-max_gain;
-#X obj 135 105 moses 0;
-#X obj 135 83 * -1;
-#X obj 135 127 * -1;
-#X obj 193 106 s \$0-ramp;
-#X obj 193 85 max 5;
-#X obj 317 137 s \$0-mode;
-#X obj 284 125 \$1;
-#X obj 317 113 \$2;
-#X connect 1 0 6 0;
-#X connect 2 0 0 0;
-#X connect 3 0 15 0;
-#X connect 3 0 16 0;
-#X connect 6 0 2 0;
-#X connect 6 1 7 0;
-#X connect 6 2 10 0;
-#X connect 6 3 13 0;
+#X obj 58 84 clip 0 1;
+#X obj 417 161 loadbang;
+#X text 415 138 Load args;
+#X obj 417 211 s \$0-mode;
+#X obj 417 187 \$1;
+#X obj 59 54 route gain1 gain2 pan1 pan2 mode, f 54;
+#X obj 315 81 s \$0-mode;
+#X obj 123 84 clip 0 1;
+#X obj 239 142 clip -100 100;
+#X obj 277 110 clip -100 100;
+#X obj 239 196 s \$0-panL-set;
+#X obj 278 171 s \$0-panR-set;
+#X obj 58 164 s \$0-set-slider1;
+#X obj 88 124 s \$0-set-slider2;
+#X connect 0 0 6 0;
+#X connect 1 0 13 0;
+#X connect 2 0 5 0;
+#X connect 5 0 4 0;
+#X connect 6 0 1 0;
+#X connect 6 1 8 0;
+#X connect 6 2 9 0;
+#X connect 6 3 10 0;
+#X connect 6 4 7 0;
+#X connect 8 0 14 0;
 #X connect 9 0 11 0;
-#X connect 10 0 9 0;
-#X connect 11 0 8 0;
-#X connect 13 0 12 0;
-#X connect 15 0 4 0;
-#X connect 16 0 14 0;
+#X connect 10 0 12 0;
 #X restore 515 168 pd set_GUI;
 #X obj 515 123 inlet;
 #X obj 199 101 cnv 1 32 2 empty empty empty 20 12 0 14 -233017 -66577
@@ -348,11 +291,31 @@
 #X connect 8 0 0 0;
 #X connect 9 0 1 0;
 #X restore 395 217 pd pan;
+#X obj 151 260 nbx 4 14 -100 100 0 0 \$0-panL \$0-panL-set empty 0
+-8 2 12 -228856 -1 -1 0 256;
+#X obj 195 260 nbx 4 14 -100 100 0 0 \$0-panR \$0-panR-set empty 0
+-8 2 12 -228856 -1 -1 0 256;
+#X obj 190 261 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 192 261 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 192 262 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 235 261 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 237 261 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 237 262 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 158 274 cnv 1 73 1 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 194 101 cnv 1 1 175 empty empty empty 20 12 0 14 -1 -66577 0
+;
 #X connect 0 0 2 0;
-#X connect 2 0 26 0;
+#X connect 2 0 15 0;
 #X connect 3 0 5 0;
-#X connect 5 0 26 1;
-#X connect 24 0 23 0;
-#X connect 26 0 1 0;
-#X connect 26 1 4 0;
-#X coords 0 0 1 1 89 178 2 150 100;
+#X connect 5 0 15 1;
+#X connect 13 0 12 0;
+#X connect 15 0 1 0;
+#X connect 15 1 4 0;
+#X coords 0 0 1 1 89 176 2 150 100;

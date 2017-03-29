@@ -19,6 +19,7 @@ rescale.class.sources := classes/rescale.c
 
 # signal:
 accum~.class.sources := classes/accum~.c
+balance~.class.sources := classes/balance~.c
 cents2ratio~.class.sources := classes/cents2ratio~.c
 changed~.class.sources := classes/changed~.c
 downsample~.class.sources := classes/downsample~.c
