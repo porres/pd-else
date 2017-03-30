@@ -48,10 +48,10 @@ static void *lastvalue_free(t_lastvalue *x)
     return (void *)x;
 }
 
-static void *lastvalue_new(void)
+static void *lastvalue_new(t_floatarg f)
 {
     t_lastvalue *x = (t_lastvalue *)pd_new(lastvalue_class);
-    x->x_last = 0;
+    x->x_last = f;
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return (x);
 }
