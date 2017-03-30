@@ -18,6 +18,42 @@ typedef struct _gbman
 } t_gbman;
 
 
+static void gbman_list(t_gbman *x, t_symbol *s, int argc, t_atom * argv)
+{
+    if (argc > 2)
+        {
+        pd_error(x, "gbman~: list size needs to be = 2");
+        }
+    else{
+        int argnum = 0; // current argument
+        while(argc)
+        {
+            if(argv -> a_type != A_FLOAT)
+                {
+                pd_error(x, "gbman~: list needs to only contain floats");
+                }
+            else
+                {
+                t_float curf = atom_getfloatarg(0, argc, argv);
+                switch(argnum)
+                    {
+                    case 0:
+                        x->x_y_nm1 = curf;
+                        break;
+                    case 1:
+                        x->x_y_nm2 = curf;
+                        break;
+                    };
+                argnum++;
+                };
+            argc--;
+            argv++;
+        };
+    }
+}
+
+
+
 static t_int *gbman_perform(t_int *w)
 {
     t_gbman *x = (t_gbman *)(w[1]);
@@ -105,5 +141,6 @@ void gbman_tilde_setup(void)
         (t_newmethod)gbman_new, (t_method)gbman_free,
         sizeof(t_gbman), 0, A_GIMME, 0);
     CLASS_MAINSIGNALIN(gbman_class, t_gbman, x_freq);
+    class_addlist(gbman_class, gbman_list);
     class_addmethod(gbman_class, (t_method)gbman_dsp, gensym("dsp"), A_CANT, 0);
 }
