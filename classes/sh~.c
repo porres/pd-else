@@ -42,12 +42,12 @@ static void *sh_free(t_sh *x)
     return (void *)x;
 }
 
-static void *sh_new(void)
+static void *sh_new(t_floatarg f)
 {
     t_sh *x = (t_sh *)pd_new(sh_class);
     x->x_triglet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     outlet_new((t_object *)x, &s_signal);
-    x->x_lastout = 0;
+    x->x_lastout = f;
     return (x);
 }
 
@@ -58,6 +58,7 @@ void sh_tilde_setup(void)
         (t_method)sh_free,
         sizeof(t_sh),
         CLASS_DEFAULT,
+        A_DEFFLOAT,
         0);
         class_addmethod(sh_class, nullfn, gensym("signal"), 0);
         class_addmethod(sh_class, (t_method)sh_dsp, gensym("dsp"), A_CANT, 0);

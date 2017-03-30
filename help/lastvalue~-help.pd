@@ -29,15 +29,11 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 112 40 cnv 4 4 4 empty empty value 0 28 2 18 -233017 -1 0;
-#X obj 204 271 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 204 122 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 164 272 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 92 256;
+#X obj 212 117 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 204 212 else/lastvalue~;
-#X obj 204 184 sig~;
-#X obj 204 152 random 100;
-#X obj 249 184 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#X obj 212 141 random 100;
 #X text 61 88 [lastvalue~] reports the last value when the signal changes
 ;
 #X obj 3 3 cnv 15 301 42 empty empty lastvalue~ 20 20 2 37 -233017
@@ -149,17 +145,25 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X text 142 385 (none);
 #X text 145 350 signal;
 #X obj 106 314 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 145 314 signal;
 #X text 191 350 - last input value;
 #X text 191 314 - signal to detect the last value;
-#X obj 204 242 else/s2f~ 100;
-#X connect 17 0 20 0;
-#X connect 18 0 32 0;
-#X connect 19 0 18 0;
-#X connect 20 0 21 0;
-#X connect 20 0 19 0;
-#X connect 32 0 16 0;
+#X obj 164 250 else/s2f~ 100;
+#X obj 164 217 else/lastvalue~ 3;
+#X text 138 385 1) float - initial last value (default 0);
+#X text 372 233 <= current value;
+#X text 251 270 <= last value;
+#X obj 212 168 sig~ 13;
+#X obj 287 233 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 13 256;
+#X obj 287 211 else/s2f~ 100;
+#X connect 17 0 18 0;
+#X connect 18 0 33 0;
+#X connect 28 0 16 0;
+#X connect 29 0 28 0;
+#X connect 33 0 29 0;
+#X connect 33 0 35 0;
+#X connect 35 0 34 0;

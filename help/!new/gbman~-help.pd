@@ -1,0 +1,10 @@
+#N canvas 466 26 814 428 10;
+#X obj 356 141 out~;
+#X floatatom 378 65 5 0 0 0 - - -, f 5;
+#X obj 388 38 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 376 97 gbman~ 800 -0.7 -2.7;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 0 0;
+#X connect 3 0 0 1;
