@@ -1,3 +1,7 @@
+ELSE 1.0 (currently at alpha stage)
+
+----------------------------------------------
+
 ELSE - EL Locus Solus' Else - library for Pd
 
 "EL Locus Solus" is run by Alexandre Torres Porres, who organizes cultural events and teaches computer music courses since around 2009, at the time of PdCon09 (the 3rd International Pure Data Convention in 2009, São Paulo - Brasil); website: http://alexandre-torres.wixsite.com/el-locus-solus
