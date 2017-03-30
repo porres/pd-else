@@ -16,58 +16,85 @@ Porres; 2017
 
 ----------------------
 
-Objects:
+62 Objects:
 
-OSCILLATORS (8):
+DETERMINISTIC GENERATORS: OSCILLATORS (7)
 - [imp~]
 - [imp2~]
-- [lfnoise~]
-- [par~]
+- [parabolic~]
 - [pulse~]
 - [sawtooth~]
 - [square~]
-- [vartri~]
+- [vtriangle~]
 
-CONVERSION (12):
+CHAOTIC GENERATORS (2):
+- [clipnoise~] 
+- [lfnoise~]
+
+
+CONVERSION (16):
 - [cents2rato]
 - [cents2ratio~]
-- [f2s~]
+- [db2lin]
+- [db2lin~]
+- [float2sig~]
 - [hz2rad]
 - [hz2rad~]
+- [lin2db]
+- [lin2db~]
 - [rad2hz]
 - [rad2hz~]
 - [ratio2cents]
 - [ratio2cents~]
 - [rescale]
 - [rescale~]
-- [s2f~]
+- [sig2float~]
 
-SIGNAL ANALYSIS (7):
+SIGNAL ANALYSIS (9):
 - [changed~]
 - [elapsed~]
 - [lastvalue~]
 - [median~]
+- [peak~]
+- [rms~]
 - [togedge~]
-- [trigcount~]
+- [vu~]
 - [zerocross~]
 
-TRIGGERS (5):
+TRIGGERS (8):
 - [dust~]
+- [dust2~]
 - [pimp~]
+- [pulsecount~]
+- [pulsediv~]
 - [sh~]
 - [toggleff~]
 - [trigate~]
 
-CONSTANT VALUES (3):
+CONSTANT VALUES (4):
 - [nyquist]
 - [pi]
 - [sr~]
+- [e]
 
-GUI (1):
+GUI (8):
 - [out~]
+- [gain~]
+- [gain2~]
+- [meter~]
+- [meter2~]
+- [mix2~]
+- [mix4~]
+- [setdsp~]
 
 MISCELANEOUS (4):
 - [accum~]
 - [downsample~]
 - [lastvalue]
 - [sin~]
+
+SIGNAL ROUTING (4):
+- [balance~]
+- [pan2~]
+- [pan4~]
+- [xfade~]
