@@ -1,0 +1,14 @@
+#N canvas 810 233 419 255 10;
+#X obj 102 188 outlet~;
+#X obj 51 34 inlet;
+#X msg 51 117 set 1;
+#X obj 51 141 fexpr~ 0 \; $y1[-1];
+#X obj 51 66 route bang;
+#X text 158 102 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 160 83 Alexandre Torres Porres (2017);
+#X obj 65 92 loadbang;
+#X connect 1 0 4 0;
+#X connect 2 0 3 0;
+#X connect 3 1 0 0;
+#X connect 4 0 2 0;
+#X connect 7 0 2 0;

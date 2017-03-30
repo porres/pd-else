@@ -1,94 +1,109 @@
-// Porres 2016
+// Porres 2017
 
-#include "m_pd.h"
 #include <math.h>
+#include "m_pd.h"
 
-static t_class *cents2ratio_class;
+static t_class *gbman_class;
 
-typedef struct _cents2ratio {
-  t_object x_obj;
-  t_inlet *x_inlet;
-  t_outlet *x_outlet;
-} t_cents2ratio;
-
-void *cents2ratio_new(void);
-static t_int * cents2ratio_perform(t_int *w);
-static void cents2ratio_dsp(t_cents2ratio *x, t_signal **sp);
-
-static t_int * cents2ratio_perform(t_int *w)
+typedef struct _gbman
 {
-  t_cents2ratio *x = (t_cents2ratio *)(w[1]); // ???
-  int n = (int)(w[2]);
-  t_float *in = (t_float *)(w[3]);
-  t_float *out = (t_float *)(w[4]);
-  while(n--)
-*out++ = pow(2, (*in++/1200));
-  return (w + 5);
-}
-
-A non-interpolating sound generator based on the difference equations:
-x(n) = 1 - y[n-1] + abs(x[n-1])
-y(n) = x(n-1)
+    t_object  x_obj;
+    int x_val;
+    t_float  x_y_nm1;
+    t_float  x_y_nm2;
+    t_float  x_sr;
+    double  x_phase;
+    t_float  x_freq;
+    t_outlet *x_outlet;
+} t_gbman;
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void GbmanN_next(GbmanN *unit, int inNumSamples){
-    float *out = ZOUT(0);
-    float freq = ZIN0(0);
-    
-    double last_out = unit->last_out;
-    double y_nm2 = unit->y_nm2;
-    float counter = unit->counter;
-    
-    float samplesPerCycle;
-    if(freq < unit->mRate->mSampleRate)
-        samplesPerCycle = unit->mRate->mSampleRate / sc_max(freq, 0.001f);
-    else samplesPerCycle = 1.f;
-    
-    for (int i=0; i<inNumSamples; ++i) {
-        if(counter >= samplesPerCycle){
-            counter -= samplesPerCycle;
-            double y_nm1 = last_out;
-
-            double out = 1.f - y_nm2 + abs(y_nm1);
-            
+static t_int *gbman_perform(t_int *w)
+{
+    t_gbman *x = (t_gbman *)(w[1]);
+    int nblock = (t_int)(w[2]);
+    int *vp = (int *)(w[3]);
+    t_float *in = (t_float *)(w[4]);
+    t_sample *out = (t_sample *)(w[5]);
+    int val = *vp;
+    t_float y_nm1 = x->x_y_nm1;
+    t_float y_nm2 = x->x_y_nm2;
+    double phase = x->x_phase;
+    double sr = x->x_sr;
+    while (nblock--)
+    {
+        t_float hz = *in++;
+        double phase_step = hz / sr; // phase_step
+        phase_step = phase_step > 1 ? 1. : phase_step < -1 ? -1 : phase_step; // clipped phase_step
+        int trig;
+        t_float output;
+        if (hz >= 0)
+            {
+            trig = phase >= 1.;
+            if (phase >= 1.) phase = phase - 1;
+            }
+        else
+            {
+            trig = (phase <= 0.);
+            if (phase <= 0.) phase = phase + 1.;
+            }
+        if (trig) // update
+            {
+            output = 1 + fabsf(y_nm1) - y_nm2;
             y_nm2 = y_nm1;
-        }
-        counter++;
-        ZXP(out) = out;
+            y_nm1 = output;
+            }
+        else output = y_nm1; // last output
+        *out++ = output;
+        phase += phase_step;
     }
-    unit->last_out = out;
-    unit->y_nm2 = y_nm2;
-    unit->counter = counter;
+    x->x_phase = phase;
+    x->x_y_nm1 = y_nm1;
+    x->x_y_nm2 = y_nm2;
+    return (w + 6);
 }
 
-void GbmanN_Ctor(GbmanN *unit){
-    SETCALC(GbmanN_next);
-    unit->last_out = ZIN0(1);
-    unit->y_nm2 = ZIN0(2);
-    unit->counter = 0.f;
-    GbmanN_next(unit, 1);
-}
-
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-static void cents2ratio_dsp(t_cents2ratio *x, t_signal **sp)
+static void gbman_dsp(t_gbman *x, t_signal **sp)
 {
-  dsp_add(cents2ratio_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
+    x->x_sr = sp[0]->s_sr;
+    dsp_add(gbman_perform, 5, x, sp[0]->s_n, &x->x_val, sp[0]->s_vec, sp[1]->s_vec);
 }
 
-void *cents2ratio_new(void)
+static void *gbman_free(t_gbman *x)
 {
-  t_cents2ratio *x = (t_cents2ratio *)pd_new(cents2ratio_class); 
-  x->x_inlet = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-  x->x_outlet = outlet_new(&x->x_obj, &s_signal);
-  return (void *)x;
+    outlet_free(x->x_outlet);
+    return (void *)x;
 }
 
-void cents2ratio_tilde_setup(void) {
-  cents2ratio_class = class_new(gensym("cents2ratio~"),
-    (t_newmethod) cents2ratio_new, 0, sizeof (t_cents2ratio), CLASS_NOINLET, 0);
-  class_addmethod(cents2ratio_class, (t_method) cents2ratio_dsp, gensym("dsp"), 0);
+
+static void *gbman_new(t_symbol *s, int ac, t_atom *av)
+{
+    t_gbman *x = (t_gbman *)pd_new(gbman_class);
+    x->x_sr = sys_getsr();
+    t_float hz = x->x_sr * 0.5, y1 = 1.2, y2 = 2.1; // default parameters
+    if (ac && av->a_type == A_FLOAT)
+    {
+        hz = av->a_w.w_float;
+        ac--; av++;
+        if (ac && av->a_type == A_FLOAT)
+            y1 = av->a_w.w_float;
+            ac--; av++;
+            if (ac && av->a_type == A_FLOAT)
+                y2 = av->a_w.w_float;
+    }
+    if(hz >= 0) x->x_phase = 1;
+    x->x_freq  = hz;
+    x->x_y_nm1 = y1;
+    x->x_y_nm2 = y2;
+    x->x_outlet = outlet_new(&x->x_obj, &s_signal);
+    return (x);
+}
+
+void gbman_tilde_setup(void)
+{
+    gbman_class = class_new(gensym("gbman~"),
+        (t_newmethod)gbman_new, (t_method)gbman_free,
+        sizeof(t_gbman), 0, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(gbman_class, t_gbman, x_freq);
+    class_addmethod(gbman_class, (t_method)gbman_dsp, gensym("dsp"), A_CANT, 0);
 }

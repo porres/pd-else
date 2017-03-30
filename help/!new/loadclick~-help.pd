@@ -1,0 +1,67 @@
+#N canvas 698 77 559 500 10;
+#X obj 4 318 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 373 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 428 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 127 382 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 461 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 232 382 - converted ratio value(s);
+#X obj 23 40 cnv 4 4 4 empty empty Trigger 0 28 2 18 -233017 -1 0;
+#X obj 85 40 cnv 4 4 4 empty empty impulse 0 28 2 18 -233017 -1 0;
+#X obj 127 326 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 127 348 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 172 348 float;
+#X text 212 348 - gate time in ms;
+#X text 128 437 1) float - gate time in ms (default 0 \, no gate);
+#X obj 127 405 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 166 405 signal;
+#X text 178 326 bang;
+#X text 212 326 - generate trigger impulse/gate;
+#X text 166 382 signal;
+#X text 212 405 - tomed gate;
+#X obj 151 40 cnv 4 4 4 empty empty & 0 28 2 18 -233017 -1 0;
+#X obj 173 40 cnv 4 4 4 empty empty timed 0 28 2 18 -233017 -1 0;
+#X obj 223 40 cnv 4 4 4 empty empty gate 0 28 2 18 -233017 -1 0;
+#X obj 263 40 cnv 4 4 4 empty empty from 0 28 2 18 -233017 -1 0;
+#X obj 306 40 cnv 4 4 4 empty empty bangs 0 28 2 18 -233017 -1 0;
+#X obj 3 3 cnv 15 301 42 empty empty trigate~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 304 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X text 68 88 When receiving a bang \, [trigate~] sends a trigger impulse
+out the left outlet and a timed gate trgger out the right outlet (values
+of 1 for the duration \, 0 otherwise). The length of the gate is given
+in ms \, if 0 or less is given \, no gate is output.;
+#X obj 174 242 out~;
+#X obj 193 206 imp~;
+#X msg 217 181 1;
+#X obj 296 247 number~;
+#X connect 36 0 35 0;
+#X connect 36 0 35 1;
+#X connect 36 0 38 0;
+#X connect 37 0 36 2;

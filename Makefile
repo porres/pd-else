@@ -25,6 +25,7 @@ cents2ratio~.class.sources := classes/cents2ratio~.c
 changed~.class.sources := classes/changed~.c
 downsample~.class.sources := classes/downsample~.c
 elapsed~.class.sources := classes/elapsed~.c
+gbman~.class.sources := classes/gbman~.c
 lfnoise~.class.sources := classes/lfnoise~.c
 hz2rad~.class.sources := classes/hz2rad~.c
 imp~.class.sources := classes/imp~.c
