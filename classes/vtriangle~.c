@@ -4,9 +4,9 @@
 #include "math.h"
 
 
-static t_class *vtri_class;
+static t_class *vtriangle_class;
 
-typedef struct _vtri
+typedef struct _vtriangle
 {
     t_object x_obj;
     double  x_phase;
@@ -17,11 +17,11 @@ typedef struct _vtri
     t_inlet  *x_inlet_sync;
     t_outlet *x_outlet;
     t_float x_sr;
-} t_vtri;
+} t_vtriangle;
 
-static t_int *vtri_perform(t_int *w)
+static t_int *vtriangle_perform(t_int *w)
 {
-    t_vtri *x = (t_vtri *)(w[1]);
+    t_vtriangle *x = (t_vtriangle *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // width
@@ -73,13 +73,13 @@ static t_int *vtri_perform(t_int *w)
     return (w + 8);
 }
 
-static void vtri_dsp(t_vtri *x, t_signal **sp)
+static void vtriangle_dsp(t_vtriangle *x, t_signal **sp)
 {
-    dsp_add(vtri_perform, 7, x, sp[0]->s_n,
+    dsp_add(vtriangle_perform, 7, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
-static void *vtri_free(t_vtri *x)
+static void *vtriangle_free(t_vtriangle *x)
 {
     inlet_free(x->x_inlet_width);
     inlet_free(x->x_inlet_phase);
@@ -88,9 +88,9 @@ static void *vtri_free(t_vtri *x)
     return (void *)x;
 }
 
-static void *vtri_new(t_symbol *s, int ac, t_atom *av)
+static void *vtriangle_new(t_symbol *s, int ac, t_atom *av)
 {
-    t_vtri *x = (t_vtri *)pd_new(vtri_class);
+    t_vtriangle *x = (t_vtriangle *)pd_new(vtriangle_class);
     t_float f1 = 0, f2 = 0.5, f3 = 0;
     if (ac && av->a_type == A_FLOAT)
     {
@@ -130,11 +130,11 @@ static void *vtri_new(t_symbol *s, int ac, t_atom *av)
     return (x);
 }
 
-void vtri_tilde_setup(void)
+void vtriangle_tilde_setup(void)
 {
-    vtri_class = class_new(gensym("vtri~"),
-        (t_newmethod)vtri_new, (t_method)vtri_free,
-        sizeof(t_vtri), CLASS_DEFAULT, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(vtri_class, t_vtri, x_freq);
-    class_addmethod(vtri_class, (t_method)vtri_dsp, gensym("dsp"), A_CANT, 0);
+    vtriangle_class = class_new(gensym("vtriangle~"),
+        (t_newmethod)vtriangle_new, (t_method)vtriangle_free,
+        sizeof(t_vtriangle), CLASS_DEFAULT, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(vtriangle_class, t_vtriangle, x_freq);
+    class_addmethod(vtriangle_class, (t_method)vtriangle_dsp, gensym("dsp"), A_CANT, 0);
 }

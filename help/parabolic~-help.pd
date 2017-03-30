@@ -20,7 +20,6 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 200 200 else/par~ 220;
 #X obj 183 249 else/out~;
 #X obj 200 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -160,7 +159,7 @@
 #N canvas 354 88 811 327 sync 0;
 #X obj 180 118 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 89 245 else/out~;
+#X obj 69 245 else/out~;
 #X text 46 141 impulse value of 1 =>;
 #X text 15 14 The third inlet expects an impulse signal for syncing.
 The impulse values need to be > 0 and <= 1 (otherwise ignored) so the
@@ -168,92 +167,94 @@ internal phase jumps imediately to the given impulse value. Because
 phase is cyclical \, the value of 1 represents the "phase 0" of the
 cycle \, where the impulse occurs. Send it impulses and check the result
 below.;
-#X text 658 88 Master;
-#X text 583 123 Slave;
-#X obj 461 177 else/out~;
-#X obj 560 62 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
+#X text 695 92 Master;
+#X text 613 126 Slave;
+#X obj 491 177 else/out~;
+#X obj 602 66 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 110 256;
 #X text 426 255 Note that the "phase sync" inlet is quite different
 from the "phase offset" inlet. This means that you will resset the
 internal of the object \, but the offset still remains.;
 #X obj 180 142 else/trigate~;
-#X obj 560 88 else/imp~ 110;
-#X obj 105 203 else/par~ 220;
-#X obj 485 122 else/par~ 200;
-#X text 420 24 An impulse oscillator as the input forces "hard sync".
+#X obj 602 92 else/imp~ 110;
+#X text 440 24 An impulse oscillator as the input forces "hard sync".
 ;
 #X text 194 163 <== immediately jumps to the start \; of the cycle
 when receiving an impulse.;
+#X obj 69 203 else/parabolic~ 220;
+#X obj 491 123 else/parabolic~ 200;
 #X connect 0 0 9 0;
 #X connect 7 0 10 0;
-#X connect 9 0 11 2;
-#X connect 10 0 12 2;
-#X connect 11 0 1 0;
-#X connect 11 0 1 1;
-#X connect 12 0 6 0;
-#X connect 12 0 6 1;
-#X restore 494 268 pd sync;
-#N canvas 534 204 801 409 phase 0;
-#X text 409 90 The phase values are wrapped into the 0-1 range \, since
+#X connect 9 0 13 2;
+#X connect 10 0 14 2;
+#X connect 13 0 1 0;
+#X connect 13 0 1 1;
+#X connect 14 0 6 0;
+#X connect 14 0 6 1;
+#X restore 494 278 pd sync;
+#N canvas 534 204 786 409 phase 0;
+#X text 400 90 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 - where 1 is also the start of another
 cycle.;
 #X text 19 21 The second argument sets an initial phase (or "phase
 offset"). This is also settable with the second inlet. In such a way
 \, you have two objects with the same frequency falling out and back
 in sync. Another feature is phase modulation.;
-#X obj 521 181 cnv 15 120 65 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 512 181 cnv 15 140 65 empty empty empty 20 12 0 14 -233017 -66577
 0;
-#X obj 517 273 else/out~;
-#X obj 570 192 osc~ 50.1;
-#X text 523 163 Phase Modulation:;
-#X text 321 111 1;
-#X obj 187 113 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 508 273 else/out~;
+#X obj 579 192 osc~ 50.1;
+#X text 514 163 Phase Modulation:;
+#X text 339 111 1;
+#X obj 205 113 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 184 137 0 0 0 0 - - -;
-#X text 165 112 0;
-#X obj 50 161 else/par~ 440 0;
+#X floatatom 202 137 0 0 0 0 - - -;
+#X text 183 112 0;
 #X obj 101 301 else/out~;
 #X obj 120 255 +~;
-#X obj 135 214 else/par~ 440 0.5;
-#X msg 184 163 \$1 10;
-#X obj 184 187 line~;
-#X obj 533 220 else/par~ 200;
+#X msg 202 163 \$1 10;
+#X obj 202 187 line~;
+#X obj 31 161 else/parabolic~ 440 0;
+#X obj 135 214 else/parabolic~ 440 0.5;
+#X obj 524 220 else/parabolic~ 200;
 #X connect 4 0 16 1;
 #X connect 7 0 8 0;
-#X connect 8 0 14 0;
-#X connect 10 0 12 0;
-#X connect 12 0 11 0;
-#X connect 12 0 11 1;
-#X connect 13 0 12 1;
-#X connect 14 0 15 0;
-#X connect 15 0 13 1;
+#X connect 8 0 12 0;
+#X connect 11 0 10 0;
+#X connect 11 0 10 1;
+#X connect 12 0 13 0;
+#X connect 13 0 15 1;
+#X connect 14 0 11 0;
+#X connect 15 0 11 1;
 #X connect 16 0 3 0;
 #X connect 16 0 3 1;
-#X restore 445 243 pd phase offset;
-#X obj 3 3 cnv 15 301 42 empty empty par~ 20 20 2 37 -233017 -1 0;
+#X restore 445 253 pd phase offset;
+#X obj 3 3 cnv 15 301 42 empty empty parabolic~ 20 20 2 37 -233017
+-1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 61 86 [par~] is an impulse oscillator that accepts negative
-frequencies \, has inlets for phase modulation and phase sync. A parabolic
-waveform is similar to a sinusoid but it is not band limited (has aliasing).
-;
 #N canvas 793 162 406 338 example 0;
 #X obj 115 93 phasor~ 220;
 #X obj 115 139 +~;
 #X obj 115 188 else/sin~;
 #X obj 97 239 else/out~;
 #X obj 221 114 *~ 2;
-#X obj 221 83 else/par~ 0.5;
 #X text 23 22 When used to modulate the phase \, a parabolic oscillator
 acts like a triangular wave in frequency modulation.;
+#X obj 221 83 else/parabolic~ 0.5;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X connect 2 0 3 1;
 #X connect 4 0 1 1;
-#X connect 5 0 4 0;
-#X restore 476 218 pd example;
-#X connect 10 0 11 0;
-#X connect 10 0 11 1;
-#X connect 12 0 10 0;
+#X connect 6 0 4 0;
+#X restore 476 228 pd example;
+#X obj 200 200 else/parabolic~ 220;
+#X text 61 86 [parabolic~] is a parabolic oscillator that accepts negative
+frequencies \, has inlets for phase modulation and phase sync. A parabolic
+waveform is similar to a sinusoid but it is not band limited (has aliasing).
+;
+#X connect 11 0 39 0;
+#X connect 39 0 10 0;
+#X connect 39 0 10 1;

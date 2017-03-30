@@ -1,44 +1,44 @@
-#N canvas 498 26 558 477 10;
-#X obj 1 439 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#N canvas 498 26 558 466 10;
+#X obj 1 431 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 1 326 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 1 318 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 1 361 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 1 353 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 1 392 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+#X obj 1 384 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 100 334 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 100 326 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 128 334 signal;
-#X text 116 399 1) float;
-#X text 116 415 2) float;
-#X text 128 369 (none);
-#X obj 2 2 cnv 15 301 42 empty empty meter~ 20 20 2 37 -233017 -1 0
+#X text 128 326 signal;
+#X text 116 391 1) float;
+#X text 116 407 2) float;
+#X text 128 361 (none);
+#X obj 2 6 cnv 15 301 42 empty empty meter~ 20 20 2 37 -233017 -1 0
 ;
-#X obj 305 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 305 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 2 graph;
+#X restore 2 6 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 304 2 pd;
-#X obj 344 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 304 6 pd;
+#X obj 344 14 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 22 39 cnv 4 4 4 empty empty Mono 0 28 2 18 -233017 -1 0;
-#X obj 71 39 cnv 4 4 4 empty empty VU-meter 0 28 2 18 -233017 -1 0
+#X obj 22 43 cnv 4 4 4 empty empty Mono 0 28 2 18 -233017 -1 0;
+#X obj 71 43 cnv 4 4 4 empty empty VU-meter 0 28 2 18 -233017 -1 0
 ;
-#X obj 457 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 457 14 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 477 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 14 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 514 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 14 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 463 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 29 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 501 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 29 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 178 334 - incoming mono signal to be vu-metered;
+#X text 178 326 - incoming mono signal to be vu-metered;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -142,10 +142,10 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 70 pd;
-#X text 178 399 - window size for the [vu~] object, f 60;
-#X text 178 415 - hop size for the [vu~] object, f 60;
-#N canvas 717 164 553 406 example 0;
+#X restore 505 74 pd;
+#X text 178 391 - window size for the [vu~] object, f 60;
+#X text 178 407 - hop size for the [vu~] object, f 60;
+#N canvas 717 164 498 399 example 0;
 #X obj 111 69 adc~;
 #X obj 111 102 else/gain~;
 #X text 51 25 Using [else/meter~] in conjunction with [else/gain~]
@@ -160,11 +160,11 @@
 #X connect 5 0 6 0;
 #X connect 5 1 6 1;
 #X connect 7 0 5 0;
-#X restore 461 286 pd example;
-#X obj 250 143 osc~ 180;
-#X text 84 86 [meter~] is a convenient mono VU-meter abstraction based
+#X restore 461 285 pd example;
+#X obj 250 142 osc~ 180;
+#X text 84 90 [meter~] is a convenient mono VU-meter abstraction based
 on [else/vu~] and vanilla's [vu] GUI.;
-#X obj 250 172 else/meter~;
-#X text 129 232 [else/meter~] ==>;
+#X obj 250 171 else/meter~;
+#X text 129 231 [else/meter~] ==>;
 #X connect 26 0 28 0;
-#X coords 0 477 1 476 74 39 0;
+#X coords 0 466 1 465 74 39 0;

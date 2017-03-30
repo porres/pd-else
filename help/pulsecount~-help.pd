@@ -154,13 +154,13 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 61 86 [pulsecount~] counts pulse triggers. A trigger happens
-at transitions from non positive to positive. A trigger in the right
-inklet resets the counter to zero.;
 #X obj 197 254 else/s2f~;
 #X text 199 347 - an impulse resets counter to zero;
+#X text 61 86 [pulsecount~] counts pulse triggers. A trigger happens
+at transitions from non positive to positive. A trigger in the right
+inlet resets the counter to zero.;
 #X connect 18 0 28 0;
 #X connect 19 0 20 0;
 #X connect 20 0 28 1;
-#X connect 28 0 32 0;
-#X connect 32 0 16 0;
+#X connect 28 0 31 0;
+#X connect 31 0 16 0;

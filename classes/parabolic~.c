@@ -4,9 +4,9 @@
 #include "math.h"
 
 
-static t_class *par_class;
+static t_class *parabolic_class;
 
-typedef struct _par
+typedef struct _parabolic
 {
     t_object x_obj;
     double  x_phase;
@@ -16,11 +16,11 @@ typedef struct _par
     t_inlet  *x_inlet_sync;
     t_outlet *x_outlet_dsp_0;
     t_float x_sr;
-} t_par;
+} t_parabolic;
 
-static t_int *par_perform(t_int *w)
+static t_int *parabolic_perform(t_int *w)
 {
-    t_par *x = (t_par *)(w[1]);
+    t_parabolic *x = (t_parabolic *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // phase
@@ -59,13 +59,13 @@ static t_int *par_perform(t_int *w)
     return (w + 7);
 }
 
-static void par_dsp(t_par *x, t_signal **sp)
+static void parabolic_dsp(t_parabolic *x, t_signal **sp)
 {
-    dsp_add(par_perform, 6, x, sp[0]->s_n,
+    dsp_add(parabolic_perform, 6, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void *par_free(t_par *x)
+static void *parabolic_free(t_parabolic *x)
 {
     inlet_free(x->x_inlet_phase);
     inlet_free(x->x_inlet_sync);
@@ -73,9 +73,9 @@ static void *par_free(t_par *x)
     return (void *)x;
 }
 
-static void *par_new(t_floatarg f1, t_floatarg f2)
+static void *parabolic_new(t_floatarg f1, t_floatarg f2)
 {
-    t_par *x = (t_par *)pd_new(par_class);
+    t_parabolic *x = (t_parabolic *)pd_new(parabolic_class);
     t_float init_freq = f1;
     t_float init_phase = f2;
     init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
@@ -92,11 +92,11 @@ static void *par_new(t_floatarg f1, t_floatarg f2)
     return (x);
 }
 
-void par_tilde_setup(void)
+void parabolic_tilde_setup(void)
 {
-    par_class = class_new(gensym("par~"),
-        (t_newmethod)par_new, (t_method)par_free,
-        sizeof(t_par), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
-    CLASS_MAINSIGNALIN(par_class, t_par, x_freq);
-    class_addmethod(par_class, (t_method)par_dsp, gensym("dsp"), A_CANT, 0);
+    parabolic_class = class_new(gensym("parabolic~"),
+        (t_newmethod)parabolic_new, (t_method)parabolic_free,
+        sizeof(t_parabolic), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
+    CLASS_MAINSIGNALIN(parabolic_class, t_parabolic, x_freq);
+    class_addmethod(parabolic_class, (t_method)parabolic_dsp, gensym("dsp"), A_CANT, 0);
 }

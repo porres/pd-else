@@ -94,21 +94,21 @@
 #X connect 10 1 4 0;
 #X connect 11 0 2 0;
 #X restore 187 156 pd linear;
-#X obj 131 69 receive \$0-slider;
 #X obj 200 107 r \$0-ramp;
 #X obj 131 106 pack f 20;
 #X obj 35 31 inlet~;
 #X obj 37 232 *~;
-#X connect 0 0 8 1;
-#X connect 2 0 8 1;
-#X connect 3 0 8 1;
-#X connect 4 0 6 0;
-#X connect 5 0 6 1;
-#X connect 6 0 2 0;
-#X connect 6 0 3 0;
-#X connect 6 0 0 0;
-#X connect 7 0 8 0;
-#X connect 8 0 1 0;
+#X obj 131 69 receive \$0-slider1;
+#X connect 0 0 7 1;
+#X connect 2 0 7 1;
+#X connect 3 0 7 1;
+#X connect 4 0 5 1;
+#X connect 5 0 2 0;
+#X connect 5 0 3 0;
+#X connect 5 0 0 0;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;
+#X connect 8 0 5 0;
 #X restore 356 187 pd gain~;
 #X obj 428 41 inlet~;
 #X obj 428 256 outlet~;
@@ -233,9 +233,9 @@
 0;
 #X obj 158 101 cnv 1 32 2 empty empty empty 20 12 0 14 -233017 -66577
 0;
-#N canvas 273 66 516 311 set_GUI 0;
+#N canvas 273 66 516 311 set_GUI 1;
 #X obj 59 20 inlet;
-#X obj 58 84 clip 0 1;
+#X obj 59 84 clip 0 1;
 #X obj 417 161 loadbang;
 #X text 415 138 Load args;
 #X obj 417 211 s \$0-mode;
@@ -247,7 +247,7 @@
 #X obj 277 110 clip -100 100;
 #X obj 239 196 s \$0-panL-set;
 #X obj 278 171 s \$0-panR-set;
-#X obj 58 164 s \$0-set-slider1;
+#X obj 59 164 s \$0-set-slider1;
 #X obj 88 124 s \$0-set-slider2;
 #X connect 0 0 6 0;
 #X connect 1 0 13 0;
@@ -262,7 +262,7 @@
 #X connect 9 0 11 0;
 #X connect 10 0 12 0;
 #X restore 515 168 pd set_GUI;
-#X obj 515 123 inlet;
+#X obj 515 43 inlet;
 #X obj 199 101 cnv 1 32 2 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 262 23 503 388 pan 0;
