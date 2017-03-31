@@ -1,0 +1,61 @@
+#N canvas 724 23 563 490 10;
+#X obj 7 450 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 7 296 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 343 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 378 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 7 409 cnv 3 550 3 empty empty more_info 8 12 0 13 -228856 -1
+0;
+#X obj 117 305 cnv 17 3 32 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 117 353 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 184 353 signal;
+#X obj 2 3 cnv 15 301 42 empty empty crackle~ 20 20 2 37 -233017 -1
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 87 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1 0
+;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 38 40 cnv 4 4 4 empty empty Noise 0 28 2 18 -233017 -1 0;
+#X obj 221 151 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 12700 1;
+#X obj 218 229 else/out~;
+#X obj 218 200 else/crackle~;
+#X msg 171 177 clear;
+#X text 237 353 - crackle noise;
+#X text 193 321 clear - clear filter's memory;
+#X obj 218 177 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 105 91 [crackle~] generates noise based on a chaotic function
+\, defined by the difference equation \; y[n] = p * y[n-1] - y[n-2]
+- 0.05;
+#X text 239 150 'p' parameter;
+#X text 151 305 float/signal - chaotic parameter 'p' (from 0 to 1)
+;
+#X text 180 386 1) float - 'p' parameter (default 0.5);
+#X text 121 417 Object inspired on SuperCollider's "Crackle" UGEN.
+The 'p' parameter is added to 1 (cause usable values are from 1 to
+2)., f 62;
+#X connect 18 0 24 0;
+#X connect 20 0 19 0;
+#X connect 20 0 19 1;
+#X connect 21 0 20 0;
+#X connect 24 0 20 0;
