@@ -49,6 +49,7 @@ sh~.class.sources := classes/sh~.c
 select~.class.sources := classes/select~.c
 sin~.class.sources := classes/sin~.c
 square~.class.sources := classes/square~.c
+standard~.class.sources := classes/standard~.c
 toggleff~.class.sources := classes/toggleff~.c
 togedge~.class.sources := classes/togedge~.c
 vtriangle~.class.sources := classes/vtriangle~.c
