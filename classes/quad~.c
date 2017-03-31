@@ -3,9 +3,9 @@
 #include <math.h>
 #include "m_pd.h"
 
-static t_class *quadmap_class;
+static t_class *quad_class;
 
-typedef struct _quadmap
+typedef struct _quad
 {
     t_object  x_obj;
     int x_val;
@@ -17,10 +17,10 @@ typedef struct _quadmap
     double  x_phase;
     t_float  x_freq;
     t_outlet *x_outlet;
-} t_quadmap;
+} t_quad;
 
 
-static void quadmap_k(t_quadmap *x, t_float f)
+static void quad_k(t_quad *x, t_float f)
 {
     //    x->x_a = f;
     //    x->x_c = f;
@@ -28,11 +28,11 @@ static void quadmap_k(t_quadmap *x, t_float f)
     //    x->x_yn = f;
 }
 
-static void quadmap_list(t_quadmap *x, t_symbol *s, int argc, t_atom * argv)
+static void quad_list(t_quad *x, t_symbol *s, int argc, t_atom * argv)
 {
 /*    if (argc > 2)
         {
-        pd_error(x, "quadmap~: list size needs to be = 2");
+        pd_error(x, "quad~: list size needs to be = 2");
         }
     else{
         int argnum = 0; // current argument
@@ -40,7 +40,7 @@ static void quadmap_list(t_quadmap *x, t_symbol *s, int argc, t_atom * argv)
         {
             if(argv -> a_type != A_FLOAT)
                 {
-                pd_error(x, "quadmap~: list needs to only contain floats");
+                pd_error(x, "quad~: list needs to only contain floats");
                 }
             else
                 {
@@ -63,9 +63,9 @@ static void quadmap_list(t_quadmap *x, t_symbol *s, int argc, t_atom * argv)
 }
 
 
-static t_int *quadmap_perform(t_int *w)
+static t_int *quad_perform(t_int *w)
 {
-    t_quadmap *x = (t_quadmap *)(w[1]);
+    t_quad *x = (t_quad *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in = (t_float *)(w[3]);
     t_sample *out = (t_sample *)(w[4]);
@@ -105,21 +105,21 @@ static t_int *quadmap_perform(t_int *w)
 }
 
 
-static void quadmap_dsp(t_quadmap *x, t_signal **sp)
+static void quad_dsp(t_quad *x, t_signal **sp)
 {
     x->x_sr = sp[0]->s_sr;
-    dsp_add(quadmap_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(quad_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
 }
 
-static void *quadmap_free(t_quadmap *x)
+static void *quad_free(t_quad *x)
 {
     outlet_free(x->x_outlet);
     return (void *)x;
 }
 
-static void *quadmap_new(t_symbol *s, int ac, t_atom *av)
+static void *quad_new(t_symbol *s, int ac, t_atom *av)
 {
-    t_quadmap *x = (t_quadmap *)pd_new(quadmap_class);
+    t_quad *x = (t_quad *)pd_new(quad_class);
     x->x_sr = sys_getsr();
     t_float hz = x->x_sr * 0.5, a = 1, b = -1, c = -0.75, yn = 0; // default parameters
     if (ac && av->a_type == A_FLOAT)
@@ -148,13 +148,13 @@ static void *quadmap_new(t_symbol *s, int ac, t_atom *av)
     return (x);
 }
 
-void quadmap_tilde_setup(void)
+void quad_tilde_setup(void)
 {
-    quadmap_class = class_new(gensym("quadmap~"),
-        (t_newmethod)quadmap_new, (t_method)quadmap_free,
-        sizeof(t_quadmap), 0, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(quadmap_class, t_quadmap, x_freq);
-    class_addlist(quadmap_class, quadmap_list);
-    class_addmethod(quadmap_class, (t_method)quadmap_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(quadmap_class, (t_method)quadmap_k, gensym("k"), A_DEFFLOAT, 0);
+    quad_class = class_new(gensym("quad~"),
+        (t_newmethod)quad_new, (t_method)quad_free,
+        sizeof(t_quad), 0, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(quad_class, t_quad, x_freq);
+    class_addlist(quad_class, quad_list);
+    class_addmethod(quad_class, (t_method)quad_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(quad_class, (t_method)quad_k, gensym("k"), A_DEFFLOAT, 0);
 }

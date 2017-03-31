@@ -14,22 +14,28 @@ typedef struct _henon
     double  x_b;
     double  x_y_nm1;
     double  x_y_nm2;
+    double  x_init_y1;
+    double  x_init_y2;
     double  x_phase;
     t_float  x_freq;
     t_outlet *x_outlet;
 } t_henon;
 
 
-static void henon_k(t_henon *x, t_float f)
+static void henon_coefs(t_henon *x, t_float f)
 {
-    //    x->x_a = f;
-    //    x->x_c = f;
-    //    x->x_m = f;
-    //    x->x_y_nm1 = f;
+    //    x->x_a = f1;
+    //    x->x_b = f2;
 }
 
 static void henon_list(t_henon *x, t_symbol *s, int argc, t_atom * argv)
 {
+    
+//  x->x_y_nm1 = x->x_init_y1 = y_nm1;
+//    x->x_y_nm2 = x->x_init_y2 = y_nm2;
+    
+    
+    
 /*    if (argc > 2)
         {
         pd_error(x, "henon~: list size needs to be = 2");
@@ -95,10 +101,19 @@ static t_int *henon_perform(t_int *w)
         if (trig) // update
             {
             output = 1 - (a * y_nm1*y_nm1) + (b * y_nm2);
-            y_nm2 = y_nm1;
-            y_nm1 = output;
+            if((output > 1.5) || (output < -1.5))
+                {
+                output = 0;
+                y_nm2 = 0; // x->x_init_y2;
+                y_nm1 = 0; // x->x_init_y1;
+                }
+            else if((output < 1.5) && (output > -1.5))
+                {
+                y_nm2 = y_nm1;
+                y_nm1 = output;
+                }
             }
-        *out++ = output;
+        *out++ = y_nm2;
         phase += phase_step;
     }
     x->x_phase = phase;
@@ -145,8 +160,8 @@ static void *henon_new(t_symbol *s, int ac, t_atom *av)
     x->x_freq  = hz;
     x->x_a = a;
     x->x_b = b;
-    x->x_y_nm1 = y_nm1;
-    x->x_y_nm2 = y_nm2;
+    x->x_y_nm1 = x->x_init_y1 = y_nm1;
+    x->x_y_nm2 = x->x_init_y2 = y_nm2;
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return (x);
 }
@@ -159,5 +174,5 @@ void henon_tilde_setup(void)
     CLASS_MAINSIGNALIN(henon_class, t_henon, x_freq);
     class_addlist(henon_class, henon_list);
     class_addmethod(henon_class, (t_method)henon_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(henon_class, (t_method)henon_k, gensym("k"), A_DEFFLOAT, 0);
+    class_addmethod(henon_class, (t_method)henon_coefs, gensym("coefs"), A_DEFFLOAT, 0);
 }
