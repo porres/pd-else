@@ -31,6 +31,7 @@ hz2rad~.class.sources := classes/hz2rad~.c
 imp~.class.sources := classes/imp~.c
 imp2~.class.sources := classes/imp2~.c
 lastvalue~.class.sources := classes/lastvalue~.c
+latoocarfian~.class.sources := classes/latoocarfian~.c
 median~.class.sources := classes/median~.c
 pan2~.class.sources := classes/pan2~.c
 pan4~.class.sources := classes/pan4~.c
