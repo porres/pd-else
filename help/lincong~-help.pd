@@ -1,0 +1,110 @@
+#N canvas 376 59 559 679 10;
+#X obj 226 194 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0
+10 -228856 -1 -1 8000 1;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Latoocarfian 0 28 2 18 -233017 -1
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 125 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 -233017 -1 0
+;
+#X obj 3 636 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 3 350 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 420 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 456 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 94 429 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 93 360 cnv 17 3 52 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 150 430 signal;
+#X text 137 463 1) float;
+#X obj 223 218 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 3421 256;
+#X text 114 360 float/signal;
+#X obj 2 3 cnv 15 301 42 empty empty latoocarfian~ 20 20 2 37 -233017
+-1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#X text 197 360 - frequency in hertz (negative values accepted);
+#X obj 186 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
+0;
+#X text 282 218 rate in Hz;
+#X text 197 431 - gingerbread man map chaotic signal;
+#X obj 180 270 else/out~;
+#X text 162 397 list;
+#N canvas 874 162 416 394 parameters 0;
+#X text 34 27 By default \, the initial k \, x and y values are 1 \,
+0.5 and 0 \, respectively \, but can be changed via arguments or messages.
+;
+#X obj 74 85 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 0 1;
+#X obj 71 109 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 130 109 rate in Hz;
+#X obj 71 314 else/out~;
+#X obj 71 268 else/standard~;
+#X text 152 236 sets k;
+#X obj 106 179 pack f f;
+#X floatatom 106 158 5 0 0 0 - - -, f 5;
+#X floatatom 151 159 5 0 0 0 - - -, f 5;
+#X text 108 138 x;
+#X text 156 141 y;
+#X msg 116 235 k \$1;
+#X floatatom 116 215 5 0 0 0 - - -, f 5;
+#X text 164 184 list sets initial values of x and y;
+#X connect 1 0 2 0;
+#X connect 2 0 5 0;
+#X connect 5 0 4 0;
+#X connect 5 0 4 1;
+#X connect 7 0 5 0;
+#X connect 8 0 7 0;
+#X connect 9 0 7 1;
+#X connect 12 0 5 0;
+#X connect 13 0 12 0;
+#X restore 446 318 pd parameters;
+#X text 83 155 The output rate of the equation is given in hertz (default:
+nyquist).;
+#X text 137 480 2) float;
+#X text 137 497 3) float;
+#X text 137 515 4) float;
+#X obj 7 539 cnv 3 550 3 empty empty more_info 8 12 0 13 -228856 -1
+0;
+#X text 132 378 k <float>;
+#X text 197 379 - sets the value of k;
+#X text 197 398 - 2 floats set initial values of x and y \, respectively
+;
+#X text 197 497 - sets initial value of x (default: 0.5);
+#X text 197 515 - sets initial value of y (default: 0);
+#X text 197 463 - sets frequency in hertz (default: nyquist);
+#X obj 223 245 else/latoocarfian~;
+#X text 84 91 [latoocarfian~] is a chaotic generator using the difference
+equations \; x[n] = sin(a * y[n-1]) + d * sin(a * x[n-1]) \; y[n] =
+sin(b * z[n]) + c * sin(b * y[n-1]) \;;
+#X text 123 547 Object based on SuperCollider's LatoocarfianN UGEN.
+The equation is given in Clifford Pickover's book Chaos In Wonderland
+(pg. 26) \, according to which 'a' and 'b' should be from -3 to +3
+\, and 'c' and 'd' from 0.5 to 1.5. It can give continuous chaotic
+output \, converge to a single value or oscillate in a cycle (tone).
+;
+#X text 197 480 - sets a (default: 1);
+#X text 93 331 a: 1 \, b: 3 \, c: 0.5 \, d: 0.5 \, xi: 0.5 \, yi: 0.5
+;
+#X connect 0 0 17 0;
+#X connect 17 0 39 0;
+#X connect 39 0 25 1;
+#X connect 39 0 25 0;
