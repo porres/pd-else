@@ -16,7 +16,7 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Object list (64 objects):
+Object list (65 objects):
 
 DETERMINISTIC GENERATORS: OSCILLATORS (7)
 - [imp~]
@@ -27,11 +27,12 @@ DETERMINISTIC GENERATORS: OSCILLATORS (7)
 - [square~]
 - [vtriangle~]
 
-CHAOTIC GENERATORS (4):
+CHAOTIC GENERATORS (5):
 - [brown~] 
 - [clipnoise~] 
 - [gbman~] 
 - [lfnoise~]
+- [standard~]
 
 CONVERSION (16):
 - [cents2rato]
