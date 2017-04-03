@@ -37,7 +37,7 @@ CHAOTIC GENERATORS (11):
 - [lfnoise~]
 - [lincong~]
 - [logistic~]
-- [quadmap~]
+- [quad~]
 - [standard~]
 
 CONVERSION (16):
