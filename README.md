@@ -32,7 +32,7 @@ CHAOTIC GENERATORS (11):
 - [clipnoise~] 
 - [crackle~] 
 - [gbman~] 
-- [henon]
+- [henon~]
 - [latoocarfian~]
 - [lfnoise~]
 - [lincong~]
