@@ -1,4 +1,4 @@
-#N canvas 457 76 557 633 10;
+#N canvas 809 57 559 613 10;
 #X obj 0 573 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 0 357 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -18,7 +18,7 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 1 2 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 1;
+#X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 303 2 pd;
 #X obj 343 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -36,8 +36,8 @@
 #X obj 500 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -106,7 +106,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -417,7 +417,7 @@ same as the output. We have then two non linear modes:;
 to the power of 4 (so \, for instance \, an input slider value of 0.5
 becomes 0.125)., f 57;
 #X restore 467 313 pd scaling \; modes & gain;
-#X text 113 219 [else/mix2~] ==>;
+#X text 124 219 [else/mix2~] ==>;
 #X text 194 502 - left channel signal;
 #X text 144 522 signal;
 #X text 194 522 - right channel signal;
@@ -436,7 +436,7 @@ becomes 0.125)., f 57;
 #X obj 298 119 osc~ 880;
 #X text 83 86 [mix2~] is a convenient 2 channel mixer abstraction with
 gain and panning.;
-#X text 333 222 silders set gain, f 8;
+#X text 335 222 silders set gain, f 8;
 #X obj 233 145 else/mix2~;
 #X text 194 409 - sets slider of channel 1 (range is from 0 to 1),
 f 54;
@@ -451,4 +451,4 @@ f 54;
 #X connect 43 0 46 1;
 #X connect 46 0 37 0;
 #X connect 46 1 37 1;
-#X coords 0 633 1 632 74 39 0;
+#X coords 0 613 1 612 74 39 0;

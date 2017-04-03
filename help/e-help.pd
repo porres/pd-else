@@ -64,7 +64,7 @@ so it can be recalled in an [expr] object.;
 #X connect 5 0 0 0;
 #X connect 5 0 4 0;
 #X connect 6 0 2 0;
-#X restore 431 236 pd expr and value;
+#X restore 431 252 pd expr and value;
 #X obj 209 222 else/e;
 #X text 61 89 [e] calculates and outputs the value of 'e'. It receives
 a multiplier value via the argument or second inlet \, which needs

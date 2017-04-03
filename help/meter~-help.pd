@@ -1,18 +1,18 @@
 #N canvas 498 26 558 466 10;
-#X obj 1 431 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#X obj 1 427 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 1 318 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 1 314 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 1 353 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 1 349 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 1 384 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+#X obj 1 380 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 100 326 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 120 322 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 128 326 signal;
-#X text 116 391 1) float;
-#X text 116 407 2) float;
-#X text 128 361 (none);
+#X text 148 322 signal;
+#X text 136 387 1) float;
+#X text 136 403 2) float;
+#X text 209 357 (none);
 #X obj 2 6 cnv 15 301 42 empty empty meter~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 305 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -38,10 +38,10 @@
 0;
 #X obj 501 29 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 178 326 - incoming mono signal to be vu-metered;
+#X text 198 322 - incoming mono signal to be vu-metered;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -110,7 +110,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -143,8 +143,8 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 74 pd;
-#X text 178 391 - window size for the [vu~] object, f 60;
-#X text 178 407 - hop size for the [vu~] object, f 60;
+#X text 198 387 - window size for the [vu~] object, f 44;
+#X text 198 403 - hop size for the [vu~] object, f 44;
 #N canvas 717 164 498 399 example 0;
 #X obj 111 69 adc~;
 #X obj 111 102 else/gain~;
@@ -160,11 +160,11 @@
 #X connect 5 0 6 0;
 #X connect 5 1 6 1;
 #X connect 7 0 5 0;
-#X restore 461 285 pd example;
-#X obj 250 142 osc~ 180;
+#X restore 471 281 pd example;
+#X obj 250 138 osc~ 180;
 #X text 84 90 [meter~] is a convenient mono VU-meter abstraction based
 on [else/vu~] and vanilla's [vu] GUI.;
-#X obj 250 171 else/meter~;
-#X text 129 231 [else/meter~] ==>;
+#X obj 250 167 else/meter~;
+#X text 129 227 [else/meter~] ==>;
 #X connect 26 0 28 0;
 #X coords 0 466 1 465 74 39 0;

@@ -31,8 +31,8 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -101,7 +101,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -134,64 +134,64 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
-#X obj 191 256 osc~ 1;
-#X obj 286 207 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 185 256 osc~ 1;
+#X obj 280 207 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 286 234 else/trigate~;
+#X obj 280 234 else/trigate~;
 #X text 173 415 signal;
 #X obj 117 473 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 173 472 signal;
-#X text 145 508 signal;
+#X text 173 508 signal;
 #X obj 3 3 cnv 15 301 42 empty empty pulsediv~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X obj 309 349 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 218 256;
+#X obj 323 349 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
 #X text 222 415 - trigger signal to be divided;
-#X text 209 508 - divided triggers (impulse);
-#X text 144 542 1) float - divide value (default 1);
+#X text 222 508 - divided triggers (impulse);
+#X text 168 542 1) float - divide value (default 1);
 #X text 143 432 div <float>;
 #X text 131 450 start <float>;
-#X obj 309 296 else/pulsecount~;
-#X obj 193 373 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 109 256;
-#X obj 193 350 else/s2f~;
-#X obj 309 322 else/s2f~;
-#X obj 193 327 else/pulsecount~;
-#X text 242 373 divided count;
-#X text 358 349 whole count;
+#X obj 323 296 else/pulsecount~;
+#X obj 187 373 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 187 327 else/pulsecount~;
+#X text 236 373 divided count;
+#X text 372 349 whole count;
 #X text 61 86 [pulsediv~] outputs impulses when receiving triggers
 (signal changes from non-positive to positive) \, but doesn't count
 a number of triggers corresponding to a division value.;
-#X msg 172 228 start \$1;
-#X msg 122 262 div \$1;
-#X floatatom 172 207 5 0 0 0 - - -, f 5;
-#X floatatom 122 242 5 0 0 0 - - -, f 5;
+#X msg 166 228 start \$1;
+#X msg 116 262 div \$1;
+#X floatatom 166 207 5 0 0 0 - - -, f 5;
+#X floatatom 116 242 5 0 0 0 - - -, f 5;
 #X text 60 131 The first trigger in the count is output. A starting
 value lets you start in the middle of a count. If the start value is
 negative \, it adds that many counts to the first time the output is
 triggered.;
-#X text 144 559 2) float - start count value (default 0);
-#X obj 172 296 else/pulsediv~ 2;
+#X text 168 559 2) float - start count value (default 0);
+#X obj 166 296 else/pulsediv~ 2;
 #X text 222 450 - sets the start value;
 #X text 222 432 - sets the division value (minimum: 1);
 #X text 222 472 - an impulse resets the counter to the start value
 ;
+#X obj 323 322 else/sig2float~;
+#X obj 187 350 else/sig2float~;
 #X connect 17 0 32 0;
-#X connect 17 0 46 0;
+#X connect 17 0 44 0;
 #X connect 18 0 19 0;
 #X connect 19 0 32 1;
-#X connect 19 0 36 1;
-#X connect 19 0 46 1;
-#X connect 32 0 35 0;
-#X connect 34 0 33 0;
-#X connect 35 0 26 0;
-#X connect 36 0 34 0;
-#X connect 40 0 46 0;
-#X connect 41 0 46 0;
-#X connect 42 0 40 0;
-#X connect 43 0 41 0;
-#X connect 46 0 36 0;
+#X connect 19 0 34 1;
+#X connect 19 0 44 1;
+#X connect 32 0 48 0;
+#X connect 34 0 49 0;
+#X connect 38 0 44 0;
+#X connect 39 0 44 0;
+#X connect 40 0 38 0;
+#X connect 41 0 39 0;
+#X connect 44 0 34 0;
+#X connect 48 0 26 0;
+#X connect 49 0 33 0;

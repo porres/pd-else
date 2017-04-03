@@ -44,8 +44,8 @@
 native Pd object [noise~] generates). White noise has constant spectral
 power per hertz of bandwidth \, while brown noise drops 6dB per octave.
 Subjectively \, brown noise sounds less hissy than white noise.;
-#X text 105 91 [brown~] generates brown noise (aka brownian noise)
-and outouts it.;
 #X obj 230 169 else/out~;
-#X connect 20 0 25 0;
-#X connect 20 0 25 1;
+#X text 75 91 [brown~] generates brown noise (aka brownian noise or
+red noise) and outputs it.;
+#X connect 20 0 24 0;
+#X connect 20 0 24 1;

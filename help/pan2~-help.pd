@@ -31,8 +31,8 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -101,7 +101,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -140,10 +140,9 @@
 ;
 #X text 152 311 float/signal;
 #X obj 279 129 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 2600 1;
+-1 -1 0 1;
 #X floatatom 276 150 0 0 0 0 - - -;
 #X obj 191 215 else/out~;
-#X obj 276 171 else/f2s~ 100;
 #X obj 184 145 osc~ 440;
 #X obj 3 4 cnv 15 301 42 empty empty pan2~ 20 20 2 37 -233017 -1 0
 ;
@@ -162,9 +161,10 @@
 #X text 189 364 signal;
 #X text 242 364 - right channel;
 #X text 149 398 1) float - initial pan value (default 0);
+#X obj 276 171 else/sig2float~ 100;
 #X connect 21 0 22 0;
-#X connect 22 0 24 0;
-#X connect 24 0 28 1;
-#X connect 25 0 28 0;
-#X connect 28 0 23 0;
-#X connect 28 1 23 1;
+#X connect 22 0 38 0;
+#X connect 24 0 27 0;
+#X connect 27 0 23 0;
+#X connect 27 1 23 1;
+#X connect 38 0 27 1;

@@ -156,7 +156,7 @@ to be greater than 1 \, if 0 or less is given \, then it defaults to
 #X text 357 178 ms;
 #X text 297 158 convert time;
 #X text 144 281 signal;
-#X text 144 368 float;
+#X text 150 368 float;
 #X text 190 281 - signal value to convert to float;
 #X obj 105 305 cnv 17 3 50 empty empty 1 5 9 0 16 -228856 -162280 0
 ;

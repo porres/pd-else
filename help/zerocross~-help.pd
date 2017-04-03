@@ -17,7 +17,7 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 1;
+#X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -43,7 +43,7 @@
 #X obj 275 152 osc~ 1;
 #X obj 275 200 else/zerocross~;
 #X text 374 227 both;
-#X text 137 445 (none);
+#X text 189 445 (none);
 #X text 61 86 [zerocross~] sens impulses when crossing from non-positive
 to positive (left outlet) \, from positive to non-positive (middle
 outlet) and both (right outlet).;
@@ -63,28 +63,28 @@ outlet) and both (right outlet).;
 ;
 #X text 135 330 signal;
 #X text 177 330 - signal to detect zero crossings;
-#N canvas 1067 127 363 334 estimating 0;
-#X obj 96 195 /~;
-#X obj 96 233 else/s2f~;
+#N canvas 965 126 363 334 estimating 0;
+#X obj 66 189 /~;
 #X obj 177 117 else/zerocross~;
-#X obj 177 189 else/s2f~;
 #X obj 177 155 else/elapsed~;
-#X obj 96 134 else/sr~;
-#X obj 96 273 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 66 134 else/sr~;
+#X obj 66 273 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 177 224 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 158 273 <= frequency estimate;
+#X text 128 273 <= frequency estimate;
 #X obj 177 81 osc~ 100;
 #X text 42 29 Estimating frequency with zero crossing count.;
-#X connect 0 0 1 0;
-#X connect 1 0 6 0;
-#X connect 2 0 4 0;
-#X connect 3 0 7 0;
-#X connect 4 0 0 1;
-#X connect 4 0 3 0;
-#X connect 5 0 0 0;
-#X connect 9 0 2 0;
+#X obj 177 190 else/sig2float~;
+#X obj 66 224 else/sig2float~;
+#X connect 0 0 10 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 1;
+#X connect 2 0 9 0;
+#X connect 3 0 0 0;
+#X connect 7 0 1 0;
+#X connect 9 0 5 0;
+#X connect 10 0 4 0;
 #X restore 460 274 pd estimating \; frequency;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992

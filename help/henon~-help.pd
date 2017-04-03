@@ -1,5 +1,5 @@
-#N canvas 822 32 560 642 10;
-#X obj 226 174 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
+#N canvas 647 23 559 631 10;
+#X obj 224 175 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -17,79 +17,59 @@
 0;
 #X obj 125 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 -233017 -1 0
 ;
-#X obj 3 636 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 592 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 370 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 326 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 440 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 396 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 476 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 432 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 94 449 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 94 405 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 93 380 cnv 17 3 52 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 93 336 cnv 17 3 52 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 150 450 signal;
-#X text 137 483 1) float;
-#X obj 223 198 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 441 256;
-#X text 114 380 float/signal;
+#X text 150 406 signal;
+#X text 137 439 1) float;
+#X obj 221 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 114 336 float/signal;
 #X obj 2 3 cnv 15 301 42 empty empty henon~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 197 380 - frequency in hertz (negative values accepted);
+#X text 197 336 - frequency in hertz (negative values accepted);
 #X obj 186 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
-#X text 282 198 rate in Hz;
-#X text 162 415 list;
+#X text 280 199 rate in Hz;
+#X text 162 371 list;
 #X text 83 141 The output rate of the equation is given in hertz (default:
 nyquist).;
-#X text 137 500 2) float;
-#X obj 7 579 cnv 3 550 3 empty empty more_info 8 12 0 13 -228856 -1
+#X text 137 456 2) float;
+#X obj 7 535 cnv 3 550 3 empty empty more_info 8 12 0 13 -228856 -1
 0;
-#X text 197 483 - sets frequency in hertz (default: nyquist);
-#X obj 38 224 scope~ 130 130 2 3 128 -1.5 1.5 0 0 0 0 205 229 232 74
-79 77 96 98 102 0;
+#X text 197 439 - sets frequency in hertz (default: nyquist);
 #X obj 81 40 cnv 4 4 4 empty empty map 0 28 2 18 -233017 -1 0;
-#X text 197 451 - henon map chaotic signal;
-#X text 123 587 Object based on SuperCollider's "HenonN" UGEN. This
+#X text 197 407 - henon map chaotic signal;
+#X text 123 543 Object based on SuperCollider's "HenonN" UGEN. This
 equation was discovered by French astronomer Michel Hénon while studying
 the orbits of stars in globular clusters.;
 #X text 84 91 [henon~] is a chaotic generator using the difference
 equation \; y[n] = 1 - a * y[n-1]^2 + b * y[n-2];
-#X text 197 555 - sets initial value of y[n-2] (default 0);
-#X text 197 537 - sets initial value of y[n-1] (default 0);
-#X text 197 500 - sets a (default 1.4);
-#X text 137 518 3) float;
-#X text 137 537 4) float;
-#X text 137 555 5) float;
-#X text 197 518 - sets b (default 0.3);
-#X text 197 415 - 2 floats set y[n-1] and y[n-2] \, respectively;
-#X text 114 397 coefs <f \, f>;
-#X text 197 397 - floats set 'a' and 'b' \, respectively;
-#X floatatom 57 194 5 0 0 0 - - -, f 5;
-#X msg 112 194 range -1.5 1.5;
-#X obj 321 339 cyclone/number~;
-#X obj 350 314 cyclone/number~;
-#X obj 360 236 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X floatatom 376 287 0 0 0 0 - - -;
-#X floatatom 424 267 0 0 0 0 - - -;
-#X obj 321 265 cyclone/minmax~;
-#X obj 199 289 out~;
+#X text 197 511 - sets initial value of y[n-2] (default 0);
+#X text 197 493 - sets initial value of y[n-1] (default 0);
+#X text 197 456 - sets a (default 1.4);
+#X text 137 474 3) float;
+#X text 137 493 4) float;
+#X text 137 511 5) float;
+#X text 197 474 - sets b (default 0.3);
+#X text 197 371 - 2 floats set y[n-1] and y[n-2] \, respectively;
+#X text 114 353 coefs <f \, f>;
+#X text 197 353 - floats set 'a' and 'b' \, respectively;
+#X obj 199 262 out~;
 #X obj 221 228 else/henon~;
 #X connect 0 0 17 0;
-#X connect 17 0 53 0;
-#X connect 44 0 29 0;
-#X connect 45 0 29 0;
-#X connect 48 0 51 0;
-#X connect 51 0 46 0;
-#X connect 51 1 47 0;
-#X connect 51 2 49 0;
-#X connect 51 3 50 0;
-#X connect 53 0 29 0;
-#X connect 53 0 51 0;
-#X connect 53 0 52 0;
-#X connect 53 0 52 1;
+#X connect 17 0 44 0;
+#X connect 44 0 43 0;
+#X connect 44 0 43 1;

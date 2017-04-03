@@ -1,5 +1,5 @@
-#N canvas 645 23 559 680 10;
-#X obj 193 234 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0
+#N canvas 645 23 559 677 10;
+#X obj 203 234 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0
 10 -228856 -1 -1 0 1;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -19,7 +19,7 @@
 0;
 #X obj 163 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 -233017 -1 0
 ;
-#X obj 3 640 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 637 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 425 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -33,7 +33,7 @@
 ;
 #X text 164 485 signal;
 #X text 151 518 1) float;
-#X obj 190 258 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 200 258 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 128 435 float/signal;
 #X obj 2 3 cnv 15 301 42 empty empty gbman~ 20 20 2 37 -233017 -1 0
@@ -44,23 +44,22 @@
 #X text 211 435 - frequency in hertz (negative values accepted);
 #X obj 224 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
-#X obj 190 335 clip~ -1 1;
-#X text 260 335 <=== cause it \; can get Loud!!!;
-#X text 121 256 rate in Hz;
+#X obj 200 335 clip~ -1 1;
+#X text 270 335 <=== cause it \; can get Loud!!!;
+#X text 131 256 rate in Hz;
 #X text 211 486 - gingerbread man map chaotic signal;
 #X text 151 536 2) float;
 #X text 151 554 3) float;
-#X msg 271 280 1.2 2.1;
-#X obj 190 305 else/gbman~;
-#X obj 147 360 else/out~;
-#X msg 262 256 0.3 -0.2;
-#X text 322 280 (default);
+#X msg 281 280 1.2 2.1;
+#X obj 200 305 else/gbman~;
+#X obj 157 360 else/out~;
+#X msg 272 256 0.3 -0.2;
+#X text 332 280 (default);
 #X text 176 454 list;
-#X obj 7 583 cnv 3 550 3 empty empty more_info 8 12 0 13 -228856 -1
+#X obj 7 580 cnv 3 550 3 empty empty more_info 8 12 0 13 -228856 -1
 0;
-#X text 211 518 - sets frequency in hertz (default: nyquist);
-#X text 321 259 initial feedback values;
-#X text 84 91 [gbman~] is a gingerbread man map chaotic generator \,
+#X text 331 259 initial feedback values;
+#X text 83 91 [gbman~] is a gingerbread man map chaotic generator \,
 the sound output is from the difference equation \; y[n] = 1 + abs(y[n-1])
 - y[n-2];
 #X text 82 136 The output rate of the equation is given in hertz \,
@@ -69,12 +68,14 @@ feedback values of y[n-1] and y[n-2] are 1.2 and 2.1 \, respectively
 \, but can be changed via arguments or as a list input (depending on
 the parameters \, the output can be really high \, be careful).;
 #X text 211 455 - 2 floats set y[n-1] and y[n-2] \, respectively;
-#X text 129 592 This object was based on SuperCollider's "GbmanN" UGEN.
+#X text 139 589 This object was based on SuperCollider's "GbmanN" UGEN.
 The given reference is: Devaney \, R. L. "The Gingerbreadman." Algorithm
 3 \, 15-16 \, Jan. 1992;
-#X text 211 536 - sets initial feedback value of y[n-1] (default: 1.2)
+#X text 211 554 - initial feedback value of y[n-2] (default 2.1);
+#X text 211 536 - sets initial feedback value of y[n-1] (default 1.2)
 ;
-#X text 211 554 - initial feedback value of y[n-2] (default: 2.1);
+#X text 211 518 - sets frequency in hertz (default nyquist frequency)
+;
 #X connect 0 0 18 0;
 #X connect 18 0 31 0;
 #X connect 24 0 32 0;

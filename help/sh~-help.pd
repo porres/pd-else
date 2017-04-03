@@ -5,13 +5,13 @@
 ;
 #X obj 3 416 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 142 388 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 152 388 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 143 325 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 153 325 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 3 447 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 163 177 noise~;
+#X obj 152 187 noise~;
 #X obj 3 3 cnv 15 301 42 empty empty sh~ 20 20 2 37 -233017 -1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -19,7 +19,7 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 1;
+#X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -32,13 +32,13 @@
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
 #X obj 83 40 cnv 4 4 4 empty empty & 0 28 2 18 -233017 -1 0;
-#X obj 143 351 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 153 351 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 163 283 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.839452 256;
+#X obj 152 283 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -107,7 +107,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -145,13 +145,13 @@ inlet according to the second "gate" inlet. The values are sampled
 if the gate signal is greater than zero \, or held if lesser or equal
 to zero.;
 #X obj 267 237 else/out~;
-#X text 170 327 signal - input signal;
-#X text 170 353 signal - gate signal;
+#X text 180 327 signal - input signal;
+#X text 180 353 signal - gate signal;
 #X obj 267 183 else/imp~ 2;
 #N canvas 870 127 425 463 gate 0;
 #X obj 138 163 noise~;
 #X obj 138 349 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.106702 256;
+-228856 -1 -1 0 256;
 #X obj 207 165 osc~ 0.5;
 #X obj 155 242 else/out~;
 #X text 32 18 In the parent patch we have an example with an impulse
@@ -161,17 +161,17 @@ impulse occurs \, then held otherwise.;
 Now \, when values are greater than zero \, the gate is open and the
 signal passes through \, being held only when the gate value is less
 or equal to zero.;
-#X obj 138 319 else/s2f~ 100;
 #X obj 138 203 else/sh~;
 #X text 99 398 This object is inspired by "Gate" from SuperCollider!
 , f 33;
-#X connect 0 0 7 0;
-#X connect 2 0 7 1;
-#X connect 6 0 1 0;
-#X connect 7 0 3 0;
-#X connect 7 0 3 1;
-#X connect 7 0 6 0;
-#X restore 492 221 pd gate;
+#X obj 138 319 else/sig2float~ 100;
+#X connect 0 0 6 0;
+#X connect 2 0 6 1;
+#X connect 6 0 3 0;
+#X connect 6 0 3 1;
+#X connect 6 0 8 0;
+#X connect 8 0 1 0;
+#X restore 494 222 pd gate;
 #N canvas 391 119 819 356 downsampling 0;
 #X obj 121 129 noise~;
 #X obj 195 136 else/imp~ 100;
@@ -208,19 +208,18 @@ to work;
 #X connect 11 0 10 1;
 #X connect 14 0 2 0;
 #X connect 14 0 2 1;
-#X restore 443 249 pd downsampling;
+#X restore 445 250 pd downsampling;
 #X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 163 253 else/s2f~ 100;
-#X text 170 388 signal - sampled and held signal;
-#X obj 163 217 else/sh~;
-#X text 158 424 1) float - initially held value;
+#X text 180 388 signal - sampled and held signal;
+#X obj 152 217 else/sh~;
+#X text 168 424 1) float - initially held value;
 #N canvas 837 142 450 319 argument 0;
 #X obj 180 117 noise~;
 #X obj 180 241 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1.55 256;
+-228856 -1 -1 0 256;
 #X obj 180 205 else/sig2float~;
 #X obj 180 158 else/sh~ 1.55;
 #X obj 255 112 else/trigate~;
@@ -234,10 +233,11 @@ triggered.;
 #X connect 3 0 2 0;
 #X connect 4 0 3 1;
 #X connect 5 0 4 0;
-#X restore 467 279 pd argument;
-#X connect 6 0 32 0;
+#X restore 469 276 pd argument;
+#X obj 152 253 else/sig2float~;
+#X connect 6 0 31 0;
 #X connect 25 0 22 0;
 #X connect 25 0 22 1;
-#X connect 25 0 32 1;
-#X connect 30 0 19 0;
-#X connect 32 0 30 0;
+#X connect 25 0 31 1;
+#X connect 31 0 34 0;
+#X connect 34 0 19 0;

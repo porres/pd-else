@@ -1,4 +1,4 @@
-#N canvas 201 23 560 494 10;
+#N canvas 453 23 560 494 10;
 #X obj 3 280 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 363 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -141,10 +141,9 @@
 ;
 #X text 152 335 float/signal;
 #X obj 309 129 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 5000 1;
+-1 -1 0 1;
 #X floatatom 306 150 0 0 0 0 - - -;
 #X obj 191 215 else/out~;
-#X obj 306 171 else/f2s~ 100;
 #X obj 184 125 osc~ 440;
 #X obj 3 4 cnv 15 301 42 empty empty balance~ 20 20 2 37 -233017 -1
 0;
@@ -158,7 +157,6 @@
 ;
 #X text 189 394 signal;
 #X text 242 394 - right channel;
-#X text 149 428 1) float - initial pan value (default 0);
 #X obj 184 178 else/balance~;
 #X obj 221 152 osc~ 880;
 #X text 75 91 [balance~] performs an equal power (sin/cos) stereo balancing.
@@ -169,10 +167,12 @@
 #X text 240 288 - left signal input;
 #X text 188 308 signal;
 #X text 240 308 - right signal input;
+#X text 149 428 1) float - initial balance value (default 0);
+#X obj 306 171 else/sig2float~ 100;
 #X connect 21 0 22 0;
-#X connect 22 0 24 0;
-#X connect 24 0 35 2;
-#X connect 25 0 35 0;
-#X connect 35 0 23 0;
-#X connect 35 1 23 1;
-#X connect 36 0 35 1;
+#X connect 22 0 42 0;
+#X connect 24 0 33 0;
+#X connect 33 0 23 0;
+#X connect 33 1 23 1;
+#X connect 34 0 33 1;
+#X connect 42 0 33 2;

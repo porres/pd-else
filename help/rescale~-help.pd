@@ -21,8 +21,8 @@
 #X text 122 341 float/signal - sets the high end of the output range
 ;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -91,7 +91,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -158,7 +158,7 @@
 #X obj 235 147 osc~ 1;
 #X obj 235 177 else/rescale~;
 #X obj 235 238 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.100796 256;
+-228856 -1 -1 0 256;
 #X text 96 236 rescaled to 0-1 range;
 #N canvas 846 65 417 527 exponential 0;
 #X obj 104 361 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
@@ -214,7 +214,7 @@ that boundary with the same conversion parameters.;
 #X text 233 279 Inverted;
 #X obj 221 166 sig~;
 #X obj 221 259 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.5 256;
+-228856 -1 -1 0 256;
 #N canvas 894 346 167 187 snapshot~ 0;
 #X obj 42 107 snapshot~;
 #X obj 64 52 loadbang;
@@ -227,7 +227,7 @@ that boundary with the same conversion parameters.;
 #X connect 4 0 0 0;
 #X restore 221 229 pd snapshot~;
 #X obj 100 257 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.5 256;
+-228856 -1 -1 0 256;
 #N canvas 894 346 167 187 snapshot~ 0;
 #X obj 42 107 snapshot~;
 #X obj 64 52 loadbang;
@@ -275,7 +275,7 @@ that boundary with the same conversion parameters.;
 #X text 78 86 The [rescale~] object was designed to rescale audio input
 values from -1 to 1 into another range (0-1 by default). A third argument
 sets an exponential factor (1 by default - linear).;
-#X obj 235 208 else/s2f~ 100;
+#X obj 235 208 else/sig2float~ 100;
 #X connect 29 0 30 0;
 #X connect 30 0 37 0;
 #X connect 37 0 31 0;

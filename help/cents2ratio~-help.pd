@@ -177,7 +177,7 @@ an interval in cents to an interval ratio. The conversion formula is
 #X connect 5 0 6 0;
 #X connect 5 0 6 1;
 #X restore 462 286 pd example;
-#X obj 188 257 else/s2f~ 100;
+#X obj 188 257 else/sig2float~ 100;
 #X connect 7 0 24 0;
 #X connect 24 0 31 0;
 #X connect 31 0 33 0;

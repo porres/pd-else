@@ -46,8 +46,8 @@
 -228856 -1 -1 0 256;
 #X text 310 61 (for signals);
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -116,7 +116,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -159,7 +159,7 @@
 #X text 71 88 Use [rad2hz~] to convert a signal representing a frequency
 in "Radians per Sample" to Hertz. This depends on the patch's sample
 rate (sr). The conversion formula is \; hz = rad * sr / 2pi;
-#X obj 241 241 else/s2f~ 100;
+#X obj 241 241 else/sig2float~ 100;
 #X connect 7 0 21 0;
 #X connect 21 0 26 0;
 #X connect 26 0 32 0;

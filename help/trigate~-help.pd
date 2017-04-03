@@ -1,41 +1,41 @@
 #N canvas 698 77 559 500 10;
-#X obj 4 318 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 314 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 373 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 369 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 428 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 424 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 127 382 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 127 378 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 461 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 457 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 232 382 - converted ratio value(s);
+#X text 232 378 - converted ratio value(s);
 #X obj 23 40 cnv 4 4 4 empty empty Trigger 0 28 2 18 -233017 -1 0;
 #X obj 85 40 cnv 4 4 4 empty empty impulse 0 28 2 18 -233017 -1 0;
-#X obj 193 175 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 200 172 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 298 176 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 305 173 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 217 250 else/out~;
-#X obj 193 207 else/trigate~ 1000;
-#X text 355 176 ms;
-#X text 298 157 gate time;
-#X text 133 227 impulse =>;
-#X text 300 225 <= timed gate;
-#X obj 127 326 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 224 247 else/out~;
+#X obj 200 204 else/trigate~ 1000;
+#X text 362 173 ms;
+#X text 305 154 gate time;
+#X text 140 224 impulse =>;
+#X text 307 222 <= timed gate;
+#X obj 127 322 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 127 348 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 127 344 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 172 348 float;
-#X text 212 348 - gate time in ms;
-#X text 128 437 1) float - gate time in ms (default 0 \, no gate);
-#X obj 127 405 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 172 344 float;
+#X text 212 344 - gate time in ms;
+#X text 128 433 1) float - gate time in ms (default 0 \, no gate);
+#X obj 127 401 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 166 405 signal;
-#X text 178 326 bang;
-#X text 212 326 - generate trigger impulse/gate;
-#X text 166 382 signal;
-#X text 212 405 - tomed gate;
+#X text 166 401 signal;
+#X text 178 322 bang;
+#X text 212 322 - generate trigger impulse/gate;
+#X text 166 378 signal;
+#X text 212 401 - tomed gate;
 #X text 68 88 When receiving a bang \, [trigate~] sends a trigger impulse
 out the left outlet and a timed gate trgger out the right outlet (values
 of 1 for the duration \, 0 otherwise). The length of the gate is given

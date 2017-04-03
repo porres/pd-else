@@ -18,7 +18,7 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 1 5 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 1;
+#X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 303 5 pd;
 #X obj 343 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -36,8 +36,8 @@
 #X obj 500 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -106,7 +106,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -151,7 +151,7 @@
 #X text 108 476 mode <float>;
 #X text 194 476 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear);
-#N canvas 715 46 499 644 examples 1;
+#N canvas 715 46 499 644 examples 0;
 #X msg 332 309 mode \$1;
 #X obj 332 232 vradio 15 1 0 3 \$0-dummy \$0-dummy-set empty 0 -8 0
 10 -228856 -1 -1 0;
@@ -165,16 +165,15 @@
 #X obj 333 142 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X floatatom 330 162 5 0 0 0 - - -, f 5;
-#X obj 198 486 else/meter2~;
-#X obj 254 370 else/gain2~;
-#X text 295 409 <= [else/gain2~];
-#X text 283 549 <= [else/meter2~];
+#X obj 187 486 else/meter2~;
+#X obj 243 370 else/gain2~;
+#X text 284 409 <= [else/gain2~];
+#X text 272 549 <= [else/meter2~];
 #X msg 330 183 gain3 \$1;
 #X msg 252 161 pan2 \$1;
 #X text 249 113 set pan (channel 2);
 #X text 335 142 set gain (channel 3);
-#X text 100 404 you can use [gain2~] as a master leveler, f 21;
-#X obj 83 185 mix4~;
+#X text 89 404 you can use [gain2~] as a master leveler, f 21;
 #X obj 49 128 osc~ 80;
 #X obj 107 128 osc~ 120;
 #X obj 167 128 osc~ 150;
@@ -182,7 +181,8 @@
 #X text 85 32 [mix4~] has 3 scaling modes for its slider (the default
 is "quartic"). The rightmost inlet sets scaling mode \, gain and pan
 values., f 47;
-#X connect 0 0 19 4;
+#X obj 83 185 else/mix4~;
+#X connect 0 0 24 4;
 #X connect 1 0 4 0;
 #X connect 4 0 0 0;
 #X connect 7 0 15 0;
@@ -190,14 +190,14 @@ values., f 47;
 #X connect 9 0 14 0;
 #X connect 11 0 10 0;
 #X connect 11 1 10 1;
-#X connect 14 0 19 4;
-#X connect 15 0 19 4;
-#X connect 19 0 11 0;
-#X connect 19 1 11 1;
-#X connect 20 0 19 0;
-#X connect 21 0 19 1;
-#X connect 22 0 19 2;
-#X connect 23 0 19 3;
+#X connect 14 0 24 4;
+#X connect 15 0 24 4;
+#X connect 19 0 24 0;
+#X connect 20 0 24 1;
+#X connect 21 0 24 2;
+#X connect 22 0 24 3;
+#X connect 24 0 11 0;
+#X connect 24 1 11 1;
 #X restore 473 290 pd examples;
 #N canvas 754 160 434 484 scaling 0;
 #X obj 91 57 cnv 15 198 198 empty empty empty 20 12 0 14 -253888 -66577
@@ -453,7 +453,7 @@ gain and panning.;
 #X obj 362 115 osc~ 1320;
 #X obj 241 333 dac~ 1 2, f 10;
 #X text 381 215 <= [else/mix4~];
-#X obj 188 142 mix4~;
+#X obj 188 142 else/mix4~;
 #X connect 47 0 53 0;
 #X connect 48 0 53 1;
 #X connect 49 0 53 2;

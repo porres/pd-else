@@ -1,15 +1,15 @@
-#N canvas 570 53 559 481 10;
-#X obj 4 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 570 53 559 465 10;
+#X obj 4 301 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 374 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 358 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 409 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 393 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 126 383 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 146 367 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 127 326 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 147 310 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 442 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 426 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -30,7 +30,7 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 197 283 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 197 267 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
@@ -136,31 +136,31 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
-#X obj 197 180 osc~ 1;
-#X obj 290 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 197 175 osc~ 1;
+#X obj 290 147 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 290 180 else/trigate~;
-#X text 154 417 (none);
-#X text 155 325 signal;
-#X obj 127 348 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 290 175 else/trigate~;
+#X text 224 401 (none);
+#X text 175 309 signal;
+#X obj 147 332 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 155 347 signal;
-#X text 199 325 - trigger signal to count;
-#X text 155 383 signal;
-#X text 199 383 - the trigger count;
-#X obj 197 219 else/pulsecount~;
+#X text 175 331 signal;
+#X text 219 309 - trigger signal to count;
+#X text 175 367 signal;
+#X text 219 367 - the trigger count;
+#X obj 197 206 else/pulsecount~;
 #X obj 3 3 cnv 15 301 42 empty empty pulsecount~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X obj 197 254 else/s2f~;
-#X text 199 347 - an impulse resets counter to zero;
+#X text 219 331 - an impulse resets counter to zero;
 #X text 61 86 [pulsecount~] counts pulse triggers. A trigger happens
 at transitions from non positive to positive. A trigger in the right
 inlet resets the counter to zero.;
+#X obj 197 238 else/sig2float~;
 #X connect 18 0 28 0;
 #X connect 19 0 20 0;
 #X connect 20 0 28 1;
-#X connect 28 0 31 0;
-#X connect 31 0 16 0;
+#X connect 28 0 33 0;
+#X connect 33 0 16 0;

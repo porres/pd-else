@@ -45,7 +45,7 @@
 #X obj 196 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
 #X text 273 220 rate in Hz;
-#X obj 171 278 else/out~;
+#X obj 214 282 else/out~;
 #X text 162 390 list;
 #X obj 214 247 else/standard~;
 #X text 84 91 [standard~] is a standard map chaotic generator \, the

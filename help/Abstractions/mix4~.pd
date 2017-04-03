@@ -267,9 +267,7 @@
 #N canvas 262 23 503 388 pan 0;
 #X obj 80 218 pan2~;
 #X obj 152 217 pan2~;
-#X obj 215 131 else/f2s~ 20;
 #X obj 215 160 /~ 100;
-#X obj 339 122 else/f2s~ 20;
 #X obj 339 151 /~ 100;
 #X obj 82 48 inlet~;
 #X obj 144 49 inlet~;
@@ -277,18 +275,20 @@
 #X obj 143 277 outlet~;
 #X obj 215 99 r \$0-pan1;
 #X obj 339 90 r \$0-pan2;
-#X connect 0 0 8 0;
-#X connect 0 1 9 0;
-#X connect 1 0 8 0;
-#X connect 1 1 9 0;
-#X connect 2 0 3 0;
-#X connect 3 0 0 1;
-#X connect 4 0 5 0;
-#X connect 5 0 1 1;
-#X connect 6 0 0 0;
-#X connect 7 0 1 0;
-#X connect 10 0 2 0;
-#X connect 11 0 4 0;
+#X obj 339 122 else/float2sig~ 20;
+#X obj 215 131 else/float2sig~ 20;
+#X connect 0 0 6 0;
+#X connect 0 1 7 0;
+#X connect 1 0 6 0;
+#X connect 1 1 7 0;
+#X connect 2 0 0 1;
+#X connect 3 0 1 1;
+#X connect 4 0 0 0;
+#X connect 5 0 1 0;
+#X connect 8 0 11 0;
+#X connect 9 0 10 0;
+#X connect 10 0 3 0;
+#X connect 11 0 2 0;
 #X restore 455 217 pd pan;
 #X obj 559 41 inlet~;
 #N canvas 341 432 316 326 gain~ 0;
@@ -507,11 +507,7 @@
 #X connect 7 0 4 0;
 #X restore 631 187 pd gain~;
 #N canvas 262 23 503 388 pan 0;
-#X obj 80 218 pan2~;
-#X obj 152 217 pan2~;
-#X obj 215 131 else/f2s~ 20;
 #X obj 215 160 /~ 100;
-#X obj 339 122 else/f2s~ 20;
 #X obj 339 151 /~ 100;
 #X obj 82 48 inlet~;
 #X obj 144 49 inlet~;
@@ -519,23 +515,27 @@
 #X obj 143 277 outlet~;
 #X obj 215 99 r \$0-pan3;
 #X obj 339 90 r \$0-pan4;
-#X connect 0 0 8 0;
-#X connect 0 1 9 0;
-#X connect 1 0 8 0;
-#X connect 1 1 9 0;
-#X connect 2 0 3 0;
-#X connect 3 0 0 1;
-#X connect 4 0 5 0;
-#X connect 5 0 1 1;
-#X connect 6 0 0 0;
-#X connect 7 0 1 0;
-#X connect 10 0 2 0;
+#X obj 339 122 else/float2sig~ 20;
+#X obj 215 131 else/float2sig~ 20;
+#X obj 152 217 else/pan2~;
+#X obj 80 218 else/pan2~;
+#X connect 0 0 11 1;
+#X connect 1 0 10 1;
+#X connect 2 0 11 0;
+#X connect 3 0 10 0;
+#X connect 6 0 9 0;
+#X connect 7 0 8 0;
+#X connect 8 0 1 0;
+#X connect 9 0 0 0;
+#X connect 10 0 4 0;
+#X connect 10 1 5 0;
 #X connect 11 0 4 0;
+#X connect 11 1 5 0;
 #X restore 598 217 pd pan;
 #X obj 151 258 nbx 4 14 -100 100 0 0 \$0-pan1 \$0-pan1-set empty 0
--8 2 12 -228856 -1 -1 -2 256;
+-8 2 12 -228856 -1 -1 0 256;
 #X obj 194 258 nbx 4 14 -100 100 0 0 \$0-pan2 \$0-pan2-set empty 0
--8 2 12 -228856 -1 -1 -100 256;
+-8 2 12 -228856 -1 -1 0 256;
 #X obj 190 259 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X obj 192 259 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
@@ -553,7 +553,7 @@
 #X obj 315 259 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X obj 282 258 nbx 4 14 -100 100 0 0 \$0-pan4 \$0-pan4-set empty 0
--8 2 12 -228856 -1 -1 70 256;
+-8 2 12 -228856 -1 -1 0 256;
 #X obj 322 259 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X obj 324 259 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577

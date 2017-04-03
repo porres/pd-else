@@ -12,8 +12,8 @@
 #X obj 3 441 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -82,7 +82,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -127,13 +127,11 @@
 #X text 174 399 1) float;
 #X text 233 399 - frequency in hertz;
 #X text 174 419 2) float;
-#N canvas 504 64 800 509 sync 0;
+#N canvas 504 64 800 509 sync 1;
 #X obj 180 118 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 101 245 else/out~;
 #X text 46 141 impulse value of 1 =>;
-#X text 194 163 <== immediately jumps to the start of the cycle when
-receiving an impulse.;
 #X text 15 14 The third inlet expects an impulse signal for syncing.
 The impulse values need to be > 0 and <= 1 (otherwise ignored) so the
 internal phase jumps imediately to the given impulse value. Because
@@ -165,20 +163,22 @@ offset change to "0" will push back half the cycle.;
 #X obj 485 122 else/imp~ 200;
 #X obj 560 88 else/imp~ 110;
 #X obj 117 203 else/imp~ 1;
-#X connect 0 0 16 0;
-#X connect 9 0 20 0;
-#X connect 10 0 18 0;
-#X connect 12 0 17 1;
-#X connect 13 0 17 1;
-#X connect 16 0 21 2;
-#X connect 17 0 15 0;
-#X connect 17 0 15 1;
-#X connect 18 0 17 2;
-#X connect 19 0 8 0;
-#X connect 19 0 8 1;
-#X connect 20 0 19 2;
-#X connect 21 0 1 0;
-#X connect 21 0 1 1;
+#X text 192 163 <== immediately jumps to the start of \; the cycle
+when receiving an impulse., f 38;
+#X connect 0 0 15 0;
+#X connect 8 0 19 0;
+#X connect 9 0 17 0;
+#X connect 11 0 16 1;
+#X connect 12 0 16 1;
+#X connect 15 0 20 2;
+#X connect 16 0 14 0;
+#X connect 16 0 14 1;
+#X connect 17 0 16 2;
+#X connect 18 0 7 0;
+#X connect 18 0 7 1;
+#X connect 19 0 18 2;
+#X connect 20 0 1 0;
+#X connect 20 0 1 1;
 #X restore 494 242 pd sync;
 #X obj 209 141 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -186,7 +186,7 @@ offset change to "0" will push back half the cycle.;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 1;
+#X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -248,7 +248,7 @@ negative frequencies \, has inlets for phase modulation and phase sync.
 #X obj 95 133 else/sh~;
 #X obj 95 88 noise~;
 #X obj 95 216 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.838501 256;
+-228856 -1 -1 0 256;
 #N canvas 1046 306 123 217 snapshot~ 0;
 #X obj 29 107 snapshot~;
 #X obj 46 79 metro 100;

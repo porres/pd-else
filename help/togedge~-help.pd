@@ -10,7 +10,7 @@
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 1;
+#X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -26,32 +26,32 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 205 210 else/togedge~;
-#X obj 205 165 else/pulse~ 1;
+#X obj 217 210 else/togedge~;
+#X obj 217 165 else/pulse~ 1;
 #X text 61 86 [togedge~] is a signal version of Max's (or cyclone's)
 [togedge]. It sends an impulse in the left outlet for "zero to non-zero"
 transitions and an impulse in the right outlet for "non-zero to zero"
 transitions.;
-#X text 134 226 0 to non-0;
-#X text 292 226 non-0 to 0;
-#X obj 90 334 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 146 226 0 to non-0;
+#X text 304 226 non-0 to 0;
+#X obj 130 334 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 89 366 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 366 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 89 387 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 129 387 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 158 334 -;
-#X text 158 368 -;
-#X text 158 387 -;
-#X text 124 430 (none);
-#X text 113 368 signal;
-#X text 113 387 signal;
-#X text 173 368 impulse if a zero to non-zero transition is detected
+#X text 198 334 -;
+#X text 198 368 -;
+#X text 198 387 -;
+#X text 208 430 (none);
+#X text 153 368 signal;
+#X text 153 387 signal;
+#X text 213 368 impulse if a zero to non-zero transition is detected
 ;
-#X text 173 387 impulse if a non-zero to zero transition is detected
+#X text 213 387 impulse if a non-zero to zero transition is detected
 ;
-#X text 112 334 signal;
-#X text 173 334 signal to detect transitions from;
+#X text 152 334 signal;
+#X text 213 334 signal to detect transitions from;
 #X obj 155 40 cnv 4 4 4 empty empty transitions 0 28 2 18 -233017 -1
 0;
 #X obj 3 3 cnv 15 301 42 empty empty togedge~ 20 20 2 37 -233017 -1
@@ -59,7 +59,7 @@ transitions.;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 215 251 else/out~;
+#X obj 227 251 else/out~;
 #X connect 14 0 35 0;
 #X connect 14 1 35 1;
 #X connect 15 0 14 0;

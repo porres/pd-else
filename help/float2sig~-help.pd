@@ -154,13 +154,13 @@
 #X text 191 297 - float value to convert to signal;
 #X obj 161 40 cnv 4 4 4 empty empty signal 0 28 2 18 -233017 -1 0;
 #X text 320 143 ramp time;
-#X obj 204 225 else/s2f~;
 #X text 142 368 1) float - ramp time in ms (default 0);
 #X text 61 88 [float2sig~] coverts floats to signals. The conversion
 is smoothened by a ramp time in ms.;
 #X obj 204 195 else/float2sig~ 1000;
-#X connect 17 0 33 0;
+#X obj 204 225 else/sig2float~ 100;
+#X connect 17 0 32 0;
 #X connect 23 0 17 0;
-#X connect 24 0 33 1;
-#X connect 30 0 16 0;
-#X connect 33 0 30 0;
+#X connect 24 0 32 1;
+#X connect 32 0 33 0;
+#X connect 33 0 16 0;

@@ -1,4 +1,4 @@
-#N canvas 867 23 559 547 10;
+#N canvas 552 23 559 526 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -15,7 +15,7 @@
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
 #X obj 90 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 -233017 -1 0;
-#X obj 3 510 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 486 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 294 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -61,11 +61,10 @@ nyquist). The 'p' parameter controls the chaos;
 #X obj 174 192 else/logistic~ 440;
 #X obj 174 229 else/out~;
 #X text 84 89 [logistic~] is a chaotic generator based on the difference
-equation: y[n] = p * y[n-1] * (1- y[n-1]).;
+equation: y[n] = (3 + p) * y[n-1] * (1- y[n-1]).;
 #X text 143 440 Object inspired on SuperCollider's Logistic UGEN. The
-'p' parameter is added to 3 (cause usable values are from 3 to 4).
-The initial state is 0.5 \, and the output is rescaled. This object
-produces DC offset when the p parameter is lower.;
+initial state is 0.5 \, and the output is rescaled. This object produces
+DC offset when the p parameter is lower.;
 #X connect 16 0 35 0;
 #X connect 31 0 32 0;
 #X connect 32 0 35 1;

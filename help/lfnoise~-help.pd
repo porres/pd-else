@@ -1,7 +1,7 @@
 #N canvas 691 72 576 470 10;
 #X obj 206 168 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 6000 1;
-#X obj 203 256 else/out~;
+-228856 -1 -1 0 1;
+#X obj 181 256 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty lfnoise~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -39,7 +39,7 @@
 #X text 186 367 signal;
 #X text 173 405 1) float;
 #X obj 203 197 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 156.395 256;
+-228856 -1 -1 0 256;
 #X text 287 198 frequency in Hz;
 #X obj 203 223 else/lfnoise~ 400;
 #X text 233 405 - frequency in hertz (default 0);
@@ -54,26 +54,26 @@ It also accepts negative frequencies.;
 #X obj 208 222 noise~;
 #X obj 208 254 else/sh~;
 #X obj 208 299 out~;
-#X obj 97 300 out~;
-#X obj 97 237 lfnoise~ 300;
+#X obj 77 300 out~;
 #X obj 253 221 else/imp~ 300;
 #X obj 191 172 sig~ 300;
 #X obj 191 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 300 256;
+-228856 -1 -1 0 256;
 #X text 39 25 [lfnoise~] is basically the same as [noise~] going thgouh
 [sh~] and being controlled with [imp~].;
 #X text 39 66 You can use the setup to the right if you want more advanced
 options such as modulating the phase of the [imp~] oscillator and using
 its sync inlet.;
+#X obj 77 237 else/lfnoise~ 300;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 1 0 2 1;
-#X connect 4 0 3 0;
-#X connect 4 0 3 1;
-#X connect 5 0 1 1;
+#X connect 4 0 1 1;
+#X connect 5 0 4 0;
+#X connect 5 0 9 0;
 #X connect 6 0 5 0;
-#X connect 6 0 4 0;
-#X connect 7 0 6 0;
+#X connect 9 0 3 0;
+#X connect 9 0 3 1;
 #X restore 493 287 pd more;
 #X text 233 368 - bandlimited noise;
 #X connect 0 0 21 0;

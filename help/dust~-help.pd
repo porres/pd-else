@@ -1,7 +1,7 @@
 #N canvas 634 27 560 453 10;
 #X obj 221 138 hsl 128 15 1 5000 1 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 218 236 else/out~;
+#X obj 200 235 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty dust~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -31,9 +31,9 @@
 ;
 #X obj 3 377 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 136 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 126 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 135 313 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 125 313 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 164 349 signal;
 #X text 152 389 1) float;

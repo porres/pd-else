@@ -5,7 +5,7 @@
 ;
 #X obj 4 333 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 106 307 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 109 307 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 4 366 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
@@ -42,7 +42,7 @@
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X text 145 307 signal;
-#X obj 106 271 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 109 271 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 145 271 signal;
 #X text 191 307 - last input value;

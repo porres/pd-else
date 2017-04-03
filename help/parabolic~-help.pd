@@ -2,7 +2,7 @@
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 1;
+#X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -51,10 +51,9 @@
 #X text 243 459 - initial phase offset;
 #X text 261 350 phase offset (modulation input);
 #X text 261 369 phase sync (ressets internal phase);
-#X text 261 403 impulse signal;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -123,7 +122,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -191,7 +190,7 @@ when receiving an impulse.;
 #X connect 13 0 1 1;
 #X connect 14 0 6 0;
 #X connect 14 0 6 1;
-#X restore 494 278 pd sync;
+#X restore 494 281 pd sync;
 #N canvas 534 204 786 409 phase 0;
 #X text 400 90 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 - where 1 is also the start of another
@@ -228,7 +227,7 @@ in sync. Another feature is phase modulation.;
 #X connect 15 0 11 1;
 #X connect 16 0 3 0;
 #X connect 16 0 3 1;
-#X restore 445 253 pd phase offset;
+#X restore 445 256 pd phase offset;
 #X obj 3 3 cnv 15 301 42 empty empty parabolic~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -249,12 +248,13 @@ acts like a triangular wave in frequency modulation.;
 #X connect 2 0 3 1;
 #X connect 4 0 1 1;
 #X connect 6 0 4 0;
-#X restore 476 228 pd example;
+#X restore 476 231 pd example;
 #X obj 200 200 else/parabolic~ 220;
 #X text 61 86 [parabolic~] is a parabolic oscillator that accepts negative
 frequencies \, has inlets for phase modulation and phase sync. A parabolic
 waveform is similar to a sinusoid but it is not band limited (has aliasing).
 ;
-#X connect 11 0 39 0;
-#X connect 39 0 10 0;
-#X connect 39 0 10 1;
+#X text 261 403 parabolic oscillator output;
+#X connect 11 0 38 0;
+#X connect 38 0 10 0;
+#X connect 38 0 10 1;

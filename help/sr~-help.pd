@@ -5,13 +5,13 @@
 ;
 #X obj 4 358 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 106 332 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 119 332 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 107 266 cnv 17 3 52 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 120 266 cnv 17 3 52 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 4 391 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 141 266 bang;
+#X text 154 266 bang;
 #X obj 210 227 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 44.1 256;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -35,24 +35,24 @@
 0;
 #X obj 210 143 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 135 332 float;
+#X text 148 332 float;
 #X obj 119 40 cnv 4 4 4 empty empty rate 0 28 2 18 -233017 -1 0;
 #X obj 3 3 cnv 15 301 42 empty empty sr~ 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#N canvas 473 197 446 263 example 0;
+#N canvas 922 209 446 263 example 0;
 #X obj 97 133 /;
 #X obj 97 100 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 18 256;
+-228856 -1 -1 0 256;
 #X obj 97 169 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.408163 256;
+-228856 -1 -1 0 256;
 #X text 157 99 samples;
 #X text 160 166 ms;
 #X obj 258 101 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 18 256;
+-228856 -1 -1 0 256;
 #X obj 258 170 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 793.8 256;
+-228856 -1 -1 0 256;
 #X obj 258 134 *;
 #X text 318 100 ms;
 #X text 321 167 samples;
@@ -69,14 +69,14 @@
 #X msg 257 167 hz, f 2;
 #X obj 210 196 else/sr~ khz;
 #X msg 244 142 khz;
-#X text 171 332 - sample rate frequency in Hz or Khz;
-#X text 171 286 - get sample rate frequency in Hz;
-#X text 153 286 hz;
-#X text 171 266 - get last sample rate frequency (in Hz or Khz);
-#X text 147 304 khz;
-#X text 171 304 - get sample rate frequency in Khz;
+#X text 184 332 - sample rate frequency in Hz or Khz;
+#X text 184 286 - get sample rate frequency in Hz;
+#X text 166 286 hz;
+#X text 184 266 - get last sample rate frequency (in Hz or Khz);
+#X text 160 304 khz;
+#X text 184 304 - get sample rate frequency in Khz;
 #X text 134 227 sample rate;
-#X text 110 367 1) symbol - 'hz' (default) or 'khz' for frequency value
+#X text 123 367 1) symbol - 'hz' (default) or 'khz' for frequency value
 ;
 #X text 73 90 [sr~] reports the sample rate frequency when loading
 the patch or when receiving a bang. It reports it either in hz or khz.

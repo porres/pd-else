@@ -35,7 +35,6 @@
 0;
 #X text 155 347 (none);
 #X text 155 317 (none);
-#X text 313 235 <= click to change the status;
 #X text 149 380 1) dsp status flag: -off or -on;
 #X text 74 88 [setdsp~] is a convenient abstraction to display and
 set Pd's audio engine (aka 'DSP') state. You can just click on it to
@@ -45,5 +44,6 @@ the top right corner.;
 #X text 76 163 By default \, the [setdsp~] object will check the current
 DSP state and load accordingly (on or off). But you can give it a flag
 to set the DSP state (-on/-off).;
-#X obj 261 224 else/setdsp~;
-#X text 119 272 [setdsp~] object ==>;
+#X obj 263 224 else/setdsp~;
+#X text 135 260 [setdsp~] object ==>;
+#X text 315 236 <=== click to change the status, f 11;

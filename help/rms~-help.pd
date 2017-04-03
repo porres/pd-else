@@ -1,4 +1,4 @@
-#N canvas 772 80 559 482 10;
+#N canvas 772 80 559 491 10;
 #X obj 4 258 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 341 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -7,7 +7,7 @@
 0;
 #X obj 85 350 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 444 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 449 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -154,7 +154,6 @@ f 53;
 #X text 216 399 - hop size in samples (default \, half the window size)
 ;
 #X text 218 350 - RMS value;
-#X text 180 421 flag;
 #X text 168 320 linear;
 #X text 192 302 db;
 #X text 219 302 - change RMS value to dBFS;
@@ -164,7 +163,6 @@ the RMS value in linear amplitude (default) or in dBFS.;
 #X text 218 284 - sets window and hop size in samples;
 #X msg 285 163 db;
 #X obj 208 190 else/rms~ -db;
-#X text 216 421 - the -db flag sets the output to dBFS, f 53;
 #N canvas 555 208 817 330 analysis 0;
 #X text 15 21 The [rms~] object is based on [env~] and has the same
 analytical structure. The analysis is "Hanning" (raised cosine) windowed
@@ -234,7 +232,10 @@ size.;
 #X restore 476 224 pd analysis;
 #X text 218 320 - change RMS value to linear (the default is linear)
 ;
-#X connect 21 0 39 0;
-#X connect 24 0 39 0;
-#X connect 38 0 39 0;
-#X connect 39 0 15 0;
+#X obj 3 422 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 216 426 - sets the output to dBFS, f 53;
+#X text 186 426 -db;
+#X connect 21 0 38 0;
+#X connect 24 0 38 0;
+#X connect 37 0 38 0;
+#X connect 38 0 15 0;

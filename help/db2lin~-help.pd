@@ -1,23 +1,23 @@
-#N canvas 715 53 558 461 10;
-#X obj 3 319 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 715 53 560 451 10;
+#X obj 3 306 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 353 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 340 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 390 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 377 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 82 362 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 82 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 83 327 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 83 314 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 157 398 (none);
-#X obj 3 423 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X text 157 385 (none);
+#X obj 3 410 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 276 286 Linear Amplitude;
-#X obj 191 174 hsl 180 15 -100 0 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 17900 1;
-#X obj 188 198 nbx 5 14 -100 100 0 0 empty empty empty 0 -8 0 10 -228856
+#X text 276 276 Linear Amplitude;
+#X obj 191 164 hsl 180 15 -100 0 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 188 188 nbx 5 14 -100 100 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X text 249 196 dBFS;
+#X text 249 186 dBFS;
 #X obj 3 3 cnv 15 301 42 empty empty db2lin~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -40,13 +40,12 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 206 329 - dBFS amplitude value;
-#X text 202 362 - converted linear amplitude value;
-#X text 78 124 Conversion expression: amp = pow(10 \, dBFS / 20) \,
+#X text 206 316 - dBFS amplitude value;
+#X text 202 349 - converted linear amplitude value;
+#X text 78 119 Conversion expression: amp = pow(10 \, dBFS / 20) \,
 see the implementation inside the abstraction.;
-#X obj 188 285 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 188 275 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 1 256;
-#X obj 188 261 else/s2f~;
 #X text 78 85 [db2lin~] is a simple abstraction that converts amplitude
 values from deciBel Full Scale (dBFS) to linear.;
 #N canvas 207 34 366 264 (subpatch) 0;
@@ -153,16 +152,17 @@ values from deciBel Full Scale (dBFS) to linear.;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X obj 188 226 else/db2lin~;
-#X text 155 329 signal;
-#X text 157 362 signal;
+#X obj 188 216 else/db2lin~;
+#X text 155 316 signal;
+#X text 157 349 signal;
 #X obj 23 40 cnv 4 4 4 empty empty Convert 0 28 2 18 -233017 -1 0;
 #X obj 164 40 cnv 4 4 4 empty empty linear 0 28 2 18 -233017 -1 0;
 #X obj 215 40 cnv 4 4 4 empty empty amplitude 0 28 2 18 -233017 -1
 0;
 #X obj 140 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
 #X obj 92 40 cnv 4 4 4 empty empty dBFS 0 28 2 18 -233017 -1 0;
+#X obj 188 251 else/sig2float~;
 #X connect 8 0 9 0;
-#X connect 9 0 28 0;
-#X connect 25 0 24 0;
-#X connect 28 0 25 0;
+#X connect 9 0 27 0;
+#X connect 27 0 35 0;
+#X connect 35 0 24 0;

@@ -10,15 +10,10 @@
 #X obj 85 333 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
 #X text 139 333 signal;
-#X obj 2 2 cnv 15 301 42 empty empty gain2~ 20 20 2 37 -233017 -1 0
-;
 #X obj 305 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1;
-#X restore 2 2 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 1;
+#X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 304 2 pd;
 #X obj 344 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
@@ -361,7 +356,7 @@ act on the signal input \, the default is 20 ms and the minimum is
 0.78422 0.791806 0.799447 0.807144 0.814895 0.822702 0.830566 0.838485
 0.846461 0.854494 0.862584 0.870731 0.878936 0.887198 0.895519 0.903898
 0.912336 0.920833 0.929388 0.938004 0.946679 0.955414 0.96421 0.973066
-0.981982 0.990961;
+0.981982 0.990961 ;
 #X array linear 441 float 1;
 #A 0 0 0.00226757 0.00453515 0.00680272 0.00907029 0.0113379 0.0136054
 0.015873 0.0181406 0.0204082 0.0226757 0.0249433 0.0272109 0.0294785
@@ -495,9 +490,14 @@ you can adjust a stereo signal's gain. It has controls for ramp time
 #X text 195 482 - the adjusted gain signal of the right channel;
 #X obj 85 482 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
 -162280 0;
-#X connect 21 0 44 0;
-#X connect 21 0 44 1;
-#X connect 44 0 19 0;
-#X connect 44 1 19 1;
-#X connect 44 2 20 0;
+#X obj 2 2 cnv 15 301 42 empty empty gain2~ 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 2 graph;
+#X connect 19 0 42 0;
+#X connect 19 0 42 1;
+#X connect 42 0 17 0;
+#X connect 42 1 17 1;
+#X connect 42 2 18 0;
 #X coords 0 628 1 627 74 39 0;
