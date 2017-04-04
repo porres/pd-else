@@ -16,9 +16,9 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Object list (71 objects):
+Object list (72 objects):
 
-DETERMINISTIC GENERATORS: OSCILLATORS (7)
+OSCILLATORS (DETERMINISTIC GENERATORS): [7]
 - [imp~]
 - [imp2~]
 - [parabolic~]
@@ -27,10 +27,11 @@ DETERMINISTIC GENERATORS: OSCILLATORS (7)
 - [square~]
 - [vtriangle~]
 
-CHAOTIC GENERATORS (11):
+CHAOTIC GENERATORS: [12]
 - [brown~] 
 - [clipnoise~] 
 - [crackle~] 
+- [cusp~] 
 - [gbman~] 
 - [henon~]
 - [latoocarfian~]
@@ -40,7 +41,7 @@ CHAOTIC GENERATORS (11):
 - [quad~]
 - [standard~]
 
-CONVERSION (16):
+CONVERSION: [16]
 - [cents2rato]
 - [cents2ratio~]
 - [db2lin]
@@ -58,7 +59,7 @@ CONVERSION (16):
 - [rescale~]
 - [sig2float~]
 
-SIGNAL ANALYSIS (9):
+SIGNAL ANALYSIS: [9]
 - [changed~]
 - [elapsed~]
 - [lastvalue~]
@@ -69,7 +70,7 @@ SIGNAL ANALYSIS (9):
 - [vu~]
 - [zerocross~]
 
-TRIGGERS (8):
+TRIGGERS: [8]
 - [dust~]
 - [dust2~]
 - [pimp~]
@@ -79,13 +80,13 @@ TRIGGERS (8):
 - [toggleff~]
 - [trigate~]
 
-CONSTANT VALUES (4):
+CONSTANT VALUES: [4]
 - [nyquist]
 - [pi]
 - [sr~]
 - [e]
 
-GUI (8):
+GUI: [8]
 - [out~]
 - [gain~]
 - [gain2~]
@@ -95,14 +96,14 @@ GUI (8):
 - [mix4~]
 - [setdsp~]
 
-MISCELANEOUS (4):
-- [accum~]
-- [downsample~]
-- [lastvalue]
-- [sin~]
-
-SIGNAL ROUTING (4):
+SIGNAL ROUTING: [4]
 - [balance~]
 - [pan2~]
 - [pan4~]
 - [xfade~]
+
+MISCELANEOUS: [4]
+- [accum~]
+- [downsample~]
+- [lastvalue]
+- [sin~]
