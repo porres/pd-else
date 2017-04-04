@@ -1,4 +1,4 @@
-#N canvas 691 72 576 470 10;
+#N canvas 691 72 561 495 10;
 #X obj 206 168 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 181 256 else/out~;
@@ -24,59 +24,89 @@
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
 #X obj 142 40 cnv 4 4 4 empty empty noise 0 28 2 18 -233017 -1 0;
-#X obj 3 429 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 458 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 320 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 372 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 356 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 393 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 409 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 116 366 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 116 382 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 115 329 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X text 186 367 signal;
-#X text 173 405 1) float;
+#X text 186 383 signal;
+#X text 173 418 1) float;
 #X obj 203 197 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 287 198 frequency in Hz;
 #X obj 203 223 else/lfnoise~ 400;
-#X text 233 405 - frequency in hertz (default 0);
-#X text 233 328 - frequency in hertz;
-#X text 188 61 (no interpolation);
-#X text 150 330 float/signal;
-#X text 84 91 [lfnoise~] is a low frequency (band limited) noise with
-no interpolation (step noise). The frequency band is limited from 0
-up to the frequency it is running and it can go up to the sample rate.
-It also accepts negative frequencies.;
-#N canvas 627 45 455 386 more 0;
-#X obj 208 222 noise~;
-#X obj 208 254 else/sh~;
-#X obj 208 299 out~;
-#X obj 77 300 out~;
-#X obj 253 221 else/imp~ 300;
-#X obj 191 172 sig~ 300;
-#X obj 191 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 233 418 - frequency in hertz (default 0);
+#N canvas 557 219 879 421 more 0;
+#X obj 634 224 noise~;
+#X obj 634 256 else/sh~;
+#X obj 679 223 else/imp~ 300;
+#X obj 617 174 sig~ 300;
+#X obj 617 154 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 39 25 [lfnoise~] is basically the same as [noise~] going thgouh
-[sh~] and being controlled with [imp~].;
-#X text 39 66 You can use the setup to the right if you want more advanced
-options such as modulating the phase of the [imp~] oscillator and using
-its sync inlet.;
-#X obj 77 237 else/lfnoise~ 300;
+#X text 465 75 You can use the setup to the right if you want more
+advanced options such as modulating the phase of the [imp~] oscillator
+and using its sync inlet.;
+#X obj 503 239 else/lfnoise~ 300;
+#X text 59 75 [lfnoise~] is basically the same as [noise~] going thgouh
+[downsample~].;
+#X obj 102 139 noise~;
+#X obj 77 244 else/out~;
+#X msg 189 151 interp \$1;
+#X obj 189 124 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 281 193 else/lfnoise~ 300;
+#X obj 503 302 else/out~;
+#X obj 634 301 else/out~;
+#X obj 256 246 else/out~;
+#X obj 281 151 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 465 27 [lfnoise~] without interpolation is basically the same
+as [noise~] going thgouh [sh~] and being controlled with [imp~].;
+#X obj 102 193 else/downsample~ 300;
 #X connect 0 0 1 0;
-#X connect 1 0 2 0;
-#X connect 1 0 2 1;
-#X connect 4 0 1 1;
-#X connect 5 0 4 0;
-#X connect 5 0 9 0;
-#X connect 6 0 5 0;
-#X connect 9 0 3 0;
-#X connect 9 0 3 1;
+#X connect 1 0 14 0;
+#X connect 1 0 14 1;
+#X connect 2 0 1 1;
+#X connect 3 0 2 0;
+#X connect 3 0 6 0;
+#X connect 4 0 3 0;
+#X connect 6 0 13 0;
+#X connect 6 0 13 1;
+#X connect 8 0 18 0;
+#X connect 10 0 12 0;
+#X connect 10 0 18 0;
+#X connect 11 0 10 0;
+#X connect 12 0 15 0;
+#X connect 12 0 15 1;
+#X connect 16 0 12 0;
+#X connect 16 0 18 1;
+#X connect 18 0 9 0;
+#X connect 18 0 9 1;
 #X restore 493 287 pd more;
-#X text 233 368 - bandlimited noise;
-#X connect 0 0 21 0;
-#X connect 21 0 23 0;
-#X connect 23 0 1 0;
-#X connect 23 0 1 1;
+#X text 233 384 - bandlimited noise;
+#X text 84 91 [lfnoise~] is a low frequency (band limited) noise with
+or without interpolation. The frequency band is limited from 0 up to
+the frequency it is running and it can go up to the sample rate. It
+also accepts negative frequencies.;
+#X text 160 330 signal;
+#X obj 92 330 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 216 329 - signal to be downsampled;
+#X text 112 350 interp <float>;
+#X text 216 349 - interpolation 0 (off \, default) or 1 (on);
+#X obj 3 320 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X text 233 436 - interpolation 0 (off \, default) or 1 (on);
+#X text 173 436 2) float;
+#X msg 118 193 interp \$1;
+#X obj 118 166 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X connect 0 0 19 0;
+#X connect 19 0 21 0;
+#X connect 21 0 1 0;
+#X connect 21 0 1 1;
+#X connect 34 0 21 0;
+#X connect 35 0 34 0;
