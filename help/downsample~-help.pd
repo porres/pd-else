@@ -1,4 +1,4 @@
-#N canvas 379 70 559 527 10;
+#N canvas 245 68 559 527 10;
 #X obj 204 158 noise~;
 #X obj 336 154 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
@@ -51,40 +51,46 @@
 #X obj 333 183 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 204 211 else/downsample~ 44100;
-#N canvas 389 314 876 380 example 0;
-#X obj 156 203 else/sh~;
-#X obj 135 137 noise~;
-#X obj 204 108 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
-#X obj 156 264 else/out~;
-#X obj 201 137 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 541 78 876 380 example 0;
+#X obj 236 200 else/sh~;
+#X obj 184 117 noise~;
+#X obj 284 105 hsl 128 15 -44100 44100 0 0 empty empty empty -2 -8
+0 10 -228856 -1 -1 0 1;
+#X obj 236 261 else/out~;
+#X obj 281 134 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 42 37 This is a way to implement downsample with other two
-objects from the else library.;
 #X obj 557 136 noise~;
-#X obj 626 107 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
+#X obj 626 107 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 572 263 else/out~;
 #X obj 623 136 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 623 169 phasor~;
 #X obj 572 202 samphold~;
-#X text 458 36 One issue present with the vanilla way of doing this
-is that you can't go up to the sample rate - it stops sampling then.
-;
-#X obj 201 170 else/imp~;
+#X obj 281 167 else/imp~;
+#X text 42 37 You can implement downsample without interpolation with
+other two objects from the else library.;
+#X text 458 36 Note you cannot do it with vanilla's [samphold~] \,
+cause you can't go up to the sample rate (it stops sampling then) or
+use negative frequencies.;
+#X obj 81 208 else/downsample~ 44100;
+#X obj 81 262 else/out~;
 #X connect 0 0 3 0;
 #X connect 0 0 3 1;
 #X connect 1 0 0 0;
+#X connect 1 0 14 0;
 #X connect 2 0 4 0;
-#X connect 4 0 13 0;
-#X connect 6 0 11 0;
-#X connect 7 0 9 0;
-#X connect 9 0 10 0;
-#X connect 10 0 11 1;
-#X connect 11 0 8 0;
-#X connect 11 0 8 1;
-#X connect 13 0 0 1;
+#X connect 4 0 11 0;
+#X connect 4 0 14 1;
+#X connect 5 0 10 0;
+#X connect 6 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 10 1;
+#X connect 10 0 7 0;
+#X connect 10 0 7 1;
+#X connect 11 0 0 1;
+#X connect 14 0 15 0;
+#X connect 14 0 15 1;
 #X restore 457 288 pd example;
 #X text 417 184 frequency in Hz;
 #X text 84 95 [downsample~] samples a signal received in the left inlet
