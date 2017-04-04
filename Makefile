@@ -26,7 +26,6 @@ changed~.class.sources := classes/changed~.c
 crackle~.class.sources := classes/crackle~.c
 cusp~.class.sources := classes/cusp~.c
 downsample~.class.sources := classes/downsample~.c
-downsample2~.class.sources := classes/downsample2~.c
 elapsed~.class.sources := classes/elapsed~.c
 gbman~.class.sources := classes/gbman~.c
 henon~.class.sources := classes/henon~.c
