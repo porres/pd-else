@@ -52,7 +52,8 @@ static t_int *lfnoise2_perform(t_int *w)
             ynm1 = yn;
             yn = noise;
             }
-        *out++ = yn;
+        *out++ = ynm1 + (yn - ynm1) * phase;
+//        *out++ = yn;
     
         phase += phase_step;
         val = val * 435898247 + 382842987;
@@ -60,6 +61,7 @@ static t_int *lfnoise2_perform(t_int *w)
      *vp = val;
     x->x_phase = phase;
     x->x_yn = yn;
+    x->x_ynm1 = ynm1;
     return (w + 6);
 }
 
@@ -81,7 +83,7 @@ static void *lfnoise2_new(t_floatarg f)
     if(f >= 0) x->x_phase = 1;
     x->x_freq  = f;
     x->x_sr = sys_getsr();
-    x->x_yn = 0;
+    x->x_ynm1 = x->x_yn = 0;
     static int init = 307;
     x->x_val = (init *= 1319);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
