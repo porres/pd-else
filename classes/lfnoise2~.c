@@ -9,6 +9,7 @@ typedef struct _lfnoise2
     t_object  x_obj;
     int x_val;
     t_float  x_yn;
+    t_float  x_ynm1;
     t_float  x_sr;
     double  x_phase;
     t_float  x_freq;
@@ -25,6 +26,7 @@ static t_int *lfnoise2_perform(t_int *w)
     t_sample *out = (t_sample *)(w[5]);
     int val = *vp;
     t_float yn = x->x_yn;
+    t_float ynm1 = x->x_ynm1;
     double phase = x->x_phase;
     double sr = x->x_sr;
     while (nblock--)
@@ -47,6 +49,7 @@ static t_int *lfnoise2_perform(t_int *w)
 
         if (trig)
             {
+            ynm1 = yn;
             yn = noise;
             }
         *out++ = yn;
