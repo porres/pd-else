@@ -52,9 +52,11 @@ static t_int *lfnoise2_perform(t_int *w)
             ynm1 = yn;
             yn = noise;
             }
-        *out++ = ynm1 + (yn - ynm1) * phase;
-//        *out++ = yn;
-    
+        if (hz >= 0)
+            *out++ = ynm1 + (yn - ynm1) * phase;
+        else
+            *out++ = ynm1 + (yn - ynm1) * (1 - phase);
+        
         phase += phase_step;
         val = val * 435898247 + 382842987;
     }
@@ -77,15 +79,23 @@ static void *lfnoise2_free(t_lfnoise2 *x)
     return (void *)x;
 }
 
+static int linseed(void)
+{
+    static unsigned int linrandseed = 1997333137;
+    linrandseed = linrandseed * 2891336453 + 1500450271;
+    return linrandseed = linrandseed % 4294967296;
+}
+
 static void *lfnoise2_new(t_floatarg f)
 {
     t_lfnoise2 *x = (t_lfnoise2 *)pd_new(lfnoise2_class);
     if(f >= 0) x->x_phase = 1;
     x->x_freq  = f;
     x->x_sr = sys_getsr();
-    x->x_ynm1 = x->x_yn = 0;
-    static int init = 307;
-    x->x_val = (init *= 1319);
+    static int init_val = 307;
+    init_val *= 1319;
+    x->x_yn = (((float)((init_val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000));
+    x->x_val = init_val * 435898247 + 382842987;
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return (x);
 }
