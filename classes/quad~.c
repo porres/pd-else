@@ -19,47 +19,38 @@ typedef struct _quad
     t_outlet *x_outlet;
 } t_quad;
 
-
-static void quad_k(t_quad *x, t_float f)
-{
-    //    x->x_a = f;
-    //    x->x_c = f;
-    //    x->x_m = f;
-    //    x->x_yn = f;
-}
-
 static void quad_list(t_quad *x, t_symbol *s, int argc, t_atom * argv)
 {
-/*    if (argc > 2)
+    int argnum = 0; // current argument
+    while(argc)
+    {
+        if(argv -> a_type != A_FLOAT)
         {
-        pd_error(x, "quad~: list size needs to be = 2");
+            pd_error(x, "latoocarfian~: 'coefs' arguments needs to only contain floats");
         }
-    else{
-        int argnum = 0; // current argument
-        while(argc)
+        else
         {
-            if(argv -> a_type != A_FLOAT)
-                {
-                pd_error(x, "quad~: list needs to only contain floats");
-                }
-            else
-                {
-                t_float curf = atom_getfloatarg(0, argc, argv);
-                switch(argnum)
-                    {
-                    case 0:
-                        x->x_xn = curf;
-                        break;
-                    case 1:
-                        x->x_yn = curf;
-                        break;
-                    };
-                argnum++;
-                };
-            argc--;
-            argv++;
+            t_float curf = atom_getfloatarg(0, argc, argv);
+            switch(argnum)
+            {
+                case 0:
+                    x->x_a = curf;
+                    break;
+                case 1:
+                    x->x_b = curf;
+                    break;
+                case 2:
+                    x->x_c = curf;
+                    break;
+                case 3:
+                    x->x_yn = curf;
+                    break;
+            };
+            argnum++;
         };
-    } */
+        argc--;
+        argv++;
+    };
 }
 
 
@@ -156,5 +147,4 @@ void quad_tilde_setup(void)
     CLASS_MAINSIGNALIN(quad_class, t_quad, x_freq);
     class_addlist(quad_class, quad_list);
     class_addmethod(quad_class, (t_method)quad_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(quad_class, (t_method)quad_k, gensym("k"), A_DEFFLOAT, 0);
 }

@@ -24,6 +24,7 @@ brown~.class.sources := classes/brown~.c
 cents2ratio~.class.sources := classes/cents2ratio~.c
 changed~.class.sources := classes/changed~.c
 crackle~.class.sources := classes/crackle~.c
+cusp~.class.sources := classes/cusp~.c
 downsample~.class.sources := classes/downsample~.c
 elapsed~.class.sources := classes/elapsed~.c
 gbman~.class.sources := classes/gbman~.c

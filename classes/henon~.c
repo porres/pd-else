@@ -22,21 +22,15 @@ typedef struct _henon
 } t_henon;
 
 
-static void henon_coefs(t_henon *x, t_float f)
+static void henon_coefs(t_henon *x, t_floatarg f1, t_floatarg f2)
 {
-    //    x->x_a = f1;
-    //    x->x_b = f2;
+    x->x_a = f1;
+    x->x_b = f2;
 }
 
 static void henon_list(t_henon *x, t_symbol *s, int argc, t_atom * argv)
 {
-    
-//  x->x_y_nm1 = x->x_init_y1 = y_nm1;
-//    x->x_y_nm2 = x->x_init_y2 = y_nm2;
-    
-    
-    
-/*    if (argc > 2)
+    if (argc != 2)
         {
         pd_error(x, "henon~: list size needs to be = 2");
         }
@@ -54,10 +48,10 @@ static void henon_list(t_henon *x, t_symbol *s, int argc, t_atom * argv)
                 switch(argnum)
                     {
                     case 0:
-                        x->x_xn = curf;
+                        x->x_y_nm1 = curf;
                         break;
                     case 1:
-                        x->x_y_nm1 = curf;
+                        x->x_y_nm2 = curf;
                         break;
                     };
                 argnum++;
@@ -65,7 +59,7 @@ static void henon_list(t_henon *x, t_symbol *s, int argc, t_atom * argv)
             argc--;
             argv++;
         };
-    } */
+    }
 }
 
 
@@ -174,5 +168,5 @@ void henon_tilde_setup(void)
     CLASS_MAINSIGNALIN(henon_class, t_henon, x_freq);
     class_addlist(henon_class, henon_list);
     class_addmethod(henon_class, (t_method)henon_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(henon_class, (t_method)henon_coefs, gensym("coefs"), A_DEFFLOAT, 0);
+    class_addmethod(henon_class, (t_method)henon_coefs, gensym("coefs"), A_DEFFLOAT, A_DEFFLOAT, 0);
 }

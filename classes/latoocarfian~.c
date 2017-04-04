@@ -23,9 +23,45 @@ typedef struct _latoocarfian
 } t_latoocarfian;
 
 
-static void latoocarfian_coefs(t_latoocarfian *x, t_float f1, t_float f2, t_float f3, t_float f4)
+static void latoocarfian_coefs(t_latoocarfian *x, t_symbol *s, int argc, t_atom * argv)
 {
-//    x->x_k = f;
+    if (argc != 4)
+        {
+        pd_error(x, "latoocarfian~: 'coefs' needs a list of 4 floats as arguments");
+        }
+    else
+        {
+        int argnum = 0; // current argument
+        while(argc)
+            {
+            if(argv -> a_type != A_FLOAT)
+                {
+                pd_error(x, "latoocarfian~: 'coefs' arguments needs to only contain floats");
+                }
+            else
+                {
+                t_float curf = atom_getfloatarg(0, argc, argv);
+                switch(argnum)
+                    {
+                    case 0:
+                    x->x_a = curf;
+                    break;
+                    case 1:
+                    x->x_b = curf;
+                    break;
+                    case 2:
+                    x->x_c = curf;
+                    break;
+                    case 3:
+                    x->x_d = curf;
+                    break;
+                    };
+                    argnum++;
+                };
+            argc--;
+            argv++;
+            };
+        }
 }
 
 static void latoocarfian_list(t_latoocarfian *x, t_symbol *s, int argc, t_atom * argv)
@@ -34,10 +70,11 @@ static void latoocarfian_list(t_latoocarfian *x, t_symbol *s, int argc, t_atom *
         {
         pd_error(x, "latoocarfian~: list size needs to be = 2");
         }
-    else{
+    else
+        {
         int argnum = 0; // current argument
         while(argc)
-        {
+            {
             if(argv -> a_type != A_FLOAT)
                 {
                 pd_error(x, "latoocarfian~: list needs to only contain floats");
@@ -48,30 +85,26 @@ static void latoocarfian_list(t_latoocarfian *x, t_symbol *s, int argc, t_atom *
                 switch(argnum)
                     {
                     case 0:
-                        x->x_xn = curf;
-                        break;
+                    x->x_xn = curf;
+                    break;
                     case 1:
-                        x->x_yn = curf;
-                        break;
+                    x->x_yn = curf;
+                    break;
                     };
                 argnum++;
                 };
             argc--;
             argv++;
-        };
-    }
+            };
+        }
 }
-
-
 
 static t_int *latoocarfian_perform(t_int *w)
 {
     t_latoocarfian *x = (t_latoocarfian *)(w[1]);
     int nblock = (t_int)(w[2]);
-    int *vp = (int *)(w[3]);
-    t_float *in = (t_float *)(w[4]);
-    t_sample *out = (t_sample *)(w[5]);
-    int val = *vp; // MUST FALL
+    t_float *in = (t_float *)(w[3]);
+    t_sample *out = (t_sample *)(w[4]);
     double yn = x->x_yn;
     double xn = x->x_xn;
     double a = x->x_a;
@@ -111,14 +144,14 @@ static t_int *latoocarfian_perform(t_int *w)
     x->x_phase = phase;
     x->x_lastout = lastout;
     x->x_yn = yn;
-    return (w + 6);
+    return (w + 5);
 }
 
 
 static void latoocarfian_dsp(t_latoocarfian *x, t_signal **sp)
 {
     x->x_sr = sp[0]->s_sr;
-    dsp_add(latoocarfian_perform, 5, x, sp[0]->s_n, &x->x_val, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(latoocarfian_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
 }
 
 static void *latoocarfian_free(t_latoocarfian *x)
@@ -134,19 +167,43 @@ static void *latoocarfian_new(t_symbol *s, int ac, t_atom *av)
     x->x_sr = sys_getsr();
 // default parameters
     t_float hz = x->x_sr * 0.5, a = 1, b = 3, c = 0.5, d = 0.5, lastout = 0.5, yn = 0.5;
-/*  if (ac && av->a_type == A_FLOAT)
-    {
-        hz = av->a_w.w_float;
-        ac--; av++;
-        if (ac && av->a_type == A_FLOAT)
-            k = av->a_w.w_float;
-            ac--; av++;
-            if (ac && av->a_type == A_FLOAT)
-                xn = av->a_w.w_float;
-                ac--; av++;
-                if (ac && av->a_type == A_FLOAT)
-                    yn = av->a_w.w_float;
-    } */
+
+    int argnum = 0; // argument number
+    while(ac)
+        {
+            if(av -> a_type != A_FLOAT) goto errstate;
+            else
+            {
+                t_float curf = atom_getfloatarg(0, ac, av);
+                switch(argnum)
+                {
+                    case 0:
+                        hz = curf;
+                        break;
+                    case 1:
+                        a = curf;
+                        break;
+                    case 2:
+                        b = curf;
+                        break;
+                    case 3:
+                        c = curf;
+                        break;
+                    case 4:
+                        d = curf;
+                        break;
+                    case 5:
+                        lastout = curf;
+                        break;
+                    case 6:
+                        yn = curf;
+                        break;
+                };
+                argnum++;
+            };
+            ac--;
+            av++;
+        };
     if(hz >= 0) x->x_phase = 1;
     x->x_freq  = hz;
     x->x_yn = yn;
@@ -157,6 +214,9 @@ static void *latoocarfian_new(t_symbol *s, int ac, t_atom *av)
     x->x_d = d;
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return (x);
+    errstate:
+        pd_error(x, "latoocarfian~: arguments needs to only contain floats");
+        return NULL;
 }
 
 void latoocarfian_tilde_setup(void)
@@ -167,6 +227,5 @@ void latoocarfian_tilde_setup(void)
     CLASS_MAINSIGNALIN(latoocarfian_class, t_latoocarfian, x_freq);
     class_addlist(latoocarfian_class, latoocarfian_list);
     class_addmethod(latoocarfian_class, (t_method)latoocarfian_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(latoocarfian_class, (t_method)latoocarfian_coefs, gensym("coefs"),
-                A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(latoocarfian_class, (t_method)latoocarfian_coefs, gensym("coefs"), A_GIMME, 0);
 }

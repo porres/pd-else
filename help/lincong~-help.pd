@@ -61,12 +61,12 @@ equation \; y[n] = (a * y[n-1] + c) % m - the output signal is scaled
 to a range of -1 to 1 automatically.;
 #X text 147 465 4) float;
 #X text 147 484 5) float;
-#X text 207 348 - 4 floats sets the arguments;
 #X text 207 430 - sets 'a' (default 1.1);
 #X text 207 447 - sets 'c' (default 0.13);
 #X text 207 465 - sets 'm' (default 1);
 #X text 207 484 - sets initial value of y[n-1] (default 0);
 #X text 207 381 - linear congruential chaotic signal;
+#X text 207 348 - 4 floats sets 'a' \, 'c' \, 'm' and y[n-1];
 #X connect 0 0 17 0;
 #X connect 17 0 31 0;
 #X connect 31 0 24 1;
