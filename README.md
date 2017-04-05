@@ -105,8 +105,10 @@ SIGNAL ROUTING: [4]
 - [pan4~]
 - [xfade~]
 
-MISCELANEOUS: [4]
+MATH: [3]
 - [accum~]
-- [downsample~]
 - [lastvalue]
 - [sin~]
+
+AUDIO PROCESSING (1):
+- [downsample~]
