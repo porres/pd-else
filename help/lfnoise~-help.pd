@@ -39,52 +39,55 @@
 #X text 287 198 frequency in Hz;
 #X obj 203 223 else/lfnoise~ 400;
 #X text 233 418 - frequency in hertz (default 0);
-#N canvas 557 219 879 421 more 0;
-#X obj 634 224 noise~;
-#X obj 634 256 else/sh~;
-#X obj 679 223 else/imp~ 300;
-#X obj 617 174 sig~ 300;
-#X obj 617 154 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 470 207 810 343 more 0;
+#X obj 592 173 noise~;
+#X obj 592 205 else/sh~;
+#X obj 637 172 else/imp~ 300;
+#X obj 555 112 sig~ 300;
+#X obj 555 92 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 465 75 You can use the setup to the right if you want more
-advanced options such as modulating the phase of the [imp~] oscillator
-and using its sync inlet.;
-#X obj 503 239 else/lfnoise~ 300;
-#X text 59 75 [lfnoise~] is basically the same as [noise~] going thgouh
-[downsample~].;
-#X obj 102 139 noise~;
-#X obj 77 244 else/out~;
-#X msg 189 151 interp \$1;
-#X obj 189 124 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 461 174 else/lfnoise~ 300;
+#X obj 80 117 noise~;
+#X obj 55 222 else/out~;
+#X msg 167 129 interp \$1;
+#X obj 167 102 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 281 193 else/lfnoise~ 300;
-#X obj 503 302 else/out~;
-#X obj 634 301 else/out~;
-#X obj 256 246 else/out~;
-#X obj 281 151 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 259 171 else/lfnoise~ 300;
+#X obj 461 240 else/out~;
+#X obj 592 239 else/out~;
+#X obj 234 224 else/out~;
+#X obj 259 129 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 465 27 [lfnoise~] without interpolation is basically the same
-as [noise~] going thgouh [sh~] and being controlled with [imp~].;
-#X obj 102 193 else/downsample~ 300;
+#X obj 80 171 else/downsample~ 300;
+#X text 37 53 [lfnoise~] is similar/related to [noise~] going thgouh
+[downsample~].;
+#X obj 671 111 trigate~;
+#X obj 671 90 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 419 31 [lfnoise~] without interpolation is also similar to
+[noise~] going thgouh [sh~] and being controlled with [imp~].;
 #X connect 0 0 1 0;
-#X connect 1 0 14 0;
-#X connect 1 0 14 1;
+#X connect 1 0 12 0;
+#X connect 1 0 12 1;
 #X connect 2 0 1 1;
 #X connect 3 0 2 0;
-#X connect 3 0 6 0;
+#X connect 3 0 5 0;
 #X connect 4 0 3 0;
-#X connect 6 0 13 0;
-#X connect 6 0 13 1;
-#X connect 8 0 18 0;
-#X connect 10 0 12 0;
-#X connect 10 0 18 0;
-#X connect 11 0 10 0;
-#X connect 12 0 15 0;
-#X connect 12 0 15 1;
-#X connect 16 0 12 0;
-#X connect 16 0 18 1;
-#X connect 18 0 9 0;
-#X connect 18 0 9 1;
+#X connect 5 0 11 0;
+#X connect 5 0 11 1;
+#X connect 6 0 15 0;
+#X connect 8 0 10 0;
+#X connect 8 0 15 0;
+#X connect 9 0 8 0;
+#X connect 10 0 13 0;
+#X connect 10 0 13 1;
+#X connect 14 0 10 0;
+#X connect 14 0 15 1;
+#X connect 15 0 7 0;
+#X connect 15 0 7 1;
+#X connect 17 0 2 2;
+#X connect 17 0 5 1;
+#X connect 18 0 17 0;
 #X restore 493 287 pd more;
 #X text 233 384 - bandlimited noise;
 #X text 84 91 [lfnoise~] is a low frequency (band limited) noise with

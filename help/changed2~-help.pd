@@ -1,0 +1,49 @@
+#N canvas 840 191 559 399 10;
+#X obj 4 263 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 295 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 328 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 4 358 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 117 304 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 117 271 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 169 271 signal;
+#X text 169 304 signal;
+#X obj 211 195 else/out~;
+#X obj 2 3 cnv 15 301 42 empty empty changed2~ 20 20 2 37 -233017 -1
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Detect 0 28 2 18 -233017 -1 0;
+#X obj 154 40 cnv 4 4 4 empty empty changes 0 28 2 18 -233017 -1 0
+;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 79 40 cnv 4 4 4 empty empty direction 0 28 2 18 -233017 -1 0
+;
+#X obj 235 120 osc~ 0.5;
+#X obj 235 155 else/changed2~;
+#X text 61 86 [changed2~] sends an impulse whenever an input value
+changes aits direction.;
+#X text 167 334 (none);
+#X text 211 271 - signal to detect direction changes;
+#X text 211 304 - impulse at detected direction change;
+#X connect 20 0 21 0;
+#X connect 21 0 8 0;
+#X connect 21 0 8 1;

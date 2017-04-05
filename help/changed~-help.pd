@@ -1,4 +1,4 @@
-#N canvas 840 191 559 452 10;
+#N canvas 303 200 559 452 10;
 #X obj 4 296 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 351 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -23,7 +23,6 @@
 and the change is equal or greater than a given threshold. If the threshold
 is 0 \, then any change is detected.;
 #X obj 184 228 else/out~;
-#X text 211 360 - impulse at detected changes;
 #X text 157 390 1) float - threshold (default 0);
 #X obj 2 3 cnv 15 301 42 empty empty changed~ 20 20 2 37 -233017 -1
 0;
@@ -37,17 +36,18 @@ is 0 \, then any change is detected.;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Downsample 0 28 2 18 -233017 -1
-0;
-#X obj 125 40 cnv 4 4 4 empty empty a 0 28 2 18 -233017 -1 0;
+#X obj 23 40 cnv 4 4 4 empty empty Detect 0 28 2 18 -233017 -1 0;
+#X obj 132 40 cnv 4 4 4 empty empty changes 0 28 2 18 -233017 -1 0
+;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 140 40 cnv 4 4 4 empty empty signal 0 28 2 18 -233017 -1 0;
+#X obj 79 40 cnv 4 4 4 empty empty signal 0 28 2 18 -233017 -1 0;
 #X obj 208 153 else/lfnoise~ 5;
+#X text 211 360 - impulse when a change is detected;
 #X connect 4 0 14 0;
 #X connect 4 0 14 1;
-#X connect 28 0 4 0;
+#X connect 27 0 4 0;
