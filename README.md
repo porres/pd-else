@@ -16,7 +16,7 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Object list (74chan objects):
+Object list (75 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [7]
 - [imp~]
@@ -88,10 +88,11 @@ CONSTANT VALUES: [4]
 - [sr~]
 - [e]
 
-GUI: [8]
+GUI: [9]
 - [out~]
 - [gain~]
 - [gain2~]
+- [graph~]
 - [meter~]
 - [meter2~]
 - [mix2~]
