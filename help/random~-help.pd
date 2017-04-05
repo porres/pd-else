@@ -48,9 +48,11 @@
 #X text 84 91 [random~] generates random values between -1 and 1 when
 receiving an impulse. The random generator is from [noise~].;
 #X obj 232 249 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.712899 256;
+-228856 -1 -1 -0.838175 256;
 #X obj 232 147 else/imp~ 1;
 #X obj 232 218 else/sig2float~;
+#N canvas 652 259 568 460 examples 0;
+#X restore 439 237 pd examples;
 #X connect 20 0 31 0;
 #X connect 21 0 20 0;
 #X connect 22 0 21 0;
