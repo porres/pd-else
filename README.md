@@ -16,7 +16,7 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Object list (72 objects):
+Object list (74chan objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [7]
 - [imp~]
@@ -27,7 +27,7 @@ OSCILLATORS (DETERMINISTIC GENERATORS): [7]
 - [square~]
 - [vtriangle~]
 
-CHAOTIC GENERATORS: [12]
+CHAOTIC GENERATORS: [13]
 - [brown~] 
 - [clipnoise~] 
 - [crackle~] 
@@ -39,6 +39,7 @@ CHAOTIC GENERATORS: [12]
 - [lincong~]
 - [logistic~]
 - [quad~]
+- [random~]
 - [standard~]
 
 CONVERSION: [16]
@@ -59,8 +60,9 @@ CONVERSION: [16]
 - [rescale~]
 - [sig2float~]
 
-SIGNAL ANALYSIS: [9]
+SIGNAL ANALYSIS: [10]
 - [changed~]
+- [changed2~]
 - [elapsed~]
 - [lastvalue~]
 - [median~]
