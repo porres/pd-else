@@ -23,6 +23,7 @@ balance~.class.sources := classes/balance~.c
 brown~.class.sources := classes/brown~.c
 cents2ratio~.class.sources := classes/cents2ratio~.c
 changed~.class.sources := classes/changed~.c
+changed2~.class.sources := classes/changed2~.c
 crackle~.class.sources := classes/crackle~.c
 cusp~.class.sources := classes/cusp~.c
 downsample~.class.sources := classes/downsample~.c

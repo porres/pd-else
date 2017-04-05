@@ -6,67 +6,82 @@ static t_class *lfnoise_class;
 
 typedef struct _lfnoise
 {
-    t_object x_obj;
-    t_float  x_freq;
-    int x_val;
-    double  x_phase;
-    t_float  x_yn;
-    t_float  x_ynm1;
-    t_float  x_interp;
+    t_object   x_obj;
+    t_float    x_freq;
+    int        x_val;
+    double     x_phase;
+    t_float    x_ynp1;
+    t_float    x_yn;
+    t_int      x_interp;
+    t_inlet  *x_inlet_sync;
     t_outlet  *x_outlet;
-    float    x_sr;
+    float      x_sr;
 } t_lfnoise;
 
 static void lfnoise_interp(t_lfnoise *x, t_floatarg f)
 {
-    x->x_interp = f != 0;
+    x->x_interp = (int)f != 0;
+}
+
+static void lfnoise_seed(t_lfnoise *x, t_floatarg f)
+{
+//    x->x_ynp1 = 0.5;
+//    x->x_val = (int)f;
 }
 
 static t_int *lfnoise_perform(t_int *w)
 {
     t_lfnoise *x = (t_lfnoise *)(w[1]);
     int nblock = (t_int)(w[2]);
-    int *vp = (int *)(w[3]);
-    t_float *in = (t_float *)(w[4]);
+    t_float *in1 = (t_float *)(w[3]);
+    t_float *in2 = (t_float *)(w[4]);
     t_float *out = (t_sample *)(w[5]);
-    int val = *vp;
+    int val = x->x_val;
     double phase = x->x_phase;
+    t_float ynp1 = x->x_ynp1;
     t_float yn = x->x_yn;
-    t_float ynm1 = x->x_ynm1;
-    t_float interp = x->x_interp;
+    t_int interp = x->x_interp;
     double sr = x->x_sr;
     while (nblock--)
         {
-        float hz = *in++;
+        float hz = *in1++;
+        float sync = *in2++;
         double phase_step = hz / sr;
 // clipped phase_step
         phase_step = phase_step > 1 ? 1. : phase_step < -1 ? -1 : phase_step;
-        t_float noise = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
+        t_float random;
+            
         if (hz >= 0)
             {
+            if (sync == 1)
+                phase = 1;
             if (phase >= 1.) // update
                 {
+                random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
                 phase = phase - 1;
-                ynm1 = yn;
-                yn = noise;
+                yn = ynp1;
+                ynp1 = random; // next random value
                 }
             }
         else 
             {
+            if (sync == 1)
+                phase = 0;
             if (phase <= 0.) // update
                 {
+                random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
                 phase = phase + 1;
-                ynm1 = yn;
-                yn = noise;
+                yn = ynp1;
+                ynp1 = random; // next random value
                 }
             }
         
         if (interp)
             {
             if (hz >= 0)
-                *out++ = ynm1 + (yn - ynm1) * (phase);
+                *out++ = yn + (ynp1 - yn) * (phase);
             else
-                *out++ = ynm1 + (yn - ynm1) * (1 - phase);
+                *out++ = yn + (ynp1 - yn) * (1 - phase);
             }
         else
             *out++ = yn;
@@ -74,38 +89,77 @@ static t_int *lfnoise_perform(t_int *w)
         phase += phase_step;
         val = val * 435898247 + 382842987;
         }
-    *vp = val;
+    x->x_val = val;
     x->x_phase = phase;
-    x->x_yn = yn;
-    x->x_ynm1 = ynm1;
+    x->x_ynp1 = ynp1; // next random value
+    x->x_yn = yn; // current output
     return (w + 6);
 }
 
 static void lfnoise_dsp(t_lfnoise *x, t_signal **sp)
 {
     x->x_sr = sp[0]->s_sr;
-    dsp_add(lfnoise_perform, 5, x, sp[0]->s_n, &x->x_val, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(lfnoise_perform, 5, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
 }
 
 static void *lfnoise_free(t_lfnoise *x)
 {
+    inlet_free(x->x_inlet_sync);
     outlet_free(x->x_outlet);
     return (void *)x;
 }
 
 
-static void *lfnoise_new(t_floatarg f1, t_floatarg f2)
+static void *lfnoise_new(t_symbol *s, int ac, t_atom *av)
 {
     t_lfnoise *x = (t_lfnoise *)pd_new(lfnoise_class);
-    if (f1 >= 0) x->x_phase = 1;
-    x->x_interp = (f2 != 0);
-    x->x_freq  = f1;
-    static int i_val = 307;
-    i_val *= 1319;
-    x->x_yn = (((float)((i_val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000));
-    x->x_val = i_val * 435898247 + 382842987;
+// default seed
+    static int init_seed = 234599;
+    init_seed *= 1319;
+// default parameters
+    t_float hz = 0;
+    t_int seed = init_seed, interp = 0;
+    
+    int argnum = 0; // argument number
+    while(ac)
+    {
+        if(av -> a_type != A_FLOAT) goto errstate;
+        else
+        {
+            t_float curf = atom_getfloatarg(0, ac, av);
+            switch(argnum)
+            {
+                case 0:
+                    hz = curf;
+                    break;
+                case 1:
+                    interp = (int)curf;
+                    break;
+                case 2:
+                    seed = (int)curf * 1319;
+                    break;
+            };
+            argnum++;
+        };
+        ac--;
+        av++;
+    };
+    if (hz >= 0) x->x_phase = 1.;
+    x->x_freq = hz;
+    x->x_interp = interp != 0;
+    
+// get 1st output
+    x->x_ynp1 = (((float)((seed & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000));
+    x->x_val = seed * 435898247 + 382842987;
+// in/out
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
+    x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+    pd_float((t_pd *)x->x_inlet_sync, 0);
+// done
     return (x);
+    errstate:
+        pd_error(x, "lfnoise~: arguments needs to only contain floats");
+        return NULL;
 }
 
 
@@ -116,9 +170,10 @@ void lfnoise_tilde_setup(void)
         (t_method)lfnoise_free,
         sizeof(t_lfnoise),
         CLASS_DEFAULT,
-        A_DEFFLOAT, A_DEFFLOAT,
+        A_GIMME,
         0);
     CLASS_MAINSIGNALIN(lfnoise_class, t_lfnoise, x_freq);
     class_addmethod(lfnoise_class, (t_method)lfnoise_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(lfnoise_class, (t_method)lfnoise_interp, gensym("interp"), A_DEFFLOAT, 0);
+    class_addmethod(lfnoise_class, (t_method)lfnoise_seed, gensym("seed"), A_DEFFLOAT, 0);
 }
