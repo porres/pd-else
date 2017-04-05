@@ -13,9 +13,8 @@ typedef struct _lfnoise
     t_float    x_ynp1;
     t_float    x_yn;
     t_int      x_interp;
-    t_inlet  *x_inlet_sync;
-    t_outlet  *x_outlet1;
-    t_outlet  *x_outlet2;
+    t_inlet   *x_inlet_sync;
+    t_outlet  *x_outlet;
     float      x_sr;
 } t_lfnoise;
 
@@ -39,7 +38,6 @@ static t_int *lfnoise_perform(t_int *w)
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
     t_float *out = (t_sample *)(w[5]);
-    t_float *randout = (t_sample *)(w[6]);
     int val = x->x_val;
     double phase = x->x_phase;
     t_float ynp1 = x->x_ynp1;
@@ -89,7 +87,6 @@ static t_int *lfnoise_perform(t_int *w)
             }
         else
             *out++ = yn;
-            *randout++ = random;
 
         phase += phase_step;
         }
@@ -97,20 +94,19 @@ static t_int *lfnoise_perform(t_int *w)
     x->x_phase = phase;
     x->x_ynp1 = ynp1; // next random value
     x->x_yn = yn; // current output
-    return (w + 7);
+    return (w + 6);
 }
 
 static void lfnoise_dsp(t_lfnoise *x, t_signal **sp)
 {
     x->x_sr = sp[0]->s_sr;
-    dsp_add(lfnoise_perform, 6, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+    dsp_add(lfnoise_perform, 5, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
 }
 
 static void *lfnoise_free(t_lfnoise *x)
 {
     inlet_free(x->x_inlet_sync);
-    outlet_free(x->x_outlet1);
-    outlet_free(x->x_outlet2);
+    outlet_free(x->x_outlet);
     return (void *)x;
 }
 
@@ -157,9 +153,8 @@ static void *lfnoise_new(t_symbol *s, int ac, t_atom *av)
     x->x_ynp1 = (((float)((seed & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000));
     x->x_val = seed * 435898247 + 382842987;
 // in/out
-    x->x_outlet1 = outlet_new(&x->x_obj, &s_signal);
-    x->x_outlet2 = outlet_new(&x->x_obj, &s_signal);
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+    x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     pd_float((t_pd *)x->x_inlet_sync, 0);
 // done
     return (x);
@@ -167,7 +162,6 @@ static void *lfnoise_new(t_symbol *s, int ac, t_atom *av)
         pd_error(x, "lfnoise~: arguments needs to only contain floats");
         return NULL;
 }
-
 
 void lfnoise_tilde_setup(void)
 {

@@ -1,4 +1,4 @@
-#N canvas 691 72 561 620 10;
+#N canvas 267 52 557 644 10;
 #X obj 236 248 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 211 336 else/out~;
@@ -24,24 +24,22 @@
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
 #X obj 142 40 cnv 4 4 4 empty empty noise 0 28 2 18 -233017 -1 0;
-#X obj 2 581 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 604 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 475 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 498 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 512 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 535 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 91 485 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 508 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 159 486 signal;
-#X text 148 521 1) float;
+#X text 159 509 signal;
+#X text 148 544 1) float;
 #X obj 233 277 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 249 247 frequency in Hz;
 #X obj 233 303 else/lfnoise~ 400;
-#X text 216 521 - frequency in hertz (default 0);
-#N canvas 473 143 852 356 more 0;
-#X restore 493 367 pd more;
-#X text 216 487 - bandlimited noise;
+#X text 216 544 - frequency in hertz (default 0);
+#X text 216 510 - bandlimited noise;
 #X text 159 411 signal;
 #X obj 92 411 cnv 17 3 55 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
@@ -50,25 +48,20 @@
 #X text 215 430 - interpolation 0 (off \, default) or 1 (on);
 #X obj 3 401 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X text 216 539 - interpolation 0 (off \, default) or 1 (on);
-#X text 148 539 2) float;
+#X text 216 562 - interpolation 0 (off \, default) or 1 (on);
+#X text 148 562 2) float;
 #X msg 148 273 interp \$1;
 #X obj 148 246 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 123 450 seed <float>;
 #X text 215 449 - sets seed value;
-#X text 216 559 - seed (default \, internal);
-#X text 148 559 3) float;
-#X text 82 88 [lfnoise~] is a low frequency (band limited) noise with
-or without interpolation. It's actually a random number generator \,
-and the rate that it generates values is given in herts (negative frequencies
-accepted). It also has a 'trigger' inlet that forces the object to
-generate a new random value when receiving an impulse.;
+#X text 216 582 - seed (default \, internal);
+#X text 148 582 3) float;
 #X text 83 176 The [lfnoise~] object produces frequencies limited to
 a band from 0 up to the frequency it is running. It can go up to the
 sample rate \, and when that happens \, it's basically a white noise
 generator.;
-#N canvas 416 55 926 503 interpolation 1;
+#N canvas 416 55 926 503 interpolation 0;
 #X obj 684 234 noise~;
 #X obj 684 266 else/sh~;
 #X obj 729 233 else/imp~ 300;
@@ -93,10 +86,10 @@ generator.;
 -228856 -1 -1 0 256;
 #X obj 55 158 else/downsample~ 300;
 #X obj 293 202 else/out~;
-#X text 80 29 [lfnoise~] is similar/related to [noise~] going thgouh
-[downsample~] \, which also has interpolation.;
 #X obj 272 291 else/graph~;
 #X obj 55 291 else/graph~;
+#X text 80 29 [lfnoise~] is similar/related to [noise~] going thgouh
+[downsample~] \, which also has linear interpolation.;
 #X connect 0 0 1 0;
 #X connect 1 0 7 0;
 #X connect 1 0 7 1;
@@ -115,20 +108,64 @@ generator.;
 #X connect 14 0 13 0;
 #X connect 15 0 18 0;
 #X connect 15 0 18 1;
-#X connect 15 0 20 0;
+#X connect 15 0 19 0;
 #X connect 16 0 15 0;
 #X connect 16 0 17 1;
 #X connect 17 0 12 0;
 #X connect 17 0 12 1;
-#X connect 17 0 21 0;
-#X restore 439 297 pd interpolation;
-#N canvas 0 22 450 300 seed 0;
-#X restore 492 320 pd seed;
-#N canvas 0 22 450 300 trigger 0;
-#X restore 475 343 pd trigger;
+#X connect 17 0 20 0;
+#X restore 439 322 pd interpolation;
+#N canvas 849 168 554 446 seed 0;
+#X text 91 23 [lfnoise~] objects that share the same seed will have
+the same random number generation. You can specify a seed value as
+the third argument or via rthe 'seed' message.;
+#X obj 288 243 else/graph~;
+#X obj 71 243 else/graph~;
+#X obj 71 185 else/lfnoise~ 1 0 319;
+#X obj 288 184 else/lfnoise~ 1 0 319;
+#X msg 212 142 seed \$1;
+#X msg 212 116 521;
+#X msg 257 116 319;
+#X text 90 73 By default \, each instance of [lfnoise~] has its own
+seed value.;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 3 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X restore 492 345 pd seed;
+#X obj 91 474 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 159 475 signal;
+#X text 216 476 - impulse forces a new random value;
+#N canvas 801 184 416 409 sync 0;
+#X obj 143 180 else/sig2float~;
+#X obj 143 145 else/lfnoise~ 0.5;
+#X obj 143 212 nbx 8 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -0.134971 256;
+#X obj 143 250 vsl 18 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 5493 1;
+#X obj 242 101 else/trigate~;
+#X obj 242 68 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 39 18 An impulse into its right inlet forces [lfnoise~] to
+generate a new random value.;
+#X text 264 67 <= click;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 4 0 1 1;
+#X connect 5 0 4 0;
+#X restore 492 368 pd sync;
+#X text 82 88 [lfnoise~] is a low frequency (band limited) noise with
+or without interpolation. It's actually a random number generator \,
+and the rate that it generates values is given in herts (negative frequencies
+accepted). It also has a 'sync' inlet that forces the object to generate
+a new random value when receiving an impulse.;
 #X connect 0 0 19 0;
 #X connect 19 0 21 0;
 #X connect 21 0 1 0;
 #X connect 21 0 1 1;
-#X connect 33 0 21 0;
-#X connect 34 0 33 0;
+#X connect 32 0 21 0;
+#X connect 33 0 32 0;

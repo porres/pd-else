@@ -4,7 +4,7 @@
 
 # library name
 
-lib.name = ELSE
+lib.name = else
 
 #########################################################################
 # sources
@@ -36,7 +36,6 @@ imp2~.class.sources := classes/imp2~.c
 lastvalue~.class.sources := classes/lastvalue~.c
 latoocarfian~.class.sources := classes/latoocarfian~.c
 lfnoise~.class.sources := classes/lfnoise~.c
-lfnoise2~.class.sources := classes/lfnoise2~.c
 lincong~.class.sources := classes/lincong~.c
 logistic~.class.sources := classes/logistic~.c
 median~.class.sources := classes/median~.c
