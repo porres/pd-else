@@ -1,4 +1,8 @@
-ELSE 1.0 (currently at alpha stage)
+----------------------------------------------
+
+ELSE (currently at alpha stage)
+
+last release 1.0-alpha3 (april 5th 2017)
 
 ----------------------------------------------
 
