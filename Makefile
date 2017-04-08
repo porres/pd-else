@@ -20,6 +20,7 @@ rescale.class.sources := classes/rescale.c
 # signal:
 accum~.class.sources := classes/accum~.c
 balance~.class.sources := classes/balance~.c
+bandpass~.class.sources := classes/bandpass~.c
 brown~.class.sources := classes/brown~.c
 cents2ratio~.class.sources := classes/cents2ratio~.c
 changed~.class.sources := classes/changed~.c
@@ -52,6 +53,8 @@ rad2hz~.class.sources := classes/rad2hz~.c
 random~.class.sources := classes/random~.c
 ratio2cents~.class.sources := classes/ratio2cents~.c
 rescale~.class.sources := classes/rescale~.c
+resonant~.class.sources := classes/resonant~.c
+ring~.class.sources := classes/ring~.c
 rms~.class.sources := classes/rms~.c
 sawtooth~.class.sources := classes/sawtooth~.c
 sh~.class.sources := classes/sh~.c

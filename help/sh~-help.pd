@@ -1,15 +1,13 @@
-#N canvas 539 50 559 487 10;
+#N canvas 596 50 565 557 10;
 #X obj 3 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 379 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 409 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 416 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 446 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 152 388 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 157 418 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 153 325 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 3 447 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 497 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 152 187 noise~;
 #X obj 3 3 cnv 15 301 42 empty empty sh~ 20 20 2 37 -233017 -1 0;
@@ -32,13 +30,13 @@
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
 #X obj 83 40 cnv 4 4 4 empty empty & 0 28 2 18 -233017 -1 0;
-#X obj 153 351 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 157 385 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 152 283 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 -0.764662 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -107,7 +105,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -140,18 +138,14 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 504 62 pd;
-#X text 81 98 The [sh~] object samples and holds a value into the left
-inlet according to the second "gate" inlet. The values are sampled
-if the gate signal is greater than zero \, or held if lesser or equal
-to zero.;
 #X obj 267 237 else/out~;
-#X text 180 327 signal - input signal;
-#X text 180 353 signal - gate signal;
+#X text 200 327 signal - input signal;
+#X text 200 387 signal - gate signal;
 #X obj 267 183 else/imp~ 2;
-#N canvas 870 127 425 463 gate 0;
+#N canvas 870 127 427 415 gate 0;
 #X obj 138 163 noise~;
 #X obj 138 349 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.859496 256;
 #X obj 207 165 osc~ 0.5;
 #X obj 155 242 else/out~;
 #X text 32 18 In the parent patch we have an example with an impulse
@@ -162,16 +156,14 @@ Now \, when values are greater than zero \, the gate is open and the
 signal passes through \, being held only when the gate value is less
 or equal to zero.;
 #X obj 138 203 else/sh~;
-#X text 99 398 This object is inspired by "Gate" from SuperCollider!
-, f 33;
 #X obj 138 319 else/sig2float~ 100;
 #X connect 0 0 6 0;
 #X connect 2 0 6 1;
 #X connect 6 0 3 0;
 #X connect 6 0 3 1;
-#X connect 6 0 8 0;
-#X connect 8 0 1 0;
-#X restore 494 222 pd gate;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;
+#X restore 493 195 pd gate;
 #N canvas 391 119 819 356 downsampling 0;
 #X obj 121 129 noise~;
 #X obj 195 136 else/imp~ 100;
@@ -213,31 +205,66 @@ to work;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 180 388 signal - sampled and held signal;
+#X text 200 418 signal - sampled and held signal;
+#X obj 152 253 else/sig2float~;
 #X obj 152 217 else/sh~;
-#X text 168 424 1) float - initially held value;
-#N canvas 837 142 450 319 argument 0;
-#X obj 180 117 noise~;
-#X obj 180 241 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 180 205 else/sig2float~;
-#X obj 180 158 else/sh~ 1.55;
-#X obj 255 112 else/trigate~;
-#X obj 255 83 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X text 31 18 [sh~] accepts a float argument for the initially held
-value \, so it outputs it when loading the object and before it is
-triggered.;
+#X text 156 454 1) float - initially held value (default 0);
+#X text 156 474 2) float - initial threshold (default 0);
+#X text 81 98 The [sh~] object samples and holds a value into the left
+inlet according to the second "gate" inlet. The values are sampled
+if the gate signal is greater than the threshold (0 by default) \,
+or held if lesser or equal to it.;
+#X text 212 346 bang - sample the signal;
+#X obj 157 328 cnv 17 3 47 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 170 362 set <float> - set the held value;
+#N canvas 446 163 863 294 more 1;
+#X obj 187 124 noise~;
+#X obj 187 254 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -0.10692 256;
+#X obj 187 222 else/sig2float~;
+#X obj 187 175 else/sh~ 1.55;
+#X obj 251 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 589 142 noise~;
+#X obj 589 253 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -0.113789 256;
+#X obj 589 217 else/sig2float~;
+#X obj 589 183 else/sh~ 0 0.9;
+#X obj 670 141 osc~ 1;
+#X msg 513 141 thresh \$1;
+#X obj 513 121 nbx 5 14 -0.9 0.9 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 -0.9 256;
+#X obj 516 100 hsl 128 15 -0.9 0.9 0 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 0 1;
+#X text 442 20 The second argument of [sh~] is the threshold value
+value (0 by default) \, so the gate signal needs to be greater than
+it to sample and output the incoming signal. The threshold value can
+also be set via the "thresh" message.;
+#X msg 116 123 set \$1;
+#X obj 116 104 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 10 256;
+#X text 38 25 The first argument of [sh~] is for the initially held
+value (0 by default) \, so it is outputs when loading the object and
+before it is triggered. The set message can set the held output. The
+[sh~] can also be triggered by a bang.;
 #X connect 0 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;
-#X connect 4 0 3 1;
-#X connect 5 0 4 0;
-#X restore 469 276 pd argument;
-#X obj 152 253 else/sig2float~;
-#X connect 6 0 31 0;
-#X connect 25 0 22 0;
-#X connect 25 0 22 1;
-#X connect 25 0 31 1;
-#X connect 31 0 34 0;
-#X connect 34 0 19 0;
+#X connect 4 0 3 0;
+#X connect 5 0 8 0;
+#X connect 7 0 6 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 1;
+#X connect 10 0 8 0;
+#X connect 11 0 10 0;
+#X connect 12 0 11 0;
+#X connect 14 0 3 0;
+#X connect 15 0 14 0;
+#X restore 492 221 pd more;
+#X connect 5 0 30 0;
+#X connect 23 0 20 0;
+#X connect 23 0 20 1;
+#X connect 23 0 30 1;
+#X connect 29 0 18 0;
+#X connect 30 0 29 0;
