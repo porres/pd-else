@@ -12,6 +12,7 @@ typedef struct _bandpass {
     t_inlet    *x_inlet_q;
     t_outlet   *x_out;
     t_float     x_nyq;
+    t_float     x_bypass;
     double  x_xnm1;
     double  x_xnm2;
     double  x_ynm1;
@@ -37,10 +38,18 @@ static t_int *bandpass_perform(t_int *w)
     {
         double xn = *in1++, f = *in2++, q = *in3++;
         double omega, alphaQ, cos_w, a0, a2, b0, b1, b2, yn;
-        if (f < 0) f = 0;
-        if (f > nyq) f = nyq;
-        if (q < 0.1) q = 0.1;
-        
+        int q_bypass;
+        if (f < 0.000001)
+            f = 0.000001;
+        if (f > nyq - 0.000001)
+            f = nyq - 0.000001;
+        if (q < 0.000001)
+            {
+            q = 0.000001;
+            q_bypass = 1;
+            }
+        else
+            q_bypass = 0;
         omega = f * PI/nyq;
         alphaQ = sin(omega) / (2*q);
         cos_w = cos(omega);
@@ -49,9 +58,11 @@ static t_int *bandpass_perform(t_int *w)
         a2 = -a0;
         b1 = 2*cos_w / b0;
         b2 = (alphaQ - 1) / b0;
-
-        *out++ = yn = a0 * xn + a2 * xnm2 + b1 * ynm1 + b2 * ynm2;
-        
+        yn = a0 * xn + a2 * xnm2 + b1 * ynm1 + b2 * ynm2;
+        if(x->x_bypass || q_bypass)
+            *out++ = xn;
+        else
+            *out++ = yn;
         xnm2 = xnm1;
         xnm1 = xn;
         ynm2 = ynm1;
@@ -76,6 +87,11 @@ static void bandpass_clear(t_bandpass *x)
     x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
 }
 
+static void bandpass_bypass(t_bandpass *x, t_floatarg f)
+{
+    x->x_bypass = (int)(f != 0);
+}
+
 static void *bandpass_new(t_floatarg f1, t_floatarg f2)
 {
     t_bandpass *x = (t_bandpass *)pd_new(bandpass_class);
@@ -94,4 +110,5 @@ void bandpass_tilde_setup(void)
     class_addmethod(bandpass_class, (t_method)bandpass_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(bandpass_class, nullfn, gensym("signal"), 0);
     class_addmethod(bandpass_class, (t_method)bandpass_clear, gensym("clear"), 0);
+    class_addmethod(bandpass_class, (t_method)bandpass_bypass, gensym("bypass"), A_DEFFLOAT, 0);
 }

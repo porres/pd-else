@@ -33,7 +33,7 @@
 #X obj 157 385 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 152 283 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.764662 256;
+-228856 -1 -1 -0.663179 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -145,7 +145,7 @@
 #N canvas 870 127 427 415 gate 0;
 #X obj 138 163 noise~;
 #X obj 138 349 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.859496 256;
+-228856 -1 -1 -0.386191 256;
 #X obj 207 165 osc~ 0.5;
 #X obj 155 242 else/out~;
 #X text 32 18 In the parent patch we have an example with an impulse
@@ -218,17 +218,17 @@ or held if lesser or equal to it.;
 #X obj 157 328 cnv 17 3 47 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 170 362 set <float> - set the held value;
-#N canvas 446 163 863 294 more 1;
+#N canvas 446 163 863 294 more 0;
 #X obj 187 124 noise~;
 #X obj 187 254 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.10692 256;
+-228856 -1 -1 -0.758072 256;
 #X obj 187 222 else/sig2float~;
 #X obj 187 175 else/sh~ 1.55;
 #X obj 251 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 589 142 noise~;
 #X obj 589 253 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.113789 256;
+-228856 -1 -1 0.538766 256;
 #X obj 589 217 else/sig2float~;
 #X obj 589 183 else/sh~ 0 0.9;
 #X obj 670 141 osc~ 1;
@@ -243,7 +243,7 @@ it to sample and output the incoming signal. The threshold value can
 also be set via the "thresh" message.;
 #X msg 116 123 set \$1;
 #X obj 116 104 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 10 256;
+-228856 -1 -1 14 256;
 #X text 38 25 The first argument of [sh~] is for the initially held
 value (0 by default) \, so it is outputs when loading the object and
 before it is triggered. The set message can set the held output. The
@@ -262,6 +262,10 @@ before it is triggered. The set message can set the held output. The
 #X connect 14 0 3 0;
 #X connect 15 0 14 0;
 #X restore 492 221 pd more;
+#X obj 29 211 cnv 15 100 60 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 57 242 order;
+#X text 38 223 change args';
 #X connect 5 0 30 0;
 #X connect 23 0 20 0;
 #X connect 23 0 20 1;
