@@ -1,19 +1,19 @@
-#N canvas 574 74 559 399 10;
+#N canvas 574 74 560 469 10;
 #X obj 4 263 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 295 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 345 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 328 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 378 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 358 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 428 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 117 304 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 127 354 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 117 271 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 127 271 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 169 271 signal;
-#X text 169 304 signal;
-#X obj 211 195 else/out~;
+#X text 189 271 signal;
+#X text 189 354 signal;
+#X obj 183 193 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty resonant~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -37,32 +37,29 @@
 0;
 #X obj 99 40 cnv 4 4 4 empty empty resonant 0 28 2 18 -233017 -1 0
 ;
-#X text 167 334 (none);
-#X text 211 271 - signal to detect direction changes;
-#X text 211 304 - impulse at detected direction change;
-#X floatatom 294 122 5 0 0 0 - - -, f 5;
-#X floatatom 343 121 5 0 0 0 - - -, f 5;
-#X obj 134 158 click~;
-#X obj 150 128 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 348 171 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 236 154 else/resonant~;
-#X text 61 86 [resonant~] is a resonant bandpass filter;
-#X obj 418 103 meter~;
-#X obj 59 138 metro 300;
-#X obj 68 117 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X floatatom 105 115 5 0 0 0 - - -, f 5;
-#X connect 23 0 28 1;
-#X connect 24 0 28 2;
-#X connect 25 0 28 0;
-#X connect 26 0 25 0;
-#X connect 27 0 23 0;
-#X connect 27 0 24 0;
-#X connect 28 0 8 0;
-#X connect 28 0 8 1;
-#X connect 28 0 30 0;
-#X connect 31 0 26 0;
-#X connect 32 0 31 0;
-#X connect 33 0 31 1;
+#X obj 207 123 noise~;
+#X obj 271 128 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 500 256;
+#X obj 336 128 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 50 256;
+#X text 238 354 - filtered signal;
+#X text 238 271 - signal to be filtered;
+#X obj 127 294 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 127 317 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 237 293 - central frequency;
+#X text 238 317 - filter Q;
+#X text 153 294 float/signal;
+#X text 153 317 float/signal;
+#X text 184 384 1) float - central frequency;
+#X text 184 402 2) float - filter Q;
+#X text 211 60 (constant skirt);
+#X text 61 86 [resonant~] is a second order resonant bandpass filter.
+;
+#X obj 207 156 else/resonant~ 900 10;
+#X connect 20 0 35 0;
+#X connect 21 0 35 1;
+#X connect 22 0 35 2;
+#X connect 35 0 8 0;
+#X connect 35 0 8 1;

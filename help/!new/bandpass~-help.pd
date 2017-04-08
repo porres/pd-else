@@ -1,19 +1,19 @@
-#N canvas 574 74 560 469 10;
-#X obj 4 263 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 710 144 559 467 10;
+#X obj 4 259 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 345 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 353 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 378 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 386 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 428 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 430 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 127 354 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 127 362 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 127 271 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 127 267 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 189 271 signal;
-#X text 189 354 signal;
-#X obj 183 193 else/out~;
+#X text 189 267 signal;
+#X text 189 362 signal;
+#X obj 183 196 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty bandpass~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -37,28 +37,38 @@
 0;
 #X obj 99 40 cnv 4 4 4 empty empty resonant 0 28 2 18 -233017 -1 0
 ;
-#X obj 207 123 noise~;
-#X obj 271 128 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 102 256;
-#X obj 336 128 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 238 354 - filtered signal;
-#X obj 207 156 else/bandpass~ 900 100;
-#X text 238 271 - signal to be filtered;
-#X obj 127 294 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 207 124 noise~;
+#X obj 271 121 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 432 256;
+#X obj 336 142 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 162 256;
+#X text 238 362 - filtered signal;
+#X obj 207 165 else/bandpass~ 900 100;
+#X text 238 267 - signal to be filtered;
+#X obj 127 306 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 127 317 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 127 329 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 237 293 - central frequency;
-#X text 238 317 - filter Q;
-#X text 153 294 float/signal;
-#X text 153 317 float/signal;
-#X text 184 384 1) float - central frequency;
-#X text 184 402 2) float - filter Q;
+#X text 237 305 - central frequency;
+#X text 238 329 - filter Q;
+#X text 153 306 float/signal;
+#X text 153 329 float/signal;
+#X text 184 392 1) float - central frequency;
+#X text 184 410 2) float - filter Q;
 #X text 61 86 [bandpass~] is a second order resonant bandpass filter.
 ;
+#X text 195 286 clear;
+#X text 238 286 - clears filter's memory;
+#X text 329 118 center frequency;
+#X text 395 141 Q;
+#N canvas 0 22 450 300 equation 0;
+#X restore 411 198 pd equation and shit;
+#N canvas 0 22 450 300 frequency 0;
+#X restore 410 224 pd frequency response;
+#X msg 154 133 clear;
 #X connect 20 0 24 0;
 #X connect 21 0 24 1;
 #X connect 22 0 24 2;
 #X connect 24 0 8 0;
 #X connect 24 0 8 1;
+#X connect 41 0 24 0;

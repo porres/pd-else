@@ -71,6 +71,11 @@ static void bandpass_dsp(t_bandpass *x, t_signal **sp)
             sp[3]->s_vec);
 }
 
+static void bandpass_clear(t_bandpass *x)
+{
+    x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
+}
+
 static void *bandpass_new(t_floatarg f1, t_floatarg f2)
 {
     t_bandpass *x = (t_bandpass *)pd_new(bandpass_class);
@@ -88,4 +93,5 @@ void bandpass_tilde_setup(void)
         sizeof(t_bandpass), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(bandpass_class, (t_method)bandpass_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(bandpass_class, nullfn, gensym("signal"), 0);
+    class_addmethod(bandpass_class, (t_method)bandpass_clear, gensym("clear"), 0);
 }
