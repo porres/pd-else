@@ -12,8 +12,8 @@ typedef struct _resonant {
     t_inlet    *x_inlet_q;
     t_outlet   *x_out;
     t_float     x_nyq;
-    t_float     x_bypass;
-    t_float     x_t60;
+    int     x_bypass;
+    int     x_t60;
     double  x_xnm1;
     double  x_xnm2;
     double  x_ynm1;
@@ -50,8 +50,8 @@ static t_int *resonant_perform(t_int *w)
             f = nyq - 0.000001;
         if (q < 0.000001)
             {
-            q = 0.000001;
-            q_bypass = 1;
+            q = 0.000001; // prevent blow-up
+            q_bypass = 1; // force bypass
             }
         else
             q_bypass = 0;
@@ -98,29 +98,84 @@ static void resonant_bypass(t_resonant *x, t_floatarg f)
     x->x_bypass = (int)(f != 0);
 }
 
-static void resonant_t60(t_resonant *x, t_floatarg f)
+static void resonant_t60(t_resonant *x)
 {
-    x->x_t60 = (int)(f != 0);
+    x->x_t60 = 1;
 }
 
-static void *resonant_new(t_floatarg f1, t_floatarg f2)
+static void resonant_q(t_resonant *x)
+{
+    x->x_t60 = 0;
+}
+
+
+static void *resonant_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_resonant *x = (t_resonant *)pd_new(resonant_class);
+    float freq = 0;
+    float reson = 0;
+    int t60 = 1;
+    /////////////////////////////////////////////////////////////////////////////////////
+    int argnum = 0;
+    while(argc > 0)
+    {
+        if(argv -> a_type == A_FLOAT)
+        { //if current argument is a float
+            t_float argval = atom_getfloatarg(0, argc, argv);
+            switch(argnum)
+            {
+                case 0:
+                    freq = argval;
+                    break;
+                case 1:
+                    reson = argval;
+                    break;
+                default:
+                    break;
+            };
+            argnum++;
+            argc--;
+            argv++;
+        }
+        else if (argv -> a_type == A_SYMBOL)
+        {
+            t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
+            if(strcmp(curarg->s_name, "-q")==0)
+            {
+                t60 = 0;
+                argc -= 1;
+                argv += 1;
+            }
+            else
+            {
+                goto errstate;
+            };
+        }
+    };
+    /////////////////////////////////////////////////////////////////////////////////////
+    x->x_t60 = t60;
+    
     x->x_inlet_freq = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_freq, f1);
+    pd_float((t_pd *)x->x_inlet_freq, freq);
     x->x_inlet_q = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_q, f2);
+    pd_float((t_pd *)x->x_inlet_q, reson);
     x->x_out = outlet_new((t_object *)x, &s_signal);
+    
     return (x);
+errstate:
+    pd_error(x, "resonant~: improper args");
+    return NULL;
 }
 
 void resonant_tilde_setup(void)
 {
     resonant_class = class_new(gensym("resonant~"), (t_newmethod)resonant_new, 0,
-        sizeof(t_resonant), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
+        sizeof(t_resonant), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(resonant_class, (t_method)resonant_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(resonant_class, nullfn, gensym("signal"), 0);
     class_addmethod(resonant_class, (t_method)resonant_clear, gensym("clear"), 0);
     class_addmethod(resonant_class, (t_method)resonant_bypass, gensym("bypass"), A_DEFFLOAT, 0);
-    class_addmethod(resonant_class, (t_method)resonant_t60, gensym("t60"), A_DEFFLOAT, 0);
+    class_addmethod(resonant_class, (t_method)resonant_t60, gensym("t60"), 0);
+    class_addmethod(resonant_class, (t_method)resonant_q, gensym("q"), 0);
+
 }

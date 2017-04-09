@@ -60,8 +60,8 @@ static t_int *bandpass_perform(t_int *w)
             
         if (q < 0.000001)
             {
-            q = 0.000001;
-            q_bypass = 1;
+            q = 0.000001; // prevent blow-up
+            q_bypass = 1; // force bypass
             }
         else
             q_bypass = 0;
@@ -129,7 +129,7 @@ static void *bandpass_tilde_new(t_symbol *s, int argc, t_atom *argv)
 static void *bandpass_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_bandpass *x = (t_bandpass *)pd_new(bandpass_class);
-    float freq = 1;
+    float freq = 0;
     float reson = 1;
     int bw = 0;
 /////////////////////////////////////////////////////////////////////////////////////
