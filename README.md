@@ -19,7 +19,7 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Object list (77 objects):
+Object list (81 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [7]
 - [imp~]
@@ -113,7 +113,11 @@ MATH: [3]
 - [lastvalue]
 - [sin~]
 
-AUDIO PROCESSING (3):
+AUDIO PROCESSING (mostly filters) (7):
 - [bandpass~]
 - [downsample~]
+- [lowpass~]
+- [highpass~]
+- [notch~]
+- [phaseshifter~]
 - [resonant~]
