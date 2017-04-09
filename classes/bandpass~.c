@@ -4,6 +4,7 @@
 #include <math.h>
 
 #define PI M_PI
+#define HALF_LOG2 log(2)/2
 
 typedef struct _bandpass {
     t_object    x_obj;
@@ -49,7 +50,11 @@ static t_int *bandpass_perform(t_int *w)
         omega = f * PI/nyq; // hz2rad
         
         if (x->x_bw) // reson is bw in octaves
-            q = 1 / (2 * sinh(log(2)/2 * reson * omega/sin(omega)));
+            {
+            if (reson < 0.000001)
+                reson = 0.000001;
+            q = 1 / (2 * sinh(HALF_LOG2 * reson * omega/sin(omega)));
+            }
         else
             q = reson;
             
