@@ -1,4 +1,4 @@
-#N canvas 574 74 560 469 10;
+#N canvas 600 23 560 469 10;
 #X obj 4 263 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 345 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -39,9 +39,9 @@
 ;
 #X obj 207 123 noise~;
 #X obj 271 128 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 500 256;
+-228856 -1 -1 0 256;
 #X obj 336 128 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 50 256;
+-228856 -1 -1 1 256;
 #X text 238 354 - filtered signal;
 #X text 238 271 - signal to be filtered;
 #X obj 127 294 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
@@ -57,9 +57,14 @@
 #X text 211 60 (constant skirt);
 #X text 61 86 [resonant~] is a second order resonant bandpass filter.
 ;
-#X obj 207 156 else/resonant~ 900 10;
-#X connect 20 0 35 0;
-#X connect 21 0 35 1;
-#X connect 22 0 35 2;
-#X connect 35 0 8 0;
-#X connect 35 0 8 1;
+#X obj 109 127 imp~ 1;
+#X obj 207 156 else/resonant~ 900 1;
+#X msg 91 188 t60 1;
+#X obj 355 168 sig~ 2;
+#X connect 21 0 36 1;
+#X connect 22 0 36 2;
+#X connect 35 0 36 0;
+#X connect 36 0 8 0;
+#X connect 36 0 8 1;
+#X connect 37 0 36 0;
+#X connect 38 0 36 2;

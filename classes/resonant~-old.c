@@ -12,8 +12,6 @@ typedef struct _resonant {
     t_inlet    *x_inlet_q;
     t_outlet   *x_out;
     t_float     x_nyq;
-    t_float     x_bypass;
-    t_float     x_t60;
     double  x_xnm1;
     double  x_xnm2;
     double  x_ynm1;
@@ -37,37 +35,24 @@ static t_int *resonant_perform(t_int *w)
     t_float nyq = x->x_nyq;
     while (nblock--)
     {
-        double xn = *in1++, f = *in2++, reson = *in3++;
-        double q, omega, alphaQ, cos_w, a0, a2, b0, b1, b2, yn;
-        if (x->x_t60 = 1) // reson is t60 in ms
-            q = f * (PI * reson/1000) / log(1000);
-        else if (x->x_t60 = 0)
-            q = reson;
-        int q_bypass;
-        if (f < 0.000001)
-            f = 0.000001;
-        if (f > nyq - 0.000001)
-            f = nyq - 0.000001;
-        if (q < 0.000001)
-            {
-            q = 0.000001;
-            q_bypass = 1;
-            }
-        else
-            q_bypass = 0;
+        double xn = *in1++, f = *in2++, q = *in3++;
+        double omega, a0, a1, a2, b0, b1, b2, yn;
+        if (f < 0) f = 0;
+        if (f > nyq) f = nyq;
         omega = f * PI/nyq;
-        alphaQ = sin(omega) / (2*q);
-        cos_w = cos(omega);
+
+        if (q <= 0) q = 1; // ???????????????????????
+        double alphaQ = sinf(omega) / (2*q);
+        double cos_w = cosf(omega);
         b0 = alphaQ + 1;
         a0 = alphaQ*q / b0;
+        a1 = 0;
         a2 = -a0;
-        b1 = 2*cos_w / b0;
-        b2 = (alphaQ - 1) / b0;
-        yn = a0 * xn + a2 * xnm2 + b1 * ynm1 + b2 * ynm2;
-        if(x->x_bypass || q_bypass)
-            *out++ = xn;
-        else
-            *out++ = yn;
+        b1 = -2*cos_w / b0;
+        b2 = (1 - alphaQ) / b0;
+
+        *out++ = yn = a0 * xn + a1 * xnm1 + a2 * xnm2 -b1 * ynm1 -b2 * ynm2;
+        
         xnm2 = xnm1;
         xnm1 = xn;
         ynm2 = ynm1;
@@ -87,21 +72,6 @@ static void resonant_dsp(t_resonant *x, t_signal **sp)
             sp[3]->s_vec);
 }
 
-static void resonant_clear(t_resonant *x)
-{
-    x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
-}
-
-static void resonant_bypass(t_resonant *x, t_floatarg f)
-{
-    x->x_bypass = (int)(f != 0);
-}
-
-static void resonant_t60(t_resonant *x, t_floatarg f)
-{
-    x->x_t60 = (int)(f != 0);
-}
-
 static void *resonant_new(t_floatarg f1, t_floatarg f2)
 {
     t_resonant *x = (t_resonant *)pd_new(resonant_class);
@@ -119,7 +89,4 @@ void resonant_tilde_setup(void)
         sizeof(t_resonant), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(resonant_class, (t_method)resonant_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(resonant_class, nullfn, gensym("signal"), 0);
-    class_addmethod(resonant_class, (t_method)resonant_clear, gensym("clear"), 0);
-    class_addmethod(resonant_class, (t_method)resonant_bypass, gensym("bypass"), A_DEFFLOAT, 0);
-    class_addmethod(resonant_class, (t_method)resonant_t60, gensym("t60"), A_DEFFLOAT, 0);
 }
