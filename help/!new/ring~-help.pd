@@ -165,7 +165,7 @@ f 53;
 #X floatatom 286 122 5 0 0 0 - - -, f 5;
 #X floatatom 341 126 5 0 0 0 - - -, f 5;
 #X obj 235 191 out~;
-#X obj 196 117 noise~;
+#X obj 196 116 imp~ 1;
 #X connect 37 0 41 0;
 #X connect 37 0 41 1;
 #X connect 39 0 37 1;
