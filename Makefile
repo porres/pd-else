@@ -54,7 +54,6 @@ random~.class.sources := classes/random~.c
 ratio2cents~.class.sources := classes/ratio2cents~.c
 rescale~.class.sources := classes/rescale~.c
 resonant~.class.sources := classes/resonant~.c
-ring~.class.sources := classes/ring~.c
 rms~.class.sources := classes/rms~.c
 sawtooth~.class.sources := classes/sawtooth~.c
 sh~.class.sources := classes/sh~.c

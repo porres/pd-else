@@ -12,7 +12,8 @@ typedef struct _bandpass {
     t_inlet    *x_inlet_q;
     t_outlet   *x_out;
     t_float     x_nyq;
-    t_float     x_bypass;
+    int     x_bypass;
+    int     x_bw;
     double  x_xnm1;
     double  x_xnm2;
     double  x_ynm1;
@@ -36,13 +37,22 @@ static t_int *bandpass_perform(t_int *w)
     t_float nyq = x->x_nyq;
     while (nblock--)
     {
-        double xn = *in1++, f = *in2++, q = *in3++;
-        double omega, alphaQ, cos_w, a0, a2, b0, b1, b2, yn;
+        double xn = *in1++, f = *in2++, reson = *in3++;
+        double q, omega, alphaQ, cos_w, a0, a2, b0, b1, b2, yn;
         int q_bypass;
+        
         if (f < 0.000001)
             f = 0.000001;
         if (f > nyq - 0.000001)
             f = nyq - 0.000001;
+        
+        omega = f * PI/nyq; // hz2rad
+        
+        if (x->x_bw) // reson is bw in octaves
+            q = 1 / (2 * sinh(log(2)/2 * reson * omega/sin(omega)));
+        else
+            q = reson;
+            
         if (q < 0.000001)
             {
             q = 0.000001;
@@ -50,7 +60,7 @@ static t_int *bandpass_perform(t_int *w)
             }
         else
             q_bypass = 0;
-        omega = f * PI/nyq;
+        
         alphaQ = sin(omega) / (2*q);
         cos_w = cos(omega);
         b0 = alphaQ + 1;
@@ -59,10 +69,12 @@ static t_int *bandpass_perform(t_int *w)
         b1 = 2*cos_w / b0;
         b2 = (alphaQ - 1) / b0;
         yn = a0 * xn + a2 * xnm2 + b1 * ynm1 + b2 * ynm2;
+        
         if(x->x_bypass || q_bypass)
             *out++ = xn;
         else
             *out++ = yn;
+        
         xnm2 = xnm1;
         xnm1 = xn;
         ynm2 = ynm1;
@@ -78,8 +90,8 @@ static t_int *bandpass_perform(t_int *w)
 static void bandpass_dsp(t_bandpass *x, t_signal **sp)
 {
     x->x_nyq = sp[0]->s_sr / 2;
-    dsp_add(bandpass_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,sp[1]->s_vec, sp[2]->s_vec,
-            sp[3]->s_vec);
+    dsp_add(bandpass_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
+            sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
 static void bandpass_clear(t_bandpass *x)
@@ -90,6 +102,16 @@ static void bandpass_clear(t_bandpass *x)
 static void bandpass_bypass(t_bandpass *x, t_floatarg f)
 {
     x->x_bypass = (int)(f != 0);
+}
+
+static void bandpass_bw(t_bandpass *x)
+{
+    x->x_bw = 1;
+}
+
+static void bandpass_q(t_bandpass *x)
+{
+    x->x_bw = 0;
 }
 
 static void *bandpass_new(t_floatarg f1, t_floatarg f2)
@@ -111,4 +133,6 @@ void bandpass_tilde_setup(void)
     class_addmethod(bandpass_class, nullfn, gensym("signal"), 0);
     class_addmethod(bandpass_class, (t_method)bandpass_clear, gensym("clear"), 0);
     class_addmethod(bandpass_class, (t_method)bandpass_bypass, gensym("bypass"), A_DEFFLOAT, 0);
+    class_addmethod(bandpass_class, (t_method)bandpass_bw, gensym("bw"), 0);
+    class_addmethod(bandpass_class, (t_method)bandpass_q, gensym("q"), 0);
 }

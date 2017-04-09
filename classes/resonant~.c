@@ -39,9 +39,9 @@ static t_int *resonant_perform(t_int *w)
     {
         double xn = *in1++, f = *in2++, reson = *in3++;
         double q, omega, alphaQ, cos_w, a0, a2, b0, b1, b2, yn;
-        if (x->x_t60 = 1) // reson is t60 in ms
+        if (x->x_t60) // reson is t60 in ms
             q = f * (PI * reson/1000) / log(1000);
-        else if (x->x_t60 = 0)
+        else
             q = reson;
         int q_bypass;
         if (f < 0.000001)
@@ -68,6 +68,7 @@ static t_int *resonant_perform(t_int *w)
             *out++ = xn;
         else
             *out++ = yn;
+        
         xnm2 = xnm1;
         xnm1 = xn;
         ynm2 = ynm1;
