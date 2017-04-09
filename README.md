@@ -113,5 +113,7 @@ MATH: [3]
 - [lastvalue]
 - [sin~]
 
-AUDIO PROCESSING (1):
+AUDIO PROCESSING (3):
+- [bandpass~]
 - [downsample~]
+- [resonant~]
