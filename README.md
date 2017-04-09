@@ -19,7 +19,7 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Object list (75 objects):
+Object list (77 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [7]
 - [imp~]
