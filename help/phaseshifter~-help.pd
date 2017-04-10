@@ -494,15 +494,10 @@
 -228856 -1 -1 0 1;
 #X obj 543 124 noise~;
 #X obj 543 199 else/out~;
-#X text 55 92 y[n] = a0 * x[n] + a2 * x[n-2] + b1 * y[n-1] + b2 * y[n-2]
-;
 #X obj 684 138 nbx 5 14 0.001 100 0 0 \$0-Q empty empty 0 -8 0 10 -228856
 -1 -1 0.001 256;
 #X obj 613 115 nbx 5 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
 -1 -1 20 256;
-#X text 54 46 The equation is from the "Cookbook formulae for audio
-EQ biquad filter coefficients" by Robert Bristow-Johnsonc [1] \, and
-it is:;
 #X text 57 272 [1] found in http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
 , f 65;
 #X text 633 88 center frequency;
@@ -519,13 +514,17 @@ of center frequency 'f' in hz and 'q' as follows \;;
 / b0 \; a2 = 1 \; b1 = 2*cos(omega) / b0 \; b2 = (alphaQ - 1) / b0
 \;;
 #X text 728 169 Note: q's and bw's minimum value is 1e-06!, f 21;
-#X connect 1 0 6 0;
-#X connect 2 0 7 0;
-#X connect 3 0 15 0;
-#X connect 6 0 15 2;
-#X connect 7 0 15 1;
-#X connect 15 0 4 0;
-#X connect 15 0 4 1;
+#X text 54 46 The equation is from the "Cookbook formulae for audio
+EQ biquad filter coefficients" by Robert Bristow-Johnsonc [1] \, and
+it is: y[n] = a0 * x[n] + a1 * x[n-2] + a2 * x[n-2] + b1 * y[n-1] +
+b2 * y[n-2];
+#X connect 1 0 5 0;
+#X connect 2 0 6 0;
+#X connect 3 0 13 0;
+#X connect 5 0 13 2;
+#X connect 6 0 13 1;
+#X connect 13 0 4 0;
+#X connect 13 0 4 1;
 #X restore 429 239 pd filter formula \; and response;
 #X text 229 382 - central frequency in Hertz;
 #X text 118 469 1) float - central frequency in Hertz (default 0);

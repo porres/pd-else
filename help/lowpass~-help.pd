@@ -55,7 +55,7 @@
 1;
 #X text 133 324 bypass <float>;
 #X text 230 324 - 1 (bypasses input signal) or 0 (doesn't bypass);
-#N canvas 89 122 926 617 filter 0;
+#N canvas 148 121 926 617 filter 0;
 #N canvas 0 410 1108 572 (subpatch) 0;
 #N canvas 1066 341 460 420 plot 0;
 #N canvas 1152 83 608 408 init 0;
@@ -518,15 +518,10 @@
 0 10 -228856 -1 -1 7192 1;
 #X obj 564 124 noise~;
 #X obj 564 199 else/out~;
-#X text 55 92 y[n] = a0 * x[n] + a2 * x[n-2] + b1 * y[n-1] + b2 * y[n-2]
-;
 #X obj 693 138 nbx 5 14 0.001 100 0 0 \$0-Q empty empty 0 -8 0 10 -228856
 -1 -1 0.1 256;
 #X obj 628 115 nbx 5 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
 -1 -1 1000 256;
-#X text 54 46 The equation is from the "Cookbook formulae for audio
-EQ biquad filter coefficients" by Robert Bristow-Johnsonc [1] \, and
-it is:;
 #X text 57 272 [1] found in http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
 , f 65;
 #X text 648 88 center frequency;
@@ -543,13 +538,17 @@ below. The graph considers a sample rate of 44.1Khz.;
 of center frequency 'f' in hz and 'q' as follows \;;
 #X text 732 166 Note: q's and bw's minimum value is 1e-06!, f 21;
 #X obj 564 163 else/lowpass~ 1000 0.1;
-#X connect 1 0 6 0;
-#X connect 2 0 7 0;
-#X connect 3 0 17 0;
-#X connect 6 0 17 2;
-#X connect 7 0 17 1;
-#X connect 17 0 4 0;
-#X connect 17 0 4 1;
+#X text 54 46 The equation is from the "Cookbook formulae for audio
+EQ biquad filter coefficients" by Robert Bristow-Johnsonc [1] \, and
+it is: y[n] = a0 * x[n] + a1 * x[n-2] + a2 * x[n-2] + b1 * y[n-1] +
+b2 * y[n-2];
+#X connect 1 0 5 0;
+#X connect 2 0 6 0;
+#X connect 3 0 15 0;
+#X connect 5 0 15 2;
+#X connect 6 0 15 1;
+#X connect 15 0 4 0;
+#X connect 15 0 4 1;
 #X restore 429 239 pd filter formula \; and response;
 #X text 229 382 - central frequency in Hertz;
 #X text 118 469 1) float - central frequency in Hertz (default 0);
