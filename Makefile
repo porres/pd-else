@@ -49,6 +49,7 @@ pan2~.class.sources := classes/pan2~.c
 pan4~.class.sources := classes/pan4~.c
 parabolic~.class.sources := classes/parabolic~.c
 peak~.class.sources := classes/peak~.c
+peakfilter~.class.sources := classes/peakfilter~.c
 phaseshifter~.class.sources := classes/phaseshifter~.c
 pimp~.class.sources := classes/pimp~.c
 pulse~.class.sources := classes/pulse~.c

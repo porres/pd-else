@@ -127,7 +127,7 @@ static void *lowpass_new(t_symbol *s, int argc, t_atom *argv)
     t_lowpass *x = (t_lowpass *)pd_new(lowpass_class);
     float freq = 0;
     float reson = 1;
-    int bw = 0;
+    float bw = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
     while(argc > 0)

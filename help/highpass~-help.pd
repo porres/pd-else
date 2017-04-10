@@ -1,4 +1,4 @@
-#N canvas 712 27 561 579 10;
+#N canvas 895 83 561 579 10;
 #X obj 4 280 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 430 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -56,7 +56,7 @@
 1;
 #X text 133 324 bypass <float>;
 #X text 230 324 - 1 (bypasses input signal) or 0 (doesn't bypass);
-#N canvas 411 23 926 617 filter 1;
+#N canvas 411 23 926 617 filter 0;
 #N canvas 0 410 1108 572 (subpatch) 0;
 #N canvas 1066 341 460 420 plot 0;
 #N canvas 884 142 608 408 init 0;
