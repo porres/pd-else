@@ -1,7 +1,7 @@
 
 ELSE (currently at alpha stage)
 
-last release 1.0-alpha4 (april 10th 2017)
+next release 1.0-alpha5 (no date yet)
 
 ----------------------------------------------
 
@@ -19,7 +19,7 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Object list (84 objects):
+Object list (85 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [7]
 - [imp~]
@@ -27,6 +27,7 @@ OSCILLATORS (DETERMINISTIC GENERATORS): [7]
 - [parabolic~]
 - [pulse~]
 - [sawtooth~]
+- [sine~]
 - [square~]
 - [vtriangle~]
 
