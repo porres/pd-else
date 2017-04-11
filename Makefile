@@ -66,6 +66,7 @@ sawtooth~.class.sources := classes/sawtooth~.c
 sh~.class.sources := classes/sh~.c
 select~.class.sources := classes/select~.c
 sin~.class.sources := classes/sin~.c
+sine~.class.sources := classes/sine~.c
 square~.class.sources := classes/square~.c
 standard~.class.sources := classes/standard~.c
 toggleff~.class.sources := classes/toggleff~.c
