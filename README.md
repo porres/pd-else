@@ -19,9 +19,10 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Object list (85 objects):
+Object list (89 objects):
 
-OSCILLATORS (DETERMINISTIC GENERATORS): [8]
+OSCILLATORS (DETERMINISTIC GENERATORS): [9]
+- [cosine~]
 - [imp~]
 - [imp2~]
 - [parabolic~]
@@ -109,10 +110,15 @@ SIGNAL ROUTING: [4]
 - [pan4~]
 - [xfade~]
 
-MATH: [3]
+MATH/LOGIC: [4]
 - [accum~]
 - [lastvalue]
+- [loop]
 - [sin~]
+
+ENVELOPE: [2]
+- [decay~]
+- [decay2~]
 
 AUDIO PROCESSING (mostly filters) (10):
 - [bandpass~]
