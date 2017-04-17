@@ -61,29 +61,30 @@ t_int *select_perform(t_int *w)
 	short fadetype = x->fadetype;
 	float phase;
 	int inlet_count = x->inlet_count;
-	for ( i = 0; i < inlet_count; i++ ) {
+	for (i = 0; i < inlet_count; i++) {
 		bulk[i] = (t_float *)(w[2 + i]);
-	}
+        }
 	out = (t_float *)(w[inlet_count + 2]);
 	n = (int) w[inlet_count + 3];
 	/********************************************/
-		while(n--)
+    while(n--)
+        {
+        if (samps_to_fade >= 0)
             {
-			if ( samps_to_fade >= 0 )
+            if( fadetype == EQ_POW )
                 {
-				if( fadetype == EQ_POW )
-                    {
-					phase = HALF_PI * (1.0 - (samps_to_fade / (float) fadesamps)) ;
-					m1 = sin( phase );
-					m2 = cos( phase );
-					--samps_to_fade;
-					*out++ = (*(bulk[active_chan])++ * m1) + (*(bulk[last_chan])++ * m2);
-                    }
+                phase = HALF_PI * (1.0 - (samps_to_fade / (float) fadesamps));
+                m1 = sin( phase );
+                m2 = cos( phase );
+                --samps_to_fade;
+                *out++ = (*(bulk[active_chan])++ * m1) + (*(bulk[last_chan])++ * m2);
                 }
-			else {
-				*out++ =  *(bulk[active_chan])++;
-                }
+            // Else Linear...
             }
+        else {
+            *out++ =  *(bulk[active_chan])++;
+            }
+        }
 	x->samps_to_fade = samps_to_fade;
 	return (w + (inlet_count + 4));
 }
@@ -97,8 +98,8 @@ void select_dsp(t_select *x, t_signal **sp)
 	pointer_count = x->inlet_count + 3; // all inlets, 1 outlet, object pointer and vec-samps
 	sigvec  = (t_int **) calloc(pointer_count, sizeof(t_int *));
 	for(i = 0; i < pointer_count; i++){
-		sigvec[i] = (t_int *) calloc(sizeof(t_int),1);
-	}
+		sigvec[i] = (t_int *) calloc(sizeof(t_int), 1);
+        }
 	sigvec[0] = (t_int *)x; // first pointer is to the object
 	
 	sigvec[pointer_count - 1] = (t_int *)sp[0]->s_n; // last pointer is to vector size (N)
@@ -133,11 +134,6 @@ void select_channel(t_select *x, t_floatarg i) // Look at int at inlets
 			x->active_chan = 0;
 		if( x->active_chan > MAX_CHANS - 1)
 			x->active_chan = MAX_CHANS - 1;
-		if(! x->connected_list[chan]) { // do it anyway - it's user-stupidity
-             post("warning: channel %d not connected",chan);
-            // x->active_chan = 1;
-		}
-		// post("last: %d active %d", x->last_chan, x->active_chan);
 	}	
 }
 
@@ -163,11 +159,10 @@ void *select_new(t_symbol *s, int argc, t_atom *argv)
     if(argc >= 2){
         x->fadetime = atom_getfloatarg(1,argc,argv) / 1000.0;
     }
-    //		post("argc %d inlet count %d fadetime %f",argc, x->inlet_count, x->fadetime);
     
     for(i=0; i < x->inlet_count - 1; i++){
         inlet_new(&x->x_obj, &x->x_obj.ob_pd,gensym("signal"), gensym("signal"));
-    }
+        }
     outlet_new(&x->x_obj, gensym("signal"));
     x->sr = sys_getsr();
     x->fadetype = EQ_POW;
