@@ -8,8 +8,7 @@
 
 typedef struct _highpass {
     t_object    x_obj;
-    t_int       x_n;
-    t_inlet    *x_inlet_freq;
+    t_inlet    *x_inlet_freq; // x_inlet_freq
     t_inlet    *x_inlet_q;
     t_outlet   *x_out;
     t_float     x_nyq;
@@ -114,13 +113,6 @@ static void highpass_q(t_highpass *x)
 {
     x->x_bw = 0;
 }
-
-static void *highpass_tilde_new(t_symbol *s, int argc, t_atom *argv)
-{
-    t_highpass *x = (t_highpass *)pd_new(highpass_class);
-    return (x);
-}
-
 
 static void *highpass_new(t_symbol *s, int argc, t_atom *argv)
 {

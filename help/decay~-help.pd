@@ -1,0 +1,83 @@
+#N canvas 684 23 560 597 10;
+#X obj 4 368 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 446 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 479 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 4 551 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 129 455 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 129 376 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 191 376 signal;
+#X text 191 455 signal;
+#X obj 2 3 cnv 15 301 42 empty empty decay~ 20 20 2 37 -233017 -1 0
+;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Exponential 0 28 2 18 -233017 -1
+0;
+#X obj 117 40 cnv 4 4 4 empty empty decay 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 129 419 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 155 419 float/signal;
+#X text 197 394 clear;
+#X obj 175 297 else/out~;
+#X obj 218 253 *~;
+#X obj 146 170 else/brown~;
+#X text 61 86 [decay~] is a one pole filter that creates an exponential
+decay when triggered by an impulse \, thus turning an impulse signal
+into a decay envelope. The decay time is how long it takes for the
+signal to decay 60dB \, and it's given in ms.;
+#N canvas 950 214 406 211 rpole~ 0;
+#X obj 55 136 rpole~;
+#X floatatom 88 78 5 1 1000 0 - - -, f 5;
+#X obj 88 109 expr exp(ln(0.001) / ($f1 * $f2));
+#X obj 283 79 else/sr~ khz;
+#X text 125 78 decay time (ms);
+#X text 45 25 Here's a way to implement [decay~] with [rpole~].;
+#X floatatom 108 135 0 0 0 0 - - -;
+#X text 167 138 filter coefficient;
+#X connect 1 0 2 0;
+#X connect 2 0 0 1;
+#X connect 2 0 6 0;
+#X connect 3 0 2 1;
+#X restore 457 327 pd rpole~;
+#X text 240 376 - impulse signal to be decayed;
+#X text 240 394 - clears filter's memory;
+#X obj 295 250 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 567 1;
+#X obj 295 222 else/sig2float~;
+#X text 318 343 0;
+#X text 318 244 1;
+#X obj 233 161 else/imp~ 0.5;
+#X obj 233 191 else/decay~ 4000;
+#X text 239 418 - decay time in ms;
+#X text 240 455 - decayed signal;
+#X text 185 485 1) float - time in ms (default 1000);
+#X obj 7 515 cnv 3 550 3 empty empty more_info 8 12 0 13 -228856 -1
+0;
+#X text 143 523 Object based on SuperCollider's "Decay" UGEN.;
+#X connect 22 0 21 0;
+#X connect 22 0 21 1;
+#X connect 23 0 22 0;
+#X connect 29 0 28 0;
+#X connect 32 0 33 0;
+#X connect 33 0 22 1;
+#X connect 33 0 29 0;

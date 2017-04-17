@@ -1,0 +1,221 @@
+#N canvas 579 79 559 569 10;
+#X obj 4 318 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 428 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 461 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 4 530 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 92 437 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 92 326 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 152 326 signal;
+#X text 152 437 signal;
+#X obj 216 249 else/out~;
+#X obj 2 3 cnv 15 301 42 empty empty resonant~ 20 20 2 37 -233017 -1
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Bandpass 0 28 2 18 -233017 -1 0
+;
+#X obj 169 40 cnv 4 4 4 empty empty filter 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 99 40 cnv 4 4 4 empty empty resonant 0 28 2 18 -233017 -1 0
+;
+#X obj 92 360 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 92 383 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 116 360 float/signal;
+#X text 116 383 float/signal;
+#X text 158 344 clear;
+#X text 200 359 - central frequency in Hertz;
+#X text 128 469 1) float - central frequency in Hertz (default 0);
+#X text 201 344 - clears filter's memory if you blow it up;
+#X text 210 60 (constant skirt);
+#X obj 216 180 else/trigate~;
+#X obj 216 153 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 59 90 [resonant~] is a resonator that you can specify a decay
+time in ms \, or a Q factor. Like [bandpass~] \, it is a 2nd order
+bandpass resonant filter \, but where changing the Q increases the
+gain of the filter.;
+#X text 201 326 - signal to be filtered or excite the resonator;
+#X text 238 152 <= excite the resonator;
+#X text 201 437 - resonator/filtered signal;
+#N canvas 437 34 843 347 resonantor 0;
+#X text 33 14 Resonator:;
+#X obj 72 130 noise~;
+#X obj 72 184 *~;
+#X obj 72 275 else/out~;
+#X obj 87 158 else/pulse~ 0.5 0.25;
+#X obj 72 232 else/resonant~ 400 1000;
+#X obj 240 233 else/resonant~ 700 2000;
+#X text 33 43 The Q parameter affecting the gain of the filter makes
+it so that it acts as a 'resonator' \, where it will resonate at the
+resonant frequency for a period of time after the input signal has
+ceased.;
+#X text 449 180 Thus \, instead of a 'q' factor \, the resonant parameter
+can be specified by a decay time \, which is the default parameter
+for the [resonant~] object.;
+#X text 449 233 The decay time is given in "T60" \, which is the time
+it takes to decay 60 dB. You can convert from decay time to Q and vice
+versa with a formula implemented in the subpatch below.;
+#X obj 533 100 else/out~;
+#X obj 554 68 else/resonant~ 1000 1000;
+#X obj 554 40 else/dust~ 5;
+#X text 642 40 random excitation;
+#N canvas 521 103 452 512 T60 0;
+#X obj 292 308 pi;
+#X obj 292 282 else/pi;
+#X obj 184 156 / 1000;
+#X obj 184 210 expr log(1000) / ($f1 * pi);
+#X obj 184 181 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 243 182 decay time in seconds;
+#X obj 184 239 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 246 238 bandwidth in hertz;
+#X obj 169 268 /;
+#X obj 115 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1000 256;
+#X obj 169 294 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 228 292 Q;
+#X obj 115 108 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 173 107 decay time in miliseconds;
+#X obj 115 131 t bang float;
+#X text 64 183 center;
+#X text 53 203 frequency;
+#X obj 154 331 /;
+#X obj 154 357 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 142 242 t f f;
+#X text 213 358 bandwidth in hertz;
+#X obj 154 385 expr log(1000) / ($f1 * pi);
+#X obj 154 415 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 213 416 decay time in seconds;
+#X obj 154 437 * 1000;
+#X obj 154 462 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 212 461 decay time in miliseconds;
+#X obj 33 122 loadbang;
+#X msg 33 146 set 1000;
+#X msg 115 84 2000;
+#X obj 115 60 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 67 22 Converting from decay time to Q and vice-versa;
+#X connect 1 0 0 0;
+#X connect 2 0 4 0;
+#X connect 3 0 6 0;
+#X connect 4 0 3 0;
+#X connect 6 0 8 1;
+#X connect 8 0 10 0;
+#X connect 9 0 19 0;
+#X connect 10 0 17 1;
+#X connect 12 0 14 0;
+#X connect 14 0 9 0;
+#X connect 14 1 2 0;
+#X connect 17 0 18 0;
+#X connect 18 0 21 0;
+#X connect 19 0 17 0;
+#X connect 19 1 8 0;
+#X connect 21 0 22 0;
+#X connect 22 0 24 0;
+#X connect 24 0 25 0;
+#X connect 27 0 28 0;
+#X connect 28 0 9 0;
+#X connect 29 0 12 0;
+#X connect 30 0 29 0;
+#X restore 567 298 pd T60 and Q conversion;
+#X connect 1 0 2 0;
+#X connect 2 0 5 0;
+#X connect 2 0 6 0;
+#X connect 4 0 2 1;
+#X connect 5 0 3 0;
+#X connect 6 0 3 1;
+#X connect 11 0 10 0;
+#X connect 11 0 10 1;
+#X connect 12 0 11 0;
+#X restore 462 286 pd resonantor;
+#N canvas 383 73 743 489 [bandpass~]_vs_[resonant~] 1;
+#X obj 311 338 else/out~;
+#X obj 311 118 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 333 117 <= excite the resonator;
+#X obj 497 194 sig~ 5000;
+#X obj 131 191 else/resonant~ 1000 5000;
+#X obj 311 222 else/resonant2~ 1000;
+#X obj 423 196 sig~ 1000;
+#X obj 426 312 scope~ 130 130 2 3 128 -1 1 0 0 0 0 205 229 232 74 79
+77 96 98 102 0;
+#X obj 311 145 imp~ 1;
+#X obj 311 180 *~;
+#X obj 340 181 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 128 158 *~;
+#X obj 157 160 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 131 106 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 131 133 imp~ 1;
+#X connect 1 0 8 0;
+#X connect 3 0 5 2;
+#X connect 4 0 0 0;
+#X connect 4 0 0 1;
+#X connect 4 0 7 0;
+#X connect 5 0 0 0;
+#X connect 5 0 0 1;
+#X connect 5 0 7 0;
+#X connect 6 0 5 3;
+#X connect 8 0 9 0;
+#X connect 9 0 5 0;
+#X connect 10 0 9 1;
+#X connect 11 0 4 0;
+#X connect 12 0 11 1;
+#X connect 13 0 14 0;
+#X connect 14 0 11 0;
+#X restore 366 261 pd [bandpass~]_vs_[resonant~];
+#X msg 159 180 clear;
+#X obj 216 217 else/resonant2~ 1000 100 500;
+#X text 201 383 - attack time in ms;
+#X obj 92 405 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+;
+#X text 116 405 float/signal;
+#X text 201 405 - decay time in ms;
+#X text 128 507 2) float - decay time in ms (default 0), f 66;
+#X text 128 487 2) float - attack time in ms (default 0), f 66;
+#X obj 40 223 else/trigate~;
+#X obj 40 196 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 402 189 sig~ 5000;
+#X obj 328 191 sig~ 2000;
+#X obj 40 259 else/resonant~ 1000 5000;
+#X connect 29 0 38 0;
+#X connect 30 0 29 0;
+#X connect 37 0 38 0;
+#X connect 38 0 8 0;
+#X connect 38 0 8 1;
+#X connect 45 0 49 0;
+#X connect 46 0 45 0;
+#X connect 47 0 38 3;
+#X connect 48 0 38 2;
+#X connect 49 0 8 0;
+#X connect 49 0 8 1;
