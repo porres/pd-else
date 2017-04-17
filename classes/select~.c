@@ -67,8 +67,6 @@ t_int *select_perform(t_int *w)
 	out = (t_float *)(w[inlet_count + 2]);
 	n = (int) w[inlet_count + 3];
 	/********************************************/
-	if ( active_chan >= 0 )
-        {
 		while(n--)
             {
 			if ( samps_to_fade >= 0 )
@@ -86,14 +84,6 @@ t_int *select_perform(t_int *w)
 				*out++ =  *(bulk[active_chan])++;
                 }
             }
-        }
-  	else
-        {
-  		while(n--)
-            {
-			*out++ = 0.0;
-            }
-        }
 	x->samps_to_fade = samps_to_fade;
 	return (w + (inlet_count + 4));
 }
