@@ -1,4 +1,4 @@
-// from polygate
+
 
 #include "m_pd.h"
 #include <math.h>
@@ -21,7 +21,7 @@ typedef struct _ip // keeps track of each signal input
   int counter[INPUTLIMIT];
   double timeoff[INPUTLIMIT];
   float fade[INPUTLIMIT];
-  float *in[INPUTLIMIT]; // NOT INPUT LIMIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  float *in[INPUTLIMIT];
 } t_ip;
 
 typedef struct _select
@@ -236,56 +236,80 @@ static void adjustcounters2linear(t_select *x) // no longer used
     }
 }
 
+static void outputfades(t_int *w, int flag)
+{
+  t_select *x = (t_select *)(w[1]);
+  float *out = (t_float *)(w[3+x->ninlets]);
+  int n = (int)(w[2]);
+  int i;
+  for(i = 0; i < x->ninlets; i++)
+    x->ip.in[i] = (t_float *)(w[3+i]);
+  while (n--)
+    {
+      float sum = 0;
+      updatefades(x);
+      for(i = 0; i < x->ninlets; i++)
+	if(x->ip.fade[i])
+	  {
+	    if(flag && x->fadetype == EPOWER)
+	      sum += *x->ip.in[i]++ * epower(x->ip.fade[i]);
+	    else
+	      sum += *x->ip.in[i]++ * x->ip.fade[i];
+	  }
+      *out++ = sum;
+    }
+}
 
 static t_int *select_perform(t_int *w)
 {
   t_select *x = (t_select *)(w[1]);
-    int i;
-    for (i = 0; i < x->ninlets; i++)
-        x->ip.in[i] = (t_float *)(w[2 + i]);
-    int n = (int) w[x->ninlets + 3];
-    t_float *out = (t_float *)(w[x->ninlets + 2]);
-    while (n--) {
-    if (x->actuallastchoice == 0 && x->choice == 0 && x->lastchoice == 0)
-        { // init state
-        if(x->firsttick)
+  int n = (int)(w[2]);
+  float *out = (t_float *)(w[3+x->ninlets]);
+  if (x->actuallastchoice == 0 && x->choice == 0 && x->lastchoice == 0) { // init state
+      if(x->firsttick) {
+          int i;
           x->firsttick = 0;
-        *out++ = 0;
-        }
-   else{
-        float sum = 0;
-        for(i = 0; i < x->ninlets; i++)
-        if(x->ip.fade[i])
-            {
-            if(x->fadetype == EPOWER)
-                sum += *x->ip.in[i]++ * epower(x->ip.fade[i]);
-            else
-                sum += *x->ip.in[i]++ * x->ip.fade[i];
-            }
-        *out++ = sum;
-        }
-    }
+          }
+      while (n--)
+      *out++ = 0;
+      }
+  else if (x->actuallastchoice == 0 && x->choice != 0) outputfades(w, x->fadetype); // change from 0 to non-0
+  else if(x->choice != 0) outputfades(w, EPOWER); // change from non-0 to another non-0
+  else if (x->actuallastchoice != 0 && x->choice == 0) outputfades(w, x->fadetype); // change from non-0 to 0
   checkswitchstatus(x);
-  return (w + 4 + x->ninlets); 
+  return (w+4+x->ninlets);
 }
-
 
 static void select_dsp(t_select *x, t_signal **sp)
 {
-    long i;
-    t_int **sigvec;
-    int count = x->ninlets + 3;
-    sigvec  = (t_int **) calloc(count, sizeof(t_int *));
-    for(i = 0; i < count; i++)
-        sigvec[i] = (t_int *) calloc(sizeof(t_int), 1);
-    sigvec[0] = (t_int *)x; // first => object
-    sigvec[count - 1] = (t_int *)sp[0]->s_n; // last => block (n)
-    for(i = 1; i < count - 1; i++) // ins/out
-        sigvec[i] = (t_int *)sp[i-1]->s_vec;
-    dsp_addv(select_perform, count, (t_int *) sigvec);
-    free(sigvec);
+  int n = sp[0]->s_n, i; // there must be a smarter way....
+  switch (x->ninlets) 
+    {
+    case 1: dsp_add(select_perform, 4, x, n, sp[0]->s_vec, sp[1]->s_vec);
+      break;
+    case 2: dsp_add(select_perform, 5, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
+      break;
+    case 3: dsp_add(select_perform, 6, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+      break;
+    case 4: dsp_add(select_perform, 7, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
+      break;
+    case 5: dsp_add(select_perform, 8, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec);
+      break;
+    case 6: dsp_add(select_perform, 9, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec);
+      break;
+    case 7: dsp_add(select_perform, 10, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec);
+      break;
+    case 8: dsp_add(select_perform, 11, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
+		    sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
+    break;
+    case 9: dsp_add(select_perform, 12, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
+		    sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec, sp[9]->s_vec);
+    break;
+    case 10: dsp_add(select_perform, 13, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
+		     sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec, sp[9]->s_vec, sp[10]->s_vec);
+    break;
+    }
 }
-
 
 static void shortcheck(t_select *x, int newticks, int shorter)
 {

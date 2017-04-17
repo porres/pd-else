@@ -6,7 +6,7 @@
 
 #define HALFPI 1.570796327
 
-static t_class *switcher_class;
+static t_class *select_class;
 
 #define INPUTLIMIT 256
 #define LINEAR 0
@@ -24,7 +24,7 @@ typedef struct _ip // keeps track of each signal input
   float *in[INPUTLIMIT];
 } t_ip;
 
-typedef struct _switcher
+typedef struct _select
 {
   t_object x_obj;
   float x_f;
@@ -42,12 +42,12 @@ typedef struct _switcher
   int fadealert; 
   float srate;
   t_ip ip;
-} t_switcher;
+} t_select;
 
-static void *switcher_new(t_symbol *s, int argc, t_atom *argv)
+static void *select_new(t_symbol *s, int argc, t_atom *argv)
 {
   int usedefault = 0, i;
-  t_switcher *x = (t_switcher *)pd_new(switcher_class);
+  t_select *x = (t_select *)pd_new(select_class);
   x->srate = sys_getsr();	
   if(argc == 0 || argc > 3)
     usedefault = 1;
@@ -63,12 +63,12 @@ static void *switcher_new(t_symbol *s, int argc, t_atom *argv)
       else
 	if(argv[1].a_w.w_float >= EPMIN)
 	  {
-	    post("switcher~: 3rd optional argument should be \"linear\". Reverting to equal power default");
+	    post("select~: 3rd optional argument should be \"linear\". Reverting to equal power default");
 	    x->fadetype = x->lastfadetype = EPOWER;
 	  }  
 	else
 	  {
-	    post("switcher~: 3rd optional argument should be \"linear\". \nFade rate less than %d msec - using linear fading", EPMIN);
+	    post("select~: 3rd optional argument should be \"linear\". \nFade rate less than %d msec - using linear fading", EPMIN);
 	    x->fadetype = x->lastfadetype = LINEAR;
 	  }
     }
@@ -78,13 +78,13 @@ static void *switcher_new(t_symbol *s, int argc, t_atom *argv)
 	x->fadetype = x->lastfadetype = EPOWER;
       else
 	{
-	  post("switcher~: fade rate less than %d msec - using linear fading", EPMIN);
+	  post("select~: fade rate less than %d msec - using linear fading", EPMIN);
 	  x->fadetype = x->lastfadetype = LINEAR;
 	}
     }
   if(usedefault)
     {
-      post("switcher~: Incompatible arguments. Using base defaults");
+      post("select~: Incompatible arguments. Using base defaults");
       x->fadetype = x->lastfadetype = LINEAR;
       x->ninlets = 1;
       x->fadetime = 1;
@@ -95,7 +95,7 @@ static void *switcher_new(t_symbol *s, int argc, t_atom *argv)
       if(x->ninlets > INPUTLIMIT)
 	{
 	  x->ninlets = INPUTLIMIT;
-	  post("switcher~: maximum of %d inlets", INPUTLIMIT);
+	  post("select~: maximum of %d inlets", INPUTLIMIT);
 	}
       x->fadetime = argv[1].a_w.w_float > 0 ? argv[1].a_w.w_float : 1;
     }
@@ -118,10 +118,10 @@ static void *switcher_new(t_symbol *s, int argc, t_atom *argv)
   return (x);
 }
 
-static void adjustcounters2epower(t_switcher *x);
-static void adjustcounters2linear(t_switcher *x);
+static void adjustcounters2epower(t_select *x);
+static void adjustcounters2linear(t_select *x);
 
-void switcher_f(t_switcher *x, t_floatarg f)
+void select_f(t_select *x, t_floatarg f)
 {
   f = (int)f;
   f = f > x->ninlets ? x->ninlets : f;
@@ -148,7 +148,7 @@ void switcher_f(t_switcher *x, t_floatarg f)
 }
 
 
-static void checkswitchstatus(t_switcher *x) // checks to see which input feeds ought to be "switch~"ed off 
+static void checkswitchstatus(t_select *x) // checks to see which input feeds ought to be "switch~"ed off 
 {
   int i;
   for(i = 0; i < x->ninlets; i++)
@@ -163,7 +163,7 @@ static void checkswitchstatus(t_switcher *x) // checks to see which input feeds 
     }
 }
 
-static void updatefades(t_switcher *x)
+static void updatefades(t_select *x)
 {
   int i;
   for(i = 0; i < x->ninlets; i++)
@@ -211,7 +211,7 @@ static double aepower(double ep) // convert from equal power to linear rate
   return answer;
 }
 
-static void adjustcounters2epower(t_switcher *x) // no longer used
+static void adjustcounters2epower(t_select *x) // no longer used
 {
   // called when shifting from a linear fade-in (from zero) to an equal power crossfade
   // adjusts each input counter to smoothly match subsequent equal power scalings
@@ -224,7 +224,7 @@ static void adjustcounters2epower(t_switcher *x) // no longer used
     }
 }
 
-static void adjustcounters2linear(t_switcher *x) // no longer used
+static void adjustcounters2linear(t_select *x) // no longer used
 {
   // opposite of above
   int i;
@@ -238,7 +238,7 @@ static void adjustcounters2linear(t_switcher *x) // no longer used
 
 static void outputfades(t_int *w, int flag)
 {
-  t_switcher *x = (t_switcher *)(w[1]);
+  t_select *x = (t_select *)(w[1]);
   float *out = (t_float *)(w[3+x->ninlets]);
   int n = (int)(w[2]);
   int i;
@@ -260,9 +260,9 @@ static void outputfades(t_int *w, int flag)
     }
 }
 
-static t_int *switcher_perform(t_int *w)
+static t_int *select_perform(t_int *w)
 {
-  t_switcher *x = (t_switcher *)(w[1]);
+  t_select *x = (t_select *)(w[1]);
   int n = (int)(w[2]);
   float *out = (t_float *)(w[3+x->ninlets]);
   if (x->actuallastchoice == 0 && x->choice == 0 && x->lastchoice == 0) { // init state
@@ -280,38 +280,38 @@ static t_int *switcher_perform(t_int *w)
   return (w+4+x->ninlets);
 }
 
-static void switcher_dsp(t_switcher *x, t_signal **sp)
+static void select_dsp(t_select *x, t_signal **sp)
 {
   int n = sp[0]->s_n, i; // there must be a smarter way....
   switch (x->ninlets) 
     {
-    case 1: dsp_add(switcher_perform, 4, x, n, sp[0]->s_vec, sp[1]->s_vec);
+    case 1: dsp_add(select_perform, 4, x, n, sp[0]->s_vec, sp[1]->s_vec);
       break;
-    case 2: dsp_add(switcher_perform, 5, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
+    case 2: dsp_add(select_perform, 5, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
       break;
-    case 3: dsp_add(switcher_perform, 6, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+    case 3: dsp_add(select_perform, 6, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
       break;
-    case 4: dsp_add(switcher_perform, 7, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
+    case 4: dsp_add(select_perform, 7, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
       break;
-    case 5: dsp_add(switcher_perform, 8, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec);
+    case 5: dsp_add(select_perform, 8, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec);
       break;
-    case 6: dsp_add(switcher_perform, 9, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec);
+    case 6: dsp_add(select_perform, 9, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec);
       break;
-    case 7: dsp_add(switcher_perform, 10, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec);
+    case 7: dsp_add(select_perform, 10, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec);
       break;
-    case 8: dsp_add(switcher_perform, 11, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
+    case 8: dsp_add(select_perform, 11, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
 		    sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
     break;
-    case 9: dsp_add(switcher_perform, 12, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
+    case 9: dsp_add(select_perform, 12, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
 		    sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec, sp[9]->s_vec);
     break;
-    case 10: dsp_add(switcher_perform, 13, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
+    case 10: dsp_add(select_perform, 13, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
 		     sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec, sp[9]->s_vec, sp[10]->s_vec);
     break;
     }
 }
 
-static void shortcheck(t_switcher *x, int newticks, int shorter)
+static void shortcheck(t_select *x, int newticks, int shorter)
 {
   int i;
   for(i = 0; i < x->ninlets; i++)
@@ -320,7 +320,7 @@ static void shortcheck(t_switcher *x, int newticks, int shorter)
 	x->ip.timeoff[i] = clock_getlogicaltime() - ((newticks - x->ip.counter[i]) / (x->srate / 1000.) - 1) * (TIMEUNITPERSEC / 1000.);
     }
 }
-static void adjustcounters_ftimechange(t_switcher *x, int newticks, int shorter)
+static void adjustcounters_ftimechange(t_select *x, int newticks, int shorter)
 {
   int i;
   shortcheck(x, newticks, shorter);
@@ -331,7 +331,7 @@ static void adjustcounters_ftimechange(t_switcher *x, int newticks, int shorter)
     }
 }
 
-void switcher_ftimeepower(t_switcher *x, t_floatarg ftime)
+void select_ftimeepower(t_select *x, t_floatarg ftime)
 {
   int newticks, i, shorter;
   ftime = ftime < 1 ? 1 : ftime;
@@ -379,7 +379,7 @@ void switcher_ftimeepower(t_switcher *x, t_floatarg ftime)
     }
 }
 
-static void switcher_ftimelinear(t_switcher *x, t_floatarg ftime)
+static void select_ftimelinear(t_select *x, t_floatarg ftime)
 {
   int newticks, i, shorter;	
   ftime = ftime < 1 ? 1 : ftime;
@@ -404,14 +404,14 @@ static void switcher_ftimelinear(t_switcher *x, t_floatarg ftime)
   x->lastfadetype = x->fadetype = LINEAR;
 }
 
-void switcher_tilde_setup(void)
+void select_tilde_setup(void)
 {
-  switcher_class = class_new(gensym("switcher~"), (t_newmethod)switcher_new, 0,
-			     sizeof(t_switcher), 0, A_GIMME, 0);
-  class_addmethod(switcher_class, nullfn, gensym("signal"), 0);
-  class_addmethod(switcher_class, (t_method)switcher_dsp, gensym("dsp"), 0);
-  CLASS_MAINSIGNALIN(switcher_class, t_switcher, x_f);
-  class_addmethod(switcher_class, (t_method)switcher_f, gensym("choice"), A_FLOAT, 0);  
-  class_addmethod(switcher_class, (t_method)switcher_ftimeepower, gensym("ftime-epower"), A_FLOAT, (t_atomtype) 0);
-  class_addmethod(switcher_class, (t_method)switcher_ftimelinear, gensym("ftime-linear"), A_FLOAT, (t_atomtype) 0);
+  select_class = class_new(gensym("select~"), (t_newmethod)select_new, 0,
+			     sizeof(t_select), 0, A_GIMME, 0);
+  class_addmethod(select_class, nullfn, gensym("signal"), 0);
+  class_addmethod(select_class, (t_method)select_dsp, gensym("dsp"), 0);
+  CLASS_MAINSIGNALIN(select_class, t_select, x_f);
+  class_addmethod(select_class, (t_method)select_f, gensym("choice"), A_FLOAT, 0);  
+  class_addmethod(select_class, (t_method)select_ftimeepower, gensym("ftime-epower"), A_FLOAT, (t_atomtype) 0);
+  class_addmethod(select_class, (t_method)select_ftimelinear, gensym("ftime-linear"), A_FLOAT, (t_atomtype) 0);
 }
