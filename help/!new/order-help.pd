@@ -44,18 +44,18 @@
 #X obj 145 40 cnv 4 4 4 empty empty list 0 28 2 18 -233017 -1 0;
 #X obj 177 40 cnv 4 4 4 empty empty elements 0 28 2 18 -233017 -1 0
 ;
-#N canvas 849 204 444 235 different 0;
-#X text 47 30 If an input list is smaller than the given size \, the
-lista is output anyway. If the last bit of the broken list is of a
-size smaller than the iter size \, it is also output.;
+#N canvas 849 204 444 235 different 1;
 #X obj 138 99 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X msg 138 123 1 2 3 4 5 6 7 8 9 10;
 #X obj 138 183 print;
 #X obj 138 153 else/order 3;
-#X connect 1 0 2 0;
-#X connect 2 0 4 0;
-#X connect 4 0 3 0;
+#X text 47 30 If an input list is smaller than the given size \, the
+list is output anyway. If the last bit of the broken list is smaller
+than split size \, it is also output.;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 3 0 2 0;
 #X restore 431 252 pd different sizes;
 #X text 149 293 anything;
 #X text 208 293 - any number of elements to be split and ordered;
@@ -64,9 +64,6 @@ size smaller than the iter size \, it is also output.;
 ;
 #X text 154 401 1) float - number of elements to be ordered (default
 1);
-#X text 66 88 [order] splits a list into sucessive lists of a given
-size (default 1 element) \, and tags each of them with an ordwr index.
-;
 #X text 143 313 n <float>;
 #X text 113 331 offset <float>;
 #X text 154 418 2) float - index offset (default 0);
@@ -74,8 +71,11 @@ size (default 1 element) \, and tags each of them with an ordwr index.
 #X text 208 331 - index offset;
 #X msg 204 192 offset 1;
 #X msg 159 192 n 2;
+#X text 66 88 [order] splits a list into sucessive lists of a given
+size (default 1 element) \, and tags each of them with ordered indexes.
+;
 #X connect 16 0 21 0;
 #X connect 20 0 22 0;
 #X connect 21 0 20 0;
+#X connect 36 0 20 0;
 #X connect 37 0 20 0;
-#X connect 38 0 20 0;
