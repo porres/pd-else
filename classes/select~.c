@@ -11,13 +11,12 @@ static t_class *select_class;
 typedef struct _select
 {
 	t_object x_obj;
-	float x_f;
 	short input_chans;
 	short active_chan;
 	short last_chan;
 	int samps_to_fade;
 	int fadesamps;
-	float fadetime;
+	float time;
 	short fadetype;
 	short *connected_list;
 	float **bulk ; // array to point to all input audio channels
@@ -31,18 +30,17 @@ void *select_new(t_symbol *s, int argc, t_atom *argv);
 t_int *select_perform(t_int *w);
 void select_dsp(t_select *x, t_signal **sp);
 void select_float(t_select *x, t_float f);
-void select_fadetime(t_select *x, t_floatarg f);
+void select_time(t_select *x, t_floatarg f);
 void select_int(t_select *x, t_int i);
-void select_channel(t_select *x, t_floatarg i);
 void select_free(t_select *x);
 
-void select_fadetime(t_select *x, t_floatarg f)
+void select_time(t_select *x, t_floatarg f)
 {
 	float sec = (float)f / 1000.0;
 	if(sec < 0)
         sec = 0;
-	x->fadetime = sec;
-	x->fadesamps = x->sr * x->fadetime;
+	x->time = sec;
+	x->fadesamps = x->sr * x->time;
 	x->samps_to_fade = 0;
 }
 
@@ -109,7 +107,7 @@ void select_dsp(t_select *x, t_signal **sp)
         }
 	if(x->sr != sp[0]->s_sr){
 		x->sr = sp[0]->s_sr;
-		x->fadesamps = x->fadetime * x->sr;
+		x->fadesamps = x->time * x->sr;
 		x->samps_to_fade = 0;
 	}
 	dsp_addv(select_perform, pointer_count, (t_int *) sigvec);
@@ -119,9 +117,9 @@ void select_dsp(t_select *x, t_signal **sp)
     }
 }
 
-void select_channel(t_select *x, t_floatarg i) // Look at int at inlets
+void select_float(t_select *x, t_floatarg i) // Look at int at inlets
 {
-	int chan = i;
+	int chan = (int)i;
 	if(chan < 0)
         chan = 0;
     if(chan > x->inlet_count - 1)
@@ -147,7 +145,7 @@ void *select_new(t_symbol *s, int argc, t_atom *argv)
     int i;
     t_select *x;
     x = (t_select *)pd_new(select_class);
-    x->fadetime = 0;
+    x->time = 0;
     x->inlet_count = 1;
     if(argc >= 1){
         x->inlet_count = (int)atom_getfloatarg(0,argc,argv);
@@ -157,7 +155,7 @@ void *select_new(t_symbol *s, int argc, t_atom *argv)
             x->inlet_count = MAX_CHANS;
         }
     if(argc >= 2){
-        x->fadetime = atom_getfloatarg(1,argc,argv) / 1000.0;
+        x->time = atom_getfloatarg(1,argc,argv) / 1000.0;
     }
     
     for(i=0; i < x->inlet_count - 1; i++){
@@ -166,9 +164,9 @@ void *select_new(t_symbol *s, int argc, t_atom *argv)
     outlet_new(&x->x_obj, gensym("signal"));
     x->sr = sys_getsr();
     x->fadetype = EQ_POW;
-    if(x->fadetime < 0.0)
-        x->fadetime = 0;
-    x->fadesamps = x->fadetime * x->sr;
+    if(x->time < 0.0)
+        x->time = 0;
+    x->fadesamps = x->time * x->sr;
     x->connected_list = (short *) t_getbytes(MAX_CHANS * sizeof(short));
     for(i=0; i < 16; i++){ // 16 ???
         x->connected_list[i] = 0;
@@ -182,8 +180,8 @@ void *select_new(t_symbol *s, int argc, t_atom *argv)
 void select_tilde_setup(void) {
     select_class = class_new(gensym("select~"), (t_newmethod)select_new,
             (t_method)select_free,sizeof(t_select), CLASS_DEFAULT, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(select_class, t_select, x_f);
-    class_addmethod(select_class,(t_method)select_dsp,gensym("dsp"),0);
-    class_addmethod(select_class,(t_method)select_fadetime,gensym("fadetime"),A_FLOAT,0);
-    class_addmethod(select_class,(t_method)select_channel,gensym("channel"),A_FLOAT,0);
+    class_addmethod(select_class, nullfn, gensym("signal"), 0);
+    class_addfloat(select_class, (t_method)select_float);
+    class_addmethod(select_class,(t_method)select_dsp,gensym("dsp"), A_CANT, 0);
+    class_addmethod(select_class,(t_method)select_time,gensym("time"),A_FLOAT,0);
 }
