@@ -118,7 +118,7 @@ static void adjustcounters2linear(t_select *x) // no longer used
     }
 }
 
-// JUNTAR OS 3 ABAIXO EM UM APENAS!!!!!!
+// JUNTAR OS 2 ABAIXO EM UM APENAS!!!!!!
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 static void outputfades(t_int *w, int flag)
 {
@@ -144,8 +144,21 @@ static void outputfades(t_int *w, int flag)
     }
 }
 
-static void checkswitchstatus(t_select *x) // checks to see which input feeds ought to be "switch~"ed off
+static t_int *select_perform(t_int *w)
 {
+  t_select *x = (t_select *)(w[1]);
+  int n = (int)(w[2]);
+  float *out = (t_float *)(w[3+x->ninlets]);
+  if (x->actuallastchannel == 0 && x->channel == 0 && x->lastchannel == 0) { // init state
+      if(x->firsttick) // stupid
+          x->firsttick = 0;
+      while (n--)
+      *out++ = 0;
+      }
+  else if (x->actuallastchannel == 0 && x->channel != 0) outputfades(w, x->fadetype); // change from 0 to non-0
+  else if(x->channel != 0) outputfades(w, EPOWER); // change from non-0 to another non-0
+  else if (x->actuallastchannel != 0 && x->channel == 0) outputfades(w, x->fadetype); // change from non-0 to 0
+// check which input feeds ought to be "switch~"ed off (????)
     int i;
     for(i = 0; i < x->ninlets; i++)
     {
@@ -155,27 +168,9 @@ static void checkswitchstatus(t_select *x) // checks to see which input feeds ou
             {
                 x->ip.timeoff[i] = 0;
                 x->ip.fade[i] = 0;
-            }	 
+            }
     }
-}
-
-static t_int *select_perform(t_int *w)
-{
-  t_select *x = (t_select *)(w[1]);
-  int n = (int)(w[2]);
-  float *out = (t_float *)(w[3+x->ninlets]);
-  if (x->actuallastchannel == 0 && x->channel == 0 && x->lastchannel == 0) { // init state
-      if(x->firsttick) {
-//          int i;
-          x->firsttick = 0;
-          }
-      while (n--)
-      *out++ = 0;
-      }
-  else if (x->actuallastchannel == 0 && x->channel != 0) outputfades(w, x->fadetype); // change from 0 to non-0
-  else if(x->channel != 0) outputfades(w, EPOWER); // change from non-0 to another non-0
-  else if (x->actuallastchannel != 0 && x->channel == 0) outputfades(w, x->fadetype); // change from non-0 to 0
-  checkswitchstatus(x);
+    
   return (w+4+x->ninlets);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
