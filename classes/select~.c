@@ -27,7 +27,6 @@ typedef struct _ip // keeps track of each signal input
 typedef struct _select
 {
   t_object x_obj;
-  float x_f;
   int channel;
   int lastchannel;
   int actuallastchannel;
@@ -44,109 +43,8 @@ typedef struct _select
   t_ip ip;
 } t_select;
 
-static void *select_new(t_symbol *s, int argc, t_atom *argv)
-{
-  int usedefault = 0, i;
-  t_select *x = (t_select *)pd_new(select_class);
-  x->srate = sys_getsr();	
-  if(argc == 0 || argc > 3)
-    usedefault = 1;
-  else if(argc == 1 && argv[0].a_type != A_FLOAT)
-    usedefault = 1;
-  else if(argc >= 2)
-    if(argv[0].a_type != A_FLOAT || argv[1].a_type != A_FLOAT)
-      usedefault = 1;  
-  if(argc == 3)
-    {
-      if(argv[2].a_type == A_SYMBOL && !strcmp(argv[2].a_w.w_symbol->s_name, "linear"))
-	x->fadetype = x->lastfadetype = LINEAR;
-      else
-	if(argv[1].a_w.w_float >= EPMIN)
-	  {
-	    post("select~: 3rd optional argument should be \"linear\". Reverting to equal power default");
-	    x->fadetype = x->lastfadetype = EPOWER;
-	  }  
-	else
-	  {
-	    post("select~: 3rd optional argument should be \"linear\". \nFade rate less than %d msec - using linear fading", EPMIN);
-	    x->fadetype = x->lastfadetype = LINEAR;
-	  }
-    }
-  else
-    {
-      if(argv[1].a_w.w_float >= EPMIN)
-	x->fadetype = x->lastfadetype = EPOWER;
-      else
-	{
-	  post("select~: fade rate less than %d msec - using linear fading", EPMIN);
-	  x->fadetype = x->lastfadetype = LINEAR;
-	}
-    }
-  if(usedefault)
-    {
-      post("select~: default (");
-      x->fadetype = x->lastfadetype = EPOWER;
-      x->ninlets = 1;
-      x->fadetime = 1;
-    } 
-  else
-    {
-      x->ninlets = argv[0].a_w.w_float < 1 ? 1 : argv[0].a_w.w_float;
-      if(x->ninlets > INPUTLIMIT)
-	{
-	  x->ninlets = INPUTLIMIT;
-	  post("select~: maximum of %d inlets", INPUTLIMIT);
-	}
-      x->fadetime = argv[1].a_w.w_float > 0 ? argv[1].a_w.w_float : 1;
-    }
-  for(i = 0; i < x->ninlets - 1; i++)
-    inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-  outlet_new(&x->x_obj, gensym("signal"));
-  x->channel = 0; x->lastchannel = x->actuallastchannel = 0;
-  x->fadecount = 0;
-  x->fadeticks = (int)(x->srate / 1000 * x->fadetime); // no. of ticks to reach specified fade 'rate'
-  x->firsttick = 1;
-  x->fadealert = 0;
-  x->x_f = 0;
-  for(i = 0; i < INPUTLIMIT; i++) 
-    {
-      x->ip.active[i] = 0;
-      x->ip.counter[i] = 0;
-      x->ip.timeoff[i] = 0;
-      x->ip.fade[i] = 0;
-    }
-  return (x);
-}
-
 static void adjustcounters2epower(t_select *x);
 static void adjustcounters2linear(t_select *x);
-
-void select_channel(t_select *x, t_floatarg f)
-{
-  f = (int)f;
-  f = f > x->ninlets ? x->ninlets : f;
-  f = f < 0 ? 0 : f;
-  if(f != x->lastchannel)
-    {
-      if(f == x->actuallastchannel)
-	x->fadecount = x->fadeticks - x->fadecount;
-      else
-	x->fadecount = 0;	
-      x->channel = f;
-      if(x->channel)
-	{
-	  x->ip.active[x->channel - 1] = 1;
-	}
-      if(x->lastchannel)
-	{
-	  x->ip.active[x->lastchannel - 1] = 0;
-	  x->ip.timeoff[x->lastchannel - 1] = clock_getlogicaltime();
-	}
-      x->actuallastchannel = x->lastchannel;
-      x->lastchannel = x->channel;
-    }
-}
-
 
 static void checkswitchstatus(t_select *x) // checks to see which input feeds ought to be "switch~"ed off 
 {
@@ -311,6 +209,32 @@ static void select_dsp(t_select *x, t_signal **sp)
     }
 }
 
+void select_float(t_select *x, t_floatarg f) // select channel
+{
+    f = (int)f;
+    f = f > x->ninlets ? x->ninlets : f;
+    f = f < 0 ? 0 : f;
+    if(f != x->lastchannel)
+    {
+        if(f == x->actuallastchannel)
+            x->fadecount = x->fadeticks - x->fadecount;
+        else
+            x->fadecount = 0;
+        x->channel = f;
+        if(x->channel)
+        {
+            x->ip.active[x->channel - 1] = 1;
+        }
+        if(x->lastchannel)
+        {
+            x->ip.active[x->lastchannel - 1] = 0;
+            x->ip.timeoff[x->lastchannel - 1] = clock_getlogicaltime();
+        }
+        x->actuallastchannel = x->lastchannel;
+        x->lastchannel = x->channel;
+    }
+}
+
 static void select_time(t_select *x, t_floatarg time)
 {
     int newticks, i, shorter;
@@ -357,14 +281,75 @@ void select_mode(t_select *x, t_floatarg mode)
     }
 }
 
+static void *select_new(t_symbol *s, int argc, t_atom *argv)
+{
+    t_select *x = (t_select *)pd_new(select_class);
+    x->srate = sys_getsr();
+    t_float ch = 1, ms = 0, mode = 1;
+    int i;
+    int argnum = 0;
+    while(argc > 0)
+    {
+        if(argv -> a_type == A_FLOAT)
+        { //if current argument is a float
+            t_float argval = atom_getfloatarg(0, argc, argv);
+            switch(argnum)
+            {
+                case 0:
+                    ch = argval;
+                    break;
+                case 1:
+                    ms = argval;
+                    break;
+                case 2:
+                    mode = (argval != 0);
+                    break;
+                default:
+                    break;
+            };
+            argnum++;
+            argc--;
+            argv++;
+        }
+        else {
+            goto errstate;
+        };
+    };
+    x->ninlets = ch < 1 ? 1 : ch;
+    if(x->ninlets > INPUTLIMIT)
+        {
+        x->ninlets = INPUTLIMIT;
+        post("select~: maximum of %d inlets", INPUTLIMIT);
+        }
+    x->fadetime = ms > 0 ? ms : 1; // what happens with ms = 0???
+    for(i = 0; i < x->ninlets - 1; i++)
+        inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
+    outlet_new(&x->x_obj, gensym("signal"));
+    x->channel = 0; x->lastchannel = x->actuallastchannel = 0;
+    x->fadecount = 0;
+    x->fadeticks = (int)(x->srate / 1000 * x->fadetime); // no. of ticks to reach specified fade 'rate'
+    x->firsttick = 1;
+    x->fadealert = 0;
+    for(i = 0; i < INPUTLIMIT; i++)
+    {
+        x->ip.active[i] = 0;
+        x->ip.counter[i] = 0;
+        x->ip.timeoff[i] = 0;
+        x->ip.fade[i] = 0;
+    }
+    return (x);
+    errstate:
+        pd_error(x, "select~: improper args");
+        return NULL;
+}
+
 void select_tilde_setup(void)
 {
     select_class = class_new(gensym("select~"), (t_newmethod)select_new, 0,
 			     sizeof(t_select), 0, A_GIMME, 0);
+    class_addfloat(select_class, (t_method)select_float);
     class_addmethod(select_class, nullfn, gensym("signal"), 0);
     class_addmethod(select_class, (t_method)select_dsp, gensym("dsp"), 0);
-    CLASS_MAINSIGNALIN(select_class, t_select, x_f);
-    class_addmethod(select_class, (t_method)select_channel, gensym("channel"), A_FLOAT, 0);
     class_addmethod(select_class, (t_method)select_time, gensym("time"), A_FLOAT, (t_atomtype) 0);
     class_addmethod(select_class, (t_method)select_mode, gensym("mode"), A_FLOAT, (t_atomtype) 0);
 }
