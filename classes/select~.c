@@ -73,7 +73,6 @@ static double epower(double rate)
     rate = 0;
   if(rate > 0.999)
     rate = 0.999;
-
  rate *= HALF_PI;
  tmp = cos(rate - HALF_PI);
   tmp = tmp < 0 ? 0 : tmp;
@@ -156,7 +155,7 @@ static t_int *select_perform(t_int *w)
       *out++ = 0;
       }
   else if (x->actuallastchannel == 0 && x->channel != 0) outputfades(w, x->fadetype); // change from 0 to non-0
-  else if(x->channel != 0) outputfades(w, EPOWER); // change from non-0 to another non-0
+  else if(x->channel != 0) outputfades(w, EPOWER); // change from non-0 to another non-0 // IS IT ALWAYS EQ POWER???????????
   else if (x->actuallastchannel != 0 && x->channel == 0) outputfades(w, x->fadetype); // change from non-0 to 0
 // check which input feeds ought to be "switch~"ed off (????)
     int i;
@@ -170,8 +169,7 @@ static t_int *select_perform(t_int *w)
                 x->ip.fade[i] = 0;
             }
     }
-    
-  return (w+4+x->ninlets);
+  return (w + 4 + x->ninlets);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
