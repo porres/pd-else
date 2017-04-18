@@ -1,4 +1,4 @@
-// from polygate
+
 
 #include "m_pd.h"
 #include <math.h>
@@ -21,16 +21,16 @@ typedef struct _ip // keeps track of each signal input
   int counter[INPUTLIMIT];
   double timeoff[INPUTLIMIT];
   float fade[INPUTLIMIT];
-  float *in[INPUTLIMIT]; // NOT INPUT LIMIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  float *in[INPUTLIMIT];
 } t_ip;
 
 typedef struct _select
 {
   t_object x_obj;
   float x_f;
-  int choice;
-  int lastchoice;
-  int actuallastchoice;
+  int channel;
+  int lastchannel;
+  int actuallastchannel;
   int ninlets;
   int fadetime;
   double changetime;
@@ -84,8 +84,8 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv)
     }
   if(usedefault)
     {
-      post("select~: Incompatible arguments. Using base defaults");
-      x->fadetype = x->lastfadetype = LINEAR;
+      post("select~: default (");
+      x->fadetype = x->lastfadetype = EPOWER;
       x->ninlets = 1;
       x->fadetime = 1;
     } 
@@ -102,7 +102,7 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv)
   for(i = 0; i < x->ninlets - 1; i++)
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
   outlet_new(&x->x_obj, gensym("signal"));
-  x->choice = 0; x->lastchoice = x->actuallastchoice = 0;
+  x->channel = 0; x->lastchannel = x->actuallastchannel = 0;
   x->fadecount = 0;
   x->fadeticks = (int)(x->srate / 1000 * x->fadetime); // no. of ticks to reach specified fade 'rate'
   x->firsttick = 1;
@@ -121,29 +121,29 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv)
 static void adjustcounters2epower(t_select *x);
 static void adjustcounters2linear(t_select *x);
 
-void select_f(t_select *x, t_floatarg f)
+void select_channel(t_select *x, t_floatarg f)
 {
   f = (int)f;
   f = f > x->ninlets ? x->ninlets : f;
   f = f < 0 ? 0 : f;
-  if(f != x->lastchoice)
+  if(f != x->lastchannel)
     {
-      if(f == x->actuallastchoice)
+      if(f == x->actuallastchannel)
 	x->fadecount = x->fadeticks - x->fadecount;
       else
 	x->fadecount = 0;	
-      x->choice = f;
-      if(x->choice)
+      x->channel = f;
+      if(x->channel)
 	{
-	  x->ip.active[x->choice - 1] = 1;
+	  x->ip.active[x->channel - 1] = 1;
 	}
-      if(x->lastchoice)
+      if(x->lastchannel)
 	{
-	  x->ip.active[x->lastchoice - 1] = 0;
-	  x->ip.timeoff[x->lastchoice - 1] = clock_getlogicaltime();
+	  x->ip.active[x->lastchannel - 1] = 0;
+	  x->ip.timeoff[x->lastchannel - 1] = clock_getlogicaltime();
 	}
-      x->actuallastchoice = x->lastchoice;
-      x->lastchoice = x->choice;
+      x->actuallastchannel = x->lastchannel;
+      x->lastchannel = x->channel;
     }
 }
 
@@ -236,157 +236,150 @@ static void adjustcounters2linear(t_select *x) // no longer used
     }
 }
 
+static void outputfades(t_int *w, int flag)
+{
+  t_select *x = (t_select *)(w[1]);
+  float *out = (t_float *)(w[3+x->ninlets]);
+  int n = (int)(w[2]);
+  int i;
+  for(i = 0; i < x->ninlets; i++)
+    x->ip.in[i] = (t_float *)(w[3+i]);
+  while (n--)
+    {
+      float sum = 0;
+      updatefades(x);
+      for(i = 0; i < x->ninlets; i++)
+	if(x->ip.fade[i])
+	  {
+	    if(flag && x->fadetype == EPOWER)
+	      sum += *x->ip.in[i]++ * epower(x->ip.fade[i]);
+	    else
+	      sum += *x->ip.in[i]++ * x->ip.fade[i];
+	  }
+      *out++ = sum;
+    }
+}
+
 static t_int *select_perform(t_int *w)
 {
   t_select *x = (t_select *)(w[1]);
-    int i;
-    for (i = 0; i < x->ninlets; i++)
-        x->ip.in[i] = (t_float *)(w[2 + i]);
-    int n = (int) w[x->ninlets + 3];
-    t_float *out = (t_float *)(w[x->ninlets + 2]);
-    while (n--) {
-    if (x->actuallastchoice == 0 && x->choice == 0 && x->lastchoice == 0)
-        { // init state
-        if(x->firsttick)
+  int n = (int)(w[2]);
+  float *out = (t_float *)(w[3+x->ninlets]);
+  if (x->actuallastchannel == 0 && x->channel == 0 && x->lastchannel == 0) { // init state
+      if(x->firsttick) {
+          int i;
           x->firsttick = 0;
-        *out++ = 0;
-        }
-   else{
-        float sum = 0;
-        for(i = 0; i < x->ninlets; i++) ////
-        if(x->ip.fade[i])
-            {
-            if(x->fadetype == EPOWER)
-                sum += *x->ip.in[i]++ * epower(x->ip.fade[i]);
-            else
-                sum += *x->ip.in[i]++ * x->ip.fade[i];
-            }
-        *out++ = sum;
-        }
-    }
+          }
+      while (n--)
+      *out++ = 0;
+      }
+  else if (x->actuallastchannel == 0 && x->channel != 0) outputfades(w, x->fadetype); // change from 0 to non-0
+  else if(x->channel != 0) outputfades(w, EPOWER); // change from non-0 to another non-0
+  else if (x->actuallastchannel != 0 && x->channel == 0) outputfades(w, x->fadetype); // change from non-0 to 0
   checkswitchstatus(x);
-  return (w + 4 + x->ninlets); 
+  return (w+4+x->ninlets);
 }
-
 
 static void select_dsp(t_select *x, t_signal **sp)
 {
-    long i;
-    t_int **sigvec;
-    int count = x->ninlets + 3;
-    sigvec  = (t_int **) calloc(count, sizeof(t_int *));
-    for(i = 0; i < count; i++)
-        sigvec[i] = (t_int *) calloc(sizeof(t_int), 1);
-    sigvec[0] = (t_int *)x; // first => object
-    sigvec[count - 1] = (t_int *)sp[0]->s_n; // last => block (n)
-    for(i = 1; i < count - 1; i++) // ins/out
-        sigvec[i] = (t_int *)sp[i-1]->s_vec;
-    dsp_addv(select_perform, count, (t_int *) sigvec);
-    free(sigvec);
+  int n = sp[0]->s_n, i; // there must be a smarter way....
+  switch (x->ninlets) 
+    {
+    case 1: dsp_add(select_perform, 4, x, n, sp[0]->s_vec, sp[1]->s_vec);
+      break;
+    case 2: dsp_add(select_perform, 5, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
+      break;
+    case 3: dsp_add(select_perform, 6, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+      break;
+    case 4: dsp_add(select_perform, 7, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
+      break;
+    case 5: dsp_add(select_perform, 8, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec);
+      break;
+    case 6: dsp_add(select_perform, 9, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec);
+      break;
+    case 7: dsp_add(select_perform, 10, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec);
+      break;
+    case 8: dsp_add(select_perform, 11, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
+		    sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
+    break;
+    case 9: dsp_add(select_perform, 12, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
+		    sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec, sp[9]->s_vec);
+    break;
+    case 10: dsp_add(select_perform, 13, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
+		     sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec, sp[9]->s_vec, sp[10]->s_vec);
+    break;
+    }
 }
 
+// JUNTAR OS TRES ABAIXO EM UM APENAS!!!
 
 static void shortcheck(t_select *x, int newticks, int shorter)
 {
-  int i;
-  for(i = 0; i < x->ninlets; i++)
+    int i;
+    for(i = 0; i < x->ninlets; i++)
     {
-      if(shorter && x->ip.timeoff[i]) // correct active timeoffs for new x->fadeticks (newticks)
-	x->ip.timeoff[i] = clock_getlogicaltime() - ((newticks - x->ip.counter[i]) / (x->srate / 1000.) - 1) * (TIMEUNITPERSEC / 1000.);
+        if(shorter && x->ip.timeoff[i]) // correct active timeoffs for new x->fadeticks (newticks)
+            x->ip.timeoff[i] = clock_getlogicaltime() - ((newticks - x->ip.counter[i]) / (x->srate / 1000.) - 1) * (TIMEUNITPERSEC / 1000.);
     }
 }
+
 static void adjustcounters_ftimechange(t_select *x, int newticks, int shorter)
 {
-  int i;
-  shortcheck(x, newticks, shorter);
-  for(i = 0; i < x->ninlets; i++)
+    int i;
+    shortcheck(x, newticks, shorter);
+    for(i = 0; i < x->ninlets; i++)
     {
-      if(x->ip.counter[i])
-	x->ip.counter[i] = x->ip.fade[i] * (float)newticks;
+        if(x->ip.counter[i])
+            x->ip.counter[i] = x->ip.fade[i] * (float)newticks;
     }
 }
 
-void select_ftimeepower(t_select *x, t_floatarg ftime)
+static void select_time(t_select *x, t_floatarg time)
 {
-  int newticks, i, shorter;
-  ftime = ftime < 1 ? 1 : ftime;
-  shorter = ftime < x->fadetime ? 1 : 0;
-  x->fadetime = (int)ftime;
-  newticks = (int)(x->srate / 1000 * x->fadetime); // no. of ticks to reach specified fade time
-  x->fadeticks = newticks;
-  if(ftime < EPMIN)
-    {
-      // NB - if we change to linear as a tone is fading out ----> click
-      if(x->lastfadetype != LINEAR) // change to linear
-	{
-	  shortcheck(x, x->fadeticks, shorter);
-	  for(i = 0; i < x->ninlets; i++)
-	    {
-	      if(x->ip.counter[i])
-		{
-		  float fade = x->ip.fade[i];
-		  int oldcounter = x->ip.counter[i];
-		  x->ip.counter[i] = epower(fade) * x->fadeticks;
-		  x->ip.fade[i] = x->ip.counter[i]/ (float)x->fadeticks; // ???
-		}
-	    }
-	  }
-      else // plain fade-time change - linear
-	adjustcounters_ftimechange(x, x->fadeticks, shorter);
-      x->lastfadetype = x->fadetype = LINEAR;
-    }
-  else 
-    {
-      if(x->lastfadetype != EPOWER) // change to equal power
-	for(i = 0; i < x->ninlets; i++)
-	  {
-	    if(x->ip.counter[i])
-	      {
-		float fade = x->ip.fade[i];
-		int oldcounter = x->ip.counter[i];
-		x->ip.counter[i] = aepower(fade) * x->fadeticks;
-		x->ip.fade[i] = epower(x->ip.counter[i]/ (float)x->fadeticks); // ???
-	      }
-	  }
-      else // plain fade-time change - equal power
-	adjustcounters_ftimechange(x, x->fadeticks, shorter);
-      x->lastfadetype = x->fadetype = EPOWER;
-    }
+    int newticks, i, shorter;
+    time = time < 1 ? 1 : time;
+    shorter = (time < x->fadetime);
+    x->fadetime = (int)time;
+    x->fadeticks = (int)(x->srate * time/1000); // no. of ticks to reach specified fade time
+    adjustcounters_ftimechange(x, x->fadeticks, shorter);
 }
 
-static void select_ftimelinear(t_select *x, t_floatarg ftime)
-{
-  int newticks, i, shorter;	
-  ftime = ftime < 1 ? 1 : ftime;
-  shorter = ftime < x->fadetime ? 1 : 0;
-  x->fadetime = (int)ftime;
-  newticks = (int)(x->srate / 1000 * x->fadetime); 
-  x->fadeticks = newticks;
-  if(x->lastfadetype != LINEAR)
-    {
-      shortcheck(x, x->fadeticks, shorter); 
-      for(i = 0; i < x->ninlets; i++)
-	{
-	  float fade = x->ip.fade[i];
-	  int oldcounter = x->ip.counter[i];
-	  x->ip.counter[i] = epower(fade) * x->fadeticks;
-	  x->ip.fade[i] = x->ip.counter[i]/ (float)x->fadeticks; // ???
 
-	}
+void select_mode(t_select *x, t_floatarg mode)
+{
+    int i;
+    if(mode == 1 && x->lastfadetype != 1) // change to equal power
+    {
+        for(i = 0; i < x->ninlets; i++)
+        {
+            float fade = x->ip.fade[i];
+            int oldcounter = x->ip.counter[i];
+            x->ip.counter[i] = aepower(fade) * x->fadeticks;
+            x->ip.fade[i] = epower(x->ip.counter[i]/ (float)x->fadeticks); // ???
+        }
+        x->lastfadetype = x->fadetype = EPOWER;
     }
-  else
-    adjustcounters_ftimechange(x, newticks, shorter);
-  x->lastfadetype = x->fadetype = LINEAR;
+    else if(mode == 0 && x->lastfadetype != 0) // change to linear
+    {
+        for(i = 0; i < x->ninlets; i++)
+        {
+            float fade = x->ip.fade[i];
+            int oldcounter = x->ip.counter[i];
+            x->ip.counter[i] = epower(fade) * x->fadeticks;
+            x->ip.fade[i] = x->ip.counter[i]/ (float)x->fadeticks; // ???
+        }
+        x->lastfadetype = x->fadetype = LINEAR;
+    }
 }
 
 void select_tilde_setup(void)
 {
-  select_class = class_new(gensym("select~"), (t_newmethod)select_new, 0,
+    select_class = class_new(gensym("select~"), (t_newmethod)select_new, 0,
 			     sizeof(t_select), 0, A_GIMME, 0);
-  class_addmethod(select_class, nullfn, gensym("signal"), 0);
-  class_addmethod(select_class, (t_method)select_dsp, gensym("dsp"), 0);
-  CLASS_MAINSIGNALIN(select_class, t_select, x_f);
-  class_addmethod(select_class, (t_method)select_f, gensym("choice"), A_FLOAT, 0);  
-  class_addmethod(select_class, (t_method)select_ftimeepower, gensym("ftime-epower"), A_FLOAT, (t_atomtype) 0);
-  class_addmethod(select_class, (t_method)select_ftimelinear, gensym("ftime-linear"), A_FLOAT, (t_atomtype) 0);
+    class_addmethod(select_class, nullfn, gensym("signal"), 0);
+    class_addmethod(select_class, (t_method)select_dsp, gensym("dsp"), 0);
+    CLASS_MAINSIGNALIN(select_class, t_select, x_f);
+    class_addmethod(select_class, (t_method)select_channel, gensym("channel"), A_FLOAT, 0);
+    class_addmethod(select_class, (t_method)select_time, gensym("time"), A_FLOAT, (t_atomtype) 0);
+    class_addmethod(select_class, (t_method)select_mode, gensym("mode"), A_FLOAT, (t_atomtype) 0);
 }
