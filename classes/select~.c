@@ -4,7 +4,7 @@
 #include <math.h>
 #include <string.h>
 
-#define HALFPI 1.570796327
+#define HALF_PI M_PI * 0.5
 
 static t_class *select_class;
 
@@ -12,8 +12,7 @@ static t_class *select_class;
 #define LINEAR 0
 #define EPOWER 1
 #define EPMIN 0 // ???
-
-#define TIMEUNITPERSEC (32.*441000.) // ???
+#define TIMEUNITPERSEC (32.*441000.) // ?????????????????????????????
 
 typedef struct _ip // keeps track of each signal input
 {
@@ -46,21 +45,6 @@ typedef struct _select
 static void adjustcounters2epower(t_select *x);
 static void adjustcounters2linear(t_select *x);
 
-static void checkswitchstatus(t_select *x) // checks to see which input feeds ought to be "switch~"ed off 
-{
-  int i;
-  for(i = 0; i < x->ninlets; i++)
-    {
-      if(!x->ip.active[i])
-	if(clock_gettimesince(x->ip.timeoff[i]) > x->fadetime 
-	   && x->ip.timeoff[i])
-	  {
-	    x->ip.timeoff[i] = 0;
-	    x->ip.fade[i] = 0;
-	  }	 
-    }
-}
-
 static void updatefades(t_select *x)
 {
   int i;
@@ -90,8 +74,8 @@ static double epower(double rate)
   if(rate > 0.999)
     rate = 0.999;
 
- rate *= HALFPI;
- tmp = cos(rate - HALFPI);
+ rate *= HALF_PI;
+ tmp = cos(rate - HALF_PI);
   tmp = tmp < 0 ? 0 : tmp;
   tmp = tmp > 1 ? 1 : tmp;
   return tmp;
@@ -100,7 +84,7 @@ static double epower(double rate)
 static double aepower(double ep) // convert from equal power to linear rate
 {
 /*    double answer = (atan(2*ep*ep - 1) + 0.785398) / 1.5866; */
-  double answer = (acos(ep) + HALFPI) / HALFPI;
+  double answer = (acos(ep) + HALF_PI) / HALF_PI;
 
   answer = 2 - answer;   // ??? - but does the trick
 
@@ -134,6 +118,8 @@ static void adjustcounters2linear(t_select *x) // no longer used
     }
 }
 
+// JUNTAR OS 3 ABAIXO EM UM APENAS!!!!!!
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 static void outputfades(t_int *w, int flag)
 {
   t_select *x = (t_select *)(w[1]);
@@ -158,6 +144,21 @@ static void outputfades(t_int *w, int flag)
     }
 }
 
+static void checkswitchstatus(t_select *x) // checks to see which input feeds ought to be "switch~"ed off
+{
+    int i;
+    for(i = 0; i < x->ninlets; i++)
+    {
+        if(!x->ip.active[i])
+            if(clock_gettimesince(x->ip.timeoff[i]) > x->fadetime
+               && x->ip.timeoff[i])
+            {
+                x->ip.timeoff[i] = 0;
+                x->ip.fade[i] = 0;
+            }	 
+    }
+}
+
 static t_int *select_perform(t_int *w)
 {
   t_select *x = (t_select *)(w[1]);
@@ -165,7 +166,7 @@ static t_int *select_perform(t_int *w)
   float *out = (t_float *)(w[3+x->ninlets]);
   if (x->actuallastchannel == 0 && x->channel == 0 && x->lastchannel == 0) { // init state
       if(x->firsttick) {
-          int i;
+//          int i;
           x->firsttick = 0;
           }
       while (n--)
@@ -177,6 +178,7 @@ static t_int *select_perform(t_int *w)
   checkswitchstatus(x);
   return (w+4+x->ninlets);
 }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 static void select_dsp(t_select *x, t_signal **sp)
 {
@@ -235,7 +237,7 @@ void select_float(t_select *x, t_floatarg f) // select channel
     }
 }
 
-static void select_time(t_select *x, t_floatarg time)
+static void select_time(t_select *x, t_floatarg time) // time
 {
     int newticks, i, shorter;
     time = time < 1 ? 1 : time;
@@ -254,7 +256,7 @@ static void select_time(t_select *x, t_floatarg time)
     }
 }
 
-void select_mode(t_select *x, t_floatarg mode)
+void select_mode(t_select *x, t_floatarg mode) // mode
 {
     int i;
     if(mode == 1 && x->lastfadetype != 1) // change to equal power
