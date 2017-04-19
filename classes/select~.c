@@ -70,7 +70,7 @@ void select_float(t_select *x, t_floatarg f) // select channel
     }
 }
 
-static void checkswitchstatus(t_select *x) // checks to see which input feeds ought to be "switch~"ed off 
+static void checkswitchstatus(t_select *x) // check which input feeds oughtta be "switch~"ed off
 {
   int i;
   for(i = 0; i < x->ninlets; i++)
