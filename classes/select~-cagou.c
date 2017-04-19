@@ -342,10 +342,10 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv)
 void select_tilde_setup(void)
 {
     select_class = class_new(gensym("select~"), (t_newmethod)select_new, 0,
-			     sizeof(t_select), 0, A_GIMME, 0);
+			     sizeof(t_select), CLASS_DEFAULT, A_GIMME, 0);
     class_addfloat(select_class, (t_method)select_float);
     class_addmethod(select_class, nullfn, gensym("signal"), 0);
-    class_addmethod(select_class, (t_method)select_dsp, gensym("dsp"), 0);
+    class_addmethod(select_class, (t_method)select_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(select_class, (t_method)select_time, gensym("time"), A_FLOAT, (t_atomtype) 0);
     class_addmethod(select_class, (t_method)select_mode, gensym("mode"), A_FLOAT, (t_atomtype) 0);
 }

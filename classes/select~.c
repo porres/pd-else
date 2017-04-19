@@ -27,7 +27,6 @@ typedef struct _ip // keeps track of each signal input
 typedef struct _select
 {
   t_object x_obj;
-  float x_f;
   int channel;
   int lastchannel;
   int actuallastchannel;
@@ -107,7 +106,6 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv)
   x->fadeticks = (int)(x->srate / 1000 * x->fadetime); // no. of ticks to reach specified fade 'rate'
   x->firsttick = 1;
   x->fadealert = 0;
-  x->x_f = 0;
   for(i = 0; i < INPUTLIMIT; i++) 
     {
       x->ip.active[i] = 0;
@@ -121,7 +119,7 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv)
 static void adjustcounters2epower(t_select *x);
 static void adjustcounters2linear(t_select *x);
 
-void select_channel(t_select *x, t_floatarg f)
+void select_float(t_select *x, t_floatarg f)
 {
   f = (int)f;
   f = f > x->ninlets ? x->ninlets : f;
@@ -375,11 +373,10 @@ void select_mode(t_select *x, t_floatarg mode)
 void select_tilde_setup(void)
 {
     select_class = class_new(gensym("select~"), (t_newmethod)select_new, 0,
-			     sizeof(t_select), 0, A_GIMME, 0);
+                             sizeof(t_select), CLASS_DEFAULT, A_GIMME, 0);
+    class_addfloat(select_class, (t_method)select_float);
     class_addmethod(select_class, nullfn, gensym("signal"), 0);
-    class_addmethod(select_class, (t_method)select_dsp, gensym("dsp"), 0);
-    CLASS_MAINSIGNALIN(select_class, t_select, x_f);
-    class_addmethod(select_class, (t_method)select_channel, gensym("channel"), A_FLOAT, 0);
+    class_addmethod(select_class, (t_method)select_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(select_class, (t_method)select_time, gensym("time"), A_FLOAT, (t_atomtype) 0);
     class_addmethod(select_class, (t_method)select_mode, gensym("mode"), A_FLOAT, (t_atomtype) 0);
 }
