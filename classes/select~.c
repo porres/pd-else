@@ -13,7 +13,8 @@ static t_class *select_class;
 #define EPOWER 1
 #define EPMIN 0 // ???
 
-#define TIMEUNITPERSEC (32.*441000.) // ???
+// #define TIMEUNITPERSEC (32.*441000.) // ???
+#define TIMEUNITPERSEC (32.*441.) // ???
 
 typedef struct _ip // keeps track of each signal input
 {
@@ -39,11 +40,11 @@ typedef struct _select
   int fadetype;
   int lastfadetype;
   int fadealert; 
-  float srate;
+  float sr_khz;
   t_ip ip;
 } t_select;
 
-void select_float(t_select *x, t_floatarg f)
+void select_float(t_select *x, t_floatarg f) // select channel
 {
   f = (int)f;
   f = f > x->ninlets ? x->ninlets : f;
@@ -118,18 +119,6 @@ static double epower(double rate)
   tmp = tmp < 0 ? 0 : tmp;
   tmp = tmp > 1 ? 1 : tmp;
   return tmp;
-}
-
-static double aepower(double ep) // convert from equal power to linear rate
-{
-/*    double answer = (atan(2*ep*ep - 1) + 0.785398) / 1.5866; */
-  double answer = (acos(ep) + HALF_PI) / HALF_PI;
-
-  answer = 2 - answer;   // ??? - but does the trick
-
-  answer = answer < 0 ? 0 : answer;
-  answer = answer > 1 ? 1 : answer;
-  return answer;
 }
 
 static void outputfades(t_int *w, int flag)
@@ -213,17 +202,29 @@ static void select_time(t_select *x, t_floatarg time) // time
     time = time < 1 ? 1 : time;
     shorter = (time < x->fadetime);
     x->fadetime = (int)time;
-    x->fadeticks = (int)(x->srate * time/1000); // no. of ticks to reach specified fade time
+    x->fadeticks = (int)(x->sr_khz * time); // no. of ticks to reach specified fade time
     for(i = 0; i < x->ninlets; i++) // shortcheck
     {
         if(shorter && x->ip.timeoff[i]) // correct active timeoffs for new x->fadeticks
-            x->ip.timeoff[i] = clock_getlogicaltime() - ((x->fadeticks - x->ip.counter[i]) / (x->srate/1000.) - 1) * (TIMEUNITPERSEC/1000.);
+            x->ip.timeoff[i] = clock_getlogicaltime() - ((x->fadeticks - x->ip.counter[i]) / x->sr_khz - 1) * TIMEUNITPERSEC;
     }
     for(i = 0; i < x->ninlets; i++) // adjustcounters
     {
         if(x->ip.counter[i])
             x->ip.counter[i] = x->ip.fade[i] * (float)x->fadeticks;
     }
+}
+
+// JUNTAR COM MODE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+static double aepower(double ep) // convert from equal to linear
+{ //    double answer = (atan(2*ep*ep - 1) + 0.785398) / 1.5866;
+    double answer = (acos(ep) + HALF_PI) / HALF_PI;
+    
+    answer = 2 - answer;   // ??? - but does the trick
+    
+    answer = answer < 0 ? 0 : answer;
+    answer = answer > 1 ? 1 : answer;
+    return answer;
 }
 
 void select_mode(t_select *x, t_floatarg mode)
@@ -252,12 +253,13 @@ void select_mode(t_select *x, t_floatarg mode)
         x->lastfadetype = x->fadetype = LINEAR;
     }
 }
+// JUNTAR COM AEPOWER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 static void *select_new(t_symbol *s, int argc, t_atom *argv)
 {
     int usedefault = 0, i;
     t_select *x = (t_select *)pd_new(select_class);
-    x->srate = sys_getsr();
+    x->sr_khz = sys_getsr() * 0.001;
     if(argc == 0 || argc > 3)
         usedefault = 1;
     else if(argc == 1 && argv[0].a_type != A_FLOAT)
@@ -313,7 +315,7 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv)
     outlet_new(&x->x_obj, gensym("signal"));
     x->channel = 0; x->lastchannel = x->actuallastchannel = 0;
     x->fadecount = 0;
-    x->fadeticks = (int)(x->srate / 1000 * x->fadetime); // no. of ticks to reach specified fade 'rate'
+    x->fadeticks = (int)(x->sr_khz * x->fadetime); // no. of ticks to reach specified fade 'rate'
     x->firsttick = 1;
     x->fadealert = 0;
     for(i = 0; i < INPUTLIMIT; i++) 
