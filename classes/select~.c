@@ -280,38 +280,24 @@ static void select_dsp(t_select *x, t_signal **sp)
     }
 }
 
-// JUNTAR OS TRES ABAIXO EM UM APENAS!!! /////////////////////////////////////////////
-static void shortcheck(t_select *x, int newticks, int shorter)
+static void select_time(t_select *x, t_floatarg time) // time
 {
-    int i;
-    for(i = 0; i < x->ninlets; i++)
-    {
-        if(shorter && x->ip.timeoff[i]) // correct active timeoffs for new x->fadeticks (newticks)
-            x->ip.timeoff[i] = clock_getlogicaltime() - ((newticks - x->ip.counter[i]) / (x->srate / 1000.) - 1) * (TIMEUNITPERSEC / 1000.);
-    }
-}
-
-static void adjustcounters_ftimechange(t_select *x, int newticks, int shorter)
-{
-    int i;
-    shortcheck(x, newticks, shorter);
-    for(i = 0; i < x->ninlets; i++)
-    {
-        if(x->ip.counter[i])
-            x->ip.counter[i] = x->ip.fade[i] * (float)newticks;
-    }
-}
-
-static void select_time(t_select *x, t_floatarg time)
-{
-    int newticks, i, shorter;
+    int i, shorter;
     time = time < 1 ? 1 : time;
     shorter = (time < x->fadetime);
     x->fadetime = (int)time;
     x->fadeticks = (int)(x->srate * time/1000); // no. of ticks to reach specified fade time
-    adjustcounters_ftimechange(x, x->fadeticks, shorter);
+    for(i = 0; i < x->ninlets; i++) // shortcheck
+    {
+        if(shorter && x->ip.timeoff[i]) // correct active timeoffs for new x->fadeticks
+            x->ip.timeoff[i] = clock_getlogicaltime() - ((x->fadeticks - x->ip.counter[i]) / (x->srate/1000.) - 1) * (TIMEUNITPERSEC/1000.);
+    }
+    for(i = 0; i < x->ninlets; i++) // adjustcounters
+    {
+        if(x->ip.counter[i])
+            x->ip.counter[i] = x->ip.fade[i] * (float)x->fadeticks;
+    }
 }
-// JUNTAR OS TRES ACIMA EM UM APENAS!!! /////////////////////////////////////////////
 
 void select_mode(t_select *x, t_floatarg mode)
 {
