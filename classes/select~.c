@@ -116,8 +116,8 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv)
   return (x);
 }
 
-static void adjustcounters2epower(t_select *x);
-static void adjustcounters2linear(t_select *x);
+/* static void adjustcounters2epower(t_select *x);
+static void adjustcounters2linear(t_select *x); */
 
 void select_float(t_select *x, t_floatarg f)
 {
@@ -144,7 +144,6 @@ void select_float(t_select *x, t_floatarg f)
       x->lastchannel = x->channel;
     }
 }
-
 
 static void checkswitchstatus(t_select *x) // checks to see which input feeds ought to be "switch~"ed off 
 {
@@ -209,7 +208,7 @@ static double aepower(double ep) // convert from equal power to linear rate
   return answer;
 }
 
-static void adjustcounters2epower(t_select *x) // no longer used
+/* static void adjustcounters2epower(t_select *x) // no longer used
 {
   // called when shifting from a linear fade-in (from zero) to an equal power crossfade
   // adjusts each input counter to smoothly match subsequent equal power scalings
@@ -232,7 +231,7 @@ static void adjustcounters2linear(t_select *x) // no longer used
       rate = x->ip.counter[i] / (double)x->fadeticks;
       x->ip.counter[i] = epower(rate) * (double)x->fadeticks;
     }
-}
+} */
 
 static void outputfades(t_int *w, int flag)
 {
