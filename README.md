@@ -1,7 +1,7 @@
 
 ELSE (currently at alpha stage)
 
-next release 1.0-alpha5 (no date yet)
+find latest releases at: https://github.com/porres/pd-else/releases
 
 ----------------------------------------------
 
@@ -19,7 +19,7 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Object list (89 objects):
+Current Object list (89 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [9]
 - [cosine~]
