@@ -4,7 +4,7 @@
 #include <math.h>
 #include <string.h>
 
-#define HALFPI 1.570796327
+#define HALF_PI (M_PI * 0.5)
 
 static t_class *select_class;
 
@@ -192,8 +192,8 @@ static double epower(double rate)
   if(rate > 0.999)
     rate = 0.999;
 
- rate *= HALFPI;
- tmp = cos(rate - HALFPI);
+ rate *= HALF_PI;
+ tmp = cos(rate - HALF_PI);
   tmp = tmp < 0 ? 0 : tmp;
   tmp = tmp > 1 ? 1 : tmp;
   return tmp;
@@ -202,7 +202,7 @@ static double epower(double rate)
 static double aepower(double ep) // convert from equal power to linear rate
 {
 /*    double answer = (atan(2*ep*ep - 1) + 0.785398) / 1.5866; */
-  double answer = (acos(ep) + HALFPI) / HALFPI;
+  double answer = (acos(ep) + HALF_PI) / HALF_PI;
 
   answer = 2 - answer;   // ??? - but does the trick
 

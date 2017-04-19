@@ -310,6 +310,7 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv)
             goto errstate;
         };
     };
+    x->fadetype = x->lastfadetype = EPOWER;
     x->ninlets = ch < 1 ? 1 : ch;
     if(x->ninlets > INPUTLIMIT)
         {
