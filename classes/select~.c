@@ -116,9 +116,6 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv)
   return (x);
 }
 
-/* static void adjustcounters2epower(t_select *x);
-static void adjustcounters2linear(t_select *x); */
-
 void select_float(t_select *x, t_floatarg f)
 {
   f = (int)f;
@@ -208,31 +205,6 @@ static double aepower(double ep) // convert from equal power to linear rate
   return answer;
 }
 
-/* static void adjustcounters2epower(t_select *x) // no longer used
-{
-  // called when shifting from a linear fade-in (from zero) to an equal power crossfade
-  // adjusts each input counter to smoothly match subsequent equal power scalings
-  int i;
-  double ep;
-  for(i = 0; i < x->ninlets; i++)
-    {
-      ep = x->ip.counter[i] / (double)x->fadeticks;
-      x->ip.counter[i] = aepower(ep) * (double)x->fadeticks;
-    }
-}
-
-static void adjustcounters2linear(t_select *x) // no longer used
-{
-  // opposite of above
-  int i;
-  double rate;
-  for(i = 0; i < x->ninlets; i++)
-    {
-      rate = x->ip.counter[i] / (double)x->fadeticks;
-      x->ip.counter[i] = epower(rate) * (double)x->fadeticks;
-    }
-} */
-
 static void outputfades(t_int *w, int flag)
 {
   t_select *x = (t_select *)(w[1]);
@@ -308,8 +280,7 @@ static void select_dsp(t_select *x, t_signal **sp)
     }
 }
 
-// JUNTAR OS TRES ABAIXO EM UM APENAS!!!
-
+// JUNTAR OS TRES ABAIXO EM UM APENAS!!! /////////////////////////////////////////////
 static void shortcheck(t_select *x, int newticks, int shorter)
 {
     int i;
@@ -340,7 +311,7 @@ static void select_time(t_select *x, t_floatarg time)
     x->fadeticks = (int)(x->srate * time/1000); // no. of ticks to reach specified fade time
     adjustcounters_ftimechange(x, x->fadeticks, shorter);
 }
-
+// JUNTAR OS TRES ACIMA EM UM APENAS!!! /////////////////////////////////////////////
 
 void select_mode(t_select *x, t_floatarg mode)
 {
