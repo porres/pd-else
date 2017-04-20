@@ -101,7 +101,7 @@ static double epower(double rate) {
  return tmp;
 }
 
-static void outputfades(t_int *w, int flag) {
+static void outputfades(t_int *w) {
   t_select *x = (t_select *)(w[1]);
   float *out = (t_float *)(w[3+x->ninlets]);
   int n = (int)(w[2]);
@@ -113,7 +113,7 @@ static void outputfades(t_int *w, int flag) {
     updatefades(x);
     for(i = 0; i < x->ninlets; i++)
         if(x->ip.fade[i]) {
-            if(flag && x->fadetype == EPOWER)
+            if(x->fadetype == EPOWER)
                 sum += *x->ip.in[i]++ * epower(x->ip.fade[i]);
             else
                 sum += *x->ip.in[i]++ * x->ip.fade[i];
@@ -134,9 +134,7 @@ static t_int *select_perform(t_int *w){
       while (n--)
       *out++ = 0;
   }
-  else if (x->actuallastchannel == 0 && x->channel != 0) outputfades(w, x->fadetype); // change from 0 to non-0
-  else if(x->channel != 0) outputfades(w, EPOWER); // change from non-0 to another non-0
-  else if (x->actuallastchannel != 0 && x->channel == 0) outputfades(w, x->fadetype); // change from non-0 to 0
+  outputfades(w);
   checkswitchstatus(x);
   return (w + 4 + x->ninlets);
 }
