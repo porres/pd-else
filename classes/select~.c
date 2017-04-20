@@ -136,7 +136,7 @@ static void select_dsp(t_select *x, t_signal **sp) {
 
 static void select_time(t_select *x, t_floatarg time) {
     int i, shorter;
-    time = time < 1 ? 1 : time;
+    time = time < 0 ? 0 : time;
     shorter = (time < x->fadetime);
     x->fadetime = (int)time;
     x->fadeticks = (int)(x->sr_khz * time); // no. of ticks to reach specified fade time
@@ -188,7 +188,7 @@ void select_ep(t_select *x) {
 static void *select_new(t_symbol *s, int argc, t_atom *argv) {
     t_select *x = (t_select *)pd_new(select_class);
     x->sr_khz = sys_getsr() * 0.001;
-    t_float ch = 1, ms = 1, fade_mode = EPOWER, init_channel = 0;
+    t_float ch = 1, ms = 0, fade_mode = EPOWER, init_channel = 0;
     int i;
     int argnum = 0;
     while(argc > 0){
@@ -226,7 +226,7 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv) {
     x->ninlets = ch < 1 ? 1 : ch;
     if(x->ninlets > INPUTLIMIT)
         x->ninlets = INPUTLIMIT;
-    x->fadetime = ms >= 1 ? ms : 1; // what happens with ms = 0???
+    x->fadetime = ms >= 0 ? ms : 0;
     for(i = 0; i < x->ninlets - 1; i++)
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     outlet_new(&x->x_obj, gensym("signal"));

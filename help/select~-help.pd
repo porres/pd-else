@@ -1,4 +1,4 @@
-#N canvas 681 23 565 578 10;
+#N canvas 681 23 561 575 10;
 #X obj 4 303 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 415 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -64,11 +64,8 @@
 #X text 156 516 -lin;
 #X text 190 516 - sets crossfade type to linear (default is equal power)
 ;
-#N canvas 180 195 450 300 crossfade 0;
-#X restore 421 262 pd crossfade types;
 #X text 219 130 1: inlet 1;
 #X text 219 145 2: inlet 2;
-#X obj 199 201 else/select~ 2 1000 1;
 #X obj 138 143 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 77 165 crossfade duration, f 9;
@@ -76,12 +73,36 @@
 #X text 171 366 ep;
 #X text 165 348 lin;
 #X text 189 366 - change cross fade type to equal power;
-#X text 425 175 make it accept symbol args..., f 14;
-#X connect 21 0 45 0;
-#X connect 22 0 45 1;
+#X obj 199 201 else/select~ 2 1000 1;
+#N canvas 944 156 392 386 crossfade_modes 0;
+#X obj 94 310 else/out~;
+#X floatatom 94 154 3 0 1 0 - - -, f 3;
+#X obj 94 116 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 94 275 else/select~ 1 1000 -lin;
+#X text 22 14 By default \, [select~] adopts an equal power crossfading
+function (sin/cos). You can set it to linear crossfade at instantiation
+with the -lin flag.;
+#X msg 123 214 ep;
+#X msg 133 243 lin;
+#X text 23 62 You can also change the crossfade mode to linear and
+equal power with the 'lin' and 'ep' messages \, respectively.;
+#X text 150 214 change to equal power (default);
+#X text 162 242 change to linear;
+#X obj 111 182 osc~ 440;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 0 0;
+#X connect 3 0 0 1;
+#X connect 5 0 3 0;
+#X connect 6 0 3 0;
+#X connect 10 0 3 0;
+#X restore 426 270 pd crossfade_modes;
+#X connect 21 0 50 0;
+#X connect 22 0 50 1;
 #X connect 26 0 32 0;
-#X connect 32 0 45 0;
-#X connect 34 0 45 0;
-#X connect 45 0 8 0;
-#X connect 45 0 8 1;
-#X connect 46 0 34 0;
+#X connect 32 0 50 0;
+#X connect 34 0 50 0;
+#X connect 44 0 34 0;
+#X connect 50 0 8 0;
+#X connect 50 0 8 1;
