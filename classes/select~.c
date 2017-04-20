@@ -120,33 +120,18 @@ static t_int *select_perform(t_int *w){
 }
 
 static void select_dsp(t_select *x, t_signal **sp) {
-  int n = sp[0]->s_n, i; // there is a smarter way!!!
-  switch (x->ninlets) 
-    {
-    case 1: dsp_add(select_perform, 4, x, n, sp[0]->s_vec, sp[1]->s_vec);
-      break;
-    case 2: dsp_add(select_perform, 5, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
-      break;
-    case 3: dsp_add(select_perform, 6, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
-      break;
-    case 4: dsp_add(select_perform, 7, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
-      break;
-    case 5: dsp_add(select_perform, 8, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec);
-      break;
-    case 6: dsp_add(select_perform, 9, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec);
-      break;
-    case 7: dsp_add(select_perform, 10, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec);
-      break;
-    case 8: dsp_add(select_perform, 11, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
-		    sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec);
-    break;
-    case 9: dsp_add(select_perform, 12, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
-		    sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec, sp[9]->s_vec);
-    break;
-    case 10: dsp_add(select_perform, 13, x, n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, 
-		     sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec, sp[6]->s_vec, sp[7]->s_vec, sp[8]->s_vec, sp[9]->s_vec, sp[10]->s_vec);
-    break;
-    }
+    long i;
+    t_int **sigvec;
+    int count = x->ninlets + 3;
+    sigvec  = (t_int **) calloc(count, sizeof(t_int *));
+    for(i = 0; i < count; i++)
+        sigvec[i] = (t_int *) calloc(sizeof(t_int), 1); // init sigvec
+    sigvec[0] = (t_int *)x; // 1st => object
+    sigvec[1] = (t_int *)sp[0]->s_n; // 2nd => block (n)
+    for(i = 2; i < count; i++) // ins/out
+        sigvec[i] = (t_int *)sp[i-2]->s_vec;
+    dsp_addv(select_perform, count, (t_int *) sigvec);
+    free(sigvec);
 }
 
 static void select_time(t_select *x, t_floatarg time) {
