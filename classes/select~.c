@@ -59,22 +59,6 @@ void select_float(t_select *x, t_floatarg f){
   }
 }
 
-static void updatefades(t_select *x){
-  int i;
-  for(i = 0; i < x->ninlets; i++){
-      if(!x->ip.counter[i])
-          x->ip.fade[i] = 0;
-      if(x->ip.active[i] && x->ip.counter[i] < x->fadeticks){
-          if(x->ip.counter[i])
-              x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
-          x->ip.counter[i]++;
-      }
-      else if (!x->ip.active[i] && x->ip.counter[i] > 0){
-          x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
-          x->ip.counter[i]--;
-      }
-  }
-}
 
 static double epower(double rate) {
  double tmp;
@@ -89,14 +73,20 @@ static double epower(double rate) {
  return tmp;
 }
 
-static void checkswitchstatus(t_select *x){ // check which input feeds oughtta be "switch~"ed off
+static void updatefades(t_select *x){
     int i;
     for(i = 0; i < x->ninlets; i++){
-        if(!x->ip.active[i])
-            if(clock_gettimesince(x->ip.timeoff[i]) > x->fadetime && x->ip.timeoff[i]){
-                x->ip.timeoff[i] = 0;
-                x->ip.fade[i] = 0;
-            }
+        if(!x->ip.counter[i])
+            x->ip.fade[i] = 0;
+        if(x->ip.active[i] && x->ip.counter[i] < x->fadeticks){
+            if(x->ip.counter[i])
+                x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
+            x->ip.counter[i]++;
+        }
+        else if (!x->ip.active[i] && x->ip.counter[i] > 0){
+            x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
+            x->ip.counter[i]--;
+        }
     }
 }
 
@@ -122,12 +112,19 @@ static void outputfades(t_int *w) {
 }
 
 static t_int *select_perform(t_int *w){
-  t_select *x = (t_select *)(w[1]);
-  int n = (int)(w[2]);
-  float *out = (t_float *)(w[3 + x->ninlets]);
-  outputfades(w);
-  checkswitchstatus(x);
-  return (w + 4 + x->ninlets);
+    t_select *x = (t_select *)(w[1]);
+    int n = (int)(w[2]);
+    float *out = (t_float *)(w[3 + x->ninlets]);
+    int i, j;
+    outputfades(w);
+    for(j = 0; j < x->ninlets; j++){// check which input feeds oughtta be "switch~"ed off
+        if(!x->ip.active[j])
+            if(clock_gettimesince(x->ip.timeoff[j]) > x->fadetime && x->ip.timeoff[j]){
+                x->ip.timeoff[j] = 0;
+                x->ip.fade[j] = 0;
+            }
+    }
+    return (w + 4 + x->ninlets);
 }
 
 static void select_dsp(t_select *x, t_signal **sp) {
