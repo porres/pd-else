@@ -13,8 +13,7 @@ static t_class *select_class;
 #define EPOWER 1
 #define TIME_UNITS_MS (32.*441.) // ????????????????????????????
 
-typedef struct _ip // keeps track of each signal input
-{
+typedef struct _ip { // keeps track of each signal input
   int active[INPUTLIMIT]; 
   int counter[INPUTLIMIT];
   double timeoff[INPUTLIMIT];
@@ -22,8 +21,7 @@ typedef struct _ip // keeps track of each signal input
   float *in[INPUTLIMIT];
 } t_ip;
 
-typedef struct _select
-{
+typedef struct _select {
   t_object x_obj;
   int channel;
   int lastchannel;
@@ -41,77 +39,66 @@ typedef struct _select
   t_ip ip;
 } t_select;
 
-void select_float(t_select *x, t_floatarg f) // select channel
-{
+void select_float(t_select *x, t_floatarg f){
   f = (int)f;
   f = f > x->ninlets ? x->ninlets : f;
   f = f < 0 ? 0 : f;
-  if(f != x->lastchannel)
-    {
-      if(f == x->actuallastchannel)
-	x->fadecount = x->fadeticks - x->fadecount;
-      else
-	x->fadecount = 0;	
-      x->channel = f;
-      if(x->channel)
-	{
-	  x->ip.active[x->channel - 1] = 1;
-	}
-      if(x->lastchannel)
-	{
-	  x->ip.active[x->lastchannel - 1] = 0;
-	  x->ip.timeoff[x->lastchannel - 1] = clock_getlogicaltime();
-	}
-      x->actuallastchannel = x->lastchannel;
-      x->lastchannel = x->channel;
-    }
+  if(f != x->lastchannel){
+    if(f == x->actuallastchannel)
+        x->fadecount = x->fadeticks - x->fadecount;
+    else
+        x->fadecount = 0;
+        x->channel = f;
+    if(x->channel)
+        x->ip.active[x->channel - 1] = 1;
+    if(x->lastchannel) {
+        x->ip.active[x->lastchannel - 1] = 0;
+        x->ip.timeoff[x->lastchannel - 1] = clock_getlogicaltime();
+        }
+    x->actuallastchannel = x->lastchannel;
+    x->lastchannel = x->channel;
+  }
 }
 
 static void checkswitchstatus(t_select *x){ // check which input feeds oughtta be "switch~"ed off
   int i;
-  for(i = 0; i < x->ninlets; i++)
-    {
-      if(!x->ip.active[i])
-	if(clock_gettimesince(x->ip.timeoff[i]) > x->fadetime 
-	   && x->ip.timeoff[i])
-	  {
-	    x->ip.timeoff[i] = 0;
-	    x->ip.fade[i] = 0;
-	  }	 
+  for(i = 0; i < x->ninlets; i++){
+    if(!x->ip.active[i])
+        if(clock_gettimesince(x->ip.timeoff[i]) > x->fadetime && x->ip.timeoff[i]){
+            x->ip.timeoff[i] = 0;
+            x->ip.fade[i] = 0;
+        }
     }
 }
 
-static void updatefades(t_select *x) {
+static void updatefades(t_select *x){
   int i;
-  for(i = 0; i < x->ninlets; i++)
-    {
+  for(i = 0; i < x->ninlets; i++){
       if(!x->ip.counter[i])
-	x->ip.fade[i] = 0;
-      if(x->ip.active[i] && x->ip.counter[i] < x->fadeticks)
-	{
-	  if(x->ip.counter[i])
-	    x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
-	  x->ip.counter[i]++;
-	}
-      else if (!x->ip.active[i] && x->ip.counter[i] > 0)
-	{
-	  x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
-	  x->ip.counter[i]--;
-	}
-    }
+          x->ip.fade[i] = 0;
+      if(x->ip.active[i] && x->ip.counter[i] < x->fadeticks){
+          if(x->ip.counter[i])
+              x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
+          x->ip.counter[i]++;
+      }
+      else if (!x->ip.active[i] && x->ip.counter[i] > 0){
+          x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
+          x->ip.counter[i]--;
+      }
+  }
 }
 
 static double epower(double rate) {
-  double tmp;
-  if(rate < 0)
-    rate = 0;
-  if(rate > 0.999)
-    rate = 0.999;
+ double tmp;
+ if(rate < 0)
+  rate = 0;
+ if(rate > 0.999)
+  rate = 0.999;
  rate *= HALF_PI;
  tmp = cos(rate - HALF_PI);
-  tmp = tmp < 0 ? 0 : tmp;
-  tmp = tmp > 1 ? 1 : tmp;
-  return tmp;
+ tmp = tmp < 0 ? 0 : tmp;
+ tmp = tmp > 1 ? 1 : tmp;
+ return tmp;
 }
 
 static void outputfades(t_int *w, int flag) {
@@ -121,23 +108,21 @@ static void outputfades(t_int *w, int flag) {
   int i;
   for(i = 0; i < x->ninlets; i++)
     x->ip.in[i] = (t_float *)(w[3+i]);
-  while (n--)
-    {
-      float sum = 0;
-      updatefades(x);
-      for(i = 0; i < x->ninlets; i++)
-	if(x->ip.fade[i])
-	  {
-	    if(flag && x->fadetype == EPOWER)
-	      sum += *x->ip.in[i]++ * epower(x->ip.fade[i]);
-	    else
-	      sum += *x->ip.in[i]++ * x->ip.fade[i];
-	  }
-      *out++ = sum;
+  while (n--) {
+    float sum = 0;
+    updatefades(x);
+    for(i = 0; i < x->ninlets; i++)
+        if(x->ip.fade[i]) {
+            if(flag && x->fadetype == EPOWER)
+                sum += *x->ip.in[i]++ * epower(x->ip.fade[i]);
+            else
+                sum += *x->ip.in[i]++ * x->ip.fade[i];
+        }
+    *out++ = sum;
     }
 }
 
-static t_int *select_perform(t_int *w) {
+static t_int *select_perform(t_int *w){
   t_select *x = (t_select *)(w[1]);
   int n = (int)(w[2]);
   float *out = (t_float *)(w[3+x->ninlets]);
@@ -148,7 +133,7 @@ static t_int *select_perform(t_int *w) {
           }
       while (n--)
       *out++ = 0;
-      }
+  }
   else if (x->actuallastchannel == 0 && x->channel != 0) outputfades(w, x->fadetype); // change from 0 to non-0
   else if(x->channel != 0) outputfades(w, EPOWER); // change from non-0 to another non-0
   else if (x->actuallastchannel != 0 && x->channel == 0) outputfades(w, x->fadetype); // change from non-0 to 0
@@ -192,13 +177,11 @@ static void select_time(t_select *x, t_floatarg time) {
     shorter = (time < x->fadetime);
     x->fadetime = (int)time;
     x->fadeticks = (int)(x->sr_khz * time); // no. of ticks to reach specified fade time
-    for(i = 0; i < x->ninlets; i++) // shortcheck
-    {
+    for(i = 0; i < x->ninlets; i++){ // shortcheck
         if(shorter && x->ip.timeoff[i]) // correct active timeoffs for new x->fadeticks
             x->ip.timeoff[i] = clock_getlogicaltime() - ((x->fadeticks - x->ip.counter[i]) / x->sr_khz - 1) * TIME_UNITS_MS;
     }
-    for(i = 0; i < x->ninlets; i++) // adjustcounters
-    {
+    for(i = 0; i < x->ninlets; i++){ // adjustcounters
         if(x->ip.counter[i])
             x->ip.counter[i] = x->ip.fade[i] * (float)x->fadeticks;
     }
@@ -216,10 +199,8 @@ static double aepower(double ep) // convert from equal to linear
 
 void select_mode(t_select *x, t_floatarg mode) {
     int i;
-    if(mode == 1 && x->lastfadetype != 1) // change to equal power
-    {
-        for(i = 0; i < x->ninlets; i++)
-        {
+    if(mode == 1 && x->lastfadetype != 1){ // change to equal power
+        for(i = 0; i < x->ninlets; i++) {
             float fade = x->ip.fade[i];
             int oldcounter = x->ip.counter[i];
             x->ip.counter[i] = aepower(fade) * x->fadeticks;
@@ -227,10 +208,8 @@ void select_mode(t_select *x, t_floatarg mode) {
         }
         x->lastfadetype = x->fadetype = EPOWER;
     }
-    else if(mode == 0 && x->lastfadetype != 0) // change to linear
-    {
-        for(i = 0; i < x->ninlets; i++)
-        {
+    else if(mode == 0 && x->lastfadetype != 0){ // change to linear
+        for(i = 0; i < x->ninlets; i++) {
             float fade = x->ip.fade[i];
             int oldcounter = x->ip.counter[i];
             x->ip.counter[i] = epower(fade) * x->fadeticks;
@@ -241,8 +220,7 @@ void select_mode(t_select *x, t_floatarg mode) {
 }
 // JUNTAR COM AEPOWER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-static void *select_new(t_symbol *s, int argc, t_atom *argv)
-{
+static void *select_new(t_symbol *s, int argc, t_atom *argv) {
     t_select *x = (t_select *)pd_new(select_class);
     x->sr_khz = sys_getsr() * 0.001;
     t_float ch = 1, ms = 1, mode = 1;
