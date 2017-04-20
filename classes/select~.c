@@ -167,7 +167,7 @@ static t_int *select_perform(t_int *w)
 
 static void select_dsp(t_select *x, t_signal **sp)
 {
-  int n = sp[0]->s_n, i; // there must be a smarter way....
+  int n = sp[0]->s_n, i; // there is be a smarter way!!!
   switch (x->ninlets) 
     {
     case 1: dsp_add(select_perform, 4, x, n, sp[0]->s_vec, sp[1]->s_vec);
@@ -257,59 +257,33 @@ void select_mode(t_select *x, t_floatarg mode)
 
 static void *select_new(t_symbol *s, int argc, t_atom *argv)
 {
-    int usedefault = 0, i;
     t_select *x = (t_select *)pd_new(select_class);
     x->sr_khz = sys_getsr() * 0.001;
-    if(argc == 0 || argc > 3)
-        usedefault = 1;
-    else if(argc == 1 && argv[0].a_type != A_FLOAT)
-        usedefault = 1;
-    else if(argc >= 2)
-        if(argv[0].a_type != A_FLOAT || argv[1].a_type != A_FLOAT)
-            usedefault = 1;
-    if(argc == 3)
-    {
-        if(argv[2].a_type == A_SYMBOL && !strcmp(argv[2].a_w.w_symbol->s_name, "linear"))
-            x->fadetype = x->lastfadetype = LINEAR;
-        else
-            if(argv[1].a_w.w_float >= EPMIN)
-            {
-                post("select~: 3rd optional argument should be \"linear\". Reverting to equal power default");
-                x->fadetype = x->lastfadetype = EPOWER;
-            }
-            else
-            {
-                post("select~: 3rd optional argument should be \"linear\". \nFade rate less than %d msec - using linear fading", EPMIN);
-                x->fadetype = x->lastfadetype = LINEAR;
-            }
-    }
-    else
-    {
-        if(argv[1].a_w.w_float >= EPMIN)
-            x->fadetype = x->lastfadetype = EPOWER;
-        else
-        {
-            post("select~: fade rate less than %d msec - using linear fading", EPMIN);
-            x->fadetype = x->lastfadetype = LINEAR;
+    t_float ch = 1, ms = 1, mode = 1;
+    int i;
+    int argnum = 0;
+    while(argc > 0){
+        if(argv -> a_type == A_FLOAT) { //if current argument is a float
+            t_float argval = atom_getfloatarg(0, argc, argv);
+            switch(argnum){
+                case 0:
+                    ch = argval;
+                    break;
+                case 1:
+                    ms = argval;
+                default:
+                    break;
+            };
+            argnum++;
+            argc--;
+            argv++;
         }
-    }
-    if(usedefault)
-    {
-        post("select~: default (");
-        x->fadetype = x->lastfadetype = EPOWER;
-        x->ninlets = 1;
-        x->fadetime = 1;
-    }
-    else
-    {
-        x->ninlets = argv[0].a_w.w_float < 1 ? 1 : argv[0].a_w.w_float;
-        if(x->ninlets > INPUTLIMIT)
-        {
-            x->ninlets = INPUTLIMIT;
-            post("select~: maximum of %d inlets", INPUTLIMIT);
-        }
-        x->fadetime = argv[1].a_w.w_float > 0 ? argv[1].a_w.w_float : 1;
-    }
+    };
+    x->fadetype = x->lastfadetype = EPOWER;
+    x->ninlets = ch < 1 ? 1 : ch;
+    if(x->ninlets > INPUTLIMIT)
+        x->ninlets = INPUTLIMIT;
+    x->fadetime = ms >= 1 ? ms : 1; // what happens with ms = 0???
     for(i = 0; i < x->ninlets - 1; i++)
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     outlet_new(&x->x_obj, gensym("signal"));
@@ -318,8 +292,7 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv)
     x->fadeticks = (int)(x->sr_khz * x->fadetime); // no. of ticks to reach specified fade 'rate'
     x->firsttick = 1;
     x->fadealert = 0;
-    for(i = 0; i < INPUTLIMIT; i++) 
-    {
+    for(i = 0; i < INPUTLIMIT; i++){
         x->ip.active[i] = 0;
         x->ip.counter[i] = 0;
         x->ip.timeoff[i] = 0;
