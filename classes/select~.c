@@ -59,7 +59,6 @@ void select_float(t_select *x, t_floatarg f){
   }
 }
 
-
 static double epower(double rate) {
  double tmp;
  if(rate < 0)
@@ -120,6 +119,7 @@ static t_int *select_perform(t_int *w){
 }
 
 static void select_dsp(t_select *x, t_signal **sp) {
+    x->sr_khz = sp[0]->s_sr * 0.001;
     long i;
     t_int **sigvec;
     int count = x->ninlets + 3;
@@ -150,7 +150,6 @@ static void select_time(t_select *x, t_floatarg time) {
     }
 }
 
-// JUNTAR COM MODE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 static double aepower(double ep) // convert from equal to linear
 { //    double answer = (atan(2*ep*ep - 1) + 0.785398) / 1.5866; // ???
     double answer = (acos(ep) + HALF_PI) / HALF_PI;
@@ -160,18 +159,9 @@ static double aepower(double ep) // convert from equal to linear
     return answer;
 }
 
-void select_mode(t_select *x, t_floatarg mode) {
+void select_lin(t_select *x) {
     int i;
-    if(mode == 1 && x->lastfadetype != 1){ // change to equal power
-        for(i = 0; i < x->ninlets; i++) {
-            float fade = x->ip.fade[i];
-            int oldcounter = x->ip.counter[i];
-            x->ip.counter[i] = aepower(fade) * x->fadeticks;
-            x->ip.fade[i] = epower(x->ip.counter[i]/ (float)x->fadeticks); // ???
-        }
-        x->lastfadetype = x->fadetype = EPOWER;
-    }
-    else if(mode == 0 && x->lastfadetype != 0){ // change to linear
+    if(x->lastfadetype != 0){ // change to linear
         for(i = 0; i < x->ninlets; i++) {
             float fade = x->ip.fade[i];
             int oldcounter = x->ip.counter[i];
@@ -181,12 +171,24 @@ void select_mode(t_select *x, t_floatarg mode) {
         x->lastfadetype = x->fadetype = LINEAR;
     }
 }
-// JUNTAR COM AEPOWER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+void select_ep(t_select *x) {
+    int i;
+    if(x->lastfadetype != 1){ // change to equal power
+        for(i = 0; i < x->ninlets; i++) {
+            float fade = x->ip.fade[i];
+            int oldcounter = x->ip.counter[i];
+            x->ip.counter[i] = aepower(fade) * x->fadeticks;
+            x->ip.fade[i] = epower(x->ip.counter[i]/ (float)x->fadeticks); // ???
+        }
+        x->lastfadetype = x->fadetype = EPOWER;
+    }
+}
 
 static void *select_new(t_symbol *s, int argc, t_atom *argv) {
     t_select *x = (t_select *)pd_new(select_class);
     x->sr_khz = sys_getsr() * 0.001;
-    t_float ch = 1, ms = 1, mode = 1;
+    t_float ch = 1, ms = 1, fade_mode = EPOWER, init_channel = 0;
     int i;
     int argnum = 0;
     while(argc > 0){
@@ -198,6 +200,9 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv) {
                     break;
                 case 1:
                     ms = argval;
+                    break;
+                case 2:
+                    init_channel = argval;
                 default:
                     break;
             };
@@ -205,8 +210,19 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv) {
             argc--;
             argv++;
         }
+        else if (argv -> a_type == A_SYMBOL){
+            t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
+            if(strcmp(curarg->s_name, "-lin")==0) {
+                fade_mode = LINEAR;
+                argc -= 1;
+                argv += 1;
+                }
+            else{
+                goto errstate;
+            };
+        }
     };
-    x->fadetype = x->lastfadetype = EPOWER;
+    x->fadetype = x->lastfadetype = fade_mode;
     x->ninlets = ch < 1 ? 1 : ch;
     if(x->ninlets > INPUTLIMIT)
         x->ninlets = INPUTLIMIT;
@@ -214,17 +230,22 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv) {
     for(i = 0; i < x->ninlets - 1; i++)
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     outlet_new(&x->x_obj, gensym("signal"));
-    x->channel = 0; x->lastchannel = x->actuallastchannel = 0;
+    x->lastchannel = x->actuallastchannel = 0;
     x->fadecount = 0;
     x->fadeticks = (int)(x->sr_khz * x->fadetime); // no. of ticks to reach specified fade 'rate'
     x->fadealert = 0;
+    x->channel = init_channel;
     for(i = 0; i < INPUTLIMIT; i++){
         x->ip.active[i] = 0;
         x->ip.counter[i] = 0;
         x->ip.timeoff[i] = 0;
         x->ip.fade[i] = 0;
     }
+    select_float(x, x->channel);
     return (x);
+    errstate:
+        pd_error(x, "select~: improper args");
+        return NULL;
 }
 
 void select_tilde_setup(void) {
@@ -234,5 +255,6 @@ void select_tilde_setup(void) {
     class_addmethod(select_class, nullfn, gensym("signal"), 0);
     class_addmethod(select_class, (t_method)select_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(select_class, (t_method)select_time, gensym("time"), A_FLOAT, (t_atomtype) 0);
-    class_addmethod(select_class, (t_method)select_mode, gensym("mode"), A_FLOAT, (t_atomtype) 0);
+    class_addmethod(select_class, (t_method)select_lin, gensym("lin"), 0);
+    class_addmethod(select_class, (t_method)select_ep, gensym("ep"), 0);
 }
