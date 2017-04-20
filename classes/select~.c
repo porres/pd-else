@@ -138,7 +138,7 @@ static t_int *select_perform(t_int *w){
   else if(x->channel != 0) outputfades(w, EPOWER); // change from non-0 to another non-0
   else if (x->actuallastchannel != 0 && x->channel == 0) outputfades(w, x->fadetype); // change from non-0 to 0
   checkswitchstatus(x);
-  return (w+4+x->ninlets);
+  return (w + 4 + x->ninlets);
 }
 
 static void select_dsp(t_select *x, t_signal **sp) {
