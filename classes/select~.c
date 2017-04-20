@@ -31,7 +31,6 @@ typedef struct _select {
   double changetime;
   int fadecount;
   int fadeticks;
-  int firsttick;
   int fadetype;
   int lastfadetype;
   int fadealert; 
@@ -58,17 +57,6 @@ void select_float(t_select *x, t_floatarg f){
     x->actuallastchannel = x->lastchannel;
     x->lastchannel = x->channel;
   }
-}
-
-static void checkswitchstatus(t_select *x){ // check which input feeds oughtta be "switch~"ed off
-  int i;
-  for(i = 0; i < x->ninlets; i++){
-    if(!x->ip.active[i])
-        if(clock_gettimesince(x->ip.timeoff[i]) > x->fadetime && x->ip.timeoff[i]){
-            x->ip.timeoff[i] = 0;
-            x->ip.fade[i] = 0;
-        }
-    }
 }
 
 static void updatefades(t_select *x){
@@ -101,6 +89,17 @@ static double epower(double rate) {
  return tmp;
 }
 
+static void checkswitchstatus(t_select *x){ // check which input feeds oughtta be "switch~"ed off
+    int i;
+    for(i = 0; i < x->ninlets; i++){
+        if(!x->ip.active[i])
+            if(clock_gettimesince(x->ip.timeoff[i]) > x->fadetime && x->ip.timeoff[i]){
+                x->ip.timeoff[i] = 0;
+                x->ip.fade[i] = 0;
+            }
+    }
+}
+
 static void outputfades(t_int *w) {
   t_select *x = (t_select *)(w[1]);
   float *out = (t_float *)(w[3+x->ninlets]);
@@ -125,15 +124,7 @@ static void outputfades(t_int *w) {
 static t_int *select_perform(t_int *w){
   t_select *x = (t_select *)(w[1]);
   int n = (int)(w[2]);
-  float *out = (t_float *)(w[3+x->ninlets]);
-  if (x->actuallastchannel == 0 && x->channel == 0 && x->lastchannel == 0) { // init state
-      if(x->firsttick) {
-          int i;
-          x->firsttick = 0;
-          }
-      while (n--)
-      *out++ = 0;
-  }
+  float *out = (t_float *)(w[3 + x->ninlets]);
   outputfades(w);
   checkswitchstatus(x);
   return (w + 4 + x->ninlets);
@@ -252,7 +243,6 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv) {
     x->channel = 0; x->lastchannel = x->actuallastchannel = 0;
     x->fadecount = 0;
     x->fadeticks = (int)(x->sr_khz * x->fadetime); // no. of ticks to reach specified fade 'rate'
-    x->firsttick = 1;
     x->fadealert = 0;
     for(i = 0; i < INPUTLIMIT; i++){
         x->ip.active[i] = 0;
