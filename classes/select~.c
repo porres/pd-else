@@ -90,38 +90,30 @@ static void updatefades(t_select *x){
     }
 }
 
-static void outputfades(t_int *w) {
-  t_select *x = (t_select *)(w[1]);
-  float *out = (t_float *)(w[3+x->ninlets]);
-  int n = (int)(w[2]);
-  int i;
-  for(i = 0; i < x->ninlets; i++)
-    x->ip.in[i] = (t_float *)(w[3+i]);
-  while (n--) {
-    float sum = 0;
-    updatefades(x);
-    for(i = 0; i < x->ninlets; i++)
-        if(x->ip.fade[i]) {
-            if(x->fadetype == EPOWER)
-                sum += *x->ip.in[i]++ * epower(x->ip.fade[i]);
-            else
-                sum += *x->ip.in[i]++ * x->ip.fade[i];
-        }
-    *out++ = sum;
-    }
-}
-
 static t_int *select_perform(t_int *w){
+    int i, j;
     t_select *x = (t_select *)(w[1]);
     int n = (int)(w[2]);
+    for(i = 0; i < x->ninlets; i++)
+        x->ip.in[i] = (t_float *)(w[3 + i]);
     float *out = (t_float *)(w[3 + x->ninlets]);
-    int i, j;
-    outputfades(w);
-    for(j = 0; j < x->ninlets; j++){// check which input feeds oughtta be "switch~"ed off
-        if(!x->ip.active[j])
-            if(clock_gettimesince(x->ip.timeoff[j]) > x->fadetime && x->ip.timeoff[j]){
-                x->ip.timeoff[j] = 0;
-                x->ip.fade[j] = 0;
+    while (n--) {
+        float sum = 0;
+        updatefades(x);
+        for(i = 0; i < x->ninlets; i++)
+            if(x->ip.fade[i]) {
+                if(x->fadetype == EPOWER)
+                    sum += *x->ip.in[i]++ * epower(x->ip.fade[i]);
+                else
+                    sum += *x->ip.in[i]++ * x->ip.fade[i];
+            }
+        *out++ = sum;
+    }
+    for(i = 0; i < x->ninlets; i++){ // check which input feeds oughtta be "switch~"ed off
+        if(!x->ip.active[i])
+            if(clock_gettimesince(x->ip.timeoff[i]) > x->fadetime && x->ip.timeoff[i]){
+                x->ip.timeoff[i] = 0;
+                x->ip.fade[i] = 0;
             }
     }
     return (w + 4 + x->ninlets);
