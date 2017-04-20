@@ -11,10 +11,7 @@ static t_class *select_class;
 #define INPUTLIMIT 10
 #define LINEAR 0
 #define EPOWER 1
-#define EPMIN 0 // ???
-
-// #define TIMEUNITPERSEC (32.*441000.) // ???
-#define TIMEUNITPERSEC (32.*441.) // ???
+#define TIME_UNITS_MS (32.*441.) // ????????????????????????????
 
 typedef struct _ip // keeps track of each signal input
 {
@@ -70,8 +67,7 @@ void select_float(t_select *x, t_floatarg f) // select channel
     }
 }
 
-static void checkswitchstatus(t_select *x) // check which input feeds oughtta be "switch~"ed off
-{
+static void checkswitchstatus(t_select *x){ // check which input feeds oughtta be "switch~"ed off
   int i;
   for(i = 0; i < x->ninlets; i++)
     {
@@ -85,8 +81,7 @@ static void checkswitchstatus(t_select *x) // check which input feeds oughtta be
     }
 }
 
-static void updatefades(t_select *x)
-{
+static void updatefades(t_select *x) {
   int i;
   for(i = 0; i < x->ninlets; i++)
     {
@@ -106,14 +101,12 @@ static void updatefades(t_select *x)
     }
 }
 
-static double epower(double rate)
-{
+static double epower(double rate) {
   double tmp;
   if(rate < 0)
     rate = 0;
   if(rate > 0.999)
     rate = 0.999;
-
  rate *= HALF_PI;
  tmp = cos(rate - HALF_PI);
   tmp = tmp < 0 ? 0 : tmp;
@@ -121,8 +114,7 @@ static double epower(double rate)
   return tmp;
 }
 
-static void outputfades(t_int *w, int flag)
-{
+static void outputfades(t_int *w, int flag) {
   t_select *x = (t_select *)(w[1]);
   float *out = (t_float *)(w[3+x->ninlets]);
   int n = (int)(w[2]);
@@ -145,8 +137,7 @@ static void outputfades(t_int *w, int flag)
     }
 }
 
-static t_int *select_perform(t_int *w)
-{
+static t_int *select_perform(t_int *w) {
   t_select *x = (t_select *)(w[1]);
   int n = (int)(w[2]);
   float *out = (t_float *)(w[3+x->ninlets]);
@@ -165,9 +156,8 @@ static t_int *select_perform(t_int *w)
   return (w+4+x->ninlets);
 }
 
-static void select_dsp(t_select *x, t_signal **sp)
-{
-  int n = sp[0]->s_n, i; // there is be a smarter way!!!
+static void select_dsp(t_select *x, t_signal **sp) {
+  int n = sp[0]->s_n, i; // there is a smarter way!!!
   switch (x->ninlets) 
     {
     case 1: dsp_add(select_perform, 4, x, n, sp[0]->s_vec, sp[1]->s_vec);
@@ -196,8 +186,7 @@ static void select_dsp(t_select *x, t_signal **sp)
     }
 }
 
-static void select_time(t_select *x, t_floatarg time) // time
-{
+static void select_time(t_select *x, t_floatarg time) {
     int i, shorter;
     time = time < 1 ? 1 : time;
     shorter = (time < x->fadetime);
@@ -206,7 +195,7 @@ static void select_time(t_select *x, t_floatarg time) // time
     for(i = 0; i < x->ninlets; i++) // shortcheck
     {
         if(shorter && x->ip.timeoff[i]) // correct active timeoffs for new x->fadeticks
-            x->ip.timeoff[i] = clock_getlogicaltime() - ((x->fadeticks - x->ip.counter[i]) / x->sr_khz - 1) * TIMEUNITPERSEC;
+            x->ip.timeoff[i] = clock_getlogicaltime() - ((x->fadeticks - x->ip.counter[i]) / x->sr_khz - 1) * TIME_UNITS_MS;
     }
     for(i = 0; i < x->ninlets; i++) // adjustcounters
     {
@@ -217,18 +206,15 @@ static void select_time(t_select *x, t_floatarg time) // time
 
 // JUNTAR COM MODE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 static double aepower(double ep) // convert from equal to linear
-{ //    double answer = (atan(2*ep*ep - 1) + 0.785398) / 1.5866;
+{ //    double answer = (atan(2*ep*ep - 1) + 0.785398) / 1.5866; // ???
     double answer = (acos(ep) + HALF_PI) / HALF_PI;
-    
     answer = 2 - answer;   // ??? - but does the trick
-    
     answer = answer < 0 ? 0 : answer;
     answer = answer > 1 ? 1 : answer;
     return answer;
 }
 
-void select_mode(t_select *x, t_floatarg mode)
-{
+void select_mode(t_select *x, t_floatarg mode) {
     int i;
     if(mode == 1 && x->lastfadetype != 1) // change to equal power
     {
@@ -301,8 +287,7 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv)
     return (x);
 }
 
-void select_tilde_setup(void)
-{
+void select_tilde_setup(void) {
     select_class = class_new(gensym("select~"), (t_newmethod)select_new, 0,
                              sizeof(t_select), CLASS_DEFAULT, A_GIMME, 0);
     class_addfloat(select_class, (t_method)select_float);
