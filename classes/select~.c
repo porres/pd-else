@@ -71,25 +71,8 @@ static double epower(double rate) {
  return tmp;
 }
 
-static void updatefades(t_select *x){
-    int i;
-    for(i = 0; i < x->ninlets; i++){
-        if(!x->ip.counter[i])
-            x->ip.fade[i] = 0;
-        if(x->ip.active[i] && x->ip.counter[i] <= x->fadeticks){
-            if(x->ip.counter[i])
-                x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
-            x->ip.counter[i]++;
-        }
-        else if (!x->ip.active[i] && x->ip.counter[i] > 0){
-            x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
-            x->ip.counter[i]--;
-        }
-    }
-}
-
 static t_int *select_perform(t_int *w){
-    int i, j;
+    int i;
     t_select *x = (t_select *)(w[1]);
     int n = (int)(w[2]);
     for(i = 0; i < x->ninlets; i++)
@@ -97,7 +80,20 @@ static t_int *select_perform(t_int *w){
     float *out = (t_float *)(w[3 + x->ninlets]);
     while (n--) {
         float sum = 0;
-        updatefades(x);
+        for(i = 0; i < x->ninlets; i++){ // update fades
+            if(!x->ip.counter[i])
+                x->ip.fade[i] = 0;
+            if(x->ip.active[i] && x->ip.counter[i] <= x->fadeticks){
+                if(x->ip.counter[i]){
+                    x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
+                    x->ip.counter[i]++;
+                }
+            }
+            else if (!x->ip.active[i] && x->ip.counter[i] > 0){
+                x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
+                x->ip.counter[i]--;
+            }
+        } // perform
         for(i = 0; i < x->ninlets; i++)
             if(x->ip.fade[i]) {
                 if(x->fadetype == EPOWER)
