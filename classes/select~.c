@@ -58,17 +58,11 @@ void select_float(t_select *x, t_floatarg f){
   }
 }
 
-static double epower(double rate) {
- double tmp;
- if(rate < 0)
-  rate = 0;
- if(rate > 1)
-  rate = 1;
- rate *= HALF_PI;
- tmp = sin(rate);
- tmp = tmp < 0 ? 0 : tmp;
- tmp = tmp > 1 ? 1 : tmp;
- return tmp;
+static double epower(double fade) {
+    fade = fade < 0 ? 0 : fade > 1 ? : 1;
+    double radians = fade * HALF_PI;
+    double ep = sin(radians);
+    return ep;
 }
 
 static t_int *select_perform(t_int *w){
@@ -80,23 +74,25 @@ static t_int *select_perform(t_int *w){
     float *out = (t_float *)(w[3 + x->ninlets]);
     while (n--) {
         float sum = 0;
-        for(i = 0; i < x->ninlets; i++){ // updatefades(x);
-            if(!x->ip.counter[i])
+        for(i = 0; i < x->ninlets; i++){ // update fade values
+            if(!x->ip.counter[i]) // if counter == 0, fade = 0 (?)
                 x->ip.fade[i] = 0;
-            if(x->ip.active[i] && x->ip.counter[i] <= x->fadeticks){
-                if(x->ip.counter[i])
-                    x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
-                x->ip.counter[i]++;
+            if(x->ip.active[i] && x->ip.counter[i] <= x->fadeticks)
+            { // if active and counter < ticks
+                if(x->ip.counter[i]) // if counter != 0
+                    x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks; // fade value
+                x->ip.counter[i]++; // increase counter
             }
-            else if (!x->ip.active[i] && x->ip.counter[i] > 0){
-                x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
-                x->ip.counter[i]--;
+            else if (!x->ip.active[i] && x->ip.counter[i] > 0)
+            { // if inactive and counter > 0
+                x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks; // fade value
+                x->ip.counter[i]--; // decrease counter
             }
         }
         for(i = 0; i < x->ninlets; i++) // perform
             if(x->ip.fade[i]) {
                 if(x->fadetype == EPOWER)
-                    sum += *x->ip.in[i]++ * epower(x->ip.fade[i]);
+                    sum += *x->ip.in[i]++ * sin(x->ip.fade[i] * HALF_PI);
                 else
                     sum += *x->ip.in[i]++ * x->ip.fade[i];
             }
