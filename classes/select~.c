@@ -112,7 +112,7 @@ static void select_time(t_select *x, t_floatarg time) {
     time = time < 0 ? 0 : time;
     shorter = (time < x->fadetime);
     x->fadetime = time;
-    x->fadeticks = (int)(x->sr_khz * x->fadetime); // no. of ticks to reach specified fade time
+    x->fadeticks = (int)(x->sr_khz * x->fadetime) + 1; // no. of ticks to reach specified fade time
     for(i = 0; i < x->ninlets; i++){ // shortcheck
         if(shorter && x->ip.timeoff[i]) // correct active timeoffs for new x->fadeticks
             x->ip.timeoff[i] = clock_getlogicaltime() - ((x->fadeticks - x->ip.counter[i]) / x->sr_khz - 1) * TIME_UNITS_MS;
@@ -208,7 +208,7 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv) {
     outlet_new(&x->x_obj, gensym("signal"));
     x->lastchannel = x->actuallastchannel = 0;
     x->fadecount = 0;
-    x->fadeticks = (int)(x->sr_khz * x->fadetime); // no. of samples to crossfade
+    x->fadeticks = (int)(x->sr_khz * x->fadetime) + 1; // no. of samples to crossfade
     x->channel = init_channel;
     for(i = 0; i < INPUTLIMIT; i++){
         x->ip.active[i] = 0;
