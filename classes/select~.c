@@ -13,7 +13,7 @@ static t_class *select_class;
 #define EPOWER 1
 #define TIME_UNITS_MS (32.*441.) // ????????????????????????????
 
-typedef struct _ip { // keeps track of each signal input [0] is 1st inlet!!!
+typedef struct _ip { // [0] is 1st inlet!!!
   int active[INPUTLIMIT]; 
   int counter[INPUTLIMIT];
   double timeoff[INPUTLIMIT];
@@ -28,7 +28,6 @@ typedef struct _select {
   int actuallastchannel;
   int ninlets;
   float fadetime;
-  double changetime;
   int fade_in_samps;
   int fadetype;
   int lastfadetype;
@@ -118,18 +117,9 @@ static void select_time(t_select *x, t_floatarg time) {
     }
 }
 
-static double aepower(double ep) // convert from equal to linear
-{ //    double answer = (atan(2*ep*ep - 1) + 0.785398) / 1.5866; // ???
-    double answer = (acos(ep) + HALF_PI) / HALF_PI;
-    answer = 2 - answer;   // ??? - but does the trick
-    answer = answer < 0 ? 0 : answer;
-    answer = answer > 1 ? 1 : answer;
-    return answer;
-}
-
-void select_lin(t_select *x) {
+void select_lin(t_select *x) { // BUGGED!!!!!!
     int i;
-    if(x->lastfadetype != 0){ // change to linear
+    if(x->lastfadetype != LINEAR){ // change to linear
         for(i = 0; i < x->ninlets; i++) {
             double ep = x->ip.fade[i];
             ep = ep < 0 ? 0 : ep > 1 ? : 1;
@@ -144,10 +134,13 @@ void select_lin(t_select *x) {
 
 void select_ep(t_select *x) {
     int i;
-    if(x->lastfadetype != 1){ // change to equal power
+    if(x->lastfadetype != EPOWER){ // change to equal power
         for(i = 0; i < x->ninlets; i++) {
             int oldcounter = x->ip.counter[i];
-            x->ip.counter[i] = aepower(x->ip.fade[i]) * x->fade_in_samps;
+            double aepower = (acos(x->ip.fade[i]) + HALF_PI) / HALF_PI;
+            aepower = 2 - aepower;   // ??? - but does the trick (???????????)
+            aepower = aepower < 0 ? 0 : aepower > 1 ? 1 : aepower;
+            x->ip.counter[i] = aepower * x->fade_in_samps;
             double ep = (x->ip.counter[i] / (double)x->fade_in_samps);
             ep = ep < 0 ? 0 : ep > 1 ? : 1;
             x->ip.fade[i] = sin(ep * HALF_PI); // ???
