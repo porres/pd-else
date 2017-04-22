@@ -29,24 +29,19 @@ typedef struct _select {
   int ninlets;
   float fadetime;
   double changetime;
-  int fadecount;
-  int fadeticks;
+  int fade_in_samps;
   int fadetype;
   int lastfadetype;
   float sr_khz;
   t_ip ip;
 } t_select;
 
-void select_float(t_select *x, t_floatarg f){
-  f = (int)f;
-  f = f > x->ninlets ? x->ninlets : f;
-  f = f < 0 ? 0 : f;
-  if(f != x->lastchannel){
-    if(f == x->actuallastchannel)
-        x->fadecount = x->fadeticks - x->fadecount;
-    else
-        x->fadecount = 0;
-        x->channel = f;
+void select_float(t_select *x, t_floatarg ch){
+  ch = (int)ch;
+  ch = ch > x->ninlets ? x->ninlets : ch;
+  ch = ch < 0 ? 0 : ch;
+  if(ch != x->lastchannel){
+    x->channel = ch;
     if(x->channel)
         x->ip.active[x->channel - 1] = 1;
     if(x->lastchannel) {
@@ -69,11 +64,11 @@ static t_int *select_perform(t_int *w){
     {
         float sum = 0;
         for(i = 0; i < x->ninlets; i++) {
-            if(x->ip.active[i] && x->ip.counter[i] < x->fadeticks)
+            if(x->ip.active[i] && x->ip.counter[i] < x->fade_in_samps)
                 x->ip.counter[i]++;
             else if (!x->ip.active[i] && x->ip.counter[i] > 0)
                 x->ip.counter[i]--;
-            x->ip.fade[i] = x->ip.counter[i] / (double)x->fadeticks;
+            x->ip.fade[i] = x->ip.counter[i] / (double)x->fade_in_samps;
             if(x->fadetype == EPOWER)
                 sum += *x->ip.in[i]++ * sin(x->ip.fade[i] * HALF_PI);
             else
@@ -112,14 +107,14 @@ static void select_time(t_select *x, t_floatarg time) {
     time = time < 0 ? 0 : time;
     shorter = (time < x->fadetime);
     x->fadetime = time;
-    x->fadeticks = (int)(x->sr_khz * x->fadetime) + 1; // no. of ticks to reach specified fade time
+    x->fade_in_samps = (int)(x->sr_khz * x->fadetime) + 1; // no. of ticks to reach specified fade time
     for(i = 0; i < x->ninlets; i++){ // shortcheck
-        if(shorter && x->ip.timeoff[i]) // correct active timeoffs for new x->fadeticks
-            x->ip.timeoff[i] = clock_getlogicaltime() - ((x->fadeticks - x->ip.counter[i]) / x->sr_khz - 1) * TIME_UNITS_MS;
+        if(shorter && x->ip.timeoff[i]) // correct active timeoffs for new x->fade_in_samps
+            x->ip.timeoff[i] = clock_getlogicaltime() - ((x->fade_in_samps - x->ip.counter[i]) / x->sr_khz - 1) * TIME_UNITS_MS;
     }
     for(i = 0; i < x->ninlets; i++){ // adjustcounters
         if(x->ip.counter[i])
-            x->ip.counter[i] = x->ip.fade[i] * (double)x->fadeticks;
+            x->ip.counter[i] = x->ip.fade[i] * (double)x->fade_in_samps;
     }
 }
 
@@ -140,8 +135,8 @@ void select_lin(t_select *x) {
             ep = ep < 0 ? 0 : ep > 1 ? : 1;
             ep = sin(ep * HALF_PI);
             int oldcounter = x->ip.counter[i];
-            x->ip.counter[i] = ep * x->fadeticks;
-            x->ip.fade[i] = x->ip.counter[i] / (double)x->fadeticks; // ???
+            x->ip.counter[i] = ep * x->fade_in_samps;
+            x->ip.fade[i] = x->ip.counter[i] / (double)x->fade_in_samps; // ???
         }
         x->lastfadetype = x->fadetype = LINEAR;
     }
@@ -152,8 +147,8 @@ void select_ep(t_select *x) {
     if(x->lastfadetype != 1){ // change to equal power
         for(i = 0; i < x->ninlets; i++) {
             int oldcounter = x->ip.counter[i];
-            x->ip.counter[i] = aepower(x->ip.fade[i]) * x->fadeticks;
-            double ep = (x->ip.counter[i] / (double)x->fadeticks);
+            x->ip.counter[i] = aepower(x->ip.fade[i]) * x->fade_in_samps;
+            double ep = (x->ip.counter[i] / (double)x->fade_in_samps);
             ep = ep < 0 ? 0 : ep > 1 ? : 1;
             x->ip.fade[i] = sin(ep * HALF_PI); // ???
         }
@@ -207,8 +202,7 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv) {
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     outlet_new(&x->x_obj, gensym("signal"));
     x->lastchannel = x->actuallastchannel = 0;
-    x->fadecount = 0;
-    x->fadeticks = (int)(x->sr_khz * x->fadetime) + 1; // no. of samples to crossfade
+    x->fade_in_samps = (int)(x->sr_khz * x->fadetime) + 1; // no. of samples to crossfade
     x->channel = init_channel;
     for(i = 0; i < INPUTLIMIT; i++){
         x->ip.active[i] = 0;
