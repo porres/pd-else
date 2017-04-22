@@ -17,7 +17,7 @@ typedef struct _ip { // keeps track of each signal input [0] is 1st inlet!!!
   int active[INPUTLIMIT]; 
   int counter[INPUTLIMIT];
   double timeoff[INPUTLIMIT];
-  float fade[INPUTLIMIT];
+  double fade[INPUTLIMIT];
   float *in[INPUTLIMIT];
 } t_ip;
 
@@ -58,13 +58,6 @@ void select_float(t_select *x, t_floatarg f){
   }
 }
 
-static double epower(double fade) {
-    fade = fade < 0 ? 0 : fade > 1 ? : 1;
-    double radians = fade * HALF_PI;
-    double ep = sin(radians);
-    return ep;
-}
-
 static t_int *select_perform(t_int *w){
     int i;
     t_select *x = (t_select *)(w[1]);
@@ -80,7 +73,7 @@ static t_int *select_perform(t_int *w){
                 x->ip.counter[i]++;
             else if (!x->ip.active[i] && x->ip.counter[i] > 0)
                 x->ip.counter[i]--;
-            x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
+            x->ip.fade[i] = x->ip.counter[i] / (double)x->fadeticks;
             if(x->fadetype == EPOWER)
                 sum += *x->ip.in[i]++ * sin(x->ip.fade[i] * HALF_PI);
             else
@@ -92,7 +85,7 @@ static t_int *select_perform(t_int *w){
         if(!x->ip.active[i])
             if(clock_gettimesince(x->ip.timeoff[i]) > x->fadetime && x->ip.timeoff[i]){
                 x->ip.timeoff[i] = 0;
-                x->ip.fade[i] = 0;
+                x->ip.fade[i] = 0; // this shouldn't exist, I'm sure...
             }
     }
     return (w + 4 + x->ninlets);
@@ -126,7 +119,7 @@ static void select_time(t_select *x, t_floatarg time) {
     }
     for(i = 0; i < x->ninlets; i++){ // adjustcounters
         if(x->ip.counter[i])
-            x->ip.counter[i] = x->ip.fade[i] * (float)x->fadeticks;
+            x->ip.counter[i] = x->ip.fade[i] * (double)x->fadeticks;
     }
 }
 
@@ -143,10 +136,12 @@ void select_lin(t_select *x) {
     int i;
     if(x->lastfadetype != 0){ // change to linear
         for(i = 0; i < x->ninlets; i++) {
-            float fade = x->ip.fade[i];
+            double ep = x->ip.fade[i];
+            ep = ep < 0 ? 0 : ep > 1 ? : 1;
+            ep = sin(ep * HALF_PI);
             int oldcounter = x->ip.counter[i];
-            x->ip.counter[i] = epower(fade) * x->fadeticks;
-            x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks; // ???
+            x->ip.counter[i] = ep * x->fadeticks;
+            x->ip.fade[i] = x->ip.counter[i] / (double)x->fadeticks; // ???
         }
         x->lastfadetype = x->fadetype = LINEAR;
     }
@@ -156,10 +151,11 @@ void select_ep(t_select *x) {
     int i;
     if(x->lastfadetype != 1){ // change to equal power
         for(i = 0; i < x->ninlets; i++) {
-            float fade = x->ip.fade[i];
             int oldcounter = x->ip.counter[i];
-            x->ip.counter[i] = aepower(fade) * x->fadeticks;
-            x->ip.fade[i] = epower(x->ip.counter[i] / (float)x->fadeticks); // ???
+            x->ip.counter[i] = aepower(x->ip.fade[i]) * x->fadeticks;
+            double ep = (x->ip.counter[i] / (double)x->fadeticks);
+            ep = ep < 0 ? 0 : ep > 1 ? : 1;
+            x->ip.fade[i] = sin(ep * HALF_PI); // ???
         }
         x->lastfadetype = x->fadetype = EPOWER;
     }
