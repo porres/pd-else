@@ -13,7 +13,7 @@ static t_class *select_class;
 #define EPOWER 1
 #define TIME_UNITS_MS (32.*441.) // ????????????????????????????
 
-typedef struct _ip { // keeps track of each signal input
+typedef struct _ip { // keeps track of each signal input [0] is 1st inlet!!!
   int active[INPUTLIMIT]; 
   int counter[INPUTLIMIT];
   double timeoff[INPUTLIMIT];
@@ -72,29 +72,19 @@ static t_int *select_perform(t_int *w){
     for(i = 0; i < x->ninlets; i++)
         x->ip.in[i] = (t_float *)(w[3 + i]);
     float *out = (t_float *)(w[3 + x->ninlets]);
-    while (n--) {
+    while (n--)
+    {
         float sum = 0;
-        for(i = 0; i < x->ninlets; i++){ // update fade values
-            if(!x->ip.counter[i]) // if counter == 0, fade = 0 (?)
-                x->ip.fade[i] = 0;
-            if(x->ip.active[i] && x->ip.counter[i] <= x->fadeticks)
-            { // if active and counter < ticks
-                if(x->ip.counter[i]) // if counter != 0
-                    x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks; // fade value
-                x->ip.counter[i]++; // increase counter
-            }
+        for(i = 0; i < x->ninlets; i++) {
+            if(x->ip.active[i] && x->ip.counter[i] < x->fadeticks)
+                x->ip.counter[i]++;
             else if (!x->ip.active[i] && x->ip.counter[i] > 0)
-            { // if inactive and counter > 0
-                x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks; // fade value
-                x->ip.counter[i]--; // decrease counter
-            }
-        }
-        for(i = 0; i < x->ninlets; i++) // perform
-            if(x->ip.fade[i]) {
-                if(x->fadetype == EPOWER)
-                    sum += *x->ip.in[i]++ * sin(x->ip.fade[i] * HALF_PI);
-                else
-                    sum += *x->ip.in[i]++ * x->ip.fade[i];
+                x->ip.counter[i]--;
+            x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks;
+            if(x->fadetype == EPOWER)
+                sum += *x->ip.in[i]++ * sin(x->ip.fade[i] * HALF_PI);
+            else
+                sum += *x->ip.in[i]++ * x->ip.fade[i];
             }
         *out++ = sum;
     }
@@ -156,7 +146,7 @@ void select_lin(t_select *x) {
             float fade = x->ip.fade[i];
             int oldcounter = x->ip.counter[i];
             x->ip.counter[i] = epower(fade) * x->fadeticks;
-            x->ip.fade[i] = x->ip.counter[i]/ (float)x->fadeticks; // ???
+            x->ip.fade[i] = x->ip.counter[i] / (float)x->fadeticks; // ???
         }
         x->lastfadetype = x->fadetype = LINEAR;
     }
@@ -169,7 +159,7 @@ void select_ep(t_select *x) {
             float fade = x->ip.fade[i];
             int oldcounter = x->ip.counter[i];
             x->ip.counter[i] = aepower(fade) * x->fadeticks;
-            x->ip.fade[i] = epower(x->ip.counter[i]/ (float)x->fadeticks); // ???
+            x->ip.fade[i] = epower(x->ip.counter[i] / (float)x->fadeticks); // ???
         }
         x->lastfadetype = x->fadetype = EPOWER;
     }
