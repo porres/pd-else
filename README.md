@@ -19,7 +19,7 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Current Object list (89 objects):
+Current Object list (90 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [9]
 - [cosine~]
@@ -104,10 +104,11 @@ GUI: [9]
 - [mix4~]
 - [setdsp~]
 
-SIGNAL ROUTING: [4]
+SIGNAL ROUTING: [5]
 - [balance~]
 - [pan2~]
 - [pan4~]
+- [select~]
 - [xfade~]
 
 MATH/LOGIC: [4]
