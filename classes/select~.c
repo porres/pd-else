@@ -25,7 +25,6 @@ typedef struct _select {
   int lastchannel;
   int actuallastchannel;
   int ninlets;
-  float fadetime;
   int fade_in_samps;
   int fadetype;
   int lastfadetype;
@@ -94,8 +93,7 @@ static void select_dsp(t_select *x, t_signal **sp) {
 static void select_time(t_select *x, t_floatarg time) {
     int i;
     time = time < 0 ? 0 : time;
-    x->fadetime = time;
-    x->fade_in_samps = (int)(x->sr_khz * x->fadetime) + 1; // no. of ticks to reach specified fade time
+    x->fade_in_samps = (int)(x->sr_khz * time) + 1; // no. of ticks to reach specified fade time
     for(i = 0; i < x->ninlets; i++){ // adjustcounters
         if(x->ip.counter[i])
             x->ip.counter[i] = x->ip.fade[i] * (double)x->fade_in_samps;
@@ -126,7 +124,6 @@ void select_ep(t_select *x) {
             aepower = 2 - aepower;   // ??? - but does the trick (???????????)
             aepower = aepower < 0 ? 0 : aepower > 1 ? 1 : aepower;
             x->ip.counter[i] = aepower * x->fade_in_samps;
-            double ep = (x->ip.counter[i] / (double)x->fade_in_samps);
         }
         x->lastfadetype = x->fadetype = EPOWER;
     }
@@ -173,12 +170,12 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv) {
     x->ninlets = ch < 1 ? 1 : ch;
     if(x->ninlets > INPUTLIMIT)
         x->ninlets = INPUTLIMIT;
-    x->fadetime = ms > 0 ? ms : 0;
     for(i = 0; i < x->ninlets - 1; i++)
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     outlet_new(&x->x_obj, gensym("signal"));
     x->lastchannel = x->actuallastchannel = 0;
-    x->fade_in_samps = (int)(x->sr_khz * x->fadetime) + 1; // no. of samples to crossfade
+    ms = ms > 0 ? ms : 0;
+    x->fade_in_samps = (int)(x->sr_khz * ms) + 1; // no. of samples to crossfade
     x->channel = init_channel;
     for(i = 0; i < INPUTLIMIT; i++){
         x->ip.active[i] = 0;
