@@ -20,26 +20,26 @@ typedef struct _ip { // [0] is 1st inlet!!!
 } t_ip;
 
 typedef struct _select {
-  t_object x_obj;
-  int   x_channel;
-  int   x_lastchannel;
-  int   x_ninlets;
-  int   x_fade_in_samps;
-  int   x_fadetype;
-  int   x_last_fadetype;
-  float x_sr_khz;
+  t_object  x_obj;
+  int       x_channel;
+  int       x_lastchannel;
+  int       x_ninlets;
+  double    x_fade_in_samps;
+  int       x_fadetype;
+  int       x_last_fadetype;
+  float     x_sr_khz;
   t_ip ip;
 } t_select;
 
 void select_float(t_select *x, t_floatarg ch){
   ch = (int)ch > x->x_ninlets ? x->x_ninlets : (int)ch;
   x->x_channel = ch < 0 ? 0 : ch;
-  if(ch != x->x_lastchannel){
+  if(x->x_channel != x->x_lastchannel){
       if(x->x_channel)
           x->ip.active_channel[x->x_channel - 1] = 1;
       if(x->x_lastchannel)
           x->ip.active_channel[x->x_lastchannel - 1] = 0;
-      x->x_lastchannel = ch;
+      x->x_lastchannel = x->x_channel;
   }
 }
 
@@ -58,7 +58,7 @@ static t_int *select_perform(t_int *w){
                 x->ip.counter[i]++;
             else if (!x->ip.active_channel[i] && x->ip.counter[i] > 0)
                 x->ip.counter[i]--;
-            x->ip.fade[i] = x->ip.counter[i] / (double)x->x_fade_in_samps;
+            x->ip.fade[i] = x->ip.counter[i] / x->x_fade_in_samps;
             if(x->x_fadetype == EPOWER)
                 x->ip.fade[i] = sin(x->ip.fade[i] * HALF_PI);
             sum += *x->ip.in[i]++ * x->ip.fade[i];
@@ -86,9 +86,9 @@ static void select_dsp(t_select *x, t_signal **sp) {
 
 static void select_time(t_select *x, t_floatarg ms) {
     int i;
-    double old_x_fade_in_samps = (double)x->x_fade_in_samps;
+    double old_x_fade_in_samps = x->x_fade_in_samps;
     ms = ms < 0 ? 0 : ms;
-    x->x_fade_in_samps = (int)(x->x_sr_khz * ms) + 1;
+    x->x_fade_in_samps = x->x_sr_khz * ms + 1;
     for(i = 0; i < x->x_ninlets; i++)
         if(x->ip.counter[i]) // adjust counters
             x->ip.counter[i] = (x->ip.counter[i]/old_x_fade_in_samps) * x->x_fade_in_samps;
@@ -163,7 +163,7 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv) {
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     outlet_new(&x->x_obj, gensym("signal"));
     ms = ms > 0 ? ms : 0;
-    x->x_fade_in_samps = (int)(x->x_sr_khz * ms) + 1;
+    x->x_fade_in_samps = x->x_sr_khz * ms + 1;
     x->x_lastchannel = 0;
     for(i = 0; i < INPUTLIMIT; i++){
         x->ip.active_channel[i] = 0;
@@ -183,7 +183,7 @@ void select_tilde_setup(void) {
     class_addfloat(select_class, (t_method)select_float);
     class_addmethod(select_class, nullfn, gensym("signal"), 0);
     class_addmethod(select_class, (t_method)select_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(select_class, (t_method)select_time, gensym("time"), A_FLOAT, (t_atomtype) 0);
+    class_addmethod(select_class, (t_method)select_time, gensym("time"), A_FLOAT, 0);
     class_addmethod(select_class, (t_method)select_lin, gensym("lin"), 0);
     class_addmethod(select_class, (t_method)select_ep, gensym("ep"), 0);
 }
