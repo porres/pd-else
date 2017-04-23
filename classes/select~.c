@@ -11,12 +11,10 @@ static t_class *select_class;
 #define INPUTLIMIT 256
 #define LINEAR 0
 #define EPOWER 1
-#define TIME_UNITS_MS (32.*441.) // ????????????????????????????
 
 typedef struct _ip { // [0] is 1st inlet!!!
   int active[INPUTLIMIT]; 
   int counter[INPUTLIMIT];
-  double timeoff[INPUTLIMIT];
   double fade[INPUTLIMIT];
   float *in[INPUTLIMIT];
 } t_ip;
@@ -45,7 +43,6 @@ void select_float(t_select *x, t_floatarg ch){
         x->ip.active[x->channel - 1] = 1;
     if(x->lastchannel) {
         x->ip.active[x->lastchannel - 1] = 0;
-        x->ip.timeoff[x->lastchannel - 1] = clock_getlogicaltime();
         }
     x->actuallastchannel = x->lastchannel;
     x->lastchannel = x->channel;
@@ -75,13 +72,6 @@ static t_int *select_perform(t_int *w){
             }
         *out++ = sum;
     }
-    for(i = 0; i < x->ninlets; i++){ // check which input feeds oughtta be "switch~"ed off
-        if(!x->ip.active[i])
-            if(clock_gettimesince(x->ip.timeoff[i]) > x->fadetime && x->ip.timeoff[i]){
-                x->ip.timeoff[i] = 0;
-                x->ip.fade[i] = 0; // this shouldn't exist, I'm sure...
-            }
-    }
     return (w + 4 + x->ninlets);
 }
 
@@ -102,15 +92,10 @@ static void select_dsp(t_select *x, t_signal **sp) {
 }
 
 static void select_time(t_select *x, t_floatarg time) {
-    int i, shorter;
+    int i;
     time = time < 0 ? 0 : time;
-    shorter = (time < x->fadetime);
     x->fadetime = time;
     x->fade_in_samps = (int)(x->sr_khz * x->fadetime) + 1; // no. of ticks to reach specified fade time
-    for(i = 0; i < x->ninlets; i++){ // shortcheck
-        if(shorter && x->ip.timeoff[i]) // correct active timeoffs for new x->fade_in_samps
-            x->ip.timeoff[i] = clock_getlogicaltime() - ((x->fade_in_samps - x->ip.counter[i]) / x->sr_khz - 1) * TIME_UNITS_MS;
-    }
     for(i = 0; i < x->ninlets; i++){ // adjustcounters
         if(x->ip.counter[i])
             x->ip.counter[i] = x->ip.fade[i] * (double)x->fade_in_samps;
@@ -142,8 +127,6 @@ void select_ep(t_select *x) {
             aepower = aepower < 0 ? 0 : aepower > 1 ? 1 : aepower;
             x->ip.counter[i] = aepower * x->fade_in_samps;
             double ep = (x->ip.counter[i] / (double)x->fade_in_samps);
-            ep = ep < 0 ? 0 : ep > 1 ? : 1;
-            x->ip.fade[i] = sin(ep * HALF_PI); // ???
         }
         x->lastfadetype = x->fadetype = EPOWER;
     }
@@ -200,7 +183,6 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv) {
     for(i = 0; i < INPUTLIMIT; i++){
         x->ip.active[i] = 0;
         x->ip.counter[i] = 0;
-        x->ip.timeoff[i] = 0;
         x->ip.fade[i] = 0;
     }
     select_float(x, x->channel);
