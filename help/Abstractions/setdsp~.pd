@@ -76,7 +76,7 @@
 #X obj 226 139 s \$0-tgl-r;
 #X msg 226 115 set \$1;
 #X msg 135 177 \; pd dsp \$1;
-#N canvas 336 97 347 312 load_check 1;
+#N canvas 336 97 347 312 load_check 0;
 #X obj 134 157 sig~ 1;
 #X obj 134 201 snapshot~;
 #X obj 217 145 del 5;
