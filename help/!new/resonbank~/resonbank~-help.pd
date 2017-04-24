@@ -1,0 +1,13 @@
+#N canvas 714 82 648 409 10;
+#X obj 65 119 resonbank~ 8 1000;
+#X msg 164 62 freq 100 250 300 370 420 510 590 650 \, decay 2000 1800
+1500 900 2000 1800 1500 900 \, amp 0.9 0.5 0.9 0.6 0.8 0.3 0.4 1,
+f 41;
+#X obj 65 78 noise~;
+#X obj 51 184 else/out~;
+#X obj 65 153 lowpass~ 1000 3;
+#X connect 0 0 4 0;
+#X connect 1 0 0 1;
+#X connect 2 0 0 0;
+#X connect 4 0 3 0;
+#X connect 4 0 3 1;
