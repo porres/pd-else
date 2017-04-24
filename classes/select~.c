@@ -70,9 +70,8 @@ static t_int *select_perform(t_int *w){
 
 static void select_dsp(t_select *x, t_signal **sp) {
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    long i;
+    int i, count = x->x_ninlets + 3;
     t_int **sigvec;
-    int count = x->x_ninlets + 3;
     sigvec  = (t_int **) calloc(count, sizeof(t_int *));
     for(i = 0; i < count; i++)
         sigvec[i] = (t_int *) calloc(sizeof(t_int), 1); // init sigvec
@@ -86,12 +85,12 @@ static void select_dsp(t_select *x, t_signal **sp) {
 
 static void select_time(t_select *x, t_floatarg ms) {
     int i;
-    double old_x_fade_in_samps = x->x_fade_in_samps;
+    double last_fade_in_samps = x->x_fade_in_samps;
     ms = ms < 0 ? 0 : ms;
     x->x_fade_in_samps = x->x_sr_khz * ms + 1;
     for(i = 0; i < x->x_ninlets; i++)
         if(x->ip.counter[i]) // adjust counters
-            x->ip.counter[i] = (x->ip.counter[i]/old_x_fade_in_samps) * x->x_fade_in_samps;
+            x->ip.counter[i] = x->ip.counter[i] / last_fade_in_samps * x->x_fade_in_samps;
 }
 
 void select_lin(t_select *x) {

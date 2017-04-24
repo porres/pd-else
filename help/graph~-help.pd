@@ -138,13 +138,13 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 74 pd;
-#X text 121 403 1) float;
-#X text 195 329 - incoming signal for channel 1;
+#X text 133 403 1) float;
 #X text 84 90 [graph~] is a convenient abstraction for visualizing
 audio signals.;
-#X obj 172 143 graph~;
 #X obj 172 118 noise~;
-#X text 200 367 (none);
-#X text 181 403 - buffer size in samnples (default 441);
-#X connect 23 0 22 0;
+#X text 145 369 (none);
+#X text 193 403 - buffer size in samnples (default 441);
+#X obj 172 146 else/graph~;
+#X text 195 329 - incoming signal to graph;
+#X connect 21 0 24 0;
 #X coords 0 461 1 460 74 39 0;

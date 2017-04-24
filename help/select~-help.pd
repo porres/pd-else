@@ -67,7 +67,7 @@
 #X obj 199 201 else/select~ 2 1000 1;
 #N canvas 840 91 418 509 crossfade_modes 0;
 #X floatatom 98 159 3 0 1 0 - - -, f 3;
-#X obj 98 121 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 98 121 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X msg 127 219 ep;
 #X msg 137 248 lin;
@@ -81,8 +81,9 @@ the object with the -lin flag.;
 #X obj 115 187 sig~ 1;
 #X obj 98 311 sig2float~;
 #X obj 98 349 vsl 17 128 0 1 0 0 sdgdfg sdfhjmjmj empty 0 -9 0 10 -228856
--1 -1 12700 1;
+-1 -1 0 1;
 #X obj 98 280 else/select~ 1 2000 -lin;
+#X obj 326 402 else/setdsp~;
 #X connect 0 0 11 0;
 #X connect 1 0 0 0;
 #X connect 2 0 11 0;
