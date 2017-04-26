@@ -1,4 +1,4 @@
-#N canvas 553 23 561 575 10;
+#N canvas 565 23 561 575 10;
 #X obj 4 303 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 415 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -96,12 +96,12 @@ the object with the -lin flag.;
 #X text 189 348 - change crossfade type to linear;
 #X text 189 366 - change crossfade type to equal power;
 #X text 189 424 - selected inlet/channel;
-#X text 136 454 1) float - number of inlets/channels (default 1 \,
-max 256);
 #X text 136 471 2) float - crossfade time in ms (default 0 - no crossfade)
 ;
 #X text 136 487 3) float - initially selected channel (default 0: none)
 ;
+#X text 136 454 1) float - number of inlets/channels (default 1 \,
+max 500);
 #X connect 21 0 43 0;
 #X connect 22 0 43 1;
 #X connect 24 0 28 0;

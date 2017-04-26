@@ -2,33 +2,28 @@
 
 #include "m_pd.h"
 #include <math.h>
-#include <string.h>
 
 #define HALF_PI (M_PI * 0.5)
 
 static t_class *select_class;
 
-#define INPUTLIMIT 256
+#define INPUTLIMIT 500
 #define LINEAR 0
 #define EPOWER 1
 
-typedef struct _ip { // [0] is 1st inlet!!!
-  int active_channel[INPUTLIMIT]; 
-  int counter[INPUTLIMIT];
-  double fade[INPUTLIMIT];
-  float *in[INPUTLIMIT];
-} t_ip;
-
 typedef struct _select {
-  t_object  x_obj;
-  int       x_channel;
-  int       x_lastchannel;
-  int       x_ninlets;
-  double    x_fade_in_samps;
-  int       x_fadetype;
-  int       x_last_fadetype;
-  float     x_sr_khz;
-  t_ip ip;
+    t_object    x_obj;
+    int         x_channel;
+    int         x_lastchannel;
+    int         x_ninlets;
+    double      x_fade_in_samps;
+    int         x_fadetype;
+    int         x_last_fadetype;
+    float       x_sr_khz;
+    int         x_active_cha65nnel[INPUTLIMIT];
+    int         x_counter[INPUTLIMIT];
+    double      x_fade[INPUTLIMIT];
+    float       *x_in[INPUTLIMIT];
 } t_select;
 
 void select_float(t_select *x, t_floatarg ch){
@@ -36,9 +31,9 @@ void select_float(t_select *x, t_floatarg ch){
   x->x_channel = ch < 0 ? 0 : ch;
   if(x->x_channel != x->x_lastchannel){
       if(x->x_channel)
-          x->ip.active_channel[x->x_channel - 1] = 1;
+          x->x_active_channel[x->x_channel - 1] = 1;
       if(x->x_lastchannel)
-          x->ip.active_channel[x->x_lastchannel - 1] = 0;
+          x->x_active_channel[x->x_lastchannel - 1] = 0;
       x->x_lastchannel = x->x_channel;
   }
 }
@@ -48,20 +43,20 @@ static t_int *select_perform(t_int *w){
     t_select *x = (t_select *)(w[1]);
     int n = (int)(w[2]);
     for(i = 0; i < x->x_ninlets; i++)
-        x->ip.in[i] = (t_float *)(w[3 + i]);
+        x->x_in[i] = (t_float *)(w[3 + i]);
     float *out = (t_float *)(w[3 + x->x_ninlets]);
     while (n--)
     {
         float sum = 0;
         for(i = 0; i < x->x_ninlets; i++) {
-            if(x->ip.active_channel[i] && x->ip.counter[i] < x->x_fade_in_samps)
-                x->ip.counter[i]++;
-            else if (!x->ip.active_channel[i] && x->ip.counter[i] > 0)
-                x->ip.counter[i]--;
-            x->ip.fade[i] = x->ip.counter[i] / x->x_fade_in_samps;
+            if(x->x_active_channel[i] && x->x_counter[i] < x->x_fade_in_samps)
+                x->x_counter[i]++;
+            else if (!x->x_active_channel[i] && x->x_counter[i] > 0)
+                x->x_counter[i]--;
+            x->x_fade[i] = x->x_counter[i] / x->x_fade_in_samps;
             if(x->x_fadetype == EPOWER)
-                x->ip.fade[i] = sin(x->ip.fade[i] * HALF_PI);
-            sum += *x->ip.in[i]++ * x->ip.fade[i];
+                x->x_fade[i] = sin(x->x_fade[i] * HALF_PI);
+            sum += *x->x_in[i]++ * x->x_fade[i];
             }
         *out++ = sum;
     }
@@ -89,16 +84,16 @@ static void select_time(t_select *x, t_floatarg ms) {
     ms = ms < 0 ? 0 : ms;
     x->x_fade_in_samps = x->x_sr_khz * ms + 1;
     for(i = 0; i < x->x_ninlets; i++)
-        if(x->ip.counter[i]) // adjust counters
-            x->ip.counter[i] = x->ip.counter[i] / last_fade_in_samps * x->x_fade_in_samps;
+        if(x->x_counter[i]) // adjust counters
+            x->x_counter[i] = x->x_counter[i] / last_fade_in_samps * x->x_fade_in_samps;
 }
 
 void select_lin(t_select *x) {
     if(x->x_last_fadetype != LINEAR){ // change to linear
         int i;
         for(i = 0; i < x->x_ninlets; i++){
-            if(x->ip.counter[i]) // adjust counter
-                x->ip.counter[i] = x->ip.fade[i] * x->x_fade_in_samps;
+            if(x->x_counter[i]) // adjust counter
+                x->x_counter[i] = x->x_fade[i] * x->x_fade_in_samps;
         }
         x->x_last_fadetype = x->x_fadetype = LINEAR;
     }
@@ -108,9 +103,9 @@ void select_ep(t_select *x) {
     if(x->x_last_fadetype != EPOWER){ // change to equal power
         int i;
         for(i = 0; i < x->x_ninlets; i++) {
-            if(x->ip.counter[i]){ // adjust counter
-                double ep = 2 - ((acos(x->ip.fade[i]) + HALF_PI) / HALF_PI);
-                x->ip.counter[i] = ep * x->x_fade_in_samps;
+            if(x->x_counter[i]){ // adjust counter
+                double ep = 2 - ((acos(x->x_fade[i]) + HALF_PI) / HALF_PI);
+                x->x_counter[i] = ep * x->x_fade_in_samps;
             }
         }
         x->x_last_fadetype = x->x_fadetype = EPOWER;
@@ -165,9 +160,9 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv) {
     x->x_fade_in_samps = x->x_sr_khz * ms + 1;
     x->x_lastchannel = 0;
     for(i = 0; i < INPUTLIMIT; i++){
-        x->ip.active_channel[i] = 0;
-        x->ip.counter[i] = 0;
-        x->ip.fade[i] = 0;
+        x->x_active_channel[i] = 0;
+        x->x_counter[i] = 0;
+        x->x_fade[i] = 0;
     }
     select_float(x, init_channel);
     return (x);

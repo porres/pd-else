@@ -1,0 +1,70 @@
+#N canvas 553 23 560 492 10;
+#X obj 4 313 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 369 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 402 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 109 378 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 109 346 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+;
+#X text 137 345 signal;
+#X text 137 378 signal;
+#X obj 186 246 else/out~;
+#X obj 2 3 cnv 15 301 42 empty empty selectx~ 20 20 2 37 -233017 -1
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Select 0 28 2 18 -233017 -1 0;
+#X obj 141 40 cnv 4 4 4 empty empty with 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 76 40 cnv 4 4 4 empty empty channel 0 28 2 18 -233017 -1 0;
+#X obj 185 40 cnv 4 4 4 empty empty crossfade 0 28 2 18 -233017 -1
+0;
+#X text 179 345 - input channels to select;
+#X obj 109 321 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 255 179 osc~ 220;
+#X obj 393 178 osc~ 440;
+#X obj 186 211 else/selectx~ 3, f 35;
+#X obj 324 178 osc~ 330;
+#X obj 135 134 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X floatatom 132 154 0 0 0 0 - - -;
+#X obj 132 179 else/float2sig~ 10;
+#X text 179 321 - selected channel with crossfade;
+#X text 179 378 - crossfaded channels;
+#X text 61 86 [selectx~] selects between multiple inputs with equal
+power crossfade between two adjacent channels.;
+#X text 126 408 1) float - number of channels (default/min 2 \, max
+500);
+#X obj 4 455 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 3 426 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 180 434 - sets crossfade type to linear (default is equal power)
+;
+#X text 137 434 -index;
+#X text 137 321 signal;
+#X text 150 134 select channels;
+#X connect 22 0 24 1;
+#X connect 23 0 24 3;
+#X connect 24 0 7 0;
+#X connect 24 0 7 1;
+#X connect 25 0 24 2;
+#X connect 26 0 27 0;
+#X connect 27 0 28 0;
+#X connect 28 0 24 0;

@@ -1,6 +1,7 @@
 
 #include "m_pd.h"
-//#include <math.h>
+#include <math.h>
+#define HALF_PI (M_PI * 0.5)
 
 #define MAXINTPUT 500 //maximum number of channel inlets
 
@@ -9,6 +10,7 @@ typedef struct _selectx
     t_object   x_obj;
     t_float *x_ch_select; // main signal (channel selector)
     int 	  x_n_inlets; // inlets excluding main signal
+    int 	  x_indexed; // inlets excluding main signal
     t_float   x_channel; // 0 = closed, nonzero = index of inlet to pass (1 indexed)
     t_float  **x_ivecs; // copying from matrix
     t_float  *x_ovec; // single pointer since we're dealing with an array rather than an array of arrays
@@ -24,27 +26,30 @@ static t_int *selectx_perform(t_int *w)
     t_float **ivecs = x->x_ivecs;
     t_float *ovec = x->x_ovec;
     t_float output;
-    int n_inlets = x->x_n_inlets;
+    int max_sel = x->x_n_inlets - 1;
+    int indexed = x->x_indexed;
     int i;
     for(i = 0; i < nblock; i++){
         float sel = channel[i];
-        int ch = (int)channel[i];
-        float fade = channel[i] - (int)channel[i];
-        if (sel < 0)
-            output = 0;
-        else if (ch == 0)
-            output = ivecs[0][i] * fade;
-        else if (ch == n_inlets)
-            output = ivecs[n_inlets - 1][i] * (1 - fade);
-        else if (sel >= n_inlets + 1)
-            output = 0;
-        else
-            output = ivecs[ch - 1][i] * (1 - fade) + ivecs[ch][i] * fade;
+        if(!indexed)
+            sel = channel[i] * max_sel;
+        if(sel <= 0)
+            output = ivecs[0][i];
+        else if(sel >= max_sel)
+            output = ivecs[max_sel][i];
+        else{
+            int ch = (int)sel;
+            float fade = (sel - ch) * HALF_PI;
+            float fadeL = fabs(sin(fade - HALF_PI)); // cos
+            float fadeR = sin(fade); // sin
+            float left = ivecs[ch][i] * fadeL; // cos
+            float right = ivecs[ch + 1][i] * fadeR; // sin
+            output = left + right;
+        }
         ovec[i] = output;
     };
     return (w + 3);
 }
-
 
 static void selectx_dsp(t_selectx *x, t_signal **sp)
 {
@@ -61,7 +66,7 @@ static void selectx_dsp(t_selectx *x, t_signal **sp)
 static void *selectx_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_selectx *x = (t_selectx *)pd_new(selectx_class);
-    t_float n_inlets = 1; //inlets not counting selectx input
+    t_float n_inlets = 2; //inlets not counting selectx input
     t_float channel = 0; //start off closed initially
     int i;
     int argnum = 0;
@@ -85,8 +90,8 @@ static void *selectx_new(t_symbol *s, int argc, t_atom *argv)
     };
     
     //bounds checking
-    if(n_inlets < 1){
-        n_inlets = 1;
+    if(n_inlets < 2){
+        n_inlets = 2;
     }
     else if(n_inlets > (t_float)MAXINTPUT){
         n_inlets = MAXINTPUT;
@@ -97,7 +102,7 @@ static void *selectx_new(t_symbol *s, int argc, t_atom *argv)
     else if(channel > n_inlets){
         channel = n_inlets;
     };
-    
+    x->x_indexed = 0;
     x->x_n_inlets = (int)n_inlets;
     x->x_channel = channel;
     x->x_ivecs = getbytes(n_inlets * sizeof(*x->x_ivecs));
