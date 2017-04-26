@@ -1,0 +1,14 @@
+#N canvas 413 212 666 329 10;
+#X obj 206 152 else/out~;
+#X obj 273 76 osc~ 200;
+#X obj 341 76 osc~ 300;
+#X obj 206 43 phasor~ 1;
+#X obj 206 72 *~ 3;
+#X obj 206 117 else/selectx~ 2 1, f 23;
+#X floatatom 157 82 5 0 0 0 - - -, f 5;
+#X connect 1 0 5 1;
+#X connect 2 0 5 2;
+#X connect 3 0 4 0;
+#X connect 5 0 0 0;
+#X connect 5 0 0 1;
+#X connect 6 0 5 0;

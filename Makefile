@@ -70,6 +70,7 @@ rms~.class.sources := classes/rms~.c
 sawtooth~.class.sources := classes/sawtooth~.c
 sh~.class.sources := classes/sh~.c
 select~.class.sources := classes/select~.c
+selectx~.class.sources := classes/selectx~.c
 sin~.class.sources := classes/sin~.c
 sine~.class.sources := classes/sine~.c
 square~.class.sources := classes/square~.c
