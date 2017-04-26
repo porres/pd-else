@@ -23,18 +23,24 @@ static t_int *selectx_perform(t_int *w)
     t_float *channel = x->x_ch_select;
     t_float **ivecs = x->x_ivecs;
     t_float *ovec = x->x_ovec;
+    t_float output;
     int i,j;
     int n_inlets = x->x_n_inlets;
     for(i=0; i < nblock; i++){
         int ch = (int)channel[i];
-        if (ch > n_inlets){
-            ch = n_inlets;
-        }
-        t_float output = 0;
-        if(ch != 0){
+        float fade = channel[i] - (int)channel[i];
+        if (channel[i] < 0)
+            output = 0;
+        else if (ch == 0)
+            output = ivecs[0][i] * fade;
+        else if (ch == n_inlets)
+            output = ivecs[n_inlets - 1][i] * (1 - fade);
+        else if (channel[i] >= n_inlets + 1)
+            output = 0;
+        else {
             for(j = 0; j < n_inlets; j++){
                 if(ch == (j+1)){
-                        output = ivecs[j][i];
+                    output = ivecs[j][i] * (1 - fade) + ivecs[j+1][i] * fade;
                 };
             };
         };
