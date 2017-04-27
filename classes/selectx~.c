@@ -1,9 +1,9 @@
 
 #include "m_pd.h"
 #include <math.h>
-#define HALF_PI (M_PI * 0.5)
 
-#define MAXINTPUT 500 //maximum number of channel inlets
+#define HALF_PI (M_PI * 0.5)
+#define MAXINTPUT 500
 
 typedef struct _selectx
 {
@@ -11,12 +11,16 @@ typedef struct _selectx
     t_float *x_ch_select; // main signal (channel selector)
     int 	  x_n_inlets; // inlets excluding main signal
     int 	  x_indexed; // inlets excluding main signal
-    t_float   x_channel; // 0 = closed, nonzero = index of inlet to pass (1 indexed)
     t_float  **x_ivecs; // copying from matrix
     t_float  *x_ovec; // single pointer since we're dealing with an array rather than an array of arrays
 } t_selectx;
 
 static t_class *selectx_class;
+
+static void selectx_index(t_selectx *x, t_floatarg f)
+{
+    x->x_indexed = f != 0;
+}
 
 static t_int *selectx_perform(t_int *w)
 {
@@ -67,52 +71,40 @@ static void *selectx_new(t_symbol *s, int argc, t_atom *argv)
 {
     t_selectx *x = (t_selectx *)pd_new(selectx_class);
     t_float n_inlets = 2; //inlets not counting selectx input
-    t_float channel = 0; //start off closed initially
+    x->x_indexed = 1;
     int i;
     int argnum = 0;
     while(argc > 0){
-        if(argv -> a_type == A_FLOAT){
+        if(argv -> a_type == A_FLOAT) { //if current argument is a float
             t_float argval = atom_getfloatarg(0, argc, argv);
             switch(argnum){
                 case 0:
                     n_inlets = argval;
-                    break;
                 case 1:
-                    channel = argval;
-                    break;
+                    x->x_indexed = argval != 0;
                 default:
                     break;
             };
+            argnum++;
             argc--;
             argv++;
-            argnum++;
-        };
+        }
+        else
+            goto errstate;
     };
-    
-    //bounds checking
-    if(n_inlets < 2){
+    if(n_inlets < 2)
         n_inlets = 2;
-    }
-    else if(n_inlets > (t_float)MAXINTPUT){
+    else if(n_inlets > (t_float)MAXINTPUT)
         n_inlets = MAXINTPUT;
-    };
-    if(channel < 0){
-        channel = 0;
-    }
-    else if(channel > n_inlets){
-        channel = n_inlets;
-    };
-    x->x_indexed = 0;
     x->x_n_inlets = (int)n_inlets;
-    x->x_channel = channel;
     x->x_ivecs = getbytes(n_inlets * sizeof(*x->x_ivecs));
-    
-    for (i = 0; i < n_inlets; i++){
+    for (i = 0; i < n_inlets; i++)
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-    };
     outlet_new((t_object *)x, &s_signal);
-    
     return (x);
+    errstate:
+        pd_error(x, "select~x: improper args");
+        return NULL;
 }
 
 void * selectx_free(t_selectx *x){
@@ -125,5 +117,6 @@ void selectx_tilde_setup(void)
     selectx_class = class_new(gensym("selectx~"), (t_newmethod)selectx_new,
                     (t_method)selectx_free, sizeof(t_selectx), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(selectx_class, (t_method)selectx_dsp, gensym("dsp"), A_CANT, 0);
-    CLASS_MAINSIGNALIN(selectx_class, t_selectx, x_channel);
+    class_addmethod(selectx_class, nullfn, gensym("signal"), 0);
+    class_addmethod(selectx_class, (t_method)selectx_index, gensym("index"), A_FLOAT, 0);
 }

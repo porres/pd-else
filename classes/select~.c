@@ -3,13 +3,12 @@
 #include "m_pd.h"
 #include <math.h>
 
-#define HALF_PI (M_PI * 0.5)
-
 static t_class *select_class;
 
 #define INPUTLIMIT 500
 #define LINEAR 0
 #define EPOWER 1
+#define HALF_PI (M_PI * 0.5)
 
 typedef struct _select {
     t_object    x_obj;
@@ -20,7 +19,7 @@ typedef struct _select {
     int         x_fadetype;
     int         x_last_fadetype;
     float       x_sr_khz;
-    int         x_active_cha65nnel[INPUTLIMIT];
+    int         x_active_channel[INPUTLIMIT];
     int         x_counter[INPUTLIMIT];
     double      x_fade[INPUTLIMIT];
     float       *x_in[INPUTLIMIT];
@@ -141,8 +140,8 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv) {
             t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
             if(strcmp(curarg->s_name, "-lin")==0) {
                 fade_mode = LINEAR;
-                argc -= 1;
-                argv += 1;
+                argc--;
+                argv++;
                 }
             else{
                 goto errstate;
