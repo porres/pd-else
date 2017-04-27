@@ -19,7 +19,7 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Current Object list (90 objects):
+Current Object list (92 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [9]
 - [cosine~]
@@ -87,12 +87,6 @@ TRIGGERS: [8]
 - [toggleff~]
 - [trigate~]
 
-CONSTANT VALUES: [4]
-- [nyquist]
-- [pi]
-- [sr~]
-- [e]
-
 GUI: [9]
 - [out~]
 - [gain~]
@@ -104,22 +98,13 @@ GUI: [9]
 - [mix4~]
 - [setdsp~]
 
-SIGNAL ROUTING: [5]
+SIGNAL ROUTING: [6]
 - [balance~]
 - [pan2~]
 - [pan4~]
 - [select~]
+- [selectx~]
 - [xfade~]
-
-MATH/LOGIC: [4]
-- [accum~]
-- [lastvalue]
-- [loop]
-- [sin~]
-
-ENVELOPE: [2]
-- [decay~]
-- [decay2~]
 
 AUDIO PROCESSING (mostly filters) (10):
 - [bandpass~]
@@ -132,3 +117,22 @@ AUDIO PROCESSING (mostly filters) (10):
 - [peakfilter~]
 - [phaseshifter~]
 - [resonant~]
+
+ENVELOPE: [2]
+- [decay~]
+- [decay2~]
+
+MATH/LOGIC: [4]
+- [accum~]
+- [lastvalue]
+- [loop]
+- [sin~]
+
+CONSTANT VALUES: [4]
+- [nyquist]
+- [pi]
+- [sr~]
+- [e]
+
+MANAGE LISTS: [1]
+- [order]
