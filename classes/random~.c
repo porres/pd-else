@@ -9,6 +9,8 @@ typedef struct _random
     t_object   x_obj;
     int        x_val;
     t_float    x_random;
+    t_float    x_ol;
+    t_float    x_oh;
     t_outlet  *x_outlet;
 } t_random;
 
@@ -21,24 +23,32 @@ static t_int *random_perform(t_int *w)
 {
     t_random *x = (t_random *)(w[1]);
     int nblock = (t_int)(w[2]);
-    t_float *in = (t_float *)(w[3]);
+    t_float *in1 = (t_float *)(w[3]);
     t_float *out = (t_sample *)(w[4]);
     int val = x->x_val;
     t_float random = x->x_random;
     while (nblock--)
         {
-        float trig = *in++;
-        if (trig == 1) // update
+        t_float output;
+        float trig = *in1++;
+        float ol = x->x_ol; // Output LOW
+        float oh = x->x_oh; // Output HIGH
+        if (trig != 0) // update
             {
             random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
             val = val * 435898247 + 382842987;
             }
-        *out++ = random;
+        output = ((random + 1) / 2 == 0) ? ol :
+            (random + 1) / 2 > 0 ?
+            (ol + oh - ol) * (random + 1) / 2 :
+            (ol + oh - ol) * -((-random - 1) / 2);
+        *out++ = output;
         }
     x->x_val = val;
     x->x_random = random; // current output
     return (w + 5);
 }
+
 
 static void random_dsp(t_random *x, t_signal **sp)
 {
@@ -54,6 +64,8 @@ static void *random_free(t_random *x)
 static void *random_new(t_symbol *s, int ac, t_atom *av)
 {
     t_random *x = (t_random *)pd_new(random_class);
+    float low = -1;
+    float high = 1;
 // default seed
     static int init_seed = 234599;
     init_seed *= 1319;
@@ -69,7 +81,13 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
             switch(argnum)
             {
                 case 0:
-                    seed = (int)curf * 1319;
+//                    seed = (int)curf * 1319;
+                    low = curf;
+                    break;
+                case 1:
+                    high = curf;
+                    break;
+                default:
                     break;
             };
             argnum++;
@@ -78,6 +96,8 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
         av++;
     };
     x->x_val = seed; // load seed value
+    x->x_ol = low;
+    x->x_oh = high;
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return (x);
     errstate:
