@@ -1,4 +1,4 @@
-#N canvas 691 72 559 445 10;
+#N canvas 691 72 558 461 10;
 #X obj 2 3 cnv 15 301 42 empty empty random~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -21,7 +21,7 @@
 0;
 #X obj 168 39 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
-#X obj 2 404 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 424 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 334 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
@@ -43,18 +43,32 @@
 #X text 236 291 - impulse generates a random value;
 #X text 144 312 seed <float>;
 #X text 236 311 - sets seed value;
-#X text 236 346 - random values (between -1 and 1);
-#X text 237 380 - seed (default \, internal);
 #X text 84 91 [random~] generates random values between -1 and 1 when
 receiving an impulse. The random generator is from [noise~].;
 #X obj 232 249 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.838175 256;
+-228856 -1 -1 0.762709 256;
 #X obj 232 147 else/imp~ 1;
 #X obj 232 218 else/sig2float~;
-#N canvas 652 259 568 460 examples 0;
+#N canvas 797 40 389 320 examples 1;
+#X obj 68 189 else/out~;
+#X text 33 28 Generating random resonant frequencies on impulse;
+#X obj 68 72 else/imp~ 2;
+#X obj 68 146 else/resonant~ 0 2000;
+#X obj 231 150 number~;
+#X obj 129 110 else/random~ 500 700;
+#X connect 2 0 3 0;
+#X connect 2 0 5 0;
+#X connect 3 0 0 0;
+#X connect 3 0 0 1;
+#X connect 5 0 3 1;
+#X connect 5 0 4 0;
 #X restore 439 237 pd examples;
-#X connect 20 0 31 0;
+#X text 236 345 - random values;
+#X text 168 400 2) float;
+#X text 237 380 - low boundary value (default -1);
+#X text 237 400 - high boundary value (default 1);
+#X connect 20 0 29 0;
 #X connect 21 0 20 0;
 #X connect 22 0 21 0;
-#X connect 30 0 20 0;
-#X connect 31 0 29 0;
+#X connect 28 0 20 0;
+#X connect 29 0 27 0;

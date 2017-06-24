@@ -74,14 +74,19 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
     int argnum = 0;
     while(ac)
     {
-        if(av -> a_type != A_FLOAT) goto errstate;
+        if(av -> a_type != A_FLOAT)
+            {
+            // if arg = seed;
+            // seed = (int)curf * 1319;
+            // else
+                goto errstate;
+            }
         else
         {
             t_float curf = atom_getfloatarg(0, ac, av);
             switch(argnum)
             {
                 case 0:
-//                    seed = (int)curf * 1319;
                     low = curf;
                     break;
                 case 1:
@@ -90,11 +95,12 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
                 default:
                     break;
             };
-            argnum++;
         };
+        argnum++;
         ac--;
         av++;
     };
+//////////////////////////////////////////
     x->x_val = seed; // load seed value
     x->x_ol = low;
     x->x_oh = high;
