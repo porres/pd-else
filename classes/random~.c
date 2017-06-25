@@ -68,7 +68,7 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
     float low = -1;
     float high = 1;
 // default seed
-    static int init_seed = 234599;
+    static int init_seed = 74599;
     init_seed *= 1319;
     t_int seed = init_seed;
  // get arg
