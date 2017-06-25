@@ -9,6 +9,7 @@ typedef struct _random
     t_object   x_obj;
     int        x_val;
     t_float    x_random;
+    t_float    x_lastin;
     t_float    x_ol;
     t_float    x_oh;
     t_outlet  *x_outlet;
@@ -27,28 +28,28 @@ static t_int *random_perform(t_int *w)
     t_float *out = (t_sample *)(w[4]);
     int val = x->x_val;
     t_float random = x->x_random;
+    t_float lastin = x->x_lastin;
     while (nblock--)
         {
         t_float output;
         float trig = *in1++;
         float ol = x->x_ol; // Output LOW
         float oh = x->x_oh; // Output HIGH
-        if (trig != 0) // update
+        if (trig > 0 && lastin <= 0 || trig < 0 && lastin >= 0 ) // update
             {
             random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
             val = val * 435898247 + 382842987;
             }
         output = ((random + 1) / 2 == 0) ? ol :
-            (random + 1) / 2 > 0 ?
-            ol + (oh - ol) * (random + 1) / 2 :
-            ol + (oh - ol) * -((-random - 1) / 2);
+            ol + (oh - ol) * (random + 1) / 2;
         *out++ = output;
+        lastin = trig;
         }
     x->x_val = val;
     x->x_random = random; // current output
+    x->x_lastin = lastin; // last input
     return (w + 5);
 }
-
 
 static void random_dsp(t_random *x, t_signal **sp)
 {
@@ -72,6 +73,7 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
     t_int seed = init_seed;
  // get arg
     int argnum = 0;
+
     while(ac)
     {
         if(av -> a_type != A_FLOAT)
@@ -104,22 +106,18 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
     x->x_val = seed; // load seed value
     x->x_ol = low;
     x->x_oh = high;
+    x->x_lastin = 0;
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return (x);
     errstate:
-        pd_error(x, "random~: arguments needs to only contain floats");
+        pd_error(x, "random~: wrong arguments");
         return NULL;
 }
 
 void random_tilde_setup(void)
 {
-    random_class = class_new(gensym("random~"),
-        (t_newmethod)random_new,
-        (t_method)random_free,
-        sizeof(t_random),
-        CLASS_DEFAULT,
-        A_GIMME,
-        0);
+    random_class = class_new(gensym("random~"), (t_newmethod)random_new,
+        (t_method)random_free, sizeof(t_random), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(random_class, nullfn, gensym("signal"), 0);
     class_addmethod(random_class, (t_method)random_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(random_class, (t_method)random_seed, gensym("seed"), A_DEFFLOAT, 0);
