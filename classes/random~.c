@@ -40,8 +40,8 @@ static t_int *random_perform(t_int *w)
             }
         output = ((random + 1) / 2 == 0) ? ol :
             (random + 1) / 2 > 0 ?
-            (ol + oh - ol) * (random + 1) / 2 :
-            (ol + oh - ol) * -((-random - 1) / 2);
+            ol + (oh - ol) * (random + 1) / 2 :
+            ol + (oh - ol) * -((-random - 1) / 2);
         *out++ = output;
         }
     x->x_val = val;
