@@ -33,15 +33,15 @@ static t_int *random_perform(t_int *w)
         {
         t_float output;
         float trig = *in1++;
-        float ol = x->x_ol; // Output LOW
-        float oh = x->x_oh; // Output HIGH
-        if (trig > 0 && lastin <= 0 || trig < 0 && lastin >= 0 ) // update
+        float out_low = x->x_ol; // Output LOW
+        float out_high = x->x_oh; // Output HIGH
+        float range = out_high - out_low; // range
+            if (trig > 0 && lastin <= 0 || trig < 0 && lastin >= 0 ) // update
             {
             random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
             val = val * 435898247 + 382842987;
             }
-        output = ((random + 1) / 2 == 0) ? ol :
-            ol + (oh - ol) * (random + 1) / 2;
+        output = out_low + range * (random + 1) / 2;
         *out++ = output;
         lastin = trig;
         }
@@ -65,52 +65,71 @@ static void *random_free(t_random *x)
 static void *random_new(t_symbol *s, int ac, t_atom *av)
 {
     t_random *x = (t_random *)pd_new(random_class);
-    float low = -1;
-    float high = 1;
-// default seed
+/////////////////////////////////////////////////////////////////////////////////////
+    float low;
+    float high;
+    if(ac)
+        {
+        if(ac == 1)
+            {
+            if(av -> a_type == A_FLOAT)
+                {
+                low = 0;
+                high = atom_getfloat(av);
+                }
+            else goto errstate;
+            }
+        if(ac == 2)
+            {
+            int argnum = 0;
+            while(ac)
+                {
+                if(av -> a_type != A_FLOAT)
+                    {
+                    goto errstate;
+                    }
+                else
+                    {
+                    t_float curf = atom_getfloatarg(0, ac, av);
+                    switch(argnum)
+                        {
+                        case 0:
+                            low = curf;
+                            break;
+                        case 1:
+                            high = curf;
+                            break;
+                        default:
+                            break;
+                        };
+                    };
+                    argnum++;
+                    ac--;
+                    av++;
+                };
+            }
+        else goto errstate;
+        }
+    else
+        {
+        low = -1;
+        high = 1;
+        }
+    x->x_ol = low;
+    x->x_oh = high;
+/////////////////////////////////////////////////////////////////////////////////////
+    // default seed
     static int init_seed = 74599;
     init_seed *= 1319;
     t_int seed = init_seed;
- // get arg
-    int argnum = 0;
-
-    while(ac)
-    {
-        if(av -> a_type != A_FLOAT)
-            {
-            // if arg = seed;
-            // seed = (int)curf * 1319;
-            // else
-                goto errstate;
-            }
-        else
-        {
-            t_float curf = atom_getfloatarg(0, ac, av);
-            switch(argnum)
-            {
-                case 0:
-                    low = curf;
-                    break;
-                case 1:
-                    high = curf;
-                    break;
-                default:
-                    break;
-            };
-        };
-        argnum++;
-        ac--;
-        av++;
-    };
-//////////////////////////////////////////
     x->x_val = seed; // load seed value
-    x->x_ol = low;
-    x->x_oh = high;
+//
     x->x_lastin = 0;
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return (x);
+//
     errstate:
-        pd_error(x, "random~: wrong arguments");
+        pd_error(x, "random~: improper args");
         return NULL;
 }
 
