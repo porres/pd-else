@@ -37,8 +37,8 @@ static t_int *random_perform(t_int *w)
         {
         t_float output;
         float trig = *in1++;
-        float out_low = x->x_ol; // Output LOW
-        float out_high = x->x_oh; // Output HIGH
+        float out_low = *in2++; // Output LOW
+        float out_high = *in3++; // Output HIGH
         float range = out_high - out_low; // range
         if (trig > 0 && lastin <= 0 || trig < 0 && lastin >= 0 ) // update
             {
@@ -122,8 +122,8 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
         low = -1;
         high = 1;
         }
-    x->x_ol = low;
-    x->x_oh = high;
+//    x->x_ol = low;
+//    x->x_oh = high;
 /////////////////////////////////////////////////////////////////////////////////////
     static int init_seed = 74599;
     init_seed *= 1319;
@@ -133,9 +133,9 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
     x->x_lastin = 0;
 //
     x->x_low_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_low_let, 0);
+        pd_float((t_pd *)x->x_low_let, low);
     x->x_high_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_high_let, 0);
+        pd_float((t_pd *)x->x_high_let, high);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
 //
     return (x);
