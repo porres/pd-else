@@ -39,10 +39,10 @@ static t_int *random_perform(t_int *w)
             if (trig > 0 && lastin <= 0 || trig < 0 && lastin >= 0 ) // update
             {
             random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
+            random = out_low + range * (random + 1) / 2;
             val = val * 435898247 + 382842987;
             }
-        output = out_low + range * (random + 1) / 2;
-        *out++ = output;
+        *out++ = random;
         lastin = trig;
         }
     x->x_val = val;
@@ -108,7 +108,8 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
                     av++;
                 };
             }
-        else goto errstate;
+        if(ac > 2)
+            goto errstate;
         }
     else
         {

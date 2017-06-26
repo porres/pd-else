@@ -85,8 +85,6 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
                 {
                 low = 0;
                 high = atom_getfloat(av);
-//                    post("low: %d", low);
-//                    post("high: %d", high);
                 }
             else goto errstate;
             }
