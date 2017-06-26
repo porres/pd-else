@@ -9,10 +9,11 @@ typedef struct _random
     t_object   x_obj;
     int        x_val;
     t_float    x_random;
+    t_float    x_rescaled_random;
     t_float    x_lastin;
-    t_float    x_ol;
-    t_float    x_oh;
-    t_outlet  *x_outlet;
+    t_inlet    *x_low_let;
+    t_inlet    *x_high_let;
+    t_outlet   *x_outlet;
 } t_random;
 
 static void random_seed(t_random *x, t_floatarg f)
@@ -25,39 +26,47 @@ static t_int *random_perform(t_int *w)
     t_random *x = (t_random *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
-    t_float *out = (t_sample *)(w[4]);
+    t_float *in2 = (t_float *)(w[4]);
+    t_float *in3 = (t_float *)(w[5]);
+    t_float *out = (t_sample *)(w[6]);
     int val = x->x_val;
     t_float random = x->x_random;
+    t_float rescaled_random = x->x_rescaled_random;
     t_float lastin = x->x_lastin;
     while (nblock--)
         {
         t_float output;
         float trig = *in1++;
-        float out_low = x->x_ol; // Output LOW
-        float out_high = x->x_oh; // Output HIGH
+        float out_low = *in2; // Output LOW
+        float out_high = *in3; // Output HIGH
         float range = out_high - out_low; // range
-            if (trig > 0 && lastin <= 0 || trig < 0 && lastin >= 0 ) // update
+        if (trig > 0 && lastin <= 0 || trig < 0 && lastin >= 0 ) // update
             {
             random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
             val = val * 435898247 + 382842987;
+            rescaled_random = out_low + range * (random + 1) / 2; // rescaled output
             }
-        output = out_low + range * (random + 1) / 2;
+        output = out_low + range * (random + 1) / 2; // rescaled output
         *out++ = output;
         lastin = trig;
-        }
+        } 
     x->x_val = val;
     x->x_random = random; // current output
+    x->x_rescaled_random = rescaled_random; // current output
     x->x_lastin = lastin; // last input
-    return (w + 5);
+    return (w + 7);
 }
 
 static void random_dsp(t_random *x, t_signal **sp)
 {
-    dsp_add(random_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(random_perform, 6, x, sp[0]->s_n,
+            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
 static void *random_free(t_random *x)
 {
+    inlet_free(x->x_low_let);
+    inlet_free(x->x_high_let);
     outlet_free(x->x_outlet);
     return (void *)x;
 }
@@ -76,6 +85,8 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
                 {
                 low = 0;
                 high = atom_getfloat(av);
+//                    post("low: %d", low);
+//                    post("high: %d", high);
                 }
             else goto errstate;
             }
@@ -91,6 +102,7 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
                 else
                     {
                     t_float curf = atom_getfloatarg(0, ac, av);
+
                     switch(argnum)
                         {
                         case 0:
@@ -108,24 +120,28 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
                     av++;
                 };
             }
-        else goto errstate;
+        if(ac > 2)
+            goto errstate;
         }
     else
         {
         low = -1;
         high = 1;
         }
-    x->x_ol = low;
-    x->x_oh = high;
 /////////////////////////////////////////////////////////////////////////////////////
-    // default seed
     static int init_seed = 74599;
     init_seed *= 1319;
     t_int seed = init_seed;
     x->x_val = seed; // load seed value
 //
     x->x_lastin = 0;
+//
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
+    x->x_low_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_low_let, low);
+    x->x_high_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_high_let, high);
+//
     return (x);
 //
     errstate:
