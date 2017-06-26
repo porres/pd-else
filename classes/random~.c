@@ -12,6 +12,8 @@ typedef struct _random
     t_float    x_lastin;
     t_float    x_ol;
     t_float    x_oh;
+    t_inlet   *x_low_let;
+    t_inlet   *x_high_let;
     t_outlet  *x_outlet;
 } t_random;
 
@@ -25,7 +27,9 @@ static t_int *random_perform(t_int *w)
     t_random *x = (t_random *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
-    t_float *out = (t_sample *)(w[4]);
+    t_float *in2 = (t_float *)(w[4]);
+    t_float *in3 = (t_float *)(w[5]);
+    t_float *out = (t_sample *)(w[6]);
     int val = x->x_val;
     t_float random = x->x_random;
     t_float lastin = x->x_lastin;
@@ -36,7 +40,7 @@ static t_int *random_perform(t_int *w)
         float out_low = x->x_ol; // Output LOW
         float out_high = x->x_oh; // Output HIGH
         float range = out_high - out_low; // range
-            if (trig > 0 && lastin <= 0 || trig < 0 && lastin >= 0 ) // update
+        if (trig > 0 && lastin <= 0 || trig < 0 && lastin >= 0 ) // update
             {
             random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
             random = out_low + range * (random + 1) / 2;
@@ -48,16 +52,19 @@ static t_int *random_perform(t_int *w)
     x->x_val = val;
     x->x_random = random; // current output
     x->x_lastin = lastin; // last input
-    return (w + 5);
+    return (w + 7);
 }
 
 static void random_dsp(t_random *x, t_signal **sp)
 {
-    dsp_add(random_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(random_perform, 6, x, sp[0]->s_n,
+            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
 static void *random_free(t_random *x)
 {
+    inlet_free(x->x_low_let);
+    inlet_free(x->x_high_let);
     outlet_free(x->x_outlet);
     return (void *)x;
 }
@@ -79,7 +86,7 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
                 }
             else goto errstate;
             }
-        if(ac == 2)
+        else if(ac == 2)
             {
             int argnum = 0;
             while(ac)
@@ -108,8 +115,7 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
                     av++;
                 };
             }
-        if(ac > 2)
-            goto errstate;
+        else goto errstate;
         }
     else
         {
@@ -119,14 +125,19 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
     x->x_ol = low;
     x->x_oh = high;
 /////////////////////////////////////////////////////////////////////////////////////
-    // default seed
     static int init_seed = 74599;
     init_seed *= 1319;
     t_int seed = init_seed;
     x->x_val = seed; // load seed value
 //
     x->x_lastin = 0;
+//
+    x->x_low_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_low_let, 0);
+    x->x_high_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_high_let, 0);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
+//
     return (x);
 //
     errstate:
