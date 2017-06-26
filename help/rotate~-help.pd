@@ -1,50 +1,45 @@
-#N canvas 695 44 562 568 10;
-#X obj -1 525 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 513 23 559 525 10;
+#X obj 3 486 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj -1 344 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 323 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj -1 428 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1
+#X obj 4 397 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 452 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj -1 483 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
-0;
-#X obj 109 353 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 119 332 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 109 438 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 119 407 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 179 438 signal;
+#X text 189 407 signal;
 #X obj 23 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
 #X obj 77 40 cnv 4 4 4 empty empty rotation 0 28 2 18 -233017 -1 0
 ;
-#X text 75 91 [rotate~] does an equal power rotation for stereo sounds.
+#X text 75 88 [rotate~] does an equal power rotation for stereo sounds.
 It takes two audio inputs (L \, R) and a position control. At -1 \,
 the position is the original input. At 0 \, both inputs are mixed in
 both outputs. At 1 \, the input channels are fully inverted.;
-#X obj 173 271 else/out~;
-#X obj 173 172 else/brown~;
-#X obj 282 187 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 207 201 osc~ 440;
-#X msg 250 159 -1;
-#X msg 279 159 0;
-#X msg 308 159 1;
-#X obj 173 240 else/rotate~;
-#X obj 279 209 else/float2sig~ 100;
-#X obj 109 373 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 191 260 else/out~;
+#X obj 307 189 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 12300 1;
+#X msg 275 161 -1;
+#X msg 304 161 0;
+#X msg 333 161 1;
+#X obj 119 352 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 109 393 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 119 372 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 179 353 signal;
-#X text 179 373 signal;
-#X text 143 393 float/signal;
-#X text 240 393 - position;
-#X text 240 373 - right input;
-#X text 240 353 - left input;
-#X obj 109 458 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 189 332 signal;
+#X text 189 352 signal;
+#X text 153 372 float/signal;
+#X text 250 372 - position;
+#X text 250 352 - right input;
+#X text 250 332 - left input;
+#X obj 119 427 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 179 458 signal;
-#X text 240 438 - left output;
-#X text 240 458 - right output;
-#X text 177 495 float position (default -1);
+#X text 189 427 signal;
+#X text 250 407 - left output;
+#X text 250 427 - right output;
 #X obj 3 3 cnv 15 301 42 empty empty rotate~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -67,12 +62,31 @@ both outputs. At 1 \, the input channels are fully inverted.;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X connect 11 0 17 0;
-#X connect 12 0 18 0;
-#X connect 13 0 17 1;
-#X connect 14 0 12 0;
-#X connect 15 0 12 0;
-#X connect 16 0 12 0;
-#X connect 17 0 10 0;
-#X connect 17 1 10 1;
-#X connect 18 0 17 2;
+#X obj 191 161 else/brown~;
+#X obj 231 190 osc~ 440;
+#X text 176 462 1) float;
+#X text 243 463 - position (default -1);
+#X floatatom 304 211 5 0 0 0 - - -, f 5;
+#N canvas 876 209 280 286 example 0;
+#X obj 89 204 else/out~;
+#X obj 78 156 else/rotate~ 1;
+#X obj 118 97 osc~ 440;
+#X obj 78 67 osc~ 220;
+#X obj 159 129 osc~ 0.5;
+#X text 41 22 Continuous rotation with an LFO;
+#X connect 1 0 0 0;
+#X connect 1 1 0 1;
+#X connect 2 0 1 1;
+#X connect 3 0 1 0;
+#X connect 4 0 1 2;
+#X restore 434 285 pd example;
+#X obj 191 229 else/rotate~;
+#X connect 11 0 41 0;
+#X connect 11 0 43 2;
+#X connect 12 0 11 0;
+#X connect 13 0 11 0;
+#X connect 14 0 11 0;
+#X connect 37 0 43 0;
+#X connect 38 0 43 1;
+#X connect 43 0 10 0;
+#X connect 43 1 10 1;

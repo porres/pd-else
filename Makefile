@@ -67,6 +67,7 @@ rescale~.class.sources := classes/rescale~.c
 resonant~.class.sources := classes/resonant~.c
 resonant2~.class.sources := classes/resonant2~.c
 rms~.class.sources := classes/rms~.c
+rotate~.class.sources := classes/rotate~.c
 sawtooth~.class.sources := classes/sawtooth~.c
 sh~.class.sources := classes/sh~.c
 select~.class.sources := classes/select~.c
