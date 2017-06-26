@@ -9,6 +9,7 @@ typedef struct _random
     t_object   x_obj;
     int        x_val;
     t_float    x_random;
+    t_float    x_rescaled_random;
     t_float    x_lastin;
     t_inlet    *x_low_let;
     t_inlet    *x_high_let;
@@ -30,6 +31,7 @@ static t_int *random_perform(t_int *w)
     t_float *out = (t_sample *)(w[6]);
     int val = x->x_val;
     t_float random = x->x_random;
+    t_float rescaled_random = x->x_rescaled_random;
     t_float lastin = x->x_lastin;
     while (nblock--)
         {
@@ -42,6 +44,7 @@ static t_int *random_perform(t_int *w)
             {
             random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
             val = val * 435898247 + 382842987;
+            rescaled_random = out_low + range * (random + 1) / 2; // rescaled output
             }
         output = out_low + range * (random + 1) / 2; // rescaled output
         *out++ = output;
@@ -49,6 +52,7 @@ static t_int *random_perform(t_int *w)
         } 
     x->x_val = val;
     x->x_random = random; // current output
+    x->x_rescaled_random = rescaled_random; // current output
     x->x_lastin = lastin; // last input
     return (w + 7);
 }

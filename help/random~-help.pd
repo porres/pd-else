@@ -41,14 +41,14 @@
 #X text 145 318 seed <float>;
 #X text 237 317 - sets seed value;
 #X obj 203 260 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 94.7352 256;
+-228856 -1 -1 -0.336914 256;
 #X obj 203 229 else/sig2float~;
 #X text 237 395 - random values;
 #N canvas 1002 243 370 273 example 0;
 #X obj 68 195 else/out~;
 #X text 33 24 Generating random resonant frequencies on impulse;
 #X obj 226 169 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 276.821 256;
+-228856 -1 -1 211.659 256;
 #X obj 68 152 else/resonant~ 0 3000;
 #X obj 129 106 else/random~ 200 500;
 #X obj 68 68 else/imp~ 2;
@@ -181,7 +181,6 @@ positive transitions.;
 #X text 144 362 float/signal;
 #X text 237 341 - lowest random value;
 #X text 236 362 - highest random value;
-#X obj 203 201 else/random~, f 29;
 #X obj 203 158 else/imp~ 1;
 #X obj 288 168 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -189,10 +188,11 @@ positive transitions.;
 -228856 -1 -1 0 256;
 #X text 296 147 low;
 #X text 385 149 high;
-#X connect 19 0 38 0;
+#X obj 203 201 else/random~, f 29;
+#X connect 19 0 43 0;
 #X connect 20 0 19 0;
 #X connect 24 0 23 0;
-#X connect 38 0 24 0;
-#X connect 39 0 38 0;
-#X connect 40 0 38 1;
-#X connect 41 0 38 2;
+#X connect 38 0 43 0;
+#X connect 39 0 43 1;
+#X connect 40 0 43 2;
+#X connect 43 0 24 0;
