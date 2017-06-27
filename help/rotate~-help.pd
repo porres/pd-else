@@ -1,4 +1,4 @@
-#N canvas 513 23 559 525 10;
+#N canvas 507 58 559 524 10;
 #X obj 3 486 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 4 323 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -15,16 +15,9 @@
 #X obj 23 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
 #X obj 77 40 cnv 4 4 4 empty empty rotation 0 28 2 18 -233017 -1 0
 ;
-#X text 75 88 [rotate~] does an equal power rotation for stereo sounds.
-It takes two audio inputs (L \, R) and a position control. At -1 \,
-the position is the original input. At 0 \, both inputs are mixed in
-both outputs. At 1 \, the input channels are fully inverted.;
-#X obj 191 260 else/out~;
-#X obj 307 189 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12300 1;
-#X msg 275 161 -1;
-#X msg 304 161 0;
-#X msg 333 161 1;
+#X obj 171 260 else/out~;
+#X obj 289 201 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
 #X obj 119 352 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 119 372 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
@@ -62,31 +55,49 @@ both outputs. At 1 \, the input channels are fully inverted.;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 191 161 else/brown~;
-#X obj 231 190 osc~ 440;
+#X obj 205 201 else/brown~;
+#X obj 171 170 osc~ 440;
 #X text 176 462 1) float;
-#X text 243 463 - position (default -1);
-#X floatatom 304 211 5 0 0 0 - - -, f 5;
-#N canvas 876 209 280 286 example 0;
-#X obj 89 204 else/out~;
-#X obj 78 156 else/rotate~ 1;
-#X obj 118 97 osc~ 440;
-#X obj 78 67 osc~ 220;
-#X obj 159 129 osc~ 0.5;
-#X text 41 22 Continuous rotation with an LFO;
-#X connect 1 0 0 0;
-#X connect 1 1 0 1;
-#X connect 2 0 1 1;
-#X connect 3 0 1 0;
-#X connect 4 0 1 2;
-#X restore 434 285 pd example;
-#X obj 191 229 else/rotate~;
-#X connect 11 0 41 0;
-#X connect 11 0 43 2;
-#X connect 12 0 11 0;
-#X connect 13 0 11 0;
-#X connect 14 0 11 0;
-#X connect 37 0 43 0;
-#X connect 38 0 43 1;
-#X connect 43 0 10 0;
-#X connect 43 1 10 1;
+#N canvas 745 245 487 296 example 0;
+#X obj 315 213 else/out~;
+#X obj 338 106 osc~ 440;
+#X obj 304 76 osc~ 220;
+#X obj 304 165 else/rotate~;
+#X obj 373 138 osc~ 0.25;
+#X obj 71 205 else/out~;
+#X obj 94 98 osc~ 440;
+#X obj 60 68 osc~ 220;
+#X obj 60 157 else/rotate~;
+#X text 129 24 Continuous rotation with LFOs;
+#X obj 129 129 else/vtriangle~ 0.25;
+#X connect 1 0 3 1;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 3 1 0 1;
+#X connect 4 0 3 2;
+#X connect 6 0 8 1;
+#X connect 7 0 8 0;
+#X connect 8 0 5 0;
+#X connect 8 1 5 1;
+#X connect 10 0 8 2;
+#X restore 450 289 pd example;
+#X obj 171 229 else/rotate~;
+#X msg 258 170 0;
+#X msg 286 170 0.5;
+#X msg 317 170 1;
+#X obj 286 230 float2sig~ 100;
+#X text 243 463 - position (default 0);
+#X text 75 88 [rotate~] does an equal power rotation for stereo sounds.
+It takes two audio inputs (L \, R) and a position control. A full cycle
+is from -1 to 1: at 0 \, the position is the original input. At 0.5
+\, both inputs are mixed in both outputs. At 1 \, the input channels
+are fully inverted.;
+#X connect 10 0 41 0;
+#X connect 33 0 37 1;
+#X connect 34 0 37 0;
+#X connect 37 0 9 0;
+#X connect 37 1 9 1;
+#X connect 38 0 10 0;
+#X connect 39 0 10 0;
+#X connect 40 0 10 0;
+#X connect 41 0 37 2;

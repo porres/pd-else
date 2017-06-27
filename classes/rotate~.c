@@ -27,11 +27,14 @@ static t_int *rotate_perform(t_int *w)
         float in_l = *in1++;
         float in_r = *in2++;
         float pos = *in3++;
-        if (pos < -1) pos = -1;
-        if (pos > 1) pos = 1;
-        pos = (pos + 1) * 0.5;
-        *out1++ = in_l * (pos == 1 ? 0 : cos(pos * HALF_PI)) + in_r * sin(pos * HALF_PI);
-        *out2++ = in_l * sin(pos * HALF_PI) + in_r * (pos == 1 ? 0 : cos(pos * HALF_PI));
+        if(pos > 1.)
+            pos = 1.;
+        if(pos < -1.)
+            pos = -1.;
+        float cosine = (pos == 1 || pos == -1 ? 0 : cos(pos * HALF_PI));
+        float sine = fabs(sin(pos * HALF_PI));
+        *out1++ = (in_l * cosine) + (in_r * sine);
+        *out2++ = (in_l * sine) + (in_r * cosine);
         }
     return (w + 8);
 }
@@ -48,24 +51,17 @@ static void *rotate_free(t_rotate *x)
     return (void *)x;
 }
 
-
-static void *rotate_new(t_symbol *s, int ac, t_atom *av)
+static void *rotate_new (t_floatarg f1)
 {
     t_rotate *x = (t_rotate *)pd_new(rotate_class);
-/////////////////////////////////////////////////////////////////////////////////////
+/////
     float init_pos;
-    if(ac)
-        {
-        if(ac == 1 && av -> a_type == A_FLOAT)
-            {
-            init_pos = atom_getfloat(av);
-            if(init_pos < -1) init_pos = -1;
-            if(init_pos > 1) init_pos = 1;
-            }
-        else goto errstate;
-        }
-    else init_pos = -1;
-/////////////////////////////////////////////////////////////////////////////////////
+    if(f1 > 1.)
+        f1 = 1.;
+    if (f1 < -1.)
+        f1 = -1.;
+    init_pos = f1;
+/////
     inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     x->x_pos_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_pos_inlet, init_pos);
@@ -80,8 +76,7 @@ static void *rotate_new(t_symbol *s, int ac, t_atom *av)
 void rotate_tilde_setup(void)
 {
     rotate_class = class_new(gensym("rotate~"), (t_newmethod)rotate_new,
-        (t_method)rotate_free, sizeof(t_rotate), CLASS_DEFAULT, A_GIMME, 0);
+        (t_method)rotate_free, sizeof(t_rotate), CLASS_DEFAULT, A_DEFFLOAT, 0);
         class_addmethod(rotate_class, nullfn, gensym("signal"), 0);
         class_addmethod(rotate_class, (t_method)rotate_dsp, gensym("dsp"), A_CANT, 0);
 }
-
