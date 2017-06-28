@@ -1,12 +1,10 @@
 
 #include "m_pd.h"
-#include <math.h>
 
 static t_class *fold_tilde_class;
 
 typedef struct _fold_tilde {//fold_tilde (control rate) 
 	t_object x_obj;
-	int mode; //0=fold, 1 = wrap, 2 = clip, 3 = none
 	t_float minval;
 	t_float maxval;
 	t_float x_input; //dummy var
@@ -65,8 +63,6 @@ static t_int *fold_tilde_perform(t_int *w)
 	t_float *in3 = (t_float *)(w[4]);
 	t_float *out = (t_float *)(w[5]);
 	int n = (int)(w[6]);
-
-	int mode = x->mode;
 	while (n--){
 		float input = *in1++;
 		float minv = *in2++;
@@ -85,14 +81,6 @@ static t_int *fold_tilde_perform(t_int *w)
 	return (w+7);
 }
 
-static void *fold_tilde_free(t_fold_tilde *x){
-	inlet_free(x->x_minlet);
-	inlet_free(x->x_maxlet);
-	outlet_free(x->x_outlet);
-	return (void *)x;
-
-}
-
 static void fold_tilde_dsp(t_fold_tilde *x, t_signal **sp)
 {
 		dsp_add(fold_tilde_perform, 6, x, sp[0]->s_vec, sp[1]->s_vec,
@@ -100,13 +88,11 @@ static void fold_tilde_dsp(t_fold_tilde *x, t_signal **sp)
 }
 
 static void *fold_tilde_new(t_symbol *s, int argc, t_atom *argv){
-    //two optional args (lo, hi), then attributes for mode (str) and range (2 fl)
     t_fold_tilde *x = (t_fold_tilde *)pd_new(fold_tilde_class);
     int numargs = 0;//number of args read
     int pastargs = 0; //if any attrs have been declared yet
     x->minval = -1.;
     x-> maxval = 1.;
-    x->mode = 0;
     
     while(argc > 0 ){
         if(argv -> a_type == A_FLOAT){ //if nullpointer, should be float or int
@@ -153,7 +139,6 @@ errstate:
     pd_error(x, "fold~: improper args");
     return NULL;
 }
-
 
 void fold_tilde_setup(void){
 	fold_tilde_class = class_new(gensym("fold~"), (t_newmethod)fold_tilde_new, 0,
