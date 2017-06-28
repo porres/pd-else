@@ -34,7 +34,7 @@ static t_int *fold_tilde_perform(t_int *w)
 			minv = temp;
 			};
         float output;
-        float range = maxv - minv;=
+        float range = maxv - minv;
         if(input < maxv && input >= minv) // if input in range, return input
             output = input;
         else if(minv == maxv)
