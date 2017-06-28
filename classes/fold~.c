@@ -1,11 +1,6 @@
 
 #include "m_pd.h"
 #include <math.h>
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
-
-
 
 static t_class *fold_tilde_class;
 
