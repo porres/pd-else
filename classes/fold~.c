@@ -11,9 +11,7 @@ typedef struct _fold_tilde {//fold_tilde (control rate)
 	t_inlet *x_minlet; 
 	t_inlet *x_maxlet; 
 	t_outlet *x_outlet;
-	int x_numargs;//num of args given
 } t_fold_tilde;
-
 
 static float fold_tilde_folder(float input, float minval, float maxval){
 	//fold_tilde helper function
@@ -34,7 +32,7 @@ static float fold_tilde_folder(float input, float minval, float maxval){
 				returnval = diff + minval;
 				}
 			else{// odd number of ranges away = counting down from max
-				diff = diff - ((float)mag)*range;
+				diff = diff - ((float)mag) * range;
 				returnval = maxval - diff;
 				};
 			}
@@ -51,7 +49,6 @@ static float fold_tilde_folder(float input, float minval, float maxval){
 				};
 			};
 		}
-
 	return returnval;
 }
 
@@ -132,7 +129,6 @@ static void *fold_tilde_new(t_symbol *s, int argc, t_atom *argv){
     x->x_maxlet =  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     pd_float( (t_pd *) x->x_minlet, x->minval);
     pd_float( (t_pd *) x->x_maxlet, x->maxval);
-    x->x_numargs = numargs;
     x->x_outlet =  outlet_new(&x->x_obj, gensym("signal"));
     return (x);
 errstate:
