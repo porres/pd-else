@@ -1,6 +1,7 @@
 // Porres 2017
 
 #include "m_pd.h"
+#include "m_pd.h"
 
 static t_class *wrap2_class;
 
