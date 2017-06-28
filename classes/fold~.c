@@ -86,13 +86,10 @@ static void fold_tilde_dsp(t_fold_tilde *x, t_signal **sp)
 static void *fold_tilde_new(t_symbol *s, int argc, t_atom *argv){
     t_fold_tilde *x = (t_fold_tilde *)pd_new(fold_tilde_class);
     int numargs = 0;//number of args read
-    int pastargs = 0; //if any attrs have been declared yet
     x->minval = -1.;
     x-> maxval = 1.;
-    
     while(argc > 0 ){
         if(argv -> a_type == A_FLOAT){ //if nullpointer, should be float or int
-            if(!pastargs){//if we aren't past the args yet
                 switch(numargs){
                         
                     case 0: 	x->minval = atom_getfloatarg(0, argc, argv);
@@ -113,16 +110,11 @@ static void *fold_tilde_new(t_symbol *s, int argc, t_atom *argv){
                         argv++;
                         break;
                 };
-            }
-            else{
-                argc--;
-                argv++;
-            };
         }
-        else if (argv->a_type == A_SYMBOL){
-
+        else if (argv->a_type == A_SYMBOL)
+            {
             goto errstate;
-        };
+            };
     };
     x->x_minlet = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     x->x_maxlet =  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
