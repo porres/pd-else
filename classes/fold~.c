@@ -3,7 +3,7 @@
 
 static t_class *fold_tilde_class;
 
-typedef struct _fold_tilde {//fold_tilde (control rate) 
+typedef struct _fold_tilde {
 	t_object x_obj;
 	t_float minval;
 	t_float maxval;
@@ -12,7 +12,6 @@ typedef struct _fold_tilde {//fold_tilde (control rate)
 	t_inlet *x_maxlet; 
 	t_outlet *x_outlet;
 } t_fold_tilde;
-
 
 static t_int *fold_tilde_perform(t_int *w)
 {
@@ -39,12 +38,12 @@ static t_int *fold_tilde_perform(t_int *w)
             output = input;
         else if(minv == maxv)
             output = minv;
-        else // folding
-            {
+        else
+            { // folding
             if(input < minv)
                 {
-                float diff = minv - input; //diff between input and minimum (positive)
-                int mag = (int)(diff/range); //case where input is more than a range away from minval
+                float diff = minv - input; // diff between input and minimum (positive)
+                int mag = (int)(diff/range); // case where input is more than a range away from minval
                 if(mag % 2 == 0)
                     { // even number of ranges away = counting up from min
                     diff = diff - ((float)mag)*range;
@@ -57,16 +56,16 @@ static t_int *fold_tilde_perform(t_int *w)
                     };
                 }
             else
-                { //input > maxv
-                float diff = input - maxv; //diff between input and max (positive)
-                int mag  = (int)(diff/range); //case where input is more than a range away from maxv
+                { // input > maxv
+                float diff = input - maxv; // diff between input and max (positive)
+                int mag  = (int)(diff/range); // case where input is more than a range away from maxv
                 if(mag % 2 == 0)
-                    { //even number of ranges away = counting down from max
+                    { // even number of ranges away = counting down from max
                     diff = diff - (float)mag*range;
                     output = maxv - diff;
                     }
                 else
-                    { //odd number of ranges away = counting up from min
+                    { // odd number of ranges away = counting up from min
                     diff = diff - (float)mag*range;
                     output = diff + minv;
                     };
@@ -88,34 +87,46 @@ static void *fold_tilde_new(t_symbol *s, int argc, t_atom *argv){
     int numargs = 0;//number of args read
     x->minval = -1.;
     x-> maxval = 1.;
-    while(argc > 0 ){
-        if(argv -> a_type == A_FLOAT){ //if nullpointer, should be float or int
+    
+    if(argc == 1)
+    {
+        if(argv -> a_type == A_FLOAT)
+        {
+            x->minval = 0;
+            x-> maxval = atom_getfloat(argv);
+        }
+        else goto errstate;
+    }
+    else if(argc == 2)
+    {
+        while(argc > 0 ){
+            if(argv -> a_type == A_FLOAT){ //if nullpointer, should be float or int
                 switch(numargs){
-                        
                     case 0: 	x->minval = atom_getfloatarg(0, argc, argv);
                         numargs++;
                         argc--;
                         argv++;
                         break;
-                        
                     case 1: 	x->maxval = atom_getfloatarg(0, argc, argv);
                         numargs++;
                         argc--;
                         argv++;
                         break;
-                        
-                        
                     default:
                         argc--;
                         argv++;
                         break;
                 };
-        }
-        else if (argv->a_type == A_SYMBOL)
+            }
+            else if (argv->a_type == A_SYMBOL)
             {
-            goto errstate;
+                goto errstate;
             };
-    };
+        };
+    }
+    else if(argc > 2)
+        goto errstate;
+
     x->x_minlet = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     x->x_maxlet =  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     pd_float( (t_pd *) x->x_minlet, x->minval);
