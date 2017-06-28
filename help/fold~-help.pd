@@ -1,4 +1,4 @@
-#N canvas 275 23 559 517 10;
+#N canvas 440 39 559 517 10;
 #X obj 2 3 cnv 15 301 42 empty empty fold~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
