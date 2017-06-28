@@ -13,44 +13,6 @@ typedef struct _fold_tilde {//fold_tilde (control rate)
 	t_outlet *x_outlet;
 } t_fold_tilde;
 
-static float fold_tilde_folder(float input, float minval, float maxval){
-	//fold_tilde helper function
-	float returnval;
-	float range = maxval - minval;
-	if(input < maxval && input >= minval){//if input in range, return input
-		returnval = input;
-		}
-	else if(minval == maxval){
-		returnval = minval;
-	}
-	else {//folding
-		if(input < minval){
-			float diff = minval - input; //diff between input and minimum (positive)
-			int mag = (int)(diff/range); //case where input is more than a range away from minval
-			if(mag % 2 == 0){// even number of ranges away = counting up from min
-				diff = diff - ((float)mag)*range;
-				returnval = diff + minval;
-				}
-			else{// odd number of ranges away = counting down from max
-				diff = diff - ((float)mag) * range;
-				returnval = maxval - diff;
-				};
-			}
-		else{ //input > maxval
-			float diff = input - maxval; //diff between input and max (positive)
-			int mag  = (int)(diff/range); //case where input is more than a range away from maxval
-			if(mag % 2 == 0){//even number of ranges away = counting down from max
-				diff = diff - (float)mag*range;
-				returnval = maxval - diff;
-				}
-			else{//odd number of ranges away = counting up from min
-				diff = diff - (float)mag*range;
-				returnval = diff + minval;
-				};
-			};
-		}
-	return returnval;
-}
 
 static t_int *fold_tilde_perform(t_int *w)
 {
@@ -71,7 +33,46 @@ static t_int *fold_tilde_perform(t_int *w)
 			minv = temp;
 			};
 
-		float returnval = fold_tilde_folder(input, minv, maxv);
+        
+        /////////////////////////////////////////////////////////
+        float returnval;
+        float range = maxv - minv;
+        if(input < maxv && input >= minv)
+        {//if input in range, return input
+            returnval = input;
+        }
+        else if(minv == maxv)
+        {
+            returnval = minv;
+        }
+        else
+        {//folding
+            if(input < minv){
+                float diff = minv - input; //diff between input and minimum (positive)
+                int mag = (int)(diff/range); //case where input is more than a range away from minval
+                if(mag % 2 == 0){// even number of ranges away = counting up from min
+                    diff = diff - ((float)mag)*range;
+                    returnval = diff + minv;
+                }
+                else{// odd number of ranges away = counting down from max
+                    diff = diff - ((float)mag) * range;
+                    returnval = maxv - diff;
+                };
+            }
+            else{ //input > maxv
+                float diff = input - maxv; //diff between input and max (positive)
+                int mag  = (int)(diff/range); //case where input is more than a range away from maxv
+                if(mag % 2 == 0){//even number of ranges away = counting down from max
+                    diff = diff - (float)mag*range;
+                    returnval = maxv - diff;
+                }
+                else{//odd number of ranges away = counting up from min
+                    diff = diff - (float)mag*range;
+                    returnval = diff + minv;
+                };
+            };
+        }
+        /////////////////////////////////////////////////////////
 
 		*out++ = returnval;
 		};
