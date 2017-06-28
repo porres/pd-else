@@ -19,17 +19,6 @@
 #define ATOMS_FREEA(x, n) (freebytes((x), (n) * sizeof(t_atom)))
 #endif
 
-#ifndef CYfoldTMODE_DEF
-#define CYfoldTMODE_DEF 0
-#endif
-
-#ifndef CYfoldTLO_DEF
-#define CYfoldTLO_DEF -1.f
-#endif
-
-#ifndef CYfoldTHI_DEF
-#define CYfoldTHI_DEF 1.f
-#endif
 
 static t_class *fold_tilde_class;
 
@@ -44,28 +33,6 @@ typedef struct _fold_tilde {//fold_tilde (control rate)
 	t_outlet *x_outlet;
 	int x_numargs;//num of args given
 } t_fold_tilde;
-
-
-
-static int fold_tilde_setmode_help(char const * mode){
-//helper function for setting mode
-int retmode; //int val for mode (see struct)
-		if(strcmp(mode, "clip") == 0){
-			retmode = 2;
-		}
-		else if(strcmp(mode, "wrap") == 0){
-			retmode = 1;
-		}
-		else if(strcmp(mode, "fold") == 0){
-			retmode = 0;
-		}
-		else{//default to none o/wise
-			retmode = 3;
-		};
-	
-	return retmode;
-	
-};
 
 
 static float fold_tilde_folder(float input, float minval, float maxval, int mode){
@@ -130,38 +97,6 @@ static float fold_tilde_folder(float input, float minval, float maxval, int mode
 	return returnval;
 }
 
-static void fold_tilde_setrange(t_fold_tilde *x, t_float lo, t_float hi){
-
-	x->minval = lo;
-	x->maxval = hi;
-
-		pd_float( (t_pd *) x->x_minlet, x->minval);
-		pd_float( (t_pd *) x->x_maxlet, x->maxval);
-}
-
-
-static void fold_tilde_setmode(t_fold_tilde *x, t_symbol *s, int argc, t_atom *argv){
-		int setmode;
-		if(argc > 0){
-			t_symbol *arg1 = atom_getsymbolarg(0, argc, argv);
-			if(arg1 == &s_){ // if arg is a number
-				float mode = atom_getfloatarg(0, argc, argv);
-				setmode = (int) mode;
-				if( setmode < 0){
-					setmode = 0;
-				}
-				else if( setmode > 3){
-					setmode = 3;
-				};
-			}
-			else{//if arg is a symbol
-				setmode = fold_tilde_setmode_help(arg1->s_name);
-			};
-
-			x->mode = setmode;
-		};
-}
-
 static t_int *fold_tilde_perform(t_int *w)
 {
 	t_fold_tilde *x = (t_fold_tilde *)(w[1]);
@@ -209,9 +144,9 @@ static void *fold_tilde_new(t_symbol *s, int argc, t_atom *argv){
     t_fold_tilde *x = (t_fold_tilde *)pd_new(fold_tilde_class);
     int numargs = 0;//number of args read
     int pastargs = 0; //if any attrs have been declared yet
-    x->minval = CYfoldTLO_DEF;
-    x-> maxval = CYfoldTHI_DEF;
-    x->mode = CYfoldTMODE_DEF;
+    x->minval = -1.;
+    x-> maxval = 1.;
+    x->mode = 0;
     
     while(argc > 0 ){
         if(argv -> a_type == A_FLOAT){ //if nullpointer, should be float or int
@@ -263,8 +198,6 @@ errstate:
 void fold_tilde_setup(void){
 	fold_tilde_class = class_new(gensym("fold~"), (t_newmethod)fold_tilde_new, 0,
 			sizeof(t_fold_tilde), CLASS_DEFAULT, A_GIMME, 0);
-	class_addmethod(fold_tilde_class, (t_method)fold_tilde_setrange, gensym("range"), A_FLOAT, A_FLOAT, 0);
-	class_addmethod(fold_tilde_class, (t_method)fold_tilde_setmode, gensym("mode"), A_GIMME, 0);
     class_addmethod(fold_tilde_class, (t_method)fold_tilde_dsp, gensym("dsp"), A_CANT, 0);
     CLASS_MAINSIGNALIN(fold_tilde_class, t_fold_tilde, x_input);
 }
