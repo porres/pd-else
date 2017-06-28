@@ -35,7 +35,7 @@ typedef struct _fold_tilde {//fold_tilde (control rate)
 } t_fold_tilde;
 
 
-static float fold_tilde_folder(float input, float minval, float maxval, int mode){
+static float fold_tilde_folder(float input, float minval, float maxval){
 	//fold_tilde helper function
 	float returnval;
 	float range = maxval - minval;
@@ -45,7 +45,7 @@ static float fold_tilde_folder(float input, float minval, float maxval, int mode
 	else if(minval == maxval){
 		returnval = minval;
 	}
-	else if(mode == 0){//folding
+	else {//folding
 		if(input < minval){
 			float diff = minval - input; //diff between input and minimum (positive)
 			int mag = (int)(diff/range); //case where input is more than a range away from minval
@@ -71,28 +71,6 @@ static float fold_tilde_folder(float input, float minval, float maxval, int mode
 				};
 			};
 		}
-	else if (mode == 1){// wrapping
-		if(input < minval){
-			returnval = input;
-			while(returnval < minval){
-					returnval += range;
-			};
-		}
-		else{
-			returnval = fmod(input-minval,maxval-minval) + minval;
-		};
-	}
-	else if(mode == 2){//clipping
-		if(input < minval){
-			returnval = minval;
-		}
-		else{//input > maxval
-			returnval = maxval;
-		};
-	}
-	else{//mode = 3, no effect
-		returnval = input;
-	};
 
 	return returnval;
 }
@@ -118,7 +96,7 @@ static t_int *fold_tilde_perform(t_int *w)
 			minv = temp;
 			};
 
-		float returnval = fold_tilde_folder(input, minv, maxv, mode);
+		float returnval = fold_tilde_folder(input, minv, maxv);
 
 		*out++ = returnval;
 		};
