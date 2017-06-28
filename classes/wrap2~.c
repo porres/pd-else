@@ -2,64 +2,67 @@
 
 #include "m_pd.h"
 
-static t_class *random_class;
+static t_class *wrap2_class;
 
-typedef struct _random
+typedef struct _wrap2
 {
     t_object   x_obj;
-    int        x_val;
-    t_float    x_random;
-    t_float    x_lastin;
+    t_float    x_wrap2;
     t_inlet   *x_low_let;
     t_inlet   *x_high_let;
     t_outlet  *x_outlet;
-} t_random;
+} t_wrap2;
 
-static void random_seed(t_random *x, t_floatarg f)
-{
-    x->x_val = (int)f * 1319;
-}
 
-static t_int *random_perform(t_int *w)
+static t_int *wrap2_perform(t_int *w)
 {
-    t_random *x = (t_random *)(w[1]);
+    t_wrap2 *x = (t_wrap2 *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
     t_float *in3 = (t_float *)(w[5]);
     t_float *out = (t_sample *)(w[6]);
-    int val = x->x_val;
-    t_float random = x->x_random;
-    t_float lastin = x->x_lastin;
     while (nblock--)
         {
         t_float output;
-        float trig = *in1++;
-        float out_low = *in2++; // Output LOW
-        float out_high = *in3++; // Output HIGH
-        float range = out_high - out_low; // range
-        if (trig > 0 && lastin <= 0 || trig < 0 && lastin >= 0 ) // update
+        float input = *in1++;
+        float in_low = *in2++;
+        float in_high = *in3++;
+        float low = in_low;
+        float high = in_high;
+        if(low > high)
             {
-            random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
-            random = out_low + range * (random + 1) / 2;
-            val = val * 435898247 + 382842987;
+            low = in_high;
+            high = in_low;
             }
-        *out++ = random;
-        lastin = trig;
+        float range = high - low;
+        if(low == high)
+            output = low;
+        else
+            {
+            if(input < low)
+                {
+                output = input;
+                while(output < low)
+                    {
+                    output += range;
+                    };
+                }
+            else
+                output = fmod(input - low, range) + low;
+            }
+        *out++ = output;
         }
-    x->x_val = val;
-    x->x_random = random; // current output
-    x->x_lastin = lastin; // last input
     return (w + 7);
 }
 
-static void random_dsp(t_random *x, t_signal **sp)
+static void wrap2_dsp(t_wrap2 *x, t_signal **sp)
 {
-    dsp_add(random_perform, 6, x, sp[0]->s_n,
+    dsp_add(wrap2_perform, 6, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void *random_free(t_random *x)
+static void *wrap2_free(t_wrap2 *x)
 {
     inlet_free(x->x_low_let);
     inlet_free(x->x_high_let);
@@ -67,20 +70,19 @@ static void *random_free(t_random *x)
     return (void *)x;
 }
 
-static void *random_new(t_symbol *s, int ac, t_atom *av)
+static void *wrap2_new(t_symbol *s, int ac, t_atom *av)
 {
-    t_random *x = (t_random *)pd_new(random_class);
+    t_wrap2 *x = (t_wrap2 *)pd_new(wrap2_class);
 /////////////////////////////////////////////////////////////////////////////////////
-    float low;
-    float high;
+    float init_low, low, init_high, high;
     if(ac)
         {
         if(ac == 1)
             {
             if(av -> a_type == A_FLOAT)
                 {
-                low = 0;
-                high = atom_getfloat(av);
+                low = init_low = 0;
+                high = init_high = atom_getfloat(av);
                 }
             else goto errstate;
             }
@@ -99,10 +101,10 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
                     switch(argnum)
                         {
                         case 0:
-                            low = curf;
+                            low = init_low = curf;
                             break;
                         case 1:
-                            high = curf;
+                            high = init_high = curf;
                             break;
                         default:
                             break;
@@ -117,17 +119,15 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
         }
     else
         {
-        low = -1;
-        high = 1;
+        low = init_low = -1;
+        high = init_high = 1;
+        }
+    if(low > high)
+        {
+        low = init_high;
+        high = init_low;
         }
 /////////////////////////////////////////////////////////////////////////////////////
-    static int init_seed = 74599;
-    init_seed *= 1319;
-    t_int seed = init_seed;
-    x->x_val = seed; // load seed value
-//
-    x->x_lastin = 0;
-//
     x->x_low_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_low_let, low);
     x->x_high_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -137,15 +137,14 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
     return (x);
 //
     errstate:
-        pd_error(x, "random~: improper args");
+        pd_error(x, "wrap2~: improper args");
         return NULL;
 }
 
-void random_tilde_setup(void)
+void wrap2_tilde_setup(void)
 {
-    random_class = class_new(gensym("random~"), (t_newmethod)random_new,
-        (t_method)random_free, sizeof(t_random), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(random_class, nullfn, gensym("signal"), 0);
-    class_addmethod(random_class, (t_method)random_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(random_class, (t_method)random_seed, gensym("seed"), A_DEFFLOAT, 0);
+    wrap2_class = class_new(gensym("wrap2~"), (t_newmethod)wrap2_new,
+        (t_method)wrap2_free, sizeof(t_wrap2), CLASS_DEFAULT, A_GIMME, 0);
+    class_addmethod(wrap2_class, nullfn, gensym("signal"), 0);
+    class_addmethod(wrap2_class, (t_method)wrap2_dsp, gensym("dsp"), A_CANT, 0);
 }

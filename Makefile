@@ -32,6 +32,7 @@ decay~.class.sources := classes/decay~.c
 decay2~.class.sources := classes/decay2~.c
 downsample~.class.sources := classes/downsample~.c
 elapsed~.class.sources := classes/elapsed~.c
+fold~.class.sources := classes/fold~.c
 gbman~.class.sources := classes/gbman~.c
 henon~.class.sources := classes/henon~.c
 highpass~.class.sources := classes/highpass~.c
@@ -69,6 +70,7 @@ resonant2~.class.sources := classes/resonant2~.c
 rms~.class.sources := classes/rms~.c
 rotate~.class.sources := classes/rotate~.c
 sawtooth~.class.sources := classes/sawtooth~.c
+sawtooth2~.class.sources := classes/sawtooth2~.c
 sh~.class.sources := classes/sh~.c
 select~.class.sources := classes/select~.c
 selectx~.class.sources := classes/selectx~.c
@@ -81,6 +83,7 @@ togedge~.class.sources := classes/togedge~.c
 vtriangle~.class.sources := classes/vtriangle~.c
 vu~.class.sources := classes/vu~.c
 xfade~.class.sources := classes/xfade~.c
+wrap2~.class.sources := classes/wrap2~.c
 zerocross~.class.sources := classes/zerocross~.c
 
 #########################################################################

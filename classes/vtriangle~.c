@@ -45,7 +45,10 @@ static t_int *vtriangle_perform(t_int *w)
         if (phase_dev >= 1 || phase_dev <= -1)
             phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
 
-        if (trig > 0 && trig <= 1) phase = trig;
+        if (trig > 0 && trig < 1)
+            phase = trig;
+        else if (trig == 1)
+            phase = 0;
         else
             {
             phase = phase + phase_dev;
@@ -57,8 +60,8 @@ static t_int *vtriangle_perform(t_int *w)
         else if (width == 1) output = phase * 2 - 1;
         else
             {
-                t_float inc = phase * width;
-                t_float dec = (phase - 1) * (width - 1);
+                t_float inc = phase * width;                   // phase * 0.5
+                t_float dec = (phase - 1) * (width - 1);       //
                 t_float gain = pow(width * (width - 1), -1);
                 t_float min = (inc < dec ? inc : dec);
                 output = (min * gain) * 2 + 1;
