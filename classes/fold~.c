@@ -5,12 +5,12 @@ static t_class *fold_tilde_class;
 
 typedef struct _fold_tilde {
 	t_object x_obj;
-	t_float minval;
-	t_float maxval;
-	t_float x_input; //dummy var
-	t_inlet *x_minlet; 
-	t_inlet *x_maxlet; 
-	t_outlet *x_outlet;
+	t_float     x_min;
+	t_float     x_max;
+	t_float     x_in; // dummy
+	t_inlet     *x_minlet;
+	t_inlet     *x_maxlet;
+	t_outlet    *x_outlet;
 } t_fold_tilde;
 
 static t_int *fold_tilde_perform(t_int *w)
@@ -22,52 +22,52 @@ static t_int *fold_tilde_perform(t_int *w)
 	t_float *out = (t_float *)(w[5]);
 	int n = (int)(w[6]);
 	while (n--){
-		float input = *in1++;
-		float minv = *in2++;
-		float maxv = *in3++;
-		if(minv > maxv)
-            {
-			float temp;
-			temp = maxv;
-			maxv = minv;
-			minv = temp;
-			};
+		float in = *in1++;
+		float min = *in2++;
+		float max = *in3++;
         float output;
-        float range = maxv - minv;
-        if(input < maxv && input >= minv) // if input in range, return input
-            output = input;
-        else if(minv == maxv)
-            output = minv;
+		if(min > max)
+            { // swap values
+			float temp;
+			temp = max;
+			max = min;
+			min = temp;
+			};
+        if(min == max)
+            output = min;
+        else if(in <= max && in >= min)
+            output = in; // if in range, = in
         else
             { // folding
-            if(input < minv)
+            float range = max - min;
+            if(in < min)
                 {
-                float diff = minv - input; // diff between input and minimum (positive)
-                int mag = (int)(diff/range); // case where input is more than a range away from minval
+                float diff = min - in; // positive diff between in and min
+                int mag = (int)(diff/range); // in is > range from min
                 if(mag % 2 == 0)
-                    { // even number of ranges away = counting up from min
-                    diff = diff - ((float)mag)*range;
-                    output = diff + minv;
+                    { // even # of ranges away = counting up from min
+                    diff = diff - ((float)mag * range);
+                    output = diff + min;
                     }
                 else
-                    { // odd number of ranges away = counting down from max
-                    diff = diff - ((float)mag) * range;
-                    output = maxv - diff;
+                    { // odd # of ranges away = counting down from max
+                    diff = diff - ((float)mag * range);
+                    output = max - diff;
                     };
                 }
-            else
-                { // input > maxv
-                float diff = input - maxv; // diff between input and max (positive)
-                int mag  = (int)(diff/range); // case where input is more than a range away from maxv
+            else // in > max
+                {
+                float diff = in - max; // positive diff between in and max
+                int mag  = (int)(diff/range); // in is > range from max
                 if(mag % 2 == 0)
-                    { // even number of ranges away = counting down from max
-                    diff = diff - (float)mag*range;
-                    output = maxv - diff;
+                    { // even # of ranges away = counting down from max
+                    diff = diff - ((float)mag * range);
+                    output = max - diff;
                     }
                 else
-                    { // odd number of ranges away = counting up from min
-                    diff = diff - (float)mag*range;
-                    output = diff + minv;
+                    { // odd # of ranges away = counting up from min
+                    diff = diff - ((float)mag * range);
+                    output = diff + min;
                     };
                 };
             }
@@ -84,30 +84,33 @@ static void fold_tilde_dsp(t_fold_tilde *x, t_signal **sp)
 
 static void *fold_tilde_new(t_symbol *s, int argc, t_atom *argv){
     t_fold_tilde *x = (t_fold_tilde *)pd_new(fold_tilde_class);
-    int numargs = 0;//number of args read
-    x->minval = -1.;
-    x-> maxval = 1.;
-    
+///////////////////////////
+    x->x_min = -1.;
+    x-> x_max = 1.;
     if(argc == 1)
     {
         if(argv -> a_type == A_FLOAT)
         {
-            x->minval = 0;
-            x-> maxval = atom_getfloat(argv);
+            x->x_min = 0;
+            x->x_max = atom_getfloat(argv);
         }
         else goto errstate;
     }
     else if(argc == 2)
-    {
-        while(argc > 0 ){
-            if(argv -> a_type == A_FLOAT){ //if nullpointer, should be float or int
-                switch(numargs){
-                    case 0: 	x->minval = atom_getfloatarg(0, argc, argv);
+        {
+        int numargs = 0;
+        while(argc > 0 )
+            {
+            if(argv -> a_type == A_FLOAT)
+                { // if nullpointer, should be float or int
+                switch(numargs)
+                    {
+                    case 0: x->x_min = atom_getfloatarg(0, argc, argv);
                         numargs++;
                         argc--;
                         argv++;
                         break;
-                    case 1: 	x->maxval = atom_getfloatarg(0, argc, argv);
+                    case 1: x->x_max = atom_getfloatarg(0, argc, argv);
                         numargs++;
                         argc--;
                         argv++;
@@ -116,21 +119,19 @@ static void *fold_tilde_new(t_symbol *s, int argc, t_atom *argv){
                         argc--;
                         argv++;
                         break;
-                };
-            }
-            else if (argv->a_type == A_SYMBOL)
-            {
+                    };
+                }
+            else // not a float
                 goto errstate;
             };
-        };
-    }
+        }
     else if(argc > 2)
         goto errstate;
-
+///////////////////////////
     x->x_minlet = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     x->x_maxlet =  inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-    pd_float( (t_pd *) x->x_minlet, x->minval);
-    pd_float( (t_pd *) x->x_maxlet, x->maxval);
+    pd_float( (t_pd *) x->x_minlet, x->x_min);
+    pd_float( (t_pd *) x->x_maxlet, x->x_max);
     x->x_outlet =  outlet_new(&x->x_obj, gensym("signal"));
     return (x);
 errstate:
@@ -142,5 +143,5 @@ void fold_tilde_setup(void){
 	fold_tilde_class = class_new(gensym("fold~"), (t_newmethod)fold_tilde_new, 0,
 			sizeof(t_fold_tilde), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(fold_tilde_class, (t_method)fold_tilde_dsp, gensym("dsp"), A_CANT, 0);
-    CLASS_MAINSIGNALIN(fold_tilde_class, t_fold_tilde, x_input);
+    CLASS_MAINSIGNALIN(fold_tilde_class, t_fold_tilde, x_in);
 }

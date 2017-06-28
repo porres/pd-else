@@ -1,4 +1,4 @@
-#N canvas 275 23 560 500 10;
+#N canvas 275 23 559 517 10;
 #X obj 2 3 cnv 15 301 42 empty empty fold~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -20,23 +20,23 @@
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
 #X obj 147 39 cnv 4 4 4 empty empty two 0 28 2 18 -233017 -1 0;
-#X obj 4 459 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 479 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 4 338 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 358 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 375 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 395 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 111 348 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 111 368 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 181 349 signal;
-#X text 181 272 signal;
-#X obj 111 272 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 181 369 signal;
+#X text 181 292 signal;
+#X obj 111 292 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 262 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 282 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 163 233 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 163 253 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 163 206 else/sig2float~;
+#X obj 163 226 else/sig2float~;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -141,38 +141,61 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
-#X text 110 384 1) list -;
-#X obj 111 294 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 110 404 1) list -;
+#X obj 111 314 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 111 315 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 111 335 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 144 295 float/signal;
-#X text 144 316 float/signal;
-#X obj 248 145 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 144 315 float/signal;
+#X text 144 336 float/signal;
+#X obj 248 165 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 334 146 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 334 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 256 124 low;
-#X text 345 126 high;
-#X obj 163 129 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 256 144 low;
+#X text 345 146 high;
+#X obj 163 149 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 163 152 sig~;
-#X text 120 128 input;
+#X obj 163 172 sig~;
+#X text 120 148 input;
 #X obj 187 39 cnv 4 4 4 empty empty values 0 28 2 18 -233017 -1 0;
-#X text 74 91 [fold~] folds between a low and high value.;
-#X text 237 271 - input values to be folded;
-#X text 237 295 - lowest fold value;
-#X text 236 316 - highest fold value;
-#X text 237 349 - folded values;
-#X obj 163 179 else/fold~, f 29;
-#X text 175 383 floats set fold's range \, 2 floats sets minimum and
+#X text 237 291 - input values to be folded;
+#X text 237 315 - lowest fold value;
+#X text 236 336 - highest fold value;
+#X text 237 369 - folded values;
+#X obj 163 199 else/fold~, f 29;
+#X text 175 403 floats set fold's range \, 2 floats sets minimum and
 maximum. No arguments loads default values (-1 and 1). 1 float sets
 maximum value (and lowest value is set to 0). If the maximum value
 is less than the minimum \, the maximum becomes the minimum and vice-versa.
 ;
+#X text 74 91 [fold~] folds between a low and high value. This is like
+a mirroring function \, where an out of bounds value folds back until
+it is in the given range.;
+#N canvas 536 115 457 419 wavefolding 0;
+#X obj 73 258 else/out~;
+#X obj 190 207 else/graph~;
+#X obj 116 167 else/fold~;
+#X obj 116 126 *~;
+#X obj 196 92 hsl 128 15 1 8 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 193 113 nbx 5 14 1 8 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 1 256;
+#X obj 193 135 float2sig~ 100 1;
+#X obj 116 89 osc~ 98.5;
+#X text 96 35 Wavefolding: a type of waveshaping technique.;
+#X connect 2 0 0 0;
+#X connect 2 0 0 1;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 3 1;
+#X connect 7 0 3 0;
+#X restore 402 242 pd wavefolding example;
 #X connect 20 0 19 0;
-#X connect 27 0 40 1;
-#X connect 28 0 40 2;
+#X connect 27 0 39 1;
+#X connect 28 0 39 2;
 #X connect 31 0 32 0;
-#X connect 32 0 40 0;
-#X connect 40 0 20 0;
+#X connect 32 0 39 0;
+#X connect 39 0 20 0;
