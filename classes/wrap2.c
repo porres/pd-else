@@ -28,7 +28,7 @@ t_float convert(t_float f, min, max)
     };
     if(min == max)
         result = min;
-    else if(f <= max && f >= min)
+    else if(f < max && f >= min)
         result = f; // if f range, = in
     else
     { // wrap
