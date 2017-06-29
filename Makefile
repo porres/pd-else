@@ -85,6 +85,7 @@ square~.class.sources := classes/square~.c
 standard~.class.sources := classes/standard~.c
 toggleff~.class.sources := classes/toggleff~.c
 togedge~.class.sources := classes/togedge~.c
+triwave~.class.sources := classes/triwave~.c
 vtriangle~.class.sources := classes/vtriangle~.c
 vu~.class.sources := classes/vu~.c
 xfade~.class.sources := classes/xfade~.c
