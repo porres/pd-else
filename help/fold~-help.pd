@@ -1,4 +1,4 @@
-#N canvas 440 39 559 517 10;
+#N canvas 92 90 559 517 10;
 #X obj 2 3 cnv 15 301 42 empty empty fold~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -11,15 +11,16 @@
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 26 40 cnv 4 4 4 empty empty Folds 0 28 2 18 -233017 -1 0;
-#X obj 76 40 cnv 4 4 4 empty empty between 0 28 2 18 -233017 -1 0;
+#X obj 26 40 cnv 4 4 4 empty empty Fold 0 28 2 18 -233017 -1 0;
+#X obj 133 40 cnv 4 4 4 empty empty between 0 28 2 18 -233017 -1 0
+;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 147 39 cnv 4 4 4 empty empty two 0 28 2 18 -233017 -1 0;
+#X obj 202 40 cnv 4 4 4 empty empty two 0 28 2 18 -233017 -1 0;
 #X obj 4 479 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 4 358 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -38,8 +39,8 @@
 -228856 -1 -1 0 256;
 #X obj 163 226 else/sig2float~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -108,7 +109,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -158,7 +159,7 @@
 -228856 -1 -1 0 256;
 #X obj 163 172 sig~;
 #X text 120 148 input;
-#X obj 187 39 cnv 4 4 4 empty empty values 0 28 2 18 -233017 -1 0;
+#X obj 240 40 cnv 4 4 4 empty empty values 0 28 2 18 -233017 -1 0;
 #X text 237 291 - input values to be folded;
 #X text 237 315 - lowest fold value;
 #X text 236 336 - highest fold value;
@@ -193,6 +194,7 @@ it is in the given range.;
 #X connect 6 0 3 1;
 #X connect 7 0 3 0;
 #X restore 402 242 pd wavefolding example;
+#X obj 71 40 cnv 4 4 4 empty empty signals 0 28 2 18 -233017 -1 0;
 #X connect 20 0 19 0;
 #X connect 27 0 39 1;
 #X connect 28 0 39 2;

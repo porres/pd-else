@@ -1,51 +1,52 @@
-#N canvas 570 53 560 513 10;
-#X obj 4 337 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 522 53 559 531 10;
+#X obj 4 259 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 404 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 366 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 439 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 401 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 86 413 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 111 375 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 87 346 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 112 267 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 472 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 490 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 155 150 hsl 180 15 -1200 1200 0 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 17900 1;
-#X obj 200 206 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 262 171 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 161 364 bang;
-#X text 167 382 set;
-#X text 125 345 float/list;
-#N canvas 970 92 287 299 lists 0;
-#X obj 75 67 loadbang;
-#X text 54 33 it also works with lists:;
-#X msg 75 93 0 600 1200;
-#X obj 75 152 unpack f f f;
-#X obj 75 242 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
-#X obj 109 213 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1.41421 256;
-#X obj 144 183 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 2 256;
-#X obj 75 121 else/fold;
-#X connect 0 0 2 0;
-#X connect 2 0 7 0;
-#X connect 3 0 4 0;
-#X connect 3 1 5 0;
-#X connect 3 2 6 0;
-#X connect 7 0 3 0;
-#X restore 481 299 pd lists;
-#X text 110 177 cents;
-#X text 191 345 - cents value(s);
-#X text 191 413 - converted ratio value(s);
-#X text 160 302 ratio;
-#X obj 152 178 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1200 256;
-#X obj 200 302 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1.33484 256;
-#X obj 3 3 cnv 15 301 42 empty empty fold 20 20 2 37 -233017 -1 0;
+#X text 172 286 bang;
+#X text 178 304 set;
+#X text 136 267 float/list;
+#N canvas 919 164 275 284 lists 0;
+#X obj 83 60 loadbang;
+#X obj 83 145 unpack f f f;
+#X obj 83 235 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.7 256;
+#X obj 117 206 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.7 256;
+#X obj 152 176 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.7 256;
+#X obj 83 114 else/fold;
+#X msg 83 86 -0.7 0.7 1.3;
+#X text 42 26 It also works with lists:;
+#X connect 0 0 6 0;
+#X connect 1 0 2 0;
+#X connect 1 1 3 0;
+#X connect 1 2 4 0;
+#X connect 5 0 1 0;
+#X connect 6 0 5 0;
+#X restore 481 233 pd lists;
+#X obj 162 146 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 244 232 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 150 375 float/list;
+#X text 202 267 - value to be folded;
+#X text 202 286 - fold or output the last folded value (only float)
+;
+#X text 202 304 - sets next value to be folded via bang (only float)
+;
+#X text 216 375 - folded value(s);
+#X obj 2 3 cnv 15 301 42 empty empty fold 20 20 2 37 -233017 -1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -56,35 +57,46 @@
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Cents/Ratio 0 28 2 18 -233017 -1
-0;
-#X obj 113 40 cnv 4 4 4 empty empty conversion 0 28 2 18 -233017 -1
-0;
+#X obj 26 40 cnv 4 4 4 empty empty Folds 0 28 2 18 -233017 -1 0;
+#X obj 76 40 cnv 4 4 4 empty empty between 0 28 2 18 -233017 -1 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
-0;
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
-0;
-#X text 61 86 Use [cents2ratio] to convert intervals in cents to interval
-ratios. The conversion formula is \; ratio = pow(2 \, (cents/1200))
+#X obj 147 39 cnv 4 4 4 empty empty two 0 28 2 18 -233017 -1 0;
+#X obj 187 39 cnv 4 4 4 empty empty values 0 28 2 18 -233017 -1 0;
+#X text 61 86 [fold] folds between a low and high value. This is like
+a mirroring function \, where an out of bounds value folds back until
+it is in the given range.;
+#X text 120 145 input;
+#X msg 244 145 set 2.9;
+#X obj 244 200 else/fold, f 20;
+#X obj 112 321 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 125 413 float/list;
-#X msg 216 235 set 500;
-#X text 137 448 1) float - initial cents value (default 0);
-#X text 219 206 convert;
-#X text 272 235 sets next value to be converted;
-#X text 191 382 - sets next value to be converted via bang (only float)
+#X obj 112 342 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 191 364 - convert or output the last converted value (only
-float);
-#X obj 200 270 else/fold 700;
-#X connect 6 0 16 0;
-#X connect 7 0 38 0;
-#X connect 16 0 38 0;
-#X connect 32 0 38 0;
-#X connect 38 0 17 0;
+#X text 202 322 - lowest fold value;
+#X text 201 343 - highest fold value;
+#X text 166 322 float;
+#X text 166 343 float;
+#X text 110 412 1) list -;
+#X text 175 413 floats set fold's range \, 2 floats sets minimum and
+maximum. No arguments loads default values (0 and 1). 1 float sets
+maximum value (and lowest value is set to 0). If the maximum value
+is less than the minimum \, the maximum becomes the minimum and vice-versa.
+;
+#X text 159 230 folded value;
+#X obj 302 172 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 361 172 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 317 153 min;
+#X text 376 153 max;
+#X connect 6 0 33 0;
+#X connect 11 0 33 0;
+#X connect 32 0 33 0;
+#X connect 33 0 12 0;
+#X connect 43 0 33 1;
+#X connect 44 0 33 2;
