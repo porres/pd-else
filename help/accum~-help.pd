@@ -46,7 +46,7 @@ inlet.;
 #X obj 319 204 else/trigate~;
 #X obj 226 232 else/accum~ 1000;
 #X obj 226 290 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1004 256;
+-228856 -1 -1 1008 256;
 #X text 166 328 signal;
 #X text 208 328 - value to accumulate;
 #X text 208 345 - sets the starting value;
@@ -165,6 +165,7 @@ inlet.;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 305 3 graph;
 #X obj 226 261 else/sig2float~ 100;
+#X text 340 179 reset;
 #X connect 18 0 22 0;
 #X connect 19 0 23 0;
 #X connect 20 0 23 0;

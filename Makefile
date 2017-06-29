@@ -67,6 +67,7 @@ pulsecount~.class.sources := classes/pulsecount~.c
 pulsediv~.class.sources := classes/pulsediv~.c
 quad~.class.sources := classes/quad~.c
 rad2hz~.class.sources := classes/rad2hz~.c
+ramp~.class.sources := classes/ramp~.c
 random~.class.sources := classes/random~.c
 ratio2cents~.class.sources := classes/ratio2cents~.c
 rescale~.class.sources := classes/rescale~.c
