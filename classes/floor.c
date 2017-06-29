@@ -47,10 +47,10 @@ void floor_bang(t_floor *x)
   outlet_float(x->float_outlet,convert(x->f));
 }
 
-void *floor_new(t_floatarg f1)
+void *floor_new(void)
 {
   t_floor *x = (t_floor *) pd_new(floor_class);
-  x->f = f1;
+  x->f = 0;
   x->float_outlet = outlet_new(&x->x_obj, 0);
   x->bytes = sizeof(t_atom);
   x->output_list = (t_atom *)getbytes(x->bytes);
@@ -69,7 +69,7 @@ void floor_free(t_floor *x)
 void floor_setup(void)
 {
   floor_class = class_new(gensym("floor"), (t_newmethod)floor_new,
-			  (t_method)floor_free,sizeof(t_floor),0, A_DEFFLOAT, 0);
+			  (t_method)floor_free,sizeof(t_floor), 0, 0);
   class_addfloat(floor_class,(t_method)floor_float);
   class_addlist(floor_class,(t_method)floor_list);
   class_addmethod(floor_class,(t_method)floor_set,gensym("set"),A_DEFFLOAT,0);
