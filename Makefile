@@ -33,6 +33,7 @@ decay~.class.sources := classes/decay~.c
 decay2~.class.sources := classes/decay2~.c
 downsample~.class.sources := classes/downsample~.c
 elapsed~.class.sources := classes/elapsed~.c
+floor.class.sources := classes/floor.c
 floor~.class.sources := classes/floor~.c
 fold.class.sources := classes/fold.c
 fold~.class.sources := classes/fold~.c
