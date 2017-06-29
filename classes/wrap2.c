@@ -38,7 +38,7 @@ t_float convert(t_float f, min, max)
             result = f;
             while(result < min)
             {
-                output += range;
+                result += range;
             };
         }
         else
