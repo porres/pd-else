@@ -32,17 +32,17 @@ t_float convert(t_float f, min, max)
         result = f; // if f range, = in
     else
     { // wrap
-        float range = high - low;
-        if(f < low)
+        float range = max - min;
+        if(f < min)
         {
             result = f;
-            while(result < low)
+            while(result < min)
             {
                 output += range;
             };
         }
         else
-            result = fmod(f - low, range) + low;
+            result = fmod(f - min, range) + min;
     }
     return result;
 }
