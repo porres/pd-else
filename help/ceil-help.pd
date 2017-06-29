@@ -12,7 +12,7 @@
 #X obj 4 388 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 148 128 hsl 180 15 -10 10 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12900 1;
+-1 -1 0 1;
 #X obj 235 159 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 125 261 float/list;
@@ -21,13 +21,13 @@
 #X text 54 33 it also works with lists:;
 #X obj 75 152 unpack f f f;
 #X obj 75 242 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -4 256;
+-228856 -1 -1 -3 256;
 #X obj 109 213 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 4 256;
+-228856 -1 -1 5 256;
 #X obj 144 183 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 7 256;
-#X obj 75 121 else/floor;
-#X msg 75 93 -3.2 4.1 7.9;
+-228856 -1 -1 8 256;
+#X obj 75 121 else/ceil;
+#X msg 75 93 -3.9 4.7 7.1;
 #X connect 0 0 7 0;
 #X connect 2 0 3 0;
 #X connect 2 1 4 0;
@@ -36,13 +36,11 @@
 #X connect 7 0 6 0;
 #X restore 482 223 pd lists;
 #X obj 145 156 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 4.41341 256;
+-228856 -1 -1 0 256;
 #X obj 235 225 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 4 256;
+-228856 -1 -1 -1 256;
 #X text 125 329 float/list;
-#X obj 235 193 else/floor;
-#X obj 3 3 cnv 15 301 42 empty empty floor 20 20 2 37 -233017 -1 0
-;
+#X obj 3 3 cnv 15 301 42 empty empty ceil 20 20 2 37 -233017 -1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -53,8 +51,8 @@
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Floor 0 28 2 18 -233017 -1 0;
-#X obj 73 40 cnv 4 4 4 empty empty function 0 28 2 18 -233017 -1 0
+#X obj 23 40 cnv 4 4 4 empty empty Ceil 0 28 2 18 -233017 -1 0;
+#X obj 63 40 cnv 4 4 4 empty empty function 0 28 2 18 -233017 -1 0
 ;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
@@ -66,20 +64,21 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 191 261 - input value(s) to floor function;
 #X text 191 280 - perform function or output the last value (only floats)
 ;
-#X text 191 329 - output value(s) of floor function;
 #X text 149 363 (none);
-#X text 68 89 [floor] is a floor math function.;
 #X text 103 155 input;
 #X text 185 225 output;
 #X text 191 299 - sets input value with no output (only floats);
 #X text 161 280 bang;
 #X text 119 298 set <float>;
 #X msg 260 158 set -1.9;
+#X text 68 89 [ceil] is a ceil math function.;
+#X obj 235 193 else/ceil;
+#X text 191 261 - input value(s) to ceil function;
+#X text 191 329 - output value(s) of ceil function;
 #X connect 6 0 10 0;
-#X connect 7 0 13 0;
-#X connect 10 0 13 0;
-#X connect 13 0 11 0;
-#X connect 36 0 13 0;
+#X connect 7 0 34 0;
+#X connect 10 0 34 0;
+#X connect 32 0 34 0;
+#X connect 34 0 11 0;
