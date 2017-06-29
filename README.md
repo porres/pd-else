@@ -19,15 +19,16 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Current Object list (93 objects):
+Current Object list (98 objects):
 
-OSCILLATORS (DETERMINISTIC GENERATORS): [9]
+OSCILLATORS (DETERMINISTIC GENERATORS): [10]
 - [cosine~]
 - [imp~]
 - [imp2~]
 - [parabolic~]
 - [pulse~]
 - [sawtooth~]
+- [sawtooth2~]
 - [sine~]
 - [square~]
 - [vtriangle~]
@@ -123,11 +124,16 @@ ENVELOPE: [2]
 - [decay~]
 - [decay2~]
 
-MATH/LOGIC: [4]
+MATH/LOGIC: [8]
 - [accum~]
 - [lastvalue]
 - [loop]
 - [sin~]
+- [fold]
+- [fold~]
+- [wrap2]
+- [wrap2~]
+
 
 CONSTANT VALUES: [4]
 - [nyquist]
