@@ -32,6 +32,7 @@ decay~.class.sources := classes/decay~.c
 decay2~.class.sources := classes/decay2~.c
 downsample~.class.sources := classes/downsample~.c
 elapsed~.class.sources := classes/elapsed~.c
+fold.class.sources := classes/fold.c
 fold~.class.sources := classes/fold~.c
 gbman~.class.sources := classes/gbman~.c
 henon~.class.sources := classes/henon~.c
