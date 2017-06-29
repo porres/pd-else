@@ -84,6 +84,7 @@ togedge~.class.sources := classes/togedge~.c
 vtriangle~.class.sources := classes/vtriangle~.c
 vu~.class.sources := classes/vu~.c
 xfade~.class.sources := classes/xfade~.c
+wrap2.class.sources := classes/wrap2.c
 wrap2~.class.sources := classes/wrap2~.c
 zerocross~.class.sources := classes/zerocross~.c
 

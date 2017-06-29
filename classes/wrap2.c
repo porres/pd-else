@@ -1,151 +1,152 @@
-// Porres 2017
-
+// Porres 2016
+ 
 #include "m_pd.h"
-#include "m_pd.h"
+#include <math.h>
 
 static t_class *wrap2_class;
 
 typedef struct _wrap2
 {
-    t_object   x_obj;
-    t_float    x_wrap2;
-    t_inlet   *x_low_let;
-    t_inlet   *x_high_let;
-    t_outlet  *x_outlet;
+    t_object    x_obj;
+    t_int       x_bytes;
+    t_atom      *output_list;
+    t_outlet    *x_outlet;
+    t_float     x_f;
+    t_float     x_min;
+    t_float     x_max;
 } t_wrap2;
 
-
-static t_int *wrap2_perform(t_int *w)
+t_float convert(t_float f, min, max)
 {
-    t_wrap2 *x = (t_wrap2 *)(w[1]);
-    int nblock = (t_int)(w[2]);
-    t_float *in1 = (t_float *)(w[3]);
-    t_float *in2 = (t_float *)(w[4]);
-    t_float *in3 = (t_float *)(w[5]);
-    t_float *out = (t_sample *)(w[6]);
-    while (nblock--)
-        {
-        t_float output;
-        float input = *in1++;
-        float in_low = *in2++;
-        float in_high = *in3++;
-        float low = in_low;
-        float high = in_high;
-        if(low > high)
-            {
-            low = in_high;
-            high = in_low;
-            }
+    float result;
+    if(min > max)
+    { // swap values
+        float temp;
+        temp = max;
+        max = min;
+        min = temp;
+    };
+    if(min == max)
+        result = min;
+    else if(f <= max && f >= min)
+        result = f; // if f range, = in
+    else
+    { // wrap
         float range = high - low;
-        if(low == high)
-            output = low;
-        else
-            {
-            if(input < low)
-                {
-                output = input;
-                while(output < low)
-                    {
-                    output += range;
-                    };
-                }
-            else
-                output = fmod(input - low, range) + low;
-            }
-        *out++ = output;
-        }
-    return (w + 7);
-}
-
-static void wrap2_dsp(t_wrap2 *x, t_signal **sp)
-{
-    dsp_add(wrap2_perform, 6, x, sp[0]->s_n,
-            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
-}
-
-static void *wrap2_free(t_wrap2 *x)
-{
-    inlet_free(x->x_low_let);
-    inlet_free(x->x_high_let);
-    outlet_free(x->x_outlet);
-    return (void *)x;
-}
-
-static void *wrap2_new(t_symbol *s, int ac, t_atom *av)
-{
-    t_wrap2 *x = (t_wrap2 *)pd_new(wrap2_class);
-/////////////////////////////////////////////////////////////////////////////////////
-    float init_low, low, init_high, high;
-    if(ac)
+        if(f < low)
         {
-        if(ac == 1)
+            result = f;
+            while(result < low)
             {
-            if(av -> a_type == A_FLOAT)
+                output += range;
+            };
+        }
+        else
+            result = fmod(f - low, range) + low;
+    }
+    return result;
+}
+
+void wrap2_float(t_wrap2 *x, t_floatarg f)
+{
+  x->x_f = f;
+  outlet_float(x->x_outlet, convert(f, x->x_min, x->x_max));
+}
+
+void wrap2_list(t_wrap2 *x, t_symbol *s, int argc, t_atom *argv)
+{
+  int old_bytes = x->x_bytes, i = 0;
+  x->x_bytes = argc*sizeof(t_atom);
+  x->output_list = (t_atom *)t_resizebytes(x->output_list,old_bytes,x->x_bytes);
+  for(i=0;i<argc;i++)
+    SETFLOAT(x->output_list+i,convert(atom_getfloatarg(i,argc,argv), x->x_min, x->x_max));
+  outlet_list(x->x_outlet,0,argc,x->output_list);
+}
+
+void wrap2_set(t_wrap2 *x, t_float f)
+{
+  x->x_f = f;
+}
+
+void wrap2_bang(t_wrap2 *x)
+{
+  outlet_float(x->x_outlet,convert(x->x_f, x->x_min, x->x_max));
+}
+
+void *wrap2_new(t_symbol *s, int argc, t_atom *argv)
+{
+  t_wrap2 *x = (t_wrap2 *) pd_new(wrap2_class);
+///////////////////////////
+    x->x_min = 0.;
+    x-> x_max = 1.;
+    if(argc == 1)
+    {
+        if(argv -> a_type == A_FLOAT)
+        {
+            x->x_min = 0;
+            x->x_max = atom_getfloat(argv);
+        }
+        else goto errstate;
+    }
+    else if(argc == 2)
+    {
+        int numargs = 0;
+        while(argc > 0 )
+        {
+            if(argv -> a_type == A_FLOAT)
+            { // if nullpointer, should be float or int
+                switch(numargs)
                 {
-                low = init_low = 0;
-                high = init_high = atom_getfloat(av);
-                }
-            else goto errstate;
-            }
-        else if(ac == 2)
-            {
-            int argnum = 0;
-            while(ac)
-                {
-                if(av -> a_type != A_FLOAT)
-                    {
-                    goto errstate;
-                    }
-                else
-                    {
-                    t_float curf = atom_getfloatarg(0, ac, av);
-                    switch(argnum)
-                        {
-                        case 0:
-                            low = init_low = curf;
-                            break;
-                        case 1:
-                            high = init_high = curf;
-                            break;
-                        default:
-                            break;
-                        };
-                    };
-                    argnum++;
-                    ac--;
-                    av++;
+                    case 0: x->x_min = atom_getfloatarg(0, argc, argv);
+                        numargs++;
+                        argc--;
+                        argv++;
+                        break;
+                    case 1: x->x_max = atom_getfloatarg(0, argc, argv);
+                        numargs++;
+                        argc--;
+                        argv++;
+                        break;
+                    default:
+                        argc--;
+                        argv++;
+                        break;
                 };
             }
-        else goto errstate;
-        }
-    else
-        {
-        low = init_low = -1;
-        high = init_high = 1;
-        }
-    if(low > high)
-        {
-        low = init_high;
-        high = init_low;
-        }
-/////////////////////////////////////////////////////////////////////////////////////
-    x->x_low_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_low_let, low);
-    x->x_high_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_high_let, high);
-    x->x_outlet = outlet_new(&x->x_obj, &s_signal);
-//
-    return (x);
-//
-    errstate:
-        pd_error(x, "wrap2~: improper args");
-        return NULL;
+            else // not a float
+                goto errstate;
+        };
+    }
+    else if(argc > 2)
+        goto errstate;
+///////////////////////////
+  x->x_outlet = outlet_new(&x->x_obj, 0);
+  x->x_bytes = sizeof(t_atom);
+  floatinlet_new((t_object *)x, &x->x_min);
+  floatinlet_new((t_object *)x, &x->x_max);
+  x->output_list = (t_atom *)getbytes(x->x_bytes);
+  if(x->output_list==NULL)
+    {
+    pd_error(x,"wrap2: memory allocation failure");
+    return NULL;
+    }
+  return (x);
+errstate:
+    pd_error(x, "wrap2: improper args");
+    return NULL;
 }
 
-void wrap2_tilde_setup(void)
+void wrap2_free(t_wrap2 *x)
 {
-    wrap2_class = class_new(gensym("wrap2~"), (t_newmethod)wrap2_new,
-        (t_method)wrap2_free, sizeof(t_wrap2), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(wrap2_class, nullfn, gensym("signal"), 0);
-    class_addmethod(wrap2_class, (t_method)wrap2_dsp, gensym("dsp"), A_CANT, 0);
+  t_freebytes(x->output_list,x->x_bytes);
+}
+
+void wrap2_setup(void)
+{
+  wrap2_class = class_new(gensym("wrap2"), (t_newmethod)wrap2_new,
+			  (t_method)wrap2_free,sizeof(t_wrap2),0, A_GIMME, 0);
+  class_addfloat(wrap2_class,(t_method)wrap2_float);
+  class_addlist(wrap2_class,(t_method)wrap2_list);
+  class_addmethod(wrap2_class,(t_method)wrap2_set,gensym("set"),A_DEFFLOAT,0);
+  class_addbang(wrap2_class,(t_method)wrap2_bang);
 }
