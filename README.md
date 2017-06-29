@@ -19,7 +19,7 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Current Object list (98 objects):
+Current Object list (102 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [10]
 - [cosine~]
@@ -124,13 +124,17 @@ ENVELOPE: [2]
 - [decay~]
 - [decay2~]
 
-MATH/LOGIC: [8]
+MATH/LOGIC: [12]
 - [accum~]
+- [ceil]
+- [ceil~]
+- [floor]
+- [floor~]
+- [fold]
+- [fold~]
 - [lastvalue]
 - [loop]
 - [sin~]
-- [fold]
-- [fold~]
 - [wrap2]
 - [wrap2~]
 
