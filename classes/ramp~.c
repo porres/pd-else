@@ -9,22 +9,44 @@ static t_class *ramp_class;
 
 typedef struct _ramp
 {
-    t_object x_obj;
-    double  x_phase;
-    float   x_min;
-    float   x_max;
-    float   x_inc;
-    float   x_reset;
-    t_float    x_lastin;
-    t_inlet  *x_inlet_inc;
-    t_inlet  *x_inlet_min;
-    t_inlet  *x_inlet_max;
-    t_outlet *x_outlet;
+    t_object    x_obj;
+    double      x_phase;
+    float       x_min;
+    float       x_max;
+    float       x_inc;
+    float       x_reset;
+    int         x_continue;
+    int         x_loop;
+    t_float     x_lastin;
+    t_inlet     *x_inlet_inc;
+    t_inlet     *x_inlet_min;
+    t_inlet     *x_inlet_max;
+    t_outlet    *x_outlet;
 } t_ramp;
+
+static void ramp_float(t_ramp *x, t_floatarg f)
+{
+    x->x_phase = f;
+}
 
 static void ramp_bang(t_ramp *x)
 {
     x->x_phase = x->x_reset;
+}
+
+static void ramp_loop(t_ramp *x, t_floatarg f)
+{
+    x->x_loop = f != 0;
+}
+
+static void ramp_stop(t_count *x)
+{
+    x->x_continue = 0;
+}
+
+static void ramp_start(t_count *x)
+{
+    x->x_continue = 1;
 }
 
 static void ramp_reset(t_ramp *x, t_floatarg f)
@@ -80,9 +102,9 @@ static t_int *ramp_perform(t_int *w)
                     }
                 }
             output = phase;
-            lastin = trig;
             }
         *out++ = output;
+        lastin = trig;
         phase += phase_step; // next phase
     }
     x->x_phase = phase;
@@ -143,6 +165,11 @@ static void *ramp_new(t_symbol *s, int argc, t_atom *argv)
                         argc--;
                         argv++;
                         break;
+                    case 4: x->x_loop = atom_getfloatarg(0, argc, argv) != 0;
+                        numargs++;
+                        argc--;
+                        argv++;
+                        break;
                     default:
                         argc--;
                         argv++;
@@ -176,5 +203,9 @@ void ramp_tilde_setup(void)
     class_addmethod(ramp_class, nullfn, gensym("signal"), 0);
     class_addmethod(ramp_class, (t_method)ramp_dsp, gensym("dsp"), A_CANT, 0);
     class_addbang(ramp_class, (t_method)ramp_bang);
+    class_addfloat(ramp_class, (t_method)ramp_float);
+    class_addmethod(ramp_class, (t_method)ramp_loop, gensym("loop"), A_FLOAT, 0);
     class_addmethod(ramp_class, (t_method)ramp_reset, gensym("reset"), A_FLOAT, 0);
+    class_addmethod(ramp_class, (t_method)ramp_stop, gensym("stop"), 0);
+    class_addmethod(ramp_class, (t_method)ramp_start, gensym("start"), 0);
 }
