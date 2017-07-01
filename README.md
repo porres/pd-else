@@ -123,10 +123,10 @@ AUDIO PROCESSING (mostly filters) (10):
 
 CONTROL: [3]
 envelope (2)
-- [decay~]
-- [decay2~]
+ - [decay~]
+ - [decay2~]
 buffer(1)
-- [ramp~]
+ - [ramp~]
 
 MATH/LOGIC: [12]
 - [accum~]
