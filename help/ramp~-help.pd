@@ -1,0 +1,425 @@
+#N canvas 539 66 561 576 10;
+#X obj 4 282 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 425 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 458 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 4 538 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 87 434 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 87 291 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 146 328 signal;
+#X obj 2 3 cnv 15 301 42 empty empty ramp~ 20 20 2 37 -233017 -1 0
+;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Resettable 0 28 2 18 -233017 -1
+0;
+#X obj 107 40 cnv 4 4 4 empty empty ramp 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 189 167 else/ramp~;
+#X obj 189 132 else/imp~ 1;
+#X obj 189 228 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 4867 256;
+#X obj 189 199 else/sig2float~;
+#X obj 192 251 hsl 128 15 0 44100 0 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 1402 1;
+#X obj 158 133 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 270 125 reset via bang or triger signal, f 16;
+#X text 147 434 signal;
+#X text 158 290 bang;
+#X text 188 328 - signal reset trigger (non-positive to positive transition)
+;
+#X text 188 290 - control reset trigger: resets to the reset point
+value;
+#X text 104 310 reset <float>;
+#X text 188 310 - sets the reset point value;
+#X obj 87 354 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 111 354 float/signal;
+#X obj 87 376 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 111 376 float/signal;
+#X obj 87 398 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 111 398 float/signal;
+#X text 189 434 - the ramp signal;
+#X text 61 85 [ramp~] is a resettable linear ramp between a minimum
+and maximum value. When passing over the limits \, the ramp is wrapped.
+;
+#N canvas 564 23 409 509 frequency 0;
+#X obj 93 168 /~;
+#X obj 74 265 expr~ sin($v1);
+#X obj 74 226 else/ramp~;
+#X obj 93 196 *~;
+#X obj 135 316 else/graph~;
+#X obj 108 138 else/sr~;
+#X obj 131 172 else/pi 2;
+#X obj 31 348 else/out~;
+#X obj 93 109 sig~ 440;
+#X text 149 109 Hertz;
+#X text 163 139 sample rate;
+#X text 193 173 max = 2*pi;
+#X text 24 22 If one wants [ramp~] to output a signal with frequency
+in hertz (oscillating between min and max values) \, then the increment
+value should be (max - min) * freq / sr (where freq is the frequency
+in hz and sr is the sampling rate).;
+#X connect 0 0 3 0;
+#X connect 1 0 4 0;
+#X connect 1 0 7 1;
+#X connect 1 0 7 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 1;
+#X connect 5 0 0 1;
+#X connect 6 0 2 3;
+#X connect 6 0 3 1;
+#X connect 8 0 0 0;
+#X restore 464 246 pd frequency;
+#N canvas 207 34 366 264 (subpatch) 0;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
+#X obj 215 68 route dsp;
+#X obj 215 37 receive pd;
+#N canvas 977 77 379 291 set_color 0;
+#X obj 47 30 inlet;
+#X obj 147 200 s \$0-cnv;
+#X obj 47 83 select 0 1;
+#X obj 47 220 s \$0-tgl-r;
+#N canvas 0 22 712 637 off 0;
+#X obj 490 220 * -1;
+#X obj 424 300 +;
+#X obj 409 325 +;
+#X obj 347 219 * -65536;
+#X obj 424 220 * -256;
+#X obj 409 356 - 1;
+#X obj 390 189 unpack f f f;
+#X obj 225 295 +;
+#X obj 210 320 +;
+#X obj 148 214 * -65536;
+#X obj 225 215 * -256;
+#X obj 291 215 * -1;
+#X obj 210 351 - 1;
+#X obj 191 184 unpack f f f;
+#X obj 379 423 pack;
+#X msg 395 152 124 124 124;
+#X msg 203 154 220 220 220;
+#X obj 238 121 t b b;
+#X obj 238 81 inlet;
+#X obj 378 485 outlet;
+#X connect 0 0 1 1;
+#X connect 1 0 2 1;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 14 1;
+#X connect 6 0 3 0;
+#X connect 6 1 4 0;
+#X connect 6 2 0 0;
+#X connect 7 0 8 1;
+#X connect 8 0 12 0;
+#X connect 9 0 8 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 1;
+#X connect 12 0 14 0;
+#X connect 13 0 9 0;
+#X connect 13 1 10 0;
+#X connect 13 2 11 0;
+#X connect 14 0 19 0;
+#X connect 15 0 6 0;
+#X connect 16 0 13 0;
+#X connect 17 0 16 0;
+#X connect 17 1 15 0;
+#X connect 18 0 17 0;
+#X restore 47 113 pd off;
+#X msg 47 180 color \$1 \$2 0;
+#X msg 147 131 -4.86997e+06 -1.34937e+07;
+#X msg 147 171 color \$1 0 \$2;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 6 0;
+#X connect 4 0 5 0;
+#X connect 4 0 7 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 1 0;
+#X restore 215 165 pd set_color;
+#X obj 135 122 r \$0-tgl-s;
+#N canvas 121 482 450 300 (subpatch) 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+0;
+#X coords 0 -1 1 1 42 27 1 100 100;
+#X restore 51 144 pd;
+#X obj 226 139 s \$0-tgl-r;
+#X msg 226 115 set \$1;
+#X msg 135 177 \; pd dsp \$1;
+#N canvas 256 32 278 194 load_check 0;
+#X obj 136 53 sig~ 1;
+#X obj 74 24 loadbang;
+#X obj 136 86 snapshot~;
+#X obj 91 52 del 5;
+#X obj 136 151 outlet;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 74 126 switch~;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 1 0 5 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 3 0 5 0;
+#X connect 5 0 6 0;
+#X restore 51 72 pd load_check;
+#X connect 1 0 3 0;
+#X connect 1 0 7 0;
+#X connect 2 0 1 0;
+#X connect 4 0 8 0;
+#X connect 4 0 3 0;
+#X connect 7 0 6 0;
+#X connect 9 0 0 0;
+#X coords 0 -1 1 1 44 72 2 50 100;
+#X restore 505 61 pd;
+#X text 189 354 - sets the increment value (default 1);
+#X text 189 376 - sets the minimum value (default 0);
+#X text 189 398 - sets the maximum value (default 2ˆ32 - 1);
+#N canvas 207 34 366 264 (subpatch) 0;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
+#X obj 215 68 route dsp;
+#X obj 215 37 receive pd;
+#N canvas 977 77 379 291 set_color 0;
+#X obj 47 30 inlet;
+#X obj 147 200 s \$0-cnv;
+#X obj 47 83 select 0 1;
+#X obj 47 220 s \$0-tgl-r;
+#N canvas 0 22 712 637 off 0;
+#X obj 490 220 * -1;
+#X obj 424 300 +;
+#X obj 409 325 +;
+#X obj 347 219 * -65536;
+#X obj 424 220 * -256;
+#X obj 409 356 - 1;
+#X obj 390 189 unpack f f f;
+#X obj 225 295 +;
+#X obj 210 320 +;
+#X obj 148 214 * -65536;
+#X obj 225 215 * -256;
+#X obj 291 215 * -1;
+#X obj 210 351 - 1;
+#X obj 191 184 unpack f f f;
+#X obj 379 423 pack;
+#X msg 395 152 124 124 124;
+#X msg 203 154 220 220 220;
+#X obj 238 121 t b b;
+#X obj 238 81 inlet;
+#X obj 378 485 outlet;
+#X connect 0 0 1 1;
+#X connect 1 0 2 1;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 14 1;
+#X connect 6 0 3 0;
+#X connect 6 1 4 0;
+#X connect 6 2 0 0;
+#X connect 7 0 8 1;
+#X connect 8 0 12 0;
+#X connect 9 0 8 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 1;
+#X connect 12 0 14 0;
+#X connect 13 0 9 0;
+#X connect 13 1 10 0;
+#X connect 13 2 11 0;
+#X connect 14 0 19 0;
+#X connect 15 0 6 0;
+#X connect 16 0 13 0;
+#X connect 17 0 16 0;
+#X connect 17 1 15 0;
+#X connect 18 0 17 0;
+#X restore 47 113 pd off;
+#X msg 47 180 color \$1 \$2 0;
+#X msg 147 131 -4.86997e+06 -1.34937e+07;
+#X msg 147 171 color \$1 0 \$2;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 6 0;
+#X connect 4 0 5 0;
+#X connect 4 0 7 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 1 0;
+#X restore 215 165 pd set_color;
+#X obj 135 122 r \$0-tgl-s;
+#N canvas 121 482 450 300 (subpatch) 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+0;
+#X coords 0 -1 1 1 42 27 1 100 100;
+#X restore 51 144 pd;
+#X obj 226 139 s \$0-tgl-r;
+#X msg 226 115 set \$1;
+#X msg 135 177 \; pd dsp \$1;
+#N canvas 256 32 278 194 load_check 0;
+#X obj 136 53 sig~ 1;
+#X obj 74 24 loadbang;
+#X obj 136 86 snapshot~;
+#X obj 91 52 del 5;
+#X obj 136 151 outlet;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 74 126 switch~;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 1 0 5 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 3 0 5 0;
+#X connect 5 0 6 0;
+#X restore 51 72 pd load_check;
+#X connect 1 0 3 0;
+#X connect 1 0 7 0;
+#X connect 2 0 1 0;
+#X connect 4 0 8 0;
+#X connect 4 0 3 0;
+#X connect 7 0 6 0;
+#X connect 9 0 0 0;
+#X coords 0 -1 1 1 44 72 2 50 100;
+#X restore 505 61 pd;
+#X text 136 467 1) float;
+#X text 136 484 2) float;
+#X text 136 500 3) float;
+#X text 136 516 4) float;
+#X text 190 467 - increment value (default 1);
+#X text 190 483 - minimum value (default 0);
+#X text 190 499 - maximum value (default 2ˆ32 - 1);
+#N canvas 434 244 454 419 stop-continue 0;
+#X obj 115 212 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 85.912 256;
+#X obj 115 183 else/sig2float~;
+#X obj 115 247 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 8591 1;
+#X text 97 369 0;
+#X text 85 239 127;
+#X text 79 302 63.5;
+#X obj 164 80 sig~ 0.001;
+#X obj 206 117 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 164 117 *~;
+#X obj 115 151 else/ramp~ 0.001 0 127 63;
+#X text 25 18 This examples uses a toggle to start and stop (or pause
+and continue) the ramp increment.;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 6 0 8 0;
+#X connect 7 0 8 1;
+#X connect 8 0 9 1;
+#X connect 9 0 1 0;
+#X restore 440 194 pd stop-continue;
+#X text 190 515 - start/reset value (default 0);
+#N canvas 434 244 746 388 basic 0;
+#X obj 88 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 29.3309 256;
+#X obj 88 170 else/sig2float~;
+#X obj 88 234 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 2933 1;
+#X obj 88 111 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 46 111 reset;
+#X text 164 255 Note that the ramp automatically wraps between the
+minimum and maximum values., f 20;
+#X obj 489 187 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.383317 256;
+#X obj 489 158 else/sig2float~;
+#X obj 489 222 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 8784 1;
+#X obj 489 96 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 446 96 reset;
+#X text 510 247 0.5;
+#X text 508 214 1;
+#X text 509 310 0.5;
+#X text 510 279 0;
+#X text 510 343 -1;
+#X text 70 356 0;
+#X text 58 226 127;
+#X text 52 289 63.5;
+#X text 383 24 You can have a resset point outside the minimum and
+maximum range. Below \, the value is resset to -1 \, but when it falls
+within the min/max range \, it wraps around it.;
+#X msg 156 114 0.001, f 6;
+#X msg 143 91 -0.001;
+#X text 29 11 Below \, we have [ramp~] loaded with the following parameters:
+, f 49;
+#X text 207 100 <= change direction;
+#X obj 88 138 else/ramp~ -0.001 0 127 63.5;
+#X text 28 44 increment = -0.001 / minimum = 0 / maximum = 127 / reset
+value = 63.5 (also the initial/staring value)., f 52;
+#X obj 489 126 else/ramp~ 2e-05 -0.5 0.5 -1;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 3 0 24 0;
+#X connect 6 0 8 0;
+#X connect 7 0 6 0;
+#X connect 9 0 26 0;
+#X connect 20 0 24 1;
+#X connect 21 0 24 1;
+#X connect 24 0 1 0;
+#X connect 26 0 7 0;
+#X restore 434 168 pd basic examples;
+#N canvas 640 153 562 369 read 0;
+#X text 83 30 This examples uses a toggle to start and stop (or pause
+and continue) the ramp increment.;
+#X obj 115 201 else/ramp~, f 15;
+#X obj 302 205 soundfiler;
+#X floatatom 302 232 0 0 0 0 - - -;
+#X obj 87 278 else/out~;
+#X obj 115 237 tabread4~ \$0-sample;
+#X obj 147 116 hsl 128 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 5700 1;
+#X obj 144 170 else/float2sig~ 100 1;
+#X obj 144 142 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -0.204724 256;
+#X obj 115 142 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 63 142 restart;
+#X obj 302 151 symbol \$0-sample;
+#X obj 302 126 loadbang;
+#X text 298 256 sample size;
+#X msg 302 180 read -resize ./vacuous.wav \$1;
+#X obj 389 209 table \$0-sample;
+#X connect 1 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 3;
+#X connect 5 0 4 0;
+#X connect 5 0 4 1;
+#X connect 6 0 8 0;
+#X connect 7 0 1 1;
+#X connect 8 0 7 0;
+#X connect 9 0 1 0;
+#X connect 11 0 14 0;
+#X connect 12 0 11 0;
+#X connect 14 0 2 0;
+#X restore 446 220 pd read buffers;
+#X connect 17 0 20 0;
+#X connect 18 0 17 0;
+#X connect 19 0 21 0;
+#X connect 20 0 19 0;
+#X connect 22 0 17 0;
