@@ -121,11 +121,11 @@ AUDIO PROCESSING (mostly filters) (10):
 - [phaseshifter~]
 - [resonant~]
 
-CONTROL: [3]
-envelope (2)
+CONTROL/ENVELOPE: [2]
  - [decay~]
  - [decay2~]
-buffer(1)
+ 
+CONTROL/BUFFER: [1]
  - [ramp~]
 
 MATH/LOGIC: [12]
