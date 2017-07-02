@@ -39,12 +39,12 @@ static void ramp_loop(t_ramp *x, t_floatarg f)
     x->x_loop = f != 0;
 }
 
-static void ramp_stop(t_count *x)
+static void ramp_stop(t_ramp *x)
 {
     x->x_continue = 0;
 }
 
-static void ramp_start(t_count *x)
+static void ramp_start(t_ramp *x)
 {
     x->x_continue = 1;
 }
@@ -146,6 +146,8 @@ static void *ramp_new(t_symbol *s, int argc, t_atom *argv)
     x->x_min = 0.;
     x->x_max = MAX_LIMIT;
     x->x_inc = 1.;
+    x->x_continue = 1.;
+    x->x_loop = 1.;
     if(argc)
     {
         int numargs = 0;
