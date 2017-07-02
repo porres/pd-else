@@ -83,29 +83,39 @@ static t_int *ramp_perform(t_int *w)
                 {
                 if(min > max)
                     { // swap values
-                        float temp;
-                        temp = max;
-                        max = min;
-                        min = temp;
+                    float temp;
+                    temp = max;
+                    max = min;
+                    min = temp;
                     };
-                if(phase < min || phase >= max) // wrap phase
+                if(x->x_loop) // wrap
                     {
-                    float range = max - min;
-                    if(phase < min && phase_step < 0)
+                    if(phase < min || phase >= max) // wrap phase
                         {
-                        while(phase < min)
-                        phase += range; // wrapped phase
+                        float range = max - min;
+                        if(phase < min && phase_step < 0)
+                            {
+                            while(phase < min)
+                                phase += range; // wrapped phase
+                            }
+                        else if(phase > max && phase_step > 0)
+                            phase = fmod(phase - min, range) + min; // wrapped phase
                         }
-                    else
-                        if(phase > max && phase_step > 0)
-                        phase = fmod(phase - min, range) + min; // wrapped phase
+                    }
+                else // clip
+                    {
+                    if(phase < min && phase_step < 0)
+                        phase = min;
+                    if(phase > max && phase_step > 0)
+                        phase = max;
                     }
                 }
             output = phase;
             }
         *out++ = output;
         lastin = trig;
-        phase += phase_step; // next phase
+        if(x->x_continue)
+            phase += phase_step; // next phase
     }
     x->x_phase = phase;
     x->x_lastin = lastin; // last input
