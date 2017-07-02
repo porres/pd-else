@@ -32,11 +32,25 @@ static void ramp_float(t_ramp *x, t_floatarg f)
 static void ramp_bang(t_ramp *x)
 {
     x->x_phase = x->x_reset;
+    if(!x->x_continue)
+        x->x_continue = 1;
 }
 
-static void ramp_loop(t_ramp *x, t_floatarg f)
+static void ramp_loop(t_ramp *x)
 {
-    x->x_loop = f != 0;
+    x->x_loop = 1;
+}
+
+static void ramp_clip(t_ramp *x)
+{
+    x->x_loop = 0;
+}
+
+
+static void ramp_reset(t_ramp *x)
+{
+    x->x_phase = x->x_reset;
+    x->x_continue = 0;
 }
 
 static void ramp_stop(t_ramp *x)
@@ -49,7 +63,7 @@ static void ramp_start(t_ramp *x)
     x->x_continue = 1;
 }
 
-static void ramp_reset(t_ramp *x, t_floatarg f)
+static void ramp_set(t_ramp *x, t_floatarg f)
 {
     x->x_reset = f;
 }
@@ -78,7 +92,11 @@ static t_int *ramp_perform(t_int *w)
         else
             {
             if (trig > 0 && lastin <= 0)
+                {
                 phase = reset;
+                if(!x->x_continue)
+                    x->x_continue = 1;
+                }
             else
                 {
                 if(min > max)
@@ -154,7 +172,7 @@ static void *ramp_new(t_symbol *s, int argc, t_atom *argv)
         while(argc > 0 )
         {
             if(argv -> a_type == A_FLOAT)
-            { // if nullpointer, should be float or int
+            {
                 switch(numargs)
                 {
                     case 0: x->x_inc = atom_getfloatarg(0, argc, argv);
@@ -188,7 +206,27 @@ static void *ramp_new(t_symbol *s, int argc, t_atom *argv)
                         break;
                 };
             }
-            else // not a float
+            else if (argv -> a_type == A_SYMBOL)
+            {
+            t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
+                {
+                if(strcmp(curarg->s_name, "-off")==0)
+                    {
+                    x->x_continue = 0;
+                    argc --;
+                    argv ++;
+                    }
+                else if(strcmp(curarg->s_name, "-clip")==0)
+                    {
+                    x->x_loop = 0;
+                    argc --;
+                    argv ++;
+                    }
+                else
+                    goto errstate;
+                }
+            }
+            else
                 goto errstate;
         };
     }
@@ -216,8 +254,10 @@ void ramp_tilde_setup(void)
     class_addmethod(ramp_class, (t_method)ramp_dsp, gensym("dsp"), A_CANT, 0);
     class_addbang(ramp_class, (t_method)ramp_bang);
     class_addfloat(ramp_class, (t_method)ramp_float);
-    class_addmethod(ramp_class, (t_method)ramp_loop, gensym("loop"), A_FLOAT, 0);
-    class_addmethod(ramp_class, (t_method)ramp_reset, gensym("reset"), A_FLOAT, 0);
+    class_addmethod(ramp_class, (t_method)ramp_loop, gensym("loop"), 0);
+    class_addmethod(ramp_class, (t_method)ramp_clip, gensym("clip"), 0);
+    class_addmethod(ramp_class, (t_method)ramp_set, gensym("set"), A_FLOAT, 0);
+    class_addmethod(ramp_class, (t_method)ramp_reset, gensym("reset"), 0);
     class_addmethod(ramp_class, (t_method)ramp_stop, gensym("stop"), 0);
     class_addmethod(ramp_class, (t_method)ramp_start, gensym("start"), 0);
 }
