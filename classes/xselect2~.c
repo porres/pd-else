@@ -5,7 +5,7 @@
 #define HALF_PI (M_PI * 0.5)
 #define MAXINTPUT 500
 
-typedef struct _selectx
+typedef struct _xselect2
 {
     t_object   x_obj;
     t_float *x_ch_select; // main signal (channel selector)
@@ -13,18 +13,18 @@ typedef struct _selectx
     int 	  x_indexed; // inlets excluding main signal
     t_float  **x_ivecs; // copying from matrix
     t_float  *x_ovec; // single pointer since we're dealing with an array rather than an array of arrays
-} t_selectx;
+} t_xselect2;
 
-static t_class *selectx_class;
+static t_class *xselect2_class;
 
-static void selectx_index(t_selectx *x, t_floatarg f)
+static void xselect2_index(t_xselect2 *x, t_floatarg f)
 {
     x->x_indexed = f != 0;
 }
 
-static t_int *selectx_perform(t_int *w)
+static t_int *xselect2_perform(t_int *w)
 {
-    t_selectx *x = (t_selectx *)(w[1]);
+    t_xselect2 *x = (t_xselect2 *)(w[1]);
     int nblock = (int)(w[2]);
     t_float *channel = x->x_ch_select;
     t_float **ivecs = x->x_ivecs;
@@ -55,22 +55,22 @@ static t_int *selectx_perform(t_int *w)
     return (w + 3);
 }
 
-static void selectx_dsp(t_selectx *x, t_signal **sp)
+static void xselect2_dsp(t_xselect2 *x, t_signal **sp)
 {
     int i, nblock = sp[0]->s_n;
     t_signal **sigp = sp;
-    x->x_ch_select = (*sigp++)->s_vec; //the first sig in is the selectx idx
+    x->x_ch_select = (*sigp++)->s_vec; //the first sig in is the xselect2 idx
     for (i = 0; i < x->x_n_inlets; i++){ //now for the n_inlets
         *(x->x_ivecs+i) = (*sigp++)->s_vec;
     };
     x->x_ovec = (*sigp++)->s_vec; //now for the outlet
-    dsp_add(selectx_perform, 2, x, nblock);
+    dsp_add(xselect2_perform, 2, x, nblock);
 }
 
-static void *selectx_new(t_symbol *s, int argc, t_atom *argv)
+static void *xselect2_new(t_symbol *s, int argc, t_atom *argv)
 {
-    t_selectx *x = (t_selectx *)pd_new(selectx_class);
-    t_float n_inlets = 2; //inlets not counting selectx input
+    t_xselect2 *x = (t_xselect2 *)pd_new(xselect2_class);
+    t_float n_inlets = 2; //inlets not counting xselect2 input
     x->x_indexed = 1;
     int i;
     int argnum = 0;
@@ -107,16 +107,16 @@ static void *selectx_new(t_symbol *s, int argc, t_atom *argv)
         return NULL;
 }
 
-void * selectx_free(t_selectx *x){
+void * xselect2_free(t_xselect2 *x){
     freebytes(x->x_ivecs, x->x_n_inlets * sizeof(*x->x_ivecs));
     return (void *) x;
 }
 
-void selectx_tilde_setup(void)
+void xselect2_tilde_setup(void)
 {
-    selectx_class = class_new(gensym("selectx~"), (t_newmethod)selectx_new,
-                    (t_method)selectx_free, sizeof(t_selectx), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(selectx_class, (t_method)selectx_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(selectx_class, nullfn, gensym("signal"), 0);
-    class_addmethod(selectx_class, (t_method)selectx_index, gensym("index"), A_FLOAT, 0);
+    xselect2_class = class_new(gensym("xselect2~"), (t_newmethod)xselect2_new,
+                    (t_method)xselect2_free, sizeof(t_xselect2), CLASS_DEFAULT, A_GIMME, 0);
+    class_addmethod(xselect2_class, (t_method)xselect2_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(xselect2_class, nullfn, gensym("signal"), 0);
+    class_addmethod(xselect2_class, (t_method)xselect2_index, gensym("index"), A_FLOAT, 0);
 }

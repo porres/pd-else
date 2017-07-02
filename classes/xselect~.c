@@ -3,14 +3,14 @@
 #include "m_pd.h"
 #include <math.h>
 
-static t_class *select_class;
+static t_class *xselect_class;
 
 #define INPUTLIMIT 500
 #define LINEAR 0
 #define EPOWER 1
 #define HALF_PI (M_PI * 0.5)
 
-typedef struct _select {
+typedef struct _xselect {
     t_object    x_obj;
     int         x_channel;
     int         x_lastchannel;
@@ -23,9 +23,9 @@ typedef struct _select {
     int         x_counter[INPUTLIMIT];
     double      x_fade[INPUTLIMIT];
     float       *x_in[INPUTLIMIT];
-} t_select;
+} t_xselect;
 
-void select_float(t_select *x, t_floatarg ch){
+void xselect_float(t_xselect *x, t_floatarg ch){
   ch = (int)ch > x->x_ninlets ? x->x_ninlets : (int)ch;
   x->x_channel = ch < 0 ? 0 : ch;
   if(x->x_channel != x->x_lastchannel){
@@ -37,9 +37,9 @@ void select_float(t_select *x, t_floatarg ch){
   }
 }
 
-static t_int *select_perform(t_int *w){
+static t_int *xselect_perform(t_int *w){
     int i;
-    t_select *x = (t_select *)(w[1]);
+    t_xselect *x = (t_xselect *)(w[1]);
     int n = (int)(w[2]);
     for(i = 0; i < x->x_ninlets; i++)
         x->x_in[i] = (t_float *)(w[3 + i]);
@@ -62,7 +62,7 @@ static t_int *select_perform(t_int *w){
     return (w + 4 + x->x_ninlets);
 }
 
-static void select_dsp(t_select *x, t_signal **sp) {
+static void xselect_dsp(t_xselect *x, t_signal **sp) {
     x->x_sr_khz = sp[0]->s_sr * 0.001;
     int i, count = x->x_ninlets + 3;
     t_int **sigvec;
@@ -73,11 +73,11 @@ static void select_dsp(t_select *x, t_signal **sp) {
     sigvec[1] = (t_int *)sp[0]->s_n; // 2nd => block (n)
     for(i = 2; i < count; i++) // ins/out
         sigvec[i] = (t_int *)sp[i-2]->s_vec;
-    dsp_addv(select_perform, count, (t_int *) sigvec);
+    dsp_addv(xselect_perform, count, (t_int *) sigvec);
     free(sigvec);
 }
 
-static void select_time(t_select *x, t_floatarg ms) {
+static void xselect_time(t_xselect *x, t_floatarg ms) {
     int i;
     double last_fade_in_samps = x->x_fade_in_samps;
     ms = ms < 0 ? 0 : ms;
@@ -87,7 +87,7 @@ static void select_time(t_select *x, t_floatarg ms) {
             x->x_counter[i] = x->x_counter[i] / last_fade_in_samps * x->x_fade_in_samps;
 }
 
-void select_lin(t_select *x) {
+void xselect_lin(t_xselect *x) {
     if(x->x_last_fadetype != LINEAR){ // change to linear
         int i;
         for(i = 0; i < x->x_ninlets; i++){
@@ -98,7 +98,7 @@ void select_lin(t_select *x) {
     }
 }
 
-void select_ep(t_select *x) {
+void xselect_ep(t_xselect *x) {
     if(x->x_last_fadetype != EPOWER){ // change to equal power
         int i;
         for(i = 0; i < x->x_ninlets; i++) {
@@ -111,8 +111,8 @@ void select_ep(t_select *x) {
     }
 }
 
-static void *select_new(t_symbol *s, int argc, t_atom *argv) {
-    t_select *x = (t_select *)pd_new(select_class);
+static void *xselect_new(t_symbol *s, int argc, t_atom *argv) {
+    t_xselect *x = (t_xselect *)pd_new(xselect_class);
     x->x_sr_khz = sys_getsr() * 0.001;
     t_float ch = 1, ms = 0, fade_mode = EPOWER, init_channel = 0;
     int i;
@@ -163,20 +163,20 @@ static void *select_new(t_symbol *s, int argc, t_atom *argv) {
         x->x_counter[i] = 0;
         x->x_fade[i] = 0;
     }
-    select_float(x, init_channel);
+    xselect_float(x, init_channel);
     return (x);
     errstate:
-        pd_error(x, "select~: improper args");
+        pd_error(x, "xselect~: improper args");
         return NULL;
 }
 
-void select_tilde_setup(void) {
-    select_class = class_new(gensym("select~"), (t_newmethod)select_new, 0,
-                             sizeof(t_select), CLASS_DEFAULT, A_GIMME, 0);
-    class_addfloat(select_class, (t_method)select_float);
-    class_addmethod(select_class, nullfn, gensym("signal"), 0);
-    class_addmethod(select_class, (t_method)select_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(select_class, (t_method)select_time, gensym("time"), A_FLOAT, 0);
-    class_addmethod(select_class, (t_method)select_lin, gensym("lin"), 0);
-    class_addmethod(select_class, (t_method)select_ep, gensym("ep"), 0);
+void xselect_tilde_setup(void) {
+    xselect_class = class_new(gensym("xselect~"), (t_newmethod)xselect_new, 0,
+                             sizeof(t_xselect), CLASS_DEFAULT, A_GIMME, 0);
+    class_addfloat(xselect_class, (t_method)xselect_float);
+    class_addmethod(xselect_class, nullfn, gensym("signal"), 0);
+    class_addmethod(xselect_class, (t_method)xselect_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(xselect_class, (t_method)xselect_time, gensym("time"), A_FLOAT, 0);
+    class_addmethod(xselect_class, (t_method)xselect_lin, gensym("lin"), 0);
+    class_addmethod(xselect_class, (t_method)xselect_ep, gensym("ep"), 0);
 }
