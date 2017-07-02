@@ -105,8 +105,8 @@ SIGNAL ROUTING: [7]
 - [pan2~]
 - [pan4~]
 - [rotate~]
-- [select~]
-- [selectx~]
+- [xselect~]
+- [xselect2~]
 - [xfade~]
 
 AUDIO PROCESSING (mostly filters) (10):
