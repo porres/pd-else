@@ -15,7 +15,7 @@ Even though extended has quite a large set of external libraries and objects, at
 
 ----------------
 
-The current library state is at alpha experimental releases, where drastic changes may occur and and backwards compatibility is not guaranteed for future releases
+The current library state is at alpha experimental releases, where drastic changes may occur and backwards compatibility is not guaranteed for future releases
 
 ----------------------
 
