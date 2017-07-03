@@ -16,7 +16,7 @@ typedef struct _fold
     t_float     x_max;
 } t_fold;
 
-t_float convert(t_float f, min, max)
+t_float convert(t_float f, t_float min, t_float max)
 {
     float result;
     if(min > max)

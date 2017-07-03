@@ -16,7 +16,7 @@ typedef struct _wrap2
     t_float     x_max;
 } t_wrap2;
 
-t_float convert(t_float f, min, max)
+t_float convert(t_float f, t_float min, t_float max)
 {
     float result;
     if(min > max)
