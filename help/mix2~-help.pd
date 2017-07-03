@@ -1,39 +1,39 @@
-#N canvas 809 57 559 613 10;
-#X obj 0 573 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#N canvas 473 59 562 617 10;
+#X obj 1 579 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 0 357 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 1 363 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 0 494 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 1 500 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 0 545 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+#X obj 1 551 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 77 365 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 78 371 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 144 365 signal;
-#X obj 1 2 cnv 15 301 42 empty empty mix2~ 20 20 2 37 -233017 -1 0
+#X text 145 371 signal;
+#X obj 2 8 cnv 15 301 42 empty empty mix2~ 20 20 2 37 -233017 -1 0
 ;
-#X obj 304 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 305 9 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 1 2 graph;
+#X restore 2 8 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 303 2 pd;
-#X obj 343 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 304 8 pd;
+#X obj 344 16 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 21 39 cnv 4 4 4 empty empty 2-channel 0 28 2 18 -233017 -1 0
+#X obj 22 45 cnv 4 4 4 empty empty 2-channel 0 28 2 18 -233017 -1 0
 ;
-#X obj 101 39 cnv 4 4 4 empty empty mixer 0 28 2 18 -233017 -1 0;
-#X obj 456 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 102 45 cnv 4 4 4 empty empty mixer 0 28 2 18 -233017 -1 0;
+#X obj 457 16 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 476 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 16 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 513 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 16 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 462 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 31 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 500 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 31 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
@@ -138,18 +138,18 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 504 70 pd;
-#X obj 77 410 cnv 17 3 78 empty \$0-pddp.cnv.let.0 2 5 9 0 16 -228856
+#X restore 505 76 pd;
+#X obj 78 416 cnv 17 3 78 empty \$0-pddp.cnv.let.0 2 5 9 0 16 -228856
 -162280 0;
-#X text 180 552 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
+#X text 181 558 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear);
-#X obj 77 501 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 78 507 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X obj 77 524 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
+#X obj 78 530 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
 -162280 0;
-#X text 144 502 signal;
-#X text 108 473 mode <float>;
-#X text 194 473 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
+#X text 145 508 signal;
+#X text 109 479 mode <float>;
+#X text 195 479 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear);
 #N canvas 590 103 461 623 examples 0;
 #X msg 265 287 mode \$1;
@@ -193,7 +193,7 @@ values., f 49;
 #X connect 17 1 16 1;
 #X connect 21 0 17 0;
 #X connect 21 1 17 1;
-#X restore 473 287 pd examples;
+#X restore 474 293 pd examples;
 #N canvas 754 160 434 484 scaling 0;
 #X obj 91 57 cnv 15 198 198 empty empty empty 20 12 0 14 -253888 -66577
 0;
@@ -416,39 +416,39 @@ same as the output. We have then two non linear modes:;
 #X text 40 370 Quartic (default): This mode just gets the slider values
 to the power of 4 (so \, for instance \, an input slider value of 0.5
 becomes 0.125)., f 57;
-#X restore 467 313 pd scaling \; modes & gain;
-#X text 124 219 [else/mix2~] ==>;
-#X text 194 502 - left channel signal;
-#X text 144 522 signal;
-#X text 194 522 - right channel signal;
-#X text 120 552 1) float;
-#X text 108 441 pan1 <float>;
-#X text 108 457 pan2 <float>;
-#X text 102 409 gain1 <float>;
-#X text 102 425 gain2 <float>;
-#X obj 263 332 dac~;
-#X text 194 365 - incoming signal for channel 1;
-#X text 144 387 signal;
-#X text 194 387 - incoming signal for channel 2;
-#X obj 77 386 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
+#X restore 468 319 pd scaling \; modes & gain;
+#X text 125 225 [else/mix2~] ==>;
+#X text 195 508 - left channel signal;
+#X text 145 528 signal;
+#X text 195 528 - right channel signal;
+#X text 121 558 1) float;
+#X text 109 447 pan1 <float>;
+#X text 109 463 pan2 <float>;
+#X text 103 415 gain1 <float>;
+#X text 103 431 gain2 <float>;
+#X obj 264 338 dac~;
+#X text 195 371 - incoming signal for channel 1;
+#X text 145 393 signal;
+#X text 195 393 - incoming signal for channel 2;
+#X obj 78 392 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
 -162280 0;
-#X obj 233 119 osc~ 440;
-#X obj 298 119 osc~ 880;
-#X text 83 86 [mix2~] is a convenient 2 channel mixer abstraction with
+#X obj 234 125 osc~ 440;
+#X obj 299 125 osc~ 880;
+#X text 84 92 [mix2~] is a convenient 2 channel mixer abstraction with
 gain and panning.;
-#X text 335 222 silders set gain, f 8;
-#X obj 233 145 else/mix2~;
-#X text 194 409 - sets slider of channel 1 (range is from 0 to 1),
+#X text 336 228 silders set gain, f 8;
+#X obj 234 151 else/mix2~;
+#X text 195 415 - sets slider of channel 1 (range is from 0 to 1),
 f 54;
-#X text 194 425 - sets slider of channel 2 (range is from 0 to 1),
+#X text 195 431 - sets slider of channel 2 (range is from 0 to 1),
 f 54;
-#X text 194 441 - sets slider of channel 1 (range is from -100 to 100)
+#X text 330 302 number boxes set panning, f 13;
+#X text 195 463 - sets number of channel 2 (range is from -100 to 100)
 ;
-#X text 194 457 - sets slider of channel 2 (range is from -100 to 100)
+#X text 195 447 - sets number of channel 1 (range is from -100 to 100)
 ;
-#X text 329 296 number boxes set panning, f 13;
 #X connect 42 0 46 0;
 #X connect 43 0 46 1;
 #X connect 46 0 37 0;
 #X connect 46 1 37 1;
-#X coords 0 613 1 612 74 39 0;
+#X coords 0 617 1 616 74 39 0;

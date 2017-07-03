@@ -86,6 +86,7 @@ sin~.class.sources := classes/sin~.c
 sine~.class.sources := classes/sine~.c
 square~.class.sources := classes/square~.c
 standard~.class.sources := classes/standard~.c
+susloop~.class.sources := classes/susloop~.c
 toggleff~.class.sources := classes/toggleff~.c
 togedge~.class.sources := classes/togedge~.c
 triwave~.class.sources := classes/triwave~.c
