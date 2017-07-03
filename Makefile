@@ -105,6 +105,7 @@ $(wildcard help/*.pd) \
 $(wildcard help/Abstractions/*.pd) \
 *.pd \
 README.md \
+help/vacuous.wav
 
 #########################################################################
 
