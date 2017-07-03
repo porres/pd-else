@@ -1,7 +1,7 @@
-#N canvas 267 52 557 644 10;
-#X obj 236 248 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
+#N canvas 542 33 561 631 10;
+#X obj 236 235 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X obj 211 336 else/out~;
+#X obj 211 323 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty lfnoise~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -24,72 +24,75 @@
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
 #X obj 142 40 cnv 4 4 4 empty empty noise 0 28 2 18 -233017 -1 0;
-#X obj 2 604 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 591 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 498 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 485 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 535 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 522 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 91 508 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 495 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 159 509 signal;
-#X text 148 544 1) float;
-#X obj 233 277 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 159 496 signal;
+#X text 148 531 1) float;
+#X obj 233 264 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 249 247 frequency in Hz;
-#X obj 233 303 else/lfnoise~ 400;
-#X text 216 544 - frequency in hertz (default 0);
-#X text 216 510 - bandlimited noise;
-#X text 159 411 signal;
-#X obj 92 411 cnv 17 3 55 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 249 234 frequency in Hz;
+#X obj 233 290 else/lfnoise~ 400;
+#X text 216 531 - frequency in hertz (default 0);
+#X text 216 497 - bandlimited noise;
+#X obj 92 398 cnv 17 3 55 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 215 410 - signal to be downsampled;
-#X text 111 431 interp <float>;
-#X text 215 430 - interpolation 0 (off \, default) or 1 (on);
-#X obj 3 401 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X text 111 418 interp <float>;
+#X text 215 417 - interpolation 0 (off \, default) or 1 (on);
+#X obj 3 388 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X text 216 562 - interpolation 0 (off \, default) or 1 (on);
-#X text 148 562 2) float;
-#X msg 148 273 interp \$1;
-#X obj 148 246 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 216 549 - interpolation 0 (off \, default) or 1 (on);
+#X text 148 549 2) float;
+#X msg 148 260 interp \$1;
+#X obj 148 233 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 123 450 seed <float>;
-#X text 215 449 - sets seed value;
-#X text 216 582 - seed (default \, internal);
-#X text 148 582 3) float;
-#X text 83 176 The [lfnoise~] object produces frequencies limited to
+#X text 123 437 seed <float>;
+#X text 215 436 - sets seed value;
+#X text 216 569 - seed (default \, internal);
+#X text 148 569 3) float;
+#X text 83 163 The [lfnoise~] object produces frequencies limited to
 a band from 0 up to the frequency it is running. It can go up to the
 sample rate \, and when that happens \, it's basically a white noise
-generator.;
-#N canvas 416 55 926 503 interpolation 0;
-#X obj 684 234 noise~;
-#X obj 684 266 else/sh~;
-#X obj 729 233 else/imp~ 300;
-#X obj 647 173 sig~ 300;
-#X obj 647 153 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+generator., f 62;
+#N canvas 416 55 923 480 interpolation 0;
+#X obj 685 178 noise~;
+#X obj 685 210 else/sh~;
+#X obj 730 177 else/imp~ 300;
+#X obj 648 117 sig~ 300;
+#X obj 648 97 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 553 235 else/lfnoise~ 300;
-#X obj 553 301 else/out~;
-#X obj 684 300 else/out~;
-#X obj 763 172 trigate~;
-#X obj 763 147 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 520 85 [lfnoise~] without interpolation is also similar to
+#X obj 554 179 else/lfnoise~ 300;
+#X obj 554 245 else/out~;
+#X obj 685 244 else/out~;
+#X obj 764 116 trigate~;
+#X obj 764 91 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 521 29 [lfnoise~] without interpolation is also similar to
 [noise~] going thgouh [sh~] and being controlled with [imp~].;
-#X obj 55 104 noise~;
-#X obj 73 197 else/out~;
-#X msg 143 110 interp \$1;
-#X obj 143 83 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 54 101 noise~;
+#X obj 72 194 else/out~;
+#X msg 142 107 interp \$1;
+#X obj 142 80 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 272 158 else/lfnoise~ 300;
-#X obj 272 116 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 271 155 else/lfnoise~ 300;
+#X obj 271 113 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 55 158 else/downsample~ 300;
-#X obj 293 202 else/out~;
-#X obj 272 291 else/graph~;
-#X obj 55 291 else/graph~;
-#X text 80 29 [lfnoise~] is similar/related to [noise~] going thgouh
+#X obj 54 155 else/downsample~ 300;
+#X obj 292 199 else/out~;
+#X obj 271 288 else/graph~;
+#X obj 54 288 else/graph~;
+#X text 79 26 [lfnoise~] is similar/related to [noise~] going thgouh
 [downsample~] \, which also has linear interpolation.;
+#X text 534 336 See also two simplified versions of [lfnoise~] \, which
+are: [stepnoise~] (without interpolation) and [rampnoise~] (with interpolation.
+;
+#X obj 696 412 else/rampnoise~;
+#X obj 696 388 else/stepnoise~;
 #X connect 0 0 1 0;
 #X connect 1 0 7 0;
 #X connect 1 0 7 1;
@@ -114,7 +117,7 @@ generator.;
 #X connect 17 0 12 0;
 #X connect 17 0 12 1;
 #X connect 17 0 20 0;
-#X restore 439 322 pd interpolation;
+#X restore 439 309 pd interpolation;
 #N canvas 849 168 554 446 seed 0;
 #X text 91 23 [lfnoise~] objects that share the same seed will have
 the same random number generation. You can specify a seed value as
@@ -134,18 +137,18 @@ seed value.;
 #X connect 5 0 4 0;
 #X connect 6 0 5 0;
 #X connect 7 0 5 0;
-#X restore 492 345 pd seed;
-#X obj 91 474 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X restore 492 333 pd seed;
+#X obj 91 461 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 159 475 signal;
-#X text 216 476 - impulse forces a new random value;
+#X text 159 462 signal;
+#X text 216 463 - impulse forces a new random value;
 #N canvas 801 184 416 409 sync 0;
 #X obj 143 180 else/sig2float~;
 #X obj 143 145 else/lfnoise~ 0.5;
 #X obj 143 212 nbx 8 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.134971 256;
+-228856 -1 -1 0.8634 256;
 #X obj 143 250 vsl 18 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 5493 1;
+-1 -1 11833 1;
 #X obj 242 101 else/trigate~;
 #X obj 242 68 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -157,15 +160,40 @@ generate a new random value.;
 #X connect 2 0 3 0;
 #X connect 4 0 1 1;
 #X connect 5 0 4 0;
-#X restore 492 368 pd sync;
+#X restore 492 356 pd sync;
+#X text 123 398 float/signal;
+#X text 215 397 - frequency input in hertz;
+#X text 43 301 see also:;
+#X obj 44 352 else/rampnoise~;
+#X obj 44 328 else/stepnoise~;
 #X text 82 88 [lfnoise~] is a low frequency (band limited) noise with
-or without interpolation. It's actually a random number generator \,
-and the rate that it generates values is given in herts (negative frequencies
-accepted). It also has a 'sync' inlet that forces the object to generate
-a new random value when receiving an impulse.;
+or without interpolation. It generates random values (between -1 and
+1) at a rate in hertz (negative frequencies accepted). It also has
+a 'sync' inlet that forces the object to generate a new random value
+when receiving an impulse., f 62;
+#N canvas 806 202 450 300 control 0;
+#X obj 267 157 osc~;
+#X obj 267 194 else/out~;
+#X obj 69 163 osc~;
+#X obj 69 200 else/out~;
+#X obj 69 133 else/rescale~ 200 800;
+#X text 50 33 [lfnoise~] can be used to control parameters of other
+objects. Here we control the frequency of an oscillator.;
+#X obj 267 96 else/lfnoise~ 10 1;
+#X obj 267 127 else/rescale~ 200 800;
+#X obj 69 103 else/lfnoise~ 10;
+#X connect 0 0 1 0;
+#X connect 0 0 1 1;
+#X connect 2 0 3 0;
+#X connect 2 0 3 1;
+#X connect 4 0 2 0;
+#X connect 6 0 7 0;
+#X connect 7 0 0 0;
+#X connect 8 0 4 0;
+#X restore 475 285 pd control;
 #X connect 0 0 19 0;
 #X connect 19 0 21 0;
 #X connect 21 0 1 0;
 #X connect 21 0 1 1;
-#X connect 32 0 21 0;
-#X connect 33 0 32 0;
+#X connect 30 0 21 0;
+#X connect 31 0 30 0;
