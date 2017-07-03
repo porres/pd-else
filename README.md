@@ -19,7 +19,7 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Current Object list (104 objects):
+Current Object list (106 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [11]
 - [cosine~]
@@ -34,7 +34,7 @@ OSCILLATORS (DETERMINISTIC GENERATORS): [11]
 - [triwave~]
 - [vtriangle~]
 
-CHAOTIC GENERATORS: [13]
+CHAOTIC GENERATORS: [15]
 - [brown~] 
 - [clipnoise~] 
 - [crackle~] 
@@ -47,7 +47,9 @@ CHAOTIC GENERATORS: [13]
 - [logistic~]
 - [quad~]
 - [random~]
+- [rampnoise~]
 - [standard~]
+- [stepnoise~]
 
 CONVERSION: [16]
 - [cents2rato]
