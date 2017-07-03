@@ -103,7 +103,7 @@ zerocross~.class.sources := classes/zerocross~.c
 datafiles = \
 $(wildcard help/*.pd) \
 $(wildcard help/Abstractions/*.pd) \
-ELSE-meta.pd \
+*.pd \
 README.md \
 
 #########################################################################
