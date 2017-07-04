@@ -1,17 +1,16 @@
-#N canvas 582 53 558 654 10;
-#X obj 4 296 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 327 23 558 621 10;
+#X obj 4 276 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 476 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 426 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 506 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 456 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 3 612 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 562 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 87 483 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 87 433 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 87 304 cnv 17 3 75 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 87 284 cnv 17 3 45 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 146 301 signal;
 #X obj 2 3 cnv 15 301 42 empty empty susloop~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -32,22 +31,17 @@
 0;
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 194 246 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 45951 256;
-#X obj 194 220 else/sig2float~;
-#X obj 197 269 hsl 128 15 0 120000 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 4863 1;
-#X text 147 483 signal;
-#X text 158 316 bang;
-#X obj 87 385 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 147 433 signal;
+#X text 157 300 bang;
+#X obj 87 335 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 110 386 float/signal;
-#X obj 87 407 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X text 110 336 float/signal;
+#X obj 87 357 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 110 408 float/signal;
-#X obj 87 428 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X text 110 358 float/signal;
+#X obj 87 378 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 110 430 float/signal;
+#X text 110 380 float/signal;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -152,7 +146,7 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
-#X text 188 386 - sets the increment value (default 1), f 59;
+#X text 188 336 - sets the increment value (default 1), f 59;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -257,17 +251,16 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
-#X text 136 513 1) float;
-#X text 136 530 2) float;
-#X text 136 546 3) float;
-#X text 136 562 4) float;
-#X text 190 513 - increment value (default 1), f 59;
-#X text 158 351 stop;
-#X obj 4 582 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 136 463 1) float;
+#X text 136 480 2) float;
+#X text 136 496 3) float;
+#X text 136 512 4) float;
+#X text 190 463 - increment value (default 1), f 59;
+#X obj 4 532 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X obj 139 40 cnv 4 4 4 empty empty for 0 28 2 18 -233017 -1 0;
 #X obj 169 40 cnv 4 4 4 empty empty samplers 0 28 2 18 -233017 -1 0
 ;
-#N canvas 242 23 501 678 read 0;
+#N canvas 851 146 501 678 read 0;
 #X obj 284 195 soundfiler;
 #X floatatom 284 222 0 0 0 0 - - -;
 #X obj 284 141 symbol \$0-sample;
@@ -280,77 +273,96 @@ read samples at different speeds. With an increment of "1" \, it reads
 at the original speed \, at "2" it reads twice as fast \, "0.5" half
 as fast. Note it can also play it backwards at different speeds with
 negative increment values., f 69;
-#X obj 132 421 else/out~;
-#X obj 160 380 tabread4~ \$0-sample;
-#X obj 160 319 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 106 320 restart;
+#X obj 166 470 else/out~;
+#X obj 194 429 tabread4~ \$0-sample;
+#X text 140 369 restart;
 #X obj 97 227 tabread4~ \$0-sample;
 #X obj 129 106 hsl 128 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 8700 1;
 #X obj 126 160 else/float2sig~ 100 1;
 #X obj 126 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.740157 256;
 #X obj 97 132 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X text 45 132 restart;
-#X obj 97 191 else/ramp~, f 15;
 #X obj 284 246 value \$0-size;
-#X obj 160 347 else/susloop~ 1 10000 50000;
-#X msg 226 307 loop \$1;
-#X obj 226 285 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 194 396 else/susloop~ 1 10000 50000;
+#X obj 194 369 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
+#X msg 224 369 stop;
+#X obj 97 191 else/susloop~, f 15;
+#X obj 357 112 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 72 279 else/out~;
+#X msg 56 159 stop;
 #X connect 0 0 1 0;
-#X connect 1 0 18 3;
-#X connect 1 0 19 0;
+#X connect 1 0 17 0;
+#X connect 1 0 21 4;
 #X connect 2 0 5 0;
 #X connect 3 0 2 0;
 #X connect 5 0 0 0;
 #X connect 9 0 8 0;
 #X connect 9 0 8 1;
-#X connect 10 0 20 0;
-#X connect 13 0 15 0;
-#X connect 14 0 18 1;
-#X connect 15 0 14 0;
-#X connect 16 0 18 0;
-#X connect 18 0 12 0;
-#X connect 20 0 9 0;
-#X connect 22 0 21 0;
-#X restore 450 265 pd read buffers;
-#X text 110 368 loop <float>;
-#X text 188 408 - sets loop start (default 0), f 59;
-#X text 188 430 - sets loop end (default 2ˆ32 - 1), f 59;
-#X obj 87 448 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
+#X connect 11 0 23 0;
+#X connect 11 0 23 1;
+#X connect 12 0 14 0;
+#X connect 13 0 21 1;
+#X connect 14 0 13 0;
+#X connect 15 0 21 0;
+#X connect 18 0 9 0;
+#X connect 19 0 18 0;
+#X connect 20 0 18 0;
+#X connect 21 0 11 0;
+#X connect 22 0 2 0;
+#X connect 24 0 21 0;
+#X restore 450 245 pd read buffers;
+#X text 188 358 - sets loop start (default 0), f 59;
+#X text 188 380 - sets loop end (default 2ˆ32 - 1), f 59;
+#X obj 87 398 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
 ;
-#X text 110 450 float/signal;
-#X text 188 450 - sets sample size (default 2ˆ32 - 1), f 59;
-#X text 189 483 - the control signal, f 59;
-#X text 190 529 - loop start (default 0), f 59;
-#X text 190 545 - loop end (default 2ˆ32 - 1), f 59;
-#X text 190 561 - sample size (default 2ˆ32 - 1), f 59;
-#X text 90 589 -loop <float>;
-#X text 176 589 - sets loop on <1> (default) or off <0>, f 61;
-#X obj 194 193 else/susloop~ 1 40000 80000 12000;
-#X text 188 352 - stops and goes back to 0, f 59;
-#X text 188 301 - signal trigger: starts from 0, f 59;
-#X text 188 316 - control trigger: starts from 0, f 59;
-#X text 188 368 - sets loop mode on <1> or off <0>;
-#X text 61 85 [susloop~] generates a control signal designed to read
-buffers and loop at a given section. You can trigger it with a bang
-or with a trigger signal (non-positive to positive transition).;
-#X msg 224 145 loop 0;
-#X msg 234 168 loop 1;
-#X text 269 147 loop off;
-#X text 281 168 loop on;
-#X obj 194 154 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 110 400 float/signal;
+#X text 188 400 - sets sample size (default 2ˆ32 - 1), f 59;
+#X text 189 433 - the control signal, f 59;
+#X text 190 479 - loop start (default 0), f 59;
+#X text 190 495 - loop end (default 2ˆ32 - 1), f 59;
+#X text 190 511 - sample size (default 2ˆ32 - 1), f 59;
+#X text 90 539 -loop <float>;
+#X text 176 539 - sets loop on <1> (default) or off <0>, f 61;
+#X obj 184 144 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 117 154 start/stop;
-#X text 152 332 float;
-#X text 188 332 - 1: starts from 0 \, 2: stops and goes back to 0,
-f 59;
-#X connect 17 0 19 0;
-#X connect 18 0 17 0;
-#X connect 53 0 18 0;
-#X connect 59 0 53 0;
-#X connect 60 0 53 0;
-#X connect 63 0 53 0;
+#X obj 184 226 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 184 200 else/sig2float~;
+#X obj 187 249 hsl 128 15 0 120000 0 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 0 1;
+#X obj 184 173 else/susloop~ 1 40000 80000 120000;
+#N canvas 370 72 599 576 signal 0;
+#X obj 204 256 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 204 230 else/sig2float~;
+#X obj 207 279 hsl 128 15 0 120000 0 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 0 1;
+#X obj 204 203 else/susloop~ 1 40000 80000 120000;
+#X obj 204 141 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 204 165 sig~;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 3 0 1 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X restore 439 218 pd signal trigger;
+#X text 157 317 stop;
+#X text 188 318 - stops and goes back to 0, f 59;
+#X text 212 143 gate (on/off);
+#X text 188 301 - control trigger: starts from 0 and loops, f 59;
+#X text 109 284 float/signal;
+#X text 188 284 - gate: 1: starts from 0 and loops \, 0: loop is off
+, f 59;
+#X text 61 85 [susloop~] generates a control signal designed to read
+buffers and loop at a given section. It responds to a gate input (float
+or signal).;
+#X connect 47 0 51 0;
+#X connect 48 0 50 0;
+#X connect 49 0 48 0;
+#X connect 51 0 49 0;
