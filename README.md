@@ -19,7 +19,7 @@ The current library state is at alpha experimental releases, where drastic chang
 
 ----------------------
 
-Current Object list (106 objects):
+Current Object list (107 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [11]
 - [cosine~]
@@ -123,12 +123,13 @@ AUDIO PROCESSING (mostly filters) (10):
 - [phaseshifter~]
 - [resonant~]
 
-CONTROL/ENVELOPE: [2]
+CONTROL (ENVELOPE): [2]
  - [decay~]
  - [decay2~]
  
-CONTROL/BUFFER: [1]
+CONTROL (ENVELOPE): [2]
  - [ramp~]
+ - [susloop~]
 
 MATH/LOGIC: [12]
 - [accum~]
