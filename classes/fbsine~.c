@@ -103,7 +103,7 @@ static void *fbsine_new(t_symbol *s, int ac, t_atom *av)
     }
     
     t_float init_freq = f1;
-    t_float init_fb = 2;
+    t_float init_fb = f2;
     t_float init_phase = f3;
     init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
     if (init_phase == 0 && init_freq > 0)
