@@ -230,18 +230,18 @@ feature is phase modulation.;
 #X obj 229 214 else/fbsine~ 440;
 #X obj 260 186 sig~;
 #X obj 263 143 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12700 1;
+-1 -1 0 1;
 #X obj 25 40 cnv 4 4 4 empty empty Feedback 0 28 2 18 -233017 -1 0
 ;
 #X text 148 184 hz =>;
 #X obj 260 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+-228856 -1 -1 0 256;
 #X obj 122 346 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 165 347 float/signal -;
 #X text 243 503 - initial phase offset (default 0);
 #X text 184 503 3) float;
-#N canvas 377 133 722 404 feedback 0;
+#N canvas 377 133 722 404 feedback 1;
 #N canvas 623 128 491 434 fbsine~ 0;
 #X obj 101 203 +~;
 #X obj 101 345 outlet~;
@@ -263,25 +263,27 @@ feature is phase modulation.;
 #X connect 9 0 3 0;
 #X restore 72 218 pd fbsine~;
 #X obj 227 129 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12700 1;
-#X obj 144 139 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 195 256;
+-1 -1 0 1;
 #X obj 224 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+-228856 -1 -1 0 256;
 #X obj 72 259 else/out~;
 #X obj 211 258 else/out~;
 #X obj 211 210 fbsine~;
-#X obj 224 184 else/float2sig~ 10;
-#X connect 0 0 4 0;
-#X connect 0 0 4 1;
-#X connect 1 0 3 0;
-#X connect 2 0 6 0;
-#X connect 2 0 0 0;
-#X connect 3 0 7 0;
+#X obj 128 157 sig~ 440;
+#X obj 128 131 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 224 184 else/float2sig~ 10 1;
+#X connect 0 0 3 0;
+#X connect 0 0 3 1;
+#X connect 1 0 2 0;
+#X connect 2 0 8 0;
+#X connect 5 0 4 0;
+#X connect 5 0 4 1;
+#X connect 6 0 0 0;
 #X connect 6 0 5 0;
-#X connect 6 0 5 1;
-#X connect 7 0 6 1;
-#X connect 7 0 0 1;
+#X connect 7 0 6 0;
+#X connect 8 0 5 1;
+#X connect 8 0 0 1;
 #X restore 469 229 pd feedback;
 #X text 261 348 feedback value;
 #X text 243 483 - initial feedback value (default 0);
