@@ -1,11 +1,11 @@
+EL Locus Solus' Else library for Pd 
 
-ELSE (currently at alpha stage)
+ELSE - EL Locus Solus' Externals
 
-find latest releases at: https://github.com/porres/pd-else/releases
+The project is still at an alpha experimental phase, where drastic changes may occur and backwards compatibility is not guaranteed for future releases. Find latest releases at: https://github.com/porres/pd-else/releases
 
 ----------------------------------------------
 
-ELSE - EL Locus Solus' Else - library for Pd
 
 "EL Locus Solus" is run by Alexandre Torres Porres, who organizes cultural events and teaches computer music courses since around 2009, at the time of PdCon09 (the 3rd International Pure Data Convention in 2009, São Paulo - Brasil); website: http://alexandre-torres.wixsite.com/el-locus-solus
 
@@ -13,13 +13,30 @@ EL Locus Solus offers a computer music tutorial with examples in Pure Data for i
 
 Even though extended has quite a large set of external libraries and objects, at some point there was the need of something "else". Thus, EL Locus Solus is now not only offering computer music examples, but also the "else" library, with extra objects for its didactic material.
 
-----------------
+-------
 
-The current library state is at alpha experimental releases, where drastic changes may occur and backwards compatibility is not guaranteed for future releases
+<strong>Installing ELSE:</strong>
 
-----------------------
+This release has been tested with Pd Vanilla 0.47-1, not guaranteed to work in any other version or in Pd Extended/Purr Data. ELSE comes with a set of separate binaries, so you just need to add the "else" path to Pd. Please check this PDF document, which has this other useful information on how to install externals in general: HOWTO Install and Load Externals in Pd (pdf)
 
-Current Object list (106 objects):
+
+<strong>Building ELSE for Pd Vanilla:</strong>
+
+ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
+
+<pre>make pdincludepath=~/pd-0.47-1/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.47-1/bin/)</pre>
+
+* Installing with pdlibbuilder
+
+use "objectsdir" to set a relative path for your build, something like:
+
+<pre>make install objectsdir=../cyclone-build</pre>
+
+Then move it to your preferred install folder for Pd.
+
+-------
+
+Current Object list (107 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [11]
 - [cosine~]
@@ -123,12 +140,13 @@ AUDIO PROCESSING (mostly filters) (10):
 - [phaseshifter~]
 - [resonant~]
 
-CONTROL/ENVELOPE: [2]
+CONTROL (ENVELOPE): [2]
  - [decay~]
  - [decay2~]
  
-CONTROL/BUFFER: [1]
+CONTROL (ENVELOPE): [2]
  - [ramp~]
+ - [susloop~]
 
 MATH/LOGIC: [12]
 - [accum~]
