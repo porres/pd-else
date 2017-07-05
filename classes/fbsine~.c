@@ -11,8 +11,8 @@ typedef struct _fbsine
 {
     t_object x_obj;
     double  x_phase;
-    double  x_last_out;
-    double  x_last_phase_offset;
+    float  x_last_out;
+    float  x_last_phase_offset;
     t_float  x_freq;
     t_inlet  *x_inlet_fb;
     t_inlet  *x_inlet_phase;
@@ -32,19 +32,25 @@ static t_int *fbsine_perform(t_int *w)
     t_float *out = (t_float *)(w[7]);
     float last_out = x->x_last_out;
     double phase = x->x_phase;
+    float last_phase_offset = x->x_last_phase_offset;
     float sr = x->x_sr;
     while (nblock--){
-        double hz = *in1++;
+        float hz = *in1++;
         float fback = *in2++;
+        float phase_offset = *in3++;
         float trig = *in4++;
+        float phase_dev = phase_offset - last_phase_offset;
+        phase += (double)phase_dev;
         if (trig > 0 && trig <= 1)
             phase = trig;
         float radians = (phase + last_out * fback) * TWOPI;
         *out++ = last_out = sin(radians);
         phase += (double)(hz / sr); // next phase
+        last_phase_offset = phase_offset; // last phase offset
     }
     x->x_last_out = last_out; // last out
     x->x_phase = fmod(phase, 1); // next wrapped phase
+    x->x_last_phase_offset = last_phase_offset;
     return (w + 8);
 }
 

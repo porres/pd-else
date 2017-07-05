@@ -44,7 +44,7 @@
 #X text 261 372 phase offset (modulation input);
 #X text 261 392 phase sync (ressets internal phase);
 #X obj 187 186 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 -126 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -230,18 +230,18 @@ feature is phase modulation.;
 #X obj 229 214 else/fbsine~ 440;
 #X obj 260 186 sig~;
 #X obj 263 143 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 2800 1;
 #X obj 25 40 cnv 4 4 4 empty empty Feedback 0 28 2 18 -233017 -1 0
 ;
 #X text 148 184 hz =>;
 #X obj 260 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 -0.559055 256;
 #X obj 122 346 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 165 347 float/signal -;
 #X text 243 503 - initial phase offset (default 0);
 #X text 184 503 3) float;
-#N canvas 377 133 722 404 feedback 1;
+#N canvas 377 133 722 404 feedback 0;
 #N canvas 623 128 491 434 fbsine~ 0;
 #X obj 101 203 +~;
 #X obj 101 345 outlet~;
@@ -265,7 +265,7 @@ feature is phase modulation.;
 #X obj 227 129 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 224 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 -1 256;
 #X obj 72 259 else/out~;
 #X obj 211 258 else/out~;
 #X obj 211 210 fbsine~;
