@@ -17,7 +17,29 @@ Even though extended has quite a large set of external libraries and objects, at
 
 The current library state is at alpha experimental releases, where drastic changes may occur and backwards compatibility is not guaranteed for future releases
 
-----------------------
+
+-------
+
+<strong>Installing ELSE:</strong>
+
+This release has been tested with Pd Vanilla 0.47-1, not guaranteed to work in any other version or in Pd Extended/Purr Data. ELSE comes with a set of separate binaries, so you just need to add the "else" path to Pd. Please check this PDF document, which has this other useful information on how to install externals in general: HOWTO Install and Load Externals in Pd (pdf)
+
+
+<strong>Building ELSE for Pd Vanilla:</strong>
+
+ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
+
+<pre>make pdincludepath=~/pd-0.47-1/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.47-1/bin/)</pre>
+
+* Installing with pdlibbuilder
+
+use "objectsdir" to set a relative path for your build, something like:
+
+<pre>make install objectsdir=../cyclone-build</pre>
+
+Then move it to your preferred install folder for Pd.
+
+-------
 
 Current Object list (107 objects):
 
