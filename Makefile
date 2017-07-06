@@ -63,6 +63,7 @@ peak~.class.sources := classes/peak~.c
 peakfilter~.class.sources := classes/peakfilter~.c
 phaseshifter~.class.sources := classes/phaseshifter~.c
 pimp~.class.sources := classes/pimp~.c
+pmosc~.class.sources := classes/pmosc~.c
 pulse~.class.sources := classes/pulse~.c
 pulsecount~.class.sources := classes/pulsecount~.c
 pulsediv~.class.sources := classes/pulsediv~.c
