@@ -1,4 +1,4 @@
-#N canvas 630 23 559 565 10;
+#N canvas 630 23 560 601 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -21,30 +21,30 @@
 0;
 #X obj 3 315 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 419 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 437 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 455 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 473 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 122 428 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 122 446 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 123 323 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 122 323 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 525 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 563 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 165 324 float/signal -;
 #X text 262 325 frequency in hz;
-#X obj 122 371 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 122 389 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 165 372 float/signal -;
-#X obj 122 395 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X text 165 390 float/signal -;
+#X obj 122 413 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 201 392 signal -;
-#X text 200 428 signal -;
-#X text 184 464 1) float;
-#X text 261 372 phase offset (modulation input);
-#X text 261 392 phase sync (ressets internal phase);
+#X text 201 410 signal -;
+#X text 200 446 signal -;
+#X text 154 482 1) float;
+#X text 261 390 phase offset (modulation input);
+#X text 261 410 phase sync (ressets internal phase);
 #X obj 187 186 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -126 256;
+-228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -184,7 +184,7 @@ below.;
 #X connect 13 0 1 1;
 #X connect 14 0 5 0;
 #X connect 14 0 5 1;
-#X restore 494 279 pd sync;
+#X restore 496 283 pd sync;
 #N canvas 430 175 777 299 phase 0;
 #X text 401 23 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 - where 1 is also the start of another
@@ -217,62 +217,74 @@ feature is phase modulation.;
 #X connect 12 0 2 0;
 #X connect 12 0 2 1;
 #X connect 13 0 10 1;
-#X restore 445 254 pd phase offset;
+#X restore 447 258 pd phase offset;
 #X obj 3 3 cnv 15 301 42 empty empty fbsine~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 243 464 - frequency in hertz (default 0);
+#X text 213 482 - frequency in hertz (default 0);
 #X obj 212 249 else/out~;
-#X text 261 428 sine wave signal;
-#X text 184 483 2) float;
+#X text 261 446 sine wave signal;
+#X text 154 501 2) float;
 #X obj 229 214 else/fbsine~ 440;
 #X obj 260 186 sig~;
 #X obj 263 143 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 2800 1;
+-1 -1 0 1;
 #X obj 25 40 cnv 4 4 4 empty empty Feedback 0 28 2 18 -233017 -1 0
 ;
 #X text 148 184 hz =>;
 #X obj 260 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.559055 256;
-#X obj 122 346 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+-228856 -1 -1 0 256;
+#X obj 122 364 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 165 347 float/signal -;
-#X text 243 503 - initial phase offset (default 0);
-#X text 184 503 3) float;
-#N canvas 377 133 722 404 feedback 0;
-#N canvas 623 128 491 434 fbsine~ 0;
-#X obj 101 203 +~;
-#X obj 101 345 outlet~;
-#X obj 145 171 *~;
-#X obj 40 158 phasor~;
-#X obj 279 235 block~ 1;
-#X obj 101 231 else/sin~;
-#X obj 122 287 delwrite~ \$0-fb 1;
-#X obj 145 120 delread~ \$0-fb 0;
-#X obj 160 73 inlet~;
-#X obj 40 74 inlet~;
-#X connect 0 0 5 0;
+#X text 165 365 float/signal -;
+#X text 213 521 - initial phase offset (default 0);
+#X text 154 521 3) float;
+#N canvas 796 138 532 437 feedback 1;
+#N canvas 623 128 393 405 fbsine~ 0;
+#X obj 91 186 +~;
+#X obj 91 336 outlet~;
+#X obj 106 150 *~;
+#X obj 30 149 phasor~;
+#X obj 258 214 block~ 1;
+#X obj 112 287 delwrite~ \$0-fb 1;
+#X obj 106 99 delread~ \$0-fb 0;
+#X obj 121 52 inlet~;
+#X obj 30 65 inlet~;
+#X text 226 289 for feedback;
+#X text 211 100 1 sample feedback;
+#X text 136 149 * feedback parameter;
+#X obj 91 230 else/sin~;
+#X connect 0 0 12 0;
 #X connect 2 0 0 1;
 #X connect 3 0 0 0;
-#X connect 5 0 1 0;
-#X connect 5 0 6 0;
-#X connect 7 0 2 0;
-#X connect 8 0 2 1;
-#X connect 9 0 3 0;
-#X restore 72 218 pd fbsine~;
-#X obj 227 129 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 224 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -1 256;
-#X obj 72 259 else/out~;
-#X obj 211 258 else/out~;
-#X obj 211 210 fbsine~;
-#X obj 128 157 sig~ 440;
-#X obj 128 131 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X connect 6 0 2 0;
+#X connect 7 0 2 1;
+#X connect 8 0 3 0;
+#X connect 12 0 1 0;
+#X connect 12 0 5 0;
+#X restore 94 299 pd fbsine~;
+#X obj 249 210 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 12700 1;
+#X obj 246 233 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1 256;
+#X obj 94 340 else/out~;
+#X obj 233 339 else/out~;
+#X obj 233 291 fbsine~;
+#X obj 150 238 sig~ 440;
+#X obj 150 212 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 224 184 else/float2sig~ 10 1;
+#X obj 246 265 else/float2sig~ 10;
+#X text 61 24 The feedback parameter controls how much of the signal
+output is fed back to the phase input of [fbsine~]. The phase input
+is normalized from 0-1. For a detailed implementation \, please check
+the [pd fbsine] subpacth \, where the same code/algorithm is implemented
+as a pd patch., f 62;
+#X text 63 108 [fbsine~] has no limits for the feeback values \, and
+negative values are also allowed \, but note that this parameter easily
+turns the output into chaotic noise. Common values are usually in the
+-1 to 1 range.;
 #X connect 0 0 3 0;
 #X connect 0 0 3 1;
 #X connect 1 0 2 0;
@@ -284,13 +296,68 @@ feature is phase modulation.;
 #X connect 7 0 6 0;
 #X connect 8 0 5 1;
 #X connect 8 0 0 1;
-#X restore 469 229 pd feedback;
-#X text 261 348 feedback value;
-#X text 243 483 - initial feedback value (default 0);
+#X restore 471 208 pd feedback;
+#X text 261 366 feedback value;
+#X text 213 501 - initial feedback value (default 0);
 #X text 60 86 [fbsine~] is a sinusoidal oscillator with phase modulation
 feedback. Like [else/sine~] \, it accepts negative frequencies \, has
 inlets fo phase modulation and phase sync. Additionally \, it has a
 feedback value., f 61;
+#X text 154 541 4) float;
+#X text 213 541 - mean filter on <1> or off <0> (default 0);
+#X text 153 344 filter <float> -;
+#X text 262 345 turns mean filter on <1> or off <0>;
+#N canvas 377 133 722 404 mean 0;
+#N canvas 623 128 504 395 fbsine~ 0;
+#X obj 115 172 +~;
+#X obj 115 334 outlet~;
+#X obj 159 140 *~;
+#X obj 54 127 phasor~;
+#X obj 115 200 else/sin~;
+#X obj 174 42 inlet~;
+#X obj 54 43 inlet~;
+#X obj 149 285 delwrite~ \$0-fb2 1;
+#X obj 159 89 delread~ \$0-fb2 0;
+#X text 202 225 mean average filter;
+#X obj 263 164 block~ 1;
+#X obj 149 244 biquad~ 0 0 0.5 0.5 0;
+#X connect 0 0 4 0;
+#X connect 2 0 0 1;
+#X connect 3 0 0 0;
+#X connect 4 0 1 0;
+#X connect 4 0 11 0;
+#X connect 5 0 2 1;
+#X connect 6 0 3 0;
+#X connect 8 0 2 0;
+#X connect 11 0 7 0;
+#X restore 172 235 pd fbsine~;
+#X obj 327 146 hsl 128 15 -0.5 0.5 0 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 6800 1;
+#X obj 324 169 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.0354331 256;
+#X obj 311 275 else/out~;
+#X obj 311 227 fbsine~;
+#X obj 228 174 sig~ 440;
+#X obj 228 148 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 324 201 else/float2sig~ 10 1;
+#X obj 172 278 else/out~;
+#X obj 311 86 loadbang;
+#X msg 311 111 filter 0;
+#X connect 0 0 8 0;
+#X connect 0 0 8 1;
+#X connect 1 0 2 0;
+#X connect 2 0 7 0;
+#X connect 4 0 3 0;
+#X connect 4 0 3 1;
+#X connect 5 0 0 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X connect 7 0 4 1;
+#X connect 7 0 0 1;
+#X connect 9 0 10 0;
+#X connect 10 0 4 0;
+#X restore 453 233 pd mean filter;
 #X connect 26 0 36 0;
 #X connect 36 0 33 0;
 #X connect 36 0 33 1;
