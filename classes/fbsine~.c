@@ -54,8 +54,7 @@ static t_int *fbsine_perform(t_int *w)
         if (trig > 0 && trig <= 1)
             phase = trig;
         if(x->x_filter)
-            fback = yn_m1 * index;
-//          fback = ((yn_m1 + yn_m2) * 0.5) * index; // filter
+            fback = ((yn_m1 + yn_m2) * 0.5) * index; // filter
         else
             fback = yn_m1 * index; // no filter
         float radians = (phase + fback) * TWOPI;
