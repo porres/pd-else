@@ -4,9 +4,9 @@
 #include "math.h"
 
 
-static t_class *vtriangle_class;
+static t_class *vsaw_class;
 
-typedef struct _vtriangle
+typedef struct _vsaw
 {
     t_object x_obj;
     double  x_phase;
@@ -17,11 +17,11 @@ typedef struct _vtriangle
     t_inlet  *x_inlet_sync;
     t_outlet *x_outlet;
     t_float x_sr;
-} t_vtriangle;
+} t_vsaw;
 
-static t_int *vtriangle_perform(t_int *w)
+static t_int *vsaw_perform(t_int *w)
 {
-    t_vtriangle *x = (t_vtriangle *)(w[1]);
+    t_vsaw *x = (t_vsaw *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // width
@@ -36,7 +36,7 @@ static t_int *vtriangle_perform(t_int *w)
     {
         double hz = *in1++;
         double width = *in2++;
-        width = width > 1. ? 1. : width < 0. ? 0. : width; // clipped
+        width = width > 1. ? 1. : width < -1. ? -1. : width; // clipped
         double phase_offset = *in3++;
         double trig = *in4++;
         double phase_step = hz / sr; // phase_step
@@ -56,17 +56,17 @@ static t_int *vtriangle_perform(t_int *w)
             if (phase >= 1) phase = phase - 1.; // wrap deviated phase
             }
         
-        if (width == 0) output = phase * -2 + 1;
+        if (width == -1) output = phase * -2 + 1;
         else if (width == 1) output = phase * 2 - 1;
         else
             {
+                width = (width + 1) * 0.5;
                 t_float inc = phase * width;                   // phase * 0.5
                 t_float dec = (phase - 1) * (width - 1);       //
                 t_float gain = pow(width * (width - 1), -1);
                 t_float min = (inc < dec ? inc : dec);
                 output = (min * gain) * 2 + 1;
             }
-        
         *out++ = output;
         phase = phase + phase_step; // next phase
         last_phase_offset = phase_offset; // last phase offset
@@ -76,13 +76,13 @@ static t_int *vtriangle_perform(t_int *w)
     return (w + 8);
 }
 
-static void vtriangle_dsp(t_vtriangle *x, t_signal **sp)
+static void vsaw_dsp(t_vsaw *x, t_signal **sp)
 {
-    dsp_add(vtriangle_perform, 7, x, sp[0]->s_n,
+    dsp_add(vsaw_perform, 7, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
-static void *vtriangle_free(t_vtriangle *x)
+static void *vsaw_free(t_vsaw *x)
 {
     inlet_free(x->x_inlet_width);
     inlet_free(x->x_inlet_phase);
@@ -91,9 +91,9 @@ static void *vtriangle_free(t_vtriangle *x)
     return (void *)x;
 }
 
-static void *vtriangle_new(t_symbol *s, int ac, t_atom *av)
+static void *vsaw_new(t_symbol *s, int ac, t_atom *av)
 {
-    t_vtriangle *x = (t_vtriangle *)pd_new(vtriangle_class);
+    t_vsaw *x = (t_vsaw *)pd_new(vsaw_class);
     t_float f1 = 0, f2 = 0.5, f3 = 0;
     if (ac && av->a_type == A_FLOAT)
     {
@@ -109,7 +109,7 @@ static void *vtriangle_new(t_symbol *s, int ac, t_atom *av)
     t_float init_freq = f1;
     
     t_float init_width = f2;
-    init_width < 0 ? 0 : init_width >= 1 ? 0 : init_width; // clipping width input
+    init_width < -1 ? -1 : init_width > 1 ? 1 : init_width; // clipping width input
     
     t_float init_phase = f3;
     init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
@@ -133,11 +133,11 @@ static void *vtriangle_new(t_symbol *s, int ac, t_atom *av)
     return (x);
 }
 
-void vtriangle_tilde_setup(void)
+void vsaw_tilde_setup(void)
 {
-    vtriangle_class = class_new(gensym("vtriangle~"),
-        (t_newmethod)vtriangle_new, (t_method)vtriangle_free,
-        sizeof(t_vtriangle), CLASS_DEFAULT, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(vtriangle_class, t_vtriangle, x_freq);
-    class_addmethod(vtriangle_class, (t_method)vtriangle_dsp, gensym("dsp"), A_CANT, 0);
+    vsaw_class = class_new(gensym("vsaw~"),
+        (t_newmethod)vsaw_new, (t_method)vsaw_free,
+        sizeof(t_vsaw), CLASS_DEFAULT, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(vsaw_class, t_vsaw, x_freq);
+    class_addmethod(vsaw_class, (t_method)vsaw_dsp, gensym("dsp"), A_CANT, 0);
 }
