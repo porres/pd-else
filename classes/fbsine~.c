@@ -12,6 +12,7 @@ typedef struct _fbsine
     t_object x_obj;
     double  x_phase;
     float  x_yn_m1;
+    float  x_yn_m2;
     float  x_last_phase_offset;
     t_float  x_freq;
     t_int    x_filter;
@@ -37,28 +38,36 @@ static t_int *fbsine_perform(t_int *w)
     t_float *in4 = (t_float *)(w[6]); // sync
     t_float *out = (t_float *)(w[7]);
     float yn_m1 = x->x_yn_m1;
+    float yn_m2 = x->x_yn_m2;
     double phase = x->x_phase;
     float last_phase_offset = x->x_last_phase_offset;
     float sr = x->x_sr;
     while (nblock--){
         float hz = *in1++;
-        float fback = *in2++;
+        float index = *in2++;
         float phase_offset = *in3++;
         float trig = *in4++;
+        float fback;
+        float output;
         float phase_dev = phase_offset - last_phase_offset;
         phase += (double)phase_dev;
         if (trig > 0 && trig <= 1)
             phase = trig;
         if(x->x_filter)
-            fback = 0;
+            fback = yn_m1 * index;
+//          fback = ((yn_m1 + yn_m2) * 0.5) * index; // filter
         else
-            fback *= yn_m1; // no filter
+            fback = yn_m1 * index; // no filter
         float radians = (phase + fback) * TWOPI;
-        *out++ = yn_m1 = sin(radians);
+        output = sin(radians);
+        *out++ = output;
         phase += (double)(hz / sr); // next phase
         last_phase_offset = phase_offset; // last phase offset
+        yn_m2 = yn_m1;
+        yn_m1 = output;
     }
     x->x_yn_m1 = yn_m1; // last out
+    x->x_yn_m2 = yn_m2; // last out
     x->x_phase = fmod(phase, 1); // next wrapped phase
     x->x_last_phase_offset = last_phase_offset;
     return (w + 8);

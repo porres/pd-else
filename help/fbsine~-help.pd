@@ -230,18 +230,18 @@ feature is phase modulation.;
 #X obj 229 214 else/fbsine~ 440;
 #X obj 260 186 sig~;
 #X obj 263 143 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12700 1;
+-1 -1 0 1;
 #X obj 25 40 cnv 4 4 4 empty empty Feedback 0 28 2 18 -233017 -1 0
 ;
 #X text 148 184 hz =>;
 #X obj 260 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+-228856 -1 -1 0 256;
 #X obj 122 364 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 165 365 float/signal -;
 #X text 213 521 - initial phase offset (default 0);
 #X text 154 521 3) float;
-#N canvas 796 138 532 437 feedback 0;
+#N canvas 796 138 532 437 feedback 1;
 #N canvas 623 128 393 405 fbsine~ 0;
 #X obj 91 186 +~;
 #X obj 91 336 outlet~;
@@ -275,7 +275,6 @@ feature is phase modulation.;
 #X obj 150 238 sig~ 440;
 #X obj 150 212 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 246 265 else/float2sig~ 10;
 #X text 61 24 The feedback parameter controls how much of the signal
 output is fed back to the phase input of [fbsine~]. The phase input
 is normalized from 0-1. For a detailed implementation \, please check
@@ -285,17 +284,18 @@ as a pd patch., f 62;
 negative values are also allowed \, but note that this parameter easily
 turns the output into chaotic noise. Common values are usually in the
 -1 to 1 range.;
+#X obj 246 264 else/float2sig~ 10 1;
 #X connect 0 0 3 0;
 #X connect 0 0 3 1;
 #X connect 1 0 2 0;
-#X connect 2 0 8 0;
+#X connect 2 0 10 0;
 #X connect 5 0 4 0;
 #X connect 5 0 4 1;
 #X connect 6 0 0 0;
 #X connect 6 0 5 0;
 #X connect 7 0 6 0;
-#X connect 8 0 5 1;
-#X connect 8 0 0 1;
+#X connect 10 0 5 1;
+#X connect 10 0 0 1;
 #X restore 471 208 pd feedback;
 #X text 261 366 feedback value;
 #X text 213 501 - initial feedback value (default 0);
@@ -307,7 +307,7 @@ feedback value., f 61;
 #X text 213 541 - mean filter on <1> or off <0> (default 0);
 #X text 153 344 filter <float> -;
 #X text 262 345 turns mean filter on <1> or off <0>;
-#N canvas 377 133 722 404 mean 1;
+#N canvas 377 133 722 404 mean 0;
 #N canvas 623 128 504 395 fbsine~ 0;
 #X obj 115 172 +~;
 #X obj 115 334 outlet~;
@@ -332,9 +332,9 @@ feedback value., f 61;
 #X connect 11 0 7 0;
 #X restore 172 235 pd fbsine~;
 #X obj 327 146 hsl 128 15 -0.5 0.5 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 12700 1;
+-228856 -1 -1 0 1;
 #X obj 324 169 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.5 256;
+-228856 -1 -1 0 256;
 #X obj 311 275 else/out~;
 #X obj 311 227 fbsine~;
 #X obj 228 174 sig~ 440;
