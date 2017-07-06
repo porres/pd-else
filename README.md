@@ -49,7 +49,7 @@ OSCILLATORS (DETERMINISTIC GENERATORS): [12]
 - [sine~]
 - [square~]
 - [triwave~]
-- [vtriangle~]
+- [vsaw~]
 - [pmosc~]
 
 CHAOTIC GENERATORS: [17]
