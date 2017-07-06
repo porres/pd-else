@@ -228,53 +228,19 @@ feature is phase modulation.;
 #X text 261 446 sine wave signal;
 #X text 154 501 2) float;
 #X obj 229 214 else/fbsine~ 440;
-#X obj 260 186 sig~;
 #X obj 263 143 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 5800 1;
 #X obj 25 40 cnv 4 4 4 empty empty Feedback 0 28 2 18 -233017 -1 0
 ;
 #X text 148 184 hz =>;
 #X obj 260 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 -0.0866142 256;
 #X obj 122 364 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 165 365 float/signal -;
 #X text 213 521 - initial phase offset (default 0);
 #X text 154 521 3) float;
-#N canvas 796 138 532 437 feedback 0;
-#N canvas 623 128 393 405 fbsine~ 0;
-#X obj 91 186 +~;
-#X obj 91 336 outlet~;
-#X obj 106 150 *~;
-#X obj 30 149 phasor~;
-#X obj 258 214 block~ 1;
-#X obj 112 287 delwrite~ \$0-fb 1;
-#X obj 106 99 delread~ \$0-fb 0;
-#X obj 121 52 inlet~;
-#X obj 30 65 inlet~;
-#X text 226 289 for feedback;
-#X text 211 100 1 sample feedback;
-#X text 136 149 * feedback parameter;
-#X obj 91 230 else/sin~;
-#X connect 0 0 12 0;
-#X connect 2 0 0 1;
-#X connect 3 0 0 0;
-#X connect 6 0 2 0;
-#X connect 7 0 2 1;
-#X connect 8 0 3 0;
-#X connect 12 0 1 0;
-#X connect 12 0 5 0;
-#X restore 94 299 pd fbsine~;
-#X obj 249 210 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 246 233 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 94 340 else/out~;
-#X obj 233 339 else/out~;
-#X obj 233 291 fbsine~;
-#X obj 150 238 sig~ 440;
-#X obj 150 212 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#N canvas 610 170 525 453 feedback 0;
 #X text 61 24 The feedback parameter controls how much of the signal
 output is fed back to the phase input of [fbsine~]. The phase input
 is normalized from 0-1. For a detailed implementation \, please check
@@ -284,18 +250,53 @@ as a pd patch., f 62;
 negative values are also allowed \, but note that this parameter easily
 turns the output into chaotic noise. Common values are usually in the
 -1 to 1 range.;
-#X obj 246 264 else/float2sig~ 10 1;
-#X connect 0 0 3 0;
-#X connect 0 0 3 1;
-#X connect 1 0 2 0;
-#X connect 2 0 10 0;
-#X connect 5 0 4 1;
-#X connect 5 0 4 0;
-#X connect 6 0 0 0;
-#X connect 6 0 5 0;
+#N canvas 623 128 393 405 fbsine~ 0;
+#X obj 91 186 +~;
+#X obj 91 336 outlet~;
+#X obj 106 150 *~;
+#X obj 30 149 phasor~;
+#X obj 258 214 block~ 1;
+#X obj 112 287 delwrite~ \$0-fb 1;
+#X obj 106 99 delread~ \$0-fb 0;
+#X obj 121 52 inlet~;
+#X obj 30 55 inlet~;
+#X text 226 289 for feedback;
+#X text 211 100 1 sample feedback;
+#X obj 91 230 else/sin~;
+#X text 136 149 * feedback index parameter;
+#X text 115 31 feedback index parameter;
+#X text 28 33 Hz;
+#X connect 0 0 11 0;
+#X connect 2 0 0 1;
+#X connect 3 0 0 0;
+#X connect 6 0 2 0;
+#X connect 7 0 2 1;
+#X connect 8 0 3 0;
+#X connect 11 0 1 0;
+#X connect 11 0 5 0;
+#X restore 117 298 pd fbsine~;
+#X obj 272 209 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 6400 1;
+#X obj 269 232 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.00787402 256;
+#X obj 117 339 else/out~;
+#X obj 256 338 else/out~;
+#X obj 256 290 fbsine~;
+#X obj 173 237 sig~ 440;
+#X obj 173 211 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 269 263 else/float2sig~ 10;
+#X connect 2 0 5 0;
+#X connect 2 0 5 1;
+#X connect 3 0 4 0;
+#X connect 4 0 10 0;
+#X connect 7 0 6 1;
 #X connect 7 0 6 0;
-#X connect 10 0 5 1;
-#X connect 10 0 0 1;
+#X connect 8 0 2 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 0;
+#X connect 10 0 7 1;
+#X connect 10 0 2 1;
 #X restore 471 208 pd feedback;
 #X text 261 366 feedback value;
 #X text 213 501 - initial feedback value (default 0);
@@ -304,10 +305,29 @@ feedback. Like [else/sine~] \, it accepts negative frequencies \, has
 inlets fo phase modulation and phase sync. Additionally \, it has a
 feedback value., f 61;
 #X text 154 541 4) float;
-#X text 213 541 - mean filter on <1> or off <0> (default 0);
 #X text 153 344 filter <float> -;
 #X text 262 345 turns mean filter on <1> or off <0>;
-#N canvas 377 133 858 446 mean 0;
+#N canvas 377 133 857 420 mean 0;
+#X obj 610 141 hsl 128 15 -0.5 0.5 0 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 12700 1;
+#X obj 607 164 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.5 256;
+#X obj 594 280 else/out~;
+#X obj 594 232 fbsine~;
+#X obj 526 169 sig~ 440;
+#X obj 526 143 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 451 276 else/out~;
+#X msg 594 105 filter \$1;
+#X obj 594 62 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 594 33 loadbang;
+#X text 616 58 <= compare with and without filter, f 19;
+#X text 28 105 [fbsine~] has an optional filter in the feedback loop.
+This is a simple mean average filter that takes the average of 2 samples
+and cuts very high frequencies. This filter has been used in some yamaha
+synthesizers to smoothen out the output of a self modulating oscillator.
+FM8 \, by Native Instruments (a DX7 clone) uses it too.;
 #N canvas 623 128 504 395 fbsine~ 0;
 #X obj 115 172 +~;
 #X obj 115 334 outlet~;
@@ -318,7 +338,7 @@ feedback value., f 61;
 #X obj 54 43 inlet~;
 #X obj 149 285 delwrite~ \$0-fb2 1;
 #X obj 159 89 delread~ \$0-fb2 0;
-#X text 202 225 mean average filter;
+#X text 285 241 mean average filter;
 #X obj 263 164 block~ 1;
 #X obj 149 244 biquad~ 0 0 0.5 0.5 0;
 #X connect 0 0 4 0;
@@ -330,41 +350,34 @@ feedback value., f 61;
 #X connect 6 0 3 0;
 #X connect 8 0 2 0;
 #X connect 11 0 7 0;
-#X restore 424 258 pd fbsine~;
-#X obj 579 159 hsl 128 15 -0.5 0.5 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 12700 1;
-#X obj 576 182 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.5 256;
-#X obj 563 298 else/out~;
-#X obj 563 250 fbsine~;
-#X obj 480 187 sig~ 440;
-#X obj 480 161 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 424 301 else/out~;
-#X msg 563 123 filter \$1;
-#X obj 563 98 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
-1;
-#X obj 563 71 loadbang;
-#X obj 576 214 else/float2sig~ 10 0.5;
-#X text 585 99 <= compare with and without filter;
-#X connect 0 0 7 0;
-#X connect 0 0 7 1;
-#X connect 1 0 2 0;
-#X connect 2 0 11 0;
+#X restore 450 233 pd fbsine~ (filtered);
+#X text 30 202 For more details \, you can check the subpatch [pd fbsine~
+filtered~] for a patch implementation of this oscillator with the filter
+included.;
+#X obj 607 196 else/float2sig~ 10;
+#X text 31 256 See how you can go to a feedback index of 0.5 and still
+hold a tonal character when the filter is on. Then test without the
+filter for comparison.;
+#X connect 0 0 1 0;
+#X connect 1 0 14 0;
+#X connect 3 0 2 0;
+#X connect 3 0 2 1;
+#X connect 4 0 12 0;
 #X connect 4 0 3 0;
-#X connect 4 0 3 1;
-#X connect 5 0 0 0;
 #X connect 5 0 4 0;
-#X connect 6 0 5 0;
-#X connect 8 0 4 0;
+#X connect 7 0 3 0;
+#X connect 8 0 7 0;
 #X connect 9 0 8 0;
-#X connect 10 0 9 0;
-#X connect 11 0 4 1;
-#X connect 11 0 0 1;
+#X connect 12 0 6 0;
+#X connect 12 0 6 1;
+#X connect 14 0 3 1;
+#X connect 14 0 12 1;
 #X restore 453 233 pd mean filter;
+#X obj 260 188 else/float2sig~ 10;
+#X text 213 541 - mean filter: on <1> or off <0> (default 0);
 #X connect 26 0 36 0;
 #X connect 36 0 33 0;
 #X connect 36 0 33 1;
-#X connect 37 0 36 1;
-#X connect 38 0 41 0;
-#X connect 41 0 37 0;
+#X connect 37 0 40 0;
+#X connect 40 0 53 0;
+#X connect 53 0 36 1;
