@@ -1,0 +1,262 @@
+#N canvas 630 23 559 575 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 77 40 cnv 4 4 4 empty empty modulation 0 28 2 18 -233017 -1
+0;
+#X obj 3 287 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 389 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 444 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 122 398 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 122 295 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 3 534 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 165 296 float/signal -;
+#X obj 122 341 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 165 342 float/signal -;
+#X obj 122 365 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+;
+#X text 200 398 signal -;
+#X text 154 453 1) float;
+#X obj 135 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 90 256;
+#N canvas 207 34 366 264 (subpatch) 0;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
+#X obj 215 68 route dsp;
+#X obj 215 37 receive pd;
+#N canvas 977 77 379 291 set_color 0;
+#X obj 47 30 inlet;
+#X obj 147 200 s \$0-cnv;
+#X obj 47 83 select 0 1;
+#X obj 47 220 s \$0-tgl-r;
+#N canvas 0 22 712 637 off 0;
+#X obj 490 220 * -1;
+#X obj 424 300 +;
+#X obj 409 325 +;
+#X obj 347 219 * -65536;
+#X obj 424 220 * -256;
+#X obj 409 356 - 1;
+#X obj 390 189 unpack f f f;
+#X obj 225 295 +;
+#X obj 210 320 +;
+#X obj 148 214 * -65536;
+#X obj 225 215 * -256;
+#X obj 291 215 * -1;
+#X obj 210 351 - 1;
+#X obj 191 184 unpack f f f;
+#X obj 379 423 pack;
+#X msg 395 152 124 124 124;
+#X msg 203 154 220 220 220;
+#X obj 238 121 t b b;
+#X obj 238 81 inlet;
+#X obj 378 485 outlet;
+#X connect 0 0 1 1;
+#X connect 1 0 2 1;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 14 1;
+#X connect 6 0 3 0;
+#X connect 6 1 4 0;
+#X connect 6 2 0 0;
+#X connect 7 0 8 1;
+#X connect 8 0 12 0;
+#X connect 9 0 8 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 1;
+#X connect 12 0 14 0;
+#X connect 13 0 9 0;
+#X connect 13 1 10 0;
+#X connect 13 2 11 0;
+#X connect 14 0 19 0;
+#X connect 15 0 6 0;
+#X connect 16 0 13 0;
+#X connect 17 0 16 0;
+#X connect 17 1 15 0;
+#X connect 18 0 17 0;
+#X restore 47 113 pd off;
+#X msg 47 180 color \$1 \$2 0;
+#X msg 147 131 -4.86997e+06 -1.34937e+07;
+#X msg 147 171 color \$1 0 \$2;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 6 0;
+#X connect 4 0 5 0;
+#X connect 4 0 7 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 1 0;
+#X restore 215 165 pd set_color;
+#X obj 135 122 r \$0-tgl-s;
+#N canvas 121 482 450 300 (subpatch) 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+0;
+#X coords 0 -1 1 1 42 27 1 100 100;
+#X restore 51 144 pd;
+#X obj 226 139 s \$0-tgl-r;
+#X msg 226 115 set \$1;
+#X msg 135 177 \; pd dsp \$1;
+#N canvas 256 32 278 194 load_check 0;
+#X obj 136 53 sig~ 1;
+#X obj 74 24 loadbang;
+#X obj 136 86 snapshot~;
+#X obj 91 52 del 5;
+#X obj 136 151 outlet;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 74 126 switch~;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 1 0 5 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 3 0 5 0;
+#X connect 5 0 6 0;
+#X restore 51 72 pd load_check;
+#X connect 1 0 3 0;
+#X connect 1 0 7 0;
+#X connect 2 0 1 0;
+#X connect 4 0 8 0;
+#X connect 4 0 3 0;
+#X connect 7 0 6 0;
+#X connect 9 0 0 0;
+#X coords 0 -1 1 1 44 72 2 50 100;
+#X restore 505 71 pd;
+#X obj 3 3 cnv 15 301 42 empty empty xmod~ 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X obj 202 224 else/out~;
+#X text 154 472 2) float;
+#X obj 25 40 cnv 4 4 4 empty empty Cross 0 28 2 18 -233017 -1 0;
+#X obj 122 316 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 165 317 float/signal -;
+#X text 154 492 3) float;
+#X text 154 512 4) float;
+#X obj 197 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.21 256;
+#X obj 256 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1.4 256;
+#X obj 314 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.14 256;
+#X obj 122 418 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 200 418 signal -;
+#X text 165 366 float/signal -;
+#X text 261 318 modulation index 1;
+#X text 261 366 modulation index 2;
+#X text 262 297 frequency of oscillator 1;
+#X text 261 342 frequency of oscillator 2;
+#X text 261 398 output of oscillator 1;
+#X text 261 418 output of oscillator 2;
+#X text 213 453 - frequency of oscillator 1 in hertz (default 0);
+#X text 213 492 - frequency of oscillator 2 in hertz (default 0);
+#X text 213 472 - modulation index 1 (default 0);
+#X text 213 512 - modulation index 2 (default 0);
+#X text 60 86 [xmod~] performs cross modulation of two sine oscillators.
+For now \, the only modulation option is phase modulation., f 61;
+#X text 140 131 freq1;
+#X text 198 130 index1;
+#X text 261 130 freq2;
+#X text 318 130 index2;
+#N canvas 222 241 744 441 details 1;
+#X text 167 69 Hz_1;
+#N canvas 136 80 553 499 Cross_Phase_Modulation 0;
+#X obj 298 57 inlet~;
+#X obj 377 57 inlet~;
+#X obj 44 56 inlet~;
+#X obj 113 56 inlet~;
+#X obj 298 434 outlet~;
+#X obj 439 330 block~ 1;
+#X obj 98 240 *~;
+#X obj 362 343 *~;
+#X text 45 35 Hz_1;
+#X text 111 35 índice_1;
+#X text 301 32 Hz_2;
+#X text 373 31 índice_2;
+#X obj 352 366 cnv 15 150 40 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 362 380 delwrite~ \$0-pm_fb 1;
+#X obj 132 104 cnv 15 150 40 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 144 113 delread~ \$0-pm_fb 0;
+#X text 166 85 feedback;
+#X obj 44 424 outlet~;
+#X obj 44 178 else/sine~;
+#X obj 298 299 else/sine~;
+#X connect 0 0 19 0;
+#X connect 1 0 7 1;
+#X connect 2 0 18 0;
+#X connect 3 0 6 1;
+#X connect 6 0 19 1;
+#X connect 7 0 13 0;
+#X connect 15 0 18 1;
+#X connect 18 0 6 0;
+#X connect 18 0 17 0;
+#X connect 19 0 7 0;
+#X connect 19 0 4 0;
+#X restore 98 255 pd Cross_Phase_Modulation;
+#X obj 231 83 hsl 128 15 0.01 1 1 0 empty index1 empty -2 -8 0 10 -262130
+-1 -1 10800 1;
+#X obj 228 110 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262130 -1 -1 0.5 256;
+#X obj 159 88 nbx 5 14 -1e+37 1e+37 0 0 empty freq1 empty 0 -8 0 10
+-204786 -1 -1 150 256;
+#X text 259 82 índice_1;
+#X obj 447 85 hsl 128 15 0.01 1 1 0 empty index2 empty -2 -8 0 10 -203904
+-1 -1 6500 1;
+#X obj 444 112 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-203904 -1 -1 0.1 256;
+#X obj 377 94 nbx 5 14 -1e+37 1e+37 0 0 empty freq2 empty 0 -8 0 10
+-204800 -1 -1 120 256;
+#X text 385 75 Hz_2;
+#X text 475 84 índice_2;
+#X obj 134 322 else/out~;
+#X obj 345 293 else/out~;
+#X obj 339 255 else/xmod~;
+#X connect 1 0 11 0;
+#X connect 1 1 11 1;
+#X connect 2 0 3 0;
+#X connect 3 0 1 1;
+#X connect 3 0 13 1;
+#X connect 4 0 1 0;
+#X connect 4 0 13 0;
+#X connect 6 0 7 0;
+#X connect 7 0 1 3;
+#X connect 7 0 13 3;
+#X connect 8 0 1 2;
+#X connect 8 0 13 2;
+#X connect 13 0 12 0;
+#X connect 13 1 12 1;
+#X restore 480 253 pd details;
+#X obj 151 182 else/xmod~ 150 0.5 120 0.1;
+#X connect 21 0 54 0;
+#X connect 32 0 54 1;
+#X connect 33 0 54 2;
+#X connect 34 0 54 3;
+#X connect 54 0 25 0;
+#X connect 54 1 25 1;
