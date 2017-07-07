@@ -62,8 +62,6 @@ static void ikeda_list(t_ikeda *x, t_symbol *s, int argc, t_atom * argv)
     }
 }
 
-
-
 static t_int *ikeda_perform(t_int *w)
 {
     t_ikeda *x = (t_ikeda *)(w[1]);
@@ -115,18 +113,16 @@ static void ikeda_dsp(t_ikeda *x, t_signal **sp)
     dsp_add(ikeda_perform, 6, x, sp[0]->s_n, &x->x_val, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
 }
 
-
 static void *ikeda_new(t_symbol *s, int ac, t_atom *av)
 {
     t_ikeda *x = (t_ikeda *)pd_new(ikeda_class);
     x->x_sr = sys_getsr();
-    t_float hz = x->x_sr * 0.5, u = 0.75, y1 = 0, y2 = 0; // default parameters
-    if (ac && av->a_type == A_FLOAT)
-    {
+    t_float hz = x->x_sr * 0.5, init_u = 0.5, y1 = 0, y2 = 0; // default parameters
+    if (ac && av->a_type == A_FLOAT){
         hz = av->a_w.w_float;
         ac--; av++;
         if (ac && av->a_type == A_FLOAT)
-            u = av->a_w.w_float;
+            init_u = av->a_w.w_float;
         ac--; av++;
         if (ac && av->a_type == A_FLOAT)
             y1 = av->a_w.w_float;
@@ -136,7 +132,7 @@ static void *ikeda_new(t_symbol *s, int ac, t_atom *av)
     }
     if(hz >= 0) x->x_phase = 1;
     x->x_freq  = hz;
-    x->x_u = u;
+    x->x_u = init_u;
     x->x_yn1 = y1;
     x->x_yn2 = y2;
     outlet_new(&x->x_obj, &s_signal);
