@@ -44,6 +44,7 @@ henon~.class.sources := classes/henon~.c
 highpass~.class.sources := classes/highpass~.c
 highshelf~.class.sources := classes/highshelf~.c
 hz2rad~.class.sources := classes/hz2rad~.c
+ikeda~.class.sources := classes/ikeda~.c
 imp~.class.sources := classes/imp~.c
 imp2~.class.sources := classes/imp2~.c
 lastvalue~.class.sources := classes/lastvalue~.c
