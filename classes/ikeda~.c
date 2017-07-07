@@ -117,7 +117,7 @@ static void *ikeda_new(t_symbol *s, int ac, t_atom *av)
 {
     t_ikeda *x = (t_ikeda *)pd_new(ikeda_class);
     x->x_sr = sys_getsr();
-    t_float hz = x->x_sr * 0.5, init_u = 0.5, y1 = 0, y2 = 0; // default parameters
+    t_float hz = x->x_sr * 0.5, init_u = 0.75, y1 = 0, y2 = 0; // default parameters
     if (ac && av->a_type == A_FLOAT){
         hz = av->a_w.w_float;
         ac--; av++;
