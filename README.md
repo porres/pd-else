@@ -36,7 +36,7 @@ Then move it to your preferred install folder for Pd.
 
 -------
 
-Current Object list (110 objects):
+Current Object list (111 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [12]
 - [cosine~]
@@ -52,7 +52,7 @@ OSCILLATORS (DETERMINISTIC GENERATORS): [12]
 - [vsaw~]
 - [pmosc~]
 
-CHAOTIC GENERATORS: [17]
+CHAOTIC GENERATORS: [18]
 - [brown~] 
 - [clipnoise~] 
 - [crackle~] 
@@ -60,6 +60,7 @@ CHAOTIC GENERATORS: [17]
 - [fbsine~] 
 - [gbman~] 
 - [henon~]
+- [ikeda~]
 - [latoocarfian~]
 - [lfnoise~]
 - [lincong~]
