@@ -36,7 +36,7 @@ Then move it to your preferred install folder for Pd.
 
 -------
 
-Current Object list (112 objects):
+Current Object list (114 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [12]
 - [cosine~]
@@ -132,10 +132,12 @@ SIGNAL ROUTING: [7]
 - [xselect2~]
 - [xfade~]
 
-AUDIO PROCESSING (mostly filters) (11):
+AUDIO PROCESSING (mostly filters) (13):
 - [apass~]
 - [bandpass~]
 - [downsample~]
+- [fbcomb~]
+- [fbdelay~]
 - [lowpass~]
 - [lowshelf~]
 - [highpass~]
