@@ -1,0 +1,133 @@
+#N canvas 434 62 559 552 10;
+#X obj 2 512 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 2 319 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 425 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 456 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 124 378 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 124 401 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X obj 124 433 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 124 328 cnv 17 3 45 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 206 360 clear - clears the buffer, f 38;
+#X text 201 434 signal - the filtered signal;
+#X obj 145 149 noise~;
+#X obj 192 181 *~;
+#X text 210 343 list;
+#X obj 192 253 else/out~;
+#X obj 2 4 cnv 15 301 42 empty empty fbcomb~ 20 20 2 37 -233017 -1
+0;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 4 graph;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 41 cnv 4 4 4 empty empty Feedback 0 28 2 18 -233017 -1 0
+;
+#X obj 199 41 cnv 4 4 4 empty empty reverberator 0 28 2 18 -233017
+-1 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 4 graph;
+#X obj 357 197 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 274 197 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 152 462 1) float - maximum delay time in ms (default 100 \,
+minimum 1);
+#X text 200 327 signal - signal input to the filter, f 39;
+#X text 234 177 Delay time (ms);
+#X text 354 177 Decay time (ms);
+#X text 152 492 3) float - decay time in ms (default 0), f 60;
+#N canvas 359 47 725 314 Details 0;
+#X text 140 240 D = Delay time in ms;
+#X floatatom 461 177 5 0 100 0 - - -, f 5;
+#X floatatom 553 178 5 0 100 0 - - -, f 5;
+#X obj 556 154 hsl 128 15 -1000 1000 0 0 empty empty empty -2 -8 0
+10 -228856 -1 -1 0 1;
+#X text 588 153 t60 (ms);
+#X obj 370 236 else/out~;
+#X text 338 58 Negative values of t60 generate negative feedback of
+the same absolute value as its absolute input., f 60;
+#X obj 370 160 else/trigate~;
+#X obj 370 136 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 498 177 D;
+#X obj 37 86 cnv 15 260 120 empty empty empty 20 12 0 14 -228856 -66577
+0;
+#X text 184 103 |;
+#X text 184 115 |;
+#X text 184 127 |;
+#X text 165 138 |;
+#X text 207 138 |;
+#X text 207 158 |;
+#X text 165 158 |;
+#X text 168 129 _______;
+#X text 168 158 _______;
+#X text 184 130 v;
+#X text 129 129 |;
+#X text 129 141 |;
+#X text 129 105 |;
+#X text 129 117 |;
+#X text 129 104 ^;
+#X text 207 94 >;
+#X text 131 147 -(*a)-;
+#X text 165 148 | z^-D |;
+#X text 69 95 x[n] ----(+)----------- y[n];
+#X text 104 182 y(n) = x(n) + a * y(n-D);
+#X text 140 224 a = feedback coefficient;
+#X text 37 41 [fbcomb~] is just a feedback line \, whose diagram and
+equation is:, f 34;
+#X text 338 14 The 'a' coefficient is calculated in [fbcomb~] from
+the decay time parameter (t60) and delay time (D) according to the
+expression: a = exp(log(0.001) * D/t60).;
+#X text 338 89 The [fbcomb~] object performs a simple linear interpolation
+for delay time that falls in between sample values.;
+#X obj 370 199 else/fbcomb~ 100 10 1000, f 31;
+#X connect 1 0 35 1;
+#X connect 2 0 35 2;
+#X connect 3 0 2 0;
+#X connect 7 0 35 0;
+#X connect 8 0 7 0;
+#X connect 35 0 5 0;
+#X connect 35 0 5 1;
+#X restore 442 246 pd Details and \; Filter Equation;
+#X text 164 380 float/signal - delay time (im ms), f 45;
+#X text 164 403 float/signal - decay time (in ms), f 45;
+#X text 152 477 2) float - delay time in ms (default 0), f 60;
+#X text 242 343 - updates all 3 arguments, f 32;
+#X obj 152 41 cnv 4 4 4 empty empty delay 0 28 2 18 -233017 -1 0;
+#X obj 192 219 else/fbcomb~ 100 10 1000, f 28;
+#X obj 207 149 else/pulse~ 0.5;
+#X obj 102 41 cnv 4 4 4 empty empty comb 0 28 2 18 -233017 -1 0;
+#X text 60 88 Use [fbcomb~] for comb filtering \, delay effects and
+reverberation. You can set a delay time and a reverberation/decay time
+in ms ("t60") \, which is the time the impulse takes to fall 60dB in
+energy., f 66;
+#X obj 452 291 else/fbdelay~;
+#X text 387 292 see also:;
+#X connect 10 0 11 0;
+#X connect 11 0 39 0;
+#X connect 26 0 39 2;
+#X connect 27 0 39 1;
+#X connect 39 0 13 1;
+#X connect 39 0 13 0;
+#X connect 40 0 11 1;

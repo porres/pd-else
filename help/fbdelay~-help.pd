@@ -1,0 +1,126 @@
+#N canvas 434 62 559 552 10;
+#X obj 2 512 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 2 319 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 425 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 456 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 124 378 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 124 401 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X obj 124 433 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 124 328 cnv 17 3 45 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 206 360 clear - clears the buffer, f 38;
+#X text 201 434 signal - the filtered signal;
+#X obj 145 149 noise~;
+#X obj 192 181 *~;
+#X text 210 343 list;
+#X obj 192 253 else/out~;
+#X obj 2 4 cnv 15 301 42 empty empty fbdelay~ 20 20 2 37 -233017 -1
+0;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 4 graph;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 41 cnv 4 4 4 empty empty Feedback 0 28 2 18 -233017 -1 0
+;
+#X obj 148 41 cnv 4 4 4 empty empty line 0 28 2 18 -233017 -1 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 4 graph;
+#X obj 357 197 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 274 197 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 152 462 1) float - maximum delay time in ms (default 100 \,
+minimum 1);
+#X text 200 327 signal - signal input to the filter, f 39;
+#X text 234 177 Delay time (ms);
+#X text 354 177 Decay time (ms);
+#N canvas 359 47 725 314 Details 0;
+#X text 140 240 D = Delay time in ms;
+#X floatatom 461 133 5 0 100 0 - - -, f 5;
+#X floatatom 553 134 5 0 100 0 - - -, f 5;
+#X obj 556 110 hsl 128 15 -0.9999 0.9999 0 0 empty empty empty -2 -8
+0 10 -228856 -1 -1 5300 1;
+#X obj 370 192 else/out~;
+#X obj 370 116 else/trigate~;
+#X obj 370 92 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 498 133 D;
+#X obj 37 86 cnv 15 260 120 empty empty empty 20 12 0 14 -228856 -66577
+0;
+#X text 184 103 |;
+#X text 184 115 |;
+#X text 184 127 |;
+#X text 165 138 |;
+#X text 207 138 |;
+#X text 207 158 |;
+#X text 165 158 |;
+#X text 168 129 _______;
+#X text 168 158 _______;
+#X text 184 130 v;
+#X text 129 129 |;
+#X text 129 141 |;
+#X text 129 105 |;
+#X text 129 117 |;
+#X text 129 104 ^;
+#X text 207 94 >;
+#X text 131 147 -(*a)-;
+#X text 165 148 | z^-D |;
+#X text 69 95 x[n] ----(+)----------- y[n];
+#X text 104 182 y(n) = x(n) + a * y(n-D);
+#X text 140 224 a = feedback coefficient;
+#X text 338 35 The [fbcomb~] object performs a simple linear interpolation
+for delay time that falls in between sample values.;
+#X text 37 41 [fbdelay~] is just a feedback line \, whose diagram and
+equation is:, f 36;
+#X text 583 109 feedback gain;
+#X obj 370 155 else/fbdelay~ 100 10 0.9, f 31;
+#X connect 1 0 33 1;
+#X connect 2 0 33 2;
+#X connect 3 0 2 0;
+#X connect 5 0 33 0;
+#X connect 6 0 5 0;
+#X connect 33 0 4 0;
+#X connect 33 0 4 1;
+#X restore 442 246 pd Details and \; Filter Equation;
+#X text 164 380 float/signal - delay time (im ms), f 45;
+#X text 152 477 2) float - delay time in ms (default 0), f 60;
+#X text 242 343 - updates all 3 arguments, f 32;
+#X obj 101 41 cnv 4 4 4 empty empty delay 0 28 2 18 -233017 -1 0;
+#X obj 207 149 else/pulse~ 0.5;
+#X text 393 292 see also:;
+#X text 60 88 Use [fbdelay~] for comb filtering \, delay effects and
+reverberation. You can set a delay time and a feedback gain coefficient.
+, f 67;
+#X obj 192 219 else/fbdelay~ 100 10 0.9, f 28;
+#X text 164 403 float/signal - feedback gain coefficient, f 45;
+#X text 152 492 3) float - feedback gain coefficient (default 0),
+f 60;
+#X obj 458 291 else/fbcomb~;
+#X connect 10 0 11 0;
+#X connect 11 0 40 0;
+#X connect 26 0 40 2;
+#X connect 27 0 40 1;
+#X connect 37 0 11 1;
+#X connect 40 0 13 1;
+#X connect 40 0 13 0;
