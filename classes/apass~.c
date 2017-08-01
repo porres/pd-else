@@ -1,13 +1,13 @@
-//almost complete rewrite since the previous version of Cyclone didn't implement it correctly (used only one delay buffer)
-//- Derek Kwan 2016
+// Porres 2017
+// Based on Max/cyclone's [allpass~] and SuperCollider's AllPassL
 
 #include <math.h>
 #include <stdlib.h>
 #include "m_pd.h"
 
 #define apass_STACK 48000 //stack buf size, 1 sec at 48k for good measure
-#define apass_DELAY  10.0 //maximum delay
-#define apass_MIND 1 //minumum delay
+#define apass_DELAY  100.0 //maximum delay
+#define apass_MIND 1 // minumum delay in ms
 #define apass_MAXD 4294967294 //max delay = 2**32 - 2
 
 #define apass_MINMS 0. //min delay in ms
@@ -164,7 +164,7 @@ static t_int *apass_perform(t_int *w)
         if (ain[i] == 0)
             ain[i] = 0;
         else
-            ain[i] = copysign(exp(log(0.001) * delms/fabs($f1)), ain[i]);
+            ain[i] = copysign(exp(log(0.001) * delms/fabs(ain[i])), ain[i]);
         
         double output = (double)ain[i]*-1.*input + delx + (double)ain[i]*dely;
         //stick this guy in the ybuffer and output
@@ -285,7 +285,6 @@ static void *apass_new(t_symbol *s, int argc, t_atom * argv){
         initdel = x->x_maxdel;
     };
     
-    
     //inlets outlets
     x->x_dellet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_dellet, initdel);
@@ -294,8 +293,6 @@ static void *apass_new(t_symbol *s, int argc, t_atom * argv){
     x->x_outlet = outlet_new((t_object *)x, &s_signal);
     return (x);
 }
-
-
 
 
 
