@@ -19,6 +19,7 @@ rescale.class.sources := classes/rescale.c
 
 # signal:
 accum~.class.sources := classes/accum~.c
+apass~.class.sources := classes/apass~.c
 balance~.class.sources := classes/balance~.c
 bandpass~.class.sources := classes/bandpass~.c
 brown~.class.sources := classes/brown~.c
