@@ -65,9 +65,9 @@ static t_int *xgate_perform(t_int *w){
 // set fade to channel
 
 //        outputs[i] = input * x->x_fade[i];
+        *x->x_outs[i]++ = input * x->x_fade[i];
         }
-        *x->x_outs[1] = 1.1;
-        *x->x_outs[2] = 2.2;
+
     }
     return (w + 4 + x->x_outlets);
 }
