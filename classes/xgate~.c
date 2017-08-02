@@ -64,7 +64,7 @@ static t_int *xgate_perform(t_int *w){
 
 static void xgate_dsp(t_xgate *x, t_signal **sp) {
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    int i, count = x->x_outlets + 2;
+    int i, count = x->x_outlets + 3;
     t_int **sigvec;
     sigvec  = (t_int **) calloc(count, sizeof(t_int *));
     for(i = 0; i < count; i++)
@@ -152,7 +152,7 @@ static void *xgate_new(t_symbol *s, int argc, t_atom *argv) {
     x->x_outlets = ch < 1 ? 1 : ch;
     if(x->x_outlets > OUTPUTLIMIT)
         x->x_outlets = OUTPUTLIMIT;
-    for(i = 0; i < x->x_outlets - 1; i++)
+    for(i = 0; i < x->x_outlets; i++)
         outlet_new(&x->x_obj, gensym("signal"));
     ms = ms > 0 ? ms : 0;
     x->x_fade_in_samps = x->x_sr_khz * ms + 1;
