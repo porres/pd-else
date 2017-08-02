@@ -98,6 +98,7 @@ triwave~.class.sources := classes/triwave~.c
 vsaw~.class.sources := classes/vsaw~.c
 vu~.class.sources := classes/vu~.c
 xfade~.class.sources := classes/xfade~.c
+xgate~.class.sources := classes/xgate~.c
 xgate2~.class.sources := classes/xgate2~.c
 xmod~.class.sources := classes/xmod~.c
 xselect~.class.sources := classes/xselect~.c

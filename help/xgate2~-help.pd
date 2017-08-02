@@ -1,16 +1,16 @@
-#N canvas 648 23 559 559 10;
-#X obj 4 368 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 648 23 559 555 10;
+#X obj 4 365 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 436 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 474 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 469 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 83 450 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 88 445 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X obj 83 418 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 88 413 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 137 417 signal;
-#X text 137 450 signal;
+#X text 151 412 signal;
+#X text 151 445 signal;
 #X obj 2 3 cnv 15 301 42 empty empty xgate2~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -34,15 +34,15 @@
 #X obj 76 40 cnv 4 4 4 empty empty an 0 28 2 18 -233017 -1 0;
 #X obj 195 40 cnv 4 4 4 empty empty crossfade 0 28 2 18 -233017 -1
 0;
-#X obj 83 376 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 88 373 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 520 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 515 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 137 376 signal;
-#X text 95 394 index <float>;
-#X text 183 394 - <1> sets to indexed mode \, <0> to non-indexed (default)
+#X text 151 373 signal;
+#X text 109 391 index <float>;
+#X text 197 391 - <1> sets to indexed mode \, <0> to non-indexed (default)
 ;
-#X text 130 496 2) float - <1> sets to indexed mode (default) <0> sets
+#X text 110 491 2) float - <1> sets to indexed mode (default) <0> sets
 to non-indexed, f 69;
 #N canvas 859 187 436 394 modes 0;
 #X text 42 131 In non-indexed mode \, the selection input values are
@@ -76,23 +76,23 @@ mode. You can also use the index message to change bewteen modes.;
 #X connect 11 2 1 0;
 #X connect 11 3 1 1;
 #X connect 12 0 11 0;
-#X restore 483 335 pd modes;
+#X restore 483 331 pd modes;
 #X obj 101 40 cnv 4 4 4 empty empty input 0 28 2 18 -233017 -1 0;
-#X text 130 480 1) float - number of output channels (default/min 2
+#X text 110 475 1) float - number of output channels (default/min 2
 \, max 500), f 69;
-#X text 183 450 - routed outputs with crossfade;
-#X text 183 376 - input channel to be routed;
-#X text 183 417 - output selection;
-#X obj 272 138 hsl 128 15 0 3 0 0 empty empty empty -2 -8 0 10 -228856
+#X text 197 445 - routed outputs with crossfade;
+#X text 197 373 - input channel to be routed;
+#X text 197 412 - output selection;
+#X obj 271 138 hsl 128 15 0 3 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 269 159 0 0 0 0 - - -;
-#X obj 188 185 else/xgate2~ 4;
+#X floatatom 268 159 0 0 0 0 - - -;
+#X obj 187 185 else/xgate2~ 4;
 #X text 61 86 [xgate2~] routes an input signal to 'n' specified outlets
 with equal power crossfade between two adjacent channels.;
-#X obj 188 148 noise~;
-#X obj 150 221 else/meter2~;
-#X obj 242 221 else/meter2~;
-#X text 272 138 select output channel;
+#X obj 187 148 noise~;
+#X obj 149 219 else/meter2~;
+#X obj 241 219 else/meter2~;
+#X text 271 138 select output channel;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
