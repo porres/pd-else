@@ -36,7 +36,7 @@ Then move it to your preferred install folder for Pd.
 
 -------
 
-Current Object list (115 objects):
+Current Object list (116 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [12]
 - [cosine~]
@@ -123,14 +123,15 @@ GUI: [9]
 - [mix4~]
 - [setdsp~]
 
-SIGNAL ROUTING: [7]
+SIGNAL ROUTING: [8]
 - [balance~]
 - [pan2~]
 - [pan4~]
 - [rotate~]
+- [xfade~]
+- [xgate~]
 - [xselect~]
 - [xselect2~]
-- [xfade~]
 
 AUDIO PROCESSING (mostly filters) (13):
 - [apass~]
