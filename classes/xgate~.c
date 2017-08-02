@@ -22,7 +22,7 @@ typedef struct _xgate {
     int         x_active_channel[OUTPUTLIMIT];
     int         x_counter[OUTPUTLIMIT];
     double      x_fade[OUTPUTLIMIT];
-    float       *x_out[OUTPUTLIMIT];
+    float       *x_outs[OUTPUTLIMIT];
 } t_xgate;
 
 void xgate_float(t_xgate *x, t_floatarg ch){
@@ -41,9 +41,10 @@ static t_int *xgate_perform(t_int *w){
     int i;
     t_xgate *x = (t_xgate *)(w[1]);
     int n = (int)(w[2]);
-    float *in = (t_float *)(w[3]);
+    t_float *in = (t_float *)(w[3]);
     for(i = 0; i < x->x_outlets; i++)
-        x->x_out[i] = (t_float *)(w[4 + i]); // all outputs
+        x->x_outs[i] = (t_float *)(w[4 + i]); // all outputs
+//    t_float *outputs = x->x_outs[i];
     while (n--)
     {
     float input = *in;
@@ -62,8 +63,11 @@ static t_int *xgate_perform(t_int *w){
             x->x_fade[i] = sin(x->x_fade[i] * HALF_PI);
         
 // set fade to channel
-        *x->x_out[i] = input * x->x_fade[i];
+
+//        outputs[i] = input * x->x_fade[i];
         }
+        *x->x_outs[1] = 1.1;
+        *x->x_outs[2] = 2.2;
     }
     return (w + 4 + x->x_outlets);
 }
