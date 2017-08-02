@@ -43,11 +43,11 @@
 #X text 154 482 1) float;
 #X text 261 390 phase offset (modulation input);
 #X text 261 410 phase sync (ressets internal phase);
-#X obj 187 186 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 165 186 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -116,7 +116,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -194,16 +194,16 @@ cycle.;
 #X obj 523 191 else/out~;
 #X text 525 81 Phase Modulation:;
 #X obj 600 110 osc~ 50.01;
-#X text 313 98 1;
+#X text 314 98 1;
 #X obj 38 216 else/out~;
-#X obj 179 98 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 180 98 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 176 123 0 0 0 0 - - -;
-#X text 157 98 0;
+#X floatatom 177 123 0 0 0 0 - - -;
+#X text 158 98 0;
 #X obj 56 180 +~;
 #X obj 56 122 else/fbsine~ 220;
 #X obj 538 138 else/fbsine~ 200;
-#X obj 71 153 else/fbsine~ 220 0 0.5;
+#X obj 71 153 else/fbsine~ 220 0 0.5, f 27;
 #X text 19 21 The third argument sets an initial phase (or "phase offset").
 This is also settable with the third inlet. In such a way \, you have
 two objects with the same frequency falling in and out of phase. Another
@@ -224,17 +224,17 @@ feature is phase modulation.;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X text 213 482 - frequency in hertz (default 0);
-#X obj 212 249 else/out~;
+#X obj 190 249 else/out~;
 #X text 261 446 sine wave signal;
 #X text 154 501 2) float;
-#X obj 229 214 else/fbsine~ 440;
-#X obj 263 143 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 5800 1;
+#X obj 207 214 else/fbsine~ 440;
+#X obj 241 143 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
 #X obj 25 40 cnv 4 4 4 empty empty Feedback 0 28 2 18 -233017 -1 0
 ;
-#X text 148 184 hz =>;
-#X obj 260 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.0866142 256;
+#X text 126 184 hz =>;
+#X obj 238 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
 #X obj 122 364 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 165 365 float/signal -;
@@ -276,9 +276,9 @@ turns the output into chaotic noise. Common values are usually in the
 #X connect 11 0 5 0;
 #X restore 117 298 pd fbsine~;
 #X obj 272 209 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 6400 1;
+-1 -1 0 1;
 #X obj 269 232 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.00787402 256;
+-228856 -1 -1 0 256;
 #X obj 117 339 else/out~;
 #X obj 256 338 else/out~;
 #X obj 256 290 fbsine~;
@@ -309,9 +309,9 @@ feedback value., f 61;
 #X text 262 345 turns mean filter on <1> or off <0>;
 #N canvas 377 133 857 420 mean 0;
 #X obj 610 141 hsl 128 15 -0.5 0.5 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 12700 1;
+-228856 -1 -1 0 1;
 #X obj 607 164 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.5 256;
+-228856 -1 -1 0 256;
 #X obj 594 280 else/out~;
 #X obj 594 232 fbsine~;
 #X obj 526 169 sig~ 440;
@@ -373,7 +373,7 @@ filter for comparison.;
 #X connect 14 0 3 1;
 #X connect 14 0 12 1;
 #X restore 453 233 pd mean filter;
-#X obj 260 188 else/float2sig~ 10;
+#X obj 238 188 else/float2sig~ 10;
 #X text 213 541 - mean filter: on <1> or off <0> (default 0);
 #X connect 26 0 36 0;
 #X connect 36 0 33 0;

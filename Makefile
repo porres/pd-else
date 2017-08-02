@@ -43,6 +43,7 @@ floor~.class.sources := classes/floor~.c
 fold.class.sources := classes/fold.c
 fold~.class.sources := classes/fold~.c
 gbman~.class.sources := classes/gbman~.c
+glide~.class.sources := classes/glide~.c
 henon~.class.sources := classes/henon~.c
 highpass~.class.sources := classes/highpass~.c
 highshelf~.class.sources := classes/highshelf~.c
