@@ -55,20 +55,17 @@ static t_int *xgate2_perform(t_int *w)
     return (w + 3);
 }
 
-static void xgate2_dsp(t_xgate2 *x, t_signal **sp)
-{
+static void xgate2_dsp(t_xgate2 *x, t_signal **sp){
     int i, nblock = sp[0]->s_n;
     t_signal **sigp = sp;
     x->x_ivec = (*sigp++)->s_vec; // the input inlet
     x->x_ch_select = (*sigp++)->s_vec; //the idx inlet
-    for (i = 0; i < x->x_n_outlets; i++){ // the n_outlets
+    for (i = 0; i < x->x_n_outlets; i++) // the n_outlets
         *(x->x_ovecs+i) = (*sigp++)->s_vec;
-    };
     dsp_add(xgate2_perform, 2, x, nblock);
 }
 
-static void *xgate2_new(t_symbol *s, int argc, t_atom *argv)
-{
+static void *xgate2_new(t_symbol *s, int argc, t_atom *argv){
     t_xgate2 *x = (t_xgate2 *)pd_new(xgate2_class);
     t_float n_outlets = 2; //inlets not counting xgate2 input
     x->x_indexed = 1;
@@ -99,8 +96,7 @@ static void *xgate2_new(t_symbol *s, int argc, t_atom *argv)
     x->x_n_outlets = (int)n_outlets;
     x->x_ovecs = getbytes(n_outlets * sizeof(*x->x_ovecs));
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-    inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-    for (i = 0; i <= n_outlets; i++)
+    for (i = 0; i < n_outlets; i++)
         outlet_new((t_object *)x, &s_signal);
     return (x);
     errstate:
@@ -113,10 +109,9 @@ void * xgate2_free(t_xgate2 *x){
     return (void *) x;
 }
 
-void xgate2_tilde_setup(void)
-{
+void xgate2_tilde_setup(void){
     xgate2_class = class_new(gensym("xgate2~"), (t_newmethod)xgate2_new,
-                    (t_method)xgate2_free, sizeof(t_xgate2), CLASS_DEFAULT, A_GIMME, 0);
+                (t_method)xgate2_free, sizeof(t_xgate2), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(xgate2_class, (t_method)xgate2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xgate2_class, nullfn, gensym("signal"), 0);
     class_addmethod(xgate2_class, (t_method)xgate2_index, gensym("index"), A_FLOAT, 0);

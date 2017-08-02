@@ -1,0 +1,106 @@
+#N canvas 441 23 559 503 10;
+#X obj 4 310 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 383 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 416 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 83 392 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 83 360 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+;
+#X text 137 359 signal;
+#X text 137 392 signal;
+#X obj 2 3 cnv 15 301 42 empty empty xgate2~ 20 20 2 37 -233017 -1
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Select 0 28 2 18 -233017 -1 0;
+#X obj 141 40 cnv 4 4 4 empty empty with 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 76 40 cnv 4 4 4 empty empty channel 0 28 2 18 -233017 -1 0;
+#X obj 185 40 cnv 4 4 4 empty empty crossfade 0 28 2 18 -233017 -1
+0;
+#X obj 83 318 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 183 318 - selected channel with crossfade;
+#X text 183 392 - crossfaded channels;
+#X text 130 422 1) float - number of channels (default/min 2 \, max
+500);
+#X obj 4 462 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 137 318 signal;
+#X text 95 336 index <float>;
+#X text 183 336 - <1> sets to indexed mode \, <0> to non-indexed (default)
+;
+#X text 183 359 - secondary inputs are the channels to select from
+;
+#X text 130 438 2) float - <1> sets to indexed mode (default) <0> sets
+to non-indexed, f 69;
+#N canvas 838 44 430 414 modes 0;
+#X text 42 131 In non-indexed mode \, the selection input values are
+from 0 (first channel) to 1 (last channel).;
+#X obj 125 332 else/out~;
+#X obj 194 265 osc~ 220;
+#X obj 332 264 osc~ 440;
+#X obj 263 264 osc~ 330;
+#X obj 128 187 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X floatatom 125 207 0 0 0 0 - - -;
+#X obj 125 232 else/float2sig~ 10;
+#X text 143 187 select channels;
+#X text 237 335 set to non-indexed mode with the second argument,
+f 24;
+#X msg 55 255 index \$1;
+#X obj 55 232 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 125 297 else/xselect2~ 3 0, f 35;
+#X text 40 24 You can set the operation mode of [xselect2~] with the
+second argument \, 1 sets to indexed mode (default) and 0 sets to non-indexed
+mode. You can also use the index message to change bewteen modes.;
+#X text 42 84 In the default mode of [xselect2~] (indexed) \, the integer
+part represents the channel (indexed from 0) and the fractional part
+the crossfading point.;
+#X connect 2 0 12 1;
+#X connect 3 0 12 3;
+#X connect 4 0 12 2;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 12 0;
+#X connect 10 0 12 0;
+#X connect 11 0 10 0;
+#X connect 12 0 1 0;
+#X connect 12 0 1 1;
+#X restore 484 275 pd modes;
+#X text 61 86 [xselect2~] selects between multiple inputs with equal
+power crossfade between two adjacent channels.;
+#X obj 100 235 else/out~;
+#X obj 286 154 hsl 128 15 0 2 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 6500 1;
+#X floatatom 283 175 0 0 0 0 - - -;
+#X obj 283 199 else/float2sig~ 10;
+#X text 301 154 select channels;
+#X obj 123 167 noise~;
+#X obj 123 201 else/xgate2~ 4, f 22;
+#X obj 209 235 else/out~;
+#X connect 32 0 33 0;
+#X connect 33 0 34 0;
+#X connect 34 0 37 1;
+#X connect 36 0 37 0;
+#X connect 37 0 31 0;
+#X connect 37 1 31 1;
+#X connect 37 2 38 0;
+#X connect 37 3 38 1;
