@@ -1,4 +1,4 @@
-#N canvas 648 23 559 555 10;
+#N canvas 429 23 559 555 10;
 #X obj 4 365 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 436 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -11,8 +11,8 @@
 ;
 #X text 151 412 signal;
 #X text 151 445 signal;
-#X obj 2 3 cnv 15 301 42 empty empty xgate2~ 20 20 2 37 -233017 -1
-0;
+#X obj 2 3 cnv 15 301 42 empty empty xgate~ 20 20 2 37 -233017 -1 0
+;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -190,12 +190,18 @@ with equal power crossfade between two adjacent channels.;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X obj 188 218 else/meter2~;
-#X obj 187 186 else/xgate~ 2;
+#X obj 161 215 else/meter2~;
 #X msg 146 154 1;
-#X obj 61 243 number~;
-#X connect 32 0 35 0;
-#X connect 35 0 34 0;
-#X connect 35 0 37 0;
-#X connect 35 1 34 1;
-#X connect 36 0 35 0;
+#X obj 20 240 number~;
+#X floatatom 99 173 5 0 0 0 - - -, f 5;
+#X obj 265 213 else/meter2~;
+#X obj 366 246 xselect~;
+#X obj 187 186 else/xgate~ 4 1000 0;
+#X connect 32 0 40 0;
+#X connect 35 0 40 0;
+#X connect 37 0 40 0;
+#X connect 40 0 34 0;
+#X connect 40 0 36 0;
+#X connect 40 1 34 1;
+#X connect 40 2 38 0;
+#X connect 40 3 38 1;

@@ -46,18 +46,24 @@ static t_int *xgate_perform(t_int *w){
         x->x_out[i] = (t_float *)(w[4 + i]); // all outputs
     while (n--)
     {
-/*        float sum = 0;
-        for(i = 0; i < x->x_outlets; i++) {
-            if(x->x_active_channel[i] && x->x_counter[i] < x->x_fade_in_samps)
-                x->x_counter[i]++;
-            else if (!x->x_active_channel[i] && x->x_counter[i] > 0)
-                x->x_counter[i]--;
-            x->x_fade[i] = x->x_counter[i] / x->x_fade_in_samps;
-            if(x->x_fadetype == EPOWER)
-                x->x_fade[i] = sin(x->x_fade[i] * HALF_PI);
-            sum += *x->x_out[i]++ * x->x_fade[i];
-            }
-        *out++ = sum; */
+    float input = *in;
+        
+    for(i = 0; i < x->x_outlets; i++)
+        {
+// fade in/out counter
+        if(x->x_active_channel[i] && x->x_counter[i] < x->x_fade_in_samps)
+            x->x_counter[i]++;
+        else if (!x->x_active_channel[i] && x->x_counter[i] > 0)
+            x->x_counter[i]--;
+        
+// calculate fade value
+        x->x_fade[i] = x->x_counter[i] / x->x_fade_in_samps;
+        if(x->x_fadetype == EPOWER)
+            x->x_fade[i] = sin(x->x_fade[i] * HALF_PI);
+        
+// set fade to channel
+        *x->x_out[i] = input * x->x_fade[i];
+        }
     }
     return (w + 4 + x->x_outlets);
 }
