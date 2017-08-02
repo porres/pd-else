@@ -42,7 +42,7 @@ static t_int *xselect_perform(t_int *w){
     t_xselect *x = (t_xselect *)(w[1]);
     int n = (int)(w[2]);
     for(i = 0; i < x->x_ninlets; i++)
-        x->x_in[i] = (t_float *)(w[3 + i]);
+        x->x_in[i] = (t_float *)(w[3 + i]); // all inputs
     float *out = (t_float *)(w[3 + x->x_ninlets]);
     while (n--)
     {

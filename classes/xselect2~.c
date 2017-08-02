@@ -103,7 +103,7 @@ static void *xselect2_new(t_symbol *s, int argc, t_atom *argv)
     outlet_new((t_object *)x, &s_signal);
     return (x);
     errstate:
-        pd_error(x, "select~x: improper args");
+        pd_error(x, "xselect2~: improper args");
         return NULL;
 }
 
