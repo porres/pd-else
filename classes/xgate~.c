@@ -47,7 +47,7 @@ static t_int *xgate_perform(t_int *w){
 //    t_float *outputs = x->x_outs[i];
     while (n--)
     {
-    float input = *in;
+    float input = *in++;
         
     for(i = 0; i < x->x_outlets; i++)
         {
@@ -64,10 +64,9 @@ static t_int *xgate_perform(t_int *w){
         
 // set fade to channel
 
-//        outputs[i] = input * x->x_fade[i];
         *x->x_outs[i]++ = input * x->x_fade[i];
         }
-
+        
     }
     return (w + 4 + x->x_outlets);
 }
