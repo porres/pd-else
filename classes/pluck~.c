@@ -13,7 +13,7 @@ static t_class *pluck_class;
 typedef struct _pluck
 {
     t_object        x_obj;
-    t_inlet         *x_dellet;
+    t_inlet         *x_hz_let;
     t_inlet         *x_alet;
     t_inlet         *x_inlet_cutoff;
     t_outlet        *x_outlet;
@@ -230,42 +230,75 @@ static void pluck_dsp(t_pluck *x, t_signal **sp)
     pluck_sz(x);
 } */
 
-static void *pluck_new(t_floatarg f1, t_floatarg f2, t_floatarg f3){
+static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
     t_pluck *x = (t_pluck *)pd_new(pluck_class);
+/////////////////////////////////////////////////////////////////////////////////////
+    float freq = 0;
+    float decay = 0;
+    float cut_freq = 15000;
+////
+    int argnum = 0;
+    while(argc > 0){
+        if(argv -> a_type == A_FLOAT)
+        { //if current argument is a float
+            t_float argval = atom_getfloatarg(0, argc, argv);
+            switch(argnum)
+            {
+                case 0:
+                    freq = argval;
+                    break;
+                case 1:
+                    decay = argval;
+                    break;
+                case 2:
+                    cut_freq = argval;
+                    break;
+                default:
+                    break;
+            };
+            argnum++;
+            argc--;
+            argv++;
+        }
+    else if (argv -> a_type == A_SYMBOL)
+        goto errstate;
+    };
+/////////////////////////////////////////////////////////////////////////////////////
     x->x_sr = sys_getsr();
     x->x_alloc = x->x_last_trig = 0;
     x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
     x->x_sum =  PLUCK_MAXD;
     x->x_sz = PLUCK_STACK;
-    // clear out stack buf, set pointer to stack
+// clear out stack buf, set pointer to stack
     x->x_ybuf = x->x_fbstack;
     pluck_clear(x);
-    if (f1 < 0)
-        f1 = 0;
-    x->x_maxdel = f1;
-    // ship off to the helper method to deal with allocation if necessary
+    if (freq < 0)
+        freq = 0;
+    x->x_maxdel = 1000;
+// ship off to the helper method to deal with allocation if necessary
     pluck_sz(x);
-    // boundschecking
-    // this is 1/44.1 (1/(sr*0.001) rounded up, good enough?
     
-    // inlets / outlet
+// inlets / outlet
     inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    x->x_dellet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_dellet, f1);
+    x->x_hz_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_hz_let, freq);
     x->x_alet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_alet, f2);
+        pd_float((t_pd *)x->x_alet, decay);
     x->x_inlet_cutoff = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_cutoff, f3);
-    
+        pd_float((t_pd *)x->x_inlet_cutoff, cut_freq);
     x->x_outlet = outlet_new((t_object *)x, &s_signal);
     return (x);
+    errstate:
+        pd_error(x, "pluck~: improper args");
+        return NULL;
 }
 
 static void * pluck_free(t_pluck *x){
     if(x->x_alloc)
         free(x->x_ybuf);
-    inlet_free(x->x_dellet);
+    inlet_free(x->x_hz_let);
     inlet_free(x->x_alet);
+    inlet_free(x->x_inlet_cutoff);
     outlet_free(x->x_outlet);
     return (void *)x;
 }
@@ -273,7 +306,7 @@ static void * pluck_free(t_pluck *x){
 void pluck_tilde_setup(void)
 {
     pluck_class = class_new(gensym("pluck~"), (t_newmethod)pluck_new,
-                              (t_method)pluck_free, sizeof(t_pluck), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
+                (t_method)pluck_free, sizeof(t_pluck), 0, A_GIMME, 0);
     class_addmethod(pluck_class, nullfn, gensym("signal"), 0);
     class_addmethod(pluck_class, (t_method)pluck_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(pluck_class, (t_method)pluck_clear, gensym("clear"), 0);

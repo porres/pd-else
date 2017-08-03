@@ -1,15 +1,16 @@
-#N canvas 698 77 563 473 10;
-#X obj 4 326 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 698 77 560 594 10;
+#X obj 4 346 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 361 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 461 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 395 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 495 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 428 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 554 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 253 155 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 146 40 cnv 4 4 4 empty empty object 0 28 2 18 -233017 -1 0;
+#X obj 249 195 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 100 256;
+#X obj 165 40 cnv 4 4 4 empty empty algorithm 0 28 2 18 -233017 -1
+0;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -131,51 +132,84 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X obj 147 135 noise~;
-#X obj 158 254 out~;
-#X obj 23 41 cnv 4 4 4 empty empty Karplus-Strong 0 28 2 18 -233017
+#X obj 173 278 out~;
+#X obj 42 41 cnv 4 4 4 empty empty Karplus-Strong 0 28 2 18 -233017
 -1 0;
-#X text 68 88 [pluck~];
-#X text 309 155 Hz;
-#X obj 218 128 else/trigate~;
-#X obj 218 106 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X text 305 195 Hz;
+#X obj 173 168 else/trigate~;
+#X obj 173 146 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 288 176 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 287 216 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 345 177 decay;
+#N canvas 748 271 391 355 example 0;
+#X obj 111 208 else/pluck~;
+#X obj 177 144 else/random~ 500 2000;
+#X obj 169 107 else/random~ 50 150;
+#X obj 46 125 else/brown~;
+#X obj 126 73 else/dust~ 5;
+#X obj 179 180 else/random~ 10000 20000;
+#X text 44 25 And now for some computer music cliché...;
+#X obj 111 256 else/out~;
+#X connect 0 0 7 0;
+#X connect 0 0 7 1;
+#X connect 1 0 0 3;
+#X connect 2 0 0 2;
+#X connect 3 0 0 0;
+#X connect 4 0 0 1;
+#X connect 4 0 1 0;
+#X connect 4 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 0 4;
+#X restore 455 314 pd example;
+#X obj 18 41 cnv 4 4 4 empty empty A 0 28 2 18 -233017 -1 0;
 #X obj 3 3 cnv 15 301 42 empty empty pluck~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#N canvas 748 271 533 399 example 0;
-#X obj 175 249 out~;
-#X obj 175 201 else/pluck~;
-#X obj 238 175 else/random~ 500 2000;
-#X obj 233 129 else/random~ 50 150;
-#X obj 110 136 else/brown~;
-#X obj 196 95 else/dust~ 5;
-#X connect 1 0 0 0;
-#X connect 1 0 0 1;
-#X connect 2 0 1 3;
-#X connect 3 0 1 2;
-#X connect 4 0 1 0;
-#X connect 5 0 1 1;
-#X connect 5 0 2 0;
-#X connect 5 0 3 0;
-#X restore 401 242 pd example;
-#X obj 432 289 else/lowpass~;
-#X obj 324 197 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 10000 256;
-#X text 383 195 cuttoff;
-#X msg 86 175 clear;
-#X obj 183 218 else/pluck~ 50 1000 15000;
-#X connect 4 0 31 2;
-#X connect 15 0 31 0;
-#X connect 20 0 31 1;
-#X connect 21 0 20 0;
-#X connect 22 0 31 3;
-#X connect 28 0 31 4;
-#X connect 30 0 31 0;
-#X connect 31 0 16 0;
-#X connect 31 0 16 1;
+#X text 348 216 decay time (ms);
+#X obj 342 240 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 117 470 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 117 355 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 117 376 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 182 470 signal;
+#X text 228 470 - karplus-Strong output;
+#X text 174 503 1) float - frequency in hertz (default 0);
+#X text 174 518 2) float - decay time in ms (default 0);
+#X text 174 533 3) float - filter cutoff frequency (default 15000)
+;
+#X obj 117 397 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X obj 117 418 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+;
+#X text 188 419 float;
+#X obj 117 438 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
+;
+#X text 188 439 float;
+#X text 182 355 signal;
+#X text 228 355 - excitation signal;
+#X text 182 377 signal;
+#X text 228 377 - trigger signal (negative to positive transition)
+;
+#X text 146 397 float/signal;
+#X text 228 397 - frequency in hertz;
+#X text 228 419 - decay time in ms;
+#X text 228 439 - filter cutoff frequency;
+#X text 404 239 cutoff;
+#X obj 173 238 else/pluck~ 100 2500 10000;
+#X text 45 91 [pluck~] is a Karplus-Strong algorithm: a feedback loop
+with a 2nd order lowpass filter. It takes an excitation signal \, a
+trigger inlet \, a frequency in hertz \, a decay time in ms and a cutoff
+frequency for the filter., f 69;
+#X connect 4 0 49 2;
+#X connect 18 0 49 1;
+#X connect 18 0 49 0;
+#X connect 19 0 18 0;
+#X connect 20 0 49 3;
+#X connect 26 0 49 4;
+#X connect 49 0 15 0;
+#X connect 49 0 15 1;
