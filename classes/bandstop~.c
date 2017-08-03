@@ -6,7 +6,7 @@
 #define PI M_PI
 #define HALF_LOG2 log(2)/2
 
-typedef struct _phaseshifter {
+typedef struct _bandstop {
     t_object    x_obj;
     t_int       x_n;
     t_inlet    *x_inlet_freq;
@@ -19,13 +19,13 @@ typedef struct _phaseshifter {
     double  x_xnm2;
     double  x_ynm1;
     double  x_ynm2;
-    } t_phaseshifter;
+    } t_bandstop;
 
-static t_class *phaseshifter_class;
+static t_class *bandstop_class;
 
-static t_int *phaseshifter_perform(t_int *w)
+static t_int *bandstop_perform(t_int *w)
 {
-    t_phaseshifter *x = (t_phaseshifter *)(w[1]);
+    t_bandstop *x = (t_bandstop *)(w[1]);
     int nblock = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
@@ -63,9 +63,9 @@ static t_int *phaseshifter_perform(t_int *w)
         alphaQ = sin(omega) / (2*q);
         cos_w = cos(omega);
         b0 = alphaQ + 1;
-        a0 = (1 - alphaQ) / b0;
+        a0 = 1 / b0;
         a1 = -2*cos_w / b0;
-        a2 = 1;
+        a2 = a0;
         b1 = -a1;
         b2 = (alphaQ - 1) / b0;
         
@@ -88,43 +88,43 @@ static t_int *phaseshifter_perform(t_int *w)
     return (w + 7);
 }
 
-static void phaseshifter_dsp(t_phaseshifter *x, t_signal **sp)
+static void bandstop_dsp(t_bandstop *x, t_signal **sp)
 {
     x->x_nyq = sp[0]->s_sr / 2;
-    dsp_add(phaseshifter_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
+    dsp_add(bandstop_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void phaseshifter_clear(t_phaseshifter *x)
+static void bandstop_clear(t_bandstop *x)
 {
     x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
 }
 
-static void phaseshifter_bypass(t_phaseshifter *x, t_floatarg f)
+static void bandstop_bypass(t_bandstop *x, t_floatarg f)
 {
     x->x_bypass = (int)(f != 0);
 }
 
-static void phaseshifter_bw(t_phaseshifter *x)
+static void bandstop_bw(t_bandstop *x)
 {
     x->x_bw = 1;
 }
 
-static void phaseshifter_q(t_phaseshifter *x)
+static void bandstop_q(t_bandstop *x)
 {
     x->x_bw = 0;
 }
 
-static void *phaseshifter_tilde_new(t_symbol *s, int argc, t_atom *argv)
+static void *bandstop_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
-    t_phaseshifter *x = (t_phaseshifter *)pd_new(phaseshifter_class);
+    t_bandstop *x = (t_bandstop *)pd_new(bandstop_class);
     return (x);
 }
 
 
-static void *phaseshifter_new(t_symbol *s, int argc, t_atom *argv)
+static void *bandstop_new(t_symbol *s, int argc, t_atom *argv)
 {
-    t_phaseshifter *x = (t_phaseshifter *)pd_new(phaseshifter_class);
+    t_bandstop *x = (t_bandstop *)pd_new(bandstop_class);
     float freq = 0;
     float reson = 1;
     int bw = 0;
@@ -176,18 +176,18 @@ static void *phaseshifter_new(t_symbol *s, int argc, t_atom *argv)
 
     return (x);
     errstate:
-        pd_error(x, "phaseshifter~: improper args");
+        pd_error(x, "bandstop~: improper args");
         return NULL;
 }
 
-void phaseshifter_tilde_setup(void)
+void bandstop_tilde_setup(void)
 {
-    phaseshifter_class = class_new(gensym("phaseshifter~"), (t_newmethod)phaseshifter_new, 0,
-        sizeof(t_phaseshifter), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(phaseshifter_class, (t_method)phaseshifter_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(phaseshifter_class, nullfn, gensym("signal"), 0);
-    class_addmethod(phaseshifter_class, (t_method)phaseshifter_clear, gensym("clear"), 0);
-    class_addmethod(phaseshifter_class, (t_method)phaseshifter_bypass, gensym("bypass"), A_DEFFLOAT, 0);
-    class_addmethod(phaseshifter_class, (t_method)phaseshifter_bw, gensym("bw"), 0);
-    class_addmethod(phaseshifter_class, (t_method)phaseshifter_q, gensym("q"), 0);
+    bandstop_class = class_new(gensym("bandstop~"), (t_newmethod)bandstop_new, 0,
+        sizeof(t_bandstop), CLASS_DEFAULT, A_GIMME, 0);
+    class_addmethod(bandstop_class, (t_method)bandstop_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(bandstop_class, nullfn, gensym("signal"), 0);
+    class_addmethod(bandstop_class, (t_method)bandstop_clear, gensym("clear"), 0);
+    class_addmethod(bandstop_class, (t_method)bandstop_bypass, gensym("bypass"), A_DEFFLOAT, 0);
+    class_addmethod(bandstop_class, (t_method)bandstop_bw, gensym("bw"), 0);
+    class_addmethod(bandstop_class, (t_method)bandstop_q, gensym("q"), 0);
 }

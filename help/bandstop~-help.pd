@@ -1,21 +1,21 @@
-#N canvas 332 28 561 579 10;
-#X obj 4 280 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 332 28 561 586 10;
+#X obj 4 285 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 430 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 435 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 463 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 468 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 543 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 548 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 109 439 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 109 444 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 109 288 cnv 17 3 88 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 109 293 cnv 17 3 88 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 181 288 signal;
-#X text 181 439 signal;
-#X obj 151 217 else/out~;
-#X obj 2 3 cnv 15 301 42 empty empty notch~ 20 20 2 37 -233017 -1 0
-;
+#X text 181 293 signal;
+#X text 181 444 signal;
+#X obj 151 222 else/out~;
+#X obj 2 3 cnv 15 301 42 empty empty bandstop~ 20 20 2 37 -233017 -1
+0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -27,33 +27,33 @@
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
 #X obj 23 40 cnv 4 4 4 empty empty Band 0 28 2 18 -233017 -1 0;
-#X obj 122 40 cnv 4 4 4 empty empty filter 0 28 2 18 -233017 -1 0;
+#X obj 112 40 cnv 4 4 4 empty empty filter 0 28 2 18 -233017 -1 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 71 40 cnv 4 4 4 empty empty reject 0 28 2 18 -233017 -1 0;
-#X obj 185 155 noise~;
-#X obj 233 140 nbx 5 14 100 10000 1 0 empty empty empty 0 -8 0 10 -228856
+#X obj 71 40 cnv 4 4 4 empty empty stop 0 28 2 18 -233017 -1 0;
+#X obj 185 160 noise~;
+#X obj 242 145 nbx 5 14 100 10000 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 100 256;
-#X obj 292 164 nbx 5 14 0.1 100 1 0 empty empty empty 0 -8 0 10 -228856
+#X obj 310 169 nbx 5 14 0.1 100 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0.1 256;
-#X text 230 439 - filtered signal;
-#X text 230 288 - signal to be filtered;
-#X obj 109 383 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 230 444 - filtered signal;
+#X text 230 293 - signal to be filtered;
+#X obj 109 388 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 109 406 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 109 411 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 145 383 float/signal;
-#X text 145 406 float/signal;
-#X text 187 306 clear;
-#X msg 108 150 bypass \$1;
-#X obj 108 127 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 145 388 float/signal;
+#X text 145 411 float/signal;
+#X text 187 311 clear;
+#X msg 108 155 bypass \$1;
+#X obj 108 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 133 324 bypass <float>;
-#X text 230 324 - 1 (bypasses input signal) or 0 (doesn't bypass);
+#X text 133 329 bypass <float>;
+#X text 230 329 - 1 (bypasses input signal) or 0 (doesn't bypass);
 #N canvas 486 72 926 617 filter 0;
 #N canvas 292 224 1108 572 (subpatch) 0;
 #N canvas 1066 341 460 420 plot 0;
@@ -560,19 +560,19 @@ b2 * y[n-2];
 #X connect 11 0 13 0;
 #X connect 12 0 9 2;
 #X connect 13 0 9 1;
-#X restore 429 239 pd filter formula \; and response;
-#X text 229 382 - central frequency in Hertz;
-#X text 118 469 1) float - central frequency in Hertz (default 0);
-#X msg 175 122 clear;
-#X text 230 306 - clears filter's memory if you blow it up;
-#X text 351 163 resonance (Q by default);
-#X text 205 341 bw;
-#X text 230 341 - sets resonance parameter to bandwidth in octaves
+#X restore 429 244 pd filter formula \; and response;
+#X text 229 387 - central frequency in Hertz;
+#X text 118 474 1) float - central frequency in Hertz (default 0);
+#X msg 175 127 clear;
+#X text 230 311 - clears filter's memory if you blow it up;
+#X text 369 168 resonance (Q by default);
+#X text 205 346 bw;
+#X text 230 346 - sets resonance parameter to bandwidth in octaves
 ;
-#X text 211 358 q;
-#X obj 3 514 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 135 520 -bw;
-#X text 165 520 - sets resonance parameter to bandwidth in octaves
+#X text 211 363 q;
+#X obj 3 519 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 135 525 -bw;
+#X text 165 525 - sets resonance parameter to bandwidth in octaves
 , f 53;
 #N canvas 868 136 407 322 resonance 0;
 #X text 27 17 By default \, the resonance parameter is the filter 'q'
@@ -592,15 +592,15 @@ the message methods.;
 #X connect 5 0 8 0;
 #X connect 8 0 2 0;
 #X connect 8 0 2 1;
-#X restore 464 214 pd resonance;
-#X text 118 487 2) float - resonance (default 1) \, either in 'Q' (default)
+#X restore 464 219 pd resonance;
+#X text 118 492 2) float - resonance (default 1) \, either in 'Q' (default)
 or 'bw', f 65;
-#X text 230 358 - sets resonance parameter to Q (default);
-#X text 230 406 - filter resonance (Q or bandwidth);
-#X text 291 139 resonant/center frequency;
-#X obj 175 186 else/notch~ 1000 0.1;
-#X text 61 86 [notch~] is a 2nd order band reject (or 'notch') filter.
-;
+#X text 230 363 - sets resonance parameter to Q (default);
+#X text 230 411 - filter resonance (Q or bandwidth);
+#X text 300 144 resonant/center frequency;
+#X obj 175 191 else/bandstop~ 1000 0.1;
+#X text 61 86 [bandstop~] is a 2nd order band reject filter \, it can
+also be used as a 'notch' filter.;
 #X connect 20 0 51 0;
 #X connect 21 0 51 1;
 #X connect 22 0 51 2;

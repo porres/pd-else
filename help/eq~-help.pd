@@ -1,54 +1,50 @@
-#N canvas 647 23 562 626 10;
-#X obj 4 285 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 647 23 560 630 10;
+#X obj 4 288 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 458 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 461 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 491 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 494 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 589 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 592 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 102 467 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 102 470 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 102 294 cnv 17 3 85 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 102 297 cnv 17 3 85 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 174 293 signal;
-#X text 174 467 signal;
-#X obj 230 222 else/out~;
-#X obj 2 3 cnv 15 301 42 empty empty peakfilter~ 20 20 2 37 -233017
--1 0;
+#X text 174 296 signal;
+#X text 174 470 signal;
+#X obj 219 225 else/out~;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1;
-#X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Peak 0 28 2 18 -233017 -1 0;
-#X obj 66 40 cnv 4 4 4 empty empty filter 0 28 2 18 -233017 -1 0;
+#X obj 22 40 cnv 4 4 4 empty empty Parametric 0 28 2 18 -233017 -1
+0;
+#X obj 183 40 cnv 4 4 4 empty empty filter 0 28 2 18 -233017 -1 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 242 158 noise~;
-#X text 223 467 - filtered signal;
-#X text 223 293 - signal to be filtered;
-#X obj 102 386 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 231 161 noise~;
+#X text 223 470 - filtered signal;
+#X text 223 296 - signal to be filtered;
+#X obj 102 389 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 102 409 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 102 412 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 138 386 float/signal;
-#X text 138 409 float/signal;
-#X text 180 311 clear;
-#X msg 163 155 bypass \$1;
-#X obj 163 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 138 389 float/signal;
+#X text 138 412 float/signal;
+#X text 180 314 clear;
+#X msg 152 158 bypass \$1;
+#X obj 152 135 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 126 329 bypass <float>;
-#X text 223 329 - 1 (bypasses input signal) or 0 (doesn't bypass);
+#X text 126 332 bypass <float>;
+#X text 223 332 - 1 (bypasses input signal) or 0 (doesn't bypass);
 #N canvas 385 158 926 590 filter 0;
 #N canvas 585 271 1108 572 (subpatch) 0;
 #N canvas 570 76 460 420 plot 0;
@@ -541,71 +537,69 @@ a2 = (1 - alphaQ*G) / b0 \; - b0 = alphaQ/G + 1 \; - alphaQ = sin(w)
 ;
 #X coords 0 -1 1 1 900 290 2 100 100;
 #X restore 14 274 pd;
-#X obj 649 117 hsl 128 15 0.1 10 0 0 empty \$0-Q-set empty -2 -8 0
+#X obj 630 111 hsl 128 15 0.1 10 0 0 empty \$0-Q-set empty -2 -8 0
 10 -228856 -1 -1 1155 1;
-#X obj 618 68 hsl 128 15 20 20000 1 0 empty \$0-Hz-set empty -2 -8
+#X obj 615 62 hsl 128 15 20 20000 1 0 empty \$0-Hz-set empty -2 -8
 0 10 -228856 -1 -1 6663 1;
-#X obj 564 114 noise~;
-#X obj 568 206 else/out~;
-#X obj 646 141 nbx 4 14 1e-06 10 0 0 \$0-Q empty empty 0 -8 0 10 -228856
+#X obj 555 107 noise~;
+#X obj 581 200 else/out~;
+#X obj 627 135 nbx 4 14 1e-06 10 0 0 \$0-Q empty empty 0 -8 0 10 -228856
 -1 -1 1 256;
-#X obj 615 92 nbx 4 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
+#X obj 612 86 nbx 4 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
 -1 -1 750 256;
 #X text 46 237 [1] found in http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
 , f 65;
 #X text 508 18 Change the parameters and check the filter response
 below. The graph considers a sample rate of 44.1Khz.;
-#X obj 704 147 hsl 128 15 -24 24 0 0 empty \$0-G-set empty -2 -8 0
+#X obj 686 141 hsl 128 15 -24 24 0 0 empty \$0-G-set empty -2 -8 0
 10 -228856 -1 -1 9525 1;
-#X obj 701 173 nbx 4 14 -24 24 0 0 \$0-G empty empty 0 -8 0 10 -228856
+#X obj 683 167 nbx 4 14 -24 24 0 0 \$0-G empty empty 0 -8 0 10 -228856
 -1 -1 12 256;
-#X text 737 147 gain (dB);
+#X text 719 141 gain (dB);
 #X text 54 21 The equation is from the "Cookbook formulae for audio
 EQ biquad filter coefficients" by Robert Bristow-Johnsonc [1] \, and
 it is: y[n] = a0 * x[n] + a1 * x[n-2] + a2 * x[n-2] + b1 * y[n-1] +
 b2 * y[n-2];
-#X obj 584 173 else/peakfilter~;
-#X text 629 68 center frequency;
-#X text 681 117 resonance;
+#X text 626 62 center frequency;
+#X text 670 111 resonance;
 #X text 52 80 a0 \, a1 \, a2 \, b1 and b2 are calculated as a function
 of frequency 'f' in hz \, 'Q' and 'db' gain as follows \; w = f * PI/nyquist
 \; G = pow(10 \, db/40) \; alphaQ = sin(w) / (2*Q) \; b0 = alphaQ/G
 + 1 \; a0 = (1 + alphaQ*G) / b0 \; a1 = a1 = -2*cos(w) / b0 \; a2 =
 (1 - alphaQ*G) / b0 \; b1 = 2*cos(w) / b0 \; b2 = (alphaQ/G - 1) /
 b0 \;;
+#X obj 597 167 else/eq~;
 #X connect 1 0 5 0;
 #X connect 2 0 6 0;
-#X connect 3 0 13 0;
-#X connect 5 0 13 2;
-#X connect 6 0 13 1;
+#X connect 3 0 16 0;
+#X connect 5 0 16 2;
+#X connect 6 0 16 1;
 #X connect 9 0 10 0;
-#X connect 10 0 13 3;
-#X connect 13 0 4 0;
-#X connect 13 0 4 1;
+#X connect 10 0 16 3;
+#X connect 16 0 4 0;
+#X connect 16 0 4 1;
 #X restore 429 244 pd filter formula \; and response;
-#X msg 230 127 clear;
-#X text 223 311 - clears filter's memory if you blow it up;
-#X obj 102 432 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X msg 219 130 clear;
+#X text 223 314 - clears filter's memory if you blow it up;
+#X obj 102 435 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 138 432 float/signal;
-#X text 223 432 - gain in dB;
-#X text 131 532 3) float - gain in dB (default 0), f 53;
-#X text 61 86 [peakfilter~] is a 2nd order peak filter.;
-#X obj 230 191 else/peakfilter~ 1000 1 8;
-#X text 198 348 bw;
-#X text 223 348 - sets resonance parameter to bandwidth in octaves
+#X text 138 435 float/signal;
+#X text 223 435 - gain in dB;
+#X text 131 535 3) float - gain in dB (default 0), f 53;
+#X text 198 351 bw;
+#X text 223 351 - sets resonance parameter to bandwidth in octaves
 ;
-#X text 204 365 q;
-#X text 223 365 - sets resonance parameter to Q (default);
-#X text 223 409 - filter resonance (Q or bandwidth);
-#X text 222 385 - central frequency in Hertz;
-#X text 131 497 1) float - central frequency in Hertz (default 0),
+#X text 204 368 q;
+#X text 223 368 - sets resonance parameter to Q (default);
+#X text 223 412 - filter resonance (Q or bandwidth);
+#X text 222 388 - central frequency in Hertz;
+#X text 131 500 1) float - central frequency in Hertz (default 0),
 f 53;
-#X text 131 515 2) float - resonance (default 1) \, either in 'Q' (default)
+#X text 131 518 2) float - resonance (default 1) \, either in 'Q' (default)
 or 'bw', f 65;
-#X obj 3 559 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 122 565 -bw;
-#X text 152 565 - sets resonance parameter to bandwidth in octaves
+#X obj 3 562 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 122 568 -bw;
+#X text 152 568 - sets resonance parameter to bandwidth in octaves
 , f 53;
 #N canvas 905 73 407 322 resonance 0;
 #X text 27 17 By default \, the resonance parameter is the filter 'q'
@@ -619,16 +613,25 @@ the message methods.;
 #X msg 135 128 bw;
 #X text 175 156 resonance as 'q';
 #X text 163 128 resonance as bandwidth in octaves;
-#X obj 81 184 else/peakfilter~ 1000 5 12 -bw;
+#X obj 81 184 else/eq~ 1000 5 12 -bw;
 #X connect 3 0 8 0;
 #X connect 4 0 8 0;
 #X connect 5 0 8 0;
 #X connect 8 0 2 0;
 #X connect 8 0 2 1;
 #X restore 464 218 pd resonance;
-#X connect 19 0 39 0;
-#X connect 27 0 39 0;
-#X connect 28 0 27 0;
-#X connect 32 0 39 0;
-#X connect 39 0 8 0;
-#X connect 39 0 8 1;
+#X obj 2 3 cnv 15 301 42 empty empty eq~ 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X obj 109 40 cnv 4 4 4 empty empty equalizer 0 28 2 18 -233017 -1
+0;
+#X text 61 86 [eq~] is a 2nd order parametric equalizer filter \, it
+can be used as a peak and a notch filter.;
+#X obj 219 194 else/eq~ 500 10 24;
+#X connect 17 0 52 0;
+#X connect 25 0 52 0;
+#X connect 26 0 25 0;
+#X connect 30 0 52 0;
+#X connect 52 0 8 0;
+#X connect 52 0 8 1;

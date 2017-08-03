@@ -6,7 +6,7 @@
 #define PI M_PI
 #define HALF_LOG2 log(2) * 0.5
 
-typedef struct _peakfilter {
+typedef struct _eq {
     t_object    x_obj;
     t_int       x_n;
     t_inlet    *x_inlet_freq;
@@ -20,13 +20,13 @@ typedef struct _peakfilter {
     double  x_xnm2;
     double  x_ynm1;
     double  x_ynm2;
-    } t_peakfilter;
+    } t_eq;
 
-static t_class *peakfilter_class;
+static t_class *eq_class;
 
-static t_int *peakfilter_perform(t_int *w)
+static t_int *eq_perform(t_int *w)
 {
-    t_peakfilter *x = (t_peakfilter *)(w[1]);
+    t_eq *x = (t_eq *)(w[1]);
     int nblock = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
@@ -92,42 +92,42 @@ static t_int *peakfilter_perform(t_int *w)
     return (w + 8);
 }
 
-static void peakfilter_dsp(t_peakfilter *x, t_signal **sp)
+static void eq_dsp(t_eq *x, t_signal **sp)
 {
     x->x_nyq = sp[0]->s_sr / 2;
-    dsp_add(peakfilter_perform, 7, x, sp[0]->s_n, sp[0]->s_vec,
+    dsp_add(eq_perform, 7, x, sp[0]->s_n, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
-static void peakfilter_clear(t_peakfilter *x)
+static void eq_clear(t_eq *x)
 {
     x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
 }
 
-static void peakfilter_bypass(t_peakfilter *x, t_floatarg f)
+static void eq_bypass(t_eq *x, t_floatarg f)
 {
     x->x_bypass = (int)(f != 0);
 }
 
-static void *peakfilter_tilde_new(t_symbol *s, int argc, t_atom *argv)
+static void *eq_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
-    t_peakfilter *x = (t_peakfilter *)pd_new(peakfilter_class);
+    t_eq *x = (t_eq *)pd_new(eq_class);
     return (x);
 }
 
-static void peakfilter_bw(t_peakfilter *x)
+static void eq_bw(t_eq *x)
 {
     x->x_bw = 1;
 }
 
-static void peakfilter_q(t_peakfilter *x)
+static void eq_q(t_eq *x)
 {
     x->x_bw = 0;
 }
 
-static void *peakfilter_new(t_symbol *s, int argc, t_atom *argv)
+static void *eq_new(t_symbol *s, int argc, t_atom *argv)
 {
-    t_peakfilter *x = (t_peakfilter *)pd_new(peakfilter_class);
+    t_eq *x = (t_eq *)pd_new(eq_class);
     float freq = 0;
     float reson = 0;
     float db = 0;
@@ -183,18 +183,18 @@ static void *peakfilter_new(t_symbol *s, int argc, t_atom *argv)
     x->x_out = outlet_new((t_object *)x, &s_signal);
     return (x);
     errstate:
-        pd_error(x, "peakfilter~: improper args");
+        pd_error(x, "eq~: improper args");
         return NULL;
 }
 
-void peakfilter_tilde_setup(void)
+void eq_tilde_setup(void)
 {
-    peakfilter_class = class_new(gensym("peakfilter~"), (t_newmethod)peakfilter_new, 0,
-        sizeof(t_peakfilter), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(peakfilter_class, (t_method)peakfilter_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(peakfilter_class, nullfn, gensym("signal"), 0);
-    class_addmethod(peakfilter_class, (t_method)peakfilter_clear, gensym("clear"), 0);
-    class_addmethod(peakfilter_class, (t_method)peakfilter_bypass, gensym("bypass"), A_DEFFLOAT, 0);
-    class_addmethod(peakfilter_class, (t_method)peakfilter_bw, gensym("bw"), 0);
-    class_addmethod(peakfilter_class, (t_method)peakfilter_q, gensym("q"), 0);
+    eq_class = class_new(gensym("eq~"), (t_newmethod)eq_new, 0,
+        sizeof(t_eq), CLASS_DEFAULT, A_GIMME, 0);
+    class_addmethod(eq_class, (t_method)eq_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(eq_class, nullfn, gensym("signal"), 0);
+    class_addmethod(eq_class, (t_method)eq_clear, gensym("clear"), 0);
+    class_addmethod(eq_class, (t_method)eq_bypass, gensym("bypass"), A_DEFFLOAT, 0);
+    class_addmethod(eq_class, (t_method)eq_bw, gensym("bw"), 0);
+    class_addmethod(eq_class, (t_method)eq_q, gensym("q"), 0);
 }

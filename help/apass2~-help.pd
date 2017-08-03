@@ -1,0 +1,156 @@
+#N canvas 746 101 559 546 10;
+#X obj 2 502 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 2 319 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 425 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 456 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 124 378 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 124 401 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X obj 124 433 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 124 328 cnv 17 3 45 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 201 434 signal - the filtered signal;
+#X obj 140 150 noise~;
+#X obj 187 182 *~;
+#X obj 187 254 else/out~;
+#X obj 3 4 cnv 15 301 42 empty empty apass2~ 20 20 2 37 -233017 -1
+0;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 4 graph;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 41 cnv 4 4 4 empty empty Allpass 0 28 2 18 -233017 -1 0;
+#X obj 85 41 cnv 4 4 4 empty empty filter/reverberator 0 28 2 18 -233017
+-1 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 4 graph;
+#X obj 310 198 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 248 176 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0 256;
+#X text 200 327 signal - signal input to the filter, f 48;
+#X text 304 176 Delay time (ms);
+#X text 369 199 Decay time (ms);
+#N canvas 522 182 732 339 Details 0;
+#X text 172 238 a = gain coefficient;
+#X text 172 254 D = Delay time in ms;
+#X floatatom 498 209 5 0 1000 0 - - -, f 5;
+#X floatatom 560 210 8 0 100 0 - - -, f 8;
+#X obj 563 186 hsl 128 15 -1000 1000 0 0 empty empty empty -2 -8 0
+10 -228856 -1 -1 0 1;
+#X obj 437 272 else/out~;
+#X text 338 58 Negative values of t60 generate negative feedback of
+the same absolute value as its absolute input., f 60;
+#X obj 437 176 else/trigate~;
+#X obj 437 152 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 39 100 cnv 15 260 120 empty empty empty 20 12 0 14 -228856 -66577
+0;
+#X text 89 113 |;
+#X text 89 125 |;
+#X text 89 137 |;
+#X text 70 148 |;
+#X text 112 148 |;
+#X text 112 168 |;
+#X text 70 168 |;
+#X text 73 139 _______;
+#X text 73 168 _______;
+#X text 118 157 -----;
+#X text 89 140 v;
+#X text 144 139 |;
+#X text 144 151 |;
+#X text 144 115 |;
+#X text 144 127 |;
+#X text 144 114 ^;
+#X text 230 113 |;
+#X text 230 125 |;
+#X text 230 137 |;
+#X text 211 148 |;
+#X text 253 148 |;
+#X text 253 168 |;
+#X text 211 168 |;
+#X text 214 139 _______;
+#X text 214 168 _______;
+#X text 230 140 v;
+#X text 175 139 |;
+#X text 175 151 |;
+#X text 175 115 |;
+#X text 175 127 |;
+#X text 175 114 ^;
+#X text 251 104 >;
+#X text 177 157 -(*a)-;
+#X text 70 158 | z^-D |;
+#X text 211 158 | z^-D |;
+#X text 53 196 y(n) = -a * x(n) + x(n-D) + a * y(n-D);
+#X text 49 105 x[n] ---(*-a)--(+)--(+)----------- y[n];
+#X text 36 27 An "All Pass Filter" passes all frequencies without altering
+their gain \, but affects the phase response., f 44;
+#X text 36 73 Here's All Pass filter diagram and equation:;
+#X text 338 14 The 'a' coefficient is calculated in [apass~] from the
+decay time parameter (t60) and delay time (D) according to the expression:
+a = exp(log(0.001) * D/t60).;
+#X text 583 185 decay time (ms);
+#X text 613 209 (t60);
+#X text 471 208 (D);
+#X text 36 291 For a delay time of 0 \, The object is bypassed!;
+#X msg 375 205 size \$1;
+#X msg 385 180 100;
+#X msg 375 155 1000;
+#X text 338 138 change delay size:, f 13;
+#X text 338 89 The [apass2~] object performs a simple linear interpolation
+for delay time that falls in between sample values.;
+#X obj 437 234 else/apass2~ 100 1000;
+#X connect 2 0 59 1;
+#X connect 3 0 59 2;
+#X connect 4 0 3 0;
+#X connect 7 0 59 0;
+#X connect 8 0 7 0;
+#X connect 54 0 59 0;
+#X connect 55 0 54 0;
+#X connect 56 0 54 0;
+#X connect 59 0 5 0;
+#X connect 59 0 5 1;
+#X restore 442 276 pd Details and \; Filter Equation;
+#X text 164 378 float/signal - delay time (im ms), f 54;
+#X text 164 403 float/signal - decay time (in ms), f 54;
+#X text 152 462 1) float - maximum and initial delay time in ms (default
+0), f 60;
+#X text 152 479 2) float - decay time in ms (default 0), f 60;
+#X text 242 343 - changes the maximum delay size (in ms), f 41;
+#X text 163 343 size <float>;
+#X obj 248 196 sig~;
+#X text 206 360 clear - clears the delay buffer, f 47;
+#X obj 202 150 else/pulse~ 1 0.25;
+#X text 60 89 Use [apass2~] for allpass filtering \, delay effects
+and reverberation. You can set a delay time and a reverberation/decay
+time in ms ("t60") \, which is the time the impulse takes to fall 60dB
+in energy., f 70;
+#X obj 187 220 else/apass2~ 100 1000;
+#X connect 9 0 10 0;
+#X connect 10 0 40 0;
+#X connect 24 0 40 2;
+#X connect 25 0 36 0;
+#X connect 36 0 40 1;
+#X connect 38 0 10 1;
+#X connect 40 0 11 1;
+#X connect 40 0 11 0;
