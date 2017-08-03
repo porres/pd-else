@@ -4,7 +4,7 @@
 #include <math.h>
 
 #define PI M_PI
-#define HALF_LOG2 log(2)/2
+#define HALF_LOG2 log(2) * 0.5
 
 typedef struct _peakfilter {
     t_object    x_obj;
