@@ -9,7 +9,6 @@
 ;
 #X obj 4 457 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 232 378 - converted ratio value(s);
 #X obj 23 40 cnv 4 4 4 empty empty Trigger 0 28 2 18 -233017 -1 0;
 #X obj 85 40 cnv 4 4 4 empty empty impulse 0 28 2 18 -233017 -1 0;
 #X obj 200 172 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -35,11 +34,6 @@
 #X text 178 322 bang;
 #X text 212 322 - generate trigger impulse/gate;
 #X text 166 378 signal;
-#X text 212 401 - tomed gate;
-#X text 68 88 When receiving a bang \, [trigate~] sends a trigger impulse
-out the left outlet and a timed gate trgger out the right outlet (values
-of 1 for the duration \, 0 otherwise). The length of the gate is given
-in ms \, if 0 or less is given \, no gate is output.;
 #X obj 151 40 cnv 4 4 4 empty empty & 0 28 2 18 -233017 -1 0;
 #X obj 173 40 cnv 4 4 4 empty empty timed 0 28 2 18 -233017 -1 0;
 #X obj 223 40 cnv 4 4 4 empty empty gate 0 28 2 18 -233017 -1 0;
@@ -67,7 +61,13 @@ in ms \, if 0 or less is given \, no gate is output.;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X connect 8 0 11 0;
-#X connect 9 0 11 1;
-#X connect 11 0 10 0;
-#X connect 11 1 10 1;
+#X text 212 378 - impulse signal;
+#X text 212 401 - timed gate signal;
+#X text 68 88 When receiving a bang \, [trigate~] sends a trigger impulse
+out the left outlet and a timed gate trigger out the right outlet (values
+of 1 for the duration \, 0 otherwise). The length of the gate is given
+in ms \, if 0 or less is given \, no gate is output.;
+#X connect 7 0 10 0;
+#X connect 8 0 10 1;
+#X connect 10 0 9 0;
+#X connect 10 1 9 1;
