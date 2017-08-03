@@ -36,7 +36,10 @@ Then move it to your preferred install folder for Pd.
 
 -------
 
-Current Object list (118 objects):
+Current Object list (119 objects):
+
+PHYSICAL MODELLING: [1]
+- [pluck~]
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [12]
 - [cosine~]
