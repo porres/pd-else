@@ -22,6 +22,7 @@ accum~.class.sources := classes/accum~.c
 apass~.class.sources := classes/apass~.c
 balance~.class.sources := classes/balance~.c
 bandpass~.class.sources := classes/bandpass~.c
+bcoeff.class.sources := classes/bcoeff.c
 brown~.class.sources := classes/brown~.c
 ceil.class.sources := classes/ceil.c
 ceil~.class.sources := classes/ceil~.c
