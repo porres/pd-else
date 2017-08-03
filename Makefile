@@ -67,6 +67,7 @@ parabolic~.class.sources := classes/parabolic~.c
 peak~.class.sources := classes/peak~.c
 peakfilter~.class.sources := classes/peakfilter~.c
 phaseshifter~.class.sources := classes/phaseshifter~.c
+pluck~.class.sources := classes/pluck~.c
 pimp~.class.sources := classes/pimp~.c
 pmosc~.class.sources := classes/pmosc~.c
 pulse~.class.sources := classes/pulse~.c
