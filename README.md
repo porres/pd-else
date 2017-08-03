@@ -139,7 +139,9 @@ SIGNAL ROUTING: [9]
 
 AUDIO PROCESSING (mostly filters) (13):
 - [apass~]
+- [apass2~]
 - [bandpass~]
+- [bandstop~]
 - [downsample~]
 - [fbcomb~]
 - [fbdelay~]
@@ -147,9 +149,7 @@ AUDIO PROCESSING (mostly filters) (13):
 - [lowshelf~]
 - [highpass~]
 - [highshelf~]
-- [notch~]
-- [peakfilter~]
-- [phaseshifter~]
+- [eq~]
 - [resonant~]
 
 CONTROL: [5]
