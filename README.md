@@ -36,7 +36,7 @@ Then move it to your preferred install folder for Pd.
 
 -------
 
-Current Object list (117 objects):
+Current Object list (118 objects):
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [12]
 - [cosine~]
@@ -102,7 +102,7 @@ SIGNAL ANALYSIS: [10]
 - [vu~]
 - [zerocross~]
 
-TRIGGERS: [8]
+TRIGGERS: [9]
 - [dust~]
 - [dust2~]
 - [pimp~]
@@ -110,6 +110,7 @@ TRIGGERS: [8]
 - [pulsediv~]
 - [sh~]
 - [toggleff~]
+- [tgate~]
 - [trigate~]
 
 GUI: [9]
