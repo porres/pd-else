@@ -173,14 +173,14 @@
 #X obj 141 183 noise~;
 #X obj 197 252 else/out~;
 #X obj 197 148 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 8 256;
-#X obj 273 148 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 273 256;
-#X obj 350 148 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -170 256;
+-228856 -1 -1 0 256;
+#X obj 267 148 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 338 148 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
 #X obj 130 131 loadbang;
 #X text 204 127 freq;
-#X text 356 129 gain;
+#X text 344 129 gain;
 #X text 186 543 - sets amplitude/gain in db (default 1), f 60;
 #X text 186 436 - sets amplitude/gain in db, f 60;
 #X obj 219 198 print coefficients;
@@ -188,16 +188,16 @@
 \, reson \, bstop \, notch \, lshelf \, hshelf \, off>, f 58;
 #X text 186 394 - sets filter type \, frequency \, Q/Slope and gain
 , f 60;
-#X text 271 129 Q/Slope;
-#X obj 197 172 else/bcoeff peak 500 10 24;
+#X text 265 129 Q/Slope;
 #X text 70 86 [bcoeff] generates coefficients for vanilla's [biquad~]
 \, according to different filter types., f 61;
+#X obj 197 172 else/bcoeff eq 500 10 24;
 #X connect 42 0 44 0;
 #X connect 42 0 44 1;
 #X connect 43 0 42 0;
-#X connect 45 0 57 0;
-#X connect 46 0 57 1;
-#X connect 47 0 57 2;
-#X connect 48 0 57 0;
-#X connect 57 0 42 0;
-#X connect 57 0 53 0;
+#X connect 45 0 58 0;
+#X connect 46 0 58 1;
+#X connect 47 0 58 2;
+#X connect 48 0 58 0;
+#X connect 58 0 42 0;
+#X connect 58 0 53 0;
