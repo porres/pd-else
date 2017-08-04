@@ -1,0 +1,95 @@
+#N canvas 493 81 559 523 10;
+#X obj 3 278 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 401 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 434 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 3 484 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 101 410 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 101 286 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 161 286 signal;
+#X text 161 410 signal;
+#X obj 2 3 cnv 15 301 42 empty empty resonbank2~ 20 20 2 37 -233017
+-1 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Bank 0 28 2 18 -233017 -1 0;
+#X obj 165 40 cnv 4 4 4 empty empty filters 0 28 2 18 -233017 -1 0
+;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 95 40 cnv 4 4 4 empty empty resonant 0 28 2 18 -233017 -1 0
+;
+#X obj 101 309 cnv 17 3 85 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 68 40 cnv 4 4 4 empty empty of 0 28 2 18 -233017 -1 0;
+#X obj 169 220 else/out~;
+#X text 156 460 2) float - ramp time in ms (default 10), f 57;
+#X text 423 146 <= click;
+#X text 132 309 freq <list>;
+#X text 126 343 decay <list>;
+#X text 138 360 amp <list>;
+#X text 132 378 ramp <list>;
+#X text 209 309 - list of frequencies for all filters in the bank;
+#X text 209 343 - list of decay time for all filters in the bank;
+#X text 209 360 - list of amplitudes for all filters in the bank;
+#X text 209 378 - list of ramp time for all filters in the bank;
+#X text 210 286 - signal to be filtered via a bank of resonators;
+#N canvas 715 32 502 385 example 0;
+#X obj 54 248 else/out~;
+#X obj 189 112 loadbang;
+#X obj 54 154 else/dust~ 5;
+#X text 270 99 click on the messages below to alter between them,
+f 27;
+#X text 58 22 A ramp time as the second argument sets a transition
+time in ms between parameter changes of resonant frequency \, decay
+time an amplitude. By default \, this is set to 10 ms. You can also
+send a list of ramp time for each filter in the bank.;
+#X msg 189 135 freq 100 250 300 370 420 510 590 650 \, decay 800 900
+1500 900 2000 800 1500 900 \, attack 200 100 150 75 200 100 150 100
+\, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 41;
+#X msg 220 211 freq 140 290 310 330 490 580 690 750 \, decay 900 800
+2500 700 500 1200 1700 900 \, attack 100 150 200 50 100 150 100 200
+\, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 41;
+#X obj 54 211 else/resonbank2~ 8 2000;
+#X text 67 328 If you do not set attack times \, [resonbank2~] will
+behave in the same way as [resonbank~] \, but it will be less efficient.
+;
+#X connect 1 0 5 0;
+#X connect 2 0 7 0;
+#X connect 5 0 7 1;
+#X connect 6 0 7 1;
+#X connect 7 0 0 0;
+#X connect 7 0 0 1;
+#X restore 468 248 pd example;
+#X text 156 442 1) float - number of resonant filters (default 1),
+f 57;
+#X text 210 410 - the bank filtered signal;
+#X text 59 86 [resonbank2~] is a bank made of [resonant2~] objects.
+You can set any number of filters and control their parameters.;
+#X obj 169 148 imp~ 1;
+#X msg 274 129 freq 110 220 330 440 \, attack 50 10 5 10 \, decay 2500
+2800 2300 2400, f 23;
+#X text 120 326 attack <list>;
+#X text 209 326 - list of attack time for all filters in the bank;
+#X obj 169 192 else/resonbank2~ 4;
+#X connect 37 0 41 0;
+#X connect 38 0 41 1;
+#X connect 41 0 21 0;
+#X connect 41 0 21 1;
