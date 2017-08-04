@@ -35,7 +35,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (121 objects):
+Current Object list (122 objects):
 
 PHYSICAL MODELLING: [1]
 - [pluck~]
@@ -143,7 +143,7 @@ SIGNAL ROUTING: [9]
 - [xselect~]
 - [xselect2~]
 
-FILTERS (11):
+FILTERS (12):
 - [apass~]
 - [bandpass~]
 - [bandstop~]
@@ -153,6 +153,7 @@ FILTERS (11):
 - [highshelf~]
 - [lowpass~]
 - [lowshelf~]
+- [resonbank~]
 - [resonant~]
 - [resonant2~]
 
