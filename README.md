@@ -35,10 +35,16 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (119 objects):
+Current Object list (120 objects):
 
 PHYSICAL MODELLING: [1]
 - [pluck~]
+
+AUDIO PROCESSING: [4]
+- [downsample~]
+- [apass2~]
+- [fbcomb~]
+- [fbdelay~]
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [12]
 - [cosine~]
@@ -137,14 +143,11 @@ SIGNAL ROUTING: [9]
 - [xselect~]
 - [xselect2~]
 
-AUDIO PROCESSING (mostly filters) (13):
+FILTERS (10):
 - [apass~]
-- [apass2~]
 - [bandpass~]
 - [bandstop~]
-- [downsample~]
-- [fbcomb~]
-- [fbdelay~]
+- [bcoeff]
 - [lowpass~]
 - [lowshelf~]
 - [highpass~]
