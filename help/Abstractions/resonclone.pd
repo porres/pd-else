@@ -1,7 +1,7 @@
-#N canvas 330 82 528 308 10;
-#X obj 192 269 outlet~;
+#N canvas 458 348 604 317 10;
+#X obj 192 281 outlet~;
 #X obj 79 20 inlet;
-#X obj 192 214 /~ \$2;
+#X obj 192 230 /~ \$2;
 #X obj 29 20 inlet~;
 #X obj 120 21 inlet;
 #X obj 56 134 else/resonant~;
@@ -11,11 +11,14 @@
 #X obj 79 98 else/float2sig~ \$3;
 #X obj 207 148 else/float2sig~ \$3 1;
 #X obj 251 17 inlet;
-#X text 330 41 This is an abstraction;
-#X text 275 211 Part of ELSE \; https://github.com/porres/pd-else;
-#X text 277 192 Alexandre Torres Porres (2017);
-#X text 331 64 used on the [resonbank~];
-#X text 336 89 object;
+#X text 374 66 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 376 47 Alexandre Torres Porres (2017);
+#X text 378 111 This is an abstraction used on the [resonbank~] object
+, f 27;
+#X obj 279 203 f \$2;
+#X obj 279 226 sel 0;
+#X obj 279 179 loadbang;
+#X msg 279 250 1;
 #X connect 1 0 9 0;
 #X connect 2 0 0 0;
 #X connect 3 0 5 0;
@@ -29,3 +32,7 @@
 #X connect 11 0 8 1;
 #X connect 11 0 9 1;
 #X connect 11 0 10 1;
+#X connect 15 0 16 0;
+#X connect 16 0 18 0;
+#X connect 17 0 15 0;
+#X connect 18 0 2 1;

@@ -1,13 +1,13 @@
-#N canvas 708 52 559 486 10;
-#X obj 4 284 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 708 52 561 503 10;
+#X obj 4 304 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 356 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 376 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 391 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 411 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 85 365 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 85 385 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 444 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 464 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -29,16 +29,16 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 97 40 cnv 4 4 4 empty empty index 0 28 2 18 -233017 -1 0;
-#X obj 192 136 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 192 156 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 3 3 cnv 15 301 42 empty empty order 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X obj 85 293 cnv 17 3 55 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 85 313 cnv 17 3 55 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 192 256 print;
+#X obj 192 276 print;
 #X obj 145 40 cnv 4 4 4 empty empty list 0 28 2 18 -233017 -1 0;
 #X obj 177 40 cnv 4 4 4 empty empty elements 0 28 2 18 -233017 -1 0
 ;
@@ -54,28 +54,32 @@ than the split size \, it is also output.;
 #X connect 0 0 1 0;
 #X connect 1 0 3 0;
 #X connect 3 0 2 0;
-#X restore 431 252 pd different sizes;
-#X text 135 293 anything;
-#X text 194 293 - any number of elements to be split and ordered;
-#X text 129 313 n <float>;
-#X text 99 331 offset <float>;
-#X text 140 418 2) float - index offset (default 0);
-#X text 194 331 - index offset;
-#X msg 204 192 offset 1;
-#X msg 159 192 n 2;
-#X text 66 88 [order] splits a list into successive lists of a given
-size (default 1 element) and tags each of them with ordered indexes.
-;
-#X text 194 313 - number of elements in each ordered list;
-#X text 159 365 list;
-#X text 194 365 - ordered lists \, with the split elements preceded
+#X restore 424 268 pd different sizes;
+#X text 135 313 anything;
+#X text 194 313 - any number of elements to be split and ordered;
+#X text 129 333 n <float>;
+#X text 99 351 offset <float>;
+#X text 140 438 2) float - index offset (default 0);
+#X text 194 351 - index offset;
+#X msg 204 212 offset 1;
+#X msg 159 212 n 2;
+#X text 194 333 - number of elements in each ordered list;
+#X text 159 385 list;
+#X text 194 385 - ordered lists \, with the split elements preceded
 by index;
-#X msg 192 160 1 2 3 4 5 6 7 8 9;
-#X obj 192 226 else/order;
-#X text 140 401 1) float - 'n' number of elements to be ordered (default
+#X msg 192 180 1 2 3 4 5 6 7 8 9;
+#X obj 192 246 else/order;
+#X text 140 421 1) float - 'n' number of elements to be ordered (default
 1);
-#X connect 16 0 36 0;
-#X connect 30 0 37 0;
-#X connect 31 0 37 0;
-#X connect 36 0 37 0;
-#X connect 37 0 20 0;
+#X text 66 86 [order] splits a list into successive lists of a given
+size (default 1 element) and tags each of them with ordered indexes.
+This is useful for sending values to all instances of an object loaded
+in [clone]!;
+#X text 350 168 The [order] object is used inside the [resonbank~]
+object \, open and check it out., f 27;
+#X obj 398 215 else/resonbank~ 1;
+#X connect 16 0 35 0;
+#X connect 30 0 36 0;
+#X connect 31 0 36 0;
+#X connect 35 0 36 0;
+#X connect 36 0 20 0;
