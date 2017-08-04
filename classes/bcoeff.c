@@ -27,7 +27,7 @@ static void bcoeff_bang(t_bcoeff *x){
         double omega, alphaQ, cos_w, b0;
         double hz = (double)x->x_freq;
         double q = (double)x->x_q_s;
-        double amp = pow(10, x->x_gain / 40);
+        double g = pow(10, x->x_gain / 20);
         double nyq = sys_getsr() * 0.5;
         if (hz < 0.1)
             hz = 0.1;
@@ -40,10 +40,10 @@ static void bcoeff_bang(t_bcoeff *x){
         alphaQ = sin(omega) / (2*q);
         cos_w = cos(omega);
         b0 = alphaQ + 1;
-        a0 = (1 - alphaQ) / b0;
-        a1 = -2*cos_w / b0;
-        a2 = 1;
-        b1 = -a1;
+        a0 = (1 - alphaQ) * g/b0;
+        a1 = -2*cos_w  * g/b0;
+        a2 = g;
+        b1 = 2*cos_w / b0;
         b2 = (alphaQ - 1) / b0;
     }
 // bandpass
@@ -51,7 +51,7 @@ static void bcoeff_bang(t_bcoeff *x){
         double omega, alphaQ, cos_w, b0;
         double hz = (double)x->x_freq;
         double q = (double)x->x_q_s;
-        double amp = pow(10, x->x_gain / 40);
+        double g = pow(10, x->x_gain / 20);
         double nyq = sys_getsr() * 0.5;
         if (hz < 0.1)
             hz = 0.1;
@@ -64,7 +64,7 @@ static void bcoeff_bang(t_bcoeff *x){
         alphaQ = sin(omega) / (2*q);
         cos_w = cos(omega);
         b0 = alphaQ + 1;
-        a0 = alphaQ / b0;
+        a0 = alphaQ  * g/b0;
         a1 = 0.;
         a2 = -a0;
         b1 = 2*cos_w / b0;
@@ -75,7 +75,7 @@ static void bcoeff_bang(t_bcoeff *x){
         double omega, alphaQ, cos_w, b0;
         double hz = (double)x->x_freq;
         double q = (double)x->x_q_s;
-        double amp = pow(10, x->x_gain / 40);
+        double g = pow(10, x->x_gain / 20);
         double nyq = sys_getsr() * 0.5;
         if (hz < 0.1)
             hz = 0.1;
@@ -88,10 +88,10 @@ static void bcoeff_bang(t_bcoeff *x){
         alphaQ = sin(omega) / (2*q);
         cos_w = cos(omega);
         b0 = alphaQ + 1;
-        a0 = 1 / b0;
-        a1 = -2*cos_w / b0;
+        a0 = g / b0;
+        a1 = -2*cos_w * g/b0;
         a2 = a0;
-        b1 = -a1;
+        b1 = 2*cos_w / b0;
         b2 = (alphaQ - 1) / b0;
     }
 // eq
@@ -123,7 +123,7 @@ static void bcoeff_bang(t_bcoeff *x){
         double omega, alphaQ, cos_w, b0;
         double hz = (double)x->x_freq;
         double q = (double)x->x_q_s;
-        double amp = pow(10, x->x_gain / 40);
+        double g = pow(10, x->x_gain / 20);
         double nyq = sys_getsr() * 0.5;
         if (hz < 0.1)
             hz = 0.1;
@@ -136,8 +136,8 @@ static void bcoeff_bang(t_bcoeff *x){
         alphaQ = sin(omega) / (2*q);
         cos_w = cos(omega);
         b0 = alphaQ + 1;
-        a0 = (1 + cos_w) / (2 * b0);
-        a1 = -(1 + cos_w) / b0;
+        a0 = (1+cos_w)  * g/(2*b0);
+        a1 = -(1+cos_w)  * g/b0;
         a2 = a0;
         b1 = 2*cos_w / b0;
         b2 = (alphaQ - 1) / b0;
@@ -173,7 +173,7 @@ static void bcoeff_bang(t_bcoeff *x){
         double omega, alphaQ, cos_w, b0;
         double hz = (double)x->x_freq;
         double q = (double)x->x_q_s;
-        double amp = pow(10, x->x_gain / 40);
+        double g = pow(10, x->x_gain / 20);
         double nyq = sys_getsr() * 0.5;
         if (hz < 0.1)
             hz = 0.1;
@@ -186,8 +186,8 @@ static void bcoeff_bang(t_bcoeff *x){
         alphaQ = sin(omega) / (2*q);
         cos_w = cos(omega);
         b0 = alphaQ + 1;
-        a0 = (1 - cos_w) / (2 * b0);
-        a1 = (1 - cos_w) / b0;
+        a0 = (1-cos_w)  * g/(2*b0);
+        a1 = (1-cos_w)  * g/b0;
         a2 = a0;
         b1 = 2*cos_w / b0;
         b2 = (alphaQ - 1) / b0;
@@ -223,7 +223,7 @@ static void bcoeff_bang(t_bcoeff *x){
         double omega, alphaQ, cos_w, b0;
         double hz = (double)x->x_freq;
         double q = (double)x->x_q_s;
-        double amp = pow(10, x->x_gain / 40);
+        double g = pow(10, x->x_gain / 20);
         double nyq = sys_getsr() * 0.5;
         if (hz < 0.1)
             hz = 0.1;
@@ -236,11 +236,11 @@ static void bcoeff_bang(t_bcoeff *x){
         alphaQ = sin(omega) / (2*q);
         cos_w = cos(omega);
         b0 = alphaQ + 1;
-        a0 = alphaQ*q / b0;
-        a1 = 0.;
+        a0 = alphaQ*q  * g/b0;
+        a1 = 0;
         a2 = -a0;
         b1 = 2*cos_w / b0;
-        b2 = (alphaQ - 1) / b0;
+        b2 = (alphaQ - 1) / b0;  
     }
     SETFLOAT(at, b1);
     SETFLOAT(at+1, b2);
