@@ -1,4 +1,4 @@
-#N canvas 587 115 560 542 10;
+#N canvas 493 23 560 542 10;
 #X obj 4 291 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 405 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -44,110 +44,13 @@
 #X text 177 317 clear;
 #X text 219 337 - central frequency in Hertz;
 #X text 220 317 - clears filter's memory if you blow it up;
-#X obj 195 159 else/trigate~;
-#X obj 195 132 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 195 161 else/trigate~;
+#X obj 195 134 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 220 299 - signal to be filtered or excite the resonator;
-#X text 217 131 <= excite the resonator;
+#X text 217 133 <= excite the resonator;
 #X text 220 414 - resonator/filtered signal;
-#N canvas 437 34 843 347 resonantor 0;
-#X text 33 14 Resonator:;
-#X obj 72 130 noise~;
-#X obj 72 184 *~;
-#X obj 72 275 else/out~;
-#X obj 87 158 else/pulse~ 0.5 0.25;
-#X obj 72 232 else/resonant~ 400 1000;
-#X obj 240 233 else/resonant~ 700 2000;
-#X text 33 43 The Q parameter affecting the gain of the filter makes
-it so that it acts as a 'resonator' \, where it will resonate at the
-resonant frequency for a period of time after the input signal has
-ceased.;
-#X text 449 180 Thus \, instead of a 'q' factor \, the resonant parameter
-can be specified by a decay time \, which is the default parameter
-for the [resonant~] object.;
-#X text 449 233 The decay time is given in "T60" \, which is the time
-it takes to decay 60 dB. You can convert from decay time to Q and vice
-versa with a formula implemented in the subpatch below.;
-#X obj 533 100 else/out~;
-#X obj 554 68 else/resonant~ 1000 1000;
-#X obj 554 40 else/dust~ 5;
-#X text 642 40 random excitation;
-#N canvas 521 103 452 512 T60 0;
-#X obj 292 308 pi;
-#X obj 292 282 else/pi;
-#X obj 184 156 / 1000;
-#X obj 184 210 expr log(1000) / ($f1 * pi);
-#X obj 184 181 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 243 182 decay time in seconds;
-#X obj 184 239 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 246 238 bandwidth in hertz;
-#X obj 169 268 /;
-#X obj 115 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1000 256;
-#X obj 169 294 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 228 292 Q;
-#X obj 115 108 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 173 107 decay time in miliseconds;
-#X obj 115 131 t bang float;
-#X text 64 183 center;
-#X text 53 203 frequency;
-#X obj 154 331 /;
-#X obj 154 357 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 142 242 t f f;
-#X text 213 358 bandwidth in hertz;
-#X obj 154 385 expr log(1000) / ($f1 * pi);
-#X obj 154 415 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 213 416 decay time in seconds;
-#X obj 154 437 * 1000;
-#X obj 154 462 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 212 461 decay time in miliseconds;
-#X obj 33 122 loadbang;
-#X msg 33 146 set 1000;
-#X msg 115 84 2000;
-#X obj 115 60 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X text 67 22 Converting from decay time to Q and vice-versa;
-#X connect 1 0 0 0;
-#X connect 2 0 4 0;
-#X connect 3 0 6 0;
-#X connect 4 0 3 0;
-#X connect 6 0 8 1;
-#X connect 8 0 10 0;
-#X connect 9 0 19 0;
-#X connect 10 0 17 1;
-#X connect 12 0 14 0;
-#X connect 14 0 9 0;
-#X connect 14 1 2 0;
-#X connect 17 0 18 0;
-#X connect 18 0 21 0;
-#X connect 19 0 17 0;
-#X connect 19 1 8 0;
-#X connect 21 0 22 0;
-#X connect 22 0 24 0;
-#X connect 24 0 25 0;
-#X connect 27 0 28 0;
-#X connect 28 0 9 0;
-#X connect 29 0 12 0;
-#X connect 30 0 29 0;
-#X restore 567 298 pd T60 and Q conversion;
-#X connect 1 0 2 0;
-#X connect 2 0 5 0;
-#X connect 2 0 6 0;
-#X connect 4 0 2 1;
-#X connect 5 0 3 0;
-#X connect 6 0 3 1;
-#X connect 11 0 10 0;
-#X connect 11 0 10 1;
-#X connect 12 0 11 0;
-#X restore 462 232 pd resonantor;
-#X msg 138 159 clear;
+#X msg 138 161 clear;
 #X obj 144 40 cnv 4 4 4 empty empty with 0 28 2 18 -233017 -1 0;
 #X obj 189 40 cnv 4 4 4 empty empty attack/decay 0 28 2 18 -233017
 -1 0;
@@ -159,38 +62,65 @@ versa with a formula implemented in the subpatch below.;
 #X text 135 382 float/signal;
 #X text 220 361 - attack time in ms;
 #X text 220 382 - decay time in ms;
-#N canvas 835 161 411 574 [resonant~]_vs_[resonant2~] 0;
-#X text 27 12 If you compare the filter response of both [bandpass~]
-and [resonant~] \, you may notice how similar they are. In fact \,
-the only difference is that [bandpass~] will have an automatic gain
-adjustment so the maximum gain value is constantly at 0 dB!;
-#X text 29 91 Therefore \, we can describe [bandpass~] as being a "constant
-gain filter" \, whereas [resonant~] is a constant skirt filter.;
-#X obj 103 136 else/imp~ 1;
-#X obj 104 421 else/out~;
-#X obj 191 224 else/out~;
-#X obj 191 192 else/bandpass~ 1000 1000;
-#X obj 104 384 else/resonant~ 1000 1000 -q;
-#X text 297 240 <= we hear nothing, f 10;
-#X text 220 443 <= we hear the resonance;
-#X obj 131 225 else/meter~;
-#X obj 42 426 else/meter~;
-#X connect 2 0 5 0;
-#X connect 2 0 6 0;
-#X connect 5 0 4 0;
-#X connect 5 0 4 1;
-#X connect 5 0 9 0;
-#X connect 6 0 3 0;
-#X connect 6 0 3 1;
-#X connect 6 0 10 0;
-#X restore 360 254 pd [resonant~]_vs_[resonant2~];
 #X text 60 87 [resonant2~] is a resonator just like [resonant~] \,
 but you you can specify an attack time besides a decay time.;
 #X obj 195 196 else/resonant2~ 500 500 2000;
 #X text 166 446 1) float - central frequency in hertz (default 0),
 f 55;
-#X connect 26 0 44 0;
+#N canvas 443 164 778 516 details 0;
+#X obj 488 141 else/imp~ 1;
+#X obj 603 261 else/out~;
+#X obj 473 321 else/out~;
+#X obj 488 224 else/resonant~ 500 100, f 15;
+#X obj 383 224 else/resonant~ 500 1000, f 15;
+#X obj 473 282 -~;
+#X text 339 51 The [resonant2~] object can be implemented from two
+[resonant~] objects \, where the signal from the [resonant~] object
+that has the decay parameter is subtracted by the signal from another
+that has the attack paranmeter., f 63;
+#X obj 143 291 noise~;
+#X obj 143 345 *~;
+#X obj 100 431 else/out~;
+#X obj 54 150 else/out~;
+#X obj 75 90 else/dust~ 5;
+#X text 163 90 random excitation;
+#X obj 43 388 else/resonant2~ 400 100 1000, f 15;
+#X obj 143 378 else/resonant2~ 700 500 2000, f 15;
+#X text 33 222 The filter acts as a 'resonator' \, where it resonates
+at the resonant frequency for a period of time after the input signal
+has ceased., f 42;
+#X obj 75 118 else/resonant2~ 1000 250 1000;
+#X text 31 27 The resonance parameter is specified by the decay time
+\, like the [resonant~] object., f 44;
+#X obj 158 319 else/pulse~ 0.33 0.5;
+#X text 369 412 If the attack time is the same as the decay time \,
+then the signal gets canceled out. If the attack time is greater than
+the decay time \, then the polarity of the impulse response is inverted.
+;
+#X obj 603 212 else/resonant2~ 500 100 1000, f 15;
+#X text 580 344 <= compare;
+#X text 532 284 compare =>;
+#X connect 0 0 3 0;
+#X connect 0 0 4 0;
+#X connect 0 0 20 0;
+#X connect 3 0 5 1;
+#X connect 4 0 5 0;
+#X connect 5 0 2 0;
+#X connect 5 0 2 1;
+#X connect 7 0 8 0;
+#X connect 8 0 13 0;
+#X connect 8 0 14 0;
+#X connect 11 0 16 0;
+#X connect 13 0 9 0;
+#X connect 14 0 9 1;
+#X connect 16 0 10 0;
+#X connect 16 0 10 1;
+#X connect 18 0 8 1;
+#X connect 20 0 1 0;
+#X connect 20 0 1 1;
+#X restore 464 258 pd details;
+#X connect 26 0 42 0;
 #X connect 27 0 26 0;
-#X connect 32 0 44 0;
-#X connect 44 0 8 0;
-#X connect 44 0 8 1;
+#X connect 31 0 42 0;
+#X connect 42 0 8 0;
+#X connect 42 0 8 1;
