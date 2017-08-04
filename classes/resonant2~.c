@@ -13,10 +13,14 @@ typedef struct _resonant2 {
     t_inlet    *x_inlet_t2;
     t_outlet   *x_out;
     t_float     x_nyq;
-    double  x_xnm1;
-    double  x_xnm2;
-    double  x_ynm1;
-    double  x_ynm2;
+    double  x_x1nm1;
+    double  x_x1nm2;
+    double  x_y1nm1;
+    double  x_y1nm2;
+    double  x_x2nm1;
+    double  x_x2nm2;
+    double  x_y2nm1;
+    double  x_y2nm2;
     } t_resonant2;
 
 static t_class *resonant2_class;
@@ -29,20 +33,24 @@ static t_int *resonant2_perform(t_int *w){
     t_float *in3 = (t_float *)(w[5]);
     t_float *in4 = (t_float *)(w[6]);
     t_float *out = (t_float *)(w[7]);
-    double xnm1 = x->x_xnm1;
-    double xnm2 = x->x_xnm2;
-    double ynm1 = x->x_ynm1;
-    double ynm2 = x->x_ynm2;
+    double x1nm1 = x->x_x1nm1;
+    double x1nm2 = x->x_x1nm2;
+    double y1nm1 = x->x_y1nm1;
+    double y1nm2 = x->x_y1nm2;
+    double x2nm1 = x->x_x2nm1;
+    double x2nm2 = x->x_x2nm2;
+    double y2nm1 = x->x_y2nm1;
+    double y2nm2 = x->x_y2nm2;
     t_float nyq = x->x_nyq;
     while (nblock--){
         double xn = *in1++, f = *in2++, t1 = *in3++, t2 = *in4++;
-        double q, omega, alphaQ, cos_w, a0, a2, b0, b1, b2, yn;
+        double q, omega, alphaQ, cos_w, a0, a2, b0, b1, b2, y1n, y2n;
         if (f < 0.000001)
             f = 0.000001;
         if (f > nyq - 0.000001)
             f = nyq - 0.000001;
         if (t1 <= 0)
-            *out++ = xn;
+            y1n = 0; // attack = 0
         else{
             q = f * (PI * t1/1000) / log(1000); // t60
             omega = f * PI/nyq;
@@ -53,29 +61,52 @@ static t_int *resonant2_perform(t_int *w){
             a2 = -a0;
             b1 = 2*cos_w / b0;
             b2 = (alphaQ - 1) / b0;
-            yn = a0 * xn + a2 * xnm2 + b1 * ynm1 + b2 * ynm2;
-            *out++ = yn;
+            y1n = a0 * xn + a2 * x1nm2 + b1 * y1nm1 + b2 * y1nm2;
             }
-        xnm2 = xnm1;
-        xnm1 = xn;
-        ynm2 = ynm1;
-        ynm1 = yn;
+        if (t2 <= 0)
+            y2n = xn; // no decay
+        else{
+            q = f * (PI * t2/1000) / log(1000); // t60
+            omega = f * PI/nyq;
+            alphaQ = sin(omega) / (2*q);
+            cos_w = cos(omega);
+            b0 = alphaQ + 1;
+            a0 = alphaQ*q / b0;
+            a2 = -a0;
+            b1 = 2*cos_w / b0;
+            b2 = (alphaQ - 1) / b0;
+            y2n = a0 * xn + a2 * x2nm2 + b1 * y2nm1 + b2 * y2nm2;
+            }
+        *out++ = y2n - y1n; // decay - attack
+        x1nm2 = x1nm1;
+        x1nm1 = xn;
+        y1nm2 = y1nm1;
+        y1nm1 = y1n;
+        x2nm2 = x2nm1;
+        x2nm1 = xn;
+        y2nm2 = y2nm1;
+        y2nm1 = y2n;
     }
-    x->x_xnm1 = xnm1;
-    x->x_xnm2 = xnm2;
-    x->x_ynm1 = ynm1;
-    x->x_ynm2 = ynm2;
+    x->x_x1nm1 = x1nm1;
+    x->x_x1nm2 = x1nm2;
+    x->x_y1nm1 = y1nm1;
+    x->x_y1nm2 = y1nm2;
+    x->x_x2nm1 = x2nm1;
+    x->x_x2nm2 = x2nm2;
+    x->x_y2nm1 = y2nm1;
+    x->x_y2nm2 = y2nm2;
     return (w + 8);
 }
 
 static void resonant2_dsp(t_resonant2 *x, t_signal **sp){
     x->x_nyq = sp[0]->s_sr / 2;
-    dsp_add(resonant2_perform, 7, x, sp[0]->s_n, sp[0]->s_vec,
-        sp[1]->s_vec, sp[2]->s_vec,sp[3]->s_vec);
+    dsp_add(resonant2_perform, 7, x, sp[0]->s_n, sp[0]->s_vec,sp[1]->s_vec,
+            sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
 static void resonant2_clear(t_resonant2 *x){
-    x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
+    x->x_x1nm1 = x->x_x1nm2 = x->x_y1nm1 = x->x_y1nm2 = 0.;
+    x->x_x2nm1 = x->x_x2nm2 = x->x_y2nm1 = x->x_y2nm2 = 0.;
 }
 
 static void *resonant2_new(t_symbol *s, int argc, t_atom *argv){
