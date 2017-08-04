@@ -1,13 +1,13 @@
-#N canvas 565 140 559 604 10;
+#N canvas 686 55 560 619 10;
 #X obj 4 316 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 457 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 476 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 488 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 507 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 106 465 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 101 484 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 563 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 582 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 3 cnv 15 301 42 empty empty bcoeff 20 20 2 37 -233017 -1 0
 ;
@@ -140,64 +140,67 @@
 #X restore 305 3 graph;
 #X obj 168 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
-#X obj 106 324 cnv 17 3 86 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 101 324 cnv 17 3 102 empty empty 0 5 9 0 16 -228856 -162280
+0;
+#X obj 101 433 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 106 414 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 101 454 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X obj 106 435 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X text 206 434 - sets Q / Slope, f 55;
+#X text 163 434 float;
+#X text 163 455 float;
+#X text 206 324 - sets cutoff/center frequency, f 55;
+#X text 163 324 float;
+#X text 169 344 bang;
+#X text 206 344 - generates coefficients, f 55;
+#X text 169 485 list;
+#X text 138 514 1) symbol;
+#X text 144 530 2) float;
+#X text 144 546 3) float;
+#X text 206 485 - list of coefficients for the vanilla [biquad~] object
 ;
-#X text 186 415 - sets Q / Slope, f 60;
-#X text 143 415 float;
-#X text 143 436 float;
-#X text 186 324 - sets cutoff/center frequency, f 60;
-#X text 143 324 float;
-#X text 149 344 bang;
-#X text 186 344 - generates coefficients, f 60;
-#X text 149 466 list;
-#X text 118 495 1) symbol;
-#X text 124 511 2) float;
-#X text 124 527 3) float;
-#X text 186 466 - list of coefficients for the vanilla [biquad~] object
-, f 60;
-#X text 185 364 -;
-#X text 137 364 symbol;
-#X text 125 394 anything;
-#X text 124 543 4) float;
-#X text 186 511 - sets cutoff/center frequency (default 0), f 60;
-#X text 186 527 - sets Q/Slope (default 1), f 60;
+#X text 205 364 -;
+#X text 157 364 symbol;
+#X text 145 394 anything;
+#X text 144 562 4) float;
+#X text 206 530 - sets cutoff/center frequency (default 0), f 55;
+#X text 206 546 - sets Q/Slope (default 1), f 55;
 #N canvas 903 227 450 300 example 0;
 #X restore 480 286 pd example;
-#X text 186 495 - sets filter type (lpass/hpass/etc...) - default 'off'
-, f 60;
-#X obj 197 223 biquad~;
-#X obj 141 183 noise~;
-#X obj 197 252 else/out~;
-#X obj 197 148 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 206 514 - sets filter type (lpass/hpass/etc...) - default 'off'
+;
+#X obj 208 223 biquad~;
+#X obj 145 178 noise~;
+#X obj 165 252 else/out~;
+#X obj 208 148 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 267 148 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 278 148 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 338 148 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 349 148 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 130 131 loadbang;
-#X text 204 127 freq;
-#X text 344 129 gain;
-#X text 186 543 - sets amplitude/gain in db (default 1), f 60;
-#X text 186 436 - sets amplitude/gain in db, f 60;
-#X obj 219 198 print coefficients;
-#X text 198 364 sets filter type: <apass \, lpass \, hpass \, bpass
-\, reson \, bstop \, notch \, lshelf \, hshelf \, off>, f 58;
-#X text 186 394 - sets filter type \, frequency \, Q/Slope and gain
-, f 60;
-#X text 265 129 Q/Slope;
+#X obj 141 131 loadbang;
+#X text 215 127 freq;
+#X text 355 129 gain;
+#X obj 230 198 print coefficients;
+#X text 218 364 sets filter type: <apass \, lpass \, hpass \, bpass
+\, reson \, bstop \, notch \, lshelf \, hshelf \, off>, f 53;
+#X text 206 394 - sets filter type \, frequency \, Q/Slope and gain
+, f 55;
+#X text 276 129 Q/Slope;
+#X obj 208 172 else/bcoeff eq 500 10 24;
+#X text 206 455 - sets gain in db, f 55;
+#X text 206 562 - sets gain in db (default 0), f 55;
 #X text 70 86 [bcoeff] generates coefficients for vanilla's [biquad~]
-\, according to different filter types., f 61;
-#X obj 197 172 else/bcoeff eq 500 10 24;
+\, according to different filter types. All inlets are hot!, f 61
+;
+#X text 206 411 - sets frequency \, Q/Slope and gain, f 55;
+#X text 109 411 list <f \, f \, f>;
 #X connect 42 0 44 0;
 #X connect 42 0 44 1;
 #X connect 43 0 42 0;
-#X connect 45 0 58 0;
-#X connect 46 0 58 1;
-#X connect 47 0 58 2;
-#X connect 48 0 58 0;
-#X connect 58 0 42 0;
-#X connect 58 0 53 0;
+#X connect 45 0 55 0;
+#X connect 46 0 55 1;
+#X connect 47 0 55 2;
+#X connect 48 0 55 0;
+#X connect 55 0 42 0;
+#X connect 55 0 51 0;

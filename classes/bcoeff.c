@@ -250,8 +250,29 @@ static void bcoeff_bang(t_bcoeff *x){
     outlet_list(x->x_obj.ob_outlet, &s_list, 5, at);
 }
 
-void bcoeff_list(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
-    // freq, gain, q
+static void bcoeff_list(t_bcoeff *x, t_symbol *s, int ac, t_atom * av){
+    int argnum = 0; //current argument
+    while(ac){
+        if(av -> a_type == A_FLOAT){
+            t_float curf = atom_getfloatarg(0, ac, av);
+            switch(argnum){
+                case 0:
+                    x->x_freq = curf;
+                    break;
+                case 1:
+                    x->x_q_s = curf;
+                    break;
+                case 2:
+                    x->x_gain = curf;
+                default:
+                    break;
+            };
+            argnum++;
+        };
+        ac--;
+        av++;
+    };
+    bcoeff_bang(x);
 }
 
 void bcoeff_off(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
@@ -260,46 +281,235 @@ void bcoeff_off(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void bcoeff_apass(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+    int argnum = 0; //current argument
+    while(ac){
+        if(av -> a_type == A_FLOAT){
+            t_float curf = atom_getfloatarg(0, ac, av);
+            switch(argnum){
+                case 0:
+                    x->x_freq = curf;
+                    break;
+                case 1:
+                    x->x_q_s = curf;
+                    break;
+                case 2:
+                    x->x_gain = curf;
+                default:
+                    break;
+            };
+            argnum++;
+        };
+        ac--;
+        av++;
+    };
     x->x_type = 1;
     bcoeff_bang(x);
 }
 
 void bcoeff_bandpass(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+    int argnum = 0; //current argument
+    while(ac){
+        if(av -> a_type == A_FLOAT){
+            t_float curf = atom_getfloatarg(0, ac, av);
+            switch(argnum){
+                case 0:
+                    x->x_freq = curf;
+                    break;
+                case 1:
+                    x->x_q_s = curf;
+                    break;
+                case 2:
+                    x->x_gain = curf;
+                default:
+                    break;
+            };
+            argnum++;
+        };
+        ac--;
+        av++;
+    };
     x->x_type = 2;
     bcoeff_bang(x);
 }
 
 void bcoeff_bandstop(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+    int argnum = 0; //current argument
+    while(ac){
+        if(av -> a_type == A_FLOAT){
+            t_float curf = atom_getfloatarg(0, ac, av);
+            switch(argnum){
+                case 0:
+                    x->x_freq = curf;
+                    break;
+                case 1:
+                    x->x_q_s = curf;
+                    break;
+                case 2:
+                    x->x_gain = curf;
+                default:
+                    break;
+            };
+            argnum++;
+        };
+        ac--;
+        av++;
+    };
     x->x_type = 3;
     bcoeff_bang(x);
 }
 
 void bcoeff_eq(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+    int argnum = 0; //current argument
+    while(ac){
+        if(av -> a_type == A_FLOAT){
+            t_float curf = atom_getfloatarg(0, ac, av);
+            switch(argnum){
+                case 0:
+                    x->x_freq = curf;
+                    break;
+                case 1:
+                    x->x_q_s = curf;
+                    break;
+                case 2:
+                    x->x_gain = curf;
+                default:
+                    break;
+            };
+            argnum++;
+        };
+        ac--;
+        av++;
+    };
     x->x_type = 4;
     bcoeff_bang(x);
 }
 
 void bcoeff_highpass(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+    int argnum = 0; //current argument
+    while(ac){
+        if(av -> a_type == A_FLOAT){
+            t_float curf = atom_getfloatarg(0, ac, av);
+            switch(argnum){
+                case 0:
+                    x->x_freq = curf;
+                    break;
+                case 1:
+                    x->x_q_s = curf;
+                    break;
+                case 2:
+                    x->x_gain = curf;
+                default:
+                    break;
+            };
+            argnum++;
+        };
+        ac--;
+        av++;
+    };
     x->x_type = 5;
     bcoeff_bang(x);
 }
 
 void bcoeff_highshelf(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+    int argnum = 0; //current argument
+    while(ac){
+        if(av -> a_type == A_FLOAT){
+            t_float curf = atom_getfloatarg(0, ac, av);
+            switch(argnum){
+                case 0:
+                    x->x_freq = curf;
+                    break;
+                case 1:
+                    x->x_q_s = curf;
+                    break;
+                case 2:
+                    x->x_gain = curf;
+                default:
+                    break;
+            };
+            argnum++;
+        };
+        ac--;
+        av++;
+    };
     x->x_type = 6;
     bcoeff_bang(x);
 }
 
 void bcoeff_lowpass(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+    int argnum = 0; //current argument
+    while(ac){
+        if(av -> a_type == A_FLOAT){
+            t_float curf = atom_getfloatarg(0, ac, av);
+            switch(argnum){
+                case 0:
+                    x->x_freq = curf;
+                    break;
+                case 1:
+                    x->x_q_s = curf;
+                    break;
+                case 2:
+                    x->x_gain = curf;
+                default:
+                    break;
+            };
+            argnum++;
+        };
+        ac--;
+        av++;
+    };
     x->x_type = 7;
     bcoeff_bang(x);
 }
 
 void bcoeff_lowshelf(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+    int argnum = 0; //current argument
+    while(ac){
+        if(av -> a_type == A_FLOAT){
+            t_float curf = atom_getfloatarg(0, ac, av);
+            switch(argnum){
+                case 0:
+                    x->x_freq = curf;
+                    break;
+                case 1:
+                    x->x_q_s = curf;
+                    break;
+                case 2:
+                    x->x_gain = curf;
+                default:
+                    break;
+            };
+            argnum++;
+        };
+        ac--;
+        av++;
+    };
     x->x_type = 8;
     bcoeff_bang(x);
 }
 
 void bcoeff_resonant(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+    int argnum = 0; //current argument
+    while(ac){
+        if(av -> a_type == A_FLOAT){
+            t_float curf = atom_getfloatarg(0, ac, av);
+            switch(argnum){
+                case 0:
+                    x->x_freq = curf;
+                    break;
+                case 1:
+                    x->x_q_s = curf;
+                    break;
+                case 2:
+                    x->x_gain = curf;
+                default:
+                    break;
+            };
+            argnum++;
+        };
+        ac--;
+        av++;
+    };
     x->x_type = 9;
     bcoeff_bang(x);
 }
@@ -321,7 +531,7 @@ static void bcoeff_gain(t_bcoeff *x, t_floatarg val){
     bcoeff_bang(x);
 }
 
-static void *bcoeff_new(t_symbol *s, int argc, t_atom *argv){
+static void *bcoeff_new(t_symbol *s, int ac, t_atom *av){
     t_bcoeff *x = (t_bcoeff *)pd_new(bcoeff_class);
     float freq = 0;
     float q_or_s = 1;
@@ -329,75 +539,75 @@ static void *bcoeff_new(t_symbol *s, int argc, t_atom *argv){
     int type = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
-    while(argc > 0){
-        if (argv -> a_type == A_SYMBOL){
-            t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
+    while(ac > 0){
+        if (av -> a_type == A_SYMBOL){
+            t_symbol *curarg = atom_getsymbolarg(0, ac, av);
             if(strcmp(curarg->s_name, "apass")==0){
                 type = 1;
-                argc--;
-                argv++;
+                ac--;
+                av++;
             }
             else if(strcmp(curarg->s_name, "bandpass")==0){
                 type = 2;
-                argc--;
-                argv++;
+                ac--;
+                av++;
             }
             else if(strcmp(curarg->s_name, "bandstop")==0){
                 type = 3;
-                argc--;
-                argv++;
+                ac--;
+                av++;
             }
             else if(strcmp(curarg->s_name, "eq")==0){
                 type = 4;
-                argc--;
-                argv++;
+                ac--;
+                av++;
             }
             else if(strcmp(curarg->s_name, "highpass")==0){
                 type = 5;
-                argc--;
-                argv++;
+                ac--;
+                av++;
             }
             else if(strcmp(curarg->s_name, "highshelf")==0){
                 type = 6;
-                argc--;
-                argv++;
+                ac--;
+                av++;
             }
             else if(strcmp(curarg->s_name, "lowpass")==0){
                 type = 7;
-                argc--;
-                argv++;
+                ac--;
+                av++;
             }
             else if(strcmp(curarg->s_name, "lowshelf")==0){
                 type = 8;
-                argc--;
-                argv++;
+                ac--;
+                av++;
             }
             else if(strcmp(curarg->s_name, "resonant")==0){
                 type = 9;
-                argc--;
-                argv++;
+                ac--;
+                av++;
             }
             else
                 goto errstate;
         }
-        if(argv -> a_type == A_FLOAT) {
-            t_float argval = atom_getfloatarg(0, argc, argv);
+        if(av -> a_type == A_FLOAT) {
+            t_float aval = atom_getfloatarg(0, ac, av);
             switch(argnum){
                 case 0:
-                    freq = argval;
+                    freq = aval;
                     break;
                 case 1:
-                    q_or_s = argval;
+                    q_or_s = aval;
                     break;
                 case 2:
-                    db = argval;
+                    db = aval;
                     break;
                 default:
                     break;
                 };
             argnum++;
-            argc--;
-            argv++;
+            ac--;
+            av++;
             }
     };
 /////////////////////////////////////////////////////////////////////////////////////
@@ -421,6 +631,7 @@ void bcoeff_setup(void){
     class_addfloat(bcoeff_class, bcoeff_freq);
     class_addmethod(bcoeff_class, (t_method)bcoeff_Q_S, gensym("ft1"), A_FLOAT, 0);
     class_addmethod(bcoeff_class, (t_method)bcoeff_gain, gensym("ft2"), A_FLOAT, 0);
+    class_addlist(bcoeff_class, (t_method)bcoeff_list);
     
     class_addmethod(bcoeff_class, (t_method) bcoeff_lowpass, gensym("lowpass"), A_GIMME, 0);
     class_addmethod(bcoeff_class, (t_method) bcoeff_highpass, gensym("highpass"), A_GIMME, 0);
