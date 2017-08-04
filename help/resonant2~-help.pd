@@ -1,4 +1,4 @@
-#N canvas 576 72 559 619 10;
+#N canvas 139 85 559 619 10;
 #X obj 4 318 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 468 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -14,8 +14,8 @@
 #X text 152 326 signal;
 #X text 152 477 signal;
 #X obj 216 249 else/out~;
-#X obj 2 3 cnv 15 301 42 empty empty resonant~ 20 20 2 37 -233017 -1
-0;
+#X obj 2 3 cnv 15 301 42 empty empty resonant2~ 20 20 2 37 -233017
+-1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -554,35 +554,46 @@ below. The graph considers a sample rate of 44.1Khz.;
 #X text 201 344 - clears filter's memory if you blow it up;
 #X text 182 396 q;
 #X obj 3 552 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#N canvas 783 164 407 314 resonance 0;
-#X obj 127 242 else/out~;
-#X obj 127 147 noise~;
-#X msg 189 172 q;
-#X text 217 173 resonance as 'q';
-#X msg 180 148 t60;
-#X text 27 17 By default \, the resonance parameter is the filter 't60'
-\, whic is the time in ms for an excitation signal (such as an impulse)
-decays 60dB. But you can also set the parameter value to be the 'q'
-of the filter with the -q flag.;
-#X text 27 75 Alternatively \, you can switch from 'q' to 't60' with
-the message methods.;
-#X text 207 148 resonance as 't60' in ms;
-#X msg 57 172 bypass \$1;
-#X obj 57 148 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 127 202 else/resonant~ 500 150 -q;
-#X connect 1 0 10 0;
-#X connect 2 0 10 0;
-#X connect 4 0 10 0;
-#X connect 8 0 10 0;
-#X connect 9 0 8 0;
-#X connect 10 0 0 0;
-#X connect 10 0 0 1;
+#N canvas 662 217 659 505 resonance 1;
+#X obj 148 251 else/out~;
+#X obj 148 182 else/trigate~;
+#X obj 148 155 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 170 154 <= excite the resonator;
+#X msg 91 182 clear;
+#X obj 148 219 else/resonant~ 500 5000;
+#X obj 390 261 else/out~;
+#X obj 389 162 else/trigate~;
+#X obj 389 135 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 411 134 <= excite the resonator;
+#X msg 333 192 clear;
+#X obj 440 195 sig~ 500;
+#X obj 509 199 sig~ 0;
+#X obj 564 196 sig~ 5000;
+#X obj 327 276 print~;
+#X obj 389 229 else/resonant2~ 500 5000;
+#X connect 1 0 5 0;
+#X connect 2 0 1 0;
+#X connect 4 0 5 0;
+#X connect 5 0 0 0;
+#X connect 5 0 0 1;
+#X connect 7 0 15 0;
+#X connect 8 0 7 0;
+#X connect 8 0 14 0;
+#X connect 10 0 15 0;
+#X connect 15 0 6 0;
+#X connect 15 0 6 1;
+#X connect 15 0 14 0;
 #X restore 467 198 pd resonance;
 #X text 210 60 (constant skirt);
 #X obj 216 180 else/trigate~;
 #X obj 216 153 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
+#X text 59 90 [resonant~] is a resonator that you can specify a decay
+time in ms \, or a Q factor. Like [bandpass~] \, it is a 2nd order
+bandpass resonant filter \, but where changing the Q increases the
+gain of the filter.;
 #X text 201 326 - signal to be filtered or excite the resonator;
 #X text 238 152 <= excite the resonator;
 #X text 170 379 t60;
@@ -595,36 +606,7 @@ the message methods.;
 #X text 128 527 2) float - resonance (default 0) \, either in 'T60'
 (default) or 'Q', f 66;
 #X text 209 558 - sets resonance parameter to 'q';
-#N canvas 835 161 411 574 [bandpass~]_vs_[resonant~] 0;
-#X text 27 12 If you compare the filter response of both [bandpass~]
-and [resonant~] \, you may notice how similar they are. In fact \,
-the only difference is that [bandpass~] will have an automatic gain
-adjustment so the maximum gain value is constantly at 0 dB!;
-#X text 29 91 Therefore \, we can describe [bandpass~] as being a "constant
-gain filter" \, whereas [resonant~] is a constant skirt filter.;
-#X obj 103 136 else/imp~ 1;
-#X obj 104 421 else/out~;
-#X obj 191 224 else/out~;
-#X obj 191 192 else/bandpass~ 1000 1000;
-#X obj 104 384 else/resonant~ 1000 1000 -q;
-#X text 297 240 <= we hear nothing, f 10;
-#X text 220 443 <= we hear the resonance;
-#X obj 131 225 else/meter~;
-#X obj 42 426 else/meter~;
-#X connect 2 0 5 0;
-#X connect 2 0 6 0;
-#X connect 5 0 4 0;
-#X connect 5 0 4 1;
-#X connect 5 0 9 0;
-#X connect 6 0 3 0;
-#X connect 6 0 3 1;
-#X connect 6 0 10 0;
-#X restore 366 261 pd [bandpass~]_vs_[resonant~];
-#X msg 159 180 clear;
-#X obj 216 217 else/resonant~ 500 5000;
-#X text 55 218 resonating at 500 Hz ==> decaying 60dB in 5000 ms,
-f 24;
-#N canvas 466 163 843 347 resonator 0;
+#N canvas 437 34 843 347 resonantor 0;
 #X text 33 14 Resonator:;
 #X obj 72 130 noise~;
 #X obj 72 184 *~;
@@ -646,7 +628,7 @@ versa with a formula implemented in the subpatch below.;
 #X obj 554 68 else/resonant~ 1000 1000;
 #X obj 554 40 else/dust~ 5;
 #X text 642 40 random excitation;
-#N canvas 769 150 452 512 T60 0;
+#N canvas 521 103 452 512 T60 0;
 #X obj 292 308 pi;
 #X obj 292 282 else/pi;
 #X obj 184 156 / 1000;
@@ -720,13 +702,38 @@ versa with a formula implemented in the subpatch below.;
 #X connect 11 0 10 0;
 #X connect 11 0 10 1;
 #X connect 12 0 11 0;
-#X restore 469 286 pd resonator;
-#X text 59 90 [resonant~] is a resonator that you can specify a decay
-time in ms \, or a Q factor. Like [bandpass~] \, it is a 2nd order
-bandpass resonant filter \, but changing the Q increases the gain of
-the filter.;
-#X connect 35 0 49 0;
+#X restore 462 286 pd resonantor;
+#N canvas 835 161 411 574 [bandpass~]_vs_[resonant~] 0;
+#X text 27 12 If you compare the filter response of both [bandpass~]
+and [resonant~] \, you may notice how similar they are. In fact \,
+the only difference is that [bandpass~] will have an automatic gain
+adjustment so the maximum gain value is constantly at 0 dB!;
+#X text 29 91 Therefore \, we can describe [bandpass~] as being a "constant
+gain filter" \, whereas [resonant~] is a constant skirt filter.;
+#X obj 103 136 else/imp~ 1;
+#X obj 104 421 else/out~;
+#X obj 191 224 else/out~;
+#X obj 191 192 else/bandpass~ 1000 1000;
+#X obj 104 384 else/resonant~ 1000 1000 -q;
+#X text 297 240 <= we hear nothing, f 10;
+#X text 220 443 <= we hear the resonance;
+#X obj 131 225 else/meter~;
+#X obj 42 426 else/meter~;
+#X connect 2 0 5 0;
+#X connect 2 0 6 0;
+#X connect 5 0 4 0;
+#X connect 5 0 4 1;
+#X connect 5 0 9 0;
+#X connect 6 0 3 0;
+#X connect 6 0 3 1;
+#X connect 6 0 10 0;
+#X restore 366 261 pd [bandpass~]_vs_[resonant~];
+#X msg 159 180 clear;
+#X obj 216 217 else/resonant~ 500 5000;
+#X text 55 218 resonating at 500 Hz ==> decaying 60dB in 5000 ms,
+f 24;
+#X connect 35 0 51 0;
 #X connect 36 0 35 0;
-#X connect 48 0 49 0;
-#X connect 49 0 8 0;
-#X connect 49 0 8 1;
+#X connect 50 0 51 0;
+#X connect 51 0 8 0;
+#X connect 51 0 8 1;
