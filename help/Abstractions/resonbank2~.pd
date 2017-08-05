@@ -1,6 +1,6 @@
-#N canvas 636 73 482 290 10;
+#N canvas 636 73 482 372 10;
 #X obj 57 24 inlet~;
-#X obj 88 234 outlet~;
+#X obj 88 299 outlet~;
 #X obj 106 25 inlet;
 #X obj 106 142 else/order;
 #X obj 137 112 else/order;
@@ -14,6 +14,8 @@
 #X obj 106 59 route freq attack decay amp ramp;
 #X obj 210 112 else/order;
 #X obj 257 144 else/order;
+#X text 156 241 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 158 222 Alexandre Torres Porres (2017);
 #X connect 0 0 11 0;
 #X connect 2 0 12 0;
 #X connect 3 0 11 1;

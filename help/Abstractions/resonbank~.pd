@@ -1,6 +1,6 @@
-#N canvas 636 73 454 287 10;
+#N canvas 219 77 396 305 10;
 #X obj 57 24 inlet~;
-#X obj 70 206 outlet~;
+#X obj 70 231 outlet~;
 #X obj 106 25 inlet;
 #X obj 106 114 else/order;
 #X obj 143 84 else/order;
@@ -13,6 +13,8 @@
 #X obj 70 140 clone \$1 resonclone \$1 \$2;
 #X obj 336 126 moses 0;
 #X obj 217 85 else/order;
+#X text 157 215 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 159 196 Alexandre Torres Porres (2017);
 #X connect 0 0 11 0;
 #X connect 2 0 6 0;
 #X connect 3 0 11 1;
