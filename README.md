@@ -35,7 +35,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (123 objects):
+Current Object list (124 objects):
 
 PHYSICAL MODELLING: [1]
 - [pluck~]
@@ -46,7 +46,7 @@ AUDIO PROCESSING: [4]
 - [fbcomb~]
 - [fbdelay~]
 
-OSCILLATORS (DETERMINISTIC GENERATORS): [12]
+OSCILLATORS (DETERMINISTIC GENERATORS): [13]
 - [cosine~]
 - [imp~]
 - [imp2~]
@@ -54,6 +54,7 @@ OSCILLATORS (DETERMINISTIC GENERATORS): [12]
 - [pulse~]
 - [sawtooth~]
 - [sawtooth2~]
+- [oscbank~]
 - [sine~]
 - [square~]
 - [triwave~]
