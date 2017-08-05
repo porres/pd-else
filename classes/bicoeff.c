@@ -4,17 +4,17 @@
 
 #define PI M_PI
 
-typedef struct _bcoeff{
+typedef struct _bicoeff{
     t_object  x_obj;
     t_float   x_freq;
     t_float   x_q_s;
     t_float   x_gain;
     t_float   x_type;
-} t_bcoeff;
+} t_bicoeff;
 
-static t_class *bcoeff_class;
+static t_class *bicoeff_class;
 
-static void bcoeff_bang(t_bcoeff *x){
+static void bicoeff_bang(t_bicoeff *x){
     t_atom at[5];
     double a0, a1, a2, b1, b2;
 // off
@@ -250,7 +250,7 @@ static void bcoeff_bang(t_bcoeff *x){
     outlet_list(x->x_obj.ob_outlet, &s_list, 5, at);
 }
 
-static void bcoeff_list(t_bcoeff *x, t_symbol *s, int ac, t_atom * av){
+static void bicoeff_list(t_bicoeff *x, t_symbol *s, int ac, t_atom * av){
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -272,15 +272,15 @@ static void bcoeff_list(t_bcoeff *x, t_symbol *s, int ac, t_atom * av){
         ac--;
         av++;
     };
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
-void bcoeff_off(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+void bicoeff_off(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
     x->x_type = 0;
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
-void bcoeff_apass(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+void bicoeff_apass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -303,10 +303,10 @@ void bcoeff_apass(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
         av++;
     };
     x->x_type = 1;
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
-void bcoeff_bandpass(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+void bicoeff_bandpass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -329,10 +329,10 @@ void bcoeff_bandpass(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
         av++;
     };
     x->x_type = 2;
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
-void bcoeff_bandstop(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+void bicoeff_bandstop(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -355,10 +355,10 @@ void bcoeff_bandstop(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
         av++;
     };
     x->x_type = 3;
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
-void bcoeff_eq(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+void bicoeff_eq(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -381,10 +381,10 @@ void bcoeff_eq(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
         av++;
     };
     x->x_type = 4;
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
-void bcoeff_highpass(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+void bicoeff_highpass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -407,10 +407,10 @@ void bcoeff_highpass(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
         av++;
     };
     x->x_type = 5;
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
-void bcoeff_highshelf(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+void bicoeff_highshelf(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -433,10 +433,10 @@ void bcoeff_highshelf(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
         av++;
     };
     x->x_type = 6;
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
-void bcoeff_lowpass(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+void bicoeff_lowpass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -459,10 +459,10 @@ void bcoeff_lowpass(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
         av++;
     };
     x->x_type = 7;
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
-void bcoeff_lowshelf(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+void bicoeff_lowshelf(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -485,10 +485,10 @@ void bcoeff_lowshelf(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
         av++;
     };
     x->x_type = 8;
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
-void bcoeff_resonant(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
+void bicoeff_resonant(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -511,28 +511,28 @@ void bcoeff_resonant(t_bcoeff *x, t_symbol *s, int ac, t_atom *av){
         av++;
     };
     x->x_type = 9;
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
 /////////////////////////////////
 
-static void bcoeff_freq(t_bcoeff *x, t_floatarg val){
+static void bicoeff_freq(t_bicoeff *x, t_floatarg val){
     x->x_freq = val;
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
-static void bcoeff_Q_S(t_bcoeff *x, t_floatarg val){
+static void bicoeff_Q_S(t_bicoeff *x, t_floatarg val){
     x->x_q_s = val;
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
-static void bcoeff_gain(t_bcoeff *x, t_floatarg val){
+static void bicoeff_gain(t_bicoeff *x, t_floatarg val){
     x->x_gain = val;
-    bcoeff_bang(x);
+    bicoeff_bang(x);
 }
 
-static void *bcoeff_new(t_symbol *s, int ac, t_atom *av){
-    t_bcoeff *x = (t_bcoeff *)pd_new(bcoeff_class);
+static void *bicoeff_new(t_symbol *s, int ac, t_atom *av){
+    t_bicoeff *x = (t_bicoeff *)pd_new(bicoeff_class);
     float freq = 0;
     float q_or_s = 1;
     float db = 0;
@@ -620,26 +620,26 @@ static void *bcoeff_new(t_symbol *s, int ac, t_atom *av){
     outlet_new((t_object *)x, &s_list);
     return (x);
     errstate:
-        pd_error(x, "bcoeff: improper args");
+        pd_error(x, "bicoeff: improper args");
         return NULL;
 }
 
-void bcoeff_setup(void){
-    bcoeff_class = class_new(gensym("bcoeff"), (t_newmethod)bcoeff_new, 0,
-			    sizeof(t_bcoeff), 0, A_GIMME, 0);
-    class_addbang(bcoeff_class, bcoeff_bang);
-    class_addfloat(bcoeff_class, bcoeff_freq);
-    class_addmethod(bcoeff_class, (t_method)bcoeff_Q_S, gensym("ft1"), A_FLOAT, 0);
-    class_addmethod(bcoeff_class, (t_method)bcoeff_gain, gensym("ft2"), A_FLOAT, 0);
-    class_addlist(bcoeff_class, (t_method)bcoeff_list);
+void bicoeff_setup(void){
+    bicoeff_class = class_new(gensym("bicoeff"), (t_newmethod)bicoeff_new, 0,
+			    sizeof(t_bicoeff), 0, A_GIMME, 0);
+    class_addbang(bicoeff_class, bicoeff_bang);
+    class_addfloat(bicoeff_class, bicoeff_freq);
+    class_addmethod(bicoeff_class, (t_method)bicoeff_Q_S, gensym("ft1"), A_FLOAT, 0);
+    class_addmethod(bicoeff_class, (t_method)bicoeff_gain, gensym("ft2"), A_FLOAT, 0);
+    class_addlist(bicoeff_class, (t_method)bicoeff_list);
     
-    class_addmethod(bcoeff_class, (t_method) bcoeff_lowpass, gensym("lowpass"), A_GIMME, 0);
-    class_addmethod(bcoeff_class, (t_method) bcoeff_highpass, gensym("highpass"), A_GIMME, 0);
-    class_addmethod(bcoeff_class, (t_method) bcoeff_bandpass, gensym("bandpass"), A_GIMME, 0);
-    class_addmethod(bcoeff_class, (t_method) bcoeff_bandstop, gensym("bandstop"), A_GIMME, 0);
-    class_addmethod(bcoeff_class, (t_method) bcoeff_resonant, gensym("resonant"), A_GIMME, 0);
-    class_addmethod(bcoeff_class, (t_method) bcoeff_eq, gensym("eq"), A_GIMME, 0);
-    class_addmethod(bcoeff_class, (t_method) bcoeff_lowshelf, gensym("lowshelf"), A_GIMME, 0);
-    class_addmethod(bcoeff_class, (t_method) bcoeff_highshelf, gensym("highshelf"), A_GIMME, 0);
-    class_addmethod(bcoeff_class, (t_method) bcoeff_apass, gensym("apass"), A_GIMME, 0);
+    class_addmethod(bicoeff_class, (t_method) bicoeff_lowpass, gensym("lowpass"), A_GIMME, 0);
+    class_addmethod(bicoeff_class, (t_method) bicoeff_highpass, gensym("highpass"), A_GIMME, 0);
+    class_addmethod(bicoeff_class, (t_method) bicoeff_bandpass, gensym("bandpass"), A_GIMME, 0);
+    class_addmethod(bicoeff_class, (t_method) bicoeff_bandstop, gensym("bandstop"), A_GIMME, 0);
+    class_addmethod(bicoeff_class, (t_method) bicoeff_resonant, gensym("resonant"), A_GIMME, 0);
+    class_addmethod(bicoeff_class, (t_method) bicoeff_eq, gensym("eq"), A_GIMME, 0);
+    class_addmethod(bicoeff_class, (t_method) bicoeff_lowshelf, gensym("lowshelf"), A_GIMME, 0);
+    class_addmethod(bicoeff_class, (t_method) bicoeff_highshelf, gensym("highshelf"), A_GIMME, 0);
+    class_addmethod(bicoeff_class, (t_method) bicoeff_apass, gensym("apass"), A_GIMME, 0);
 }
