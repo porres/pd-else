@@ -86,7 +86,7 @@ FILTERS (14):
 - [bandpass~]
 - [bandstop~]
 - [bpbank~]
-- [bcoeff]
+- [bicoeff]
 - [eq~]
 - [highpass~]
 - [highshelf~]
