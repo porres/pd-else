@@ -35,7 +35,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (125 objects):
+Current Object list (126 objects):
 
 PHYSICAL MODELLING: [1]
 - [pluck~]
@@ -81,12 +81,13 @@ CHAOTIC GENERATORS: [18]
 - [stepnoise~]
 - [xmod~]
 
-FILTERS (14):
+FILTERS (15):
 - [apass~]
 - [bandpass~]
 - [bandstop~]
 - [bpbank~]
 - [bicoeff]
+- [biplot]
 - [eq~]
 - [highpass~]
 - [highshelf~]
