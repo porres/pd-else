@@ -1,10 +1,10 @@
 #N canvas 458 348 546 323 10;
 #X obj 107 281 outlet~;
 #X obj 107 230 /~ \$2;
-#X obj 122 18 inlet;
+#X obj 142 21 inlet;
 #X obj 107 179 *~;
 #X obj 122 148 else/float2sig~ \$3 1;
-#X obj 171 17 inlet;
+#X obj 198 20 inlet;
 #X text 289 66 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 291 47 Alexandre Torres Porres (2017);
 #X obj 194 203 f \$2;
@@ -13,15 +13,18 @@
 #X msg 194 250 1;
 #X obj 51 134 else/sine~;
 #X obj 51 91 else/float2sig~ \$3;
-#X obj 50 20 inlet;
+#X obj 51 20 inlet;
 #X text 293 111 This is an abstraction used on the [oscbank~] object
 , f 27;
+#X obj 93 59 else/float2sig~ \$3;
+#X obj 93 21 inlet;
 #X connect 1 0 0 0;
 #X connect 2 0 4 0;
 #X connect 3 0 1 0;
 #X connect 4 0 3 1;
 #X connect 5 0 4 1;
 #X connect 5 0 13 1;
+#X connect 5 0 16 1;
 #X connect 8 0 9 0;
 #X connect 9 0 11 0;
 #X connect 10 0 8 0;
@@ -29,3 +32,5 @@
 #X connect 12 0 3 0;
 #X connect 13 0 12 0;
 #X connect 14 0 13 0;
+#X connect 16 0 12 1;
+#X connect 17 0 16 0;

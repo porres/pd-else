@@ -1,15 +1,15 @@
-#N canvas 489 89 559 469 10;
+#N canvas 489 89 560 485 10;
 #X obj 3 275 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 343 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 363 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 376 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 396 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 3 426 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 446 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 101 352 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 101 372 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 161 352 signal;
+#X text 161 372 signal;
 #X obj 2 3 cnv 15 301 42 empty empty oscbank~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -35,31 +35,31 @@
 ;
 #X obj 68 40 cnv 4 4 4 empty empty of 0 28 2 18 -233017 -1 0;
 #X obj 175 212 else/out~;
-#X text 156 402 2) float - ramp time in ms (default 10), f 57;
+#X text 156 422 2) float - ramp time in ms (default 10), f 57;
 #X text 132 285 freq <list>;
 #X text 138 302 amp <list>;
-#X text 132 320 ramp <list>;
-#N canvas 732 194 427 347 example 0;
-#X obj 90 270 else/out~;
+#X text 132 340 ramp <list>;
+#N canvas 732 194 411 373 example 0;
+#X obj 90 290 else/out~;
 #X obj 90 109 loadbang;
 #X text 164 95 click on the messages below to alter between them,
 f 27;
-#X obj 90 233 else/oscbank~ 8 2000;
-#X msg 90 132 freq 100 250 300 370 420 510 590 650 \, amp 0.9 0.5 0.9
-1 0.8 0.9 0.7 1, f 38;
-#X msg 130 179 freq 140 290 310 330 490 580 690 750 \, amp 0.8 1 0.7
-1 0.9 0.8 0.9 1, f 37;
+#X obj 90 253 else/oscbank~ 8 2000;
 #X text 40 16 A ramp time as the second argument sets a transition
 time in ms between parameter changes of frequency and amplitude. By
 default \, this is set to 10 ms. You can also send a list of ramp time
 for each oscillator in the bank.;
-#X connect 1 0 4 0;
+#X msg 90 132 freq 100 250 300 370 420 510 590 650 \, phase 0 0.5 0.25
+0 0.1 0.9 0.75 0.1 \, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 38;
+#X msg 129 189 freq 140 290 310 330 490 580 690 750 \, phase 0.5 0
+0.75 0.4 0.7 0 0.25 0.5 \, amp 0.8 1 0.7 1 0.9 0.8 0.9 1, f 38;
+#X connect 1 0 5 0;
 #X connect 3 0 0 0;
 #X connect 3 0 0 1;
-#X connect 4 0 3 0;
 #X connect 5 0 3 0;
+#X connect 6 0 3 0;
 #X restore 464 239 pd example;
-#X text 156 384 1) float - number of resonant filters (default 1),
+#X text 156 404 1) float - number of resonant filters (default 1),
 f 57;
 #X obj 188 184 else/oscbank~ 4;
 #X obj 188 123 loadbang;
@@ -69,10 +69,13 @@ set any number of oscillators and control their parameters.;
 ;
 #X text 209 302 - list of amplitudes for all oscillators in the bank
 ;
-#X text 209 320 - list of ramp time for all oscillators in the bank
+#X text 209 340 - list of ramp time for all oscillators in the bank
 ;
-#X text 210 352 - the oscillator bank output;
+#X text 210 372 - the oscillator bank output;
 #X msg 188 146 freq 360 440 590 720 \, amp 0.9 0.5 0.5 0.6, f 23;
+#X text 126 321 phase <list>;
+#X text 209 321 - list of phases (0-1) for all oscillators in the bank
+;
 #X connect 25 0 18 0;
 #X connect 25 0 18 1;
 #X connect 26 0 32 0;
