@@ -40,6 +40,7 @@ decay2~.class.sources := classes/decay2~.c
 downsample~.class.sources := classes/downsample~.c
 elapsed~.class.sources := classes/elapsed~.c
 eq~.class.sources := classes/eq~.c
+fader~.class.sources := classes/fader~.c
 fbsine~.class.sources := classes/fbsine~.c
 fbcomb~.class.sources := classes/fbcomb~.c
 fbdelay~.class.sources := classes/fbdelay~.c
