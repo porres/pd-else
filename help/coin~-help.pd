@@ -1,0 +1,69 @@
+#N canvas 483 23 559 474 10;
+#X obj 2 3 cnv 15 301 42 empty empty coin~ 20 20 2 37 -233017 -1 0
+;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Statistical 0 28 2 18 -233017 -1
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 108 39 cnv 4 4 4 empty empty trigger 0 28 2 18 -233017 -1 0
+;
+#X obj 3 437 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 4 355 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 390 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 111 365 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 181 366 signal;
+#X text 181 289 signal;
+#X obj 113 289 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 279 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X msg 173 158 seed \$1;
+#X obj 173 139 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 145 309 seed <float>;
+#X text 237 308 - sets seed value;
+#X text 237 366 - random values;
+#X text 237 288 - trigger signal;
+#X obj 111 331 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 144 332 float/signal;
+#X obj 339 168 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 59.0551 256;
+#X text 120 415 2) float - seed value (default: internal);
+#X obj 219 220 else/out~;
+#X obj 342 146 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 7500 1;
+#X text 120 399 1) float - probability in percentage (default 50);
+#X obj 236 149 else/imp~ 5;
+#X text 396 167 %;
+#X text 372 145 probability;
+#X obj 236 191 else/coin~;
+#X text 237 332 - probability in percentage (0 to 100);
+#X text 74 91 When [coin~] receives a trigger \, it tosses a coin and
+either passes the trigger or not according to a probability parameter.
+;
+#X connect 18 0 34 0;
+#X connect 19 0 18 0;
+#X connect 26 0 34 1;
+#X connect 29 0 26 0;
+#X connect 31 0 34 0;
+#X connect 34 0 28 0;
+#X connect 34 0 28 1;
