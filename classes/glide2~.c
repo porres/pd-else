@@ -50,8 +50,7 @@ static void glide2_dsp(t_glide2 *x, t_signal **sp)
             sp[1]->s_vec, sp[2]->s_vec);
 }
 
-static void glide2_clear(t_glide2 *x)
-{
+static void glide2_reset(t_glide2 *x){
     x->x_ynm1 = 0.;
 }
 
@@ -102,5 +101,5 @@ void glide2_tilde_setup(void)
         sizeof(t_glide2), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(glide2_class, (t_method)glide2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(glide2_class, nullfn, gensym("signal"), 0);
-    class_addmethod(glide2_class, (t_method)glide2_clear, gensym("clear"), 0);
+    class_addmethod(glide2_class, (t_method)glide2_reset, gensym("reset"), 0);
 }

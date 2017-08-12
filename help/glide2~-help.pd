@@ -1,4 +1,4 @@
-#N canvas 453 23 561 549 10;
+#N canvas 635 50 561 549 10;
 #X obj 4 368 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 446 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -32,7 +32,6 @@
 #X obj 129 419 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 155 419 float/signal;
-#X text 197 394 clear;
 #X obj 184 294 else/out~;
 #X obj 227 250 *~;
 #X obj 155 167 else/brown~;
@@ -72,10 +71,11 @@ glide/portamento for its signal input changes. The glide time in ms
 is how long it takes for the signal to converge to within 0.01% of
 the target value.;
 #X obj 242 188 else/glide2~ 1000;
+#X text 197 394 reset;
+#X connect 19 0 18 0;
+#X connect 19 0 18 1;
 #X connect 20 0 19 0;
-#X connect 20 0 19 1;
-#X connect 21 0 20 0;
-#X connect 24 0 23 0;
-#X connect 29 0 36 0;
-#X connect 36 0 20 1;
-#X connect 36 0 24 0;
+#X connect 23 0 22 0;
+#X connect 28 0 35 0;
+#X connect 35 0 19 1;
+#X connect 35 0 23 0;
