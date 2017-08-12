@@ -132,7 +132,7 @@ SIGNAL ANALYSIS: [10]
 - [vu~]
 - [zerocross~]
 
-CONTROL: [5]
+CONTROL: [6]
  - [decay~]
  - [decay2~]
  - [glide~]
