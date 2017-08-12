@@ -1,12 +1,12 @@
+// porres 2017
 
 #include "m_pd.h"
 #include "math.h"
 
-typedef struct _glide
-{
+typedef struct _glide{
     t_object x_obj;
     t_float  x_in;
-    t_inlet    *x_inlet_ms;
+    t_inlet  *x_inlet_ms;
     int      x_n;
     double   x_coef;
     t_float  x_last;
@@ -33,11 +33,9 @@ static t_int *glide_perform(t_int *w){
     while (nblock--){
         t_float f = *in1++;
         t_float ms = *in2++;
-        
+        if (ms < 0)
+            ms = 0;
         x->x_n = roundf(ms * x->x_sr_khz);
-        if (x->x_n < 0)
-            x->x_n = 0;
-
         double coef;
         if (x->x_n == 0)
             coef = 0.;
@@ -46,12 +44,21 @@ static t_int *glide_perform(t_int *w){
  
         if(coef != x->x_coef){
             x->x_coef = coef;
-            x->x_change = 1;
-            };
+            if (f != last){
+                if (x->x_n > 1){
+                    incr = (f - last) * x->x_coef;
+                    nleft = x->x_n;
+                    *out++ = (last += incr);
+                    continue;
+                    }
+                }
+            incr = 0.;
+            nleft = 0;
+            *out++ = last = f;
+            }
         
-        if (f != target || change){
+        else if (f != target){
             target = f;
-            change = 0;
             if (f != last){
                 if (x->x_n > 1){
                     incr = (f - last) * x->x_coef;
@@ -64,6 +71,7 @@ static t_int *glide_perform(t_int *w){
 	    nleft = 0;
 	    *out++ = last = f;
         }
+        
         else if (nleft > 0){
             *out++ = (last += incr);
             if (--nleft == 1){
