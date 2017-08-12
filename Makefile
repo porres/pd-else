@@ -50,6 +50,7 @@ fold.class.sources := classes/fold.c
 fold~.class.sources := classes/fold~.c
 gbman~.class.sources := classes/gbman~.c
 glide~.class.sources := classes/glide~.c
+glide2~.class.sources := classes/glide2~.c
 henon~.class.sources := classes/henon~.c
 highpass~.class.sources := classes/highpass~.c
 highshelf~.class.sources := classes/highshelf~.c

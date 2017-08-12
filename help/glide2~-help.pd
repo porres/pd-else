@@ -1,0 +1,81 @@
+#N canvas 453 23 561 549 10;
+#X obj 4 368 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 446 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 479 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 6 511 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 129 455 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 129 376 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 191 376 signal;
+#X text 191 455 signal;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Exponential 0 28 2 18 -233017 -1
+0;
+#X obj 117 40 cnv 4 4 4 empty empty glide 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 129 419 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 155 419 float/signal;
+#X text 197 394 clear;
+#X obj 184 294 else/out~;
+#X obj 227 250 *~;
+#X obj 155 167 else/brown~;
+#X text 240 394 - clears filter's memory;
+#X obj 304 247 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 304 219 else/sig2float~;
+#X text 327 340 0;
+#X text 327 241 1;
+#X obj 2 3 cnv 15 301 42 empty empty glide2~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X obj 242 160 else/pulse~ 0.5;
+#X text 240 376 - input signal;
+#X text 239 418 - glide time in ms;
+#X text 240 455 - glided signal;
+#X text 185 485 1) float - glide time in ms (default 1000);
+#N canvas 716 92 505 349 example 0;
+#X obj 80 185 osc~;
+#X obj 80 232 else/out~;
+#X obj 80 54 else/stepnoise~ 1;
+#X obj 80 97 else/rescale~ 200 800;
+#X text 194 53 <= random numbers generated once a second;
+#X text 218 97 <= values rescaled to 200-800 range;
+#X text 190 143 <= values are glided \, generating a portamento;
+#X obj 80 143 else/glide2~ 1000;
+#X connect 0 0 1 0;
+#X connect 0 0 1 1;
+#X connect 2 0 3 0;
+#X connect 3 0 7 0;
+#X connect 7 0 0 0;
+#X restore 462 319 pd example;
+#X text 61 86 [glide2~] is a one pole filter that creates an exponential
+glide/portamento for its signal input changes. The glide time in ms
+is how long it takes for the signal to converge to within 0.01% of
+the target value.;
+#X obj 242 188 else/glide2~ 1000;
+#X connect 20 0 19 0;
+#X connect 20 0 19 1;
+#X connect 21 0 20 0;
+#X connect 24 0 23 0;
+#X connect 29 0 36 0;
+#X connect 36 0 20 1;
+#X connect 36 0 24 0;

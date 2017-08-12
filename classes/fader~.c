@@ -1,3 +1,5 @@
+// a rip off from iemlib/fade~
+
 #include "m_pd.h"
 #include <math.h>
 
@@ -46,6 +48,7 @@
 t_float *fader_table_lin=(t_float *)0L;
 t_float *fader_table_linsqrt=(t_float *)0L;
 t_float *fader_table_sqrt=(t_float *)0L;
+t_float *fader_table_quartic=(t_float *)0L;
 t_float *fader_table_sin=(t_float *)0L;
 t_float *fader_table_sinhann=(t_float *)0L;
 t_float *fader_table_hann=(t_float *)0L;
@@ -74,6 +77,11 @@ static void fader_linsqrt(t_fader_tilde *x){
 static void fader_sqrt(t_fader_tilde *x){
     x->x_table = fader_table_sqrt;
 }
+
+static void fader_quartic(t_fader_tilde *x){
+    x->x_table = fader_table_quartic;
+}
+
 
 static void fader_sin(t_fader_tilde *x){
     x->x_table = fader_table_sin;
@@ -105,6 +113,8 @@ static void *fader_tilde_new(t_symbol *s){
         x->x_table = fader_table_sinhann;
     else if(s == gensym("hann"))
         x->x_table = fader_table_hann;
+    else if(s == gensym("quartic"))
+        x->x_table = fader_table_quartic;
     else
       x->x_table = fader_table_sin; // default
   return (x);
@@ -123,7 +133,6 @@ static t_int *fader_tilde_perform(t_int *w){
   tf.tf_d = UNITBIT32;
   normhipart = tf.tf_i[HIOFFSET];
   
-#if 1     /* this is the readable version of the code. */
   while (n--)
   {
     t_float input = *in++;
@@ -140,28 +149,6 @@ static t_int *fader_tilde_perform(t_int *w){
     f2 = addr[1];
     *out++ = f1 + frac * (f2 - f1);
   }
-#endif
-#if 0     /* this is the same, unwrapped by hand. */
-  dphase = (double)(*in++ * (t_float)(COSTABSIZE) * 0.99999) + UNITBIT32;
-  tf.tf_d = dphase;
-  addr = tab + (tf.tf_i[HIOFFSET] & (COSTABSIZE-1));
-  tf.tf_i[HIOFFSET] = normhipart;
-  while (--n)
-  {
-    dphase = (double)(*in++ * (t_float)(COSTABSIZE) * 0.99999) + UNITBIT32;
-    frac = tf.tf_d - UNITBIT32;
-    tf.tf_d = dphase;
-    f1 = addr[0];
-    f2 = addr[1];
-    addr = tab + (tf.tf_i[HIOFFSET] & (COSTABSIZE-1));
-    *out++ = f1 + frac * (f2 - f1);
-    tf.tf_i[HIOFFSET] = normhipart;
-  }
-  frac = tf.tf_d - UNITBIT32;
-  f1 = addr[0];
-  f2 = addr[1];
-  *out++ = f1 + frac * (f2 - f1);
-#endif
   return (w+5);
 }
 
@@ -211,6 +198,12 @@ static void fader_tilde_maketable(void){
     for(i=COSTABSIZE+1, fp=fader_table_linsqrt, phase=0; i--; fp++, phase+=phsinc)
       *fp = pow(phase, 0.75);
   }
+  if(!fader_table_quartic)
+  {
+    fader_table_quartic = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
+    for(i=COSTABSIZE+1, fp=fader_table_quartic, phase=0; i--; fp++, phase+=phsinc)
+        *fp = pow(phase, 4);
+  }
   if(!fader_table_sqrt)
   {
     fader_table_sqrt = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
@@ -233,5 +226,6 @@ void fader_tilde_setup(void){
     class_addmethod(fader_tilde_class, (t_method)fader_sin, gensym("sin"), 0);
     class_addmethod(fader_tilde_class, (t_method)fader_sinhann, gensym("sinhann"), 0);
     class_addmethod(fader_tilde_class, (t_method)fader_hann, gensym("hann"), 0);
+    class_addmethod(fader_tilde_class, (t_method)fader_quartic, gensym("quartic"), 0);
   fader_tilde_maketable();
 }
