@@ -1,4 +1,4 @@
-#N canvas 251 23 559 455 10;
+#N canvas 537 32 562 442 10;
 #X obj 4 270 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 334 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -153,345 +153,374 @@
 #X text 140 238 output;
 #X text 140 300 anything;
 #X obj 188 187 else/fader~ sqrt;
-#N canvas 437 495 917 772 curves 1;
-#X text 637 607 =;
-#X obj 663 608 cos~;
-#X obj 36 139 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
-0;
-#N canvas 0 22 452 302 (subpatch) 0;
-#X array hann_in 441 float 0;
-#X array hann_out 441 float 0;
-#X coords 0 1.01 441 0 350 200 1 0 0;
-#X restore 35 138 graph;
-#X obj 529 608 else/fader~ hann;
-#X obj 663 582 /~ 2;
-#X obj 663 633 expr~ ($v1 * -0.5) + 0.5;
-#N canvas 135 30 760 501 equal-power_3dB 0;
-#X obj 575 379 sqrt~;
-#X text 553 378 =;
-#X text 542 135 =;
-#X obj 574 123 /~ 4;
-#X obj 574 148 else/sin~;
-#X obj 445 379 else/fader~ sqrt;
-#X obj 437 135 else/fader~ sin;
+#N canvas 695 105 587 269 curves 0;
+#N canvas 135 30 735 535 contant-power(3db) 0;
 #X obj 30 287 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
 0;
 #N canvas 0 22 452 302 (subpatch) 0;
-#X array sqrt_in 441 float 0;
-#X array sqrt_out 441 float 0;
+#X array \$0-sqrt_in 441 float 0;
+#X array \$0-sqrt_out 441 float 0;
 #X coords 0 1.01 441 0 350 200 1 0 0;
 #X restore 29 286 graph;
 #X obj 32 45 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
 0;
 #N canvas 0 22 452 302 (subpatch) 0;
-#X array sin_in 441 float 0;
-#X array sin_out 441 float 0;
+#X array \$0-sin_in 441 float 0;
+#X array \$0-sin_out 441 float 0;
 #X coords 0 1.01 441 0 350 200 1 0 0;
 #X restore 31 44 graph;
-#X connect 3 0 4 0;
-#X restore 29 41 pd equal-power_3dB;
-#N canvas 88 255 1201 548 4.5dB 1;
-#X obj 28 285 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
+#N canvas 742 165 509 418 plot 0;
+#X obj 274 124 loadbang;
+#X obj 247 48 phasor~ 100;
+#X obj 82 125 loadbang;
+#X obj 55 49 phasor~ -100;
+#X obj 274 302 loadbang;
+#X obj 247 226 phasor~ 100;
+#X obj 82 303 loadbang;
+#X obj 55 227 phasor~ -100;
+#X obj 54 156 tabwrite~ \$0-sqrt_out;
+#X obj 246 156 tabwrite~ \$0-sqrt_in;
+#X obj 54 334 tabwrite~ \$0-sin_out;
+#X obj 246 334 tabwrite~ \$0-sin_in;
+#X obj 55 93 else/fader~ sqrt;
+#X obj 55 271 else/fader~ sin;
+#X obj 247 271 else/fader~ sin;
+#X obj 247 92 else/fader~ sqrt;
+#X connect 0 0 9 0;
+#X connect 1 0 15 0;
+#X connect 2 0 8 0;
+#X connect 3 0 12 0;
+#X connect 4 0 11 0;
+#X connect 5 0 14 0;
+#X connect 6 0 10 0;
+#X connect 7 0 13 0;
+#X connect 12 0 8 0;
+#X connect 13 0 10 0;
+#X connect 14 0 11 0;
+#X connect 15 0 9 0;
+#X restore 327 253 pd plot;
+#X text 431 108 There are two "contant power" curves \, which have
+a crossing point at -3dB., f 33;
+#X text 432 164 We have the "sin" (sine) function above and a "sqrt"
+(square root) function below., f 33;
+#X text 434 227 The "sin" function is 1/4 of the cycle of a sine function.
+, f 33;
+#X text 435 270 The "sqrt" function is the same as extracting the square
+root of the input., f 33;
+#X restore 172 152 pd contant-power(3db);
+#N canvas 240 70 761 552 compromise(4.5db) 0;
+#X obj 34 50 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
 0;
 #N canvas 0 22 452 302 (subpatch) 0;
-#X array linsqrt_in 441 float 0;
-#X array linsqrt_out 441 float 0;
+#X array \$0-hannsin_in 441 float 0;
+#X array \$0-hannsin_out 441 float 0;
 #X coords 0 1.01 441 0 350 200 1 0 0;
-#X restore 27 284 graph;
-#X obj 32 45 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
-0;
-#N canvas 0 22 452 302 (subpatch) 0;
-#X array sinhann_in 441 float 0;
-#X array sinhann_out 441 float 0;
-#X coords 0 1.01 441 0 350 200 1 0 0;
-#X restore 31 44 graph;
-#X text 839 111 =;
-#X text 571 151 =;
-#X obj 593 131 /~ 4;
-#X obj 593 154 else/sin~;
-#X obj 435 151 else/fader~ sinhann;
-#X obj 713 111 else/fader~ linsqrt;
-#X obj 593 177 pow~ 1.5;
-#X obj 864 111 pow~ 0.75;
-#X obj 392 285 cnv 15 348 198 empty empty empty 20 12 0 14 -228856
--66577 0;
-#N canvas 0 22 452 302 (subpatch) 0;
-#X array lin_in 441 float 1;
-#A 0 0 0.00284198 0.00568394 0.00852586 0.0113677 0.0142095 0.0170512
-0.0198928 0.0227343 0.0255756 0.0284168 0.0312578 0.0340986 0.0369392
-0.0397795 0.0426196 0.0454594 0.0482989 0.0511382 0.0539771 0.0568156
-0.0596538 0.0624916 0.065329 0.068166 0.0710026 0.0738387 0.0766744
-0.0795095 0.0823442 0.0851783 0.0880119 0.090845 0.0936774 0.0965093
-0.0993406 0.102171 0.105001 0.10783 0.110659 0.113487 0.116314 0.119141
-0.121966 0.124791 0.127615 0.130439 0.133261 0.136083 0.138904 0.141724
-0.144543 0.147361 0.150178 0.152994 0.155809 0.158623 0.161437 0.164249
-0.16706 0.16987 0.172679 0.175487 0.178294 0.1811 0.183904 0.186707
-0.189509 0.19231 0.19511 0.197909 0.200706 0.203502 0.206296 0.20909
-0.211882 0.214672 0.217462 0.22025 0.223036 0.225821 0.228605 0.231387
-0.234168 0.236947 0.239725 0.242501 0.245275 0.248048 0.25082 0.25359
-0.256358 0.259125 0.26189 0.264653 0.267415 0.270174 0.272933 0.275689
-0.278444 0.281197 0.283948 0.286697 0.289444 0.29219 0.294934 0.297676
-0.300416 0.303154 0.30589 0.308624 0.311356 0.314086 0.316814 0.31954
-0.322264 0.324986 0.327706 0.330424 0.33314 0.335854 0.338565 0.341274
-0.343981 0.346686 0.349389 0.352089 0.354787 0.357483 0.360177 0.362868
-0.365557 0.368243 0.370928 0.373609 0.376289 0.378966 0.38164 0.384313
-0.386982 0.389649 0.392314 0.394976 0.397636 0.400293 0.402947 0.405599
-0.408248 0.410895 0.413539 0.41618 0.418819 0.421455 0.424088 0.426718
-0.429346 0.431971 0.434593 0.437212 0.439829 0.442443 0.445053 0.447661
-0.450266 0.452868 0.455468 0.458064 0.460657 0.463247 0.465835 0.468419
-0.471 0.473578 0.476153 0.478725 0.481294 0.48386 0.486423 0.488982
-0.491539 0.494092 0.496642 0.499188 0.501732 0.504272 0.506809 0.509343
-0.511873 0.5144 0.516923 0.519444 0.52196 0.524474 0.526984 0.529491
-0.531994 0.534494 0.53699 0.539482 0.541972 0.544457 0.546939 0.549418
-0.551893 0.554364 0.556832 0.559296 0.561756 0.564213 0.566666 0.569115
-0.57156 0.574002 0.57644 0.578874 0.581305 0.583731 0.586154 0.588573
-0.590988 0.593399 0.595807 0.59821 0.600609 0.603005 0.605396 0.607784
-0.610167 0.612547 0.614922 0.617293 0.619661 0.622024 0.624383 0.626738
-0.629089 0.631436 0.633778 0.636116 0.63845 0.64078 0.643106 0.645427
-0.647744 0.650057 0.652365 0.654669 0.656969 0.659264 0.661555 0.663842
-0.666124 0.668402 0.670675 0.672944 0.675208 0.677468 0.679723 0.681974
-0.68422 0.686462 0.688699 0.690931 0.693159 0.695382 0.697601 0.699814
-0.702024 0.704228 0.706428 0.708623 0.710813 0.712998 0.715179 0.717355
-0.719526 0.721692 0.723853 0.72601 0.728161 0.730308 0.73245 0.734586
-0.736718 0.738845 0.740967 0.743084 0.745196 0.747302 0.749404 0.7515
-0.753592 0.755678 0.757759 0.759836 0.761906 0.763972 0.766033 0.768088
-0.770138 0.772183 0.774223 0.776257 0.778286 0.78031 0.782328 0.784341
-0.786349 0.788351 0.790348 0.79234 0.794326 0.796306 0.798281 0.800251
-0.802215 0.804174 0.806127 0.808074 0.810016 0.811953 0.813884 0.815809
-0.817728 0.819642 0.82155 0.823453 0.82535 0.827241 0.829126 0.831006
-0.83288 0.834748 0.83661 0.838467 0.840317 0.842162 0.844001 0.845834
-0.847661 0.849482 0.851298 0.853107 0.85491 0.856708 0.858499 0.860285
-0.862064 0.863837 0.865605 0.867366 0.869121 0.87087 0.872612 0.874349
-0.87608 0.877804 0.879522 0.881234 0.882939 0.884639 0.886332 0.888019
-0.889699 0.891374 0.893042 0.894703 0.896358 0.898007 0.899649 0.901285
-0.902915 0.904538 0.906155 0.907765 0.909368 0.910966 0.912556 0.91414
-0.915718 0.917289 0.918853 0.920411 0.921962 0.923506 0.925044 0.926575
-0.928099 0.929617 0.931128 0.932632 0.934129 0.93562 0.937104 0.938581
-0.940051 0.941514 0.942971 0.94442 0.945863 0.947298 0.948727 0.950149
-0.951564 0.952972 0.954373 0.955767 0.957154 0.958533 0.959906 0.961272
-0.96263 0.963982 0.965326 0.966663 0.967993 0.969316 0.970631 0.97194
-0.973241 0.974535 0.975821 0.977101 0.978373 0.979637 0.980895 0.982145
-0.983387 0.984622 0.98585 0.987071 0.988284 0.989489 0.990687 0.991877
-0.993061 0.994236 0.995404 0.996564 0.997717 0.998862;
-#X array lin_out 441 float 1;
-#A 0 0 0.998862 0.997717 0.996564 0.995404 0.994236 0.993061 0.991877
-0.990687 0.989489 0.988284 0.987071 0.98585 0.984622 0.983387 0.982145
-0.980895 0.979637 0.978373 0.977101 0.975821 0.974535 0.973241 0.97194
-0.970631 0.969316 0.967993 0.966663 0.965326 0.963982 0.96263 0.961272
-0.959906 0.958533 0.957154 0.955767 0.954373 0.952972 0.951564 0.950149
-0.948727 0.947298 0.945863 0.94442 0.942971 0.941514 0.940051 0.938581
-0.937104 0.93562 0.934129 0.932632 0.931128 0.929617 0.928099 0.926575
-0.925044 0.923506 0.921962 0.920411 0.918853 0.917289 0.915718 0.91414
-0.912556 0.910966 0.909368 0.907765 0.906155 0.904538 0.902915 0.901285
-0.899649 0.898007 0.896358 0.894703 0.893041 0.891374 0.889699 0.888019
-0.886332 0.884639 0.882939 0.881234 0.879522 0.877804 0.87608 0.874349
-0.872612 0.87087 0.869121 0.867366 0.865605 0.863837 0.862064 0.860285
-0.858499 0.856708 0.85491 0.853107 0.851298 0.849482 0.847661 0.845834
-0.844001 0.842162 0.840317 0.838467 0.83661 0.834748 0.83288 0.831006
-0.829126 0.827241 0.82535 0.823453 0.82155 0.819642 0.817728 0.815809
-0.813884 0.811953 0.810016 0.808074 0.806127 0.804174 0.802215 0.800251
-0.798281 0.796306 0.794326 0.79234 0.790348 0.788351 0.786349 0.784341
-0.782328 0.78031 0.778286 0.776257 0.774223 0.772183 0.770138 0.768088
-0.766033 0.763972 0.761906 0.759836 0.757759 0.755678 0.753592 0.7515
-0.749404 0.747302 0.745196 0.743084 0.740967 0.738845 0.736718 0.734586
-0.73245 0.730308 0.728161 0.72601 0.723853 0.721692 0.719526 0.717355
-0.715179 0.712998 0.710813 0.708623 0.706428 0.704228 0.702024 0.699814
-0.697601 0.695382 0.693159 0.690931 0.688699 0.686462 0.68422 0.681974
-0.679723 0.677468 0.675208 0.672944 0.670675 0.668402 0.666124 0.663842
-0.661555 0.659264 0.656969 0.654669 0.652365 0.650057 0.647744 0.645427
-0.643106 0.64078 0.63845 0.636116 0.633778 0.631435 0.629089 0.626738
-0.624383 0.622024 0.619661 0.617293 0.614922 0.612547 0.610167 0.607784
-0.605396 0.603005 0.600609 0.59821 0.595807 0.593399 0.590988 0.588573
-0.586154 0.583731 0.581305 0.578874 0.57644 0.574002 0.57156 0.569115
-0.566666 0.564213 0.561756 0.559296 0.556832 0.554364 0.551893 0.549418
-0.546939 0.544457 0.541972 0.539482 0.53699 0.534494 0.531994 0.529491
-0.526984 0.524474 0.52196 0.519444 0.516923 0.5144 0.511873 0.509343
-0.506809 0.504272 0.501732 0.499188 0.496642 0.494092 0.491539 0.488982
-0.486423 0.48386 0.481294 0.478725 0.476153 0.473578 0.471 0.468419
-0.465835 0.463247 0.460657 0.458064 0.455468 0.452868 0.450266 0.447661
-0.445053 0.442442 0.439829 0.437212 0.434593 0.431971 0.429346 0.426718
-0.424088 0.421455 0.418819 0.41618 0.413539 0.410895 0.408248 0.405599
-0.402947 0.400293 0.397636 0.394976 0.392314 0.389649 0.386982 0.384313
-0.38164 0.378966 0.376289 0.373609 0.370928 0.368243 0.365557 0.362868
-0.360177 0.357483 0.354787 0.352089 0.349389 0.346686 0.343981 0.341274
-0.338565 0.335854 0.33314 0.330424 0.327706 0.324986 0.322264 0.31954
-0.316814 0.314086 0.311356 0.308624 0.30589 0.303154 0.300416 0.297676
-0.294934 0.29219 0.289444 0.286697 0.283948 0.281197 0.278444 0.275689
-0.272933 0.270174 0.267415 0.264653 0.26189 0.259125 0.256358 0.25359
-0.25082 0.248048 0.245275 0.242501 0.239725 0.236947 0.234168 0.231387
-0.228605 0.225821 0.223036 0.22025 0.217462 0.214672 0.211882 0.20909
-0.206296 0.203502 0.200706 0.197909 0.19511 0.19231 0.189509 0.186707
-0.183904 0.181099 0.178294 0.175487 0.172679 0.16987 0.16706 0.164249
-0.161437 0.158623 0.155809 0.152994 0.150178 0.147361 0.144543 0.141724
-0.138904 0.136083 0.133261 0.130439 0.127615 0.124791 0.121966 0.119141
-0.116314 0.113487 0.110659 0.10783 0.105001 0.102171 0.0993405 0.0965093
-0.0936774 0.090845 0.0880119 0.0851783 0.0823442 0.0795095 0.0766744
-0.0738387 0.0710026 0.068166 0.065329 0.0624916 0.0596538 0.0568156
-0.053977 0.0511381 0.0482989 0.0454594 0.0426196 0.0397795 0.0369391
-0.0340986 0.0312578 0.0284168 0.0255756 0.0227343 0.0198928 0.0170512
-0.0142095 0.0113677 0.00852585 0.00568392 0.00284196;
-#X coords 0 1.01 441 0 350 200 1 0 0;
-#X restore 391 284 graph;
-#X connect 6 0 7 0;
-#X connect 7 0 10 0;
-#X restore 25 80 pd 4.5dB;
-#N canvas 404 51 827 665 plot 0;
-#X obj 294 59 loadbang;
-#X obj 295 143 phasor~ 100;
-#X msg 358 109 0;
-#X obj 294 109 s \$0-plot;
-#X obj 41 245 r \$0-plot;
-#X obj 163 245 r \$0-plot;
-#X obj 296 245 r \$0-plot;
-#X obj 417 245 r \$0-plot;
-#X obj 539 245 r \$0-plot;
-#X obj 676 245 r \$0-plot;
-#X msg 423 109 \; pd dsp 1;
-#X obj 294 82 trigger bang bang bang;
-#X obj 18 270 tabwrite~ lin_in;
-#X obj 140 270 tabwrite~ linsqrt_in;
-#X obj 273 270 tabwrite~ sqrt_in;
-#X obj 394 270 tabwrite~ sin_in;
-#X obj 516 270 tabwrite~ sinhann_in;
-#X obj 653 269 tabwrite~ hann_in;
-#X obj 290 350 loadbang;
-#X msg 389 410 0;
-#X obj 290 383 trigger bang bang;
-#X obj 43 571 tabwrite~ lin_out;
-#X obj 165 571 tabwrite~ linsqrt_out;
-#X obj 298 571 tabwrite~ sqrt_out;
-#X obj 419 571 tabwrite~ sin_out;
-#X obj 541 571 tabwrite~ sinhann_out;
-#X obj 678 570 tabwrite~ hann_out;
-#X obj 320 444 phasor~ -100;
-#X obj 290 410 s \$0-plot2;
-#X obj 66 546 r \$0-plot2;
-#X obj 188 546 r \$0-plot2;
-#X obj 321 546 r \$0-plot2;
-#X obj 442 546 r \$0-plot2;
-#X obj 564 546 r \$0-plot2;
-#X obj 701 546 r \$0-plot2;
-#X obj 44 187 else/fader~ lin;
-#X obj 140 208 else/fader~ linsqrt;
-#X obj 273 208 else/fader~ sqrt;
-#X obj 394 208 else/fader~ sin;
-#X obj 516 208 else/fader~ sinhann;
-#X obj 653 208 else/fader~ hann;
-#X obj 53 509 else/fader~ lin;
-#X obj 165 509 else/fader~ linsqrt;
-#X obj 298 509 else/fader~ sqrt;
-#X obj 419 509 else/fader~ sin;
-#X obj 541 509 else/fader~ sinhann;
-#X obj 678 509 else/fader~ hann;
-#X obj 34 120 *~;
-#X obj 34 149 sqrt~;
-#X obj 83 111 /~ 4;
-#X obj 83 136 else/sin~;
-#X obj 48 434 *~;
-#X obj 48 463 sqrt~;
-#X obj 97 425 /~ 4;
-#X obj 97 450 else/sin~;
-#X connect 0 0 11 0;
-#X connect 1 0 35 0;
-#X connect 1 0 36 0;
-#X connect 1 0 37 0;
-#X connect 1 0 38 0;
-#X connect 1 0 39 0;
-#X connect 1 0 40 0;
-#X connect 1 0 49 0;
-#X connect 1 0 47 0;
-#X connect 2 0 1 1;
-#X connect 4 0 12 0;
-#X connect 5 0 13 0;
+#X restore 33 49 graph;
+#N canvas 742 165 509 418 plot 0;
+#X obj 274 124 loadbang;
+#X obj 247 48 phasor~ 100;
+#X obj 82 125 loadbang;
+#X obj 55 49 phasor~ -100;
+#X obj 274 302 loadbang;
+#X obj 247 226 phasor~ 100;
+#X obj 82 303 loadbang;
+#X obj 55 227 phasor~ -100;
+#X obj 55 93 else/fader~ hannsin;
+#X obj 247 92 else/fader~ hannsin;
+#X obj 55 271 else/fader~ linsin;
+#X obj 247 271 else/fader~ linsin;
+#X obj 54 156 tabwrite~ \$0-hannsin_out;
+#X obj 246 156 tabwrite~ \$0-hannsin_in;
+#X obj 54 334 tabwrite~ \$0-linsin_out;
+#X obj 246 334 tabwrite~ \$0-linsin_in;
+#X connect 0 0 13 0;
+#X connect 1 0 9 0;
+#X connect 2 0 12 0;
+#X connect 3 0 8 0;
+#X connect 4 0 15 0;
+#X connect 5 0 11 0;
 #X connect 6 0 14 0;
-#X connect 7 0 15 0;
-#X connect 8 0 16 0;
-#X connect 9 0 17 0;
-#X connect 11 0 3 0;
-#X connect 11 1 2 0;
-#X connect 11 2 10 0;
-#X connect 18 0 20 0;
-#X connect 19 0 27 1;
-#X connect 20 0 28 0;
-#X connect 20 1 19 0;
-#X connect 27 0 41 0;
-#X connect 27 0 42 0;
-#X connect 27 0 43 0;
-#X connect 27 0 44 0;
-#X connect 27 0 45 0;
-#X connect 27 0 46 0;
-#X connect 27 0 53 0;
-#X connect 27 0 51 0;
-#X connect 29 0 21 0;
-#X connect 30 0 22 0;
-#X connect 31 0 23 0;
-#X connect 32 0 24 0;
-#X connect 33 0 25 0;
-#X connect 34 0 26 0;
-#X connect 36 0 13 0;
-#X connect 37 0 14 0;
-#X connect 38 0 15 0;
-#X connect 39 0 16 0;
-#X connect 40 0 17 0;
-#X connect 42 0 22 0;
-#X connect 43 0 23 0;
-#X connect 44 0 24 0;
-#X connect 45 0 25 0;
-#X connect 46 0 26 0;
-#X connect 47 0 48 0;
-#X connect 48 0 12 0;
-#X connect 49 0 50 0;
-#X connect 50 0 47 1;
-#X connect 51 0 52 0;
-#X connect 52 0 21 0;
-#X connect 53 0 54 0;
-#X connect 54 0 51 1;
-#X restore 745 165 pd plot;
-#X text 54 479 sqrlaw;
-#X text 54 531 quartic;
-#X obj 184 527 pow~ 4;
-#X obj 184 495 else/float2sig~ 10;
-#X obj 184 561 number~;
-#X obj 187 447 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
-#X floatatom 184 473 5 0 0 0 - - -, f 5;
-#X obj 443 397 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 473 488 sig2float~;
-#X obj 473 527 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X obj 428 491 *~;
-#X obj 407 547 dac~;
-#X obj 375 438 osc~ 440;
-#X obj 443 426 else/float2sig~ 500;
-#X obj 443 453 else/fader~ quartic;
+#X connect 7 0 10 0;
+#X connect 8 0 12 0;
+#X connect 9 0 13 0;
+#X connect 10 0 14 0;
+#X connect 11 0 15 0;
+#X restore 329 258 pd plot;
+#X obj 34 290 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
+0;
+#N canvas 0 22 452 302 (subpatch) 0;
+#X array \$0-linsin_in 441 float 0;
+#X array \$0-linsin_out 441 float 0;
+#X coords 0 1.01 441 0 350 200 1 0 0;
+#X restore 33 289 graph;
+#X text 419 97 As a compromise between the functions that cross between
+-3 and -6dB \, we have a crossing point at -4.5 dB., f 37;
+#X text 419 150 This can be achieved with a geometric mean between
+such functions. Here we have a mean between the "hann" and the "sin"
+function above \, and a mean between the "lin" and "sin" function below.
+, f 37;
+#X restore 172 202 pd compromise(4.5db);
+#N canvas 221 110 734 527 constant-voltage(6db) 0;
+#X obj 31 56 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
+0;
+#N canvas 0 22 452 302 (subpatch) 0;
+#X array \$0-hann_in 441 float 0;
+#X array \$0-hann_out 441 float 0;
+#X coords 0 1.01 441 0 350 200 1 0 0;
+#X restore 30 55 graph;
+#N canvas 233 311 515 432 plot 0;
+#X obj 274 123 loadbang;
+#X obj 247 47 phasor~ 100;
+#X obj 82 124 loadbang;
+#X obj 55 48 phasor~ -100;
+#X obj 54 155 tabwrite~ \$0-hann_out;
+#X obj 246 155 tabwrite~ \$0-hann_in;
+#X obj 247 91 else/fader~ hann;
+#X obj 55 92 else/fader~ hann;
+#X obj 274 301 loadbang;
+#X obj 247 225 phasor~ 100;
+#X obj 82 302 loadbang;
+#X obj 55 226 phasor~ -100;
+#X obj 247 270 else/fader~ lin;
+#X obj 55 270 else/fader~ lin;
+#X obj 246 333 tabwrite~ \$0-lin_in;
+#X obj 54 333 tabwrite~ \$0-lin_out;
+#X connect 0 0 5 0;
 #X connect 1 0 6 0;
-#X connect 5 0 1 0;
+#X connect 2 0 4 0;
+#X connect 3 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 4 0;
+#X connect 8 0 14 0;
+#X connect 9 0 12 0;
+#X connect 10 0 15 0;
+#X connect 11 0 13 0;
 #X connect 12 0 14 0;
-#X connect 13 0 12 0;
-#X connect 15 0 16 0;
+#X connect 13 0 15 0;
+#X restore 327 262 pd plot;
+#X obj 32 289 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
+0;
+#N canvas 0 22 452 302 (subpatch) 0;
+#X array \$0-lin_in 441 float 0;
+#X array \$0-lin_out 441 float 0;
+#X coords 0 1.01 441 0 350 200 1 0 0;
+#X restore 31 288 graph;
+#X text 430 125 There are two "contant voltage" curves \, which have
+a crossing point at -6dB., f 33;
+#X text 430 181 We have the "hann" function above and a linear transfer
+function below, f 33;
+#X text 431 246 The "hann" function is half the cycle of a "cosine"
+function., f 33;
+#X text 432 288 The "lin" function does nothing \, it is the same as
+the input., f 33;
+#X restore 172 176 pd constant-voltage(6db);
+#N canvas 363 166 734 349 quartic 0;
+#X obj 45 72 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
+0;
+#N canvas 0 22 452 302 (subpatch) 0;
+#X array \$0-quartic_in 441 float 0;
+#X array \$0-quartic_out 441 float 0;
+#X coords 0 1.01 441 0 350 200 1 0 0;
+#X restore 44 71 graph;
+#N canvas 404 51 478 244 plot 0;
+#X obj 274 123 loadbang;
+#X obj 247 47 phasor~ 100;
+#X obj 247 91 else/fader~ quartic;
+#X obj 246 155 tabwrite~ \$0-quartic_in;
+#X obj 82 124 loadbang;
+#X obj 55 92 else/fader~ quartic;
+#X obj 55 48 phasor~ -100;
+#X obj 54 155 tabwrite~ \$0-quartic_out;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 4 0 7 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
+#X restore 44 277 pd plot;
+#X text 455 104 The default curve is "quartic" \, which is the same
+as raising the input to the power of 4, f 31;
+#X text 517 175 as in:;
+#X obj 572 176 pow~ 4;
+#X restore 172 128 pd quartic;
+#N canvas 207 34 366 264 (subpatch) 0;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
+#X obj 215 68 route dsp;
+#X obj 215 37 receive pd;
+#N canvas 977 77 379 291 set_color 0;
+#X obj 47 30 inlet;
+#X obj 147 200 s \$0-cnv;
+#X obj 47 83 select 0 1;
+#X obj 47 220 s \$0-tgl-r;
+#N canvas 0 22 712 637 off 0;
+#X obj 490 220 * -1;
+#X obj 424 300 +;
+#X obj 409 325 +;
+#X obj 347 219 * -65536;
+#X obj 424 220 * -256;
+#X obj 409 356 - 1;
+#X obj 390 189 unpack f f f;
+#X obj 225 295 +;
+#X obj 210 320 +;
+#X obj 148 214 * -65536;
+#X obj 225 215 * -256;
+#X obj 291 215 * -1;
+#X obj 210 351 - 1;
+#X obj 191 184 unpack f f f;
+#X obj 379 423 pack;
+#X msg 395 152 124 124 124;
+#X msg 203 154 220 220 220;
+#X obj 238 121 t b b;
+#X obj 238 81 inlet;
+#X obj 378 485 outlet;
+#X connect 0 0 1 1;
+#X connect 1 0 2 1;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 14 1;
+#X connect 6 0 3 0;
+#X connect 6 1 4 0;
+#X connect 6 2 0 0;
+#X connect 7 0 8 1;
+#X connect 8 0 12 0;
+#X connect 9 0 8 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 1;
+#X connect 12 0 14 0;
+#X connect 13 0 9 0;
+#X connect 13 1 10 0;
+#X connect 13 2 11 0;
+#X connect 14 0 19 0;
+#X connect 15 0 6 0;
 #X connect 16 0 13 0;
-#X connect 17 0 23 0;
-#X connect 18 0 19 0;
-#X connect 20 0 21 0;
-#X connect 20 0 21 1;
-#X connect 22 0 20 0;
-#X connect 23 0 24 0;
-#X connect 24 0 18 0;
-#X connect 24 0 20 1;
-#X restore 464 229 pd curves;
-#X text 373 178 make quartic default;
-#X text 374 197 add dB;
+#X connect 17 0 16 0;
+#X connect 17 1 15 0;
+#X connect 18 0 17 0;
+#X restore 47 113 pd off;
+#X msg 47 180 color \$1 \$2 0;
+#X msg 147 131 -4.86997e+06 -1.34937e+07;
+#X msg 147 171 color \$1 0 \$2;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 6 0;
+#X connect 4 0 5 0;
+#X connect 4 0 7 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 1 0;
+#X restore 215 165 pd set_color;
+#X obj 135 122 r \$0-tgl-s;
+#N canvas 121 482 450 300 (subpatch) 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+0;
+#X coords 0 -1 1 1 42 27 1 100 100;
+#X restore 51 144 pd;
+#X obj 226 139 s \$0-tgl-r;
+#X msg 226 115 set \$1;
+#X msg 135 177 \; pd dsp \$1;
+#N canvas 256 32 278 194 load_check 0;
+#X obj 136 53 sig~ 1;
+#X obj 74 24 loadbang;
+#X obj 136 86 snapshot~;
+#X obj 91 52 del 5;
+#X obj 136 151 outlet;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 74 126 switch~;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 1 0 5 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 3 0 5 0;
+#X connect 5 0 6 0;
+#X restore 51 72 pd load_check;
+#X connect 1 0 3 0;
+#X connect 1 0 7 0;
+#X connect 2 0 1 0;
+#X connect 4 0 8 0;
+#X connect 4 0 3 0;
+#X connect 7 0 6 0;
+#X connect 9 0 0 0;
+#X coords 0 -1 1 1 44 72 2 50 100;
+#X restore 363 49 pd;
+#X text 446 49 be sure audio is on, f 7;
+#X text 414 63 <===;
+#X text 68 53 Open the subpatch below for more details on the fading
+curves available, f 32;
+#X restore 474 209 pd curves;
 #X text 203 281 - input value (clipped from 0 to 1);
-#X text 88 92 [fader~] is a waveshaper. It takes input from 0 to 1
-and uses internal lookup tables for 8 different fading curves.;
 #X text 203 300 -;
-#X text 215 300 fade types <quartic \, db \, sin \, sqrt \, hann \,
-lin \, sinpow \, linpow>;
 #X text 203 344 - waveshaped output;
-#X text 143 381 1) symbol -;
-#X text 216 381 fade types <quartic \, db \, sin \, sqrt \, hann \,
-lin \, sinpow \, linpow> (default: quartic);
+#X text 131 381 1) symbol -;
+#X text 78 92 [fader~] is a waveshaper. It takes input from 0 to 1
+and uses internal lookup tables for 7 different fading curves.;
+#X text 216 381 fade types <quartic \, sin \, sqrt \, hann \, lin \,
+hannsin \, linsin> (default: quartic), f 47;
+#X text 215 300 fade types <quartic \, sin \, sqrt \, hann \, lin \,
+hannsin \, linsin>, f 47;
+#N canvas 552 191 622 511 crossfading 0;
+#X obj 381 249 else/fader~;
+#X obj 122 278 else/fader~;
+#X obj 28 224 else/brown~;
+#X obj 104 317 *~;
+#X obj 250 110 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 247 134 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 247 157 else/float2sig~ 10;
+#X obj 363 341 *~;
+#X obj 297 291 osc~ 440;
+#X obj 345 385 +~;
+#X obj 332 430 else/out~;
+#X obj 247 241 expr~ 1 - $v1;
+#X msg 491 113 sin;
+#X msg 495 134 sqrt;
+#X msg 487 92 quartic;
+#X msg 499 154 hann;
+#X msg 502 174 lin;
+#X msg 505 195 hannsin;
+#X msg 508 215 linsin;
+#X msg 153 116 sin;
+#X msg 157 137 sqrt;
+#X msg 149 95 quartic;
+#X msg 161 157 hann;
+#X msg 164 177 lin;
+#X msg 167 198 hannsin;
+#X msg 170 218 linsin;
+#X text 249 26 Here's how you can combine different fade in and out
+curves with a crossfading slider., f 27;
+#X connect 0 0 7 1;
+#X connect 1 0 3 1;
+#X connect 2 0 3 0;
+#X connect 3 0 9 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 11 0;
+#X connect 6 0 0 0;
+#X connect 7 0 9 1;
+#X connect 8 0 7 0;
+#X connect 9 0 10 0;
+#X connect 9 0 10 1;
+#X connect 11 0 1 0;
+#X connect 12 0 0 0;
+#X connect 13 0 0 0;
+#X connect 14 0 0 0;
+#X connect 15 0 0 0;
+#X connect 16 0 0 0;
+#X connect 17 0 0 0;
+#X connect 18 0 0 0;
+#X connect 19 0 1 0;
+#X connect 20 0 1 0;
+#X connect 21 0 1 0;
+#X connect 22 0 1 0;
+#X connect 23 0 1 0;
+#X connect 24 0 1 0;
+#X connect 25 0 1 0;
+#X restore 439 231 pd crossfading;
 #X connect 6 0 21 0;
 #X connect 21 0 28 0;
 #X connect 24 0 22 0;

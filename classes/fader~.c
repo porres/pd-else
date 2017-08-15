@@ -5,6 +5,9 @@
 
 #define UNITBIT32 1572864.  /* 3*2^19; bit 32 has place value 1 */
 
+
+#define HALF_PI M_PI * 0.5
+
 /* machine-dependent definitions.  These ifdefs really
  should have been by CPU type and not by operating system! */
 #ifdef IRIX
@@ -46,11 +49,11 @@
 #endif /* __unix__ or __APPLE__*/
 
 t_float *fader_table_lin=(t_float *)0L;
-t_float *fader_table_linsqrt=(t_float *)0L;
+t_float *fader_table_linsin=(t_float *)0L;
 t_float *fader_table_sqrt=(t_float *)0L;
 t_float *fader_table_quartic=(t_float *)0L;
 t_float *fader_table_sin=(t_float *)0L;
-t_float *fader_table_sinhann=(t_float *)0L;
+t_float *fader_table_hannsin=(t_float *)0L;
 t_float *fader_table_hann=(t_float *)0L;
 
 static t_class *fader_tilde_class;
@@ -70,8 +73,8 @@ static void fader_lin(t_fader_tilde *x){
     x->x_table = fader_table_lin;
 }
 
-static void fader_linsqrt(t_fader_tilde *x){
-    x->x_table = fader_table_linsqrt;
+static void fader_linsin(t_fader_tilde *x){
+    x->x_table = fader_table_linsin;
 }
 
 static void fader_sqrt(t_fader_tilde *x){
@@ -87,8 +90,8 @@ static void fader_sin(t_fader_tilde *x){
     x->x_table = fader_table_sin;
 }
 
-static void fader_sinhann(t_fader_tilde *x){
-    x->x_table = fader_table_sinhann;
+static void fader_hannsin(t_fader_tilde *x){
+    x->x_table = fader_table_hannsin;
 }
 
 static void fader_hann(t_fader_tilde *x){
@@ -103,14 +106,14 @@ static void *fader_tilde_new(t_symbol *s){
     
     if(s == gensym("lin"))
         x->x_table = fader_table_lin;
-    else if(s == gensym("linsqrt"))
-        x->x_table = fader_table_linsqrt;
+    else if(s == gensym("linsin"))
+        x->x_table = fader_table_linsin;
     else if(s == gensym("sqrt"))
         x->x_table = fader_table_sqrt;
     else if(s == gensym("sin"))
         x->x_table = fader_table_sin;
-    else if(s == gensym("sinhann"))
-        x->x_table = fader_table_sinhann;
+    else if(s == gensym("hannsin"))
+        x->x_table = fader_table_hannsin;
     else if(s == gensym("hann"))
         x->x_table = fader_table_hann;
     else if(s == gensym("quartic"))
@@ -158,57 +161,58 @@ static void fader_tilde_dsp(t_fader_tilde *x, t_signal **sp){
 
 static void fader_tilde_maketable(void){
   int i;
-  t_float *fp, phase, fff,phsinc = 0.5*3.141592653 / ((t_float)COSTABSIZE*0.99999);
+  t_float *fp, phase1, phase2, fff;
+  t_float phlinc = 1.0 / ((t_float)COSTABSIZE*0.99999);
+  t_float phsinc = HALF_PI * phlinc;
   union tabfudge_d tf;
   
   if(!fader_table_sin)
   {
     fader_table_sin = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
-    for(i=COSTABSIZE+1, fp=fader_table_sin, phase=0; i--; fp++, phase+=phsinc)
-      *fp = sin(phase);
+    for(i=COSTABSIZE+1, fp=fader_table_sin, phase1=0; i--; fp++, phase1+=phsinc)
+      *fp = sin(phase1);
   }
-  if(!fader_table_sinhann)
+  if(!fader_table_hannsin)
   {
-    fader_table_sinhann = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
-    for(i=COSTABSIZE+1, fp=fader_table_sinhann, phase=0; i--; fp++, phase+=phsinc)
+    fader_table_hannsin = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
+    for(i=COSTABSIZE+1, fp=fader_table_hannsin, phase1=0; i--; fp++, phase1+=phsinc)
     {
-      fff = sin(phase);
+      fff = sin(phase1);
       *fp = fff*sqrt(fff);
     }
   }
   if(!fader_table_hann)
   {
     fader_table_hann = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
-    for(i=COSTABSIZE+1, fp=fader_table_hann, phase=0; i--; fp++, phase+=phsinc)
+    for(i=COSTABSIZE+1, fp=fader_table_hann, phase1=0; i--; fp++, phase1+=phsinc)
     {
-      fff = sin(phase);
+      fff = sin(phase1);
       *fp = fff*fff;
     }
   }
-  phsinc = 1.0 / ((t_float)COSTABSIZE*0.99999);
   if(!fader_table_lin)
   {
     fader_table_lin = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
-    for(i=COSTABSIZE+1, fp=fader_table_lin, phase=0; i--; fp++, phase+=phsinc)
-      *fp = phase;
+    for(i=COSTABSIZE+1, fp=fader_table_lin, phase1=0; i--; fp++, phase1+=phlinc)
+      *fp = phase1;
   }
-  if(!fader_table_linsqrt)
+  if(!fader_table_linsin)
   {
-    fader_table_linsqrt = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
-    for(i=COSTABSIZE+1, fp=fader_table_linsqrt, phase=0; i--; fp++, phase+=phsinc)
-      *fp = pow(phase, 0.75);
+    fader_table_linsin = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
+    for(i=COSTABSIZE+1, fp=fader_table_linsin, phase1=phase2=0; i--; fp++, phase1+=phlinc, phase2+=phsinc)
+      *fp = sqrt(phase1 * sin(phase2));
   }
   if(!fader_table_quartic)
   {
     fader_table_quartic = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
-    for(i=COSTABSIZE+1, fp=fader_table_quartic, phase=0; i--; fp++, phase+=phsinc)
-        *fp = pow(phase, 4);
+    for(i=COSTABSIZE+1, fp=fader_table_quartic, phase1=0; i--; fp++, phase1+=phlinc)
+        *fp = pow(phase1, 4);
   }
   if(!fader_table_sqrt)
   {
     fader_table_sqrt = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
-    for(i=COSTABSIZE+1, fp=fader_table_sqrt, phase=0; i--; fp++, phase+=phsinc)
-      *fp = sqrt(phase);
+    for(i=COSTABSIZE+1, fp=fader_table_sqrt, phase1=0; i--; fp++, phase1+=phlinc)
+      *fp = sqrt(phase1);
   }
   tf.tf_d = UNITBIT32 + 0.5;
   if((unsigned)tf.tf_i[LOWOFFSET] != 0x80000000)
@@ -221,10 +225,10 @@ void fader_tilde_setup(void){
   CLASS_MAINSIGNALIN(fader_tilde_class, t_fader_tilde, x_f);
   class_addmethod(fader_tilde_class, (t_method)fader_tilde_dsp, gensym("dsp"), 0);
     class_addmethod(fader_tilde_class, (t_method)fader_lin, gensym("lin"), 0);
-    class_addmethod(fader_tilde_class, (t_method)fader_linsqrt, gensym("linsqrt"), 0);
+    class_addmethod(fader_tilde_class, (t_method)fader_linsin, gensym("linsin"), 0);
     class_addmethod(fader_tilde_class, (t_method)fader_sqrt, gensym("sqrt"), 0);
     class_addmethod(fader_tilde_class, (t_method)fader_sin, gensym("sin"), 0);
-    class_addmethod(fader_tilde_class, (t_method)fader_sinhann, gensym("sinhann"), 0);
+    class_addmethod(fader_tilde_class, (t_method)fader_hannsin, gensym("hannsin"), 0);
     class_addmethod(fader_tilde_class, (t_method)fader_hann, gensym("hann"), 0);
     class_addmethod(fader_tilde_class, (t_method)fader_quartic, gensym("quartic"), 0);
   fader_tilde_maketable();
