@@ -1,7 +1,61 @@
 // porres 2017
 
 #include "m_pd.h"
-#include "math.h"
+#include <math.h>
+
+#define UNITBIT32 1572864.  /* 3*2^19; bit 32 has place value 1 */
+
+#define HALF_PI M_PI * 0.5
+
+/* machine-dependent definitions.  These ifdefs really
+ should have been by CPU type and not by operating system! */
+#ifdef IRIX
+/* big-endian.  Most significant byte is at low address in memory */
+#define HIOFFSET 0    /* word offset to find MSB */
+#define LOWOFFSET 1    /* word offset to find LSB */
+#define int32 long  /* a data type that has 32 bits */
+#endif /* IRIX */
+
+#ifdef MSW
+/* little-endian; most significant byte is at highest address */
+#define HIOFFSET 1
+#define LOWOFFSET 0
+#define int32 long
+#endif /* MSW */
+
+#if defined(__FreeBSD__) || defined(__APPLE__)
+#include <machine/endian.h>
+#endif
+
+#ifdef __linux__
+#include <endian.h>
+#endif
+
+#if defined(__unix__) || defined(__APPLE__)
+#if !defined(BYTE_ORDER) || !defined(LITTLE_ENDIAN)
+#error No byte order defined
+#endif
+
+#if BYTE_ORDER == LITTLE_ENDIAN
+#define HIOFFSET 1
+#define LOWOFFSET 0
+#else
+#define HIOFFSET 0    /* word offset to find MSB */
+#define LOWOFFSET 1    /* word offset to find LSB */
+#endif /* __BYTE_ORDER */
+#include <sys/types.h>
+#define int32 int32_t
+#endif /* __unix__ or __APPLE__*/
+
+t_float *autofade_table_lin=(t_float *)0L;
+t_float *autofade_table_linsin=(t_float *)0L;
+t_float *autofade_table_sqrt=(t_float *)0L;
+t_float *autofade_table_quartic=(t_float *)0L;
+t_float *autofade_table_sin=(t_float *)0L;
+t_float *autofade_table_hannsin=(t_float *)0L;
+t_float *autofade_table_hann=(t_float *)0L;
+
+
 
 typedef struct _autofade{
     t_object x_obj;
@@ -14,10 +68,46 @@ typedef struct _autofade{
     t_float  x_sr_khz;
     double   x_incr;
     int      x_nleft;
+    t_float *x_table;
 } t_autofade;
 
+union tabfudge_d{
+    double tf_d;
+    int32 tf_i[2];
+};
 
 static t_class *autofade_class;
+
+static void autofade_lin(t_autofade *x){
+    x->x_table = autofade_table_lin;
+}
+
+static void autofade_linsin(t_autofade *x){
+    x->x_table = autofade_table_linsin;
+}
+
+static void autofade_sqrt(t_autofade *x){
+    x->x_table = autofade_table_sqrt;
+}
+
+static void autofade_quartic(t_autofade *x){
+    x->x_table = autofade_table_quartic;
+}
+
+
+static void autofade_sin(t_autofade *x){
+    x->x_table = autofade_table_sin;
+}
+
+static void autofade_hannsin(t_autofade *x){
+    x->x_table = autofade_table_hannsin;
+}
+
+static void autofade_hann(t_autofade *x){
+    x->x_table = autofade_table_hann;
+}
+
+
 
 static t_int *autofade_perform(t_int *w){
     t_autofade *x = (t_autofade *)(w[1]);
@@ -30,6 +120,15 @@ static t_int *autofade_perform(t_int *w){
     t_float target = x->x_target;
     double incr = x->x_incr;
     int nleft = x->x_nleft;
+    
+    t_float *tab = x->x_table, *addr, f1, f2, frac;
+    double dphase;
+    int normhipart;
+    union tabfudge_d tf;
+    
+    tf.tf_d = UNITBIT32;
+    normhipart = tf.tf_i[HIOFFSET];
+    
     while (nblock--){
         t_float in = *in1++;
         t_float f = *in2++;
@@ -107,6 +206,8 @@ static void *autofade_new(t_floatarg ms){
     x->x_nleft = 0;
     x->x_coef = 0.;
     
+    x->x_table = autofade_table_quartic; // default
+    
     inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     
     x->x_inlet_ms = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -115,9 +216,78 @@ static void *autofade_new(t_floatarg ms){
     return (x);
 }
 
+static void autofade_tilde_maketable(void){
+    int i;
+    t_float *fp, phase1, phase2, fff;
+    t_float phlinc = 1.0 / ((t_float)COSTABSIZE*0.99999);
+    t_float phsinc = HALF_PI * phlinc;
+    union tabfudge_d tf;
+    
+    if(!autofade_table_sin)
+    {
+        autofade_table_sin = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
+        for(i=COSTABSIZE+1, fp=autofade_table_sin, phase1=0; i--; fp++, phase1+=phsinc)
+            *fp = sin(phase1);
+    }
+    if(!autofade_table_hannsin)
+    {
+        autofade_table_hannsin = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
+        for(i=COSTABSIZE+1, fp=autofade_table_hannsin, phase1=0; i--; fp++, phase1+=phsinc)
+        {
+            fff = sin(phase1);
+            *fp = fff*sqrt(fff);
+        }
+    }
+    if(!autofade_table_hann)
+    {
+        autofade_table_hann = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
+        for(i=COSTABSIZE+1, fp=autofade_table_hann, phase1=0; i--; fp++, phase1+=phsinc)
+        {
+            fff = sin(phase1);
+            *fp = fff*fff;
+        }
+    }
+    if(!autofade_table_lin)
+    {
+        autofade_table_lin = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
+        for(i=COSTABSIZE+1, fp=autofade_table_lin, phase1=0; i--; fp++, phase1+=phlinc)
+            *fp = phase1;
+    }
+    if(!autofade_table_linsin)
+    {
+        autofade_table_linsin = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
+        for(i=COSTABSIZE+1, fp=autofade_table_linsin, phase1=phase2=0; i--; fp++, phase1+=phlinc, phase2+=phsinc)
+            *fp = sqrt(phase1 * sin(phase2));
+    }
+    if(!autofade_table_quartic)
+    {
+        autofade_table_quartic = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
+        for(i=COSTABSIZE+1, fp=autofade_table_quartic, phase1=0; i--; fp++, phase1+=phlinc)
+            *fp = pow(phase1, 4);
+    }
+    if(!autofade_table_sqrt)
+    {
+        autofade_table_sqrt = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
+        for(i=COSTABSIZE+1, fp=autofade_table_sqrt, phase1=0; i--; fp++, phase1+=phlinc)
+            *fp = sqrt(phase1);
+    }
+    tf.tf_d = UNITBIT32 + 0.5;
+    if((unsigned)tf.tf_i[LOWOFFSET] != 0x80000000)
+        bug("autofade~: unexpected machine alignment");
+}
+
+
 void autofade_tilde_setup(void){
     autofade_class = class_new(gensym("autofade~"), (t_newmethod)autofade_new, 0,
                 sizeof(t_autofade), 0, A_DEFFLOAT, 0);
     class_addmethod(autofade_class, nullfn, gensym("signal"), 0);
     class_addmethod(autofade_class, (t_method) autofade_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(autofade_class, (t_method)autofade_lin, gensym("lin"), 0);
+    class_addmethod(autofade_class, (t_method)autofade_linsin, gensym("linsin"), 0);
+    class_addmethod(autofade_class, (t_method)autofade_sqrt, gensym("sqrt"), 0);
+    class_addmethod(autofade_class, (t_method)autofade_sin, gensym("sin"), 0);
+    class_addmethod(autofade_class, (t_method)autofade_hannsin, gensym("hannsin"), 0);
+    class_addmethod(autofade_class, (t_method)autofade_hann, gensym("hann"), 0);
+    class_addmethod(autofade_class, (t_method)autofade_quartic, gensym("quartic"), 0);
+    autofade_tilde_maketable();
 }

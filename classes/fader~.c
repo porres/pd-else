@@ -119,7 +119,7 @@ static void *fader_tilde_new(t_symbol *s){
     else if(s == gensym("quartic"))
         x->x_table = fader_table_quartic;
     else
-      x->x_table = fader_table_sin; // default
+      x->x_table = fader_table_quartic; // default
   return (x);
 }
 
