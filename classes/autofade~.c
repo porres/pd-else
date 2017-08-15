@@ -136,6 +136,9 @@ static t_int *autofade_perform(t_int *w){
         t_float ms = *in3++;
         if (ms < 0)
             ms = 0;
+        
+        t_float phase;
+        
         x->x_n = roundf(ms * x->x_sr_khz);
         double coef;
         if (x->x_n == 0)
@@ -149,7 +152,22 @@ static t_int *autofade_perform(t_int *w){
                 if (x->x_n > 1){
                     incr = (f - last) * x->x_coef;
                     nleft = x->x_n;
-                    *out++ = in * (last += incr);
+                    
+                    phase = last += incr;
+                    if (phase > 1)
+                        phase = 1;
+                    if (phase < 0)
+                        phase = 0;
+                    
+                    dphase = (double)(phase * (t_float)(COSTABSIZE) * 0.99999) + UNITBIT32;
+                    tf.tf_d = dphase;
+                    addr = tab + (tf.tf_i[HIOFFSET] & (COSTABSIZE-1));
+                    tf.tf_i[HIOFFSET] = normhipart;
+                    frac = tf.tf_d - UNITBIT32;
+                    f1 = addr[0];
+                    f2 = addr[1];
+                    *out++ = in * (f1 + frac * (f2 - f1));
+                    
                     continue;
                     }
                 }
@@ -165,7 +183,22 @@ static t_int *autofade_perform(t_int *w){
                 if (x->x_n > 1){
                     incr = (f - last) * x->x_coef;
                     nleft = x->x_n;
-                    *out++ = in * (last += incr);
+                    
+                    phase = last += incr;
+                    if (phase > 1)
+                        phase = 1;
+                    if (phase < 0)
+                        phase = 0;
+                    
+                    dphase = (double)(phase * (t_float)(COSTABSIZE) * 0.99999) + UNITBIT32;
+                    tf.tf_d = dphase;
+                    addr = tab + (tf.tf_i[HIOFFSET] & (COSTABSIZE-1));
+                    tf.tf_i[HIOFFSET] = normhipart;
+                    frac = tf.tf_d - UNITBIT32;
+                    f1 = addr[0];
+                    f2 = addr[1];
+                    *out++ = in * (f1 + frac * (f2 - f1));
+                    
                     continue;
                 }
             }
@@ -176,7 +209,22 @@ static t_int *autofade_perform(t_int *w){
         }
         
         else if (nleft > 0){
-            *out++ = in * (last += incr);
+            
+            phase = last += incr;
+            if (phase > 1)
+                phase = 1;
+            if (phase < 0)
+                phase = 0;
+            
+            dphase = (double)(phase * (t_float)(COSTABSIZE) * 0.99999) + UNITBIT32;
+            tf.tf_d = dphase;
+            addr = tab + (tf.tf_i[HIOFFSET] & (COSTABSIZE-1));
+            tf.tf_i[HIOFFSET] = normhipart;
+            frac = tf.tf_d - UNITBIT32;
+            f1 = addr[0];
+            f2 = addr[1];
+            *out++ = in * (f1 + frac * (f2 - f1));
+            
             if (--nleft == 1){
                 incr = 0.;
                 last = target;

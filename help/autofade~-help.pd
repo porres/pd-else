@@ -32,16 +32,12 @@
 ;
 #X text 155 340 float/signal;
 #X obj 184 234 else/out~;
-#X obj 203 146 else/brown~;
 #X obj 2 3 cnv 15 301 42 empty empty autofade~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X text 249 318 - input signal;
-#X obj 268 175 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X text 61 86 [autofade~] generates a;
 #X obj 129 363 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
 #X text 155 363 float/signal;
@@ -50,14 +46,22 @@
 #X text 248 339 - gate;
 #X text 248 362 - fade time in ms;
 #X text 187 425 1) float - fade time in ms (default 0);
-#X text 249 395 - faded signal;
-#X text 379 177 fade time;
+#X text 390 177 fade time;
 #X text 287 175 gate;
-#X obj 333 178 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 203 202 else/autofade~ 10000;
-#X connect 18 0 34 0;
-#X connect 22 0 34 1;
-#X connect 33 0 34 2;
-#X connect 34 0 17 0;
-#X connect 34 0 17 1;
+#X obj 333 178 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 5000 256;
+#X text 249 395 - autofaded signal;
+#X obj 267 176 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 203 202 else/autofade~ 1000;
+#X obj 202 146 else/brown~;
+#X msg 120 164 quartic;
+#X text 61 86 [autofade~] is an automatic fade in/out envelope generator
+that responds to a gate control.;
+#X text 372 238 args \; help \; see also fader~;
+#X connect 29 0 32 2;
+#X connect 31 0 32 1;
+#X connect 32 0 17 0;
+#X connect 32 0 17 1;
+#X connect 33 0 32 0;
+#X connect 34 0 32 0;
