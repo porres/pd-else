@@ -35,7 +35,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (128 objects):
+Current Object list (129 objects):
 
 PHYSICAL MODELLING: [1]
 - [pluck~]
@@ -132,9 +132,10 @@ SIGNAL ANALYSIS: [10]
 - [vu~]
 - [zerocross~]
 
-CONTROL: [6]
+CONTROL: [7]
  - [decay~]
  - [decay2~]
+ - [fader~]
  - [glide~]
  - [glide2~]
  - [ramp~]
