@@ -245,7 +245,7 @@ static void autofade_dsp(t_autofade *x, t_signal **sp){
         sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void *autofade_new(t_floatarg ms){
+static void *autofade_new(t_symbol *s, int argc, t_atom *argv){
     t_autofade *x = (t_autofade *)pd_new(autofade_class);
     x->x_sr_khz = sys_getsr() * 0.001;
     x->x_last = 0.;
@@ -253,8 +253,83 @@ static void *autofade_new(t_floatarg ms){
     x->x_incr = 0.;
     x->x_nleft = 0;
     x->x_coef = 0.;
-    
     x->x_table = autofade_table_quartic; // default
+    t_float ms = 0; // default
+/////////////////////////////////////////////////////////////////////////////////////
+    if(argc){
+        if(argc == 1){
+            if(argv -> a_type == A_FLOAT){ //if current argument is a float
+                t_float argval = atom_getfloatarg(0, argc, argv);
+                ms = argval;
+            }
+            else if (argv -> a_type == A_SYMBOL){
+                t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
+                if(strcmp(curarg->s_name, "lin")==0)
+                    x->x_table = autofade_table_lin;
+                else if(strcmp(curarg->s_name, "linsin")==0)
+                    x->x_table = autofade_table_linsin;
+                else if(strcmp(curarg->s_name, "sqrt")==0)
+                    x->x_table = autofade_table_sqrt;
+                else if(strcmp(curarg->s_name, "sin")==0)
+                    x->x_table = autofade_table_sin;
+                else if(strcmp(curarg->s_name, "hannsin")==0)
+                    x->x_table = autofade_table_hannsin;
+                else if(strcmp(curarg->s_name, "linsin")==0)
+                    x->x_table = autofade_table_linsin;
+                else if(strcmp(curarg->s_name, "hann")==0)
+                    x->x_table = autofade_table_hann;
+                else if(strcmp(curarg->s_name, "quartic")==0)
+                    x->x_table = autofade_table_quartic;
+                else
+                    goto errstate;
+            }
+            else
+                goto errstate;
+        }
+        else if (argc == 2){
+            int argnum = 0;
+            while(argc > 0){
+                if (argv -> a_type == A_SYMBOL){
+                    t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
+                    if(strcmp(curarg->s_name, "lin")==0)
+                        x->x_table = autofade_table_lin;
+                    else if(strcmp(curarg->s_name, "linsin")==0)
+                        x->x_table = autofade_table_linsin;
+                    else if(strcmp(curarg->s_name, "sqrt")==0)
+                        x->x_table = autofade_table_sqrt;
+                    else if(strcmp(curarg->s_name, "sin")==0)
+                        x->x_table = autofade_table_sin;
+                    else if(strcmp(curarg->s_name, "hannsin")==0)
+                        x->x_table = autofade_table_hannsin;
+                    else if(strcmp(curarg->s_name, "linsin")==0)
+                        x->x_table = autofade_table_linsin;
+                    else if(strcmp(curarg->s_name, "hann")==0)
+                        x->x_table = autofade_table_hann;
+                    else
+                        goto errstate;
+                }
+                else if(argv -> a_type == A_FLOAT){ //if current argument is a float
+                    t_float argval = atom_getfloatarg(0, argc, argv);
+                    switch(argnum){
+                        case 0:
+                            goto errstate;
+                            break;
+                        case 1:
+                            ms = argval;
+                            break;
+                        default:
+                            break;
+                    };
+                }
+                argnum++;
+                argc--;
+                argv++;
+            }
+        }
+        else
+            goto errstate;
+    }
+/////////////////////////////////////////////////////////////////////////////////////
     
     inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     
@@ -262,6 +337,9 @@ static void *autofade_new(t_floatarg ms){
         pd_float((t_pd *)x->x_inlet_ms, ms);
     outlet_new((t_object *)x, &s_signal);
     return (x);
+    errstate:
+        pd_error(x, "autofade~: improper args");
+        return NULL;
 }
 
 static void autofade_tilde_maketable(void){
@@ -327,7 +405,7 @@ static void autofade_tilde_maketable(void){
 
 void autofade_tilde_setup(void){
     autofade_class = class_new(gensym("autofade~"), (t_newmethod)autofade_new, 0,
-                sizeof(t_autofade), 0, A_DEFFLOAT, 0);
+                sizeof(t_autofade), 0, A_GIMME, 0);
     class_addmethod(autofade_class, nullfn, gensym("signal"), 0);
     class_addmethod(autofade_class, (t_method) autofade_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(autofade_class, (t_method)autofade_lin, gensym("lin"), 0);
