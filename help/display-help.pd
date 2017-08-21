@@ -1,4 +1,85 @@
-#N canvas 665 152 573 254 10;
-#X obj 153 115 display 18;
-#X text 253 177 0 is auto-resize;
-#X coords 0 254 1 253 85 22 0;
+#N canvas 180 165 598 627 10;
+#X obj 4 332 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 430 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 463 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 4 541 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 129 439 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 129 340 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 191 340 signal;
+#X text 191 439 signal;
+#X obj 2 4 cnv 15 301 42 empty empty display 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 4 graph;
+#X obj 23 41 cnv 4 4 4 empty empty Exponential 0 28 2 18 -233017 -1
+0;
+#X obj 117 41 cnv 4 4 4 empty empty decay 0 28 2 18 -233017 -1 0;
+#X obj 129 383 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 155 383 float/signal;
+#X text 197 358 clear;
+#X text 240 358 - clears filter's memory;
+#X text 185 469 1) float - attack in ms (default 100);
+#X text 239 382 - attack time in ms;
+#X obj 129 405 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 155 405 float/signal;
+#X text 239 404 - decay time in ms;
+#X text 240 340 - impulse signal to be decayed;
+#X text 240 439 - decayed signal;
+#X text 61 87 [decay2~] is like [decay~] \, but it has an attack time
+parameter.;
+#X text 185 487 1) float - decay in ms (default 1000);
+#N canvas 298 23 448 429 more 0;
+#X obj 153 224 *~;
+#X obj 114 143 osc~ 440;
+#X obj 199 115 else/decay~ 500;
+#X obj 184 149 else/decay~ 2000;
+#X obj 184 78 else/imp~ 1;
+#X obj 184 183 -~;
+#X obj 153 263 else/out~;
+#X text 297 115 attack;
+#X text 292 150 release;
+#X text 49 34 [decay2~] can be implemented with two [decay~] objects
+like this:;
+#X text 36 349 Note: if the attack time is equal to the decay time
+\, then the signal cancels out. Moreover \, if the attack time is greater
+than the decay time \, then the polarity is inverted.;
+#X connect 0 0 6 0;
+#X connect 0 0 6 1;
+#X connect 1 0 0 0;
+#X connect 2 0 5 1;
+#X connect 3 0 5 0;
+#X connect 4 0 3 0;
+#X connect 4 0 2 0;
+#X connect 5 0 0 1;
+#X restore 456 291 pd more;
+#X obj 7 512 cnv 3 550 3 empty empty more_info 8 12 0 13 -228856 -1
+0;
+#X text 143 520 Object based on SuperCollider's "Decay2" UGEN.;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 172 206 else/display 8;
+#X coords 0 627 1 626 85 22 0;

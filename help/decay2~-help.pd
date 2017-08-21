@@ -15,25 +15,12 @@
 #X text 191 438 signal;
 #X obj 2 3 cnv 15 301 42 empty empty decay2~ 20 20 2 37 -233017 -1
 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
 #X obj 23 40 cnv 4 4 4 empty empty Exponential 0 28 2 18 -233017 -1
 0;
 #X obj 117 40 cnv 4 4 4 empty empty decay 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
 #X obj 129 382 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 155 382 float/signal;
@@ -87,10 +74,27 @@ than the decay time \, then the polarity is inverted.;
 #X obj 295 213 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
 -1 -1 0 1;
 #X text 318 306 0;
-#X connect 22 0 21 0;
-#X connect 22 0 21 1;
-#X connect 24 0 41 0;
-#X connect 26 0 22 0;
-#X connect 27 0 40 0;
-#X connect 40 0 22 1;
-#X connect 40 0 24 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X connect 16 0 15 0;
+#X connect 16 0 15 1;
+#X connect 18 0 35 0;
+#X connect 20 0 16 0;
+#X connect 21 0 34 0;
+#X connect 34 0 16 1;
+#X connect 34 0 18 0;
