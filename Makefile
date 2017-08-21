@@ -98,6 +98,7 @@ sine~.class.sources := classes/sine~.c
 square~.class.sources := classes/square~.c
 standard~.class.sources := classes/standard~.c
 susloop~.class.sources := classes/susloop~.c
+symbol2.class.sources := classes/symbol2.c
 tgate~.class.sources := classes/tgate~.c
 toggleff~.class.sources := classes/toggleff~.c
 togedge~.class.sources := classes/togedge~.c
