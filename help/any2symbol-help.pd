@@ -1,10 +1,59 @@
-#N canvas 794 26 392 269 10;
-#X obj 112 110 any2symbol;
-#X msg 112 71 1 2 3 4;
-#X obj 112 145 print;
-#X floatatom 186 76 5 0 0 0 - - -, f 5;
-#X msg 232 76 x a;
-#X connect 0 0 2 0;
-#X connect 1 0 0 0;
-#X connect 3 0 0 0;
-#X connect 4 0 0 0;
+#N canvas 308 145 559 411 10;
+#X obj 4 269 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 302 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 337 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 116 311 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 370 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 3 4 cnv 15 301 42 empty empty any2symbol 20 20 2 37 -233017
+-1 0;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 4 graph;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 41 cnv 4 4 4 empty empty Convert 0 28 2 18 -233017 -1 0;
+#X obj 90 41 cnv 4 4 4 empty empty anything 0 28 2 18 -233017 -1 0
+;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 116 279 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 72 93 [any2symbol] converts any message to a symbol message.
+;
+#X obj 199 199 else/any2symbol;
+#X text 141 280 anything;
+#X text 154 311 symbol;
+#X text 208 311 - the converted symbol message;
+#X text 152 346 (none);
+#X text 208 280 - any message to be converted to a symbol;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 4 pd;
+#X obj 160 41 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
+#X obj 181 41 cnv 4 4 4 empty empty symbol 0 28 2 18 -233017 -1 0;
+#X symbolatom 199 239 25 0 0 0 - - -, f 25;
+#X msg 199 133 1 2 3 4;
+#X obj 168 160 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 273 157 a b c;
+#X floatatom 209 158 7 0 0 0 - - -, f 7;
+#X connect 18 0 27 0;
+#X connect 28 0 18 0;
+#X connect 29 0 18 0;
+#X connect 30 0 18 0;
+#X connect 31 0 18 0;
