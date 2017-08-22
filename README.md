@@ -35,16 +35,16 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (130 objects):
-
-PHYSICAL MODELLING: [1]
-- [pluck~]
+Current Object list (132 objects):
 
 AUDIO PROCESSING: [4]
 - [downsample~]
 - [apass2~]
 - [fbcomb~]
 - [fbdelay~]
+
+PHYSICAL MODELLING: [1]
+- [pluck~]
 
 OSCILLATORS (DETERMINISTIC GENERATORS): [13]
 - [cosine~]
@@ -142,7 +142,8 @@ CONTROL: [8]
  - [ramp~]
  - [susloop~]
 
-GUI: [9]
+GUI: [10]
+- [display]
 - [out~]
 - [gain~]
 - [gain2~]
@@ -174,7 +175,8 @@ CONSTANT VALUES: [4]
 - [sr~]
 - [e]
 
-CONVERSION: [16]
+CONVERSION: [17]
+- [any2symbol]
 - [cents2rato]
 - [cents2ratio~]
 - [db2lin]
