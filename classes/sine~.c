@@ -27,8 +27,8 @@ typedef struct _sine
 
 void sine_ft1(t_sine *x, t_float f)
 {
-    x->x_phase = f;
-    pd_error(x, "I got %.2f", f);
+//    x->x_phase = f;
+//    pd_error(x, "I got %.2f", f);
 }
 
 
@@ -48,12 +48,13 @@ static t_int *sine_perform(t_int *w)
     
     if (!magic_isnan(*x->x_signalscalar))
         {
-        sine_ft1(x, *scalar);
+//        sine_ft1(x, *scalar);
+        x->x_phase = *scalar;
         magic_setnan(x->x_signalscalar);
         }
     
-    pd_error(x, "phase is %.2f", phase);
-    pd_error(x, "scalar is %.2f", *scalar);
+//    pd_error(x, "phase is %.2f", phase);
+//    pd_error(x, "scalar is %.2f", *scalar);
     
     while (nblock--){
 
