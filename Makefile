@@ -116,10 +116,7 @@ wrap2~.class.sources := classes/wrap2~.c
 zerocross~.class.sources := classes/zerocross~.c
 
 # magic
-
-magicbit := shared/magicbit.c
-
-sine~.class.sources := classes/sine~.c $(magicbit)
+sine~.class.sources := classes/sine~.c
 
 #########################################################################
 
