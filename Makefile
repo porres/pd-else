@@ -31,10 +31,10 @@ ceil.class.sources := classes/ceil.c
 ceil~.class.sources := classes/ceil~.c
 cents2ratio~.class.sources := classes/cents2ratio~.c
 coin~.class.sources := classes/coin~.c
+cosine~.class.sources := classes/cosine~.c
 changed~.class.sources := classes/changed~.c
 changed2~.class.sources := classes/changed2~.c
 crackle~.class.sources := classes/crackle~.c
-cosine~.class.sources := classes/cosine~.c
 cusp~.class.sources := classes/cusp~.c
 decay~.class.sources := classes/decay~.c
 decay2~.class.sources := classes/decay2~.c
@@ -94,7 +94,6 @@ sawtooth2~.class.sources := classes/sawtooth2~.c
 sh~.class.sources := classes/sh~.c
 stepnoise~.class.sources := classes/stepnoise~.c
 sin~.class.sources := classes/sin~.c
-sine~.class.sources := classes/sine~.c
 square~.class.sources := classes/square~.c
 standard~.class.sources := classes/standard~.c
 susloop~.class.sources := classes/susloop~.c
@@ -115,6 +114,12 @@ xselect2~.class.sources := classes/xselect2~.c
 wrap2.class.sources := classes/wrap2.c
 wrap2~.class.sources := classes/wrap2~.c
 zerocross~.class.sources := classes/zerocross~.c
+
+# magic
+
+magicbit := shared/magicbit.c
+
+sine~.class.sources := classes/sine~.c $(magicbit)
 
 #########################################################################
 

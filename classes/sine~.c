@@ -2,7 +2,7 @@
 
 #include "m_pd.h"
 #include "math.h"
-#include "shared/magicbit.h"
+#include "magicbit.h"
 
 #define TWOPI (M_PI * 2)
 
