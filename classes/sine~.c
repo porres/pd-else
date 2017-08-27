@@ -25,10 +25,65 @@ typedef struct _sine
     t_float  x_phase_sync_float; // float from magic
 } t_sine;
 
-static void sine_ft1(t_sine *x, t_float f)
+void sine_ft1(t_sine *x, t_float f)
 {
     x->x_phase = f;
+    pd_error(x, "I got %.2f", f);
 }
+
+
+static t_int *sine_perform(t_int *w)
+{
+    t_sine *x = (t_sine *)(w[1]);
+    int nblock = (t_int)(w[2]);
+    t_float *in1 = (t_float *)(w[3]); // freq
+    t_float *in3 = (t_float *)(w[4]); // phase
+    t_float *out = (t_float *)(w[5]);
+    double phase = x->x_phase;
+    double last_phase_offset = x->x_last_phase_offset;
+    double sr = x->x_sr;
+    double output;
+    
+    t_float *scalar = x->x_signalscalar;
+    
+    if (!magic_isnan(*x->x_signalscalar))
+        {
+        sine_ft1(x, *scalar);
+        magic_setnan(x->x_signalscalar);
+        }
+    
+    pd_error(x, "phase is %.2f", phase);
+    pd_error(x, "scalar is %.2f", *scalar);
+    
+    while (nblock--){
+
+        double hz = *in1++;
+        double phase_offset = *in3++;
+        double phase_step = hz / sr; // phase_step
+        phase_step = phase_step > 0.5 ? 0.5 : phase_step < -0.5 ? -0.5 : phase_step; // clipped to nyq
+        double phase_dev = phase_offset - last_phase_offset;
+        if (phase_dev >= 1 || phase_dev <= -1)
+            phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
+        
+        phase = phase + phase_dev;
+        
+        
+        
+        if (phase <= 0)
+            phase = phase + 1.; // wrap deviated phase
+        if (phase >= 1)
+            phase = phase - 1.; // wrap deviated phase
+
+        *out++ = sin(phase * TWOPI);
+        
+        phase = phase + phase_step; // next phase
+        last_phase_offset = phase_offset; // last phase offset
+    }
+    x->x_phase = phase;
+    x->x_last_phase_offset = last_phase_offset;
+    return (w + 6);
+}
+
 
 static t_int *sine_perform_sig(t_int *w)
 {
