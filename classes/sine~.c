@@ -22,10 +22,15 @@ typedef struct _sine
     t_glist *x_glist; // object list
     t_float *x_signalscalar; // right inlet's float field
     int x_hasfeeders; // right inlet connection flag
-    t_float  x_phase_sync; // float from magic
+    t_float  x_phase_sync_float; // float from magic
 } t_sine;
 
-static t_int *sine_perform(t_int *w)
+static void sine_ft1(t_sine *x, t_float f)
+{
+    x->x_phase = f;
+}
+
+static t_int *sine_perform_sig(t_int *w)
 {
     t_sine *x = (t_sine *)(w[1]);
     int nblock = (t_int)(w[2]);
@@ -37,37 +42,40 @@ static t_int *sine_perform(t_int *w)
     double last_phase_offset = x->x_last_phase_offset;
     double sr = x->x_sr;
     double output;
-// Magic
-    t_float *scalar = x->x_signalscalar;
-    x->x_phase_sync = *scalar;
-    while (nblock--)
-    {
-        double hz = *in1++;
-        double trig = *in2++;
-        double phase_offset = *in3++;
+    t_float *scalar = x->x_signalscalar; // Magic
+    pd_error(x, "sine~: float input is %.2f", *scalar);
+    while (nblock--){
 // Magic start
+        t_float trig;
         if (x->x_hasfeeders)
             trig = *in2++;
-        else
-            trig = x->x_phase_sync;
+        else {
+          //  trig = *scalar; ???
+            }
 // Magic end
+        double hz = *in1++;
+        double phase_offset = *in3++;
         double phase_step = hz / sr; // phase_step
         phase_step = phase_step > 0.5 ? 0.5 : phase_step < -0.5 ? -0.5 : phase_step; // clipped to nyq
         double phase_dev = phase_offset - last_phase_offset;
         if (phase_dev >= 1 || phase_dev <= -1)
             phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
+        
 // Magic Start
-        if (x->x_hasfeeders)
+        if (x->x_hasfeeders){
             if (trig > 0 && trig <= 1)
                 phase = trig;
-        else
-            phase = trig;
-// Magic end
-        else{
-            phase = phase + phase_dev;
-            if (phase <= 0) phase = phase + 1.; // wrap deviated phase
-            if (phase >= 1) phase = phase - 1.; // wrap deviated phase
+            else{
+                phase = phase + phase_dev;
+                if (phase <= 0) phase = phase + 1.; // wrap deviated phase
+                if (phase >= 1) phase = phase - 1.; // wrap deviated phase
             }
+        }
+        else{
+            // ???
+            }
+// end of magic
+
         *out++ = sin(phase * TWOPI);
         
         phase = phase + phase_step; // next phase
@@ -82,8 +90,17 @@ static void sine_dsp(t_sine *x, t_signal **sp)
 {
     x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal); // magic feeder flag
     x->x_sr = sp[0]->s_sr;
-    dsp_add(sine_perform, 6, x, sp[0]->s_n,
+    
+    if (x->x_hasfeeders){
+        dsp_add(sine_perform_sig, 6, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+        }
+    
+    else
+    {
+        dsp_add(sine_perform, 5, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
+    }
+    
 }
 
 static void *sine_free(t_sine *x)
@@ -129,4 +146,5 @@ void sine_tilde_setup(void){
         sizeof(t_sine), CLASS_DEFAULT, A_GIMME, 0);
     CLASS_MAINSIGNALIN(sine_class, t_sine, x_freq);
     class_addmethod(sine_class, (t_method)sine_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(sine_class, (t_method)sine_ft1, gensym("ft1"), A_FLOAT, 0);
 }
