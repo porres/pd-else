@@ -33,8 +33,8 @@ void sine_phase(t_sine *x, t_float f)
 void sine_ft1(t_sine *x, t_float f)
 {
     x->x_phase = f;
-    post("*scalar is %.2f", f);
-    post("phase is %.2f", x->x_phase);
+//    post("*scalar is %.2f", f);
+//    post("phase is %.2f", x->x_phase);
 }
 
 void sine_print(t_sine *x){
@@ -49,9 +49,7 @@ static t_int *sine_perform(t_int *w){
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // sync
     t_float *in3 = (t_float *)(w[5]); // phase
-    t_float *out = (t_float *)(w[6]);
-    double phase = x->x_phase;
-    double last_phase_offset = x->x_last_phase_offset;
+    t_float *out = (t_float *)(w[6]);    double last_phase_offset = x->x_last_phase_offset;
     double sr = x->x_sr;
     double output;
     
@@ -59,11 +57,14 @@ static t_int *sine_perform(t_int *w){
     
     if (!magic_isnan(*x->x_signalscalar))
         {
-        sine_ft1(x, *scalar);
-//        x->x_phase = *scalar;
+//        sine_ft1(x, *scalar);
+        x->x_phase = *scalar;
+//        post("phase is %.2f", x->x_phase);
         magic_setnan(x->x_signalscalar);
         }
     
+    double phase = x->x_phase;
+
     while (nblock--){
 
         double hz = *in1++;
