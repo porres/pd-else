@@ -160,10 +160,10 @@ static void *impulse_new(t_floatarg f1, t_floatarg f2)
     x->x_last_phase_offset = 0;
     x->x_freq = init_freq;
     x->x_sr = sys_getsr(); // sample rate
-    x->x_inlet_phase = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_phase, init_phase);
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_sync, 0);
+        pd_float((t_pd *)x->x_inlet_sync, 0);
+    x->x_inlet_phase = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_phase, init_phase);
     x->x_outlet_dsp_0 = outlet_new(&x->x_obj, &s_signal);
 // Magic
     x->x_glist = canvas_getcurrent();

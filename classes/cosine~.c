@@ -98,7 +98,7 @@ static t_int *cosine_perform_sig(t_int *w)
             if (phase >= 1)
                 phase = phase - 1.; // wrap deviated phase
         }
-        *out++ = sin(phase * TWOPI);
+        *out++ = cos(phase * TWOPI);
         phase = phase + phase_step; // next phase
         last_phase_offset = phase_offset; // last phase offset
     }
