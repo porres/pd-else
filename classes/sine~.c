@@ -25,6 +25,11 @@ typedef struct _sine
     t_float  x_phase_sync_float; // float from magic
 } t_sine;
 
+void sine_phase(t_sine *x, t_float f)
+{
+    x->x_phase = f;
+}
+
 void sine_ft1(t_sine *x, t_float f)
 {
     x->x_phase = f;
@@ -180,5 +185,6 @@ void sine_tilde_setup(void){
     CLASS_MAINSIGNALIN(sine_class, t_sine, x_freq);
     class_addmethod(sine_class, (t_method)sine_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(sine_class, (t_method)sine_ft1, gensym("ft1"), A_FLOAT, 0);
+    class_addmethod(sine_class, (t_method)sine_phase, gensym("phase"), A_FLOAT, 0);
     class_addmethod(sine_class, (t_method)sine_print, gensym("print"), 0);
 }
