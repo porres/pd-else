@@ -1,4 +1,4 @@
-#N canvas 507 23 559 510 10;
+#N canvas 682 23 559 510 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -20,33 +20,23 @@
 0;
 #X obj 123 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
 0;
-#X obj 3 274 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
 #X obj 3 370 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 406 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
 #X obj 122 379 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 123 282 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
 #X obj 3 477 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 122 304 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X obj 122 324 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
-;
 #X text 206 379 signal -;
 #X text 187 415 1) float;
 #X text 187 434 2) float;
-#X obj 122 345 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
-;
 #X obj 214 144 nbx 5 14 -50 50 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
 #X text 274 142 <= hz;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -115,7 +105,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -178,7 +168,7 @@ second inlet.;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#N canvas 385 345 894 295 phase 0;
+#N canvas 387 302 894 295 phase 0;
 #X text 438 24 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 - where 1 is also the start of another
 cycle.;
@@ -186,10 +176,6 @@ cycle.;
 0;
 #X obj 576 191 else/out~;
 #X text 562 82 Phase Modulation:;
-#X text 19 21 The third argument sets an initial phase (or "phase offset").
-This is also settable with the third inlet. In such a way \, you have
-two objects with the same frequency falling out and back in sync. Another
-feature is phase modulation.;
 #X obj 592 138 else/pulse~ 200;
 #X obj 694 111 osc~ 50.05;
 #X text 347 116 1;
@@ -198,22 +184,26 @@ feature is phase modulation.;
 #X floatatom 206 141 4 0 0 0 - - -, f 4;
 #X text 187 116 0;
 #X obj 62 202 else/sig2float~;
-#X obj 62 230 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 62 230 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 288 202 else/sig2float~;
 #X obj 288 230 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 288 172 else/pulse~ 1;
 #X obj 62 171 else/pulse~ 1 0.5 0.5;
-#X connect 5 0 2 0;
-#X connect 5 0 2 1;
-#X connect 6 0 5 3;
-#X connect 8 0 9 0;
-#X connect 9 0 16 3;
-#X connect 11 0 12 0;
-#X connect 13 0 14 0;
-#X connect 15 0 13 0;
-#X connect 16 0 11 0;
+#X text 19 21 The third argument sets an initial phase (or "phase offset").
+This is also settable with the fourth inlet. In such a way \, you have
+two objects with the same frequency falling out and back in sync. Another
+feature is phase modulation.;
+#X connect 4 0 2 0;
+#X connect 4 0 2 1;
+#X connect 5 0 4 3;
+#X connect 7 0 8 0;
+#X connect 8 0 15 3;
+#X connect 10 0 11 0;
+#X connect 12 0 13 0;
+#X connect 14 0 12 0;
+#X connect 15 0 10 0;
 #X restore 443 239 pd phase offset;
 #X text 187 452 3) float;
 #X text 267 379 pulse signal;
@@ -261,8 +251,8 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X text 223 139 <= reset =>;
 #X text 319 180 <= impulse value of 1;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -331,7 +321,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -364,9 +354,9 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 424 222 pd;
-#X obj 88 254 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 88 254 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 254 257 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 254 257 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 254 200 else/pulse~ 1;
 #X msg 35 141 0;
@@ -393,12 +383,23 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 499 213 pd sync;
 #X text 256 415 - frequency in hertz (default 0);
 #X text 256 434 - initial pulse width (default 0.5);
-#X text 164 325 float/signal - phase offset (modulation input);
-#X text 206 345 signal - phase sync (ressets internal phase);
-#X text 165 304 float/signal - pulse width (from 0 to 1);
-#X text 164 283 float/signal - frequency in hz;
 #X text 256 452 - initial phase offset (default 0);
 #X obj 214 175 else/pulse~ 1;
-#X connect 23 0 43 0;
-#X connect 33 0 34 0;
-#X connect 43 0 33 0;
+#X obj 3 274 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 123 282 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 122 304 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 122 324 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X obj 122 345 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+;
+#X text 164 346 float/signal - phase offset (modulation input);
+#X text 165 304 float/signal - pulse width (from 0 to 1);
+#X text 164 283 float/signal - frequency in hz;
+#X text 164 326 float/signal - phase sync (ressets internal phase)
+;
+#X connect 18 0 34 0;
+#X connect 28 0 29 0;
+#X connect 34 0 28 0;

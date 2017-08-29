@@ -1,4 +1,4 @@
-#N canvas 343 166 563 459 10;
+#N canvas 693 119 563 459 10;
 #X obj 3 265 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 339 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -195,18 +195,15 @@ to another phase value.;
 #N canvas 430 175 908 347 phase 0;
 #X obj 575 122 cnv 15 200 65 empty empty empty 20 12 0 14 -233017 -66577
 0;
-#X obj 578 214 else/out~;
+#X obj 571 214 else/out~;
 #X text 572 104 Phase Modulation:;
-#X obj 688 133 osc~ 50.01;
-#X obj 593 161 else/sine~ 200;
+#X obj 695 133 osc~ 50.01;
 #X text 38 31 The second argument sets an initial phase (or "phase
 offset"). This is also settable with the third inlet. This allows you
 to control two oscillators with the same frequency falling in and out
 of phase. Another feature is phase modulation., f 54;
-#X obj 110 251 else/out~;
-#X obj 128 215 +~;
-#X obj 77 150 else/sine~ 220 0.5;
-#X obj 146 188 else/sine~ 220;
+#X obj 96 251 else/out~;
+#X obj 114 215 +~;
 #X text 376 114 1;
 #X obj 244 114 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
@@ -216,16 +213,19 @@ of phase. Another feature is phase modulation., f 54;
 #X text 464 43 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 (where 1 is also the start of another
 cycle).;
-#X connect 3 0 4 2;
-#X connect 4 0 1 0;
-#X connect 4 0 1 1;
-#X connect 7 0 6 0;
-#X connect 7 0 6 1;
-#X connect 8 0 7 0;
-#X connect 9 0 7 1;
-#X connect 11 0 12 0;
-#X connect 12 0 14 0;
-#X connect 14 0 9 2;
+#X obj 77 150 else/cosine~ 220 0.5;
+#X obj 132 188 else/cosine~ 220;
+#X obj 586 161 else/cosine~ 200;
+#X connect 3 0 15 2;
+#X connect 6 0 5 0;
+#X connect 6 0 5 1;
+#X connect 8 0 9 0;
+#X connect 9 0 11 0;
+#X connect 11 0 14 2;
+#X connect 13 0 6 0;
+#X connect 14 0 6 1;
+#X connect 15 0 1 0;
+#X connect 15 0 1 1;
 #X restore 438 224 pd phase offset;
 #X text 243 403 - initial phase offset (default 0);
 #X text 243 384 - frequency in hertz (default 0);
