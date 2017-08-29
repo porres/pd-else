@@ -1,28 +1,34 @@
-// Porres 2017
+// Porres 2016
 
 #include "m_pd.h"
 #include "math.h"
-#include "magic.h"
 
 static t_class *pimp_class;
 
-typedef struct _pimp{
+typedef struct _pimp
+{
     t_object x_obj;
     double  x_phase;
     double  x_last_phase_offset;
     t_float  x_freq;
-    t_inlet  *x_inlet_sync;
     t_inlet  *x_inlet_phase;
+    t_inlet  *x_inlet_sync;
     t_outlet *x_outlet_dsp_0;
     t_outlet *x_outlet_dsp_1;
     t_float x_sr;
-    int x_posfreq; // positive frequency flag
 // MAGIC:
+    int x_posfreq; // positive frequency flag
     t_glist *x_glist; // object list
     t_float *x_signalscalar; // right inlet's float field
     int x_hasfeeders; // right inlet connection flag
     t_float  x_phase_sync_float; // float from magic
 } t_pimp;
+
+
+static void pimp_print(t_pimp *x){
+    t_float *scalar = x->x_signalscalar;
+    post("scalar: %f", *scalar);
+}
 
 
 static t_int *pimp_perform_magic(t_int *w){
@@ -33,19 +39,19 @@ static t_int *pimp_perform_magic(t_int *w){
     t_float *in3 = (t_float *)(w[5]); // phase
     t_float *out1 = (t_float *)(w[6]);
     t_float *out2 = (t_float *)(w[7]);
-// Magic Start
     int posfreq = x->x_posfreq;
+/* // Magic Start
     t_float *scalar = x->x_signalscalar;
-    if (!magic_isnan(*x->x_signalscalar)){
+    if (!magic_isnan(*x->x_signalscalar)) {
         t_float input_phase = fmod(*scalar, 1);
         if (input_phase < 0)
             input_phase += 1;
         if(input_phase == 0 && x->x_posfreq)
             input_phase = 1;
         x->x_phase = input_phase;
-        magic_setnan(x->x_signalscalar);
+    magic_setnan(x->x_signalscalar);
     }
-// Magic End
+// Magic End */
     double phase = x->x_phase;
     double last_phase_offset = x->x_last_phase_offset;
     double sr = x->x_sr;
@@ -59,29 +65,29 @@ static t_int *pimp_perform_magic(t_int *w){
         if (phase_dev >= 1 || phase_dev <= -1)
             phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
         if (hz >= 0){
-            phase = phase + phase_dev;
-            if (phase_dev != 0 && phase <= 0)
-                phase = phase + 1.; // wrap deviated phase
-            *out1++ = phase >= 1.;
+            phase += phase_dev;
+            if (phase <= 0)
+                phase += 1.; // wrap deviated phase
+            *out2++ = phase >= 1.;
             if (phase >= 1.)
-                phase = phase - 1; // wrapped phase
+                phase -= 1; // wrapped phase
         }
         else{
-            phase = phase + phase_dev;
+            phase += phase_dev;
             if (phase >= 1)
-                phase = phase - 1.; // wrap deviated phase
-            *out1++ = phase <= 0.;
+                phase -= 1.; // wrap deviated phase
+            *out2++ = phase <= 0.;
             if (phase <= 0.)
-                phase = phase + 1.; // wrapped phase
+                phase += 1.; // wrapped phase
         }
-        *out2++ = 0.33;
-        phase = phase + phase_step; // next phase
+        *out1++ = phase; // wrapped phase
+        phase += phase_step; // next phase
         last_phase_offset = phase_offset; // last phase offset
     }
     x->x_posfreq = posfreq;
     x->x_phase = phase;
     x->x_last_phase_offset = last_phase_offset;
-    return (w + 7);
+    return (w + 8);
 }
 
 
@@ -106,33 +112,33 @@ static t_int *pimp_perform(t_int *w){
         if (phase_dev >= 1 || phase_dev <= -1)
             phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
         if (hz >= 0){
-            if (trig > 0 && trig <= 1)
-                phase = trig;
-            else{
-                phase = phase + phase_dev;
-                if (phase_dev != 0 && phase <= 0)
-                    phase = phase + 1.; // wrap deviated phase
-            }
-            *out1++ = phase >= 1.;
-            if (phase >= 1.)
-                phase = phase - 1; // wrapped phase
-        }
+                if (trig > 0 && trig <= 1)
+                    phase = trig;
+                else{
+                    phase += phase_dev;
+                    if (phase <= 0)
+                        phase += 1.; // wrap deviated phase
+                }
+                *out2++ = phase >= 1.;
+                if (phase >= 1.)
+                    phase -= 1; // wrapped phase
+                }
         else{
             if (trig > 0 && trig < 1)
                 phase = trig;
             else if (trig == 1)
                 phase = 0;
             else{
-                phase = phase + phase_dev;
+                phase += phase_dev;
                 if (phase >= 1)
-                    phase = phase - 1.; // wrap deviated phase
+                    phase -= 1.; // wrap deviated phase
+                }
+                *out2++ = phase <= 0.;
+                if (phase <= 0.)
+                    phase += 1.; // wrapped phase
             }
-            *out1++ = phase <= 0.;
-            if (phase <= 0.)
-                phase = phase + 1.; // wrapped phase
-        }
-        *out2++ = 0.33;
-        phase = phase + phase_step; // next phase
+        *out1++ = phase; // wrapped phase
+        phase += phase_step; // next phase
         last_phase_offset = phase_offset; // last phase offset
     }
     x->x_phase = phase;
@@ -145,15 +151,16 @@ static void pimp_dsp(t_pimp *x, t_signal **sp){
     x->x_sr = sp[0]->s_sr;
     if (x->x_hasfeeders){
         dsp_add(pimp_perform, 7, x, sp[0]->s_n,
-            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
+                sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
     }
     else{
         dsp_add(pimp_perform_magic, 7, x, sp[0]->s_n,
-                sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
+            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
     }
 }
 
-static void *pimp_free(t_pimp *x){
+static void *pimp_free(t_pimp *x)
+{
     inlet_free(x->x_inlet_sync);
     inlet_free(x->x_inlet_phase);
     outlet_free(x->x_outlet_dsp_0);
@@ -186,9 +193,10 @@ static void *pimp_new(t_floatarg f1, t_floatarg f2){
 }
 
 void pimp_tilde_setup(void){
-    pimp_class = class_new(gensym("pimp~"),(t_newmethod)pimp_new, (t_method)pimp_free,
-            sizeof(t_pimp), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
+    pimp_class = class_new(gensym("pimp~"),
+        (t_newmethod)pimp_new, (t_method)pimp_free,
+        sizeof(t_pimp), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
     CLASS_MAINSIGNALIN(pimp_class, t_pimp, x_freq);
     class_addmethod(pimp_class, (t_method)pimp_dsp, gensym("dsp"), A_CANT, 0);
-    class_sethelpsymbol(pimp_class, gensym("pimpulse~"));
+    class_addmethod(pimp_class, (t_method)pimp_print, gensym("print"), 0);
 }
