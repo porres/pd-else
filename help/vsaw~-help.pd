@@ -1,4 +1,4 @@
-#N canvas 593 55 559 514 10;
+#N canvas 606 102 559 514 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -28,26 +28,11 @@
 0;
 #X obj 122 378 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 123 281 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
 #X obj 3 476 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 165 282 float/signal -;
-#X text 262 283 frequency in hz;
-#X obj 122 303 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X text 164 324 float/signal -;
-#X obj 122 323 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
-;
-#X text 200 344 signal -;
 #X text 200 378 signal -;
 #X text 184 414 1) float;
 #X text 184 433 2) float;
-#X text 261 325 phase offset (modulation input);
-#X text 261 344 phase sync (ressets internal phase);
-#X obj 122 344 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
-;
-#X text 165 303 float/signal -;
 #X obj 218 149 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 278 145 <= hz;
@@ -155,99 +140,30 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#N canvas 354 88 811 327 sync 0;
-#X obj 180 118 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 95 245 else/out~;
-#X text 46 141 impulse value of 1 =>;
-#X text 715 88 Master;
-#X text 631 123 Slave;
-#X obj 536 169 else/out~;
-#X obj 617 62 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 110 256;
-#X text 426 255 Note that the "phase sync" inlet is quite different
-from the "phase offset" inlet. This means that you will resset the
-internal of the object \, but the offset still remains.;
-#X obj 180 142 else/trigate~;
-#X obj 617 88 else/imp~ 110;
-#X text 420 24 An impulse oscillator as the input forces "hard sync".
-;
-#X text 15 14 The fourth inlet expects an impulse signal for syncing.
-The impulse values need to be > 0 and <= 1 (otherwise ignored) so the
-internal phase jumps imediately to the given impulse value. Because
-phase is cyclical \, the value of 1 represents the "phase 0" of the
-cycle \, where the impulse occurs. Send it impulses and check the result
-below.;
-#X text 193 163 <== immediately jumps to the \; start of the cycle
-when receiving an impulse., f 30;
-#X obj 111 203 else/vsaw~ 1;
-#X obj 536 122 else/vsaw~ 200;
-#X connect 0 0 8 0;
-#X connect 6 0 9 0;
-#X connect 8 0 13 3;
-#X connect 9 0 14 3;
-#X connect 13 0 1 0;
-#X connect 13 0 1 1;
-#X connect 14 0 5 0;
-#X connect 14 0 5 1;
-#X restore 494 243 pd sync;
-#N canvas 430 175 777 303 phase 0;
-#X text 403 27 The phase values are wrapped into the 0-1 range \, since
-the phase cycle is from 0 to 1 - where 1 is also the start of another
-cycle.;
-#X obj 527 103 cnv 15 150 65 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X obj 540 195 else/out~;
-#X text 527 85 Phase Modulation:;
-#X text 21 18 The third argument sets an initial phase (or "phase offset").
-This is also settable with the third inlet. In such a way \, you have
-two objects with the same frequency falling out and back in sync. Another
-feature is phase modulation.;
-#X obj 609 114 osc~ 50.01;
-#X text 339 110 1;
-#X obj 84 228 else/out~;
-#X obj 205 110 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 202 135 0 0 0 0 - - -;
-#X text 183 110 0;
-#X obj 102 192 +~;
-#X obj 34 134 else/vsaw~ 220 0.5 0;
-#X obj 116 165 else/vsaw~ 220 0.5 0.5;
-#X obj 555 142 else/vsaw~ 200;
-#X connect 5 0 14 2;
-#X connect 8 0 9 0;
-#X connect 9 0 13 2;
-#X connect 11 0 7 0;
-#X connect 11 0 7 1;
-#X connect 12 0 11 0;
-#X connect 13 0 11 1;
-#X connect 14 0 2 0;
-#X connect 14 0 2 1;
-#X restore 445 222 pd phase offset;
 #X text 184 451 3) float;
-#N canvas 859 159 476 412 width 0;
-#X obj 63 248 else/out~;
-#X obj 142 72 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 4600 1;
-#X obj 139 97 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.275591 256;
-#X text 47 21 A width of 0 or 1 makes it a sawtooth like waveform \,
-while beteen 0 and 1 makes it a variable triangle waveform.;
-#X obj 180 207 else/graph~;
-#X obj 106 157 else/vsaw~ 98.5 0;
-#X obj 139 122 else/float2sig~ 10;
+#N canvas 859 159 457 411 width 0;
+#X obj 64 253 else/out~;
+#X obj 144 77 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 12700 1;
+#X obj 141 102 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1 256;
+#X obj 181 212 else/graph~;
+#X obj 141 127 else/float2sig~ 10;
+#X text 27 20 A width of -1 or 1 makes it a sawtooth like waveform
+\, while beteen -1 and 1 makes it triangular variants., f 53;
+#X obj 107 162 else/vsaw~ 98.5;
 #X connect 1 0 2 0;
-#X connect 2 0 6 0;
-#X connect 5 0 0 0;
-#X connect 5 0 0 1;
-#X connect 5 0 4 0;
-#X connect 6 0 5 1;
-#X restore 486 199 pd width;
+#X connect 2 0 4 0;
+#X connect 4 0 6 1;
+#X connect 6 0 0 0;
+#X connect 6 0 0 1;
+#X connect 6 0 3 0;
+#X restore 488 198 pd width;
 #X text 243 451 - initial phase offset (default 0);
 #X text 243 414 - frequency in hertz (default 0);
 #X obj 201 212 else/out~;
-#N canvas 444 111 857 401 waveform 0;
-#X obj 346 73 cnv 15 198 148 empty empty empty 20 12 0 14 -241406 -66577
+#N canvas 411 52 920 431 waveform 0;
+#X obj 373 76 cnv 15 198 148 empty empty empty 20 12 0 14 -241406 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-default-triangle 400 float 1;
@@ -285,15 +201,15 @@ while beteen 0 and 1 makes it a variable triangle waveform.;
 -0.87 -0.88 -0.89 -0.9 -0.91 -0.92 -0.93 -0.94 -0.95 -0.96 -0.97 -0.98
 -0.99;
 #X coords -10 1.05 410 -1.05 200 150 1 0 0;
-#X restore 345 72 graph;
-#X text 293 229 phase:;
-#X text 343 229 0;
-#X text 535 229 1;
-#X text 435 229 0.5;
+#X restore 372 75 graph;
+#X text 320 232 phase:;
+#X text 370 232 0;
+#X text 562 232 1;
+#X text 462 232 0.5;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 200 75 1 0 0;
-#X restore 345 72 graph;
-#X obj 626 73 cnv 15 198 148 empty empty empty 20 12 0 14 -241406 -66577
+#X restore 372 75 graph;
+#X obj 653 76 cnv 15 198 148 empty empty empty 20 12 0 14 -241406 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-saw2 400 float 1;
@@ -333,15 +249,15 @@ while beteen 0 and 1 makes it a variable triangle waveform.;
 0.935 0.94 0.945 0.95 0.955 0.96 0.965 0.97 0.975 0.98 0.985 0.99 0
 ;
 #X coords -10 1.05 410 -1.05 200 150 1 0 0;
-#X restore 625 72 graph;
-#X text 573 229 phase:;
-#X text 623 229 0;
-#X text 816 229 1;
-#X text 715 229 0.5;
+#X restore 652 75 graph;
+#X text 600 232 phase:;
+#X text 650 232 0;
+#X text 843 232 1;
+#X text 742 232 0.5;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 200 75 1 0 0;
-#X restore 625 72 graph;
-#X obj 63 73 cnv 15 198 148 empty empty empty 20 12 0 14 -241406 -66577
+#X restore 652 75 graph;
+#X obj 90 76 cnv 15 198 148 empty empty empty 20 12 0 14 -241406 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-saw1 400 float 1;
@@ -381,35 +297,35 @@ while beteen 0 and 1 makes it a variable triangle waveform.;
 -0.935 -0.94 -0.945 -0.95 -0.955 -0.96 -0.965 -0.97 -0.975 -0.98 -0.985
 -0.99 0;
 #X coords -10 1.05 410 -1.05 200 150 1 0 0;
-#X restore 62 72 graph;
-#X text 10 229 phase:;
-#X text 60 229 0;
-#X text 252 229 1;
-#X text 152 229 0.5;
+#X restore 89 75 graph;
+#X text 37 232 phase:;
+#X text 87 232 0;
+#X text 279 232 1;
+#X text 179 232 0.5;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 200 75 1 0 0;
-#X restore 62 72 graph;
-#X text 331 35 (default waveform of this oscillator);
-#X text 248 351 see also:;
-#X obj 316 352 else/sawtooth~;
-#X text 655 313 see also:;
-#X obj 723 314 else/triwave~;
-#X text 54 298 The start and end of the cycle is always an amplitude
+#X restore 89 75 graph;
+#X text 358 38 (default waveform of this oscillator);
+#X text 235 374 see also:;
+#X obj 303 375 else/sawtooth~;
+#X text 669 327 see also:;
+#X text 41 301 The start and end of the cycle is always an amplitude
 value of "-1" for all waveforms \, except when the width parameter
 is = -1 \, when the waveform is the same of [sawtooth~] \, (see "\$0-saw1"
-above on the left).;
-#X text 98 20 Width = -1;
-#X text 405 16 Width = 0;
-#X text 692 18 Width = 1;
-#X text 460 340 For a width parameter of 1 \, the waveform is of an
-inverted sawtooth.;
-#X text 459 263 For a default parameter of "0" \, the waveform is similar
-to [triwave~] \, (see "\$0-default-triangle" above in the middle).
-Note that they have a phase difference of 0.25 between each other.
-;
-#X text 54 264 The waveform can change/vary to different waveforms
+above on the left)., f 54;
+#X text 125 23 Width = -1;
+#X text 432 19 Width = 0;
+#X text 719 21 Width = 1;
+#X text 487 363 For a width parameter of 1 \, the waveform is of an
+inverted sawtooth., f 49;
+#X text 41 267 The waveform can change/vary to different waveforms
 according to the width parameter.;
-#X restore 468 176 pd waveform;
+#X obj 740 327 else/triangular~;
+#X text 486 266 For a default parameter of "0" \, the waveform is similar
+to [triangular~] \, (see "\$0-default-triangle" above in the middle).
+Note that they have a phase difference of 0.25 between each other.
+, f 55;
+#X restore 468 175 pd waveform;
 #X obj 98 40 cnv 4 4 4 empty empty sawtooth-triangle 0 28 2 18 -233017
 -1 0;
 #X obj 3 3 cnv 15 301 42 empty empty vsaw~ 20 20 2 37 -233017 -1 0
@@ -417,13 +333,227 @@ according to the width parameter.;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 60 86 [vsaw~] is a variable sawtooth waveform oscillator that
-also becomes a triangular osccilator. It accepts negative frequencies
-\, has inlets for width \, phase modulation and phase sync.;
 #X obj 218 175 else/vsaw~ 220;
-#X text 262 304 width (from -1 to 1);
 #X text 243 433 - initial width (default 0);
 #X text 261 378 variable sawtooth-triangle wave signal;
-#X connect 29 0 44 0;
-#X connect 44 0 38 0;
-#X connect 44 0 38 1;
+#X obj 123 282 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 122 304 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 122 324 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X obj 122 345 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+;
+#X text 164 346 float/signal - phase offset (modulation input);
+#X text 164 283 float/signal - frequency in hz;
+#X text 164 326 float/signal - phase sync (ressets internal phase)
+;
+#X text 165 304 float/signal - pulse width (from -1 to 1);
+#X text 60 86 [vsaw~] is a variable sawtooth waveform oscillator that
+also becomes a triangular osccilator. It accepts negative frequencies
+\, has inlets for width \, phase sync and phase modulation., f 57
+;
+#N canvas 403 51 875 522 sync 0;
+#X text 517 49 Syncing the phase with control messages is useful for
+LFOs and control with MIDI. A sync with audio is usefull for the "hard
+sync" technique \, where an oscillator is synced according to the frequency
+of a master frequency., f 44;
+#X obj 522 266 else/out~;
+#X obj 608 169 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 110 256;
+#X text 709 195 Master oscillator;
+#X text 667 230 Slave oscillator;
+#X obj 608 195 else/imp~ 110;
+#X text 508 373 NOTE:;
+#X text 524 406 The "phase sync" inlet is quite different from the
+"phase offset" inlet. This means that the are completely independent.
+, f 43;
+#X text 35 389 Additionally \, you can reset the oscillator with an
+impulse signal. Inputs that are > 0 and <= 1 reset the phase Pdexpects
+an impulse signal for syncing. The impulse values need to be > 0 and
+<= 1 (otherwise ignored). Because phase is cyclical \, the value of
+1 represents the "phase 0" of the cycle \, where the impulse occurs.
+Send it impulses above and check the result. Use a multiplier to reset
+to another phase value.;
+#X text 33 15 The third inlet resets the phase and behaves in the same
+way for control data as the phase sync inlet of other objects like
+[else/sine~]. A number input resets the oscillator and restarts the
+cycle with an initial phase that corresponds to the input number \,
+so the internal phase is synced to the given value. The phase values
+are from 0 to 1 and values beyond that are wrapped within this range.
+;
+#X obj 249 224 else/sig2float~;
+#X obj 312 159 else/trigate~;
+#X obj 312 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 223 139 <= reset =>;
+#X text 319 180 <= impulse value of 1;
+#N canvas 207 34 366 264 (subpatch) 0;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
+#X obj 215 68 route dsp;
+#X obj 215 37 receive pd;
+#N canvas 977 77 379 291 set_color 0;
+#X obj 47 30 inlet;
+#X obj 147 200 s \$0-cnv;
+#X obj 47 83 select 0 1;
+#X obj 47 220 s \$0-tgl-r;
+#N canvas 0 22 712 637 off 0;
+#X obj 490 220 * -1;
+#X obj 424 300 +;
+#X obj 409 325 +;
+#X obj 347 219 * -65536;
+#X obj 424 220 * -256;
+#X obj 409 356 - 1;
+#X obj 390 189 unpack f f f;
+#X obj 225 295 +;
+#X obj 210 320 +;
+#X obj 148 214 * -65536;
+#X obj 225 215 * -256;
+#X obj 291 215 * -1;
+#X obj 210 351 - 1;
+#X obj 191 184 unpack f f f;
+#X obj 379 423 pack;
+#X msg 395 152 124 124 124;
+#X msg 203 154 220 220 220;
+#X obj 238 121 t b b;
+#X obj 238 81 inlet;
+#X obj 378 485 outlet;
+#X connect 0 0 1 1;
+#X connect 1 0 2 1;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 14 1;
+#X connect 6 0 3 0;
+#X connect 6 1 4 0;
+#X connect 6 2 0 0;
+#X connect 7 0 8 1;
+#X connect 8 0 12 0;
+#X connect 9 0 8 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 1;
+#X connect 12 0 14 0;
+#X connect 13 0 9 0;
+#X connect 13 1 10 0;
+#X connect 13 2 11 0;
+#X connect 14 0 19 0;
+#X connect 15 0 6 0;
+#X connect 16 0 13 0;
+#X connect 17 0 16 0;
+#X connect 17 1 15 0;
+#X connect 18 0 17 0;
+#X restore 47 113 pd off;
+#X msg 47 180 color \$1 \$2 0;
+#X msg 147 131 -4.86997e+06 -1.34937e+07;
+#X msg 147 171 color \$1 0 \$2;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 6 0;
+#X connect 4 0 5 0;
+#X connect 4 0 7 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 1 0;
+#X restore 215 165 pd set_color;
+#X obj 135 122 r \$0-tgl-s;
+#N canvas 121 482 450 300 (subpatch) 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+0;
+#X coords 0 -1 1 1 42 27 1 100 100;
+#X restore 51 144 pd;
+#X obj 226 139 s \$0-tgl-r;
+#X msg 226 115 set \$1;
+#X msg 135 177 \; pd dsp \$1;
+#N canvas 256 32 278 194 load_check 0;
+#X obj 136 53 sig~ 1;
+#X obj 74 24 loadbang;
+#X obj 136 86 snapshot~;
+#X obj 91 52 del 5;
+#X obj 136 151 outlet;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 74 126 switch~;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 1 0 5 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 3 0 5 0;
+#X connect 5 0 6 0;
+#X restore 51 72 pd load_check;
+#X connect 1 0 3 0;
+#X connect 1 0 7 0;
+#X connect 2 0 1 0;
+#X connect 4 0 8 0;
+#X connect 4 0 3 0;
+#X connect 7 0 6 0;
+#X connect 9 0 0 0;
+#X coords 0 -1 1 1 44 72 2 50 100;
+#X restore 161 269 pd;
+#X msg 35 141 0;
+#X msg 69 141 0.25;
+#X msg 146 140 0.75;
+#X msg 189 140 1;
+#X msg 111 140 0.5;
+#X obj 249 250 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 3254 1;
+#X obj 92 221 else/sig2float~;
+#X obj 92 252 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 4092 1;
+#X obj 92 191 else/vsaw~ 1 1;
+#X obj 249 200 else/vsaw~ 1 1;
+#X obj 522 229 else/vsaw~ 200 0.75;
+#X connect 2 0 5 0;
+#X connect 5 0 26 2;
+#X connect 10 0 21 0;
+#X connect 11 0 25 2;
+#X connect 12 0 11 0;
+#X connect 16 0 24 2;
+#X connect 17 0 24 2;
+#X connect 18 0 24 2;
+#X connect 19 0 24 2;
+#X connect 20 0 24 2;
+#X connect 22 0 23 0;
+#X connect 24 0 22 0;
+#X connect 25 0 10 0;
+#X connect 26 0 1 0;
+#X connect 26 0 1 1;
+#X restore 495 220 pd sync;
+#N canvas 385 345 890 351 phase 0;
+#X text 438 24 The phase values are wrapped into the 0-1 range \, since
+the phase cycle is from 0 to 1 - where 1 is also the start of another
+cycle.;
+#X obj 560 100 cnv 15 240 65 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 590 191 else/out~;
+#X text 562 82 Phase Modulation:;
+#X text 19 21 The third argument sets an initial phase (or "phase offset").
+This is also settable with the third inlet. In such a way \, you have
+two objects with the same frequency falling out and back in sync. Another
+feature is phase modulation.;
+#X obj 701 111 osc~ 50.05;
+#X text 364 116 1;
+#X obj 226 116 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X floatatom 223 141 4 0 0 0 - - -, f 4;
+#X text 204 116 0;
+#X obj 223 207 +~;
+#X obj 207 244 else/out~;
+#X obj 606 138 else/vsaw~ 200;
+#X obj 241 172 else/vsaw~ 100 1 0.5;
+#X obj 114 173 else/vsaw~ 100 1;
+#X connect 5 0 12 3;
+#X connect 7 0 8 0;
+#X connect 8 0 14 3;
+#X connect 10 0 11 0;
+#X connect 10 0 11 1;
+#X connect 12 0 2 0;
+#X connect 12 0 2 1;
+#X connect 13 0 10 1;
+#X connect 14 0 10 0;
+#X restore 439 242 pd phase offset;
+#X connect 18 0 30 0;
+#X connect 30 0 25 0;
+#X connect 30 0 25 1;

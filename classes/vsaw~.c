@@ -166,7 +166,7 @@ static void *vsaw_free(t_vsaw *x)
 static void *vsaw_new(t_symbol *s, int ac, t_atom *av)
 {
     t_vsaw *x = (t_vsaw *)pd_new(vsaw_class);
-    t_float f1 = 0, f2 = 0.5, f3 = 0;
+    t_float f1 = 0, f2 = 0, f3 = 0;
     if (ac && av->a_type == A_FLOAT)
     {
         f1 = av->a_w.w_float;

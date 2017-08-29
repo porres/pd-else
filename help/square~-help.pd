@@ -1,4 +1,4 @@
-#N canvas 226 102 559 510 10;
+#N canvas 171 121 559 510 10;
 #X obj 3 274 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 370 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -60,7 +60,7 @@ feature is phase modulation.;
 #X obj 701 111 osc~ 50.05;
 #X text 361 116 1;
 #X obj 223 116 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 11400 1;
+-1 -1 0 1;
 #X floatatom 220 141 4 0 0 0 - - -, f 4;
 #X text 201 116 0;
 #X obj 592 138 else/square~ 200;
@@ -116,8 +116,8 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X text 223 139 <= reset =>;
 #X text 319 180 <= impulse value of 1;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -186,7 +186,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -227,9 +227,9 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X obj 83 191 else/square~ 1;
 #X obj 249 200 else/square~ 1;
 #X obj 83 252 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 9900 1;
+-1 -1 4950 1;
 #X obj 249 250 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 9900 1;
+-1 -1 4950 1;
 #X obj 83 191 else/square~ 1;
 #X obj 536 229 else/square~ 200;
 #X connect 2 0 5 0;
@@ -250,8 +250,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 499 213 pd sync;
 #X text 256 415 - frequency in hertz (default 0);
 #X text 256 434 - initial pulse width (default 0.5);
-#X text 164 325 float/signal - phase offset (modulation input);
-#X text 206 345 signal - phase sync (ressets internal phase);
+#X text 164 346 float/signal - phase offset (modulation input);
 #X text 165 304 float/signal - pulse width (from 0 to 1);
 #X text 164 283 float/signal - frequency in hz;
 #X text 256 452 - initial phase offset (default 0);
@@ -281,7 +280,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X obj 227 139 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 123 256;
+-228856 -1 -1 0 256;
 #X text 287 138 <= hz;
 #X obj 227 166 else/square~ 220;
 #X obj 212 202 else/out~;
@@ -289,6 +288,8 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X text 60 87 [square~] is a square oscillator that accepts negative
 frequencies \, has inlets for pulse width \, phase sync and phase modulation.
 ;
-#X connect 35 0 37 0;
-#X connect 37 0 38 0;
-#X connect 37 0 38 1;
+#X text 164 326 float/signal - phase sync (ressets internal phase)
+;
+#X connect 34 0 36 0;
+#X connect 36 0 37 0;
+#X connect 36 0 37 1;
