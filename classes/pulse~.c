@@ -94,7 +94,7 @@ static t_int *pulse_perform_magic(t_int *w)
     return (w + 8);
 }
 
-static t_int *pulse_perform_magic(t_int *w)
+static t_int *pulse_perform(t_int *w)
 {
     t_pulse *x = (t_pulse *)(w[1]);
     int nblock = (t_int)(w[2]);
@@ -169,7 +169,7 @@ static t_int *pulse_perform_magic(t_int *w)
 }
 
 static void pulse_dsp(t_pulse *x, t_signal **sp){
-    x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal); // magic feeder flag
+    x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 2, &s_signal); // magic feeder flag
     x->x_sr = sp[0]->s_sr;
     if (x->x_hasfeeders){
         dsp_add(pulse_perform, 7, x, sp[0]->s_n,
@@ -230,7 +230,7 @@ static void *pulse_new(t_symbol *s, int ac, t_atom *av)
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
 // Magic
     x->x_glist = canvas_getcurrent();
-    x->x_signalscalar = obj_findsignalscalar((t_object *)x, 1);
+    x->x_signalscalar = obj_findsignalscalar((t_object *)x, 2);
     return (x);
 }
 
