@@ -3,7 +3,6 @@
 #include "m_pd.h"
 #include "math.h"
 
-
 static t_class *pimp_class;
 
 typedef struct _pimp
@@ -25,6 +24,7 @@ typedef struct _pimp
     t_float  x_phase_sync_float; // float from magic
 } t_pimp;
 
+
 static t_int *pimp_perform_magic(t_int *w){
     t_pimp *x = (t_pimp *)(w[1]);
     int nblock = (t_int)(w[2]);
@@ -33,12 +33,24 @@ static t_int *pimp_perform_magic(t_int *w){
     t_float *in3 = (t_float *)(w[5]); // phase
     t_float *out1 = (t_float *)(w[6]);
     t_float *out2 = (t_float *)(w[7]);
+/* // Magic Start
+    int posfreq = x->x_posfreq;
+    t_float *scalar = x->x_signalscalar;
+    if (!magic_isnan(*x->x_signalscalar)){
+        t_float input_phase = fmod(*scalar, 1);
+        if (input_phase < 0)
+            input_phase += 1;
+        if(input_phase == 0 && x->x_posfreq)
+            input_phase = 1;
+        x->x_phase = input_phase;
+        magic_setnan(x->x_signalscalar);
+    }
+// Magic End */
     double phase = x->x_phase;
     double last_phase_offset = x->x_last_phase_offset;
     double sr = x->x_sr;
     while (nblock--){
         double hz = *in1++;
-        double trig = *in2++;
         double phase_offset = *in3++;
         double phase_step = hz / sr; // phase_step
         phase_step = phase_step > 1 ? 1. : phase_step < -1 ? -1 : phase_step; // clipped phase_step
@@ -46,27 +58,17 @@ static t_int *pimp_perform_magic(t_int *w){
         if (phase_dev >= 1 || phase_dev <= -1)
             phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
         if (hz >= 0){
-            if (trig > 0 && trig <= 1)
-                phase = trig;
-            else{
-                phase += phase_dev;
-                if (phase <= 0)
-                    phase += 1.; // wrap deviated phase
-            }
+            phase += phase_dev;
+            if (phase <= 0)
+                phase += 1.; // wrap deviated phase
             *out2++ = phase >= 1.;
             if (phase >= 1.)
                 phase -= 1; // wrapped phase
         }
         else{
-            if (trig > 0 && trig < 1)
-                phase = trig;
-            else if (trig == 1)
-                phase = 0;
-            else{
-                phase += phase_dev;
-                if (phase >= 1)
-                    phase -= 1.; // wrap deviated phase
-            }
+            phase += phase_dev;
+            if (phase >= 1)
+                phase -= 1.; // wrap deviated phase
             *out2++ = phase <= 0.;
             if (phase <= 0.)
                 phase += 1.; // wrapped phase
@@ -144,8 +146,7 @@ static void pimp_dsp(t_pimp *x, t_signal **sp){
                 sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
     }
     else{
-// why?        dsp_add(pimp_perform_magic, 7, x, sp[0]->s_n,
-        dsp_add(pimp_perform, 7, x, sp[0]->s_n,
+        dsp_add(pimp_perform_magic, 7, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
     }
 }
