@@ -33,17 +33,18 @@ static t_int *pimp_perform_magic(t_int *w){
     t_float *in3 = (t_float *)(w[5]); // phase
     t_float *out1 = (t_float *)(w[6]);
     t_float *out2 = (t_float *)(w[7]);
-/* // Magic Start
     int posfreq = x->x_posfreq;
+// Magic Start
     t_float *scalar = x->x_signalscalar;
-    if (!magic_isnan(*x->x_signalscalar)){
+//    post("scalar: %f", *scalar);
+/*    if (!magic_isnan(*x->x_signalscalar)) {
         t_float input_phase = fmod(*scalar, 1);
         if (input_phase < 0)
             input_phase += 1;
         if(input_phase == 0 && x->x_posfreq)
             input_phase = 1;
         x->x_phase = input_phase;
-        magic_setnan(x->x_signalscalar);
+    magic_setnan(x->x_signalscalar);
     }
 // Magic End */
     double phase = x->x_phase;
@@ -51,6 +52,7 @@ static t_int *pimp_perform_magic(t_int *w){
     double sr = x->x_sr;
     while (nblock--){
         double hz = *in1++;
+        posfreq = hz >= 0;
         double phase_offset = *in3++;
         double phase_step = hz / sr; // phase_step
         phase_step = phase_step > 1 ? 1. : phase_step < -1 ? -1 : phase_step; // clipped phase_step
@@ -77,6 +79,7 @@ static t_int *pimp_perform_magic(t_int *w){
         phase += phase_step; // next phase
         last_phase_offset = phase_offset; // last phase offset
     }
+    x->x_posfreq = posfreq;
     x->x_phase = phase;
     x->x_last_phase_offset = last_phase_offset;
     return (w + 8);
