@@ -139,14 +139,14 @@
 #X restore 265 233 pd graph;
 #X text 491 14 An impulse oscillator as the input forces hard sync
 to the phase output., f 48;
-#X text 718 94 Master;
-#X text 718 129 Slave;
-#X obj 600 166 cos~;
-#X obj 588 204 else/out~;
-#X obj 600 68 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
+#X text 695 99 Master;
+#X text 743 134 Slave;
+#X obj 625 171 cos~;
+#X obj 613 209 else/out~;
+#X obj 577 73 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 110 256;
-#X obj 600 128 else/pimp~ 200;
-#X obj 600 94 else/pimp~ 110;
+#X obj 625 133 else/pimp~ 200;
+#X obj 577 99 else/pimp~ 110;
 #X text 494 281 NOTE:;
 #X msg 41 134 0;
 #X msg 72 133 0.25;
@@ -190,7 +190,7 @@ phase offset change to "0" goes back half a cycle., f 44;
 #X connect 6 0 7 1;
 #X connect 8 0 10 0;
 #X connect 9 0 6 0;
-#X connect 10 1 9 2;
+#X connect 10 1 9 1;
 #X connect 12 0 22 1;
 #X connect 13 0 22 1;
 #X connect 14 0 22 1;
@@ -212,7 +212,7 @@ phase offset change to "0" goes back half a cycle., f 44;
 #X obj 185 201 else/pimp~ 1, f 16;
 #X obj 294 249 else/out~;
 #X obj 185 261 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.27907 256;
+-228856 -1 -1 0.902744 256;
 #N canvas 1046 306 123 217 snapshot~ 0;
 #X obj 29 107 snapshot~;
 #X obj 46 53 loadbang;
@@ -225,7 +225,7 @@ phase offset change to "0" goes back half a cycle., f 44;
 #X connect 4 0 0 0;
 #X restore 185 232 pd snapshot~;
 #X obj 146 194 vsl 20 90 0 1 0 0 dsfsk sfg empty 0 -9 0 10 -228856
--1 -1 2484 1;
+-1 -1 8034 1;
 #X obj 110 42 cnv 4 4 4 empty empty imp~ 0 28 2 18 -233017 -1 0;
 #X text 330 221 <= impulse;
 #X text 86 232 phase =>;
@@ -330,7 +330,7 @@ for phase sync and phase modulation like [imp~].;
 #X obj 288 208 else/sh~;
 #X obj 288 153 noise~;
 #X obj 288 281 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.166004 256;
+-228856 -1 -1 0.579508 256;
 #N canvas 1046 306 123 217 snapshot~ 0;
 #X obj 29 107 snapshot~;
 #X obj 46 79 metro 100;
@@ -343,7 +343,7 @@ for phase sync and phase modulation like [imp~].;
 #X connect 4 0 0 0;
 #X restore 288 251 pd snapshot~;
 #X obj 133 130 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -1 256;
+-228856 -1 -1 0 256;
 #X obj 136 105 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 514 154 cnv 15 198 138 empty empty empty 20 12 0 14 -233017

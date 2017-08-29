@@ -60,20 +60,20 @@ static t_int *pimp_perform_magic(t_int *w){
         if (phase_dev >= 1 || phase_dev <= -1)
             phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
         if (hz >= 0){
-            phase += phase_dev;
-            if (phase <= 0)
-                phase += 1.; // wrap deviated phase
+            phase = phase + phase_dev;
+            if (phase_dev != 0 && phase <= 0)
+                phase = phase + 1.; // wrap deviated phase
             *out2++ = phase >= 1.;
             if (phase >= 1.)
-                phase -= 1; // wrapped phase
+                phase = phase - 1; // wrapped phase
         }
         else{
-            phase += phase_dev;
+            phase = phase + phase_dev;
             if (phase >= 1)
-                phase -= 1.; // wrap deviated phase
+                phase = phase - 1.; // wrap deviated phase
             *out2++ = phase <= 0.;
             if (phase <= 0.)
-                phase += 1.; // wrapped phase
+                phase = phase + 1.; // wrapped phase
         }
         *out1++ = phase; // wrapped phase
         phase += phase_step; // next phase
@@ -107,31 +107,31 @@ static t_int *pimp_perform(t_int *w){
         if (phase_dev >= 1 || phase_dev <= -1)
             phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
         if (hz >= 0){
-                if (trig > 0 && trig <= 1)
-                    phase = trig;
-                else{
-                    phase += phase_dev;
-                    if (phase <= 0)
-                        phase += 1.; // wrap deviated phase
-                }
-                *out2++ = phase >= 1.;
-                if (phase >= 1.)
-                    phase -= 1; // wrapped phase
-                }
+            if (trig > 0 && trig <= 1)
+                phase = trig;
+            else{
+                phase = phase + phase_dev;
+                if (phase_dev != 0 && phase <= 0)
+                    phase = phase + 1.; // wrap deviated phase
+            }
+            *out2++ = phase >= 1.;
+            if (phase >= 1.)
+                phase = phase - 1; // wrapped phase
+        }
         else{
             if (trig > 0 && trig < 1)
                 phase = trig;
             else if (trig == 1)
                 phase = 0;
             else{
-                phase += phase_dev;
+                phase = phase + phase_dev;
                 if (phase >= 1)
-                    phase -= 1.; // wrap deviated phase
-                }
-                *out2++ = phase <= 0.;
-                if (phase <= 0.)
-                    phase += 1.; // wrapped phase
+                    phase = phase - 1.; // wrap deviated phase
             }
+            *out2++ = phase <= 0.;
+            if (phase <= 0.)
+                phase = phase + 1.; // wrapped phase
+        }
         *out1++ = phase; // wrapped phase
         phase += phase_step; // next phase
         last_phase_offset = phase_offset; // last phase offset
