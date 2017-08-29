@@ -174,7 +174,6 @@ to periodically trigger processes such as with [sh~] below.;
 #X connect 8 0 6 1;
 #X connect 12 0 2 0;
 #X restore 477 195 pd example;
-#X text 251 366 impulse signal;
 #X obj 285 213 else/out~;
 #X obj 105 291 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
@@ -292,8 +291,9 @@ cycle).;
 oscillator that accepts negative frequencies \, has inlets for phase
 sync and phase modulation., f 57;
 #X text 302 153 (alias);
-#X connect 7 0 40 0;
-#X connect 40 0 8 0;
-#X connect 40 0 8 1;
-#X connect 41 0 24 0;
-#X connect 41 0 24 1;
+#X text 251 366 impulse oscillator signal;
+#X connect 7 0 39 0;
+#X connect 39 0 8 0;
+#X connect 39 0 8 1;
+#X connect 40 0 23 0;
+#X connect 40 0 23 1;

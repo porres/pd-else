@@ -233,7 +233,6 @@ f 50;
 #X text 243 420 - initial phase offset (default 0);
 #X text 243 401 - frequency in hertz (default 0);
 #X obj 201 221 else/out~;
-#X text 267 365 sine wave signal;
 #X text 184 420 2) float;
 #X text 165 313 float/signal -;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -267,6 +266,7 @@ f 50;
 frequencies \, has inlets for phase sync and and phase modulation.
 A parabolic waveform is similar to a sinusoid but it is not band limited
 (has aliasing)., f 64;
-#X connect 15 0 37 0;
-#X connect 37 0 21 0;
-#X connect 37 0 21 1;
+#X text 267 365 parabolic wave signal;
+#X connect 15 0 36 0;
+#X connect 36 0 21 0;
+#X connect 36 0 21 1;
