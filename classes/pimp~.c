@@ -25,6 +25,12 @@ typedef struct _pimp
 } t_pimp;
 
 
+static void pimp_print(t_pimp *x){
+    t_float *scalar = x->x_signalscalar;
+    post("scalar: %f", *scalar);
+}
+
+
 static t_int *pimp_perform_magic(t_int *w){
     t_pimp *x = (t_pimp *)(w[1]);
     int nblock = (t_int)(w[2]);
@@ -34,10 +40,9 @@ static t_int *pimp_perform_magic(t_int *w){
     t_float *out1 = (t_float *)(w[6]);
     t_float *out2 = (t_float *)(w[7]);
     int posfreq = x->x_posfreq;
-// Magic Start
+/* // Magic Start
     t_float *scalar = x->x_signalscalar;
-//    post("scalar: %f", *scalar);
-/*    if (!magic_isnan(*x->x_signalscalar)) {
+    if (!magic_isnan(*x->x_signalscalar)) {
         t_float input_phase = fmod(*scalar, 1);
         if (input_phase < 0)
             input_phase += 1;
@@ -156,15 +161,14 @@ static void pimp_dsp(t_pimp *x, t_signal **sp){
 
 static void *pimp_free(t_pimp *x)
 {
-    inlet_free(x->x_inlet_phase);
     inlet_free(x->x_inlet_sync);
+    inlet_free(x->x_inlet_phase);
     outlet_free(x->x_outlet_dsp_0);
     outlet_free(x->x_outlet_dsp_1);
     return (void *)x;
 }
 
-static void *pimp_new(t_floatarg f1, t_floatarg f2)
-{
+static void *pimp_new(t_floatarg f1, t_floatarg f2){
     t_pimp *x = (t_pimp *)pd_new(pimp_class);
     t_float init_freq = f1;
     t_float init_phase = f2;
@@ -188,11 +192,11 @@ static void *pimp_new(t_floatarg f1, t_floatarg f2)
     return (x);
 }
 
-void pimp_tilde_setup(void)
-{
+void pimp_tilde_setup(void){
     pimp_class = class_new(gensym("pimp~"),
         (t_newmethod)pimp_new, (t_method)pimp_free,
         sizeof(t_pimp), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, 0);
     CLASS_MAINSIGNALIN(pimp_class, t_pimp, x_freq);
     class_addmethod(pimp_class, (t_method)pimp_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(pimp_class, (t_method)pimp_print, gensym("print"), 0);
 }
