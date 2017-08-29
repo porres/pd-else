@@ -1,21 +1,17 @@
-#N canvas 591 30 561 539 10;
-#X obj 3 318 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 591 30 562 528 10;
+#X obj 3 391 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 394 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 449 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 446 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 122 403 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 104 400 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 123 326 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 3 500 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 497 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 23 42 cnv 4 4 4 empty empty Phasor~ 0 28 2 18 -233017 -1 0;
 #X obj 90 42 cnv 4 4 4 empty empty + 0 28 2 18 -233017 -1 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -84,7 +80,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -117,90 +113,21 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X text 165 327 float/signal -;
-#X text 262 328 frequency in hz;
-#X obj 122 347 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 188 400 signal -;
+#X obj 104 421 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 164 348 float/signal -;
-#X obj 122 368 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
-;
-#X text 200 369 signal -;
-#X text 200 403 signal -;
-#X obj 122 424 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X text 200 424 signal -;
-#X text 261 403 phase signal;
-#X text 184 458 1) float;
-#X text 243 458 - frequency in hertz;
-#X text 184 478 2) float;
-#N canvas 581 153 787 332 examples 0;
-#X obj 276 200 else/sh~;
-#X obj 276 145 noise~;
-#X obj 276 273 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#N canvas 1046 306 123 217 snapshot~ 0;
-#X obj 29 107 snapshot~;
-#X obj 46 79 metro 100;
-#X obj 46 53 loadbang;
-#X obj 29 146 outlet;
-#X obj 29 25 inlet~;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
-#X connect 2 0 1 0;
-#X connect 4 0 0 0;
-#X restore 276 243 pd snapshot~;
-#X obj 133 122 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 136 97 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 489 140 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
+#X text 188 421 signal -;
+#X text 249 400 phase signal;
+#X text 171 455 1) float;
+#X text 239 455 - frequency in hertz;
+#X text 171 475 2) float;
+#N canvas 454 70 884 607 sync 0;
+#X obj 137 320 cnv 15 198 118 empty empty empty 20 12 0 14 -233017
 -66577 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array \$0-phase 441 float 0;
-#X coords 0 1 440 0 200 140 1 0 0;
-#X restore 488 139 graph;
-#X text 694 269 0;
-#X text 692 132 1;
-#X obj 59 225 metro 100;
-#X obj 59 200 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
-1;
-#X obj 59 176 loadbang;
-#X obj 133 272 tabwrite~ \$0-phase;
-#X text 161 96 frequency;
-#X obj 159 201 else/out~;
-#X obj 133 149 else/pimp~ 1;
-#X text 23 22 [pimp~] is very convenient for both driving a process
-with its phase output (such as reading a sample or envelope) and also
-triggering at period transitions other objects or processes (such as
-with [sh~] below).;
-#X text 408 26 Since it deals with negative frequencies \, the impulse
-is only sent when leaping from one phase cycle to the next (in either
-direction). Try smoothly changing the frequency from positive to negative
-in the slider to the left \, pay close attention to the phase output
-below and litsen to when the impulse happens.;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
-#X connect 3 0 2 0;
-#X connect 4 0 16 0;
-#X connect 5 0 4 0;
-#X connect 10 0 13 0;
-#X connect 11 0 10 0;
-#X connect 12 0 11 0;
-#X connect 16 0 13 0;
-#X connect 16 1 15 1;
-#X connect 16 1 15 0;
-#X connect 16 1 0 1;
-#X restore 470 228 pd examples;
-#N canvas 504 64 795 695 sync 0;
-#X obj 174 118 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 105 203 else/pimp~ 1;
-#X obj 60 337 cnv 15 198 118 empty empty empty 20 12 0 14 -233017 -66577
-0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array sync-phase-\$0 30000 float 0;
 #X coords 0 1.025 29999 -0.025 200 120 2 0 0;
-#X restore 59 336 graph;
+#X restore 136 319 graph;
 #N canvas 286 96 450 300 graph 0;
 #X obj 194 26 inlet~;
 #X obj 118 80 metro 900;
@@ -209,85 +136,83 @@ below and litsen to when the impulse happens.;
 #X connect 0 0 2 0;
 #X connect 1 0 2 0;
 #X connect 3 0 1 0;
-#X restore 105 262 pd graph;
-#X obj 174 246 else/out~;
-#X text 40 141 impulse value of 1 =>;
-#X text 188 163 <== immediately jumps to the start of the cycle when
-receiving an impulse., f 27;
-#X text 56 253 sync phase, f 6;
-#X text 15 14 The third inlet expects an impulse signal for syncing.
-The impulse values need to be > 0 and <= 1 (otherwise ignored) so the
-internal phase jumps imediately to the given impulse value. Because
-phase is cyclical \, the value of 1 represents the "phase 0" of the
-cycle \, where the impulse occurs. Send it impulses and check the result
-below.;
-#X text 420 24 An impulse oscillator as the input forces hard sync
-to the phase output.;
-#X text 680 95 Master;
-#X text 680 130 Slave;
-#X obj 582 167 cos~;
-#N canvas 286 96 450 300 graph 0;
-#X obj 194 26 inlet~;
-#X obj 98 29 loadbang;
-#X obj 197 128 tabwrite~ hard-sync-\$0;
-#X obj 158 48 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 118 80 metro 441;
-#X connect 0 0 2 0;
-#X connect 1 0 4 0;
-#X connect 3 0 4 0;
-#X connect 4 0 2 0;
-#X restore 582 277 pd graph;
-#X obj 602 208 else/out~;
-#X obj 469 337 cnv 15 198 118 empty empty empty 20 12 0 14 -233017
--66577 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array hard-sync-\$0 660 float 0;
-#X coords 0 1.025 659 -1.025 200 120 2 0 0;
-#X restore 468 336 graph;
-#X obj 582 69 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
+#X restore 265 233 pd graph;
+#X text 491 14 An impulse oscillator as the input forces hard sync
+to the phase output., f 48;
+#X text 718 94 Master;
+#X text 718 129 Slave;
+#X obj 600 166 cos~;
+#X obj 588 204 else/out~;
+#X obj 600 68 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 110 256;
-#X obj 582 129 else/pimp~ 200;
-#X obj 582 95 else/pimp~ 110;
-#X obj 582 495 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 600 128 else/pimp~ 200;
+#X obj 600 94 else/pimp~ 110;
+#X text 494 281 NOTE:;
+#X msg 41 134 0;
+#X msg 72 133 0.25;
+#X msg 144 133 0.75;
+#X msg 184 133 1;
+#X msg 112 133 0.5;
+#X obj 305 152 else/trigate~;
+#X obj 305 132 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 489 570 else/pimp~ 1 0.5;
-#X text 90 524 Note that the "phase sync" inlet is quite different
-from the "phase offset" inlet. This means that you will resset the
-internal of the object \, but the offset still remains.;
-#X msg 507 534 0;
-#X msg 540 534 0.5;
-#X text 91 572 In the example to the right \, even though the phase
-sync forces the object to go to the initial phase "0" \, it still has
-the initial offset of 0.5 as set via the 2nd argument. A further phase
-offset change to "0" will push back half the cycle.;
-#X obj 565 605 else/out~;
-#X obj 582 519 else/trigate~;
-#X obj 174 142 else/trigate~;
-#X connect 0 0 29 0;
-#X connect 1 0 4 0;
-#X connect 1 1 5 0;
-#X connect 1 1 5 1;
-#X connect 13 0 14 0;
-#X connect 13 0 15 0;
-#X connect 13 0 15 1;
-#X connect 18 0 20 0;
-#X connect 19 0 13 0;
-#X connect 20 1 19 2;
-#X connect 21 0 28 0;
-#X connect 22 1 27 0;
-#X connect 22 1 27 1;
-#X connect 24 0 22 1;
-#X connect 25 0 22 1;
-#X connect 28 0 22 2;
-#X connect 29 0 1 2;
-#X restore 494 279 pd sync;
+#X text 215 132 <= reset =>;
+#X text 312 173 <= impulse value of 1;
+#X obj 99 215 else/out~;
+#X obj 61 180 else/pimp~ 1;
+#X obj 265 198 else/pimp~ 2;
+#X text 33 13 The second inlet resets the phase ands behaves in the
+same way as in [phasor~]. A number input resets the oscillator and
+restarts the cycle with an initial phase that corresponds to the input
+number \, so the internal phase is synced to the given value. The phase
+values are from 0 to 1 and values beyond that are wrapped within this
+range.;
+#X text 34 473 Additionally \, you can reset the oscillator with an
+impulse signal. Inputs that are > 0 and <= 1 reset the phase Pdexpects
+an impulse signal for syncing. The impulse values need to be > 0 and
+<= 1 (otherwise ignored). Because phase is cyclical \, the value of
+1 represents the "phase 0" of the cycle \, where the impulse occurs.
+Send it impulses above and check the result. Use a multiplier to reset
+to another phase value.;
+#X obj 568 473 else/pimp~ 1 0.5;
+#X obj 635 523 else/out~;
+#X msg 677 446 0;
+#X msg 710 446 0.5;
+#X msg 622 444 0;
+#X text 518 308 The "phase sync" inlet is quite different from the
+"phase offset" inlet. This means that the are completely independent.
+For example \, the [pimp~] below has the initial offset of 0.5 \, so
+if you sync the phase to "0" \, it still has that offset (thus \, a
+phase offset change to "0" goes back half a cycle., f 44;
+#X text 559 445 sync =>;
+#X text 744 446 <= offset;
+#X connect 6 0 7 0;
+#X connect 6 0 7 1;
+#X connect 8 0 10 0;
+#X connect 9 0 6 0;
+#X connect 10 1 9 2;
+#X connect 12 0 22 1;
+#X connect 13 0 22 1;
+#X connect 14 0 22 1;
+#X connect 15 0 22 1;
+#X connect 16 0 22 1;
+#X connect 17 0 23 1;
+#X connect 18 0 17 0;
+#X connect 22 1 21 0;
+#X connect 22 1 21 1;
+#X connect 23 0 2 0;
+#X connect 26 1 27 0;
+#X connect 26 1 27 1;
+#X connect 28 0 26 2;
+#X connect 29 0 26 2;
+#X connect 30 0 26 1;
+#X restore 497 251 pd sync;
 #X obj 185 173 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 185 201 else/pimp~ 1, f 16;
-#X obj 278 249 else/out~;
+#X obj 294 249 else/out~;
 #X obj 185 261 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.27907 256;
 #N canvas 1046 306 123 217 snapshot~ 0;
 #X obj 29 107 snapshot~;
 #X obj 46 53 loadbang;
@@ -300,10 +225,10 @@ offset change to "0" will push back half the cycle.;
 #X connect 4 0 0 0;
 #X restore 185 232 pd snapshot~;
 #X obj 146 194 vsl 20 90 0 1 0 0 dsfsk sfg empty 0 -9 0 10 -228856
--1 -1 0 1;
+-1 -1 2484 1;
 #X obj 110 42 cnv 4 4 4 empty empty imp~ 0 28 2 18 -233017 -1 0;
-#X text 310 217 <= impulse;
-#X text 88 232 phase =>;
+#X text 330 221 <= impulse;
+#X text 86 232 phase =>;
 #X obj 3 4 cnv 15 301 42 empty empty pimp~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -326,67 +251,142 @@ offset change to "0" will push back half the cycle.;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#N canvas 534 204 808 365 phase 0;
-#X obj 69 223 else/pimp~ 1 0;
-#X obj 100 183 else/pimp~ 1 0.5;
-#X obj 150 258 else/out~;
-#X obj 149 130 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#N canvas 335 133 898 344 phase 0;
+#X obj 478 111 cnv 15 140 65 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 639 79 cnv 15 100 110 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 490 246 else/out~;
+#X obj 490 206 cos~;
+#X obj 490 150 else/pimp~ 200;
+#X obj 648 251 else/out~;
+#X obj 648 211 cos~;
+#X obj 648 142 +~;
+#X obj 648 166 wrap~;
+#X obj 648 89 phasor~ 200;
+#X obj 666 113 osc~ 50.1;
+#X obj 537 122 osc~ 50.1;
+#X text 477 93 Phase Modulation:;
+#X text 746 133 <= same as this;
+#X obj 96 243 else/out~;
+#X obj 114 207 +~;
+#X text 369 106 1;
+#X obj 237 106 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 146 155 0 0 0 0 - - -;
-#X text 418 23 The phase values are wrapped into the 0-1 range \, since
-the phase cycle is from 0 to 1 - where 1 is also the start of another
-cycle.;
-#X text 19 21 The second argument sets an initial phase (or "phase
-offset"). This is also settable with the second inlet. In such a way
-\, you have two objects with the same frequency falling out and back
-in sync. Another feature is phase modulation.;
-#X text 287 130 1;
-#X text 127 130 0;
-#X obj 452 127 cnv 15 120 65 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X obj 611 95 cnv 15 85 110 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X obj 464 262 else/out~;
-#X obj 464 222 cos~;
-#X obj 464 166 else/pimp~ 200;
-#X obj 622 267 else/out~;
-#X obj 622 227 cos~;
-#X obj 622 158 +~;
-#X obj 622 182 wrap~;
-#X obj 622 105 phasor~ 200;
-#X obj 637 129 osc~ 50.1;
-#X obj 504 135 osc~ 50.1;
-#X text 454 109 Phase Modulation:;
-#X text 677 154 <= same as this;
-#X connect 0 1 2 0;
-#X connect 1 1 2 1;
-#X connect 3 0 4 0;
-#X connect 4 0 1 1;
-#X connect 12 0 11 0;
-#X connect 12 0 11 1;
-#X connect 13 0 12 0;
+#X floatatom 234 130 4 0 0 0 - - -, f 4;
+#X text 217 106 0;
+#X obj 234 154 else/float2sig~ 10;
+#X obj 114 142 else/imp~ 1 0.5;
+#X obj 132 180 else/impulse~ 1;
+#X text 16 19 The second argument sets an initial phase (or "phase
+offset"). This is also settable with the third inlet. This allows you
+to control two objects with the same frequency falling in and out of
+phase. Another feature is phase modulation., f 53;
+#X text 418 23 The phase input values are wrapped into the 0-1 range
+\, since the phase cycle is from 0 to 1 (where 1 is also the start
+of another cycle).;
+#X connect 3 0 2 0;
+#X connect 3 0 2 1;
+#X connect 4 0 3 0;
+#X connect 6 0 5 0;
+#X connect 6 0 5 1;
+#X connect 7 0 8 0;
+#X connect 8 0 6 0;
+#X connect 9 0 7 0;
+#X connect 10 0 7 1;
+#X connect 11 0 4 1;
 #X connect 15 0 14 0;
 #X connect 15 0 14 1;
-#X connect 16 0 17 0;
-#X connect 17 0 15 0;
-#X connect 18 0 16 0;
-#X connect 19 0 16 1;
-#X connect 20 0 13 1;
-#X restore 445 253 pd phase offset;
-#X text 243 478 - initial phase offset;
-#X text 261 349 phase offset (modulation input);
-#X text 261 369 phase sync (ressets internal phase);
-#X text 130 271 0;
-#X text 130 188 1;
-#X text 63 89 [pimp~] is a combination of [phasor~] and [else/imp~].
-It's [imp~] with an extra phase output (left outlet). The impulse happens
-at every phase period start (in both negative or positive frequencies/directions).
-It also has inlets for phase modulation and phase sync like [imp~].
+#X connect 17 0 18 0;
+#X connect 18 0 20 0;
+#X connect 20 0 22 2;
+#X connect 21 0 15 0;
+#X connect 22 0 15 1;
+#X restore 441 275 pd phase offset;
+#X text 239 475 - initial phase offset;
+#X text 135 272 0;
+#X text 135 190 1;
+#X text 249 421 impulse signal (at period transitions);
+#X text 63 89 [pimp~] is a combination of [phasor~] and [else/imp~]
+(alias of [else/impulse~]). It's [imp~] with an extra phase output
+(left outlet). The impulse happens at every phase period start (in
+both negative or positive frequencies/directions). It also has inlets
+for phase sync and phase modulation like [imp~].;
+#X obj 3 311 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X text 261 424 impulse signal (at period transitions);
-#X connect 24 0 25 0;
-#X connect 25 0 28 0;
-#X connect 25 1 26 0;
-#X connect 25 1 26 1;
-#X connect 27 0 29 0;
-#X connect 28 0 27 0;
+#X obj 105 321 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 147 322 float/signal -;
+#X text 251 322 frequency in hz;
+#X obj 104 343 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 147 364 float/signal -;
+#X obj 104 363 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 252 364 phase offset (modulation input);
+#X text 252 344 phase sync (ressets internal phase);
+#X text 147 344 float/signal -;
+#N canvas 461 182 862 354 example 0;
+#X obj 288 208 else/sh~;
+#X obj 288 153 noise~;
+#X obj 288 281 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -0.166004 256;
+#N canvas 1046 306 123 217 snapshot~ 0;
+#X obj 29 107 snapshot~;
+#X obj 46 79 metro 100;
+#X obj 46 53 loadbang;
+#X obj 29 146 outlet;
+#X obj 29 25 inlet~;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 4 0 0 0;
+#X restore 288 251 pd snapshot~;
+#X obj 133 130 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -1 256;
+#X obj 136 105 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 514 154 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
+-66577 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-phase 441 float 0;
+#X coords 0 1 440 0 200 140 1 0 0;
+#X restore 513 153 graph;
+#X text 719 283 0;
+#X text 717 146 1;
+#X obj 59 233 metro 100;
+#X obj 59 208 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 59 184 loadbang;
+#X obj 133 280 tabwrite~ \$0-phase;
+#X text 161 104 frequency;
+#X obj 171 209 else/out~;
+#X obj 133 157 else/pimp~ 1;
+#X text 24 22 [pimp~] is very convenient for both driving a process
+with its phase output (such as reading a sample or envelope) and also
+triggering at period transitions other objects or processes (such as
+with [sh~] below)., f 54;
+#X text 439 24 Since it deals with negative frequencies \, the impulse
+is only sent when leaping from one phase cycle to the next (in either
+direction). Try smoothly changing the frequency from positive to negative
+in the slider to the left \, pay close attention to the phase output
+below and litsen to when the impulse happens., f 53;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 3 0 2 0;
+#X connect 4 0 16 0;
+#X connect 5 0 4 0;
+#X connect 10 0 13 0;
+#X connect 11 0 10 0;
+#X connect 12 0 11 0;
+#X connect 16 0 13 0;
+#X connect 16 1 15 1;
+#X connect 16 1 15 0;
+#X connect 16 1 0 1;
+#X restore 476 227 pd example;
+#X connect 15 0 16 0;
+#X connect 16 0 19 0;
+#X connect 16 1 17 0;
+#X connect 16 1 17 1;
+#X connect 18 0 20 0;
+#X connect 19 0 18 0;
