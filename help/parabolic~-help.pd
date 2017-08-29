@@ -1,56 +1,74 @@
-#N canvas 570 53 559 525 10;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
-#N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
-#X obj 23 40 cnv 4 4 4 empty empty Parabolic 0 28 2 18 -233017 -1 0
+#N canvas 555 153 560 470 10;
+#X obj 3 282 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 102 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
+#X obj 3 356 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 392 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 122 365 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 123 290 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 3 442 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
-0;
-#X obj 183 249 else/out~;
-#X obj 200 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 165 291 float/signal -;
+#X text 269 291 frequency in hz;
+#X obj 122 312 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 165 333 float/signal -;
+#X obj 122 332 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 206 365 signal -;
+#X text 184 401 1) float;
+#X text 270 333 phase offset (modulation input);
+#X text 270 313 phase sync (ressets internal phase);
+#X obj 218 158 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 260 167 <= hz;
-#X obj 3 318 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 394 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 430 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
-0;
-#X obj 122 403 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 123 326 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 3 481 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
-0;
-#X text 165 327 float/signal -;
-#X text 262 328 frequency in hz;
-#X obj 122 348 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X text 164 349 float/signal -;
-#X obj 122 368 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
-;
-#X text 200 369 signal -;
-#X text 200 403 signal -;
-#X text 184 439 1) float;
-#X text 243 439 - frequency in hertz;
-#X text 184 459 2) float;
-#X text 243 459 - initial phase offset;
-#X text 261 350 phase offset (modulation input);
-#X text 261 369 phase sync (ressets internal phase);
+#X text 278 157 <= hz;
+#N canvas 403 51 858 494 sync 0;
+#X msg 29 134 0;
+#X obj 37 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 4950 1;
+#X obj 37 211 else/sig2float~;
+#X msg 63 134 0.25;
+#X msg 140 133 0.75;
+#X msg 183 133 1;
+#X msg 105 133 0.5;
+#X obj 238 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 4950 1;
+#X obj 238 217 else/sig2float~;
+#X obj 306 152 else/trigate~;
+#X obj 306 132 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 217 132 <= reset =>;
+#X text 313 173 <= impulse value of 1;
+#X text 34 15 The second inlet resets the phase ands behaves in the
+same way for control data as objects like [osc~] and [phasor~] in Pd.
+A number input resets the oscillator and restarts the cycle with an
+initial phase that corresponds to the input number \, so the internal
+phase is synced to the given value. The phase values are from 0 to
+1 and values beyond that are wrapped within this range.;
+#X text 518 25 Syncing the phase with control messages is useful for
+LFOs and control with MIDI. A sync with audio is usefull for the "hard
+sync" technique \, where an oscillator is synced according to the frequency
+of a master frequency., f 44;
+#X obj 528 255 else/out~;
+#X obj 593 149 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 110 256;
+#X text 694 175 Master oscillator;
+#X text 670 210 Slave oscillator;
+#X obj 593 175 else/imp~ 110;
+#X text 509 349 NOTE:;
+#X text 525 382 The "phase sync" inlet is quite different from the
+"phase offset" inlet. This means that the are completely independent.
+, f 43;
+#X text 36 370 Additionally \, you can reset the oscillator with an
+impulse signal. Inputs that are > 0 and <= 1 reset the phase Pdexpects
+an impulse signal for syncing. The impulse values need to be > 0 and
+<= 1 (otherwise ignored). Because phase is cyclical \, the value of
+1 represents the "phase 0" of the cycle \, where the impulse occurs.
+Send it impulses above and check the result. Use a multiplier to reset
+to another phase value.;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
 -262144 0 1;
@@ -154,107 +172,101 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 71 pd;
-#N canvas 354 88 811 327 sync 0;
-#X obj 180 118 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 69 245 else/out~;
-#X text 46 141 impulse value of 1 =>;
-#X text 15 14 The third inlet expects an impulse signal for syncing.
-The impulse values need to be > 0 and <= 1 (otherwise ignored) so the
-internal phase jumps imediately to the given impulse value. Because
-phase is cyclical \, the value of 1 represents the "phase 0" of the
-cycle \, where the impulse occurs. Send it impulses and check the result
-below.;
-#X text 695 92 Master;
-#X text 613 126 Slave;
-#X obj 491 177 else/out~;
-#X obj 602 66 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 110 256;
-#X text 426 255 Note that the "phase sync" inlet is quite different
-from the "phase offset" inlet. This means that you will resset the
-internal of the object \, but the offset still remains.;
-#X obj 180 142 else/trigate~;
-#X obj 602 92 else/imp~ 110;
-#X text 440 24 An impulse oscillator as the input forces "hard sync".
-;
-#X text 194 163 <== immediately jumps to the start \; of the cycle
-when receiving an impulse.;
-#X obj 69 203 else/parabolic~ 220;
-#X obj 491 123 else/parabolic~ 200;
-#X connect 0 0 9 0;
-#X connect 7 0 10 0;
-#X connect 9 0 13 2;
-#X connect 10 0 14 2;
-#X connect 13 0 1 0;
-#X connect 13 0 1 1;
-#X connect 14 0 6 0;
-#X connect 14 0 6 1;
-#X restore 494 281 pd sync;
-#N canvas 534 204 786 409 phase 0;
-#X text 400 90 The phase values are wrapped into the 0-1 range \, since
-the phase cycle is from 0 to 1 - where 1 is also the start of another
-cycle.;
-#X text 19 21 The second argument sets an initial phase (or "phase
-offset"). This is also settable with the second inlet. In such a way
-\, you have two objects with the same frequency falling out and back
-in sync. Another feature is phase modulation.;
-#X obj 512 181 cnv 15 140 65 empty empty empty 20 12 0 14 -233017 -66577
+#X restore 132 267 pd;
+#X obj 37 181 else/parabolic~ 0.25;
+#X obj 238 193 else/parabolic~ 0.25;
+#X obj 528 209 else/parabolic~ 200;
+#X connect 0 0 24 1;
+#X connect 2 0 1 0;
+#X connect 3 0 24 1;
+#X connect 4 0 24 1;
+#X connect 5 0 24 1;
+#X connect 6 0 24 1;
+#X connect 8 0 7 0;
+#X connect 9 0 25 1;
+#X connect 10 0 9 0;
+#X connect 16 0 19 0;
+#X connect 19 0 26 1;
+#X connect 24 0 2 0;
+#X connect 25 0 8 0;
+#X connect 26 0 15 0;
+#X connect 26 0 15 1;
+#X restore 494 217 pd sync;
+#N canvas 430 175 908 347 phase 0;
+#X obj 555 112 cnv 15 240 65 empty empty empty 20 12 0 14 -233017 -66577
 0;
-#X obj 508 273 else/out~;
-#X obj 579 192 osc~ 50.1;
-#X text 514 163 Phase Modulation:;
-#X text 339 111 1;
-#X obj 205 113 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 558 204 else/out~;
+#X text 552 94 Phase Modulation:;
+#X obj 703 123 osc~ 50.01;
+#X text 28 31 The second argument sets an initial phase (or "phase
+offset"). This is also settable with the third inlet. This allows you
+to control two oscillators with the same frequency falling in and out
+of phase. Another feature is phase modulation., f 53;
+#X obj 92 251 else/out~;
+#X obj 110 215 +~;
+#X text 393 114 1;
+#X obj 261 114 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 202 137 0 0 0 0 - - -;
-#X text 183 112 0;
-#X obj 101 301 else/out~;
-#X obj 120 255 +~;
-#X msg 202 163 \$1 10;
-#X obj 202 187 line~;
-#X obj 31 161 else/parabolic~ 440 0;
-#X obj 135 214 else/parabolic~ 440 0.5;
-#X obj 524 220 else/parabolic~ 200;
-#X connect 4 0 16 1;
-#X connect 7 0 8 0;
-#X connect 8 0 12 0;
-#X connect 11 0 10 0;
-#X connect 11 0 10 1;
-#X connect 12 0 13 0;
-#X connect 13 0 15 1;
-#X connect 14 0 11 0;
-#X connect 15 0 11 1;
-#X connect 16 0 3 0;
-#X connect 16 0 3 1;
-#X restore 445 256 pd phase offset;
+#X floatatom 258 138 4 0 0 0 - - -, f 4;
+#X text 241 114 0;
+#X obj 258 162 else/float2sig~ 10;
+#X text 444 33 The phase values are wrapped into the 0-1 range \, since
+the phase cycle is from 0 to 1 (where 1 is also the start of another
+cycle).;
+#X text 473 275 Note: When used to modulate the phase \, a parabolic
+oscillator acts like a triangular wave modulating the frequency.,
+f 50;
+#X obj 69 149 else/parabolic~ 220 0.5;
+#X obj 128 188 else/parabolic~ 220;
+#X obj 573 151 else/parabolic~ 200;
+#X connect 3 0 16 2;
+#X connect 6 0 5 0;
+#X connect 6 0 5 1;
+#X connect 8 0 9 0;
+#X connect 9 0 11 0;
+#X connect 11 0 15 2;
+#X connect 14 0 6 0;
+#X connect 15 0 6 1;
+#X connect 16 0 1 0;
+#X connect 16 0 1 1;
+#X restore 438 241 pd phase offset;
+#X text 243 420 - initial phase offset (default 0);
+#X text 243 401 - frequency in hertz (default 0);
+#X obj 201 221 else/out~;
+#X text 267 365 sine wave signal;
+#X text 184 420 2) float;
+#X text 165 313 float/signal -;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Parabolic 0 28 2 18 -233017 -1 0
+;
+#X obj 102 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
 #X obj 3 3 cnv 15 301 42 empty empty parabolic~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#N canvas 793 162 406 338 example 0;
-#X obj 115 93 phasor~ 220;
-#X obj 115 139 +~;
-#X obj 115 188 else/sin~;
-#X obj 97 239 else/out~;
-#X obj 221 114 *~ 2;
-#X text 23 22 When used to modulate the phase \, a parabolic oscillator
-acts like a triangular wave in frequency modulation.;
-#X obj 221 83 else/parabolic~ 0.5;
-#X connect 0 0 1 0;
-#X connect 1 0 2 0;
-#X connect 2 0 3 0;
-#X connect 2 0 3 1;
-#X connect 4 0 1 1;
-#X connect 6 0 4 0;
-#X restore 476 231 pd example;
-#X obj 200 200 else/parabolic~ 220;
-#X text 61 86 [parabolic~] is a parabolic oscillator that accepts negative
-frequencies \, has inlets for phase modulation and phase sync. A parabolic
-waveform is similar to a sinusoid but it is not band limited (has aliasing).
-;
-#X text 261 403 parabolic oscillator output;
-#X connect 11 0 38 0;
-#X connect 38 0 10 0;
-#X connect 38 0 10 1;
+#X obj 218 186 else/parabolic~ 440;
+#X text 60 87 [parabolic~] is a parabolic oscillator that accepts negative
+frequencies \, has inlets for phase sync and and phase modulation.
+A parabolic waveform is similar to a sinusoid but it is not band limited
+(has aliasing)., f 64;
+#X connect 15 0 37 0;
+#X connect 37 0 21 0;
+#X connect 37 0 21 1;
