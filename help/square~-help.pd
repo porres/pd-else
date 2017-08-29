@@ -1,4 +1,4 @@
-#N canvas 171 121 559 510 10;
+#N canvas 150 149 559 510 10;
 #X obj 3 274 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 370 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -53,10 +53,6 @@ cycle.;
 0;
 #X obj 576 191 else/out~;
 #X text 562 82 Phase Modulation:;
-#X text 19 21 The third argument sets an initial phase (or "phase offset").
-This is also settable with the third inlet. In such a way \, you have
-two objects with the same frequency falling out and back in sync. Another
-feature is phase modulation.;
 #X obj 701 111 osc~ 50.05;
 #X text 361 116 1;
 #X obj 223 116 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
@@ -68,15 +64,19 @@ feature is phase modulation.;
 #X obj 55 171 else/square~ 100 0.5 0.5;
 #X obj 241 172 else/square~ 100;
 #X obj 207 244 else/out~;
-#X connect 5 0 10 3;
-#X connect 7 0 8 0;
-#X connect 8 0 12 3;
-#X connect 10 0 2 0;
-#X connect 10 0 2 1;
-#X connect 11 0 14 0;
-#X connect 11 0 14 1;
-#X connect 12 0 11 0;
-#X connect 13 0 11 1;
+#X text 32 21 The third argument sets an initial phase (or "phase offset").
+This is also settable with the fourth inlet. In such a way \, you have
+two objects with the same frequency falling out and back in sync. Another
+feature is phase modulation., f 51;
+#X connect 4 0 9 3;
+#X connect 6 0 7 0;
+#X connect 7 0 11 3;
+#X connect 9 0 2 0;
+#X connect 9 0 2 1;
+#X connect 10 0 13 0;
+#X connect 10 0 13 1;
+#X connect 11 0 10 0;
+#X connect 12 0 10 1;
 #X restore 443 239 pd phase offset;
 #X text 187 452 3) float;
 #N canvas 403 51 875 522 sync 0;
@@ -116,8 +116,8 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X text 223 139 <= reset =>;
 #X text 319 180 <= impulse value of 1;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -186,7 +186,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -224,16 +224,15 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X msg 146 140 0.75;
 #X msg 189 140 1;
 #X msg 111 140 0.5;
-#X obj 83 191 else/square~ 1;
+#X obj 83 194 else/square~ 1;
 #X obj 249 200 else/square~ 1;
 #X obj 83 252 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 4950 1;
+-1 -1 9900 1;
 #X obj 249 250 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 4950 1;
-#X obj 83 191 else/square~ 1;
+-1 -1 9900 1;
 #X obj 536 229 else/square~ 200;
 #X connect 2 0 5 0;
-#X connect 5 0 27 2;
+#X connect 5 0 26 2;
 #X connect 10 0 24 0;
 #X connect 11 0 25 0;
 #X connect 12 0 23 2;
@@ -245,8 +244,8 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X connect 21 0 22 2;
 #X connect 22 0 10 0;
 #X connect 23 0 11 0;
-#X connect 27 0 1 0;
-#X connect 27 0 1 1;
+#X connect 26 0 1 0;
+#X connect 26 0 1 1;
 #X restore 499 213 pd sync;
 #X text 256 415 - frequency in hertz (default 0);
 #X text 256 434 - initial pulse width (default 0.5);

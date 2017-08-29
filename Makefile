@@ -60,6 +60,7 @@ ikeda~.class.sources := classes/ikeda~.c
 imp~.class.sources := classes/imp~.c
 impulse~.class.sources := classes/impulse~.c
 imp2~.class.sources := classes/imp2~.c
+impulse2~.class.sources := classes/impulse2~.c
 lastvalue~.class.sources := classes/lastvalue~.c
 latoocarfian~.class.sources := classes/latoocarfian~.c
 lfnoise~.class.sources := classes/lfnoise~.c

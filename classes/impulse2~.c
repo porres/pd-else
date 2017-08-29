@@ -4,9 +4,9 @@
 #include "math.h"
 #include "magic.h"
 
-static t_class *imp2_class;
+static t_class *impulse2_class;
 
-typedef struct _imp2
+typedef struct _impulse2
 {
     t_object x_obj;
     double  x_phase;
@@ -23,10 +23,10 @@ typedef struct _imp2
     t_float *x_signalscalar; // right inlet's float field
     int x_hasfeeders; // right inlet connection flag
     t_float  x_phase_sync_float; // float from magic
-} t_imp2;
+} t_impulse2;
 
-static t_int *imp2_perform_magic(t_int *w){
-    t_imp2 *x = (t_imp2 *)(w[1]);
+static t_int *impulse2_perform_magic(t_int *w){
+    t_impulse2 *x = (t_impulse2 *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // width
@@ -96,8 +96,8 @@ static t_int *imp2_perform_magic(t_int *w){
     return (w + 8);
 }
 
-static t_int *imp2_perform(t_int *w){
-    t_imp2 *x = (t_imp2 *)(w[1]);
+static t_int *impulse2_perform(t_int *w){
+    t_impulse2 *x = (t_impulse2 *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // width
@@ -168,20 +168,20 @@ static t_int *imp2_perform(t_int *w){
 }
 
 
-static void imp2_dsp(t_imp2 *x, t_signal **sp){
+static void impulse2_dsp(t_impulse2 *x, t_signal **sp){
     x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 2, &s_signal); // magic feeder flag
     x->x_sr = sp[0]->s_sr;
     if (x->x_hasfeeders){
-        dsp_add(imp2_perform, 7, x, sp[0]->s_n,
+        dsp_add(impulse2_perform, 7, x, sp[0]->s_n,
                 sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
     }
     else{
-        dsp_add(imp2_perform, 7, x, sp[0]->s_n,
+        dsp_add(impulse2_perform, 7, x, sp[0]->s_n,
                 sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
     }
 }
 
-static void *imp2_free(t_imp2 *x)
+static void *impulse2_free(t_impulse2 *x)
 {
     inlet_free(x->x_inlet_width);
     inlet_free(x->x_inlet_phase);
@@ -190,9 +190,9 @@ static void *imp2_free(t_imp2 *x)
     return (void *)x;
 }
 
-static void *imp2_new(t_symbol *s, int ac, t_atom *av)
+static void *impulse2_new(t_symbol *s, int ac, t_atom *av)
 {
-    t_imp2 *x = (t_imp2 *)pd_new(imp2_class);
+    t_impulse2 *x = (t_impulse2 *)pd_new(impulse2_class);
     t_float f1 = 0, f2 = 0.5, f3 = 0;
     if (ac && av->a_type == A_FLOAT)
     {
@@ -237,12 +237,11 @@ static void *imp2_new(t_symbol *s, int ac, t_atom *av)
     return (x);
 }
 
-void imp2_tilde_setup(void)
+void impulse2_tilde_setup(void)
 {
-    imp2_class = class_new(gensym("imp2~"),
-        (t_newmethod)imp2_new, (t_method)imp2_free,
-        sizeof(t_imp2), CLASS_DEFAULT, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(imp2_class, t_imp2, x_freq);
-    class_addmethod(imp2_class, (t_method)imp2_dsp, gensym("dsp"), A_CANT, 0);
-    class_sethelpsymbol(imp2_class, gensym("impulse2~"));
+    impulse2_class = class_new(gensym("impulse2~"),
+        (t_newmethod)impulse2_new, (t_method)impulse2_free,
+        sizeof(t_impulse2), CLASS_DEFAULT, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(impulse2_class, t_impulse2, x_freq);
+    class_addmethod(impulse2_class, (t_method)impulse2_dsp, gensym("dsp"), A_CANT, 0);
 }
