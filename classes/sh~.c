@@ -67,8 +67,8 @@ static void *sh_new(t_floatarg f1, t_floatarg f2)
     t_sh *x = (t_sh *)pd_new(sh_class);
     x->x_triglet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     outlet_new((t_object *)x, &s_signal);
-    x->x_lastout = f1;
-    x->x_thresh = f2;
+    x->x_thresh = f1;
+    x->x_lastout = f2;
     return (x);
 }
 
