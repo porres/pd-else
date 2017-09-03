@@ -5,7 +5,9 @@
 #include "g_canvas.h"
 #include <string.h> // needed?
 
-struct _outlet {// local to m_obj.c.
+// Magic
+
+struct _outlet { // local to m_obj.c.
     t_object *o_owner;
     struct _outlet *o_next;
     t_outconnect *o_connections;
@@ -50,3 +52,5 @@ int magic_inlet_connection(t_object *x, t_glist *glist, int inno, t_symbol *outs
         return (1);
     return (0);
 }
+
+// End of Magic
