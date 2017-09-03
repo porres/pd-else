@@ -71,7 +71,6 @@ pan2~.class.sources := classes/pan2~.c
 pan4~.class.sources := classes/pan4~.c
 peak~.class.sources := classes/peak~.c
 pluck~.class.sources := classes/pluck~.c
-pimp~.class.sources := classes/pimp~.c
 pmosc~.class.sources := classes/pmosc~.c
 pulsecount~.class.sources := classes/pulsecount~.c
 pulsediv~.class.sources := classes/pulsediv~.c
@@ -122,6 +121,7 @@ sawtooth2~.class.sources := classes/sawtooth2~.c $(magic)
 square~.class.sources := classes/square~.c $(magic)
 triangular~.class.sources := classes/triangular~.c $(magic)
 vsaw~.class.sources := classes/vsaw~.c $(magic)
+pimp~.class.sources := classes/pimp~.c $(magic)
 
 
 #########################################################################
