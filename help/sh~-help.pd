@@ -1,42 +1,42 @@
-#N canvas 631 23 575 606 10;
-#X obj 3 316 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 631 23 563 610 10;
+#X obj 3 318 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 438 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 440 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 475 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 477 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 157 447 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 157 449 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 570 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 572 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 137 196 noise~;
-#X obj 3 3 cnv 15 301 42 empty empty sh~ 20 20 2 37 -233017 -1 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 137 198 noise~;
+#X obj 3 5 cnv 15 301 42 empty empty sh~ 20 20 2 37 -233017 -1 0;
+#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 2 3 graph;
+#X restore 2 5 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 5 pd;
+#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Sample 0 28 2 18 -233017 -1 0;
-#X obj 107 40 cnv 4 4 4 empty empty hold 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 42 cnv 4 4 4 empty empty Sample 0 28 2 18 -233017 -1 0;
+#X obj 107 42 cnv 4 4 4 empty empty hold 0 28 2 18 -233017 -1 0;
+#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 83 40 cnv 4 4 4 empty empty & 0 28 2 18 -233017 -1 0;
-#X obj 157 414 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 83 42 cnv 4 4 4 empty empty & 0 28 2 18 -233017 -1 0;
+#X obj 157 416 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 137 287 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.323121 256;
+#X obj 137 289 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -105,7 +105,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -137,10 +137,10 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 504 62 pd;
-#X obj 274 243 else/out~;
-#X text 205 326 signal - input signal, f 31;
-#X text 205 415 signal - gate signal, f 31;
+#X restore 504 64 pd;
+#X obj 274 245 else/out~;
+#X text 205 328 signal - input signal, f 31;
+#X text 205 417 signal - gate signal, f 31;
 #N canvas 431 69 768 381 downsampling 0;
 #X obj 100 136 noise~;
 #X obj 174 143 else/imp~ 100;
@@ -179,27 +179,27 @@ generator will behave the same way for both modes!;
 #X connect 10 0 9 1;
 #X connect 12 0 2 0;
 #X connect 12 0 2 1;
-#X restore 436 278 pd downsampling;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X restore 436 280 pd downsampling;
+#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 200 447 signal - sampled and held signal;
-#X obj 137 259 else/sig2float~;
-#X text 219 343 bang - sample the signal, f 29;
-#X obj 157 327 cnv 17 3 82 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 200 449 signal - sampled and held signal;
+#X obj 137 261 else/sig2float~;
+#X text 219 345 bang - sample the signal, f 29;
+#X obj 157 329 cnv 17 3 82 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 170 361 set <float> - set the held value, f 36;
+#X text 170 363 set <float> - set the held value, f 36;
 #N canvas 446 163 872 343 more 0;
 #X obj 647 141 noise~;
 #X obj 647 271 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1.55 256;
+-228856 -1 -1 0 256;
 #X obj 647 239 else/sig2float~;
 #X obj 711 156 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 205 165 noise~;
 #X obj 205 276 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.319241 256;
+-228856 -1 -1 0 256;
 #X obj 205 240 else/sig2float~;
 #X obj 286 164 osc~ 1;
 #X msg 114 165 thresh \$1;
@@ -234,22 +234,22 @@ the held output. The [sh~] can also be triggered by a bang., f 55
 #X connect 12 0 11 0;
 #X connect 14 0 6 0;
 #X connect 15 0 2 0;
-#X restore 492 253 pd more;
-#X text 154 483 1) float - initial threshold (default 0), f 49;
-#X text 154 499 2) float - initially held value (default 0), f 49
+#X restore 492 255 pd more;
+#X text 154 485 1) float - initial threshold (default 0), f 49;
+#X text 154 501 2) float - initially held value (default 0), f 49
 ;
-#X obj 137 225 else/sh~;
-#X obj 274 181 else/imp~ 2;
-#X text 154 515 3) float - mode: 0 (gate \, default) or 1 (trigger)
+#X obj 137 227 else/sh~;
+#X obj 274 183 else/imp~ 2;
+#X text 154 517 3) float - mode: 0 (gate \, default) or 1 (trigger)
 ;
-#X obj 3 535 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 188 544 "-tr" - sets to trigger mode;
-#X text 219 379 gate - sets to gate mode, f 29;
-#X text 198 396 trigger - sets to trigger mode, f 32;
+#X obj 3 537 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 188 546 "-tr" - sets to trigger mode;
+#X text 219 381 gate - sets to gate mode, f 29;
+#X text 198 398 trigger - sets to trigger mode, f 32;
 #N canvas 727 74 515 524 modes 0;
 #X obj 243 202 noise~;
 #X obj 243 383 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.902521 256;
+-228856 -1 -1 0 256;
 #X obj 262 277 else/out~;
 #X obj 243 237 else/sh~;
 #X obj 243 353 else/sig2float~;
@@ -278,10 +278,10 @@ it to trigger mode with the "-tr" flag as in:, f 55;
 #X connect 5 0 3 0;
 #X connect 6 0 3 0;
 #X connect 10 0 3 1;
-#X restore 485 227 pd modes;
-#X obj 98 195 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X restore 485 229 pd modes;
+#X obj 98 197 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X text 37 92 [sh~] samples and holds a value from the left inlet.
+#X text 37 94 [sh~] samples and holds a value from the left inlet.
 In "gate" mode (default) \, values are sampled if the signal in the
 right inlet is greater than the threshold (0 by default) \, or held
 if lesser or equal to it. In "trigger" mode \, the value needs to fall
