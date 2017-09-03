@@ -57,6 +57,7 @@ int magic_inlet_connection(t_object *x, t_glist *glist, int inno, t_symbol *outs
 
 // End of Magic
 
+#include "math.h"
 #define TWOPI (M_PI * 2)
 
 static t_class *sine_class;
