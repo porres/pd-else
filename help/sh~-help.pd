@@ -1,15 +1,15 @@
-#N canvas 596 50 565 557 10;
-#X obj 3 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 631 23 575 606 10;
+#X obj 3 316 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 409 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 438 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 446 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 475 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 157 418 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 157 447 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 497 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 570 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 152 187 noise~;
+#X obj 137 196 noise~;
 #X obj 3 3 cnv 15 301 42 empty empty sh~ 20 20 2 37 -233017 -1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -30,10 +30,10 @@
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
 #X obj 83 40 cnv 4 4 4 empty empty & 0 28 2 18 -233017 -1 0;
-#X obj 157 385 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 157 414 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 152 283 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.663179 256;
+#X obj 137 287 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.323121 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -138,137 +138,159 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 504 62 pd;
-#X obj 267 237 else/out~;
-#X text 200 327 signal - input signal;
-#X text 200 387 signal - gate signal;
-#X obj 267 183 else/imp~ 2;
-#N canvas 870 127 427 415 gate 0;
-#X obj 138 163 noise~;
-#X obj 138 349 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.386191 256;
-#X obj 207 165 osc~ 0.5;
-#X obj 155 242 else/out~;
-#X text 32 18 In the parent patch we have an example with an impulse
-generator \, where the input value is only sampled at the instant the
-impulse occurs \, then held otherwise.;
-#X text 32 69 In this example we have an oscillator as the gate signal.
-Now \, when values are greater than zero \, the gate is open and the
-signal passes through \, being held only when the gate value is less
-or equal to zero.;
-#X obj 138 203 else/sh~;
-#X obj 138 319 else/sig2float~ 100;
-#X connect 0 0 6 0;
-#X connect 2 0 6 1;
-#X connect 6 0 3 0;
-#X connect 6 0 3 1;
-#X connect 6 0 7 0;
-#X connect 7 0 1 0;
-#X restore 493 195 pd gate;
-#N canvas 391 119 819 356 downsampling 0;
-#X obj 121 129 noise~;
-#X obj 195 136 else/imp~ 100;
-#X obj 103 215 else/out~;
-#X obj 198 87 hsl 128 15 100 44100 1 0 empty empty empty -2 -8 0 10
+#X obj 274 243 else/out~;
+#X text 205 326 signal - input signal, f 31;
+#X text 205 415 signal - gate signal, f 31;
+#N canvas 431 69 768 381 downsampling 0;
+#X obj 100 136 noise~;
+#X obj 174 143 else/imp~ 100;
+#X obj 82 222 else/out~;
+#X obj 177 94 hsl 128 15 100 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X obj 195 114 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 174 121 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 31 18 With [sh~] you can downsample a signal (in a "sample
-and hold" fashion) and raise it up to the sample rate.;
-#X obj 517 128 noise~;
-#X obj 499 214 else/out~;
-#X obj 594 86 hsl 128 15 100 44100 1 0 empty empty empty -2 -8 0 10
+#X obj 478 129 noise~;
+#X obj 460 215 else/out~;
+#X obj 541 87 hsl 128 15 100 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X obj 591 113 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 538 114 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 517 168 samphold~;
-#X obj 591 135 phasor~ 100;
-#X text 415 21 This isn't possible with the corresponding vanilla counterparts
+#X obj 478 169 samphold~;
+#X obj 538 136 phasor~ 100;
+#X text 394 17 This isn't possible with the corresponding vanilla counterparts
 because of the way they were designed. Change the slider up to the
-sample rate and check it out.;
-#X text 194 311 The sample rate must be 44100 in order for this example
-to work;
-#X obj 121 169 else/sh~;
-#X connect 0 0 14 0;
-#X connect 1 0 14 1;
+sample rate and check it out., f 51;
+#X obj 100 176 else/sh~;
+#X text 29 21 With [sh~] you can downsample a signal (in a "sample
+and hold" fashion) and raise it up to the sample rate \, when in gate
+mode., f 45;
+#X text 202 306 Note that in trigger mode \, it can only go up to the
+Nyquist frequency. But for frequencies below Nyquist \, an impulse
+generator will behave the same way for both modes!;
+#X connect 0 0 12 0;
+#X connect 1 0 12 1;
 #X connect 3 0 4 0;
 #X connect 4 0 1 0;
-#X connect 6 0 10 0;
-#X connect 8 0 9 0;
-#X connect 9 0 11 0;
-#X connect 10 0 7 0;
-#X connect 10 0 7 1;
-#X connect 11 0 10 1;
-#X connect 14 0 2 0;
-#X connect 14 0 2 1;
-#X restore 445 250 pd downsampling;
+#X connect 5 0 9 0;
+#X connect 7 0 8 0;
+#X connect 8 0 10 0;
+#X connect 9 0 6 0;
+#X connect 9 0 6 1;
+#X connect 10 0 9 1;
+#X connect 12 0 2 0;
+#X connect 12 0 2 1;
+#X restore 436 278 pd downsampling;
 #X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 200 418 signal - sampled and held signal;
-#X obj 152 253 else/sig2float~;
-#X obj 152 217 else/sh~;
-#X text 156 454 1) float - initially held value (default 0);
-#X text 156 474 2) float - initial threshold (default 0);
-#X text 81 98 The [sh~] object samples and holds a value into the left
-inlet according to the second "gate" inlet. The values are sampled
-if the gate signal is greater than the threshold (0 by default) \,
-or held if lesser or equal to it.;
-#X text 212 346 bang - sample the signal;
-#X obj 157 328 cnv 17 3 47 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 200 447 signal - sampled and held signal;
+#X obj 137 259 else/sig2float~;
+#X text 219 343 bang - sample the signal, f 29;
+#X obj 157 327 cnv 17 3 82 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 170 362 set <float> - set the held value;
-#N canvas 446 163 863 294 more 0;
-#X obj 187 124 noise~;
-#X obj 187 254 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.758072 256;
-#X obj 187 222 else/sig2float~;
-#X obj 187 175 else/sh~ 1.55;
-#X obj 251 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 170 361 set <float> - set the held value, f 36;
+#N canvas 446 163 872 343 more 0;
+#X obj 647 141 noise~;
+#X obj 647 271 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1.55 256;
+#X obj 647 239 else/sig2float~;
+#X obj 711 156 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 589 142 noise~;
-#X obj 589 253 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.538766 256;
-#X obj 589 217 else/sig2float~;
-#X obj 589 183 else/sh~ 0 0.9;
-#X obj 670 141 osc~ 1;
-#X msg 513 141 thresh \$1;
-#X obj 513 121 nbx 5 14 -0.9 0.9 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 -0.9 256;
-#X obj 516 100 hsl 128 15 -0.9 0.9 0 0 empty empty empty -2 -8 0 10
+#X obj 205 165 noise~;
+#X obj 205 276 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -0.319241 256;
+#X obj 205 240 else/sig2float~;
+#X obj 286 164 osc~ 1;
+#X msg 114 165 thresh \$1;
+#X obj 114 145 nbx 5 14 -0.9 0.9 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0 256;
+#X obj 117 124 hsl 128 15 -0.9 0.9 0 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X text 442 20 The second argument of [sh~] is the threshold value
-value (0 by default) \, so the gate signal needs to be greater than
-it to sample and output the incoming signal. The threshold value can
-also be set via the "thresh" message.;
-#X msg 116 123 set \$1;
-#X obj 116 104 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 14 256;
-#X text 38 25 The first argument of [sh~] is for the initially held
-value (0 by default) \, so it is outputs when loading the object and
-before it is triggered. The set message can set the held output. The
-[sh~] can also be triggered by a bang.;
-#X connect 0 0 3 0;
+#X msg 576 140 set \$1;
+#X obj 576 121 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 44 26 The first argument of [sh~] is the threshold value value
+(0 by default) \, so the signal from the right inlet needs to be greater
+than it to sample and output the incoming signal. The threshold value
+can also be set via the "thresh" message., f 52;
+#X obj 205 206 else/sh~ 0.9;
+#X obj 647 192 else/sh~ 0 1.55;
+#X text 450 26 The second argument of [sh~] is for the initially held
+value (0 by default) \, so it is output when loading the object and
+before it is triggered by the right inlet. The set message can set
+the held output. The [sh~] can also be triggered by a bang., f 55
+;
+#X connect 0 0 15 0;
 #X connect 2 0 1 0;
-#X connect 3 0 2 0;
-#X connect 4 0 3 0;
-#X connect 5 0 8 0;
-#X connect 7 0 6 0;
-#X connect 8 0 7 0;
-#X connect 9 0 8 1;
-#X connect 10 0 8 0;
-#X connect 11 0 10 0;
+#X connect 3 0 15 0;
+#X connect 4 0 14 0;
+#X connect 6 0 5 0;
+#X connect 7 0 14 1;
+#X connect 8 0 14 0;
+#X connect 9 0 8 0;
+#X connect 10 0 9 0;
+#X connect 11 0 15 0;
 #X connect 12 0 11 0;
-#X connect 14 0 3 0;
-#X connect 15 0 14 0;
-#X restore 492 221 pd more;
-#X obj 29 211 cnv 15 100 60 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X text 57 242 order;
-#X text 38 223 change args';
-#X connect 5 0 30 0;
-#X connect 23 0 20 0;
-#X connect 23 0 20 1;
-#X connect 23 0 30 1;
-#X connect 29 0 18 0;
-#X connect 30 0 29 0;
+#X connect 14 0 6 0;
+#X connect 15 0 2 0;
+#X restore 492 253 pd more;
+#X text 154 483 1) float - initial threshold (default 0), f 49;
+#X text 154 499 2) float - initially held value (default 0), f 49
+;
+#X obj 137 225 else/sh~;
+#X obj 274 181 else/imp~ 2;
+#X text 154 515 3) float - mode: 0 (gate \, default) or 1 (trigger)
+;
+#X obj 3 535 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 188 544 "-tr" - sets to trigger mode;
+#X text 219 379 gate - sets to gate mode, f 29;
+#X text 198 396 trigger - sets to trigger mode, f 32;
+#N canvas 727 74 515 524 modes 0;
+#X obj 243 202 noise~;
+#X obj 243 383 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -0.902521 256;
+#X obj 262 277 else/out~;
+#X obj 243 237 else/sh~;
+#X obj 243 353 else/sig2float~;
+#X msg 204 170 gate;
+#X msg 140 170 trigger;
+#X text 58 18 By default \, [sh~] is in gate mode. Below \, we have
+an oscillator in the second inlet \, so when its values are greater
+than zero \, the gate is open and the signal passes through \, being
+held only when the oscillator values are less or equal to zero., f
+55;
+#X text 57 92 In trigger mode \, it will sample and hold until the
+next trigger \, which happens when the second inlet value is greater
+than the threshold and its last value was equal or below it., f 55
+;
+#X text 244 171 <= change modes;
+#X obj 296 203 osc~ 1;
+#X obj 346 473 else/sh~ -tr;
+#X text 72 417 You can change the mode with the messages like above
+\, or set it with the third argument. Alternatively \, you can set
+it to trigger mode with the "-tr" flag as in:, f 55;
+#X connect 0 0 3 0;
+#X connect 3 0 2 0;
+#X connect 3 0 2 1;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X connect 5 0 3 0;
+#X connect 6 0 3 0;
+#X connect 10 0 3 1;
+#X restore 485 227 pd modes;
+#X obj 98 195 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 37 92 [sh~] samples and holds a value from the left inlet.
+In "gate" mode (default) \, values are sampled if the signal in the
+right inlet is greater than the threshold (0 by default) \, or held
+if lesser or equal to it. In "trigger" mode \, the value needs to fall
+below the threshold before it can retrigger [sh~]. A bang also triggers
+it., f 62;
+#X connect 5 0 34 0;
+#X connect 27 0 18 0;
+#X connect 34 0 27 0;
+#X connect 35 0 20 0;
+#X connect 35 0 20 1;
+#X connect 35 0 34 1;
+#X connect 42 0 34 0;
