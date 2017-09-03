@@ -120,7 +120,9 @@ wrap2~.class.sources := classes/wrap2~.c
 zerocross~.class.sources := classes/zerocross~.c
 
 # magic
-sine~.class.sources := classes/sine~.c
+magic := shared/magic.c
+    sine~.class.sources := classes/sine~.c $(magic)
+
 
 #########################################################################
 
