@@ -5,7 +5,7 @@
 #include "g_canvas.h"
 #include <string.h> // needed?
 
-struct _outlet // local to m_obj.c.{
+struct _outlet {// local to m_obj.c.
     t_object *o_owner;
     struct _outlet *o_next;
     t_outconnect *o_connections;
