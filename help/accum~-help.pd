@@ -1,62 +1,51 @@
-#N canvas 521 82 561 495 10;
-#X obj 4 321 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 737 196 564 484 10;
+#X obj 6 314 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 384 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 394 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 419 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 426 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 126 393 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 128 403 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 127 328 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 321 cnv 17 3 49 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 452 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 453 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 184 345 set;
-#X obj 3 3 cnv 15 301 42 empty empty accum~ 20 20 2 37 -233017 -1 0
+#X obj 5 3 cnv 15 301 42 empty empty accum~ 20 20 2 37 -233017 -1 0
 ;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 308 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 2 3 graph;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 4 3 graph;
+#X obj 347 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
-#X obj 81 40 cnv 4 4 4 empty empty accumulator 0 28 2 18 -233017 -1
+#X obj 25 40 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
+#X obj 83 40 cnv 4 4 4 empty empty accumulator 0 28 2 18 -233017 -1
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 460 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 480 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 517 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 466 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 504 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 319 180 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 329 166 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 166 202 set 10;
-#X obj 226 185 else/imp~ 1;
-#X text 72 92 [accum~] starts accumulating from a starting point. Each
-input sample is added to the previous output for a running sum. The
-starting value can be set as an argument or the 'set' message. You
-can resset to the starting value with an impulse signal in the right
-inlet.;
-#X obj 319 204 else/trigate~;
-#X obj 226 232 else/accum~ 1000;
-#X obj 226 290 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1008 256;
-#X text 166 328 signal;
-#X text 208 328 - value to accumulate;
-#X text 208 345 - sets the starting value;
-#X text 166 393 signal;
-#X text 208 393 - the accumulated value;
-#X text 154 428 1) float - starting value (default 0);
-#X obj 126 363 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 329 192 else/trigate~;
+#X text 178 321 signal;
+#X text 230 321 - value to accumulate;
+#X text 230 354 - sets the starting value;
+#X text 178 404 signal;
+#X text 230 404 - the accumulated value;
+#X text 166 431 1) float - starting value (default 0);
+#X obj 128 374 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 166 364 signal;
-#X text 208 364 - impulse ressets to starting value;
+#X text 178 375 signal;
+#X text 230 374 - impulse ressets to starting value;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -160,15 +149,31 @@ inlet.;
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 61 pd;
+#X restore 507 61 pd;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1;
-#X restore 305 3 graph;
-#X obj 226 261 else/sig2float~ 100;
-#X text 340 179 reset;
-#X connect 18 0 22 0;
-#X connect 19 0 23 0;
-#X connect 20 0 23 0;
-#X connect 22 0 23 1;
-#X connect 23 0 36 0;
-#X connect 36 0 24 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 307 3 graph;
+#X text 350 165 reset;
+#X msg 244 188 set 1;
+#X obj 200 188 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 154 187 reset;
+#X text 143 354 set <float>;
+#X text 192 338 bang;
+#X text 230 338 - ressets to starting value;
+#X obj 227 161 sig~ 0.01;
+#X obj 200 284 print~;
+#X text 64 92 [accum~] starts accumulating input values from a starting
+point. The starting value can be set as an argument or the 'set' message.
+You can resset to the starting value with a bang or with an impulse
+signal in the right inlet.;
+#X obj 227 249 else/display~ 8;
+#X obj 227 219 else/accum~ 10, f 15;
+#X connect 17 0 18 0;
+#X connect 18 0 41 1;
+#X connect 31 0 41 0;
+#X connect 32 0 38 0;
+#X connect 32 0 41 0;
+#X connect 37 0 41 0;
+#X connect 40 0 38 0;
+#X connect 41 0 40 0;
