@@ -1,4 +1,4 @@
-#N canvas 449 67 560 433 10;
+#N canvas 940 406 560 433 10;
 #X obj 4 300 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 334 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -9,14 +9,13 @@
 0;
 #X obj 129 308 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 2 5 cnv 15 301 42 empty empty display 20 20 2 37 -233017 -1
+#X obj 2 4 cnv 15 301 42 empty empty display~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 2 5 graph;
+#X restore 2 4 graph;
 #X obj 23 42 cnv 4 4 4 empty empty Display 0 28 2 18 -233017 -1 0;
-#X obj 93 42 cnv 4 4 4 empty empty messages 0 28 2 18 -233017 -1 0
-;
+#X obj 93 42 cnv 4 4 4 empty empty signals 0 28 2 18 -233017 -1 0;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -36,28 +35,19 @@
 0;
 #X text 115 371 1) float - number of characters (default: 0 - not fixed)
 ;
-#X text 168 308 anything;
-#X text 231 308 - any message to be displayed;
-#X obj 254 184 loadbang;
-#X msg 153 203 any message;
-#X obj 283 262 else/display;
-#X msg 254 210 list a b c;
-#X text 150 265 [else/display] =>;
-#X floatatom 283 234 5 0 0 0 - - -, f 5;
-#X symbolatom 333 235 10 0 0 0 - - -, f 10;
-#X text 61 86 [display] is similar to [print] \, it displays the message
-(without the message selector). An argument specifies a fixed number
-of characters to display. If "0" or no argument is given \, the display
-will automatically resize according to the input message. If a message
-is larger than the fixed number of characters \, the displayed message
-is truncated.;
 #X obj 129 341 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 168 341 anything;
-#X text 231 341 - any input is passed through;
-#X connect 20 0 23 0;
-#X connect 21 0 22 0;
-#X connect 23 0 22 0;
-#X connect 25 0 22 0;
-#X connect 26 0 22 0;
+#X obj 244 235 else/display~;
+#X text 109 238 [else/display~] =>;
+#X obj 244 194 else/stepnoise~ 2;
+#X text 182 308 signal;
+#X text 182 341 signal;
+#X text 231 308 - any signal to be displayed;
+#X text 231 341 - any signal is passed through;
+#X text 61 93 [display~] is similar to [else/display] \, but displays
+signal values instead. An argument specifies a fixed number of characters
+to display. If "0" or no argument is given \, the display will automatically
+resize according to the input. If a signal value is larger than the
+fixed number of characters \, the displayed signal is truncated.;
+#X connect 21 0 19 0;
 #X coords 0 433 1 432 85 22 0;
