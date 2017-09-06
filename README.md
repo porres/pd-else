@@ -38,7 +38,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (134 objects):
+Current Object list (135 objects):
 
 AUDIO PROCESSING: [4]
 - [downsample~]
@@ -147,8 +147,9 @@ CONTROL: [8]
  - [ramp~]
  - [susloop~]
 
-GUI: [10]
+GUI: [11]
 - [display]
+- [display~]
 - [out~]
 - [gain~]
 - [gain2~]
