@@ -34,7 +34,7 @@ static t_int *ar_perform(t_int *w){
     double incr = x->x_incr;
     int nleft = x->x_nleft;
     while (nblock--){
-        t_float f = *in1++;
+        t_float gate = *in1++;
         t_float attack = *in2++;
         t_float release = *in3++;
         if (attack < 0)
@@ -49,34 +49,56 @@ static t_int *ar_perform(t_int *w){
             coef_a = 0.;
         else
             coef_a = 1. / (float)x->x_n_attack;
-        if(coef_a != x->x_coef_a){
+        if (x->x_n_release == 0)
+            coef_r = 0.;
+        else
+            coef_r = 1. / (float)x->x_n_release;
+        
+        if(coef_a != x->x_coef_a || coef_r != x->x_coef_r){ // changed time
             x->x_coef_a = coef_a;
-            if (f != last){
+            x->x_coef_r = coef_r;
+            if (gate > last){
                 if (x->x_n_attack > 1){
-                    incr = (f - last) * x->x_coef_a;
+                    incr = (gate - last) * x->x_coef_a;
                     nleft = x->x_n_attack;
                     *out++ = (last += incr);
                     continue;
                     }
                 }
+            else if (gate < last){
+                if (x->x_n_release > 1){
+                    incr = (gate - last) * x->x_coef_r;
+                    nleft = x->x_n_release;
+                    *out++ = (last += incr);
+                    continue;
+                }
+            }
             incr = 0.;
             nleft = 0;
-            *out++ = last = f;
+            *out++ = last = gate;
             }
         
-        else if (f != target){
-            target = f;
-            if (f != last){
+        else if (gate != target){
+            target = gate;
+            if (gate > last){
                 if (x->x_n_attack > 1){
-                    incr = (f - last) * x->x_coef_a;
+                    incr = (gate - last) * x->x_coef_a;
                     nleft = x->x_n_attack;
+                    *out++ = (last += incr);
+                    continue;
+                }
+            }
+            else if (gate < last){
+                if (x->x_n_release > 1){
+                    incr = (gate - last) * x->x_coef_r;
+                    nleft = x->x_n_release;
                     *out++ = (last += incr);
                     continue;
                 }
             }
 	    incr = 0.;
 	    nleft = 0;
-	    *out++ = last = f;
+	    *out++ = last = gate;
         }
         
         else if (nleft > 0){
@@ -101,7 +123,7 @@ static void ar_dsp(t_ar *x, t_signal **sp){
         sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void *ar_new(t_floatarg attack, release){
+static void *ar_new(t_floatarg attack, t_floatarg release){
     t_ar *x = (t_ar *)pd_new(ar_class);
     x->x_sr_khz = sys_getsr() * 0.001;
     x->x_last = 0.;

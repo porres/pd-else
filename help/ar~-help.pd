@@ -1,0 +1,70 @@
+#N canvas 673 23 561 560 10;
+#X obj 4 338 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 416 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 449 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 6 501 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 129 425 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 129 346 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 205 425 signal;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Attack/Release 0 28 2 18 -233017
+-1 0;
+#X obj 143 40 cnv 4 4 4 empty empty envelope 0 28 2 18 -233017 -1 0
+;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 129 369 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 163 369 float/signal;
+#X obj 184 264 else/out~;
+#X obj 227 220 *~;
+#X obj 145 147 else/brown~;
+#X obj 307 217 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 307 189 else/sig2float~;
+#X text 330 310 0;
+#X text 330 211 1;
+#X obj 2 3 cnv 15 301 42 empty empty ar~ 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X text 164 346 float/signal;
+#X text 259 368 - attack time in ms;
+#X obj 129 390 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 163 390 float/signal;
+#X text 259 389 - release time in ms;
+#X text 259 425 - envelope signal;
+#X text 155 455 1) float - attack time in ms (default 0);
+#X text 155 475 2) float - release time in ms (default 0);
+#X obj 245 159 else/ar~ 1000 500;
+#X text 67 86 [ar~] is a linear attack/release envelope.;
+#X text 260 346 - gate values;
+#X obj 364 131 else/pulse~ 0.5;
+#X obj 274 126 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 400 159 500;
+#X connect 18 0 17 0;
+#X connect 18 0 17 1;
+#X connect 19 0 18 0;
+#X connect 21 0 20 0;
+#X connect 34 0 18 1;
+#X connect 34 0 21 0;
+#X connect 38 0 34 0;
+#X connect 39 0 34 2;
