@@ -1,0 +1,126 @@
+// porres 2017
+
+#include "m_pd.h"
+#include "math.h"
+
+typedef struct _ar{
+    t_object x_obj;
+    t_float  x_in;
+    t_inlet  *x_inlet_attack;
+    t_inlet  *x_inlet_release;
+    int      x_n_attack;
+    int      x_n_release;
+    double   x_coef_a;
+    double   x_coef_r;
+    t_float  x_last;
+    t_float  x_target;
+    t_float  x_sr_khz;
+    double   x_incr;
+    int      x_nleft;
+} t_ar;
+
+
+static t_class *ar_class;
+
+static t_int *ar_perform(t_int *w){
+    t_ar *x = (t_ar *)(w[1]);
+    int nblock = (int)(w[2]);
+    t_float *in1 = (t_float *)(w[3]);
+    t_float *in2 = (t_float *)(w[4]);
+    t_float *in3 = (t_float *)(w[5]);
+    t_float *out = (t_float *)(w[6]);
+    t_float last = x->x_last;
+    t_float target = x->x_target;
+    double incr = x->x_incr;
+    int nleft = x->x_nleft;
+    while (nblock--){
+        t_float f = *in1++;
+        t_float attack = *in2++;
+        t_float release = *in3++;
+        if (attack < 0)
+            attack = 0;
+        if (release < 0)
+            release = 0;
+        x->x_n_attack = roundf(attack * x->x_sr_khz);
+        x->x_n_release = roundf(release * x->x_sr_khz);
+        double coef_a;
+        double coef_r;
+        if (x->x_n_attack == 0)
+            coef_a = 0.;
+        else
+            coef_a = 1. / (float)x->x_n_attack;
+        if(coef_a != x->x_coef_a){
+            x->x_coef_a = coef_a;
+            if (f != last){
+                if (x->x_n_attack > 1){
+                    incr = (f - last) * x->x_coef_a;
+                    nleft = x->x_n_attack;
+                    *out++ = (last += incr);
+                    continue;
+                    }
+                }
+            incr = 0.;
+            nleft = 0;
+            *out++ = last = f;
+            }
+        
+        else if (f != target){
+            target = f;
+            if (f != last){
+                if (x->x_n_attack > 1){
+                    incr = (f - last) * x->x_coef_a;
+                    nleft = x->x_n_attack;
+                    *out++ = (last += incr);
+                    continue;
+                }
+            }
+	    incr = 0.;
+	    nleft = 0;
+	    *out++ = last = f;
+        }
+        
+        else if (nleft > 0){
+            *out++ = (last += incr);
+            if (--nleft == 1){
+                incr = 0.;
+                last = target;
+                }
+            }
+        else *out++ = target;
+        };
+    x->x_last = (PD_BIGORSMALL(last) ? 0. : last);
+    x->x_target = (PD_BIGORSMALL(target) ? 0. : target);
+    x->x_incr = incr;
+    x->x_nleft = nleft;
+    return (w + 7);
+}
+
+static void ar_dsp(t_ar *x, t_signal **sp){
+    x->x_sr_khz = sp[0]->s_sr * 0.001;
+    dsp_add(ar_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
+        sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+}
+
+static void *ar_new(t_floatarg attack, release){
+    t_ar *x = (t_ar *)pd_new(ar_class);
+    x->x_sr_khz = sys_getsr() * 0.001;
+    x->x_last = 0.;
+    x->x_target = 0.;
+    x->x_incr = 0.;
+    x->x_nleft = 0;
+    x->x_coef_a = 0.;
+    x->x_coef_r = 0.;
+    x->x_inlet_attack = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_attack, attack);
+    x->x_inlet_release = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_release, release);
+    outlet_new((t_object *)x, &s_signal);
+    return (x);
+}
+
+void ar_tilde_setup(void){
+    ar_class = class_new(gensym("ar~"), (t_newmethod)ar_new, 0,
+				 sizeof(t_ar), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
+    CLASS_MAINSIGNALIN(ar_class, t_ar, x_in);
+    class_addmethod(ar_class, (t_method) ar_dsp, gensym("dsp"), A_CANT, 0);
+}

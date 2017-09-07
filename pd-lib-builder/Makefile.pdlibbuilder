@@ -1,9 +1,13 @@
-# Makefile.pdlibbuilder version 0.2.3, dated 2016-03-29
-#
+# Makefile.pdlibbuilder dated 2016-11-22
+version = 0.4.4
+
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
 # Inspired by Hans Christoph Steiner's Makefile Template and Stephan Beal's
 # ShakeNMake.
+#
+# Grab the newest version of Makefile.pdlibbuilder from
+#    https://github.com/pure-data/pd-lib-builder/
 #
 # GNU make version >= 3.81 required.
 #
@@ -72,36 +76,40 @@
 # - forDarwin
 # - forWindows
 #
+# Variables available for your makefile or make command line:
 #
-# Variables avaialable for (re)definition via command arguments:
+# - make-lib-executable
+# - suppress-wunused
 #
-# - pdbinpath (Windows only)
-# - pdincludepath
-# - DESTDIR
-# - prefix
-# - libdir
-# - pkglibdir
+# Path variables for make command line or environment:
+#
+# - PDDIR
+# - PDINCLUDEDIR
+# - PDBINDIR
+# - PDLIBDIR
+#
+# Standard make variables for make command line or environment:
+#
 # - CPPFLAGS
 # - CFLAGS
 # - LDFLAGS
 # - CC
 # - CXX
 # - INSTALL
-# - INSTALL_PROGRAM
-# - INSTALL_DATA
-# - INSTALL_DIR
+# - DESTDIR
 #
-# Variables available for your makefile or as command argument:
+# Deprecated path variables:
 #
+# - PD_PATH
+# - pdincludepath
+# - pdbinpath
 # - objectsdir
-# - make-lib-executable
-# - suppress-wunused
 #
 #
 #=== descriptions of Makefile.pdlibbuilder API variables =======================
 #
 #
-# lib.name: 
+# lib.name:
 # Name of the library directory as it will be installed / distributed. Also the
 # name of the lib executable in the case where all classes are linked into
 # a single binary.
@@ -111,7 +119,7 @@
 # into a single lib binary.
 #
 # class.sources:
-# All sources files (C or C++) for which the condition holds that 
+# All sources files (C or C++) for which the condition holds that
 # class name == source file basename.
 #
 # <classname>.class.sources:
@@ -130,24 +138,18 @@
 # link libs) for the whole library. These flags are added to platform-specific
 # flags defined by Makefile.pdlibbuilder.
 #
-# <classname>.class.ldflags and <classname>.class.ldlibs: 
+# <classname>.class.ldflags and <classname>.class.ldlibs:
 # Define ldflags resp. ldlibs specific to class <classname>. These flags are
 # added to platform-specific flags defined by Makefile.pdlibbuilder, and flags
 # defined in your Makefile for the whole library. Note: cflags can not be
 # defined per class in the current implementation.
 #
-# datafiles and datadirs: 
+# datafiles and datadirs:
 # All extra files you want to include in binary distributions of the
 # library: abstractions and help patches, example patches, meta patch, readme
 # and license texts, manuals, sound files, etcetera. Use 'datafiles' for all
 # files that should go into your lib rootdir and 'datadirs' for complete
 # directories you want to copy from source to distribution.
-#
-# externalsdir: 
-# Relative path to directory 'externals' in the context of pd-extended SVN, or
-# any other centralized build layout for multiple libraries. Default value
-# is '..', meaning the direct parent. The value is used in search paths for 
-# pd core components (header files, and executable in the case of Windows).
 #
 # forLinux, forDarwin, forWindows:
 # Shorthand for 'variable definitions for Linux only' etc. Use like:
@@ -156,26 +158,41 @@
 #      class.sources += linuxthing.c
 #    endef
 #
-# makefiles and makefiledirs: 
+# makefiles and makefiledirs:
 # Extra makefiles or directories with makefiles that should be made in sub-make
 # processes.
 #
-# pdbinpath:
-# For Windows only. Directory where pd.dll can be found for linking.
+# make-lib-executable:
+# When this variable is defined 'yes' in your makefile or as command argument,
+# Makefile.pdlibbuilder will try to build all classes into a single library
+# executable (but it will force exit if lib.setup.sources is undefined).
+# If your makefile defines 'make-lib-executable=yes' as the library default,
+# this can still be overriden with 'make-lib-executable=no' as command argument
+# to build individual class executables (the Makefile.pdlibbuilder default.)
 #
-# pdincludepath:
-# Directory where Pd API m_pd.h can be found, and other Pd header files.
+# suppress-wunused:
+# When this variable is defined ('yes' or any other value), -Wunused-variable,
+# -Wunused-parameter, -Wunused-value and -Wunused-function are suppressed,
+# but the other warnings from -Wall are retained.
 #
-# DESTDIR, prefix, libdir:
-# Components of the path for installation as conventionally used on Linux.
+# PDDIR:
+# Root directory of 'portable' pd package. When defined, PDINCLUDEDIR and
+# PDBINDIR will be evaluated as $(PDDIR)/src and $(PDDIR)/bin.
 #
-# pkglibdir:
-# Base path for installation of Pd library directories. Default is specified
-# per OS, see section about paths below.
+# PDINCLUDEDIR:
+# Directory where Pd API m_pd.h should be found, and other Pd header files.
+# Overrides the default search path.
 #
-# objectsdir:
-# Alias of pkglibdir. Can be defined in your makefile to enable project-
-# dependent relative install locations.
+# PDBINDIR:
+# Directory where pd.dll should be found for linking (Windows only). Overrides
+# the default search path.
+#
+# PDLIBDIR:
+# Root directory for installation of Pd library directories. Overrides the
+# default install location.
+#
+# DESTDIR:
+# Prepended path component for staged install.
 #
 # CPPFLAGS:
 # Preprocessor flags which are not strictly required for building.
@@ -193,21 +210,21 @@
 # CC and CXX:
 # C and C++ compiler programs as defined in your build environment.
 #
-# INSTALL, INSTALL_PROGRAM, INSTALL_DATA, INSTALL_DIR:
-# Definitions of install program, may be overriden via command argument.
+# INSTALL
+# Definition of install program.
 #
-# make-lib-executable:
-# When this variable is defined 'yes' in your makefile or as command argument,
-# Makefile.pdlibbuilder will try to build all classes into a single library
-# executable (but it will force exit if lib.setup.sources is undefined).
-# If your makefile defines 'make-lib-executable=yes' as the library default,
-# this can still be overriden with 'make-lib-executable=no' as command argument 
-# to build individual class executables (the Makefile.pdlibbuilder default.)
+# PD_PATH:
+# Equivalent to PDDIR. Supported for compatibility with pd-extended central
+# makefile, but deprecated otherwise.
 #
-# suppress-wunused:
-# When this variable is defined ('yes' or any other value), -Wunused-variable,
-# -Wunused-parameter, -Wunused-value and -Wunused-function are suppressed,
-# but the other warnings from -Wall are retained.
+# objectsdir:
+# Root directory for installation of Pd library directories, like PDLIBDIR but
+# not overridable by environment. Supported for compatibility with pd-extended
+# central makefile, but deprecated otherwise.
+#
+# pdincludepath, pdbinpath:
+# As PDINCLUDEDIR and PDBINDIR but not overridable by environment. Deprecated
+# as user variables.
 #
 #
 #=== paths =====================================================================
@@ -216,33 +233,25 @@
 # Source files in directories other than current working directory must be
 # prefixed with their relative path. Do not rely on VPATH or vpath.
 # Object (.o) files are built in the directory of their source files.
-# Executables are built in current working directory. 
+# Executables are built in current working directory.
 #
-# Variable 'pdincludepath' stores a location where m_pd.h is expected to reside.
-# Locations where Makefile.pdlibbuilder tries to find it, in order of priority:
+# Default search path for m_pd.h and other API header files is platform
+# dependent, and overridable by PDINCLUDEDIR:
 #
-# any OS:   $(externalsdir)../pd/src
+# Linux:    /usr/include/pd
 #
-# Linux:    /usr/include/pdextended
-#           /usr/include/pd
+# OSX:      /Applications/Pd*.app/Contents/Resources/src
 #
-# OSX:      /Applications/Pd-extended.app/Contents/Resources/include/pdextended
-#           /Applications/Pd.app/Contents/Resources/src
+# Windows:  %PROGRAMFILES%/pd/src
 #
-# Windows:  %PROGRAMFILES%/pd/include/pdextended
-#           %PROGRAMFILES%/pd/src
-#
-# The path for installation of all library components is constructed as:
-#
-# installpath := $(DESTDIR)$(objectsdir)/$(lib.name)
-#
-# Default for 'objectsdir' is defined per platform and follows this convention:
-# https://puredata.info/docs/faq/how-do-i-install-externals-and-help-files
+# Default location to install pd libraries is platform dependent, and
+# overridable by PDLIBDIR:
 #
 # Linux:    /usr/local/lib/pd-externals
 # OSX:      ~/Library/Pd
 # Windows:  %APPDATA%/Pd
 #
+# https://puredata.info/docs/faq/how-do-i-install-externals-and-help-files
 # The rationale for not installing to ~/pd-externals by default on Linux
 # is that some people share the home dir between 32 and 64 bit installations.
 #
@@ -295,7 +304,7 @@
 # are upper case. Use target 'allvars' to print all variables and their values.
 #
 # 'Fields' in data variables are separated by dots, like in 'foo.class.sources'.
-# Words in variables expressing a function or command are separated by dashes, 
+# Words in variables expressing a function or command are separated by dashes,
 # like in 'make-lib-executable'.
 #
 #
@@ -319,7 +328,7 @@
 #
 #=== end of documentation sections =============================================
 #
-# 
+#
 ################################################################################
 ################################################################################
 ################################################################################
@@ -334,10 +343,9 @@ ifneq ($(firstword $(sort 3.81 $(MAKE_VERSION))), 3.81)
   $(error GNU make version 3.81 or higher is required)
 endif
 
-# Relative path to externals root dir in multi-lib source tree like 
+# Relative path to externals root dir in multi-lib source tree like
 # pd-extended SVN. Default is parent of current working directory. May be
-# defined differently in including makefile. This variable is used to probe for
-# paths.
+# defined differently in including makefile.
 externalsdir ?= ..
 
 # variable you can use to check if Makefile.pdlibbuilder is already included
@@ -352,7 +360,7 @@ Makefile.pdlibbuilder = true
 # strip possibles spaces from lib.name, they mess up calculated file names
 lib.name := $(strip $(lib.name))
 
-# if meta file exists, check library version 
+# if meta file exists, check library version
 metafile := $(wildcard $(lib.name)-meta.pd)
 
 ifdef metafile
@@ -424,7 +432,7 @@ endif
 #=== flags per architecture ====================================================
 
 
-# Set architecture-dependent cflags, mainly for Linux. For Mac and Windows, 
+# Set architecture-dependent cflags, mainly for Linux. For Mac and Windows,
 # arch.c.flags are overriden below.
 
 machine := $(shell uname -m)
@@ -446,7 +454,7 @@ endif
 
 # Intel/AMD 64 bit, build with SSE, SSE2 and SSE3 instructions
 ifeq ($(findstring $(machine), ia64 x86_64), $(machine))
-  arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3 
+  arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3
 endif
 
 
@@ -454,26 +462,25 @@ endif
 
 
 # The following systems are defined: Linux, Darwin, Windows. GNU and
-# GNU/kFreeBSD are treated as Linux to get the same options. System-specific
-# multiline defines (optionally set in library makefile) are conditionally
-# evaluated here.
+# GNU/kFreeBSD are treated as Linux to get the same options.
 
 uname := $(shell uname)
 
 ifeq ($(findstring $(uname), Linux GNU GNU/kFreeBSD), $(uname))
   system = Linux
-  $(eval $(forLinux))
 endif
 
 ifeq ($(uname), Darwin)
   system = Darwin
-  $(eval $(forDarwin))
 endif
 
 ifeq ($(findstring MINGW, $(uname)), MINGW)
   system = Windows
-  $(eval $(forWindows))
 endif
+
+# evaluate possible system-specific multiline defines from library makefile
+$(eval $(for$(system)))
+
 
 # TODO: Cygwin, Android
 
@@ -485,20 +492,17 @@ ifeq ($(system), Linux)
   prefix = /usr/local
   libdir := $(prefix)/lib
   pkglibdir = $(libdir)/pd-externals
-  pdincludepath := $(firstword $(wildcard \
-    $(externalsdir)/../pd/src \
-    /usr/include/pdextended \
-    /usr/include/pd))
+  pdincludepath := $(wildcard /usr/include/pd)
   extension = pd_linux
   cpp.flags := -DUNIX
-  c.flags := -fpic
-  c.ldflags := -rdynamic -shared -fpic -Wl,-rpath,"\$$ORIGIN",--enable-new-dtags
+  c.flags := -fPIC
+  c.ldflags := -rdynamic -shared -fPIC -Wl,-rpath,"\$$ORIGIN",--enable-new-dtags
   c.ldlibs := -lc -lm
-  cxx.flags := -fpic -fcheck-new
-  cxx.ldflags := -rdynamic -shared -fpic -Wl,-rpath,"\$$ORIGIN",--enable-new-dtags
+  cxx.flags := -fPIC -fcheck-new
+  cxx.ldflags := -rdynamic -shared -fPIC -Wl,-rpath,"\$$ORIGIN",--enable-new-dtags
   cxx.ldlibs := -lc -lm -lstdc++
   shared.extension = so
-  shared.ldflags := -rdynamic -fpic -shared -Wl,-soname,$(shared.lib)
+  shared.ldflags := -rdynamic -fPIC -shared -Wl,-soname,$(shared.lib)
   stripflags = --strip-unneeded -R .note -R .comment
 endif
 
@@ -511,15 +515,14 @@ endif
 # LLVM-clang doesn't support -fcheck-new, therefore this flag is omitted for
 # OSX x86_64.
 
+
 ifeq ($(system), Darwin)
   pkglibdir = $(HOME)/Library/Pd
   pdincludepath := $(firstword $(wildcard \
-    $(externalsdir)/../pd/src \
-    /Applications/Pd-extended*.app/Contents/Resources/include/pdextended \
     /Applications/Pd*.app/Contents/Resources/src))
   extension = pd_darwin
   cpp.flags := -DUNIX -DMACOSX -I /sw/include
-  c.flags := 
+  c.flags :=
   c.ldflags := -undefined suppress -flat_namespace -bundle
   c.ldlibs := -lc
   cxx.ldflags := -undefined suppress -flat_namespace -bundle
@@ -529,15 +532,18 @@ ifeq ($(system), Darwin)
     -install_name @loader_path/$(shared.lib) \
     -compatibility_version 1 -current_version 1.0
   stripflags = -x
+  version.flag := $(filter $(cflags), -mmacosx-version-min=%)
   ifeq ($(machine), i386)
     cxx.flags := -fcheck-new
-    arch.c.flags := -arch ppc -arch i386 -arch x86_64 -mmacosx-version-min=10.4
-    arch.ld.flags := -arch ppc -arch i386 -arch x86_64 -mmacosx-version-min=10.4
+    arch := ppc i386 x86_64
+    version.flag ?= -mmacosx-version-min=10.4
   endif
   ifeq ($(machine), x86_64)
-    arch.c.flags := -arch i386 -arch x86_64 -mmacosx-version-min=10.5
-    arch.ld.flags := -arch i386 -arch x86_64 -mmacosx-version-min=10.5
+    arch := i386 x86_64
+    version.flag ?= -mmacosx-version-min=10.5
   endif
+  arch.c.flags := $(addprefix -arch , $(arch)) $(version.flag)
+  arch.ld.flags := $(arch.c.flags)
 endif
 
 
@@ -554,20 +560,15 @@ endif
 # paths for 32-bit executables on 64-bit Windows aren't yet defined here (TODO)
 ifeq ($(system), Windows)
   pkglibdir := $(APPDATA)/Pd
-  pdbinpath := $(wildcard $(externalsdir)/../pd/bin)
-  pdincludepath := $(wildcard $(externalsdir)/../pd/src)
   ifndef pdbinpath
     pdbinpath := $(shell ls -d "$(PROGRAMFILES)/pd/bin")
-  endif
-  ifndef pdincludepath
-    pdincludepath := $(shell ls -d "$(PROGRAMFILES)/pd/include/pdextended")
   endif
   ifndef pdincludepath
     pdincludepath := $(shell ls -d "$(PROGRAMFILES)/pd/src")
   endif
 endif
 
-# On Windows we build 32 bit by default to match Pd(-extended) binary 
+# On Windows we build 32 bit by default to match Pd(-extended) binary
 # distributions. This may change in the future.
 # TODO: decide whether -mms-bitfields should be specified.
 ifeq ($(system), Windows)
@@ -577,15 +578,15 @@ ifeq ($(system), Windows)
   arch.c.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
   cpp.flags := -DMSW -DNT
   c.flags :=
-  c.ldflags := -static-libgcc -shared \
+  c.ldflags = -static-libgcc -shared \
     -Wl,--enable-auto-import "$(pdbinpath)/pd.dll"
   c.ldlibs :=
   cxx.flags := -fcheck-new
-  cxx.ldflags := -static-libstdc++ -shared \
+  cxx.ldflags = -static-libstdc++ -shared \
     -Wl,--enable-auto-import "$(pdbinpath)/pd.dll"
   cxx.ldlibs :=
   shared.extension = dll
-  shared.ldflags := -static-libgcc -shared "$(pdbinpath)/pd.dll"
+  shared.ldflags = -static-libgcc -shared "$(pdbinpath)/pd.dll"
   stripflags = --strip-unneeded -R .note -R .comment
 endif
 
@@ -593,18 +594,27 @@ endif
 #=== paths =====================================================================
 
 
-# Default pkglibdir is specified above per operating system. It is aliased as 
-# 'objectsdir' to retain compatibility with pd-extended template. Assignment
-# operator '?=' is used to enable a project-relative path definition in the
-# including makefile.
-objectsdir ?= $(pkglibdir)
+# Platform-dependent default paths are specified above, but overridable.
+# Path variables in upper case can be defined as make command argument or in the
+# environment. 'PD_PATH' and 'objectsdir' are supported for compatibility with
+# the build system that pd-l2ork has inherited from pd-extended.
+
+PDDIR ?= $(PD_PATH)
+PDINCLUDEDIR ?= $(pdincludepath)
+PDBINDIR ?= $(pdbinpath)
+PDLIBDIR ?= $(firstword $(objectsdir) $(pkglibdir))
+
+ifneq ($(PDDIR),)
+  PDINCLUDEDIR := $(wildcard $(PDDIR)/src)
+  PDBINDIR := $(wildcard $(PDDIR)/bin)
+endif
 
 # base path where all components of the lib will be installed by default
-installpath := $(DESTDIR)$(objectsdir)/$(lib.name)
+installpath := $(DESTDIR)$(PDLIBDIR)/$(lib.name)
 
-# check if pdincludepath contains spaces (as is often the case on Windows)
+# check if include path contains spaces (as is often the case on Windows)
 # if so, store the path so we can later do checks with it
-pdincludepathwithspaces := $(if $(word 2, $(pdincludepath)), $(pdincludepath))
+pdincludepathwithspaces := $(if $(word 2, $(PDINCLUDEDIR)), $(PDINCLUDEDIR))
 
 
 #=== accumulated build flags ===================================================
@@ -612,7 +622,7 @@ pdincludepathwithspaces := $(if $(word 2, $(pdincludepath)), $(pdincludepath))
 
 # From GNU make docs: 'Users expect to be able to specify CFLAGS freely
 # themselves.' So we use CFLAGS to define options which  are not strictly
-# required for compilation: optimizations, architecture specifications, and 
+# required for compilation: optimizations, architecture specifications, and
 # warnings. CFLAGS can be safely overriden using a make command argument.
 # Variables cflags, ldflags and ldlibs may be defined in including makefile.
 
@@ -627,7 +637,10 @@ endif
 CFLAGS = $(warn.flags) $(optimization.flags) $(arch.c.flags)
 
 # preprocessor flags
-cpp.flags += -DPD -I "$(pdincludepath)" $(CPPFLAGS)
+cpp.flags := -DPD -I "$(PDINCLUDEDIR)" $(cpp.flags) $(CPPFLAGS)
+
+# flags for dependency checking (cflags from makefile may define -I options)
+depcheck.flags := $(cpp.flags) $(cflags)
 
 # architecture specifications for linker are overridable by LDFLAGS
 LDFLAGS := $(arch.ld.flags)
@@ -668,7 +681,7 @@ compile-cxx := $(CXX)
 all:
 
 # To avoid unpredictable results, make sure the default target is not redefined
-# by including makefile. 
+# by including makefile.
 ifneq ($(.DEFAULT_GOAL), all)
   $(error Default target must be 'all'.)
 endif
@@ -681,9 +694,12 @@ else
 endif
 
 # store path to Pd API m_pd.h if it is found
-ifdef pdincludepath
-  mpdh := $(shell ls "$(pdincludepath)/m_pd.h")
+ifdef PDINCLUDEDIR
+  mpdh := $(shell ls "$(PDINCLUDEDIR)/m_pd.h")
 endif
+
+# print Makefile.pdlibbuilder version
+$(info ++++ info: using Makefile.pdlibbuilder version $(version))
 
 # when making target all, check if m_pd.h is found and print info about it
 ifeq ($(goals), all)
@@ -739,8 +755,8 @@ MAKEFLAGS += --no-builtin-rules
 
 
 # Target all forces the build of targets [$(executables) post] in
-# deterministic order. Target $(executables) builds class executables plus 
-# optional shared lib or alternatively a single lib executable when 
+# deterministic order. Target $(executables) builds class executables plus
+# optional shared lib or alternatively a single lib executable when
 # make-lib-executable=true. Target post is optionally defined by
 # library makefile.
 
@@ -884,14 +900,8 @@ $(foreach v, $(classes), $(eval $(declare-class-executable-target)))
 # which case implicit prerequisites are not checked.
 
 # When the Pd include path contains spaces it will mess up the implicit
-# prerequisites rules. Also it is known that multiple arch flags are
-# incompatible with preprocessor option -MM on OSX <= 10.5. Dependency
-# tracking must be disabled in those cases.
-
-oldfat := $(and $(filter ppc i386, $(machine)), \
-          $(filter-out 0 1, $(words $(filter -arch, $(c.flags)))))
-
-disable-dependency-tracking := pdincludepathwithspaces oldfat
+# prerequisites rules.
+disable-dependency-tracking := $(strip $(pdincludepathwithspaces))
 
 ifndef disable-dependency-tracking
   must-build-everything := $(filter all, $(goals))
@@ -901,8 +911,9 @@ endif
 
 # declare implicit prerequisites rule like 'object.o: header1.h header2.h ...'
 # argument $1 is input source file(s)
+# dir is explicitly added because option -MM strips it by default
 define declare-object-target
-$(filter %.o: %.h, $(shell $(CPP) $(c.flags) -MM $1)) $(MAKEFILE_LIST)
+$(dir $1)$(filter %.o: %.h, $(shell $(CPP) $(depcheck.flags) -MM $1)) $(MAKEFILE_LIST)
 endef
 
 # evaluate implicit prerequisite rules when rebuilding everything
@@ -951,7 +962,7 @@ endef
 %.pre:: %.cc force
 	$(call make-preprocessor-file,cxx)
 
-%.pre:: %.cpp force 
+%.pre:: %.cpp force
 	$(call make-preprocessor-file,cxx)
 
 
@@ -1009,13 +1020,15 @@ install: $(if $(datadirs), install-datadirs)
 
 install-executables: all
 	$(INSTALL_DIR) -v "$(installpath)"
-	$(INSTALL_PROGRAM) $(executables) "$(installpath)"
+	$(foreach v, $(executables), \
+	$(INSTALL_PROGRAM) '$v' "$(installpath)";)
 	$(info ++++ info: executables of lib $(lib.name) installed \
         from $(CURDIR) to $(installpath))
 
 install-datafiles: all
 	$(INSTALL_DIR) -v "$(installpath)"
-	$(INSTALL_DATA) $(datafiles) "$(installpath)"
+	$(foreach v, $(datafiles), \
+	$(INSTALL_DATA) '$(v)' "$(installpath)";)
 	$(info ++++ info: data files of lib $(lib.name) installed \
         from $(CURDIR) to $(installpath))
 
@@ -1158,7 +1171,7 @@ depend:
 ifdef mpdh
   mpdhinfo := $(mpdh)
 else
-  mpdhinfo := m_pd.h was not found. Is Pd(-extended) installed?
+  mpdhinfo := m_pd.h was not found. Is Pd installed?
 endif
 
 help:
@@ -1172,13 +1185,13 @@ help:
 	@echo
 	@echo "  Pd API m_pd.h:"
 	@echo "    $(mpdhinfo)"
-	@echo "  You may specify your preferred Pd include path as argument to"
-	@echo "  the make command, like 'pdincludepath=path/to/pd/src'."
+	@echo "  You may specify your preferred Pd include directory as argument"
+	@echo "  to the make command, like 'PDINCLUDEDIR=path/to/pd/src'."
 	@echo
 	@echo "  Path for installation of your libdir(s):"
-	@echo "    $(objectsdir)"
+	@echo "    $(PDLIBDIR)"
 	@echo "  Alternatively you may specify your path for installation as argument"
-	@echo "  to the make command, like 'objectsdir=path/to/pd-externals'."
+	@echo "  to the make command, like 'PDLIBDIR=path/to/pd-externals'."
 	@echo
 	@echo "  Default paths are listed in the doc sections in Makefile.pdlibbuilder."
 	@echo

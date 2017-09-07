@@ -44,15 +44,70 @@ with Pd's default extension for the platform. For anything more than the
 most basic usage, read the documentation sections in Makefile.pdlibbuilder.
 
 
+### paths ###
+
+
+Makefile.pdlibbuilder >= v0.4.0 supports pd path variables which can be
+defined not only as make command argument but also in the environment, to
+override platform-dependent defaults:
+
+PDDIR:
+Root directory of 'portable' pd package. When defined, PDINCLUDEDIR and 
+PDBINDIR will be evaluated as $(PDDIR)/src and $(PDDIR)/bin.
+
+PDINCLUDEDIR:
+Directory where Pd API m_pd.h should be found, and other Pd header files.
+Overrides the default search path.
+
+PDBINDIR:
+Directory where pd.dll should be found for linking (Windows only). Overrides
+the default search path.
+
+PDLIBDIR:
+Root directory for installation of Pd library directories. Overrides the
+default install location.
+
+
+### documentation ###
+
+
+This README.md provides only basic information. A large comment section inside
+Makefile.pdlibbuilder lists and explains the available user variables, default
+paths, and targets. The internal documentation reflects the exact functionality
+of the particular version. A tips&tricks page is in the works. 
+
+
+### versioning ###
+
+
+The project is versioned in MAJOR.MINOR.BUGFIX format (see http://semver.org),
+and maintained at https://github.com/pure-data/pd-lib-builder. Pd lib developers
+are invited to regulary check for updates, and to contribute and discuss 
+improvements here. If you really need to distribute a personalized version with
+your library, rename Makefile.pdlibbuilder to avoid confusion.
+
+
 ### examples ###
 
 
-Here are three projects using the Makefile.pdlibbuilder approach:
+Here are a few projects using the Makefile.pdlibbuilder approach:
 
 https://github.com/pure-data/helloworld
 
-https://github.com/electrickery/pd-cyclone
+https://github.com/electrickery/pd-cyclone (stable)
 
-https://github.com/pure-data/xeq
+https://github.com/porres/pd-cyclone (experimental)
+
+https://git.iem.at/pd/iemguts
+
+https://git.iem.at/pd/iemnet
+
+https://git.iem.at/pd/iem_ambi
+
+https://git.iem.at/pd/mediasettings
+
+https://git.iem.at/pd-gui/punish
+
+https://github.com/residuum/PuRestJson
 
 More examples will be referenced here when they are available. 
