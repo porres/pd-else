@@ -7,7 +7,7 @@
 0;
 #X obj 4 374 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 111 289 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 289 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 23 41 cnv 4 4 4 empty empty Display 0 28 2 18 -233017 -1 0;
 #X obj 93 41 cnv 4 4 4 empty empty signals 0 28 2 18 -233017 -1 0;
@@ -28,16 +28,13 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 138 352 1) float - number of characters (default: 0 - not fixed)
+#X text 140 352 1) float - number of characters (default: 0 - not fixed)
 ;
-#X obj 111 322 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 322 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 244 244 else/display~;
 #X text 109 247 [else/display~] =>;
-#X text 154 289 signal;
-#X text 154 322 signal;
-#X text 203 289 - any signal to be displayed;
-#X text 203 322 - any signal is passed through;
+#X text 156 322 signal;
 #X obj 2 3 cnv 15 301 42 empty empty display~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -154,5 +151,23 @@ fixed number of characters \, the displayed signal is truncated.;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 507 61 pd;
 #X obj 244 213 else/stepnoise~ 1;
-#X connect 28 0 17 0;
+#X text 114 289 float/signal;
+#N canvas 638 85 343 248 float 0;
+#X text 38 124 [else/display~] =>;
+#X obj 180 121 else/display~ 4;
+#X obj 180 187 print~;
+#X msg 180 84 100;
+#X msg 220 84 -1.2;
+#X obj 204 155 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 67 29 float inputs are promoted to signals and passed through
+, f 29;
+#X connect 1 0 2 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 2 0;
+#X restore 432 241 pd float input;
+#X text 205 289 - values to be displayed;
+#X text 205 322 - the input is passed through;
+#X connect 25 0 17 0;
 #X coords 0 401 1 400 85 22 0;

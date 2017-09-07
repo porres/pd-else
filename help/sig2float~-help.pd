@@ -1,4 +1,4 @@
-#N canvas 447 77 560 466 10;
+#N canvas 911 90 560 466 10;
 #X obj 4 273 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 359 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -29,16 +29,16 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 139 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
-#X obj 189 241 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#X obj 202 239 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.429191 256;
 #X obj 3 3 cnv 15 301 42 empty empty sig2float~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -107,7 +107,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -142,19 +142,18 @@
 #X restore 505 71 pd;
 #X obj 105 281 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 300 179 nbx 5 14 0 1000 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
+#X obj 332 177 nbx 5 14 0 1000 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 167 256;
 #X obj 87 40 cnv 4 4 4 empty empty signal 0 28 2 18 -233017 -1 0;
-#X obj 189 169 noise~;
-#X msg 330 231 start;
-#X msg 329 207 stop;
+#X obj 202 167 noise~;
+#X msg 362 229 start;
+#X msg 361 205 stop;
 #X text 61 88 [s2f~] coverts signals to floats. The conversion occurs
 at a time rate defined by the argument or right inlet. The time needs
 to be greater than 1 \, if 0 or less is given \, then it defaults to
 1! The right inlet can also 'stop' and 'restart' the conversion.;
-#X text 141 403 1) float - conversion time in ms (default 1);
-#X text 357 178 ms;
-#X text 297 158 convert time;
+#X text 389 176 ms;
+#X text 329 156 convert time;
 #X text 144 281 signal;
 #X text 150 368 float;
 #X text 190 281 - signal value to convert to float;
@@ -167,9 +166,11 @@ to be greater than 1 \, if 0 or less is given \, then it defaults to
 #X text 156 322 stop;
 #X text 150 340 start;
 #X text 190 368 - converted float;
-#X obj 189 209 else/sig2float~ 100;
-#X connect 21 0 41 1;
-#X connect 23 0 41 0;
-#X connect 24 0 41 1;
-#X connect 25 0 41 1;
-#X connect 41 0 16 0;
+#X obj 202 207 else/sig2float~ 100;
+#X text 126 403 1) float - conversion time in ms (minimum and default
+1);
+#X connect 21 0 40 1;
+#X connect 23 0 40 0;
+#X connect 24 0 40 1;
+#X connect 25 0 40 1;
+#X connect 40 0 16 0;
