@@ -17,6 +17,7 @@ typedef struct _ar{
     t_float  x_sr_khz;
     double   x_incr;
     int      x_nleft;
+    int      x_gate_status;
 } t_ar;
 
 
@@ -31,12 +32,14 @@ static t_int *ar_perform(t_int *w){
     t_float *out = (t_float *)(w[6]);
     t_float last = x->x_last;
     t_float target = x->x_target;
+    t_float gate_status = x->x_gate_status;
     double incr = x->x_incr;
     int nleft = x->x_nleft;
     while (nblock--){
-        t_float gate = *in1++;
+        t_float input = *in1++;
         t_float attack = *in2++;
         t_float release = *in3++;
+        t_int gate = (input != 0);
         if (attack < 0)
             attack = 0;
         if (release < 0)
@@ -54,20 +57,20 @@ static t_int *ar_perform(t_int *w){
         else
             coef_r = 1. / (float)x->x_n_release;
         
-        if(coef_a != x->x_coef_a || coef_r != x->x_coef_r){ // changed time
-            x->x_coef_a = coef_a;
-            x->x_coef_r = coef_r;
-            if (gate > last){
+        if (gate != gate_status){ // gate status change
+            target = input;
+            gate_status = gate;
+            if (gate){
                 if (x->x_n_attack > 1){
-                    incr = (gate - last) * x->x_coef_a;
+                    incr = (target - last) * x->x_coef_a;
                     nleft = x->x_n_attack;
                     *out++ = (last += incr);
                     continue;
-                    }
                 }
-            else if (gate < last){
+            }
+            else {
                 if (x->x_n_release > 1){
-                    incr = (gate - last) * x->x_coef_r;
+                    incr = (target - last) * x->x_coef_r;
                     nleft = x->x_n_release;
                     *out++ = (last += incr);
                     continue;
@@ -75,31 +78,32 @@ static t_int *ar_perform(t_int *w){
             }
             incr = 0.;
             nleft = 0;
-            *out++ = last = gate;
-            }
+            *out++ = last = target;
+        }
         
-        else if (gate != target){
-            target = gate;
-            if (gate > last){
+        else if(coef_a != x->x_coef_a || coef_r != x->x_coef_r){ // changed time
+            x->x_coef_a = coef_a;
+            x->x_coef_r = coef_r;
+            if (target > last){ // if going up
                 if (x->x_n_attack > 1){
-                    incr = (gate - last) * x->x_coef_a;
+                    incr = (target - last) * x->x_coef_a;
                     nleft = x->x_n_attack;
                     *out++ = (last += incr);
                     continue;
+                    }
                 }
-            }
-            else if (gate < last){
+            else if (target < last){ // if going down
                 if (x->x_n_release > 1){
-                    incr = (gate - last) * x->x_coef_r;
+                    incr = (target - last) * x->x_coef_r;
                     nleft = x->x_n_release;
                     *out++ = (last += incr);
                     continue;
                 }
             }
-	    incr = 0.;
-	    nleft = 0;
-	    *out++ = last = gate;
-        }
+            incr = 0.;
+            nleft = 0;
+            *out++ = last = target;
+            }
         
         else if (nleft > 0){
             *out++ = (last += incr);
@@ -114,6 +118,7 @@ static t_int *ar_perform(t_int *w){
     x->x_target = (PD_BIGORSMALL(target) ? 0. : target);
     x->x_incr = incr;
     x->x_nleft = nleft;
+    x->x_gate_status = gate_status;
     return (w + 7);
 }
 
@@ -132,6 +137,7 @@ static void *ar_new(t_floatarg attack, t_floatarg release){
     x->x_nleft = 0;
     x->x_coef_a = 0.;
     x->x_coef_r = 0.;
+    x->x_gate_status = 0;
     x->x_inlet_attack = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_attack, attack);
     x->x_inlet_release = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);

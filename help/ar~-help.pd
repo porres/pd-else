@@ -1,4 +1,4 @@
-#N canvas 673 23 561 560 10;
+#N canvas 780 23 562 527 10;
 #X obj 4 338 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 416 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -12,23 +12,9 @@
 #X obj 129 346 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 205 425 signal;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
-#N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
 #X obj 23 40 cnv 4 4 4 empty empty Attack/Release 0 28 2 18 -233017
 -1 0;
-#X obj 143 40 cnv 4 4 4 empty empty envelope 0 28 2 18 -233017 -1 0
-;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
+#X obj 143 40 cnv 4 4 4 empty empty gated 0 28 2 18 -233017 -1 0;
 #X obj 129 369 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 163 369 float/signal;
@@ -53,18 +39,34 @@
 #X text 259 425 - envelope signal;
 #X text 155 455 1) float - attack time in ms (default 0);
 #X text 155 475 2) float - release time in ms (default 0);
-#X obj 245 159 else/ar~ 1000 500;
-#X text 67 86 [ar~] is a linear attack/release envelope.;
-#X text 260 346 - gate values;
-#X obj 364 131 else/pulse~ 0.5;
-#X obj 274 126 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 245 128 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 400 159 500;
-#X connect 18 0 17 0;
-#X connect 18 0 17 1;
-#X connect 19 0 18 0;
-#X connect 21 0 20 0;
-#X connect 34 0 18 1;
-#X connect 34 0 21 0;
-#X connect 38 0 34 0;
-#X connect 39 0 34 2;
+#X obj 245 159 else/ar~ 250 750;
+#X text 260 346 - gate/maximum values;
+#X obj 193 40 cnv 4 4 4 empty empty envelope 0 28 2 18 -233017 -1 0
+;
+#X text 67 86 [ar~] is a linear attack/release gated envelope.;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 304 3 pd;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X connect 12 0 11 0;
+#X connect 12 0 11 1;
+#X connect 13 0 12 0;
+#X connect 15 0 14 0;
+#X connect 28 0 29 0;
+#X connect 29 0 12 1;
+#X connect 29 0 15 0;

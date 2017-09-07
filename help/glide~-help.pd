@@ -13,21 +13,8 @@
 ;
 #X text 191 356 signal;
 #X text 191 435 signal;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
-#N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
 #X obj 23 40 cnv 4 4 4 empty empty Linear 0 28 2 18 -233017 -1 0;
 #X obj 83 40 cnv 4 4 4 empty empty glide 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
 #X obj 129 399 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 155 399 float/signal;
@@ -35,7 +22,7 @@
 #X obj 227 230 *~;
 #X obj 145 157 else/brown~;
 #X obj 304 227 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 1979 1;
+-1 -1 1322 1;
 #X obj 304 199 else/sig2float~;
 #X text 327 320 0;
 #X text 327 221 1;
@@ -69,10 +56,27 @@ signal input changes. The glide time in ms.;
 #X obj 242 169 else/glide~ 1000;
 #X text 197 374 reset;
 #X text 240 374 - resets glide to input value;
-#X connect 19 0 18 0;
-#X connect 19 0 18 1;
-#X connect 20 0 19 0;
-#X connect 22 0 21 0;
-#X connect 33 0 34 0;
-#X connect 34 0 19 1;
-#X connect 34 0 22 0;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 304 3 pd;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X connect 13 0 12 0;
+#X connect 13 0 12 1;
+#X connect 14 0 13 0;
+#X connect 16 0 15 0;
+#X connect 27 0 28 0;
+#X connect 28 0 13 1;
+#X connect 28 0 16 0;
