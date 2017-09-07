@@ -38,7 +38,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (135 objects):
+Current Object list (136 objects):
 
 AUDIO PROCESSING: [4]
 - [downsample~]
@@ -137,7 +137,8 @@ SIGNAL ANALYSIS: [10]
 - [vu~]
 - [zerocross~]
 
-CONTROL: [8]
+CONTROL: [9]
+ - [ar~]
  - [autofade~]
  - [decay~]
  - [decay2~]
