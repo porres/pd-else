@@ -21,7 +21,7 @@
 #X obj 187 315 else/out~;
 #X obj 230 271 *~;
 #X obj 310 268 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 9900 1;
+-1 -1 0 1;
 #X obj 310 240 else/sig2float~;
 #X text 333 361 0;
 #X text 333 262 1;
@@ -38,7 +38,7 @@
 #X text 259 473 - envelope signal;
 #X text 155 503 1) float - attack time in ms (default 0);
 #X text 155 523 2) float - release time in ms (default 0);
-#X obj 248 179 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 248 179 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 243 40 cnv 4 4 4 empty empty envelope 0 28 2 18 -233017 -1 0
 ;
@@ -62,9 +62,9 @@
 #X obj 159 227 osc~ 440;
 #X text 260 394 - gate values;
 #X obj 282 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 50 256;
 #X obj 385 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 50 256;
 #X text 283 165 attack;
 #X text 386 156 release;
 #X text 67 86 [ar~] is a linear attack/release gated envelope. At a
@@ -110,7 +110,7 @@ amplitude.;
 #X connect 12 0 9 0;
 #X connect 13 0 10 0;
 #X restore 462 336 pd example;
-#X obj 248 210 else/adr~ 250 750, f 20;
+#X obj 248 210 else/adr~ 5000 5000, f 20;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;

@@ -1,4 +1,4 @@
-#N canvas 499 23 562 575 10;
+#N canvas 717 116 562 575 10;
 #X obj 4 386 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 464 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -38,9 +38,8 @@
 #X text 259 473 - envelope signal;
 #X text 155 503 1) float - attack time in ms (default 0);
 #X text 155 523 2) float - release time in ms (default 0);
-#X obj 248 179 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 248 179 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X obj 248 210 else/ar~ 250 750, f 20;
 #X obj 193 40 cnv 4 4 4 empty empty envelope 0 28 2 18 -233017 -1 0
 ;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -63,9 +62,9 @@
 #X obj 159 227 osc~ 440;
 #X text 260 394 - gate values;
 #X obj 316 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 5000 256;
 #X obj 385 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 5000 256;
 #X text 317 156 attack;
 #X text 386 156 release;
 #X text 67 86 [ar~] is a linear attack/release gated envelope. At a
@@ -111,12 +110,16 @@ amplitude.;
 #X connect 12 0 9 0;
 #X connect 13 0 10 0;
 #X restore 462 336 pd example;
+#X obj 248 210 else/ar~ 5000 5000, f 20;
+#X msg 455 175 6000;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;
-#X connect 27 0 28 0;
-#X connect 28 0 12 1;
-#X connect 28 0 14 0;
-#X connect 38 0 12 0;
-#X connect 40 0 28 1;
-#X connect 41 0 28 2;
+#X connect 27 0 46 0;
+#X connect 37 0 12 0;
+#X connect 39 0 46 1;
+#X connect 40 0 46 2;
+#X connect 46 0 12 1;
+#X connect 46 0 14 0;
+#X connect 47 0 40 0;
+#X connect 47 0 39 0;

@@ -12,8 +12,6 @@ typedef struct _adr{
     int      x_n_attack;
     int      x_n_decay;
     int      x_n_release;
-    double   x_coef_a;
-    double   x_coef_r;
     t_float  x_last;
     t_float  x_target;
     t_float  x_sustain_target;
@@ -71,13 +69,13 @@ static t_int *adr_perform(t_int *w){
             coef_r = 0.;
         else
             coef_r = 1. / (float)x->x_n_release;
-    
+        
         if (gate != gate_status){ // gate status change
             target = input;
             gate_status = gate;
             if (gate){
                 if (x->x_n_attack > 1){
-                    incr = (target - last) * x->x_coef_a;
+                    incr = (target - last) * coef_a;
                     nleft = x->x_n_attack;
                     *out++ = (last += incr);
                     continue;
@@ -85,7 +83,7 @@ static t_int *adr_perform(t_int *w){
             }
             else {
                 if (x->x_n_release > 1){
-                    incr = (target - last) * x->x_coef_r;
+                    incr = (target - last) * coef_r;
                     nleft = x->x_n_release;
                     *out++ = (last += incr);
                     continue;
@@ -95,30 +93,6 @@ static t_int *adr_perform(t_int *w){
             nleft = 0;
             *out++ = last = target;
         }
-        
-        else if(coef_a != x->x_coef_a || coef_r != x->x_coef_r){ // changed time
-            x->x_coef_a = coef_a;
-            x->x_coef_r = coef_r;
-            if (target > last){ // if going up
-                if (x->x_n_attack > 1){
-                    incr = (target - last) * x->x_coef_a;
-                    nleft = x->x_n_attack;
-                    *out++ = (last += incr);
-                    continue;
-                    }
-                }
-            else if (target < last){ // if going down
-                if (x->x_n_release > 1){
-                    incr = (target - last) * x->x_coef_r;
-                    nleft = x->x_n_release;
-                    *out++ = (last += incr);
-                    continue;
-                }
-            }
-            incr = 0.;
-            nleft = 0;
-            *out++ = last = target;
-            }
         
         else if (nleft > 0){
             *out++ = (last += incr);
@@ -151,8 +125,6 @@ static void *adr_new(t_floatarg attack, t_floatarg release){
     x->x_target = 0.;
     x->x_incr = 0.;
     x->x_nleft = 0;
-    x->x_coef_a = 0.;
-    x->x_coef_r = 0.;
     x->x_gate_status = 0;
     x->x_inlet_attack = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_attack, attack);
