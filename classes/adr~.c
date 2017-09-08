@@ -6,6 +6,8 @@ typedef struct _adr{
     t_object x_obj;
     t_float  x_in;
     t_inlet  *x_inlet_attack;
+    t_inlet  *x_inlet_decay;
+    t_inlet  *x_inlet_sustain;
     t_inlet  *x_inlet_release;
     int      x_n_attack;
     int      x_n_release;
@@ -28,7 +30,9 @@ static t_int *adr_perform(t_int *w){
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
     t_float *in3 = (t_float *)(w[5]);
-    t_float *out = (t_float *)(w[6]);
+    t_float *in4 = (t_float *)(w[6]);
+    t_float *in5 = (t_float *)(w[7]);
+    t_float *out = (t_float *)(w[8]);
     t_float last = x->x_last;
     t_float target = x->x_target;
     t_float gate_status = x->x_gate_status;
@@ -37,7 +41,9 @@ static t_int *adr_perform(t_int *w){
     while (nblock--){
         t_float input = *in1++;
         t_float attack = *in2++;
-        t_float release = *in3++;
+        t_float decay = *in3++;
+        t_float sustain = *in4++;
+        t_float release = *in5++;
         t_int gate = (input != 0);
         if (attack < 0)
             attack = 0;
@@ -118,13 +124,14 @@ static t_int *adr_perform(t_int *w){
     x->x_incr = incr;
     x->x_nleft = nleft;
     x->x_gate_status = gate_status;
-    return (w + 7);
+    return (w + 9);
 }
 
 static void adr_dsp(t_adr *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    dsp_add(adr_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
-        sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+    dsp_add(adr_perform, 8, x, sp[0]->s_n,
+            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
+            sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec);
 }
 
 static void *adr_new(t_floatarg attack, t_floatarg release){
@@ -139,6 +146,10 @@ static void *adr_new(t_floatarg attack, t_floatarg release){
     x->x_gate_status = 0;
     x->x_inlet_attack = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_attack, attack);
+    x->x_inlet_decay = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_decay, 0);
+    x->x_inlet_sustain = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_sustain, 0);
     x->x_inlet_release = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_release, release);
     outlet_new((t_object *)x, &s_signal);
