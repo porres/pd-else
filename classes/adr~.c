@@ -10,11 +10,13 @@ typedef struct _adr{
     t_inlet  *x_inlet_sustain;
     t_inlet  *x_inlet_release;
     int      x_n_attack;
+    int      x_n_decay;
     int      x_n_release;
     double   x_coef_a;
     double   x_coef_r;
     t_float  x_last;
     t_float  x_target;
+    t_float  x_sustain_target;
     t_float  x_sr_khz;
     double   x_incr;
     int      x_nleft;
@@ -42,26 +44,34 @@ static t_int *adr_perform(t_int *w){
         t_float input = *in1++;
         t_float attack = *in2++;
         t_float decay = *in3++;
-        t_float sustain = *in4++;
+        t_float sustain_point = *in4++;
         t_float release = *in5++;
         t_int gate = (input != 0);
         if (attack < 0)
             attack = 0;
+        if (decay < 0)
+            decay = 0;
         if (release < 0)
             release = 0;
         x->x_n_attack = roundf(attack * x->x_sr_khz);
+        x->x_n_decay = roundf(decay * x->x_sr_khz);
         x->x_n_release = roundf(release * x->x_sr_khz);
         double coef_a;
+        double coef_d;
         double coef_r;
         if (x->x_n_attack == 0)
             coef_a = 0.;
         else
             coef_a = 1. / (float)x->x_n_attack;
+        if (x->x_n_decay == 0)
+            coef_d = 0.;
+        else
+            coef_d = 1. / (float)x->x_n_decay;
         if (x->x_n_release == 0)
             coef_r = 0.;
         else
             coef_r = 1. / (float)x->x_n_release;
-        
+    
         if (gate != gate_status){ // gate status change
             target = input;
             gate_status = gate;
