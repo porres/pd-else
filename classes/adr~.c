@@ -2,7 +2,7 @@
 
 #include "m_pd.h"
 
-typedef struct _ar{
+typedef struct _adr{
     t_object x_obj;
     t_float  x_in;
     t_inlet  *x_inlet_attack;
@@ -17,13 +17,13 @@ typedef struct _ar{
     double   x_incr;
     int      x_nleft;
     int      x_gate_status;
-} t_ar;
+} t_adr;
 
 
-static t_class *ar_class;
+static t_class *adr_class;
 
-static t_int *ar_perform(t_int *w){
-    t_ar *x = (t_ar *)(w[1]);
+static t_int *adr_perform(t_int *w){
+    t_adr *x = (t_adr *)(w[1]);
     int nblock = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
@@ -121,14 +121,14 @@ static t_int *ar_perform(t_int *w){
     return (w + 7);
 }
 
-static void ar_dsp(t_ar *x, t_signal **sp){
+static void adr_dsp(t_adr *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    dsp_add(ar_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
+    dsp_add(adr_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
         sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void *ar_new(t_floatarg attack, t_floatarg release){
-    t_ar *x = (t_ar *)pd_new(ar_class);
+static void *adr_new(t_floatarg attack, t_floatarg release){
+    t_adr *x = (t_adr *)pd_new(adr_class);
     x->x_sr_khz = sys_getsr() * 0.001;
     x->x_last = 0.;
     x->x_target = 0.;
@@ -145,9 +145,9 @@ static void *ar_new(t_floatarg attack, t_floatarg release){
     return (x);
 }
 
-void ar_tilde_setup(void){
-    ar_class = class_new(gensym("ar~"), (t_newmethod)ar_new, 0,
-				 sizeof(t_ar), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
-    CLASS_MAINSIGNALIN(ar_class, t_ar, x_in);
-    class_addmethod(ar_class, (t_method) ar_dsp, gensym("dsp"), A_CANT, 0);
+void adr_tilde_setup(void){
+    adr_class = class_new(gensym("adr~"), (t_newmethod)adr_new, 0,
+				 sizeof(t_adr), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
+    CLASS_MAINSIGNALIN(adr_class, t_adr, x_in);
+    class_addmethod(adr_class, (t_method) adr_dsp, gensym("dsp"), A_CANT, 0);
 }
