@@ -177,7 +177,7 @@ MATH/LOGIC: [13]
 - [wrap2~]
 
 CONSTANT VALUES: [4]
-- [nyquist]
+- [nyquist~]
 - [pi]
 - [sr~]
 - [e]
