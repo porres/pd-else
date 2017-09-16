@@ -1,19 +1,19 @@
 #N canvas 840 191 559 399 10;
-#X obj 4 263 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 274 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 295 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 306 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 328 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 339 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 358 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 367 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 117 304 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 117 315 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 117 271 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 117 282 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 169 271 signal;
-#X text 169 304 signal;
-#X obj 211 195 else/out~;
+#X text 166 282 signal;
+#X text 166 315 signal;
+#X obj 268 199 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty changed2~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -37,13 +37,18 @@
 0;
 #X obj 79 40 cnv 4 4 4 empty empty direction 0 28 2 18 -233017 -1 0
 ;
-#X obj 235 120 osc~ 0.5;
-#X obj 235 155 else/changed2~;
+#X obj 268 120 osc~ 0.5;
+#X obj 268 155 else/changed2~;
+#X text 166 345 (none);
+#X text 212 282 - signal to detect direction changes;
+#X text 212 315 - impulse at detected direction change;
 #X text 61 86 [changed2~] sends an impulse whenever an input value
-changes aits direction.;
-#X text 167 334 (none);
-#X text 211 271 - signal to detect direction changes;
-#X text 211 304 - impulse at detected direction change;
+changes its direction.;
+#X obj 141 155 else/sig2float~;
+#X obj 141 179 vsl 15 80 -1 1 0 0 skhb slkl empty 0 -9 0 10 -228856
+-1 -1 1090 1;
 #X connect 20 0 21 0;
+#X connect 20 0 26 0;
 #X connect 21 0 8 0;
 #X connect 21 0 8 1;
+#X connect 26 0 27 0;

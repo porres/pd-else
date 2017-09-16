@@ -62,11 +62,11 @@
 #X obj 159 227 osc~ 440;
 #X text 260 394 - gate values;
 #X obj 282 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 50 256;
-#X obj 385 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 50 256;
+-228856 -1 -1 0 256;
+#X obj 419 207 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
 #X text 283 165 attack;
-#X text 386 156 release;
+#X text 420 189 release;
 #X text 67 86 [ar~] is a linear attack/release gated envelope. At a
 gate on value (transition from 0 to any value) \, [ar~] goes from 0
 to that value at the specified attack time in ms. A gate of (transition
@@ -110,13 +110,17 @@ amplitude.;
 #X connect 12 0 9 0;
 #X connect 13 0 10 0;
 #X restore 462 336 pd example;
-#X obj 248 210 else/adr~ 5000 5000, f 20;
+#X obj 356 180 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1000 256;
+#X text 357 162 decay;
+#X obj 248 210 else/adr~ 1000 1000, f 20;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;
-#X connect 27 0 46 0;
+#X connect 27 0 48 0;
 #X connect 37 0 12 0;
-#X connect 39 0 46 1;
-#X connect 40 0 46 4;
-#X connect 46 0 12 1;
-#X connect 46 0 14 0;
+#X connect 39 0 48 1;
+#X connect 40 0 48 4;
+#X connect 46 0 48 2;
+#X connect 48 0 12 1;
+#X connect 48 0 14 0;

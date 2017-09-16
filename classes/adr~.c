@@ -1,6 +1,7 @@
 // porres 2017
 
 #include "m_pd.h"
+#include <math.h>
 
 typedef struct _adr{
     t_object x_obj;
@@ -9,9 +10,6 @@ typedef struct _adr{
     t_inlet  *x_inlet_decay;
     t_inlet  *x_inlet_sustain;
     t_inlet  *x_inlet_release;
-    int      x_n_attack;
-    int      x_n_decay;
-    int      x_n_release;
     t_float  x_last;
     t_float  x_target;
     t_float  x_sustain_target;
@@ -39,6 +37,7 @@ static t_int *adr_perform(t_int *w){
     double incr = x->x_incr;
     int nleft = x->x_nleft;
     while (nblock--){
+        
         t_float input = *in1++;
         t_float attack = *in2++;
         t_float decay = *in3++;
@@ -51,40 +50,40 @@ static t_int *adr_perform(t_int *w){
             decay = 0;
         if (release < 0)
             release = 0;
-        x->x_n_attack = roundf(attack * x->x_sr_khz);
-        x->x_n_decay = roundf(decay * x->x_sr_khz);
-        x->x_n_release = roundf(release * x->x_sr_khz);
+        t_float n_attack = roundf(attack * x->x_sr_khz);
+        t_float n_decay = roundf(decay * x->x_sr_khz);
+        t_float n_release = roundf(release * x->x_sr_khz);
         double coef_a;
         double coef_d;
         double coef_r;
-        if (x->x_n_attack == 0)
+        if (n_attack == 0)
             coef_a = 0.;
         else
-            coef_a = 1. / (float)x->x_n_attack;
-        if (x->x_n_decay == 0)
+            coef_a = 1. / n_attack;
+        if (n_decay == 0)
             coef_d = 0.;
         else
-            coef_d = 1. / (float)x->x_n_decay;
-        if (x->x_n_release == 0)
+            coef_d = 1. / n_decay;
+        if (n_release == 0)
             coef_r = 0.;
         else
-            coef_r = 1. / (float)x->x_n_release;
+            coef_r = 1. / n_release;
         
         if (gate != gate_status){ // gate status change
             target = input;
             gate_status = gate;
             if (gate){
-                if (x->x_n_attack > 1){
+                if (n_attack > 1){
                     incr = (target - last) * coef_a;
-                    nleft = x->x_n_attack;
+                    nleft = n_attack + n_decay;
                     *out++ = (last += incr);
                     continue;
                 }
             }
             else {
-                if (x->x_n_release > 1){
-                    incr = (target - last) * coef_r;
-                    nleft = x->x_n_release;
+                if (n_release > 1){
+                    incr =  -(last * coef_r);
+                    nleft = n_release;
                     *out++ = (last += incr);
                     continue;
                 }
@@ -95,13 +94,17 @@ static t_int *adr_perform(t_int *w){
         }
         
         else if (nleft > 0){
+            if (nleft < n_decay)
+                incr = ((target * 0.5) - target) * coef_d;
             *out++ = (last += incr);
-            if (--nleft == 1){
+                
+            nleft--;
+            if (nleft == 1){
                 incr = 0.;
-                last = target;
+                last = target * 0.5;
                 }
             }
-        else *out++ = target;
+        else *out++ = target * 0.5;
         };
     x->x_last = (PD_BIGORSMALL(last) ? 0. : last);
     x->x_target = (PD_BIGORSMALL(target) ? 0. : target);

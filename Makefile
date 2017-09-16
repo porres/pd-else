@@ -71,6 +71,7 @@ loop.class.sources := classes/loop.c
 lowpass~.class.sources := classes/lowpass~.c
 lowshelf~.class.sources := classes/lowshelf~.c
 median~.class.sources := classes/median~.c
+metro~.class.sources := classes/metro~.c
 pan2~.class.sources := classes/pan2~.c
 pan4~.class.sources := classes/pan4~.c
 peak~.class.sources := classes/peak~.c
