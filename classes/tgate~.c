@@ -16,6 +16,10 @@ typedef struct _tgate
     t_outlet  *x_outlet;
 } t_tgate;
 
+static void tgate_bang(t_tgate *x){
+    x->x_sum = 0;
+}
+
 static t_int *tgate_perform(t_int *w)
 {
     t_tgate *x = (t_tgate *)(w[1]);
@@ -78,4 +82,5 @@ void tgate_tilde_setup(void)
         sizeof(t_tgate), CLASS_DEFAULT, A_DEFFLOAT, 0);
     class_addmethod(tgate_class, nullfn, gensym("signal"), 0);
     class_addmethod(tgate_class, (t_method) tgate_dsp, gensym("dsp"), 0);
+    class_addbang(tgate_class,(t_method)tgate_bang);
 }

@@ -1,57 +1,52 @@
-#N canvas 698 77 559 428 10;
-#X obj 4 266 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 736 118 560 421 10;
+#X obj 4 256 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 321 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 327 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 355 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 361 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 130 330 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 86 336 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 388 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 394 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 270 156 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 320 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 327 156 ms;
-#X text 270 137 gate time;
-#X obj 130 274 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 377 171 ms;
+#X text 320 152 gate time;
+#X obj 86 264 cnv 17 3 32 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 130 296 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 86 302 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 235 296 - gate time in ms;
-#X text 151 364 1) float - gate time in ms (default 0 \, no gate);
-#X text 189 328 signal;
-#X obj 23 40 cnv 4 4 4 empty empty Timed 0 28 2 18 -233017 -1 0;
-#X obj 73 40 cnv 4 4 4 empty empty gate 0 28 2 18 -233017 -1 0;
-#X obj 113 40 cnv 4 4 4 empty empty from 0 28 2 18 -233017 -1 0;
-#X obj 156 40 cnv 4 4 4 empty empty triggers 0 28 2 18 -233017 -1 0
+#X text 191 302 - gate time in ms;
+#X text 107 370 1) float - gate time in ms (default 0 \, no gate);
+#X text 145 334 signal;
+#X obj 23 41 cnv 4 4 4 empty empty Timed 0 28 2 18 -233017 -1 0;
+#X obj 73 41 cnv 4 4 4 empty empty gate 0 28 2 18 -233017 -1 0;
+#X obj 113 41 cnv 4 4 4 empty empty from 0 28 2 18 -233017 -1 0;
+#X obj 156 41 cnv 4 4 4 empty empty triggers 0 28 2 18 -233017 -1 0
 ;
-#X obj 3 3 cnv 15 301 42 empty empty tgate~ 20 20 2 37 -233017 -1 0
+#X obj 3 4 cnv 15 301 42 empty empty tgate~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 3 graph;
-#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X restore 2 4 graph;
+#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 304 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 304 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 183 147 else/imp~ 1;
-#X obj 183 178 else/tgate~ 500;
-#X obj 183 203 else/sig2float~;
-#X obj 183 231 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
-1;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -155,17 +150,24 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 71 pd;
-#X text 68 88 When receiving a trigger signal \, [tgate~] sends a timed
-gate (values of 1 for the duration \, 0 otherwise). The length of the
-gate is given in ms \, if 0 or less is given \, no gate is output.
+#X restore 505 72 pd;
+#X text 145 264 signal;
+#X text 109 302 float/signal;
+#X text 191 334 - timed gate;
+#X text 191 264 - trigger signal (negative to positive transition)
 ;
-#X text 189 274 signal;
-#X text 153 296 float/signal;
-#X text 235 328 - timed gate;
-#X text 235 274 - trigger signal (negative to positive transition)
+#X text 159 282 bang;
+#X text 192 282 - control trigger;
+#X text 68 89 When receiving a trigger \, [tgate~] sends a timed gate
+(values of 1 for the duration \, 0 otherwise). The length of the gate
+is given in ms \, if 0 or less is given \, no gate is output., f 55
 ;
-#X connect 5 0 28 1;
-#X connect 27 0 28 0;
-#X connect 28 0 29 0;
-#X connect 29 0 30 0;
+#X obj 186 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 211 162 else/imp~ 0.5;
+#X obj 211 193 else/tgate~ 1000;
+#X obj 211 222 else/display~ 3;
+#X connect 5 0 37 1;
+#X connect 35 0 37 0;
+#X connect 36 0 37 0;
+#X connect 37 0 38 0;
