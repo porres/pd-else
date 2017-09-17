@@ -1,0 +1,88 @@
+#N canvas 709 23 624 562 10;
+#X obj 3 3 cnv 15 301 42 empty empty match~ 20 20 2 37 -233017 -1 0
+;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X obj 23 40 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
+#X obj 78 40 cnv 4 4 4 empty empty median 0 28 2 18 -233017 -1 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 3 338 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 391 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 428 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 112 400 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 113 346 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 3 459 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 112 368 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 160 400 signal -;
+#X text 144 437 1) float;
+#X text 159 347 signal -;
+#X text 164 368 float -;
+#X text 222 348 the signal to perform the median on;
+#X text 222 369 number of samples to perform the median;
+#X text 221 401 the median of the input signal;
+#X msg 329 149 64;
+#X obj 230 188 nbx 5 14 1 64 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 1 256;
+#X msg 230 149 8;
+#X msg 263 149 16;
+#X msg 294 149 32;
+#X text 203 436 - number of samples to perform the median (default
+1);
+#X text 72 91 The [median~] objects retunrs the median of a number
+of samples (minimum number of samples is 1 and maximum is the block
+size).;
+#X obj 102 241 display~;
+#X obj 90 281 out~;
+#X floatatom 101 148 5 0 0 0 - - -, f 5;
+#X obj 173 249 print~;
+#X obj 220 211 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 18 203 print~;
+#X obj 36 178 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 224 278 out~;
+#X obj 103 173 sig~ 1;
+#X obj 158 143 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 99 207 else/match~ 0 1;
+#X connect 27 0 28 0;
+#X connect 29 0 28 0;
+#X connect 30 0 28 0;
+#X connect 31 0 28 0;
+#X connect 34 0 35 0;
+#X connect 34 0 35 1;
+#X connect 36 0 42 0;
+#X connect 38 0 37 0;
+#X connect 40 0 39 0;
+#X connect 42 0 44 0;
+#X connect 43 0 42 0;
+#X connect 44 0 34 0;
+#X connect 44 0 39 0;
+#X connect 44 1 37 0;
+#X connect 44 1 41 0;

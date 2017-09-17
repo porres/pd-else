@@ -70,6 +70,7 @@ logistic~.class.sources := classes/logistic~.c
 loop.class.sources := classes/loop.c
 lowpass~.class.sources := classes/lowpass~.c
 lowshelf~.class.sources := classes/lowshelf~.c
+match~.class.sources := classes/match~.c
 median~.class.sources := classes/median~.c
 metro~.class.sources := classes/metro~.c
 pan2~.class.sources := classes/pan2~.c

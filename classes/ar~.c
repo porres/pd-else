@@ -1,6 +1,7 @@
 // porres 2017
 
 #include "m_pd.h"
+#include <math.h>
 
 typedef struct _ar{
     t_object x_obj;
