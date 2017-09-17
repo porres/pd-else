@@ -100,6 +100,7 @@ tdelay2~.class.sources := classes/tdelay2~.c
 tgate~.class.sources := classes/tgate~.c
 toggleff~.class.sources := classes/toggleff~.c
 togedge~.class.sources := classes/togedge~.c
+trigger~.class.sources := classes/trigger~.c
 vu~.class.sources := classes/vu~.c
 xfade~.class.sources := classes/xfade~.c
 xgate~.class.sources := classes/xgate~.c

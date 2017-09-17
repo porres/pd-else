@@ -1,0 +1,60 @@
+#N canvas 631 23 562 482 10;
+#X obj 4 316 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 388 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 425 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 138 397 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 453 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 306 5 pd;
+#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 24 42 cnv 4 4 4 empty empty Trigger 0 28 2 18 -233017 -1 0;
+#X obj 88 42 cnv 4 4 4 empty empty detection 0 28 2 18 -233017 -1 0
+;
+#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 138 364 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 138 327 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 155 433 1) float - initial threshold (default 0), f 49;
+#X obj 171 250 else/out~;
+#X text 164 326 float/signal - input signal, f 37;
+#X text 220 343 bang - generate impulse, f 29;
+#X text 164 365 float/signal - set threshold, f 37;
+#X text 206 397 signal - impulse when past over threshold;
+#X text 38 94 [trigger~] sends an impulse when it detects a gate on
+signal \, that is when a signal goes past a threshold value. You can
+set the threshold value with the argument or the 2nd inlet. A bang
+will also send an impulse, f 62;
+#X obj 171 175 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 171 207 else/trigger~;
+#X obj 282 213 else/trigger~ 0.5;
+#X obj 282 164 else/sine~ 1;
+#X obj 4 5 cnv 15 301 42 empty empty trigger~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 5 graph;
+#X connect 24 0 25 0;
+#X connect 25 0 18 0;
+#X connect 26 0 18 1;
+#X connect 27 0 25 0;
+#X connect 27 0 26 0;
