@@ -55,13 +55,13 @@ t_int *match_perform(t_int *w){
                     match_outlet[i] = 1.0; // always send a unity click
                     matched = 1;
                 }
-//                else
-//                    matched = 0;
+                else
+                    matched = 0;
 			}
-//            if(!matched){
+            if(!matched){
 //                match_outlet = (double *) outs[j+1];
-//               match_outlet[i] = 1.0;
-//           }
+//                match_outlet[i] = 1.0;
+           }
         }
         last = inlet[i];
 	}
