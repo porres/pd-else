@@ -59,8 +59,8 @@ t_int *match_perform(t_int *w){
                     matched = 0;
 			}
             if(!matched){
-//                match_outlet = (double *) outs[j+1];
-//                match_outlet[i] = 1.0;
+                match_outlet = (double *) outs[length - 1];
+                match_outlet[i] = 1.0;
            }
         }
         last = inlet[i];
