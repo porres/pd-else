@@ -48,15 +48,14 @@ t_int *match_perform(t_int *w){
 			match_outlet[i] = 0.0;
 	}
 	for(i = 0; i < n; i++){ // match & route
-        if (inlet[i] != last){
+        matched = 0;
+        if (inlet[i] != last){ // if changed
 			for(j = 0; j < length - 1; j++){
-                if(inlet[i] == matches[j]){
+                if(inlet[i] == matches[j]){ // if matched
                     match_outlet = (double *) outs[j];
                     match_outlet[i] = 1.0; // always send a unity click
                     matched = 1;
                 }
-                else
-                    matched = 0;
 			}
             if(!matched){
                 match_outlet = (double *) outs[length - 1];
@@ -95,15 +94,24 @@ void match_free(t_match *x){
 }
 
 void *match_new(t_symbol *msg, short argc, t_atom *argv){
-    int i;
     t_match *x = (t_match *)pd_new(match_class);
-    x->length = (t_int)argc + 1;
     x->x_lastin = 0;
-    for(i=0; i < x->length ; i++)
+    if(!argc){
+        x->length = 2;
         outlet_new(&x->x_obj, gensym("signal"));
-    x->matches = (double *) malloc((x->length - 1) * sizeof(double));
-    for(i = 0; i < argc; i++)
-        x->matches[i] = (double)atom_getfloatarg(i,argc,argv);
+        outlet_new(&x->x_obj, gensym("signal"));
+        x->matches = (double *) malloc(1 * sizeof(double));
+        x->matches[0] = 0;
+    }
+    else{
+        int i;
+        x->length = (t_int)argc + 1;
+        for(i=0; i < x->length ; i++)
+            outlet_new(&x->x_obj, gensym("signal"));
+        x->matches = (double *) malloc((x->length - 1) * sizeof(double));
+        for(i = 0; i < argc; i++)
+            x->matches[i] = (double)atom_getfloatarg(i,argc,argv);
+    }
     x->ins = (t_float **) malloc(1 * sizeof(t_float *));
     x->outs = (t_float **) malloc(x->length * sizeof(t_float *));
     x->ins[0] = (t_float *) malloc(8192 * sizeof(t_float));
