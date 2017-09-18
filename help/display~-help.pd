@@ -1,48 +1,48 @@
-#N canvas 758 330 562 401 10;
-#X obj 4 281 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 85 313 562 443 10;
+#X obj 4 303 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 315 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 337 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 346 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 368 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 374 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 414 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 91 289 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 311 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 23 41 cnv 4 4 4 empty empty Display 0 28 2 18 -233017 -1 0;
-#X obj 93 41 cnv 4 4 4 empty empty signals 0 28 2 18 -233017 -1 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 23 43 cnv 4 4 4 empty empty Display 0 28 2 18 -233017 -1 0;
+#X obj 93 43 cnv 4 4 4 empty empty signals 0 28 2 18 -233017 -1 0;
+#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 5 pd;
+#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 140 352 1) float - number of characters (default: 0 - not fixed)
+#X text 140 374 1) float - number of characters (default: 0 - not fixed)
 ;
-#X obj 91 322 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 344 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 244 244 else/display~;
-#X text 109 247 [else/display~] =>;
-#X text 156 322 signal;
-#X obj 2 3 cnv 15 301 42 empty empty display~ 20 20 2 37 -233017 -1
+#X obj 244 266 else/display~;
+#X text 109 269 [else/display~] =>;
+#X text 156 344 signal;
+#X obj 2 5 cnv 15 301 42 empty empty display~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 2 3 graph;
-#X text 61 92 [display~] is similar to [else/display] \, but displays
+#X restore 2 5 graph;
+#X text 61 94 [display~] is similar to [else/display] \, but displays
 signal values instead., f 57;
-#X text 61 123 An argument specifies a fixed number of characters to
+#X text 61 125 An argument specifies a fixed number of characters to
 display. If "0" or no argument is given \, the display will automatically
 resize according to the input. If a signal value is larger than the
 fixed number of characters \, the displayed signal is truncated.;
@@ -149,9 +149,9 @@ fixed number of characters \, the displayed signal is truncated.;
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 507 61 pd;
-#X obj 244 213 else/stepnoise~ 1;
-#X text 114 289 float/signal;
+#X restore 507 63 pd;
+#X obj 244 235 else/stepnoise~ 1;
+#X text 114 311 float/signal;
 #N canvas 638 85 343 248 float 0;
 #X text 38 124 [else/display~] =>;
 #X obj 180 121 else/display~ 4;
@@ -166,8 +166,11 @@ fixed number of characters \, the displayed signal is truncated.;
 #X connect 3 0 1 0;
 #X connect 4 0 1 0;
 #X connect 5 0 2 0;
-#X restore 432 241 pd float input;
-#X text 205 289 - values to be displayed;
-#X text 205 322 - the input is passed through;
+#X restore 432 263 pd float input;
+#X text 205 311 - values to be displayed;
+#X text 205 344 - the input is passed through;
+#X text 140 394 2) float - refresh rate (default 100 ms);
+#X text 61 198 A second argument sets the refresh rate in ms., f 57
+;
 #X connect 25 0 17 0;
-#X coords 0 401 1 400 85 22 0;
+#X coords 0 443 1 442 85 22 0;
