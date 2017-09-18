@@ -90,6 +90,7 @@ void *match_new(t_symbol *msg, short argc, t_atom *argv){
     int i;
     t_match *x = (t_match *)pd_new(match_class);
     x->length = (t_int)argc;
+    x->x_lastin = 0;
     for(i=0; i< x->length ; i++)
         outlet_new(&x->x_obj, gensym("signal"));
     x->matches = (double *) malloc(x->length * sizeof(double));
@@ -97,8 +98,7 @@ void *match_new(t_symbol *msg, short argc, t_atom *argv){
         x->matches[i] = (double)atom_getfloatarg(i,argc,argv);
     x->ins = (t_float **) malloc(1 * sizeof(t_float *));
     x->outs = (t_float **) malloc(x->length * sizeof(t_float *));
-    for(i = 0; i < 1; i++) // ???????????
-        x->ins[i] = (t_float *) malloc(8192 * sizeof(t_float));
+    x->ins[0] = (t_float *) malloc(8192 * sizeof(t_float));
     return x;
 }
 
