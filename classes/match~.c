@@ -54,29 +54,23 @@ t_int *match_perform(t_int *w){
 	t_float *inlet;
 	t_float *match_outlet;
 	t_float *matches = x->matches;
-	t_int length = x->length;
-    int n = (int) w[length + 3]; // obj, func, 1 inlet
-    // copy input vectors (just 1 here)
-    for(i = 0; i < 1; i++){
+    t_int length = x->length;
+    t_float last = x->x_lastin;
+    int n = (int) w[length + 3];
+    for(i = 0; i < 1; i++){ // copy input vectors
         invec = (t_float *) w[2 + i];
-        for(j = 0; j < n; j++){
+        for(j = 0; j < n; j++)
             ins[i][j] = invec[j];
-        }
     }
     inlet = ins[0];
-    // assign output vector pointers
-    for(i = 0; i < length; i++){
+    for(i = 0; i < length; i++)  // assign output vector pointers
         outs[i] = (t_float *) w[3 + i];
-    }
-    // clean each outlet
-	for(j = 0; j < length; j++){
+    for(j = 0; j < length; j++){ // clean each outlet
 		match_outlet = (double *) outs[j];
-		for(i = 0; i < n; i++){
+		for(i = 0; i < n; i++)
 			match_outlet[i] = 0.0;
-		}
 	}
-    // now match and route any clicks in the input
-	for(i = 0; i < n; i++){
+	for(i = 0; i < n; i++){ // match & route
 		if(inlet[i]){
 			for(j = 0; j < length; j++){
 				if( inlet[i] == matches[j]){
@@ -86,8 +80,21 @@ t_int *match_perform(t_int *w){
 			}
 		}
 	}
+    x->x_lastin = inlet[n-1];
     return (w + length + 4);
 }
+
+/*
+    for(i = 0; i < n; i++){
+        for(j = 0; j < length; j++){ // match & route
+            if(inlet[i] == matches[j] && inlet[i] != last){
+                match_outlet = (double *) outs[j];
+                match_outlet[i] = 1.0;
+            }
+            last = inlet[i];
+        }
+    } */
+
 
 void match_dsp(t_match *x, t_signal **sp)
 {
