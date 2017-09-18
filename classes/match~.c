@@ -21,30 +21,6 @@ void *match_new(t_symbol *msg, short argc, t_atom *argv);
 void match_free(t_match *x);
 void match_dsp(t_match *x, t_signal **sp);
 
-
-void *match_new(t_symbol *msg, short argc, t_atom *argv){
-	int i;
-	t_match *x = (t_match *)pd_new(match_class);
-	x->length = (t_int)argc;
-	for(i=0; i< x->length ; i++)
-        outlet_new(&x->x_obj, gensym("signal"));
-	x->matches = (double *) malloc(x->length * sizeof(double));
-	for(i = 0; i < argc; i++)
-		x->matches[i] = (double)atom_getfloatarg(i,argc,argv);
-    x->ins = (t_float **) malloc(1 * sizeof(t_float *));
-    x->outs = (t_float **) malloc(x->length * sizeof(t_float *));
-    for(i = 0; i < 1; i++) // ???????????
-        x->ins[i] = (t_float *) malloc(8192 * sizeof(t_float));
-	return x;
-}
-
-void match_free(t_match *x){
-	free(x->matches);
-    free(x->outs);
-    free(x->ins[0]);
-    free(x->ins);
-}
-
 t_int *match_perform(t_int *w){
     int i, j;
     t_match *x = (t_match *) w[1];
@@ -101,6 +77,29 @@ void match_dsp(t_match *x, t_signal **sp)
 		sigvec[i] = (t_int *)sp[i-1]->s_vec;
     dsp_addv(match_perform, pointer_count, (t_int *)sigvec);
     free(sigvec);
+}
+
+void match_free(t_match *x){
+    free(x->matches);
+    free(x->outs);
+    free(x->ins[0]);
+    free(x->ins);
+}
+
+void *match_new(t_symbol *msg, short argc, t_atom *argv){
+    int i;
+    t_match *x = (t_match *)pd_new(match_class);
+    x->length = (t_int)argc;
+    for(i=0; i< x->length ; i++)
+        outlet_new(&x->x_obj, gensym("signal"));
+    x->matches = (double *) malloc(x->length * sizeof(double));
+    for(i = 0; i < argc; i++)
+        x->matches[i] = (double)atom_getfloatarg(i,argc,argv);
+    x->ins = (t_float **) malloc(1 * sizeof(t_float *));
+    x->outs = (t_float **) malloc(x->length * sizeof(t_float *));
+    for(i = 0; i < 1; i++) // ???????????
+        x->ins[i] = (t_float *) malloc(8192 * sizeof(t_float));
+    return x;
 }
 
 void match_tilde_setup(void){
