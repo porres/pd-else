@@ -49,21 +49,27 @@
 of samples (minimum number of samples is 1 and maximum is the block
 size).;
 #X obj 234 234 display~;
-#X floatatom 234 147 5 0 0 0 - - -, f 5;
-#X obj 234 172 sig~ 1;
-#X obj 205 147 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 234 148 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X obj 277 234 else/display~;
-#X obj 320 234 display~;
-#X obj 364 233 else/display~;
-#X obj 289 148 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -262144
--1 -1 3;
-#X obj 234 201 else/match~ 0 1 2 3;
-#X connect 28 0 29 0;
-#X connect 29 0 35 0;
-#X connect 30 0 29 0;
-#X connect 34 0 29 0;
-#X connect 35 0 27 0;
-#X connect 35 1 31 0;
-#X connect 35 2 32 0;
-#X connect 35 3 33 0;
+#X obj 361 234 else/display~;
+#X obj 364 269 trig2bang~;
+#X obj 364 295 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 233 270 trig2bang~;
+#X obj 233 296 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 234 201 else/match~ 0 1;
+#X obj 234 172 sig~;
+#X obj 265 147 loadbang;
+#X obj 478 194 loadbang;
+#X msg 477 222 \; pd dsp 1;
+#X connect 27 0 32 0;
+#X connect 28 0 35 0;
+#X connect 29 0 30 0;
+#X connect 30 0 31 0;
+#X connect 32 0 33 0;
+#X connect 34 0 27 0;
+#X connect 34 1 29 0;
+#X connect 35 0 34 0;
+#X connect 36 0 28 0;
+#X connect 37 0 38 0;

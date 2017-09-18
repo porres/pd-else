@@ -71,13 +71,15 @@ t_int *match_perform(t_int *w){
 			match_outlet[i] = 0.0;
 	}
 	for(i = 0; i < n; i++){ // match & route
+        if (inlet[i] != last){
 			for(j = 0; j < length; j++){
-                if(inlet[i] == matches[j]){ // if(inlet[i] == matches[j] && inlet[i] != last)
-					match_outlet = (double *) outs[j];
-					match_outlet[i] = 1.0; // always send a unity click
-				}
-            last = inlet[i];
+                if(inlet[i] == matches[j]){
+                    match_outlet = (double *) outs[j];
+                    match_outlet[i] = 1.0; // always send a unity click
+                }
 			}
+        }
+        last = inlet[i];
 	}
     x->x_lastin = inlet[n-1];
     return (w + length + 4);
