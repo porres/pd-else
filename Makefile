@@ -14,8 +14,6 @@ uname := $(shell uname -s)
 # sources
 #########################################################################
 
-sel~.class.sources := classes/sel~.c
-
 # control:
 cents2ratio.class.sources := classes/cents2ratio.c
 hz2rad.class.sources := classes/hz2rad.c
