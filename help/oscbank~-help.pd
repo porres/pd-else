@@ -1,4 +1,4 @@
-#N canvas 489 89 560 485 10;
+#N canvas 710 48 560 485 10;
 #X obj 3 275 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 363 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -39,29 +39,28 @@
 #X text 132 285 freq <list>;
 #X text 138 302 amp <list>;
 #X text 132 340 ramp <list>;
-#N canvas 732 194 411 373 example 0;
-#X obj 90 290 else/out~;
-#X obj 90 109 loadbang;
-#X text 164 95 click on the messages below to alter between them,
+#N canvas 450 217 503 402 example 0;
+#X obj 89 290 else/out~;
+#X obj 89 109 loadbang;
+#X text 163 95 click on the messages below to alter between them,
 f 27;
-#X obj 90 253 else/oscbank~ 8 2000;
-#X text 40 16 A ramp time as the second argument sets a transition
+#X text 39 16 A ramp time as the second argument sets a transition
 time in ms between parameter changes of frequency and amplitude. By
 default \, this is set to 10 ms. You can also send a list of ramp time
 for each oscillator in the bank.;
-#X msg 90 132 freq 100 250 300 370 420 510 590 650 \, phase 0 0.5 0.25
+#X msg 89 132 freq 100 250 300 370 420 510 590 650 \, phase 0 0.5 0.25
 0 0.1 0.9 0.75 0.1 \, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 38;
-#X msg 129 189 freq 140 290 310 330 490 580 690 750 \, phase 0.5 0
+#X msg 128 189 freq 140 290 310 330 490 580 690 750 \, phase 0.5 0
 0.75 0.4 0.7 0 0.25 0.5 \, amp 0.8 1 0.7 1 0.9 0.8 0.9 1, f 38;
-#X connect 1 0 5 0;
-#X connect 3 0 0 0;
-#X connect 3 0 0 1;
-#X connect 5 0 3 0;
-#X connect 6 0 3 0;
+#X obj 89 254 else/oscbank~ 8 2000;
+#X connect 1 0 4 0;
+#X connect 4 0 6 0;
+#X connect 5 0 6 0;
+#X connect 6 0 0 0;
+#X connect 6 0 0 1;
 #X restore 464 239 pd example;
 #X text 156 404 1) float - number of resonant filters (default 1),
 f 57;
-#X obj 188 184 else/oscbank~ 4;
 #X obj 188 123 loadbang;
 #X text 59 85 [oscbank~] is a bank made of [sine~] objects. You can
 set any number of oscillators and control their parameters.;
@@ -76,7 +75,8 @@ set any number of oscillators and control their parameters.;
 #X text 126 321 phase <list>;
 #X text 209 321 - list of phases (0-1) for all oscillators in the bank
 ;
-#X connect 25 0 18 0;
-#X connect 25 0 18 1;
-#X connect 26 0 32 0;
-#X connect 32 0 25 0;
+#X obj 188 184 else/oscbank~ 4;
+#X connect 25 0 31 0;
+#X connect 31 0 34 0;
+#X connect 34 0 18 0;
+#X connect 34 0 18 1;
