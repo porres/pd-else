@@ -9,7 +9,7 @@ typedef struct _match{
     t_float x_lastin;
 	t_float *matches; // store numbers to match against
 	t_float *trigger_vec; // copy of input vector
-	t_int length; // number of matches to check
+	t_int   length; // number of matches to check
     t_float **ins; // array of input signal vectors
     t_float **outs; // array of output signal vectors
 } t_match;
@@ -32,6 +32,7 @@ t_int *match_perform(t_int *w){
 	t_float *matches = x->matches;
     t_int length = x->length;
     t_float last = x->x_lastin;
+    t_int matched;
     int n = (int) w[length + 3];
     for(i = 0; i < 1; i++){ // copy input vectors
         invec = (t_float *) w[2 + i];
@@ -48,12 +49,19 @@ t_int *match_perform(t_int *w){
 	}
 	for(i = 0; i < n; i++){ // match & route
         if (inlet[i] != last){
-			for(j = 0; j < length; j++){
+			for(j = 0; j < length - 1; j++){
                 if(inlet[i] == matches[j]){
                     match_outlet = (double *) outs[j];
                     match_outlet[i] = 1.0; // always send a unity click
+                    matched = 1;
                 }
+//                else
+//                    matched = 0;
 			}
+//            if(!matched){
+//                match_outlet = (double *) outs[j+1];
+//               match_outlet[i] = 1.0;
+//           }
         }
         last = inlet[i];
 	}
@@ -89,11 +97,11 @@ void match_free(t_match *x){
 void *match_new(t_symbol *msg, short argc, t_atom *argv){
     int i;
     t_match *x = (t_match *)pd_new(match_class);
-    x->length = (t_int)argc;
+    x->length = (t_int)argc + 1;
     x->x_lastin = 0;
-    for(i=0; i< x->length ; i++)
+    for(i=0; i < x->length ; i++)
         outlet_new(&x->x_obj, gensym("signal"));
-    x->matches = (double *) malloc(x->length * sizeof(double));
+    x->matches = (double *) malloc((x->length - 1) * sizeof(double));
     for(i = 0; i < argc; i++)
         x->matches[i] = (double)atom_getfloatarg(i,argc,argv);
     x->ins = (t_float **) malloc(1 * sizeof(t_float *));
