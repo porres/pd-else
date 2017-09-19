@@ -8,6 +8,7 @@ typedef struct _match{
     t_float x_f;
     t_float x_lastin;
     t_int   x_n_outlets;
+    t_int   x_first;
 	t_float *matches; // numbers to match against
     t_float **ins;
     t_float **outs;
@@ -49,7 +50,21 @@ t_int *match_perform(t_int *w){
 // match
 	for(i = 0; i < n; i++){
         matched = 0;
-        if (inlet[i] != last){ // if changed
+        if(!x->x_first){
+            x->x_first = 1;
+            for(j = 0; j < outlets - 1; j++){
+                if(inlet[i] == matches[j]){ // if matched
+                    match_outlet = (double *) outs[j];
+                    match_outlet[i] = 1.0; // always send a unity click
+                    matched = 1;
+                }
+            }
+            if(!matched){
+                match_outlet = (double *) outs[outlets - 1];
+                match_outlet[i] = 1.0;
+            }
+        }
+        else if (inlet[i] != last){ // if changed
 			for(j = 0; j < outlets - 1; j++){
                 if(inlet[i] == matches[j]){ // if matched
                     match_outlet = (double *) outs[j];
@@ -99,6 +114,7 @@ void match_free(t_match *x){
 void *match_new(t_symbol *msg, short argc, t_atom *argv){
     t_match *x = (t_match *)pd_new(match_class);
     x->x_lastin = 0;
+    x->x_first = 0;
     if(!argc){
         x->x_n_outlets = 2;
         outlet_new(&x->x_obj, gensym("signal"));

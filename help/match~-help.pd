@@ -145,32 +145,27 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 506 74 pd;
-#X obj 178 278 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 182 282 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 178 254 else/trig2bang~;
-#X obj 301 255 else/trig2bang~;
-#X obj 301 278 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 182 258 else/trig2bang~;
+#X obj 305 259 else/trig2bang~;
+#X obj 305 282 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 178 204 nbx 2 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 178 177 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 182 208 nbx 2 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1 256;
+#X obj 182 181 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X text 219 329 the signal to be matched;
 #X text 147 418 1) list;
 #X text 206 417 - values to match to (default 0);
-#X obj 178 226 else/match~ 1, f 18;
-#X text 87 265 matches argument =>, f 12;
-#X text 322 277 <= unmatched;
+#X text 91 269 matches argument =>, f 12;
+#X text 326 281 <= unmatched;
 #X obj 92 384 cnv 17 3 17 empty empty r 5 9 0 16 -228856 -162280 0
 ;
 #X text 218 363 impulse when signal matches an argument;
 #X text 157 384 signal -;
 #X text 218 385 impulse when signal doesn't match arguments;
 #X text 115 328 float/signal -;
-#X text 62 92 [match~] is the signal counterpart of pd vanilla's [select]
-object \, but sends impulses instead of bangs. When a signal value
-corresponds to one of the arguments \, an impulse is sent to its corresponding
-inlet. Otherwise \, the rightmost outlet sends an impulse.;
 #N canvas 697 133 595 371 example 0;
 #X obj 81 184 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -214,9 +209,15 @@ inlet. Otherwise \, the rightmost outlet sends an impulse.;
 #X connect 14 0 15 0;
 #X connect 17 0 5 0;
 #X restore 463 257 pd example;
+#X obj 182 230 else/match~ 1, f 18;
+#X text 62 92 [match~] is quite similar to pd vanilla's [select] object
+\, but is signal based and sends impulses instead of bangs.;
+#X text 62 123 When a signal value corresponds to one of the arguments
+\, an impulse is sent to its corresponding outlet. Otherwise \, the
+rightmost outlet sends an impulse., f 58;
 #X connect 24 0 23 0;
 #X connect 25 0 26 0;
-#X connect 27 0 32 0;
+#X connect 27 0 40 0;
 #X connect 28 0 27 0;
-#X connect 32 0 24 0;
-#X connect 32 1 25 0;
+#X connect 40 0 24 0;
+#X connect 40 1 25 0;
