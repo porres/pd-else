@@ -37,11 +37,7 @@
 #X obj 258 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 4950 1;
 #X obj 258 217 else/sig2float~;
-#X obj 316 152 else/trigate~;
-#X obj 316 132 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
 #X text 227 132 <= reset =>;
-#X text 323 173 <= impulse value of 1;
 #X text 34 15 The second inlet resets the phase ands behaves in the
 same way for control data as objects like [osc~] and [phasor~] in Pd.
 A number input resets the oscillator and restarts the cycle with an
@@ -176,21 +172,29 @@ to another phase value.;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 147 266 pd;
-#X connect 0 0 23 1;
+#X obj 316 162 else/impgen~;
+#X msg 422 131 0.25;
+#X msg 348 130 0.75;
+#X msg 316 130 1;
+#X msg 388 130 0.5;
+#X connect 0 0 20 1;
 #X connect 2 0 1 0;
-#X connect 3 0 23 1;
-#X connect 4 0 23 1;
-#X connect 5 0 23 1;
-#X connect 6 0 23 1;
+#X connect 3 0 20 1;
+#X connect 4 0 20 1;
+#X connect 5 0 20 1;
+#X connect 6 0 20 1;
 #X connect 8 0 7 0;
-#X connect 9 0 24 1;
-#X connect 10 0 9 0;
-#X connect 16 0 19 0;
-#X connect 19 0 25 1;
-#X connect 23 0 2 0;
-#X connect 24 0 8 0;
-#X connect 25 0 15 0;
-#X connect 25 0 15 1;
+#X connect 13 0 16 0;
+#X connect 16 0 22 1;
+#X connect 20 0 2 0;
+#X connect 21 0 8 0;
+#X connect 22 0 12 0;
+#X connect 22 0 12 1;
+#X connect 24 0 21 1;
+#X connect 25 0 24 0;
+#X connect 26 0 24 0;
+#X connect 27 0 24 0;
+#X connect 28 0 24 0;
 #X restore 494 200 pd sync;
 #N canvas 430 175 908 347 phase 0;
 #X obj 575 122 cnv 15 200 65 empty empty empty 20 12 0 14 -233017 -66577

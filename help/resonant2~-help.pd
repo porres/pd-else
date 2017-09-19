@@ -44,7 +44,6 @@
 #X text 177 317 clear;
 #X text 219 337 - central frequency in Hertz;
 #X text 220 317 - clears filter's memory if you blow it up;
-#X obj 195 161 else/trigate~;
 #X obj 195 134 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 220 299 - signal to be filtered or excite the resonator;
@@ -119,8 +118,9 @@ the decay time \, then the polarity of the impulse response is inverted.
 #X connect 20 0 1 0;
 #X connect 20 0 1 1;
 #X restore 464 258 pd details;
-#X connect 26 0 42 0;
-#X connect 27 0 26 0;
-#X connect 31 0 42 0;
-#X connect 42 0 8 0;
-#X connect 42 0 8 1;
+#X obj 195 161 else/impgen~;
+#X connect 26 0 44 0;
+#X connect 30 0 41 0;
+#X connect 41 0 8 0;
+#X connect 41 0 8 1;
+#X connect 44 0 41 0;

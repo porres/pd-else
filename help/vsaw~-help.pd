@@ -383,11 +383,7 @@ so the internal phase is synced to the given value. The phase values
 are from 0 to 1 and values beyond that are wrapped within this range.
 ;
 #X obj 249 224 else/sig2float~;
-#X obj 312 159 else/trigate~;
-#X obj 312 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
 #X text 223 139 <= reset =>;
-#X text 319 180 <= impulse value of 1;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
 -262144 0 1;
@@ -505,21 +501,29 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X obj 82 191 else/vsaw~ 1 1;
 #X obj 249 200 else/vsaw~ 1 1;
 #X obj 522 229 else/vsaw~ 200 0.75;
+#X obj 312 172 else/impgen~;
+#X msg 418 141 0.25;
+#X msg 344 140 0.75;
+#X msg 312 140 1;
+#X msg 384 140 0.5;
 #X connect 2 0 5 0;
-#X connect 5 0 26 2;
-#X connect 10 0 21 0;
-#X connect 11 0 25 2;
-#X connect 12 0 11 0;
-#X connect 16 0 24 2;
-#X connect 17 0 24 2;
-#X connect 18 0 24 2;
-#X connect 19 0 24 2;
-#X connect 20 0 24 2;
-#X connect 22 0 23 0;
-#X connect 24 0 22 0;
-#X connect 25 0 10 0;
-#X connect 26 0 1 0;
-#X connect 26 0 1 1;
+#X connect 5 0 23 2;
+#X connect 10 0 18 0;
+#X connect 13 0 21 2;
+#X connect 14 0 21 2;
+#X connect 15 0 21 2;
+#X connect 16 0 21 2;
+#X connect 17 0 21 2;
+#X connect 19 0 20 0;
+#X connect 21 0 19 0;
+#X connect 22 0 10 0;
+#X connect 23 0 1 0;
+#X connect 23 0 1 1;
+#X connect 24 0 22 2;
+#X connect 25 0 24 0;
+#X connect 26 0 24 0;
+#X connect 27 0 24 0;
+#X connect 28 0 24 0;
 #X restore 495 220 pd sync;
 #N canvas 385 345 890 351 phase 0;
 #X text 438 24 The phase values are wrapped into the 0-1 range \, since

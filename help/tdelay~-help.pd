@@ -150,7 +150,6 @@
 #X text 235 314 - trigger signal (negative to positive transition)
 ;
 #X obj 214 202 else/tdelay~ 500;
-#X obj 214 174 else/trigate~;
 #X obj 214 150 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 195 236 else/out~;
@@ -162,8 +161,9 @@
 ms. Any impulse triggers which arrive before the delayed impulse output
 resets and reschedules the delay \, in the same way as the [delay]
 object.;
+#X obj 214 174 else/impgen~;
 #X connect 5 0 26 1;
-#X connect 26 0 29 0;
-#X connect 26 0 29 1;
-#X connect 27 0 26 0;
-#X connect 28 0 27 0;
+#X connect 26 0 28 0;
+#X connect 26 0 28 1;
+#X connect 27 0 34 0;
+#X connect 34 0 26 0;

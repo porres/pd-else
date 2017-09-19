@@ -162,7 +162,6 @@
 #X text 426 255 Note that the "phase sync" inlet is quite different
 from the "phase offset" inlet. This means that you will resset the
 internal of the object \, but the offset still remains.;
-#X obj 180 142 else/trigate~;
 #X obj 617 88 else/imp~ 110;
 #X text 420 24 An impulse oscillator as the input forces "hard sync".
 ;
@@ -176,14 +175,15 @@ cycle \, where the impulse occurs. Send it impulses and check the result
 below.;
 #X obj 99 203 else/fbsine~ 1;
 #X obj 524 122 else/fbsine~ 200;
-#X connect 0 0 8 0;
-#X connect 6 0 9 0;
+#X obj 180 142 else/impgen~;
+#X connect 0 0 14 0;
+#X connect 6 0 8 0;
 #X connect 8 0 13 3;
-#X connect 9 0 14 3;
-#X connect 13 0 1 0;
-#X connect 13 0 1 1;
-#X connect 14 0 5 0;
-#X connect 14 0 5 1;
+#X connect 12 0 1 0;
+#X connect 12 0 1 1;
+#X connect 13 0 5 0;
+#X connect 13 0 5 1;
+#X connect 14 0 12 3;
 #X restore 496 283 pd sync;
 #N canvas 430 175 777 299 phase 0;
 #X text 401 23 The phase values are wrapped into the 0-1 range \, since

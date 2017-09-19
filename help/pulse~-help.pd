@@ -1,4 +1,4 @@
-#N canvas 682 23 559 510 10;
+#N canvas 293 190 559 510 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -244,12 +244,8 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 ;
 #X obj 540 205 else/pulse~ 200;
 #X obj 88 221 else/sig2float~;
-#X obj 254 224 else/sig2float~;
-#X obj 312 159 else/trigate~;
-#X obj 312 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 258 224 else/sig2float~;
 #X text 223 139 <= reset =>;
-#X text 319 180 <= impulse value of 1;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
 -262144 0 1;
@@ -356,30 +352,38 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 424 222 pd;
 #X obj 88 254 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 254 257 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 258 257 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 254 200 else/pulse~ 1;
+#X obj 258 200 else/pulse~ 1;
 #X msg 35 141 0;
 #X msg 69 141 0.25;
 #X msg 146 140 0.75;
 #X msg 189 140 1;
 #X msg 111 140 0.5;
 #X obj 88 191 else/pulse~ 1;
+#X obj 316 172 else/impgen~;
+#X msg 422 141 0.25;
+#X msg 348 140 0.75;
+#X msg 316 140 1;
+#X msg 388 140 0.5;
 #X connect 2 0 5 0;
 #X connect 5 0 10 2;
 #X connect 10 0 1 0;
 #X connect 10 0 1 1;
-#X connect 11 0 18 0;
-#X connect 12 0 19 0;
-#X connect 13 0 20 2;
-#X connect 14 0 13 0;
-#X connect 20 0 12 0;
-#X connect 21 0 26 2;
-#X connect 22 0 26 2;
-#X connect 23 0 26 2;
-#X connect 24 0 26 2;
-#X connect 25 0 26 2;
-#X connect 26 0 11 0;
+#X connect 11 0 15 0;
+#X connect 12 0 16 0;
+#X connect 17 0 12 0;
+#X connect 18 0 23 2;
+#X connect 19 0 23 2;
+#X connect 20 0 23 2;
+#X connect 21 0 23 2;
+#X connect 22 0 23 2;
+#X connect 23 0 11 0;
+#X connect 24 0 17 2;
+#X connect 25 0 24 0;
+#X connect 26 0 24 0;
+#X connect 27 0 24 0;
+#X connect 28 0 24 0;
 #X restore 499 213 pd sync;
 #X text 256 415 - frequency in hertz (default 0);
 #X text 256 434 - initial pulse width (default 0.5);

@@ -139,7 +139,6 @@
 #X obj 197 175 osc~ 1;
 #X obj 290 147 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 290 175 else/trigate~;
 #X text 224 401 (none);
 #X text 175 309 signal;
 #X obj 147 332 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
@@ -159,8 +158,9 @@
 at transitions from non positive to positive. A trigger in the right
 inlet resets the counter to zero.;
 #X obj 197 238 else/sig2float~;
-#X connect 18 0 28 0;
-#X connect 19 0 20 0;
-#X connect 20 0 28 1;
-#X connect 28 0 33 0;
-#X connect 33 0 16 0;
+#X obj 290 175 else/impgen~;
+#X connect 18 0 27 0;
+#X connect 19 0 33 0;
+#X connect 27 0 32 0;
+#X connect 32 0 16 0;
+#X connect 33 0 27 1;

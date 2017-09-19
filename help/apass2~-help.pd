@@ -61,7 +61,6 @@
 #X obj 437 272 else/out~;
 #X text 338 58 Negative values of t60 generate negative feedback of
 the same absolute value as its absolute input., f 60;
-#X obj 437 176 else/trigate~;
 #X obj 437 152 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 39 100 cnv 15 260 120 empty empty empty 20 12 0 14 -228856 -66577
@@ -120,16 +119,17 @@ a = exp(log(0.001) * D/t60).;
 #X text 338 89 The [apass2~] object performs a simple linear interpolation
 for delay time that falls in between sample values.;
 #X obj 437 234 else/apass2~ 100 1000;
-#X connect 2 0 59 1;
-#X connect 3 0 59 2;
+#X obj 437 176 else/impgen~;
+#X connect 2 0 58 1;
+#X connect 3 0 58 2;
 #X connect 4 0 3 0;
 #X connect 7 0 59 0;
-#X connect 8 0 7 0;
-#X connect 54 0 59 0;
-#X connect 55 0 54 0;
-#X connect 56 0 54 0;
-#X connect 59 0 5 0;
-#X connect 59 0 5 1;
+#X connect 53 0 58 0;
+#X connect 54 0 53 0;
+#X connect 55 0 53 0;
+#X connect 58 0 5 0;
+#X connect 58 0 5 1;
+#X connect 59 0 58 0;
 #X restore 442 276 pd Details and \; Filter Equation;
 #X text 164 378 float/signal - delay time (im ms), f 54;
 #X text 164 403 float/signal - decay time (in ms), f 54;

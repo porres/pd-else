@@ -579,7 +579,6 @@ the message methods.;
 #X connect 10 0 0 1;
 #X restore 467 198 pd resonance;
 #X text 210 60 (constant skirt);
-#X obj 216 180 else/trigate~;
 #X obj 216 153 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 201 326 - signal to be filtered or excite the resonator;
@@ -725,8 +724,9 @@ time in ms \, or a Q factor. Like [bandpass~] \, it is a 2nd order
 bandpass resonant filter \, but changing the Q increases the gain of
 the filter.;
 #X text 128 509 1) float - central frequency in hertz (default 0);
-#X connect 34 0 48 0;
-#X connect 35 0 34 0;
-#X connect 47 0 48 0;
-#X connect 48 0 8 0;
-#X connect 48 0 8 1;
+#X obj 216 180 else/impgen~;
+#X connect 34 0 52 0;
+#X connect 46 0 47 0;
+#X connect 47 0 8 0;
+#X connect 47 0 8 1;
+#X connect 52 0 47 0;

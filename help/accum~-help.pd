@@ -35,7 +35,6 @@
 0;
 #X obj 329 166 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 329 192 else/trigate~;
 #X text 178 321 signal;
 #X text 230 321 - value to accumulate;
 #X text 230 354 - sets the starting value;
@@ -169,11 +168,12 @@ You can resset to the starting value with a bang or with an impulse
 signal in the right inlet.;
 #X obj 227 249 else/display~ 8;
 #X obj 227 219 else/accum~ 10, f 15;
-#X connect 17 0 18 0;
-#X connect 18 0 41 1;
-#X connect 31 0 41 0;
-#X connect 32 0 38 0;
-#X connect 32 0 41 0;
-#X connect 37 0 41 0;
-#X connect 40 0 38 0;
-#X connect 41 0 40 0;
+#X obj 329 192 else/impgen~;
+#X connect 17 0 41 0;
+#X connect 30 0 40 0;
+#X connect 31 0 37 0;
+#X connect 31 0 40 0;
+#X connect 36 0 40 0;
+#X connect 39 0 37 0;
+#X connect 40 0 39 0;
+#X connect 41 0 40 1;

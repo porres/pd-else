@@ -149,7 +149,6 @@
 #X text 153 346 float/signal;
 #X text 235 324 - trigger signal (negative to positive transition)
 ;
-#X obj 187 180 else/trigate~;
 #X obj 187 156 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 168 242 else/out~;
@@ -161,8 +160,9 @@
 #X text 67 88 [tdelay2~] delays impulse triggers by a given time in
 ms. After receiving an impulse trigger to delay \, following impulse
 triggers received before its delayed output are ignored.;
-#X connect 5 0 33 1;
-#X connect 26 0 33 0;
-#X connect 27 0 26 0;
-#X connect 33 0 28 0;
-#X connect 33 0 28 1;
+#X obj 187 180 else/impgen~;
+#X connect 5 0 32 1;
+#X connect 26 0 34 0;
+#X connect 32 0 27 0;
+#X connect 32 0 27 1;
+#X connect 34 0 32 0;
