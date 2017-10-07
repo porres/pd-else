@@ -67,11 +67,6 @@
 -228856 -1 -1 0 256;
 #X text 317 156 attack;
 #X text 386 156 release;
-#X text 67 86 [ar~] is a linear attack/release gated envelope. At a
-gate on value (transition from 0 to any value) \, [ar~] goes from 0
-to that value at the specified attack time in ms. A gate of (transition
-from any value to 0) makes [ar~] go to 0 at the specified release time
-in ms.;
 #X text 168 180 gate (1/0);
 #N canvas 775 203 521 510 example 0;
 #X obj 262 164 else/display~ 7;
@@ -110,13 +105,18 @@ amplitude.;
 #X connect 12 0 9 0;
 #X connect 13 0 10 0;
 #X restore 462 336 pd example;
-#X obj 248 210 else/ar~ 5000 5000, f 20;
+#X obj 248 210 else/ar~ 1000 500, f 20;
+#X text 67 86 [ar~] is a linear attack/release gated envelope. At a
+gate on value (transition from 0 to any value) \, [ar~] goes from 0
+to that value at the specified attack time in ms. A gate off (transition
+from any value to 0) makes [ar~] go to 0 at the specified release time
+in ms.;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;
-#X connect 27 0 46 0;
+#X connect 27 0 45 0;
 #X connect 37 0 12 0;
-#X connect 39 0 46 1;
-#X connect 40 0 46 2;
-#X connect 46 0 12 1;
-#X connect 46 0 14 0;
+#X connect 39 0 45 1;
+#X connect 40 0 45 2;
+#X connect 45 0 12 1;
+#X connect 45 0 14 0;

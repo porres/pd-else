@@ -8,11 +8,11 @@ static t_class *metro_class;
 typedef struct _metro{
     t_object x_obj;
     double  x_phase;
-    double  x_last_phase_offset;
     t_inlet  *x_inlet_bpm;
     t_outlet *x_outlet_dsp_0;
     t_float x_sr;
     t_float x_gate;
+    t_float x_last_in;
     t_float x_mul;
 } t_metro;
 
@@ -25,7 +25,8 @@ static t_int *metro_perform(t_int *w){
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // gate
     t_float *in2 = (t_float *)(w[4]); // bpm
-    t_float *out1 = (t_float *)(w[5]);
+    t_float *out = (t_float *)(w[5]);
+    float lastin = x->x_last_in;
     double phase = x->x_phase;
     double sr = x->x_sr;
     while (nblock--){
@@ -42,13 +43,20 @@ static t_int *metro_perform(t_int *w){
         double phase_step = hz / sr; // phase_step
         if (phase_step > 1)
             phase_step = 1;
-        *out1++ = phase >= 1.;
-        if (phase >= 1.)
-            phase = phase - 1; // wrapped phase
-        if (gate != 0)
+        if (gate != 0){
+            if (lastin == 0)
+                phase = 1;
+            *out++ = phase >= 1.;
+            if (phase >= 1.)
+                phase = phase - 1; // wrapped phase
             phase += phase_step; // next phase
+            }
+        else
+            *out++ = 0;
+        lastin = gate;
     }
     x->x_phase = phase;
+    x->x_last_in = lastin;
     return (w + 6);
 }
 

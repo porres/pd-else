@@ -22,7 +22,7 @@
 #X obj 227 230 *~;
 #X obj 145 157 else/brown~;
 #X obj 304 227 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 1322 1;
+-1 -1 356 1;
 #X obj 304 199 else/sig2float~;
 #X text 327 320 0;
 #X text 327 221 1;
@@ -48,7 +48,7 @@
 #X connect 1 0 2 1;
 #X connect 4 0 5 0;
 #X connect 5 0 0 0;
-#X restore 471 311 pd example;
+#X restore 471 307 pd example;
 #X text 61 86 [glide~] generates a linear glide/portamento from its
 signal input changes. The glide time in ms.;
 #X text 185 465 1) float - glide time in ms (default 0);
@@ -73,6 +73,8 @@ signal input changes. The glide time in ms.;
 0;
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
+#X obj 457 260 else/glide2~;
+#X text 450 238 see also:;
 #X connect 13 0 12 0;
 #X connect 13 0 12 1;
 #X connect 14 0 13 0;
