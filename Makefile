@@ -139,7 +139,7 @@ pimp~.class.sources := classes/pimp~.c $(magic)
 datafiles = \
 $(wildcard help/*.pd) \
 $(wildcard help/Abstractions/*.pd) \
-*.pd \
+else-meta.pd \
 README.md \
 help/vacuous.wav
 
