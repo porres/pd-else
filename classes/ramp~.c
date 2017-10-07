@@ -32,7 +32,8 @@ static void ramp_float(t_ramp *x, t_floatarg f)
 
 static void ramp_mode(t_ramp *x, t_floatarg f)
 {
-    int i = (int)f;
+    int i;
+    i = (int)f;
     if (i < 0 )
         i = 0;
     if (i > 2)
@@ -89,30 +90,24 @@ static t_int *ramp_perform(t_int *w)
         float max = *in4++; // max
         if(min == max)
             output = min;
-        else
-            {
-            if (trig > 0 && lastin <= 0)
-                {
+        else{
+            if (trig > 0 && lastin <= 0){
                 phase = reset;
                 if(!x->x_continue)
                     x->x_continue = 1;
                 }
-            else
-                {
-                if(min > max)
-                    { // swap values
+            else{
+                if(min > max){ // swap values
                     float temp;
                     temp = max;
                     max = min;
                     min = temp;
                     };
-                if(x->x_mode == 0) // loop / wrap
-                    {
+                if(x->x_mode == 0){ // loop / wrap
                     if(phase < min || phase >= max) // wrap phase
                         {
                         float range = max - min;
-                        if(phase < min && phase_step < 0)
-                            {
+                        if(phase < min && phase_step < 0){
                             while(phase < min)
                                 phase += range; // wrapped phase
                             }
@@ -120,19 +115,21 @@ static t_int *ramp_perform(t_int *w)
                             phase = fmod(phase - min, range) + min; // wrapped phase
                         }
                     }
-                else if (x->x_mode == 1)// clip
-                    {
+                else if (x->x_mode == 1){ // clip
                     if(phase < min && phase_step < 0)
                         phase = min;
                     if(phase > max && phase_step > 0)
                         phase = max;
                     }
-                else if (x->x_mode == 2)// reset
-                    {
-                    if(phase < min && phase_step < 0)
-                        phase = min;
-                    if(phase > max && phase_step > 0)
+                else if (x->x_mode == 2){// reset
+                    if(phase > max && phase_step > 0){
                         phase = reset;
+                        x->x_continue = 0;
+                        }
+                    if(phase < min && phase_step < 0){
+                        phase = reset;
+                        x->x_continue = 0;
+                        }
                     }
                 }
             output = phase;
@@ -267,7 +264,7 @@ void ramp_tilde_setup(void)
     class_addbang(ramp_class, (t_method)ramp_bang);
     class_addfloat(ramp_class, (t_method)ramp_float);
     class_addmethod(ramp_class, (t_method)ramp_set, gensym("set"), A_FLOAT, 0);
-    class_addmethod(ramp_class, (t_method)ramp_set, gensym("mode"), A_FLOAT, 0);
+    class_addmethod(ramp_class, (t_method)ramp_mode, gensym("mode"), A_FLOAT, 0);
     class_addmethod(ramp_class, (t_method)ramp_reset, gensym("reset"), 0);
     class_addmethod(ramp_class, (t_method)ramp_stop, gensym("stop"), 0);
     class_addmethod(ramp_class, (t_method)ramp_start, gensym("start"), 0);
