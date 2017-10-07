@@ -180,7 +180,7 @@ static void *ramp_new(t_symbol *s, int argc, t_atom *argv)
                         argc--;
                         argv++;
                         break;
-                    case 1: x->x_min = atom_getfloatarg(0, argc, argv);
+                    case 1: x->x_min = x->x_reset = atom_getfloatarg(0, argc, argv);
                         numargs++;
                         argc--;
                         argv++;
@@ -191,11 +191,6 @@ static void *ramp_new(t_symbol *s, int argc, t_atom *argv)
                         argv++;
                         break;
                     case 3: x->x_reset = atom_getfloatarg(0, argc, argv);
-                        numargs++;
-                        argc--;
-                        argv++;
-                        break;
-                    case 4: mode = atom_getfloatarg(0, argc, argv) != 0;
                         numargs++;
                         argc--;
                         argv++;
@@ -235,9 +230,9 @@ static void *ramp_new(t_symbol *s, int argc, t_atom *argv)
     }
 ///////////////////////////
     mode = (int)mode;
-    if (mode < 0 )
+    if (mode <= 0 )
         mode = 0;
-    if (mode > 2)
+    if (mode >= 2)
         mode = 2;
     x->x_mode = mode;
     x->x_phase = (double)x->x_reset ;
