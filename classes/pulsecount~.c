@@ -26,8 +26,13 @@ static t_int *pulsecount_perform(t_int *w)
     {
         t_float in = *in1++;
         t_float trig = *in2++;
-        if(trig > 0) count = 0;
-        *out++ = count += (in > 0 && lastin <= 0);
+        long pulse = (in > 0 && lastin <= 0);
+        if(trig > 0)
+            count = 0;
+        else if(pulse)
+            count++;
+            
+        *out++ = count;
         lastin = in;
     }
     x->x_lastin = lastin;

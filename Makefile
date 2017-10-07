@@ -93,6 +93,7 @@ rms~.class.sources := classes/rms~.c
 rotate~.class.sources := classes/rotate~.c
 sh~.class.sources := classes/sh~.c
 stepnoise~.class.sources := classes/stepnoise~.c
+step~.class.sources := classes/step~.c
 sin~.class.sources := classes/sin~.c
 standard~.class.sources := classes/standard~.c
 susloop~.class.sources := classes/susloop~.c
