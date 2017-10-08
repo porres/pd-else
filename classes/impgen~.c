@@ -1,1 +1,0 @@
-#define IMPGEN_MAX_SIZE  256  
