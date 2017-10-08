@@ -1,0 +1,80 @@
+#N canvas 294 78 574 562 10;
+#X obj 4 287 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 427 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 460 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 4 523 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 109 436 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 109 295 cnv 17 3 54 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 181 295 signal;
+#X text 181 436 signal;
+#X obj 23 42 cnv 4 4 4 empty empty Hold 0 28 2 18 -233017 -1 0;
+#X obj 86 42 cnv 4 4 4 empty empty trigger 0 28 2 18 -233017 -1 0;
+#X text 230 436 - filtered signal;
+#X text 230 295 - signal to be filtered;
+#X obj 109 355 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 109 378 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 145 355 float/signal;
+#X text 145 378 float/signal;
+#X text 187 313 clear;
+#X text 133 331 bypass <float>;
+#X text 230 331 - 1 (bypasses input signal) or 0 (doesn't bypass);
+#N canvas 801 320 729 416 filter 1;
+#X obj 273 105 abs~;
+#X obj 227 164 display~;
+#X obj 227 71 dust2~ 3;
+#X obj 227 129 sh~ -tr;
+#X connect 0 0 3 1;
+#X connect 2 0 0 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X restore 412 214 pd filter formula \; and response;
+#X text 230 313 - clears filter's memory if you blow it up;
+#X obj 109 401 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+;
+#X text 145 401 float/signal;
+#X text 230 401 - gain in dB;
+#X text 230 378 - slope (from 0 to 1);
+#X text 229 354 - shelving frequency in Hertz;
+#X text 138 501 3) float - gain in dB (default 0), f 53;
+#X text 138 484 2) float - slope from 0 to 1 (default 0), f 53;
+#X text 138 466 1) float - shelving frequency in Hertz (default 0)
+, f 53;
+#X obj 144 42 cnv 4 4 4 empty empty value 0 28 2 18 -233017 -1 0;
+#X obj 68 42 cnv 4 4 4 empty empty a 0 28 2 18 -233017 -1 0;
+#X obj 2 5 cnv 15 301 42 empty empty trighold~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 5 graph;
+#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 5 pd;
+#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X text 61 92 [trighold~] holds a trigger value. When a transition
+from 0 to non-zero occurs;
+#X obj 230 193 else/trighold~;
+#X obj 230 161 dust2~ 5;
+#X obj 230 224 else/display~ 7;
+#X connect 42 0 44 0;
+#X connect 43 0 42 0;

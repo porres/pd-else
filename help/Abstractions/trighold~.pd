@@ -1,0 +1,7 @@
+#N canvas 751 250 592 223 10;
+#X obj 95 74 inlet~;
+#X obj 95 142 outlet~;
+#X obj 95 104 fexpr~ if($x1 == 0 \, $y1 \, if($x1[-1] == 0 && $x1 !=
+0 \, $x1 \, $y1));
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
