@@ -1,62 +1,68 @@
-#N canvas 571 87 567 463 10;
-#X obj 6 295 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 571 87 562 477 10;
+#X obj 4 284 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 359 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 385 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 394 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 420 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 119 368 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 78 394 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 6 427 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 452 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 27 41 cnv 4 4 4 empty empty Impulse 0 28 2 18 -233017 -1 0;
-#X obj 244 135 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 25 40 cnv 4 4 4 empty empty Impulse 0 28 2 18 -233017 -1 0;
+#X obj 167 150 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 221 229 else/out~;
-#X obj 119 303 cnv 17 3 49 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 197 221 else/out~;
+#X obj 78 292 cnv 17 3 84 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 180 303 bang;
-#X text 168 368 signal;
-#X obj 91 41 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1 0
+#X text 129 309 bang;
+#X text 115 394 signal;
+#X obj 89 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1 0
 ;
-#X obj 5 4 cnv 15 301 42 empty empty impgen~ 20 20 2 37 -233017 -1
+#X obj 3 3 cnv 15 301 42 empty empty impseq~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 4 4 graph;
-#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X restore 2 3 graph;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 306 4 pd;
-#X obj 347 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 304 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 460 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 480 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 517 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 466 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 504 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 214 368 - impulse signal;
-#X text 214 303 - generate impulse;
-#X text 173 320 float;
-#X text 130 403 1) float - impulse value (default 1);
-#X text 214 319 - generate impulse with given value;
-#X obj 244 193 else/impgen~;
-#X msg 166 137 0.1;
-#X msg 266 161 set 1;
-#X text 131 336 set <float>;
-#X text 214 335 - set impulse value;
-#X text 70 99 When receiving a bang \, [impgen~] sends an impulse.
+#X text 122 326 float;
+#X obj 163 40 cnv 4 4 4 empty empty and 0 28 2 18 -233017 -1 0;
+#X obj 199 40 cnv 4 4 4 empty empty sequencer 0 28 2 18 -233017 -1
+0;
+#X obj 197 185 else/impseq~ 1 0.5 0.25;
+#X text 163 325 - sets a single sequence value and outputs it;
+#X text 129 342 list;
+#X text 87 359 set <list>;
+#X text 163 358 - sets one or more impulse values without outputing
 ;
-#X msg 205 137 0.5;
-#X connect 6 0 27 0;
-#X connect 27 0 7 0;
-#X connect 27 0 7 1;
-#X connect 28 0 27 0;
-#X connect 29 0 27 0;
-#X connect 33 0 27 0;
+#X text 115 293 signal;
+#X text 68 98 When receiving a signal trigger (0 to non-0 transition)
+or a bang \, [impseq~] sends an impulse from a given sequence.;
+#X text 163 293 - trigger to generate impulse from sequence;
+#X text 163 309 - generates impulse from sequence;
+#X text 163 341 - of floats sets sequence values and outputs the first
+;
+#X text 161 394 - impulse signal from a sequence;
+#X text 114 429 1) list - list of floats sets the sequence (default
+1);
+#X obj 197 149 else/imp~ 1;
+#X connect 6 0 25 0;
+#X connect 25 0 7 0;
+#X connect 25 0 7 1;
+#X connect 37 0 25 0;

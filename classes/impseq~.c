@@ -265,22 +265,16 @@ t_int *impseq_perform(t_int *w)
     t_impseqpat *impseqs = x->impseqs;
     t_sequence sequence = x->sequence;
     float *in_vec = x->in_vec;
-    
-    
     if( x->mute || current_impseq < 0){
         while(n--) *outlet++ = 0;
         return (w+5);
     }
-    
-    // should use memcpy() here
-    for(i = 0; i < n; i++){
+    for(i = 0; i < n; i++){    // should use memcpy() here
         in_vec[i] = inlet[i];
     }
-    // clean outlet - should use memset()
-    for( i = 0; i < n; i++){
+    for( i = 0; i < n; i++){     // clean outlet - should use memset()
         outlet[i] = 0.0;
     }
-    
     for(i = 0; i<n; i++){
         if(in_vec[i] || x->x_bang){ // got a click
             x->x_bang = 0;
