@@ -1,0 +1,3 @@
+#N canvas 500 441 364 217 10;
+#X obj 96 85 else/hold~;
+#X text 113 35 holds a trigger value;

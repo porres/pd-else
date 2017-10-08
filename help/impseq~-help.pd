@@ -1,0 +1,31 @@
+#N canvas 730 128 549 440 10;
+#X obj 193 56 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X floatatom 267 70 5 0 0 0 - - -, f 5;
+#X obj 174 93 else/metro~ 180;
+#X obj 102 125 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 107 151 impgen~ 0.01;
+#X obj 75 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 261 281 fexpr~ if($x1 == 0 \, $y1 \, $x1);
+#X obj 261 305 display~;
+#X obj 261 337 osc~;
+#X obj 337 305 fexpr~ if($x1 == 0 \, $y1 \, $x1);
+#X obj 337 329 display~;
+#X obj 255 379 out~;
+#X obj 261 255 impseq~ 220 440 330 500 666;
+#X obj 82 226 out~;
+#X obj 103 181 impseq~;
+#X connect 0 0 2 0;
+#X connect 1 0 2 1;
+#X connect 3 0 4 0;
+#X connect 4 0 14 0;
+#X connect 5 0 14 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 0;
+#X connect 8 0 11 0;
+#X connect 9 0 10 0;
+#X connect 12 0 6 0;
+#X connect 14 0 13 0;
+#X connect 14 0 13 1;
