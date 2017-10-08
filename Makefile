@@ -14,10 +14,6 @@ uname := $(shell uname -s)
 # sources
 #########################################################################
 
-
-impseq~.class.sources := classes/impseq~.c
-
-
 # control:
 cents2ratio.class.sources := classes/cents2ratio.c
 hz2rad.class.sources := classes/hz2rad.c
@@ -66,6 +62,7 @@ highpass~.class.sources := classes/highpass~.c
 highshelf~.class.sources := classes/highshelf~.c
 hz2rad~.class.sources := classes/hz2rad~.c
 ikeda~.class.sources := classes/ikeda~.c
+impseq~.class.sources := classes/impseq~.c
 lastvalue~.class.sources := classes/lastvalue~.c
 latoocarfian~.class.sources := classes/latoocarfian~.c
 lfnoise~.class.sources := classes/lfnoise~.c
