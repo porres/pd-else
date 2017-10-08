@@ -39,10 +39,6 @@
 #X text 220 343 bang - generate impulse, f 29;
 #X text 164 365 float/signal - set threshold, f 37;
 #X text 206 397 signal - impulse when past over threshold;
-#X text 38 94 [trigger~] sends an impulse when it detects a gate on
-signal \, that is when a signal goes past a threshold value. You can
-set the threshold value with the argument or the 2nd inlet. A bang
-will also send an impulse, f 62;
 #X obj 171 175 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 171 207 else/trigger~;
@@ -53,8 +49,12 @@ will also send an impulse, f 62;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 5 graph;
-#X connect 24 0 25 0;
-#X connect 25 0 18 0;
-#X connect 26 0 18 1;
-#X connect 27 0 25 0;
-#X connect 27 0 26 0;
+#X text 38 94 [trigger~] sends an impulse when it detects a "gate on"
+signal \, that is when a signal goes past a threshold value. You can
+set the threshold value with the argument or the 2nd inlet. A bang
+will also send an impulse., f 63;
+#X connect 23 0 24 0;
+#X connect 24 0 18 0;
+#X connect 25 0 18 1;
+#X connect 26 0 24 0;
+#X connect 26 0 25 0;

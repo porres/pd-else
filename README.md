@@ -38,7 +38,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (141 objects):
+Current Object list (142 objects):
 
 AUDIO PLAYING: [1]
 - [sampler~]
@@ -114,7 +114,7 @@ SIGNAL ROUTING: [9]
 - [xselect~]
 - [xselect2~]
 
-TRIGGERS: [16]
+TRIGGERS: [17]
 - [coin~]
 - [dust~]
 - [dust2~]
@@ -131,6 +131,7 @@ TRIGGERS: [16]
 - [impgen~]
 - [trig2bang~]
 - [trigger~]
+- [trighold~]
 
 SIGNAL ANALYSIS: [10]
 - [changed~]
