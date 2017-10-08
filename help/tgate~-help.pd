@@ -1,32 +1,28 @@
-#N canvas 736 118 560 421 10;
-#X obj 4 256 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 736 118 560 485 10;
+#X obj 4 288 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 327 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 359 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 361 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 393 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 86 336 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 116 368 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 394 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 426 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 320 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 377 171 ms;
-#X text 320 152 gate time;
-#X obj 86 264 cnv 17 3 32 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 116 296 cnv 17 3 32 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 86 302 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 116 334 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 191 302 - gate time in ms;
-#X text 107 370 1) float - gate time in ms (default 0 \, no gate);
-#X text 145 334 signal;
+#X text 221 334 - gate time in ms;
+#X text 137 402 1) float - gate time in ms (default 0 \, no gate);
+#X text 175 366 signal;
 #X obj 23 41 cnv 4 4 4 empty empty Timed 0 28 2 18 -233017 -1 0;
 #X obj 73 41 cnv 4 4 4 empty empty gate 0 28 2 18 -233017 -1 0;
 #X obj 113 41 cnv 4 4 4 empty empty from 0 28 2 18 -233017 -1 0;
-#X obj 156 41 cnv 4 4 4 empty empty triggers 0 28 2 18 -233017 -1 0
+#X obj 156 41 cnv 4 4 4 empty empty impulses 0 28 2 18 -233017 -1 0
 ;
-#X obj 3 4 cnv 15 301 42 empty empty tgate~ 20 20 2 37 -233017 -1 0
-;
+#X obj 3 4 cnv 15 301 42 empty empty tgate2~ 20 20 2 37 -233017 -1
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 4 graph;
@@ -151,23 +147,53 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 72 pd;
-#X text 145 264 signal;
-#X text 109 302 float/signal;
-#X text 191 334 - timed gate;
-#X text 191 264 - trigger signal (negative to positive transition)
-;
-#X text 159 282 bang;
-#X text 192 282 - control trigger;
-#X text 68 89 When receiving a trigger \, [tgate~] sends a timed gate
-(values of 1 for the duration \, 0 otherwise). The length of the gate
-is given in ms \, if 0 or less is given \, no gate is output., f 55
-;
-#X obj 186 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 211 162 else/imp~ 0.5;
-#X obj 211 193 else/tgate~ 1000;
-#X obj 211 222 else/display~ 3;
-#X connect 5 0 37 1;
+#X text 175 296 signal;
+#X text 139 334 float/signal;
+#X text 221 366 - timed gate;
+#X obj 309 252 else/display~ 9;
+#X text 182 314 float;
+#X text 68 89 When receiving an impulse or a float \, [tgate~] sends
+a timed gate (with the value of the impulse/float for the given duration
+\, 0 otherwise). The length of the gate is given in ms \, if 0 or less
+is given \, no gate is output., f 55;
+#X text 221 296 - impulse trigger with the gate value;
+#X text 222 314 - control trigger with the gate value;
+#X obj 90 245 else/display~ 9;
+#X msg 55 180 0.1;
+#X msg 90 180 -0.9;
+#X msg 132 180 13;
+#X obj 90 215 else/tgate2~ 500;
+#X obj 199 190 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 256 189 ms;
+#X text 199 171 gate time;
+#X obj 309 194 else/zerocross~;
+#X obj 309 222 else/tgate2~ 666;
+#X obj 309 164 else/sine~ 1;
+#N canvas 619 208 739 363 more 1;
+#X obj 73 94 else/imp~ 0.5;
+#X obj 73 127 *~;
+#X obj 105 127 noise~;
+#X obj 73 155 else/tgate2~ 1000;
+#X obj 73 185 else/display~ 9;
+#X text 65 51 random impulses;
+#X obj 372 194 else/display~ 9;
+#X obj 372 133 else/dust~ 4;
+#X obj 372 164 else/tgate2~ 500;
+#X text 309 48 If an impulse is received before the time gate is finished
+\, a new timed gate starts, f 46;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 1;
+#X connect 3 0 4 0;
+#X connect 7 0 8 0;
+#X connect 8 0 6 0;
+#X restore 476 230 pd more \; examples;
+#X connect 34 0 37 0;
 #X connect 35 0 37 0;
 #X connect 36 0 37 0;
-#X connect 37 0 38 0;
+#X connect 37 0 33 0;
+#X connect 38 0 37 1;
+#X connect 41 0 42 0;
+#X connect 42 0 28 0;
+#X connect 43 0 41 0;
