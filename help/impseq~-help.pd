@@ -52,8 +52,6 @@
 #X text 163 358 - sets one or more impulse values without outputing
 ;
 #X text 115 293 signal;
-#X text 68 98 When receiving a signal trigger (0 to non-0 transition)
-or a bang \, [impseq~] sends an impulse from a given sequence.;
 #X text 163 293 - trigger to generate impulse from sequence;
 #X text 163 309 - generates impulse from sequence;
 #X text 163 341 - of floats sets sequence values and outputs the first
@@ -62,7 +60,9 @@ or a bang \, [impseq~] sends an impulse from a given sequence.;
 #X text 114 429 1) list - list of floats sets the sequence (default
 1);
 #X obj 197 149 else/imp~ 1;
+#X text 68 94 When receiving a signal trigger (0 to non-0 transition)
+or a bang \, [impseq~] sends an impulse from a given sequence.;
 #X connect 6 0 25 0;
 #X connect 25 0 7 0;
 #X connect 25 0 7 1;
-#X connect 37 0 25 0;
+#X connect 36 0 25 0;

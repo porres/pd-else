@@ -119,7 +119,7 @@ a = exp(log(0.001) * D/t60).;
 #X text 338 89 The [apass2~] object performs a simple linear interpolation
 for delay time that falls in between sample values.;
 #X obj 437 234 else/apass2~ 100 1000;
-#X obj 437 176 else/impgen~;
+#X obj 437 176 else/impseq~;
 #X connect 2 0 58 1;
 #X connect 3 0 58 2;
 #X connect 4 0 3 0;

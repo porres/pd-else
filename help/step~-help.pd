@@ -26,11 +26,11 @@
 #X obj 214 187 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 246 187 else/metro~ 60;
-#X obj 246 156 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 246 156 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -99,7 +99,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -149,18 +149,19 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 378 210 impgen~;
 #X msg 378 188 1;
 #X text 216 333 - counted steps;
 #X text 159 298 signal;
 #X text 215 297 - trigger counts;
 #X obj 246 218 else/step~ 3;
-#X obj 123 183 impgen~;
-#X msg 123 161 1;
-#X connect 15 0 32 0;
+#X obj 123 183 impseq~;
+#X obj 123 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 378 210 impseq~;
+#X connect 15 0 31 0;
 #X connect 17 0 16 0;
-#X connect 27 0 32 1;
-#X connect 28 0 27 0;
-#X connect 32 0 13 0;
+#X connect 27 0 34 0;
+#X connect 31 0 13 0;
+#X connect 32 0 31 0;
 #X connect 33 0 32 0;
-#X connect 34 0 33 0;
+#X connect 34 0 31 1;

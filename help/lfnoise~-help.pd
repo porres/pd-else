@@ -92,7 +92,7 @@ are: [stepnoise~] (without interpolation) and [rampnoise~] (with interpolation.
 ;
 #X obj 696 412 else/rampnoise~;
 #X obj 696 388 else/stepnoise~;
-#X obj 764 116 else/impgen~;
+#X obj 764 116 else/impseq~;
 #X connect 0 0 1 0;
 #X connect 1 0 7 0;
 #X connect 1 0 7 1;
@@ -153,13 +153,12 @@ seed value.;
 -1;
 #X text 39 18 An impulse into its right inlet forces [lfnoise~] to
 generate a new random value.;
-#X text 264 67 <= click;
-#X obj 242 101 else/impgen~;
+#X obj 242 100 else/impseq~;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
-#X connect 4 0 7 0;
-#X connect 7 0 1 1;
+#X connect 4 0 6 0;
+#X connect 6 0 1 1;
 #X restore 492 356 pd sync;
 #X text 123 398 float/signal;
 #X text 215 397 - frequency input in hertz;

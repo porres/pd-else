@@ -48,7 +48,7 @@
 #N canvas 403 51 858 494 sync 0;
 #X msg 29 134 0;
 #X obj 54 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 4950 1;
+-1 -1 0 1;
 #X obj 54 211 else/sig2float~;
 #X obj 54 181 else/sine~ 0.25;
 #X msg 63 134 0.25;
@@ -56,7 +56,7 @@
 #X msg 183 133 1;
 #X msg 105 133 0.5;
 #X obj 255 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 4950 1;
+-1 -1 0 1;
 #X obj 255 217 else/sig2float~;
 #X obj 255 193 else/sine~ 0.25;
 #X text 217 132 <= reset =>;
@@ -89,8 +89,8 @@ an impulse signal for syncing. The impulse values need to be > 0 and
 Send it impulses above and check the result. Use a multiplier to reset
 to another phase value.;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -159,7 +159,7 @@ to another phase value.;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -192,11 +192,11 @@ to another phase value.;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 141 265 pd;
-#X obj 306 164 else/impgen~;
 #X msg 412 133 0.25;
 #X msg 338 132 0.75;
 #X msg 306 132 1;
 #X msg 378 132 0.5;
+#X obj 306 164 else/impseq~;
 #X connect 0 0 3 1;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;
@@ -210,11 +210,11 @@ to another phase value.;
 #X connect 18 0 14 0;
 #X connect 18 0 14 1;
 #X connect 19 0 18 1;
-#X connect 24 0 10 1;
-#X connect 25 0 24 0;
-#X connect 26 0 24 0;
-#X connect 27 0 24 0;
-#X connect 28 0 24 0;
+#X connect 24 0 28 0;
+#X connect 25 0 28 0;
+#X connect 26 0 28 0;
+#X connect 27 0 28 0;
+#X connect 28 0 10 1;
 #X restore 494 200 pd sync;
 #N canvas 430 175 908 347 phase 0;
 #X obj 575 122 cnv 15 200 65 empty empty empty 20 12 0 14 -233017 -66577

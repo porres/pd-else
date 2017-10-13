@@ -724,7 +724,7 @@ time in ms \, or a Q factor. Like [bandpass~] \, it is a 2nd order
 bandpass resonant filter \, but changing the Q increases the gain of
 the filter.;
 #X text 128 509 1) float - central frequency in hertz (default 0);
-#X obj 216 180 else/impgen~;
+#X obj 216 180 else/impseq~;
 #X connect 34 0 52 0;
 #X connect 46 0 47 0;
 #X connect 47 0 8 0;

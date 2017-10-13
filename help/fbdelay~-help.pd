@@ -81,7 +81,7 @@ for delay time that falls in between sample values.;
 #X text 23 253 For [fbdelay~] \, the minimum delay time is 1 sample!
 ;
 #X obj 422 168 else/fbdelay~ 100 0.8;
-#X obj 422 110 else/impgen~;
+#X obj 422 110 else/impseq~;
 #X connect 24 0 39 1;
 #X connect 25 0 39 2;
 #X connect 27 0 40 0;

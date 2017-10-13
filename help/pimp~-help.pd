@@ -1,4 +1,4 @@
-#N canvas 230 405 562 528 10;
+#N canvas 752 192 562 528 10;
 #X obj 3 391 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 446 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
@@ -10,8 +10,8 @@
 #X obj 23 42 cnv 4 4 4 empty empty Phasor~ 0 28 2 18 -233017 -1 0;
 #X obj 90 42 cnv 4 4 4 empty empty + 0 28 2 18 -233017 -1 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -80,7 +80,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -121,7 +121,7 @@
 #X text 171 455 1) float;
 #X text 239 455 - frequency in hertz;
 #X text 171 475 2) float;
-#N canvas 198 421 884 607 sync 0;
+#N canvas 423 188 884 607 sync 0;
 #X obj 137 320 cnv 15 198 118 empty empty empty 20 12 0 14 -233017
 -66577 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -182,11 +182,11 @@ if you sync the phase to "0" \, it still has that offset (thus \, a
 phase offset change to "0" goes back half a cycle., f 44;
 #X text 559 445 sync =>;
 #X text 744 446 <= offset;
-#X obj 316 162 else/impgen~;
 #X msg 422 131 0.25;
 #X msg 348 130 0.75;
 #X msg 316 130 1;
 #X msg 388 130 0.5;
+#X obj 316 162 else/impseq~;
 #X connect 6 0 7 0;
 #X connect 6 0 7 1;
 #X connect 8 0 10 0;
@@ -205,18 +205,18 @@ phase offset change to "0" goes back half a cycle., f 44;
 #X connect 25 0 23 2;
 #X connect 26 0 23 2;
 #X connect 27 0 23 1;
-#X connect 31 0 20 1;
-#X connect 32 0 31 0;
-#X connect 33 0 31 0;
-#X connect 34 0 31 0;
-#X connect 35 0 31 0;
+#X connect 31 0 35 0;
+#X connect 32 0 35 0;
+#X connect 33 0 35 0;
+#X connect 34 0 35 0;
+#X connect 35 0 20 1;
 #X restore 497 251 pd sync;
 #X obj 185 173 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 185 201 else/pimp~ 1, f 16;
 #X obj 294 249 else/out~;
 #X obj 185 261 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.653855 256;
 #N canvas 1046 306 123 217 snapshot~ 0;
 #X obj 29 107 snapshot~;
 #X obj 46 53 loadbang;
@@ -229,7 +229,7 @@ phase offset change to "0" goes back half a cycle., f 44;
 #X connect 4 0 0 0;
 #X restore 185 232 pd snapshot~;
 #X obj 146 194 vsl 20 90 0 1 0 0 dsfsk sfg empty 0 -9 0 10 -228856
--1 -1 0 1;
+-1 -1 5819 1;
 #X obj 110 42 cnv 4 4 4 empty empty imp~ 0 28 2 18 -233017 -1 0;
 #X text 330 221 <= impulse;
 #X text 86 232 phase =>;
@@ -334,7 +334,7 @@ for phase sync and phase modulation like [imp~].;
 #X obj 288 208 else/sh~;
 #X obj 288 153 noise~;
 #X obj 288 281 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 -0.297405 256;
 #N canvas 1046 306 123 217 snapshot~ 0;
 #X obj 29 107 snapshot~;
 #X obj 46 79 metro 100;

@@ -161,11 +161,11 @@
 ms. Any impulse triggers which arrive before the delayed impulse output
 resets and reschedules the delay \, in the same way as the [delay]
 object.;
-#X obj 214 174 else/impgen~;
 #X obj 426 252 else/tdelay2~;
 #X text 424 230 see also:;
+#X obj 214 174 else/impseq~;
 #X connect 5 0 26 1;
 #X connect 26 0 28 0;
 #X connect 26 0 28 1;
-#X connect 27 0 34 0;
-#X connect 34 0 26 0;
+#X connect 27 0 36 0;
+#X connect 36 0 26 0;

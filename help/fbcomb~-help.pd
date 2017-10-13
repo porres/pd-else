@@ -88,7 +88,7 @@ for delay time that falls in between sample values.;
 #X obj 437 234 else/fbcomb~ 100 1000;
 #X text 42 52 [fbcomb~] is just simple feedback delay line \, whose
 diagram and equation is:, f 39;
-#X obj 437 176 else/impgen~;
+#X obj 437 176 else/impseq~;
 #X connect 27 0 39 1;
 #X connect 28 0 39 2;
 #X connect 29 0 28 0;
