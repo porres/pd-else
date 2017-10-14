@@ -37,7 +37,6 @@
 #X restore 73 309 pd resize;
 #X msg 189 138 label_font 0 12 \, label_pos 2 10 \, size 10 \, label
 \$1;
-#X obj 351 182 else/sr~ khz;
 #X obj 325 302 spigot;
 #X obj 375 302 spigot;
 #X obj 325 264 bang~;
@@ -46,6 +45,7 @@
 #X obj 379 248 expr $f2 < $f1 \; $f2 > $f1 \; $f2;
 #X floatatom 487 336 5 0 0 0 - - -, f 5;
 #X obj 351 208 expr 64 / $f1 \; if(\$2 <= 0 \, 100 \, \$2);
+#X obj 351 182 else/sr~ -khz;
 #X connect 0 0 2 0;
 #X connect 1 0 7 0;
 #X connect 1 0 10 0;
@@ -66,18 +66,18 @@
 #X connect 13 0 0 0;
 #X connect 13 1 12 0;
 #X connect 15 0 11 0;
-#X connect 16 0 24 0;
-#X connect 17 0 21 0;
-#X connect 18 0 21 0;
+#X connect 16 0 20 0;
+#X connect 17 0 20 0;
+#X connect 18 0 16 0;
 #X connect 19 0 17 0;
-#X connect 20 0 18 0;
-#X connect 22 0 17 1;
-#X connect 22 1 18 1;
-#X connect 22 1 20 0;
-#X connect 22 1 23 0;
-#X connect 22 2 20 1;
-#X connect 24 0 22 0;
-#X connect 24 1 22 1;
+#X connect 21 0 16 1;
+#X connect 21 1 17 1;
+#X connect 21 1 19 0;
+#X connect 21 1 22 0;
+#X connect 21 2 19 1;
+#X connect 23 0 21 0;
+#X connect 23 1 21 1;
+#X connect 24 0 23 0;
 #X restore 386 121 pd init;
 #X obj 295 185 list prepend;
 #X obj 376 161 r \$0-fixed;

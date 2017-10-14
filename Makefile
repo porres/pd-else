@@ -74,6 +74,7 @@ lowshelf~.class.sources := classes/lowshelf~.c
 match~.class.sources := classes/match~.c
 median~.class.sources := classes/median~.c
 metro~.class.sources := classes/metro~.c
+nyquist~.class.sources := classes/nyquist~.c
 pan2~.class.sources := classes/pan2~.c
 pan4~.class.sources := classes/pan4~.c
 peak~.class.sources := classes/peak~.c
