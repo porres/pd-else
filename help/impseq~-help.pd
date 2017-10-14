@@ -62,7 +62,30 @@ or a bang \, [impseq~] sends an impulse from a given sequence.;
 #X obj 275 242 else/display~ 4;
 #X obj 199 182 else/impseq~ 1 0.5 0.25 0;
 #X obj 199 149 else/imp~ 2;
-#N canvas 803 153 563 433 example 0;
+#X text 76 376 goto <float>;
+#X text 166 375 - goes to a position index in the sequence (from 1)
+;
+#X obj 435 185 else/sequencer~;
+#X text 434 166 see also:;
+#N canvas 803 153 535 393 example2 0;
+#X obj 78 97 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1 1
+;
+#X obj 62 288 else/out~;
+#X obj 78 123 else/metro~ 180;
+#X obj 79 246 else/resonant2~ 500 100 1000;
+#X obj 78 162 else/impseq~ 1 0.5 1 0.5 0 1 0.5 0.25 0;
+#X obj 143 205 else/sequencer~ 500 900 300 700 200 600 400 800;
+#X text 79 33 [impseq~] can be used in conjunction with [sequencer~]
+;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 3 0 1 0;
+#X connect 3 0 1 1;
+#X connect 4 0 3 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 1;
+#X restore 459 249 pd example2;
+#N canvas 803 153 563 433 example1 0;
 #X obj 267 87 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 224 324 else/out~;
@@ -88,12 +111,7 @@ a sequence value of "0" works as a rest.;
 #X connect 8 0 1 1;
 #X connect 10 0 3 0;
 #X connect 10 0 5 0;
-#X restore 462 201 pd example;
-#X text 76 376 goto <float>;
-#X text 166 375 - goes to a position index in the sequence (from 1)
-;
-#X obj 432 250 else/sequencer~;
-#X text 431 231 see also:;
+#X restore 459 223 pd example1;
 #X connect 34 0 36 0;
 #X connect 37 0 6 0;
 #X connect 37 0 6 1;
