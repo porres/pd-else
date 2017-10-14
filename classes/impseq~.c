@@ -248,9 +248,7 @@ void impseq_free(t_impseq *x){
     free(x->in_vec);
 }
 
-
-t_int *impseq_perform(t_int *w)
-{
+t_int *impseq_perform(t_int *w){
     int i;
     t_impseq *x = (t_impseq *) (w[1]);
     float *inlet = (t_float *) (w[2]);
@@ -265,42 +263,33 @@ t_int *impseq_perform(t_int *w)
     t_impseqpat *impseqs = x->impseqs;
     t_sequence sequence = x->sequence;
     float *in_vec = x->in_vec;
-    if( x->mute || current_impseq < 0){
-        while(n--) *outlet++ = 0;
+    if(x->mute || current_impseq < 0){
+        while(n--)
+            *outlet++ = 0;
         return (w+5);
     }
-    for(i = 0; i < n; i++){    // should use memcpy() here
+    for(i = 0; i < n; i++)    // should use memcpy() here
         in_vec[i] = inlet[i];
-    }
-    for( i = 0; i < n; i++){     // clean outlet - should use memset()
+    for(i = 0; i < n; i++)     // clean outlet - should use memset()
         outlet[i] = 0.0;
-    }
-    for(i = 0; i<n; i++){
+    for(i = 0; i < n; i++){
         if(in_vec[i] || x->x_bang){ // got a click
             x->x_bang = 0;
             if(indexmode){ // indexmode means the click itself controls the phase of the impseq
                 phase = in_vec[i] - 1;
-                /*    	post("current impseq: %d, length: %d, inphase %d", current_impseq, impseqs[current_impseq].length, phase); */
-                if(phase < 0 || phase >= impseqs[current_impseq].length){
-                    /*	post("phase %d out of range", phase); */
+                if(phase < 0 || phase >= impseqs[current_impseq].length)
                     phase %= impseqs[current_impseq].length;
-                    /*	post("phase reset to %d", phase); */
-                }
             }
-            if(gate){
+            if(gate)
 				outlet[i] = impseqs[current_impseq].pat[phase];
-                //				post("impseq value: %f",outlet[i]);
-			}
             ++phase; //advance phase in all cases (so pattern advances when gated)
             if(phase >= impseqs[current_impseq].length){
 				phase = 0;
 				if(noloop){
 					x->mute = 1;
-                    //				post("halted by noloop");
 					goto out;
 				}
-				// if a sequence is active, reset the current impseq too
-				if(sequence.length){
+				if(sequence.length){ // if a sequence is active, reset the current impseq too
 					impseq_recall(x, (t_floatarg)sequence.seq[sequence.phase++]);
 					current_impseq = x->current_impseq; // this was reset internally!
 					if(sequence.phase >= sequence.length)

@@ -138,28 +138,33 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#N canvas 512 142 490 395 pulse 0;
-#X obj 135 315 else/out~;
-#X obj 219 193 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#N canvas 512 142 541 446 pulse 0;
+#X obj 81 326 else/out~;
+#X obj 165 204 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 216 218 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 162 229 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 23 22 The pulse width parameter controlls how much of the cycle
+#X text 44 29 The pulse width parameter controlls how much of the cycle
 is "on" or "off". A pulse width of 0.5 means the first half is "on"
 and the lasr half is "off".;
-#X text 30 71 A pulse width of 0 has the smallest "on" pulse size:
+#X text 51 78 A pulse width of 0 has the smallest "on" pulse size:
 a single sample - thus \, just like an impulse oscillator!;
-#X text 30 107 Conversely \, a pulse widht of 1 has the largest (the
+#X text 51 114 Conversely \, a pulse widht of 1 has the largest (the
 entire period except the last sample).;
-#X obj 216 241 else/float2sig~ 10;
-#X text 32 148 The pulse width is set via the second argument or the
+#X obj 162 252 else/float2sig~ 10;
+#X text 53 155 The pulse width is set via the second argument or the
 second inlet.;
-#X obj 151 270 else/randpulse~ 100;
+#X obj 97 281 else/randpulse~ 100;
+#X obj 348 303 else/out~;
+#X obj 348 264 else/randpulse~ 1 0;
+#X text 335 234 regular random impulses;
 #X connect 1 0 2 0;
 #X connect 2 0 6 0;
 #X connect 6 0 8 1;
 #X connect 8 0 0 0;
 #X connect 8 0 0 1;
+#X connect 10 0 9 0;
+#X connect 10 0 9 1;
 #X restore 438 180 pd pulse width;
 #X obj 3 3 cnv 15 301 42 empty empty randpulse~ 20 20 2 37 -233017
 -1 0;
@@ -209,9 +214,9 @@ seed value.;
 #N canvas 801 184 450 409 sync 0;
 #X obj 124 182 else/sig2float~;
 #X obj 124 214 nbx 8 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.644773 256;
 #X obj 124 252 vsl 18 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 6350 1;
+-1 -1 10444 1;
 #X obj 254 78 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 254 110 else/impseq~;
