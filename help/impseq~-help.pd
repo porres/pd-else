@@ -59,10 +59,19 @@
 #X text 161 394 - impulse signal from a sequence;
 #X text 114 429 1) list - list of floats sets the sequence (default
 1);
-#X obj 197 149 else/imp~ 1;
 #X text 68 94 When receiving a signal trigger (0 to non-0 transition)
 or a bang \, [impseq~] sends an impulse from a given sequence.;
-#X connect 6 0 25 0;
+#X obj 310 149 pulse~ 1;
+#X obj 394 224 display~;
+#X obj 73 218 sig~ 1;
+#X obj 136 245 print~;
+#X obj 130 180 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 63 181 5 0 0 0 - - -, f 5;
+#X obj 197 149 else/imp~ 1000;
 #X connect 25 0 7 0;
 #X connect 25 0 7 1;
-#X connect 36 0 25 0;
+#X connect 25 0 38 0;
+#X connect 25 0 40 0;
+#X connect 41 0 40 0;
+#X connect 42 0 39 0;
