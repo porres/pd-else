@@ -15,7 +15,7 @@ void *canvas_getblock(t_class *blockclass, t_canvas **canvasp);
 
 static void sr2_bang(t_sr2 *x){
     t_float srate = sys_getsr();
-    t_float resample;
+    t_float resample = 1;
 /*    t_canvas *canvas = x->x_canvas;
      while (canvas){
      t_block *b = (t_block *)canvas_getblock(block_class, &canvas);

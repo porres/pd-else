@@ -58,8 +58,10 @@ the patch or when receiving a bang. It reports it either in hz or khz.
 #X obj 87 190 samplerate~;
 #X obj 87 221 nbx 10 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 705600 256;
+#X floatatom 285 222 5 0 0 0 - - -, f 5;
 #X connect 18 0 31 0;
 #X connect 18 0 34 0;
 #X connect 31 0 7 0;
+#X connect 31 1 36 0;
 #X connect 33 0 32 0;
 #X connect 34 0 35 0;
