@@ -93,8 +93,8 @@ void sequencer_indexmode(t_sequencer *x, t_floatarg t){
 	x->indexmode = (short)t;
 }
 
-void sequencer_gozero(t_sequencer *x){
-    x->phase = 0;
+void sequencer_goto(t_sequencer *x, t_floatarg f){
+    x->phase = (int)f - 1;
 }
 
 void sequencer_mute(t_sequencer *x, t_floatarg f){
@@ -349,7 +349,7 @@ void sequencer_tilde_setup(void){
     class_addmethod(sequencer_class,(t_method)sequencer_indexmode,gensym("indexmode"),A_FLOAT,0);
     class_addmethod(sequencer_class,(t_method)sequencer_playonce,gensym("playonce"),A_FLOAT,0);
     class_addmethod(sequencer_class,(t_method)sequencer_noloop,gensym("noloop"),A_FLOAT,0);
-    class_addmethod(sequencer_class,(t_method)sequencer_gozero,gensym("gozero"),0);
+    class_addmethod(sequencer_class,(t_method)sequencer_goto,gensym("goto"),A_FLOAT,0);
     class_addmethod(sequencer_class,(t_method)sequencer_set, gensym("set"),A_GIMME,0);
     class_addbang(sequencer_class, (t_method)sequencer_bang);
     class_addfloat(sequencer_class, (t_method)sequencer_float);

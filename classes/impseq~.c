@@ -93,8 +93,8 @@ void impseq_indexmode(t_impseq *x, t_floatarg t){
 	x->indexmode = (short)t;
 }
 
-void impseq_gozero(t_impseq *x){
-    x->phase = 0;
+void impseq_goto(t_impseq *x, t_floatarg f){
+    x->phase = (int)f - 1;
 }
 
 void impseq_mute(t_impseq *x, t_floatarg f){
@@ -351,7 +351,7 @@ void impseq_tilde_setup(void){
     class_addmethod(impseq_class,(t_method)impseq_indexmode,gensym("indexmode"),A_FLOAT,0);
     class_addmethod(impseq_class,(t_method)impseq_playonce,gensym("playonce"),A_FLOAT,0);
     class_addmethod(impseq_class,(t_method)impseq_noloop,gensym("noloop"),A_FLOAT,0);
-    class_addmethod(impseq_class,(t_method)impseq_gozero,gensym("gozero"),0);
+    class_addmethod(impseq_class,(t_method)impseq_goto,gensym("goto"),A_FLOAT,0);
     class_addmethod(impseq_class,(t_method)impseq_set, gensym("set"),A_GIMME,0);
     class_addbang(impseq_class, (t_method)impseq_bang);
     class_addfloat(impseq_class, (t_method)impseq_float);

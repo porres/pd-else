@@ -1,20 +1,20 @@
-#N canvas 681 32 562 477 10;
+#N canvas 498 28 558 492 10;
 #X obj 4 284 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 385 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 400 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 420 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 435 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 78 394 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 78 409 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 452 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 467 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 25 40 cnv 4 4 4 empty empty Impulse 0 28 2 18 -233017 -1 0;
-#X obj 167 219 else/out~;
-#X obj 78 292 cnv 17 3 84 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 156 219 else/out~;
+#X obj 66 292 cnv 17 3 100 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 129 309 bang;
-#X text 115 394 signal;
+#X text 132 309 bang;
+#X text 115 409 signal;
 #X obj 89 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1 0
 ;
 #X obj 3 3 cnv 15 301 42 empty empty impseq~ 20 20 2 37 -233017 -1
@@ -39,31 +39,63 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 122 326 float;
+#X text 125 326 float;
 #X obj 163 40 cnv 4 4 4 empty empty and 0 28 2 18 -233017 -1 0;
 #X obj 199 40 cnv 4 4 4 empty empty sequencer 0 28 2 18 -233017 -1
 0;
-#X text 163 325 - sets a single sequence value and outputs it;
-#X text 129 342 list;
-#X text 87 359 set <list>;
-#X text 163 358 - sets one or more impulse values without outputing
+#X text 166 325 - sets a single sequence value and outputs it;
+#X text 132 342 list;
+#X text 90 359 set <list>;
+#X text 166 358 - sets one or more impulse values without outputing
 ;
-#X text 115 293 signal;
-#X text 163 293 - trigger to generate impulse from sequence;
-#X text 163 309 - generates impulse from sequence;
-#X text 163 341 - of floats sets sequence values and outputs the first
+#X text 118 293 signal;
+#X text 166 293 - trigger to generate impulse from sequence;
+#X text 166 309 - generates impulse from sequence;
+#X text 166 341 - of floats sets sequence values and outputs the first
 ;
-#X text 114 429 1) list - list of floats sets the sequence (default
+#X text 114 444 1) list - list of floats sets the sequence (default
 1);
 #X text 68 94 When receiving a signal trigger (0 to non-0 transition)
 or a bang \, [impseq~] sends an impulse from a given sequence.;
-#X obj 210 182 else/impseq~ 1 0.5 0.25;
-#X obj 210 149 else/imp~ 1;
-#X obj 286 216 else/trighold~;
-#X text 161 394 - impulse value from a sequence;
-#X obj 286 242 else/display~ 4;
-#X connect 34 0 6 0;
-#X connect 34 0 6 1;
+#X obj 275 216 else/trighold~;
+#X text 161 409 - impulse value from a sequence;
+#X obj 275 242 else/display~ 4;
+#X obj 199 182 else/impseq~ 1 0.5 0.25 0;
+#X obj 199 149 else/imp~ 2;
+#N canvas 803 153 563 433 example 0;
+#X obj 267 87 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 224 324 else/out~;
+#X obj 58 142 else/metro~ 180;
+#X obj 58 181 else/impseq~ 1 0.5 1 0.5 0 1 0.5 0.25 0;
+#X obj 267 216 else/metro~ 120;
+#X obj 267 244 else/impseq~ 1 0.5 1 0.5 1 1 0.5 0;
+#X obj 292 120 sel 0;
+#X obj 58 219 else/resonant2~ 500 100 1000;
+#X obj 267 278 else/resonant2~ 300 50 2500;
+#X text 76 20 Impulses can be used as rythmic triggers. As such \,
+a sequence value of "0" works as a rest.;
+#X msg 292 149 goto 1;
+#X connect 0 0 2 0;
+#X connect 0 0 4 0;
+#X connect 0 0 6 0;
+#X connect 2 0 3 0;
+#X connect 3 0 7 0;
+#X connect 4 0 5 0;
+#X connect 5 0 8 0;
+#X connect 6 0 10 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 1;
+#X connect 10 0 3 0;
+#X connect 10 0 5 0;
+#X restore 462 201 pd example;
+#X text 76 376 goto <float>;
+#X text 166 375 - goes to a position index in the sequence (from 1)
+;
+#X obj 432 250 else/sequencer~;
+#X text 431 231 see also:;
 #X connect 34 0 36 0;
-#X connect 35 0 34 0;
-#X connect 36 0 38 0;
+#X connect 37 0 6 0;
+#X connect 37 0 6 1;
+#X connect 37 0 34 0;
+#X connect 38 0 37 0;
