@@ -2,7 +2,7 @@ EL Locus Solus' Else library for Pd
 
 ELSE - EL Locus Solus' Externals
 
-Version 1.0 beta-2 (Release date: unreleased)
+Version 1.0 beta-2 (Release date: October 15th 2017)
 
 The project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
 
@@ -38,7 +38,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (144 objects):
+Current Object list (145 objects):
 
 AUDIO PLAYING: [1]
 - [sampler~]
@@ -87,13 +87,14 @@ CHAOTIC GENERATORS: [18]
 - [stepnoise~]
 - [xmod~]
 
-FILTERS (15):
+FILTERS (16):
 - [apass~]
 - [bandpass~]
 - [bandstop~]
 - [bpbank~]
 - [bicoeff]
 - [biplot]
+- [brickwall~]
 - [eq~]
 - [highpass~]
 - [highshelf~]

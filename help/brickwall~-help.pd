@@ -1,4 +1,4 @@
-#N canvas 489 50 564 461 10;
+#N canvas 741 55 564 461 10;
 #X obj 5 309 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 361 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -140,7 +140,6 @@
 #X obj 109 42 cnv 4 4 4 empty empty filter 0 28 2 18 -233017 -1 0;
 #X obj 185 239 else/out~;
 #X obj 185 168 noise~;
-#X obj 185 198 else/brickwall~ 500;
 #X text 177 317 signal;
 #X text 222 317 - signal to be filtered, f 43;
 #X text 184 337 float;
@@ -153,13 +152,91 @@
 #X text 222 370 - the filtered signal;
 #X text 120 402 1) float;
 #X text 185 401 - cutoff in hertz (default 0.9 * Nyquist);
-#N canvas 896 71 678 423 anti-aliasing 1;
-#X obj 355 129;
-#X restore 424 270 pd anti-aliasing;
-#X text 58 91 [brickwall~] is filter with a steep cutoff slope \, more
+#N canvas 782 105 558 528 anti-aliasing 0;
+#X obj 308 342 cnv 15 198 138 empty empty empty 20 12 0 14 -228856
+-66577 0;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array \$0-band-limited 100 float 0;
+#X coords 0 1.2 99 -1.2 200 140 1 0 0;
+#X restore 307 341 graph;
+#X text 293 343 1;
+#X text 287 463 -1;
+#X text 293 403 0;
+#N canvas 232 59 321 281 plot 0;
+#X obj 85 111 metro 441;
+#X obj 85 60 loadbang;
+#X obj 85 87 tgl 15 0 empty empty empty 17 7 0 10 -203904 -1 -1 1 1
+;
+#X obj 56 164 tabwrite~ \$0-band-limited;
+#X obj 56 28 inlet~;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 4 0 3 0;
+#X restore 338 183 pd plot;
+#N canvas 232 59 321 281 plot 0;
+#X obj 85 111 metro 441;
+#X obj 85 60 loadbang;
+#X obj 85 87 tgl 15 0 empty empty empty 17 7 0 10 -203904 -1 -1 1 1
+;
+#X obj 56 28 inlet~;
+#X obj 56 164 tabwrite~ \$0-non-limited;
+#X obj 193 108 s \$0-Hz;
+#X msg 193 84 1000;
+#X connect 0 0 4 0;
+#X connect 1 0 2 0;
+#X connect 1 0 6 0;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;
+#X connect 6 0 5 0;
+#X restore 195 188 pd plot;
+#X obj 63 342 cnv 15 198 138 empty empty empty 20 12 0 14 -191343 -66577
+0;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array \$0-non-limited 100 float 0;
+#X coords 0 1.2 99 -1.2 200 140 1 0 0;
+#X restore 62 341 graph;
+#X text 48 343 1;
+#X text 42 460 -1;
+#X text 48 403 0;
+#X obj 314 106 nbx 5 15 -1e+37 1e+37 0 0 empty \$0-Hz empty 0 -8 0
+10 -228856 -1 -1 1000 256;
+#X obj 271 231 out~;
+#X obj 138 232 out~;
+#X obj 181 151 else/sawtooth~;
+#N canvas 386 287 387 341 Anti-Aliasing 0;
+#X obj 58 241 outlet~;
+#X obj 58 48 inlet~ lin;
+#X obj 229 105 block~ 64 1 16;
+#X text 181 184 <= Anti-Aliasing filter;
+#X text 203 201 (default frequency is 0.9 * Nyquist), f 19;
+#X text 202 81 Oversampling (16x);
+#X obj 58 183 else/brickwall~;
+#X obj 58 114 else/sawtooth~;
+#X connect 1 0 7 0;
+#X connect 6 0 0 0;
+#X connect 7 0 6 0;
+#X restore 314 151 pd Anti-Aliasing;
+#X text 76 31 [brickwall~] is really useful as an anti-aliasing filter
+when you do the upsampling + filtering technique. See the subpatch
+[pd Anti-Aliasing] below and compare the results.;
+#X connect 12 0 16 0;
+#X connect 12 0 15 0;
+#X connect 15 0 6 0;
+#X connect 15 0 14 1;
+#X connect 15 0 14 0;
+#X connect 16 0 5 0;
+#X connect 16 0 13 1;
+#X connect 16 0 13 0;
+#X restore 426 271 pd anti-aliasing;
+#X obj 185 203 else/brickwall~ 500;
+#X text 63 91 [brickwall~] is filter with a steep cutoff slope \, more
 precisely an 8th order butterworth lowpass filter. By default \, its
 cutoff frequency is 0.9 * Nyquist \, but you can change it with the
-1st argument or second inlet;
-#X connect 19 0 20 0;
-#X connect 20 0 18 0;
-#X connect 20 0 18 1;
+1st argument or the second inlet., f 56;
+#X obj 315 179 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X connect 19 0 31 0;
+#X connect 31 0 18 0;
+#X connect 31 0 18 1;
+#X connect 33 0 31 1;
