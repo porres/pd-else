@@ -13,7 +13,7 @@
 0;
 #X text 154 266 bang;
 #X obj 210 227 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 44.1 256;
+-228856 -1 -1 44100 256;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -41,47 +41,25 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#N canvas 922 209 446 263 example 0;
-#X obj 97 133 /;
-#X obj 97 100 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 97 169 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 157 99 samples;
-#X text 160 166 ms;
-#X obj 258 101 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 258 170 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 258 134 *;
-#X text 318 100 ms;
-#X text 321 167 samples;
-#X text 56 34 convert between samples and ms.;
-#X obj 134 132 else/sr~ khz;
-#X obj 295 133 else/sr~ khz;
-#X connect 0 0 2 0;
-#X connect 1 0 0 0;
-#X connect 5 0 7 0;
-#X connect 7 0 6 0;
-#X connect 11 0 0 1;
-#X connect 12 0 7 1;
-#X restore 471 228 pd example;
-#X msg 257 167 hz, f 2;
-#X msg 244 142 khz;
 #X text 184 332 - sample rate frequency in Hz or Khz;
 #X text 184 286 - get sample rate frequency in Hz;
 #X text 166 286 hz;
 #X text 184 266 - get last sample rate frequency (in Hz or Khz);
 #X text 160 304 khz;
 #X text 184 304 - get sample rate frequency in Khz;
-#X text 103 227 sample rate;
 #X text 123 367 1) symbol - 'hz' (default) or 'khz' for frequency value
 ;
 #X text 73 90 [sr~] reports the sample rate frequency when loading
 the patch or when receiving a bang. It reports it either in hz or khz.
 ;
 #X obj 210 196 else/sr2~;
-#X connect 18 0 35 0;
-#X connect 24 0 35 0;
-#X connect 25 0 35 0;
-#X connect 35 0 7 0;
+#X obj 346 187 block~;
+#X msg 346 164 set 64 1 16;
+#X obj 87 190 samplerate~;
+#X obj 87 221 nbx 10 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 705600 256;
+#X connect 18 0 31 0;
+#X connect 18 0 34 0;
+#X connect 31 0 7 0;
+#X connect 33 0 32 0;
+#X connect 34 0 35 0;

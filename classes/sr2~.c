@@ -22,14 +22,14 @@ static void sr2_bang(t_sr2 *x){
      if (b)
          resample = (t_float)(b->x_upsample) / (t_float)(b->x_downsample);
      } */
+    outlet_float(x->x_obj.ob_outlet, resample);
     outlet_float(x->x_obj.ob_outlet, srate);
-//    outlet_float(x->x_obj.ob_outlet, resample);
 }
 
 static void *sr2_new(t_symbol *s){
     t_sr2 *x = (t_sr2 *)pd_new(sr2_class);
     outlet_new(&x->x_obj, &s_float);
-//    outlet_new(&x->x_obj, &s_float);
+    outlet_new(&x->x_obj, &s_float);
     x->x_canvas = canvas_getcurrent();
     return (x);
 }
