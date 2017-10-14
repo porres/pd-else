@@ -38,7 +38,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (142 objects):
+Current Object list (143 objects):
 
 AUDIO PLAYING: [1]
 - [sampler~]
@@ -67,7 +67,7 @@ OSCILLATORS (DETERMINISTIC GENERATORS): [13]
 - [vsaw~]
 - [pmosc~]
 
-CHAOTIC GENERATORS: [17]
+CHAOTIC GENERATORS: [18]
 - [brown~] 
 - [clipnoise~] 
 - [crackle~] 
@@ -82,6 +82,7 @@ CHAOTIC GENERATORS: [17]
 - [logistic~]
 - [quad~]
 - [rampnoise~]
+- [randpulse~]
 - [standard~]
 - [stepnoise~]
 - [xmod~]

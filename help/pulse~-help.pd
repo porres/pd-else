@@ -1,4 +1,4 @@
-#N canvas 293 190 559 510 10;
+#N canvas 649 77 559 510 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -35,8 +35,8 @@
 -1 -1 0 256;
 #X text 274 142 <= hz;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -105,7 +105,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -138,30 +138,28 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#N canvas 512 142 487 425 pulse 0;
-#X obj 156 335 else/out~;
+#N canvas 512 142 490 395 pulse 0;
+#X obj 156 314 else/out~;
 #X obj 213 192 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 210 217 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X msg 210 240 \$1 10;
-#X obj 210 262 line~;
 #X text 23 22 The pulse width parameter controlls how much of the cycle
 is "on" or "off". A pulse width of 0.5 means the first half is "on"
 and the lasr half is "off".;
-#X obj 172 290 else/pulse~ 100 0;
+#X obj 172 269 else/pulse~ 100 0;
 #X text 30 71 A pulse width of 0 has the smallest "on" pulse size:
 a single sample - thus \, just like an impulse oscillator!;
 #X text 30 107 Conversely \, a pulse widht of 1 has the largest (the
 entire period except the last sample).;
-#X text 32 148 The pulse width is set via the first argument or the
+#X obj 210 240 else/float2sig~ 10;
+#X text 32 148 The pulse width is set via the second argument or the
 second inlet.;
 #X connect 1 0 2 0;
-#X connect 2 0 3 0;
-#X connect 3 0 4 0;
-#X connect 4 0 6 1;
-#X connect 6 0 0 0;
-#X connect 6 0 0 1;
+#X connect 2 0 7 0;
+#X connect 4 0 0 0;
+#X connect 4 0 0 1;
+#X connect 7 0 4 1;
 #X restore 450 189 pd pulse width;
 #X obj 3 3 cnv 15 301 42 empty empty pulse~ 20 20 2 37 -233017 -1 0
 ;
@@ -187,7 +185,7 @@ cycle.;
 #X obj 62 230 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 288 202 else/sig2float~;
-#X obj 288 230 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 288 230 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 288 172 else/pulse~ 1;
 #X obj 62 171 else/pulse~ 1 0.5 0.5;
@@ -211,7 +209,7 @@ feature is phase modulation.;
 1 and 0 \, or on/off) that accepts negative frequencies \, has inlets
 for pulse width \, phase sync and phase modulation.;
 #X obj 214 204 else/sig2float~;
-#X obj 214 232 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 214 232 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #N canvas 403 51 863 462 sync 0;
 #X text 517 25 Syncing the phase with control messages is useful for
@@ -247,8 +245,8 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X obj 258 224 else/sig2float~;
 #X text 223 139 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -317,7 +315,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -350,9 +348,9 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 424 222 pd;
-#X obj 88 254 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 88 254 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 258 257 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 258 257 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 258 200 else/pulse~ 1;
 #X msg 35 141 0;
