@@ -228,9 +228,7 @@ t_int *impseq_perform(t_int *w){
     float *inlet = (t_float *) (w[2]);
     float *outlet = (t_float *) (w[3]);
     int nblock = (int) w[4];
-    
     t_float lastin = x->x_lastin;
-    
     int phase = x->phase;
     short gate = x->gate;
     short indexmode = x->indexmode;
@@ -244,7 +242,7 @@ t_int *impseq_perform(t_int *w){
 /*        if(x->mute || current_impseq < 0)
             *outlet++ = 0;
           else{ */
-            if((input != 0) || x->x_bang){ // trigger
+            if((input != 0 && lastin == 0) || x->x_bang){ // trigger
 /*              if(indexmode){ // input controls the phase
                     phase = input - 1;
                     if(phase < 0 || phase >= impseqs[current_impseq].length)

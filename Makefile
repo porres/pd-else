@@ -97,6 +97,7 @@ sh~.class.sources := classes/sh~.c
 stepnoise~.class.sources := classes/stepnoise~.c
 step~.class.sources := classes/step~.c
 sin~.class.sources := classes/sin~.c
+sequencer~.class.sources := classes/sequencer~.c
 standard~.class.sources := classes/standard~.c
 susloop~.class.sources := classes/susloop~.c
 tdelay~.class.sources := classes/tdelay~.c

@@ -1,0 +1,62 @@
+#N canvas 681 32 575 466 10;
+#X obj 4 263 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 364 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 399 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 78 373 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 3 431 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 25 40 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
+#X obj 78 271 cnv 17 3 84 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 129 288 bang;
+#X text 115 373 signal;
+#X obj 3 3 cnv 15 301 42 empty empty sequencer~ 20 20 2 37 -233017
+-1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 304 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X text 122 305 float;
+#X obj 79 40 cnv 4 4 4 empty empty sequencer 0 28 2 18 -233017 -1 0
+;
+#X text 163 304 - sets a single sequence value and outputs it;
+#X text 129 321 list;
+#X text 87 338 set <list>;
+#X text 163 337 - sets one or more impulse values without outputing
+;
+#X text 115 272 signal;
+#X text 163 272 - trigger to generate impulse from sequence;
+#X text 163 288 - generates impulse from sequence;
+#X text 163 320 - of floats sets sequence values and outputs the first
+;
+#X obj 169 190 else/sequencer~ 0 10 5 2 3 7 9 1 4 11 6 8;
+#X obj 169 157 else/imp~ 2;
+#X obj 169 218 else/display~ 3;
+#X text 68 94 When receiving a signal trigger (0 to non-0 transition)
+or a bang \, [sequencer~] sends a signal value from a given sequence.
+, f 58;
+#X text 161 373 - values from a sequence;
+#X text 114 408 1) list - list of floats sets the sequence (default
+0);
+#X connect 29 0 31 0;
+#X connect 30 0 29 0;
