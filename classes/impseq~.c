@@ -4,7 +4,7 @@
 
 static t_class *impseq_class;
 
-#define MAXLEN 256
+#define MAXLEN 1024
 #define MAXimpseqS 1024
 #define MAXSEQ 1024
 
@@ -24,35 +24,19 @@ typedef struct _impseq{
     float x_f;
     float x_lastin;
     int x_bang;
-    short mute;// stops all computation (try z-disable)
+    short mute; // stops all computation (try z-disable)
     short gate; // continues impseqing but inhibits all output
     short phaselock; // indicates all patterns are the same size and use the same phase count
-    short indexmode;//special mode where input clicks are also impseq indicies (+ 1)
-    int phase;//phase of current pattern
-    int current_impseq;// currently selected pattern
-    t_impseqpat *impseqs;// contains the impseq patterns
-    t_sequence sequence;// contains an optional impseq sequence
-    int *stored_impseqs;// a list of patterns stored
-    int pattern_count;//how many patterns are stored
-    short noloop;// flag to play pattern only once
-    float *in_vec;//copy space for input to avoid dreaded vector sharing override
+    short indexmode; //special mode where input clicks are also impseq indicies (+ 1)
+    int phase; //phase of current pattern
+    int current_impseq; // currently selected pattern
+    t_impseqpat *impseqs; // contains the impseq patterns
+    t_sequence sequence; // contains an optional impseq sequence
+    int *stored_impseqs; // a list of patterns stored
+    int pattern_count; //how many patterns are stored
+    short noloop; // flag to play pattern only once
+    float *in_vec; // copy space for input to avoid dreaded vector sharing override
 } t_impseq;
-
-void *impseq_new(t_symbol *msg, short argc, t_atom *argv);
-t_int *impseq_perform(t_int *w);
-void impseq_dsp(t_impseq *x, t_signal **sp);
-void impseq_mute(t_impseq *x, t_floatarg f);
-void impseq_phaselock(t_impseq *x, t_floatarg f);
-void impseq_gate(t_impseq *x, t_floatarg f);
-void impseq_addimpseq(t_impseq *x, t_symbol *msg, short argc, t_atom *argv);
-void impseq_recall(t_impseq *x, t_floatarg p);
-void impseq_showimpseq(t_impseq *x, t_floatarg p);
-void impseq_indexmode(t_impseq *x, t_floatarg t);
-void impseq_gozero(t_impseq *x);
-void impseq_free(t_impseq *x);
-void impseq_sequence(t_impseq *x, t_symbol *msg, short argc, t_atom *argv);
-void impseq_noloop(t_impseq *x, t_floatarg f);
-void impseq_playonce(t_impseq *x, t_floatarg pnum);
 
 static void impseq_bang(t_impseq *x){
     x->x_bang = 1;
@@ -103,12 +87,6 @@ static void impseq_set(t_impseq *x, t_symbol *s, int argc, t_atom * argv){
         x->stored_impseqs[0] = 0;
         x->pattern_count = 1;
     }
-}
-
-void impseq_playonce(t_impseq *x, t_floatarg pnum){
-	x->noloop = 1;
-	x->mute = 0;
-	impseq_recall(x,pnum);
 }
 
 void impseq_indexmode(t_impseq *x, t_floatarg t){
@@ -181,6 +159,12 @@ void impseq_recall(t_impseq *x, t_floatarg p)
     }
 }
 
+void impseq_playonce(t_impseq *x, t_floatarg pnum){
+    x->noloop = 1;
+    x->mute = 0;
+    impseq_recall(x,pnum);
+}
+
 // initiate impseq recall sequence
 void impseq_sequence(t_impseq *x, t_symbol *msg, short argc, t_atom *argv){
     int i;
@@ -239,22 +223,11 @@ void impseq_addimpseq(t_impseq *x, t_symbol *msg, short argc, t_atom *argv){
     //  post("there are currently %d patterns stored",x->pattern_count);
 }
 
-void impseq_free(t_impseq *x){
-    int i;
-    for(i=0;i<x->pattern_count;i++)
-        free(x->impseqs[i].pat);
-    free(x->impseqs);
-    free(x->stored_impseqs);
-    free(x->sequence.seq);
-    free(x->in_vec);
-}
-
 t_int *impseq_perform(t_int *w){
-    int i;
     t_impseq *x = (t_impseq *) (w[1]);
     float *inlet = (t_float *) (w[2]);
     float *outlet = (t_float *) (w[3]);
-    int n = (int) w[4];
+    int nblock = (int) w[4];
     
     t_float lastin = x->x_lastin;
     
@@ -265,21 +238,20 @@ t_int *impseq_perform(t_int *w){
     int current_impseq = x->current_impseq;
     t_impseqpat *impseqs = x->impseqs;
     t_sequence sequence = x->sequence;
-    while (n--){
+    while (nblock--){
         float input = *inlet++;
-        if(x->mute || current_impseq < 0)
+        float output;
+/*        if(x->mute || current_impseq < 0)
             *outlet++ = 0;
-        else{
-            if((input != 0 && lastin == 0) || x->x_bang){ // trigger
-                x->x_bang = 0;
-                if(indexmode){ // input controls the phase
+          else{ */
+            if((input != 0) || x->x_bang){ // trigger
+/*              if(indexmode){ // input controls the phase
                     phase = input - 1;
                     if(phase < 0 || phase >= impseqs[current_impseq].length)
                         phase %= impseqs[current_impseq].length;
-                }
-                if(gate)
-                    *outlet++ = impseqs[current_impseq].pat[phase];
-                ++phase; //advance phase in all cases
+                } */
+                output = impseqs[current_impseq].pat[phase];
+                phase++; // next phase
                 if(phase >= impseqs[current_impseq].length){
                     phase = 0;
                     if(sequence.length){ // if a sequence is active, reset the current impseq too
@@ -289,8 +261,11 @@ t_int *impseq_perform(t_int *w){
                             sequence.phase = 0;
                     }
                 }
+            x->x_bang = 0;
             }
-        }
+        else output = 0;
+//        }
+        *outlet++ = output;
         lastin = input;
     }
     x->x_lastin = lastin;
@@ -303,6 +278,16 @@ void impseq_dsp(t_impseq *x, t_signal **sp){
     dsp_add(impseq_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
 
+void impseq_free(t_impseq *x){
+    int i;
+    for(i=0;i<x->pattern_count;i++)
+        free(x->impseqs[i].pat);
+    free(x->impseqs);
+    free(x->stored_impseqs);
+    free(x->sequence.seq);
+    free(x->in_vec);
+}
+
 void *impseq_new(t_symbol *msg, short argc, t_atom *argv)
 {
     int i;
@@ -313,9 +298,6 @@ void *impseq_new(t_symbol *msg, short argc, t_atom *argv)
     x->stored_impseqs = (int *) malloc(MAXimpseqS * sizeof(int));
     
     x->sequence.seq = (int *) malloc(MAXSEQ * sizeof(int));
-    
-    /* this should be vector size, and possibly realloced in dsp routine if size changes */
-    x->in_vec = (float *) malloc(8192 * sizeof(float));
     
     x->sequence.length = 0; // no sequence by default
     x->sequence.phase = 0; //
