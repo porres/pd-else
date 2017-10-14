@@ -10,8 +10,6 @@ cflags = -Ishared -DHAVE_STRUCT_TIMESPEC
 
 uname := $(shell uname -s)
 
-sr2~.class.sources := classes/sr2~.c
-
 #########################################################################
 # sources
 #########################################################################
@@ -100,6 +98,7 @@ stepnoise~.class.sources := classes/stepnoise~.c
 step~.class.sources := classes/step~.c
 sin~.class.sources := classes/sin~.c
 sequencer~.class.sources := classes/sequencer~.c
+sr~.class.sources := classes/sr~.c
 standard~.class.sources := classes/standard~.c
 susloop~.class.sources := classes/susloop~.c
 tdelay~.class.sources := classes/tdelay~.c
