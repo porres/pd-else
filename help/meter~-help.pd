@@ -1,44 +1,43 @@
-#N canvas 498 26 558 466 10;
-#X obj 1 427 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#N canvas 498 26 561 476 10;
+#X obj 2 448 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 1 314 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 2 313 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 1 349 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 2 348 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 1 380 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+#X obj 2 401 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 120 322 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 121 321 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 148 322 signal;
-#X text 136 387 1) float;
-#X text 136 403 2) float;
-#X text 209 357 (none);
-#X obj 2 6 cnv 15 301 42 empty empty meter~ 20 20 2 37 -233017 -1 0
+#X text 149 321 signal;
+#X text 137 408 1) float;
+#X text 137 424 2) float;
+#X obj 3 5 cnv 15 301 42 empty empty meter~ 20 20 2 37 -233017 -1 0
 ;
-#X obj 305 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 6 graph;
+#X restore 3 5 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 304 6 pd;
-#X obj 344 14 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 5 pd;
+#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 22 43 cnv 4 4 4 empty empty Mono 0 28 2 18 -233017 -1 0;
-#X obj 71 43 cnv 4 4 4 empty empty VU-meter 0 28 2 18 -233017 -1 0
+#X obj 23 42 cnv 4 4 4 empty empty Mono 0 28 2 18 -233017 -1 0;
+#X obj 72 42 cnv 4 4 4 empty empty VU-meter 0 28 2 18 -233017 -1 0
 ;
-#X obj 457 14 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 477 14 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 514 14 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 463 29 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 501 29 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 198 322 - incoming mono signal to be vu-metered;
+#X text 199 321 - incoming mono signal to be vu-metered;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
 -262144 0 1;
@@ -142,29 +141,148 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 74 pd;
-#X text 198 387 - window size for the [vu~] object, f 44;
-#X text 198 403 - hop size for the [vu~] object, f 44;
-#N canvas 717 164 498 399 example 0;
-#X obj 111 69 adc~;
-#X obj 111 102 else/gain~;
-#X text 51 25 Using [else/meter~] in conjunction with [else/gain~]
-;
-#X obj 111 224 else/meter~;
-#X text 205 110 [else/meter~] is basically a wrapper of:;
-#X obj 277 187 else/vu~;
-#X obj 293 233 vu 15 120 empty empty -1 -8 0 10 -66577 -1 1 0;
-#X obj 277 156 osc~ 180;
-#X connect 0 0 1 0;
+#X restore 506 73 pd;
+#X text 199 408 - window size for the [vu~] object, f 44;
+#X text 199 424 - hop size for the [vu~] object, f 44;
+#N canvas 717 164 509 452 example 0;
+#X obj 112 119 else/gain~;
+#X text 228 118 [else/meter~] is basically a wrapper of:, f 26;
+#X obj 337 178 else/vu~;
+#X obj 338 224 vu 15 120 empty empty -1 -8 0 10 -66577 -1 1 0;
+#X obj 112 86 osc~ 180;
+#X obj 337 147 adc~ 1;
+#X obj 87 389 dac~;
+#X obj 112 233 else/meter~;
+#N canvas 207 34 366 264 (subpatch) 0;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
+#X obj 215 68 route dsp;
+#X obj 215 37 receive pd;
+#N canvas 977 77 379 291 set_color 0;
+#X obj 47 30 inlet;
+#X obj 147 200 s \$0-cnv;
+#X obj 47 83 select 0 1;
+#X obj 47 220 s \$0-tgl-r;
+#N canvas 0 22 712 637 off 0;
+#X obj 490 220 * -1;
+#X obj 424 300 +;
+#X obj 409 325 +;
+#X obj 347 219 * -65536;
+#X obj 424 220 * -256;
+#X obj 409 356 - 1;
+#X obj 390 189 unpack f f f;
+#X obj 225 295 +;
+#X obj 210 320 +;
+#X obj 148 214 * -65536;
+#X obj 225 215 * -256;
+#X obj 291 215 * -1;
+#X obj 210 351 - 1;
+#X obj 191 184 unpack f f f;
+#X obj 379 423 pack;
+#X msg 395 152 124 124 124;
+#X msg 203 154 220 220 220;
+#X obj 238 121 t b b;
+#X obj 238 81 inlet;
+#X obj 378 485 outlet;
+#X connect 0 0 1 1;
+#X connect 1 0 2 1;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 14 1;
+#X connect 6 0 3 0;
+#X connect 6 1 4 0;
+#X connect 6 2 0 0;
+#X connect 7 0 8 1;
+#X connect 8 0 12 0;
+#X connect 9 0 8 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 1;
+#X connect 12 0 14 0;
+#X connect 13 0 9 0;
+#X connect 13 1 10 0;
+#X connect 13 2 11 0;
+#X connect 14 0 19 0;
+#X connect 15 0 6 0;
+#X connect 16 0 13 0;
+#X connect 17 0 16 0;
+#X connect 17 1 15 0;
+#X connect 18 0 17 0;
+#X restore 47 113 pd off;
+#X msg 47 180 color \$1 \$2 0;
+#X msg 147 131 -4.86997e+06 -1.34937e+07;
+#X msg 147 171 color \$1 0 \$2;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 1 6 0;
+#X connect 4 0 5 0;
+#X connect 4 0 7 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 1 0;
+#X restore 215 165 pd set_color;
+#X obj 135 122 r \$0-tgl-s;
+#N canvas 121 482 450 300 (subpatch) 0;
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+0;
+#X coords 0 -1 1 1 42 27 1 100 100;
+#X restore 51 144 pd;
+#X obj 226 139 s \$0-tgl-r;
+#X msg 226 115 set \$1;
+#X msg 135 177 \; pd dsp \$1;
+#N canvas 256 32 278 194 load_check 0;
+#X obj 136 53 sig~ 1;
+#X obj 74 24 loadbang;
+#X obj 136 86 snapshot~;
+#X obj 91 52 del 5;
+#X obj 136 151 outlet;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 74 126 switch~;
+#X connect 0 0 2 0;
 #X connect 1 0 3 0;
+#X connect 1 0 5 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 3 0 5 0;
 #X connect 5 0 6 0;
-#X connect 5 1 6 1;
-#X connect 7 0 5 0;
-#X restore 471 281 pd example;
-#X obj 250 138 osc~ 180;
-#X text 84 90 [meter~] is a convenient mono VU-meter abstraction based
-on [else/vu~] and vanilla's [vu] GUI.;
-#X obj 250 167 else/meter~;
-#X text 129 227 [else/meter~] ==>;
-#X connect 26 0 28 0;
-#X coords 0 466 1 465 74 39 0;
+#X restore 51 72 pd load_check;
+#X connect 1 0 3 0;
+#X connect 1 0 7 0;
+#X connect 2 0 1 0;
+#X connect 4 0 8 0;
+#X connect 4 0 3 0;
+#X connect 7 0 6 0;
+#X connect 9 0 0 0;
+#X coords 0 -1 1 1 44 72 2 50 100;
+#X restore 231 247 pd;
+#X obj 157 386 else/display 15;
+#X text 139 183 <= [else/gain~];
+#X text 278 389 <= [else/display];
+#X text 47 24 Using [else/meter~] in conjunction with [else/gain~]
+and [dac~], f 52;
+#X connect 0 0 7 0;
+#X connect 2 0 3 0;
+#X connect 2 1 3 1;
+#X connect 4 0 0 0;
+#X connect 5 0 2 0;
+#X connect 7 0 6 0;
+#X connect 7 0 6 1;
+#X connect 7 1 9 0;
+#X restore 472 280 pd example;
+#X obj 251 137 osc~ 180;
+#X obj 251 166 else/meter~;
+#X text 129 226 [else/meter~] ==>;
+#X obj 121 356 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 149 357 signal;
+#X text 199 357 - incoming mono signal is passed through;
+#X text 85 89 [meter~] is a convenient mono VU-meter abstraction based
+on [else/vu~] and vanilla's [vu] GUI object., f 52;
+#X obj 121 379 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
+-162280 0;
+#X text 163 380 list;
+#X text 199 380 - vu values (RMS and peak amplitude in dBFS);
+#X connect 25 0 26 0;
+#X coords 0 476 1 475 74 39 0;

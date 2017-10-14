@@ -1,4 +1,4 @@
-#N canvas 85 313 562 443 10;
+#N canvas 926 248 562 443 10;
 #X obj 4 303 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 337 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -47,8 +47,8 @@ display. If "0" or no argument is given \, the display will automatically
 resize according to the input. If a signal value is larger than the
 fixed number of characters \, the displayed signal is truncated.;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -117,7 +117,7 @@ fixed number of characters \, the displayed signal is truncated.;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -169,8 +169,8 @@ fixed number of characters \, the displayed signal is truncated.;
 #X restore 432 263 pd float input;
 #X text 205 311 - values to be displayed;
 #X text 205 344 - the input is passed through;
-#X text 140 394 2) float - refresh rate (default 100 ms);
 #X text 61 198 A second argument sets the refresh rate in ms., f 57
 ;
+#X text 140 394 2) float - refresh rate in ms (default 100);
 #X connect 25 0 17 0;
 #X coords 0 443 1 442 85 22 0;

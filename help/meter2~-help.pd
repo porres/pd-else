@@ -1,42 +1,41 @@
-#N canvas 681 115 557 484 10;
-#X obj 1 441 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#N canvas 681 115 562 525 10;
+#X obj 2 493 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 1 308 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 2 310 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 1 363 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 2 365 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 1 394 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+#X obj 2 446 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 100 316 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 101 318 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 128 316 signal;
-#X text 116 401 1) float;
-#X text 116 417 2) float;
-#X text 128 371 (none);
-#X obj 2 3 cnv 15 301 42 empty empty meter2~ 20 20 2 37 -233017 -1
+#X text 129 318 signal;
+#X text 117 453 1) float;
+#X text 117 469 2) float;
+#X obj 3 5 cnv 15 301 42 empty empty meter2~ 20 20 2 37 -233017 -1
 0;
-#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 3 graph;
+#X restore 3 5 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 304 3 pd;
-#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 5 pd;
+#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 22 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
-#X obj 73 40 cnv 4 4 4 empty empty VU-meter 0 28 2 18 -233017 -1 0
+#X obj 23 42 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
+#X obj 74 42 cnv 4 4 4 empty empty VU-meter 0 28 2 18 -233017 -1 0
 ;
-#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
@@ -141,42 +140,66 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 71 pd;
-#X obj 230 162 else/meter2~;
-#X obj 230 134 osc~ 180;
-#X obj 295 134 osc~ 190;
-#X text 178 401 - window size for the [vu~] objects, f 60;
-#X text 178 417 - hop size for the [vu~] objects, f 60;
-#X obj 100 338 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
+#X restore 506 73 pd;
+#X obj 231 164 else/meter2~;
+#X obj 231 136 osc~ 180;
+#X obj 296 136 osc~ 190;
+#X text 179 453 - window size for the [vu~] objects, f 60;
+#X text 179 469 - hop size for the [vu~] objects, f 60;
+#X obj 101 340 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
 -162280 0;
-#X text 128 338 signal;
-#X text 178 316 - left incoming signal to be vu-metered;
-#X text 178 338 - right incoming signal to be vu-metered;
-#N canvas 801 82 500 409 example 0;
-#X obj 126 67 adc~;
-#X text 30 28 Use it in conjunction with [else/gain2~];
-#X obj 82 227 else/meter2~;
-#X obj 138 100 else/gain2~;
-#X obj 335 175 else/vu~;
-#X obj 336 221 vu 15 120 empty empty -1 -8 0 10 -66577 -1 1 0;
-#X text 204 99 [else/meter2~] is basically a wrapper of:;
-#X obj 252 173 else/vu~;
-#X obj 304 134 noise~;
-#X obj 318 221 vu 15 120 empty empty -1 -8 0 10 -66577 -1 0 0;
-#X connect 0 0 3 0;
-#X connect 0 1 3 1;
-#X connect 3 0 2 0;
-#X connect 3 1 2 1;
-#X connect 4 0 5 0;
-#X connect 4 1 5 1;
+#X text 129 340 signal;
+#X text 179 318 - left incoming signal to be vu-metered;
+#X text 179 340 - right incoming signal to be vu-metered;
+#N canvas 801 82 628 483 example 0;
+#X obj 185 110 else/gain2~;
+#X obj 469 161 else/vu~;
+#X obj 470 207 vu 15 120 empty empty -1 -8 0 10 -66577 -1 1 0;
+#X text 352 91 [else/meter2~] is basically a wrapper of:, f 28;
+#X obj 405 161 else/vu~;
+#X obj 469 120 noise~;
+#X obj 452 207 vu 15 120 empty empty -1 -8 0 10 -66577 -1 0 0;
+#X obj 129 227 else/meter2~;
+#X obj 185 63 else/brown~;
+#X obj 129 380 dac~;
+#X obj 194 86 noise~;
+#X obj 194 377 else/display 35;
+#X text 199 405 list is: rms of left \, peak of left \, rms of right
+\, peak of right, f 36;
+#X text 55 140 [else/gain2~] =>;
+#X text 455 377 <= [else/display];
+#X obj 306 236 else/setdsp~;
+#X text 33 27 Use it in conjunction with [else/gain2~] and [dac~];
+#X connect 0 0 7 0;
+#X connect 0 1 7 1;
+#X connect 1 0 2 0;
+#X connect 1 1 2 1;
+#X connect 4 0 6 0;
+#X connect 4 1 6 1;
+#X connect 5 0 1 0;
+#X connect 5 0 4 0;
 #X connect 7 0 9 0;
 #X connect 7 1 9 1;
-#X connect 8 0 4 0;
-#X connect 8 0 7 0;
-#X restore 461 278 pd example;
-#X text 83 87 [meter2~] is a convenient stereo VU-meter abstraction
-based on [else/vu~] and vanilla's [vu] GUI.;
-#X text 109 219 [else/meter2~] ==>;
-#X connect 23 0 22 0;
-#X connect 24 0 22 1;
-#X coords 0 484 1 483 74 39 0;
+#X connect 7 2 11 0;
+#X connect 8 0 0 0;
+#X connect 10 0 0 1;
+#X restore 462 280 pd example;
+#X text 84 89 [meter2~] is a convenient stereo VU-meter abstraction
+based on [else/vu~] and vanilla's [vu] GUI., f 54;
+#X text 97 221 [else/meter2~] ==>;
+#X obj 101 378 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 129 378 signal;
+#X obj 101 400 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
+-162280 0;
+#X text 129 400 signal;
+#X text 179 378 - left incoming signal is passed through;
+#X text 179 400 - right incoming signal is passed through;
+#X obj 102 423 cnv 17 3 17 empty \$0-pddp.cnv.let.0 2 5 9 0 16 -228856
+-162280 0;
+#X text 144 424 list;
+#X text 180 424 - vu values (RMS/peak amplitude in dBFS) of inputs
+;
+#X connect 22 0 21 0;
+#X connect 23 0 21 1;
+#X coords 0 525 1 524 74 39 0;
