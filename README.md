@@ -2,7 +2,7 @@ EL Locus Solus' Else library for Pd
 
 ELSE - EL Locus Solus' Externals
 
-Version 1.0 beta-2 (Release date: October 15th 2017)
+Version 1.0 beta-3 (Release date: unreleased)
 
 The project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
 
@@ -17,6 +17,10 @@ Even though extended has quite a large set of external libraries and objects, at
 ELSE steals some ideas and stuff from SuperCollider, such as most of the chaotic generators UGENs. It also grew to encompass functionalities from objects found in other Pd libraries, but with a different design.  
 
 -------
+
+<strong>Downloading ELSE:</strong>
+
+Look for the latest releases in https://github.com/porres/pd-else/releases - but ELSE is also available via 'deken' (Pd's external manager). In Pd, just go for Help => Find Externals and search for 'else'.
 
 <strong>Installing ELSE:</strong>
 
