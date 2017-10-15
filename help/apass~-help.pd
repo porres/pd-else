@@ -50,15 +50,15 @@
 #X text 230 324 - 1 (bypasses input signal) or 0 (doesn't bypass);
 #N canvas 395 72 926 617 filter 0;
 #X obj 715 109 hsl 128 15 0.001 100 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 6000 1;
+-228856 -1 -1 0 1;
 #X obj 644 83 hsl 128 15 20 20000 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 8500 1;
+-228856 -1 -1 0 1;
 #X obj 592 119 noise~;
 #X obj 592 194 else/out~;
 #X obj 712 133 nbx 5 14 0.001 100 0 0 \$0-Q empty empty 0 -8 0 10 -228856
--1 -1 0.230253 256;
+-1 -1 0.001 256;
 #X obj 641 110 nbx 5 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
--1 -1 2036.59 256;
+-1 -1 20 256;
 #X text 112 275 [1] found in http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
 , f 65;
 #X text 661 83 center frequency;
@@ -79,7 +79,6 @@ EQ biquad filter coefficients" by Robert Bristow-Johnsonc [1] \, and
 it is: y[n] = a0 * x[n] + a1 * x[n-2] + a2 * x[n-2] + b1 * y[n-1] +
 b2 * y[n-2];
 #X obj 592 158 else/apass~ 750 1;
-#X obj 12 308 else/biplot;
 #N canvas 169 31 398 275 coeff 0;
 #X obj 103 87 r \$0-Hz;
 #X obj 173 87 r \$0-Q;
@@ -91,6 +90,7 @@ b2 * y[n-2];
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;
 #X restore 12 281 pd coeff;
+#X obj 12 308 else/biplot;
 #X connect 0 0 4 0;
 #X connect 1 0 5 0;
 #X connect 2 0 15 0;
@@ -98,7 +98,7 @@ b2 * y[n-2];
 #X connect 5 0 15 1;
 #X connect 15 0 3 0;
 #X connect 15 0 3 1;
-#X connect 17 0 16 0;
+#X connect 16 0 17 0;
 #X restore 429 239 pd filter formula \; and response;
 #X text 229 382 - central frequency in Hertz;
 #X text 118 469 1) float - central frequency in Hertz (default 0);

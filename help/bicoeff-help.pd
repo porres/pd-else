@@ -191,14 +191,14 @@
 #X msg 449 55 resonant;
 #X text 490 184 Q;
 #X obj 487 138 hsl 128 15 20 15000 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 12700 1;
+-228856 -1 -1 0 1;
 #X floatatom 484 159 0 0 0 0 - - -;
 #X obj 750 133 nbx 5 14 0.01 1 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0.01 256;
 #X obj 824 134 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
 #X obj 677 134 nbx 5 14 20 20000 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 26.9114 256;
+-1 -1 20 256;
 #X text 688 117 Freq;
 #X text 834 117 Gain;
 #X text 756 116 Q;

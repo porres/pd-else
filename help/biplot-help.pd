@@ -40,7 +40,7 @@
 #X obj 231 36 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
 #X obj 84 36 nbx 5 14 20 20000 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 898.201 256;
+-1 -1 20 256;
 #X text 95 19 Freq;
 #X text 163 18 Q;
 #X obj 57 36 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1

@@ -10,7 +10,7 @@
 #X obj 3 416 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 131 203 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -4.83426 256;
+-228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
 -262144 0 1;
@@ -148,25 +148,25 @@ the window size. This is all also true for [env~] \, by the way.;
 #X obj 677 252 block~ 64;
 #N canvas 242 23 357 282 out_rate 0;
 #X obj 121 63 b;
-#X obj 121 91 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 121 91 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 121 113 sel 0 1;
 #X obj 121 141 timer;
 #X obj 121 171 *;
-#X obj 158 170 else/sr~ khz;
 #X obj 121 34 inlet;
 #X obj 121 211 outlet;
+#X obj 158 170 else/sr~ -khz;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X connect 2 1 3 1;
 #X connect 3 0 4 0;
-#X connect 4 0 7 0;
-#X connect 5 0 4 1;
-#X connect 6 0 0 0;
+#X connect 4 0 6 0;
+#X connect 5 0 0 0;
+#X connect 7 0 4 1;
 #X restore 516 251 pd out_rate;
 #X obj 516 280 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 2048 256;
+-228856 -1 -1 0 256;
 #X text 575 280 hop size;
 #X text 651 164 change block size;
 #X obj 471 161 noise~;
@@ -227,7 +227,7 @@ size.;
 #X text 61 88 [vu~] combines [else/rms~] and [else/peak~] to provide
 dBFs output to Pd Vanilla's [vu] GUI.;
 #X obj 230 202 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.00160471 256;
+-228856 -1 -1 0 256;
 #X obj 125 343 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 214 343 float;
