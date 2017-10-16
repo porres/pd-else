@@ -2,6 +2,7 @@
 
 #include "m_pd.h"
 #include "math.h"
+#include "magic.h"
 
 #define TWOPI (M_PI * 2)
 
@@ -33,7 +34,7 @@ static void fbsine_filter(t_fbsine *x, t_floatarg f)
     x->x_filter = f != 0;
 }
 
-static t_int *fbsine_perform(t_int *w)
+static t_int *fbsine_perform_magic(t_int *w)
 {
     t_fbsine *x = (t_fbsine *)(w[1]);
     int nblock = (t_int)(w[2]);
@@ -84,8 +85,7 @@ static t_int *fbsine_perform(t_int *w)
     return (w + 8);
 }
 
-static t_int *fbsine_perform_sig(t_int *w)
-{
+static t_int *fbsine_perform(t_int *w){
     t_fbsine *x = (t_fbsine *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
@@ -128,17 +128,16 @@ static t_int *fbsine_perform_sig(t_int *w)
     return (w + 8);
 }
 
-static void fbsine_dsp(t_fbsine *x, t_signal **sp)
-{
+static void fbsine_dsp(t_fbsine *x, t_signal **sp){
     x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 2, &s_signal); // magic feeder flag
     x->x_sr = sp[0]->s_sr;
     if (x->x_hasfeeders){
-        dsp_add(fbsine_perform_sig, 7, x, sp[0]->s_n, sp[0]->s_vec,
-            sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
+        dsp_add(fbsine_perform, 7, x, sp[0]->s_n,
+                sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
     }
     else{
-        dsp_add(fbsine_perform, 7, x, sp[0]->s_n, sp[0]->s_vec,
-                sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
+        dsp_add(fbsine_perform_magic, 7, x, sp[0]->s_n,
+                sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
     }
 }
 
@@ -186,10 +185,10 @@ static void *fbsine_new(t_symbol *s, int ac, t_atom *av)
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_sync, 0);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
-    return (x);
 // Magic
     x->x_glist = canvas_getcurrent();
     x->x_signalscalar = obj_findsignalscalar((t_object *)x, 2);
+    return (x);
 }
 
 void fbsine_tilde_setup(void)
