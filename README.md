@@ -53,7 +53,7 @@ AUDIO PROCESSING: [3]
 - [fbdelay~]
 
 REVERB: [1]
-- [plate~]
+- [plateverb~]
 
 PHYSICAL MODELLING: [1]
 - [pluck~]
