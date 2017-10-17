@@ -49,7 +49,7 @@ AUDIO PLAYING: [1]
 
 AUDIO PROCESSING: [3]
 - [downsample~]
-- [apass2~]
+- [allpass.rev~]
 - [fbdelay~]
 
 REVERB: [1]
@@ -95,7 +95,7 @@ CHAOTIC GENERATORS: [18]
 - [xmod~]
 
 FILTERS (16):
-- [apass~]
+- [allpass.2nd~]
 - [bandpass~]
 - [bandstop~]
 - [bpbank~]
