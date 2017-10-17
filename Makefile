@@ -46,7 +46,6 @@ downsample~.class.sources := classes/downsample~.c
 elapsed~.class.sources := classes/elapsed~.c
 eq~.class.sources := classes/eq~.c
 fader~.class.sources := classes/fader~.c
-fbcomb~.class.sources := classes/fbcomb~.c
 fbdelay~.class.sources := classes/fbdelay~.c
 floor.class.sources := classes/floor.c
 floor~.class.sources := classes/floor~.c
