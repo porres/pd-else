@@ -17,7 +17,7 @@ typedef struct _apass2
     t_inlet         *x_alet;
     t_outlet        *x_outlet;
     int             x_sr;
-    int             x_t60;
+    int             x_gain;
 // pointers to the delay bufs
     double          * x_ybuf;
     double          x_ffstack[apass2_STACK];
@@ -140,7 +140,7 @@ static t_int *apass2_perform(t_int *w){
 // now get those delayed vals
         double delx = apass2_readmsdelay(x, x->x_xbuf, delms);
         double dely = apass2_readmsdelay(x, x->x_ybuf, delms);
-        if(x->x_t60)
+        if(!x->x_gain)
             {
             if (ain[i] == 0)
                 ain[i] = 0;
@@ -178,15 +178,15 @@ static void apass2_size(t_apass2 *x, t_floatarg f1){
     apass2_sz(x);
 }
 
-static void apass2_t60(t_apass2 *x, t_floatarg f1){
-    x->x_t60 = f1 != 0;
+static void apass2_gain(t_apass2 *x, t_floatarg f1){
+    x->x_gain = f1 != 0;
 }
 
 static void *apass2_new(t_symbol *s, int argc, t_atom *argv){
     t_apass2 *x = (t_apass2 *)pd_new(apass2_class);
     x->x_sr = sys_getsr();
     x->x_alloc = 0;
-    x->x_t60 = 1;
+    x->x_gain = 0;
     x->x_sz = apass2_STACK;
 // clear out stack bufs, set pointer to stack
     x->x_ybuf = x->x_fbstack;
@@ -204,10 +204,10 @@ static void *apass2_new(t_symbol *s, int argc, t_atom *argv){
                     init_maxdelay = argval;
                     break;
                 case 1:
-                    init_coeff = argval != 0;
+                    init_coeff = argval;
                     break;
                 case 2:
-                    x->x_t60 = argval != 0;
+                    x->x_gain = argval != 0;
                     break;
                 default:
                     break;
@@ -259,5 +259,5 @@ void apass2_tilde_setup(void)
     class_addmethod(apass2_class, (t_method)apass2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(apass2_class, (t_method)apass2_clear, gensym("clear"), 0);
     class_addmethod(apass2_class, (t_method)apass2_size, gensym("size"), A_DEFFLOAT, 0);
-    class_addmethod(apass2_class, (t_method)apass2_t60, gensym("t60"), A_DEFFLOAT, 0);
+    class_addmethod(apass2_class, (t_method)apass2_gain, gensym("gain"), A_DEFFLOAT, 0);
 }
