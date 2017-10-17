@@ -196,13 +196,10 @@ static void *apass2_new(t_symbol *s, int argc, t_atom *argv){
     float init_maxdelay;
     float init_coeff;
     int argnum = 0;
-    while(argc > 0)
-    {
-        if(argv -> a_type == A_FLOAT)
-        { //if current argument is a float
+    while(argc > 0){
+        if(argv -> a_type == A_FLOAT){ //if current argument is a float
             t_float argval = atom_getfloatarg(0, argc, argv);
-            switch(argnum)
-            {
+            switch(argnum){
                 case 0:
                     init_maxdelay = argval;
                     break;
@@ -219,25 +216,13 @@ static void *apass2_new(t_symbol *s, int argc, t_atom *argv){
             argc--;
             argv++;
         }
-        else if (argv -> a_type == A_SYMBOL)
-        {
-            t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-            if(strcmp(curarg->s_name, "-bw")==0)
-            {
-                bw = 1;
-                argc -= 1;
-                argv += 1;
-            }
-            else
-            {
-                goto errstate;
-            };
-        }
-    };
+        else
+            goto errstate;
+    }
 /////////////////////////////////////////////////////////////////////////////////////
-    if (f1 < 0)
-        f1 = 0;
-    x->x_maxdel = f1;
+    if (init_maxdelay < 0)
+        init_maxdelay = 0;
+    x->x_maxdel = init_maxdelay;
 // ship off to the helper method to deal with allocation if necessary
     apass2_sz(x);
 // boundschecking
@@ -245,7 +230,7 @@ static void *apass2_new(t_symbol *s, int argc, t_atom *argv){
     
 // inlets / outlet
     x->x_dellet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_dellet, f1);
+    pd_float((t_pd *)x->x_dellet, init_maxdelay);
     x->x_alet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_alet, init_coeff);
     x->x_outlet = outlet_new((t_object *)x, &s_signal);
