@@ -23,7 +23,7 @@ rescale.class.sources := classes/rescale.c
 
 # signal:
 accum~.class.sources := classes/accum~.c
-apass~.class.sources := classes/apass~.c
+allpass.2nd~.class.sources := classes/allpass.2nd~.c
 allpass.rev~.class.sources := classes/allpass.rev~.c
 asr~.class.sources := classes/asr~.c
 autofade~.class.sources := classes/autofade~.c

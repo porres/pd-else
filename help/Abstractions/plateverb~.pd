@@ -208,10 +208,10 @@
 #N canvas 736 80 346 233 4-stage 0;
 #X obj 57 44 inlet~;
 #X obj 57 175 outlet~;
-#X obj 57 74 else/apass2~ 4.771 0.75 1;
-#X obj 57 98 else/apass2~ 3.595 0.75 1;
-#X obj 57 120 else/apass2~ 12.73 0.625 1;
-#X obj 57 143 else/apass2~ 9.307 0.625 1;
+#X obj 57 74 else/allpass.rev~ 4.771 0.75 1;
+#X obj 57 98 else/allpass.rev~ 3.595 0.75 1;
+#X obj 57 120 else/allpass.rev~ 12.73 0.625 1;
+#X obj 57 143 else/allpass.rev~ 9.307 0.625 1;
 #X connect 0 0 2 0;
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;
@@ -223,7 +223,7 @@
 #X obj 164 93 osc~ 0.1;
 #X obj 164 115 else/rescale~ 26.51 34.51, f 13;
 #X obj 94 213 outlet~;
-#X obj 92 154 else/apass2~ 35 0.7 1;
+#X obj 92 154 else/allpass.rev~ 35 0.7 1;
 #X connect 0 0 4 0;
 #X connect 1 0 2 0;
 #X connect 2 0 4 1;
@@ -234,7 +234,7 @@
 #X obj 148 111 else/rescale~ 18.58 26.58, f 14;
 #X obj 74 54 inlet~;
 #X obj 76 195 outlet~;
-#X obj 76 151 else/apass2~ 35 0.7 1;
+#X obj 76 151 else/allpass.rev~ 35 0.7 1;
 #X connect 0 0 1 0;
 #X connect 1 0 4 1;
 #X connect 2 0 4 0;

@@ -32,8 +32,8 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -102,7 +102,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -183,7 +183,6 @@
 #X floatatom 566 183 5 0 0 0 - - -, f 5;
 #X msg 466 95 lowpass;
 #X msg 474 115 highpass;
-#X msg 423 15 apass;
 #X obj 507 183 nbx 5 14 0.1 100 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0.1 256;
 #X msg 436 35 bandpass;
@@ -229,27 +228,28 @@ the filter type and takes 3 more optional arguments.;
 #X obj 449 239 s \$0-bicoeff;
 #X obj 169 235 s \$0-bicoeff;
 #X obj 6 246 r \$0-bicoeff;
-#X connect 0 0 28 2;
-#X connect 1 0 28 0;
-#X connect 2 0 28 0;
-#X connect 3 0 28 0;
-#X connect 4 0 28 1;
-#X connect 5 0 28 0;
-#X connect 6 0 28 0;
-#X connect 7 0 28 0;
-#X connect 9 0 10 0;
-#X connect 10 0 28 0;
-#X connect 11 0 30 1;
-#X connect 12 0 30 2;
-#X connect 13 0 30 0;
-#X connect 20 0 30 0;
-#X connect 21 0 27 0;
-#X connect 22 0 27 0;
-#X connect 23 0 27 0;
-#X connect 27 0 33 0;
-#X connect 28 0 32 0;
-#X connect 30 0 29 0;
-#X connect 34 0 31 0;
+#X msg 423 15 allpass;
+#X connect 0 0 27 2;
+#X connect 1 0 27 0;
+#X connect 2 0 27 0;
+#X connect 3 0 27 1;
+#X connect 4 0 27 0;
+#X connect 5 0 27 0;
+#X connect 6 0 27 0;
+#X connect 8 0 9 0;
+#X connect 9 0 27 0;
+#X connect 10 0 29 1;
+#X connect 11 0 29 2;
+#X connect 12 0 29 0;
+#X connect 19 0 29 0;
+#X connect 20 0 26 0;
+#X connect 21 0 26 0;
+#X connect 22 0 26 0;
+#X connect 26 0 32 0;
+#X connect 27 0 31 0;
+#X connect 29 0 28 0;
+#X connect 33 0 30 0;
+#X connect 34 0 27 0;
 #X restore 477 238 pd details;
 #X text 201 433 - sets "Q" or "Slope" \, depending on filter type,
 f 57;
@@ -264,7 +264,6 @@ and gain, f 55;
 according to different filter types. All inlets are hot!, f 61;
 #X obj 208 172 else/bicoeff eq 500 10 24;
 #N canvas 399 107 925 491 related 0;
-#X obj 679 25 else/apass~;
 #X obj 627 55 else/bandpass~;
 #X obj 629 81 else/bandstop~;
 #X obj 724 55 else/lowpass~;
@@ -280,6 +279,7 @@ control all the parameters. They are:, f 35;
 #X text 40 89 The [else/biplot] object below is a great companion to
 [bicoeff] as it plots the filter response from a list of biquad coefficients
 , f 50;
+#X obj 657 25 else/allpass.2nd~;
 #X restore 471 265 pd related \; objects;
 #X connect 37 0 39 0;
 #X connect 37 0 39 1;

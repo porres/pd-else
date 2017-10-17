@@ -1,4 +1,4 @@
-#N canvas 200 170 565 582 10;
+#N canvas 605 23 576 594 10;
 #X obj 4 551 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 4 330 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -16,11 +16,11 @@
 #X obj 116 339 cnv 17 3 66 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 193 467 signal - the filtered signal;
-#X obj 148 162 noise~;
-#X obj 195 194 *~;
-#X obj 195 266 else/out~;
-#X obj 4 4 cnv 15 301 42 empty empty apass2~ 20 20 2 37 -233017 -1
-0;
+#X obj 128 162 noise~;
+#X obj 175 194 *~;
+#X obj 175 266 else/out~;
+#X obj 4 4 cnv 15 301 42 empty empty allpass.rev~ 20 20 2 37 -233017
+-1 0;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -29,8 +29,8 @@
 #X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
 #X obj 24 41 cnv 4 4 4 empty empty Allpass 0 28 2 18 -233017 -1 0;
-#X obj 86 41 cnv 4 4 4 empty empty filter/reverberator 0 28 2 18 -233017
--1 0;
+#X obj 86 41 cnv 4 4 4 empty empty reverberator 0 28 2 18 -233017 -1
+0;
 #X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -44,18 +44,18 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 306 4 graph;
-#X obj 318 210 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 354 210 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 256 188 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
+#X obj 264 188 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 1 256;
 #X text 191 338 signal - signal input to the filter, f 49;
-#X text 312 188 Delay time (ms);
-#X text 377 211 Decay time (ms);
+#X text 320 188 Delay time (ms);
+#X text 413 211 Decay time (ms);
 #N canvas 522 182 855 362 Details 0;
 #X text 172 254 D = Delay time in ms;
-#X floatatom 538 209 5 0 1000 0 - - -, f 5;
-#X floatatom 600 210 8 0 100 0 - - -, f 8;
-#X obj 603 186 hsl 128 15 -1000 1000 0 0 empty empty empty -2 -8 0
+#X floatatom 566 209 5 0 1000 0 - - -, f 5;
+#X floatatom 656 210 8 0 100 0 - - -, f 8;
+#X obj 659 186 hsl 128 15 -1000 1000 0 0 empty empty empty -2 -8 0
 10 -228856 -1 -1 0 1;
 #X obj 477 272 else/out~;
 #X text 378 58 Negative values of t60 generate negative feedback of
@@ -104,9 +104,9 @@ the same absolute value as its absolute input., f 60;
 #X text 36 27 An "All Pass Filter" passes all frequencies without altering
 their gain \, but affects the phase response., f 44;
 #X text 36 73 Here's All Pass filter diagram and equation:;
-#X text 623 185 decay time (ms);
-#X text 653 209 (t60);
-#X text 511 208 (D);
+#X text 679 185 decay time (ms);
+#X text 719 209 (t60);
+#X text 539 208 (D);
 #X text 36 291 For a delay time of 0 \, The object is bypassed!;
 #X msg 415 205 size \$1;
 #X msg 425 180 100;
@@ -114,22 +114,22 @@ their gain \, but affects the phase response., f 44;
 #X text 378 138 change delay size:, f 13;
 #X text 378 89 The [apass2~] object performs a simple linear interpolation
 for delay time that falls in between sample values.;
-#X obj 477 234 else/apass2~ 100 1000;
 #X obj 477 176 else/impseq~;
 #X text 377 14 By default \, the 'a' coefficient is calculated in [apass2~]
 from the decay time parameter (t60) and delay time (D) according to
 the expression: a = exp(log(0.001) * D/t60).;
 #X text 172 238 a = gain coefficient;
-#X connect 1 0 56 1;
-#X connect 2 0 56 2;
+#X obj 477 234 else/allpass.rev~ 100 1000;
+#X connect 1 0 59 1;
+#X connect 2 0 59 2;
 #X connect 3 0 2 0;
-#X connect 6 0 57 0;
-#X connect 51 0 56 0;
+#X connect 6 0 56 0;
+#X connect 51 0 59 0;
 #X connect 52 0 51 0;
 #X connect 53 0 51 0;
-#X connect 56 0 4 0;
-#X connect 56 0 4 1;
-#X connect 57 0 56 0;
+#X connect 56 0 59 0;
+#X connect 59 0 4 0;
+#X connect 59 0 4 1;
 #X restore 438 287 pd Details and \; Filter Equation;
 #X text 156 411 float/signal - delay time (im ms), f 54;
 #X text 156 436 float/signal - decay time (in ms), f 54;
@@ -139,14 +139,8 @@ the expression: a = exp(log(0.001) * D/t60).;
 #X text 240 354 - changes the maximum delay size (in ms), f 42;
 #X text 147 354 size <float>;
 #X text 198 371 clear - clears the delay buffer, f 48;
-#X obj 210 162 else/pulse~ 1 0.25;
-#X obj 195 232 else/apass2~ 100 1000;
-#X obj 256 208 sig~ 10;
-#X text 61 89 Use [apass2~] for allpass filtering \, delay effects
-and reverberation. By default \, you can set a delay time and a reverberation/decay
-time in ms ("t60") \, which is the time the impulse takes to fall 60dB
-in energy (but you can change this parameter to a gain coefficient).
-, f 69;
+#X obj 193 162 else/pulse~ 1 0.25;
+#X obj 264 208 sig~ 10;
 #X text 240 388 - non-0 sets to gain mode;
 #X text 111 529 3) float - non-0 sets to gain mode (default 0), f
 60;
@@ -157,26 +151,32 @@ in energy (but you can change this parameter to a gain coefficient).
 #X obj 287 230 else/out~;
 #X obj 219 130 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 287 187 else/apass2~ 10 0.9 1;
 #X msg 219 153 gain \$1;
 #X text 48 38 By default \, the reverberation/decay time is in "t60"
 \, which is the time in ms that the impulse takes to fall 60dB in energy.
 You can change this parameter to a gain coefficient value with the
 third argument \, where a non zero value sets to "gain mode". You can
 also change that with the "gain" message., f 72;
-#X connect 0 0 4 0;
+#X obj 287 187 else/allpass.rev~ 10 0.9 1;
+#X connect 0 0 6 0;
 #X connect 1 0 0 0;
-#X connect 3 0 5 0;
-#X connect 4 0 2 0;
-#X connect 4 0 2 1;
-#X connect 5 0 4 0;
+#X connect 3 0 4 0;
+#X connect 4 0 6 0;
+#X connect 6 0 2 0;
+#X connect 6 0 2 1;
 #X restore 459 262 pd gain mode;
 #X text 146 388 gain <float>;
+#X obj 175 232 else/allpass.rev~ 100 1000;
+#X text 61 89 Use [allpass.rev~] as a reverberator \, allpass filter
+and delay. By default \, you can set a delay time and a reverberation/decay
+time in ms ("t60") \, which is the time the impulse takes to fall 60dB
+in energy (but you can change this parameter to a gain coefficient).
+, f 67;
 #X connect 9 0 10 0;
-#X connect 10 0 38 0;
-#X connect 24 0 38 2;
-#X connect 25 0 39 0;
+#X connect 10 0 43 0;
+#X connect 24 0 43 2;
+#X connect 25 0 38 0;
 #X connect 37 0 10 1;
-#X connect 38 0 11 1;
-#X connect 38 0 11 0;
-#X connect 39 0 38 1;
+#X connect 38 0 43 1;
+#X connect 43 0 11 1;
+#X connect 43 0 11 0;

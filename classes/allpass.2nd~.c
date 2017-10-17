@@ -6,7 +6,7 @@
 #define PI M_PI
 #define HALF_LOG2 log(2)/2
 
-typedef struct _apass {
+typedef struct _allpass_2nd {
     t_object    x_obj;
     t_int       x_n;
     t_inlet    *x_inlet_freq;
@@ -19,13 +19,13 @@ typedef struct _apass {
     double  x_xnm2;
     double  x_ynm1;
     double  x_ynm2;
-    } t_apass;
+    } t_allpass_2nd;
 
-static t_class *apass_class;
+static t_class *allpass_2nd_class;
 
-static t_int *apass_perform(t_int *w)
+static t_int *allpass_2nd_perform(t_int *w)
 {
-    t_apass *x = (t_apass *)(w[1]);
+    t_allpass_2nd *x = (t_allpass_2nd *)(w[1]);
     int nblock = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
@@ -88,43 +88,43 @@ static t_int *apass_perform(t_int *w)
     return (w + 7);
 }
 
-static void apass_dsp(t_apass *x, t_signal **sp)
+static void allpass_2nd_dsp(t_allpass_2nd *x, t_signal **sp)
 {
     x->x_nyq = sp[0]->s_sr / 2;
-    dsp_add(apass_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
+    dsp_add(allpass_2nd_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void apass_clear(t_apass *x)
+static void allpass_2nd_clear(t_allpass_2nd *x)
 {
     x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
 }
 
-static void apass_bypass(t_apass *x, t_floatarg f)
+static void allpass_2nd_bypass(t_allpass_2nd *x, t_floatarg f)
 {
     x->x_bypass = (int)(f != 0);
 }
 
-static void apass_bw(t_apass *x)
+static void allpass_2nd_bw(t_allpass_2nd *x)
 {
     x->x_bw = 1;
 }
 
-static void apass_q(t_apass *x)
+static void allpass_2nd_q(t_allpass_2nd *x)
 {
     x->x_bw = 0;
 }
 
-static void *apass_tilde_new(t_symbol *s, int argc, t_atom *argv)
+static void *allpass_2nd_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
-    t_apass *x = (t_apass *)pd_new(apass_class);
+    t_allpass_2nd *x = (t_allpass_2nd *)pd_new(allpass_2nd_class);
     return (x);
 }
 
 
-static void *apass_new(t_symbol *s, int argc, t_atom *argv)
+static void *allpass_2nd_new(t_symbol *s, int argc, t_atom *argv)
 {
-    t_apass *x = (t_apass *)pd_new(apass_class);
+    t_allpass_2nd *x = (t_allpass_2nd *)pd_new(allpass_2nd_class);
     float freq = 0;
     float reson = 1;
     int bw = 0;
@@ -176,18 +176,18 @@ static void *apass_new(t_symbol *s, int argc, t_atom *argv)
 
     return (x);
     errstate:
-        pd_error(x, "apass~: improper args");
+        pd_error(x, "allpass_2nd~: improper args");
         return NULL;
 }
 
-void apass_tilde_setup(void)
+void setup_allpass0x2e2nd_tilde(void)
 {
-    apass_class = class_new(gensym("apass~"), (t_newmethod)apass_new, 0,
-        sizeof(t_apass), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(apass_class, (t_method)apass_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(apass_class, nullfn, gensym("signal"), 0);
-    class_addmethod(apass_class, (t_method)apass_clear, gensym("clear"), 0);
-    class_addmethod(apass_class, (t_method)apass_bypass, gensym("bypass"), A_DEFFLOAT, 0);
-    class_addmethod(apass_class, (t_method)apass_bw, gensym("bw"), 0);
-    class_addmethod(apass_class, (t_method)apass_q, gensym("q"), 0);
+    allpass_2nd_class = class_new(gensym("allpass.2nd~"), (t_newmethod)allpass_2nd_new, 0,
+        sizeof(t_allpass_2nd), CLASS_DEFAULT, A_GIMME, 0);
+    class_addmethod(allpass_2nd_class, (t_method)allpass_2nd_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(allpass_2nd_class, nullfn, gensym("signal"), 0);
+    class_addmethod(allpass_2nd_class, (t_method)allpass_2nd_clear, gensym("clear"), 0);
+    class_addmethod(allpass_2nd_class, (t_method)allpass_2nd_bypass, gensym("bypass"), A_DEFFLOAT, 0);
+    class_addmethod(allpass_2nd_class, (t_method)allpass_2nd_bw, gensym("bw"), 0);
+    class_addmethod(allpass_2nd_class, (t_method)allpass_2nd_q, gensym("q"), 0);
 }

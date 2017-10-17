@@ -280,7 +280,7 @@ void bicoeff_off(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
     bicoeff_bang(x);
 }
 
-void bicoeff_apass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
+void bicoeff_allpass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -542,7 +542,7 @@ static void *bicoeff_new(t_symbol *s, int ac, t_atom *av){
     while(ac > 0){
         if (av -> a_type == A_SYMBOL){
             t_symbol *curarg = atom_getsymbolarg(0, ac, av);
-            if(strcmp(curarg->s_name, "apass")==0){
+            if(strcmp(curarg->s_name, "allpass")==0){
                 type = 1;
                 ac--;
                 av++;
@@ -641,5 +641,5 @@ void bicoeff_setup(void){
     class_addmethod(bicoeff_class, (t_method) bicoeff_eq, gensym("eq"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method) bicoeff_lowshelf, gensym("lowshelf"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method) bicoeff_highshelf, gensym("highshelf"), A_GIMME, 0);
-    class_addmethod(bicoeff_class, (t_method) bicoeff_apass, gensym("apass"), A_GIMME, 0);
+    class_addmethod(bicoeff_class, (t_method) bicoeff_allpass, gensym("allpass"), A_GIMME, 0);
 }
