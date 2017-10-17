@@ -54,7 +54,7 @@ AUDIO PROCESSING: [4]
 - [fbdelay~]
 
 REVERB: [1]
-- [dattorro~]
+- [plate~]
 
 PHYSICAL MODELLING: [1]
 - [pluck~]
