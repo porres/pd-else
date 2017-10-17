@@ -17,6 +17,7 @@ typedef struct _apass2
     t_inlet         *x_alet;
     t_outlet        *x_outlet;
     int             x_sr;
+    int             x_t60;
 // pointers to the delay bufs
     double          * x_ybuf;
     double          x_ffstack[apass2_STACK];
@@ -139,10 +140,13 @@ static t_int *apass2_perform(t_int *w){
 // now get those delayed vals
         double delx = apass2_readmsdelay(x, x->x_xbuf, delms);
         double dely = apass2_readmsdelay(x, x->x_ybuf, delms);
-        if (ain[i] == 0)
-            ain[i] = 0;
-        else
-            ain[i] = copysign(exp(log(0.001) * delms/fabs(ain[i])), ain[i]);
+        if(x->x_t60)
+            {
+            if (ain[i] == 0)
+                ain[i] = 0;
+            else
+                ain[i] = copysign(exp(log(0.001) * delms/fabs(ain[i])), ain[i]);
+            }
 // y[n] = -a * x[n] + x[n-d] + a * y[n-d]
         if (delms == 0)
             output = input;
@@ -174,15 +178,63 @@ static void apass2_size(t_apass2 *x, t_floatarg f1){
     apass2_sz(x);
 }
 
-static void *apass2_new(t_floatarg f1, t_floatarg f2){
+static void apass2_t60(t_apass2 *x, t_floatarg f1){
+    x->x_t60 = f1 != 0;
+}
+
+static void *apass2_new(t_symbol *s, int argc, t_atom *argv){
     t_apass2 *x = (t_apass2 *)pd_new(apass2_class);
     x->x_sr = sys_getsr();
     x->x_alloc = 0;
+    x->x_t60 = 1;
     x->x_sz = apass2_STACK;
 // clear out stack bufs, set pointer to stack
     x->x_ybuf = x->x_fbstack;
     x->x_xbuf = x->x_ffstack;
     apass2_clear(x);
+/////////////////////////////////////////////////////////////////////////////////////
+    float init_maxdelay;
+    float init_coeff;
+    int argnum = 0;
+    while(argc > 0)
+    {
+        if(argv -> a_type == A_FLOAT)
+        { //if current argument is a float
+            t_float argval = atom_getfloatarg(0, argc, argv);
+            switch(argnum)
+            {
+                case 0:
+                    init_maxdelay = argval;
+                    break;
+                case 1:
+                    init_coeff = argval != 0;
+                    break;
+                case 2:
+                    x->x_t60 = argval != 0;
+                    break;
+                default:
+                    break;
+            };
+            argnum++;
+            argc--;
+            argv++;
+        }
+        else if (argv -> a_type == A_SYMBOL)
+        {
+            t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
+            if(strcmp(curarg->s_name, "-bw")==0)
+            {
+                bw = 1;
+                argc -= 1;
+                argv += 1;
+            }
+            else
+            {
+                goto errstate;
+            };
+        }
+    };
+/////////////////////////////////////////////////////////////////////////////////////
     if (f1 < 0)
         f1 = 0;
     x->x_maxdel = f1;
@@ -195,9 +247,12 @@ static void *apass2_new(t_floatarg f1, t_floatarg f2){
     x->x_dellet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_dellet, f1);
     x->x_alet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_alet, f2);
+    pd_float((t_pd *)x->x_alet, init_coeff);
     x->x_outlet = outlet_new((t_object *)x, &s_signal);
     return (x);
+errstate:
+    pd_error(x, "apass2~: improper args");
+    return NULL;
 }
 
 static void * apass2_free(t_apass2 *x){
@@ -214,9 +269,10 @@ static void * apass2_free(t_apass2 *x){
 void apass2_tilde_setup(void)
 {
     apass2_class = class_new(gensym("apass2~"), (t_newmethod)apass2_new,
-        (t_method)apass2_free, sizeof(t_apass2), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
+        (t_method)apass2_free, sizeof(t_apass2), 0, A_GIMME, 0);
     class_addmethod(apass2_class, nullfn, gensym("signal"), 0);
     class_addmethod(apass2_class, (t_method)apass2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(apass2_class, (t_method)apass2_clear, gensym("clear"), 0);
     class_addmethod(apass2_class, (t_method)apass2_size, gensym("size"), A_DEFFLOAT, 0);
+    class_addmethod(apass2_class, (t_method)apass2_t60, gensym("t60"), A_DEFFLOAT, 0);
 }

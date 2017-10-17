@@ -1,4 +1,4 @@
-#N canvas 746 101 559 546 10;
+#N canvas 746 101 575 541 10;
 #X obj 2 502 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 2 319 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -133,9 +133,9 @@ for delay time that falls in between sample values.;
 #X restore 442 276 pd Details and \; Filter Equation;
 #X text 164 378 float/signal - delay time (im ms), f 54;
 #X text 164 403 float/signal - decay time (in ms), f 54;
-#X text 152 462 1) float - maximum and initial delay time in ms (default
+#X text 119 462 1) float - maximum and initial delay time in ms (default
 0), f 60;
-#X text 152 479 2) float - decay time in ms (default 0), f 60;
+#X text 119 479 2) float - decay time in ms (default 0), f 60;
 #X text 242 343 - changes the maximum delay size (in ms), f 41;
 #X text 163 343 size <float>;
 #X obj 248 196 sig~;
