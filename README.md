@@ -2,7 +2,7 @@ EL Locus Solus' Else library for Pd
 
 ELSE - EL Locus Solus' Externals
 
-Version 1.0 beta-3 (Release date: unreleased)
+Version 1.0 beta-3 (Release date: October 18th 2017)
 
 The project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
 
