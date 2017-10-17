@@ -1,15 +1,15 @@
 #N canvas 223 59 573 648 10;
-#X obj 3 302 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 290 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 446 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 434 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 505 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 493 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 92 455 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 92 443 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 133 310 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 133 298 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 605 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 593 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 3 cnv 15 301 42 empty empty dattorro~ 20 20 2 37 -233017 -1
 0;
@@ -38,10 +38,10 @@
 #X obj 261 40 cnv 4 4 4 empty empty model 0 28 2 18 -233017 -1 0;
 #X obj 199 40 cnv 4 4 4 empty empty reverb 0 28 2 18 -233017 -1 0;
 #X obj 92 40 cnv 4 4 4 empty empty plate 0 28 2 18 -233017 -1 0;
-#X text 157 312 signal;
-#X text 216 312 - input signal;
-#X text 157 455 signal;
-#X text 212 455 - left channel output;
+#X text 157 300 signal;
+#X text 216 300 - input signal;
+#X text 157 443 signal;
+#X text 212 443 - left channel output;
 #X obj 142 40 cnv 4 4 4 empty empty stereo 0 28 2 18 -233017 -1 0;
 #X obj 144 224 else/out~;
 #X obj 134 147 else/sampler~ violin.wav 1 1;
@@ -50,33 +50,26 @@
 #X obj 303 206 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 364 206 dry/wet;
-#X obj 92 476 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 92 464 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 157 475 signal;
-#X text 212 475 - right channel output;
-#X obj 133 332 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 157 463 signal;
+#X text 212 463 - right channel output;
+#X obj 133 320 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 133 354 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 133 342 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X obj 133 375 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 133 363 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X obj 133 397 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
+#X obj 133 385 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
 ;
-#X obj 133 419 cnv 17 3 17 empty empty 5 5 9 0 16 -228856 -162280 0
+#X obj 133 407 cnv 17 3 17 empty empty 5 5 9 0 16 -228856 -162280 0
 ;
-#X text 163 334 float;
-#X text 163 357 float;
-#X text 163 379 float;
-#X text 163 399 float;
-#X text 163 422 float;
-#X text 216 422 - dry/wet (0 - 100);
-#X text 159 515 1) float - pre delay;
-#X text 159 532 2) float - bandwidth;
-#X text 159 549 3) float - damping;
-#X text 159 566 4) float - feedback gain;
-#X text 159 583 5) float - dry/wet;
-#X text 78 91 [dattoro~] is a reverb based on a patch by Tom Erbe implementing
-the Dattorro plate stereo reverb model.;
+#X text 163 322 float;
+#X text 163 345 float;
+#X text 163 367 float;
+#X text 163 387 float;
+#X text 163 410 float;
+#X text 216 410 - dry/wet (0 - 100);
 #N canvas 534 67 918 532 example 0;
 #X obj 330 266 catch~ \$0-input;
 #X obj 721 280 throw~ \$0-input;
@@ -102,7 +95,7 @@ the Dattorro plate stereo reverb model.;
 #X obj 521 305 hsl 128 15 0 1 0 0 empty fbgain empty -2 -8 0 10 -228856
 -1 -1 10160 1;
 #X floatatom 518 328 5 0 0 0 - - -, f 5;
-#X obj 600 339 hsl 128 15 0 100 0 0 empty drywet empty -2 -8 0 10 -228856
+#X obj 600 339 hsl 128 15 0 1 0 0 empty drywet empty -2 -8 0 10 -228856
 -1 -1 6350 1;
 #X floatatom 597 366 5 0 0 0 - - -, f 5;
 #X obj 442 437 else/out~;
@@ -122,7 +115,7 @@ the Dattorro plate stereo reverb model.;
 #N canvas 1110 429 211 203 init 0;
 #X obj 41 42 loadbang;
 #X msg 41 71 \; predelayms 30 \; bandwidth 0.6 \; damping 0.25 \; fbgain
-0.8 \; drywet 50;
+0.8 \; drywet 0.5;
 #X connect 0 0 1 0;
 #X restore 362 383 pd init;
 #X obj 174 178 else/decay~ 200;
@@ -226,11 +219,18 @@ the Dattorro plate stereo reverb model.;
 #X connect 49 0 22 0;
 #X connect 49 1 22 1;
 #X restore 443 247 pd example;
-#X text 216 334 - pre delay (0 - 200);
-#X text 216 357 - bandwidth (0 - 1);
-#X text 216 379 - damping (0 - 1);
-#X text 216 398 - feedback gain (0 - 1);
-#X obj 134 179 else/dattorro~ 30 0.6 0.25 0.8 90, f 17;
+#X text 216 322 - pre delay (0 - 200);
+#X text 216 367 - damping (0 - 1);
+#X text 216 386 - feedback gain (0 - 1);
+#X text 78 91 [dattoro~] is a reverb asbtraction based on a patch by
+Tom Erbe implementing the Dattorro plate stereo reverb model.;
+#X text 216 345 - cutoff (0 - 1);
+#X text 159 503 1) float - pre delay (0 - 200), f 36;
+#X text 159 520 2) float - cutoff (0 - 1);
+#X text 159 537 3) float - damping (0 - 1);
+#X text 159 554 4) float - feedback gain (0 - 1);
+#X text 159 571 5) float - dry/wet (0 - 1);
+#X obj 134 179 else/dattorro~ 30 0.6 0.25 0.8 0.9, f 17;
 #X connect 26 0 55 0;
 #X connect 27 0 28 0;
 #X connect 28 0 55 5;
