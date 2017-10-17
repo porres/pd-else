@@ -5,12 +5,12 @@
 #include <stdlib.h>
 #include "m_pd.h"
 
-#define apass2_STACK 48000 // stack buf size, 1 sec at 48k
-#define apass2_MAXD 4294967294 // max delay = 2**32 - 2
+#define allpass_rev_STACK 48000 // stack buf size, 1 sec at 48k
+#define allpass_rev_MAXD 4294967294 // max delay = 2**32 - 2
 
-static t_class *apass2_class;
+static t_class *allpass_rev_class;
 
-typedef struct _apass2
+typedef struct _allpass_rev
 {
     t_object        x_obj;
     t_inlet         *x_dellet;
@@ -20,16 +20,16 @@ typedef struct _apass2
     int             x_gain;
 // pointers to the delay bufs
     double          * x_ybuf;
-    double          x_ffstack[apass2_STACK];
+    double          x_ffstack[allpass_rev_STACK];
     double          * x_xbuf;
-    double          x_fbstack[apass2_STACK];
+    double          x_fbstack[allpass_rev_STACK];
     int             x_alloc; // if we are using allocated bufs
     unsigned int    x_sz; // actual size of each delay buffer
     t_float         x_maxdel;  // maximum delay in ms
     unsigned int    x_wh;     // writehead
-} t_apass2;
+} t_allpass_rev;
 
-static void apass2_clear(t_apass2 *x){
+static void allpass_rev_clear(t_allpass_rev *x){
     unsigned int i;
     for(i=0; i<x->x_sz; i++){
         x->x_xbuf[i] = 0.;
@@ -38,7 +38,7 @@ static void apass2_clear(t_apass2 *x){
     x->x_wh = 0;
 }
 
-static void apass2_sz(t_apass2 *x){
+static void allpass_rev_sz(t_allpass_rev *x){
     // helper function to deal with allocation issues if needed
     // ie if wanted size x->x_maxdel is bigger than stack, allocate
     
@@ -52,9 +52,9 @@ static void apass2_sz(t_apass2 *x){
     
     if(newsz < 0)
         newsz = 0;
-    else if(newsz > apass2_MAXD)
-        newsz = apass2_MAXD;
-    if(!alloc && newsz > apass2_STACK){
+    else if(newsz > allpass_rev_MAXD)
+        newsz = allpass_rev_MAXD;
+    if(!alloc && newsz > allpass_rev_STACK){
         x->x_xbuf = (double *)malloc(sizeof(double)*newsz);
         x->x_ybuf = (double *)malloc(sizeof(double)*newsz);
         x->x_alloc = 1;
@@ -65,18 +65,18 @@ static void apass2_sz(t_apass2 *x){
         x->x_ybuf = (double *)realloc(x->x_ybuf, sizeof(double)*newsz);
         x->x_sz = newsz;
     }
-    else if(alloc && newsz < apass2_STACK){
+    else if(alloc && newsz < allpass_rev_STACK){
         free(x->x_xbuf);
         free(x->x_ybuf);
-        x->x_sz = apass2_STACK;
+        x->x_sz = allpass_rev_STACK;
         x->x_xbuf = x->x_ffstack;
         x->x_ybuf = x->x_fbstack;
         x->x_alloc = 0;
     };
-    apass2_clear(x);
+    allpass_rev_clear(x);
 }
 
-static double apass2_getlin(double tab[], unsigned int sz, double idx){
+static double allpass_rev_getlin(double tab[], unsigned int sz, double idx){
     // linear interpolated reader, copied from Derek Kwan's library
     double output;
     unsigned int tabphase1 = (unsigned int)idx;
@@ -98,7 +98,7 @@ static double apass2_getlin(double tab[], unsigned int sz, double idx){
     return output;
 }
 
-static double apass2_readmsdelay(t_apass2 *x, double arr[], t_float ms){
+static double allpass_rev_readmsdelay(t_allpass_rev *x, double arr[], t_float ms){
     //helper func, basically take desired ms delay, convert to samp, read from arr[]
     
     //eventual reading head
@@ -112,12 +112,12 @@ static double apass2_readmsdelay(t_apass2 *x, double arr[], t_float ms){
         rh -= (double)x->x_sz;
     };
     //now to read from the buffer!
-    double output = apass2_getlin(arr, x->x_sz, rh);
+    double output = allpass_rev_getlin(arr, x->x_sz, rh);
     return output;
 }
 
-static t_int *apass2_perform(t_int *w){
-    t_apass2 *x = (t_apass2 *)(w[1]);
+static t_int *allpass_rev_perform(t_int *w){
+    t_allpass_rev *x = (t_allpass_rev *)(w[1]);
     int n = (int)(w[2]);
     t_float *xin = (t_float *)(w[3]);
     t_float *din = (t_float *)(w[4]);
@@ -138,8 +138,8 @@ static t_int *apass2_perform(t_int *w){
         else if(delms > x->x_maxdel)
             delms = x->x_maxdel;
 // now get those delayed vals
-        double delx = apass2_readmsdelay(x, x->x_xbuf, delms);
-        double dely = apass2_readmsdelay(x, x->x_ybuf, delms);
+        double delx = allpass_rev_readmsdelay(x, x->x_xbuf, delms);
+        double dely = allpass_rev_readmsdelay(x, x->x_ybuf, delms);
         if(!x->x_gain)
             {
             if (ain[i] == 0)
@@ -159,39 +159,39 @@ static t_int *apass2_perform(t_int *w){
     return (w + 7);
 }
 
-static void apass2_dsp(t_apass2 *x, t_signal **sp)
+static void allpass_rev_dsp(t_allpass_rev *x, t_signal **sp)
 {
     int sr = sp[0]->s_sr;
     if(sr != x->x_sr){
 // if new sample rate isn't old sample rate, need to realloc
         x->x_sr = sr;
-        apass2_sz(x);
+        allpass_rev_sz(x);
     };
-    dsp_add(apass2_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
+    dsp_add(allpass_rev_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
         sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void apass2_size(t_apass2 *x, t_floatarg f1){
+static void allpass_rev_size(t_allpass_rev *x, t_floatarg f1){
     if(f1 < 0)
         f1 = 0;
     x->x_maxdel = f1;
-    apass2_sz(x);
+    allpass_rev_sz(x);
 }
 
-static void apass2_gain(t_apass2 *x, t_floatarg f1){
+static void allpass_rev_gain(t_allpass_rev *x, t_floatarg f1){
     x->x_gain = f1 != 0;
 }
 
-static void *apass2_new(t_symbol *s, int argc, t_atom *argv){
-    t_apass2 *x = (t_apass2 *)pd_new(apass2_class);
+static void *allpass_rev_new(t_symbol *s, int argc, t_atom *argv){
+    t_allpass_rev *x = (t_allpass_rev *)pd_new(allpass_rev_class);
     x->x_sr = sys_getsr();
     x->x_alloc = 0;
     x->x_gain = 0;
-    x->x_sz = apass2_STACK;
+    x->x_sz = allpass_rev_STACK;
 // clear out stack bufs, set pointer to stack
     x->x_ybuf = x->x_fbstack;
     x->x_xbuf = x->x_ffstack;
-    apass2_clear(x);
+    allpass_rev_clear(x);
 /////////////////////////////////////////////////////////////////////////////////////
     float init_maxdelay;
     float init_coeff;
@@ -224,7 +224,7 @@ static void *apass2_new(t_symbol *s, int argc, t_atom *argv){
         init_maxdelay = 0;
     x->x_maxdel = init_maxdelay;
 // ship off to the helper method to deal with allocation if necessary
-    apass2_sz(x);
+    allpass_rev_sz(x);
 // boundschecking
 // this is 1/44.1 (1/(sr*0.001) rounded up, good enough?
     
@@ -236,11 +236,11 @@ static void *apass2_new(t_symbol *s, int argc, t_atom *argv){
     x->x_outlet = outlet_new((t_object *)x, &s_signal);
     return (x);
 errstate:
-    pd_error(x, "apass2~: improper args");
+    pd_error(x, "allpass_rev~: improper args");
     return NULL;
 }
 
-static void * apass2_free(t_apass2 *x){
+static void * allpass_rev_free(t_allpass_rev *x){
     if(x->x_alloc){
         free(x->x_xbuf);
         free(x->x_ybuf);
@@ -251,13 +251,13 @@ static void * apass2_free(t_apass2 *x){
     return (void *)x;
 }
 
-void apass2_tilde_setup(void)
+void setup_allpass0x2erev_tilde(void)
 {
-    apass2_class = class_new(gensym("apass2~"), (t_newmethod)apass2_new,
-        (t_method)apass2_free, sizeof(t_apass2), 0, A_GIMME, 0);
-    class_addmethod(apass2_class, nullfn, gensym("signal"), 0);
-    class_addmethod(apass2_class, (t_method)apass2_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(apass2_class, (t_method)apass2_clear, gensym("clear"), 0);
-    class_addmethod(apass2_class, (t_method)apass2_size, gensym("size"), A_DEFFLOAT, 0);
-    class_addmethod(apass2_class, (t_method)apass2_gain, gensym("gain"), A_DEFFLOAT, 0);
+    allpass_rev_class = class_new(gensym("allpass.rev~"), (t_newmethod)allpass_rev_new,
+        (t_method)allpass_rev_free, sizeof(t_allpass_rev), 0, A_GIMME, 0);
+    class_addmethod(allpass_rev_class, nullfn, gensym("signal"), 0);
+    class_addmethod(allpass_rev_class, (t_method)allpass_rev_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(allpass_rev_class, (t_method)allpass_rev_clear, gensym("clear"), 0);
+    class_addmethod(allpass_rev_class, (t_method)allpass_rev_size, gensym("size"), A_DEFFLOAT, 0);
+    class_addmethod(allpass_rev_class, (t_method)allpass_rev_gain, gensym("gain"), A_DEFFLOAT, 0);
 }
