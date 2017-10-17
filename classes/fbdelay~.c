@@ -5,12 +5,12 @@
 #include <stdlib.h>
 #include "m_pd.h"
 
-#define FBCOMB_STACK 48000 // stack buf size, 1 sec at 48k
-#define FBCOMB_MAXD 4294967294 // max delay = 2**32 - 2
+#define fbdelay_STACK 48000 // stack buf size, 1 sec at 48k
+#define fbdelay_MAXD 4294967294 // max delay = 2**32 - 2
 
-static t_class *fbcomb_class;
+static t_class *fbdelay_class;
 
-typedef struct _fbcomb
+typedef struct _fbdelay
 {
     t_object        x_obj;
     t_inlet         *x_dellet;
@@ -20,14 +20,14 @@ typedef struct _fbcomb
     int             x_gain;
     // pointers to the delay buf
     double          * x_ybuf;
-    double          x_fbstack[FBCOMB_STACK];
+    double          x_fbstack[fbdelay_STACK];
     int             x_alloc; // if we are using allocated buf
     unsigned int    x_sz; // actual size of each delay buffer
     t_float         x_maxdel;  // maximum delay in ms
     unsigned int    x_wh;     // writehead
-} t_fbcomb;
+} t_fbdelay;
 
-static void fbcomb_clear(t_fbcomb *x){
+static void fbdelay_clear(t_fbdelay *x){
     unsigned int i;
     for(i=0; i<x->x_sz; i++){
         x->x_ybuf[i] = 0.;
@@ -35,7 +35,7 @@ static void fbcomb_clear(t_fbcomb *x){
     x->x_wh = 0;
 }
 
-static void fbcomb_sz(t_fbcomb *x){
+static void fbdelay_sz(t_fbdelay *x){
     // helper function to deal with allocation issues if needed
     // ie if wanted size x->x_maxdel is bigger than stack, allocate
     
@@ -49,9 +49,9 @@ static void fbcomb_sz(t_fbcomb *x){
     
     if(newsz < 0)
         newsz = 0;
-    else if(newsz > FBCOMB_MAXD)
-        newsz = FBCOMB_MAXD;
-    if(!alloc && newsz > FBCOMB_STACK){
+    else if(newsz > fbdelay_MAXD)
+        newsz = fbdelay_MAXD;
+    if(!alloc && newsz > fbdelay_STACK){
         x->x_ybuf = (double *)malloc(sizeof(double)*newsz);
         x->x_alloc = 1;
         x->x_sz = newsz;
@@ -60,16 +60,16 @@ static void fbcomb_sz(t_fbcomb *x){
         x->x_ybuf = (double *)realloc(x->x_ybuf, sizeof(double)*newsz);
         x->x_sz = newsz;
     }
-    else if(alloc && newsz < FBCOMB_STACK){
+    else if(alloc && newsz < fbdelay_STACK){
         free(x->x_ybuf);
-        x->x_sz = FBCOMB_STACK;
+        x->x_sz = fbdelay_STACK;
         x->x_ybuf = x->x_fbstack;
         x->x_alloc = 0;
     };
-    fbcomb_clear(x);
+    fbdelay_clear(x);
 }
 
-static double fbcomb_getlin(double tab[], unsigned int sz, double idx){
+static double fbdelay_getlin(double tab[], unsigned int sz, double idx){
     // linear interpolated reader, copied from Derek Kwan's library
     double output;
     unsigned int tabphase1 = (unsigned int)idx;
@@ -91,7 +91,7 @@ static double fbcomb_getlin(double tab[], unsigned int sz, double idx){
     return output;
 }
 
-static double fbcomb_readmsdelay(t_fbcomb *x, double arr[], t_float ms){
+static double fbdelay_readmsdelay(t_fbdelay *x, double arr[], t_float ms){
     //helper func, basically take desired ms delay, convert to samp, read from arr[]
     
     //eventual reading head
@@ -105,12 +105,12 @@ static double fbcomb_readmsdelay(t_fbcomb *x, double arr[], t_float ms){
         rh -= (double)x->x_sz;
     };
     //now to read from the buffer!
-    double output = fbcomb_getlin(arr, x->x_sz, rh);
+    double output = fbdelay_getlin(arr, x->x_sz, rh);
     return output;
 }
 
-static t_int *fbcomb_perform(t_int *w){
-    t_fbcomb *x = (t_fbcomb *)(w[1]);
+static t_int *fbdelay_perform(t_int *w){
+    t_fbdelay *x = (t_fbdelay *)(w[1]);
     int n = (int)(w[2]);
     t_float *xin = (t_float *)(w[3]);
     t_float *din = (t_float *)(w[4]);
@@ -124,7 +124,7 @@ static t_int *fbcomb_perform(t_int *w){
         t_float delms = din[i];
         if(delms > x->x_maxdel)
             delms = x->x_maxdel;
-        double y_n = fbcomb_readmsdelay(x, x->x_ybuf, delms); // get delayed vals
+        double y_n = fbdelay_readmsdelay(x, x->x_ybuf, delms); // get delayed vals
         if(!x->x_gain){
             if (ain[i] == 0)
                 ain[i] = 0;
@@ -139,42 +139,42 @@ static t_int *fbcomb_perform(t_int *w){
     return (w + 7);
 }
 
-static void fbcomb_dsp(t_fbcomb *x, t_signal **sp)
+static void fbdelay_dsp(t_fbdelay *x, t_signal **sp)
 {
     int sr = sp[0]->s_sr;
     if(sr != x->x_sr){
         // if new sample rate isn't old sample rate, need to realloc
         x->x_sr = sr;
-        fbcomb_sz(x);
+        fbdelay_sz(x);
     };
-    dsp_add(fbcomb_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
+    dsp_add(fbdelay_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void fbcomb_size(t_fbcomb *x, t_floatarg f1){
+static void fbdelay_size(t_fbdelay *x, t_floatarg f1){
     if(f1 < 0)
         f1 = 0;
     x->x_maxdel = f1;
-    fbcomb_sz(x);
+    fbdelay_sz(x);
 }
 
-static void apass2_gain(t_apass2 *x, t_floatarg f1){
+static void fbdelay_gain(t_fbdelay *x, t_floatarg f1){
     x->x_gain = f1 != 0;
 }
 
-static void *fbcomb_new(t_floatarg f1, t_floatarg f2, t_floatarg f3){
-    t_fbcomb *x = (t_fbcomb *)pd_new(fbcomb_class);
+static void *fbdelay_new(t_floatarg f1, t_floatarg f2, t_floatarg f3){
+    t_fbdelay *x = (t_fbdelay *)pd_new(fbdelay_class);
     x->x_sr = sys_getsr();
     x->x_alloc = 0;
-    x->x_sz = FBCOMB_STACK;
+    x->x_sz = fbdelay_STACK;
     // clear out stack buf, set pointer to stack
     x->x_ybuf = x->x_fbstack;
-    fbcomb_clear(x);
+    fbdelay_clear(x);
     if (f1 < 0)
         f1 = 0;
     x->x_maxdel = f1;
     // ship off to the helper method to deal with allocation if necessary
-    fbcomb_sz(x);
+    fbdelay_sz(x);
     // boundschecking
     // this is 1/44.1 (1/(sr*0.001) rounded up, good enough?
     x->x_gain = f3 != 0;
@@ -187,7 +187,7 @@ static void *fbcomb_new(t_floatarg f1, t_floatarg f2, t_floatarg f3){
     return (x);
 }
 
-static void * fbcomb_free(t_fbcomb *x){
+static void * fbdelay_free(t_fbdelay *x){
     if(x->x_alloc)
         free(x->x_ybuf);
     inlet_free(x->x_dellet);
@@ -196,13 +196,14 @@ static void * fbcomb_free(t_fbcomb *x){
     return (void *)x;
 }
 
-void fbcomb_tilde_setup(void)
+void fbdelay_tilde_setup(void)
 {
-    fbcomb_class = class_new(gensym("fbcomb~"), (t_newmethod)fbcomb_new,
-                              (t_method)fbcomb_free, sizeof(t_fbcomb), 0, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(fbcomb_class, nullfn, gensym("signal"), 0);
-    class_addmethod(fbcomb_class, (t_method)fbcomb_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(fbcomb_class, (t_method)fbcomb_clear, gensym("clear"), 0);
-    class_addmethod(fbcomb_class, (t_method)fbcomb_size, gensym("size"), A_DEFFLOAT, 0);
+    fbdelay_class = class_new(gensym("fbdelay~"), (t_newmethod)fbdelay_new,
+                              (t_method)fbdelay_free, sizeof(t_fbdelay), 0, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(fbdelay_class, nullfn, gensym("signal"), 0);
+    class_addmethod(fbdelay_class, (t_method)fbdelay_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(fbdelay_class, (t_method)fbdelay_clear, gensym("clear"), 0);
+    class_addmethod(fbdelay_class, (t_method)fbdelay_size, gensym("size"), A_DEFFLOAT, 0);
+    class_addmethod(fbdelay_class, (t_method)fbdelay_gain, gensym("gain"), A_DEFFLOAT, 0);
 }
         
