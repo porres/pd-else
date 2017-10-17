@@ -1,92 +1,84 @@
-#N canvas 661 145 561 516 10;
-#X obj 4 316 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 591 23 560 485 10;
+#X obj 3 275 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 404 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 363 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 437 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 396 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 487 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 446 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 72 413 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 71 372 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 120 413 signal;
-#X obj 3 4 cnv 15 301 42 empty empty oscbank2~ 20 20 2 37 -233017 -1
+#X text 131 372 signal;
+#X obj 2 3 cnv 15 301 42 empty empty oscbank2~ 20 20 2 37 -233017 -1
 0;
-#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 3 4 graph;
+#X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 306 4 pd;
-#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 24 41 cnv 4 4 4 empty empty Bank 0 28 2 18 -233017 -1 0;
-#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 40 cnv 4 4 4 empty empty Bank 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 96 41 cnv 4 4 4 empty empty oscillators 0 28 2 18 -233017 -1
+#X obj 95 40 cnv 4 4 4 empty empty oscillators 0 28 2 18 -233017 -1
 0;
-#X obj 72 325 cnv 17 3 54 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 71 284 cnv 17 3 54 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 69 41 cnv 4 4 4 empty empty of 0 28 2 18 -233017 -1 0;
-#X obj 176 253 else/out~;
-#X text 115 463 2) float - ramp time in ms (default 10), f 57;
-#X text 91 326 freq <list>;
-#X text 97 343 amp <list>;
-#X text 91 381 ramp <list>;
-#N canvas 940 243 574 407 example 0;
+#X obj 68 40 cnv 4 4 4 empty empty of 0 28 2 18 -233017 -1 0;
+#X obj 175 212 else/out~;
+#X text 126 422 2) float - ramp time in ms (default 10), f 57;
+#X text 102 285 freq <list>;
+#X text 108 302 amp <list>;
+#X text 102 340 ramp <list>;
+#N canvas 450 217 503 402 example 0;
 #X obj 89 290 else/out~;
+#X obj 89 109 loadbang;
+#X text 163 95 click on the messages below to alter between them,
+f 27;
 #X text 39 16 A ramp time as the second argument sets a transition
 time in ms between parameter changes of frequency and amplitude. By
 default \, this is set to 10 ms. You can also send a list of ramp time
 for each oscillator in the bank.;
-#X obj 89 254 else/oscbank2~ 8 2000;
-#X obj 194 116 loadbang;
-#X text 268 102 click on the messages below to alter between them,
-f 27;
-#X obj 89 197 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 212 256;
-#X msg 194 139 ratio 1 2.5 3 3.7 4.2 5.1 5.9 6 \, phase 0 0.5 0.25
+#X msg 89 132 freq 100 250 300 370 420 510 590 650 \, phase 0 0.5 0.25
 0 0.1 0.9 0.75 0.1 \, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 38;
-#X obj 89 224 sig~ 100;
-#X msg 233 196 ratio 0.5 1.4 2.9 3.1 3.3 4.9 5.8 6.9 \, phase 0.5 0
+#X msg 128 189 freq 140 290 310 330 490 580 690 750 \, phase 0.5 0
 0.75 0.4 0.7 0 0.25 0.5 \, amp 0.8 1 0.7 1 0.9 0.8 0.9 1, f 38;
-#X connect 2 0 0 0;
-#X connect 2 0 0 1;
-#X connect 3 0 6 0;
-#X connect 5 0 7 0;
-#X connect 6 0 2 1;
-#X connect 7 0 2 0;
-#X connect 8 0 2 1;
-#X restore 465 280 pd example;
-#X obj 298 163 loadbang;
-#X text 168 326 - list of frequencies for all oscillators in the bank
+#X obj 89 253 else/oscbank2~ 8 2000;
+#X connect 1 0 4 0;
+#X connect 4 0 6 0;
+#X connect 5 0 6 0;
+#X connect 6 0 0 0;
+#X connect 6 0 0 1;
+#X restore 464 239 pd example;
+#X obj 188 123 loadbang;
+#X text 179 285 - list of frequencies for all oscillators in the bank
 ;
-#X text 168 343 - list of amplitudes for all oscillators in the bank
+#X text 179 302 - list of amplitudes for all oscillators in the bank
 ;
-#X text 168 381 - list of ramp time for all oscillators in the bank
+#X text 179 340 - list of ramp time for all oscillators in the bank
 ;
-#X text 169 413 - the oscillator bank output;
-#X text 85 362 phase <list>;
-#X text 168 362 - list of phases (0-1) for all oscillators in the bank
+#X text 180 372 - the oscillator bank output;
+#X msg 188 146 freq 360 440 590 720 \, amp 0.9 0.5 0.5 0.6, f 23;
+#X text 96 321 phase <list>;
+#X text 179 321 - list of phases (0-1) for all oscillators in the bank
 ;
-#X msg 298 186 ratio 0.51 1 1.9 2.3 \, amp 0.9 0.5 0.5 0.6, f 23;
-#X text 60 86 [oscbank2~] is a bank made of [sine~] objects. You can
-set any number of oscillators and control their parameters. Unlike
-[oscbak~] \, you have a signal frequency input and the frequency of
-each oscillator is specified as a ratio of that frequency (default
-1).;
-#X obj 189 188 sig~ 400;
-#X text 115 445 1) float - number of oscillators (default 1), f 57
+#X text 126 404 1) float - number of oscillators (default 1), f 57
 ;
-#X obj 189 225 else/oscbank2~ 4;
-#X connect 24 0 31 0;
-#X connect 31 0 35 1;
-#X connect 33 0 35 0;
-#X connect 35 0 18 0;
-#X connect 35 0 18 1;
+#X text 59 85 [oscbank2~] is a bank made of [sine~] objects. You can
+set any number of oscillators and control their parameters.;
+#X obj 188 184 else/oscbank2~ 4;
+#X text 423 173 see also:;
+#X obj 426 195 else/oscbank~ 1;
+#X connect 24 0 29 0;
+#X connect 29 0 34 0;
+#X connect 34 0 18 0;
+#X connect 34 0 18 1;
