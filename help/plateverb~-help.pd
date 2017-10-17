@@ -1,13 +1,13 @@
-#N canvas 755 291 561 621 10;
+#N canvas 731 168 561 621 10;
 #X obj 3 290 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 434 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 493 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 92 443 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 132 443 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 133 298 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 132 298 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 3 593 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
@@ -29,37 +29,36 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 82 40 cnv 4 4 4 empty empty plate 0 28 2 18 -233017 -1 0;
-#X text 157 300 signal;
-#X text 216 300 - input signal;
-#X text 157 443 signal;
-#X text 212 443 - left channel output;
+#X text 167 300 signal;
+#X text 226 300 - input signal;
+#X text 167 443 signal;
+#X text 222 443 - left channel output;
 #X obj 22 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
-#X obj 99 156 else/sampler~ violin.wav 1 1;
-#X obj 316 140 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 344 140 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 313 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 341 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 374 166 dry/wet;
-#X obj 92 464 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 402 166 dry/wet;
+#X obj 132 464 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 157 463 signal;
-#X text 212 463 - right channel output;
-#X obj 133 320 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 167 463 signal;
+#X text 222 463 - right channel output;
+#X obj 132 320 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 133 342 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 132 342 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X obj 133 363 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 132 363 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X obj 133 385 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
+#X obj 132 385 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
 ;
-#X obj 133 407 cnv 17 3 17 empty empty 5 5 9 0 16 -228856 -162280 0
+#X obj 132 407 cnv 17 3 17 empty empty 5 5 9 0 16 -228856 -162280 0
 ;
-#X text 163 322 float;
-#X text 163 345 float;
-#X text 163 367 float;
-#X text 163 387 float;
-#X text 163 410 float;
-#X text 216 410 - dry/wet (0 - 100);
+#X text 173 322 float;
+#X text 173 345 float;
+#X text 173 367 float;
+#X text 173 387 float;
+#X text 173 410 float;
+#X text 226 410 - dry/wet (0 - 100);
 #N canvas 534 67 936 499 example 0;
 #X obj 47 272 catch~ \$0-input;
 #X obj 354 169 throw~ \$0-input;
@@ -73,31 +72,31 @@
 #X obj 542 186 throw~ \$0-input;
 #X obj 679 143 *~;
 #X obj 679 178 throw~ \$0-input;
-#X obj 176 165 hsl 128 15 0 200 0 0 empty predelayms empty -2 -8 0
+#X obj 182 165 hsl 128 15 0 200 0 0 empty predelayms empty -2 -8 0
 10 -228856 -1 -1 1905 1;
-#X floatatom 173 189 5 0 0 0 - - -, f 5;
-#X obj 191 212 hsl 128 15 0 1 0 0 empty bandwidth empty -2 -8 0 10
+#X floatatom 179 189 5 0 0 0 - - -, f 5;
+#X obj 202 211 hsl 128 15 0 1 0 0 empty bandwidth empty -2 -8 0 10
 -228856 -1 -1 7620 1;
-#X floatatom 188 238 5 0 0 0 - - -, f 5;
-#X obj 206 263 hsl 128 15 0 1 0 0 empty damping empty -2 -8 0 10 -228856
+#X floatatom 199 237 5 0 0 0 - - -, f 5;
+#X obj 223 262 hsl 128 15 0 1 0 0 empty damping empty -2 -8 0 10 -228856
 -1 -1 3175 1;
-#X floatatom 203 288 5 0 0 0 - - -, f 5;
-#X obj 221 311 hsl 128 15 0 1 0 0 empty fbgain empty -2 -8 0 10 -228856
+#X floatatom 220 287 5 0 0 0 - - -, f 5;
+#X obj 243 310 hsl 128 15 0 1 0 0 empty fbgain empty -2 -8 0 10 -228856
 -1 -1 10160 1;
-#X floatatom 218 334 5 0 0 0 - - -, f 5;
-#X obj 297 345 hsl 128 15 0 1 0 0 empty drywet empty -2 -8 0 10 -228856
+#X floatatom 240 333 5 0 0 0 - - -, f 5;
+#X obj 319 344 hsl 128 15 0 1 0 0 empty drywet empty -2 -8 0 10 -228856
 -1 -1 6350 1;
-#X floatatom 294 372 5 0 0 0 - - -, f 5;
+#X floatatom 316 371 5 0 0 0 - - -, f 5;
 #X obj 159 413 else/out~;
-#X text 263 344 dry;
-#X text 431 346 wet;
-#X text 252 311 fb-gain;
-#X text 263 344 dry;
-#X text 263 344 dry;
-#X text 239 262 damping;
-#X text 215 211 bandwidth;
-#X text 263 344 dry;
-#X text 199 164 pre delay;
+#X text 285 343 dry;
+#X text 453 345 wet;
+#X text 274 310 fb-gain;
+#X text 285 343 dry;
+#X text 285 343 dry;
+#X text 256 261 damping;
+#X text 226 210 bandwidth;
+#X text 285 343 dry;
+#X text 205 164 pre delay;
 #X obj 47 171 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 47 199 else/impseq~;
@@ -107,7 +106,7 @@
 #X msg 41 71 \; predelayms 30 \; bandwidth 0.6 \; damping 0.25 \; fbgain
 0.8 \; drywet 0.5;
 #X connect 0 0 1 0;
-#X restore 79 389 pd init;
+#X restore 390 384 pd init;
 #X obj 560 75 else/decay~ 200;
 #X obj 560 22 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -170,7 +169,9 @@
 #X msg 59 56 open;
 #X msg 100 34 start;
 #X msg 118 60 stop;
-#X obj 159 371 else/plate~;
+#X obj 159 371 else/plateverb~;
+#X text 614 323 Test the reverb with many sound input sources, f 25
+;
 #X connect 0 0 49 0;
 #X connect 2 0 43 0;
 #X connect 3 0 8 0;
@@ -209,27 +210,28 @@
 #X connect 49 0 22 0;
 #X connect 49 1 22 1;
 #X restore 445 252 pd example;
-#X text 216 322 - pre delay (0 - 200);
-#X text 216 367 - damping (0 - 1);
-#X text 216 386 - feedback gain (0 - 1);
-#X text 216 345 - cutoff (0 - 1);
-#X text 159 503 1) float - pre delay (0 - 200), f 36;
-#X text 159 520 2) float - cutoff (0 - 1);
-#X text 159 537 3) float - damping (0 - 1);
-#X text 159 554 4) float - feedback gain (0 - 1);
-#X text 159 571 5) float - dry/wet (0 - 1);
-#X obj 3 3 cnv 15 301 42 empty empty plate~ 20 20 2 37 -233017 -1 0
-;
+#X text 226 322 - pre delay (0 - 200);
+#X text 226 367 - damping (0 - 1);
+#X text 226 386 - feedback gain (0 - 1);
+#X text 226 345 - cutoff (0 - 1);
+#X text 169 503 1) float - pre delay (0 - 200), f 36;
+#X text 169 520 2) float - cutoff (0 - 1);
+#X text 169 537 3) float - damping (0 - 1);
+#X text 169 554 4) float - feedback gain (0 - 1);
+#X text 169 571 5) float - dry/wet (0 - 1);
+#X obj 3 3 cnv 15 301 42 empty empty plateverb~ 20 20 2 37 -233017
+-1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X obj 129 40 cnv 4 4 4 empty empty reverb 0 28 2 18 -233017 -1 0;
-#X text 69 88 [plate~] is a reverb asbtraction based on a patch by
-Tom Erbe implementing the Dattorro plate stereo reverb model.;
-#X obj 99 188 else/plate~ 30 0.6 0.25 0.8 0.9;
 #X obj 177 225 else/out~;
-#X connect 20 0 52 0;
-#X connect 21 0 22 0;
-#X connect 22 0 52 5;
-#X connect 52 0 53 0;
-#X connect 52 1 53 1;
+#X obj 99 152 else/sampler~ vacuous.wav 1 1;
+#X obj 99 187 else/plateverb~ 30 0.6 0.25 0.8 0.9;
+#X text 69 88 [plateverb~] is a reverb asbtraction based on a patch
+by Tom Erbe implementing the Dattorro plate stereo reverb model.;
+#X connect 20 0 21 0;
+#X connect 21 0 52 5;
+#X connect 51 0 52 0;
+#X connect 52 0 50 0;
+#X connect 52 1 50 1;
