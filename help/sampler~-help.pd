@@ -1,11 +1,11 @@
-#N canvas 527 65 568 586 10;
-#X obj 178 200 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 527 65 563 630 10;
+#X obj 233 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 129 200 start;
-#X msg 220 203 stop;
-#X msg 199 148 open;
-#X msg 343 194 loop \$1;
-#X obj 343 170 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 108 208 start;
+#X msg 156 208 stop;
+#X msg 262 199 open;
+#X msg 189 169 loop \$1;
+#X obj 189 145 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -33,47 +33,87 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 7 558 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 7 598 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 7 334 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 7 354 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 440 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 7 480 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 471 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 511 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 119 448 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 111 489 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 121 341 cnv 17 3 94 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X text 206 449 signal - the sample signal;
-#X text 188 357 start - same as bang, f 49;
-#X text 195 373 stop - stop playing the sample, f 48;
-#X text 195 341 bang - start playing the sample from start, f 48;
-#X text 132 389 open <symbol> -;
-#X text 244 389 opens a file with the symbol name (no symbol opens
+#X obj 113 362 cnv 17 3 112 empty empty 0 5 9 0 16 -228856 -162280
+0;
+#X text 173 490 signal - the sample signal;
+#X text 180 378 start - same as bang, f 49;
+#X text 187 394 stop - stop playing the sample, f 48;
+#X text 124 430 open <symbol> -;
+#X text 236 430 opens a file with the symbol name (no symbol opens
 dialog box), f 41;
-#X text 139 419 loop <float> -;
-#X text 244 419 loop on <1> or off <0>, f 41;
-#X msg 213 174 open vacuous.wav;
-#X text 65 89 [sampler~] is a convenient and simple abstraction to
-read single channel files from your computer. The sample needs to be
-at the same samplerate as Pd's., f 64;
-#X obj 199 266 else/out~;
-#X text 143 481 1) float - (optional) number of channels (default 1)
+#X text 131 460 loop <float> -;
+#X text 236 460 loop on <1> or off <0>, f 41;
+#X msg 272 225 open vacuous.wav;
+#X obj 213 290 else/out~;
+#X text 129 540 2) symbol - the name of the file to open (default none)
 ;
-#X text 137 499 2) symbol - the name of the file to open (default none)
-;
-#X text 144 516 3) float - autostart <1: on \, 0: off> (default 0)
+#X text 136 557 3) float - autostart <1: on \, 0: off> (default 0)
 , f 54;
-#X text 144 533 4) float - loop <1: on \, 0: off> (default 0), f 54
+#X text 136 574 4) float - loop <1: on \, 0: off> (default 0), f 54
 ;
-#X obj 199 234 else/sampler~ 2 violin.wav 1 1;
-#X connect 0 0 39 0;
-#X connect 1 0 39 0;
-#X connect 2 0 39 0;
-#X connect 3 0 39 0;
-#X connect 4 0 39 0;
+#X obj 213 258 else/sampler~ 2 violin.wav 1 1;
+#X text 65 89 [sampler~] is a convenient abstraction based on [readsf~]
+to read files from your computer. Note that the file sample needs to
+be at the same samplerate as Pd's., f 64;
+#X obj 213 199 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 187 362 bang - (re)start playing the sample;
+#X text 180 412 float - non-0 (re)starts playing \, zero stops, f
+48;
+#X text 135 522 1) float - (optional) channels (default 1 \, max 64)
+;
+#N canvas 887 235 577 510 multi-channel 0;
+#X obj 83 286 else/sampler~ 2 stereo.aif;
+#X obj 83 336 else/meter2~;
+#X obj 219 334 else/out~;
+#X obj 83 205 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X msg 111 205 stop;
+#X obj 355 338 else/out~;
+#X obj 355 261 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 383 261 stop;
+#X obj 355 292 else/sampler~ stereo.aif;
+#X msg 127 231 open violin.wav;
+#X msg 142 256 open stereo.aif;
+#X text 98 103 If you have a file with less channels than specified
+(like a mono file in a stereo sampler) \, the extra channels are silent.
+Conversely \, a file with more channels than specified (like a stereo
+file in a mono sampler) has its remaining channels ignored.;
+#X text 97 23 If you give an optional float argumewnt as the first
+argument \, it specifies the number of channels. If no float argument
+is given as the first argument \, then the default number of channels
+is 1 (mono). The maximum number is 64 channels.;
+#X connect 0 0 1 0;
+#X connect 0 0 2 0;
+#X connect 0 1 1 1;
+#X connect 0 1 2 1;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 6 0 8 0;
+#X connect 7 0 8 0;
+#X connect 8 0 5 0;
+#X connect 8 0 5 1;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X restore 428 314 pd multi-channel;
+#X connect 0 0 36 0;
+#X connect 1 0 36 0;
+#X connect 2 0 36 0;
+#X connect 3 0 36 0;
+#X connect 4 0 36 0;
 #X connect 5 0 4 0;
-#X connect 32 0 39 0;
-#X connect 39 0 34 0;
-#X connect 39 0 34 1;
+#X connect 31 0 36 0;
+#X connect 36 0 32 0;
+#X connect 36 0 32 1;
+#X connect 38 0 36 0;
