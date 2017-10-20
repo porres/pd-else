@@ -61,7 +61,6 @@ dialog box), f 41;
 , f 54;
 #X text 136 574 4) float - loop <1: on \, 0: off> (default 0), f 54
 ;
-#X obj 213 258 else/sampler~ 2 violin.wav 1 1;
 #X text 65 89 [sampler~] is a convenient abstraction based on [readsf~]
 to read files from your computer. Note that the file sample needs to
 be at the same samplerate as Pd's., f 64;
@@ -107,13 +106,14 @@ is 1 (mono). The maximum number is 64 channels.;
 #X connect 9 0 0 0;
 #X connect 10 0 0 0;
 #X restore 428 314 pd multi-channel;
-#X connect 0 0 36 0;
-#X connect 1 0 36 0;
-#X connect 2 0 36 0;
-#X connect 3 0 36 0;
-#X connect 4 0 36 0;
+#X obj 213 258 else/sampler~ violin.wav 1 1;
+#X connect 0 0 42 0;
+#X connect 1 0 42 0;
+#X connect 2 0 42 0;
+#X connect 3 0 42 0;
+#X connect 4 0 42 0;
 #X connect 5 0 4 0;
-#X connect 31 0 36 0;
-#X connect 36 0 32 0;
-#X connect 36 0 32 1;
-#X connect 38 0 36 0;
+#X connect 31 0 42 0;
+#X connect 37 0 42 0;
+#X connect 42 0 32 0;
+#X connect 42 0 32 1;

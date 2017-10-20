@@ -147,6 +147,8 @@ $(wildcard help/Abstractions/*.pd) \
 else-meta.pd \
 README.md \
 help/vacuous.wav
+help/violin.wav
+help/stereo.aif
 
 #########################################################################
 
