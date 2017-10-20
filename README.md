@@ -42,7 +42,11 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (146 objects):
+Current Object list (147 objects):
+
+MISCELLANEA: [2]
+- [loadbanger] / [lb]
+- [order]
 
 AUDIO PLAYING: [1]
 - [sampler~]
@@ -218,6 +222,3 @@ CONVERSION: [17]
 - [rescale]
 - [rescale~]
 - [sig2float~]
-
-MANAGE LISTS: [1]
-- [order]

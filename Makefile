@@ -17,6 +17,7 @@ uname := $(shell uname -s)
 # control:
 cents2ratio.class.sources := classes/cents2ratio.c
 hz2rad.class.sources := classes/hz2rad.c
+lb.class.sources := classes/lb.c
 loadbanger.class.sources := classes/loadbanger.c
 rad2hz.class.sources := classes/rad2hz.c
 ratio2cents.class.sources := classes/ratio2cents.c
