@@ -1,4 +1,4 @@
-#N canvas 601 239 564 457 10;
+#N canvas 377 405 564 457 10;
 #X obj 6 290 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 6 326 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -53,22 +53,6 @@
 #X text 132 371 1) float - number of outputs (default 1);
 #X obj 6 396 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 157 405 -next: sets loadbang to "next mode";
-#N canvas 886 173 538 395 dynamic 0;
-#X obj 348 298 else/sampler~ 4;
-#X obj 118 298 else/sampler~;
-#X text 59 53 So \, by default \, [loadbanger] uses the "init" type
-of bang when loading the patch. As said before \, this is sent first
-in subpatches and abstractions. Not only that \, but the bang is sent
-also before the parent patch continues to load and connections are
-made.;
-#X text 61 130 This makes it possible to create abstractions with variable
-inlets/outlets via dynamic patching \, which simply does not work if
-you're using [loadbang] instead.;
-#X obj 228 298 else/sampler~ 2;
-#X text 64 183 In ELSE \, the [sampler~] abstraction uses [loadbanger]
-for that purpose \, so it can have a variable number of outlets depending
-on the first optional float argument (1 by default).;
-#X restore 411 257 pd dynamic patching;
 #N canvas 551 213 549 404 details 0;
 #X obj 295 303 else/loadbanger 3;
 #X obj 411 326 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -106,7 +90,7 @@ it \, it'll also send a bang like [loadbang]. Test this below.;
 #X connect 7 1 5 0;
 #X connect 7 2 4 0;
 #X connect 8 0 7 0;
-#X restore 474 211 pd details;
+#X restore 474 207 pd details;
 #X obj 336 183 else/lb;
 #X obj 337 230 metro 500;
 #X obj 337 257 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -138,14 +122,34 @@ patches. So you can also use that to control the order in which [loadbang]
 objects are triggered.;
 #X connect 2 0 0 0;
 #X connect 4 0 3 0;
-#X restore 488 234 pd -next;
+#X restore 488 229 pd -next;
 #X text 196 299 - any message triggers bangs;
 #X text 399 182 (abbreviation);
-#X connect 15 0 37 0;
-#X connect 20 0 37 0;
-#X connect 33 0 34 0;
-#X connect 35 0 33 0;
-#X connect 37 0 19 0;
-#X connect 37 0 25 0;
-#X connect 37 1 24 0;
-#X connect 37 1 26 0;
+#N canvas 886 173 550 447 abstractions 1;
+#X obj 334 267 else/sampler~ 4;
+#X obj 104 267 else/sampler~;
+#X text 61 121 This makes it possible to create abstractions with variable
+inlets/outlets via dynamic patching \, which simply does not work if
+you're using [loadbang] instead.;
+#X obj 214 267 else/sampler~ 2;
+#X text 64 174 In ELSE \, the [sampler~] abstraction uses [loadbanger]
+for that purpose \, so it can have a variable number of outlets depending
+on the first optional float argument (1 by default).;
+#X text 69 330 Important Note: If you're using [loadbanger] inside
+an abstrac tion and neeed it to send a control data throughout an outlet
+to a parent patch \, you need to use the -next flag. That's because
+\, as stated \, these are triggered before the connections are made
+\, so a value is not sent out.;
+#X text 59 44 So \, by default \, [loadbanger] uses the "init" type
+of bang when loading the patch. As said before \, this is sent first
+in subpatches and abstractions. Not only that \, but the bang is sent
+also before the connections are made in the parent patch.;
+#X restore 431 252 pd abstractions \; dynamic patching;
+#X connect 15 0 36 0;
+#X connect 20 0 36 0;
+#X connect 32 0 33 0;
+#X connect 34 0 32 0;
+#X connect 36 0 19 0;
+#X connect 36 0 25 0;
+#X connect 36 1 24 0;
+#X connect 36 1 26 0;
