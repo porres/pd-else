@@ -1,4 +1,4 @@
-#N canvas 613 238 559 390 10;
+#N canvas 794 211 559 390 10;
 #X obj 4 261 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 296 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -11,7 +11,6 @@
 ;
 #X obj 104 269 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 165 335 1) float - threshold (default 0);
 #X obj 2 3 cnv 15 301 42 empty empty changed 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -54,14 +53,20 @@ messages.;
 #X text 196 269 - any message to pass through;
 #X text 196 305 - any message that's different from the previous;
 #X obj 156 165 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 13 256;
-#X obj 223 192 else/changed;
+-228856 -1 -1 0.42 256;
 #X obj 156 144 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X connect 22 0 33 0;
-#X connect 23 0 33 0;
-#X connect 24 0 33 0;
-#X connect 25 0 24 0;
-#X connect 32 0 33 0;
-#X connect 33 0 28 0;
-#X connect 34 0 32 0;
+#X msg 380 164 list porra caralho;
+#X obj 223 192 else/changed porra caralho;
+#X text 143 335 1) anything - threshold (default 0);
+#X obj 168 193 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X connect 21 0 34 0;
+#X connect 22 0 34 0;
+#X connect 23 0 34 0;
+#X connect 24 0 23 0;
+#X connect 31 0 34 0;
+#X connect 32 0 31 0;
+#X connect 33 0 34 0;
+#X connect 34 0 27 0;
+#X connect 36 0 34 0;
