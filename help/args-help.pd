@@ -1,0 +1,12 @@
+#N canvas 521 168 768 397 10;
+#X obj 485 195 args-example;
+#X obj 485 167 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 485 257 else/display;
+#X obj 566 224 bng 20 350 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 239 203 args;
+#X text 280 203 <= open and check;
+#X connect 0 0 2 0;
+#X connect 0 1 3 0;
+#X connect 1 0 0 0;
