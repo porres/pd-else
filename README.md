@@ -44,7 +44,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (148 objects):
+Current Object list (149 objects):
 
 MISCELLANEA: [3]
 - [args]
@@ -173,10 +173,11 @@ CONTROL: [11]
  - [sequencer~]
  - [impseq~]
 
-GUI: [11]
+GUI: [12]
 - [display]
 - [display~]
 - [out~]
+- [output~]
 - [gain~]
 - [gain2~]
 - [graph~]
