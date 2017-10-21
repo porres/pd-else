@@ -1,4 +1,4 @@
-#N canvas 221 236 559 452 10;
+#N canvas 613 238 559 452 10;
 #X obj 4 296 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 351 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -20,11 +20,10 @@ is 0 \, then any change is detected.;
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 2 3 graph;
-#X obj 23 40 cnv 4 4 4 empty empty Detect 0 28 2 18 -233017 -1 0;
-#X obj 132 40 cnv 4 4 4 empty empty changes 0 28 2 18 -233017 -1 0
-;
-#X obj 79 40 cnv 4 4 4 empty empty signal 0 28 2 18 -233017 -1 0;
+#X restore 3 3 graph;
+#X obj 23 40 cnv 4 4 4 empty empty Pass 0 28 2 18 -233017 -1 0;
+#X obj 113 40 cnv 4 4 4 empty empty when 0 28 2 18 -233017 -1 0;
+#X obj 70 40 cnv 4 4 4 empty empty data 0 28 2 18 -233017 -1 0;
 #X text 211 360 - impulse when a change is detected;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -48,7 +47,7 @@ is 0 \, then any change is detected.;
 #X obj 219 233 display;
 #X msg 220 156 1 2 3;
 #X msg 276 159 1 3;
-#X obj 296 214 print;
+#X obj 295 231 print;
 #X symbolatom 326 159 10 0 0 0 - - -, f 10;
 #X obj 216 184 else/changed s;
 #X obj 337 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
@@ -57,6 +56,12 @@ is 0 \, then any change is detected.;
 #X msg 154 231 1;
 #X msg 366 190 list fuck you;
 #X msg 398 229 bull shit;
+#X obj 167 140 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 47 177 change;
+#X obj 163 40 cnv 4 4 4 empty empty it 0 28 2 18 -233017 -1 0;
+#X obj 187 40 cnv 4 4 4 empty empty changed 0 28 2 18 -233017 -1 0
+;
 #X connect 26 0 30 0;
 #X connect 27 0 30 0;
 #X connect 29 0 30 0;
@@ -67,3 +72,4 @@ is 0 \, then any change is detected.;
 #X connect 33 0 30 0;
 #X connect 34 0 30 0;
 #X connect 35 0 30 0;
+#X connect 36 0 32 0;
