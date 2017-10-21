@@ -1,12 +1,75 @@
-#N canvas 521 168 768 397 10;
-#X obj 485 195 args-example;
-#X obj 485 167 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 647 195 566 362 10;
+#X obj 25 41 cnv 4 4 4 empty empty Argument 0 28 2 18 -233017 -1 0
+;
+#X obj 110 41 cnv 4 4 4 empty empty management 0 28 2 18 -233017 -1
+0;
+#X obj 4 4 cnv 15 301 42 empty empty args 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 4 4 graph;
+#X obj 213 41 cnv 4 4 4 empty empty model 0 28 2 18 -233017 -1 0;
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 306 4 pd;
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X text 66 97 [args] is a base model for loading an argument list into
+an abstraction. It is Vanilla Compatible and useful for the management
+of variable number of arguments in abstractions.;
+#N canvas 968 172 487 556 example 0;
+#X obj 162 180 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 485 257 else/display;
-#X obj 566 224 bng 20 350 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 320 239 bng 20 350 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 239 203 args;
-#X text 280 203 <= open and check;
-#X connect 0 0 2 0;
-#X connect 0 1 3 0;
-#X connect 1 0 0 0;
+#X text 44 33 This example uses the args-example.pd abstraction \,
+which is a very simple example on how the base model provided in [args]
+works.;
+#X obj 169 357 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 285 416 bng 20 350 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 191 358 reload arguments;
+#X obj 162 284 else/display;
+#X text 184 181 resend arguments;
+#X text 48 93 Here you can test that the given arguments are loaded
+and passed throughout the left outlet. But if no arguments are given
+\, then the right outlet sends a bang.;
+#X obj 169 481 else/display;
+#X text 114 286 args;
+#X text 253 241 no args;
+#X obj 285 445 print no args;
+#X obj 162 208 else/args-example 1 2 3;
+#X obj 169 384 else/args-example;
+#X connect 0 0 13 0;
+#X connect 3 0 14 0;
+#X connect 4 0 12 0;
+#X connect 13 0 6 0;
+#X connect 13 1 1 0;
+#X connect 14 0 9 0;
+#X connect 14 1 4 0;
+#X restore 446 199 pd example;
+#X obj 6 234 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 266 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 298 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 6 330 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 129 177 open and check =>;
+#X obj 261 177 else/args;
+#X text 204 244 (none);
+#X text 204 274 (none);
+#X text 204 304 (none);

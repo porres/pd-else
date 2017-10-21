@@ -1,4 +1,4 @@
-#N canvas 763 235 629 258 10;
+#N canvas 763 235 767 273 10;
 #N canvas 764 23 738 740 load_args 0;
 #X obj 347 246 makefilename $%d;
 #X obj 261 322 pack f \$0;
@@ -15,12 +15,12 @@
 #X obj 10 60 symbol \$1-test;
 #X obj 133 60 makefilename $%d-test;
 #X obj 37 135 list append \$1;
-#X obj 10 10 r 1017-i;
+#X obj 10 10 r 1033-i;
 #X obj 10 35 trigger bang float;
 #X obj 10 85 sel s;
 #X obj 37 110 b;
-#X obj 37 160 s 1017-arg;
-#X obj 10 185 s 1017-noarg;
+#X obj 37 160 s 1033-arg;
+#X obj 10 185 s 1033-noarg;
 #X connect 0 0 5 0;
 #X connect 1 0 5 1;
 #X connect 2 0 7 0;
@@ -86,17 +86,18 @@ $%d-test, f 27;
 #X connect 27 1 26 0;
 #X connect 27 2 6 1;
 #X connect 28 0 25 0;
-#X restore 125 120 pd load_args;
-#X text 217 119 <==;
-#X text 245 106 put this subpatch in your abstraction to load arguments
+#X restore 202 119 pd load_args;
+#X text 294 118 <==;
+#X text 322 105 put this subpatch in your abstraction to load arguments
 , f 29;
-#X text 88 41 [args] -;
-#X text 153 41 base model for loading an argument list into an abstraction
+#X text 73 38 [args] -;
+#X text 138 38 base model for loading an argument list into an abstraction
 (Vanilla Compatible), f 40;
-#X text 229 159 bang for no arguments, f 11;
-#X text 46 157 list of arguments, f 9;
-#X obj 206 166 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 125 163 list;
-#X connect 0 0 8 0;
-#X connect 0 1 7 0;
+#X text 314 158 bang for no arguments, f 11;
+#X text 123 156 list of arguments, f 9;
+#X obj 202 162 list;
+#X obj 283 161 b;
+#X text 478 195 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 480 176 Alexandre Torres Porres (2017);
+#X connect 0 0 7 0;
+#X connect 0 1 8 0;

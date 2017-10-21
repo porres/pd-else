@@ -2,7 +2,7 @@ EL Locus Solus' Else library for Pd
 
 ELSE - EL Locus Solus' Externals
 
-Version 1.0 beta-3 (Release date: October 18th 2017)
+Version 1.0 beta-4 (Unreleased)
 
 The project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
 
@@ -42,9 +42,10 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 -------
 
-Current Object list (147 objects):
+Current Object list (148 objects):
 
-MISCELLANEA: [2]
+MISCELLANEA: [3]
+- [args]
 - [loadbanger] / [lb]
 - [order]
 
