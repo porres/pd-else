@@ -1,0 +1,69 @@
+#N canvas 221 236 559 452 10;
+#X obj 4 296 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 351 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 384 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 4 414 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 117 360 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 117 304 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 211 304 - signal to detect changes;
+#X text 61 86 [changed~] sends an impulse whenever an input value changes
+and the change is equal or greater than a given threshold. If the threshold
+is 0 \, then any change is detected.;
+#X text 157 390 1) float - threshold (default 0);
+#X obj 2 3 cnv 15 301 42 empty empty changed 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X obj 23 40 cnv 4 4 4 empty empty Detect 0 28 2 18 -233017 -1 0;
+#X obj 132 40 cnv 4 4 4 empty empty changes 0 28 2 18 -233017 -1 0
+;
+#X obj 79 40 cnv 4 4 4 empty empty signal 0 28 2 18 -233017 -1 0;
+#X text 211 360 - impulse when a change is detected;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X text 155 303 anything;
+#X text 169 360 anything;
+#X obj 219 233 display;
+#X msg 220 156 1 2 3;
+#X msg 276 159 1 3;
+#X obj 296 214 print;
+#X symbolatom 326 159 10 0 0 0 - - -, f 10;
+#X obj 216 184 else/changed s;
+#X obj 337 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 136 164 5 0 0 0 - - -, f 5;
+#X msg 154 231 1;
+#X msg 366 190 list fuck you;
+#X msg 398 229 bull shit;
+#X connect 26 0 30 0;
+#X connect 27 0 30 0;
+#X connect 29 0 30 0;
+#X connect 30 0 25 0;
+#X connect 30 0 28 0;
+#X connect 31 0 29 0;
+#X connect 32 0 30 0;
+#X connect 33 0 30 0;
+#X connect 34 0 30 0;
+#X connect 35 0 30 0;

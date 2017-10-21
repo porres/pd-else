@@ -16,6 +16,7 @@ uname := $(shell uname -s)
 
 # control:
 cents2ratio.class.sources := classes/cents2ratio.c
+changed.class.sources := classes/changed.c
 hz2rad.class.sources := classes/hz2rad.c
 lb.class.sources := classes/lb.c
 loadbanger.class.sources := classes/loadbanger.c
@@ -146,8 +147,8 @@ $(wildcard help/*.pd) \
 $(wildcard help/Abstractions/*.pd) \
 else-meta.pd \
 README.md \
-help/vacuous.wav
-help/violin.wav
+help/vacuous.wav \
+help/violin.wav \
 help/stereo.aif
 
 #########################################################################
