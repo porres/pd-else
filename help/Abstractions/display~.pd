@@ -3,7 +3,7 @@
 0;
 #X obj 101 101 cnv 1 6 1 empty empty empty 20 12 0 14 -1 -66577 0;
 #X obj 101 136 namecanvas \$0-canvas, f 11;
-#N canvas 907 249 596 410 init 0;
+#N canvas 1038 266 596 410 init 1;
 #X obj 73 102 float \$1;
 #X obj 73 151 moses;
 #X obj 73 127 int;
@@ -18,7 +18,7 @@
 #X obj 189 168 s \$0-display;
 #X obj 189 108 symbol;
 #X obj 73 75 trigger bang bang;
-#N canvas 271 23 463 403 resize 0;
+#N canvas 271 23 463 403 resize 1;
 #X obj 170 256 s \$0-display;
 #X obj 170 165 * 7;
 #X msg 170 226 vis_size \$1 20;
@@ -43,7 +43,6 @@
 #X obj 430 302 metro;
 #X obj 375 330 s \$0-bang;
 #X obj 379 248 expr $f2 < $f1 \; $f2 > $f1 \; $f2;
-#X floatatom 487 336 5 0 0 0 - - -, f 5;
 #X obj 351 208 expr 64 / $f1 \; if(\$2 <= 0 \, 100 \, \$2);
 #X obj 351 182 else/sr~ -khz;
 #X connect 0 0 2 0;
@@ -73,11 +72,10 @@
 #X connect 21 0 16 1;
 #X connect 21 1 17 1;
 #X connect 21 1 19 0;
-#X connect 21 1 22 0;
 #X connect 21 2 19 1;
-#X connect 23 0 21 0;
-#X connect 23 1 21 1;
-#X connect 24 0 23 0;
+#X connect 22 0 21 0;
+#X connect 22 1 21 1;
+#X connect 23 0 22 0;
 #X restore 386 121 pd init;
 #X obj 295 185 list prepend;
 #X obj 376 161 r \$0-fixed;
