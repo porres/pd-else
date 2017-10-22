@@ -2,11 +2,21 @@ EL Locus Solus' Else library for Pd
 
 ELSE - EL Locus Solus' Externals
 
+----------------------------------------------
+
 Version 1.0 beta-4 (Unreleased)
 
-See https://github.com/porres/pd-else/blob/master/License.txt for License Agreement
-
 The project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
+
+----------------------------------------------
+
+	Copyright © 2017 Alexandre Torres Porres <porres@gmail.com>
+
+   This work is free. You can redistribute it and/or modify it under the
+   terms of the Do What The Fuck You Want To Public License, Version 2,
+   as published by Sam Hocevar. 
+ 
+   See License.txt and http://www.wtfpl.net/ for more details
 
 ----------------------------------------------
 
