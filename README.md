@@ -2,13 +2,13 @@ EL Locus Solus' Else library for Pd
 
 ELSE - EL Locus Solus' Externals
 
-----------------------------------------------
+--------------------------------------------------------------------------
 
 Version 1.0 beta-4 (Unreleased)
 
 The project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
 
-----------------------------------------------
+--------------------------------------------------------------------------
 
 	Copyright © 2017 Alexandre Torres Porres <porres@gmail.com>
 
@@ -18,7 +18,7 @@ The project is still in a beta phase, where drastic changes may occur and backwa
  
    See License.txt and http://www.wtfpl.net/ for more details
 
-----------------------------------------------
+--------------------------------------------------------------------------
 
 "EL Locus Solus" is run by Alexandre Torres Porres, who organizes cultural events/concerts and teaches computer music courses; website: http://alexandre-torres.wixsite.com/el-locus-solus
 
@@ -28,7 +28,7 @@ Even though extended has quite a large set of external libraries and objects, at
 
 ELSE steals some ideas and stuff from SuperCollider, such as most of the chaotic generators UGENs. It also grew to encompass functionalities from objects found in other Pd libraries, but with a different design.  
 
--------
+--------------------------------------------------------------------------
 
 <strong>Downloading ELSE:</strong>
 
@@ -52,18 +52,21 @@ use "objectsdir" to set a relative path for your build, something like:
 
 Then move it to your preferred install folder for Pd and add it to the path.
 
--------
+--------------------------------------------------------------------------
 
 Current Object list (150 objects):
 
-MISCELLANEA: [4]
+AUDIO PLAYING: [1]
+- [sampler~]
+
+EXTRA: [2]
 - [args]
+- [output~]
+
+MISCELLANEA: [3]
 - [changed]
 - [loadbanger] / [lb]
 - [order]
-
-AUDIO PLAYING: [1]
-- [sampler~]
 
 AUDIO PROCESSING: [3]
 - [downsample~]
@@ -184,11 +187,10 @@ CONTROL: [11]
  - [sequencer~]
  - [impseq~]
 
-GUI: [12]
+GUI: [11]
 - [display]
 - [display~]
 - [out~]
-- [output~]
 - [gain~]
 - [gain2~]
 - [graph~]
