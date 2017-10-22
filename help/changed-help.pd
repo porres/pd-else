@@ -1,15 +1,15 @@
-#N canvas 794 211 559 390 10;
-#X obj 4 261 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 850 133 747 621 10;
+#X obj 4 344 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 296 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 437 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 329 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 470 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 359 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 501 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 104 305 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 84 446 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 104 269 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 84 352 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 2 3 cnv 15 301 42 empty empty changed 20 20 2 37 -233017 -1
 0;
@@ -17,8 +17,8 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 3 graph;
 #X obj 23 40 cnv 4 4 4 empty empty Pass 0 28 2 18 -233017 -1 0;
-#X obj 113 40 cnv 4 4 4 empty empty when 0 28 2 18 -233017 -1 0;
-#X obj 70 40 cnv 4 4 4 empty empty data 0 28 2 18 -233017 -1 0;
+#X obj 107 40 cnv 4 4 4 empty empty when 0 28 2 18 -233017 -1 0;
+#X obj 64 40 cnv 4 4 4 empty empty data 0 28 2 18 -233017 -1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -36,37 +36,55 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 132 268 anything;
-#X text 130 305 anything;
-#X msg 223 134 1 2 3;
-#X msg 237 158 1 3;
-#X symbolatom 279 166 10 0 0 0 - - -, f 10;
-#X obj 279 145 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 142 353 anything;
+#X text 110 446 anything;
+#X msg 249 211 1 3;
+#X symbolatom 289 229 10 0 0 0 - - -, f 10;
+#X obj 289 209 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 163 40 cnv 4 4 4 empty empty it 0 28 2 18 -233017 -1 0;
-#X obj 187 40 cnv 4 4 4 empty empty changed 0 28 2 18 -233017 -1 0
+#X obj 157 40 cnv 4 4 4 empty empty it 0 28 2 18 -233017 -1 0;
+#X obj 181 40 cnv 4 4 4 empty empty changed 0 28 2 18 -233017 -1 0
 ;
-#X obj 223 222 display;
+#X obj 217 309 display;
+#X text 206 353 - any message to pass through;
+#X text 176 446 - any message that's different from the previous;
+#X obj 137 218 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 26 256;
+#X obj 137 197 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 182 160 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 170 370 bang;
+#X text 206 370 - force the data to be output;
+#X text 100 389 set <anything>;
+#X text 206 389 - set a current message inside the object;
 #X text 61 86 [changed] passes its data input through only when it
-changed. Unline [change] from Pd Vanilla \, it accepts any kind of
-messages.;
-#X text 196 269 - any message to pass through;
-#X text 196 305 - any message that's different from the previous;
-#X obj 156 165 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.42 256;
-#X obj 156 144 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X msg 380 164 list porra caralho;
-#X obj 223 192 else/changed porra caralho;
-#X text 143 335 1) anything - threshold (default 0);
-#X obj 168 193 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X connect 21 0 34 0;
-#X connect 22 0 34 0;
-#X connect 23 0 34 0;
-#X connect 24 0 23 0;
-#X connect 31 0 34 0;
-#X connect 32 0 31 0;
-#X connect 33 0 34 0;
-#X connect 34 0 27 0;
-#X connect 36 0 34 0;
+changed from the last receive message or the message that was set via
+arguments or messages. Unline [change] from Pd Vanilla \, it accepts
+any kind of messages.;
+#X msg 217 162 hi there;
+#X msg 235 187 list one 2 3;
+#X msg 295 254 set 1 3;
+#X text 100 164 outputs =>;
+#X text 359 253 <= sets message;
+#X obj 324 314 else/changed hi there;
+#X text 382 152 set message sets on top of selector;
+#X msg 111 282 set bang;
+#X text 112 478 1) anything - initializes first message (default ???)
+;
+#X text 382 173 set bang prevents from banging, f 31;
+#X obj 165 312 print;
+#X text 383 196 arg symbol atom has duplicate selector;
+#X obj 217 280 else/changed bunda;
+#X connect 21 0 49 0;
+#X connect 22 0 49 0;
+#X connect 23 0 22 0;
+#X connect 29 0 49 0;
+#X connect 30 0 29 0;
+#X connect 31 0 49 0;
+#X connect 37 0 49 0;
+#X connect 38 0 49 0;
+#X connect 39 0 49 0;
+#X connect 44 0 49 0;
+#X connect 49 0 26 0;
+#X connect 49 0 47 0;
