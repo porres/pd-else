@@ -43,7 +43,7 @@ static void changed_anything(t_changed *x, t_symbol *s, int argc, t_atom *argv){
         outlet_anything(x->x_obj.ob_outlet, s, argc, argv);
     }
     if(!change)
-        post("didn't change")
+        post("didn't change");
 }
 
 static void changed_set(t_changed *x, t_symbol *s, int argc, t_atom *argv){
