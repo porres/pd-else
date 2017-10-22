@@ -5,7 +5,10 @@
 
  Everyone is permitted to copy and distribute verbatim or modified
  copies of this license document, and changing it is allowed as long
- as the name is changed.
+ as the name is changed. This work is free. You can redistribute it 
+ and/or modify it under the terms of the Do What The Fuck You Want To 
+ Public License, Version 2, as published by Sam Hocevar. 
+ See http://www.wtfpl.net/ for more details
 
             DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
