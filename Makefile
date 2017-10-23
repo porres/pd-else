@@ -15,6 +15,7 @@ uname := $(shell uname -s)
 #########################################################################
 
 # control:
+# args.class.sources := classes/args.c
 cents2ratio.class.sources := classes/cents2ratio.c
 changed.class.sources := classes/changed.c
 hz2rad.class.sources := classes/hz2rad.c
@@ -136,7 +137,6 @@ square~.class.sources := classes/square~.c $(magic)
 triangular~.class.sources := classes/triangular~.c $(magic)
 vsaw~.class.sources := classes/vsaw~.c $(magic)
 pimp~.class.sources := classes/pimp~.c $(magic)
-
 
 #########################################################################
 

@@ -175,7 +175,7 @@ SIGNAL ANALYSIS: [10]
 - [zerocross~]
 
 CONTROL: [11]
- - [ar~]
+ - [asr~]
  - [autofade~]
  - [decay~]
  - [decay2~]

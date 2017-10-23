@@ -49,7 +49,7 @@
 #X text 207 354 - any message to pass through;
 #X text 177 445 - any message that's different from the previous;
 #X obj 129 219 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 54 256;
 #X obj 129 198 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 174 161 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
