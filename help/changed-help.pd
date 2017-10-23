@@ -1,90 +1,92 @@
-#N canvas 850 133 560 536 10;
-#X obj 4 344 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 850 133 563 573 10;
+#X obj 5 345 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 415 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 436 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 475 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 496 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 506 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 540 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 84 424 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 85 445 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 84 352 cnv 17 3 53 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 85 353 cnv 17 3 73 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 2 3 cnv 15 301 42 empty empty changed 20 20 2 37 -233017 -1
+#X obj 3 4 cnv 15 301 42 empty empty changed 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 3 3 graph;
-#X obj 23 40 cnv 4 4 4 empty empty Pass 0 28 2 18 -233017 -1 0;
-#X obj 107 40 cnv 4 4 4 empty empty when 0 28 2 18 -233017 -1 0;
-#X obj 64 40 cnv 4 4 4 empty empty data 0 28 2 18 -233017 -1 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X restore 4 4 graph;
+#X obj 24 41 cnv 4 4 4 empty empty Pass 0 28 2 18 -233017 -1 0;
+#X obj 108 41 cnv 4 4 4 empty empty when 0 28 2 18 -233017 -1 0;
+#X obj 65 41 cnv 4 4 4 empty empty data 0 28 2 18 -233017 -1 0;
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 306 4 pd;
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 142 353 anything;
-#X text 110 424 anything;
-#X msg 240 211 1 3;
-#X symbolatom 280 229 10 0 0 0 - - -, f 10;
-#X obj 280 209 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 143 354 anything;
+#X text 111 445 anything;
+#X msg 241 212 1 3;
+#X symbolatom 281 230 10 0 0 0 - - -, f 10;
+#X obj 281 210 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 157 40 cnv 4 4 4 empty empty it 0 28 2 18 -233017 -1 0;
-#X obj 181 40 cnv 4 4 4 empty empty changed 0 28 2 18 -233017 -1 0
+#X obj 158 41 cnv 4 4 4 empty empty it 0 28 2 18 -233017 -1 0;
+#X obj 182 41 cnv 4 4 4 empty empty changed 0 28 2 18 -233017 -1 0
 ;
-#X obj 208 309 display;
-#X text 206 353 - any message to pass through;
-#X text 176 424 - any message that's different from the previous;
-#X obj 128 218 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 209 310 display;
+#X text 207 354 - any message to pass through;
+#X text 177 445 - any message that's different from the previous;
+#X obj 129 219 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 128 197 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 129 198 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 173 160 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 174 161 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 170 370 bang;
-#X text 206 370 - force the data to be output;
-#X text 100 389 set <anything>;
-#X text 206 389 - set a current message inside the object;
-#X text 61 86 [changed] passes its data input through only when it
+#X text 171 371 bang;
+#X text 207 371 - force the data to be output;
+#X text 101 390 set <anything>;
+#X text 207 390 - set a current message inside the object;
+#X text 62 87 [changed] passes its data input through only when it
 changed from the last receive message or the message that was set via
 arguments or messages. Unline [change] from Pd Vanilla \, it accepts
 any kind of messages.;
-#X msg 208 162 hi there;
-#X msg 226 187 list one 2 3;
-#X msg 286 254 set 1 3;
-#X text 91 164 outputs =>;
-#X text 350 253 <= sets message;
-#X text 112 483 1) anything - initializes first message (default ???)
-;
-#X obj 352 310 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X msg 209 163 hi there;
+#X msg 227 188 list one 2 3;
+#X msg 287 255 set 1 3;
+#X text 92 165 outputs =>;
+#X text 351 254 <= sets message;
+#X obj 353 311 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 84 447 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 85 468 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 138 447 bang;
-#X text 176 447 - bangs when data hasn't changed;
-#X obj 208 280 else/changed hi there;
-#X text 376 311 <= didn't change;
-#X connect 21 0 47 0;
-#X connect 22 0 47 0;
+#X text 139 468 bang;
+#X text 177 468 - bangs when data hasn't changed;
+#X text 377 312 <= didn't change;
+#X text 113 504 1) anything - initializes first message;
+#X text 209 520 (default: empty symbol atom);
+#X text 178 409 set;
+#X text 207 409 - sets to an empty symbol atom;
+#X obj 209 281 else/changed hi there;
+#X connect 21 0 51 0;
+#X connect 22 0 51 0;
 #X connect 23 0 22 0;
-#X connect 29 0 47 0;
+#X connect 29 0 51 0;
 #X connect 30 0 29 0;
-#X connect 31 0 47 0;
-#X connect 37 0 47 0;
-#X connect 38 0 47 0;
-#X connect 39 0 47 0;
-#X connect 47 0 26 0;
-#X connect 47 1 43 0;
+#X connect 31 0 51 0;
+#X connect 37 0 51 0;
+#X connect 38 0 51 0;
+#X connect 39 0 51 0;
+#X connect 51 0 26 0;
+#X connect 51 1 42 0;

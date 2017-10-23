@@ -21,7 +21,7 @@ static void changed_anything(t_changed *x, t_symbol *s, int argc, t_atom *argv){
     int i;
     int c = argc;
     x->x_sym = s;
-    if(c == x->x_c)	// same number of elements
+    if(c == x->x_c)
         for (i = 0; i < c; i++){
             if (x->x_a[i].a_type == A_FLOAT){
                 if (argv[i].a_type != A_FLOAT || x->x_a[i].a_w.w_float != argv[i].a_w.w_float)
@@ -35,10 +35,10 @@ static void changed_anything(t_changed *x, t_symbol *s, int argc, t_atom *argv){
             }
         }
     else
-        x->x_change = 1;	// different number of elements
+        x->x_change = 1;
     if (x->x_change){
         x->x_c = c;
-        for (i = 0; i < c; i++) // same new list
+        for (i = 0; i < c; i++)
             x->x_a[i] = argv[i];
         outlet_anything(x->x_obj.ob_outlet, s, argc, argv);
         x->x_change = 0;
@@ -49,9 +49,9 @@ static void changed_anything(t_changed *x, t_symbol *s, int argc, t_atom *argv){
 
 static void changed_set(t_changed *x, t_symbol *s, int argc, t_atom *argv){
     int i;
-    if(argc == 0) // NO ARGUMENTS
-        x->x_sym = &s_bang; ///////////////////////////// change to empty symbol?
-    else if(argc == 1){ // 1 ARGUMENT
+    if(argc == 0)
+        x->x_sym = &s_;
+    else if(argc == 1){
         if ((argv)->a_type == A_SYMBOL){
             x->x_sym = atom_getsymbol(argv);
             argc--;
@@ -59,7 +59,7 @@ static void changed_set(t_changed *x, t_symbol *s, int argc, t_atom *argv){
         else if ((argv)->a_type == A_FLOAT)
             x->x_sym = &s_float;
     }
-    else{ // ARGUMENTS >= 2
+    else{
         if((argv)->a_type == A_SYMBOL){
             x->x_sym = atom_getsymbol(argv++);
             argc--;
@@ -75,9 +75,9 @@ static void changed_set(t_changed *x, t_symbol *s, int argc, t_atom *argv){
 static void *changed_new(t_symbol *s, int argc, t_atom *argv){
     t_changed *x = (t_changed *)pd_new(changed_class);
     int i;
-    if(argc == 0) // NO ARGUMENTS
-        x->x_sym = &s_bang; ///////////////////////////// change to empty symbol?
-    else if(argc == 1){ // 1 ARGUMENT
+    if(argc == 0)
+        x->x_sym = &s_;
+    else if(argc == 1){
         if ((argv)->a_type == A_SYMBOL){
             x->x_sym = atom_getsymbol(argv);
             argc--; 
@@ -85,7 +85,7 @@ static void *changed_new(t_symbol *s, int argc, t_atom *argv){
         else if ((argv)->a_type == A_FLOAT)
                 x->x_sym = &s_float;
     }
-    else{ // ARGUMENTS >= 2
+    else{
         if((argv)->a_type == A_SYMBOL){
             x->x_sym = atom_getsymbol(argv++);
             argc--;
