@@ -145,11 +145,10 @@ pimp~.class.sources := classes/pimp~.c $(magic)
 datafiles = \
 $(wildcard help/*.pd) \
 $(wildcard help/Abstractions/*.pd) \
-License.txt \
+$(wildcard help/*.wav) \
+$(wildcard *.txt) \
 else-meta.pd \
 README.md \
-help/vacuous.wav \
-help/violin.wav \
 help/stereo.aif
 
 #########################################################################
