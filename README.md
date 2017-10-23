@@ -1,10 +1,10 @@
-EL Locus Solus' Else library for Pd 
+#### Welcome to the readme of EL Locus Solus' Else library for Pd 
 
-ELSE - EL Locus Solus' Externals
+# ELSE - EL Locus Solus' Externals
 
 --------------------------------------------------------------------------
 
-Version 1.0 beta-4 (Unreleased)
+### Version 1.0 beta-4 (Unreleased)
 
 The project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
 
@@ -20,7 +20,7 @@ The project is still in a beta phase, where drastic changes may occur and backwa
 
 --------------------------------------------------------------------------
 
-"EL Locus Solus" is run by Alexandre Torres Porres, who organizes cultural events/concerts and teaches computer music courses; website: http://alexandre-torres.wixsite.com/el-locus-solus
+**"EL Locus Solus"** is run by Alexandre Torres Porres, who organizes cultural events/concerts and teaches computer music courses; website: http://alexandre-torres.wixsite.com/el-locus-solus
 
 EL Locus Solus offers a computer music tutorial with examples in Pure Data for its courses. These are in portuguese as of yet, with plans for english translation and formatting into a book. There are over 350 examples for now and they were designed to work with Pd Extended 0.42-5, making extensive use of the existing objects available in Pd Extended's libraries.
 
@@ -30,15 +30,15 @@ ELSE steals some ideas and stuff from SuperCollider, such as most of the chaotic
 
 --------------------------------------------------------------------------
 
-<strong>Downloading ELSE:</strong>
+### Downloading ELSE:
 
 Look for the latest releases in https://github.com/porres/pd-else/releases - but ELSE is also available via 'deken' (Pd's external manager). In Pd, just go for Help => Find Externals and search for 'else'.
 
-<strong>Installing ELSE:</strong>
+###Installing ELSE:
 
 This release has been tested with Pd Vanilla 0.47-1, not guaranteed to work in any other version or in Pd Extended/Purr Data. ELSE comes with a set of separate binaries, so you just need to add the "else" path to Pd.
 
-<strong>Building ELSE for Pd Vanilla:</strong>
+####Building ELSE for Pd Vanilla:
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
 
@@ -54,32 +54,32 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-Current Object list (150 objects):
+##Current Object list (150 objects):
 
-AUDIO PLAYING: [1]
+**AUDIO PLAYING: [1]**
 - [sampler~]
 
-EXTRA: [2]
+**EXTRA: [2]**
 - [args]
 - [output~]
 
-MISCELLANEA: [3]
+**MISCELLANEA: [3]**
 - [changed]
 - [loadbanger] / [lb]
 - [order]
 
-AUDIO PROCESSING: [3]
+**AUDIO PROCESSING: [3]**
 - [downsample~]
 - [allpass.rev~]
 - [fbdelay~]
 
-REVERB: [1]
+**REVERB: [1]**
 - [plateverb~]
 
-PHYSICAL MODELLING: [1]
+**PHYSICAL MODELLING: [1]**
 - [pluck~]
 
-OSCILLATORS (DETERMINISTIC GENERATORS): [14]
+**OSCILLATORS (DETERMINISTIC GENERATORS): [14]**
 - [cosine~]
 - [impulse~] / [imp~]
 - [impulse2~] / [imp2~]
@@ -95,7 +95,7 @@ OSCILLATORS (DETERMINISTIC GENERATORS): [14]
 - [vsaw~]
 - [pmosc~]
 
-CHAOTIC GENERATORS: [18]
+**CHAOTIC GENERATORS: [18]**
 - [brown~] 
 - [clipnoise~] 
 - [crackle~] 
@@ -115,7 +115,7 @@ CHAOTIC GENERATORS: [18]
 - [stepnoise~]
 - [xmod~]
 
-FILTERS (16):
+**FILTERS (16):**
 - [allpass.2nd~]
 - [bandpass~]
 - [bandstop~]
@@ -133,7 +133,7 @@ FILTERS (16):
 - [resonant~]
 - [resonant2~]
 
-SIGNAL ROUTING: [9]
+**SIGNAL ROUTING: [9]**
 - [balance~]
 - [pan2~]
 - [pan4~]
@@ -144,7 +144,7 @@ SIGNAL ROUTING: [9]
 - [xselect~]
 - [xselect2~]
 
-TRIGGERS: [16]
+**TRIGGERS: [16]**
 - [coin~]
 - [dust~]
 - [dust2~]
@@ -162,7 +162,7 @@ TRIGGERS: [16]
 - [trigger~]
 - [trighold~]
 
-SIGNAL ANALYSIS: [10]
+**SIGNAL ANALYSIS: [10]**
 - [changed~]
 - [changed2~]
 - [elapsed~]
@@ -174,7 +174,7 @@ SIGNAL ANALYSIS: [10]
 - [vu~]
 - [zerocross~]
 
-CONTROL: [11]
+**CONTROL: [11]**
  - [asr~]
  - [autofade~]
  - [decay~]
@@ -187,7 +187,7 @@ CONTROL: [11]
  - [sequencer~]
  - [impseq~]
 
-GUI: [11]
+**GUI: [11]**
 - [display]
 - [display~]
 - [out~]
@@ -200,7 +200,7 @@ GUI: [11]
 - [mix4~]
 - [setdsp~]
 
-MATH/LOGIC: [13]
+**MATH/LOGIC: [13]**
 - [accum~]
 - [ceil]
 - [ceil~]
@@ -215,13 +215,13 @@ MATH/LOGIC: [13]
 - [wrap2]
 - [wrap2~]
 
-CONSTANT VALUES: [4]
+**CONSTANT VALUES: [4]**
 - [nyquist~]
 - [pi]
 - [sr~]
 - [e]
 
-CONVERSION: [17]
+**CONVERSION: [17]**
 - [any2symbol]
 - [cents2rato]
 - [cents2ratio~]
