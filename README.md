@@ -16,7 +16,7 @@ The project is still in a beta phase, where drastic changes may occur and backwa
    terms of the Do What The Fuck You Want To Public License, Version 2,
    as published by Sam Hocevar. 
  
-   See License.txt and http://www.wtfpl.net/ for more details
+   See License.txt https://github.com/porres/pd-else/blob/master/License.txt and http://www.wtfpl.net/ for more details
 
 --------------------------------------------------------------------------
 
