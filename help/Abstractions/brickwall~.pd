@@ -1,4 +1,4 @@
-#N canvas 405 165 523 332 10;
+#N canvas 705 147 523 332 10;
 #X obj 84 52 inlet~;
 #X obj 84 267 outlet~;
 #N canvas 335 23 333 262 biquad 0;
@@ -252,7 +252,7 @@
 #X restore 84 234 pd biquad;
 #X text 202 154 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 204 135 Alexandre Torres Porres (2017);
-#N canvas 203 298 552 423 frequency 0;
+#N canvas 604 118 552 423 frequency 1;
 #X obj 212 305 t b f;
 #X obj 212 363 outlet;
 #X obj 244 331 v r_\$0;
@@ -267,10 +267,10 @@
 #X obj 265 183 / 2;
 #X obj 94 189 select 0;
 #X obj 94 90 else/nyquist~;
-#X obj 94 114 * 0.9;
 #X obj 94 138 t b f b;
 #X text 297 184 running nyquist;
 #X text 81 69 "global" nyquist;
+#X obj 94 114 * 0.75;
 #X connect 0 0 1 0;
 #X connect 0 1 2 0;
 #X connect 3 0 4 0;
@@ -282,12 +282,12 @@
 #X connect 10 0 11 0;
 #X connect 11 0 6 1;
 #X connect 12 1 6 0;
-#X connect 13 0 14 0;
-#X connect 14 0 15 0;
-#X connect 15 0 8 0;
-#X connect 15 1 6 0;
-#X connect 15 2 3 0;
-#X connect 15 2 10 0;
+#X connect 13 0 17 0;
+#X connect 14 0 8 0;
+#X connect 14 1 6 0;
+#X connect 14 2 3 0;
+#X connect 14 2 10 0;
+#X connect 17 0 14 0;
 #X restore 144 90 pd frequency;
 #X obj 144 51 inlet;
 #N canvas 53 23 333 262 biquad 0;
