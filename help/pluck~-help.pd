@@ -29,8 +29,8 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -99,7 +99,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -142,23 +142,23 @@
 -228856 -1 -1 0 256;
 #N canvas 748 271 391 355 example 0;
 #X obj 111 208 else/pluck~;
-#X obj 177 144 else/random~ 500 2000;
-#X obj 169 107 else/random~ 50 150;
 #X obj 46 125 else/brown~;
 #X obj 126 73 else/dust~ 5;
-#X obj 179 180 else/random~ 10000 20000;
 #X text 44 25 And now for some computer music cliché...;
 #X obj 111 256 else/out~;
-#X connect 0 0 7 0;
-#X connect 0 0 7 1;
-#X connect 1 0 0 3;
-#X connect 2 0 0 2;
-#X connect 3 0 0 0;
-#X connect 4 0 0 1;
-#X connect 4 0 1 0;
-#X connect 4 0 2 0;
-#X connect 4 0 5 0;
-#X connect 5 0 0 4;
+#X obj 169 107 else/randf~ 50 150;
+#X obj 177 144 else/randf~ 500 2000;
+#X obj 179 180 else/randf~ 10000 20000;
+#X connect 0 0 4 0;
+#X connect 0 0 4 1;
+#X connect 1 0 0 0;
+#X connect 2 0 0 1;
+#X connect 2 0 5 0;
+#X connect 2 0 6 0;
+#X connect 2 0 7 0;
+#X connect 5 0 0 2;
+#X connect 6 0 0 3;
+#X connect 7 0 0 4;
 #X restore 455 314 pd example;
 #X obj 18 41 cnv 4 4 4 empty empty A 0 28 2 18 -233017 -1 0;
 #X obj 3 3 cnv 15 301 42 empty empty pluck~ 20 20 2 37 -233017 -1 0

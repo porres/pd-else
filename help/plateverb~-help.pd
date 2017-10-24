@@ -35,9 +35,9 @@
 #X text 222 443 - left channel output;
 #X obj 22 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
 #X obj 358 140 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 10800 1;
+-1 -1 0 1;
 #X obj 355 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.850394 256;
+-228856 -1 -1 0 256;
 #X obj 132 464 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 167 463 signal;
@@ -57,26 +57,26 @@
 #X text 173 367 float;
 #X text 173 387 float;
 #X text 173 410 float;
-#N canvas 688 67 844 556 example 0;
+#N canvas 688 67 844 556 example 1;
 #X obj 348 317 catch~ \$0-input;
 #X obj 625 160 throw~ \$0-input;
 #X obj 625 24 adc~ 1;
 #X obj 46 229 *~;
 #X obj 46 264 throw~ \$0-input;
 #X obj 483 210 hsl 128 15 0 1 0 0 empty \$0-predelayms empty -2 -8
-0 10 -228856 -1 -1 1270 1;
+0 10 -228856 -1 -1 0 1;
 #X floatatom 480 234 5 0 0 0 - - -, f 5;
 #X obj 503 256 hsl 128 15 0 1 0 0 empty \$0-cutoff empty -2 -8 0 10
--228856 -1 -1 7620 1;
+-228856 -1 -1 0 1;
 #X floatatom 500 282 5 0 0 0 - - -, f 5;
 #X obj 524 307 hsl 128 15 0 1 0 0 empty \$0-damping empty -2 -8 0 10
--228856 -1 -1 3175 1;
+-228856 -1 -1 0 1;
 #X floatatom 521 332 5 0 0 0 - - -, f 5;
 #X obj 544 355 hsl 128 15 0 1 0 0 empty \$0-fbgain empty -2 -8 0 10
--228856 -1 -1 10160 1;
+-228856 -1 -1 0 1;
 #X floatatom 541 378 5 0 0 0 - - -, f 5;
 #X obj 620 389 hsl 128 15 0 1 0 0 empty \$0-drywet empty -2 -8 0 10
--228856 -1 -1 6350 1;
+-228856 -1 -1 0 1;
 #X floatatom 617 416 5 0 0 0 - - -, f 5;
 #X text 586 388 dry;
 #X text 754 390 wet;
@@ -127,7 +127,6 @@
 #X obj 188 338 else/impseq~;
 #X obj 188 314 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 93 376 else/random~ 500 3000, f 12;
 #X obj 35 413 else/lowpass~ 0 5;
 #X text 344 201 impulse;
 #X text 407 59 sample;
@@ -150,19 +149,20 @@
 #X text 540 255 cutoff;
 #X obj 460 416 else/plateverb~;
 #X obj 460 458 else/out~;
-#X connect 0 0 54 0;
+#X obj 93 376 else/randf~ 500 3000, f 12;
+#X connect 0 0 53 0;
 #X connect 2 0 30 0;
 #X connect 3 0 4 0;
 #X connect 5 0 6 0;
-#X connect 6 0 54 1;
+#X connect 6 0 53 1;
 #X connect 7 0 8 0;
-#X connect 8 0 54 2;
+#X connect 8 0 53 2;
 #X connect 9 0 10 0;
-#X connect 10 0 54 3;
+#X connect 10 0 53 3;
 #X connect 11 0 12 0;
-#X connect 12 0 54 4;
+#X connect 12 0 53 4;
 #X connect 13 0 14 0;
-#X connect 14 0 54 5;
+#X connect 14 0 53 5;
 #X connect 23 0 24 0;
 #X connect 24 0 25 0;
 #X connect 26 0 27 0;
@@ -175,17 +175,17 @@
 #X connect 33 0 32 0;
 #X connect 34 0 32 0;
 #X connect 35 0 32 0;
-#X connect 37 0 44 0;
+#X connect 37 0 43 0;
 #X connect 38 0 39 0;
 #X connect 40 0 38 1;
 #X connect 41 0 40 0;
-#X connect 41 0 43 0;
+#X connect 41 0 55 0;
 #X connect 42 0 41 0;
-#X connect 43 0 44 1;
-#X connect 44 0 38 0;
-#X connect 51 0 50 0;
-#X connect 54 0 55 0;
-#X connect 54 1 55 1;
+#X connect 43 0 38 0;
+#X connect 50 0 49 0;
+#X connect 53 0 54 0;
+#X connect 53 1 54 1;
+#X connect 55 0 43 1;
 #X restore 445 252 pd example;
 #X text 226 367 - damping (0 - 1);
 #X text 226 386 - feedback gain (0 - 1);
