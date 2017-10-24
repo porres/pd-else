@@ -2,34 +2,34 @@
 
 #include "m_pd.h"
 
-static t_class *random_class;
+static t_class *randf_class;
 
-typedef struct _random
+typedef struct _randf
 {
     t_object   x_obj;
     int        x_val;
-    t_float    x_random;
+    t_float    x_randf;
     t_float    x_lastin;
     t_inlet   *x_low_let;
     t_inlet   *x_high_let;
     t_outlet  *x_outlet;
-} t_random;
+} t_randf;
 
-static void random_seed(t_random *x, t_floatarg f)
+static void randf_seed(t_randf *x, t_floatarg f)
 {
     x->x_val = (int)f * 1319;
 }
 
-static t_int *random_perform(t_int *w)
+static t_int *randf_perform(t_int *w)
 {
-    t_random *x = (t_random *)(w[1]);
+    t_randf *x = (t_randf *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
     t_float *in3 = (t_float *)(w[5]);
     t_float *out = (t_sample *)(w[6]);
     int val = x->x_val;
-    t_float random = x->x_random;
+    t_float randf = x->x_randf;
     t_float lastin = x->x_lastin;
     while (nblock--)
         {
@@ -40,26 +40,26 @@ static t_int *random_perform(t_int *w)
         float range = out_high - out_low; // range
         if (trig > 0 && lastin <= 0 || trig < 0 && lastin >= 0 ) // update
             {
-            random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
-            random = out_low + range * (random + 1) / 2;
+            randf = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
+            randf = out_low + range * (randf + 1) / 2;
             val = val * 435898247 + 382842987;
             }
-        *out++ = random;
+        *out++ = randf;
         lastin = trig;
         }
     x->x_val = val;
-    x->x_random = random; // current output
+    x->x_randf = randf; // current output
     x->x_lastin = lastin; // last input
     return (w + 7);
 }
 
-static void random_dsp(t_random *x, t_signal **sp)
+static void randf_dsp(t_randf *x, t_signal **sp)
 {
-    dsp_add(random_perform, 6, x, sp[0]->s_n,
+    dsp_add(randf_perform, 6, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void *random_free(t_random *x)
+static void *randf_free(t_randf *x)
 {
     inlet_free(x->x_low_let);
     inlet_free(x->x_high_let);
@@ -67,9 +67,9 @@ static void *random_free(t_random *x)
     return (void *)x;
 }
 
-static void *random_new(t_symbol *s, int ac, t_atom *av)
+static void *randf_new(t_symbol *s, int ac, t_atom *av)
 {
-    t_random *x = (t_random *)pd_new(random_class);
+    t_randf *x = (t_randf *)pd_new(randf_class);
 /////////////////////////////////////////////////////////////////////////////////////
     float low;
     float high;
@@ -137,15 +137,14 @@ static void *random_new(t_symbol *s, int ac, t_atom *av)
     return (x);
 //
     errstate:
-        pd_error(x, "random~: improper args");
+        pd_error(x, "randf~: improper args");
         return NULL;
 }
 
-void random_tilde_setup(void)
-{
-    random_class = class_new(gensym("random~"), (t_newmethod)random_new,
-        (t_method)random_free, sizeof(t_random), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(random_class, nullfn, gensym("signal"), 0);
-    class_addmethod(random_class, (t_method)random_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(random_class, (t_method)random_seed, gensym("seed"), A_DEFFLOAT, 0);
+void randf_tilde_setup(void){
+    randf_class = class_new(gensym("randf~"), (t_newmethod)randf_new,
+        (t_method)randf_free, sizeof(t_randf), CLASS_DEFAULT, A_GIMME, 0);
+    class_addmethod(randf_class, nullfn, gensym("signal"), 0);
+    class_addmethod(randf_class, (t_method)randf_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(randf_class, (t_method)randf_seed, gensym("seed"), A_DEFFLOAT, 0);
 }
