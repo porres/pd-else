@@ -28,13 +28,13 @@ static int next_separator(char tag, int ac, t_atom *av, int* ac_a, t_atom ** av_
 
 static void break_anything(t_break *x, t_symbol *s, int argc, t_atom *argv){
     if (x->x_break){
-        int ac_a, i = 0;
+        int ac_a, i = 0; //  neees "= 0"
         t_atom* av_a;
         while (next_separator(x->x_separator, argc, argv, &ac_a, &av_a, &i)){
             if ((av_a)->a_type == A_SYMBOL)
                 outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(av_a), ac_a - 1, av_a + 1);
-            else if (((av_a)->a_type == A_FLOAT) && ac_a == 1)
-                outlet_float(x->x_obj.ob_outlet, atom_getfloat(av_a));
+/*            else if (((av_a)->a_type == A_FLOAT) && ac_a == 1)
+                outlet_float(x->x_obj.ob_outlet, atom_getfloat(av_a)); */
             else
                 outlet_anything(x->x_obj.ob_outlet, s, ac_a, av_a);
         }
