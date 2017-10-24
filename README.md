@@ -54,7 +54,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (150 objects):
+##Current Object list (151 objects):
 
 **AUDIO PLAYING: [1]**
 - [sampler~]
@@ -200,7 +200,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [mix4~]
 - [setdsp~]
 
-**MATH/LOGIC: [13]**
+**MATH/LOGIC: [14]**
 - [accum~]
 - [ceil]
 - [ceil~]
@@ -210,7 +210,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [fold~]
 - [lastvalue]
 - [loop]
-- [random~]
+- [randf~]
+- [randi~]
 - [sin~]
 - [wrap2]
 - [wrap2~]
