@@ -16,8 +16,8 @@ static void args_bang(t_args *x){
       return;
   b = x->x_canvas->gl_obj.te_binbuf;
   if(b){
-    argc=binbuf_getnatom(b)-1;
-    argv=binbuf_getvec(b)+1;
+    argc = binbuf_getnatom(b) - 1;
+    argv = binbuf_getvec(b) + 1;
   }
   else{
     canvas_setcurrent(x->x_canvas);
