@@ -64,19 +64,19 @@
 #X obj 46 229 *~;
 #X obj 46 264 throw~ \$0-input;
 #X obj 483 210 hsl 128 15 0 1 0 0 empty \$0-predelayms empty -2 -8
-0 10 -228856 -1 -1 0 1;
+0 10 -228856 -1 -1 1270 1;
 #X floatatom 480 234 5 0 0 0 - - -, f 5;
 #X obj 503 256 hsl 128 15 0 1 0 0 empty \$0-cutoff empty -2 -8 0 10
--228856 -1 -1 0 1;
+-228856 -1 -1 7620 1;
 #X floatatom 500 282 5 0 0 0 - - -, f 5;
 #X obj 524 307 hsl 128 15 0 1 0 0 empty \$0-damping empty -2 -8 0 10
--228856 -1 -1 0 1;
+-228856 -1 -1 3175 1;
 #X floatatom 521 332 5 0 0 0 - - -, f 5;
 #X obj 544 355 hsl 128 15 0 1 0 0 empty \$0-fbgain empty -2 -8 0 10
--228856 -1 -1 0 1;
+-228856 -1 -1 10160 1;
 #X floatatom 541 378 5 0 0 0 - - -, f 5;
 #X obj 620 389 hsl 128 15 0 1 0 0 empty \$0-drywet empty -2 -8 0 10
--228856 -1 -1 0 1;
+-228856 -1 -1 6350 1;
 #X floatatom 617 416 5 0 0 0 - - -, f 5;
 #X text 586 388 dry;
 #X text 754 390 wet;
@@ -138,7 +138,7 @@
 #X obj 112 95 f \$0;
 #X msg 112 118 \; \$1-predelayms 0.1 \; \$1-cutoff 0.6 \; \$1-damping
 0.25 \; \$1-fbgain 0.8 \; \$1-drywet 0.5;
-#X obj 112 72 else/lb -next;
+#X obj 112 72 else/lb;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
 #X connect 3 0 1 0;
@@ -207,12 +207,12 @@ by Tom Erbe implementing the Dattorro plate stereo reverb model.;
 #X text 169 503 1) float - pre delay in seconds (0 - 1) - default 0
 ;
 #X text 226 322 - pre delay in seconds (0 - 1);
-#X obj 99 186 else/plateverb~ 0.05 0.6 0.25 0.8 0.8;
 #X text 226 410 - dry/wet (0 - 1);
 #X text 325 140 dry;
 #X text 492 140 wet;
+#X obj 99 186 else/plateverb~ 0.05 0.6 0.25 0.8 0.8;
 #X connect 20 0 21 0;
-#X connect 21 0 51 5;
-#X connect 43 0 51 0;
-#X connect 51 0 42 0;
-#X connect 51 1 42 1;
+#X connect 21 0 54 5;
+#X connect 43 0 54 0;
+#X connect 54 0 42 0;
+#X connect 54 1 42 1;
