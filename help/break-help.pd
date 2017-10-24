@@ -1,4 +1,4 @@
-#N canvas 759 172 613 542 10;
+#N canvas 909 23 689 562 10;
 #X obj 25 41 cnv 4 4 4 empty empty Argument 0 28 2 18 -233017 -1 0
 ;
 #X obj 110 41 cnv 4 4 4 empty empty management 0 28 2 18 -233017 -1
@@ -61,28 +61,37 @@ and passed throughout the left outlet. But if no arguments are given
 #X connect 14 0 9 0;
 #X connect 14 1 4 0;
 #X restore 446 199 pd example;
-#X obj 6 324 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 6 364 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 356 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 396 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 388 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 428 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 420 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 460 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 129 177 open and check =>;
 #X obj 261 177 else/args;
-#X text 204 334 (none);
-#X text 204 364 (none);
-#X text 204 394 (none);
-#X obj 238 291 print;
+#X text 204 374 (none);
+#X text 204 404 (none);
+#X text 204 434 (none);
+#X obj 213 309 print;
 #X msg 125 244 1 2 3 4;
-#X msg 88 271 bunda;
 #X msg 339 272 any;
 #X obj 426 280 changed;
-#X msg 238 235 -freq 1;
+#X obj 286 313 route symbol;
+#X obj 286 341 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 286 291 -a;
+#X obj 336 335 print route;
 #X obj 239 265 else/break -;
-#X connect 25 0 30 0;
-#X connect 26 0 30 0;
-#X connect 27 0 30 0;
-#X connect 29 0 30 0;
-#X connect 30 0 24 0;
+#X msg 239 235 -freq 1 2 3 -amp 2 3 4;
+#X msg 52 314 -bunda 1 -cocô 2 3;
+#X connect 25 0 32 0;
+#X connect 26 0 32 0;
+#X connect 28 0 29 0;
+#X connect 28 0 31 0;
+#X connect 30 0 28 0;
+#X connect 32 0 24 0;
+#X connect 32 0 28 0;
+#X connect 33 0 32 0;
+#X connect 34 0 32 0;
