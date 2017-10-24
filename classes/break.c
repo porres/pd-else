@@ -11,7 +11,7 @@ typedef struct _break{
 
 static int next_separator(char tag, int ac, t_atom *av, int* ac_a, t_atom ** av_a, int* iter){
 	int j;
-    if (ac == 0 || *iter >= ac){
+    if (*iter >= ac){
 		*ac_a = 0;
 		*av_a = NULL;
 		return 0;
