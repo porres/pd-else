@@ -1,4 +1,4 @@
-#N canvas 909 23 689 562 10;
+#N canvas 909 23 614 578 10;
 #X obj 25 41 cnv 4 4 4 empty empty Argument 0 28 2 18 -233017 -1 0
 ;
 #X obj 110 41 cnv 4 4 4 empty empty management 0 28 2 18 -233017 -1
@@ -26,72 +26,37 @@
 0;
 #X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 66 97 [args] is a base model for loading an argument list into
-an abstraction. It is Vanilla Compatible and useful for the management
-of variable number of arguments in abstractions.;
-#N canvas 968 172 487 556 example 0;
-#X obj 162 180 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 320 239 bng 20 350 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 44 33 This example uses the args-example.pd abstraction \,
-which is a very simple example on how the base model provided in [args]
-works.;
-#X obj 169 357 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 285 416 bng 20 350 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 191 358 reload arguments;
-#X obj 162 284 else/display;
-#X text 184 181 resend arguments;
-#X text 48 93 Here you can test that the given arguments are loaded
-and passed throughout the left outlet. But if no arguments are given
-\, then the right outlet sends a bang.;
-#X obj 169 481 else/display;
-#X text 114 286 args;
-#X text 253 241 no args;
-#X obj 285 445 print no args;
-#X obj 162 208 else/args-example 1 2 3;
-#X obj 169 384 else/args-example;
-#X connect 0 0 13 0;
-#X connect 3 0 14 0;
-#X connect 4 0 12 0;
-#X connect 13 0 6 0;
-#X connect 13 1 1 0;
-#X connect 14 0 9 0;
-#X connect 14 1 4 0;
-#X restore 446 199 pd example;
-#X obj 6 364 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 420 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 396 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 452 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 428 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 484 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 460 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 516 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 129 177 open and check =>;
-#X obj 261 177 else/args;
-#X text 204 374 (none);
-#X text 204 404 (none);
-#X text 204 434 (none);
-#X obj 213 309 print;
-#X msg 125 244 1 2 3 4;
-#X msg 339 272 any;
-#X obj 426 280 changed;
-#X obj 286 313 route symbol;
-#X obj 286 341 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X msg 286 291 -a;
-#X obj 336 335 print route;
-#X obj 239 265 else/break -;
-#X msg 239 235 -freq 1 2 3 -amp 2 3 4;
-#X msg 52 314 -bunda 1 -cocô 2 3;
-#X connect 25 0 32 0;
-#X connect 26 0 32 0;
-#X connect 28 0 29 0;
-#X connect 28 0 31 0;
-#X connect 30 0 28 0;
-#X connect 32 0 24 0;
-#X connect 32 0 28 0;
-#X connect 33 0 32 0;
-#X connect 34 0 32 0;
+#X text 202 430 (none);
+#X text 202 460 (none);
+#X text 202 490 (none);
+#X obj 211 365 print;
+#X msg 181 234 -bunda list cu meu;
+#X msg 223 263 -bunda 1 2;
+#X msg 55 308 -cu 1 -bosta 2;
+#X msg 63 345 -cu -bosta;
+#X text 70 369 não separa;
+#X text 56 283 mantem -cu;
+#X text 68 93 - o primeiro \, se tiver separador \, precisa ser seguido
+de uma lista de números pra aparecer o seletor;
+#X text 65 132 - se eu comento o type=symbol/float \, ele não separa
+direito ou mantem o seletor;
+#X msg 247 291 -freq 1 2 3 -amp -phase -ratio 2;
+#X obj 344 373 print;
+#X msg 341 343 symbol;
+#X obj 421 340 fromsymbol;
+#X obj 237 321 else/break -;
+#X connect 21 0 33 0;
+#X connect 22 0 33 0;
+#X connect 23 0 33 0;
+#X connect 24 0 33 0;
+#X connect 29 0 33 0;
+#X connect 31 0 33 0;
+#X connect 33 0 20 0;

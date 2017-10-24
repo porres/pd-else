@@ -10,19 +10,19 @@ typedef struct _break{
 } t_break;
 
 static int next_separator(char tag, int ac, t_atom *av, int* ac_a, t_atom ** av_a, int* iter){
-	int i;
+	int j;
     if (ac == 0 || *iter >= ac){
 		*ac_a = 0;
 		*av_a = NULL;
 		return 0;
 	}
-    for (i = *iter + 1; i < ac; i++){
-        if ((av+i)->a_type == A_SYMBOL && (atom_getsymbol(av+i))->s_name[0] == tag)
+    for (j = *iter + 1; j < ac; j++){
+        if ((av+j)->a_type == A_SYMBOL && (atom_getsymbol(av+j))->s_name[0] == tag)
             break;
      }
-	 *ac_a = i - *iter;
+	 *ac_a = j - *iter;
 	 *av_a = av + *iter;
-	 *iter = i;
+	 *iter = j;
      return (*ac_a);     
 }
 
