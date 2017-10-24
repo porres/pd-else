@@ -98,8 +98,7 @@
 #X connect 14 0 2 0;
 #X connect 14 1 13 0;
 #X connect 15 0 3 0;
-#X restore 298 108 pd get_n_ch;
-#X obj 182 80 else/loadbanger 4;
+#X restore 340 108 pd get_n_ch;
 #N canvas 1045 405 481 414 load 0;
 #X obj 142 100 v sym_\$0;
 #X obj 142 74 inlet;
@@ -150,6 +149,7 @@
 #X connect 2 0 4 0;
 #X connect 2 1 3 0;
 #X restore 182 141 pd load \; args;
+#X obj 182 80 else/loadbanger -init 4;
 #X connect 1 0 2 0;
 #X connect 2 0 5 0;
 #X connect 3 0 4 0;
@@ -162,10 +162,10 @@
 #X connect 8 0 7 3;
 #X connect 10 0 7 2;
 #X connect 11 0 0 0;
-#X connect 14 0 15 0;
-#X connect 14 1 1 0;
-#X connect 14 2 6 0;
-#X connect 14 2 8 0;
-#X connect 14 3 13 0;
+#X connect 15 0 14 0;
+#X connect 15 1 1 0;
+#X connect 15 2 6 0;
+#X connect 15 2 8 0;
+#X connect 15 3 13 0;
 #X restore 246 138 pd dynamic patching;
 #X connect 0 0 1 0;

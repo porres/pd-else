@@ -7,7 +7,7 @@ typedef struct _loadbanger{
     t_object    x_ob;
     int         x_nouts;
     int         x_banged;
-    int         x_next;
+    int         x_init;
     t_outlet  **x_outs;
     t_outlet   *x_outbuf[1];
 } t_loadbanger;
@@ -15,7 +15,7 @@ typedef struct _loadbanger{
 static t_class *loadbanger_class;
 
 static void loadbanger_loadbang(t_loadbanger *x, t_float f){
-    if((int)f == LB_INIT && !x->x_next){ // == LB_INIT (1) and not "next"
+    if((int)f == LB_INIT && x->x_init){ // == LB_INIT (1) and "-init"
         int i = x->x_nouts;
         while (i--){
             outlet_bang(x->x_outs[i]);
@@ -61,7 +61,7 @@ static void *loadbanger_new(t_symbol *s, int argc, t_atom *argv){
     int i, nouts = 1;
     x->x_banged = 0;
     t_outlet **outs;
-    x->x_next = 0;
+    x->x_init = 0;
     t_float float_flag = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
@@ -76,8 +76,8 @@ static void *loadbanger_new(t_symbol *s, int argc, t_atom *argv){
             else
                 if (argv -> a_type == A_SYMBOL){
                     t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-                    if(strcmp(curarg->s_name, "-next")==0){
-                        x->x_next = 1;
+                    if(strcmp(curarg->s_name, "-init")==0){
+                        x->x_init = 1;
                         argc--;
                         argv++;
                     }

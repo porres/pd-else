@@ -9,7 +9,7 @@ typedef struct _lb{
     t_object    x_ob;
     int         x_nouts;
     int         x_banged;
-    int         x_next;
+    int         x_init;
     t_outlet  **x_outs;
     t_outlet   *x_outbuf[1];
 } t_lb;
@@ -17,7 +17,7 @@ typedef struct _lb{
 static t_class *lb_class;
 
 static void lb_loadbang(t_lb *x, t_float f){
-    if((int)f == LB_INIT && !x->x_next){ // == LB_INIT (1) and not "next"
+    if((int)f == LB_INIT && x->x_init){ // == LB_INIT (1) and "-init"
         int i = x->x_nouts;
         while (i--){
             outlet_bang(x->x_outs[i]);
@@ -63,7 +63,7 @@ static void *lb_new(t_symbol *s, int argc, t_atom *argv){
     int i, nouts = 1;
     x->x_banged = 0;
     t_outlet **outs;
-    x->x_next = 0;
+    x->x_init = 0;
     t_float float_flag = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
@@ -78,8 +78,8 @@ static void *lb_new(t_symbol *s, int argc, t_atom *argv){
             else
                 if (argv -> a_type == A_SYMBOL){
                     t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-                    if(strcmp(curarg->s_name, "-next")==0){
-                        x->x_next = 1;
+                    if(strcmp(curarg->s_name, "-init")==0){
+                        x->x_init = 1;
                         argc--;
                         argv++;
                     }
@@ -120,6 +120,6 @@ void lb_setup(void){
     class_addanything(lb_class, lb_anything);
     class_addmethod(lb_class, (t_method)lb_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     class_addmethod(lb_class, (t_method)lb_click, gensym("click"),
-                                    A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
+                    A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
     class_sethelpsymbol(lb_class, gensym("loadbanger"));
 }
