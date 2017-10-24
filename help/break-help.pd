@@ -1,4 +1,4 @@
-#N canvas 647 195 613 542 10;
+#N canvas 759 172 613 542 10;
 #X obj 25 41 cnv 4 4 4 empty empty Argument 0 28 2 18 -233017 -1 0
 ;
 #X obj 110 41 cnv 4 4 4 empty empty management 0 28 2 18 -233017 -1
@@ -77,9 +77,12 @@ and passed throughout the left outlet. But if no arguments are given
 #X obj 238 291 print;
 #X msg 125 244 1 2 3 4;
 #X msg 88 271 bunda;
-#X obj 238 265 else/break;
-#X msg 238 236 1 2 3 -freq 100 200 300 -amps 1 0.5 0.25;
-#X connect 25 0 27 0;
-#X connect 26 0 27 0;
-#X connect 27 0 24 0;
-#X connect 28 0 27 0;
+#X msg 339 272 any;
+#X obj 426 280 changed;
+#X msg 238 235 -freq 1;
+#X obj 239 265 else/break -;
+#X connect 25 0 30 0;
+#X connect 26 0 30 0;
+#X connect 27 0 30 0;
+#X connect 29 0 30 0;
+#X connect 30 0 24 0;
