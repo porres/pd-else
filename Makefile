@@ -88,6 +88,7 @@ rad2hz~.class.sources := classes/rad2hz~.c
 ramp~.class.sources := classes/ramp~.c
 rampnoise~.class.sources := classes/rampnoise~.c
 random~.class.sources := classes/random~.c
+randomi~.class.sources := classes/randomi~.c
 randpulse~.class.sources := classes/randpulse~.c
 ratio2cents~.class.sources := classes/ratio2cents~.c
 rescale~.class.sources := classes/rescale~.c
