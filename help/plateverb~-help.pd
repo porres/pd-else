@@ -34,11 +34,10 @@
 #X text 167 443 signal;
 #X text 222 443 - left channel output;
 #X obj 22 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
-#X obj 344 140 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 341 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 402 166 dry/wet;
+#X obj 358 140 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 10800 1;
+#X obj 355 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.850394 256;
 #X obj 132 464 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 167 463 signal;
@@ -58,27 +57,26 @@
 #X text 173 367 float;
 #X text 173 387 float;
 #X text 173 410 float;
-#X text 226 410 - dry/wet (0 - 100);
-#N canvas 688 67 844 556 example 1;
+#N canvas 688 67 844 556 example 0;
 #X obj 348 317 catch~ \$0-input;
 #X obj 625 160 throw~ \$0-input;
 #X obj 625 24 adc~ 1;
 #X obj 46 229 *~;
 #X obj 46 264 throw~ \$0-input;
-#X obj 483 210 hsl 128 15 0 200 0 0 empty \$0-predelayms empty -2 -8
-0 10 -228856 -1 -1 0 1;
+#X obj 483 210 hsl 128 15 0 1 0 0 empty \$0-predelayms empty -2 -8
+0 10 -228856 -1 -1 1270 1;
 #X floatatom 480 234 5 0 0 0 - - -, f 5;
-#X obj 503 256 hsl 128 15 0 1 0 0 empty \$0-bandwidth empty -2 -8 0
-10 -228856 -1 -1 0 1;
+#X obj 503 256 hsl 128 15 0 1 0 0 empty \$0-cutoff empty -2 -8 0 10
+-228856 -1 -1 7620 1;
 #X floatatom 500 282 5 0 0 0 - - -, f 5;
 #X obj 524 307 hsl 128 15 0 1 0 0 empty \$0-damping empty -2 -8 0 10
--228856 -1 -1 0 1;
+-228856 -1 -1 3175 1;
 #X floatatom 521 332 5 0 0 0 - - -, f 5;
 #X obj 544 355 hsl 128 15 0 1 0 0 empty \$0-fbgain empty -2 -8 0 10
--228856 -1 -1 0 1;
+-228856 -1 -1 10160 1;
 #X floatatom 541 378 5 0 0 0 - - -, f 5;
 #X obj 620 389 hsl 128 15 0 1 0 0 empty \$0-drywet empty -2 -8 0 10
--228856 -1 -1 0 1;
+-228856 -1 -1 6350 1;
 #X floatatom 617 416 5 0 0 0 - - -, f 5;
 #X text 586 388 dry;
 #X text 754 390 wet;
@@ -86,7 +84,6 @@
 #X text 586 388 dry;
 #X text 586 388 dry;
 #X text 557 306 damping;
-#X text 527 255 bandwidth;
 #X text 586 388 dry;
 #X text 506 209 pre delay;
 #X obj 323 200 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -132,85 +129,90 @@
 -1 -1;
 #X obj 93 376 else/random~ 500 3000, f 12;
 #X obj 35 413 else/lowpass~ 0 5;
-#X obj 460 416 else/plateverb~;
 #X text 344 201 impulse;
 #X text 407 59 sample;
 #X text 665 88 audio input;
 #X text 129 163 tone;
 #X text 208 314 noise burst;
-#X obj 460 458 else/out~ 8;
-#N canvas 1068 445 450 300 init 1;
-#X obj 112 72 else/lb;
+#N canvas 1068 445 450 300 init 0;
 #X obj 112 43 inlet;
 #X obj 112 95 f \$0;
-#X msg 112 117 \; \$1-predelayms 30 \; \$1-bandwidth 0.6 \; \$1-damping
+#X msg 112 118 \; \$1-predelayms 0.1 \; \$1-cutoff 0.6 \; \$1-damping
 0.25 \; \$1-fbgain 0.8 \; \$1-drywet 0.5;
-#X connect 0 0 2 0;
-#X connect 1 0 0 0;
-#X connect 2 0 3 0;
+#X obj 112 72 else/lb -next;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 3 0 1 0;
 #X restore 683 451 pd init;
 #X obj 683 430 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 703 431 reload args;
-#X connect 0 0 46 0;
-#X connect 2 0 31 0;
+#X text 540 255 cutoff;
+#X obj 460 416 else/plateverb~;
+#X obj 460 458 else/out~;
+#X connect 0 0 54 0;
+#X connect 2 0 30 0;
 #X connect 3 0 4 0;
 #X connect 5 0 6 0;
-#X connect 6 0 46 1;
+#X connect 6 0 54 1;
 #X connect 7 0 8 0;
-#X connect 8 0 46 2;
+#X connect 8 0 54 2;
 #X connect 9 0 10 0;
-#X connect 10 0 46 3;
+#X connect 10 0 54 3;
 #X connect 11 0 12 0;
-#X connect 12 0 46 4;
+#X connect 12 0 54 4;
 #X connect 13 0 14 0;
-#X connect 14 0 46 5;
+#X connect 14 0 54 5;
+#X connect 23 0 24 0;
 #X connect 24 0 25 0;
-#X connect 25 0 26 0;
+#X connect 26 0 27 0;
+#X connect 26 0 29 0;
 #X connect 27 0 28 0;
-#X connect 27 0 30 0;
-#X connect 28 0 29 0;
-#X connect 29 0 3 1;
-#X connect 30 0 3 0;
-#X connect 31 0 1 0;
+#X connect 28 0 3 1;
+#X connect 29 0 3 0;
+#X connect 30 0 1 0;
+#X connect 32 0 31 0;
 #X connect 33 0 32 0;
-#X connect 34 0 33 0;
-#X connect 35 0 33 0;
-#X connect 36 0 33 0;
-#X connect 38 0 45 0;
-#X connect 39 0 40 0;
-#X connect 41 0 39 1;
+#X connect 34 0 32 0;
+#X connect 35 0 32 0;
+#X connect 37 0 44 0;
+#X connect 38 0 39 0;
+#X connect 40 0 38 1;
+#X connect 41 0 40 0;
+#X connect 41 0 43 0;
 #X connect 42 0 41 0;
-#X connect 42 0 44 0;
-#X connect 43 0 42 0;
-#X connect 44 0 45 1;
-#X connect 45 0 39 0;
-#X connect 46 0 52 0;
-#X connect 46 1 52 1;
-#X connect 54 0 53 0;
+#X connect 43 0 44 1;
+#X connect 44 0 38 0;
+#X connect 51 0 50 0;
+#X connect 54 0 55 0;
+#X connect 54 1 55 1;
 #X restore 445 252 pd example;
-#X text 226 322 - pre delay (0 - 200);
 #X text 226 367 - damping (0 - 1);
 #X text 226 386 - feedback gain (0 - 1);
 #X text 226 345 - cutoff (0 - 1);
-#X text 169 503 1) float - pre delay (0 - 200), f 36;
-#X text 169 520 2) float - cutoff (0 - 1);
-#X text 169 537 3) float - damping (0 - 1);
-#X text 169 554 4) float - feedback gain (0 - 1);
-#X text 169 571 5) float - dry/wet (0 - 1);
 #X obj 3 3 cnv 15 301 42 empty empty plateverb~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X obj 129 40 cnv 4 4 4 empty empty reverb 0 28 2 18 -233017 -1 0;
-#X obj 177 225 else/out~;
+#X obj 189 225 else/out~;
 #X obj 99 152 else/sampler~ vacuous.wav 1 1;
 #X text 69 88 [plateverb~] is a reverb asbtraction based on a patch
 by Tom Erbe implementing the Dattorro plate stereo reverb model.;
-#X obj 99 187 else/plateverb~ 30 0.6 0.25 0.8 0.9;
+#X text 169 537 3) float - damping (0 - 1) - default 0;
+#X text 169 554 4) float - feedback gain (0 - 1) - default 0;
+#X text 169 571 5) float - dry/wet (0 - 1) - default 0;
+#X text 169 520 2) float - cutoff (0 - 1) - default 0;
+#X text 169 503 1) float - pre delay in seconds (0 - 1) - default 0
+;
+#X text 226 322 - pre delay in seconds (0 - 1);
+#X obj 99 186 else/plateverb~ 0.05 0.6 0.25 0.8 0.8;
+#X text 226 410 - dry/wet (0 - 1);
+#X text 325 140 dry;
+#X text 492 140 wet;
 #X connect 20 0 21 0;
-#X connect 21 0 53 5;
-#X connect 51 0 53 0;
-#X connect 53 0 50 0;
-#X connect 53 1 50 1;
+#X connect 21 0 51 5;
+#X connect 43 0 51 0;
+#X connect 51 0 42 0;
+#X connect 51 1 42 1;
