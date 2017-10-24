@@ -14,7 +14,7 @@ static int next_separator(char tag, int ac, t_atom *av, int* ac_a, t_atom ** av_
     if (*i >= ac){ // End While!
 		*ac_a = 0;
 		*av_a = NULL;
-		return 0;
+		return (*ac_a);
 	}
     for (j = *i + 1; j < ac; j++){
         if ((av+j)->a_type == A_SYMBOL && (atom_getsymbol(av+j))->s_name[0] == tag)
@@ -28,7 +28,7 @@ static int next_separator(char tag, int ac, t_atom *av, int* ac_a, t_atom ** av_
 
 static void break_anything(t_break *x, t_symbol *s, int argc, t_atom *argv){
     if (x->x_break){
-        int ac_a, i = 0; //  neees "= 0"
+        int ac_a, i = 0; //  needs "= 0"
         t_atom* av_a;
         while (next_separator(x->x_separator, argc, argv, &ac_a, &av_a, &i)){
             if ((av_a)->a_type == A_SYMBOL)
@@ -43,10 +43,8 @@ static void break_anything(t_break *x, t_symbol *s, int argc, t_atom *argv){
 
 static void *break_new(t_symbol *selector, int argc, t_atom* argv) {
   t_break *x = (t_break *)pd_new(break_class);
-  x->x_break = 0;
   if(argc && ((argv)->a_type == A_SYMBOL)){
-        t_symbol* s = atom_getsymbol(argv);
-        x->x_separator = s->s_name[0];
+        x->x_separator = atom_getsymbol(argv)->s_name[0];
         x->x_break = 1;
         }
    outlet_new(&x->x_obj, &s_anything);
