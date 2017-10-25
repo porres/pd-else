@@ -31,8 +31,8 @@
 #X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -101,7 +101,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -151,7 +151,6 @@
 #X text 174 370 signal;
 #X text 222 370 - the filtered signal;
 #X text 120 402 1) float;
-#X text 185 401 - cutoff in hertz (default 0.9 * Nyquist);
 #N canvas 782 105 568 529 anti-aliasing 0;
 #X obj 306 346 cnv 15 198 138 empty empty empty 20 12 0 14 -228856
 -66577 0;
@@ -200,7 +199,7 @@
 #X text 40 464 -1;
 #X text 46 407 0;
 #X obj 306 108 nbx 5 15 -1e+37 1e+37 0 0 empty \$0-Hz empty 0 -8 0
-10 -228856 -1 -1 2030 256;
+10 -228856 -1 -1 500 256;
 #X obj 263 233 out~;
 #X obj 130 234 out~;
 #X obj 173 153 else/sawtooth~;
@@ -232,7 +231,7 @@ when you do the "upsampling + filtering" technique. See the subpatch
 #X connect 16 0 13 0;
 #X restore 426 271 pd anti-aliasing;
 #X obj 323 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 16000 256;
+-228856 -1 -1 0 256;
 #X obj 193 207 else/brickwall~ 500;
 #X text 63 91 [brickwall~] a 10th order butterworth lowpass filter
 \, which is filter with a steep cutoff slope (30 dB by octave)., f
@@ -240,7 +239,8 @@ when you do the "upsampling + filtering" technique. See the subpatch
 #X text 63 133 By default \, its cutoff frequency is 0.75 * Nyquist
 \, but you can change it with the 1st argument or the second inlet.
 , f 54;
-#X connect 19 0 32 0;
-#X connect 31 0 32 1;
-#X connect 32 0 18 0;
-#X connect 32 0 18 1;
+#X text 185 401 - cutoff in hertz (default 0.75 * Nyquist);
+#X connect 19 0 31 0;
+#X connect 30 0 31 1;
+#X connect 31 0 18 0;
+#X connect 31 0 18 1;

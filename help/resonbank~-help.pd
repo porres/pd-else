@@ -1,4 +1,4 @@
-#N canvas 489 89 559 497 10;
+#N canvas 342 115 559 497 10;
 #X obj 3 269 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 372 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -63,7 +63,6 @@ can set any number of filters and control their parameters.;
 1500 900 2000 800 1500 900 \, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 42
 ;
 #X obj 54 154 else/dust~ 5;
-#X obj 54 191 else/resonbank~ 8 2000;
 #X msg 204 190 freq 140 290 310 330 490 580 690 750 \, decay 1000 800
 2500 700 500 1200 1700 900 \, amp 0.8 1 0.7 1 0.9 0.8 0.9 1, f 42
 ;
@@ -73,12 +72,13 @@ f 27;
 time in ms between parameter changes of resonant frequency \, decay
 time an amplitude. By default \, this is set to 10 ms. You can also
 send a list of ramp time for each filter in the bank.;
+#X obj 54 191 else/resonbank~ 8 2000;
 #X connect 1 0 2 0;
-#X connect 2 0 4 1;
-#X connect 3 0 4 0;
-#X connect 4 0 0 0;
-#X connect 4 0 0 1;
-#X connect 5 0 4 1;
+#X connect 2 0 7 1;
+#X connect 3 0 7 0;
+#X connect 4 0 7 1;
+#X connect 7 0 0 0;
+#X connect 7 0 0 1;
 #X restore 468 239 pd example;
 #X text 156 413 1) float - number of resonant filters (default 1),
 f 57;

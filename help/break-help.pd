@@ -33,13 +33,13 @@
 0;
 #X obj 210 221 else/break -;
 #X obj 210 260 print Break;
-#X msg 210 186 1 2 3 -size 2048 -amp 1 -phase;
 #X msg 181 153 no separators at all;
 #X text 148 309 anything - any message to be broken appart;
 #X text 148 341 anything - broken lists;
 #X text 141 371 1) symbol - separator;
 #X text 81 92 [break] can break a list with a given separator set via
 the argument. If no separator is given \, the list is not broken.;
+#X msg 210 187 1 2 3 -size 2048 -amp 1 -phase 0;
 #X connect 16 0 17 0;
 #X connect 18 0 16 0;
-#X connect 19 0 16 0;
+#X connect 23 0 16 0;

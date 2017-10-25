@@ -1,4 +1,4 @@
-#N canvas 420 127 561 516 10;
+#N canvas 843 105 561 516 10;
 #X obj 4 316 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 404 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -84,11 +84,11 @@ set any number of oscillators and control their parameters. Unlike
 [oscbak2~] \, you have a signal frequency input and the frequency of
 each oscillator is specified as a ratio of that frequency (default
 1).;
-#X obj 133 224 else/oscbank~ 4;
 #X text 430 215 see also:;
+#X obj 133 224 else/oscbank~ 4 -ratio 1 0.5 0.25 0.125;
 #X obj 430 237 else/oscbank2~ 1;
 #X connect 24 0 31 0;
-#X connect 31 0 35 1;
-#X connect 32 0 35 0;
-#X connect 35 0 18 0;
-#X connect 35 0 18 1;
+#X connect 31 0 36 1;
+#X connect 32 0 36 0;
+#X connect 36 0 18 0;
+#X connect 36 0 18 1;

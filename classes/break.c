@@ -20,16 +20,12 @@ static void break_anything(t_break *x, t_symbol *s, int argc, t_atom *argv){
                 if ((argv+j)->a_type == A_SYMBOL && x->x_separator == (atom_getsymbol(argv+j))->s_name[0])
                     break;
             ac_break = j - i;
-            if (first){
+            if(first){
                 outlet_anything(x->x_obj.ob_outlet, s, ac_break, argv + i);
                 first = 0;
             }
-            else{
-                if((argv + i)->a_type == A_SYMBOL)
-                    outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(argv + i), ac_break - 1, argv + i + 1);
-                else
-                    outlet_anything(x->x_obj.ob_outlet, s, ac_break, argv + i);
-            }
+            else
+                outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(argv + i), ac_break - 1, argv + i + 1);
             i = j;
         }
     }

@@ -6,10 +6,10 @@
 #X obj 35 25 inlet;
 #X obj 35 57 route float;
 #X obj 118 57 max 0;
-#X text 218 109 Part of ELSE \; https://github.com/porres/pd-else;
-#X text 220 90 Alexandre Torres Porres (2017);
+#X text 195 137 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 197 118 Alexandre Torres Porres (2017);
 #X obj 142 104 f \$2;
-#X obj 142 81 loadbang;
+#X obj 142 81 loadbanger -init;
 #X connect 0 0 2 0;
 #X connect 1 0 6 0;
 #X connect 2 0 3 0;

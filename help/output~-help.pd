@@ -1,4 +1,4 @@
-#N canvas 681 64 562 694 10;
+#N canvas 646 68 562 694 10;
 #X obj 221 138 osc~ 440;
 #X obj 1 1 cnv 15 301 42 empty empty output~ 20 20 2 37 -233017 -1
 0;
@@ -28,10 +28,10 @@
 #X text 295 194 <= Mute button;
 #X obj 201 172 ./output~;
 #X text 296 176 <== DSP toggle;
-#X text 75 79 The [output~] abstraction is a user-friendly gain adjuster
+#X text 75 80 The [output~] abstraction is a user-friendly gain adjuster
 and stereo output \, with controls for "compute audio" (DSP) \, volume
 \, gain multiplier \, mute \, dac~ and ramp time.;
-#X obj 1 653 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#X obj 1 646 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 1 528 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 8 12
 0 13 -228856 -1 0;
@@ -304,10 +304,6 @@ fades in and out when turning it on and off!;
 #X connect 3 0 1 2;
 #X connect 5 0 4 0;
 #X restore 430 162 pd DSP status;
-#X text 96 534 [output~] was originally in Pd Extended's extra folder
-as a variant of [ezoutput~] from PDDP. This is an improved \, redesigned
-and backwards compatible version by Alexandre Porres with extra features.
-, f 57;
 #X obj 75 238 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 75 259 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
@@ -320,10 +316,15 @@ and backwards compatible version by Alexandre Porres with extra features.
 ;
 #X obj 75 282 cnv 17 3 111 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 96 590 This was first made to be included in Purr Data \, which
-carries this version of [output~] natively. Nonetheless \, this abstraction
-is a vanilla compatible version made available in the ELSE library.
-, f 57;
+#X obj 383 49 cnv 15 110 20 empty empty empty 20 12 0 14 -240170 -66577
+0;
+#X text 389 51 (Extra Object);
+#X text 96 534 [output~] was originally in Pd Extended's extra folder
+as a variant of [ezoutput~] from PDDP. This is an improved \, redesigned
+and backwards compatible version by Alexandre Porres with extra features
+first made to be included natively in Purr Data., f 57;
+#X text 96 605 This abstraction comes as an extra object in ELSE and
+is a vanilla compatible version (no external dependencies).;
 #X connect 0 0 15 0;
 #X connect 0 0 15 1;
 #X coords 0 694 1 693 74 39 0;
