@@ -9,32 +9,28 @@ typedef struct _break{
   char			x_separator;
 } t_break;
 
-static int next_separator(char tag, int ac, t_atom *av, int* ac_a, t_atom ** av_a, int* i){
-	int j;
-    if (*i >= ac){ // End While!
-		*ac_a = 0;
-		*av_a = NULL;
-		return (*ac_a);
-	}
-    for (j = *i + 1; j < ac; j++){
-        if ((av+j)->a_type == A_SYMBOL && (atom_getsymbol(av+j))->s_name[0] == tag)
-            break;
-     }
-	 *ac_a = j - *i;
-	 *av_a = av + *i;
-	 *i = j;
-     return (*ac_a);     
-}
-
 static void break_anything(t_break *x, t_symbol *s, int argc, t_atom *argv){
     if (x->x_break){
-        int ac_a, i = 0; //  needs "= 0"
-        t_atom* av_a;
-        while (next_separator(x->x_separator, argc, argv, &ac_a, &av_a, &i)){
-            if ((av_a)->a_type == A_SYMBOL)
-                outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(av_a), ac_a - 1, av_a + 1);
-            else
-                outlet_anything(x->x_obj.ob_outlet, s, ac_a, av_a);
+        int i = 0;
+        int first = 1;
+        int ac_break;
+        while(i < argc){
+            int j;
+            for (j = i + 1; j < argc; j++)
+                if ((argv+j)->a_type == A_SYMBOL && x->x_separator == (atom_getsymbol(argv+j))->s_name[0])
+                    break;
+            ac_break = j - i;
+            if (first){
+                outlet_anything(x->x_obj.ob_outlet, s, ac_break, argv + i);
+                first = 0;
+            }
+            else{
+                if((argv + i)->a_type == A_SYMBOL)
+                    outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(argv + i), ac_break - 1, argv + i + 1);
+                else
+                    outlet_anything(x->x_obj.ob_outlet, s, ac_break, argv + i);
+            }
+            i = j;
         }
     }
     else

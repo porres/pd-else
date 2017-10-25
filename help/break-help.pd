@@ -1,4 +1,4 @@
-#N canvas 909 23 614 578 10;
+#N canvas 549 23 613 657 10;
 #X obj 25 41 cnv 4 4 4 empty empty Argument 0 28 2 18 -233017 -1 0
 ;
 #X obj 110 41 cnv 4 4 4 empty empty management 0 28 2 18 -233017 -1
@@ -26,40 +26,42 @@
 0;
 #X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 4 420 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 500 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 452 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 532 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 484 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 564 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 516 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 596 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 202 430 (none);
-#X text 202 460 (none);
-#X text 202 490 (none);
-#X obj 211 365 print;
-#X msg 221 234 -bunda 1 2;
-#X msg 55 308 -cu 1 -bosta 2;
-#X msg 63 345 -cu -bosta;
-#X text 70 369 não separa;
-#X text 56 283 mantem -cu;
+#X text 202 510 (none);
+#X text 202 540 (none);
+#X text 202 570 (none);
+#X obj 211 445 print;
+#X msg 221 314 -bunda 1 2;
+#X msg 55 388 -cu 1 -bosta 2;
+#X msg 63 425 -cu -bosta;
+#X text 70 449 não separa;
+#X text 56 363 mantem -cu;
 #X text 68 93 - o primeiro \, se tiver separador \, precisa ser seguido
 de uma lista de números pra aparecer o seletor;
 #X text 65 132 - se eu comento o type=symbol/float \, ele não separa
 direito ou mantem o seletor;
-#X msg 247 291 -freq 1 2 3 -amp -phase -ratio 2;
-#X obj 344 373 print;
-#X msg 341 343 symbol;
-#X obj 421 340 fromsymbol;
-#X msg 237 260 -bunda 1;
-#X text 306 262 agora funciona;
-#X msg 179 205 -bunda list cu meu -x 11;
-#X obj 237 321 else/break;
-#X connect 21 0 35 0;
-#X connect 22 0 35 0;
-#X connect 23 0 35 0;
-#X connect 28 0 35 0;
-#X connect 30 0 35 0;
-#X connect 32 0 35 0;
-#X connect 34 0 35 0;
-#X connect 35 0 20 0;
+#X obj 344 453 print;
+#X msg 341 423 symbol;
+#X obj 421 420 fromsymbol;
+#X msg 237 340 -bunda 1;
+#X text 306 342 agora funciona;
+#X msg 179 285 -bunda list cu meu -x 11;
+#X obj 237 401 else/break -;
+#X text 234 183 sem -1 + 1 repetiu os selectors tudo!;
+#X msg 247 371 -freq 1 2 3 -amp 1 -phase -ratio 2 3 4;
+#X text 234 207 sem -1 tb deu merda;
+#X connect 21 0 34 0;
+#X connect 22 0 34 0;
+#X connect 23 0 34 0;
+#X connect 29 0 34 0;
+#X connect 31 0 34 0;
+#X connect 33 0 34 0;
+#X connect 34 0 20 0;
+#X connect 36 0 34 0;
