@@ -14,8 +14,8 @@ static void break_anything(t_break *x, t_symbol *s, int argc, t_atom *argv){
     if (x->x_break){
         int i = 0, first = 1, ac_break;
         while(i < argc){
-            int j;
-            for (j = i + 1; j < argc; j++)
+            int j = i + 1; 
+            for (j; j < argc; j++)
                 if ((argv+j)->a_type == A_SYMBOL && x->x_separator == (atom_getsymbol(argv+j))->s_name[0])
                     break;
             ac_break = j - i;
