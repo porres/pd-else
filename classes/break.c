@@ -14,18 +14,17 @@ static void break_anything(t_break *x, t_symbol *s, int argc, t_atom *argv){
     if (x->x_break){
         int i = 0, first = 1, ac_break;
         while(i < argc){
-            int j;
-            for (j = i + 1; j < argc; j++)
-                if ((argv+j)->a_type == A_SYMBOL && x->x_separator == (atom_getsymbol(argv+j))->s_name[0])
+            int j = i;
+            for (i++; i < argc; i++)
+                if ((argv+i)->a_type == A_SYMBOL && x->x_separator == (atom_getsymbol(argv+i))->s_name[0])
                     break;
-            ac_break = j - i;
+            ac_break = i - j;
             if(first){
-                outlet_anything(x->x_obj.ob_outlet, s, ac_break, argv + i);
+                outlet_anything(x->x_obj.ob_outlet, s, ac_break, argv + j);
                 first = 0;
             }
             else
-                outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(argv + i), ac_break - 1, argv + i + 1);
-            i = j;
+                outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(argv + j), ac_break - 1, argv + j + 1);
         }
     }
     else
