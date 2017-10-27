@@ -12,30 +12,33 @@ typedef struct _break{
 
 static void break_anything(t_break *x, t_symbol *s, int ac, t_atom *av){
     if (x->x_break){
-        int i = 0, first = 1, ac_break;
         if(!ac)
             outlet_anything(x->x_obj.ob_outlet, s, ac, av);
         else{
+            int i = -1, first = 1, ac_break;
             while(i < ac){
                 int j = i + 1;
-                post("i = %d / j = %d (i + 1)", i, j);
+//                post("i = %d / j = %d (i + 1)", i, j);
                 for (j; j < ac; j++){
-                    post("j = %d", j);
+//                    post("j = %d", j);
                     if ((av+j)->a_type == A_SYMBOL && x->x_separator == (atom_getsymbol(av+j))->s_name[0]){
-                        post("break");
+                      //  post("break");
                         break;
                     }
                 }
-                ac_break = j - i;
-                post("i = %d / j = %d, ac_break = %d (j - i)", i, j, ac_break);
+                ac_break = j - i - 1;
+               // post("i = %d / j = %d, ac_break = %d (j - i - 1)", i, j, ac_break);
                 if(first){ // start here and counting from 0;
-                    outlet_anything(x->x_obj.ob_outlet, s, ac_break, av + i);
+                    if(j == 0)
+                        outlet_anything(x->x_obj.ob_outlet, s, ac_break, av - 1);
+                    else
+                        outlet_anything(x->x_obj.ob_outlet, s, ac_break, av);
                     first = 0;
                 }
                 else
-                    outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(av + i), ac_break - 1, av + i + 1);
+                    outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(av + i), ac_break, av + i + 1);
                 i = j;
-                post("i = j = %d", i);
+             //   post("i = j = %d", i);
             }
         }
     }
