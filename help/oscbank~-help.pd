@@ -1,15 +1,15 @@
-#N canvas 843 105 561 516 10;
-#X obj 4 316 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 566 66 561 606 10;
+#X obj 4 336 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 404 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 424 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 437 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 457 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 487 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 579 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 72 413 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 100 433 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 120 413 signal;
+#X text 149 433 signal;
 #X obj 3 4 cnv 15 301 42 empty empty oscbank~ 20 20 2 37 -233017 -1
 0;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -31,14 +31,13 @@
 0;
 #X obj 96 41 cnv 4 4 4 empty empty oscillators 0 28 2 18 -233017 -1
 0;
-#X obj 72 325 cnv 17 3 54 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 100 345 cnv 17 3 73 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 69 41 cnv 4 4 4 empty empty of 0 28 2 18 -233017 -1 0;
-#X obj 120 253 else/out~;
-#X text 115 463 2) float - ramp time in ms (default 10), f 57;
-#X text 91 326 freq <list>;
-#X text 97 343 amp <list>;
-#X text 91 381 ramp <list>;
+#X obj 108 266 else/out~;
+#X text 144 483 2) float - ramp time in ms (default 10), f 53;
+#X text 136 363 amp <list>;
+#X text 130 401 ramp <list>;
 #N canvas 940 243 553 389 example 0;
 #X obj 89 290 else/out~;
 #X text 39 16 A ramp time as the second argument sets a transition
@@ -63,32 +62,37 @@ f 27;
 #X connect 7 0 8 1;
 #X connect 8 0 0 0;
 #X connect 8 0 0 1;
-#X restore 465 280 pd example;
-#X obj 235 163 loadbang;
-#X text 168 326 - list of frequencies for all oscillators in the bank
-;
-#X text 168 343 - list of amplitudes for all oscillators in the bank
-;
-#X text 168 381 - list of ramp time for all oscillators in the bank
-;
-#X text 169 413 - the oscillator bank output;
-#X text 85 362 phase <list>;
-#X text 168 362 - list of phases (0-1) for all oscillators in the bank
-;
-#X msg 235 186 ratio 0.51 1 1.9 2.3 \, amp 0.9 0.5 0.5 0.6, f 23;
-#X obj 133 188 sig~ 400;
-#X text 115 445 1) float - number of oscillators (default 1), f 57
+#X restore 459 298 pd example;
+#X text 198 433 - the oscillator bank output;
+#X text 124 382 phase <list>;
+#X msg 344 175 ratio 0.51 1 1.9 2.3 \, amp 0.9 0.5 0.5 0.6, f 21;
+#X obj 151 180 sig~ 400;
+#X text 144 465 1) float - number of oscillators (default 1), f 53
 ;
 #X text 60 86 [oscbank2~] is a bank made of [sine~] objects. You can
 set any number of oscillators and control their parameters. Unlike
 [oscbak2~] \, you have a signal frequency input and the frequency of
 each oscillator is specified as a ratio of that frequency (default
 1).;
-#X text 430 215 see also:;
-#X obj 133 224 else/oscbank~ 4 -ratio 1 0.5 0.25 0.125;
-#X obj 430 237 else/oscbank2~ 1;
-#X connect 24 0 31 0;
-#X connect 31 0 36 1;
-#X connect 32 0 36 0;
-#X connect 36 0 18 0;
-#X connect 36 0 18 1;
+#X text 419 244 see also:;
+#X obj 419 266 else/oscbank2~ 1;
+#X obj 151 216 else/oscbank~ 4 -ratio 1 0.7 1.3 2.7 -amp 0.9 0.5 0.5
+0.6, f 28;
+#X obj 4 507 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 122 346 ratio <list>;
+#X text 214 363 - list of amplitudes for all oscillators;
+#X text 214 346 - list of ratios for all oscillators;
+#X text 214 382 - list of phases (0-1) for all oscillators;
+#X text 214 401 - list of ramp time for all oscillators;
+#X text 113 513 -ratio <list>: sets list of ratios for all oscillators
+, f 57;
+#X text 113 528 -amp <list>: sets list of amplitudes for all oscillators
+, f 57;
+#X text 113 544 -phase <list>: sets list of phases for all oscillators
+, f 57;
+#X text 113 559 -ramp <list>: sets ramp time for all oscillators,
+f 57;
+#X connect 25 0 31 1;
+#X connect 26 0 31 0;
+#X connect 31 0 18 0;
+#X connect 31 0 18 1;
