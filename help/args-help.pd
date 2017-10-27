@@ -1,13 +1,11 @@
-#N canvas 647 195 566 362 10;
-#X obj 25 41 cnv 4 4 4 empty empty Argument 0 28 2 18 -233017 -1 0
+#N canvas 647 195 565 379 10;
+#X obj 25 41 cnv 4 4 4 empty empty Output 0 28 2 18 -233017 -1 0;
+#X obj 90 41 cnv 4 4 4 empty empty arguments 0 28 2 18 -233017 -1 0
 ;
-#X obj 110 41 cnv 4 4 4 empty empty management 0 28 2 18 -233017 -1
-0;
 #X obj 4 4 cnv 15 301 42 empty empty args 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 4 4 graph;
-#X obj 213 41 cnv 4 4 4 empty empty model 0 28 2 18 -233017 -1 0;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -25,51 +23,161 @@
 0;
 #X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 66 97 [args] is a base model for loading an argument list into
-an abstraction. It is Vanilla Compatible and useful for the management
-of variable number of arguments in abstractions.;
-#N canvas 968 172 487 556 example 0;
-#X obj 162 180 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 899 67 575 739 example 0;
+#X obj 162 176 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 320 239 bng 20 350 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 320 235 bng 20 350 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 44 33 This example uses the args-example.pd abstraction \,
-which is a very simple example on how the base model provided in [args]
-works.;
-#X obj 169 357 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 169 353 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 285 416 bng 20 350 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 285 412 bng 20 350 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 191 358 reload arguments;
-#X obj 162 284 else/display;
-#X text 184 181 resend arguments;
-#X text 48 93 Here you can test that the given arguments are loaded
+#X obj 162 280 else/display;
+#X text 49 92 Here you can test that the given arguments are loaded
 and passed throughout the left outlet. But if no arguments are given
 \, then the right outlet sends a bang.;
-#X obj 169 481 else/display;
-#X text 114 286 args;
-#X text 253 241 no args;
-#X obj 285 445 print no args;
-#X obj 162 208 else/args-example 1 2 3;
-#X obj 169 384 else/args-example;
-#X connect 0 0 13 0;
-#X connect 3 0 14 0;
-#X connect 4 0 12 0;
-#X connect 13 0 6 0;
-#X connect 13 1 1 0;
-#X connect 14 0 9 0;
-#X connect 14 1 4 0;
-#X restore 446 199 pd example;
+#X obj 169 477 else/display;
+#X text 114 282 args;
+#X text 253 237 no args;
+#X obj 285 441 print no args;
+#X obj 162 204 else/args-example 1 2 3;
+#N canvas 764 23 708 707 load_args 0;
+#X obj 358 251 makefilename $%d;
+#X obj 272 327 pack f \$0;
+#X text 192 79 Maximum attempts, f 8;
+#X obj 484 338 send pd-\$0-test_arg;
+#X msg 358 282 obj 37 135 list append \$1, f 14;
+#X obj 59 101 r \$0-noarg;
+#X obj 206 219 select;
+#X obj 272 219 trigger float float float;
+#X msg 151 85 4096;
+#X text 257 87 (that might be engouh);
+#X obj 484 245 makefilename $%d-test;
+#N canvas 344 339 309 232 \$0-test_arg 0;
+#X obj 10 60 symbol \$1-test;
+#X obj 133 60 makefilename $%d-test;
+#X obj 37 135 list append \$1;
+#X obj 10 10 r 1004-i;
+#X obj 10 35 trigger bang float;
+#X obj 10 85 sel s;
+#X obj 37 110 b;
+#X obj 37 160 s 1004-arg;
+#X obj 10 185 s 1004-noarg;
+#X connect 0 0 5 0;
+#X connect 1 0 5 1;
+#X connect 2 0 7 0;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 4 1 1 0;
+#X connect 5 0 8 0;
+#X connect 5 1 6 0;
+#X connect 6 0 2 0;
+#X restore 498 178 pd \$0-test_arg;
+#X obj 164 428 r \$0-arg;
+#X obj 203 496 list;
+#X obj 164 463 list prepend;
+#X obj 120 492 list;
+#X text 180 631 list of arguments, f 9;
+#X msg 272 380 \; pd-\$2-test_arg obj 10 10 r \$2-i \; pd-\$2-test_arg
+obj 10 35 trigger bang float \; pd-\$2-test_arg obj 10 85 sel s \;
+pd-\$2-test_arg obj 37 110 b \; pd-\$2-test_arg obj 37 160 s \$2-arg
+\; pd-\$2-test_arg obj 10 185 s \$2-noarg \; pd-\$2-test_arg connect
+3 0 4 0 \; pd-\$2-test_arg connect 4 1 1 0 \; pd-\$2-test_arg connect
+4 0 0 0 \; pd-\$2-test_arg connect 1 0 5 1 \; pd-\$2-test_arg connect
+0 0 5 0 \; pd-\$2-test_arg connect 5 1 6 0 \; pd-\$2-test_arg connect
+6 0 2 0 \; pd-\$2-test_arg connect 2 0 7 0 \; pd-\$2-test_arg connect
+5 0 8 0 \; \$2-i \$1 \;;
+#X msg 484 272 clear \, obj 10 60 symbol \$1 \, obj 133 60 makefilename
+$%d-test, f 27;
+#X obj 119 638 outlet;
+#X obj 151 157 until;
+#X obj 206 189 + 1;
+#X msg 233 147 0;
+#X obj 151 123 trigger float bang float;
+#X obj 151 188 float;
+#X obj 151 55 inlet;
+#X connect 0 0 4 0;
+#X connect 1 0 17 0;
+#X connect 4 0 3 0;
+#X connect 5 0 15 0;
+#X connect 5 0 20 1;
+#X connect 6 0 15 0;
+#X connect 6 1 7 0;
+#X connect 7 0 1 0;
+#X connect 7 1 0 0;
+#X connect 7 2 10 0;
+#X connect 8 0 23 0;
+#X connect 10 0 18 0;
+#X connect 12 0 14 0;
+#X connect 13 0 14 1;
+#X connect 13 0 15 1;
+#X connect 14 0 13 0;
+#X connect 15 0 19 0;
+#X connect 18 0 3 0;
+#X connect 20 0 24 0;
+#X connect 21 0 24 1;
+#X connect 21 0 6 0;
+#X connect 22 0 24 1;
+#X connect 23 0 20 0;
+#X connect 23 1 22 0;
+#X connect 23 2 6 1;
+#X connect 24 0 21 0;
+#X connect 25 0 8 0;
+#X restore 128 641 pd load_args;
+#X text 220 640 <==;
+#X text 248 627 put this subpatch in your abstraction to load arguments
+, f 29;
+#X text 49 44 Below we have an abstraction that uses [args] \, which
+is a very simple example on how it works.;
+#X text 64 555 If you were hoping for a vanilla solution. Below there's
+a subopatch that behaves exactly like [args] if inserted into an abstraction
+;
+#X obj 169 380 else/args-example;
+#X text 191 354 <= load arguments;
+#X text 184 176 <= load arguments;
+#X connect 0 0 10 0;
+#X connect 2 0 16 0;
+#X connect 3 0 9 0;
+#X connect 10 0 4 0;
+#X connect 10 1 1 0;
+#X connect 16 0 6 0;
+#X connect 16 1 3 0;
+#X restore 451 173 pd example;
 #X obj 6 234 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 6 266 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 298 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 318 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 330 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 350 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 129 177 open and check =>;
-#X obj 261 177 else/args;
-#X text 204 244 (none);
-#X text 204 274 (none);
-#X text 204 304 (none);
+#X obj 238 174 else/args;
+#X text 204 324 (none);
+#X text 66 97 [args] loads arguments of an abstraction as a list. It
+is useful for the management of variable number of arguments in abstractions.
+;
+#X text 144 244 bang - output arguments list;
+#X text 116 277 anything -, f 10;
+#X text 194 278 list of arguments (or bang if no arguments are given)
+, f 42;
+#X text 396 150 see examples below;
+#N canvas 899 67 577 420 break 0;
+#X obj 173 115 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 173 189 else/display;
+#X text 129 191 args;
+#X obj 173 143 else/args-example -freq 100 200 -amp 1 0.5;
+#X obj 173 270 route -freq -amp;
+#X obj 227 300 else/display;
+#X obj 173 335 else/display;
+#X obj 173 236 else/break -;
+#X text 69 55 You can use break to split an argument list and furtherly
+route it.;
+#X text 196 114 <= get arguments;
+#X connect 0 0 3 0;
+#X connect 1 0 7 0;
+#X connect 3 0 1 0;
+#X connect 4 0 6 0;
+#X connect 4 1 5 0;
+#X connect 7 0 4 0;
+#X restore 465 202 pd break;
