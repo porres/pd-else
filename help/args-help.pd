@@ -157,9 +157,7 @@ a subopatch that behaves exactly like [args] if inserted into an abstraction
 is useful for the management of variable number of arguments in abstractions.
 ;
 #X text 144 244 bang - output arguments list;
-#X text 116 277 anything -, f 10;
-#X text 194 278 list of arguments (or bang if no arguments are given)
-, f 42;
+#X text 116 277 anything -;
 #X text 396 150 see examples below;
 #N canvas 899 67 577 420 break 0;
 #X obj 173 115 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -181,3 +179,10 @@ route it.;
 #X connect 4 1 5 0;
 #X connect 7 0 4 0;
 #X restore 465 202 pd break;
+#X obj 238 150 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 238 201 print;
+#X text 194 278 arguments (or bang if no arguments are given \, as
+in this help patch), f 34;
+#X connect 17 0 25 0;
+#X connect 24 0 17 0;
