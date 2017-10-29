@@ -15,7 +15,12 @@ static void break_float(t_break *x, t_float f){
 }
 
 static void break_symbol(t_break *x, t_symbol *s){
-    outlet_symbol(x->x_obj.ob_outlet, s);
+    if(x->x_break){
+        if(x->x_separator == s->s_name[0])
+            outlet_anything(x->x_obj.ob_outlet, s, 0, s); // output selector
+        else
+            outlet_symbol(x->x_obj.ob_outlet, s);
+    }
 }
 
 static void break_anything(t_break *x, t_symbol *s, int ac, t_atom *av){
