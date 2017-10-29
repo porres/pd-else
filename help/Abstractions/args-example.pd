@@ -1,11 +1,10 @@
-#N canvas 482 247 917 427 10;
-#X text 86 252 list of arguments =>;
-#X obj 244 293 outlet;
-#X obj 244 104 inlet;
-#X text 116 29 This is an example of an abstraction with [else/args]
+#N canvas 482 247 733 420 10;
+#X obj 79 355 outlet;
+#X obj 79 106 inlet;
+#X text 113 33 This is an example of an abstraction with [else/args]
 \, used in its help file (args-help.pd).;
-#X obj 244 167 else/args;
-#X obj 244 205 else/display;
+#X obj 79 169 else/args;
+#X obj 79 267 else/display;
 #N canvas 764 23 708 707 load_args 0;
 #X obj 358 251 makefilename $%d;
 #X obj 272 327 pack f \$0;
@@ -19,15 +18,15 @@
 #X text 257 87 (that might be engouh);
 #X obj 484 245 makefilename $%d-test;
 #N canvas 344 339 309 232 \$0-test_arg 0;
-#X obj 10 60 symbol \$1-test;
+#X obj 10 60 symbol \$7-test;
 #X obj 133 60 makefilename $%d-test;
-#X obj 37 135 list append \$1;
-#X obj 10 10 r 1004-i;
+#X obj 37 135 list append \$7;
+#X obj 10 10 r 1029-i;
 #X obj 10 35 trigger bang float;
 #X obj 10 85 sel s;
 #X obj 37 110 b;
-#X obj 37 160 s 1004-arg;
-#X obj 10 185 s 1004-noarg;
+#X obj 37 160 s 1029-arg;
+#X obj 10 185 s 1029-noarg;
 #X connect 0 0 5 0;
 #X connect 1 0 5 1;
 #X connect 2 0 7 0;
@@ -88,16 +87,17 @@ $%d-test, f 27;
 #X connect 23 2 6 1;
 #X connect 24 0 21 0;
 #X connect 25 0 8 0;
-#X restore 486 237 pd load_args;
-#X text 578 236 <==;
-#X text 606 223 put this subpatch in your abstraction to load arguments
+#X restore 321 239 pd load_args;
+#X text 413 238 <==;
+#X text 441 225 put this subpatch in your abstraction to load arguments
 , f 29;
-#X obj 486 282 else/display;
-#X text 455 137 If you were hoping for a vanilla solution. Below there's
+#X obj 321 284 else/display;
+#X text 290 139 If you were hoping for a vanilla solution. Below there's
 a subopatch that behaves exactly like [args]! Just copy and paste it
 into another abstraction, f 56;
-#X connect 2 0 4 0;
-#X connect 2 0 6 0;
-#X connect 4 0 5 0;
-#X connect 5 0 1 0;
-#X connect 6 0 9 0;
+#X text 101 317 <= list of arguments;
+#X connect 1 0 3 0;
+#X connect 1 0 5 0;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 5 0 8 0;

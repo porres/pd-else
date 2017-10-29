@@ -23,41 +23,20 @@
 0;
 #X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#N canvas 899 67 524 513 example 0;
-#X obj 162 172 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 899 67 508 308 example 0;
+#X obj 111 165 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 161 267 bng 20 350 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 229 266 else/display;
-#X text 49 88 Here you can test that the given arguments are loaded
+#X obj 111 241 else/display;
+#X text 43 85 Here you can test that the given arguments are loaded
 and passed throughout the left outlet. But if no arguments are given
 \, then the right outlet sends a bang.;
-#X text 185 268 args;
-#X text 94 269 no args;
-#X text 49 40 Below we have an abstraction that uses [args] \, which
+#X text 43 37 Below we have an abstraction that uses [args] \, which
 is a very simple example on how it works.;
-#X text 184 172 <= load arguments;
-#X obj 162 200 else/args-example 1 2 3;
-#X obj 162 234 route bang;
-#X obj 200 347 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 200 442 bng 20 350 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 267 441 else/display;
-#X text 223 443 args;
-#X text 133 444 no args;
-#X text 222 347 <= load arguments;
-#X obj 200 409 route bang;
-#X obj 200 375 else/args-example;
-#X text 335 200 <= click and open the abstraction, f 18;
-#X connect 0 0 8 0;
-#X connect 8 0 9 0;
-#X connect 9 0 1 0;
-#X connect 9 1 2 0;
-#X connect 10 0 17 0;
-#X connect 16 0 11 0;
-#X connect 16 1 12 0;
-#X connect 17 0 16 0;
+#X text 133 165 <= load arguments;
+#X text 284 193 <= click and open the abstraction, f 18;
+#X obj 111 193 else/args-example 1 2 3;
+#X connect 0 0 6 0;
+#X connect 6 0 1 0;
 #X restore 451 183 pd example;
 #X obj 6 244 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -69,25 +48,24 @@ is a very simple example on how it works.;
 0;
 #X obj 238 174 else/args;
 #X text 218 345 (none);
-#X text 66 97 [args] loads arguments of an abstraction as a list. It
-is useful for the management of variable number of arguments in abstractions.
-;
 #X text 144 254 bang - output arguments list;
 #X text 116 287 anything -;
 #X text 396 160 see examples below;
-#N canvas 899 67 577 420 break 0;
-#X obj 173 115 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 173 189 else/display;
-#X text 129 191 args;
-#X obj 173 270 route -freq -amp;
-#X obj 227 300 else/display;
-#X obj 173 335 else/display;
-#X obj 173 236 else/break -;
-#X text 69 55 You can use break to split an argument list and furtherly
+#N canvas 899 67 514 395 break 0;
+#X obj 131 93 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 131 167 else/display;
+#X text 87 169 args;
+#X obj 131 248 route -freq -amp;
+#X obj 185 278 else/display;
+#X obj 131 313 else/display;
+#X obj 131 214 else/break -;
+#X text 40 37 You can use break to split an argument list and furtherly
 route it.;
-#X text 196 114 <= get arguments;
-#X obj 173 143 else/args-example -freq 100 200 -amp 1 0.5;
+#X text 154 92 <= get arguments;
+#X obj 131 121 else/args-example -freq 100 200 -amp 1 0.5;
+#X text 268 219 <= this would also be inside the abstraction \, of
+course, f 23;
 #X connect 0 0 9 0;
 #X connect 1 0 6 0;
 #X connect 3 0 5 0;
@@ -101,5 +79,8 @@ route it.;
 - or bang if no arguments are given to the parent patch (as in this
 help patch), f 47;
 #X obj 238 205 else/display;
-#X connect 17 0 26 0;
-#X connect 24 0 17 0;
+#X text 80 95 [args] loads arguments of an abstraction and is useful
+for the management of variable number of arguments in abstractions.
+, f 54;
+#X connect 17 0 25 0;
+#X connect 23 0 17 0;
