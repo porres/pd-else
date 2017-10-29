@@ -1,4 +1,4 @@
-#N canvas 527 65 565 677 10;
+#N canvas 527 65 563 655 10;
 #X obj 233 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X msg 108 208 start;
@@ -87,7 +87,7 @@ is given as the first argument \, then the default number of channels
 is 1 (mono). The maximum number is 64 channels.;
 #X obj 52 222 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 333 249 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 333 249 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 333 281 else/sampler~ stereo.aif -loop;
 #X obj 52 273 else/sampler~ 2 stereo.aif -loop;

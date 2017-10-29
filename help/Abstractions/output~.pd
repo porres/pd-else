@@ -1,4 +1,4 @@
-#N canvas 751 91 560 462 10;
+#N canvas 986 413 467 404 10;
 #X obj 14 106 hsl 66 20 0 1 0 0 \$0-slider \$0-set-slider volume 19
 7 1 13 -228856 -1 -1 0 1;
 #X obj 83 94 tgl 16 0 \$0-dsp-toggle \$0-dsp-toggle-set off 3 6 1 9
@@ -8,15 +8,15 @@
 #X obj 22 263 block~ 64;
 #X obj 142 29 inlet~;
 #X obj 162 186 *~;
-#X obj 194 29 inlet~;
-#X obj 214 185 *~;
+#X obj 214 28 inlet~;
+#X obj 234 184 *~;
 #X obj 142 71 hip~ 3;
-#X obj 194 70 hip~ 3;
-#X obj 248 27 inlet;
-#X obj 287 261 outlet;
-#X obj 214 262 outlet~;
+#X obj 214 69 hip~ 3;
+#X obj 268 26 inlet;
+#X obj 307 261 outlet;
+#X obj 234 261 outlet~;
 #X obj 162 261 outlet~;
-#X obj 287 229 r \$0-slider;
+#X obj 307 229 r \$0-slider;
 #N canvas 627 117 614 293 set_GUI 0;
 #X obj 66 243 s \$0-set-slider;
 #X obj 98 18 inlet;
@@ -50,8 +50,8 @@
 #X connect 12 6 10 0;
 #X connect 12 7 14 0;
 #X connect 14 0 13 0;
-#X restore 248 70 pd set_GUI;
-#X obj 194 139 *~;
+#X restore 268 69 pd set_GUI;
+#X obj 214 138 *~;
 #X obj 142 141 *~;
 #N canvas 599 50 439 352 dac 0;
 #X obj 94 320 dac~;
@@ -89,7 +89,7 @@
 #X connect 13 0 15 0;
 #X connect 14 0 13 0;
 #X connect 15 0 12 0;
-#X restore 227 231 pd dac;
+#X restore 247 230 pd dac;
 #N canvas 329 100 340 226 gain 0;
 #N canvas 251 205 450 331 quartic 0;
 #X obj 100 126 line~;
@@ -210,7 +210,7 @@
 #X connect 5 0 2 0;
 #X connect 5 0 3 0;
 #X connect 5 0 0 0;
-#X restore 269 136 pd gain;
+#X restore 289 135 pd gain;
 #N canvas 495 50 450 300 mute 0;
 #X obj 121 167 line~;
 #X obj 121 196 *~;
@@ -292,7 +292,7 @@
 #X connect 11 0 12 0;
 #X connect 13 0 7 0;
 #X connect 13 0 3 0;
-#X restore 209 103 pd mute;
+#X restore 229 102 pd mute;
 #N canvas 1033 328 407 422 Gui_control 0;
 #X msg 242 154 0;
 #X msg 29 303 \; pd dsp 1;
@@ -448,7 +448,7 @@
 #X connect 14 0 13 0;
 #X connect 15 0 13 0;
 #X connect 16 0 15 1;
-#X restore 269 103 pd Gui_control;
+#X restore 289 102 pd Gui_control;
 #N canvas 1045 306 347 352 load_args 0;
 #X obj 75 88 list length;
 #X obj 147 174 \$1;
@@ -475,12 +475,12 @@
 #X obj 10 60 symbol \$1-test;
 #X obj 133 60 makefilename $%d-test;
 #X obj 37 135 list append \$1;
-#X obj 10 10 r 1014-i;
+#X obj 10 10 r 1003-i;
 #X obj 10 35 trigger bang float;
 #X obj 10 85 sel s;
 #X obj 37 110 b;
-#X obj 37 160 s 1014-arg;
-#X obj 10 185 s 1014-noarg;
+#X obj 37 160 s 1003-arg;
+#X obj 10 185 s 1003-noarg;
 #X connect 0 0 5 0;
 #X connect 1 0 5 1;
 #X connect 2 0 7 0;
@@ -552,8 +552,9 @@ $%d-test, f 27;
 #X connect 7 0 3 0;
 #X connect 8 0 2 0;
 #X connect 9 0 0 0;
-#X restore 283 183 pd load_args;
-#X text 162 304 Alexandre Torres Porres (2016), f 51;
+#X restore 303 182 pd load_args;
+#X text 164 329 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 166 310 Alexandre Torres Porres (2017);
 #X connect 4 0 8 0;
 #X connect 5 0 13 0;
 #X connect 5 0 18 0;
