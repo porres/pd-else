@@ -1,45 +1,45 @@
-#N canvas 721 98 563 424 10;
-#X obj 25 41 cnv 4 4 4 empty empty Break 0 28 2 18 -233017 -1 0;
-#X obj 80 41 cnv 4 4 4 empty empty lists 0 28 2 18 -233017 -1 0;
-#X obj 4 4 cnv 15 301 42 empty empty break 20 20 2 37 -233017 -1 0
+#N canvas 721 98 560 414 10;
+#X obj 24 41 cnv 4 4 4 empty empty Break 0 28 2 18 -233017 -1 0;
+#X obj 79 41 cnv 4 4 4 empty empty lists 0 28 2 18 -233017 -1 0;
+#X obj 3 4 cnv 15 301 42 empty empty break 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 4 4 graph;
-#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X restore 3 4 graph;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 306 4 pd;
-#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 4 300 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 292 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 332 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 324 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 364 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 356 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 396 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 388 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 210 221 else/break -;
-#X obj 210 260 print Break;
-#X msg 181 153 no separators at all;
-#X text 148 309 anything - any message to be broken appart;
-#X text 148 341 anything - broken lists;
-#X text 141 371 1) symbol - separator;
-#X text 81 92 [break] can break a list with a given separator set via
+#X obj 209 221 else/break -;
+#X obj 209 260 print Break;
+#X msg 208 153 no separators at all;
+#X text 147 301 anything - any message to be broken appart;
+#X text 147 333 anything - broken lists;
+#X text 140 363 1) symbol - separator;
+#X text 80 92 [break] can break a list with a given separator set via
 the argument. If no separator is given \, the list is not broken.;
-#X msg 210 187 1 2 3 -size 2048 -amp 1 -phase 0;
+#X msg 237 187 1 2 3 -size 2048 -amp 1 -phase 0;
 #N canvas 899 67 514 395 args 0;
 #X obj 131 93 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -61,7 +61,41 @@ and furtherly route it.;
 #X connect 3 1 4 0;
 #X connect 6 0 3 0;
 #X connect 8 0 1 0;
-#X restore 466 260 pd args;
+#X restore 476 258 pd args;
+#N canvas 923 248 519 376 symbol 0;
+#X msg 90 209 symbol that;
+#X obj 79 322 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 131 322 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 201 322 symbol;
+#X obj 184 322 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 65 340 -this;
+#X text 122 340 that;
+#X text 79 21 [break] can also break a symbol message. If a symbol
+has the separator character \, it will be broken apart and passed through
+not as a symbol message anymore. That means it loses its "symbol" selector.
+, f 52;
+#X text 80 81 One way to test this is with the [route] object \, which
+won't be able to route a symbol message., f 52;
+#X text 82 116 See below;
+#X text 177 182 <= loses symbol selector and is routed;
+#X msg 79 180 symbol @this;
+#X obj 79 244 else/break @;
+#X obj 79 288 route @this that symbol;
+#X text 181 209 <= doesn't lose it and isn't routed;
+#X connect 0 0 12 0;
+#X connect 11 0 12 0;
+#X connect 12 0 13 0;
+#X connect 13 0 1 0;
+#X connect 13 1 2 0;
+#X connect 13 2 4 0;
+#X restore 462 231 pd symbol;
+#X obj 159 182 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 5 256;
+#X text 79 169 floats go through =>, f 10;
 #X connect 16 0 17 0;
 #X connect 18 0 16 0;
 #X connect 23 0 16 0;
+#X connect 26 0 16 0;
