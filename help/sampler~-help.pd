@@ -1,4 +1,4 @@
-#N canvas 527 65 563 630 10;
+#N canvas 527 65 565 677 10;
 #X obj 233 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X msg 108 208 start;
@@ -33,7 +33,7 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 7 598 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 7 628 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 7 354 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -72,48 +72,46 @@ be at the same samplerate as Pd's., f 64;
 #X text 135 522 1) float - (optional) channels (default 1 \, max 64)
 ;
 #N canvas 887 235 577 510 multi-channel 0;
-#X obj 83 286 else/sampler~ 2 stereo.aif;
-#X obj 83 336 else/meter2~;
-#X obj 219 334 else/out~;
-#X obj 83 205 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X msg 111 205 stop;
-#X obj 355 338 else/out~;
-#X obj 355 261 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X msg 383 261 stop;
-#X obj 355 292 else/sampler~ stereo.aif;
-#X msg 127 231 open violin.wav;
-#X msg 142 256 open stereo.aif;
-#X text 98 103 If you have a file with less channels than specified
+#X obj 208 324 else/meter2~;
+#X obj 52 333 else/out~;
+#X obj 333 327 else/out~;
+#X msg 96 218 open violin.wav;
+#X msg 111 243 open stereo.aif;
+#X text 87 105 If you have a file with less channels than specified
 (like a mono file in a stereo sampler) \, the extra channels are silent.
 Conversely \, a file with more channels than specified (like a stereo
 file in a mono sampler) has its remaining channels ignored.;
-#X text 97 23 If you give an optional float argumewnt as the first
+#X text 86 25 If you give an optional float argumewnt as the first
 argument \, it specifies the number of channels. If no float argument
 is given as the first argument \, then the default number of channels
 is 1 (mono). The maximum number is 64 channels.;
-#X connect 0 0 1 0;
-#X connect 0 0 2 0;
-#X connect 0 1 1 1;
-#X connect 0 1 2 1;
-#X connect 3 0 0 0;
-#X connect 4 0 0 0;
-#X connect 6 0 8 0;
-#X connect 7 0 8 0;
-#X connect 8 0 5 0;
-#X connect 8 0 5 1;
-#X connect 9 0 0 0;
+#X obj 52 222 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 333 249 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 333 281 else/sampler~ stereo.aif -loop;
+#X obj 52 273 else/sampler~ 2 stereo.aif -loop;
+#X connect 3 0 10 0;
+#X connect 4 0 10 0;
+#X connect 7 0 10 0;
+#X connect 8 0 9 0;
+#X connect 9 0 2 0;
+#X connect 9 0 2 1;
+#X connect 10 0 1 0;
 #X connect 10 0 0 0;
+#X connect 10 1 1 1;
+#X connect 10 1 0 1;
 #X restore 428 314 pd multi-channel;
+#X obj 7 594 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 177 606 -loop: turns loop mode on;
 #X obj 213 258 else/sampler~ violin.wav 1 1;
-#X connect 0 0 42 0;
-#X connect 1 0 42 0;
-#X connect 2 0 42 0;
-#X connect 3 0 42 0;
-#X connect 4 0 42 0;
+#X connect 0 0 44 0;
+#X connect 1 0 44 0;
+#X connect 2 0 44 0;
+#X connect 3 0 44 0;
+#X connect 4 0 44 0;
 #X connect 5 0 4 0;
-#X connect 31 0 42 0;
-#X connect 37 0 42 0;
-#X connect 42 0 32 0;
-#X connect 42 0 32 1;
+#X connect 31 0 44 0;
+#X connect 37 0 44 0;
+#X connect 44 0 32 0;
+#X connect 44 0 32 1;

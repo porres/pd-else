@@ -261,7 +261,7 @@
 #X connect 14 0 1 1;
 #X connect 14 0 0 1;
 #X restore 117 205 pd delwrite;
-#N canvas 1061 343 520 284 pre-delay 0;
+#N canvas 1061 343 520 284 pre-delay 1;
 #N canvas 692 361 450 300 pre-delay-write 0;
 #X obj 92 72 inlet~;
 #X obj 98 189 outlet~;
@@ -273,14 +273,12 @@
 #N canvas 861 406 279 218 pre-delay-read 0;
 #X obj 87 19 inlet~;
 #X obj 63 173 outlet~;
-#X obj 63 64 r \$0-predelay;
+#X obj 63 84 r \$0-predelay;
 #X obj 63 147 delread4~ \$0-predelay;
 #X obj 63 124 else/float2sig~ 25;
-#X obj 63 97 * 1000;
-#X connect 2 0 5 0;
+#X connect 2 0 4 0;
 #X connect 3 0 1 0;
 #X connect 4 0 3 0;
-#X connect 5 0 4 0;
 #X restore 81 114 pd pre-delay-read;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
