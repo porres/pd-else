@@ -40,6 +40,28 @@
 #X text 81 92 [break] can break a list with a given separator set via
 the argument. If no separator is given \, the list is not broken.;
 #X msg 210 187 1 2 3 -size 2048 -amp 1 -phase 0;
+#N canvas 899 67 514 395 args 0;
+#X obj 131 93 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 131 167 else/display;
+#X text 87 169 args;
+#X obj 131 248 route -freq -amp;
+#X obj 185 278 else/display;
+#X obj 131 313 else/display;
+#X obj 131 214 else/break -;
+#X text 154 92 <= get arguments;
+#X obj 131 121 else/args-example -freq 100 200 -amp 1 0.5;
+#X text 268 219 <= this would also be inside the abstraction \, of
+course, f 23;
+#X text 40 37 You can use break to split an argument list from [args]
+and furtherly route it.;
+#X connect 0 0 8 0;
+#X connect 1 0 6 0;
+#X connect 3 0 5 0;
+#X connect 3 1 4 0;
+#X connect 6 0 3 0;
+#X connect 8 0 1 0;
+#X restore 466 260 pd args;
 #X connect 16 0 17 0;
 #X connect 18 0 16 0;
 #X connect 23 0 16 0;
