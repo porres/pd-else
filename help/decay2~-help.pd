@@ -43,7 +43,7 @@
 #X text 61 86 [decay2~] is like [decay~] \, but it has an attack time
 parameter.;
 #X text 185 486 1) float - decay in ms (default 1000);
-#N canvas 298 23 448 429 more 0;
+#N canvas 551 48 508 454 more 0;
 #X obj 153 224 *~;
 #X obj 114 143 osc~ 440;
 #X obj 199 115 else/decay~ 500;
@@ -70,9 +70,8 @@ than the decay time \, then the polarity is inverted.;
 #X obj 7 511 cnv 3 550 3 empty empty more_info 8 12 0 13 -228856 -1
 0;
 #X text 143 519 Object based on SuperCollider's "Decay2" UGEN.;
-#X obj 233 154 else/decay2~ 1000 100;
 #X obj 295 213 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 0 1;
+-1 -1 186 1;
 #X text 318 306 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -91,10 +90,11 @@ than the decay time \, then the polarity is inverted.;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
+#X obj 233 154 else/decay2~ 100 1000;
 #X connect 16 0 15 0;
 #X connect 16 0 15 1;
-#X connect 18 0 35 0;
+#X connect 18 0 34 0;
 #X connect 20 0 16 0;
-#X connect 21 0 34 0;
-#X connect 34 0 16 1;
-#X connect 34 0 18 0;
+#X connect 21 0 44 0;
+#X connect 44 0 16 1;
+#X connect 44 0 18 0;

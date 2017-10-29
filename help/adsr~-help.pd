@@ -1,70 +1,70 @@
-#N canvas 975 65 560 667 10;
-#X obj 4 401 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 975 65 561 668 10;
+#X obj 5 404 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 519 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 522 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 552 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 555 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 640 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 643 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 94 528 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 95 531 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 94 409 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 95 412 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 161 528 signal;
-#X obj 23 41 cnv 4 4 4 empty empty Attack/Decay/Sustain/Release 0 28
+#X text 162 531 signal;
+#X obj 24 41 cnv 4 4 4 empty empty Attack/Decay/Sustain/Release 0 28
 2 18 -233017 -1 0;
-#X obj 248 41 cnv 4 4 4 empty empty gated 0 28 2 18 -233017 -1 0;
-#X obj 94 432 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 249 41 cnv 4 4 4 empty empty gated 0 28 2 18 -233017 -1 0;
+#X obj 95 435 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 119 432 float/signal;
-#X obj 107 333 else/out~;
-#X obj 150 289 *~;
-#X obj 230 286 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+#X text 120 435 float/signal;
+#X obj 108 336 else/out~;
+#X obj 151 292 *~;
+#X obj 231 289 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
 -1 -1 0 1;
-#X obj 230 258 else/sig2float~;
-#X text 253 376 0;
-#X text 253 282 1;
-#X obj 2 4 cnv 15 301 42 empty empty adsr~ 20 20 2 37 -233017 -1 0
+#X obj 231 261 else/sig2float~;
+#X text 254 379 0;
+#X text 254 285 1;
+#X obj 3 4 cnv 15 301 42 empty empty adsr~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 2 4 graph;
-#X text 120 409 float/signal;
-#X text 215 431 - attack time in ms;
-#X obj 94 453 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X restore 3 4 graph;
+#X text 121 412 float/signal;
+#X text 216 434 - attack time in ms;
+#X obj 95 456 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 119 453 float/signal;
-#X text 215 528 - envelope signal;
-#X text 100 558 1) float - attack time in ms (default 0);
-#X obj 168 197 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 120 456 float/signal;
+#X text 216 531 - envelope signal;
+#X text 101 561 1) float - attack time in ms (default 0);
+#X obj 169 200 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 298 41 cnv 4 4 4 empty empty envelope 0 28 2 18 -233017 -1 0
+#X obj 299 41 cnv 4 4 4 empty empty envelope 0 28 2 18 -233017 -1 0
 ;
-#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 304 4 pd;
-#X obj 344 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 457 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 477 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 514 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 463 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 79 245 osc~ 440;
-#X text 216 409 - gate values;
-#X obj 228 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 80 248 osc~ 440;
+#X text 217 412 - gate values;
+#X obj 229 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 289 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 290 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 229 182 attack;
+#X text 230 185 attack;
 #N canvas 1004 208 521 510 example 0;
 #X obj 261 158 else/display~ 7;
 #X obj 106 161 else/display~ 7;
@@ -96,50 +96,45 @@ amplitude.;
 #X connect 12 0 1 0;
 #X connect 13 0 4 1;
 #X connect 13 0 8 0;
-#X restore 441 297 pd example;
-#X obj 168 228 else/adsr~ 1000 500 0.5 1000, f 35;
-#X obj 349 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X restore 442 300 pd example;
+#X obj 169 231 else/adsr~ 1000 500 0.5 1000, f 35;
+#X obj 350 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 410 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 411 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 412 182 release;
-#X text 291 182 decay;
-#X text 350 182 sustain;
-#X text 374 373 see also:;
-#X obj 448 372 else/asr~;
-#X obj 94 475 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X text 413 185 release;
+#X text 292 185 decay;
+#X text 351 185 sustain;
+#X text 375 376 see also:;
+#X obj 449 375 else/asr~;
+#X obj 95 478 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 119 475 float/signal;
-#X obj 94 497 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
+#X text 120 478 float/signal;
+#X obj 95 500 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
 ;
-#X text 119 497 float/signal;
-#X text 215 496 - release time in ms;
-#X text 100 618 4) float - release time in ms (default 0);
-#X text 100 578 2) float - decay time in ms (default 0);
-#X text 215 452 - decay time in ms;
-#X text 215 474 - sustain amplitude (ratio to gate value);
-#X text 100 599 3) float - sustain amplitude ratio to gate value (default
+#X text 120 500 float/signal;
+#X text 216 499 - release time in ms;
+#X text 101 621 4) float - release time in ms (default 0);
+#X text 101 581 2) float - decay time in ms (default 0);
+#X text 216 455 - decay time in ms;
+#X text 216 477 - sustain amplitude (ratio to gate value);
+#X text 101 602 3) float - sustain amplitude ratio to gate value (default
 0), f 61;
-#X text 67 87 [adsr~] is a linear attack/decay/sustain/release gated
-envelope. At a gate on value (transition from 0 to any value). After
-that \, a decay ramp goes to the sustain point \, which is specified
-as a ratio of the gate value. A gate off (transition from any value
-to 0) makes [adsr~] go to 0 at the specified release time in ms.;
-#X text 127 197 gate;
-#N canvas 1004 208 510 419 triggered 0;
-#X obj 228 212 else/display~ 7;
-#X obj 179 339 else/out~;
-#X text 49 28 You can use the [tgate~] object to create a timed gate
+#X text 128 200 gate;
+#N canvas 1103 244 503 425 triggered 0;
+#X obj 216 214 else/display~ 7;
+#X obj 176 337 else/out~;
+#X text 38 24 You can use the [tgate~] object to create a timed gate
 so you can trigger the envelope.;
-#X obj 228 183 else/tgate~ 500;
-#X obj 228 87 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 216 185 else/tgate~ 500;
+#X obj 216 89 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 188 293 *~;
-#X obj 116 219 else/brown~;
-#X obj 228 116 else/metro~ 60;
-#X text 288 215 <= gate value;
-#X text 241 149 <= impulse;
-#X obj 228 252 else/adsr~ 50 100 0.5 500;
+#X obj 176 295 *~;
+#X obj 104 221 else/brown~;
+#X obj 216 118 else/metro~ 60;
+#X text 276 217 <= gate value;
+#X text 229 151 <= impulse;
+#X obj 216 254 else/adsr~ 50 100 0.5 500;
 #X connect 0 0 10 0;
 #X connect 3 0 0 0;
 #X connect 4 0 7 0;
@@ -148,7 +143,13 @@ so you can trigger the envelope.;
 #X connect 6 0 5 0;
 #X connect 7 0 3 0;
 #X connect 10 0 5 1;
-#X restore 420 324 pd triggered \; by impulses;
+#X restore 421 327 pd triggered \; by impulses;
+#X text 68 87 [adsr~] is a linear attack/decay/sustain/release gated
+envelope. At a gate on value (transition from 0 to any value) \, the
+envelope starts its attack ramp. After that \, a decay ramp goes to
+the sustain point \, which is specified as a ratio of the gate value.
+A gate off (transition from any value to 0) makes [adsr~] go to 0 at
+the specified release time in ms.;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;
