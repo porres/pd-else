@@ -57,14 +57,14 @@
 #X text 173 367 float;
 #X text 173 387 float;
 #X text 173 410 float;
-#N canvas 688 67 844 556 example 0;
+#N canvas 688 67 844 556 example 1;
 #X obj 368 318 catch~ \$0-input;
 #X obj 645 161 throw~ \$0-input;
 #X obj 645 25 adc~ 1;
 #X obj 66 230 *~;
 #X obj 66 265 throw~ \$0-input;
 #X obj 503 211 hsl 128 15 0 1000 0 0 empty \$0-predelayms empty -2
--8 0 10 -228856 -1 -1 5270 1;
+-8 0 10 -228856 -1 -1 1270 1;
 #X floatatom 500 235 5 0 0 0 - - -, f 5;
 #X obj 523 257 hsl 128 15 0 1 0 0 empty \$0-cutoff empty -2 -8 0 10
 -228856 -1 -1 7620 1;
@@ -76,7 +76,7 @@
 -228856 -1 -1 10160 1;
 #X floatatom 561 379 5 0 0 0 - - -, f 5;
 #X obj 640 390 hsl 128 15 0 1 0 0 empty \$0-drywet empty -2 -8 0 10
--228856 -1 -1 6350 1;
+-228856 -1 -1 12350 1;
 #X floatatom 637 417 5 0 0 0 - - -, f 5;
 #X text 606 389 dry;
 #X text 774 391 wet;
@@ -110,7 +110,6 @@
 #X restore 66 200 pd tone;
 #X obj 645 50 else/gain~;
 #X obj 381 141 throw~ \$0-input;
-#X obj 381 114 else/sampler~ violin.wav 0 1;
 #X msg 337 80 open;
 #X text 98 76 Test the reverb with many sound input sources, f 25
 ;
@@ -147,19 +146,20 @@
 #X obj 381 78 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 406 80 play/stop;
-#X connect 0 0 53 0;
+#X obj 381 114 else/sampler~ violin.wav -loop;
+#X connect 0 0 52 0;
 #X connect 2 0 30 0;
 #X connect 3 0 4 0;
 #X connect 5 0 6 0;
-#X connect 6 0 53 1;
+#X connect 6 0 52 1;
 #X connect 7 0 8 0;
-#X connect 8 0 53 2;
+#X connect 8 0 52 2;
 #X connect 9 0 10 0;
-#X connect 10 0 53 3;
+#X connect 10 0 52 3;
 #X connect 11 0 12 0;
-#X connect 12 0 53 4;
+#X connect 12 0 52 4;
 #X connect 13 0 14 0;
-#X connect 14 0 53 5;
+#X connect 14 0 52 5;
 #X connect 23 0 24 0;
 #X connect 24 0 25 0;
 #X connect 26 0 27 0;
@@ -168,20 +168,20 @@
 #X connect 28 0 3 1;
 #X connect 29 0 3 0;
 #X connect 30 0 1 0;
-#X connect 32 0 31 0;
-#X connect 33 0 32 0;
-#X connect 35 0 41 0;
-#X connect 36 0 37 0;
-#X connect 38 0 36 1;
+#X connect 32 0 55 0;
+#X connect 34 0 40 0;
+#X connect 35 0 36 0;
+#X connect 37 0 35 1;
+#X connect 38 0 37 0;
+#X connect 38 0 51 0;
 #X connect 39 0 38 0;
-#X connect 39 0 52 0;
-#X connect 40 0 39 0;
-#X connect 41 0 36 0;
-#X connect 48 0 47 0;
-#X connect 52 0 41 1;
-#X connect 53 0 51 0;
-#X connect 53 1 51 1;
-#X connect 54 0 32 0;
+#X connect 40 0 35 0;
+#X connect 47 0 46 0;
+#X connect 51 0 40 1;
+#X connect 52 0 50 0;
+#X connect 52 1 50 1;
+#X connect 53 0 55 0;
+#X connect 55 0 31 0;
 #X restore 445 252 pd example;
 #X text 226 367 - damping (0 - 1);
 #X text 226 386 - feedback gain (0 - 1);
