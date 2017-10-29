@@ -1,4 +1,4 @@
-#N canvas 809 52 560 667 10;
+#N canvas 975 65 560 667 10;
 #X obj 4 401 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 519 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -65,7 +65,6 @@
 #X obj 289 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 229 182 attack;
-#X text 88 198 gate (1/0);
 #N canvas 1004 208 521 510 example 0;
 #X obj 261 158 else/display~ 7;
 #X obj 106 161 else/display~ 7;
@@ -97,7 +96,7 @@ amplitude.;
 #X connect 12 0 1 0;
 #X connect 13 0 4 1;
 #X connect 13 0 8 0;
-#X restore 447 338 pd example;
+#X restore 441 297 pd example;
 #X obj 168 228 else/adsr~ 1000 500 0.5 1000, f 35;
 #X obj 349 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -126,14 +125,38 @@ envelope. At a gate on value (transition from 0 to any value). After
 that \, a decay ramp goes to the sustain point \, which is specified
 as a ratio of the gate value. A gate off (transition from any value
 to 0) makes [adsr~] go to 0 at the specified release time in ms.;
+#X text 127 197 gate;
+#N canvas 1004 208 510 419 triggered 0;
+#X obj 228 212 else/display~ 7;
+#X obj 179 339 else/out~;
+#X text 49 28 You can use the [tgate~] object to create a timed gate
+so you can trigger the envelope.;
+#X obj 228 183 else/tgate~ 500;
+#X obj 228 87 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 188 293 *~;
+#X obj 116 219 else/brown~;
+#X obj 228 116 else/metro~ 60;
+#X text 288 215 <= gate value;
+#X text 241 149 <= impulse;
+#X obj 228 252 else/adsr~ 50 100 0.5 500;
+#X connect 0 0 10 0;
+#X connect 3 0 0 0;
+#X connect 4 0 7 0;
+#X connect 5 0 1 0;
+#X connect 5 0 1 1;
+#X connect 6 0 5 0;
+#X connect 7 0 3 0;
+#X connect 10 0 5 1;
+#X restore 420 324 pd triggered \; by impulses;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;
-#X connect 25 0 42 0;
+#X connect 25 0 41 0;
 #X connect 35 0 12 0;
-#X connect 37 0 42 1;
-#X connect 38 0 42 2;
-#X connect 42 0 12 1;
-#X connect 42 0 14 0;
-#X connect 43 0 42 3;
-#X connect 44 0 42 4;
+#X connect 37 0 41 1;
+#X connect 38 0 41 2;
+#X connect 41 0 12 1;
+#X connect 41 0 14 0;
+#X connect 42 0 41 3;
+#X connect 43 0 41 4;

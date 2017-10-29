@@ -18,13 +18,13 @@
 #X obj 129 414 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 163 414 float/signal;
-#X obj 187 315 else/out~;
-#X obj 230 271 *~;
-#X obj 310 268 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+#X obj 147 315 else/out~;
+#X obj 190 271 *~;
+#X obj 270 268 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
 -1 -1 0 1;
-#X obj 310 240 else/sig2float~;
-#X text 333 358 0;
-#X text 333 264 1;
+#X obj 270 240 else/sig2float~;
+#X text 293 358 0;
+#X text 293 264 1;
 #X obj 2 3 cnv 15 301 42 empty empty asr~ 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -38,7 +38,7 @@
 #X text 259 470 - envelope signal;
 #X text 155 500 1) float - attack time in ms (default 0);
 #X text 155 520 2) float - release time in ms (default 0);
-#X obj 248 179 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 208 179 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 248 40 cnv 4 4 4 empty empty envelope 0 28 2 18 -233017 -1 0
 ;
@@ -59,15 +59,14 @@
 0;
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 159 227 osc~ 440;
+#X obj 119 227 osc~ 440;
 #X text 260 391 - gate values;
-#X obj 316 182 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 276 182 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 385 182 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 345 182 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 317 164 attack;
-#X text 387 164 release;
-#X text 168 180 gate (1/0);
+#X text 277 164 attack;
+#X text 347 164 release;
 #N canvas 1004 208 521 510 example 0;
 #X obj 261 158 else/display~ 7;
 #X obj 106 161 else/display~ 7;
@@ -99,8 +98,8 @@ amplitude.;
 #X connect 12 0 0 0;
 #X connect 12 0 13 0;
 #X connect 13 0 1 0;
-#X restore 463 311 pd example;
-#X obj 248 210 else/asr~ 1000 500, f 20;
+#X restore 463 269 pd example;
+#X obj 208 210 else/asr~ 1000 500, f 20;
 #X text 389 348 see also:;
 #X obj 463 347 else/adsr~;
 #X text 67 86 [asr~] is a linear attack/sustain/release gated envelope.
@@ -108,12 +107,36 @@ At a gate on value (transition from 0 to any value) \, [asr~] goes
 from 0 to that value at the specified attack time in ms. A gate off
 (transition from any value to 0) makes [asr~] go to 0 at the specified
 release time in ms., f 59;
+#X text 168 180 gate;
+#N canvas 1004 208 510 419 triggered 0;
+#X obj 228 212 else/display~ 7;
+#X obj 179 339 else/out~;
+#X text 49 28 You can use the [tgate~] object to create a timed gate
+so you can trigger the envelope.;
+#X obj 228 183 else/tgate~ 500;
+#X obj 228 87 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 188 293 *~;
+#X obj 116 219 else/brown~;
+#X obj 228 116 else/metro~ 60;
+#X text 288 215 <= gate value;
+#X obj 228 252 else/asr~ 50 500;
+#X text 241 149 <= impulse;
+#X connect 0 0 9 0;
+#X connect 3 0 0 0;
+#X connect 4 0 7 0;
+#X connect 5 0 1 0;
+#X connect 5 0 1 1;
+#X connect 6 0 5 0;
+#X connect 7 0 3 0;
+#X connect 9 0 5 1;
+#X restore 443 296 pd triggered \; by impulses;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;
-#X connect 27 0 45 0;
+#X connect 27 0 44 0;
 #X connect 37 0 12 0;
-#X connect 39 0 45 1;
-#X connect 40 0 45 2;
-#X connect 45 0 12 1;
-#X connect 45 0 14 0;
+#X connect 39 0 44 1;
+#X connect 40 0 44 2;
+#X connect 44 0 12 1;
+#X connect 44 0 14 0;
