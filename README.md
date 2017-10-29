@@ -54,7 +54,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (153 objects):
+##Current Object list (154 objects):
 
 **AUDIO PLAYING: [1]**
 - [sampler~]
@@ -145,10 +145,11 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [xselect~]
 - [xselect2~]
 
-**TRIGGERS: [16]**
+**TRIGGERS: [17]**
 - [coin~]
 - [dust~]
 - [dust2~]
+- [gatehold~]
 - [pimp~]
 - [metro~]
 - [pulsecount~]

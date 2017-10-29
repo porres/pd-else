@@ -252,7 +252,7 @@
 #X restore 84 234 pd biquad;
 #X text 202 154 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 204 135 Alexandre Torres Porres (2017);
-#N canvas 604 118 552 423 frequency 1;
+#N canvas 604 118 552 423 frequency 0;
 #X obj 212 305 t b f;
 #X obj 212 363 outlet;
 #X obj 244 331 v r_\$0;

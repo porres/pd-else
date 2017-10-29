@@ -57,7 +57,7 @@
 #X text 173 367 float;
 #X text 173 387 float;
 #X text 173 410 float;
-#N canvas 688 67 844 556 example 1;
+#N canvas 688 67 844 556 example 0;
 #X obj 368 318 catch~ \$0-input;
 #X obj 645 161 throw~ \$0-input;
 #X obj 645 25 adc~ 1;
@@ -76,7 +76,7 @@
 -228856 -1 -1 10160 1;
 #X floatatom 561 379 5 0 0 0 - - -, f 5;
 #X obj 640 390 hsl 128 15 0 1 0 0 empty \$0-drywet empty -2 -8 0 10
--228856 -1 -1 12350 1;
+-228856 -1 -1 6350 1;
 #X floatatom 637 417 5 0 0 0 - - -, f 5;
 #X text 606 389 dry;
 #X text 774 391 wet;
