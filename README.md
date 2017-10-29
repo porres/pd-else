@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-5 (Unreleased)
+### Version 1.0 beta-5 (Released October 30th 2017)
 
 The project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
 
@@ -54,7 +54,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (152 objects):
+##Current Object list (153 objects):
 
 **AUDIO PLAYING: [1]**
 - [sampler~]
@@ -175,7 +175,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [vu~]
 - [zerocross~]
 
-**CONTROL: [11]**
+**CONTROL: [12]**
+ - [adsr~]
  - [asr~]
  - [autofade~]
  - [decay~]

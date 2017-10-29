@@ -3,7 +3,7 @@
 #include "m_pd.h"
 #include <math.h>
 
-typedef struct _adr{
+typedef struct _adsr{
     t_object x_obj;
     t_float  x_in;
     t_inlet  *x_inlet_attack;
@@ -17,13 +17,13 @@ typedef struct _adr{
     double   x_incr;
     int      x_nleft;
     int      x_gate_status;
-} t_adr;
+} t_adsr;
 
 
-static t_class *adr_class;
+static t_class *adsr_class;
 
-static t_int *adr_perform(t_int *w){
-    t_adr *x = (t_adr *)(w[1]);
+static t_int *adsr_perform(t_int *w){
+    t_adsr *x = (t_adsr *)(w[1]);
     int nblock = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
@@ -37,13 +37,13 @@ static t_int *adr_perform(t_int *w){
     double incr = x->x_incr;
     int nleft = x->x_nleft;
     while (nblock--){
-        
-        t_float input = *in1++;
+        t_float input_gate = *in1++;
         t_float attack = *in2++;
         t_float decay = *in3++;
         t_float sustain_point = *in4++;
         t_float release = *in5++;
-        t_int gate = (input != 0);
+        t_int gate = (input_gate != 0);
+// clip input
         if (attack < 0)
             attack = 0;
         if (decay < 0)
@@ -53,59 +53,69 @@ static t_int *adr_perform(t_int *w){
         t_float n_attack = roundf(attack * x->x_sr_khz);
         t_float n_decay = roundf(decay * x->x_sr_khz);
         t_float n_release = roundf(release * x->x_sr_khz);
+// set coefs
         double coef_a;
-        double coef_d;
-        double coef_r;
-        if (n_attack == 0)
+        if(n_attack == 0)
             coef_a = 0.;
         else
             coef_a = 1. / n_attack;
-        if (n_decay == 0)
+        double coef_d;
+        if(n_decay == 0)
             coef_d = 0.;
         else
             coef_d = 1. / n_decay;
-        if (n_release == 0)
+        double coef_r;
+        if(n_release == 0)
             coef_r = 0.;
         else
             coef_r = 1. / n_release;
-        
-        if (gate != gate_status){ // gate status change
-            target = input;
+// go for it
+        if(gate != gate_status){ // gate status change
             gate_status = gate;
-            if (gate){
-                if (n_attack > 1){
+            target = input_gate;
+            if (gate_status){ // if gate opened
+                if(n_attack > 1){
                     incr = (target - last) * coef_a;
                     nleft = n_attack + n_decay;
-                    *out++ = (last += incr);
-                    continue;
+                }
+                else{
+                    incr = (target - last);
+                    nleft = 1 + n_decay;
                 }
             }
-            else {
-                if (n_release > 1){
+            else{ // if gate closed
+                if(n_release > 1){
                     incr =  -(last * coef_r);
                     nleft = n_release;
-                    *out++ = (last += incr);
-                    continue;
+                }
+                else{
+                    incr =  -last;
+                    nleft = 1;
                 }
             }
-            incr = 0.;
-            nleft = 0;
-            *out++ = last = target;
         }
-        
-        else if (nleft > 0){
-            if (nleft < n_decay)
-                incr = ((target * 0.5) - target) * coef_d;
-            *out++ = (last += incr);
-                
-            nleft--;
-            if (nleft == 1){
-                incr = 0.;
-                last = target * 0.5;
-                }
+// "attack + decay + sustain" phase
+        if (gate_status){
+            if(nleft > 0){ // "attack + decay" not over
+                if (nleft < n_decay){ // attack is over
+                    incr = ((target * sustain_point) - target) * coef_d;
+                    }
+                    *out++ = (last += incr);
+                nleft--;
             }
-        else *out++ = target * 0.5;
-        };
+            else // "sustain" phase
+                *out++ = target * sustain_point;
+        }
+// "release" phase
+        else{
+            if(nleft > 0){ // "release" not over
+                *out++ = (last += incr);
+                nleft--;
+            }
+            else // "release" over
+                *out++ = 0;
+        }
+    };
     x->x_last = (PD_BIGORSMALL(last) ? 0. : last);
     x->x_target = (PD_BIGORSMALL(target) ? 0. : target);
     x->x_incr = incr;
@@ -114,15 +124,15 @@ static t_int *adr_perform(t_int *w){
     return (w + 9);
 }
 
-static void adr_dsp(t_adr *x, t_signal **sp){
+static void adsr_dsp(t_adsr *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    dsp_add(adr_perform, 8, x, sp[0]->s_n,
+    dsp_add(adsr_perform, 8, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec,
             sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec);
 }
 
-static void *adr_new(t_floatarg attack, t_floatarg release){
-    t_adr *x = (t_adr *)pd_new(adr_class);
+static void *adsr_new(t_floatarg a, t_floatarg d, t_floatarg s, t_floatarg r){
+    t_adsr *x = (t_adsr *)pd_new(adsr_class);
     x->x_sr_khz = sys_getsr() * 0.001;
     x->x_last = 0.;
     x->x_target = 0.;
@@ -130,20 +140,20 @@ static void *adr_new(t_floatarg attack, t_floatarg release){
     x->x_nleft = 0;
     x->x_gate_status = 0;
     x->x_inlet_attack = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_attack, attack);
+        pd_float((t_pd *)x->x_inlet_attack, a);
     x->x_inlet_decay = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_decay, 0);
+        pd_float((t_pd *)x->x_inlet_decay, d);
     x->x_inlet_sustain = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_sustain, 0);
+        pd_float((t_pd *)x->x_inlet_sustain, s);
     x->x_inlet_release = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_release, release);
+        pd_float((t_pd *)x->x_inlet_release, r);
     outlet_new((t_object *)x, &s_signal);
     return (x);
 }
 
-void adr_tilde_setup(void){
-    adr_class = class_new(gensym("adr~"), (t_newmethod)adr_new, 0,
-				 sizeof(t_adr), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
-    CLASS_MAINSIGNALIN(adr_class, t_adr, x_in);
-    class_addmethod(adr_class, (t_method) adr_dsp, gensym("dsp"), A_CANT, 0);
+void adsr_tilde_setup(void){
+    adsr_class = class_new(gensym("adsr~"), (t_newmethod)adsr_new, 0,
+				 sizeof(t_adsr), 0, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
+    CLASS_MAINSIGNALIN(adsr_class, t_adsr, x_in);
+    class_addmethod(adsr_class, (t_method) adsr_dsp, gensym("dsp"), A_CANT, 0);
 }

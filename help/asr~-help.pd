@@ -80,13 +80,13 @@
 #X obj 261 259 else/rescale~ 100 1500;
 #X text 323 290 <= cutoff;
 #X text 168 165 <= Hz;
-#X text 53 28 [ar~] accepts any gate value \, positive or negative
-and above 1 or below -1 \, so you can use it to control anything besides
-amplitude.;
 #X obj 261 201 else/asr~ 250 750;
 #X obj 261 89 else/randpulse~ 0.5;
 #X obj 106 135 else/randf~ 50 150;
-#X connect 0 0 12 0;
+#X text 53 28 [asr~] accepts any gate value \, positive or negative
+and above 1 or below -1 \, so you can use it to control anything besides
+amplitude.;
+#X connect 0 0 11 0;
 #X connect 1 0 3 0;
 #X connect 3 0 4 0;
 #X connect 4 0 7 0;
@@ -94,17 +94,19 @@ amplitude.;
 #X connect 7 0 5 1;
 #X connect 7 0 5 0;
 #X connect 8 0 6 0;
-#X connect 12 0 4 1;
-#X connect 12 0 8 0;
-#X connect 13 0 0 0;
-#X connect 13 0 14 0;
-#X connect 14 0 1 0;
-#X restore 462 336 pd example;
+#X connect 11 0 4 1;
+#X connect 11 0 8 0;
+#X connect 12 0 0 0;
+#X connect 12 0 13 0;
+#X connect 13 0 1 0;
+#X restore 463 311 pd example;
 #X obj 248 210 else/asr~ 1000 500, f 20;
+#X text 389 348 see also:;
+#X obj 463 347 else/adsr~;
 #X text 67 86 [asr~] is a linear attack/sustain/release gated envelope.
 At a gate on value (transition from 0 to any value) \, [asr~] goes
 from 0 to that value at the specified attack time in ms. A gate off
-(transition from any value to 0) makes [ar~] go to 0 at the specified
+(transition from any value to 0) makes [asr~] go to 0 at the specified
 release time in ms., f 59;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
