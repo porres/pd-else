@@ -1,22 +1,22 @@
-#N canvas 578 72 558 465 10;
-#X obj 4 306 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 845 55 559 465 10;
+#X obj 4 315 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 361 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 370 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 395 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 404 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 130 370 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 379 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 428 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 437 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 307 175 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 319 185 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 364 175 ms;
-#X obj 130 314 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 376 185 ms;
+#X obj 91 323 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 130 336 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 91 345 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 189 368 signal;
+#X text 149 377 signal;
 #X obj 23 40 cnv 4 4 4 empty empty Trigger 0 28 2 18 -233017 -1 0;
 #X obj 86 40 cnv 4 4 4 empty empty delay 0 28 2 18 -233017 -1 0;
 #X obj 3 3 cnv 15 301 42 empty empty tdelay~ 20 20 2 37 -233017 -1
@@ -145,27 +145,27 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X text 189 314 signal;
-#X text 153 336 float/signal;
-#X text 235 314 - trigger signal (negative to positive transition)
+#X text 149 323 signal;
+#X text 113 346 float/signal;
+#X text 195 323 - trigger signal (negative to positive transition)
 ;
-#X obj 214 202 else/tdelay~ 500;
-#X obj 214 150 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 226 212 else/tdelay~ 500;
+#X obj 226 160 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 195 236 else/out~;
-#X text 307 156 delay time;
-#X text 235 336 - delay time in ms;
-#X text 235 368 - delayed trigger;
-#X text 151 404 1) float - delay time in ms (default 0);
-#X text 67 88 [tdelay~] delays impulse triggers by a given time in
-ms. Any impulse triggers which arrive before the delayed impulse output
-resets and reschedules the delay \, in the same way as the [delay]
-object.;
-#X obj 426 252 else/tdelay2~;
-#X text 424 230 see also:;
-#X obj 214 174 else/impseq~;
+#X obj 207 246 else/out~;
+#X text 319 166 delay time;
+#X text 195 346 - delay time in ms;
+#X text 195 377 - delayed trigger;
+#X text 111 413 1) float - delay time in ms (default 0);
+#X obj 426 272 else/tdelay2~;
+#X text 424 250 see also:;
+#X obj 226 184 else/impseq~;
+#X text 59 91 After receiving a trigger (negative to positive transition)
+\, [tdelay~] sends an impulse delayed by a given time in ms. Any triggers
+which arrive before the delayed output resets and reschedules the delay
+\, in the same way as the [delay] object.;
 #X connect 5 0 26 1;
 #X connect 26 0 28 0;
 #X connect 26 0 28 1;
-#X connect 27 0 36 0;
-#X connect 36 0 26 0;
+#X connect 27 0 35 0;
+#X connect 35 0 26 0;

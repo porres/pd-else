@@ -1,0 +1,57 @@
+#N canvas 827 105 563 487 10;
+#X obj 6 360 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 391 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 423 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 118 399 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 6 457 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 118 368 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 176 400 signal;
+#X obj 25 39 cnv 4 4 4 empty empty Gate 0 28 2 18 -233017 -1 0;
+#X obj 69 39 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
+#X obj 95 39 cnv 4 4 4 empty empty impulse 0 28 2 18 -233017 -1 0;
+#X obj 5 2 cnv 15 301 42 empty empty gate2imp~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 4 2 graph;
+#X obj 307 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 306 2 pd;
+#X obj 347 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 460 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 480 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 517 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 466 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 504 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X text 176 368 signal;
+#X text 224 368 - impulse trigger with the gate value;
+#X obj 207 162 else/display~;
+#X text 224 400 - held gate;
+#X obj 207 135 else/randpulse~ 0.5 0.25;
+#X text 176 434 (none);
+#X obj 207 196 else/gate2imp~;
+#X obj 207 295 else/trighold~;
+#X obj 221 231 else/out~;
+#X obj 207 319 else/display~;
+#X text 70 87 [gate2imp~] send an impulse when receiving a gate (0
+to non 0 transitions). The impulse value is the same as the gate;
+#X connect 22 0 26 0;
+#X connect 24 0 22 0;
+#X connect 26 0 28 0;
+#X connect 26 0 28 1;
+#X connect 26 0 27 0;
+#X connect 27 0 29 0;

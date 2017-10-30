@@ -54,20 +54,58 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (154 objects):
+##Current Object list (155 objects):
 
-**AUDIO PLAYING: [1]**
-- [sampler~]
-
-**EXTRA: [2]**
-- [args]
-- [output~]
-
-**MISCELLANEA: [4]**
+**MISCELLANEA: [5]**
 - [changed]
 - [loadbanger] / [lb]
 - [order]
-- [break]
+- [break] 
+- [args]
+
+**CONVERSION: [17]**
+- [any2symbol]
+- [cents2rato]
+- [cents2ratio~]
+- [db2lin]
+- [db2lin~]
+- [float2sig~]
+- [hz2rad]
+- [hz2rad~]
+- [lin2db]
+- [lin2db~]
+- [rad2hz]
+- [rad2hz~]
+- [ratio2cents]
+- [ratio2cents~]
+- [rescale]
+- [rescale~]
+- [sig2float~]
+
+**MATH/LOGIC: [14]**
+- [accum~]
+- [ceil]
+- [ceil~]
+- [floor]
+- [floor~]
+- [fold]
+- [fold~]
+- [lastvalue]
+- [loop]
+- [randf~]
+- [randi~]
+- [sin~]
+- [wrap2]
+- [wrap2~]
+
+**CONSTANT VALUES: [4]**
+- [nyquist~]
+- [pi]
+- [sr~]
+- [e]
+
+**AUDIO PLAYING: [1]**
+- [sampler~]
 
 **AUDIO PROCESSING: [3]**
 - [downsample~]
@@ -145,11 +183,12 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [xselect~]
 - [xselect2~]
 
-**TRIGGERS: [17]**
+**TRIGGERS: [18]**
 - [coin~]
 - [dust~]
 - [dust2~]
 - [gatehold~]
+- [gate2imp~]
 - [pimp~]
 - [metro~]
 - [pulsecount~]
@@ -203,43 +242,5 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [mix4~]
 - [setdsp~]
 
-**MATH/LOGIC: [14]**
-- [accum~]
-- [ceil]
-- [ceil~]
-- [floor]
-- [floor~]
-- [fold]
-- [fold~]
-- [lastvalue]
-- [loop]
-- [randf~]
-- [randi~]
-- [sin~]
-- [wrap2]
-- [wrap2~]
-
-**CONSTANT VALUES: [4]**
-- [nyquist~]
-- [pi]
-- [sr~]
-- [e]
-
-**CONVERSION: [17]**
-- [any2symbol]
-- [cents2rato]
-- [cents2ratio~]
-- [db2lin]
-- [db2lin~]
-- [float2sig~]
-- [hz2rad]
-- [hz2rad~]
-- [lin2db]
-- [lin2db~]
-- [rad2hz]
-- [rad2hz~]
-- [ratio2cents]
-- [ratio2cents~]
-- [rescale]
-- [rescale~]
-- [sig2float~]
+**EXTRA: [1]**
+- [output~]

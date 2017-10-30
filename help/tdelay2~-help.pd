@@ -9,9 +9,9 @@
 ;
 #X obj 5 438 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 287 181 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 297 188 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 344 181 ms;
+#X text 354 188 ms;
 #X obj 89 324 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 89 346 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
@@ -149,22 +149,23 @@
 #X text 112 346 float/signal;
 #X text 194 324 - trigger signal (negative to positive transition)
 ;
-#X obj 188 156 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 198 163 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 169 242 else/out~;
-#X text 287 162 delay time;
+#X obj 179 249 else/out~;
+#X text 297 169 delay time;
 #X text 194 346 - delay time in ms;
 #X text 194 381 - delayed trigger;
 #X text 110 414 1) float - delay time in ms (default 0);
-#X obj 188 208 else/tdelay2~ 500;
-#X text 68 88 [tdelay2~] delays impulse triggers by a given time in
-ms. After receiving an impulse trigger to delay \, following impulse
-triggers received before its delayed output are ignored.;
+#X obj 198 215 else/tdelay2~ 500;
 #X text 425 245 see also:;
 #X obj 428 267 else/tdelay~;
-#X obj 188 180 else/impseq~;
+#X obj 198 187 else/impseq~;
+#X text 68 88 After receiving a trigger (negative to positive transition)
+\, [tdelay2~] sends an impulse delayed by a given time in ms. After
+receiving a trigger to delay \, following triggers received before
+its delayed output are ignored.;
 #X connect 5 0 32 1;
-#X connect 26 0 36 0;
+#X connect 26 0 35 0;
 #X connect 32 0 27 0;
 #X connect 32 0 27 1;
-#X connect 36 0 32 0;
+#X connect 35 0 32 0;

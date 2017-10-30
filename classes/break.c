@@ -42,9 +42,12 @@ static void break_anything(t_break *x, t_symbol *s, int ac, t_atom *av){
                 n = j - i - 1;
                 if(first){
                     if(n == 0) // it's a selector
-                        outlet_anything(x->x_obj.ob_outlet, s, n, av - 1); // output selector
+                        if(0){ // if selector is list, do nothing
+                        }
+                        else
+                            outlet_anything(x->x_obj.ob_outlet, s, n, av - 1); // output selector
                     else
-                        outlet_anything(x->x_obj.ob_outlet, s, n, av); // output selector
+                        outlet_anything(x->x_obj.ob_outlet, s, n, av);
                     first = 0;
                     }
                 else
