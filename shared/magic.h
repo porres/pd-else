@@ -1,8 +1,7 @@
 #define MAGIC_NAN 0x7FFFFFFFul
 
-/*This is a public function that returns float fields. It is not declared in m_pd.h,
-so we have to declare it here. The arguments are the object and the inlet number
-(indexed from zero)*/
+/* public function returning float fields undeclared in m_pd.h.
+ Arguments: object/inlet number (0 indexed) */
 EXTERN t_float *obj_findsignalscalar(t_object *x, int m);
 
 union magic_ui32_fl {
@@ -12,13 +11,8 @@ union magic_ui32_fl {
 
 void magic_setnan (t_float *in);
 int magic_isnan (t_float in);
-int magic_isinf (t_float in);
-
-
-
 
 // from old fragile (bits and pieces likely to break with any new Pd version.)
-
 t_outconnect *magic_outlet_connections(t_outlet *o);
 t_outconnect *magic_outlet_nextconnection(t_outconnect *last, t_object **destp, int *innop);
 
