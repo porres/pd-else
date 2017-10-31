@@ -1,8 +1,0 @@
-#N canvas 429 44 753 331 10;
-#X obj 90 135 fexpr~ if($x1[-1] == 0 && $x1 != 0 \, $x1 \, 0);
-#X obj 90 170 outlet~;
-#X obj 90 98 inlet~;
-#X text 440 140 Part of ELSE \; https://github.com/porres/pd-else;
-#X text 442 121 Alexandre Torres Porres (2017);
-#X connect 0 0 1 0;
-#X connect 2 0 0 0;
