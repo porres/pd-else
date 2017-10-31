@@ -1,4 +1,4 @@
-#N canvas 325 91 560 453 10;
+#N canvas 579 70 560 453 10;
 #X obj 4 302 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 336 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -40,11 +40,10 @@
 #X text 231 310 - any message to be displayed;
 #X obj 254 186 loadbang;
 #X msg 153 205 any message;
-#X obj 283 264 else/display;
 #X msg 254 212 list a b c;
 #X text 150 267 [else/display] =>;
-#X floatatom 283 236 5 0 0 0 - - -, f 5;
-#X symbolatom 333 237 10 0 0 0 - - -, f 10;
+#X floatatom 278 236 5 0 0 0 - - -, f 5;
+#X symbolatom 328 237 10 0 0 0 - - -, f 10;
 #X text 61 88 [display] is similar to [print] \, it displays the message
 (without the message selector). An argument specifies a fixed number
 of characters to display. If "0" or no argument is given \, the display
@@ -56,9 +55,10 @@ is truncated.;
 #X text 168 343 anything;
 #X text 231 343 - any input is passed through;
 #X text 115 393 2) float - refresh rate in ms (default 100);
-#X connect 20 0 23 0;
-#X connect 21 0 22 0;
-#X connect 23 0 22 0;
-#X connect 25 0 22 0;
-#X connect 26 0 22 0;
+#X obj 278 264 else/display;
+#X connect 20 0 22 0;
+#X connect 21 0 31 0;
+#X connect 22 0 31 0;
+#X connect 24 0 31 0;
+#X connect 25 0 31 0;
 #X coords 0 453 1 452 85 22 0;
