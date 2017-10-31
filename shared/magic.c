@@ -25,15 +25,6 @@ int magic_isnan(t_float in) {
 			(input_u.uif_uint32 & 0x007fffff));
 }
 
-t_outconnect *magic_outlet_connections(t_outlet *o){ // obj_starttraverseoutlet() replacement
-    return (o ? o->o_connections : 0);
-    }
-
-t_outconnect *magic_outlet_nextconnection(t_outconnect *last, t_object **destp, int *innop){
-    t_inlet *dummy;
-    return (obj_nexttraverseoutlet(last, destp, &dummy, innop));
-    }
-
 int magic_inlet_connection(t_object *x, t_glist *glist, int inno, t_symbol *outsym){
     t_linetraverser t;
     linetraverser_start(&t, glist);
