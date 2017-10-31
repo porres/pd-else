@@ -1,64 +1,63 @@
-#N canvas 579 70 560 453 10;
-#X obj 4 302 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 579 70 570 449 10;
+#X obj 8 301 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 336 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 8 335 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 367 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 8 366 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 415 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 8 414 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 129 310 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 133 309 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 2 7 cnv 15 301 42 empty empty display 20 20 2 37 -233017 -1
+#X obj 6 6 cnv 15 301 42 empty empty display 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 2 7 graph;
-#X obj 23 44 cnv 4 4 4 empty empty Display 0 28 2 18 -233017 -1 0;
-#X obj 93 44 cnv 4 4 4 empty empty messages 0 28 2 18 -233017 -1 0
+#X restore 6 6 graph;
+#X obj 27 43 cnv 4 4 4 empty empty Display 0 28 2 18 -233017 -1 0;
+#X obj 97 43 cnv 4 4 4 empty empty messages 0 28 2 18 -233017 -1 0
 ;
-#X obj 306 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 310 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 305 6 pd;
-#X obj 345 14 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 309 5 pd;
+#X obj 349 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 458 14 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 462 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 14 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 482 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 14 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 519 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 29 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 468 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 29 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 506 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 115 373 1) float - number of characters (default: 0 - not fixed)
+#X text 119 372 1) float - number of characters (default: 0 - not fixed)
 ;
-#X text 168 310 anything;
-#X text 231 310 - any message to be displayed;
-#X obj 254 186 loadbang;
-#X msg 153 205 any message;
-#X msg 254 212 list a b c;
-#X text 150 267 [else/display] =>;
-#X floatatom 278 236 5 0 0 0 - - -, f 5;
-#X symbolatom 328 237 10 0 0 0 - - -, f 10;
-#X text 61 88 [display] is similar to [print] \, it displays the message
-(without the message selector). An argument specifies a fixed number
-of characters to display. If "0" or no argument is given \, the display
-will automatically resize according to the input message. If a message
-is larger than the fixed number of characters \, the displayed message
-is truncated.;
-#X obj 129 343 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 172 309 anything;
+#X text 235 309 - any message to be displayed;
+#X obj 258 185 loadbang;
+#X msg 157 204 any message;
+#X msg 258 211 list a b c;
+#X text 154 266 [else/display] =>;
+#X floatatom 282 235 5 0 0 0 - - -, f 5;
+#X symbolatom 332 236 10 0 0 0 - - -, f 10;
+#X obj 133 342 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 168 343 anything;
-#X text 231 343 - any input is passed through;
-#X text 115 393 2) float - refresh rate in ms (default 100);
-#X obj 278 264 else/display;
+#X text 172 342 anything;
+#X text 235 342 - any input is passed through;
+#X text 119 392 2) float - refresh rate in ms (default 100);
+#X obj 282 263 else/display;
+#X text 65 87 [display] can display a message just like [print]. The
+1st argument specifies a fixed number of characters to display. If
+"0" or no argument is given \, the display automatically resizes according
+to the input message. If a message is larger than the fixed number
+of characters \, the displayed message is truncated.;
 #X connect 20 0 22 0;
-#X connect 21 0 31 0;
-#X connect 22 0 31 0;
-#X connect 24 0 31 0;
-#X connect 25 0 31 0;
-#X coords 0 453 1 452 85 22 0;
+#X connect 21 0 30 0;
+#X connect 22 0 30 0;
+#X connect 24 0 30 0;
+#X connect 25 0 30 0;
+#X coords 0 449 1 448 85 22 0;
