@@ -1,4 +1,4 @@
-#N canvas 749 349 665 273 10;
+#N canvas 743 301 665 273 10;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
 -262144 0 1;
 #X obj 215 68 route dsp;
@@ -113,6 +113,8 @@
 #X obj 38 199 change;
 #X obj 38 226 outlet;
 #X obj 24 66 != 0;
+#X obj 51 102 cnv 1 6 1 empty empty empty 20 12 0 14 -1 -66577 0;
+#X obj 51 170 cnv 1 6 1 empty empty empty 20 12 0 14 -1 -66577 0;
 #X connect 0 0 14 0;
 #X connect 1 0 3 0;
 #X connect 1 0 7 0;
