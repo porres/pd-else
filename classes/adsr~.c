@@ -80,9 +80,9 @@ static t_int *adsr_perform(t_int *w){
         else
             coef_r = 1. / n_release;
 // go for it
-        if(audio_gate || x->x_f_gate != gate_status){ // gate status change
+        if((audio_gate || (x->x_f_gate != 0)) != gate_status){ // gate status change
             gate_status = audio_gate || x->x_f_gate;
-            target = x->x_f_gate ? x->x_f_gate : input_gate;
+            target = x->x_f_gate != 0 ? x->x_f_gate : input_gate;
             if (gate_status){ // if gate opened
                 if(!status){
                     status = 1;
@@ -97,7 +97,7 @@ static t_int *adsr_perform(t_int *w){
                     nleft = 1 + n_decay;
                 }
             }
-            else{ // if gate closed, set release time
+            else{ // if gate closed, set release incr
                 if(n_release > 1){
                     incr =  -(last * coef_r);
                     nleft = n_release;

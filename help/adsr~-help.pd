@@ -1,4 +1,4 @@
-#N canvas 975 65 574 690 10;
+#N canvas 975 65 563 690 10;
 #X obj 5 404 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 522 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -11,13 +11,13 @@
 ;
 #X obj 95 412 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 162 531 signal;
+#X text 172 531 signal;
 #X obj 24 41 cnv 4 4 4 empty empty Attack/Decay/Sustain/Release 0 28
 2 18 -233017 -1 0;
 #X obj 249 41 cnv 4 4 4 empty empty gated 0 28 2 18 -233017 -1 0;
 #X obj 95 435 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 120 435 float/signal;
+#X text 130 435 float/signal;
 #X obj 108 336 else/out~;
 #X obj 151 292 *~;
 #X obj 231 289 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
@@ -30,13 +30,13 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X text 121 412 float/signal;
-#X text 216 434 - attack time in ms;
+#X text 131 412 float/signal;
+#X text 226 434 - attack time in ms;
 #X obj 95 456 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 120 456 float/signal;
-#X text 216 531 - envelope signal;
-#X text 101 582 1) float - attack time in ms (default 0);
+#X text 130 456 float/signal;
+#X text 226 531 - envelope signal;
+#X text 111 582 1) float - attack time in ms (default 0);
 #X obj 169 200 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 299 41 cnv 4 4 4 empty empty envelope 0 28 2 18 -233017 -1 0
@@ -59,7 +59,7 @@
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 80 248 osc~ 440;
-#X text 217 412 - gate values;
+#X text 227 412 - gate values;
 #X obj 229 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 290 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -96,8 +96,7 @@ amplitude.;
 #X connect 12 0 1 0;
 #X connect 13 0 4 1;
 #X connect 13 0 8 0;
-#X restore 460 304 pd example;
-#X obj 169 231 else/adsr~ 1000 500 0.5 1000, f 35;
+#X restore 466 310 pd example;
 #X obj 350 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 411 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -109,16 +108,16 @@ amplitude.;
 #X obj 307 362 else/asr~;
 #X obj 95 478 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 120 478 float/signal;
+#X text 130 478 float/signal;
 #X obj 95 500 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
 ;
-#X text 120 500 float/signal;
-#X text 216 499 - release time in ms;
-#X text 101 642 4) float - release time in ms (default 0);
-#X text 101 602 2) float - decay time in ms (default 0);
-#X text 216 455 - decay time in ms;
-#X text 216 477 - sustain amplitude (ratio to gate value);
-#X text 101 623 3) float - sustain amplitude ratio to gate value (default
+#X text 130 500 float/signal;
+#X text 226 499 - release time in ms;
+#X text 111 642 4) float - release time in ms (default 0);
+#X text 111 602 2) float - decay time in ms (default 0);
+#X text 226 455 - decay time in ms;
+#X text 226 477 - sustain amplitude (ratio to gate value);
+#X text 111 623 3) float - sustain amplitude ratio to gate value (default
 0), f 61;
 #X text 128 200 gate;
 #N canvas 1103 244 503 425 triggered 0;
@@ -143,7 +142,7 @@ so you can trigger the envelope.;
 #X connect 6 0 5 0;
 #X connect 7 0 3 0;
 #X connect 10 0 5 1;
-#X restore 439 331 pd triggered \; by impulses;
+#X restore 445 335 pd triggered \; by impulses;
 #X text 68 87 [adsr~] is a linear attack/decay/sustain/release gated
 envelope. At a gate on value (transition from 0 to any value) \, the
 envelope starts its attack ramp. After that \, a decay ramp goes to
@@ -155,21 +154,17 @@ the specified release time in ms.;
 #X obj 411 282 else/display;
 #X obj 95 553 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 169 553 float;
-#X text 216 553 - envelope status (1/0);
-#N canvas 1004 208 525 470 status 0;
-#X obj 382 338 switch~;
-#X obj 382 270 tgl 50 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 179 553 float;
+#N canvas 1086 243 525 470 status 0;
+#X obj 382 340 switch~;
+#X obj 382 272 tgl 50 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 178 310 *~;
 #X obj 116 248 osc~ 440;
-#X obj 196 197 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-0.5;
 #X obj 153 360 dac~;
 #X obj 228 288 else/sig2float~;
 #X obj 228 324 vsl 18 100 0 0.5 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 0 1;
-#X obj 196 245 else/adsr~ 100 300 0.5 1000;
 #X text 53 38 [adsr~] has a right outlet that sends a status value
 (1 when the envelope starts and 0 when it ends). This can be useful
 for different things \, but particularly to turn on and off the DSP
@@ -178,26 +173,35 @@ processing of a subopatch or abstraction with [switch~].;
 is possible because the float input of [adsr~] will always turn the
 status on \, so you can use it to start the DSP. See below., f 62
 ;
+#X obj 46 339 else/setdsp~;
+#X msg 196 189 0.25;
+#X msg 215 214 0;
+#X text 235 190 gate on;
+#X text 249 213 gate off;
+#X obj 196 246 else/adsr~ 100 300 0.25 500;
 #X connect 1 0 0 0;
-#X connect 2 0 5 0;
-#X connect 2 0 5 1;
+#X connect 2 0 4 0;
+#X connect 2 0 4 1;
 #X connect 3 0 2 0;
-#X connect 4 0 8 0;
-#X connect 6 0 7 0;
-#X connect 8 0 2 1;
-#X connect 8 0 6 0;
-#X connect 8 1 1 0;
-#X restore 467 368 pd status;
+#X connect 5 0 6 0;
+#X connect 10 0 14 0;
+#X connect 11 0 14 0;
+#X connect 14 0 2 1;
+#X connect 14 0 5 0;
+#X connect 14 1 1 0;
+#X restore 473 374 pd status;
+#X text 226 553 - envelope status (on: 1 / off: 0);
+#X obj 169 231 else/adsr~ 1000 500 0.5 1000, f 35;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;
-#X connect 25 0 41 0;
+#X connect 25 0 67 0;
 #X connect 35 0 12 0;
-#X connect 37 0 41 1;
-#X connect 38 0 41 2;
-#X connect 41 0 12 1;
-#X connect 41 0 14 0;
-#X connect 41 1 62 0;
-#X connect 42 0 41 3;
-#X connect 43 0 41 4;
-#X connect 62 0 63 0;
+#X connect 37 0 67 1;
+#X connect 38 0 67 2;
+#X connect 41 0 67 3;
+#X connect 42 0 67 4;
+#X connect 61 0 62 0;
+#X connect 67 0 12 1;
+#X connect 67 0 14 0;
+#X connect 67 1 61 0;
