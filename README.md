@@ -54,7 +54,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (155 objects):
+##Current Object list (154 objects):
 
 **MISCELLANEA: [5]**
 - [changed]
@@ -183,7 +183,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [xselect~]
 - [xselect2~]
 
-**TRIGGERS: [18]**
+**TRIGGERS: [17]**
 - [coin~]
 - [dust~]
 - [dust2~]
@@ -200,7 +200,6 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [tgate~]
 - [match~]
 - [trig2bang~]
-- [trigger~]
 - [trighold~]
 
 **SIGNAL ANALYSIS: [10]**
@@ -211,8 +210,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [median~]
 - [peak~]
 - [rms~]
-- [togedge~]
 - [vu~]
+- [past~]
 - [zerocross~]
 
 **CONTROL: [12]**
