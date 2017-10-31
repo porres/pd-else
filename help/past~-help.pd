@@ -120,6 +120,8 @@ threshold or past it. You can set the threshold value with the argument
 or the 2nd inlet., f 63;
 #X text 176 410 signal - impulse when falls back or past a threshold
 ;
+#X text 109 281 <= gate on;
+#X text 341 280 <= gate off;
 #X connect 23 0 18 0;
 #X connect 23 0 26 0;
 #X connect 23 1 18 1;
