@@ -22,7 +22,7 @@ static t_int * ceil_perform(t_int *w)
   t_float *in = (t_float *)(w[3]);
   t_float *out = (t_float *)(w[4]);
   while(n--)
-  *out++ = ceil(*in++);
+      *out++ = ceil(*in++);
   return (w + 5);
 }
 
