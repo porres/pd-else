@@ -1,11 +1,11 @@
-#N canvas 975 65 561 668 10;
+#N canvas 975 65 574 690 10;
 #X obj 5 404 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 522 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 555 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 576 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 5 643 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 664 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 95 531 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
@@ -36,7 +36,7 @@
 ;
 #X text 120 456 float/signal;
 #X text 216 531 - envelope signal;
-#X text 101 561 1) float - attack time in ms (default 0);
+#X text 101 582 1) float - attack time in ms (default 0);
 #X obj 169 200 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 299 41 cnv 4 4 4 empty empty envelope 0 28 2 18 -233017 -1 0
@@ -96,7 +96,7 @@ amplitude.;
 #X connect 12 0 1 0;
 #X connect 13 0 4 1;
 #X connect 13 0 8 0;
-#X restore 442 300 pd example;
+#X restore 460 304 pd example;
 #X obj 169 231 else/adsr~ 1000 500 0.5 1000, f 35;
 #X obj 350 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -105,8 +105,8 @@ amplitude.;
 #X text 413 185 release;
 #X text 292 185 decay;
 #X text 351 185 sustain;
-#X text 375 376 see also:;
-#X obj 449 375 else/asr~;
+#X text 307 334 see also:;
+#X obj 307 362 else/asr~;
 #X obj 95 478 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
 #X text 120 478 float/signal;
@@ -114,11 +114,11 @@ amplitude.;
 ;
 #X text 120 500 float/signal;
 #X text 216 499 - release time in ms;
-#X text 101 621 4) float - release time in ms (default 0);
-#X text 101 581 2) float - decay time in ms (default 0);
+#X text 101 642 4) float - release time in ms (default 0);
+#X text 101 602 2) float - decay time in ms (default 0);
 #X text 216 455 - decay time in ms;
 #X text 216 477 - sustain amplitude (ratio to gate value);
-#X text 101 602 3) float - sustain amplitude ratio to gate value (default
+#X text 101 623 3) float - sustain amplitude ratio to gate value (default
 0), f 61;
 #X text 128 200 gate;
 #N canvas 1103 244 503 425 triggered 0;
@@ -143,13 +143,51 @@ so you can trigger the envelope.;
 #X connect 6 0 5 0;
 #X connect 7 0 3 0;
 #X connect 10 0 5 1;
-#X restore 421 327 pd triggered \; by impulses;
+#X restore 439 331 pd triggered \; by impulses;
 #X text 68 87 [adsr~] is a linear attack/decay/sustain/release gated
 envelope. At a gate on value (transition from 0 to any value) \, the
 envelope starts its attack ramp. After that \, a decay ramp goes to
 the sustain point \, which is specified as a ratio of the gate value.
 A gate off (transition from any value to 0) makes [adsr~] go to 0 at
 the specified release time in ms.;
+#X obj 411 258 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 411 282 else/display;
+#X obj 95 553 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 169 553 float;
+#X text 216 553 - envelope status (1/0);
+#N canvas 1004 208 525 470 status 0;
+#X obj 382 338 switch~;
+#X obj 382 270 tgl 50 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 178 310 *~;
+#X obj 116 248 osc~ 440;
+#X obj 196 197 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+0.5;
+#X obj 153 360 dac~;
+#X obj 228 288 else/sig2float~;
+#X obj 228 324 vsl 18 100 0 0.5 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 196 245 else/adsr~ 100 300 0.5 1000;
+#X text 53 38 [adsr~] has a right outlet that sends a status value
+(1 when the envelope starts and 0 when it ends). This can be useful
+for different things \, but particularly to turn on and off the DSP
+processing of a subopatch or abstraction with [switch~].;
+#X text 55 118 This only works for control data such as MIDI \, and
+is possible because the float input of [adsr~] will always turn the
+status on \, so you can use it to start the DSP. See below., f 62
+;
+#X connect 1 0 0 0;
+#X connect 2 0 5 0;
+#X connect 2 0 5 1;
+#X connect 3 0 2 0;
+#X connect 4 0 8 0;
+#X connect 6 0 7 0;
+#X connect 8 0 2 1;
+#X connect 8 0 6 0;
+#X connect 8 1 1 0;
+#X restore 467 368 pd status;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;
@@ -159,5 +197,7 @@ the specified release time in ms.;
 #X connect 38 0 41 2;
 #X connect 41 0 12 1;
 #X connect 41 0 14 0;
+#X connect 41 1 62 0;
 #X connect 42 0 41 3;
 #X connect 43 0 41 4;
+#X connect 62 0 63 0;

@@ -5,15 +5,17 @@
 
 typedef struct _adsr{
     t_object x_obj;
-    t_float  x_in;
     t_inlet  *x_inlet_attack;
     t_inlet  *x_inlet_decay;
     t_inlet  *x_inlet_sustain;
     t_inlet  *x_inlet_release;
+    t_float  x_f_gate;
+    t_int    x_status;
     t_float  x_last;
     t_float  x_target;
     t_float  x_sustain_target;
     t_float  x_sr_khz;
+    t_outlet  *x_out2;
     double   x_incr;
     int      x_nleft;
     int      x_gate_status;
@@ -21,6 +23,13 @@ typedef struct _adsr{
 
 
 static t_class *adsr_class;
+
+static void adsr_float(t_adsr *x, t_floatarg f){
+    if(f != 0 && !x->x_status) { // on
+        outlet_float(x->x_out2, x->x_status = 1);
+    }
+    x->x_f_gate = f;
+}
 
 static t_int *adsr_perform(t_int *w){
     t_adsr *x = (t_adsr *)(w[1]);
@@ -34,6 +43,7 @@ static t_int *adsr_perform(t_int *w){
     t_float last = x->x_last;
     t_float target = x->x_target;
     t_float gate_status = x->x_gate_status;
+    t_int status = x->x_status;
     double incr = x->x_incr;
     int nleft = x->x_nleft;
     while (nblock--){
@@ -42,7 +52,7 @@ static t_int *adsr_perform(t_int *w){
         t_float decay = *in3++;
         t_float sustain_point = *in4++;
         t_float release = *in5++;
-        t_int gate = (input_gate != 0);
+        t_int audio_gate = (input_gate != 0);
 // clip input
         if (attack < 0)
             attack = 0;
@@ -70,10 +80,14 @@ static t_int *adsr_perform(t_int *w){
         else
             coef_r = 1. / n_release;
 // go for it
-        if(gate != gate_status){ // gate status change
-            gate_status = gate;
-            target = input_gate;
+        if(audio_gate || x->x_f_gate != gate_status){ // gate status change
+            gate_status = audio_gate || x->x_f_gate;
+            target = x->x_f_gate ? x->x_f_gate : input_gate;
             if (gate_status){ // if gate opened
+                if(!status){
+                    status = 1;
+                    outlet_float(x->x_out2, status);
+                    }
                 if(n_attack > 1){
                     incr = (target - last) * coef_a;
                     nleft = n_attack + n_decay;
@@ -83,7 +97,7 @@ static t_int *adsr_perform(t_int *w){
                     nleft = 1 + n_decay;
                 }
             }
-            else{ // if gate closed
+            else{ // if gate closed, set release time
                 if(n_release > 1){
                     incr =  -(last * coef_r);
                     nleft = n_release;
@@ -95,7 +109,7 @@ static t_int *adsr_perform(t_int *w){
             }
         }
 // "attack + decay + sustain" phase
-        if (gate_status){
+        if(gate_status){
             if(nleft > 0){ // "attack + decay" not over
                 if (nleft < n_decay){ // attack is over
                     incr = ((target * sustain_point) - target) * coef_d;
@@ -112,8 +126,11 @@ static t_int *adsr_perform(t_int *w){
                 *out++ = (last += incr);
                 nleft--;
             }
-            else // "release" over
+            else{ // "release" over
+                if(status)
+                    outlet_float(x->x_out2, status = 0);
                 *out++ = 0;
+                }
         }
     };
     x->x_last = (PD_BIGORSMALL(last) ? 0. : last);
@@ -121,6 +138,7 @@ static t_int *adsr_perform(t_int *w){
     x->x_incr = incr;
     x->x_nleft = nleft;
     x->x_gate_status = gate_status;
+    x->x_status = status;
     return (w + 9);
 }
 
@@ -148,12 +166,14 @@ static void *adsr_new(t_floatarg a, t_floatarg d, t_floatarg s, t_floatarg r){
     x->x_inlet_release = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_release, r);
     outlet_new((t_object *)x, &s_signal);
+    x->x_out2 = outlet_new((t_object *)x, &s_float);
     return (x);
 }
 
 void adsr_tilde_setup(void){
     adsr_class = class_new(gensym("adsr~"), (t_newmethod)adsr_new, 0,
 				 sizeof(t_adsr), 0, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
-    CLASS_MAINSIGNALIN(adsr_class, t_adsr, x_in);
+    class_addmethod(adsr_class, nullfn, gensym("signal"), 0);
     class_addmethod(adsr_class, (t_method) adsr_dsp, gensym("dsp"), A_CANT, 0);
+    class_addfloat(adsr_class, (t_method)adsr_float);
 }
