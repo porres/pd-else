@@ -1,16 +1,16 @@
 // from cyclone's magic stuff by matt barber
 
-#include "m_pd.h"
-#include "magic.h"
-#include "g_canvas.h"
+#include <m_pd.h>
+#include <magic.h>
+#include <g_canvas.h>
 #include <stdint.h>
 
 int magic_inlet_connection(t_object *x, t_glist *glist, int inno, t_symbol *outsym){
     t_linetraverser t;
     linetraverser_start(&t, glist);
-    while (linetraverser_next(&t))
-        if (t.tr_ob2 == x && t.tr_inno == inno &&
-            (!outsym || outsym == outlet_getsymbol(t.tr_outlet)))
+    while(linetraverser_next(&t))
+        if(t.tr_ob2 == x && t.tr_inno == inno &&
+           (!outsym || outsym == outlet_getsymbol(t.tr_outlet)))
             return (1);
     return (0);
 }
