@@ -76,7 +76,7 @@ generates them from mouse clicking. Right click it for properties!
 #X text 224 501 - set number of octaves;
 #X text 131 520 lowc <float>;
 #X text 224 520 - set C# of lowest C;
-#N canvas 672 55 486 581 example 1;
+#N canvas 672 55 486 581 example 0;
 #X obj 69 135 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 69 367 poly 4 1;
@@ -240,7 +240,7 @@ synths., f 58;
 #X text 284 523 see also:;
 #X text 233 171 Try clicking and dragging \, it also works and slides
 through chromatically!, f 26;
-#X obj 69 264 else/keyboard 17 80 3 2;
+#X obj 69 264 keyboard 17 80 3 2;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 1 1 2 1;
@@ -264,7 +264,7 @@ through chromatically!, f 26;
 #X text 90 157 octave up;
 #X text 100 180 octave down;
 #X text 226 541 - velocity of MIDI note value;
-#X obj 58 241 else/keyboard 17 80 4 3;
+#X obj 58 241 keyboard 17 80 4 3;
 #X connect 9 0 11 0;
 #X connect 9 1 10 0;
 #X connect 14 0 16 0;
