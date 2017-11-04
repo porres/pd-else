@@ -17,22 +17,21 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X obj 65 333 unpack float float;
-#X obj 170 358 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 58 336 unpack float float;
+#X obj 163 361 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 65 358 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 61 375 MIDI Note;
-#X text 169 374 Velocity;
-#X obj 160 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 58 361 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 55 256;
+#X text 54 378 MIDI Note;
+#X text 162 377 Velocity;
+#X obj 216 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 160 201 makenote 100 200;
-#X obj 160 153 metro 300;
-#X obj 160 175 expr random(48 \, 96);
+#X obj 216 208 makenote 100 200;
+#X obj 216 160 metro 300;
+#X obj 216 182 expr random(48 \, 96);
 #X text 180 413 float;
 #X text 180 541 float;
 #X text 224 413 - MIDI Note value;
-#X text 226 541 - velocity;
 #X text 224 431 - MIDI Note and Velocity values;
 #X text 138 431 list <f \, f>;
 #X obj 94 541 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
@@ -61,7 +60,6 @@
 #X coords 0 1 100 -1 252 42 1;
 #X restore 306 4 graph;
 #X text 115 661 4) float - C# number of lowest C (default 3 - C3);
-#X obj 65 238 keyboard 16 80 4 3 0;
 #X text 115 607 1) float - white key width in pixels (default 16);
 #X text 115 679 5) float - computer input on <1> or off <0> (default
 0);
@@ -89,11 +87,11 @@ generates them from mouse clicking. Right click it for properties!
 #X obj 69 163 metro 800;
 #X obj 69 198 expr random(36 \, 72);
 #X obj 270 389 catch~ \$0-voice;
-#X obj 69 264 keyboard 16 80 3 2 0;
+#X obj 69 264 keyboard 16 80 3 2;
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
@@ -129,7 +127,7 @@ generates them from mouse clicking. Right click it for properties!
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
@@ -165,7 +163,7 @@ generates them from mouse clicking. Right click it for properties!
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
@@ -201,7 +199,7 @@ generates them from mouse clicking. Right click it for properties!
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
@@ -241,6 +239,8 @@ check it. You should also try pd's [clone] object for managing polyphonic
 synths., f 58;
 #X obj 360 522 clone;
 #X text 284 523 see also:;
+#X text 233 171 Try clicking and dragging \, it also works and slides
+through chromatically!, f 26;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 1 1 2 1;
@@ -258,11 +258,21 @@ synths., f 58;
 #X connect 8 0 4 1;
 #X connect 9 0 1 0;
 #X restore 442 361 pd example;
+#X msg 58 205 oct \$1;
+#X msg 58 157 1;
+#X msg 68 180 -1;
+#X text 90 157 octave up;
+#X text 100 180 octave down;
+#X text 226 541 - velocity of MIDI note value;
+#X obj 58 241 keyboard 17 80 4 3;
 #X connect 9 0 11 0;
 #X connect 9 1 10 0;
 #X connect 14 0 16 0;
-#X connect 15 0 39 0;
-#X connect 15 1 39 1;
+#X connect 15 0 58 0;
+#X connect 15 1 58 1;
 #X connect 16 0 17 0;
 #X connect 17 0 15 0;
-#X connect 39 0 9 0;
+#X connect 52 0 58 0;
+#X connect 53 0 52 0;
+#X connect 54 0 52 0;
+#X connect 58 0 9 0;
