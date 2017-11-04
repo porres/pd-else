@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-6 (Unreleased)
+### Version 1.0 beta-6 (Released November 5th 2017)
 
 The project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
 
@@ -54,7 +54,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (154 objects):
+##Current Object list (155 objects):
 
 **MISCELLANEA: [5]**
 - [changed]
@@ -228,12 +228,13 @@ Then move it to your preferred install folder for Pd and add it to the path.
  - [sequencer~]
  - [impseq~]
 
-**GUI: [11]**
+**GUI: [12]**
 - [display]
 - [display~]
 - [out~]
 - [gain~]
 - [gain2~]
+- [keyboard]
 - [graph~]
 - [meter~]
 - [meter2~]

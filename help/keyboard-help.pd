@@ -1,0 +1,88 @@
+#N canvas 494 23 562 733 10;
+#X obj 5 409 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 569 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 602 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 6 704 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 94 417 cnv 17 3 123 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 110 41 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
+#X obj 26 41 cnv 4 4 4 empty empty Keyboard 0 28 2 18 -233017 -1 0
+;
+#X obj 3 4 cnv 15 301 42 empty empty keyboard 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 4 graph;
+#X obj 65 333 unpack float float;
+#X obj 170 358 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 65 358 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 61 375 MIDI Note;
+#X text 169 374 Velocity;
+#X obj 160 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 160 201 makenote 100 200;
+#X obj 160 153 metro 300;
+#X obj 160 175 expr random(48 \, 96);
+#X text 180 417 float;
+#X text 180 545 float;
+#X text 224 417 - MIDI Note value;
+#X text 226 545 - velocity;
+#X text 224 435 - MIDI Note and Velocity values;
+#X text 138 435 list <f \, f>;
+#X obj 94 545 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 93 579 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 227 579 - MIDI Note and Velocity values;
+#X text 138 579 list <f \, f>;
+#X text 115 629 2) float - height in pixels (default 80);
+#X text 115 647 3) float - number of octaves (default 4);
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1;
+#X restore 306 4 graph;
+#X text 115 665 4) float - C# number of lowest C (default 3 - C3);
+#X obj 65 238 keyboard 16 80 4 3 0;
+#X text 115 611 1) float - white key width in pixels (default 16);
+#X text 115 683 5) float - computer input on <1> or off <0> (default
+0);
+#X text 44 90 [keyboard] is a GUI that receives MIDI notes and also
+generates them from mouse clicking. Right click it for properties!
+, f 64;
+#X text 224 452 - set key width;
+#X text 124 452 width <float>;
+#X text 117 469 height <float>;
+#X text 224 469 - set keybioard width;
+#X text 138 487 oct <float>;
+#X text 224 487 - transpose octaves up or down;
+#X text 131 505 8ves <float>;
+#X text 224 505 - set number of octaves;
+#X text 131 524 lowc <float>;
+#X text 224 524 - set C# of lowest C;
+#X connect 9 0 11 0;
+#X connect 9 1 10 0;
+#X connect 14 0 16 0;
+#X connect 15 0 39 0;
+#X connect 15 1 39 1;
+#X connect 16 0 17 0;
+#X connect 17 0 15 0;
+#X connect 39 0 9 0;

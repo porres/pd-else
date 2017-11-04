@@ -14,6 +14,9 @@ uname := $(shell uname -s)
 # sources
 #########################################################################
 
+# GUI:
+keyboard.class.sources := classes/keyboard.c
+
 # control:
 args.class.sources := classes/args.c
 break.class.sources := classes/break.c
