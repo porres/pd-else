@@ -11,22 +11,9 @@
 ;
 #X text 153 308 signal;
 #X text 153 419 signal;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
-#N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
 #X obj 23 40 cnv 4 4 4 empty empty Automatic 0 28 2 18 -233017 -1 0
 ;
 #X obj 110 40 cnv 4 4 4 empty empty fade-in/out 0 28 2 18 -233017 -1
-0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
 #X obj 87 364 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
@@ -44,7 +31,7 @@
 #X text 390 177 fade time;
 #X text 287 175 gate;
 #X obj 333 178 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1000 256;
+-228856 -1 -1 0 256;
 #X text 207 419 - autofaded signal;
 #X obj 268 176 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -249,8 +236,8 @@ as raising the input to the power of 4, f 31;
 #X obj 572 176 pow~ 4;
 #X restore 297 140 pd quartic;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -319,7 +306,7 @@ as raising the input to the power of 4, f 31;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -398,8 +385,25 @@ curves.;
 #X text 207 479 - fade time in ms (default 0);
 #X text 206 363 - gate: "fade in" if > 0 \, "fade out" otherwise;
 #X obj 203 202 else/autofade~ 1000;
-#X connect 25 0 44 2;
-#X connect 27 0 44 1;
-#X connect 28 0 44 0;
-#X connect 44 0 17 0;
-#X connect 44 0 17 1;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 304 3 graph;
+#X connect 19 0 38 2;
+#X connect 21 0 38 1;
+#X connect 22 0 38 0;
+#X connect 38 0 11 0;
+#X connect 38 0 11 1;

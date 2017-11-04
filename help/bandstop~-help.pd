@@ -16,24 +16,11 @@
 #X obj 151 222 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty bandstop~ 20 20 2 37 -233017 -1
 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
 #X obj 23 40 cnv 4 4 4 empty empty Band 0 28 2 18 -233017 -1 0;
 #X obj 112 40 cnv 4 4 4 empty empty filter 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
 #X obj 71 40 cnv 4 4 4 empty empty stop 0 28 2 18 -233017 -1 0;
 #X obj 185 160 noise~;
 #X obj 242 145 nbx 5 14 100 10000 1 0 empty empty empty 0 -8 0 10 -228856
@@ -70,13 +57,13 @@ of center frequency 'f' in hz and 'q' as follows \;;
 = a0 \; b1 = -a1 \; b2 = (alphaQ - 1) / b0 \;;
 #X text 722 166 Note: q's and bw's minimum value is 1e-06!, f 21;
 #X obj 693 111 hsl 128 15 0.01 100 1 0 empty \$0-Q-set empty -2 -8
-0 10 -228856 -1 -1 3175 1;
+0 10 -228856 -1 -1 0 1;
 #X obj 625 85 hsl 128 15 20 20000 1 0 empty \$0-Hz-set empty -2 -8
-0 10 -228856 -1 -1 7192 1;
+0 10 -228856 -1 -1 0 1;
 #X obj 690 135 nbx 6 14 0.1 100 0 0 \$0-Q empty empty 0 -8 0 10 -228856
 -1 -1 0.1 256;
 #X obj 622 109 nbx 6 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
--1 -1 1000 256;
+-1 -1 20 256;
 #X text 642 85 center frequency;
 #X text 714 111 resonance (Q);
 #X text 54 48 The equation is from the "Cookbook formulae for audio
@@ -145,11 +132,28 @@ or 'bw', f 65;
 #X obj 175 191 else/bandstop~ 1000 0.1;
 #X text 61 86 [bandstop~] is a 2nd order band reject filter \, it can
 also be used as a 'notch' filter.;
-#X connect 20 0 51 0;
-#X connect 21 0 51 1;
-#X connect 22 0 51 2;
-#X connect 30 0 51 0;
-#X connect 31 0 30 0;
-#X connect 37 0 51 0;
-#X connect 51 0 8 0;
-#X connect 51 0 8 1;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 304 3 graph;
+#X connect 14 0 45 0;
+#X connect 15 0 45 1;
+#X connect 16 0 45 2;
+#X connect 24 0 45 0;
+#X connect 25 0 24 0;
+#X connect 31 0 45 0;
+#X connect 45 0 8 0;
+#X connect 45 0 8 1;

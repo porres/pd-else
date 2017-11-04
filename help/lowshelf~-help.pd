@@ -16,25 +16,12 @@
 #X obj 230 222 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty lowshelf~ 20 20 2 37 -233017 -1
 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
 #X obj 23 40 cnv 4 4 4 empty empty Lowshelf 0 28 2 18 -233017 -1 0
 ;
 #X obj 104 40 cnv 4 4 4 empty empty filter 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
 #X obj 242 158 noise~;
 #X text 230 434 - filtered signal;
 #X text 230 293 - signal to be filtered;
@@ -54,13 +41,13 @@
 #X obj 677 117 hsl 128 15 0.1 1 0 0 empty \$0-Q-set empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 617 68 hsl 128 15 20 20000 1 0 empty \$0-Hz-set empty -2 -8
-0 10 -228856 -1 -1 7192 1;
+0 10 -228856 -1 -1 0 1;
 #X obj 555 114 noise~;
 #X obj 539 206 else/out~;
 #X obj 674 141 nbx 4 14 1e-06 1 0 0 \$0-Q empty empty 0 -8 0 10 -228856
--1 -1 0.1 256;
+-1 -1 1e-06 256;
 #X obj 614 92 nbx 4 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
--1 -1 1000 256;
+-1 -1 20 256;
 #X text 32 239 [1] found in http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
 , f 65;
 #X text 508 18 Change the parameters and check the filter response
@@ -68,9 +55,9 @@ below. The graph considers a sample rate of 44.1Khz.;
 #X text 614 68 shelving frequency;
 #X text 714 116 slope;
 #X obj 761 147 hsl 128 15 -24 24 0 0 empty \$0-G-set empty -2 -8 0
-10 -228856 -1 -1 9525 1;
+10 -228856 -1 -1 0 1;
 #X obj 758 173 nbx 4 14 -24 24 0 0 \$0-G empty empty 0 -8 0 10 -228856
--1 -1 12 256;
+-1 -1 0 256;
 #X text 791 147 gain (dB);
 #X text 54 21 The equation is from the "Cookbook formulae for audio
 EQ biquad filter coefficients" by Robert Bristow-Johnsonc [1] \, and
@@ -123,9 +110,26 @@ f * PI/nyquist \; G = pow(10 \, db/40) \; alphaS = sin(w) * sqrt((G*G
 #X text 138 464 1) float - shelving frequency in Hertz (default 0)
 , f 53;
 #X obj 230 191 else/lowshelf~ 1500 0.5 -8;
-#X connect 19 0 43 0;
-#X connect 27 0 43 0;
-#X connect 28 0 27 0;
-#X connect 32 0 43 0;
-#X connect 43 0 8 0;
-#X connect 43 0 8 1;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 304 3 graph;
+#X connect 13 0 37 0;
+#X connect 21 0 37 0;
+#X connect 22 0 21 0;
+#X connect 26 0 37 0;
+#X connect 37 0 8 0;
+#X connect 37 0 8 1;
