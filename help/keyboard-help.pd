@@ -1,13 +1,13 @@
 #N canvas 494 23 562 733 10;
-#X obj 5 409 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 5 405 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 569 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 565 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 602 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 598 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 704 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 700 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 94 417 cnv 17 3 123 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 94 413 cnv 17 3 123 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 110 41 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
 #X obj 26 41 cnv 4 4 4 empty empty Keyboard 0 28 2 18 -233017 -1 0
@@ -29,20 +29,20 @@
 #X obj 160 201 makenote 100 200;
 #X obj 160 153 metro 300;
 #X obj 160 175 expr random(48 \, 96);
-#X text 180 417 float;
-#X text 180 545 float;
-#X text 224 417 - MIDI Note value;
-#X text 226 545 - velocity;
-#X text 224 435 - MIDI Note and Velocity values;
-#X text 138 435 list <f \, f>;
-#X obj 94 545 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 180 413 float;
+#X text 180 541 float;
+#X text 224 413 - MIDI Note value;
+#X text 226 541 - velocity;
+#X text 224 431 - MIDI Note and Velocity values;
+#X text 138 431 list <f \, f>;
+#X obj 94 541 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 93 579 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 93 575 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 227 579 - MIDI Note and Velocity values;
-#X text 138 579 list <f \, f>;
-#X text 115 629 2) float - height in pixels (default 80);
-#X text 115 647 3) float - number of octaves (default 4);
+#X text 227 575 - MIDI Note and Velocity values;
+#X text 138 575 list <f \, f>;
+#X text 115 625 2) float - height in pixels (default 80);
+#X text 115 643 3) float - number of octaves (default 4);
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -60,24 +60,204 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1;
 #X restore 306 4 graph;
-#X text 115 665 4) float - C# number of lowest C (default 3 - C3);
+#X text 115 661 4) float - C# number of lowest C (default 3 - C3);
 #X obj 65 238 keyboard 16 80 4 3 0;
-#X text 115 611 1) float - white key width in pixels (default 16);
-#X text 115 683 5) float - computer input on <1> or off <0> (default
+#X text 115 607 1) float - white key width in pixels (default 16);
+#X text 115 679 5) float - computer input on <1> or off <0> (default
 0);
 #X text 44 90 [keyboard] is a GUI that receives MIDI notes and also
 generates them from mouse clicking. Right click it for properties!
 , f 64;
-#X text 224 452 - set key width;
-#X text 124 452 width <float>;
-#X text 117 469 height <float>;
-#X text 224 469 - set keybioard width;
-#X text 138 487 oct <float>;
-#X text 224 487 - transpose octaves up or down;
-#X text 131 505 8ves <float>;
-#X text 224 505 - set number of octaves;
-#X text 131 524 lowc <float>;
-#X text 224 524 - set C# of lowest C;
+#X text 224 448 - set key width;
+#X text 124 448 width <float>;
+#X text 117 465 height <float>;
+#X text 224 465 - set keybioard width;
+#X text 138 483 oct <float>;
+#X text 224 483 - transpose octaves up or down;
+#X text 131 501 8ves <float>;
+#X text 224 501 - set number of octaves;
+#X text 131 520 lowc <float>;
+#X text 224 520 - set C# of lowest C;
+#N canvas 672 55 486 581 example 0;
+#X obj 69 135 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 69 367 poly 4 1;
+#X obj 69 395 pack f f f;
+#X obj 69 423 route 1 2 3 4;
+#X obj 257 433 out~;
+#X obj 69 234 makenote 100 1500;
+#X obj 69 163 metro 800;
+#X obj 69 198 expr random(36 \, 72);
+#X obj 270 389 catch~ \$0-voice;
+#X obj 69 264 keyboard 16 80 3 2 0;
+#N canvas 1014 119 477 340 voice 0;
+#X obj 125 33 inlet;
+#X obj 213 99 / 127;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 125 186 *~;
+#X obj 128 247 *~;
+#X obj 398 223 switch~;
+#X obj 125 95 mtof;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
+-1 0 1;
+#X obj 38 185 else/sine~;
+#X obj 125 136 else/sine~;
+#X obj 125 65 unpack float float;
+#X obj 213 136 else/adsr~ 500 200 0.5 1000;
+#X obj 262 179 else/sig2float~;
+#X obj 128 278 throw~ \$0-voice;
+#X obj 39 144 * 1.497;
+#X connect 0 0 10 0;
+#X connect 1 0 11 0;
+#X connect 2 0 5 0;
+#X connect 3 0 8 2;
+#X connect 4 0 13 0;
+#X connect 6 0 9 0;
+#X connect 6 0 14 0;
+#X connect 8 0 4 0;
+#X connect 9 0 3 0;
+#X connect 10 0 6 0;
+#X connect 10 1 1 0;
+#X connect 11 0 3 1;
+#X connect 11 0 4 1;
+#X connect 11 0 12 0;
+#X connect 11 1 2 0;
+#X connect 12 0 7 0;
+#X connect 14 0 8 0;
+#X restore 69 526 pd voice;
+#N canvas 1014 119 477 340 voice 0;
+#X obj 125 33 inlet;
+#X obj 213 99 / 127;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 125 186 *~;
+#X obj 128 247 *~;
+#X obj 398 223 switch~;
+#X obj 125 95 mtof;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
+-1 0 1;
+#X obj 38 185 else/sine~;
+#X obj 125 136 else/sine~;
+#X obj 125 65 unpack float float;
+#X obj 213 136 else/adsr~ 500 200 0.5 1000;
+#X obj 262 179 else/sig2float~;
+#X obj 128 278 throw~ \$0-voice;
+#X obj 39 144 * 1.497;
+#X connect 0 0 10 0;
+#X connect 1 0 11 0;
+#X connect 2 0 5 0;
+#X connect 3 0 8 2;
+#X connect 4 0 13 0;
+#X connect 6 0 9 0;
+#X connect 6 0 14 0;
+#X connect 8 0 4 0;
+#X connect 9 0 3 0;
+#X connect 10 0 6 0;
+#X connect 10 1 1 0;
+#X connect 11 0 3 1;
+#X connect 11 0 4 1;
+#X connect 11 0 12 0;
+#X connect 11 1 2 0;
+#X connect 12 0 7 0;
+#X connect 14 0 8 0;
+#X restore 91 502 pd voice;
+#N canvas 1014 119 477 340 voice 0;
+#X obj 125 33 inlet;
+#X obj 213 99 / 127;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 125 186 *~;
+#X obj 128 247 *~;
+#X obj 398 223 switch~;
+#X obj 125 95 mtof;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
+-1 0 1;
+#X obj 38 185 else/sine~;
+#X obj 125 136 else/sine~;
+#X obj 125 65 unpack float float;
+#X obj 213 136 else/adsr~ 500 200 0.5 1000;
+#X obj 262 179 else/sig2float~;
+#X obj 128 278 throw~ \$0-voice;
+#X obj 39 144 * 1.497;
+#X connect 0 0 10 0;
+#X connect 1 0 11 0;
+#X connect 2 0 5 0;
+#X connect 3 0 8 2;
+#X connect 4 0 13 0;
+#X connect 6 0 9 0;
+#X connect 6 0 14 0;
+#X connect 8 0 4 0;
+#X connect 9 0 3 0;
+#X connect 10 0 6 0;
+#X connect 10 1 1 0;
+#X connect 11 0 3 1;
+#X connect 11 0 4 1;
+#X connect 11 0 12 0;
+#X connect 11 1 2 0;
+#X connect 12 0 7 0;
+#X connect 14 0 8 0;
+#X restore 113 476 pd voice;
+#N canvas 1014 119 477 340 voice 0;
+#X obj 125 33 inlet;
+#X obj 213 99 / 127;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 125 186 *~;
+#X obj 128 247 *~;
+#X obj 398 223 switch~;
+#X obj 125 95 mtof;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
+-1 0 1;
+#X obj 38 185 else/sine~;
+#X obj 125 136 else/sine~;
+#X obj 125 65 unpack float float;
+#X obj 213 136 else/adsr~ 500 200 0.5 1000;
+#X obj 262 179 else/sig2float~;
+#X obj 128 278 throw~ \$0-voice;
+#X obj 39 144 * 1.497;
+#X connect 0 0 10 0;
+#X connect 1 0 11 0;
+#X connect 2 0 5 0;
+#X connect 3 0 8 2;
+#X connect 4 0 13 0;
+#X connect 6 0 9 0;
+#X connect 6 0 14 0;
+#X connect 8 0 4 0;
+#X connect 9 0 3 0;
+#X connect 10 0 6 0;
+#X connect 10 1 1 0;
+#X connect 11 0 3 1;
+#X connect 11 0 4 1;
+#X connect 11 0 12 0;
+#X connect 11 1 2 0;
+#X connect 12 0 7 0;
+#X connect 14 0 8 0;
+#X restore 135 452 pd voice;
+#X text 39 29 [keyboard] displaying randomly generated notes and driving
+a [poly] with 4 voices. Also see that each voice subpatch has [adsr~]'s
+status outlet to control the DSP status for that subpatch - open and
+check it. You should also try pd's [clone] object for managing polyphonic
+synths., f 58;
+#X obj 360 522 clone;
+#X text 284 523 see also:;
+#X connect 0 0 6 0;
+#X connect 1 0 2 0;
+#X connect 1 1 2 1;
+#X connect 1 2 2 2;
+#X connect 2 0 3 0;
+#X connect 3 0 10 0;
+#X connect 3 1 11 0;
+#X connect 3 2 12 0;
+#X connect 3 3 13 0;
+#X connect 5 0 9 0;
+#X connect 5 1 9 1;
+#X connect 6 0 7 0;
+#X connect 7 0 5 0;
+#X connect 8 0 4 0;
+#X connect 8 0 4 1;
+#X connect 9 0 1 0;
+#X restore 442 361 pd example;
 #X connect 9 0 11 0;
 #X connect 9 1 10 0;
 #X connect 14 0 16 0;

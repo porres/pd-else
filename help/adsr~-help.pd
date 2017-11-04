@@ -1,4 +1,4 @@
-#N canvas 975 65 563 690 10;
+#N canvas 614 95 563 690 10;
 #X obj 5 404 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 522 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -65,24 +65,186 @@
 #X obj 290 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 230 185 attack;
-#N canvas 1004 208 521 510 example 0;
-#X obj 261 158 else/display~ 7;
-#X obj 106 161 else/display~ 7;
-#X text 321 161 <= gate value;
-#X obj 106 207 else/sawtooth~;
-#X obj 200 280 *~;
-#X obj 157 362 else/out~;
-#X obj 261 287 else/display~ 7;
-#X obj 200 320 else/lowpass~ 0 20;
-#X obj 261 259 else/rescale~ 100 1500;
-#X text 323 290 <= cutoff;
-#X text 168 165 <= Hz;
-#X obj 261 89 else/randpulse~ 0.5;
-#X obj 106 135 else/randf~ 50 150;
-#X obj 261 201 else/adsr~ 100 300 0.7 100;
-#X text 53 28 [adsr~] accepts any gate value \, positive or negative
+#N canvas 488 231 1011 578 example 0;
+#X obj 753 202 else/display~ 7;
+#X obj 598 205 else/display~ 7;
+#X text 813 205 <= gate value;
+#X obj 598 251 else/sawtooth~;
+#X obj 692 324 *~;
+#X obj 649 406 else/out~;
+#X obj 753 331 else/display~ 7;
+#X obj 692 364 else/lowpass~ 0 20;
+#X obj 753 303 else/rescale~ 100 1500;
+#X text 815 334 <= cutoff;
+#X text 660 209 <= Hz;
+#X obj 753 133 else/randpulse~ 0.5;
+#X obj 598 179 else/randf~ 50 150;
+#X obj 753 245 else/adsr~ 100 300 0.7 100;
+#X text 560 53 [adsr~] accepts any gate value \, positive or negative
 and above 1 or below -1 \, so you can use it to control anything besides
 amplitude.;
+#X obj 89 111 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 89 343 poly 4 1;
+#X obj 89 371 pack f f f;
+#X obj 89 399 route 1 2 3 4;
+#X obj 271 410 out~;
+#X obj 89 210 makenote 100 1500;
+#X obj 89 139 metro 800;
+#X obj 89 174 expr random(36 \, 72);
+#X obj 284 366 catch~ \$0-voice;
+#X obj 89 240 keyboard 16 80 3 2 0;
+#N canvas 1014 119 477 340 voice 0;
+#X obj 125 33 inlet;
+#X obj 213 99 / 127;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 125 186 *~;
+#X obj 128 247 *~;
+#X obj 398 223 switch~;
+#X obj 125 95 mtof;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
+-1 0 1;
+#X obj 38 185 else/sine~;
+#X obj 125 136 else/sine~;
+#X obj 125 65 unpack float float;
+#X obj 213 136 else/adsr~ 500 200 0.5 1000;
+#X obj 262 179 else/sig2float~;
+#X obj 128 278 throw~ \$0-voice;
+#X obj 39 144 * 1.497;
+#X connect 0 0 10 0;
+#X connect 1 0 11 0;
+#X connect 2 0 5 0;
+#X connect 3 0 8 2;
+#X connect 4 0 13 0;
+#X connect 6 0 9 0;
+#X connect 6 0 14 0;
+#X connect 8 0 4 0;
+#X connect 9 0 3 0;
+#X connect 10 0 6 0;
+#X connect 10 1 1 0;
+#X connect 11 0 3 1;
+#X connect 11 0 4 1;
+#X connect 11 0 12 0;
+#X connect 11 1 2 0;
+#X connect 12 0 7 0;
+#X connect 14 0 8 0;
+#X restore 89 502 pd voice;
+#N canvas 1014 119 477 340 voice 0;
+#X obj 125 33 inlet;
+#X obj 213 99 / 127;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 125 186 *~;
+#X obj 128 247 *~;
+#X obj 398 223 switch~;
+#X obj 125 95 mtof;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
+-1 0 1;
+#X obj 38 185 else/sine~;
+#X obj 125 136 else/sine~;
+#X obj 125 65 unpack float float;
+#X obj 213 136 else/adsr~ 500 200 0.5 1000;
+#X obj 262 179 else/sig2float~;
+#X obj 128 278 throw~ \$0-voice;
+#X obj 39 144 * 1.497;
+#X connect 0 0 10 0;
+#X connect 1 0 11 0;
+#X connect 2 0 5 0;
+#X connect 3 0 8 2;
+#X connect 4 0 13 0;
+#X connect 6 0 9 0;
+#X connect 6 0 14 0;
+#X connect 8 0 4 0;
+#X connect 9 0 3 0;
+#X connect 10 0 6 0;
+#X connect 10 1 1 0;
+#X connect 11 0 3 1;
+#X connect 11 0 4 1;
+#X connect 11 0 12 0;
+#X connect 11 1 2 0;
+#X connect 12 0 7 0;
+#X connect 14 0 8 0;
+#X restore 111 478 pd voice;
+#N canvas 1014 119 477 340 voice 0;
+#X obj 125 33 inlet;
+#X obj 213 99 / 127;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 125 186 *~;
+#X obj 128 247 *~;
+#X obj 398 223 switch~;
+#X obj 125 95 mtof;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
+-1 0 1;
+#X obj 38 185 else/sine~;
+#X obj 125 136 else/sine~;
+#X obj 125 65 unpack float float;
+#X obj 213 136 else/adsr~ 500 200 0.5 1000;
+#X obj 262 179 else/sig2float~;
+#X obj 128 278 throw~ \$0-voice;
+#X obj 39 144 * 1.497;
+#X connect 0 0 10 0;
+#X connect 1 0 11 0;
+#X connect 2 0 5 0;
+#X connect 3 0 8 2;
+#X connect 4 0 13 0;
+#X connect 6 0 9 0;
+#X connect 6 0 14 0;
+#X connect 8 0 4 0;
+#X connect 9 0 3 0;
+#X connect 10 0 6 0;
+#X connect 10 1 1 0;
+#X connect 11 0 3 1;
+#X connect 11 0 4 1;
+#X connect 11 0 12 0;
+#X connect 11 1 2 0;
+#X connect 12 0 7 0;
+#X connect 14 0 8 0;
+#X restore 133 452 pd voice;
+#N canvas 1014 119 477 340 voice 0;
+#X obj 125 33 inlet;
+#X obj 213 99 / 127;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 125 186 *~;
+#X obj 128 247 *~;
+#X obj 398 223 switch~;
+#X obj 125 95 mtof;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
+-1 0 1;
+#X obj 38 185 else/sine~;
+#X obj 125 136 else/sine~;
+#X obj 125 65 unpack float float;
+#X obj 213 136 else/adsr~ 500 200 0.5 1000;
+#X obj 262 179 else/sig2float~;
+#X obj 128 278 throw~ \$0-voice;
+#X obj 39 144 * 1.497;
+#X connect 0 0 10 0;
+#X connect 1 0 11 0;
+#X connect 2 0 5 0;
+#X connect 3 0 8 2;
+#X connect 4 0 13 0;
+#X connect 6 0 9 0;
+#X connect 6 0 14 0;
+#X connect 8 0 4 0;
+#X connect 9 0 3 0;
+#X connect 10 0 6 0;
+#X connect 10 1 1 0;
+#X connect 11 0 3 1;
+#X connect 11 0 4 1;
+#X connect 11 0 12 0;
+#X connect 11 1 2 0;
+#X connect 12 0 7 0;
+#X connect 14 0 8 0;
+#X restore 155 428 pd voice;
+#X text 48 21 Here we have [keyboard] displaying randomly generated
+notes and driving a [poly] with 4 voices. Also see that each voice
+subpatch has [adsr~]'s status outlet to control the DSP status for
+that subpatch - open and check it. You should also try pd's [clone]
+object for managing polyphonic synths.;
+#X obj 332 500 clone;
+#X text 256 501 see also:;
 #X connect 0 0 13 0;
 #X connect 1 0 3 0;
 #X connect 3 0 4 0;
@@ -96,7 +258,23 @@ amplitude.;
 #X connect 12 0 1 0;
 #X connect 13 0 4 1;
 #X connect 13 0 8 0;
-#X restore 466 310 pd example;
+#X connect 15 0 21 0;
+#X connect 16 0 17 0;
+#X connect 16 1 17 1;
+#X connect 16 2 17 2;
+#X connect 17 0 18 0;
+#X connect 18 0 25 0;
+#X connect 18 1 26 0;
+#X connect 18 2 27 0;
+#X connect 18 3 28 0;
+#X connect 20 0 24 0;
+#X connect 20 1 24 1;
+#X connect 21 0 22 0;
+#X connect 22 0 20 0;
+#X connect 23 0 19 0;
+#X connect 23 0 19 1;
+#X connect 24 0 16 0;
+#X restore 468 373 pd example;
 #X obj 350 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 411 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -142,7 +320,7 @@ so you can trigger the envelope.;
 #X connect 6 0 5 0;
 #X connect 7 0 3 0;
 #X connect 10 0 5 1;
-#X restore 445 335 pd triggered \; by impulses;
+#X restore 446 336 pd triggered \; by impulses;
 #X text 68 87 [adsr~] is a linear attack/decay/sustain/release gated
 envelope. At a gate on value (transition from 0 to any value) \, the
 envelope starts its attack ramp. After that \, a decay ramp goes to
@@ -155,7 +333,7 @@ the specified release time in ms.;
 #X obj 95 553 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 179 553 float;
-#N canvas 1086 243 525 470 status 0;
+#N canvas 70 217 601 559 status 0;
 #X obj 382 340 switch~;
 #X obj 382 272 tgl 50 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -173,7 +351,7 @@ processing of a subopatch or abstraction with [switch~].;
 is possible because the float input of [adsr~] will always turn the
 status on \, so you can use it to start the DSP. See below., f 62
 ;
-#X obj 46 339 else/setdsp~;
+#X obj 315 446 else/setdsp~;
 #X msg 196 189 0.25;
 #X msg 215 214 0;
 #X text 235 190 gate on;
@@ -189,7 +367,7 @@ status on \, so you can use it to start the DSP. See below., f 62
 #X connect 14 0 2 1;
 #X connect 14 0 5 0;
 #X connect 14 1 1 0;
-#X restore 473 374 pd status;
+#X restore 474 310 pd status;
 #X text 226 553 - envelope status (on: 1 / off: 0);
 #X obj 169 231 else/adsr~ 1000 500 0.5 1000, f 35;
 #X connect 12 0 11 0;
