@@ -24,9 +24,11 @@ The project is still in a beta phase, where drastic changes may occur and backwa
 
 EL Locus Solus offers a computer music tutorial with examples in Pure Data for its courses. These are in portuguese as of yet, with plans for english translation and formatting into a book. There are over 350 examples for now and they were designed to work with Pd Extended 0.42-5, making extensive use of the existing objects available in Pd Extended's libraries.
 
-Even though extended has quite a large set of external libraries and objects, at some point there was the need of something "else". Thus, EL Locus Solus is now not only offering computer music examples, but also the "ELSE" library, with extra objects for its didactic material.
+Even though extended has quite a large set of external libraries and objects, at some point there was the need of something "else". Thus, this library emerged and EL Locus Solus is now not only offering computer music examples, but also the "ELSE" library, with extra objects for its didactic material and courses.
 
-ELSE steals some ideas and stuff from SuperCollider, such as most of the chaotic generators UGENs. It also grew to encompass functionalities from objects found in other Pd libraries, but with a different design.  
+ELSE also started by stealing some ideas and stuff from SuperCollider, such as most of the chaotic generators UGENs. But what started as a new library to include missing functionalities in the Pd Ecossystem (Pd Extended mostly) now also grew to encompass functionalities found in other Pd objects/libraries in Pd Extended, but with a different design and more functionalities, in order to remove many dependencies of the didactic material from these old and abandoned libraries. 
+
+Hence, ELSE is now a place to put any other object I find necessary for my didactic material and work with Pd that is not already in cyclone, another library repository found in Porres' github (https://github.com/porres/pd-cyclone).  
 
 --------------------------------------------------------------------------
 
