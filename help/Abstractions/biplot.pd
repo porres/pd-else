@@ -206,7 +206,7 @@
 #X connect 3 1 2 1;
 #X connect 6 0 1 0;
 #X connect 7 0 3 0;
-#X restore 28 168 pd plot;
+#X restore 29 198 pd plot;
 #X obj 101 103 cnv 15 898 286 empty empty empty 18 9 1 15 -262144 -1
 0;
 #X obj 153 109 cnv 15 805 235 empty empty empty 20 12 0 14 -1 -66577
@@ -241,10 +241,10 @@
 #X text 520 344 0.5;
 #X text 418 344 0.2;
 #X text 338 344 0.1;
-#X text 962 215 -24;
-#X text 969 163 0;
+#X text 960 216 -24;
+#X text 967 164 0;
 #X obj 114 176 cnv 15 15 15 empty empty dB 0 9 1 17 -262144 -1 0;
-#X text 963 192 -12;
+#X text 961 193 -12;
 #X obj 157 114 cnv 15 798 27 empty empty empty 20 12 0 14 -241340 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -281,16 +281,18 @@
 #X obj 106 162 cnv 15 15 15 empty empty Amp 0 0 1 17 -262144 -1 0;
 #X obj 102 276 cnv 15 15 15 empty empty Phase 0 0 1 17 -262144 -1 0
 ;
-#X text 967 331 -pi;
-#X text 966 305 -pi/2;
-#X text 966 275 0;
-#X text 966 248 pi/2;
-#X text 967 226 pi;
+#X text 958 332 -pi;
+#X text 957 306 -pi/2;
+#X text 960 276 0;
+#X text 960 249 pi/2;
+#X text 961 227 pi;
 #X obj 109 296 cnv 15 15 15 empty empty rad 0 0 1 17 -262144 -1 0;
-#X text 964 133 12;
-#X text 966 108 24;
-#X obj 28 138 inlet;
+#X text 962 134 12;
+#X text 964 109 24;
+#X obj 18 156 inlet;
 #X obj 108 101 cnv 8 888 8 empty empty empty 18 9 1 15 -262144 -1 0
 ;
+#X obj 18 235 outlet;
 #X connect 47 0 0 0;
+#X connect 47 0 49 0;
 #X coords 0 -1 1 1 900 290 1 100 100;
