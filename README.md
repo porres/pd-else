@@ -56,7 +56,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (156 objects):
+##Current Object list (158 objects):
 
 **MISCELLANEA: [6]**
 - [args]
@@ -85,7 +85,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [rescale~]
 - [sig2float~]
 
-**MATH/LOGIC: [14]**
+**MATH/LOGIC: [16]**
 - [accum~]
 - [ceil]
 - [ceil~]
@@ -95,7 +95,9 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [fold~]
 - [lastvalue]
 - [loop]
+- [randf]
 - [randf~]
+- [randi]
 - [randi~]
 - [sin~]
 - [wrap2]
