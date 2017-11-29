@@ -22,7 +22,6 @@ static void *args_new(void){
 }
 
 void args_setup(void){
-  args_class = class_new(gensym("args"), (t_newmethod)args_new, 0,
-    sizeof(t_args), 0, 0);
+  args_class = class_new(gensym("args"), (t_newmethod)args_new, 0, sizeof(t_args), 0, 0);
   class_addbang(args_class, args_bang);
 }

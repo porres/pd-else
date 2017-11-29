@@ -56,14 +56,15 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (155 objects):
+##Current Object list (156 objects):
 
-**MISCELLANEA: [5]**
+**MISCELLANEA: [6]**
+- [args]
+- [break] 
 - [changed]
 - [loadbanger] / [lb]
 - [order]
-- [break] 
-- [args]
+- [setmess]
 
 **CONVERSION: [17]**
 - [any2symbol]
