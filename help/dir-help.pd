@@ -1,0 +1,48 @@
+#N canvas 647 195 563 400 10;
+#X obj 25 41 cnv 4 4 4 empty empty Output 0 28 2 18 -233017 -1 0;
+#X obj 90 41 cnv 4 4 4 empty empty patch's 0 28 2 18 -233017 -1 0;
+#X obj 4 4 cnv 15 301 42 empty empty dir 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 4 4 graph;
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 306 4 pd;
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 6 267 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 299 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 335 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 6 363 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 218 342 (none);
+#X obj 143 140 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 143 197 else/display;
+#X obj 143 166 else/dir;
+#X text 80 95 [dir] outputs the directory this patch is located in
+when receiving a bang., f 54;
+#X text 130 310 symbol -;
+#X text 144 277 bang - output the directory this patch is in;
+#X text 194 310 the directory this patch is in, f 47;
+#X obj 143 234 print dir;
+#X obj 150 40 cnv 4 4 4 empty empty directory 0 28 2 18 -233017 -1
+0;
+#X connect 17 0 19 0;
+#X connect 18 0 24 0;
+#X connect 19 0 18 0;

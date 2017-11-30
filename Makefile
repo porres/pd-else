@@ -22,6 +22,7 @@ args.class.sources := classes/args.c
 break.class.sources := classes/break.c
 cents2ratio.class.sources := classes/cents2ratio.c
 changed.class.sources := classes/changed.c
+dir.class.sources := classes/dir.c
 hz2rad.class.sources := classes/hz2rad.c
 lb.class.sources := classes/lb.c
 loadbanger.class.sources := classes/loadbanger.c
