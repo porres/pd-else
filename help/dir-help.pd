@@ -1,4 +1,4 @@
-#N canvas 964 51 562 601 10;
+#N canvas 344 44 561 651 10;
 #X obj 24 41 cnv 4 4 4 empty empty Acess 0 28 2 18 -233017 -1 0;
 #X obj 78 41 cnv 4 4 4 empty empty file 0 28 2 18 -233017 -1 0;
 #X obj 3 4 cnv 15 301 42 empty empty dir 20 20 2 37 -233017 -1 0;
@@ -24,17 +24,17 @@
 0;
 #X obj 5 375 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 485 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 525 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 542 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 594 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 5 572 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 624 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 217 551 (none);
+#X text 217 603 (none);
 #X obj 120 198 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 120 273 else/dir;
-#X text 142 496 symbol -;
+#X text 142 536 symbol -;
 #X obj 119 40 cnv 4 4 4 empty empty directory 0 28 2 18 -233017 -1
 0;
 #X msg 135 222 dump;
@@ -46,20 +46,17 @@ the patch is located in by default).;
 #X text 161 421 dir -;
 #X text 203 421 outputs the current directory in the right outlet;
 #X text 154 441 dump -;
-#X text 203 441 dump files from directory;
 #X msg 108 174 dir \, dump;
 #X text 140 197 same as "dir \, dump";
-#X obj 72 383 cnv 17 3 96 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 72 383 cnv 17 3 134 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 72 494 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 72 534 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 154 462 bang -;
 #X text 203 462 output directory and files;
-#X text 142 519 symbol -;
-#X obj 72 517 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 72 557 cnv 17 3 33 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 206 496 the files from the directory, f 47;
-#X obj 173 337 print dir;
+#X text 206 536 the files from the directory, f 47;
 #X obj 84 338 print files;
 #X text 147 403 reset -;
 #X text 202 403 resets to patch's directory;
@@ -68,13 +65,40 @@ the patch is located in by default).;
 #X text 181 247 sends directory path (right outlet);
 #X msg 83 148 open ..;
 #X msg 31 148 reset;
-#X text 206 519 the current directory, f 47;
+#X text 156 559 atom -;
+#X obj 173 337 print dir;
+#N canvas 582 226 558 380 example 0;
+#X obj 179 223 else/dir;
+#X msg 179 190 seek \$1;
+#X obj 179 158 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 206 256;
+#X obj 232 252 else/display;
+#X obj 179 289 else/display;
+#X msg 129 189 n;
+#X text 71 31 The 'n' message outputs the number of found files in
+the opened directory. The seek message can search for a file acording
+to a number. If the seek number is greater than the number of files
+\, then the search is wrapped according to the number of files. The
+seek number is indexed from 1 and cannot be <= 0!;
+#X connect 0 0 4 0;
+#X connect 0 1 3 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 5 0 0 0;
+#X restore 435 166 pd example;
+#X text 175 482 n -;
+#X text 203 482 output number of found files in the right outlet;
+#X text 203 441 dump files from directory in the left outlet;
+#X text 98 502 seek <float> -;
+#X text 203 502 seek for a file corresponding to that number;
+#X text 206 559 a symbol with the current directory or a float with
+the number of found files, f 47;
 #X connect 17 0 18 0;
-#X connect 18 0 40 0;
-#X connect 18 1 43 0;
+#X connect 18 0 37 0;
+#X connect 18 1 40 0;
 #X connect 21 0 18 0;
 #X connect 23 0 18 0;
-#X connect 30 0 18 0;
-#X connect 43 0 39 0;
-#X connect 46 0 18 0;
-#X connect 47 0 18 0;
+#X connect 29 0 18 0;
+#X connect 40 0 46 0;
+#X connect 43 0 18 0;
+#X connect 44 0 18 0;
