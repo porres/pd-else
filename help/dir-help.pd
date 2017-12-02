@@ -1,48 +1,80 @@
-#N canvas 647 195 563 400 10;
-#X obj 25 41 cnv 4 4 4 empty empty Output 0 28 2 18 -233017 -1 0;
-#X obj 90 41 cnv 4 4 4 empty empty patch's 0 28 2 18 -233017 -1 0;
-#X obj 4 4 cnv 15 301 42 empty empty dir 20 20 2 37 -233017 -1 0;
+#N canvas 964 51 562 601 10;
+#X obj 24 41 cnv 4 4 4 empty empty Acess 0 28 2 18 -233017 -1 0;
+#X obj 78 41 cnv 4 4 4 empty empty file 0 28 2 18 -233017 -1 0;
+#X obj 3 4 cnv 15 301 42 empty empty dir 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 4 4 graph;
-#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X restore 3 4 graph;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 306 4 pd;
-#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 6 267 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 5 375 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 299 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 485 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 335 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 542 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 363 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 572 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 218 342 (none);
-#X obj 143 140 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 217 551 (none);
+#X obj 120 198 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 143 197 else/display;
-#X obj 143 166 else/dir;
-#X text 80 95 [dir] outputs the directory this patch is located in
-when receiving a bang., f 54;
-#X text 130 310 symbol -;
-#X text 144 277 bang - output the directory this patch is in;
-#X text 194 310 the directory this patch is in, f 47;
-#X obj 143 234 print dir;
-#X obj 150 40 cnv 4 4 4 empty empty directory 0 28 2 18 -233017 -1
+#X obj 120 273 else/dir;
+#X text 142 496 symbol -;
+#X obj 119 40 cnv 4 4 4 empty empty directory 0 28 2 18 -233017 -1
 0;
-#X connect 17 0 19 0;
-#X connect 18 0 24 0;
-#X connect 19 0 18 0;
+#X msg 135 222 dump;
+#X text 79 95 [dir] access files from a given directory (the directory
+the patch is located in by default).;
+#X msg 152 247 dir;
+#X text 91 384 open <symbol> -;
+#X text 203 384 opens a directory;
+#X text 161 421 dir -;
+#X text 203 421 outputs the current directory in the right outlet;
+#X text 154 441 dump -;
+#X text 203 441 dump files from directory;
+#X msg 108 174 dir \, dump;
+#X text 140 197 same as "dir \, dump";
+#X obj 72 383 cnv 17 3 96 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 72 494 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 154 462 bang -;
+#X text 203 462 output directory and files;
+#X text 142 519 symbol -;
+#X obj 72 517 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 206 496 the files from the directory, f 47;
+#X obj 173 337 print dir;
+#X obj 84 338 print files;
+#X text 147 403 reset -;
+#X text 202 403 resets to patch's directory;
+#X obj 173 299 else/display 50;
+#X text 175 221 dump all files from the directory (left outlet);
+#X text 181 247 sends directory path (right outlet);
+#X msg 83 148 open ..;
+#X msg 31 148 reset;
+#X text 206 519 the current directory, f 47;
+#X connect 17 0 18 0;
+#X connect 18 0 40 0;
+#X connect 18 1 43 0;
+#X connect 21 0 18 0;
+#X connect 23 0 18 0;
+#X connect 30 0 18 0;
+#X connect 43 0 39 0;
+#X connect 46 0 18 0;
+#X connect 47 0 18 0;
