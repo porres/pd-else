@@ -56,9 +56,9 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (159 objects):
+##Current Object list (160 objects):
 
-**MISCELLANEA: [7]**
+**MISCELLANEA: [8]**
 - [args]
 - [break] 
 - [changed]
@@ -66,6 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [loadbanger] / [lb]
 - [order]
 - [setmess]
+- [routetype]
 
 **CONVERSION: [17]**
 - [any2symbol]

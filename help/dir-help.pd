@@ -1,4 +1,4 @@
-#N canvas 344 44 561 651 10;
+#N canvas 257 29 561 657 10;
 #X obj 24 41 cnv 4 4 4 empty empty Acess 0 28 2 18 -233017 -1 0;
 #X obj 78 41 cnv 4 4 4 empty empty file 0 28 2 18 -233017 -1 0;
 #X obj 3 4 cnv 15 301 42 empty empty dir 20 20 2 37 -233017 -1 0;
@@ -26,52 +26,52 @@
 ;
 #X obj 5 525 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 594 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 590 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 5 624 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 620 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 217 603 (none);
-#X obj 120 198 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 247 599 (none);
+#X obj 129 198 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 120 273 else/dir;
-#X text 142 536 symbol -;
+#X obj 129 273 else/dir;
+#X text 171 536 symbol -;
 #X obj 119 40 cnv 4 4 4 empty empty directory 0 28 2 18 -233017 -1
 0;
-#X msg 135 222 dump;
+#X msg 144 222 dump;
 #X text 79 95 [dir] access files from a given directory (the directory
 the patch is located in by default).;
-#X msg 152 247 dir;
-#X text 91 384 open <symbol> -;
-#X text 203 384 opens a directory;
-#X text 161 421 dir -;
-#X text 203 421 outputs the current directory in the right outlet;
-#X text 154 441 dump -;
-#X msg 108 174 dir \, dump;
-#X text 140 197 same as "dir \, dump";
-#X obj 72 383 cnv 17 3 134 empty empty 0 5 9 0 16 -228856 -162280 0
+#X msg 161 247 dir;
+#X text 129 384 open <symbol> -;
+#X text 233 384 opens a directory;
+#X text 189 421 dir -;
+#X text 233 421 outputs the current directory in the right outlet;
+#X text 183 441 dump -;
+#X msg 115 174 dir \, dump;
+#X text 149 197 same as "dir \, dump";
+#X obj 92 383 cnv 17 3 134 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 72 534 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 92 534 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 154 462 bang -;
-#X text 203 462 output directory and files;
-#X obj 72 557 cnv 17 3 33 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 183 462 bang -;
+#X text 233 462 output directory and files;
+#X obj 92 557 cnv 17 3 27 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 206 536 the files from the directory, f 47;
-#X obj 84 338 print files;
-#X text 147 403 reset -;
-#X text 202 403 resets to patch's directory;
-#X obj 173 299 else/display 50;
-#X text 175 221 dump all files from the directory (left outlet);
-#X text 181 247 sends directory path (right outlet);
-#X msg 83 148 open ..;
-#X msg 31 148 reset;
-#X text 156 559 atom -;
-#X obj 173 337 print dir;
+#X text 233 536 the files from the directory, f 47;
+#X obj 85 338 print files;
+#X text 177 403 reset -;
+#X text 232 403 resets to patch's directory;
+#X obj 174 299 else/display 50;
+#X text 181 221 dump all files from the directory (left outlet);
+#X text 190 247 sends directory path (right outlet);
+#X msg 92 148 open ..;
+#X msg 40 148 reset;
+#X text 183 559 atom -;
+#X obj 174 337 print dir;
 #N canvas 582 226 558 380 example 0;
 #X obj 179 223 else/dir;
 #X msg 179 190 seek \$1;
 #X obj 179 158 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 206 256;
+-228856 -1 -1 0 256;
 #X obj 232 252 else/display;
 #X obj 179 289 else/display;
 #X msg 129 189 n;
@@ -86,12 +86,12 @@ seek number is indexed from 1 and cannot be <= 0!;
 #X connect 2 0 1 0;
 #X connect 5 0 0 0;
 #X restore 435 166 pd example;
-#X text 175 482 n -;
-#X text 203 482 output number of found files in the right outlet;
-#X text 203 441 dump files from directory in the left outlet;
-#X text 98 502 seek <float> -;
-#X text 203 502 seek for a file corresponding to that number;
-#X text 206 559 a symbol with the current directory or a float with
+#X text 201 482 n -;
+#X text 233 482 output number of found files in the right outlet;
+#X text 233 441 dump files from directory in the left outlet;
+#X text 135 502 seek <float> -;
+#X text 233 502 seek for a file corresponding to that number;
+#X text 233 559 a symbol with the current directory or a float with
 the number of found files, f 47;
 #X connect 17 0 18 0;
 #X connect 18 0 37 0;
