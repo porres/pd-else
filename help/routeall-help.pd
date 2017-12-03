@@ -1,4 +1,4 @@
-#N canvas 214 107 563 558 10;
+#N canvas 214 107 562 465 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -24,32 +24,27 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 7 449 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 7 426 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 7 322 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 7 292 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 356 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 7 326 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 413 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 390 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 123 365 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 108 335 cnv 17 3 24 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X obj 123 330 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 108 300 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 177 330 anything - any message to be routed by type;
-#X obj 123 388 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+#X obj 108 365 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
 0;
 #X msg 188 174 1 2 3;
 #X obj 75 41 cnv 4 4 4 empty empty all 0 28 2 18 -233017 -1 0;
-#X text 200 366 bang -;
-#X text 247 366 bang messages;
-#X text 194 389 float -;
 #X obj 252 256 else/display;
-#X text 247 389 float messages;
 #X obj 105 41 cnv 4 4 4 empty empty the 0 28 2 18 -233017 -1 0;
 #X text 65 89 [routeall] routes messages and - unlike [route] - keeps
 its first element!, f 64;
-#X text 141 425 1) anything -;
+#X text 146 399 1) anything -;
 #X obj 176 233 else/routeall a 1, f 26;
 #X obj 176 257 else/display;
 #X obj 329 255 else/display;
@@ -59,13 +54,21 @@ its first element!, f 64;
 #X floatatom 241 200 5 0 0 0 - - -, f 5;
 #X msg 176 142 list a b;
 #X msg 291 202 unmatched;
-#X connect 20 0 30 0;
-#X connect 30 0 31 0;
-#X connect 30 1 25 0;
-#X connect 30 2 32 0;
-#X connect 33 0 30 0;
-#X connect 34 0 30 0;
-#X connect 35 0 30 0;
-#X connect 36 0 30 0;
-#X connect 37 0 30 0;
-#X connect 38 0 30 0;
+#X text 163 365 anything -;
+#X text 234 365 any unmatched message;
+#X text 162 334 anything -;
+#X text 233 334 if an input message matches an argument \, the corresponding
+outlet sends that message., f 44;
+#X text 161 300 anything -;
+#X text 232 300 any message to be routed completely;
+#X text 234 399 arguments to match the 1st element of a message;
+#X connect 19 0 25 0;
+#X connect 25 0 26 0;
+#X connect 25 1 21 0;
+#X connect 25 2 27 0;
+#X connect 28 0 25 0;
+#X connect 29 0 25 0;
+#X connect 30 0 25 0;
+#X connect 31 0 25 0;
+#X connect 32 0 25 0;
+#X connect 33 0 25 0;
