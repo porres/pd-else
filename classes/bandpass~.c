@@ -136,7 +136,7 @@ static void *bandpass_new(t_symbol *s, int argc, t_atom *argv)
     int argnum = 0;
     while(argc > 0)
     {
-        if(argv -> a_type == A_FLOAT)
+        if(argv->a_type == A_FLOAT)
         { //if current argument is a float
             t_float argval = atom_getfloatarg(0, argc, argv);
             switch(argnum)

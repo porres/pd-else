@@ -1,0 +1,71 @@
+#N canvas 214 107 563 558 10;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 41 cnv 4 4 4 empty empty Route 0 28 2 18 -233017 -1 0;
+#X obj 138 41 cnv 4 4 4 empty empty message 0 28 2 18 -233017 -1 0
+;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 4 graph;
+#X obj 3 4 cnv 15 301 42 empty empty routeall 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 4 graph;
+#X obj 7 449 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 7 322 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 356 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 413 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 123 365 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+;
+#X obj 123 330 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 177 330 anything - any message to be routed by type;
+#X obj 123 388 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+0;
+#X msg 188 174 1 2 3;
+#X obj 75 41 cnv 4 4 4 empty empty all 0 28 2 18 -233017 -1 0;
+#X text 200 366 bang -;
+#X text 247 366 bang messages;
+#X text 194 389 float -;
+#X obj 252 256 else/display;
+#X text 247 389 float messages;
+#X obj 105 41 cnv 4 4 4 empty empty the 0 28 2 18 -233017 -1 0;
+#X text 65 89 [routeall] routes messages and - unlike [route] - keeps
+its first element!, f 64;
+#X text 141 425 1) anything -;
+#X obj 176 233 else/routeall a 1, f 26;
+#X obj 176 257 else/display;
+#X obj 329 255 else/display;
+#X msg 97 161 symbol a;
+#X msg 145 184 a;
+#X msg 234 174 1;
+#X floatatom 241 200 5 0 0 0 - - -, f 5;
+#X msg 176 142 list a b;
+#X msg 291 202 unmatched;
+#X connect 20 0 30 0;
+#X connect 30 0 31 0;
+#X connect 30 1 25 0;
+#X connect 30 2 32 0;
+#X connect 33 0 30 0;
+#X connect 34 0 30 0;
+#X connect 35 0 30 0;
+#X connect 36 0 30 0;
+#X connect 37 0 30 0;
+#X connect 38 0 30 0;

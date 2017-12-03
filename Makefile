@@ -31,6 +31,7 @@ randi.class.sources := classes/randi.c
 rad2hz.class.sources := classes/rad2hz.c
 ratio2cents.class.sources := classes/ratio2cents.c
 rescale.class.sources := classes/rescale.c
+routeall.class.sources := classes/routeall.c
 routetype.class.sources := classes/routetype.c
 
 # signal:
