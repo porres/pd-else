@@ -42,6 +42,14 @@ static void routeall_symbol(t_routeall *x, t_symbol *s){
 static void routeall_list(t_routeall *x, t_symbol *s, int ac, t_atom *av){
     t_int n;
     t_symbol *arg;
+    if(ac == 0){
+        routeall_bang(x);
+        return;
+    }
+    if(ac == 1 && av[0].a_type == A_SYMBOL){
+        routeall_symbol(x, atom_getsymbol(av));
+        return;
+    }
     for(n = 0; n < x->x_ac; n++){
         if(x->x_av[n].a_type == A_SYMBOL){
             arg = x->x_av[n].a_w.w_symbol;

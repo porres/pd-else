@@ -1,4 +1,4 @@
-#N canvas 335 38 564 554 10;
+#N canvas 378 37 564 554 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -71,11 +71,11 @@ argument (from first to last). As soon as a match is found \, it sends
 the message to the corresponding output - this means that it stops
 looking for other matches. If no match is found \, the message is sent
 to the rightmost outlet., f 66;
-#N canvas 311 160 845 501 selectors 0;
+#N canvas 53 56 845 501 selectors 0;
 #X text 30 112 If you give the [routeall] object a selector as an argument
 \, it will be able to match and route accordingly.;
 #X obj 101 178 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 41 256;
+-228856 -1 -1 0 256;
 #X symbolatom 118 202 10 0 0 0 - - -, f 10;
 #X obj 212 252 else/display;
 #X obj 101 253 else/display;
