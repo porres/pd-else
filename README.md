@@ -56,7 +56,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (161 objects):
+##Current Object list (162 objects):
 
 **MISCELLANEA: [3]**
 - [args]
@@ -71,13 +71,14 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [routeall]
 - [routetype]
 
-**CONVERSION: [17]**
+**CONVERSION: [18]**
 - [any2symbol]
 - [cents2rato]
 - [cents2ratio~]
 - [db2lin]
 - [db2lin~]
 - [float2sig~]
+- [float2bits]
 - [hz2rad]
 - [hz2rad~]
 - [lin2db]

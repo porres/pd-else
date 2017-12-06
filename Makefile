@@ -25,6 +25,7 @@ changed.class.sources := classes/changed.c
 dir.class.sources := classes/dir.c
 hz2rad.class.sources := classes/hz2rad.c
 lb.class.sources := classes/lb.c
+float2bits.class.sources := classes/float2bits.c
 loadbanger.class.sources := classes/loadbanger.c
 randf.class.sources := classes/randf.c
 randi.class.sources := classes/randi.c
