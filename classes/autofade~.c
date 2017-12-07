@@ -56,7 +56,6 @@ t_float *autofade_table_hannsin=(t_float *)0L;
 t_float *autofade_table_hann=(t_float *)0L;
 
 
-
 typedef struct _autofade{
     t_object x_obj;
     t_float  x_in;

@@ -11,8 +11,8 @@
 ;
 #X obj 4 415 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 191 138 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 192 136 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 11400 1;
 #X text 116 281 float/signal;
 #X text 152 344 signal;
 #X obj 3 3 cnv 15 301 42 empty empty fader~ 20 20 2 37 -233017 -1 0
@@ -40,10 +40,6 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 188 162 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 188 239 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -148,12 +144,11 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X obj 188 212 else/sig2float~ 100;
-#X text 145 161 input;
-#X text 140 238 output;
+#X text 146 162 input;
+#X text 142 239 output;
 #X text 140 300 anything;
-#X obj 188 187 else/fader~ sqrt;
-#N canvas 695 105 587 269 curves 0;
+#X obj 189 209 else/fader~ sqrt;
+#N canvas 693 105 587 269 curves 0;
 #N canvas 135 30 735 535 contant-power(3db) 0;
 #X obj 30 287 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
 0;
@@ -259,7 +254,7 @@ root of the input., f 33;
 such functions. Here we have a mean between the "hann" and the "sin"
 function above \, and a mean between the "lin" and "sin" function below.
 , f 37;
-#X restore 172 202 pd compromise(4.5db);
+#X restore 172 201 pd compromise(4.5db);
 #N canvas 221 110 734 527 constant-voltage(6db) 0;
 #X obj 31 56 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
 0;
@@ -463,10 +458,10 @@ hannsin \, linsin> (default: quartic), f 47;
 #X text 215 300 fade types <quartic \, sin \, sqrt \, hann \, lin \,
 hannsin \, linsin>, f 47;
 #N canvas 552 191 622 511 crossfading 0;
-#X obj 381 249 else/fader~;
+#X obj 378 249 else/fader~;
 #X obj 122 278 else/fader~;
 #X obj 28 224 else/brown~;
-#X obj 104 317 *~;
+#X obj 107 317 *~;
 #X obj 250 110 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 247 134 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -474,16 +469,16 @@ hannsin \, linsin>, f 47;
 #X obj 247 157 else/float2sig~ 10;
 #X obj 363 341 *~;
 #X obj 297 291 osc~ 440;
-#X obj 345 385 +~;
-#X obj 332 430 else/out~;
+#X obj 348 385 +~;
+#X obj 335 430 else/out~;
 #X obj 247 241 expr~ 1 - $v1;
-#X msg 491 113 sin;
-#X msg 495 134 sqrt;
-#X msg 487 92 quartic;
-#X msg 499 154 hann;
-#X msg 502 174 lin;
-#X msg 505 195 hannsin;
-#X msg 508 215 linsin;
+#X msg 488 113 sin;
+#X msg 492 134 sqrt;
+#X msg 484 92 quartic;
+#X msg 496 154 hann;
+#X msg 499 174 lin;
+#X msg 502 195 hannsin;
+#X msg 505 215 linsin;
 #X msg 153 116 sin;
 #X msg 157 137 sqrt;
 #X msg 149 95 quartic;
@@ -521,7 +516,11 @@ curves with a crossfading slider., f 27;
 #X connect 24 0 1 0;
 #X connect 25 0 1 0;
 #X restore 439 231 pd crossfading;
-#X connect 6 0 21 0;
-#X connect 21 0 28 0;
-#X connect 24 0 22 0;
-#X connect 28 0 24 0;
+#X obj 189 186 else/float2sig~ 10;
+#X obj 189 235 else/display~;
+#X obj 189 162 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.636872 256;
+#X connect 6 0 37 0;
+#X connect 25 0 36 0;
+#X connect 35 0 25 0;
+#X connect 37 0 35 0;
