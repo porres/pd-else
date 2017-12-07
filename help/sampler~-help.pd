@@ -41,11 +41,10 @@
 ;
 #X obj 7 538 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 111 489 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 111 489 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
 #X obj 113 362 cnv 17 3 112 empty empty 0 5 9 0 16 -228856 -162280
 0;
-#X text 173 490 signal - the sample signal;
 #X text 180 378 start - same as bang, f 49;
 #X text 187 394 stop - stop playing the sample, f 48;
 #X text 124 430 open <symbol> -;
@@ -114,17 +113,19 @@ is 1 (mono). The maximum number is 64 channels.;
 #X obj 378 286 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 397 286 finished;
-#X obj 111 515 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 111 515 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+0;
+#X text 173 490 signal - the sample signal of the corresponding channel
 ;
-#X text 173 516 signal - a bang when finishing playing the sample;
-#X connect 0 0 44 0;
-#X connect 1 0 44 0;
-#X connect 2 0 44 0;
-#X connect 3 0 44 0;
-#X connect 4 0 44 0;
+#X text 185 516 bang - a bang when finishing playing the sample;
+#X connect 0 0 43 0;
+#X connect 1 0 43 0;
+#X connect 2 0 43 0;
+#X connect 3 0 43 0;
+#X connect 4 0 43 0;
 #X connect 5 0 4 0;
-#X connect 31 0 44 0;
-#X connect 37 0 44 0;
-#X connect 44 0 32 0;
-#X connect 44 0 32 1;
-#X connect 44 1 45 0;
+#X connect 30 0 43 0;
+#X connect 36 0 43 0;
+#X connect 43 0 31 0;
+#X connect 43 0 31 1;
+#X connect 43 1 44 0;
