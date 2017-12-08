@@ -1,4 +1,4 @@
-#N canvas 318 31 1040 458 10;
+#N canvas 240 31 1040 458 10;
 #N canvas 1078 387 278 264 plot 0;
 #N canvas 777 371 351 322 init 0;
 #X obj 90 24 loadbang;
@@ -295,6 +295,8 @@
 #X obj 18 235 outlet;
 #X obj 108 381 cnv 8 888 8 empty empty empty 18 9 1 15 -262144 -1 0
 ;
+#X text 173 45 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 175 26 Alexandre Torres Porres (2017);
 #X connect 47 0 0 0;
 #X connect 47 0 49 0;
 #X coords 0 -1 1 1 900 290 1 100 100;
