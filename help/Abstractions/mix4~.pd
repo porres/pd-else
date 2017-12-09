@@ -572,7 +572,7 @@
 0;
 #X obj 234 259 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
 0;
-#X obj 158 272 cnv 1 160 1 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 158 272 cnv 1 160 2 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X obj 195 105 vsl 43 150 0 1 0 0 \$0-slider2 \$0-set-slider2 empty
 24 9 0 14 -228856 -79060 -99865 0 1;
@@ -609,4 +609,4 @@
 #X connect 12 0 13 1;
 #X connect 13 0 1 0;
 #X connect 13 1 4 0;
-#X coords 0 0 1 1 176 174 2 150 100;
+#X coords 0 0 1 1 176 175 2 150 100;

@@ -38,7 +38,7 @@
 #X text 224 144 Part of ELSE \; https://github.com/porres/pd-else;
 #X obj 33 251 outlet~;
 #X obj 150 105 vsl 26 91 0 1 0 0 \$0-slider \$0-set-slider empty 24
-9 0 14 -228856 -1 -1 3200 1;
+9 0 14 -228856 -1 -1 0 1;
 #X text 226 105 [gain~]: Mono Gain;
 #X obj 150 252 outlet;
 #X obj 150 220 r \$0-slider;
@@ -163,7 +163,7 @@
 #X obj 37 252 *~;
 #X obj 91 21 inlet~;
 #X obj 91 252 *~;
-#X obj 91 297 outlet~;
+#X obj 91 297 outlet~, f 9;
 #X connect 0 0 4 0;
 #X connect 2 0 4 0;
 #X connect 3 0 4 0;
@@ -178,14 +178,14 @@
 #X connect 9 0 1 0;
 #X connect 10 0 11 0;
 #X connect 11 0 12 0;
-#X restore 33 182 pd gain~, f 9;
+#X restore 33 182 pd gain~;
 #X obj 85 38 inlet~;
 #X obj 167 101 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X obj 85 251 outlet~;
-#X obj 157 199 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 157 200 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
 0;
-#X obj 167 199 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 167 200 cnv 1 1 1 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X connect 0 0 13 0;
 #X connect 1 0 2 0;
@@ -193,4 +193,4 @@
 #X connect 13 0 5 0;
 #X connect 13 1 16 0;
 #X connect 14 0 13 1;
-#X coords 0 0 1 1 26 101 2 150 100;
+#X coords 0 0 1 1 26 102 2 150 100;

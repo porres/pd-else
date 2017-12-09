@@ -65,7 +65,7 @@
 #X connect 7 0 2 0;
 #X restore 344 334 pd fixed;
 #X obj 288 385 outlet;
-#X obj 101 121 cnv 1 6 1 empty empty empty 20 12 0 14 -1 -66577 0;
+#X obj 101 120 cnv 1 6 2 empty empty empty 20 12 0 14 -1 -66577 0;
 #X obj 302 163 r \$0-bang;
 #X obj 344 205 symbol;
 #N canvas 756 189 613 703 blink 0;

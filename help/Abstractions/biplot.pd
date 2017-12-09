@@ -207,7 +207,7 @@
 #X connect 6 0 1 0;
 #X connect 7 0 3 0;
 #X restore 29 198 pd plot;
-#X obj 101 103 cnv 15 898 284 empty empty empty 18 9 1 15 -262144 -1
+#X obj 101 103 cnv 15 898 283 empty empty empty 18 9 1 15 -262144 -1
 0;
 #X obj 153 109 cnv 15 805 235 empty empty empty 20 12 0 14 -1 -66577
 0;
