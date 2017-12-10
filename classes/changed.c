@@ -10,7 +10,7 @@ typedef struct _changed{
     int        x_c;
     int        x_change;
     t_symbol  *x_sym;
-    t_intlet  *x_set_inlet;
+    t_inlet   *x_set_inlet;
     t_outlet  *x_bang_out;
 } t_changed;
 
@@ -98,7 +98,7 @@ static void *changed_new(t_symbol *s, int argc, t_atom *argv){
     for (i = 0; i < argc; i++)
         x->x_a[i] = argv[i];
     x->x_change = 0;
-    inlet_new((t_object *)x, (t_pd *)x, &s_anything, gensym("at1"));
+    inlet_new((t_object *)x, (t_pd *)x, &s_anything, gensym("set"));
     outlet_new(&x->x_obj, &s_anything);
     x->x_bang_out = outlet_new(&x->x_obj, &s_bang);
     return (x);
