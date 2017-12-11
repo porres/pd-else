@@ -20,6 +20,14 @@ The project is still in a beta phase, where drastic changes may occur and backwa
 
 --------------------------------------------------------------------------
 
+### Acknowldegdements
+
+Special thanks to Flávio Luis Schiavoni, for helping me out in a few things, teaching me how to code and contributing to this library with the objects: [median~] and [keyboard]. 
+
+I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also contributing with the [float2bits] object.
+
+--------------------------------------------------------------------------
+
 **"EL Locus Solus"** is run by Alexandre Torres Porres, who organizes cultural events/concerts and teaches computer music courses; website: http://alexandre-torres.wixsite.com/el-locus-solus
 
 EL Locus Solus offers a computer music tutorial with examples in Pure Data for its courses. These are in portuguese as of yet, with plans for english translation and formatting into a book. There are over 350 examples for now and they were designed to work with Pd Extended 0.42-5, making extensive use of the existing objects available in Pd Extended's libraries.
