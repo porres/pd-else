@@ -10,12 +10,13 @@
 static t_class *dir_class;
 
 typedef struct dir{
-    t_object x_obj;
+    t_object  x_obj;
     DIR      *x_dir;
     char      x_directory[MAXPDSTRING];
     t_symbol *x_getdir;
     t_int     x_nfiles;
     t_int     x_ignored;
+    t_int     x_seek;
     t_outlet *x_out1;
     t_outlet *x_out2;
 }t_dir;
@@ -27,6 +28,7 @@ static void dir_seek(t_dir *x, t_float f){
         return;
     }
     seek = ((seek - 1) % x->x_nfiles) + 1;
+    x->x_seek = seek;
     seek += x->x_ignored;
     rewinddir(x->x_dir);
     struct dirent *result = NULL;
@@ -37,13 +39,37 @@ static void dir_seek(t_dir *x, t_float f){
     rewinddir(x->x_dir);
 }
 
+static void dir_next(t_dir *x){
+    dir_seek(x, x->x_seek + 1);
+}
+
 static void dir_open(t_dir *x, t_symbol *dirname){
-    if(!opendir(dirname->s_name)){
-        pd_error(x, "filedir: cannot open directory: %s", dirname->s_name);
+    if(!strcmp(dirname->s_name, "")){
+        pd_error(x, "dir: no symbol given to 'open'");
         return;
     }
-    strncpy(x->x_directory, dirname->s_name, MAXPDSTRING);
-    x->x_dir = opendir(dirname->s_name);
+    char tempdir[MAXPDSTRING];
+    strcpy(tempdir, x->x_directory);
+    if(!strcmp(dirname->s_name, "..")){ // parent dir
+        char *last_slash;
+        last_slash = strrchr(x->x_directory, '/');
+        *last_slash = '\0';
+        if(!strcmp(x->x_directory, ""))
+            strcpy(x->x_directory, "/");
+    }
+    else if(!strcmp(dirname->s_name, ".")){
+        // do nothing / reopen same dir
+    }
+    else if(!strncmp(dirname->s_name, "/", 1)) // absolute path
+        strncpy(x->x_directory, dirname->s_name, MAXPDSTRING);
+    else // relative to current dir
+        sprintf(x->x_directory, "%s/%s", x->x_directory, dirname->s_name );
+    if(!opendir(x->x_directory)){
+        pd_error(x, "dir: cannot open '%s'", dirname->s_name);
+        strcpy(x->x_directory, tempdir);
+        return;
+    }
+    x->x_dir = opendir(x->x_directory);
     rewinddir(x->x_dir);
     x->x_nfiles = x->x_ignored = 0;
     struct dirent *result = NULL;
@@ -64,7 +90,7 @@ static void dir_reset(t_dir *x){
     strncpy(x->x_directory, x->x_getdir->s_name, MAXPDSTRING);
     x->x_dir = opendir(x->x_getdir->s_name);
     rewinddir(x->x_dir);
-    x->x_nfiles = x->x_ignored = 0;
+    x->x_nfiles = x->x_ignored = x->x_seek = 0;
     struct dirent *result = NULL;
     while(result = readdir(x->x_dir)){
         if(strncmp(result->d_name, ".", 1 ))
@@ -110,6 +136,7 @@ void dir_setup(void){
     class_addmethod(dir_class, (t_method)dir_dir, gensym("dir"), 0);
     class_addmethod(dir_class, (t_method)dir_dump, gensym("dump"), 0);
     class_addmethod(dir_class, (t_method)dir_reset, gensym("reset"), 0);
+    class_addmethod(dir_class, (t_method)dir_next, gensym("next"), 0);
     class_addmethod(dir_class, (t_method)dir_open, gensym("open"), A_DEFSYMBOL, 0);
     class_addmethod(dir_class, (t_method)dir_seek, gensym("seek"), A_DEFFLOAT, 0);
 }

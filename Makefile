@@ -161,8 +161,7 @@ $(wildcard help/Abstractions/*.pd) \
 $(wildcard help/*.wav) \
 $(wildcard *.txt) \
 else-meta.pd \
-README.pdf \
-help/stereo.aif
+README.pdf
 
 #########################################################################
 

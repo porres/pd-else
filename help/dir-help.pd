@@ -1,4 +1,4 @@
-#N canvas 257 29 561 657 10;
+#N canvas 154 51 563 642 10;
 #X obj 24 41 cnv 4 4 4 empty empty Acess 0 28 2 18 -233017 -1 0;
 #X obj 78 41 cnv 4 4 4 empty empty file 0 28 2 18 -233017 -1 0;
 #X obj 3 4 cnv 15 301 42 empty empty dir 20 20 2 37 -233017 -1 0;
@@ -22,77 +22,136 @@
 0;
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 5 375 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 5 369 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 525 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 516 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 590 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 581 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 5 620 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 611 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 247 599 (none);
+#X text 232 590 (none);
 #X obj 129 198 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 129 273 else/dir;
-#X text 171 536 symbol -;
+#X text 156 527 symbol -;
 #X obj 119 40 cnv 4 4 4 empty empty directory 0 28 2 18 -233017 -1
 0;
 #X msg 144 222 dump;
 #X text 79 95 [dir] access files from a given directory (the directory
 the patch is located in by default).;
 #X msg 161 247 dir;
-#X text 129 384 open <symbol> -;
-#X text 233 384 opens a directory;
-#X text 189 421 dir -;
-#X text 233 421 outputs the current directory in the right outlet;
-#X text 183 441 dump -;
+#X text 114 378 open <symbol> -;
+#X text 218 378 opens a directory;
+#X text 174 410 dir -;
+#X text 218 410 outputs the current directory in the right outlet;
+#X text 168 426 dump -;
 #X msg 115 174 dir \, dump;
 #X text 149 197 same as "dir \, dump";
-#X obj 92 383 cnv 17 3 134 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 88 377 cnv 17 3 132 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 92 534 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 88 525 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 183 462 bang -;
-#X text 233 462 output directory and files;
-#X obj 92 557 cnv 17 3 27 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 168 443 bang -;
+#X text 218 443 output directory and files;
+#X obj 88 548 cnv 17 3 27 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 233 536 the files from the directory, f 47;
+#X text 218 527 the files from the directory, f 47;
 #X obj 85 338 print files;
-#X text 177 403 reset -;
-#X text 232 403 resets to patch's directory;
+#X text 162 394 reset -;
+#X text 217 394 resets to patch's directory;
 #X obj 174 299 else/display 50;
 #X text 181 221 dump all files from the directory (left outlet);
 #X text 190 247 sends directory path (right outlet);
 #X msg 92 148 open ..;
 #X msg 40 148 reset;
-#X text 183 559 atom -;
+#X text 168 550 atom -;
 #X obj 174 337 print dir;
-#N canvas 582 226 558 380 example 0;
-#X obj 179 223 else/dir;
-#X msg 179 190 seek \$1;
-#X obj 179 158 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 232 252 else/display;
-#X obj 179 289 else/display;
-#X msg 129 189 n;
-#X text 71 31 The 'n' message outputs the number of found files in
+#N canvas 527 152 746 499 example 0;
+#X obj 400 243 else/dir;
+#X msg 400 210 seek \$1;
+#X obj 400 178 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 168 256;
+#X obj 445 272 else/display;
+#X obj 400 309 else/display;
+#X msg 350 209 n;
+#X text 157 25 The 'n' message outputs the number of found files in
 the opened directory. The seek message can search for a file acording
 to a number. If the seek number is greater than the number of files
 \, then the search is wrapped according to the number of files. The
 seek number is indexed from 1 and cannot be <= 0!;
+#X msg 465 211 next;
+#X text 158 103 The 'next' message increments the seek value and will
+also wrap according to the number of files.;
+#X obj 181 286 route float;
+#X msg 79 234 seek \$1;
+#X obj 139 349 pack symbol symbol;
+#X msg 139 378 open \$2/\$1;
+#X obj 79 313 else/display;
+#X obj 79 207 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 13 256;
+#X obj 79 157 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X msg 40 233 next;
+#X obj 139 405 else/display;
+#X msg 186 231 n \, dir, f 10;
+#X obj 79 266 else/dir;
+#X obj 186 206 loadbang;
+#X obj 79 181 else/randi 1 1;
+#X obj 160 158 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 168 256;
 #X connect 0 0 4 0;
 #X connect 0 1 3 0;
 #X connect 1 0 0 0;
 #X connect 2 0 1 0;
 #X connect 5 0 0 0;
-#X restore 435 166 pd example;
-#X text 201 482 n -;
-#X text 233 482 output number of found files in the right outlet;
-#X text 233 441 dump files from directory in the left outlet;
-#X text 135 502 seek <float> -;
-#X text 233 502 seek for a file corresponding to that number;
-#X text 233 559 a symbol with the current directory or a float with
+#X connect 7 0 0 0;
+#X connect 9 0 22 0;
+#X connect 9 1 11 1;
+#X connect 10 0 19 0;
+#X connect 11 0 12 0;
+#X connect 12 0 17 0;
+#X connect 13 0 11 0;
+#X connect 14 0 10 0;
+#X connect 15 0 21 0;
+#X connect 16 0 19 0;
+#X connect 18 0 19 0;
+#X connect 19 0 13 0;
+#X connect 19 1 9 0;
+#X connect 20 0 18 0;
+#X connect 21 0 14 0;
+#X connect 22 0 21 2;
+#X restore 447 171 pd example;
+#X text 186 460 n -;
+#X text 218 460 output number of found files in the right outlet;
+#X text 218 426 dump files from directory in the left outlet;
+#X text 120 477 seek <float> -;
+#X text 218 550 a symbol with the current directory or a float with
 the number of found files, f 47;
+#X text 168 495 next -;
+#X text 218 477 seeks and output the file corresponding to that number
+;
+#X text 218 495 increments seek value and outputs file;
+#X text 148 148 <= opens parent directory;
+#N canvas 625 248 574 418 open 0;
+#X text 77 42 The 'open' message expects a symbol defining a directory.
+If the symbol starts with "/" \, then it means the symbol specifies
+an absolute path. Otherwise \, [dir] will look for directories relative
+to the current directory.;
+#X text 79 97 For example \, "open samples" looks for a subdirectory
+named 'samples' relative to the current directory. More than one level
+of subdirectories (like "open samples/wav") can be given.;
+#X text 79 153 To open the parent directory you can use "open .." \,
+and "open ." will just reopen the same directory. You can also use
+"./" or "../";
+#X obj 57 289 else/dir;
+#X obj 102 315 else/display 50;
+#X msg 57 263 open \$1 \, dir;
+#X symbolatom 57 238 40 0 0 0 - - -, f 40;
+#X connect 3 1 4 0;
+#X connect 5 0 3 0;
+#X connect 6 0 5 0;
+#X restore 462 148 pd open;
 #X connect 17 0 18 0;
 #X connect 18 0 37 0;
 #X connect 18 1 40 0;
