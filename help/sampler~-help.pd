@@ -1,5 +1,5 @@
-#N canvas 386 29 577 688 10;
-#X obj 233 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 545 102 564 689 10;
+#X obj 236 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X msg 108 208 start;
 #X msg 156 208 stop;
@@ -33,7 +33,7 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 7 657 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 7 662 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 7 354 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -54,12 +54,6 @@ dialog box), f 50;
 #X text 222 458 loop on <1> or off <0>, f 50;
 #X msg 272 225 open vacuous.wav;
 #X obj 213 290 else/out~;
-#X text 114 569 2) symbol - the name of the file to open (default none)
-;
-#X text 121 586 3) float - autostart <1: on \, 0: off> (default 0)
-, f 54;
-#X text 121 603 4) float - loop <1: on \, 0: off> (default 0), f 54
-;
 #X text 65 89 [sampler~] is a convenient abstraction based on [readsf~]
 to read files from your computer. Note that the file sample needs to
 be at the same samplerate as Pd's., f 64;
@@ -68,47 +62,49 @@ be at the same samplerate as Pd's., f 64;
 #X text 175 362 bang - (re)start playing the sample;
 #X text 170 412 float - non-0 (re)starts playing \, zero stops, f
 59;
-#X text 120 551 1) float - (optional) channels (default 1 \, max 64)
-;
 #N canvas 760 138 588 508 multi-channel 0;
-#X obj 179 331 else/meter2~;
-#X obj 66 331 else/out~;
+#X obj 175 332 else/meter2~;
+#X obj 62 332 else/out~;
 #X obj 347 323 else/out~;
-#X msg 110 214 open violin.wav;
-#X text 123 111 If you have a file with less channels than specified
+#X msg 106 215 open violin.wav;
+#X text 123 115 If you have a file with less channels than specified
 (like a mono file in a stereo sampler) \, the extra channels are silent.
 Conversely \, a file with more channels than specified (like a stereo
 file in a mono sampler) has its remaining channels ignored.;
-#X text 122 31 If you give an optional float argumewnt as the first
-argument \, it specifies the number of channels. If no float argument
-is given as the first argument \, then the default number of channels
-is 1 (mono). The maximum number is 64 channels.;
-#X obj 66 211 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 62 212 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 347 245 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 255 293 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 239 294 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 524 302 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 536 302 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 124 239 open stereo.wav;
-#X obj 347 277 else/sampler~ stereo.aif -loop;
-#X obj 66 267 else/sampler~ 2 stereo.wav -loop;
-#X connect 3 0 12 0;
-#X connect 6 0 12 0;
-#X connect 7 0 11 0;
-#X connect 10 0 12 0;
-#X connect 11 0 2 0;
-#X connect 11 0 2 1;
-#X connect 11 1 9 0;
-#X connect 12 0 1 0;
-#X connect 12 0 0 0;
-#X connect 12 1 1 1;
-#X connect 12 1 0 1;
-#X connect 12 2 8 0;
+#X msg 120 240 open stereo.wav;
+#X obj 347 277 else/sampler~ 1 stereo.aif -loop;
+#X obj 62 268 else/sampler~ stereo.wav -loop;
+#X text 122 30 If you give an optional float argumewnt as the first
+argument \, it specifies the number of channels. If no float argument
+and no sound file are given \, then the default number of channels
+is 1 (mono). But if the first optional argument is not given and a
+file name is given \, then the number of channels is the same as the
+sound file's. The maximum number is 64 channels.;
+#X text 208 213 <= mono file;
+#X text 221 239 <= stereo file;
+#X connect 3 0 11 0;
+#X connect 5 0 11 0;
+#X connect 6 0 10 0;
+#X connect 9 0 11 0;
+#X connect 10 0 2 0;
+#X connect 10 0 2 1;
+#X connect 10 1 8 0;
+#X connect 11 0 1 0;
+#X connect 11 0 0 0;
+#X connect 11 1 1 1;
+#X connect 11 1 0 1;
+#X connect 11 2 7 0;
 #X restore 435 319 pd multi-channel;
-#X obj 7 623 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 171 633 -loop: turns loop mode on;
+#X obj 7 632 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 174 639 -loop: turns loop mode on;
 #X obj 378 286 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 397 286 finished;
@@ -118,14 +114,24 @@ is 1 (mono). The maximum number is 64 channels.;
 ;
 #X text 165 518 bang - a bang when finishing playing the sample;
 #X obj 213 258 else/sampler~ violin.wav 1 1;
-#X connect 0 0 48 0;
-#X connect 1 0 48 0;
-#X connect 2 0 48 0;
-#X connect 3 0 48 0;
-#X connect 4 0 48 0;
+#X text 193 548 (optional) channels (default 1 if no file is given
+\, or sound file's if given \, max 64), f 44;
+#X text 116 575 2) symbol, f 9;
+#X text 182 575 - the name of the file to open (default none);
+#X text 116 592 3) float;
+#X text 182 592 - autostart <1: on \, 0: off> (default 0), f 45;
+#X text 116 607 4) float;
+#X text 182 608 - loop <1: on \, 0: off> (default 0), f 45;
+#X text 116 551 1) float;
+#X text 180 549 -;
+#X connect 0 0 44 0;
+#X connect 1 0 44 0;
+#X connect 2 0 44 0;
+#X connect 3 0 44 0;
+#X connect 4 0 44 0;
 #X connect 5 0 4 0;
-#X connect 30 0 48 0;
-#X connect 36 0 48 0;
-#X connect 48 0 31 0;
-#X connect 48 0 31 1;
-#X connect 48 1 43 0;
+#X connect 30 0 44 0;
+#X connect 33 0 44 0;
+#X connect 44 0 31 0;
+#X connect 44 0 31 1;
+#X connect 44 1 39 0;
