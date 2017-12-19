@@ -6,7 +6,9 @@
 
 ### Version 1.0 beta-7 (Unreleased)
 
-The project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
+Needs Pd 0.48-0 or above
+
+This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
 
 --------------------------------------------------------------------------
 
