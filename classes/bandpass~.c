@@ -2,6 +2,7 @@
 
 #include "m_pd.h"
 #include <math.h>
+#include <string.h>
 
 #define PI M_PI
 #define HALF_LOG2 log(2)/2
