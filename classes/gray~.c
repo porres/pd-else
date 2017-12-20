@@ -1,3 +1,6 @@
+// Matt Barber and Porres (2017)
+// Based on SuperCollider's GrayNoise UGen
+
 #include "m_pd.h"
 
 static t_class *gray_class;
@@ -5,12 +8,12 @@ static t_class *gray_class;
 typedef struct _gray{
     t_object  x_obj;
     int x_val;
-    t_float  x_lastout;
+    int x_base;
     t_outlet *x_outlet;
 } t_gray;
 
 static void gray_float(t_gray *x, t_floatarg f){
-    x->x_val = f;
+    x->x_val = x->x_base = f;
 }
 
 static t_int *gray_perform(t_int *w){
@@ -19,21 +22,17 @@ static t_int *gray_perform(t_int *w){
     int *vp = (int *)(w[3]);
     t_sample *out = (t_sample *)(w[4]);
     int val = *vp;
-    t_float lastout = x->x_lastout;
+    int base = x->x_base;
     while(nblock--){
-        t_float noise = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
-        t_float input = noise * 0.125;
-        t_float output = input + lastout;
-        if (output > 1)
-            output = 2 - output;
-        if (output < -1)
-            output = -2 - output;
-        *out++ = output;
+        t_float noise = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(16.0 / 0x40000000);
+        int shift = (int)(noise + 16.0);
+        shift = (shift == 32 ? 31 : shift);
+        base ^= 1L << shift;
+        *out++ = base * 4.65661287308e-10f; // That's 1/(2^31), so normalizes the int to 1.0
         val = val * 435898247 + 382842987;
-        lastout = output;
     }
-     *vp = val;
-    x->x_lastout = lastout;
+    *vp = val;
+    x->x_base = base;
     return (w + 5);
 }
 
@@ -43,12 +42,11 @@ static void gray_dsp(t_gray *x, t_signal **sp){
 
 static void *gray_new(t_symbol *s, int ac, t_atom *av){
     t_gray *x = (t_gray *)pd_new(gray_class);
-    x->x_lastout = 0;
     static int init = 307;
-    x->x_val = (init *= 1319);
+    x->x_val = x->x_base = (init *= 1319);
     if(ac)
         if(av->a_type == A_FLOAT)
-            x->x_val = atom_getfloatarg(0, ac, av) * 1319;
+            x->x_val = x->x_base = atom_getfloatarg(0, ac, av) * 1319;
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return(x);
 }

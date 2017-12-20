@@ -25,7 +25,7 @@ red noise) and outputs it.;
 #X obj 127 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
 #X obj 81 40 cnv 4 4 4 empty empty noise 0 28 2 18 -233017 -1 0;
-#X obj 3 3 cnv 15 301 42 empty empty Brown~ 20 20 2 37 -233017 -1 0
+#X obj 3 3 cnv 15 301 42 empty empty brown~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;

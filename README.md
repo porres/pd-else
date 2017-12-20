@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-7 (Unreleased)
+### Version 1.0 beta-7 (released dec 20th 2017)
 
 Needs Pd 0.48-0 or above
 
@@ -26,7 +26,7 @@ This project is still in a beta phase, where drastic changes may occur and backw
 
 Special thanks to Flávio Luis Schiavoni, for helping me out in a few things, teaching me how to code and contributing to this library with the objects: [median~] and [keyboard]. 
 
-I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also contributing with the [float2bits] object.
+I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also contributing with the [float2bits] and [gray~] objects.
 
 --------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (163 objects):
+##Current Object list (164 objects):
 
 **MISCELLANEA: [3]**
 - [args]
@@ -158,13 +158,14 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [vsaw~]
 - [pmosc~]
 
-**CHAOTIC GENERATORS: [18]**
+**CHAOTIC GENERATORS: [19]**
 - [brown~] 
 - [clipnoise~] 
 - [crackle~] 
 - [cusp~] 
 - [fbsine~] 
 - [gbman~] 
+- [gray~] 
 - [henon~]
 - [ikeda~]
 - [latoocarfian~]

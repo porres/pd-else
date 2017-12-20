@@ -70,6 +70,7 @@ gbman~.class.sources := classes/gbman~.c
 gate2imp~.class.sources := classes/gate2imp~.c
 glide~.class.sources := classes/glide~.c
 glide2~.class.sources := classes/glide2~.c
+gray~.class.sources := classes/gray~.c
 henon~.class.sources := classes/henon~.c
 highpass~.class.sources := classes/highpass~.c
 highshelf~.class.sources := classes/highshelf~.c
