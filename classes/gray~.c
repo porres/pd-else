@@ -1,5 +1,5 @@
-// Matt Barber and Porres (2017)
-// Based on SuperCollider's GrayNoise UGen
+// matt barber and porres (2017)
+// based on SuperCollider's GrayNoise UGen
 
 #include "m_pd.h"
 

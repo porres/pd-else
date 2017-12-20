@@ -1,4 +1,4 @@
-// matt bbarber and porres
+// matt barber and porres (2017)
 
 #include "m_pd.h"
 
