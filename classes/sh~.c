@@ -5,13 +5,13 @@
 static t_class *sh_class;
 
 typedef struct _sh{
-    t_object x_obj;
-    t_inlet  *x_trig_inlet;
-    t_float  x_lastout;
-    t_float  x_last_trig;
-    t_float  x_trig_bang;
-    t_float  x_thresh;
-    int  x_mode;
+    t_object    x_obj;
+    t_inlet     *x_trig_inlet;
+    t_float     x_lastout;
+    t_float     x_last_trig;
+    t_float     x_trig_bang;
+    t_float     x_thresh;
+    t_int         x_mode;
 } t_sh;
 
 static void sh_thresh(t_sh *x, t_floatarg f){
