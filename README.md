@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-7 (released dec 20th 2017)
+### Version 1.0 beta-8 (Unreleased)
 
 Needs Pd 0.48-0 or above
 
@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (164 objects):
+##Current Object list (165 objects):
 
 **MISCELLANEA: [3]**
 - [args]
@@ -239,12 +239,13 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [past~]
 - [zerocross~]
 
-**CONTROL: [12]**
+**CONTROL: [13]**
  - [adsr~]
  - [asr~]
  - [autofade~]
  - [decay~]
  - [decay2~]
+ - [envgen~]
  - [fader~]
  - [glide~]
  - [glide2~]

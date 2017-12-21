@@ -59,6 +59,7 @@ decay~.class.sources := classes/decay~.c
 decay2~.class.sources := classes/decay2~.c
 downsample~.class.sources := classes/downsample~.c
 elapsed~.class.sources := classes/elapsed~.c
+envgen~.class.sources := classes/envgen~.c
 eq~.class.sources := classes/eq~.c
 fader~.class.sources := classes/fader~.c
 fbdelay~.class.sources := classes/fbdelay~.c
