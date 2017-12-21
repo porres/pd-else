@@ -108,7 +108,7 @@ static void asr_dsp(t_asr *x, t_signal **sp){
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void *asr_new(t_floatarg a, t_floatarg d, t_floatarg s, t_floatarg r){
+static void *asr_new(t_floatarg a, t_floatarg r){
     t_asr *x = (t_asr *)pd_new(asr_class);
     x->x_sr_khz = sys_getsr() * 0.001;
     x->x_last = 0.;
@@ -127,7 +127,7 @@ static void *asr_new(t_floatarg a, t_floatarg d, t_floatarg s, t_floatarg r){
 
 void asr_tilde_setup(void){
     asr_class = class_new(gensym("asr~"), (t_newmethod)asr_new, 0,
-				 sizeof(t_asr), 0, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
+				 sizeof(t_asr), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(asr_class, nullfn, gensym("signal"), 0);
     class_addmethod(asr_class, (t_method) asr_dsp, gensym("dsp"), A_CANT, 0);
     class_addfloat(asr_class, (t_method)asr_float);
