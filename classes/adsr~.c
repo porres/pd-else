@@ -46,75 +46,47 @@ static t_int *adsr_perform(t_int *w){
     t_int status = x->x_status;
     double incr = x->x_incr;
     int nleft = x->x_nleft;
-    while (nblock--){
+    while(nblock--){
         t_float input_gate = *in1++;
         t_float attack = *in2++;
         t_float decay = *in3++;
         t_float sustain_point = *in4++;
         t_float release = *in5++;
         t_int audio_gate = (input_gate != 0);
-// clip input
-        if (attack < 0)
-            attack = 0;
-        if (decay < 0)
-            decay = 0;
-        if (release < 0)
-            release = 0;
+// get 'n' and clip to 1, set coefs
         t_float n_attack = roundf(attack * x->x_sr_khz);
+        if(n_attack < 1)
+            (n_attack) = 1;
+        double coef_a = 1. / n_attack;
         t_float n_decay = roundf(decay * x->x_sr_khz);
+        if(n_decay < 1)
+            (n_decay) = 1;
+        double coef_d = 1. / n_decay;
         t_float n_release = roundf(release * x->x_sr_khz);
-// set coefs
-        double coef_a;
-        if(n_attack == 0)
-            coef_a = 0.;
-        else
-            coef_a = 1. / n_attack;
-        double coef_d;
-        if(n_decay == 0)
-            coef_d = 0.;
-        else
-            coef_d = 1. / n_decay;
-        double coef_r;
-        if(n_release == 0)
-            coef_r = 0.;
-        else
-            coef_r = 1. / n_release;
-// go for it
+        if(n_release < 1)
+            (n_release) = 1;
+        double coef_r = 1. / n_release;
+// Get incr & nleft values!
         if((audio_gate || (x->x_f_gate != 0)) != gate_status){ // gate status change
             gate_status = audio_gate || x->x_f_gate;
             target = x->x_f_gate != 0 ? x->x_f_gate : input_gate;
-            if (gate_status){ // if gate opened
-                if(!status){
-                    status = 1;
-                    outlet_float(x->x_out2, status);
-                    }
-                if(n_attack > 1){
-                    incr = (target - last) * coef_a;
-                    nleft = n_attack + n_decay;
-                }
-                else{
-                    incr = (target - last);
-                    nleft = 1 + n_decay;
-                }
+            if(gate_status){ // if gate opened
+                if(!status)
+                    outlet_float(x->x_out2, status = 1);
+                incr = (target - last) * coef_a;
+                nleft = n_attack + n_decay;
             }
-            else{ // if gate closed, set release incr
-                if(n_release > 1){
-                    incr =  -(last * coef_r);
-                    nleft = n_release;
-                }
-                else{
-                    incr =  -last;
-                    nleft = 1;
-                }
+            else{ // gate closed, set release incr
+                incr =  -(last * coef_r);
+                nleft = n_release;
             }
         }
 // "attack + decay + sustain" phase
         if(gate_status){
             if(nleft > 0){ // "attack + decay" not over
-                if (nleft < n_decay){ // attack is over
+                if (nleft <= n_decay) // attack is over, update incr
                     incr = ((target * sustain_point) - target) * coef_d;
-                    }
-                    *out++ = (last += incr);
+                *out++ = last += incr;
                 nleft--;
             }
             else // "sustain" phase

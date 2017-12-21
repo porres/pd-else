@@ -254,7 +254,7 @@ static void *autofade_new(t_symbol *s, int argc, t_atom *argv){
     x->x_nleft = 0;
     x->x_coef = 0.;
     x->x_table = autofade_table_quartic; // default
-    t_float ch = 1; // default
+    t_int ch = 1; // default
     x->x_ms = 0; // default
 /////////////////////////////////////////////////////////////////////////////////////
     if(argc){
@@ -285,7 +285,7 @@ static void *autofade_new(t_symbol *s, int argc, t_atom *argv){
                 t_float argval = atom_getfloatarg(0, argc, argv);
                 switch(argnum - sym_arg){
                     case 0:
-                        ch = argval;
+                        ch = (int)argval;
                         break;
                     case 1:
                         x->x_ms = argval;
@@ -302,10 +302,13 @@ static void *autofade_new(t_symbol *s, int argc, t_atom *argv){
         }
     }
 /////////////////////////////////////////////////////////////////////////////////////
-    
-    inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    
-    outlet_new((t_object *)x, &s_signal);
+    if(ch <1)
+        ch = 1;
+    t_int i;
+    for(i = 0; i < ch; i++)
+        inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
+    for(i = 0; i < ch; i++)
+        outlet_new((t_object *)x, &s_signal);
     return (x);
     errstate:
         pd_error(x, "autofade~: improper args");

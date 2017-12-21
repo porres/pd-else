@@ -7,7 +7,7 @@
 0;
 #X obj 4 493 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 105 397 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 105 397 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
 #X text 169 363 signal;
 #X text 171 397 signal;
@@ -362,15 +362,15 @@ the fading curves available, f 32;
 #X connect 19 0 20 0;
 #X connect 20 0 7 0;
 #X connect 20 0 7 1;
-#X restore 467 208 pd curves;
+#X restore 467 195 pd curves;
 #X text 61 89 [autofade~] is an automatic fade in/out that responds
 to a gate control. It uses internal lookup tables for 7 different fading
 curves., f 64;
-#X text 219 427 (optional) fade types <quartic \, sin \, sqrt \, lin
+#X text 238 427 (optional) fade types <quartic \, sin \, sqrt \, lin
 \, hann \, lin \, hannsin \, linsin> (default: quartic), f 47;
-#X text 207 427 -;
-#X text 132 428 1) symbol;
-#X text 207 473 - fade time in ms (default 0), f 49;
+#X text 226 427 -;
+#X text 154 428 1) symbol;
+#X text 226 473 - fade time in ms (default 0), f 49;
 #X text 225 293 - gate: "fade in" if > 0 \, "fade out" otherwise;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -389,19 +389,33 @@ curves., f 64;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 304 3 graph;
-#X obj 203 185 else/autofade~ 1 1000;
-#X text 132 455 2) float;
-#X text 132 473 3) float;
-#X text 207 455 - number of channels (default 1), f 49;
+#X text 154 455 2) float;
+#X text 154 473 3) float;
+#X text 226 455 - number of channels (default 1), f 49;
 #X msg 249 155 fade \$1;
 #X text 168 156 gate;
-#X obj 203 156 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 203 156 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X text 226 338 - fade time in ms, f 44;
 #X text 133 338 fade <float>;
-#X connect 15 0 44 0;
-#X connect 17 0 40 1;
-#X connect 40 0 11 0;
-#X connect 40 0 11 1;
-#X connect 44 0 40 0;
-#X connect 46 0 40 0;
+#X obj 203 185 else/autofade~ 1 1000;
+#N canvas 835 150 535 554 multichannel 0;
+#X obj 233 262 else/out~;
+#X obj 273 161 else/brown~;
+#X text 178 166 gate;
+#X obj 213 166 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 213 195 else/autofade~ 2 1000;
+#X obj 353 165 noise~;
+#X connect 1 0 4 1;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 4 1 0 1;
+#X connect 5 0 4 2;
+#X restore 430 217 pd multichannel;
+#X connect 15 0 43 0;
+#X connect 17 0 48 1;
+#X connect 43 0 48 0;
+#X connect 45 0 48 0;
+#X connect 48 0 11 0;
+#X connect 48 0 11 1;
