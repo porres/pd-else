@@ -61,26 +61,26 @@
 0;
 #X obj 119 227 osc~ 440;
 #X text 260 391 - gate values;
-#X obj 276 182 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 275 182 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 345 182 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 343 182 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 277 164 attack;
-#X text 347 164 release;
-#N canvas 1004 208 521 510 example 0;
-#X obj 261 158 else/display~ 7;
+#X text 276 164 attack;
+#X text 345 164 release;
+#N canvas 919 208 521 510 example 0;
+#X obj 252 158 else/display~ 7;
 #X obj 106 161 else/display~ 7;
-#X text 321 161 <= gate value;
+#X text 312 161 <= gate value;
 #X obj 106 207 else/sawtooth~;
 #X obj 200 280 *~;
 #X obj 157 362 else/out~;
-#X obj 261 287 else/display~ 7;
+#X obj 252 287 else/display~ 7;
 #X obj 200 320 else/lowpass~ 0 20;
-#X obj 261 259 else/rescale~ 100 1500;
-#X text 323 290 <= cutoff;
+#X obj 252 259 else/rescale~ 100 1500;
+#X text 314 290 <= cutoff;
 #X text 168 165 <= Hz;
-#X obj 261 201 else/asr~ 250 750;
-#X obj 261 89 else/randpulse~ 0.5;
+#X obj 252 201 else/asr~ 250 750;
+#X obj 252 89 else/randpulse~ 0.5;
 #X obj 106 135 else/randf~ 50 150;
 #X text 53 28 [asr~] accepts any gate value \, positive or negative
 and above 1 or below -1 \, so you can use it to control anything besides
@@ -99,18 +99,18 @@ amplitude.;
 #X connect 12 0 13 0;
 #X connect 13 0 1 0;
 #X restore 463 269 pd example;
-#X obj 208 210 else/asr~ 1000 500, f 20;
+#X obj 208 210 else/asr~ 1000 500, f 23;
 #X text 389 348 see also:;
-#X obj 463 347 else/adsr~;
+#X obj 461 347 else/adsr~;
 #X text 67 86 [asr~] is a linear attack/sustain/release gated envelope.
 At a gate on value (transition from 0 to any value) \, [asr~] goes
 from 0 to that value at the specified attack time in ms. A gate off
 (transition from any value to 0) makes [asr~] go to 0 at the specified
 release time in ms., f 59;
 #X text 168 180 gate;
-#N canvas 1004 208 510 419 triggered 0;
+#N canvas 930 208 510 419 triggered 0;
 #X obj 228 212 else/display~ 7;
-#X obj 179 339 else/out~;
+#X obj 172 339 else/out~;
 #X text 49 28 You can use the [tgate~] object to create a timed gate
 so you can trigger the envelope.;
 #X obj 228 183 else/tgate~ 500;
@@ -130,7 +130,7 @@ so you can trigger the envelope.;
 #X connect 6 0 5 0;
 #X connect 7 0 3 0;
 #X connect 9 0 5 1;
-#X restore 443 296 pd triggered \; by impulses;
+#X restore 444 296 pd triggered \; by impulses;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;

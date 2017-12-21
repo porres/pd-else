@@ -5,16 +5,15 @@
 
 typedef struct _asr{
     t_object x_obj;
-    t_float  x_in;
     t_inlet  *x_inlet_attack;
+    t_inlet  *x_inlet_sustain;
     t_inlet  *x_inlet_release;
-    int      x_n_attack;
-    int      x_n_release;
-    double   x_coef_a;
-    double   x_coef_r;
+    t_float  x_f_gate;
+    t_int    x_status;
     t_float  x_last;
     t_float  x_target;
     t_float  x_sr_khz;
+    t_outlet  *x_out2;
     double   x_incr;
     int      x_nleft;
     int      x_gate_status;
@@ -22,6 +21,13 @@ typedef struct _asr{
 
 
 static t_class *asr_class;
+
+static void asr_float(t_asr *x, t_floatarg f){
+    if(f != 0 && !x->x_status) { // on
+        outlet_float(x->x_out2, x->x_status = 1);
+    }
+    x->x_f_gate = f;
+}
 
 static t_int *asr_perform(t_int *w){
     t_asr *x = (t_asr *)(w[1]);
@@ -33,122 +39,96 @@ static t_int *asr_perform(t_int *w){
     t_float last = x->x_last;
     t_float target = x->x_target;
     t_float gate_status = x->x_gate_status;
+    t_int status = x->x_status;
     double incr = x->x_incr;
     int nleft = x->x_nleft;
-    while (nblock--){
-        t_float input = *in1++;
+    while(nblock--){
+        t_float input_gate = *in1++;
         t_float attack = *in2++;
         t_float release = *in3++;
-        t_int gate = (input != 0);
-        if (attack < 0)
-            attack = 0;
-        if (release < 0)
-            release = 0;
-        x->x_n_attack = roundf(attack * x->x_sr_khz);
-        x->x_n_release = roundf(release * x->x_sr_khz);
-        double coef_a;
-        double coef_r;
-        if (x->x_n_attack == 0)
-            coef_a = 0.;
-        else
-            coef_a = 1. / (float)x->x_n_attack;
-        if (x->x_n_release == 0)
-            coef_r = 0.;
-        else
-            coef_r = 1. / (float)x->x_n_release;
-        
-        if (gate != gate_status){ // gate status change
-            target = input;
-            gate_status = gate;
-            if (gate){
-                if (x->x_n_attack > 1){
-                    incr = (target - last) * x->x_coef_a;
-                    nleft = x->x_n_attack;
-                    *out++ = (last += incr);
-                    continue;
-                }
+        t_int audio_gate = (input_gate != 0);
+// get 'n' and clip to 1, set coefs
+        t_float n_attack = roundf(attack * x->x_sr_khz);
+        if(n_attack < 1)
+            (n_attack) = 1;
+        double coef_a = 1. / n_attack;
+        t_float n_release = roundf(release * x->x_sr_khz);
+        if(n_release < 1)
+            (n_release) = 1;
+        double coef_r = 1. / n_release;
+// Get incr & nleft values!
+        if((audio_gate || (x->x_f_gate != 0)) != gate_status){ // gate status change
+            gate_status = audio_gate || x->x_f_gate;
+            target = x->x_f_gate != 0 ? x->x_f_gate : input_gate;
+            if(gate_status){ // if gate opened
+                if(!status)
+                    outlet_float(x->x_out2, status = 1);
+                incr = (target - last) * coef_a;
+                nleft = n_attack;
             }
-            else {
-                if (x->x_n_release > 1){
-                    incr = (target - last) * x->x_coef_r;
-                    nleft = x->x_n_release;
-                    *out++ = (last += incr);
-                    continue;
-                }
+            else{ // gate closed, set release incr
+                incr =  -(last * coef_r);
+                nleft = n_release;
             }
-            incr = 0.;
-            nleft = 0;
-            *out++ = last = target;
         }
-        
-        else if(coef_a != x->x_coef_a || coef_r != x->x_coef_r){ // changed time
-            x->x_coef_a = coef_a;
-            x->x_coef_r = coef_r;
-            if (target > last){ // if going up
-                if (x->x_n_attack > 1){
-                    incr = (target - last) * x->x_coef_a;
-                    nleft = x->x_n_attack;
-                    *out++ = (last += incr);
-                    continue;
-                    }
-                }
-            else if (target < last){ // if going down
-                if (x->x_n_release > 1){
-                    incr = (target - last) * x->x_coef_r;
-                    nleft = x->x_n_release;
-                    *out++ = (last += incr);
-                    continue;
-                }
+// "attack / sustain" phase
+        if(gate_status){
+            if(nleft > 0){ // "attack" not over
+                *out++ = last += incr;
+                nleft--;
             }
-            incr = 0.;
-            nleft = 0;
-            *out++ = last = target;
+            else // "sustain" phase
+                *out++ = target;
+        }
+// "release" phase
+        else{
+            if(nleft > 0){ // "release" not over
+                *out++ = last += incr;
+                nleft--;
             }
-        
-        else if (nleft > 0){
-            *out++ = (last += incr);
-            if (--nleft == 1){
-                incr = 0.;
-                last = target;
-                }
+            else{ // "release" over
+                if(status)
+                    outlet_float(x->x_out2, status = 0);
+                *out++ = 0;
             }
-        else *out++ = target;
-        };
+        }
+    };
     x->x_last = (PD_BIGORSMALL(last) ? 0. : last);
     x->x_target = (PD_BIGORSMALL(target) ? 0. : target);
     x->x_incr = incr;
     x->x_nleft = nleft;
     x->x_gate_status = gate_status;
+    x->x_status = status;
     return (w + 7);
 }
 
 static void asr_dsp(t_asr *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    dsp_add(asr_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
-        sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+    dsp_add(asr_perform, 6, x, sp[0]->s_n,
+            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void *asr_new(t_floatarg attack, t_floatarg release){
+static void *asr_new(t_floatarg a, t_floatarg d, t_floatarg s, t_floatarg r){
     t_asr *x = (t_asr *)pd_new(asr_class);
     x->x_sr_khz = sys_getsr() * 0.001;
     x->x_last = 0.;
     x->x_target = 0.;
     x->x_incr = 0.;
     x->x_nleft = 0;
-    x->x_coef_a = 0.;
-    x->x_coef_r = 0.;
     x->x_gate_status = 0;
     x->x_inlet_attack = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_attack, attack);
+        pd_float((t_pd *)x->x_inlet_attack, a);
     x->x_inlet_release = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_release, release);
+        pd_float((t_pd *)x->x_inlet_release, r);
     outlet_new((t_object *)x, &s_signal);
+    x->x_out2 = outlet_new((t_object *)x, &s_float);
     return (x);
 }
 
 void asr_tilde_setup(void){
     asr_class = class_new(gensym("asr~"), (t_newmethod)asr_new, 0,
-				 sizeof(t_asr), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
-    CLASS_MAINSIGNALIN(asr_class, t_asr, x_in);
+				 sizeof(t_asr), 0, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(asr_class, nullfn, gensym("signal"), 0);
     class_addmethod(asr_class, (t_method) asr_dsp, gensym("dsp"), A_CANT, 0);
+    class_addfloat(asr_class, (t_method)asr_float);
 }
