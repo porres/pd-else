@@ -47,6 +47,8 @@
 #define int32 int32_t
 #endif /* __unix__ or __APPLE__*/
 
+#define MAXCH 64
+
 t_float *autofade_table_lin=(t_float *)0L;
 t_float *autofade_table_linsin=(t_float *)0L;
 t_float *autofade_table_sqrt=(t_float *)0L;
@@ -58,16 +60,19 @@ t_float *autofade_table_hann=(t_float *)0L;
 
 typedef struct _autofade{
     t_object x_obj;
-    t_float  x_in;
+    t_float  x_f;
     t_float  x_ms;
-    int      x_n;
+    t_int    x_n;
+    t_int    x_ch;
     double   x_coef;
     t_float  x_last;
     t_float  x_target;
     t_float  x_sr_khz;
     double   x_incr;
-    int      x_nleft;
-    t_float *x_table;
+    t_int    x_nleft;
+    t_float  *x_ins[MAXCH];
+    t_float  *x_outs[MAXCH];
+    t_float  *x_table;
 } t_autofade;
 
 union tabfudge_d{
@@ -112,26 +117,28 @@ static void autofade_fade(t_autofade *x, t_floatarg f){
 
 static t_int *autofade_perform(t_int *w){
     t_autofade *x = (t_autofade *)(w[1]);
-    int nblock = (int)(w[2]);
-    t_float *in1 = (t_float *)(w[3]);
-    t_float *in2 = (t_float *)(w[4]);
-    t_float *out = (t_float *)(w[5]);
+    t_int nblock = (int)(w[2]);
+    t_float *in_gate = (t_float *)(w[3]);               // gate input
+    t_int i;
+    for(i = 0; i < x->x_ch; i++)
+        x->x_ins[i] = (t_float *)(w[4 + i]);            // channel inputs
+    for(i = 0; i < x->x_ch; i++)
+        x->x_outs[i] = (t_float *)(w[4 + x->x_ch + i]); // channel outputs
     t_float last = x->x_last;
     t_float target = x->x_target;
     double incr = x->x_incr;
-    int nleft = x->x_nleft;
+    t_int nleft = x->x_nleft;
     
     t_float *tab = x->x_table, *addr, f1, f2, frac;
     double dphase;
-    int normhipart;
+    t_int normhipart;
     union tabfudge_d tf;
     
     tf.tf_d = UNITBIT32;
     normhipart = tf.tf_i[HIOFFSET];
     
     while (nblock--){
-        t_float f = *in1++;
-        t_float in = *in2++;
+        t_float f = *in_gate++;
         f = f > 0;  ////////////// Gate!
         t_float ms = x->x_ms;
         if (ms < 0)
@@ -148,8 +155,8 @@ static t_int *autofade_perform(t_int *w){
         
         if(coef != x->x_coef){
             x->x_coef = coef;
-            if (f != last){
-                if (x->x_n > 1){
+            if(f != last){
+                if(x->x_n > 1){
                     incr = (f - last) * x->x_coef;
                     nleft = x->x_n;
                     
@@ -166,7 +173,9 @@ static t_int *autofade_perform(t_int *w){
                     frac = tf.tf_d - UNITBIT32;
                     f1 = addr[0];
                     f2 = addr[1];
-                    *out++ = in * (f1 + frac * (f2 - f1));
+                    
+                    for(i = 0; i < x->x_ch; i++)
+                        *x->x_outs[i]++ = *x->x_ins[i]++ * (f1 + frac * (f2 - f1));
                     
                     continue;
                     }
@@ -174,7 +183,8 @@ static t_int *autofade_perform(t_int *w){
             incr = 0.;
             nleft = 0;
             last = f;
-            *out++ = in * f;
+            for(i = 0; i < x->x_ch; i++)
+                *x->x_outs[i]++ = *x->x_ins[i]++ * f;
             }
         
         else if (f != target){
@@ -197,7 +207,9 @@ static t_int *autofade_perform(t_int *w){
                     frac = tf.tf_d - UNITBIT32;
                     f1 = addr[0];
                     f2 = addr[1];
-                    *out++ = in * (f1 + frac * (f2 - f1));
+                    
+                    for(i = 0; i < x->x_ch; i++)
+                        *x->x_outs[i]++ = *x->x_ins[i]++ * (f1 + frac * (f2 - f1));
                     
                     continue;
                 }
@@ -205,7 +217,8 @@ static t_int *autofade_perform(t_int *w){
 	    incr = 0.;
 	    nleft = 0;
         last = f;
-	    *out++ = in * f;
+        for(i = 0; i < x->x_ch; i++)
+            *x->x_outs[i]++ = *x->x_ins[i]++ * f;
         }
         
         else if (nleft > 0){
@@ -223,26 +236,39 @@ static t_int *autofade_perform(t_int *w){
             frac = tf.tf_d - UNITBIT32;
             f1 = addr[0];
             f2 = addr[1];
-            *out++ = in * (f1 + frac * (f2 - f1));
+            
+            for(i = 0; i < x->x_ch; i++)
+                *x->x_outs[i]++ = *x->x_ins[i]++ * (f1 + frac * (f2 - f1));
             
             if (--nleft == 1){
                 incr = 0.;
                 last = target;
                 }
             }
-        else *out++ = in * target;
+        else
+            for(i = 0; i < x->x_ch; i++)
+                *x->x_outs[i]++ = *x->x_ins[i]++ * target;
         };
     x->x_last = (PD_BIGORSMALL(last) ? 0. : last);
     x->x_target = (PD_BIGORSMALL(target) ? 0. : target);
     x->x_incr = incr;
     x->x_nleft = nleft;
-    return (w + 6);
+    return (w + 4 + x->x_ch * 2);
 }
 
 static void autofade_dsp(t_autofade *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    dsp_add(autofade_perform, 5, x, sp[0]->s_n, sp[0]->s_vec,
-        sp[1]->s_vec, sp[2]->s_vec);
+    int i, count = (x->x_ch * 2) + 3;
+    t_int **sigvec;
+    sigvec  = (t_int **) calloc(count, sizeof(t_int *));
+    for(i = 0; i < count; i++)
+        sigvec[i] = (t_int *) calloc(sizeof(t_int), 1);     // init sigvec
+    sigvec[0] = (t_int *)x;                                 // 1st => object
+    sigvec[1] = (t_int *)sp[0]->s_n;                        // 2nd => block (n)
+    for(i = 2; i < count; i++)                              // ins/out
+        sigvec[i] = (t_int *)sp[i-2]->s_vec;
+    dsp_addv(autofade_perform, count, (t_int *)sigvec);
+    free(sigvec);
 }
 
 static void *autofade_new(t_symbol *s, int argc, t_atom *argv){
@@ -263,19 +289,19 @@ static void *autofade_new(t_symbol *s, int argc, t_atom *argv){
         while(argc > 0){
             if(argv -> a_type == A_SYMBOL && !argnum){
                 t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-                if(strcmp(curarg->s_name, "lin")==0)
+                if(!strcmp(curarg->s_name, "lin"))
                     x->x_table = autofade_table_lin;
-                else if(strcmp(curarg->s_name, "linsin")==0)
+                else if(!strcmp(curarg->s_name, "linsin"))
                     x->x_table = autofade_table_linsin;
-                else if(strcmp(curarg->s_name, "sqrt")==0)
+                else if(!strcmp(curarg->s_name, "sqrt"))
                     x->x_table = autofade_table_sqrt;
-                else if(strcmp(curarg->s_name, "sin")==0)
+                else if(!strcmp(curarg->s_name, "sin"))
                     x->x_table = autofade_table_sin;
-                else if(strcmp(curarg->s_name, "hannsin")==0)
+                else if(!strcmp(curarg->s_name, "hannsin"))
                     x->x_table = autofade_table_hannsin;
-                else if(strcmp(curarg->s_name, "linsin")==0)
+                else if(!strcmp(curarg->s_name, "linsin"))
                     x->x_table = autofade_table_linsin;
-                else if(strcmp(curarg->s_name, "hann")==0)
+                else if(!strcmp(curarg->s_name, "hann"))
                     x->x_table = autofade_table_hann;
                 else
                     goto errstate;
@@ -302,12 +328,15 @@ static void *autofade_new(t_symbol *s, int argc, t_atom *argv){
         }
     }
 /////////////////////////////////////////////////////////////////////////////////////
-    if(ch <1)
+    if(ch < 1)
         ch = 1;
+    if(ch > 64)
+        ch = 64;
+    x->x_ch = ch;
     t_int i;
-    for(i = 0; i < ch; i++)
+    for(i = 0; i < x->x_ch; i++)
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-    for(i = 0; i < ch; i++)
+    for(i = 0; i < x->x_ch; i++)
         outlet_new((t_object *)x, &s_signal);
     return (x);
     errstate:
@@ -379,7 +408,7 @@ static void autofade_tilde_maketable(void){
 void autofade_tilde_setup(void){
     autofade_class = class_new(gensym("autofade~"), (t_newmethod)autofade_new, 0,
                     sizeof(t_autofade), 0, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(autofade_class, t_autofade, x_in);
+    CLASS_MAINSIGNALIN(autofade_class, t_autofade, x_f);
     class_addmethod(autofade_class, (t_method) autofade_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(autofade_class, (t_method)autofade_lin, gensym("lin"), 0);
     class_addmethod(autofade_class, (t_method)autofade_linsin, gensym("linsin"), 0);
