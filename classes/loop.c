@@ -11,23 +11,34 @@ typedef struct _loop{
     t_int       x_counter_start;
     t_int       x_offset;
     t_int       x_count;
+    t_int       x_inc;
     t_int       x_running;
 }t_loop;
 
 static t_class *loop_class;
 
 static void loop_dobang(t_loop *x){
-    if (!x->x_running){
-        int count = x->x_counter_start;
-        int target = x->x_target;
-        int counter_start = x->x_counter_start;
+    if(!x->x_running){
+        t_int count = x->x_counter_start;
+        t_int target = x->x_target;
+        t_int counter_start = x->x_counter_start;
         x->x_running = LOOP_RUNNING;
 // continue from where it stoped, even if counter_start changed
-        for (count = x->x_count; count < target; count++){
-            outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
-            x->x_count++;
-            if(x->x_running == LOOP_PAUSED)
-                return;
+        if(x->x_inc == 1){
+            for(count = x->x_count; count < target; count++){
+                outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
+                x->x_count += x->x_inc;
+                if(x->x_running == LOOP_PAUSED)
+                    return;
+            }
+        }
+        else{
+            for(count = x->x_count; count > target; count--){
+                outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
+                x->x_count += x->x_inc;
+                if(x->x_running == LOOP_PAUSED)
+                    return;
+            }
         }
     x->x_count = counter_start;
     x->x_running = 0;
@@ -43,12 +54,21 @@ static void loop_bang(t_loop *x){
 static void loop_float(t_loop *x, t_float f){
     x->x_target = (int)f;
     x->x_counter_start = 0;
+    x->x_inc = 1;
     loop_bang(x);
 }
 
 static void loop_list(t_loop *x, t_symbol *s, int ac, t_atom *av){
     x->x_counter_start = (int)atom_getfloat(av);
-    x->x_target = (int)atom_getfloat(av+1) + 1;
+    x->x_target = (int)atom_getfloat(av+1);
+    if(x->x_counter_start > x->x_target){
+        x->x_inc = -1;
+        x->x_target--;
+    }
+    else{
+        x->x_inc = 1;
+        x->x_target++;
+    }
     loop_bang(x);
 }
 
@@ -59,7 +79,7 @@ static void loop_pause(t_loop *x){
 }
 
 static void loop_resume(t_loop *x){
-    if (x->x_running == LOOP_PAUSED){
+    if(x->x_running == LOOP_PAUSED){
         x->x_running = 0;
         loop_dobang(x);
     }
@@ -112,9 +132,15 @@ static void *loop_new(t_symbol *s, int argc, t_atom *argv){
     if(f2){
         x->x_counter_start = (int)f1;
         x->x_target = (int)f2 + 1;
+        if(x->x_counter_start > x->x_target)
+            x->x_inc = -1;
+        else
+            x->x_inc = 1;
     }
-    else if(f1)
+    else if(f1){
         x->x_target = (int)f1;
+        x->x_inc = 1;
+    }
     x->x_count = x->x_counter_start;
     x->x_running = 0;
     x->x_offset = (int)offset;

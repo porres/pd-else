@@ -119,7 +119,7 @@ static t_int *autofade_perform(t_int *w){
     t_autofade *x = (t_autofade *)(w[1]);
     t_int nblock = (int)(w[2]);
     t_float *in_gate = (t_float *)(w[3]);               // gate input
-    t_int i;
+    t_int i, j;
     for(i = 0; i < x->x_ch; i++)
         x->x_ins[i] = (t_float *)(w[4 + i]);            // channel inputs
     for(i = 0; i < x->x_ch; i++)
@@ -174,8 +174,8 @@ static t_int *autofade_perform(t_int *w){
                     f1 = addr[0];
                     f2 = addr[1];
                     
-                    for(i = 0; i < x->x_ch; i++)
-                        *x->x_outs[i]++ = *x->x_ins[i]++ * (f1 + frac * (f2 - f1));
+                    for(i = 0, j = x->x_ch * 2 - 1; i < x->x_ch; i++, j--)
+                        *x->x_outs[j]++ = *x->x_ins[i]++ * (f1 + frac * (f2 - f1));
                     
                     continue;
                     }
@@ -183,8 +183,8 @@ static t_int *autofade_perform(t_int *w){
             incr = 0.;
             nleft = 0;
             last = f;
-            for(i = 0; i < x->x_ch; i++)
-                *x->x_outs[i]++ = *x->x_ins[i]++ * f;
+                    for(i = 0, j = x->x_ch * 2 - 1; i < x->x_ch; i++, j--)
+                *x->x_outs[j]++ = *x->x_ins[i]++ * f;
             }
         
         else if (f != target){
@@ -208,8 +208,8 @@ static t_int *autofade_perform(t_int *w){
                     f1 = addr[0];
                     f2 = addr[1];
                     
-                    for(i = 0; i < x->x_ch; i++)
-                        *x->x_outs[i]++ = *x->x_ins[i]++ * (f1 + frac * (f2 - f1));
+                    for(i = 0, j = x->x_ch * 2 - 1; i < x->x_ch; i++, j--)
+                        *x->x_outs[j]++ = *x->x_ins[i]++ * (f1 + frac * (f2 - f1));
                     
                     continue;
                 }
@@ -217,8 +217,8 @@ static t_int *autofade_perform(t_int *w){
 	    incr = 0.;
 	    nleft = 0;
         last = f;
-        for(i = 0; i < x->x_ch; i++)
-            *x->x_outs[i]++ = *x->x_ins[i]++ * f;
+                    for(i = 0, j = x->x_ch * 2 - 1; i < x->x_ch; i++, j--)
+            *x->x_outs[j]++ = *x->x_ins[i]++ * f;
         }
         
         else if (nleft > 0){
@@ -237,8 +237,8 @@ static t_int *autofade_perform(t_int *w){
             f1 = addr[0];
             f2 = addr[1];
             
-            for(i = 0; i < x->x_ch; i++)
-                *x->x_outs[i]++ = *x->x_ins[i]++ * (f1 + frac * (f2 - f1));
+                    for(i = 0, j = x->x_ch * 2 - 1; i < x->x_ch; i++, j--)
+                *x->x_outs[j]++ = *x->x_ins[i]++ * (f1 + frac * (f2 - f1));
             
             if (--nleft == 1){
                 incr = 0.;
@@ -246,8 +246,8 @@ static t_int *autofade_perform(t_int *w){
                 }
             }
         else
-            for(i = 0; i < x->x_ch; i++)
-                *x->x_outs[i]++ = *x->x_ins[i]++ * target;
+                    for(i = 0, j = x->x_ch * 2 - 1; i < x->x_ch; i++, j--)
+                *x->x_outs[j]++ = *x->x_ins[i]++ * target;
         };
     x->x_last = (PD_BIGORSMALL(last) ? 0. : last);
     x->x_target = (PD_BIGORSMALL(target) ? 0. : target);
