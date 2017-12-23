@@ -2,8 +2,9 @@
 
 #include "m_pd.h"
 
-#define LOOP_RUNNING  1
-#define LOOP_PAUSED   2
+#define OFF      0
+#define RUNNING  1
+#define PAUSED   2
 
 typedef struct _loop{
     t_object    x_obj;
@@ -13,41 +14,36 @@ typedef struct _loop{
     t_int       x_count;
     t_int       x_inc;
     t_int       x_running;
+    t_outlet   *x_bangout;
 }t_loop;
 
 static t_class *loop_class;
 
 static void loop_dobang(t_loop *x){
     if(!x->x_running){
-        t_int count = x->x_counter_start;
-        t_int target = x->x_target;
-        t_int counter_start = x->x_counter_start;
-        x->x_running = LOOP_RUNNING;
-// continue from where it stoped, even if counter_start changed
+        x->x_running = RUNNING;
         if(x->x_inc == 1){
-            for(count = x->x_count; count < target; count++){
+            for(x->x_count; x->x_count < x->x_target; x->x_count++){
                 outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
-                x->x_count += x->x_inc;
-                if(x->x_running == LOOP_PAUSED)
+                if(x->x_running == PAUSED)
                     return;
             }
         }
         else{
-            for(count = x->x_count; count > target; count--){
+            for(x->x_count; x->x_count > x->x_target; x->x_count--){
                 outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
-                x->x_count += x->x_inc;
-                if(x->x_running == LOOP_PAUSED)
+                if(x->x_running == PAUSED)
                     return;
             }
         }
-    x->x_count = counter_start;
-    x->x_running = 0;
+        outlet_bang(x->x_bangout);
+        x->x_running = OFF;
     }
 }
 
 static void loop_bang(t_loop *x){
     x->x_count = x->x_counter_start;
-    x->x_running = 0;
+    x->x_running = OFF;
     loop_dobang(x);
 }
 
@@ -73,20 +69,15 @@ static void loop_list(t_loop *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void loop_pause(t_loop *x){
-    if(!x->x_running)
-        x->x_count = x->x_target; // ???
-    x->x_running = LOOP_PAUSED;
+    if(x->x_running  == RUNNING)
+        x->x_running = PAUSED;
 }
 
-static void loop_resume(t_loop *x){
-    if(x->x_running == LOOP_PAUSED){
-        x->x_running = 0;
-        loop_dobang(x);
+static void loop_continue(t_loop *x){
+    if(x->x_running == PAUSED){
+        x->x_running = OFF;
+    loop_dobang(x);
     }
-}
-
-static void loop_counter_start(t_loop *x, t_float f){
-    x->x_counter_start = (int)f;
 }
 
 static void loop_offset(t_loop *x, t_float f){
@@ -145,6 +136,7 @@ static void *loop_new(t_symbol *s, int argc, t_atom *argv){
     x->x_running = 0;
     x->x_offset = (int)offset;
     outlet_new((t_object *)x, &s_float);
+    x->x_bangout = outlet_new((t_object *)x, &s_bang);
     return (x);
 errstate:
     pd_error(x, "loop: improper args");
@@ -157,7 +149,6 @@ void loop_setup(void){
     class_addfloat(loop_class, loop_float);
     class_addlist(loop_class, loop_list);
     class_addmethod(loop_class, (t_method)loop_pause, gensym("pause"), 0);
-    class_addmethod(loop_class, (t_method)loop_resume, gensym("continue"), 0);
-    class_addmethod(loop_class, (t_method)loop_counter_start, gensym("start"), A_DEFFLOAT, 0);
+    class_addmethod(loop_class, (t_method)loop_continue, gensym("continue"), 0);
     class_addmethod(loop_class, (t_method)loop_offset, gensym("offset"), A_DEFFLOAT, 0);
 }
