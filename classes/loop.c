@@ -13,43 +13,46 @@ typedef struct _loop{
     t_int       x_offset;
     t_int       x_count;
     t_int       x_inc;
-    t_int       x_running;
+    t_int       x_status;
     t_outlet   *x_bangout;
 }t_loop;
 
 static t_class *loop_class;
 
-static void loop_dobang(t_loop *x){
-    if(!x->x_running){
-        x->x_running = RUNNING;
-        if(x->x_inc == 1){
-            for(x->x_count; x->x_count < x->x_target; x->x_count++){
-                outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
-                if(x->x_running == PAUSED)
-                    return;
-            }
+static void loop_do_loop(t_loop *x){ // The Actual Loop
+    x->x_status = RUNNING;
+    if(x->x_inc == 1){
+        while(x->x_count <= x->x_target){
+            outlet_float(((t_object *)x)->ob_outlet, x->x_count++ + x->x_offset);
+            if(x->x_status == PAUSED)
+                return;
         }
-        else{
-            for(x->x_count; x->x_count > x->x_target; x->x_count--){
-                outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
-                if(x->x_running == PAUSED)
-                    return;
-            }
-        }
-        outlet_bang(x->x_bangout);
-        x->x_running = OFF;
     }
+    else{
+        while(x->x_count >= x->x_target){
+            outlet_float(((t_object *)x)->ob_outlet, x->x_count-- + x->x_offset);
+            if(x->x_status == PAUSED)
+                return;
+        }
+    }
+    outlet_bang(x->x_bangout);
+    x->x_status = OFF;
 }
 
 static void loop_bang(t_loop *x){
-    x->x_count = x->x_counter_start;
-    x->x_running = OFF;
-    loop_dobang(x);
+    if(x->x_status != RUNNING){
+        x->x_count = x->x_counter_start; // reset
+        loop_do_loop(x);
+    }
 }
 
 static void loop_float(t_loop *x, t_float f){
-    x->x_target = (int)f;
+    if(f < 1){
+        pd_error(x, "loop: number of iterations need to be >= 1");
+        return;
+    }
     x->x_counter_start = 0;
+    x->x_target = (int)f - 1;
     x->x_inc = 1;
     loop_bang(x);
 }
@@ -57,27 +60,21 @@ static void loop_float(t_loop *x, t_float f){
 static void loop_list(t_loop *x, t_symbol *s, int ac, t_atom *av){
     x->x_counter_start = (int)atom_getfloat(av);
     x->x_target = (int)atom_getfloat(av+1);
-    if(x->x_counter_start > x->x_target){
+    if(x->x_counter_start > x->x_target)
         x->x_inc = -1;
-        x->x_target--;
-    }
-    else{
+    else
         x->x_inc = 1;
-        x->x_target++;
-    }
     loop_bang(x);
 }
 
 static void loop_pause(t_loop *x){
-    if(x->x_running  == RUNNING)
-        x->x_running = PAUSED;
+    if(x->x_status == RUNNING)
+        x->x_status = PAUSED;
 }
 
 static void loop_continue(t_loop *x){
-    if(x->x_running == PAUSED){
-        x->x_running = OFF;
-    loop_dobang(x);
-    }
+    if(x->x_status == PAUSED)
+        loop_do_loop(x);
 }
 
 static void loop_offset(t_loop *x, t_float f){
@@ -86,9 +83,8 @@ static void loop_offset(t_loop *x, t_float f){
 
 static void *loop_new(t_symbol *s, int argc, t_atom *argv){
     t_loop *x = (t_loop *)pd_new(loop_class);
-    t_float f1 = 0;
-    t_float f2 = 0;
-    t_float offset = 0;
+    x->x_status = OFF;
+    t_float f1 = 0, f2 = 0, offset = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
     while(argc > 0){
@@ -120,21 +116,21 @@ static void *loop_new(t_symbol *s, int argc, t_atom *argv){
         }
     };
 ///////////////////////////////////////////////////////////////////////////////////
+    x->x_offset = (int)offset;
     if(f2){
         x->x_counter_start = (int)f1;
-        x->x_target = (int)f2 + 1;
+        x->x_target = (int)f2;
         if(x->x_counter_start > x->x_target)
             x->x_inc = -1;
         else
             x->x_inc = 1;
     }
     else if(f1){
-        x->x_target = (int)f1;
+        if(f1 < 1)
+            f1 = 1;
+        x->x_target = (int)f1 - 1;
         x->x_inc = 1;
     }
-    x->x_count = x->x_counter_start;
-    x->x_running = 0;
-    x->x_offset = (int)offset;
     outlet_new((t_object *)x, &s_float);
     x->x_bangout = outlet_new((t_object *)x, &s_bang);
     return (x);
