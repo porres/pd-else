@@ -449,6 +449,14 @@ ifeq ($(findstring MINGW, $(uname)), MINGW)
   system = Windows
 endif
 
+# Unfortunately not all Mingw versions provide a link cc > gcc, therefore
+# gcc is hardcoded here (but not if CC is redefined).
+ifeq ($(system), Windows)
+  ifeq ($(origin CC), default)
+    CC = gcc
+  endif
+endif
+
 # evaluate possible system-specific multiline defines from library makefile
 $(eval $(for$(system)))
 
@@ -459,7 +467,16 @@ $(eval $(for$(system)))
 #=== architecture ==============================================================
 
 
-machine := $(shell uname -m)
+# native architecture
+machine := $(shell uname --machine)
+
+# Target architecture as reported by compiler. Give precedence to eventual
+# user-defined compiler. The first field of <cpu>-<vendor>-<os> is extracted.
+ifneq ($(origin CXX), default)
+  target.arch = $(firstword $(subst -, ,$(shell $(CXX) -dumpmachine)))
+else
+  target.arch = $(firstword $(subst -, ,$(shell $(CC) -dumpmachine)))
+endif
 
 
 ################################################################################
@@ -582,8 +599,6 @@ endif
 # TODO: decide whether -mms-bitfields should be specified.
 ifeq ($(system), Windows)
   extension = dll
-  CC = gcc
-  CXX = g++
   arch.c.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
   cpp.flags := -DMSW -DNT
   c.flags :=
