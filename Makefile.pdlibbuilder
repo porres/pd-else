@@ -425,37 +425,8 @@ endif
 
 
 ################################################################################
-### variables per platform #####################################################
+### platform detection #########################################################
 ################################################################################
-
-
-#=== flags per architecture ====================================================
-
-
-# Set architecture-dependent cflags, mainly for Linux. For Mac and Windows,
-# arch.c.flags are overriden below.
-
-machine := $(shell uname -m)
-
-# Raspberry Pi 1st generation
-ifeq ($(machine), armv6l)
-  arch.c.flags = -march=armv6 -mfpu=vfp -mfloat-abi=hard
-endif
-
-# Beagle, Udoo, RPi2 etc.
-ifeq ($(machine), armv7l)
-  arch.c.flags = -march=armv7-a -mfpu=vfpv3 -mfloat-abi=hard
-endif
-
-# Intel 32 bit, build with SSE and SSE2 instructions
-ifeq ($(findstring $(machine), i386 i686), $(machine))
-  arch.c.flags = -march=pentium4 -mfpmath=sse -msse -msse2
-endif
-
-# Intel/AMD 64 bit, build with SSE, SSE2 and SSE3 instructions
-ifeq ($(findstring $(machine), ia64 x86_64), $(machine))
-  arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3
-endif
 
 
 #=== operating system ==========================================================
@@ -483,6 +454,44 @@ $(eval $(for$(system)))
 
 
 # TODO: Cygwin, Android
+
+
+#=== architecture ==============================================================
+
+
+machine := $(shell uname -m)
+
+
+################################################################################
+### variables per platform #####################################################
+################################################################################
+
+
+#=== flags per architecture ====================================================
+
+
+# Set architecture-dependent cflags, mainly for Linux. For Mac and Windows,
+# arch.c.flags are overriden below.
+
+# Raspberry Pi 1st generation
+ifeq ($(machine), armv6l)
+  arch.c.flags = -march=armv6 -mfpu=vfp -mfloat-abi=hard
+endif
+
+# Beagle, Udoo, RPi2 etc.
+ifeq ($(machine), armv7l)
+  arch.c.flags = -march=armv7-a -mfpu=vfpv3 -mfloat-abi=hard
+endif
+
+# Intel 32 bit, build with SSE and SSE2 instructions
+ifeq ($(findstring $(machine), i386 i686), $(machine))
+  arch.c.flags = -march=pentium4 -mfpmath=sse -msse -msse2
+endif
+
+# Intel/AMD 64 bit, build with SSE, SSE2 and SSE3 instructions
+ifeq ($(findstring $(machine), ia64 x86_64), $(machine))
+  arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3
+endif
 
 
 #=== flags and paths for Linux =================================================
