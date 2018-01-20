@@ -594,13 +594,16 @@ ifeq ($(system), Windows)
   endif
 endif
 
-# On Windows we build 32 bit by default to match Pd(-extended) binary
-# distributions. This may change in the future.
 # TODO: decide whether -mms-bitfields should be specified.
 ifeq ($(system), Windows)
+  ifeq ($(findstring $(target.arch), ia64 x86_64), $(target.arch))
+    cpp.flags := -DMSW -DNT -DPD_LONGINTTYPE=__int64
+    arch.c.flags := -march=core2 -msse -msse2 -mfpmath=sse
+  else
+    cpp.flags := -DMSW -DNT
+    arch.c.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
+  endif
   extension = dll
-  arch.c.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
-  cpp.flags := -DMSW -DNT
   c.flags :=
   c.ldflags = -static-libgcc -shared \
     -Wl,--enable-auto-import "$(pdbinpath)/pd.dll"
