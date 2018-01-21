@@ -445,7 +445,7 @@ ifeq ($(uname), Darwin)
   system = Darwin
 endif
 
-ifeq ($(findstring $(uname), MINGW MSYS), $(uname))
+ifeq ($(filter MINGW% MSYS, $(uname)), $(uname)) 
   system = Windows
 endif
 
@@ -606,7 +606,7 @@ endif
 # TODO: decide whether -mms-bitfields should be specified.
 ifeq ($(system), Windows)
   cpp.flags := -DMSW -DNT
-  ifeq ($(findstring $(target.arch), i%86 mingw32), $(target.arch))
+  ifeq ($(filter i%86 mingw32, $(target.arch)), $(target.arch))
      arch.c.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
   else ifeq (x86_64, $(target.arch))
     cpp.flags := -DMSW -DNT -DPD_LONGINTTYPE=__int64
