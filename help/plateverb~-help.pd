@@ -1,15 +1,15 @@
-#N canvas 683 136 561 621 10;
-#X obj 3 290 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 683 136 563 604 10;
+#X obj 3 282 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 434 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 426 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 493 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 481 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 132 443 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 137 435 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 132 298 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 137 290 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 593 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 577 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -29,104 +29,102 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 82 40 cnv 4 4 4 empty empty plate 0 28 2 18 -233017 -1 0;
-#X text 167 300 signal;
-#X text 226 300 - input signal;
-#X text 167 443 signal;
-#X text 222 443 - left channel output;
+#X text 172 292 signal;
+#X text 222 292 - input signal;
+#X text 172 435 signal;
+#X text 222 435 - left channel output;
 #X obj 22 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
-#X obj 344 140 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 347 135 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 341 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 344 161 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 132 464 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 137 456 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 167 463 signal;
-#X text 222 463 - right channel output;
-#X obj 132 320 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 172 455 signal;
+#X text 222 455 - right channel output;
+#X obj 137 312 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 132 342 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 137 334 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X obj 132 363 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 137 355 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X obj 132 385 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
+#X obj 137 377 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
 ;
-#X obj 132 407 cnv 17 3 17 empty empty 5 5 9 0 16 -228856 -162280 0
+#X obj 137 399 cnv 17 3 17 empty empty 5 5 9 0 16 -228856 -162280 0
 ;
-#X text 173 322 float;
-#X text 173 345 float;
-#X text 173 367 float;
-#X text 173 387 float;
-#X text 173 410 float;
-#N canvas 688 67 844 556 example 0;
-#X obj 368 318 catch~ \$0-input;
-#X obj 645 161 throw~ \$0-input;
-#X obj 645 25 adc~ 1;
-#X obj 66 230 *~;
-#X obj 66 265 throw~ \$0-input;
-#X obj 503 211 hsl 128 15 0 1000 0 0 empty \$0-predelayms empty -2
+#X text 178 314 float;
+#X text 178 337 float;
+#X text 178 359 float;
+#X text 178 379 float;
+#X text 178 402 float;
+#N canvas 751 70 639 516 example 0;
+#X obj 282 155 catch~ \$0-input;
+#X obj 516 224 throw~ \$0-input;
+#X obj 516 88 adc~ 1;
+#X obj 58 232 *~;
+#X obj 58 267 throw~ \$0-input;
+#X obj 317 194 hsl 128 15 0 1000 0 0 empty \$0-predelayms empty -2
 -8 0 10 -228856 -1 -1 1270 1;
-#X floatatom 500 235 5 0 0 0 - - -, f 5;
-#X obj 523 257 hsl 128 15 0 1 0 0 empty \$0-cutoff empty -2 -8 0 10
+#X floatatom 314 218 5 0 0 0 - - -, f 5;
+#X obj 334 240 hsl 128 15 0 1 0 0 empty \$0-cutoff empty -2 -8 0 10
 -228856 -1 -1 7620 1;
-#X floatatom 520 283 5 0 0 0 - - -, f 5;
-#X obj 544 308 hsl 128 15 0 1 0 0 empty \$0-damping empty -2 -8 0 10
+#X floatatom 331 266 5 0 0 0 - - -, f 5;
+#X obj 352 291 hsl 128 15 0 1 0 0 empty \$0-damping empty -2 -8 0 10
 -228856 -1 -1 3175 1;
-#X floatatom 541 333 5 0 0 0 - - -, f 5;
-#X obj 564 356 hsl 128 15 0 1 0 0 empty \$0-fbgain empty -2 -8 0 10
+#X floatatom 349 316 5 0 0 0 - - -, f 5;
+#X obj 369 339 hsl 128 15 0 1 0 0 empty \$0-fbgain empty -2 -8 0 10
 -228856 -1 -1 10160 1;
-#X floatatom 561 379 5 0 0 0 - - -, f 5;
-#X obj 640 390 hsl 128 15 0 1 0 0 empty \$0-drywet empty -2 -8 0 10
+#X floatatom 366 362 5 0 0 0 - - -, f 5;
+#X obj 441 373 hsl 128 15 0 1 0 0 empty \$0-drywet empty -2 -8 0 10
 -228856 -1 -1 6350 1;
-#X floatatom 637 417 5 0 0 0 - - -, f 5;
-#X text 606 389 dry;
-#X text 774 391 wet;
-#X text 595 356 fb-gain;
-#X text 606 389 dry;
-#X text 606 389 dry;
-#X text 577 307 damping;
-#X text 606 389 dry;
-#X text 526 210 pre delay;
-#X obj 343 201 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X floatatom 438 400 5 0 0 0 - - -, f 5;
+#X text 410 372 dry;
+#X text 575 374 wet;
+#X text 403 339 fb-gain;
+#X text 410 372 dry;
+#X text 410 372 dry;
+#X text 385 290 damping;
+#X text 410 372 dry;
+#X text 340 193 pre delay;
+#X obj 89 61 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 89 89 else/impseq~;
+#X obj 89 124 throw~ \$0-input;
+#X obj 118 166 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 343 229 else/impseq~;
-#X obj 343 264 throw~ \$0-input;
-#X obj 126 164 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 126 192 else/impseq~;
-#X obj 126 217 else/decay2~ 50 1000;
-#N canvas 780 129 497 250 tone 0;
-#X obj 78 114 mtof;
-#X obj 78 43 inlet;
-#X obj 78 178 outlet~;
-#X obj 78 92 + 36;
-#X obj 78 70 random 48;
-#X obj 78 141 else/oscbank~ 6 -ratio 1 3 5.01 7.02 9.03 11.04 -amp
-1 0.3 0.2 0.15 0.1 0.1, f 47;
-#X connect 0 0 5 0;
+#X obj 118 204 else/impseq~;
+#X obj 118 229 else/decay2~ 50 1000;
+#N canvas 780 129 289 174 tone 0;
+#X obj 28 72 mtof;
+#X obj 28 20 inlet;
+#X obj 28 134 outlet~;
+#X obj 28 97 else/oscbank~ 6 -ratio 1 3 5.01 7.02 9.03 11.04 -amp 1
+0.3 0.2 0.15 0.1 0.1, f 38;
+#X obj 28 47 else/randi 36 84;
+#X connect 0 0 3 0;
 #X connect 1 0 4 0;
-#X connect 3 0 0 0;
-#X connect 4 0 3 0;
-#X connect 5 0 2 0;
-#X restore 66 200 pd tone;
-#X obj 645 50 else/gain~;
-#X obj 381 141 throw~ \$0-input;
-#X msg 337 80 open;
-#X text 98 76 Test the reverb with many sound input sources, f 25
+#X connect 3 0 2 0;
+#X connect 4 0 0 0;
+#X restore 58 202 pd tone;
+#X obj 516 113 else/gain~;
+#X obj 283 112 throw~ \$0-input;
+#X msg 239 51 open;
+#X text 50 16 Test the reverb with many sound input sources, f 25
 ;
-#X obj 55 383 noise~;
-#X obj 190 454 *~;
-#X obj 190 483 throw~ \$0-input;
-#X obj 208 405 else/decay~ 200;
-#X obj 208 339 else/impseq~;
-#X obj 208 315 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 31 376 noise~;
+#X obj 150 438 *~;
+#X obj 150 467 throw~ \$0-input;
+#X obj 165 407 else/decay~ 200;
+#X obj 165 341 else/impseq~;
+#X obj 165 317 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 55 414 else/lowpass~ 0 5;
-#X text 364 202 impulse;
-#X text 357 53 sample;
-#X text 685 89 audio input;
-#X text 149 164 tone;
-#X text 228 315 noise burst;
-#N canvas 1068 445 450 300 init 0;
+#X obj 31 407 else/lowpass~ 0 5;
+#X text 110 62 impulse;
+#X text 259 24 sample;
+#X text 511 64 audio input;
+#X text 139 166 tone;
+#X text 185 317 noise burst;
+#N canvas 990 445 450 300 init 0;
 #X obj 112 43 inlet;
 #X obj 112 95 f \$0;
 #X obj 112 72 else/lb;
@@ -135,31 +133,31 @@
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
-#X restore 703 452 pd init;
-#X obj 703 431 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X restore 504 435 pd init;
+#X obj 504 414 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 723 432 reload args;
-#X text 560 256 cutoff;
-#X obj 480 459 else/out~;
-#X obj 113 377 else/randf~ 500 3000, f 12;
-#X obj 480 417 else/plateverb~;
-#X obj 381 78 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 524 415 reload args;
+#X text 371 239 cutoff;
+#X obj 297 432 else/out~;
+#X obj 80 370 else/randf~ 500 3000, f 12;
+#X obj 283 49 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 406 80 play/stop;
-#X obj 381 114 else/sampler~ violin.wav -loop;
-#X connect 0 0 52 0;
+#X text 308 51 play/stop;
+#X obj 283 85 else/sampler~ violin.wav -loop;
+#X obj 297 389 else/plateverb~;
+#X connect 0 0 55 0;
 #X connect 2 0 30 0;
 #X connect 3 0 4 0;
 #X connect 5 0 6 0;
-#X connect 6 0 52 1;
+#X connect 6 0 55 1;
 #X connect 7 0 8 0;
-#X connect 8 0 52 2;
+#X connect 8 0 55 2;
 #X connect 9 0 10 0;
-#X connect 10 0 52 3;
+#X connect 10 0 55 3;
 #X connect 11 0 12 0;
-#X connect 12 0 52 4;
+#X connect 12 0 55 4;
 #X connect 13 0 14 0;
-#X connect 14 0 52 5;
+#X connect 14 0 55 5;
 #X connect 23 0 24 0;
 #X connect 24 0 25 0;
 #X connect 26 0 27 0;
@@ -168,7 +166,7 @@
 #X connect 28 0 3 1;
 #X connect 29 0 3 0;
 #X connect 30 0 1 0;
-#X connect 32 0 55 0;
+#X connect 32 0 54 0;
 #X connect 34 0 40 0;
 #X connect 35 0 36 0;
 #X connect 37 0 35 1;
@@ -178,34 +176,34 @@
 #X connect 40 0 35 0;
 #X connect 47 0 46 0;
 #X connect 51 0 40 1;
-#X connect 52 0 50 0;
-#X connect 52 1 50 1;
-#X connect 53 0 55 0;
-#X connect 55 0 31 0;
+#X connect 52 0 54 0;
+#X connect 54 0 31 0;
+#X connect 55 0 50 0;
+#X connect 55 1 50 1;
 #X restore 445 252 pd example;
-#X text 226 367 - damping (0 - 1);
-#X text 226 386 - feedback gain (0 - 1);
-#X text 226 345 - cutoff (0 - 1);
+#X text 222 359 - damping (0 - 1);
+#X text 222 378 - feedback gain (0 - 1);
+#X text 222 337 - cutoff (0 - 1);
 #X obj 3 3 cnv 15 301 42 empty empty plateverb~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X obj 129 40 cnv 4 4 4 empty empty reverb 0 28 2 18 -233017 -1 0;
-#X obj 189 225 else/out~;
-#X obj 99 152 else/sampler~ vacuous.wav 1 1;
+#X obj 197 220 else/out~;
+#X obj 107 147 else/sampler~ vacuous.wav 1 1;
 #X text 69 88 [plateverb~] is a reverb asbtraction based on a patch
 by Tom Erbe implementing the Dattorro plate stereo reverb model.;
-#X text 169 537 3) float - damping (0 - 1) - default 0;
-#X text 169 554 4) float - feedback gain (0 - 1) - default 0;
-#X text 169 571 5) float - dry/wet (0 - 1) - default 0;
-#X text 169 520 2) float - cutoff (0 - 1) - default 0;
-#X text 226 410 - dry/wet (0 - 1);
-#X text 311 140 dry;
-#X text 481 140 wet;
-#X text 226 322 - pre delay in ms (0 - 1000);
-#X text 169 503 1) float - pre delay in ms (0 - 1000) - default 0;
-#X obj 99 186 else/plateverb~ 50 0.6 0.25 0.8 0.8;
+#X text 156 523 3) float - damping (0 - 1) - default 0;
+#X text 156 540 4) float - feedback gain (0 - 1) - default 0;
+#X text 156 557 5) float - dry/wet (0 - 1) - default 0;
+#X text 156 506 2) float - cutoff (0 - 1) - default 0;
+#X text 222 402 - dry/wet (0 - 1);
+#X text 316 134 dry;
+#X text 483 135 wet;
+#X text 222 314 - pre delay in ms (0 - 1000);
+#X text 156 489 1) float - pre delay in ms (0 - 1000) - default 0;
+#X obj 107 181 else/plateverb~ 50 0.6 0.25 0.8 0.8, f 40;
 #X connect 20 0 21 0;
 #X connect 21 0 54 5;
 #X connect 43 0 54 0;
