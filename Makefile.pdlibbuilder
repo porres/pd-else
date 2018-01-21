@@ -506,7 +506,7 @@ ifeq ($(findstring $(machine), i386 i686), $(machine))
 endif
 
 # Intel/AMD 64 bit, build with SSE, SSE2 and SSE3 instructions
-ifeq ($(findstring $(machine), ia64 x86_64), $(machine))
+ifeq ($(findstring $(machine), x86_64), $(machine))
   arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3
 endif
 
@@ -596,7 +596,7 @@ endif
 
 # TODO: decide whether -mms-bitfields should be specified.
 ifeq ($(system), Windows)
-  ifeq ($(findstring $(target.arch), ia64 x86_64), $(target.arch))
+  ifeq ($(findstring $(target.arch), x86_64), $(target.arch))
     cpp.flags := -DMSW -DNT -DPD_LONGINTTYPE=__int64
     arch.c.flags := -march=core2 -msse -msse2 -mfpmath=sse
   else
