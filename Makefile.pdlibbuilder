@@ -445,7 +445,7 @@ ifeq ($(uname), Darwin)
   system = Darwin
 endif
 
-ifeq ($(findstring MINGW, $(uname)), MINGW)
+ifeq ($(findstring $(uname), MINGW MSYS), $(uname))
   system = Windows
 endif
 
