@@ -596,12 +596,14 @@ endif
 
 # TODO: decide whether -mms-bitfields should be specified.
 ifeq ($(system), Windows)
-  ifeq ($(findstring $(target.arch), x86_64), $(target.arch))
+  cpp.flags := -DMSW -DNT
+  ifeq ($(findstring $(target.arch), i%86 mingw32), $(target.arch))
+     arch.c.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
+  else ifeq (x86_64, $(target.arch))
     cpp.flags := -DMSW -DNT -DPD_LONGINTTYPE=__int64
     arch.c.flags := -march=core2 -msse -msse2 -mfpmath=sse
   else
-    cpp.flags := -DMSW -DNT
-    arch.c.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
+    arch.c.flags =
   endif
   extension = dll
   c.flags :=
