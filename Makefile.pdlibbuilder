@@ -467,15 +467,23 @@ $(eval $(for$(system)))
 #=== architecture ==============================================================
 
 
-# native architecture
-machine := $(shell uname --machine)
+# native architecture of the build machine
+build.arch := $(shell uname --machine)
 
 # Target architecture as reported by compiler. Give precedence to eventual
 # user-defined compiler. The first field of <cpu>-<vendor>-<os> is extracted.
 ifneq ($(origin CXX), default)
-  target.arch = $(firstword $(subst -, ,$(shell $(CXX) -dumpmachine)))
+  dumpmachine.cpu = $(firstword $(subst -, ,$(shell $(CXX) -dumpmachine)))
 else
-  target.arch = $(firstword $(subst -, ,$(shell $(CC) -dumpmachine)))
+  dumpmachine.cpu = $(firstword $(subst -, ,$(shell $(CC) -dumpmachine)))
+endif
+
+# Target architecture as reported by compiler is only used for Windows at the
+# moment. For other systems this still has to be tested.
+ifeq ($(system), Windows)
+  target.arch = $(dumpmachine.cpu)
+else
+  target.arch = $(build.arch)
 endif
 
 
@@ -491,19 +499,19 @@ endif
 # arch.c.flags are overriden below.
 
 # Raspberry Pi 1st generation
-ifeq ($(machine), armv6l)
+ifeq ($(target.arch), armv6l)
   arch.c.flags = -march=armv6 -mfpu=vfp -mfloat-abi=hard
 
 # Beagle, Udoo, RPi2 etc.
-else ifeq ($(machine), armv7l)
+else ifeq ($(target.arch), armv7l)
   arch.c.flags = -march=armv7-a -mfpu=vfpv3 -mfloat-abi=hard
 
 # Intel 32 bit, build with SSE and SSE2 instructions
-else ifeq ($(findstring $(machine), i386 i686), $(machine))
+else ifeq ($(findstring $(target.arch), i386 i686), $(target.arch))
   arch.c.flags = -march=pentium4 -mfpmath=sse -msse -msse2
   
 # Intel/AMD 64 bit, build with SSE, SSE2 and SSE3 instructions
-else ifeq ($(findstring $(machine), x86_64), $(machine))
+else ifeq ($(findstring $(target.arch), x86_64), $(target.arch))
   arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3
   
 # if none of the above architectures detected
@@ -560,12 +568,12 @@ ifeq ($(system), Darwin)
     -compatibility_version 1 -current_version 1.0
   stripflags = -x
   version.flag := $(filter $(cflags), -mmacosx-version-min=%)
-  ifeq ($(machine), i386)
+  ifeq ($(target.arch), i386)
     cxx.flags := -fcheck-new
     arch := ppc i386 x86_64
     version.flag ?= -mmacosx-version-min=10.4
   endif
-  ifeq ($(machine), x86_64)
+  ifeq ($(target.arch), x86_64)
     arch := i386 x86_64
     version.flag ?= -mmacosx-version-min=10.5
   endif
