@@ -610,7 +610,7 @@ ifeq ($(system), Windows)
      arch.c.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
   else ifeq (x86_64, $(target.arch))
     cpp.flags := -DMSW -DNT -DPD_LONGINTTYPE=__int64
-    arch.c.flags := -march=core2 -msse -msse2 -mfpmath=sse
+    arch.c.flags := -march=core2 -msse -msse2 -msse3 -mfpmath=sse
   else
     arch.c.flags =
   endif
