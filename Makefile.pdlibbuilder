@@ -493,21 +493,22 @@ endif
 # Raspberry Pi 1st generation
 ifeq ($(machine), armv6l)
   arch.c.flags = -march=armv6 -mfpu=vfp -mfloat-abi=hard
-endif
 
 # Beagle, Udoo, RPi2 etc.
-ifeq ($(machine), armv7l)
+else ifeq ($(machine), armv7l)
   arch.c.flags = -march=armv7-a -mfpu=vfpv3 -mfloat-abi=hard
-endif
 
 # Intel 32 bit, build with SSE and SSE2 instructions
-ifeq ($(findstring $(machine), i386 i686), $(machine))
+else ifeq ($(findstring $(machine), i386 i686), $(machine))
   arch.c.flags = -march=pentium4 -mfpmath=sse -msse -msse2
-endif
-
+  
 # Intel/AMD 64 bit, build with SSE, SSE2 and SSE3 instructions
-ifeq ($(findstring $(machine), x86_64), $(machine))
+else ifeq ($(findstring $(machine), x86_64), $(machine))
   arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3
+  
+# if none of the above architectures detected
+else
+  arch.c.flags =
 endif
 
 
