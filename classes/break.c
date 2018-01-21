@@ -63,12 +63,12 @@ static void break_anything(t_break *x, t_symbol *s, int ac, t_atom *av){
 
 static void *break_new(t_symbol *selector, int ac, t_atom* av){
   t_break *x = (t_break *)pd_new(break_class);
-  if(ac && ((av)->a_type == A_SYMBOL)){
-        x->x_separator = atom_getsymbol(av)->s_name[0];
-        x->x_break = 1;
-        }
+  if(ac && av->a_type == A_SYMBOL){
+      x->x_separator = atom_getsymbol(av)->s_name[0];
+      x->x_break = 1;
+  }
   outlet_new(&x->x_obj, &s_anything);
-  return (x);
+  return(x);
 }
 
 void break_setup(void){

@@ -35,10 +35,10 @@
 0;
 #X obj 194 145 else/imp~ 1;
 #X obj 194 227 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 39595 256;
+-228856 -1 -1 931 256;
 #X obj 194 201 else/sig2float~;
 #X obj 197 250 hsl 128 15 0 44100 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 11403 1;
+-228856 -1 -1 268 1;
 #X obj 163 146 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 134 479 signal;
@@ -341,7 +341,6 @@ different loop points and a reset/restart value outside the loop.;
 #X msg 214 481 mode 1;
 #X obj 128 511 else/ramp~ 1 10000 50000;
 #X msg 269 446 50000;
-#X text 222 391 implementing "else/susloop~";
 #X text 157 391 loop;
 #X connect 0 0 1 0;
 #X connect 1 0 20 3;
@@ -382,10 +381,10 @@ different loop points and a reset/restart value outside the loop.;
 #X text 176 374 - (re)starts incrementing;
 #N canvas 326 258 1052 471 examples-1 0;
 #X obj 71 258 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 99.6049 256;
+-228856 -1 -1 7.86899 256;
 #X obj 71 229 else/sig2float~;
 #X obj 71 293 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 9960 1;
+-1 -1 787 1;
 #X obj 71 170 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 470 202 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -463,7 +462,7 @@ the rightmost example., f 49;
 #X restore 463 178 pd examples-1;
 #N canvas 480 163 823 384 examples-2 0;
 #X obj 521 278 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 63.5 256;
+-228856 -1 -1 65.8275 256;
 #X obj 521 249 else/sig2float~;
 #X obj 574 147 *~;
 #X obj 614 146 else/pulse~ 1;
@@ -471,7 +470,7 @@ the rightmost example., f 49;
 #X text 642 322 127;
 #X text 573 322 63.5;
 #X obj 524 305 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 6350 1;
+-1 -1 6583 1;
 #X text 433 25 This examples uses a [*~] start and stop the ramp increment.
 This allows you to stop and start with sample accuracy. Additionally
 \, we use [togedge~] to stop and reset the ramp as in the "reset" message

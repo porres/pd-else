@@ -1,11 +1,11 @@
-#N canvas 770 349 561 480 10;
-#X obj 3 358 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 577 66 560 490 10;
+#X obj 3 335 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 390 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 367 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 419 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 396 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 3 453 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 462 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -33,25 +33,34 @@
 #X restore 2 4 graph;
 #X obj 120 40 cnv 4 4 4 empty empty interface 0 28 2 18 -233017 -1
 0;
-#X text 74 88 [setdsp~] is a convenient abstraction to display and
+#X obj 105 375 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 106 344 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 209 201 else/setdsp~;
+#X text 81 237 [setdsp~] object ==>;
+#X text 261 213 <=== click to change the status, f 11;
+#X obj 209 281 else/display;
+#X obj 209 311 print set_dsp;
+#X text 102 408 1) float -, f 10;
+#X text 57 88 [setdsp~] is a convenient abstraction to display and
 set Pd's audio engine (aka 'DSP') state. You can just click on it to
-change it to On/Off via it toggle interface. This object is commonly
+change it to On/Off via its toggle interface. This object is commonly
 found in the documentation of the ELSE library audio objects \, at
-the top right corner.;
-#X text 76 163 By default \, the [setdsp~] object will check the current
-DSP state and load accordingly (on or off). But you can give it a flag
-to set the DSP state (-on/-off).;
-#X text 149 430 1) symbol - dsp status flag: -off or -on;
-#X obj 132 398 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 133 367 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 263 224 else/setdsp~;
-#X text 135 260 [setdsp~] object ==>;
-#X text 315 236 <=== click to change the status, f 11;
-#X obj 263 304 else/display;
-#X obj 263 334 print set_dsp;
-#X text 175 368 float - sets dsp status;
-#X text 175 399 float - dsp status;
-#X connect 22 0 25 0;
-#X connect 25 0 26 0;
+the top right corner., f 74;
+#X text 57 139 By default \, the [setdsp~] object will check the current
+DSP state and load accordingly (on or off). But you can give it an
+argument to set it on/off., f 74;
+#X text 142 345 float - sets dsp status: non-0 turns it on and 0 turns
+it off, f 63;
+#X text 142 376 float - dsp status: 1 (for on) or 0 (for off);
+#X text 171 408 a non-0 value forces the status to be on \, while a
+0 value forces it to be off. If no argument is given \, the default
+behaviour is to check the current DSP state and load the GUI interface
+accordingly (on or off), f 61;
+#X obj 209 181 nbx 2 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 239 179 <= set the state via a float message;
+#X connect 19 0 22 0;
+#X connect 22 0 23 0;
+#X connect 30 0 19 0;
