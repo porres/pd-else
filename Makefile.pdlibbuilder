@@ -468,7 +468,7 @@ $(eval $(for$(system)))
 
 
 # native architecture of the build machine
-build.arch := $(shell uname --machine)
+build.arch := $(shell uname -m)
 
 # Target architecture as reported by compiler. Give precedence to eventual
 # user-defined compiler. The first field of <cpu>-<vendor>-<os> is extracted.
