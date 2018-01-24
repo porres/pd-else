@@ -1,5 +1,5 @@
-# Makefile.pdlibbuilder dated 2016-11-22
-version = 0.4.4
+# Makefile.pdlibbuilder dated 2018-01-23
+version = 0.5.0
 
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -425,37 +425,8 @@ endif
 
 
 ################################################################################
-### variables per platform #####################################################
+### platform detection #########################################################
 ################################################################################
-
-
-#=== flags per architecture ====================================================
-
-
-# Set architecture-dependent cflags, mainly for Linux. For Mac and Windows,
-# arch.c.flags are overriden below.
-
-machine := $(shell uname -m)
-
-# Raspberry Pi 1st generation
-ifeq ($(machine), armv6l)
-  arch.c.flags = -march=armv6 -mfpu=vfp -mfloat-abi=hard
-endif
-
-# Beagle, Udoo, RPi2 etc.
-ifeq ($(machine), armv7l)
-  arch.c.flags = -march=armv7-a -mfpu=vfpv3 -mfloat-abi=hard
-endif
-
-# Intel 32 bit, build with SSE and SSE2 instructions
-ifeq ($(findstring $(machine), i386 i686), $(machine))
-  arch.c.flags = -march=pentium4 -mfpmath=sse -msse -msse2
-endif
-
-# Intel/AMD 64 bit, build with SSE, SSE2 and SSE3 instructions
-ifeq ($(findstring $(machine), ia64 x86_64), $(machine))
-  arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3
-endif
 
 
 #=== operating system ==========================================================
@@ -474,8 +445,16 @@ ifeq ($(uname), Darwin)
   system = Darwin
 endif
 
-ifeq ($(findstring MINGW, $(uname)), MINGW)
+ifeq ($(filter MINGW% MSYS, $(uname)), $(uname)) 
   system = Windows
+endif
+
+# Unfortunately not all Mingw versions provide a link cc > gcc, therefore
+# gcc is hardcoded here (but not if CC is redefined).
+ifeq ($(system), Windows)
+  ifeq ($(origin CC), default)
+    CC = gcc
+  endif
 endif
 
 # evaluate possible system-specific multiline defines from library makefile
@@ -483,6 +462,62 @@ $(eval $(for$(system)))
 
 
 # TODO: Cygwin, Android
+
+
+#=== architecture ==============================================================
+
+
+# native architecture of the build machine
+build.arch := $(shell uname -m)
+
+# Target architecture as reported by compiler. Give precedence to eventual
+# user-defined compiler. The first field of <cpu>-<vendor>-<os> is extracted.
+ifneq ($(origin CXX), default)
+  dumpmachine.cpu = $(firstword $(subst -, ,$(shell $(CXX) -dumpmachine)))
+else
+  dumpmachine.cpu = $(firstword $(subst -, ,$(shell $(CC) -dumpmachine)))
+endif
+
+# Target architecture as reported by compiler is only used for Windows at the
+# moment. For other systems this still has to be tested.
+ifeq ($(system), Windows)
+  target.arch = $(dumpmachine.cpu)
+else
+  target.arch = $(build.arch)
+endif
+
+
+################################################################################
+### variables per platform #####################################################
+################################################################################
+
+
+#=== flags per architecture ====================================================
+
+
+# Set architecture-dependent cflags, mainly for Linux. For Mac and Windows,
+# arch.c.flags are overriden below.
+
+# Raspberry Pi 1st generation
+ifeq ($(target.arch), armv6l)
+  arch.c.flags = -march=armv6 -mfpu=vfp -mfloat-abi=hard
+
+# Beagle, Udoo, RPi2 etc.
+else ifeq ($(target.arch), armv7l)
+  arch.c.flags = -march=armv7-a -mfpu=vfpv3 -mfloat-abi=hard
+
+# Intel 32 bit, build with SSE and SSE2 instructions
+else ifeq ($(findstring $(target.arch), i386 i686), $(target.arch))
+  arch.c.flags = -march=pentium4 -mfpmath=sse -msse -msse2
+  
+# Intel/AMD 64 bit, build with SSE, SSE2 and SSE3 instructions
+else ifeq ($(findstring $(target.arch), x86_64), $(target.arch))
+  arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3
+  
+# if none of the above architectures detected
+else
+  arch.c.flags =
+endif
 
 
 #=== flags and paths for Linux =================================================
@@ -533,12 +568,12 @@ ifeq ($(system), Darwin)
     -compatibility_version 1 -current_version 1.0
   stripflags = -x
   version.flag := $(filter $(cflags), -mmacosx-version-min=%)
-  ifeq ($(machine), i386)
+  ifeq ($(target.arch), i386)
     cxx.flags := -fcheck-new
     arch := ppc i386 x86_64
     version.flag ?= -mmacosx-version-min=10.4
   endif
-  ifeq ($(machine), x86_64)
+  ifeq ($(target.arch), x86_64)
     arch := i386 x86_64
     version.flag ?= -mmacosx-version-min=10.5
   endif
@@ -568,15 +603,18 @@ ifeq ($(system), Windows)
   endif
 endif
 
-# On Windows we build 32 bit by default to match Pd(-extended) binary
-# distributions. This may change in the future.
 # TODO: decide whether -mms-bitfields should be specified.
 ifeq ($(system), Windows)
-  extension = dll
-  CC = gcc
-  CXX = g++
-  arch.c.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
   cpp.flags := -DMSW -DNT
+  ifeq ($(filter i%86 mingw32, $(target.arch)), $(target.arch))
+     arch.c.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
+  else ifeq (x86_64, $(target.arch))
+    cpp.flags := -DMSW -DNT -DPD_LONGINTTYPE=__int64
+    arch.c.flags := -march=core2 -msse -msse2 -msse3 -mfpmath=sse
+  else
+    arch.c.flags =
+  endif
+  extension = dll
   c.flags :=
   c.ldflags = -static-libgcc -shared \
     -Wl,--enable-auto-import "$(pdbinpath)/pd.dll"

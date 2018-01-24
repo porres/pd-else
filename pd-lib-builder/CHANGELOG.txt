@@ -1,5 +1,10 @@
 Changelog for Makefile.pdlibbuilder.
 
+v0.5.0, dated 2018-01-23
+Implement target architecture detection for Windows builds,
+and set appropriate options for 32 and 64 bit (used to be for 32 bit only).
+(feature, issue #37 #38, merge commit 215bf3e)
+
 v0.4.4, dated 2016-11-22
 Use variable 'system' when evaluating 'for{Linux,Darwin,Windows}'
 (bugfix, issue #31, commit 2c14110)
