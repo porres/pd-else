@@ -1,53 +1,53 @@
-#N canvas 634 27 560 453 10;
-#X obj 221 138 hsl 128 15 1 5000 1 0 empty empty empty -2 -8 0 10 -228856
+#N canvas 634 27 561 438 10;
+#X obj 222 138 hsl 128 15 1 5000 1 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 218 236 else/out~;
-#X obj 2 3 cnv 15 301 42 empty empty dust2~ 20 20 2 37 -233017 -1 0
+#X obj 219 236 else/out~;
+#X obj 3 3 cnv 15 301 42 empty empty dust2~ 20 20 2 37 -233017 -1 0
 ;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 3 graph;
+#X restore 3 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 306 3 pd;
+#X obj 346 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Random 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 24 40 cnv 4 4 4 empty empty Random 0 28 2 18 -233017 -1 0;
+#X obj 459 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 479 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 465 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 92 40 cnv 4 4 4 empty empty impulses 0 28 2 18 -233017 -1 0
+#X obj 93 40 cnv 4 4 4 empty empty impulses 0 28 2 18 -233017 -1 0
 ;
-#X obj 3 413 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 410 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 304 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 304 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 340 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 340 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 377 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 374 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 136 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 117 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 135 313 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 116 313 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 164 349 signal;
-#X text 152 389 1) float;
-#X obj 218 167 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 302 168 density;
-#X text 213 350 - random impulses;
-#X text 213 312 - density (rate) of random impulses;
-#X text 213 388 - density (default 0);
-#X obj 218 193 else/dust~ 1;
-#X text 170 313 float;
-#X text 92 90 [dust~] sends random impulse values (from -1 to 1) at
+#X text 176 349 signal;
+#X text 162 386 1) float;
+#X obj 219 167 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1 256;
+#X text 303 168 density;
+#X text 223 350 - random impulses;
+#X text 223 313 - density (rate) of random impulses;
+#X text 223 385 - density (default 0);
+#X text 93 90 [dust~] sends random impulse values (from -1 to 1) at
 random times according to a density parameter.;
+#X text 140 314 float/signal;
+#X obj 219 193 else/dust~ 1;
 #X connect 0 0 20 0;
-#X connect 20 0 25 0;
-#X connect 25 0 1 0;
-#X connect 25 0 1 1;
+#X connect 20 0 27 0;
+#X connect 27 0 1 0;
+#X connect 27 0 1 1;
