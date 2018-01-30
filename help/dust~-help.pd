@@ -1,7 +1,7 @@
-#N canvas 634 27 560 453 10;
-#X obj 221 138 hsl 128 15 1 5000 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 2000 1;
-#X obj 200 235 else/out~;
+#N canvas 312 23 561 454 10;
+#X obj 212 147 hsl 128 15 1 5000 1 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 191 244 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty dust~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -23,30 +23,54 @@
 0;
 #X obj 92 40 cnv 4 4 4 empty empty impulses 0 28 2 18 -233017 -1 0
 ;
-#X obj 3 413 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 426 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 304 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 340 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 353 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 377 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 390 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 126 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 126 362 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 125 313 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 125 313 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 188 349 signal;
-#X text 176 389 1) float;
-#X obj 218 167 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 3.82397 256;
-#X text 302 168 density;
-#X text 237 350 - random impulses;
+#X text 188 362 signal;
+#X text 176 402 1) float;
+#X obj 209 176 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 293 177 density;
+#X text 237 363 - random impulses;
 #X text 237 313 - density (rate) of random impulses;
-#X text 237 388 - density (default 0);
-#X obj 218 193 else/dust~ 1;
-#X text 92 89 [dust~] sends random impulse values (only positive values)
-at random times according to a density parameter.;
+#X text 237 401 - density (default 0);
+#X obj 209 202 else/dust~ 1;
 #X text 152 314 float/signal;
+#X text 152 332 seed <float>;
+#X text 236 332 - sets seed value;
+#N canvas 559 236 357 286 seed 0;
+#X obj 43 221 else/display~;
+#X obj 193 221 else/display~;
+#X text 254 84 <= set seed;
+#X text 60 23 Sync [dust~] objects with a seed value;
+#X msg 193 85 seed 507;
+#X obj 193 63 loadbang;
+#X obj 43 177 else/trighold~;
+#X obj 193 180 else/trighold~;
+#X obj 193 143 else/dust~ 1;
+#X obj 43 143 else/dust~ 1;
+#X connect 4 0 8 0;
+#X connect 4 0 9 0;
+#X connect 5 0 4 0;
+#X connect 6 0 0 0;
+#X connect 7 0 1 0;
+#X connect 8 0 7 0;
+#X connect 9 0 6 0;
+#X restore 465 267 pd seed;
+#X text 92 89 [dust~] is based on SuperCollider's "Dust" UGEN and outputs
+random impulse values (only positive values up to 1) at random times
+according to a density parameter.;
+#X text 444 187 see also:;
+#X obj 441 209 else/dust2~;
 #X connect 0 0 20 0;
 #X connect 20 0 25 0;
 #X connect 25 0 1 0;

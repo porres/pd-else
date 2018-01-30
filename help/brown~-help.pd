@@ -13,14 +13,12 @@
 ;
 #X obj 157 279 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 268 129 else/brown~;
+#X obj 235 131 else/brown~;
 #X text 131 343 Brown noise distinguishes from white noise (which the
 native Pd object [noise~] generates). White noise has constant spectral
 power per hertz of bandwidth \, while brown noise drops 6dB per octave.
 Subjectively \, brown noise sounds less hissy than white noise.;
-#X obj 247 165 else/out~;
-#X text 75 91 [brown~] generates brown noise (aka brownian noise or
-red noise) and outputs it.;
+#X obj 214 167 else/out~;
 #X obj 23 40 cnv 4 4 4 empty empty Brown 0 28 2 18 -233017 -1 0;
 #X obj 127 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
@@ -81,5 +79,8 @@ red noise) and outputs it.;
 #X connect 15 0 1 0;
 #X restore 484 197 pd seed;
 #X text 180 312 1) float - sets seed;
+#X text 75 91 [brown~] is based on SuperCollider's "BrownNoise" UGEN
+and generates brown noise (aka brownian noise or red noise) and outputs
+it.;
 #X connect 7 0 9 0;
 #X connect 7 0 9 1;
