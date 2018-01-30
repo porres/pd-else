@@ -1,17 +1,17 @@
-#N canvas 741 125 564 484 10;
-#X obj 4 280 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 702 49 561 562 10;
+#X obj 4 304 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 347 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 406 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 382 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 441 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 119 356 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 119 415 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 120 290 cnv 17 3 52 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 120 314 cnv 17 3 88 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 445 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 534 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 154 290 bang;
+#X text 154 314 bang;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -31,33 +31,24 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 230 182 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 159 189 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 148 356 float;
+#X text 148 415 float;
 #X obj 119 40 cnv 4 4 4 empty empty rate 0 28 2 18 -233017 -1 0;
 #X obj 3 3 cnv 15 301 42 empty empty sr~ 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 166 310 hz;
-#X text 160 328 khz;
-#X text 184 290 - get sample rate frequency (in Hz or Khz);
-#X text 184 356 - sample rate frequency (in Hz or Khz);
-#X text 184 310 - set and get the sample rate frequency in Hz;
-#X text 184 328 - set and get the sample rate frequency in Khz;
-#X msg 252 182 hz;
-#X msg 287 182 khz;
-#X text 142 390 (none);
-#X text 73 90 [sr~] reports the sample rate frequency when loading
-the patch or when receiving a bang. It reports it either in hz or khz.
-Unlike [samplerate~] \, it doesn't report up/down sampling rates. It
-also automatically loads the samplerate value when loading the patch.
-;
-#X obj 230 240 else/display 6;
-#X obj 230 212 else/sr~ -khz;
-#X obj 4 415 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 159 423 -khz;
-#X text 196 423 - sets frequency in khz, f 24;
+#X text 166 334 hz;
+#X text 160 352 khz;
+#X text 184 415 - sample rate frequency (in Hz or Khz);
+#X text 184 334 - set and get the sample rate frequency in Hz;
+#X text 184 352 - set and get the sample rate frequency in Khz;
+#X msg 181 189 hz;
+#X msg 213 189 khz;
+#X text 142 449 (none);
+#X obj 4 474 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 154 481 -khz;
 #N canvas 1049 171 508 284 up/downsampling 0;
 #X obj 123 182 samplerate~;
 #X obj 308 166 block~ 64 1 16;
@@ -81,7 +72,7 @@ rate running in the patch due to [block~]., f 56;
 #X connect 8 0 1 0;
 #X connect 8 0 5 0;
 #X connect 9 0 0 0;
-#X restore 413 216 pd up/downsampling;
+#X restore 414 235 pd up/downsampling;
 #N canvas 1049 171 484 249 pd-dsp-started 0;
 #X obj 212 120 r pd-dsp-started;
 #X text 42 35 The "pd-dsp-started" message is automatically sent when
@@ -91,8 +82,32 @@ rate may have changed in the audio settings., f 56;
 #X obj 212 155 else/sr~;
 #X connect 0 0 3 0;
 #X connect 3 0 2 0;
-#X restore 418 244 pd pd-dsp-started;
-#X connect 17 0 33 0;
-#X connect 28 0 33 0;
-#X connect 29 0 33 0;
-#X connect 33 0 32 0;
+#X restore 419 263 pd pd-dsp-started;
+#X msg 223 211 ms;
+#X msg 256 212 sec;
+#X obj 213 268 else/display;
+#X text 73 87 [sr~] reports the sample rate frequency or period when
+loading the patch or when receiving a bang. The frequency is reported
+either in hz or khz and the period either in seconds os miliseconds.
+Unlike [samplerate~] \, it doesn't report up/down sampling rates. It
+also automatically loads the samplerate value when loading the patch.
+, f 67;
+#X text 75 156 The default output is the sample rate frequency in hertz.
+;
+#X text 184 314 - get sample rate frequency or period;
+#X text 166 369 ms;
+#X text 184 369 - set and get the sample rate period in ms;
+#X text 160 387 sec;
+#X text 184 387 - set and get the sample rate period in seconds;
+#X text 184 481 - sets to frequency in khz;
+#X text 184 498 - sets to period in ms;
+#X text 184 515 - sets to period in seconds;
+#X text 160 498 -ms;
+#X text 154 515 -sec;
+#X obj 213 242 else/sr~ -khz;
+#X connect 17 0 49 0;
+#X connect 27 0 49 0;
+#X connect 28 0 49 0;
+#X connect 34 0 49 0;
+#X connect 35 0 49 0;
+#X connect 49 0 36 0;
