@@ -1,4 +1,4 @@
-#N canvas 699 134 560 465 10;
+#N canvas 473 113 561 506 10;
 #X obj 4 275 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 350 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -7,11 +7,11 @@
 0;
 #X obj 105 359 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 437 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 477 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -80,7 +80,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -134,7 +134,7 @@
 0;
 #X obj 24 42 cnv 4 4 4 empty empty Metronome 0 28 2 18 -233017 -1 0
 ;
-#X obj 4 6 cnv 15 301 42 empty empty metro~ 20 20 2 37 -233017 -1 0
+#X obj 4 6 cnv 15 301 42 empty empty tempo~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -147,21 +147,41 @@
 #X text 148 327 float/signal -;
 #X text 174 396 1) float;
 #X text 174 415 2) float;
-#X obj 199 142 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 199 142 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X text 253 327 bpm;
 #X text 252 359 impulses at metro beat;
 #X text 240 396 - bpm (default 0);
-#X text 64 91 The [metro~] object is like a clock~ that sends impulses
-at a time specified in bpm as in a metronome.;
 #X text 252 285 gate (on/off);
 #X text 240 415 - period multiplier (default 1);
 #X text 155 305 mul <float> -;
 #X text 252 305 period multipler;
-#X obj 294 142 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 280 145 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 199 168 else/metro~ 60;
+#X text 64 86 The [tempo~] object is like [imp~] \, but sends impulses
+at a time specified in bpm as in a metronome and is turned on/off by
+a gate input., f 61;
+#X obj 199 168 else/tempo~ 60;
+#X obj 4 439 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 205 449 -on;
+#X text 240 449 - initially turn it on;
+#N canvas 832 243 458 246 multiplier 0;
+#X obj 234 94 else/tempo~ 60 0.5 -on;
+#X obj 234 125 else/trig2bang~;
+#X obj 234 158 bng 30 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 79 126 else/trig2bang~;
+#X obj 79 159 bng 30 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 79 95 else/tempo~ 60 1 -on;
+#X text 54 32 By default \, the priod multiplier is "1" \, but you
+can change it with a 2nd argument.;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 3 0 4 0;
+#X connect 5 0 3 0;
+#X restore 436 223 pd multiplier;
 #X connect 25 0 35 0;
-#X connect 34 0 35 1;
+#X connect 33 0 35 1;
 #X connect 35 0 7 0;
 #X connect 35 0 7 1;
