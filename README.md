@@ -6,13 +6,13 @@
 
 ### Version 1.0 beta-8 (Unreleased)
 
-Needs Pd 0.48-0 or above
+Needs Pd 0.48-1 or above
 
 This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
 
 --------------------------------------------------------------------------
 
-	Copyright © 2017 Alexandre Torres Porres <porres@gmail.com>
+	Copyright © 2017-2018 Alexandre Torres Porres <porres@gmail.com>
 
    This work is free. You can redistribute it and/or modify it under the
    terms of the Do What The Fuck You Want To Public License, Version 2,
@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (165 objects):
+##Current Object list (166 objects):
 
 **MISCELLANEA: [3]**
 - [args]
@@ -208,14 +208,15 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [xselect~]
 - [xselect2~]
 
-**TRIGGERS: [17]**
+**TRIGGERS: [18]**
 - [coin~]
 - [dust~]
 - [dust2~]
 - [gatehold~]
 - [gate2imp~]
 - [pimp~]
-- [metro~]
+- [tempo]
+- [tempo~]
 - [pulsecount~]
 - [pulsediv~]
 - [sh~]

@@ -1,4 +1,4 @@
-#N canvas 473 113 561 506 10;
+#N canvas 559 23 561 506 10;
 #X obj 4 275 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 350 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -147,7 +147,7 @@
 #X text 148 327 float/signal -;
 #X text 174 396 1) float;
 #X text 174 415 2) float;
-#X obj 199 142 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 199 142 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 253 327 bpm;
 #X text 252 359 impulses at metro beat;
