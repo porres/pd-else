@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (166 objects):
+##Current Object list (167 objects):
 
 **MISCELLANEA: [3]**
 - [args]
@@ -208,7 +208,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [xselect~]
 - [xselect2~]
 
-**TRIGGERS: [18]**
+**TRIGGERS: [19]**
 - [coin~]
 - [dust~]
 - [dust2~]
@@ -222,6 +222,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [sh~]
 - [tdelay~]
 - [tdelay2~]
+- [togedge~]
 - [toggleff~]
 - [tgate~]
 - [match~]

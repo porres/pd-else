@@ -124,6 +124,7 @@ tdelay~.class.sources := classes/tdelay~.c
 tdelay2~.class.sources := classes/tdelay2~.c
 tgate~.class.sources := classes/tgate~.c
 toggleff~.class.sources := classes/toggleff~.c
+togedge~.class.sources := classes/togedge~.c
 trighold~.class.sources := classes/trighold~.c
 past~.class.sources := classes/past~.c
 vu~.class.sources := classes/vu~.c
