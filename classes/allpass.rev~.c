@@ -236,7 +236,7 @@ static void *allpass_rev_new(t_symbol *s, int argc, t_atom *argv){
     x->x_outlet = outlet_new((t_object *)x, &s_signal);
     return (x);
 errstate:
-    pd_error(x, "allpass_rev~: improper args");
+    pd_error(x, "allpass.rev~: improper args");
     return NULL;
 }
 

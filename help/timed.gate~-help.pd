@@ -5,24 +5,24 @@
 ;
 #X obj 4 427 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 86 403 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 96 403 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 4 495 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 86 295 cnv 17 3 68 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 96 295 cnv 17 3 68 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 86 371 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 96 371 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 192 372 - gate time in ms;
-#X text 137 436 1) float - gate time in ms (default 0 \, no gate);
-#X text 147 404 signal;
+#X text 202 372 - gate time in ms;
+#X text 147 436 1) float - gate time in ms (default 0 \, no gate);
+#X text 157 404 signal;
 #X obj 23 40 cnv 4 4 4 empty empty Timed 0 28 2 18 -233017 -1 0;
 #X obj 73 40 cnv 4 4 4 empty empty gate 0 28 2 18 -233017 -1 0;
 #X obj 113 40 cnv 4 4 4 empty empty from 0 28 2 18 -233017 -1 0;
 #X obj 156 40 cnv 4 4 4 empty empty impulses 0 28 2 18 -233017 -1 0
 ;
-#X obj 3 3 cnv 15 301 42 empty empty tgate~ 20 20 2 37 -233017 -1 0
-;
+#X obj 3 3 cnv 15 301 42 empty empty timed.gate~ 20 20 2 37 -233017
+-1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
@@ -147,25 +147,21 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X text 147 295 signal;
-#X text 105 372 float/signal;
-#X text 192 404 - timed gate;
+#X text 157 295 signal;
+#X text 115 372 float/signal;
+#X text 202 404 - timed gate;
 #X obj 309 252 else/display~ 9;
-#X text 154 313 float;
-#X text 68 88 When receiving an impulse or a float \, [tgate~] sends
-a timed gate (with the value of the impulse/float for the given duration
-\, 0 otherwise). The length of the gate is given in ms \, if 0 or less
-is given \, no gate is output., f 55;
-#X text 192 295 - impulse trigger with the gate value;
-#X text 193 313 - control trigger with the gate value;
-#X obj 99 251 else/display~ 9;
-#X msg 64 171 0.1;
-#X msg 99 171 -0.9;
-#X msg 141 171 13;
-#X obj 201 196 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 164 313 float;
+#X text 202 295 - impulse trigger with the gate value;
+#X text 203 313 - control trigger with the gate value;
+#X obj 86 251 else/display~ 9;
+#X msg 51 171 0.1;
+#X msg 86 171 -0.9;
+#X msg 128 171 13;
+#X obj 203 196 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 258 192 ms;
-#X text 201 177 gate time;
+#X text 260 192 ms;
+#X text 203 177 gate time;
 #X obj 309 194 else/zerocross~;
 #X obj 309 164 else/sine~ 1;
 #N canvas 938 106 450 420 more 0;
@@ -174,7 +170,6 @@ is given \, no gate is output., f 55;
 #X obj 106 283 noise~;
 #X obj 74 341 else/display~ 9;
 #X text 69 222 random impulses;
-#X obj 74 311 else/tgate~ 1000;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
 -262144 0 1;
@@ -278,39 +273,38 @@ is given \, no gate is output., f 55;
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 253 262 pd;
+#X restore 277 259 pd;
 #X obj 65 161 else/display~ 9;
-#X obj 65 131 else/tgate~ 1000;
 #X obj 65 107 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 211 159 else/display~ 9;
-#X obj 211 105 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 221 159 else/display~ 9;
+#X obj 221 105 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 211 129 else/tgate~ 1000 0.5;
-#X msg 241 104 1.5;
+#X msg 251 104 1.5;
 #X text 33 20 A bang will trigger the object to generate a gate. By
 default \, the initial gate value is "1" \, but you can change that
 with the second argument. A bang will also output the last received
 gate value from a signal or float input., f 53;
+#X obj 65 131 else/timed.gate~ 1000;
+#X obj 221 129 else/timed.gate~ 1000 0.5;
+#X obj 74 311 else/timed.gate~ 1000;
 #X connect 0 0 1 0;
-#X connect 1 0 5 0;
+#X connect 1 0 14 0;
 #X connect 2 0 1 1;
-#X connect 5 0 3 0;
-#X connect 8 0 7 0;
-#X connect 9 0 8 0;
-#X connect 11 0 12 0;
-#X connect 12 0 10 0;
-#X connect 13 0 12 0;
+#X connect 7 0 12 0;
+#X connect 9 0 13 0;
+#X connect 10 0 13 0;
+#X connect 12 0 6 0;
+#X connect 13 0 8 0;
+#X connect 14 0 3 0;
 #X restore 487 218 pd more \; examples;
-#X obj 309 222 else/tgate~ 666;
-#X text 137 455 2) float - initial gate amplitude (default 1);
-#X obj 99 221 else/tgate~ 500;
-#X text 161 330 bang;
-#X text 193 330 - control trigger with the last/initial gate value
+#X text 147 455 2) float - initial gate amplitude (default 1);
+#X text 171 330 bang;
+#X text 203 330 - control trigger with the last/initial gate value
 ;
-#X text 98 347 retrigger <f>;
-#X text 193 347 - non-zero sets to retrigger mode;
-#X text 137 471 3) float - non-zero sets to retrigger mode;
+#X text 108 347 retrigger <f>;
+#X text 203 347 - non-zero sets to retrigger mode;
+#X text 147 471 3) float - non-zero sets to retrigger mode;
 #N canvas 900 250 464 307 retrigger 0;
 #X obj 176 233 else/display~ 9;
 #X msg 298 164 retrigger \$1;
@@ -432,14 +426,20 @@ or the third argument., f 53;
 #X connect 5 0 6 0;
 #X connect 6 0 0 0;
 #X restore 459 254 pd retrigger;
-#X obj 147 197 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 134 197 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X connect 34 0 45 0;
-#X connect 35 0 45 0;
-#X connect 36 0 45 0;
-#X connect 37 0 45 1;
-#X connect 40 0 43 0;
-#X connect 41 0 40 0;
-#X connect 43 0 28 0;
-#X connect 45 0 33 0;
-#X connect 52 0 45 0;
+#X obj 86 221 else/timed.gate~ 500;
+#X text 68 88 When receiving an impulse or a float \, [timed.gate~]
+sends a timed gate (with the value of the impulse/float for the given
+duration \, 0 otherwise). The length of the gate is given in ms \,
+if 0 or less is given \, no gate is output.;
+#X obj 309 222 else/timed.gate~ 666;
+#X connect 33 0 50 0;
+#X connect 34 0 50 0;
+#X connect 35 0 50 0;
+#X connect 36 0 50 1;
+#X connect 39 0 52 0;
+#X connect 40 0 39 0;
+#X connect 49 0 50 0;
+#X connect 50 0 32 0;
+#X connect 52 0 28 0;

@@ -2,18 +2,18 @@
 
 #include "m_pd.h"
 
-static t_class *tdelay_class;
+static t_class *trig_delay_class;
 
-typedef struct _tdelay{
+typedef struct _trig_delay{
     t_object  x_obj;
     t_int     x_on;
     t_inlet  *x_del_let;
     t_float   x_count;
     t_float   x_sr_khz;
-} t_tdelay;
+} t_trig_delay;
 
-static t_int *tdelay_perform(t_int *w){
-    t_tdelay *x = (t_tdelay *)(w[1]);
+static t_int *trig_delay_perform(t_int *w){
+    t_trig_delay *x = (t_trig_delay *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in = (t_float *)(w[3]);
     t_float *del_in = (t_float *)(w[4]);
@@ -43,14 +43,14 @@ static t_int *tdelay_perform(t_int *w){
     return (w + 6);
 }
 
-static void tdelay_dsp(t_tdelay *x, t_signal **sp){
+static void trig_delay_dsp(t_trig_delay *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    dsp_add(tdelay_perform, 5, x, sp[0]->s_n,
+    dsp_add(trig_delay_perform, 5, x, sp[0]->s_n,
         sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
 }
 
-static void *tdelay_new(t_floatarg f1){
-    t_tdelay *x = (t_tdelay *)pd_new(tdelay_class);
+static void *trig_delay_new(t_floatarg f1){
+    t_trig_delay *x = (t_trig_delay *)pd_new(trig_delay_class);
     x->x_count = x->x_on = 0;
     x->x_sr_khz = sys_getsr() * 0.001;
     x->x_del_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -59,14 +59,14 @@ static void *tdelay_new(t_floatarg f1){
     return (x);
 }
 
-static void * tdelay_free(t_tdelay *x){
+static void * trig_delay_free(t_trig_delay *x){
     inlet_free(x->x_del_let);
     return (void *)x;
 }
 
-void tdelay_tilde_setup(void){
-    tdelay_class = class_new(gensym("tdelay~"), (t_newmethod)tdelay_new,
-        0, sizeof(t_tdelay), CLASS_DEFAULT, A_DEFFLOAT, 0);
-    class_addmethod(tdelay_class, nullfn, gensym("signal"), 0);
-    class_addmethod(tdelay_class, (t_method) tdelay_dsp, gensym("dsp"), 0);
+void setup_trig0x2edelay_tilde(void){
+    trig_delay_class = class_new(gensym("trig.delay~"), (t_newmethod)trig_delay_new,
+        0, sizeof(t_trig_delay), CLASS_DEFAULT, A_DEFFLOAT, 0);
+    class_addmethod(trig_delay_class, nullfn, gensym("signal"), 0);
+    class_addmethod(trig_delay_class, (t_method) trig_delay_dsp, gensym("dsp"), 0);
 }

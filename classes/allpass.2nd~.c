@@ -176,7 +176,7 @@ static void *allpass_2nd_new(t_symbol *s, int argc, t_atom *argv)
 
     return (x);
     errstate:
-        pd_error(x, "allpass_2nd~: improper args");
+        pd_error(x, "allpass.2nd~: improper args");
         return NULL;
 }
 
