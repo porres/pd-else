@@ -1,13 +1,13 @@
-#N canvas 572 27 562 471 10;
-#X obj 4 231 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 627 87 561 553 10;
+#X obj 4 281 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 325 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 402 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 361 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 438 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 125 334 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 125 411 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 446 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 523 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -33,71 +33,97 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X obj 125 240 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 125 291 cnv 17 3 62 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 125 280 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 125 357 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 134 371 1) float;
-#X text 134 390 2) float;
-#X obj 197 140 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 134 448 1) float;
+#X text 134 467 2) float;
+#X obj 200 141 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 200 371 - bpm (default 0);
-#X obj 246 143 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 200 448 - bpm (default 0);
+#X obj 249 144 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 4 414 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 163 424 -on;
-#X text 198 424 - initially turn it on;
-#X obj 197 200 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 4 491 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 163 501 -on;
+#X text 198 501 - initially turn it on;
+#X obj 200 247 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 64 85 The [tempo] object sends bang at a time specified in
 bpm. it has a swing parameter and is turned on and off by a toggle.
 , f 61;
-#X text 186 123 on/off;
-#X text 255 122 BPM;
-#X text 225 241 toggle (on/off);
-#X text 164 241 float -;
-#X text 164 281 float -;
-#X obj 125 302 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X text 189 124 on/off;
+#X text 258 123 BPM;
+#X text 225 289 toggle (on/off);
+#X text 164 289 float -;
+#X text 164 358 float -;
+#X obj 125 379 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 164 303 float -;
-#X text 170 334 bang -;
-#X text 225 334 bangs at metro beat;
-#X text 200 390 - swing deviation in % (default 0);
-#X text 226 281 bpm (beats per minute);
-#N canvas 837 109 474 379 swing 0;
-#X text 52 97 The minimum swing value is 0 (no deviation) and there
+#X text 164 380 float -;
+#X text 170 411 bang -;
+#X text 225 411 bangs at metro beat;
+#X text 200 467 - swing deviation in % (default 0);
+#X text 226 358 bpm (beats per minute);
+#N canvas 837 109 444 372 swing 0;
+#X text 43 96 The minimum swing value is 0 (no deviation) and there
 is no maximum value.;
-#X obj 194 158 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 185 157 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 194 215 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 185 214 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 311 163 nbx 4 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
+#X obj 302 162 nbx 4 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X text 183 137 on/off;
-#X obj 194 245 else/impseq~;
-#X obj 178 279 else/out~;
-#X text 51 18 The swing paraneter sets a tempo deviation for irregular
+#X text 174 136 on/off;
+#X obj 185 244 else/impseq~;
+#X obj 169 278 else/out~;
+#X text 298 143 swing (%);
+#X obj 185 186 else/tempo 60 10 -on;
+#X text 42 17 The swing paraneter sets a tempo deviation for irregular
 beats. it is set as percentage and corresponds to a time ratio. For
-exam \, ple \, say you have a tempo at 60 bpm \, a swing value of 100%
+example \, say you have a tempo at 60 bpm \, a swing value of 100%
 creates random fluctuations 100% faster or slower \, and that corresponds
 to a deviation from 60 to 120 bpm and 60 to 30 bpm.;
-#X text 307 144 swing (%);
-#X obj 194 187 else/tempo 60 10 -on;
-#X connect 1 0 9 0;
+#X connect 1 0 8 0;
 #X connect 2 0 5 0;
-#X connect 3 0 9 2;
+#X connect 3 0 8 2;
 #X connect 5 0 6 0;
 #X connect 5 0 6 1;
-#X connect 9 0 2 0;
-#X restore 480 193 pd swing;
-#X text 170 258 bang -;
-#X text 225 258 sync/start/restart metronome;
-#X obj 197 173 else/tempo 60 -on;
-#X text 226 303 swing deviation parameter (in %);
-#X obj 157 140 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+#X connect 8 0 2 0;
+#X restore 478 216 pd swing;
+#X text 170 306 bang -;
+#X text 226 380 swing deviation parameter (in %);
+#X obj 160 141 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 121 141 sync;
-#X connect 20 0 42 0;
-#X connect 22 0 42 1;
-#X connect 42 0 26 0;
-#X connect 44 0 42 0;
+#X text 124 142 sync;
+#X text 225 306 sync the metronome;
+#X obj 200 220 else/tempo 60 -on;
+#N canvas 837 109 449 327 sync 0;
+#X obj 189 166 bng 20 50 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 142 100 else/tempo 30 -on;
+#X obj 189 139 else/tempo 70 -on;
+#X obj 189 198 else/impseq~;
+#X obj 177 245 else/out~;
+#X obj 142 166 bng 20 50 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 51 24 You can sync a [tempo] object to an external sync source
+with an incoming bang.;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 1 0 5 0;
+#X connect 2 0 0 0;
+#X connect 3 0 4 0;
+#X connect 3 0 4 1;
+#X restore 485 239 pd sync;
+#X text 164 323 start -;
+#X text 225 323 turn the metronome on;
+#X text 170 339 stop -;
+#X text 225 339 turn the metronome off;
+#X msg 207 169 start;
+#X msg 214 189 stop;
+#X connect 20 0 45 0;
+#X connect 22 0 45 1;
+#X connect 42 0 45 0;
+#X connect 45 0 26 0;
+#X connect 51 0 45 0;
+#X connect 52 0 45 0;
