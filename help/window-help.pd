@@ -1,0 +1,37 @@
+#N canvas 576 383 558 374 10;
+#X obj 2 148 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 181 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 220 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 136 190 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 218 57 tgl 18 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
+1 1;
+#X text 261 229 (none);
+#X obj 2 253 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 259 156 (none);
+#X text 168 192 float -;
+#X text 223 191 window status (0 inactive / 1 active);
+#X text 243 59 status;
+#N canvas 727 113 353 219 example 0;
+#X obj 83 74 select 1 0;
+#X msg 83 102 I am now active;
+#X msg 192 102 I am now inactive;
+#X obj 83 131 print subpatch;
+#X obj 83 44 ./window;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 3 0;
+#X connect 4 0 0 0;
+#X restore 461 97 pd example;
+#X obj 218 87 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1 256;
+#X obj 218 30 ./window;
+#X obj 217 119 print WINDOW;
+#X connect 4 0 12 0;
+#X connect 12 0 14 0;
+#X connect 13 0 4 0;

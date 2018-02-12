@@ -138,9 +138,10 @@ wrap2.class.sources := classes/wrap2.c
 wrap2~.class.sources := classes/wrap2~.c
 zerocross~.class.sources := classes/zerocross~.c
 
+sine~.class.sources := classes/sine~.c
+
 # magic
 magic := shared/magic.c
-sine~.class.sources := classes/sine~.c $(magic)
 cosine~.class.sources := classes/cosine~.c $(magic)
 fbsine~.class.sources := classes/fbsine~.c $(magic)
 imp~.class.sources := classes/imp~.c $(magic)
@@ -155,6 +156,10 @@ square~.class.sources := classes/square~.c $(magic)
 triangular~.class.sources := classes/triangular~.c $(magic)
 vsaw~.class.sources := classes/vsaw~.c $(magic)
 pimp~.class.sources := classes/pimp~.c $(magic)
+
+# gui.c dependency
+gui := shared/gui.c
+    window.class.sources := classes/window.c $(gui)
 
 #########################################################################
 
