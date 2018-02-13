@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "m_pd.h"
-#include "g_canvas.h"
 #include "gui.h"
+#include "g_canvas.h"
 
 typedef struct _window{
     t_object   x_ob;
@@ -23,7 +23,11 @@ static void window_dofocus(t_window *x, t_symbol *s, t_floatarg f){
 }
 
 static void window_free(t_window *x){
-    hammergui_unbindfocus((t_pd *)x); // HAMMER
+    hammergui_unbindfocus((t_pd *)x);
+}
+
+static void *window_bang(t_window *x){
+    outlet_float(((t_object *)x)->ob_outlet, x->x_on);
 }
 
 static void *window_new(t_floatarg f){
@@ -38,17 +42,17 @@ static void *window_new(t_floatarg f){
         depth--;
     }
     char buf[32];
-//  sprintf(buf, ".x%lx.c", (unsigned long)canvas_getcurrent());
     sprintf(buf, ".x%lx.c", (unsigned long)canvas);
     x->x_cvname = gensym(buf);
     x->x_on = 0;
     outlet_new((t_object *)x, &s_float);
-    hammergui_bindfocus((t_pd *)x); // HAMMER
+    hammergui_bindfocus((t_pd *)x);
     return(x);
 }
 
 void window_setup(void){
     window_class = class_new(gensym("window"), (t_newmethod)window_new,
-        (t_method)window_free, sizeof(t_window), CLASS_NOINLET, A_DEFFLOAT, 0);
+        (t_method)window_free, sizeof(t_window), 0, A_DEFFLOAT, 0);
+    class_addbang(window_class, window_bang);
     class_addmethod(window_class, (t_method)window_dofocus, gensym("_focus"), A_SYMBOL, A_FLOAT, 0);
 }
