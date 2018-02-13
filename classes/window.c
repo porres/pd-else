@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "m_pd.h"
+#include "g_canvas.h"
 #include "gui.h"
 
 typedef struct _window{
@@ -27,8 +28,6 @@ static void window_free(t_window *x){
 
 static void *window_new(t_floatarg f){
     t_window *x = (t_window *)pd_new(window_class);
-   
-/*//
     t_glist *glist=(t_glist *)canvas_getcurrent();
     t_canvas *canvas=(t_canvas*)glist_getcanvas(glist);
     int depth = (int)f;
@@ -38,11 +37,10 @@ static void *window_new(t_floatarg f){
         canvas = canvas->gl_owner;
         depth--;
     }
-//*///
-    
     char buf[32];
-    sprintf(buf, ".x%lx.c", (unsigned long)canvas_getcurrent());
-    x->x_cvname = gensym(buf); // x->x_cvname
+//  sprintf(buf, ".x%lx.c", (unsigned long)canvas_getcurrent());
+    sprintf(buf, ".x%lx.c", (unsigned long)canvas);
+    x->x_cvname = gensym(buf);
     x->x_on = 0;
     outlet_new((t_object *)x, &s_float);
     hammergui_bindfocus((t_pd *)x); // HAMMER
@@ -51,6 +49,6 @@ static void *window_new(t_floatarg f){
 
 void window_setup(void){
     window_class = class_new(gensym("window"), (t_newmethod)window_new,
-        (t_method)window_free, sizeof(t_window), CLASS_NOINLET, A_DEFFLOAT, 0); // PUT INLET!
+        (t_method)window_free, sizeof(t_window), CLASS_NOINLET, A_DEFFLOAT, 0);
     class_addmethod(window_class, (t_method)window_dofocus, gensym("_focus"), A_SYMBOL, A_FLOAT, 0);
 }
