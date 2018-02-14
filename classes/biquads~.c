@@ -1,8 +1,8 @@
 #include "m_pd.h"
 
 #define COEFFS 5   // number of coeffs per filter stage
-#define MAX_COEFFS 100 // defining max number of coeffs to take
-#define STAGES 20 // number of stages = MAX_COEFFS/COEFFS
+#define MAX_COEFFS 250 // defining max number of coeffs to take
+#define STAGES 50 // number of stages = MAX_COEFFS/COEFFS
 
 static t_class *biquads_class;
 
