@@ -12,7 +12,8 @@ typedef struct _loop{
     t_int       x_counter_start;
     t_int       x_offset;
     t_int       x_count;
-    t_int       x_inc;
+    t_int       x_inc;      
+    t_int       x_dir;      // up is "1", down is "-1"
     t_int       x_status;
     t_outlet   *x_bangout;
 }t_loop;
@@ -21,16 +22,18 @@ static t_class *loop_class;
 
 static void loop_do_loop(t_loop *x){ // The Actual Loop
     x->x_status = RUNNING;
-    if(x->x_inc == 1){
+    if(x->x_dir == 1){
         while(x->x_count <= x->x_target){
-            outlet_float(((t_object *)x)->ob_outlet, x->x_count++ + x->x_offset);
+            outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
+            x->x_count = x->x_count + (x->x_dir * x->x_inc);
             if(x->x_status == PAUSED)
                 return;
         }
     }
     else{
         while(x->x_count >= x->x_target){
-            outlet_float(((t_object *)x)->ob_outlet, x->x_count-- + x->x_offset);
+            outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
+            x->x_count = x->x_count + (x->x_dir * x->x_inc);
             if(x->x_status == PAUSED)
                 return;
         }
@@ -53,6 +56,7 @@ static void loop_float(t_loop *x, t_float f){
     }
     x->x_counter_start = 0;
     x->x_target = (int)f - 1;
+    x->x_dir = 1;
     x->x_inc = 1;
     loop_bang(x);
 }
@@ -60,10 +64,17 @@ static void loop_float(t_loop *x, t_float f){
 static void loop_list(t_loop *x, t_symbol *s, int ac, t_atom *av){
     x->x_counter_start = (int)atom_getfloat(av);
     x->x_target = (int)atom_getfloat(av+1);
+    if(ac == 3){
+        int inc = (int)atom_getfloat(av+2);
+        if(!inc)
+            pd_error(x, "[loop]: increment needs to be != 0");
+        else
+            x->x_inc = inc;
+    }
     if(x->x_counter_start > x->x_target)
-        x->x_inc = -1;
+        x->x_dir = -1;
     else
-        x->x_inc = 1;
+        x->x_dir = 1;
     loop_bang(x);
 }
 
@@ -79,6 +90,14 @@ static void loop_continue(t_loop *x){
 
 static void loop_offset(t_loop *x, t_float f){
     x->x_offset = (int)f;
+}
+
+static void loop_inc(t_loop *x, t_float f){
+    int inc = (int)f;
+    if(!inc)
+        pd_error(x, "[loop]: increment needs to be != 0");
+    else
+        x->x_inc = inc;
 }
 
 static void *loop_new(t_symbol *s, int argc, t_atom *argv){
@@ -121,16 +140,17 @@ static void *loop_new(t_symbol *s, int argc, t_atom *argv){
         x->x_counter_start = (int)f1;
         x->x_target = (int)f2;
         if(x->x_counter_start > x->x_target)
-            x->x_inc = -1;
+            x->x_dir = -1;
         else
-            x->x_inc = 1;
+            x->x_dir = 1;
     }
     else if(f1){
         if(f1 < 1)
             f1 = 1;
         x->x_target = (int)f1 - 1;
-        x->x_inc = 1;
+        x->x_dir = 1;
     }
+    x->x_inc = 1;
     outlet_new((t_object *)x, &s_float);
     x->x_bangout = outlet_new((t_object *)x, &s_bang);
     return (x);
@@ -147,4 +167,5 @@ void loop_setup(void){
     class_addmethod(loop_class, (t_method)loop_pause, gensym("pause"), 0);
     class_addmethod(loop_class, (t_method)loop_continue, gensym("continue"), 0);
     class_addmethod(loop_class, (t_method)loop_offset, gensym("offset"), A_DEFFLOAT, 0);
+    class_addmethod(loop_class, (t_method)loop_inc, gensym("inc"), A_DEFFLOAT, 0);
 }
