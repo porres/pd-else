@@ -46,6 +46,7 @@ balance~.class.sources := classes/balance~.c
 bandpass~.class.sources := classes/bandpass~.c
 bandstop~.class.sources := classes/bandstop~.c
 bicoeff.class.sources := classes/bicoeff.c
+biquads~.class.sources := classes/biquads~.c
 brown~.class.sources := classes/brown~.c
 ceil.class.sources := classes/ceil.c
 ceil~.class.sources := classes/ceil~.c

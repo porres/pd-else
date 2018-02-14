@@ -1,0 +1,75 @@
+#N canvas 544 44 561 486 10;
+#X obj 1 312 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 1 390 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 1 427 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 99 400 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 1 460 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 4 4 cnv 15 301 42 empty empty biquads~ 20 20 2 37 -233017 -1
+0;
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 4 graph;
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 24 41 cnv 4 4 4 empty empty Biquad 0 28 2 18 -233017 -1 0;
+#X obj 84 41 cnv 4 4 4 empty empty series 0 28 2 18 -233017 -1 0;
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 306 4 graph;
+#X obj 321 249 else/out~;
+#X obj 321 152 noise~;
+#X obj 56 220 else/bicoeff eq 500 10 24;
+#X obj 131 248 else/bicoeff eq 900 10 24;
+#X obj 56 277 send \$0-coeffs;
+#X obj 56 195 else/lb 2, f 13;
+#X obj 56 250 list;
+#X obj 343 182 receive \$0-coeffs;
+#X obj 321 213 else/biquads~;
+#X text 157 400 signal -;
+#X text 215 400 the filtered signal;
+#X text 156 436 (none);
+#X obj 99 320 cnv 17 3 65 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 157 321 signal -;
+#X text 215 321 the signal to be filtered;
+#X msg 245 184 bypass \$1;
+#X obj 245 162 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 74 91 [biquads~] is a series of biquad filters in cascade.
+Each biquad section is defined as a list of 5 coefficients (in the
+same way as Pd Vanilla's [biquad~]). Below we have a series of two
+biquad sections in cascade., f 64;
+#X text 163 353 clear -;
+#X text 218 353 clears the filter's memory;
+#X text 169 337 list -;
+#X text 217 337 list of biquad coefficients;
+#X text 109 370 bypass <float> -;
+#X text 219 370 <1> bypasses the input \, <0> turns the filter on;
+#X connect 18 0 25 0;
+#X connect 19 0 23 0;
+#X connect 20 0 23 1;
+#X connect 22 0 19 0;
+#X connect 22 1 20 0;
+#X connect 23 0 21 0;
+#X connect 24 0 25 0;
+#X connect 25 0 17 0;
+#X connect 25 0 17 1;
+#X connect 32 0 25 0;
+#X connect 33 0 32 0;
