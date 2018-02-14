@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (167 objects):
+##Current Object list (168 objects):
 
 **MISCELLANEA: [4]**
 - [args]
@@ -180,8 +180,9 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [stepnoise~]
 - [xmod~]
 
-**FILTERS (16):**
+**FILTERS (17):**
 - [allpass.2nd~]
+- [biquads~]
 - [bandpass~]
 - [bandstop~]
 - [bpbank~]
