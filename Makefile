@@ -161,8 +161,9 @@ magic := shared/magic.c
 gui := shared/gui.c
     window.class.sources := classes/window.c $(gui)
 
+fromany.class.sources := classes/fromany.c
+
 charstring := shared/charstring.c
-    fromany.class.sources := classes/fromany.c $(charstring)
     toany.class.sources := classes/toany.c $(charstring)
 
 #########################################################################
