@@ -1,0 +1,62 @@
+#N canvas 583 48 561 425 10;
+#X floatatom 169 194 5 0 0 0 - - -, f 5;
+#X symbolatom 220 192 10 0 0 0 - - -, f 10;
+#X obj 219 272 print any2bytes-help;
+#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 306 5 pd;
+#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 24 42 cnv 4 4 4 empty empty Convert 0 28 2 18 -233017 -1 0;
+#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 90 42 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
+#X obj 4 5 cnv 15 301 42 empty empty fromany 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 5 graph;
+#X obj 112 42 cnv 4 4 4 empty empty character 0 28 2 18 -233017 -1
+0;
+#X obj 187 42 cnv 4 4 4 empty empty codes 0 28 2 18 -233017 -1 0;
+#X text 63 135 no special handling for symbols / "float" selector is
+silently dropped;
+#X obj 219 244 else/fromany;
+#X obj 4 302 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 338 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 369 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 116 346 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 116 311 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 143 311 anything;
+#X obj 4 398 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 166 346 list;
+#X text 200 311 - any pd message to be converted, f 48;
+#X text 200 346 - list of numeric character codes, f 48;
+#X text 62 96 [fromany] converts from any messages to a list of numeric
+character codes for each input character. This is done very similarly
+to Pd Vanilla's [list fromsymbol]., f 74;
+#X msg 211 166 1 2 3;
+#X msg 230 213 list a b c;
+#X text 159 377 (none);
+#X text 302 212 <= fix no list selector;
+#X connect 0 0 18 0;
+#X connect 1 0 18 0;
+#X connect 18 0 2 0;
+#X connect 30 0 18 0;
+#X connect 31 0 18 0;

@@ -139,28 +139,31 @@ wrap2.class.sources := classes/wrap2.c
 wrap2~.class.sources := classes/wrap2~.c
 zerocross~.class.sources := classes/zerocross~.c
 
-sine~.class.sources := classes/sine~.c
+# dependencies:
 
-# magic
 magic := shared/magic.c
-cosine~.class.sources := classes/cosine~.c $(magic)
-fbsine~.class.sources := classes/fbsine~.c $(magic)
-imp~.class.sources := classes/imp~.c $(magic)
-impulse~.class.sources := classes/impulse~.c $(magic)
-imp2~.class.sources := classes/imp2~.c $(magic)
-impulse2~.class.sources := classes/impulse2~.c $(magic)
-parabolic~.class.sources := classes/parabolic~.c $(magic)
-pulse~.class.sources := classes/pulse~.c $(magic)
-sawtooth~.class.sources := classes/sawtooth~.c $(magic)
-sawtooth2~.class.sources := classes/sawtooth2~.c $(magic)
-square~.class.sources := classes/square~.c $(magic)
-triangular~.class.sources := classes/triangular~.c $(magic)
-vsaw~.class.sources := classes/vsaw~.c $(magic)
-pimp~.class.sources := classes/pimp~.c $(magic)
+    sine~.class.sources := classes/sine~.c $(magic)
+    cosine~.class.sources := classes/cosine~.c $(magic)
+    fbsine~.class.sources := classes/fbsine~.c $(magic)
+    imp~.class.sources := classes/imp~.c $(magic)
+    impulse~.class.sources := classes/impulse~.c $(magic)
+    imp2~.class.sources := classes/imp2~.c $(magic)
+    impulse2~.class.sources := classes/impulse2~.c $(magic)
+    parabolic~.class.sources := classes/parabolic~.c $(magic)
+    pulse~.class.sources := classes/pulse~.c $(magic)
+    sawtooth~.class.sources := classes/sawtooth~.c $(magic)
+    sawtooth2~.class.sources := classes/sawtooth2~.c $(magic)
+    square~.class.sources := classes/square~.c $(magic)
+    triangular~.class.sources := classes/triangular~.c $(magic)
+    vsaw~.class.sources := classes/vsaw~.c $(magic)
+    pimp~.class.sources := classes/pimp~.c $(magic)
 
-# gui.c dependency
 gui := shared/gui.c
     window.class.sources := classes/window.c $(gui)
+
+charstring := shared/charstring.c
+    fromany.class.sources := classes/fromany.c $(charstring)
+    toany.class.sources := classes/toany.c $(charstring)
 
 #########################################################################
 
