@@ -57,7 +57,9 @@
 #X text 63 96 [fromany] converts from any messages to a list of numeric
 character codes for each input character (similarly to Pd Vanilla's
 [list fromsymbol]). Note that "symbol" \, "list" anf "float" selectors
-aren't convrerted., f 74;
+aren't convrerted \, whereas bangs are!, f 74;
+#X obj 141 173 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 0 0 16 0;
 #X connect 1 0 16 0;
 #X connect 16 0 32 0;
@@ -66,3 +68,4 @@ aren't convrerted., f 74;
 #X connect 30 0 1 0;
 #X connect 31 0 30 0;
 #X connect 33 0 16 0;
+#X connect 37 0 16 0;

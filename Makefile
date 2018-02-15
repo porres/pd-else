@@ -34,6 +34,8 @@ ratio2cents.class.sources := classes/ratio2cents.c
 rescale.class.sources := classes/rescale.c
 routeall.class.sources := classes/routeall.c
 routetype.class.sources := classes/routetype.c
+fromany.class.sources := classes/fromany.c
+toany.class.sources := classes/toany.c
 
 # signal:
 accum~.class.sources := classes/accum~.c
@@ -161,10 +163,6 @@ magic := shared/magic.c
 gui := shared/gui.c
     window.class.sources := classes/window.c $(gui)
 
-fromany.class.sources := classes/fromany.c
-
-charstring := shared/charstring.c
-    toany.class.sources := classes/toany.c $(charstring)
 
 #########################################################################
 
