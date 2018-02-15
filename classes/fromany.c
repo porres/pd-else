@@ -16,7 +16,7 @@ typedef struct _fromany{
 }t_fromany;
 
 static void fromany_anything(t_fromany *x, t_symbol *sel, int argc, t_atom *argv){
-  t_pdstring_atoms arg_atoms = {argv,argc,0};
+  t_pdstring_atoms arg_atoms = {argv, argc, 0};
   pdstring_bytes_clear(&x->x_bytes);
   pdstring_fromany(x, &x->x_bytes, sel, &arg_atoms, x->x_binbuf);
   pdstring_bytes2atoms(x, &x->x_atoms, &x->x_bytes, -1); // -1 is EOS

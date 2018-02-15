@@ -1,58 +1,16 @@
-/*=============================================================================*\
- * File: mooPdUtils.h
- * Author: Bryan Jurish <moocow@ling.uni-potsdam.de>
- * Description: some generic utilities for pd externals
- *=============================================================================*/
-
-#ifndef _MOO_PD_UTILS_H
-#define _MOO_PD_UTILS_H
-
-/*-- MOO_UNUSED : macro for unused attributes; to avoid compiler warnings */
-#ifdef __GNUC__
-# define MOO_UNUSED __attribute__((unused))
-#else
-# define MOO_UNUSED
-#endif
-
-/*-- PDEXT_UNUSED : alias for MOO_UNUSED --*/
-#define PDEXT_UNUSED MOO_UNUSED
-
-#endif /* _MOO_PD_UTILS_H */
-
-///////////////////////////////////////
-
-#ifndef PDSTRING_UTILS_H
-#define PDSTRING_UTILS_H
-
 #include <string.h>
 #include <m_pd.h>
 #include <stdlib.h>
 
-/*=====================================================================
- * Constants
- *=====================================================================*/
-
-/* PDSTRING_EOS_NONE
- *  + "safe" float value to use as x_eos if no truncation is desired
- */
+//   + "safe" float value to use as x_eos if no truncation is desired
 #define PDSTRING_EOS_NONE 1e38f
-
-/* PDSTRING_DEFAULT_BUFLEN
- *  + common default buffer length
- */
-#define PDSTRING_DEFAULT_BUFLEN 256
-
-/* PDSTRING_DEFAULT_GET
- *  + common default buffer grow length
- */
-#define PDSTRING_DEFAULT_GET 256
 
 /* PDSTRING_BYSTES_GET
  *  + number of extra bytes to get when buffer must grow
  */
-#define PDSTRING_BYTES_GET PDSTRING_DEFAULT_GET
-#define PDSTRING_WCHARS_GET PDSTRING_DEFAULT_GET
-#define PDSTRING_ATOMS_GET PDSTRING_DEFAULT_GET
+#define PDSTRING_BYTES_GET 256
+#define PDSTRING_WCHARS_GET 256
+#define PDSTRING_ATOMS_GET 256
 
 //#define PDSTRING_STATIC static
 #define PDSTRING_STATIC
@@ -150,7 +108,6 @@ PDSTRING_STATIC void pdstring_floatarray_getvec(t_object *x, t_pdstring_floatarr
  */
 PDSTRING_STATIC void pdstring_fromany(void *x, t_pdstring_bytes *dst, t_symbol *sel, t_pdstring_atoms *src, t_binbuf *x_binbuf);
 
-
 /*--------------------------------------------------------------------
  * pdstring_toany()
  *  + uses x_binbuf for conversion
@@ -197,4 +154,3 @@ PDSTRING_STATIC void pdstring_bytes2atoms(void *x, t_pdstring_atoms *dst, t_pdst
  */
 PDSTRING_STATIC void pdstring_wchars2atoms(void *x, t_pdstring_atoms *dst, t_pdstring_wchars *src);
 
-#endif /* PDSTRING_UTILS_H */

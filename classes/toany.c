@@ -30,7 +30,7 @@ static void toany_atoms(t_toany *x, int argc, t_atom *argv){
     outlet_anything(x->x_outlet, &s_list, x_argc, x_argv);
 }
 
-static void toany_anything(t_toany *x, MOO_UNUSED t_symbol *sel, int argc, t_atom *argv){
+static void toany_anything(t_toany *x, t_symbol *sel, int argc, t_atom *argv){
   int i0 = 0, i;
   if (x->x_eos >= 0){
     for(i = i0; i < argc; i++){
