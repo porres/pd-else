@@ -48,7 +48,6 @@
 #X text 175 330 - set separator character code;
 #X text 129 394 1) float - separator character code (default none)
 ;
-#X floatatom 205 207 5 0 0 0 - - -, f 5;
 #X msg 193 167 97 32 98;
 #X obj 193 271 print;
 #X text 447 236 see also:;
@@ -61,8 +60,10 @@ second inlet or as an argument. Negative separator values is the same
 as "none"., f 74;
 #X text 278 193 separator: none;
 #X text 290 216 separator: space;
+#X obj 205 213 nbx 3 14 33 100 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 33 256;
 #X connect 0 0 14 1;
 #X connect 1 0 14 1;
-#X connect 14 0 31 0;
+#X connect 14 0 30 0;
 #X connect 29 0 14 0;
-#X connect 30 0 14 0;
+#X connect 37 0 14 0;

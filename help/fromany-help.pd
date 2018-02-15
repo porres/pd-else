@@ -1,5 +1,4 @@
 #N canvas 214 104 562 436 10;
-#X floatatom 169 173 5 0 0 0 - - -, f 5;
 #X symbolatom 224 198 10 0 0 0 - - -, f 10;
 #X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -58,14 +57,16 @@
 character codes for each input character (similarly to Pd Vanilla's
 [list fromsymbol]). Note that "symbol" \, "list" anf "float" selectors
 aren't convrerted \, whereas bangs are!, f 74;
-#X obj 141 173 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 142 172 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X connect 0 0 16 0;
-#X connect 1 0 16 0;
-#X connect 16 0 32 0;
-#X connect 27 0 16 0;
-#X connect 29 0 16 0;
-#X connect 30 0 1 0;
-#X connect 31 0 30 0;
-#X connect 33 0 16 0;
-#X connect 37 0 16 0;
+#X obj 167 173 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X connect 0 0 15 0;
+#X connect 15 0 31 0;
+#X connect 26 0 15 0;
+#X connect 28 0 15 0;
+#X connect 29 0 0 0;
+#X connect 30 0 29 0;
+#X connect 32 0 15 0;
+#X connect 36 0 15 0;
+#X connect 37 0 15 0;
