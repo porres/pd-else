@@ -1,7 +1,6 @@
-#N canvas 583 48 561 425 10;
-#X floatatom 169 194 5 0 0 0 - - -, f 5;
-#X symbolatom 220 192 10 0 0 0 - - -, f 10;
-#X obj 219 272 print any2bytes-help;
+#N canvas 214 104 562 436 10;
+#X floatatom 169 173 5 0 0 0 - - -, f 5;
+#X symbolatom 224 198 10 0 0 0 - - -, f 10;
 #X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -29,34 +28,41 @@
 #X obj 112 42 cnv 4 4 4 empty empty character 0 28 2 18 -233017 -1
 0;
 #X obj 187 42 cnv 4 4 4 empty empty codes 0 28 2 18 -233017 -1 0;
-#X text 63 135 no special handling for symbols / "float" selector is
-silently dropped;
-#X obj 219 244 else/fromany;
-#X obj 4 302 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 223 250 else/fromany;
+#X obj 4 314 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 338 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 350 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 369 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 381 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 116 346 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 116 358 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 116 311 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 116 323 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 143 311 anything;
-#X obj 4 398 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X text 143 323 anything;
+#X obj 4 410 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 166 346 list;
-#X text 200 311 - any pd message to be converted, f 48;
-#X text 200 346 - list of numeric character codes, f 48;
-#X text 62 96 [fromany] converts from any messages to a list of numeric
-character codes for each input character. This is done very similarly
-to Pd Vanilla's [list fromsymbol]., f 74;
-#X msg 211 166 1 2 3;
-#X msg 230 213 list a b c;
-#X text 159 377 (none);
-#X text 302 212 <= fix no list selector;
-#X connect 0 0 18 0;
-#X connect 1 0 18 0;
-#X connect 18 0 2 0;
-#X connect 30 0 18 0;
-#X connect 31 0 18 0;
+#X text 166 358 list;
+#X text 200 323 - any pd message to be converted, f 48;
+#X text 200 358 - list of numeric character codes, f 48;
+#X msg 210 172 1 2 3;
+#X text 166 389 (none);
+#X msg 269 221 list a b;
+#X obj 261 172 else/any2symbol;
+#X msg 261 150 a b;
+#X obj 223 278 else/display;
+#X msg 235 220 a b;
+#X text 447 255 see also:;
+#X obj 446 276 else/toany;
+#X text 63 96 [fromany] converts from any messages to a list of numeric
+character codes for each input character (similarly to Pd Vanilla's
+[list fromsymbol]). Note that "symbol" \, "list" anf "float" selectors
+aren't convrerted., f 74;
+#X connect 0 0 16 0;
+#X connect 1 0 16 0;
+#X connect 16 0 32 0;
+#X connect 27 0 16 0;
+#X connect 29 0 16 0;
+#X connect 30 0 1 0;
+#X connect 31 0 30 0;
+#X connect 33 0 16 0;

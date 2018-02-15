@@ -1,6 +1,6 @@
-#N canvas 738 23 560 516 10;
-#X msg 233 214 -1;
-#X msg 265 214 32;
+#N canvas 778 105 562 441 10;
+#X msg 250 193 -1;
+#X msg 263 217 32;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -24,40 +24,45 @@
 #X obj 131 41 cnv 4 4 4 empty empty character 0 28 2 18 -233017 -1
 0;
 #X obj 206 41 cnv 4 4 4 empty empty codes 0 28 2 18 -233017 -1 0;
-#X text 62 95 [tomany] converts from a list of numeric character codes
-to any messages \, very similarly to Pd Vanilla's [list tosymbol].
-, f 74;
-#X msg 176 179 97 32 98 32 99;
-#X obj 176 268 print;
-#X text 89 303 2nd inlet sets separator character (negative value is
-none). avoid implicit input splitting entirely.;
-#X obj 176 244 else/toany;
-#X text 111 143 1- change selector thing \, only take number lists!
+#X obj 193 242 else/toany;
+#X obj 3 299 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 371 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 2 356 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 428 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 459 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 387 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 90 436 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 90 364 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 90 380 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 90 308 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 488 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 416 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 175 436 - list of numeric character codes, f 48;
-#X obj 90 402 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 175 364 - list of numeric character codes, f 48;
+#X obj 90 330 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 141 380 list;
-#X text 135 402 float;
-#X text 117 436 anything;
-#X text 175 380 - list of numeric character to convert to any messages
+#X text 141 308 list;
+#X text 135 330 float;
+#X text 117 364 anything;
+#X text 175 308 - list of numeric character to convert to any messages
 ;
-#X text 175 402 - set separator character code;
-#X text 129 466 1) float - separator character code (default none)
+#X text 175 330 - set separator character code;
+#X text 129 394 1) float - separator character code (default none)
 ;
-#X connect 0 0 18 1;
-#X connect 1 0 18 1;
-#X connect 15 0 18 0;
-#X connect 18 0 16 0;
+#X floatatom 205 207 5 0 0 0 - - -, f 5;
+#X msg 193 167 97 32 98;
+#X obj 193 271 print;
+#X text 447 236 see also:;
+#X obj 441 257 else/fromany;
+#X text 62 91 [toany] converts from a list of numeric character codes
+to any messages (similarly to Pd Vanilla's [list tosymbol])., f 74
+;
+#X text 62 119 You can also specify a separator character code in the
+second inlet or as an argument. Negative separator values is the same
+as "none"., f 74;
+#X text 278 193 separator: none;
+#X text 290 216 separator: space;
+#X connect 0 0 14 1;
+#X connect 1 0 14 1;
+#X connect 14 0 31 0;
+#X connect 29 0 14 0;
+#X connect 30 0 14 0;

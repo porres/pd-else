@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (170 objects):
+##Current Object list (172 objects):
 
 **MISCELLANEA: [4]**
 - [args]
@@ -77,8 +77,10 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **MIDI: [1]**
 - [clock]
 
-**MESSAGE MANAGEMENT: [6]**
+**MESSAGE MANAGEMENT: [8]**
 - [break] 
+- [fromany] 
+- [toany] 
 - [changed]
 - [order]
 - [setmess]

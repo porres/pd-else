@@ -130,18 +130,15 @@ PDSTRING_STATIC void pdstring_floatarray_getvec(t_object *x, t_pdstring_floatarr
  */
 PDSTRING_STATIC void pdstring_fromany(void *x, t_pdstring_bytes *dst, t_symbol *sel, t_pdstring_atoms *src, t_binbuf *x_binbuf){
   int bb_is_tmp=0;
-  //-- create temporary binbuf?
-  if (!x_binbuf) {
-    x_binbuf = binbuf_new();
-    bb_is_tmp = 1;
+  if(!x_binbuf){   // create temporary binbuf
+      x_binbuf = binbuf_new();
+      bb_is_tmp = 1;
   }
-  //-- prepare binbuf
-  binbuf_clear(x_binbuf);
-  //-- binbuf_add(): selector
-  if (sel && sel != &s_float && sel != &s_list && sel != &s_) {
-    t_atom a;
-    SETSYMBOL((&a), sel);
-    binbuf_add(x_binbuf, 1, &a);
+  binbuf_clear(x_binbuf);   // prepare binbuf
+  if(sel && sel != &s_float && sel != &s_list && sel != &s_ && sel != &s_symbol){ // add selector
+      t_atom a;
+      SETSYMBOL((&a), sel);
+      binbuf_add(x_binbuf, 1, &a);
   }
   //-- binbuf_add(): src atoms
   binbuf_add(x_binbuf, src->a_len, src->a_buf);

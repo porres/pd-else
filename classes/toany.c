@@ -30,18 +30,24 @@ static void toany_atoms(t_toany *x, int argc, t_atom *argv){
     outlet_anything(x->x_outlet, &s_list, x_argc, x_argv);
 }
 
-static void toany_anything(t_toany *x, t_symbol *sel, int argc, t_atom *argv){
+static void toany_list(t_toany *x, t_symbol *sel, int argc, t_atom *argv){
   int i0 = 0, i;
-  if (x->x_eos >= 0){
+  for(i = 0; i < argc; i++){
+      if((argv+i)->a_type != A_FLOAT){
+          pd_error(x, "toany: takes only floats in a list");
+          return;
+      }
+  }
+  if(x->x_eos >= 0){
     for(i = i0; i < argc; i++){
-        if(((int)atom_getfloatarg(i,argc,argv))==((int)x->x_eos)){
-            toany_atoms(x, i-i0, argv+i0);
+        if(((int)atom_getfloatarg(i, argc, argv)) == ((int)x->x_eos)){
+            toany_atoms(x, i - i0, argv + i0);
             i0 = i + 1;
         }
     }
   }
   if(i0 < argc)
-    toany_atoms(x, argc-i0, argv+i0);
+    toany_atoms(x, argc - i0, argv + i0);
 }
 
 static void *toany_new(t_symbol *sel, int argc, t_atom *argv){
@@ -68,5 +74,5 @@ static void toany_free(t_toany *x){
 void toany_setup(void){
     toany_class = class_new(gensym("toany"), (t_newmethod)toany_new, (t_method)toany_free,
         sizeof(t_toany), CLASS_DEFAULT, A_GIMME, 0);
-    class_addanything(toany_class, (t_method)toany_anything);
+    class_addlist(toany_class, (t_method)toany_list);
 }
