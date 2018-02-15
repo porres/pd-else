@@ -41,7 +41,6 @@
 #X restore 2 3 graph;
 #X text 166 334 hz;
 #X text 160 352 khz;
-#X text 184 415 - sample rate frequency (in Hz or Khz);
 #X text 184 334 - set and get the sample rate frequency in Hz;
 #X text 184 352 - set and get the sample rate frequency in Khz;
 #X msg 181 189 hz;
@@ -105,9 +104,10 @@ also automatically loads the samplerate value when loading the patch.
 #X text 160 498 -ms;
 #X text 154 515 -sec;
 #X obj 213 242 else/sr~ -khz;
-#X connect 17 0 49 0;
-#X connect 27 0 49 0;
-#X connect 28 0 49 0;
-#X connect 34 0 49 0;
-#X connect 35 0 49 0;
-#X connect 49 0 36 0;
+#X text 184 415 - sample rate frequency or period;
+#X connect 17 0 48 0;
+#X connect 26 0 48 0;
+#X connect 27 0 48 0;
+#X connect 33 0 48 0;
+#X connect 34 0 48 0;
+#X connect 48 0 35 0;
