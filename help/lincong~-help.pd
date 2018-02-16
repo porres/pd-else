@@ -1,20 +1,7 @@
 #N canvas 748 23 559 579 10;
 #X obj 226 183 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0
 10 -228856 -1 -1 0 1;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
-#N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
 #X obj 23 40 cnv 4 4 4 empty empty Linear 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
 #X obj 177 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 -233017 -1 0
 ;
 #X obj 3 540 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
@@ -67,7 +54,24 @@ to a range of -1 to 1 automatically.;
 #X text 207 484 - sets initial value of y[n-1] (default 0);
 #X text 207 381 - linear congruential chaotic signal;
 #X text 207 348 - 4 floats sets 'a' \, 'c' \, 'm' and y[n-1];
-#X connect 0 0 17 0;
-#X connect 17 0 31 0;
-#X connect 31 0 24 1;
-#X connect 31 0 24 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X connect 0 0 11 0;
+#X connect 11 0 25 0;
+#X connect 25 0 18 1;
+#X connect 25 0 18 0;
