@@ -85,6 +85,7 @@ ikeda~.class.sources := classes/ikeda~.c
 impseq~.class.sources := classes/impseq~.c
 lastvalue~.class.sources := classes/lastvalue~.c
 latoocarfian~.class.sources := classes/latoocarfian~.c
+lorenz~.class.sources := classes/lorenz~.c
 lfnoise~.class.sources := classes/lfnoise~.c
 lincong~.class.sources := classes/lincong~.c
 logistic~.class.sources := classes/logistic~.c

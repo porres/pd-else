@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (172 objects):
+##Current Object list (173 objects):
 
 **MISCELLANEA: [4]**
 - [args]
@@ -161,7 +161,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [vsaw~]
 - [pmosc~]
 
-**CHAOTIC GENERATORS: [19]**
+**CHAOTIC GENERATORS: [20]**
 - [brown~] 
 - [clipnoise~] 
 - [crackle~] 
@@ -172,6 +172,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [henon~]
 - [ikeda~]
 - [latoocarfian~]
+- [lorenz~]
 - [lfnoise~]
 - [lincong~]
 - [logistic~]

@@ -1,75 +1,56 @@
-#N canvas 748 23 578 604 10;
-#X obj 190 182 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 0 1;
+#N canvas 747 68 560 552 10;
 #X obj 23 40 cnv 4 4 4 empty empty Lorenz 0 28 2 18 -233017 -1 0;
 #X obj 87 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 -233017 -1 0;
-#X obj 3 561 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 525 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 328 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 264 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 378 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 342 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 408 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 372 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 94 385 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 84 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 92 338 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 82 272 cnv 17 3 63 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 160 386 signal;
-#X text 127 415 1) float;
-#X obj 187 206 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 124 338 float/signal;
+#X text 166 350 signal;
+#X text 133 379 1) float;
+#X text 130 274 float/signal;
 #X obj 2 3 cnv 15 301 42 empty empty lorenz~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 207 338 - frequency in hertz (negative values accepted);
+#X text 213 274 - frequency in hertz (negative values accepted), f
+49;
 #X obj 148 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
-#X text 246 206 rate in Hz;
-#X obj 187 263 else/out~;
-#X text 172 355 list;
-#X text 127 429 2) float;
-#X text 127 443 3) float;
-#X obj 7 532 cnv 3 550 3 empty empty more_info 8 12 0 13 -228856 -1
+#X text 133 393 2) float;
+#X text 133 407 3) float;
+#X obj 7 496 cnv 3 550 3 empty empty more_info 8 12 0 13 -228856 -1
 0;
-#X text 187 415 - sets frequency in hertz (default: nyquist), f 55
+#X text 193 379 - sets frequency in hertz (default: nyquist), f 55
 ;
-#X text 127 457 4) float;
-#X text 127 471 5) float;
-#X obj 187 231 else/lorenz~;
-#X text 84 90 The [lorenz~] system is composed by the following differential
-equations \; x' = s * (y - x) \; y' = x * (r - z) - y \; z' = x * y
-- b * z, f 55;
-#N canvas 258 77 632 312 more 1;
-#X text 133 69 freq: Iteration frequency in Hertz \; s: Equation variable
-\; r: Equation variable \; b: Equation variable \; h: Integration time
-step \; xi: Initial value of x \; yi: Initial value of y \; zi: Initial
-value of z, f 36;
-#X text 95 37 freq: 22050 \, s: 10 \, r: 28 \, b: 2.667 \, h: 0.05
-\, xi: 0.1 \, yi: 0 \, zi: 0, f 77;
-#X restore 482 288 pd more;
-#X text 127 486 6) float;
-#X text 127 500 7) float;
-#X text 127 514 8) float;
-#X text 187 429 - sets 's' (default 10), f 55;
-#X text 187 443 - sets 'r' (default 28), f 55;
-#X text 187 457 - sets 'b' (default 2.6667), f 55;
-#X text 187 500 - sets initial value of y[n-1] (default 0), f 55;
-#X text 187 471 - sets 'h' (default 0.05), f 55;
-#X text 187 486 - sets initial value of x[n-1] (default 0.1), f 55
+#X text 133 421 4) float;
+#X text 133 435 5) float;
+#X text 133 450 6) float;
+#X text 133 464 7) float;
+#X text 133 478 8) float;
+#X text 193 393 - sets 's' (default 10), f 55;
+#X text 193 407 - sets 'r' (default 28), f 55;
+#X text 193 421 - sets 'b' (default 2.6667), f 55;
+#X text 193 464 - sets initial value of y[n-1] (default 0), f 55;
+#X text 193 435 - sets 'h' (default 0.05), f 55;
+#X text 193 450 - sets initial value of x[n-1] (default 0.1), f 55
 ;
-#X text 187 514 - sets initial value of z[n-1] (default 0), f 55;
-#X text 207 387 - lorenz chaotic signal;
-#X text 207 356 - up to 8 floats sets arguments;
-#X text 155 540 Object based on SuperCollider's "LorenzL" UGEN;
+#X text 193 478 - sets initial value of z[n-1] (default 0), f 55;
+#X text 213 351 - lorenz chaotic signal;
+#X text 161 504 Object based on SuperCollider's "LorenzL" UGEN;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 305 3 pd;
+#X restore 304 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
@@ -82,7 +63,74 @@ value of z, f 36;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X connect 0 0 11 0;
-#X connect 11 0 26 0;
-#X connect 26 0 18 1;
-#X connect 26 0 18 0;
+#X obj 211 132 hsl 128 15 440 44100 1 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 0 1;
+#X obj 208 154 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 135 154 rate in Hz;
+#X obj 165 202 else/out~;
+#N canvas 663 152 409 431 parameters 0;
+#X obj 52 98 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 0 1;
+#X obj 49 122 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 79 97 rate in Hz;
+#X obj 73 352 else/out~;
+#X floatatom 73 165 5 0 0 0 - - -, f 5;
+#X floatatom 137 166 5 0 0 0 - - -, f 5;
+#X msg 83 286 coefs \$1 \$2 \$3 \$4;
+#X floatatom 83 239 5 0 0 0 - - -, f 5;
+#X obj 83 258 pack float float float float;
+#X floatatom 138 239 5 0 0 0 - - -, f 5;
+#X floatatom 193 239 5 0 0 0 - - -, f 5;
+#X floatatom 248 239 5 0 0 0 - - -, f 5;
+#X text 22 11 By default \, the initial s \, r \, b and h values are
+10 \, 28 \, 2.667 and 0.05 respectively \, but can be changed via arguments
+or via the "coefs" message.;
+#X obj 73 186 pack float float float;
+#X text 71 146 x[n-1];
+#X text 135 146 y[n-1];
+#X floatatom 202 164 5 0 0 0 - - -, f 5;
+#X text 200 146 z[n-1];
+#X text 215 183 list sets initial values of x \, y and z, f 24;
+#X text 119 238 s;
+#X text 174 238 r;
+#X text 231 238 b;
+#X text 284 238 h;
+#X text 199 279 sets coefficients 's' \, 'r' \, 'b' & 'h', f 21;
+#X text 22 56 You can also set previous values of x \, y and z with
+a list.;
+#X obj 73 320 else/lorenz~;
+#X connect 0 0 1 0;
+#X connect 1 0 25 0;
+#X connect 4 0 13 0;
+#X connect 5 0 13 1;
+#X connect 6 0 25 0;
+#X connect 7 0 8 0;
+#X connect 8 0 6 0;
+#X connect 9 0 8 1;
+#X connect 10 0 8 2;
+#X connect 11 0 8 3;
+#X connect 13 0 25 0;
+#X connect 16 0 13 2;
+#X connect 25 0 3 0;
+#X connect 25 0 3 1;
+#X restore 443 235 pd parameters;
+#X obj 208 177 else/lorenz~;
+#X text 178 306 list;
+#X text 94 291 coefs <f \, f \, f \, f>;
+#X text 213 292 - list sets values of 's' \, 'r' \, 'b' and 'h', f
+49;
+#X text 213 307 - 3 floats set x[n-1] \, y[n-1] and z[n-1] respectively
+;
+#X text 84 87 The [lorenz~] is a strange attractor discovered by Edward
+N. Lorenz while studying mathematical models of the atmosphere.;
+#X text 353 163 The system is based on these differential equations
+\; x' = x + h * s * (y - x) \; y' = y + h * (x * (r - z) - y) \; z'
+= z + h * (x * y) - (b * z), f 32;
+#X text 172 322 clear;
+#X text 213 323 - clears values of z \, y and z;
+#X connect 41 0 42 0;
+#X connect 42 0 46 0;
+#X connect 46 0 44 1;
+#X connect 46 0 44 0;
