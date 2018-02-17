@@ -1,22 +1,21 @@
-#N canvas 519 51 561 558 10;
+#N canvas 655 45 560 605 10;
 #X obj 23 41 cnv 4 4 4 empty empty Control 0 28 2 18 -233017 -1 0;
-#X obj 3 532 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 577 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 332 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 297 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 428 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 393 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 458 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 423 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 92 435 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 92 400 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 92 340 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 92 305 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 3 4 cnv 15 301 42 empty empty lfo 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 4 graph;
-#X text 120 479 2) float;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -34,45 +33,57 @@
 0;
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 213 129 hsl 128 15 0.1 1 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 210 151 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 137 151 rate in Hz;
+#X obj 189 124 hsl 128 15 0.1 1 1 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 10600 1;
+#X obj 186 150 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.683354 256;
+#X text 213 124 rate in Hz;
 #X obj 89 41 cnv 4 4 4 empty empty LFO 0 28 2 18 -233017 -1 0;
-#X msg 247 180 0;
-#X text 139 436 float;
-#X text 139 342 float;
+#X msg 244 149 0;
+#X text 139 401 float;
+#X text 139 307 float;
 #X text 64 91 [lfo] is a control rate LFO with some common waveforms.
 , f 73;
-#X obj 210 232 vsl 22 80 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 2449 1;
-#X text 120 465 1) symbol;
-#X text 180 465 - (optional) sets waveform (default sine), f 55;
-#X text 180 479 - sets frequency in hertz (default 0), f 55;
-#X text 180 493 - sets initial phase from 0 - 1 (default 0), f 55
+#X obj 195 201 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
+-228856 -1 -1 2642 1;
+#X text 180 429 - sets frequency in hertz (default 0), f 55;
+#X text 180 443 - sets initial phase from 0 - 1 (default 0), f 55
 ;
-#X text 120 493 3) float;
-#X text 120 508 4) float;
-#X text 180 437 - LFO's waveform in the range from 0 - 127;
-#X obj 210 204 ./lfo tri 0.5;
-#X text 180 508 - sets refresh rate in ms (default 5), f 55;
-#X obj 92 380 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 180 402 - LFO's waveform in the range from 0 - 127;
+#X text 180 458 - sets refresh rate in ms (default 5), f 55;
+#X obj 92 345 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 139 382 float;
-#X obj 92 401 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X text 139 347 float;
+#X obj 92 366 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 139 403 float;
-#X text 180 382 - phase reset from 0 - 1;
-#X text 180 403 - refresh rate in ms (minimum is 5 ms), f 49;
-#X text 180 342 - frequency in hertz up to 100 (negative values accepted)
+#X text 139 368 float;
+#X text 180 347 - phase reset from 0 - 1;
+#X text 180 368 - refresh rate in ms (minimum is 5 ms), f 49;
+#X text 180 307 - frequency in hertz up to 100 (negative values accepted)
 ;
-#X text 121 359 anything;
-#X text 180 359 -;
-#X text 192 359 sets waveform (sine \, tri \, saw \, sawup or sawdown)
+#X text 121 324 anything;
+#X text 180 324 -;
+#X text 272 147 <= phase reset;
+#X text 120 429 1) float;
+#X text 120 443 2) float;
+#X text 120 458 3) float;
+#X obj 3 479 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 118 487 -sine;
+#X text 161 487 - sets waveform to sine (default), f 61;
+#X text 124 503 -tri;
+#X text 161 503 - sets waveform to triangular, f 61;
+#X text 124 519 -saw;
+#X text 161 519 - sets waveform to sawtooth, f 61;
+#X text 70 536 -vsaw <float>;
+#X text 58 552 -square <float>;
+#X text 161 536 - sets waveform to variable sawtooth and width (from
+-1 to 1), f 61;
+#X text 161 552 - sets waveform to square and width (from 0 to 1),
+f 61;
+#X text 192 324 sets waveform (sine \, tri \, saw \, vsawup and square)
 ;
-#X text 275 178 <= phase reset;
-#X connect 18 0 19 0;
-#X connect 19 0 34 0;
-#X connect 22 0 34 1;
-#X connect 34 0 26 0;
+#X obj 195 174 else/lfo 0.5 -tri;
+#X connect 17 0 18 0;
+#X connect 18 0 55 0;
+#X connect 21 0 55 1;
+#X connect 55 0 25 0;
