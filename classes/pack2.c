@@ -139,7 +139,8 @@ static void *pack2_new(t_symbol *s, int argc, t_atom *argv){
             inlet_new((t_object *)x, &(x->x_ins[i].x_pd), 0, 0);
         }
         else if(argv[i].a_type == A_SYMBOL){
-            if(argv[i].a_w.w_symbol == gensym("f")){ // only "f" arg converts to float
+            if(argv[i].a_w.w_symbol == gensym("f") ||
+               argv[i].a_w.w_symbol == gensym("float")){ 
                 x->x_vec[i].a_type      = A_FLOAT;
                 x->x_vec[i].a_w.w_float = 0.f;
                 x->x_ins[i].x_pd    = pack2_inlet_class;

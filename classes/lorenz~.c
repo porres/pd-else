@@ -30,16 +30,16 @@ static void lorenz_clear(t_lorenz *x){
     x->x_xnm1 = x->x_ynm1 = x->x_znm1 = x->x_xn = x->x_yn = x->x_zn = 0;
 }
 
-static void lorenz_coefs(t_lorenz *x, t_symbol *s, int argc, t_atom * argv){
+static void lorenz_coeffs(t_lorenz *x, t_symbol *s, int argc, t_atom * argv){
     if(argc){
         if(argc > 4){
-            pd_error(x, "lorenz~: 'coefs' needs a maximum of 4 floats as arguments");
+            pd_error(x, "lorenz~: 'coeffs' needs a maximum of 4 floats as arguments");
             return;
         }
         int argnum = 0; // current argument
         while(argc){
             if(argv -> a_type != A_FLOAT){
-                pd_error(x, "lorenz~: 'coefs' arguments needs to only contain floats");
+                pd_error(x, "lorenz~: 'coeffs' arguments needs to only contain floats");
                 return;
             }
             else{
@@ -266,6 +266,6 @@ void lorenz_tilde_setup(void){
     CLASS_MAINSIGNALIN(lorenz_class, t_lorenz, x_freq);
     class_addlist(lorenz_class, lorenz_list);
     class_addmethod(lorenz_class, (t_method)lorenz_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(lorenz_class, (t_method)lorenz_coefs, gensym("coefs"), A_GIMME, 0);
+    class_addmethod(lorenz_class, (t_method)lorenz_coeffs, gensym("coeffs"), A_GIMME, 0);
     class_addmethod(lorenz_class, (t_method)lorenz_clear, gensym("clear"), 0);
 }
