@@ -63,36 +63,33 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 211 132 hsl 128 15 440 44100 1 0 empty empty empty -2 -8 0 10
+#X obj 211 132 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 208 154 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 440 256;
 #X text 135 154 rate in Hz;
 #X obj 165 202 else/out~;
-#N canvas 663 152 409 431 parameters 0;
-#X obj 52 98 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
+#N canvas 489 107 409 467 parameters 0;
+#X obj 52 98 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 7000 1;
 #X obj 49 122 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 5582.14 256;
 #X text 79 97 rate in Hz;
-#X obj 73 352 else/out~;
+#X obj 73 370 else/out~;
 #X floatatom 73 165 5 0 0 0 - - -, f 5;
 #X floatatom 137 166 5 0 0 0 - - -, f 5;
-#X msg 83 286 coefs \$1 \$2 \$3 \$4;
 #X floatatom 83 239 5 0 0 0 - - -, f 5;
-#X obj 83 258 pack float float float float;
 #X floatatom 138 239 5 0 0 0 - - -, f 5;
 #X floatatom 193 239 5 0 0 0 - - -, f 5;
 #X floatatom 248 239 5 0 0 0 - - -, f 5;
 #X text 22 11 By default \, the initial s \, r \, b and h values are
 10 \, 28 \, 2.667 and 0.05 respectively \, but can be changed via arguments
 or via the "coefs" message.;
-#X obj 73 186 pack float float float;
 #X text 71 146 x[n-1];
 #X text 135 146 y[n-1];
 #X floatatom 202 164 5 0 0 0 - - -, f 5;
 #X text 200 146 z[n-1];
-#X text 215 183 list sets initial values of x \, y and z, f 24;
+#X text 224 183 list sets initial values of x \, y and z, f 24;
 #X text 119 238 s;
 #X text 174 238 r;
 #X text 231 238 b;
@@ -100,21 +97,26 @@ or via the "coefs" message.;
 #X text 199 279 sets coefficients 's' \, 'r' \, 'b' & 'h', f 21;
 #X text 22 56 You can also set previous values of x \, y and z with
 a list.;
-#X obj 73 320 else/lorenz~;
+#X obj 83 258 pack float float float float;
+#X msg 83 286 coefs \$1 \$2 \$3 \$4;
+#X obj 73 186 pack float float float;
+#X msg 105 313 clear;
+#X obj 73 338 else/lorenz~;
 #X connect 0 0 1 0;
-#X connect 1 0 25 0;
-#X connect 4 0 13 0;
-#X connect 5 0 13 1;
-#X connect 6 0 25 0;
-#X connect 7 0 8 0;
-#X connect 8 0 6 0;
-#X connect 9 0 8 1;
-#X connect 10 0 8 2;
-#X connect 11 0 8 3;
-#X connect 13 0 25 0;
-#X connect 16 0 13 2;
-#X connect 25 0 3 0;
-#X connect 25 0 3 1;
+#X connect 1 0 26 0;
+#X connect 4 0 24 0;
+#X connect 5 0 24 1;
+#X connect 6 0 22 0;
+#X connect 7 0 22 1;
+#X connect 8 0 22 2;
+#X connect 9 0 22 3;
+#X connect 13 0 24 2;
+#X connect 22 0 23 0;
+#X connect 23 0 26 0;
+#X connect 24 0 26 0;
+#X connect 25 0 26 0;
+#X connect 26 0 3 0;
+#X connect 26 0 3 1;
 #X restore 443 235 pd parameters;
 #X obj 208 177 else/lorenz~;
 #X text 178 306 list;
