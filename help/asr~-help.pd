@@ -289,8 +289,6 @@ release time in ms., f 59;
 #N canvas 930 208 510 419 triggered 0;
 #X obj 228 212 else/display~ 7;
 #X obj 172 339 else/out~;
-#X text 49 28 You can use the [tgate~] object to create a timed gate
-so you can trigger the envelope.;
 #X obj 228 87 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 188 293 *~;
@@ -300,14 +298,16 @@ so you can trigger the envelope.;
 #X text 241 149 <= impulse;
 #X obj 228 116 else/tempo~ 60;
 #X obj 228 183 else/timed.gate~ 500;
-#X connect 0 0 7 0;
-#X connect 3 0 9 0;
-#X connect 4 0 1 0;
-#X connect 4 0 1 1;
-#X connect 5 0 4 0;
-#X connect 7 0 4 1;
-#X connect 9 0 10 0;
-#X connect 10 0 0 0;
+#X text 49 28 You can use the [timed.gate~] object to create a timed
+gate so you can trigger the envelope.;
+#X connect 0 0 6 0;
+#X connect 2 0 8 0;
+#X connect 3 0 1 0;
+#X connect 3 0 1 1;
+#X connect 4 0 3 0;
+#X connect 6 0 3 1;
+#X connect 8 0 9 0;
+#X connect 9 0 0 0;
 #X restore 445 258 pd triggered \; by impulses;
 #X obj 131 484 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
