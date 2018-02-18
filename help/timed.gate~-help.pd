@@ -418,13 +418,13 @@ timed gate starts before the last was finished., f 53;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 71 161 pd;
 #X obj 176 159 else/dust2~ 5;
-#X obj 176 203 else/tgate~ 500;
 #X text 35 87 You can to retrigger mode with the retrigger message
 or the third argument., f 53;
-#X connect 1 0 6 0;
+#X obj 176 203 else/timed.gate~ 500;
+#X connect 1 0 7 0;
 #X connect 2 0 1 0;
-#X connect 5 0 6 0;
-#X connect 6 0 0 0;
+#X connect 5 0 7 0;
+#X connect 7 0 0 0;
 #X restore 459 254 pd retrigger;
 #X obj 134 197 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;

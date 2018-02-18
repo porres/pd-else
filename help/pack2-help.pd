@@ -1,70 +1,117 @@
-#N canvas 598 54 560 465 10;
-#X obj 23 40 cnv 4 4 4 empty empty Combine 0 28 2 18 -233017 -1 0;
-#X obj 3 3 cnv 15 301 42 empty empty pack2 20 20 2 37 -233017 -1 0
+#N canvas 598 54 558 451 10;
+#X obj 22 40 cnv 4 4 4 empty empty Combine 0 28 2 18 -233017 -1 0;
+#X obj 2 3 cnv 15 301 42 empty empty pack2 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 3 3 graph;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X restore 2 3 graph;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 304 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 303 3 pd;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 99 40 cnv 4 4 4 empty empty atoms 0 28 2 18 -233017 -1 0;
-#X obj 3 439 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 98 40 cnv 4 4 4 empty empty atoms 0 28 2 18 -233017 -1 0;
+#X obj 2 426 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 251 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 2 238 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 344 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 2 331 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 377 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 364 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 73 353 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 81 340 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 95 385 1) anything;
-#X obj 73 258 cnv 17 3 80 empty empty n 5 9 0 16 -228856 -162280 0
+#X text 106 372 1) anything;
+#X obj 81 245 cnv 17 3 80 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X text 114 321 anything;
-#X text 138 259 bang;
-#X text 78 277 set <anything>;
-#X text 174 259 - outputs the stored list of elements, f 60;
-#X text 174 321 -;
-#X text 174 277 -;
-#X text 187 321 same as "set" \, but it forces a list output, f 58
+#X text 125 308 anything;
+#X text 149 246 bang;
+#X text 89 264 set <anything>;
+#X text 185 246 - outputs the stored list of elements, f 58;
+#X text 185 308 -;
+#X text 185 264 -;
+#X text 198 308 same as "set" \, but it forces a list output, f 56
 ;
-#X text 174 385 -;
-#X text 187 277 the elements of a message update the inlet's value
-they're connected to and the subsequent inlets according to the remaining
-elements - it doesn't force an output;
-#X obj 266 154 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 27 256;
-#X obj 209 208 display;
-#X obj 209 180 else/pack2;
-#X obj 209 154 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 32 256;
-#X text 114 354 anything;
-#X text 174 354 - the message composed of the given elements;
-#X text 72 86 [pack2] is similar to Pd Vanilla's [pack]. But any inlet
+#X text 185 372 -;
+#X obj 280 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -41.33 256;
+#X obj 217 205 display;
+#X obj 217 177 else/pack2, f 11;
+#X obj 217 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 42 256;
+#X text 125 341 anything;
+#X text 185 341 - the message composed of the given elements;
+#X text 71 86 [pack2] is similar to Pd Vanilla's [pack]. But any inlet
 triggers the output (though a "set" message avoids the output). It
 can also initialize a symbol value and it doesn't create a list selector
 for you. The [pack2] object is also very similar to [cyclone/pak].
 , f 67;
-#X text 185 385 a float sets to float type and its initial value \,
+#X text 196 372 a float sets to float type and its initial value \,
 the symbol 'f' or 'float' also sets to float (initially 0) and any
 other symbol sets to symbol type and its initial value - default: two
-floats set to '0';
-#X connect 28 0 30 1;
+floats set to '0', f 54;
+#X obj 189 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#N canvas 448 27 435 601 more 0;
+#X floatatom 73 85 0 0 0 0 - - -;
+#X obj 134 86 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X symbolatom 204 79 6 0 0 0 - - -, f 6;
+#X obj 122 155 else/display;
+#X obj 122 122 cyclone/pak 1 pure data f 10;
+#X msg 163 49 set else's cool;
+#X msg 122 24 set 9 pd rules 1.2 1.3;
+#X msg 251 78 1.2 9.7;
+#X floatatom 287 101 5 0 0 0 - - -, f 5;
+#X floatatom 144 265 5 0 0 0 - - -, f 5;
+#X text 52 215 A float into a symbol inlet empties the symbol value.
+;
+#X symbolatom 189 446 10 0 0 0 - - -, f 10;
+#X floatatom 189 537 5 0 0 0 - - -, f 5;
+#X obj 187 263 loadbang;
+#X obj 144 296 pak s;
+#X obj 129 421 loadbang;
+#X obj 189 507 pak 3.7;
+#X floatatom 129 538 5 0 0 0 - - -, f 5;
+#X obj 129 508 pak i;
+#X msg 129 469 3;
+#X text 56 381 A symbol into a float/int inlet zeroes the value.;
+#X obj 144 330 else/display;
+#X connect 0 0 4 0;
+#X connect 1 0 4 0;
+#X connect 2 0 4 2;
+#X connect 4 0 3 0;
+#X connect 5 0 4 1;
+#X connect 6 0 4 0;
+#X connect 7 0 4 3;
+#X connect 8 0 4 4;
+#X connect 9 0 14 0;
+#X connect 11 0 16 0;
+#X connect 11 0 18 0;
+#X connect 13 0 14 0;
+#X connect 14 0 21 0;
+#X connect 15 0 16 0;
+#X connect 15 0 19 0;
+#X connect 16 0 12 0;
+#X connect 18 0 17 0;
+#X connect 19 0 18 0;
+#X restore 468 210 pd more;
+#X text 197 264 the elements of a message update the inlet's value
+they are connected to and the subsequent inlets according to the remaining
+elements - it doesn't force an output, f 56;
+#X connect 27 0 29 1;
+#X connect 29 0 28 0;
 #X connect 30 0 29 0;
-#X connect 31 0 30 0;
+#X connect 35 0 29 0;

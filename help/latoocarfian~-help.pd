@@ -50,48 +50,48 @@
 #X text 25 19 By default \, the initial k \, x and y values are 1 \,
 0.5 and 0 \, respectively \, but can be changed via arguments or messages.
 ;
-#X obj 41 67 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0 10
+#X obj 64 68 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X obj 38 91 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 61 92 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 68 68 rate in Hz;
-#X obj 116 282 else/out~;
-#X obj 116 132 pack f f;
-#X floatatom 116 111 5 0 0 0 - - -, f 5;
-#X floatatom 161 112 5 0 0 0 - - -, f 5;
-#X text 106 91 y[n-1];
-#X text 160 91 x[n-1];
-#X text 176 132 list sets initial values of y[n-1] and x[n-1], f 24
+#X text 91 69 rate in Hz;
+#X obj 106 310 else/out~;
+#X floatatom 106 141 5 0 0 0 - - -, f 5;
+#X floatatom 163 142 5 0 0 0 - - -, f 5;
+#X text 96 121 y[n-1];
+#X text 162 121 x[n-1];
+#X text 205 140 list sets initial values of y[n-1] and x[n-1], f 24
 ;
-#X msg 126 222 coefs \$1 \$2 \$3 \$4;
-#X text 242 215 sets coefficients 'a' \, 'b' \, 'c' & 'd', f 21;
-#X floatatom 126 175 5 0 0 0 - - -, f 5;
-#X obj 126 194 pack float float float float;
-#X floatatom 181 175 5 0 0 0 - - -, f 5;
-#X floatatom 236 175 5 0 0 0 - - -, f 5;
-#X floatatom 291 175 5 0 0 0 - - -, f 5;
-#X text 162 174 a;
-#X text 217 174 b;
-#X text 274 174 c;
-#X text 327 174 d;
-#X obj 116 250 else/latoocarfian~;
-#X text 44 360 The object can give chaotic output \, converge to a
+#X msg 116 250 coefs \$1 \$2 \$3 \$4;
+#X text 232 243 sets coefficients 'a' \, 'b' \, 'c' & 'd', f 21;
+#X obj 106 278 else/latoocarfian~;
+#X text 44 391 The object can give chaotic output \, converge to a
 single value or oscillate in a cycle. According to the reference \,
 'a' and 'b' should be from -3 to +3 \, and 'c' and 'd' from 0.5 to
 1.5.;
+#X floatatom 176 203 5 0 0 0 - - -, f 5;
+#X floatatom 237 203 5 0 0 0 - - -, f 5;
+#X floatatom 298 203 5 0 0 0 - - -, f 5;
+#X floatatom 359 203 5 0 0 0 - - -, f 5;
+#X text 212 202 a;
+#X text 271 202 b;
+#X text 332 202 c;
+#X text 395 203 d;
+#X obj 116 222 else/pack2 coeffs float float float float;
+#X obj 106 162 else/pack2;
 #X connect 1 0 2 0;
-#X connect 2 0 22 0;
-#X connect 5 0 22 0;
-#X connect 6 0 5 0;
-#X connect 7 0 5 1;
-#X connect 11 0 22 0;
-#X connect 13 0 14 0;
-#X connect 14 0 11 0;
-#X connect 15 0 14 1;
-#X connect 16 0 14 2;
-#X connect 17 0 14 3;
-#X connect 22 0 4 0;
-#X connect 22 0 4 1;
+#X connect 2 0 12 0;
+#X connect 5 0 23 0;
+#X connect 6 0 23 1;
+#X connect 10 0 12 0;
+#X connect 12 0 4 0;
+#X connect 12 0 4 1;
+#X connect 14 0 22 1;
+#X connect 15 0 22 2;
+#X connect 16 0 22 3;
+#X connect 17 0 22 4;
+#X connect 22 0 10 0;
+#X connect 23 0 12 0;
 #X restore 447 281 pd parameters;
 #X text 83 150 The output rate of the equation is given in hertz (default:
 nyquist).;
@@ -116,11 +116,11 @@ sin(b * x[n]) + c * sin(b * y[n-1]) \;;
 #X text 227 481 - sets d (default: 0.5);
 #X text 167 497 6) float;
 #X text 167 513 7) float;
-#X text 108 339 coefs <f \, f \, f \, f>;
 #X text 227 340 - list sets values of 'a' \, 'b' \, 'c' and 'd';
 #X text 149 538 Object based on SuperCollider's "LatoocarfianN" UGEN.
 The reference is "Chaos In Wonderland" (pg. 26) by Clifford Pickover.
 ;
+#X text 102 339 coeffs <f \, f \, f \, f>;
 #X connect 0 0 17 0;
 #X connect 17 0 33 0;
 #X connect 33 0 24 1;

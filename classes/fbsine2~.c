@@ -21,21 +21,21 @@ typedef struct _fbsine2{
     t_outlet  *x_outlet;
 }t_fbsine2;
 
-/*
+
 static void fbsine2_clear(t_fbsine2 *x){
-    x->x_xnm1 = x->x_ynm1 = x->x_znm1 = x->x_xn = x->x_yn = x->x_zn = 0;
+    x->x_xn = x->x_yn = 0;
 }
 
-static void fbsine2_coefs(t_fbsine2 *x, t_symbol *s, int argc, t_atom * argv){
+static void fbsine2_coeffs(t_fbsine2 *x, t_symbol *s, int argc, t_atom * argv){
     if(argc){
         if(argc > 4){
-            pd_error(x, "fbsine2~: 'coefs' needs a maximum of 4 floats as arguments");
+            pd_error(x, "fbsine2~: 'coeffs' needs a maximum of 4 floats as arguments");
             return;
         }
         int argnum = 0; // current argument
         while(argc){
             if(argv -> a_type != A_FLOAT){
-                pd_error(x, "fbsine2~: 'coefs' arguments needs to only contain floats");
+                pd_error(x, "fbsine2~: 'coeffs' arguments needs to only contain floats");
                 return;
             }
             else{
@@ -64,8 +64,8 @@ static void fbsine2_coefs(t_fbsine2 *x, t_symbol *s, int argc, t_atom * argv){
 
 static void fbsine2_list(t_fbsine2 *x, t_symbol *s, int argc, t_atom * argv){
     if(argc){
-        if(argc > 3){
-            pd_error(x, "fbsine2~: list size needs to be <= 3");
+        if(argc > 2){
+            pd_error(x, "fbsine2~: list size needs to be <= 2");
             return;
         }
         int argnum = 0; // current argument
@@ -83,9 +83,6 @@ static void fbsine2_list(t_fbsine2 *x, t_symbol *s, int argc, t_atom * argv){
                     case 1:
                     x->x_yn = curf;
                     break;
-                    case 2:
-                    x->x_zn = curf;
-                    break;
                 };
                 argnum++;
             };
@@ -93,7 +90,7 @@ static void fbsine2_list(t_fbsine2 *x, t_symbol *s, int argc, t_atom * argv){
             argv++;
         };
     }
-} */
+}
 
 static t_int *fbsine2_perform(t_int *w){
     t_fbsine2 *x = (t_fbsine2 *)(w[1]);
@@ -212,7 +209,7 @@ void fbsine2_tilde_setup(void){
         sizeof(t_fbsine2), 0, A_GIMME, 0);
     CLASS_MAINSIGNALIN(fbsine2_class, t_fbsine2, x_freq);
     class_addmethod(fbsine2_class, (t_method)fbsine2_dsp, gensym("dsp"), A_CANT, 0);
-//    class_addlist(fbsine2_class, fbsine2_list);
-//    class_addmethod(fbsine2_class, (t_method)fbsine2_coefs, gensym("coefs"), A_GIMME, 0);
-//    class_addmethod(fbsine2_class, (t_method)fbsine2_clear, gensym("clear"), 0);
+    class_addlist(fbsine2_class, fbsine2_list);
+    class_addmethod(fbsine2_class, (t_method)fbsine2_coeffs, gensym("coeffs"), A_GIMME, 0);
+    class_addmethod(fbsine2_class, (t_method)fbsine2_clear, gensym("clear"), 0);
 }

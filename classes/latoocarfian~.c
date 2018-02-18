@@ -23,11 +23,11 @@ typedef struct _latoocarfian
 } t_latoocarfian;
 
 
-static void latoocarfian_coefs(t_latoocarfian *x, t_symbol *s, int argc, t_atom * argv)
+static void latoocarfian_coeffs(t_latoocarfian *x, t_symbol *s, int argc, t_atom * argv)
 {
     if (argc != 4)
         {
-        pd_error(x, "latoocarfian~: 'coefs' needs a list of 4 floats as arguments");
+        pd_error(x, "latoocarfian~: 'coeffs' needs a list of 4 floats as arguments");
         }
     else
         {
@@ -36,7 +36,7 @@ static void latoocarfian_coefs(t_latoocarfian *x, t_symbol *s, int argc, t_atom 
             {
             if(argv -> a_type != A_FLOAT)
                 {
-                pd_error(x, "latoocarfian~: 'coefs' arguments needs to only contain floats");
+                pd_error(x, "latoocarfian~: 'coeffs' arguments needs to only contain floats");
                 }
             else
                 {
@@ -227,5 +227,5 @@ void latoocarfian_tilde_setup(void)
     CLASS_MAINSIGNALIN(latoocarfian_class, t_latoocarfian, x_freq);
     class_addlist(latoocarfian_class, latoocarfian_list);
     class_addmethod(latoocarfian_class, (t_method)latoocarfian_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(latoocarfian_class, (t_method)latoocarfian_coefs, gensym("coefs"), A_GIMME, 0);
+    class_addmethod(latoocarfian_class, (t_method)latoocarfian_coeffs, gensym("coeffs"), A_GIMME, 0);
 }

@@ -1,4 +1,4 @@
-#N canvas 887 334 560 419 10;
+#N canvas 880 334 560 419 10;
 #X obj 23 40 cnv 4 4 4 empty empty Step 0 28 2 18 -233017 -1 0;
 #X obj 64 40 cnv 4 4 4 empty empty counter 0 28 2 18 -233017 -1 0;
 #X obj 2 387 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
@@ -25,12 +25,11 @@
 #X text 82 88 [step~] is a counter;
 #X obj 214 187 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 246 187 else/metro~ 60;
 #X obj 246 156 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -99,7 +98,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -158,10 +157,12 @@
 #X obj 123 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X obj 378 210 impseq~;
-#X connect 15 0 31 0;
-#X connect 17 0 16 0;
-#X connect 27 0 34 0;
-#X connect 31 0 13 0;
+#X obj 246 187 else/tempo~ 60;
+#X connect 15 0 30 0;
+#X connect 16 0 34 0;
+#X connect 26 0 33 0;
+#X connect 30 0 13 0;
+#X connect 31 0 30 0;
 #X connect 32 0 31 0;
-#X connect 33 0 32 0;
-#X connect 34 0 31 1;
+#X connect 33 0 30 1;
+#X connect 34 0 30 0;

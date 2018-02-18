@@ -26,7 +26,7 @@ static void quad_list(t_quad *x, t_symbol *s, int argc, t_atom * argv)
     {
         if(argv -> a_type != A_FLOAT)
         {
-            pd_error(x, "latoocarfian~: 'coefs' arguments needs to only contain floats");
+            pd_error(x, "latoocarfian~: list arguments needs to only contain floats");
         }
         else
         {

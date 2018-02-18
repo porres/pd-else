@@ -147,10 +147,10 @@
 #X text 224 285 - impulse trigger with the gate value;
 #N canvas 639 96 538 502 example 0;
 #X obj 68 237 else/sine~ 50;
-#X obj 66 305 else/sine~ 200;
+#X obj 80 305 else/sine~ 200;
 #X obj 161 273 *~;
 #X obj 274 361 *~;
-#X obj 179 228 else/adsr~ 400 200 0.5 1000, f 14;
+#X obj 176 228 else/adsr~ 400 200 0.5 1000, f 14;
 #X obj 231 402 out~;
 #X obj 292 225 else/gatehold~ 500;
 #X obj 292 252 else/adsr~ 100 100 0.5 750;
@@ -179,10 +179,10 @@ object.;
 #X text 224 344 - held gate;
 #X text 139 376 1) float - hold time in ms (default 0 \, no hold);
 #X obj 246 207 else/gatehold~ 500;
-#X obj 369 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 351 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 184 312 float;
-#X text 426 183 hold time;
+#X text 408 183 hold time;
 #X obj 246 146 else/randpulse~ 0.5 0.25;
 #X text 70 88 [gatehold~] holds a gate value for a certain amount of
 time (specified in ms) after the gate has closed. If a new gate starts

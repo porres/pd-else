@@ -45,7 +45,6 @@
 #X obj 178 304 else/trighold~;
 #X obj 192 240 else/out~;
 #X obj 178 328 else/display~;
-#X obj 425 260 else/tgate~;
 #X text 427 237 see also:;
 #X text 423 292 which does an opposite convertion, f 11;
 #X text 70 87 [gate2imp~] converts gates to impulses. It sends an impulse
@@ -53,6 +52,7 @@ when receiving a gate (0 to non 0 transitions) where the impulse value
 is the same as the gate.;
 #X text 209 370 - gate signal to be converted;
 #X text 209 402 - impulse converted from gate;
+#X obj 405 260 else/timed.gate~;
 #X connect 21 0 24 0;
 #X connect 22 0 21 0;
 #X connect 24 0 26 0;

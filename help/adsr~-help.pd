@@ -303,23 +303,23 @@ object for managing polyphonic synths.;
 #X obj 176 337 else/out~;
 #X text 38 24 You can use the [tgate~] object to create a timed gate
 so you can trigger the envelope.;
-#X obj 216 185 else/tgate~ 500;
 #X obj 216 89 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 176 295 *~;
 #X obj 104 221 else/brown~;
-#X obj 216 118 else/metro~ 60;
 #X text 276 217 <= gate value;
 #X text 229 151 <= impulse;
 #X obj 216 254 else/adsr~ 50 100 0.5 500;
-#X connect 0 0 10 0;
-#X connect 3 0 0 0;
-#X connect 4 0 7 0;
-#X connect 5 0 1 0;
-#X connect 5 0 1 1;
-#X connect 6 0 5 0;
-#X connect 7 0 3 0;
-#X connect 10 0 5 1;
+#X obj 216 118 else/tempo~ 60;
+#X obj 216 185 else/timed.gate~ 500;
+#X connect 0 0 8 0;
+#X connect 3 0 9 0;
+#X connect 4 0 1 0;
+#X connect 4 0 1 1;
+#X connect 5 0 4 0;
+#X connect 8 0 4 1;
+#X connect 9 0 10 0;
+#X connect 10 0 0 0;
 #X restore 450 321 pd triggered \; by impulses;
 #X text 68 87 [adsr~] is a linear attack/decay/sustain/release gated
 envelope. At a gate on value (transition from 0 to any value) \, the

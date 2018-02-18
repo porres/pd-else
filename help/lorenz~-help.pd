@@ -1,4 +1,4 @@
-#N canvas 747 68 560 552 10;
+#N canvas 249 63 560 552 10;
 #X obj 23 40 cnv 4 4 4 empty empty Lorenz 0 28 2 18 -233017 -1 0;
 #X obj 87 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 -233017 -1 0;
 #X obj 3 525 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
@@ -78,9 +78,6 @@
 #X obj 87 395 else/out~;
 #X floatatom 87 180 5 0 0 0 - - -, f 5;
 #X floatatom 169 181 5 0 0 0 - - -, f 5;
-#X text 61 15 By default \, the initial s \, r \, b and h values are
-10 \, 28 \, 2.667 and 0.05 respectively \, but can be changed via arguments
-or via the "coefs" message.;
 #X text 85 161 x[n-1];
 #X text 167 161 y[n-1];
 #X floatatom 252 179 5 0 0 0 - - -, f 5;
@@ -101,20 +98,23 @@ a list.;
 #X obj 87 201 else/pack2 float float float;
 #X msg 122 333 clear;
 #X obj 106 295 else/pack2 coeffs 10 28 2.667 0.05, f 40;
+#X text 61 15 By default \, the initial s \, r \, b and h values are
+10 \, 28 \, 2.667 and 0.05 respectively \, but can be changed via arguments
+or via the "coeffs" message.;
 #X connect 0 0 1 0;
-#X connect 1 0 22 0;
-#X connect 4 0 23 0;
-#X connect 5 0 23 1;
-#X connect 9 0 23 2;
-#X connect 14 0 25 1;
-#X connect 15 0 25 2;
-#X connect 16 0 25 3;
-#X connect 17 0 25 4;
-#X connect 22 0 3 0;
-#X connect 22 0 3 1;
-#X connect 23 0 22 0;
-#X connect 24 0 22 0;
-#X connect 25 0 22 0;
+#X connect 1 0 21 0;
+#X connect 4 0 22 0;
+#X connect 5 0 22 1;
+#X connect 8 0 22 2;
+#X connect 13 0 24 1;
+#X connect 14 0 24 2;
+#X connect 15 0 24 3;
+#X connect 16 0 24 4;
+#X connect 21 0 3 0;
+#X connect 21 0 3 1;
+#X connect 22 0 21 0;
+#X connect 23 0 21 0;
+#X connect 24 0 21 0;
 #X restore 443 235 pd parameters;
 #X obj 208 177 else/lorenz~;
 #X text 178 306 list;
