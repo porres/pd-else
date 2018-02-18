@@ -17,7 +17,7 @@ typedef struct _pack2_inlet{
     t_class*    x_pd;
     t_atom*     x_atoms;
     t_int       x_max;
-    t_pack2*      x_owner;
+    t_pack2*    x_owner;
     int         x_idx; //index of inlet
 } t_pack2_inlet;
 
@@ -33,22 +33,24 @@ static void pack2_bang(t_pack2 *x){
     }
 }
 
-
-
 static void pack2_copy(t_pack2 *x, int ndest, t_atom* dest, int nsrc, t_atom* src, int srcidx){
     int i, isint;
     for(i = 0; i < ndest && i < nsrc; ++i){
         if(src[i].a_type == A_FLOAT){
             if(dest[i].a_type == A_FLOAT)
                 dest[i].a_w.w_float = src[i].a_w.w_float;
-            else if(dest[i].a_type == A_SYMBOL)
-                dest[i].a_w.w_symbol = &s_; // float becomes blank symbol
+            else if(dest[i].a_type == A_SYMBOL){
+                dest[i].a_type = A_FLOAT;
+                dest[i].a_w.w_float = src[i].a_w.w_float; // symbol becomes float
+            }
         }
         else if(src[i].a_type == A_SYMBOL){
             if(dest[i].a_type == A_SYMBOL)
                 dest[i].a_w.w_symbol = src[i].a_w.w_symbol;
-            else if(dest[i].a_type == A_FLOAT)
-                dest[i].a_w.w_float = 0; // symbol becomes 0
+            else if(dest[i].a_type == A_FLOAT){
+                dest[i].a_type = A_SYMBOL;
+                dest[i].a_w.w_symbol = src[i].a_w.w_symbol; // float becomes symbol
+            }
         }
     }
 }
@@ -64,7 +66,8 @@ static void pack2_inlet_float(t_pack2_inlet *x, float f){
         pack2_bang(x->x_owner);
     }
     else if(x->x_atoms->a_type == A_SYMBOL){
-        x->x_atoms->a_w.w_symbol =  &s_; // float becomes blank symbol
+        x->x_atoms->a_type      = A_FLOAT; // symbol becomes float
+        x->x_atoms->a_w.w_float = f;
         pack2_bang(x->x_owner);
     }
 }
@@ -75,7 +78,8 @@ static void pack2_inlet_symbol(t_pack2_inlet *x, t_symbol* s){
         pack2_bang(x->x_owner);
     }
     else if(x->x_atoms->a_type == A_FLOAT){
-        x->x_atoms->a_w.w_float = 0; // symbol becomes 0
+        x->x_atoms->a_type      = A_SYMBOL; // float becomes symbol
+        x->x_atoms->a_w.w_symbol = s;
         pack2_bang(x->x_owner);
     }
 }
@@ -88,8 +92,10 @@ static void pack2_inlet_list(t_pack2_inlet *x, t_symbol* s, int argc, t_atom* ar
 static void pack2_inlet_anything(t_pack2_inlet *x, t_symbol* s, int argc, t_atom* argv){
     if(x->x_atoms[0].a_type == A_SYMBOL)
         x->x_atoms[0].a_w.w_symbol = s;
-    else if (x->x_atoms[0].a_type == A_FLOAT)
-        x->x_atoms[0].a_w.w_float = 0; // symbol becomes 0
+    else if (x->x_atoms[0].a_type == A_FLOAT){
+        x->x_atoms[0].a_type = A_SYMBOL;
+        x->x_atoms[0].a_w.w_symbol = s; // float becomes symbol
+    }
     pack2_copy(x->x_owner, x->x_max-1, x->x_atoms+1, argc, argv, x->x_idx);
     pack2_bang(x->x_owner);
 }
