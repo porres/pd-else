@@ -1,40 +1,8 @@
-#N canvas 521 281 561 488 10;
-#X obj 5 414 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
-0;
-#X obj 5 291 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 326 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 355 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
-0;
-#X obj 95 300 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X msg 189 110 open;
-#N canvas 647 158 513 184 All_Messages 0;
-#X text 100 40 open;
-#X text 139 40 - opens buffer supbatch window, f 57;
-#X text 139 56 - closes buffer supbatch window, f 57;
-#X text 46 23 read <symbol>;
-#X text 34 131 setsize <float>;
-#X text 139 132 - sets buffer size in ms, f 57;
-#X text 34 148 sizeinsamps <f>;
-#X text 139 149 - sets buffer size in samples, f 57;
-#X text 46 114 normalize <f>;
-#X text 139 115 - normalizes to the given float value, f 57;
-#X text 139 23 - sets file to load from (no symbol opens dialog box)
-, f 57;
-#X text 64 72 sr <float>;
-#X text 139 72 - sets sample rate for writting a file (default: Patch's)
-;
-#X text 94 56 close;
-#X restore 374 300 pd All_Messages;
-#X text 124 301 click to open and check all messages: =>;
+#N canvas 432 69 561 655 10;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 24 41 cnv 4 4 4 empty empty Play 0 28 2 18 -233017 -1 0;
-#X obj 66 41 cnv 4 4 4 empty empty files 0 28 2 18 -233017 -1 0;
 #X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -48,24 +16,78 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 306 4 graph;
+#X obj 237 242 out~;
+#X msg 208 174 start;
+#X msg 147 153 pause;
+#X msg 190 153 continue;
+#X msg 256 181 speed \$1;
+#X obj 256 158 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X msg 322 187 loop \$1;
+#X obj 322 163 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 23 41 cnv 4 4 4 empty empty Multi-channel 0 28 2 18 -233017
+-1 0;
+#X obj 132 41 cnv 4 4 4 empty empty player 0 28 2 18 -233017 -1 0;
+#X obj 121 153 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 65 89 [player~] is a convenient abstraction based on [soundfiler]
+and [tabread4~] to load files into arrays and play from them. It is
+more versatile than [else/sampler~]. For instance \, you can play in
+different speeds and even backwards., f 64;
+#X obj 7 618 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 7 306 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 445 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 480 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 91 454 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+;
+#X obj 91 316 cnv 17 3 124 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 168 376 start - same as bang, f 59;
+#X text 122 349 open <symbol> -;
+#X text 222 348 opens a file with the symbol name (no symbol opens
+dialog box), f 50;
+#X text 128 424 loop <float> -;
+#X text 222 424 loop on <1> or off <0>, f 50;
+#X obj 7 572 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 193 488 (optional) channels (default 1 if no file is given
+\, or sound file's if given \, max 64), f 44;
+#X text 116 515 2) symbol;
+#X text 182 515 - the name of the file to open (default none);
+#X text 116 532 3) float;
+#X text 182 532 - autostart <1: on \, 0: off> (default 0), f 45;
+#X text 116 547 4) float;
+#X text 182 548 - loop <1: on \, 0: off> (default 0), f 45;
+#X text 116 491 1) float;
+#X text 180 489 -;
+#X text 168 392 pause - pauses playing the buffer, f 59;
+#X text 174 314 bang - (re)start playing the buffer from the beggining
+, f 58;
+#X text 150 408 continue - unpauses and continues playing the buffer
+, f 62;
+#X text 121 332 speed <float> -;
+#X text 222 332 sets the playing speed, f 50;
+#X text 120 596 -speed <float>: sets playing speed (default 100);
+#X text 174 579 -loop: turns loop mode on (default off);
+#X text 153 455 signal - the buffer signal of the corresponding channel
+;
 #X obj 4 4 cnv 15 301 42 empty empty player~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X text 103 362 1) symbol;
-#X text 103 377 2) float;
-#X text 103 393 3) float;
-#X obj 95 333 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
-;
-#X text 123 333 signal - output channels;
-#X msg 212 137 close;
-#X text 176 362 - audio file to load (needed), f 42;
-#X text 176 377 - buffer size in ms (default audio file's);
-#X text 176 393 - channels (1 to 64) default: audio file's;
-#X obj 378 137 sampler~;
-#X obj 217 218 out~;
-#X obj 189 163 ./player~ stereo.aif;
-#X connect 5 0 31 0;
-#X connect 31 0 30 0;
-#X connect 31 1 30 1;
+#X obj 208 213 else/player~ stereo.aif;
+#X connect 9 0 51 0;
+#X connect 10 0 51 0;
+#X connect 11 0 51 0;
+#X connect 12 0 51 0;
+#X connect 13 0 12 0;
+#X connect 14 0 51 0;
+#X connect 15 0 14 0;
+#X connect 18 0 51 0;
+#X connect 51 0 8 0;
+#X connect 51 1 8 1;
