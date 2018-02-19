@@ -1,0 +1,71 @@
+#N canvas 521 281 561 488 10;
+#X obj 5 414 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 5 291 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 326 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 355 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 95 300 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X msg 189 110 open;
+#N canvas 647 158 513 184 All_Messages 0;
+#X text 100 40 open;
+#X text 139 40 - opens buffer supbatch window, f 57;
+#X text 139 56 - closes buffer supbatch window, f 57;
+#X text 46 23 read <symbol>;
+#X text 34 131 setsize <float>;
+#X text 139 132 - sets buffer size in ms, f 57;
+#X text 34 148 sizeinsamps <f>;
+#X text 139 149 - sets buffer size in samples, f 57;
+#X text 46 114 normalize <f>;
+#X text 139 115 - normalizes to the given float value, f 57;
+#X text 139 23 - sets file to load from (no symbol opens dialog box)
+, f 57;
+#X text 64 72 sr <float>;
+#X text 139 72 - sets sample rate for writting a file (default: Patch's)
+;
+#X text 94 56 close;
+#X restore 374 300 pd All_Messages;
+#X text 124 301 click to open and check all messages: =>;
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 24 41 cnv 4 4 4 empty empty Play 0 28 2 18 -233017 -1 0;
+#X obj 66 41 cnv 4 4 4 empty empty files 0 28 2 18 -233017 -1 0;
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 306 4 graph;
+#X obj 4 4 cnv 15 301 42 empty empty player~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 4 graph;
+#X text 103 362 1) symbol;
+#X text 103 377 2) float;
+#X text 103 393 3) float;
+#X obj 95 333 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+;
+#X text 123 333 signal - output channels;
+#X msg 212 137 close;
+#X text 176 362 - audio file to load (needed), f 42;
+#X text 176 377 - buffer size in ms (default audio file's);
+#X text 176 393 - channels (1 to 64) default: audio file's;
+#X obj 378 137 sampler~;
+#X obj 217 218 out~;
+#X obj 189 163 ./player~ stereo.aif;
+#X connect 5 0 31 0;
+#X connect 31 0 30 0;
+#X connect 31 1 30 1;
