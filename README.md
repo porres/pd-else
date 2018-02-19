@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (176 objects):
+##Current Object list (177 objects):
 
 **MISCELLANEA: [4]**
 - [args]
@@ -132,7 +132,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [sr~]
 - [e]
 
-**AUDIO PLAYING: [1]**
+**AUDIO PLAYING: [2]**
+- [player~]
 - [sampler~]
 
 **AUDIO PROCESSING: [3]**
