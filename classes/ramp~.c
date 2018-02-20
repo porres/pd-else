@@ -8,8 +8,7 @@
 
 static t_class *ramp_class;
 
-typedef struct _ramp
-{
+typedef struct _ramp{
     t_object    x_obj;
     double      x_phase;
     float       x_min;
@@ -18,20 +17,20 @@ typedef struct _ramp
     float       x_reset;
     int         x_continue;
     int         x_mode;
+    int         x_clip;
     t_float     x_lastin;
     t_inlet     *x_inlet_inc;
     t_inlet     *x_inlet_min;
     t_inlet     *x_inlet_max;
     t_outlet    *x_outlet;
+    t_outlet    *x_bangout;
 } t_ramp;
 
-static void ramp_float(t_ramp *x, t_floatarg f)
-{
+static void ramp_float(t_ramp *x, t_floatarg f){
     x->x_phase = f;
 }
 
-static void ramp_mode(t_ramp *x, t_floatarg f)
-{
+static void ramp_mode(t_ramp *x, t_floatarg f){
     int i;
     i = (int)f;
     if (i < 0 )
@@ -41,36 +40,30 @@ static void ramp_mode(t_ramp *x, t_floatarg f)
     x->x_mode = i;
 }
 
-static void ramp_bang(t_ramp *x)
-{
+static void ramp_bang(t_ramp *x){
     x->x_phase = x->x_reset;
     if(!x->x_continue)
         x->x_continue = 1;
 }
 
-static void ramp_reset(t_ramp *x)
-{
+static void ramp_reset(t_ramp *x){
     x->x_phase = x->x_reset;
     x->x_continue = 0;
 }
 
-static void ramp_stop(t_ramp *x)
-{
+static void ramp_stop(t_ramp *x){
     x->x_continue = 0;
 }
 
-static void ramp_start(t_ramp *x)
-{
+static void ramp_start(t_ramp *x){
     x->x_continue = 1;
 }
 
-static void ramp_set(t_ramp *x, t_floatarg f)
-{
+static void ramp_set(t_ramp *x, t_floatarg f){
     x->x_reset = f;
 }
 
-static t_int *ramp_perform(t_int *w)
-{
+static t_int *ramp_perform(t_int *w){
     t_ramp *x = (t_ramp *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // trigger
@@ -82,58 +75,75 @@ static t_int *ramp_perform(t_int *w)
     float reset = x->x_reset; // reset point
     t_float lastin = x->x_lastin;
     double output;
-    while (nblock--)
-    {
-        float trig = *in1++; // trigger
+    while(nblock--){
+        float trig = *in1++;        // trigger
         double phase_step = *in2++; // phase_step
-        float min = *in3++; // min
-        float max = *in4++; // max
+        float min = *in3++;         // min
+        float max = *in4++;         // max
         if(min == max)
             output = min;
         else{
-            if (trig > 0 && lastin <= 0){
+            if(trig > 0 && lastin <= 0){
                 phase = reset;
                 if(!x->x_continue)
                     x->x_continue = 1;
-                }
+            }
             else{
                 if(min > max){ // swap values
                     float temp;
                     temp = max;
                     max = min;
                     min = temp;
-                    };
+                };
                 if(x->x_mode == 0){ // loop / wrap
-                    if(phase < min || phase >= max) // wrap phase
-                        {
+                    x->x_clip = 0;
+                    if(phase < min || phase >= max){ // wrap phase
                         float range = max - min;
                         if(phase < min && phase_step < 0){
                             while(phase < min)
                                 phase += range; // wrapped phase
-                            }
-                        else if(phase > max && phase_step > 0)
+                        outlet_bang(x->x_bangout); // outlet bang
+                        }
+                        else if(phase > max && phase_step > 0){
                             phase = fmod(phase - min, range) + min; // wrapped phase
-                        }
-                    }
-                else if (x->x_mode == 1){ // clip
-                    if(phase < min && phase_step < 0)
-                        phase = min;
-                    if(phase > max && phase_step > 0)
-                        phase = max;
-                    }
-                else if (x->x_mode == 2){// reset
-                    if(phase > max && phase_step > 0){
-                        phase = reset;
-                        x->x_continue = 0;
-                        }
-                    if(phase < min && phase_step < 0){
-                        phase = reset;
-                        x->x_continue = 0;
+                        outlet_bang(x->x_bangout); // outlet bang
                         }
                     }
                 }
-            output = phase;
+                else if(x->x_mode == 1){ // clip
+                    if(phase < min && phase_step < 0){
+                        phase = min;
+                        if(!x->x_clip){
+                            outlet_bang(x->x_bangout); // outlet bang
+                            x->x_clip = 1;
+                        }
+                    }
+                    if(phase > max && phase_step > 0){
+                        phase = max;
+                        if(!x->x_clip){
+                            outlet_bang(x->x_bangout); // outlet bang
+                            x->x_clip = 1;
+                        }
+                    }
+                    else
+                        x->x_clip = 0;
+                }
+                else if (x->x_mode == 2){// reset
+                    x->x_clip = 0;
+                    if(phase > max && phase_step > 0){
+                        phase = reset;
+                        x->x_continue = 0;
+                        outlet_bang(x->x_bangout); // outlet bang
+                    }
+                    if(phase < min && phase_step < 0){
+                        phase = reset;
+                        x->x_continue = 0;
+                        outlet_bang(x->x_bangout); // outlet bang
+                    }
+                }
             }
+            output = phase;
+        }
         *out++ = output;
         lastin = trig;
         if(x->x_continue)
@@ -144,14 +154,12 @@ static t_int *ramp_perform(t_int *w)
     return (w + 8);
 }
 
-static void ramp_dsp(t_ramp *x, t_signal **sp)
-{
+static void ramp_dsp(t_ramp *x, t_signal **sp){
     dsp_add(ramp_perform, 7, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
-static void *ramp_free(t_ramp *x)
-{
+static void *ramp_free(t_ramp *x){
     inlet_free(x->x_inlet_inc);
     inlet_free(x->x_inlet_min);
     inlet_free(x->x_inlet_max);
@@ -159,8 +167,7 @@ static void *ramp_free(t_ramp *x)
     return (void *)x;
 }
 
-static void *ramp_new(t_symbol *s, int argc, t_atom *argv)
-{
+static void *ramp_new(t_symbol *s, int argc, t_atom *argv){
     t_ramp *x = (t_ramp *)pd_new(ramp_class);
 ///////////////////////////
     x->x_lastin = 0;
@@ -243,6 +250,7 @@ static void *ramp_new(t_symbol *s, int argc, t_atom *argv)
     x->x_inlet_max = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_max, x->x_max);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
+    x->x_bangout = outlet_new((t_object *)x, &s_bang);
     return (x);
     errstate:
         pd_error(x, "ramp~: improper args");
