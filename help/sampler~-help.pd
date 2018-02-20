@@ -48,8 +48,6 @@
 #X text 169 378 start - same as bang, f 49;
 #X text 176 394 stop - stop playing the sample, f 48;
 #X text 122 430 open <symbol> -;
-#X text 222 429 opens a file with the symbol name (no symbol opens
-dialog box), f 50;
 #X text 128 458 loop <float> -;
 #X text 222 458 loop on <1> or off <0>, f 50;
 #X msg 272 225 open vacuous.wav;
@@ -124,14 +122,18 @@ sound file's. The maximum number is 64 channels.;
 #X text 116 551 1) float;
 #X text 180 549 -;
 #X obj 213 258 else/sampler~ violin.wav 1 1;
-#X connect 0 0 53 0;
-#X connect 1 0 53 0;
-#X connect 2 0 53 0;
-#X connect 3 0 53 0;
-#X connect 4 0 53 0;
+#X text 222 429 opens a file with the symbol name (no symbol opens
+dialog box) and starts playing, f 50;
+#X text 37 286 see also:;
+#X obj 31 312 else/player~;
+#X connect 0 0 52 0;
+#X connect 1 0 52 0;
+#X connect 2 0 52 0;
+#X connect 3 0 52 0;
+#X connect 4 0 52 0;
 #X connect 5 0 4 0;
-#X connect 30 0 53 0;
-#X connect 33 0 53 0;
-#X connect 53 0 31 0;
-#X connect 53 0 31 1;
-#X connect 53 1 39 0;
+#X connect 29 0 52 0;
+#X connect 32 0 52 0;
+#X connect 52 0 30 0;
+#X connect 52 0 30 1;
+#X connect 52 1 38 0;
