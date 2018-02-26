@@ -83,8 +83,12 @@ static void *multigate_new(t_symbol *s, int argc, t_atom *argv){
 }
 
 void multigate_tilde_setup(void){
-    multigate_class = class_new(gensym("multigate~"), (t_newmethod)multigate_new, 0,
-            sizeof(t_multigate), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(multigate_class, (t_method)multigate_dsp, gensym("dsp"), A_CANT, 0);
-    CLASS_MAINSIGNALIN(multigate_class, t_multigate, x_gate);
+    t_class* c = class_new(gensym("multigate~"), (t_newmethod)multigate_new, (t_method)multigate_free,
+            sizeof(t_multigate), CLASS_DEFAULT, A_FLOAT, A_DEFFLOAT, 0);
+    if(c)
+    {
+        class_addmethod(c, (t_method)multigate_dsp, gensym("dsp"), A_CANT, 0);
+        CLASS_MAINSIGNALIN(c, t_multigate, x_gate);
+        multigate_class = c;
+    }
 }
