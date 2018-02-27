@@ -1,9 +1,13 @@
-// porres 2017
+// Porres 2017-2018, based on fade~ and with the mighty help of the kind Pierre Gulot
 
-#include "m_pd.h"
+#include <m_pd.h>
+#include <float.h>
 #include <math.h>
+#include <string.h>
 
-#define UNITBIT32 1572864.  /* 3*2^19; bit 32 has place value 1 */
+#define MAXCH 512
+
+#define UNITBIT32 1572864.  // 3*2^19; bit 32 has place value 1
 
 #define HALF_PI M_PI * 0.5
 
@@ -47,8 +51,6 @@
 #define int32 int32_t
 #endif /* __unix__ or __APPLE__*/
 
-#define MAXCH 64
-
 t_float *autofade_table_lin=(t_float *)0L;
 t_float *autofade_table_linsin=(t_float *)0L;
 t_float *autofade_table_sqrt=(t_float *)0L;
@@ -57,23 +59,23 @@ t_float *autofade_table_sin=(t_float *)0L;
 t_float *autofade_table_hannsin=(t_float *)0L;
 t_float *autofade_table_hann=(t_float *)0L;
 
-
 typedef struct _autofade{
-    t_object x_obj;
-    t_float  x_f;
-    t_float  x_ms;
-    t_int    x_n;
-    t_int    x_ch;
-    double   x_coef;
-    t_float  x_last;
-    t_float  x_target;
-    t_float  x_sr_khz;
-    double   x_incr;
-    t_int    x_nleft;
-    t_float  *x_ins[MAXCH];
-    t_float  *x_outs[MAXCH];
-    t_float  *x_table;
-} t_autofade;
+    t_object   x_obj;
+    t_float    x_f;        // dummy
+    t_int      x_channels; // number of channels
+    t_sample  *x_temp;     // temporary audio vectors
+    t_int      x_blksize;  // block size
+    
+    t_float    x_ms;
+    t_int      x_n;
+    double     x_coef;
+    t_float    x_gate_status;
+    double     x_phase;
+    t_float    x_sr_khz;
+    double     x_incr;
+    t_int      x_nleft;
+    t_float   *x_table;
+}t_autofade;
 
 union tabfudge_d{
     double tf_d;
@@ -111,234 +113,203 @@ static void autofade_hann(t_autofade *x){
     x->x_table = autofade_table_hann;
 }
 
-static void autofade_fade(t_autofade *x, t_floatarg f){
-    x->x_ms = f;
+static void autofade_fade(t_autofade *x, t_floatarg ms){
+    x->x_n = roundf(ms * x->x_sr_khz);
+    if(x->x_n < 1)
+        x->x_n = 1;
+    x->x_coef = 1. / (double)x->x_n;
 }
-
+ 
 static t_int *autofade_perform(t_int *w){
-    t_autofade *x = (t_autofade *)(w[1]);
-    t_int nblock = (int)(w[2]);
-    t_float *in_gate = (t_float *)(w[3]);               // gate input
-    t_int i, j;
-    for(i = 0; i < x->x_ch; i++)
-        x->x_ins[i] = (t_float *)(w[4 + i]);            // channel inputs
-    for(i = 0; i < x->x_ch; i++)
-        x->x_outs[i] = (t_float *)(w[4 + x->x_ch + i]); // channel outputs
-    t_float last = x->x_last;
-    t_float target = x->x_target;
+    t_autofade *x = (t_autofade *)(w[1]); // first is object
+    t_int channels      = (t_int)(w[2]);
+    t_int blocksize     = (t_int)(w[3]);
+    t_sample *gate      = (t_sample *)(w[4]);
+    t_sample *temporary = (t_sample *)(w[5]);
+    t_sample *tempio, *fadevalues, *temp;
     double incr = x->x_incr;
-    t_int nleft = x->x_nleft;
-    
-    t_float *tab = x->x_table, *addr, f1, f2, frac;
+    double phase = x->x_phase;
     double dphase;
+    t_float gate_status = x->x_gate_status;
+    t_int nleft = x->x_nleft;
+    t_float *tab = x->x_table, *addr, f1, f2, frac;
     t_int normhipart;
     union tabfudge_d tf;
-    
     tf.tf_d = UNITBIT32;
     normhipart = tf.tf_i[HIOFFSET];
-    
-    while (nblock--){
-        t_float f = *in_gate++;
-        f = f > 0;  ////////////// Gate!
-        t_float ms = x->x_ms;
-        if (ms < 0)
-            ms = 0;
-        
-        t_float phase;
-        
-        x->x_n = roundf(ms * x->x_sr_khz);
-        double coef;
-        if (x->x_n == 0)
-            coef = 0.;
-        else
-            coef = 1. / (float)x->x_n;
-        
-        if(coef != x->x_coef){
-            x->x_coef = coef;
-            if(f != last){
-                if(x->x_n > 1){
-                    incr = (f - last) * x->x_coef;
-                    nleft = x->x_n;
-                    
-                    phase = last += incr;
-                    if (phase > 1)
-                        phase = 1;
-                    if (phase < 0)
-                        phase = 0;
-                    
-                    dphase = (double)(phase * (t_float)(COSTABSIZE) * 0.99999) + UNITBIT32;
-                    tf.tf_d = dphase;
-                    addr = tab + (tf.tf_i[HIOFFSET] & (COSTABSIZE-1));
-                    tf.tf_i[HIOFFSET] = normhipart;
-                    frac = tf.tf_d - UNITBIT32;
-                    f1 = addr[0];
-                    f2 = addr[1];
-                    
-                    for(i = 0, j = x->x_ch * 2 - 1; i < x->x_ch; i++, j--)
-                        *x->x_outs[j]++ = *x->x_ins[i]++ * (f1 + frac * (f2 - f1));
-                    
-                    continue;
-                    }
-                }
-            incr = 0.;
-            nleft = 0;
-            last = f;
-                    for(i = 0, j = x->x_ch * 2 - 1; i < x->x_ch; i++, j--)
-                *x->x_outs[j]++ = *x->x_ins[i]++ * f;
-            }
-        
-        else if (f != target){
-            target = f;
-            if (f != last){
-                if (x->x_n > 1){
-                    incr = (f - last) * x->x_coef;
-                    nleft = x->x_n;
-                    
-                    phase = last += incr;
-                    if (phase > 1)
-                        phase = 1;
-                    if (phase < 0)
-                        phase = 0;
-                    
-                    dphase = (double)(phase * (t_float)(COSTABSIZE) * 0.99999) + UNITBIT32;
-                    tf.tf_d = dphase;
-                    addr = tab + (tf.tf_i[HIOFFSET] & (COSTABSIZE-1));
-                    tf.tf_i[HIOFFSET] = normhipart;
-                    frac = tf.tf_d - UNITBIT32;
-                    f1 = addr[0];
-                    f2 = addr[1];
-                    
-                    for(i = 0, j = x->x_ch * 2 - 1; i < x->x_ch; i++, j--)
-                        *x->x_outs[j]++ = *x->x_ins[i]++ * (f1 + frac * (f2 - f1));
-                    
-                    continue;
-                }
-            }
-	    incr = 0.;
-	    nleft = 0;
-        last = f;
-                    for(i = 0, j = x->x_ch * 2 - 1; i < x->x_ch; i++, j--)
-            *x->x_outs[j]++ = *x->x_ins[i]++ * f;
+    t_int i, j;
+// get fade values
+    fadevalues = gate; // needs to be initialized somehow
+    for(j = 0; j < blocksize; ++j){
+        gate[j] = (fabsf(gate[j]) > FLT_EPSILON); // gate on/off
+        if(gate[j] != gate_status){ // gate change / update
+            gate_status = gate[j];
+            incr = gate_status ? (1 - phase) * x->x_coef : -(phase * x->x_coef);
+            nleft = x->x_n;
         }
-        
-        else if (nleft > 0){
-            
-            phase = last += incr;
-            if (phase > 1)
-                phase = 1;
-            if (phase < 0)
-                phase = 0;
-            
-            dphase = (double)(phase * (t_float)(COSTABSIZE) * 0.99999) + UNITBIT32;
-            tf.tf_d = dphase;
-            addr = tab + (tf.tf_i[HIOFFSET] & (COSTABSIZE-1));
-            tf.tf_i[HIOFFSET] = normhipart;
-            frac = tf.tf_d - UNITBIT32;
-            f1 = addr[0];
-            f2 = addr[1];
-            
-                    for(i = 0, j = x->x_ch * 2 - 1; i < x->x_ch; i++, j--)
-                *x->x_outs[j]++ = *x->x_ins[i]++ * (f1 + frac * (f2 - f1));
-            
-            if (--nleft == 1){
-                incr = 0.;
-                last = target;
-                }
-            }
+        if(nleft > 0){
+            phase += incr;
+            nleft--;
+        }
         else
-                    for(i = 0, j = x->x_ch * 2 - 1; i < x->x_ch; i++, j--)
-                *x->x_outs[j]++ = *x->x_ins[i]++ * target;
-        };
-    x->x_last = (PD_BIGORSMALL(last) ? 0. : last);
-    x->x_target = (PD_BIGORSMALL(target) ? 0. : target);
+            phase = (double)gate_status;
+        dphase = (double)(phase * (t_float)(COSTABSIZE) * 0.99999) + UNITBIT32;
+        tf.tf_d = dphase;
+        addr = tab + (tf.tf_i[HIOFFSET] & (COSTABSIZE-1));
+        tf.tf_i[HIOFFSET] = normhipart;
+        frac = tf.tf_d - UNITBIT32;
+        f1 = addr[0];
+        f2 = addr[1];
+        fadevalues[j] = f1 + frac * (f2 - f1);
+    };
+// Record inputs * fade into temporary vector
+    temp = temporary;
+    for(i = 0; i < channels; ++i){
+        tempio = (t_sample *)(w[i+6]);
+        for(j = 0; j < blocksize; ++j){
+            *temp++ = *tempio++ * fadevalues[j];
+        }
+    }
+// Record temporary vector into outputs
+    temp = temporary;
+    for(i = 0; i < channels; ++i){
+        tempio = (t_sample *)(w[i+6+channels]);
+        for(j = 0; j < blocksize; ++j)
+            *tempio++ = *temp++;
+    }
+    x->x_gate_status = (PD_BIGORSMALL(gate_status) ? 0. : gate_status);
     x->x_incr = incr;
     x->x_nleft = nleft;
-    return (w + 4 + x->x_ch * 2);
+    x->x_phase = phase;
+    return(w + channels * 2 + 6);
+}
+
+static void autofade_free(t_autofade *x){
+    if(x->x_temp){
+        freebytes(x->x_temp, x->x_channels * x->x_blksize * sizeof(*x->x_temp));
+        x->x_temp = NULL;
+        x->x_blksize = 0;
+    }
 }
 
 static void autofade_dsp(t_autofade *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    int i, count = (x->x_ch * 2) + 3;
-    t_int **sigvec;
-    sigvec  = (t_int **) calloc(count, sizeof(t_int *));
-    for(i = 0; i < count; i++)
-        sigvec[i] = (t_int *) calloc(sizeof(t_int), 1);     // init sigvec
-    sigvec[0] = (t_int *)x;                                 // 1st => object
-    sigvec[1] = (t_int *)sp[0]->s_n;                        // 2nd => block (n)
-    for(i = 2; i < count; i++)                              // ins/out
-        sigvec[i] = (t_int *)sp[i-2]->s_vec;
-    dsp_addv(autofade_perform, count, (t_int *)sigvec);
-    free(sigvec);
+    size_t i, vecsize;
+    t_int* vec;
+// Free memory if temp vector's been allocated
+    autofade_free(x);
+// Allocate a C-like matrix (number of rows * number of columns)
+    x->x_blksize = (t_int)sp[0]->s_n;
+    x->x_temp    = (t_sample *)getbytes(x->x_channels * x->x_blksize * sizeof(*x->x_temp));
+    if(x->x_temp){ // Pass arg to method and args to DSP chain
+        vecsize = x->x_channels * 2 + 5;
+        vec = (t_int *)getbytes(vecsize * sizeof(*vec));
+        if(vec){
+            vec[0] = (t_int *)x;             // first is the object
+            vec[1] = (t_int)x->x_channels;
+            vec[2] = (t_int)sp[0]->s_n;
+            vec[3] = (t_int)sp[0]->s_vec;
+            vec[4] = (t_int)x->x_temp;
+            for(i = 0; i < x->x_channels * 2; ++i)
+                vec[i+5] = (t_int)sp[i+1]->s_vec;
+            dsp_addv(autofade_perform, vecsize, vec);
+            freebytes(vec, vecsize * sizeof(*vec));
+        }
+        else
+            pd_error(x, "can't allocate temporary vectors.");
+    }
+    else{
+        x->x_blksize = 0;
+        pd_error(x, "can't allocate temporary vectors.");
+    }
 }
 
 static void *autofade_new(t_symbol *s, int argc, t_atom *argv){
+    int i;
     t_autofade *x = (t_autofade *)pd_new(autofade_class);
-    x->x_sr_khz = sys_getsr() * 0.001;
-    x->x_last = 0.;
-    x->x_target = 0.;
-    x->x_incr = 0.;
-    x->x_nleft = 0;
-    x->x_coef = 0.;
-    x->x_table = autofade_table_quartic; // default
-    t_int ch = 1; // default
-    x->x_ms = 0; // default
-/////////////////////////////////////////////////////////////////////////////////////
-    if(argc){
-        int argnum = 0;
-        int sym_arg = 0;
-        while(argc > 0){
-            if(argv -> a_type == A_SYMBOL && !argnum){
-                t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-                if(!strcmp(curarg->s_name, "lin"))
-                    x->x_table = autofade_table_lin;
-                else if(!strcmp(curarg->s_name, "linsin"))
-                    x->x_table = autofade_table_linsin;
-                else if(!strcmp(curarg->s_name, "sqrt"))
-                    x->x_table = autofade_table_sqrt;
-                else if(!strcmp(curarg->s_name, "sin"))
-                    x->x_table = autofade_table_sin;
-                else if(!strcmp(curarg->s_name, "hannsin"))
-                    x->x_table = autofade_table_hannsin;
-                else if(!strcmp(curarg->s_name, "linsin"))
-                    x->x_table = autofade_table_linsin;
-                else if(!strcmp(curarg->s_name, "hann"))
-                    x->x_table = autofade_table_hann;
+    if(x){
+        x->x_sr_khz = sys_getsr() * 0.001;
+        x->x_gate_status = 0.;
+        x->x_incr = 0.;
+        x->x_nleft = 0;
+        x->x_coef = 0.;
+        x->x_table = autofade_table_quartic;
+        t_float ms = 0;
+        x->x_channels = 1;
+//
+        t_int symarg = 0;
+        t_int argnum = 0;
+        while(argc){
+            if(argv->a_type == A_SYMBOL){
+                if(!symarg){
+                    t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
+                    if(!strcmp(curarg->s_name, "lin"))
+                        x->x_table = autofade_table_lin;
+                    else if(!strcmp(curarg->s_name, "linsin"))
+                        x->x_table = autofade_table_linsin;
+                    else if(!strcmp(curarg->s_name, "sqrt"))
+                        x->x_table = autofade_table_sqrt;
+                    else if(!strcmp(curarg->s_name, "sin"))
+                        x->x_table = autofade_table_sin;
+                    else if(!strcmp(curarg->s_name, "hannsin"))
+                        x->x_table = autofade_table_hannsin;
+                    else if(!strcmp(curarg->s_name, "linsin"))
+                        x->x_table = autofade_table_linsin;
+                    else if(!strcmp(curarg->s_name, "hann"))
+                        x->x_table = autofade_table_hann;
+                    else if(!strcmp(curarg->s_name, "quartic"))
+                        x->x_table = autofade_table_quartic;
+                    else
+                        goto errstate;
+                    symarg = 1;
+                }
                 else
                     goto errstate;
-                sym_arg = 1;
             }
-            else if(argv -> a_type == A_FLOAT){ // if current argument is a float
+            else if(argv->a_type == A_FLOAT){
                 t_float argval = atom_getfloatarg(0, argc, argv);
-                switch(argnum - sym_arg){
-                    case 0:
-                        ch = (int)argval;
-                        break;
-                    case 1:
-                        x->x_ms = argval;
-                        break;
-                    default:
-                        goto errstate;
-                };
+                if(symarg){
+                    switch(argnum){
+                        case 1:
+                            ms = argval;
+                            break;
+                        case 2:
+                            x->x_channels = (int)argval;
+                            break;
+                        default:
+                            break;
+                    };
+                }
+                else{
+                    switch(argnum){
+                        case 0:
+                            ms = argval;
+                            break;
+                        case 1:
+                            x->x_channels = (int)argval;
+                            break;
+                        default:
+                            break;
+                    };
+                }
             }
-            else
-                goto errstate;
             argnum++;
             argc--;
             argv++;
         }
+        if(x->x_channels < 1)
+            x->x_channels = 1;
+        if(x->x_channels > MAXCH)
+            x->x_channels = MAXCH;
+        autofade_fade(x, ms);
+        x->x_temp    = NULL;
+        x->x_blksize = 0;
+        for(i = 0; i < x->x_channels; i++){
+            inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+            outlet_new((t_object *)x, &s_signal);
+        }
     }
-/////////////////////////////////////////////////////////////////////////////////////
-    if(ch < 1)
-        ch = 1;
-    if(ch > 64)
-        ch = 64;
-    x->x_ch = ch;
-    t_int i;
-    for(i = 0; i < x->x_ch; i++)
-        inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-    for(i = 0; i < x->x_ch; i++)
-        outlet_new((t_object *)x, &s_signal);
-    return (x);
+    return(x);
     errstate:
         pd_error(x, "autofade~: improper args");
         return NULL;
@@ -351,50 +322,41 @@ static void autofade_tilde_maketable(void){
     t_float phsinc = HALF_PI * phlinc;
     union tabfudge_d tf;
     
-    if(!autofade_table_sin)
-    {
+    if(!autofade_table_sin){
         autofade_table_sin = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
         for(i=COSTABSIZE+1, fp=autofade_table_sin, phase1=0; i--; fp++, phase1+=phsinc)
             *fp = sin(phase1);
     }
-    if(!autofade_table_hannsin)
-    {
+    if(!autofade_table_hannsin){
         autofade_table_hannsin = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
-        for(i=COSTABSIZE+1, fp=autofade_table_hannsin, phase1=0; i--; fp++, phase1+=phsinc)
-        {
+        for(i=COSTABSIZE+1, fp=autofade_table_hannsin, phase1=0; i--; fp++, phase1+=phsinc){
             fff = sin(phase1);
             *fp = fff*sqrt(fff);
         }
     }
-    if(!autofade_table_hann)
-    {
+    if(!autofade_table_hann){
         autofade_table_hann = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
-        for(i=COSTABSIZE+1, fp=autofade_table_hann, phase1=0; i--; fp++, phase1+=phsinc)
-        {
+        for(i=COSTABSIZE+1, fp=autofade_table_hann, phase1=0; i--; fp++, phase1+=phsinc){
             fff = sin(phase1);
             *fp = fff*fff;
         }
     }
-    if(!autofade_table_lin)
-    {
+    if(!autofade_table_lin){
         autofade_table_lin = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
         for(i=COSTABSIZE+1, fp=autofade_table_lin, phase1=0; i--; fp++, phase1+=phlinc)
             *fp = phase1;
     }
-    if(!autofade_table_linsin)
-    {
+    if(!autofade_table_linsin){
         autofade_table_linsin = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
         for(i=COSTABSIZE+1, fp=autofade_table_linsin, phase1=phase2=0; i--; fp++, phase1+=phlinc, phase2+=phsinc)
             *fp = sqrt(phase1 * sin(phase2));
     }
-    if(!autofade_table_quartic)
-    {
+    if(!autofade_table_quartic){
         autofade_table_quartic = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
         for(i=COSTABSIZE+1, fp=autofade_table_quartic, phase1=0; i--; fp++, phase1+=phlinc)
             *fp = pow(phase1, 4);
     }
-    if(!autofade_table_sqrt)
-    {
+    if(!autofade_table_sqrt){
         autofade_table_sqrt = (t_float *)getbytes(sizeof(t_float) * (COSTABSIZE+1));
         for(i=COSTABSIZE+1, fp=autofade_table_sqrt, phase1=0; i--; fp++, phase1+=phlinc)
             *fp = sqrt(phase1);
@@ -404,19 +366,23 @@ static void autofade_tilde_maketable(void){
         bug("autofade~: unexpected machine alignment");
 }
 
-
 void autofade_tilde_setup(void){
-    autofade_class = class_new(gensym("autofade~"), (t_newmethod)autofade_new, 0,
-                    sizeof(t_autofade), 0, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(autofade_class, t_autofade, x_f);
-    class_addmethod(autofade_class, (t_method) autofade_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(autofade_class, (t_method)autofade_lin, gensym("lin"), 0);
-    class_addmethod(autofade_class, (t_method)autofade_linsin, gensym("linsin"), 0);
-    class_addmethod(autofade_class, (t_method)autofade_sqrt, gensym("sqrt"), 0);
-    class_addmethod(autofade_class, (t_method)autofade_sin, gensym("sin"), 0);
-    class_addmethod(autofade_class, (t_method)autofade_hannsin, gensym("hannsin"), 0);
-    class_addmethod(autofade_class, (t_method)autofade_hann, gensym("hann"), 0);
-    class_addmethod(autofade_class, (t_method)autofade_quartic, gensym("quartic"), 0);
-    class_addmethod(autofade_class, (t_method)autofade_fade, gensym("fade"), A_DEFFLOAT, 0);
-    autofade_tilde_maketable();
+    t_class* c = class_new(gensym("autofade~"), (t_newmethod)autofade_new, (t_method)autofade_free,
+            sizeof(t_autofade), CLASS_DEFAULT, A_GIMME, 0);
+    if(c){
+        CLASS_MAINSIGNALIN(c, t_autofade, x_f);
+        class_addmethod(c, (t_method)autofade_dsp, gensym("dsp"), A_CANT, 0);
+        
+        class_addmethod(c, (t_method)autofade_fade, gensym("fade"), A_DEFFLOAT, 0);
+        class_addmethod(c, (t_method)autofade_lin, gensym("lin"), 0);
+        class_addmethod(c, (t_method)autofade_linsin, gensym("linsin"), 0);
+        class_addmethod(c, (t_method)autofade_sqrt, gensym("sqrt"), 0);
+        class_addmethod(c, (t_method)autofade_sin, gensym("sin"), 0);
+        class_addmethod(c, (t_method)autofade_hannsin, gensym("hannsin"), 0);
+        class_addmethod(c, (t_method)autofade_hann, gensym("hann"), 0);
+        class_addmethod(c, (t_method)autofade_quartic, gensym("quartic"), 0);
+        autofade_tilde_maketable();
+
+        autofade_class = c;
+    }
 }
