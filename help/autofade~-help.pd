@@ -1,43 +1,43 @@
-#N canvas 673 23 560 514 10;
-#X obj 4 279 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 673 23 560 532 10;
+#X obj 4 277 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 385 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 383 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 418 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 436 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 488 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 506 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 105 394 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 105 392 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X text 169 360 signal;
-#X text 171 394 signal;
+#X text 169 358 signal;
+#X text 171 392 signal;
 #X obj 23 40 cnv 4 4 4 empty empty Automatic 0 28 2 18 -233017 -1 0
 ;
 #X obj 110 40 cnv 4 4 4 empty empty fade-in/out 0 28 2 18 -233017 -1
 0;
-#X obj 105 360 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 105 358 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X text 133 290 float/signal;
-#X obj 242 220 else/out~;
+#X text 133 288 float/signal;
+#X obj 222 218 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty autofade~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 105 164 fade time;
-#X obj 171 143 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1000 256;
-#X text 225 394 - autofaded signal;
-#X obj 303 144 else/brown~;
-#X text 157 308 anything;
-#X text 225 308 -;
-#X text 237 308 fade types <quartic \, sin \, sqrt \, hann \, lin \,
+#X text 85 162 fade time;
+#X obj 151 141 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 225 392 - autofaded signal;
+#X obj 283 142 else/brown~;
+#X text 157 306 anything;
+#X text 225 306 -;
+#X text 237 306 fade types <quartic \, sin \, sqrt \, hann \, lin \,
 hannsin \, linsin>, f 42;
-#X obj 106 289 cnv 17 3 65 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 106 287 cnv 17 3 65 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 226 360 - input signal to be faded in/out, f 44;
-#X obj 453 248 else/fader~;
-#X text 381 248 see also:;
+#X text 226 358 - input signal to be faded in/out, f 44;
+#X obj 40 244 else/fader~;
+#X text 48 227 see also:;
 #N canvas 695 105 540 389 curves 0;
 #N canvas 135 30 735 535 contant-power(3db) 0;
 #X obj 30 287 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
@@ -362,12 +362,12 @@ the fading curves available, f 32;
 #X connect 19 0 20 0;
 #X connect 20 0 7 0;
 #X connect 20 0 7 1;
-#X restore 467 217 pd curves;
-#X text 238 424 (optional) fade types <quartic \, sin \, sqrt \, lin
+#X restore 475 251 pd curves;
+#X text 238 442 (optional) fade types <quartic \, sin \, sqrt \, lin
 \, hann \, lin \, hannsin \, linsin> (default: quartic), f 47;
-#X text 226 424 -;
-#X text 154 425 1) symbol;
-#X text 226 452 - fade time in ms (default 0), f 49;
+#X text 226 442 -;
+#X text 154 443 1) symbol;
+#X text 226 470 - fade time in ms (default 0), f 49;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -385,25 +385,33 @@ the fading curves available, f 32;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 304 3 graph;
-#X text 226 467 - number of channels (default 1), f 49;
-#X msg 171 163 fade \$1;
-#X text 237 145 gate;
-#X obj 242 163 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 226 485 - number of channels (default 1), f 49;
+#X msg 151 161 fade \$1;
+#X text 217 143 gate;
+#X obj 222 161 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 226 335 - fade time in ms, f 44;
-#X text 133 335 fade <float>;
-#X text 225 290 - gate: "fade in" if != 0 \, "fade out" otherwise;
+#X text 226 333 - fade time in ms, f 44;
+#X text 133 333 fade <float>;
+#X text 225 288 - gate: "fade in" if != 0 \, "fade out" otherwise;
 #X text 61 89 [autofade~] is an automatic fade in/out for multichannel
 inputs. It responds to a gate control and uses internal lookup tables
 for 7 different fading curves., f 64;
-#X obj 242 192 else/autofade~ 1000 2;
-#X obj 365 168 else/gray~;
-#X text 154 452 2) float;
-#X text 154 467 3) float;
+#X obj 345 166 else/gray~;
+#X text 154 470 2) float;
+#X text 154 485 3) float;
+#X obj 345 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 365 216 <= when fade is finished;
+#X obj 105 414 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+0;
+#X text 183 413 bang;
+#X text 225 413 - a bang is sent when the fade in/out is finished;
+#X obj 222 190 else/autofade~ 1000 2;
 #X connect 15 0 39 0;
-#X connect 17 0 46 1;
-#X connect 39 0 46 0;
-#X connect 41 0 46 0;
-#X connect 46 0 11 0;
-#X connect 46 1 11 1;
-#X connect 47 0 46 2;
+#X connect 17 0 54 1;
+#X connect 39 0 54 0;
+#X connect 41 0 54 0;
+#X connect 46 0 54 2;
+#X connect 54 0 11 0;
+#X connect 54 1 11 1;
+#X connect 54 2 49 0;
