@@ -65,14 +65,13 @@ typedef struct _autofade{
     t_int      x_channels; // number of channels
     t_sample  *x_temp;     // temporary audio vectors
     t_int      x_blksize;  // block size
-    
     t_float    x_ms;
     t_int      x_n;
     double     x_coef;
-    t_float    x_gate_status;
     double     x_phase;
-    t_float    x_sr_khz;
     double     x_incr;
+    t_float    x_gate_status;
+    t_float    x_sr_khz;
     t_int      x_nleft;
     t_float   *x_table;
 }t_autofade;
@@ -141,26 +140,30 @@ static t_int *autofade_perform(t_int *w){
 // get fade values
     fadevalues = gate; // needs to be initialized somehow
     for(j = 0; j < blocksize; ++j){
-        gate[j] = (fabsf(gate[j]) > FLT_EPSILON); // gate on/off
+        gate[j] = (fabsf(gate[j]) >= FLT_EPSILON); // gate on/off
         if(gate[j] != gate_status){ // gate change / update
             gate_status = gate[j];
-            incr = gate_status ? (1 - phase) * x->x_coef : -(phase * x->x_coef);
+            incr = gate_status ? (double)(1 - phase) * x->x_coef : -(double)(phase * x->x_coef);
             nleft = x->x_n;
         }
         if(nleft > 0){
             phase += incr;
+            if(PD_BIGORSMALL(phase) || phase < 0)
+                phase = 0;
+            if(phase > 1)
+                phase = 1;
             nleft--;
+            dphase = (double)(phase * (t_float)(COSTABSIZE) * 0.99999) + UNITBIT32;
+            tf.tf_d = dphase;
+            addr = tab + (tf.tf_i[HIOFFSET] & (COSTABSIZE-1));
+            tf.tf_i[HIOFFSET] = normhipart;
+            frac = tf.tf_d - UNITBIT32;
+            f1 = addr[0];
+            f2 = addr[1];
+            fadevalues[j] = f1 + frac * (f2 - f1);
         }
         else
-            phase = (double)gate_status;
-        dphase = (double)(phase * (t_float)(COSTABSIZE) * 0.99999) + UNITBIT32;
-        tf.tf_d = dphase;
-        addr = tab + (tf.tf_i[HIOFFSET] & (COSTABSIZE-1));
-        tf.tf_i[HIOFFSET] = normhipart;
-        frac = tf.tf_d - UNITBIT32;
-        f1 = addr[0];
-        f2 = addr[1];
-        fadevalues[j] = f1 + frac * (f2 - f1);
+            phase = fadevalues[j] = gate_status;
     };
 // Record inputs * fade into temporary vector
     temp = temporary;
