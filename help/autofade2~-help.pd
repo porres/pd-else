@@ -19,8 +19,8 @@
 ;
 #X text 133 317 float/signal;
 #X obj 219 247 else/out~;
-#X obj 2 3 cnv 15 301 42 empty empty autofade~ 20 20 2 37 -233017 -1
-0;
+#X obj 2 3 cnv 15 301 42 empty empty autofade2~ 20 20 2 37 -233017
+-1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
@@ -228,8 +228,8 @@ as raising the input to the power of 4, f 31;
 #X obj 572 176 pow~ 4;
 #X restore 298 31 pd quartic;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -298,7 +298,7 @@ as raising the input to the power of 4, f 31;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
