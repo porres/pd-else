@@ -45,6 +45,7 @@ allpass.rev~.class.sources := classes/allpass.rev~.c
 adsr~.class.sources := classes/adsr~.c
 asr~.class.sources := classes/asr~.c
 autofade~.class.sources := classes/autofade~.c
+autofade2~.class.sources := classes/autofade2~.c
 balance~.class.sources := classes/balance~.c
 bandpass~.class.sources := classes/bandpass~.c
 bandstop~.class.sources := classes/bandstop~.c

@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (177 objects):
+##Current Object list (178 objects):
 
 **MISCELLANEA: [4]**
 - [args]
@@ -251,10 +251,11 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [past~]
 - [zerocross~]
 
-**CONTROL: [13]**
+**CONTROL: [14]**
  - [adsr~]
  - [asr~]
  - [autofade~]
+ - [autofade2~]
  - [decay~]
  - [decay2~]
  - [fader~]
