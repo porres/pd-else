@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (178 objects):
+##Current Object list (179 objects):
 
 **MISCELLANEA: [4]**
 - [args]
@@ -267,7 +267,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
  - [impseq~]
  - [lfo]
 
-**GUI: [12]**
+**GUI: [13]**
+- [matrix.ctl]
 - [display]
 - [display~]
 - [out~]
