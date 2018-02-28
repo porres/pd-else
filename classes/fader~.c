@@ -1,10 +1,9 @@
-// a rip off from iemlib/fade~
+// a rip off from iemlib/fade~ with some changes
 
 #include "m_pd.h"
 #include <math.h>
 
 #define UNITBIT32 1572864.  /* 3*2^19; bit 32 has place value 1 */
-
 
 #define HALF_PI M_PI * 0.5
 
