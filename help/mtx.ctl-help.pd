@@ -1,9 +1,9 @@
-#N struct 1037-cell float x float y float cellsize float color;
-#N struct 1042-cell float x float y float cellsize float color;
-#N canvas 721 129 562 496 10;
+#N struct 1009-cell float x float y float cellsize float color;
+#N struct 1014-cell float x float y float cellsize float color;
+#N canvas 721 129 564 535 10;
 #X obj 248 269 display;
-#X msg 248 168 1 0 \$1;
-#X obj 248 144 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 248 164 1 0 \$1;
+#X obj 248 140 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 2 2 cnv 15 301 42 empty empty mtx.ctl 20 20 2 37 -233017 -1
 0;
@@ -32,30 +32,29 @@
 0;
 #X obj 6 308 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 385 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 411 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 415 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 441 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 470 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 496 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 120 316 cnv 17 3 64 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 121 315 cnv 17 3 91 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 121 392 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 121 418 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 204 392 list;
-#X text 243 392 - column \, row and status;
-#X text 188 420 1) float - number of columns (default 3), f 47;
-#X text 188 435 2) float - number of rows (default 3), f 47;
-#X text 188 450 3) float - cell size in pixels (default 20), f 47
+#X text 204 418 list;
+#X text 243 418 - column \, row and status;
+#X text 188 446 1) float - number of columns (default 3), f 47;
+#X text 188 461 2) float - number of rows (default 3), f 47;
+#X text 188 476 3) float - cell size in pixels (default 20), f 47
 ;
-#X text 203 316 list;
-#X text 243 316 - sets column \, row and status;
-#X text 155 332 rows <float>;
-#X text 137 349 columns <float>;
-#X text 242 332 - sets number of rows;
-#X text 242 349 - sets number of columns;
-#X text 155 365 size <float>;
-#X text 242 365 - sets cell size in pixels;
+#X text 203 315 list;
+#X text 155 360 rows <float>;
+#X text 137 375 columns <float>;
+#X text 243 360 - sets number of rows, f 41;
+#X text 243 375 - sets number of columns, f 41;
+#X text 155 390 size <float>;
+#X text 243 390 - sets cell size in pixels, f 41;
 #X text 110 219 click on the cells =>;
 #X obj 248 197 else/mtx.ctl;
 #X text 49 88 [mtx.ctl] provides a user matrix interface control. The
@@ -93,6 +92,18 @@ cells in the grid can be either on or off. The output is a list with
 #X connect 19 0 20 0;
 #X connect 19 1 20 1;
 #X restore 454 270 pd mtx~;
-#X connect 1 0 36 0;
+#X msg 202 164 clear;
+#X text 197 345 clear;
+#X msg 308 169 set 2 1 \$1;
+#X obj 308 146 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X text 167 330 set <list>;
+#X text 243 315 - sets column \, row \, status and outputs it;
+#X text 243 330 - sets column \, row and status (no output);
+#X text 243 345 - clears active cells (no output), f 41;
+#X connect 1 0 35 0;
 #X connect 2 0 1 0;
-#X connect 36 0 0 0;
+#X connect 35 0 0 0;
+#X connect 38 0 35 0;
+#X connect 40 0 35 0;
+#X connect 41 0 40 0;
