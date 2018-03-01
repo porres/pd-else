@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (179 objects):
+##Current Object list (180 objects):
 
 **MISCELLANEA: [4]**
 - [args]
@@ -207,7 +207,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [resonant~]
 - [resonant2~]
 
-**SIGNAL ROUTING: [9]**
+**SIGNAL ROUTING: [10]**
 - [balance~]
 - [pan2~]
 - [pan4~]
@@ -217,6 +217,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [xgate2~]
 - [xselect~]
 - [xselect2~]
+- [mtx~]
 
 **TRIGGERS: [19]**
 - [coin~]
@@ -268,7 +269,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
  - [lfo]
 
 **GUI: [13]**
-- [matrix.ctl]
+- [mtx.ctl]
 - [display]
 - [display~]
 - [out~]

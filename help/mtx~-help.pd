@@ -1,0 +1,91 @@
+#N struct 1009-cell float x float y float cellsize float color;
+#N canvas 292 185 571 568 10;
+#X obj 9 343 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 443 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 8 477 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 81 416 cnv 1 3 17 empty empty 0=>n 5 9 0 16 -228856 -162280
+0;
+#X text 137 417 signal;
+#X text 140 454 signal;
+#X text 184 156 0;
+#X text 199 156 1;
+#X text 213 156 2;
+#X text 228 156 3;
+#X text 149 349 list;
+#X obj 81 350 cnv 17 3 62 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 253 142 osc~ 300;
+#X obj 286 164 osc~ 400;
+#X obj 319 186 osc~ 500;
+#X obj 352 209 osc~ 600;
+#X text 264 266 0;
+#X text 257 230 0;
+#X text 291 230 1;
+#X text 324 230 2;
+#X text 358 231 3;
+#X text 128 484 1) float;
+#X text 128 501 2) float;
+#X obj 82 452 cnv 1 3 17 empty empty 0=>n 5 9 0 16 -228856 -162280
+0;
+#X text 124 172 output 0;
+#X text 124 187 output 1;
+#X text 142 156 input:;
+#X text 186 484 - 'n' number of inputs (1 to 512 \, default 1);
+#X text 186 501 - 'n' number of outputs (1 to 512 \, default 1);
+#X text 307 267 1;
+#X obj 180 213 else/display;
+#X text 143 396 clear;
+#X text 149 381 dump;
+#X text 101 365 fade <float>;
+#X text 192 364 - sets fade time in ms, f 56;
+#X text 192 416 - signals to route/mix, f 56;
+#X text 128 518 3) float;
+#X text 186 518 - fade time in ms (default 10);
+#X text 192 380 - outputs state off all cells, f 56;
+#X text 192 349 - floats set: inlet \, outlet and on <non-0> or off
+<0>, f 56;
+#X text 192 395 - clears all connections, f 56;
+#X obj 180 170 else/mtx.ctl 4 2 15;
+#X obj 253 245 else/mtx~ 4 2 100;
+#X obj 259 281 else/out~;
+#X obj 2 3 cnv 15 301 42 empty empty mtx~ 20 20 2 37 -233017 -1 0;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 304 3 pd;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 22 40 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
+#X obj 76 40 cnv 4 4 4 empty empty routing 0 28 2 18 -233017 -1 0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 138 40 cnv 4 4 4 empty empty matrix 0 28 2 18 -233017 -1 0;
+#X obj 8 540 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 187 453 - routed signals from inlets;
+#X text 64 92 [mtx~] routes signals from any inlets to one or more
+outlets. If more than one inlet connects to an outlet \, the output
+is the sum of the inlets' signals., f 64;
+#X connect 12 0 42 0;
+#X connect 13 0 42 1;
+#X connect 14 0 42 2;
+#X connect 15 0 42 3;
+#X connect 30 0 42 0;
+#X connect 41 0 30 0;
+#X connect 42 0 43 0;
+#X connect 42 1 43 1;

@@ -1,11 +1,12 @@
-#N struct 1008-cell float x float y float cellsize float color;
+#N struct 1037-cell float x float y float cellsize float color;
+#N struct 1042-cell float x float y float cellsize float color;
 #N canvas 721 129 562 496 10;
 #X obj 248 269 display;
 #X msg 248 168 1 0 \$1;
 #X obj 248 144 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 2 2 cnv 15 301 42 empty empty matrix.ctl 20 20 2 37 -233017
--1 0;
+#X obj 2 2 cnv 15 301 42 empty empty mtx.ctl 20 20 2 37 -233017 -1
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 2 graph;
@@ -55,11 +56,43 @@
 #X text 242 349 - sets number of columns;
 #X text 155 365 size <float>;
 #X text 242 365 - sets cell size in pixels;
-#X obj 248 197 else/matrix.ctl;
 #X text 110 219 click on the cells =>;
-#X text 49 88 [matrix.ctl] provides a user matrix interface control.
-The cells in the grid can be either on or off. The output is a list
-with 3 floats that specify: column \, row and status., f 68;
-#X connect 1 0 35 0;
+#X obj 248 197 else/mtx.ctl;
+#X text 49 88 [mtx.ctl] provides a user matrix interface control. The
+cells in the grid can be either on or off. The output is a list with
+3 floats that specify: column \, row and status., f 69;
+#N canvas 371 36 470 327 mtx~ 0;
+#X text 118 75 0;
+#X text 133 75 1;
+#X text 147 75 2;
+#X text 162 75 3;
+#X obj 198 68 osc~ 300;
+#X obj 231 90 osc~ 400;
+#X obj 264 112 osc~ 500;
+#X obj 297 135 osc~ 600;
+#X text 209 192 0;
+#X text 202 156 0;
+#X text 236 156 1;
+#X text 269 156 2;
+#X text 303 157 3;
+#X text 58 91 output 0;
+#X text 58 106 output 1;
+#X text 76 75 input:;
+#X text 252 193 1;
+#X obj 114 132 else/display;
+#X obj 114 89 else/mtx.ctl 4 2 15;
+#X obj 198 171 else/mtx~ 4 2 100;
+#X obj 204 207 else/out~;
+#X text 54 27 [mtx.ctl] is very convenient for controlling [mtx~];
+#X connect 4 0 19 0;
+#X connect 5 0 19 1;
+#X connect 6 0 19 2;
+#X connect 7 0 19 3;
+#X connect 17 0 19 0;
+#X connect 18 0 17 0;
+#X connect 19 0 20 0;
+#X connect 19 1 20 1;
+#X restore 454 270 pd mtx~;
+#X connect 1 0 36 0;
 #X connect 2 0 1 0;
-#X connect 35 0 0 0;
+#X connect 36 0 0 0;
