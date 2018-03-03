@@ -1,39 +1,20 @@
-#N struct 1012-rectangle float x float c;
-#N struct 1012-point float x0 float y0 float s;
-#N struct 1013-rectangle float x float c;
-#N struct 1013-point float x0 float y0 float s;
-#N struct 1014-rectangle float x float c;
-#N struct 1014-point float x0 float y0 float s;
-#N struct 1019-rectangle float x float c;
-#N struct 1019-point float x0 float y0 float s;
-#N struct 1029-rectangle float x float c;
-#N struct 1029-point float x0 float y0 float s;
-#N canvas 374 108 1066 655 10;
-#X obj 154 217 display;
-#X text 182 47 [slider2d];
-#X text 333 89 [slider2d -size 64];
-#X obj 331 210 display;
-#X text 467 127 -range -1 1 -size 64;
-#X obj 154 75 slider2d;
-#X obj 335 125 slider2d -size 64;
-#X obj 444 162 slider2d -range -1 1 -size 64;
-#X obj 442 244 display;
-#X obj 543 193 slider2d -size 64 -range -1 1;
-#X obj 531 273 display;
-#X text 649 57 flags: -size <float> (default: 127);
-#X text 648 78 flags: -range <float \, float> (default: 0 \, 127);
-#N canvas 657 106 474 489 example 0;
-#X obj 205 30 slider2d;
-#X obj 205 251 else/float2sig~ 100;
-#X obj 244 279 else/float2sig~ 100;
-#X obj 244 196 else/rescale 0.5 10;
-#X obj 205 225 else/rescale 150 1500;
-#X obj 121 384 else/out~;
-#X obj 244 309 else/display~;
-#X obj 182 309 else/display~;
-#X obj 121 345 else/lowpass~ 150 0.5;
-#X obj 120 240 else/brown~;
-#X obj 205 172 unpack;
+#N struct 1033-rectangle float x float c;
+#N struct 1033-point float x0 float y0 float s;
+#N struct 1041-rectangle float x float c;
+#N struct 1041-point float x0 float y0 float s;
+#N canvas 447 128 564 473 10;
+#N canvas 742 101 474 489 example 0;
+#X obj 205 39 slider2d;
+#X obj 205 260 else/float2sig~ 100;
+#X obj 244 288 else/float2sig~ 100;
+#X obj 244 205 else/rescale 0.5 10;
+#X obj 205 234 else/rescale 150 1500;
+#X obj 121 393 else/out~;
+#X obj 244 318 else/display~;
+#X obj 182 318 else/display~;
+#X obj 121 354 else/lowpass~ 150 0.5;
+#X obj 120 249 else/brown~;
+#X obj 205 181 unpack;
 #X connect 0 0 10 0;
 #X connect 1 0 7 0;
 #X connect 2 0 6 0;
@@ -46,8 +27,57 @@
 #X connect 9 0 8 0;
 #X connect 10 0 4 0;
 #X connect 10 1 3 0;
-#X restore 725 241 pd example;
-#X connect 5 0 0 0;
-#X connect 6 0 3 0;
-#X connect 7 0 8 0;
-#X connect 9 0 10 0;
+#X restore 381 207 pd example;
+#X obj 2 3 cnv 15 301 42 empty empty slider2d 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X obj 23 40 cnv 4 4 4 empty empty Two-dimensional 0 28 2 18 -233017
+-1 0;
+#X obj 158 40 cnv 4 4 4 empty empty slider 0 28 2 18 -233017 -1 0;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 304 3 pd;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 6 320 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 371 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 401 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 445 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 105 327 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 105 378 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 204 378 list;
+#X text 203 327 list;
+#X text 243 378 - x/y coordinates;
+#X text 134 408 -size <float>: sets x/y size (default: 127);
+#X text 134 423 -range: sets x/y range <float \, float> (default: 0
+\, 127);
+#X text 68 92 A two dimensional slider;
+#X obj 169 148 else/slider2d;
+#X obj 169 288 else/display;
+#X text 119 347 set <float \, float>;
+#X text 243 347 - sets x and y;
+#X text 243 327 - sets x \, y and outputs it;
+#X msg 169 123 32 78;
+#X msg 218 123 set 85 30;
+#X connect 25 0 26 0;
+#X connect 30 0 25 0;
+#X connect 31 0 25 0;
