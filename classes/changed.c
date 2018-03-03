@@ -20,26 +20,29 @@ static void changed_bang(t_changed *x){
 
 static void changed_anything(t_changed *x, t_symbol *s, int argc, t_atom *argv){
     int i;
-    int c = argc;
     x->x_sym = s;
-    if(c == x->x_c)
-        for (i = 0; i < c; i++){
-            if (x->x_a[i].a_type == A_FLOAT){
-                if (argv[i].a_type != A_FLOAT || x->x_a[i].a_w.w_float != argv[i].a_w.w_float)
+    if(x->x_c == argc){
+        for(i = 0; i < argc; i++){
+            if(x->x_a[i].a_type == A_FLOAT){
+                if(x->x_a[i].a_w.w_float != argv[i].a_w.w_float){
                     x->x_change = 1;
-                break;
+                    break;
+                }
             }
-            else if (x->x_a[i].a_type == A_SYMBOL){
-                if (argv[i].a_type != A_SYMBOL || x->x_a[i].a_w.w_symbol != argv[i].a_w.w_symbol)
+            else if(x->x_a[i].a_type == A_SYMBOL){
+                if(x->x_a[i].a_w.w_symbol != argv[i].a_w.w_symbol){
                     x->x_change = 1;
-                break;
+                    break;
+                }
             }
         }
-    else
+    }
+    else{
+        x->x_c = argc;
         x->x_change = 1;
-    if (x->x_change){
-        x->x_c = c;
-        for (i = 0; i < c; i++)
+    }
+    if(x->x_change){
+        for (i = 0; i < argc; i++)
             x->x_a[i] = argv[i];
         outlet_anything(x->x_obj.ob_outlet, s, argc, argv);
         x->x_change = 0;
