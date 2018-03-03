@@ -1,8 +1,8 @@
-#N struct 1033-rectangle float x float c;
-#N struct 1033-point float x0 float y0 float s;
-#N struct 1041-rectangle float x float c;
-#N struct 1041-point float x0 float y0 float s;
-#N canvas 447 128 564 473 10;
+#N struct 1004-rectangle float x float c;
+#N struct 1004-point float x0 float y0 float s;
+#N struct 1012-rectangle float x float c;
+#N struct 1012-point float x0 float y0 float s;
+#N canvas 447 128 576 505 10;
 #N canvas 742 101 474 489 example 0;
 #X obj 205 39 slider2d;
 #X obj 205 260 else/float2sig~ 100;
@@ -55,20 +55,20 @@
 0;
 #X obj 6 320 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 371 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 391 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 401 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 6 445 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 421 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 465 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 105 327 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 105 327 cnv 17 3 57 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 105 378 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 105 398 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 204 378 list;
+#X text 204 398 list;
 #X text 203 327 list;
-#X text 243 378 - x/y coordinates;
-#X text 134 408 -size <float>: sets x/y size (default: 127);
-#X text 134 423 -range: sets x/y range <float \, float> (default: 0
+#X text 243 398 - x/y coordinates;
+#X text 134 428 -size <float>: sets x/y size (default: 127);
+#X text 134 443 -range: sets x/y range <float \, float> (default: 0
 \, 127);
 #X text 68 92 A two dimensional slider;
 #X obj 169 148 else/slider2d;
@@ -78,6 +78,8 @@
 #X text 243 327 - sets x \, y and outputs it;
 #X msg 169 123 32 78;
 #X msg 218 123 set 85 30;
+#X text 155 367 size <float>;
+#X text 243 367 - sets size;
 #X connect 25 0 26 0;
 #X connect 30 0 25 0;
 #X connect 31 0 25 0;
