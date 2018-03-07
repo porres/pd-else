@@ -3,7 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include "m_pd.h"
-#include "magic.h"
+// #include "magic.h"
 
 #define mtx_DEFGAIN  1.
 #define mtx_DEFfade  10.
@@ -42,11 +42,7 @@ typedef struct _mtx
     float     *x_incrs;
     float     *x_bigincrs;
     int       *x_remains;
-    /* Additions for filtering floats from secondary inlets -- Matt Barber*/
-    t_float   *x_zerovec;
-    t_float   *x_signalscalars[mtx_MAXINLETS];
-    t_glist   *x_glist;
-    int        x_hasfeeders[mtx_MAXINLETS];
+
 } t_mtx;
 
 typedef void (*t_mtx_cellfn)(t_mtx *x, int indx, int ondx,
@@ -261,14 +257,7 @@ static t_int *mtx_perform(t_int *w)
     for (indx = 0; indx < x->x_numinlets; indx++){
 	t_float *ivec = *ivecs++;
 	t_float **ovecp = osums;
-	if (indx){
-		if (!magic_isnan(*x->x_signalscalars[indx]))
-		{
-			pd_error(x, "mtx~: doesn't understand 'float'");
-			magic_setnan(x->x_signalscalars[indx]);
-		}
-		if (!(x->x_hasfeeders[indx])) ivec = x->x_zerovec;
-	}
+
 	int ondx = x->x_numoutlets;
 	while (ondx--){
 	    t_float *in = ivec;
@@ -346,7 +335,7 @@ static void mtx_dsp(t_mtx *x, t_signal **sp)
     for (i = 0; i < x->x_numinlets; i++)
     {
 		*vecp++ = (*sigp++)->s_vec;
-		x->x_hasfeeders[i] = magic_inlet_connection((t_object *)x, x->x_glist, i, &s_signal);
+//		x->x_hasfeeders[i] = magic_inlet_connection((t_object *)x, x->x_glist, i, &s_signal);
 	};
     vecp = x->x_ovecs;
     for (i = 0; i < x->x_numoutlets; i++){
@@ -467,8 +456,8 @@ static void *mtx_new(t_symbol *s, int argc, t_atom *argv)
 	t_mtx *x = (t_mtx *)pd_new(mtx_class);
 
 	t_float fadeval = mtx_DEFfade;
-	t_float nan32;
-	magic_setnan(&nan32);
+//	t_float nan32;
+//	magic_setnan(&nan32);
 	x->x_numinlets = (int)mtx_MININLETS;
 	x->x_numoutlets = (int)mtx_MINOUTLETS;
 	x->x_defgain = mtx_DEFGAIN;
