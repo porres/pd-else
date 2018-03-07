@@ -68,15 +68,6 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 ##Current Object list (181 objects):
 
-**MISCELLANEA: [4]**
-- [args]
-- [window]
-- [dir]
-- [loadbanger] / [lb]
-
-**MIDI: [1]**
-- [clock]
-
 **MESSAGE MANAGEMENT: [9]**
 - [break] 
 - [fromany] 
@@ -87,6 +78,17 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [pack2]
 - [routeall]
 - [routetype]
+
+**PATCH/SUBPATCH MANAGEMENT: [3]**
+- [args]
+- [window]
+- [loadbanger] / [lb]
+-
+**FILE MANAGEMENT: [1]**
+- [dir]
+
+**MIDI: [1]**
+- [clock]
 
 **CONVERSION: [18]**
 - [any2symbol]
@@ -127,9 +129,9 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [wrap2~]
 
 **CONSTANT VALUES: [4]**
+- [sr~]
 - [nyquist~]
 - [pi]
-- [sr~]
 - [e]
 
 **AUDIO PLAYING: [2]**
@@ -144,8 +146,26 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **REVERB: [1]**
 - [plateverb~]
 
-**PHYSICAL MODELLING: [1]**
-- [pluck~]
+**FILTERS (19):**
+- [allpass.2nd~]
+- [lop.bw~]
+- [hip.bw~]
+- [biquads~]
+- [bandpass~]
+- [bandstop~]
+- [bpbank~]
+- [bicoeff]
+- [biplot]
+- [brickwall~]
+- [eq~]
+- [highpass~]
+- [highshelf~]
+- [lowpass~]
+- [lowshelf~]
+- [resonbank~]
+- [resonbank2~]
+- [resonant~]
+- [resonant2~]
 
 **OSCILLATORS (DETERMINISTIC GENERATORS): [14]**
 - [cosine~]
@@ -186,26 +206,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [stepnoise~]
 - [xmod~]
 
-**FILTERS (19):**
-- [allpass.2nd~]
-- [lop.bw~]
-- [hip.bw~]
-- [biquads~]
-- [bandpass~]
-- [bandstop~]
-- [bpbank~]
-- [bicoeff]
-- [biplot]
-- [brickwall~]
-- [eq~]
-- [highpass~]
-- [highshelf~]
-- [lowpass~]
-- [lowshelf~]
-- [resonbank~]
-- [resonbank2~]
-- [resonant~]
-- [resonant2~]
+**PHYSICAL MODELLING: [1]**
+- [pluck~]
 
 **SIGNAL ROUTING: [10]**
 - [balance~]
@@ -218,6 +220,38 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [xselect~]
 - [xselect2~]
 - [mtx~]
+
+**CONTROL: [14]**
+ - [adsr~]
+ - [asr~]
+ - [autofade~]
+ - [autofade2~]
+ - [decay~]
+ - [decay2~]
+ - [fader~]
+ - [glide~]
+ - [glide2~]
+ - [ramp~]
+ - [susloop~]
+ - [sequencer~]
+ - [impseq~]
+ - [lfo]
+
+**GUI: [14]**
+- [mtx.ctl]
+- [slider2d]
+- [display]
+- [display~]
+- [out~]
+- [gain~]
+- [gain2~]
+- [keyboard]
+- [graph~]
+- [meter~]
+- [meter2~]
+- [mix2~]
+- [mix4~]
+- [setdsp~]
 
 **TRIGGERS: [19]**
 - [coin~]
@@ -251,38 +285,6 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [vu~]
 - [past~]
 - [zerocross~]
-
-**CONTROL: [14]**
- - [adsr~]
- - [asr~]
- - [autofade~]
- - [autofade2~]
- - [decay~]
- - [decay2~]
- - [fader~]
- - [glide~]
- - [glide2~]
- - [ramp~]
- - [susloop~]
- - [sequencer~]
- - [impseq~]
- - [lfo]
-
-**GUI: [14]**
-- [mtx.ctl]
-- [slider2d]
-- [display]
-- [display~]
-- [out~]
-- [gain~]
-- [gain2~]
-- [keyboard]
-- [graph~]
-- [meter~]
-- [meter2~]
-- [mix2~]
-- [mix4~]
-- [setdsp~]
 
 **EXTRA: [1]**
 - [output~]
