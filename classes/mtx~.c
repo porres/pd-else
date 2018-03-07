@@ -347,9 +347,9 @@ static void mtx_dsp(t_mtx *x, t_signal **sp)
 			newsize = nblock * sizeof(*x->x_osums[i]);
 			for (i = 0; i < x->x_numoutlets; i++)
 			x->x_osums[i] = resizebytes(x->x_osums[i], oldsize, newsize);
-			oldsize = x->x_maxblock * sizeof(*x->x_zerovec);
-			newsize = nblock * sizeof(*x->x_zerovec);
-			x->x_zerovec = resizebytes(x->x_zerovec, oldsize, newsize);
+//			oldsize = x->x_maxblock * sizeof(*x->x_zerovec);
+//			newsize = nblock * sizeof(*x->x_zerovec);
+//			x->x_zerovec = resizebytes(x->x_zerovec, oldsize, newsize);
 			x->x_maxblock = nblock;
 		};
 	x->x_nblock = nblock;
@@ -430,7 +430,7 @@ static void *mtx_free(t_mtx *x)
 	int i;
 	for (i = 0; i < x->x_numoutlets; i++)
 	    freebytes(x->x_osums[i], x->x_maxblock * sizeof(*x->x_osums[i]));
-	freebytes(x->x_zerovec, x->x_maxblock * sizeof(*x->x_zerovec));
+//	freebytes(x->x_zerovec, x->x_maxblock * sizeof(*x->x_zerovec));
 	freebytes(x->x_osums, x->x_numoutlets * sizeof(*x->x_osums));
     }
     if (x->x_cells)
@@ -520,7 +520,7 @@ static void *mtx_new(t_symbol *s, int argc, t_atom *argv)
 	};
 	x->x_cells = getbytes(x->x_ncells * sizeof(*x->x_cells));
 	/* zerovec for filtering float inputs*/
-	x->x_zerovec = getbytes(x->x_maxblock * sizeof(*x->x_zerovec));
+//	x->x_zerovec = getbytes(x->x_maxblock * sizeof(*x->x_zerovec));
 	mtx_clear(x);
 
 	    x->x_gains = getbytes(x->x_ncells * sizeof(*x->x_gains));
@@ -543,14 +543,14 @@ static void *mtx_new(t_symbol *s, int argc, t_atom *argv)
 			x->x_remains[i] = 0;
 		};
 	for (i = 1; i < x->x_numinlets; i++){
-		pd_float( (t_pd *)inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal), nan32);
-		x->x_signalscalars[i] = obj_findsignalscalar((t_object *)x, i);
+		inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
+//		x->x_signalscalars[i] = obj_findsignalscalar((t_object *)x, i);
 	};
 	for (i = 0; i < x->x_numoutlets; i++){
 	 	outlet_new(&x->x_obj, gensym("signal"));
 	};
 	x->x_dumpout = outlet_new((t_object *)x, &s_list);
-	x->x_glist = canvas_getcurrent();
+//	x->x_glist = canvas_getcurrent();
 	return (x);
 	errstate:
 		pd_error(x, "mtx~: improper args");
