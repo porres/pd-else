@@ -83,7 +83,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [args]
 - [window]
 - [loadbanger] / [lb]
--
+
 **FILE MANAGEMENT: [1]**
 - [dir]
 
