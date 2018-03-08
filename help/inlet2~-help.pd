@@ -1,4 +1,4 @@
-#N canvas 582 71 577 415 10;
+#N canvas 582 71 574 400 10;
 #N canvas 627 71 324 251 inlet2~ 0;
 #X obj 111 174 outlet~;
 #X obj 111 129 else/display~;
@@ -6,57 +6,55 @@
 #X obj 111 93 else/inlet2~ 10;
 #X connect 1 0 0 0;
 #X connect 3 0 1 0;
-#X restore 199 210 pd inlet2~;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X restore 199 205 pd inlet2~;
+#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 2 pd;
+#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 75 40 cnv 4 4 4 empty empty inlet 0 28 2 18 -233017 -1 0;
-#X obj 21 40 cnv 4 4 4 empty empty Audio 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 75 39 cnv 4 4 4 empty empty inlet 0 28 2 18 -233017 -1 0;
+#X obj 21 39 cnv 4 4 4 empty empty Audio 0 28 2 18 -233017 -1 0;
+#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 3 4 cnv 15 301 42 empty empty inlet2~ 20 20 2 37 -233017 -1
+#X obj 3 3 cnv 15 301 42 empty empty inlet2~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 4 graph;
-#X text 70 99 The [inlet2~] is a simplified version of [inlet~] \,
+#X restore 2 3 graph;
+#X text 70 98 The [inlet2~] is a simplified version of [inlet~] \,
 as it doesn't provide up/downsampling \, but it carries an added feature
 of being able to load default values. This is particularly useful for
 abstractions!;
-#X obj 487 111 else/setdsp~;
-#X text 71 158 Below \, the subptach has a default value of 10 \, so
+#X obj 487 110 else/setdsp~;
+#X text 71 157 Below \, the subptach has a default value of 10 \, so
 it outputs it when no connections have been made yet., f 56;
-#X obj 3 290 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 275 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 322 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 307 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 351 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 336 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 3 462 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
-0;
-#X obj 125 330 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 125 315 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 126 299 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 126 284 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 175 363 1) float -;
-#X text 162 300 float - sets default value, f 52;
-#X text 162 331 signal - value from parent patch or default value;
-#X text 244 363 sets default value, f 33;
-#X obj 199 240 else/display~;
-#X text 356 215 more details:;
-#N canvas 379 23 854 365 more 0;
+#X text 175 348 1) float -;
+#X text 162 285 float - sets default value, f 52;
+#X text 162 316 signal - value from parent patch or default value;
+#X text 244 348 sets default value, f 33;
+#X obj 199 235 else/display~;
+#X text 356 210 more details:;
+#N canvas 379 23 724 357 more 0;
 #N canvas 434 96 446 411 test 0;
 #X obj 154 352 outlet~;
 #X obj 154 307 else/display~;
@@ -79,25 +77,30 @@ is the default value and set it internally inside the abstraction.
 #X connect 6 0 1 0;
 #X connect 7 0 8 0;
 #X connect 8 0 2 0;
-#X restore 166 164 pd test;
-#X obj 166 200 else/display~;
-#X obj 202 130 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 -18 256;
-#X obj 166 95 sig~ 5;
-#X text 32 27 Disconnect the [sig~] object from the subpacth and see
+#X restore 169 166 pd test;
+#X obj 169 202 else/display~;
+#X obj 205 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 169 97 sig~ 5;
+#X text 35 29 Disconnect the [sig~] object from the subpacth and see
 how it restores the default value. But also note that a float input
 will also update this default value and be promoted to a signal.;
-#X text 36 246 Hence \, the real big advantage of [inlet2~] is to load
+#X text 39 248 Hence \, the real big advantage of [inlet2~] is to load
 default values inside an abstraction \, without interaction with the
 parent patch. Now open the subpatch above for yet more considerations.
 ;
-#X obj 565 166 else/oscbank~ 1 400;
-#X text 459 48 The [oscbank~] object is an example of an object in
+#X obj 507 118 else/oscbank~ 1 400;
+#X text 458 36 The [oscbank~] object is an example of an object in
 else that uses the [inlet2~] object to load a default value for the
-frequency input.;
+frequency input., f 35;
+#X text 457 201 Note that [inlet2~] doesn't handle resampling \, so
+if you need to resample inside an abstraction \, do it inside a subpacth
+with a proper [inlet~] object, f 38;
 #X connect 0 0 1 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
-#X restore 367 237 pd more;
-#X text 85 210 click to open =>;
-#X connect 0 0 26 0;
+#X restore 367 232 pd more;
+#X text 85 205 click to open =>;
+#X obj 6 371 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X connect 0 0 25 0;
