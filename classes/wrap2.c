@@ -16,7 +16,7 @@ typedef struct _wrap2
     t_float     x_max;
 } t_wrap2;
 
-t_float wrap2_convert(t_float f, t_float min, t_float max)
+static t_float convert(t_float f, t_float min, t_float max)
 {
     float result;
     if(min > max)
@@ -50,7 +50,7 @@ t_float wrap2_convert(t_float f, t_float min, t_float max)
 void wrap2_float(t_wrap2 *x, t_floatarg f)
 {
   x->x_f = f;
-  outlet_float(x->x_outlet, wrap2_convert(f, x->x_min, x->x_max));
+  outlet_float(x->x_outlet, convert(f, x->x_min, x->x_max));
 }
 
 void wrap2_list(t_wrap2 *x, t_symbol *s, int argc, t_atom *argv)
@@ -59,7 +59,7 @@ void wrap2_list(t_wrap2 *x, t_symbol *s, int argc, t_atom *argv)
   x->x_bytes = argc*sizeof(t_atom);
   x->output_list = (t_atom *)t_resizebytes(x->output_list,old_bytes,x->x_bytes);
   for(i=0;i<argc;i++)
-    SETFLOAT(x->output_list+i,wrap2_convert(atom_getfloatarg(i,argc,argv), x->x_min, x->x_max));
+    SETFLOAT(x->output_list+i,convert(atom_getfloatarg(i,argc,argv), x->x_min, x->x_max));
   outlet_list(x->x_outlet,0,argc,x->output_list);
 }
 
@@ -70,7 +70,7 @@ void wrap2_set(t_wrap2 *x, t_float f)
 
 void wrap2_bang(t_wrap2 *x)
 {
-  outlet_float(x->x_outlet,wrap2_convert(x->x_f, x->x_min, x->x_max));
+  outlet_float(x->x_outlet,convert(x->x_f, x->x_min, x->x_max));
 }
 
 void *wrap2_new(t_symbol *s, int argc, t_atom *argv)

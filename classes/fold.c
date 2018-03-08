@@ -16,7 +16,7 @@ typedef struct _fold
     t_float     x_max;
 } t_fold;
 
-t_float fold_convert(t_float f, t_float min, t_float max)
+static t_float convert(t_float f, t_float min, t_float max)
 {
     float result;
     if(min > max)
@@ -70,7 +70,7 @@ t_float fold_convert(t_float f, t_float min, t_float max)
 void fold_float(t_fold *x, t_floatarg f)
 {
   x->x_f = f;
-  outlet_float(x->x_outlet, fold_convert(f, x->x_min, x->x_max));
+  outlet_float(x->x_outlet, convert(f, x->x_min, x->x_max));
 }
 
 void fold_list(t_fold *x, t_symbol *s, int argc, t_atom *argv)
@@ -79,7 +79,7 @@ void fold_list(t_fold *x, t_symbol *s, int argc, t_atom *argv)
   x->x_bytes = argc*sizeof(t_atom);
   x->output_list = (t_atom *)t_resizebytes(x->output_list,old_bytes,x->x_bytes);
   for(i=0;i<argc;i++)
-    SETFLOAT(x->output_list+i,fold_convert(atom_getfloatarg(i,argc,argv), x->x_min, x->x_max));
+    SETFLOAT(x->output_list+i,convert(atom_getfloatarg(i,argc,argv), x->x_min, x->x_max));
   outlet_list(x->x_outlet,0,argc,x->output_list);
 }
 
@@ -90,7 +90,7 @@ void fold_set(t_fold *x, t_float f)
 
 void fold_bang(t_fold *x)
 {
-  outlet_float(x->x_outlet,fold_convert(x->x_f, x->x_min, x->x_max));
+  outlet_float(x->x_outlet,convert(x->x_f, x->x_min, x->x_max));
 }
 
 void *fold_new(t_symbol *s, int argc, t_atom *argv)
