@@ -21,7 +21,7 @@ void hz2rad_float(t_hz2rad *x, t_floatarg f);
 void hz2rad_bang(t_hz2rad *x);
 void hz2rad_set(t_hz2rad *x, t_floatarg f);
 
-t_float convert(t_hz2rad *x, t_float f);
+static t_float convert(t_hz2rad *x, t_float f);
 
 void hz2rad_float(t_hz2rad *x, t_floatarg f)
 {

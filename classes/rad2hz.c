@@ -21,7 +21,7 @@ void rad2hz_float(t_rad2hz *x, t_floatarg f);
 void rad2hz_bang(t_rad2hz *x);
 void rad2hz_set(t_rad2hz *x, t_floatarg f);
 
-t_float convert(t_rad2hz *x, t_float f);
+static t_float convert(t_rad2hz *x, t_float f);
 
 void rad2hz_float(t_rad2hz *x, t_floatarg f)
 {

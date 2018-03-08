@@ -21,7 +21,7 @@ void cents2ratio_float(t_cents2ratio *x, t_floatarg f);
 void cents2ratio_bang(t_cents2ratio *x);
 void cents2ratio_set(t_cents2ratio *x, t_floatarg f);
 
-t_float convert(t_float f);
+static t_float convert(t_float f);
 
 void cents2ratio_float(t_cents2ratio *x, t_floatarg f)
 {

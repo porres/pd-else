@@ -14,7 +14,7 @@ typedef struct _ceil
   t_float f;
 } t_ceil;
 
-t_float convert(t_float f);
+static t_float convert(t_float f);
 
 void ceil_float(t_ceil *x, t_floatarg f)
 {

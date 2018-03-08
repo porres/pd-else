@@ -14,7 +14,7 @@ typedef struct _floor
   t_float f;
 } t_floor;
 
-t_float convert(t_float f);
+static t_float convert(t_float f);
 
 void floor_float(t_floor *x, t_floatarg f)
 {
