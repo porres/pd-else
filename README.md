@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-8 (Released: March 6th, 2018)
+### Version 1.0 beta-8 (Released: March 8th, 2018)
 
 Needs Pd 0.48-1 or above
 
@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (181 objects):
+##Current Object list (182 objects):
 
 **MESSAGE MANAGEMENT: [9]**
 - [break] 
@@ -82,6 +82,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **PATCH/SUBPATCH MANAGEMENT: [3]**
 - [args]
 - [window]
+- [inlet2~]
 - [loadbanger] / [lb]
 
 **FILE MANAGEMENT: [1]**
