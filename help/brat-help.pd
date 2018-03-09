@@ -73,13 +73,13 @@ open the subpatch with right click and then "open"., f 66;
 ;
 #X text 186 349 - bang when clicked on in the parent patch;
 #X text 154 293 (none);
-#N canvas 284 132 454 252 more 0;
+#N canvas 284 132 454 252 more 1;
 #X obj 127 123 else/sampler~;
 #X obj 248 123 else/player~;
 #X text 49 37 The [sampler~] and [player~] objects in else use [brat]
 to open a new sound file when clicked on. And when queried about properties
-\, it sends a warning saying "sorry \, I don't really have a properties
-window";
+\, it sends a warning saying "sorry \, I don't really have properties"
+;
 #X restore 431 239 pd more;
 #X connect 14 0 17 0;
 #X connect 14 1 15 0;
