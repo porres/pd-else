@@ -1,4 +1,4 @@
-#N canvas 545 102 564 689 10;
+#N canvas 545 89 564 689 10;
 #X obj 236 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X msg 108 208 start;
@@ -126,6 +126,7 @@ sound file's. The maximum number is 64 channels.;
 dialog box) and starts playing, f 50;
 #X text 37 286 see also:;
 #X obj 31 312 else/player~;
+#X text 47 258 click: opens a new file =>;
 #X connect 0 0 52 0;
 #X connect 1 0 52 0;
 #X connect 2 0 52 0;

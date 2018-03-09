@@ -144,6 +144,7 @@ as "stop", f 62;
 and [tabread4~]. It offers many playing capabilities on arrays and
 it's more versatile than [else/sampler~]. For instance \, you can play
 in different speeds and even backwards., f 76;
+#X text 96 213 click: opens a new file =>;
 #X connect 8 0 64 0;
 #X connect 9 0 64 0;
 #X connect 10 0 64 0;
