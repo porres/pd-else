@@ -238,24 +238,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
  - [sequencer~]
  - [impseq~]
  - [lfo]
-
-**GUI: [14]**
-- [mtx.ctl]
-- [slider2d]
-- [display]
-- [display~]
-- [out~]
-- [gain~]
-- [gain2~]
-- [keyboard]
-- [graph~]
-- [meter~]
-- [meter2~]
-- [mix2~]
-- [mix4~]
-- [setdsp~]
-
-**TRIGGERS: [19]**
+ 
+ **TRIGGERS: [19]**
 - [coin~]
 - [dust~]
 - [dust2~]
@@ -287,6 +271,22 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [vu~]
 - [past~]
 - [zerocross~]
+
+**GUI: [14]**
+- [mtx.ctl]
+- [slider2d]
+- [display]
+- [display~]
+- [out~]
+- [gain~]
+- [gain2~]
+- [keyboard]
+- [graph~]
+- [meter~]
+- [meter2~]
+- [mix2~]
+- [mix4~]
+- [setdsp~]
 
 **EXTRA: [1]**
 - [output~]
