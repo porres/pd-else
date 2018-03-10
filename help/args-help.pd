@@ -1,5 +1,6 @@
-#N canvas 647 195 564 397 10;
-#X obj 25 41 cnv 4 4 4 empty empty Output 0 28 2 18 -233017 -1 0;
+#N struct 1043-point float x0 float y0 float s;
+#N canvas 458 31 563 399 10;
+#X obj 25 41 cnv 4 4 4 empty empty Manage 0 28 2 18 -233017 -1 0;
 #X obj 90 41 cnv 4 4 4 empty empty arguments 0 28 2 18 -233017 -1 0
 ;
 #X obj 4 4 cnv 15 301 42 empty empty args 20 20 2 37 -233017 -1 0;
@@ -23,64 +24,186 @@
 0;
 #X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#N canvas 899 67 508 308 example 0;
-#X obj 111 165 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 6 244 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 291 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 345 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 6 373 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 238 174 else/args;
+#X text 225 352 (none);
+#X text 178 251 bang - output arguments list;
+#X text 150 299 anything -;
+#N canvas 680 170 449 400 break 0;
+#X obj 105 82 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 105 156 else/display;
+#X text 61 158 args;
+#X obj 105 277 route -freq -amp;
+#X obj 151 306 else/display;
+#X obj 105 345 else/display;
+#X obj 105 203 else/break -;
+#X text 46 26 You can use break to split an argument list and furtherly
+route it.;
+#X text 128 81 <= get arguments;
+#X text 190 203 <= this would also be inside the abstraction \, of
+course, f 23;
+#X obj 105 110 else/args-example -freq 100 200 -amp 1 0.5;
+#X connect 0 0 10 0;
+#X connect 1 0 6 0;
+#X connect 3 0 5 0;
+#X connect 3 1 4 0;
+#X connect 6 0 3 0;
+#X connect 10 0 1 0;
+#X restore 467 212 pd break;
+#X obj 238 148 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 111 241 else/display;
+#X text 220 300 symbol \, float or list \, depending on the given arguments
+- or bang if no arguments are given to the parent patch (as in this
+help patch), f 47;
+#X obj 238 204 else/display;
+#X text 91 90 [args] loads arguments of an abstraction and can also
+change them. It is useful for the management of variable number of
+arguments in abstractions \, and also to change/set them up.;
+#X text 154 269 anything - sets new arguments;
+#N canvas 236 181 865 447 example1 0;
+#X obj 97 165 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 97 241 else/display;
 #X text 43 85 Here you can test that the given arguments are loaded
 and passed throughout the left outlet. But if no arguments are given
 \, then the right outlet sends a bang.;
 #X text 43 37 Below we have an abstraction that uses [args] \, which
 is a very simple example on how it works.;
-#X text 133 165 <= load arguments;
-#X text 284 193 <= click and open the abstraction, f 18;
-#X obj 111 193 else/args-example 1 2 3;
+#X text 119 165 <= load arguments;
+#X text 253 193 <= click and open the abstraction, f 18;
+#X obj 97 193 else/args-example 1 2 3;
+#X obj 574 133 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 574 245 else/display;
+#X msg 602 173 1 2 3;
+#N canvas 572 23 708 707 load_args 0;
+#X obj 358 251 makefilename $%d;
+#X obj 272 327 pack f \$0;
+#X text 192 79 Maximum attempts, f 8;
+#X obj 484 338 send pd-\$0-test_arg;
+#X msg 358 282 obj 37 135 list append \$1, f 14;
+#X obj 59 101 r \$0-noarg;
+#X obj 206 219 select;
+#X obj 272 219 trigger float float float;
+#X msg 151 85 4096;
+#X text 257 87 (that might be engouh);
+#X obj 484 245 makefilename $%d-test;
+#N canvas 344 339 309 232 \$0-test_arg 0;
+#X obj 10 60 symbol \$1-test;
+#X obj 133 60 makefilename $%d-test;
+#X obj 37 135 list append \$1;
+#X obj 10 10 r 1069-i;
+#X obj 10 35 trigger bang float;
+#X obj 10 85 sel s;
+#X obj 37 110 b;
+#X obj 37 160 s 1069-arg;
+#X obj 10 185 s 1069-noarg;
+#X connect 0 0 5 0;
+#X connect 1 0 5 1;
+#X connect 2 0 7 0;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 4 1 1 0;
+#X connect 5 0 8 0;
+#X connect 5 1 6 0;
+#X connect 6 0 2 0;
+#X restore 498 178 pd \$0-test_arg;
+#X obj 164 428 r \$0-arg;
+#X obj 203 496 list;
+#X obj 164 463 list prepend;
+#X obj 120 492 list;
+#X text 180 631 list of arguments, f 9;
+#X msg 272 380 \; pd-\$2-test_arg obj 10 10 r \$2-i \; pd-\$2-test_arg
+obj 10 35 trigger bang float \; pd-\$2-test_arg obj 10 85 sel s \;
+pd-\$2-test_arg obj 37 110 b \; pd-\$2-test_arg obj 37 160 s \$2-arg
+\; pd-\$2-test_arg obj 10 185 s \$2-noarg \; pd-\$2-test_arg connect
+3 0 4 0 \; pd-\$2-test_arg connect 4 1 1 0 \; pd-\$2-test_arg connect
+4 0 0 0 \; pd-\$2-test_arg connect 1 0 5 1 \; pd-\$2-test_arg connect
+0 0 5 0 \; pd-\$2-test_arg connect 5 1 6 0 \; pd-\$2-test_arg connect
+6 0 2 0 \; pd-\$2-test_arg connect 2 0 7 0 \; pd-\$2-test_arg connect
+5 0 8 0 \; \$2-i \$1 \;;
+#X msg 484 272 clear \, obj 10 60 symbol \$1 \, obj 133 60 makefilename
+$%d-test, f 27;
+#X obj 119 638 outlet;
+#X obj 151 157 until;
+#X obj 206 189 + 1;
+#X msg 233 147 0;
+#X obj 151 123 trigger float bang float;
+#X obj 151 188 float;
+#X obj 151 55 inlet;
+#X connect 0 0 4 0;
+#X connect 1 0 17 0;
+#X connect 4 0 3 0;
+#X connect 5 0 15 0;
+#X connect 5 0 20 1;
+#X connect 6 0 15 0;
+#X connect 6 1 7 0;
+#X connect 7 0 1 0;
+#X connect 7 1 0 0;
+#X connect 7 2 10 0;
+#X connect 8 0 23 0;
+#X connect 10 0 18 0;
+#X connect 12 0 14 0;
+#X connect 13 0 14 1;
+#X connect 13 0 15 1;
+#X connect 14 0 13 0;
+#X connect 15 0 19 0;
+#X connect 18 0 3 0;
+#X connect 20 0 24 0;
+#X connect 21 0 24 1;
+#X connect 21 0 6 0;
+#X connect 22 0 24 1;
+#X connect 23 0 20 0;
+#X connect 23 1 22 0;
+#X connect 23 2 6 1;
+#X connect 24 0 21 0;
+#X connect 25 0 8 0;
+#X restore 56 357 pd load_args;
+#X text 142 356 <==;
+#X text 170 349 put this subpatch in your abstraction to load arguments
+, f 29;
+#X text 29 294 If you were hoping for a vanilla solution to load arguments
+\, Below there's a subpatch that does that! Just copy and paste it
+into your abstraction:;
+#X obj 574 201 else/args-example 1 2 3;
+#X text 460 62 Next we have the same abstraction with no arguments
+set. Note how you can also send any message to it and it'll change
+the arguments. But they'll be valid only if you save the patch.;
+#X text 486 305 Note that you can have [else/args] anywhere inside
+an abstraction \, like deep buried inside many layers of subpatches.
+;
 #X connect 0 0 6 0;
 #X connect 6 0 1 0;
-#X restore 451 183 pd example;
-#X obj 6 244 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 6 276 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 6 338 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
-0;
-#X obj 6 366 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
-0;
-#X obj 238 174 else/args;
-#X text 218 345 (none);
-#X text 144 254 bang - output arguments list;
-#X text 116 287 anything -;
-#X text 396 160 see examples below;
-#N canvas 899 67 514 395 break 0;
-#X obj 131 93 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X obj 131 167 else/display;
-#X text 87 169 args;
-#X obj 131 248 route -freq -amp;
-#X obj 185 278 else/display;
-#X obj 131 313 else/display;
-#X obj 131 214 else/break -;
-#X text 40 37 You can use break to split an argument list and furtherly
-route it.;
-#X text 154 92 <= get arguments;
-#X obj 131 121 else/args-example -freq 100 200 -amp 1 0.5;
-#X text 268 219 <= this would also be inside the abstraction \, of
-course, f 23;
-#X connect 0 0 9 0;
-#X connect 1 0 6 0;
-#X connect 3 0 5 0;
-#X connect 3 1 4 0;
-#X connect 6 0 3 0;
-#X connect 9 0 1 0;
-#X restore 465 212 pd break;
-#X obj 238 148 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 194 288 symbol \, float or list \, depending on the given arguments
-- or bang if no arguments are given to the parent patch (as in this
-help patch), f 47;
-#X obj 238 205 else/display;
-#X text 80 95 [args] loads arguments of an abstraction and is useful
-for the management of variable number of arguments in abstractions.
-, f 54;
-#X connect 17 0 25 0;
-#X connect 23 0 17 0;
+#X connect 7 0 14 0;
+#X connect 9 0 14 0;
+#X connect 14 0 8 0;
+#X restore 466 171 pd example1;
+#N canvas 360 200 719 463 example2 0;
+#X text 32 31 The [slider2] abstraction in else uses [else/args] to
+update the arguments when it receives messages that change its parameters.
+For example \, the "size" message., f 51;
+#X obj 162 192 else/slider2d -size 64;
+#X obj 162 334 else/display;
+#X msg 162 166 size \$1;
+#X obj 165 127 hsl 100 15 18 127 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 162 147 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 376 28 Change the size below and duplicate the object to see
+how the duplicate now has the same size. this is also how GUI objects
+normally behave in Pd by the way., f 51;
+#X connect 1 0 2 0;
+#X connect 3 0 1 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X restore 466 192 pd example2;
+#X connect 16 0 23 0;
+#X connect 21 0 16 0;
