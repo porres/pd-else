@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (183 objects):
+##Current Object list (184 objects):
 
 **MESSAGE MANAGEMENT: [9]**
 - [break] 
@@ -79,9 +79,10 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [routeall]
 - [routetype]
 
-**PATCH/SUBPATCH MANAGEMENT: [5]**
+**PATCH/SUBPATCH MANAGEMENT: [6]**
 - [args]
-- [brat]
+- [click]
+- [properties]
 - [window]
 - [inlet2~]
 - [loadbanger] / [lb]

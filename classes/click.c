@@ -111,32 +111,25 @@ static void addObjectToCanvas(const t_pd *parent, const t_pd *obj){
 }
 
 ///////////////////////
-// start of brat_class
+// start of click_class
 ///////////////////////
 
-static t_class *brat_class;
+static t_class *click_class;
 
-typedef struct _brat{
+typedef struct _click{
   t_object  x_obj;
-  t_outlet *x_properties_bangout;
   t_outlet *x_click_bangout;
-}t_brat;
+}t_click;
 
-t_propertiesfn x_properties_fn = NULL;
-
-static void brat_free(t_brat *x){
+static void click_free(t_click *x){
   removeObjectFromCanvases((t_pd*)x);
 }
 
-static void properties_bang(t_brat *x){
-    outlet_bang(x->x_properties_bangout);
-}
-
-static void click_bang(t_brat *x){
+static void click_bang(t_click *x){
     outlet_bang(x->x_click_bangout);
 }
 
-static void brat_click(t_gobj *z, t_canvas *x){
+static void click_click(t_gobj *z, t_canvas *x){
     t_cnv_objlist *objs = objectsInCanvas((t_pd*)z);
     if(objs == NULL){
       canvas_vis(z, 1);
@@ -148,44 +141,23 @@ static void brat_click(t_gobj *z, t_canvas *x){
     }
 }
 
-static void brat_properties(t_gobj *z, t_glist *owner){
-  t_cnv_objlist *objs = objectsInCanvas((t_pd*)z);
-  if(objs == NULL)
-    x_properties_fn(z, owner);
-  while(objs){
-      t_brat* x = (t_brat*)objs->obj;
-      properties_bang(x);
-      objs = objs->next;
-  }
-}
-
-static void *brat_new(void){
-    t_brat *x = (t_brat *)pd_new(brat_class);
+static void *click_new(t_floatarg f){
+    t_click *x = (t_click *)pd_new(click_class);
+    t_int subpatch_mode = f != 0;;
     t_glist *glist = (t_glist *)canvas_getcurrent();
     t_canvas *canvas = (t_canvas*)glist_getcanvas(glist);
     t_class *class = ((t_gobj*)canvas)->g_pd;
-    while(!canvas->gl_env)
-        canvas = canvas->gl_owner; // yeah
-    x->x_properties_bangout = outlet_new((t_object *)x, &s_bang);
+    if(!subpatch_mode){
+        while(!canvas->gl_env)
+            canvas = canvas->gl_owner; // yeah
+    }
+    class_addmethod(class, (t_method)click_click, gensym("click"), 0);
     x->x_click_bangout = outlet_new((t_object *)x, &s_bang);
-    
-// properties
-    t_propertiesfn class_properties_fn = NULL;
-// get properties from the class
-    class_properties_fn = class_getpropertiesfn(class);
-    if(class_properties_fn != brat_properties)
-        x_properties_fn = class_properties_fn;
-    // else is NULL
-// set properties
-    class_setpropertiesfn(class, brat_properties);
-    
-    class_addmethod(class, (t_method)brat_click, gensym("click"), 0);
     addObjectToCanvas((t_pd*)canvas, (t_pd*)x);
     return(x);
 }
 
-void brat_setup(void){
-  brat_class = class_new(gensym("brat"), (t_newmethod)brat_new,
-            (t_method)brat_free, sizeof(t_brat), CLASS_NOINLET, 0);
-    x_properties_fn = NULL;
+void click_setup(void){
+  click_class = class_new(gensym("click"), (t_newmethod)click_new,
+            (t_method)click_free, sizeof(t_click), CLASS_NOINLET, A_DEFFLOAT, 0);
 }
