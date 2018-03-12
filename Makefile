@@ -20,6 +20,7 @@ keyboard.class.sources := classes/keyboard.c
 # control:
 args.class.sources := classes/args.c
 click.class.sources := classes/click.c
+colors.class.sources := classes/colors.c
 properties.class.sources := classes/properties.c
 break.class.sources := classes/break.c
 cents2ratio.class.sources := classes/cents2ratio.c
