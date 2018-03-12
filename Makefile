@@ -19,7 +19,8 @@ keyboard.class.sources := classes/keyboard.c
 
 # control:
 args.class.sources := classes/args.c
-brat.class.sources := classes/brat.c
+click.class.sources := classes/click.c
+properties.class.sources := classes/properties.c
 break.class.sources := classes/break.c
 cents2ratio.class.sources := classes/cents2ratio.c
 changed.class.sources := classes/changed.c
