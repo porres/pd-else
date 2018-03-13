@@ -39,8 +39,8 @@
 -228856 -1 -1 0 256;
 #X obj 163 225 else/sig2float~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -109,7 +109,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -149,12 +149,12 @@
 ;
 #X text 144 314 float/signal;
 #X text 144 335 float/signal;
-#X obj 249 164 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 248 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 335 165 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 334 175 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 257 143 low;
-#X text 346 145 high;
+#X text 256 153 low;
+#X text 345 155 high;
 #X obj 163 148 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 163 171 sig~;
@@ -164,7 +164,7 @@
 #X text 237 314 - lowest fold value;
 #X text 236 335 - highest fold value;
 #X text 237 368 - folded values;
-#X obj 163 198 else/fold~, f 25;
+#X obj 163 198 else/fold~, f 29;
 #X text 175 402 floats set fold's range \, 2 floats sets minimum and
 maximum. No arguments loads default values (-1 and 1). 1 float sets
 maximum value (and lowest value is set to 0). If the maximum value
@@ -173,9 +173,9 @@ is less than the minimum \, the maximum becomes the minimum and vice-versa.
 #X text 74 90 [fold~] folds between a low and high value. This is like
 a mirroring function \, where an out of bounds value folds back until
 it is in the given range., f 56;
-#N canvas 846 154 457 419 wavefolding 0;
+#N canvas 771 156 457 419 wavefolding 0;
 #X obj 73 258 else/out~;
-#X obj 190 207 else/graph~;
+#X obj 190 207 else/graph~ 447;
 #X obj 116 167 else/fold~;
 #X obj 116 126 *~;
 #X obj 196 92 hsl 128 15 1 8 0 0 empty empty empty -2 -8 0 10 -228856
@@ -183,8 +183,8 @@ it is in the given range., f 56;
 #X obj 193 113 nbx 5 14 1 8 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 1 256;
 #X obj 193 135 float2sig~ 100 1;
-#X obj 116 89 osc~ 98.5;
 #X text 96 35 Wavefolding: a type of waveshaping technique.;
+#X obj 116 89 osc~ 98.5;
 #X connect 2 0 0 0;
 #X connect 2 0 0 1;
 #X connect 2 0 1 0;
@@ -192,7 +192,7 @@ it is in the given range., f 56;
 #X connect 4 0 5 0;
 #X connect 5 0 6 0;
 #X connect 6 0 3 1;
-#X connect 7 0 3 0;
+#X connect 8 0 3 0;
 #X restore 383 241 pd wavefolding example;
 #X obj 71 39 cnv 4 4 4 empty empty signals 0 28 2 18 -233017 -1 0;
 #X connect 20 0 19 0;

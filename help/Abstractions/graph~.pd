@@ -1,24 +1,24 @@
 #N canvas 154 132 956 513 10;
 #X obj 320 169 clip~ -1 1;
 #X obj 320 26 inlet~;
-#X obj 484 204 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 504 204 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
-#X msg 521 322 441;
+#X msg 541 322 441;
 #X obj 424 26 inlet;
 #X obj 424 184 moses 64;
-#X obj 521 248 < 64;
-#X obj 560 298 int;
-#X obj 561 437 change 441;
+#X obj 541 248 < 64;
+#X obj 580 298 int;
+#X obj 581 437 change 441;
 #X obj 357 267 metro 1 1 samps;
 #X obj 469 387 int;
-#X obj 521 273 sel 1 0;
-#X obj 521 219 trigger f f;
-#X obj 521 397 * 2;
+#X obj 541 273 sel 1 0;
+#X obj 541 219 trigger f f;
+#X obj 541 397 * 2;
 #X obj 444 244 * 2;
 #X msg 368 363 set \$1;
-#X obj 592 467 array size;
+#X obj 612 467 array size;
 #X obj 320 405 tabwrite~;
-#X obj 649 440 r \$0-name;
+#X obj 669 440 r \$0-name;
 #N canvas 27 23 381 397 init-name 0;
 #X obj 176 68 expr \$0 * 1000 + 1 \; \$0 * 1000 + 2;
 #X obj 225 175 t b f;
@@ -61,16 +61,16 @@
 #X connect 14 0 15 0;
 #X connect 15 0 17 0;
 #X connect 15 1 0 0;
-#X restore 612 236 pd init-name;
-#X obj 612 260 pack \$0 symbol;
-#X obj 708 259 r \$0-name;
-#X obj 670 211 s pd-\$0-array-cnv;
-#X obj 612 176 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X restore 632 236 pd init-name;
+#X obj 632 260 pack \$0 symbol;
+#X obj 728 259 r \$0-name;
+#X obj 690 211 s pd-\$0-array-cnv;
+#X obj 632 176 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X obj 612 210 t b b;
-#X msg 670 189 clear;
-#X obj 484 173 trigger b b b;
-#X obj 502 83 else/lb;
+#X obj 632 210 t b b;
+#X msg 690 189 clear;
+#X obj 504 173 trigger b b b;
+#X obj 504 73 else/lb;
 #X obj 59 100 cnv 15 198 138 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 4 23 450 300 \$0-array-cnv 0;
@@ -79,12 +79,12 @@
 #X obj 401 320 r \$0-name;
 #X obj 368 341 symbol;
 #X obj 368 300 r \$0-set;
-#X msg 612 282 \; pd-\$1-array-cnv graph \$1-graph \; pd-\$1-graph
+#X msg 632 282 \; pd-\$1-array-cnv graph \$1-graph \; pd-\$1-graph
 pop \, array \$2 0 float 1 \; \$1-set bang;
-#X obj 502 103 else/args;
-#X obj 521 195 f 441;
-#X obj 502 126 route bang float;
-#X obj 527 149 t b f;
+#X obj 504 103 else/args;
+#X obj 541 195 f 441;
+#X obj 504 126 route bang float;
+#X obj 549 149 t b f;
 #X connect 0 0 17 0;
 #X connect 1 0 0 0;
 #X connect 2 0 9 0;
@@ -93,6 +93,7 @@ pop \, array \$2 0 float 1 \; \$1-set bang;
 #X connect 4 0 5 0;
 #X connect 5 1 10 0;
 #X connect 5 1 14 0;
+#X connect 5 1 34 0;
 #X connect 6 0 11 0;
 #X connect 7 0 9 1;
 #X connect 7 0 8 0;
