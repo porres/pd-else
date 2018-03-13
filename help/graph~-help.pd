@@ -1,37 +1,37 @@
-#N canvas 721 107 559 461 10;
-#X obj 1 424 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#N canvas 235 36 558 437 10;
+#X obj 1 411 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 1 321 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 1 301 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
 #X obj 1 356 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 1 396 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+#X obj 1 383 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 109 330 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 139 310 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 145 329 signal;
-#X obj 305 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X text 175 309 signal;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 304 6 pd;
-#X obj 344 14 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 304 3 pd;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 22 43 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
-#X obj 77 43 cnv 4 4 4 empty empty graph 0 28 2 18 -233017 -1 0;
-#X obj 457 14 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 22 40 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
+#X obj 77 40 cnv 4 4 4 empty empty graph 0 28 2 18 -233017 -1 0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 477 14 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 514 14 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 463 29 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 501 29 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -100,7 +100,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -132,19 +132,26 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 74 pd;
-#X text 133 403 1) float;
-#X text 84 90 [graph~] is a convenient abstraction for visualizing
-audio signals.;
-#X obj 172 118 noise~;
-#X text 145 369 (none);
-#X text 193 403 - buffer size in samnples (default 441);
-#X obj 172 146 else/graph~;
-#X text 195 329 - incoming signal to graph;
-#X obj 2 6 cnv 15 301 42 empty empty graph~ 20 20 2 37 -233017 -1 0
+#X restore 505 71 pd;
+#X text 113 390 1) float;
+#X text 175 363 (none);
+#X text 225 309 - incoming signal to graph;
+#X obj 2 3 cnv 15 301 42 empty empty graph~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 2 6 graph;
-#X connect 19 0 22 0;
-#X coords 0 461 1 460 74 39 0;
+#X restore 2 3 graph;
+#X text 81 87 [graph~] is a convenient abstraction for visualizing
+audio signals.;
+#X obj 139 333 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
+-162280 0;
+#X text 181 333 float;
+#X text 225 333 - buffer size in samples;
+#X text 173 390 - buffer size in samples (default 441 \, minumum 64)
+;
+#X obj 172 142 else/graph~;
+#X obj 367 122 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 603 256;
+#X obj 172 118 noise~;
+#X connect 28 0 27 1;
+#X connect 29 0 27 0;

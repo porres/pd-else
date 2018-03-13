@@ -1,5 +1,24 @@
+#N struct 1026-point float x0 float y0 float s;
+#N struct 1026-grid float x0 float y0 float s;
 #N canvas 604 157 620 462 10;
 #N canvas 46 445 1192 433 \$0-arrays-cnv 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array                      127 float 1;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+#X coords 0 0 127 127 127 127 2 0 0;
+#X restore 100 20 graph;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array                      127 float 1;
+#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0;
+#X coords 0 127 127 0 127 127 2 0 0;
+#X restore 100 20 graph;
+#X coords 0 127 127 0 127 127 2 100 20;
 #X restore 190 100 pd \$0-arrays-cnv;
 #N canvas 183 363 399 246 \$0-point 0;
 #X obj 88 71 filledcurve 0 0 8 x0 y0 x0 y0 x0 y0;
@@ -569,8 +588,12 @@ min_\$0) * size_\$0/range_\$0 \; max_\$0 - min_\$0;
 #X obj 482 177 active;
 #X obj 428 215 spigot;
 #N canvas 446 63 450 300 \$0-point-cnv 0;
+#X scalar 1026-point 0 0 127 \;;
+#X coords 0 127 127 0 127 127 2 0 0;
 #X restore 190 100 pd \$0-point-cnv;
 #N canvas 46 345 1192 433 \$0-grid-cnv 0;
+#X scalar 1026-grid 0 0 127 \;;
+#X coords 0 127 127 0 127 127 2 0 0;
 #X restore 190 100 pd \$0-grid-cnv;
 #N canvas 183 363 399 246 \$0-grid 0;
 #X obj 98 92 drawpolygon 0 2 x0 0 x0 s;
@@ -587,3 +610,4 @@ min_\$0) * size_\$0/range_\$0 \; max_\$0 - min_\$0;
 #X connect 18 0 19 0;
 #X connect 21 0 22 1;
 #X connect 22 0 20 0;
+#X coords 0 127 127 0 127 127 2 190 100;
