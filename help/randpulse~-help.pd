@@ -1,4 +1,4 @@
-#N canvas 764 138 575 506 10;
+#N canvas 705 138 575 506 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -140,9 +140,9 @@
 #X restore 505 71 pd;
 #N canvas 512 142 541 446 pulse 0;
 #X obj 81 326 else/out~;
-#X obj 165 204 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 155 204 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 162 229 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 152 229 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 44 29 The pulse width parameter controlls how much of the cycle
 is "on" or "off". A pulse width of 0.5 means the first half is "on"
@@ -151,7 +151,7 @@ and the lasr half is "off".;
 a single sample - thus \, just like an impulse oscillator!;
 #X text 51 114 Conversely \, a pulse widht of 1 has the largest (the
 entire period except the last sample).;
-#X obj 162 252 else/float2sig~ 10;
+#X obj 152 252 else/float2sig~ 10;
 #X text 53 155 The pulse width is set via the second argument or the
 second inlet.;
 #X obj 97 281 else/randpulse~ 100;
@@ -165,7 +165,7 @@ second inlet.;
 #X connect 8 0 0 1;
 #X connect 10 0 9 0;
 #X connect 10 0 9 1;
-#X restore 438 180 pd pulse width;
+#X restore 446 180 pd pulse width;
 #X obj 3 3 cnv 15 301 42 empty empty randpulse~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -191,7 +191,7 @@ second inlet.;
 #X text 60 87 [randpulse~] is a random pulse train oscillator (which
 alternates between a random value and 0 \, or on/off). It accepts negative
 frequencies \, has inlets for pulse width and sync.;
-#N canvas 849 168 554 446 seed 0;
+#N canvas 726 168 554 446 seed 0;
 #X text 71 23 [randpulse~] objects that share the same seed will have
 the same random number generation. You can specify a seed value as
 the third argument or via the 'seed' message.;
@@ -200,26 +200,26 @@ seed value.;
 #X obj 288 243 else/graph~;
 #X obj 71 243 else/graph~;
 #X msg 216 144 seed \$1;
-#X msg 216 118 521;
 #X msg 182 118 319;
 #X obj 288 184 else/randpulse~ 1;
 #X obj 71 185 else/randpulse~ 1;
+#X msg 216 118 987345;
+#X connect 4 0 6 0;
 #X connect 4 0 7 0;
-#X connect 4 0 8 0;
 #X connect 5 0 4 0;
-#X connect 6 0 4 0;
-#X connect 7 0 2 0;
-#X connect 8 0 3 0;
+#X connect 6 0 2 0;
+#X connect 7 0 3 0;
+#X connect 8 0 4 0;
 #X restore 487 203 pd seed;
 #N canvas 801 184 450 409 sync 0;
 #X obj 124 182 else/sig2float~;
 #X obj 124 214 nbx 8 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.644773 256;
+-228856 -1 -1 0 256;
 #X obj 124 252 vsl 18 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 10444 1;
-#X obj 254 78 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1 -1 6350 1;
+#X obj 235 78 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 254 110 else/impseq~;
+#X obj 235 110 else/impseq~;
 #X obj 124 147 else/randpulse~ 0.5;
 #X text 31 23 An impulse into its right inlet forces [randpulse~] to
 generate a new random value and restart the cycle.;

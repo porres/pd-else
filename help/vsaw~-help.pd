@@ -141,14 +141,14 @@
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
 #X text 184 451 3) float;
-#N canvas 859 159 457 411 width 0;
+#N canvas 823 159 457 411 width 0;
 #X obj 64 253 else/out~;
-#X obj 144 77 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 139 82 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 141 102 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 181 212 else/graph~;
-#X obj 141 127 else/float2sig~ 10;
+#X obj 136 107 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -1 256;
+#X obj 181 212 else/graph~ 445;
+#X obj 136 132 else/float2sig~ 10;
 #X text 27 20 A width of -1 or 1 makes it a sawtooth like waveform
 \, while beteen -1 and 1 makes it triangular variants., f 53;
 #X obj 107 162 else/vsaw~ 98.5;
@@ -158,7 +158,7 @@
 #X connect 6 0 0 0;
 #X connect 6 0 0 1;
 #X connect 6 0 3 0;
-#X restore 488 198 pd width;
+#X restore 485 198 pd width;
 #X text 243 451 - initial phase offset (default 0);
 #X text 243 414 - frequency in hertz (default 0);
 #X obj 201 212 else/out~;
@@ -353,17 +353,17 @@ Note that they have a phase difference of 0.25 between each other.
 also becomes a triangular osccilator. It accepts negative frequencies
 \, has inlets for width \, phase sync and phase modulation., f 57
 ;
-#N canvas 403 51 875 522 sync 0;
+#N canvas 280 50 847 522 sync 0;
 #X text 517 49 Syncing the phase with control messages is useful for
 LFOs and control with MIDI. A sync with audio is usefull for the "hard
 sync" technique \, where an oscillator is synced according to the frequency
 of a master frequency., f 44;
 #X obj 522 266 else/out~;
-#X obj 608 169 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
+#X obj 596 169 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 110 256;
-#X text 709 195 Master oscillator;
-#X text 667 230 Slave oscillator;
-#X obj 608 195 else/imp~ 110;
+#X text 685 196 Master oscillator;
+#X text 648 230 Slave oscillator;
+#X obj 596 195 else/imp~ 110;
 #X text 508 373 NOTE:;
 #X text 524 406 The "phase sync" inlet is quite different from the
 "phase offset" inlet. This means that the are completely independent.
@@ -382,7 +382,7 @@ cycle with an initial phase that corresponds to the input number \,
 so the internal phase is synced to the given value. The phase values
 are from 0 to 1 and values beyond that are wrapped within this range.
 ;
-#X obj 249 224 else/sig2float~;
+#X obj 258 224 else/sig2float~;
 #X text 223 139 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
@@ -493,13 +493,13 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X msg 146 140 0.75;
 #X msg 189 140 1;
 #X msg 111 140 0.5;
-#X obj 249 250 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 7023 1;
+#X obj 258 250 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 5090 1;
 #X obj 82 221 else/sig2float~;
 #X obj 82 252 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 7023 1;
+-1 -1 5090 1;
 #X obj 82 191 else/vsaw~ 1 1;
-#X obj 249 200 else/vsaw~ 1 1;
+#X obj 258 200 else/vsaw~ 1 1;
 #X obj 522 229 else/vsaw~ 200 0.75;
 #X msg 418 141 0.25;
 #X msg 344 140 0.75;
@@ -524,8 +524,8 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X connect 26 0 28 0;
 #X connect 27 0 28 0;
 #X connect 28 0 22 2;
-#X restore 495 220 pd sync;
-#N canvas 385 345 890 351 phase 0;
+#X restore 490 220 pd sync;
+#N canvas 283 312 890 351 phase 0;
 #X text 438 24 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 - where 1 is also the start of another
 cycle.;
@@ -533,16 +533,16 @@ cycle.;
 0;
 #X obj 590 191 else/out~;
 #X text 562 82 Phase Modulation:;
-#X obj 701 111 osc~ 50.05;
-#X text 364 116 1;
-#X obj 226 116 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 687 111 osc~ 50.05;
+#X text 348 116 1;
+#X obj 210 116 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 223 141 4 0 0 0 - - -, f 4;
-#X text 204 116 0;
+#X floatatom 207 141 4 0 0 0 - - -, f 4;
+#X text 188 116 0;
 #X obj 223 207 +~;
 #X obj 207 244 else/out~;
 #X obj 606 138 else/vsaw~ 200;
-#X obj 241 172 else/vsaw~ 100 1 0.5;
+#X obj 238 172 else/vsaw~ 100 1 0.5;
 #X obj 114 173 else/vsaw~ 100 1;
 #X text 19 21 The third argument sets an initial phase (or "phase offset").
 This is also settable with the fourth inlet. In such a way \, you have
@@ -557,7 +557,7 @@ feature is phase modulation., f 54;
 #X connect 11 0 2 1;
 #X connect 12 0 9 1;
 #X connect 13 0 9 0;
-#X restore 439 242 pd phase offset;
+#X restore 441 242 pd phase offset;
 #X connect 18 0 30 0;
 #X connect 30 0 25 0;
 #X connect 30 0 25 1;
