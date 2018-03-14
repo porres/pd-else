@@ -147,17 +147,17 @@
 -1 -1 0 1;
 #X obj 136 107 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 -1 256;
-#X obj 181 212 else/graph~ 445;
 #X obj 136 132 else/float2sig~ 10;
 #X text 27 20 A width of -1 or 1 makes it a sawtooth like waveform
 \, while beteen -1 and 1 makes it triangular variants., f 53;
 #X obj 107 162 else/vsaw~ 98.5;
+#X obj 181 213 else/graph~ 447 5;
 #X connect 1 0 2 0;
-#X connect 2 0 4 0;
-#X connect 4 0 6 1;
-#X connect 6 0 0 0;
-#X connect 6 0 0 1;
-#X connect 6 0 3 0;
+#X connect 2 0 3 0;
+#X connect 3 0 5 1;
+#X connect 5 0 0 0;
+#X connect 5 0 0 1;
+#X connect 5 0 6 0;
 #X restore 485 198 pd width;
 #X text 243 451 - initial phase offset (default 0);
 #X text 243 414 - frequency in hertz (default 0);
@@ -494,10 +494,10 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X msg 189 140 1;
 #X msg 111 140 0.5;
 #X obj 258 250 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 5090 1;
+-1 -1 1841 1;
 #X obj 82 221 else/sig2float~;
 #X obj 82 252 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 5090 1;
+-1 -1 1841 1;
 #X obj 82 191 else/vsaw~ 1 1;
 #X obj 258 200 else/vsaw~ 1 1;
 #X obj 522 229 else/vsaw~ 200 0.75;

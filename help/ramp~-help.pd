@@ -35,10 +35,10 @@
 0;
 #X obj 194 134 else/imp~ 1;
 #X obj 194 216 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 14879 256;
+-228856 -1 -1 11279 256;
 #X obj 194 190 else/sig2float~;
 #X obj 197 239 hsl 128 15 0 44100 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 4285 1;
+-228856 -1 -1 3248 1;
 #X obj 163 135 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 150 462 signal;
@@ -69,19 +69,19 @@
 in hertz (oscillating between min and max values) \, then the increment
 value should be (max - min) * freq / sr (where freq is the frequency
 in hz and sr is the sampling rate).;
-#X obj 145 309 else/graph~ 442;
 #X text 157 226 (Having an oscillator the hard way);
 #X obj 93 109 sig~ 98.5;
+#X obj 151 308 else/graph~ 447 5;
 #X connect 0 0 3 0;
 #X connect 1 0 6 1;
 #X connect 1 0 6 0;
-#X connect 1 0 11 0;
+#X connect 1 0 13 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 1;
 #X connect 4 0 0 1;
 #X connect 5 0 2 3;
 #X connect 5 0 3 1;
-#X connect 13 0 0 0;
+#X connect 12 0 0 0;
 #X restore 468 236 pd frequency;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
@@ -381,10 +381,10 @@ different loop points and a reset/restart value outside the loop.;
 #X text 192 360 - (re)starts incrementing;
 #N canvas 388 286 1052 471 examples-1 0;
 #X obj 71 258 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 6.22095 256;
+-228856 -1 -1 87.4209 256;
 #X obj 71 229 else/sig2float~;
 #X obj 71 293 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 622 1;
+-1 -1 8742 1;
 #X obj 71 170 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 470 202 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -472,7 +472,7 @@ the rightmost example., f 49;
 #X restore 462 175 pd examples-1;
 #N canvas 480 163 823 384 examples-2 0;
 #X obj 521 278 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 100.698 256;
+-228856 -1 -1 91.6975 256;
 #X obj 521 249 else/sig2float~;
 #X obj 574 147 *~;
 #X obj 614 146 else/pulse~ 1;
@@ -480,7 +480,7 @@ the rightmost example., f 49;
 #X text 642 322 127;
 #X text 573 322 63.5;
 #X obj 524 305 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 10070 1;
+-1 -1 9170 1;
 #X text 433 25 This examples uses a [*~] start and stop the ramp increment.
 This allows you to stop and start with sample accuracy. Additionally
 \, we use [togedge~] to stop and reset the ramp as in the "reset" message

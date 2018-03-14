@@ -80,11 +80,9 @@ generator., f 62;
 1;
 #X obj 271 155 else/lfnoise~ 300;
 #X obj 271 113 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 150 256;
+-228856 -1 -1 0 256;
 #X obj 54 155 else/downsample~ 300;
 #X obj 292 199 else/out~;
-#X obj 271 288 else/graph~ 2000;
-#X obj 54 288 else/graph~ 2000;
 #X text 79 26 [lfnoise~] is similar/related to [noise~] going thgouh
 [downsample~] \, which also has linear interpolation.;
 #X text 534 336 See also two simplified versions of [lfnoise~] \, which
@@ -93,6 +91,8 @@ are: [stepnoise~] (without interpolation) and [rampnoise~] (with interpolation.
 #X obj 696 412 else/rampnoise~;
 #X obj 696 388 else/stepnoise~;
 #X obj 764 116 else/impseq~;
+#X obj 272 292 else/graph~ 1500 10;
+#X obj 55 290 else/graph~ 1500 10;
 #X connect 0 0 1 0;
 #X connect 1 0 7 0;
 #X connect 1 0 7 1;
@@ -102,21 +102,21 @@ are: [stepnoise~] (without interpolation) and [rampnoise~] (with interpolation.
 #X connect 4 0 3 0;
 #X connect 5 0 6 0;
 #X connect 5 0 6 1;
-#X connect 8 0 24 0;
+#X connect 8 0 22 0;
 #X connect 10 0 16 0;
 #X connect 12 0 14 0;
 #X connect 12 0 16 0;
 #X connect 13 0 12 0;
 #X connect 14 0 17 0;
 #X connect 14 0 17 1;
-#X connect 14 0 18 0;
+#X connect 14 0 23 0;
 #X connect 15 0 14 0;
 #X connect 15 0 16 1;
 #X connect 16 0 11 0;
 #X connect 16 0 11 1;
-#X connect 16 0 19 0;
-#X connect 24 0 2 2;
-#X connect 24 0 5 1;
+#X connect 16 0 24 0;
+#X connect 22 0 2 2;
+#X connect 22 0 5 1;
 #X restore 439 309 pd interpolation;
 #N canvas 726 168 554 446 seed 0;
 #X text 91 23 [lfnoise~] objects that share the same seed will have
@@ -146,9 +146,9 @@ seed value.;
 #X obj 143 180 else/sig2float~;
 #X obj 143 145 else/lfnoise~ 0.5;
 #X obj 143 212 nbx 8 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.238299 256;
+-228856 -1 -1 -0.22514 256;
 #X obj 143 250 vsl 18 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 7863 1;
+-1 -1 4920 1;
 #X obj 242 68 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X text 39 18 An impulse into its right inlet forces [lfnoise~] to
