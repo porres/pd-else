@@ -1,15 +1,15 @@
-#N canvas 235 36 558 437 10;
-#X obj 1 411 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#N canvas 442 78 561 491 10;
+#X obj 1 463 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 1 301 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 1 321 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 1 356 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 1 393 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 1 383 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+#X obj 1 420 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 139 310 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 125 330 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 175 309 signal;
+#X text 192 329 signal;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -133,25 +133,36 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X text 113 390 1) float;
-#X text 175 363 (none);
-#X text 225 309 - incoming signal to graph;
+#X text 113 427 1) float;
+#X text 175 400 (none);
+#X text 240 329 - incoming signal to graph;
 #X obj 2 3 cnv 15 301 42 empty empty graph~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 81 87 [graph~] is a convenient abstraction for visualizing
-audio signals.;
-#X obj 139 333 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
+#X obj 125 353 cnv 17 3 30 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
 -162280 0;
-#X text 181 333 float;
-#X text 225 333 - buffer size in samples;
-#X text 173 390 - buffer size in samples (default 441 \, minumum 64)
+#X text 240 353 - buffer size in samples;
+#X text 173 427 - buffer size in samples (default 441 \, minumum 64)
 ;
-#X obj 172 142 else/graph~;
-#X obj 367 122 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 603 256;
-#X obj 172 118 noise~;
-#X connect 28 0 27 1;
-#X connect 29 0 27 0;
+#X text 61 87 [graph~] is a very simple but convenient abstraction
+for visualizing audio signals.;
+#X text 113 444 1) float;
+#X text 156 353 size <float>;
+#X text 144 370 frames <float>;
+#X text 240 370 - number of buffers to skip;
+#X text 173 444 - frame skip (default 0);
+#X obj 319 118 nbx 5 14 64 44100 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 441 256;
+#X msg 319 139 size \$1;
+#X obj 346 177 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0 256;
+#X msg 346 198 frames \$1;
+#X obj 124 131 noise~;
+#X obj 124 162 else/graph~ 441 0;
+#X connect 31 0 32 0;
+#X connect 32 0 36 1;
+#X connect 33 0 34 0;
+#X connect 34 0 36 1;
+#X connect 35 0 36 0;
