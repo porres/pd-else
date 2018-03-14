@@ -1,4 +1,4 @@
-#N canvas 442 78 561 491 10;
+#N canvas 717 73 561 491 10;
 #X obj 1 463 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 1 321 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -150,19 +150,19 @@
 for visualizing audio signals.;
 #X text 113 444 1) float;
 #X text 156 353 size <float>;
-#X text 144 370 frames <float>;
 #X text 240 370 - number of buffers to skip;
-#X text 173 444 - frame skip (default 0);
 #X obj 319 118 nbx 5 14 64 44100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 441 256;
+-1 -1 64 256;
 #X msg 319 139 size \$1;
 #X obj 346 177 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X msg 346 198 frames \$1;
+-1 -1 100 256;
 #X obj 124 131 noise~;
 #X obj 124 162 else/graph~ 441 0;
-#X connect 31 0 32 0;
-#X connect 32 0 36 1;
-#X connect 33 0 34 0;
-#X connect 34 0 36 1;
-#X connect 35 0 36 0;
+#X msg 346 198 skip \$1;
+#X text 156 370 skip <float>;
+#X text 173 444 - buffer skip (default 0);
+#X connect 29 0 30 0;
+#X connect 30 0 33 1;
+#X connect 31 0 34 0;
+#X connect 32 0 33 0;
+#X connect 34 0 33 1;
