@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (186 objects):
+##Current Object list (187 objects):
 
 **MESSAGE MANAGEMENT: [9]**
 - [break] 
@@ -275,8 +275,9 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [past~]
 - [zerocross~]
 
-**GUI: [14]**
+**GUI: [15]**
 - [mtx.ctl]
+- [pic]
 - [slider2d]
 - [display]
 - [display~]
