@@ -18,6 +18,7 @@ uname := $(shell uname -s)
 keyboard.class.sources := classes/keyboard.c
 
 # control:
+pic.class.sources := classes/pic.c
 args.class.sources := classes/args.c
 click.class.sources := classes/click.c
 colors.class.sources := classes/colors.c

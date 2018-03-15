@@ -1,0 +1,44 @@
+#N canvas 463 23 573 437 10;
+#X obj 253 218 pic logo.gif;
+#X msg 252 127 open logo.gif;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Load 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 68 40 cnv 4 4 4 empty empty pictures 0 28 2 18 -233017 -1 0
+;
+#X obj 3 3 cnv 15 301 42 empty empty pic 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 3 graph;
+#X text 81 94 [pic] loads image pictures \, so fasr \, it only works
+with files: .gif \, .ppm & .pgm;
+#X obj 4 294 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 329 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 364 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 111 303 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 397 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 140 304 open <symbol>;
+#X text 226 304 - open an image file named by the symbol;
+#X text 182 338 (none);
+#X text 143 372 1) symbol - file to open (needed \, no default);
+#X connect 1 0 0 0;
