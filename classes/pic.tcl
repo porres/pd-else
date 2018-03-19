@@ -1,16 +1,10 @@
 
-namespace eval ::else::pic:: {
+namespace eval ::else_pic:: {
 }
 
-proc ::else::pic::configure {obj_id img filename} {
+proc ::else_pic::configurar {obj_id img filename} {
     if { [catch {$img configure -file $filename} fid]} {
-        ::pdwindow::logpost $obj_id 1 "[image]: error reading '$filename':\n$fid\n"
-    }
-}
-
-proc ::else::pic::create_photo {obj_id img filename} {
-    if { [catch {image create photo $img -file $filename} fid]} {
-        ::pdwindow::logpost $obj_id 1 "[image]: error reading '$filename':\n$fid\n"
+        ::pdwindow::logpost $obj_id 1 "[pic]: error loading '$filename':\n$fid\n"
     }
 }
 

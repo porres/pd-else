@@ -1,4 +1,4 @@
-// moonlib
+// from moonlib
 
 #include "m_pd.h"
 #include "m_imp.h"
@@ -26,7 +26,7 @@ typedef struct _pic{
     int         x_def_img;
 } t_pic;
 
-// widget helper functions
+//////////////////////////// widget helper functions /////////////////////////////
 
 const char *pic_get_filename(t_pic *x,char *file){
     static char fname[MAXPDSTRING];
@@ -42,65 +42,50 @@ const char *pic_get_filename(t_pic *x,char *file){
         return 0;
 }
 
-void pic_drawme(t_pic *x, t_glist *glist, int displace){
-    if(displace){
+void pic_draw(t_pic *x, t_glist *glist, int displace){
+    if(displace){ // move to displace???
         sys_vgui(".x%lx.c coords %xS \
                  %d %d\n", glist_getcanvas(glist), x,
                  text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist));
     }
-    else{
-        const char *fname = pic_get_filename(x, x->x_filename->s_name);
-        if(x->x_filename == &s_){ // if blank, use default
-            x->x_filename = gensym("else_pic_def_img");
-            x->x_def_img = 1;
-        }
-        else if(!fname){
-            pd_error(x, "[pic]: error opening file '%s'", x->x_filename->s_name);
-            x->x_filename = gensym("else_pic_def_img");
-            x->x_def_img = 1;
-        }
-        if(x->x_def_img){
+    else{ // VIS (move to VIS???)
+        if(x->x_def_img){ // USING DEFAULT PIC
             sys_vgui(".x%lx.c create image %d %d -tags %xS\n", glist_getcanvas(glist),
                      text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist), x);
             sys_vgui(".x%lx.c itemconfigure %xS -image %s\n",
                      glist_getcanvas(glist), x, x->x_filename->s_name);
         }
-        else{
+        else{ // using file pic
             sys_vgui("image create photo img%x\n", x); // if no local image ?
-            sys_vgui("::else::pic::configure .x%lx img%x {%s}\n", x, x, fname);
-            sys_vgui(".x%lx.c create image %d %d -image img%x -tags %xS\n",
-                     glist_getcanvas(glist), text_xpix(&x->x_obj, glist),
-                     text_ypix(&x->x_obj, glist), x, x);
+            const char *fname = pic_get_filename(x, x->x_filename->s_name); // every time?
+            sys_vgui("::else_pic::configurar .x%lx img%x {%s}\n", x, x, fname);
         }
         // TODO callback from gui sys_vgui("pic_size logo");
     }
 }
 
-void pic_erase(t_pic *x,t_glist *glist){
+void pic_erase(t_pic *x,t_glist *glist){ // move to vis?
     sys_vgui(".x%lx.c delete %xS\n", glist_getcanvas(glist), x);
 }
 
 // ------------------------ pic widgetbehaviour-----------------------------
 
 static void pic_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
-    int width, height;
     t_pic *x = (t_pic *)z;
-    width = x->x_width;
-    height = x->x_height;
     *xp1 = text_xpix(&x->x_obj, glist);
     *yp1 = text_ypix(&x->x_obj, glist);
-    *xp2 = text_xpix(&x->x_obj, glist) + width;
-    *yp2 = text_ypix(&x->x_obj, glist) + height;
+    *xp2 = text_xpix(&x->x_obj, glist) + x->x_width;
+    *yp2 = text_ypix(&x->x_obj, glist) + x->x_height;
 }
 
 static void pic_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_pic *x = (t_pic *)z;
     x->x_obj.te_xpix += dx;
     x->x_obj.te_ypix += dy;
-    sys_vgui(".x%lx.c coords %xSEL %d %d %d %d\n", glist_getcanvas(glist), x,
-             text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist),
-             text_xpix(&x->x_obj, glist) + x->x_width, text_ypix(&x->x_obj, glist) + x->x_height);
-    pic_drawme(x, glist, 1);
+    sys_vgui(".x%lx.c coords %xSEL %d %d %d %d\n", glist_getcanvas(glist), x, text_xpix(&x->x_obj,
+        glist), text_ypix(&x->x_obj, glist), text_xpix(&x->x_obj, glist) + x->x_width,
+        text_ypix(&x->x_obj, glist) + x->x_height);
+    pic_draw(x, glist, 1);
     canvas_fixlinesfor(glist,(t_text *) x);
 }
 
@@ -123,45 +108,37 @@ static void pic_delete(t_gobj *z, t_glist *glist){
 
 static void pic_vis(t_gobj *z, t_glist *glist, int vis){
     t_pic *s = (t_pic *)z;
-    if(vis)
-        pic_drawme(s, glist, 0);
-    else
-        pic_erase(s, glist);
+    vis ? pic_draw(s, glist, 0) : pic_erase(s, glist);
 }
 
 static void pic_save(t_gobj *z, t_binbuf *b){
     t_pic *x = (t_pic *)z;
-    if(x->x_filename == gensym("else_pic_def_img")){
-        if(x->x_arg != &s_)
-            x->x_filename = x->x_arg;
-        else
-            x->x_filename = &s_;
-    }
+    if(x->x_filename == gensym("else_pic_def_img"))
+        x->x_filename = x->x_arg != &s_ ? x->x_arg : &s_;
     binbuf_addv(b, "ssiiss", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
         atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_filename);
     binbuf_addv(b, ";");
 }
 
-t_widgetbehavior   pic_widgetbehavior;
-
 void pic_open(t_gobj *z,t_symbol *file){
     t_pic *x = (t_pic *)z;
-    int default_pic = x->x_def_img;
     const char *fname = pic_get_filename(x, file->s_name);
     if(fname){
         x->x_filename = file;
-        x->x_def_img = 0;
         if(glist_isvisible(x->x_glist)){
             sys_vgui("image create photo img%x\n",x); // if no local image ?
             sys_vgui("img%x blank\n", x);
-            sys_vgui("::else::pic::configure .x%lx img%x {%s}\n", x, x, fname);
-            if(default_pic)
+            sys_vgui("::else_pic::configurar .x%lx img%x {%s}\n", x, x, fname);
+            if(x->x_def_img)
                 sys_vgui(".x%lx.c itemconfigure %xS -image img%x\n", glist_getcanvas(x->x_glist), x, x);
         }
+        x->x_def_img = 0;
     }
     else
         pd_error(x, "[pic]: error opening file '%s'", file->s_name);
 }
+
+t_widgetbehavior pic_widgetbehavior;
 
 static void pic_setwidget(void){
     pic_widgetbehavior.w_getrectfn =  pic_getrect;
@@ -178,6 +155,15 @@ static void *pic_new(t_symbol *name){
     x->x_width = x->x_height = 15;
     x->x_def_img = 0;
     x->x_arg = x->x_filename = name;
+    if(x->x_filename == &s_){
+        x->x_filename = gensym("else_pic_def_img");
+        x->x_def_img = 1;
+    }
+    else if(!pic_get_filename(x, x->x_filename->s_name)){
+        pd_error(x, "[pic]: error opening file '%s'", x->x_filename->s_name);
+        x->x_filename = gensym("else_pic_def_img");
+        x->x_def_img = 1;
+    }
     return(x);
 }
 
