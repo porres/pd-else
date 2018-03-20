@@ -33,16 +33,19 @@ static void colors_set(t_colors *x, t_floatarg r, t_floatarg g, t_floatarg b){
 }
 
 static void colors_callback(t_colors *x, t_symbol *colors){
-    if(x->x_hex)
-        outlet_symbol(x->x_obj.ob_outlet, colors);
-    else{ // RGB
-        unsigned int red, green, blue;
-        sscanf(colors->s_name, "#%02x%02x%02x", &red, &green, &blue);
-        t_atom at[3];
-        SETFLOAT(at, red);
-        SETFLOAT(at+1, green);
-        SETFLOAT(at+2, blue);
-        outlet_list(x->x_obj.ob_outlet, &s_list, 3, at);
+    if(colors != &s_){
+        if(x->x_hex)
+            outlet_symbol(x->x_obj.ob_outlet, colors);
+        else{ // RGB
+            unsigned int red, green, blue;
+            sscanf(colors->s_name, "#%02x%02x%02x", &red, &green, &blue);
+            t_atom at[3];
+            SETFLOAT(at, red);
+            SETFLOAT(at+1, green);
+            SETFLOAT(at+2, blue);
+            outlet_list(x->x_obj.ob_outlet, &s_list, 3, at);
+        }
+        strncpy(x->x_color, colors->s_name, MAXPDSTRING);
     }
 }
 

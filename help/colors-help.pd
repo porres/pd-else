@@ -1,6 +1,6 @@
 #N canvas 592 87 560 380 10;
-#X obj 239 192 display;
-#X obj 239 132 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 246 195 display;
+#X obj 246 135 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -42,14 +42,15 @@
 #X text 201 241 bang;
 #X text 201 294 list;
 #X text 231 294 - RGB values (from 0 - 255);
-#X text 90 92 [colors] is a RGB color picker.;
-#X text 145 152 click opens color picker =>, f 15;
-#X msg 270 133 set 127 127 127;
+#X text 152 155 click opens color picker =>, f 15;
+#X msg 277 136 set 127 127 127;
 #X text 258 329 none;
 #X text 146 261 set <f \, f \, f>;
 #X text 231 241 - open color picker;
 #X text 231 261 - sets RGB (Red \, Green and Blue) values;
-#X obj 239 164 else/colors;
-#X connect 1 0 31 0;
-#X connect 26 0 31 0;
-#X connect 31 0 0 0;
+#X obj 246 167 else/colors;
+#X text 76 91 [colors] is a RGB (Reg/Green/Blue) color picker. The
+RGB values are from 0 to 255, f 63;
+#X connect 1 0 30 0;
+#X connect 25 0 30 0;
+#X connect 30 0 0 0;
