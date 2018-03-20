@@ -44,12 +44,12 @@
 #X text 231 294 - RGB values (from 0 - 255);
 #X text 90 92 [colors] is a RGB color picker.;
 #X text 145 152 click opens color picker =>, f 15;
-#X obj 239 164 colors;
 #X msg 270 133 set 127 127 127;
 #X text 258 329 none;
 #X text 146 261 set <f \, f \, f>;
 #X text 231 241 - open color picker;
-#X text 231 261 - sets RGB;
-#X connect 1 0 26 0;
-#X connect 26 0 0 0;
-#X connect 27 0 26 0;
+#X text 231 261 - sets RGB (Red \, Green and Blue) values;
+#X obj 239 164 else/colors;
+#X connect 1 0 31 0;
+#X connect 26 0 31 0;
+#X connect 31 0 0 0;
