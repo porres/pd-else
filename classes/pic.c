@@ -58,7 +58,10 @@ void pic_draw(t_pic *x, t_glist *glist, int displace){
         else{ // using file pic
             sys_vgui("image create photo img%x\n", x); // if no local image ?
             const char *fname = pic_get_filename(x, x->x_filename->s_name); // every time?
-            sys_vgui("::else_pic::configurar .x%lx img%x {%s}\n", x, x, fname);
+            sys_vgui("img%x configure -file {%s}\n", x, fname);
+            sys_vgui(".x%lx.c create image %d %d -image img%x -tags %xS\n",
+                     glist_getcanvas(glist), text_xpix(&x->x_obj, glist),
+                     text_ypix(&x->x_obj, glist), x, x);
         }
         // TODO callback from gui sys_vgui("pic_size logo");
     }
@@ -126,9 +129,9 @@ void pic_open(t_gobj *z,t_symbol *file){
     if(fname){
         x->x_filename = file;
         if(glist_isvisible(x->x_glist)){
-            sys_vgui("image create photo img%x\n",x); // if no local image ?
+            sys_vgui("image create photo img%x\n", x); // if no local image ?
             sys_vgui("img%x blank\n", x);
-            sys_vgui("::else_pic::configurar .x%lx img%x {%s}\n", x, x, fname);
+            sys_vgui("img%x configure -file {%s}\n", x, fname);
             if(x->x_def_img)
                 sys_vgui(".x%lx.c itemconfigure %xS -image img%x\n", glist_getcanvas(x->x_glist), x, x);
         }
@@ -173,6 +176,7 @@ void pic_setup(void){
     pic_setwidget();
     class_setwidget(pic_class, &pic_widgetbehavior);
     class_setsavefn(pic_class, &pic_save);
-    sys_vgui("eval [read [open {%s/%s.tcl}]]\n", pic_class->c_externdir->s_name,
-             pic_class->c_name->s_name);
+// default image (?)
+    sys_vgui("image create photo else_pic_def_img -data {R0lGODdhJwAnAMQAAAAAAAsLCxMTExwcHCIiIisrKzw8PERERExMTFRUVF1dXWVlZW1tbXNzc3t7e4ODg42NjZOTk5qamqSkpK2trbS0tLy8vMPDw8zMzNTU1Nzc3OPj4+3t7fT09P///wAAACH5BAkKAB8ALAAAAAAnACcAAAX/oCeOJKlRTzIARwNVWinPNNYAeK4HjNXRQNLGkRsIArnAYIVbZILAjAFAYAICgmxyQMBZoDJNt1vUGc0CAAY86iioSdwgkTjIzQAEh+2hwHFpAhQbHIUZRGk5XRRsbldxazIQAFZpCz9QGjqUABM0HHZIjwMxUBgAiUh6QJOVAE9QGVRGBQCMQBJ/qGpgHUQ5l0GtOWmwUBwTCwoRe0AbZDhIBRt8Hh2YQURWKw/VfMOKvN5BHA+cObUR40EZCOc4tQzY6yUXONACXQzN9CUWV9twRJjXT4S9M/e8FJTBoVYiTgxKLSRRQdcKCAQnejDHZIUDjTNuJFphDOSICAAKUQiIZzLMpgstZWR4sKABzJgzMuLcyXMdBwsTKEjcqcFdjls4HRXgsuJmTHu1EjbYOeFdmgT8TFaEtiJYzA13UnbiWfERgAY6QdoQgGBCWiAhAAA7\n");
+    sys_vgui("}\n");
 }
