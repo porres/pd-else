@@ -1,10 +1,12 @@
+
 #include <stdio.h>
 #include <string.h>
 #include "m_pd.h"
-#include "m_imp.h"  // FIXME need access to c_externdir...
+#include "m_imp.h"  /* FIXME need access to c_externdir... */
 #include "g_canvas.h"
 
-typedef struct _link{
+typedef struct _link
+{
     t_object   x_ob;
     t_glist   *x_glist;
     int        x_isboxed;
@@ -22,7 +24,7 @@ typedef struct _link{
 static t_class *link_class;
 static t_class *linkbox_class;
 
-// Code that might be merged back to g_text.c starts here:
+/* Code that might be merged back to g_text.c starts here: */
 
 static void link_getrect(t_gobj *z, t_glist *glist,
 			     int *xp1, int *yp1, int *xp2, int *yp2)
@@ -118,15 +120,16 @@ static t_widgetbehavior link_widgetbehavior =
     link_wbclick,
 };
 
-// Code that might be merged back to g_text.c ends here.
+/* Code that might be merged back to g_text.c ends here. */
 
-// FIXME need access to glob_pdobject...
-static t_pd *link_pdtarget(t_link *x){
+/* FIXME need access to glob_pdobject... */
+static t_pd *link_pdtarget(t_link *x)
+{
     t_pd *pdtarget = gensym("pd")->s_thing;
     if (pdtarget && !strcmp(class_getname(*pdtarget), "pd"))
 	return (pdtarget);
     else
-	return ((t_pd *)x);  // internal error
+	return ((t_pd *)x);  /* internal error */
 }
 
 static void link_anything(t_link *x, t_symbol *s, int ac, t_atom *av)
@@ -145,8 +148,7 @@ static void link_click(t_link *x, t_floatarg xpos, t_floatarg ypos,
     x->x_ishit = 1;
     sys_vgui("link_open {%s} {%s}\n",               \
              x->x_ulink->s_name, x->x_dirsym->s_name);
-    x->x_ishit = 0;    
-    outlet_symbol(x->x_ob.ob_outlet, x->x_ulink);
+    x->x_ishit = 0;
 }
 
 static void link_bang(t_link *x)
@@ -251,38 +253,45 @@ static char *link_optext(int *sizep, int ac, t_atom *av)
     return (result);
 }
 
-static void link_free(t_link *x){
+static void link_free(t_link *x)
+{
     if (x->x_vistext)
 	freebytes(x->x_vistext, x->x_vissize);
 }
 
-static void *link_new(t_symbol *s, int ac, t_atom *av){
+static void *link_new(t_symbol *s, int ac, t_atom *av)
+{
     t_link xgen, *x;
     int skip;
     xgen.x_isboxed = 0;
     xgen.x_vistext = 0;
     xgen.x_vissize = 0;
-    if ((xgen.x_ulink = link_nextsymbol(ac, av, 0, &skip))){
-        t_symbol *opt;
-        ac -= skip;
-        av += skip;
-        while ((opt = link_nextsymbol(ac, av, 1, &skip))){
-            ac -= skip;
-            av += skip;
-            if (opt == gensym("-box"))
-                xgen.x_isboxed = 1;
-            else if (opt == gensym("-text")){
-                t_symbol *nextsym = link_nextsymbol(ac, av, 1, &skip);
-                int natoms = (nextsym ? skip - 1 : ac);
-                if (natoms)
-                    xgen.x_vistext = link_optext(&xgen.x_vissize, natoms, av);
-            }
-        }
+    if ((xgen.x_ulink = link_nextsymbol(ac, av, 0, &skip)))
+    {
+	t_symbol *opt;
+	ac -= skip;
+	av += skip;
+	while ((opt = link_nextsymbol(ac, av, 1, &skip)))
+	{
+	    ac -= skip;
+	    av += skip;
+	    if (opt == gensym("-box"))
+		xgen.x_isboxed = 1;
+	    else if (opt == gensym("-text"))
+	    {
+		t_symbol *nextsym = link_nextsymbol(ac, av, 1, &skip);
+		int natoms = (nextsym ? skip - 1 : ac);
+		if (natoms)
+		    xgen.x_vistext =
+			link_optext(&xgen.x_vissize, natoms, av);
+	    }
+	}
     }
     x = (t_link *)
 	pd_new(xgen.x_isboxed ? linkbox_class : link_class);
     x->x_glist = canvas_getcurrent();
-    x->x_dirsym = canvas_getdir(x->x_glist);  // FIXME
+    x->x_dirsym = canvas_getdir(x->x_glist);  /* FIXME */
+
     x->x_isboxed = xgen.x_isboxed;
     x->x_vistext = xgen.x_vistext;
     x->x_vissize = xgen.x_vissize;
@@ -295,50 +304,59 @@ static void *link_new(t_symbol *s, int ac, t_atom *av){
     SETSYMBOL(&x->x_openargs[0], x->x_ulink);
     SETSYMBOL(&x->x_openargs[1], x->x_dirsym);
     x->x_ishit = 0;
-    if(x->x_isboxed)
-        outlet_new((t_object *)x, &s_anything);
-    else{ // do we need to set ((t_text *)x)->te_type = T_TEXT; ?
-        if (!x->x_vistext){
-            x->x_vislength = strlen(x->x_ulink->s_name);
-            x->x_vissize = x->x_vislength + 1;
-            x->x_vistext = getbytes(x->x_vissize);
-            strcpy(x->x_vistext, x->x_ulink->s_name);
-        }
+    if (x->x_isboxed)
+	outlet_new((t_object *)x, &s_anything);
+    else
+    {
+	/* do we need to set ((t_text *)x)->te_type = T_TEXT; ? */
+	if (!x->x_vistext)
+	{
+	    x->x_vislength = strlen(x->x_ulink->s_name);
+	    x->x_vissize = x->x_vislength + 1;
+	    x->x_vistext = getbytes(x->x_vissize);
+	    strcpy(x->x_vistext, x->x_ulink->s_name);
+	}
     }
     return (x);
 }
 
-void link_setup(void){
+void link_setup(void)
+{
     t_symbol *dirsym;
-    link_class = class_new(gensym("link"), (t_newmethod)link_new, (t_method)link_free,
-        sizeof(t_link), CLASS_NOINLET | CLASS_PATCHABLE, A_GIMME, 0);
+
+    link_class = class_new(gensym("link"),
+			       (t_newmethod)link_new,
+			       (t_method)link_free,
+			       sizeof(t_link),
+			       CLASS_NOINLET | CLASS_PATCHABLE,
+			       A_GIMME, 0);
     class_addanything(link_class, link_anything);
     class_setwidget(link_class, &link_widgetbehavior);
-    linkbox_class = class_new(gensym("link"), 0, (t_method)link_free,
-        sizeof(t_link), 0, A_GIMME, 0);
+
+    linkbox_class = class_new(gensym("link"), 0,
+				  (t_method)link_free,
+				  sizeof(t_link), 0, A_GIMME, 0);
     class_addbang(linkbox_class, link_bang);
     class_addanything(linkbox_class, link_anything);
-    class_addmethod(linkbox_class, (t_method)link_click, gensym("click"),
-        A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    dirsym = link_class->c_externdir;  // FIXME
-//    sys_vgui("source {%s/link.tcl}\n", dirsym->s_name);
+    class_addmethod(linkbox_class, (t_method)link_click,
+		    gensym("click"),
+		    A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+
+    dirsym = link_class->c_externdir;  /* FIXME */
     
     sys_vgui("proc link_open {filename dir} {\n");
-    sys_vgui("    if {[string first "://" $filename] > -1} {\n")
-    
-    proc link_open {filename dir} {
-        if {[string first "://" $filename] > -1} {
-            menu_openfile $filename
-        } elseif {[file pathtype $filename] eq "absolute"} {
-            menu_openfile $filename
-        } elseif {[file exists [file join $dir $filename]]} {
-            set fullpath [file normalize [file join $dir $filename]]
-            set dir [file dirname $fullpath]
-            set filename [file tail $fullpath]
-            menu_doc_open $dir $filename
-        } else {
-            pdtk_post "\[link\] file not found: $filename\n"
-        }
-    }
+    sys_vgui("    if {[string first \"://\" $filename] > -1} {\n");
+    sys_vgui("        menu_openfile $filename\n");
+    sys_vgui("    } elseif {[file pathtype $filename] eq \"absolute\"} {\n");
+    sys_vgui("        menu_openfile $filename\n");
+    sys_vgui("    } elseif {[file exists [file join $dir $filename]]} {\n");
+    sys_vgui("        set fullpath [file normalize [file join $dir $filename]]\n");
+    sys_vgui("        set dir [file dirname $fullpath]\n");
+    sys_vgui("        set filename [file tail $fullpath]\n");
+    sys_vgui("        menu_doc_open $dir $filename\n");
+    sys_vgui("    } else {\n");
+    sys_vgui("        pdtk_post \"link: $filename can't be opened\n\"\n");
+    sys_vgui("    }\n");
+    sys_vgui("}\n");
     
 }
