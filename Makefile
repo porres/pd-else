@@ -16,12 +16,13 @@ uname := $(shell uname -s)
 
 # GUI:
 keyboard.class.sources := classes/keyboard.c
+link.class.sources := classes/link.c
+colors.class.sources := classes/colors.c
 
 # control:
 pic.class.sources := classes/pic.c
 args.class.sources := classes/args.c
 click.class.sources := classes/click.c
-colors.class.sources := classes/colors.c
 properties.class.sources := classes/properties.c
 break.class.sources := classes/break.c
 cents2ratio.class.sources := classes/cents2ratio.c
