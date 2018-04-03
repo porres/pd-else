@@ -16,6 +16,7 @@ static void message_output(t_message *x, t_symbol *s, int ac, t_atom *av){
     else{
         char separator = gensym(",")->s_name[0]; // split character
         int i = 0, first = 1, n;
+// while
         while(i < ac){
             int j = i; // i = start point
             for(j; j < ac; j++){
@@ -23,8 +24,7 @@ static void message_output(t_message *x, t_symbol *s, int ac, t_atom *av){
                     break; // j = comma
             }
             n = j - i; // n = number of elements in a message (counting the comma element)
-            
-// begining of output messages
+    // output messages
             if(first){
                 if(n == 0){ // it's only the selector
                     if(!strcmp(s->s_name, "list")) // if selector is list, turn to bang
@@ -50,18 +50,17 @@ static void message_output(t_message *x, t_symbol *s, int ac, t_atom *av){
                 first = 0;
             }
             else{ // messages after a comma
-                if((av+i)->a_type == A_SYMBOL)
+                if((av+i)->a_type == A_SYMBOL && strcmp(atom_getsymbol(av+i)->s_name, ",")) // ignore commas
                     outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(av+i), n-1, av + i+1);
                 else if((av+i)->a_type == A_FLOAT)
                     outlet_anything(x->x_obj.ob_outlet, &s_list, n, av+i);
             }
-// end of output messages
-            i = j + 1; // next start point
-        } // end of while
+    // next start point
+            i = j + 1;
+        }
+// end of while
     }
 }
-
-
 
 static void message_send(t_message *x, t_symbol *s, int ac, t_atom *av){
     if(!ac && strcmp(s->s_name, ";")) // only a selector (but not a semicolon
