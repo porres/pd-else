@@ -19,6 +19,9 @@ keyboard.class.sources := classes/keyboard.c
 link.class.sources := classes/link.c
 colors.class.sources := classes/colors.c
 
+# Soon to be GUI?s
+message.class.sources := classes/message.c
+
 # control:
 pic.class.sources := classes/pic.c
 args.class.sources := classes/args.c

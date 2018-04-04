@@ -30,6 +30,8 @@ static void message_send(t_message *x, t_symbol *s, int ac, t_atom *av){
                 send_flag = 1; // from now on, send all the shit
             send_this = last_send_flag;
             split_this = last_comma_flag;
+            if(send_this && split_this)
+                send_this = 0;
             for(j = i; j < ac; j++){ // <=====    FOR
                 if((av+j)->a_type == A_SYMBOL && atom_getsymbol(av+j)->s_name[0] == send){
                     last_comma_flag = 0; // next break point is a send, so comma = 0
@@ -95,8 +97,9 @@ static void message_send(t_message *x, t_symbol *s, int ac, t_atom *av){
                             if((av+i)->a_type == A_FLOAT)
                                 typedmess(send_sym->s_thing, &s_list, n, av+i);
                             else if((av+i)->a_type == A_SYMBOL){
-                                if(!strcmp(atom_getsymbol(av+i)->s_name, ",") && !n){
-                                } // ignore if the message is only a comma selector
+                                if((!strcmp(atom_getsymbol(av+i)->s_name, ",") ||
+                                    !strcmp(atom_getsymbol(av+i)->s_name, ";")) && !n){
+                                } // ignore if the message is only a comma or semicolon selector
                                 else
                                     typedmess(send_sym->s_thing, atom_getsymbol(av+i), n-1, av+i+1);
                             }
