@@ -94,14 +94,23 @@ static void message_send(t_message *x, t_symbol *s, int ac, t_atom *av){
                         if(send_sym->s_thing){ // there's a receive and a message, send it!
                             if((av+i)->a_type == A_FLOAT)
                                 typedmess(send_sym->s_thing, &s_list, n, av+i);
-                            else if((av+i)->a_type == A_SYMBOL)
-                                typedmess(send_sym->s_thing, atom_getsymbol(av+i), n-1, av+i+1);
+                            else if((av+i)->a_type == A_SYMBOL){
+                                if(!strcmp(atom_getsymbol(av+i)->s_name, ",") && !n){
+                                } // ignore if the message is only a comma selector
+                                else
+                                    typedmess(send_sym->s_thing, atom_getsymbol(av+i), n-1, av+i+1);
+                            }
                         }
                     }
                 }
                 else{ // we're *NOT* sending stuff
-                    if((av+i)->a_type == A_SYMBOL && strcmp(s->s_name, ",")) // ignore commas
-                        outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(av+i), n-1, av + i+1);
+                    if((av+i)->a_type == A_SYMBOL){
+                        if((!strcmp(atom_getsymbol(av+i)->s_name, ",") ||
+                            !strcmp(atom_getsymbol(av+i)->s_name, ";")) && !n){
+                        } // ignore if the message is only a comma or semicolon selector
+                        else
+                            outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(av+i), n-1, av + i+1);
+                    }
                     else if((av+i)->a_type == A_FLOAT)
                         outlet_anything(x->x_obj.ob_outlet, &s_list, n, av+i);
                 }
