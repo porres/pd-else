@@ -1,4 +1,4 @@
-#N canvas 472 117 561 412 10;
+#N canvas 397 47 562 505 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -23,56 +23,94 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X obj 4 245 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 316 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 292 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 363 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 327 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 398 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 133 301 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 118 372 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 134 253 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 119 324 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 386 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 477 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 202 301 anything;
-#X obj 4 358 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
-#X text 266 254 - outputs message;
-#X text 170 270 set <anything<>;
-#X text 192 335 1) anything - the message;
-#X text 256 301 - the message;
-#X text 212 254 anything;
-#X text 151 366 clicking on the outputs the message;
-#X obj 236 184 else/message \$0-x;
-#X text 266 270 - sets a message;
-#X obj 236 212 else/display;
-#X text 183 184 click =>;
-#X msg 267 154 set 1 2 3;
-#X obj 236 154 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 202 372 anything;
+#X obj 4 449 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
+#X text 266 325 - outputs message;
+#X text 170 341 set <anything<>;
+#X text 256 372 - the message;
+#X text 212 325 anything;
+#X text 151 457 clicking on the outputs the message;
+#X obj 207 256 else/message \$0-x;
+#X text 266 341 - sets a message;
+#X obj 207 284 else/display;
+#X text 154 256 click =>;
+#X msg 207 206 set 1 2 3;
+#X obj 181 206 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#N canvas 19 233 450 333 syntax 1;
-#X text 32 23 Like a regular message box \, a comma will split the
+#N canvas 315 192 833 309 syntax 0;
+#X text 14 20 Like a regular message box \, a comma will split the
 message in different ones inside the same box.;
-#X obj 124 75 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X obj 106 72 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 124 105 else/message 1 \, 2 \, 3;
-#X obj 124 135 print Message;
-#X obj 116 230 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 39 178 It can also deal with semicolons \, which turn the message
+#X obj 106 102 else/message 1 \, 2 \, 3;
+#X obj 106 132 print Message;
+#X obj 94 228 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 17 176 It can also deal with semicolons \, which turn the message
 box into a send object;
-#X obj 116 260 else/message \; \$0-a 1 \, 2 \, 3;
-#X obj 245 236 receive \$0-a;
-#X obj 245 264 print Receive;
+#X obj 94 258 else/message \; \$0-a 1 \, 2 \, 3;
+#X obj 223 234 receive \$0-a;
+#X obj 223 262 print Receive;
+#X obj 483 234 else/display;
+#X obj 660 234 else/display;
+#X msg 446 139 1 2;
+#X msg 513 149 list a b c;
+#X msg 532 175 1 2 3;
+#X obj 483 206 message list $a1 $a2 $a3;
+#X obj 660 206 message $a1 $a2;
+#X msg 692 177 12 13;
+#X msg 620 120 stop;
+#X msg 660 121 symbol x;
+#X obj 483 138 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 678 150 list a b;
+#X text 389 42 Since "\$1" \, "\$2" and so on are taken and considered
+the arguments of an abstraction \, the [message] box has a specific
+syntax for message input (similar in fashion to [expr]'s variables).
+The variables are $a# - where "a" is short for "atom" and # is the
+element number of an incomming message., f 68;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X connect 4 0 6 0;
 #X connect 7 0 8 0;
-#X restore 466 218 pd syntax;
+#X connect 11 0 14 0;
+#X connect 12 0 14 0;
+#X connect 13 0 14 0;
+#X connect 14 0 9 0;
+#X connect 15 0 10 0;
+#X connect 16 0 15 0;
+#X connect 17 0 15 0;
+#X connect 18 0 15 0;
+#X connect 19 0 14 0;
+#X connect 20 0 15 0;
+#X restore 466 289 pd syntax;
+#X obj 227 229 else/message set \$0-x;
 #X text 71 87 The [message] object is much like Pd Vanilla's message
 box \, but as an object it deals differently with dollarsigns. For
-instance \, "\$1" \, "\$2" \, and so on are considered arguments. and
-[message] can also deal with "\$0" and expand it., f 65;
-#X connect 26 0 28 0;
-#X connect 30 0 26 0;
-#X connect 31 0 26 0;
+instance \, "\$1" \, "\$2" \, and so on are considered arguments \,
+and [message] can also deal with "\$0" and expand it. For the normal
+behaviour for dollarsigns in messages \, [message] has its own variables:
+$a1 \, $a2 \, and so on., f 65;
+#X text 71 158 This object also mimicks the behaviour of comma and
+semicolons inside regular message boxes. See [pd syntax] for more details.
+, f 65;
+#X text 112 406 1) anything -;
+#X text 199 406 the message \, where " \, " and " \; " behave as usual
+in message boxes \, dollarsigns behave as usual inside objects and
+$a# is a syntax for dollarsign behaviour in messages;
+#X connect 25 0 27 0;
+#X connect 29 0 25 0;
+#X connect 30 0 25 0;
+#X connect 32 0 25 0;

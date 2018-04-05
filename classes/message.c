@@ -1,5 +1,7 @@
 #include "m_pd.h"
 #include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
 
 static t_class *message_class;
 
@@ -124,14 +126,96 @@ static void message_send(t_message *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void message_anything(t_message *x, t_symbol *s, int ac, t_atom *av){
-    if(x->x_av)
-        message_send(x, x->x_s, x->x_ac, x->x_av);
+    if(x->x_av){
+        char tempdir[MAXPDSTRING];
+        t_symbol *sel = x->x_s;
+        t_atom *a = (t_atom *)getbytes(x->x_ac * sizeof(t_atom));
+        int extra = 0;
+        int j = 0;
+        t_int index = 0;
+// selector
+//        post("selector");
+        strcpy(tempdir, x->x_s->s_name);
+        if(!strncmp(tempdir, "$a", 2)){
+            memmove(tempdir, tempdir+2, strlen(tempdir));
+            int isnumber = 1;
+            for(j = 0; j < (int)strlen(tempdir); j++){
+                if((int)(tempdir[j]) < 48 || (int)(tempdir[j]) > 57){
+                    isnumber = 0;
+                    break;
+                }
+            }
+            if(isnumber)
+                index = atoi(tempdir);
+//            post("dollar-%d", index);
+        }
+        if(index){
+            if(index > ac){
+                pd_error(x, "[message]: argument $a%ld outta range", index);
+                extra = 1;
+                sel = &s_list;
+                a = (t_atom *)getbytes(x->x_ac+1 * sizeof(t_atom));
+                SETFLOAT(&a[0], 0);
+            }
+            else{
+                if(av[index-1].a_type == A_SYMBOL)
+                    sel = atom_getsymbol(&av[index-1]);
+                else if(av[index-1].a_type == A_FLOAT){
+//                    post("atom input is a float and its index is = %d", index-1);
+//                    post("floatargs is = %2f", atom_getfloat(&av[index-1]));
+//                    post("ac = %d", x->x_ac);
+                    extra = 1;
+                    sel = &s_list;
+                    a = (t_atom *)getbytes(x->x_ac+1 * sizeof(t_atom));
+                    a[0] = av[index-1];
+                }
+            }
+        }
+// atom
+        for(int i = 0; i < x->x_ac; i++){
+// post("i = %d", i);
+            if(x->x_av[i].a_type == A_SYMBOL){
+// post("%s", atom_getsymbol(&x->x_av[i])->s_name);
+                strcpy(tempdir, atom_getsymbol(&x->x_av[i])->s_name);
+                if(!strncmp(tempdir, "$a", 2)){
+                    memmove(tempdir, tempdir+2, strlen(tempdir));
+                    int isnumber = 1;
+                    for(j = 0; j < (int)strlen(tempdir); j++){
+                        if((int)(tempdir[j]) < 48 || (int)(tempdir[j]) > 57){
+                            isnumber = 0;
+                            break;
+                        }
+                    }
+                    if(isnumber)
+                        index = atoi(tempdir);
+// post("dollar-%d", index);
+                }
+                if(index){
+                    if(index > ac){
+                        pd_error(x, "[message]: argument $a%ld outta range", index);
+                        SETFLOAT(&a[i+extra], 0);
+                    }
+                    else
+                        a[i+extra] = av[index-1];
+                }
+                else{
+                    a[i+extra] = x->x_av[i];
+                }
+            }
+        }
+        message_send(x, sel, x->x_ac+extra, a);
+    }
 }
 
 static void message_click(t_message *x){
     if(x->x_av)
         message_send(x, x->x_s, x->x_ac, x->x_av);
 }
+
+/* static void message_bang(t_message *x){
+ if(x->x_av)
+ message_send(x, x->x_s, x->x_ac, x->x_av);
+ }*/
 
 static void message_set(t_message *x, t_symbol *s, int ac, t_atom *av){
     if(!ac){
@@ -184,7 +268,8 @@ static void *message_new(t_symbol *s, int ac, t_atom *av){
 void message_setup(void){
   message_class = class_new(gensym("message"), (t_newmethod)message_new,
         (t_method)message_free, sizeof(t_message), 0, A_GIMME, 0);
-  class_addanything(message_class, (t_method)message_anything);
+    class_addanything(message_class, (t_method)message_anything);
+//    class_addbang(message_class, (t_method)message_bang);
   class_addmethod(message_class, (t_method)message_set, gensym("set"), A_GIMME, 0);
   class_addmethod(message_class, (t_method)message_click, gensym("click"), 0);
 }
