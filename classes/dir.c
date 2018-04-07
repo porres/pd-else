@@ -121,15 +121,15 @@ static void dir_bang(t_dir *x){
 
 static void *dir_new(t_floatarg f){
     t_dir *x = (t_dir *)pd_new(dir_class);
-    t_int parent_mode = (int)f > 0;
     t_glist *glist = (t_glist *)canvas_getcurrent();
     t_canvas *canvas = (t_canvas*)glist_getcanvas(glist);
-    if(parent_mode){
-        while(!canvas->gl_env)
+    int depth =(int)f;
+    if(depth > 0){
+        while(depth-- && canvas->gl_owner){
+            while(!canvas->gl_env)
+                canvas = canvas->gl_owner;
             canvas = canvas->gl_owner;
-        int depth =(int)f;
-        while(depth-- && canvas->gl_owner)
-            canvas = canvas->gl_owner;
+        }
     }
     x->x_getdir = canvas_getdir(canvas);
     dir_reset(x);
