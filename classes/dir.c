@@ -119,9 +119,18 @@ static void dir_bang(t_dir *x){
     dir_dump(x);
 }
 
-static void *dir_new(void){
+static void *dir_new(t_floatarg f){
     t_dir *x = (t_dir *)pd_new(dir_class);
-    t_canvas *canvas = canvas_getcurrent();
+    t_int parent_mode = (int)f > 0;
+    t_glist *glist = (t_glist *)canvas_getcurrent();
+    t_canvas *canvas = (t_canvas*)glist_getcanvas(glist);
+    if(parent_mode){
+        while(!canvas->gl_env)
+            canvas = canvas->gl_owner;
+        int depth =(int)f;
+        while(depth-- && canvas->gl_owner)
+            canvas = canvas->gl_owner;
+    }
     x->x_getdir = canvas_getdir(canvas);
     dir_reset(x);
     x->x_out1 = outlet_new(&x->x_obj, &s_anything);
@@ -130,7 +139,7 @@ static void *dir_new(void){
 }
 
 void dir_setup(void){
-    dir_class = class_new(gensym("dir"), (t_newmethod)dir_new, 0, sizeof(t_dir), 0, 0);
+    dir_class = class_new(gensym("dir"), (t_newmethod)dir_new, 0, sizeof(t_dir), 0, A_DEFFLOAT, 0);
     class_addbang(dir_class, dir_bang);
     class_addmethod(dir_class, (t_method)dir_n, gensym("n"), 0);
     class_addmethod(dir_class, (t_method)dir_dir, gensym("dir"), 0);
