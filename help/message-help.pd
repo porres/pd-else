@@ -48,7 +48,7 @@
 #X text 185 231 click =>;
 #X obj 212 192 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#N canvas 427 230 833 309 syntax 0;
+#N canvas 363 200 833 309 syntax 0;
 #X text 14 20 Like a regular message box \, a comma will split the
 message in different ones inside the same box.;
 #X obj 106 72 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
@@ -62,24 +62,28 @@ box into a send object;
 #X obj 94 258 else/message \; \$0-a 1 \, 2 \, 3;
 #X obj 223 234 receive \$0-a;
 #X obj 223 262 print Receive;
-#X obj 483 234 else/display;
-#X obj 660 234 else/display;
-#X msg 446 139 1 2;
-#X msg 513 149 list a b c;
-#X msg 532 175 1 2 3;
-#X obj 483 206 message list $a1 $a2 $a3;
-#X obj 660 206 message $a1 $a2;
-#X msg 692 177 12 13;
-#X msg 620 120 stop;
-#X msg 660 121 symbol x;
-#X obj 483 138 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 492 214 else/display;
+#X obj 669 214 else/display;
+#X msg 455 119 1 2;
+#X msg 522 129 list a b c;
+#X msg 541 155 1 2 3;
+#X obj 492 186 message list $a1 $a2 $a3;
+#X obj 669 186 message $a1 $a2;
+#X msg 701 157 12 13;
+#X msg 629 100 stop;
+#X msg 669 101 symbol x;
+#X obj 492 118 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 678 150 list a b;
-#X text 389 42 Since "\$1" \, "\$2" and so on are taken and considered
+#X msg 687 130 list a b;
+#X text 398 22 Since "\$1" \, "\$2" and so on are taken and considered
 the arguments of an abstraction \, the [message] box has a specific
 syntax for message input (similar in fashion to [expr]'s variables).
 The variables are $a# - where "a" is short for "atom" and # is the
 element number of an incomming message., f 68;
+#X text 411 255 Note that a "set $a1" message will set a variable.
+;
+#X text 412 279 Important: $a# is still not expandable inside symbols.
+;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X connect 4 0 6 0;
