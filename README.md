@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (190 objects):
+##Current Object list (191 objects):
 
 **MESSAGE MANAGEMENT: [9]**
 - [break] 
@@ -91,8 +91,9 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **FILE MANAGEMENT: [1]**
 - [dir]
 
-**MIDI: [1]**
+**MIDI: [2]**
 - [clock]
+- [mono]
 
 **CONVERSION: [20]**
 - [hex2dec]

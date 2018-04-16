@@ -6,7 +6,7 @@
 #X obj 39 63 route mode list float;
 #X text 239 90 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 241 71 Alexandre Torres Porres (2018);
-#N canvas 391 216 788 217 init 1;
+#N canvas 391 216 788 217 init 0;
 #X obj 104 66 else/args;
 #X obj 104 112 route -last -high -low;
 #X msg 104 138 0;
@@ -30,9 +30,9 @@
 #X obj 29 171 s \$0-bang;
 #X obj 29 131 t b f;
 #X floatatom 184 177 5 0 0 0 - - -, f 5;
-#X obj 104 89 break -;
 #X obj 104 42 loadbang;
-#X connect 0 0 14 0;
+#X obj 104 89 else/break -;
+#X connect 0 0 15 0;
 #X connect 1 0 2 0;
 #X connect 1 1 3 0;
 #X connect 1 2 4 0;
@@ -44,8 +44,8 @@
 #X connect 10 0 9 0;
 #X connect 12 0 11 0;
 #X connect 12 1 5 0;
-#X connect 14 0 1 0;
-#X connect 15 0 0 0;
+#X connect 14 0 0 0;
+#X connect 15 0 1 0;
 #X restore 39 104 pd init \; tables;
 #N canvas 190 48 491 483 monophonic 0;
 #X obj 46 430 outlet;
