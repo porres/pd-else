@@ -1,0 +1,76 @@
+#N canvas 357 35 571 576 10;
+#X obj 271 235 display;
+#X obj 214 236 display;
+#X obj 161 134 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X msg 161 166 30 \$1;
+#X obj 214 134 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X msg 214 166 33 \$1;
+#X obj 270 135 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X msg 270 167 36 \$1;
+#X obj 322 136 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X msg 322 168 39 \$1;
+#X obj 214 203 mono -high;
+#N canvas 4 23 450 300 example 1;
+#X restore 384 239 pd example;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 41 cnv 4 4 4 empty empty Monophonic 0 28 2 18 -233017 -1
+0;
+#X obj 122 41 cnv 4 4 4 empty empty voice 0 28 2 18 -233017 -1 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 4 graph;
+#X obj 3 4 cnv 15 301 42 empty empty mono 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 4 graph;
+#X obj 172 41 cnv 4 4 4 empty empty manager 0 28 2 18 -233017 -1 0
+;
+#X text 65 89 [mono] takes note messages and handles them to emulate
+monophonic synth behaviour., f 66;
+#X text 286 204 priority on higher notes;
+#X obj 7 542 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 7 274 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 402 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 464 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 91 411 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 90 282 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 169 298 start - same as bang, f 49;
+#X text 175 282 bang - (re)start playing the sample;
+#X obj 7 512 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 91 341 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 91 438 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X connect 2 0 3 0;
+#X connect 3 0 10 0;
+#X connect 4 0 5 0;
+#X connect 5 0 10 0;
+#X connect 6 0 7 0;
+#X connect 7 0 10 0;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X connect 10 0 1 0;
+#X connect 10 1 0 0;
