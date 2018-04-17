@@ -14,6 +14,10 @@ uname := $(shell uname -s)
 # sources
 #########################################################################
 
+# inlet2~.class.sources := classes/inlet2~.c
+
+vinlet~.class.sources := classes/vinlet~.c
+
 # GUI:
 keyboard.class.sources := classes/keyboard.c
 link.class.sources := classes/link.c
@@ -47,7 +51,6 @@ fromany.class.sources := classes/fromany.c
 toany.class.sources := classes/toany.c
 
 # signal:
-inlet2~.class.sources := classes/inlet2~.c
 accum~.class.sources := classes/accum~.c
 allpass.2nd~.class.sources := classes/allpass.2nd~.c
 allpass.rev~.class.sources := classes/allpass.rev~.c
