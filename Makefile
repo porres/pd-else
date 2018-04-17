@@ -16,7 +16,7 @@ uname := $(shell uname -s)
 
 # inlet2~.class.sources := classes/inlet2~.c
 
-vinlet~.class.sources := classes/vinlet~.c
+vinlet.class.sources := classes/vinlet.c
 
 # GUI:
 keyboard.class.sources := classes/keyboard.c

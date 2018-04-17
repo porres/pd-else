@@ -256,8 +256,9 @@ static void *vinlet_newsig(t_symbol *s)
     return (x);
 }
 
-void inlet2_tilde_setup(void){
-    vinlet_class = class_new(gensym("inlet2~"), (t_newmethod)vinlet_newsig,
+void vinlet_setup(void)
+{
+    vinlet_class = class_new(gensym("vinlet"), (t_newmethod)vinlet_newsig,
         (t_method)vinlet_free, sizeof(t_vinlet), CLASS_NOINLET, A_DEFSYM, 0);
     class_addbang(vinlet_class, vinlet_bang);
     class_addpointer(vinlet_class, vinlet_pointer);
@@ -266,9 +267,5 @@ void inlet2_tilde_setup(void){
     class_addlist(vinlet_class, vinlet_list);
     class_addanything(vinlet_class, vinlet_anything);
     class_addmethod(vinlet_class, (t_method)vinlet_dsp, gensym("dsp"), A_CANT, 0);
-//    class_sethelpsymbol(vinlet_class, gensym("pd"));
-}
-
-void vinlet_tilde_setup(void){
-    inlet2_tilde_setup();
+    class_sethelpsymbol(vinlet_class, gensym("pd"));
 }
