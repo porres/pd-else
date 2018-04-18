@@ -87,7 +87,7 @@ release it \, it recalls the next lowest note that is still on., f
 #X connect 31 0 18 0;
 #X connect 32 0 1 0;
 #X connect 32 1 0 0;
-#X restore 474 242 pd example;
+#X restore 474 240 pd example;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -114,7 +114,7 @@ release it \, it recalls the next lowest note that is still on., f
 #X restore 2 3 graph;
 #X obj 166 40 cnv 4 4 4 empty empty manager 0 28 2 18 -233017 -1 0
 ;
-#X text 314 209 priority on higher notes;
+#X text 313 208 priority on higher notes;
 #X obj 5 493 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 7 270 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -123,38 +123,43 @@ release it \, it recalls the next lowest note that is still on., f
 ;
 #X obj 5 408 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 89 363 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 117 363 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 90 278 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 118 278 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 5 436 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 90 332 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 118 332 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 89 384 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 117 384 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 175 278 list - MIDI note messages (note and velocity pair)
+#X text 185 278 list - MIDI note messages (note and velocity pair)
 , f 58;
-#X text 169 294 float - note values, f 59;
-#X text 169 332 float - velocity values, f 59;
-#X text 127 310 mode <float> - sets priority mode: <0> last \, <1 \,
+#X text 179 294 float - note values, f 59;
+#X text 179 332 float - velocity values, f 59;
+#X text 137 310 mode <float> - sets priority mode: <0> last \, <1 \,
 high> \, <2 \, low>, f 66;
-#X text 167 363 float - note values, f 59;
-#X text 167 385 float - velocity values, f 59;
-#X text 210 415 (none);
-#X text 160 443 -last: sets mode to "last" (default);
-#X text 160 458 -high: sets mode to "high", f 36;
-#X text 166 474 -low: sets mode to "low", f 35;
-#X obj 210 208 else/mono -high;
+#X text 177 363 float - note values, f 59;
+#X text 177 385 float - velocity values, f 59;
+#X text 199 443 -last: sets mode to "last" (default);
+#X text 199 458 -high: sets mode to "high", f 36;
+#X text 205 474 -low: sets mode to "low", f 35;
 #X text 65 88 [mono] takes note messages and handles them to emulate
 monophonic synth behaviour. Its internal memory can remember up to
 the last 10 input voices., f 66;
+#X text 150 415 1) float - non zero sets to retrigger mode;
+#X msg 117 161 retrigger \$1;
+#X obj 117 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 210 208 else/mono -high;
 #X connect 2 0 3 0;
-#X connect 3 0 44 0;
+#X connect 3 0 47 0;
 #X connect 4 0 5 0;
-#X connect 5 0 44 0;
+#X connect 5 0 47 0;
 #X connect 6 0 7 0;
-#X connect 7 0 44 0;
+#X connect 7 0 47 0;
 #X connect 8 0 9 0;
-#X connect 9 0 44 0;
-#X connect 44 0 1 0;
-#X connect 44 1 0 0;
+#X connect 9 0 47 0;
+#X connect 45 0 47 0;
+#X connect 46 0 45 0;
+#X connect 47 0 1 0;
+#X connect 47 1 0 0;
