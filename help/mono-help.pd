@@ -1,92 +1,91 @@
-#N canvas 484 26 563 539 10;
-#X obj 317 236 display;
-#X obj 230 237 display;
-#X obj 230 129 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#N canvas 289 44 560 551 10;
+#X obj 367 239 display;
+#X obj 280 240 display;
+#X obj 239 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
-#X msg 230 161 30 \$1;
-#X obj 283 129 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 239 161 30 \$1;
+#X obj 280 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
-#X msg 283 161 33 \$1;
-#X obj 339 130 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 280 161 33 \$1;
+#X obj 321 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
-#X msg 339 162 36 \$1;
-#X obj 391 131 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 321 161 36 \$1;
+#X obj 362 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
-#X msg 391 163 39 \$1;
-#N canvas 572 162 631 461 example 0;
-#X obj 432 166 display;
-#X obj 333 167 display;
-#X obj 333 59 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 362 161 39 \$1;
+#N canvas 491 152 609 447 example 0;
+#X obj 402 162 display;
+#X obj 303 163 display;
+#X obj 303 55 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 64;
-#X msg 333 91 30 \$1;
-#X obj 386 59 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 303 87 30 \$1;
+#X obj 356 55 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 64;
-#X msg 386 91 33 \$1;
-#X obj 442 60 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 356 87 33 \$1;
+#X obj 412 56 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 64;
-#X msg 442 92 36 \$1;
-#X obj 494 61 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 412 88 36 \$1;
+#X obj 464 57 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 64;
-#X msg 494 93 39 \$1;
-#X obj 273 22 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -228856 -1
+#X msg 464 89 39 \$1;
+#X obj 243 18 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -228856 -1
 -1 1;
-#X msg 273 98 mode \$1;
-#X floatatom 273 74 3 0 0 0 - - -, f 3;
-#X text 239 22 last;
-#X text 239 37 high;
-#X text 245 52 low;
-#X obj 417 285 *~;
-#X obj 333 196 mtof;
-#X obj 333 246 else/sawtooth~;
-#X text 454 137 priority: last (default);
-#X obj 432 203 / 127;
-#X obj 437 387 else/out~;
-#X obj 417 315 else/lowpass~ 2000 5;
-#X text 30 90 Here's a patch where you can test [mono] to emulate a
-MIDI input via toggles that act as note on/off, f 34;
-#X text 31 151 The default priotiy mode is "last" So whenever you play
+#X msg 243 94 mode \$1;
+#X floatatom 243 70 3 0 0 0 - - -, f 3;
+#X text 209 18 last;
+#X text 209 33 high;
+#X text 215 48 low;
+#X obj 387 274 *~;
+#X obj 303 192 mtof;
+#X obj 303 242 else/sawtooth~;
+#X text 424 133 priority: last (default);
+#X obj 402 191 / 127;
+#X obj 409 376 else/out~;
+#X obj 387 304 else/lowpass~ 2000 5;
+#X text 15 112 The default priotiy mode is "last" So whenever you play
 a new note when you're still holding other notes \, it goes through
 - and when you release it \, the last note you had played before that
-is still on gets recalled., f 42;
-#X text 32 245 When the priority is set to "high" \, a new note on
+is still on gets recalled., f 34;
+#X text 16 206 When the priority is set to "high" \, a new note on
 goes through only when it is higher than the existing ones - and when
 you release it \, it recalls the next highest note that is still on.
-, f 45;
-#X text 33 309 When the priority is set to "low" \, a new note on goes
+, f 40;
+#X text 17 277 When the priority is set to "low" \, a new note on goes
 through only when it is lower than the existing ones - and when you
 release it \, it recalls the next lowest note that is still on., f
-45;
-#X text 330 30 emulate note messages:;
-#X text 33 380 You can set the mode via a flag or via the mode message.
-;
-#X obj 432 245 else/adsr~ 200 50 0.75 500, f 29;
-#X obj 417 342 else/plateverb~ 50 0.9 0.75 0.5 0, f 19;
-#X obj 333 219 else/glide~ 100;
-#X obj 333 139 else/mono, f 17;
+40;
+#X text 17 348 You can set the mode via a flag or via the mode message.
+, f 42;
+#X obj 402 241 else/adsr~ 200 50 0.75 500, f 29;
+#X obj 387 331 else/plateverb~ 50 0.9 0.75 0.5 0, f 19;
+#X obj 303 215 else/glide~ 100;
+#X text 14 51 Here's a patch where you can test [mono] to emulate a
+MIDI input via toggles that act as note on/off., f 26;
+#X obj 303 135 else/mono 1, f 17;
 #X connect 0 0 20 0;
 #X connect 1 0 17 0;
 #X connect 2 0 3 0;
-#X connect 3 0 32 0;
+#X connect 3 0 31 0;
 #X connect 4 0 5 0;
-#X connect 5 0 32 0;
+#X connect 5 0 31 0;
 #X connect 6 0 7 0;
-#X connect 7 0 32 0;
+#X connect 7 0 31 0;
 #X connect 8 0 9 0;
-#X connect 9 0 32 0;
+#X connect 9 0 31 0;
 #X connect 10 0 12 0;
-#X connect 11 0 32 0;
+#X connect 11 0 31 0;
 #X connect 12 0 11 0;
 #X connect 16 0 22 0;
-#X connect 17 0 31 0;
+#X connect 17 0 29 0;
 #X connect 18 0 16 0;
-#X connect 20 0 29 0;
-#X connect 22 0 30 0;
-#X connect 29 0 16 1;
-#X connect 30 0 21 0;
-#X connect 30 1 21 1;
-#X connect 31 0 18 0;
-#X connect 32 0 1 0;
-#X connect 32 1 0 0;
+#X connect 20 0 27 0;
+#X connect 22 0 28 0;
+#X connect 27 0 16 1;
+#X connect 28 0 21 0;
+#X connect 28 1 21 1;
+#X connect 29 0 18 0;
+#X connect 31 0 1 0;
+#X connect 31 1 0 0;
 #X restore 474 240 pd example;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -114,57 +113,61 @@ release it \, it recalls the next lowest note that is still on., f
 #X restore 2 3 graph;
 #X obj 166 40 cnv 4 4 4 empty empty manager 0 28 2 18 -233017 -1 0
 ;
-#X text 333 208 priority on higher notes;
-#X obj 5 513 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 526 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 7 270 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 375 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 388 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 428 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 441 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 113 383 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 396 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 114 278 cnv 17 3 67 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 92 278 cnv 17 3 80 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 5 456 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 114 352 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 5 469 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 92 365 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 113 404 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 91 417 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 185 278 list - MIDI note messages (note and velocity pair)
+#X text 165 278 list - MIDI note messages (note and velocity pair)
 , f 58;
-#X text 179 294 float - note values, f 59;
-#X text 179 352 float - velocity values, f 59;
-#X text 137 310 mode <float> - sets priority mode: <0> last \, <1 \,
+#X text 159 294 float - note values, f 59;
+#X text 159 365 float - velocity values, f 59;
+#X text 117 310 mode <float> - sets priority mode: <0> last \, <1 \,
 high> \, <2 \, low>, f 66;
-#X text 177 383 float - note values, f 59;
-#X text 177 405 float - velocity values, f 59;
-#X text 199 463 -last: sets mode to "last" (default);
-#X text 199 478 -high: sets mode to "high", f 36;
-#X text 205 494 -low: sets mode to "low", f 35;
+#X text 157 396 float - note values, f 59;
+#X text 157 418 float - velocity values, f 59;
+#X text 159 476 -last: sets mode to "last" (default);
+#X text 159 491 -high: sets mode to "high", f 36;
+#X text 165 507 -low: sets mode to "low", f 35;
 #X text 65 88 [mono] takes note messages and handles them to emulate
 monophonic synth behaviour. Its internal memory can remember up to
 the last 10 input voices., f 66;
-#X obj 147 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 164 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 230 208 else/mono -high;
-#X msg 147 161 legato \$1;
-#X text 150 435 1) float - non zero sets to legato mode;
-#X text 125 327 legato <float> - non zero sets to legato mode, f 68
-;
-#X text 133 161 *;
-#X text 24 202 * in legato mode \, a new velocity value is only sent
+#X msg 164 161 legato \$1;
+#X text 130 448 1) float - non zero sets to legato mode;
+#X text 150 161 *;
+#X text 59 214 * in legato mode \, a new velocity value is only sent
 if a first note on is given., f 28;
+#X msg 362 184 clear;
+#X text 159 343 clear - sends a note off for the hanging note and clears
+memory, f 63;
+#X text 105 327 legato <float> - non zero sets to legato mode \, zero
+restores default, f 68;
+#X obj 280 214 else/mono -high;
+#X text 385 133 <= emulate note messages;
 #X connect 2 0 3 0;
-#X connect 3 0 45 0;
+#X connect 3 0 51 0;
 #X connect 4 0 5 0;
-#X connect 5 0 45 0;
+#X connect 5 0 51 0;
 #X connect 6 0 7 0;
-#X connect 7 0 45 0;
+#X connect 7 0 51 0;
 #X connect 8 0 9 0;
-#X connect 9 0 45 0;
-#X connect 44 0 46 0;
-#X connect 45 0 1 0;
-#X connect 45 1 0 0;
-#X connect 46 0 45 0;
+#X connect 9 0 51 0;
+#X connect 43 0 44 0;
+#X connect 44 0 51 0;
+#X connect 48 0 51 0;
+#X connect 51 0 1 0;
+#X connect 51 1 0 0;
