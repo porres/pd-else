@@ -1,83 +1,82 @@
-#N canvas 681 64 583 695 10;
-#X obj 225 139 osc~ 440;
-#X obj 5 2 cnv 15 301 42 empty empty output~ 20 20 2 37 -233017 -1
+#N canvas 514 23 560 626 10;
+#X obj 222 132 osc~ 440;
+#X obj 2 3 cnv 15 301 42 empty empty output~ 20 20 2 37 -233017 -1
 0;
-#X obj 308 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 5 2 graph;
+#X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 307 2 pd;
-#X obj 347 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 304 3 pd;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 25 39 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
-#X obj 79 39 cnv 4 4 4 empty empty Output 0 28 2 18 -233017 -1 0;
-#X obj 460 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 22 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
+#X obj 76 40 cnv 4 4 4 empty empty Output 0 28 2 18 -233017 -1 0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 480 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 517 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 466 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 504 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 79 196 click & drag ===>;
-#X text 299 195 <= Mute button;
-#X obj 205 173 ./output~;
-#X text 300 177 <== DSP toggle;
-#X text 79 80 The [output~] abstraction is a user-friendly gain adjuster
+#X text 90 186 click & drag ===>;
+#X text 296 188 <= Mute button;
+#X text 297 170 <== DSP toggle;
+#X text 76 81 The [output~] abstraction is a user-friendly gain adjuster
 and stereo output \, with controls for "compute audio" (DSP) \, volume
 \, gain multiplier \, mute \, dac~ and ramp time.;
-#X obj 5 654 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#X obj 2 597 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 5 529 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 8 12
+#X obj 2 511 cnv 3 550 3 empty \$0-pddp.cnv.more_info more_info 8 12
 0 13 -228856 -1 0;
-#X obj 5 229 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 2 221 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 5 401 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 2 393 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 5 474 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+#X obj 2 466 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X text 127 239 signal;
-#X text 127 261 signal;
-#X text 133 284 float;
-#X text 126 409 signal;
-#X text 126 432 signal;
-#X text 132 453 float;
-#X text 177 239 - incoming signal routed to left channel output, f
+#X text 124 231 signal;
+#X text 124 253 signal;
+#X text 130 276 float;
+#X text 123 401 signal;
+#X text 123 424 signal;
+#X text 129 445 float;
+#X text 174 231 - incoming signal routed to left channel output, f
 60;
-#X text 177 261 - incoming signal routed to right channel output,
+#X text 174 253 - incoming signal routed to right channel output,
 f 60;
-#X text 176 409 - gain scaled output of left inlet, f 60;
-#X text 176 432 - gain scaled output of right inlet, f 60;
-#X text 176 453 - slider value (0-1), f 60;
-#X text 154 503 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
+#X text 173 401 - gain scaled output of left inlet, f 60;
+#X text 173 424 - gain scaled output of right inlet, f 60;
+#X text 173 445 - slider value (0-1), f 60;
+#X text 174 489 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear), f 60;
-#X text 115 363 <on/off>;
-#X text 97 300 dac <float>;
-#X text 177 300 - turns dac~ on <1> or off <0> (outlets not affected)
+#X text 112 355 <on/off>;
+#X text 94 292 dac <float>;
+#X text 174 292 - turns dac~ on <1> or off <0> (outlets not affected)
 , f 60;
-#X text 91 314 gain <float>;
-#X text 177 314 - sets linear gain multiplier (values <= 0 are ignored)
+#X text 88 306 gain <float>;
+#X text 174 306 - sets linear gain multiplier (values <= 0 are ignored)
 , f 60;
-#X text 91 379 ramp <float>;
-#X text 91 330 mode <float>;
-#X text 177 330 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
+#X text 88 371 ramp <float>;
+#X text 88 322 mode <float>;
+#X text 174 322 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear), f 60;
-#X text 92 481 1) float;
-#X text 177 284 - sets slider (range is clipped to 0-1), f 60;
-#X text 177 379 - sets ramp time in ms for slider values (default 20)
+#X text 112 473 1) float;
+#X text 174 276 - sets slider (range is clipped to 0-1), f 60;
+#X text 174 371 - sets ramp time in ms for slider values (default 20)
 , f 60;
-#X text 154 481 - [dac~]: <0>: no dac~ output \, <1>: dac~ output (default)
+#X text 174 473 - [dac~]: <0>: no dac~ output \, <1>: dac~ output (default)
 , f 60;
-#X text 177 363 - turns DSP Engine (Compute Audio) "On" or "Off",
+#X text 174 355 - turns DSP Engine (Compute Audio) "On" or "Off",
 f 60;
-#X text 92 503 2) float, f 9;
-#X text 138 346 mute;
-#X text 177 346 - mute/unmute button, f 60;
+#X text 112 489 2) float, f 9;
+#X text 135 338 mute;
+#X text 174 338 - mute/unmute button, f 60;
 #N canvas 437 158 932 533 examples 0;
 #X obj 208 188 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
@@ -164,8 +163,8 @@ Using [output~] without the dac~ is useful for gain adjustments only.
 #X connect 39 0 40 0;
 #X connect 39 1 40 1;
 #X connect 39 2 23 0;
-#X restore 446 140 pd examples;
-#N canvas 765 168 743 441 scaling 1;
+#X restore 464 131 pd examples;
+#N canvas 537 168 743 441 scaling 0;
 #X obj 29 54 cnv 15 198 198 empty empty empty 20 12 0 14 -253888 -66577
 0;
 #N canvas 0 22 452 302 (subpatch) 0;
@@ -270,7 +269,7 @@ becomes 0.125)., f 57;
 #X connect 26 0 24 0;
 #X connect 28 0 26 0;
 #X connect 36 0 26 0;
-#X restore 441 186 pd scaling \; modes & gain;
+#X restore 459 177 pd scaling \; modes & gain;
 #N canvas 876 153 511 576 DSP 0;
 #X obj 129 295 osc~ 440;
 #X obj 129 341 output~;
@@ -303,27 +302,28 @@ fades in and out when turning it on and off!;
 #X connect 2 0 1 2;
 #X connect 3 0 1 2;
 #X connect 5 0 4 0;
-#X restore 434 163 pd DSP status;
-#X text 100 535 [output~] was originally in Pd Extended's extra folder
+#X restore 452 154 pd DSP status;
+#X text 97 517 [output~] was originally in Pd Extended's extra folder
 as a variant of [ezoutput~] from PDDP. This is an improved \, redesigned
 and backwards compatible version by Alexandre Porres with extra features.
-;
-#X text 99 591 This was first made to be included in Purr Data for
+, f 70;
+#X text 97 555 This was first made to be included in Purr Data for
 Pd-l2ork made \, which carries this version of [output~] by default.
 Nonetheless \, this is a vanilla compatible version made available
-in the ELSE library.;
-#X obj 79 239 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+in the ELSE library., f 70;
+#X obj 76 231 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 79 260 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 76 252 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 78 409 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 75 401 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 78 430 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 75 422 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 78 451 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 75 443 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X obj 79 283 cnv 17 3 111 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 76 275 cnv 17 3 111 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X connect 0 0 15 0;
-#X connect 0 0 15 1;
-#X coords 0 695 1 694 74 39 0;
+#X obj 202 166 ./output~;
+#X connect 0 0 61 0;
+#X connect 0 0 61 1;
+#X coords 0 626 1 625 74 39 0;
