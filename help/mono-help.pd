@@ -1,18 +1,18 @@
-#N canvas 289 44 560 551 10;
-#X obj 367 239 display;
-#X obj 280 240 display;
+#N canvas 593 41 564 565 10;
+#X obj 367 241 display;
+#X obj 280 242 display;
+#X obj 198 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X msg 198 161 30 \$1;
 #X obj 239 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
-#X msg 239 161 30 \$1;
+#X msg 239 161 33 \$1;
 #X obj 280 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
-#X msg 280 161 33 \$1;
+#X msg 280 161 36 \$1;
 #X obj 321 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
-#X msg 321 161 36 \$1;
-#X obj 362 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X msg 362 161 39 \$1;
+#X msg 321 161 39 \$1;
 #N canvas 491 152 609 447 example 0;
 #X obj 402 162 display;
 #X obj 303 163 display;
@@ -113,61 +113,64 @@ MIDI input via toggles that act as note on/off., f 26;
 #X restore 2 3 graph;
 #X obj 166 40 cnv 4 4 4 empty empty manager 0 28 2 18 -233017 -1 0
 ;
-#X obj 5 526 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 539 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 7 270 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 388 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 401 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 441 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 454 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 91 396 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 409 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 92 278 cnv 17 3 80 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 92 278 cnv 17 3 95 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 5 469 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 92 365 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 5 482 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 92 378 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 91 417 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 91 430 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 165 278 list - MIDI note messages (note and velocity pair)
 , f 58;
 #X text 159 294 float - note values, f 59;
-#X text 159 365 float - velocity values, f 59;
+#X text 159 378 float - velocity values, f 59;
 #X text 117 310 mode <float> - sets priority mode: <0> last \, <1 \,
 high> \, <2 \, low>, f 66;
-#X text 157 396 float - note values, f 59;
-#X text 157 418 float - velocity values, f 59;
-#X text 159 476 -last: sets mode to "last" (default);
-#X text 159 491 -high: sets mode to "high", f 36;
-#X text 165 507 -low: sets mode to "low", f 35;
+#X text 157 409 float - note values, f 59;
+#X text 157 431 float - velocity values, f 59;
+#X text 159 489 -last: sets mode to "last" (default);
+#X text 159 504 -high: sets mode to "high", f 36;
+#X text 165 520 -low: sets mode to "low", f 35;
 #X text 65 88 [mono] takes note messages and handles them to emulate
 monophonic synth behaviour. Its internal memory can remember up to
 the last 10 input voices., f 66;
-#X obj 164 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 127 144 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 164 161 legato \$1;
-#X text 130 448 1) float - non zero sets to legato mode;
-#X text 150 161 *;
+#X msg 127 166 legato \$1;
+#X text 130 461 1) float - non zero sets to legato mode;
+#X text 113 166 *;
 #X text 59 214 * in legato mode \, a new velocity value is only sent
 if a first note on is given., f 28;
-#X msg 362 184 clear;
-#X text 159 343 clear - sends a note off for the hanging note and clears
-memory, f 63;
+#X msg 365 186 clear;
 #X text 105 327 legato <float> - non zero sets to legato mode \, zero
 restores default, f 68;
-#X obj 280 214 else/mono -high;
-#X text 385 133 <= emulate note messages;
+#X text 344 133 <= emulate note messages;
+#X text 159 343 flush - sends a note off for the hanging note and clears
+memory, f 63;
+#X text 159 359 clear - clears memory (without output), f 63;
+#X obj 280 216 else/mono -high;
+#X msg 365 164 flush;
 #X connect 2 0 3 0;
-#X connect 3 0 51 0;
+#X connect 3 0 53 0;
 #X connect 4 0 5 0;
-#X connect 5 0 51 0;
+#X connect 5 0 53 0;
 #X connect 6 0 7 0;
-#X connect 7 0 51 0;
+#X connect 7 0 53 0;
 #X connect 8 0 9 0;
-#X connect 9 0 51 0;
+#X connect 9 0 53 0;
 #X connect 43 0 44 0;
-#X connect 44 0 51 0;
-#X connect 48 0 51 0;
-#X connect 51 0 1 0;
-#X connect 51 1 0 0;
+#X connect 44 0 53 0;
+#X connect 48 0 53 0;
+#X connect 53 0 1 0;
+#X connect 53 1 0 0;
+#X connect 54 0 53 0;
