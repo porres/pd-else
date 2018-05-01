@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (191 objects):
+##Current Object list (199 objects):
 
 **MESSAGE MANAGEMENT: [9]**
 - [break] 
@@ -94,11 +94,15 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **MIDI: [2]**
 - [clock]
 - [mono]
+- [voices]
+- [suspedal]
 
 **CONVERSION: [20]**
 - [hex2dec]
 - [dec2hex]
 - [any2symbol]
+- [car2pol]
+- [car2pol~]
 - [cents2rato]
 - [cents2ratio~]
 - [db2lin]
@@ -113,6 +117,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [rad2hz~]
 - [ratio2cents]
 - [ratio2cents~]
+- [pol2car]
+- [pol2car~]
 - [rescale]
 - [rescale~]
 - [sig2float~]
@@ -127,6 +133,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [fold~]
 - [lastvalue]
 - [loop]
+- [mag]
+- [mag~]
 - [randf]
 - [randf~]
 - [randi]
