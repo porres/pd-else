@@ -1,0 +1,188 @@
+#N canvas 595 23 564 646 10;
+#X msg 192 164 60 \$1;
+#X obj 192 135 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X obj 192 235 else/display;
+#X obj 238 134 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X obj 286 135 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X obj 338 133 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X msg 238 164 62 \$1;
+#X msg 286 164 63 \$1;
+#X msg 338 162 65 \$1;
+#X obj 3 4 cnv 15 301 42 empty empty voices 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 4 graph;
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1;
+#X restore 306 4 graph;
+#X obj 23 40 cnv 4 4 4 empty empty Polyphonic 0 28 2 18 -233017 -1
+0;
+#X obj 111 40 cnv 4 4 4 empty empty voice 0 28 2 18 -233017 -1 0;
+#X obj 156 40 cnv 4 4 4 empty empty allocator 0 28 2 18 -233017 -1
+0;
+#N canvas 110 23 886 468 (subpatch) 0;
+#X obj 175 259 route 0 1 2 3;
+#X obj 175 381 print poly-0;
+#X obj 193 358 print poly-1;
+#X obj 212 333 print poly-2;
+#X obj 231 309 print poly-3;
+#X msg 77 73 60 \$1;
+#X obj 77 44 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 127
+;
+#X obj 77 144 else/display;
+#X obj 625 351 else/display;
+#X obj 742 266 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 625 326 pack float float, f 20;
+#X obj 742 243 lb;
+#X obj 625 293 ./suspedal -retrig 2;
+#X msg 624 272 60 \$1;
+#X obj 624 243 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X obj 626 406 else/display;
+#X obj 626 382 voices 4 1 0 1;
+#X obj 371 180 else/display;
+#X obj 488 95 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 371 155 pack float float, f 20;
+#X obj 488 72 lb;
+#X obj 372 235 else/display;
+#X msg 308 74 60 \$1;
+#X obj 308 45 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X msg 325 183 clear;
+#X obj 371 122 ./suspedal;
+#X obj 372 211 voices 4 1 0 0;
+#X obj 372 275 print;
+#X text 526 180 set release time to free unused voice \; for both retrigger
+and non retriger mode;
+#X text 529 110 why only printing count in note off?;
+#X text 528 131 print also in note on \, before clearing all up;
+#X msg 320 220 stop;
+#X text 443 238 rename "stop" to "flush";
+#X obj 123 43 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X obj 177 43 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X obj 223 42 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X msg 123 73 62 \$1;
+#X msg 177 72 63 \$1;
+#X msg 223 71 65 \$1;
+#X obj 77 118 voices 4 1;
+#X obj 224 109 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X obj 77 181 print;
+#X msg 224 138 66 \$1;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 0 2 3 0;
+#X connect 0 3 4 0;
+#X connect 5 0 39 0;
+#X connect 6 0 5 0;
+#X connect 7 0 41 0;
+#X connect 8 0 16 0;
+#X connect 9 0 12 2;
+#X connect 10 0 8 0;
+#X connect 11 0 9 0;
+#X connect 12 0 10 0;
+#X connect 12 1 10 1;
+#X connect 13 0 12 0;
+#X connect 14 0 13 0;
+#X connect 16 0 15 0;
+#X connect 17 0 26 0;
+#X connect 18 0 25 2;
+#X connect 19 0 17 0;
+#X connect 20 0 18 0;
+#X connect 21 0 27 0;
+#X connect 22 0 25 0;
+#X connect 23 0 22 0;
+#X connect 24 0 26 0;
+#X connect 25 0 19 0;
+#X connect 25 1 19 1;
+#X connect 26 0 21 0;
+#X connect 31 0 26 0;
+#X connect 33 0 36 0;
+#X connect 34 0 37 0;
+#X connect 35 0 38 0;
+#X connect 36 0 39 0;
+#X connect 37 0 39 0;
+#X connect 38 0 39 0;
+#X connect 39 0 7 0;
+#X connect 40 0 42 0;
+#X connect 42 0 39 0;
+#X restore 514 186 pd;
+#X obj 192 209 voices 4;
+#X obj 5 609 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 7 290 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 437 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 490 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 112 445 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 113 298 cnv 17 3 110 empty empty 0 5 9 0 16 -228856 -162280
+0;
+#X obj 5 532 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 113 414 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 112 466 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 186 298 list - MIDI note messages (note and velocity pair)
+, f 56;
+#X text 180 313 float - note values, f 57;
+#X text 180 414 float - velocity values, f 57;
+#X text 180 445 float - note values, f 57;
+#X text 180 467 float - velocity values, f 57;
+#X text 162 497 1) float - sets number of voices;
+#X text 162 512 2) float - non zero sets voice stealing;
+#X text 150 539 -offset <float>: sets index offset (default 0);
+#X text 198 554 -retrig: sets to retrigger mode, f 36;
+#X text 145 569 -release <float>: sets release time;
+#X text 44 90 [voices] is similar to Pd Vanilla's poly object \, but
+offers more functionalities. Use it to implement polyphonic synths.
+, f 69;
+#X text 126 345 offset <float> - sets index offset, f 66;
+#X text 126 361 retrig <float> - non zero sets to retrigger mode.,
+f 66;
+#X text 180 377 clear - clears memory without output, f 57;
+#X text 180 394 flush - clears memory and output hanging notes, f
+57;
+#X text 120 329 release <float> - sets index offset, f 67;
+#X obj 192 267 print voices;
+#X msg 120 164 steal \$1;
+#X obj 120 140 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X connect 0 0 23 0;
+#X connect 1 0 0 0;
+#X connect 2 0 49 0;
+#X connect 3 0 6 0;
+#X connect 4 0 7 0;
+#X connect 5 0 8 0;
+#X connect 6 0 23 0;
+#X connect 7 0 23 0;
+#X connect 8 0 23 0;
+#X connect 23 0 2 0;
+#X connect 50 0 23 0;
+#X connect 51 0 50 0;

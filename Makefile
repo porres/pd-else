@@ -27,6 +27,8 @@ colors.class.sources := classes/colors.c
 message.class.sources := classes/message.c
 
 # control:
+suspedal.class.sources := classes/suspedal.c
+voices.class.sources := classes/voices.c
 pic.class.sources := classes/pic.c
 args.class.sources := classes/args.c
 click.class.sources := classes/click.c
