@@ -1,46 +1,46 @@
-#N canvas 740 93 562 578 10;
+#N canvas 663 83 562 578 10;
 #X obj 2 428 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 2 477 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 90 435 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 89 435 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 2 266 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 90 274 cnv 17 3 106 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 89 274 cnv 17 3 106 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 287 153 tgl 22 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
+#X obj 297 153 tgl 22 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
 0 1;
-#X obj 90 406 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 89 406 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X obj 90 456 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 89 456 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 90 385 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 89 385 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 2 546 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 163 272 float;
-#X text 169 287 list;
-#X text 198 386 -;
-#X text 162 386 float;
-#X text 198 407 -;
-#X text 162 407 float;
-#X text 198 436 -;
-#X text 198 458 -;
-#X obj 287 215 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 157 272 float;
+#X text 163 287 list;
+#X text 192 386 -;
+#X text 156 386 float;
+#X text 192 407 -;
+#X text 156 407 float;
+#X text 192 436 -;
+#X text 192 458 -;
+#X obj 297 215 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 212 215 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 222 215 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 162 140 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 172 140 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 162 436 float;
-#X text 162 458 float;
-#X text 211 386 the velocity part of a note message;
+#X text 156 436 float;
+#X text 156 458 float;
+#X text 205 386 the velocity part of a note message;
 #X obj 2 506 cnv 3 550 3 empty empty flag 8 12 0 13 -228856 -1 0;
-#X text 163 302 clear - clears the memory (no note-off messages are
+#X text 157 302 clear - clears the memory (no note-off messages are
 output);
-#X obj 287 238 print velocity;
-#X text 199 272 - the pitch part of a note message;
+#X obj 297 238 print velocity;
+#X text 193 272 - the pitch part of a note message;
 #X obj 308 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 347 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -65,50 +65,71 @@ output);
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 4 3 graph;
-#X text 114 332 tonal <float>;
-#X text 197 527 -tonal - sets sustain to "tonal" mode;
-#X text 155 511 -retrig <float> - sets retriger mode <0 \, 1 \, 2 or
-3>;
-#X text 108 347 retrig <float>;
-#X obj 212 190 else/suspedal;
-#X text 102 362 sustain <float>;
-#X obj 162 164 makenote 93 750;
-#X text 316 157 sustain On/Off;
-#X obj 212 238 print pitch;
+#X text 108 332 tonal <float>;
+#X text 191 527 -tonal - sets sustain to "tonal" mode;
+#X text 102 347 retrig <float>;
+#X obj 222 190 else/suspedal;
+#X text 96 362 sustain <float>;
+#X obj 172 164 makenote 93 750;
+#X text 326 157 sustain On/Off;
+#X obj 222 238 print pitch;
 #X text 70 87 [suspedal] holds MIDI Note Off messages when on and sends
 them out when it's switched off. It has two sustain modes \, 'regular'
-(default) and 'tonal' - as in the design of modern pianos.;
-#X text 199 287 - a pair of pitch/velocity velues from note messages
+(default) and 'tonal' - as in the design of modern pianos., f 63;
+#X text 193 287 - a pair of pitch/velocity velues from note messages
 ;
-#X text 163 317 flush - outputs all held note-off messages;
-#X text 199 332 - non zero sets to "tonal" mode;
-#X text 199 347 - sets retrigger mode <0 \, 1 \, 2 or 3>;
-#X text 199 362 - pedal switch: on <1> or off <0>;
-#X text 213 407 pedal switch: on <1> or off <0>;
-#X text 213 436 the pitch value of a note message;
-#X text 213 458 the velocity value of a note message;
-#X text 163 485 float - non zero turns on the pedal (default: 0 - off)
+#X text 157 317 flush - outputs all held note-off messages;
+#X text 193 332 - non zero sets to "tonal" mode;
+#X text 193 347 - sets retrigger mode <0 \, 1 \, 2 or 3>;
+#X text 193 362 - pedal switch: on <1> or off <0>;
+#X text 207 407 pedal switch: on <1> or off <0>;
+#X text 207 436 the pitch value of a note message;
+#X text 207 458 the velocity value of a note message;
+#X text 157 485 float - non zero turns on the pedal (default: 0 - off)
 ;
-#N canvas 527 198 700 432 example 0;
-#X obj 146 248 ctlin 64 1;
-#X obj 146 274 tgl 22 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
+#N canvas 527 198 822 448 example 0;
+#X obj 151 248 ctlin 64 1;
+#X obj 151 274 tgl 22 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
 0 1;
-#X obj 596 236 tgl 22 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
+#X obj 647 233 tgl 22 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
 0 1;
-#X text 628 245 On/Off;
-#X obj 521 194 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 679 242 On/Off;
+#X text 676 225 sustain;
+#X obj 29 144 keyboard 17 80 3 3;
+#X obj 76 261 display;
+#X obj 76 307 else/suspedal;
+#X obj 572 265 else/suspedal;
+#X text 37 20 You can directly connect the [notein] object to acess
+MIDI note messages from an external controller and access the MIDI
+message from an actual sustain pedal (which is normallu controller
+number 64) and feed it to the [suspedal] object.;
+#X text 38 81 In the example below we have the [else/keyboard] object
+instead.;
+#X obj 76 336 pack float float;
+#X obj 76 390 print Note-Message;
+#X obj 76 360 else/display;
+#X text 431 20 The default sustain mode - used in this example - holds
+any note off messages when it is on. Below \, we use [suspedal] in
+a patch with 2-voice polyphonic synth controlled by random notes.;
+#X msg 518 215 flush;
+#X obj 518 177 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 471 178 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 471 216 clear;
+#X obj 572 154 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 521 120 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 572 80 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X floatatom 558 264 5 0 0 0 - - -, f 5;
-#X floatatom 521 264 5 0 0 0 - - -, f 5;
-#X text 547 122 random notes;
-#X text 625 228 sustain;
-#X obj 520 367 ./out~;
-#X obj 24 144 keyboard 17 80 3 3;
-#X obj 71 261 display;
-#N canvas 229 31 292 303 oscillators 0;
-#X obj 110 143 route 1 2;
+#X obj 572 129 else/randi 60 80;
+#X obj 572 178 makenote 127 250;
+#X obj 572 105 else/tempo 40 50;
+#X obj 572 199 pack float float;
+#X obj 572 226 else/display;
+#X text 598 82 random pitches;
+#X text 613 153 pitch;
+#X obj 572 295 else/voices 2 1;
+#N canvas 887 396 225 222 oscillators 0;
 #N canvas 358 23 457 381 osc1 0;
 #X obj 171 110 / 127;
 #X obj 156 199 *~;
@@ -130,8 +151,8 @@ them out when it's switched off. It has two sustain modes \, 'regular'
 #X connect 7 0 1 0;
 #X connect 8 0 4 0;
 #X connect 8 1 9 0;
-#X restore 110 176 pd osc1;
-#X obj 110 48 inlet;
+#X restore 49 103 pd osc1;
+#X obj 49 35 inlet;
 #N canvas 358 23 457 381 osc2 0;
 #X obj 171 110 / 127;
 #X obj 156 199 *~;
@@ -153,171 +174,77 @@ them out when it's switched off. It has two sustain modes \, 'regular'
 #X connect 7 0 1 0;
 #X connect 8 0 4 0;
 #X connect 8 1 9 0;
-#X restore 169 177 pd osc2;
-#X obj 119 245 outlet~;
-#X obj 188 248 outlet~;
-#X obj 110 108 pack f f f;
-#X obj 110 80 poly 2 1;
-#X obj 157 49 inlet;
-#X connect 0 0 1 0;
-#X connect 0 1 3 0;
-#X connect 1 0 4 0;
-#X connect 1 1 5 0;
-#X connect 2 0 7 0;
-#X connect 3 0 4 0;
-#X connect 3 1 5 0;
-#X connect 6 0 0 0;
-#X connect 7 0 6 0;
-#X connect 7 1 6 1;
-#X connect 7 2 6 2;
-#X connect 8 0 7 1;
-#X restore 520 325 pd oscillators;
-#X obj 521 169 else/randi 60 80;
-#X obj 521 218 makenote 127 250;
-#X obj 521 145 else/tempo 40 50;
-#X obj 71 307 else/suspedal;
-#X obj 521 288 else/suspedal;
-#X text 32 20 You can directly connect the [notein] object to acess
-MIDI note messages from an external controller and access the MIDI
-message from an actual sustain pedal (which is normallu controller
-number 64) and feed it to the [suspedal] object.;
-#X text 33 81 In the example below we have the [else/keyboard] object
-instead.;
-#X obj 71 336 pack float float;
-#X obj 71 390 print Note-Message;
-#X obj 71 360 else/display;
-#X text 430 27 The default sustain mode - used in this example - holds
-any note off messages when it is on. Below \, we use [suspedal] in
-a patch with 2-voice polyphonic synth controlled by random notes.;
-#X msg 473 241 flush;
-#X obj 473 203 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 426 211 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X msg 426 249 clear;
-#X connect 0 0 1 0;
-#X connect 1 0 17 2;
-#X connect 2 0 18 2;
-#X connect 4 0 15 0;
-#X connect 5 0 16 0;
-#X connect 6 0 18 1;
-#X connect 7 0 18 0;
-#X connect 11 0 12 0;
-#X connect 12 0 17 0;
-#X connect 13 0 10 0;
-#X connect 13 1 10 1;
-#X connect 14 0 4 0;
-#X connect 15 0 7 0;
-#X connect 15 1 6 0;
-#X connect 16 0 14 0;
-#X connect 17 0 21 0;
-#X connect 17 1 21 1;
-#X connect 18 0 13 0;
-#X connect 18 1 13 1;
-#X connect 21 0 23 0;
-#X connect 23 0 22 0;
-#X connect 25 0 18 0;
-#X connect 26 0 25 0;
-#X connect 27 0 28 0;
-#X connect 28 0 18 0;
-#X restore 479 190 pd example;
-#N canvas 711 170 484 437 tonal-mode 0;
-#X obj 109 178 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X obj 109 351 display;
-#X obj 109 321 pack float float;
-#X obj 226 247 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X msg 109 200 30 \$1;
-#X obj 178 147 keyboard 17 80 2 3;
-#X text 33 41 In the 'tonal' mode \, as in the design of piano sustain
-pedals \, you cam sustain notes that are currently on but not the following
-ones. This allows you to sustain a bass/chord while being able to use
-both hands to play further notes.;
-#X obj 109 388 print Note-Message;
-#X obj 109 285 else/suspedal -tonal;
-#X text 45 140 1) turn on a note;
-#X text 254 248 2) turn on sustain;
-#X text 46 156 3) turn off note;
-#X text 253 262 5) turn off sustain to release the note off from the
-held note;
-#X text 169 118 4) play with keyboad (note off aren't held);
-#X obj 109 250 else/display;
-#N canvas 4 23 450 300 tonal 0;
-#X obj 191 153 pack;
-#X obj 191 127 else/mono;
-#X obj 191 179 display;
-#X obj 191 214 print mono;
-#X msg 122 67 flush;
-#X obj 122 19 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X msg 184 88 60 \$1;
-#X msg 231 87 72 \$1;
-#X obj 184 63 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X obj 231 60 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X connect 0 0 2 0;
+#X restore 108 104 pd osc2;
+#X obj 50 172 outlet~;
+#X obj 147 175 outlet~;
+#X obj 108 36 inlet;
+#X connect 0 0 3 0;
+#X connect 0 1 4 0;
 #X connect 1 0 0 0;
-#X connect 1 1 0 1;
 #X connect 2 0 3 0;
-#X connect 5 0 4 0;
-#X connect 6 0 1 0;
-#X connect 7 0 1 0;
-#X connect 8 0 6 0;
-#X connect 9 0 7 0;
-#X restore 299 345 pd tonal;
-#X connect 0 0 4 0;
-#X connect 1 0 7 0;
-#X connect 2 0 1 0;
-#X connect 3 0 8 2;
-#X connect 4 0 14 0;
-#X connect 5 0 14 0;
-#X connect 8 0 2 0;
-#X connect 8 1 2 1;
-#X connect 14 0 8 0;
-#X restore 461 212 pd tonal-mode;
-#N canvas 503 123 740 329 retrigger-mode 0;
-#X obj 614 32 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
--1 0;
-#X floatatom 614 100 3 0 0 0 - - -, f 3;
-#X text 634 47 1 're-trigger';
-#X text 635 63 0 'historical';
-#X text 637 78 2 'lastnote';
-#X text 635 31 3 'ignore';
-#X msg 614 122 mode \$1;
-#X obj 478 235 display;
-#X obj 478 205 pack float float;
-#X obj 478 35 keyboard 17 80 1 3;
-#X obj 478 123 else/display;
-#X msg 416 106 flush;
-#X obj 416 58 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X obj 478 272 print retrigger;
-#X text 15 78 - mode <0>:;
-#X text 88 79 ignores repeated notes and doesn't retrigger them;
-#X text 15 107 - mode <1>:;
-#X text 88 108 sends a note off before retriggering the new note on
-value;
-#X text 15 139 - mode <2>:;
-#X text 88 139 doesn't send a note off before retriggering the new
-note on value \, but sends all corresponding note offs when the pedal
-is turned of or flushed.;
-#X text 15 180 - mode <3>:;
-#X text 88 180 doesn't send a note off before retriggering the new
-note on value and sends only one note off when the pedal is turned
-of or flushed.;
-#X text 15 28 [suspedal] has 4 different modes of handling repeated
-notes and how to retrigger them. These are for either 'regular' or
-'sustain' modes \, and they are:;
-#N canvas 295 54 1127 546 retrigger 0;
+#X connect 2 1 4 0;
+#X connect 5 0 2 0;
+#X restore 572 325 pd oscillators;
+#X obj 585 367 else/out~;
+#X connect 0 0 1 0;
+#X connect 1 0 7 2;
+#X connect 2 0 8 2;
+#X connect 5 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 11 0;
+#X connect 7 1 11 1;
+#X connect 8 0 28 0;
+#X connect 8 1 28 1;
+#X connect 11 0 13 0;
+#X connect 13 0 12 0;
+#X connect 15 0 8 0;
+#X connect 16 0 15 0;
+#X connect 17 0 18 0;
+#X connect 18 0 8 0;
+#X connect 19 0 22 0;
+#X connect 20 0 23 0;
+#X connect 21 0 19 0;
+#X connect 22 0 24 0;
+#X connect 22 1 24 1;
+#X connect 23 0 21 0;
+#X connect 24 0 25 0;
+#X connect 25 0 8 0;
+#X connect 28 0 29 0;
+#X connect 28 1 29 1;
+#X connect 29 0 30 0;
+#X connect 29 1 30 1;
+#X restore 479 188 pd example;
+#N canvas 830 203 493 488 retrigger 1;
+#X obj 92 205 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
+-1 2;
+#X floatatom 92 273 3 0 0 0 - - -, f 3;
+#X obj 175 405 display;
+#X obj 175 375 pack float float;
+#X obj 221 199 keyboard 17 80 1 3;
+#X obj 175 295 else/display;
+#X obj 175 442 print retrigger;
+#X text 34 65 - mode <0>:;
+#X text 34 81 - mode <1>:;
+#X text 34 97 - mode <2>:;
+#X text 34 128 - mode <3>:;
+#X msg 92 295 retrig \$1;
+#X obj 250 313 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 108 65 do not retrigger (ignores repeated notes), f 59;
+#X text 23 23 [suspedal] has 4 different modes of handling repeated
+notes. These are for either 'regular' or 'tonal' modes \, and they
+are:, f 62;
+#X text 108 81 retrigger a repeated note on message, f 59;
+#X obj 175 339 else/suspedal;
+#X text 110 205 0 'ignore', f 14;
+#X text 110 235 2 'free first';
+#X text 110 250 3 'free later';
+#N canvas 295 54 1127 546 more-examples 1;
 #X obj 156 235 display;
 #X obj 156 205 pack float float;
 #X obj 156 132 else/display;
-#X msg 52 156 panic;
 #X obj 391 264 t l l;
 #X obj 434 267 print suspedal;
-#X text 26 236 mode 0 - historical;
 #X obj 391 198 pack float float;
 #X msg 344 124 flush;
 #X obj 344 76 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856 -1
@@ -361,95 +288,146 @@ notes and how to retrigger them. These are for either 'regular' or
 #X obj 650 223 else/suspedal -retrig 2;
 #X obj 526 136 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 291 137 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 291 137 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 1022 192 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1
 0 1;
 #X obj 887 235 else/suspedal -retrig 3;
-#X obj 156 315 ./voices 4 1;
-#X obj 156 351 route 0 1 2 3;
-#X obj 156 473 print poly-0;
-#X obj 174 450 print poly-1;
-#X obj 193 425 print poly-2;
-#X obj 212 400 print poly-3;
-#X obj 390 302 ./voices 4 1;
-#X obj 390 338 route 0 1 2 3;
-#X obj 390 460 print poly-0;
-#X obj 408 437 print poly-1;
-#X obj 427 412 print poly-2;
-#X obj 446 387 print poly-3;
-#X connect 0 0 13 0;
+#X obj 391 397 print poly-1;
+#X obj 412 370 print poly-2;
+#X obj 434 346 print poly-3;
+#X obj 456 322 print poly-4;
+#X obj 391 297 else/voices 4 1;
+#X obj 650 462 print poly-1;
+#X obj 671 435 print poly-2;
+#X obj 693 411 print poly-3;
+#X obj 715 387 print poly-4;
+#X obj 650 362 else/voices 4 1;
+#X obj 887 472 print poly-1;
+#X obj 908 445 print poly-2;
+#X obj 930 421 print poly-3;
+#X obj 952 397 print poly-4;
+#X obj 887 372 else/voices 4 1;
+#X obj 156 297 else/voices 2;
+#X obj 156 352 else/display;
+#X obj 221 351 else/display;
+#X connect 0 0 11 0;
 #X connect 1 0 0 0;
-#X connect 2 0 36 0;
-#X connect 4 0 49 0;
-#X connect 4 1 5 0;
-#X connect 7 0 12 0;
-#X connect 8 0 37 0;
+#X connect 2 0 34 0;
+#X connect 3 0 45 0;
+#X connect 3 1 4 0;
+#X connect 5 0 10 0;
+#X connect 6 0 35 0;
+#X connect 7 0 6 0;
+#X connect 8 0 35 0;
 #X connect 9 0 8 0;
-#X connect 10 0 37 0;
-#X connect 11 0 10 0;
-#X connect 12 0 4 0;
-#X connect 13 0 43 0;
-#X connect 13 1 14 0;
-#X connect 15 0 2 0;
-#X connect 16 0 15 0;
-#X connect 17 1 18 0;
-#X connect 19 0 22 0;
-#X connect 20 0 42 0;
-#X connect 21 0 20 0;
-#X connect 22 0 17 0;
-#X connect 23 0 24 0;
-#X connect 24 0 42 0;
-#X connect 25 1 26 0;
-#X connect 27 0 32 0;
-#X connect 28 0 38 0;
+#X connect 10 0 3 0;
+#X connect 11 0 56 0;
+#X connect 11 1 12 0;
+#X connect 13 0 2 0;
+#X connect 14 0 13 0;
+#X connect 15 0 55 0;
+#X connect 15 1 16 0;
+#X connect 17 0 20 0;
+#X connect 18 0 40 0;
+#X connect 19 0 18 0;
+#X connect 20 0 15 0;
+#X connect 21 0 22 0;
+#X connect 22 0 40 0;
+#X connect 23 0 50 0;
+#X connect 23 1 24 0;
+#X connect 25 0 30 0;
+#X connect 26 0 36 0;
+#X connect 27 0 26 0;
+#X connect 28 0 36 0;
 #X connect 29 0 28 0;
-#X connect 30 0 38 0;
-#X connect 31 0 30 0;
-#X connect 32 0 25 0;
-#X connect 33 0 34 0;
-#X connect 34 0 38 0;
-#X connect 35 0 38 2;
-#X connect 36 0 1 0;
-#X connect 36 1 1 1;
-#X connect 37 0 7 0;
-#X connect 37 1 7 1;
-#X connect 38 0 27 0;
-#X connect 38 1 27 1;
-#X connect 39 0 37 2;
-#X connect 40 0 36 2;
-#X connect 41 0 42 2;
-#X connect 42 0 19 0;
-#X connect 42 1 19 1;
-#X connect 43 0 44 0;
-#X connect 44 0 45 0;
-#X connect 44 1 46 0;
-#X connect 44 2 47 0;
-#X connect 44 3 48 0;
-#X connect 49 0 50 0;
-#X connect 50 0 51 0;
-#X connect 50 1 52 0;
-#X connect 50 2 53 0;
-#X connect 50 3 54 0;
-#X restore 162 247 pd retrigger examples;
-#X obj 478 169 else/suspedal 1;
+#X connect 30 0 23 0;
+#X connect 31 0 32 0;
+#X connect 32 0 36 0;
+#X connect 33 0 36 2;
+#X connect 34 0 1 0;
+#X connect 34 1 1 1;
+#X connect 35 0 5 0;
+#X connect 35 1 5 1;
+#X connect 36 0 25 0;
+#X connect 36 1 25 1;
+#X connect 37 0 35 2;
+#X connect 38 0 34 2;
+#X connect 39 0 40 2;
+#X connect 40 0 17 0;
+#X connect 40 1 17 1;
+#X connect 45 0 41 0;
+#X connect 45 1 42 0;
+#X connect 45 2 43 0;
+#X connect 45 3 44 0;
+#X connect 50 0 46 0;
+#X connect 50 1 47 0;
+#X connect 50 2 48 0;
+#X connect 50 3 49 0;
+#X connect 55 0 51 0;
+#X connect 55 1 52 0;
+#X connect 55 2 53 0;
+#X connect 55 3 54 0;
+#X connect 56 0 57 0;
+#X connect 56 1 58 0;
+#X restore 334 382 pd more-examples;
+#X text 110 220 1 'retrigger', f 14;
+#X text 108 97 'free first' - sends a note off before retriggering
+a repeated note, f 59;
+#X text 108 125 'free later' - keeps a histroy of all received note
+ons and sends note off messages for all of them when the pedal is switched
+off (unlike mode 1 \, which only sends one not off);
 #X connect 0 0 1 0;
+#X connect 1 0 11 0;
+#X connect 2 0 6 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 16 0;
+#X connect 11 0 16 0;
+#X connect 12 0 16 2;
+#X connect 16 0 3 0;
+#X connect 16 1 3 1;
+#X restore 467 234 pd retrigger;
+#N canvas 711 170 512 434 tonal 0;
+#X obj 103 160 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+127;
+#X obj 103 333 display;
+#X obj 103 303 pack float float;
+#X obj 220 229 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X msg 103 182 30 \$1;
+#X obj 172 129 keyboard 17 80 2 3;
+#X obj 103 370 print Note-Message;
+#X obj 103 267 else/suspedal -tonal;
+#X text 39 122 1) turn on a note;
+#X text 248 230 2) turn on sustain;
+#X text 40 138 3) turn off note;
+#X obj 103 232 else/display;
+#X text 247 244 5), f 2;
+#X text 267 244 turn off sustain to send the note off from the held
+note, f 26;
+#X text 51 19 In the 'tonal' mode \, as in the design of piano sustain
+pedals \, you cam sustain notes that are currently on but not the new
+ones after you switch it on. This allows you to sustain a bass/chord
+while being able to use both hands to play further notes., f 62;
+#X text 161 100 4) play with keyboad (bew notes aren't sustained);
+#X connect 0 0 4 0;
 #X connect 1 0 6 0;
-#X connect 6 0 24 0;
-#X connect 7 0 13 0;
-#X connect 8 0 7 0;
-#X connect 9 0 10 0;
-#X connect 10 0 24 0;
-#X connect 11 0 24 0;
-#X connect 12 0 11 0;
-#X connect 24 0 8 0;
-#X connect 24 1 8 1;
-#X restore 437 235 pd retrigger-mode;
-#X connect 5 0 44 2;
+#X connect 2 0 1 0;
+#X connect 3 0 7 2;
+#X connect 4 0 11 0;
+#X connect 5 0 11 0;
+#X connect 7 0 2 0;
+#X connect 7 1 2 1;
+#X connect 11 0 7 0;
+#X restore 491 211 pd tonal;
+#X text 149 511 -retrig <float> - sets retriger mode <0 \, 1 \, 2 or
+3> (default 0), f 63;
+#X connect 5 0 43 2;
 #X connect 18 0 26 0;
-#X connect 19 0 48 0;
-#X connect 20 0 46 0;
-#X connect 44 0 19 0;
-#X connect 44 1 18 0;
-#X connect 46 0 44 0;
-#X connect 46 1 44 1;
+#X connect 19 0 47 0;
+#X connect 20 0 45 0;
+#X connect 43 0 19 0;
+#X connect 43 1 18 0;
+#X connect 45 0 43 0;
+#X connect 45 1 43 1;

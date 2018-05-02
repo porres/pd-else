@@ -87,11 +87,17 @@ static void suspedal_float(t_suspedal *x, t_float f){
                 if(x->x_vel){ // If Note-On
                     if(x->x_noteon[pitch] > 0){ // note is being sustained
                         x->x_noteon[pitch] = 1;
-                        if(x->x_retrig == 0 || x->x_retrig == 2){ //  mode 0/2 - just pass
+                        if(x->x_retrig == 0){ // don't retrigger (ignore repeated)
+                            if(!suspedal_check_noteoff(x, pitch)){ // pass only if pitch is not in x->x_ord
+                                outlet_float(x->x_velout, x->x_vel);
+                                outlet_float(((t_object *)x)->ob_outlet, pitch);
+                            }
+                        }
+                        else if(x->x_retrig == 1 || x->x_retrig == 3){ // (retrigger/free later) - just pass
                             outlet_float(x->x_velout, x->x_vel);
                             outlet_float(((t_object *)x)->ob_outlet, pitch);
                         }
-                        else if(x->x_retrig == 1){ // Mode 1: retrigger
+                        else if(x->x_retrig == 2){ // 'free first'
                             if(suspedal_check_noteoff(x, pitch)){ // if pitch is in x->x_ord, retrigger
                                 outlet_float(x->x_velout, 0);
                                 outlet_float(((t_object *)x)->ob_outlet, pitch);
@@ -99,26 +105,20 @@ static void suspedal_float(t_suspedal *x, t_float f){
                             outlet_float(x->x_velout, x->x_vel);
                             outlet_float(((t_object *)x)->ob_outlet, pitch);
                         }
-                        else if(x->x_retrig == 3){ // Mode 3: don't retrigger (ignore repeated)
-                            if(!suspedal_check_noteoff(x, pitch)){ // pass only if pitch is not in x->x_ord
-                                outlet_float(x->x_velout, x->x_vel);
-                                outlet_float(((t_object *)x)->ob_outlet, pitch);
-                            }
-                        }
                     }
-                    else{ // just pass
+                    else{ // note is not being sustained: just pass
                         outlet_float(x->x_velout, x->x_vel);
                         outlet_float(((t_object *)x)->ob_outlet, pitch);
                     }
                 }
                 else{ // Note-Off => ADD
                     if(x->x_noteon[pitch] > 0){
-                        if(x->x_retrig == 0){ // always add
+                        if(x->x_retrig == 3){ // mode 3 - 'free later': always add
                             suspedal_check_arrsz(x, x->x_nord+1); // check if we have room for new entry
                             x->x_ord[x->x_nord] = pitch;
                             x->x_nord++;
                         }
-                        else{ // mode 1, 2, or 3
+                        else{ // mode 0, 1, or 2
                             if(!suspedal_check_noteoff(x, pitch)){ // only add if not found in "x->x_ord"
                                 suspedal_check_arrsz(x, x->x_nord+1); // check if we have room for new entry
                                 x->x_ord[x->x_nord] = pitch;
@@ -135,12 +135,20 @@ static void suspedal_float(t_suspedal *x, t_float f){
             }
             else{ // regular sustain mode
                 if(x->x_vel){ // If Note-On
-                    if(x->x_retrig == 0 || x->x_retrig == 2){ //  mode 0/2 - just pass
+                    if(x->x_retrig == 0){ // Mode 0: don't retrigger (ignore repeated)
+                        if(!suspedal_check_noteoff(x, pitch)){ // pass only if pitch is not in x->x_ord
+                            outlet_float(x->x_velout, x->x_vel);
+                            outlet_float(((t_object *)x)->ob_outlet, pitch);
+                            x->x_noteon[pitch] = 1; // note on flag
+                        }
+                        x->x_noteon[pitch] = 1; // note on flag
+                    }
+                    else if(x->x_retrig == 1 || x->x_retrig == 3){ //  mode 1/3 - just pass
                         outlet_float(x->x_velout, x->x_vel);
                         outlet_float(((t_object *)x)->ob_outlet, pitch);
                         x->x_noteon[pitch] = 1; // note on flag
                     }
-                    else if(x->x_retrig == 1){ // Mode 1: retrigger
+                    else if(x->x_retrig == 2){ // Mode 2: 'free first'
                         if(suspedal_check_noteoff(x, pitch)){ // if pitch is in x->x_ord, retrigger
                             outlet_float(x->x_velout, 0);
                             outlet_float(((t_object *)x)->ob_outlet, pitch);
@@ -149,22 +157,14 @@ static void suspedal_float(t_suspedal *x, t_float f){
                         outlet_float(((t_object *)x)->ob_outlet, pitch);
                         x->x_noteon[pitch] = 1; // note on flag
                     }
-                    else if(x->x_retrig == 3){ // Mode 3: don't retrigger (ignore repeated)
-                        if(!suspedal_check_noteoff(x, pitch)){ // pass only if pitch is not in x->x_ord
-                            outlet_float(x->x_velout, x->x_vel);
-                            outlet_float(((t_object *)x)->ob_outlet, pitch);
-                            x->x_noteon[pitch] = 1; // note on flag
-                        }
-                        x->x_noteon[pitch] = 1; // note on flag
-                    }
                 }
                 else{ // Note-Off => ADD
-                    if(x->x_retrig == 0){ // always add
+                    if(x->x_retrig == 3){ // mode 3 - 'free later': always add
                         suspedal_check_arrsz(x, x->x_nord+1); // check if we have room for new entry
                         x->x_ord[x->x_nord] = pitch;
                         x->x_nord++;
                     }
-                    else{ // mode 1, 2, or 3
+                    else{ // mode 0, 1, or 2
                         if(!suspedal_check_noteoff(x, pitch)){ // only add if not found in "x->x_ord"
                             suspedal_check_arrsz(x, x->x_nord+1); // check if we have room for new entry
                             x->x_ord[x->x_nord] = pitch;
@@ -197,15 +197,15 @@ static void suspedal_flush(t_suspedal *x){
     unsigned int i;
     for(i = 0; i < x->x_nord; i++){
         int pitch = x->x_ord[i];
-        if(x->x_retrig){ // mode 1, 2 or 3
+        if(x->x_retrig == 3){
+            outlet_float(x->x_velout, 0);
+            outlet_float(((t_object *)x)->ob_outlet, pitch);
+        }
+        else{ // mode 0, 1 or 2
             if(x->x_noteon[pitch] != 1){ // ignore if note on
                 outlet_float(x->x_velout, 0);
                 outlet_float(((t_object *)x)->ob_outlet, pitch);
             }
-        }
-        else{
-            outlet_float(x->x_velout, 0);
-            outlet_float(((t_object *)x)->ob_outlet, pitch);
         }
     };
     suspedal_clear(x);
@@ -292,9 +292,9 @@ void suspedal_setup(void){
 	suspedal_class = class_new(gensym("suspedal"), (t_newmethod)suspedal_new, (t_method)suspedal_free,
                 sizeof(t_suspedal), 0, A_GIMME, 0);
     class_addfloat(suspedal_class, (t_method)suspedal_float);
-    class_addmethod(suspedal_class, (t_method)suspedal_tonal,  gensym("tonal"), A_FLOAT, 0);
-	class_addmethod(suspedal_class, (t_method)suspedal_retrig,  gensym("retrig"), A_FLOAT, 0);
-    class_addmethod(suspedal_class, (t_method)suspedal_status,  gensym("sustain"), A_FLOAT, 0);
-    class_addmethod(suspedal_class, (t_method)suspedal_clear,  gensym("clear"), 0);
-    class_addmethod(suspedal_class, (t_method)suspedal_flush,  gensym("flush"), 0);
+    class_addmethod(suspedal_class, (t_method)suspedal_tonal, gensym("tonal"), A_FLOAT, 0);
+	class_addmethod(suspedal_class, (t_method)suspedal_retrig, gensym("retrig"), A_FLOAT, 0);
+    class_addmethod(suspedal_class, (t_method)suspedal_status, gensym("sustain"), A_FLOAT, 0);
+    class_addmethod(suspedal_class, (t_method)suspedal_clear, gensym("clear"), 0);
+    class_addmethod(suspedal_class, (t_method)suspedal_flush, gensym("flush"), 0);
 }
