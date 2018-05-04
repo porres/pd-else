@@ -1,4 +1,4 @@
-#N canvas 838 94 574 590 10;
+#N canvas 838 94 560 569 10;
 #X obj 2 543 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 2 451 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -105,12 +105,12 @@ for delay time that falls in between sample values.;
 #X obj 140 154 noise~;
 #X obj 187 186 *~;
 #X obj 187 258 else/out~;
-#X obj 310 202 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 316 202 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 248 180 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
+#X obj 251 180 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X text 304 180 Delay time (ms);
-#X text 369 203 Decay time (ms);
+#X text 307 179 Delay time (ms);
+#X text 374 202 Decay time (ms);
 #X obj 202 154 else/pulse~ 1;
 #X text 113 503 2) float - decay time in ms (default 0), f 60;
 #X obj 2 319 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -118,11 +118,6 @@ for delay time that falls in between sample values.;
 #X text 216 343 - changes the maximum delay size (in ms), f 41;
 #X text 137 343 size <float>;
 #X text 180 360 clear - clears the delay buffer, f 47;
-#X text 60 87 Use [fbdelay~] for delay effects \, reverberation and
-comb filtering. y default \, you can set a delay time and a reverberation/decay
-time in ms ("t60") \, which is the time the impulse takes to fall 60dB
-in energy (but you can change this parameter to a gain coefficient).
-, f 67;
 #X text 113 488 1) float - maximum/initial delay in ms (default 1 sample)
 , f 60;
 #X text 174 327 signal - signal input to the delay line, f 48;
@@ -154,10 +149,15 @@ also change that with the "gain" message., f 72;
 #X connect 6 0 2 1;
 #X restore 456 255 pd gain mode;
 #X obj 187 224 else/fbdelay~ 100 1000;
+#X text 60 87 Use [fbdelay~] for delay effects \, reverberation and
+comb filtering. By default \, you can set a delay time and a reverberation/decay
+time in ms ("t60") \, which is the time the impulse takes to fall 60dB
+in energy (but you can change this parameter to a gain coefficient).
+, f 67;
 #X connect 23 0 24 0;
-#X connect 24 0 44 0;
-#X connect 26 0 44 2;
-#X connect 27 0 44 1;
+#X connect 24 0 43 0;
+#X connect 26 0 43 2;
+#X connect 27 0 43 1;
 #X connect 30 0 24 1;
-#X connect 44 0 25 1;
-#X connect 44 0 25 0;
+#X connect 43 0 25 1;
+#X connect 43 0 25 0;

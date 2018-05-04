@@ -1,4 +1,4 @@
-#N canvas 657 33 563 592 10;
+#N canvas 493 23 563 592 10;
 #X obj 3 3 cnv 15 301 42 empty empty voices 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -72,21 +72,17 @@ like Pd Vanilla's [poly] object \, but with more functionalities. By
 default \, it routes the voices to different outlets \, but it also
 has a list mode like [poly]., f 71;
 #X text 186 442 list - note messages, f 57;
-#X text 120 326 release <float> - sets a release time in ms, f 67
-;
 #X text 180 310 float - note pitch values, f 57;
 #X text 180 411 float - note velocity values, f 57;
 #X text 162 473 1) float - sets number of voices (default 1);
 #X text 162 488 2) float - non zero sets voice stealing (default 0)
 ;
-#X text 122 515 -release <float>: sets release time in ms (default
-0);
 #X obj 364 140 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
 #X msg 364 165 72 \$1;
 #X obj 181 208 else/voices 2, f 20;
-#X text 180 263 voice 1;
-#X text 241 263 voice 2;
+#X text 161 262 voice 1;
+#X text 222 262 voice 2;
 #N canvas 845 290 441 432 steal 0;
 #X obj 139 268 else/display;
 #X obj 197 268 else/display;
@@ -142,8 +138,8 @@ on message and will output that message as an "extra".;
 #X connect 16 0 17 0;
 #X connect 17 0 13 0;
 #X restore 493 186 pd steal;
-#X text 302 263 extra;
-#N canvas 807 227 521 308 retrigger 0;
+#X text 283 262 extra;
+#N canvas 361 237 521 308 retrigger 0;
 #X text 107 69 - retrig <0>:;
 #X text 107 95 - retrig <1>:;
 #X text 191 95 retrigger on the same voice allocation, f 43;
@@ -255,9 +251,36 @@ f 70;
 #X connect 14 1 4 0;
 #X connect 14 2 5 0;
 #X restore 229 256 pd retrig_2;
-#X restore 469 229 pd retrigger;
-#N canvas 441 264 886 468 release 0;
-#X restore 481 207 pd release;
+#X restore 469 207 pd retrigger;
+#N canvas 698 101 477 404 release 0;
+#X obj 99 323 else/display;
+#X obj 158 323 else/display;
+#X obj 99 130 keyboard 17 80 1 4;
+#X obj 217 323 else/display;
+#X obj 276 325 else/display;
+#X obj 336 323 else/display;
+#X text 41 23 You can set a release time to prevent a note off from
+freeing a voice allocation \, and keep it allocated for that period
+of time after a note off is sent., f 65;
+#X text 41 65 This is useful if you want to wait for a release envelope
+to finish before using that voice allocation for a new note., f 65
+;
+#X obj 99 296 else/voices 4 -rel 1000, f 40;
+#X obj 246 155 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1000;
+#X obj 246 183 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X msg 246 205 rel \$1;
+#X connect 2 0 8 0;
+#X connect 8 0 0 0;
+#X connect 8 1 1 0;
+#X connect 8 2 3 0;
+#X connect 8 3 4 0;
+#X connect 8 4 5 0;
+#X connect 9 0 10 0;
+#X connect 10 0 11 0;
+#X connect 11 0 8 0;
+#X restore 481 228 pd release;
 #N canvas 636 123 639 504 list 0;
 #X obj 161 289 else/display;
 #X msg 111 182 60 \$1;
@@ -274,7 +297,7 @@ f 70;
 #X msg 211 182 62 \$1;
 #X msg 261 182 63 \$1;
 #X obj 332 316 else/display;
-#X obj 467 206 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 467 206 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 332 134 keyboard 17 80 1 3;
 #X obj 332 235 else/suspedal -retrig 3;
@@ -293,29 +316,50 @@ a list with voice index \, pitch and velocity., f 72;
 sets the voice index offset \, which is 0 by default. You can also
 set a different index offset with the "offset" message (this is only
 possible in the context of "list mode")., f 72;
-#N canvas 719 64 574 431 clone_example 0;
-#X obj 52 239 else/display;
-#X obj 61 319 else/out~;
-#X obj 52 209 else/voices 4 1 -list;
-#X obj 52 39 keyboard 17 80 4 3;
-#X obj 187 138 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 52 169 else/suspedal -retrig 2;
-#X obj 52 278 clone 4 voice 4;
-#X text 245 176 In this subpatch we have [voices] feeding [clone] \,
+#N canvas 719 64 505 333 clone_example 0;
+#X obj 54 252 else/out~;
+#X obj 40 77 keyboard 17 80 2 4;
+#X text 211 175 In this subpatch we have [voices] feeding [clone] \,
 which loads 4 instances of a patch named "voice.pd"., f 43;
-#X text 245 216 According to the voice index \, the MIDI note messages
-are routed to different instances of "voice.pd"., f 43;
-#X text 245 258 check clone's help file and lick on in to open the
+#X text 211 267 check clone's help file and lick on in to open the
 patch., f 43;
-#X connect 0 0 6 0;
-#X connect 2 0 0 0;
+#N canvas 470 55 378 320 random 0;
+#X obj 86 246 pack f f;
+#X obj 86 283 outlet;
+#X obj 50 19 inlet;
+#X obj 50 44 expr random(60 \, 72) \; random(90 \, 127) \; random(750
+\, 1250);
+#X obj 86 221 makenote;
+#X obj 183 116 expr $f1 + random(2 \, 5);
+#X obj 199 140 expr $f1 + random(2 \, 5);
+#X obj 217 164 expr $f1 + random(2 \, 5);
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
 #X connect 3 0 5 0;
-#X connect 4 0 5 2;
-#X connect 5 0 2 0;
-#X connect 5 1 2 1;
-#X connect 6 0 1 0;
-#X connect 6 1 1 1;
+#X connect 3 1 4 1;
+#X connect 3 2 4 2;
+#X connect 4 0 0 0;
+#X connect 4 1 0 1;
+#X connect 5 0 6 0;
+#X connect 5 0 4 0;
+#X connect 6 0 7 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 0;
+#X restore 40 49 pd random chords;
+#X obj 40 19 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 211 215 According to the voice index (the first element in
+the list sent by [voices]) \, the MIDI note messages are routed to
+different instances of "voice.pd"., f 43;
+#X obj 40 182 else/voices 4 1 -list;
+#X obj 40 211 clone 4 voice 4;
+#X connect 1 0 7 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X connect 7 0 8 0;
+#X connect 8 0 0 0;
+#X connect 8 1 0 1;
 #X restore 374 447 pd clone_example;
 #X text 129 396 This mode is particularly useful for using with [clone]
 to implement polyphonic synths \, check the subpatch below:;
@@ -342,19 +386,21 @@ to implement polyphonic synths \, check the subpatch below:;
 0);
 #X obj 120 156 notein;
 #X obj 120 180 pack;
-#X connect 30 0 48 0;
+#X text 144 515 -rel <float>: sets release time in ms (default 0);
+#X text 144 326 rel <float> - sets a release time in ms, f 63;
+#X connect 30 0 46 0;
 #X connect 31 0 30 0;
 #X connect 32 0 34 0;
 #X connect 33 0 35 0;
-#X connect 34 0 48 0;
-#X connect 35 0 48 0;
+#X connect 34 0 46 0;
+#X connect 35 0 46 0;
 #X connect 36 0 37 0;
-#X connect 37 0 48 0;
-#X connect 46 0 47 0;
-#X connect 47 0 48 0;
-#X connect 48 0 27 0;
-#X connect 48 1 28 0;
-#X connect 48 2 29 0;
-#X connect 57 0 58 0;
-#X connect 57 1 58 1;
-#X connect 58 0 48 0;
+#X connect 37 0 46 0;
+#X connect 44 0 45 0;
+#X connect 45 0 46 0;
+#X connect 46 0 27 0;
+#X connect 46 1 28 0;
+#X connect 46 2 29 0;
+#X connect 55 0 56 0;
+#X connect 55 1 56 1;
+#X connect 56 0 46 0;
