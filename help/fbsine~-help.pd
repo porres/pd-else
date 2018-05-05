@@ -1,4 +1,4 @@
-#N canvas 887 190 563 591 10;
+#N canvas 499 77 563 591 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -38,8 +38,8 @@
 #X obj 165 186 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -108,7 +108,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -172,15 +172,15 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 ;
 #X obj 548 209 else/pulse~ 200;
 #X obj 69 261 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 858 1;
+-1 -1 4950 1;
 #X obj 69 223 else/sig2float~;
 #X obj 244 261 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 9898 1;
+-1 -1 4950 1;
 #X obj 244 229 else/sig2float~;
 #X text 232 144 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -249,7 +249,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -345,7 +345,7 @@ feature is phase modulation.;
 #X connect 12 0 2 0;
 #X connect 12 0 2 1;
 #X connect 13 0 10 1;
-#X restore 436 281 pd phase offset;
+#X restore 443 281 pd phase offset;
 #X obj 3 3 cnv 15 301 42 empty empty fbsine~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -356,12 +356,12 @@ feature is phase modulation.;
 #X text 261 444 sine wave signal;
 #X text 154 499 2) float;
 #X obj 207 214 else/fbsine~ 440;
-#X obj 246 143 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 241 143 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 25 40 cnv 4 4 4 empty empty Feedback 0 28 2 18 -233017 -1 0
 ;
 #X text 126 184 hz =>;
-#X obj 243 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 238 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 122 364 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
@@ -425,7 +425,7 @@ turns the output into chaotic noise. Common values are usually in the
 #X connect 9 0 8 0;
 #X connect 10 0 7 1;
 #X connect 10 0 2 1;
-#X restore 460 206 pd feedback;
+#X restore 467 206 pd feedback;
 #X text 268 366 feedback value;
 #X text 213 499 - initial feedback value (default 0);
 #X text 60 86 [fbsine~] is a sinusoidal oscillator with phase modulation
@@ -458,17 +458,19 @@ synthesizers to smoothen out the output of a self modulating oscillator.
 FM8 \, by Native Instruments (a DX7 clone) uses it too.;
 #N canvas 623 128 504 395 fbsine~ 0;
 #X obj 115 172 +~;
-#X obj 115 334 outlet~;
+#X obj 115 354 outlet~;
 #X obj 159 140 *~;
 #X obj 54 127 phasor~;
 #X obj 115 200 else/sin~;
 #X obj 174 42 inlet~;
 #X obj 54 43 inlet~;
-#X obj 149 285 delwrite~ \$0-fb2 1;
+#X obj 149 305 delwrite~ \$0-fb2 1;
 #X obj 159 89 delread~ \$0-fb2 0;
 #X text 285 241 mean average filter;
 #X obj 263 164 block~ 1;
 #X obj 149 244 biquad~ 0 0 0.5 0.5 0;
+#X text 284 265 same as:;
+#X obj 299 286 else/mavg~ 2;
 #X connect 0 0 4 0;
 #X connect 2 0 0 1;
 #X connect 3 0 0 0;
@@ -500,8 +502,8 @@ filter for comparison.;
 #X connect 12 0 6 1;
 #X connect 14 0 3 1;
 #X connect 14 0 12 1;
-#X restore 442 231 pd mean filter;
-#X obj 243 188 else/float2sig~ 10;
+#X restore 449 231 pd mean filter;
+#X obj 238 188 else/float2sig~ 10;
 #X text 213 539 - mean filter: on <1> or off <0> (default 0);
 #X obj 122 387 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;

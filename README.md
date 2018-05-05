@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (199 objects):
+##Current Object list (200 objects):
 
 **MESSAGE MANAGEMENT: [9]**
 - [break] 
@@ -161,7 +161,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **REVERB: [1]**
 - [plateverb~]
 
-**FILTERS (19):**
+**FILTERS (20):**
 - [allpass.2nd~]
 - [lop.bw~]
 - [hip.bw~]
@@ -181,6 +181,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [resonbank2~]
 - [resonant~]
 - [resonant2~]
+- [mavg~]
 
 **OSCILLATORS (DETERMINISTIC GENERATORS): [14]**
 - [cosine~]

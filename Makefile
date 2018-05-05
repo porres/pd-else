@@ -111,6 +111,7 @@ lowpass~.class.sources := classes/lowpass~.c
 lowshelf~.class.sources := classes/lowshelf~.c
 mtx~.class.sources := classes/mtx~.c
 match~.class.sources := classes/match~.c
+mavg~.class.sources := classes/mavg~.c
 median~.class.sources := classes/median~.c
 tempo~.class.sources := classes/tempo~.c
 nyquist~.class.sources := classes/nyquist~.c
