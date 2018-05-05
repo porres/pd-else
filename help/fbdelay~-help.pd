@@ -11,7 +11,6 @@
 ;
 #X obj 98 459 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 175 460 signal - the filtered signal;
 #X obj 2 4 cnv 15 301 42 empty empty fbdelay~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -154,10 +153,11 @@ comb filtering. By default \, you can set a delay time and a reverberation/decay
 time in ms ("t60") \, which is the time the impulse takes to fall 60dB
 in energy (but you can change this parameter to a gain coefficient).
 , f 67;
-#X connect 23 0 24 0;
-#X connect 24 0 43 0;
-#X connect 26 0 43 2;
-#X connect 27 0 43 1;
-#X connect 30 0 24 1;
-#X connect 43 0 25 1;
-#X connect 43 0 25 0;
+#X text 175 460 signal - the filtered/delayed signal;
+#X connect 22 0 23 0;
+#X connect 23 0 42 0;
+#X connect 25 0 42 2;
+#X connect 26 0 42 1;
+#X connect 29 0 23 1;
+#X connect 42 0 24 1;
+#X connect 42 0 24 0;

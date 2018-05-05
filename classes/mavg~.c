@@ -3,19 +3,19 @@
 #include <string.h>
 
 #define MAVG_MAXBUF         192000000   // max buffer size - undocumented
-#define MAVG_BUFSIZE        100         // default size
+#define MAVG_DEF_BUFSIZE        100         // default size
 
 typedef struct _mavg{
     t_object        x_obj;
-    t_inlet        *x_inlet_n;              // inlet for n samples
-    unsigned int    x_last_n;               // last # of samples for moving average
-    unsigned int    x_count;                // for 1st round of accumulation
-    double          x_accum;                // accumulation
-    double         *x_buf;                  // buffer pointer
-    double          x_stack[MAVG_BUFSIZE];  // buffer
-    int             x_alloc;                // if x_buf is allocated or stack ?????
-    unsigned int    x_size;                 // allocated size for x_buf
-    unsigned int    x_bufrd;                // buffer readhead
+    t_inlet        *x_inlet_n;                  // inlet for n samples
+    unsigned int    x_last_n;                   // last # of samples for moving average
+    unsigned int    x_count;                    // for 1st round of accumulation
+    double          x_accum;                    // accumulation
+    double         *x_buf;                      // buffer pointer
+    double          x_stack[MAVG_DEF_BUFSIZE];  // buffer
+    int             x_alloc;                    // if x_buf is allocated or stack ?????
+    unsigned int    x_size;                     // allocated size for x_buf
+    unsigned int    x_bufrd;                    // buffer readhead
 }t_mavg;
 
 static t_class *mavg_class;
@@ -31,15 +31,15 @@ static void mavg_size(t_mavg *x, t_float f){ // deals with allocation issues if 
     unsigned int newsz = f < 1 ? 1 : (unsigned int)f;   // new requested size
     if(newsz > MAVG_MAXBUF)
         newsz = MAVG_MAXBUF;
-    if(!x->x_alloc && newsz > MAVG_BUFSIZE){  // allocate
+    if(!x->x_alloc && newsz > MAVG_DEF_BUFSIZE){  // allocate
         x->x_buf = (double *)malloc(sizeof(double)*newsz);
         x->x_alloc = 1;
     }
     else if(x->x_alloc && newsz > cursz) // reallocate
         x->x_buf = (double *)realloc(x->x_buf, sizeof(double)*newsz);
-    else if(x->x_alloc && newsz < MAVG_BUFSIZE){ // reset
+    else if(x->x_alloc && newsz < MAVG_DEF_BUFSIZE){ // reset
         free(x->x_buf);
-        x->x_size = MAVG_BUFSIZE;
+        x->x_size = MAVG_DEF_BUFSIZE;
         x->x_buf = x->x_stack;
         x->x_alloc = 0;
     };
@@ -98,24 +98,22 @@ static void *mavg_new(t_symbol *s, int argc, t_atom * argv){
     t_mavg *x = (t_mavg *)pd_new(mavg_class);
 // default buf / size / n
     x->x_buf = x->x_stack;
-    x->x_size = MAVG_BUFSIZE;
+    x->x_size = MAVG_DEF_BUFSIZE;
     float n_arg = 1;
     x->x_alloc = 0;    
 /////////////////////////////////////////////////////////////////////////////////
     int symarg = 0;
-    int argnum = 0;
     while(argc > 0){
         if(argv->a_type == A_SYMBOL){
             if(!symarg)
                 symarg = 1;
             t_symbol * cursym = atom_getsymbolarg(0, argc, argv);
-            if(!strcmp(cursym->s_name, "-max")){
+            if(!strcmp(cursym->s_name, "-size")){
                 if(argc >= 2 && (argv+1)->a_type == A_FLOAT){
                     t_float curfloat = atom_getfloatarg(1, argc, argv);
                     x->x_size = (int)curfloat;
                     argc -= 2;
                     argv += 2;
-                    argnum++;
                 }
                 else
                     goto errstate;
@@ -126,11 +124,10 @@ static void *mavg_new(t_symbol *s, int argc, t_atom * argv){
         else if(argv->a_type == A_FLOAT && !symarg){
             n_arg = (int)atom_getfloatarg(0, argc, argv);
             n_arg = (n_arg < 1 ? 1 : n_arg);
-            if(n_arg > (float)x->x_size)
-                x->x_size = (unsigned int)n_arg;
+//            if(n_arg > (float)x->x_size)
+            x->x_size = (unsigned int)n_arg;
             argc--;
             argv++;
-            argnum++;
         }
         else
             goto errstate;
