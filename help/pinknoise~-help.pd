@@ -1,0 +1,80 @@
+#N canvas 646 101 567 376 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Pink 0 28 2 18 -233017 -1 0;
+#X obj 69 40 cnv 4 4 4 empty empty noise 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 3 graph;
+#X obj 3 2 cnv 15 301 42 empty empty pinknoise~ 20 20 2 37 -233017
+-1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 3 graph;
+#X obj 235 177 else/out~;
+#X obj 6 349 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 6 241 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 280 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 320 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 176 292 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 210 292 signal;
+#X text 260 292 - pink noise;
+#X text 206 328 1) float - sets seed;
+#X obj 177 254 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 218 254 float - sets seed;
+#N canvas 559 236 694 278 seed 0;
+#X obj 368 144 else/downsample~ 1;
+#X obj 368 188 else/display~;
+#X obj 518 147 else/downsample~ 1;
+#X obj 518 188 else/display~;
+#X msg 518 52 507;
+#X text 549 51 <= set seed;
+#X obj 48 144 else/downsample~ 1;
+#X obj 48 187 else/display~;
+#X obj 198 143 else/downsample~ 1;
+#X obj 198 187 else/display~;
+#X obj 368 54 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 48 106 else/pinknoise~ 1039;
+#X obj 198 106 else/pinknoise~ 1039;
+#X obj 368 110 else/pinknoise~;
+#X obj 518 110 else/pinknoise~;
+#X text 46 51 Sync [pinknoise~] objects with a seed value;
+#X connect 0 0 1 0;
+#X connect 2 0 3 0;
+#X connect 4 0 13 0;
+#X connect 4 0 14 0;
+#X connect 6 0 7 0;
+#X connect 8 0 9 0;
+#X connect 10 0 13 0;
+#X connect 10 0 14 0;
+#X connect 11 0 6 0;
+#X connect 12 0 8 0;
+#X connect 13 0 0 0;
+#X connect 14 0 2 0;
+#X restore 488 211 pd seed;
+#X obj 235 142 else/pinknoise~;
+#X text 76 86 [pinknoise~] is a pink noise genareator. Subjectively
+\, pink noise sounds less hissy than white noise. While white noise
+has constant spectral power per hertz of bandwidth \, pink noise has
+constant power per octave., f 66;
+#X connect 24 0 12 0;
+#X connect 24 0 12 1;

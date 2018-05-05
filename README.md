@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (201 objects):
+##Current Object list (202 objects):
 
 **MESSAGE MANAGEMENT: [9]**
 - [break] 
@@ -200,7 +200,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [vsaw~]
 - [pmosc~]
 
-**CHAOTIC GENERATORS: [21]**
+**CHAOTIC GENERATORS: [22]**
 - [brown~] 
 - [clipnoise~] 
 - [crackle~] 
@@ -221,6 +221,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [randpulse~]
 - [standard~]
 - [stepnoise~]
+- [pinknoise~]
 - [xmod~]
 
 **PHYSICAL MODELLING: [1]**
