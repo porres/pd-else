@@ -3,6 +3,7 @@
 
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 #include "m_pd.h"
 
 #define fbdelay_STACK 48000 // stack buf size, 1 sec at 48k
@@ -47,8 +48,8 @@ static void fbdelay_sz(t_fbdelay *x){
     int alloc = x->x_alloc;
     unsigned int cursz = x->x_sz; //current size
     
-    if(newsz < 0)
-        newsz = 0;
+    if(newsz < 1)
+        newsz = 1;
     else if(newsz > fbdelay_MAXD)
         newsz = fbdelay_MAXD;
     if(!alloc && newsz > fbdelay_STACK){
@@ -77,10 +78,6 @@ static double fbdelay_getlin(double tab[], unsigned int sz, double idx){
     double frac = idx - (double)tabphase1;
     if(tabphase1 >= sz - 1){
         tabphase1 = sz - 1; // checking to see if index falls within bounds
-        output = tab[tabphase1];
-    }
-    else if(tabphase1 < 0){
-        tabphase1 = 0;
         output = tab[tabphase1];
     }
     else{
@@ -162,29 +159,82 @@ static void fbdelay_gain(t_fbdelay *x, t_floatarg f1){
     x->x_gain = f1 != 0;
 }
 
-static void *fbdelay_new(t_floatarg f1, t_floatarg f2, t_floatarg f3){
+static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
     t_fbdelay *x = (t_fbdelay *)pd_new(fbdelay_class);
-    x->x_sr = sys_getsr();
+    x->x_sr = sys_getsr(); // ???
     x->x_alloc = 0;
     x->x_sz = fbdelay_STACK;
     // clear out stack buf, set pointer to stack
     x->x_ybuf = x->x_fbstack;
     fbdelay_clear(x);
-    if (f1 < 0)
-        f1 = 0;
-    x->x_maxdel = f1;
-    // ship off to the helper method to deal with allocation if necessary
-    fbdelay_sz(x);
-    // boundschecking
-    // this is 1/44.1 (1/(sr*0.001) rounded up, good enough?
-    x->x_gain = f3 != 0;
-    // inlets / outlet
+    
+// args
+    float del_time = 0;
+    float delsize = 1000;
+    float fb = 0;
+    x->x_gain = 0;
+/////////////////////////////////////////////////////////////////////////////////
+    int symarg = 0;
+    int argnum = 0;
+    while(argc > 0){
+        if(argv->a_type == A_SYMBOL){
+            if(!symarg)
+                symarg = 1;
+            t_symbol * cursym = atom_getsymbolarg(0, argc, argv);
+            if(!strcmp(cursym->s_name, "-size")){
+                if(argc >= 2 && (argv+1)->a_type == A_FLOAT){
+                    t_float curfloat = atom_getfloatarg(1, argc, argv);
+                    delsize = curfloat < 0 ? 0 : curfloat;
+                    argc -= 2;
+                    argv += 2;
+                    argnum++;
+                }
+                else
+                    goto errstate;
+            }
+            else
+                goto errstate;
+        }
+        else if(argv->a_type == A_FLOAT && !symarg){
+            t_float argval = atom_getfloatarg(0, argc, argv);
+            switch(argnum){
+                case 0:
+                {
+                    del_time = (argval < 0 ? 0 : argval);
+                    if(del_time > 0)
+                        delsize = del_time;
+                }
+                    break;
+                case 1:
+                    fb = argval;
+                    break;
+                case 2:
+                    x->x_gain = argval != 0;
+                    break;
+                default:
+                    break;
+            };
+            argc--;
+            argv++;
+            argnum++;
+        }
+        else
+            goto errstate;
+    };
+/////////////////////////////////////////////////////////////////////////////////
+    
+    x->x_maxdel = delsize;
+    fbdelay_sz(x); // helper method to deal with allocation if necessary
+    
     x->x_dellet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_dellet, f1);
+    pd_float((t_pd *)x->x_dellet, del_time);
     x->x_alet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_alet, f2);
+    pd_float((t_pd *)x->x_alet, fb);
     x->x_outlet = outlet_new((t_object *)x, &s_signal);
     return (x);
+errstate:
+    pd_error(x, "[fbdelay~]: improper args");
+    return NULL;
 }
 
 static void * fbdelay_free(t_fbdelay *x){
@@ -196,10 +246,9 @@ static void * fbdelay_free(t_fbdelay *x){
     return (void *)x;
 }
 
-void fbdelay_tilde_setup(void)
-{
+void fbdelay_tilde_setup(void){
     fbdelay_class = class_new(gensym("fbdelay~"), (t_newmethod)fbdelay_new,
-                              (t_method)fbdelay_free, sizeof(t_fbdelay), 0, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
+                              (t_method)fbdelay_free, sizeof(t_fbdelay), 0, A_GIMME, 0);
     class_addmethod(fbdelay_class, nullfn, gensym("signal"), 0);
     class_addmethod(fbdelay_class, (t_method)fbdelay_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(fbdelay_class, (t_method)fbdelay_clear, gensym("clear"), 0);

@@ -84,6 +84,7 @@ elapsed~.class.sources := classes/elapsed~.c
 eq~.class.sources := classes/eq~.c
 fader~.class.sources := classes/fader~.c
 fbdelay~.class.sources := classes/fbdelay~.c
+ffdelay~.class.sources := classes/ffdelay~.c
 fbsine2~.class.sources := classes/fbsine2~.c
 floor.class.sources := classes/floor.c
 floor~.class.sources := classes/floor~.c

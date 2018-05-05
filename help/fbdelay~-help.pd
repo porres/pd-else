@@ -1,4 +1,4 @@
-#N canvas 838 94 563 580 10;
+#N canvas 814 68 568 645 10;
 #X obj 2 4 cnv 15 301 42 empty empty fbdelay~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -113,7 +113,7 @@ comb filtering. By default \, you can set a delay time and a reverberation/decay
 time in ms ("t60") \, which is the time the impulse takes to fall 60dB
 in energy (but you can change this parameter to a gain coefficient).
 , f 67;
-#X obj 2 550 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 590 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 2 451 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
@@ -127,15 +127,15 @@ in energy (but you can change this parameter to a gain coefficient).
 ;
 #X text 138 406 float/signal - delay time (im ms), f 54;
 #X text 138 429 float/signal - decay time (in ms), f 54;
-#X obj 120 154 noise~;
-#X obj 167 186 *~;
-#X obj 167 258 else/out~;
-#X obj 296 201 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 131 154 noise~;
+#X obj 178 186 *~;
+#X obj 178 258 else/out~;
+#X obj 307 201 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 231 179 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
+#X obj 242 179 nbx 3 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X text 287 178 Delay time (ms);
-#X obj 182 154 else/pulse~ 1;
+#X text 285 178 Delay time (ms);
+#X obj 193 154 else/pulse~ 1;
 #X obj 2 319 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X text 216 343 - changes the maximum delay size (in ms), f 41;
@@ -146,14 +146,21 @@ in energy (but you can change this parameter to a gain coefficient).
 #X text 137 378 gain <float>;
 #X obj 100 329 cnv 17 3 66 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 167 224 else/fbdelay~ 100 1000;
+#X obj 178 224 else/fbdelay~ 100 1000;
 #X text 163 503 2) float - feedback amount (default 0), f 58;
-#X text 355 199 feedback (Decay time in ms);
 #X text 162 520 3) float -;
 #X text 229 520 feedback mode: <0> ("t60") or <non-0> (gain mode) -
 default 0, f 47;
 #X text 163 488 1) float - delay time (default 1 sample), f 58;
 #X text 174 460 signal - the filtered/delayed signal;
+#X text 364 200 Feedback (Decay time in ms);
+#X obj 2 550 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 220 558 -;
+#X text 133 558 -size <float>;
+#X text 234 557 sets delay size (default 1000 ms or first argument's
+value if given), f 46;
+#X text 23 246 see also:;
+#X obj 26 268 else/ffdelay~;
 #X connect 24 0 25 0;
 #X connect 25 0 39 0;
 #X connect 27 0 39 2;

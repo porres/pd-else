@@ -124,7 +124,6 @@ static void *mavg_new(t_symbol *s, int argc, t_atom * argv){
         else if(argv->a_type == A_FLOAT && !symarg){
             n_arg = (int)atom_getfloatarg(0, argc, argv);
             n_arg = (n_arg < 1 ? 1 : n_arg);
-//            if(n_arg > (float)x->x_size)
             x->x_size = (unsigned int)n_arg;
             argc--;
             argv++;
