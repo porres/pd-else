@@ -18,18 +18,18 @@ static void gray_float(t_gray *x, t_floatarg f){
 
 static t_int *gray_perform(t_int *w){
     t_gray *x = (t_gray *)(w[1]);
-    int nblock = (t_int)(w[2]);
+    int n = (t_int)(w[2]);
     int *vp = (int *)(w[3]);
     t_sample *out = (t_sample *)(w[4]);
     int val = *vp;
     int base = x->x_base;
-    while(nblock--){
+    while(n--){
         t_float noise = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(16.0 / 0x40000000);
+        val = val * 435898247 + 382842987;
         int shift = (int)(noise + 16.0);
-        shift = (shift == 32 ? 31 : shift);
+        shift = (shift == 32 ? 31 : shift); // random numbers from 0 - 31
         base ^= 1L << shift;
         *out++ = base * 4.65661287308e-10f; // That's 1/(2^31), so normalizes the int to 1.0
-        val = val * 435898247 + 382842987;
     }
     *vp = val;
     x->x_base = base;

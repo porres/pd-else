@@ -24,6 +24,7 @@ static t_int *brown_perform(t_int *w){
     t_float lastout = x->x_lastout;
     while(nblock--){
         t_float noise = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
+        val = val * 435898247 + 382842987;
         t_float input = noise * 0.125;
         t_float output = input + lastout;
         if (output > 1)
@@ -31,7 +32,6 @@ static t_int *brown_perform(t_int *w){
         if (output < -1)
             output = -2 - output;
         *out++ = output;
-        val = val * 435898247 + 382842987;
         lastout = output;
     }
      *vp = val;
