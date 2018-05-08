@@ -1,5 +1,5 @@
 // Porres 2017
-// Adapted from cyclone's allpass
+// Based on cyclone's allpass
 
 #include <math.h>
 #include <stdlib.h>
