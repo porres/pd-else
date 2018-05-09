@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (205 objects):
+##Current Object list (206 objects):
 
 **MESSAGE MANAGEMENT: [13]**
 - [break] 
@@ -158,11 +158,12 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [player~]
 - [sampler~]
 
-**AUDIO PROCESSING: [4]**
+**AUDIO PROCESSING: [5]**
 - [downsample~]
 - [allpass.rev~]
 - [fbdelay~]
 - [ffdelay~]
+- [crusher~]
 
 **REVERB: [1]**
 - [plateverb~]
