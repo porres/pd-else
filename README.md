@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (203 objects):
+##Current Object list (204 objects):
 
 **MESSAGE MANAGEMENT: [13]**
 - [break] 
@@ -100,13 +100,14 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [voices]
 - [suspedal]
 
-**MATH: FUNCTIONS: [18]**
+**MATH: FUNCTIONS: [19]**
 - [accum~]
 - [ceil]
 - [ceil~]
 - [floor]
 - [floor~]
 - [int~]
+- [quantizer~]q
 - [fold]
 - [fold~]
 - [lastvalue]

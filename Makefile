@@ -125,6 +125,7 @@ pmosc~.class.sources := classes/pmosc~.c
 pulsecount~.class.sources := classes/pulsecount~.c
 pulsediv~.class.sources := classes/pulsediv~.c
 quad~.class.sources := classes/quad~.c
+quantizer~.class.sources := classes/quantizer~.c
 rad2hz~.class.sources := classes/rad2hz~.c
 ramp~.class.sources := classes/ramp~.c
 rampnoise~.class.sources := classes/rampnoise~.c
