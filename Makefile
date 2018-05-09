@@ -134,6 +134,7 @@ randi~.class.sources := classes/randi~.c
 randpulse~.class.sources := classes/randpulse~.c
 ratio2cents~.class.sources := classes/ratio2cents~.c
 rescale~.class.sources := classes/rescale~.c
+rint~.class.sources := classes/rint~.c
 resonant~.class.sources := classes/resonant~.c
 resonant2~.class.sources := classes/resonant2~.c
 rms~.class.sources := classes/rms~.c
