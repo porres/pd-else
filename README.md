@@ -66,12 +66,13 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (202 objects):
+##Current Object list (203 objects):
 
-**MESSAGE MANAGEMENT: [9]**
+**MESSAGE MANAGEMENT: [13]**
 - [break] 
 - [fromany] 
 - [toany] 
+- [any2symbol]
 - [changed]
 - [order]
 - [setmess]
@@ -79,6 +80,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [pack2]
 - [routeall]
 - [routetype]
+- [sig2float~]
+- [float2sig~]
 
 **PATCH/SUBPATCH MANAGEMENT: [6]**
 - [args]
@@ -91,23 +94,41 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **FILE MANAGEMENT: [1]**
 - [dir]
 
-**MIDI: [2]**
+**MIDI: [4]**
 - [clock]
 - [mono]
 - [voices]
 - [suspedal]
 
-**CONVERSION: [20]**
+**MATH: FUNCTIONS: [18]**
+- [accum~]
+- [ceil]
+- [ceil~]
+- [floor]
+- [floor~]
+- [int~]
+- [fold]
+- [fold~]
+- [lastvalue]
+- [mag]
+- [mag~]
+- [randf]
+- [randf~]
+- [randi]
+- [randi~]
+- [sin~]
+- [wrap2]
+- [wrap2~]
+
+**MATH: CONVERSION: [21]**
 - [hex2dec]
 - [dec2hex]
-- [any2symbol]
 - [car2pol]
 - [car2pol~]
 - [cents2rato]
 - [cents2ratio~]
 - [db2lin]
 - [db2lin~]
-- [float2sig~]
 - [float2bits]
 - [hz2rad]
 - [hz2rad~]
@@ -121,33 +142,15 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [pol2car~]
 - [rescale]
 - [rescale~]
-- [sig2float~]
 
-**MATH/LOGIC: [16]**
-- [accum~]
-- [ceil]
-- [ceil~]
-- [floor]
-- [floor~]
-- [fold]
-- [fold~]
-- [lastvalue]
-- [loop]
-- [mag]
-- [mag~]
-- [randf]
-- [randf~]
-- [randi]
-- [randi~]
-- [sin~]
-- [wrap2]
-- [wrap2~]
-
-**CONSTANT VALUES: [4]**
+**MATH: CONSTANT VALUES: [4]**
 - [sr~]
 - [nyquist~]
 - [pi]
 - [e]
+
+**MATH: LOGIC: [1]**
+- [loop]
 
 **AUDIO PLAYING: [2]**
 - [player~]

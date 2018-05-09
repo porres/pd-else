@@ -1,0 +1,57 @@
+#N canvas 666 52 567 404 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Truncate 0 28 2 18 -233017 -1 0
+;
+#X obj 94 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1;
+#X restore 305 3 graph;
+#X obj 3 2 cnv 15 301 42 empty empty int~ 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 3 graph;
+#X obj 6 368 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 6 263 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 300 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 336 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 157 274 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 473 92 else/setdsp~;
+#X obj 246 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 2.88 256;
+#X obj 246 214 else/display~;
+#X text 222 345 (none);
+#X text 189 275 float/signal - signal input;
+#X obj 157 311 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 193 185 int;
+#X obj 193 214 else/display;
+#X obj 116 40 cnv 4 4 4 empty empty integer 0 28 2 18 -233017 -1 0
+;
+#X text 225 312 signal - truncated integer signal;
+#X text 74 86 [int~] truncates a signal towards zero \, that means
+only the integer value is considered.;
+#X obj 246 184 else/int~;
+#X obj 246 162 sig~;
+#X connect 18 0 23 0;
+#X connect 18 0 29 0;
+#X connect 23 0 24 0;
+#X connect 28 0 19 0;
+#X connect 29 0 28 0;
