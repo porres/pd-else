@@ -50,9 +50,9 @@
 #X text 130 541 -mode <float>;
 #X text 220 541 -;
 #X obj 260 133 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 8600 1;
 #X obj 257 155 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.677165 256;
 #X text 219 483 - step value (default = 0 \, no approximation), f
 52;
 #X text 219 447 - quantized signal;
@@ -71,44 +71,48 @@ or 3 (ceil) - default 0, f 50;
 #X text 123 340 -1;
 #X text 129 273 0;
 #X text 129 204 1;
-#N canvas 566 158 569 340 modes 0;
-#X text 85 23 You can set the mode with the second argument \, the
+#N canvas 566 158 444 328 modes 0;
+#X text 32 18 You can set the mode with the second argument \, the
 -mode flag or the mode message. Modes are: 0 (round) \, 1 (int) \,
 2 (floor) or 3 (ceil) - the default mode is 0 (round)., f 62;
-#X obj 396 188 else/int~;
-#X obj 385 210 else/floor~;
-#X obj 391 233 else/ceil~;
-#X obj 116 171 hsl 180 16 -10 10 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 151 168 hsl 180 16 -10 10 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X text 181 199 input;
-#X obj 113 197 else/display~ 8;
-#X obj 113 279 else/display~ 8;
-#X obj 113 240 else/quantizer~ 0.25;
-#X msg 49 186 mode \$1;
-#X obj 49 90 vradio 16 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
+#X obj 148 194 else/display~ 8;
+#X obj 148 273 else/display~ 8;
+#X msg 84 183 mode \$1;
+#X obj 84 87 vradio 16 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
 -1 0;
-#X floatatom 49 162 3 0 0 0 - - -, f 3;
-#X obj 390 164 else/rint~;
-#X text 367 128 Check also these objects:, f 14;
-#X text 70 90 0: round - rounds to nearest step;
-#X text 70 106 1: truncate - truncates to step;
-#X text 70 123 2: floor - approximates to lower step;
-#X text 70 139 3: ceil - approximates to higher step;
-#X text 459 163 round;
-#X text 460 189 truncate;
-#X text 460 210 floor;
-#X text 460 233 ceil;
-#X text 305 268 The above objects are like the different modes in [quantizer~]
-for a setp of 1!, f 40;
-#X text 181 283 output;
-#X connect 4 0 6 0;
-#X connect 6 0 8 0;
-#X connect 8 0 7 0;
-#X connect 9 0 8 0;
-#X connect 10 0 11 0;
-#X connect 11 0 9 0;
-#X restore 478 329 pd modes;
+#X floatatom 84 159 3 0 0 0 - - -, f 3;
+#X text 105 87 0: round - rounds to nearest step;
+#X text 105 103 1: truncate - truncates to step;
+#X text 105 120 2: floor - approximates to lower step;
+#X text 105 136 3: ceil - approximates to higher step;
+#X obj 148 237 else/quantizer~ 1;
+#X connect 1 0 2 0;
+#X connect 2 0 11 0;
+#X connect 4 0 11 0;
+#X connect 5 0 6 0;
+#X connect 6 0 4 0;
+#X connect 11 0 3 0;
+#X restore 485 300 pd modes;
 #X obj 146 178 else/quantizer~ 0.1;
+#N canvas 801 232 476 325 compare 0;
+#X obj 179 75 else/int~;
+#X obj 168 97 else/floor~;
+#X obj 174 120 else/ceil~;
+#X text 242 50 round;
+#X text 243 76 truncate;
+#X text 243 97 floor;
+#X text 243 120 ceil;
+#X text 88 155 The above objects are like the different modes in [quantizer~]
+for a setp of 1!, f 40;
+#X text 106 24 Check also these:, f 19;
+#X obj 138 51 expr~ round($v1);
+#X text 50 215 ELSE also has the [rint~] object \, which quite similar
+to the 'round' function and is also present in [expr] \, but 0.5 rounds
+to 0 instead of 1!, f 62;
+#X obj 206 269 else/rint~;
+#X restore 473 324 pd compare;
 #X connect 25 0 47 0;
 #X connect 30 0 31 0;
 #X connect 31 0 47 1;

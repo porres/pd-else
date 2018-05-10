@@ -1,4 +1,4 @@
-#N canvas 666 52 562 426 10;
+#N canvas 666 52 559 423 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -21,8 +21,8 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 3 graph;
-#X obj 78 40 cnv 4 4 4 empty empty all 0 28 2 18 -233017 -1 0;
-#X obj 104 40 cnv 4 4 4 empty empty inputs 0 28 2 18 -233017 -1 0;
+#X obj 75 40 cnv 4 4 4 empty empty all 0 28 2 18 -233017 -1 0;
+#X obj 101 40 cnv 4 4 4 empty empty inputs 0 28 2 18 -233017 -1 0;
 #X obj 2 258 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 2 328 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -38,13 +38,12 @@
 #X text 164 266 bang;
 #X text 179 372 -;
 #X text 116 372 1) float;
-#X floatatom 242 161 5 0 0 0 - - -, f 5;
-#X floatatom 300 161 5 0 0 0 - - -, f 5;
-#X floatatom 359 161 5 0 0 0 - - -, f 5;
-#X obj 183 131 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+#X floatatom 240 161 5 0 0 0 - - -, f 5;
+#X floatatom 298 161 5 0 0 0 - - -, f 5;
+#X obj 181 131 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 277 133 2 3;
-#X msg 211 132 set 10 2;
+#X msg 275 133 2 3;
+#X msg 209 132 set 10 2;
 #X text 104 300 set <anything>;
 #X text 140 283 anything;
 #X text 141 339 anything;
@@ -52,22 +51,25 @@
 #X text 201 300 - set any input message without output;
 #X text 201 266 - outputs last stored values;
 #X text 201 283 -;
-#X obj 157 40 cnv 4 4 4 empty empty hot 0 28 2 18 -233017 -1 0;
-#X text 58 94 [hot] outputs messages when any inlet gets a message
-\, making them all hot.;
-#X obj 359 220 else/display 4;
-#X obj 300 220 else/display 4;
-#X obj 242 220 else/display 4;
-#X text 193 372 sets the number of inlets/outlets (default 2 \, max
-128);
+#X obj 154 40 cnv 4 4 4 empty empty hot 0 28 2 18 -233017 -1 0;
+#X obj 298 220 else/display 4;
+#X obj 240 220 else/display 4;
 #X text 213 283 any messages go to the corresponding outlet.;
-#X obj 242 195 else/hot 3, f 20;
-#X connect 22 0 42 0;
-#X connect 23 0 42 1;
-#X connect 24 0 42 2;
-#X connect 25 0 42 0;
-#X connect 26 0 42 1;
-#X connect 27 0 42 0;
-#X connect 42 0 39 0;
-#X connect 42 1 38 0;
-#X connect 42 2 37 0;
+#X obj 240 195 else/hot 3, f 20;
+#X text 67 87 [hot] outputs messages when any inlet gets a message
+\, making them all hot. Output is from right to left.;
+#X text 193 372 sets 'n' number of inlets/outlets (default 2 \, max
+128);
+#X symbolatom 357 161 10 0 0 0 - - -, f 10;
+#X obj 357 220 else/display;
+#X msg 340 136 hi;
+#X connect 22 0 38 0;
+#X connect 23 0 38 1;
+#X connect 24 0 38 0;
+#X connect 25 0 38 1;
+#X connect 26 0 38 0;
+#X connect 38 0 36 0;
+#X connect 38 1 35 0;
+#X connect 38 2 42 0;
+#X connect 41 0 38 2;
+#X connect 43 0 38 2;
