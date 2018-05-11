@@ -24,7 +24,7 @@ link.class.sources := classes/link.c
 colors.class.sources := classes/colors.c
 
 # Soon to be GUI?s
-message.class.sources := classes/message.c
+# message.class.sources := classes/message.c
 
 # control:
 suspedal.class.sources := classes/suspedal.c
