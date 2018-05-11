@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (208 objects):
+##Current Object list (210 objects):
 
 **MESSAGE MANAGEMENT: [13]**
 - [break] 
@@ -263,7 +263,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
  - [impseq~]
  - [lfo]
  
- **TRIGGERS: [19]**
+ **TRIGGERS: [21]**
 - [coin~]
 - [dust~]
 - [dust2~]
@@ -275,6 +275,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [pulsecount~]
 - [pulsediv~]
 - [sh~]
+- [schmitt]
+- [schmitt~]
 - [trig.delay~]
 - [trig.delay2~]
 - [togedge~]

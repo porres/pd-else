@@ -20,8 +20,9 @@ vinlet.class.sources := classes/vinlet.c
 
 # GUI:
 keyboard.class.sources := classes/keyboard.c
-link.class.sources := classes/link.c
+openfile.class.sources := classes/openfile.c
 colors.class.sources := classes/colors.c
+pic.class.sources := classes/pic.c
 
 # Soon to be GUI?s
 # message.class.sources := classes/message.c
@@ -29,7 +30,6 @@ colors.class.sources := classes/colors.c
 # control:
 suspedal.class.sources := classes/suspedal.c
 voices.class.sources := classes/voices.c
-pic.class.sources := classes/pic.c
 args.class.sources := classes/args.c
 click.class.sources := classes/click.c
 properties.class.sources := classes/properties.c
@@ -40,8 +40,8 @@ dir.class.sources := classes/dir.c
 hot.class.sources := classes/hot.c
 hz2rad.class.sources := classes/hz2rad.c
 lb.class.sources := classes/lb.c
-float2bits.class.sources := classes/float2bits.c
 loadbanger.class.sources := classes/loadbanger.c
+float2bits.class.sources := classes/float2bits.c
 pack2.class.sources := classes/pack2.c
 quantizer.class.sources := classes/quantizer.c
 randf.class.sources := classes/randf.c
@@ -144,6 +144,7 @@ resonant2~.class.sources := classes/resonant2~.c
 rms~.class.sources := classes/rms~.c
 rotate~.class.sources := classes/rotate~.c
 sh~.class.sources := classes/sh~.c
+schmitt~.class.sources := classes/schmitt~.c
 stepnoise~.class.sources := classes/stepnoise~.c
 step~.class.sources := classes/step~.c
 sin~.class.sources := classes/sin~.c
