@@ -314,7 +314,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [mix2~]
 - [mix4~]
 - [setdsp~]
-- [link]
+- [openfile]
 
 **EXTRA: [1]**
 - [output~]
