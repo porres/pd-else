@@ -35,7 +35,7 @@ void cents2ratio_set(t_cents2ratio *x, t_float f){
 }
 
 void cents2ratio_bang(t_cents2ratio *x){
-  outlet_float(x->x_outlet,convert(x->x_f));
+  outlet_float(x->x_outlet, convert(x->x_f));
 }
 
 void *cents2ratio_new(t_floatarg f){
