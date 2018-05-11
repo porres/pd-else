@@ -114,6 +114,7 @@ logistic~.class.sources := classes/logistic~.c
 loop.class.sources := classes/loop.c
 lowpass~.class.sources := classes/lowpass~.c
 lowshelf~.class.sources := classes/lowshelf~.c
+mrms~.class.sources := classes/mrms~.c
 mtx~.class.sources := classes/mtx~.c
 match~.class.sources := classes/match~.c
 mavg~.class.sources := classes/mavg~.c

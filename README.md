@@ -66,7 +66,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (210 objects):
+##Current Object list (211 objects):
 
 **MESSAGE MANAGEMENT: [13]**
 - [break] 
@@ -286,7 +286,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [trig2bang~]
 - [trighold~]
 
-**SIGNAL ANALYSIS: [10]**
+**SIGNAL ANALYSIS: [11]**
 - [changed~]
 - [changed2~]
 - [elapsed~]
@@ -294,6 +294,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [median~]
 - [peak~]
 - [rms~]
+- [mrms~]
 - [vu~]
 - [past~]
 - [zerocross~]
