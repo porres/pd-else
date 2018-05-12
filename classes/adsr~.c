@@ -10,6 +10,7 @@ typedef struct _adsr{
     t_inlet  *x_inlet_sustain;
     t_inlet  *x_inlet_release;
     t_float  x_f_gate;
+    t_float  x_last_gate;
     t_int    x_status;
     t_float  x_last;
     t_float  x_target;
@@ -19,16 +20,29 @@ typedef struct _adsr{
     double   x_incr;
     int      x_nleft;
     int      x_gate_status;
-} t_adsr;
+    int      x_retrigger;
+}t_adsr;
 
 
 static t_class *adsr_class;
 
-static void adsr_float(t_adsr *x, t_floatarg f){
-    if(f != 0 && !x->x_status) { // on
+static void adsr_bang(t_adsr *x){
+    x->x_f_gate = x->x_last_gate;
+    if(!x->x_status) // trigger it on
         outlet_float(x->x_out2, x->x_status = 1);
-    }
+    else
+        x->x_retrigger = 1;
+}
+
+static void adsr_float(t_adsr *x, t_floatarg f){
     x->x_f_gate = f;
+    if(x->x_f_gate != 0){
+        x->x_last_gate = x->x_f_gate;
+        if(!x->x_status) // trigger it on
+            outlet_float(x->x_out2, x->x_status = 1);
+        else
+            x->x_retrigger = 1;
+    }
 }
 
 static t_int *adsr_perform(t_int *w){
@@ -52,22 +66,30 @@ static t_int *adsr_perform(t_int *w){
         t_float decay = *in3++;
         t_float sustain_point = *in4++;
         t_float release = *in5++;
-        t_int audio_gate = (input_gate != 0);
-// get 'n' and clip to 1, set coefs
+// get & clip 'n'; set a/d/r coefs
         t_float n_attack = roundf(attack * x->x_sr_khz);
         if(n_attack < 1)
-            (n_attack) = 1;
+            n_attack = 1;
         double coef_a = 1. / n_attack;
         t_float n_decay = roundf(decay * x->x_sr_khz);
         if(n_decay < 1)
-            (n_decay) = 1;
+            n_decay = 1;
         double coef_d = 1. / n_decay;
         t_float n_release = roundf(release * x->x_sr_khz);
         if(n_release < 1)
-            (n_release) = 1;
+            n_release = 1;
         double coef_r = 1. / n_release;
-// Get incr & nleft values!
-        if((audio_gate || (x->x_f_gate != 0)) != gate_status){ // gate status change
+// Gate status / get incr & nleft values!
+        t_int audio_gate = (input_gate != 0);
+        t_int control_gate = (x->x_f_gate != 0);
+        if(x->x_retrigger){
+            target = x->x_f_gate;
+            incr = (target - last) * coef_a;
+            nleft = n_attack + n_decay;
+            x->x_retrigger = 0;
+            gate_status = 1;
+        }
+        else if((audio_gate || control_gate) != gate_status){ // status changed
             gate_status = audio_gate || x->x_f_gate;
             target = x->x_f_gate != 0 ? x->x_f_gate : input_gate;
             if(gate_status){ // if gate opened
@@ -84,7 +106,7 @@ static t_int *adsr_perform(t_int *w){
 // "attack + decay + sustain" phase
         if(gate_status){
             if(nleft > 0){ // "attack + decay" not over
-                if (nleft <= n_decay) // attack is over, update incr
+                if(nleft <= n_decay) // attack is over, update incr
                     incr = ((target * sustain_point) - target) * coef_d;
                 *out++ = last += incr;
                 nleft--;
@@ -129,6 +151,7 @@ static void *adsr_new(t_floatarg a, t_floatarg d, t_floatarg s, t_floatarg r){
     x->x_incr = 0.;
     x->x_nleft = 0;
     x->x_gate_status = 0;
+    x->x_last_gate = 1;
     x->x_inlet_attack = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_attack, a);
     x->x_inlet_decay = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -148,4 +171,5 @@ void adsr_tilde_setup(void){
     class_addmethod(adsr_class, nullfn, gensym("signal"), 0);
     class_addmethod(adsr_class, (t_method) adsr_dsp, gensym("dsp"), A_CANT, 0);
     class_addfloat(adsr_class, (t_method)adsr_float);
+    class_addbang(adsr_class, (t_method)adsr_bang);
 }
