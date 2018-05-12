@@ -1,0 +1,86 @@
+#N canvas 692 43 567 564 10;
+#X obj 3 526 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 3 211 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 385 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 439 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 100 362 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 101 393 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 100 220 cnv 17 3 137 empty empty 0 5 9 0 16 -228856 -162280
+0;
+#X obj 3 5 cnv 15 301 42 empty empty count 20 20 2 37 -233017 -1 0
+;
+#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 5 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 5 pd;
+#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 42 cnv 4 4 4 empty empty A 0 28 2 18 -233017 -1 0;
+#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 44 42 cnv 4 4 4 empty empty counter 0 28 2 18 -233017 -1 0;
+#X obj 221 125 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 221 178 else/display;
+#X text 167 364 list;
+#X text 157 394 float;
+#X text 208 394 - count;
+#X text 165 217 bang;
+#X text 207 365 - updates arguments, f 55;
+#X text 133 447 1) list -;
+#X text 198 446 1 float: max / 2 floats: min & max / 3 floats: min
+\, max & reset point, f 36;
+#X text 208 216 - count, f 55;
+#X text 159 231 float;
+#X text 208 230 - set new count value and output it, f 55;
+#X text 111 259 reset <float>;
+#X text 208 258 -;
+#X text 220 258 without float \, resets to the reset point \, but a
+float sets a new reset point as well, f 53;
+#X text 123 245 set <float>;
+#X text 208 244 - sets new count value, f 55;
+#X obj 290 181 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 123 284 max <float>;
+#X text 208 283 - sets maximum value, f 55;
+#X text 123 298 min <float>;
+#X text 208 297 - sets minimum value, f 55;
+#X text 177 312 up;
+#X text 208 312 - sets count direction upwards, f 55;
+#X text 165 327 down;
+#X text 208 327 - sets count direction downwards, f 55;
+#X text 123 342 alt <float>;
+#X obj 101 415 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 163 416 bang;
+#X text 208 416 - bang when reaching vount limits;
+#X obj 3 477 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 144 485 -down - sets to count downwards mode;
+#X text 150 500 -alt - sets to alternating mode;
+#X text 208 341 - non-0 sets to alternating mode (between up/down)
+, f 55;
+#X text 68 87 [count] counts and wraps beteen a minimum and maximum
+value. It has modes for counting up \, down and alternating between
+them., f 63;
+#X obj 221 149 else/count 4;
+#X connect 19 0 54 0;
+#X connect 54 0 20 0;
+#X connect 54 1 36 0;
