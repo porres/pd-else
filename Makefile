@@ -202,6 +202,7 @@ datafiles = \
 $(wildcard help/*.pd) \
 $(wildcard help/Abstractions/*.pd) \
 $(wildcard help/*.wav) \
+$(wildcard help/*.gif) \
 $(wildcard *.txt) \
 else-meta.pd \
 README.pdf

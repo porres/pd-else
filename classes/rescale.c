@@ -32,9 +32,9 @@ void rescale_factor(t_rescale *x, t_floatarg f);
 void rescale_classic(t_rescale *x, t_floatarg f);
 void rescale_set(t_rescale *x, t_floatarg f);
 
-t_float scaling(t_rescale *x, t_float f);
-t_float exp_scaling(t_rescale *x, t_float f);
-t_float (*ptrtoscaling)(t_rescale *x,t_float f);
+static t_float scaling(t_rescale *x, t_float f);
+static t_float exp_scaling(t_rescale *x, t_float f);
+static t_float (*ptrtoscaling)(t_rescale *x,t_float f);
 void check(t_rescale *x);
 
 void *rescale_new(t_symbol *s, int argc, t_atom *argv)
@@ -123,14 +123,14 @@ void rescale_ft(t_rescale *x, t_floatarg f)
   return;
 }
 
-t_float scaling(t_rescale *x, t_float f)
+static t_float scaling(t_rescale *x, t_float f)
 {
   f = (x->maxout - x->minout)*(f-x->minin)/(x->maxin-x->minin) + x->minout;
   f = f < x->minout ? x->minout : f > x->maxout ? x->maxout : f;
   return f;
 }
 
-t_float exp_scaling(t_rescale *x, t_float f)
+static t_float exp_scaling(t_rescale *x, t_float f)
 {
   f = ((f-x->minin)/(x->maxin-x->minin) == 0) 
     ? x->minout : (((f-x->minin)/(x->maxin-x->minin)) > 0) 
