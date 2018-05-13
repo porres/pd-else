@@ -13,7 +13,7 @@ typedef struct _cents2ratio{
   t_float       x_f;
 }t_cents2ratio;
 
-t_float convert(t_float f){
+static t_float convert(t_float f){
     return pow(2, (f/1200));
 }
 

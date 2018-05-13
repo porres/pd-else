@@ -29,7 +29,7 @@ void ratio2cents_float(t_ratio2cents *x, t_floatarg f)
   outlet_float(x->float_outlet, convert(f));
 }
 
-t_float convert(t_float f)
+static t_float convert(t_float f)
 {
     if(f<0.f)
     f = 0.f;

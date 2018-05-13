@@ -39,61 +39,56 @@ void check(t_rescale *x);
 
 void *rescale_new(t_symbol *s, int argc, t_atom *argv)
 {
-  t_rescale *x = (t_rescale *)pd_new(rescale_class);
-  x->float_outlet = outlet_new(&x->obj, 0);
-  floatinlet_new(&x->obj,&x->minout);
-  floatinlet_new(&x->obj,&x->maxout);
-  x->minin = 0;
-  x->maxin = 127;
-  x->minout = 0;
-  x->maxout = 1;
-  x->flag = 0;
-  x->expo = 1.f;
-  t_int numargs = 0;
-  t_float tmp = -1.f;
-
-  while(argc>0) {
-    t_symbol *firstarg = atom_getsymbolarg(0,argc,argv);
-    if(firstarg==&s_){
-      switch(numargs) {
-      case 0:
-	x->minout = atom_getfloatarg(0,argc,argv);
-	numargs++;
-	argc--;
-	argv++;
-	break;
-      case 1:
-	x->maxout = atom_getfloatarg(0,argc,argv);
-	numargs++;
-	argc--;
-	argv++;
-	break;
-      case 2:
-	tmp = atom_getfloatarg(0,argc,argv);
-	numargs++;
-	argc--;
-	argv++;
-	break;
-      default:
-	argc--;
-	argv++;
-      }
+    t_rescale *x = (t_rescale *)pd_new(rescale_class);
+    x->float_outlet = outlet_new(&x->obj, 0);
+    floatinlet_new(&x->obj,&x->minout);
+    floatinlet_new(&x->obj,&x->maxout);
+    x->minin = 0;
+    x->maxin = 127;
+    x->minout = 0;
+    x->maxout = 1;
+    x->flag = 0;
+    x->expo = 1.f;
+    t_int numargs = 0;
+    t_float tmp = -1.f;
+    while(argc>0) {
+        t_symbol *firstarg = atom_getsymbolarg(0,argc,argv);
+        if(firstarg==&s_){
+            switch(numargs) {
+                case 0:
+                    x->minout = atom_getfloatarg(0,argc,argv);
+                    numargs++;
+                    argc--;
+                    argv++;
+                    break;
+                case 1:
+                    x->maxout = atom_getfloatarg(0,argc,argv);
+                    numargs++;
+                    argc--;
+                    argv++;
+                    break;
+                case 2:
+                    tmp = atom_getfloatarg(0,argc,argv);
+                    numargs++;
+                    argc--;
+                    argv++;
+                    break;
+                default:
+                    argc--;
+                    argv++;
+            }
+        }
     }
+    if(tmp!=-1) {
+        x->expo = ((tmp<0.f) ? 0.f : tmp);
   }
-
-
-  if(tmp!=-1) {
-    x->expo = ((tmp<0.f) ? 0.f : tmp);
-  }
-  
   x->ac = 1;
   x->a_bytes = x->ac*sizeof(t_atom);
   x->output_list = (t_atom *)getbytes(x->a_bytes);
   if(x->output_list==NULL) {
-    pd_error(x,"rescale: memory allocation failure");
-    return NULL;
+      pd_error(x,"rescale: memory allocation failure");
+      return NULL;
   }
-  
   return (x);
 }
 

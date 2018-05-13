@@ -29,12 +29,10 @@ void hz2rad_float(t_hz2rad *x, t_floatarg f)
   outlet_float(x->float_outlet, convert(x,f));
 }
 
-t_float convert(t_hz2rad *x, t_float f)
+static t_float convert(t_hz2rad *x, t_float f)
 {
     return f * x->x_radps;
 }
-
-
 
 void hz2rad_list(t_hz2rad *x, t_symbol *s, int argc, t_atom *argv)
 {
