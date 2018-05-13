@@ -1,52 +1,61 @@
-// matt barber and porres (2017)
+// matt barber and porres (2017-2018)
 // based on SuperCollider's GrayNoise UGen
 
 #include "m_pd.h"
+#include "random.h"
 
 static t_class *gray_class;
 
 typedef struct _gray{
     t_object  x_obj;
-    int x_val;
     int x_base;
+    t_random_state x_rstate;
     t_outlet *x_outlet;
+
 } t_gray;
 
 static void gray_float(t_gray *x, t_floatarg f){
-    x->x_val = x->x_base = f;
+    random_init(&x->x_rstate, f);
+    x->x_base = x->x_rstate.s1 ^ x->x_rstate.s2 ^ x->x_rstate.s3;
 }
 
 static t_int *gray_perform(t_int *w){
     t_gray *x = (t_gray *)(w[1]);
     int n = (t_int)(w[2]);
-    int *vp = (int *)(w[3]);
+    t_random_state *rstate = (t_random_state *)(w[3]);
     t_sample *out = (t_sample *)(w[4]);
-    int val = *vp;
     int base = x->x_base;
-    while(n--){
+    uint32_t *s1 = &rstate->s1;
+    uint32_t *s2 = &rstate->s2;
+    uint32_t *s3 = &rstate->s3;
+    /*while(n--){
         t_float noise = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(16.0 / 0x40000000);
         val = val * 435898247 + 382842987;
         int shift = (int)(noise + 16.0);
         shift = (shift == 32 ? 31 : shift); // random numbers from 0 - 31
         base ^= 1L << shift;
         *out++ = base * 4.65661287308e-10f; // That's 1/(2^31), so normalizes the int to 1.0
-    }
-    *vp = val;
+    }    */
+    while(n--){
+    	base ^= 1L << (random_trand(s1, s2, s3) & 31);
+    	*out++ = base * 4.65661287308e-10f; // That's 1/(2^31), so normalizes the int to 1.0
+	}
     x->x_base = base;
     return (w + 5);
 }
 
 static void gray_dsp(t_gray *x, t_signal **sp){
-    dsp_add(gray_perform, 4, x, sp[0]->s_n, &x->x_val, sp[0]->s_vec);
+    dsp_add(gray_perform, 4, x, sp[0]->s_n, &x->x_rstate, sp[0]->s_vec);
 }
 
 static void *gray_new(t_symbol *s, int ac, t_atom *av){
     t_gray *x = (t_gray *)pd_new(gray_class);
-    static int init = 307;
-    x->x_val = x->x_base = (init *= 1319);
-    if(ac)
-        if(av->a_type == A_FLOAT)
-            x->x_val = x->x_base = atom_getfloatarg(0, ac, av) * 1319;
+    static int seed = 1;
+    if ((ac) && (av->a_type == A_FLOAT))
+        random_init(&x->x_rstate, atom_getfloatarg(0, ac, av));
+    else
+    	random_init(&x->x_rstate, seed++);
+    x->x_base = x->x_rstate.s1 ^ x->x_rstate.s2 ^ x->x_rstate.s3;
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return(x);
 }

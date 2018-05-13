@@ -68,7 +68,6 @@ bandpass~.class.sources := classes/bandpass~.c
 bandstop~.class.sources := classes/bandstop~.c
 bicoeff.class.sources := classes/bicoeff.c
 biquads~.class.sources := classes/biquads~.c
-brown~.class.sources := classes/brown~.c
 ceil.class.sources := classes/ceil.c
 ceil~.class.sources := classes/ceil~.c
 cents2ratio~.class.sources := classes/cents2ratio~.c
@@ -97,7 +96,6 @@ gbman~.class.sources := classes/gbman~.c
 gate2imp~.class.sources := classes/gate2imp~.c
 glide~.class.sources := classes/glide~.c
 glide2~.class.sources := classes/glide2~.c
-gray~.class.sources := classes/gray~.c
 henon~.class.sources := classes/henon~.c
 highpass~.class.sources := classes/highpass~.c
 highshelf~.class.sources := classes/highshelf~.c
@@ -126,7 +124,6 @@ pan4~.class.sources := classes/pan4~.c
 peak~.class.sources := classes/peak~.c
 pluck~.class.sources := classes/pluck~.c
 pmosc~.class.sources := classes/pmosc~.c
-pinknoise~.class.sources := classes/pinknoise~.c
 pulsecount~.class.sources := classes/pulsecount~.c
 pulsediv~.class.sources := classes/pulsediv~.c
 quad~.class.sources := classes/quad~.c
@@ -193,6 +190,10 @@ magic := shared/magic.c
 gui := shared/gui.c
     window.class.sources := classes/window.c $(gui)
 
+noise := shared/random.c
+    brown~.class.sources := classes/brown~.c $(noise)
+    gray~.class.sources := classes/gray~.c $(noise)
+    pinknoise~.class.sources := classes/pinknoise~.c $(noise)
 
 #########################################################################
 
