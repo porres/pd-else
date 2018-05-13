@@ -1,184 +1,146 @@
-// porres 2017
-
-#include <string.h>
-
+// Porres 2016
+ 
 #include "m_pd.h"
 #include <math.h>
 
 static t_class *rescale_class;
 
-typedef struct _rescale
-{
-  t_object obj; /* object header */
-  t_float in; /* stored input value */
-  t_outlet *float_outlet;
-  t_float minin;
-  t_float maxin;
-  t_float minout;
-  t_float maxout;
-  t_float expo;
-  t_atom *output_list; /* for list output */
-  t_int a_bytes;
-  t_int flag;
-  t_int ac;
-} t_rescale;
+typedef struct _rescale{
+    t_object    x_obj;
+    t_outlet   *x_outlet;
+    t_atom     *x_at;
+    t_int       x_bytes;
+    t_float     x_f;
+    t_float     x_minin;
+    t_float     x_maxin;
+    t_float     x_minout;
+    t_float     x_maxout;
+    t_float     x_exp;
+}t_rescale;
 
-void *rescale_new(t_symbol *s, int argc, t_atom *argv);
-void rescale_ft(t_rescale *x, t_floatarg f);
-void rescale_bang(t_rescale *x);
-void rescale_list(t_rescale *x, t_symbol *s, int argc, t_atom *argv);
-void rescale_free(t_rescale *x);
-void rescale_factor(t_rescale *x, t_floatarg f);
-void rescale_classic(t_rescale *x, t_floatarg f);
-void rescale_set(t_rescale *x, t_floatarg f);
+static t_float convert(t_rescale *x, t_float f){
+    t_float minin = x->x_minin;
+    t_float minout = x->x_minout;
+    t_float rangein = x->x_maxin - minin;
+    t_float rangeout = x->x_maxout - minout;
+    t_float exp = x->x_exp;
+    return (f-minin) == 0 ? minout :
+        (f-minin)/rangein > 0 ?
+        minout + rangeout * pow((f-minin)/rangein, exp) :
+        minout + rangeout * -pow((minin-f)/rangein, exp);
+}
 
-static t_float scaling(t_rescale *x, t_float f);
-static t_float exp_scaling(t_rescale *x, t_float f);
-static t_float (*ptrtoscaling)(t_rescale *x,t_float f);
-void check(t_rescale *x);
+void rescale_bang(t_rescale *x){
+    outlet_float(x->x_outlet, convert(x, x->x_f));
+}
 
-void *rescale_new(t_symbol *s, int argc, t_atom *argv)
-{
+void rescale_float(t_rescale *x, t_floatarg f){
+    outlet_float(x->x_outlet, convert(x, x->x_f = f));
+}
+
+void rescale_list(t_rescale *x, t_symbol *s, int ac, t_atom *av){
+    int old_bytes = x->x_bytes, i = 0;
+    x->x_bytes = ac*sizeof(t_atom);
+    x->x_at = (t_atom *)t_resizebytes(x->x_at, old_bytes, x->x_bytes);
+    for(i = 0; i < ac; i++)
+        SETFLOAT(x->x_at+i, convert(x, atom_getfloatarg(i, ac, av)));
+    outlet_list(x->x_outlet, 0, ac, x->x_at);
+}
+
+void rescale_set(t_rescale *x, t_float f){
+    x->x_f = f;
+}
+
+void rescale_exp(t_rescale *x, t_floatarg f){
+    x->x_exp = f < 0. ? 0. : f;
+}
+
+void rescale_free(t_rescale *x){
+    t_freebytes(x->x_at, x->x_bytes);
+}
+
+void *rescale_new(t_symbol *s, int ac, t_atom *av){
     t_rescale *x = (t_rescale *)pd_new(rescale_class);
-    x->float_outlet = outlet_new(&x->obj, 0);
-    floatinlet_new(&x->obj,&x->minout);
-    floatinlet_new(&x->obj,&x->maxout);
-    x->minin = 0;
-    x->maxin = 127;
-    x->minout = 0;
-    x->maxout = 1;
-    x->flag = 0;
-    x->expo = 1.f;
+    x->x_minin = 0;
+    x->x_maxin = 127;
+    x->x_minout = 0;
+    x->x_maxout = 1;
+    x->x_exp = 1.f;
     t_int numargs = 0;
-    t_float tmp = -1.f;
-    while(argc>0) {
-        t_symbol *firstarg = atom_getsymbolarg(0,argc,argv);
-        if(firstarg==&s_){
-            switch(numargs) {
-                case 0:
-                    x->minout = atom_getfloatarg(0,argc,argv);
-                    numargs++;
-                    argc--;
-                    argv++;
-                    break;
-                case 1:
-                    x->maxout = atom_getfloatarg(0,argc,argv);
-                    numargs++;
-                    argc--;
-                    argv++;
-                    break;
-                case 2:
-                    tmp = atom_getfloatarg(0,argc,argv);
-                    numargs++;
-                    argc--;
-                    argv++;
-                    break;
-                default:
-                    argc--;
-                    argv++;
+    if(ac > 0){
+        numargs = ac;
+        t_int argnum = 0;
+        if(ac <= 3){
+            while(ac){
+                t_float argval = atom_getfloatarg(0, ac, av);
+                switch(argnum){
+                    case 0:
+                        x->x_minout = argval;
+                        break;
+                    case 1:
+                        x->x_maxout = argval;
+                        break;
+                    case 2:
+                        x->x_exp = argval < 0 ? 0 : argval;
+                        break;
+                    default:
+                        break;
+                };
+                argnum++;
+                ac--;
+                av++;
+            }
+        }
+        else{ // ac =4 || 5
+            while(ac){
+                t_float argval = atom_getfloatarg(0, ac, av);
+                switch(argnum){
+                    case 0:
+                        x->x_minin = argval;
+                        break;
+                    case 1:
+                        x->x_maxin = argval;
+                        break;
+                    case 2:
+                        x->x_minout = argval;
+                        break;
+                    case 3:
+                        x->x_maxout = argval;
+                        break;
+                    case 4:
+                        x->x_exp = argval < 0 ? 0 : argval;
+                        break;
+                    default:
+                        break;
+                };
+                argnum++;
+                ac--;
+                av++;
             }
         }
     }
-    if(tmp!=-1) {
-        x->expo = ((tmp<0.f) ? 0.f : tmp);
-  }
-  x->ac = 1;
-  x->a_bytes = x->ac*sizeof(t_atom);
-  x->output_list = (t_atom *)getbytes(x->a_bytes);
-  if(x->output_list==NULL) {
-      pd_error(x,"rescale: memory allocation failure");
-      return NULL;
-  }
-  return (x);
+    x->x_bytes = sizeof(t_atom);
+    x->x_at = (t_atom *)getbytes(x->x_bytes);
+    x->x_outlet = outlet_new(&x->x_obj, 0);
+    if(numargs <= 3){
+        floatinlet_new(&x->x_obj, &x->x_minout);
+        floatinlet_new(&x->x_obj, &x->x_maxout);
+    }
+    else{
+        floatinlet_new(&x->x_obj, &x->x_minin);
+        floatinlet_new(&x->x_obj, &x->x_maxin);
+        floatinlet_new(&x->x_obj, &x->x_minout);
+        floatinlet_new(&x->x_obj, &x->x_maxout);
+    }
+    return (x);
 }
 
-void rescale_setup(void)
-{
-  t_class *c;
-  rescale_class = class_new(gensym("rescale"), (t_newmethod)rescale_new,
-			  (t_method)rescale_free,sizeof(t_rescale),0,A_GIMME,0);
-  c = rescale_class;
-  class_addfloat(c,(t_method)rescale_ft);
-  class_addbang(c,(t_method)rescale_bang);
-  class_addlist(c,(t_method)rescale_list);
-  class_addmethod(c,(t_method)rescale_factor, gensym("factor"), A_DEFFLOAT, 0);
-  class_addmethod(c,(t_method)rescale_set, gensym("set"), A_DEFFLOAT, 0);
-}
-
-
-void rescale_ft(t_rescale *x, t_floatarg f)
-{
-  if(f < 0) f = 0;
-  if(f > 127) f = 127;
-  x->in = f;
-  check(x);
-  t_float temp = ptrtoscaling(x, f);
-  SETFLOAT(x->output_list, temp);
-  outlet_list(x->float_outlet, 0, x->ac, x->output_list);
-  return;
-}
-
-static t_float scaling(t_rescale *x, t_float f)
-{
-  f = (x->maxout - x->minout)*(f-x->minin)/(x->maxin-x->minin) + x->minout;
-  f = f < x->minout ? x->minout : f > x->maxout ? x->maxout : f;
-  return f;
-}
-
-static t_float exp_scaling(t_rescale *x, t_float f)
-{
-  f = ((f-x->minin)/(x->maxin-x->minin) == 0) 
-    ? x->minout : (((f-x->minin)/(x->maxin-x->minin)) > 0) 
-    ? (x->minout + (x->maxout-x->minout) * pow((f-x->minin)/(x->maxin-x->minin),x->expo)) 
-    : ( x->minout + (x->maxout-x->minout) * -(pow(((-f+x->minin)/(x->maxin-x->minin)),x->expo)));
-    f = f < x->minout ? x->minout : f > x->maxout ? x->maxout : f;
-  return f;
-}
-
-void rescale_bang(t_rescale *x)
-{
-  rescale_ft(x, x->in);
-  return;
-}
-
-void rescale_list(t_rescale *x, t_symbol *s, int argc, t_atom *argv)
-{
-  int i = 0;
-  int old_a = x->a_bytes;
-  x->ac = argc;
-  x->a_bytes = argc*sizeof(t_atom);
-  x->output_list = (t_atom *)t_resizebytes(x->output_list,old_a,x->a_bytes);
-  check(x);
-    x->in = atom_getfloatarg(0, argc, argv);
-    x->in = x->in < 0 ? 0 : x->in > 127 ? 127 : x->in;
-  for(i=0;i<argc;i++)
-    SETFLOAT(x->output_list+i, ptrtoscaling(x, atom_getfloatarg(i, argc, argv)));
-  outlet_list(x->float_outlet,0,argc,x->output_list);
-  return;
-}
-
-void rescale_set(t_rescale *x, t_float f)
-{
-    x->in = f;
-    if(x->in < 0) x->in = 0;
-    if(x->in > 127) x->in = 127;
-}
-
-void rescale_factor(t_rescale *x, t_floatarg f)
-{
-  x->expo = f < 0. ? 0. : f;
-  return;
-}
-
-void check(t_rescale *x)
-{
-  if(x->expo==1)
-    ptrtoscaling = scaling;
-  else ptrtoscaling = exp_scaling;
-  return;
-}
-
-void rescale_free(t_rescale *x)
-{
-  t_freebytes(x->output_list,x->a_bytes);
+void rescale_setup(void){
+    rescale_class = class_new(gensym("rescale"), (t_newmethod)rescale_new,
+            (t_method)rescale_free, sizeof(t_rescale), 0, A_GIMME, 0);
+    class_addfloat(rescale_class, (t_method)rescale_float);
+    class_addlist(rescale_class, (t_method)rescale_list);
+    class_addbang(rescale_class, (t_method)rescale_bang);
+    class_addmethod(rescale_class, (t_method)rescale_set, gensym("set"), A_DEFFLOAT,0 );
+    class_addmethod(rescale_class, (t_method)rescale_exp, gensym("exp"), A_DEFFLOAT, 0);
 }
