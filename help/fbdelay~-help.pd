@@ -1,4 +1,4 @@
-#N canvas 204 52 568 668 10;
+#N canvas 564 76 568 668 10;
 #X obj 2 4 cnv 15 301 42 empty empty fbdelay~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -131,9 +131,9 @@ in energy (but you can change this parameter to a gain coefficient).
 #X obj 178 186 *~;
 #X obj 178 258 else/out~;
 #X obj 307 201 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 44100 256;
+-228856 -1 -1 0 256;
 #X obj 242 179 nbx 3 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 100 256;
+-1 -1 0 256;
 #X text 285 178 Delay time (ms);
 #X obj 193 154 else/pulse~ 1;
 #X obj 2 319 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -166,7 +166,7 @@ value if given), f 46;
 #X text 220 608 -;
 #X text 180 607 -gain;
 #X text 234 607 sets feedback mode to gain;
-#N canvas 499 146 858 345 size 1;
+#N canvas 499 146 858 345 size 0;
 #X text 448 48 Alternatively \, with the -samps flag \, you can set
 it to operate in time units specified by the number of samples. In
 the same way \, this affects both delay time and delay size., f 64
