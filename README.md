@@ -26,7 +26,7 @@ This project is still in a beta phase, where drastic changes may occur and backw
 
 Special thanks to Flávio Luis Schiavoni, for helping me out in a few things, teaching me how to code and contributing to this library with the objects: [median~] and [keyboard]. 
 
-I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also contributing with the [float2bits] and [gray~] objects.
+I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also contributing with the [float2bits], [brown~],  [gray~] and [pinknoise~] objects.
 
 --------------------------------------------------------------------------
 
