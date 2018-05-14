@@ -117,7 +117,7 @@ amplitude.;
 #X obj 195 246 display;
 #X obj 268 246 display;
 #X obj 330 159 tgl 22 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
-1 1;
+0 1;
 #X obj 169 135 else/display;
 #X text 328 142 On/Off;
 #X obj 169 165 makenote 127 150;
@@ -127,7 +127,7 @@ amplitude.;
 #X text 143 280 open =>;
 #N canvas 179 291 434 315 voice1 0;
 #X obj 73 46 inlet;
-#X obj 265 158 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 265 158 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 265 210 switch~;
 #X obj 163 219 *~;
@@ -186,10 +186,10 @@ object for managing polyphonic synths.;
 #X connect 32 0 23 0;
 #X connect 33 0 31 0;
 #X connect 33 1 31 1;
-#X restore 470 294 pd example;
+#X restore 475 310 pd example;
 #X obj 206 201 else/asr~ 1000 500, f 23;
-#X text 396 338 see also:;
-#X obj 468 337 else/adsr~;
+#X text 344 287 see also:;
+#X obj 341 310 else/adsr~;
 #X text 68 86 [asr~] is a linear attack/sustain/release gated envelope.
 At a gate on value (transition from 0 to any value) \, [asr~] goes
 from 0 to that value at the specified attack time in ms. A gate off
@@ -218,7 +218,7 @@ gate so you can trigger the envelope.;
 #X connect 6 0 3 1;
 #X connect 8 0 9 0;
 #X connect 9 0 0 0;
-#X restore 451 257 pd triggered \; by impulses;
+#X restore 457 275 pd triggered \; by impulses;
 #X obj 131 484 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 212 484 float;
@@ -257,7 +257,30 @@ of a subpatch or abstraction with [switch~].;
 #X connect 13 0 5 0;
 #X connect 13 1 1 0;
 #X connect 14 0 13 0;
-#X restore 476 230 pd status;
+#X restore 481 252 pd status;
+#N canvas 768 211 409 373 fader~ 0;
+#X obj 140 259 *~;
+#X obj 140 294 else/out~;
+#X obj 70 115 else/brown~;
+#X obj 155 84 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 155 228 else/fader~;
+#X msg 200 171 quartic;
+#X msg 209 193 lin;
+#X msg 192 148 sin;
+#X obj 155 112 else/asr~ 1000 1500;
+#X text 20 24 The [fader~] object can be useful for generating non
+linear envelopes from [asr~]'s output.;
+#X connect 0 0 1 0;
+#X connect 0 0 1 1;
+#X connect 2 0 0 0;
+#X connect 3 0 8 0;
+#X connect 4 0 0 1;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 0;
+#X connect 8 0 4 0;
+#X restore 481 334 pd fader~;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;

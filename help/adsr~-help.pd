@@ -1,4 +1,4 @@
-#N canvas 580 150 564 639 10;
+#N canvas 580 111 564 639 10;
 #X obj 5 362 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 491 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -65,7 +65,7 @@
 #X obj 302 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 248 162 attack;
-#N canvas 486 183 815 477 example 1;
+#N canvas 486 183 815 477 example 0;
 #X obj 605 171 else/display~ 7;
 #X obj 459 174 else/display~ 7;
 #X text 665 174 <= gate value;
@@ -90,7 +90,7 @@ amplitude.;
 #X text 88 344 see also:;
 #N canvas 179 291 434 315 voice1 0;
 #X obj 73 46 inlet;
-#X obj 313 163 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 313 163 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 313 215 switch~;
 #X obj 163 219 *~;
@@ -116,7 +116,7 @@ amplitude.;
 #X obj 204 253 display;
 #X obj 277 253 display;
 #X obj 339 171 tgl 22 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
-1 1;
+0 1;
 #X obj 204 225 else/voices 2 1 -retrig 1;
 #X obj 178 142 else/display;
 #X obj 204 199 else/suspedal -retrig 1;
@@ -124,7 +124,7 @@ amplitude.;
 #X obj 178 172 makenote 127 150;
 #N canvas 47 291 438 299 voice2 0;
 #X obj 72 37 inlet;
-#X obj 312 154 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 312 154 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 312 206 switch~;
 #X obj 162 200 *~;
@@ -341,141 +341,28 @@ attack ramp is generated \, then a decay ramp goes to the sustain point
 any value to 0) makes [adsr~] go to 0 at the specified release time
 in ms., f 68;
 #X obj 193 186 sig~;
-#N canvas 486 183 815 451 fader~ 0;
-#X obj 605 171 else/display~ 7;
-#X obj 459 174 else/display~ 7;
-#X text 665 174 <= gate value;
-#X obj 459 220 else/sawtooth~;
-#X obj 553 293 *~;
-#X obj 510 375 else/out~;
-#X obj 605 300 else/display~ 7;
-#X obj 553 333 else/lowpass~ 0 20;
-#X obj 605 272 else/rescale~ 100 1500;
-#X text 667 303 <= cutoff;
-#X text 521 178 <= Hz;
-#X obj 605 102 else/randpulse~ 0.5;
-#X obj 459 148 else/randf~ 50 150;
-#X obj 605 214 else/adsr~ 100 300 0.7 100;
-#X text 425 30 [adsr~] accepts any gate value \, positive or negative
-and above 1 or below -1 \, so you can use it to control anything besides
-amplitude.;
-#X obj 285 382 out~;
-#X obj 328 143 clone;
-#X text 262 144 see also:;
-#X obj 100 230 keyboard 16 80 2 3;
-#N canvas 622 284 477 340 voice1 0;
-#X obj 125 33 inlet;
-#X obj 230 99 / 127;
-#X obj 395 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#N canvas 768 211 409 373 fader~ 1;
+#X obj 140 259 *~;
+#X obj 140 294 else/out~;
+#X obj 70 115 else/brown~;
+#X obj 155 84 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 125 186 *~;
-#X obj 128 247 *~;
-#X obj 395 223 switch~;
-#X obj 125 95 mtof;
-#X obj 253 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
-#X obj 39 185 else/sine~;
-#X obj 125 136 else/sine~;
-#X obj 125 65 unpack float float;
-#X obj 253 179 else/sig2float~;
-#X obj 128 278 throw~ \$0-voice;
-#X obj 39 144 * 1.497;
-#X obj 230 136 else/adsr~ 400 150 0.75 1000;
-#X connect 0 0 10 0;
-#X connect 1 0 14 0;
-#X connect 2 0 5 0;
-#X connect 3 0 8 2;
-#X connect 4 0 12 0;
-#X connect 6 0 9 0;
-#X connect 6 0 13 0;
+#X obj 155 228 else/fader~;
+#X obj 155 112 else/adsr~ 1000 500 0.75 1500;
+#X msg 200 171 quartic;
+#X msg 209 193 lin;
+#X msg 192 148 sin;
+#X text 20 24 The [fader~] object can be useful for generating non
+linear envelopes from [adsr~]'s output.;
+#X connect 0 0 1 0;
+#X connect 0 0 1 1;
+#X connect 2 0 0 0;
+#X connect 3 0 5 0;
+#X connect 4 0 0 1;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 0;
 #X connect 8 0 4 0;
-#X connect 9 0 3 0;
-#X connect 10 0 6 0;
-#X connect 10 1 1 0;
-#X connect 11 0 7 0;
-#X connect 13 0 8 0;
-#X connect 14 0 3 1;
-#X connect 14 0 4 1;
-#X connect 14 0 11 0;
-#X connect 14 1 2 0;
-#X restore 100 400 pd voice1;
-#N canvas 883 119 477 340 voice2 0;
-#X obj 125 33 inlet;
-#X obj 230 99 / 127;
-#X obj 389 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 125 186 *~;
-#X obj 128 247 *~;
-#X obj 389 223 switch~;
-#X obj 125 95 mtof;
-#X obj 253 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
-#X obj 39 185 else/sine~;
-#X obj 125 136 else/sine~;
-#X obj 125 65 unpack float float;
-#X obj 230 136 else/adsr~ 500 200 0.5 1000;
-#X obj 253 179 else/sig2float~;
-#X obj 128 278 throw~ \$0-voice;
-#X obj 39 144 * 1.497;
-#X connect 0 0 10 0;
-#X connect 1 0 11 0;
-#X connect 2 0 5 0;
-#X connect 3 0 8 2;
-#X connect 4 0 13 0;
-#X connect 6 0 9 0;
-#X connect 6 0 14 0;
-#X connect 8 0 4 0;
-#X connect 9 0 3 0;
-#X connect 10 0 6 0;
-#X connect 10 1 1 0;
-#X connect 11 0 3 1;
-#X connect 11 0 4 1;
-#X connect 11 0 12 0;
-#X connect 11 1 2 0;
-#X connect 12 0 7 0;
-#X connect 14 0 8 0;
-#X restore 187 399 pd voice2;
-#X obj 100 142 else/randi 48 72;
-#X obj 100 167 display;
-#X obj 100 97 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 100 119 else/tempo 60 100;
-#X obj 100 200 makenote 127 750;
-#X obj 100 333 else/voices 2 1;
-#X text 26 15 Here we have [keyboard] displaying randomly generated
-notes and driving a [voice] object with 2 voices. Also see that each
-voice subpatch has [adsr~]'s status outlet to control the DSP status
-for that subpatch - open and check it. You should also try pd's [clone]
-object for managing polyphonic synths.;
-#X obj 100 363 display;
-#X obj 187 363 display;
-#X obj 285 339 catch~ \$0-voiced;
-#X connect 0 0 13 0;
-#X connect 1 0 3 0;
-#X connect 3 0 4 0;
-#X connect 4 0 7 0;
-#X connect 6 0 7 1;
-#X connect 7 0 5 1;
-#X connect 7 0 5 0;
-#X connect 8 0 6 0;
-#X connect 11 0 0 0;
-#X connect 11 0 12 0;
-#X connect 12 0 1 0;
-#X connect 13 0 4 1;
-#X connect 13 0 8 0;
-#X connect 18 0 26 0;
-#X connect 21 0 22 0;
-#X connect 22 0 25 0;
-#X connect 23 0 24 0;
-#X connect 24 0 21 0;
-#X connect 25 0 18 0;
-#X connect 25 1 18 1;
-#X connect 26 0 28 0;
-#X connect 26 1 29 0;
-#X connect 28 0 19 0;
-#X connect 29 0 20 0;
-#X connect 30 0 15 0;
-#X connect 30 0 15 1;
 #X restore 490 326 pd fader~;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
