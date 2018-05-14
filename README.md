@@ -30,15 +30,19 @@ I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" 
 
 --------------------------------------------------------------------------
 
-**"EL Locus Solus"** is run by Alexandre Torres Porres, who organizes cultural events/concerts and teaches computer music courses; website: http://alexandre-torres.wixsite.com/el-locus-solus
+**"EL Locus Solus"** is run by me, Alexandre Torres Porres, and is a thing that organizes cultural events/concerts and music technology courses; website: http://alexandre-torres.wixsite.com/el-locus-solus
 
 EL Locus Solus offers a computer music tutorial with examples in Pure Data for its courses. These are in portuguese as of yet, with plans for english translation and formatting into a book. There are over 350 examples for now and they were designed to work with Pd Extended 0.42-5, making extensive use of the existing objects available in Pd Extended's libraries.
 
-Even though extended has quite a large set of external libraries and objects, at some point there was the need of something "else". Thus, this library emerged and EL Locus Solus is now not only offering computer music examples, but also the "ELSE" library, with extra objects for its didactic material and courses.
+Even though Pd Extended's libraries form a large set of external objects, at some point there was the need of something "else". Thus, this library emerged with the goal of provind extra objects. ELSE also started by stealing some ideas and stuff from SuperCollider, such as most of the chaotic generators UGENs. 
 
-ELSE also started by stealing some ideas and stuff from SuperCollider, such as most of the chaotic generators UGENs. But what started as a new library to include missing functionalities in the Pd Ecossystem (Pd Extended mostly) now also grew to encompass functionalities found in other Pd objects/libraries in Pd Extended, but with a different design and more functionalities, in order to remove many dependencies of the didactic material from these old and abandoned libraries. 
+But what started as a new library to include missing functionalities in the Pd Ecossystem (libraries from Pd Extended mostly) has now grown to encompass functionalities found in other Pd objects/libraries in Pd Extended, but with a different design and more functionalities, in order to remove many dependencies of the didactic material from these libraries. The reasons behind this is to rely on as little libraries as possible and also to get rid of many projects that are now long gone abandoned. 
 
-Hence, ELSE is now a place to put any other object I find necessary for my didactic material and work with Pd that is not already in cyclone, another library repository found in Porres' github (https://github.com/porres/pd-cyclone).  
+The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. In fact, the didactic material has become quite obsolete with so much new objects on the table that it'll need a complete rewrite. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects.
+
+I'm also involved in maintaining Cyclone, a legacy library for Pd (see: https://github.com/porres/pd-cyclone). But ELSE is now in the process of superseding even cyclone, at least for the purposes of my didactic material.
+
+Hence, ELSE is now a coming to be a quite big library, and keeps growing and growing, and it will take a while to stabilize. We can say then it's still in an early stage of development, that's why it's still in Beta stage, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. 
 
 --------------------------------------------------------------------------
 
