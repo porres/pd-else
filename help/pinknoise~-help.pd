@@ -32,14 +32,14 @@
 ;
 #X obj 6 336 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 176 311 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 156 311 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 210 311 signal;
-#X text 260 311 - pink noise;
-#X text 206 344 1) float - sets seed, f 45;
-#X obj 177 257 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 190 311 signal;
+#X text 240 311 - pink noise;
+#X text 186 344 1) float - sets seed, f 45;
+#X obj 157 257 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 218 257 float - sets seed;
+#X text 198 257 float - sets seed;
 #N canvas 559 236 694 278 seed 0;
 #X obj 368 144 else/downsample~ 1;
 #X obj 368 188 else/display~;
@@ -76,7 +76,7 @@
 "PinkNoise". Subjectively \, pink noise sounds less hissy than white
 noise. While white noise has constant spectral power per hertz of bandwidth
 \, pink noise has constant power per octave., f 63;
-#X obj 177 279 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 157 279 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #N canvas 666 63 513 319 pinkness 0;
 #X obj 159 238 else/out~;
@@ -100,7 +100,7 @@ at 20hz., f 68;
 #X connect 5 0 6 0;
 #X connect 6 0 4 0;
 #X restore 471 215 pd pinkness;
-#X text 206 361 2) float - pinkness (number of extra octaves);
-#X text 218 279 float - sets pinkness (number of extra octaves);
+#X text 186 361 2) float - pinkness (number of extra octaves);
+#X text 198 279 float - sets pinkness (number of extra octaves);
 #X connect 24 0 12 0;
 #X connect 24 0 12 1;
