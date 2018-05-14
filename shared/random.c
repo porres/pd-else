@@ -1,4 +1,4 @@
-// random number generator from supercollider, coded by Matt Barber
+// random number generator from supercollider
 
 #include <m_pd.h>
 #include <stdint.h>
@@ -34,6 +34,7 @@ void random_init(t_random_state* rstate, float f)
 	*s1 = 1243598713U ^ seed; if (*s1 <  2) *s1 = 1243598713U;
 	*s2 = 3093459404U ^ seed; if (*s2 <  8) *s2 = 3093459404U;
 	*s3 = 1821928721U ^ seed; if (*s3 < 16) *s3 = 1821928721U;
+	
 }
 
 
