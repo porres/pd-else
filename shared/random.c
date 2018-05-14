@@ -1,4 +1,5 @@
 // random number generator from supercollider
+// coded by matt barber
 
 #include <m_pd.h>
 #include <stdint.h>

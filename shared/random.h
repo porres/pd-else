@@ -1,3 +1,6 @@
+// random number generator from supercollider
+// coded by matt barber
+
 #include <stdint.h>
 
 // these are for pinknoise
