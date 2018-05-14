@@ -1,4 +1,4 @@
-#N canvas 646 101 567 376 10;
+#N canvas 376 35 567 376 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -23,23 +23,23 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 3 graph;
-#X obj 235 177 else/out~;
-#X obj 6 349 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 228 184 else/out~;
+#X obj 6 348 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 6 241 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 6 251 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 280 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 284 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 320 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 319 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 176 292 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 176 294 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 210 292 signal;
-#X text 260 292 - pink noise;
-#X text 206 328 1) float - sets seed;
-#X obj 177 254 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 210 294 signal;
+#X text 260 294 - pink noise;
+#X text 206 327 1) float - sets seed;
+#X obj 177 260 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 218 254 float - sets seed;
+#X text 218 260 float - sets seed;
 #N canvas 559 236 694 278 seed 0;
 #X obj 368 144 else/downsample~ 1;
 #X obj 368 188 else/display~;
@@ -70,11 +70,11 @@
 #X connect 12 0 8 0;
 #X connect 13 0 0 0;
 #X connect 14 0 2 0;
-#X restore 488 211 pd seed;
-#X obj 235 142 else/pinknoise~;
-#X text 76 86 [pinknoise~] is a pink noise genareator. Subjectively
-\, pink noise sounds less hissy than white noise. While white noise
-has constant spectral power per hertz of bandwidth \, pink noise has
-constant power per octave., f 66;
+#X restore 494 217 pd seed;
+#X obj 228 151 else/pinknoise~;
+#X text 76 86 [pinknoise~] is a pink noise generator based on SuperCollider's
+"PinkNoise". Subjectively \, pink noise sounds less hissy than white
+noise. While white noise has constant spectral power per hertz of bandwidth
+\, pink noise has constant power per octave., f 63;
 #X connect 24 0 12 0;
 #X connect 24 0 12 1;
