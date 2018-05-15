@@ -12,7 +12,7 @@ union inletunion{
     t_gpointer  *iu_pointerslot;
     t_float     *iu_floatslot;
     t_symbol   **iu_symslot;
-    t_sample     iu_floatsignalvalue;
+    t_float     iu_floatsignalvalue;
 };
 
 struct _inlet{

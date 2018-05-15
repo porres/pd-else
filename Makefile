@@ -14,7 +14,7 @@ uname := $(shell uname -s)
 # sources
 #########################################################################
 
-# inlet2~.class.sources := classes/inlet2~.c
+inlet2~.class.sources := classes/inlet2~.c
 
 # vinlet.class.sources := classes/vinlet.c
 
