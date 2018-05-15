@@ -18,6 +18,10 @@ uname := $(shell uname -s)
 
 # vinlet.class.sources := classes/vinlet.c
 
+# step~.class.sources := classes/step~.c
+
+# envgen~.class.sources := classes/envgen~.c
+
 # GUI:
 keyboard.class.sources := classes/keyboard.c
 openfile.class.sources := classes/openfile.c
@@ -82,7 +86,6 @@ downsample~.class.sources := classes/downsample~.c
 dust~.class.sources := classes/dust~.c
 dust2~.class.sources := classes/dust2~.c
 elapsed~.class.sources := classes/elapsed~.c
-# envgen~.class.sources := classes/envgen~.c
 eq~.class.sources := classes/eq~.c
 fader~.class.sources := classes/fader~.c
 fbdelay~.class.sources := classes/fbdelay~.c
@@ -144,7 +147,6 @@ rotate~.class.sources := classes/rotate~.c
 sh~.class.sources := classes/sh~.c
 schmitt~.class.sources := classes/schmitt~.c
 stepnoise~.class.sources := classes/stepnoise~.c
-step~.class.sources := classes/step~.c
 sin~.class.sources := classes/sin~.c
 sequencer~.class.sources := classes/sequencer~.c
 sr~.class.sources := classes/sr~.c
