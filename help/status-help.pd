@@ -44,7 +44,7 @@ to zero" transitions., f 66;
 #X obj 245 178 else/status;
 #X obj 245 202 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 245 152 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 245 152 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X msg 245 130 0;
 #X msg 214 130 1;
@@ -75,6 +75,8 @@ to zero" transitions., f 66;
 #X text 213 276 changes internal status, f 40;
 #X text 146 359 1) float - initial status value (default no status)
 ;
+#X text 454 175 see also:;
+#X obj 445 197 else/status~;
 #X connect 22 0 23 0;
 #X connect 22 1 27 0;
 #X connect 24 0 22 0;

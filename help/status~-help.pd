@@ -61,6 +61,8 @@
 impulse in the left outlet for "zero to non-zero" transitions and an
 impulse in the right outlet for "non-zero to zero" transitions., f
 66;
+#X text 444 247 see also:;
+#X obj 437 269 else/status;
 #X connect 32 0 33 0;
 #X connect 33 0 34 0;
 #X connect 34 0 31 0;
