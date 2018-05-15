@@ -45,6 +45,7 @@ hot.class.sources := classes/hot.c
 hz2rad.class.sources := classes/hz2rad.c
 lb.class.sources := classes/lb.c
 loadbanger.class.sources := classes/loadbanger.c
+nbang.class.sources := classes/nbang.c
 float2bits.class.sources := classes/float2bits.c
 pack2.class.sources := classes/pack2.c
 quantizer.class.sources := classes/quantizer.c

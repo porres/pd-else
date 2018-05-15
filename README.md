@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-9 (Released: May 14th 2018)
+### Version 1.0 beta-10 (Unreleased)
 
 Needs Pd 0.48-1 or above
 
@@ -70,7 +70,10 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (211 objects):
+##Current Object list (213 objects):
+
+**ASSORTED: [1]**
+- [nbang]
 
 **MESSAGE MANAGEMENT: [13]**
 - [break] 
@@ -267,7 +270,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
  - [impseq~]
  - [lfo]
  
- **TRIGGERS: [21]**
+ **TRIGGERS: [22]**
 - [coin~]
 - [dust~]
 - [dust2~]
@@ -281,9 +284,10 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [sh~]
 - [schmitt]
 - [schmitt~]
+- [status]
+- [status~]
 - [trig.delay~]
 - [trig.delay2~]
-- [togedge~]
 - [toggleff~]
 - [timed.gate~]
 - [match~]
