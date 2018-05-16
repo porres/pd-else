@@ -1,17 +1,17 @@
 #N canvas 698 88 562 491 10;
-#X obj 4 275 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 278 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 351 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 352 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 386 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 387 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 119 360 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 119 361 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 120 284 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 120 285 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 4 464 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 154 284 bang;
+#X text 154 285 bang;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -31,51 +31,53 @@
 0;
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 159 160 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 159 170 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 148 360 float;
+#X text 148 361 float;
 #X obj 107 41 cnv 4 4 4 empty empty size 0 28 2 18 -233017 -1 0;
 #X obj 3 4 cnv 15 301 42 empty empty blocksize~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 4 graph;
-#X text 166 332 hz;
-#X msg 181 160 hz;
+#X text 166 333 hz;
+#X msg 181 170 hz;
 #X text 202 394 (none);
 #X obj 4 419 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 154 426 -khz;
-#N canvas 956 171 258 214 pd-dsp-started 0;
-#X obj 72 90 r pd-dsp-started;
-#X obj 72 153 else/display 6;
-#X obj 72 125 else/blocksize~;
-#X text 45 27 The "pd-dsp-started" message is automatically sent when
+#N canvas 545 247 411 216 pd-dsp-started 0;
+#X obj 79 94 r pd-dsp-started;
+#X obj 79 157 else/display 6;
+#X obj 79 129 else/blocksize~;
+#X text 52 31 The "pd-dsp-started" message is automatically sent when
 DSP is started in Pd., f 30;
+#X obj 293 69 else/setdsp~;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X restore 419 234 pd pd-dsp-started;
-#X msg 223 182 ms;
-#X obj 213 239 else/display;
-#X text 166 317 ms;
-#X text 184 317 - set and get the sample rate period in ms;
+#X msg 223 192 ms;
+#X obj 213 246 else/display;
+#X text 166 318 ms;
+#X text 184 318 - set and get the sample rate period in ms;
 #X text 184 426 - sets to frequency in khz;
 #X text 184 443 - sets to period in ms;
 #X text 160 443 -ms;
-#X text 58 88 [blocksize~] reports the block size when the audio is
-turned on \, when it changes or via a bang. The period is reported
-in samples or ms \, but you can also query the corresponding frequency
-in hz., f 67;
-#X text 57 128 The default output is the block size in samples.;
-#X obj 213 213 else/blocksize~ -ms;
+#X text 57 138 The default output is the block size in samples.;
 #X obj 494 85 else/setdsp~;
-#X msg 213 160 samps;
-#X text 184 360 - block size period or frequency;
-#X text 148 300 samps;
-#X text 184 284 - get block size period or frequency;
-#X text 184 332 - set and get the block size frequency in Hz;
-#X text 184 300 - set and get the block size period in samples;
-#X connect 17 0 37 0;
-#X connect 23 0 37 0;
-#X connect 28 0 37 0;
-#X connect 37 0 29 0;
-#X connect 39 0 37 0;
+#X msg 213 170 samps;
+#X text 184 361 - block size period or frequency;
+#X text 148 301 samps;
+#X text 184 285 - get block size period or frequency;
+#X text 184 333 - set and get the block size frequency in Hz;
+#X text 184 301 - set and get the block size period in samples;
+#X text 58 88 [blocksize~] reports the block size when the audio is
+turned on \, when it changes or via a bang (if the DSP isn't on \,
+the default size is presumed to be 64). The period is reported in samples
+or ms \, but you can also query the corresponding frequency in hz.
+, f 64;
+#X obj 213 220 else/blocksize~ -ms;
+#X connect 17 0 44 0;
+#X connect 23 0 44 0;
+#X connect 28 0 44 0;
+#X connect 37 0 44 0;
+#X connect 44 0 29 0;

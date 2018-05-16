@@ -13,6 +13,8 @@ typedef struct _blocksize{
 } t_blocksize;
 
 static void blocksize_bang(t_blocksize *x){
+    if(x->x_size == 0)
+        x->x_size = 64;
     t_float out = x->x_size;
     if(x->x_mode == 1)
         out *= (1000/(t_float)x->x_sr);
@@ -60,6 +62,7 @@ static void blocksize_dsp(t_blocksize *x, t_signal **sp){
 static void *blocksize_new(t_symbol *s, int ac, t_atom *av){
     t_blocksize *x = (t_blocksize *)pd_new(blocksize_class);
     x->x_size = x->x_mode = 0;
+    x->x_sr = sys_getsr();
     if(ac && av->a_type == A_SYMBOL){
         t_symbol *sym = atom_getsymbolarg(0, ac, av);
         if(!strcmp(sym->s_name, "-ms"))
