@@ -2,6 +2,7 @@
 
 #include "m_pd.h"
 #include "g_canvas.h"  // for LB_LOAD
+#include <string.h>
 
 static t_class *sr_class;
 

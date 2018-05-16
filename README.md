@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (213 objects):
+##Current Object list (214 objects):
 
 **ASSORTED: [1]**
 - [nbang]
@@ -90,8 +90,9 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [sig2float~]
 - [float2sig~]
 
-**PATCH/SUBPATCH MANAGEMENT: [5]**
+**PATCH/SUBPATCH MANAGEMENT: [6]**
 - [args]
+- [blocksize~]
 - [click]
 - [properties]
 - [window]
