@@ -1,17 +1,17 @@
-#N canvas 702 49 561 562 10;
+#N canvas 453 59 564 561 10;
 #X obj 4 304 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 406 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 407 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 441 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 442 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 119 415 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 104 416 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 120 314 cnv 17 3 88 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 105 313 cnv 17 3 88 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 534 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 535 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 154 314 bang;
+#X text 154 312 bang;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -19,8 +19,8 @@
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Get 0 28 2 18 -233017 -1 0;
-#X obj 57 40 cnv 4 4 4 empty empty sample 0 28 2 18 -233017 -1 0;
+#X obj 23 40 cnv 4 4 4 empty empty Get/set 0 28 2 18 -233017 -1 0;
+#X obj 90 40 cnv 4 4 4 empty empty sample 0 28 2 18 -233017 -1 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -31,37 +31,36 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 159 189 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 159 192 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 148 415 float;
-#X obj 119 40 cnv 4 4 4 empty empty rate 0 28 2 18 -233017 -1 0;
+#X text 148 418 float;
+#X obj 152 40 cnv 4 4 4 empty empty rate 0 28 2 18 -233017 -1 0;
 #X obj 3 3 cnv 15 301 42 empty empty sr~ 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 166 334 hz;
-#X text 160 352 khz;
-#X text 184 334 - set and get the sample rate frequency in Hz;
-#X text 184 352 - set and get the sample rate frequency in Khz;
-#X msg 181 189 hz;
-#X msg 213 189 khz;
-#X text 142 449 (none);
-#X obj 4 474 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 154 481 -khz;
-#N canvas 1049 171 508 284 up/downsampling 0;
-#X obj 123 182 samplerate~;
-#X obj 308 166 block~ 64 1 16;
-#X obj 123 210 else/display 6;
-#X obj 223 210 else/display 6;
-#X obj 223 182 else/sr~;
-#X obj 223 143 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 166 327 hz;
+#X text 160 342 khz;
+#X text 184 327 - set and get the sample rate frequency in Hz;
+#X text 184 342 - set and get the sample rate frequency in Khz;
+#X msg 181 192 hz;
+#X msg 213 192 khz;
+#X obj 4 475 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 154 482 -khz;
+#N canvas 932 171 387 235 up/downsampling 0;
+#X obj 58 159 samplerate~;
+#X obj 243 143 block~ 64 1 16;
+#X obj 58 187 else/display 6;
+#X obj 158 187 else/display 6;
+#X obj 158 159 else/sr~;
+#X obj 158 120 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 54 29 Unlike [samplerate~] \, [sr~] always gives you the global
+#X text 29 21 Unlike [samplerate~] \, [sr~] always gives you the global
 sample rate as defined in Pd's audio settings instead of the up/downsampling
 rate running in the patch due to [block~]., f 56;
-#X msg 308 102 set 64 1 0.5;
-#X msg 323 131 set 64 1 16;
-#X obj 123 140 loadbang;
+#X msg 243 79 set 64 1 0.5;
+#X msg 258 108 set 64 1 16;
+#X obj 58 117 loadbang;
 #X connect 0 0 2 0;
 #X connect 4 0 3 0;
 #X connect 5 0 0 0;
@@ -71,43 +70,57 @@ rate running in the patch due to [block~]., f 56;
 #X connect 8 0 1 0;
 #X connect 8 0 5 0;
 #X connect 9 0 0 0;
-#X restore 414 235 pd up/downsampling;
-#N canvas 1049 171 484 249 pd-dsp-started 0;
-#X obj 212 120 r pd-dsp-started;
-#X text 42 35 The "pd-dsp-started" message is automatically sent when
-DSP is started in Pd. This way you can receive an update whenever sample
-rate may have changed in the audio settings., f 56;
-#X obj 212 183 else/display 6;
-#X obj 212 155 else/sr~;
-#X connect 0 0 3 0;
-#X connect 3 0 2 0;
-#X restore 419 263 pd pd-dsp-started;
-#X msg 223 211 ms;
-#X msg 256 212 sec;
-#X obj 213 268 else/display;
-#X text 73 87 [sr~] reports the sample rate frequency or period when
-loading the patch or when receiving a bang. The frequency is reported
-either in hz or khz and the period either in seconds os miliseconds.
-Unlike [samplerate~] \, it doesn't report up/down sampling rates. It
-also automatically loads the samplerate value when loading the patch.
-, f 67;
-#X text 75 156 The default output is the sample rate frequency in hertz.
+#X restore 419 273 pd up/downsampling;
+#X msg 223 214 ms;
+#X msg 256 215 sec;
+#X obj 213 271 else/display;
+#X text 64 162 The default output is the sample rate frequency in hertz.
 ;
-#X text 184 314 - get sample rate frequency or period;
-#X text 166 369 ms;
-#X text 184 369 - set and get the sample rate period in ms;
-#X text 160 387 sec;
-#X text 184 387 - set and get the sample rate period in seconds;
-#X text 184 481 - sets to frequency in khz;
-#X text 184 498 - sets to period in ms;
-#X text 184 515 - sets to period in seconds;
-#X text 160 498 -ms;
-#X text 154 515 -sec;
-#X obj 213 242 else/sr~ -khz;
-#X text 184 415 - sample rate frequency or period;
-#X connect 17 0 48 0;
-#X connect 26 0 48 0;
-#X connect 27 0 48 0;
-#X connect 33 0 48 0;
-#X connect 34 0 48 0;
-#X connect 48 0 35 0;
+#X text 184 312 - get sample rate frequency or period;
+#X text 166 357 ms;
+#X text 184 357 - set and get the sample rate period in ms;
+#X text 160 372 sec;
+#X text 184 372 - set and get the sample rate period in seconds;
+#X text 160 499 -ms;
+#X text 154 516 -sec;
+#X obj 213 245 else/sr~ -khz;
+#X text 184 418 - sample rate frequency or period;
+#X text 63 87 [sr~] can set the sample rate and also reports the sample
+rate frequency or period when loading the patch \, when receiving a
+bang or when it changes. The frequency is reported either in hz or
+khz and the period either in seconds os miliseconds. Unlike [samplerate~]
+\, it doesn't report up/down sampling rates. It also automatically
+loads the samplerate value when loading the patch., f 70;
+#X text 130 450 1) float - sets sample rate in hz;
+#X text 184 482 - sets output to frequency in khz;
+#X text 184 499 - sets output to period in ms;
+#X text 184 516 - sets output to period in seconds;
+#X text 112 387 set <float>;
+#X text 184 387 - sets sample rate in hz;
+#N canvas 771 211 431 265 set-samplerate 0;
+#X obj 167 189 else/sr~;
+#X msg 167 103 set 48000;
+#X msg 186 136 set 22050;
+#X msg 143 78 set 44100;
+#X obj 167 214 else/display;
+#X obj 302 112 else/setdsp~;
+#X obj 196 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 82 191 else/sr~;
+#X obj 82 216 else/display;
+#X text 28 17 You can set the samplerate with a float argument and
+also via the "set" message. If the audio is on and the sample rate
+changes \, all [sr~] objects output the new sample rate.;
+#X connect 0 0 4 0;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 8 0;
+#X restore 422 251 pd set-samplerate;
+#X connect 17 0 42 0;
+#X connect 26 0 42 0;
+#X connect 27 0 42 0;
+#X connect 31 0 42 0;
+#X connect 32 0 42 0;
+#X connect 42 0 33 0;
