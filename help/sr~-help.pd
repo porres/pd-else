@@ -31,7 +31,7 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 159 192 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 179 192 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 148 418 float;
 #X obj 152 40 cnv 4 4 4 empty empty rate 0 28 2 18 -233017 -1 0;
@@ -43,8 +43,8 @@
 #X text 160 342 khz;
 #X text 184 327 - set and get the sample rate frequency in Hz;
 #X text 184 342 - set and get the sample rate frequency in Khz;
-#X msg 181 192 hz;
-#X msg 213 192 khz;
+#X msg 201 192 hz;
+#X msg 233 192 khz;
 #X obj 4 475 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 154 482 -khz;
 #N canvas 932 171 387 235 up/downsampling 0;
@@ -71,9 +71,9 @@ rate running in the patch due to [block~]., f 56;
 #X connect 8 0 5 0;
 #X connect 9 0 0 0;
 #X restore 419 273 pd up/downsampling;
-#X msg 223 214 ms;
-#X msg 256 215 sec;
-#X obj 213 271 else/display;
+#X msg 243 214 ms;
+#X msg 276 215 sec;
+#X obj 233 271 else/display;
 #X text 64 162 The default output is the sample rate frequency in hertz.
 ;
 #X text 184 312 - get sample rate frequency or period;
@@ -83,7 +83,7 @@ rate running in the patch due to [block~]., f 56;
 #X text 184 372 - set and get the sample rate period in seconds;
 #X text 160 499 -ms;
 #X text 154 516 -sec;
-#X obj 213 245 else/sr~ -khz;
+#X obj 233 245 else/sr~ -khz;
 #X text 184 418 - sample rate frequency or period;
 #X text 63 87 [sr~] can set the sample rate and also reports the sample
 rate frequency or period when loading the patch \, when receiving a
@@ -106,18 +106,23 @@ loads the samplerate value when loading the patch., f 70;
 #X obj 302 112 else/setdsp~;
 #X obj 196 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 82 191 else/sr~;
-#X obj 82 216 else/display;
+#X obj 45 114 else/sr~;
+#X obj 45 139 else/display;
 #X text 28 17 You can set the samplerate with a float argument and
 also via the "set" message. If the audio is on and the sample rate
 changes \, all [sr~] objects output the new sample rate.;
+#X obj 46 200 else/display;
+#X obj 46 175 else/nyquist~;
 #X connect 0 0 4 0;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
 #X connect 6 0 0 0;
 #X connect 7 0 8 0;
+#X connect 11 0 10 0;
 #X restore 422 251 pd set-samplerate;
+#X text 50 236 see also:;
+#X obj 59 262 else/nyquist~;
 #X connect 17 0 42 0;
 #X connect 26 0 42 0;
 #X connect 27 0 42 0;
