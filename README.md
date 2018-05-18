@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (214 objects):
+##Current Object list (215 objects):
 
 **ASSORTED: [1]**
 - [nbang]
@@ -174,6 +174,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [fbdelay~]
 - [ffdelay~]
 - [crusher~]
+- [drive~]
 
 **REVERB: [1]**
 - [plateverb~]

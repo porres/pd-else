@@ -85,6 +85,7 @@ cusp~.class.sources := classes/cusp~.c
 decay~.class.sources := classes/decay~.c
 decay2~.class.sources := classes/decay2~.c
 downsample~.class.sources := classes/downsample~.c
+drive~.class.sources := classes/drive~.c
 dust~.class.sources := classes/dust~.c
 dust2~.class.sources := classes/dust2~.c
 elapsed~.class.sources := classes/elapsed~.c
