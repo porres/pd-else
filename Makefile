@@ -63,7 +63,8 @@ toany.class.sources := classes/toany.c
 # signal:
 accum~.class.sources := classes/accum~.c
 allpass.2nd~.class.sources := classes/allpass.2nd~.c
-allpass.rev~.class.sources := classes/allpass.rev~.cadsr~.class.sources := classes/adsr~.c
+allpass.rev~.class.sources := classes/allpass.rev~.c
+adsr~.class.sources := classes/adsr~.c
 asr~.class.sources := classes/asr~.c
 autofade~.class.sources := classes/autofade~.c
 autofade2~.class.sources := classes/autofade2~.c

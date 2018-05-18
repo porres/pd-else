@@ -1,13 +1,13 @@
-#N canvas 336 31 560 465 10;
-#X obj 4 320 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 557 112 562 423 10;
+#X obj 4 260 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 358 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 298 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 393 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 333 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 124 367 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 124 307 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 426 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 393 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 3 cnv 15 301 42 empty empty elapsed~ 20 20 2 37 -233017 -1
 0;
@@ -22,7 +22,7 @@
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
 #X obj 23 40 cnv 4 4 4 empty empty Elapsed 0 28 2 18 -233017 -1 0;
-#X obj 89 40 cnv 4 4 4 empty empty number 0 28 2 18 -233017 -1 0;
+#X obj 89 40 cnv 4 4 4 empty empty period 0 28 2 18 -233017 -1 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -33,11 +33,9 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 305 231 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -106,7 +104,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -139,40 +137,26 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
-#X obj 305 260 /;
-#X obj 305 287 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 118 176 else/imp~ 1;
-#X obj 154 40 cnv 4 4 4 empty empty of 0 28 2 18 -233017 -1 0;
-#X obj 183 40 cnv 4 4 4 empty empty samples 0 28 2 18 -233017 -1 0
+#X obj 173 153 else/imp~ 1;
+#X text 216 342 (none);
+#X text 157 307 signal;
+#X obj 124 270 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 156 402 (none);
-#X text 157 367 signal;
-#X obj 124 330 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X text 157 330 signal;
-#X text 372 231 number of samples;
-#X text 375 288 elapsed time in ms;
-#X obj 305 169 else/elapsed~;
-#X obj 305 142 osc~ 1;
-#X obj 118 269 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 118 207 else/elapsed~;
-#X text 61 96 [elapsed~] returns the elapsed number of samples since
-it was last triggered. A trigger happens on a transition from non positive
-to positive.;
-#X text 199 329 - any signal to trigger the object;
-#X obj 118 240 else/sig2float~ 100;
-#X obj 305 202 else/sig2float~ 100;
-#X text 199 367 - elapsed number of samples since it was last triggerd
-;
-#X obj 344 260 else/sr~ -khz;
-#X connect 17 0 19 0;
-#X connect 19 0 20 0;
-#X connect 21 0 33 0;
-#X connect 30 0 37 0;
-#X connect 31 0 30 0;
-#X connect 33 0 36 0;
-#X connect 36 0 32 0;
-#X connect 37 0 17 0;
-#X connect 39 0 19 1;
+#X text 157 270 signal;
+#X obj 302 156 osc~ 1;
+#X obj 173 184 else/elapsed~;
+#X text 199 269 - any signal to trigger the object;
+#X text 61 91 [elapsed~] returns the elapsed period in number of samples
+or ms since it was last triggered. A trigger happens on a transition
+from non positive to positive.;
+#X obj 173 216 display~;
+#X obj 302 215 display~;
+#X obj 302 183 else/elapsed~ -ms;
+#X obj 4 365 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 150 373 -ms;
+#X text 182 373 - sets period to ms (default: number of samples);
+#X text 199 307 - elapsed period since last triggerd;
+#X connect 18 0 24 0;
+#X connect 23 0 29 0;
+#X connect 24 0 27 0;
+#X connect 29 0 28 0;
