@@ -192,6 +192,11 @@ magic := shared/magic.c
     vsaw~.class.sources := classes/vsaw~.c $(magic)
     pimp~.class.sources := classes/pimp~.c $(magic)
 
+bufmagic := \
+shared/magic.c \
+shared/buffer.c
+    wavetable~.class.sources = classes/wavetable~.c $(bufmagic)
+
 gui := shared/gui.c
     window.class.sources := classes/window.c $(gui)
 
