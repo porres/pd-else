@@ -14,12 +14,6 @@ uname := $(shell uname -s)
 # sources
 #########################################################################
 
-inlet2~.class.sources := classes/inlet2~.c
-
-# vinlet.class.sources := classes/vinlet.c
-
-# step~.class.sources := classes/step~.c
-
 # envgen~.class.sources := classes/envgen~.c
 
 # GUI:
@@ -27,9 +21,6 @@ keyboard.class.sources := classes/keyboard.c
 openfile.class.sources := classes/openfile.c
 colors.class.sources := classes/colors.c
 pic.class.sources := classes/pic.c
-
-# Soon to be GUI?s
-# message.class.sources := classes/message.c
 
 # control:
 suspedal.class.sources := classes/suspedal.c
@@ -43,6 +34,7 @@ changed.class.sources := classes/changed.c
 dir.class.sources := classes/dir.c
 hot.class.sources := classes/hot.c
 hz2rad.class.sources := classes/hz2rad.c
+initmess.class.sources := classes/initmess.c
 lb.class.sources := classes/lb.c
 loadbanger.class.sources := classes/loadbanger.c
 nbang.class.sources := classes/nbang.c

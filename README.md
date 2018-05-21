@@ -70,10 +70,19 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (216 objects):
+##Current Object list (217 objects):
 
 **ASSORTED: [1]**
 - [nbang]
+
+**PATCH/SUBPATCH MANAGEMENT: [7]**
+- [args]
+- [blocksize~]
+- [click]
+- [properties]
+- [window]
+- [loadbanger] / [lb]
+- [initmess]
 
 **MESSAGE MANAGEMENT: [13]**
 - [break] 
@@ -89,14 +98,6 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [routetype]
 - [sig2float~]
 - [float2sig~]
-
-**PATCH/SUBPATCH MANAGEMENT: [6]**
-- [args]
-- [blocksize~]
-- [click]
-- [properties]
-- [window]
-- [loadbanger] / [lb]
 
 **FILE MANAGEMENT: [1]**
 - [dir]
