@@ -19,7 +19,6 @@
 #X text 131 311 set <symbol>;
 #X text 218 310 - sets the array/table to be used for lookup;
 #X text 218 293 - signal to be used as index;
-#X obj 500 70 cyclone/setdsp~;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -44,10 +43,10 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X text 70 91 [shaper~] uses arrays as transfer functions for waveshaping
+#X text 70 87 [shaper~] uses arrays as transfer functions for waveshaping
 \, in which signal input values (from -1 to 1) are mapped to the table's
 indexes. Values outside the -1 to 1 range are wrapped inside it.;
-#X obj 63 176 cnv 15 118 78 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 73 176 cnv 15 118 78 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-clip 512 float 1;
@@ -76,13 +75,13 @@ indexes. Values outside the -1 to 1 range are wrapped inside it.;
 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
 1 1 1 1 1;
 #X coords 0 1.05 511 -1.05 120 80 1 0 0;
-#X restore 62 175 graph;
-#X text 57 257 0;
-#X text 166 258 511;
-#X text 42 243 -1;
-#X text 47 170 1;
-#X obj 224 150 else/player~ violin.wav 1 1;
-#X obj 224 216 else/out~;
+#X restore 72 175 graph;
+#X text 67 257 0;
+#X text 176 258 511;
+#X text 52 243 -1;
+#X text 57 170 1;
+#X obj 264 150 else/player~ violin.wav 1 1;
+#X obj 264 216 else/out~;
 #N canvas 694 149 460 603 waveshaping 0;
 #X obj 77 390 cnv 15 278 178 empty empty empty 20 12 0 14 -233017 -66577
 0;
@@ -120,10 +119,9 @@ indexes. Values outside the -1 to 1 range are wrapped inside it.;
 #X connect 13 0 11 0;
 #X connect 13 0 11 1;
 #X restore 458 226 pd waveshaping;
-#X obj 224 180 else/shaper~ \$0-clip;
+#X obj 264 180 else/shaper~ \$0-clip;
 #N canvas 806 221 446 245 more 0;
 #X obj 44 96 osc~ 0.075;
-#X obj 44 165 ./out~;
 #X text 29 21 [shaper~] also allows other functionalities besides waveshaping.
 For example \, an LFO sine wave can scan through an audio sample forward
 and reverse \, accelerating and decelerating \, resulting in a turntable
@@ -133,11 +131,12 @@ scratch effect. Check below., f 65;
 26;
 #X obj 294 167 table \$0-violin;
 #X obj 44 130 else/shaper~ \$0-violin;
-#X connect 0 0 6 0;
-#X connect 4 0 3 0;
-#X connect 6 0 1 0;
-#X connect 6 0 1 1;
+#X obj 44 165 else/out~;
+#X connect 0 0 5 0;
+#X connect 3 0 2 0;
+#X connect 5 0 6 0;
+#X connect 5 0 6 1;
 #X restore 500 248 pd more;
-#X connect 33 0 36 0;
-#X connect 36 0 34 0;
-#X connect 36 0 34 1;
+#X connect 32 0 35 0;
+#X connect 35 0 33 0;
+#X connect 35 0 33 1;
