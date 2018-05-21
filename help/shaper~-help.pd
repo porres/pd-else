@@ -1,0 +1,143 @@
+#N canvas 565 39 567 417 10;
+#X obj 5 387 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 5 286 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 330 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 361 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 101 295 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 167 294 signal;
+#X obj 101 339 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 167 339 signal;
+#X text 149 366 1) symbol;
+#X text 218 339 - ouput of transfer function lookup (waveshaping);
+#X text 218 366 - array/table name to be used for lookup;
+#X text 131 311 set <symbol>;
+#X text 218 310 - sets the array/table to be used for lookup;
+#X text 218 293 - signal to be used as index;
+#X obj 500 70 cyclone/setdsp~;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 25 41 cnv 4 4 4 empty empty Waveshaper 0 28 2 18 -233017 -1
+0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 3 4 cnv 15 301 42 empty empty shaper~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 4 graph;
+#X text 70 91 [shaper~] uses arrays as transfer functions for waveshaping
+\, in which signal input values (from -1 to 1) are mapped to the table's
+indexes. Values outside the -1 to 1 range are wrapped inside it.;
+#X obj 63 176 cnv 15 118 78 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-clip 512 float 1;
+#A 0 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -0.96875
+-0.9375 -0.90625 -0.875 -0.84375 -0.8125 -0.78125 -0.75 -0.71875 -0.6875
+-0.65625 -0.625 -0.59375 -0.5625 -0.53125 -0.5 -0.46875 -0.4375 -0.40625
+-0.375 -0.34375 -0.3125 -0.28125 -0.25 -0.21875 -0.1875 -0.15625 -0.125
+-0.09375 -0.0625 -0.03125 0 0.03125 0.0625 0.09375 0.125 0.15625 0.1875
+0.21875 0.25 0.28125 0.3125 0.34375 0.375 0.40625 0.4375 0.46875 0.5
+0.53125 0.5625 0.59375 0.625 0.65625 0.6875 0.71875 0.75 0.78125 0.8125
+0.84375 0.875 0.90625 0.9375 0.96875 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+1 1 1 1 1;
+#X coords 0 1.05 511 -1.05 120 80 1 0 0;
+#X restore 62 175 graph;
+#X text 57 257 0;
+#X text 166 258 511;
+#X text 42 243 -1;
+#X text 47 170 1;
+#X obj 224 150 else/player~ violin.wav 1 1;
+#X obj 224 216 else/out~;
+#N canvas 694 149 460 603 waveshaping 0;
+#X obj 77 390 cnv 15 278 178 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array \$0-shape 4099 float 0;
+#X coords 0 1 4098 -1 280 180 1;
+#X restore 76 389 graph;
+#X obj 133 111 *~;
+#X obj 201 90 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.1 256;
+#X obj 204 66 hsl 128 15 0.1 1 0 1 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#N canvas 865 257 382 167 generate_waveform 0;
+#X obj 68 52 loadbang;
+#X msg 68 76 sinesum 4096 1 0.5 1 0.3 0.2 0.9 \, normalize;
+#X obj 68 103 send \$0-shape;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X restore 232 372 pd generate_waveform;
+#X text 235 66 Amplitude;
+#X obj 133 65 osc~ 230;
+#X text 47 349 transfer function:;
+#X text 33 18 Here's an example of waveshaping on a sine wave for synthesis.
+;
+#X obj 205 193 else/graph~ 200 22;
+#X obj 90 233 else/out~;
+#X obj 201 111 else/float2sig~ 50;
+#X obj 133 150 else/shaper~ \$0-shape;
+#X connect 2 0 13 0;
+#X connect 3 0 12 0;
+#X connect 4 0 3 0;
+#X connect 7 0 2 0;
+#X connect 12 0 2 1;
+#X connect 13 0 10 0;
+#X connect 13 0 11 0;
+#X connect 13 0 11 1;
+#X restore 458 226 pd waveshaping;
+#X obj 224 180 else/shaper~ \$0-clip;
+#N canvas 806 221 446 245 more 0;
+#X obj 44 96 osc~ 0.075;
+#X obj 44 165 ./out~;
+#X text 29 21 [shaper~] also allows other functionalities besides waveshaping.
+For example \, an LFO sine wave can scan through an audio sample forward
+and reverse \, accelerating and decelerating \, resulting in a turntable
+scratch effect. Check below., f 65;
+#X obj 220 166 soundfiler;
+#X obj 220 130 else/initmess read -resize violin.wav \$0-violin, f
+26;
+#X obj 294 167 table \$0-violin;
+#X obj 44 130 else/shaper~ \$0-violin;
+#X connect 0 0 6 0;
+#X connect 4 0 3 0;
+#X connect 6 0 1 0;
+#X connect 6 0 1 1;
+#X restore 500 248 pd more;
+#X connect 33 0 36 0;
+#X connect 36 0 34 0;
+#X connect 36 0 34 1;

@@ -184,6 +184,9 @@ magic := shared/magic.c
     vsaw~.class.sources := classes/vsaw~.c $(magic)
     pimp~.class.sources := classes/pimp~.c $(magic)
 
+buf := shared/buffer.c
+    shaper~.class.sources = classes/shaper~.c $(buf)
+
 bufmagic := \
 shared/magic.c \
 shared/buffer.c
