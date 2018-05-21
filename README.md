@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (218 objects):
+##Current Object list (219 objects):
 
 **ASSORTED: [1]**
 - [nbang]
@@ -181,13 +181,14 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **REVERB: [1]**
 - [plateverb~]
 
-**FILTERS (20):**
+**FILTERS (21):**
 - [allpass.2nd~]
 - [lop.bw~]
 - [hip.bw~]
 - [biquads~]
 - [bandpass~]
 - [bandstop~]
+- [crossover~]
 - [bpbank~]
 - [bicoeff]
 - [biplot]

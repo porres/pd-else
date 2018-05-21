@@ -73,6 +73,7 @@ coin~.class.sources := classes/coin~.c
 changed~.class.sources := classes/changed~.c
 changed2~.class.sources := classes/changed2~.c
 crackle~.class.sources := classes/crackle~.c
+crossover~.class.sources := classes/crossover~.c
 cusp~.class.sources := classes/cusp~.c
 decay~.class.sources := classes/decay~.c
 decay2~.class.sources := classes/decay2~.c
