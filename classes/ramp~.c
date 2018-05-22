@@ -24,7 +24,7 @@ typedef struct _ramp{
     t_inlet     *x_inlet_max;
     t_outlet    *x_outlet;
     t_outlet    *x_bangout;
-} t_ramp;
+}t_ramp;
 
 static void ramp_float(t_ramp *x, t_floatarg f){
     x->x_phase = f;
@@ -95,17 +95,15 @@ static t_int *ramp_perform(t_int *w){
                     max = min;
                     min = temp;
                 };
-                if(x->x_mode == 0){ // loop / wrap
+                if(x->x_mode == 0){ // loop
                     x->x_clip = 0;
-                    if(phase < min || phase >= max){ // wrap phase
-                        float range = max - min;
+                    if(phase < min || phase > max){
                         if(phase < min && phase_step < 0){
-                            while(phase < min)
-                                phase += range; // wrapped phase
+                        phase = max;
                         outlet_bang(x->x_bangout); // outlet bang
                         }
                         else if(phase > max && phase_step > 0){
-                            phase = fmod(phase - min, range) + min; // wrapped phase
+                        phase = min; 
                         outlet_bang(x->x_bangout); // outlet bang
                         }
                     }
@@ -170,6 +168,7 @@ static void *ramp_free(t_ramp *x){
 static void *ramp_new(t_symbol *s, int argc, t_atom *argv){
     t_ramp *x = (t_ramp *)pd_new(ramp_class);
 ///////////////////////////
+    t_symbol *curarg = s; // get rid of warning
     x->x_lastin = 0;
     x->x_reset = 0;
     x->x_min = 0.;
@@ -209,7 +208,7 @@ static void *ramp_new(t_symbol *s, int argc, t_atom *argv){
                 };
             }
             else if (argv -> a_type == A_SYMBOL){
-                t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
+                curarg = atom_getsymbolarg(0, argc, argv);
                 int isoff = strcmp(curarg->s_name, "-off") == 0;
                 int ismode = strcmp(curarg->s_name, "-mode") == 0;
                 if(ismode && argc >= 2){
