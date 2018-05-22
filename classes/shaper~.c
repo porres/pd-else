@@ -1,14 +1,21 @@
-
 #include "m_pd.h"
+#include <stdlib.h>
 #include <math.h>
 #include "buffer.h"
+
+#define MAX_HARMS 256
 
 static t_class *shaper_class;
 
 typedef struct _shaper{
-	t_object x_obj;
-	t_buffer *x_buffer;
-	t_outlet *x_out; //outlet
+    t_object    x_obj;
+    float      *x_cheby;
+    float      *x_harms;
+    int         x_hcount;
+    int         x_flen;
+    int         x_norm;
+    int         x_arrayset;
+    t_buffer   *x_buffer;
 }t_shaper;
 
 static double interppolate(t_word *buf, double i){ // linear interpolation
@@ -22,57 +29,152 @@ static double interppolate(t_word *buf, double i){ // linear interpolation
 }
 
 static void shaper_set(t_shaper *x, t_symbol *s){
-   buffer_setarray(x->x_buffer, s);
+    buffer_setarray(x->x_buffer, s);
+    x->x_arrayset = 1;
+}
+
+static void update_cheby_func(t_shaper *x){
+    int i;
+    for(i = 0; i < x->x_flen; i++) // clear
+		x->x_cheby[i] = 0;
+	for(i = 0 ; i < x->x_hcount; i++){
+		if(x->x_harms[i] > 0.0){
+			for(int j = 0; j < x->x_flen; j++){
+				float p = -1.0 + 2.0 * ((float)j / (float)x->x_flen);
+				x->x_cheby[j] += (x->x_harms[i] * cos((float)i * acos(p)));
+			}
+		}
+	}
+    if(x->x_norm){ // normalize
+        float  min = 1, max = -1; // find min/max
+        for(i = 0; i < x->x_flen; i++){
+            if(x->x_cheby[i] < min)
+                min = x->x_cheby[i];
+            if(x->x_cheby[i] > max)
+                max = x->x_cheby[i];
+        }
+        for(i = 0; i < x->x_flen; i++){
+            if((max - min) == 0)
+                x->x_cheby[i] = x->x_harms[0] != 0;
+            else
+                x->x_cheby[i] = 2.0 * ((x->x_cheby[i] - min) / (max - min)) - 1.0;
+        }
+    }
+}
+
+static void shaper_dc(t_shaper *x, t_float f){
+    x->x_harms[0] = f;
+    if(!x->x_norm)
+        update_cheby_func(x);
+    x->x_arrayset = 0;
+}
+
+static void shaper_norm(t_shaper *x, t_float f){
+    x->x_norm = f != 0;
+    update_cheby_func(x);
+    x->x_arrayset = 0;
+}
+
+static void shaper_list(t_shaper *x, t_symbol *s, short ac, t_atom *av){
+    t_symbol *temp;
+    temp = s; // get rid of warning
+    x->x_hcount = 1;
+    for(short i = 0; i < ac; i++)
+        if(av[i].a_type == A_FLOAT)
+            x->x_harms[x->x_hcount++] = av[i].a_w.w_float;
+    update_cheby_func(x);
+    x->x_arrayset = 0;
 }
 
 static t_int *shaper_perform(t_int *w){
-	t_shaper *x = (t_shaper *)(w[1]);
+	t_shaper *x = (t_shaper *) (w[1]);
 	t_float *in = (t_float *)(w[2]);
 	t_float *out = (t_float *)(w[3]);
-    int n = (int)(w[4]);
+    t_int n = w[4];
     t_word *buf = (t_word *)x->x_buffer->c_vectors[0];
-	double maxidx = (double)(x->x_buffer->c_npts - 1);
+    double maxidx = (double)(x->x_buffer->c_npts - 1);
 	while(n--){
-		double output = 0; // silence if no buffer
-        if(x->x_buffer->c_playable){ // read the buffer and interpolate
-            double ph = ((double)*in++ + 1) * 0.5; // get phase (0-1)
-            while(ph < 0) // wrap
-                ph++;
-            while(ph >= 1)
-                ph--;
+        float output = 0;
+		double ph = ((double)*in++ + 1) * 0.5; // get phase (0-1)
+        while(ph < 0) // wrap
+            ph++;
+        while(ph >= 1)
+            ph--;
+        if(x->x_arrayset && x->x_buffer->c_playable){
             double i = ph * maxidx;
             output = interppolate(buf, i);
         }
+        else{
+            int i = (int)(ph * (double)(x->x_flen - 1));
+            output = x->x_cheby[i];
+        }
 		*out++ = output;
-	};
-	return(w+5);
+	}
+	return(w + 5);
 }
 
 static void shaper_dsp(t_shaper *x, t_signal **sp){
-    buffer_checkdsp(x->x_buffer);	
+    buffer_checkdsp(x->x_buffer);
     dsp_add(shaper_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
 
-static void *shaper_free(t_shaper *x){
-    outlet_free(x->x_out);
-	return (void *)x;
+static void shaper_free(t_shaper *x){
+    buffer_free(x->x_buffer);
+    free(x->x_cheby);
+    free(x->x_harms);
 }
 
 static void *shaper_new(t_symbol *s, int ac, t_atom *av){
     t_shaper *x = (t_shaper *)pd_new(shaper_class);
     t_symbol *name = s; // get rid of warning
     name = NULL;
-    if(ac == 1 && av->a_type == A_SYMBOL)
-        name = atom_getsymbolarg(0, ac, av);
+    x->x_flen = 1 << 16 ;
+    x->x_cheby = (float *)calloc(x->x_flen, sizeof(float));
+    x->x_harms = (float *)calloc(MAX_HARMS, sizeof(float));
+    x->x_hcount = 2;
+    x->x_harms[0] = 0;
+    x->x_harms[1] = 1;
+    x->x_norm = 1;
+    x->x_arrayset = 0;
+    if(ac){
+        int sym = 0;
+        x->x_hcount = 1;
+        x->x_harms[1] = 0;
+        while(ac){
+            if(!sym && av->a_type == A_FLOAT){
+                x->x_harms[x->x_hcount++] = atom_getfloatarg(0, ac, av);
+                ac--, av++;
+            }
+            else if(av->a_type == A_SYMBOL){
+                sym = 1;
+                if(!x->x_arrayset){
+                    name = atom_getsymbolarg(0, ac, av);
+                    x->x_arrayset = 1, ac--, av++;
+                }
+                else
+                    goto errstate;
+            }
+            else
+                goto errstate;
+        }
+    };
     x->x_buffer = buffer_init((t_class *) x, name, 1, 0);
-    x->x_out = outlet_new(&x->x_obj, gensym("signal"));
+    if(!x->x_arrayset)
+        update_cheby_func(x);
+    outlet_new(&x->x_obj, gensym("signal"));
     return(x);
+    errstate:
+        post("shaper~: improper args");
+        return NULL;
 }
 
 void shaper_tilde_setup(void){
-   shaper_class = class_new(gensym("shaper~"), (t_newmethod)shaper_new,
-        (t_method)shaper_free, sizeof(t_shaper), CLASS_DEFAULT, A_GIMME, 0);
+    shaper_class = class_new(gensym("shaper~"), (t_newmethod)shaper_new,
+        (t_method)shaper_free,sizeof(t_shaper), 0, A_GIMME, 0);
     class_addmethod(shaper_class, nullfn, gensym("signal"), 0);
-    class_addmethod(shaper_class, (t_method)shaper_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(shaper_class, (t_method)shaper_dsp, gensym("dsp"), 0);
+    class_addmethod(shaper_class, (t_method)shaper_list, gensym("list"), A_GIMME, 0);
+    class_addmethod(shaper_class, (t_method)shaper_norm, gensym("norm"), A_DEFFLOAT, 0);
+    class_addmethod(shaper_class, (t_method)shaper_dc, gensym("dc"), A_DEFFLOAT, 0);
     class_addmethod(shaper_class, (t_method)shaper_set, gensym("set"), A_SYMBOL, 0);
 }
