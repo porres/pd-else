@@ -1,21 +1,21 @@
-#N canvas 565 39 565 565 10;
-#X obj 5 532 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 565 39 559 552 10;
+#X obj 3 527 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 5 319 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 5 314 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 413 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 408 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 444 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 439 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 88 328 cnv 17 3 78 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 88 323 cnv 17 3 78 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 138 327 signal;
-#X obj 88 422 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 138 322 signal;
+#X obj 88 417 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 138 422 signal;
-#X text 102 344 set <symbol>;
-#X text 187 343 - sets the array/table to be used for lookup;
-#X text 187 326 - signal to be used as index;
+#X text 138 417 signal;
+#X text 102 339 set <symbol>;
+#X text 187 338 - sets the array/table to be used for lookup;
+#X text 187 321 - signal to be used as index;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -109,7 +109,7 @@ function \, but on a sine wave as a synthesis technique.;
 #X connect 14 0 6 0;
 #X connect 14 0 7 0;
 #X connect 14 0 7 1;
-#X restore 458 240 pd waveshaping;
+#X restore 442 246 pd waveshaping;
 #N canvas 806 221 446 245 more 0;
 #X obj 69 91 osc~ 0.075;
 #X text 29 21 [shaper~] also allows other functionalities besides waveshaping.
@@ -126,7 +126,7 @@ scratch effect. Check below., f 65;
 #X connect 3 0 2 0;
 #X connect 6 0 5 0;
 #X connect 6 0 5 1;
-#X restore 500 282 pd more;
+#X restore 484 288 pd more;
 #X text 70 87 [shaper~] performs waveshaping with transfer functions
 \, in which signal input values (from -1 to 1) are mapped to the the
 transfer function's indexes. Values outside the -1 to 1 range are wrapped
@@ -134,24 +134,24 @@ inside it., f 65;
 #X text 70 134 You can set an array for [shaper~] \, as in this example
 \, or use its internal transfer function for chebyshev polinomials.
 , f 65;
-#X text 150 360 list;
-#X text 114 375 dc <float>;
-#X text 187 374 - sets DC offset for internal transfer function;
-#X text 102 390 norm <float>;
-#X text 187 389 - sets normalization for internal funcion on <1> or
+#X text 150 355 list;
+#X text 114 370 dc <float>;
+#X text 187 369 - sets DC offset for internal transfer function;
+#X text 102 385 norm <float>;
+#X text 187 384 - sets normalization for internal funcion on <1> or
 off <0>;
-#X text 187 449 -;
-#X text 108 449 1) anything;
-#X text 199 449 a symbol sets array/table name to be used for lookup
+#X text 187 444 -;
+#X text 108 444 1) anything;
+#X text 199 444 a symbol sets array/table name to be used for lookup
 \, but a list of floats sets harmonic weigths for internal transfer
 function (default 1)., f 55;
-#X obj 5 491 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 143 498 -dc: sets DC offset for internal transfer function
+#X obj 5 486 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 143 493 -dc: sets DC offset for internal transfer function
 (default 0), f 62;
-#X text 83 513 -norm <float>:;
-#X text 173 513 sets normalization on <1> (default) or off <0>, f
+#X text 83 508 -norm <float>:;
+#X text 173 508 sets normalization on <1> (default) or off <0>, f
 57;
-#N canvas 408 87 928 504 chebyshev 0;
+#N canvas 296 80 934 513 chebyshev 0;
 #X text 22 14 If you don't give [shaper~] an array with a transfer
 function \, it uses an internal one by default. This internal transfer
 function represents a summation of chebyshev polinomials., f 70;
@@ -163,27 +163,41 @@ the fundamental., f 70;
 the argument "1" \, which is the first order polinomial \, which is
 just a linear function. Hence \, it represents the fundamental., f
 70;
-#X obj 58 205 osc~ 200;
-#X obj 194 326 else/graph~ 441 8;
-#X obj 85 359 out~;
-#X msg 143 214 1 1;
-#X msg 127 189 1;
-#X obj 128 296 else/shaper~;
-#X text 154 189 fundamental;
-#X text 171 213 fundamental and 1st harmonic;
-#X msg 155 246 0.5 1;
-#X msg 212 261 norm \$1;
-#X obj 212 241 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 58 228 osc~ 200;
+#X obj 194 349 else/graph~ 441 8;
+#X obj 85 382 out~;
+#X msg 143 237 1 1;
+#X msg 127 212 1;
+#X obj 128 319 else/shaper~;
+#X text 154 212 fundamental;
+#X text 171 236 fundamental and 1st harmonic;
+#X msg 155 269 0.5 1;
+#X msg 212 284 norm \$1;
+#X obj 212 264 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 22 129 The list of coefficients can be given as an argumnent
 or as a list input. The object \, by default \, normalizes the transfer
 fucntion to output values between -1 and 1 \, but you can change that
 with the "norm" message or flag., f 70;
-#X text 471 12 For non normalized outputs \, you can also set a DC
+#X text 482 32 For non normalized outputs \, you can also set a DC
 value \, or 0th order polinomoal. This can also be set for a normalized
 function \, but doesn't affect it., f 70;
-#X text 471 51 you can set the DC offset with the "dc" message or flag.
+#X text 482 71 you can set the DC offset with the "dc" message or flag.
 , f 70;
+#X obj 672 248 osc~ 200;
+#X obj 667 332 else/graph~ 441 8;
+#X obj 557 352 out~;
+#X msg 599 174 norm \$1;
+#X obj 599 154 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 600 289 else/shaper~ 0.5 -norm 0 -dc 0.5;
+#X msg 634 196 0.5;
+#X msg 523 162 dc \$1;
+#X obj 526 123 hsl 100 15 0 0.5 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 523 143 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X msg 663 219 0.5 0.5;
 #X connect 3 0 8 0;
 #X connect 6 0 8 0;
 #X connect 7 0 8 0;
@@ -193,9 +207,20 @@ function \, but doesn't affect it., f 70;
 #X connect 11 0 8 0;
 #X connect 12 0 8 0;
 #X connect 13 0 12 0;
-#X restore 470 261 pd chebyshev;
-#X text 187 359 - harmonic weigths for internal transfer function;
-#X text 187 422 - ouput of transfer function (waveshaping);
+#X connect 17 0 22 0;
+#X connect 20 0 22 0;
+#X connect 21 0 20 0;
+#X connect 22 0 18 0;
+#X connect 22 0 19 1;
+#X connect 22 0 19 0;
+#X connect 23 0 22 0;
+#X connect 24 0 22 0;
+#X connect 25 0 26 0;
+#X connect 26 0 24 0;
+#X connect 27 0 22 0;
+#X restore 454 267 pd chebyshev;
+#X text 187 354 - harmonic weigths for internal transfer function;
+#X text 187 417 - ouput of transfer function (waveshaping);
 #X obj 282 217 else/shaper~ \$0-clip;
 #X connect 28 0 49 0;
 #X connect 49 0 29 0;

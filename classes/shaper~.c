@@ -1,31 +1,33 @@
-#include "m_pd.h"
-#include <stdlib.h>
-#include <math.h>
-#include "buffer.h"
 
-#define MAX_HARMS 256
+#include "m_pd.h"
+#include "buffer.h"
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+#define MAX_COEF 256
 
 static t_class *shaper_class;
 
 typedef struct _shaper{
     t_object    x_obj;
-    float      *x_cheby;
-    float      *x_harms;
-    int         x_hcount;
-    int         x_flen;
-    int         x_norm;
-    int         x_arrayset;
+    t_float    *x_cheby;
+    t_float    *x_coef;
+    t_int       x_count;
+    t_int       x_flen;
+    t_int       x_norm;
+    t_int       x_arrayset;
     t_buffer   *x_buffer;
 }t_shaper;
 
-static double interppolate(t_word *buf, double i){ // linear interpolation
+static double lin_interp(t_word *buf, double i){ // linear interpolation
     int i1 = (int)i;
     int i2 = i1 + 1;
     double frac = i - (double)i1;
     double ya = buf[i1].w_float;
     double yb = buf[i2].w_float;
-    double interpolation = ya + ((yb - ya) * frac);
-    return interpolation;
+    double interp = ya + ((yb - ya) * frac);
+    return interp;
 }
 
 static void shaper_set(t_shaper *x, t_symbol *s){
@@ -37,11 +39,11 @@ static void update_cheby_func(t_shaper *x){
     int i;
     for(i = 0; i < x->x_flen; i++) // clear
 		x->x_cheby[i] = 0;
-	for(i = 0 ; i < x->x_hcount; i++){
-		if(x->x_harms[i] > 0.0){
+	for(i = 0 ; i < x->x_count; i++){
+		if(x->x_coef[i] > 0.0){
 			for(int j = 0; j < x->x_flen; j++){
 				float p = -1.0 + 2.0 * ((float)j / (float)x->x_flen);
-				x->x_cheby[j] += (x->x_harms[i] * cos((float)i * acos(p)));
+				x->x_cheby[j] += (x->x_coef[i] * cos((float)i * acos(p)));
 			}
 		}
 	}
@@ -55,7 +57,7 @@ static void update_cheby_func(t_shaper *x){
         }
         for(i = 0; i < x->x_flen; i++){
             if((max - min) == 0)
-                x->x_cheby[i] = x->x_harms[0] != 0;
+                x->x_cheby[i] = x->x_coef[0] != 0;
             else
                 x->x_cheby[i] = 2.0 * ((x->x_cheby[i] - min) / (max - min)) - 1.0;
         }
@@ -63,7 +65,7 @@ static void update_cheby_func(t_shaper *x){
 }
 
 static void shaper_dc(t_shaper *x, t_float f){
-    x->x_harms[0] = f;
+    x->x_coef[0] = f;
     if(!x->x_norm)
         update_cheby_func(x);
     x->x_arrayset = 0;
@@ -78,10 +80,10 @@ static void shaper_norm(t_shaper *x, t_float f){
 static void shaper_list(t_shaper *x, t_symbol *s, short ac, t_atom *av){
     t_symbol *temp;
     temp = s; // get rid of warning
-    x->x_hcount = 1;
+    x->x_count = 1;
     for(short i = 0; i < ac; i++)
         if(av[i].a_type == A_FLOAT)
-            x->x_harms[x->x_hcount++] = av[i].a_w.w_float;
+            x->x_coef[x->x_count++] = av[i].a_w.w_float;
     update_cheby_func(x);
     x->x_arrayset = 0;
 }
@@ -102,7 +104,7 @@ static t_int *shaper_perform(t_int *w){
             ph--;
         if(x->x_arrayset && x->x_buffer->c_playable){
             double i = ph * maxidx;
-            output = interppolate(buf, i);
+            output = lin_interp(buf, i);
         }
         else{
             int i = (int)(ph * (double)(x->x_flen - 1));
@@ -121,7 +123,7 @@ static void shaper_dsp(t_shaper *x, t_signal **sp){
 static void shaper_free(t_shaper *x){
     buffer_free(x->x_buffer);
     free(x->x_cheby);
-    free(x->x_harms);
+    free(x->x_coef);
 }
 
 static void *shaper_new(t_symbol *s, int ac, t_atom *av){
@@ -130,25 +132,42 @@ static void *shaper_new(t_symbol *s, int ac, t_atom *av){
     name = NULL;
     x->x_flen = 1 << 16 ;
     x->x_cheby = (float *)calloc(x->x_flen, sizeof(float));
-    x->x_harms = (float *)calloc(MAX_HARMS, sizeof(float));
-    x->x_hcount = 2;
-    x->x_harms[0] = 0;
-    x->x_harms[1] = 1;
+    x->x_coef = (float *)calloc(MAX_COEF, sizeof(float));
+    x->x_count = 2;
+    x->x_coef[0] = 0;
+    x->x_coef[1] = 1;
     x->x_norm = 1;
     x->x_arrayset = 0;
     if(ac){
-        int sym = 0;
-        x->x_hcount = 1;
-        x->x_harms[1] = 0;
+        int flag = 0;
+        x->x_count = 1;
+        x->x_coef[1] = 0;
         while(ac){
-            if(!sym && av->a_type == A_FLOAT){
-                x->x_harms[x->x_hcount++] = atom_getfloatarg(0, ac, av);
+            if(!flag && av->a_type == A_FLOAT){
+                x->x_coef[x->x_count++] = atom_getfloatarg(0, ac, av);
                 ac--, av++;
             }
             else if(av->a_type == A_SYMBOL){
-                sym = 1;
-                if(!x->x_arrayset){
-                    name = atom_getsymbolarg(0, ac, av);
+                t_symbol *curarg = atom_getsymbolarg(0, ac, av);
+                if(!strcmp(curarg->s_name, "-norm")){
+                    if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                        t_float curfloat = atom_getfloatarg(1, ac, av);
+                        x->x_norm = (int)(curfloat != 0);
+                        flag = 1, ac-=2, av+=2;
+                    }
+                    else
+                        goto errstate;
+                }
+                else if(!strcmp(curarg->s_name, "-dc")){
+                    if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                        x->x_coef[0] = atom_getfloatarg(1, ac, av);
+                        flag = 1, ac-=2, av+=2;
+                    }
+                    else
+                        goto errstate;
+                }
+                else if(!x->x_arrayset && !flag){
+                    name = curarg;
                     x->x_arrayset = 1, ac--, av++;
                 }
                 else
