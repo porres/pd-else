@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (219 objects):
+##Current Object list (228 objects):
 
 **ASSORTED: [1]**
 - [nbang]
@@ -204,7 +204,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [resonant2~]
 - [mavg~]
 
-**OSCILLATORS (DETERMINISTIC GENERATORS): [15]**
+**OSCILLATORS (DETERMINISTIC GENERATORS): [24]**
 - [cosine~]
 - [impulse~] / [imp~]
 - [impulse2~] / [imp2~]
@@ -220,6 +220,15 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [vsaw~]
 - [pmosc~]
 - [wavetable~] / [wt~]
+- [bl.imp~]
+- [bl.imp2~]
+- [bl.saw~]
+- [bl.saw2~]
+- [bl.sine~]
+- [bl.square~]
+- [bl.tri~]
+- [bl.vsaw~]
+- [bl.wavetable~]
 
 **CHAOTIC GENERATORS: [22]**
 - [brown~] 
