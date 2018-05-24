@@ -21,7 +21,7 @@ typedef struct _sr{
     t_settings  x_settings;
 }t_sr;
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
 
 static void audio_settings(int *pnaudioindev, int *paudioindev, int *pchindev, int *pnaudiooutdev,
     int *paudiooutdev, int *pchoutdev, int *prate, int *padvance, int *pcallback, int *pblocksize){
@@ -66,7 +66,7 @@ static void get_settings(t_settings *setts){
     }
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
 
 static void sr_set(t_sr *x, t_floatarg f){
     t_int rate = (int)f;
@@ -114,7 +114,7 @@ static void sr_loadbang(t_sr *x, t_floatarg action){
 }
 
 static void sr_dsp(t_sr *x, t_signal **sp){
-    t_float sr = (t_float)sp[0]->s_sr;
+    t_float sr = sys_getsr();
     if(sr != x->x_sr){
         x->x_sr = sr;
         if(x->x_khz)

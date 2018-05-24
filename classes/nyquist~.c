@@ -51,7 +51,7 @@ static void nyquist_loadbang(t_nyquist *x, t_floatarg action){
 }
 
 static void nyquist_dsp(t_nyquist *x, t_signal **sp){
-    t_float nyquist = (t_float)sp[0]->s_sr * 0.5;
+    t_float nyquist = sys_getsr() * 0.5;
     if(nyquist != x->x_nyq){
         x->x_nyq = nyquist;
         if(x->x_khz)
