@@ -34,9 +34,9 @@
 #X msg 160 133 0.75;
 #X msg 203 133 1;
 #X msg 125 133 0.5;
-#X obj 261 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
+#X obj 287 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 4950 1;
-#X obj 261 217 else/sig2float~;
+#X obj 287 217 else/sig2float~;
 #X text 237 132 <= reset =>;
 #X text 34 15 The second inlet resets the phase ands behaves in the
 same way for control data as objects like [osc~] and [phasor~] in Pd.
@@ -48,7 +48,7 @@ phase is synced to the given value. The phase values are from 0 to
 LFOs and control with MIDI. A sync with audio is usefull for the "hard
 sync" technique \, where an oscillator is synced according to the frequency
 of a master frequency., f 44;
-#X obj 508 252 else/out~;
+#X obj 532 252 else/out~;
 #X obj 594 149 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 110 256;
 #X text 695 175 Master oscillator;
@@ -169,39 +169,37 @@ to another phase value.;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 161 265 pd;
-#X obj 60 181 else/sawtooth~ 0.25;
-#X obj 261 193 else/sawtooth~ 0.25;
-#X obj 533 209 else/sawtooth~ 200;
 #X msg 433 134 0.25;
 #X msg 359 133 0.75;
 #X msg 327 133 1;
 #X msg 399 133 0.5;
 #X obj 327 165 else/impseq~;
-#X connect 0 0 21 1;
+#X obj 60 181 else/saw~ 0.25;
+#X obj 287 193 else/saw~ 0.25;
+#X obj 557 209 else/saw~ 200;
+#X connect 0 0 26 1;
 #X connect 2 0 1 0;
-#X connect 3 0 21 1;
-#X connect 4 0 21 1;
-#X connect 5 0 21 1;
-#X connect 6 0 21 1;
+#X connect 3 0 26 1;
+#X connect 4 0 26 1;
+#X connect 5 0 26 1;
+#X connect 6 0 26 1;
 #X connect 8 0 7 0;
 #X connect 13 0 16 0;
-#X connect 16 0 23 1;
-#X connect 21 0 2 0;
-#X connect 22 0 8 0;
-#X connect 23 0 12 0;
-#X connect 23 0 12 1;
-#X connect 24 0 28 0;
-#X connect 25 0 28 0;
-#X connect 26 0 28 0;
-#X connect 27 0 28 0;
-#X connect 28 0 22 1;
-#X restore 494 200 pd sync;
+#X connect 16 0 28 1;
+#X connect 21 0 25 0;
+#X connect 22 0 25 0;
+#X connect 23 0 25 0;
+#X connect 24 0 25 0;
+#X connect 25 0 27 1;
+#X connect 26 0 2 0;
+#X connect 27 0 8 0;
+#X connect 28 0 12 0;
+#X connect 28 0 12 1;
+#X restore 490 200 pd sync;
 #N canvas 430 175 908 347 phase 0;
-#X obj 575 122 cnv 15 240 65 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X obj 588 214 else/out~;
-#X text 572 104 Phase Modulation:;
-#X obj 726 133 osc~ 50.01;
+#X obj 561 184 else/out~;
+#X text 670 131 Phase Modulation:;
+#X obj 651 103 osc~ 50.01;
 #X text 28 31 The second argument sets an initial phase (or "phase
 offset"). This is also settable with the third inlet. This allows you
 to control two oscillators with the same frequency falling in and out
@@ -209,30 +207,30 @@ of phase. Another feature is phase modulation., f 53;
 #X text 464 43 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 (where 1 is also the start of another
 cycle).;
-#X obj 603 161 else/sawtooth~ 200;
-#X obj 100 255 else/out~;
-#X obj 118 219 +~;
-#X text 394 118 1;
-#X obj 262 118 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 103 255 else/out~;
+#X obj 121 219 +~;
+#X text 346 118 1;
+#X obj 214 118 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 259 142 4 0 0 0 - - -, f 4;
-#X text 242 118 0;
-#X obj 259 166 else/float2sig~ 10;
-#X obj 68 154 else/sawtooth~ 220 0.5;
-#X obj 136 192 else/sawtooth~ 220;
+#X floatatom 211 142 4 0 0 0 - - -, f 4;
+#X text 194 118 0;
+#X obj 211 166 else/float2sig~ 10;
 #X text 240 235 Note that out of phase sawtooth waveforms do not cancel
 each other, f 23;
-#X connect 3 0 6 2;
-#X connect 6 0 1 0;
-#X connect 6 0 1 1;
-#X connect 8 0 7 0;
-#X connect 8 0 7 1;
-#X connect 10 0 11 0;
-#X connect 11 0 13 0;
-#X connect 13 0 15 2;
-#X connect 14 0 8 0;
-#X connect 15 0 8 1;
-#X restore 438 224 pd phase offset;
+#X obj 88 154 else/saw~ 220 0.5;
+#X obj 136 192 else/saw~ 220;
+#X obj 576 131 else/saw~ 200;
+#X connect 2 0 15 2;
+#X connect 6 0 5 0;
+#X connect 6 0 5 1;
+#X connect 8 0 9 0;
+#X connect 9 0 11 0;
+#X connect 11 0 14 2;
+#X connect 13 0 6 0;
+#X connect 14 0 6 1;
+#X connect 15 0 0 0;
+#X connect 15 0 0 1;
+#X restore 442 224 pd phase offset;
 #X text 243 403 - initial phase offset (default 0);
 #X text 243 384 - frequency in hertz (default 0);
 #X obj 201 204 else/out~;
@@ -259,14 +257,10 @@ each other, f 23;
 0;
 #X obj 103 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
 0;
-#X obj 3 3 cnv 15 301 42 empty empty sawtooth~ 20 20 2 37 -233017 -1
-0;
+#X obj 3 3 cnv 15 301 42 empty empty saw~ 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 60 89 [sawtooth~] is a sawtooth oscillator that accepts negative
-frequencies \, has inlets for phase sync and phase modulation.;
-#X obj 218 169 else/sawtooth~ 440;
 #N canvas 836 191 391 475 waveform 0;
 #X obj 101 79 cnv 15 198 148 empty empty empty 20 12 0 14 -241406 -66577
 0;
@@ -318,14 +312,17 @@ frequencies \, has inlets for phase sync and phase modulation.;
 #X restore 100 78 graph;
 #X text 34 19 This is the waveform of this oscillator.;
 #X text 87 295 see also:;
-#X obj 159 294 else/sawtooth2~;
 #X text 90 378 see also:;
 #X obj 162 377 else/vsaw~;
 #X text 46 407 A variable sawtooth waveform oscillator that also becomes
 a triangular osccilator., f 43;
 #X text 38 323 For a different sawtooth waveform;
+#X obj 159 294 else/saw2~;
 #X restore 466 175 pd waveform;
 #X text 267 348 sawtooth wave signal;
-#X connect 15 0 37 0;
-#X connect 37 0 21 0;
-#X connect 37 0 21 1;
+#X obj 218 169 else/saw~ 440;
+#X text 60 89 [saw~] is a sawtooth oscillator that accepts negative
+frequencies \, has inlets for phase sync and phase modulation.;
+#X connect 15 0 38 0;
+#X connect 38 0 21 0;
+#X connect 38 0 21 1;

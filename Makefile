@@ -178,10 +178,10 @@ magic := shared/magic.c
     impulse2~.class.sources := classes/impulse2~.c $(magic)
     parabolic~.class.sources := classes/parabolic~.c $(magic)
     pulse~.class.sources := classes/pulse~.c $(magic)
-    sawtooth~.class.sources := classes/sawtooth~.c $(magic)
-    sawtooth2~.class.sources := classes/sawtooth2~.c $(magic)
+    saw~.class.sources := classes/saw~.c $(magic)
+    saw2~.class.sources := classes/saw2~.c $(magic)
     square~.class.sources := classes/square~.c $(magic)
-    triangular~.class.sources := classes/triangular~.c $(magic)
+    tri~.class.sources := classes/tri~.c $(magic)
     vsaw~.class.sources := classes/vsaw~.c $(magic)
     pimp~.class.sources := classes/pimp~.c $(magic)
 

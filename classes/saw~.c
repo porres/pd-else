@@ -4,11 +4,9 @@
 #include "math.h"
 #include "magic.h"
 
-#define TWOPI (M_PI * 2)
+static t_class *saw_class;
 
-static t_class *triangular_class;
-
-typedef struct _triangular
+typedef struct _saw
 {
     t_object x_obj;
     double  x_phase;
@@ -23,10 +21,10 @@ typedef struct _triangular
     t_float *x_signalscalar; // right inlet's float field
     int x_hasfeeders; // right inlet connection flag
     t_float  x_phase_sync_float; // float from magic
-} t_triangular;
+} t_saw;
 
-static t_int *triangular_perform(t_int *w){
-    t_triangular *x = (t_triangular *)(w[1]);
+static t_int *saw_perform(t_int *w){
+    t_saw *x = (t_saw *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // sync
@@ -59,12 +57,7 @@ static t_int *triangular_perform(t_int *w){
             phase = phase + 1.; // wrap deviated phase
         if (phase >= 1)
             phase = phase - 1.; // wrap deviated phase
-        output = phase * 4;
-        if (output >= 1 && output < 3)
-            output = 1 - (output - 1);
-        else if (output >= 3 && output)
-            output = (output - 4);
-        *out++ = output;
+        *out++ = phase * -2 + 1;
         phase = phase + phase_step; // next phase
         last_phase_offset = phase_offset; // last phase offset
     }
@@ -73,9 +66,9 @@ static t_int *triangular_perform(t_int *w){
     return (w + 7);
 }
 
-static t_int *triangular_perform_sig(t_int *w)
+static t_int *saw_perform_sig(t_int *w)
 {
-    t_triangular *x = (t_triangular *)(w[1]);
+    t_saw *x = (t_saw *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // sync
@@ -103,12 +96,7 @@ static t_int *triangular_perform_sig(t_int *w)
             if (phase >= 1)
                 phase = phase - 1.; // wrap deviated phase
         }
-        output = phase * 4;
-        if (output >= 1 && output < 3)
-            output = 1 - (output - 1);
-        else if (output >= 3 && output)
-            output = (output - 4);
-        *out++ = output;
+        *out++ = phase * -2 + 1;
         phase = phase + phase_step; // next phase
         last_phase_offset = phase_offset; // last phase offset
     }
@@ -117,27 +105,27 @@ static t_int *triangular_perform_sig(t_int *w)
     return (w + 7);
 }
 
-static void triangular_dsp(t_triangular *x, t_signal **sp){
+static void saw_dsp(t_saw *x, t_signal **sp){
     x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal); // magic feeder flag
     x->x_sr = sp[0]->s_sr;
     if (x->x_hasfeeders){
-        dsp_add(triangular_perform_sig, 6, x, sp[0]->s_n,
+        dsp_add(saw_perform_sig, 6, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
         }
     else{
-        dsp_add(triangular_perform, 6, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+        dsp_add(saw_perform, 6, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
     }
 }
 
-static void *triangular_free(t_triangular *x){
+static void *saw_free(t_saw *x){
     inlet_free(x->x_inlet_sync);
     inlet_free(x->x_inlet_phase);
     outlet_free(x->x_outlet);
     return (void *)x;
 }
 
-static void *triangular_new(t_symbol *s, int ac, t_atom *av){
-    t_triangular *x = (t_triangular *)pd_new(triangular_class);
+static void *saw_new(t_symbol *s, int ac, t_atom *av){
+    t_saw *x = (t_saw *)pd_new(saw_class);
     t_float f1 = 0, f2 = 0;
     if (ac && av->a_type == A_FLOAT){
         f1 = av->a_w.w_float;
@@ -165,10 +153,10 @@ static void *triangular_new(t_symbol *s, int ac, t_atom *av){
     return (x);
 }
 
-void triangular_tilde_setup(void){
-    triangular_class = class_new(gensym("triangular~"),
-        (t_newmethod)triangular_new, (t_method)triangular_free,
-        sizeof(t_triangular), CLASS_DEFAULT, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(triangular_class, t_triangular, x_freq);
-    class_addmethod(triangular_class, (t_method)triangular_dsp, gensym("dsp"), A_CANT, 0);
+void saw_tilde_setup(void){
+    saw_class = class_new(gensym("saw~"),
+        (t_newmethod)saw_new, (t_method)saw_free,
+        sizeof(t_saw), CLASS_DEFAULT, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(saw_class, t_saw, x_freq);
+    class_addmethod(saw_class, (t_method)saw_dsp, gensym("dsp"), A_CANT, 0);
 }

@@ -4,9 +4,11 @@
 #include "math.h"
 #include "magic.h"
 
-static t_class *sawtooth2_class;
+#define TWOPI (M_PI * 2)
 
-typedef struct _sawtooth2
+static t_class *tri_class;
+
+typedef struct _tri
 {
     t_object x_obj;
     double  x_phase;
@@ -21,10 +23,10 @@ typedef struct _sawtooth2
     t_float *x_signalscalar; // right inlet's float field
     int x_hasfeeders; // right inlet connection flag
     t_float  x_phase_sync_float; // float from magic
-} t_sawtooth2;
+} t_tri;
 
-static t_int *sawtooth2_perform(t_int *w){
-    t_sawtooth2 *x = (t_sawtooth2 *)(w[1]);
+static t_int *tri_perform(t_int *w){
+    t_tri *x = (t_tri *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // sync
@@ -57,9 +59,11 @@ static t_int *sawtooth2_perform(t_int *w){
             phase = phase + 1.; // wrap deviated phase
         if (phase >= 1)
             phase = phase - 1.; // wrap deviated phase
-        output = phase * 2;
-        if (output > 1)
-            output = output - 2;
+        output = phase * 4;
+        if (output >= 1 && output < 3)
+            output = 1 - (output - 1);
+        else if (output >= 3 && output)
+            output = (output - 4);
         *out++ = output;
         phase = phase + phase_step; // next phase
         last_phase_offset = phase_offset; // last phase offset
@@ -69,9 +73,9 @@ static t_int *sawtooth2_perform(t_int *w){
     return (w + 7);
 }
 
-static t_int *sawtooth2_perform_sig(t_int *w)
+static t_int *tri_perform_sig(t_int *w)
 {
-    t_sawtooth2 *x = (t_sawtooth2 *)(w[1]);
+    t_tri *x = (t_tri *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // sync
@@ -99,9 +103,11 @@ static t_int *sawtooth2_perform_sig(t_int *w)
             if (phase >= 1)
                 phase = phase - 1.; // wrap deviated phase
         }
-        output = phase * 2;
-        if (output > 1)
-            output = output - 2;
+        output = phase * 4;
+        if (output >= 1 && output < 3)
+            output = 1 - (output - 1);
+        else if (output >= 3 && output)
+            output = (output - 4);
         *out++ = output;
         phase = phase + phase_step; // next phase
         last_phase_offset = phase_offset; // last phase offset
@@ -111,27 +117,27 @@ static t_int *sawtooth2_perform_sig(t_int *w)
     return (w + 7);
 }
 
-static void sawtooth2_dsp(t_sawtooth2 *x, t_signal **sp){
+static void tri_dsp(t_tri *x, t_signal **sp){
     x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 1, &s_signal); // magic feeder flag
     x->x_sr = sp[0]->s_sr;
     if (x->x_hasfeeders){
-        dsp_add(sawtooth2_perform_sig, 6, x, sp[0]->s_n,
+        dsp_add(tri_perform_sig, 6, x, sp[0]->s_n,
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
         }
     else{
-        dsp_add(sawtooth2_perform, 6, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+        dsp_add(tri_perform, 6, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
     }
 }
 
-static void *sawtooth2_free(t_sawtooth2 *x){
+static void *tri_free(t_tri *x){
     inlet_free(x->x_inlet_sync);
     inlet_free(x->x_inlet_phase);
     outlet_free(x->x_outlet);
     return (void *)x;
 }
 
-static void *sawtooth2_new(t_symbol *s, int ac, t_atom *av){
-    t_sawtooth2 *x = (t_sawtooth2 *)pd_new(sawtooth2_class);
+static void *tri_new(t_symbol *s, int ac, t_atom *av){
+    t_tri *x = (t_tri *)pd_new(tri_class);
     t_float f1 = 0, f2 = 0;
     if (ac && av->a_type == A_FLOAT){
         f1 = av->a_w.w_float;
@@ -159,10 +165,10 @@ static void *sawtooth2_new(t_symbol *s, int ac, t_atom *av){
     return (x);
 }
 
-void sawtooth2_tilde_setup(void){
-    sawtooth2_class = class_new(gensym("sawtooth2~"),
-        (t_newmethod)sawtooth2_new, (t_method)sawtooth2_free,
-        sizeof(t_sawtooth2), CLASS_DEFAULT, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(sawtooth2_class, t_sawtooth2, x_freq);
-    class_addmethod(sawtooth2_class, (t_method)sawtooth2_dsp, gensym("dsp"), A_CANT, 0);
+void tri_tilde_setup(void){
+    tri_class = class_new(gensym("tri~"),
+        (t_newmethod)tri_new, (t_method)tri_free,
+        sizeof(t_tri), CLASS_DEFAULT, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(tri_class, t_tri, x_freq);
+    class_addmethod(tri_class, (t_method)tri_dsp, gensym("dsp"), A_CANT, 0);
 }
