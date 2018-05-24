@@ -1,0 +1,15 @@
+#N canvas 521 281 482 232 10;
+#X obj 60 45 inlet~;
+#X obj 112 45 inlet~;
+#X obj 165 45 inlet~;
+#X obj 84 102 else/sine~;
+#X obj 84 163 outlet~;
+#X obj 237 74 block~ 64 1 16;
+#X obj 84 132 else/brickwall~;
+#X text 217 129 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 219 110 Alexandre Torres Porres (2018);
+#X connect 0 0 3 0;
+#X connect 1 0 3 1;
+#X connect 2 0 3 2;
+#X connect 3 0 6 0;
+#X connect 6 0 4 0;
