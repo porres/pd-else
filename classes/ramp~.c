@@ -80,7 +80,8 @@ static t_int *ramp_perform(t_int *w){
         double phase_step = *in2++; // phase_step
         float min = *in3++;         // min
         float max = *in4++;         // max
-        if(min == max)
+        float range = max - min;
+        if(range == 0)
             output = min;
         else{
             if(trig > 0 && lastin <= 0){
@@ -97,14 +98,16 @@ static t_int *ramp_perform(t_int *w){
                 };
                 if(x->x_mode == 0){ // loop
                     x->x_clip = 0;
-                    if(phase < min || phase > max){
-                        if(phase < min && phase_step < 0){
-                        phase = max;
-                        outlet_bang(x->x_bangout); // outlet bang
+                    if(phase <= min || phase >= max){
+                        if(phase <= min && phase_step < 0){
+                            while(phase <= min)
+                                phase += range;
+                            outlet_bang(x->x_bangout); // outlet bang
                         }
-                        else if(phase > max && phase_step > 0){
-                        phase = min; 
-                        outlet_bang(x->x_bangout); // outlet bang
+                        else if(phase >= max && phase_step > 0){
+                            while(phase >= max)
+                                phase -= range;
+                            outlet_bang(x->x_bangout); // outlet bang
                         }
                     }
                 }
