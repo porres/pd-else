@@ -168,7 +168,7 @@
 #X text 188 308 signal;
 #X text 240 308 - right signal input;
 #X text 149 428 1) float - initial balance value (default 0);
-#X obj 306 171 else/sig2float~ 100;
+#X obj 306 171 else/float2sig~ 10;
 #X connect 21 0 22 0;
 #X connect 22 0 42 0;
 #X connect 24 0 33 0;
