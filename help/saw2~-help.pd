@@ -324,6 +324,8 @@ a triangular osccilator., f 43;
 #X text 60 89 [saw2~] is another sawtooth oscillator that accepts negative
 frequencies \, has inlets for phase sync and phase modulation.;
 #X obj 218 169 else/saw2~ 440;
+#X text 387 150 see also:;
+#X obj 455 150 else/bl.saw2~;
 #X connect 15 0 39 0;
 #X connect 39 0 21 0;
 #X connect 39 0 21 1;

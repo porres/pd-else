@@ -316,6 +316,8 @@ cycle).;
 #X obj 218 169 else/tri~ 440;
 #X text 60 89 [tri~] is a triangular wave oscillator that accepts negative
 frequencies \, has inlets for phase sync and phase modulation.;
+#X text 393 150 see also:;
+#X obj 461 150 else/bl.tri~;
 #X connect 15 0 39 0;
 #X connect 39 0 21 0;
 #X connect 39 0 21 1;

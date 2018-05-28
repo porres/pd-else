@@ -1,4 +1,4 @@
-#N canvas 556 37 560 467 10;
+#N canvas 556 37 562 469 10;
 #X obj 4 442 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 5 267 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -11,7 +11,7 @@
 ;
 #X text 186 365 signal;
 #X text 168 392 1) symbol;
-#X obj 237 204 else/out~;
+#X obj 247 204 else/out~;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -57,7 +57,7 @@
 #X text 228 392 - array name (optional \, default none), f 43;
 #N canvas 750 137 488 500 set 0;
 #X obj 122 245 nbx 6 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 103 256;
+-228856 -1 -1 0 256;
 #X obj 79 359 else/out~;
 #X obj 193 328 else/graph~ 441 11;
 #N canvas 927 315 382 169 generate-saw 0;
@@ -103,19 +103,19 @@ exist array \, then the output is silent., f 65;
 , f 43;
 #X msg 41 134 0;
 #X obj 35 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 9899 1;
+-1 -1 4950 1;
 #X obj 35 211 else/sig2float~;
 #X msg 75 134 0.25;
 #X msg 152 133 0.75;
 #X msg 195 133 1;
 #X msg 117 133 0.5;
 #X obj 236 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 58 1;
+-1 -1 4950 1;
 #X obj 236 217 else/sig2float~;
 #X text 229 132 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -184,7 +184,7 @@ exist array \, then the output is silent., f 65;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -286,7 +286,7 @@ of phase. Another feature is phase modulation., f 53;
 #X obj 63 247 else/out~;
 #X obj 81 211 +~;
 #X obj 252 110 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 3500 1;
+-1 -1 0 1;
 #X floatatom 249 134 4 0 0 0 - - -, f 4;
 #X text 232 110 0;
 #X obj 249 158 else/float2sig~ 50;
@@ -304,9 +304,9 @@ of phase. Another feature is phase modulation., f 53;
 #X connect 14 0 0 0;
 #X connect 14 0 0 1;
 #X restore 489 239 pd phase;
-#X obj 237 146 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 80 256;
-#X obj 237 171 wavetable~ \$0-table 110;
+#X obj 247 146 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 247 171 wavetable~ \$0-table 110;
 #N canvas 811 254 384 353 table 0;
 #X obj 59 20 loadbang;
 #X msg 59 43 sinesum 4096 1 0.5 0.333 0.25 \, normalize;
@@ -319,13 +319,15 @@ of phase. Another feature is phase modulation., f 53;
 #X restore 32 118 graph;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
-#X restore 136 212 pd table;
+#X restore 136 167 pd table;
 #X text 83 88 [wavetable~] is an interpolating wavetable oscillator
 like Pd Vanilla's [tabosc4~]. It accepts negative frequencies \, has
 inlets for phase sync and phase modulation.;
 #X text 146 290 set <symbol> - sets an entire array to be used as a
 waveform, f 62;
-#X text 48 212 check table =>;
+#X text 48 167 check table =>;
+#X text 46 206 see also:;
+#X obj 78 224 else/bl.wavetable~;
 #X connect 35 0 36 0;
 #X connect 36 0 7 0;
 #X connect 36 0 7 1;

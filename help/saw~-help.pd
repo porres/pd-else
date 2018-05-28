@@ -323,6 +323,8 @@ a triangular osccilator., f 43;
 #X obj 218 169 else/saw~ 440;
 #X text 60 89 [saw~] is a sawtooth oscillator that accepts negative
 frequencies \, has inlets for phase sync and phase modulation.;
+#X text 393 150 see also:;
+#X obj 461 150 else/bl.saw~;
 #X connect 15 0 38 0;
 #X connect 38 0 21 0;
 #X connect 38 0 21 1;
