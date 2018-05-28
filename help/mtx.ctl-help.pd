@@ -1,7 +1,6 @@
-#N struct 2369-cell float x float y float cellsize float color;
-#N struct 2374-cell float x float y float cellsize float color;
+#N struct 1055-cell float x float y float cellsize float color;
+#N struct 1060-cell float x float y float cellsize float color;
 #N canvas 721 129 564 535 10;
-#X obj 248 269 display;
 #X msg 248 164 1 0 \$1;
 #X obj 248 140 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -101,9 +100,10 @@ cells in the grid can be either on or off. The output is a list with
 #X text 243 315 - sets column \, row \, status and outputs it;
 #X text 243 330 - sets column \, row and status (no output);
 #X text 243 345 - clears active cells (no output), f 41;
-#X connect 1 0 35 0;
-#X connect 2 0 1 0;
-#X connect 35 0 0 0;
-#X connect 38 0 35 0;
-#X connect 40 0 35 0;
-#X connect 41 0 40 0;
+#X obj 247 269 else/display;
+#X connect 0 0 34 0;
+#X connect 1 0 0 0;
+#X connect 34 0 45 0;
+#X connect 37 0 34 0;
+#X connect 39 0 34 0;
+#X connect 40 0 39 0;

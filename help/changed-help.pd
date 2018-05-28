@@ -45,7 +45,6 @@
 #X obj 158 41 cnv 4 4 4 empty empty it 0 28 2 18 -233017 -1 0;
 #X obj 182 41 cnv 4 4 4 empty empty changed 0 28 2 18 -233017 -1 0
 ;
-#X obj 209 310 display;
 #X text 207 354 - any message to pass through;
 #X text 177 445 - any message that's different from the previous;
 #X obj 129 219 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -79,14 +78,15 @@ any kind of messages.;
 #X text 178 409 set;
 #X text 207 409 - sets to an empty symbol atom;
 #X obj 209 281 else/changed hi there;
-#X connect 21 0 51 0;
-#X connect 22 0 51 0;
+#X obj 209 310 else/display;
+#X connect 21 0 50 0;
+#X connect 22 0 50 0;
 #X connect 23 0 22 0;
-#X connect 29 0 51 0;
-#X connect 30 0 29 0;
-#X connect 31 0 51 0;
-#X connect 37 0 51 0;
-#X connect 38 0 51 0;
-#X connect 39 0 51 0;
-#X connect 51 0 26 0;
-#X connect 51 1 42 0;
+#X connect 28 0 50 0;
+#X connect 29 0 28 0;
+#X connect 30 0 50 0;
+#X connect 36 0 50 0;
+#X connect 37 0 50 0;
+#X connect 38 0 50 0;
+#X connect 50 0 51 0;
+#X connect 50 1 41 0;

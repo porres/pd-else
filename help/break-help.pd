@@ -62,35 +62,35 @@ and furtherly route it.;
 #X connect 6 0 3 0;
 #X connect 8 0 1 0;
 #X restore 476 258 pd args;
-#N canvas 889 247 519 376 symbol 0;
-#X msg 90 209 symbol that;
-#X obj 79 322 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#N canvas 889 247 429 368 symbol 0;
+#X msg 86 192 symbol that;
+#X obj 75 305 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 131 322 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 120 305 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 201 322 symbol;
-#X obj 184 322 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 155 325 symbol;
+#X obj 165 305 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 65 340 -this;
-#X text 122 340 that;
-#X text 79 21 [break] can also break a symbol message. If a symbol
+#X text 62 323 -this;
+#X text 112 323 that;
+#X text 61 16 [break] can also break a symbol message. If a symbol
 has the separator character \, it will be broken apart and passed through
 not as a symbol message anymore. That means it loses its "symbol" selector.
 , f 52;
-#X text 80 81 One way to test this is with the [route] object \, which
+#X text 62 76 One way to test this is with the [route] object \, which
 won't be able to route a symbol message., f 52;
-#X text 82 116 See below;
-#X text 177 182 <= loses symbol selector and is routed;
-#X msg 79 180 symbol @this;
-#X obj 79 244 else/break @;
-#X obj 79 288 route @this that symbol;
-#X text 181 209 <= doesn't lose it and isn't routed;
-#X connect 0 0 12 0;
+#X text 158 162 <= loses symbol selector and is routed;
+#X msg 75 163 symbol @this;
+#X obj 75 227 else/break @;
+#X obj 75 271 route @this that symbol;
+#X text 162 191 <= doesn't lose it and isn't routed;
+#X text 64 111 See below:;
+#X connect 0 0 11 0;
+#X connect 10 0 11 0;
 #X connect 11 0 12 0;
-#X connect 12 0 13 0;
-#X connect 13 0 1 0;
-#X connect 13 1 2 0;
-#X connect 13 2 4 0;
+#X connect 12 0 1 0;
+#X connect 12 1 2 0;
+#X connect 12 2 4 0;
 #X restore 464 232 pd symbol;
 #X obj 159 182 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;

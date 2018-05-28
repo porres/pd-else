@@ -1,6 +1,5 @@
-#N struct 1487-pixel float color;
+#N struct 1511-pixel float color;
 #N canvas 546 23 560 610 10;
-#X obj 248 272 display;
 #X obj 248 158 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -49,7 +48,6 @@
 #X text 95 193 open color picker;
 #N canvas 573 40 595 448 convert 0;
 #X obj 318 189 else/pack2 rgb 0 0 0;
-#X obj 318 217 display;
 #X obj 357 24 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
 -262144 -1 0 0;
 #X obj 396 24 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4033
@@ -60,7 +58,6 @@
 #X obj 396 166 int;
 #X obj 435 166 int;
 #X symbolatom 318 295 8 0 0 0 - - -, f 8;
-#X obj 318 396 display;
 #X text 427 257 converts to hexadecimal;
 #X obj 318 361 else/colors;
 #X text 391 361 converts to RGB (default);
@@ -76,23 +73,25 @@ with the "to" message., f 40;
 #X text 46 334 Be aware that when you lose resolution when you convert
 to "ds" (Pd's Data Structures format)., f 38;
 #X obj 94 285 else/display;
-#X connect 0 0 1 0;
-#X connect 1 0 13 0;
+#X obj 318 217 else/display;
+#X obj 318 397 else/display;
+#X connect 0 0 21 0;
+#X connect 1 0 4 0;
 #X connect 2 0 5 0;
 #X connect 3 0 6 0;
-#X connect 4 0 7 0;
-#X connect 5 0 0 1;
-#X connect 6 0 0 2;
-#X connect 7 0 0 3;
-#X connect 8 0 17 0;
-#X connect 11 0 9 0;
-#X connect 13 0 8 0;
-#X connect 14 0 22 0;
-#X connect 15 0 14 0;
-#X connect 16 0 14 0;
-#X connect 17 0 11 0;
-#X connect 18 0 14 0;
-#X connect 19 0 14 0;
+#X connect 4 0 0 1;
+#X connect 5 0 0 2;
+#X connect 6 0 0 3;
+#X connect 7 0 15 0;
+#X connect 9 0 22 0;
+#X connect 11 0 7 0;
+#X connect 12 0 20 0;
+#X connect 13 0 12 0;
+#X connect 14 0 12 0;
+#X connect 15 0 9 0;
+#X connect 16 0 12 0;
+#X connect 17 0 12 0;
+#X connect 21 0 11 0;
 #X restore 472 257 pd convert;
 #X text 198 316 - output/convert color;
 #X text 114 348 rgb <f \, f \, f>;
@@ -107,7 +106,7 @@ to "ds" (Pd's Data Structures format)., f 38;
 #X obj 4 555 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
 #X text 161 563 clicking on the object opens color picker;
 #X obj 248 244 else/colors;
-#N canvas 575 174 685 387 gui 0;
+#N canvas 575 174 685 387 gui 1;
 #X obj 24 246 else/pack2 rgb 0 0 0;
 #X obj 63 108 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
 -262144 -1 0 0;
@@ -115,9 +114,7 @@ to "ds" (Pd's Data Structures format)., f 38;
 -262144 -1 0 0;
 #X obj 141 108 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
 -262144 -1 0 0;
-#X obj 24 305 display;
 #X obj 24 273 else/colors -gui;
-#X obj 371 302 display;
 #X obj 187 104 cnv 15 90 250 empty empty empty 20 12 0 14 -1 -66577
 0;
 #X obj 189 106 cnv 15 86 246 empty \$0-set-cnv empty 20 12 0 14 -1
@@ -125,7 +122,7 @@ to "ds" (Pd's Data Structures format)., f 38;
 #X text 188 86 GUI;
 #X text 537 82 Data Structures;
 #N canvas 4 23 450 300 \$0-DS 0;
-#X scalar 1487-pixel 0 \;;
+#X scalar 1511-pixel 0 \;;
 #X coords 0 0 1 1 90 250 2 100 100;
 #X restore 540 104 pd \$0-DS;
 #N canvas 148 23 292 236 set-gui 0;
@@ -165,18 +162,20 @@ to "ds" (Pd's Data Structures format)., f 38;
 #X text 161 15 [colors] can output color values specially for Pd Vanilla's
 GUI objects and Data Structures. Note that Data Structures have less
 color resolution. See examples below.;
-#X connect 0 0 5 0;
+#X obj 371 302 else/display;
+#X obj 24 305 else/display;
+#X connect 0 0 4 0;
 #X connect 1 0 0 1;
 #X connect 2 0 0 2;
 #X connect 3 0 0 3;
-#X connect 4 0 12 0;
-#X connect 5 0 4 0;
-#X connect 6 0 13 0;
-#X connect 14 0 18 0;
-#X connect 15 0 14 1;
-#X connect 16 0 14 2;
-#X connect 17 0 14 3;
-#X connect 18 0 6 0;
+#X connect 4 0 19 0;
+#X connect 12 0 16 0;
+#X connect 13 0 12 1;
+#X connect 14 0 12 2;
+#X connect 15 0 12 3;
+#X connect 16 0 18 0;
+#X connect 18 0 11 0;
+#X connect 19 0 10 0;
 #X restore 495 278 pd gui;
 #X text 198 412 -;
 #X text 126 379 gui <float>;
@@ -198,8 +197,9 @@ the output format and also convert from other input formats. Colors
 that you pick and colors you send to the object are stored and recalled
 next time you open the color picker. This object is quite useful for
 setting color properties inside abstractions., f 66;
-#X connect 1 0 40 0;
-#X connect 22 0 40 0;
-#X connect 23 0 40 0;
-#X connect 24 0 40 0;
-#X connect 40 0 0 0;
+#X obj 248 272 else/display;
+#X connect 0 0 39 0;
+#X connect 21 0 39 0;
+#X connect 22 0 39 0;
+#X connect 23 0 39 0;
+#X connect 39 0 56 0;

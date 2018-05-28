@@ -85,14 +85,14 @@
 #X msg 258 170 0;
 #X msg 286 170 0.5;
 #X msg 317 170 1;
-#X obj 286 230 float2sig~ 100;
 #X text 243 463 - position (default 0);
 #X text 75 88 [rotate~] does an equal power rotation for stereo sounds.
 It takes two audio inputs (L \, R) and a position control. A full cycle
 is from -1 to 1: at 0 \, the position is the original input. At 0.5
 \, both inputs are mixed in both outputs. At 1 \, the input channels
 are fully inverted.;
-#X connect 10 0 41 0;
+#X obj 286 230 else/float2sig~ 100;
+#X connect 10 0 43 0;
 #X connect 33 0 37 1;
 #X connect 34 0 37 0;
 #X connect 37 0 9 0;
@@ -100,4 +100,4 @@ are fully inverted.;
 #X connect 38 0 10 0;
 #X connect 39 0 10 0;
 #X connect 40 0 10 0;
-#X connect 41 0 37 2;
+#X connect 43 0 37 2;

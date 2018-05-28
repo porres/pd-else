@@ -50,7 +50,6 @@
 #X text 113 451 -size <float>;
 #X text 212 345 'n' number of last samples to apply the average to
 (if different than the last \, the filter is cleared), f 51;
-#X obj 212 221 display~;
 #X obj 212 142 noise~;
 #X text 199 323 - sets new maximum size and clears buffer's memory
 ;
@@ -71,42 +70,43 @@
 over a time window of samples. At each sample \, the RMS of the last
 'n' sample is given.;
 #X obj 212 187 else/mrms~ 4096 -db;
-#N canvas 728 74 628 477 example 0;
-#X obj 489 47 cyclone/setdsp~;
-#X obj 57 160 noise~;
-#X obj 267 285 else/graph~;
-#X obj 57 286 else/graph~;
-#X obj 390 219 nbx 5 17 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
+#N canvas 728 74 564 455 example 0;
+#X obj 35 156 noise~;
+#X obj 245 281 else/graph~;
+#X obj 35 282 else/graph~;
+#X obj 368 215 nbx 5 17 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
 -228856 -1 -1 0 256;
-#X obj 393 174 hsl 150 15 1 2048 1 0 adsfadsg ahhah empty -2 -8 0 10
+#X obj 371 170 hsl 150 15 1 2048 1 0 adsfadsg ahhah empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X text 398 173 'n' samples to average;
-#X obj 390 197 int;
-#X text 59 26 The first argument specifies 'n' number of samples to
+#X text 376 169 'n' samples to average;
+#X obj 368 193 int;
+#X text 37 22 The first argument specifies 'n' number of samples to
 take the RMS. This also sets the buffer size if no size flag is given.
 Float or signals into the right inlet also sets 'n'. The default and
 minimum value is "1"., f 61;
-#X text 59 89 By default \, the buffers size 1024 samples long. You
+#X text 37 85 By default \, the buffers size 1024 samples long. You
 can also set the maximum value with the -size flag or message., f
 61;
-#X msg 267 180 size 2048;
-#X msg 286 210 size 512;
-#X obj 267 249 else/mrms~ -size 2048;
-#X connect 1 0 3 0;
-#X connect 1 0 12 0;
-#X connect 4 0 12 1;
-#X connect 5 0 7 0;
-#X connect 7 0 4 0;
-#X connect 10 0 12 0;
-#X connect 11 0 12 0;
-#X connect 12 0 2 0;
+#X msg 245 176 size 2048;
+#X msg 264 206 size 512;
+#X obj 245 245 else/mrms~ -size 2048;
+#X obj 467 43 else/setdsp~;
+#X connect 0 0 2 0;
+#X connect 0 0 11 0;
+#X connect 3 0 11 1;
+#X connect 4 0 6 0;
+#X connect 6 0 3 0;
+#X connect 9 0 11 0;
+#X connect 10 0 11 0;
+#X connect 11 0 1 0;
 #X restore 470 247 pd example;
 #X obj 48 237 else/rms~;
 #X text 46 211 see also:;
 #X obj 487 64 else/setdsp~;
-#X connect 31 0 36 0;
-#X connect 32 0 46 0;
-#X connect 37 0 36 0;
-#X connect 43 0 46 0;
-#X connect 44 0 46 0;
-#X connect 46 0 31 0;
+#X obj 212 221 else/display~;
+#X connect 31 0 45 0;
+#X connect 36 0 35 0;
+#X connect 42 0 45 0;
+#X connect 43 0 45 0;
+#X connect 45 0 50 0;
+#X connect 50 0 35 0;

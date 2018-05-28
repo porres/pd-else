@@ -45,7 +45,6 @@
 #X text 188 397 -;
 #X obj 304 183 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 218 230 display;
 #X obj 229 182 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 128 366 anything;
@@ -133,9 +132,10 @@ symbol and vice versa., f 75;
 #X text 199 397 the number of elements defines the number of inlets.
 A float or a symbol will define an initial value (default: two floats
 set to '0'), f 51;
-#X connect 26 0 34 1;
-#X connect 28 0 34 0;
-#X connect 31 0 34 0;
-#X connect 34 0 27 0;
-#X connect 36 0 34 1;
-#X connect 37 0 34 0;
+#X obj 218 230 else/display;
+#X connect 26 0 33 1;
+#X connect 27 0 33 0;
+#X connect 30 0 33 0;
+#X connect 33 0 39 0;
+#X connect 35 0 33 1;
+#X connect 36 0 33 0;

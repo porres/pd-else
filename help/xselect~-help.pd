@@ -62,7 +62,7 @@
 #X text 77 165 crossfade duration, f 9;
 #X text 171 366 ep;
 #X text 165 348 lin;
-#N canvas 840 91 418 509 crossfade_modes 0;
+#N canvas 840 91 418 509 crossfade_modes 1;
 #X floatatom 98 159 3 0 1 0 - - -, f 3;
 #X obj 98 121 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -73,7 +73,6 @@ equal power with the 'lin' and 'ep' messages \, respectively.;
 #X text 154 219 change to equal power (default);
 #X text 166 247 change to linear;
 #X obj 115 187 sig~ 1;
-#X obj 98 311 sig2float~;
 #X obj 98 349 vsl 17 128 0 1 0 0 sdgdfg sdfhjmjmj empty 0 -9 0 10 -228856
 -1 -1 0 1;
 #X obj 326 402 else/setdsp~;
@@ -81,13 +80,14 @@ equal power with the 'lin' and 'ep' messages \, respectively.;
 #X text 21 14 By default \, [xselect~] adopts an equal power crossfading
 function (sin/cos). You can set it to linear crossfade when creating
 the object with the -lin flag.;
-#X connect 0 0 11 0;
+#X obj 98 311 else/sig2float~;
+#X connect 0 0 10 0;
 #X connect 1 0 0 0;
-#X connect 2 0 11 0;
-#X connect 3 0 11 0;
-#X connect 7 0 11 0;
-#X connect 8 0 9 0;
-#X connect 11 0 8 0;
+#X connect 2 0 10 0;
+#X connect 3 0 10 0;
+#X connect 7 0 10 0;
+#X connect 10 0 12 0;
+#X connect 12 0 8 0;
 #X restore 426 270 pd crossfade_modes;
 #X text 189 311 - selected inlet (0 is none);
 #X text 189 348 - change crossfade type to linear;

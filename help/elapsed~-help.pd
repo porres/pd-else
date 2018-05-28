@@ -34,8 +34,8 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -104,7 +104,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -149,14 +149,14 @@
 #X text 61 91 [elapsed~] returns the elapsed period in number of samples
 or ms since it was last triggered. A trigger happens on a transition
 from non positive to positive.;
-#X obj 173 216 display~;
-#X obj 302 215 display~;
 #X obj 302 183 else/elapsed~ -ms;
 #X obj 4 365 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 150 373 -ms;
 #X text 182 373 - sets period to ms (default: number of samples);
 #X text 199 307 - elapsed period since last triggerd;
+#X obj 302 215 else/display~;
+#X obj 173 216 else/display~;
 #X connect 18 0 24 0;
-#X connect 23 0 29 0;
-#X connect 24 0 27 0;
-#X connect 29 0 28 0;
+#X connect 23 0 27 0;
+#X connect 24 0 33 0;
+#X connect 27 0 32 0;

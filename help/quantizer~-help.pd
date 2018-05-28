@@ -50,9 +50,9 @@
 #X text 130 541 -mode <float>;
 #X text 220 541 -;
 #X obj 260 133 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 8600 1;
+-1 -1 0 1;
 #X obj 257 155 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.677165 256;
+-228856 -1 -1 0 256;
 #X text 219 483 - step value (default = 0 \, no approximation), f
 52;
 #X text 219 447 - quantized signal;

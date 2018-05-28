@@ -39,8 +39,8 @@
 -228856 -1 -1 0 256;
 #X obj 163 225 else/sig2float~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -109,7 +109,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -181,18 +181,18 @@ it is in the given range., f 56;
 -1 -1 0 1;
 #X obj 193 113 nbx 5 14 1 8 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 1 256;
-#X obj 193 135 float2sig~ 100 1;
 #X text 96 35 Wavefolding: a type of waveshaping technique.;
 #X obj 116 89 osc~ 98.5;
 #X obj 189 208 else/graph~ 447 5;
+#X obj 192 135 else/float2sig~ 100 1;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
-#X connect 1 0 8 0;
+#X connect 1 0 7 0;
 #X connect 2 0 1 0;
 #X connect 3 0 4 0;
-#X connect 4 0 5 0;
-#X connect 5 0 2 1;
-#X connect 7 0 2 0;
+#X connect 4 0 8 0;
+#X connect 6 0 2 0;
+#X connect 8 0 2 1;
 #X restore 383 241 pd wavefolding example;
 #X obj 71 39 cnv 4 4 4 empty empty signals 0 28 2 18 -233017 -1 0;
 #X connect 20 0 19 0;

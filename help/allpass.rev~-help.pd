@@ -144,20 +144,20 @@ the expression: a = exp(log(0.001) * D/t60).;
 #X text 240 388 - non-0 sets to gain mode;
 #X text 111 529 3) float - non-0 sets to gain mode (default 0), f
 60;
-#N canvas 901 210 625 359 gain 0;
-#X obj 287 153 else/impseq~;
-#X obj 287 126 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 680 207 505 310 gain 0;
+#X obj 207 141 else/impseq~;
+#X obj 207 114 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 287 230 else/out~;
-#X obj 219 130 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 207 218 else/out~;
+#X obj 139 118 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 219 153 gain \$1;
-#X text 48 38 By default \, the reverberation/decay time is in "t60"
+#X msg 139 141 gain \$1;
+#X text 30 23 By default \, the reverberation/decay time is in "t60"
 \, which is the time in ms that the impulse takes to fall 60dB in energy.
 You can change this parameter to a gain coefficient value with the
 third argument \, where a non zero value sets to "gain mode". You can
 also change that with the "gain" message., f 72;
-#X obj 287 187 else/allpass.rev~ 10 0.9 1;
+#X obj 207 175 else/allpass.rev~ 10 0.9 1;
 #X connect 0 0 6 0;
 #X connect 1 0 0 0;
 #X connect 3 0 4 0;

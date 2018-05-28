@@ -90,7 +90,7 @@ can have :, f 63;
 -228856 -1 -1 0 256;
 #X text 314 140 delay time in ms;
 #X obj 227 184 else/ffdelay~;
-#N canvas 793 187 469 318 interpolation 1;
+#N canvas 793 187 469 318 interpolation 0;
 #X obj 54 219 -~;
 #X obj 276 153 nbx 9 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;

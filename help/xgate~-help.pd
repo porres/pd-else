@@ -25,8 +25,8 @@
 #X obj 101 40 cnv 4 4 4 empty empty input 0 28 2 18 -233017 -1 0;
 #X obj 187 131 noise~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -95,7 +95,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -155,7 +155,7 @@
 ;
 #X text 176 422 ep;
 #X text 170 404 lin;
-#N canvas 840 91 418 509 crossfade_modes 0;
+#N canvas 840 91 418 509 crossfade_modes 1;
 #X floatatom 98 159 3 0 1 0 - - -, f 3;
 #X obj 98 121 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -166,7 +166,6 @@ equal power with the 'lin' and 'ep' messages \, respectively.;
 #X text 154 219 change to equal power (default);
 #X text 166 247 change to linear;
 #X obj 115 187 sig~ 1;
-#X obj 98 311 sig2float~;
 #X obj 98 349 vsl 17 128 0 1 0 0 sdgdfg sdfhjmjmj empty 0 -9 0 10 -228856
 -1 -1 0 1;
 #X obj 326 402 else/setdsp~;
@@ -174,13 +173,14 @@ equal power with the 'lin' and 'ep' messages \, respectively.;
 #X text 21 14 By default \, [xgate~] adopts an equal power crossfading
 function (sin/cos). You can set it to linear crossfade when creating
 the object with the -lin flag.;
-#X connect 0 0 11 0;
+#X obj 98 311 else/sig2float~;
+#X connect 0 0 10 0;
 #X connect 1 0 0 0;
-#X connect 2 0 11 0;
-#X connect 3 0 11 0;
-#X connect 7 0 11 0;
-#X connect 8 0 9 0;
-#X connect 11 0 8 0;
+#X connect 2 0 10 0;
+#X connect 3 0 10 0;
+#X connect 7 0 10 0;
+#X connect 10 0 12 0;
+#X connect 12 0 8 0;
 #X restore 426 307 pd crossfade_modes;
 #X text 194 404 - change crossfade type to linear;
 #X text 194 422 - change crossfade type to equal power;

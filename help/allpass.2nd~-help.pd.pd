@@ -48,7 +48,7 @@
 1;
 #X text 133 324 bypass <float>;
 #X text 230 324 - 1 (bypasses input signal) or 0 (doesn't bypass);
-#N canvas 395 72 926 617 filter 1;
+#N canvas 395 72 926 617 filter 0;
 #X obj 730 109 hsl 128 15 0.001 100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 662 83 hsl 128 15 20 20000 1 0 empty empty empty -2 -8 0 10

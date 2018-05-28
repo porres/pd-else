@@ -15,10 +15,10 @@
 0;
 #X text 199 245 Amplitude;
 #X text 223 189 Real;
-#X text 397 189 Imaginary;
+#X text 403 189 Imaginary;
 #X obj 263 190 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 338 190 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 344 190 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 208 292 - real part from the cartesian coordinates, f 43;
 #X text 209 320 - imaginary part from the cartesian coordinates, f
@@ -82,36 +82,7 @@ require the phase values., f 63;
 #X text 209 355 - magnitude, f 32;
 #X obj 33 242 else/car2pol~;
 #X text 35 220 see also:;
-#N canvas 920 244 470 335 x 0;
-#X obj 140 90 rfft~;
-#X obj 89 133 display~;
-#X obj 74 180 print~;
-#X obj 56 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 143 60 noise~;
-#X obj 322 70 block~ 4096;
-#X obj 344 145 nbx 5 14 64 44100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 64 256;
-#X msg 344 166 size \$1;
-#X obj 371 204 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X obj 149 189 else/graph~ 441 0;
-#X msg 371 225 skip \$1;
-#X obj 142 119 else/mag~ norm;
-#X connect 0 0 1 0;
-#X connect 0 0 11 0;
-#X connect 0 1 1 0;
-#X connect 0 1 11 1;
-#X connect 3 0 2 0;
-#X connect 4 0 0 0;
-#X connect 6 0 7 0;
-#X connect 7 0 9 1;
-#X connect 8 0 10 0;
-#X connect 10 0 9 1;
-#X connect 11 0 2 0;
-#X connect 11 0 9 0;
-#X restore 398 246 pd x;
 #X obj 263 213 else/mag~ norm;
-#X connect 10 0 40 0;
-#X connect 11 0 40 1;
-#X connect 40 0 27 0;
+#X connect 10 0 39 0;
+#X connect 11 0 39 1;
+#X connect 39 0 27 0;

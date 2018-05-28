@@ -1,5 +1,4 @@
 #N canvas 463 23 560 452 10;
-#X obj 273 248 pic pdlogo.gif;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -41,9 +40,10 @@
 #X msg 272 127 open pdlogo.gif;
 #X text 81 94 [pic] loads image pictures \, so far \, it only works
 with file types: .gif \, .ppm & .pgm;
-#X obj 400 262 pic ;
 #X text 428 256 <= default image;
 #X text 133 402 1) symbol - file to open (default \, internal question
 mark image), f 64;
-#X connect 21 0 0 0;
-#X connect 22 0 0 0;
+#X obj 273 248 else/pic pdlogo.gif;
+#X obj 400 262 else/pic ;
+#X connect 20 0 25 0;
+#X connect 21 0 25 0;

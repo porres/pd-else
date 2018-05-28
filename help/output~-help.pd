@@ -202,7 +202,6 @@ same as the output. We have then two non linear modes:;
 -228856 -1 -1 0 256;
 #X obj 551 288 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 468 341 output~;
 #X obj 551 174 vsl 15 80 0 2 0 0 empty empty empty 0 -9 0 10 -233017
 -1 -1 0 1;
 #X text 557 269 max gain;
@@ -262,17 +261,17 @@ becomes 0.125)., f 57;
 #X connect 16 0 0 0;
 #X restore 146 22 pd init-array;
 #X obj 416 231 else/db2lin;
-#X connect 23 0 27 0;
-#X connect 23 0 27 1;
-#X connect 24 0 27 2;
-#X connect 25 0 36 0;
+#X obj 468 341 ./output~;
+#X connect 23 0 36 0;
+#X connect 23 0 36 1;
+#X connect 24 0 36 2;
+#X connect 25 0 35 0;
 #X connect 26 0 24 0;
-#X connect 28 0 26 0;
-#X connect 36 0 26 0;
+#X connect 27 0 26 0;
+#X connect 35 0 26 0;
 #X restore 459 177 pd scaling \; modes & gain;
 #N canvas 876 153 511 576 DSP 0;
 #X obj 129 295 osc~ 440;
-#X obj 129 341 output~;
 #X msg 212 285 on;
 #X msg 228 311 off;
 #X msg 177 96 \; pd dsp \$1;
@@ -297,11 +296,12 @@ volume up in one of the usual ways and with the interface provided
 by [output~] (via toggle or messages). You'll notice how changing the
 DSP status with [output~] does not 'click'! This is because it automatically
 fades in and out when turning it on and off!;
-#X connect 0 0 1 0;
-#X connect 0 0 1 1;
-#X connect 2 0 1 2;
-#X connect 3 0 1 2;
-#X connect 5 0 4 0;
+#X obj 129 341 ./output~;
+#X connect 0 0 11 0;
+#X connect 0 0 11 1;
+#X connect 1 0 11 2;
+#X connect 2 0 11 2;
+#X connect 4 0 3 0;
 #X restore 452 154 pd DSP status;
 #X text 97 517 [output~] was originally in Pd Extended's extra folder
 as a variant of [ezoutput~] from PDDP. This is an improved \, redesigned
