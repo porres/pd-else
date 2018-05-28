@@ -1,38 +1,24 @@
-#N canvas 507 58 559 524 10;
-#X obj 3 486 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 605 198 563 456 10;
+#X obj 3 428 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 4 323 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 303 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 397 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 360 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 452 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 394 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 119 332 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 119 312 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X obj 119 407 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 199 370 signal;
+#X obj 23 40 cnv 4 4 4 empty empty Channel 0 28 2 18 -233017 -1 0;
+#X obj 89 40 cnv 4 4 4 empty empty rotation 0 28 2 18 -233017 -1 0
 ;
-#X text 189 407 signal;
-#X obj 23 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
-#X obj 77 40 cnv 4 4 4 empty empty rotation 0 28 2 18 -233017 -1 0
-;
-#X obj 171 260 else/out~;
-#X obj 289 201 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 119 352 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X obj 119 372 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
-;
-#X text 189 332 signal;
-#X text 189 352 signal;
-#X text 153 372 float/signal;
-#X text 250 372 - position;
-#X text 250 352 - right input;
-#X text 250 332 - left input;
-#X obj 119 427 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X text 189 427 signal;
-#X text 250 407 - left output;
-#X text 250 427 - right output;
+#X obj 187 240 else/out~;
+#X obj 306 178 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 3175 1;
+#X obj 119 335 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+0;
+#X text 163 336 float/signal;
 #X obj 3 3 cnv 15 301 42 empty empty rotate~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -55,49 +41,91 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 205 201 else/brown~;
-#X obj 171 170 osc~ 440;
-#X text 176 462 1) float;
-#N canvas 745 245 487 296 example 0;
-#X obj 315 213 else/out~;
-#X obj 338 106 osc~ 440;
-#X obj 304 76 osc~ 220;
-#X obj 304 165 else/rotate~;
-#X obj 373 138 osc~ 0.25;
-#X obj 71 205 else/out~;
-#X obj 94 98 osc~ 440;
-#X obj 60 68 osc~ 220;
-#X obj 60 157 else/rotate~;
-#X text 129 24 Continuous rotation with LFOs;
-#X obj 129 129 else/vsaw~ 0.25;
+#X obj 221 181 else/brown~;
+#X obj 187 150 osc~ 440;
+#X text 186 405 1) float;
+#N canvas 736 79 608 362 example 0;
+#X obj 405 231 else/out~;
+#X obj 428 124 osc~ 440;
+#X obj 394 94 osc~ 220;
+#X obj 394 183 else/rotate~;
+#X text 349 63 Continuous rotation with LFOs;
+#X obj 463 155 else/vsaw~ 0.25;
+#X obj 58 136 sig~ 1;
+#X obj 57 289 else/display~;
+#X obj 84 289 else/display~;
+#X obj 175 227 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 57 258 else/rotate~ 4;
+#X obj 77 161 sig~ 2;
+#X obj 97 190 sig~ 3;
+#X obj 117 215 sig~ 4;
+#X obj 111 289 else/display~;
+#X obj 138 289 else/display~;
+#X obj 172 193 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -1 256;
+#X msg 207 164 -1;
+#X msg 197 141 -0.75;
+#X msg 188 119 -0.5;
+#X msg 173 96 -0.25;
+#X msg 157 74 0;
+#X obj 252 193 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1 256;
+#X msg 237 74 0;
+#X msg 287 164 1;
+#X msg 277 141 0.75;
+#X msg 268 119 0.5;
+#X msg 253 96 0.25;
+#X text 47 27 Here's how the rotation works for more than 2 channels.
+, f 29;
 #X connect 1 0 3 1;
 #X connect 2 0 3 0;
 #X connect 3 0 0 0;
 #X connect 3 1 0 1;
-#X connect 4 0 3 2;
-#X connect 6 0 8 1;
-#X connect 7 0 8 0;
-#X connect 8 0 5 0;
-#X connect 8 1 5 1;
-#X connect 10 0 8 2;
-#X restore 450 289 pd example;
-#X obj 171 229 else/rotate~;
-#X msg 258 170 0;
-#X msg 286 170 0.5;
-#X msg 317 170 1;
-#X text 243 463 - position (default 0);
-#X text 75 88 [rotate~] does an equal power rotation for stereo sounds.
-It takes two audio inputs (L \, R) and a position control. A full cycle
-is from -1 to 1: at 0 \, the position is the original input. At 0.5
-\, both inputs are mixed in both outputs. At 1 \, the input channels
-are fully inverted.;
-#X obj 286 230 else/float2sig~ 100;
-#X connect 10 0 43 0;
-#X connect 33 0 37 1;
-#X connect 34 0 37 0;
+#X connect 5 0 3 2;
+#X connect 6 0 10 0;
+#X connect 9 0 10 4;
+#X connect 10 0 7 0;
+#X connect 10 1 8 0;
+#X connect 10 2 14 0;
+#X connect 10 3 15 0;
+#X connect 11 0 10 1;
+#X connect 12 0 10 2;
+#X connect 13 0 10 3;
+#X connect 16 0 9 0;
+#X connect 17 0 16 0;
+#X connect 18 0 16 0;
+#X connect 19 0 16 0;
+#X connect 20 0 16 0;
+#X connect 21 0 16 0;
+#X connect 22 0 9 0;
+#X connect 23 0 22 0;
+#X connect 24 0 22 0;
+#X connect 25 0 22 0;
+#X connect 26 0 22 0;
+#X connect 27 0 22 0;
+#X restore 470 270 pd example;
+#X msg 303 147 0;
+#X msg 331 147 0.5;
+#X text 163 312 float/signal;
+#X text 260 312 - channel inputs;
+#X obj 120 370 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+;
+#X text 260 370 - channel outputs;
+#X text 260 336 - position (from -1 to 1);
+#X obj 303 207 else/float2sig~ 100;
+#X text 66 88 [rotate~] performs equal power rotation for 'n' channels
+(default 2). It takes a position control in which a full cycle is from
+0 to 1 \, negative values from 0 to -1 are wrapped., f 69;
+#X text 243 405 - number of channels (minimum and default: 2);
+#X obj 187 209 else/rotate~;
+#X msg 265 147 -0.5;
+#X connect 9 0 33 0;
+#X connect 22 0 36 1;
+#X connect 23 0 36 0;
+#X connect 26 0 9 0;
+#X connect 27 0 9 0;
+#X connect 33 0 36 2;
+#X connect 36 0 8 0;
+#X connect 36 1 8 1;
 #X connect 37 0 9 0;
-#X connect 37 1 9 1;
-#X connect 38 0 10 0;
-#X connect 39 0 10 0;
-#X connect 40 0 10 0;
-#X connect 43 0 37 2;
