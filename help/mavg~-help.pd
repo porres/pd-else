@@ -16,7 +16,6 @@
 #X text 156 388 signal;
 #X text 144 421 1) float;
 #X text 200 388 - the moving average over the last 'n' samples;
-#X obj 500 69 cyclone/setdsp~;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -52,12 +51,11 @@
 a given number of samples. At each sample \, the average of the last
 'n' sample is given., f 61;
 #X obj 374 245 nbx 3 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 3 256;
+-228856 -1 -1 0 256;
 #X obj 377 200 hsl 150 15 1 100 1 0 adsfadsg ahhah empty -2 -8 0 10
--228856 -1 -1 3600 1;
+-228856 -1 -1 0 1;
 #X text 382 199 'n' samples to average;
 #X obj 374 223 int;
-#X obj 460 37 cyclone/setdsp~;
 #X obj 263 275 else/mavg~ -size 10;
 #X text 51 56 The first argument specifies 'n' number of samples to
 average. This also sets the buffer size if no size flag is given. Float
@@ -67,14 +65,15 @@ value is "1" \, which makes it the same as the input signal., f 61
 #X text 51 119 By default \, the buffers size 100 samples long. You
 can also set the maximum value with the -size flag or message., f
 61;
+#X obj 460 37 else/setdsp~;
 #X connect 0 0 2 0;
-#X connect 0 0 11 0;
-#X connect 3 0 11 0;
-#X connect 4 0 11 0;
-#X connect 6 0 11 1;
+#X connect 0 0 10 0;
+#X connect 3 0 10 0;
+#X connect 4 0 10 0;
+#X connect 6 0 10 1;
 #X connect 7 0 9 0;
 #X connect 9 0 6 0;
-#X connect 11 0 1 0;
+#X connect 10 0 1 0;
 #X restore 441 229 pd more_details;
 #X obj 3 444 cnv 3 550 3 empty empty flag 8 12 0 13 -228856 -1 0;
 #X text 162 308 clear;
@@ -99,7 +98,7 @@ the last 'n' given samples. This is also a type of lowpass filter.
 #X obj 91 180 else/out~;
 #X obj 215 179 else/out~;
 #X obj 272 109 nbx 5 14 1 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 33 256;
+-1 -1 1 256;
 #X obj 215 133 else/mavg~;
 #X text 261 88 'n' samples;
 #X text 47 19 [mavg~] is nothing but a moving average filter \, which
@@ -121,11 +120,12 @@ or argument's value if given), f 53;
 #X text 55 190 Average of the last two samples ========>, f 21;
 #X text 213 346 'n' number of last samples to apply the average to
 (if different than the last \, the filter is cleared), f 51;
+#X obj 500 69 else/setdsp~;
+#X connect 32 0 35 0;
+#X connect 32 0 36 0;
 #X connect 33 0 36 0;
-#X connect 33 0 37 0;
-#X connect 34 0 37 0;
-#X connect 37 0 41 0;
-#X connect 45 0 34 0;
-#X connect 45 0 36 0;
-#X connect 45 0 41 0;
-#X connect 45 0 33 0;
+#X connect 36 0 40 0;
+#X connect 44 0 33 0;
+#X connect 44 0 35 0;
+#X connect 44 0 40 0;
+#X connect 44 0 32 0;

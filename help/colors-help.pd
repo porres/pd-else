@@ -1,4 +1,4 @@
-#N struct 1003-pixel float color;
+#N struct 1487-pixel float color;
 #N canvas 546 23 560 610 10;
 #X obj 248 272 display;
 #X obj 248 158 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -110,22 +110,22 @@ to "ds" (Pd's Data Structures format)., f 38;
 #N canvas 575 174 685 387 gui 0;
 #X obj 24 246 else/pack2 rgb 0 0 0;
 #X obj 63 108 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
--262144 -1 12700 0;
+-262144 -1 0 0;
 #X obj 102 108 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4033
--262144 -1 12700 0;
+-262144 -1 0 0;
 #X obj 141 108 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
--262144 -1 8400 0;
+-262144 -1 0 0;
 #X obj 24 305 display;
 #X obj 24 273 else/colors -gui;
 #X obj 371 302 display;
 #X obj 187 104 cnv 15 90 250 empty empty empty 20 12 0 14 -1 -66577
 0;
-#X obj 189 106 cnv 15 86 246 empty \$0-set-cnv empty 20 12 0 14 -262123
+#X obj 189 106 cnv 15 86 246 empty \$0-set-cnv empty 20 12 0 14 -1
 -66577 0;
 #X text 188 86 GUI;
 #X text 537 82 Data Structures;
 #N canvas 4 23 450 300 \$0-DS 0;
-#X scalar 1003-pixel 777 \;;
+#X scalar 1487-pixel 0 \;;
 #X coords 0 0 1 1 90 250 2 100 100;
 #X restore 540 104 pd \$0-DS;
 #N canvas 148 23 292 236 set-gui 0;
@@ -156,11 +156,11 @@ to "ds" (Pd's Data Structures format)., f 38;
 #X restore 371 335 pd set-ds;
 #X obj 371 246 else/pack2 rgb 0 0 0;
 #X obj 410 108 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
--262144 -1 11100 0;
+-262144 -1 0 0;
 #X obj 449 108 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4033
--262144 -1 11900 0;
+-262144 -1 0 0;
 #X obj 488 108 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
--262144 -1 11200 0;
+-262144 -1 0 0;
 #X obj 371 273 else/colors -ds;
 #X text 161 15 [colors] can output color values specially for Pd Vanilla's
 GUI objects and Data Structures. Note that Data Structures have less
@@ -177,7 +177,7 @@ color resolution. See examples below.;
 #X connect 16 0 14 2;
 #X connect 17 0 14 3;
 #X connect 18 0 6 0;
-#X restore 496 278 pd gui;
+#X restore 495 278 pd gui;
 #X text 198 412 -;
 #X text 126 379 gui <float>;
 #X text 132 394 ds <float>;

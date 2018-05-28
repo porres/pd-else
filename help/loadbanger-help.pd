@@ -62,7 +62,7 @@
 #X text 52 209 click on it =====>, f 9;
 #X text 196 299 - any message triggers bangs;
 #X text 400 182 (abbreviation);
-#N canvas 886 173 540 434 abstractions 0;
+#N canvas 886 173 500 412 abstractions 0;
 #X obj 310 255 else/sampler~ 4;
 #X obj 80 255 else/sampler~;
 #X text 47 110 This makes it possible to create abstractions with variable
@@ -83,58 +83,58 @@ an abstraction and neeed it to send a control data throughout an outlet
 to a parent patch \, you cannot use the -init flag. That's because
 \, as stated \, these are triggered before the connections are made
 \, so a value is not sent out.;
-#X restore 431 252 pd abstractions \; dynamic patching;
+#X restore 436 250 pd abstractions \; dynamic patching;
 #X text 71 90 [loadbanger] (or [lb]) sends "bangs" (from right to left)
 when loading the patch and also sends bangs when receiving any message
 or clicked on. The number of outputs is defined by the argument (1
 by default). [lb] can also be useful for dynamic patching (for creating
 inlets/outlets).;
 #X text 157 405 -init: sets loadbang to "init mode";
-#N canvas 532 220 953 429 -init 0;
-#X obj 895 360 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 487 220 885 429 -init 0;
+#X obj 823 349 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 816 360 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 755 349 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 737 360 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 688 349 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 681 362 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 610 349 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 605 361 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 545 350 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 530 361 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 481 350 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 530 335 trigger bang bang bang;
-#X obj 530 305 loadbang;
-#X obj 533 150 print next;
-#X obj 727 152 print first;
-#X text 22 31 Pure Data can send two different kind of bangs when loading
+#X obj 481 324 trigger bang bang bang;
+#X obj 481 294 loadbang;
+#X obj 480 150 print next;
+#X obj 674 152 print first;
+#X text 27 31 Pure Data can send two different kind of bangs when loading
 the patch. The [loadbang] object in Pd Vanilla sends a bang when the
 patch has been loaded. Let's name this type of bang as "load".;
-#X text 23 94 But there is also another type of bang that Pd can send
+#X text 28 94 But there is also another type of bang that Pd can send
 \, lets call it "init" bang. This second type is sent before "load".
 A famous external that just uses this kind of bang is [initbang] from
 the library iemguts.;
-#X text 23 162 [loadbanger] works with both kinds of bangs. By default
+#X text 28 162 [loadbanger] works with both kinds of bangs. By default
 \, it sends the "load" bang \, but if you can change to "init mode"
 with the "-init" flag.;
-#X obj 727 117 else/loadbanger -init;
-#X obj 533 116 else/loadbanger;
-#X obj 737 334 else/loadbanger -init 3;
-#X text 23 215 The "init" bangs are sent before "load" bangs. It is
+#X obj 674 117 else/loadbanger -init;
+#X obj 480 116 else/loadbanger;
+#X obj 688 323 else/loadbanger -init 3;
+#X text 28 215 The "init" bangs are sent before "load" bangs. It is
 also sent first inside subpatches and abstractions than in parent patches.
 In the case of abstractions \, this is mostly useful for dynamic patching
 \, because you can initialize it with a dynamic number of inlets/outlets
 as exlpained in the next example.;
-#X text 24 312 One extra functionality from having both types of bangs
+#X text 29 312 One extra functionality from having both types of bangs
 is that you can control the order of execution \, where you can have
 one group of [loadbanger] objects initializing first than another [loadbanger].
 But this might be tricky and unrelieable if you're dealing with abstractions.
 So \, if you're not sure what you're doing \, just stick with regular
 "load" bangs.;
-#X text 485 38 If you check pd's terminal window after loading this
+#X text 432 38 If you check pd's terminal window after loading this
 help file \, you'll see that the [loadbanger] object with the -init
 flag is sent before the others.;
-#X text 499 204 Another difference from these "two" types of bangs
+#X text 446 204 Another difference from these "two" types of bangs
 is that a "load" bang is sent again if you reinstantiate or duplicate
 the object. The [loadbanger] object will also do that even if it is
 in "init" mode. You can test that in this subpatch.;

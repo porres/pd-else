@@ -1,4 +1,4 @@
-#N canvas 385 23 560 580 10;
+#N canvas 515 82 560 567 10;
 #X obj 4 331 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 429 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -71,7 +71,7 @@ than the decay time \, then the polarity is inverted.;
 0;
 #X text 143 519 Object based on SuperCollider's "Decay2" UGEN.;
 #X obj 295 213 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 186 1;
+-1 -1 23 1;
 #X text 318 306 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;

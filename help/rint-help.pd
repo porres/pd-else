@@ -19,15 +19,13 @@
 #X text 177 229 float;
 #X text 177 267 float;
 #X text 177 302 float;
-#N canvas 937 321 275 226 lists 0;
-#X obj 76 67 loadbang;
+#N canvas 937 321 278 200 lists 0;
 #X text 55 33 it also works with lists:;
-#X obj 76 155 else/display;
-#X obj 76 120 else/rint;
-#X msg 76 92 0.333 0.666 -0.999;
-#X connect 0 0 4 0;
+#X obj 43 134 else/display;
+#X obj 43 99 else/rint;
+#X obj 43 66 else/initmess 0.333 0.666 -0.999;
+#X connect 2 0 1 0;
 #X connect 3 0 2 0;
-#X connect 4 0 3 0;
 #X restore 483 188 pd lists;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;

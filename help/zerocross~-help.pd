@@ -63,28 +63,22 @@ outlet) and both (right outlet).;
 ;
 #X text 135 330 signal;
 #X text 177 330 - signal to detect zero crossings;
-#N canvas 965 126 363 334 estimating 0;
+#N canvas 965 126 367 317 estimating 0;
 #X obj 66 189 /~;
 #X obj 177 117 else/zerocross~;
 #X obj 177 155 else/elapsed~;
 #X obj 66 134 else/sr~;
-#X obj 66 273 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 177 224 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 128 273 <= frequency estimate;
 #X obj 177 81 osc~ 100;
 #X text 42 29 Estimating frequency with zero crossing count.;
-#X obj 177 190 else/sig2float~;
-#X obj 66 224 else/sig2float~;
-#X connect 0 0 10 0;
+#X obj 66 224 else/display~;
+#X obj 177 190 else/display~;
+#X text 60 255 frequency estimate;
+#X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 2 0 0 1;
-#X connect 2 0 9 0;
+#X connect 2 0 7 0;
 #X connect 3 0 0 0;
-#X connect 7 0 1 0;
-#X connect 9 0 5 0;
-#X connect 10 0 4 0;
+#X connect 4 0 1 0;
 #X restore 460 274 pd estimating \; frequency;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992

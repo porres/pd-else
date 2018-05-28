@@ -1,5 +1,5 @@
-#N struct 1009-cell float x float y float cellsize float color;
-#N struct 1014-cell float x float y float cellsize float color;
+#N struct 2369-cell float x float y float cellsize float color;
+#N struct 2374-cell float x float y float cellsize float color;
 #N canvas 721 129 564 535 10;
 #X obj 248 269 display;
 #X msg 248 164 1 0 \$1;
@@ -60,7 +60,7 @@
 #X text 49 88 [mtx.ctl] provides a user matrix interface control. The
 cells in the grid can be either on or off. The output is a list with
 3 floats that specify: column \, row and status., f 69;
-#N canvas 371 36 470 327 mtx~ 0;
+#N canvas 631 247 470 327 mtx~ 0;
 #X text 118 75 0;
 #X text 133 75 1;
 #X text 147 75 2;
@@ -95,7 +95,7 @@ cells in the grid can be either on or off. The output is a list with
 #X msg 202 164 clear;
 #X text 197 345 clear;
 #X msg 308 169 set 2 1 \$1;
-#X obj 308 146 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 308 146 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 167 330 set <list>;
 #X text 243 315 - sets column \, row \, status and outputs it;

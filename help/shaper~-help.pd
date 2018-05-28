@@ -116,12 +116,12 @@ function \, but on a sine wave as a synthesis technique.;
 For example \, an LFO sine wave can scan through an audio sample forward
 and reverse \, accelerating and decelerating \, resulting in a turntable
 scratch effect. Check below., f 65;
-#X obj 220 166 soundfiler;
-#X obj 220 130 else/initmess read -resize violin.wav \$0-violin, f
+#X obj 240 166 soundfiler;
+#X obj 240 130 else/initmess read -resize violin.wav \$0-violin, f
 26;
-#X obj 294 167 table \$0-violin;
+#X obj 314 166 table \$0-violin;
 #X obj 69 160 else/out~;
-#X obj 69 125 ./shaper~ \$0-violin;
+#X obj 69 125 else/shaper~ \$0-violin;
 #X connect 0 0 6 0;
 #X connect 3 0 2 0;
 #X connect 6 0 5 0;

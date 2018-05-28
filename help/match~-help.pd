@@ -148,47 +148,47 @@
 #X obj 182 282 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 182 258 else/trig2bang~;
-#X obj 305 259 else/trig2bang~;
-#X obj 305 282 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 287 259 else/trig2bang~;
+#X obj 287 282 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 182 208 nbx 2 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
-#X obj 182 181 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+-228856 -1 -1 0 256;
+#X obj 182 181 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 219 329 the signal to be matched;
 #X text 147 418 1) list;
 #X text 206 417 - values to match to (default 0);
 #X text 91 269 matches argument =>, f 12;
-#X text 326 281 <= unmatched;
+#X text 308 281 <= unmatched;
 #X obj 92 384 cnv 17 3 17 empty empty r 5 9 0 16 -228856 -162280 0
 ;
 #X text 218 363 impulse when signal matches an argument;
 #X text 157 384 signal -;
 #X text 218 385 impulse when signal doesn't match arguments;
 #X text 115 328 float/signal -;
-#N canvas 697 133 595 371 example 0;
-#X obj 81 184 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#N canvas 697 133 526 370 example 1;
+#X obj 81 183 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 81 160 else/trig2bang~;
-#X obj 203 161 else/trig2bang~;
-#X obj 203 184 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 81 159 else/trig2bang~;
+#X obj 193 159 else/trig2bang~;
+#X obj 193 182 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 81 132 else/match~ 1 2 3, f 53;
-#X obj 81 58 *~ 4;
-#X obj 81 80 else/ceil~;
-#X obj 81 103 else/display~;
-#X obj 326 162 else/trig2bang~;
-#X obj 326 185 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 69 130 else/match~ 1 2 3, f 57;
+#X obj 69 56 *~ 4;
+#X obj 69 78 else/ceil~;
+#X obj 69 101 else/display~;
+#X obj 310 161 else/trig2bang~;
+#X obj 310 184 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 449 162 else/trig2bang~;
-#X obj 449 185 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 408 160 else/trig2bang~;
+#X obj 408 183 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 304 216 else/resonant~ 2500 1000, f 14;
-#X obj 53 215 else/resonant~ 1000 500, f 14;
-#X obj 177 215 else/resonant~ 1500 750, f 14;
-#X obj 177 283 out~;
-#X text 226 72 A sequencer patch;
-#X obj 81 34 phasor~ 0.75;
+#X obj 295 214 else/resonant~ 2500 1000, f 14;
+#X obj 70 212 else/resonant~ 1000 500, f 14;
+#X obj 182 213 else/resonant~ 1500 750, f 14;
+#X obj 182 281 out~;
+#X text 214 70 A sequencer patch;
+#X obj 69 32 phasor~ 0.75;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
 #X connect 4 0 1 0;

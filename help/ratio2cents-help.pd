@@ -17,24 +17,13 @@
 #X text 156 363 bang;
 #X text 162 379 set;
 #X text 120 347 float/list;
-#N canvas 970 92 287 299 lists 0;
-#X obj 75 67 loadbang;
-#X text 54 33 it also works with lists:;
-#X obj 75 152 unpack f f f;
-#X obj 75 242 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -2400 256;
-#X obj 109 213 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 701.955 256;
-#X obj 144 183 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 2400 256;
-#X obj 75 121 else/ratio2cents;
-#X msg 75 93 0.25 1.5 4;
-#X connect 0 0 7 0;
-#X connect 2 0 3 0;
-#X connect 2 1 4 0;
-#X connect 2 2 5 0;
-#X connect 6 0 2 0;
-#X connect 7 0 6 0;
+#N canvas 970 92 249 221 lists 0;
+#X text 45 26 it also works with lists:;
+#X obj 52 106 else/ratio2cents;
+#X obj 52 137 else/display;
+#X obj 52 69 else/initmess 0.25 1.5 4;
+#X connect 1 0 2 0;
+#X connect 3 0 1 0;
 #X restore 474 298 pd lists;
 #X obj 149 178 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;

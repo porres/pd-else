@@ -139,7 +139,7 @@
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
 #N canvas 512 142 490 395 pulse 0;
-#X obj 156 314 else/out~;
+#X obj 161 314 else/out~;
 #X obj 213 192 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 210 217 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -147,7 +147,7 @@
 #X text 23 22 The pulse width parameter controlls how much of the cycle
 is "on" or "off". A pulse width of 0.5 means the first half is "on"
 and the lasr half is "off".;
-#X obj 172 269 else/pulse~ 100 0;
+#X obj 177 269 else/pulse~ 100 0;
 #X text 30 71 A pulse width of 0 has the smallest "on" pulse size:
 a single sample - thus \, just like an impulse oscillator!;
 #X text 30 107 Conversely \, a pulse widht of 1 has the largest (the
@@ -166,42 +166,40 @@ second inlet.;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#N canvas 387 302 894 295 phase 0;
-#X text 438 24 The phase values are wrapped into the 0-1 range \, since
+#N canvas 387 302 791 284 phase 0;
+#X text 398 21 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 - where 1 is also the start of another
 cycle.;
-#X obj 560 100 cnv 15 240 65 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X obj 576 191 else/out~;
-#X text 562 82 Phase Modulation:;
-#X obj 592 138 else/pulse~ 200;
-#X obj 694 111 osc~ 50.05;
-#X text 347 116 1;
-#X obj 209 116 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 498 156 else/out~;
+#X text 615 110 Phase Modulation:;
+#X obj 514 110 else/pulse~ 200;
+#X obj 601 83 osc~ 50.05;
+#X text 326 108 1;
+#X obj 188 108 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 206 141 4 0 0 0 - - -, f 4;
-#X text 187 116 0;
-#X obj 62 202 else/sig2float~;
-#X obj 62 230 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X floatatom 185 133 4 0 0 0 - - -, f 4;
+#X text 166 108 0;
+#X obj 62 194 else/sig2float~;
+#X obj 62 222 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 288 202 else/sig2float~;
-#X obj 288 230 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 267 194 else/sig2float~;
+#X obj 267 222 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 288 172 else/pulse~ 1;
-#X obj 62 171 else/pulse~ 1 0.5 0.5;
-#X text 19 21 The third argument sets an initial phase (or "phase offset").
+#X obj 267 164 else/pulse~ 1;
+#X obj 62 163 else/pulse~ 1 0.5 0.5;
+#X text 30 19 The third argument sets an initial phase (or "phase offset").
 This is also settable with the fourth inlet. In such a way \, you have
 two objects with the same frequency falling out and back in sync. Another
 feature is phase modulation.;
-#X connect 4 0 2 0;
-#X connect 4 0 2 1;
-#X connect 5 0 4 3;
-#X connect 7 0 8 0;
-#X connect 8 0 15 3;
-#X connect 10 0 11 0;
-#X connect 12 0 13 0;
-#X connect 14 0 12 0;
-#X connect 15 0 10 0;
+#X connect 3 0 1 0;
+#X connect 3 0 1 1;
+#X connect 4 0 3 3;
+#X connect 6 0 7 0;
+#X connect 7 0 14 3;
+#X connect 9 0 10 0;
+#X connect 11 0 12 0;
+#X connect 13 0 11 0;
+#X connect 14 0 9 0;
 #X restore 443 239 pd phase offset;
 #X text 187 452 3) float;
 #X text 267 379 pulse signal;
@@ -217,11 +215,11 @@ LFOs and control with MIDI. A sync with audio is usefull for the "hard
 sync" technique \, where an oscillator is synced according to the frequency
 of a master frequency., f 44;
 #X obj 540 242 else/out~;
-#X obj 608 145 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
+#X obj 598 145 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 110 256;
-#X text 709 171 Master oscillator;
+#X text 699 171 Master oscillator;
 #X text 653 206 Slave oscillator;
-#X obj 608 171 else/imp~ 110;
+#X obj 598 171 else/imp~ 110;
 #X text 508 349 NOTE:;
 #X text 524 382 The "phase sync" inlet is quite different from the
 "phase offset" inlet. This means that the are completely independent.
@@ -242,7 +240,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 ;
 #X obj 540 205 else/pulse~ 200;
 #X obj 88 221 else/sig2float~;
-#X obj 258 224 else/sig2float~;
+#X obj 266 224 else/sig2float~;
 #X text 223 139 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
@@ -350,9 +348,9 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 424 222 pd;
 #X obj 88 254 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 258 257 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 266 257 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 258 200 else/pulse~ 1;
+#X obj 266 200 else/pulse~ 1;
 #X msg 35 141 0;
 #X msg 69 141 0.25;
 #X msg 146 140 0.75;
@@ -382,7 +380,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X connect 26 0 28 0;
 #X connect 27 0 28 0;
 #X connect 28 0 17 2;
-#X restore 499 213 pd sync;
+#X restore 492 214 pd sync;
 #X text 256 415 - frequency in hertz (default 0);
 #X text 256 434 - initial pulse width (default 0.5);
 #X text 256 452 - initial phase offset (default 0);

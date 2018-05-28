@@ -251,7 +251,7 @@
 #X obj 139 40 cnv 4 4 4 empty empty for 0 28 2 18 -233017 -1 0;
 #X obj 169 40 cnv 4 4 4 empty empty samplers 0 28 2 18 -233017 -1 0
 ;
-#N canvas 851 146 501 678 read 0;
+#N canvas 851 146 504 533 read 0;
 #X obj 284 195 soundfiler;
 #X floatatom 284 222 0 0 0 0 - - -;
 #X obj 284 141 symbol \$0-sample;
@@ -309,24 +309,24 @@ negative increment values., f 69;
 #X text 192 510 - loop start (default 0), f 57;
 #X text 192 526 - loop end (default 2ˆ32 - 1), f 57;
 #X text 192 542 - sample size (default 2ˆ32 - 1), f 57;
-#X obj 135 147 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 135 147 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 135 229 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 46594.3 256;
+-228856 -1 -1 0 256;
 #X obj 135 203 else/sig2float~;
 #X obj 138 252 hsl 128 15 0 120000 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 4931 1;
+-228856 -1 -1 0 1;
 #X obj 135 176 else/susloop~ 1 40000 80000 120000;
 #N canvas 370 72 571 337 signal 0;
 #X obj 241 196 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 48727 256;
+-228856 -1 -1 63103 256;
 #X obj 241 170 else/sig2float~;
 #X obj 244 219 hsl 128 15 0 120000 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 5157 1;
+-228856 -1 -1 6678 1;
 #X obj 241 143 else/susloop~ 1 40000 80000 120000;
 #X obj 241 105 else/pulse~ 0.1;
 #X obj 119 145 else/sig2float~;
-#X obj 119 188 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 119 188 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
@@ -361,11 +361,11 @@ restart, f 57;
 , f 57;
 #X text 110 413 size <float>;
 #X obj 336 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.645669 256;
+-228856 -1 -1 0 256;
 #X text 163 146 ("trigger"/"release");
 #X text 44 146 gate (on/off);
 #X obj 339 130 hsl 128 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 8400 1;
+-1 -1 0 1;
 #X text 374 130 increment;
 #X connect 32 0 36 0;
 #X connect 33 0 35 0;

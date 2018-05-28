@@ -13,7 +13,7 @@
 ;
 #X text 181 288 signal;
 #X text 181 439 signal;
-#X obj 123 215 else/out~;
+#X obj 173 215 else/out~;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -29,10 +29,10 @@
 0;
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 157 153 noise~;
-#X obj 236 138 nbx 5 14 100 10000 1 0 empty empty empty 0 -8 0 10 -228856
+#X obj 207 153 noise~;
+#X obj 273 138 nbx 5 14 100 10000 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 100 256;
-#X obj 326 162 nbx 5 14 0.1 100 1 0 empty empty empty 0 -8 0 10 -228856
+#X obj 350 162 nbx 5 14 0.1 100 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0.1 256;
 #X text 230 439 - filtered signal;
 #X text 230 288 - signal to be filtered;
@@ -43,26 +43,26 @@
 #X text 145 383 float/signal;
 #X text 145 406 float/signal;
 #X text 187 306 clear;
-#X msg 80 148 bypass \$1;
-#X obj 80 125 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 130 148 bypass \$1;
+#X obj 130 125 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 133 324 bypass <float>;
 #X text 230 324 - 1 (bypasses input signal) or 0 (doesn't bypass);
-#N canvas 395 72 926 617 filter 0;
-#X obj 753 109 hsl 128 15 0.001 100 1 0 empty empty empty -2 -8 0 10
+#N canvas 395 72 926 617 filter 1;
+#X obj 730 109 hsl 128 15 0.001 100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X obj 674 83 hsl 128 15 20 20000 1 0 empty empty empty -2 -8 0 10
+#X obj 662 83 hsl 128 15 20 20000 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 592 119 noise~;
 #X obj 592 194 else/out~;
-#X obj 750 133 nbx 5 14 0.001 100 0 0 \$0-Q empty empty 0 -8 0 10 -228856
+#X obj 727 133 nbx 5 14 0.001 100 0 0 \$0-Q empty empty 0 -8 0 10 -228856
 -1 -1 0.001 256;
-#X obj 671 110 nbx 5 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
+#X obj 659 110 nbx 5 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
 -1 -1 20 256;
 #X text 112 275 [1] found in http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
 , f 65;
-#X text 691 83 center frequency;
-#X text 774 109 resonance (Q);
+#X text 679 83 center frequency;
+#X text 751 109 resonance (Q);
 #X text 53 13 This filter has zeroes fixes at +1 and -1 on the z-plane
 \, which means both 0Hz and Nyquist are always filtered out.;
 #X text 510 14 Change the parameters and check the filter response
@@ -102,7 +102,7 @@ b2 * y[n-2];
 #X restore 429 239 pd filter formula \; and response;
 #X text 229 382 - central frequency in Hertz;
 #X text 118 469 1) float - central frequency in Hertz (default 0);
-#X msg 147 120 clear;
+#X msg 197 120 clear;
 #X text 230 306 - clears filter's memory if you blow it up;
 #X text 205 341 bw;
 #X text 230 341 - sets resonance parameter to bandwidth in octaves
@@ -135,16 +135,16 @@ the message methods.;
 or 'bw', f 65;
 #X text 230 358 - sets resonance parameter to Q (default);
 #X text 230 406 - filter resonance (Q or bandwidth);
-#X text 294 137 resonant/center frequency;
+#X text 331 137 resonant/center frequency;
 #X obj 2 3 cnv 15 301 42 empty empty allpass.2nd~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X text 61 86 [allpass.2nd~] is a 2nd order allpass filter.;
-#X obj 147 184 else/allpass.2nd~ 1000 0.1;
-#X text 384 161 resonance, f 9;
-#X text 358 180 (Q by default);
+#X obj 197 184 else/allpass.2nd~ 1000 0.1;
+#X text 408 161 resonance;
+#X text 382 180 (Q by default);
 #X connect 17 0 50 0;
 #X connect 18 0 50 1;
 #X connect 19 0 50 2;

@@ -61,13 +61,13 @@
 #X text 237 337 - values to analyze;
 #X text 237 415 - 1/0 depending on the analysis;
 #X text 237 466 - sets high threshold (default 1);
-#X obj 270 188 ./schmitt~ -0.5 0.5;
 #X obj 270 154 else/sine~ 0.25;
 #X text 73 89 [schmitt~] is a Schmitt trigger. When the input is greater
 than or equal to the high threshold level \, the output is 1 and becomes
 0 when the signal is equal to or less than the reset level (low threshold).
 ;
+#X obj 270 188 else/schmitt~ -0.5 0.5;
 #X connect 36 0 30 0;
-#X connect 41 0 13 0;
-#X connect 42 0 36 0;
-#X connect 42 0 41 0;
+#X connect 41 0 36 0;
+#X connect 41 0 43 0;
+#X connect 43 0 13 0;

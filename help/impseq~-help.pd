@@ -85,20 +85,20 @@ or a bang \, [impseq~] sends an impulse from a given sequence.;
 #X connect 4 0 2 1;
 #X connect 6 0 3 0;
 #X restore 459 249 pd example2;
-#N canvas 803 153 563 433 example1 0;
-#X obj 267 87 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#N canvas 803 153 455 401 example1 0;
+#X obj 253 74 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 224 324 else/out~;
-#X obj 58 181 else/impseq~ 1 0.5 1 0.5 0 1 0.5 0.25 0;
-#X obj 267 244 else/impseq~ 1 0.5 1 0.5 1 1 0.5 0;
-#X obj 292 120 sel 0;
-#X obj 58 219 else/resonant2~ 500 100 1000;
-#X obj 267 278 else/resonant2~ 300 50 2500;
-#X text 76 20 Impulses can be used as rythmic triggers. As such \,
+#X obj 210 311 else/out~;
+#X obj 44 168 else/impseq~ 1 0.5 1 0.5 0 1 0.5 0.25 0, f 20;
+#X obj 253 231 else/impseq~ 1 0.5 1 0.5 1 1 0.5 0, f 18;
+#X obj 195 111 sel 0;
+#X obj 44 206 else/resonant2~ 500 100 1000;
+#X obj 253 276 else/resonant2~ 300 50 2500;
+#X text 65 20 Impulses can be used as rythmic triggers. As such \,
 a sequence value of "0" works as a rest.;
-#X msg 292 149 goto 1;
-#X obj 58 142 else/tempo~ 180;
-#X obj 267 216 else/tempo~ 120;
+#X msg 195 140 goto 1;
+#X obj 44 129 else/tempo~ 180;
+#X obj 253 203 else/tempo~ 120;
 #X connect 0 0 4 0;
 #X connect 0 0 9 0;
 #X connect 0 0 10 0;

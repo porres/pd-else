@@ -51,16 +51,16 @@ the same absolute value as its absolute input., f 60;
 #X text 68 109 x[n] ----(+)----------- y[n];
 #X text 103 196 y(n) = x(n) + a * y(n-D);
 #X text 139 238 a = feedback coefficient;
-#X floatatom 498 209 5 0 1000 0 - - -, f 5;
-#X floatatom 560 210 8 0 100 0 - - -, f 8;
-#X obj 563 186 hsl 128 15 -1000 1000 0 0 empty empty empty -2 -8 0
+#X floatatom 501 209 5 0 1000 0 - - -, f 5;
+#X floatatom 566 210 8 0 100 0 - - -, f 8;
+#X obj 569 186 hsl 128 15 -1000 1000 0 0 empty empty empty -2 -8 0
 10 -228856 -1 -1 0 1;
 #X obj 437 272 else/out~;
 #X obj 437 152 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 583 185 decay time (ms);
-#X text 613 209 (t60);
-#X text 471 208 (D);
+#X text 589 185 decay time (ms);
+#X text 619 209 (t60);
+#X text 474 208 (D);
 #X msg 375 205 size \$1;
 #X msg 385 180 100;
 #X msg 375 155 1000;

@@ -40,8 +40,8 @@
 #X obj 504 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -110,7 +110,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -145,33 +145,33 @@
 #X restore 507 71 pd;
 #X text 176 285 signal;
 #X text 224 285 - impulse trigger with the gate value;
-#N canvas 639 96 538 502 example 0;
-#X obj 68 237 else/sine~ 50;
-#X obj 80 305 else/sine~ 200;
-#X obj 161 273 *~;
-#X obj 274 361 *~;
-#X obj 176 228 else/adsr~ 400 200 0.5 1000, f 14;
-#X obj 231 402 out~;
-#X obj 292 225 else/gatehold~ 500;
-#X obj 292 252 else/adsr~ 100 100 0.5 750;
-#X text 68 33 [gatehold~] allows the one gate to have a different duration
+#N canvas 639 96 517 475 example 0;
+#X obj 125 163 else/sine~ 50;
+#X obj 81 278 else/sine~ 200;
+#X obj 162 246 *~;
+#X obj 278 334 *~;
+#X obj 177 201 else/adsr~ 400 200 0.5 1000, f 14;
+#X obj 293 198 else/gatehold~ 500;
+#X obj 293 225 else/adsr~ 100 100 0.5 750;
+#X text 76 21 [gatehold~] allows the one gate to have a different duration
 to control a separate parameter.;
-#X text 69 68 In this example we have a gate controlling two independent
+#X text 77 56 In this example we have a gate controlling two independent
 envelopes (one that controls the phase modulation index and another
 that controls the amplitude). The envelope that controls the amplitude
 has its sustain period enlarged by 500 ms because of the [gatehold~]
 object.;
-#X obj 292 180 else/pulse~ 0.2 0.25;
+#X obj 293 153 else/pulse~ 0.2 0.25;
+#X obj 235 375 else/out~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
 #X connect 2 0 1 2;
-#X connect 3 0 5 0;
-#X connect 3 0 5 1;
+#X connect 3 0 10 0;
+#X connect 3 0 10 1;
 #X connect 4 0 2 1;
-#X connect 6 0 7 0;
-#X connect 7 0 3 1;
-#X connect 10 0 4 0;
-#X connect 10 0 6 0;
+#X connect 5 0 6 0;
+#X connect 6 0 3 1;
+#X connect 9 0 4 0;
+#X connect 9 0 5 0;
 #X restore 476 243 pd example;
 #X obj 246 239 else/display~;
 #X obj 246 173 else/display~;

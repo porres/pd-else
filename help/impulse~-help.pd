@@ -147,7 +147,7 @@
 #X obj 95 133 else/sh~;
 #X obj 95 88 noise~;
 #X obj 95 216 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.783077 256;
+-228856 -1 -1 -0.480259 256;
 #X obj 213 113 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 216 88 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
@@ -173,7 +173,7 @@ to periodically trigger processes such as with [sh~] below.;
 #X connect 8 0 6 0;
 #X connect 8 0 6 1;
 #X connect 12 0 2 0;
-#X restore 477 195 pd example;
+#X restore 481 195 pd example;
 #X obj 285 213 else/out~;
 #X obj 105 291 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
@@ -209,11 +209,11 @@ LFOs and control with MIDI. A sync with audio is usefull for the "hard
 sync" technique \, where an oscillator is synced according to the frequency
 of a master frequency., f 44;
 #X obj 517 242 else/out~;
-#X obj 583 143 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
+#X obj 576 143 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 110 256;
-#X text 682 170 Master oscillator;
+#X text 675 170 Master oscillator;
 #X text 638 203 Slave oscillator;
-#X obj 583 169 else/imp~ 110;
+#X obj 576 169 else/imp~ 110;
 #X text 491 336 NOTE:;
 #X text 510 363 The "phase sync" inlet is quite different from the
 "phase offset" inlet. This means that the are completely independent.
@@ -226,8 +226,8 @@ an impulse signal for syncing. The impulse values need to be > 0 and
 Send it impulses above and check the result. Use a multiplier to reset
 to another phase value.;
 #X obj 70 211 else/out~;
-#X obj 263 228 else/out~;
-#X obj 263 198 else/impulse~ 1;
+#X obj 271 228 else/out~;
+#X obj 271 198 else/impulse~ 1;
 #X obj 539 202 else/imp~ 200;
 #X obj 70 181 else/impulse~ 1;
 #X msg 420 130 0.25;
@@ -254,41 +254,39 @@ to another phase value.;
 #X connect 24 0 25 0;
 #X connect 25 0 18 1;
 #X restore 498 219 pd sync;
-#N canvas 430 175 908 347 phase 0;
-#X obj 575 122 cnv 15 240 65 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X obj 591 203 else/out~;
-#X text 572 104 Phase Modulation:;
-#X obj 722 133 osc~ 50.01;
+#N canvas 430 175 780 341 phase 0;
+#X obj 457 186 else/out~;
+#X text 587 142 Phase Modulation:;
+#X obj 571 115 osc~ 50.01;
 #X text 28 31 The second argument sets an initial phase (or "phase
 offset"). This is also settable with the third inlet. This allows you
 to control two oscillators with the same frequency falling in and out
 of phase. Another feature is phase modulation., f 53;
-#X obj 108 255 else/out~;
-#X obj 126 219 +~;
-#X text 381 118 1;
-#X obj 249 118 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 79 256 else/out~;
+#X obj 97 220 +~;
+#X text 334 119 1;
+#X obj 202 119 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 246 142 4 0 0 0 - - -, f 4;
-#X text 229 118 0;
-#X obj 246 166 else/float2sig~ 10;
-#X text 464 43 The phase values are wrapped into the 0-1 range \, since
+#X floatatom 199 143 4 0 0 0 - - -, f 4;
+#X text 182 119 0;
+#X obj 199 167 else/float2sig~ 10;
+#X text 387 46 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 (where 1 is also the start of another
 cycle).;
-#X obj 606 160 else/impulse~ 200;
-#X obj 126 154 else/imp~ 1 0.5;
-#X obj 144 192 else/impulse~ 1;
-#X connect 3 0 13 2;
-#X connect 6 0 5 0;
-#X connect 6 0 5 1;
-#X connect 8 0 9 0;
-#X connect 9 0 11 0;
-#X connect 11 0 15 2;
-#X connect 13 0 1 0;
-#X connect 13 0 1 1;
-#X connect 14 0 6 0;
-#X connect 15 0 6 1;
-#X restore 442 243 pd phase offset;
+#X obj 472 143 else/impulse~ 200;
+#X obj 97 155 else/imp~ 1 0.5;
+#X obj 112 193 else/impulse~ 1;
+#X connect 2 0 12 2;
+#X connect 5 0 4 0;
+#X connect 5 0 4 1;
+#X connect 7 0 8 0;
+#X connect 8 0 10 0;
+#X connect 10 0 14 2;
+#X connect 12 0 0 0;
+#X connect 12 0 0 1;
+#X connect 13 0 5 0;
+#X connect 14 0 5 1;
+#X restore 450 243 pd phase offset;
 #X obj 124 179 else/impulse~ 100;
 #X obj 285 172 else/imp~ 5;
 #X text 63 90 The [impulse~] object (or [imp~] for short) is an impulse

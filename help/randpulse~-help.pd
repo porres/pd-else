@@ -1,4 +1,4 @@
-#N canvas 705 138 575 506 10;
+#N canvas 705 138 567 493 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -214,9 +214,9 @@ seed value.;
 #N canvas 801 184 450 409 sync 0;
 #X obj 124 182 else/sig2float~;
 #X obj 124 214 nbx 8 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.38037 256;
 #X obj 124 252 vsl 18 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 6350 1;
+-1 -1 8765 1;
 #X obj 235 78 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 235 110 else/impseq~;

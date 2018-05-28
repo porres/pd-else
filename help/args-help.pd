@@ -1,4 +1,5 @@
-#N struct 1043-point float x0 float y0 float s;
+#N struct 1169-point float x0 float y0 float s;
+#N struct 1169-grid float x0 float y0 float s;
 #N canvas 458 31 563 399 10;
 #X obj 25 41 cnv 4 4 4 empty empty Manage 0 28 2 18 -233017 -1 0;
 #X obj 90 41 cnv 4 4 4 empty empty arguments 0 28 2 18 -233017 -1 0
@@ -68,22 +69,22 @@ help patch), f 47;
 change them. It is useful for the management of variable number of
 arguments in abstractions \, and also to change/set them up.;
 #X text 154 269 anything - sets new arguments;
-#N canvas 236 181 865 447 example1 0;
-#X obj 97 165 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#N canvas 236 181 833 404 example1 0;
+#X obj 92 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 97 241 else/display;
-#X text 43 85 Here you can test that the given arguments are loaded
+#X obj 92 225 else/display;
+#X text 38 69 Here you can test that the given arguments are loaded
 and passed throughout the left outlet. But if no arguments are given
 \, then the right outlet sends a bang.;
-#X text 43 37 Below we have an abstraction that uses [args] \, which
+#X text 38 21 Below we have an abstraction that uses [args] \, which
 is a very simple example on how it works.;
-#X text 119 165 <= load arguments;
-#X text 253 193 <= click and open the abstraction, f 18;
-#X obj 97 193 else/args-example 1 2 3;
-#X obj 574 133 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 114 149 <= load arguments;
+#X text 248 177 <= click and open the abstraction, f 18;
+#X obj 92 177 else/args-example 1 2 3;
+#X obj 542 110 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 574 245 else/display;
-#X msg 602 173 1 2 3;
+#X obj 542 222 else/display;
+#X msg 570 150 1 2 3;
 #N canvas 572 23 708 707 load_args 0;
 #X obj 358 251 makefilename $%d;
 #X obj 272 327 pack f \$0;
@@ -166,18 +167,18 @@ $%d-test, f 27;
 #X connect 23 2 6 1;
 #X connect 24 0 21 0;
 #X connect 25 0 8 0;
-#X restore 56 357 pd load_args;
-#X text 142 356 <==;
-#X text 170 349 put this subpatch in your abstraction to load arguments
+#X restore 51 341 pd load_args;
+#X text 137 340 <==;
+#X text 165 333 put this subpatch in your abstraction to load arguments
 , f 29;
-#X text 29 294 If you were hoping for a vanilla solution to load arguments
+#X text 24 278 If you were hoping for a vanilla solution to load arguments
 \, Below there's a subpatch that does that! Just copy and paste it
 into your abstraction:;
-#X obj 574 201 else/args-example 1 2 3;
-#X text 460 62 Next we have the same abstraction with no arguments
+#X obj 542 178 else/args-example 1 2 3;
+#X text 428 39 Next we have the same abstraction with no arguments
 set. Note how you can also send any message to it and it'll change
 the arguments. But they'll be valid only if you save the patch.;
-#X text 486 305 Note that you can have [else/args] anywhere inside
+#X text 454 282 Note that you can have [else/args] anywhere inside
 an abstraction \, like deep buried inside many layers of subpatches.
 ;
 #X connect 0 0 6 0;

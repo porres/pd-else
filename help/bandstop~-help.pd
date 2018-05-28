@@ -56,16 +56,16 @@ of center frequency 'f' in hz and 'q' as follows \;;
 \; b0 = alphaQ + 1 \; a0 = 1 / b0 \; a1 = -2*cos(omega) / b0 \; a2
 = a0 \; b1 = -a1 \; b2 = (alphaQ - 1) / b0 \;;
 #X text 722 166 Note: q's and bw's minimum value is 1e-06!, f 21;
-#X obj 693 111 hsl 128 15 0.01 100 1 0 empty \$0-Q-set empty -2 -8
+#X obj 702 111 hsl 128 15 0.01 100 1 0 empty \$0-Q-set empty -2 -8
 0 10 -228856 -1 -1 0 1;
-#X obj 625 85 hsl 128 15 20 20000 1 0 empty \$0-Hz-set empty -2 -8
+#X obj 634 85 hsl 128 15 20 20000 1 0 empty \$0-Hz-set empty -2 -8
 0 10 -228856 -1 -1 0 1;
-#X obj 690 135 nbx 6 14 0.1 100 0 0 \$0-Q empty empty 0 -8 0 10 -228856
+#X obj 699 135 nbx 6 14 0.1 100 0 0 \$0-Q empty empty 0 -8 0 10 -228856
 -1 -1 0.1 256;
-#X obj 622 109 nbx 6 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
+#X obj 631 109 nbx 6 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
 -1 -1 20 256;
-#X text 642 85 center frequency;
-#X text 714 111 resonance (Q);
+#X text 651 85 center frequency;
+#X text 723 111 resonance (Q);
 #X text 54 48 The equation is from the "Cookbook formulae for audio
 EQ biquad filter coefficients" by Robert Bristow-Johnsonc [1] \, and
 it is: y[n] = a0 * x[n] + a1 * x[n-2] + a2 * x[n-2] + b1 * y[n-1] +

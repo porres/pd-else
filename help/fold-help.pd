@@ -1,4 +1,4 @@
-#N canvas 522 53 559 531 10;
+#N canvas 522 53 561 521 10;
 #X obj 4 259 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 366 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -16,24 +16,13 @@
 #X text 172 286 bang;
 #X text 178 304 set;
 #X text 136 267 float/list;
-#N canvas 919 164 275 284 lists 0;
-#X obj 83 60 loadbang;
-#X obj 83 145 unpack f f f;
-#X obj 83 235 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.7 256;
-#X obj 117 206 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.7 256;
-#X obj 152 176 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.7 256;
-#X obj 83 114 else/fold;
-#X msg 83 86 -0.7 0.7 1.3;
+#N canvas 919 164 250 209 lists 0;
+#X obj 43 99 else/fold;
 #X text 42 26 It also works with lists:;
-#X connect 0 0 6 0;
-#X connect 1 0 2 0;
-#X connect 1 1 3 0;
-#X connect 1 2 4 0;
-#X connect 5 0 1 0;
-#X connect 6 0 5 0;
+#X obj 43 130 else/display;
+#X obj 43 65 else/initmess -0.7 0.7 1.3;
+#X connect 0 0 2 0;
+#X connect 3 0 0 0;
 #X restore 481 233 pd lists;
 #X obj 162 146 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;

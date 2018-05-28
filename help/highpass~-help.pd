@@ -1,4 +1,4 @@
-#N canvas 895 83 561 579 10;
+#N canvas 635 30 561 579 10;
 #X obj 4 280 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 430 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -14,19 +14,6 @@
 #X text 181 288 signal;
 #X text 181 439 signal;
 #X obj 151 217 else/out~;
-#X obj 2 3 cnv 15 301 42 empty empty highpass~ 20 20 2 37 -233017 -1
-0;
-#X obj 23 40 cnv 4 4 4 empty empty Highpass 0 28 2 18 -233017 -1 0
-;
-#X obj 167 40 cnv 4 4 4 empty empty filter 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
-#X obj 97 40 cnv 4 4 4 empty empty resonant 0 28 2 18 -233017 -1 0
-;
 #X obj 185 155 noise~;
 #X obj 242 140 nbx 5 14 100 10000 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 100 256;
@@ -138,6 +125,9 @@ or 'bw', f 65;
 #X text 61 86 [highpass~] is a 2nd order highpass resonant filter.
 ;
 #X obj 175 186 else/highpass~ 1000 0.1;
+#X obj 23 40 cnv 4 4 4 empty empty Highpass 0 28 2 18 -233017 -1 0
+;
+#X obj 162 40 cnv 4 4 4 empty empty filter 0 28 2 18 -233017 -1 0;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -155,11 +145,18 @@ or 'bw', f 65;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 304 3 graph;
-#X connect 16 0 48 0;
-#X connect 17 0 48 1;
-#X connect 18 0 48 2;
-#X connect 26 0 48 0;
-#X connect 27 0 26 0;
-#X connect 33 0 48 0;
-#X connect 48 0 8 0;
-#X connect 48 0 8 1;
+#X obj 97 40 cnv 4 4 4 empty empty resonant 0 28 2 18 -233017 -1 0
+;
+#X obj 2 3 cnv 15 301 42 empty empty highpass~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X connect 9 0 41 0;
+#X connect 10 0 41 1;
+#X connect 11 0 41 2;
+#X connect 19 0 41 0;
+#X connect 20 0 19 0;
+#X connect 26 0 41 0;
+#X connect 41 0 8 0;
+#X connect 41 0 8 1;

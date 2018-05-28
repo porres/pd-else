@@ -1,44 +1,44 @@
-#N canvas 537 32 562 442 10;
-#X obj 4 270 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 537 32 566 430 10;
+#X obj 4 256 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 334 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 320 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 371 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 357 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 90 344 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 90 330 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 91 279 cnv 17 3 47 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 265 cnv 17 3 47 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 415 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 401 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 192 136 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 11400 1;
-#X text 116 281 float/signal;
-#X text 152 344 signal;
-#X obj 3 3 cnv 15 301 42 empty empty fader~ 20 20 2 37 -233017 -1 0
+#X obj 192 142 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X text 116 267 float/signal;
+#X text 152 330 signal;
+#X obj 3 4 cnv 15 301 42 empty empty fader~ 20 20 2 37 -233017 -1 0
 ;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 3 graph;
+#X restore 2 4 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Fader 0 28 2 18 -233017 -1 0;
-#X obj 74 40 cnv 4 4 4 empty empty waveshaper 0 28 2 18 -233017 -1
+#X obj 23 41 cnv 4 4 4 empty empty Fader 0 28 2 18 -233017 -1 0;
+#X obj 74 41 cnv 4 4 4 empty empty waveshaper 0 28 2 18 -233017 -1
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
@@ -143,11 +143,11 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 71 pd;
-#X text 146 162 input;
-#X text 142 239 output;
-#X text 140 300 anything;
-#X obj 189 209 else/fader~ sqrt;
+#X restore 505 72 pd;
+#X text 147 169 input;
+#X text 142 225 output;
+#X text 140 286 anything;
+#X obj 189 195 else/fader~ sqrt;
 #N canvas 693 105 587 269 curves 0;
 #N canvas 135 30 735 535 contant-power(3db) 0;
 #X obj 30 287 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
@@ -446,16 +446,16 @@ as raising the input to the power of 4, f 31;
 #X text 414 63 <===;
 #X text 68 53 Open the subpatch below for more details on the fading
 curves available, f 32;
-#X restore 474 209 pd curves;
-#X text 203 281 - input value (clipped from 0 to 1);
-#X text 203 300 -;
-#X text 203 344 - waveshaped output;
-#X text 131 381 1) symbol -;
-#X text 78 92 [fader~] is a waveshaper. It takes input from 0 to 1
+#X restore 474 195 pd curves;
+#X text 203 267 - input value (clipped from 0 to 1);
+#X text 203 286 -;
+#X text 203 330 - waveshaped output;
+#X text 131 367 1) symbol -;
+#X text 78 90 [fader~] is a waveshaper. It takes input from 0 to 1
 and uses internal lookup tables for 7 different fading curves.;
-#X text 216 381 fade types <quartic \, sin \, sqrt \, hann \, lin \,
+#X text 216 367 fade types <quartic \, sin \, sqrt \, hann \, lin \,
 hannsin \, linsin> (default: quartic), f 47;
-#X text 215 300 fade types <quartic \, sin \, sqrt \, hann \, lin \,
+#X text 215 286 fade types <quartic \, sin \, sqrt \, hann \, lin \,
 hannsin \, linsin>, f 47;
 #N canvas 552 191 622 511 crossfading 0;
 #X obj 378 249 else/fader~;
@@ -515,12 +515,9 @@ curves with a crossfading slider., f 27;
 #X connect 23 0 1 0;
 #X connect 24 0 1 0;
 #X connect 25 0 1 0;
-#X restore 439 231 pd crossfading;
-#X obj 189 186 else/float2sig~ 10;
-#X obj 189 235 else/display~;
-#X obj 189 162 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.636872 256;
-#X connect 6 0 37 0;
-#X connect 25 0 36 0;
-#X connect 35 0 25 0;
-#X connect 37 0 35 0;
+#X restore 444 217 pd crossfading;
+#X obj 189 221 else/display~;
+#X obj 189 165 else/display~;
+#X connect 6 0 36 0;
+#X connect 25 0 35 0;
+#X connect 36 0 25 0;

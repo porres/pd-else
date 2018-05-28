@@ -57,12 +57,12 @@
 #X text 173 367 float;
 #X text 173 387 float;
 #X text 173 410 float;
-#N canvas 688 67 844 556 example 0;
+#N canvas 596 67 844 556 example 0;
 #X obj 368 318 catch~ \$0-input;
 #X obj 645 161 throw~ \$0-input;
 #X obj 645 25 adc~ 1;
-#X obj 66 230 *~;
-#X obj 66 265 throw~ \$0-input;
+#X obj 66 250 *~;
+#X obj 66 285 throw~ \$0-input;
 #X obj 503 211 hsl 128 15 0 1000 0 0 empty \$0-predelayms empty -2
 -8 0 10 -228856 -1 -1 1270 1;
 #X floatatom 500 235 5 0 0 0 - - -, f 5;
@@ -113,14 +113,14 @@
 #X msg 337 80 open;
 #X text 98 76 Test the reverb with many sound input sources, f 25
 ;
-#X obj 55 383 noise~;
+#X obj 64 383 noise~;
 #X obj 190 454 *~;
 #X obj 190 483 throw~ \$0-input;
 #X obj 208 405 else/decay~ 200;
 #X obj 208 339 else/impseq~;
 #X obj 208 315 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 55 414 else/lowpass~ 0 5;
+#X obj 64 414 else/lowpass~ 0 5;
 #X text 364 202 impulse;
 #X text 357 53 sample;
 #X text 685 89 audio input;

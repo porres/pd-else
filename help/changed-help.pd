@@ -49,7 +49,7 @@
 #X text 207 354 - any message to pass through;
 #X text 177 445 - any message that's different from the previous;
 #X obj 129 219 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 54 256;
+-228856 -1 -1 0 256;
 #X obj 129 198 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 174 161 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -67,13 +67,13 @@ any kind of messages.;
 #X msg 287 255 set 1 3;
 #X text 92 165 outputs =>;
 #X text 351 254 <= sets message;
-#X obj 353 311 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 332 311 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 85 468 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 139 468 bang;
 #X text 177 468 - bangs when data hasn't changed;
-#X text 377 312 <= didn't change;
+#X text 356 312 <= didn't change;
 #X text 113 504 1) anything - initializes first message;
 #X text 209 520 (default: empty symbol atom);
 #X text 178 409 set;

@@ -1,4 +1,4 @@
-#N canvas 522 53 559 512 10;
+#N canvas 522 53 573 501 10;
 #X obj 4 239 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 346 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -9,36 +9,25 @@
 ;
 #X obj 112 247 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 470 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 461 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 262 151 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 172 266 bang;
 #X text 178 284 set;
 #X text 136 247 float/list;
-#N canvas 919 164 275 284 lists 0;
-#X obj 83 60 loadbang;
-#X obj 83 145 unpack f f f;
-#X obj 83 235 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.3 256;
-#X obj 117 206 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.7 256;
-#X obj 152 176 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.3 256;
-#X msg 83 86 -0.7 0.7 1.3;
-#X text 42 26 It also works with lists:;
-#X obj 83 114 else/wrap2;
-#X connect 0 0 5 0;
+#N canvas 919 164 262 235 lists 0;
+#X text 50 26 It also works with lists:;
+#X obj 48 107 else/wrap2;
+#X obj 48 138 else/display;
+#X obj 48 71 else/initmess -0.7 0.7 1.3;
 #X connect 1 0 2 0;
-#X connect 1 1 3 0;
-#X connect 1 2 4 0;
-#X connect 5 0 7 0;
-#X connect 7 0 1 0;
+#X connect 3 0 1 0;
 #X restore 481 213 pd lists;
 #X obj 162 126 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 4.41 256;
+-228856 -1 -1 0 256;
 #X obj 244 212 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -1.59 256;
+-228856 -1 -1 0 256;
 #X text 150 355 float/list;
 #X text 216 355 - folded value(s);
 #X obj 2 3 cnv 15 301 42 empty empty wrap2 20 20 2 37 -233017 -1 0
@@ -74,9 +63,9 @@
 #X text 110 392 1) list -;
 #X text 159 210 folded value;
 #X obj 302 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -2 256;
+-228856 -1 -1 0 256;
 #X obj 361 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 4 256;
+-228856 -1 -1 0 256;
 #X text 317 133 min;
 #X text 376 133 max;
 #X obj 244 180 else/wrap2, f 20;

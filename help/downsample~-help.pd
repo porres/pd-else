@@ -51,30 +51,30 @@
 #X obj 333 183 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 204 211 else/downsample~ 44100;
-#N canvas 232 42 876 380 example 0;
-#X obj 236 200 else/sh~;
-#X obj 184 117 noise~;
-#X obj 284 105 hsl 128 15 -44100 44100 0 0 empty empty empty -2 -8
-0 10 -228856 -1 -1 0 1;
-#X obj 236 261 else/out~;
-#X obj 281 134 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 357 108 802 350 example 0;
+#X obj 199 192 else/sh~;
+#X obj 147 109 noise~;
+#X obj 247 97 hsl 128 15 -44100 44100 0 0 empty empty empty -2 -8 0
+10 -228856 -1 -1 0 1;
+#X obj 199 253 else/out~;
+#X obj 244 126 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 557 136 noise~;
-#X obj 626 107 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
+#X obj 518 141 noise~;
+#X obj 572 93 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X obj 572 263 else/out~;
-#X obj 623 136 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 518 249 else/out~;
+#X obj 569 122 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 623 169 phasor~;
-#X obj 572 202 samphold~;
-#X obj 281 167 else/imp~;
-#X text 42 37 You can implement downsample without interpolation with
+#X obj 569 155 phasor~;
+#X obj 518 188 samphold~;
+#X obj 244 159 else/imp~;
+#X text 25 26 You can implement downsample without interpolation with
 other two objects from the else library.;
-#X text 458 36 Note you cannot do it with vanilla's [samphold~] \,
+#X text 404 22 Note you cannot do it with vanilla's [samphold~] \,
 cause you can't go up to the sample rate (it stops sampling then) or
 use negative frequencies.;
-#X obj 81 208 else/downsample~ 44100;
-#X obj 81 262 else/out~;
+#X obj 44 200 else/downsample~ 44100;
+#X obj 44 254 else/out~;
 #X connect 0 0 3 0;
 #X connect 0 0 3 1;
 #X connect 1 0 0 0;

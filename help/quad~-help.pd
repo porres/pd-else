@@ -1,4 +1,4 @@
-#N canvas 727 243 559 577 10;
+#N canvas 727 243 560 565 10;
 #X obj 215 173 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -32,7 +32,7 @@
 #X text 150 378 signal;
 #X text 137 411 1) float;
 #X obj 212 197 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 441 256;
+-228856 -1 -1 0 256;
 #X text 114 327 float/signal;
 #X obj 2 3 cnv 15 301 42 empty empty quad~ 20 20 2 37 -233017 -1 0
 ;

@@ -1,4 +1,4 @@
-#N canvas 876 27 563 505 10;
+#N canvas 545 57 563 505 10;
 #X obj 2 3 cnv 15 301 42 empty empty randi~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -45,8 +45,8 @@
 #X connect 6 0 3 0;
 #X restore 462 242 pd example;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -115,7 +115,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -161,12 +161,12 @@ positive transitions.;
 #X text 144 348 float/signal;
 #X text 237 327 - lowest random value;
 #X text 236 348 - highest random value;
-#X obj 282 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 266 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 389 175 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 358 175 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 290 153 low;
-#X text 400 155 high;
+#X text 274 153 low;
+#X text 369 155 high;
 #X obj 175 164 else/imp~ 5;
 #X obj 175 206 else/randi~ 0 1, f 31;
 #X obj 175 237 else/display~;

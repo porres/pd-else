@@ -15,7 +15,6 @@
 #X text 199 291 - the signal to be averaged;
 #X text 155 387 signal;
 #X text 143 420 1) float;
-#X obj 499 68 cyclone/setdsp~;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -66,8 +65,8 @@
 #X text 173 471 -db;
 #X text 213 470 sets output to dBFS, f 40;
 #X text 199 307 - clears buffer's memory;
-#X msg 303 134 linear;
-#X msg 320 158 db;
+#X msg 281 135 linear;
+#X msg 298 159 db;
 #X text 61 88 [mrms~] gives you a running/moving RMS (Root Mean Square)
 over a time window of samples. At each sample \, the RMS of the last
 'n' sample is given.;
@@ -104,9 +103,10 @@ can also set the maximum value with the -size flag or message., f
 #X restore 470 247 pd example;
 #X obj 48 237 else/rms~;
 #X text 46 211 see also:;
-#X connect 32 0 37 0;
-#X connect 33 0 47 0;
-#X connect 38 0 37 0;
-#X connect 44 0 47 0;
-#X connect 45 0 47 0;
-#X connect 47 0 32 0;
+#X obj 487 64 else/setdsp~;
+#X connect 31 0 36 0;
+#X connect 32 0 46 0;
+#X connect 37 0 36 0;
+#X connect 43 0 46 0;
+#X connect 44 0 46 0;
+#X connect 46 0 31 0;

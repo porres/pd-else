@@ -28,15 +28,15 @@
 #N canvas 403 51 858 494 sync 0;
 #X msg 39 134 0;
 #X obj 57 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 1 1;
+-1 -1 8782 1;
 #X obj 57 211 else/sig2float~;
 #X msg 73 134 0.25;
 #X msg 150 133 0.75;
 #X msg 193 133 1;
 #X msg 115 133 0.5;
-#X obj 258 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 7889 1;
-#X obj 258 217 else/sig2float~;
+#X obj 267 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 8782 1;
+#X obj 267 217 else/sig2float~;
 #X text 227 132 <= reset =>;
 #X text 34 15 The second inlet resets the phase ands behaves in the
 same way for control data as objects like [osc~] and [phasor~] in Pd.
@@ -49,11 +49,11 @@ LFOs and control with MIDI. A sync with audio is usefull for the "hard
 sync" technique \, where an oscillator is synced according to the frequency
 of a master frequency., f 44;
 #X obj 514 252 else/out~;
-#X obj 593 149 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
+#X obj 585 149 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 110 256;
-#X text 694 175 Master oscillator;
+#X text 686 175 Master oscillator;
 #X text 657 210 Slave oscillator;
-#X obj 593 175 else/imp~ 110;
+#X obj 585 175 else/imp~ 110;
 #X text 509 349 NOTE:;
 #X text 525 382 The "phase sync" inlet is quite different from the
 "phase offset" inlet. This means that the are completely independent.
@@ -66,7 +66,7 @@ an impulse signal for syncing. The impulse values need to be > 0 and
 Send it impulses above and check the result. Use a multiplier to reset
 to another phase value.;
 #X obj 57 181 else/cosine~ 0.25;
-#X obj 258 193 else/cosine~ 0.25;
+#X obj 267 193 else/cosine~ 0.25;
 #X obj 539 209 else/cosine~ 200;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
@@ -196,41 +196,39 @@ to another phase value.;
 #X connect 27 0 28 0;
 #X connect 28 0 21 1;
 #X restore 494 200 pd sync;
-#N canvas 430 175 908 347 phase 0;
-#X obj 575 122 cnv 15 200 65 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X obj 571 214 else/out~;
-#X text 572 104 Phase Modulation:;
-#X obj 695 133 osc~ 50.01;
-#X text 38 31 The second argument sets an initial phase (or "phase
+#N canvas 430 175 815 348 phase 0;
+#X obj 490 183 else/out~;
+#X text 629 135 Phase Modulation:;
+#X obj 608 110 osc~ 50.01;
+#X text 41 32 The second argument sets an initial phase (or "phase
 offset"). This is also settable with the third inlet. This allows you
 to control two oscillators with the same frequency falling in and out
 of phase. Another feature is phase modulation., f 54;
-#X obj 96 251 else/out~;
-#X obj 114 215 +~;
-#X text 376 114 1;
-#X obj 244 114 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 99 252 else/out~;
+#X obj 117 216 +~;
+#X text 363 115 1;
+#X obj 231 115 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 241 138 4 0 0 0 - - -, f 4;
-#X text 224 114 0;
-#X obj 241 162 else/float2sig~ 10;
-#X text 464 43 The phase values are wrapped into the 0-1 range \, since
+#X floatatom 228 139 4 0 0 0 - - -, f 4;
+#X text 211 115 0;
+#X obj 228 163 else/float2sig~ 10;
+#X text 408 42 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 (where 1 is also the start of another
 cycle).;
-#X obj 77 150 else/cosine~ 220 0.5;
-#X obj 132 188 else/cosine~ 220;
-#X obj 586 161 else/cosine~ 200;
-#X connect 3 0 15 2;
-#X connect 6 0 5 0;
-#X connect 6 0 5 1;
-#X connect 8 0 9 0;
-#X connect 9 0 11 0;
-#X connect 11 0 14 2;
-#X connect 13 0 6 0;
-#X connect 14 0 6 1;
-#X connect 15 0 1 0;
-#X connect 15 0 1 1;
-#X restore 438 224 pd phase offset;
+#X obj 80 151 else/cosine~ 220 0.5;
+#X obj 135 189 else/cosine~ 220;
+#X obj 515 138 else/cosine~ 200;
+#X connect 2 0 14 2;
+#X connect 5 0 4 0;
+#X connect 5 0 4 1;
+#X connect 7 0 8 0;
+#X connect 8 0 10 0;
+#X connect 10 0 13 2;
+#X connect 12 0 5 0;
+#X connect 13 0 5 1;
+#X connect 14 0 0 0;
+#X connect 14 0 0 1;
+#X restore 445 224 pd phase offset;
 #X text 243 403 - initial phase offset (default 0);
 #X text 243 384 - frequency in hertz (default 0);
 #X obj 201 204 else/out~;

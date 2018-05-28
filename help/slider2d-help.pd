@@ -1,9 +1,15 @@
 #N struct 1004-point float x0 float y0 float s;
+#N struct 1004-grid float x0 float y0 float s;
 #N struct 1016-point float x0 float y0 float s;
+#N struct 1016-grid float x0 float y0 float s;
 #N struct 1017-point float x0 float y0 float s;
+#N struct 1017-grid float x0 float y0 float s;
 #N struct 1026-point float x0 float y0 float s;
+#N struct 1026-grid float x0 float y0 float s;
 #N struct 1027-point float x0 float y0 float s;
+#N struct 1027-grid float x0 float y0 float s;
 #N struct 1032-point float x0 float y0 float s;
+#N struct 1032-grid float x0 float y0 float s;
 #N canvas 528 84 562 500 10;
 #N canvas 742 101 474 489 example 0;
 #X obj 205 39 slider2d;

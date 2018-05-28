@@ -176,44 +176,41 @@ exponential \, try it below (with values from 0.1 to 10).;
 #X connect 11 0 5 0;
 #X connect 13 0 5 0;
 #X restore 453 190 pd exponential;
-#N canvas 695 23 433 497 advanced 0;
-#X obj 204 66 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+#N canvas 695 23 435 474 advanced 0;
+#X obj 210 66 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 201 121 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 207 121 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 154 336 hsl 128 15 -127 127 0 0 empty empty empty -2 -8 0 10
+#X obj 166 335 hsl 128 15 -127 127 0 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X obj 151 364 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 36 267 If the input value is outside the input range \, [scale]
+#X text 42 267 If the input value is outside the input range \, [scale]
 will not clip the values to the output range but keep scaling outside
 that boundary with the same conversion parameters.;
-#X text 29 18 The scaling can be inverted by reversing one of the ranges
+#X text 35 18 The scaling can be inverted by reversing one of the ranges
 (input or output);
-#X obj 80 117 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 86 117 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 80 143 sig~;
-#X obj 151 387 sig~;
-#X text 201 229 Inverted;
-#X obj 201 143 sig~;
-#X obj 80 171 else/rescale~ 0 1;
-#X obj 201 172 else/rescale~ 1 0;
-#X obj 151 412 else/rescale~ -10 10;
-#X obj 201 202 else/display~;
-#X obj 80 202 else/display~;
-#X obj 151 442 else/display~;
+#X obj 86 143 sig~;
+#X text 207 229 Inverted;
+#X obj 207 143 sig~;
+#X obj 86 171 else/rescale~ 0 1;
+#X obj 207 172 else/rescale~ 1 0;
+#X obj 163 391 else/rescale~ -10 10;
+#X obj 207 202 else/display~;
+#X obj 86 202 else/display~;
+#X obj 163 421 else/display~;
+#X obj 163 361 else/display~;
 #X connect 0 0 1 0;
-#X connect 0 0 6 0;
-#X connect 1 0 10 0;
-#X connect 2 0 3 0;
-#X connect 3 0 8 0;
-#X connect 6 0 7 0;
-#X connect 7 0 11 0;
-#X connect 8 0 13 0;
+#X connect 0 0 5 0;
+#X connect 1 0 8 0;
+#X connect 2 0 15 0;
+#X connect 5 0 6 0;
+#X connect 6 0 9 0;
+#X connect 8 0 10 0;
+#X connect 9 0 13 0;
 #X connect 10 0 12 0;
-#X connect 11 0 15 0;
-#X connect 12 0 14 0;
-#X connect 13 0 16 0;
+#X connect 11 0 14 0;
+#X connect 15 0 11 0;
 #X restore 471 211 pd advanced;
 #X text 78 86 By default \, [rescale~] rescales input values from -1
 to 1 into another range of values (0-1 by default). You can also set
@@ -244,9 +241,9 @@ factor - default (0 \, 127 \, 0 \, 1 \, 1);
 #X text 117 173 min-out;
 #X text 177 173 max-out;
 #X obj 295 114 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 2300 1;
+-1 -1 0 1;
 #X obj 292 142 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.128492 256;
+-228856 -1 -1 0 256;
 #X obj 451 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 505 181 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10

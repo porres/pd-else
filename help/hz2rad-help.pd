@@ -47,29 +47,18 @@
 #X text 196 327 - hertz value(s);
 #X text 196 397 - converted radians per sample value(s);
 #X obj 227 282 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 3.14159 256;
+-228856 -1 -1 0 256;
 #X obj 227 175 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 312 174 Hertz;
 #X text 312 281 Radians per sample;
-#N canvas 970 92 287 299 lists 0;
-#X obj 75 67 loadbang;
-#X text 54 33 it also works with lists:;
-#X obj 75 152 unpack f f f;
-#X obj 75 242 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.142476 256;
-#X obj 109 213 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.712379 256;
-#X obj 144 183 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1.5708 256;
-#X obj 75 121 else/hz2rad;
-#X msg 75 93 1000 5000 11025;
-#X connect 0 0 7 0;
-#X connect 2 0 3 0;
-#X connect 2 1 4 0;
-#X connect 2 2 5 0;
-#X connect 6 0 2 0;
-#X connect 7 0 6 0;
+#N canvas 970 92 287 234 lists 0;
+#X text 58 33 it also works with lists:;
+#X obj 50 100 else/hz2rad;
+#X obj 50 131 else/display;
+#X obj 50 70 else/initmess 1000 5000 11025;
+#X connect 1 0 2 0;
+#X connect 3 0 1 0;
 #X restore 474 280 pd lists;
 #X text 119 397 float/list;
 #X msg 247 208 set 44100;

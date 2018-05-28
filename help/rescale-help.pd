@@ -19,14 +19,12 @@
 #X text 178 355 set;
 #X text 136 318 float/list;
 #N canvas 970 92 283 204 lists 0;
-#X obj 63 54 loadbang;
 #X text 42 20 it also works with lists:;
-#X obj 63 108 else/rescale;
-#X msg 63 80 16 63 127;
-#X obj 63 139 else/display;
-#X connect 0 0 3 0;
-#X connect 2 0 4 0;
-#X connect 3 0 2 0;
+#X obj 50 89 else/rescale;
+#X obj 50 120 else/display;
+#X obj 50 61 else/initmess 16 63 127;
+#X connect 1 0 2 0;
+#X connect 3 0 1 0;
 #X restore 488 283 pd lists;
 #X obj 102 185 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -69,14 +67,14 @@
 #X obj 247 105 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 247 162 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+-228856 -1 -1 0 256;
 #X text 264 180 Inverted;
 #X obj 169 281 hsl 128 15 -127 256 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 12700 1;
+-228856 -1 -1 0 1;
 #X obj 166 309 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 256 256;
+-228856 -1 -1 0 256;
 #X obj 166 371 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 2.01575 256;
+-228856 -1 -1 0 256;
 #X obj 247 128 else/rescale 1 0;
 #X obj 133 129 else/rescale 0 1;
 #X obj 166 336 else/rescale;
@@ -168,9 +166,9 @@ You can also set an exponential factor (1 by default - linear). All
 these parameters can be changed by arguments., f 73;
 #N canvas 494 89 675 351 arguments 0;
 #X obj 82 134 hsl 180 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 1100 1;
+-1 -1 0 1;
 #X obj 79 162 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 7.80447 256;
+-228856 -1 -1 0 256;
 #X obj 182 184 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 238 185 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -180,9 +178,9 @@ these parameters can be changed by arguments., f 73;
 #X text 180 165 min-out;
 #X text 237 165 max-out;
 #X obj 341 111 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 17900 1;
+-1 -1 0 1;
 #X obj 338 139 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+-228856 -1 -1 0 256;
 #X obj 338 256 else/display;
 #X obj 338 223 else/rescale 0 1 -10 10, f 36;
 #X obj 497 196 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10

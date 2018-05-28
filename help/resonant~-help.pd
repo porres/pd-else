@@ -34,9 +34,9 @@
 #X text 104 362 bypass <float>;
 #X text 201 362 - 1 (bypasses input signal) or 0 (doesn't bypass);
 #N canvas 280 141 926 617 filter 0;
-#X obj 683 101 hsl 128 15 0.1 100 1 0 empty \$0-Q-set empty -2 -8 0
+#X obj 674 101 hsl 128 15 0.1 100 1 0 empty \$0-Q-set empty -2 -8 0
 10 -228856 -1 -1 0 1;
-#X obj 615 75 hsl 128 15 20 20000 1 0 empty \$0-Hz-set empty -2 -8
+#X obj 606 75 hsl 128 15 20 20000 1 0 empty \$0-Hz-set empty -2 -8
 0 10 -228856 -1 -1 0 1;
 #X obj 545 111 noise~;
 #X obj 527 183 else/out~;
@@ -44,17 +44,17 @@
 ;
 #X text 61 118 a0 \, a2 \, b1 and b2 are calculated as a function of
 center frequency 'f' in hz and 'q' as follows \;;
-#X obj 680 125 nbx 6 14 0.1 100 0 0 \$0-Q empty empty 0 -8 0 10 -228856
+#X obj 671 125 nbx 6 14 0.1 100 0 0 \$0-Q empty empty 0 -8 0 10 -228856
 -1 -1 0.1 256;
-#X obj 612 101 nbx 6 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
+#X obj 603 101 nbx 6 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
 -1 -1 20 256;
 #X text 54 46 The equation is from the "Cookbook formulae for audio
 EQ biquad filter coefficients" by Robert Bristow-Johnsonc [1] \, and
 it is:;
 #X text 50 249 [1] found in http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
 , f 65;
-#X text 632 75 center frequency;
-#X text 704 101 resonance (Q);
+#X text 623 75 center frequency;
+#X text 695 101 resonance (Q);
 #X text 53 13 This filter has zeroes fixes at +1 and -1 on the z-plane
 \, which means both 0Hz and Nyquist are always filtered out.;
 #X text 712 151 Note: a 'q' value of 0 bypasses the input., f 21;

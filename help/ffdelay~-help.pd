@@ -1,5 +1,4 @@
 #N canvas 574 23 561 506 10;
-#X obj 499 69 cyclone/setdsp~;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -46,33 +45,33 @@
 #X text 60 89 [ffdelay~] is simple feed forward delay with interpolation.
 ;
 #N canvas 718 195 670 302 examples 0;
-#X obj 509 94 osc~ 0.1;
+#X obj 497 94 osc~ 0.1;
 #X text 96 88 vibrato;
 #X obj 65 194 else/out~;
-#X obj 87 122 else/sawtooth~ 80;
-#X obj 389 108 else/sawtooth~ 40;
 #X text 385 67 feedforward flanger;
 #X obj 389 173 +~;
 #X obj 87 159 else/ffdelay~ 512 -samps;
 #X obj 404 145 else/ffdelay~ 10;
-#X obj 509 119 else/rescale~ 0 10;
+#X obj 497 119 else/rescale~ 0 10;
 #X obj 228 134 else/rescale~ 0 512;
 #X obj 228 107 osc~ 1;
 #X obj 373 208 else/out~;
 #X text 48 20 A couple of examples with some delay effects fun you
 can have :, f 63;
-#X connect 0 0 9 0;
-#X connect 3 0 7 0;
-#X connect 4 0 6 0;
-#X connect 4 0 8 0;
-#X connect 6 0 12 1;
-#X connect 6 0 12 0;
-#X connect 7 0 2 0;
-#X connect 7 0 2 1;
-#X connect 8 0 6 1;
-#X connect 9 0 8 1;
-#X connect 10 0 7 1;
-#X connect 11 0 10 0;
+#X obj 87 122 else/bl.saw~ 80;
+#X obj 389 108 else/bl.saw~ 40;
+#X connect 0 0 7 0;
+#X connect 4 0 10 1;
+#X connect 4 0 10 0;
+#X connect 5 0 2 0;
+#X connect 5 0 2 1;
+#X connect 6 0 4 1;
+#X connect 7 0 6 1;
+#X connect 8 0 5 1;
+#X connect 9 0 8 0;
+#X connect 12 0 5 0;
+#X connect 13 0 4 0;
+#X connect 13 0 6 0;
 #X restore 470 216 pd examples;
 #X obj 1 421 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 185 431 -;
@@ -91,7 +90,7 @@ can have :, f 63;
 -228856 -1 -1 0 256;
 #X text 314 140 delay time in ms;
 #X obj 227 184 else/ffdelay~;
-#N canvas 793 187 469 318 interpolation 0;
+#N canvas 793 187 469 318 interpolation 1;
 #X obj 54 219 -~;
 #X obj 276 153 nbx 9 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -101,10 +100,10 @@ can have :, f 63;
 #X obj 69 185 else/ffdelay~ 0.666 -size 32 -samps;
 #X obj 54 250 else/display~;
 #X text 125 254 <== This number reflects the delay amount;
-#X obj 366 16 cyclone/setdsp~;
 #X text 49 39 The [ffdelay~] object uses a cubic (4 point) interpolation
 \, but between 0 and 1 \, it uses a regular linear interpolation.,
 f 44;
+#X obj 366 16 else/setdsp~;
 #X connect 0 0 5 0;
 #X connect 1 0 4 1;
 #X connect 2 0 1 0;
@@ -172,9 +171,10 @@ argument \, you can use the -size flag/message, f 64;
 #X restore 475 192 pd details;
 #X text 40 207 see also:;
 #X obj 41 229 else/fbdelay~;
-#X connect 30 0 13 0;
-#X connect 30 0 39 0;
-#X connect 31 0 30 0;
-#X connect 36 0 37 0;
-#X connect 37 0 39 1;
-#X connect 39 0 13 1;
+#X obj 487 65 else/setdsp~;
+#X connect 29 0 12 0;
+#X connect 29 0 38 0;
+#X connect 30 0 29 0;
+#X connect 35 0 36 0;
+#X connect 36 0 38 1;
+#X connect 38 0 12 1;

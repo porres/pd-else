@@ -36,16 +36,16 @@
 #X text 189 277 - signal to be filtered via a bank of resonators;
 #N canvas 483 241 536 315 example 0;
 #X obj 68 228 else/out~;
-#X obj 198 112 loadbang;
-#X text 274 99 click on the messages below to alter between them,
+#X obj 179 112 loadbang;
+#X text 255 99 click on the messages below to alter between them,
 f 27;
 #X text 61 28 A ramp time as the second argument sets a transition
 time in ms between parameter changes of resonant frequency \, decay
 time an amplitude. By default \, this is set to 10 ms. You can also
 send a list of ramp time for each filter in the bank.;
-#X msg 198 135 freq 100 250 300 370 420 510 590 650 \, q 2.5 9.5 15.5
+#X msg 179 135 freq 100 250 300 370 420 510 590 650 \, q 2.5 9.5 15.5
 9.5 10.5 8.5 1.5 9.5 \, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 38;
-#X msg 219 190 freq 140 290 310 330 490 580 690 750 \, q 7.5 5.5 10.5
+#X msg 200 190 freq 140 290 310 330 490 580 690 750 \, q 7.5 5.5 10.5
 5.5 20.5 9.5 4.5 5.5 \, amp 0.8 1 0.7 1 0.9 0.8 0.9 1, f 37;
 #X obj 68 154 else/brown~;
 #X obj 68 191 else/bpbank~ 8 2000;

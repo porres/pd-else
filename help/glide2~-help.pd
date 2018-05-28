@@ -1,4 +1,4 @@
-#N canvas 635 50 561 549 10;
+#N canvas 635 50 561 541 10;
 #X obj 4 368 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 446 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -24,7 +24,7 @@
 #X obj 155 167 else/brown~;
 #X text 240 394 - clears filter's memory;
 #X obj 304 247 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 9814 1;
+-1 -1 9808 1;
 #X obj 304 219 else/sig2float~;
 #X text 327 340 0;
 #X text 327 241 1;

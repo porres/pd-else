@@ -1,4 +1,4 @@
-#N canvas 959 131 569 610 10;
+#N canvas 871 131 569 610 10;
 #X obj 4 278 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 401 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -48,11 +48,11 @@
 #X text 195 360 - list of amplitudes for all filters in the bank;
 #X text 195 378 - list of ramp time for all filters in the bank;
 #X text 196 286 - signal to be filtered via a bank of resonators;
-#N canvas 781 192 579 399 example 0;
+#N canvas 781 192 559 399 example 0;
 #X obj 57 249 else/out~;
-#X obj 216 113 loadbang;
+#X obj 192 113 loadbang;
 #X obj 57 155 else/dust~ 5;
-#X text 297 100 click on the messages below to alter between them,
+#X text 273 100 click on the messages below to alter between them,
 f 27;
 #X text 61 23 A ramp time as the second argument sets a transition
 time in ms between parameter changes of resonant frequency \, decay
@@ -61,10 +61,10 @@ send a list of ramp time for each filter in the bank.;
 #X text 70 329 If you do not set attack times \, [resonbank2~] will
 behave in the same way as [resonbank~] \, but it will be less efficient.
 ;
-#X msg 216 136 freq 100 250 300 370 420 510 590 650 \, attack 200 100
+#X msg 192 136 freq 100 250 300 370 420 510 590 650 \, attack 200 100
 150 75 200 100 150 100 \, decay 800 900 1500 900 2000 800 1500 900
 \, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 41;
-#X msg 247 212 freq 140 290 310 330 490 580 690 750 \, attack 100 150
+#X msg 223 212 freq 140 290 310 330 490 580 690 750 \, attack 100 150
 200 50 100 150 100 200 \, decay 900 800 2500 700 500 1200 1700 900
 \, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 41;
 #X obj 57 212 else/resonbank2~ 8 2000;
