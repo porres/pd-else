@@ -123,7 +123,7 @@ static void *dir_new(t_floatarg f){
     t_dir *x = (t_dir *)pd_new(dir_class);
     t_glist *glist = (t_glist *)canvas_getcurrent();
     t_canvas *canvas = (t_canvas*)glist_getcanvas(glist);
-    int depth =(int)f;
+    int depth = (int)f;
     if(depth > 0){
         while(depth-- && canvas->gl_owner){
             while(!canvas->gl_env)
@@ -135,7 +135,7 @@ static void *dir_new(t_floatarg f){
     dir_reset(x);
     x->x_out1 = outlet_new(&x->x_obj, &s_anything);
     x->x_out2 = outlet_new(&x->x_obj, &s_symbol);
-    return (x);
+    return(x);
 }
 
 void dir_setup(void){
