@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (228 objects):
+##Current Object list (229 objects):
 
 **ASSORTED: [1]**
 - [nbang]
@@ -230,7 +230,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [bl.vsaw~]
 - [bl.wavetable~]
 
-**CHAOTIC GENERATORS: [22]**
+**CHAOTIC GENERATORS: [23]**
 - [brown~] 
 - [clipnoise~] 
 - [crackle~] 
@@ -249,6 +249,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [quad~]
 - [rampnoise~]
 - [randpulse~]
+- [randpulse2~]
 - [standard~]
 - [stepnoise~]
 - [pinknoise~]

@@ -133,6 +133,7 @@ rampnoise~.class.sources := classes/rampnoise~.c
 randf~.class.sources := classes/randf~.c
 randi~.class.sources := classes/randi~.c
 randpulse~.class.sources := classes/randpulse~.c
+randpulse2~.class.sources := classes/randpulse2~.c
 ratio2cents~.class.sources := classes/ratio2cents~.c
 rescale~.class.sources := classes/rescale~.c
 rint~.class.sources := classes/rint~.c
