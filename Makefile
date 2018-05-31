@@ -188,6 +188,7 @@ magic := shared/magic.c
 
 buf := shared/buffer.c
     shaper~.class.sources = classes/shaper~.c $(buf)
+    table~.class.sources = classes/table~.c $(buf)
 
 bufmagic := \
 shared/magic.c \

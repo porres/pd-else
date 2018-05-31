@@ -70,10 +70,11 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (229 objects):
+##Current Object list (230 objects):
 
-**ASSORTED: [1]**
+**ASSORTED: [2]**
 - [nbang]
+- [table~]
 
 **PATCH/SUBPATCH MANAGEMENT: [7]**
 - [args]
