@@ -1,58 +1,48 @@
-// Porres 2017
-// Adapted from apass2~
+// Porres 2018
 
+#include "m_pd.h"
 #include <math.h>
 #include <stdlib.h>
 #include <string.h>
-#include "m_pd.h"
 
-#define fbdelay_STACK 48000 // stack buf size, 1 sec at 48k
-#define fbdelay_MAXD 4294967294 // max delay = 2**32 - 2
+#define FBD_STACK   48000       // stack buf size, 1 sec at 48k
+#define FBD_MAXD    4294967294  // max delay = 2**32 - 2
 
 static t_class *fbdelay_class;
 
-typedef struct _fbdelay
-{
+typedef struct _fbdelay{
     t_object        x_obj;
-    t_inlet         *x_dellet;
-    t_inlet         *x_alet;
-    t_outlet        *x_outlet;
-    int             x_sr;
-    int             x_gain;
-    // pointers to the delay buf
-    double          * x_ybuf;
-    double          x_fbstack[fbdelay_STACK];
-    int             x_alloc; // if we are using allocated buf
-    unsigned int    x_sz; // actual size of each delay buffer
-    t_float         x_maxdel;  // maximum delay in ms
-    unsigned int    x_wh;     // writehead
-} t_fbdelay;
+    t_inlet        *x_dellet;
+    t_inlet        *x_alet;
+    t_outlet       *x_outlet;
+    t_float         x_sr_khz;
+    t_int           x_gain;
+// pointers to delay buf
+    t_int           x_alloc;  // if we are using allocated buf
+    t_float         x_maxdel;   // maximum delay in ms
+    double         *x_ybuf;
+    double          x_fbstack[FBD_STACK];
+    unsigned int    x_sz;       // actual size of each delay buffer
+    unsigned int    x_wp;       // write head
+    unsigned int    x_ms;       // ms flag
+}t_fbdelay;
 
 static void fbdelay_clear(t_fbdelay *x){
-    unsigned int i;
-    for(i=0; i<x->x_sz; i++){
+    for(unsigned int i = 0; i < x->x_sz; i++)
         x->x_ybuf[i] = 0.;
-    };
-    x->x_wh = 0;
+    x->x_wp = 0;
 }
 
-static void fbdelay_sz(t_fbdelay *x){
-    // helper function to deal with allocation issues if needed
-    // ie if wanted size x->x_maxdel is bigger than stack, allocate
-    
-    // convert ms to samps
-    unsigned int newsz = (unsigned int)ceil((double)x->x_maxdel*0.001*(double)x->x_sr);
-    newsz++; // add a sample for good measure since say bufsize is 2048 and
-    // you want a delay of 2048 samples,.. problem!
-    
+static void fbdelay_sz(t_fbdelay *x){ // deal with allocation issues
+    unsigned int newsz = (unsigned int)ceil((double)x->x_maxdel*(double)x->x_sr_khz); // convert to samps
+    newsz++; // add a sample, so if size is 2048 and you want a delay of 2048 samples (?)
     int alloc = x->x_alloc;
     unsigned int cursz = x->x_sz; //current size
-    
     if(newsz < 1)
         newsz = 1;
-    else if(newsz > fbdelay_MAXD)
-        newsz = fbdelay_MAXD;
-    if(!alloc && newsz > fbdelay_STACK){
+    else if(newsz > FBD_MAXD)
+        newsz = FBD_MAXD;
+    if(!alloc && newsz > FBD_STACK){
         x->x_ybuf = (double *)malloc(sizeof(double)*newsz);
         x->x_alloc = 1;
         x->x_sz = newsz;
@@ -61,87 +51,72 @@ static void fbdelay_sz(t_fbdelay *x){
         x->x_ybuf = (double *)realloc(x->x_ybuf, sizeof(double)*newsz);
         x->x_sz = newsz;
     }
-    else if(alloc && newsz < fbdelay_STACK){
+    else if(alloc && newsz < FBD_STACK){
         free(x->x_ybuf);
-        x->x_sz = fbdelay_STACK;
+        x->x_sz = FBD_STACK;
         x->x_ybuf = x->x_fbstack;
         x->x_alloc = 0;
     };
     fbdelay_clear(x);
 }
 
-static double fbdelay_getlin(double tab[], unsigned int sz, double idx){
-    // linear interpolated reader, copied from Derek Kwan's library
-    double output;
-    unsigned int tabphase1 = (unsigned int)idx;
-    unsigned int tabphase2 = tabphase1 + 1;
-    double frac = idx - (double)tabphase1;
-    if(tabphase1 >= sz - 1){
-        tabphase1 = sz - 1; // checking to see if index falls within bounds
-        output = tab[tabphase1];
-    }
-    else{
-        double yb = tab[tabphase2]; // linear interp
-        double ya = tab[tabphase1];
-        output = ya+((yb-ya)*frac);
-    };
-    return output;
-}
-
-static double fbdelay_readmsdelay(t_fbdelay *x, double arr[], t_float ms){
-    //helper func, basically take desired ms delay, convert to samp, read from arr[]
-    
-    //eventual reading head
-    double rh = (double)ms*((double)x->x_sr*0.001); //converting ms to samples
-    //bounds checking for minimum delay in samples
-    if(rh < 1)
-        rh = 1;
-    rh = (double)x->x_wh+((double)x->x_sz-rh); //essentially subracting from writehead to find proper position in buffer
-    //wrapping into length of delay buffer
-    while(rh >= x->x_sz){
-        rh -= (double)x->x_sz;
-    };
-    //now to read from the buffer!
-    double output = fbdelay_getlin(arr, x->x_sz, rh);
-    return output;
-}
-
 static t_int *fbdelay_perform(t_int *w){
     t_fbdelay *x = (t_fbdelay *)(w[1]);
-    int n = (int)(w[2]);
+    t_int n = (int)(w[2]);
     t_float *xin = (t_float *)(w[3]);
     t_float *din = (t_float *)(w[4]);
     t_float *ain = (t_float *)(w[5]);
     t_float *out = (t_float *)(w[6]);
-    int i;
-    for(i=0; i<n;i++){
-        int wh = x->x_wh;
-        double input = (double)xin[i];
-        double output;
-        t_float delms = din[i];
-        if(delms > x->x_maxdel)
-            delms = x->x_maxdel;
-        double y_n = fbdelay_readmsdelay(x, x->x_ybuf, delms); // get delayed vals
-        if(!x->x_gain){
-            if (ain[i] == 0)
-                ain[i] = 0;
-            else
-                ain[i] = copysign(exp(log(0.001) * delms/fabs(ain[i])), ain[i]);
-            }
-        output = input + (double)ain[i] * y_n;
-        x->x_ybuf[wh] = output;
-        out[i] = output;
-        x->x_wh = (wh + 1) % x->x_sz; // increment writehead
+    for(t_int i = 0; i < n; i++){
+        t_float del = din[i];
+        double y_n;
+        if(!x->x_ms)
+            del /= x->x_sr_khz;
+        if(del > x->x_maxdel)
+            del = x->x_maxdel;
+        t_float ms = del;
+        del *= x->x_sr_khz;     // delay in samples
+        if(del < 1)             // minimum of 1 sample delay
+            del = 1;
+        if((del - floor(del)) == 0){
+            double rp = (double)x->x_wp + ((double)x->x_sz - del);  // find read point
+            while(rp >= x->x_sz)       // wrap into length of delay buffer (???)
+                rp -= (double)x->x_sz;
+            unsigned int ndx = (unsigned int)rp;
+            if(ndx >= x->x_sz - 1) // clip index
+                ndx = x->x_sz - 1;
+            y_n = x->x_ybuf[ndx];
+        }
+        else{ // lagrange interpolation
+            double rp = (double)x->x_wp + ((double)x->x_sz - (del + 1));  // find read point
+            while(rp >= x->x_sz)       // wrap into length of delay buffer (???)
+                rp -= (double)x->x_sz;
+            double frac = 1 - ((double)del - floor(del));
+            unsigned int ndxm1 = (unsigned int)rp;
+            unsigned int ndx = ndxm1 + 1, ndx1 = ndxm1 + 2, ndx2 = ndxm1 + 3;
+            if(ndx2 > x->x_sz - 1)
+                ndx2 = x->x_sz - 1;
+            double a = x->x_ybuf[ndxm1];
+            double b = x->x_ybuf[ndx];
+            double c = x->x_ybuf[ndx1];
+            double d = x->x_ybuf[ndx2];
+            double cmb = c-b;
+            y_n = b + frac*(cmb - (1.-frac)/6. * ((d-a - 3.0*cmb) * frac+d+ 2.0*a - 3.0*b));
+        }
+        if(!x->x_gain)
+            ain[i] = ain[i] == 0 ? 0 : copysign(exp(log(0.001) * ms/fabs(ain[i])), ain[i]);
+        double output = (double)xin[i] + y_n * (double)ain[i];
+        out[i] = (t_float)output;
+        x->x_ybuf[x->x_wp] = output;       // write output to buffer
+        x->x_wp = (x->x_wp + 1) % x->x_sz; // increment and wrap write head
     };
-    return (w + 7);
+    return(w+7);
 }
 
-static void fbdelay_dsp(t_fbdelay *x, t_signal **sp)
-{
-    int sr = sp[0]->s_sr;
-    if(sr != x->x_sr){
-        // if new sample rate isn't old sample rate, need to realloc
-        x->x_sr = sr;
+static void fbdelay_dsp(t_fbdelay *x, t_signal **sp){
+    t_float sr_khz = (t_float)sp[0]->s_sr * 0.001;
+    if(sr_khz != x->x_sr_khz){
+        x->x_sr_khz = sr_khz;
         fbdelay_sz(x);
     };
     dsp_add(fbdelay_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
@@ -152,6 +127,8 @@ static void fbdelay_size(t_fbdelay *x, t_floatarg f1){
     if(f1 < 0)
         f1 = 0;
     x->x_maxdel = f1;
+    if(!x->x_ms)
+        x->x_maxdel /= x->x_sr_khz;
     fbdelay_sz(x);
 }
 
@@ -161,18 +138,17 @@ static void fbdelay_gain(t_fbdelay *x, t_floatarg f1){
 
 static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
     t_fbdelay *x = (t_fbdelay *)pd_new(fbdelay_class);
-    x->x_sr = sys_getsr(); // ???
+    t_symbol *cursym = s; // get rid of warning
+    x->x_sr_khz = sys_getsr() * 0.001;
     x->x_alloc = 0;
-    x->x_sz = fbdelay_STACK;
-    // clear out stack buf, set pointer to stack
-    x->x_ybuf = x->x_fbstack;
-    fbdelay_clear(x);
-    
-// args
+    x->x_sz = FBD_STACK;
+    x->x_ybuf = x->x_fbstack;   // set pointer to stack
+    fbdelay_clear(x);           // clear out stack buf
     float del_time = 0;
     float delsize = 1000;
     float fb = 0;
     x->x_gain = 0;
+    x->x_ms = 1;
 /////////////////////////////////////////////////////////////////////////////////
     int symarg = 0;
     int argnum = 0;
@@ -180,7 +156,7 @@ static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
         if(argv->a_type == A_SYMBOL){
             if(!symarg)
                 symarg = 1;
-            t_symbol * cursym = atom_getsymbolarg(0, argc, argv);
+            cursym = atom_getsymbolarg(0, argc, argv);
             if(!strcmp(cursym->s_name, "-size")){
                 if(argc >= 2 && (argv+1)->a_type == A_FLOAT){
                     t_float curfloat = atom_getfloatarg(1, argc, argv);
@@ -191,6 +167,18 @@ static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
                 }
                 else
                     goto errstate;
+            }
+            else if(!strcmp(cursym->s_name, "-samps")){
+                x->x_ms = 0;
+                argc--;
+                argv++;
+                argnum++;
+            }
+            else if(!strcmp(cursym->s_name, "-gain")){
+                x->x_gain = 1;
+                argc--;
+                argv++;
+                argnum++;
             }
             else
                 goto errstate;
@@ -222,10 +210,10 @@ static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
             goto errstate;
     };
 /////////////////////////////////////////////////////////////////////////////////
-    
     x->x_maxdel = delsize;
-    fbdelay_sz(x); // helper method to deal with allocation if necessary
-    
+    if(!x->x_ms)
+        x->x_maxdel /= x->x_sr_khz;
+    fbdelay_sz(x);
     x->x_dellet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_dellet, del_time);
     x->x_alet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -243,7 +231,7 @@ static void * fbdelay_free(t_fbdelay *x){
     inlet_free(x->x_dellet);
     inlet_free(x->x_alet);
     outlet_free(x->x_outlet);
-    return (void *)x;
+    return(void *)x;
 }
 
 void fbdelay_tilde_setup(void){

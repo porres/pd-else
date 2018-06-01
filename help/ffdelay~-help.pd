@@ -44,7 +44,7 @@
 ;
 #X text 60 89 [ffdelay~] is simple feed forward delay with interpolation.
 ;
-#N canvas 718 195 670 302 examples 0;
+#N canvas 610 195 670 302 examples 0;
 #X obj 497 94 osc~ 0.1;
 #X text 96 88 vibrato;
 #X obj 65 194 else/out~;
@@ -117,7 +117,7 @@ f 44;
 f 50;
 #X text 199 430 sets delay size \, which defines the delay's maximum
 time (default 1000 ms or argument's value if given);
-#N canvas 499 146 858 345 details 0;
+#N canvas 367 164 858 345 details 0;
 #X text 448 19 By default \, all time units in [ffdelay~] is in ms.
 This affects not only the delay time \, but also the delay size.,
 f 64;
@@ -125,49 +125,48 @@ f 64;
 it to operate in time units specified by the number of samples. In
 the same way \, this affects both delay time and delay size., f 64
 ;
-#X obj 476 254 else/out~;
-#X obj 476 154 else/impseq~;
-#X obj 476 126 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 559 251 else/out~;
+#X obj 559 151 else/impseq~;
+#X obj 559 123 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 519 211 else/ffdelay~ 22050 -size 44100 -samps;
-#X msg 577 148 size 22050;
-#X msg 587 175 size 44100;
-#X obj 744 183 nbx 5 14 0 44100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X obj 51 232 else/out~;
-#X obj 51 132 else/impseq~;
-#X obj 51 104 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X msg 660 145 size 22050;
+#X msg 670 172 size 44100;
+#X obj 755 184 nbx 5 14 22050 44100 1 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 44100 256;
+#X obj 67 237 else/out~;
+#X obj 67 137 else/impseq~;
+#X obj 67 109 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 94 189 else/ffdelay~ 500;
+#X obj 110 194 else/ffdelay~ 500;
 #X text 32 22 By default \, the delay size is 1000 ms \, but if you
 give it an argument \, it sets both the delay time and also the delay
 size., f 64;
-#X obj 223 231 else/out~;
-#X obj 223 131 else/impseq~;
-#X obj 223 103 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 261 236 else/out~;
+#X obj 261 136 else/impseq~;
+#X obj 261 108 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 266 188 else/ffdelay~ 500 -size 1000;
 #X text 32 51 If you need a larger delay size than specified by a first
 argument \, you can use the -size flag/message, f 64;
-#X msg 324 130 size 500;
-#X msg 336 154 size 1000;
+#X obj 304 193 else/ffdelay~ 100 -size 500;
+#X obj 602 208 else/ffdelay~ 22050 -samps;
+#X obj 463 165 nbx 5 14 100 500 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 500 256;
 #X connect 3 0 2 0;
-#X connect 3 0 5 0;
+#X connect 3 0 18 0;
 #X connect 4 0 3 0;
-#X connect 5 0 2 1;
-#X connect 6 0 5 0;
-#X connect 7 0 5 0;
-#X connect 8 0 5 1;
+#X connect 5 0 18 0;
+#X connect 6 0 18 0;
+#X connect 7 0 18 1;
+#X connect 9 0 8 0;
+#X connect 9 0 11 0;
 #X connect 10 0 9 0;
-#X connect 10 0 12 0;
-#X connect 11 0 10 0;
-#X connect 12 0 9 1;
+#X connect 11 0 8 1;
+#X connect 14 0 13 0;
+#X connect 14 0 17 0;
 #X connect 15 0 14 0;
-#X connect 15 0 17 0;
-#X connect 16 0 15 0;
-#X connect 17 0 14 1;
-#X connect 19 0 17 0;
-#X connect 20 0 17 0;
+#X connect 17 0 13 1;
+#X connect 18 0 2 1;
+#X connect 19 0 17 1;
 #X restore 475 192 pd details;
 #X text 40 207 see also:;
 #X obj 41 229 else/fbdelay~;
