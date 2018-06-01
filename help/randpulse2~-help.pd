@@ -1,37 +1,36 @@
-#N canvas 565 39 574 408 10;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 565 39 563 401 10;
+#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 2 pd;
+#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 145 40 cnv 4 4 4 empty empty train 0 28 2 18 -233017 -1 0;
-#X obj 95 40 cnv 4 4 4 empty empty pulse 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 145 39 cnv 4 4 4 empty empty train 0 28 2 18 -233017 -1 0;
+#X obj 95 39 cnv 4 4 4 empty empty pulse 0 28 2 18 -233017 -1 0;
+#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 193 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
+#X obj 193 39 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
 0;
-#X obj 3 284 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 286 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 320 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 315 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 122 293 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 102 293 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 369 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 374 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 206 293 signal -;
-#X text 190 329 1) float;
-#X obj 219 140 nbx 5 14 -50 50 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 21 256;
+#X text 150 322 1) float;
+#X obj 199 139 nbx 5 14 -50 50 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -135,49 +134,79 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 71 pd;
-#X obj 3 3 cnv 15 301 42 empty empty randpulse2~ 20 20 2 37 -233017
+#X restore 505 70 pd;
+#X obj 3 2 cnv 15 301 42 empty empty randpulse2~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 2 3 graph;
-#X obj 3 232 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X restore 2 2 graph;
+#X obj 3 226 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 123 240 cnv 17 3 37 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 103 234 cnv 17 3 45 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 24 40 cnv 4 4 4 empty empty Random 0 28 2 18 -233017 -1 0;
-#N canvas 726 168 554 446 seed 0;
-#X text 70 73 By default \, each instance of [randpulse~] has its own
+#X obj 24 39 cnv 4 4 4 empty empty Random 0 28 2 18 -233017 -1 0;
+#N canvas 622 221 439 268 seed 0;
+#X text 42 66 By default \, each instance of [randpulse~] has its own
 seed value.;
-#X obj 288 243 else/graph~;
-#X obj 71 243 else/graph~;
-#X msg 216 144 seed \$1;
-#X msg 182 118 319;
-#X msg 216 118 987345;
-#X obj 71 185 else/randpulse2~ 1;
-#X obj 288 184 else/randpulse2~ 1;
-#X text 71 23 [randpulse2~] objects that share the same seed will have
+#X msg 215 135 seed \$1;
+#X msg 181 109 319;
+#X msg 215 109 987345;
+#X obj 96 175 else/randpulse2~ 1;
+#X obj 214 175 else/randpulse2~ 1;
+#X text 43 16 [randpulse2~] objects that share the same seed will have
 the same random number generation. You can specify a seed value as
 the third argument or via the 'seed' message.;
-#X connect 3 0 6 0;
-#X connect 3 0 7 0;
-#X connect 4 0 3 0;
-#X connect 5 0 3 0;
-#X connect 6 0 2 0;
-#X connect 7 0 1 0;
-#X restore 487 196 pd seed;
-#X text 168 260 seed <float>;
-#X text 249 259 - sets seed value;
-#X text 267 293 random pulse signal;
-#X obj 219 196 display~;
-#X text 60 87 [randpulse2~] is a random pulse train oscillator (which
-alternates between 0 and 1 at random intervals according to a density
-parameter.;
-#X text 254 347 - seed (default \, internal);
-#X text 190 347 2) float;
-#X text 279 138 <= density;
-#X text 171 241 float/signal - density;
-#X text 256 329 - density (default 0);
-#X obj 219 170 else/randpulse2~ 1;
-#X connect 17 0 35 0;
-#X connect 35 0 28 0;
+#X obj 96 204 display~;
+#X obj 214 204 display~;
+#X connect 1 0 4 0;
+#X connect 1 0 5 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X connect 4 0 7 0;
+#X connect 5 0 8 0;
+#X restore 487 195 pd seed;
+#X text 128 267 seed <float>;
+#X text 209 266 - sets seed value;
+#X obj 199 190 display~;
+#X text 209 353 - seed (default \, internal);
+#X text 259 137 <= density;
+#X text 131 233 float/signal - density;
+#X text 209 321 - density (default 0);
+#X text 150 354 3) float;
+#X text 150 338 2) float;
+#X obj 199 164 else/randpulse2~ 50;
+#X text 209 292 - random pulse signal;
+#X text 164 293 signal;
+#X text 128 249 rand <float>;
+#X text 209 248 - non zero sets to random gate value mode;
+#X text 209 337 - non zero sets to random gate value mode (default
+0);
+#N canvas 622 221 464 378 rand 0;
+#X obj 185 200 else/graph~ 441 3;
+#X text 47 23 By default \, gate values in [randopulse2~] are "1" \,
+but you can set it to random mode with the second argument (non zero
+value) \, where it gives you random positive and negative values (in
+hte range from -1 to 1). You can also use the "rand" message to change
+this.;
+#X msg 69 132 rand \$1;
+#X obj 69 107 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 86 241 else/out~;
+#X obj 129 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 100 256;
+#X obj 129 168 else/randpulse2~ 1500 1;
+#X obj 132 105 hsl 128 15 100 44100 1 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 0 1;
+#X connect 2 0 6 0;
+#X connect 3 0 2 0;
+#X connect 5 0 6 0;
+#X connect 6 0 0 0;
+#X connect 6 0 4 1;
+#X connect 6 0 4 0;
+#X connect 7 0 5 0;
+#X restore 487 173 pd rand;
+#X text 60 86 [randpulse2~] is a random pulse train oscillator (which
+alternates between 0 and 1 at random intervals according to a "density"
+parameter \, which controls the average frequency.;
+#X connect 16 0 33 0;
+#X connect 33 0 26 0;
