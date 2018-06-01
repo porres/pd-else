@@ -28,27 +28,27 @@ typedef struct _fromany{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-fromany_atoms_clear(t_fromany_atoms *a){
+static fromany_atoms_clear(t_fromany_atoms *a){
     if(a->a_alloc)
         freebytes(a->a_buf, (a->a_alloc)*sizeof(t_atom));
     a->a_buf   = NULL;
     a->a_len   = a->a_alloc = 0;
 }
 
-fromany_atoms_realloc(t_fromany_atoms *a, size_t n){
+static fromany_atoms_realloc(t_fromany_atoms *a, size_t n){
     fromany_atoms_clear(a);
     a->a_buf   = n ? (t_atom*)getbytes(n*sizeof(t_atom)) : NULL;
     a->a_alloc = n;
 }
 
-fromany_char_code_clear(t_fromany_char_code *b){
+static fromany_char_code_clear(t_fromany_char_code *b){
     if(b->b_alloc)
         freebytes(b->b_buf, (b->b_alloc)*sizeof(unsigned char));
     b->b_buf   = NULL;
     b->b_len   = b->b_alloc = 0;
 }
 
-fromany_char_code_realloc(t_fromany_char_code *b, size_t n){
+static fromany_char_code_realloc(t_fromany_char_code *b, size_t n){
     fromany_char_code_clear(b);
     b->b_buf   = n ? (unsigned char*)getbytes(n*sizeof(unsigned char)) : NULL;
     b->b_alloc = n;
@@ -56,7 +56,7 @@ fromany_char_code_realloc(t_fromany_char_code *b, size_t n){
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-get_atoms(void *x, t_fromany_atoms *dst, t_fromany_char_code *src){
+static get_atoms(void *x, t_fromany_atoms *dst, t_fromany_char_code *src){
     int i;
     if(dst->a_alloc <= (size_t)src->b_len) // re-allocate?
         fromany_atoms_realloc(dst, src->b_len + 1 + 256);
@@ -65,7 +65,7 @@ get_atoms(void *x, t_fromany_atoms *dst, t_fromany_char_code *src){
     dst->a_len = src->b_len;
 }
 
-convert_fromany(void *x, t_fromany_char_code *dst, t_symbol *sel, t_fromany_atoms *src, t_binbuf *x_binbuf){
+static convert_fromany(void *x, t_fromany_char_code *dst, t_symbol *sel, t_fromany_atoms *src, t_binbuf *x_binbuf){
     int bb_is_tmp = 0;
     if(!x_binbuf){ // create temporary binbuf
         x_binbuf = binbuf_new();

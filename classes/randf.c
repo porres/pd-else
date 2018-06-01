@@ -11,11 +11,11 @@ typedef struct _randf{
     t_float     x_max;
 } t_randf;
 
-void randf_seed(t_randf *x, t_float f){
+static void randf_seed(t_randf *x, t_float f){
     x->x_val = (int)f * 1319;
 }
 
-void randf_bang(t_randf *x){
+static void randf_bang(t_randf *x){
     int val = x->x_val;
     t_float random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
     random = x->x_min + (x->x_max - x->x_min) * (random + 1) / 2; // rescale
@@ -23,7 +23,7 @@ void randf_bang(t_randf *x){
     outlet_float(x->x_obj.ob_outlet, random);
 }
 
-void *randf_new(t_symbol *s, int argc, t_atom *argv){
+static void *randf_new(t_symbol *s, int argc, t_atom *argv){
     t_randf *x = (t_randf *) pd_new(randf_class);
     static int init_seed = 54569;
 /////////////////////////////////////////////

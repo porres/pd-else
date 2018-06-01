@@ -1,0 +1,65 @@
+#N canvas 321 23 563 419 10;
+#X obj 4 3 cnv 15 301 42 empty empty coin 20 20 2 37 -233017 -1 0;
+#X obj 308 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 4 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 307 3 pd;
+#X obj 347 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 25 40 cnv 4 4 4 empty empty Statistical 0 28 2 18 -233017 -1
+0;
+#X obj 460 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 480 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 466 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 110 39 cnv 4 4 4 empty empty bangs 0 28 2 18 -233017 -1 0;
+#X obj 5 391 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 6 309 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 344 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 115 319 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 115 263 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 6 253 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X msg 175 158 seed \$1;
+#X obj 175 139 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 40 256;
+#X obj 115 285 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 289 168 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 138 369 2) float - seed value (default: internal);
+#X obj 292 146 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X text 138 353 1) float - probability in percentage (default 50);
+#X text 346 167 %;
+#X text 322 145 probability;
+#X text 239 286 - probability in percentage (0 to 100);
+#X text 76 91 When [coin] receives a bang \, it tosses a coin and either
+passes the bang or not according to a probability parameter.;
+#X obj 238 149 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 238 218 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 195 263 bang;
+#X text 239 262 - a bang to be passed or not;
+#X text 189 286 float;
+#X text 195 320 bang;
+#X text 239 320 - random bangs;
+#X obj 238 191 else/coin;
+#X connect 16 0 34 0;
+#X connect 17 0 16 0;
+#X connect 19 0 34 1;
+#X connect 21 0 19 0;
+#X connect 27 0 34 0;
+#X connect 34 0 28 0;

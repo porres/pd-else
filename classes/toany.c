@@ -30,7 +30,7 @@ typedef struct _toany{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-toany_atoms_clear(t_toany_atoms *a){
+static toany_atoms_clear(t_toany_atoms *a){
     if(a->a_alloc)
         freebytes(a->a_buf, (a->a_alloc)*sizeof(t_atom));
     a->a_buf   = NULL;
@@ -38,13 +38,13 @@ toany_atoms_clear(t_toany_atoms *a){
     a->a_alloc = 0;
 }
 
-toany_atoms_realloc(t_toany_atoms *a, size_t n){
+static toany_atoms_realloc(t_toany_atoms *a, size_t n){
     toany_atoms_clear(a);
     a->a_buf   = n ? (t_atom*)getbytes(n*sizeof(t_atom)) : NULL;
     a->a_alloc = n;
 }
 
-toany_char_code_clear(t_toany_char_code *b){
+static toany_char_code_clear(t_toany_char_code *b){
     if(b->b_alloc)
         freebytes(b->b_buf, (b->b_alloc)*sizeof(unsigned char));
     b->b_buf   = NULL;
@@ -52,7 +52,7 @@ toany_char_code_clear(t_toany_char_code *b){
     b->b_alloc = 0;
 }
 
-toany_char_code_realloc(t_toany_char_code *b, size_t n){
+static toany_char_code_realloc(t_toany_char_code *b, size_t n){
     toany_char_code_clear(b);
     b->b_buf   = n ? (unsigned char*)getbytes(n*sizeof(unsigned char)) : NULL;
     b->b_alloc = n;
@@ -60,7 +60,7 @@ toany_char_code_realloc(t_toany_char_code *b, size_t n){
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-convert_toany(void *x, t_toany_atoms *dst, t_toany_char_code *src, t_binbuf *x_binbuf){
+static convert_toany(void *x, t_toany_atoms *dst, t_toany_char_code *src, t_binbuf *x_binbuf){
     int bb_is_tmp = 0;                                      // create temporary binbuf?
     if(!x_binbuf){
         x_binbuf = binbuf_new();
@@ -84,7 +84,7 @@ convert_toany(void *x, t_toany_atoms *dst, t_toany_char_code *src, t_binbuf *x_b
     }
 }
 
-toany_get_atoms(void *x, t_toany_char_code *dst, t_toany_atoms *src, t_float x_eos){
+static toany_get_atoms(void *x, t_toany_char_code *dst, t_toany_atoms *src, t_float x_eos){
     t_atom *argv = src->a_buf;
     int     argc = src->a_len;
     unsigned char *s;

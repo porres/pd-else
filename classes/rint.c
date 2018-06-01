@@ -12,7 +12,7 @@ typedef struct _rint{
     t_atom     *x_at;
 }t_rint;
 
-void rint_bang(t_rint *x){
+static void rint_bang(t_rint *x){
     outlet_float(x->x_obj.ob_outlet, rint(x->x_f));
 }
 
@@ -29,7 +29,7 @@ static void rint_list(t_rint *x, t_symbol *s, int argc, t_atom *argv){
 	outlet_list(x->x_obj.ob_outlet, &s_list, argc, x->x_at);
 }
 
-void rint_free(t_rint *x){
+static void rint_free(t_rint *x){
     t_freebytes(x->x_at, x->x_bytes);
 }
 

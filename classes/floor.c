@@ -16,18 +16,18 @@ typedef struct _floor
 
 static t_float convert(t_float f);
 
-void floor_float(t_floor *x, t_floatarg f)
+static void floor_float(t_floor *x, t_floatarg f)
 {
   x->f = f;
   outlet_float(x->float_outlet, convert(f));
 }
 
-t_float convert(t_float f)
+static t_float convert(t_float f)
 {
   return floor(f);
 }
 
-void floor_list(t_floor *x, t_symbol *s, int argc, t_atom *argv)
+static void floor_list(t_floor *x, t_symbol *s, int argc, t_atom *argv)
 {
   int old_bytes = x->bytes, i = 0;
   x->bytes = argc*sizeof(t_atom);
@@ -37,17 +37,17 @@ void floor_list(t_floor *x, t_symbol *s, int argc, t_atom *argv)
   outlet_list(x->float_outlet,0,argc,x->output_list);
 }
 
-void floor_set(t_floor *x, t_float f)
+static void floor_set(t_floor *x, t_float f)
 {
   x->f = f;
 }
 
-void floor_bang(t_floor *x)
+static void floor_bang(t_floor *x)
 {
   outlet_float(x->float_outlet,convert(x->f));
 }
 
-void *floor_new(void)
+static void *floor_new(void)
 {
   t_floor *x = (t_floor *) pd_new(floor_class);
   x->f = 0;
@@ -61,7 +61,7 @@ void *floor_new(void)
   return (x);
 }
 
-void floor_free(t_floor *x)
+static void floor_free(t_floor *x)
 {
   t_freebytes(x->output_list,x->bytes);
 }

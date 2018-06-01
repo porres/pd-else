@@ -47,13 +47,13 @@ static t_float convert(t_float f, t_float min, t_float max)
     return result;
 }
 
-void wrap2_float(t_wrap2 *x, t_floatarg f)
+static void wrap2_float(t_wrap2 *x, t_floatarg f)
 {
   x->x_f = f;
   outlet_float(x->x_outlet, convert(f, x->x_min, x->x_max));
 }
 
-void wrap2_list(t_wrap2 *x, t_symbol *s, int argc, t_atom *argv)
+static void wrap2_list(t_wrap2 *x, t_symbol *s, int argc, t_atom *argv)
 {
   int old_bytes = x->x_bytes, i = 0;
   x->x_bytes = argc*sizeof(t_atom);
@@ -63,17 +63,17 @@ void wrap2_list(t_wrap2 *x, t_symbol *s, int argc, t_atom *argv)
   outlet_list(x->x_outlet,0,argc,x->output_list);
 }
 
-void wrap2_set(t_wrap2 *x, t_float f)
+static void wrap2_set(t_wrap2 *x, t_float f)
 {
   x->x_f = f;
 }
 
-void wrap2_bang(t_wrap2 *x)
+static void wrap2_bang(t_wrap2 *x)
 {
   outlet_float(x->x_outlet,convert(x->x_f, x->x_min, x->x_max));
 }
 
-void *wrap2_new(t_symbol *s, int argc, t_atom *argv)
+static void *wrap2_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_wrap2 *x = (t_wrap2 *) pd_new(wrap2_class);
 ///////////////////////////
@@ -136,7 +136,7 @@ errstate:
     return NULL;
 }
 
-void wrap2_free(t_wrap2 *x)
+static void wrap2_free(t_wrap2 *x)
 {
   t_freebytes(x->output_list,x->x_bytes);
 }

@@ -30,15 +30,15 @@ static t_float convert(t_rescale *x, t_float f){
         minout + rangeout * -pow((minin-f)/rangein, exp);
 }
 
-void rescale_bang(t_rescale *x){
+static void rescale_bang(t_rescale *x){
     outlet_float(x->x_outlet, convert(x, x->x_f));
 }
 
-void rescale_float(t_rescale *x, t_floatarg f){
+static void rescale_float(t_rescale *x, t_floatarg f){
     outlet_float(x->x_outlet, convert(x, x->x_f = f));
 }
 
-void rescale_list(t_rescale *x, t_symbol *s, int ac, t_atom *av){
+static void rescale_list(t_rescale *x, t_symbol *s, int ac, t_atom *av){
     int old_bytes = x->x_bytes, i = 0;
     x->x_bytes = ac*sizeof(t_atom);
     x->x_at = (t_atom *)t_resizebytes(x->x_at, old_bytes, x->x_bytes);
@@ -47,19 +47,19 @@ void rescale_list(t_rescale *x, t_symbol *s, int ac, t_atom *av){
     outlet_list(x->x_outlet, 0, ac, x->x_at);
 }
 
-void rescale_set(t_rescale *x, t_float f){
+static void rescale_set(t_rescale *x, t_float f){
     x->x_f = f;
 }
 
-void rescale_exp(t_rescale *x, t_floatarg f){
+static void rescale_exp(t_rescale *x, t_floatarg f){
     x->x_exp = f < 0. ? 0. : f;
 }
 
-void rescale_free(t_rescale *x){
+static void rescale_free(t_rescale *x){
     t_freebytes(x->x_at, x->x_bytes);
 }
 
-void *rescale_new(t_symbol *s, int ac, t_atom *av){
+static void *rescale_new(t_symbol *s, int ac, t_atom *av){
     t_rescale *x = (t_rescale *)pd_new(rescale_class);
     x->x_minin = 0;
     x->x_maxin = 127;

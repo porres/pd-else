@@ -15,15 +15,15 @@ typedef struct _rad2hz
   t_float f;
 } t_rad2hz;
 
-void *rad2hz_new(t_floatarg f1);
-void rad2hz_free(t_rad2hz *x);
-void rad2hz_float(t_rad2hz *x, t_floatarg f);
-void rad2hz_bang(t_rad2hz *x);
-void rad2hz_set(t_rad2hz *x, t_floatarg f);
+static void *rad2hz_new(t_floatarg f1);
+static void rad2hz_free(t_rad2hz *x);
+static void rad2hz_float(t_rad2hz *x, t_floatarg f);
+static void rad2hz_bang(t_rad2hz *x);
+static void rad2hz_set(t_rad2hz *x, t_floatarg f);
 
 static t_float convert(t_rad2hz *x, t_float f);
 
-void rad2hz_float(t_rad2hz *x, t_floatarg f)
+static void rad2hz_float(t_rad2hz *x, t_floatarg f)
 {
   x->f = f;
   outlet_float(x->float_outlet, convert(x,f));
@@ -34,7 +34,7 @@ static t_float convert(t_rad2hz *x, t_float f)
     return f * x->x_iradps;
 }
 
-void rad2hz_list(t_rad2hz *x, t_symbol *s, int argc, t_atom *argv)
+static void rad2hz_list(t_rad2hz *x, t_symbol *s, int argc, t_atom *argv)
 {
   int old_bytes = x->bytes, i = 0;
   x->bytes = argc*sizeof(t_atom);
@@ -44,17 +44,17 @@ void rad2hz_list(t_rad2hz *x, t_symbol *s, int argc, t_atom *argv)
   outlet_list(x->float_outlet,0,argc,x->output_list);
 }
 
-void rad2hz_set(t_rad2hz *x, t_float f)
+static void rad2hz_set(t_rad2hz *x, t_float f)
 {
   x->f = f;
 }
 
-void rad2hz_bang(t_rad2hz *x)
+static void rad2hz_bang(t_rad2hz *x)
 {
   outlet_float(x->float_outlet,convert(x, x->f));
 }
 
-void *rad2hz_new(t_floatarg f1)
+static void *rad2hz_new(t_floatarg f1)
 {
   t_rad2hz *x = (t_rad2hz *) pd_new(rad2hz_class);
   x->x_iradps = sys_getsr() / (2 * M_PI);
@@ -65,7 +65,7 @@ void *rad2hz_new(t_floatarg f1)
   return (x);
 }
 
-void rad2hz_free(t_rad2hz *x)
+static void rad2hz_free(t_rad2hz *x)
 {
   t_freebytes(x->output_list,x->bytes);
 }

@@ -17,11 +17,11 @@ static t_float convert(t_float f){
     return pow(2, (f/1200));
 }
 
-void cents2ratio_float(t_cents2ratio *x, t_floatarg f){
+static void cents2ratio_float(t_cents2ratio *x, t_floatarg f){
   outlet_float(x->x_outlet, convert(x->x_f = f));
 }
 
-void cents2ratio_list(t_cents2ratio *x, t_symbol *s, int argc, t_atom *argv){
+static void cents2ratio_list(t_cents2ratio *x, t_symbol *s, int argc, t_atom *argv){
     int old_bytes = x->x_bytes, i = 0;
     x->x_bytes = argc*sizeof(t_atom);
     x->x_atom_list = (t_atom *)t_resizebytes(x->x_atom_list, old_bytes, x->x_bytes);
@@ -30,15 +30,15 @@ void cents2ratio_list(t_cents2ratio *x, t_symbol *s, int argc, t_atom *argv){
     outlet_list(x->x_outlet, 0, argc, x->x_atom_list);
 }
 
-void cents2ratio_set(t_cents2ratio *x, t_float f){
+static void cents2ratio_set(t_cents2ratio *x, t_float f){
   x->x_f = f;
 }
 
-void cents2ratio_bang(t_cents2ratio *x){
+static void cents2ratio_bang(t_cents2ratio *x){
   outlet_float(x->x_outlet, convert(x->x_f));
 }
 
-void *cents2ratio_new(t_floatarg f){
+static void *cents2ratio_new(t_floatarg f){
     t_cents2ratio *x = (t_cents2ratio *) pd_new(cents2ratio_class);
     x->x_f = f;
     x->x_outlet = outlet_new(&x->x_obj, 0);
@@ -47,7 +47,7 @@ void *cents2ratio_new(t_floatarg f){
     return(x);
 }
 
-void cents2ratio_free(t_cents2ratio *x){
+static void cents2ratio_free(t_cents2ratio *x){
   t_freebytes(x->x_atom_list, x->x_bytes);
 }
 

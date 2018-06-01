@@ -15,26 +15,26 @@ typedef struct _hz2rad
   t_float f;
 } t_hz2rad;
 
-void *hz2rad_new(t_floatarg f1);
-void hz2rad_free(t_hz2rad *x);
-void hz2rad_float(t_hz2rad *x, t_floatarg f);
-void hz2rad_bang(t_hz2rad *x);
-void hz2rad_set(t_hz2rad *x, t_floatarg f);
+static void *hz2rad_new(t_floatarg f1);
+static void hz2rad_free(t_hz2rad *x);
+static void hz2rad_float(t_hz2rad *x, t_floatarg f);
+static void hz2rad_bang(t_hz2rad *x);
+static void hz2rad_set(t_hz2rad *x, t_floatarg f);
 
 static t_float convert(t_hz2rad *x, t_float f);
 
-void hz2rad_float(t_hz2rad *x, t_floatarg f)
+static void hz2rad_float(t_hz2rad *x, t_floatarg f)
 {
   x->f = f;
   outlet_float(x->float_outlet, convert(x,f));
 }
 
-static t_float convert(t_hz2rad *x, t_float f)
+static static t_float convert(t_hz2rad *x, t_float f)
 {
     return f * x->x_radps;
 }
 
-void hz2rad_list(t_hz2rad *x, t_symbol *s, int argc, t_atom *argv)
+static void hz2rad_list(t_hz2rad *x, t_symbol *s, int argc, t_atom *argv)
 {
   int old_bytes = x->bytes, i = 0;
   x->bytes = argc*sizeof(t_atom);
@@ -44,17 +44,17 @@ void hz2rad_list(t_hz2rad *x, t_symbol *s, int argc, t_atom *argv)
   outlet_list(x->float_outlet,0,argc,x->output_list);
 }
 
-void hz2rad_set(t_hz2rad *x, t_float f)
+static void hz2rad_set(t_hz2rad *x, t_float f)
 {
   x->f = f;
 }
 
-void hz2rad_bang(t_hz2rad *x)
+static void hz2rad_bang(t_hz2rad *x)
 {
   outlet_float(x->float_outlet,convert(x, x->f));
 }
 
-void *hz2rad_new(t_floatarg f1)
+static void *hz2rad_new(t_floatarg f1)
 {
   t_hz2rad *x = (t_hz2rad *) pd_new(hz2rad_class);
   x->x_radps = 2 * M_PI / sys_getsr();
@@ -65,7 +65,7 @@ void *hz2rad_new(t_floatarg f1)
   return (x);
 }
 
-void hz2rad_free(t_hz2rad *x)
+static void hz2rad_free(t_hz2rad *x)
 {
   t_freebytes(x->output_list,x->bytes);
 }

@@ -11,11 +11,11 @@ typedef struct _randi{
     t_float         x_max;
 } t_randi;
 
-void randi_seed(t_randi *x, t_float f){
+static void randi_seed(t_randi *x, t_float f){
     x->x_val = f;
 }
 
-void randi_bang(t_randi *x){
+static void randi_bang(t_randi *x){
     unsigned int val = x->x_val;
     t_int random;
     t_int out_low = (int)x->x_min; // Output LOW
@@ -38,7 +38,7 @@ void randi_bang(t_randi *x){
     outlet_float(x->x_obj.ob_outlet, random);
 }
 
-void *randi_new(t_symbol *s, int argc, t_atom *argv){
+static void *randi_new(t_symbol *s, int argc, t_atom *argv){
     t_randi *x = (t_randi *) pd_new(randi_class);
     static unsigned int random_seed = 1489853723;
 //////////////////////////////////////////////////////////

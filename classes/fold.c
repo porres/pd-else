@@ -67,13 +67,13 @@ static t_float convert(t_float f, t_float min, t_float max)
     return result;
 }
 
-void fold_float(t_fold *x, t_floatarg f)
+static void fold_float(t_fold *x, t_floatarg f)
 {
   x->x_f = f;
   outlet_float(x->x_outlet, convert(f, x->x_min, x->x_max));
 }
 
-void fold_list(t_fold *x, t_symbol *s, int argc, t_atom *argv)
+static void fold_list(t_fold *x, t_symbol *s, int argc, t_atom *argv)
 {
   int old_bytes = x->x_bytes, i = 0;
   x->x_bytes = argc*sizeof(t_atom);
@@ -83,17 +83,17 @@ void fold_list(t_fold *x, t_symbol *s, int argc, t_atom *argv)
   outlet_list(x->x_outlet,0,argc,x->output_list);
 }
 
-void fold_set(t_fold *x, t_float f)
+static void fold_set(t_fold *x, t_float f)
 {
   x->x_f = f;
 }
 
-void fold_bang(t_fold *x)
+static void fold_bang(t_fold *x)
 {
   outlet_float(x->x_outlet,convert(x->x_f, x->x_min, x->x_max));
 }
 
-void *fold_new(t_symbol *s, int argc, t_atom *argv)
+static void *fold_new(t_symbol *s, int argc, t_atom *argv)
 {
   t_fold *x = (t_fold *) pd_new(fold_class);
 ///////////////////////////
@@ -156,7 +156,7 @@ errstate:
     return NULL;
 }
 
-void fold_free(t_fold *x)
+static void fold_free(t_fold *x)
 {
   t_freebytes(x->output_list,x->x_bytes);
 }

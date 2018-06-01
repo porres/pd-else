@@ -14,16 +14,15 @@ typedef struct _ratio2cents
   t_float f;
 } t_ratio2cents;
 
-
-void *ratio2cents_new(t_floatarg f1);
-void ratio2cents_free(t_ratio2cents *x);
-void ratio2cents_float(t_ratio2cents *x, t_floatarg f);
-void ratio2cents_bang(t_ratio2cents *x);
-void ratio2cents_set(t_ratio2cents *x, t_floatarg f);
+static void *ratio2cents_new(t_floatarg f1);
+static void ratio2cents_free(t_ratio2cents *x);
+static void ratio2cents_float(t_ratio2cents *x, t_floatarg f);
+static void ratio2cents_bang(t_ratio2cents *x);
+static void ratio2cents_set(t_ratio2cents *x, t_floatarg f);
 
 static t_float convert(t_float f);
 
-void ratio2cents_float(t_ratio2cents *x, t_floatarg f)
+static void ratio2cents_float(t_ratio2cents *x, t_floatarg f)
 {
   x->f = f;
   outlet_float(x->float_outlet, convert(f));
@@ -36,7 +35,7 @@ static t_float convert(t_float f)
     return log2(f) * 1200;
 }
 
-void ratio2cents_list(t_ratio2cents *x, t_symbol *s, int argc, t_atom *argv)
+static void ratio2cents_list(t_ratio2cents *x, t_symbol *s, int argc, t_atom *argv)
 {
   int old_bytes = x->bytes, i = 0;
   x->bytes = argc*sizeof(t_atom);
@@ -46,18 +45,17 @@ void ratio2cents_list(t_ratio2cents *x, t_symbol *s, int argc, t_atom *argv)
   outlet_list(x->float_outlet,0,argc,x->output_list);
 }
 
-void ratio2cents_set(t_ratio2cents *x, t_float f)
+static void ratio2cents_set(t_ratio2cents *x, t_float f)
 {
   x->f = f;
 }
 
-void ratio2cents_bang(t_ratio2cents *x)
+static void ratio2cents_bang(t_ratio2cents *x)
 {
   outlet_float(x->float_outlet,convert(x->f));
 }
 
-
-void *ratio2cents_new(t_floatarg f1)
+static void *ratio2cents_new(t_floatarg f1)
 {
   t_ratio2cents *x = (t_ratio2cents *) pd_new(ratio2cents_class);
   x->f = f1 == 0 ? 1: f1;
@@ -67,7 +65,7 @@ void *ratio2cents_new(t_floatarg f1)
   return (x);
 }
 
-void ratio2cents_free(t_ratio2cents *x)
+static void ratio2cents_free(t_ratio2cents *x)
 {
   t_freebytes(x->output_list,x->bytes);
 }
