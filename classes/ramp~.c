@@ -24,7 +24,12 @@ typedef struct _ramp{
     t_inlet     *x_inlet_max;
     t_outlet    *x_outlet;
     t_outlet    *x_bangout;
+    t_clock     *x_clock;
 }t_ramp;
+
+static void ramp_tick(t_ramp *x){
+    outlet_bang(x->x_bangout);
+}
 
 static void ramp_float(t_ramp *x, t_floatarg f){
     x->x_phase = f;
@@ -102,12 +107,12 @@ static t_int *ramp_perform(t_int *w){
                         if(phase <= min && phase_step < 0){
                             while(phase <= min)
                                 phase += range;
-                            outlet_bang(x->x_bangout); // outlet bang
+                            clock_delay(x->x_clock, 0); // outlet bang
                         }
                         else if(phase >= max && phase_step > 0){
                             while(phase >= max)
                                 phase -= range;
-                            outlet_bang(x->x_bangout); // outlet bang
+                            clock_delay(x->x_clock, 0); // outlet bang
                         }
                     }
                 }
@@ -115,14 +120,14 @@ static t_int *ramp_perform(t_int *w){
                     if(phase < min && phase_step < 0){
                         phase = min;
                         if(!x->x_clip){
-                            outlet_bang(x->x_bangout); // outlet bang
+                            clock_delay(x->x_clock, 0); // outlet bang
                             x->x_clip = 1;
                         }
                     }
                     if(phase > max && phase_step > 0){
                         phase = max;
                         if(!x->x_clip){
-                            outlet_bang(x->x_bangout); // outlet bang
+                            clock_delay(x->x_clock, 0); // outlet bang
                             x->x_clip = 1;
                         }
                     }
@@ -134,12 +139,12 @@ static t_int *ramp_perform(t_int *w){
                     if(phase > max && phase_step > 0){
                         phase = reset;
                         x->x_continue = 0;
-                        outlet_bang(x->x_bangout); // outlet bang
+                        clock_delay(x->x_clock, 0); // outlet bang
                     }
                     if(phase < min && phase_step < 0){
                         phase = reset;
                         x->x_continue = 0;
-                        outlet_bang(x->x_bangout); // outlet bang
+                        clock_delay(x->x_clock, 0); // outlet bang
                     }
                 }
             }
@@ -161,6 +166,8 @@ static void ramp_dsp(t_ramp *x, t_signal **sp){
 }
 
 static void *ramp_free(t_ramp *x){
+    if(x->x_clock)
+        clock_free(x->x_clock);
     inlet_free(x->x_inlet_inc);
     inlet_free(x->x_inlet_min);
     inlet_free(x->x_inlet_max);
@@ -253,6 +260,7 @@ static void *ramp_new(t_symbol *s, int argc, t_atom *argv){
         pd_float((t_pd *)x->x_inlet_max, x->x_max);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     x->x_bangout = outlet_new((t_object *)x, &s_bang);
+    x->x_clock = clock_new(x, (t_method)ramp_tick);
     return (x);
     errstate:
         pd_error(x, "ramp~: improper args");

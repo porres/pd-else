@@ -1,4 +1,4 @@
-#N canvas 719 116 561 637 10;
+#N canvas 270 46 561 637 10;
 #X obj 4 263 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 455 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -14,25 +14,12 @@
 #X text 150 268 signal;
 #X obj 2 3 cnv 15 301 42 empty empty ramp~ 20 20 2 37 -233017 -1 0
 ;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
 #X obj 23 40 cnv 4 4 4 empty empty Resettable 0 28 2 18 -233017 -1
 0;
 #X obj 107 40 cnv 4 4 4 empty empty ramp 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
 #X obj 194 134 else/imp~ 1;
 #X obj 194 216 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -769,8 +756,25 @@ value;
 "reset" <2>;
 #X text 192 331 - sets mode to "wrap" <0> \, "clip" <1> or "reset"
 <2>;
-#X connect 17 0 66 0;
-#X connect 18 0 20 0;
-#X connect 19 0 18 0;
-#X connect 21 0 66 0;
-#X connect 66 0 19 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X connect 11 0 60 0;
+#X connect 12 0 14 0;
+#X connect 13 0 12 0;
+#X connect 15 0 60 0;
+#X connect 60 0 13 0;
