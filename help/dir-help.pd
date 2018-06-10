@@ -1,4 +1,4 @@
-#N canvas 436 23 563 642 10;
+#N canvas 568 23 563 642 10;
 #X obj 24 41 cnv 4 4 4 empty empty Acess 0 28 2 18 -233017 -1 0;
 #X obj 78 41 cnv 4 4 4 empty empty file 0 28 2 18 -233017 -1 0;
 #X obj 3 4 cnv 15 301 42 empty empty dir 20 20 2 37 -233017 -1 0;
@@ -87,7 +87,7 @@ also wrap according to the number of files.;
 #X obj 139 389 pack symbol symbol;
 #X obj 79 353 else/display;
 #X obj 79 247 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 197 256;
+-228856 -1 -1 0 256;
 #X obj 79 157 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X msg 40 273 next;
@@ -97,7 +97,7 @@ also wrap according to the number of files.;
 #X obj 186 246 loadbang;
 #X obj 79 221 else/randi 1 1;
 #X obj 160 198 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 399 256;
+-228856 -1 -1 240 256;
 #X msg 139 418 \$2/\$1;
 #X text 100 156 <= a random file from the "else" externals folder;
 #X connect 0 0 4 0;
@@ -133,19 +133,19 @@ the number of found files, f 47;
 ;
 #X text 211 479 increments seek value and outputs file;
 #X text 155 145 <= opens parent directory;
-#N canvas 635 167 574 418 open 0;
-#X text 77 42 The 'open' message expects a symbol defining a directory.
+#N canvas 635 167 477 382 open 0;
+#X text 66 24 The 'open' message expects a symbol defining a directory.
 If the symbol starts with "/" \, then it means the symbol specifies
 an absolute path. Otherwise \, [dir] will look for directories relative
 to the current directory.;
-#X text 79 97 For example \, "open samples" looks for a subdirectory
+#X text 68 79 For example \, "open samples" looks for a subdirectory
 named 'samples' relative to the current directory. More than one level
 of subdirectories (like "open samples/wav") can be given.;
-#X obj 57 289 else/dir;
-#X obj 102 315 else/display 50;
-#X msg 57 263 open \$1 \, dir;
-#X symbolatom 57 238 40 0 0 0 - - -, f 40;
-#X text 79 153 To open the parent directory you can use "open .." \,
+#X obj 46 271 else/dir;
+#X obj 91 297 else/display 50;
+#X msg 46 245 open \$1 \, dir;
+#X symbolatom 46 220 40 0 0 0 - - -, f 40;
+#X text 68 135 To open the parent directory you can use "open .." \,
 and "open ." will just reopen the same directory. You can also use
 "./" or "../" \, and "../sounds" will look for a subfolder named "sounds"
 in the parent directory.;
@@ -157,14 +157,22 @@ in the parent directory.;
 #X text 211 574 initial directoty \, 0 is current patch's directory
 \, 1 is parent's patch's \, 2 parent's parent's and so on (default
 0), f 50;
-#N canvas 215 64 452 210 argument 0;
-#X text 55 44 If [player~] is used inside an abstraction \, the argument
+#N canvas 687 187 507 359 argument 0;
+#X text 78 28 If [dir] is used inside an abstraction \, the argument
 sets the abstraction's depth level and can be used to query the parent
 patch's directory. for instance \, "1" sets the default directory to
 the the parent's patch.;
-#X text 55 99 Note \, however \, that the [dir] object can be inside
-any layers of subpatches inside an abstraction \, it doesn't matter.
-, f 59;
+#X obj 114 200 else/display;
+#X obj 57 175 else/dir 1;
+#X msg 57 148 dir;
+#X text 92 261 Note that the [dir] object can be inside any layers
+of subpatches inside an abstraction or a patch to get the patch's directpry
+\, it doesn't matter.;
+#X text 78 81 If you ask for a parent's directory but the patch is
+not an abstraction (as in this example) \, then it ignores the upper
+levels and just loads the current patch's directory instead.;
+#X connect 2 1 1 0;
+#X connect 3 0 2 0;
 #X restore 458 211 pd argument;
 #X connect 16 0 17 0;
 #X connect 17 0 36 0;
