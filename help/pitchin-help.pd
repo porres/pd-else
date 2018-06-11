@@ -1,4 +1,4 @@
-#N canvas 453 32 564 569 10;
+#N canvas 569 58 564 569 10;
 #X obj 23 40 cnv 4 4 4 empty empty Midi 0 28 2 18 -233017 -1 0;
 #X obj 65 40 cnv 4 4 4 empty empty pitch 0 28 2 18 -233017 -1 0;
 #X obj 3 3 cnv 15 301 42 empty empty pitchin 20 20 2 37 -233017 -1
@@ -133,6 +133,8 @@ on/off flag, f 46;
 #X msg 233 162 128 \, 68 \, 0;
 #X obj 205 260 else/display;
 #X text 274 241 Velocity;
+#X text 33 232 see also:;
+#X obj 35 252 else/pitchout;
 #X connect 35 0 43 0;
 #X connect 36 0 43 0;
 #X connect 43 0 59 0;

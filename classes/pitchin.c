@@ -20,10 +20,6 @@ typedef struct _pitchin{
 
 static t_class *pitchin_class;
 
-static void pitchin_clear(t_pitchin *x){
-    x->x_status = x->x_ready = 0;
-}
-
 static void pitchin_float(t_pitchin *x, t_float f){
     int ival = (int)f;
     if(ival < 0)
@@ -45,7 +41,7 @@ static void pitchin_float(t_pitchin *x, t_float f){
         if(bval & 0x80){
             unsigned char status = bval & 0xF0;
             if(status == 0xF0 && bval < 0xF8)
-                pitchin_clear(x);
+                x->x_status = x->x_ready = 0; // clear
             else if(status == 0x80 || status == 0x90){
                 unsigned char channel = bval & 0x0F;
                 if(x->x_omni)
@@ -54,7 +50,7 @@ static void pitchin_float(t_pitchin *x, t_float f){
                 x->x_ready = 0;
             }
             else
-                pitchin_clear(x);
+                x->x_status = x->x_ready = 0; // clear
         }
         else if(x->x_ready){
             int flag = (x->x_status == 0x90 && bval);
@@ -76,7 +72,7 @@ static void pitchin_float(t_pitchin *x, t_float f){
         }
     }
     else
-        pitchin_clear(x);
+        x->x_status = x->x_ready = 0; // clear
 }
 
 static void *pitchin_new(t_symbol *s, t_int ac, t_atom *av){
