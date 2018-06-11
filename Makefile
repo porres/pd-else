@@ -40,6 +40,7 @@ loadbanger.class.sources := classes/loadbanger.c
 nbang.class.sources := classes/nbang.c
 float2bits.class.sources := classes/float2bits.c
 pbendin.class.sources := classes/pbendin.c
+pbendout.class.sources := classes/pbendout.c
 pack2.class.sources := classes/pack2.c
 quantizer.class.sources := classes/quantizer.c
 randf.class.sources := classes/randf.c
