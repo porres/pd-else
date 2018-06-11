@@ -48,26 +48,26 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 782 189 448 247 channel 0;
-#X obj 165 195 display;
-#X text 93 198 Pitch Bend;
-#X msg 246 127 1;
-#X msg 279 127 5;
-#X text 309 127 <= channel;
-#X text 15 11 An argument sets channel number. If so \, only messages
-corresponding to that channel are sent out. If no channel is set it
-loads "0" as the default and the object operates in omni mode \, where
-the objects outputs values from all channels and the channel number
-is output in the right outlet. You can change the channel via an extra
-right inlet (0 sets to omni)., f 67;
-#X obj 165 165 else/pbendin 5;
-#X msg 228 101 0;
-#X text 256 101 <= omni;
-#X obj 165 127 midiin;
-#X connect 2 0 6 1;
-#X connect 3 0 6 1;
-#X connect 6 0 0 0;
-#X connect 7 0 6 1;
-#X connect 9 0 6 0;
+#X obj 159 199 display;
+#X text 87 202 Pitch Bend;
+#X msg 240 131 1;
+#X msg 273 131 5;
+#X text 303 131 <= channel;
+#X obj 159 169 else/pbendin 5;
+#X msg 222 105 0;
+#X text 250 105 <= omni;
+#X obj 159 131 midiin;
+#X text 20 9 An argument sets the channel number. If so \, only MIDI
+messages that correspond to that channel are sent. If no channel is
+given \, it loads "0" as the default and the object operates in omni
+mode \, where the objects outputs values from all channels and the
+channel number is output in the right outlet. You can also change the
+channel with the right inlet (0 sets to omni)., f 67;
+#X connect 2 0 5 1;
+#X connect 3 0 5 1;
+#X connect 5 0 0 0;
+#X connect 6 0 5 1;
+#X connect 8 0 5 0;
 #X restore 473 206 pd channel;
 #X text 253 329 MIDI pitch bend (from -1 to 1), f 31;
 #X obj 110 40 cnv 4 4 4 empty empty bend 0 28 2 18 -233017 -1 0;
@@ -86,7 +86,7 @@ right inlet (0 sets to omni)., f 67;
 as integers from 0 to 16383 \, whereas the default behaviour is a normalized
 output (floats from -1 to 1), f 67;
 #X obj 156 88 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 19 256;
+-228856 -1 -1 0 256;
 #X obj 156 115 else/pbendout -raw;
 #X obj 156 143 else/pbendin -raw;
 #X obj 156 177 display;

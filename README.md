@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (235 objects):
+##Current Object list (236 objects):
 
 **ASSORTED: [2]**
 - [nbang]
@@ -103,10 +103,11 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **FILE MANAGEMENT: [1]**
 - [dir]
 
-**MIDI: [6]**
+**MIDI: [7]**
 - [clock]
 - [pbendin]
 - [pbendout]
+- [pitchin]
 - [mono]
 - [voices]
 - [suspedal]
