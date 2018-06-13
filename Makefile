@@ -25,6 +25,8 @@ pic.class.sources := classes/pic.c
 # control:
 atouchin.class.sources := classes/atouchin.c
 atouchout.class.sources := classes/atouchout.c
+controlin.class.sources := classes/controlin.c
+controlout.class.sources := classes/controlout.c
 suspedal.class.sources := classes/suspedal.c
 voices.class.sources := classes/voices.c
 args.class.sources := classes/args.c
