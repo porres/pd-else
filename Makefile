@@ -43,6 +43,7 @@ lb.class.sources := classes/lb.c
 loadbanger.class.sources := classes/loadbanger.c
 nbang.class.sources := classes/nbang.c
 float2bits.class.sources := classes/float2bits.c
+panic.class.sources := classes/panic.c
 pitchin.class.sources := classes/pitchin.c
 pitchout.class.sources := classes/pitchout.c
 programin.class.sources := classes/programin.c

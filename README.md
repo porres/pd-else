@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (245 objects):
+##Current Object list (246 objects):
 
 **ASSORTED: [2]**
 - [nbang]
@@ -103,7 +103,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **FILE MANAGEMENT: [1]**
 - [dir]
 
-**MIDI: [15]**
+**MIDI: [16]**
 - [sysrt.in]
 - [sysrt.out]
 - [controlin]
@@ -111,6 +111,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [atouchin]
 - [atouchout]
 - [clock]
+- [panic]
 - [programin]
 - [programout]
 - [pbendin]
