@@ -2,7 +2,7 @@
 #X obj 23 41 cnv 4 4 4 empty empty Midi 0 28 2 18 -233017 -1 0;
 #X obj 65 41 cnv 4 4 4 empty empty aftertouch 0 28 2 18 -233017 -1
 0;
-#X obj 3 4 cnv 15 301 42 empty empty atouchin 20 20 2 37 -233017 -1
+#X obj 3 4 cnv 15 301 42 empty empty touch.in 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -62,7 +62,7 @@ given \, it loads "0" as the default and the object operates in omni
 mode \, where the objects outputs values from all channels and the
 channel number is output in the right outlet. You can also change the
 channel with the right inlet (0 sets to omni)., f 67;
-#X obj 149 179 else/atouchin;
+#X obj 149 179 else/touch.in;
 #X connect 1 0 9 1;
 #X connect 2 0 9 1;
 #X connect 4 0 9 1;
@@ -81,21 +81,16 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X obj 302 214 else/display;
 #X obj 227 217 else/display;
 #X text 20 194 see also:;
-#X obj 227 192 else/atouchin;
 #X msg 227 136 212 \, 100;
 #X msg 253 163 215 \, 45;
-#X text 69 86 [atouchin] extracts MIDI Aftertouch information from
-raw MIDI input (such as from [midiin])., f 61;
 #X text 284 135 Aftertouch message (raw MIDI data);
 #X text 152 221 Aftertouch;
-#X obj 22 214 else/atouchout;
 #N canvas 846 321 455 328 poly 0;
 #X text 197 238 Pitch;
 #X obj 220 198 else/display;
 #X obj 165 232 else/display;
 #X text 301 173 MIDI channel;
 #X obj 276 170 else/display;
-#X obj 165 147 else/atouchin -poly;
 #X text 255 202 Aftertouch;
 #X text 21 12 With the -poly flag \, the polyphonic aftertouch is retrieved
 \, where you get a separate aftertouch values for each pitch \, so
@@ -105,11 +100,12 @@ we have an extra outlet., f 67;
 #X msg 193 116 164 \, 68 \, 88;
 #X msg 165 92 170 \, 120 \, 60;
 #X text 62 73 Polyphonic Aftertouch (raw MIDI data), f 21;
-#X connect 5 0 2 0;
-#X connect 5 1 1 0;
-#X connect 5 2 4 0;
-#X connect 9 0 5 0;
-#X connect 10 0 5 0;
+#X obj 165 147 else/touch.in -poly;
+#X connect 8 0 11 0;
+#X connect 9 0 11 0;
+#X connect 11 0 2 0;
+#X connect 11 1 1 0;
+#X connect 11 2 4 0;
 #X restore 491 219 pd poly;
 #X text 255 352 Rightmost outlet is MIDI channel;
 #X obj 2 414 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
@@ -117,8 +113,12 @@ we have an extra outlet., f 67;
 #X text 189 423 sets the object to output polyphonic aftertouch, f
 48;
 #X text 254 326 Leftmost outlet(s): MIDI Aftertouch;
-#X connect 34 0 39 0;
-#X connect 39 0 37 0;
-#X connect 39 1 36 0;
-#X connect 40 0 39 0;
-#X connect 41 0 39 0;
+#X text 69 86 [touch.in] extracts MIDI Aftertouch information from
+raw MIDI input (such as from [midiin])., f 61;
+#X obj 227 192 else/touch.in;
+#X obj 22 213 else/touch.out;
+#X connect 34 0 50 0;
+#X connect 39 0 50 0;
+#X connect 40 0 50 0;
+#X connect 50 0 37 0;
+#X connect 50 1 36 0;

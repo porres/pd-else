@@ -3,7 +3,7 @@
 #include "m_pd.h"
 #include <string.h>
 
-typedef struct _controlin{
+typedef struct _ctlin{
     t_object       x_ob;
     t_int          x_omni;
     t_float        x_ch;
@@ -14,11 +14,11 @@ typedef struct _controlin{
     unsigned char  x_channel;
     t_outlet      *x_chanout;
     t_outlet      *x_n_out;
-}t_controlin;
+}t_ctlin;
 
-static t_class *controlin_class;
+static t_class *ctlin_class;
 
-static void controlin_float(t_controlin *x, t_float f){
+static void ctlin_float(t_ctlin *x, t_float f){
     if(f < 0 || f > 256){
         x->x_control = 0;
         return;
@@ -63,8 +63,8 @@ static void controlin_float(t_controlin *x, t_float f){
     }
 }
 
-static void *controlin_new(t_symbol *s, t_int ac, t_atom *av){
-    t_controlin *x = (t_controlin *)pd_new(controlin_class);
+static void *ctlin_new(t_symbol *s, t_int ac, t_atom *av){
+    t_ctlin *x = (t_ctlin *)pd_new(ctlin_class);
     t_symbol *curarg = NULL;
     curarg = s; // get rid of warning
     x->x_control = x->x_ready = x->x_n = 0;
@@ -89,12 +89,12 @@ static void *controlin_new(t_symbol *s, t_int ac, t_atom *av){
     x->x_chanout = outlet_new((t_object *)x, &s_float);
     return(x);
     errstate:
-        pd_error(x, "[controlin]: improper args");
+        pd_error(x, "[ctlin]: improper args");
         return NULL;
 }
 
-void controlin_setup(void){
-    controlin_class = class_new(gensym("controlin"), (t_newmethod)controlin_new,
-        0, sizeof(t_controlin), 0, A_GIMME, 0);
-    class_addfloat(controlin_class, controlin_float);
+void setup_ctl0x2ein(void){
+    ctlin_class = class_new(gensym("ctl.in"), (t_newmethod)ctlin_new,
+        0, sizeof(t_ctlin), 0, A_GIMME, 0);
+    class_addfloat(ctlin_class, ctlin_float);
 }

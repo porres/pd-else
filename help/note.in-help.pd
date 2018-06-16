@@ -1,7 +1,7 @@
 #N canvas 569 58 564 569 10;
 #X obj 23 40 cnv 4 4 4 empty empty Midi 0 28 2 18 -233017 -1 0;
 #X obj 65 40 cnv 4 4 4 empty empty pitch 0 28 2 18 -233017 -1 0;
-#X obj 3 3 cnv 15 301 42 empty empty pitchin 20 20 2 37 -233017 -1
+#X obj 3 3 cnv 15 301 42 empty empty note.in 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -54,7 +54,6 @@
 #X msg 208 111 0;
 #X text 236 111 <= omni;
 #X obj 157 137 midiin;
-#X obj 157 175 else/pitchin;
 #X obj 191 227 display;
 #X obj 226 198 display;
 #X text 16 12 An argument sets the channel number. If so \, only MIDI
@@ -63,13 +62,14 @@ given \, it loads "0" as the default and the object operates in omni
 mode \, where the objects outputs values from all channels and the
 channel number is output in the right outlet. You can also change the
 channel with the right inlet (0 sets to omni)., f 67;
-#X connect 1 0 7 1;
-#X connect 2 0 7 1;
-#X connect 4 0 7 1;
-#X connect 6 0 7 0;
-#X connect 7 0 0 0;
-#X connect 7 1 8 0;
-#X connect 7 2 9 0;
+#X obj 157 175 else/note.in;
+#X connect 1 0 10 1;
+#X connect 2 0 10 1;
+#X connect 4 0 10 1;
+#X connect 6 0 10 0;
+#X connect 10 0 0 0;
+#X connect 10 1 7 0;
+#X connect 10 2 8 0;
 #X restore 473 242 pd channel;
 #X text 223 474 sets channel number (default 0 - OMNI);
 #X text 238 335 -;
@@ -92,7 +92,6 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X obj 164 222 else/display;
 #X obj 131 246 else/display;
 #X msg 159 110 128 \, 68 \, 88;
-#X obj 131 141 else/pitchin -rel;
 #X text 253 165 MIDI channel;
 #X obj 230 162 else/display;
 #X obj 197 192 else/display;
@@ -103,16 +102,14 @@ sent and there's an extra outlet for the note on/off flag. The default
 behaviour is to always send "0" as the note off velocity., f 67;
 #X text 98 303 Release velocity is very rare in today's controllers
 \, but it used to be a real thing., f 44;
-#X connect 0 0 7 0;
-#X connect 6 0 7 0;
-#X connect 7 0 5 0;
-#X connect 7 1 4 0;
-#X connect 7 2 10 0;
-#X connect 7 3 9 0;
+#X obj 131 141 else/note.in -rel;
+#X connect 0 0 14 0;
+#X connect 6 0 14 0;
+#X connect 14 0 5 0;
+#X connect 14 1 4 0;
+#X connect 14 2 9 0;
+#X connect 14 3 8 0;
 #X restore 473 266 pd release;
-#X text 69 85 [pitchin] extracts MIDI Pitch information from raw MIDI
-input (such as from [midiin])., f 61;
-#X obj 205 190 else/pitchin;
 #X text 253 365 MIDI pitch, f 31;
 #X text 238 391 -;
 #X text 198 391 float;
@@ -134,10 +131,13 @@ on/off flag, f 46;
 #X obj 205 260 else/display;
 #X text 274 241 Velocity;
 #X text 33 232 see also:;
-#X obj 35 252 else/pitchout;
-#X connect 35 0 43 0;
-#X connect 36 0 43 0;
-#X connect 43 0 59 0;
-#X connect 43 1 57 0;
-#X connect 43 2 56 0;
-#X connect 58 0 43 0;
+#X text 69 85 [note.in] extracts MIDI Pitch information from raw MIDI
+input (such as from [midiin])., f 61;
+#X obj 35 252 else/note.out;
+#X obj 205 190 else/note.in;
+#X connect 35 0 62 0;
+#X connect 36 0 62 0;
+#X connect 56 0 62 0;
+#X connect 62 0 57 0;
+#X connect 62 1 55 0;
+#X connect 62 2 54 0;

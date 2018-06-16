@@ -3,15 +3,15 @@
 #include "m_pd.h"
 #include <string.h>
 
-typedef struct _controlout{
+typedef struct _ctlout{
     t_object  x_ob;
     t_float   x_channel;
     t_float   x_n;
-}t_controlout;
+}t_ctlout;
 
-static t_class *controlout_class;
+static t_class *ctlout_class;
 
-static void controlout_float(t_controlout *x, t_float f){
+static void ctlout_float(t_ctlout *x, t_float f){
     if(f >= 0 && f <= 127){
         t_int channel = (int)x->x_channel;
         if(channel <= 0)
@@ -24,8 +24,8 @@ static void controlout_float(t_controlout *x, t_float f){
     }
 }
 
-static void *controlout_new(t_symbol *s, t_int ac, t_atom *av){
-    t_controlout *x = (t_controlout *)pd_new(controlout_class);
+static void *ctlout_new(t_symbol *s, t_int ac, t_atom *av){
+    t_ctlout *x = (t_ctlout *)pd_new(ctlout_class);
     t_symbol *curarg = NULL;
     curarg = s; // get rid of warning
     t_float channel = 1;
@@ -45,12 +45,12 @@ static void *controlout_new(t_symbol *s, t_int ac, t_atom *av){
     outlet_new((t_object *)x, &s_float);
     return(x);
     errstate:
-        pd_error(x, "[controlout]: improper args");
+        pd_error(x, "[ctlout]: improper args");
         return NULL;
 }
 
-void controlout_setup(void){
-    controlout_class = class_new(gensym("controlout"), (t_newmethod)controlout_new,
-            0, sizeof(t_controlout), 0, A_GIMME, 0);
-    class_addfloat(controlout_class, controlout_float);
+void setup_ctl0x2eout(void){
+    ctlout_class = class_new(gensym("ctl.out"), (t_newmethod)ctlout_new,
+            0, sizeof(t_ctlout), 0, A_GIMME, 0);
+    class_addfloat(ctlout_class, ctlout_float);
 }

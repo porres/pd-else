@@ -1,8 +1,8 @@
 #N canvas 581 23 564 404 10;
 #X obj 23 40 cnv 4 4 4 empty empty Midi 0 28 2 18 -233017 -1 0;
 #X obj 65 40 cnv 4 4 4 empty empty program 0 28 2 18 -233017 -1 0;
-#X obj 3 3 cnv 15 301 42 empty empty programout 20 20 2 37 -233017
--1 0;
+#X obj 3 3 cnv 15 301 42 empty empty pgm.out 20 20 2 37 -233017 -1
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
@@ -24,8 +24,6 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 69 85 [programout] formats and sends raw MIDI program messages.
-An argument sets channel number (the default is 1)., f 61;
 #X obj 2 243 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 2 298 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -48,19 +46,21 @@ An argument sets channel number (the default is 1)., f 61;
 #X text 253 308 raw MIDI stream, f 31;
 #X text 223 345 sets channel number (default 1);
 #X text 27 180 see also:;
-#X obj 34 202 else/pitchin;
 #X obj 228 208 midiout;
 #X obj 228 147 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -4 256;
-#X obj 327 146 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 324 127 ch;
+#X obj 309 146 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 306 127 ch;
 #X text 238 275 -;
 #X text 198 275 float;
 #X text 238 256 - pitch values;
-#X obj 228 175 else/programout 4;
 #X text 227 127 program;
 #X text 253 275 MIDI channel;
-#X connect 31 0 37 0;
-#X connect 32 0 37 1;
-#X connect 37 0 30 0;
+#X obj 228 175 else/pgm.out 4;
+#X obj 34 202 else/pgm.in;
+#X text 69 85 [pgm.out] formats and sends raw MIDI program messages.
+An argument sets channel number (the default is 1)., f 61;
+#X connect 29 0 37 0;
+#X connect 30 0 37 1;
+#X connect 37 0 28 0;

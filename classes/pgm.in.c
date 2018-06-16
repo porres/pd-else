@@ -3,7 +3,7 @@
 #include "m_pd.h"
 #include <string.h>
 
-typedef struct _programin{
+typedef struct _pgmin{
     t_object       x_ob;
     t_int          x_omni;
     t_float        x_ch;
@@ -11,11 +11,11 @@ typedef struct _programin{
     unsigned char  x_pgm;
     unsigned char  x_channel;
     t_outlet      *x_chanout;
-}t_programin;
+}t_pgmin;
 
-static t_class *programin_class;
+static t_class *pgmin_class;
 
-static void programin_float(t_programin *x, t_float f){
+static void pgmin_float(t_pgmin *x, t_float f){
     if(f < 0 || f > 256){
         x->x_pgm = 0;
         return;
@@ -43,8 +43,8 @@ static void programin_float(t_programin *x, t_float f){
     }
 }
 
-static void *programin_new(t_floatarg f){
-    t_programin *x = (t_programin *)pd_new(programin_class);
+static void *pgmin_new(t_floatarg f){
+    t_pgmin *x = (t_pgmin *)pd_new(pgmin_class);
     x->x_pgm = 0;
     t_int channel = (t_int)f;
     if(channel < 0)
@@ -59,8 +59,8 @@ static void *programin_new(t_floatarg f){
     return(x);
 }
 
-void programin_setup(void){
-    programin_class = class_new(gensym("programin"), (t_newmethod)programin_new,
-        0, sizeof(t_programin), 0, A_DEFFLOAT, 0);
-    class_addfloat(programin_class, programin_float);
+void setup_pgm0x2ein(void){
+    pgmin_class = class_new(gensym("pgm.in"), (t_newmethod)pgmin_new,
+        0, sizeof(t_pgmin), 0, A_DEFFLOAT, 0);
+    class_addfloat(pgmin_class, pgmin_float);
 }

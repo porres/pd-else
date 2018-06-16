@@ -3,7 +3,7 @@
 #include "m_pd.h"
 #include <string.h>
 
-typedef struct _pitchin{
+typedef struct _notein{
     t_object       x_ob;
     t_int          x_omni;
     t_int          x_rel;
@@ -16,11 +16,11 @@ typedef struct _pitchin{
     t_outlet      *x_velout;
     t_outlet      *x_flagout;
     t_outlet      *x_chanout;
-}t_pitchin;
+}t_notein;
 
-static t_class *pitchin_class;
+static t_class *notein_class;
 
-static void pitchin_float(t_pitchin *x, t_float f){
+static void notein_float(t_notein *x, t_float f){
     int ival = (int)f;
     if(ival < 0)
         return;
@@ -75,8 +75,8 @@ static void pitchin_float(t_pitchin *x, t_float f){
         x->x_status = x->x_ready = 0; // clear
 }
 
-static void *pitchin_new(t_symbol *s, t_int ac, t_atom *av){
-    t_pitchin *x = (t_pitchin *)pd_new(pitchin_class);
+static void *notein_new(t_symbol *s, t_int ac, t_atom *av){
+    t_notein *x = (t_notein *)pd_new(notein_class);
     t_symbol *curarg = NULL;
     curarg = s; // get rid of warning
     t_int channel = 0;
@@ -113,12 +113,12 @@ static void *pitchin_new(t_symbol *s, t_int ac, t_atom *av){
     x->x_chanout = outlet_new((t_object *)x, &s_float);
     return(x);
     errstate:
-        pd_error(x, "[pitchin]: improper args");
+        pd_error(x, "[notein]: improper args");
         return NULL;
 }
 
-void pitchin_setup(void){
-    pitchin_class = class_new(gensym("pitchin"), (t_newmethod)pitchin_new,
-                            0, sizeof(t_pitchin), 0, A_GIMME, 0);
-    class_addfloat(pitchin_class, pitchin_float);
+void setup_note0x2ein(void){
+    notein_class = class_new(gensym("note.in"), (t_newmethod)notein_new,
+                            0, sizeof(t_notein), 0, A_GIMME, 0);
+    class_addfloat(notein_class, notein_float);
 }

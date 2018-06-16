@@ -2,7 +2,7 @@
 #X obj 22 40 cnv 4 4 4 empty empty Midi 0 28 2 18 -233017 -1 0;
 #X obj 65 40 cnv 4 4 4 empty empty aftertouch 0 28 2 18 -233017 -1
 0;
-#X obj 2 3 cnv 15 301 42 empty empty atouchout 20 20 2 37 -233017 -1
+#X obj 2 3 cnv 15 301 42 empty empty touch.out 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -57,10 +57,6 @@
 #X text 197 281 float;
 #X obj 153 278 cnv 17 3 17 empty empty R 5 9 0 16 -228856 -162280 0
 ;
-#X text 69 85 [atouchout] formats and sends raw MIDI aftertouch messages.
-An argument sets channel number (the default is 1)., f 66;
-#X obj 217 180 else/atouchout 4;
-#X obj 31 203 else/atouchin;
 #X text 237 256 - Leftmost inlet(s): MIDI Aftertouch;
 #X text 252 281 Rightmost intlet: MIDI channel;
 #X text 188 390 sets the object to output polyphonic aftertouch;
@@ -71,25 +67,29 @@ An argument sets channel number (the default is 1)., f 66;
 #X text 25 14 With the -poly flag \, the polyphonic aftertouch message
 is formated \, where you have separate aftertouch values for each pitch
 \, so there's an extra inlet., f 67;
-#X obj 152 114 else/atouchout -poly;
-#X obj 152 146 else/atouchin -poly;
 #X obj 269 87 nbx 3 14 1 16 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 12 256;
+-1 -1 1 256;
 #X obj 210 87 nbx 3 14 0 127 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 115 256;
+-1 -1 0 256;
 #X obj 152 87 nbx 3 14 0 127 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 75 256;
+-1 -1 0 256;
 #X obj 263 174 else/display;
 #X obj 207 174 else/display;
 #X obj 152 174 else/display;
-#X connect 2 0 3 0;
-#X connect 3 0 9 0;
-#X connect 3 1 8 0;
-#X connect 3 2 7 0;
-#X connect 4 0 2 2;
-#X connect 5 0 2 1;
-#X connect 6 0 2 0;
+#X obj 152 114 else/touch.out -poly;
+#X obj 152 146 else/touch.in -poly;
+#X connect 2 0 8 2;
+#X connect 3 0 8 1;
+#X connect 4 0 8 0;
+#X connect 8 0 9 0;
+#X connect 9 0 7 0;
+#X connect 9 1 6 0;
+#X connect 9 2 5 0;
 #X restore 487 203 pd poly;
-#X connect 29 0 37 0;
-#X connect 30 0 37 1;
-#X connect 37 0 28 0;
+#X obj 31 203 else/touch.in;
+#X obj 217 180 else/touch.out 4;
+#X text 69 85 [touch.out] formats and sends raw MIDI aftertouch messages.
+An argument sets channel number (the default is 1)., f 66;
+#X connect 29 0 42 0;
+#X connect 30 0 42 1;
+#X connect 42 0 28 0;

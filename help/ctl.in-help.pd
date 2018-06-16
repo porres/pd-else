@@ -1,8 +1,8 @@
-#N canvas 673 101 560 468 10;
+#N canvas 542 145 560 468 10;
 #X obj 23 41 cnv 4 4 4 empty empty Midi 0 28 2 18 -233017 -1 0;
 #X obj 65 41 cnv 4 4 4 empty empty control 0 28 2 18 -233017 -1 0;
-#X obj 3 4 cnv 15 301 42 empty empty controlin 20 20 2 37 -233017 -1
-0;
+#X obj 3 4 cnv 15 301 42 empty empty ctl.in 20 20 2 37 -233017 -1 0
+;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 4 graph;
@@ -39,29 +39,29 @@
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 792 220 453 261 channel 0;
-#X obj 134 203 display;
+#X obj 125 203 display;
 #X msg 215 141 1;
 #X msg 248 141 5;
 #X text 278 141 <= channel;
 #X msg 197 115 0;
 #X text 225 115 <= omni;
 #X obj 134 141 midiin;
-#X obj 174 203 display;
+#X obj 165 203 display;
 #X text 19 15 An argument sets the channel number. If so \, only MIDI
 messages that correspond to that channel are sent. If no channel is
 given \, it loads "0" as the default and the object operates in omni
 mode \, where the objects outputs values from all channels and the
 channel number is output in the right outlet. You can also change the
 channel with the right inlet (0 sets to omni)., f 67;
-#X obj 134 179 else/controlin;
-#X obj 215 203 display;
-#X connect 1 0 9 1;
-#X connect 2 0 9 1;
-#X connect 4 0 9 1;
-#X connect 6 0 9 0;
-#X connect 9 0 0 0;
-#X connect 9 1 7 0;
-#X connect 9 2 10 0;
+#X obj 206 203 display;
+#X obj 134 179 else/ctl.in;
+#X connect 1 0 10 1;
+#X connect 2 0 10 1;
+#X connect 4 0 10 1;
+#X connect 6 0 10 0;
+#X connect 10 0 0 0;
+#X connect 10 1 7 0;
+#X connect 10 2 9 0;
 #X restore 473 216 pd channel;
 #X text 224 412 sets channel number (default 0 - OMNI);
 #X text 239 299 -;
@@ -70,19 +70,15 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X obj 155 296 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 171 146 midiin;
-#X obj 308 217 else/display;
-#X obj 227 217 else/display;
+#X obj 299 217 else/display;
+#X obj 218 217 else/display;
 #X text 20 194 see also:;
-#X text 69 86 [controlin] extracts MIDI control information from raw
-MIDI input (such as from [midiin])., f 61;
-#X text 221 243 Value;
-#X obj 267 217 else/display;
-#X text 270 242 #;
-#X text 297 241 channel;
+#X text 212 243 Value;
+#X obj 258 217 else/display;
+#X text 261 242 #;
+#X text 288 241 channel;
 #X msg 227 131 180 \, 12 \, 100;
 #X msg 253 163 176 \, 64 \, 20;
-#X obj 22 214 else/controlout;
-#X obj 227 192 else/controlin;
 #X text 239 379 -;
 #X text 199 379 float;
 #X obj 154 330 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
@@ -99,9 +95,13 @@ MIDI input (such as from [midiin])., f 61;
 #X text 315 124 Control message (raw MIDI data), f 15;
 #X text 253 355 control number, f 31;
 #X text 253 330 control value, f 31;
-#X connect 28 0 40 0;
-#X connect 37 0 40 0;
-#X connect 38 0 40 0;
-#X connect 40 0 30 0;
-#X connect 40 1 34 0;
-#X connect 40 2 29 0;
+#X obj 22 214 else/ctl.out;
+#X obj 227 192 else/ctl.in;
+#X text 69 86 [ctl.in] extracts MIDI control information from raw MIDI
+input (such as from [midiin])., f 61;
+#X connect 28 0 52 0;
+#X connect 36 0 52 0;
+#X connect 37 0 52 0;
+#X connect 52 0 30 0;
+#X connect 52 1 33 0;
+#X connect 52 2 29 0;

@@ -1,8 +1,8 @@
 #N canvas 700 83 558 425 10;
 #X obj 22 42 cnv 4 4 4 empty empty Midi 0 28 2 18 -233017 -1 0;
 #X obj 65 42 cnv 4 4 4 empty empty control 0 28 2 18 -233017 -1 0;
-#X obj 2 5 cnv 15 301 42 empty empty controlout 20 20 2 37 -233017
--1 0;
+#X obj 2 5 cnv 15 301 42 empty empty ctl.out 20 20 2 37 -233017 -1
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 5 graph;
@@ -41,20 +41,16 @@
 #X text 269 334 raw MIDI stream, f 31;
 #X text 216 371 sets channel number (default 1);
 #X text 27 176 see also:;
-#X obj 222 211 midiout;
+#X obj 231 211 midiout;
 #X obj 222 149 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 271 148 nbx 3 14 0 127 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 1 256;
-#X obj 222 182 else/controlout 4;
+-1 -1 0 256;
 #X text 271 129 #;
 #X text 221 129 value;
 #X obj 321 148 nbx 2 14 1 16 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 1 256;
 #X text 314 129 channel;
-#X obj 34 198 else/controlin;
-#X text 89 87 [controlout] formats and sends raw MIDI control messages.
-An argument sets channel number (the default is 1)., f 57;
 #X obj 171 249 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 215 251 float;
@@ -69,7 +65,11 @@ An argument sets channel number (the default is 1)., f 57;
 #X text 268 274 control number, f 31;
 #X text 256 251 - control value;
 #X text 269 297 MIDI channel;
-#X connect 26 0 28 0;
-#X connect 27 0 28 1;
-#X connect 28 0 25 0;
-#X connect 31 0 28 2;
+#X obj 34 198 else/ctl.in;
+#X obj 231 182 else/ctl.out 4;
+#X text 89 87 [ctl.out] formats and sends raw MIDI control messages.
+An argument sets channel number (the default is 1).;
+#X connect 26 0 44 0;
+#X connect 27 0 44 1;
+#X connect 30 0 44 2;
+#X connect 44 0 25 0;

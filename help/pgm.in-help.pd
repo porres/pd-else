@@ -1,8 +1,8 @@
 #N canvas 642 135 561 437 10;
 #X obj 23 40 cnv 4 4 4 empty empty Midi 0 28 2 18 -233017 -1 0;
 #X obj 65 40 cnv 4 4 4 empty empty program 0 28 2 18 -233017 -1 0;
-#X obj 3 3 cnv 15 301 42 empty empty programin 20 20 2 37 -233017 -1
-0;
+#X obj 3 3 cnv 15 301 42 empty empty pgm.in 20 20 2 37 -233017 -1 0
+;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
@@ -54,14 +54,14 @@
 #X msg 212 115 0;
 #X text 240 115 <= omni;
 #X obj 149 141 midiin;
-#X obj 230 203 display;
+#X obj 212 203 display;
 #X text 19 15 An argument sets the channel number. If so \, only MIDI
 messages that correspond to that channel are sent. If no channel is
 given \, it loads "0" as the default and the object operates in omni
 mode \, where the objects outputs values from all channels and the
 channel number is output in the right outlet. You can also change the
 channel with the right inlet (0 sets to omni)., f 67;
-#X obj 149 179 else/programin;
+#X obj 149 179 else/pgm.in;
 #X connect 1 0 9 1;
 #X connect 2 0 9 1;
 #X connect 4 0 9 1;
@@ -75,23 +75,23 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X text 253 293 MIDI channel, f 31;
 #X obj 154 290 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 149 145 midiin;
-#X text 305 217 MIDI channel;
-#X obj 286 213 else/display;
-#X obj 205 216 else/display;
-#X text 16 182 see also:;
-#X text 69 85 [programin] extracts MIDI Program information from raw
-MIDI input (such as from [midiin])., f 61;
-#X msg 205 135 196 \, 13;
-#X obj 205 190 else/programin;
-#X text 155 220 Program;
-#X obj 18 202 else/programout;
-#X msg 233 162 199 \, 15;
-#X text 262 134 Program message (raw MIDI data);
+#X obj 163 145 midiin;
+#X text 301 217 MIDI channel;
+#X obj 282 213 else/display;
+#X obj 219 216 else/display;
+#X text 29 194 see also:;
+#X msg 219 135 196 \, 13;
+#X text 169 220 Program;
+#X msg 247 162 199 \, 15;
+#X text 276 134 Program message (raw MIDI data);
 #X text 253 323 MIDI Program, f 31;
 #X text 254 351 MIDI channel;
-#X connect 34 0 41 0;
-#X connect 40 0 41 0;
-#X connect 41 0 37 0;
-#X connect 41 1 36 0;
-#X connect 44 0 41 0;
+#X obj 31 214 else/pgm.out;
+#X obj 219 190 else/pgm.in;
+#X text 69 85 [pgm.in] extracts MIDI Program information from raw MIDI
+input (such as from [midiin])., f 61;
+#X connect 34 0 46 0;
+#X connect 39 0 46 0;
+#X connect 41 0 46 0;
+#X connect 46 0 37 0;
+#X connect 46 1 36 0;

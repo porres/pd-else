@@ -3,7 +3,7 @@
 #include "m_pd.h"
 #include <string.h>
 
-typedef struct _atouchin{
+typedef struct _touchin{
     t_object       x_ob;
     t_int          x_omni;
     t_int          x_poly;
@@ -15,11 +15,11 @@ typedef struct _atouchin{
     unsigned char  x_channel;
     t_outlet      *x_chanout;
     t_outlet      *x_pressout;
-}t_atouchin;
+}t_touchin;
 
-static t_class *atouchin_class;
+static t_class *touchin_class;
 
-static void atouchin_float(t_atouchin *x, t_float f){
+static void touchin_float(t_touchin *x, t_float f){
     if(f < 0 || f > 256){
         x->x_atouch = 0;
         return;
@@ -74,8 +74,8 @@ static void atouchin_float(t_atouchin *x, t_float f){
     }
 }
 
-static void *atouchin_new(t_symbol *s, t_int ac, t_atom *av){
-    t_atouchin *x = (t_atouchin *)pd_new(atouchin_class);
+static void *touchin_new(t_symbol *s, t_int ac, t_atom *av){
+    t_touchin *x = (t_touchin *)pd_new(touchin_class);
     t_symbol *curarg = s; // get rid of warning
     x->x_atouch = x->x_poly =  x->x_ready = x->x_pressure = 0;
     t_float channel = 0;
@@ -109,12 +109,12 @@ static void *atouchin_new(t_symbol *s, t_int ac, t_atom *av){
     x->x_chanout = outlet_new((t_object *)x, &s_float);
     return(x);
     errstate:
-        pd_error(x, "[atouchin]: improper args");
+        pd_error(x, "[touchin]: improper args");
         return NULL;
 }
 
-void atouchin_setup(void){
-    atouchin_class = class_new(gensym("atouchin"), (t_newmethod)atouchin_new,
-        0, sizeof(t_atouchin), 0, A_GIMME, 0);
-    class_addfloat(atouchin_class, atouchin_float);
+void setup_touch0x2ein(void){
+    touchin_class = class_new(gensym("touch.in"), (t_newmethod)touchin_new,
+        0, sizeof(t_touchin), 0, A_GIMME, 0);
+    class_addfloat(touchin_class, touchin_float);
 }

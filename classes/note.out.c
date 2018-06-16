@@ -3,18 +3,18 @@
 #include "m_pd.h"
 #include <string.h>
 
-typedef struct _pitchout{
+typedef struct _noteout{
     t_object  x_ob;
     t_float   x_channel;
     t_float   x_flag;
     t_float   x_velocity;
     t_int     x_pitch;
     t_int     x_rel;
-}t_pitchout;
+}t_noteout;
 
-static t_class *pitchout_class;
+static t_class *noteout_class;
 
-static void pitchout_float(t_pitchout *x, t_float f){
+static void noteout_float(t_noteout *x, t_float f){
     int pitch = (int)f;
     if(pitch >= 0 && pitch <= 127){
         int channel = (int)x->x_channel;
@@ -41,8 +41,8 @@ static void pitchout_float(t_pitchout *x, t_float f){
     }
 }
 
-static void *pitchout_new(t_symbol *s, t_int ac, t_atom *av){
-    t_pitchout *x = (t_pitchout *)pd_new(pitchout_class);
+static void *noteout_new(t_symbol *s, t_int ac, t_atom *av){
+    t_noteout *x = (t_noteout *)pd_new(noteout_class);
     t_symbol *curarg = s; // get rid of warning
     float channel = 1;
     if(ac){
@@ -77,12 +77,12 @@ static void *pitchout_new(t_symbol *s, t_int ac, t_atom *av){
     x->x_pitch = -1;
     return(x);
     errstate:
-        pd_error(x, "[pitchout]: improper args");
+        pd_error(x, "[noteout]: improper args");
         return NULL;
 }
 
-void pitchout_setup(void){
-    pitchout_class = class_new(gensym("pitchout"), (t_newmethod)pitchout_new, 0,
-        sizeof(t_pitchout), 0, A_GIMME, 0);
-    class_addfloat(pitchout_class, pitchout_float);
+void setup_note0x2eout(void){
+    noteout_class = class_new(gensym("note.out"), (t_newmethod)noteout_new, 0,
+        sizeof(t_noteout), 0, A_GIMME, 0);
+    class_addfloat(noteout_class, noteout_float);
 }

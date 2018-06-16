@@ -23,10 +23,8 @@ colors.class.sources := classes/colors.c
 pic.class.sources := classes/pic.c
 
 # control:
-atouchin.class.sources := classes/atouchin.c
-atouchout.class.sources := classes/atouchout.c
-controlin.class.sources := classes/controlin.c
-controlout.class.sources := classes/controlout.c
+ctl.in.class.sources := classes/ctl.in.c
+ctl.out.class.sources := classes/ctl.out.c
 suspedal.class.sources := classes/suspedal.c
 voices.class.sources := classes/voices.c
 args.class.sources := classes/args.c
@@ -42,12 +40,12 @@ initmess.class.sources := classes/initmess.c
 lb.class.sources := classes/lb.c
 loadbanger.class.sources := classes/loadbanger.c
 nbang.class.sources := classes/nbang.c
+note.in.class.sources := classes/note.in.c
+note.out.class.sources := classes/note.out.c
 float2bits.class.sources := classes/float2bits.c
 panic.class.sources := classes/panic.c
-pitchin.class.sources := classes/pitchin.c
-pitchout.class.sources := classes/pitchout.c
-programin.class.sources := classes/programin.c
-programout.class.sources := classes/programout.c
+pgm.in.class.sources := classes/pgm.in.c
+pgm.out.class.sources := classes/pgm.out.c
 pbendin.class.sources := classes/pbendin.c
 pbendout.class.sources := classes/pbendout.c
 pack2.class.sources := classes/pack2.c
@@ -62,6 +60,9 @@ routeall.class.sources := classes/routeall.c
 routetype.class.sources := classes/routetype.c
 fromany.class.sources := classes/fromany.c
 toany.class.sources := classes/toany.c
+touch.in.class.sources := classes/touch.in.c
+touch.out.class.sources := classes/touch.out.c
+
 
 # signal:
 accum~.class.sources := classes/accum~.c
