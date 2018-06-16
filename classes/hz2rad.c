@@ -29,8 +29,7 @@ static void hz2rad_float(t_hz2rad *x, t_floatarg f)
   outlet_float(x->float_outlet, convert(x,f));
 }
 
-static static t_float convert(t_hz2rad *x, t_float f)
-{
+static t_float convert(t_hz2rad *x, t_float f){
     return f * x->x_radps;
 }
 
