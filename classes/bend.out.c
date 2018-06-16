@@ -3,15 +3,15 @@
 #include "m_pd.h"
 #include <string.h>
 
-typedef struct _pbendout{
+typedef struct _bendout{
     t_object  x_ob;
     t_float   x_channel;
     t_int     x_raw;
-}t_pbendout;
+}t_bendout;
 
-static t_class *pbendout_class;
+static t_class *bendout_class;
 
-static void pbendout_float(t_pbendout *x, t_float f){
+static void bendout_float(t_bendout *x, t_float f){
     t_int bend;
     t_int channel = (int)x->x_channel;
     if(channel <= 0)
@@ -27,8 +27,8 @@ static void pbendout_float(t_pbendout *x, t_float f){
     }
 }
 
-static void *pbendout_new(t_symbol *s, t_int ac, t_atom *av){
-    t_pbendout *x = (t_pbendout *)pd_new(pbendout_class);
+static void *bendout_new(t_symbol *s, t_int ac, t_atom *av){
+    t_bendout *x = (t_bendout *)pd_new(bendout_class);
     t_symbol *curarg = s; // get rid of warning
     floatinlet_new((t_object *)x, &x->x_channel);
     outlet_new((t_object *)x, &s_float);
@@ -57,12 +57,12 @@ static void *pbendout_new(t_symbol *s, t_int ac, t_atom *av){
     x->x_channel = (channel > 0 ? channel : 1);
     return(x);
     errstate:
-        pd_error(x, "[pbendout]: improper args");
+        pd_error(x, "[bendout]: improper args");
         return NULL;
 }
 
-void pbendout_setup(void){
-    pbendout_class = class_new(gensym("pbendout"), (t_newmethod)pbendout_new,
-            0, sizeof(t_pbendout), 0, A_GIMME, 0);
-    class_addfloat(pbendout_class, pbendout_float);
+void setup_bend0x2eout(void){
+    bendout_class = class_new(gensym("bend.out"), (t_newmethod)bendout_new,
+            0, sizeof(t_bendout), 0, A_GIMME, 0);
+    class_addfloat(bendout_class, bendout_float);
 }

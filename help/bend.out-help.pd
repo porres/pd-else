@@ -1,7 +1,7 @@
 #N canvas 627 68 566 447 10;
 #X obj 23 40 cnv 4 4 4 empty empty Midi 0 28 2 18 -233017 -1 0;
 #X obj 66 40 cnv 4 4 4 empty empty pitch 0 28 2 18 -233017 -1 0;
-#X obj 3 3 cnv 15 301 42 empty empty pbendout 20 20 2 37 -233017 -1
+#X obj 3 3 cnv 15 301 42 empty empty bend.out 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -54,12 +54,12 @@ from 0 to 16383 \, whereas the default behaviour is a normalized output
 (floats from -1 to 1), f 57;
 #X obj 187 103 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 187 130 else/pbendout -raw;
-#X obj 187 158 else/pbendin -raw;
 #X obj 187 192 display;
-#X connect 1 0 2 0;
-#X connect 2 0 3 0;
+#X obj 187 130 else/bend.out -raw;
+#X obj 187 158 else/bend.in -raw;
+#X connect 1 0 3 0;
 #X connect 3 0 4 0;
+#X connect 4 0 2 0;
 #X restore 505 224 pd raw;
 #X text 238 270 - pitch bend values;
 #X text 253 324 raw MIDI stream, f 31;
@@ -73,13 +73,13 @@ from 0 to 16383 \, whereas the default behaviour is a normalized output
 #X text 329 170 MIDI Channel;
 #X obj 290 170 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 203 201 else/pbendout 4;
-#X text 70 85 [pbendout] formats and sends raw MIDI pitch bend messages.
+#X text 25 201 see also:;
+#X obj 32 223 else/bend.in;
+#X obj 203 201 else/bend.out 4;
+#X text 70 85 [bend.out] formats and sends raw MIDI pitch bend messages.
 By default \, it takes normalized values (floats from -1 to 1). An
 argument sets channel number (the default is 1)., f 66;
-#X text 25 201 see also:;
-#X obj 32 223 else/pbendin;
 #X connect 36 0 37 0;
-#X connect 37 0 40 0;
-#X connect 39 0 40 1;
-#X connect 40 0 35 0;
+#X connect 37 0 42 0;
+#X connect 39 0 42 1;
+#X connect 42 0 35 0;

@@ -3,7 +3,7 @@
 #include "m_pd.h"
 #include <string.h>
 
-typedef struct _pbendin{
+typedef struct _bendin{
     t_object       x_ob;
     t_int          x_omni;
     t_int          x_raw;
@@ -14,11 +14,11 @@ typedef struct _pbendin{
     unsigned char  x_channel;
     unsigned char  x_lsb;
     t_outlet      *x_chanout;
-}t_pbendin;
+}t_bendin;
 
-static t_class *pbendin_class;
+static t_class *bendin_class;
 
-static void pbendin_float(t_pbendin *x, t_float f){
+static void bendin_float(t_bendin *x, t_float f){
     if(f < 0)
         return;
     t_int ch = x->x_ch_in;
@@ -70,8 +70,8 @@ static void pbendin_float(t_pbendin *x, t_float f){
         x->x_status = x->x_ready = 0; // clear
 }
 
-static void *pbendin_new(t_symbol *s, t_int ac, t_atom *av){
-    t_pbendin *x = (t_pbendin *)pd_new(pbendin_class);
+static void *bendin_new(t_symbol *s, t_int ac, t_atom *av){
+    t_bendin *x = (t_bendin *)pd_new(bendin_class);
     t_symbol *curarg = s; // get rid of warning
     t_int channel = 0;
     x->x_raw = x->x_status = x->x_ready = 0;
@@ -104,12 +104,12 @@ static void *pbendin_new(t_symbol *s, t_int ac, t_atom *av){
     x->x_chanout = outlet_new((t_object *)x, &s_float);
     return(x);
     errstate:
-        pd_error(x, "[pbendin]: improper args");
+        pd_error(x, "[bendin]: improper args");
         return NULL;
 }
 
-void pbendin_setup(void){
-    pbendin_class = class_new(gensym("pbendin"), (t_newmethod)pbendin_new,
-                            0, sizeof(t_pbendin), 0, A_GIMME, 0);
-    class_addfloat(pbendin_class, pbendin_float);
+void setup_bend0x2ein(void){
+    bendin_class = class_new(gensym("bend.in"), (t_newmethod)bendin_new,
+                            0, sizeof(t_bendin), 0, A_GIMME, 0);
+    class_addfloat(bendin_class, bendin_float);
 }
