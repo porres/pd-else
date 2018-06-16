@@ -214,6 +214,12 @@ noise := shared/random.c
     gray~.class.sources := classes/gray~.c $(noise)
     pinknoise~.class.sources := classes/pinknoise~.c $(noise)
 
+midi := \
+    shared/mifi.c \
+    shared/file.c \
+    shared/grow.c
+    midi.class.sources := classes/midi.c $(midi)
+
 #########################################################################
 
 # extra files
@@ -223,6 +229,7 @@ $(wildcard help/*.pd) \
 $(wildcard help/Abstractions/*.pd) \
 $(wildcard help/*.wav) \
 $(wildcard help/*.gif) \
+$(wildcard help/*.mid) \
 $(wildcard *.txt) \
 else-meta.pd \
 README.pdf
