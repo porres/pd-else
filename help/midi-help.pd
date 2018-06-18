@@ -1,83 +1,82 @@
-#N canvas 495 23 562 505 10;
-#X obj 5 214 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 495 23 562 512 10;
+#X obj 4 214 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 401 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 411 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 450 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 460 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 100 408 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 99 418 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 315 181 bng 16 250 50 0 empty empty empty 0 -6 0 10 -228856
+#X obj 314 181 bng 16 250 50 0 empty empty empty 0 -6 0 10 -228856
 -1 -1;
-#X obj 100 429 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 99 439 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 5 478 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 488 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 165 238 bang;
-#X text 159 222 float;
-#X obj 100 222 cnv 17 3 172 empty empty 0 5 9 0 16 -228856 -162280
-0;
-#X text 211 431 sent at the end of a sequence (useful for looping)
+#X text 164 248 bang;
+#X text 158 222 float;
+#X obj 99 222 cnv 17 3 182 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 210 441 sent at the end of a sequence (useful for looping)
 , f 53;
-#X text 161 409 float -;
-#X text 167 430 bang -;
-#X text 139 458 1) symbol -;
-#X text 199 222 - raw MIDI data stream to be recorded, f 55;
-#X text 336 182 <= when finished;
-#X text 112 300 start <float> -;
-#X text 154 285 record -;
-#X text 166 328 stop -;
-#X text 211 269 saves to a MIDI file (no symbol opens a dialog box)
+#X text 160 419 float -;
+#X text 166 440 bang -;
+#X text 138 468 1) symbol -;
+#X text 335 182 <= when finished;
+#X text 111 310 start <float> -;
+#X text 153 295 record -;
+#X text 165 338 stop -;
+#X text 210 279 saves to a MIDI file (no symbol opens a dialog box)
 , f 53;
-#X text 211 458 a MIDI file to be loaded, f 53;
-#X text 160 344 pause -;
-#X text 211 328 stops recording/playing and goes back to start, f
+#X text 210 468 a MIDI file to be loaded, f 53;
+#X text 159 354 pause -;
+#X text 210 338 stops recording/playing and goes back to start, f
 53;
-#X text 211 344 pauses recording/playing, f 53;
-#X text 142 360 continue -;
-#X text 211 360 continues after a pause message was given, f 53;
-#X obj 5 2 cnv 15 301 42 empty empty midi 20 20 2 37 -233017 -1 0;
-#X obj 308 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X text 210 354 pauses recording/playing, f 53;
+#X text 141 370 continue -;
+#X text 210 370 continues after a pause message was given, f 53;
+#X obj 4 2 cnv 15 301 42 empty empty midi 20 20 2 37 -233017 -1 0;
+#X obj 307 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 4 2 graph;
-#X obj 347 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 3 2 graph;
+#X obj 346 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 25 39 cnv 4 4 4 empty empty Read/write 0 28 2 18 -233017 -1
+#X obj 24 39 cnv 4 4 4 empty empty Read/write 0 28 2 18 -233017 -1
 0;
-#X obj 113 39 cnv 4 4 4 empty empty MIDI 0 28 2 18 -233017 -1 0;
-#X obj 460 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 112 39 cnv 4 4 4 empty empty MIDI 0 28 2 18 -233017 -1 0;
+#X obj 459 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 480 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 479 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 517 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 516 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 466 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 465 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 504 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 503 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
-#X restore 307 2 graph;
-#X obj 163 39 cnv 4 4 4 empty empty files 0 28 2 18 -233017 -1 0;
-#X text 112 253 open <symbol> -;
-#X text 112 269 save <symbol> -;
-#X text 52 152 click to open file =>;
-#X text 199 238 - external clock tick, f 55;
-#X text 211 254 opens a MIDI file (no symbol opens a dialog box),
+#X restore 306 2 graph;
+#X obj 162 39 cnv 4 4 4 empty empty files 0 28 2 18 -233017 -1 0;
+#X text 111 263 open <symbol> -;
+#X text 111 279 save <symbol> -;
+#X text 51 152 click to open file =>;
+#X text 198 248 - external clock tick, f 55;
+#X text 210 264 opens a MIDI file (no symbol opens a dialog box),
 f 53;
-#X text 211 285 starts recording raw MIDI input, f 53;
-#X text 211 409 raw MIDI data stream from a MIDI file, f 53;
-#X text 89 85 [midi] plays/records raw MIDI streams and can save/read
+#X text 210 295 starts recording raw MIDI input, f 53;
+#X text 210 419 raw MIDI data stream from a MIDI file, f 53;
+#X text 88 85 [midi] plays/records raw MIDI streams and can save/read
 MIDI files., f 55;
-#X text 211 300 start sequence at a tempo ratio - default '1' (normal
+#X text 210 310 start sequence at a tempo ratio - default '1' (normal
 tempo) and negative values expects external clock, f 53;
-#X text 160 377 panic -;
-#X text 211 377 flushes hanging notes, f 53;
-#X obj 186 121 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 159 387 panic -;
+#X text 210 387 flushes hanging notes, f 53;
+#X obj 185 121 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 209 122 Play/stop;
+#X text 208 122 Play/stop;
 #N canvas 443 130 798 464 read/write 0;
 #X obj 127 92 tgl 22 0 empty empty empty 17 7 0 10 -216373 -66577 -1
 0 1;
@@ -197,7 +196,7 @@ the dialog box., f 56;
 #X connect 24 0 15 0;
 #X connect 25 0 11 0;
 #X connect 25 1 11 1;
-#X restore 466 157 pd read/write;
+#X restore 465 157 pd read/write;
 #N canvas 460 92 744 528 more 0;
 #X obj 171 456 else/out~;
 #N canvas 791 23 364 324 synth 0;
@@ -435,9 +434,12 @@ continue message keeps playing from where it stopped!;
 #X connect 30 1 15 0;
 #X connect 32 0 19 0;
 #X connect 32 1 19 1;
-#X restore 501 179 pd more;
-#X obj 186 181 print midi;
-#X obj 186 152 else/midi midi-seq.mid;
-#X connect 50 0 55 0;
-#X connect 55 0 54 0;
-#X connect 55 1 4 0;
+#X restore 500 179 pd more;
+#X obj 185 181 print midi;
+#X obj 185 152 else/midi midi-seq.mid;
+#X text 198 222 -, f 1;
+#X text 210 222 start <1> \, stop <0> when not in record mode or raw
+MIDI data stream to be recorded, f 53;
+#X connect 49 0 54 0;
+#X connect 54 0 53 0;
+#X connect 54 1 4 0;

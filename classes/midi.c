@@ -441,6 +441,16 @@ static void seq_bang(t_seq *x){
     }
 }
 
+static void seq_pause(t_seq *x){
+    if (x->x_mode == SEQ_PLAYMODE && SEQ_ISRUNNING(x)){
+        x->x_clockdelay -= clock_gettimesince(x->x_prevtime);
+        if (x->x_clockdelay < 0.)
+            x->x_clockdelay = 0.;
+        clock_unset(x->x_clock);
+        x->x_prevtime = 0.;
+    }
+}
+
 static void seq_float(t_seq *x, t_float f){
     if (x->x_mode == SEQ_RECMODE){
         /* CHECKED noninteger and out of range silently truncated */
@@ -462,6 +472,14 @@ static void seq_float(t_seq *x, t_float f){
                 seq_checkstatus(x, c);
         }
     }
+    else if(f != 0){
+        seq_settimescale(x, 1);
+        seq_setmode(x, SEQ_PLAYMODE);
+    }
+    else{ // stop
+        seq_pause(x);
+        seq_panic(x);
+    }
 }
 
 static void seq_record(t_seq *x){ // stops playback, resets recording
@@ -475,16 +493,6 @@ static void seq_start(t_seq *x, t_floatarg f){
     else{
         seq_settimescale(x, (f > SEQ_STARTEPSILON ? (100. / f) : 1.));
         seq_setmode(x, SEQ_PLAYMODE);  /* CHECKED 'start' stops recording */
-    }
-}
-
-static void seq_pause(t_seq *x){
-    if (x->x_mode == SEQ_PLAYMODE && SEQ_ISRUNNING(x)){
-        x->x_clockdelay -= clock_gettimesince(x->x_prevtime);
-        if (x->x_clockdelay < 0.)
-            x->x_clockdelay = 0.;
-        clock_unset(x->x_clock);
-        x->x_prevtime = 0.;
     }
 }
 
