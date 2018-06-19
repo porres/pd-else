@@ -1,4 +1,4 @@
-#N canvas 275 229 513 364 10;
+#N canvas 663 161 513 364 10;
 #X obj 51 263 *~;
 #X obj 126 211 expr~ $v1 >= $f2;
 #X msg 241 171 -100;
@@ -12,12 +12,12 @@
 #X obj 268 119 else/break -;
 #X obj 241 146 route bang float list -size, f 31;
 #X obj 378 171 s \$0-size;
-#X obj 147 90 r \$0-size;
-#X msg 96 124 size \$1;
+#X obj 136 100 r \$0-size;
+#X msg 96 134 size \$1;
 #X obj 268 70 loadbang;
 #X text 262 251 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 264 232 Alexandre Torres Porres (2018);
-#X obj 96 170 else/mrms~ 256 -db, f 9;
+#X obj 76 170 else/mov.rms~ 256 -db;
 #X connect 0 0 8 0;
 #X connect 1 0 6 0;
 #X connect 2 0 1 1;

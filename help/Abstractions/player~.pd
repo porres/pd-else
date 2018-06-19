@@ -1,7 +1,8 @@
 #N canvas 411 192 493 349 10;
-#X declare -path /Users/porres/Documents/Pd/externals/else;
+#X declare -path /Users/porres/Desktop/git/pd-else/help/Abstractions
+;
 #X obj 76 28 inlet;
-#N canvas 825 175 281 211 messages 1;
+#N canvas 825 175 281 211 messages 0;
 #X obj 27 14 inlet;
 #N canvas 744 85 353 273 norm 0;
 #X obj 60 32 inlet;
@@ -166,7 +167,7 @@
 #X restore 76 59 pd messages;
 #X obj 71 91 namecanvas \$0-sampler;
 #N canvas 330 379 895 258 \$0-tabread 0;
-#X obj 20 20 r~ 1020-tabread4~;
+#X obj 20 20 r~ 1003-tabread4~;
 #X restore 74 162 pd \$0-tabread;
 #N canvas 453 92 572 396 dynamic 0;
 #X obj 298 268 s pd-\$0-tabread;
@@ -344,7 +345,7 @@
 #X obj 199 60 else/dir 1;
 #X msg 363 56 clear \, obj 30 20 declare -path \$1;
 #N canvas 169 23 493 100 \$0-path 0;
-#X obj 30 20 declare -path /Users/porres/Documents/Pd/externals/else
+#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/help/Abstractions
 ;
 #X restore 465 80 pd \$0-path;
 #X msg 166 234 100;
@@ -436,10 +437,10 @@
 #N canvas 871 121 479 442 \$0-buffers 0;
 #X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
 0;
-#N canvas 0 22 450 300 ch0_1020 0;
-#X array 0-buffer_1020 100 float 2;
+#N canvas 0 22 450 300 ch0_1003 0;
+#X array 0-buffer_1003 100 float 2;
 #X coords 0 1 0 -1 450 82 2 0 0;
-#X restore 5 19 pd ch0_1020;
+#X restore 5 19 pd ch0_1003;
 #X coords 0 0 0 0 10 20 0;
 #X restore 419 308 pd \$0-buffers;
 #X msg 52 208 obj \$2 200 r \$1-didit \, obj \$2 240 outlet \, connect

@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-10 (June 16th 2018)
+### Version 1.0 beta-11 (Unreleased)
 
 Needs Pd 0.48-1 or above
 
@@ -218,7 +218,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [resonbank2~]
 - [resonant~]
 - [resonant2~]
-- [mavg~]
+- [mov.avg~]
 
 **OSCILLATORS (DETERMINISTIC GENERATORS): [24]**
 - [cosine~]
@@ -335,7 +335,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [median~]
 - [peak~]
 - [rms~]
-- [mrms~]
+- [mov.rms~]
 - [vu~]
 - [past~]
 - [zerocross~]
