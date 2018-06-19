@@ -1,5 +1,6 @@
-#N canvas 686 222 493 349 10;
-#X declare -path /Users/porres/Documents/Pd/externals/else;
+#N canvas 411 192 493 349 10;
+#X declare -path /Users/porres/Desktop/git/pd-else/help/Abstractions
+;
 #X obj 76 28 inlet;
 #N canvas 825 175 281 211 messages 0;
 #X obj 27 14 inlet;
@@ -26,28 +27,25 @@
 #X msg 63 113 0;
 #X obj 27 166 send pd-\$0-buffers;
 #X obj 136 117 s \$0-sr;
-#N canvas 755 173 398 445 load-file 0;
-#X obj 158 139 symbol;
-#X obj 89 58 route bang, f 12;
-#X obj 89 105 openpanel;
-#X obj 89 32 inlet;
-#X obj 185 310 list trim;
-#X obj 185 338 soundfiler;
-#X obj 185 366 s \$0-size;
-#X obj 185 280 list append;
-#X obj 269 280 r \$0-buflist;
-#X obj 160 395 s \$0-start;
-#X obj 158 167 t b s;
-#X obj 53 145 r \$0-file;
-#X obj 53 171 t b s;
-#X obj 53 262 v autostart_\$0;
-#X obj 53 292 sel 1;
-#X obj 178 68 else/click;
-#X obj 185 242 list append;
-#X obj 185 198 list prepend read -resize -maxsize, f 17;
-#X obj 304 246 pow 31;
-#X msg 304 220 2;
-#X obj 304 196 loadbang;
+#N canvas 218 387 374 387 load-file 0;
+#X obj 156 126 symbol;
+#X obj 87 45 route bang, f 12;
+#X obj 87 92 openpanel;
+#X obj 87 19 inlet;
+#X obj 183 257 list trim;
+#X obj 183 285 soundfiler;
+#X obj 183 313 s \$0-size;
+#X obj 183 227 list append;
+#X obj 267 227 r \$0-buflist;
+#X obj 158 342 s \$0-start;
+#X obj 156 154 t b s;
+#X obj 51 132 r \$0-file;
+#X obj 51 158 t b s;
+#X obj 51 209 v autostart_\$0;
+#X obj 51 239 sel 1;
+#X obj 176 55 else/click;
+#X obj 183 185 list prepend read -resize -maxsize 2.14748e+09, f 25
+;
 #X connect 0 0 10 0;
 #X connect 1 0 2 0;
 #X connect 1 1 0 0;
@@ -58,18 +56,14 @@
 #X connect 7 0 4 0;
 #X connect 8 0 7 1;
 #X connect 10 0 9 0;
-#X connect 10 1 17 0;
+#X connect 10 1 16 0;
 #X connect 11 0 12 0;
 #X connect 12 0 13 0;
-#X connect 12 1 17 0;
+#X connect 12 1 16 0;
 #X connect 13 0 14 0;
 #X connect 14 0 9 0;
 #X connect 15 0 2 0;
 #X connect 16 0 7 0;
-#X connect 17 0 16 0;
-#X connect 18 0 16 1;
-#X connect 19 0 18 0;
-#X connect 20 0 19 0;
 #X restore 100 141 pd load-file;
 #X obj 27 47 route show hide open sr norm, f 31;
 #N canvas 504 258 440 441 ramp~ 0;
@@ -173,7 +167,7 @@
 #X restore 76 59 pd messages;
 #X obj 71 91 namecanvas \$0-sampler;
 #N canvas 330 379 895 258 \$0-tabread 0;
-#X obj 20 20 r~ 1009-tabread4~;
+#X obj 20 20 r~ 1003-tabread4~;
 #X restore 74 162 pd \$0-tabread;
 #N canvas 453 92 572 396 dynamic 0;
 #X obj 298 268 s pd-\$0-tabread;
@@ -351,7 +345,7 @@
 #X obj 199 60 else/dir 1;
 #X msg 363 56 clear \, obj 30 20 declare -path \$1;
 #N canvas 169 23 493 100 \$0-path 0;
-#X obj 30 20 declare -path /Users/porres/Documents/Pd/externals/else
+#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/help/Abstractions
 ;
 #X restore 465 80 pd \$0-path;
 #X msg 166 234 100;
@@ -443,10 +437,10 @@
 #N canvas 871 121 479 442 \$0-buffers 0;
 #X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
 0;
-#N canvas 0 22 450 300 ch0_1009 0;
-#X array 0-buffer_1009 100 float 2;
+#N canvas 0 22 450 300 ch0_1003 0;
+#X array 0-buffer_1003 100 float 2;
 #X coords 0 1 0 -1 450 82 2 0 0;
-#X restore 5 19 pd ch0_1009;
+#X restore 5 19 pd ch0_1003;
 #X coords 0 0 0 0 10 20 0;
 #X restore 419 308 pd \$0-buffers;
 #X msg 52 208 obj \$2 200 r \$1-didit \, obj \$2 240 outlet \, connect
