@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (247 objects):
+##Current Object list (248 objects):
 
 **ASSORTED: [2]**
 - [nbang]
@@ -177,14 +177,14 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [pi]
 - [e]
 
-**MATH: LOGIC: [1]**
+**LOGIC: [1]**
 - [loop]
 
 **AUDIO PLAYING: [2]**
 - [player~]
 - [sampler~]
 
-**AUDIO PROCESSING: [8]**
+**AUDIO PROCESSING: [9]**
 - [downsample~]
 - [allpass.rev~]
 - [fbdelay~]
@@ -193,11 +193,12 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [crusher~]
 - [drive~]
 - [noisegate~]
+- [freqshift~]
 
-**REVERB: [1]**
+**AUDIO PROCESSING: REVERB: [1]**
 - [plateverb~]
 
-**FILTERS (21):**
+**AUDIO PROCESSING: FILTERS (21):**
 - [allpass.2nd~]
 - [lop.bw~]
 - [hip.bw~]
