@@ -137,13 +137,13 @@ static void *dir_new(t_floatarg f){
     x->x_nfiles = x->x_ignored = x->x_seek = 0;
     strncpy(x->x_directory, x->x_getdir->s_name, MAXPDSTRING);
     x->x_dir = opendir(x->x_getdir->s_name);
-/*   struct dirent *result = NULL;
+   struct dirent *result = NULL;
     while((result = readdir(x->x_dir))){
         if(strncmp(result->d_name, ".", 1))
             x->x_nfiles++;
         else
             x->x_ignored++;
-    } */
+    }
     x->x_out1 = outlet_new(&x->x_obj, &s_anything);
     x->x_out2 = outlet_new(&x->x_obj, &s_symbol);
     return(x);
