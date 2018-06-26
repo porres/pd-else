@@ -1,36 +1,36 @@
-#N canvas 698 77 560 594 10;
-#X obj 4 346 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 567 76 562 552 10;
+#X obj 4 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 461 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 432 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 495 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 466 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 554 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 525 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 249 195 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 253 147 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 165 40 cnv 4 4 4 empty empty algorithm 0 28 2 18 -233017 -1
+#X obj 165 41 cnv 4 4 4 empty empty algorithm 0 28 2 18 -233017 -1
 0;
-#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 304 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 304 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -99,7 +99,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -131,14 +131,14 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 71 pd;
-#X obj 42 41 cnv 4 4 4 empty empty Karplus-Strong 0 28 2 18 -233017
+#X restore 505 72 pd;
+#X obj 42 42 cnv 4 4 4 empty empty Karplus-Strong 0 28 2 18 -233017
 -1 0;
-#X text 305 195 Hz;
-#X obj 173 146 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 309 146 Hz;
+#X obj 165 142 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 287 216 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#X obj 297 169 nbx 5 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0 256;
 #N canvas 748 271 391 355 example 0;
 #X obj 111 208 else/pluck~;
 #X obj 46 125 else/brown~;
@@ -158,58 +158,76 @@
 #X connect 5 0 0 2;
 #X connect 6 0 0 3;
 #X connect 7 0 0 4;
-#X restore 455 314 pd example;
-#X obj 18 41 cnv 4 4 4 empty empty A 0 28 2 18 -233017 -1 0;
-#X obj 3 3 cnv 15 301 42 empty empty pluck~ 20 20 2 37 -233017 -1 0
+#X restore 462 286 pd example;
+#X obj 18 42 cnv 4 4 4 empty empty A 0 28 2 18 -233017 -1 0;
+#X obj 3 4 cnv 15 301 42 empty empty pluck~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 3 graph;
-#X text 348 216 decay time (ms);
-#X obj 342 240 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X restore 2 4 graph;
+#X text 358 169 decay time (ms);
+#X obj 342 191 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 117 470 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 117 441 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 117 355 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 117 326 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 117 376 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 117 347 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 182 470 signal;
-#X text 228 470 - karplus-Strong output;
-#X text 174 503 1) float - frequency in hertz (default 0);
-#X text 174 518 2) float - decay time in ms (default 0);
-#X text 174 533 3) float - filter cutoff frequency (default 15000)
+#X text 184 441 signal;
+#X text 230 441 - karplus-Strong output;
+#X text 176 489 2) float - decay time in ms (default 0);
+#X text 176 504 3) float - filter cutoff frequency (default 15000)
 ;
-#X obj 117 397 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 117 368 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X obj 117 418 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 117 389 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 188 419 float;
-#X obj 117 438 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
+#X text 190 390 float;
+#X obj 117 409 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
 ;
-#X text 188 439 float;
-#X text 182 355 signal;
-#X text 228 355 - excitation signal;
-#X text 182 377 signal;
-#X text 228 377 - trigger signal (negative to positive transition)
-;
-#X text 146 397 float/signal;
-#X text 228 397 - frequency in hertz;
-#X text 228 419 - decay time in ms;
-#X text 228 439 - filter cutoff frequency;
-#X text 404 239 cutoff;
-#X obj 173 238 else/pluck~ 100 2500 10000;
+#X text 190 410 float;
+#X text 184 326 signal;
+#X text 230 326 - excitation signal;
+#X text 184 348 signal;
+#X text 148 368 float/signal;
+#X text 230 390 - decay time in ms;
+#X text 230 410 - filter cutoff frequency;
+#X obj 165 211 else/pluck~ 100 2500 10000, f 30;
 #X text 45 91 [pluck~] is a Karplus-Strong algorithm: a feedback loop
 with a 2nd order lowpass filter. It takes an excitation signal \, a
 trigger inlet \, a frequency in hertz \, a decay time in ms and a cutoff
 frequency for the filter., f 69;
-#X obj 173 168 else/impseq~;
-#X obj 173 278 else/out~;
-#X connect 4 0 47 2;
-#X connect 17 0 49 0;
-#X connect 18 0 47 3;
-#X connect 24 0 47 4;
-#X connect 47 0 50 0;
-#X connect 47 0 50 1;
-#X connect 49 0 47 1;
-#X connect 49 0 47 0;
+#X obj 165 171 else/impseq~;
+#X obj 165 251 else/out~;
+#X text 230 368 - frequency in hertz (minimum 1);
+#X text 176 474 1) float - frequency in hertz (default 1);
+#X text 404 190 filter cutoff (hz);
+#N canvas 891 267 364 321 trigger 0;
+#X obj 98 237 else/out~;
+#X obj 142 115 else/impseq~ 1 0.5 0.25 0.1;
+#X obj 84 145 noise~;
+#X obj 98 197 else/pluck~ 50 2500 10000, f 30;
+#X obj 142 84 else/tempo~ 120 -on;
+#X obj 170 141 else/trighold~;
+#X obj 170 163 display~;
+#X text 39 15 Below we have a sequence of impulse values \, we can
+then see how the impulse value determines the amplitude/intensity.
+, f 46;
+#X connect 1 0 3 1;
+#X connect 1 0 5 0;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 3 0 0 1;
+#X connect 4 0 1 0;
+#X connect 5 0 6 0;
+#X restore 462 264 pd trigger;
+#X text 231 348 - impulse trigger (determines the amplitude);
+#X connect 4 0 43 2;
+#X connect 17 0 45 0;
+#X connect 18 0 43 3;
+#X connect 24 0 43 4;
+#X connect 43 0 46 0;
+#X connect 43 0 46 1;
+#X connect 45 0 43 1;
+#X connect 45 0 43 0;

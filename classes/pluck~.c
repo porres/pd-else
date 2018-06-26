@@ -10,8 +10,7 @@
 
 static t_class *pluck_class;
 
-typedef struct _pluck
-{
+typedef struct _pluck{
     t_object        x_obj;
     t_inlet         *x_hz_let;
     t_inlet         *x_alet;
@@ -27,19 +26,19 @@ typedef struct _pluck
     unsigned int    x_wh;     // writehead
     
     float     x_sum;
+    float     x_amp;
     float     x_last_trig;
     
     double  x_xnm1;
     double  x_xnm2;
     double  x_ynm1;
     double  x_ynm2;
-} t_pluck;
+}t_pluck;
 
 static void pluck_clear(t_pluck *x){
     unsigned int i;
-    for(i=0; i<x->x_sz; i++){
+    for(i = 0; i < x->x_sz; i++)
         x->x_ybuf[i] = 0.;
-    };
     x->x_wh = 0;
     x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
 }
@@ -56,9 +55,7 @@ static void pluck_sz(t_pluck *x){
     int alloc = x->x_alloc;
     unsigned int cursz = x->x_sz; //current size
     
-    if(newsz < 0)
-        newsz = 0;
-    else if(newsz > PLUCK_MAXD)
+    if(newsz > PLUCK_MAXD)
         newsz = PLUCK_MAXD;
     if(!alloc && newsz > PLUCK_STACK){
         x->x_ybuf = (double *)malloc(sizeof(double)*newsz);
@@ -86,10 +83,6 @@ static double pluck_getlin(double tab[], unsigned int sz, double idx){
     double frac = idx - (double)tabphase1;
     if(tabphase1 >= sz - 1){
         tabphase1 = sz - 1; // checking to see if index falls within bounds
-        output = tab[tabphase1];
-    }
-    else if(tabphase1 < 0){
-        tabphase1 = 0;
         output = tab[tabphase1];
     }
     else{
@@ -130,6 +123,7 @@ static t_int *pluck_perform(t_int *w){
     t_float sr = x->x_sr;
     t_float last_trig = x->x_last_trig;
     t_float sum = x->x_sum;
+    t_float amp = x->x_amp;
     
     double xnm1 = x->x_xnm1;
     double xnm2 = x->x_xnm2;
@@ -137,7 +131,7 @@ static t_int *pluck_perform(t_int *w){
     double ynm2 = x->x_ynm2;
     
     int i;
-    for(i=0; i<n;i++){
+    for(i = 0; i < n; i++){
         int wh = x->x_wh;
         
         double input = (double)xin[i];
@@ -161,8 +155,10 @@ static t_int *pluck_perform(t_int *w){
         else
             ain[i] = copysign(exp(log(0.001) * delms/fabs(ain[i])), ain[i]);
         
-        if (trig > 0 && last_trig <= 0)
+        if(trig != 0 && last_trig == 0){
             sum = 0;
+            amp = trig;
+        }
         
 // Filter stuff
         double cuttoff = (double)cut_in[i];
@@ -183,9 +179,9 @@ static t_int *pluck_perform(t_int *w){
         b1 = 2*cos_w / b0;
         b2 = (alphaQ - 1) / b0;
 // gate
-        t_int gate = (sum += 1) <= samps;
+        t_float gate = ((sum += 1) <= samps) * amp;
 // envelope
-        double envelope = input * gate;
+        double envelope = input * (double)gate;
 // output
         output = envelope + (double)ain[i] * fb_del;
         out[i] = output;
@@ -202,6 +198,7 @@ static t_int *pluck_perform(t_int *w){
         ynm1 = yn;
     };
     x->x_sum = sum; // next
+    x->x_last_trig = amp;
     x->x_last_trig = last_trig;
     x->x_xnm1 = xnm1;
     x->x_xnm2 = xnm2;
@@ -223,27 +220,19 @@ static void pluck_dsp(t_pluck *x, t_signal **sp)
             sp[4]->s_vec, sp[5]->s_vec);
 }
 
-/* static void pluck_size(t_pluck *x, t_floatarg f1){
-    if(f1 < 0)
-        f1 = 0;
-    x->x_maxdel = f1;
-    pluck_sz(x);
-} */
-
 static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
     t_pluck *x = (t_pluck *)pd_new(pluck_class);
 /////////////////////////////////////////////////////////////////////////////////////
+    s = NULL;
     float freq = 0;
     float decay = 0;
     float cut_freq = 15000;
 ////
     int argnum = 0;
     while(argc > 0){
-        if(argv -> a_type == A_FLOAT)
-        { //if current argument is a float
+        if(argv->a_type == A_FLOAT){ //if current argument is a float
             t_float argval = atom_getfloatarg(0, argc, argv);
-            switch(argnum)
-            {
+            switch(argnum){
                 case 0:
                     freq = argval;
                     break;
@@ -260,7 +249,7 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
             argc--;
             argv++;
         }
-    else if (argv -> a_type == A_SYMBOL)
+    else if(argv->a_type == A_SYMBOL)
         goto errstate;
     };
 /////////////////////////////////////////////////////////////////////////////////////
