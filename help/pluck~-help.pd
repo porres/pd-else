@@ -137,27 +137,30 @@
 #X text 309 146 Hz;
 #X obj 165 142 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 297 169 nbx 5 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#N canvas 748 271 391 355 example 0;
-#X obj 111 208 else/pluck~;
-#X obj 46 125 else/brown~;
-#X obj 126 73 else/dust~ 5;
-#X text 44 25 And now for some computer music cliché...;
-#X obj 111 256 else/out~;
-#X obj 169 107 else/randf~ 50 150;
-#X obj 177 144 else/randf~ 500 2000;
-#X obj 179 180 else/randf~ 10000 20000;
-#X connect 0 0 4 0;
-#X connect 0 0 4 1;
-#X connect 1 0 0 0;
-#X connect 2 0 0 1;
-#X connect 2 0 5 0;
-#X connect 2 0 6 0;
-#X connect 2 0 7 0;
+#X obj 297 169 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#N canvas 748 271 410 386 example 0;
+#X obj 132 209 else/pluck~;
+#X obj 132 293 else/out~;
+#X obj 132 246 else/plateverb~ 50 0.6 0.25 0.8 0.8, f 19;
+#X obj 193 145 else/randf~ 2500 5000;
+#X obj 67 126 else/brown~;
+#X obj 185 108 else/randf~ 30 250;
+#X obj 195 186 else/randf~ 500 20000;
+#X obj 147 74 else/dust~ 1;
+#X text 79 22 And now for some computer music cliché with random generators...
+, f 32;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 2 1 1 1;
+#X connect 3 0 0 3;
+#X connect 4 0 0 0;
 #X connect 5 0 0 2;
-#X connect 6 0 0 3;
-#X connect 7 0 0 4;
+#X connect 6 0 0 4;
+#X connect 7 0 0 1;
+#X connect 7 0 3 0;
+#X connect 7 0 5 0;
+#X connect 7 0 6 0;
 #X restore 462 286 pd example;
 #X obj 18 42 cnv 4 4 4 empty empty A 0 28 2 18 -233017 -1 0;
 #X obj 3 4 cnv 15 301 42 empty empty pluck~ 20 20 2 37 -233017 -1 0
@@ -206,7 +209,6 @@ frequency for the filter., f 69;
 #N canvas 891 267 364 321 trigger 0;
 #X obj 98 237 else/out~;
 #X obj 142 115 else/impseq~ 1 0.5 0.25 0.1;
-#X obj 84 145 noise~;
 #X obj 98 197 else/pluck~ 50 2500 10000, f 30;
 #X obj 142 84 else/tempo~ 120 -on;
 #X obj 170 141 else/trighold~;
@@ -214,15 +216,41 @@ frequency for the filter., f 69;
 #X text 39 15 Below we have a sequence of impulse values \, we can
 then see how the impulse value determines the amplitude/intensity.
 , f 46;
-#X connect 1 0 3 1;
-#X connect 1 0 5 0;
-#X connect 2 0 3 0;
-#X connect 3 0 0 0;
-#X connect 3 0 0 1;
-#X connect 4 0 1 0;
-#X connect 5 0 6 0;
+#X obj 36 145 else/pinknoise~;
+#X connect 1 0 2 1;
+#X connect 1 0 4 0;
+#X connect 2 0 0 0;
+#X connect 2 0 0 1;
+#X connect 3 0 1 0;
+#X connect 4 0 5 0;
+#X connect 7 0 2 0;
 #X restore 462 264 pd trigger;
 #X text 231 348 - impulse trigger (determines the amplitude);
+#N canvas 891 267 431 313 negative 0;
+#X obj 138 111 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 226 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -5000 256;
+#X text 287 138 decay time (ms);
+#X obj 138 140 else/impseq~;
+#X obj 94 220 else/out~;
+#X msg 226 86 5000;
+#X obj 94 180 else/pluck~ 100 5000, f 30;
+#X msg 243 109 -5000;
+#X obj 77 141 noise~;
+#X text 36 18 The decay time is actually a feedback parameter. Since
+negative feedback values are allowed \, you can insert a negative decay
+time value. Note that a negative parameter changes the tonal quality
+significantly.;
+#X connect 0 0 3 0;
+#X connect 1 0 6 3;
+#X connect 3 0 6 1;
+#X connect 5 0 1 0;
+#X connect 6 0 4 0;
+#X connect 6 0 4 1;
+#X connect 7 0 1 0;
+#X connect 8 0 6 0;
+#X restore 461 231 pd negative \; feedback;
 #X connect 4 0 43 2;
 #X connect 17 0 45 0;
 #X connect 18 0 43 3;
