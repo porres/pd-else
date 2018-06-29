@@ -47,11 +47,10 @@
 #X text 166 327 - goes to a position index in the sequence (from 1)
 ;
 #N canvas 803 160 399 333 example 0;
-#X obj 73 39 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1 1
+#X obj 73 39 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
-#X obj 73 178 else/bl.saw~;
 #X obj 73 153 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 100 256;
+-228856 -1 -1 0 256;
 #X obj 73 99 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 73 65 else/tempo 120 100;
@@ -60,23 +59,23 @@
 #X obj 145 208 *~;
 #X obj 123 243 else/out~;
 #X text 151 38 A sequence of frequencies.;
+#X obj 73 178 else/bl.saw~;
 #X obj 73 124 else/sequencer 50 100 80 120 60 150 100 70;
-#X connect 0 0 4 0;
-#X connect 1 0 7 0;
-#X connect 2 0 1 0;
-#X connect 3 0 6 0;
-#X connect 3 0 10 0;
-#X connect 4 0 3 0;
-#X connect 5 0 7 1;
-#X connect 6 0 5 0;
-#X connect 7 0 8 0;
-#X connect 7 0 8 1;
-#X connect 10 0 2 0;
+#X connect 0 0 3 0;
+#X connect 1 0 9 0;
+#X connect 2 0 5 0;
+#X connect 2 0 10 0;
+#X connect 3 0 2 0;
+#X connect 4 0 6 1;
+#X connect 5 0 4 0;
+#X connect 6 0 7 0;
+#X connect 6 0 7 1;
+#X connect 9 0 6 0;
+#X connect 10 0 1 0;
 #X restore 467 215 pd example;
 #X text 68 94 When receiving a bang \, [sequencer] sends a value from
 a given sequence.;
 #X obj 153 148 else/tempo 120 -on;
-#X obj 153 178 else/sequencer 10 5 0 2 3 7 9 1 4 11 6 8;
 #X obj 153 208 else/display;
 #X text 126 363 float;
 #X obj 3 3 cnv 15 301 42 empty empty sequencer 20 20 2 37 -233017 -1
@@ -84,5 +83,6 @@ a given sequence.;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X connect 30 0 31 0;
-#X connect 31 0 32 0;
+#X obj 153 178 else/sequencer 10 5 0 2 3 7 9 1 4 11 6 8;
+#X connect 30 0 35 0;
+#X connect 35 0 31 0;
