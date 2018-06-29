@@ -138,7 +138,7 @@ static void *mavg_new(t_symbol *s, int argc, t_atom * argv){
     outlet_new((t_object *)x, &s_signal);
     return (x);
 errstate:
-    pd_error(x, "[mavg~]: improper args");
+    pd_error(x, "[mov.avg~]: improper args");
     return NULL;
 }
 

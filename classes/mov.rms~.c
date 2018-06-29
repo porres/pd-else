@@ -157,7 +157,7 @@ static void *mrms_new(t_symbol *s, int argc, t_atom * argv){
     outlet_new((t_object *)x, &s_signal);
     return (x);
 errstate:
-    pd_error(x, "[mrms~]: improper args");
+    pd_error(x, "[mov.rms~]: improper args");
     return NULL;
 }
 

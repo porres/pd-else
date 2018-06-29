@@ -1,4 +1,4 @@
-#N canvas 567 76 562 552 10;
+#N canvas 528 50 562 552 10;
 #X obj 4 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 432 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -142,7 +142,7 @@
 #N canvas 748 271 410 386 example 0;
 #X obj 132 209 else/pluck~;
 #X obj 132 293 else/out~;
-#X obj 132 246 else/plateverb~ 50 0.6 0.25 0.8 0.8, f 19;
+#X obj 132 246 else/plateverb~ 50 0.6 0.25 0.8 0.8, f 18;
 #X obj 193 145 else/randf~ 2500 5000;
 #X obj 67 126 else/brown~;
 #X obj 185 108 else/randf~ 30 250;
@@ -196,7 +196,6 @@
 #X text 148 368 float/signal;
 #X text 230 390 - decay time in ms;
 #X text 230 410 - filter cutoff frequency;
-#X obj 165 211 else/pluck~ 100 2500 10000, f 30;
 #X text 45 91 [pluck~] is a Karplus-Strong algorithm: a feedback loop
 with a 2nd order lowpass filter. It takes an excitation signal \, a
 trigger inlet \, a frequency in hertz \, a decay time in ms and a cutoff
@@ -206,17 +205,34 @@ frequency for the filter., f 69;
 #X text 230 368 - frequency in hertz (minimum 1);
 #X text 176 474 1) float - frequency in hertz (default 1);
 #X text 404 190 filter cutoff (hz);
-#N canvas 891 267 364 321 trigger 0;
-#X obj 98 237 else/out~;
-#X obj 142 115 else/impseq~ 1 0.5 0.25 0.1;
-#X obj 98 197 else/pluck~ 50 2500 10000, f 30;
-#X obj 142 84 else/tempo~ 120 -on;
-#X obj 170 141 else/trighold~;
-#X obj 170 163 display~;
-#X text 39 15 Below we have a sequence of impulse values \, we can
+#N canvas 634 226 651 347 trigger 0;
+#X obj 103 247 else/out~;
+#X obj 139 115 else/impseq~ 1 0.5 0.25 0.1;
+#X obj 103 207 else/pluck~ 50 2500 10000;
+#X obj 139 84 else/tempo~ 120 -on;
+#X obj 167 141 else/trighold~;
+#X obj 167 163 display~;
+#X text 12 10 Below we have a sequence of impulse values \, we can
 then see how the impulse value determines the amplitude/intensity.
 , f 46;
-#X obj 36 145 else/pinknoise~;
+#X obj 33 145 else/pinknoise~;
+#X obj 387 198 noise~;
+#X obj 490 208 else/impseq~;
+#X obj 490 188 / 127;
+#X obj 439 197 mtof;
+#X obj 387 238 else/pluck~ 0 2500;
+#X obj 387 269 else/out~;
+#X obj 452 94 else/randi 24 50;
+#X obj 452 70 t b b;
+#X obj 439 142 makenote 0 500;
+#X obj 452 47 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 479 117 else/randi 50 127;
+#X obj 439 165 stripnote;
+#X obj 395 114 notein;
+#X obj 395 139 pack;
+#X text 326 9 When using MIDI to trigger the object \, make sure to
+use [stripnote] to filter note offs., f 48;
 #X connect 1 0 2 1;
 #X connect 1 0 4 0;
 #X connect 2 0 0 0;
@@ -224,13 +240,31 @@ then see how the impulse value determines the amplitude/intensity.
 #X connect 3 0 1 0;
 #X connect 4 0 5 0;
 #X connect 7 0 2 0;
+#X connect 8 0 12 0;
+#X connect 9 0 12 1;
+#X connect 10 0 9 0;
+#X connect 11 0 12 2;
+#X connect 12 0 13 0;
+#X connect 12 0 13 1;
+#X connect 14 0 16 0;
+#X connect 15 0 14 0;
+#X connect 15 1 18 0;
+#X connect 16 0 19 0;
+#X connect 16 1 19 1;
+#X connect 17 0 15 0;
+#X connect 18 0 16 1;
+#X connect 19 0 11 0;
+#X connect 19 1 10 0;
+#X connect 20 0 21 0;
+#X connect 20 1 21 1;
+#X connect 21 0 19 0;
 #X restore 462 264 pd trigger;
 #X text 231 348 - impulse trigger (determines the amplitude);
 #N canvas 891 267 431 313 negative 0;
 #X obj 138 111 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 226 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -5000 256;
+-228856 -1 -1 0 256;
 #X text 287 138 decay time (ms);
 #X obj 138 140 else/impseq~;
 #X obj 94 220 else/out~;
@@ -251,11 +285,12 @@ significantly.;
 #X connect 7 0 1 0;
 #X connect 8 0 6 0;
 #X restore 461 231 pd negative \; feedback;
-#X connect 4 0 43 2;
-#X connect 17 0 45 0;
-#X connect 18 0 43 3;
-#X connect 24 0 43 4;
-#X connect 43 0 46 0;
-#X connect 43 0 46 1;
-#X connect 45 0 43 1;
-#X connect 45 0 43 0;
+#X obj 165 211 else/pluck~ 50 2500 10000, f 30;
+#X connect 4 0 52 2;
+#X connect 17 0 44 0;
+#X connect 18 0 52 3;
+#X connect 24 0 52 4;
+#X connect 44 0 52 1;
+#X connect 44 0 52 0;
+#X connect 52 0 45 0;
+#X connect 52 0 45 1;

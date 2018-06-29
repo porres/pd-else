@@ -1,4 +1,4 @@
-#N canvas 498 28 558 492 10;
+#N canvas 552 79 558 492 10;
 #X obj 4 284 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 400 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -84,7 +84,7 @@ or a bang \, [impseq~] sends an impulse from a given sequence.;
 #X connect 3 0 4 0;
 #X connect 4 0 2 1;
 #X connect 6 0 3 0;
-#X restore 459 249 pd example2;
+#X restore 459 259 pd example2;
 #N canvas 803 153 455 401 example1 0;
 #X obj 253 74 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -111,7 +111,23 @@ a sequence value of "0" works as a rest.;
 #X connect 8 0 3 0;
 #X connect 9 0 2 0;
 #X connect 10 0 3 0;
-#X restore 459 223 pd example1;
+#X restore 459 240 pd example1;
+#N canvas 790 230 329 269 float2imp 0;
+#X msg 189 83 0.25;
+#X msg 115 82 0.75;
+#X msg 83 82 1;
+#X msg 155 82 0.5;
+#X obj 115 135 else/impseq~;
+#X text 58 19 The [impseq~] object can be used to convert floats to
+impulses., f 35;
+#X obj 115 176 else/out~;
+#X connect 0 0 4 0;
+#X connect 1 0 4 0;
+#X connect 2 0 4 0;
+#X connect 3 0 4 0;
+#X connect 4 0 6 0;
+#X connect 4 0 6 1;
+#X restore 453 218 pd float2imp;
 #X connect 34 0 36 0;
 #X connect 37 0 6 0;
 #X connect 37 0 6 1;
