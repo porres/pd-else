@@ -6,6 +6,7 @@
 #include <math.h>
 
 #define MAX_COEF 256
+#define TWO_PI (M_PI * 2)
 
 static t_class *shaper_class;
 
@@ -17,6 +18,11 @@ typedef struct _shaper{
     t_int       x_flen;
     t_int       x_norm;
     t_int       x_arrayset;
+    t_int       x_dc_filter;
+    t_float     x_sr;
+    double      x_a;
+    double      x_xnm1;
+    double      x_ynm1;
     t_buffer   *x_buffer;
 }t_shaper;
 
@@ -64,6 +70,10 @@ static void update_cheby_func(t_shaper *x){
     }
 }
 
+static void shaper_filter(t_shaper *x, t_float f){
+    x->x_dc_filter = f != 0;
+}
+
 static void shaper_dc(t_shaper *x, t_float f){
     x->x_coef[0] = f;
     if(!x->x_norm)
@@ -91,11 +101,15 @@ static void shaper_list(t_shaper *x, t_symbol *s, short ac, t_atom *av){
 static t_int *shaper_perform(t_int *w){
 	t_shaper *x = (t_shaper *) (w[1]);
 	t_float *in = (t_float *)(w[2]);
-	t_float *out = (t_float *)(w[3]);
+    t_float *out = (t_float *)(w[3]);
+    double xnm1 = x->x_xnm1;
+    double ynm1 = x->x_ynm1;
+    double a = x->x_a;
     t_int n = w[4];
     t_word *buf = (t_word *)x->x_buffer->c_vectors[0];
     double maxidx = (double)(x->x_buffer->c_npts - 1);
 	while(n--){
+        double yn, xn;
         float output = 0;
 		double ph = ((double)*in++ + 1) * 0.5; // get phase (0-1)
         while(ph < 0) // wrap
@@ -110,12 +124,25 @@ static t_int *shaper_perform(t_int *w){
             int i = (int)(ph * (double)(x->x_flen - 1));
             output = x->x_cheby[i];
         }
+        xn = yn = (double)output;
+        if(x->x_dc_filter){
+            yn = xn - xnm1 + (a * ynm1);
+            output = (float)yn;
+        }
 		*out++ = output;
+        xnm1 = xn;
+        ynm1 = yn;
 	}
+    x->x_xnm1 = xnm1;
+    x->x_ynm1 = ynm1;
 	return(w + 5);
 }
 
 static void shaper_dsp(t_shaper *x, t_signal **sp){
+    if(sp[0]->s_sr != x->x_sr){
+        x->x_sr = sp[0]->s_sr;
+        x->x_a = 1 - (5*TWO_PI/(double)x->x_sr);
+    }
     buffer_checkdsp(x->x_buffer);
     dsp_add(shaper_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
@@ -137,7 +164,9 @@ static void *shaper_new(t_symbol *s, int ac, t_atom *av){
     x->x_coef[0] = 0;
     x->x_coef[1] = 1;
     x->x_norm = 1;
+    x->x_dc_filter = 1;
     x->x_arrayset = 0;
+    x->x_a = 1 - (5*TWO_PI/(double)x->x_sr);
     if(ac){
         int flag = 0;
         x->x_count = 1;
@@ -161,6 +190,14 @@ static void *shaper_new(t_symbol *s, int ac, t_atom *av){
                 else if(!strcmp(curarg->s_name, "-dc")){
                     if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                         x->x_coef[0] = atom_getfloatarg(1, ac, av);
+                        flag = 1, ac-=2, av+=2;
+                    }
+                    else
+                        goto errstate;
+                }
+                else if(!strcmp(curarg->s_name, "-filter")){
+                    if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                        x->x_dc_filter = atom_getfloatarg(1, ac, av) != 0;
                         flag = 1, ac-=2, av+=2;
                     }
                     else
@@ -195,5 +232,6 @@ void shaper_tilde_setup(void){
     class_addmethod(shaper_class, (t_method)shaper_list, gensym("list"), A_GIMME, 0);
     class_addmethod(shaper_class, (t_method)shaper_norm, gensym("norm"), A_DEFFLOAT, 0);
     class_addmethod(shaper_class, (t_method)shaper_dc, gensym("dc"), A_DEFFLOAT, 0);
+    class_addmethod(shaper_class, (t_method)shaper_filter, gensym("filter"), A_DEFFLOAT, 0);
     class_addmethod(shaper_class, (t_method)shaper_set, gensym("set"), A_SYMBOL, 0);
 }
