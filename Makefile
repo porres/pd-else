@@ -33,6 +33,7 @@ properties.class.sources := classes/properties.c
 break.class.sources := classes/break.c
 cents2ratio.class.sources := classes/cents2ratio.c
 changed.class.sources := classes/changed.c
+coin.class.sources := classes/coin.c
 dir.class.sources := classes/dir.c
 hot.class.sources := classes/hot.c
 hz2rad.class.sources := classes/hz2rad.c

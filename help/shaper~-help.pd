@@ -101,7 +101,7 @@ function \, but on a sine wave as a synthesis technique., f 56;
 0.2 0.9 \, normalize, f 27;
 #X obj 407 206 else/shaper~ -filter 0;
 #X msg 474 181 filter \$1;
-#X obj 474 159 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 474 159 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 496 159 removes DC offset;
 #X text 18 65 This particular transfer function generates a DC Offset
@@ -188,46 +188,47 @@ just a linear function. Hence \, it represents the fundamental., f
 or as a list input. The object \, by default \, normalizes the transfer
 fucntion to output values between -1 and 1 \, but you can change that
 with the "norm" message or flag., f 70;
-#X text 482 32 For non normalized outputs \, you can also set a DC
-value \, or 0th order polinomoal. This can also be set for a normalized
-function \, but doesn't affect it., f 70;
-#X text 482 71 you can set the DC offset with the "dc" message or flag.
-, f 70;
 #X obj 672 248 osc~ 200;
 #X obj 667 332 else/graph~ 441 8;
 #X msg 599 174 norm \$1;
 #X obj 599 154 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 600 289 else/shaper~ 0.5 -norm 0 -dc 0.5;
 #X msg 634 196 0.5;
 #X msg 523 162 dc \$1;
 #X obj 526 123 hsl 100 15 0 0.5 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 4500 1;
 #X obj 523 143 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.227273 256;
 #X msg 663 219 0.5 0.5;
 #X obj 85 382 else/out~;
 #X obj 557 352 else/out~;
+#X obj 600 289 else/shaper~ 0.5 -norm 0 -dc 0.5 -filter 0;
+#X text 482 81 you can set the DC offset with the "dc" message or flag.
+, f 70;
+#X text 482 30 For non normalized outputs \, you can also set a DC
+value \, or 0th order polinomoal. This can also be set for a normalized
+function \, but doesn't affect it. Clearly \, the internal filter needs
+to be off as well., f 70;
 #X connect 3 0 7 0;
 #X connect 5 0 7 0;
 #X connect 6 0 7 0;
 #X connect 7 0 4 0;
-#X connect 7 0 26 1;
-#X connect 7 0 26 0;
+#X connect 7 0 23 1;
+#X connect 7 0 23 0;
 #X connect 10 0 7 0;
 #X connect 11 0 7 0;
 #X connect 12 0 11 0;
-#X connect 16 0 20 0;
-#X connect 18 0 20 0;
-#X connect 19 0 18 0;
-#X connect 20 0 17 0;
-#X connect 20 0 27 1;
-#X connect 20 0 27 0;
-#X connect 21 0 20 0;
-#X connect 22 0 20 0;
-#X connect 23 0 24 0;
-#X connect 24 0 22 0;
-#X connect 25 0 20 0;
+#X connect 14 0 25 0;
+#X connect 16 0 25 0;
+#X connect 17 0 16 0;
+#X connect 18 0 25 0;
+#X connect 19 0 25 0;
+#X connect 20 0 21 0;
+#X connect 21 0 19 0;
+#X connect 22 0 25 0;
+#X connect 25 0 15 0;
+#X connect 25 0 24 1;
+#X connect 25 0 24 0;
 #X restore 454 267 pd chebyshev;
 #X text 187 354 - harmonic weigths for internal transfer function;
 #X text 187 431 - ouput of transfer function (waveshaping);
