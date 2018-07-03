@@ -1,20 +1,20 @@
-#N canvas 792 94 568 450 10;
-#X obj 6 424 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 613 94 563 494 10;
+#X obj 6 470 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 6 318 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 335 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 355 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 372 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
 #X obj 113 249 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 114 329 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 114 346 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 6 240 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X text 176 251 signal - value to perform the scaling function on;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -83,7 +83,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -141,135 +141,66 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 242 180 else/rescale~;
-#X text 103 209 rescaled to 0-1 range;
-#N canvas 846 65 417 527 exponential 0;
-#X obj 104 361 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
--66577 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array \$0-exponential 441 float 0;
-#X coords 0 1 440 0 200 140 1 0 0;
-#X restore 103 360 graph;
-#X text 310 490 0;
-#X text 308 358 1;
-#X obj 120 297 tabwrite~ \$0-exponential;
-#X obj 135 268 else/rescale~;
-#X msg 135 202 -1 \, 1 10;
-#X floatatom 120 144 0 1 1.2 0 - - -;
-#X obj 123 120 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X text 131 120 exponential factor;
-#X obj 120 169 trigger bang float;
-#X obj 135 231 vline~;
-#X text 32 25 The third or fifth argument and the "exp" message specify
-the exponential factor (must be greater than 0) where 1 gives you linear
-scaling (no exponential). It's like raising to the power of the given
-exponential \, try it below (with values from 0.1 to 10).;
-#X msg 225 224 exp \$1;
-#X connect 5 0 4 0;
-#X connect 6 0 11 0;
-#X connect 7 0 10 0;
-#X connect 8 0 7 0;
-#X connect 10 0 6 0;
-#X connect 10 0 4 0;
-#X connect 10 1 13 0;
-#X connect 11 0 5 0;
-#X connect 13 0 5 0;
-#X restore 453 190 pd exponential;
-#N canvas 695 23 435 474 advanced 0;
-#X obj 210 66 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 207 121 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 166 335 hsl 128 15 -127 127 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
-#X text 42 267 If the input value is outside the input range \, [scale]
-will not clip the values to the output range but keep scaling outside
-that boundary with the same conversion parameters.;
-#X text 35 18 The scaling can be inverted by reversing one of the ranges
-(input or output);
-#X obj 86 117 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 86 143 sig~;
-#X text 207 229 Inverted;
-#X obj 207 143 sig~;
-#X obj 86 171 else/rescale~ 0 1;
-#X obj 207 172 else/rescale~ 1 0;
-#X obj 163 391 else/rescale~ -10 10;
-#X obj 207 202 else/display~;
-#X obj 86 202 else/display~;
-#X obj 163 421 else/display~;
-#X obj 163 361 else/display~;
-#X connect 0 0 1 0;
-#X connect 0 0 5 0;
-#X connect 1 0 8 0;
-#X connect 2 0 15 0;
-#X connect 5 0 6 0;
-#X connect 6 0 9 0;
-#X connect 8 0 10 0;
-#X connect 9 0 13 0;
-#X connect 10 0 12 0;
-#X connect 11 0 14 0;
-#X connect 15 0 11 0;
-#X restore 471 211 pd advanced;
-#X text 78 86 By default \, [rescale~] rescales input values from -1
+#X obj 242 178 else/rescale~;
+#X text 103 211 rescaled to 0-1 range;
+#X text 78 85 By default \, [rescale~] rescales input values from -1
 to 1 into another range of values (0-1 by default). You can also set
 an exponential factor (1 by default - linear). All these parameters
 can be changed by arguments.;
-#X obj 242 204 else/display~;
-#X obj 242 150 osc~ 0.1;
-#X obj 113 294 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 242 206 else/display~;
+#X obj 242 148 osc~ 0.1;
+#X obj 113 311 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X text 237 294 - range parameters \, see [pd arguments];
+#X text 237 311 - range parameters \, see [pd arguments];
 #X text 146 270 exp <float> -;
-#X text 152 294 float/signal;
-#X text 178 330 signal - the rescaled signal;
-#X text 108 365 1) list -;
-#X text 173 365 up to 3 arguments set: minimum output \, maximum output
+#X text 152 311 float/signal;
+#X text 178 347 signal - the rescaled signal;
+#X text 108 382 1) list -;
+#X text 173 382 up to 3 arguments set: minimum output \, maximum output
 \, exponential factor. 4 arguments set minimum output \, maximum input
 \, minimum output \, maximum output and 5 fifth argument sets the exponential
 factor - default (0 \, 127 \, 0 \, 1 \, 1);
-#N canvas 607 100 678 313 arguments 0;
-#X obj 64 121 hsl 180 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
+#N canvas 352 97 948 550 arguments 0;
+#X obj 42 117 hsl 180 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 61 149 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 39 145 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 119 192 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 97 188 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 178 193 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 156 189 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 117 173 min-out;
-#X text 177 173 max-out;
-#X obj 295 114 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X text 95 169 min-out;
+#X text 155 169 max-out;
+#X obj 273 110 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 292 142 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 270 138 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 451 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 429 176 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 505 181 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 483 177 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 449 161 min-out;
-#X text 504 161 max-out;
-#X obj 345 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 427 157 min-out;
+#X text 482 157 max-out;
+#X obj 323 176 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 398 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 376 176 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 343 161 min-in;
-#X text 397 161 max-in;
-#X obj 61 219 else/rescale~ -10 10;
-#X obj 292 207 else/rescale~ 0 1 -10 10, f 36;
-#X obj 292 237 else/display~;
-#X obj 61 254 else/display~;
-#X text 73 29 If you give [rescale~] up to 3 arguments \, it'll only
+#X text 321 157 min-in;
+#X text 375 157 max-in;
+#X obj 39 215 else/rescale~ -10 10;
+#X obj 270 203 else/rescale~ 0 1 -10 10, f 36;
+#X obj 270 233 else/display~;
+#X obj 39 250 else/display~;
+#X text 51 25 If you give [rescale~] up to 3 arguments \, it'll only
 have 3 inlets and you can set the minimum and maximum output via the
 rightmost inlets. But if you give 4 or more arguments \, [rescale~]
 is initialized with more inlets so you can set all range parameters.
 , f 74;
-#X obj 292 178 sig~;
-#X obj 61 195 sig~;
+#X obj 270 174 sig~;
+#X obj 39 191 sig~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -338,7 +269,7 @@ is initialized with more inlets so you can set all range parameters.
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -370,7 +301,56 @@ is initialized with more inlets so you can set all range parameters.
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 584 45 pd;
+#X restore 578 142 pd;
+#X obj 88 371 hsl 180 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 85 399 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 161 442 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 238 443 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 159 423 min-out;
+#X text 237 423 max-out;
+#X obj 85 504 else/display~;
+#X obj 85 469 else/rescale~ -10 10 -clip;
+#X obj 85 443 sig~;
+#X msg 330 408 clip \$1;
+#X obj 330 383 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 401 365 hsl 180 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 5600 1;
+#X obj 398 393 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -0.374302 256;
+#X obj 398 458 else/rescale~ 0 1 -10 10;
+#X obj 398 488 else/display~;
+#X obj 398 429 sig~;
+#X obj 668 356 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
+-66577 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-exponential 441 float 0;
+#X coords 0 1 440 0 200 140 1 0 0;
+#X restore 667 355 graph;
+#X text 874 485 0;
+#X text 872 353 1;
+#X obj 684 292 tabwrite~ \$0-exponential;
+#X obj 699 263 else/rescale~;
+#X msg 699 197 -1 \, 1 10;
+#X floatatom 684 139 0 1 1.2 0 - - -;
+#X obj 687 115 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X text 695 115 exponential factor;
+#X obj 684 164 trigger bang float;
+#X obj 699 226 vline~;
+#X text 547 23 The third or fifth argument and the "exp" message specify
+the exponential factor (must be greater than 0) where 1 gives you linear
+scaling (no exponential). It's like raising to the power of the given
+exponential \, try it below (with values from 0.1 to 10).;
+#X msg 789 219 exp \$1;
+#X text 95 297 The -clip flag or clip message clips the output into
+the output range. By default \, [rescale~] will not clip the values
+to the output range but keep scaling outside that boundary with the
+same conversion parameters., f 71;
 #X connect 0 0 1 0;
 #X connect 1 0 22 0;
 #X connect 2 0 16 1;
@@ -385,6 +365,56 @@ is initialized with more inlets so you can set all range parameters.
 #X connect 17 0 18 0;
 #X connect 21 0 17 0;
 #X connect 22 0 16 0;
-#X restore 465 169 pd arguments;
-#X connect 21 0 26 0;
-#X connect 27 0 21 0;
+#X connect 24 0 25 0;
+#X connect 25 0 32 0;
+#X connect 26 0 31 1;
+#X connect 27 0 31 2;
+#X connect 31 0 30 0;
+#X connect 32 0 31 0;
+#X connect 33 0 37 0;
+#X connect 34 0 33 0;
+#X connect 35 0 36 0;
+#X connect 36 0 39 0;
+#X connect 37 0 38 0;
+#X connect 39 0 37 0;
+#X connect 45 0 44 0;
+#X connect 46 0 51 0;
+#X connect 47 0 50 0;
+#X connect 48 0 47 0;
+#X connect 50 0 46 0;
+#X connect 50 0 44 0;
+#X connect 50 1 53 0;
+#X connect 51 0 45 0;
+#X connect 53 0 45 0;
+#X restore 465 189 pd arguments;
+#X text 140 287 clip <float> -;
+#X text 230 287 <1> turns clipping on \, <0> off;
+#X obj 6 437 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 198 447 -clip: sets clipping on (default off);
+#N canvas 841 306 432 287 inverted 0;
+#X obj 210 66 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 7500 1;
+#X obj 207 121 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.181102 256;
+#X text 35 18 The scaling can be inverted by reversing one of the ranges
+(input or output);
+#X obj 86 117 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.181102 256;
+#X obj 86 143 sig~;
+#X text 207 229 Inverted;
+#X obj 207 143 sig~;
+#X obj 86 171 else/rescale~ 0 1;
+#X obj 207 172 else/rescale~ 1 0;
+#X obj 207 202 else/display~;
+#X obj 86 202 else/display~;
+#X connect 0 0 1 0;
+#X connect 0 0 3 0;
+#X connect 1 0 6 0;
+#X connect 3 0 4 0;
+#X connect 4 0 7 0;
+#X connect 6 0 8 0;
+#X connect 7 0 10 0;
+#X connect 8 0 9 0;
+#X restore 471 211 pd inverted;
+#X connect 21 0 24 0;
+#X connect 25 0 21 0;
