@@ -56,8 +56,11 @@ void *drive_new(t_symbol *s, int ac, t_atom *av){
     t_float drive = 1;
     x->x_mode = 0;
     while(ac > 0){
-        if(av->a_type == A_FLOAT)
+        if(av->a_type == A_FLOAT){
             drive = atom_getfloatarg(0, ac, av);
+            ac--;
+            av++;
+        }
         else if(av->a_type == A_SYMBOL){
             t_symbol *curarg = s; // get rid of warning
             curarg = atom_getsymbolarg(0, ac, av);
