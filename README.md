@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (251 objects):
+##Current Object list (252 objects):
 
 **ASSORTED: [2]**
 - [nbang]
@@ -200,7 +200,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **AUDIO PROCESSING: REVERB: [1]**
 - [plateverb~]
 
-**AUDIO PROCESSING: FILTERS (21):**
+**AUDIO PROCESSING: FILTERS (22):**
 - [allpass.2nd~]
 - [lop.bw~]
 - [hip.bw~]
@@ -217,11 +217,12 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [highshelf~]
 - [lowpass~]
 - [lowshelf~]
+- [mov.avg~]
 - [resonbank~]
 - [resonbank2~]
 - [resonant~]
 - [resonant2~]
-- [mov.avg~]
+- [svfilter~]
 
 **OSCILLATORS (DETERMINISTIC GENERATORS): [24]**
 - [cosine~]

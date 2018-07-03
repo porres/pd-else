@@ -164,6 +164,7 @@ sr~.class.sources := classes/sr~.c
 status~.class.sources := classes/status~.c
 standard~.class.sources := classes/standard~.c
 susloop~.class.sources := classes/susloop~.c
+svfilter~.class.sources := classes/svfilter~.c
 trig.delay~.class.sources := classes/trig.delay~.c
 trig.delay2~.class.sources := classes/trig.delay2~.c
 timed.gate~.class.sources := classes/timed.gate~.c
