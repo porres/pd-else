@@ -1,29 +1,16 @@
-#N canvas 201 70 559 527 10;
+#N canvas 515 62 558 511 10;
 #X obj 204 158 noise~;
-#X obj 336 154 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
+#X obj 301 163 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 182 252 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty downsample~ 20 20 2 37 -233017
 -1 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
 #X obj 23 40 cnv 4 4 4 empty empty Downsample 0 28 2 18 -233017 -1
 0;
 #X obj 125 40 cnv 4 4 4 empty empty a 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
 #X obj 140 40 cnv 4 4 4 empty empty signal 0 28 2 18 -233017 -1 0;
 #X obj 3 485 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
@@ -47,18 +34,16 @@
 #X text 148 443 1) float;
 #X text 215 376 - rate (in hertz) used to downsample the input signal
 ;
-#X text 215 443 - rate in hertz (default 0);
-#X obj 333 183 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 298 187 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 204 211 else/downsample~ 44100;
 #N canvas 357 108 802 350 example 0;
 #X obj 199 192 else/sh~;
 #X obj 147 109 noise~;
 #X obj 247 97 hsl 128 15 -44100 44100 0 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 0 1;
-#X obj 199 253 else/out~;
+10 -228856 -1 -1 6400 1;
+#X obj 199 247 else/out~;
 #X obj 244 126 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 347.244 256;
 #X obj 518 141 noise~;
 #X obj 572 93 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
@@ -73,15 +58,15 @@ other two objects from the else library.;
 #X text 404 22 Note you cannot do it with vanilla's [samphold~] \,
 cause you can't go up to the sample rate (it stops sampling then) or
 use negative frequencies.;
-#X obj 44 200 else/downsample~ 44100;
-#X obj 44 254 else/out~;
+#X obj 74 248 else/out~;
+#X obj 74 194 else/downsample~;
 #X connect 0 0 3 0;
 #X connect 0 0 3 1;
 #X connect 1 0 0 0;
-#X connect 1 0 14 0;
+#X connect 1 0 15 0;
 #X connect 2 0 4 0;
 #X connect 4 0 11 0;
-#X connect 4 0 14 1;
+#X connect 4 0 15 1;
 #X connect 5 0 10 0;
 #X connect 6 0 8 0;
 #X connect 8 0 9 0;
@@ -89,24 +74,43 @@ use negative frequencies.;
 #X connect 10 0 7 0;
 #X connect 10 0 7 1;
 #X connect 11 0 0 1;
-#X connect 14 0 15 0;
-#X connect 14 0 15 1;
+#X connect 15 0 14 0;
+#X connect 15 0 14 1;
 #X restore 457 288 pd example;
-#X text 417 184 frequency in Hz;
+#X text 382 188 frequency in Hz;
 #X text 84 95 [downsample~] samples a signal received in the left inlet
 at a frequency rate in hertz. It can operate with or without interpolation.
 ;
 #X text 148 463 1) float;
 #X text 215 463 - interpolation 0 (off \, default) or 1 (on);
-#X msg 258 178 interp \$1;
-#X obj 258 151 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 130 179 interp \$1;
+#X obj 130 152 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 112 349 interp <float>;
 #X text 216 348 - interpolation 0 (off \, default) or 1 (on);
-#X connect 0 0 30 0;
-#X connect 1 0 29 0;
-#X connect 29 0 30 1;
-#X connect 30 0 2 0;
-#X connect 30 0 2 1;
-#X connect 36 0 30 0;
-#X connect 37 0 36 0;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 304 3 pd;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 205 211 else/downsample~;
+#X text 215 443 - rate in hertz (default is Pd's sample rate);
+#X connect 0 0 40 0;
+#X connect 1 0 22 0;
+#X connect 22 0 40 1;
+#X connect 28 0 40 0;
+#X connect 29 0 28 0;
+#X connect 40 0 2 0;
+#X connect 40 0 2 1;

@@ -181,7 +181,7 @@ static void *bandpass_new(t_symbol *s, int argc, t_atom *argv)
 
     return (x);
     errstate:
-        pd_error(x, "bandpass~: improper args");
+        pd_error(x, "[bandpass~]: improper args");
         return NULL;
 }
 

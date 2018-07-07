@@ -90,15 +90,44 @@ static void *downsample_free(t_downsample *x)
     return (void *)x;
 }
 
-static void *downsample_new(t_floatarg f1, t_floatarg f2)
-{
+static void *downsample_new(t_symbol *s, int argc, t_atom *argv){
     t_downsample *x = (t_downsample *)pd_new(downsample_class);
-    if (f1 >= 0) x->x_phase = 1;
-    x->x_interp = (f2 != 0);
+    t_symbol *dummy = s;
+    dummy = NULL;
+    t_float init_freq = sys_getsr();
+    x->x_interp = x->x_phase = 0;
+/////////////////////////////////////////////////////////////////////////////////////
+    int argnum = 0;
+    while(argc > 0){
+        if(argv->a_type == A_FLOAT){ //if current argument is a float
+            t_float argval = atom_getfloatarg(0, argc, argv);
+            switch(argnum){
+                case 0:
+                    init_freq = argval;
+                    break;
+                case 1:
+                    x->x_interp = (argval != 0);
+                    break;
+                default:
+                    break;
+            };
+            argnum++;
+            argc--;
+            argv++;
+        }
+        else
+            goto errstate;
+    }
+/////////////////////////////////////////////////////////////////////////////////////
+    if(init_freq >= 0)
+        x->x_phase = 1;
     x->x_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet, (f1));
+    pd_float((t_pd *)x->x_inlet, init_freq);
     outlet_new((t_object *)x, &s_signal);
     return (x);
+    errstate:
+        pd_error(x, "[downsample~]: improper args");
+        return NULL;
 }
 
 
@@ -109,7 +138,7 @@ void downsample_tilde_setup(void)
         (t_method)downsample_free,
         sizeof(t_downsample),
         CLASS_DEFAULT,
-        A_DEFFLOAT, A_DEFFLOAT,
+        A_GIME,
         0);
     class_addmethod(downsample_class, nullfn, gensym("signal"), 0);
     class_addmethod(downsample_class, (t_method)downsample_dsp, gensym("dsp"), A_CANT, 0);
