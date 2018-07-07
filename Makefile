@@ -160,6 +160,7 @@ schmitt~.class.sources := classes/schmitt~.c
 stepnoise~.class.sources := classes/stepnoise~.c
 sin~.class.sources := classes/sin~.c
 sequencer~.class.sources := classes/sequencer~.c
+select~.class.sources := classes/select~.c
 sr~.class.sources := classes/sr~.c
 status~.class.sources := classes/status~.c
 standard~.class.sources := classes/standard~.c

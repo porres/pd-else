@@ -1,4 +1,4 @@
-#N canvas 565 23 561 575 10;
+#N canvas 495 247 561 575 10;
 #X obj 4 303 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 415 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -16,24 +16,11 @@
 #X obj 199 236 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty xselect~ 20 20 2 37 -233017 -1
 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
 #X obj 23 40 cnv 4 4 4 empty empty Select 0 28 2 18 -233017 -1 0;
 #X obj 141 40 cnv 4 4 4 empty empty with 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
 #X obj 76 40 cnv 4 4 4 empty empty channel 0 28 2 18 -233017 -1 0;
 #X obj 185 40 cnv 4 4 4 empty empty crossfade 0 28 2 18 -233017 -1
 0;
@@ -62,7 +49,7 @@
 #X text 77 165 crossfade duration, f 9;
 #X text 171 366 ep;
 #X text 165 348 lin;
-#N canvas 840 91 418 509 crossfade_modes 1;
+#N canvas 840 91 418 509 crossfade_modes 0;
 #X floatatom 98 159 3 0 1 0 - - -, f 3;
 #X obj 98 121 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -102,11 +89,28 @@ max 500);
 #X obj 199 201 else/xselect~ 2 1000 1;
 #X text 61 86 [xselect~] selects between multiple inputs with crossfading.
 ;
-#X connect 21 0 50 0;
-#X connect 22 0 50 1;
-#X connect 24 0 27 0;
-#X connect 27 0 50 0;
-#X connect 29 0 50 0;
-#X connect 38 0 29 0;
-#X connect 50 0 8 0;
-#X connect 50 0 8 1;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X connect 15 0 44 0;
+#X connect 16 0 44 1;
+#X connect 18 0 21 0;
+#X connect 21 0 44 0;
+#X connect 23 0 44 0;
+#X connect 32 0 23 0;
+#X connect 44 0 8 0;
+#X connect 44 0 8 1;

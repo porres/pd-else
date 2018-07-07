@@ -1,0 +1,93 @@
+#N canvas 565 82 562 508 10;
+#X obj 4 482 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 5 397 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 433 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 105 372 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+;
+#X text 176 409 signal;
+#X text 156 458 2) float;
+#X obj 5 331 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 105 342 cnv 17 3 26 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 139 341 float/signal;
+#X text 156 441 1) float;
+#X obj 269 177 osc~ 660;
+#X obj 238 150 osc~ 440;
+#X floatatom 207 205 3 0 0 0 - - -, f 3;
+#X obj 207 137 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
+-1 -1 3;
+#X text 173 136 none;
+#X text 143 152 1st inlet;
+#X text 143 167 2nd inlet;
+#X text 143 181 3rd inlet;
+#N canvas 714 317 427 315 signal-rate 0;
+#X obj 142 113 *~ 3;
+#X obj 142 84 phasor~ 0.5;
+#X obj 139 232 else/out~;
+#X obj 142 141 else/display~ 5;
+#X obj 162 178 else/select~ 2, f 15;
+#X obj 205 145 noise~;
+#X obj 249 145 osc~ 400;
+#X text 28 16 You can set the inlet number with a signal input \, this
+allows [select~] to be controlle with sample accuracy. Float values
+are truncated to integers., f 61;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X connect 4 0 2 1;
+#X connect 5 0 4 1;
+#X connect 6 0 4 2;
+#X restore 447 299 pd signal-rate;
+#X obj 105 407 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 228 409 - the selected input;
+#X text 228 459 - initially selected inlet (default 0 - none);
+#X text 228 341 -;
+#X text 239 341 inlet number to select - values are truncated to integers
+and clipped from 0 to number of channels, f 49;
+#X text 228 373 - input signal channels to be selected;
+#X text 228 439 - input channels to select (1 to 512 \, default 1)
+;
+#X text 138 373 float/signal;
+#X obj 2 3 cnv 15 301 42 empty empty select~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X obj 83 40 cnv 4 4 4 empty empty selector 0 28 2 18 -233017 -1 0
+;
+#X obj 16 40 cnv 4 4 4 empty empty Channel 0 28 2 18 -233017 -1 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 207 230 else/select~ 3 1;
+#X obj 300 201 pinknoise~;
+#X obj 207 268 else/out~;
+#X text 78 90 [select~] selects one input signal (or none) from the
+'n' specified inlets to an outlet., f 67;
+#X connect 10 0 39 2;
+#X connect 11 0 39 1;
+#X connect 12 0 39 0;
+#X connect 13 0 12 0;
+#X connect 39 0 41 0;
+#X connect 39 0 41 1;
+#X connect 40 0 39 3;

@@ -1,4 +1,4 @@
-#N canvas 541 57 559 575 10;
+#N canvas 528 108 559 575 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -39,7 +39,7 @@
 #X text 200 398 signal -;
 #X text 154 453 1) float;
 #X obj 135 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 208 256;
+-228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -158,11 +158,11 @@
 #X text 154 492 3) float;
 #X text 154 512 4) float;
 #X obj 197 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.51 256;
+-228856 -1 -1 0 256;
 #X obj 256 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 86 256;
+-228856 -1 -1 0 256;
 #X obj 314 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.35 256;
+-228856 -1 -1 0 256;
 #X obj 122 418 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 200 418 signal -;
@@ -220,17 +220,17 @@ For now \, the only modulation option is phase modulation., f 61;
 #X connect 15 0 4 0;
 #X restore 64 191 pd Cross_Phase_Modulation;
 #X obj 132 85 hsl 128 15 0.01 1 1 0 empty index1 empty -2 -8 0 10 -228856
--1 -1 8100 1;
+-1 -1 0 1;
 #X obj 129 112 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.188621 256;
+-228856 -1 -1 0 256;
 #X obj 64 111 nbx 5 14 -1e+37 1e+37 0 0 empty freq1 empty 0 -8 0 10
--228856 -1 -1 51 256;
+-228856 -1 -1 0 256;
 #X obj 343 86 hsl 128 15 0.01 1 1 0 empty index2 empty -2 -8 0 10 -191407
--1 -1 12100 1;
+-1 -1 0 1;
 #X obj 340 113 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--191407 -1 -1 0.804474 256;
+-191407 -1 -1 0 256;
 #X obj 273 112 nbx 5 14 -1e+37 1e+37 0 0 empty freq2 empty 0 -8 0 10
--191407 -1 -1 200 256;
+-191407 -1 -1 0 256;
 #X obj 64 229 else/out~;
 #X obj 235 232 else/out~;
 #X obj 235 192 else/xmod~;
