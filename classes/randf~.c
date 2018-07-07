@@ -10,6 +10,7 @@ typedef struct _randf
     int        x_val;
     t_float    x_randf;
     t_float    x_lastin;
+    t_int      x_trig_bang;
     t_inlet   *x_low_let;
     t_inlet   *x_high_let;
     t_outlet  *x_outlet;
@@ -18,6 +19,10 @@ typedef struct _randf
 static void randf_seed(t_randf *x, t_floatarg f)
 {
     x->x_val = (int)f * 1319;
+}
+
+static void randf_bang(t_randf *x){
+    x->x_trig_bang = 1;
 }
 
 static t_int *randf_perform(t_int *w)
@@ -33,24 +38,29 @@ static t_int *randf_perform(t_int *w)
     t_float lastin = x->x_lastin;
     while (nblock--)
         {
-        t_float output;
         float trig = *in1++;
         float out_low = *in2++; // Output LOW
         float out_high = *in3++; // Output HIGH
         float range = out_high - out_low; // range
-        if (trig > 0 && lastin <= 0 || trig < 0 && lastin >= 0 ) // update
-            {
+        t_int trigger = 0;
+        if(x->x_trig_bang){
+            trigger = 1;
+            x->x_trig_bang = 0;
+        }
+        else
+            trigger = (trig > 0 && lastin <= 0) || (trig < 0 && lastin >= 0);
+        if(trigger){ // update
             randf = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
             randf = out_low + range * (randf + 1) / 2;
             val = val * 435898247 + 382842987;
-            }
+        }
         *out++ = randf;
         lastin = trig;
         }
     x->x_val = val;
     x->x_randf = randf; // current output
     x->x_lastin = lastin; // last input
-    return (w + 7);
+    return(w+7);
 }
 
 static void randf_dsp(t_randf *x, t_signal **sp)
@@ -67,9 +77,10 @@ static void *randf_free(t_randf *x)
     return (void *)x;
 }
 
-static void *randf_new(t_symbol *s, int ac, t_atom *av)
-{
+static void *randf_new(t_symbol *s, int ac, t_atom *av){
     t_randf *x = (t_randf *)pd_new(randf_class);
+    t_symbol *dummy = s;
+    dummy = NULL;
 /////////////////////////////////////////////////////////////////////////////////////
     float low;
     float high;
@@ -147,4 +158,5 @@ void randf_tilde_setup(void){
     class_addmethod(randf_class, nullfn, gensym("signal"), 0);
     class_addmethod(randf_class, (t_method)randf_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(randf_class, (t_method)randf_seed, gensym("seed"), A_DEFFLOAT, 0);
+    class_addbang(randf_class, (t_method)randf_bang);
 }

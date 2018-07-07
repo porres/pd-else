@@ -1,4 +1,4 @@
-#N canvas 668 149 572 491 10;
+#N canvas 553 44 560 483 10;
 #X obj 2 3 cnv 15 301 42 empty empty randf~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -8,43 +8,52 @@
 #X obj 145 40 cnv 4 4 4 empty empty number 0 28 2 18 -233017 -1 0;
 #X obj 213 39 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
-#X obj 3 452 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 457 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 4 358 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 369 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 395 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 406 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 111 368 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 111 379 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 181 369 signal;
+#X text 181 380 signal;
 #X text 181 272 signal;
-#X obj 113 272 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 113 272 cnv 17 3 47 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 4 262 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X msg 127 172 seed \$1;
-#X obj 127 153 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X msg 134 164 seed \$1;
+#X obj 134 145 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 145 292 seed <float>;
-#X text 237 291 - sets seed value;
-#X text 237 369 - random values;
-#N canvas 1002 243 429 314 example 0;
-#X obj 110 224 else/out~;
-#X text 33 24 Generating random resonant frequencies on impulse;
-#X obj 110 181 else/resonant~ 0 3000;
-#X obj 110 77 else/imp~ 2;
-#X obj 171 147 else/display~;
-#X obj 171 115 else/randf~ 200 500;
-#X connect 2 0 0 0;
-#X connect 2 0 0 1;
-#X connect 3 0 2 0;
-#X connect 3 0 5 0;
-#X connect 4 0 2 1;
-#X connect 5 0 4 0;
+#X text 145 304 seed <float>;
+#X text 237 303 - sets seed value;
+#X text 237 380 - random values;
+#N canvas 869 227 392 406 example 0;
+#X obj 126 325 else/out~;
+#X text 50 28 Generating random resonant frequencies on impulse;
+#X obj 126 178 else/imp~ 2;
+#X obj 187 248 else/display~;
+#X obj 187 216 else/randf~ 200 500;
+#X obj 126 88 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 126 140 else/display~;
+#X obj 126 66 loadbang;
+#X obj 126 282 else/resonant~ 0 3000;
+#X obj 126 115 else/randf~ 1 3;
+#X connect 2 0 4 0;
+#X connect 2 0 8 0;
+#X connect 3 0 8 1;
+#X connect 4 0 3 0;
+#X connect 5 0 9 0;
+#X connect 6 0 2 0;
+#X connect 7 0 5 0;
+#X connect 8 0 0 0;
+#X connect 8 0 0 1;
+#X connect 9 0 6 0;
 #X restore 460 228 pd example;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -113,7 +122,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -146,22 +155,22 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
-#X text 110 404 1) list -;
-#X text 175 403 floats set random's range \, 2 floats sets minimum
+#X text 110 415 1) list -;
+#X text 175 414 floats set random's range \, 2 floats sets minimum
 and maximum - no arguments loads default values (-1 and 1). 1 float
 sets maximum value (and lowest value is set to 0).;
 #X text 71 90 [random~] generates random values for a given range when
 triggered. A trigger happens at positive to negative or negative to
 positive transitions.;
 #X text 237 271 - trigger signal;
-#X obj 111 314 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 111 325 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 111 335 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 111 346 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 144 315 float/signal;
-#X text 144 336 float/signal;
-#X text 237 315 - lowest random value;
-#X text 236 336 - highest random value;
+#X text 144 326 float/signal;
+#X text 144 347 float/signal;
+#X text 237 326 - lowest random value;
+#X text 236 347 - highest random value;
 #X obj 290 169 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 379 170 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -169,7 +178,7 @@ positive transitions.;
 #X text 297 149 low;
 #X text 390 150 high;
 #X obj 202 227 else/display~;
-#X obj 202 159 else/imp~ 5;
+#X obj 202 165 else/imp~ 5;
 #X obj 202 196 else/randf~, f 30;
 #X obj 98 40 cnv 4 4 4 empty empty float 0 28 2 18 -233017 -1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -189,6 +198,8 @@ positive transitions.;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
+#X text 193 287 bang;
+#X text 237 286 - control rate trigger;
 #X connect 13 0 36 0;
 #X connect 14 0 13 0;
 #X connect 30 0 36 1;
