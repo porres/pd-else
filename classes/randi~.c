@@ -5,10 +5,11 @@
 static t_class *randi_class;
 
 typedef struct _randi{
-    t_object        x_obj;
-    unsigned int    x_val;
-    t_int         x_randi;
-    t_float         x_lastin;
+    t_object         x_obj;
+    unsigned int     x_val;
+    t_int            x_randi;
+    t_float          x_lastin;
+    t_int            x_trig_bang;
     t_inlet         *x_low_let;
     t_inlet         *x_high_let;
     t_outlet        *x_outlet;
@@ -16,6 +17,10 @@ typedef struct _randi{
 
 static void randi_seed(t_randi *x, t_floatarg f){
     x->x_val = f;
+}
+
+static void randi_bang(t_randi *x){
+    x->x_trig_bang = 1;
 }
 
 static t_int *randi_perform(t_int *w){
@@ -29,7 +34,6 @@ static t_int *randi_perform(t_int *w){
     t_int randi = x->x_randi;
     t_float lastin = x->x_lastin;
     while (nblock--){
-        t_float output;
         float trig = *in1++;
         float input2 = *in2++;
         float input3 = *in3++;
@@ -43,13 +47,23 @@ static t_int *randi_perform(t_int *w){
         int range = out_high - out_low; // range
         if (range == 0)
             randi = out_low;
-        else if (trig > 0 && lastin <= 0 || trig < 0 && lastin >= 0 ){ // update
-            randi = ((double)range) * ((double)val) * (1./4294967296.);
-            val = val * 472940017 + 832416023;
-            if (randi > range)
-                randi = range;
-            randi += out_low;
+        else{
+            t_int trigger = 0;
+            if(x->x_trig_bang){
+                trigger = 1;
+                x->x_trig_bang = 0;
             }
+            else
+                trigger = (trig > 0 && lastin <= 0) || (trig < 0 && lastin >= 0);
+            if(trigger){ // update
+                randi = ((double)range) * ((double)val) * (1./4294967296.);
+                val = val * 472940017 + 832416023;
+                if(randi > range)
+                    randi = range;
+                randi += out_low;
+            }
+            
+        }
         *out++ = randi;
         lastin = trig;
         }
@@ -73,6 +87,8 @@ static void *randi_free(t_randi *x){
 
 static void *randi_new(t_symbol *s, int ac, t_atom *av){
     t_randi *x = (t_randi *)pd_new(randi_class);
+    t_symbol *dummy = s;
+    dummy = NULL;
 /////////////////////////////////////////////////////////////////////////////////////
     float low;
     float high;
@@ -136,4 +152,5 @@ void randi_tilde_setup(void){
     class_addmethod(randi_class, nullfn, gensym("signal"), 0);
     class_addmethod(randi_class, (t_method)randi_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(randi_class, (t_method)randi_seed, gensym("seed"), A_DEFFLOAT, 0);
+    class_addbang(randi_class, (t_method)randi_bang);
 }
