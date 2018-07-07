@@ -106,6 +106,7 @@ fold.class.sources := classes/fold.c
 fold~.class.sources := classes/fold~.c
 freqshift~.class.sources := classes/freqshift~.c
 gbman~.class.sources := classes/gbman~.c
+gate~.class.sources := classes/gate~.c
 gate2imp~.class.sources := classes/gate2imp~.c
 glide~.class.sources := classes/glide~.c
 glide2~.class.sources := classes/glide2~.c
