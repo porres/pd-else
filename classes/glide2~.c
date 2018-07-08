@@ -98,9 +98,8 @@ static void *glide2_new(t_symbol *s, int argc, t_atom *argv)
 
 void glide2_tilde_setup(void){
     glide2_class = class_new(gensym("glide2~"), (t_newmethod)glide2_new, 0,
-            sizeof(t_glide2), CLASS_DEFAULT, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(glide_class, t_glide2, x_in);
+            sizeof(t_glide2), 0, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(glide2_class, t_glide2, x_in);
     class_addmethod(glide2_class, (t_method)glide2_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(glide2_class, nullfn, gensym("signal"), 0);
     class_addmethod(glide2_class, (t_method)glide2_reset, gensym("reset"), 0);
 }

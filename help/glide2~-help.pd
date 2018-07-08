@@ -11,7 +11,6 @@
 ;
 #X obj 129 376 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 191 376 signal;
 #X text 191 455 signal;
 #X obj 23 40 cnv 4 4 4 empty empty Exponential 0 28 2 18 -233017 -1
 0;
@@ -21,10 +20,10 @@
 #X text 155 419 float/signal;
 #X obj 184 294 else/out~;
 #X obj 227 250 *~;
-#X obj 155 167 else/brown~;
+#X obj 158 173 else/brown~;
 #X text 240 394 - clears filter's memory;
 #X obj 304 247 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 9808 1;
+-1 -1 4180 1;
 #X obj 304 219 else/sig2float~;
 #X text 327 340 0;
 #X text 327 241 1;
@@ -52,7 +51,7 @@
 #X connect 2 0 3 0;
 #X connect 3 0 7 0;
 #X connect 7 0 0 0;
-#X restore 462 319 pd example;
+#X restore 463 328 pd example;
 #X text 61 86 [glide2~] is a one pole filter that creates an exponential
 glide/portamento for its signal input changes. The glide time in ms
 is how long it takes for the signal to converge to within 0.01% of
@@ -76,10 +75,11 @@ the target value.;
 0;
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
+#X text 155 376 float/signal;
+#X connect 12 0 11 0;
+#X connect 12 0 11 1;
 #X connect 13 0 12 0;
-#X connect 13 0 12 1;
-#X connect 14 0 13 0;
-#X connect 17 0 16 0;
-#X connect 22 0 29 0;
-#X connect 29 0 13 1;
-#X connect 29 0 17 0;
+#X connect 16 0 15 0;
+#X connect 21 0 28 0;
+#X connect 28 0 12 1;
+#X connect 28 0 16 0;
