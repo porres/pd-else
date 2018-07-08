@@ -7,11 +7,12 @@
 
 typedef struct _glide2 {
     t_object    x_obj;
+    t_float     x_in;
     t_inlet    *x_inlet_ms;
     t_outlet   *x_out;
     t_float     x_sr_khz;
-    double  x_ynm1;
-    } t_glide2;
+    double      x_ynm1;
+}t_glide2;
 
 static t_class *glide2_class;
 
@@ -95,10 +96,10 @@ static void *glide2_new(t_symbol *s, int argc, t_atom *argv)
         return NULL;
 }
 
-void glide2_tilde_setup(void)
-{
+void glide2_tilde_setup(void){
     glide2_class = class_new(gensym("glide2~"), (t_newmethod)glide2_new, 0,
-        sizeof(t_glide2), CLASS_DEFAULT, A_GIMME, 0);
+            sizeof(t_glide2), CLASS_DEFAULT, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(glide_class, t_glide2, x_in);
     class_addmethod(glide2_class, (t_method)glide2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(glide2_class, nullfn, gensym("signal"), 0);
     class_addmethod(glide2_class, (t_method)glide2_reset, gensym("reset"), 0);

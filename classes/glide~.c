@@ -15,7 +15,7 @@ typedef struct _glide{
     double   x_incr;
     int      x_nleft;
     int      x_reset;
-} t_glide;
+}t_glide;
 
 
 static void glide_reset(t_glide *x){

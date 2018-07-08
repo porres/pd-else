@@ -1,6 +1,6 @@
 #N canvas 515 62 558 511 10;
 #X obj 204 158 noise~;
-#X obj 301 163 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
+#X obj 301 163 hsl 128 15 10 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 182 252 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty downsample~ 20 20 2 37 -233017
@@ -35,15 +35,15 @@
 #X text 215 376 - rate (in hertz) used to downsample the input signal
 ;
 #X obj 298 187 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 10 256;
 #N canvas 357 108 802 350 example 0;
 #X obj 199 192 else/sh~;
 #X obj 147 109 noise~;
 #X obj 247 97 hsl 128 15 -44100 44100 0 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 6400 1;
+10 -228856 -1 -1 12700 1;
 #X obj 199 247 else/out~;
 #X obj 244 126 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 347.244 256;
+-228856 -1 -1 44100 256;
 #X obj 518 141 noise~;
 #X obj 572 93 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;

@@ -138,7 +138,7 @@ void downsample_tilde_setup(void)
         (t_method)downsample_free,
         sizeof(t_downsample),
         CLASS_DEFAULT,
-        A_GIME,
+        A_GIMME,
         0);
     class_addmethod(downsample_class, nullfn, gensym("signal"), 0);
     class_addmethod(downsample_class, (t_method)downsample_dsp, gensym("dsp"), A_CANT, 0);
