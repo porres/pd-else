@@ -43,7 +43,7 @@ static t_int *decay2_perform(t_int *w){
         double a1, a2, yn1, yn2;
         if(x->x_flag){
             xn = x->x_f;
-            x-x_flag = 0;
+            x->x_flag = 0;
         }
         if (attack <= 0)
             yn1 = 0;
