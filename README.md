@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (252 objects):
+##Current Object list (253 objects):
 
 **ASSORTED: [2]**
 - [nbang]
@@ -153,7 +153,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [dec2hex]
 - [car2pol]
 - [car2pol~]
-- [cents2rato]
+- [cents2ratio]
 - [cents2ratio~]
 - [db2lin]
 - [db2lin~]
@@ -290,13 +290,14 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [15]**
+**CONTROL: [16]**
  - [adsr~]
  - [asr~]
  - [autofade~]
  - [autofade2~]
  - [decay~]
  - [decay2~]
+ - [envelope~]
  - [fader~]
  - [glide~]
  - [glide2~]
