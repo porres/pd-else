@@ -8,7 +8,6 @@ static t_class *hz2rad_class;
 typedef struct _hz2rad
 {
   t_object x_obj;
-  t_float   x_radps;
   t_outlet *float_outlet;
   t_int bytes;
   t_atom *output_list;
@@ -30,7 +29,8 @@ static void hz2rad_float(t_hz2rad *x, t_floatarg f)
 }
 
 static t_float convert(t_hz2rad *x, t_float f){
-    return f * x->x_radps;
+    float radps = 2 * M_PI / sys_getsr();
+    return f * radps;
 }
 
 static void hz2rad_list(t_hz2rad *x, t_symbol *s, int argc, t_atom *argv)
@@ -56,7 +56,6 @@ static void hz2rad_bang(t_hz2rad *x)
 static void *hz2rad_new(t_floatarg f1)
 {
   t_hz2rad *x = (t_hz2rad *) pd_new(hz2rad_class);
-  x->x_radps = 2 * M_PI / sys_getsr();
   x->f = f1;
   x->float_outlet = outlet_new(&x->x_obj, 0);
   x->bytes = sizeof(t_atom);

@@ -3,6 +3,8 @@
 #include "m_pd.h"
 #include <math.h>
 
+#define TWO_PI (2 * M_PI)
+
 static t_class *rad2hz_class;
 
 typedef struct _rad2hz
@@ -30,7 +32,7 @@ static void rad2hz_float(t_rad2hz *x, t_floatarg f)
 
 static t_float convert(t_rad2hz *x, t_float f)
 {
-    iradps = sys_getsr() / (2 * M_PI);
+    t_float iradps = sys_getsr() / TWO_PI;
     return f * iradps;
 }
 
