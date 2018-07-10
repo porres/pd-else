@@ -44,11 +44,10 @@
 #X restore 478 331 pd rpole~;
 #X text 240 428 - clears filter's memory;
 #X obj 325 248 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 554 1;
+-1 -1 166 1;
 #X obj 325 220 else/sig2float~;
 #X text 348 341 0;
 #X text 348 242 1;
-#X obj 263 159 else/imp~ 0.5;
 #X obj 263 189 else/decay~ 4000;
 #X text 239 449 - decay time in ms;
 #X text 240 486 - decayed signal;
@@ -58,30 +57,35 @@
 impulse \, thus turning an impulse signal into a decay envelope. The
 decay time is how long it takes for the signal to decay 60dB \, and
 it's given in ms., f 63;
-#N canvas 544 265 686 422 control 0;
-#X obj 104 306 else/out~;
-#X obj 147 262 *~;
-#X obj 224 259 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 0 1;
-#X obj 224 231 else/sig2float~;
-#X text 247 352 0;
-#X text 247 253 1;
-#X obj 162 170 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 544 265 662 364 control 0;
+#X obj 102 249 else/out~;
+#X obj 145 205 *~;
+#X obj 222 202 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 200 1;
+#X obj 222 174 else/sig2float~;
+#X text 245 295 0;
+#X text 245 196 1;
+#X obj 160 113 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 162 200 else/decay~ 4000;
-#X obj 85 200 else/gray~;
-#X obj 409 316 else/out~;
-#X obj 452 272 *~;
-#X obj 529 269 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+#X obj 160 143 else/decay~ 4000;
+#X obj 83 143 else/gray~;
+#X obj 366 271 else/out~;
+#X obj 409 227 *~;
+#X obj 486 224 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
 -1 -1 0 1;
-#X obj 529 241 else/sig2float~;
-#X text 552 362 0;
-#X text 552 263 1;
-#X obj 467 210 else/decay~ 4000;
-#X obj 390 210 else/gray~;
-#X msg 467 169 1;
-#X msg 501 169 0.5;
-#X msg 541 169 0.1;
+#X obj 486 196 else/sig2float~;
+#X text 509 317 0;
+#X text 509 218 1;
+#X obj 424 165 else/decay~ 4000;
+#X obj 347 165 else/gray~;
+#X msg 424 124 1;
+#X msg 458 124 0.5;
+#X msg 498 124 0.1;
+#X obj 397 123 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 143 36 [decay~] can also be used with control rate objects
+\, such as bangs and float input. a bang will trigger the object with
+the last received float input (which is 1 by default).;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 3 0 2 0;
@@ -98,6 +102,7 @@ it's given in ms., f 63;
 #X connect 17 0 15 0;
 #X connect 18 0 15 0;
 #X connect 19 0 15 0;
+#X connect 20 0 15 0;
 #X restore 472 307 pd control;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -121,10 +126,11 @@ it's given in ms., f 63;
 #X text 240 377 - control trigger;
 #X text 197 393 float;
 #X text 240 393 - control trigger;
+#X obj 263 159 else/dust~ 1;
 #X connect 16 0 15 0;
 #X connect 16 0 15 1;
 #X connect 17 0 16 0;
 #X connect 21 0 20 0;
-#X connect 24 0 25 0;
-#X connect 25 0 16 1;
-#X connect 25 0 21 0;
+#X connect 24 0 16 1;
+#X connect 24 0 21 0;
+#X connect 43 0 24 0;

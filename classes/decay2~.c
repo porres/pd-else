@@ -19,7 +19,7 @@ typedef struct _decay2{
 
 static t_class *decay2_class;
 
-static void decay2_bang(t_decay *x){
+static void decay2_bang(t_decay2 *x){
     x->x_flag = 1;
 }
 
@@ -83,6 +83,7 @@ static void *decay2_new(t_symbol *s, int argc, t_atom *argv)
     t_decay2 *x = (t_decay2 *)pd_new(decay2_class);
     float attack = 100;
     float decay = 1000;
+    x->x_f = 1.;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
     while(argc > 0)
