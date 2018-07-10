@@ -44,7 +44,7 @@
 #X restore 478 331 pd rpole~;
 #X text 240 428 - clears filter's memory;
 #X obj 325 248 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 166 1;
+-1 -1 849 1;
 #X obj 325 220 else/sig2float~;
 #X text 348 341 0;
 #X text 348 242 1;
@@ -61,7 +61,7 @@ it's given in ms., f 63;
 #X obj 102 249 else/out~;
 #X obj 145 205 *~;
 #X obj 222 202 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 200 1;
+-1 -1 0 1;
 #X obj 222 174 else/sig2float~;
 #X text 245 295 0;
 #X text 245 196 1;
@@ -72,7 +72,7 @@ it's given in ms., f 63;
 #X obj 366 271 else/out~;
 #X obj 409 227 *~;
 #X obj 486 224 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 0 1;
+-1 -1 130 1;
 #X obj 486 196 else/sig2float~;
 #X text 509 317 0;
 #X text 509 218 1;
@@ -81,11 +81,11 @@ it's given in ms., f 63;
 #X msg 424 124 1;
 #X msg 458 124 0.5;
 #X msg 498 124 0.1;
-#X obj 397 123 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
 #X text 143 36 [decay~] can also be used with control rate objects
 \, such as bangs and float input. a bang will trigger the object with
 the last received float input (which is 1 by default).;
+#X obj 395 122 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 3 0 2 0;
@@ -102,7 +102,7 @@ the last received float input (which is 1 by default).;
 #X connect 17 0 15 0;
 #X connect 18 0 15 0;
 #X connect 19 0 15 0;
-#X connect 20 0 15 0;
+#X connect 21 0 15 0;
 #X restore 472 307 pd control;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;

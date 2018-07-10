@@ -28,8 +28,7 @@ static void decay2_float(t_decay2 *x, t_float f){
     x->x_flag = 1;
 }
 
-static t_int *decay2_perform(t_int *w)
-{
+static t_int *decay2_perform(t_int *w){
     t_decay2 *x = (t_decay2 *)(w[1]);
     int nblock = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
@@ -39,14 +38,16 @@ static t_int *decay2_perform(t_int *w)
     double last1 = x->x_last1;
     double last2 = x->x_last2;
     t_float sr_khz = x->x_sr_khz;
-    while (nblock--)
-    {
+    while (nblock--){
         double xn = *in1++, attack = *in2++, decay = *in3++;
         double a1, a2, yn1, yn2;
-        
+        if(x->x_flag){
+            xn = x->x_f;
+            x-x_flag = 0;
+        }
         if (attack <= 0)
             yn1 = 0;
-        else {
+        else{
             a1 = exp(LOG001 / (attack * sr_khz));
             yn1 = xn + a1 * last1;
             last1 = yn1;
