@@ -40,9 +40,9 @@
 #N canvas 823 159 457 411 width 0;
 #X obj 64 253 else/out~;
 #X obj 137 82 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12700 1;
+-1 -1 0 1;
 #X obj 134 107 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+-228856 -1 -1 -1 256;
 #X obj 134 132 else/float2sig~ 10;
 #X obj 181 213 else/graph~ 300 43;
 #X obj 107 162 else/vsaw~ 200;
@@ -213,14 +213,14 @@ according to the width parameter.;
 #X obj 740 327 else/tri~;
 #X text 125 23 Width = 0;
 #X text 432 19 Width = 0.5;
-#X text 41 301 The start and end of the cycle is always an amplitude
-value of "-1" for all waveforms \, except when the width parameter
-is = 0 \, which is the default and when the waveform is the same of
-[sawtooth~] \, (see "\$0-saw1" above on the left)., f 54;
 #X text 486 266 For a parameter of "0.5" \, the waveform is similar
 to [triangular~] \, (see "\$0-default-triangle" above in the middle).
 Note that they have a phase difference of 0.25 between each other.
 ;
+#X text 41 301 The start and end of the cycle is always an amplitude
+value of "-1" for all waveforms \, except when the width parameter
+is = 0 \, which is the default and when the waveform is the same of
+[saw~] \, (see "\$0-saw1" above on the left)., f 54;
 #X restore 477 172 pd waveform;
 #X obj 98 40 cnv 4 4 4 empty empty sawtooth-triangle 0 28 2 18 -233017
 -1 0;
@@ -389,10 +389,10 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X msg 189 140 1;
 #X msg 111 140 0.5;
 #X obj 258 250 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 4630 1;
+-1 -1 2456 1;
 #X obj 82 221 else/sig2float~;
 #X obj 82 252 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 4630 1;
+-1 -1 2456 1;
 #X obj 82 191 else/vsaw~ 1 1;
 #X obj 258 200 else/vsaw~ 1 1;
 #X obj 522 229 else/vsaw~ 200 0.75;

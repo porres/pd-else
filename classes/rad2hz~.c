@@ -3,6 +3,8 @@
 #include "m_pd.h"
 #include <math.h>
 
+#define TWO_PI (2 * M_PI)
+
 static t_class *rad2hz_class;
 
 typedef struct _rad2hz {
@@ -30,7 +32,8 @@ static t_int * rad2hz_perform(t_int *w)
 
 static void rad2hz_dsp(t_rad2hz *x, t_signal **sp)
 {
-  dsp_add(rad2hz_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
+    x->x_iradps = sp[0]->s_sr / TWO_PI;
+    dsp_add(rad2hz_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
 }
 
 void *rad2hz_new(void)
