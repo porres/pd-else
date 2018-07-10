@@ -38,28 +38,35 @@ static t_int *decay2_perform(t_int *w){
     double last1 = x->x_last1;
     double last2 = x->x_last2;
     t_float sr_khz = x->x_sr_khz;
-    while (nblock--){
-        double xn = *in1++, attack = *in2++, decay = *in3++;
-        double a1, a2, yn1, yn2;
+    while(nblock--){
+        double a1, a2, yn1, yn2, n, a, b, t, xn = *in1++, attack = *in2++, decay = *in3++;
         if(x->x_flag){
             xn = x->x_f;
             x->x_flag = 0;
         }
-        if (attack <= 0)
+        if(attack <= 0)
             yn1 = 0;
         else{
             a1 = exp(LOG001 / (attack * sr_khz));
             yn1 = xn + a1 * last1;
             last1 = yn1;
-            }
+            a = 1000 * log(1000) / attack;
+        }
         if (decay <= 0)
             yn2 = xn;
-        else {
+        else{
             a2 = exp(LOG001 / (decay * sr_khz));
             yn2 = xn + a2 * last2;
             last2 = yn2;
-            }
-        *out++ = yn2 - yn1;
+            b = 1000 * log(1000) / decay;
+        }
+        if(attack > 0 && decay > 0){
+            t = log(a/b) / (a-b);
+            n = fabs(1/(exp(-b*t) - exp(-a*t)));
+            *out++ = (yn2 - yn1) * n;
+        }
+        else
+            *out++ = yn2 - yn1;
     }
     x->x_last1 = last1;
     x->x_last2 = last2;
@@ -79,8 +86,9 @@ static void decay2_clear(t_decay2 *x)
     x->x_last2 = 0.;
 }
 
-static void *decay2_new(t_symbol *s, int argc, t_atom *argv)
-{
+static void *decay2_new(t_symbol *s, int argc, t_atom *argv){
+    t_symbol *dummy = s;
+    dummy = NULL;
     t_decay2 *x = (t_decay2 *)pd_new(decay2_class);
     float attack = 100;
     float decay = 1000;

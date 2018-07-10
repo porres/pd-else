@@ -1,4 +1,4 @@
-#N canvas 508 131 565 576 10;
+#N canvas 574 89 565 576 10;
 #X obj 4 330 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 468 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -21,11 +21,11 @@
 #X obj 129 421 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 155 421 float/signal;
-#X obj 175 259 else/out~;
-#X obj 218 215 *~;
-#X obj 295 184 else/sig2float~;
-#X text 318 206 1;
-#X obj 146 157 osc~ 440;
+#X obj 175 263 else/out~;
+#X obj 218 219 *~;
+#X obj 295 188 else/sig2float~;
+#X text 321 210 1;
+#X obj 146 161 osc~ 440;
 #X text 185 507 1) float - attack in ms (default 100);
 #X text 239 420 - attack time in ms;
 #X obj 129 443 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
@@ -34,21 +34,25 @@
 #X text 239 442 - decay time in ms;
 #X text 240 477 - decayed signal;
 #X text 185 525 1) float - decay in ms (default 1000);
-#N canvas 551 48 508 454 more 0;
-#X obj 153 224 *~;
-#X obj 114 143 osc~ 440;
-#X obj 199 115 else/decay~ 500;
-#X obj 184 149 else/decay~ 2000;
-#X obj 184 78 else/imp~ 1;
-#X obj 184 183 -~;
-#X obj 153 263 else/out~;
-#X text 297 115 attack;
-#X text 292 150 release;
-#X text 49 34 [decay2~] can be implemented with two [decay~] objects
-like this:;
-#X text 36 349 Note: if the attack time is equal to the decay time
+#N canvas 551 48 509 477 more 0;
+#X obj 194 218 *~;
+#X obj 155 137 osc~ 440;
+#X obj 240 109 else/decay~ 500;
+#X obj 225 143 else/decay~ 2000;
+#X obj 225 72 else/imp~ 1;
+#X obj 225 177 -~;
+#X obj 194 257 else/out~;
+#X text 338 109 attack;
+#X text 333 144 release;
+#X text 71 342 Note: if the attack time is equal to the decay time
 \, then the signal cancels out. Moreover \, if the attack time is greater
-than the decay time \, then the polarity is inverted.;
+than the decay time \, then the polarity is inverted., f 62;
+#X text 66 25 [decay2~] is derived from the difference of two [decay~]
+objects \, like this:, f 62;
+#X text 70 385 Note also that \, unlike in the patch above \, the output
+is normalized according to the impulse. Therefore \, if you feed it
+an impulse of "1" \, as above \, the maximum amplitude will be 1 as
+well!, f 62;
 #X connect 0 0 6 0;
 #X connect 0 0 6 1;
 #X connect 1 0 0 0;
@@ -58,9 +62,8 @@ than the decay time \, then the polarity is inverted.;
 #X connect 4 0 2 0;
 #X connect 5 0 0 1;
 #X restore 489 269 pd more;
-#X obj 295 212 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 89 1;
-#X text 318 305 0;
+#X obj 295 216 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 4545 1;
 #X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -78,7 +81,7 @@ than the decay time \, then the polarity is inverted.;
 0;
 #X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 233 153 else/decay2~ 100 1000;
+#X obj 233 157 else/decay2~ 100 1000;
 #X obj 129 341 cnv 17 3 65 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 191 375 signal;
@@ -87,43 +90,44 @@ than the decay time \, then the polarity is inverted.;
 #X text 197 342 float;
 #X text 240 375 - impulse trigger;
 #X text 240 342 - control trigger;
-#X text 197 358 float;
 #X text 240 358 - control trigger;
-#X text 61 85 [decay2~] is like [decay~] \, but it has an attack time
+#X text 82 85 [decay2~] is like [decay~] \, but it has an attack time
 parameter. It is based on SuperCollider's "Decay2" UGEN.;
-#N canvas 645 327 662 364 control 0;
-#X obj 102 249 else/out~;
-#X obj 145 205 *~;
-#X obj 222 202 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+#N canvas 608 162 627 364 control 0;
+#X obj 88 234 else/out~;
+#X obj 131 190 *~;
+#X obj 208 187 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
 -1 -1 0 1;
-#X obj 222 174 else/sig2float~;
-#X text 245 295 0;
-#X text 245 196 1;
-#X obj 160 113 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 208 159 else/sig2float~;
+#X text 231 280 0;
+#X text 231 181 1;
+#X obj 146 98 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 69 128 else/gray~;
+#X obj 352 256 else/out~;
+#X obj 395 212 *~;
+#X obj 472 209 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 4950 1;
+#X obj 472 181 else/sig2float~;
+#X text 497 252 0;
+#X text 497 203 1;
+#X obj 333 150 else/gray~;
+#X msg 410 109 1;
+#X msg 444 109 0.5;
+#X msg 484 109 0.1;
+#X obj 381 107 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 83 143 else/gray~;
-#X obj 366 271 else/out~;
-#X obj 409 227 *~;
-#X obj 486 224 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 0 1;
-#X obj 486 196 else/sig2float~;
-#X text 509 317 0;
-#X text 509 218 1;
-#X obj 347 165 else/gray~;
-#X msg 424 124 1;
-#X msg 458 124 0.5;
-#X msg 498 124 0.1;
-#X obj 395 122 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 143 36 [decay2~] can also be used with control rate objects
-\, such as bangs and float input. a bang will trigger the object with
+#X obj 146 128 else/decay2~ 1000 4000;
+#X obj 410 150 else/decay2~ 1000 4000;
+#X msg 521 109 -1;
+#X text 491 302 -1;
+#X text 125 25 [decay2~] can also be used with control rate messages
+\, such as bangs and float input. A bang will trigger the object with
 the last received float input (which is 1 by default).;
-#X obj 424 165 else/decay2~ 100 4000;
-#X obj 160 143 else/decay2~ 100 4000;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 3 0 2 0;
-#X connect 6 0 21 0;
+#X connect 6 0 19 0;
 #X connect 7 0 1 0;
 #X connect 9 0 8 0;
 #X connect 9 0 8 1;
@@ -133,16 +137,20 @@ the last received float input (which is 1 by default).;
 #X connect 16 0 20 0;
 #X connect 17 0 20 0;
 #X connect 18 0 20 0;
+#X connect 19 0 1 1;
+#X connect 19 0 3 0;
 #X connect 20 0 9 1;
 #X connect 20 0 11 0;
-#X connect 21 0 1 1;
-#X connect 21 0 3 0;
+#X connect 21 0 20 0;
 #X restore 470 291 pd control;
-#X obj 233 123 else/dust~ 1;
+#X text 203 358 bang;
+#X obj 233 127 else/randpulse~ 1 0;
+#X text 321 260 0;
+#X text 315 309 -1;
 #X connect 13 0 12 0;
 #X connect 13 0 12 1;
 #X connect 14 0 25 0;
 #X connect 16 0 13 0;
-#X connect 35 0 13 1;
-#X connect 35 0 14 0;
-#X connect 47 0 35 0;
+#X connect 34 0 13 1;
+#X connect 34 0 14 0;
+#X connect 46 0 34 0;

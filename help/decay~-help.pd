@@ -1,18 +1,18 @@
-#N canvas 436 53 562 568 10;
-#X obj 4 368 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 573 58 560 545 10;
+#X obj 4 348 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 477 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 457 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 510 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 490 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 539 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 519 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 129 486 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 466 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 129 376 cnv 17 3 65 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 356 cnv 17 3 65 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 191 410 signal;
-#X text 191 486 signal;
+#X text 191 390 signal;
+#X text 191 466 signal;
 #X obj 2 3 cnv 15 301 42 empty empty decay~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -21,14 +21,14 @@
 #X obj 23 40 cnv 4 4 4 empty empty Exponential 0 28 2 18 -233017 -1
 0;
 #X obj 117 40 cnv 4 4 4 empty empty decay 0 28 2 18 -233017 -1 0;
-#X obj 129 450 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 129 430 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 155 450 float/signal;
-#X text 197 428 clear;
-#X obj 205 295 else/out~;
-#X obj 248 251 *~;
-#X obj 166 189 else/brown~;
-#N canvas 950 214 406 211 rpole~ 0;
+#X text 155 430 float/signal;
+#X text 197 408 clear;
+#X obj 177 279 else/out~;
+#X obj 220 235 *~;
+#X obj 151 164 else/brown~;
+#N canvas 813 279 406 211 rpole~ 0;
 #X obj 55 136 rpole~;
 #X floatatom 88 78 5 1 1000 0 - - -, f 5;
 #X obj 88 109 expr exp(ln(0.001) / ($f1 * $f2));
@@ -41,22 +41,15 @@
 #X connect 2 0 0 1;
 #X connect 2 0 5 0;
 #X connect 7 0 2 1;
-#X restore 478 331 pd rpole~;
-#X text 240 428 - clears filter's memory;
-#X obj 325 248 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 849 1;
-#X obj 325 220 else/sig2float~;
-#X text 348 341 0;
-#X text 348 242 1;
-#X obj 263 189 else/decay~ 4000;
-#X text 239 449 - decay time in ms;
-#X text 240 486 - decayed signal;
-#X text 185 516 1) float - time in ms (default 1000);
-#X text 64 86 [decay~] is a one pole filter based on SuperCollider's
-"Decay" UGEN. It creates an exponential decay when triggered by an
-impulse \, thus turning an impulse signal into a decay envelope. The
-decay time is how long it takes for the signal to decay 60dB \, and
-it's given in ms., f 63;
+#X restore 478 311 pd rpole~;
+#X text 240 408 - clears filter's memory;
+#X obj 297 232 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 4945 1;
+#X obj 297 204 else/sig2float~;
+#X text 320 226 1;
+#X text 239 429 - decay time in ms;
+#X text 240 466 - decayed signal;
+#X text 185 496 1) float - time in ms (default 1000);
 #N canvas 544 265 662 364 control 0;
 #X obj 102 249 else/out~;
 #X obj 145 205 *~;
@@ -71,21 +64,23 @@ it's given in ms., f 63;
 #X obj 83 143 else/gray~;
 #X obj 366 271 else/out~;
 #X obj 409 227 *~;
-#X obj 486 224 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 130 1;
+#X obj 486 224 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 4950 1;
 #X obj 486 196 else/sig2float~;
-#X text 509 317 0;
-#X text 509 218 1;
+#X text 512 218 1;
 #X obj 424 165 else/decay~ 4000;
 #X obj 347 165 else/gray~;
 #X msg 424 124 1;
 #X msg 458 124 0.5;
-#X msg 498 124 0.1;
-#X text 143 36 [decay~] can also be used with control rate objects
-\, such as bangs and float input. a bang will trigger the object with
-the last received float input (which is 1 by default).;
-#X obj 395 122 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X msg 497 124 0.1;
+#X obj 396 123 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
+#X text 143 36 [decay~] can also be used with control rate messages
+\, such as bangs and float input. A bang will trigger the object with
+the last received float input (which is 1 by default).;
+#X text 512 266 0;
+#X text 506 317 -1;
+#X msg 537 124 -1;
 #X connect 1 0 0 0;
 #X connect 1 0 0 1;
 #X connect 3 0 2 0;
@@ -96,14 +91,15 @@ the last received float input (which is 1 by default).;
 #X connect 10 0 9 0;
 #X connect 10 0 9 1;
 #X connect 12 0 11 0;
-#X connect 15 0 10 1;
-#X connect 15 0 12 0;
-#X connect 16 0 10 0;
-#X connect 17 0 15 0;
-#X connect 18 0 15 0;
-#X connect 19 0 15 0;
-#X connect 21 0 15 0;
-#X restore 472 307 pd control;
+#X connect 14 0 10 1;
+#X connect 14 0 12 0;
+#X connect 15 0 10 0;
+#X connect 16 0 14 0;
+#X connect 17 0 14 0;
+#X connect 18 0 14 0;
+#X connect 19 0 14 0;
+#X connect 23 0 14 0;
+#X restore 472 287 pd control;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -121,16 +117,23 @@ the last received float input (which is 1 by default).;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 197 377 float;
-#X text 240 410 - impulse trigger;
-#X text 240 377 - control trigger;
-#X text 197 393 float;
-#X text 240 393 - control trigger;
-#X obj 263 159 else/dust~ 1;
+#X text 197 357 float;
+#X text 240 390 - impulse trigger;
+#X text 240 357 - control trigger;
+#X text 240 373 - control trigger;
+#X obj 235 173 else/decay~ 1000;
+#X obj 235 147 else/randpulse~ 1 0;
+#X text 320 275 0;
+#X text 319 325 -1;
+#X text 64 86 [decay~] is a one pole filter based on SuperCollider's
+"Decay" UGEN. It creates an exponential decay from impulses. The decay
+time (in ms) is how long it takes for the signal to decay 60dB., f
+63;
+#X text 203 373 bang;
 #X connect 16 0 15 0;
 #X connect 16 0 15 1;
 #X connect 17 0 16 0;
 #X connect 21 0 20 0;
-#X connect 24 0 16 1;
-#X connect 24 0 21 0;
-#X connect 43 0 24 0;
+#X connect 39 0 16 1;
+#X connect 39 0 21 0;
+#X connect 40 0 39 0;
