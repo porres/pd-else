@@ -5,17 +5,28 @@
 
 #define LOG001 log(0.001)
 
-typedef struct _decay2 {
+typedef struct _decay2{
     t_object    x_obj;
     t_inlet    *x_inlet_attack;
     t_inlet    *x_inlet_decay;
     t_outlet   *x_out;
     t_float     x_sr_khz;
-    double  x_last1;
-    double  x_last2;
-    } t_decay2;
+    t_int       x_flag;
+    double      x_last1;
+    double      x_last2;
+    double      x_f;
+}t_decay2;
 
 static t_class *decay2_class;
+
+static void decay2_bang(t_decay *x){
+    x->x_flag = 1;
+}
+
+static void decay2_float(t_decay2 *x, t_float f){
+    x->x_f = (double)f;
+    x->x_flag = 1;
+}
 
 static t_int *decay2_perform(t_int *w)
 {
@@ -117,4 +128,6 @@ void decay2_tilde_setup(void)
     class_addmethod(decay2_class, (t_method)decay2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(decay2_class, nullfn, gensym("signal"), 0);
     class_addmethod(decay2_class, (t_method)decay2_clear, gensym("clear"), 0);
+    class_addfloat(decay2_class, (t_method)decay2_float);
+    class_addbang(decay2_class, (t_method)decay2_bang);
 }
