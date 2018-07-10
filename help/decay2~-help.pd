@@ -1,4 +1,4 @@
-#N canvas 574 89 565 576 10;
+#N canvas 645 130 565 576 10;
 #X obj 4 330 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 468 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -63,7 +63,7 @@ well!, f 62;
 #X connect 5 0 0 1;
 #X restore 489 269 pd more;
 #X obj 295 216 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 4545 1;
+-1 -1 4945 1;
 #X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;

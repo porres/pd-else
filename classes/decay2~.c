@@ -39,7 +39,7 @@ static t_int *decay2_perform(t_int *w){
     double last2 = x->x_last2;
     t_float sr_khz = x->x_sr_khz;
     while(nblock--){
-        double a1, a2, yn1, yn2, n, a, b, t, xn = *in1++, attack = *in2++, decay = *in3++;
+        double a1, a2, yn1, yn2, a, b, n, t, xn = *in1++, attack = *in2++, decay = *in3++;
         if(x->x_flag){
             xn = x->x_f;
             x->x_flag = 0;
