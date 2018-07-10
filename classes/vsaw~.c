@@ -50,7 +50,7 @@ static t_int *vsaw_perform_magic(t_int *w)
     while (nblock--){
         double hz = *in1++;
         double width = *in2++;
-        width = width > 1. ? 1. : width < -1. ? -1. : width; // clipped
+        width = width > 1. ? 1. : width < 0. ? 0. : width; // clipped
         double phase_offset = *in4++;
         double phase_step = hz / sr; // phase_step
         phase_step = phase_step > 0.5 ? 0.5 : phase_step < -0.5 ? -0.5 : phase_step; // clipped to nyq
@@ -62,12 +62,11 @@ static t_int *vsaw_perform_magic(t_int *w)
             phase = phase + 1.; // wrap deviated phase
         if (phase >= 1)
             phase = phase - 1.; // wrap deviated phase
-        if (width == -1)
+        if (width == 0)
             output = phase * -2 + 1;
         else if (width == 1)
             output = phase * 2 - 1;
         else{
-            width = (width + 1) * 0.5;
             t_float inc = phase * width;                   // phase * 0.5
             t_float dec = (phase - 1) * (width - 1);       //
             t_float gain = pow(width * (width - 1), -1);
@@ -99,7 +98,7 @@ static t_int *vsaw_perform(t_int *w)
     while (nblock--){
         double hz = *in1++;
         double width = *in2++;
-        width = width > 1. ? 1. : width < -1. ? -1. : width; // clipped
+        width = width > 1. ? 1. : width < 0. ? 0. : width; // clipped
         double trig = *in3++;
         double phase_offset = *in4++;
         double phase_step = hz / sr; // phase_step
@@ -119,18 +118,17 @@ static t_int *vsaw_perform(t_int *w)
                 phase = phase - 1.; // wrap deviated phase
             }
         
-        if (width == -1)
+        if (width == 0)
             output = phase * -2 + 1;
         else if (width == 1)
             output = phase * 2 - 1;
         else{
-            width = (width + 1) * 0.5;
             t_float inc = phase * width;                   // phase * 0.5
             t_float dec = (phase - 1) * (width - 1);       //
             t_float gain = pow(width * (width - 1), -1);
             t_float min = (inc < dec ? inc : dec);
             output = (min * gain) * 2 + 1;
-            }
+        }
         *out++ = output;
         phase = phase + phase_step; // next phase
         last_phase_offset = phase_offset; // last phase offset
@@ -181,11 +179,11 @@ static void *vsaw_new(t_symbol *s, int ac, t_atom *av)
     t_float init_freq = f1;
     
     t_float init_width = f2;
-    init_width < -1 ? -1 : init_width > 1 ? 1 : init_width; // clipping width input
+    init_width = init_width < 0 ? 0 : init_width > 1 ? 1 : init_width; // clipping width input
     
     t_float init_phase = f3;
-    init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
-    if (init_phase == 0 && init_freq > 0)
+    init_phase = init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
+    if(init_phase == 0 && init_freq > 0)
         x->x_phase = 1.;
     
     x->x_last_phase_offset = 0;
@@ -209,8 +207,7 @@ static void *vsaw_new(t_symbol *s, int ac, t_atom *av)
     return (x);
 }
 
-void vsaw_tilde_setup(void)
-{
+void vsaw_tilde_setup(void){
     vsaw_class = class_new(gensym("vsaw~"),
         (t_newmethod)vsaw_new, (t_method)vsaw_free,
         sizeof(t_vsaw), CLASS_DEFAULT, A_GIMME, 0);

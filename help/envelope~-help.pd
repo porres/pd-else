@@ -1,0 +1,76 @@
+#N canvas 484 48 561 483 10;
+#X obj 4 337 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 372 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 407 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 106 381 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 107 346 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 457 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Envelope 0 28 2 18 -233017 -1 0
+;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 102 40 cnv 4 4 4 empty empty waveforms 0 28 2 18 -233017 -1
+0;
+#X obj 3 3 cnv 15 301 42 empty empty envelope~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 3 graph;
+#X obj 178 177 else/graph~ 441 9;
+#X text 141 347 float/signal;
+#X text 221 347 - phase input;
+#X text 176 381 signal;
+#X text 221 381 - envelope waveform;
+#X text 161 416 1) symbol - (optional) waveform: sin (default) \, hann
+or tri;
+#X text 62 89 [envelope~] provides 3 different waveforms to be used
+as envelopes.;
+#X text 167 436 2) float - phase offset (default 0);
+#X obj 178 121 phasor~ 250;
+#N canvas 598 262 741 350 waveforms 0;
+#X obj 44 158 else/graph~ 441 9;
+#X obj 44 103 phasor~ 250;
+#X obj 264 156 else/graph~ 441 9;
+#X obj 264 101 phasor~ 250;
+#X obj 480 155 else/graph~ 441 9;
+#X obj 480 100 phasor~ 250;
+#X text 48 74 sine (default);
+#X text 262 72 triangular;
+#X text 489 74 hann;
+#X text 61 33 Waveforms;
+#X obj 44 130 else/envelope~ sin;
+#X obj 264 129 else/envelope~ tri;
+#X obj 480 128 else/envelope~ hann;
+#X obj 625 28 else/setdsp~;
+#X connect 1 0 10 0;
+#X connect 3 0 11 0;
+#X connect 5 0 12 0;
+#X connect 10 0 0 0;
+#X connect 11 0 2 0;
+#X connect 12 0 4 0;
+#X restore 468 297 pd waveforms;
+#X obj 178 149 else/envelope~ hann;
+#X obj 485 98 else/setdsp~;
+#X connect 26 0 28 0;
+#X connect 28 0 18 0;

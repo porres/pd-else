@@ -8,7 +8,6 @@ static t_class *rad2hz_class;
 typedef struct _rad2hz
 {
   t_object x_obj;
-  t_float   x_iradps;
   t_outlet *float_outlet;
   t_int bytes;
   t_atom *output_list;
@@ -31,7 +30,8 @@ static void rad2hz_float(t_rad2hz *x, t_floatarg f)
 
 static t_float convert(t_rad2hz *x, t_float f)
 {
-    return f * x->x_iradps;
+    iradps = sys_getsr() / (2 * M_PI);
+    return f * iradps;
 }
 
 static void rad2hz_list(t_rad2hz *x, t_symbol *s, int argc, t_atom *argv)
@@ -57,7 +57,6 @@ static void rad2hz_bang(t_rad2hz *x)
 static void *rad2hz_new(t_floatarg f1)
 {
   t_rad2hz *x = (t_rad2hz *) pd_new(rad2hz_class);
-  x->x_iradps = sys_getsr() / (2 * M_PI);
   x->f = f1;
   x->float_outlet = outlet_new(&x->x_obj, 0);
   x->bytes = sizeof(t_atom);
