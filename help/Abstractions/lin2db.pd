@@ -11,6 +11,7 @@
 #X obj 86 198 *;
 #X text 223 182 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 225 163 Alexandre Torres Porres (2017);
+#X obj 86 98 f \$1;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 2 0 1 0;
@@ -18,5 +19,6 @@
 #X connect 4 0 9 1;
 #X connect 5 0 8 0;
 #X connect 6 0 9 0;
-#X connect 7 0 6 0;
+#X connect 7 0 12 0;
 #X connect 9 0 5 0;
+#X connect 12 0 6 0;

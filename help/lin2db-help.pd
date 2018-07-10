@@ -1,28 +1,26 @@
-#N canvas 575 59 559 438 10;
+#N canvas 575 59 561 444 10;
 #X obj 3 293 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 327 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 347 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 364 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 384 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 82 336 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 82 356 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 83 301 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 83 301 cnv 17 3 37 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 153 373 (none);
-#X obj 3 397 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 417 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 247 202 Linear Amplitude;
 #X obj 191 176 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 188 230 else/lin2db;
 #X obj 188 202 nbx 5 14 -100 100 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
 #X obj 188 257 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 -999 256;
 #X text 249 257 dBFS;
 #X text 155 303 float;
-#X text 157 336 float;
+#X text 157 356 float;
 #X text 78 131 Conversion expression: dbFS = log10(amp) * 20 \, see
 the implementation inside the abstraction.;
 #X text 78 85 [lin2db] is a simple abstraction that converts amplitude
@@ -57,7 +55,14 @@ is "-999".;
 #X obj 223 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
 #X obj 246 40 cnv 4 4 4 empty empty dBFS 0 28 2 18 -233017 -1 0;
 #X text 206 303 - linear amplitude value;
-#X text 202 336 - converted dBFS amplitude value;
-#X connect 8 0 10 0;
-#X connect 9 0 11 0;
-#X connect 10 0 9 0;
+#X text 202 356 - converted dBFS amplitude value;
+#X obj 160 200 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 147 393 1) float - value to be converted (default 0);
+#X text 161 320 bang;
+#X text 206 320 - convert last received value;
+#X obj 188 230 else/lin2db;
+#X connect 7 0 8 0;
+#X connect 8 0 36 0;
+#X connect 32 0 36 0;
+#X connect 36 0 9 0;
