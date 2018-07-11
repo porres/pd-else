@@ -31,18 +31,17 @@
 ;
 #X obj 5 332 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 126 270 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 136 270 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 472 92 else/setdsp~;
 #X text 191 341 (none);
-#X text 158 271 float/signal - signal input;
-#X obj 126 307 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 136 307 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 207 40 cnv 4 4 4 empty empty integer 0 28 2 18 -233017 -1 0
 ;
 #X obj 145 40 cnv 4 4 4 empty empty nearest 0 28 2 18 -233017 -1 0
 ;
-#X text 194 308 signal - rounded integer signal;
+#X text 170 308 signal - rounded integer signal;
 #X text 73 89 [rint~] takes a float input and rounds it to the nearest
 integer value.;
 #X obj 110 40 cnv 4 4 4 empty empty the 0 28 2 18 -233017 -1 0;
@@ -51,6 +50,7 @@ integer value.;
 #X obj 204 157 else/display~ 8;
 #X obj 204 222 else/display~ 8;
 #X obj 204 193 else/rint~;
-#X connect 26 0 27 0;
-#X connect 27 0 29 0;
-#X connect 29 0 28 0;
+#X text 168 271 signal - signal input;
+#X connect 25 0 26 0;
+#X connect 26 0 28 0;
+#X connect 28 0 27 0;

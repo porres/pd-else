@@ -1,20 +1,17 @@
-#N canvas 463 87 567 420 10;
+#N canvas 321 109 567 420 10;
 #X obj 3 285 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 323 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 360 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 112 333 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 142 333 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 113 294 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 143 294 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 198 370 (none);
 #X obj 3 391 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 231 165 hsl 180 15 0.5 2 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X text 145 296 float/signal;
 #X text 181 333 signal;
 #X obj 3 3 cnv 15 301 42 empty empty ratio2cents~ 20 20 2 37 -233017
 -1 0;
@@ -42,11 +39,9 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 228 194 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -115,7 +110,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -152,12 +147,16 @@
 #X text 89 89 Use [ratio2cents~] to convert a signal representing a
 ratio interval to an interval in cents. The conversion formula is \;
 cents = log2(ratio) * 1200;
-#X text 185 193 Ratio;
-#X text 186 252 Cents;
 #X text 232 296 - ratio value;
 #X text 232 333 - converted cents value;
-#X obj 228 219 else/ratio2cents~;
-#X obj 228 250 else/display~;
-#X connect 7 0 22 0;
-#X connect 22 0 30 0;
-#X connect 30 0 31 0;
+#X text 184 245 Cents;
+#X obj 225 242 else/display~;
+#X obj 228 156 hsl 180 15 0.5 2 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 225 181 else/display~;
+#X text 182 184 Ratio;
+#X obj 225 214 else/ratio2cents~;
+#X text 181 296 signal;
+#X connect 27 0 28 0;
+#X connect 28 0 30 0;
+#X connect 30 0 26 0;

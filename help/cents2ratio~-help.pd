@@ -1,23 +1,20 @@
-#N canvas 430 81 561 437 10;
-#X obj 3 302 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 430 81 565 414 10;
+#X obj 3 282 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 340 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 320 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 377 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 357 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 112 350 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 143 330 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 113 311 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 143 291 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 198 387 (none);
-#X obj 3 408 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X text 198 367 (none);
+#X obj 3 388 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 191 165 hsl 180 15 -1200 1200 0 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 0 1;
-#X text 145 313 float/signal;
-#X text 232 313 - value in cents;
-#X text 232 350 - converted ratio value;
-#X text 181 350 signal;
+#X text 232 293 - value in cents;
+#X text 232 330 - converted ratio value;
+#X text 181 330 signal;
 #X obj 3 3 cnv 15 301 42 empty empty cents2ratio~ 20 20 2 37 -233017
 -1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -44,16 +41,12 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 188 194 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -1200 256;
-#X text 146 260 Ratio;
-#X text 145 193 Cents;
 #X text 109 89 Use [cents2ratio~] to convert a signal representing
 an interval in cents to an interval ratio. The conversion formula is
 \; ratio = pow(2 \, (cents/1200));
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -122,7 +115,7 @@ an interval in cents to an interval ratio. The conversion formula is
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -156,7 +149,6 @@ an interval in cents to an interval ratio. The conversion formula is
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
 #X text 195 60 (for signals);
-#X obj 188 226 else/cents2ratio~;
 #N canvas 785 258 437 401 example 0;
 #X obj 182 180 else/cents2ratio~;
 #X obj 182 138 else/rescale~ -500 700;
@@ -174,8 +166,15 @@ an interval in cents to an interval ratio. The conversion formula is
 #X connect 4 0 3 0;
 #X connect 5 0 6 0;
 #X connect 5 0 6 1;
-#X restore 462 266 pd example;
-#X obj 188 257 else/display~;
-#X connect 7 0 24 0;
-#X connect 24 0 30 0;
-#X connect 30 0 32 0;
+#X restore 472 256 pd example;
+#X obj 201 155 hsl 180 15 -1200 1200 0 0 empty empty empty -2 -8 0
+10 -228856 -1 -1 0 1;
+#X text 156 250 Ratio;
+#X text 155 186 Cents;
+#X obj 198 247 else/display~;
+#X obj 198 184 else/display~ 7;
+#X obj 198 216 else/cents2ratio~;
+#X text 181 293 signal;
+#X connect 26 0 30 0;
+#X connect 30 0 31 0;
+#X connect 31 0 29 0;

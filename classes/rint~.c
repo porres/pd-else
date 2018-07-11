@@ -7,7 +7,6 @@ static t_class *rint_class;
 
 typedef struct _rint{
     t_object x_obj;
-    t_float  x_in;
 }t_rint;
 
 static t_int * rint_perform(t_int *w){
@@ -33,7 +32,7 @@ void * rint_new(void){
 void rint_tilde_setup(void) {
     rint_class = class_new(gensym("int~"),
         (t_newmethod) rint_new, 0, sizeof(t_rint), 0, 0);
-    CLASS_MAINSIGNALIN(rint_class, t_rint, x_in);
+    class_addmethod(rint_class, nullfn, gensym("signal"), 0);
     class_addmethod(rint_class, (t_method)rint_dsp, gensym("dsp"), A_CANT, 0);
 }
 

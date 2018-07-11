@@ -7,7 +7,6 @@ static t_class *int_tilde_class;
 
 typedef struct _int_tilde{
     t_object x_obj;
-    t_float  x_in;
 }t_int_tilde;
 
 static t_int * int_tilde_perform(t_int *w){
@@ -32,8 +31,8 @@ void * int_tilde_new(void){
 
 void int_tilde_setup(void) {
     int_tilde_class = class_new(gensym("int~"),
-        (t_newmethod) int_tilde_new, 0, sizeof(t_int_tilde), 0, 0);
-    CLASS_MAINSIGNALIN(int_tilde_class, t_int_tilde, x_in);
+                (t_newmethod) int_tilde_new, 0, sizeof(t_int_tilde), 0, 0);
+    class_addmethod(int_tilde_class, nullfn, gensym("signal"), 0);
     class_addmethod(int_tilde_class, (t_method)int_tilde_dsp, gensym("dsp"), A_CANT, 0);
 }
 

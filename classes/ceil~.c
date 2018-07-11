@@ -7,7 +7,6 @@ static t_class *ceil_class;
 
 typedef struct _ceil {
   t_object x_obj;
-  t_inlet *x_inlet;
   t_outlet *x_outlet;
 } t_ceil;
 
@@ -33,14 +32,15 @@ static void ceil_dsp(t_ceil *x, t_signal **sp)
 
 void *ceil_new(void)
 {
-  t_ceil *x = (t_ceil *)pd_new(ceil_class); 
-  x->x_inlet = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
+  t_ceil *x = (t_ceil *)pd_new(ceil_class);
   x->x_outlet = outlet_new(&x->x_obj, &s_signal);
   return (void *)x;
 }
 
 void ceil_tilde_setup(void) {
   ceil_class = class_new(gensym("ceil~"),
-    (t_newmethod) ceil_new, 0, sizeof (t_ceil), CLASS_NOINLET, 0);
+    (t_newmethod) ceil_new, 0, sizeof (t_ceil), 0, 0);
+    
+  class_addmethod(ceil_class, nullfn, gensym("signal"), 0);
   class_addmethod(ceil_class, (t_method) ceil_dsp, gensym("dsp"), 0);
 }
