@@ -1,4 +1,4 @@
-#N canvas 521 23 559 399 10;
+#N canvas 521 23 575 391 10;
 #X obj 184 180 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty clipnoise~ 20 20 2 37 -233017
 -1 0;
@@ -28,20 +28,53 @@
 ;
 #X obj 3 323 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 136 295 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 156 295 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 164 295 signal;
+#X text 184 295 signal;
 #X obj 227 136 else/clipnoise~;
-#X text 126 258 (none);
-#X text 126 332 (none);
-#X text 213 296 - clipped noise;
+#X text 233 296 - clipped noise;
 #X obj 312 202 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 1 256;
 #X text 92 89 [clipnoise~] generates white noise whose values are either
 -1 or 1 This produces the maximum energy and peak to peak amplitude.
 ;
 #X obj 312 172 else/rms~;
+#X text 179 335 1) float - sets seed, f 45;
+#X obj 155 262 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 196 262 float - sets seed;
+#N canvas 559 236 694 278 seed 0;
+#X obj 368 188 else/display~;
+#X obj 518 188 else/display~;
+#X msg 518 52 507;
+#X text 549 51 <= set seed;
+#X obj 368 54 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 14 256;
+#X obj 368 110 else/clipnoise~;
+#X obj 518 110 else/clipnoise~;
+#X obj 518 147 else/downsample~ 5;
+#X obj 368 144 else/downsample~ 5;
+#X obj 48 144 else/downsample~ 1;
+#X obj 48 187 else/display~;
+#X obj 198 143 else/downsample~ 1;
+#X obj 198 187 else/display~;
+#X obj 48 106 else/clipnoise~ 1039;
+#X obj 198 106 else/clipnoise~ 1039;
+#X text 46 51 Sync [clipnoise~] objects with a seed value;
+#X connect 2 0 5 0;
+#X connect 2 0 6 0;
+#X connect 4 0 5 0;
+#X connect 4 0 6 0;
+#X connect 5 0 8 0;
+#X connect 6 0 7 0;
+#X connect 7 0 1 0;
+#X connect 8 0 0 0;
+#X connect 9 0 10 0;
+#X connect 11 0 12 0;
+#X connect 13 0 9 0;
+#X connect 14 0 11 0;
+#X restore 470 207 pd seed;
 #X connect 17 0 0 0;
 #X connect 17 0 0 1;
-#X connect 17 0 23 0;
-#X connect 23 0 21 0;
+#X connect 17 0 21 0;
+#X connect 21 0 19 0;

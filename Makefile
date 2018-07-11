@@ -220,6 +220,7 @@ noise := shared/random.c
     brown~.class.sources := classes/brown~.c $(noise)
     gray~.class.sources := classes/gray~.c $(noise)
     pinknoise~.class.sources := classes/pinknoise~.c $(noise)
+    clipnoise~.class.sources := classes/clipnoise~.c $(noise)
 
 midi := \
     shared/mifi.c \
