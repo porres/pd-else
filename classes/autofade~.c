@@ -205,7 +205,7 @@ static void autofade_free(t_autofade *x){
 
 static void autofade_dsp(t_autofade *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    size_t i, vecsize;
+    size_t vecsize;
     t_int* vec;
 // Free memory if temp vector's been allocated
     autofade_free(x);
@@ -221,7 +221,7 @@ static void autofade_dsp(t_autofade *x, t_signal **sp){
             vec[2] = (t_int)sp[0]->s_n;
             vec[3] = (t_int)sp[0]->s_vec;
             vec[4] = (t_int)x->x_temp;
-            for(i = 0; i < x->x_channels * 2; ++i)
+            for(long i = 0; i < x->x_channels * 2; ++i)
                 vec[i+5] = (t_int)sp[i+1]->s_vec;
             dsp_addv(autofade_perform, vecsize, vec);
             freebytes(vec, vecsize * sizeof(*vec));
@@ -236,12 +236,14 @@ static void autofade_dsp(t_autofade *x, t_signal **sp){
 }
 
 static void *autofade_new(t_symbol *s, int argc, t_atom *argv){
+    t_symbol *dummy = s;
+    dummy = NULL;
     int i;
     t_autofade *x = (t_autofade *)pd_new(autofade_class);
     if(x){
         x->x_sr_khz = sys_getsr() * 0.001;
         x->x_gate_status = 0.;
-        x->x_done_bang = 0;
+        x->x_done_bang = 1;
         x->x_incr = 0.;
         x->x_nleft = 0;
         x->x_coef = 0.;
