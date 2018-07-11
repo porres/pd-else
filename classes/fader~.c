@@ -222,7 +222,7 @@ void fader_tilde_setup(void){
   fader_tilde_class = class_new(gensym("fader~"), (t_newmethod)fader_tilde_new, 0,
     sizeof(t_fader_tilde), 0, A_DEFSYM, 0);
   CLASS_MAINSIGNALIN(fader_tilde_class, t_fader_tilde, x_f);
-  class_addmethod(fader_tilde_class, (t_method)fader_tilde_dsp, gensym("dsp"), 0);
+  class_addmethod(fader_tilde_class, (t_method)fader_tilde_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(fader_tilde_class, (t_method)fader_lin, gensym("lin"), 0);
     class_addmethod(fader_tilde_class, (t_method)fader_linsin, gensym("linsin"), 0);
     class_addmethod(fader_tilde_class, (t_method)fader_sqrt, gensym("sqrt"), 0);

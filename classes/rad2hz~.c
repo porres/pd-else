@@ -47,5 +47,5 @@ void rad2hz_tilde_setup(void) {
   rad2hz_class = class_new(gensym("rad2hz~"),
     (t_newmethod) rad2hz_new, 0, sizeof (t_rad2hz), 0, 0);
     class_addmethod(rad2hz_class, nullfn, gensym("signal"), 0);
-  class_addmethod(rad2hz_class, (t_method) rad2hz_dsp, gensym("dsp"), 0);
+  class_addmethod(rad2hz_class, (t_method) rad2hz_dsp, gensym("dsp"), A_CANT, 0);
 }

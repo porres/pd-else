@@ -228,7 +228,7 @@ void shaper_tilde_setup(void){
     shaper_class = class_new(gensym("shaper~"), (t_newmethod)shaper_new,
         (t_method)shaper_free,sizeof(t_shaper), 0, A_GIMME, 0);
     class_addmethod(shaper_class, nullfn, gensym("signal"), 0);
-    class_addmethod(shaper_class, (t_method)shaper_dsp, gensym("dsp"), 0);
+    class_addmethod(shaper_class, (t_method)shaper_dsp, gensym("dsp"), A_CANT,  0);
     class_addmethod(shaper_class, (t_method)shaper_list, gensym("list"), A_GIMME, 0);
     class_addmethod(shaper_class, (t_method)shaper_norm, gensym("norm"), A_DEFFLOAT, 0);
     class_addmethod(shaper_class, (t_method)shaper_dc, gensym("dc"), A_DEFFLOAT, 0);

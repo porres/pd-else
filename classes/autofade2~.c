@@ -409,7 +409,6 @@ void autofade2_tilde_setup(void){
     if(c){
         CLASS_MAINSIGNALIN(c, t_autofade2, x_f);
         class_addmethod(c, (t_method)autofade2_dsp, gensym("dsp"), A_CANT, 0);
-        
         class_addmethod(c, (t_method)autofade2_fadein, gensym("fadein"), A_DEFFLOAT, 0);
         class_addmethod(c, (t_method)autofade2_fadeout, gensym("fadeout"), A_DEFFLOAT, 0);
         class_addmethod(c, (t_method)autofade2_lin, gensym("lin"), 0);

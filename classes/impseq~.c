@@ -340,7 +340,7 @@ void impseq_tilde_setup(void){
     impseq_class = class_new(gensym("impseq~"), (t_newmethod)impseq_new,
                              (t_method)impseq_free ,sizeof(t_impseq), 0,A_GIMME,0);
     CLASS_MAINSIGNALIN(impseq_class, t_impseq, x_f);
-    class_addmethod(impseq_class,(t_method)impseq_dsp,gensym("dsp"),0);
+    class_addmethod(impseq_class,(t_method)impseq_dsp,gensym("dsp"), A_CANT, 0);
     class_addmethod(impseq_class,(t_method)impseq_mute,gensym("mute"),A_FLOAT,0);
     class_addmethod(impseq_class,(t_method)impseq_phaselock,gensym("phaselock"),A_FLOAT,0);
     class_addmethod(impseq_class,(t_method)impseq_gate,gensym("gate"),A_FLOAT,0);

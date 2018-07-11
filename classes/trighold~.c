@@ -46,5 +46,5 @@ void trighold_tilde_setup(void){
   trighold_class = class_new(gensym("trighold~"),
     (t_newmethod) trighold_new, 0, sizeof (t_trighold), CLASS_DEFAULT, 0);
   CLASS_MAINSIGNALIN(trighold_class, t_trighold, x_in);
-  class_addmethod(trighold_class, (t_method) trighold_dsp, gensym("dsp"), 0);
+  class_addmethod(trighold_class, (t_method) trighold_dsp, gensym("dsp"), A_CANT, 0);
 }

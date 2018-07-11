@@ -88,7 +88,7 @@ void nyquist_tilde_setup(void){
     nyquist_class = class_new(gensym("nyquist~"),
                               (t_newmethod)nyquist_new, 0, sizeof(t_nyquist), 0, A_GIMME, 0);
     class_addmethod(nyquist_class, nullfn, gensym("signal"), 0);
-    class_addmethod(nyquist_class, (t_method)nyquist_dsp, gensym("dsp"), 0);
+    class_addmethod(nyquist_class, (t_method)nyquist_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(nyquist_class, (t_method)nyquist_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     class_addmethod(nyquist_class, (t_method)nyquist_hz, gensym("hz"), 0);
     class_addmethod(nyquist_class, (t_method)nyquist_khz, gensym("khz"), 0);

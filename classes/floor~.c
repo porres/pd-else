@@ -38,5 +38,5 @@ void floor_tilde_setup(void) {
     floor_class = class_new(gensym("floor~"),
             (t_newmethod) floor_new, 0, sizeof(t_floor), 0, 0);
     class_addmethod(floor_class, nullfn, gensym("signal"), 0);
-    class_addmethod(floor_class, (t_method) floor_dsp, gensym("dsp"), 0);
+    class_addmethod(floor_class, (t_method) floor_dsp, gensym("dsp"), A_CANT, 0);
 }

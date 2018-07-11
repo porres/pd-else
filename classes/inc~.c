@@ -65,7 +65,7 @@ void inc_tilde_setup(void){
         (t_newmethod)inc_new, (t_method)inc_free,
         sizeof(t_inc), CLASS_DEFAULT, A_DEFFLOAT, 0);
     CLASS_MAINSIGNALIN(inc_class, t_inc, x_in);
-    class_addmethod(inc_class, (t_method) inc_dsp, gensym("dsp"), 0);
+    class_addmethod(inc_class, (t_method) inc_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(inc_class, (t_method)inc_set, gensym("set"), A_FLOAT, 0);
     class_addbang(inc_class,(t_method)inc_bang);
 }

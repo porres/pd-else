@@ -21,8 +21,10 @@ static t_int *sin_perform(t_int *w){
     while(n--){
         double f = *in++;
         if(f >= 1 || f <= -1) f = fmod(f, 1);
-        if (f == 0.5) *out++ = 0;
-        else *out++ = sin(f * TWO_PI);
+        if(f == 0.5)
+            *out++ = 0;
+        else
+            *out++ = sin(f * TWO_PI);
     }
     return(w+4);
 }
@@ -41,5 +43,5 @@ void sin_tilde_setup(void){
     sin_class = class_new(gensym("sin~"), (t_newmethod)sin_new,
         0, sizeof(t_sin), CLASS_DEFAULT, 0);
     CLASS_MAINSIGNALIN(sin_class, t_sin, x_f);
-    class_addmethod(sin_class, (t_method) sin_dsp, gensym("dsp"), 0);
+    class_addmethod(sin_class, (t_method) sin_dsp, gensym("dsp"), A_CANT,  0);
 }

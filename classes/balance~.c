@@ -65,7 +65,7 @@ void balance_tilde_setup(void)
 {
     balance_class = class_new(gensym("balance~"), (t_newmethod)balance_new,
         (t_method)balance_free, sizeof(t_balance), CLASS_DEFAULT, A_DEFFLOAT, 0);
-        class_addmethod(balance_class, nullfn, gensym("signal"), 0);
+        class_addmethod(balance_class, nullfn, gensym("signal"), A_CANT, 0);
         class_addmethod(balance_class, (t_method)balance_dsp, gensym("dsp"), A_CANT, 0);
 }
 

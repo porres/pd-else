@@ -69,5 +69,5 @@ void pulsecount_tilde_setup(void)
         (t_newmethod)pulsecount_new, (t_method)pulsecount_free,
         sizeof(t_pulsecount), CLASS_DEFAULT, 0);
     class_addmethod(pulsecount_class, nullfn, gensym("signal"), 0);
-    class_addmethod(pulsecount_class, (t_method) pulsecount_dsp, gensym("dsp"), 0);
+    class_addmethod(pulsecount_class, (t_method) pulsecount_dsp, gensym("dsp"), A_CANT, 0);
 }

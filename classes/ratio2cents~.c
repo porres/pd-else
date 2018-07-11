@@ -37,5 +37,5 @@ void ratio2cents_tilde_setup(void){
     ratio2cents_class = class_new(gensym("ratio2cents~"),
                                   (t_newmethod) ratio2cents_new, 0, sizeof (t_ratio2cents), 0, 0);
     class_addmethod(ratio2cents_class, nullfn, gensym("signal"), 0);
-    class_addmethod(ratio2cents_class, (t_method) ratio2cents_dsp, gensym("dsp"), 0);
+    class_addmethod(ratio2cents_class, (t_method) ratio2cents_dsp, gensym("dsp"), A_CANT, 0);
 }

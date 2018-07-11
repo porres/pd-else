@@ -43,5 +43,5 @@ void status_tilde_setup(void){
   status_class = class_new(gensym("status~"),
     (t_newmethod) status_new, 0, sizeof (t_status), CLASS_DEFAULT, A_DEFFLOAT, 0);
   CLASS_MAINSIGNALIN(status_class, t_status, x_in);
-  class_addmethod(status_class, (t_method) status_dsp, gensym("dsp"), 0);
+  class_addmethod(status_class, (t_method) status_dsp, gensym("dsp"), A_CANT, 0);
 }

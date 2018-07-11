@@ -69,7 +69,7 @@ void step_tilde_setup(void){
         (t_newmethod)step_new, (t_method)step_free,
         sizeof(t_step), CLASS_DEFAULT, A_DEFFLOAT, 0);
     class_addmethod(step_class, nullfn, gensym("signal"), 0);
-    class_addmethod(step_class, (t_method) step_dsp, gensym("dsp"), 0);
+    class_addmethod(step_class, (t_method) step_dsp, gensym("dsp"),A_CANT,  0);
     class_addmethod(step_class, (t_method)step_set, gensym("set"), A_FLOAT, 0);
     class_addbang(step_class,(t_method)step_bang);
 }

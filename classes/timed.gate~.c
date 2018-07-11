@@ -101,7 +101,7 @@ void setup_timed0x2egate_tilde(void){
         (t_newmethod)timed_gate_new, (t_method)timed_gate_free,
         sizeof(t_timed_gate), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(timed_gate_class, nullfn, gensym("signal"), 0);
-    class_addmethod(timed_gate_class, (t_method) timed_gate_dsp, gensym("dsp"), 0);
+    class_addmethod(timed_gate_class, (t_method) timed_gate_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(timed_gate_class, (t_method)timed_gate_retrigger, gensym("retrigger"), A_DEFFLOAT, 0);
     class_addfloat(timed_gate_class, (t_method)timed_gate_float);
     class_addbang(timed_gate_class, (t_method)timed_gate_bang);

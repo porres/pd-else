@@ -338,7 +338,7 @@ void sequencer_tilde_setup(void){
     sequencer_class = class_new(gensym("sequencer~"), (t_newmethod)sequencer_new,
                              (t_method)sequencer_free ,sizeof(t_sequencer), 0,A_GIMME,0);
     CLASS_MAINSIGNALIN(sequencer_class, t_sequencer, x_f);
-    class_addmethod(sequencer_class,(t_method)sequencer_dsp,gensym("dsp"),0);
+    class_addmethod(sequencer_class,(t_method)sequencer_dsp,gensym("dsp"), A_CANT, 0);
     class_addmethod(sequencer_class,(t_method)sequencer_mute,gensym("mute"),A_FLOAT,0);
     class_addmethod(sequencer_class,(t_method)sequencer_phaselock,gensym("phaselock"),A_FLOAT,0);
     class_addmethod(sequencer_class,(t_method)sequencer_gate,gensym("gate"),A_FLOAT,0);

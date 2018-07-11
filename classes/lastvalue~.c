@@ -62,5 +62,5 @@ void lastvalue_tilde_setup(void)
         (t_newmethod)lastvalue_new, (t_method)lastvalue_free,
         sizeof(t_lastvalue), CLASS_DEFAULT, A_DEFFLOAT, 0);
     class_addmethod(lastvalue_class, nullfn, gensym("signal"), 0);
-    class_addmethod(lastvalue_class, (t_method) lastvalue_dsp, gensym("dsp"), 0);
+    class_addmethod(lastvalue_class, (t_method) lastvalue_dsp, gensym("dsp"), A_CANT, 0);
 }

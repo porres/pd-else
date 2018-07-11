@@ -44,5 +44,5 @@ void gate2imp_tilde_setup(void){
   gate2imp_class = class_new(gensym("gate2imp~"),
     (t_newmethod) gate2imp_new, 0, sizeof (t_gate2imp), CLASS_DEFAULT, 0);
   CLASS_MAINSIGNALIN(gate2imp_class, t_gate2imp, x_in);
-  class_addmethod(gate2imp_class, (t_method) gate2imp_dsp, gensym("dsp"), 0);
+  class_addmethod(gate2imp_class, (t_method) gate2imp_dsp, gensym("dsp"), A_CANT, 0);
 }

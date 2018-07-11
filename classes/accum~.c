@@ -64,7 +64,7 @@ void accum_tilde_setup(void){
         (t_newmethod)accum_new, (t_method)accum_free,
         sizeof(t_accum), CLASS_DEFAULT, A_DEFFLOAT, 0);
     CLASS_MAINSIGNALIN(accum_class, t_accum, x_in);
-    class_addmethod(accum_class, (t_method) accum_dsp, gensym("dsp"), 0);
+    class_addmethod(accum_class, (t_method) accum_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(accum_class, (t_method)accum_set, gensym("set"), A_FLOAT, 0);
     class_addbang(accum_class,(t_method)accum_bang);
 }

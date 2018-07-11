@@ -83,7 +83,7 @@ void blocksize_tilde_setup(void){
     blocksize_class = class_new(gensym("blocksize~"), (t_newmethod)blocksize_new,
                                 0, sizeof(t_blocksize), 0, A_GIMME, 0);
     class_addmethod(blocksize_class, nullfn, gensym("signal"), 0);
-    class_addmethod(blocksize_class, (t_method)blocksize_dsp, gensym("dsp"), 0);
+    class_addmethod(blocksize_class, (t_method)blocksize_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(blocksize_class, (t_method)blocksize_ms, gensym("ms"), 0);
     class_addmethod(blocksize_class, (t_method)blocksize_hz, gensym("hz"), 0);
     class_addmethod(blocksize_class, (t_method)blocksize_samps, gensym("samps"), 0);

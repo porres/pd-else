@@ -76,5 +76,5 @@ void elapsed_tilde_setup(void){
     elapsed_class = class_new(gensym("elapsed~"), (t_newmethod)elapsed_new,
         (t_method)elapsed_free, sizeof(t_elapsed), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(elapsed_class, nullfn, gensym("signal"), 0);
-    class_addmethod(elapsed_class, (t_method) elapsed_dsp, gensym("dsp"), 0);
+    class_addmethod(elapsed_class, (t_method) elapsed_dsp, gensym("dsp"), A_CANT, 0);
 }

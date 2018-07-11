@@ -165,7 +165,7 @@ void sr_tilde_setup(void){
     sr_class = class_new(gensym("sr~"),
             (t_newmethod)sr_new, 0, sizeof(t_sr), 0, A_GIMME, 0);
     class_addmethod(sr_class, nullfn, gensym("signal"), 0);
-    class_addmethod(sr_class, (t_method)sr_dsp, gensym("dsp"), 0);
+    class_addmethod(sr_class, (t_method)sr_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(sr_class, (t_method)sr_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     class_addmethod(sr_class, (t_method)sr_hz, gensym("hz"), 0);
     class_addmethod(sr_class, (t_method)sr_khz, gensym("khz"), 0);

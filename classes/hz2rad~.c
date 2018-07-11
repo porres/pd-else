@@ -39,5 +39,5 @@ void hz2rad_tilde_setup(void){
     hz2rad_class = class_new(gensym("hz2rad~"),
                              (t_newmethod) hz2rad_new, 0, sizeof (t_hz2rad), 0, 0);
     class_addmethod(hz2rad_class, nullfn, gensym("signal"), 0);
-    class_addmethod(hz2rad_class, (t_method) hz2rad_dsp, gensym("dsp"), 0);
+    class_addmethod(hz2rad_class, (t_method) hz2rad_dsp, gensym("dsp"), A_CANT, 0);
 }

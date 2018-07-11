@@ -83,7 +83,7 @@ void pulsediv_tilde_setup(void)
         (t_newmethod)pulsediv_new, (t_method)pulsediv_free,
         sizeof(t_pulsediv), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(pulsediv_class, nullfn, gensym("signal"), 0);
-    class_addmethod(pulsediv_class, (t_method) pulsediv_dsp, gensym("dsp"), 0);
+    class_addmethod(pulsediv_class, (t_method) pulsediv_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(pulsediv_class, (t_method)pulsediv_div, gensym("div"), A_DEFFLOAT, 0);
     class_addmethod(pulsediv_class, (t_method)pulsediv_start, gensym("start"), A_DEFFLOAT, 0);
 }
