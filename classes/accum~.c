@@ -7,6 +7,7 @@ static t_class *accum_class;
 typedef struct _accum{
     t_object  x_obj;
     t_float   x_sum;
+    t_float   x_in;
     t_float   x_start;
     t_inlet  *x_triglet;
     t_outlet *x_outlet;
@@ -22,20 +23,19 @@ static void accum_set(t_accum *x, t_floatarg f){
 
 static t_int *accum_perform(t_int *w){
     t_accum *x = (t_accum *)(w[1]);
-    int nblock = (t_int)(w[2]);
+    int n = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
     t_float *out = (t_float *)(w[5]);
     t_float sum = x->x_sum;
     t_float start = x->x_start;
-    while (nblock--){
+    while(n--){
         t_float in = *in1++;
         t_float trig = *in2++;
-        if (trig == 1)
-            *out++ = sum = start;
+        if(trig == 1)
+            *out++ = sum = (start += in);
         else
-            *out++ = sum;
-        sum += in;
+            *out++ = (sum += in);
     }
     x->x_sum = sum; // next
     return (w + 6);
@@ -63,7 +63,7 @@ void accum_tilde_setup(void){
     accum_class = class_new(gensym("accum~"),
         (t_newmethod)accum_new, (t_method)accum_free,
         sizeof(t_accum), CLASS_DEFAULT, A_DEFFLOAT, 0);
-    class_addmethod(accum_class, nullfn, gensym("signal"), 0);
+    CLASS_MAINSIGNALIN(accum_class, t_accum, x_in);
     class_addmethod(accum_class, (t_method) accum_dsp, gensym("dsp"), 0);
     class_addmethod(accum_class, (t_method)accum_set, gensym("set"), A_FLOAT, 0);
     class_addbang(accum_class,(t_method)accum_bang);
