@@ -615,12 +615,12 @@ static void *bicoeff_new(t_symbol *s, int ac, t_atom *av){
     x->x_q_s = q_or_s;
     x->x_gain = db;
     x->x_type = type;
-    inlet_new((t_object *)x, (t_pd *)x, &s_float, gensym("ft1"));
-    inlet_new((t_object *)x, (t_pd *)x, &s_float, gensym("ft2"));
+    inlet_new((t_object *)x, (t_pd *)x, &s_float, gensym("qs"));
+    inlet_new((t_object *)x, (t_pd *)x, &s_float, gensym("gain"));
     outlet_new((t_object *)x, &s_list);
     return (x);
     errstate:
-        pd_error(x, "bicoeff: improper args");
+        pd_error(x, "[bicoeff]: improper args");
         return NULL;
 }
 
@@ -629,8 +629,8 @@ void bicoeff_setup(void){
 			    sizeof(t_bicoeff), 0, A_GIMME, 0);
     class_addbang(bicoeff_class, bicoeff_bang);
     class_addfloat(bicoeff_class, bicoeff_freq);
-    class_addmethod(bicoeff_class, (t_method)bicoeff_Q_S, gensym("ft1"), A_FLOAT, 0);
-    class_addmethod(bicoeff_class, (t_method)bicoeff_gain, gensym("ft2"), A_FLOAT, 0);
+    class_addmethod(bicoeff_class, (t_method)bicoeff_Q_S, gensym("qs"), A_FLOAT, 0);
+    class_addmethod(bicoeff_class, (t_method)bicoeff_gain, gensym("gain"), A_FLOAT, 0);
     class_addlist(bicoeff_class, (t_method)bicoeff_list);
     
     class_addmethod(bicoeff_class, (t_method) bicoeff_lowpass, gensym("lowpass"), A_GIMME, 0);
