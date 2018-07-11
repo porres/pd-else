@@ -211,6 +211,7 @@ bufmagic := \
 shared/magic.c \
 shared/buffer.c
     wavetable~.class.sources = classes/wavetable~.c $(bufmagic)
+    wt~.class.sources = classes/wt~.c $(bufmagic)
 
 gui := shared/gui.c
     window.class.sources := classes/window.c $(gui)
