@@ -3,6 +3,7 @@
 
 #include "m_pd.h"
 #include "math.h"
+#include  <string.h>
 
 #define MAXOVERLAP 32
 #define INITVSTAKEN 64
@@ -75,7 +76,9 @@ static void rms_set(t_sigrms *x, t_floatarg f1, t_floatarg f2)
 
 static void *rms_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
-    t_sigrms *x;
+    t_sigrms *x = (t_sigrms *)pd_new(rms_tilde_class);
+    t_symbol *dummy = s;
+    dummy = NULL;
     int npoints = 0;
     int period = 0;
     int dbstate = 0;
@@ -130,7 +133,6 @@ static void *rms_tilde_new(t_symbol *s, int argc, t_atom *argv)
         error("rms: couldn't allocate buffer");
         return (0);
     }
-    x = (t_sigrms *)pd_new(rms_tilde_class);
     x->x_buf = buf;
     x->x_npoints = npoints;
     x->x_phase = 0;
