@@ -108,4 +108,5 @@ void stepnoise_tilde_setup(void)
         (t_method)stepnoise_free, sizeof(t_stepnoise), CLASS_DEFAULT, A_DEFFLOAT, 0);
     CLASS_MAINSIGNALIN(stepnoise_class, t_stepnoise, x_freq);
     class_addmethod(stepnoise_class, (t_method)stepnoise_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(stepnoise_class, (t_method)stepnoise_seed, gensym("seed"), A_DEFFLOAT, 0);
 }

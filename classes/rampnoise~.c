@@ -87,7 +87,6 @@ static void *rampnoise_free(t_rampnoise *x)
     return (void *)x;
 }
 
-
 static void *rampnoise_new(t_floatarg f)
 {
     t_rampnoise *x = (t_rampnoise *)pd_new(rampnoise_class);
@@ -104,10 +103,10 @@ static void *rampnoise_new(t_floatarg f)
     return (x);
 }
 
-void rampnoise_tilde_setup(void)
-{
+void rampnoise_tilde_setup(void){
     rampnoise_class = class_new(gensym("rampnoise~"), (t_newmethod)rampnoise_new,
         (t_method)rampnoise_free, sizeof(t_rampnoise), CLASS_DEFAULT, A_DEFFLOAT, 0);
     CLASS_MAINSIGNALIN(rampnoise_class, t_rampnoise, x_freq);
     class_addmethod(rampnoise_class, (t_method)rampnoise_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(rampnoise_class, (t_method)rampnoise_seed, gensym("seed"), A_DEFFLOAT, 0);
 }
