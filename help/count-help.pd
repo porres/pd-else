@@ -1,5 +1,5 @@
-#N canvas 692 43 559 530 10;
-#X obj 3 505 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 486 94 559 551 10;
+#X obj 3 522 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 211 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -42,7 +42,6 @@
 #X obj 221 178 else/display;
 #X text 167 364 list;
 #X text 157 394 float;
-#X text 208 394 - count;
 #X text 165 217 bang;
 #X text 207 365 - updates arguments, f 55;
 #X text 133 447 1) list -;
@@ -107,51 +106,51 @@ point.;
 #X obj 635 126 else/display;
 #X obj 505 127 else/display;
 #X msg 505 53 reset;
-#X obj 529 369 else/display;
-#X msg 529 306 reset;
-#X obj 529 343 else/count;
-#X obj 502 305 bng 19 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 521 372 else/display;
+#X msg 521 309 reset;
+#X obj 494 308 bng 19 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 602 286 4;
-#X msg 635 292 10 15;
-#X msg 644 315 15 10;
-#X msg 586 261 5 15 10;
-#X msg 568 237 20 10 13;
+#X msg 632 289 4;
+#X msg 665 295 10 15;
+#X msg 674 318 15 10;
+#X msg 616 264 5 15 10;
+#X msg 598 240 20 10 13;
 #X obj 174 138 else/count;
 #X obj 251 138 else/count 4;
 #X obj 126 331 else/count 10 15;
 #X obj 246 321 else/count 15 10;
 #X obj 505 97 else/count 5 15 10;
 #X obj 635 87 else/count 20 10 13;
-#X text 423 177 The right inlet resets these arguments. It makes a
-differencr if you send it 1 \, 2 or 3 arguments. It's like the object
+#X obj 521 346 else/count -reset 5;
+#X text 423 175 The right inlet resets these arguments. It makes a
+difference if you send it 1 \, 2 or 3 arguments. It's like the object
 has been reinitialized with such arguments., f 53;
+#X connect 0 0 25 0;
 #X connect 0 0 26 0;
-#X connect 0 0 27 0;
+#X connect 1 0 23 0;
 #X connect 1 0 24 0;
-#X connect 1 0 25 0;
+#X connect 6 0 25 0;
 #X connect 6 0 26 0;
-#X connect 6 0 27 0;
+#X connect 8 0 23 0;
 #X connect 8 0 24 0;
-#X connect 8 0 25 0;
+#X connect 11 0 27 0;
 #X connect 11 0 28 0;
-#X connect 11 0 29 0;
+#X connect 14 0 27 0;
 #X connect 14 0 28 0;
-#X connect 14 0 29 0;
-#X connect 16 0 17 0;
-#X connect 17 0 15 0;
-#X connect 18 0 17 0;
-#X connect 19 0 17 1;
-#X connect 20 0 17 1;
-#X connect 21 0 17 1;
-#X connect 22 0 17 1;
-#X connect 23 0 17 1;
-#X connect 24 0 3 0;
-#X connect 25 0 2 0;
-#X connect 26 0 5 0;
-#X connect 27 0 4 0;
-#X connect 28 0 13 0;
-#X connect 29 0 12 0;
+#X connect 16 0 29 0;
+#X connect 17 0 29 0;
+#X connect 18 0 29 1;
+#X connect 19 0 29 1;
+#X connect 20 0 29 1;
+#X connect 21 0 29 1;
+#X connect 22 0 29 1;
+#X connect 23 0 3 0;
+#X connect 24 0 2 0;
+#X connect 25 0 5 0;
+#X connect 26 0 4 0;
+#X connect 27 0 13 0;
+#X connect 28 0 12 0;
+#X connect 29 0 15 0;
 #X restore 459 137 pd arguments;
 #N canvas 836 163 453 240 direction 0;
 #X obj 169 196 nbx 2 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -165,20 +164,19 @@ has been reinitialized with such arguments., f 53;
 #X msg 120 127 alt \$1;
 #X obj 120 105 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 169 165 else/count 5 1 -alt;
 #X text 28 19 You can change the direction \, upwards or downward \,
 with the "up" and "down" message.The alternanting mode \, set with
 the "-alt" flag or message \, alternates between these two directions
 after reaching a limit (minimum or maximum value), f 64;
-#X connect 1 0 7 0;
-#X connect 3 0 7 0;
-#X connect 4 0 7 0;
-#X connect 5 0 7 0;
+#X obj 169 165 else/count 5 1 -alt;
+#X connect 1 0 8 0;
+#X connect 3 0 8 0;
+#X connect 4 0 8 0;
+#X connect 5 0 8 0;
 #X connect 6 0 5 0;
-#X connect 7 0 0 0;
-#X connect 7 1 2 0;
+#X connect 8 0 0 0;
+#X connect 8 1 2 0;
 #X restore 459 158 pd direction;
-#X obj 221 151 else/count 1 4;
 #X text 198 446 1 float sets: max / 2 floats set: min & max / 3 floats
 sets: min \, max & reset point, f 45;
 #N canvas 732 167 504 363 messages 0;
@@ -231,6 +229,9 @@ float sets a new reset point as well, f 53;
 #X connect 25 0 0 0;
 #X connect 25 1 2 0;
 #X restore 465 180 pd messages;
-#X connect 19 0 54 0;
-#X connect 54 0 20 0;
-#X connect 54 1 35 0;
+#X text 208 394 - count value;
+#X text 106 498 -reset <float> - sets reset value;
+#X obj 221 151 else/count 1 4;
+#X connect 19 0 57 0;
+#X connect 57 0 20 0;
+#X connect 57 1 34 0;
