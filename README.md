@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (254 objects):
+##Current Object list (255 objects):
 
 **ASSORTED: [2]**
 - [nbang]
@@ -309,7 +309,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
  - [impseq~]
  - [lfo]
  
- **TRIGGERS: [23]**
+ **TRIGGERS: [24]**
+- [bangdiv]
 - [coin]
 - [coin~]
 - [dust~]
