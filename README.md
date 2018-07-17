@@ -123,8 +123,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [suspedal]
 
 **MATH: FUNCTIONS: [24]**
-- [accum~]
-- [inc~]
+- [add~]
+- [add]
 - [count]
 - [ceil]
 - [ceil~]

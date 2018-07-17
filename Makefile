@@ -66,7 +66,7 @@ touch.out.class.sources := classes/touch.out.c
 
 
 # signal:
-accum~.class.sources := classes/accum~.c
+add~.class.sources := classes/add~.c
 allpass.2nd~.class.sources := classes/allpass.2nd~.c
 allpass.rev~.class.sources := classes/allpass.rev~.c
 adsr~.class.sources := classes/adsr~.c
@@ -116,7 +116,6 @@ highshelf~.class.sources := classes/highshelf~.c
 hz2rad~.class.sources := classes/hz2rad~.c
 ikeda~.class.sources := classes/ikeda~.c
 impseq~.class.sources := classes/impseq~.c
-inc~.class.sources := classes/inc~.c
 int~.class.sources := classes/int~.c
 lastvalue~.class.sources := classes/lastvalue~.c
 latoocarfian~.class.sources := classes/latoocarfian~.c
