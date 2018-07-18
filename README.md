@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (256 objects):
+##Current Object list (255 objects):
 
 **ASSORTED: [2]**
 - [nbang]
@@ -336,7 +336,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [trig2bang~]
 - [trighold~]
 
-**SIGNAL ANALYSIS: [11]**
+**SIGNAL ANALYSIS: [10]**
 - [changed~]
 - [changed2~]
 - [elapsed~]
@@ -346,7 +346,6 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [rms~]
 - [mov.rms~]
 - [vu~]
-- [past~]
 - [zerocross~]
 
 **GUI: [17]**
