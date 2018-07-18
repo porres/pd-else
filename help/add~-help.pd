@@ -163,18 +163,16 @@
 #X text 230 338 - ressets sum to starting point;
 #X text 230 354 - sets starting sum;
 #X text 166 431 1) float - starting sum (default 0);
-#X text 472 253 see also:;
-#X obj 472 275 else/inc~;
 #X text 64 92 [add~] starts accumulating input values to a starting
 sum value (0 by default). The starting sum can be set as an argument
 or the 'set' message. You can resset the to the starting sum point
 with a bang or with an impulse signal in the right inlet.;
 #X obj 227 219 else/add~ 10;
 #X connect 17 0 35 0;
-#X connect 27 0 43 0;
+#X connect 27 0 41 0;
 #X connect 28 0 33 0;
-#X connect 28 0 43 0;
-#X connect 32 0 43 0;
+#X connect 28 0 41 0;
+#X connect 32 0 41 0;
 #X connect 34 0 33 0;
-#X connect 35 0 43 1;
-#X connect 43 0 34 0;
+#X connect 35 0 41 1;
+#X connect 41 0 34 0;
