@@ -172,7 +172,6 @@ trig.delay2~.class.sources := classes/trig.delay2~.c
 timed.gate~.class.sources := classes/timed.gate~.c
 toggleff~.class.sources := classes/toggleff~.c
 trighold~.class.sources := classes/trighold~.c
-past~.class.sources := classes/past~.c
 vu~.class.sources := classes/vu~.c
 xfade~.class.sources := classes/xfade~.c
 xgate~.class.sources := classes/xgate~.c
