@@ -98,7 +98,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [routeall]
 - [routetype]
 - [sig2float~]
-- [float2sig~]
+- [float2sig~] / [f2s~]
 
 **FILE MANAGEMENT: [1]**
 - [dir]
