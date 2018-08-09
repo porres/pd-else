@@ -9,7 +9,7 @@
 #X text 195 137 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 197 118 Alexandre Torres Porres (2017);
 #X obj 142 104 f \$2;
-#X obj 142 81 loadbanger -init;
+#X obj 142 81 loadbang;
 #X connect 0 0 2 0;
 #X connect 1 0 6 0;
 #X connect 2 0 3 0;
