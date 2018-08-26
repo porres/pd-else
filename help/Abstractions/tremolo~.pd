@@ -14,11 +14,12 @@
 #X text 60 16 input;
 #X text 347 171 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 349 152 Alexandre Torres Porres (2018);
-#X obj 220 66 else/args;
-#X obj 220 93 route bang float list;
-#X obj 261 124 unpack;
-#X msg 220 116 1;
+#X obj 190 96 else/args;
+#X obj 190 123 route bang float list;
+#X obj 231 154 unpack;
+#X msg 190 146 1;
 #X obj 106 186 osc~;
+#X obj 190 71 loadbang;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 2 0 19 0;
@@ -37,3 +38,4 @@
 #X connect 17 1 10 0;
 #X connect 18 0 10 0;
 #X connect 19 0 4 0;
+#X connect 20 0 15 0;
