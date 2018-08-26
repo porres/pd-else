@@ -1,0 +1,16 @@
+#N canvas 307 394 477 196 10;
+#X obj 76 65 *~;
+#X obj 76 42 inlet~;
+#X obj 122 42 inlet;
+#X obj 76 138 outlet~;
+#X text 124 22 Hz;
+#X text 76 22 input;
+#X text 218 82 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 220 63 Alexandre Torres Porres (2018);
+#X obj 122 102 osc~;
+#X obj 122 73 else/f2s~ 5 \$1;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 2 0 9 0;
+#X connect 8 0 0 1;
+#X connect 9 0 8 0;

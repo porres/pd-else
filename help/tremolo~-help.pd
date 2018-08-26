@@ -26,36 +26,35 @@
 #X restore 2 5 graph;
 #X obj 1 277 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 80 285 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 130 285 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X obj 80 307 cnv 17 3 17 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+#X obj 130 307 cnv 17 3 17 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
 -162280 0;
-#X text 122 285 signal;
-#X obj 80 330 cnv 17 3 17 empty \$0-pddp.cnv.let.2 2 5 9 0 16 -228856
+#X text 172 285 signal;
+#X obj 130 330 cnv 17 3 17 empty \$0-pddp.cnv.let.2 2 5 9 0 16 -228856
 -162280 0;
-#X text 128 330 float;
-#X text 128 307 float;
+#X text 178 330 float;
+#X text 178 307 float;
 #X obj 201 211 else/out~;
 #X text 85 95 [tremolo~] is a tremolo abstraction. It takes a signal
 input \, a tremolo frequency and a tremolo depth., f 61;
 #X obj 1 355 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 80 367 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 130 367 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 122 367 signal;
-#X text 172 367 - incoming signal routed to left channel output: [dac~
-1], f 60;
+#X text 172 367 signal;
 #X obj 1 394 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X text 110 401 1) float;
-#X text 110 417 2) float;
+#X text 160 401 1) float;
+#X text 160 417 2) float;
 #X obj 1 438 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X text 172 401 - tremolo frequency (default 0), f 60;
-#X text 172 417 - tremolo depth (default 1), f 60;
-#X text 172 285 - input signal to be processed, f 60;
-#X text 172 307 - tremolo frequency, f 60;
-#X text 172 330 - tremolo depth (from 0 to 1), f 60;
+#X text 222 401 - tremolo frequency (default 0), f 49;
+#X text 222 417 - tremolo depth (default 1), f 49;
+#X text 222 285 - input signal to be processed, f 49;
+#X text 222 307 - tremolo frequency, f 49;
+#X text 222 330 - tremolo depth (from 0 to 1), f 49;
+#X text 222 367 - tremoloed signal, f 49;
 #X connect 0 0 1 0;
 #X connect 1 0 20 0;
 #X connect 1 0 20 1;

@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (255 objects):
+##Current Object list (256 objects):
 
 **ASSORTED: [2]**
 - [nbang]
@@ -186,7 +186,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [player~]
 - [sampler~]
 
-**AUDIO PROCESSING: [11]**
+**AUDIO PROCESSING: [12]**
 - [downsample~]
 - [allpass.rev~]
 - [fbdelay~]
@@ -197,6 +197,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [noisegate~]
 - [norm~]
 - [freqshift~]
+- [rm~]
 - [tremolo~]
 
 **AUDIO PROCESSING: REVERB: [1]**
