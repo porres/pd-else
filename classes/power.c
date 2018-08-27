@@ -12,10 +12,7 @@ typedef struct _power{
 static t_class *power_class;
 
 static void power_bang(t_power *x){
-    t_float r = (x->x_f1 == 0 && x->x_f2 < 0) ||
-        (x->x_f1 < 0 && (x->x_f2 - (int)x->x_f2) != 0) ?
-        0 : pow(x->x_f1, x->x_f2);
-    outlet_float(x->x_obj.ob_outlet, r);
+    outlet_float(x->x_obj.ob_outlet, pow(x->x_f1, x->x_f2));
 }
 
 static void power_float(t_power *x, t_float f){
@@ -29,7 +26,7 @@ static void *power_new(t_floatarg f){
     floatinlet_new(&x->x_obj, &x->x_f2);
     x->x_f1 = 0;
     x->x_f2 = f;
-    return (x);
+    return(x);
 }
 
 void power_setup(void){

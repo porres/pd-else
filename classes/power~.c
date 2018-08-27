@@ -35,7 +35,7 @@ static void *power_new(t_floatarg f2){
     x->x_f2 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_f2, f2);
     outlet_new((t_object *)x, &s_signal);
-    return (x);
+    return(x);
 }
 
 void power_tilde_setup(void){
