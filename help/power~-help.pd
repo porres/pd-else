@@ -1,4 +1,4 @@
-#N canvas 666 134 564 399 10;
+#N canvas 333 82 564 399 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -18,7 +18,7 @@
 #X restore 305 4 graph;
 #X obj 6 370 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 6 232 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 6 235 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 6 301 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
@@ -26,16 +26,14 @@
 0;
 #X obj 136 313 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 136 243 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 136 246 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 214 192 display~;
+#X obj 197 200 display~;
 #X obj 483 85 else/setdsp~;
-#X obj 289 137 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 272 142 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 214 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 197 143 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 82 89 [power~] is a mathematical power function \, unlike Pd
-vanilla's [pow] \, it handles negative input.;
 #X obj 23 41 cnv 4 4 4 empty empty Power 0 28 2 18 -233017 -1 0;
 #X obj 79 41 cnv 4 4 4 empty empty function 0 28 2 18 -233017 -1 0
 ;
@@ -44,13 +42,16 @@ vanilla's [pow] \, it handles negative input.;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X obj 214 161 else/power~ 2;
+#X obj 197 169 else/power~ 2;
 #X text 220 313 signal - power function result;
-#X obj 136 266 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 136 269 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 184 244 signal/float - sets base;
-#X text 184 267 signal/float - sets exponent;
+#X text 184 247 signal/float - sets base;
+#X text 184 270 signal/float - sets exponent;
 #X text 168 349 1) float - sets exponent (default 0);
-#X connect 16 0 23 1;
-#X connect 17 0 23 0;
-#X connect 23 0 14 0;
+#X text 82 86 [power~] is a mathematical power function \, unlike Pd
+vanilla's [pow] \, it handles negative input and has no protection
+against nan/inf.;
+#X connect 16 0 22 1;
+#X connect 17 0 22 0;
+#X connect 22 0 14 0;

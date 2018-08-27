@@ -38,11 +38,9 @@
 ;
 #X obj 234 191 else/display;
 #X obj 303 136 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -1.2 256;
+-228856 -1 -1 0 256;
 #X obj 234 135 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 19.7 256;
-#X text 91 91 [power] is a mathematical power function \, unlike Pd
-vanilla's [pow] \, it handles negative input., f 63;
+-228856 -1 -1 0 256;
 #X obj 177 265 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 218 242 float - sets base;
@@ -50,6 +48,9 @@ vanilla's [pow] \, it handles negative input., f 63;
 #X obj 234 164 else/power 2;
 #X text 218 302 float - power function result;
 #X text 186 337 1) float - sets exponent (default 0);
-#X connect 19 0 25 1;
-#X connect 20 0 25 0;
-#X connect 25 0 18 0;
+#X text 91 91 [power] is a mathematical power function \, unlike Pd
+vanilla's [pow] \, it handles negative input and has no protection
+against nan/inf., f 63;
+#X connect 19 0 24 1;
+#X connect 20 0 24 0;
+#X connect 24 0 18 0;
