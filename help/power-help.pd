@@ -1,0 +1,55 @@
+#N canvas 126 225 566 384 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Power 0 28 2 18 -233017 -1 0;
+#X obj 79 40 cnv 4 4 4 empty empty function 0 28 2 18 -233017 -1 0
+;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1;
+#X restore 305 3 graph;
+#X obj 3 2 cnv 15 301 42 empty empty power 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 3 graph;
+#X obj 6 358 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 6 231 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 290 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 329 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 176 302 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 177 242 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 234 191 else/display;
+#X obj 303 136 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -1.2 256;
+#X obj 234 135 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 19.7 256;
+#X text 91 91 [power] is a mathematical power function \, unlike Pd
+vanilla's [pow] \, it handles negative input., f 63;
+#X obj 177 265 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 218 242 float - sets base;
+#X text 218 265 float - sets exponent;
+#X obj 234 164 else/power 2;
+#X text 218 302 float - power function result;
+#X text 186 337 1) float - sets exponent (default 0);
+#X connect 19 0 25 1;
+#X connect 20 0 25 0;
+#X connect 25 0 18 0;
