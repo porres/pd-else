@@ -111,17 +111,15 @@ static void envgen_bang(t_envgen *x){
 }
 
 static void envgen_float(t_envgen *x, t_float f){
-    t_atom a[2];
-    SETFLOAT(a, 0);
-    SETFLOAT(a+1, f);
-    envgen_list(x, &s_list, 2, a);
-}
-
-static void envgen_gain(t_envgen *x, t_float f){
     if(f != 0){
         x->x_gain = f;
         envgen_list(x, &s_list, x->x_ac, x->x_av);
     }
+}
+
+static void envgen_setgain(t_envgen *x, t_float f){
+    if(f != 0)
+        x->x_gain = f;
 }
 
 static t_int *envgen_perform(t_int *w){
@@ -241,9 +239,14 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     x->x_pause = 0;
     x->x_segs = x->x_segini;
     x->x_curseg = 0;
-    x->x_ac = ac;
-    x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
-    copy_atoms(av, x->x_av, x->x_ac);
+    if(ac == 1 && av->a_type == A_FLOAT){
+        x->x_value = atom_getfloatarg(0, ac, av);
+    }
+    else{
+        x->x_ac = ac;
+        x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
+        copy_atoms(av, x->x_av, x->x_ac);
+    }
     outlet_new((t_object *)x, &s_signal);
     x->x_out2 = outlet_new((t_object *)x, &s_float);
     x->x_clock = clock_new(x, (t_method)envgen_tick);
@@ -258,7 +261,7 @@ void envgen_tilde_setup(void){
     class_addfloat(envgen_class, envgen_float);
     class_addlist(envgen_class, envgen_list);
     class_addbang(envgen_class, envgen_bang);
-    class_addmethod(envgen_class, (t_method)envgen_gain, gensym("gain"), A_FLOAT, 0);
+    class_addmethod(envgen_class, (t_method)envgen_setgain, gensym("setgain"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_set, gensym("set"), A_GIMME, 0);
     class_addmethod(envgen_class, (t_method)envgen_pause, gensym("pause"), 0);
     class_addmethod(envgen_class, (t_method)envgen_resume, gensym("resume"), 0);
