@@ -96,6 +96,7 @@ drive~.class.sources := classes/drive~.c
 dust~.class.sources := classes/dust~.c
 dust2~.class.sources := classes/dust2~.c
 elapsed~.class.sources := classes/elapsed~.c
+envgen~.class.sources := classes/envgen~.c
 eq~.class.sources := classes/eq~.c
 fader~.class.sources := classes/fader~.c
 fbdelay~.class.sources := classes/fbdelay~.c

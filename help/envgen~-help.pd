@@ -1,0 +1,296 @@
+#N canvas 492 23 566 657 10;
+#X obj 7 624 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 7 394 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 529 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 589 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 100 405 cnv 17 3 116 empty empty 0 5 9 0 16 -228856 -162280
+0;
+#X obj 100 538 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 148 538 signal;
+#X msg 120 185 pause;
+#X msg 163 185 resume;
+#X text 160 406 list;
+#X obj 100 561 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 154 487 pause;
+#X text 148 504 resume;
+#X text 199 487 - pauses the output, f 55;
+#X obj 210 154 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 262 294 vsl 20 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X text 199 538 - envelope signal;
+#X msg 278 196 0 1000 1 500 0;
+#X obj 393 256 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 24 40 cnv 4 4 4 empty empty Envelope 0 28 2 18 -233017 -1 0
+;
+#X obj 102 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
+0;
+#X obj 3 3 cnv 15 301 42 empty empty envgen~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 3 graph;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 3 graph;
+#X obj 262 260 else/sig2float~;
+#X text 289 363 0;
+#X text 285 290 1;
+#X obj 195 278 *~;
+#X obj 152 316 else/out~;
+#X obj 124 237 osc~ 440;
+#X msg 260 170 set 100 1 100 0.6 1000 0.6 500 0;
+#X text 199 406 -;
+#X text 124 436 set <list>;
+#X text 160 453 bang;
+#X text 199 453 - starts the envelope, f 55;
+#X text 154 561 float;
+#X text 200 561 - status: 1 <on> \, 0 <off>;
+#X text 171 600 1) list - list of floats to set the envelope;
+#X obj 210 225 else/envgen~ 0 1000 1 500 0, f 31;
+#N canvas 525 23 480 461 status 0;
+#X obj 352 239 switch~;
+#X obj 352 171 tgl 50 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 106 199 *~;
+#X obj 41 137 osc~ 440;
+#X obj 193 187 else/sig2float~;
+#X obj 193 223 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 281 235 else/setdsp~;
+#X obj 63 244 else/out~;
+#X text 31 19 [envgen~] has a right outlet that sends a status value
+(1 when the envelope starts and 0 when it ends). This can be useful
+for different things \, but particularly to turn on and off the DSP
+processing of a subpatch or abstraction with [switch~]., f 62;
+#X obj 121 95 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 121 134 else/envgen~ 50 1 150 0.6 500 0.6 250 0;
+#X obj 337 415 clone;
+#X text 315 390 see also:;
+#X text 62 362 You should also check try pd's [clone] object for managing
+polyphonic synths.;
+#X connect 1 0 0 0;
+#X connect 2 0 7 0;
+#X connect 2 0 7 1;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 9 0 10 0;
+#X connect 10 0 2 1;
+#X connect 10 0 4 0;
+#X connect 10 1 1 0;
+#X restore 478 284 pd status;
+#X text 199 435 - sets the envelope and doesn't run it, f 55;
+#N canvas 530 146 714 493 gain 0;
+#X obj 86 218 else/display;
+#X obj 216 420 else/out~;
+#X obj 186 370 else/plateverb~ 50 0.75 0.5 0.5 0.5, f 18;
+#X obj 201 215 else/display;
+#X obj 86 181 else/randi 36 72;
+#X obj 186 341 *~;
+#X obj 86 252 mtof;
+#X obj 100 295 else/bl.vsaw~;
+#X obj 201 288 else/envgen~ 10 1 40 0.5 400 0.5 50 0, f 19;
+#X obj 125 255 osc~ 0.75;
+#X msg 201 254 gain \$1;
+#X obj 201 169 else/randf 0.25 1;
+#X text 32 210 MIDI Pitch =>, f 8;
+#X text 151 219 gain =>;
+#X obj 552 163 else/rescale;
+#X msg 552 214 gain \$1;
+#X obj 459 184 stripnote;
+#X obj 552 191 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 459 112 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 79 256;
+#X obj 459 45 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 459 139 makenote 127 750;
+#X obj 567 378 else/out~;
+#X obj 537 328 else/plateverb~ 50 0.75 0.5 0.5 0.5, f 18;
+#X obj 537 299 *~;
+#X obj 459 243 osc~;
+#X obj 459 212 mtof;
+#X obj 552 246 else/envgen~ 10 1 40 0.5 400 0.5 50 0, f 19;
+#X obj 459 80 else/randi 60 84;
+#X obj 201 141 else/tempo 60 50;
+#X obj 201 115 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X text 221 116 <= generate random notes;
+#X text 32 20 The gain message triggers the envelope and sets an overall
+gain (which is 1 by default). This is useful for a velocity type sensitivity
+\, so the envelope corresponds to a given input gain. A gain value
+of 0 is ignored and doesn't trigger the envelope \, but you still need
+something like [stripnote] to filter out undesired MIDI note off messages.
+;
+#X connect 0 0 6 0;
+#X connect 2 0 1 0;
+#X connect 2 1 1 1;
+#X connect 3 0 10 0;
+#X connect 4 0 0 0;
+#X connect 5 0 2 0;
+#X connect 6 0 7 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 1;
+#X connect 9 0 7 1;
+#X connect 10 0 8 0;
+#X connect 11 0 3 0;
+#X connect 14 0 16 1;
+#X connect 14 0 17 0;
+#X connect 15 0 26 0;
+#X connect 16 0 25 0;
+#X connect 17 0 15 0;
+#X connect 18 0 20 0;
+#X connect 19 0 27 0;
+#X connect 20 0 16 0;
+#X connect 20 1 14 0;
+#X connect 22 0 21 0;
+#X connect 22 1 21 1;
+#X connect 23 0 22 0;
+#X connect 24 0 23 0;
+#X connect 25 0 24 0;
+#X connect 26 0 23 1;
+#X connect 27 0 18 0;
+#X connect 28 0 4 0;
+#X connect 28 0 11 0;
+#X connect 29 0 28 0;
+#X restore 489 307 pd gain;
+#X text 112 470 gain <float>;
+#X text 199 470 - sets overall gain and starts the envelope, f 55
+;
+#X text 199 504 - resumes the envelope after being paused, f 55;
+#X text 64 93 [envgen~] is a general purpose envelope generator. It
+can also be considered a line segment generator like Vanilla's [line~]
+or [vline~].;
+#N canvas 500 133 451 407 gate 0;
+#X obj 173 320 else/out~;
+#X obj 173 287 *~;
+#X msg 233 146 set 10 1 40 0.5 \, gain \$1, f 16;
+#X msg 188 148 250 0;
+#X obj 188 96 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 188 182 else/envgen~;
+#X obj 188 123 select 0;
+#X obj 55 247 else/bl.saw~;
+#X obj 55 220 else/rescale~ 50 300;
+#X obj 55 195 else/rampnoise~ 10;
+#X text 118 148 release =>;
+#X text 340 151 <=;
+#X text 356 150 attack \, decay \, sustain, f 7;
+#X text 30 24 You can force a gate on/off behaviour (such as from a
+note on/off input) with a [select] object. Below we have separate lines
+\, one for the attack/decay/sustain when receiving a gate on message
+\, and a release line when receiving a gate off., f 61;
+#X connect 1 0 0 0;
+#X connect 1 0 0 1;
+#X connect 2 0 5 0;
+#X connect 3 0 5 0;
+#X connect 4 0 6 0;
+#X connect 5 0 1 1;
+#X connect 6 0 3 0;
+#X connect 6 1 2 0;
+#X connect 7 0 1 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 0;
+#X restore 489 331 pd gate;
+#N canvas 559 175 635 397 list 0;
+#X obj 78 236 else/sig2float~;
+#X obj 78 272 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 9900 1;
+#X obj 78 195 else/envgen~;
+#X msg 90 133 0.5;
+#X msg 105 158 0 1000 1;
+#X obj 78 84 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1 1
+;
+#X msg 78 109 500 \$1;
+#X text 118 132 jumps to this value;
+#X text 20 16 When receiving a list \, [envgen~] outputs line segments.
+The line segments are set in pairs of duration and target value \,
+which is the opposite of the [line] family of objects from Pd Vanilla.
+, f 48;
+#X text 166 158 start \, duration \, target;
+#X text 125 108 duration \, target;
+#X obj 402 231 else/sig2float~;
+#X obj 402 267 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 402 190 else/envgen~ 0 1000 1 250 0.25 250 0.25 500 1 250 1
+250 0, f 30;
+#X obj 402 155 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 333 15 But if you have an odd number of elements \, the first
+float sets a staring point. In the case of a single float \, this is
+also true \, but it's the start and end point \, so \, in practical
+terms \, it just jumps to that value. See examples below., f 46;
+#X text 355 102 Being an all purpose envelope generator \, you can
+use it to create complex envelope lines., f 40;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 6 0;
+#X connect 6 0 2 0;
+#X connect 11 0 12 0;
+#X connect 13 0 11 0;
+#X connect 14 0 13 0;
+#X restore 491 261 pd list;
+#X text 263 152 ADSR (attack \, decay \, sustain \, release);
+#X text 373 196 AR (attack \, release);
+#X text 211 407 sets and runs envelope. Lists are pairs of duration
+/ target. If odd \, 1st float is the starting point;
+#X text 104 155 trigger envelope;
+#N canvas 602 207 462 373 retrigger 0;
+#X obj 138 203 *~;
+#X obj 73 151 osc~ 440;
+#X obj 214 190 else/sig2float~;
+#X obj 214 223 vsl 18 100 0 0.5 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 153 98 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 95 253 else/out~;
+#X text 180 101 <= click multiple times;
+#X obj 153 139 else/envgen~ 100 1 300 0.25 1000 0.25 500 0;
+#X text 60 23 When you give [envgen~] an even number of elements to
+set the line segments \, you can retrigger the envelope so the envelope
+restarts the attack ramp without raising from 0 - try it below or on
+the right., f 56;
+#X connect 0 0 5 0;
+#X connect 0 0 5 1;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 4 0 7 0;
+#X connect 7 0 0 1;
+#X connect 7 0 2 0;
+#X restore 459 355 pd retrigger;
+#X connect 7 0 45 0;
+#X connect 8 0 45 0;
+#X connect 14 0 45 0;
+#X connect 17 0 45 0;
+#X connect 31 0 15 0;
+#X connect 34 0 35 1;
+#X connect 34 0 35 0;
+#X connect 36 0 34 0;
+#X connect 37 0 45 0;
+#X connect 45 0 31 0;
+#X connect 45 0 34 1;
+#X connect 45 1 18 0;

@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (258 objects):
+##Current Object list (259 objects):
 
 **ASSORTED: [2]**
 - [nbang]
@@ -295,7 +295,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [16]**
+**CONTROL: [17]**
  - [adsr~]
  - [asr~]
  - [autofade~]
@@ -303,6 +303,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
  - [decay~]
  - [decay2~]
  - [envelope~]
+ - [envgen~]
  - [fader~]
  - [glide~]
  - [glide2~]
