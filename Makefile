@@ -109,6 +109,7 @@ floor~.class.sources := classes/floor~.c
 fold.class.sources := classes/fold.c
 fold~.class.sources := classes/fold~.c
 freqshift~.class.sources := classes/freqshift~.c
+function~.class.sources := classes/function~.c
 gbman~.class.sources := classes/gbman~.c
 # gate~.class.sources := classes/gate~.c
 gate2imp~.class.sources := classes/gate2imp~.c
