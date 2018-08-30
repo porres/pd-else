@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (260 objects):
+##Current Object list (261 objects):
 
 **ASSORTED: [2]**
 - [nbang]
@@ -353,10 +353,11 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [vu~]
 - [zerocross~]
 
-**GUI: [17]**
+**GUI: [18]**
 - [mtx.ctl]
 - [pic]
 - [colors]
+- [envelope]
 - [slider2d]
 - [display]
 - [display~]
