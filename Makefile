@@ -17,6 +17,7 @@ uname := $(shell uname -s)
 # envgen~.class.sources := classes/envgen~.c
 
 # GUI:
+envelope.class.sources := classes/envelope.c
 keyboard.class.sources := classes/keyboard.c
 openfile.class.sources := classes/openfile.c
 colors.class.sources := classes/colors.c
