@@ -71,7 +71,7 @@ a point and you create a new one.;
 #X connect 4 0 5 0;
 #X connect 6 0 4 0;
 #X restore 486 230 pd input;
-#N canvas 276 23 627 441 envgen~ 0;
+#N canvas 436 53 627 441 envgen~ 1;
 #X obj 261 234 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 524 139 1;
@@ -82,27 +82,27 @@ a point and you create a new one.;
 #X text 523 235 0;
 #X obj 134 222 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -262144 -1 -1 200 256;
-#X msg 261 291 0 50 1 50 0.6 300 0.6 200 0;
+#X msg 312 285 0 50 1 50 0.6 300 0.6 200 0;
 #X obj 312 112 else/initmess 0 50 1 50 0.6 300 0.6 200 0;
 #X obj 134 255 else/bl.tri~;
 #X obj 134 193 else/initmess 200;
-#X text 104 27 Here's an example on how to use [envelope] with [envgen~].
-Since [envelope] is always outputing a list you can use something like
-[setmess] and only trigger the envelope when sending the message a
-bang. Check the help file of [envgen~] for more details on how it works.
-;
 #X obj 315 145 else/envelope;
-#X connect 0 0 8 0;
+#X text 114 26 Here's an example on how to use [envelope] with [envgen~].
+Since [envelope] is always outputing a list you can use something like
+[setmess] and only trigger the envelope when sending it a bang or a
+float. Check the help file of [envgen~] for more details on how it
+works.;
+#X connect 0 0 2 0;
 #X connect 2 0 3 1;
 #X connect 3 0 4 1;
 #X connect 3 0 4 0;
 #X connect 5 0 8 0;
+#X connect 5 0 2 0;
 #X connect 7 0 10 0;
-#X connect 8 0 2 0;
-#X connect 9 0 13 0;
+#X connect 9 0 12 0;
 #X connect 10 0 3 0;
 #X connect 11 0 7 0;
-#X connect 13 0 5 0;
+#X connect 12 0 5 0;
 #X restore 474 253 pd envgen~;
 #N canvas 521 43 527 508 function~ 0;
 #X text 407 158 1;

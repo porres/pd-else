@@ -1,4 +1,4 @@
-#N canvas 669 111 560 426 10;
+#N canvas 669 111 558 438 10;
 #X obj 2 4 cnv 15 301 42 empty empty function~ 20 20 2 37 -233017 -1
 0;
 #X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -25,64 +25,69 @@
 0;
 #X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#N canvas 408 150 524 469 waveform 0;
-#X obj 111 319 else/out~;
-#X obj 228 285 else/graph~ 441 10 1.015 -1.015;
-#X msg 181 136 -1 0.5 1 0.5 -1;
-#X msg 154 90 -1 1 1;
-#X msg 168 112 1 1 -1;
-#X obj 69 132 phasor~ 200;
-#X obj 154 243 function~ 1 1 -1;
-#X msg 188 164 -1 0.25 1 0.5 1 0.25 -1;
-#X text 73 30 Here we use [function~] to generate waveforms and use
-them as oscillators with a [phasor~] input.;
-#X obj 69 110 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 201 88 sawtooth;
-#X text 216 110 inverted sawtooth;
-#X text 284 135 triangular wave;
-#X text 338 164 trapezoid;
-#X connect 2 0 6 0;
-#X connect 3 0 6 0;
-#X connect 4 0 6 0;
-#X connect 5 0 6 0;
-#X connect 6 0 0 0;
-#X connect 6 0 0 1;
-#X connect 6 0 1 0;
-#X connect 7 0 6 0;
-#X connect 9 0 5 0;
-#X restore 453 229 pd waveform;
 #X obj 467 71 setdsp~ 1;
-#X obj 1 400 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#X obj 1 410 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 1 269 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 1 279 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 1 330 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 1 340 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 1 371 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+#X obj 1 381 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 110 279 cnv 17 3 40 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 110 289 cnv 17 3 40 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 188 298 list;
-#X text 140 280 float/signal;
-#X obj 110 342 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X text 188 308 list;
+#X text 140 290 float/signal;
+#X obj 110 352 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 176 343 signal;
-#X text 226 343 - function output, f 35;
-#X text 228 280 - values from 0 to 1 reads function;
-#X text 136 379 1) list;
-#X text 198 379 - 3 or more floats set function, f 40;
-#X text 228 298 - 3 or more floats set function, f 35;
-#X obj 191 201 else/function~ 1 1 -1;
-#X obj 191 178 nbx 5 14 0 1 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 1 256;
-#X obj 194 154 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12700 1;
-#X obj 191 231 else/display~ 8;
+#X text 176 353 signal;
+#X text 226 353 - function output, f 35;
+#X text 228 290 - values from 0 to 1 reads function;
+#X text 136 389 1) list;
+#X text 198 389 - 3 or more floats set function, f 40;
+#X text 228 308 - 3 or more floats set function, f 35;
+#X obj 192 209 else/function~ 1 1 -1;
+#X obj 192 186 nbx 5 14 0 1 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0 256;
+#X obj 195 162 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 192 239 else/display~ 8;
+#N canvas 370 146 612 558 example 0;
+#X obj 112 412 else/out~;
+#X obj 229 378 else/graph~ 441 10 1.015 -1.015;
+#X msg 186 132 -1 0.5 1 0.5 -1;
+#X msg 159 86 -1 1 1;
+#X msg 173 108 1 1 -1;
+#X obj 74 128 phasor~ 200;
+#X msg 193 160 -1 0.25 1 0.5 1 0.25 -1;
+#X text 126 28 Here we use [function~] to generate waveforms and use
+them as oscillators with a [phasor~] input.;
+#X obj 74 106 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 206 84 sawtooth;
+#X text 221 106 inverted sawtooth;
+#X text 289 131 triangular wave;
+#X text 343 160 trapezoid;
+#X obj 155 336 function~ 1 100 -1;
+#X obj 211 200 else/envelope 1 1 -1;
+#X text 428 239 <== the envelope object is quite convenient for use
+with [function~]. Check its help file for more info, f 18;
+#X connect 2 0 13 0;
+#X connect 3 0 13 0;
+#X connect 4 0 13 0;
+#X connect 5 0 13 0;
+#X connect 6 0 13 0;
+#X connect 8 0 5 0;
+#X connect 13 0 0 0;
+#X connect 13 0 0 1;
+#X connect 13 0 1 0;
+#X connect 14 0 13 0;
+#X restore 472 241 pd example;
 #X text 72 87 [function~] generates functions from arguments/list input.
 Input values from 0 to 1 reads the function. It needs an odd number
 of elements in a list \, staring with 3 values \, the syntax is (point1
-\, period \, point2 \, period \, point3 \, etc...).;
-#X connect 28 0 31 0;
+\, period \, point2 \, period \, point3 \, etc...). The overall sum
+of periods is normalized to 1!;
+#X connect 27 0 30 0;
+#X connect 28 0 27 0;
 #X connect 29 0 28 0;
-#X connect 30 0 29 0;

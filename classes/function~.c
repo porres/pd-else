@@ -13,7 +13,6 @@ typedef struct _function{
     t_int       last_state;
     t_float*    finalvalues;
     t_float*    duration;
-    t_float     totaldur;
     t_int       args;          // Get rid of this
     t_int       state;
 }t_function;
@@ -60,15 +59,9 @@ static void function_resize(t_function* x,int ns){ // ???
     }
 }
 
-static void function_totaldur(t_function* x,t_float dur){
-    int i;
-    float f = dur/x->duration[x->last_state];
-    if(dur < 10){
-        post("function: duration too small %f",dur);
-        return;
-    }
-    for(i = 1; i <= x->last_state; i++)
-        x->duration[i] *= f;
+static void function_norm_dur(t_function* x){ // normalize duration
+    for(int i = 1; i <= x->last_state; i++)
+        x->duration[i] /= x->duration[x->last_state];
 }
 
 static void function_init(t_function *x,int argc,t_atom* argv){ // ???
@@ -80,11 +73,9 @@ static void function_init(t_function *x,int argc,t_atom* argv){ // ???
     x->duration[0] = 0;
     x->last_state = argc >> 1;
     function_resize(x, argc >> 1);
-    
     dur = x->duration;
     val = x->finalvalues;
-    
-    if (argc){
+    if(argc){
         *val = atom_getfloat(argv++);
         *dur = 0.0;
     }
@@ -108,6 +99,7 @@ static void function_list(t_function *x,t_symbol* s, int argc,t_atom* argv){
     t_symbol *dummy = s;
     dummy = NULL;
     function_init(x, argc, argv);
+    function_norm_dur(x);
 }
 
 static void *function_new(t_symbol *s,int argc,t_atom* argv){
@@ -118,8 +110,6 @@ static void *function_new(t_symbol *s,int argc,t_atom* argv){
     x->args = STATES;
     x->finalvalues = getbytes( x->args*sizeof(t_float));
     x->duration = getbytes( x->args*sizeof(t_float));
-    t_float initialDuration = 1000;             // ???
-    function_totaldur(x, initialDuration);      // ???
     x->x_val = 0.0;
     x->x_state = NONE;
     if(argc){
@@ -128,6 +118,7 @@ static void *function_new(t_symbol *s,int argc,t_atom* argv){
         if(argc >= 3)
             function_init(x, argc, argv);
     }
+    function_norm_dur(x);
     outlet_new(&x->x_obj, gensym("signal"));
     return(x);
 }

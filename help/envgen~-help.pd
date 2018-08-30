@@ -1,4 +1,4 @@
-#N canvas 492 23 573 701 10;
+#N canvas 492 23 566 682 10;
 #X obj 7 653 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 7 394 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -97,7 +97,7 @@ polyphonic synths.;
 #X connect 10 0 2 1;
 #X connect 10 0 4 0;
 #X connect 10 1 1 0;
-#X restore 478 284 pd status;
+#X restore 480 260 pd status;
 #X text 199 471 - sets the envelope and doesn't run it, f 53;
 #N canvas 530 146 719 476 gain 0;
 #X obj 95 210 else/display;
@@ -168,7 +168,7 @@ messages.;
 #X connect 24 0 23 0;
 #X connect 26 0 7 0;
 #X connect 28 0 6 1;
-#X restore 489 307 pd gain;
+#X restore 491 283 pd gain;
 #X text 199 424 - sets overall gain and starts the envelope, f 53
 ;
 #X text 199 523 - resumes the envelope after being paused, f 53;
@@ -205,11 +205,11 @@ note on/off input) with a [select] object. Below we have separate lines
 #X connect 7 0 1 0;
 #X connect 8 0 7 0;
 #X connect 9 0 8 0;
-#X restore 489 331 pd gate;
+#X restore 491 307 pd gate;
 #N canvas 356 215 695 411 list 0;
 #X obj 102 247 else/sig2float~;
 #X obj 102 278 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 2970 1;
+-1 -1 0 1;
 #X msg 129 189 0 1000 1;
 #X obj 102 129 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -248,7 +248,7 @@ can use it to create complex envelope lines., f 51;
 #X connect 9 0 7 0;
 #X connect 10 0 9 0;
 #X connect 14 0 0 0;
-#X restore 491 261 pd list;
+#X restore 493 237 pd list;
 #X text 263 152 ADSR (attack \, decay \, sustain \, release);
 #X text 373 196 AR (attack \, release);
 #X text 104 155 trigger envelope;
@@ -274,15 +274,48 @@ the right., f 56;
 #X connect 4 0 7 0;
 #X connect 7 0 0 1;
 #X connect 7 0 2 0;
-#X restore 459 355 pd retrigger;
+#X restore 461 331 pd retrigger;
 #X text 94 488 setgain <float>;
 #X text 154 424 float;
 #X text 211 443 sets and runs envelope. Lists are pairs of duration
 & target. If odd \, 1st float is the starting point, f 51;
 #X text 199 488 - sets overall gain, f 53;
-#X text 152 619 1) list -, f 9;
+#X text 152 619 1) list -;
 #X text 211 619 a float sets an initial output value \, a list of floats
 to set the envelope, f 51;
+#N canvas 447 164 586 450 envelope 1;
+#X obj 239 246 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 502 151 1;
+#X obj 239 326 else/envgen~;
+#X obj 112 303 *~;
+#X obj 69 350 else/out~;
+#X obj 290 270 else/setmess;
+#X text 501 247 0;
+#X obj 112 234 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 200 256;
+#X obj 290 124 else/initmess 0 50 1 50 0.6 300 0.6 200 0;
+#X obj 112 267 else/bl.tri~;
+#X obj 112 205 else/initmess 200;
+#X obj 293 157 else/envelope;
+#X msg 290 298 0 50 1 50 0.6 300 0.6 200 0;
+#X text 120 30 Here's an example on how to use [envelope] with [envgen~].
+Since [envelope] is always outputing a list you can use something like
+[setmess] and only trigger the envelope when sending a bang or a float.
+Check the help file of [envelope] for more details on how it works.
+;
+#X connect 0 0 2 0;
+#X connect 2 0 3 1;
+#X connect 3 0 4 1;
+#X connect 3 0 4 0;
+#X connect 5 0 2 0;
+#X connect 5 0 12 0;
+#X connect 7 0 9 0;
+#X connect 8 0 11 0;
+#X connect 9 0 3 0;
+#X connect 10 0 7 0;
+#X connect 11 0 5 0;
+#X restore 468 357 pd envelope;
 #X connect 7 0 43 0;
 #X connect 8 0 43 0;
 #X connect 14 0 43 0;
