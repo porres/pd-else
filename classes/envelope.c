@@ -531,6 +531,19 @@ static void envelope_width(t_envelope *x, t_floatarg f){
     envelope_update(x, x->glist);
 }
 
+static void envelope_send(t_envelope *x, t_symbol *s){
+    if(s != &s_)
+        x->x_send_sym = s;
+}
+
+static void envelope_receive(t_envelope *x, t_symbol *s){
+    if(s != &s_){
+        if(x->x_receive_sym != &s_)
+            pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
+        pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = s);
+    }
+}
+
 ///////////////////// NEW / FREE / SETUP /////////////////////
 
 static void *envelope_new(t_symbol *s, int ac, t_atom* av){
@@ -591,7 +604,25 @@ static void *envelope_new(t_symbol *s, int ac, t_atom* av){
                 }
                 else
                     goto errstate;
-            }            
+            }
+            else if(!strcmp(cursym->s_name, "-send")){
+                if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
+                    x->x_send_sym = atom_getsymbolarg(1, ac, av);
+                    ac -= 2;
+                    av += 2;
+                }
+                else
+                    goto errstate;
+            }
+            else if(!strcmp(cursym->s_name, "-receive")){
+                if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
+                    pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = atom_getsymbolarg(1, ac, av));
+                    ac -= 2;
+                    av += 2;
+                }
+                else
+                    goto errstate;
+            }
             else
                 goto errstate;
         }
@@ -612,7 +643,7 @@ errstate:
 
 static void envelope_free(t_envelope *x){
     if(x->x_receive_sym != &s_)
-         pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym); // what about send symbol ???
+         pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym); 
 }
 
 void envelope_setup(void){
@@ -625,6 +656,8 @@ void envelope_setup(void){
     class_addmethod(envelope_class, (t_method)envelope_min, gensym("min"), A_FLOAT, A_NULL);
     class_addmethod(envelope_class, (t_method)envelope_max, gensym("max"), A_FLOAT, A_NULL);
     class_addmethod(envelope_class, (t_method)envelope_duration, gensym("duration"), A_FLOAT, A_NULL);
+    class_addmethod(envelope_class, (t_method)envelope_send, gensym("send"), A_SYMBOL, A_NULL);
+    class_addmethod(envelope_class, (t_method)envelope_receive, gensym("receive"), A_SYMBOL, A_NULL);
 ///
     class_addmethod(envelope_class, (t_method)envelope_print, gensym("print"), A_NULL);
     class_addmethod(envelope_class, (t_method)envelope_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);

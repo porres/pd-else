@@ -1,4 +1,4 @@
-#N canvas 585 23 563 558 10;
+#N canvas 585 23 570 593 10;
 #X obj 24 40 cnv 4 4 4 empty empty Envelope 0 28 2 18 -233017 -1 0
 ;
 #X obj 102 40 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
@@ -26,15 +26,15 @@
 #X restore 305 3 graph;
 #X obj 4 327 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 437 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 466 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 466 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 495 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 527 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 563 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 129 335 cnv 17 3 97 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 129 445 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 335 cnv 17 3 125 empty empty 0 5 9 0 16 -228856 -162280
+0;
+#X obj 129 474 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 225 333 list;
 #X text 259 333 - sets and outputs breakpoints function;
@@ -46,18 +46,16 @@
 #X text 259 389 - sets maximum graph boundary, f 39;
 #X text 153 361 duration <float>;
 #X text 259 361 - sets overall duration, f 39;
-#X obj 161 178 envelope;
 #X obj 158 146 else/initmess 0 500 1 500 0;
 #X obj 158 290 else/display;
-#X text 225 446 list;
-#X text 259 446 - breakpoints function, f 39;
+#X text 225 475 list;
+#X text 259 475 - breakpoints function, f 39;
 #X text 67 86 [envelope] is a breakpoints function GUI to be used with
 [envggen~] or [function~]. You can click and draw on it or send it
 lists.;
 #X obj 130 145 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #N canvas 493 117 426 432 input 0;
-#X obj 101 156 envelope;
 #X msg 98 104 0 100 1 100 0.6 350 0.6 250 0;
 #X text 93 82 ADSR (attack \, decay \, sustain \, release);
 #X text 29 17 The list input needs to be an odd number of elements
@@ -69,12 +67,12 @@ on it and hit delete. Click anywhere in the graph where there's not
 a point and you create a new one.;
 #X obj 98 273 else/setmess;
 #X msg 98 301 0 100 1 100 0.6 350 0.6 250 0;
-#X connect 0 0 5 0;
-#X connect 1 0 0 0;
-#X connect 5 0 6 0;
+#X obj 101 156 else/envelope;
+#X connect 0 0 6 0;
+#X connect 4 0 5 0;
+#X connect 6 0 4 0;
 #X restore 486 242 pd input;
 #N canvas 276 23 627 441 envgen~ 0;
-#X obj 315 145 envelope;
 #X obj 261 234 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 524 139 1;
@@ -94,20 +92,20 @@ Since [envelope] is always outputing a list you can use something like
 [setmess] and only trigger the envelope when sending the message a
 bang. Check the help file of [envgen~] for more details on how it works.
 ;
-#X connect 0 0 6 0;
-#X connect 1 0 9 0;
+#X obj 315 145 else/envelope;
+#X connect 0 0 8 0;
+#X connect 2 0 3 1;
 #X connect 3 0 4 1;
-#X connect 4 0 5 1;
-#X connect 4 0 5 0;
-#X connect 6 0 9 0;
-#X connect 8 0 11 0;
-#X connect 9 0 3 0;
-#X connect 10 0 0 0;
-#X connect 11 0 4 0;
-#X connect 12 0 8 0;
+#X connect 3 0 4 0;
+#X connect 5 0 8 0;
+#X connect 7 0 10 0;
+#X connect 8 0 2 0;
+#X connect 9 0 13 0;
+#X connect 10 0 3 0;
+#X connect 11 0 7 0;
+#X connect 13 0 5 0;
 #X restore 474 265 pd envgen~;
 #N canvas 521 43 527 508 function~ 0;
-#X obj 198 164 envelope;
 #X text 407 158 1;
 #X obj 152 360 else/out~;
 #X obj 195 287 else/function~;
@@ -124,23 +122,30 @@ the function internally.;
 #X text 70 66 Note also that you can have any kind of breakpoints function
 in [envelope] and also draw something like a waveform in the range
 from -1 to 1 as below!;
-#X connect 0 0 3 0;
-#X connect 3 0 6 0;
-#X connect 3 0 2 1;
-#X connect 3 0 2 0;
-#X connect 4 0 0 0;
-#X connect 7 0 9 0;
-#X connect 8 0 7 0;
-#X connect 9 0 3 0;
+#X obj 198 164 else/envelope;
+#X connect 2 0 5 0;
+#X connect 2 0 1 1;
+#X connect 2 0 1 0;
+#X connect 3 0 11 0;
+#X connect 6 0 8 0;
+#X connect 7 0 6 0;
+#X connect 8 0 2 0;
+#X connect 11 0 2 0;
 #X restore 463 289 pd function~;
 #X text 165 403 height <float>;
 #X text 171 417 width <float>;
 #X text 259 403 - sets heigth, f 39;
 #X text 259 417 - sets width, f 39;
-#X obj 4 496 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 176 507 -heigth <float> -width <float>;
-#X text 225 475 list;
-#X text 259 475 - sets breakpoints function, f 39;
-#X connect 28 0 30 0;
-#X connect 29 0 28 0;
-#X connect 34 0 28 0;
+#X obj 4 525 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 225 504 list;
+#X text 259 504 - sets breakpoints function, f 39;
+#X obj 161 178 else/envelope;
+#X text 149 532 -heigth <float> | -width <float> | -send <symbol> |
+-receive <symbol>, f 35;
+#X text 171 431 send <symbol>;
+#X text 259 431 - sets send symbol, f 39;
+#X text 153 445 receive <symbol>;
+#X text 259 445 - sets receive symbol, f 39;
+#X connect 28 0 44 0;
+#X connect 33 0 44 0;
+#X connect 44 0 29 0;
