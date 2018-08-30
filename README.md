@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-11 (Unreleased)
+### Version 1.0 beta-11 (Released August 30th 2018)
 
 Needs Pd 0.48-1 or above
 
@@ -32,15 +32,17 @@ I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" 
 
 **"EL Locus Solus"** is run by me, Alexandre Torres Porres, and is a thing that organizes cultural events/concerts and music technology courses; website: http://alexandre-torres.wixsite.com/el-locus-solus
 
-EL Locus Solus offers a computer music tutorial with examples in Pure Data for its courses. These are in portuguese as of yet, with plans for english translation and formatting into a book. There are over 350 examples for now and they were designed to work with Pd Extended 0.42-5, making extensive use of the existing objects available in Pd Extended's libraries.
+EL Locus Solus offers a computer music tutorial with examples in Pure Data for its courses. These are in portuguese and are being currently translated and completely rewritten to english with plans of being accompanied by a book. There are about 325 examples for now and they were first designed to work with Pd Extended 0.42-5, making extensive use of the existing objects available in Pd Extended's libraries.
 
 Even though Pd Extended's libraries form a large set of external objects, at some point there was the need of something "else". Thus, this library emerged with the goal of provind extra objects. ELSE also started by stealing some ideas and stuff from SuperCollider, such as most of the chaotic generators UGENs. 
 
-But what started as a new library to include missing functionalities in the Pd Ecossystem (libraries from Pd Extended mostly) has now grown to encompass functionalities found in other Pd objects/libraries in Pd Extended, but with a different design and more functionalities, in order to remove many dependencies of the didactic material from these libraries. The reasons behind this is to rely on as little libraries as possible and also to get rid of many projects that are now long gone abandoned. 
+But what started as a new library to include missing functionalities in the Pd Ecossystem (libraries from Pd Extended mostly) has now grown to encompass functionalities found in other Pd objects/libraries in Pd Extended, but with a different design and more functionalities, in order to remove ALL the dependencies of the didactic material from these libraries. 
 
-The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. In fact, the didactic material has become quite obsolete with so much new objects on the table that it'll need a complete rewrite. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects.
+The reasons behind this is to rely on just a single library that was not abandoned instead of many projects that are now long gone abandoned. The consequence is that the tutorial is now being rewritten from scratch and is also expanding as there are plenty new things possible with the new objects from ELSE.
 
-I'm also involved in maintaining Cyclone, a legacy library for Pd (see: https://github.com/porres/pd-cyclone). But ELSE is now in the process of superseding even cyclone, at least for the purposes of my didactic material.
+I'm also involved in maintaining Cyclone, a legacy library for Pd (see: https://github.com/porres/pd-cyclone). There was the idea of relying also on cyclone for this didactic material, but ELSE is now also superseding even cyclone, at least for the purposes of my didactic material.
+
+The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects.
 
 Hence, ELSE is now a coming to be a quite big library, and keeps growing and growing, and it will take a while to stabilize. We can say then it's still in an early stage of development, that's why it's still in Beta stage, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. 
 
@@ -58,7 +60,7 @@ This release has been tested with Pd Vanilla 0.47-1, not guaranteed to work in a
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
 
-<pre>make pdincludepath=~/pd-0.47-1/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.47-1/bin/)</pre>
+<pre>make pdincludepath=~/pd-0.48-1/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.48-1/bin/)</pre>
 
 * Installing with pdlibbuilder
 
