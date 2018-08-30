@@ -294,10 +294,8 @@ static void envelope_delnum(t_envelope *x){
 
 static void envelope_create(t_envelope *x, t_glist *glist){
     int i;
-    static char buf[1024];
     float xscale, yscale;
     int xpos, ypos;
-    char num[40];
     float ySize = x->x_max - x->x_min;
     float yBase =  x->x_min;
     xpos = text_xpix(&x->x_obj, glist);
@@ -477,6 +475,7 @@ static void envelope_key(t_envelope *x, t_floatarg f){
 
 static int envelope_newclick(t_envelope *x, struct _glist *glist,
             int xpos, int ypos, int shift, int alt, int dbl, int doit){
+    alt = 0; // remove warning
 // check if user wants to resize
     float wxpos = text_xpix(&x->x_obj, glist);
     float wypos = text_ypix(&x->x_obj, glist);
@@ -497,6 +496,8 @@ static int envelope_newclick(t_envelope *x, struct _glist *glist,
 ///////////////////// METHODS /////////////////////
 
 static void envelope_list(t_envelope *x, t_symbol* s, int ac,t_atom *av){
+    t_symbol *dummy = s;
+    dummy = NULL;
     if(ac > 2 && ac % 2){
         envelope_generate(x, ac, av);
         if(glist_isvisible(x->glist))
@@ -547,27 +548,25 @@ static void envelope_receive(t_envelope *x, t_symbol *s){
 ///////////////////// NEW / FREE / SETUP /////////////////////
 
 static void *envelope_new(t_symbol *s, int ac, t_atom* av){
-     t_envelope *x = (t_envelope *)pd_new(envelope_class);
+    t_envelope *x = (t_envelope *)pd_new(envelope_class);
     t_symbol *cursym = s; // get rid of warning
-     x->x_state = 0;
-     x->x_states = STATES;
-     x->x_points = getbytes(x->x_states*sizeof(t_float));
-     x->x_duration = getbytes(x->x_states*sizeof(t_float));
+    x->x_state = 0;
+    x->x_states = STATES;
+    x->x_points = getbytes(x->x_states*sizeof(t_float));
+    x->x_duration = getbytes(x->x_states*sizeof(t_float));
 // widget
-     x->x_grabbed = 0;
-     x->glist = (t_glist*) canvas_getcurrent();
+    x->x_grabbed = 0;
+    x->glist = (t_glist*) canvas_getcurrent();
 // Default Args
-     x->x_width = 200;
-     x->x_height = 100;
-     t_float initialDuration = 1000;
-     x->x_receive_sym = x->x_send_sym = &s_;
-    
+    x->x_width = 200;
+    x->x_height = 100;
+    t_float initialDuration = 0;
+    x->x_receive_sym = x->x_send_sym = &s_;
     t_atom a[3];
     SETFLOAT(a, 0);
-    SETFLOAT(a+1, 1);
+    SETFLOAT(a+1, 1000);
     SETFLOAT(a+2, 0);
     envelope_generate(x, 3, a);
-    
 /////////////////////////////////////////////////////////////////////////////////////
     int symarg = 0;
     int n = 0;
@@ -585,10 +584,40 @@ static void *envelope_new(t_symbol *s, int ac, t_atom* av){
                 n = 0;
             }
             cursym = atom_getsymbolarg(0, ac, av);
-            if(!strcmp(cursym->s_name, "-width")){
+            if(!strcmp(cursym->s_name, "-duration")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    t_float curfloat = atom_getfloatarg(1, ac, av);
+                    initialDuration = curfloat < 0 ? 0 : curfloat; // min width is 40
+                    ac -= 2;
+                    av += 2;
+                }
+                else
+                    goto errstate;
+            }
+            else if(!strcmp(cursym->s_name, "-width")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     t_float curfloat = atom_getfloatarg(1, ac, av);
                     x->x_width = curfloat < 40 ? 40 : curfloat; // min width is 40
+                    ac -= 2;
+                    av += 2;
+                }
+                else
+                    goto errstate;
+            }
+            else if(!strcmp(cursym->s_name, "-min")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    x->x_min = atom_getfloatarg(1, ac, av);
+                    envelope_update(x, x->glist);
+                    ac -= 2;
+                    av += 2;
+                }
+                else
+                    goto errstate;
+            }
+            else if(!strcmp(cursym->s_name, "-max")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    x->x_max = atom_getfloatarg(1, ac, av);
+                    envelope_update(x, x->glist);
                     ac -= 2;
                     av += 2;
                 }
@@ -631,9 +660,9 @@ static void *envelope_new(t_symbol *s, int ac, t_atom* av){
     };
     if(!symarg && n > 2)
         envelope_generate(x, n, av);
+     if(initialDuration > 0)
+        envelope_duration(x, initialDuration);
 /////////////////////////////////////////////////////////////////////////////////////
-    
-     envelope_duration(x, initialDuration);
      outlet_new(&x->x_obj, &s_anything);
      return (x);
 errstate:

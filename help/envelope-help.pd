@@ -1,4 +1,4 @@
-#N canvas 585 23 570 593 10;
+#N canvas 585 23 566 598 10;
 #X obj 24 40 cnv 4 4 4 empty empty Envelope 0 28 2 18 -233017 -1 0
 ;
 #X obj 102 40 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
@@ -24,36 +24,35 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 3 graph;
-#X obj 4 327 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 309 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 466 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 448 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 495 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 477 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 563 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 568 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 129 335 cnv 17 3 125 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 119 317 cnv 17 3 125 empty empty 0 5 9 0 16 -228856 -162280
 0;
-#X obj 129 474 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 119 456 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 225 333 list;
-#X text 259 333 - sets and outputs breakpoints function;
-#X text 225 347 bang;
-#X text 259 347 - outputs breakpoints function, f 39;
-#X text 183 375 min <float>;
-#X text 183 389 max <float>;
-#X text 259 375 - sets minimum graph boundary, f 39;
-#X text 259 389 - sets maximum graph boundary, f 39;
-#X text 153 361 duration <float>;
-#X text 259 361 - sets overall duration, f 39;
-#X obj 158 146 else/initmess 0 500 1 500 0;
-#X obj 158 290 else/display;
-#X text 225 475 list;
-#X text 259 475 - breakpoints function, f 39;
+#X text 202 315 list;
+#X text 236 315 - sets and outputs breakpoints function, f 41;
+#X text 202 329 bang;
+#X text 236 329 - outputs breakpoints function, f 41;
+#X text 160 357 min <float>;
+#X text 160 371 max <float>;
+#X text 236 357 - sets minimum graph boundary, f 41;
+#X text 236 371 - sets maximum graph boundary, f 41;
+#X text 130 343 duration <float>;
+#X text 236 343 - sets overall duration, f 41;
+#X obj 215 132 else/initmess 0 500 1 500 0;
+#X obj 187 276 else/display;
+#X text 202 457 list;
 #X text 67 86 [envelope] is a breakpoints function GUI to be used with
 [envggen~] or [function~]. You can click and draw on it or send it
 lists.;
-#X obj 130 145 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 187 131 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #N canvas 493 117 426 432 input 0;
 #X msg 98 104 0 100 1 100 0.6 350 0.6 250 0;
@@ -71,7 +70,7 @@ a point and you create a new one.;
 #X connect 0 0 6 0;
 #X connect 4 0 5 0;
 #X connect 6 0 4 0;
-#X restore 486 242 pd input;
+#X restore 486 230 pd input;
 #N canvas 276 23 627 441 envgen~ 0;
 #X obj 261 234 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -104,7 +103,7 @@ bang. Check the help file of [envgen~] for more details on how it works.
 #X connect 10 0 3 0;
 #X connect 11 0 7 0;
 #X connect 13 0 5 0;
-#X restore 474 265 pd envgen~;
+#X restore 474 253 pd envgen~;
 #N canvas 521 43 527 508 function~ 0;
 #X text 407 158 1;
 #X obj 152 360 else/out~;
@@ -131,21 +130,24 @@ from -1 to 1 as below!;
 #X connect 7 0 6 0;
 #X connect 8 0 2 0;
 #X connect 11 0 2 0;
-#X restore 463 289 pd function~;
-#X text 165 403 height <float>;
-#X text 171 417 width <float>;
-#X text 259 403 - sets heigth, f 39;
-#X text 259 417 - sets width, f 39;
-#X obj 4 525 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 225 504 list;
-#X text 259 504 - sets breakpoints function, f 39;
-#X obj 161 178 else/envelope;
-#X text 149 532 -heigth <float> | -width <float> | -send <symbol> |
--receive <symbol>, f 35;
-#X text 171 431 send <symbol>;
-#X text 259 431 - sets send symbol, f 39;
-#X text 153 445 receive <symbol>;
-#X text 259 445 - sets receive symbol, f 39;
-#X connect 28 0 44 0;
-#X connect 33 0 44 0;
-#X connect 44 0 29 0;
+#X restore 463 277 pd function~;
+#X text 142 385 height <float>;
+#X text 148 399 width <float>;
+#X text 236 385 - sets heigth, f 41;
+#X text 236 399 - sets width, f 41;
+#X obj 4 507 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 202 486 list;
+#X obj 190 164 else/envelope;
+#X text 148 413 send <symbol>;
+#X text 236 413 - sets send symbol, f 41;
+#X text 130 427 receive <symbol>;
+#X text 236 427 - sets receive symbol, f 41;
+#X text 236 456 - breakpoints function (default 0 1000 1), f 46;
+#X text 236 486 - sets breakpoints function (default 0 1000 0);
+#X text 101 514 -heigth <float> (default 100) | -width <float> (default
+200) | -send <symbol> (default none) | -receive <symbol> (default none)
+| -duration <float> | -min <float> (default 0) | -max <float> (default
+1), f 66;
+#X connect 28 0 42 0;
+#X connect 32 0 42 0;
+#X connect 42 0 29 0;
