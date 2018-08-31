@@ -26,13 +26,15 @@ typedef struct _envgen{
     int             x_nsegs;     // as used
     int             x_pause;
     int             x_status;
+    int             x_legato;
+    t_float         x_retrigger;
     t_float         x_gain;
     t_envgen_seg    *x_curseg;
     t_envgen_seg    *x_segs;
     t_envgen_seg    x_segini[ENVGEN_MAX_SIZE];
     t_clock         *x_clock;
     t_outlet        *x_out2;
-} t_envgen;
+}t_envgen;
 
 static t_class *envgen_class;
 
@@ -66,8 +68,6 @@ static void envgen_set(t_envgen *x, t_symbol *s, int ac, t_atom *av){
 static void envgen_list(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     t_symbol *dummy = s;
     dummy = NULL;
-    if(!x->x_status)
-        outlet_float(x->x_out2, x->x_status = 1); // turn on status
     t_envgen_seg *segp;
     t_atom *a;
     t_int n;
@@ -83,7 +83,7 @@ static void envgen_list(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     copy_atoms(av, x->x_av, x->x_ac);
     t_int odd = ac % 2;
     t_int nsegs = ac / 2;
-    if(odd)
+    if(odd && !x->x_legato)
         nsegs++; // add an extra segment
     if(nsegs > ENVGEN_MAX_SIZE){
         nsegs = ENVGEN_MAX_SIZE;
@@ -92,10 +92,14 @@ static void envgen_list(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     x->x_nsegs = nsegs; // define number of line segments
     segp = x->x_segs;
     if(odd){ // initialize 1st segment
-        segp->s_delta = 0;
-        segp->s_target = av++->a_w.w_float * x->x_gain;
-        segp++;
-        nsegs--;
+        if(x->x_legato)
+            av++;
+        else{
+            segp->s_delta = x->x_status ? x->x_retrigger : 0;
+            segp->s_target = av++->a_w.w_float * x->x_gain;
+            segp++;
+            nsegs--;
+        }
     }
     while(nsegs--){
         segp->s_delta = av++->a_w.w_float;
@@ -106,6 +110,8 @@ static void envgen_list(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     x->x_curseg = x->x_segs;
     x->x_retarget = 1;
     x->x_pause = 0;
+    if(!x->x_status)
+        outlet_float(x->x_out2, x->x_status = 1); // turn on status
 }
 
 static void envgen_bang(t_envgen *x){
@@ -122,6 +128,14 @@ static void envgen_float(t_envgen *x, t_float f){
 static void envgen_setgain(t_envgen *x, t_float f){
     if(f != 0)
         x->x_gain = f;
+}
+
+static void envgen_retrigger(t_envgen *x, t_float f){
+    x->x_retrigger = f < 0 ? 0 : f;
+}
+
+static void envgen_legato(t_envgen *x, t_float f){
+    x->x_legato = f != 0;
 }
 
 static t_int *envgen_perform(t_int *w){
@@ -240,6 +254,8 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     x->x_pause = 0;
     x->x_segs = x->x_segini;
     x->x_curseg = 0;
+    x->x_legato = 0;
+    x->x_retrigger = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     int symarg = 0;
     int n = 0;
@@ -272,12 +288,26 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
                 else
                     goto errstate;
             }
+            else if(!strcmp(cursym->s_name, "-retrigger")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    x->x_retrigger = atom_getfloatarg(1, ac, av);
+                    ac -= 2;
+                    av += 2;
+                }
+                else
+                    goto errstate;
+            }
+            else if(!strcmp(cursym->s_name, "-legato")){
+                x->x_legato = 1;
+                ac--;
+                av++;
+            }
             else
                 goto errstate;
         }
         else
             goto errstate;
-    };
+    }
     if(!symarg && n > 0){
         if(n == 1)
             x->x_value = atom_getfloatarg(0, n, av);
@@ -309,4 +339,6 @@ void envgen_tilde_setup(void){
     class_addmethod(envgen_class, (t_method)envgen_set, gensym("set"), A_GIMME, 0);
     class_addmethod(envgen_class, (t_method)envgen_pause, gensym("pause"), 0);
     class_addmethod(envgen_class, (t_method)envgen_resume, gensym("resume"), 0);
+    class_addmethod(envgen_class, (t_method)envgen_legato, gensym("legato"), A_FLOAT, 0);
+    class_addmethod(envgen_class, (t_method)envgen_retrigger, gensym("retrigger"), A_FLOAT, 0);
 }
