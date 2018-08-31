@@ -1,5 +1,7 @@
+// porres 2018
 
 #include "m_pd.h"
+#include <string.h>
 
 #define ENVGEN_MAX_SIZE  512 // maximum segments
 
@@ -228,8 +230,7 @@ static void envgen_resume(t_envgen *x){
 }
 
 static void *envgen_new(t_symbol *s, int ac, t_atom *av){
-    t_symbol *dummy = s;
-    dummy = NULL;
+    t_symbol *cursym = s;
     t_envgen *x = (t_envgen *)pd_new(envgen_class);
     x->x_gain = 1;
     x->x_nleft = 0;
@@ -239,18 +240,61 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     x->x_pause = 0;
     x->x_segs = x->x_segini;
     x->x_curseg = 0;
-    if(ac == 1 && av->a_type == A_FLOAT){
-        x->x_value = atom_getfloatarg(0, ac, av);
+/////////////////////////////////////////////////////////////////////////////////////
+    int symarg = 0;
+    int n = 0;
+    while(ac > 0){
+        if((av+n)->a_type == A_FLOAT && !symarg){
+            n++;
+            ac--;
+        }
+        else if((av+n)->a_type == A_SYMBOL){
+            if(!symarg){
+                symarg = 1;
+                if(n == 1 && av->a_type == A_FLOAT){
+                    x->x_value = atom_getfloatarg(0, ac, av);
+                }
+                else if(n > 1){
+                    x->x_ac = n;
+                    x->x_av = getbytes(n * sizeof(*(x->x_av)));
+                    copy_atoms(av, x->x_av, x->x_ac);
+                }
+                av += n;
+                n = 0;
+            }
+            cursym = atom_getsymbolarg(0, ac, av);
+            if(!strcmp(cursym->s_name, "-init")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    x->x_value = atom_getfloatarg(1, ac, av);
+                    ac -= 2;
+                    av += 2;
+                }
+                else
+                    goto errstate;
+            }
+            else
+                goto errstate;
+        }
+        else
+            goto errstate;
+    };
+    if(!symarg && n > 0){
+        if(n == 1)
+            x->x_value = atom_getfloatarg(0, n, av);
+        else{
+            x->x_ac = n;
+            x->x_av = getbytes(n * sizeof(*(x->x_av)));
+            copy_atoms(av, x->x_av, x->x_ac);
+        }
     }
-    else{
-        x->x_ac = ac;
-        x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
-        copy_atoms(av, x->x_av, x->x_ac);
-    }
+/////////////////////////////////////////////////////////////////////////////////////
     outlet_new((t_object *)x, &s_signal);
     x->x_out2 = outlet_new((t_object *)x, &s_float);
     x->x_clock = clock_new(x, (t_method)envgen_tick);
     return(x);
+errstate:
+    pd_error(x, "[envgen~]: improper args");
+    return NULL;
 }
 
 void envgen_tilde_setup(void){
