@@ -40,7 +40,6 @@ typedef struct _envelope{
     int         x_shift; // move 100th
     float       x_pointer_x;
     float       x_pointer_y;
-    t_clock*    x_numclock;
 }t_envelope;
 
 // REMOVE!!
@@ -288,10 +287,6 @@ static void envelope_update_doodles(t_envelope *x, t_glist *glist){
     envelope_create_doodles(x, glist);
 }
 
-static void envelope_delnum(t_envelope *x){
-    sys_vgui(".x%lx.c delete %lxT\n", glist_getcanvas(x->glist), x);
-}
-
 static void envelope_create(t_envelope *x, t_glist *glist){
     int i;
     float xscale, yscale;
@@ -300,7 +295,6 @@ static void envelope_create(t_envelope *x, t_glist *glist){
     float yBase =  x->x_min;
     xpos = text_xpix(&x->x_obj, glist);
     ypos = (int) text_ypix(&x->x_obj, glist);
-    x->x_numclock = clock_new(x, (t_method) envelope_delnum);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d  -tags %lxS -fill %s -width %d\n",
              glist_getcanvas(glist), xpos - BORDERWIDTH, ypos - BORDERWIDTH,
              xpos + x->x_width + BORDERWIDTH,
