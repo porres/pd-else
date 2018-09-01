@@ -5,7 +5,7 @@
 
 #define ENVGEN_MAX_SIZE  512 // maximum segments
 
-typedef struct _envgenseg{
+typedef struct _envgenseg{ // ??
     float  s_target;
     float  s_delta;
 }t_envgen_line;
@@ -34,19 +34,15 @@ typedef struct _envgen{
     t_float         x_maxsustain;
     t_float         x_retrigger;
     t_float         x_gain;
-    t_envgen_line *x_curseg;
-    t_envgen_line *x_lines;
-    t_envgen_line  x_n_lineini[ENVGEN_MAX_SIZE];
+    t_envgen_line   *x_curseg;
+    t_envgen_line   *x_lines;
+    t_envgen_line   x_n_lineini[ENVGEN_MAX_SIZE];
     t_clock         *x_clock;
+    t_clock         *x_sus_clock;
     t_outlet        *x_out2;
 }t_envgen;
 
 static t_class *envgen_class;
-
-static void envgen_tick(t_envgen *x){
-    if(x->x_status && !x->x_release)
-        outlet_float(x->x_out2, x->x_status = 0);
-}
 
 static void copy_atoms(t_atom *src, t_atom *dst, int n){
     while(n--)
@@ -80,11 +76,14 @@ static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
             n_lines = x->x_suspoint;
             x->x_release = 1; // we have a release ramp!
 //            post("n_lines = suspoint = %d", n_lines);
-        // define release
+// define release
             int n = 2*n_lines + skip1st;
             x->x_ac_rel = (ac -= n);
             x->x_av_rel = getbytes(x->x_ac_rel * sizeof(*(x->x_av_rel)));
             copy_atoms(av+n, x->x_av_rel, x->x_ac_rel);
+//        clock;
+            if(x->x_maxsustain > 0)
+                clock_delay(x->x_sus_clock, x->x_maxsustain);
         }
         else
             x->x_release = 0;
@@ -133,6 +132,16 @@ static void envgen_release(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     x->x_release = 0;
     x->x_retarget = 1;
     x->x_pause = 0;
+}
+
+static void envgen_tick(t_envgen *x){
+    if(x->x_status && !x->x_release)
+        outlet_float(x->x_out2, x->x_status = 0);
+}
+
+static void envgen_sus_tick(t_envgen *x){
+    if(x->x_release)
+        envgen_release(x, &s_list, x->x_ac_rel, x->x_av_rel);
 }
 
 static void envgen_set(t_envgen *x, t_symbol *s, int ac, t_atom *av){
@@ -307,6 +316,8 @@ static void envgen_free(t_envgen *x){
         freebytes(x->x_lines, x->x_size * sizeof(*x->x_lines));
     if(x->x_clock)
         clock_free(x->x_clock);
+    if(x->x_sus_clock)
+        clock_free(x->x_sus_clock);
 }
 
 static void envgen_pause(t_envgen *x){
@@ -330,6 +341,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     x->x_curseg = 0;
     x->x_release = 0;
 // init
+    x->x_maxsustain = 0;
     x->x_legato = 0;
     x->x_retrigger = 0;
     x->x_suspoint = 0;
@@ -380,10 +392,19 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
                 else
                     goto errstate;
             }
-            else if(!strcmp(cursym->s_name, "-sustain")){
+            else if(!strcmp(cursym->s_name, "-suspoint")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     t_int suspoint = (t_int)atom_getfloatarg(1, ac, av);
                     x->x_suspoint = suspoint < 0 ? 0 : suspoint;
+                    ac -= 2;
+                    av += 2;
+                }
+                else
+                    goto errstate;
+            }
+            else if(!strcmp(cursym->s_name, "-maxsustain")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    x->x_maxsustain = (t_int)atom_getfloatarg(1, ac, av);
                     ac -= 2;
                     av += 2;
                 }
@@ -414,6 +435,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     outlet_new((t_object *)x, &s_signal);
     x->x_out2 = outlet_new((t_object *)x, &s_float);
     x->x_clock = clock_new(x, (t_method)envgen_tick);
+    x->x_sus_clock = clock_new(x, (t_method)envgen_sus_tick);
     return(x);
 errstate:
     pd_error(x, "[envgen~]: improper args");
@@ -435,7 +457,7 @@ void envgen_tilde_setup(void){
     class_addmethod(envgen_class, (t_method)envgen_pause, gensym("pause"), 0);
     class_addmethod(envgen_class, (t_method)envgen_resume, gensym("resume"), 0);
     class_addmethod(envgen_class, (t_method)envgen_legato, gensym("legato"), A_FLOAT, 0);
-    class_addmethod(envgen_class, (t_method)envgen_suspoint, gensym("sustain"), A_FLOAT, 0);
+    class_addmethod(envgen_class, (t_method)envgen_suspoint, gensym("suspoint"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_maxsustain, gensym("maxsustain"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_retrigger, gensym("retrigger"), A_FLOAT, 0);
 }
