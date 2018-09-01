@@ -8,7 +8,7 @@
 typedef struct _envgenseg{
     float  s_target;
     float  s_delta;
-}t_envgen_seg;
+}t_envgen_line;
 
 typedef struct _envgen{
     t_object        x_obj;
@@ -25,17 +25,18 @@ typedef struct _envgen{
     int             x_nleft;
     int             x_retarget;
     int             x_size;      // as allocated
-    int             x_nsegs;     // as used
+    int             x_n_lines;   // as used
     int             x_pause;
     int             x_status;
     int             x_legato;
     int             x_release;
     int             x_suspoint;
+    t_float         x_maxsustain;
     t_float         x_retrigger;
     t_float         x_gain;
-    t_envgen_seg    *x_curseg;
-    t_envgen_seg    *x_segs;
-    t_envgen_seg    x_segini[ENVGEN_MAX_SIZE];
+    t_envgen_line *x_curseg;
+    t_envgen_line *x_lines;
+    t_envgen_line  x_n_lineini[ENVGEN_MAX_SIZE];
     t_clock         *x_clock;
     t_outlet        *x_out2;
 }t_envgen;
@@ -56,7 +57,7 @@ static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     t_symbol *dummy = s;
     dummy = NULL;
     t_int odd = ac % 2;
-    t_int nsegs = ac / 2;
+    t_int n_lines = ac / 2;
     t_int skip1st = 0;
     if(odd){
         if(x->x_legato){
@@ -64,23 +65,23 @@ static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
             ac--;
         }
         else{
-            nsegs++; // add an extra segment
+            n_lines++; // add an extra segment
             skip1st = 1; // for release
         }
     }
-    if(nsegs > ENVGEN_MAX_SIZE){
-        nsegs = ENVGEN_MAX_SIZE;
+    if(n_lines > ENVGEN_MAX_SIZE){
+        n_lines = ENVGEN_MAX_SIZE;
         odd = 0;
     };
-    post("number of line segments (nsegs) = %d", nsegs);
+//    post("number of line segments (n_lines) = %d", n_lines);
     if(x->x_suspoint){ // we have a sustain point
-        post("suspoint");
-        if(nsegs - skip1st >= x->x_suspoint){ // limit # segs to suspoint and define release
-            nsegs = x->x_suspoint;
+//        post("suspoint");
+        if(n_lines - skip1st >= x->x_suspoint){ // limit # segs to suspoint and define release
+            n_lines = x->x_suspoint;
             x->x_release = 1; // we have a release ramp!
-            post("nsegs = suspoint = %d", nsegs);
+//            post("n_lines = suspoint = %d", n_lines);
         // define release
-            int n = 2*nsegs + skip1st;
+            int n = 2*n_lines + skip1st;
             x->x_ac_rel = (ac -= n);
             x->x_av_rel = getbytes(x->x_ac_rel * sizeof(*(x->x_av_rel)));
             copy_atoms(av+n, x->x_av_rel, x->x_ac_rel);
@@ -91,23 +92,21 @@ static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     else
         x->x_release = 0;
 // attack
-    
-    x->x_nsegs = nsegs += skip1st; // define number of line segments
-    post("x->x_nsegs = %d", x->x_nsegs);
-    t_envgen_seg *segp = x->x_segs;
+    x->x_n_lines = n_lines += skip1st; // define number of line segments
+    t_envgen_line *line_point = x->x_lines;
     if(odd && !x->x_legato){ // initialize 1st segment
-        segp->s_delta = x->x_status ? x->x_retrigger : 0;
-        segp->s_target = (av++)->a_w.w_float * x->x_gain;
-        segp++;
-        nsegs--;
+        line_point->s_delta = x->x_status ? x->x_retrigger : 0;
+        line_point->s_target = (av++)->a_w.w_float * x->x_gain;
+        line_point++;
+        n_lines--;
     }
-    while(nsegs--){
-        segp->s_delta = (av++)->a_w.w_float;
-        segp->s_target = (av++)->a_w.w_float * x->x_gain;
-        segp++;
+    while(n_lines--){
+        line_point->s_delta = (av++)->a_w.w_float;
+        line_point->s_target = (av++)->a_w.w_float * x->x_gain;
+        line_point++;
     }
-    x->x_target = x->x_segs->s_target;
-    x->x_curseg = x->x_segs;
+    x->x_target = x->x_lines->s_target;
+    x->x_curseg = x->x_lines;
     x->x_retarget = 1;
     x->x_pause = 0;
     if(!x->x_status)
@@ -119,20 +118,18 @@ static void envgen_release(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     dummy = NULL;
     if(ac < 2)
         return;
-    t_int nsegs = ac / 2;
-    //    post("number of line segments (nsegs) = %d", nsegs);
+    t_int n_lines = ac / 2;
+    //    post("number of line segments (n_lines) = %d", n_lines);
 // release
-    x->x_nsegs = nsegs; // define number of line segments
-    t_envgen_seg *segp = x->x_segs;
-
-    
-    while(nsegs--){
-        segp->s_delta = av++->a_w.w_float;
-        segp->s_target = av++->a_w.w_float * x->x_gain;
-        segp++;
+    x->x_n_lines = n_lines; // define number of line segments
+    t_envgen_line *line_point = x->x_lines;
+    while(n_lines--){
+        line_point->s_delta = av++->a_w.w_float;
+        line_point->s_target = av++->a_w.w_float * x->x_gain;
+        line_point++;
     }
-    x->x_target = x->x_segs->s_target;
-    x->x_curseg = x->x_segs;
+    x->x_target = x->x_lines->s_target;
+    x->x_curseg = x->x_lines;
     x->x_release = 0;
     x->x_retarget = 1;
     x->x_pause = 0;
@@ -206,6 +203,10 @@ static void envgen_legato(t_envgen *x, t_float f){
     x->x_legato = f != 0;
 }
 
+static void envgen_maxsustain(t_envgen *x, t_float f){
+    x->x_maxsustain = f;
+}
+
 static void envgen_suspoint(t_envgen *x, t_float f){
     t_int suspoint = f < 0 ? 0 : (int)f;
     x->x_suspoint = suspoint;
@@ -232,15 +233,15 @@ retarget:
         float target = x->x_curseg->s_target;
         float delta = x->x_curseg->s_delta;
     	int npoints = delta * x->x_ksr + 0.5;  /* LATER rethink */
-        x->x_nsegs--;
+        x->x_n_lines--;
         x->x_curseg++;
     	while(npoints <= 0){
             curval = x->x_value = target;
-            if (x->x_nsegs){
+            if (x->x_n_lines){
                 target = x->x_curseg->s_target;
                 delta = x->x_curseg->s_delta;
                 npoints = delta * x->x_ksr + 0.5;  /* LATER rethink */
-                x->x_nsegs--;
+                x->x_n_lines--;
                 x->x_curseg++;
             }
             else{
@@ -261,7 +262,7 @@ retarget:
     }
     if(nxfer >= nblock){
         if ((x->x_nleft -= nblock) == 0){
-            if (x->x_nsegs)
+            if (x->x_n_lines)
                 x->x_retarget = 1;
             else
                 clock_delay(x->x_clock, 0);
@@ -278,7 +279,7 @@ retarget:
             *out++ = curval, curval += inc;
         while(--nxfer);
             curval = x->x_value = x->x_target;
-        if(x->x_nsegs){
+        if(x->x_n_lines){
             x->x_retarget = 1;
             goto
                 retarget;
@@ -302,8 +303,8 @@ static void envgen_dsp(t_envgen *x, t_signal **sp){
 }
 
 static void envgen_free(t_envgen *x){
-    if(x->x_segs != x->x_segini)
-        freebytes(x->x_segs, x->x_size * sizeof(*x->x_segs));
+    if(x->x_lines != x->x_n_lineini)
+        freebytes(x->x_lines, x->x_size * sizeof(*x->x_lines));
     if(x->x_clock)
         clock_free(x->x_clock);
 }
@@ -323,9 +324,9 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     x->x_nleft = 0;
     x->x_retarget = 0;
     x->x_size = ENVGEN_MAX_SIZE;
-    x->x_nsegs = 0;
+    x->x_n_lines = 0;
     x->x_pause = 0;
-    x->x_segs = x->x_segini;
+    x->x_lines = x->x_n_lineini;
     x->x_curseg = 0;
     x->x_release = 0;
 // init
@@ -435,5 +436,6 @@ void envgen_tilde_setup(void){
     class_addmethod(envgen_class, (t_method)envgen_resume, gensym("resume"), 0);
     class_addmethod(envgen_class, (t_method)envgen_legato, gensym("legato"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_suspoint, gensym("sustain"), A_FLOAT, 0);
+    class_addmethod(envgen_class, (t_method)envgen_maxsustain, gensym("maxsustain"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_retrigger, gensym("retrigger"), A_FLOAT, 0);
 }
