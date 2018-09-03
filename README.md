@@ -72,7 +72,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (261 objects):
+##Current Object list (265 objects):
 
 **ASSORTED: [2]**
 - [nbang]
@@ -153,7 +153,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [wrap2]
 - [wrap2~]
 
-**MATH: CONVERSION: [22]**
+**MATH: CONVERSION: [26]**
 - [hex2dec]
 - [bpm]
 - [dec2hex]
@@ -161,6 +161,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [car2pol~]
 - [cents2ratio]
 - [cents2ratio~]
+- [ms2samps]
+- [ms2samps~]
 - [db2lin]
 - [db2lin~]
 - [float2bits]
@@ -172,6 +174,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [rad2hz~]
 - [ratio2cents]
 - [ratio2cents~]
+- [samps2ms]
+- [samps2ms~]
 - [pol2car]
 - [pol2car~]
 - [rescale]
