@@ -50,33 +50,16 @@ static void copy_atoms(t_atom *src, t_atom *dst, int n){
 static void envgen_retarget(t_envgen *x){
     x->x_target = x->x_curseg->s_target;
     x->x_nleft = (t_int)(x->x_curseg->s_delta * x->x_ksr + 0.5);
-    
-/*    post("nlines before = %d", x->x_n_lines);
-    post("target = %f", x->x_target);
-    post("nleft  = %d", x->x_nleft); */
-    
     x->x_n_lines--;
     x->x_curseg++;
-    
-//    post("lines after = %d", x->x_n_lines);
-    
     if(x->x_nleft == 0){
-//        post("if(x->x_nleft == 0)");
-        
         x->x_value = x->x_target;
         x->x_inc = 0;
-        
-//        post("VALUE = %f", x->x_target);
-        
-//        post("next delta = %f", x->x_curseg->s_delta);
-        
-        while(!(x->x_curseg->s_delta) && x->x_n_lines){ // next delta also == 0 && lines
+        while(x->x_n_lines && // next delta also == 0 && lines
+              !(t_int)(x->x_curseg->s_delta * x->x_ksr + 0.5)){
             x->x_value = x->x_target = x->x_curseg->s_target;
             x->x_n_lines--, x->x_curseg++;
         }
-/*        post("if(x->x_nleft == 0) nlines = %d", x->x_n_lines);
-        post("if(x->x_nleft == 0) target = %f", x->x_target);
-        post("if(x->x_nleft == 0) nleft = %d", x->x_nleft); */
     }
     else{
         x->x_value += (x->x_inc = (x->x_target - x->x_value) / (t_float)x->x_nleft);
@@ -89,7 +72,6 @@ static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     dummy = NULL;
     t_int odd = ac % 2;
     t_int n_lines = ac / 2;
- //   post("n_lines = %d", n_lines);
     t_int skip1st = 0;
     if(odd){
         if(x->x_legato){
@@ -99,7 +81,6 @@ static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
         else{
             n_lines++; // add an extra segment
             skip1st = 1; // for release
-//            post("n_lines + skip1st (1) = %d", n_lines);
         }
     }
     if(n_lines > ENVGEN_MAX_SIZE){
@@ -124,7 +105,6 @@ static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
         x->x_release = 0;
 // attack
     x->x_n_lines = n_lines; // define number of line segments
-//    post("x->x_n_lines = %d", x->x_n_lines);
     t_envgen_line *line_point = x->x_lines;
     if(odd && !x->x_legato){ // initialize 1st segment
         line_point->s_delta = x->x_status ? x->x_retrigger : 0;
@@ -139,9 +119,6 @@ static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
         line_point->s_target = (av++)->a_w.w_float * x->x_gain;
         line_point++;
     }
-//    x->x_target = x->x_lines->s_target;
-//    post("attack target = %f", x->x_target);
-//    post("---------------");
     x->x_curseg = x->x_lines;
     envgen_retarget(x);
     if(x->x_pause)

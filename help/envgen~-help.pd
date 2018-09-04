@@ -1,4 +1,4 @@
-#N canvas 678 48 564 657 10;
+#N canvas 582 50 564 657 10;
 #X obj 7 628 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 7 276 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -140,23 +140,23 @@ time if you will.;
 , f 53;
 #X text 162 391 release;
 #N canvas 344 123 996 461 basic 0;
-#X msg 590 153 pause;
-#X msg 633 153 resume;
-#X obj 684 120 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X msg 602 156 pause;
+#X msg 645 156 resume;
+#X obj 696 123 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 732 262 vsl 20 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+#X obj 744 265 vsl 20 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 0 1;
-#X msg 732 172 0 1000 1 500 0;
-#X obj 732 232 else/sig2float~;
-#X text 756 333 0;
-#X text 755 258 1;
-#X obj 669 254 *~;
-#X obj 626 292 else/out~;
-#X obj 598 213 osc~ 440;
-#X msg 714 146 set 100 1 100 0.6 1000 0.6 500 0;
-#X obj 684 201 else/envgen~ 0 1000 1 500 0;
-#X text 717 128 ADSR (attack \, decay \, sustain \, release);
-#X text 827 172 AR (attack \, release);
+#X msg 744 175 0 1000 1 500 0;
+#X obj 744 235 else/sig2float~;
+#X text 768 336 0;
+#X text 767 261 1;
+#X obj 681 257 *~;
+#X obj 638 295 else/out~;
+#X obj 610 216 osc~ 440;
+#X msg 726 149 set 100 1 100 0.6 1000 0.6 500 0;
+#X obj 696 204 else/envgen~ 0 1000 1 500 0;
+#X text 729 131 ADSR (attack \, decay \, sustain \, release);
+#X text 839 175 AR (attack \, release);
 #X obj 72 296 else/sig2float~;
 #X obj 72 327 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 4950 1;
@@ -179,11 +179,7 @@ time if you will.;
 #X msg 72 203 500 \$1;
 #X msg 99 238 0 1000 1;
 #X obj 72 266 else/envgen~ 0.5;
-#X text 43 20 When receiving a list of two or more elements \, [envgen~]
-outputs line segments. The line segments are set in pairs of duration
-and target value (this is the opposite order of the [line] family of
-objects in Pd Vanilla)., f 36;
-#X text 43 104 But if you have an odd number of elements \, the first
+#X text 55 90 But if you have an odd number of elements \, the first
 float sets a staring point. In practical terms \, it's like this number
 is a target paired with a "0" duration value., f 36;
 #X text 301 30 If you give [envgen~] just a float as the argument \,
@@ -191,9 +187,12 @@ it initializes the object to output that value as a starting point.
 You can also use the -init flag instead., f 34;
 #X text 301 100 Being an all purpose line/envelope generator \, you
 can use it to create complex envelope lines as below., f 35;
-#X text 592 50 You can pause the envelope at any point with the "pause"
+#X text 573 60 You can pause the envelope at any point with the "pause"
 message \, after which the "resume" message restarts the envelope.
 The set message sets the envelope without triggering it.;
+#X text 55 29 The line segments in [envgen~] are set in pairs of duration
+(in ms) and target value (this is the opposite order of the [line]
+family of objects in Pd Vanilla)., f 36;
 #X connect 0 0 12 0;
 #X connect 1 0 12 0;
 #X connect 2 0 12 0;
@@ -213,7 +212,7 @@ The set message sets the envelope without triggering it.;
 #X connect 29 0 31 0;
 #X connect 30 0 31 0;
 #X connect 31 0 15 0;
-#X restore 496 144 pd basic;
+#X restore 495 124 pd basic;
 #X obj 221 180 *~;
 #X obj 178 211 else/out~;
 #X obj 174 150 osc~ 440;
@@ -445,6 +444,40 @@ and can also retrigger the envelope., f 47;
 #X text 168 282 signal;
 #X text 219 391 - same as a gate off, f 53;
 #X text 219 377 - same as bang or gate on, f 53;
+#N canvas 596 61 460 418 duration 0;
+#X text 206 303 start \, duration \, target;
+#X obj 301 210 else/setdsp~;
+#X obj 125 333 else/envgen~;
+#X obj 98 380 print~;
+#X obj 98 214 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 2 256;
+#X obj 98 240 t b f;
+#X msg 65 179 0;
+#X msg 98 179 1;
+#X msg 135 179 2;
+#X msg 168 179 3;
+#X obj 125 272 else/samps2ms;
+#X msg 125 303 0 \$1 1 0 0;
+#X text 51 23 The time duration is set in ms but is converted to number
+of samples and is rounded to the nearest integer sample duration. For
+instance \, durations >= 1.5 and < 2.5 is rounded to 2 samples., f
+57;
+#X text 51 77 Therefore \, the minimum duration is 1 sample \, which
+means it jumps to the target value in the next sample. A duration of
+0 may imply on the same time duration \, but the difference is that
+multiple lines with 0 duration next to each other get ignored (and
+values less than 0 are clipped to 0)., f 57;
+#X connect 2 0 3 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X connect 5 1 10 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 0;
+#X connect 8 0 4 0;
+#X connect 9 0 4 0;
+#X connect 10 0 11 0;
+#X connect 11 0 2 0;
+#X restore 478 144 pd duration;
 #X connect 52 0 53 1;
 #X connect 52 0 53 0;
 #X connect 54 0 52 0;
