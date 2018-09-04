@@ -3,9 +3,9 @@
 #include "m_pd.h"
 #include <string.h>
 
-#define ENVGEN_MAX_SIZE  512 // maximum segments
+#define ENVGEN_MAX_SIZE  512 // maximum line segments
 
-typedef struct _envgenseg{ // ??
+typedef struct _envgenseg{
     float  s_target;
     float  s_delta;
 }t_envgen_line;
@@ -16,30 +16,28 @@ typedef struct _envgen{
     float           x_target;
     float           x_delta;
     float           x_inc;
-    float           x_biginc;
     float           x_ksr;
     int             x_ac;
-    t_atom          *x_av;
+    t_atom         *x_av;
     int             x_ac_rel;
-    t_atom          *x_av_rel;
+    t_atom         *x_av_rel;
     int             x_nleft;
-    int             x_retarget;
-    int             x_size;      // as allocated
-    int             x_n_lines;   // as used
+    int             x_n_lines;
     int             x_pause;
     int             x_status;
     int             x_legato;
     int             x_release;
     int             x_suspoint;
+    t_float         x_lastin;
     t_float         x_maxsustain;
     t_float         x_retrigger;
     t_float         x_gain;
-    t_envgen_line   *x_curseg;
-    t_envgen_line   *x_lines;
+    t_clock        *x_clock;
+    t_clock        *x_sus_clock;
+    t_outlet       *x_out2;
+    t_envgen_line  *x_curseg;
+    t_envgen_line  *x_lines;
     t_envgen_line   x_n_lineini[ENVGEN_MAX_SIZE];
-    t_clock         *x_clock;
-    t_clock         *x_sus_clock;
-    t_outlet        *x_out2;
 }t_envgen;
 
 static t_class *envgen_class;
@@ -49,11 +47,49 @@ static void copy_atoms(t_atom *src, t_atom *dst, int n){
         *dst++ = *src++;
 }
 
+static void envgen_retarget(t_envgen *x){
+    x->x_target = x->x_curseg->s_target;
+    x->x_nleft = (t_int)(x->x_curseg->s_delta * x->x_ksr + 0.5);
+    
+/*    post("nlines before = %d", x->x_n_lines);
+    post("target = %f", x->x_target);
+    post("nleft  = %d", x->x_nleft); */
+    
+    x->x_n_lines--;
+    x->x_curseg++;
+    
+//    post("lines after = %d", x->x_n_lines);
+    
+    if(x->x_nleft == 0){
+//        post("if(x->x_nleft == 0)");
+        
+        x->x_value = x->x_target;
+        x->x_inc = 0;
+        
+//        post("VALUE = %f", x->x_target);
+        
+//        post("next delta = %f", x->x_curseg->s_delta);
+        
+        while(!(x->x_curseg->s_delta) && x->x_n_lines){ // next delta also == 0 && lines
+            x->x_value = x->x_target = x->x_curseg->s_target;
+            x->x_n_lines--, x->x_curseg++;
+        }
+/*        post("if(x->x_nleft == 0) nlines = %d", x->x_n_lines);
+        post("if(x->x_nleft == 0) target = %f", x->x_target);
+        post("if(x->x_nleft == 0) nleft = %d", x->x_nleft); */
+    }
+    else{
+        x->x_value += (x->x_inc = (x->x_target - x->x_value) / (t_float)x->x_nleft);
+        x->x_nleft--;
+    }
+}
+
 static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     t_symbol *dummy = s;
     dummy = NULL;
     t_int odd = ac % 2;
     t_int n_lines = ac / 2;
+ //   post("n_lines = %d", n_lines);
     t_int skip1st = 0;
     if(odd){
         if(x->x_legato){
@@ -63,25 +99,21 @@ static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
         else{
             n_lines++; // add an extra segment
             skip1st = 1; // for release
+//            post("n_lines + skip1st (1) = %d", n_lines);
         }
     }
     if(n_lines > ENVGEN_MAX_SIZE){
         n_lines = ENVGEN_MAX_SIZE;
         odd = 0;
     };
-//    post("number of line segments (n_lines) = %d", n_lines);
     if(x->x_suspoint){ // we have a sustain point
-//        post("suspoint");
         if(n_lines - skip1st >= x->x_suspoint){ // limit # segs to suspoint and define release
             n_lines = x->x_suspoint;
             x->x_release = 1; // we have a release ramp!
-//            post("n_lines = suspoint = %d", n_lines);
-// define release
             int n = 2*n_lines + skip1st;
             x->x_ac_rel = (ac -= n);
             x->x_av_rel = getbytes(x->x_ac_rel * sizeof(*(x->x_av_rel)));
             copy_atoms(av+n, x->x_av_rel, x->x_ac_rel);
-//        clock;
             if(x->x_maxsustain > 0)
                 clock_delay(x->x_sus_clock, x->x_maxsustain);
         }
@@ -91,7 +123,8 @@ static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     else
         x->x_release = 0;
 // attack
-    x->x_n_lines = n_lines += skip1st; // define number of line segments
+    x->x_n_lines = n_lines; // define number of line segments
+//    post("x->x_n_lines = %d", x->x_n_lines);
     t_envgen_line *line_point = x->x_lines;
     if(odd && !x->x_legato){ // initialize 1st segment
         line_point->s_delta = x->x_status ? x->x_retrigger : 0;
@@ -101,13 +134,18 @@ static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     }
     while(n_lines--){
         line_point->s_delta = (av++)->a_w.w_float;
+        if(line_point->s_delta < 0)
+            line_point->s_delta = 0;
         line_point->s_target = (av++)->a_w.w_float * x->x_gain;
         line_point++;
     }
-    x->x_target = x->x_lines->s_target;
+//    x->x_target = x->x_lines->s_target;
+//    post("attack target = %f", x->x_target);
+//    post("---------------");
     x->x_curseg = x->x_lines;
-    x->x_retarget = 1;
-    x->x_pause = 0;
+    envgen_retarget(x);
+    if(x->x_pause)
+        x->x_pause = 0;
     if(!x->x_status)
         outlet_float(x->x_out2, x->x_status = 1); // turn on status
 }
@@ -118,20 +156,22 @@ static void envgen_release(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     if(ac < 2)
         return;
     t_int n_lines = ac / 2;
-    //    post("number of line segments (n_lines) = %d", n_lines);
 // release
     x->x_n_lines = n_lines; // define number of line segments
     t_envgen_line *line_point = x->x_lines;
     while(n_lines--){
         line_point->s_delta = av++->a_w.w_float;
+        if(line_point->s_delta < 0)
+            line_point->s_delta = 0;
         line_point->s_target = av++->a_w.w_float * x->x_gain;
         line_point++;
     }
     x->x_target = x->x_lines->s_target;
     x->x_curseg = x->x_lines;
     x->x_release = 0;
-    x->x_retarget = 1;
-    x->x_pause = 0;
+    envgen_retarget(x);
+    if(x->x_pause)
+        x->x_pause = 0;
 }
 
 static void envgen_tick(t_envgen *x){
@@ -225,84 +265,38 @@ static t_int *envgen_perform(t_int *w){
     t_envgen *x = (t_envgen *)(w[1]);
     t_float *in = (t_float *)(w[2]);
     t_float *out = (t_float *)(w[3]);
-    int nblock = (int)(w[4]);
-    int nxfer = x->x_nleft;
-    float curval = x->x_value;
-    float inc = x->x_inc;
-    float biginc = x->x_biginc;
-    if(x->x_pause){
-        while (nblock--)
-            *out++ = curval;
-        return(w + 5);
-    }
-    if(PD_BIGORSMALL(curval))
-        curval = x->x_value = 0;
-retarget:
-    if(x->x_retarget){
-        float target = x->x_curseg->s_target;
-        float delta = x->x_curseg->s_delta;
-    	int npoints = delta * x->x_ksr + 0.5;  /* LATER rethink */
-        x->x_n_lines--;
-        x->x_curseg++;
-    	while(npoints <= 0){
-            curval = x->x_value = target;
-            if (x->x_n_lines){
-                target = x->x_curseg->s_target;
-                delta = x->x_curseg->s_delta;
-                npoints = delta * x->x_ksr + 0.5;  /* LATER rethink */
-                x->x_n_lines--;
-                x->x_curseg++;
+    t_int n = (int)(w[4]);
+    float lastin = x->x_lastin;
+    while(n--){
+        t_float f = *in++;
+        if(f != 0 && lastin == 0){
+            x->x_gain = f;
+            envgen_attack(x, &s_list, x->x_ac, x->x_av);
+        }
+        else if(x->x_release && f == 0 && lastin != 0)
+            envgen_release(x, &s_list, x->x_ac_rel, x->x_av_rel);
+        if(PD_BIGORSMALL(x->x_value))
+            x->x_value = 0;
+        *out++ = x->x_value;
+        if(!x->x_pause && x->x_status){ // update
+            if(x->x_nleft > 0){ // inc
+                x->x_value += x->x_inc;
+                x->x_nleft--;
             }
-            else{
-                while (nblock--)
-                    *out++ = curval;
-                x->x_nleft = 0;
-                clock_delay(x->x_clock, 0);
-                x->x_retarget = 0;
-                return(w + 5);
+            else if(x->x_nleft == 0){ // target
+                x->x_value = x->x_target;
+                if(x->x_n_lines > 0){ // next
+//                    while(x->x_nleft == 0){
+                        envgen_retarget(x);
+//                    }
+                }
+                else if(!x->x_release) // off
+                    clock_delay(x->x_clock, 0); // over!!!!!
             }
         }
-    	nxfer = x->x_nleft = npoints;
-    	inc = x->x_inc = (target - x->x_value) / (float)npoints;
-        x->x_biginc = (int)(w[4]) * inc;
-        biginc = nblock * inc;
-        x->x_target = target;
-    	x->x_retarget = 0;
+        lastin = f;
     }
-    if(nxfer >= nblock){
-        if ((x->x_nleft -= nblock) == 0){
-            if (x->x_n_lines)
-                x->x_retarget = 1;
-            else
-                clock_delay(x->x_clock, 0);
-            x->x_value = x->x_target;
-        }
-        else
-            x->x_value += biginc;
-    	while(nblock--)
-            *out++ = curval, curval += inc;
-    }
-    else if(nxfer > 0){
-        nblock -= nxfer;
-        do
-            *out++ = curval, curval += inc;
-        while(--nxfer);
-            curval = x->x_value = x->x_target;
-        if(x->x_n_lines){
-            x->x_retarget = 1;
-            goto
-                retarget;
-        }
-        else{
-            while(nblock--)
-                *out++ = curval;
-            x->x_nleft = 0;
-            clock_delay(x->x_clock, 0);
-        }
-    }
-    else
-        while(nblock--)
-            *out++ = curval;
+    x->x_lastin = lastin;
     return(w + 5);
 }
 
@@ -313,7 +307,7 @@ static void envgen_dsp(t_envgen *x, t_signal **sp){
 
 static void envgen_free(t_envgen *x){
     if(x->x_lines != x->x_n_lineini)
-        freebytes(x->x_lines, x->x_size * sizeof(*x->x_lines));
+        freebytes(x->x_lines, ENVGEN_MAX_SIZE * sizeof(*x->x_lines));
     if(x->x_clock)
         clock_free(x->x_clock);
     if(x->x_sus_clock)
@@ -333,13 +327,12 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     t_envgen *x = (t_envgen *)pd_new(envgen_class);
     x->x_gain = 1;
     x->x_nleft = 0;
-    x->x_retarget = 0;
-    x->x_size = ENVGEN_MAX_SIZE;
     x->x_n_lines = 0;
     x->x_pause = 0;
     x->x_lines = x->x_n_lineini;
     x->x_curseg = 0;
     x->x_release = 0;
+    x->x_lastin = 0;
 // init
     x->x_maxsustain = 0;
     x->x_legato = 0;
