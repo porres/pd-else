@@ -1,11 +1,11 @@
-#N canvas 545 89 564 689 10;
-#X obj 236 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 467 81 564 689 10;
+#X obj 244 200 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 108 208 start;
-#X msg 156 208 stop;
-#X msg 262 199 open;
-#X msg 189 169 loop \$1;
-#X obj 189 145 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 125 209 start;
+#X msg 173 209 stop;
+#X msg 270 200 open;
+#X msg 205 174 loop \$1;
+#X obj 205 154 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -50,12 +50,9 @@
 #X text 122 430 open <symbol> -;
 #X text 128 458 loop <float> -;
 #X text 222 458 loop on <1> or off <0>, f 50;
-#X msg 272 225 open vacuous.wav;
-#X obj 213 290 else/out~;
-#X text 65 89 [sampler~] is a convenient abstraction based on [readsf~]
-to read files from your computer. Note that the file sample needs to
-be at the same samplerate as Pd's., f 64;
-#X obj 213 199 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 280 226 open vacuous.wav;
+#X obj 221 291 else/out~;
+#X obj 221 200 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 175 362 bang - (re)start playing the sample;
 #X text 170 412 float - non-0 (re)starts playing \, zero stops, f
@@ -99,13 +96,12 @@ sound file's. The maximum number is 64 channels.;
 #X connect 14 0 0 0;
 #X connect 14 1 1 1;
 #X connect 14 1 0 1;
-#X connect 14 2 7 0;
-#X restore 435 319 pd multi-channel;
+#X restore 443 320 pd multi-channel;
 #X obj 7 632 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 174 639 -loop: turns loop mode on;
-#X obj 378 286 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 386 287 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 397 286 finished;
+#X text 405 287 finished;
 #X obj 91 517 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
 0;
 #X text 153 492 signal - the sample signal of the corresponding channel
@@ -121,20 +117,24 @@ sound file's. The maximum number is 64 channels.;
 #X text 182 608 - loop <1: on \, 0: off> (default 0), f 45;
 #X text 116 551 1) float;
 #X text 180 549 -;
-#X obj 213 258 else/sampler~ violin.wav 1 1;
 #X text 222 429 opens a file with the symbol name (no symbol opens
 dialog box) and starts playing, f 50;
-#X text 37 286 see also:;
-#X obj 31 312 else/player~;
-#X text 47 258 click: opens a new file =>;
-#X connect 0 0 52 0;
-#X connect 1 0 52 0;
-#X connect 2 0 52 0;
-#X connect 3 0 52 0;
-#X connect 4 0 52 0;
+#X text 35 299 see also:;
+#X obj 39 317 else/player~;
+#X text 55 259 click: opens a new file =>;
+#X obj 221 259 else/sampler~ violin.wav 1 1;
+#X text 65 89 [sampler~] is a convenient abstraction based on [readsf~]
+to read files from your computer. Note that the file sample needs to
+be at the same samplerate as Pd's. The object is also able to search
+for files relative to the parent patch., f 64;
+#X connect 0 0 55 0;
+#X connect 1 0 55 0;
+#X connect 2 0 55 0;
+#X connect 3 0 55 0;
+#X connect 4 0 55 0;
 #X connect 5 0 4 0;
-#X connect 29 0 52 0;
-#X connect 32 0 52 0;
-#X connect 52 0 30 0;
-#X connect 52 0 30 1;
-#X connect 52 1 38 0;
+#X connect 29 0 55 0;
+#X connect 31 0 55 0;
+#X connect 55 0 30 0;
+#X connect 55 0 30 1;
+#X connect 55 1 37 0;
