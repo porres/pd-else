@@ -52,36 +52,37 @@
 #X obj 195 162 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 192 239 else/display~ 8;
-#N canvas 370 146 612 558 example 0;
-#X obj 112 412 else/out~;
-#X obj 229 378 else/graph~ 441 10 1.015 -1.015;
-#X msg 186 132 -1 0.5 1 0.5 -1;
-#X msg 159 86 -1 1 1;
-#X msg 173 108 1 1 -1;
-#X obj 74 128 phasor~ 200;
-#X msg 193 160 -1 0.25 1 0.5 1 0.25 -1;
-#X text 126 28 Here we use [function~] to generate waveforms and use
-them as oscillators with a [phasor~] input.;
-#X obj 74 106 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 549 146 637 614 example 0;
+#X obj 115 449 else/out~;
+#X obj 232 415 else/graph~ 441 10 1.015 -1.015;
+#X msg 189 169 -1 0.5 1 0.5 -1;
+#X msg 162 123 -1 1 1;
+#X msg 176 145 1 1 -1;
+#X obj 77 165 phasor~ 200;
+#X msg 196 197 -1 0.25 1 0.5 1 0.25 -1;
+#X obj 77 143 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 206 84 sawtooth;
-#X text 221 106 inverted sawtooth;
-#X text 289 131 triangular wave;
-#X text 343 160 trapezoid;
-#X obj 155 336 function~ 1 100 -1;
-#X obj 211 200 else/envelope 1 1 -1;
-#X text 428 239 <== the envelope object is quite convenient for use
+#X text 209 121 sawtooth;
+#X text 224 143 inverted sawtooth;
+#X text 292 168 triangular wave;
+#X text 346 197 trapezoid;
+#X obj 158 373 function~ 1 100 -1;
+#X obj 214 237 else/envelope 1 1 -1;
+#X text 431 276 <== the envelope object is quite convenient for use
 with [function~]. Check its help file for more info, f 18;
-#X connect 2 0 13 0;
-#X connect 3 0 13 0;
-#X connect 4 0 13 0;
-#X connect 5 0 13 0;
-#X connect 6 0 13 0;
-#X connect 8 0 5 0;
-#X connect 13 0 0 0;
-#X connect 13 0 0 1;
-#X connect 13 0 1 0;
-#X connect 14 0 13 0;
+#X text 89 33 The [function~] object allows line segments and in any
+range. Here we use it in the -1 to 1 range to generate waveforms and
+use them as oscillators with a [phasor~] input., f 62;
+#X connect 2 0 12 0;
+#X connect 3 0 12 0;
+#X connect 4 0 12 0;
+#X connect 5 0 12 0;
+#X connect 6 0 12 0;
+#X connect 7 0 5 0;
+#X connect 12 0 0 0;
+#X connect 12 0 0 1;
+#X connect 12 0 1 0;
+#X connect 13 0 12 0;
 #X restore 472 241 pd example;
 #X text 72 87 [function~] generates functions from arguments/list input.
 Input values from 0 to 1 reads the function. It needs an odd number

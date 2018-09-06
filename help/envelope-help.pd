@@ -54,7 +54,7 @@
 lists.;
 #X obj 187 131 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#N canvas 493 117 426 432 input 0;
+#N canvas 493 117 819 446 input 0;
 #X msg 98 104 0 100 1 100 0.6 350 0.6 250 0;
 #X text 93 82 ADSR (attack \, decay \, sustain \, release);
 #X text 29 17 The list input needs to be an odd number of elements
@@ -67,11 +67,24 @@ a point and you create a new one.;
 #X obj 98 273 else/setmess;
 #X msg 98 301 0 100 1 100 0.6 350 0.6 250 0;
 #X obj 101 156 else/envelope;
+#X obj 488 234 else/envelope;
+#X obj 485 176 loadbang;
+#X text 416 87 The [envelope] object works also as an all purpose line
+generator. This means you can have line segments and in any range.
+The minimum and maximum graph values are automatically calculated from
+a list input \, but you can change that with the min/max messages.
+, f 55;
+#X msg 485 202 -1 100 1 100 0 \, min -2 \, max 2;
+#X text 696 327 -2;
+#X text 699 224 2;
+#X text 699 276 0;
 #X connect 0 0 6 0;
 #X connect 4 0 5 0;
 #X connect 6 0 4 0;
+#X connect 8 0 10 0;
+#X connect 10 0 7 0;
 #X restore 486 230 pd input;
-#N canvas 436 53 627 441 envgen~ 1;
+#N canvas 436 53 627 441 envgen~ 0;
 #X obj 261 234 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 524 139 1;

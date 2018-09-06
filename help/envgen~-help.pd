@@ -139,60 +139,70 @@ time if you will.;
 #X text 219 310 - attacks the envelope with the last gate on value
 , f 53;
 #X text 162 391 release;
-#N canvas 344 123 996 461 basic 0;
-#X msg 602 156 pause;
-#X msg 645 156 resume;
-#X obj 696 123 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 382 99 897 458 basic 0;
+#X msg 507 107 pause;
+#X msg 550 107 resume;
+#X obj 601 104 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 744 265 vsl 20 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+#X obj 649 216 vsl 20 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 0 1;
-#X msg 744 175 0 1000 1 500 0;
-#X obj 744 235 else/sig2float~;
-#X text 768 336 0;
-#X text 767 261 1;
-#X obj 681 257 *~;
-#X obj 638 295 else/out~;
-#X obj 610 216 osc~ 440;
-#X msg 726 149 set 100 1 100 0.6 1000 0.6 500 0;
-#X obj 696 204 else/envgen~ 0 1000 1 500 0;
-#X text 729 131 ADSR (attack \, decay \, sustain \, release);
-#X text 839 175 AR (attack \, release);
-#X obj 72 296 else/sig2float~;
-#X obj 72 327 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 4950 1;
-#X obj 72 178 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 649 126 0 1000 1 500 0;
+#X obj 649 186 else/sig2float~;
+#X text 673 287 0;
+#X text 672 212 1;
+#X obj 586 208 *~;
+#X obj 543 246 else/out~;
+#X obj 515 167 osc~ 440;
+#X msg 631 100 set 100 1 100 0.6 1000 0.6 500 0;
+#X obj 601 155 else/envgen~ 0 1000 1 500 0;
+#X text 634 82 ADSR (attack \, decay \, sustain \, release);
+#X text 744 126 AR (attack \, release);
+#X obj 42 291 else/sig2float~;
+#X obj 42 322 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 42 173 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 157 238 start \, duration \, target;
-#X text 117 202 duration \, target;
-#X obj 335 247 else/sig2float~;
-#X obj 335 280 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 4950 1;
-#X obj 335 168 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 127 233 start \, duration \, target;
+#X text 87 197 duration \, target;
+#X obj 296 242 else/sig2float~;
+#X obj 296 275 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 296 163 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 222 343 else/setdsp~;
-#X text 98 421 0;
-#X text 97 322 1;
-#X text 361 374 0;
-#X text 360 275 1;
-#X obj 335 200 else/envgen~ 0 1000 1 250 0.25 250 0.25 500 1 250 1
+#X obj 192 338 else/setdsp~;
+#X text 68 416 0;
+#X text 67 317 1;
+#X text 322 369 0;
+#X text 321 270 1;
+#X obj 296 195 else/envgen~ 0 1000 1 250 0.25 250 0.25 500 1 250 1
 250 0 -init 0.5, f 30;
-#X msg 72 203 500 \$1;
-#X msg 99 238 0 1000 1;
-#X obj 72 266 else/envgen~ 0.5;
-#X text 55 90 But if you have an odd number of elements \, the first
+#X msg 42 198 500 \$1;
+#X msg 69 233 0 1000 1;
+#X obj 42 261 else/envgen~ 0.5;
+#X text 25 85 But if you have an odd number of elements \, the first
 float sets a staring point. In practical terms \, it's like this number
 is a target paired with a "0" duration value., f 36;
-#X text 301 30 If you give [envgen~] just a float as the argument \,
+#X text 262 25 If you give [envgen~] just a float as the argument \,
 it initializes the object to output that value as a starting point.
 You can also use the -init flag instead., f 34;
-#X text 301 100 Being an all purpose line/envelope generator \, you
+#X text 262 95 Being an all purpose line/envelope generator \, you
 can use it to create complex envelope lines as below., f 35;
-#X text 573 60 You can pause the envelope at any point with the "pause"
+#X text 512 26 You can pause the envelope at any point with the "pause"
 message \, after which the "resume" message restarts the envelope.
 The set message sets the envelope without triggering it.;
-#X text 55 29 The line segments in [envgen~] are set in pairs of duration
+#X text 25 24 The line segments in [envgen~] are set in pairs of duration
 (in ms) and target value (this is the opposite order of the [line]
 family of objects in Pd Vanilla)., f 36;
+#X obj 738 346 vsl 20 80 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 3950 1;
+#X obj 738 316 else/sig2float~;
+#X text 761 342 1;
+#X obj 738 289 else/envgen~;
+#X text 762 417 -1;
+#X msg 738 250 -1 200 1 200 0 200 0.5 100 1 400 -1, f 18;
+#X text 417 362 The [envgen~] object works also as an all purpose line
+generator such as [vline~]. This means you can have multiple line segments
+and in any range., f 45;
 #X connect 0 0 12 0;
 #X connect 1 0 12 0;
 #X connect 2 0 12 0;
@@ -212,6 +222,9 @@ family of objects in Pd Vanilla)., f 36;
 #X connect 29 0 31 0;
 #X connect 30 0 31 0;
 #X connect 31 0 15 0;
+#X connect 38 0 37 0;
+#X connect 40 0 38 0;
+#X connect 42 0 40 0;
 #X restore 495 124 pd basic;
 #X obj 221 180 *~;
 #X obj 178 211 else/out~;
@@ -450,7 +463,7 @@ and can also retrigger the envelope., f 47;
 #X obj 125 333 else/envgen~;
 #X obj 98 380 print~;
 #X obj 98 214 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 2 256;
+-262144 -1 -1 0 256;
 #X obj 98 240 t b f;
 #X msg 65 179 0;
 #X msg 98 179 1;
