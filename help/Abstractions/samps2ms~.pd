@@ -1,0 +1,10 @@
+#N canvas 564 108 563 381 10;
+#X text 267 154 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 269 135 Alexandre Torres Porres (2017);
+#X obj 163 138 else/sr~ -ms;
+#X obj 119 102 inlet~;
+#X obj 120 186 outlet~;
+#X obj 118 136 *~ 0;
+#X connect 2 0 5 1;
+#X connect 3 0 5 0;
+#X connect 5 0 4 0;
