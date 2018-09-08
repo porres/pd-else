@@ -72,11 +72,12 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (265 objects):
+##Current Object list (267 objects):
 
-**ASSORTED: [2]**
+**ASSORTED: [3]**
 - [nbang]
 - [table~]
+- [hann~]
 
 **PATCH/SUBPATCH MANAGEMENT: [7]**
 - [args]
@@ -194,9 +195,10 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [player~]
 - [sampler~]
 
-**AUDIO PROCESSING: [12]**
+**AUDIO PROCESSING: [13]**
 - [downsample~]
 - [allpass.rev~]
+- [comb.rev~]
 - [fbdelay~]
 - [ffdelay~]
 - [shaper~]
