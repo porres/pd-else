@@ -16,7 +16,6 @@ typedef struct _envgen{
     float           x_target;
     float           x_delta;
     float           x_inc;
-    float           x_ksr;
     int             x_ac;
     t_atom         *x_av;
     int             x_ac_rel;
@@ -49,14 +48,14 @@ static void copy_atoms(t_atom *src, t_atom *dst, int n){
 
 static void envgen_retarget(t_envgen *x){
     x->x_target = x->x_curseg->s_target;
-    x->x_nleft = (t_int)(x->x_curseg->s_delta * x->x_ksr + 0.5);
+    x->x_nleft = (t_int)(x->x_curseg->s_delta * sys_getsr() * 0.001 + 0.5);
     x->x_n_lines--;
     x->x_curseg++;
     if(x->x_nleft == 0){
         x->x_value = x->x_target;
         x->x_inc = 0;
         while(x->x_n_lines && // next delta also == 0 && lines
-              !(t_int)(x->x_curseg->s_delta * x->x_ksr + 0.5)){
+              !(t_int)(x->x_curseg->s_delta * sys_getsr() * 0.001 + 0.5)){
             x->x_value = x->x_target = x->x_curseg->s_target;
             x->x_n_lines--, x->x_curseg++;
         }
@@ -278,7 +277,6 @@ static t_int *envgen_perform(t_int *w){
 }
 
 static void envgen_dsp(t_envgen *x, t_signal **sp){
-    x->x_ksr = sp[0]->s_sr * 0.001;
     dsp_add(envgen_perform, 4, x, sp[0]->s_vec, sp[0]->s_vec, sp[0]->s_n);
 }
 
