@@ -72,7 +72,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (267 objects):
+##Current Object list (265 objects):
 
 **ASSORTED: [3]**
 - [nbang]
@@ -125,7 +125,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [voices]
 - [suspedal]
 
-**MATH: FUNCTIONS: [27]**
+**MATH: FUNCTIONS: [25]**
 - [add~]
 - [add]
 - [median]
@@ -144,8 +144,6 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [lastvalue]
 - [mag]
 - [mag~]
-- [power]
-- [power~]
 - [randf]
 - [randf~]
 - [randi]
