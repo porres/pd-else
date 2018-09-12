@@ -32,19 +32,17 @@ I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" 
 
 **"EL Locus Solus"** is run by me, Alexandre Torres Porres, and is a thing that organizes cultural events/concerts and music technology courses; website: http://alexandre-torres.wixsite.com/el-locus-solus
 
-EL Locus Solus offers a computer music tutorial with examples in Pure Data for its courses. These are in portuguese and are being currently translated and completely rewritten to english with plans of being accompanied by a book. There are about 325 examples for now and they were first designed to work with Pd Extended 0.42-5, making extensive use of the existing objects available in Pd Extended's libraries.
+EL Locus Solus offers a computer music tutorial with examples in Pure Data for its courses. These are now being translated and completely rewritten to english with plans of being accompanied by a book. A firts draft is available at: https://github.com/porres/Live-Electronics-Tutorial
 
-Even though Pd Extended's libraries form a large set of external objects, at some point there was the need of something "else". Thus, this library emerged with the goal of provind extra objects. ELSE also started by stealing some ideas and stuff from SuperCollider, such as most of the chaotic generators UGENs. 
+These examples were first designed to work with Pd Extended 0.42-5, making extensive use of the existing objects available in Pd Extended's libraries. Even though Pd Extended's libraries form a large set of external objects, at some point there was the need of something "else". Thus, this library emerged with the goal of provind extra objects. ELSE also started by stealing some ideas and stuff from SuperCollider, such as most of the chaotic generators UGENs. 
 
-But what started as a new library to include missing functionalities in the Pd Ecossystem (libraries from Pd Extended mostly) has now grown to encompass functionalities found in other Pd objects/libraries in Pd Extended, but with a different design and more functionalities, in order to remove ALL the dependencies of the didactic material from these libraries. 
+But what started as a new library to include missing functionalities in the Pd Ecossystem (meaning libraries from Pd Extended) has now grown to encompass functionalities found in other Pd objects/libraries in Pd Extended, but with a different design and more functionalities, in order to remove ALL the dependencies of the didactic material from these other libraries - in order to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving attention. 
 
-The reasons behind this is to rely on just a single library that was not abandoned instead of many projects that are now long gone abandoned. The consequence is that the tutorial is now being rewritten from scratch and is also expanding as there are plenty new things possible with the new objects from ELSE.
-
-I'm also involved in maintaining Cyclone, a legacy library for Pd (see: https://github.com/porres/pd-cyclone). There was the idea of relying also on cyclone for this didactic material, but ELSE is now also superseding even cyclone, at least for the purposes of my didactic material.
+I'm also involved in maintaining Cyclone, a legacy library for Pd (see: https://github.com/porres/pd-cyclone). There was the idea of relying also on cyclone for this didactic material, but ELSE now also superseded even cyclone, at least for the purposes of my didactic material.
 
 The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects.
 
-Hence, ELSE is now a coming to be a quite big library, and keeps growing and growing, and it will take a while to stabilize. We can say then it's still in an early stage of development, that's why it's still in Beta stage, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. 
+Hence, ELSE is now becoming quite big library, and keeps growing and growing, and it will still take a while to stabilize. We can say then it's still in an early stage of development (that's why it's still in Beta stage) where drastic changes may occur and backwards compatibility is not guaranteed until a final release. 
 
 --------------------------------------------------------------------------
 
@@ -54,13 +52,13 @@ Look for the latest releases in https://github.com/porres/pd-else/releases - but
 
 ###Installing ELSE:
 
-This release has been tested with Pd Vanilla 0.47-1, not guaranteed to work in any other version or in Pd Extended/Purr Data. ELSE comes with a set of separate binaries, so you just need to add the "else" path to Pd.
+This release has been tested with Pd Vanilla 0.49-0, not guaranteed to work in any other version or in Pd Extended/Purr Data. ELSE comes with a set of separate binaries, so you just need to add the "else" path to Pd.
 
 ####Building ELSE for Pd Vanilla:
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
 
-<pre>make pdincludepath=~/pd-0.48-1/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.48-1/bin/)</pre>
+<pre>make pdincludepath=~/pd-0.49-0/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.48-1/bin/)</pre>
 
 * Installing with pdlibbuilder
 
@@ -74,12 +72,13 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 ##Current Object list (265 objects):
 
-**ASSORTED: [3]**
-- [nbang]
+**ARRAY: [1]**
 - [table~]
+
+**FFT: [1]**
 - [hann~]
 
-**PATCH/SUBPATCH MANAGEMENT: [7]**
+**PATCH/SUBPATCH MANAGEMENT: [8]**
 - [args]
 - [blocksize~]
 - [click]
@@ -87,6 +86,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [window]
 - [loadbanger] / [lb]
 - [initmess]
+- [nbang]
 
 **MESSAGE MANAGEMENT: [13]**
 - [break] 
