@@ -4,9 +4,9 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-12 (Unreleased)
+### Version 1.0 beta-12 (Released september 12th 2018)
 
-Needs Pd 0.48-1 or above
+Needs Pd 0.49-0 or above
 
 This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
 
