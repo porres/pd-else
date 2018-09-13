@@ -130,7 +130,7 @@ ignored.;
 dialog box) and starts playing, f 50;
 #X text 72 255 see also:;
 #X obj 63 275 else/sampler~;
-#X obj 295 191 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 295 191 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X text 169 373 start - same as bang, f 59;
 #X text 169 424 pause - pauses playing the buffer, f 59;
@@ -138,24 +138,24 @@ dialog box) and starts playing, f 50;
 ;
 #X text 169 408 float - <1> is the same as "start" \, "0" is the same
 as "stop", f 62;
-#X msg 166 145 open stereo.aif;
 #X text 117 222 click: opens a new file =>;
-#X obj 284 223 else/player~ stereo.wav;
 #X text 49 85 [player~] is a convenient abstraction based on [soundfiler]
 and [tabread4~]. It offers many playing capabilities on arrays and
 it's more versatile than [else/sampler~]. For instance \, you can play
 in different speeds and even backwards. The object is also able to
 search for files relative to the parent patch., f 76;
-#X connect 8 0 66 0;
-#X connect 9 0 66 0;
-#X connect 10 0 66 0;
+#X msg 166 145 open stereo.wav;
+#X obj 284 223 else/player~ stereo.wav;
+#X connect 8 0 67 0;
+#X connect 9 0 67 0;
+#X connect 10 0 67 0;
 #X connect 11 0 10 0;
-#X connect 12 0 66 0;
+#X connect 12 0 67 0;
 #X connect 13 0 12 0;
-#X connect 16 0 66 0;
-#X connect 55 0 66 0;
-#X connect 59 0 66 0;
-#X connect 64 0 66 0;
-#X connect 66 0 45 0;
-#X connect 66 1 45 1;
-#X connect 66 2 46 0;
+#X connect 16 0 67 0;
+#X connect 55 0 67 0;
+#X connect 59 0 67 0;
+#X connect 66 0 67 0;
+#X connect 67 0 45 0;
+#X connect 67 1 45 1;
+#X connect 67 2 46 0;

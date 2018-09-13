@@ -1,4 +1,5 @@
 #N canvas 654 294 493 349 10;
+#X declare -path /Users/sp/Documents/Pd/externals/else;
 #X obj 76 28 inlet;
 #N canvas 825 175 281 211 messages 0;
 #X obj 27 14 inlet;
@@ -246,14 +247,13 @@
 #N canvas 306 125 270 184 get-channels 0;
 #X obj 21 76 soundfiler;
 #X msg 78 100 \$3;
-#X obj 21 48 else/pack2 read s \$0-dummy_buffer;
-#X obj 105 76 table \$0-dummy_buffer 1;
-#X obj 118 19 inlet;
+#X obj 120 19 inlet;
 #X obj 78 129 outlet;
+#X obj 21 48 else/pack2 read s;
 #X connect 0 1 1 0;
-#X connect 1 0 5 0;
-#X connect 2 0 0 0;
-#X connect 4 0 2 1;
+#X connect 1 0 3 0;
+#X connect 2 0 4 1;
+#X connect 4 0 0 0;
 #X restore 437 337 pd get-channels;
 #N canvas 220 131 355 389 other 0;
 #X obj 72 22 inlet;
@@ -341,6 +341,7 @@
 #X obj 199 60 else/dir 1;
 #X msg 363 56 clear \, obj 30 20 declare -path \$1;
 #N canvas 169 23 493 100 \$0-path 0;
+#X obj 30 20 declare -path /Users/sp/Documents/Pd/externals/else;
 #X restore 465 80 pd \$0-path;
 #X msg 166 234 100;
 #X obj 34 434 t b f;
