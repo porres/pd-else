@@ -51,8 +51,8 @@ the same absolute value as its absolute input., f 60;
 #X text 71 108 x[n] ----(+)----------- y[n];
 #X text 106 195 y(n) = x(n) + a * y(n-D);
 #X text 142 237 a = feedback coefficient;
-#X floatatom 471 205 5 0 1000 0 - - -, f 5;
-#X floatatom 536 206 8 0 100 0 - - -, f 8;
+#X floatatom 471 205 5 0 1000 0 - - -;
+#X floatatom 536 206 8 0 100 0 - - -;
 #X obj 539 182 hsl 128 15 -1000 1000 0 0 empty empty empty -2 -8 0
 10 -228856 -1 -1 0 1;
 #X obj 407 268 else/out~;
@@ -86,21 +86,22 @@ the expression: a = exp(log(0.001) * D/t60).;
 #X obj 234 95 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 234 199 else/out~;
-#X text 37 17 By default \, the reverberation/decay time is in "t60"
-\, which is the time in ms that the impulse takes to fall 60dB in energy.
-You can change this parameter to a gain coefficient value with the
-third argument \, where a non zero value sets to "gain mode". You can
-also change that with the "gain" message., f 72;
 #X obj 234 156 else/fbdelay~ 10 0.9 1;
 #X msg 170 124 gain \$1;
 #X obj 170 99 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X connect 0 0 4 0;
+#X text 37 17 By default \, the reverberation/decay time is in "t60"
+\, which is the time in ms that the impulse takes to fall 60dB in energy.
+You can change this parameter to a gain coefficient value with the
+third argument \, where a non zero value sets to "gain mode" or with
+the -gain flag. You can also change that with the "gain" message.,
+f 72;
+#X connect 0 0 3 0;
 #X connect 1 0 0 0;
-#X connect 4 0 2 0;
-#X connect 4 0 2 1;
+#X connect 3 0 2 0;
+#X connect 3 0 2 1;
+#X connect 4 0 3 0;
 #X connect 5 0 4 0;
-#X connect 6 0 5 0;
 #X restore 456 255 pd gain mode;
 #X text 60 87 Use [fbdelay~] for delay effects \, reverberation and
 comb filtering. By default \, you can set a delay time and a reverberation/decay
@@ -127,7 +128,7 @@ in energy (but you can change this parameter to a gain coefficient).
 #X obj 307 201 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 242 179 nbx 3 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 100 256;
+-1 -1 0 256;
 #X text 285 178 Delay time (ms);
 #X obj 193 154 else/pulse~ 1;
 #X obj 2 319 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -150,8 +151,8 @@ in energy (but you can change this parameter to a gain coefficient).
 #X text 133 558 -size <float>;
 #X text 234 557 sets delay size (default 1000 ms or first argument's
 value if given), f 46;
-#X text 23 246 see also:;
-#X obj 26 268 else/ffdelay~;
+#X text 23 236 see also:;
+#X obj 26 258 else/ffdelay~;
 #X text 220 588 -;
 #X text 175 587 -samps;
 #X text 234 587 sets delay time unit to "samples" (default is ms);
@@ -170,7 +171,7 @@ the same way \, this affects both delay time and delay size., f 64
 #X msg 656 121 size 22050;
 #X msg 666 142 size 44100;
 #X obj 687 187 nbx 5 14 0 44100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 44100 256;
+-1 -1 0 256;
 #X obj 79 230 else/out~;
 #X obj 79 130 else/impseq~;
 #X obj 79 102 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
@@ -193,7 +194,7 @@ argument \, you can use the -size flag/message., f 64;
 #X obj 324 189 else/fbdelay~ 100 0.5 1 -size 500;
 #X obj 593 209 else/fbdelay~ 22050 0.5 1 -samps;
 #X obj 690 167 hsl 128 15 0 44100 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 12700 1;
+-228856 -1 -1 0 1;
 #X connect 2 0 1 0;
 #X connect 2 0 19 0;
 #X connect 3 0 2 0;
@@ -215,6 +216,7 @@ argument \, you can use the -size flag/message., f 64;
 #X obj 178 224 else/fbdelay~ 100 2000;
 #X text 229 520 feedback mode: <0> ("t60") or <non-0> (gain mode) \,
 default 0, f 50;
+#X obj 26 282 else/comb.filt~;
 #X connect 24 0 25 0;
 #X connect 25 0 57 0;
 #X connect 27 0 57 2;

@@ -69,6 +69,7 @@ touch.out.class.sources := classes/touch.out.c
 add~.class.sources := classes/add~.c
 allpass.2nd~.class.sources := classes/allpass.2nd~.c
 allpass.rev~.class.sources := classes/allpass.rev~.c
+comb.rev~.class.sources := classes/comb.rev~.c
 adsr~.class.sources := classes/adsr~.c
 asr~.class.sources := classes/asr~.c
 autofade~.class.sources := classes/autofade~.c
