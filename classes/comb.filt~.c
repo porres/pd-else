@@ -158,16 +158,13 @@ static t_int *comb_perform(t_int *w)
         if(delms > x->x_maxdel){
             delms = x->x_maxdel;
         };
-        if(delms == 0){
+        if(delms == 0)
             out[i] = input;
-        }
         else{
-            //now get those delayed vals
+            if(!x->x_gain && coeff_in[i] != 0)
+                coeff_in[i] = copysign(exp(log(0.001) * delms/fabs(coeff_in[i])), coeff_in[i]);
             double delx = comb_readmsdelay(x, x->x_xbuf, delms);
             double dely = comb_readmsdelay(x, x->x_ybuf, delms);
-            //figure out your current y term: y[n] = a*x[n] + b*x[n-d] + c*y[n-d]
-            if(!x->x_gain)
-                coeff_in[i] = coeff_in[i] == 0 ? 0 : copysign(exp(log(0.001) * delms/fabs(coeff_in[i])), coeff_in[i]);
             double output = input + (double)coeff_in[i]*delx + (double)coeff_in[i]*dely;
             //stick this guy in the ybuffer and output
             x->x_ybuf[wh] = output;
