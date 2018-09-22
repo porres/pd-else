@@ -1,4 +1,4 @@
-#N canvas 514 155 562 573 12;
+#N canvas 514 155 562 552 12;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -17,66 +17,67 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 3 315 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 292 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 408 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 385 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 444 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 421 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 152 417 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 152 394 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 153 323 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 153 300 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 545 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 522 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 153 344 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 153 321 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 153 364 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 153 341 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 186 417 signal -;
-#X text 174 449 1) float;
+#X text 186 394 signal -;
+#X text 174 426 1) float;
 #X obj 3 3 cnv 15 301 42 empty empty flanger~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 206 248 else/out~;
-#X text 174 468 2) float;
-#X obj 268 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 194 229 else/out~;
+#X text 174 445 2) float;
+#X obj 263 162 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 328 131 <= hz;
-#X obj 330 159 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 332 163 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 392 185 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 401 163 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 390 158 <= depth;
-#X text 452 184 <= fb;
-#X obj 178 173 bl.saw~;
-#X obj 206 210 ./flanger~ 0.1 20 -0.6 -tri;
+#X obj 194 154 bl.saw~;
 #X text 60 87 [flanger~] is a simple flanger FX object.;
-#X text 186 324 signal -;
-#X text 249 324 flanger input;
-#X text 193 345 float -;
-#X text 193 365 float -;
-#X obj 153 384 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X text 186 301 signal -;
+#X text 249 301 flanger input;
+#X text 193 322 float -;
+#X text 193 342 float -;
+#X obj 153 361 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 193 385 float -;
-#X text 250 345 rate in Hz;
-#X text 250 365 depth (ms);
-#X text 250 385 feedback coefficient;
-#X text 247 417 flanger output;
-#X text 237 449 - rate in hertz (default 0);
-#X text 237 468 - depth in ms (default 0);
-#X obj 178 143 sig~ 150;
-#X text 174 488 3) float;
-#X text 237 488 - feedback (default 0);
-#X obj 3 509 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 86 518 -tri - sets modulator waveform to triangular (default
-sine);
-#X connect 23 0 30 1;
-#X connect 25 0 30 2;
-#X connect 26 0 30 3;
-#X connect 29 0 30 0;
-#X connect 30 0 21 0;
-#X connect 30 0 21 1;
-#X connect 44 0 29 0;
+#X text 193 362 float -;
+#X text 250 322 rate in Hz;
+#X text 250 342 depth (ms);
+#X text 250 362 feedback coefficient;
+#X text 247 394 flanger output;
+#X text 237 426 - rate in hertz (default 0);
+#X text 237 445 - depth in ms (default 0);
+#X text 174 465 3) float;
+#X text 237 465 - feedback (default 0);
+#X obj 3 486 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 194 191 else/flanger~ 0.1 20 -0.6 -tri;
+#X obj 194 130 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-hz empty 0 -8 0
+10 -228856 -1 -1 150 256;
+#X obj 46 198 else/initmess \; \$0-hz 150;
+#X text 268 142 rate;
+#X text 334 142 depth;
+#X text 404 142 fb;
+#X text 126 495 -tri - sets waveform to triangular (default sine);
+#X connect 23 0 43 1;
+#X connect 24 0 43 2;
+#X connect 25 0 43 3;
+#X connect 26 0 43 0;
+#X connect 43 0 21 0;
+#X connect 43 0 21 1;
+#X connect 44 0 26 0;

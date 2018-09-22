@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (267 objects):
+##Current Object list (270 objects):
 
 **ARRAY: [1]**
 - [table~]
@@ -193,7 +193,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [player~]
 - [sampler~]
 
-**AUDIO PROCESSING: [14]**
+**AUDIO PROCESSING: [17]**
 - [downsample~]
 - [allpass.rev~]
 - [comb.rev~]
@@ -206,8 +206,11 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [noisegate~]
 - [norm~]
 - [freqshift~]
+- [pshift~]
+- [ping.pong~]
 - [rm~]
 - [tremolo~]
+- [morph~]
 
 **AUDIO PROCESSING: REVERB: [1]**
 - [plateverb~]
