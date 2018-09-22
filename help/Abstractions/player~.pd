@@ -1,6 +1,5 @@
-#N canvas 411 192 493 349 10;
-#X declare -path /Users/porres/Desktop/git/pd-else/help/Abstractions
-;
+#N canvas 654 294 493 349 10;
+#X declare -path /Users/sp/Documents/Pd/externals/else;
 #X obj 76 28 inlet;
 #N canvas 825 175 281 211 messages 0;
 #X obj 27 14 inlet;
@@ -32,20 +31,19 @@
 #X obj 87 45 route bang, f 12;
 #X obj 87 92 openpanel;
 #X obj 87 19 inlet;
-#X obj 183 257 list trim;
-#X obj 183 285 soundfiler;
-#X obj 183 313 s \$0-size;
-#X obj 183 227 list append;
-#X obj 267 227 r \$0-buflist;
-#X obj 158 342 s \$0-start;
+#X obj 183 240 list trim;
+#X obj 183 268 soundfiler;
+#X obj 183 296 s \$0-size;
+#X obj 183 210 list append;
+#X obj 267 210 r \$0-buflist;
+#X obj 156 325 s \$0-start;
 #X obj 156 154 t b s;
 #X obj 51 132 r \$0-file;
 #X obj 51 158 t b s;
 #X obj 51 209 v autostart_\$0;
 #X obj 51 239 sel 1;
 #X obj 176 55 else/click;
-#X obj 183 185 list prepend read -resize -maxsize 2.14748e+09, f 25
-;
+#X obj 183 185 list prepend read -resize;
 #X connect 0 0 10 0;
 #X connect 1 0 2 0;
 #X connect 1 1 0 0;
@@ -167,7 +165,6 @@
 #X restore 76 59 pd messages;
 #X obj 71 91 namecanvas \$0-sampler;
 #N canvas 330 379 895 258 \$0-tabread 0;
-#X obj 20 20 r~ 1003-tabread4~;
 #X restore 74 162 pd \$0-tabread;
 #N canvas 453 92 572 396 dynamic 0;
 #X obj 298 268 s pd-\$0-tabread;
@@ -250,14 +247,13 @@
 #N canvas 306 125 270 184 get-channels 0;
 #X obj 21 76 soundfiler;
 #X msg 78 100 \$3;
-#X obj 21 48 else/pack2 read s \$0-dummy_buffer;
-#X obj 105 76 table \$0-dummy_buffer 1;
-#X obj 118 19 inlet;
+#X obj 120 19 inlet;
 #X obj 78 129 outlet;
+#X obj 21 48 else/pack2 read s;
 #X connect 0 1 1 0;
-#X connect 1 0 5 0;
-#X connect 2 0 0 0;
-#X connect 4 0 2 1;
+#X connect 1 0 3 0;
+#X connect 2 0 4 1;
+#X connect 4 0 0 0;
 #X restore 437 337 pd get-channels;
 #N canvas 220 131 355 389 other 0;
 #X obj 72 22 inlet;
@@ -345,8 +341,7 @@
 #X obj 199 60 else/dir 1;
 #X msg 363 56 clear \, obj 30 20 declare -path \$1;
 #N canvas 169 23 493 100 \$0-path 0;
-#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/help/Abstractions
-;
+#X obj 30 20 declare -path /Users/sp/Documents/Pd/externals/else;
 #X restore 465 80 pd \$0-path;
 #X msg 166 234 100;
 #X obj 34 434 t b f;
@@ -437,10 +432,16 @@
 #N canvas 871 121 479 442 \$0-buffers 0;
 #X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
 0;
-#N canvas 0 22 450 300 ch0_1003 0;
-#X array 0-buffer_1003 100 float 2;
-#X coords 0 1 0 -1 450 82 2 0 0;
-#X restore 5 19 pd ch0_1003;
+#N canvas 0 22 450 300 ch0_1011 0;
+#X array 0-buffer_1011 87741 float 2;
+#X coords 0 1 87741 -1 450 82 2 0 0;
+#X restore 5 19 pd ch0_1011;
+#X obj 6 120 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
+0;
+#N canvas 0 22 450 300 ch1_1011 0;
+#X array 1-buffer_1011 87741 float 2;
+#X coords 0 1 87741 -1 450 82 2 0 0;
+#X restore 5 119 pd ch1_1011;
 #X coords 0 0 0 0 10 20 0;
 #X restore 419 308 pd \$0-buffers;
 #X msg 52 208 obj \$2 200 r \$1-didit \, obj \$2 240 outlet \, connect
