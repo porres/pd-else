@@ -142,7 +142,6 @@ nyquist~.class.sources := classes/nyquist~.c
 pan2~.class.sources := classes/pan2~.c
 pan4~.class.sources := classes/pan4~.c
 peak~.class.sources := classes/peak~.c
-pluck~.class.sources := classes/pluck~.c
 pmosc~.class.sources := classes/pmosc~.c
 pulsecount~.class.sources := classes/pulsecount~.c
 pulsediv~.class.sources := classes/pulsediv~.c
@@ -226,6 +225,7 @@ noise := shared/random.c
     gray~.class.sources := classes/gray~.c $(noise)
     pinknoise~.class.sources := classes/pinknoise~.c $(noise)
     clipnoise~.class.sources := classes/clipnoise~.c $(noise)
+    pluck~.class.sources := classes/pluck~.c $(noise)
 
 midi := \
     shared/mifi.c \

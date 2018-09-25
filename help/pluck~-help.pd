@@ -1,296 +1,211 @@
-#N canvas 528 50 562 552 10;
-#X obj 4 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 498 43 562 587 10;
+#X obj 4 316 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 432 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 434 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 466 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 468 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 525 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 561 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 253 147 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 169 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 165 41 cnv 4 4 4 empty empty algorithm 0 28 2 18 -233017 -1
+#X obj 161 40 cnv 4 4 4 empty empty algorithm 0 28 2 18 -233017 -1
 0;
-#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 304 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 304 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
-#X obj 215 68 route dsp;
-#X obj 215 37 receive pd;
-#N canvas 977 77 379 291 set_color 0;
-#X obj 47 30 inlet;
-#X obj 147 200 s \$0-cnv;
-#X obj 47 83 select 0 1;
-#X obj 47 220 s \$0-tgl-r;
-#N canvas 0 22 712 637 off 0;
-#X obj 490 220 * -1;
-#X obj 424 300 +;
-#X obj 409 325 +;
-#X obj 347 219 * -65536;
-#X obj 424 220 * -256;
-#X obj 409 356 - 1;
-#X obj 390 189 unpack f f f;
-#X obj 225 295 +;
-#X obj 210 320 +;
-#X obj 148 214 * -65536;
-#X obj 225 215 * -256;
-#X obj 291 215 * -1;
-#X obj 210 351 - 1;
-#X obj 191 184 unpack f f f;
-#X obj 379 423 pack;
-#X msg 395 152 124 124 124;
-#X msg 203 154 220 220 220;
-#X obj 238 121 t b b;
-#X obj 238 81 inlet;
-#X obj 378 485 outlet;
-#X connect 0 0 1 1;
-#X connect 1 0 2 1;
-#X connect 2 0 5 0;
-#X connect 3 0 2 0;
-#X connect 4 0 1 0;
-#X connect 5 0 14 1;
-#X connect 6 0 3 0;
-#X connect 6 1 4 0;
-#X connect 6 2 0 0;
-#X connect 7 0 8 1;
-#X connect 8 0 12 0;
-#X connect 9 0 8 0;
-#X connect 10 0 7 0;
-#X connect 11 0 7 1;
-#X connect 12 0 14 0;
-#X connect 13 0 9 0;
-#X connect 13 1 10 0;
-#X connect 13 2 11 0;
-#X connect 14 0 19 0;
-#X connect 15 0 6 0;
-#X connect 16 0 13 0;
-#X connect 17 0 16 0;
-#X connect 17 1 15 0;
-#X connect 18 0 17 0;
-#X restore 47 113 pd off;
-#X msg 47 180 color \$1 \$2 0;
-#X msg 147 131 -4.86997e+06 -1.34937e+07;
-#X msg 147 171 color \$1 0 \$2;
-#X connect 0 0 2 0;
-#X connect 2 0 4 0;
-#X connect 2 1 6 0;
-#X connect 4 0 5 0;
-#X connect 4 0 7 0;
-#X connect 5 0 3 0;
-#X connect 6 0 7 0;
-#X connect 6 0 5 0;
-#X connect 7 0 1 0;
-#X restore 215 165 pd set_color;
-#X obj 135 122 r \$0-tgl-s;
-#N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
-0;
-#X coords 0 -1 1 1 42 27 1 100 100;
-#X restore 51 144 pd;
-#X obj 226 139 s \$0-tgl-r;
-#X msg 226 115 set \$1;
-#X msg 135 177 \; pd dsp \$1;
-#N canvas 256 32 278 194 load_check 0;
-#X obj 136 53 sig~ 1;
-#X obj 74 24 loadbang;
-#X obj 136 86 snapshot~;
-#X obj 91 52 del 5;
-#X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 74 126 switch~;
-#X connect 0 0 2 0;
-#X connect 1 0 3 0;
-#X connect 1 0 5 0;
-#X connect 2 0 4 0;
-#X connect 3 0 2 0;
-#X connect 3 0 5 0;
-#X connect 5 0 6 0;
-#X restore 51 72 pd load_check;
-#X connect 1 0 3 0;
-#X connect 1 0 7 0;
-#X connect 2 0 1 0;
-#X connect 4 0 8 0;
-#X connect 4 0 3 0;
-#X connect 7 0 6 0;
-#X connect 9 0 0 0;
-#X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 72 pd;
-#X obj 42 42 cnv 4 4 4 empty empty Karplus-Strong 0 28 2 18 -233017
+#X obj 42 41 cnv 4 4 4 empty empty Karplus-Strong 0 28 2 18 -233017
 -1 0;
-#X text 309 146 Hz;
-#X obj 165 142 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 297 169 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 174 161 Hz;
+#X obj 287 172 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#N canvas 748 271 410 386 example 0;
-#X obj 132 209 else/pluck~;
-#X obj 132 293 else/out~;
-#X obj 132 246 else/plateverb~ 50 0.6 0.25 0.8 0.8, f 18;
-#X obj 193 145 else/randf~ 2500 5000;
-#X obj 67 126 else/brown~;
-#X obj 185 108 else/randf~ 30 250;
-#X obj 195 186 else/randf~ 500 20000;
-#X obj 147 74 else/dust~ 1;
-#X text 79 22 And now for some computer music cliché with random generators...
-, f 32;
-#X connect 0 0 2 0;
-#X connect 2 0 1 0;
-#X connect 2 1 1 1;
-#X connect 3 0 0 3;
-#X connect 4 0 0 0;
-#X connect 5 0 0 2;
-#X connect 6 0 0 4;
-#X connect 7 0 0 1;
-#X connect 7 0 3 0;
-#X connect 7 0 5 0;
-#X connect 7 0 6 0;
-#X restore 462 286 pd example;
-#X obj 18 42 cnv 4 4 4 empty empty A 0 28 2 18 -233017 -1 0;
-#X obj 3 4 cnv 15 301 42 empty empty pluck~ 20 20 2 37 -233017 -1 0
+#X obj 18 41 cnv 4 4 4 empty empty A 0 28 2 18 -233017 -1 0;
+#X obj 3 3 cnv 15 301 42 empty empty pluck~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 4 graph;
-#X text 358 169 decay time (ms);
-#X obj 342 191 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X restore 2 3 graph;
+#X text 348 172 decay time (ms);
+#X obj 346 194 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 117 441 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 117 443 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 117 326 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 117 325 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 117 347 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 117 346 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 184 441 signal;
-#X text 230 441 - karplus-Strong output;
-#X text 176 489 2) float - decay time in ms (default 0);
-#X text 176 504 3) float - filter cutoff frequency (default 15000)
+#X text 184 443 signal;
+#X text 136 491 2) float - decay time in ms (default 0);
+#X text 136 506 3) float - filter cutoff frequency (default 15000)
 ;
-#X obj 117 368 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 117 367 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X obj 117 389 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 117 388 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 190 390 float;
-#X obj 117 409 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
-;
-#X text 190 410 float;
-#X text 184 326 signal;
-#X text 230 326 - excitation signal;
-#X text 184 348 signal;
-#X text 148 368 float/signal;
-#X text 230 390 - decay time in ms;
-#X text 230 410 - filter cutoff frequency;
-#X text 45 91 [pluck~] is a Karplus-Strong algorithm: a feedback loop
-with a 2nd order lowpass filter. It takes an excitation signal \, a
-trigger inlet \, a frequency in hertz \, a decay time in ms and a cutoff
-frequency for the filter., f 69;
-#X obj 165 171 else/impseq~;
-#X obj 165 251 else/out~;
-#X text 230 368 - frequency in hertz (minimum 1);
-#X text 176 474 1) float - frequency in hertz (default 1);
-#X text 404 190 filter cutoff (hz);
-#N canvas 634 226 651 347 trigger 0;
-#X obj 103 247 else/out~;
-#X obj 139 115 else/impseq~ 1 0.5 0.25 0.1;
-#X obj 103 207 else/pluck~ 50 2500 10000;
-#X obj 139 84 else/tempo~ 120 -on;
-#X obj 167 141 else/trighold~;
-#X obj 167 163 display~;
-#X text 12 10 Below we have a sequence of impulse values \, we can
-then see how the impulse value determines the amplitude/intensity.
-, f 46;
-#X obj 33 145 else/pinknoise~;
-#X obj 387 198 noise~;
-#X obj 490 208 else/impseq~;
-#X obj 490 188 / 127;
-#X obj 439 197 mtof;
-#X obj 387 238 else/pluck~ 0 2500;
-#X obj 387 269 else/out~;
-#X obj 452 94 else/randi 24 50;
-#X obj 452 70 t b b;
-#X obj 439 142 makenote 0 500;
-#X obj 452 47 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X text 148 326 float/signal;
+#X text 230 368 - decay time in ms;
+#X text 230 388 - filter cutoff frequency;
+#X obj 169 254 else/out~;
+#X text 230 326 - frequency in hertz (minimum 1);
+#X text 136 476 1) float - frequency in hertz (default 1);
+#X text 408 193 filter cutoff (hz);
+#N canvas 547 245 605 348 trigger 0;
+#X obj 67 264 else/out~;
+#X obj 116 132 else/impseq~ 1 0.5 0.25 0.1;
+#X obj 116 101 else/tempo~ 120 -on;
+#X obj 144 158 else/trighold~;
+#X obj 144 180 display~;
+#X obj 474 201 / 127;
+#X obj 399 202 mtof;
+#X obj 369 95 t b b;
+#X obj 369 72 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 479 117 else/randi 50 127;
-#X obj 439 165 stripnote;
-#X obj 395 114 notein;
-#X obj 395 139 pack;
-#X text 326 9 When using MIDI to trigger the object \, make sure to
-use [stripnote] to filter note offs., f 48;
-#X connect 1 0 2 1;
-#X connect 1 0 4 0;
-#X connect 2 0 0 0;
-#X connect 2 0 0 1;
-#X connect 3 0 1 0;
-#X connect 4 0 5 0;
-#X connect 7 0 2 0;
-#X connect 8 0 12 0;
-#X connect 9 0 12 1;
-#X connect 10 0 9 0;
-#X connect 11 0 12 2;
-#X connect 12 0 13 0;
-#X connect 12 0 13 1;
-#X connect 14 0 16 0;
-#X connect 15 0 14 0;
-#X connect 15 1 18 0;
-#X connect 16 0 19 0;
-#X connect 16 1 19 1;
-#X connect 17 0 15 0;
-#X connect 18 0 16 1;
-#X connect 19 0 11 0;
-#X connect 19 1 10 0;
-#X connect 20 0 21 0;
-#X connect 20 1 21 1;
-#X connect 21 0 19 0;
-#X restore 462 264 pd trigger;
-#X text 231 348 - impulse trigger (determines the amplitude);
+#X obj 403 142 else/randi 50 127;
+#X obj 67 224 else/pluck~ 50 2500 10000;
+#X obj 475 168 notein;
+#X text 335 22 When using MIDI to trigger the object \, make sure there's
+a note off., f 38;
+#X obj 439 236 else/pluck~ 0 2500;
+#X obj 439 267 else/out~;
+#X obj 369 119 else/randi 28 56;
+#X obj 369 167 makenote 0 5;
+#X text 25 18 Below we have a sequence of impulse values \, we can
+then see how the impulse value determines the amplitude/intensity.
+Atrigger happens when there is a 0 to non 0 transition \, and this
+values determines the amplitude., f 46;
+#X connect 1 0 3 0;
+#X connect 1 0 10 1;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 5 0 13 1;
+#X connect 6 0 13 0;
+#X connect 7 0 15 0;
+#X connect 7 1 9 0;
+#X connect 8 0 7 0;
+#X connect 9 0 16 1;
+#X connect 10 0 0 0;
+#X connect 10 0 0 1;
+#X connect 11 0 6 0;
+#X connect 11 1 5 0;
+#X connect 13 0 14 0;
+#X connect 13 0 14 1;
+#X connect 15 0 16 0;
+#X connect 16 0 6 0;
+#X connect 16 1 5 0;
+#X restore 482 242 pd trigger;
 #N canvas 891 267 431 313 negative 0;
-#X obj 138 111 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 226 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 223 143 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 287 138 decay time (ms);
-#X obj 138 140 else/impseq~;
+#X text 284 143 decay time (ms);
 #X obj 94 220 else/out~;
-#X msg 226 86 5000;
-#X obj 94 180 else/pluck~ 100 5000, f 30;
-#X msg 243 109 -5000;
-#X obj 77 141 noise~;
+#X msg 223 91 5000;
+#X msg 240 114 -5000;
 #X text 36 18 The decay time is actually a feedback parameter. Since
 negative feedback values are allowed \, you can insert a negative decay
 time value. Note that a negative parameter changes the tonal quality
 significantly.;
-#X connect 0 0 3 0;
-#X connect 1 0 6 3;
-#X connect 3 0 6 1;
-#X connect 5 0 1 0;
-#X connect 6 0 4 0;
-#X connect 6 0 4 1;
-#X connect 7 0 1 0;
-#X connect 8 0 6 0;
-#X restore 461 231 pd negative \; feedback;
-#X obj 165 211 else/pluck~ 50 2500 10000, f 30;
-#X connect 4 0 52 2;
-#X connect 17 0 44 0;
-#X connect 18 0 52 3;
-#X connect 24 0 52 4;
-#X connect 44 0 52 1;
-#X connect 44 0 52 0;
-#X connect 52 0 45 0;
-#X connect 52 0 45 1;
+#X obj 137 114 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 137 143 else/impseq~;
+#X obj 94 180 else/pluck~ 100 5000, f 22;
+#X connect 0 0 8 2;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 1;
+#X connect 8 0 2 0;
+#X connect 8 0 2 1;
+#X restore 401 242 pd negative \; feedback;
+#X text 45 90 [pluck~] is a Karplus-Strong algorithm: a feedback loop
+with a 2nd order lowpass filter. It takes a trigger inlet \, a frequency
+in hertz \, a decay time in ms and a cutoff frequency for the filter.
+, f 69;
+#X text 148 345 float/signal;
+#X text 148 388 float/signal;
+#X text 148 368 float/signal;
+#X text 230 443 - Karplus-Strong output;
+#X text 231 345 - trigger (determines the amplitude);
+#X obj 228 147 else/dust~ 4;
+#X obj 169 214 else/pluck~ 50 2500 10000, f 30;
+#X obj 4 528 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 117 410 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
+;
+#X text 148 410 float/signal;
+#X text 230 410 - optional noise input (with the -in flag);
+#X text 136 536 -in - creates an extra right outlet for noise input.
+;
+#N canvas 466 127 637 455 examples 0;
+#X obj 369 335 else/out~;
+#X text 188 38 And now for some computer music cliché with random
+generators..., f 32;
+#X obj 433 188 else/randf~ 500 5000;
+#X obj 369 251 else/pluck~;
+#X obj 369 288 else/plateverb~ 5 0.6 0.25 0.8 0.5, f 17;
+#X obj 432 227 else/randf~ 5000 10000;
+#X obj 427 150 else/randf~ 250 500;
+#X obj 84 332 else/out~;
+#X obj 84 285 else/plateverb~ 5 0.6 0.25 0.8 0.5, f 17;
+#X obj 84 248 else/pluck~ -in;
+#X obj 196 251 else/brown~;
+#X obj 105 111 else/dust~ 1;
+#X obj 390 116 else/tempo~ 300 150 -on;
+#X obj 144 145 else/randf~ 30 250;
+#X obj 150 183 else/randf~ 2500 5000;
+#X obj 149 222 else/randf~ 500 20000;
+#X connect 2 0 3 2;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 4 1 0 1;
+#X connect 5 0 3 3;
+#X connect 6 0 3 0;
+#X connect 8 0 7 0;
+#X connect 8 1 7 1;
+#X connect 9 0 8 0;
+#X connect 10 0 9 4;
+#X connect 11 0 9 1;
+#X connect 11 0 13 0;
+#X connect 11 0 14 0;
+#X connect 11 0 15 0;
+#X connect 12 0 2 0;
+#X connect 12 0 5 0;
+#X connect 12 0 3 1;
+#X connect 12 0 6 0;
+#X connect 13 0 9 0;
+#X connect 14 0 9 2;
+#X connect 15 0 9 3;
+#X restore 402 275 pd examples;
+#N canvas 753 120 447 443 -in 0;
+#X obj 98 291 else/out~;
+#X obj 118 237 else/pluck~ 50 2500 5000 -in;
+#X obj 159 144 else/dust~ 4;
+#X obj 283 206 else/impseq~;
+#X text 51 47 The [pluck~] object uses an internal white noise generator
+as the excitation signal. But if a "-in" flag is given \, [pluck~]
+creates an extra right outlet for the excitation signal. Here we use
+an impulse instead of the white noise.;
+#X connect 1 0 0 0;
+#X connect 1 0 0 1;
+#X connect 2 0 1 1;
+#X connect 2 0 3 0;
+#X connect 3 0 1 4;
+#X restore 482 262 pd -in;
+#X connect 4 0 46 0;
+#X connect 16 0 46 2;
+#X connect 21 0 46 3;
+#X connect 45 0 46 1;
+#X connect 46 0 33 0;
+#X connect 46 0 33 1;
