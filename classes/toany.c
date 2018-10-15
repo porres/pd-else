@@ -30,7 +30,7 @@ typedef struct _toany{
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static toany_atoms_clear(t_toany_atoms *a){
+static void toany_atoms_clear(t_toany_atoms *a){
     if(a->a_alloc)
         freebytes(a->a_buf, (a->a_alloc)*sizeof(t_atom));
     a->a_buf   = NULL;
@@ -38,13 +38,13 @@ static toany_atoms_clear(t_toany_atoms *a){
     a->a_alloc = 0;
 }
 
-static toany_atoms_realloc(t_toany_atoms *a, size_t n){
+static void toany_atoms_realloc(t_toany_atoms *a, size_t n){
     toany_atoms_clear(a);
     a->a_buf   = n ? (t_atom*)getbytes(n*sizeof(t_atom)) : NULL;
     a->a_alloc = n;
 }
 
-static toany_char_code_clear(t_toany_char_code *b){
+static void toany_char_code_clear(t_toany_char_code *b){
     if(b->b_alloc)
         freebytes(b->b_buf, (b->b_alloc)*sizeof(unsigned char));
     b->b_buf   = NULL;
@@ -52,7 +52,7 @@ static toany_char_code_clear(t_toany_char_code *b){
     b->b_alloc = 0;
 }
 
-static toany_char_code_realloc(t_toany_char_code *b, size_t n){
+static void toany_char_code_realloc(t_toany_char_code *b, size_t n){
     toany_char_code_clear(b);
     b->b_buf   = n ? (unsigned char*)getbytes(n*sizeof(unsigned char)) : NULL;
     b->b_alloc = n;
@@ -60,7 +60,7 @@ static toany_char_code_realloc(t_toany_char_code *b, size_t n){
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-static convert_toany(void *x, t_toany_atoms *dst, t_toany_char_code *src, t_binbuf *x_binbuf){
+static void convert_toany(t_toany_atoms *dst, t_toany_char_code *src, t_binbuf *x_binbuf){
     int bb_is_tmp = 0;                                      // create temporary binbuf?
     if(!x_binbuf){
         x_binbuf = binbuf_new();
@@ -84,7 +84,7 @@ static convert_toany(void *x, t_toany_atoms *dst, t_toany_char_code *src, t_binb
     }
 }
 
-static toany_get_atoms(void *x, t_toany_char_code *dst, t_toany_atoms *src, t_float x_eos){
+static t_int toany_get_atoms(t_toany_char_code *dst, t_toany_atoms *src, t_float x_eos){
     t_atom *argv = src->a_buf;
     int     argc = src->a_len;
     unsigned char *s;
@@ -103,8 +103,8 @@ static toany_get_atoms(void *x, t_toany_char_code *dst, t_toany_atoms *src, t_fl
 
 static void toany_output(t_toany *x, int argc, t_atom *argv){
   t_toany_atoms src = {argv, argc, argc};
-  toany_get_atoms(x, &(x->x_char_code), &src, x->x_eos);
-  convert_toany(x, NULL, &(x->x_char_code), x->x_binbuf);
+  toany_get_atoms(&(x->x_char_code), &src, x->x_eos);
+  convert_toany(NULL, &(x->x_char_code), x->x_binbuf);
   int x_argc;
   t_atom *x_argv;
   x_argc = binbuf_getnatom(x->x_binbuf);
@@ -116,6 +116,8 @@ static void toany_output(t_toany *x, int argc, t_atom *argv){
 }
 
 static void toany_list(t_toany *x, t_symbol *sel, int argc, t_atom *argv){
+  t_symbol *dummy = sel;
+  dummy = NULL;
   int i0 = 0, i;
   for(i = 0; i < argc; i++){
       if((argv+i)->a_type != A_FLOAT){
@@ -136,6 +138,8 @@ static void toany_list(t_toany *x, t_symbol *sel, int argc, t_atom *argv){
 }
 
 static void *toany_new(t_symbol *sel, int argc, t_atom *argv){
+    t_symbol *dummy = sel;
+    dummy = NULL;
     t_toany *x = (t_toany *)pd_new(toany_class);
     int bufsize = 256;
     x->x_binbuf = binbuf_new();
