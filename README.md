@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-14 (Unreleased)
+### Version 1.0 beta-14 (Released October 15th 2018)
 
 Needs Pd 0.49-0 or above
 
