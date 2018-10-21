@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-14 (Released October 15th 2018)
+### Version 1.0 beta-15 (Unreleased)
 
 Needs Pd 0.49-0 or above
 
@@ -72,13 +72,14 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 ##Current Object list (271 objects):
 
-**ARRAY: [1]**
+**ASSORTED: [2]**
 - [table~]
+- [nbang]
 
 **FFT: [1]**
 - [hann~]
 
-**PATCH/SUBPATCH MANAGEMENT: [8]**
+**PATCH/SUBPATCH MANAGEMENT: [7]**
 - [args]
 - [blocksize~]
 - [click]
@@ -86,7 +87,6 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [window]
 - [loadbanger] / [lb]
 - [initmess]
-- [nbang]
 
 **MESSAGE MANAGEMENT: [13]**
 - [break] 
@@ -216,7 +216,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **AUDIO PROCESSING: REVERB: [1]**
 - [plateverb~]
 
-**AUDIO PROCESSING: FILTERS (23):**
+**AUDIO PROCESSING: FILTERS [23]:**
 - [allpass.2nd~]
 - [comb.filt~]
 - [lop.bw~]
