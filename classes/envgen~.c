@@ -239,9 +239,9 @@ static void envgen_suspoint(t_envgen *x, t_float f){
 
 static t_int *envgen_perform(t_int *w){
     t_envgen *x = (t_envgen *)(w[1]);
-    t_float *in = (t_float *)(w[2]);
-    t_float *out = (t_float *)(w[3]);
-    t_int n = (int)(w[4]);
+    t_int n = (int)(w[2]);
+    t_float *in = (t_float *)(w[3]);
+    t_float *out = (t_float *)(w[4]);
     float lastin = x->x_lastin;
     while(n--){
         t_float f = *in++;
@@ -277,7 +277,7 @@ static t_int *envgen_perform(t_int *w){
 }
 
 static void envgen_dsp(t_envgen *x, t_signal **sp){
-    dsp_add(envgen_perform, 4, x, sp[0]->s_vec, sp[0]->s_vec, sp[0]->s_n);
+    dsp_add(envgen_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
 }
 
 static void envgen_free(t_envgen *x){
