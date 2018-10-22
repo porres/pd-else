@@ -1,4 +1,4 @@
-#N canvas 913 102 560 481 10;
+#N canvas 705 161 560 481 10;
 #X obj 4 328 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 385 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -37,12 +37,12 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 212 281 else/display;
-#X msg 212 252 1 2 3 4 5 6 7;
+#X msg 212 252;
 #X obj 130 163 loadbang;
 #X msg 130 191 set;
 #X text 332 155 <= click;
 #X obj 212 223 else/setmess 1;
-#X obj 307 202 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 293 202 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X msg 212 143 set any message;
 #X msg 225 167 1 2 3 4 5 6 7;
@@ -59,7 +59,36 @@ zero argument makes the message go through.;
 ;
 #X text 157 359 float;
 #X text 202 359 - non zero makes the message go through;
-#X text 328 203 <= sets argument;
+#X text 314 203 <= sets argument;
+#N canvas 555 119 522 512 [envgen~] 0;
+#X obj 133 259 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 396 147 1;
+#X obj 118 361 *~;
+#X obj 75 408 else/out~;
+#X obj 184 266 else/setmess;
+#X text 395 243 0;
+#X obj 184 120 else/initmess 0 50 1 50 0.6 300 0.6 200 0;
+#X msg 184 294 0 50 1 50 0.6 300 0.6 200 0;
+#X obj 133 328 else/envgen~ -retrigger 10;
+#X obj 57 310 osc~ 440;
+#X obj 187 153 else/function;
+#X text 60 31 There are some objects in Pd that can benefit from a
+"set" message - [envgen~] is an example \, and we can use [function]
+with [setmess] to prevent [envgen~] from bein retriggered when using
+[function]. Check the help files of these objects f you've never heard
+of them.;
+#X text 108 193 [function];
+#X connect 0 0 8 0;
+#X connect 2 0 3 1;
+#X connect 2 0 3 0;
+#X connect 4 0 7 0;
+#X connect 4 0 8 0;
+#X connect 6 0 10 0;
+#X connect 8 0 2 1;
+#X connect 9 0 2 0;
+#X connect 10 0 4 0;
+#X restore 446 277 pd [envgen~];
 #X connect 19 0 18 0;
 #X connect 20 0 21 0;
 #X connect 21 0 19 0;
