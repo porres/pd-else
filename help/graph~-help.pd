@@ -1,4 +1,4 @@
-#N canvas 630 69 558 524 10;
+#N canvas 630 69 559 528 10;
 #X obj 1 498 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 1 321 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -155,19 +155,19 @@ for visualizing audio signals.;
 -1 -1 64 256;
 #X msg 320 139 size \$1;
 #X obj 346 177 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 100 256;
+-1 -1 0 256;
 #X msg 346 198 skip \$1;
-#X obj 125 131 noise~;
 #X text 88 442 -size <float>;
 #X text 88 459 -skip <float>;
 #X text 173 478 - 2 floats sets upper and lower graph range (default
 1 -1);
-#X text 240 386 - number of buffers to skip;
 #X text 40 478 -range <float \, float>;
 #X text 108 386 range <float \, float>;
-#X obj 125 161 else/graph~;
+#X text 240 386 - sets min/max range;
+#X obj 125 131 noise~;
+#X obj 125 163 else/graph~;
 #X connect 29 0 30 0;
 #X connect 30 0 40 1;
 #X connect 31 0 32 0;
 #X connect 32 0 40 1;
-#X connect 33 0 40 0;
+#X connect 39 0 40 0;
