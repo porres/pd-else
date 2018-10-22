@@ -95,37 +95,6 @@ or [vline~].;
 & target. If odd \, 1st float is the starting point, f 51;
 #X text 219 363 - sets overall gain, f 53;
 #X text 139 549 1) list -;
-#N canvas 726 168 478 561 envelope 0;
-#X obj 130 297 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 393 185 1;
-#X obj 115 399 *~;
-#X obj 72 446 else/out~;
-#X obj 181 304 else/setmess;
-#X text 392 281 0;
-#X obj 181 158 else/initmess 0 50 1 50 0.6 300 0.6 200 0;
-#X obj 184 191 else/envelope;
-#X msg 181 332 0 50 1 50 0.6 300 0.6 200 0;
-#X text 56 17 Here's an example on how to use [envelope] with [envgen~].
-Since [envelope] is always outputing a list you can use something like
-[setmess] and only trigger the envelope when sending a bang or a float.
-Check the help file of [envelope] for more details on how it works.
-;
-#X text 56 83 Note that [envelope] always sends an odd number of elements
-\, so you can use "legato" mode or not \, and also set a retrigger
-time if you will.;
-#X obj 130 366 else/envgen~ -retrigger 10;
-#X obj 54 348 osc~ 440;
-#X connect 0 0 11 0;
-#X connect 2 0 3 1;
-#X connect 2 0 3 0;
-#X connect 4 0 8 0;
-#X connect 4 0 11 0;
-#X connect 6 0 7 0;
-#X connect 7 0 4 0;
-#X connect 11 0 2 1;
-#X connect 12 0 2 0;
-#X restore 478 243 pd envelope;
 #X obj 7 581 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 102 461 retrigger <float>;
 #X text 219 461 - retrigger time in ms, f 53;
@@ -491,10 +460,42 @@ values less than 0 are clipped to 0)., f 57;
 #X connect 10 0 11 0;
 #X connect 11 0 2 0;
 #X restore 478 144 pd duration;
-#X connect 52 0 53 1;
-#X connect 52 0 53 0;
-#X connect 54 0 52 0;
-#X connect 55 0 64 0;
-#X connect 57 0 58 0;
-#X connect 64 0 52 1;
-#X connect 64 0 57 0;
+#N canvas 726 168 478 561 function 0;
+#X obj 130 297 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 393 185 1;
+#X obj 115 399 *~;
+#X obj 72 446 else/out~;
+#X obj 181 304 else/setmess;
+#X text 392 281 0;
+#X obj 181 158 else/initmess 0 50 1 50 0.6 300 0.6 200 0;
+#X msg 181 332 0 50 1 50 0.6 300 0.6 200 0;
+#X obj 130 366 else/envgen~ -retrigger 10;
+#X obj 54 348 osc~ 440;
+#X obj 184 191 else/function;
+#X text 56 17 Here's an example on how to use [function] with [envgen~].
+Since [function] is always outputing a list you can use something like
+[setmess] and only trigger the envelope when sending a bang or a float.
+Check the help file of [function] for more details on how it works.
+;
+#X text 110 233 [function];
+#X text 56 83 Note that [function] always sends an odd number of elements
+\, so you can use "legato" mode or not \, and also set a retrigger
+time if you will.;
+#X connect 0 0 8 0;
+#X connect 2 0 3 1;
+#X connect 2 0 3 0;
+#X connect 4 0 7 0;
+#X connect 4 0 8 0;
+#X connect 6 0 10 0;
+#X connect 8 0 2 1;
+#X connect 9 0 2 0;
+#X connect 10 0 4 0;
+#X restore 478 243 pd function;
+#X connect 51 0 52 1;
+#X connect 51 0 52 0;
+#X connect 53 0 51 0;
+#X connect 54 0 63 0;
+#X connect 56 0 57 0;
+#X connect 63 0 51 1;
+#X connect 63 0 56 0;

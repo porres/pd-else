@@ -66,23 +66,23 @@
 #X text 224 143 inverted sawtooth;
 #X text 292 168 triangular wave;
 #X text 346 197 trapezoid;
-#X obj 158 373 function~ 1 100 -1;
-#X obj 214 237 else/envelope 1 1 -1;
-#X text 431 276 <== the envelope object is quite convenient for use
-with [function~]. Check its help file for more info, f 18;
 #X text 89 33 The [function~] object allows line segments and in any
 range. Here we use it in the -1 to 1 range to generate waveforms and
 use them as oscillators with a [phasor~] input., f 62;
-#X connect 2 0 12 0;
-#X connect 3 0 12 0;
-#X connect 4 0 12 0;
-#X connect 5 0 12 0;
-#X connect 6 0 12 0;
+#X obj 214 237 else/function 1 1 -1;
+#X text 431 276 <== the [function] object is quite convenient for use
+with [function~]. Check its help file for more info, f 18;
+#X obj 158 373 else/function~ 1 100 -1;
+#X connect 2 0 15 0;
+#X connect 3 0 15 0;
+#X connect 4 0 15 0;
+#X connect 5 0 15 0;
+#X connect 6 0 15 0;
 #X connect 7 0 5 0;
-#X connect 12 0 0 0;
-#X connect 12 0 0 1;
-#X connect 12 0 1 0;
-#X connect 13 0 12 0;
+#X connect 13 0 15 0;
+#X connect 15 0 0 0;
+#X connect 15 0 0 1;
+#X connect 15 0 1 0;
 #X restore 472 241 pd example;
 #X text 72 87 [function~] generates functions from arguments/list input.
 Input values from 0 to 1 reads the function. It needs an odd number

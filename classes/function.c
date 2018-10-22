@@ -15,11 +15,11 @@
 #include <string.h>
 #include <math.h>
 
-t_widgetbehavior envelope_widgetbehavior;
+t_widgetbehavior function_widgetbehavior;
 
-static t_class *envelope_class;
+static t_class *function_class;
 
-typedef struct _envelope{
+typedef struct _function{
     t_object    x_obj;
     t_glist*    glist;
     int         x_state;
@@ -40,23 +40,23 @@ typedef struct _envelope{
     int         x_shift; // move 100th
     float       x_pointer_x;
     float       x_pointer_y;
-}t_envelope;
+}t_function;
 
 // REMOVE!!
 
-static void envelope_print(t_envelope* x){
-    post("---===### envelope settings ###===---");
+static void function_print(t_function* x){
+    post("---===### function settings ###===---");
     post("x_state:          %d",   x->x_state);
     post("x_x_last_state:     %d",   x->x_last_state);
     post("total duration:   %.2f", x->x_total_duration);
     post("min:              %.2f", x->x_min);
     post("max:              %.2f", x->x_max);
-    post("---===### envelope settings ###===---");
+    post("---===### function settings ###===---");
 }
 
 ////// BANG  ///////////////////////////////////////////////////////////////////////////////////
 
-static void envelope_bang(t_envelope *x){
+static void function_bang(t_function *x){
     t_int n;
     n = x->x_last_state + 1;
     t_int ac = n * 2 - 1;
@@ -80,7 +80,7 @@ static void envelope_bang(t_envelope *x){
 
 // GUI SHIT //////////////////////////////////////////////////////////////////////////////////////////////
 
-static void envelope_resize(t_envelope* x,int ns){
+static void function_resize(t_function* x,int ns){
     if(ns > x->x_states){
         int newargs = ns*sizeof(t_float);
         x->x_duration = resizebytes(x->x_duration, x->x_states*sizeof(t_float), newargs);
@@ -89,9 +89,9 @@ static void envelope_resize(t_envelope* x,int ns){
     }
 }
 
-static void envelope_duration(t_envelope* x, t_float dur){
+static void function_duration(t_function* x, t_float dur){
     if(dur < 1){
-        post("envelope: minimum duration is 1 ms");
+        post("function: minimum duration is 1 ms");
         return;
     }
     x->x_total_duration = dur;
@@ -101,7 +101,7 @@ static void envelope_duration(t_envelope* x, t_float dur){
         x->x_duration[i] *= f;
 }
 
-static void envelope_generate(t_envelope *x, int ac, t_atom* av){
+static void function_generate(t_function *x, int ac, t_atom* av){
     t_float* dur;
     t_float* val;
     t_float tdur = 0;
@@ -109,7 +109,7 @@ static void envelope_generate(t_envelope *x, int ac, t_atom* av){
         return;
     x->x_duration[0] = 0;
     x->x_last_state = ac >> 1;
-    envelope_resize(x, ac >> 1);
+    function_resize(x, ac >> 1);
     dur = x->x_duration;
     val = x->x_points;
 // get the first value
@@ -161,7 +161,7 @@ static void envelope_generate(t_envelope *x, int ac, t_atom* av){
 
 // MORE GUI SHIT /////////////////////////////////////////////////////////////////////////////////////
 
-static void draw_inlet_and_outlet(t_envelope *x, t_glist *glist, int firsttime){
+static void draw_inlet_and_outlet(t_function *x, t_glist *glist, int firsttime){
     int x_onset, y_onset;
     int xpos = text_xpix(&x->x_obj, glist);
     int ypos = text_ypix(&x->x_obj, glist);
@@ -199,7 +199,7 @@ static void draw_inlet_and_outlet(t_envelope *x, t_glist *glist, int firsttime){
     }
 }
 
-static int envelope_x_next_doodle(t_envelope *x, struct _glist *glist, int xpos,int ypos){
+static int function_x_next_doodle(t_function *x, struct _glist *glist, int xpos,int ypos){
     float xscale, yscale;
     int dxpos, dypos;
     float minval = 100000.0;
@@ -232,7 +232,7 @@ static int envelope_x_next_doodle(t_envelope *x, struct _glist *glist, int xpos,
         while (((dxpos + (x->x_duration[insertpos-1] * xscale)) - xpos) >0)
             insertpos--;
         if(x->x_last_state + 1 >= x->x_states)
-            envelope_resize(x, x->x_states + 1);
+            function_resize(x, x->x_states + 1);
         for(i = x->x_last_state; i >= insertpos; i--){
             x->x_duration[i + 1] = x->x_duration[i];
             x->x_points[i + 1] = x->x_points[i];
@@ -249,7 +249,7 @@ static int envelope_x_next_doodle(t_envelope *x, struct _glist *glist, int xpos,
     return insertpos;
 }
 
-static void envelope_create_doodles(t_envelope *x, t_glist *glist){
+static void function_create_doodles(t_function *x, t_glist *glist){
     float xscale, yscale;
     int xpos, ypos;
     int i;
@@ -275,19 +275,19 @@ static void envelope_create_doodles(t_envelope *x, t_glist *glist){
     x->x_numdoodles = i;
 }
 
-static void envelope_delete_doodles(t_envelope *x, t_glist *glist){
+static void function_delete_doodles(t_function *x, t_glist *glist){
     int i;
     for(i = 0; i <= x->x_numdoodles; i++)
         sys_vgui(".x%lx.c delete %lxD%d\n",glist_getcanvas(glist), x, i);
 }
 
-static void envelope_update_doodles(t_envelope *x, t_glist *glist){
+static void function_update_doodles(t_function *x, t_glist *glist){
 // LATER only create new doodles if necessary
-    envelope_delete_doodles(x, glist);
-    envelope_create_doodles(x, glist);
+    function_delete_doodles(x, glist);
+    function_create_doodles(x, glist);
 }
 
-static void envelope_create(t_envelope *x, t_glist *glist){
+static void function_create(t_function *x, t_glist *glist){
     int i;
     float xscale, yscale;
     int xpos, ypos;
@@ -308,10 +308,10 @@ static void envelope_create(t_envelope *x, t_glist *glist){
                  (int)(ypos + x->x_height - (x->x_points[i]-yBase) / ySize*yscale));
     }
     sys_vgui(" -tags %lxP -fill %s\n", x, FRONTCOLOR);
-    envelope_create_doodles(x, glist);
+    function_create_doodles(x, glist);
 }
 
-static void envelope_update(t_envelope *x, t_glist *glist){
+static void function_update(t_function *x, t_glist *glist){
     int i;
     float xscale, yscale;
     int xpos = text_xpix(&x->x_obj, glist);
@@ -330,19 +330,19 @@ static void envelope_update(t_envelope *x, t_glist *glist){
         sys_vgui(" %d %d ",(int)(xpos + x->x_duration[i]*xscale),
                  (int)(ypos + x->x_height - (x->x_points[i] - yBase) / ySize*yscale));
     sys_vgui("\n");
-    envelope_update_doodles(x, glist);
+    function_update_doodles(x, glist);
     draw_inlet_and_outlet(x, glist, 0); // again ???
 }
 
-static void envelope_drawme(t_envelope *x, t_glist *glist, int firsttime){
+static void function_drawme(t_function *x, t_glist *glist, int firsttime){
     if(firsttime)
-        envelope_create(x, glist);
+        function_create(x, glist);
     else
-        envelope_update(x, glist);
+        function_update(x, glist);
     draw_inlet_and_outlet(x, glist, firsttime);
 }
 
-static void envelope_erase(t_envelope* x, t_glist* glist){
+static void function_erase(t_function* x, t_glist* glist){
     sys_vgui(".x%lx.c delete %lxS\n", glist_getcanvas(glist), x);
     sys_vgui(".x%lx.c delete %lxP\n", glist_getcanvas(glist), x);
     if(x->x_receive_sym == &s_){
@@ -351,14 +351,14 @@ static void envelope_erase(t_envelope* x, t_glist* glist){
         sys_vgui(".x%lx.c delete %lxo1\n", glist_getcanvas(glist), x);
         sys_vgui(".x%lx.c delete %lxo2\n", glist_getcanvas(glist), x);
     }
-    envelope_delete_doodles(x,glist);
+    function_delete_doodles(x,glist);
 }
 
 /* ------------------------ widgetbehaviour----------------------------- */
 
-static void envelope_getrect(t_gobj *z, t_glist *owner, int *xp1, int *yp1, int *xp2, int *yp2){
+static void function_getrect(t_gobj *z, t_glist *owner, int *xp1, int *yp1, int *xp2, int *yp2){
     int width, height;
-    t_envelope* s = (t_envelope*)z;
+    t_function* s = (t_function*)z;
     width = s->x_width + BORDERWIDTH;
     height = s->x_height + BORDERWIDTH; // + 2 here
     *xp1 = text_xpix(&s->x_obj,owner) - BORDERWIDTH;
@@ -367,8 +367,8 @@ static void envelope_getrect(t_gobj *z, t_glist *owner, int *xp1, int *yp1, int 
     *yp2 = text_ypix(&s->x_obj,owner) + height ; // + 4
 }
 
-static void envelope_displace(t_gobj *z, t_glist *glist, int dx, int dy){
-    t_envelope *x = (t_envelope *)z;
+static void function_displace(t_gobj *z, t_glist *glist, int dx, int dy){
+    t_function *x = (t_function *)z;
     x->x_obj.te_xpix += dx; // x movement
     x->x_obj.te_ypix += dy; // y movement
 // MOVE THE BLUE LINE
@@ -378,12 +378,12 @@ static void envelope_displace(t_gobj *z, t_glist *glist, int dx, int dy){
              x->x_obj.te_ypix - BORDERWIDTH,
              x->x_obj.te_xpix + x->x_width + BORDERWIDTH,
              x->x_obj.te_ypix + x->x_height + BORDERWIDTH);
-    envelope_drawme(x, glist, 0);
+    function_drawme(x, glist, 0);
     canvas_fixlinesfor(glist, (t_text*) x);
 }
 
-static void envelope_select(t_gobj *z, t_glist *glist, int state){
-    t_envelope *x = (t_envelope *)z;
+static void function_select(t_gobj *z, t_glist *glist, int state){
+    t_function *x = (t_function *)z;
     t_canvas * canvas = glist_getcanvas(glist);
     if(state){
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %xSEL -outline blue\n",
@@ -398,20 +398,20 @@ static void envelope_select(t_gobj *z, t_glist *glist, int state){
         sys_vgui(".x%lx.c delete %xSEL\n", canvas, x);
 }
 
-static void envelope_delete(t_gobj *z, t_glist *glist){
+static void function_delete(t_gobj *z, t_glist *glist){
     t_text *x = (t_text *)z;
     canvas_deletelinesfor(glist, x);
 }
 
-static void envelope_vis(t_gobj *z, t_glist *glist, int vis){
-    t_envelope* s = (t_envelope*)z;
+static void function_vis(t_gobj *z, t_glist *glist, int vis){
+    t_function* s = (t_function*)z;
     if(vis)
-        envelope_drawme(s, glist, 1);
+        function_drawme(s, glist, 1);
     else
-        envelope_erase(s, glist);
+        function_erase(s, glist);
 }
 
-static void envelope_followpointer(t_envelope* x,t_glist* glist){
+static void function_followpointer(t_function* x,t_glist* glist){
     float dur;
     float xscale = x->x_duration[x->x_last_state] / x->x_width;
     float ySize = x->x_max - x->x_min;
@@ -431,10 +431,10 @@ static void envelope_followpointer(t_envelope* x,t_glist* glist){
         grabbed = 1.0;
     x->x_points[x->x_grabbed] = grabbed * ySize + yBase;
     if(1)
-        envelope_bang(x);
+        function_bang(x);
 }
 
-static void envelope_motion(t_envelope *x, t_floatarg dx, t_floatarg dy){
+static void function_motion(t_function *x, t_floatarg dx, t_floatarg dy){
     if(x->x_shift){
         x->x_pointer_x += dx / 1000.f;
         x->x_pointer_y += dy / 1000.f;
@@ -443,16 +443,16 @@ static void envelope_motion(t_envelope *x, t_floatarg dx, t_floatarg dy){
         x->x_pointer_x += dx;
         x->x_pointer_y += dy;
     }
-    envelope_followpointer(x,x->glist);
+    function_followpointer(x,x->glist);
 /* "if resizing" (MAKE THIS HAPPEN IN EDIT MODE AND WHEN CLICKING THE BOTTOM RIGHT CORNER) !!!!!!!!
     else{
         x->x_width += dx;
         x->x_height += dy;
     } */
-    envelope_update(x, x->glist);
+    function_update(x, x->glist);
 }
 
-static void envelope_key(t_envelope *x, t_floatarg f){
+static void function_key(t_function *x, t_floatarg f){
     if(f == 8.0 && x->x_grabbed < x->x_last_state &&  x->x_grabbed >0){
         int i;
         for(i = x->x_grabbed; i <= x->x_last_state; i++){
@@ -461,13 +461,13 @@ static void envelope_key(t_envelope *x, t_floatarg f){
         }
         x->x_last_state--;
         x->x_grabbed--;
-        envelope_update(x, x->glist);
+        function_update(x, x->glist);
         if(1)
-            envelope_bang(x);
+            function_bang(x);
     }
 }
 
-static int envelope_newclick(t_envelope *x, struct _glist *glist,
+static int function_newclick(t_function *x, struct _glist *glist,
             int xpos, int ypos, int shift, int alt, int dbl, int doit){
     alt = 0; // remove warning
 // check if user wants to resize
@@ -476,12 +476,12 @@ static int envelope_newclick(t_envelope *x, struct _glist *glist,
     if(doit){
         if((xpos >= wxpos) && (xpos <= wxpos + x->x_width) \
            && (ypos >= wypos ) && (ypos <= wypos + x->x_height)){
-            envelope_x_next_doodle(x, glist, xpos, ypos);
-            glist_grab(x->glist, &x->x_obj.te_g, (t_glistmotionfn) envelope_motion,
-                       (t_glistkeyfn) envelope_key, xpos, ypos);
+            function_x_next_doodle(x, glist, xpos, ypos);
+            glist_grab(x->glist, &x->x_obj.te_g, (t_glistmotionfn) function_motion,
+                       (t_glistkeyfn) function_key, xpos, ypos);
             x->x_shift = shift;
-            envelope_followpointer(x, glist);
-            envelope_update(x, glist);
+            function_followpointer(x, glist);
+            function_update(x, glist);
         }
     }
     return(1);
@@ -489,13 +489,13 @@ static int envelope_newclick(t_envelope *x, struct _glist *glist,
 
 ///////////////////// METHODS /////////////////////
 
-static void envelope_list(t_envelope *x, t_symbol* s, int ac,t_atom *av){
+static void function_list(t_function *x, t_symbol* s, int ac,t_atom *av){
     t_symbol *dummy = s;
     dummy = NULL;
     if(ac > 2 && ac % 2){
-        envelope_generate(x, ac, av);
+        function_generate(x, ac, av);
         if(glist_isvisible(x->glist))
-            envelope_drawme(x, x->glist, 0);
+            function_drawme(x, x->glist, 0);
         if(1){
             outlet_list(x->x_obj.ob_outlet, &s_list, ac, av);
             if(x->x_send_sym != &s_ && x->x_send_sym->s_thing)
@@ -503,35 +503,35 @@ static void envelope_list(t_envelope *x, t_symbol* s, int ac,t_atom *av){
         }
     }
     else
-        post("[envelope] needs an odd list of at least 3 floats");
+        post("[function] needs an odd list of at least 3 floats");
 }
 
-static void envelope_min(t_envelope *x, t_floatarg f){
+static void function_min(t_function *x, t_floatarg f){
     x->x_min = f;
-    envelope_update(x, x->glist);
+    function_update(x, x->glist);
 }
 
-static void envelope_max(t_envelope *x, t_floatarg f){
+static void function_max(t_function *x, t_floatarg f){
     x->x_max = f;
-    envelope_update(x, x->glist);
+    function_update(x, x->glist);
 }
 
-static void envelope_height(t_envelope *x, t_floatarg f){
+static void function_height(t_function *x, t_floatarg f){
     x->x_height = f < 20 ? 20 : f;
-    envelope_update(x, x->glist);
+    function_update(x, x->glist);
 }
 
-static void envelope_width(t_envelope *x, t_floatarg f){
+static void function_width(t_function *x, t_floatarg f){
     x->x_width = f < 40 ? 40 : f;
-    envelope_update(x, x->glist);
+    function_update(x, x->glist);
 }
 
-static void envelope_send(t_envelope *x, t_symbol *s){
+static void function_send(t_function *x, t_symbol *s){
     if(s != &s_)
         x->x_send_sym = s;
 }
 
-static void envelope_receive(t_envelope *x, t_symbol *s){
+static void function_receive(t_function *x, t_symbol *s){
     if(s != &s_){
         if(x->x_receive_sym != &s_)
             pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
@@ -541,8 +541,8 @@ static void envelope_receive(t_envelope *x, t_symbol *s){
 
 ///////////////////// NEW / FREE / SETUP /////////////////////
 
-static void *envelope_new(t_symbol *s, int ac, t_atom* av){
-    t_envelope *x = (t_envelope *)pd_new(envelope_class);
+static void *function_new(t_symbol *s, int ac, t_atom* av){
+    t_function *x = (t_function *)pd_new(function_class);
     t_symbol *cursym = s; // get rid of warning
     x->x_state = 0;
     x->x_states = STATES;
@@ -560,7 +560,7 @@ static void *envelope_new(t_symbol *s, int ac, t_atom* av){
     SETFLOAT(a, 0);
     SETFLOAT(a+1, 1000);
     SETFLOAT(a+2, 0);
-    envelope_generate(x, 3, a);
+    function_generate(x, 3, a);
 /////////////////////////////////////////////////////////////////////////////////////
     int symarg = 0;
     int n = 0;
@@ -573,7 +573,7 @@ static void *envelope_new(t_symbol *s, int ac, t_atom* av){
             if(!symarg){
                 symarg = 1;
                 if(n > 2)
-                    envelope_generate(x, n, av);
+                    function_generate(x, n, av);
                 av += n;
                 n = 0;
             }
@@ -601,7 +601,7 @@ static void *envelope_new(t_symbol *s, int ac, t_atom* av){
             else if(!strcmp(cursym->s_name, "-min")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     x->x_min = atom_getfloatarg(1, ac, av);
-                    envelope_update(x, x->glist);
+                    function_update(x, x->glist);
                     ac -= 2;
                     av += 2;
                 }
@@ -611,7 +611,7 @@ static void *envelope_new(t_symbol *s, int ac, t_atom* av){
             else if(!strcmp(cursym->s_name, "-max")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     x->x_max = atom_getfloatarg(1, ac, av);
-                    envelope_update(x, x->glist);
+                    function_update(x, x->glist);
                     ac -= 2;
                     av += 2;
                 }
@@ -653,45 +653,45 @@ static void *envelope_new(t_symbol *s, int ac, t_atom* av){
             goto errstate;
     };
     if(!symarg && n > 2)
-        envelope_generate(x, n, av);
+        function_generate(x, n, av);
      if(initialDuration > 0)
-        envelope_duration(x, initialDuration);
+        function_duration(x, initialDuration);
 /////////////////////////////////////////////////////////////////////////////////////
      outlet_new(&x->x_obj, &s_anything);
      return (x);
 errstate:
-    pd_error(x, "[envelope]: improper args");
+    pd_error(x, "[function]: improper args");
     return NULL;
 }
 
-static void envelope_free(t_envelope *x){
+static void function_free(t_function *x){
     if(x->x_receive_sym != &s_)
          pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym); 
 }
 
-void envelope_setup(void){
-    envelope_class = class_new(gensym("envelope"), (t_newmethod)envelope_new,
-        (t_method)envelope_free, sizeof(t_envelope), 0, A_GIMME,0);
-    class_addbang(envelope_class, envelope_bang);
-    class_addlist(envelope_class, envelope_list);
-    class_addmethod(envelope_class, (t_method)envelope_height, gensym("height"), A_FLOAT, A_NULL);
-    class_addmethod(envelope_class, (t_method)envelope_width, gensym("width"), A_FLOAT, A_NULL);
-    class_addmethod(envelope_class, (t_method)envelope_min, gensym("min"), A_FLOAT, A_NULL);
-    class_addmethod(envelope_class, (t_method)envelope_max, gensym("max"), A_FLOAT, A_NULL);
-    class_addmethod(envelope_class, (t_method)envelope_duration, gensym("duration"), A_FLOAT, A_NULL);
-    class_addmethod(envelope_class, (t_method)envelope_send, gensym("send"), A_SYMBOL, A_NULL);
-    class_addmethod(envelope_class, (t_method)envelope_receive, gensym("receive"), A_SYMBOL, A_NULL);
+void function_setup(void){
+    function_class = class_new(gensym("function"), (t_newmethod)function_new,
+        (t_method)function_free, sizeof(t_function), 0, A_GIMME,0);
+    class_addbang(function_class, function_bang);
+    class_addlist(function_class, function_list);
+    class_addmethod(function_class, (t_method)function_height, gensym("height"), A_FLOAT, A_NULL);
+    class_addmethod(function_class, (t_method)function_width, gensym("width"), A_FLOAT, A_NULL);
+    class_addmethod(function_class, (t_method)function_min, gensym("min"), A_FLOAT, A_NULL);
+    class_addmethod(function_class, (t_method)function_max, gensym("max"), A_FLOAT, A_NULL);
+    class_addmethod(function_class, (t_method)function_duration, gensym("duration"), A_FLOAT, A_NULL);
+    class_addmethod(function_class, (t_method)function_send, gensym("send"), A_SYMBOL, A_NULL);
+    class_addmethod(function_class, (t_method)function_receive, gensym("receive"), A_SYMBOL, A_NULL);
 ///
-    class_addmethod(envelope_class, (t_method)envelope_print, gensym("print"), A_NULL);
-    class_addmethod(envelope_class, (t_method)envelope_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
-    class_addmethod(envelope_class, (t_method)envelope_key, gensym("key"), A_FLOAT, 0);
+    class_addmethod(function_class, (t_method)function_print, gensym("print"), A_NULL);
+    class_addmethod(function_class, (t_method)function_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(function_class, (t_method)function_key, gensym("key"), A_FLOAT, 0);
 // widget
-    envelope_widgetbehavior.w_getrectfn  = envelope_getrect;
-    envelope_widgetbehavior.w_displacefn = envelope_displace;
-    envelope_widgetbehavior.w_selectfn   = envelope_select;
-    envelope_widgetbehavior.w_activatefn = NULL;
-    envelope_widgetbehavior.w_deletefn   = envelope_delete;
-    envelope_widgetbehavior.w_visfn      = envelope_vis;
-    envelope_widgetbehavior.w_clickfn    = (t_clickfn)envelope_newclick;
-    class_setwidget(envelope_class, &envelope_widgetbehavior);
+    function_widgetbehavior.w_getrectfn  = function_getrect;
+    function_widgetbehavior.w_displacefn = function_displace;
+    function_widgetbehavior.w_selectfn   = function_select;
+    function_widgetbehavior.w_activatefn = NULL;
+    function_widgetbehavior.w_deletefn   = function_delete;
+    function_widgetbehavior.w_visfn      = function_vis;
+    function_widgetbehavior.w_clickfn    = (t_clickfn)function_newclick;
+    class_setwidget(function_class, &function_widgetbehavior);
 }
