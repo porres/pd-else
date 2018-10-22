@@ -22,6 +22,11 @@ static void timed_gate_float(t_timed_gate *x, t_float f){
     x->x_gate_value = f;
 }
 
+static void timed_gate_ms(t_timed_gate *x, t_float f){
+    if(f >= 0)
+        pd_float((t_pd *)x->x_inlet_ms, f);
+}
+
 static void timed_gate_retrigger(t_timed_gate *x, t_float f){
     x->x_retrigger = f != 0;
 }
@@ -102,7 +107,7 @@ void setup_timed0x2egate_tilde(void){
         sizeof(t_timed_gate), CLASS_DEFAULT, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(timed_gate_class, nullfn, gensym("signal"), 0);
     class_addmethod(timed_gate_class, (t_method) timed_gate_dsp, gensym("dsp"), A_CANT, 0);
-//    class_addmethod(timed_gate_class, (t_method)timed_gate_ms, gensym("ms"), A_DEFFLOAT, 0);
+    class_addmethod(timed_gate_class, (t_method)timed_gate_ms, gensym("ms"), A_DEFFLOAT, 0);
     class_addmethod(timed_gate_class, (t_method)timed_gate_retrigger, gensym("retrigger"), A_DEFFLOAT, 0);
     class_addfloat(timed_gate_class, (t_method)timed_gate_float);
     class_addbang(timed_gate_class, (t_method)timed_gate_bang);
