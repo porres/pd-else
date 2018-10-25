@@ -1,4 +1,4 @@
-#N canvas 453 23 560 689 10;
+#N canvas 725 47 560 711 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -22,49 +22,47 @@
 #X obj 346 169 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X msg 412 196 loop \$1;
-#X obj 412 172 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 412 172 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 22 40 cnv 4 4 4 empty empty Multi-channel 0 28 2 18 -233017
 -1 0;
 #X obj 131 40 cnv 4 4 4 empty empty player 0 28 2 18 -233017 -1 0;
 #X obj 316 191 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 4 665 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 685 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 6 313 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 504 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 524 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 553 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 573 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 97 511 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 97 531 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X obj 97 321 cnv 17 3 177 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 97 320 cnv 17 3 200 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 121 348 open <symbol> -;
-#X text 127 456 loop <float> -;
-#X text 221 456 loop on <1> or off <0>, f 50;
-#X obj 6 629 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 192 557 (optional) channels (default 1 if no file is given
+#X text 126 475 loop <float> -;
+#X text 220 475 loop on <1> or off <0>, f 52;
+#X obj 6 649 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 192 577 (optional) channels (default 1 if no file is given
 \, or sound file's if given \, max 64), f 44;
-#X text 115 583 2) symbol;
-#X text 180 583 - the name of the file to open (default none), f 46
+#X text 115 603 2) symbol;
+#X text 180 603 - the name of the file to open (default none), f 46
 ;
-#X text 115 597 3) float;
-#X text 180 597 - autostart <1: on \, 0: off> (default 0), f 46;
-#X text 115 610 4) float;
-#X text 180 611 - loop <1: on \, 0: off> (default 0), f 46;
-#X text 115 560 1) float;
-#X text 179 558 -;
+#X text 115 617 3) float;
+#X text 180 617 - autostart <1: on \, 0: off> (default 0), f 46;
+#X text 115 630 4) float;
+#X text 180 631 - loop <1: on \, 0: off> (default 0), f 46;
+#X text 115 580 1) float;
+#X text 179 578 -;
 #X text 173 319 bang - (re)start playing the buffer from the beggining
-, f 58;
-#X text 151 441 continue - unpauses and continues playing the buffer
-, f 62;
+, f 60;
 #X text 120 333 speed <float> -;
-#X text 221 333 sets the playing speed, f 50;
-#X text 119 647 -speed <float>: sets playing speed (default 100);
-#X text 173 633 -loop: turns loop mode on (default off);
-#X text 152 512 signal - the buffer signal of the corresponding channel
+#X text 221 333 sets the playing speed, f 52;
+#X text 119 667 -speed <float>: sets playing speed (default 100);
+#X text 173 653 -loop: turns loop mode on (default off);
+#X text 152 532 signal - the buffer signal of the corresponding channel
 ;
 #X obj 3 3 cnv 15 301 42 empty empty player~ 20 20 2 37 -233017 -1
 0;
@@ -74,13 +72,13 @@
 #X obj 296 253 else/out~;
 #X obj 419 251 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 97 532 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+#X obj 97 552 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
 0;
-#X text 164 533 bang - a bang when finishing playing the buffer;
-#X text 175 471 show -;
-#X text 221 471 shows the buffer subpatch window, f 50;
-#X text 175 485 hide -;
-#X text 221 485 hides the buffer subpatch window, f 50;
+#X text 164 553 bang - a bang when finishing playing the buffer;
+#X text 174 490 show -;
+#X text 220 490 shows the buffer subpatch window, f 52;
+#X text 174 504 hide -;
+#X text 220 504 hides the buffer subpatch window, f 52;
 #N canvas 574 23 588 508 multi-channel 0;
 #X obj 169 332 else/meter2~;
 #X obj 56 342 else/out~;
@@ -127,35 +125,41 @@ ignored.;
 #X text 440 249 <= finished;
 #X msg 270 145 open vacuous.wav;
 #X text 221 347 opens a file with the symbol name (no symbol opens
-dialog box) and starts playing, f 50;
+dialog box) and starts playing, f 52;
 #X text 72 255 see also:;
-#X obj 295 191 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 295 191 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X text 169 373 start - same as bang, f 59;
-#X text 169 424 pause - pauses playing the buffer, f 59;
-#X text 175 391 stop - stops and goes back to the beggining, f 59
+#X text 169 373 start - same as bang, f 61;
+#X text 169 418 pause - pauses playing the buffer, f 61;
+#X text 175 388 stop - stops and goes back to the beggining, f 60
 ;
-#X text 169 408 float - <1> is the same as "start" \, "0" is the same
-as "stop", f 62;
+#X text 169 403 float - <1> is the same as "start" \, "0" is the same
+as "stop", f 61;
 #X text 117 222 click: opens a new file =>;
 #X msg 166 145 open stereo.wav;
-#X obj 284 223 else/player~ stereo.wav;
 #X obj 63 275 else/sample~;
 #X text 49 85 [player~] is a convenient abstraction based on [soundfiler]
 and [tabread4~]. It offers many playing capabilities on arrays and
 it's more versatile than [sample~]. For instance \, you can play in
 different speeds and even backwards. The object is also able to search
 for files relative to the parent patch., f 76;
-#X connect 8 0 65 0;
-#X connect 9 0 65 0;
-#X connect 10 0 65 0;
+#X obj 284 223 else/player~ stereo.wav;
+#X text 151 460 continue - unpauses and continues playing the buffer
+, f 64;
+#X text 133 446 set <float> - sets a file to open (needs a reload message)
+, f 64;
+#X text 163 432 reload - reloads the file into the buffer and starts
+playing, f 62;
+#X connect 8 0 66 0;
+#X connect 9 0 66 0;
+#X connect 10 0 66 0;
 #X connect 11 0 10 0;
-#X connect 12 0 65 0;
+#X connect 12 0 66 0;
 #X connect 13 0 12 0;
-#X connect 16 0 65 0;
-#X connect 55 0 65 0;
-#X connect 58 0 65 0;
-#X connect 64 0 65 0;
-#X connect 65 0 45 0;
-#X connect 65 1 45 1;
-#X connect 65 2 46 0;
+#X connect 16 0 66 0;
+#X connect 54 0 66 0;
+#X connect 57 0 66 0;
+#X connect 63 0 66 0;
+#X connect 66 0 44 0;
+#X connect 66 1 44 1;
+#X connect 66 2 45 0;

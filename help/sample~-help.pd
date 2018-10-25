@@ -1,4 +1,4 @@
-#N canvas 598 70 565 703 10;
+#N canvas 598 70 563 716 10;
 #X obj 243 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X msg 124 208 start;
@@ -33,23 +33,23 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 1 3 graph;
-#X obj 6 661 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 677 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 6 353 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 481 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 497 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 539 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 555 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 90 490 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 90 506 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X obj 89 361 cnv 17 3 112 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 89 361 cnv 17 3 130 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 168 377 start - same as bang, f 49;
 #X text 175 393 stop - stop playing the sample, f 48;
 #X text 121 429 open <symbol> -;
-#X text 127 457 loop <float> -;
-#X text 221 457 loop on <1> or off <0>, f 50;
+#X text 127 475 loop <float> -;
+#X text 221 475 loop on <1> or off <0>, f 50;
 #X msg 279 225 open vacuous.wav;
 #X obj 220 290 else/out~;
 #X obj 220 199 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
@@ -98,46 +98,49 @@ sound file's. The maximum number is 64 channels.;
 #X connect 14 0 2 1;
 #X connect 14 1 8 0;
 #X restore 442 319 pd multi-channel;
-#X obj 6 631 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 173 638 -loop: turns loop mode on;
+#X obj 6 647 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 173 654 -loop: turns loop mode on;
 #X obj 379 286 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 398 286 finished;
-#X obj 90 516 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
-0;
-#X text 152 491 signal - the sample signal of the corresponding channel
+#X obj 90 532 cnv 17 3 17 empty empty r 5 9 0 16 -228856 -162280 0
 ;
-#X text 164 517 bang - a bang when finishing playing the sample;
-#X text 192 547 (optional) channels (default 1 if no file is given
+#X text 152 507 signal - the sample signal of the corresponding channel
+;
+#X text 164 533 bang - a bang when finishing playing the sample;
+#X text 192 563 (optional) channels (default 1 if no file is given
 \, or sound file's if given \, max 64), f 44;
-#X text 115 574 2) symbol;
-#X text 181 574 - the name of the file to open (default none);
-#X text 115 591 3) float;
-#X text 181 591 - autostart <1: on \, 0: off> (default 0), f 45;
-#X text 115 606 4) float;
-#X text 181 607 - loop <1: on \, 0: off> (default 0), f 45;
-#X text 115 550 1) float;
-#X text 179 548 -;
+#X text 115 590 2) symbol;
+#X text 181 590 - the name of the file to open (default none);
+#X text 115 607 3) float;
+#X text 181 607 - autostart <1: on \, 0: off> (default 0), f 45;
+#X text 115 622 4) float;
+#X text 181 623 - loop <1: on \, 0: off> (default 0), f 45;
+#X text 115 566 1) float;
+#X text 179 564 -;
 #X text 221 428 opens a file with the symbol name (no symbol opens
 dialog box) and starts playing, f 50;
 #X text 34 298 see also:;
 #X obj 38 316 else/player~;
 #X text 54 258 click: opens a new file =>;
-#X obj 220 257 else/sample~ violin.wav 1 1;
 #X obj 21 40 cnv 4 4 4 empty empty Load/play 0 28 2 18 -233017 -1 0
 ;
 #X text 64 88 [sample~] is a convenient abstraction based on [readsf~]
 to read files from your computer. Note that the file sample needs to
 be at the same samplerate as Pd's. The object is also able to search
 for files relative to the parent patch., f 64;
-#X connect 0 0 55 0;
-#X connect 1 0 55 0;
-#X connect 2 0 55 0;
-#X connect 3 0 55 0;
-#X connect 4 0 55 0;
+#X obj 220 257 else/sample~ violin.wav 1 1;
+#X text 121 457 open <symbol> -;
+#X text 221 456 sets a file to open next time it starts playing, f
+50;
+#X connect 0 0 57 0;
+#X connect 1 0 57 0;
+#X connect 2 0 57 0;
+#X connect 3 0 57 0;
+#X connect 4 0 57 0;
 #X connect 5 0 4 0;
-#X connect 29 0 55 0;
-#X connect 31 0 55 0;
-#X connect 55 0 30 0;
-#X connect 55 0 30 1;
-#X connect 55 1 37 0;
+#X connect 29 0 57 0;
+#X connect 31 0 57 0;
+#X connect 57 0 30 0;
+#X connect 57 0 30 1;
+#X connect 57 1 37 0;
