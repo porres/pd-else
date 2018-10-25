@@ -34,9 +34,9 @@
 #X text 167 443 signal;
 #X text 222 443 - left channel output;
 #X obj 22 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
-#X obj 344 140 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 334 140 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 341 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 331 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 132 464 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
@@ -57,7 +57,7 @@
 #X text 173 367 float;
 #X text 173 387 float;
 #X text 173 410 float;
-#N canvas 596 67 844 556 example 0;
+#N canvas 465 87 844 556 example 0;
 #X obj 368 318 catch~ \$0-input;
 #X obj 645 161 throw~ \$0-input;
 #X obj 645 25 adc~ 1;
@@ -65,19 +65,19 @@
 #X obj 66 285 throw~ \$0-input;
 #X obj 503 211 hsl 128 15 0 1000 0 0 empty \$0-predelayms empty -2
 -8 0 10 -228856 -1 -1 1270 1;
-#X floatatom 500 235 5 0 0 0 - - -, f 5;
+#X floatatom 500 235 5 0 0 0 - - -;
 #X obj 523 257 hsl 128 15 0 1 0 0 empty \$0-cutoff empty -2 -8 0 10
 -228856 -1 -1 7620 1;
-#X floatatom 520 283 5 0 0 0 - - -, f 5;
+#X floatatom 520 283 5 0 0 0 - - -;
 #X obj 544 308 hsl 128 15 0 1 0 0 empty \$0-damping empty -2 -8 0 10
 -228856 -1 -1 3175 1;
-#X floatatom 541 333 5 0 0 0 - - -, f 5;
+#X floatatom 541 333 5 0 0 0 - - -;
 #X obj 564 356 hsl 128 15 0 1 0 0 empty \$0-fbgain empty -2 -8 0 10
 -228856 -1 -1 10160 1;
-#X floatatom 561 379 5 0 0 0 - - -, f 5;
+#X floatatom 561 379 5 0 0 0 - - -;
 #X obj 640 390 hsl 128 15 0 1 0 0 empty \$0-drywet empty -2 -8 0 10
 -228856 -1 -1 6350 1;
-#X floatatom 637 417 5 0 0 0 - - -, f 5;
+#X floatatom 637 417 5 0 0 0 - - -;
 #X text 606 389 dry;
 #X text 774 391 wet;
 #X text 595 356 fb-gain;
@@ -146,7 +146,7 @@
 #X obj 381 78 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 406 80 play/stop;
-#X obj 381 114 else/sampler~ violin.wav -loop;
+#X obj 381 114 else/sample~ violin.wav -loop;
 #X connect 0 0 52 0;
 #X connect 2 0 30 0;
 #X connect 3 0 4 0;
@@ -192,8 +192,7 @@
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X obj 129 40 cnv 4 4 4 empty empty reverb 0 28 2 18 -233017 -1 0;
-#X obj 189 225 else/out~;
-#X obj 99 152 else/sampler~ vacuous.wav 1 1;
+#X obj 199 225 else/out~;
 #X text 69 88 [plateverb~] is a reverb asbtraction based on a patch
 by Tom Erbe implementing the Dattorro plate stereo reverb model.;
 #X text 169 537 3) float - damping (0 - 1) - default 0;
@@ -201,13 +200,14 @@ by Tom Erbe implementing the Dattorro plate stereo reverb model.;
 #X text 169 571 5) float - dry/wet (0 - 1) - default 0;
 #X text 169 520 2) float - cutoff (0 - 1) - default 0;
 #X text 226 410 - dry/wet (0 - 1);
-#X text 311 140 dry;
-#X text 481 140 wet;
+#X text 301 140 dry;
+#X text 471 140 wet;
 #X text 226 322 - pre delay in ms (0 - 1000);
 #X text 169 503 1) float - pre delay in ms (0 - 1000) - default 0;
-#X obj 99 186 else/plateverb~ 50 0.6 0.25 0.8 0.8;
+#X obj 109 186 else/plateverb~ 50 0.6 0.25 0.8 0.8;
+#X obj 109 152 else/sample~ vacuous.wav 1 1;
 #X connect 20 0 21 0;
-#X connect 21 0 54 5;
-#X connect 43 0 54 0;
-#X connect 54 0 42 0;
-#X connect 54 1 42 1;
+#X connect 21 0 53 5;
+#X connect 53 0 42 0;
+#X connect 53 1 42 1;
+#X connect 54 0 53 0;

@@ -1,8 +1,7 @@
 #N canvas 309 23 563 552 12;
 #X obj 210 285 else/out~;
-#X obj 225 162 else/sampler~ violin.wav 1 1;
 #X obj 265 204 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -200 256;
+-228856 -1 -1 0 256;
 #X obj 225 236 else/pshift~;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -58,7 +57,8 @@ You can set a transposition factor in cents and a grain size in ms.
 #X text 193 502 grain size in ms (default 75 \, minimum 5), f 44;
 #X obj 5 526 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X connect 1 0 3 0;
-#X connect 2 0 3 1;
-#X connect 3 0 0 0;
-#X connect 3 0 0 1;
+#X obj 225 162 else/sample~ violin.wav 1 1;
+#X connect 1 0 2 1;
+#X connect 2 0 0 0;
+#X connect 2 0 0 1;
+#X connect 35 0 2 0;

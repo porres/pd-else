@@ -1,0 +1,43 @@
+#N canvas 534 98 560 325 10;
+#X obj 4 202 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 233 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 268 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 3 298 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 2 pd;
+#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 39 cnv 4 4 4 empty empty Name 0 28 2 18 -233017 -1 0;
+#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 95 39 cnv 4 4 4 empty empty patch 0 28 2 18 -233017 -1 0;
+#X obj 3 2 cnv 15 301 42 empty empty name 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 2 graph;
+#X obj 74 39 cnv 4 4 4 empty empty a 0 28 2 18 -233017 -1 0;
+#X text 90 88 [name] is a variant of Pd Vanilla's [namecanvas] \, but
+it names only the main patch canvas \, even if it is used inside an
+abstraction., f 54;
+#X text 120 211 (none);
+#X text 120 243 (none);
+#X text 121 276 1) symbol;
+#X text 186 276 - patch name;
+#X obj 156 155 else/name alex;
+#X msg 283 149 \; alex msg 50 155 hi there;
+#X msg 50 155 hi there;

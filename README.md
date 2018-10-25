@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (271 objects):
+##Current Object list (273 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -79,10 +79,11 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **FFT: [1]**
 - [hann~]
 
-**PATCH/SUBPATCH MANAGEMENT: [7]**
+**PATCH/SUBPATCH MANAGEMENT: [8]**
 - [args]
 - [blocksize~]
 - [click]
+- [name]
 - [properties]
 - [window]
 - [loadbanger] / [lb]
@@ -189,8 +190,9 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **LOGIC: [1]**
 - [loop]
 
-**AUDIO PLAYING: [2]**
+**SAMPLING/PLAYING: [3]**
 - [player~]
+- [sample~]
 - [sampler~]
 
 **AUDIO PROCESSING: [18]**
@@ -240,6 +242,9 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [resonant~]
 - [resonant2~]
 - [svfilter~]
+
+**PHYSICAL MODELLING: [1]**
+- [pluck~]
 
 **OSCILLATORS (DETERMINISTIC GENERATORS): [24]**
 - [cosine~]
@@ -291,9 +296,6 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [stepnoise~]
 - [pinknoise~]
 - [xmod~]
-
-**PHYSICAL MODELLING: [1]**
-- [pluck~]
 
 **SIGNAL ROUTING: [10]**
 - [balance~]
