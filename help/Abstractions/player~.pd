@@ -1,7 +1,7 @@
-#N canvas 90 227 493 349 10;
+#N canvas 98 225 493 349 10;
 #X declare -path /Users/sp/Documents/Pd/externals/else;
 #X obj 76 28 inlet;
-#N canvas 825 175 289 217 messages 1;
+#N canvas 825 175 289 217 messages 0;
 #X obj 28 14 inlet;
 #X msg 28 140 vis \$1;
 #X msg 28 113 1;
@@ -136,6 +136,7 @@
 #X obj 100 63 route open set reload;
 #X obj 280 418 outlet;
 #X obj 282 113 r \$0-file;
+#X obj 339 218 display;
 #X connect 0 0 10 0;
 #X connect 1 0 2 0;
 #X connect 1 1 0 0;
@@ -157,6 +158,7 @@
 #X connect 17 0 0 1;
 #X connect 18 0 1 0;
 #X connect 18 1 17 0;
+#X connect 18 1 21 0;
 #X connect 18 2 0 0;
 #X connect 18 3 19 0;
 #X connect 20 0 17 0;
@@ -175,7 +177,7 @@
 #X restore 76 59 pd messages;
 #X obj 71 91 namecanvas \$0-sampler;
 #N canvas 330 379 895 258 \$0-tabread 0;
-#X obj 20 20 r~ 1041-tabread4~;
+#X obj 20 20 r~ 1018-tabread4~;
 #X restore 74 162 pd \$0-tabread;
 #N canvas 453 92 572 396 dynamic 0;
 #X obj 298 268 s pd-\$0-tabread;
@@ -443,16 +445,16 @@
 #N canvas 871 121 479 442 \$0-buffers 0;
 #X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
 0;
-#N canvas 0 22 450 300 ch0_1041 0;
-#X array 0-buffer_1041 167400 float 2;
-#X coords 0 1 167400 -1 450 82 2 0 0;
-#X restore 5 19 pd ch0_1041;
+#N canvas 0 22 450 300 ch0_1018 0;
+#X array 0-buffer_1018 87741 float 2;
+#X coords 0 1 87741 -1 450 82 2 0 0;
+#X restore 5 19 pd ch0_1018;
 #X obj 6 120 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
 0;
-#N canvas 0 22 450 300 ch1_1041 0;
-#X array 1-buffer_1041 167400 float 2;
-#X coords 0 1 167400 -1 450 82 2 0 0;
-#X restore 5 119 pd ch1_1041;
+#N canvas 0 22 450 300 ch1_1018 0;
+#X array 1-buffer_1018 87741 float 2;
+#X coords 0 1 87741 -1 450 82 2 0 0;
+#X restore 5 119 pd ch1_1018;
 #X coords 0 0 0 0 10 20 0;
 #X restore 419 308 pd \$0-buffers;
 #X msg 52 208 obj \$2 200 r \$1-didit \, obj \$2 240 outlet \, connect

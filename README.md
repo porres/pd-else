@@ -192,8 +192,8 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 **SAMPLING/PLAYING: [3]**
 - [player~]
-- [sample~]
-- [sampler~]
+- [rec.file~]
+- [play.file~]
 
 **AUDIO PROCESSING: [18]**
 - [downsample~]
