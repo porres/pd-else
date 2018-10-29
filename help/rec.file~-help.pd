@@ -1,4 +1,4 @@
-#N canvas 705 203 563 525 10;
+#N canvas 558 90 565 570 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -23,55 +23,56 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 7 498 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 7 546 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 7 254 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 7 259 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 384 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 7 399 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 417 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 432 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 101 393 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 88 408 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 100 262 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 87 267 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X text 160 322 float - non-0 (re)starts playing \, zero stops, f
-59;
-#X text 163 394 signal - the sample signal of the corresponding channel
+#X text 160 320 float - non-0 (re)starts playing \, zero stops, f
+62;
+#X text 166 305 stop - stops recording the sample, f 61;
+#X text 118 336 set <symbol> -;
+#X text 116 440 1) symbol;
+#X text 116 457 2) float;
+#X obj 194 164 else/brown~;
+#X obj 88 290 cnv 17 3 104 empty empty r 5 9 0 16 -228856 -162280 0
 ;
-#X msg 287 158 start;
-#X msg 309 185 stop;
-#X text 166 304 stop - stops recording the sample, f 48;
-#X text 117 340 set <symbol> -;
-#X text 116 425 1) symbol;
-#X text 182 425 - the name of the file to open (default sample.wav)
-;
-#X text 182 442 - number of channels (default 1), f 45;
-#X text 116 442 2) float;
-#X obj 170 188 else/brown~;
-#N canvas 256 35 450 300 x 0;
-#X text 45 196 Note that the file sample needs to be at the same samplerate
-as Pd's. The object is also able to search for files relative to the
-parent patch.;
-#X restore 432 195 pd x;
-#X obj 101 288 cnv 17 3 90 empty empty r 5 9 0 16 -228856 -162280 0
-;
-#X text 159 288 start - starts recording the sample, f 49;
-#X text 212 339 sets a file name to save (no symbol opens dialog box).
-, f 50;
-#X text 153 262 signal - signal inputs to record for each channel;
-#X obj 7 464 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
-#X text 108 473 clicking on the object opens dialog box to set a file
+#X text 160 290 start - starts recording the sample, f 62;
+#X text 153 267 signal - signal inputs to record for each channel;
+#X obj 7 513 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
+#X text 108 523 clicking on the object opens dialog box to set a file
 to save to, f 65;
-#X msg 319 211 rate 22050;
-#X text 117 362 rate <float> - sets sample rate of the file (default
+#X text 118 350 rate <float> - sets sample rate of the file (default
 Pd's samplerate), f 69;
-#X obj 170 219 ./rec.file~ test.wav;
 #X obj 133 41 cnv 4 4 4 empty empty file 0 28 2 18 -233017 -1 0;
 #X text 65 92 [rec.file~] is a convenient abstraction based on [writesf~]
 \, so it records sample files that you can load with other objects
-\, such as [play.file~] or [player~]., f 66;
-#X connect 20 0 38 1;
-#X connect 21 0 38 1;
-#X connect 28 0 38 0;
-#X connect 36 0 38 1;
+\, such as [play.file~] or [player~].;
+#X text 163 409 bang - outputs a bang when stops recording;
+#X obj 194 222 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 492 78 else/setdsp~;
+#X text 118 365 fade <float> - sets fade time (minimum 1), f 69;
+#X text 100 380 maxtime <float> - sets maximum recording time in ms
+, f 72;
+#X obj 7 478 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 182 440 - (optional) file name to save to (default file.wav)
+;
+#X obj 329 166 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 182 457 - number of channels to record (default 1), f 52;
+#X text 134 488 -maxtime <float> | -fade <float> (default 10 \, minimum
+1);
+#X text 208 335 sets file name (no symbol opens dialog box), f 54
+;
+#X obj 194 194 else/rec.file~ test.wav;
+#X connect 23 0 43 0;
+#X connect 39 0 43 1;
+#X connect 43 0 33 0;

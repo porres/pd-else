@@ -73,9 +73,9 @@ typedef struct _autofade{
     t_float    x_gate_status;
     t_float    x_sr_khz;
     t_int      x_nleft;
-    t_int      x_done_bang;
+    t_int      x_status_flag;
     t_float   *x_table;
-    t_outlet  *x_bangout;
+    t_outlet  *x_status_out;
 }t_autofade;
 
 union tabfudge_d{
@@ -147,7 +147,7 @@ static t_int *autofade_perform(t_int *w){
             gate_status = gate[j];
             incr = gate_status ? (double)(1 - phase) * x->x_coef : -(double)(phase * x->x_coef);
             nleft = x->x_n;
-            x->x_done_bang = 0;
+            x->x_status_flag = 0;
         }
         if(nleft > 0){
             phase += incr;
@@ -167,9 +167,9 @@ static t_int *autofade_perform(t_int *w){
         }
         else{
             phase = fadevalues[j] = gate_status;
-            if(!x->x_done_bang){
-                outlet_bang(x->x_bangout);
-                x->x_done_bang = 1;
+            if(!x->x_status_flag){
+                outlet_float(x->x_status_out, gate_status);
+                x->x_status_flag = 1;
             }
         }
     };
@@ -243,7 +243,7 @@ static void *autofade_new(t_symbol *s, int argc, t_atom *argv){
     if(x){
         x->x_sr_khz = sys_getsr() * 0.001;
         x->x_gate_status = 0.;
-        x->x_done_bang = 1;
+        x->x_status_flag = 1;
         x->x_incr = 0.;
         x->x_nleft = 0;
         x->x_coef = 0.;
@@ -322,7 +322,7 @@ static void *autofade_new(t_symbol *s, int argc, t_atom *argv){
             inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
             outlet_new((t_object *)x, &s_signal);
         }
-        x->x_bangout = outlet_new((t_object *)x, &s_float);
+        x->x_status_out = outlet_new((t_object *)x, &s_float);
     }
     return(x);
     errstate:
