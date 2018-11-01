@@ -17,6 +17,7 @@ typedef struct dir{
     t_int     x_nfiles;
     t_int     x_ignored;
     t_int     x_seek;
+    t_int     x_closed;
     t_outlet *x_out1;
     t_outlet *x_out2;
 }t_dir;
@@ -37,6 +38,13 @@ static void dir_seek(t_dir *x, t_float f){
             result = readdir(x->x_dir);
     outlet_symbol(x->x_out1, gensym(result->d_name));
     rewinddir(x->x_dir);
+}
+
+static void dir_close(t_dir *x){
+    if(!x->x_closed){
+        x->x_closed = 1;
+        closedir(x->x_dir);
+    }
 }
 
 static void dir_next(t_dir *x){
@@ -67,9 +75,14 @@ static void dir_open(t_dir *x, t_symbol *dirname){
     if(!opendir(x->x_directory)){
         pd_error(x, "dir: cannot open '%s'", dirname->s_name);
         strcpy(x->x_directory, tempdir);
+        // closedir()
+        // dir_close(x);
         return;
     }
+    // closedir()
+    dir_close(x);
     x->x_dir = opendir(x->x_directory);
+    x->x_closed = 0;
     rewinddir(x->x_dir);
     x->x_nfiles = x->x_ignored = 0;
     struct dirent *result = NULL;
@@ -88,7 +101,10 @@ static void dir_n(t_dir *x){
 
 static void dir_reset(t_dir *x){
     strncpy(x->x_directory, x->x_getdir->s_name, MAXPDSTRING);
+    // closedir()
+    dir_close(x);
     x->x_dir = opendir(x->x_getdir->s_name);
+    x->x_closed = 0;
     rewinddir(x->x_dir);
     x->x_nfiles = x->x_ignored = x->x_seek = 0;
     struct dirent *result = NULL;
@@ -102,12 +118,14 @@ static void dir_reset(t_dir *x){
 }
 
 static void dir_dump(t_dir *x){
-    rewinddir(x->x_dir);
-    struct dirent *result = NULL;
-    while((result = readdir(x->x_dir)))
-        if(strncmp(result->d_name, ".", 1 ))
-            outlet_symbol(x->x_out1, gensym(result->d_name));
-    rewinddir(x->x_dir);
+    if(!x->x_closed){
+        rewinddir(x->x_dir);
+        struct dirent *result = NULL;
+        while((result = readdir(x->x_dir)))
+            if(strncmp(result->d_name, ".", 1 ))
+                outlet_symbol(x->x_out1, gensym(result->d_name));
+        rewinddir(x->x_dir);
+    }
 }
 
 static void dir_dir(t_dir *x){
@@ -134,7 +152,7 @@ static void *dir_new(t_floatarg f){
         }
     }
     x->x_getdir = canvas_getdir(canvas);
-    x->x_nfiles = x->x_ignored = x->x_seek = 0;
+    x->x_nfiles = x->x_ignored = x->x_seek = x->x_closed = 0;
     strncpy(x->x_directory, x->x_getdir->s_name, MAXPDSTRING);
     x->x_dir = opendir(x->x_getdir->s_name);
    struct dirent *result = NULL;
@@ -156,7 +174,8 @@ void dir_setup(void){
     class_addmethod(dir_class, (t_method)dir_dir, gensym("dir"), 0);
     class_addmethod(dir_class, (t_method)dir_dump, gensym("dump"), 0);
     class_addmethod(dir_class, (t_method)dir_reset, gensym("reset"), 0);
-    class_addmethod(dir_class, (t_method)dir_next, gensym("next"), 0);
+    class_addmethod(dir_class, (t_method)dir_next, gensym("next"), 0);;
+    class_addmethod(dir_class, (t_method)dir_close, gensym("close"), 0);
     class_addmethod(dir_class, (t_method)dir_open, gensym("open"), A_DEFSYMBOL, 0);
     class_addmethod(dir_class, (t_method)dir_seek, gensym("seek"), A_DEFFLOAT, 0);
 }
