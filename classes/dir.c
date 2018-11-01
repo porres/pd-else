@@ -73,7 +73,7 @@ static void dir_open(t_dir *x, t_symbol *dirname){
     rewinddir(x->x_dir);
     x->x_nfiles = x->x_ignored = 0;
     struct dirent *result = NULL;
-    while(result = readdir(x->x_dir)){
+    while((result = readdir(x->x_dir))){
         if(strncmp(result->d_name, ".", 1 ))
             x->x_nfiles++;
         else
@@ -92,7 +92,7 @@ static void dir_reset(t_dir *x){
     rewinddir(x->x_dir);
     x->x_nfiles = x->x_ignored = x->x_seek = 0;
     struct dirent *result = NULL;
-    while(result = readdir(x->x_dir)){
+    while((result = readdir(x->x_dir))){
         if(strncmp(result->d_name, ".", 1 ))
             x->x_nfiles++;
         else
@@ -104,7 +104,7 @@ static void dir_reset(t_dir *x){
 static void dir_dump(t_dir *x){
     rewinddir(x->x_dir);
     struct dirent *result = NULL;
-    while(result = readdir(x->x_dir))
+    while((result = readdir(x->x_dir)))
         if(strncmp(result->d_name, ".", 1 ))
             outlet_symbol(x->x_out1, gensym(result->d_name));
     rewinddir(x->x_dir);
@@ -121,21 +121,32 @@ static void dir_bang(t_dir *x){
 
 static void *dir_new(t_floatarg f){
     t_dir *x = (t_dir *)pd_new(dir_class);
-    t_glist *glist = (t_glist *)canvas_getcurrent();
-    t_canvas *canvas = (t_canvas*)glist_getcanvas(glist);
-    int depth =(int)f;
-    if(depth > 0){
-        while(depth-- && canvas->gl_owner){
+    t_canvas *canvas = canvas_getcurrent();
+    int depth = (int)f;
+    if(depth < 0)
+        depth = 0;
+    while(!canvas->gl_env)
+        canvas = canvas->gl_owner;
+    while(depth--){
+        if(canvas->gl_owner){
             while(!canvas->gl_env)
                 canvas = canvas->gl_owner;
-            canvas = canvas->gl_owner;
         }
     }
     x->x_getdir = canvas_getdir(canvas);
-    dir_reset(x);
+    x->x_nfiles = x->x_ignored = x->x_seek = 0;
+    strncpy(x->x_directory, x->x_getdir->s_name, MAXPDSTRING);
+    x->x_dir = opendir(x->x_getdir->s_name);
+   struct dirent *result = NULL;
+    while((result = readdir(x->x_dir))){
+        if(strncmp(result->d_name, ".", 1))
+            x->x_nfiles++;
+        else
+            x->x_ignored++;
+    }
     x->x_out1 = outlet_new(&x->x_obj, &s_anything);
     x->x_out2 = outlet_new(&x->x_obj, &s_symbol);
-    return (x);
+    return(x);
 }
 
 void dir_setup(void){
