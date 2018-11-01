@@ -144,8 +144,8 @@ static void *freqshift_new(t_floatarg f){
     return (x);
 }
 
-void freqshift_tilde_setup(void){
-    freqshift_class = class_new(gensym("freqshift~"), (t_newmethod)freqshift_new, 0,
+void setup_freq0x2eshift_tilde(void){
+    freqshift_class = class_new(gensym("freq.shift~"), (t_newmethod)freqshift_new, 0,
         sizeof(t_freqshift), CLASS_DEFAULT, A_DEFFLOAT, 0);
     class_addmethod(freqshift_class, (t_method)freqshift_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(freqshift_class, nullfn, gensym("signal"), 0);

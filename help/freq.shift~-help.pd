@@ -20,13 +20,13 @@
 #X text 161 428 1) float;
 #X text 225 309 - signal to be shifted in frequency;
 #X text 225 352 - the requency shift value;
-#X obj 288 147 hsl 128 15 -220 220 0 0 empty empty empty -2 -8 0 10
+#X obj 294 147 hsl 128 15 -220 220 0 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X obj 285 168 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 291 168 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 303 147 frequency shift;
+#X text 309 147 frequency shift;
 #X obj 174 161 osc~ 440;
-#X obj 3 2 cnv 15 301 42 empty empty freqshift~ 20 20 2 37 -233017
+#X obj 3 2 cnv 15 301 42 empty empty freq.shift~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -52,48 +52,48 @@
 0;
 #X obj 503 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 78 89 [freqshift~] has two outputs \, the left outlet is the
-frequency shifted signal and the right outlet is the signal shifted
-in the opposite direction., f 62;
 #X obj 174 230 else/out~;
-#X obj 285 230 else/out~;
+#X obj 291 230 else/out~;
 #X text 225 328 - clears filter's memory;
 #X text 121 209 shift =>;
-#X obj 174 187 else/freqshift~ 200;
 #X text 314 204 <= opposite shift;
 #N canvas 699 174 483 410 details 0;
 #X obj 152 249 hilbert~;
 #X obj 163 289 complex-mod~;
-#X text 66 118 [freqshift~] is the same as a conjunction of the [hilbert~]
-and [complex-mod~] abstractions available as "extra" in Pd Vanilla.
-;
 #X msg 197 223 bang;
 #X text 232 220 <= clear filter memory;
 #X obj 152 186 osc~ 440;
 #X obj 232 260 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 282 259 <= frequency shift;
-#X text 65 29 [freqshift~] is a frequency shifter (not a pitch shifter!)
+#X obj 173 322 else/out~;
+#X text 65 29 [freq.shift~] is a frequency shifter (not a pitch shifter!)
 implemented via complex amplitude modulation. This is also known as
 a single-sideband modulation \, as opposed to a ring modulation that
 has two sidebands. Therefore \, the left outlet is the frequency shifted
 signal and the right outlet carries the second sideband in the opposite
 direction as there'd be in the case of a ring modulation.;
-#X obj 173 322 else/out~;
+#X text 66 118 [freq.shift~] is the same as a conjunction of the [hilbert~]
+and [complex-mod~] abstractions available as "extra" in Pd Vanilla.
+;
 #X connect 0 0 1 0;
 #X connect 0 1 1 1;
-#X connect 1 0 9 0;
-#X connect 1 1 9 1;
-#X connect 3 0 0 1;
-#X connect 5 0 0 0;
-#X connect 6 0 1 2;
+#X connect 1 0 7 0;
+#X connect 1 1 7 1;
+#X connect 2 0 0 1;
+#X connect 4 0 0 0;
+#X connect 5 0 1 2;
 #X restore 469 258 pd details;
 #X text 225 388 - frequency shifted signal;
 #X text 225 427 - the frequency shift value in hertz (default 0);
+#X obj 174 187 else/freq.shift~ 200;
+#X text 78 89 [freq.shift~] has two outputs \, the left outlet is the
+frequency shifted signal and the right outlet is the signal shifted
+in the opposite direction., f 63;
 #X connect 14 0 15 0;
-#X connect 15 0 35 1;
-#X connect 17 0 35 0;
-#X connect 35 0 31 0;
-#X connect 35 0 31 1;
-#X connect 35 1 32 1;
-#X connect 35 1 32 0;
+#X connect 15 0 38 1;
+#X connect 17 0 38 0;
+#X connect 38 0 30 0;
+#X connect 38 0 30 1;
+#X connect 38 1 31 1;
+#X connect 38 1 31 0;

@@ -1,8 +1,7 @@
 #N canvas 309 23 563 552 12;
-#X obj 210 285 else/out~;
-#X obj 265 204 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 186 281 else/out~;
+#X obj 259 207 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 225 236 else/pshift~;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -22,15 +21,12 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 4 graph;
-#X obj 3 4 cnv 15 301 42 empty empty pshift~ 20 20 2 37 -233017 -1
-0;
+#X obj 3 4 cnv 15 301 42 empty empty pitch.shift~ 20 20 2 37 -233017
+-1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X text 79 97 [pshift~] is a pitch shifter abstraction based on granulation.
-You can set a transposition factor in cents and a grain size in ms.
-, f 62;
-#X text 326 202 transposition;
+#X text 320 205 transposition;
 #X obj 7 354 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 7 432 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -57,8 +53,12 @@ You can set a transposition factor in cents and a grain size in ms.
 #X text 193 502 grain size in ms (default 75 \, minimum 5), f 44;
 #X obj 5 526 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 225 162 else/play.file~ violin.wav 1 1;
-#X connect 1 0 2 1;
-#X connect 2 0 0 0;
-#X connect 2 0 0 1;
-#X connect 35 0 2 0;
+#X obj 201 168 else/play.file~ violin.wav 1 1;
+#X obj 201 239 else/pitch.shift~;
+#X text 76 97 [pitch.shift~] is a pitch shifter abstraction based on
+granulation. You can set a transposition factor in cents and a grain
+size in ms., f 56;
+#X connect 1 0 34 1;
+#X connect 33 0 34 0;
+#X connect 34 0 0 0;
+#X connect 34 0 0 1;
