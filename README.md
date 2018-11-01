@@ -208,7 +208,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [noisegate~]
 - [norm~]
 - [freqshift~]
-- [pshift~]
+- [pitch.shift~]
 - [ping.pong~]
 - [rm~]
 - [tremolo~]
