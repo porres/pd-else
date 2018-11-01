@@ -57,7 +57,7 @@ You can set a transposition factor in cents and a grain size in ms.
 #X text 193 502 grain size in ms (default 75 \, minimum 5), f 44;
 #X obj 5 526 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 225 162 else/sample~ violin.wav 1 1;
+#X obj 225 162 else/play.file~ violin.wav 1 1;
 #X connect 1 0 2 1;
 #X connect 2 0 0 0;
 #X connect 2 0 0 1;

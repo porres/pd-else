@@ -57,7 +57,7 @@
 #X text 173 367 float;
 #X text 173 387 float;
 #X text 173 410 float;
-#N canvas 465 87 844 556 example 0;
+#N canvas 465 87 844 556 example 1;
 #X obj 368 318 catch~ \$0-input;
 #X obj 645 161 throw~ \$0-input;
 #X obj 645 25 adc~ 1;
@@ -146,7 +146,7 @@
 #X obj 381 78 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 406 80 play/stop;
-#X obj 381 114 else/sample~ violin.wav -loop;
+#X obj 381 114 else/play.file~ violin.wav -loop;
 #X connect 0 0 52 0;
 #X connect 2 0 30 0;
 #X connect 3 0 4 0;
@@ -205,7 +205,7 @@ by Tom Erbe implementing the Dattorro plate stereo reverb model.;
 #X text 226 322 - pre delay in ms (0 - 1000);
 #X text 169 503 1) float - pre delay in ms (0 - 1000) - default 0;
 #X obj 109 186 else/plateverb~ 50 0.6 0.25 0.8 0.8;
-#X obj 109 152 else/sample~ vacuous.wav 1 1;
+#X obj 109 152 else/play.file~ vacuous.wav 1 1;
 #X connect 20 0 21 0;
 #X connect 21 0 53 5;
 #X connect 53 0 42 0;

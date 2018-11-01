@@ -88,10 +88,11 @@ respond to clicks \, so the [click] object doesn't respond either.
 subpatch. Note that you can still open the subpatch with right click
 and then "open"., f 73;
 #X text 290 252 <= click me;
-#X obj 270 216 else/player~;
+#X obj 258 216 else/player~;
 #X text 189 396 sets mode \, 0 (default) is "abstraction" mode \, non-zero
 is "subpatch" mode., f 45;
-#X obj 149 216 else/sample~;
-#X text 91 174 The [sample~] and [player~] abstractions objects in
-else use [click] to open a new sound file when clicked on.;
+#X obj 140 216 else/play.file~;
+#X obj 356 216 else/rec.file~;
+#X text 112 182 These objects in else use [click] \, so click on them:
+;
 #X connect 23 0 14 0;
