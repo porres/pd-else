@@ -147,6 +147,7 @@ static void *dir_new(t_floatarg f){
         canvas = canvas->gl_owner;
     while(depth--){
         if(canvas->gl_owner){
+            canvas = canvas->gl_owner;
             while(!canvas->gl_env)
                 canvas = canvas->gl_owner;
         }
