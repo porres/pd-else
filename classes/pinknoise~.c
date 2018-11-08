@@ -95,7 +95,7 @@ static void pinknoise_dsp(t_pinknoise *x, t_signal **sp){
 static void *pinknoise_new(t_symbol *s, int ac, t_atom *av){
     t_pinknoise *x = (t_pinknoise *)pd_new(pinknoise_class);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
-    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("oct"));
+    inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym("oct"));
     static int seed = 1;
     if(ac && av->a_type == A_FLOAT)
         random_init(&x->x_rstate, atom_getfloatarg(0, ac, av));

@@ -101,7 +101,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [pack2]
 - [routeall]
 - [routetype]
-- [sig2float~]
+- [sig2float~] / [s2f~]
 - [float2sig~] / [f2s~]
 
 **FILE MANAGEMENT: [1]**

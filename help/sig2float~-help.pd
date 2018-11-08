@@ -1,13 +1,13 @@
-#N canvas 880 90 560 466 10;
-#X obj 4 273 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 444 50 561 547 10;
+#X obj 4 248 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 359 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 396 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 394 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 431 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 105 368 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 114 405 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 424 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 519 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -29,8 +29,6 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 139 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
-#X obj 202 239 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
 #X obj 3 3 cnv 15 301 42 empty empty sig2float~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -140,37 +138,75 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X obj 105 281 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 313 177 nbx 5 14 0 1000 0 0 empty empty empty 0 -8 0 10 -228856
+#X obj 114 256 cnv 17 3 105 empty empty 0 5 9 0 16 -228856 -162280
+0;
+#X obj 368 155 nbx 5 14 0 2000 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
 #X obj 87 40 cnv 4 4 4 empty empty signal 0 28 2 18 -233017 -1 0;
-#X obj 202 167 noise~;
-#X msg 343 229 start;
-#X msg 342 205 stop;
-#X text 61 88 [s2f~] coverts signals to floats. The conversion occurs
-at a time rate defined by the argument or right inlet. The time needs
-to be greater than 1 \, if 0 or less is given \, then it defaults to
-1! The right inlet can also 'stop' and 'restart' the conversion.;
-#X text 370 176 ms;
-#X text 310 156 convert time;
-#X text 144 281 signal;
-#X text 150 368 float;
-#X text 190 281 - signal value to convert to float;
-#X obj 105 305 cnv 17 3 50 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 257 148 noise~;
+#X text 427 154 ms;
+#X text 365 134 convert time;
+#X text 191 256 signal;
+#X text 197 405 float;
+#X text 238 256 - signal value to convert to float, f 40;
+#X obj 114 369 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 150 303 float;
-#X text 190 303 - convertion time in ms;
-#X text 190 322 - stops conversion (which is on by default);
-#X text 190 340 - restarts conversion;
-#X text 156 322 stop;
-#X text 150 340 start;
-#X text 190 368 - converted float;
-#X obj 202 207 else/sig2float~ 100;
-#X text 126 403 1) float - conversion time in ms (minimum and default
-1);
-#X connect 21 0 40 1;
-#X connect 23 0 40 0;
-#X connect 24 0 40 1;
-#X connect 25 0 40 1;
-#X connect 40 0 16 0;
+#X text 197 367 float;
+#X text 238 367 - convertion time in ms, f 40;
+#X text 237 405 - converted float;
+#X text 62 90 [sig2float~] coverts signals to floats. The conversion
+occurs at a time rate defined by the 1st argument or right inlet.,
+f 62;
+#X text 131 440 1) float;
+#X text 131 460 2) float;
+#X text 190 440 - self clocking interval in ms (default 0);
+#X text 190 460 - sample offset within the block (default 0);
+#X text 203 331 stop;
+#X text 197 316 start;
+#X text 197 301 float;
+#X text 238 301 - turns on (non-0) or off (0), f 40;
+#X text 238 316 - turns on, f 40;
+#X text 238 331 - turns off, f 40;
+#X obj 257 210 else/display;
+#X text 238 346 - sets sample offset within block, f 40;
+#X text 143 346 offset <float>;
+#X obj 3 486 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 174 495 -off - turns it off (default on);
+#X text 203 271 bang;
+#X text 238 271 - syncs the conversion rate, f 40;
+#X text 161 286 set <float>;
+#X text 238 286 - sets the time without syncing, f 40;
+#X obj 257 182 else/sig2float~ 500;
+#N canvas 751 309 450 321 sync 0;
+#X obj 287 187 nbx 5 14 0 2000 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0 256;
+#X obj 170 150 noise~;
+#X obj 170 242 else/display;
+#X text 351 186 ms;
+#X obj 191 180 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 170 214 else/sig2float~ 1000;
+#X msg 88 179 set \$1;
+#X obj 88 155 nbx 5 14 0 2000 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0 256;
+#X text 47 46 A bang will reset and sync the conversion rate. Each
+time you set a new rate interval in the right inlet \, it'll also force
+a sync. If you do not want to sync \, you can use the "set" message
+\, in which case the new conersion rate will only be valid at the next
+conversion.;
+#X connect 0 0 5 1;
+#X connect 1 0 5 0;
+#X connect 4 0 5 0;
+#X connect 5 0 2 0;
+#X connect 6 0 5 0;
+#X connect 7 0 6 0;
+#X restore 492 203 pd sync;
+#X obj 83 150 noise~;
+#X obj 83 212 else/display;
+#X obj 83 184 else/s2f~ 500;
+#X text 173 184 alias;
+#X connect 20 0 52 1;
+#X connect 22 0 52 0;
+#X connect 52 0 43 0;
+#X connect 54 0 56 0;
+#X connect 56 0 55 0;
