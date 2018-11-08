@@ -57,7 +57,7 @@
 #X text 173 367 float;
 #X text 173 387 float;
 #X text 173 410 float;
-#N canvas 465 87 844 556 example 1;
+#N canvas 465 87 844 556 example 0;
 #X obj 368 318 catch~ \$0-input;
 #X obj 645 161 throw~ \$0-input;
 #X obj 645 25 adc~ 1;

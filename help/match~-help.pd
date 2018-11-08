@@ -166,7 +166,7 @@
 #X text 157 384 signal -;
 #X text 218 385 impulse when signal doesn't match arguments;
 #X text 115 328 float/signal -;
-#N canvas 697 133 526 370 example 1;
+#N canvas 697 133 526 370 example 0;
 #X obj 81 183 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 81 159 else/trig2bang~;

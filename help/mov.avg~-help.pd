@@ -96,15 +96,15 @@ can also set the maximum value with the -size flag or message., f
 #X obj 290 109 nbx 5 14 1 100 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 1 256;
 #X text 279 88 'n' samples;
-#X text 47 19 [mavg~] is nothing but a moving average filter \, which
-is a kind of lowpass filter. Listen to it below.;
 #X obj 215 133 else/mov.avg~;
+#X text 47 19 [mov.avg~] is nothing but a moving average filter \,
+which is a kind of lowpass filter. Listen to it below.;
 #X connect 0 0 1 0;
 #X connect 0 0 1 1;
-#X connect 0 0 6 0;
-#X connect 3 0 6 1;
-#X connect 6 0 2 0;
-#X connect 6 0 2 1;
+#X connect 0 0 5 0;
+#X connect 3 0 5 1;
+#X connect 5 0 2 0;
+#X connect 5 0 2 1;
 #X restore 471 252 pd lowpass;
 #X obj 167 254 print~ Moving-Average;
 #X text 200 422 - sets initial 'n' samples (default 1);
@@ -128,7 +128,7 @@ over the last 'n' given samples. This is also a type of lowpass filter.
 #X obj 38 121 noise~;
 #X obj 85 195 else/graph~;
 #X obj 190 129 nbx 3 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 1 256;
+-228856 -1 -1 0 256;
 #X obj 193 84 hsl 150 15 1 100 1 0 adsfadsg ahhah empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X text 198 83 'n' samples to average;
