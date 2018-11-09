@@ -1,0 +1,71 @@
+#N canvas 433 96 570 521 12;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Control 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 85 40 cnv 4 4 4 empty empty pulse 0 28 2 18 -233017 -1 0;
+#X obj 3 3 cnv 15 301 42 empty empty pulse 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 3 graph;
+#X obj 3 292 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 376 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 412 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 134 385 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 3 489 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 135 302 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 241 303 frequency in hz;
+#X obj 134 324 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 241 348 phase sync (ressets internal phase);
+#X text 164 422 1) float;
+#X text 230 422 - frequency in hertz (default 0);
+#X text 164 442 2) float;
+#X text 171 325 float -;
+#X text 171 302 float -;
+#X obj 177 170 nbx 4 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
+-228856 -1 -1 0 256;
+#X text 150 168 Hz;
+#X obj 177 226 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X text 59 93 This is much like the [pulse~] oscillator but operates
+in a control rate (with a resolution of 1 ms) and the output is like
+a toggle switch.;
+#X obj 134 348 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 171 348 float -;
+#X text 241 324 pulse width (from 0 to 1);
+#X text 171 385 float -;
+#X text 239 385 toggle output;
+#X text 230 462 - initial phase offset (default 0);
+#X text 164 462 3) float;
+#X text 230 442 - pulse width (default 0);
+#X obj 177 200 else/pulse 1;
+#X text 295 168 <= resets phase.;
+#X msg 258 169 0;
+#X obj 177 253 else/display;
+#X connect 26 0 38 0;
+#X connect 28 0 41 0;
+#X connect 38 0 28 0;
+#X connect 40 0 38 2;

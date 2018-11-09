@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (274 objects):
+##Current Object list (275 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -309,7 +309,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [19]**
+**CONTROL: [20]**
  - [adsr~]
  - [asr~]
  - [autofade~]
@@ -329,6 +329,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
  - [impseq~]
  - [lfo]
  - [impulse]
+ - [pulse]
  
  **TRIGGERS: [24]**
 - [bangdiv]

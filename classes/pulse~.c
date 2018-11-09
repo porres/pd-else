@@ -121,7 +121,8 @@ static t_int *pulse_perform(t_int *w)
             phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
         if (hz >= 0)
             {
-                if (trig > 0 && trig <= 1) phase = trig;
+                if (trig > 0 && trig <= 1)
+                    phase = trig;
                 else
                     {
                         phase = phase + phase_dev;
