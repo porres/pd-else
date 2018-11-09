@@ -1,4 +1,4 @@
-#N canvas 599 76 563 574 12;
+#N canvas 560 120 563 574 12;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -45,9 +45,9 @@
 #X text 201 345 float -;
 #X text 201 302 float -;
 #X obj 195 166 nbx 4 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 0.5 256;
+-228856 -1 -1 0 256;
 #X text 168 164 Hz;
-#X obj 195 222 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 195 222 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 135 368 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
@@ -70,6 +70,40 @@ is like a toggle switch.;
 #X text 104 517 -rate <float>;
 #X text 210 517 - rate period in ms (default 1 \, min 0.1);
 #X obj 195 196 else/pulse 1;
+#N canvas 414 239 721 374 rate 0;
+#X obj 204 159 else/display;
+#X obj 204 127 else/sr~ -ms;
+#X text 36 36 [pulse] is an actual oscillator with a running phase
+\, which runs at a given rate. A signal oscillator runs at the sample
+rate which has a period in ms given by the [sr~] object., f 55;
+#X text 37 205 By default \, [pulse] runs at a rate whose period is
+1 ms and the minimum rate is 0.1 ms. The maximum frequency that [pulse]
+can run is half the frequency of the given rate (500 hz default).,
+f 55;
+#X obj 498 214 else/status;
+#X obj 513 250 timer;
+#X obj 498 139 else/pulse 3 -rate 20;
+#X msg 498 112 rate \$1;
+#X obj 498 86 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.1 256;
+#X obj 501 60 hsl 128 15 0.1 100 1 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 498 175 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+1;
+#X obj 513 283 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
+-228856 -1 -1 166.7 256;
+#X text 37 279 You can change the rate with the -rate flag or the "rate"
+message. This affects the period resolution, f 55;
+#X connect 1 0 0 0;
+#X connect 4 0 5 0;
+#X connect 4 1 5 1;
+#X connect 5 0 11 0;
+#X connect 6 0 10 0;
+#X connect 7 0 6 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 0;
+#X connect 10 0 4 0;
+#X restore 442 244 pd rate;
 #X connect 26 0 46 0;
 #X connect 28 0 39 0;
 #X connect 38 0 46 2;
