@@ -1,4 +1,4 @@
-#N canvas 614 164 566 459 12;
+#N canvas 649 143 563 529 12;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -27,28 +27,24 @@
 -1 -1;
 #X obj 3 280 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 340 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 370 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 376 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 406 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 134 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 107 379 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 427 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 497 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 135 290 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 107 342 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 241 291 frequency in hz;
-#X obj 134 312 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X text 242 313 phase sync (ressets internal phase);
-#X text 164 386 1) float;
-#X text 230 405 - initial phase offset (default 0);
-#X text 230 386 - frequency in hertz (default 0);
-#X text 164 405 2) float;
-#X text 178 349 bang -;
-#X text 239 349 bang at period transitions;
-#X text 171 313 float -;
-#X text 171 290 float -;
+#X text 242 343 phase sync (ressets internal phase);
+#X text 164 416 1) float;
+#X text 230 435 - initial phase offset (default 0);
+#X text 230 416 - frequency in hertz (default 0);
+#X text 164 435 2) float;
+#X text 178 379 bang -;
+#X text 239 379 bang at period transitions;
+#X text 171 343 float -;
 #X obj 191 179 nbx 4 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
 -228856 -1 -1 0 256;
 #X text 164 177 Hz;
@@ -60,7 +56,47 @@ difference between this and objects like [tempo] or [metro] is that
 a speed change takes effect right away.;
 #X msg 303 209 0.5;
 #X obj 191 209 else/impulse 1;
-#X connect 30 0 36 0;
-#X connect 32 0 36 1;
-#X connect 35 0 36 1;
-#X connect 36 0 12 0;
+#N canvas 282 260 721 374 rate 0;
+#X obj 204 159 else/display;
+#X obj 204 127 else/sr~ -ms;
+#X obj 498 210 timer;
+#X msg 498 112 rate \$1;
+#X obj 498 86 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.1 256;
+#X obj 501 60 hsl 128 15 0.1 100 1 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 498 243 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
+-228856 -1 -1 166.6 256;
+#X text 37 279 You can change the rate with the -rate flag or the "rate"
+message. This affects the period resolution, f 56;
+#X obj 498 173 t b b;
+#X text 36 36 [impulse] is an actual oscillator with a running phase
+\, which runs at a given rate. A signal oscillator runs at the sample
+rate which has a period in ms given by the [sr~] object., f 56;
+#X text 37 205 By default \, [impulse] runs at a rate whose period
+is 1 ms and the minimum rate is 0.1 ms. The maximum frequency that
+[pulse] can run is half the frequency of the given rate (500 hz default).
+, f 56;
+#X obj 498 139 else/impulse 6 -rate 20;
+#X connect 1 0 0 0;
+#X connect 2 0 6 0;
+#X connect 3 0 11 0;
+#X connect 4 0 3 0;
+#X connect 5 0 4 0;
+#X connect 8 0 2 0;
+#X connect 8 1 2 1;
+#X connect 11 0 8 0;
+#X restore 465 235 pd rate;
+#X obj 3 461 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 104 471 -rate <float>;
+#X text 209 471 - rate period in ms (default 1 \, min 0.1);
+#X obj 109 295 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 241 296 frequency in hz;
+#X text 171 295 float -;
+#X text 122 315 rate <float> -;
+#X text 241 316 rate period in ms;
+#X connect 27 0 33 0;
+#X connect 29 0 33 1;
+#X connect 32 0 33 1;
+#X connect 33 0 12 0;

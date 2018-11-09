@@ -69,16 +69,16 @@
 0));
 #X obj 80 134 f;
 #X obj 80 166 expr $f1 / rate_\$0;
-#X obj 80 198 clip -1 1;
 #X obj 100 100 r \$0-freq;
+#X obj 80 198 clip -0.5 0.5;
 #X connect 2 0 4 0;
 #X connect 2 1 0 0;
 #X connect 3 0 5 0;
 #X connect 4 0 1 0;
 #X connect 5 0 6 0;
-#X connect 6 0 7 0;
-#X connect 7 0 2 0;
-#X connect 8 0 5 0;
+#X connect 6 0 8 0;
+#X connect 7 0 5 0;
+#X connect 8 0 2 0;
 #X restore 197 129 pd inc;
 #N canvas 179 111 425 351 phase_sync 0;
 #X obj 89 37 inlet;
@@ -209,13 +209,6 @@
 #X restore 251 129 pd rate;
 #X obj 87 100 r \$0-ms;
 #X obj 55 132 metro;
-#X floatatom 141 252 5 0 0 0 - - -;
-#X obj 141 227 v phase_\$0;
-#X obj 122 186 t b b;
-#X obj 122 140 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X obj 137 285 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
 #X connect 0 0 16 0;
 #X connect 1 0 13 0;
 #X connect 2 0 10 0;
@@ -227,6 +220,3 @@
 #X connect 13 1 14 0;
 #X connect 15 0 16 1;
 #X connect 16 0 9 0;
-#X connect 18 0 17 0;
-#X connect 19 1 18 0;
-#X connect 20 0 19 0;
