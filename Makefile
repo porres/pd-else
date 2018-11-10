@@ -41,7 +41,6 @@ hz2rad.class.sources := classes/hz2rad.c
 initmess.class.sources := classes/initmess.c
 lb.class.sources := classes/lb.c
 loadbanger.class.sources := classes/loadbanger.c
-name.class.sources := classes/name.c
 nbang.class.sources := classes/nbang.c
 note.in.class.sources := classes/note.in.c
 note.out.class.sources := classes/note.out.c
