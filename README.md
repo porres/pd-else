@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (274 objects):
+##Current Object list (275 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -189,8 +189,9 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **LOGIC: [1]**
 - [loop]
 
-**SAMPLING/PLAYING: [3]**
+**SAMPLING/PLAYING: [4]**
 - [player~]
+- [pvoc.player~]
 - [rec.file~]
 - [play.file~]
 
