@@ -239,7 +239,7 @@ midi := \
 # extra files
 
 datafiles = \
-$(wildcard classes/source/abstractions/*.pd) \
+$(wildcard classes/abstractions/*.pd) \
 $(wildcard help/*.pd) \
 $(wildcard help/*.wav) \
 $(wildcard help/*.gif) \
