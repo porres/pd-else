@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (276 objects):
+##Current Object list (277 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -124,14 +124,6 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [mono]
 - [voices]
 - [suspedal]
-
-**MATH: RANDOM: [5]**
-
-- [randf]
-- [randf~]
-- [randi]
-- [randi~]
-- [drunkard]
 
 **MATH: FUNCTIONS: [21]**
 - [add~]
@@ -190,14 +182,16 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [pi]
 - [e]
 
+**MATH: RANDOM: [6]**
+- [randf]
+- [randf~]
+- [randi]
+- [randi~]
+- [drunkard~]
+- [drunkard]
+
 **LOGIC: [1]**
 - [loop]
-
-**SAMPLING/PLAYING: [4]**
-- [player~]
-- [pvoc.player~]
-- [rec.file~]
-- [play.file~]
 
 **AUDIO PROCESSING: [18]**
 - [downsample~]
@@ -246,6 +240,12 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [resonant~]
 - [resonant2~]
 - [svfilter~]
+
+**SAMPLING/PLAYING: [4]**
+- [player~]
+- [pvoc.player~]
+- [rec.file~]
+- [play.file~]
 
 **PHYSICAL MODELLING: [1]**
 - [pluck~]
