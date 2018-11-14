@@ -1,0 +1,120 @@
+#N canvas 521 31 568 765 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 3 graph;
+#X obj 22 40 cnv 4 4 4 empty empty Multi-channel 0 28 2 18 -233017
+-1 0;
+#X obj 3 3 cnv 15 301 42 empty empty gran.player~ 20 20 2 37 -233017
+-1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X obj 218 230 else/out~;
+#X obj 194 156 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X text 27 191 click: opens a new file =>;
+#X obj 276 157 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 359 157 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 4 737 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 6 293 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 535 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 586 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 97 542 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+;
+#X obj 97 300 cnv 17 3 180 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 118 316 open <symbol> -;
+#X obj 6 663 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 192 590 (optional) channels (default 1 if no file is given
+\, or sound file's if given \, max 64), f 44;
+#X text 115 615 2) symbol;
+#X text 180 615 - the name of the file to open (default none), f 46
+;
+#X text 115 630 3) float;
+#X text 115 593 1) float;
+#X text 179 591 -;
+#X text 173 299 bang - (re)start playing the buffer from the beggining
+, f 60;
+#X text 127 670 -speed <float>: sets playing speed (default 100),
+f 58;
+#X text 152 543 signal - the buffer signal of the corresponding channel
+;
+#X text 221 315 opens a file with the symbol name (no symbol opens
+dialog box) and starts playing, f 52;
+#X text 167 342 start - same as bang, f 61;
+#X text 167 423 pause - pauses playing the buffer, f 61;
+#X text 173 357 stop - stops and goes back to the beggining, f 60
+;
+#X text 167 372 float - <1> is the same as "start" \, "0" is the same
+as "stop", f 61;
+#X text 149 465 continue - unpauses and continues playing the buffer
+, f 64;
+#X text 161 437 reload - reloads the file into the buffer and starts
+playing, f 62;
+#X text 125 451 set <symbol> - sets a file to open (needs a reload
+message), f 68;
+#X obj 97 488 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 97 511 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 169 486 float - sets playing speed, f 61;
+#X text 169 511 float - sets transposition in cents, f 61;
+#X text 121 686 -transp <float>: sets transposition in cents (default
+0), f 59;
+#X obj 202 40 cnv 4 4 4 empty empty player 0 28 2 18 -233017 -1 0;
+#X obj 132 40 cnv 4 4 4 empty empty granular 0 28 2 18 -233017 -1 0
+;
+#X text 278 139 speed (%);
+#X text 358 138 transposition;
+#X text 428 156 cents;
+#X text 435 212 see also:;
+#X obj 431 235 else/player~;
+#X msg 120 156 loop \$1;
+#X obj 120 133 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 359 232 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 97 563 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+0;
+#X text 164 564 bang - a bang when finishing playing the buffer;
+#X text 124 408 loop <float> -;
+#X text 215 408 loop on <1> or off <0>, f 53;
+#X text 181 716 -loop: turns loop mode on (default off), f 49;
+#X text 115 646 4) float;
+#X text 180 647 - loop <1: on \, 0: off> (default 0), f 46;
+#X text 180 630 - autostart <1: on \, 0: off> (default 0), f 46;
+#X text 39 85 [gran.player~] is like [player~] but provides independent
+time stretching and pitch shifting via granulation., f 76;
+#X text 133 701 -size <float>: sets grain size in ms (default 25),
+f 57;
+#X text 125 390 size <float> - sets gain size in ms, f 68;
+#X obj 431 259 else/pvoc.player~;
+#X obj 194 192 else/gran.player~ stereo.wav;
+#X connect 12 0 68 0;
+#X connect 14 0 68 1;
+#X connect 15 0 68 2;
+#X connect 53 0 68 0;
+#X connect 54 0 53 0;
+#X connect 68 0 11 0;
+#X connect 68 1 11 1;
+#X connect 68 2 55 0;

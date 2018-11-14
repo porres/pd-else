@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (277 objects):
+##Current Object list (278 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -241,8 +241,9 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [resonant2~]
 - [svfilter~]
 
-**SAMPLING/PLAYING: [4]**
+**SAMPLING/PLAYING: [5]**
 - [player~]
+- [gran.player~]
 - [pvoc.player~]
 - [rec.file~]
 - [play.file~]
