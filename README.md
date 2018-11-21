@@ -367,7 +367,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **SIGNAL ANALYSIS: [10]**
 - [changed~]
 - [changed2~]
-- [elapsed~]
+- [detect~]
 - [lastvalue~]
 - [median~]
 - [peak~]
