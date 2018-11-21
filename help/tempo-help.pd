@@ -58,9 +58,7 @@
 ;
 #X text 164 414 float -;
 #X text 170 445 bang -;
-#X text 225 445 bangs at metro beat;
 #X text 200 501 - swing deviation in % (default 0);
-#X text 226 392 bpm (beats per minute);
 #N canvas 837 109 444 372 swing 0;
 #X text 43 96 The minimum swing value is 0 (no deviation) and there
 is no maximum value.;
@@ -127,9 +125,11 @@ bpm or ms. It has a swing parameter and is turned on and off by a toggle.
 #X text 225 355 sets time measure to ms;
 #X text 225 371 sets time measure to bpm;
 #X text 198 552 - sets time measure to ms (default bpm);
-#X connect 20 0 51 0;
-#X connect 22 0 51 1;
-#X connect 41 0 51 0;
-#X connect 49 0 51 0;
-#X connect 50 0 51 0;
-#X connect 51 0 26 0;
+#X text 225 445 bangs at metronome beat;
+#X text 226 392 tempo in ms or bpm;
+#X connect 20 0 49 0;
+#X connect 22 0 49 1;
+#X connect 39 0 49 0;
+#X connect 47 0 49 0;
+#X connect 48 0 49 0;
+#X connect 49 0 26 0;
