@@ -1,0 +1,134 @@
+#N canvas 638 48 561 584 10;
+#N canvas 789 202 517 483 example 0;
+#N canvas 490 23 824 492 bands 0;
+#X obj 462 279 array get \$0-bands;
+#X obj 462 251 else/tempo 100 -ms -on;
+#X obj 493 308 else/changed;
+#X obj 462 342 list prepend freq;
+#X obj 462 373 list trim;
+#X obj 462 417 outlet;
+#X msg 326 192 reset;
+#X obj 112 303 s \$0-bands;
+#X obj 112 130 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 112 190 trigger bang float;
+#X obj 112 274 pack float float;
+#X obj 112 161 else/loop 28 -step 3 -offset 27;
+#X obj 112 241 else/count;
+#X obj 447 61 cnv 15 198 138 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-bands 28 float 3;
+#A 0 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87
+90 93 96 99 102 105 108;
+#X coords 0 120 28 20 200 140 1 0 0;
+#X restore 446 60 graph;
+#X obj 112 92 loadbang;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 6 0 12 0;
+#X connect 8 0 11 0;
+#X connect 9 0 12 0;
+#X connect 9 1 10 1;
+#X connect 10 0 7 0;
+#X connect 11 0 9 0;
+#X connect 11 1 6 0;
+#X connect 12 0 10 0;
+#X connect 15 0 8 0;
+#X coords 0 -1 1 1 210 167 2 440 40;
+#X restore 243 133 pd bands;
+#X msg 267 355 q \$1;
+#X obj 267 320 nbx 3 16 50 1000 0 0 empty empty empty 0 -8 0 12 -228856
+-1 -1 50 256;
+#X obj 83 192 else/bl.saw~;
+#X obj 89 378 else/out~;
+#X obj 83 166 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-hz2 empty 0 -8 0
+10 -228856 -1 -1 74 256;
+#X obj 362 332 else/initmess \; \$0-hz1 60 \; \$0-hz2 74;
+#X obj 179 94 else/play.file~ voice.wav 1 1;
+#X text 99 36 In this example you can control the frequency of each
+frequency band channel from an array.;
+#X obj 132 328 else/vocoder~ 28 75;
+#X connect 0 0 9 2;
+#X connect 1 0 9 2;
+#X connect 2 0 1 0;
+#X connect 3 0 9 0;
+#X connect 5 0 3 0;
+#X connect 7 0 9 1;
+#X connect 9 0 4 0;
+#X connect 9 0 4 1;
+#X restore 450 268 pd example;
+#X obj 188 151 else/bl.saw~;
+#X obj 188 129 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-hz1 empty 0 -8 0
+10 -228856 -1 -1 60 256;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 25 40 cnv 4 4 4 empty empty Channel 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 3 3 cnv 15 301 42 empty empty vocoder~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X obj 96 40 cnv 4 4 4 empty empty Vocoder 0 28 2 18 -233017 -1 0;
+#X obj 3 557 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 3 455 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 104 430 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 103 327 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 103 349 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 103 371 cnv 17 3 40 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 156 430 signal -;
+#X obj 3 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X text 220 328 synth source input;
+#X text 156 328 signal -;
+#X text 156 350 signal -;
+#X text 221 350 control source input;
+#X obj 3 419 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X text 135 372 q <float> -;
+#X text 121 392 freq <list> -;
+#X text 221 430 vocoder output;
+#X text 142 465 1) float -;
+#X text 221 465 number of channels (obrigatory);
+#X text 221 372 filter q for each channel;
+#X text 142 485 2) float -;
+#X obj 3 507 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 95 515 -freq <list> -;
+#X text 221 392 list of frequency (in MIDI) for each channel;
+#X text 194 513 list of frequency (in MIDI) for each channel default
+is equally dividing the range from 28 and 108 (in MIDI) for the number
+of channels., f 47;
+#X obj 243 186 else/play.file~ voice.wav 1 1;
+#X text 59 94 [vocoder~] is classic cross synthesis channel vocoder
+abstraction.;
+#X text 223 485 filter q for each channel (default 50);
+#X obj 188 250 else/out~;
+#X obj 188 216 else/vocoder~ 16 75;
+#X connect 1 0 43 0;
+#X connect 2 0 1 0;
+#X connect 39 0 43 1;
+#X connect 43 0 42 0;
+#X connect 43 0 42 1;

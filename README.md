@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (280 objects):
+##Current Object list (281 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -193,7 +193,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 **LOGIC: [1]**
 - [loop]
 
-**AUDIO PROCESSING: [19]**
+**AUDIO PROCESSING: [20]**
 - [downsample~]
 - [allpass.rev~]
 - [comb.rev~]
@@ -212,6 +212,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [rm~]
 - [tremolo~]
 - [vibrato~]
+- [vocoder~]
 - [morph~]
 
 **AUDIO PROCESSING: REVERB: [1]**

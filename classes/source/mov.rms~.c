@@ -84,7 +84,8 @@ static t_int *mrms_perform(t_int *w){
         x->x_buf[x->x_bufrd++] = squared; // store input, increment bufrd
         if(x->x_bufrd >= n) // loop bufrd
             x->x_bufrd = 0;
-        result = sqrt(x->x_accum/(double)n); // get rms
+        //        result = sqrt(x->x_accum/(double)n); // get rms
+        result = x->x_accum; // accum
         if(x->x_db){ // convert to db
             result = 20. * log(result)/LOGTEN;
             if(result < -999)
