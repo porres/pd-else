@@ -1,4 +1,4 @@
-#N canvas 290 287 565 455 10;
+#N canvas 478 69 559 455 10;
 #X obj 3 274 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 361 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -18,9 +18,7 @@
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 140 40 cnv 4 4 4 empty empty freeze 0 28 2 18 -233017 -1 0;
-#X obj 21 40 cnv 4 4 4 empty empty Phase-vocoder 0 28 2 18 -233017
--1 0;
+#X obj 30 40 cnv 4 4 4 empty empty Freeze 0 28 2 18 -233017 -1 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -35,19 +33,14 @@
 #X text 189 282 signal;
 #X obj 138 303 cnv 17 3 52 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 173 207 else/out~;
-#X obj 173 134 noise~;
-#X msg 272 126 1;
-#X msg 284 150 0;
-#X text 300 126 freeze;
-#X text 316 150 unfreeze;
-#X obj 3 4 cnv 15 301 42 empty empty pvoc.freeze~ 20 20 2 37 -233017
--1 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 3 graph;
-#X text 75 91 [pvoc.freeze~] is a freeze object based on a phase vocoder.
-;
+#X obj 187 207 else/out~;
+#X obj 187 134 noise~;
+#X msg 256 126 1;
+#X msg 268 150 0;
+#X text 284 126 freeze;
+#X text 300 150 unfreeze;
+#X obj 3 4 cnv 15 301 42 empty empty freeze~ 20 20 2 37 -233017 -1
+0;
 #X text 244 405 (none);
 #X text 241 282 - input to freeze;
 #X text 241 304 - non-zero freezes \, 0 unfreezes;
@@ -57,11 +50,16 @@
 #X text 241 322 - freezes;
 #X text 177 338 unfreeze;
 #X text 241 338 - unfreezes;
-#X obj 173 174 else/pvoc.freeze~;
-#X text 436 216 see also:;
-#X obj 441 238 else/freeze~;
-#X connect 20 0 37 0;
-#X connect 21 0 37 1;
-#X connect 22 0 37 1;
-#X connect 37 0 19 0;
-#X connect 37 0 19 1;
+#X text 71 90 [freeze~] is an abstraction based on [sigmund~] (analysis
+& ressynthesis), f 58;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#X obj 187 174 else/freeze~;
+#X text 406 204 see also:;
+#X obj 408 226 else/pvoc.freeze~;
+#X connect 19 0 36 0;
+#X connect 20 0 36 1;
+#X connect 21 0 36 1;
+#X connect 36 0 18 0;
+#X connect 36 0 18 1;
