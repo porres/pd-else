@@ -70,14 +70,15 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (283 objects):
+##Current Object list (284 objects):
 
 **ASSORTED: [2]**
 - [table~]
 - [nbang]
 
-**FFT: [1]**
+**FFT: [2]**
 - [hann~]
+- [bin.shift~]
 
 **PATCH/SUBPATCH MANAGEMENT: [7]**
 - [args]
