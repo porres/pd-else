@@ -79,7 +79,6 @@ balance~.class.sources := classes/source/balance~.c
 bandpass~.class.sources := classes/source/bandpass~.c
 bandstop~.class.sources := classes/source/bandstop~.c
 blocksize~.class.sources := classes/source/blocksize~.c
-bin.shift~.class.sources := classes/source/bin.shift~.c
 bicoeff.class.sources := classes/source/bicoeff.c
 biquads~.class.sources := classes/source/biquads~.c
 ceil.class.sources := classes/source/ceil.c
