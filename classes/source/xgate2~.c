@@ -5,15 +5,15 @@
 #define HALF_PI (M_PI * 0.5)
 #define MAXOUTPUT 500
 
-typedef struct _xgate2
-{
+typedef struct _xgate2{
     t_object    x_obj;
+    t_float     x_f;
     t_float     *x_ch_select; // main signal (channel selector)
     int         x_n_outlets; // outlets excluding main signal
     int         x_indexed; // outlets excluding main signal
     t_float     **x_ovecs; // copying from matrix
     t_float     *x_ivec; // single pointer since (an array rather than an array of arrays)
-} t_xgate2;
+}t_xgate2;
 
 static t_class *xgate2_class;
 
@@ -37,43 +37,38 @@ static t_int *xgate2_perform(t_int *w){
         t_float sel = channel[i];
         if(!indexed) // default is indexed
             sel = channel[i] * max_sel;
-        if(sel <= 0)
-            {
+        if(sel <= 0){
             ovecs[0][i] = input;
             for(j = 1; j < n_outlets; j++)
                 ovecs[j][i] = 0.0;
-            }
-        else if(sel >= max_sel)
-            {
+        }
+        else if(sel >= max_sel){
             ovecs[max_sel][i] = input;
             for(j = 0; j < max_sel; j++)
                 ovecs[j][i] = 0.0;
-            }
-
-        else
-            {
+        }
+        else{
             int ch = (int)sel;                          // selected output
             float fade = (sel - ch) * HALF_PI;          // fade point
             float fadeL = fabs(sin(fade - HALF_PI));    // cos fade value
             float fadeR = sin(fade);                    // sin fade value
             ovecs[ch][i] = input * fadeL; // cos
             ovecs[ch + 1][i] = input * fadeR; // sin
-            for(j = 0; j < n_outlets; j++)
-                {
-                    if(j != ch && j != ch + 1)
-                        ovecs[j][i] = 0.0;
-                }
+            for(j = 0; j < n_outlets; j++){
+                if(j != ch && j != ch + 1)
+                    ovecs[j][i] = 0.0;
             }
+        }
     };
-    return (w + 3);
+    return(w + 3);
 }
 
 static void xgate2_dsp(t_xgate2 *x, t_signal **sp){
     int i, nblock = sp[0]->s_n;
     t_signal **sigp = sp;
+    x->x_ch_select = (*sigp++)->s_vec; // the idx inlet 
     x->x_ivec = (*sigp++)->s_vec; // the input inlet
-    x->x_ch_select = (*sigp++)->s_vec; //the idx inlet
-    for (i = 0; i < x->x_n_outlets; i++) // the n_outlets
+    for(i = 0; i < x->x_n_outlets; i++) // the n_outlets
         *(x->x_ovecs+i) = (*sigp++)->s_vec;
     dsp_add(xgate2_perform, 2, x, nblock);
 }
@@ -113,7 +108,7 @@ static void *xgate2_new(t_symbol *s, int argc, t_atom *argv){
         outlet_new((t_object *)x, &s_signal);
     return (x);
     errstate:
-        pd_error(x, "xgate2~: improper args");
+        pd_error(x, "[xgate2~]: improper args");
         return NULL;
 }
 
@@ -125,7 +120,7 @@ void * xgate2_free(t_xgate2 *x){
 void xgate2_tilde_setup(void){
     xgate2_class = class_new(gensym("xgate2~"), (t_newmethod)xgate2_new,
                 (t_method)xgate2_free, sizeof(t_xgate2), CLASS_DEFAULT, A_GIMME, 0);
+    CLASS_MAINSIGNALIN(xgate2_class, t_xgate2, x_f);
     class_addmethod(xgate2_class, (t_method)xgate2_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(xgate2_class, nullfn, gensym("signal"), 0);
     class_addmethod(xgate2_class, (t_method)xgate2_index, gensym("index"), A_FLOAT, 0);
 }

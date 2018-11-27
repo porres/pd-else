@@ -8,7 +8,6 @@ static t_class *spread_class;
 
 typedef struct _spread{
     t_object    x_obj;
-    t_float     x_f;
     long        inChans;
     long        outChans;
     t_float    *inarr;
@@ -141,9 +140,6 @@ void *spread_new(t_symbol *s, int ac, t_atom *av){
 void spread_tilde_setup(void){
     spread_class = class_new(gensym("spread~"), (t_newmethod)spread_new,
             (t_method)spread_free, sizeof(t_spread), 0, A_GIMME, 0);
-    
-// nope
-    
-    CLASS_MAINSIGNALIN(spread_class, t_spread, x_f);
+    class_addmethod(spread_class, nullfn, gensym("signal"), 0);
     class_addmethod(spread_class, (t_method)spread_dsp, gensym("dsp"),0);
 }
