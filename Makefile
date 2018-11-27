@@ -171,6 +171,7 @@ sequencer~.class.sources := classes/source/sequencer~.c
 sr~.class.sources := classes/source/sr~.c
 status~.class.sources := classes/source/status~.c
 standard~.class.sources := classes/source/standard~.c
+spread~.class.sources := classes/source/spread~.c
 susloop~.class.sources := classes/source/susloop~.c
 svfilter~.class.sources := classes/source/svfilter~.c
 trig.delay~.class.sources := classes/source/trig.delay~.c

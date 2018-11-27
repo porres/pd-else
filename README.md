@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (284 objects):
+##Current Object list (285 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -308,10 +308,11 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [pinknoise~]
 - [xmod~]
 
-**SIGNAL ROUTING: [10]**
+**SIGNAL ROUTING: [11]**
 - [balance~]
 - [pan2~]
 - [pan4~]
+- [spread~]
 - [rotate~]
 - [xfade~]
 - [xgate~]
