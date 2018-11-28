@@ -1,4 +1,4 @@
-#N canvas 180 32 568 765 10;
+#N canvas 521 48 568 765 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -28,9 +28,9 @@
 1;
 #X text 27 191 click: opens a new file =>;
 #X obj 276 157 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 90 256;
+-228856 -1 -1 47 256;
 #X obj 359 157 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -1200 256;
+-228856 -1 -1 -1331 256;
 #X obj 4 737 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 6 293 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
