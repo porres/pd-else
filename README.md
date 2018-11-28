@@ -8,7 +8,7 @@
 
 Needs Pd 0.49-0 or above
 
-This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release. Find latest releases at: https://github.com/porres/pd-else/releases
+This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. Find the latest and all releases at: https://github.com/porres/pd-else/releases
 
 --------------------------------------------------------------------------
 
@@ -24,7 +24,7 @@ This project is still in a beta phase, where drastic changes may occur and backw
 
 ### Acknowldegdements
 
-Special thanks to Flávio Luis Schiavoni, for helping me out in a few things, teaching me how to code and contributing to this library with the objects: [median~] and [keyboard]. 
+Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I needed during my first coding attempts and contributing to this library with the objects: [median~] and [keyboard]. 
 
 I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also contributing with the [float2bits], [brown~],  [gray~] and [pinknoise~] objects.
 
@@ -32,17 +32,17 @@ I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" 
 
 **"EL Locus Solus"** is run by me, Alexandre Torres Porres, and is a thing that organizes cultural events/concerts and music technology courses; website: http://alexandre-torres.wixsite.com/el-locus-solus
 
-EL Locus Solus offers a computer music tutorial with examples in Pure Data for its courses. These are now being translated and completely rewritten to english with plans of being accompanied by a book. A firts draft is available at: https://github.com/porres/Live-Electronics-Tutorial
+EL Locus Solus offers a computer music tutorial with examples in Pure Data for its courses. These are now being translated and completely rewritten to english with plans of being accompanied by a book. The first drafts are available at: https://github.com/porres/Live-Electronics-Tutorial
 
-These examples were first designed to work with Pd Extended 0.42-5, making extensive use of the existing objects available in Pd Extended's libraries. Even though Pd Extended's libraries form a large set of external objects, at some point there was the need of something "else". Thus, this library emerged with the goal of provind extra objects. ELSE also started by stealing some ideas and stuff from SuperCollider, such as most of the chaotic generators UGENs. 
+These examples were first designed to work with Pd Extended 0.42-5, making extensive use of the existing objects available in Pd Extended's libraries. Even though Pd Extended's libraries form a large set of external objects, at some point there was the need of something "else". Thus, this library emerged with the goal of providing more objects. ELSE also started by stealing some ideas and stuff from SuperCollider, such as most of the chaotic generators UGENs. 
 
-But what started as a new library to include missing functionalities in the Pd Ecossystem (meaning libraries from Pd Extended) has now grown to encompass functionalities found in other Pd objects/libraries in Pd Extended, but with a different design and more functionalities, in order to remove ALL the dependencies of the didactic material from these other libraries - in order to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving attention. 
+But what started as a new library to include missing functionalities in the Pd Ecossystem (meaning libraries from Pd Extended) has now grown to encompass functionalities found in other Pd objects/libraries in Pd Extended, but with a different design and more functionalities. This was done in order to remove ALL the dependencies of the didactic material from these other libraries - with the goal to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving attention. 
 
-I'm also involved in maintaining Cyclone, a legacy library for Pd (see: https://github.com/porres/pd-cyclone). There was the idea of relying also on cyclone for this didactic material, but ELSE now also superseded even cyclone, at least for the purposes of my didactic material.
+I'm also involved in maintaining Cyclone, a legacy library for Pd (see: https://github.com/porres/pd-cyclone). There was the idea of relying also on cyclone for this didactic material, but ELSE now also superseded even cyclone for the purposes of my didactic material.
 
 The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects.
 
-Hence, ELSE is now becoming quite big library, and keeps growing and growing, and it will still take a while to stabilize. We can say then it's still in an early stage of development (that's why it's still in Beta stage) where drastic changes may occur and backwards compatibility is not guaranteed until a final release. 
+Hence, ELSE is now becoming quite a big library and keeps growing and growing. It will still take a while to stabilize into a final version, so we can say it's still in an early "Beta" stage of development, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. 
 
 --------------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ Look for the latest releases in https://github.com/porres/pd-else/releases - but
 
 ###Installing ELSE:
 
-This release has been tested with Pd Vanilla 0.49-0, not guaranteed to work in any other version or in Pd Extended/Purr Data. ELSE comes with a set of separate binaries, so you just need to add the "else" path to Pd.
+This release needs Pd Vanilla 0.49-0 or above, it doesn't work in Pd Extended/Purr Data. ELSE comes with a set of separate binaries, so all you need to is add the "else" path to Pd via prepferences => path or using the [declare] object.
 
 ####Building ELSE for Pd Vanilla:
 
@@ -62,7 +62,7 @@ ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check t
 
 * Installing with pdlibbuilder
 
-use "objectsdir" to set a relative path for your build, something like:
+go to the pd-else folder and use "objectsdir" to set a relative path for your build, something like:
 
 <pre>make install objectsdir=../else-build</pre>
 
