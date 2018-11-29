@@ -1,4 +1,4 @@
-#N canvas 631 23 563 610 10;
+#N canvas 631 23 563 600 10;
 #X obj 3 318 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 440 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -7,7 +7,7 @@
 0;
 #X obj 157 449 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 572 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 567 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 137 198 noise~;
 #X obj 3 5 cnv 15 301 42 empty empty sh~ 20 20 2 37 -233017 -1 0;
@@ -30,13 +30,13 @@
 #X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
 #X obj 83 42 cnv 4 4 4 empty empty & 0 28 2 18 -233017 -1 0;
-#X obj 157 416 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 150 416 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 137 289 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.772232 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -105,7 +105,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -139,7 +139,6 @@
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 504 64 pd;
 #X obj 274 245 else/out~;
-#X text 205 328 signal - input signal, f 31;
 #X text 205 417 signal - gate signal, f 31;
 #N canvas 431 69 643 374 downsampling 0;
 #X obj 95 136 noise~;
@@ -187,7 +186,7 @@ generator will behave the same way for both modes!;
 #X text 200 449 signal - sampled and held signal;
 #X obj 137 261 else/sig2float~;
 #X text 219 345 bang - sample the signal, f 29;
-#X obj 157 329 cnv 17 3 82 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 150 329 cnv 17 3 82 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 170 363 set <float> - set the held value, f 36;
 #N canvas 446 163 739 298 more 0;
@@ -278,10 +277,11 @@ right inlet is greater than the threshold (0 by default) \, or held
 if lesser or equal to it. In "trigger" mode \, the value needs to fall
 below the threshold before it can retrigger [sh~]. A bang also triggers
 it., f 62;
-#X connect 5 0 34 0;
-#X connect 27 0 18 0;
-#X connect 34 0 27 0;
-#X connect 35 0 20 0;
-#X connect 35 0 20 1;
-#X connect 35 0 34 1;
-#X connect 42 0 34 0;
+#X text 171 328 float/signal - input to sample and hold;
+#X connect 5 0 33 0;
+#X connect 26 0 18 0;
+#X connect 33 0 26 0;
+#X connect 34 0 20 0;
+#X connect 34 0 20 1;
+#X connect 34 0 33 1;
+#X connect 41 0 33 0;

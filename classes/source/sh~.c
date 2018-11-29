@@ -1,12 +1,14 @@
 // Porres 2016
 
 #include "m_pd.h"
+#include <string.h>
 
 static t_class *sh_class;
 
 typedef struct _sh{
     t_object    x_obj;
     t_inlet     *x_trig_inlet;
+    t_float     x_f;
     t_float     x_lastout;
     t_float     x_last_trig;
     t_float     x_trig_bang;
@@ -72,6 +74,8 @@ static void *sh_free(t_sh *x){
 
 static void *sh_new(t_symbol *s, int argc, t_atom *argv){
     t_sh *x = (t_sh *)pd_new(sh_class);
+    t_symbol *dummy = s;
+    dummy = NULL;
     float init_thresh = 0;
     float init_value = 0;
     int init_mode = 0;
@@ -97,9 +101,9 @@ static void *sh_new(t_symbol *s, int argc, t_atom *argv){
             argc--;
             argv++;
         }
-        else if (argv -> a_type == A_SYMBOL){
+        else if(argv->a_type == A_SYMBOL){
             t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-            if(strcmp(curarg->s_name, "-tr")==0){
+            if(!strcmp(curarg->s_name, "-tr")){
                 init_mode = 1;
                 argc--;
                 argv++;
@@ -123,7 +127,7 @@ static void *sh_new(t_symbol *s, int argc, t_atom *argv){
 void sh_tilde_setup(void){
     sh_class = class_new(gensym("sh~"), (t_newmethod)sh_new, (t_method)sh_free,
         sizeof(t_sh), CLASS_DEFAULT, A_GIMME, 0);
-    class_addmethod(sh_class, nullfn, gensym("signal"), 0);
+    CLASS_MAINSIGNALIN(sh_class, t_sh, x_f);
     class_addmethod(sh_class, (t_method)sh_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(sh_class, (t_method)sh_set, gensym("set"), A_DEFFLOAT, 0);
     class_addmethod(sh_class, (t_method)sh_thresh, gensym("thresh"), A_DEFFLOAT, 0);
