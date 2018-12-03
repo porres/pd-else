@@ -2,6 +2,7 @@
 
 #include "m_pd.h"
 #include "math.h"
+#include <string.h>
 
 static t_class *tempo_class;
 
@@ -50,12 +51,13 @@ static t_int *tempo_perform(t_int *w){
         if(tempo < 0)
             tempo = 0;
         else
-            tempo = tempo * x->x_div * deviation;
+            tempo *= deviation;
         double hz;
         if(x->x_ms)
             hz = 1000. / tempo;
         else
             hz = tempo / 60.;
+        hz *= x->x_div;
         double phase_step = hz / sr; // phase_step
         if(phase_step > 1)
             phase_step = 1;
@@ -115,6 +117,8 @@ static void *tempo_free(t_tempo *x){
 
 static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
     t_tempo *x = (t_tempo *)pd_new(tempo_class);
+    t_symbol *dummy = s;
+    dummy = NULL;
     t_float init_swing = 0;
     t_float init_tempo = 0;
     t_float on = 0;
@@ -154,7 +158,7 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
                 argv++;
             }
             else if(!strcmp(curarg->s_name, "-div")){
-                if(argv+1->a_type == A_FLOAT){
+                if((argv+1)->a_type == A_FLOAT){
                     div = atom_getfloatarg(1, argc, argv);
                     argc -= 2;
                     argv += 2;
