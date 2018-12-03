@@ -1,4 +1,4 @@
-#N canvas 673 23 560 532 10;
+#N canvas 332 62 560 532 10;
 #X obj 4 277 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 383 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -36,8 +36,8 @@ hannsin \, linsin>, f 42;
 #X obj 106 287 cnv 17 3 65 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 226 358 - input signal to be faded in/out, f 44;
-#X obj 40 224 else/fader~;
-#X text 48 207 see also:;
+#X obj 42 222 else/fader~;
+#X text 49 204 see also:;
 #N canvas 695 105 540 389 curves 0;
 #N canvas 135 30 735 535 contant-power(3db) 0;
 #X obj 30 287 cnv 15 348 198 empty empty empty 20 12 0 14 -228856 -66577
@@ -229,8 +229,8 @@ as raising the input to the power of 4, f 31;
 #X obj 572 176 pow~ 4;
 #X restore 298 31 pd quartic;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -299,7 +299,7 @@ as raising the input to the power of 4, f 31;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -399,20 +399,21 @@ for 7 different fading curves., f 64;
 #X obj 345 166 else/gray~;
 #X text 154 470 2) float;
 #X text 154 485 3) float;
-#X obj 345 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 365 216 <= when fade is finished;
 #X obj 105 414 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
 0;
-#X text 183 413 bang;
-#X text 225 413 - a bang is sent when the fade in/out is finished;
 #X obj 222 190 else/autofade~ 1000 2;
 #X obj 30 247 else/autofade2~;
+#X text 176 413 float;
+#X obj 345 218 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 368 219 <= status;
+#X text 225 413 - a 1 or 0 is sent when the fade in/out is finished
+;
 #X connect 15 0 39 0;
-#X connect 17 0 54 1;
-#X connect 39 0 54 0;
-#X connect 41 0 54 0;
-#X connect 46 0 54 2;
-#X connect 54 0 11 0;
-#X connect 54 1 11 1;
-#X connect 54 2 49 0;
+#X connect 17 0 50 1;
+#X connect 39 0 50 0;
+#X connect 41 0 50 0;
+#X connect 46 0 50 2;
+#X connect 50 0 11 0;
+#X connect 50 1 11 1;
+#X connect 50 2 53 0;
