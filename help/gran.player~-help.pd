@@ -24,13 +24,13 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X obj 194 230 else/out~;
-#X obj 194 156 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 194 156 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X text 27 191 click: opens a new file =>;
 #X obj 276 157 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 38 256;
+-228856 -1 -1 0 256;
 #X obj 359 157 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -416 256;
+-228856 -1 -1 0 256;
 #X obj 4 737 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 6 293 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -109,15 +109,12 @@ time stretching and pitch shifting via granulation., f 76;
 #X obj 431 259 else/pvoc.player~;
 #X text 133 701 -size <float>: sets grain size in ms (default 75),
 f 57;
-#X obj 224 165 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
 #X obj 194 192 else/gran.player~ stereo.wav;
-#X connect 12 0 69 0;
-#X connect 14 0 69 1;
-#X connect 15 0 69 2;
-#X connect 53 0 69 0;
+#X connect 12 0 68 0;
+#X connect 14 0 68 1;
+#X connect 15 0 68 2;
+#X connect 53 0 68 0;
 #X connect 54 0 53 0;
-#X connect 68 0 69 0;
-#X connect 69 0 11 0;
-#X connect 69 1 11 1;
-#X connect 69 2 55 0;
+#X connect 68 0 11 0;
+#X connect 68 1 11 1;
+#X connect 68 2 55 0;
