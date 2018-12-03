@@ -1,4 +1,4 @@
-#N canvas 486 94 559 551 10;
+#N canvas 673 99 559 551 10;
 #X obj 3 522 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 211 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -37,24 +37,22 @@
 #X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 44 42 cnv 4 4 4 empty empty counter 0 28 2 18 -233017 -1 0;
-#X obj 221 125 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 228 125 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 221 178 else/display;
+#X obj 228 178 else/display;
 #X text 167 364 list;
 #X text 157 394 float;
 #X text 165 217 bang;
 #X text 207 365 - updates arguments, f 55;
 #X text 133 447 1) list -;
-#X text 208 216 - count, f 55;
 #X text 159 231 float;
-#X text 208 230 - set new count value and output it, f 55;
 #X text 111 259 reset <float>;
 #X text 208 258 -;
 #X text 220 258 without float \, resets to the reset point \, but a
 float sets a new reset point as well, f 53;
 #X text 123 245 set <float>;
 #X text 208 244 - sets new count value, f 55;
-#X obj 302 181 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 309 181 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 123 284 max <float>;
 #X text 208 283 - sets maximum value, f 55;
@@ -73,9 +71,6 @@ float sets a new reset point as well, f 53;
 #X text 166 483 -alt - sets to alternating mode;
 #X text 208 341 - non-0 sets to alternating mode (between up/down)
 , f 55;
-#X text 68 87 [count] counts and wraps beteen a minimum and maximum
-value. It has modes for counting up \, down and alternating between
-them., f 63;
 #N canvas 441 61 792 417 arguments 0;
 #X obj 246 287 bng 19 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -99,13 +94,13 @@ is the maximum). But if the first argument is greater than the second
 \, then the count order is set to downwards and it starts with the
 maximum value. The first of two arguments also sets the reset/starting
 point.;
-#X text 402 15 A third argument sets a different reset/starting point.
+#X text 418 23 A third argument sets a different reset/starting point.
 ;
-#X obj 635 53 bng 19 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X obj 635 61 bng 19 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 635 126 else/display;
-#X obj 505 127 else/display;
-#X msg 505 53 reset;
+#X obj 635 134 else/display;
+#X obj 505 135 else/display;
+#X msg 505 61 reset;
 #X obj 521 372 else/display;
 #X msg 521 309 reset;
 #X obj 494 308 bng 19 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -119,10 +114,10 @@ point.;
 #X obj 251 138 else/count 4;
 #X obj 126 331 else/count 10 15;
 #X obj 246 321 else/count 15 10;
-#X obj 505 97 else/count 5 15 10;
-#X obj 635 87 else/count 20 10 13;
+#X obj 505 105 else/count 5 15 10;
+#X obj 635 95 else/count 20 10 13;
 #X obj 521 346 else/count -reset 5;
-#X text 423 175 The right inlet resets these arguments. It makes a
+#X text 423 183 The right inlet resets these arguments. It makes a
 difference if you send it 1 \, 2 or 3 arguments. It's like the object
 has been reinitialized with such arguments., f 53;
 #X connect 0 0 25 0;
@@ -231,7 +226,12 @@ float sets a new reset point as well, f 53;
 #X restore 465 180 pd messages;
 #X text 208 394 - count value;
 #X text 106 498 -reset <float> - sets reset value;
-#X obj 221 151 else/count 1 4;
-#X connect 19 0 57 0;
-#X connect 57 0 20 0;
-#X connect 57 1 34 0;
+#X obj 228 151 else/count 1 4;
+#X text 68 87 [count] counts and wraps between a minimum and maximum
+value. It has modes for counting up \, down and alternating between
+them.;
+#X text 208 230 - sets new count value and outputs it, f 55;
+#X text 208 216 - counts, f 55;
+#X connect 19 0 54 0;
+#X connect 54 0 20 0;
+#X connect 54 1 32 0;
