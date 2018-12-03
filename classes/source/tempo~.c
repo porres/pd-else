@@ -15,6 +15,7 @@ typedef struct _tempo{
     t_outlet *x_outlet_dsp_0;
     t_float x_sr;
     t_float x_gate;
+    t_float x_div;
     t_float x_deviation;
     t_float x_last_gate;
     t_float x_last_sync;
@@ -49,7 +50,7 @@ static t_int *tempo_perform(t_int *w){
         if(tempo < 0)
             tempo = 0;
         else
-            tempo *= deviation;
+            tempo = tempo * x->x_div * deviation;
         double hz;
         if(x->x_ms)
             hz = 1000. / tempo;
@@ -92,6 +93,10 @@ static void tempo_dsp(t_tempo *x, t_signal **sp){
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
+static void tempo_div(t_tempo *x, t_floatarg f){
+    x->x_div = f < 1 ? 1 : f;
+}
+
 static void tempo_bpm(t_tempo *x){
     x->x_ms = 0;
 }
@@ -114,6 +119,7 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
     t_float init_tempo = 0;
     t_float on = 0;
     t_float ms = 0;
+    t_float div = 1;
     static int init_seed = 74599;
     x->x_val = (init_seed *= 1319);
 /////////////////////////////////////////////////////////////////////////////////////
@@ -135,7 +141,7 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
             argc--;
             argv++;
         }
-        else if (argv -> a_type == A_SYMBOL){
+        else if(argv->a_type == A_SYMBOL){
             t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
             if(!strcmp(curarg->s_name, "-on")){
                 on = 1;
@@ -147,6 +153,15 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
                 argc--;
                 argv++;
             }
+            else if(!strcmp(curarg->s_name, "-div")){
+                if(argv+1->a_type == A_FLOAT){
+                    div = atom_getfloatarg(1, argc, argv);
+                    argc -= 2;
+                    argv += 2;
+                }
+                else
+                    goto errstate;
+            }
             else
                 goto errstate;
         }
@@ -156,6 +171,9 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
         init_tempo = 0;
     if(init_swing < 0)
         init_swing = 0;
+    if(div < 1)
+        div = 1;
+    x->x_div = div;
     x->x_ms = ms != 0;
     x->x_last_sync = 0;
     x->x_last_gate = 0;
@@ -182,5 +200,6 @@ void tempo_tilde_setup(void){
     class_addmethod(tempo_class, (t_method)tempo_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(tempo_class, (t_method)tempo_ms, gensym("ms"), 0);
     class_addmethod(tempo_class, (t_method)tempo_bpm, gensym("bpm"), 0);
+    class_addmethod(tempo_class, (t_method)tempo_div, gensym("div"), A_DEFFLOAT, 0);
     class_addbang(tempo_class, tempo_bang);
 }
