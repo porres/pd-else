@@ -1,13 +1,13 @@
-#N canvas 627 87 563 597 10;
-#X obj 4 280 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 627 87 566 624 10;
+#X obj 4 268 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 436 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 472 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 477 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 125 445 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 125 450 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 573 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 595 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -33,32 +33,32 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 3 graph;
-#X obj 125 290 cnv 17 3 95 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 125 278 cnv 17 3 113 empty empty 0 5 9 0 16 -228856 -162280
+0;
+#X obj 125 397 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 125 391 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X text 134 482 1) float;
-#X text 134 501 2) float;
-#X obj 221 140 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 156 487 1) float;
+#X text 156 506 2) float;
+#X obj 226 129 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 200 482 - bpm (default 0);
-#X obj 269 143 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 212 487 - bpm (default 0);
+#X obj 299 176 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 4 525 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 163 535 -on;
-#X text 198 535 - initially turn it on;
-#X obj 220 246 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 4 530 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 185 540 -on;
+#X text 210 540 - initially turn it on;
+#X obj 226 232 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 210 123 on/off;
-#X text 278 122 BPM;
-#X text 225 288 toggle (on/off);
-#X text 164 288 float -;
-#X text 164 392 float -;
-#X obj 125 413 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X text 252 128 on/off;
+#X text 308 155 BPM;
+#X text 225 276 toggle (on/off);
+#X text 164 276 float -;
+#X text 164 398 float -;
+#X obj 125 419 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 164 414 float -;
-#X text 170 445 bang -;
-#X text 200 501 - swing deviation in % (default 0);
+#X text 164 420 float -;
+#X text 170 450 bang -;
+#X text 212 506 - swing deviation in % (default 0);
 #N canvas 837 109 444 372 swing 0;
 #X text 43 96 The minimum swing value is 0 (no deviation) and there
 is no maximum value.;
@@ -84,13 +84,13 @@ to a deviation from 60 to 120 bpm and 60 to 30 bpm.;
 #X connect 5 0 6 0;
 #X connect 5 0 6 1;
 #X connect 8 0 2 0;
-#X restore 478 215 pd swing;
-#X text 170 305 bang -;
-#X text 226 414 swing deviation parameter (in %);
-#X obj 181 140 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+#X restore 483 218 pd swing;
+#X text 170 293 bang -;
+#X text 226 420 swing deviation parameter (in %);
+#X obj 190 129 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 145 141 sync;
-#X text 225 305 sync the metronome;
+#X text 154 130 sync;
+#X text 225 293 sync the metronome;
 #N canvas 837 109 449 327 sync 0;
 #X obj 189 166 bng 20 50 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -108,28 +108,86 @@ with an incoming bang.;
 #X connect 2 0 0 0;
 #X connect 3 0 4 0;
 #X connect 3 0 4 1;
-#X restore 485 238 pd sync;
-#X text 164 322 start -;
-#X text 225 322 turn the metronome on;
-#X text 170 338 stop -;
-#X text 225 338 turn the metronome off;
-#X msg 228 168 start;
-#X msg 235 188 stop;
-#X obj 220 217 else/tempo 60 -on;
-#X text 64 83 The [tempo] object sends bang at a time specified in
+#X restore 490 241 pd sync;
+#X text 164 310 start -;
+#X text 225 310 turn the metronome on;
+#X text 170 342 stop -;
+#X text 225 342 turn the metronome off;
+#X msg 237 157 start;
+#X msg 244 177 stop;
+#X text 65 85 The [tempo] object sends bang at a time specified in
 bpm or ms. It has a swing parameter and is turned on and off by a toggle.
 , f 61;
-#X text 182 355 ms -;
-#X text 176 371 bpm -;
-#X text 163 553 -ms;
-#X text 225 355 sets time measure to ms;
-#X text 225 371 sets time measure to bpm;
-#X text 198 552 - sets time measure to ms (default bpm);
-#X text 225 445 bangs at metronome beat;
-#X text 226 392 tempo in ms or bpm;
-#X connect 20 0 49 0;
-#X connect 22 0 49 1;
-#X connect 39 0 49 0;
-#X connect 47 0 49 0;
-#X connect 48 0 49 0;
-#X connect 49 0 26 0;
+#X text 182 359 ms -;
+#X text 176 375 bpm -;
+#X text 185 558 -ms;
+#X text 225 359 sets time measure to ms;
+#X text 225 375 sets time measure to bpm;
+#X text 210 557 - sets time measure to ms (default bpm);
+#X text 225 450 bangs at metronome beat;
+#X text 226 398 tempo in ms or bpm;
+#X obj 226 206 else/tempo 60;
+#X text 131 576 -div <float>;
+#X text 210 574 - sets tempo subdivision (default 1);
+#X text 140 326 div <float>;
+#X text 223 324 sets tempo subdivision;
+#N canvas 837 109 401 473 subdivision 0;
+#X obj 118 137 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 118 204 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 107 116 on/off;
+#X obj 222 246 else/bangdiv 4;
+#X obj 222 277 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 88 261 else/count 1 4;
+#X obj 88 324 else/impseq~;
+#X obj 133 368 else/out~;
+#X obj 88 290 sel 1;
+#X obj 176 324 else/impseq~;
+#X obj 176 291 b;
+#X msg 222 138 div \$1;
+#X obj 222 107 max 1;
+#X floatatom 222 83 5 1 8 0 - - -;
+#X obj 118 176 else/tempo 30 -on -div 4;
+#X text 28 23 You can set a tempo subdivision with the -div flag or
+the "div" message". You can also use object like [count] and [bangdiv]
+to manage tempo subdivisions.;
+#X connect 0 0 14 0;
+#X connect 1 0 3 0;
+#X connect 1 0 5 0;
+#X connect 3 0 4 0;
+#X connect 5 0 8 0;
+#X connect 6 0 7 0;
+#X connect 8 0 6 0;
+#X connect 8 1 10 0;
+#X connect 9 0 7 1;
+#X connect 10 0 9 0;
+#X connect 11 0 3 0;
+#X connect 11 0 14 0;
+#X connect 12 0 11 0;
+#X connect 12 0 5 1;
+#X connect 13 0 12 0;
+#X connect 14 0 1 0;
+#X restore 447 196 pd subdivision;
+#N canvas 820 257 387 259 ms 0;
+#X obj 139 87 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 139 164 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 128 66 on/off;
+#X msg 176 89 ms;
+#X msg 185 110 bpm;
+#X obj 139 136 else/tempo 150 -ms;
+#X text 53 34 You can set the tempo either as bpm or ms.;
+#X connect 0 0 5 0;
+#X connect 3 0 5 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 0;
+#X restore 501 174 pd ms;
+#X connect 20 0 58 0;
+#X connect 22 0 58 1;
+#X connect 39 0 58 0;
+#X connect 47 0 58 0;
+#X connect 48 0 58 0;
+#X connect 58 0 26 0;
