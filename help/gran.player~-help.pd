@@ -1,4 +1,4 @@
-#N canvas 711 43 568 765 10;
+#N canvas 273 31 568 765 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -24,7 +24,7 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X obj 194 230 else/out~;
-#X obj 194 156 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 194 156 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 27 191 click: opens a new file =>;
 #X obj 276 157 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -87,8 +87,8 @@ message), f 68;
 #X text 278 139 speed (%);
 #X text 358 138 transposition;
 #X text 428 156 cents;
-#X text 435 212 see also:;
-#X obj 431 235 else/player~;
+#X text 474 187 see also:;
+#X obj 457 261 else/player~;
 #X msg 120 156 loop \$1;
 #X obj 120 133 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -106,10 +106,11 @@ message), f 68;
 #X text 39 85 [gran.player~] is like [player~] but provides independent
 time stretching and pitch shifting via granulation., f 76;
 #X text 125 390 size <float> - sets gain size in ms, f 68;
-#X obj 431 259 else/pvoc.player~;
+#X obj 427 236 else/pvoc.player~;
 #X text 133 701 -size <float>: sets grain size in ms (default 75),
 f 57;
 #X obj 194 192 else/gran.player~ stereo.wav;
+#X obj 414 211 else/stretch.shift~;
 #X connect 12 0 68 0;
 #X connect 14 0 68 1;
 #X connect 15 0 68 2;

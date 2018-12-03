@@ -48,9 +48,8 @@
 -1 0;
 #X text 250 130 speed (%);
 #X text 341 128 cents;
-#X text 431 237 see also:;
+#X text 476 210 see also:;
 #X text 175 303 signal - audio signal input, f 51;
-#X obj 429 259 else/gran.player~;
 #X text 181 326 float - sets speed, f 50;
 #X obj 130 370 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
@@ -72,9 +71,11 @@ It provides independent time stretching and pitch shifting via granulation.
 #X obj 209 193 else/pvoc.live~ 6000 50 -600;
 #X text 148 439 1) float - sets buffer size in ms (obrigatory \, no
 default), f 61;
-#X connect 12 0 39 1;
-#X connect 13 0 39 2;
-#X connect 35 0 39 0;
-#X connect 36 0 39 3;
-#X connect 39 0 11 0;
-#X connect 39 0 11 1;
+#X obj 429 234 else/pvoc.player~;
+#X obj 418 256 else/stretch.shift~;
+#X connect 12 0 38 1;
+#X connect 13 0 38 2;
+#X connect 34 0 38 0;
+#X connect 35 0 38 3;
+#X connect 38 0 11 0;
+#X connect 38 0 11 1;

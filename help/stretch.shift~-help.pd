@@ -18,15 +18,15 @@
 #X restore 305 3 graph;
 #X obj 22 40 cnv 4 4 4 empty empty Pitc-Shift 0 28 2 18 -233017 -1
 0;
-#X obj 3 3 cnv 15 301 42 empty empty stretch~ 20 20 2 37 -233017 -1
-0;
+#X obj 3 3 cnv 15 301 42 empty empty stretch.shift~ 20 20 2 37 -233017
+-1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 158 216 else/out~;
-#X obj 249 148 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 168 216 else/out~;
+#X obj 269 148 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 329 148 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 349 148 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 4 541 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
@@ -48,12 +48,12 @@
 ;
 #X obj 102 40 cnv 4 4 4 empty empty Time-Stretch 0 28 2 18 -233017
 -1 0;
-#X text 251 130 speed (%);
-#X text 328 129 transposition;
-#X text 396 147 cents;
-#X text 413 221 see also:;
+#X text 270 130 speed (%);
+#X text 347 129 transposition;
+#X text 416 147 cents;
+#X text 480 202 see also:;
 #X text 175 293 signal - audio signal input, f 51;
-#X obj 411 243 else/gran.player~;
+#X obj 435 224 else/gran.player~;
 #X text 182 316 float - sets grain size, f 50;
 #X text 182 338 float - sets speed, f 50;
 #X obj 120 359 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
@@ -63,22 +63,23 @@
 ;
 #X text 188 382 bang - resets to the beggining of the delay line,
 f 49;
-#X text 52 88 [stretch~] is like [gran.player~] \, but for live input.
-It provides independent time stretching and pitch shifting via granulation.
-, f 69;
 #X text 148 488 2) float - sets playing speed (default 100), f 61
 ;
 #X text 148 504 3) float - sets transposition in cents (default 0)
 , f 61;
 #X text 148 519 4) float - sets grain size in ms (default 25), f 61
 ;
-#X obj 133 140 else/play.file~ violin.wav 1 1, f 15;
+#X obj 153 140 else/play.file~ violin.wav 1 1, f 15;
 #X text 148 470 1) float - sets buffer size in ms (default 1000),
 f 61;
 #X text 140 401 size <float> - sets buffer size in ms, f 57;
-#X obj 158 183 else/stretch~ 60000 20 -600 300;
-#X connect 12 0 43 2;
-#X connect 13 0 43 3;
-#X connect 40 0 43 0;
-#X connect 43 0 11 0;
-#X connect 43 0 11 1;
+#X obj 168 183 else/stretch.shift~ 60000 20 -600 300;
+#X text 47 88 [stretch.shift~] is like [gran.player~] \, but for live
+input. It provides independent time stretching and pitch shifting via
+granulation., f 69;
+#X obj 416 248 else/pvoc.live~ 1000;
+#X connect 12 0 42 2;
+#X connect 13 0 42 3;
+#X connect 39 0 42 0;
+#X connect 42 0 11 0;
+#X connect 42 0 11 1;
