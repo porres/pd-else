@@ -1,31 +1,31 @@
-#N canvas 343 61 684 399 12;
+#N canvas 569 23 684 399 12;
 #X obj 463 165 namecanvas \$0-canvas, f 21;
 #X obj 42 47 inlet;
 #X obj 261 163 r \$0-fixed;
-#N canvas 717 208 459 442 not-fixed 0;
+#N canvas 747 25 459 442 not-fixed 0;
 #X obj 83 43 inlet;
 #X obj 83 74 else/any2symbol;
 #X obj 262 217 + 2;
 #X obj 83 246 pack symbol \$0 float float;
-#N canvas 286 158 300 366 width 0;
-#X obj 135 226 * 7;
-#X obj 135 252 + 5;
+#N canvas 1104 252 300 366 width 0;
+#X obj 135 266 * 7;
+#X obj 135 292 + 5;
 #X obj 135 177 list length;
 #X obj 68 37 inlet;
 #X msg 68 129 1;
 #X obj 68 98 route bang;
-#X obj 135 201 change;
-#X obj 68 69 else/fromany;
-#X obj 135 294 outlet;
+#X obj 135 241 change;
+#X obj 135 334 outlet;
+#X obj 68 69 list fromsymbol;
 #X connect 0 0 1 0;
-#X connect 1 0 8 0;
+#X connect 1 0 7 0;
 #X connect 2 0 6 0;
-#X connect 3 0 7 0;
+#X connect 3 0 8 0;
 #X connect 4 0 2 0;
 #X connect 5 0 4 0;
 #X connect 5 1 2 0;
 #X connect 6 0 0 0;
-#X connect 7 0 5 0;
+#X connect 8 0 5 0;
 #X restore 227 189 pd width;
 #X obj 83 157 trigger symbol symbol;
 #X msg 83 288 \; pd-\$2-cnv clear \, obj 101 101 cnv 10 \$3 20 empty
@@ -61,8 +61,10 @@
 #X obj 250 219 r \$0-width;
 #X obj 111 118 s \$0-message;
 #X obj 112 146 r \$0-resize-fixed;
+#X floatatom 302 181 5 0 0 0 - - -;
 #X connect 0 0 5 0;
 #X connect 1 0 4 1;
+#X connect 1 0 12 0;
 #X connect 2 0 4 0;
 #X connect 3 0 7 0;
 #X connect 4 0 3 0;
@@ -82,9 +84,9 @@
 #X obj 261 192 expr 1 - $f1;
 #X text 380 228 Alexandre Torres Porres (2017-2018);
 #N canvas 42 367 450 300 \$0-cnv 0;
-#X obj 101 101 cnv 10 12 20 empty 1005-display  2 10 0 12 -233017 -66577
-0;
-#X coords 0 1 1 -1 14 22 2 100 100;
+#X obj 101 101 cnv 10 32198 20 empty 1064-display n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n n *
+2 10 0 12 -233017 -66577 0;
+#X coords 0 1 1 -1 32200 22 2 100 100;
 #X restore 100 100 pd \$0-cnv;
 #X obj 100 101 cnv 1 6 1 empty empty empty 20 12 0 14 -1 -66577 0;
 #X obj 100 120 cnv 1 6 2 empty empty empty 20 12 0 14 -1 -66577 0;
@@ -367,14 +369,14 @@
 #X obj 147 67 nbx 4 16 1 1e+37 0 0 \$0-set-rate \$0-rate-nbx rate 9
 -10 0 12 -228856 -1 -262144 100 256;
 #X restore 379 193 pd display_properties;
-#N canvas 511 40 439 618 init 0;
+#N canvas 814 103 439 618 init 0;
 #X obj 252 527 s \$0-size;
 #X msg 188 422 1, f 2;
 #X msg 372 390 1, f 2;
 #X obj 264 493 s \$0-fixed;
 #X msg 216 422 0, f 2;
 #X obj 251 62 symbol;
-#N canvas 79 23 463 403 resize 0;
+#N canvas 89 204 463 403 resize 0;
 #X obj 170 256 s \$0-display;
 #X obj 170 135 * 7;
 #X msg 170 226 vis_size \$1 20;
@@ -413,6 +415,7 @@
 #X obj 59 520 metro;
 #X obj 102 496 s \$0-arg-rate;
 #X obj 106 522 r \$0-set-rate;
+#X floatatom 234 241 5 0 0 0 - - -;
 #X connect 1 0 6 0;
 #X connect 2 0 3 0;
 #X connect 4 0 3 0;
@@ -444,6 +447,7 @@
 #X connect 22 0 13 0;
 #X connect 23 0 12 0;
 #X connect 25 0 23 1;
+#X connect 26 0 18 0;
 #X restore 379 165 pd init;
 #X connect 1 0 5 0;
 #X connect 1 0 14 0;
@@ -455,4 +459,4 @@
 #X connect 14 0 15 0;
 #X connect 14 1 7 0;
 #X connect 14 1 8 0;
-#X coords 0 1 1 -1 14 22 2 100 100;
+#X coords 0 1 1 -1 32200 22 2 100 100;
