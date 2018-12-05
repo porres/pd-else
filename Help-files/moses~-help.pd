@@ -1,0 +1,114 @@
+#N canvas 701 126 561 462 10;
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 306 4 graph;
+#X obj 23 41 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
+#X obj 4 4 cnv 15 301 42 empty empty moses~ 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 4 graph;
+#X obj 77 41 cnv 4 4 4 empty empty moses 0 28 2 18 -233017 -1 0;
+#X obj 2 337 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 397 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 132 348 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 2 432 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 2 278 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 131 287 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 131 310 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 171 288 signal;
+#X text 172 348 signal;
+#X obj 195 235 else/display~;
+#X obj 276 161 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
+-228856 -1 -1 0 256;
+#X obj 195 193 else/moses~ 10;
+#X obj 195 155 sig~ 20;
+#X obj 276 232 else/display~;
+#X obj 195 129 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
+-228856 -1 -1 0 256;
+#X obj 132 370 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 172 372 signal;
+#X text 72 89 [moses~] is the signal version of [moses].;
+#X obj 486 74 else/setdsp~;
+#N canvas 451 83 569 613 example 0;
+#X obj 77 110 else/moses~ 30;
+#X obj 77 194 else/display~;
+#X obj 158 194 else/display~;
+#X obj 62 296 else/changed~;
+#X obj 158 296 else/changed~;
+#X obj 250 295 else/changed~;
+#X obj 77 77 else/randf~ 0 100;
+#X obj 285 513 else/out~;
+#X obj 260 469 rev3~ 106 90 7000 40;
+#X obj 62 345 else/resonant2~ 550 10 5000;
+#X obj 158 375 else/resonant2~ 750 10 2000;
+#X obj 77 36 else/dust~ 1.5;
+#X text 256 73 A simple markov chain example.;
+#X obj 190 431 else/spread~ 4 2;
+#X obj 239 192 else/display~;
+#X obj 320 192 else/display~;
+#X obj 347 264 else/changed~;
+#X obj 250 335 else/resonant2~ 900 10 500;
+#X obj 347 304 else/resonant2~ 1000 10 500;
+#X obj 239 151 else/moses~ 80;
+#X obj 158 130 else/moses~ 50;
+#X connect 0 0 1 0;
+#X connect 0 1 20 0;
+#X connect 1 0 3 0;
+#X connect 2 0 4 0;
+#X connect 3 0 9 0;
+#X connect 4 0 10 0;
+#X connect 5 0 17 0;
+#X connect 6 0 0 0;
+#X connect 8 0 7 0;
+#X connect 8 1 7 1;
+#X connect 8 2 7 0;
+#X connect 8 3 7 1;
+#X connect 9 0 13 0;
+#X connect 10 0 13 1;
+#X connect 11 0 6 0;
+#X connect 13 0 8 0;
+#X connect 13 1 8 1;
+#X connect 14 0 5 0;
+#X connect 15 0 16 0;
+#X connect 16 0 18 0;
+#X connect 17 0 13 2;
+#X connect 18 0 13 3;
+#X connect 19 0 14 0;
+#X connect 19 1 15 0;
+#X connect 20 0 2 0;
+#X connect 20 1 19 0;
+#X restore 449 234 pd example;
+#X text 176 312 float;
+#X text 219 288 - signal stream;
+#X text 220 312 - threshold, f 32;
+#X text 220 347 - signal if less than treshold, f 32;
+#X text 221 372 - signal if greater or equal to treshold;
+#X text 174 408 1) float - threshold (default 0);
+#X connect 22 0 23 1;
+#X connect 23 0 21 0;
+#X connect 23 1 25 0;
+#X connect 24 0 23 0;
+#X connect 26 0 24 0;

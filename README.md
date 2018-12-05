@@ -70,7 +70,7 @@ Then move it to your preferred install folder for Pd and add it to the path.
 
 --------------------------------------------------------------------------
 
-##Current Object list (285 objects):
+##Current Object list (286 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -191,8 +191,9 @@ Then move it to your preferred install folder for Pd and add it to the path.
 - [drunkard~]
 - [drunkard]
 
-**LOGIC: [1]**
+**LOGIC: [2]**
 - [loop]
+- [moses~]
 
 **AUDIO PROCESSING: [22]**
 - [downsample~]
