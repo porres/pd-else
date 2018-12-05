@@ -1,4 +1,4 @@
-#N canvas 321 23 563 419 10;
+#N canvas 321 23 564 461 10;
 #X obj 4 3 cnv 15 301 42 empty empty coin 20 20 2 37 -233017 -1 0;
 #X obj 308 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -19,47 +19,58 @@
 #X obj 466 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
 #X obj 110 39 cnv 4 4 4 empty empty bangs 0 28 2 18 -233017 -1 0;
-#X obj 5 391 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 428 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 6 309 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 326 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 344 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 381 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 115 319 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 115 336 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 115 263 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 115 280 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 6 253 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 6 270 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X msg 175 158 seed \$1;
-#X obj 175 139 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 40 256;
-#X obj 115 285 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X obj 289 168 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X msg 175 178 seed \$1;
+#X obj 175 159 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 138 369 2) float - seed value (default: internal);
-#X obj 292 146 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 115 302 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 289 188 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 138 406 2) float - seed value (default: internal);
+#X obj 292 166 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X text 138 353 1) float - probability in percentage (default 50);
-#X text 346 167 %;
-#X text 322 145 probability;
-#X text 239 286 - probability in percentage (0 to 100);
+#X text 138 390 1) float - probability in percentage (default 50);
+#X text 346 187 %;
+#X text 322 165 probability;
+#X text 239 303 - probability in percentage (0 to 100);
+#X obj 238 169 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 238 238 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 195 280 bang;
+#X text 239 279 - a bang to be passed or not;
+#X text 189 303 float;
+#X text 195 337 bang;
+#X text 239 337 - random bangs;
+#X obj 238 211 else/coin;
+#X obj 289 238 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 115 358 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 195 359 bang;
+#X text 239 359 - random bangs;
 #X text 76 91 When [coin] receives a bang \, it tosses a coin and either
-passes the bang or not according to a probability parameter.;
-#X obj 238 149 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 238 218 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 195 263 bang;
-#X text 239 262 - a bang to be passed or not;
-#X text 189 286 float;
-#X text 195 320 bang;
-#X text 239 320 - random bangs;
-#X obj 238 191 else/coin;
-#X connect 16 0 34 0;
+passes the bang or not according to a probability parameter. The right
+outlet sends a bang when it wasn't passed.;
+#X text 175 240 passed =>;
+#X text 315 239 <= not passed;
+#X obj 442 185 coin~;
+#X connect 16 0 33 0;
 #X connect 17 0 16 0;
-#X connect 19 0 34 1;
+#X connect 19 0 33 1;
 #X connect 21 0 19 0;
-#X connect 27 0 34 0;
-#X connect 34 0 28 0;
+#X connect 26 0 33 0;
+#X connect 33 0 27 0;
+#X connect 33 1 34 0;

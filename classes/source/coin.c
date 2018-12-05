@@ -8,6 +8,7 @@ typedef struct _coin{
     t_object    x_obj;
     t_int       x_val;
     t_float     x_prob;
+    t_outlet  *x_out2;
 } t_coin;
 
 static void coin_seed(t_coin *x, t_float f){
@@ -24,7 +25,11 @@ static void coin_bang(t_coin *x){
             outlet_bang(x->x_obj.ob_outlet);
         else if(random < x->x_prob)
             outlet_bang(x->x_obj.ob_outlet);
+        else
+            outlet_bang(x->x_out2);
     }
+    else
+        outlet_bang(x->x_out2);
 }
 
 static void *coin_new(t_symbol *s, int ac, t_atom *av){
@@ -66,6 +71,7 @@ static void *coin_new(t_symbol *s, int ac, t_atom *av){
     x->x_val = init_seed *= 1319; // load seed value
     floatinlet_new((t_object *)x, &x->x_prob);
     outlet_new((t_object *)x, &s_float);
+    x->x_out2 = outlet_new((t_object *)x, &s_float);
     return (x);
 errstate:
     pd_error(x, "[coin]: improper args");

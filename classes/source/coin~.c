@@ -10,7 +10,8 @@ typedef struct _coin{
     t_float    x_random;
     t_float    x_lastin;
     t_inlet   *x_prob_let;
-    t_outlet  *x_outlet;
+    t_outlet  *x_outlet1;
+    t_outlet  *x_outlet2;
 } t_coin;
 
 static void coin_seed(t_coin *x, t_floatarg f){
@@ -22,7 +23,8 @@ static t_int *coin_perform(t_int *w){
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
-    t_float *out = (t_sample *)(w[5]);
+    t_float *out1 = (t_sample *)(w[5]);
+    t_float *out2 = (t_sample *)(w[6]);
     int val = x->x_val;
     t_float random = x->x_random;
     t_float lastin = x->x_lastin;
@@ -34,44 +36,56 @@ static t_int *coin_perform(t_int *w){
         if (prob > 100)
             prob = 100;
         if (trig != 0 && lastin == 0){
-            if (prob == 0)
-                *out++ = 0;
-            else if (prob == 100)
-                *out++ = trig;
+            if (prob == 0){
+                *out1++ = 0;
+                *out2++ = trig;
+            }
+            else if (prob == 100){
+                *out1++ = trig;
+                *out1++ = 0;
+            }
             else { // toss coin
                 random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
                 random = ((random + 1) / 2) * 100; // 0-100
                 val = val * 435898247 + 382842987;
-                if (random < prob)
-                    *out++ = trig;
-                else
-                    *out++ = 0;
+                if (random < prob){
+                    *out1++ = trig;
+                    *out2++ = 0;
+                }
+                else{
+                    *out1++ = 0;
+                    *out2++ = trig;
                 }
             }
-        else
-            *out++ = 0;
-        lastin = trig;
         }
+        else{
+            *out1++ = 0;
+            *out2++ = 0;
+        }
+        lastin = trig;
+    }
     x->x_val = val;
     x->x_random = random; // current output
     x->x_lastin = lastin; // last input
-    return (w + 6);
+    return(w + 7);
 }
 
-static void coin_dsp(t_coin *x, t_signal **sp)
-{
-    dsp_add(coin_perform, 5, x, sp[0]->s_n,
-            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
+static void coin_dsp(t_coin *x, t_signal **sp){
+    dsp_add(coin_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
+            sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
 static void *coin_free(t_coin *x){
     inlet_free(x->x_prob_let);
-    outlet_free(x->x_outlet);
+    outlet_free(x->x_outlet1);
+    outlet_free(x->x_outlet2);
     return (void *)x;
 }
 
 static void *coin_new(t_symbol *s, int ac, t_atom *av){
     t_coin *x = (t_coin *)pd_new(coin_class);
+    t_symbol *dummy = s;
+    dummy = NULL;
 // default
     static int init_seed = 234599;
     init_seed *= 1319;
@@ -109,7 +123,8 @@ while(ac){
 //
     x->x_prob_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_prob_let, init_prob);
-    x->x_outlet = outlet_new(&x->x_obj, &s_signal);
+    x->x_outlet1 = outlet_new(&x->x_obj, &s_signal);
+    x->x_outlet2 = outlet_new(&x->x_obj, &s_signal);
     return (x);
     errstate:
         pd_error(x, "coin~: improper args");

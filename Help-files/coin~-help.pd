@@ -1,4 +1,4 @@
-#N canvas 483 23 562 467 10;
+#N canvas 483 23 566 508 10;
 #X obj 4 2 cnv 15 301 42 empty empty coin~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 308 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -21,49 +21,53 @@
 0;
 #X obj 110 38 cnv 4 4 4 empty empty impulses 0 28 2 18 -233017 -1 0
 ;
-#X obj 5 440 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 481 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 6 358 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 378 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 393 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 434 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 113 368 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 113 388 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 183 369 signal;
-#X text 183 292 signal;
-#X obj 115 292 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 183 389 signal;
+#X text 183 312 signal;
+#X obj 115 312 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 6 282 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 6 302 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X msg 175 157 seed \$1;
-#X obj 175 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X msg 173 175 seed \$1;
+#X obj 173 156 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 147 312 seed <float>;
-#X text 239 311 - sets seed value;
-#X text 239 369 - random values;
-#X obj 113 334 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 147 332 seed <float>;
+#X text 239 331 - sets seed value;
+#X obj 113 354 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 146 335 float/signal;
-#X obj 331 167 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 138 418 2) float - seed value (default: internal);
-#X obj 225 219 else/out~;
-#X obj 334 145 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X text 138 402 1) float - probability in percentage (default 50);
-#X obj 238 148 else/imp~ 5;
-#X text 388 166 %;
-#X text 364 144 probability;
-#X obj 238 190 else/coin~, f 16;
-#X text 239 335 - probability in percentage (0 to 100);
-#X text 76 90 When [coin~] receives an impulse \, it tosses a coin
+#X text 146 355 float/signal;
+#X obj 329 185 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 100 256;
+#X text 138 459 2) float - seed value (default: internal);
+#X obj 252 237 else/out~;
+#X obj 332 163 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 12700 1;
+#X text 138 443 1) float - probability in percentage (default 50);
+#X obj 236 166 else/imp~ 5;
+#X text 386 184 %;
+#X text 362 162 probability;
+#X text 239 355 - probability in percentage (0 to 100);
+#X text 239 311 - impulse signal;
+#X obj 113 410 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 183 411 signal;
+#X obj 236 208 else/coin~, f 16;
+#X text 77 94 When [coin~] receives an impulse \, it tosses a coin
 and either passes the impulse or not according to a probability parameter.
-;
-#X text 239 291 - impulse signal;
-#X connect 18 0 33 0;
+The right outlet sends an impulse when it doesn't pass.;
+#X text 239 389 - random impulses;
+#X text 239 411 - random impulses;
+#X connect 18 0 36 0;
 #X connect 19 0 18 0;
-#X connect 25 0 33 1;
-#X connect 28 0 25 0;
-#X connect 30 0 33 0;
-#X connect 33 0 27 0;
-#X connect 33 0 27 1;
+#X connect 24 0 36 1;
+#X connect 27 0 24 0;
+#X connect 29 0 36 0;
+#X connect 36 0 26 0;
+#X connect 36 1 26 1;
