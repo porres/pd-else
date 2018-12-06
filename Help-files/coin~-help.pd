@@ -1,4 +1,4 @@
-#N canvas 483 23 566 508 10;
+#N canvas 615 57 564 583 10;
 #X obj 4 2 cnv 15 301 42 empty empty coin~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 308 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -21,53 +21,102 @@
 0;
 #X obj 110 38 cnv 4 4 4 empty empty impulses 0 28 2 18 -233017 -1 0
 ;
-#X obj 5 481 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 556 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 6 378 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 418 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 434 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 474 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 113 388 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 113 428 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 183 389 signal;
-#X text 183 312 signal;
-#X obj 115 312 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 183 429 signal;
+#X text 183 332 signal;
+#X obj 6 322 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 302 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X msg 173 175 seed \$1;
-#X obj 173 156 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X msg 153 189 seed \$1;
+#X obj 153 170 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 147 332 seed <float>;
-#X text 239 331 - sets seed value;
-#X obj 113 354 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 113 394 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 146 355 float/signal;
-#X obj 329 185 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 146 395 float/signal;
+#X obj 315 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 100 256;
-#X text 138 459 2) float - seed value (default: internal);
-#X obj 252 237 else/out~;
-#X obj 332 163 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 -228856
+#X text 138 499 2) float - seed value (default: internal);
+#X obj 234 258 else/out~;
+#X obj 318 177 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 12700 1;
-#X text 138 443 1) float - probability in percentage (default 50);
-#X obj 236 166 else/imp~ 5;
-#X text 386 184 %;
-#X text 362 162 probability;
-#X text 239 355 - probability in percentage (0 to 100);
-#X text 239 311 - impulse signal;
-#X obj 113 410 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 138 483 1) float - probability in percentage (default 50);
+#X obj 216 157 else/imp~ 5;
+#X text 239 331 - impulse signal;
+#X obj 113 450 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 183 411 signal;
-#X obj 236 208 else/coin~, f 16;
-#X text 77 94 When [coin~] receives an impulse \, it tosses a coin
-and either passes the impulse or not according to a probability parameter.
-The right outlet sends an impulse when it doesn't pass.;
-#X text 239 389 - random impulses;
-#X text 239 411 - random impulses;
-#X connect 18 0 36 0;
-#X connect 19 0 18 0;
-#X connect 24 0 36 1;
-#X connect 27 0 24 0;
-#X connect 29 0 36 0;
-#X connect 36 0 26 0;
-#X connect 36 1 26 1;
+#X text 183 451 signal;
+#X text 239 429 - random impulses;
+#X text 239 451 - random impulses;
+#X obj 216 222 else/coin~ 75 100;
+#X text 329 177 number of chances;
+#X obj 238 197 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 344 256;
+#X text 243 180 total;
+#X obj 6 522 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 164 531 -seed <float> - seed value (default: internal);
+#X text 77 94 When [coin] receives a bang \, it tosses a coin and either
+passes the bang or not according to a probability parameter \, given
+as the number of changes out of a total number of chances (default
+\, 50 out of 100 - that is 50%). The right outlet sends a bang when
+it wasn't passed., f 69;
+#X text 163 240 passed =>;
+#X text 311 239 <= not passed;
+#X obj 115 332 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 189 349 float;
+#X text 239 349 - total number of chances;
+#X text 147 365 seed <float>;
+#X text 239 364 - sets seed value;
+#X text 239 395 - number of chances to go through;
+#N canvas 637 48 500 336 example 0;
+#X obj 56 245 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 155 245 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 254 245 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 353 245 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 51 270 10%;
+#X text 151 269 30%;
+#X text 250 270 40%;
+#X text 351 269 20%;
+#X obj 56 91 else/coin~ 10 100;
+#X obj 155 121 else/coin~ 30 90, f 17;
+#X obj 254 154 else/coin~ 40 60, f 17;
+#X obj 353 180 else/coin~ 20 20;
+#X obj 56 215 else/trig2bang~;
+#X text 200 48 You can concatenate several [coin~] objects to implement
+a simple markov chain., f 29;
+#X obj 155 214 else/trig2bang~;
+#X obj 254 214 else/trig2bang~;
+#X obj 353 214 else/trig2bang~;
+#X obj 56 48 else/imp~ 2;
+#X obj 418 57 else/setdsp~;
+#X connect 8 0 12 0;
+#X connect 8 1 9 0;
+#X connect 9 0 14 0;
+#X connect 9 1 10 0;
+#X connect 10 0 15 0;
+#X connect 10 1 11 0;
+#X connect 11 0 16 0;
+#X connect 12 0 0 0;
+#X connect 14 0 1 0;
+#X connect 15 0 2 0;
+#X connect 16 0 3 0;
+#X connect 17 0 8 0;
+#X restore 473 285 pd example;
+#X connect 17 0 32 0;
+#X connect 18 0 17 0;
+#X connect 21 0 32 1;
+#X connect 24 0 21 0;
+#X connect 26 0 32 0;
+#X connect 32 0 23 0;
+#X connect 32 1 23 1;
+#X connect 34 0 32 0;
