@@ -1,4 +1,4 @@
-#N canvas 321 23 564 461 10;
+#N canvas 537 38 561 510 10;
 #X obj 4 3 cnv 15 301 42 empty empty coin 20 20 2 37 -233017 -1 0;
 #X obj 308 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -19,58 +19,97 @@
 #X obj 466 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
 #X obj 110 39 cnv 4 4 4 empty empty bangs 0 28 2 18 -233017 -1 0;
-#X obj 5 428 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 482 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 6 326 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 340 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 381 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 395 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 115 336 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 115 350 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 115 280 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 115 280 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 6 270 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X msg 175 178 seed \$1;
-#X obj 175 159 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X msg 135 178 seed \$1;
+#X obj 135 159 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 115 302 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 115 316 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 289 188 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 291 188 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 138 406 2) float - seed value (default: internal);
-#X obj 292 166 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 294 166 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X text 138 390 1) float - probability in percentage (default 50);
-#X text 346 187 %;
-#X text 322 165 probability;
-#X text 239 303 - probability in percentage (0 to 100);
-#X obj 238 169 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 198 159 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 238 238 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 198 238 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 195 280 bang;
 #X text 239 279 - a bang to be passed or not;
-#X text 189 303 float;
-#X text 195 337 bang;
-#X text 239 337 - random bangs;
-#X obj 238 211 else/coin;
-#X obj 289 238 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 189 317 float;
+#X text 195 351 bang;
+#X text 239 351 - random bangs;
+#X obj 291 238 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 115 358 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 115 372 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 195 359 bang;
-#X text 239 359 - random bangs;
-#X text 76 91 When [coin] receives a bang \, it tosses a coin and either
-passes the bang or not according to a probability parameter. The right
-outlet sends a bang when it wasn't passed.;
-#X text 175 240 passed =>;
-#X text 315 239 <= not passed;
-#X obj 442 185 coin~;
-#X connect 16 0 33 0;
+#X text 195 373 bang;
+#X text 239 373 - random bangs;
+#X text 135 240 passed =>;
+#X text 317 239 <= not passed;
+#X obj 6 445 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 164 454 -seed <float> - seed value (default: internal);
+#X text 304 165 number of chances;
+#X text 50 89 When [coin] receives a bang \, it tosses a coin and either
+passes the bang or not according to a probability parameter \, given
+as the number of changes out of a total number of chances (default
+\, 50 out of 100 - that is 50%). The right outlet sends a bang when
+it wasn't passed., f 75;
+#X obj 218 188 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 224 169 total;
+#X text 189 297 float;
+#X text 239 297 - total number of chances;
+#X text 239 317 - number of chances to g othrough;
+#X text 138 404 1) float - number of chances to go through (default
+50);
+#X text 138 420 2) float - total number of chances (default 100);
+#X obj 198 211 else/coin 75 100;
+#N canvas 637 48 500 336 example 0;
+#X obj 68 102 else/coin 10 100;
+#X obj 161 132 else/coin 30 90;
+#X obj 248 165 else/coin 40 60;
+#X obj 335 191 else/coin 20 20;
+#X obj 68 46 bng 23 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 68 236 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 161 236 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 248 236 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 335 236 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 127 46 You can concatenate several [coin] objects to implement
+a simple markov chain., f 43;
+#X text 63 267 10%;
+#X text 158 266 30%;
+#X text 246 267 40%;
+#X text 333 266 20%;
+#X connect 0 0 5 0;
+#X connect 0 1 1 0;
+#X connect 1 0 6 0;
+#X connect 1 1 2 0;
+#X connect 2 0 7 0;
+#X connect 2 1 3 0;
+#X connect 3 0 8 0;
+#X connect 4 0 0 0;
+#X restore 466 236 pd example;
+#X connect 16 0 45 0;
 #X connect 17 0 16 0;
-#X connect 19 0 33 1;
-#X connect 21 0 19 0;
-#X connect 26 0 33 0;
-#X connect 33 0 27 0;
-#X connect 33 1 34 0;
+#X connect 19 0 45 1;
+#X connect 20 0 19 0;
+#X connect 21 0 45 0;
+#X connect 38 0 45 0;
+#X connect 45 0 22 0;
+#X connect 45 1 28 0;
