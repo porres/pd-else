@@ -1,22 +1,22 @@
-#N canvas 768 226 561 455 10;
+#N canvas 591 125 561 455 10;
 #X obj 5 306 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 361 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 395 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 89 370 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 109 370 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 5 428 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 321 184 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 351 184 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 378 184 ms;
-#X obj 89 314 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 408 184 ms;
+#X obj 109 314 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 89 336 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 109 336 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 148 371 signal;
+#X text 168 371 signal;
 #X obj 24 40 cnv 4 4 4 empty empty Trigger 0 28 2 18 -233017 -1 0;
 #X obj 87 40 cnv 4 4 4 empty empty delay 0 28 2 18 -233017 -1 0;
 #X obj 4 3 cnv 15 301 42 empty empty trig.delay2~ 20 20 2 37 -233017
@@ -41,131 +41,27 @@
 0;
 #X obj 503 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
-#X obj 215 68 route dsp;
-#X obj 215 37 receive pd;
-#N canvas 977 77 379 291 set_color 0;
-#X obj 47 30 inlet;
-#X obj 147 200 s \$0-cnv;
-#X obj 47 83 select 0 1;
-#X obj 47 220 s \$0-tgl-r;
-#N canvas 0 22 712 637 off 0;
-#X obj 490 220 * -1;
-#X obj 424 300 +;
-#X obj 409 325 +;
-#X obj 347 219 * -65536;
-#X obj 424 220 * -256;
-#X obj 409 356 - 1;
-#X obj 390 189 unpack f f f;
-#X obj 225 295 +;
-#X obj 210 320 +;
-#X obj 148 214 * -65536;
-#X obj 225 215 * -256;
-#X obj 291 215 * -1;
-#X obj 210 351 - 1;
-#X obj 191 184 unpack f f f;
-#X obj 379 423 pack;
-#X msg 395 152 124 124 124;
-#X msg 203 154 220 220 220;
-#X obj 238 121 t b b;
-#X obj 238 81 inlet;
-#X obj 378 485 outlet;
-#X connect 0 0 1 1;
-#X connect 1 0 2 1;
-#X connect 2 0 5 0;
-#X connect 3 0 2 0;
-#X connect 4 0 1 0;
-#X connect 5 0 14 1;
-#X connect 6 0 3 0;
-#X connect 6 1 4 0;
-#X connect 6 2 0 0;
-#X connect 7 0 8 1;
-#X connect 8 0 12 0;
-#X connect 9 0 8 0;
-#X connect 10 0 7 0;
-#X connect 11 0 7 1;
-#X connect 12 0 14 0;
-#X connect 13 0 9 0;
-#X connect 13 1 10 0;
-#X connect 13 2 11 0;
-#X connect 14 0 19 0;
-#X connect 15 0 6 0;
-#X connect 16 0 13 0;
-#X connect 17 0 16 0;
-#X connect 17 1 15 0;
-#X connect 18 0 17 0;
-#X restore 47 113 pd off;
-#X msg 47 180 color \$1 \$2 0;
-#X msg 147 131 -4.86997e+06 -1.34937e+07;
-#X msg 147 171 color \$1 0 \$2;
-#X connect 0 0 2 0;
-#X connect 2 0 4 0;
-#X connect 2 1 6 0;
-#X connect 4 0 5 0;
-#X connect 4 0 7 0;
-#X connect 5 0 3 0;
-#X connect 6 0 7 0;
-#X connect 6 0 5 0;
-#X connect 7 0 1 0;
-#X restore 215 165 pd set_color;
-#X obj 135 122 r \$0-tgl-s;
-#N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
-0;
-#X coords 0 -1 1 1 42 27 1 100 100;
-#X restore 51 144 pd;
-#X obj 226 139 s \$0-tgl-r;
-#X msg 226 115 set \$1;
-#X msg 135 177 \; pd dsp \$1;
-#N canvas 256 32 278 194 load_check 0;
-#X obj 136 53 sig~ 1;
-#X obj 74 24 loadbang;
-#X obj 136 86 snapshot~;
-#X obj 91 52 del 5;
-#X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 74 126 switch~;
-#X connect 0 0 2 0;
-#X connect 1 0 3 0;
-#X connect 1 0 5 0;
-#X connect 2 0 4 0;
-#X connect 3 0 2 0;
-#X connect 3 0 5 0;
-#X connect 5 0 6 0;
-#X restore 51 72 pd load_check;
-#X connect 1 0 3 0;
-#X connect 1 0 7 0;
-#X connect 2 0 1 0;
-#X connect 4 0 8 0;
-#X connect 4 0 3 0;
-#X connect 7 0 6 0;
-#X connect 9 0 0 0;
-#X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 506 71 pd;
-#X text 148 314 signal;
-#X text 112 336 float/signal;
-#X text 194 314 - trigger signal (negative to positive transition)
+#X text 168 314 signal;
+#X text 132 336 float/signal;
+#X text 214 314 - trigger signal (negative to positive transition)
 ;
-#X obj 155 156 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 185 156 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 155 242 else/out~;
-#X text 321 165 delay time;
-#X text 194 336 - delay time in ms;
-#X text 194 371 - delayed trigger;
-#X text 110 404 1) float - delay time in ms (default 0);
-#X text 425 245 see also:;
-#X obj 155 180 else/impseq~;
+#X obj 185 242 else/out~;
+#X text 351 165 delay time;
+#X text 214 336 - delay time in ms;
+#X text 214 371 - delayed trigger;
+#X text 160 404 1) float - delay time in ms (default 0);
+#X text 455 254 see also:;
+#X obj 185 180 else/impseq~;
 #X text 68 88 After receiving a trigger (negative to positive transition)
 \, [trig.delay2~] sends an impulse delayed by a given time in ms. After
 receiving a trigger to delay \, following triggers received before
-its delayed output are ignored.;
-#X obj 198 211 else/trig.delay2~ 500;
-#X obj 408 267 else/trig.delay~;
-#X connect 5 0 35 1;
-#X connect 26 0 33 0;
-#X connect 33 0 35 0;
-#X connect 33 0 27 0;
-#X connect 35 0 27 1;
+its delayed output are ignored., f 64;
+#X obj 228 211 else/trig.delay2~ 500;
+#X obj 438 276 else/trig.delay~;
+#X connect 5 0 34 1;
+#X connect 25 0 32 0;
+#X connect 32 0 34 0;
+#X connect 32 0 26 0;
+#X connect 34 0 26 1;

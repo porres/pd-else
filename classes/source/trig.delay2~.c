@@ -1,6 +1,7 @@
 // Porres 2017
 
 #include "m_pd.h"
+#include <math.h>
 
 static t_class *trig_delay2_class;
 
@@ -57,14 +58,14 @@ static void *trig_delay2_new(t_floatarg f1){
     return (x);
 }
 
-static void * trig_delay2_free(t_trig_delay2 *x){
+static void *trig_delay2_free(t_trig_delay2 *x){
     inlet_free(x->x_del_let);
     return (void *)x;
 }
 
 void setup_trig0x2edelay2_tilde(void){
     trig_delay2_class = class_new(gensym("trig.delay2~"), (t_newmethod)trig_delay2_new,
-        0, sizeof(t_trig_delay2), CLASS_DEFAULT, A_DEFFLOAT, 0);
+        (t_method)trig_delay2_free, sizeof(t_trig_delay2), CLASS_DEFAULT, A_DEFFLOAT, 0);
     class_addmethod(trig_delay2_class, nullfn, gensym("signal"), 0);
     class_addmethod(trig_delay2_class, (t_method) trig_delay2_dsp, gensym("dsp"), A_CANT, 0);
 }
