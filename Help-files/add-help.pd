@@ -4,7 +4,6 @@
 #X obj 6 335 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 6 367 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
-0;
 #X obj 118 344 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 119 277 cnv 17 3 49 empty empty 0 5 9 0 16 -228856 -162280 0
