@@ -66,6 +66,10 @@ go to the pd-else folder and use "objectsdir" to set a relative path for your bu
 
 Then move it to your preferred install folder for Pd and add it to the path.
 
+Cross compiling is also possible with something like this
+
+<pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=../</pre>
+
 --------------------------------------------------------------------------
 
 ##Current Object list (286 objects):
