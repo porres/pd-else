@@ -224,7 +224,7 @@ Cross compiling is also possible with something like this
 **AUDIO PROCESSING: REVERB: [1]**
 - [plateverb~]
 
-**AUDIO PROCESSING: FILTERS [23]:**
+**AUDIO PROCESSING: FILTERS [22]:**
 - [allpass.2nd~]
 - [comb.filt~]
 - [lop.bw~]
@@ -235,7 +235,6 @@ Cross compiling is also possible with something like this
 - [crossover~]
 - [bpbank~]
 - [bicoeff]
-- [biplot]
 - [brickwall~]
 - [eq~]
 - [highpass~]
@@ -384,8 +383,9 @@ Cross compiling is also possible with something like this
 - [vu~]
 - [zerocross~]
 
-**GUI: [18]**
+**GUI: [19]**
 - [mtx.ctl]
+- [biplot]
 - [pic]
 - [colors]
 - [envelope]
