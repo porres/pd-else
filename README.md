@@ -388,7 +388,7 @@ Cross compiling is also possible with something like this
 - [biplot]
 - [pic]
 - [colors]
-- [envelope]
+- [function]
 - [slider2d]
 - [display]
 - [display~]
