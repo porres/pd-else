@@ -21,9 +21,9 @@
 #X text 15 257 -1;
 #X text 127 566 1) symbol;
 #X text 192 566 - array name (required), f 58;
-#X obj 372 212 noise~;
+#X obj 390 212 noise~;
 #N canvas 773 314 686 429 multichannel 0;
-#X obj 143 266 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 1
+#X obj 143 266 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
 1;
 #X obj 444 150 cnv 15 198 98 empty empty empty 20 12 0 14 -233017 -66577
 0;
@@ -45,28 +45,28 @@ number (starting from zero) and "-" \, such as: "0-" \, "1-" \, "2-"
 when you specify it with a second argument. The number of channels
 defines the number 'n' of inlets - where the first outlets are the
 channel inputs and the two righmost are the range intlets.;
-#X obj 323 272 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 1
+#X obj 303 266 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
 1;
-#X msg 477 308 show, f 5;
-#X obj 323 340 ./rec~ buff_\$0 2;
-#X obj 477 339 else/sample~ buff_\$0 -size 44100 -ch 2, f 24;
-#X obj 323 369 else/display~;
-#X obj 143 334 ./rec~ smp_\$0 2;
+#X msg 480 301 show, f 5;
+#X obj 480 332 else/sample~ buff_\$0 -size 44100 -ch 2, f 24;
+#X obj 303 363 else/display~;
 #X obj 143 365 else/display~;
 #X obj 48 285 else/setdsp~;
 #X text 29 170 You can manually set multi channel arrays in Pd like
 that or use the [sample~] object \, which does this internally.;
-#X obj 369 305 adc~;
-#X obj 186 290 noise~;
-#X connect 0 0 12 0;
-#X connect 7 0 9 0;
-#X connect 8 0 10 0;
-#X connect 9 0 11 0;
-#X connect 12 0 13 0;
-#X connect 16 0 9 1;
-#X connect 16 1 9 2;
-#X connect 17 0 12 1;
-#X connect 17 0 12 2;
+#X obj 369 299 adc~;
+#X obj 195 290 noise~;
+#X obj 143 334 else/rec~ smp_\$0 2;
+#X obj 303 333 else/rec~ buff_\$0 2;
+#X connect 0 0 16 0;
+#X connect 7 0 17 0;
+#X connect 8 0 9 0;
+#X connect 14 0 17 1;
+#X connect 14 1 17 2;
+#X connect 15 0 16 1;
+#X connect 15 0 16 2;
+#X connect 16 0 11 0;
+#X connect 17 0 10 0;
 #X restore 454 253 pd multichannel;
 #X obj 38 151 cnv 15 168 118 empty empty empty 20 12 0 14 -233017 -66577
 0;
@@ -151,17 +151,16 @@ By default \, recording stops when the array is filled.;
 #X array \$0-test 88200 float 0;
 #X coords 0 1 88199 -1 170 120 1 0 0;
 #X restore 107 229 graph;
-#X obj 129 132 ./rec~ \$0-test -loop 1 -start 500 -end 1500 -append
-1, f 22;
 #X text 63 28 Append \, loop \, loopstart and loopend can be indicated
 as flagss/messages., f 36;
-#X connect 5 0 10 0;
-#X connect 6 0 10 0;
+#X obj 129 132 else/rec~ \$0-test -loop 1 -start 500 -end 1500 -append
+1, f 20;
+#X connect 5 0 11 0;
+#X connect 6 0 11 0;
 #X restore 495 229 pd flags;
 #X obj 500 61 else/setdsp~;
 #X msg 285 136 rec;
 #X msg 297 166 stop;
-#X obj 285 237 ./rec~ \$0-array;
 #X obj 242 160 tgl 30 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
 1;
 #X text 109 304 float/signal;
@@ -169,12 +168,13 @@ as flagss/messages., f 36;
 #X text 191 320 - (re)starts recording, f 58;
 #X text 157 335 stop;
 #X text 191 335 - stops recording, f 58;
-#X connect 9 0 65 0;
+#X obj 285 237 else/rec~ \$0-array;
+#X connect 9 0 71 0;
 #X connect 10 0 9 0;
-#X connect 15 0 65 1;
+#X connect 15 0 71 1;
 #X connect 21 0 22 0;
-#X connect 22 0 65 0;
-#X connect 63 0 65 0;
-#X connect 64 0 65 0;
-#X connect 65 0 60 0;
-#X connect 66 0 65 0;
+#X connect 22 0 71 0;
+#X connect 63 0 71 0;
+#X connect 64 0 71 0;
+#X connect 65 0 71 0;
+#X connect 71 0 60 0;
