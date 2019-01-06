@@ -1,42 +1,42 @@
-#N canvas 649 77 559 510 10;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 649 77 563 471 10;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 75 40 cnv 4 4 4 empty empty train 0 28 2 18 -233017 -1 0;
-#X obj 25 40 cnv 4 4 4 empty empty Pulse 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 75 41 cnv 4 4 4 empty empty train 0 28 2 18 -233017 -1 0;
+#X obj 25 41 cnv 4 4 4 empty empty Pulse 0 28 2 18 -233017 -1 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 123 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
+#X obj 123 41 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
 0;
-#X obj 3 370 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 336 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 406 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 372 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 122 379 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 114 345 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 477 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 443 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 206 379 signal -;
-#X text 187 415 1) float;
-#X text 187 434 2) float;
-#X obj 214 144 nbx 5 14 -50 50 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X text 274 142 <= hz;
+#X text 198 345 signal -;
+#X text 179 381 1) float;
+#X text 179 400 2) float;
+#X obj 214 145 nbx 5 14 -50 50 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 1 256;
+#X text 274 143 <= hz;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -105,7 +105,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -137,7 +137,7 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 71 pd;
+#X restore 505 72 pd;
 #N canvas 512 142 490 395 pulse 0;
 #X obj 161 314 else/out~;
 #X obj 213 192 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
@@ -160,12 +160,12 @@ second inlet.;
 #X connect 4 0 0 0;
 #X connect 4 0 0 1;
 #X connect 7 0 4 1;
-#X restore 450 189 pd pulse width;
-#X obj 3 3 cnv 15 301 42 empty empty pulse~ 20 20 2 37 -233017 -1 0
+#X restore 450 171 pd pulse width;
+#X obj 3 4 cnv 15 301 42 empty empty pulse~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 2 3 graph;
+#X restore 2 4 graph;
 #N canvas 387 302 791 284 phase 0;
 #X text 398 21 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 - where 1 is also the start of another
@@ -177,10 +177,10 @@ cycle.;
 #X text 326 108 1;
 #X obj 188 108 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 185 133 4 0 0 0 - - -, f 4;
+#X floatatom 185 133 4 0 0 0 - - -;
 #X text 166 108 0;
 #X obj 62 194 else/sig2float~;
-#X obj 62 222 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 62 222 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 267 194 else/sig2float~;
 #X obj 267 222 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
@@ -200,15 +200,12 @@ feature is phase modulation.;
 #X connect 11 0 12 0;
 #X connect 13 0 11 0;
 #X connect 14 0 9 0;
-#X restore 443 239 pd phase offset;
-#X text 187 452 3) float;
-#X text 267 379 pulse signal;
-#X text 60 87 [pulse~] is a pulse train oscillator (alternates between
+#X restore 444 213 pd phase offset;
+#X text 179 418 3) float;
+#X text 259 345 pulse signal;
+#X text 60 88 [pulse~] is a pulse train oscillator (alternates between
 1 and 0 \, or on/off) that accepts negative frequencies \, has inlets
 for pulse width \, phase sync and phase modulation.;
-#X obj 214 204 else/sig2float~;
-#X obj 214 232 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
 #N canvas 403 51 863 462 sync 0;
 #X text 517 25 Syncing the phase with control messages is useful for
 LFOs and control with MIDI. A sync with audio is usefull for the "hard
@@ -243,8 +240,8 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X obj 266 224 else/sig2float~;
 #X text 223 139 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -313,7 +310,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -380,26 +377,26 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X connect 26 0 28 0;
 #X connect 27 0 28 0;
 #X connect 28 0 17 2;
-#X restore 492 214 pd sync;
-#X text 256 415 - frequency in hertz (default 0);
-#X text 256 434 - initial pulse width (default 0.5);
-#X text 256 452 - initial phase offset (default 0);
-#X obj 214 175 else/pulse~ 1;
-#X obj 3 274 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X restore 492 192 pd sync;
+#X text 248 381 - frequency in hertz (default 0);
+#X text 248 400 - initial pulse width (default 0.5);
+#X text 248 418 - initial phase offset (default 0);
+#X obj 214 172 else/pulse~ 1;
+#X obj 3 240 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 123 282 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 115 248 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 122 304 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 114 270 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 122 324 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 114 290 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X obj 122 345 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 114 311 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 164 346 float/signal - phase offset (modulation input);
-#X text 165 304 float/signal - pulse width (from 0 to 1);
-#X text 164 283 float/signal - frequency in hz;
-#X text 164 326 float/signal - phase sync (ressets internal phase)
+#X text 156 312 float/signal - phase offset (modulation input);
+#X text 157 270 float/signal - pulse width (from 0 to 1);
+#X text 156 249 float/signal - frequency in hz;
+#X text 156 292 float/signal - phase sync (ressets internal phase)
 ;
-#X connect 18 0 34 0;
-#X connect 28 0 29 0;
-#X connect 34 0 28 0;
+#X obj 214 206 else/display~;
+#X connect 18 0 32 0;
+#X connect 32 0 42 0;

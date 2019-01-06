@@ -72,7 +72,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (290 objects):
+##Current Object list (291 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -250,11 +250,12 @@ Cross compiling is also possible with something like this
 - [resonant2~]
 - [svfilter~]
 
-**SAMPLING/PLAYING/GRANULATION: [7]**
+**SAMPLING/PLAYING/GRANULATION: [8]**
 - [player~]
 - [gran.player~]
 - [pvoc.player~]
 - [pvoc.live~]
+- [rec~]
 - [rec.file~]
 - [play.file~]
 - [sample~]
