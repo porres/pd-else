@@ -1,19 +1,18 @@
-#N canvas 674 77 568 591 10;
-#X obj 5 560 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 674 77 565 592 10;
+#X obj 5 565 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 5 201 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 429 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 430 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 458 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 463 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 74 208 cnv 17 3 214 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 81 440 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 149 467 1) symbol;
-#X text 167 436 (none);
-#X text 218 482 - audio file to load (optional), f 44;
-#X text 149 482 2) symbol;
-#X obj 5 504 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 149 472 1) symbol;
+#X text 218 487 - audio file to load (optional), f 44;
+#X text 149 487 2) symbol;
+#X obj 5 509 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -40,7 +39,7 @@
 #X restore 3 4 graph;
 #X msg 177 130 show;
 #X msg 220 135 hide;
-#X text 218 467 - buffer name (default \$0-sample), f 44;
+#X text 218 472 - buffer name (default \$0-sample), f 44;
 #X text 173 243 clear;
 #X text 218 243 - fills all arrays with zeros, f 53;
 #X text 218 375 - normalizes to the given float value, f 53;
@@ -118,11 +117,11 @@ The "reload" message reloads the last opened file.;
 #X restore 456 142 pd load/save;
 #X text 218 391 - sets maximum buffer size in samples, f 53;
 #X text 218 407 - sets maximum buffer size in ms, f 53;
-#X text 165 510 -size <float> - sets maximum buffer size in samples
+#X text 135 518 -size <float> - sets maximum buffer size in samples
 ;
-#X text 176 524 -ms <float> - sets maximum buffer size in ms, f 45
+#X text 146 532 -ms <float> - sets maximum buffer size in ms, f 45
 ;
-#X text 176 539 -ch <float> - sets number of channels, f 45;
+#X text 146 547 -ch <float> - sets number of channels, f 45;
 #N canvas 826 138 454 461 details 0;
 #X text 150 60 <= check internal array;
 #X text 69 138 Similar to:;
@@ -151,5 +150,10 @@ give it the correct table name according to a specific channel.;
 #X restore 469 122 pd details;
 #X text 118 168 click =>;
 #X obj 177 168 else//sample~ \$0-sample stereo.wav;
-#X connect 22 0 58 0;
-#X connect 23 0 58 0;
+#X obj 84 209 cnv 17 3 214 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 119 442 list <f \, f \, f>;
+#X text 218 442 - sample's size \, sample rate and channels, f 53
+;
+#X connect 21 0 57 0;
+#X connect 22 0 57 0;
