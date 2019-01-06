@@ -1,0 +1,57 @@
+#N canvas 783 364 567 455 10;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 41 cnv 4 4 4 empty empty Complex 0 28 2 18 -233017 -1 0;
+#X obj 99 41 cnv 4 4 4 empty empty multiplication 0 28 2 18 -233017
+-1 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 4 graph;
+#X obj 3 4 cnv 15 301 42 empty empty cmul~ 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 4 graph;
+#X obj 7 420 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 7 207 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 318 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 386 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 151 329 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 150 215 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 223 154 else/cmul~;
+#X text 241 400 (none);
+#X text 183 217 signal - real part of complex number 1;
+#X obj 150 239 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 150 265 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X obj 150 289 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+;
+#X text 183 241 signal - imaginary part of complex number 1;
+#X text 183 267 signal - real part of complex number 2;
+#X text 183 291 signal - imaginary part of complex number 2;
+#X text 183 330 signal - real part;
+#X obj 151 350 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 183 351 signal - imaginary part;
+#X text 99 96 This is an extra object that performs complex multiplication
+\, it is used in the [conv~] abstraction for a bit more efficiency
+, f 63;

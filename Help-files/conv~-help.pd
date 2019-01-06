@@ -1,0 +1,57 @@
+#N canvas 539 97 567 443 10;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 41 cnv 4 4 4 empty empty Partitioned 0 28 2 18 -233017 -1
+0;
+#X obj 109 41 cnv 4 4 4 empty empty convolution 0 28 2 18 -233017 -1
+0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 4 graph;
+#X obj 3 4 cnv 15 301 42 empty empty conv~ 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 4 graph;
+#X obj 7 410 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 7 287 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 318 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 356 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 151 329 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 150 295 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 177 214 else/out~;
+#X text 116 381 2) symbol;
+#X text 122 364 1) float;
+#X text 180 365 -;
+#X text 213 297 signal - input signal;
+#X text 213 330 signal - output signal;
+#X text 193 364 partition size (default 1024 \, minimum 64), f 53
+;
+#X text 75 89 [conv~] is an abstraction that performs partitioned convolution.
+It needs at least an Impulse Response sound file as an argument.,
+f 65;
+#X text 182 381 - file name to open as impulse response (obrigatory)
+;
+#X obj 177 183 else/conv~ 256 IR.wav;
+#X obj 177 151 else/play.file~ 1 vacuous.wav 1 -loop;
+#X connect 27 0 18 0;
+#X connect 27 0 18 1;
+#X connect 28 0 27 0;

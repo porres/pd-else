@@ -44,7 +44,6 @@
 #X msg 181 170 hz;
 #X text 202 394 (none);
 #X obj 4 419 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 154 426 -khz;
 #N canvas 545 247 411 216 pd-dsp-started 0;
 #X obj 79 94 r pd-dsp-started;
 #X obj 79 157 else/display 6;
@@ -59,7 +58,6 @@ DSP is started in Pd., f 30;
 #X obj 213 246 else/display;
 #X text 166 318 ms;
 #X text 184 318 - set and get the sample rate period in ms;
-#X text 184 426 - sets to frequency in khz;
 #X text 184 443 - sets to period in ms;
 #X text 160 443 -ms;
 #X text 57 138 The default output is the block size in samples.;
@@ -76,8 +74,10 @@ the default size is presumed to be 64). The period is reported in samples
 or ms \, but you can also query the corresponding frequency in hz.
 , f 64;
 #X obj 213 220 else/blocksize~ -ms;
-#X connect 17 0 44 0;
-#X connect 23 0 44 0;
-#X connect 28 0 44 0;
-#X connect 37 0 44 0;
-#X connect 44 0 29 0;
+#X text 160 426 -hz;
+#X text 184 426 - sets to frequency in hz;
+#X connect 17 0 42 0;
+#X connect 23 0 42 0;
+#X connect 27 0 42 0;
+#X connect 35 0 42 0;
+#X connect 42 0 28 0;

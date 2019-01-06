@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-15 (Released december 8th 2018)
+### Version 1.0 beta-16 (Unreleased)
 
 Needs Pd 0.49-0 or above
 
@@ -72,7 +72,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (286 objects):
+##Current Object list (290 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -91,8 +91,9 @@ Cross compiling is also possible with something like this
 - [loadbanger] / [lb]
 - [initmess]
 
-**MESSAGE MANAGEMENT: [13]**
+**MESSAGE MANAGEMENT: [14]**
 - [break] 
+- [separate] 
 - [fromany] 
 - [toany] 
 - [any2symbol]
@@ -197,8 +198,9 @@ Cross compiling is also possible with something like this
 - [loop]
 - [moses~]
 
-**AUDIO PROCESSING: [22]**
+**AUDIO PROCESSING: [23]**
 - [downsample~]
+- [conv~]
 - [allpass.rev~]
 - [comb.rev~]
 - [fbdelay~]
@@ -248,13 +250,14 @@ Cross compiling is also possible with something like this
 - [resonant2~]
 - [svfilter~]
 
-**SAMPLING/PLAYING/GRANULATION: [6]**
+**SAMPLING/PLAYING/GRANULATION: [7]**
 - [player~]
 - [gran.player~]
 - [pvoc.player~]
 - [pvoc.live~]
 - [rec.file~]
 - [play.file~]
+- [sample~]
 
 **PHYSICAL MODELLING: [1]**
 - [pluck~]
@@ -404,5 +407,6 @@ Cross compiling is also possible with something like this
 - [setdsp~]
 - [openfile]
 
-**EXTRA: [1]**
+**EXTRA: [2]**
 - [output~]
+- [cmul~]

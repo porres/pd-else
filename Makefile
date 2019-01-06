@@ -14,6 +14,9 @@ uname := $(shell uname -s)
 # Sources: ##############################################################
 #########################################################################
 
+# EXTRA:
+cmul~.class.sources := Classes/Source/cmul~.c
+
 # GUI:
 function.class.sources := Classes/Source/function.c
 keyboard.class.sources := Classes/Source/keyboard.c
@@ -58,6 +61,7 @@ rescale.class.sources := Classes/Source/rescale.c
 rint.class.sources := Classes/Source/rint.c
 routeall.class.sources := Classes/Source/routeall.c
 routetype.class.sources := Classes/Source/routetype.c
+separate.class.sources := Classes/Source/separate.c
 fromany.class.sources := Classes/Source/fromany.c
 toany.class.sources := Classes/Source/toany.c
 touch.in.class.sources := Classes/Source/touch.in.c
