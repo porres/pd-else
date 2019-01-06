@@ -71,41 +71,44 @@
 #X text 73 84 [sample~] is an abstraction that creates an audio buffer
 which you can use to load a sample. It can load and save multichannel
 files., f 70;
-#N canvas 487 434 795 373 load/save 0;
-#X msg 548 167 clear;
-#X text 575 141 open/close buffer window;
-#X text 592 166 clears all channels;
-#X text 536 34 read a file specified by a symbol (.wav or .aif/.aiff)
+#N canvas 276 442 781 476 load/save 0;
+#X msg 548 243 clear;
+#X text 575 217 open/close buffer window;
+#X text 592 242 clears all channels;
+#X text 536 110 read a file specified by a symbol (.wav or .aif/.aiff)
 , f 27;
-#X text 487 67 without symbol: opens dialog box;
-#X text 517 101 reloads the last opened file;
-#X text 573 238 without symbol: opens dialog box, f 17;
-#X msg 493 138 show;
-#X msg 534 139 hide;
-#X msg 465 102 reload;
-#X msg 454 67 load;
-#X msg 431 41 load stereo.wav;
-#X msg 534 213 save test.wav;
-#X msg 534 244 save;
-#X text 38 114 The "save" message saves the contents of [sample~] into
+#X text 487 143 without symbol: opens dialog box;
+#X text 517 177 reloads the last opened file;
+#X text 573 314 without symbol: opens dialog box, f 17;
+#X msg 493 214 show;
+#X msg 534 215 hide;
+#X msg 465 178 reload;
+#X msg 454 143 load;
+#X msg 534 289 save test.wav;
+#X msg 534 320 save;
+#X text 38 190 The "save" message saves the contents of [sample~] into
 an audio file. If no symbol is given \, a standard file dialog is opened
 for naming the file., f 59;
-#X text 38 153 You can specify a file extension with the "wav" and
+#X text 38 229 You can specify a file extension with the "wav" and
 "aif" messages \, but you can also specify a file extension in the
 given symbol (such as "test.wav"). If you don't specify an extension
 \, [sample~] saves in the same extension of the most recently opened
 audio file or the last given extension message ("wav" of "aif"). By
 default \, [sample~] saves in .wav format., f 59;
-#X text 38 240 The "depth" message sets the bit depth for writting
+#X text 38 316 The "depth" message sets the bit depth for writting
 files \, it accepts floats:, f 59;
-#X text 161 259 16 - 16-bit integer (default) \; 24 - 24-bit integer
+#X text 161 335 16 - 16-bit integer (default) \; 24 - 24-bit integer
 \; 32 - 32-bit float \;;
-#X text 628 212 writes to a file;
-#X text 39 49 You can specify a sound file to load as the second argument
+#X text 628 288 writes to a file;
+#X text 39 125 You can specify a sound file to load as the second argument
 or via the "load" message ([sample~] can load 'wav' and 'aif/aiff'
 sound files). Without a given symbol \, "load" opens a dialog box.
 The "reload" message reloads the last opened file.;
-#X obj 430 285 else/sample~ buffer_\$0 -ch 2;
+#X msg 441 127 load stereo.wav;
+#X obj 430 361 else/sample~ buffer_\$0 -ch 2;
+#X obj 435 394 else/display;
+#X msg 404 88 load stereo.wav 44100 88200;
+#X msg 426 53 load stereo.wav 44100;
 #X connect 0 0 20 0;
 #X connect 7 0 20 0;
 #X connect 8 0 20 0;
@@ -113,7 +116,10 @@ The "reload" message reloads the last opened file.;
 #X connect 10 0 20 0;
 #X connect 11 0 20 0;
 #X connect 12 0 20 0;
-#X connect 13 0 20 0;
+#X connect 19 0 20 0;
+#X connect 20 0 21 0;
+#X connect 22 0 20 0;
+#X connect 23 0 20 0;
 #X restore 456 142 pd load/save;
 #X text 218 391 - sets maximum buffer size in samples, f 53;
 #X text 218 407 - sets maximum buffer size in ms, f 53;
