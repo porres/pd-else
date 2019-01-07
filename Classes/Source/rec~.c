@@ -48,8 +48,6 @@ static void rec_set(t_rec *x, t_symbol *s){
 }
 
 static void rec_reset(t_rec *x){
-    if(x->x_sync > 0)
-        x->x_isrunning = 1; // ???
     x->x_start = 0;
     x->x_end = (t_float)x->x_buffer->c_npts/x->x_ksr; //array size in samples
 }
