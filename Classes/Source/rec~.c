@@ -12,7 +12,7 @@ typedef struct _rec{
     t_buffer   *x_buffer;
     t_float    *x_gate_vec; // gate signal
     t_float     x_last_gate;
-    int         x_appendmode;
+    int         x_continuemode;
     int         x_loopmode;
     int         x_phase;       /* writing head */
     t_float     x_f; // dummy input float
@@ -51,7 +51,6 @@ static void rec_reset(t_rec *x){
         x->x_isrunning = 1;
     x->x_start = 0;
     x->x_end = (t_float)x->x_buffer->c_npts/x->x_ksr; //array size in samples
-    x->x_phase = 0.;
 }
 
 static int rec_startpoint(t_rec *x, t_floatarg f){
@@ -85,8 +84,8 @@ static int rec_endpoint(t_rec *x, t_floatarg f){
     return endindex;
 }
 
-static void rec_append(t_rec *x, t_floatarg f){
-	x->x_appendmode = (f != 0);
+static void rec_continue(t_rec *x, t_floatarg f){
+	x->x_continuemode = (f != 0);
 }
 
 static void rec_loop(t_rec *x, t_floatarg f){
@@ -102,7 +101,7 @@ static void rec_stop(t_rec *x){
     x->x_isrunning = 0;
     clock_delay(x->x_clock, 0); // trigger a redraw
     x->x_sync = 0.;
-    if(x->x_appendmode == 0)
+    if(x->x_continuemode == 0)
         x->x_phase = 0.;
 }
 
@@ -130,8 +129,8 @@ static t_int *rec_perform(t_int *w){
             startsamp = rec_startpoint(x, startms);
             endsamp = rec_endpoint(x, endms);
             range = endsamp - startsamp;
-            //append mode shouldn't reset phase
-            if(x->x_newrun == 1 && x->x_appendmode == 0){
+            //continue mode shouldn't reset phase
+            if(x->x_newrun == 1 && x->x_continuemode == 0){
                 //isrunning 0->1 from last block, means reset phase appropriately
                 x->x_newrun = 0;
                 x->x_phase = startsamp;
@@ -219,7 +218,7 @@ static void *rec_new(t_symbol *s, int argc, t_atom *argv){
     t_symbol *dummy = s;
     dummy = NULL;
     t_float numchan = 1;
-    t_float append = 0;
+    t_float continuemode = 0;
     t_float loopstatus = 0;
     t_float start = 0;
     t_float end = -1;
@@ -237,9 +236,9 @@ static void *rec_new(t_symbol *s, int argc, t_atom *argv){
     while(argc > 0){
         if(argv->a_type == A_SYMBOL){
             t_symbol * curarg = atom_getsymbolarg(0, argc, argv);
-            if(!strcmp(curarg->s_name, "-append")){
+            if(!strcmp(curarg->s_name, "-continue")){
                 if(argc >= 2){
-                    append = atom_getfloatarg(1, argc, argv);
+                    continuemode = atom_getfloatarg(1, argc, argv);
                     argc-=2;
                     argv+=2;
                 }
@@ -326,7 +325,7 @@ static void *rec_new(t_symbol *s, int argc, t_atom *argv){
         x->x_start = start;
         x->x_end = end;
         buffer_setminsize(x->x_buffer, 2);
-        rec_append(x, append);
+        rec_continue(x, continuemode);
         rec_loop(x, loopstatus);
         x->x_clock = clock_new(x, (t_method)rec_tick);
         x->x_clocklasttick = clock_getlogicaltime();
@@ -346,7 +345,7 @@ void rec_tilde_setup(void){
 			     sizeof(t_rec), CLASS_DEFAULT, A_GIMME, 0);
     CLASS_MAINSIGNALIN(rec_class, t_rec, x_f);
     class_addmethod(rec_class, (t_method)rec_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(rec_class, (t_method)rec_append, gensym("append"), A_FLOAT, 0);
+    class_addmethod(rec_class, (t_method)rec_continue, gensym("continue"), A_FLOAT, 0);
     class_addmethod(rec_class, (t_method)rec_loop, gensym("loop"), A_FLOAT, 0);
     class_addmethod(rec_class, (t_method)rec_set, gensym("set"), A_SYMBOL, 0);
     class_addmethod(rec_class, (t_method)rec_reset, gensym("reset"), 0);
