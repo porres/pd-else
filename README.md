@@ -72,7 +72,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (291 objects):
+##Current Object list (292 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -289,7 +289,7 @@ Cross compiling is also possible with something like this
 - [bl.vsaw~]
 - [bl.wavetable~]
 
-**CHAOTIC GENERATORS: [23]**
+**CHAOTIC GENERATORS: [24]**
 - [brown~] 
 - [clipnoise~] 
 - [crackle~] 
@@ -313,6 +313,7 @@ Cross compiling is also possible with something like this
 - [stepnoise~]
 - [pinknoise~]
 - [xmod~]
+- [xmod2~]
 
 **SIGNAL ROUTING: [11]**
 - [balance~]
