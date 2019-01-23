@@ -1,4 +1,4 @@
-#N canvas 528 108 559 575 10;
+#N canvas 742 76 561 628 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -20,25 +20,25 @@
 0;
 #X obj 3 287 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 389 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 418 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 444 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 473 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 122 398 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 122 427 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 122 295 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 122 295 cnv 17 3 52 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 534 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 599 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 165 296 float/signal -;
-#X obj 122 341 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 122 373 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 165 342 float/signal -;
-#X obj 122 365 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X text 165 374 float/signal -;
+#X obj 122 395 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 200 398 signal -;
-#X text 154 453 1) float;
-#X obj 135 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 200 427 signal -;
+#X text 154 482 1) float;
+#X obj 145 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
@@ -149,42 +149,60 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 202 224 else/out~;
-#X text 154 472 2) float;
+#X obj 196 218 else/out~;
+#X text 154 501 2) float;
 #X obj 25 40 cnv 4 4 4 empty empty Cross 0 28 2 18 -233017 -1 0;
-#X obj 122 316 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 122 352 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 165 317 float/signal -;
-#X text 154 492 3) float;
-#X text 154 512 4) float;
-#X obj 197 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 165 353 float/signal -;
+#X text 154 521 3) float;
+#X text 154 541 4) float;
+#X obj 207 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 256 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 266 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 314 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 324 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 122 418 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 122 447 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 200 418 signal -;
-#X text 165 366 float/signal -;
-#X text 261 318 modulation index 1;
-#X text 261 366 modulation index 2;
-#X text 262 297 frequency of oscillator 1;
-#X text 261 342 frequency of oscillator 2;
-#X text 261 398 output of oscillator 1;
-#X text 261 418 output of oscillator 2;
-#X text 213 453 - frequency of oscillator 1 in hertz (default 0);
-#X text 213 492 - frequency of oscillator 2 in hertz (default 0);
-#X text 213 472 - modulation index 1 (default 0);
-#X text 213 512 - modulation index 2 (default 0);
-#X text 60 86 [xmod~] performs cross modulation of two sine oscillators.
-For now \, the only modulation option is phase modulation., f 61;
-#X text 140 131 freq1;
-#X text 198 130 index1;
-#X text 261 130 freq2;
-#X text 318 130 index2;
-#N canvas 767 193 518 324 details 0;
-#N canvas 682 272 553 491 Cross_Phase_Modulation 0;
+#X text 200 447 signal -;
+#X text 165 396 float/signal -;
+#X text 262 354 modulation index 1;
+#X text 262 396 modulation index 2;
+#X text 261 297 frequency of oscillator 1;
+#X text 261 374 frequency of oscillator 2;
+#X text 261 427 output of oscillator 1;
+#X text 261 447 output of oscillator 2;
+#X text 213 482 - frequency of oscillator 1 in hertz (default 0);
+#X text 213 521 - frequency of oscillator 2 in hertz (default 0);
+#X text 213 501 - modulation index 1 (default 0);
+#X text 213 541 - modulation index 2 (default 0);
+#X text 150 131 freq1;
+#X text 208 130 index1;
+#X text 271 130 freq2;
+#X text 328 130 index2;
+#N canvas 817 83 533 627 details 0;
+#X obj 141 110 hsl 128 15 1 1000 1 0 empty index1 empty -2 -8 0 10
+-228856 -1 -1 0 1;
+#X obj 138 137 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 73 136 nbx 5 14 -1e+37 1e+37 0 0 empty freq1 empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 352 111 hsl 128 15 1 1000 1 0 empty index2 empty -2 -8 0 10
+-191407 -1 -1 0 1;
+#X obj 349 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-191407 -1 -1 0 256;
+#X obj 282 137 nbx 5 14 -1e+37 1e+37 0 0 empty freq2 empty 0 -8 0 10
+-191407 -1 -1 0 256;
+#X obj 103 258 else/out~;
+#X obj 255 257 else/out~;
+#X text 379 110 index 2;
+#X text 169 109 index 1;
+#X text 81 117 Freq 1;
+#X text 290 118 Freq 2;
+#X text 122 28 You can find the details on how [xmod~] is implemented
+in with the subpatches below \, compare., f 32;
+#N canvas 951 255 553 491 Cross_Phase_Modulation 0;
 #X obj 298 57 inlet~;
 #X obj 377 57 inlet~;
 #X obj 44 56 inlet~;
@@ -218,47 +236,109 @@ For now \, the only modulation option is phase modulation., f 61;
 #X connect 14 0 13 0;
 #X connect 15 0 7 0;
 #X connect 15 0 4 0;
-#X restore 64 191 pd Cross_Phase_Modulation;
-#X obj 132 85 hsl 128 15 0.01 1 1 0 empty index1 empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 129 112 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 64 111 nbx 5 14 -1e+37 1e+37 0 0 empty freq1 empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 343 86 hsl 128 15 0.01 1 1 0 empty index2 empty -2 -8 0 10 -191407
--1 -1 0 1;
-#X obj 340 113 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--191407 -1 -1 0 256;
-#X obj 273 112 nbx 5 14 -1e+37 1e+37 0 0 empty freq2 empty 0 -8 0 10
--191407 -1 -1 0 256;
-#X obj 64 229 else/out~;
-#X obj 235 232 else/out~;
-#X obj 235 192 else/xmod~;
-#X text 370 85 index 2;
-#X text 160 84 index 1;
-#X text 72 92 Freq 1;
-#X text 281 93 Freq 2;
-#X text 73 27 You can find the details on how [xmod~] is implemented
-in the [pd Cross_Phase_Modulation] below.;
-#X connect 0 0 7 0;
-#X connect 0 1 7 1;
-#X connect 1 0 2 0;
-#X connect 2 0 0 1;
-#X connect 2 0 9 1;
-#X connect 3 0 0 0;
-#X connect 3 0 9 0;
-#X connect 4 0 5 0;
-#X connect 5 0 0 3;
-#X connect 5 0 9 3;
-#X connect 6 0 0 2;
-#X connect 6 0 9 2;
-#X connect 9 0 8 0;
-#X connect 9 1 8 1;
+#X restore 72 467 pd Cross_Phase_Modulation;
+#X obj 140 361 hsl 128 15 0.01 1 1 0 empty index1 empty -2 -8 0 10
+-228856 -1 -1 10800 1;
+#X obj 137 388 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.502097 256;
+#X obj 72 387 nbx 5 14 -1e+37 1e+37 0 0 empty freq1 empty 0 -8 0 10
+-228856 -1 -1 125 256;
+#X obj 351 362 hsl 128 15 0.01 1 1 0 empty index2 empty -2 -8 0 10
+-191407 -1 -1 6100 1;
+#X obj 348 389 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-191407 -1 -1 0.0913335 256;
+#X obj 281 388 nbx 5 14 -1e+37 1e+37 0 0 empty freq2 empty 0 -8 0 10
+-191407 -1 -1 141 256;
+#X obj 102 509 else/out~;
+#X obj 264 508 else/out~;
+#X text 378 361 index 2;
+#X text 168 360 index 1;
+#X text 80 368 Freq 1;
+#X text 289 369 Freq 2;
+#N canvas 1033 154 475 470 Cross_Freq_Modulation 0;
+#X obj 275 47 inlet~;
+#X obj 339 47 inlet~;
+#X obj 41 46 inlet~;
+#X obj 110 46 inlet~;
+#X obj 260 424 outlet~;
+#X obj 370 227 block~ 1;
+#X obj 95 230 *~;
+#X obj 324 333 *~;
+#X obj 125 95 cnv 15 130 30 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X text 140 75 feedback;
+#X obj 41 414 outlet~;
+#X obj 41 168 else/sine~;
+#X obj 260 289 else/sine~;
+#X text 108 25 index 1;
+#X text 335 21 index 2;
+#X text 278 22 freq 2;
+#X text 42 25 freq 1;
+#X obj 131 103 delread~ \$0-fm_fb 0;
+#X obj 260 262 +~;
+#X obj 41 139 +~;
+#X obj 316 363 cnv 15 140 30 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X obj 324 370 delwrite~ \$0-fm_fb 1;
+#X connect 0 0 18 1;
+#X connect 1 0 7 1;
+#X connect 2 0 19 0;
+#X connect 3 0 6 1;
+#X connect 6 0 18 0;
+#X connect 7 0 21 0;
+#X connect 11 0 6 0;
+#X connect 11 0 10 0;
+#X connect 12 0 7 0;
+#X connect 12 0 4 0;
+#X connect 17 0 19 1;
+#X connect 18 0 12 0;
+#X connect 19 0 11 0;
+#X restore 73 216 pd Cross_Freq_Modulation;
+#X obj 264 468 else/xmod~ -pm;
+#X obj 244 217 else/xmod~;
+#X connect 0 0 1 0;
+#X connect 1 0 26 1;
+#X connect 1 0 28 1;
+#X connect 2 0 26 0;
+#X connect 2 0 28 0;
+#X connect 3 0 4 0;
+#X connect 4 0 26 3;
+#X connect 4 0 28 3;
+#X connect 5 0 26 2;
+#X connect 5 0 28 2;
+#X connect 13 0 20 0;
+#X connect 13 1 20 1;
+#X connect 14 0 15 0;
+#X connect 15 0 13 1;
+#X connect 15 0 27 1;
+#X connect 16 0 13 0;
+#X connect 16 0 27 0;
+#X connect 17 0 18 0;
+#X connect 18 0 13 3;
+#X connect 18 0 27 3;
+#X connect 19 0 13 2;
+#X connect 19 0 27 2;
+#X connect 26 0 6 0;
+#X connect 26 1 6 1;
+#X connect 27 0 21 0;
+#X connect 27 1 21 1;
+#X connect 28 0 7 0;
+#X connect 28 1 7 1;
 #X restore 480 253 pd details;
-#X obj 151 182 else/xmod~ 150 0.5 120 0.1;
-#X connect 21 0 54 0;
-#X connect 32 0 54 1;
-#X connect 33 0 54 2;
-#X connect 34 0 54 3;
-#X connect 54 0 25 0;
-#X connect 54 1 25 1;
+#X obj 3 563 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 225 316 pm -;
+#X text 261 317 sets to phase modulation;
+#X text 225 333 fm -;
+#X text 261 334 sets to frequency modulation;
+#X text 101 574 -pm: sets to phase modulation (default is frequency
+modulation), f 63;
+#X text 60 86 [xmod~] performs cross modulation of two sine oscillators.
+It can perform either frequency (default) or phase modulation., f
+61;
+#X obj 160 182 else/xmod~ 150 400 305 350;
+#X connect 21 0 60 0;
+#X connect 32 0 60 1;
+#X connect 33 0 60 2;
+#X connect 34 0 60 3;
+#X connect 60 0 25 0;
+#X connect 60 1 25 1;
