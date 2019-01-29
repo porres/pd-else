@@ -1,0 +1,179 @@
+#N canvas 799 23 560 502 10;
+#X obj 2 2 cnv 15 301 42 empty empty fdn.rev~ 20 20 2 37 -233017 -1
+0;
+#X obj 305 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 2 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 304 2 pd;
+#X obj 344 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 22 39 cnv 4 4 4 empty empty Feedback 0 28 2 18 -233017 -1 0
+;
+#X obj 99 39 cnv 4 4 4 empty empty delay 0 28 2 18 -233017 -1 0;
+#X obj 457 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 477 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 514 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 463 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 501 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 646 47 732 843 example 1;
+#X obj 140 122 bng 18 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
+-1;
+#X floatatom 272 603 5 0 0 0 - - -;
+#X floatatom 328 602 5 0 0 0 - - -;
+#X obj 85 141 noise~;
+#X obj 125 187 *~;
+#X msg 293 547 reset;
+#X text 322 518 print delay lengths;
+#X text 330 545 reset state;
+#X text 173 194 specify delay line lengths manually;
+#X msg 192 263 lin 32 50 2175;
+#X msg 202 285 lin 8 75 100;
+#X msg 212 338 lin 32 100 105;
+#X msg 221 389 lin 32 1000 1005;
+#X msg 231 410 lin 32 100 2015;
+#X msg 246 442 exp 32 10 5000;
+#X msg 256 466 exp 64 1000 10;
+#X msg 268 489 exp 8 50 175;
+#X msg 175 217 501 752 5003 7504 105 206 307 408;
+#X text 311 272 specify a delay length range (<type> <# lines> <min>
+<max>), f 30;
+#X msg 282 519 print;
+#X obj 255 728 else/out~;
+#X text 275 583 low;
+#X text 328 582 high;
+#X text 259 94 print not working....;
+#X text 132 47 The number of delay lines need to be multiples of 4
+(?) and the delay size needs to be a power of 2!;
+#X text 308 336 <=;
+#X obj 64 176 brown~;
+#X msg 49 367 lin 64 101 103;
+#X msg 437 446 lin 128 110 150;
+#X msg 415 400 lin 512 150 190;
+#X msg 223 128 1500 1 1000 0;
+#X msg 42 507 lin 128 101 108;
+#X obj 447 689 else/pluck~ -in;
+#X obj 559 692 else/brown~;
+#X obj 507 586 else/randf~ 30 250;
+#X obj 513 624 else/randf~ 2500 5000;
+#X obj 512 663 else/randf~ 500 20000;
+#X obj 468 552 else/dust~ 0.5;
+#X obj 249 675 drive~ 0.5;
+#X obj 318 677 drive~ 0.5;
+#X obj 140 154 else/envgen~ 1500 0.5 2500 0;
+#X msg 424 354 exp 512 100 190;
+#X obj 217 627 ./fdn.rev~ 2048 800000;
+#X msg 376 322 exp 1024 50 900;
+#X obj 107 628 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 407 566 impseq~;
+#X obj 470 497 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 102 662 tempo~ 60;
+#X msg 253 360 lin 32 240 250;
+#X msg 229 317 exp 64 340 350;
+#X connect 0 0 40 0;
+#X connect 1 0 42 1;
+#X connect 2 0 42 2;
+#X connect 4 0 42 0;
+#X connect 5 0 42 0;
+#X connect 9 0 42 0;
+#X connect 10 0 42 0;
+#X connect 11 0 42 0;
+#X connect 12 0 42 0;
+#X connect 13 0 42 0;
+#X connect 14 0 42 0;
+#X connect 15 0 42 0;
+#X connect 16 0 42 0;
+#X connect 17 0 42 0;
+#X connect 19 0 42 0;
+#X connect 26 0 4 0;
+#X connect 27 0 42 0;
+#X connect 28 0 42 0;
+#X connect 29 0 42 0;
+#X connect 30 0 40 0;
+#X connect 31 0 42 0;
+#X connect 32 0 42 0;
+#X connect 33 0 32 4;
+#X connect 34 0 32 0;
+#X connect 35 0 32 2;
+#X connect 36 0 32 3;
+#X connect 37 0 32 1;
+#X connect 37 0 34 0;
+#X connect 37 0 35 0;
+#X connect 37 0 36 0;
+#X connect 38 0 20 0;
+#X connect 39 0 20 1;
+#X connect 40 0 4 1;
+#X connect 41 0 42 0;
+#X connect 42 0 38 0;
+#X connect 42 1 39 0;
+#X connect 43 0 42 0;
+#X connect 44 0 47 0;
+#X connect 45 0 34 0;
+#X connect 45 0 36 0;
+#X connect 45 0 35 0;
+#X connect 45 0 32 1;
+#X connect 46 0 45 0;
+#X connect 47 0 42 0;
+#X connect 48 0 42 0;
+#X connect 49 0 42 0;
+#X restore 442 211 pd example;
+#X obj 195 145 bng 18 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
+-1;
+#X obj 214 241 else/out~;
+#X obj 146 39 cnv 4 4 4 empty empty network 0 28 2 18 -233017 -1 0
+;
+#X obj 1 311 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+-228856 -1 0;
+#X obj 1 382 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+13 -228856 -1 0;
+#X obj 1 435 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+0 13 -228856 -1 0;
+#X obj 100 318 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X obj 100 339 cnv 17 3 17 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+-162280 0;
+#X text 148 318 signal;
+#X obj 100 360 cnv 17 3 17 empty \$0-pddp.cnv.let.2 2 5 9 0 16 -228856
+-162280 0;
+#X text 154 362 float;
+#X text 136 442 1) float;
+#X text 136 458 2) float;
+#X obj 1 477 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+14 -228856 -66577 0;
+#X obj 195 177 else/impseq~;
+#X obj 215 39 cnv 4 4 4 empty empty reverberator 0 28 2 18 -233017
+-1 0;
+#X obj 100 390 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X obj 100 411 cnv 17 3 17 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+-162280 0;
+#X text 148 390 signal;
+#X text 148 412 signal;
+#X text 154 341 float;
+#X text 198 318 - signal input, f 41;
+#X text 198 341 - low frequency reverb time (60dB time);
+#X text 198 362 - high frequency reverb time (60dB time), f 41;
+#X text 198 389 - left output of the FDN reverberator, f 41;
+#X text 198 412 - right output of the FDN reverberator, f 41;
+#X text 198 442 - max number of delay lines (default 8 \, minimum 4)
+;
+#X text 198 458 - total memory in samples (default 65536 \, min 64)
+;
+#X text 83 90 [fdn.rev~] is a feedback delay network reverberator that
+uses a householder reflection feedback matrix.;
+#X obj 443 249 creb/fdn~;
+#X obj 195 204 fdn.rev~ 8 400;
+#X connect 13 0 27 0;
+#X connect 27 0 43 0;
+#X connect 43 0 14 0;
+#X connect 43 1 14 1;
