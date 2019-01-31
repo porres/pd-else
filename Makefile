@@ -187,6 +187,7 @@ xfade~.class.sources := Classes/Source/xfade~.c
 xgate~.class.sources := Classes/Source/xgate~.c
 xgate2~.class.sources := Classes/Source/xgate2~.c
 xmod~.class.sources := Classes/Source/xmod~.c
+xmod2~.class.sources := Classes/Source/xmod2~.c
 xselect~.class.sources := Classes/Source/xselect~.c
 xselect2~.class.sources := Classes/Source/xselect2~.c
 wrap2.class.sources := Classes/Source/wrap2.c
