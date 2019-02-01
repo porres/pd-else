@@ -4,7 +4,6 @@
 #include "m_pd.h"
 
 // Pattern types
-#define MAKESYMBOL_UNSUPPORTED  0
 #define MAKESYMBOL_LITERAL      1
 #define MAKESYMBOL_MINSLOTTYPE  2
 #define MAKESYMBOL_INT          2
@@ -26,9 +25,9 @@
 typedef struct _makesymbol{
     t_object  x_ob;
     int       x_nslots;
-    int       x_nproxies;  /* as requested (and allocated) */
+    int       x_nproxies;  // as requested (and allocated)
     t_pd    **x_proxies;
-    int       x_fsize;     /* as allocated (i.e. including a terminating 0) */
+    int       x_fsize;     // as allocated (i.e. including a terminating 0)
     char     *x_fstring;
 }t_makesymbol;
 
@@ -61,14 +60,15 @@ static void makesymbol_proxy_checkit(t_makesymbol_proxy *x, char *buf){
             else if(x->p_type == MAKESYMBOL_FLOAT)
                 result = sprintf(buf, x->p_pattern, f);
             else if(x->p_type == MAKESYMBOL_CHAR) // a 0 input into %c nulls output
-    // float into %c is truncated, but CHECKME large/negative values */
+    // float into %c is truncated, but CHECKME large/negative values
                 result = sprintf(buf, x->p_pattern, (unsigned char)f);
             else if(x->p_type == MAKESYMBOL_STRING){ // a float into %s is ok
                 char tmp[64];  // rethink
                 sprintf(tmp, "%g", f);
                 result = sprintf(buf, x->p_pattern, tmp);
             }
-            else pd_error(x, "[makesymbol]: can't convert float to type of argument %d", x->p_id + 1);
+            else
+                pd_error(x, "[makesymbol]: can't convert float (this shouldn't happen)");
             if(result > 0)
                 valid = 1;
         }
@@ -84,11 +84,13 @@ static void makesymbol_proxy_checkit(t_makesymbol_proxy *x, char *buf){
                 if (result >= 0)
                     valid = 1;
             }
-            else pd_error(x, "[makesymbol]: can't convert symbol to type of argument %d", x->p_id + 1);
+            else
+                pd_error(x, "[makesymbol]: can't convert (type mismatch)");
         }
         *pattend = tmp;
     }
-    else pd_error(x, "makesymbol_proxy_checkit");
+    else
+        pd_error(x, "makesymbol_proxy_checkit"); // ????
     if((x->p_valid = valid))
         x->p_size = result;
     else
@@ -129,10 +131,7 @@ static void makesymbol_dooutput(t_makesymbol *x){
 }
 
 static void makesymbol_proxy_bang(t_makesymbol_proxy *x){
-    if(x->p_id == 0)
-        makesymbol_dooutput(x->p_master);  // CHECKED (in any inlet)
-    else
-        pd_error(x, "[makesymbol]: can't convert bang to type of argument %d", (x->p_id) + 1);
+    makesymbol_dooutput(x->p_master);
 }
 
 static void makesymbol_proxy_float(t_makesymbol_proxy *x, t_float f){
@@ -201,32 +200,32 @@ static void makesymbol_float(t_makesymbol *x, t_float f){
     if (x->x_nslots)
         makesymbol_proxy_float((t_makesymbol_proxy *)x->x_proxies[0], f);
     else
-        pd_error(x, "[makesymbol]: can't convert float to type of argument 1");
+        pd_error(x, "[makesymbol]: can't convert (type mismatch)");
 }
 
 static void makesymbol_symbol(t_makesymbol *x, t_symbol *s){
     if(x->x_nslots)
         makesymbol_proxy_symbol((t_makesymbol_proxy *)x->x_proxies[0], s);
     else
-        pd_error(x, "[makesymbol]: can't convert symbol to type of argument 1");
+        pd_error(x, "[makesymbol]: can't convert (type mismatch)");
 }
 
 static void makesymbol_list(t_makesymbol *x, t_symbol *s, int ac, t_atom *av){
-    if (x->x_nslots)
+    if(x->x_nslots)
         makesymbol_dolist(x, s, ac, av, 0);
     else
-        pd_error(x, "[makesymbol]: can't convert list to type of argument 1");
+        pd_error(x, "[makesymbol]: can't convert (type mismatch)");
 }
 
 static void makesymbol_anything(t_makesymbol *x, t_symbol *s, int ac, t_atom *av){
     if (x->x_nslots)
         makesymbol_doanything(x, s, ac, av, 0);
     else
-        pd_error(x, "[makesymbol]: can't convert anything to type of argument 1");
+        pd_error(x, "[makesymbol]: can't convert (type mismatch)");
 }
 
 // adjusted binbuf_gettext(), LATER do it right
-static char *hammer_gettext(int ac, t_atom *av, int *sizep){
+static char *makename_getstring(int ac, t_atom *av, int *sizep){
     char *buf = getbytes(1);
     int size = 1;
     char atomtext[MAXPDSTRING];
@@ -252,15 +251,12 @@ static char *hammer_gettext(int ac, t_atom *av, int *sizep){
     return (buf);
 }
 
-// get TYPE
-/* Called twice:  1st (with x == 0) for counting valid patterns;
- 2nd (after allocation) to initializing the proxies.
- If there's a "%%" pattern, buffer is shrinked in the second pass (LATER rethink). */
-static int makesymbol_parsepattern(t_makesymbol *x, char **patternp){
-    int type = MAKESYMBOL_UNSUPPORTED;
+// used 2x, 1st (x==0) counts valid patterns, 2nd inits proxies and shrinks %%
+static int makesymbol_get_type(t_makesymbol *x, char **patternp){
+    int type = 0;
     char errstring[MAXPDSTRING];
     char *ptr;
-    char modifier = 0;
+//    char modifier = 0;
     int width = 0;
     int precision = 0;
     int *numfield = &width;
@@ -292,34 +288,20 @@ static int makesymbol_parsepattern(t_makesymbol *x, char **patternp){
         }
         if(*numfield)
             numfield = 0;
-        if(strchr("pdiouxX", *ptr)){
+        if(strchr("pdiouxX", *ptr)){ // INT
             type = MAKESYMBOL_INT;
             break;
         }
-        else if(strchr("eEfFgG", *ptr)){
-/*            if(modifier){
-                if(x)
-                    sprintf(errstring, "\'%c\' modifier not supported", modifier);
-                break;
-            }*/
+        else if(strchr("eEfFgG", *ptr)){ // FLOAT
+            // needed to include if(modifier) to prevent %lf and stuff
             type = MAKESYMBOL_FLOAT;
             break;
         }
-        else if (strchr("c", *ptr)){
-            if(modifier){
-                if(x)
-                    sprintf(errstring, "\'%c\' modifier not supported", modifier);
-                break;
-            }
+        else if(strchr("c", *ptr)){ // CHAR
             type = MAKESYMBOL_CHAR;
             break;
         }
-        else if (strchr("s", *ptr)){
-            if(modifier){
-                if(x)
-                    sprintf(errstring, "\'%c\' modifier not supported", modifier);
-                break;
-            }
+        else if(strchr("s", *ptr)){
             type = MAKESYMBOL_STRING;
             break;
         }
@@ -334,20 +316,7 @@ static int makesymbol_parsepattern(t_makesymbol *x, char **patternp){
             }
             break;
         }
-        else if(strchr("CSnm", *ptr)){
-            if(x)
-                sprintf(errstring, "\'%c\' type not supported", *ptr);
-            break;
-        }
-        else if(strchr("l", *ptr)){
-            if(modifier){
-                if(x)
-                    sprintf(errstring, "only single modifier is supported");
-                break;
-            }
-            modifier = *ptr;
-        }
-/*        else if(strchr("h", *ptr)){ // short int is stupid
+/*        else if(strchr("l", *ptr)){ // remove longs for now
             if(modifier){
                 if(x)
                     sprintf(errstring, "only single modifier is supported");
@@ -355,12 +324,7 @@ static int makesymbol_parsepattern(t_makesymbol *x, char **patternp){
             }
             modifier = *ptr;
         }*/
-        else if(strchr("aAjqtzZ", *ptr)){
-            if(x)
-                sprintf(errstring, "\'%c\' modifier not supported", *ptr);
-            break;
-        }
-        else if (*ptr == '.'){
+        else if(*ptr == '.'){
             if(dotseen){
                 if(x)
                     sprintf(errstring, "multiple dots");
@@ -380,7 +344,8 @@ static int makesymbol_parsepattern(t_makesymbol *x, char **patternp){
             break;
         }
         else if(!strchr("-+ #\'", *ptr)){
-            if (x) sprintf(errstring, "\'%c\' format character not supported", *ptr);
+            if (x)
+                sprintf(errstring, "\'%c\' format character not supported", *ptr);
             break;
         }
     }
@@ -389,12 +354,6 @@ static int makesymbol_parsepattern(t_makesymbol *x, char **patternp){
     else
         if(x)
             sprintf(errstring, "type not specified");
-    if(x && type == MAKESYMBOL_UNSUPPORTED){
-        if (*errstring)
-            pd_error(x, "[makesymbol]: slot skipped (%s %s)", errstring, "in a format pattern");
-        else
-            pd_error(x, "[makesymbol]: slot skipped");
-    }
     *patternp = ptr;
     return(type);
 }
@@ -421,12 +380,12 @@ static void *makesymbol_new(t_symbol *s, int ac, t_atom *av){
     char *p1, *p2;
     int i = 1, nslots, nproxies = 0;
     t_pd **proxies;
-    fstring = hammer_gettext(ac, av, &fsize);
+    fstring = makename_getstring(ac, av, &fsize);
     p1 = fstring;
     while((p2 = strchr(p1, '%'))){
         int type;
         p1 = p2 + 1;
-        type = makesymbol_parsepattern(0, &p1);
+        type = makesymbol_get_type(0, &p1);
         if(type >= MAKESYMBOL_MINSLOTTYPE)
             nproxies++;
     }
@@ -440,7 +399,7 @@ static void *makesymbol_new(t_symbol *s, int ac, t_atom *av){
         p1 = fstring;
         while ((p2 = strchr(p1, '%'))){
             p1 = p2 + 1;
-            makesymbol_parsepattern(x, &p1);
+            makesymbol_get_type(x, &p1);
         };
         outlet_new((t_object *)x, &s_symbol);
         return (x);
@@ -467,7 +426,7 @@ static void *makesymbol_new(t_symbol *s, int ac, t_atom *av){
     while((p2 = strchr(p1, '%'))){
         int type;
         p1 = p2 + 1;
-        type = makesymbol_parsepattern(x, &p1);
+        type = makesymbol_get_type(x, &p1);
         if(type >= MAKESYMBOL_MINSLOTTYPE){
             if(i < nslots){
                 char buf[MAKESYMBOL_MAXWIDTH + 1];  // LATER rethink
@@ -483,8 +442,7 @@ static void *makesymbol_new(t_symbol *s, int ac, t_atom *av){
                     SETFLOAT(&y->p_atom, 0);
                 y->p_size = 0;
                 y->p_valid = 0;
-// creates inlets for any '%' (if invalid `can't convert' errors are printed)
-                if(i)
+                if(i) // creates inlets for valid '%'
                     inlet_new((t_object *)x, (t_pd *)y, 0, 0);
                 makesymbol_proxy_checkit(y, buf);
                 i++;

@@ -1,86 +1,90 @@
-#N canvas 830 104 563 426 10;
-#X obj 2 268 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 569 78 562 419 10;
+#X obj 2 258 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 329 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 2 319 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 364 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 354 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 90 275 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 97 328 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 90 338 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 2 399 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 389 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 130 338 anything;
-#N canvas 648 238 837 550 examples 0;
-#X text 51 226 float example;
-#X obj 54 248 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X msg 222 238 10.6;
-#X msg 497 232 87 65 82;
-#X obj 68 512 print;
-#X msg 68 441 error;
-#X msg 247 434 OK!;
-#X text 30 110 If a changeable number argument argument (such as %ld
-or %f) does not receive an input \, the value is "0" by default. If
-no value has been received for a changeable symbol argument (such as
-%s or %c) \, a blank space is the default.;
-#X text 35 195 Examples with float:;
-#X text 258 236 (converted to int);
-#X text 29 364 A symbol may be received in any inlet that corresponds
-to a %s argument. If sent to another inlet type \, a conversion error
-is given in Pd's window.;
-#X text 457 195 a list input spreads the values to the inlets;
-#X text 526 357 Below there's a list of all changeable arguments -
-for more details on each \, refer to a standard C library manual.,
-f 39;
-#X text 29 28 The arguments in [makesymbol] are used to format a symbol
-message and can be floats \, symbols or changeable arguments (like
-%ld or %f \, resembling the C programming language). The number of
-changeable arguments determines the number of inlets \, with each inlet
-corresponding to a changeable argument \, in order.;
-#X obj 54 278 makesymbol %.2fdB;
-#X obj 54 309 else/display;
-#X obj 222 276 makesymbol a-%d;
-#X obj 222 306 else/display;
-#X obj 68 473 makesymbol %d;
-#X obj 246 470 makesymbol it's %s;
-#X obj 497 257 makesymbol %c%c%c: What is it good for?, f 46;
-#X obj 246 501 else/display;
-#X obj 497 288 else/display;
-#X obj 524 76 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X msg 555 75 64 64;
-#X msg 619 78 \$1 \$1;
-#X obj 619 51 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 555 135 else/display;
-#X obj 555 107 makesymbol char %d = %c;
-#X connect 1 0 14 0;
-#X connect 2 0 16 0;
-#X connect 3 0 20 0;
-#X connect 5 0 18 0;
-#X connect 6 0 19 0;
-#X connect 14 0 15 0;
-#X connect 16 0 17 0;
-#X connect 18 0 4 0;
-#X connect 19 0 21 0;
-#X connect 20 0 22 0;
-#X connect 23 0 28 0;
-#X connect 24 0 28 0;
-#X connect 25 0 28 0;
-#X connect 26 0 25 0;
-#X connect 28 0 27 0;
-#X restore 472 197 pd examples;
-#X obj 170 155 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 137 328 anything;
+#N canvas 500 234 836 506 examples 0;
+#X text 52 149 float example;
+#X obj 55 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 17 256;
+#X msg 223 161 10.6;
+#X msg 473 177 87 65 82;
+#X obj 69 455 print;
+#X msg 69 384 error;
+#X text 36 118 Examples with float:;
+#X text 259 159 (converted to int);
+#X obj 55 232 else/display;
+#X obj 223 229 else/display;
+#X obj 247 444 else/display;
+#X obj 473 233 else/display;
+#X msg 568 80 64 64;
+#X obj 568 140 else/display;
+#X text 34 26 The arguments in [makesymbol] are used to format a symbol
+message and can be floats or symbols. Inlets are created for any possible
+variables (like %d or %f) - note that symbol variables (%s and %d)
+are initialized empty and float variables (all the rest) are initialized
+as "0"., f 57;
+#X obj 55 200 else/makesymbol %.2fdB;
+#X obj 223 199 else/makesymbol a-%d;
+#X floatatom 247 380 5 0 0 0 - - -;
+#X text 463 28 A list input spreads the values to the inlets;
+#X obj 309 382 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 154 276 bang;
-#X text 130 297 anything;
-#X text 187 296 -;
-#X text 187 373 -;
-#X msg 347 158 wind;
-#X msg 200 154 wood;
-#X obj 90 295 cnv 17 3 29 empty empty 0-n 5 9 0 16 -228856 -162280
+#X text 30 283 A symbol may be received in any inlet that corresponds
+to a %s variable \, but if sent to another type \, a conversion error
+is given in Pd's window. A float will give an error only if no variables
+are given (which is useful if you just want to create a single symbol
+with spaces).;
+#X obj 568 112 else/makesymbol char %d = %c;
+#X obj 473 202 else/makesymbol %c%c%c: What is it good for?, f 46
+;
+#X obj 247 413 else/makesymbol no variables;
+#X obj 69 416 else/makesymbol %d;
+#X obj 513 378 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 543 440 else/display;
+#X obj 690 352 nbx 4 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 7 256;
+#X msg 543 347 A;
+#X msg 554 374 B;
+#X obj 543 407 else/makesymbol %s-%d.wav;
+#X msg 690 378 \$1 \, bang;
+#X text 458 295 A bang in any inlet forces an output \, this can be
+used to emulate a hot inlet., f 50;
+#X connect 1 0 15 0;
+#X connect 2 0 16 0;
+#X connect 3 0 22 0;
+#X connect 5 0 24 0;
+#X connect 12 0 21 0;
+#X connect 15 0 8 0;
+#X connect 16 0 9 0;
+#X connect 17 0 23 0;
+#X connect 19 0 23 0;
+#X connect 21 0 13 0;
+#X connect 22 0 11 0;
+#X connect 23 0 10 0;
+#X connect 24 0 4 0;
+#X connect 25 0 30 0;
+#X connect 27 0 31 0;
+#X connect 28 0 30 0;
+#X connect 29 0 30 0;
+#X connect 30 0 26 0;
+#X connect 31 0 30 1;
+#X restore 465 197 pd examples;
+#X obj 160 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 161 266 bang;
+#X text 137 287 anything;
+#X text 194 286 -;
+#X text 194 363 -;
+#X obj 97 267 cnv 17 3 45 empty empty 0-n 5 9 0 16 -228856 -162280
 0;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -106,42 +110,42 @@ corresponding to a changeable argument \, in order.;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 4 graph;
-#X obj 200 217 else/display;
-#X text 109 373 1) anything;
-#X text 187 276 - formats the symbol with current input;
-#X text 200 296 float/symbol atoms to format a symbol - messages with
+#X obj 190 213 else/display;
+#X text 116 363 1) anything;
+#X text 207 286 float/symbol atoms to format a symbol - messages with
 more than one item sends each item to a separate inlet, f 54;
-#X text 187 338 - the formatted symbol;
-#X text 199 373 format symbols with changeable arguments '%';
-#N canvas 648 238 428 306 separate 0;
-#X msg 97 89 87 65 82;
-#X obj 97 121 makesymbol %c%c%c: What is it good for?, f 46;
-#X obj 97 195 else/separate;
-#X obj 97 154 else/display;
-#X obj 97 230 else/display;
-#X text 72 32 You can use the [separate] object to split the symbol
+#X text 194 328 - the formatted symbol;
+#N canvas 648 238 422 332 separate 0;
+#X obj 128 203 else/separate;
+#X obj 128 165 else/display;
+#X obj 128 269 else/display;
+#X text 63 28 You can use the [separate] object to split the symbol
 into different elements. check its help file for more details., f
 51;
-#X connect 0 0 1 0;
-#X connect 1 0 3 0;
-#X connect 2 0 4 0;
-#X connect 3 0 2 0;
-#X restore 470 228 pd separate;
-#X text 81 88 [makesymbol] formats symbols much like [makefilename]
-\, but it accepts more than one variable \, where each corresponds
-to an inlet., f 59;
-#N canvas 842 23 520 663 variables 0;
+#X obj 128 134 else/makesymbol A B C, f 22;
+#X obj 128 97 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 128 234 unpack s s s;
+#X obj 162 269 else/display;
+#X obj 197 269 else/display;
+#X connect 0 0 6 0;
+#X connect 1 0 0 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X connect 6 0 2 0;
+#X connect 6 1 7 0;
+#X connect 6 2 8 0;
+#X restore 465 218 pd separate;
+#N canvas 842 23 499 390 variables 0;
 #N canvas 470 23 383 282 %c 0;
-#X floatatom 146 125 5 0 0 0 - - -;
-#X obj 146 180 else/display;
-#X msg 146 94 97;
+#X obj 141 177 else/display;
+#X msg 141 101 97;
 #X text 89 36 %c: converts integers to characters according to the
 ASCII table, f 35;
-#X obj 146 152 else/makesymbol %c;
-#X connect 0 0 4 0;
-#X connect 2 0 0 0;
-#X connect 4 0 1 0;
-#X restore 111 82 pd %c;
+#X obj 141 139 else/makesymbol %c;
+#X connect 1 0 3 0;
+#X connect 3 0 0 0;
+#X restore 106 112 pd %c;
 #N canvas 470 23 356 324 %s 0;
 #X floatatom 130 113 5 0 0 0 - - -;
 #X msg 151 139 anything;
@@ -154,7 +158,7 @@ is just any input here in Pd., f 35;
 #X connect 1 0 5 0;
 #X connect 3 0 5 0;
 #X connect 5 0 2 0;
-#X restore 111 108 pd %s;
+#X restore 106 138 pd %s;
 #N canvas 656 23 399 485 %d 0;
 #X floatatom 189 103 5 0 0 0 - - -;
 #X obj 61 174 else/display;
@@ -178,7 +182,7 @@ no differences., f 39;
 #X connect 8 0 1 0;
 #X connect 9 0 2 0;
 #X connect 10 0 5 0;
-#X restore 111 134 pd %d or %i;
+#X restore 106 164 pd %d or %i;
 #N canvas 470 23 478 282 %u 0;
 #X floatatom 189 120 5 0 0 0 - - -;
 #X obj 189 185 else/display;
@@ -188,7 +192,7 @@ there's no enough precision for this)., f 52;
 #X obj 189 152 else/makesymbol %u;
 #X connect 0 0 3 0;
 #X connect 3 0 1 0;
-#X restore 111 162 pd %u;
+#X restore 106 192 pd %u;
 #N canvas 470 23 444 488 %f 0;
 #X floatatom 206 110 5 0 0 0 - - -;
 #X obj 78 181 else/display;
@@ -213,7 +217,7 @@ number but does not use the scientific notation., f 39;
 #X connect 10 0 2 0;
 #X connect 11 0 5 0;
 #X connect 12 0 6 0;
-#X restore 111 191 pd %f or %F;
+#X restore 106 221 pd %f or %F;
 #N canvas 470 23 522 306 %e 0;
 #X obj 138 198 else/display;
 #X obj 266 197 else/display;
@@ -227,7 +231,7 @@ uses a capital "E".;
 #X connect 2 0 5 0;
 #X connect 4 0 0 0;
 #X connect 5 0 1 0;
-#X restore 111 219 pd %e and %E;
+#X restore 106 249 pd %e and %E;
 #N canvas 470 23 522 324 %g 0;
 #X obj 127 222 else/display;
 #X obj 265 220 else/display;
@@ -248,7 +252,7 @@ shorter (%G uses a capital "E")., f 47;
 #X connect 5 0 4 0;
 #X connect 7 0 0 0;
 #X connect 8 0 1 0;
-#X restore 111 248 pd %g and %G;
+#X restore 106 278 pd %g and %G;
 #N canvas 470 23 374 248 %o 0;
 #X floatatom 139 99 5 0 0 0 - - -;
 #X text 82 46 %o: converts to an unsigned octal.;
@@ -256,7 +260,7 @@ shorter (%G uses a capital "E")., f 47;
 #X obj 139 128 else/makesymbol %o;
 #X connect 0 0 3 0;
 #X connect 3 0 2 0;
-#X restore 111 276 pd %o;
+#X restore 106 306 pd %o;
 #N canvas 470 23 479 299 %x 0;
 #X obj 77 202 else/display;
 #X msg 197 118 255;
@@ -274,14 +278,14 @@ and is preceded by "0x".;
 #X connect 5 0 0 0;
 #X connect 6 0 2 0;
 #X connect 7 0 3 0;
-#X restore 111 304 pd %x \, %X or %p;
-#X text 228 82 - Character;
-#X text 228 108 - String;
-#X text 228 191 - Float (non scientific notation);
-#X text 227 219 - Float (scientific notation);
-#X text 227 248 - Float;
-#X text 228 275 - Unsigned octal;
-#X text 228 305 - Unsigned hexadecimal integer;
+#X restore 106 334 pd %x \, %X or %p;
+#X text 223 112 - Character;
+#X text 223 138 - String;
+#X text 223 221 - Float (non scientific notation);
+#X text 222 249 - Float (scientific notation);
+#X text 222 278 - Float;
+#X text 223 305 - Unsigned octal;
+#X text 223 335 - Unsigned hexadecimal integer;
 #N canvas 571 23 374 280 %% 0;
 #X obj 146 180 else/display;
 #X obj 146 122 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -291,70 +295,23 @@ being interpreted as a pattern., f 39;
 #X obj 146 152 else/makesymbol %%c;
 #X connect 1 0 3 0;
 #X connect 3 0 0 0;
-#X restore 111 53 pd %%;
-#X text 228 53 - Literal "%";
-#X text 228 134 - Signed decimal integer (32 bits);
-#X text 228 161 - Unsigned decimal integer (32 bits);
-#X obj 128 433 openfile https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/integral-types-table
--h int types;
-#N canvas 307 30 803 391 %li 0;
-#X obj 92 90 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X symbolatom 270 184 24 0 0 0 - - -;
-#X obj 270 88 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X symbolatom 92 193 24 0 0 0 - - -;
-#X floatatom 92 136 0 0 0 0 - - -;
-#X text 292 75 Long unsigned integer (64 bits), f 19;
-#X text 114 77 Long signed integer (64 bits), f 19;
-#X text 456 229 The range of values of the signed 32 bits integers
-go from -2ˆ31 to 2ˆ31 - 1 (but since Pd uses 32 bit floats \, there's
-no enough precision for this)., f 48;
-#X text 451 139 %li: converts to a signed lpong integer (64 bits).
-The range of values go from -2ˆ63 to 2ˆ63 - 1 (but since Pd uses
-32 bit floats \, there's no enough precision for this)., f 39;
-#X obj 92 111 expr -pow(2 \, 63);
-#X obj 271 107 expr pow(2 \, 64);
-#X obj 93 164 else/makesymbol %li;
-#X obj 270 153 else/makesymbol %lu;
-#X connect 0 0 9 0;
-#X connect 2 0 10 0;
-#X connect 4 0 11 0;
-#X connect 9 0 4 0;
-#X connect 10 0 12 0;
-#X connect 11 0 3 0;
-#X connect 12 0 1 0;
-#X restore 118 545 pd %li;
-#X text 125 483 - Signed long decimal integer (64 bits);
-#N canvas 76 23 450 300 %li 0;
-#X obj 92 45 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X symbolatom 270 119 24 0 0 0 - - -;
-#X obj 270 43 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X symbolatom 92 148 24 0 0 0 - - -;
-#X floatatom 92 91 0 0 0 0 - - -;
-#X obj 270 88 makesymbol %lu;
-#X text 292 30 Long unsigned integer (64 bits), f 19;
-#X obj 92 66 expr -pow(2 \, 32);
-#X obj 92 120 makesymbol %li;
-#X text 114 32 Long signed integer (64 bits), f 19;
-#X obj 271 62 expr pow(2 \, 64);
-#X connect 0 0 7 0;
-#X connect 2 0 10 0;
-#X connect 4 0 8 0;
-#X connect 5 0 1 0;
-#X connect 7 0 4 0;
-#X connect 8 0 3 0;
-#X connect 10 0 5 0;
-#X restore 118 575 pd %li;
-#X text 117 371 To do: - fix or remove long int "li/lu" \; - make it
-accept anything without errors \; - %c blows up Pd if you scroll a
-number box \; - Change errors....;
-#X text 210 558 symbols not initialized with blank space;
-#X restore 466 171 pd variables;
-#X obj 200 184 else/makesymbol %s-%s.wav;
-#X connect 8 0 37 0;
-#X connect 13 0 37 1;
-#X connect 14 0 37 0;
-#X connect 37 0 28 0;
+#X restore 106 83 pd %%;
+#X text 223 83 - Literal "%";
+#X text 223 164 - Signed decimal integer (32 bits);
+#X text 223 191 - Unsigned decimal integer (32 bits);
+#X text 69 26 These are all the valid patterns available \, note they
+are in in the C-Style., f 44;
+#X restore 459 175 pd variables;
+#X text 194 266 - outputs the symbol;
+#X text 206 363 float/symbol atoms with '%' variables;
+#X msg 190 150 file;
+#X obj 337 155 nbx 4 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 59 256;
+#X obj 190 180 else/makesymbol %s %d.wav;
+#X text 81 88 [makesymbol] formats symbols much like [makefilename]
+\, but it accepts more than one variable \, where each corresponds
+to an inlet. It also allows to create symbols with spaces., f 59;
+#X connect 7 0 35 0;
+#X connect 33 0 35 0;
+#X connect 34 0 35 1;
+#X connect 35 0 25 0;
