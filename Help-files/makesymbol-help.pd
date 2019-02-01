@@ -9,11 +9,10 @@
 ;
 #X obj 2 389 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 137 328 anything;
 #N canvas 500 234 836 506 examples 0;
 #X text 52 149 float example;
 #X obj 55 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 17 256;
+-228856 -1 -1 0 256;
 #X msg 223 161 10.6;
 #X msg 473 177 87 65 82;
 #X obj 69 455 print;
@@ -51,7 +50,7 @@ with spaces).;
 -1 -1;
 #X obj 543 440 else/display;
 #X obj 690 352 nbx 4 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 7 256;
+-1 -1 0 256;
 #X msg 543 347 A;
 #X msg 554 374 B;
 #X obj 543 407 else/makesymbol %s-%d.wav;
@@ -303,15 +302,17 @@ being interpreted as a pattern., f 39;
 are in in the C-Style., f 44;
 #X restore 459 175 pd variables;
 #X text 194 266 - outputs the symbol;
-#X text 206 363 float/symbol atoms with '%' variables;
 #X msg 190 150 file;
 #X obj 337 155 nbx 4 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 59 256;
+-1 -1 0 256;
 #X obj 190 180 else/makesymbol %s %d.wav;
 #X text 81 88 [makesymbol] formats symbols much like [makefilename]
 \, but it accepts more than one variable \, where each corresponds
 to an inlet. It also allows to create symbols with spaces., f 59;
-#X connect 7 0 35 0;
-#X connect 33 0 35 0;
-#X connect 34 0 35 1;
-#X connect 35 0 25 0;
+#X text 206 363 atoms with '%' variables (obrigatory \, no default)
+;
+#X text 149 328 symbol;
+#X connect 6 0 33 0;
+#X connect 31 0 33 0;
+#X connect 32 0 33 1;
+#X connect 33 0 24 0;
