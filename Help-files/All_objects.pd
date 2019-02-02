@@ -2,7 +2,7 @@
 #N struct 1355-cell float x float y float cellsize float color;
 #N struct 1358-point float x0 float y0 float s;
 #N struct 1358-grid float x0 float y0 float s;
-#N canvas 642 50 528 848 10;
+#N canvas 203 191 528 848 10;
 #X text 40 36 Assorted:;
 #X obj 40 60 else/table~;
 #X obj 40 86 else/nbang;
@@ -388,5 +388,8 @@
 #X text 40 8608 Extra:;
 #X obj 38 4640 else/sample~;
 #X obj 38 535 else/separate;
-#X obj 37 3345 else/conv~;
 #X obj 38 4788 else/rec~;
+#X obj 37 3345 else/conv~;
+#X obj 288 672 else/makesymbol;
+#X obj 291 721 else/separate;
+#X obj 282 6250 else/xmod2~;
