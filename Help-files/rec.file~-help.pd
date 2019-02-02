@@ -1,4 +1,4 @@
-#N canvas 676 88 565 570 10;
+#N canvas 782 187 565 570 10;
 #X obj 7 546 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 7 259 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -60,21 +60,18 @@ Pd's samplerate), f 69;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 132 163 else/brown~;
+#X obj 122 170 else/brown~;
 #X obj 133 41 cnv 4 4 4 empty empty file 0 28 2 18 -233017 -1 0;
-#X text 53 91 [rec.file~] is a convenient abstraction based on [writesf~]
-\, so it records sample files that you can load with other objects
-\, such as [play.file~] or [player~].;
-#X obj 132 221 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 122 228 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 492 78 else/setdsp~;
-#X obj 279 165 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 269 172 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 347 164 else/play.file~ 2;
-#X obj 353 190 else/out~;
-#X msg 347 141 open test.wav;
-#X obj 132 193 else/rec.file~ test.wav 2;
-#X obj 219 164 noise~;
+#X obj 337 171 else/play.file~ 2;
+#X obj 343 197 else/out~;
+#X msg 337 148 open test.wav;
+#X obj 122 200 else/rec.file~ test.wav 2;
+#X obj 209 171 noise~;
 #N canvas 816 67 440 618 flags 0;
 #X text 38 21 By default \, [rec.file~] performs a fade in and fade
 out of 10 ms. This means that when you stop recording \, it takes an
@@ -116,10 +113,13 @@ goes on indefinitely as well.;
 #X restore 493 215 pd flags;
 #X text 124 488 -maxtime <float> (default 0) | -fade <float> (default
 10);
-#X connect 36 0 45 0;
-#X connect 41 0 45 2;
-#X connect 42 0 43 0;
-#X connect 42 1 43 1;
-#X connect 44 0 42 0;
-#X connect 45 0 39 0;
-#X connect 46 0 45 1;
+#X text 53 91 [rec.file~] is a convenient abstraction based on [writesf~]
+\, so it records sample files that you can load with other objects
+\, such as [sample~] \, [play.file~] \, [player~] and others.;
+#X connect 36 0 44 0;
+#X connect 40 0 44 2;
+#X connect 41 0 42 0;
+#X connect 41 1 42 1;
+#X connect 43 0 41 0;
+#X connect 44 0 38 0;
+#X connect 45 0 44 1;
