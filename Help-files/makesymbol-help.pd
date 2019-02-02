@@ -135,7 +135,7 @@ into different elements. check its help file for more details., f
 #X connect 6 1 7 0;
 #X connect 6 2 8 0;
 #X restore 465 218 pd separate;
-#N canvas 842 23 499 390 variables 0;
+#N canvas 886 23 499 456 variables 0;
 #N canvas 470 23 383 282 %c 0;
 #X obj 141 177 else/display;
 #X msg 141 101 97;
@@ -144,104 +144,136 @@ ASCII table, f 35;
 #X obj 141 139 else/makesymbol %c;
 #X connect 1 0 3 0;
 #X connect 3 0 0 0;
-#X restore 106 112 pd %c;
+#X restore 106 142 pd %c;
 #N canvas 470 23 356 324 %s 0;
-#X floatatom 130 113 5 0 0 0 - - -;
-#X msg 151 139 anything;
-#X obj 130 236 else/display;
-#X msg 161 166 symbol hi;
-#X text 75 47 %s: assumes the value of a string of characters \, which
+#X msg 151 150 anything;
+#X obj 130 247 else/display;
+#X msg 161 177 symbol hi;
+#X text 75 38 %s: assumes the value of a string of characters \, which
 is just any input here in Pd., f 35;
-#X obj 130 195 else/makesymbol %s;
-#X connect 0 0 5 0;
-#X connect 1 0 5 0;
-#X connect 3 0 5 0;
-#X connect 5 0 2 0;
-#X restore 106 138 pd %s;
-#N canvas 656 23 399 485 %d 0;
-#X floatatom 189 103 5 0 0 0 - - -;
-#X obj 61 174 else/display;
-#X obj 189 174 else/display;
-#X obj 146 325 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 130 206 else/makesymbol %s;
+#X obj 130 112 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 17 256;
+#X connect 0 0 4 0;
+#X connect 2 0 4 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X restore 106 168 pd %s;
+#N canvas 847 23 409 705 %d 0;
+#X obj 74 176 else/display;
+#X obj 202 176 else/display;
+#X obj 159 327 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 146 353 expr -pow(2 \, 31);
-#X obj 146 416 else/display;
-#X text 62 245 The range of values of the signed 32 bits integers go
+#X obj 159 355 expr -pow(2 \, 31);
+#X obj 159 418 else/display;
+#X text 75 247 The range of values of the signed 32 bits integers go
 from -2ˆ31 to 2ˆ31 - 1 (but since Pd uses 32 bit floats \, there's
 no enough precision for this)., f 48;
-#X text 83 37 %d or %i: both convert to a signed integer. There are
+#X text 96 39 %d or %i: both convert to a signed integer. There are
 no differences., f 39;
-#X obj 61 142 else/makesymbol %d;
-#X obj 189 142 else/makesymbol %d;
-#X obj 146 380 else/makesymbol %i;
-#X connect 0 0 8 0;
-#X connect 0 0 9 0;
-#X connect 3 0 4 0;
-#X connect 4 0 10 0;
+#X obj 74 144 else/makesymbol %d;
+#X obj 202 144 else/makesymbol %d;
+#X obj 159 382 else/makesymbol %i;
+#X obj 179 586 else/makesymbol %+i;
+#X obj 179 621 else/display;
+#X obj 202 103 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 179 552 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 105 482 The "+" flag can be used to force a "+" sign for positive
+values., f 29;
+#X connect 2 0 3 0;
+#X connect 3 0 9 0;
+#X connect 7 0 0 0;
 #X connect 8 0 1 0;
-#X connect 9 0 2 0;
-#X connect 10 0 5 0;
-#X restore 106 164 pd %d or %i;
-#N canvas 470 23 478 282 %u 0;
-#X floatatom 189 120 5 0 0 0 - - -;
-#X obj 189 185 else/display;
-#X text 84 47 %u: converts to an unsigned 32 bits integer. The range
+#X connect 9 0 4 0;
+#X connect 10 0 11 0;
+#X connect 12 0 8 0;
+#X connect 12 0 7 0;
+#X connect 13 0 10 0;
+#X restore 106 194 pd %d or %i;
+#N canvas 470 23 478 294 %u 0;
+#X obj 186 187 else/display;
+#X text 81 49 %u: converts to an unsigned 32 bits integer. The range
 of values go from 0 to 2ˆ32 - 1 (but since Pd uses 32 bit floats \,
 there's no enough precision for this)., f 52;
-#X obj 189 152 else/makesymbol %u;
-#X connect 0 0 3 0;
-#X connect 3 0 1 0;
-#X restore 106 192 pd %u;
-#N canvas 470 23 444 488 %f 0;
-#X floatatom 206 110 5 0 0 0 - - -;
-#X obj 78 181 else/display;
-#X obj 206 181 else/display;
-#X text 106 261 You can also set a precision after the decimal point.
-, f 34;
-#X floatatom 86 325 5 0 0 0 - - -;
-#X obj 86 391 else/display;
-#X obj 245 390 else/display;
-#X msg 245 324 1e-11;
-#X text 89 40 %f or %F: gets the value of a decimal floating point
+#X obj 186 154 else/makesymbol %u;
+#X obj 186 120 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
+#X restore 106 222 pd %u;
+#N canvas 470 23 447 600 %f 0;
+#X obj 85 186 else/display;
+#X obj 213 186 else/display;
+#X floatatom 93 330 5 0 0 0 - - -;
+#X obj 93 396 else/display;
+#X obj 252 395 else/display;
+#X msg 252 329 1e-11;
+#X text 96 45 %f or %F: gets the value of a decimal floating point
 number but does not use the scientific notation., f 39;
-#X obj 78 149 else/makesymbol %f;
-#X obj 206 149 else/makesymbol %F;
-#X obj 86 359 else/makesymbol %.2f;
-#X obj 245 357 else/makesymbol %.11F;
-#X connect 0 0 9 0;
-#X connect 0 0 10 0;
-#X connect 4 0 11 0;
-#X connect 7 0 12 0;
-#X connect 9 0 1 0;
-#X connect 10 0 2 0;
-#X connect 11 0 5 0;
-#X connect 12 0 6 0;
-#X restore 106 221 pd %f or %F;
+#X obj 85 154 else/makesymbol %f;
+#X obj 213 154 else/makesymbol %F;
+#X obj 93 364 else/makesymbol %.2f;
+#X obj 252 362 else/makesymbol %.11F;
+#X obj 170 521 else/display;
+#X obj 170 452 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 91 267 You can also set a precision after the decimal point
+\, and the "+" flag can be used to force a "+" sign for positive values.
+, f 47;
+#X obj 170 486 else/makesymbol %+.1f;
+#X obj 213 114 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X connect 2 0 9 0;
+#X connect 5 0 10 0;
+#X connect 7 0 0 0;
+#X connect 8 0 1 0;
+#X connect 9 0 3 0;
+#X connect 10 0 4 0;
+#X connect 12 0 14 0;
+#X connect 14 0 11 0;
+#X connect 15 0 8 0;
+#X connect 15 0 7 0;
+#X restore 106 251 pd %f or %F;
 #N canvas 470 23 522 306 %e 0;
-#X obj 138 198 else/display;
-#X obj 266 197 else/display;
+#X obj 138 218 else/display;
+#X obj 266 217 else/display;
 #X msg 266 122 0.1;
+#X obj 138 183 else/makesymbol %e;
+#X obj 266 184 else/makesymbol %+.3E;
 #X text 67 40 %e and %E: converts a float to scientific notation. You
-can also set a precision after the decimal point \, the %E options
-uses a capital "E".;
-#X obj 138 163 else/makesymbol %e;
-#X obj 266 164 else/makesymbol %.3E;
+can also set a precision after the decimal point an d the "+" flag.
+The %E alternative uses a capital "E" instead of lowercase.;
+#X msg 138 120 1;
+#X connect 2 0 3 0;
 #X connect 2 0 4 0;
-#X connect 2 0 5 0;
-#X connect 4 0 0 0;
-#X connect 5 0 1 0;
-#X restore 106 249 pd %e and %E;
-#N canvas 470 23 522 324 %g 0;
-#X obj 127 222 else/display;
-#X obj 265 220 else/display;
-#X msg 127 139 1e-10;
-#X msg 265 141 1.23456;
-#X obj 186 137 / 3;
-#X msg 186 113 4;
-#X text 109 54 %g and %G: only converts to scientific notation if it's
+#X connect 3 0 0 0;
+#X connect 4 0 1 0;
+#X connect 6 0 3 0;
+#X connect 6 0 4 0;
+#X restore 106 279 pd %e and %E;
+#N canvas 470 23 516 562 %g 0;
+#X obj 122 207 else/display;
+#X obj 260 205 else/display;
+#X msg 122 124 1e-10;
+#X msg 260 126 1.23456;
+#X obj 181 122 / 3;
+#X msg 181 98 4;
+#X text 104 39 %g and %G: only converts to scientific notation if it's
 shorter (%G uses a capital "E")., f 47;
-#X obj 127 189 else/makesymbol %.3G;
-#X obj 265 187 else/makesymbol %.8g;
+#X obj 122 174 else/makesymbol %.3G;
+#X obj 260 172 else/makesymbol %.8g;
+#X obj 135 468 else/display;
+#X obj 292 467 else/display;
+#X obj 292 434 else/makesymbol %g;
+#X obj 292 396 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1e-07 256;
+#X msg 292 332 1e-07;
+#X msg 306 365 0.1;
+#X obj 135 435 else/makesymbol %+#.3g;
+#X text 99 276 The "#" flag can be use to display integers with float
+precision., f 43;
 #X connect 2 0 7 0;
 #X connect 2 0 8 0;
 #X connect 3 0 7 0;
@@ -251,7 +283,13 @@ shorter (%G uses a capital "E")., f 47;
 #X connect 5 0 4 0;
 #X connect 7 0 0 0;
 #X connect 8 0 1 0;
-#X restore 106 278 pd %g and %G;
+#X connect 11 0 10 0;
+#X connect 12 0 11 0;
+#X connect 12 0 15 0;
+#X connect 13 0 12 0;
+#X connect 14 0 12 0;
+#X connect 15 0 9 0;
+#X restore 106 308 pd %g and %G;
 #N canvas 470 23 374 248 %o 0;
 #X floatatom 139 99 5 0 0 0 - - -;
 #X text 82 46 %o: converts to an unsigned octal.;
@@ -259,32 +297,38 @@ shorter (%G uses a capital "E")., f 47;
 #X obj 139 128 else/makesymbol %o;
 #X connect 0 0 3 0;
 #X connect 3 0 2 0;
-#X restore 106 306 pd %o;
-#N canvas 470 23 479 299 %x 0;
-#X obj 77 202 else/display;
-#X msg 197 118 255;
-#X obj 197 202 else/display;
-#X obj 327 202 else/display;
-#X text 92 43 %x: converts to an unsigned hexadecimal value and uses
+#X restore 106 336 pd %o;
+#N canvas 470 23 505 472 %x 0;
+#X obj 77 198 else/display;
+#X msg 197 114 255;
+#X obj 197 198 else/display;
+#X obj 327 198 else/display;
+#X text 92 39 %x: converts to an unsigned hexadecimal value and uses
 lowercase letters \; %X: uses capital letters \; %p uses lowercase
 and is preceded by "0x".;
-#X obj 77 167 else/makesymbol %x;
-#X obj 197 167 else/makesymbol %X;
-#X obj 327 167 else/makesymbol %p;
+#X obj 197 163 else/makesymbol %X;
+#X obj 327 163 else/makesymbol %p;
+#X msg 216 333 255;
+#X obj 216 407 else/display;
+#X obj 216 372 else/makesymbol %#X;
+#X obj 77 163 else/makesymbol %#x;
+#X text 117 271 The "#" flag can also be used to force the "0x" prefix
+(or "0X" in the case of %X)., f 48;
 #X connect 1 0 5 0;
 #X connect 1 0 6 0;
-#X connect 1 0 7 0;
-#X connect 5 0 0 0;
-#X connect 6 0 2 0;
-#X connect 7 0 3 0;
-#X restore 106 334 pd %x \, %X or %p;
-#X text 223 112 - Character;
-#X text 223 138 - String;
-#X text 223 221 - Float (non scientific notation);
-#X text 222 249 - Float (scientific notation);
-#X text 222 278 - Float;
-#X text 223 305 - Unsigned octal;
-#X text 223 335 - Unsigned hexadecimal integer;
+#X connect 1 0 10 0;
+#X connect 5 0 2 0;
+#X connect 6 0 3 0;
+#X connect 7 0 9 0;
+#X connect 9 0 8 0;
+#X connect 10 0 0 0;
+#X restore 106 364 pd %x \, %X or %p;
+#X text 223 168 - String;
+#X text 223 251 - Float (non scientific notation);
+#X text 222 279 - Float (scientific notation);
+#X text 222 308 - Float;
+#X text 223 335 - Unsigned octal;
+#X text 223 365 - Unsigned hexadecimal integer;
 #N canvas 571 23 374 280 %% 0;
 #X obj 146 180 else/display;
 #X obj 146 122 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -294,12 +338,16 @@ being interpreted as a pattern., f 39;
 #X obj 146 152 else/makesymbol %%c;
 #X connect 1 0 3 0;
 #X connect 3 0 0 0;
-#X restore 106 83 pd %%;
-#X text 223 83 - Literal "%";
-#X text 223 164 - Signed decimal integer (32 bits);
-#X text 223 191 - Unsigned decimal integer (32 bits);
-#X text 69 26 These are all the valid patterns available \, note they
-are in in the C-Style., f 44;
+#X restore 106 113 pd %%;
+#X text 223 113 - Literal "%";
+#X text 223 194 - Signed decimal integer (32 bits);
+#X text 223 221 - Unsigned decimal integer (32 bits);
+#X text 223 142 - Character (unsigned char);
+#X text 85 25 These are all the valid patterns available \, note they
+are in in the C-Style of the printf function \, but in a limited set.
+You can also use flags "+" and "#" \, plus a precision field. The modifiers
+"l" and "h" aren't supported. See examples below for more details.
+, f 54;
 #X restore 459 175 pd variables;
 #X text 194 266 - outputs the symbol;
 #X msg 190 150 file;
