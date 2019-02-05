@@ -115,8 +115,6 @@ that or use the [sample~] object \, which does this internally.;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 4 graph;
-#X text 49 95 [rec~] records up to 64 signal channels into arrays.
-By default \, recording stops when the array is filled.;
 #X text 102 365 start <float>;
 #X text 114 380 end <float>;
 #X obj 297 264 else/display~;
@@ -171,12 +169,16 @@ f 56;
 , f 56;
 #X text 202 425 non-zero enables loop recording \, 0 disables it,
 f 56;
-#X connect 9 0 66 0;
+#X text 55 88 [rec~] records up to 64 signal channels into arrays and
+can be triggered with sample accuracy., f 51;
+#X obj 254 207 sig~;
+#X connect 9 0 65 0;
 #X connect 10 0 9 0;
-#X connect 15 0 66 1;
-#X connect 21 0 63 0;
-#X connect 53 0 66 0;
-#X connect 54 0 66 0;
-#X connect 55 0 66 0;
-#X connect 63 0 66 0;
-#X connect 66 0 50 0;
+#X connect 15 0 65 1;
+#X connect 21 0 62 0;
+#X connect 52 0 65 0;
+#X connect 53 0 65 0;
+#X connect 54 0 72 0;
+#X connect 62 0 65 0;
+#X connect 65 0 49 0;
+#X connect 72 0 65 0;

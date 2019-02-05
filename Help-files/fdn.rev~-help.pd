@@ -1,0 +1,189 @@
+#N canvas 799 23 565 474 10;
+#X obj 2 2 cnv 15 301 42 empty empty fdn.rev~ 20 20 2 37 -233017 -1
+0;
+#X obj 305 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 2 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 304 2 pd;
+#X obj 344 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 22 39 cnv 4 4 4 empty empty Feedback 0 28 2 18 -233017 -1 0
+;
+#X obj 99 39 cnv 4 4 4 empty empty delay 0 28 2 18 -233017 -1 0;
+#X obj 457 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 477 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 514 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 463 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 501 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 732 49 893 852 example 0;
+#X obj 331 155 bng 18 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
+-1;
+#X floatatom 483 636 5 0 0 0 - - -;
+#X floatatom 539 635 5 0 0 0 - - -;
+#X obj 316 220 *~;
+#X text 535 508 print delay lengths;
+#X text 364 227 specify delay line lengths manually;
+#X msg 366 250 501 752 5003 7504 105 206 307 408;
+#X text 438 25 specify a delay length range (<type> <# lines> <min>
+<max>), f 30;
+#X msg 495 509 print;
+#X text 486 616 low;
+#X text 539 615 high;
+#X text 450 127 print not working....;
+#X text 416 80 The number of delay lines need to be multiples of 4
+(?) and the delay size needs to be a power of 2!;
+#X obj 258 181 brown~;
+#X msg 399 156 1500 1 1000 0;
+#X obj 331 187 else/envgen~ 1500 0.5 2500 0;
+#X msg 521 580 clear;
+#X obj 118 413 initmess 29 31 37 67 82 110 172 221, f 36;
+#X msg 222 456 29 31 37 67;
+#X msg 287 492 100 200 300 400;
+#X msg 278 566 4 4.01 4.03 4.02;
+#X obj 192 656 impseq~;
+#X obj 197 630 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 597 701 display~;
+#X msg 656 628 exp \$1;
+#X msg 428 359 set 32 1000 1005;
+#X msg 437 380 set 32 100 2015;
+#X msg 453 412 set 32 10 5000;
+#X msg 475 459 set 8 50 175;
+#X obj 664 599 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 413 332 set 32 100 320;
+#X msg 397 306 set 8 100 800;
+#X obj 66 674 expr pow(2 \, $f1);
+#X floatatom 66 642 5 0 0 0 - - -;
+#X floatatom 74 699 0 0 0 0 - - -;
+#X obj 96 756 samps2ms;
+#X floatatom 103 824 5 0 0 0 - - -;
+#X obj 88 783 / 1000;
+#X msg 160 786 set \$1;
+#X msg 169 808 1.48608;
+#X obj 65 611 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 274 791 1.48608;
+#X msg 119 715 65536;
+#X text 416 803 why buffer power of 2?;
+#X msg 463 435 set 64 10 1000;
+#X obj 105 256 /;
+#X floatatom 105 283 5 0 0 0 - - -;
+#X obj 109 314 / 60;
+#X floatatom 113 341 5 0 0 0 - - -;
+#X msg 105 234 3043 60;
+#X text 140 284 min;
+#X obj 433 726 else/out~;
+#X text 684 229 damping 0 - 100;
+#X obj 709 266 hsl 128 15 1 100 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 0 1;
+#X floatatom 641 278 5 0 0 0 - - -;
+#X obj 666 342 / 1;
+#X floatatom 659 369 5 0 0 0 - - -;
+#X obj 662 315 hot;
+#X text 682 427 time;
+#X msg 387 284 set 1024 200 2000;
+#X obj 427 663 ./fdn.rev~;
+#X text 633 773 if all zeroes \, bypass;
+#X text 32 47 * this is rounded to the next power of two in samples...
+;
+#X text 69 77 initialize list of delay lines;
+#X connect 0 0 15 0;
+#X connect 1 0 60 1;
+#X connect 2 0 60 2;
+#X connect 3 0 60 0;
+#X connect 6 0 60 0;
+#X connect 8 0 60 0;
+#X connect 13 0 3 0;
+#X connect 14 0 15 0;
+#X connect 15 0 3 1;
+#X connect 16 0 60 0;
+#X connect 17 0 60 0;
+#X connect 20 0 60 0;
+#X connect 21 0 60 0;
+#X connect 22 0 21 0;
+#X connect 24 0 60 0;
+#X connect 25 0 60 0;
+#X connect 26 0 60 0;
+#X connect 27 0 60 0;
+#X connect 28 0 60 0;
+#X connect 29 0 24 0;
+#X connect 30 0 60 0;
+#X connect 31 0 60 0;
+#X connect 32 0 34 0;
+#X connect 33 0 32 0;
+#X connect 34 0 35 0;
+#X connect 35 0 37 0;
+#X connect 37 0 36 0;
+#X connect 37 0 38 0;
+#X connect 38 0 39 0;
+#X connect 40 0 33 0;
+#X connect 44 0 60 0;
+#X connect 45 0 46 0;
+#X connect 46 0 47 0;
+#X connect 47 0 48 0;
+#X connect 49 0 45 0;
+#X connect 53 0 57 1;
+#X connect 54 0 57 0;
+#X connect 55 0 56 0;
+#X connect 57 0 55 0;
+#X connect 57 1 55 1;
+#X connect 59 0 60 0;
+#X connect 60 0 51 0;
+#X connect 60 1 23 0;
+#X connect 60 1 51 1;
+#X restore 460 258 pd example;
+#X obj 203 131 bng 18 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
+-1;
+#X obj 205 224 else/out~;
+#X obj 146 39 cnv 4 4 4 empty empty network 0 28 2 18 -233017 -1 0
+;
+#X obj 1 291 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+-228856 -1 0;
+#X obj 1 362 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+13 -228856 -1 0;
+#X obj 1 415 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+0 13 -228856 -1 0;
+#X obj 100 298 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X obj 100 319 cnv 17 3 17 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+-162280 0;
+#X text 148 298 signal;
+#X obj 100 340 cnv 17 3 17 empty \$0-pddp.cnv.let.2 2 5 9 0 16 -228856
+-162280 0;
+#X text 154 342 float;
+#X obj 1 441 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+14 -228856 -66577 0;
+#X obj 203 163 else/impseq~;
+#X obj 215 39 cnv 4 4 4 empty empty reverberator 0 28 2 18 -233017
+-1 0;
+#X obj 100 370 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X obj 100 391 cnv 17 3 17 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+-162280 0;
+#X text 148 370 signal;
+#X text 148 392 signal;
+#X text 154 321 float;
+#X text 198 298 - signal input, f 41;
+#X text 198 369 - left output of the FDN reverberator, f 41;
+#X text 198 392 - right output of the FDN reverberator, f 41;
+#X text 83 90 [fdn.rev~] is a feedback delay network reverberator that
+uses a householder reflection feedback matrix.;
+#X text 136 422 1) float;
+#X obj 203 190 fdn.rev~;
+#X text 198 422 - buffer;
+#X text 198 321 - reverberation time in seconds (t60);
+#X text 198 342 - high frequency damping in % (from 0 to 100);
+#X connect 13 0 25 0;
+#X connect 25 0 37 0;
+#X connect 37 0 14 0;
+#X connect 37 1 14 1;

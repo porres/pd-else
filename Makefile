@@ -108,6 +108,7 @@ ffdelay~.class.sources := Classes/Source/ffdelay~.c
 fbsine2~.class.sources := Classes/Source/fbsine2~.c
 float2sig~.class.sources := Classes/Source/float2sig~.c
 f2s~.class.sources := Classes/Source/f2s~.c
+fdn.rev~.class.sources := Classes/Source/fdn.rev~.c
 floor.class.sources := Classes/Source/floor.c
 floor~.class.sources := Classes/Source/floor~.c
 fold.class.sources := Classes/Source/fold.c

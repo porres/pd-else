@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-16 (Released february 2nd, 2019)
+### Version 1.0 beta-17 (Unreleased)
 
 Needs Pd 0.49-0 or above
 
@@ -40,7 +40,7 @@ But the library grew to encompass functionalities found in other Pd objects/libr
 
 The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. Hence, ELSE is becoming a quite big library and keeps growing and growing. 
 
-It will still alittle while for ELSE to stabilize into a final version. For now, it's at an early "Beta" stage of development, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. 
+It will still take a little while for ELSE to stabilize into a final version. For now, it's at an early "Beta" stage of development, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. 
 
 --------------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (293 objects):
+##Current Object list (294 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -199,11 +199,9 @@ Cross compiling is also possible with something like this
 - [loop]
 - [moses~]
 
-**AUDIO PROCESSING: [23]**
+**AUDIO PROCESSING: [21]**
 - [downsample~]
 - [conv~]
-- [allpass.rev~]
-- [comb.rev~]
 - [fbdelay~]
 - [ffdelay~]
 - [shaper~]
@@ -224,8 +222,11 @@ Cross compiling is also possible with something like this
 - [freeze~]
 - [pvoc.freeze~]
 
-**AUDIO PROCESSING: REVERB: [1]**
+**AUDIO PROCESSING: REVERBERATION: [4]**
 - [plateverb~]
+- [allpass.rev~]
+- [comb.rev~]
+- [fdn.rev~]
 
 **AUDIO PROCESSING: FILTERS [22]:**
 - [allpass.2nd~]
