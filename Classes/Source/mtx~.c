@@ -162,23 +162,20 @@ static void mtx_list(t_mtx *x, t_symbol *s, int argc, t_atom *argv)
         };
 }
 
-static void mtx_clear(t_mtx *x)
-{
+static void mtx_clear(t_mtx *x){
     int i;
-    for (i = 0; i < x->x_ncells; i++)
-    {
+    for (i = 0; i < x->x_ncells; i++){
         x->x_cells[i] = 0;
         if (x->x_gains)
             mtx_retarget(x, i);
     }
 }
 
-
-static void mtx_connect(t_mtx *x, t_symbol *s, int argc, t_atom *argv)
+/* static void mtx_connect(t_mtx *x, t_symbol *s, int argc, t_atom *argv)
 {
     int onoff = (s == gensym("connect")), inlet_idx, celloffset;
     if (argc < 2){ //if less than 2 args, fail gracefully
-		return;  /* CHECKED */
+		return;  // CHECKED
 	};
 
 	//parse first arg as inlet index
@@ -224,24 +221,19 @@ static void mtx_connect(t_mtx *x, t_symbol *s, int argc, t_atom *argv)
 			mtx_retarget_connect(x, cell_idx);
 		};
     };
-}
+} */
 
-/* CHECKED active fades are not retargeted */
-static void mtx_fade(t_mtx *x, t_floatarg f)
-{
-    if (x->x_fades)
-    {
-	int i;
-	x->x_deffade = (f < mtx_MINfade ? 0. : f); /* CHECKED cell-specific fades are lost */
-	for (i = 0; i < x->x_ncells; i++)
-	    x->x_fades[i] = x->x_deffade;
+// CHECKED active fades are not retargeted
+static void mtx_fade(t_mtx *x, t_floatarg f){
+    if (x->x_fades){
+        int i;
+        x->x_deffade = (f < mtx_MINfade ? 0. : f); // cell-specific fades are lost
+        for (i = 0; i < x->x_ncells; i++)
+            x->x_fades[i] = x->x_deffade;
     }
 }
 
-
-
-static t_int *mtx_perform(t_int *w)
-{
+static t_int *mtx_perform(t_int *w){
     t_mtx *x = (t_mtx *)(w[1]);
     int nblock = (int)(w[2]);
     t_float **ivecs = x->x_ivecs;
