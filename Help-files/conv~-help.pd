@@ -1,57 +1,60 @@
-#N canvas 539 97 567 443 10;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 627 144 569 449 10;
+#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 41 cnv 4 4 4 empty empty Partitioned 0 28 2 18 -233017 -1
+#X obj 24 42 cnv 4 4 4 empty empty Partitioned 0 28 2 18 -233017 -1
 0;
-#X obj 109 41 cnv 4 4 4 empty empty convolution 0 28 2 18 -233017 -1
+#X obj 110 42 cnv 4 4 4 empty empty convolution 0 28 2 18 -233017 -1
 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
-#X restore 305 4 graph;
-#X obj 3 4 cnv 15 301 42 empty empty conv~ 20 20 2 37 -233017 -1 0
+#X restore 306 5 graph;
+#X obj 4 5 cnv 15 301 42 empty empty conv~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 2 4 graph;
-#X obj 7 410 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X restore 3 5 graph;
+#X obj 8 422 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 7 287 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 8 267 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 318 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 8 337 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 356 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 8 375 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 151 329 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 142 348 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 150 295 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 141 275 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 177 214 else/out~;
-#X text 116 381 2) symbol;
-#X text 122 364 1) float;
-#X text 180 365 -;
-#X text 213 297 signal - input signal;
-#X text 213 330 signal - output signal;
-#X text 193 364 partition size (default 1024 \, minimum 64), f 53
+#X obj 184 206 else/out~;
+#X text 117 400 2) symbol;
+#X text 123 383 1) float;
+#X text 181 384 -;
+#X text 214 277 signal - input signal;
+#X text 214 349 signal - output signal;
+#X obj 184 143 else/play.file~ 1 vacuous.wav 1 -loop;
+#X obj 184 175 else/conv~ 1024 IR.wav;
+#X text 76 90 [conv~] is an abstraction that performs partitioned convolution.
+It takes a partition size and Impulse Response sound file., f 65;
+#X obj 141 297 cnv 17 3 35 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 75 89 [conv~] is an abstraction that performs partitioned convolution.
-It needs at least an Impulse Response sound file as an argument.,
-f 65;
-#X text 182 381 - file name to open as impulse response (obrigatory)
+#X text 178 298 size <float> - sets partition size;
+#X text 172 315 load <symbol> - loads IR sound file;
+#X text 183 400 - file name to open as impulse response (default none)
 ;
-#X obj 177 183 else/conv~ 256 IR.wav;
-#X obj 177 151 else/play.file~ 1 vacuous.wav 1 -loop;
-#X connect 27 0 18 0;
-#X connect 27 0 18 1;
-#X connect 28 0 27 0;
+#X text 194 383 optional: partition size (default 1024 \, minimum 64)
+, f 53;
+#X connect 24 0 25 0;
+#X connect 25 0 18 0;
+#X connect 25 0 18 1;
