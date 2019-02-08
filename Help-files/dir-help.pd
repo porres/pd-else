@@ -1,4 +1,4 @@
-#N canvas 568 23 563 662 10;
+#N canvas 568 23 566 650 10;
 #X obj 24 41 cnv 4 4 4 empty empty Acess 0 28 2 18 -233017 -1 0;
 #X obj 78 41 cnv 4 4 4 empty empty file 0 28 2 18 -233017 -1 0;
 #X obj 3 4 cnv 15 301 42 empty empty dir 20 20 2 37 -233017 -1 0;
@@ -22,49 +22,49 @@
 0;
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 5 353 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 5 359 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 514 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 508 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 579 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 573 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 5 629 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 623 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 151 244 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 129 269 else/dir;
-#X text 149 525 symbol -;
+#X text 149 519 symbol -;
 #X obj 119 40 cnv 4 4 4 empty empty directory 0 28 2 18 -233017 -1
 0;
 #X msg 115 168 dump;
 #X text 81 93 [dir] access files from a given directory (the directory
 the patch is located in by default).;
 #X msg 129 193 dir;
-#X text 107 362 open <symbol> -;
-#X text 211 362 opens a directory;
-#X text 167 408 dir -;
-#X text 211 408 outputs the current directory in the right outlet;
-#X text 161 424 dump -;
+#X text 107 368 open <symbol> -;
+#X text 211 368 opens a directory;
+#X text 167 400 dir -;
+#X text 211 400 outputs the current directory in the right outlet;
+#X text 161 416 dump -;
 #X msg 142 219 dir \, dump;
 #X text 171 243 same as "dir \, dump";
-#X obj 83 361 cnv 17 3 147 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 83 367 cnv 17 3 135 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 83 523 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 83 517 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 161 441 bang -;
-#X text 211 441 output directory and files;
-#X obj 83 546 cnv 17 3 27 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 161 433 bang -;
+#X text 211 433 output directory and files;
+#X obj 83 540 cnv 17 3 27 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 211 525 the files from the directory, f 47;
+#X text 211 519 the files from the directory, f 47;
 #X obj 85 330 print files;
-#X text 155 392 reset -;
-#X text 210 392 resets to patch's directory;
+#X text 155 384 reset -;
+#X text 210 384 resets to patch's directory;
 #X obj 174 293 else/display 50;
 #X text 152 167 dump all files from the directory (left outlet);
 #X text 158 193 sends directory path (right outlet);
 #X msg 97 145 open ..;
 #X msg 49 145 reset;
-#X text 161 548 atom -;
+#X text 161 542 atom -;
 #X obj 174 329 print dir;
 #N canvas 534 77 746 521 example 0;
 #X obj 430 304 else/dir;
@@ -97,7 +97,7 @@ also wrap according to the number of files.;
 #X obj 186 246 loadbang;
 #X obj 79 221 else/randi 1 1;
 #X obj 160 198 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 570 256;
+-228856 -1 -1 308 256;
 #X msg 139 418 \$2/\$1;
 #X text 100 156 <= a random file from the "else" externals folder;
 #X connect 0 0 4 0;
@@ -122,16 +122,16 @@ also wrap according to the number of files.;
 #X connect 21 0 20 2;
 #X connect 22 0 16 0;
 #X restore 464 256 pd example;
-#X text 179 458 n -;
-#X text 211 458 output number of found files in the right outlet;
-#X text 211 424 dump files from directory in the left outlet;
-#X text 113 475 seek <float> -;
-#X text 211 548 a symbol with the current directory or a float with
+#X text 179 450 n -;
+#X text 211 450 output number of found files in the right outlet;
+#X text 211 416 dump files from directory in the left outlet;
+#X text 113 467 seek <float> -;
+#X text 211 542 a symbol with the current directory or a float with
 the number of found files, f 47;
-#X text 161 493 next -;
-#X text 211 475 seeks and output the file corresponding to that number
+#X text 161 485 next -;
+#X text 211 467 seeks and output the file corresponding to that number
 ;
-#X text 211 493 increments seek value and outputs file;
+#X text 211 485 increments seek value and outputs file;
 #X text 155 145 <= opens parent directory;
 #N canvas 635 167 477 382 open 0;
 #X text 66 24 The 'open' message expects a symbol defining a directory.
@@ -153,8 +153,8 @@ in the parent directory.;
 #X connect 4 0 2 0;
 #X connect 5 0 4 0;
 #X restore 482 233 pd open;
-#X text 137 588 1) float -;
-#X text 211 588 initial directoty \, 0 is current patch's directory
+#X text 137 582 1) float -;
+#X text 211 582 initial directoty \, 0 is current patch's directory
 \, 1 is parent's patch's \, 2 parent's parent's and so on (default
 0), f 50;
 #N canvas 687 187 507 359 argument 0;
@@ -174,8 +174,6 @@ levels and just loads the current patch's directory instead.;
 #X connect 2 1 1 0;
 #X connect 3 0 2 0;
 #X restore 458 211 pd argument;
-#X text 155 377 close -;
-#X text 210 377 closes an open directory;
 #X connect 16 0 17 0;
 #X connect 17 0 36 0;
 #X connect 17 1 39 0;

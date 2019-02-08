@@ -1,7 +1,7 @@
-#N canvas 601 225 390 175 10;
+#N canvas 758 118 390 175 10;
 #X obj 54 31 inlet~;
 #X obj 54 136 outlet~;
-#N canvas 442 499 303 251 guts 1;
+#N canvas 442 499 303 251 guts 0;
 #N canvas 540 206 304 252 fft 0;
 #X obj 75 107 *~;
 #X obj 75 135 rfft~;
@@ -215,7 +215,7 @@
 #X connect 3 0 1 0;
 #X connect 3 1 2 0;
 #X restore 164 62 pd set;
-#N canvas 683 70 760 851 init 1;
+#N canvas 683 70 760 851 init 0;
 #X obj 430 394 soundfiler;
 #X msg 430 363 read \$1;
 #X msg 606 332 set \$1 2;
