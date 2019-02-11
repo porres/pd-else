@@ -1,13 +1,13 @@
-#N canvas 801 58 561 392 10;
-#X obj 3 205 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 690 106 561 381 10;
+#X obj 3 195 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 230 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 220 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 255 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 245 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X text 159 235 (none);
-#X text 159 210 (none);
-#X obj 3 363 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X text 159 225 (none);
+#X text 159 200 (none);
+#X obj 3 354 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -32,38 +32,36 @@
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
 #X obj 64 40 cnv 4 4 4 empty empty note 0 28 2 18 -233017 -1 0;
-#X text 204 156 <=;
-#X text 222 156 the default display of [else/textbox], f 19;
-#X obj 3 285 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 211 263 - the text to display, f 33;
-#X text 129 263 1) anything;
-#X text 117 293 -size <float>;
-#X text 111 310 -font <symbol>;
-#X text 211 293 - sets font size (default: patch's font size), f 47
+#X text 201 153 <=;
+#X text 219 153 the default display of [else/textbox], f 19;
+#X obj 3 275 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 117 283 -size <float>;
+#X text 111 300 -font <symbol>;
+#X text 211 283 - sets font size (default: patch's font size), f 47
 ;
-#X text 211 310 - sets font type (default: helvetica), f 47;
-#X obj 177 156 else/note 360 10 helvetica 0 0 0 note;
-#X text 129 326 -rgb <list>;
-#X text 211 326 - sets Red \, Green \, Blue colors (default 0 0 0)
+#X text 211 300 - sets font type (default: helvetica), f 47;
+#X obj 174 153 else/note 360 10 helvetica 0 0 0 note;
+#X text 129 316 -rgb <list>;
+#X text 211 316 - sets Red \, Green \, Blue colors (default 0 0 0)
 , f 47;
-#X text 99 343 -text <anything>;
-#X text 211 343 - sets text comment, f 47;
-#X text 68 87 [note] is a GUI meant to be only display text notes \,
-which can be typed in while in Edit mode. This is basically the same
-of Pd's comment but with the advantages being able to set the font
-type \, size and color., f 64;
-#N canvas 969 331 452 275 details 0;
-#X text 61 147 If you don't want to do that \, just make sure to click
+#X text 99 333 -text <anything>;
+#X text 211 333 - sets text comment, f 47;
+#N canvas 915 305 452 275 details 0;
+#X text 64 148 If you don't want to do that \, just make sure to click
 again so the whole comment text isn't selected \, and then you can
 click on the part you want to edit type. The delete key is also enabled
 and you can use the arrow keys to navigate on the comment., f 55;
-#X text 61 50 When in edit mode \, you can click on the object to select
+#X text 64 51 When in edit mode \, you can click on the object to select
 it. Note that the whole text gets selected when you do it \, so if
 you start typing \, the text gets replaced., f 55;
-#X text 61 216 A semicolon can be used to break the text \, but it's
+#X text 64 217 A semicolon can be used to break the text \, but it's
 also possible to resize the object box in edit mode to break the text.
 , f 55;
-#X obj 62 17 else/note 720 20 Helvetica 0 0 0 Editing:;
-#X obj 178 100 else/note 720 20 Helvetica 200 0 0 [note];
+#X obj 65 18 else/note 720 20 Helvetica 0 0 0 Editing:;
+#X obj 181 101 else/note 720 20 Helvetica 200 0 0 [note];
 #X coords 0 275 1 274 85 60 0;
-#X restore 466 164 pd details;
+#X restore 466 167 pd details;
+#X text 65 87 [note] is a GUI meant only to display text notes. This
+is basically the same of Pd's comment but with the advantages being
+able to set the font type \, size and color.;
+#X text 159 253 (none);
