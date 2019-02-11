@@ -20,6 +20,7 @@ cmul~.class.sources := Classes/Source/cmul~.c
 # GUI:
 function.class.sources := Classes/Source/function.c
 keyboard.class.sources := Classes/Source/keyboard.c
+note.class.sources := Classes/Source/note.c
 openfile.class.sources := Classes/Source/openfile.c
 colors.class.sources := Classes/Source/colors.c
 pic.class.sources := Classes/Source/pic.c

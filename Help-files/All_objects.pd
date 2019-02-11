@@ -1,8 +1,8 @@
 #N struct 1033-f float x;
-#N struct 1755-cell float x float y float cellsize float color;
-#N struct 1758-point float x0 float y0 float s;
-#N struct 1758-grid float x0 float y0 float s;
-#N canvas 713 102 528 848 10;
+#N struct 1355-cell float x float y float cellsize float color;
+#N struct 1358-point float x0 float y0 float s;
+#N struct 1358-grid float x0 float y0 float s;
+#N canvas 716 65 528 848 10;
 #X text 50 27 Assorted:;
 #X obj 50 51 else/table~;
 #X obj 50 77 else/nbang;
@@ -291,7 +291,7 @@
 #X obj 53 8463 else/mov.rms~;
 #X obj 53 8489 else/vu~;
 #X obj 53 8515 else/zerocross~;
-#N canvas 364 29 1012 743 GUI 0;
+#N canvas 393 153 1013 674 GUI 0;
 #X obj 198 70 else/mtx.ctl;
 #X text 76 86 [else/mtx.ctl] =>;
 #X obj 52 192 else/biplot;
@@ -314,7 +314,7 @@
 #X text 470 737 [else/gain2~] =>;
 #X obj 736 541 else/graph~;
 #X text 739 517 [else/graph~];
-#X obj 226 559 keyboard 17 80 4 3;
+#X obj 226 539 keyboard 17 80 4 3;
 #X obj 381 791 else/meter~;
 #X obj 576 790 else/meter2~;
 #X obj 64 728 else/mix2~;
@@ -324,10 +324,12 @@
 #X obj 444 120 else/openfile;
 #X obj 732 832 else/setdsp~;
 #X obj 857 788 else/output~;
-#X text 245 534 [else/keyboard];
+#X text 245 514 [else/keyboard];
 #X text 445 816 <= [else/meter~];
 #X text 465 877 [else/meter2~] =>;
 #X text 788 872 <= [else/setdspy~];
+#X obj 321 646 else/note 720 20 helvetica 200 0 0 note;
+#X text 243 652 [else/note];
 #X restore 59 8604 pd GUI;
 #X text 50 230 Patch/subpatch management:;
 #X text 48 478 Message management:;
