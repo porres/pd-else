@@ -413,29 +413,31 @@ void keyboard_float(t_keyboard *x, t_floatarg note){
     SETFLOAT(a, note);
     SETFLOAT(a+1, x->velocity_input);
     outlet_list(x->x_out, &s_list, 2, a);
-    if(note > x->first_c && note < x->first_c + (x->octaves * 12)){
-        x->notes[(int)(note - x->first_c)] = (x->velocity_input > 0) ? x->velocity_input : MOUSE_RELEASE;
-        int i;
-        for(i = 0 ; i < x->octaves * 12; i++){ // first dispatch note off
-            short key = i % 12;
-            if(x->notes[i] < 0){ // stop play Keyb or mouse
-                if( key != 1 && key != 3 && key !=6 && key != 8 && key != 10){
-                    if(x->first_c + i == 60) // Middle C
-                        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #F0FFFF\n", x->canvas, x, i);
+    if(x->glist->gl_havewindow){
+        if(note > x->first_c && note < x->first_c + (x->octaves * 12)){
+            x->notes[(int)(note - x->first_c)] = (x->velocity_input > 0) ? x->velocity_input : MOUSE_RELEASE;
+            int i;
+            for(i = 0 ; i < x->octaves * 12; i++){ // first dispatch note off
+                short key = i % 12;
+                if(x->notes[i] < 0){ // stop play Keyb or mouse
+                    if( key != 1 && key != 3 && key !=6 && key != 8 && key != 10){
+                        if(x->first_c + i == 60) // Middle C
+                            sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #F0FFFF\n", x->canvas, x, i);
+                        else
+                            sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #FFFFFF\n", x->canvas, x, i);
+                    }
                     else
-                        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #FFFFFF\n", x->canvas, x, i);
+                        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #000000\n", x->canvas, x, i);
                 }
-                else
-                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #000000\n", x->canvas, x, i);
             }
-        }
-        for(i = 0 ; i < x->octaves * 12; i++){ // then dispatch note on
-            short key = i % 12;
-            if(x->notes[i] > 0){ // play Keyb or mouse
-                if( key != 1 && key != 3 && key !=6 && key != 8 && key != 10)
-                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #9999FF\n", x->canvas, x, i);
-                else
-                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #6666FF\n", x->canvas, x, i);
+            for(i = 0 ; i < x->octaves * 12; i++){ // then dispatch note on
+                short key = i % 12;
+                if(x->notes[i] > 0){ // play Keyb or mouse
+                    if( key != 1 && key != 3 && key !=6 && key != 8 && key != 10)
+                        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #9999FF\n", x->canvas, x, i);
+                    else
+                        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #6666FF\n", x->canvas, x, i);
+                }
             }
         }
     }
