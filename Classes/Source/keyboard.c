@@ -158,16 +158,80 @@ static void keyboard_mousemotion(t_keyboard* x, t_float xpix, t_float ypix, t_fl
     }
 }
 
-/* ------------------------ widgetbehaviour----------------------------- */
+/* ------------------------ GUI SHIT----------------------------- */
 
-// THE BOUNDING RECTANGLE
-/*static void keyboard_getrect(t_gobj *z, t_glist *owner, int *xp1, int *yp1, int *xp2, int *yp2){
-    t_keyboard *x = (t_keyboard *)z;
-     *xp1 = x->x_obj.te_xpix;
-     *yp1 = x->x_obj.te_ypix;
-     *xp2 = x->x_obj.te_xpix + x->width;
-     *yp2 = x->x_obj.te_ypix + x->height;
-}*/
+// Erase the GUI
+static void keyboard_erase(t_keyboard *x){
+    sys_vgui(".x%lx.c delete %xrr\n", x->canvas, x);
+    for(t_int i = 0; i < x->octaves * 12; i++)
+        sys_vgui(".x%lx.c delete %xrrk%d\n", x->canvas, x, i);
+}
+
+// Draw the GUI
+static void keyboard_draw(t_keyboard *x){
+    int xpos = text_xpix(&x->x_obj, x->glist);
+    int ypos = text_ypix(&x->x_obj, x->glist);
+    sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %xrr -fill #FFFFFF\n", // Main rectangle
+             x->canvas,
+             xpos,
+             ypos,
+             xpos + x->width,
+             ypos + x->height,
+             x);
+    int i, wcounter, bcounter;
+    wcounter = bcounter = 0;
+    for(i = 0 ; i < x->octaves * 12 ; i++){ // white keys 1st (blacks overlay it)
+        short key = i % 12;
+        if(key != 1 && key != 3 && key != 6 && key != 8 && key != 10){
+            if(x->first_c + i == 60){ // Middle C
+                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill #F0FFFF\n",
+                         x->canvas,
+                         xpos + wcounter * (int)x->space,
+                         ypos,
+                         xpos + (wcounter + 1) * (int)x->space,
+                         ypos + x->height,
+                         x,
+                         i,
+                         x);
+                wcounter++;
+            }
+            else{ // other keys
+                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill #FFFFFF\n",
+                         x->canvas,
+                         xpos + wcounter * (int)x->space,
+                         ypos,
+                         xpos + (wcounter + 1) * (int)x->space,
+                         ypos + x->height,
+                         x,
+                         i,
+                         x);
+                wcounter++;
+            }
+        }
+    }
+    for(i = 0 ; i < x->octaves * 12 ; i++){ // Black keys
+        short key = i % 12;
+        if(key == 4 || key == 11){
+            bcounter++;
+            continue;
+        }
+        if(key == 1 || key == 3 || key ==6 || key == 8 || key == 10){
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill #000000\n",
+                     x->canvas,
+                     xpos + ((bcounter + 1) * (int)x->space) - ((int)(0.3f * x->space)) ,
+                     ypos,
+                     xpos + ((bcounter + 1) * (int)x->space) + ((int)(0.3f * x->space)) ,
+                     ypos + 2 * x->height / 3,
+                     x,
+                     i,
+                     x);
+            bcounter++;
+        }
+    }
+    canvas_fixlinesfor(x->glist, (t_text *)x);
+}
+
+/* ------------------------ widgetbehaviour----------------------------- */
 
 // GET RECT
 static void keyboard_getrect(t_gobj *z, t_glist *owner, int *xp1, int *yp1, int *xp2, int *yp2){
@@ -241,85 +305,13 @@ static void keyboard_select(t_gobj *z, t_glist *glist, int state){
         sys_vgui(".x%lx.c delete %xSEL\n",canvas, x);
 }
 
-
 // Delete the GUI
 static void keyboard_delete(t_gobj *z, t_glist *glist){
     t_text *x = (t_text *)z;
     canvas_deletelinesfor(glist_getcanvas(glist), x);
 }
 
-// GUI SHIT
-
-// Erase the GUI
-static void keyboard_erase(t_keyboard *x){
-    sys_vgui(".x%lx.c delete %xrr\n", x->canvas, x);
-    for(t_int i = 0; i < x->octaves * 12; i++)
-        sys_vgui(".x%lx.c delete %xrrk%d\n", x->canvas, x, i);
-}
-
-// Draw the GUI
-static void keyboard_draw(t_keyboard *x){
-    sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %xrr -fill #FFFFFF\n", // Main rectangle
-        x->canvas,
-        x->x_obj.te_xpix,
-        x->x_obj.te_ypix,
-        x->x_obj.te_xpix + x->width,
-        x->x_obj.te_ypix + x->height,
-        x);
-    int i, wcounter, bcounter;
-    wcounter = bcounter = 0;
-    for(i = 0 ; i < x->octaves * 12 ; i++){ // white keys 1st (blacks overlay it)
-        short key = i % 12;
-        if(key != 1 && key != 3 && key != 6 && key != 8 && key != 10){
-            if(x->first_c + i == 60){ // Middle C
-                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill #F0FFFF\n",
-                         x->canvas,
-                         x->x_obj.te_xpix + wcounter * (int)x->space,
-                         x->x_obj.te_ypix,
-                         x->x_obj.te_xpix + (wcounter + 1) * (int)x->space,
-                         x->x_obj.te_ypix + x->height,
-                         x,
-                         i,
-                         x);
-                wcounter++;
-            }
-            else{ // other keys
-                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill #FFFFFF\n",
-                x->canvas,
-                x->x_obj.te_xpix + wcounter * (int)x->space,
-                x->x_obj.te_ypix,
-                x->x_obj.te_xpix + (wcounter + 1) * (int)x->space,
-                x->x_obj.te_ypix + x->height,
-                x,
-                i,
-                x);
-                wcounter++;
-            }
-        }
-    }
-    for(i = 0 ; i < x->octaves * 12 ; i++){ // Black keys
-        short key = i % 12;
-        if(key == 4 || key == 11){
-            bcounter++;
-            continue;
-        }
-        if(key == 1 || key == 3 || key ==6 || key == 8 || key == 10){
-            sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill #000000\n",
-            x->canvas,
-            x->x_obj.te_xpix + ((bcounter + 1) * (int)x->space) - ((int)(0.3f * x->space)) ,
-            x->x_obj.te_ypix,
-            x->x_obj.te_xpix + ((bcounter + 1) * (int)x->space) + ((int)(0.3f * x->space)) ,
-            x->x_obj.te_ypix + 2 * x->height / 3,
-            x,
-            i,
-            x);
-            bcounter++;
-        }
-    }
-    canvas_fixlinesfor(x->glist, (t_text *)x);
-}
-
-// MAKE VISIBLE OR INVISIBLE
+// VIS
 static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
     t_keyboard *x = (t_keyboard *)z;
     t_canvas *cv = x->canvas = glist_getcanvas(x->glist = glist);
@@ -331,8 +323,9 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
         sys_vgui(".x%lx.c bind %xrr <KeyPress> {\n keyboard_keydown \"%d\" %%N\n}\n", cv, x, x);
         sys_vgui(".x%lx.c bind %xrr <KeyRelease> {\n keyboard_keyup \"%d\" %%N\n}\n", cv, x, x);
     }
-    else
+    else{
         keyboard_erase(x);
+    }
 }
 
 /* ------------------------ GUI Behaviour -----------------------------*/
