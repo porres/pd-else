@@ -20,6 +20,7 @@ typedef struct _keyboard{
     t_int octaves;
     t_int first_c;
     t_int low_c;
+    t_int x_toggle_mode;
     t_float space;
     t_outlet* x_out;
     t_glist *glist;
@@ -31,7 +32,7 @@ typedef struct _keyboard{
 
 static void keyboard_play(t_keyboard* x){
     int i;
-    for(i = 0 ; i < x->octaves * 12; i++){     // first, dispatch note off
+    for(i = 0 ; i < x->octaves * 12; i++){ // first, dispatch note off
         short key = i % 12;
         if(x->notes[i] < 0){ // stop play Keyb or mouse
             if( key != 1 && key != 3 && key !=6 && key != 8 && key != 10){
@@ -332,7 +333,8 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
 
 // Set Properties
 static void keyboard_set_properties(t_keyboard *x, t_floatarg space,
-            t_floatarg height,t_floatarg octaves, t_floatarg low_c){
+            t_floatarg height,t_floatarg octaves, t_floatarg low_c, t_floatarg tgl){
+    x->x_toggle_mode = (t_int)(tgl != 0);
     x->height = (height < 10) ? 10 : height;
 // clip octaves from 1 to 10
     if(octaves < 1)
@@ -363,11 +365,12 @@ void keyboard_properties(t_gobj *z, t_glist *owner){
     owner = NULL;
     t_keyboard *x = (t_keyboard *)z;
     char cmdbuf[256];
-    sprintf(cmdbuf, "keyboard_properties %%s %d %d %d %d\n",
+    sprintf(cmdbuf, "keyboard_properties %%s %d %d %d %d %d\n",
         (int)x->space,
         (int)x->height,
         (int)x->octaves,
-        (int)x->low_c);
+        (int)x->low_c,
+        (int)x->x_toggle_mode);
     gfxstub_new(&x->x_obj.ob_pd, x, cmdbuf);
 }
 
@@ -375,7 +378,7 @@ void keyboard_properties(t_gobj *z, t_glist *owner){
 static void keyboard_save(t_gobj *z, t_binbuf *b){
     t_keyboard *x = (t_keyboard *)z;
     binbuf_addv(b,
-                "ssiisiiii",
+                "ssiisiiiii",
                 gensym("#X"),
                 gensym("obj"),
                 (t_int)x->x_obj.te_xpix,
@@ -384,7 +387,8 @@ static void keyboard_save(t_gobj *z, t_binbuf *b){
                 (t_int)x->space,
                 (t_int)x->height,
                 (t_int)x->octaves,
-                (t_int)x->low_c);
+                (t_int)x->low_c,
+                (t_int)x->x_toggle_mode);
     binbuf_addv(b, ";");
 }
 
@@ -400,9 +404,9 @@ t_widgetbehavior keyboard_widgetbehavior ={
 
 // Apply changes of property windows
 static void keyboard_apply(t_keyboard *x, t_floatarg space, t_floatarg height,
-        t_floatarg octaves, t_floatarg low_c){
+        t_floatarg octaves, t_floatarg low_c, t_floatarg tgl){
     keyboard_erase(x);
-    keyboard_set_properties(x, space, height, octaves, low_c);
+    keyboard_set_properties(x, space, height, octaves, low_c, tgl);
     keyboard_draw(x);
 }
 
@@ -455,7 +459,7 @@ static void keyboard_oct(t_keyboard *x, t_floatarg f){
             target = x->low_c + f;
         if(x->low_c != target){
             keyboard_erase(x);
-            keyboard_set_properties(x, x->space, x->height, x->octaves, target);
+            keyboard_set_properties(x, x->space, x->height, x->octaves, target, x->x_toggle_mode);
             keyboard_draw(x);
         }
     }
@@ -467,7 +471,7 @@ static void keyboard_height(t_keyboard *x, t_floatarg f){
         f = 10;
     if(x->height != f){
         keyboard_erase(x);
-        keyboard_set_properties(x, x->space, f, x->octaves, x->low_c);
+        keyboard_set_properties(x, x->space, f, x->octaves, x->low_c, x->x_toggle_mode);
         keyboard_draw(x);
     }
 }
@@ -478,7 +482,7 @@ static void keyboard_width(t_keyboard *x, t_floatarg f){
         f = 7;
     if(x->space != f){
         keyboard_erase(x);
-        keyboard_set_properties(x, f, x->height, x->octaves, x->low_c);
+        keyboard_set_properties(x, f, x->height, x->octaves, x->low_c, x->x_toggle_mode);
         keyboard_draw(x);
     }
 }
@@ -491,7 +495,7 @@ static void keyboard_8ves(t_keyboard *x, t_floatarg f){
         f = 1;
     if(x->octaves != f){
         keyboard_erase(x);
-        keyboard_set_properties(x, x->space, x->height, f, x->low_c);
+        keyboard_set_properties(x, x->space, x->height, f, x->low_c, x->x_toggle_mode);
         keyboard_draw(x);
     }
 }
@@ -504,9 +508,13 @@ static void keyboard_low_c(t_keyboard *x, t_floatarg f){
         f = 0;
     if(x->low_c != f){
         keyboard_erase(x);
-        keyboard_set_properties(x, x->space, x->height, x->octaves, f);
+        keyboard_set_properties(x, x->space, x->height, x->octaves, f, x->x_toggle_mode);
         keyboard_draw(x);
     }
+}
+
+static void keyboard_toggle(t_keyboard *x, t_floatarg f){
+    keyboard_set_properties(x, x->space, x->height, x->octaves, x->low_c, f);
 }
 
 /* ------------------------ Free / New / Setup ------------------------------*/
@@ -522,6 +530,7 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
     t_symbol *dummy = s;
     dummy = NULL;
     t_keyboard *x = (t_keyboard *) pd_new(keyboard_class);
+    t_int tgl = 0;
     t_float init_space = 17;
     t_float init_height = 80;
     t_float init_8ves = 4;
@@ -534,10 +543,12 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
         init_8ves = atom_getfloat(av++), ac--;
     if(ac) // 4th ARGUMENT: Lowest C ("First C")
         init_low_c = atom_getfloat(av++), ac--;
+    if(ac) // 5th ARGUMENT: Toggle Mode)
+        tgl = (t_int)(atom_getfloat(av++) != 0), ac--;
     x->x_out = outlet_new(&x->x_obj, &s_list);
     floatinlet_new(&x->x_obj, &x->velocity_input);
 // Set Parameters
-    keyboard_set_properties(x, init_space, init_height, init_8ves, init_low_c);
+    keyboard_set_properties(x, init_space, init_height, init_8ves, init_low_c, tgl);
     pd_bind(&x->x_obj.ob_pd, gensym("keyboard"));
     return(void *) x;
 }
@@ -552,6 +563,7 @@ void keyboard_setup(void){
     class_addmethod(keyboard_class, (t_method)keyboard_height, gensym("height"), A_DEFFLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_oct, gensym("oct"), A_DEFFLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_low_c, gensym("lowc"), A_DEFFLOAT, 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_toggle, gensym("toggle"), A_DEFFLOAT, 0);
 // Methods to receive TCL/TK events
     class_addmethod(keyboard_class, (t_method)keyboard_mousepress,gensym("_mousepress"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_mouserelease,gensym("_mouserelease"), A_FLOAT, A_FLOAT, A_FLOAT, 0); 
@@ -612,28 +624,31 @@ sys_vgui("        [eval concat $$var_low_c] \\;]\n");
 sys_vgui("    pd $cmd\n");
 sys_vgui("}\n");
 
-sys_vgui("proc keyboard_properties {id width height octaves low_c} {\n");
+sys_vgui("proc keyboard_properties {id width height octaves low_c tgl} {\n");
 sys_vgui("    set vid [string trimleft $id .]\n");
 sys_vgui("    set var_width [concat var_width_$vid]\n");
 sys_vgui("    set var_height [concat var_height_$vid]\n");
 sys_vgui("    set var_octaves [concat var_octaves_$vid]\n");
 sys_vgui("    set var_low_c [concat var_low_c_$vid]\n");
+sys_vgui("    set var_tgl [concat var_tgl_$vid]\n");
 sys_vgui("\n");
 sys_vgui("    global $var_width\n");
 sys_vgui("    global $var_height\n");
 sys_vgui("    global $var_octaves\n");
 sys_vgui("    global $var_low_c\n");
+sys_vgui("    global $var_tgl\n");
 sys_vgui("\n");
 sys_vgui("    set $var_width $width\n");
 sys_vgui("    set $var_height $height\n");
 sys_vgui("    set $var_octaves $octaves\n");
 sys_vgui("    set $var_low_c $low_c\n");
+sys_vgui("    set $var_tgl $tgl\n");
 sys_vgui("\n");
 sys_vgui("    toplevel $id\n");
 sys_vgui("    wm title $id {Keyboard}\n");
 sys_vgui("    wm protocol $id WM_DELETE_WINDOW [concat keyboard_cancel $id]\n");
 sys_vgui("\n");
-sys_vgui("    label $id.label -text {Keyboard}\n");
+sys_vgui("    label $id.label -text {Keyboard properties}\n");
 sys_vgui("    pack $id.label -side top\n");
 sys_vgui("\n");
 sys_vgui("    frame $id.size\n");
@@ -652,6 +667,14 @@ sys_vgui("    label $id.notes.llow_c -text \"Low C:\"\n");
 sys_vgui("    entry $id.notes.low_c -textvariable $var_low_c -width 7\n");
 sys_vgui("    pack $id.notes.loctaves $id.notes.octaves $id.notes.llow_c $id.notes.low_c -side left\n");
 sys_vgui("\n");
+// new tgl mode
+sys_vgui("    frame $id.mode\n");
+sys_vgui("    pack $id.mode -side top\n");
+sys_vgui("    label $id.mode.ltgl -text \"Toggle Mode:\"\n");
+sys_vgui("    entry $id.mode.tgl -textvariable $var_tgl -width 1\n");
+sys_vgui("    pack $id.mode.ltgl $id.mode.tgl -side left\n");
+sys_vgui("\n");
+//
 sys_vgui("    frame $id.buttonframe\n");
 sys_vgui("    pack $id.buttonframe -side bottom -fill x -pady 2m\n");
 sys_vgui("    button $id.buttonframe.cancel -text {Cancel} -command \"keyboard_cancel $id\"\n");
