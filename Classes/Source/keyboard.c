@@ -32,35 +32,70 @@ typedef struct _keyboard{
 
 static void keyboard_play(t_keyboard* x){
     int i;
-    for(i = 0 ; i < x->octaves * 12; i++){ // first, dispatch note off
-        short key = i % 12;
-        if(x->notes[i] < 0){ // stop play Keyb or mouse
-            if( key != 1 && key != 3 && key !=6 && key != 8 && key != 10){
-                if(x->first_c + i == 60) // Middle C
-                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #F0FFFF\n", x->canvas, x, i);
-                else
-                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #FFFFFF\n", x->canvas, x, i);
+    if(x->x_toggle_mode){
+        for(i = 0 ; i < x->octaves * 12; i++){ // first, dispatch note off
+            short key = i % 12;
+            if(x->notes[i] < 0){ // stop play Keyb or mouse
+                if(key != 1 && key != 3 && key !=6 && key != 8 && key != 10){
+                    if(x->first_c + i == 60) // Middle C
+                        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #F0FFFF\n", x->canvas, x, i);
+                    else
+                        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #FFFFFF\n", x->canvas, x, i);
                 }
-            else
-                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #000000\n", x->canvas, x, i);
-            t_atom a[2];
-            SETFLOAT(a, ((int)x->first_c) + i);
-            SETFLOAT(a+1, x->notes[i] = 0);
-            outlet_list(x->x_out, &s_list, 2, a);
+                else
+                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #000000\n", x->canvas, x, i);
+                t_atom a[2];
+                SETFLOAT(a, ((int)x->first_c) + i);
+                SETFLOAT(a+1, x->notes[i] = 0);
+                outlet_list(x->x_out, &s_list, 2, a);
+            }
+        }
+        // then dispatch note on
+        for(i = 0 ; i < x->octaves * 12; i++){
+            short key = i % 12;
+            if(x->notes[i] > 0){ // play Keyb or mouse
+                if( key != 1 && key != 3 && key !=6 && key != 8 && key != 10)
+                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #9999FF\n", x->canvas, x, i);
+                else
+                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #6666FF\n", x->canvas, x, i);
+                t_atom a[2];
+                SETFLOAT(a, ((int)x->first_c) + i);
+                SETFLOAT(a+1, x->notes[i]);
+                outlet_list(x->x_out, &s_list, 2, a);
+            }
         }
     }
-    // then dispatch note on
-    for(i = 0 ; i < x->octaves * 12; i++){
-        short key = i % 12;
-        if(x->notes[i] > 0){ // play Keyb or mouse
-            if( key != 1 && key != 3 && key !=6 && key != 8 && key != 10)
-                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #9999FF\n", x->canvas, x, i);
-            else
-                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #6666FF\n", x->canvas, x, i);
-            t_atom a[2];
-            SETFLOAT(a, ((int)x->first_c) + i);
-            SETFLOAT(a+1, x->notes[i]);
-            outlet_list(x->x_out, &s_list, 2, a);
+    else{
+        for(i = 0 ; i < x->octaves * 12; i++){ // first, dispatch note off
+            short key = i % 12;
+            if(x->notes[i] < 0){ // stop play Keyb or mouse
+                if(key != 1 && key != 3 && key !=6 && key != 8 && key != 10){
+                    if(x->first_c + i == 60) // Middle C
+                        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #F0FFFF\n", x->canvas, x, i);
+                    else
+                        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #FFFFFF\n", x->canvas, x, i);
+                }
+                else
+                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #000000\n", x->canvas, x, i);
+                t_atom a[2];
+                SETFLOAT(a, ((int)x->first_c) + i);
+                SETFLOAT(a+1, x->notes[i] = 0);
+                outlet_list(x->x_out, &s_list, 2, a);
+            }
+        }
+        // then dispatch note on
+        for(i = 0 ; i < x->octaves * 12; i++){
+            short key = i % 12;
+            if(x->notes[i] > 0){ // play Keyb or mouse
+                if( key != 1 && key != 3 && key !=6 && key != 8 && key != 10)
+                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #9999FF\n", x->canvas, x, i);
+                else
+                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #6666FF\n", x->canvas, x, i);
+                t_atom a[2];
+                SETFLOAT(a, ((int)x->first_c) + i);
+                SETFLOAT(a+1, x->notes[i]);
+                outlet_list(x->x_out, &s_list, 2, a);
+            }
         }
     }
 }
@@ -121,16 +156,17 @@ static void keyboard_mouserelease(t_keyboard* x, t_float xpix, t_float ypix, t_f
         return;
     if (x->glist->gl_edit) // If edit mode, give up!
         return;
-    int i, play;
-    play = 0;
-    for(i = 0 ; i < x->octaves * 12; i++){
-        if(x->notes[i] == MOUSE_PRESS){
-            x->notes[i] = MOUSE_RELEASE;
-            play = 1;
+    if(!x->x_toggle_mode){
+        int play = 0;
+        for(t_int i = 0 ; i < x->octaves * 12; i++){
+            if(x->notes[i] == MOUSE_PRESS){
+                x->notes[i] = MOUSE_RELEASE;
+                play = 1;
             }
+        }
+        if(play == 1)
+            keyboard_play(x);
     }
-    if(play == 1)
-        keyboard_play(x);
 }
 
 // Mouse Drag event
@@ -333,8 +369,8 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
 
 // Set Properties
 static void keyboard_set_properties(t_keyboard *x, t_floatarg space,
-            t_floatarg height,t_floatarg octaves, t_floatarg low_c, t_floatarg tgl){
-    x->x_toggle_mode = (t_int)(tgl != 0);
+            t_floatarg height, t_floatarg octaves, t_floatarg low_c, t_floatarg tgl){
+    x->x_toggle_mode = tgl != 0;
     x->height = (height < 10) ? 10 : height;
 // clip octaves from 1 to 10
     if(octaves < 1)
@@ -568,123 +604,126 @@ void keyboard_setup(void){
     class_addmethod(keyboard_class, (t_method)keyboard_mousepress,gensym("_mousepress"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_mouserelease,gensym("_mouserelease"), A_FLOAT, A_FLOAT, A_FLOAT, 0); 
     class_addmethod(keyboard_class, (t_method)keyboard_mousemotion,gensym("_mousemotion"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(keyboard_class, (t_method)keyboard_apply, gensym("apply"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_apply, gensym("apply"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
 // Widget
     class_setwidget(keyboard_class, &keyboard_widgetbehavior);
     class_setsavefn(keyboard_class, keyboard_save);
     class_setpropertiesfn(keyboard_class, keyboard_properties);
-sys_vgui("if {[catch {pd}] } {\n");
-sys_vgui("    proc pd {args} {pdsend [join $args \" \"]}\n");
-sys_vgui("}\n");
-
-sys_vgui("proc keyboard_mousepress {id x y b} {\n");
-sys_vgui("    if {$b == 1} {\n");
-sys_vgui("        pd [concat keyboard _mousepress $x $y $id\\;]\n");
-sys_vgui("    }\n");
-sys_vgui("}\n");
-
-sys_vgui("proc keyboard_mouserelease {id x y b} {\n");
-sys_vgui("    if {$b == 1} {\n");
-sys_vgui("        pd [concat keyboard _mouserelease $x $y $id\\;]\n");
-sys_vgui("    }\n");
-sys_vgui("}\n");
-
-sys_vgui("proc keyboard_mousemotion {id x y} {\n");
-sys_vgui("    set cmd [concat keyboard _mousemotion $x $y $id\\;]\n");
-sys_vgui("    pd $cmd\n");
-sys_vgui("}\n");
-
-sys_vgui("proc keyboard_ok {id} {\n");
-sys_vgui("    keyboard_apply $id\n");
-sys_vgui("    keyboard_cancel $id\n");
-sys_vgui("}\n");
-
-sys_vgui("proc keyboard_cancel {id} {\n");
-sys_vgui("    set cmd [concat $id cancel \\;]\n");
-sys_vgui("    pd $cmd\n");
-sys_vgui("}\n");
-
-sys_vgui("proc keyboard_apply {id} {\n");
-sys_vgui("    set vid [string trimleft $id .]\n");
-sys_vgui("    set var_width [concat var_width_$vid]\n");
-sys_vgui("    set var_height [concat var_height_$vid]\n");
-sys_vgui("    set var_octaves [concat var_octaves_$vid]\n");
-sys_vgui("    set var_low_c [concat var_low_c_$vid]\n");
-sys_vgui("\n");
-sys_vgui("    global $var_width\n");
-sys_vgui("    global $var_height\n");
-sys_vgui("    global $var_octaves\n");
-sys_vgui("    global $var_low_c\n");
-sys_vgui("\n");
-sys_vgui("    set cmd [concat $id apply \\\n");
-sys_vgui("        [eval concat $$var_width] \\\n");
-sys_vgui("        [eval concat $$var_height] \\\n");
-sys_vgui("        [eval concat $$var_octaves] \\\n");
-sys_vgui("        [eval concat $$var_low_c] \\;]\n");
-sys_vgui("    pd $cmd\n");
-sys_vgui("}\n");
-
-sys_vgui("proc keyboard_properties {id width height octaves low_c tgl} {\n");
-sys_vgui("    set vid [string trimleft $id .]\n");
-sys_vgui("    set var_width [concat var_width_$vid]\n");
-sys_vgui("    set var_height [concat var_height_$vid]\n");
-sys_vgui("    set var_octaves [concat var_octaves_$vid]\n");
-sys_vgui("    set var_low_c [concat var_low_c_$vid]\n");
-sys_vgui("    set var_tgl [concat var_tgl_$vid]\n");
-sys_vgui("\n");
-sys_vgui("    global $var_width\n");
-sys_vgui("    global $var_height\n");
-sys_vgui("    global $var_octaves\n");
-sys_vgui("    global $var_low_c\n");
-sys_vgui("    global $var_tgl\n");
-sys_vgui("\n");
-sys_vgui("    set $var_width $width\n");
-sys_vgui("    set $var_height $height\n");
-sys_vgui("    set $var_octaves $octaves\n");
-sys_vgui("    set $var_low_c $low_c\n");
-sys_vgui("    set $var_tgl $tgl\n");
-sys_vgui("\n");
-sys_vgui("    toplevel $id\n");
-sys_vgui("    wm title $id {Keyboard}\n");
-sys_vgui("    wm protocol $id WM_DELETE_WINDOW [concat keyboard_cancel $id]\n");
-sys_vgui("\n");
-sys_vgui("    label $id.label -text {Keyboard properties}\n");
-sys_vgui("    pack $id.label -side top\n");
-sys_vgui("\n");
-sys_vgui("    frame $id.size\n");
-sys_vgui("    pack $id.size -side top\n");
-sys_vgui("    label $id.size.lwidth -text \"Key Width:\"\n");
-sys_vgui("    entry $id.size.width -textvariable $var_width -width 7\n");
-sys_vgui("    label $id.size.lheight -text \"Height:\"\n");
-sys_vgui("    entry $id.size.height -textvariable $var_height -width 7\n");
-sys_vgui("    pack $id.size.lwidth $id.size.width $id.size.lheight $id.size.height -side left\n");
-sys_vgui("\n");
-sys_vgui("    frame $id.notes\n");
-sys_vgui("    pack $id.notes -side top\n");
-sys_vgui("    label $id.notes.loctaves -text \"Octaves:\"\n");
-sys_vgui("    entry $id.notes.octaves -textvariable $var_octaves -width 7\n");
-sys_vgui("    label $id.notes.llow_c -text \"Low C:\"\n");
-sys_vgui("    entry $id.notes.low_c -textvariable $var_low_c -width 7\n");
-sys_vgui("    pack $id.notes.loctaves $id.notes.octaves $id.notes.llow_c $id.notes.low_c -side left\n");
-sys_vgui("\n");
+    
+    sys_vgui("if {[catch {pd}] } {\n");
+    sys_vgui("    proc pd {args} {pdsend [join $args \" \"]}\n");
+    sys_vgui("}\n");
+    
+    sys_vgui("proc keyboard_mousepress {id x y b} {\n");
+    sys_vgui("    if {$b == 1} {\n");
+    sys_vgui("        pd [concat keyboard _mousepress $x $y $id\\;]\n");
+    sys_vgui("    }\n");
+    sys_vgui("}\n");
+    
+    sys_vgui("proc keyboard_mouserelease {id x y b} {\n");
+    sys_vgui("    if {$b == 1} {\n");
+    sys_vgui("        pd [concat keyboard _mouserelease $x $y $id\\;]\n");
+    sys_vgui("    }\n");
+    sys_vgui("}\n");
+    
+    sys_vgui("proc keyboard_mousemotion {id x y} {\n");
+    sys_vgui("    set cmd [concat keyboard _mousemotion $x $y $id\\;]\n");
+    sys_vgui("    pd $cmd\n");
+    sys_vgui("}\n");
+    
+    sys_vgui("proc keyboard_ok {id} {\n");
+    sys_vgui("    keyboard_apply $id\n");
+    sys_vgui("    keyboard_cancel $id\n");
+    sys_vgui("}\n");
+    
+    sys_vgui("proc keyboard_cancel {id} {\n");
+    sys_vgui("    set cmd [concat $id cancel \\;]\n");
+    sys_vgui("    pd $cmd\n");
+    sys_vgui("}\n");
+    
+    sys_vgui("proc keyboard_apply {id} {\n");
+    sys_vgui("    set vid [string trimleft $id .]\n");
+    sys_vgui("    set var_width [concat var_width_$vid]\n");
+    sys_vgui("    set var_height [concat var_height_$vid]\n");
+    sys_vgui("    set var_octaves [concat var_octaves_$vid]\n");
+    sys_vgui("    set var_low_c [concat var_low_c_$vid]\n");
+    sys_vgui("    set var_tgl [concat var_tgl_$vid]\n");
+    sys_vgui("\n");
+    sys_vgui("    global $var_width\n");
+    sys_vgui("    global $var_height\n");
+    sys_vgui("    global $var_octaves\n");
+    sys_vgui("    global $var_low_c\n");
+    sys_vgui("    global $var_tgl\n");
+    sys_vgui("\n");
+    sys_vgui("    set cmd [concat $id apply \\\n");
+    sys_vgui("        [eval concat $$var_width] \\\n");
+    sys_vgui("        [eval concat $$var_height] \\\n");
+    sys_vgui("        [eval concat $$var_octaves] \\\n");
+    sys_vgui("        [eval concat $$var_low_c] \\\n");
+    sys_vgui("        [eval concat $$var_tgl] \\;]\n");
+    sys_vgui("    pd $cmd\n");
+    sys_vgui("}\n");
+    
+    sys_vgui("proc keyboard_properties {id width height octaves low_c tgl} {\n");
+    sys_vgui("    set vid [string trimleft $id .]\n");
+    sys_vgui("    set var_width [concat var_width_$vid]\n");
+    sys_vgui("    set var_height [concat var_height_$vid]\n");
+    sys_vgui("    set var_octaves [concat var_octaves_$vid]\n");
+    sys_vgui("    set var_low_c [concat var_low_c_$vid]\n");
+    sys_vgui("    set var_tgl [concat var_tgl_$vid]\n");
+    sys_vgui("\n");
+    sys_vgui("    global $var_width\n");
+    sys_vgui("    global $var_height\n");
+    sys_vgui("    global $var_octaves\n");
+    sys_vgui("    global $var_low_c\n");
+    sys_vgui("    global $var_tgl\n");
+    sys_vgui("\n");
+    sys_vgui("    set $var_width $width\n");
+    sys_vgui("    set $var_height $height\n");
+    sys_vgui("    set $var_octaves $octaves\n");
+    sys_vgui("    set $var_low_c $low_c\n");
+    sys_vgui("    set $var_tgl $tgl\n");
+    sys_vgui("\n");
+    sys_vgui("    toplevel $id\n");
+    sys_vgui("    wm title $id {Keyboard}\n");
+    sys_vgui("    wm protocol $id WM_DELETE_WINDOW [concat keyboard_cancel $id]\n");
+    sys_vgui("\n");
+    sys_vgui("    label $id.label -text {Keyboard properties}\n");
+    sys_vgui("    pack $id.label -side top\n");
+    sys_vgui("\n");
+    sys_vgui("    frame $id.size\n");
+    sys_vgui("    pack $id.size -side top\n");
+    sys_vgui("    label $id.size.lwidth -text \"Key Width:\"\n");
+    sys_vgui("    entry $id.size.width -textvariable $var_width -width 7\n");
+    sys_vgui("    label $id.size.lheight -text \"Height:\"\n");
+    sys_vgui("    entry $id.size.height -textvariable $var_height -width 7\n");
+    sys_vgui("    pack $id.size.lwidth $id.size.width $id.size.lheight $id.size.height -side left\n");
+    sys_vgui("\n");
+    sys_vgui("    frame $id.notes\n");
+    sys_vgui("    pack $id.notes -side top\n");
+    sys_vgui("    label $id.notes.loctaves -text \"Octaves:\"\n");
+    sys_vgui("    entry $id.notes.octaves -textvariable $var_octaves -width 7\n");
+    sys_vgui("    label $id.notes.llow_c -text \"Low C:\"\n");
+    sys_vgui("    entry $id.notes.low_c -textvariable $var_low_c -width 7\n");
+    sys_vgui("    pack $id.notes.loctaves $id.notes.octaves $id.notes.llow_c $id.notes.low_c -side left\n");
+    sys_vgui("\n");
 // new tgl mode
-sys_vgui("    frame $id.mode\n");
-sys_vgui("    pack $id.mode -side top\n");
-sys_vgui("    label $id.mode.ltgl -text \"Toggle Mode:\"\n");
-sys_vgui("    entry $id.mode.tgl -textvariable $var_tgl -width 1\n");
-sys_vgui("    pack $id.mode.ltgl $id.mode.tgl -side left\n");
-sys_vgui("\n");
+    sys_vgui("    frame $id.mode\n");
+    sys_vgui("    pack $id.mode -side top\n");
+    sys_vgui("    label $id.mode.ltgl -text \"Toggle Mode:\"\n");
+    sys_vgui("    entry $id.mode.tgl -textvariable $var_tgl -width 2\n");
+    sys_vgui("    pack $id.mode.ltgl $id.mode.tgl -side left\n");
+    sys_vgui("\n");
 //
-sys_vgui("    frame $id.buttonframe\n");
-sys_vgui("    pack $id.buttonframe -side bottom -fill x -pady 2m\n");
-sys_vgui("    button $id.buttonframe.cancel -text {Cancel} -command \"keyboard_cancel $id\"\n");
-sys_vgui("    button $id.buttonframe.apply -text {Apply} -command \"keyboard_apply $id\"\n");
-sys_vgui("    button $id.buttonframe.ok -text {OK} -command \"keyboard_ok $id\"\n");
-sys_vgui("    pack $id.buttonframe.cancel -side left -expand 1\n");
-sys_vgui("    pack $id.buttonframe.apply -side left -expand 1\n");
-sys_vgui("    pack $id.buttonframe.ok -side left -expand 1\n");
-sys_vgui("\n");
-sys_vgui("    focus $id.size.width\n");
-sys_vgui("}\n");
-
+    sys_vgui("    frame $id.buttonframe\n");
+    sys_vgui("    pack $id.buttonframe -side bottom -fill x -pady 2m\n");
+    sys_vgui("    button $id.buttonframe.cancel -text {Cancel} -command \"keyboard_cancel $id\"\n");
+    sys_vgui("    button $id.buttonframe.apply -text {Apply} -command \"keyboard_apply $id\"\n");
+    sys_vgui("    button $id.buttonframe.ok -text {OK} -command \"keyboard_ok $id\"\n");
+    sys_vgui("    pack $id.buttonframe.cancel -side left -expand 1\n");
+    sys_vgui("    pack $id.buttonframe.apply -side left -expand 1\n");
+    sys_vgui("    pack $id.buttonframe.ok -side left -expand 1\n");
+    sys_vgui("\n");
+    sys_vgui("    focus $id.size.width\n");
+    sys_vgui("}\n");
 }
