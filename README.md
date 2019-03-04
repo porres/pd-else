@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-17 (Released: February 9th, 2019)
+### Version 1.0 beta-18 (Unreleased)
 
 Needs Pd 0.49-0 or above
 
@@ -72,7 +72,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (295 objects):
+##Current Object list (296 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -222,8 +222,9 @@ Cross compiling is also possible with something like this
 - [freeze~]
 - [pvoc.freeze~]
 
-**AUDIO PROCESSING: REVERBERATION: [4]**
+**AUDIO PROCESSING: REVERBERATION: [5]**
 - [plateverb~]
+- [free.rev~]
 - [allpass.rev~]
 - [comb.rev~]
 - [fdn.rev~]
