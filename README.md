@@ -223,7 +223,7 @@ Cross compiling is also possible with something like this
 - [pvoc.freeze~]
 
 **AUDIO PROCESSING: REVERBERATION: [5]**
-- [plateverb~]
+- [plate.rev~]
 - [free.rev~]
 - [allpass.rev~]
 - [comb.rev~]
