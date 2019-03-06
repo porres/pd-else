@@ -96,20 +96,20 @@ fading) with the -fade flag or fade message., f 60;
 #X obj 183 491 else/play.file~ 2;
 #X obj 189 532 else/out~;
 #X msg 183 465 open test.wav;
-#X obj 56 367 else/plateverb~ 50 0.6 0.25 0.8 0.8;
 #X obj 56 404 else/rec.file~ test.wav 2 -maxtime 500 -fade 250;
 #X text 38 251 A maximum time of 0 or less means no maximum time \,
 and the recording goes on indefinitely. The maxtime needs to be at
 least twice the fade time \, otherwise it is ignored and the recording
 goes on indefinitely as well.;
-#X connect 3 0 9 0;
-#X connect 5 0 10 2;
+#X obj 56 367 else/plate.rev~ 50 0.6 0.25 0.8 0.8;
+#X connect 3 0 11 0;
+#X connect 5 0 9 2;
 #X connect 6 0 7 0;
 #X connect 6 1 7 1;
 #X connect 8 0 6 0;
-#X connect 9 0 10 0;
-#X connect 9 1 10 1;
-#X connect 10 0 4 0;
+#X connect 9 0 4 0;
+#X connect 11 0 9 0;
+#X connect 11 1 9 1;
 #X restore 493 215 pd flags;
 #X text 124 488 -maxtime <float> (default 0) | -fade <float> (default
 10);

@@ -1,7 +1,7 @@
 #N struct 1033-f float x;
-#N struct 1355-cell float x float y float cellsize float color;
-#N struct 1358-point float x0 float y0 float s;
-#N struct 1358-grid float x0 float y0 float s;
+#N struct 1361-cell float x float y float cellsize float color;
+#N struct 1364-point float x0 float y0 float s;
+#N struct 1364-grid float x0 float y0 float s;
 #N canvas 716 65 528 848 10;
 #X text 50 6 Assorted:;
 #X obj 50 30 else/table~;
@@ -137,7 +137,6 @@
 #X obj 48 3720 else/morph~;
 #X obj 48 3746 else/freeze~;
 #X obj 48 3773 else/pvoc.freeze~;
-#X obj 48 3852 else/plateverb~;
 #X text 47 4013 Audio Processing (filters):;
 #X obj 48 4037 else/allpass.2nd~;
 #X obj 48 4063 else/comb.filt~;
@@ -396,3 +395,4 @@
 #X text 45 3824 Audio Processing (reverberation):;
 #X obj 48 3962 else/fdn.rev~;
 #X obj 48 3883 else/free.rev~;
+#X obj 48 3852 else/plate.rev~;

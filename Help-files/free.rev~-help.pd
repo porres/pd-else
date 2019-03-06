@@ -1,4 +1,4 @@
-#N canvas 715 103 561 571 10;
+#N canvas 647 42 561 571 10;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -29,60 +29,54 @@
 ;
 #X obj 4 469 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 114 425 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 107 425 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 114 288 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 107 288 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 4 544 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 191 290 signal;
 #X text 191 425 signal;
 #X text 258 425 - left channel output, f 31;
-#X obj 114 446 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 107 446 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 191 445 signal;
 #X text 258 445 - right channel output, f 31;
-#X obj 114 310 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 107 310 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 114 333 cnv 17 3 77 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 107 333 cnv 17 3 77 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
 #X text 191 312 signal;
-#X text 151 493 2) float - damping (0-1) - default 0, f 38;
-#X text 151 477 1) float - room size (0-1) - default 0;
-#X text 151 524 4) float - dry/wet (0-1) - default 0, f 38;
-#X text 151 508 3) float - width (0-1) - default 0, f 38;
-#X text 155 331 size <float>;
-#X text 258 331 - room size (0-1), f 31;
-#X text 155 347 damp <float>;
-#X text 149 363 width <float>;
+#X text 258 334 - room size (0-1), f 31;
+#X text 155 349 damp <float>;
+#X text 149 364 width <float>;
 #X text 258 364 - stereo width (0-1), f 31;
-#X text 161 379 wet <float>;
-#X text 197 394 clear;
-#X text 258 394 - clears delay lines, f 31;
+#X text 161 378 wet <float>;
+#X text 197 393 clear;
+#X text 258 393 - clears delay lines, f 31;
 #X obj 214 214 else/out~;
 #X obj 177 178 else/free.rev~ 0.5 0.5 1 1;
 #X obj 155 139 else/imp~ 0.5;
 #X obj 253 138 else/imp~ 0.5 0.5;
 #X text 258 290 - left channel input signal, f 31;
 #X text 258 312 - rigth channel input signal, f 31;
-#X text 258 347 - high frequency damping (0-1), f 31;
+#X text 258 349 - high frequency damping (0-1), f 31;
 #N canvas 691 214 765 465 details 0;
 #X obj 353 206 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
 -1 -1 0 0;
 #X floatatom 350 232 5 0 0 0 - - -;
-#X floatatom 413 256 5 0 0 0 - - -;
-#X obj 546 290 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
+#X floatatom 433 256 5 0 0 0 - - -;
+#X obj 566 290 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
 -1 -1 0 0;
-#X floatatom 543 313 5 0 0 0 - - -;
-#X msg 543 337 wet \$1;
-#X msg 413 282 damp \$1;
-#X msg 350 258 size \$1;
-#X obj 416 233 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
+#X floatatom 563 313 5 0 0 0 - - -;
+#X msg 563 337 wet \$1;
+#X msg 433 282 damp \$1;
+#X obj 436 233 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
 -1 -1 0 0;
-#X obj 479 261 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
+#X obj 499 261 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
 -1 -1 0 0;
-#X floatatom 476 284 5 0 0 0 - - -;
-#X msg 476 307 width \$1;
+#X floatatom 496 284 5 0 0 0 - - -;
+#X msg 496 307 width \$1;
 #X msg 300 232 clear;
 #X obj 123 321 else/free.rev~ 0.5 0.5 0.5 0.5;
 #X obj 176 367 else/out~;
@@ -90,41 +84,47 @@
 \, the higher the damping \, the less high frequencies are filtered
 out. A lowpass filter is included inside the feedback loop of each
 comb filter., f 49;
-#X text 68 30 The freeverb algorithm is a simple implementation of
-the standard Schroeder/Moorer reverb model. It is composed of eigth
-comb filters in parallel passing through four allpass filters in series.
-The 'size' meessage controls the room size and affects the feedback
-parameter of the comb filters., f 49;
 #X text 408 51 The 'width' meessage controls how much both inputs are
 mixed or not. When this is set to 1 \, we have two independent channels.
 For a mono input \, a 0 parameter is suited to create a stereo image
 from a single channel source., f 45;
 #X text 407 127 The 'wet' meessage controls the dry (0) and wet (1)
 mix and the clear message clears up the delay lines., f 44;
-#X obj 123 276 else/imp~ 0.5;
-#X obj 211 271 else/imp~ 0.5 0.5, f 9;
+#X obj 144 273 else/player~ stereo.wav -loop, f 23;
+#X msg 350 258 liveness \$1;
+#X text 68 30 The freeverb algorithm is a simple implementation of
+the standard Schroeder/Moorer reverb model. It is composed of eigth
+comb filters in parallel passing through four allpass filters in series.
+The 'liveness' meessage controls the decay time and affects the feedback
+parameter of the comb filters., f 49;
 #X connect 0 0 1 0;
-#X connect 1 0 7 0;
+#X connect 1 0 18 0;
 #X connect 2 0 6 0;
 #X connect 3 0 4 0;
 #X connect 4 0 5 0;
-#X connect 5 0 13 2;
-#X connect 6 0 13 2;
-#X connect 7 0 13 2;
-#X connect 8 0 2 0;
+#X connect 5 0 12 2;
+#X connect 6 0 12 2;
+#X connect 7 0 2 0;
+#X connect 8 0 9 0;
 #X connect 9 0 10 0;
-#X connect 10 0 11 0;
-#X connect 11 0 13 2;
-#X connect 12 0 13 2;
-#X connect 13 0 14 0;
-#X connect 13 1 14 1;
-#X connect 19 0 13 0;
-#X connect 20 0 13 1;
+#X connect 10 0 12 2;
+#X connect 11 0 12 2;
+#X connect 12 0 13 0;
+#X connect 12 1 13 1;
+#X connect 17 0 12 0;
+#X connect 17 1 12 1;
+#X connect 18 0 12 2;
 #X restore 464 247 pd details;
 #X text 70 87 [free.rev~] is a stereo reverb abstraction based on the
 widely known 'freeverb' algorithm.;
-#X text 258 379 - wet ratio (0-1), f 31;
-#X connect 40 0 39 0;
-#X connect 40 1 39 1;
-#X connect 41 0 40 0;
-#X connect 42 0 40 1;
+#X text 258 378 - wet ratio (0-1), f 31;
+#X text 151 524 4) float - wet ratio (0-1) - default 0;
+#X text 131 334 liveness <float>;
+#X text 151 477 1) float - liveness (0-1) - default 0;
+#X text 151 493 2) float - high frequency damping (0-1) - default 0
+;
+#X text 151 508 3) float - stereo width (0-1) - default 0;
+#X connect 35 0 34 0;
+#X connect 35 1 34 1;
+#X connect 36 0 35 0;
+#X connect 37 0 35 1;
