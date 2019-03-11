@@ -46,11 +46,7 @@
 , f 47;
 #X text 99 333 -text <anything>;
 #X text 211 333 - sets text comment, f 47;
-#N canvas 915 305 452 275 details 0;
-#X text 64 148 If you don't want to do that \, just make sure to click
-again so the whole comment text isn't selected \, and then you can
-click on the part you want to edit type. The delete key is also enabled
-and you can use the arrow keys to navigate on the comment., f 55;
+#N canvas 872 292 452 275 details 0;
 #X text 64 51 When in edit mode \, you can click on the object to select
 it. Note that the whole text gets selected when you do it \, so if
 you start typing \, the text gets replaced., f 55;
@@ -59,9 +55,14 @@ also possible to resize the object box in edit mode to break the text.
 , f 55;
 #X obj 65 18 else/note 720 20 Helvetica 0 0 0 Editing:;
 #X obj 181 101 else/note 720 20 Helvetica 200 0 0 [note];
+#X text 64 148 If you don't want to do that \, just make sure to click
+again so the whole comment text isn't selected \, and then you can
+click on the part you want to edit and type. The delete key is also
+enabled and you can use the arrow keys to navigate on the comment.
+, f 55;
 #X coords 0 275 1 274 85 60 0;
 #X restore 466 167 pd details;
-#X text 65 87 [note] is a GUI meant only to display text notes. This
-is basically the same of Pd's comment but with the advantages being
-able to set the font type \, size and color.;
 #X text 159 253 (none);
+#X text 65 87 [note] is a GUI meant only to display text notes. This
+is basically the same of Pd's comment but with the advantage of being
+able to set the font type \, size and color.;

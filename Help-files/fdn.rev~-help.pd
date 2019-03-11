@@ -80,10 +80,6 @@
 ;
 #X text 163 353 list;
 #X text 201 353 - list of reflection times in ms, f 55;
-#X text 53 94 [fdn.rev~] is a feedback delay network reverberator (using
-a householder reflection feedback matrix). The main parameters are:
-decay time (t60) and damping of higher frequencies (more damping \,
-less high frequencies)., f 72;
 #X obj 228 203 nbx 4 14 0 20 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
 #X obj 290 203 hsl 128 15 0.01 100 1 0 empty empty empty -2 -8 0 10
@@ -93,7 +89,7 @@ less high frequencies)., f 72;
 #X text 127 370 set <list>;
 #X text 171 554 - list of reflection times in ms (default: none);
 #X text 201 370 - set number of lines and min/max times;
-#N canvas 457 99 546 644 example 0;
+#N canvas 648 78 546 644 example 0;
 #X msg 80 165 print;
 #X obj 108 358 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -139,10 +135,14 @@ reverberate., f 63;
 #X obj 191 235 else/fdn.rev~;
 #X obj 191 169 else/initmess 29 31 37 67 82 110 172 221;
 #X text 202 149 specify delay line lengths individually;
+#X text 53 94 [fdn.rev~] is a feedback delay network reverberator that
+you can specify the number of delay lines and each length. The main
+parameters are: decay time (t60) and high frequencies damping., f
+72;
 #X connect 12 0 24 0;
-#X connect 24 0 59 0;
-#X connect 51 0 59 1;
-#X connect 52 0 59 2;
-#X connect 59 0 13 0;
-#X connect 59 1 13 1;
-#X connect 60 0 59 0;
+#X connect 24 0 58 0;
+#X connect 50 0 58 1;
+#X connect 51 0 58 2;
+#X connect 58 0 13 0;
+#X connect 58 1 13 1;
+#X connect 59 0 58 0;
