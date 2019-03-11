@@ -19,6 +19,8 @@ This project is still in a beta phase, where drastic changes may occur and backw
    as published by Sam Hocevar. 
  
    See License.txt https://github.com/porres/pd-else/blob/master/License.txt and http://www.wtfpl.net/ for more details
+   
+   Other licenses may apply for specific objects and this is informed in the source code (such as the [giga.rev~] object). 
 
 --------------------------------------------------------------------------
 
@@ -30,15 +32,15 @@ I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" 
 
 --------------------------------------------------------------------------
 
-**"EL Locus Solus"** is run by me, Alexandre Torres Porres, and is a thing that organizes cultural events/concerts and music technology courses; website: http://alexandre-torres.wixsite.com/el-locus-solus
+**"EL Locus Solus"** is run by me, Alexandre Torres Porres. It organizes cultural events/concerts and music technology courses <http://alexandre-torres.wixsite.com/el-locus-solus> where a Live Electronics tutorial is provided with examples in Pure Data for its courses. These have just been translated and completely rewritten to english with plans of being accompanied by a book. The first versions are available at: <https://github.com/porres/Live-Electronic-Music-Tutorial>.
 
-EL Locus Solus offers a computer music tutorial with examples in Pure Data for its courses. These have just been translated and completely rewritten to english with plans of being accompanied by a book. The first versions are available at: https://github.com/porres/Live-Electronics-Tutorial - further updates are being made at each new beta release of ELSE.
+It is advisable to also download this tutorial as it solely depends on the ELSE library and it is a great didactic companion to this library, in which might be merged into a single download in the future.
 
 These examples were first developed for the now abandoned Pd Extended, making extensive use of the existing objects available in Pd Extended's libraries. Even though Pd Extended had many externals, there was the need at some point for something "else" - thus, this library emerged with the goal of providing more objects to include missing functionalities in the Pd Ecossystem.
 
-But the library grew to encompass functionalities found in other Pd objects/libraries in Pd Extended as well, with a different design and more functionalities. This was done in order to remove ALL the dependencies of the didactic material from these other libraries - with the goal to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving attention. I'm also involved in maintaining Cyclone, a legacy library for Pd (see: https://github.com/porres/pd-cyclone). But ELSE also superseded even cyclone for the purposes of my didactic material.
+But the library grew to encompass functionalities found in other Pd objects/libraries in Pd Extended as well, with a different design and more functionalities. This was done in order to remove ALL the dependencies of the didactic material from these other libraries - with the goal to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving attention. I'm also involved in maintaining Cyclone, a legacy library for Pd (see: <https://github.com/porres/pd-cyclone>). But ELSE also superseded even cyclone for the purposes of my didactic material.
 
-The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. Hence, ELSE is becoming a quite big library and keeps growing and growing. 
+The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. So that's it, ELSE is becoming a quite big library and keeps growing and growing. 
 
 It will still take a little while for ELSE to stabilize into a final version. For now, it's at an early "Beta" stage of development, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. 
 
