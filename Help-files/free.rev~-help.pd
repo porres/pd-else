@@ -67,14 +67,14 @@
 #X floatatom 350 232 5 0 0 0 - - -;
 #X floatatom 433 256 5 0 0 0 - - -;
 #X obj 566 290 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
--1 -1 0 0;
+-1 -1 12700 0;
 #X floatatom 563 313 5 0 0 0 - - -;
 #X msg 563 337 wet \$1;
 #X msg 433 282 damp \$1;
 #X obj 436 233 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
--1 -1 0 0;
+-1 -1 9500 0;
 #X obj 499 261 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
--1 -1 0 0;
+-1 -1 12700 0;
 #X floatatom 496 284 5 0 0 0 - - -;
 #X msg 496 307 width \$1;
 #X msg 300 232 clear;
@@ -90,15 +90,15 @@ For a mono input \, a 0 parameter is suited to create a stereo image
 from a single channel source., f 45;
 #X text 407 127 The 'wet' meessage controls the dry (0) and wet (1)
 mix and the clear message clears up the delay lines., f 44;
-#X obj 144 273 else/player~ stereo.wav -loop, f 23;
 #X msg 350 258 liveness \$1;
 #X text 68 30 The freeverb algorithm is a simple implementation of
 the standard Schroeder/Moorer reverb model. It is composed of eigth
 comb filters in parallel passing through four allpass filters in series.
 The 'liveness' meessage controls the decay time and affects the feedback
 parameter of the comb filters., f 49;
+#X obj 144 273 else/player~ stereo.wav 1 -loop, f 23;
 #X connect 0 0 1 0;
-#X connect 1 0 18 0;
+#X connect 1 0 17 0;
 #X connect 2 0 6 0;
 #X connect 3 0 4 0;
 #X connect 4 0 5 0;
@@ -111,9 +111,9 @@ parameter of the comb filters., f 49;
 #X connect 11 0 12 2;
 #X connect 12 0 13 0;
 #X connect 12 1 13 1;
-#X connect 17 0 12 0;
-#X connect 17 1 12 1;
-#X connect 18 0 12 2;
+#X connect 17 0 12 2;
+#X connect 19 0 12 0;
+#X connect 19 1 12 1;
 #X restore 464 247 pd details;
 #X text 70 87 [free.rev~] is a stereo reverb abstraction based on the
 widely known 'freeverb' algorithm.;
