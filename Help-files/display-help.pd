@@ -49,16 +49,19 @@
 to the input message. If a message is larger than the fixed number
 of characters \, the displayed message is truncated.;
 #X obj 229 157 loadbang;
-#X msg 149 183 any message;
+#X msg 122 183 any message;
 #X msg 229 183 list a b c;
 #X text 135 238 [else/display] =>;
-#X floatatom 253 207 5 0 0 0 - - -, f 5;
-#X symbolatom 303 208 10 0 0 0 - - -, f 10;
+#X floatatom 253 207 5 0 0 0 - - -;
+#X symbolatom 303 208 10 0 0 0 - - -;
 #X obj 253 235 else/display 0 7;
 #X text 348 164 Right-click for properties!!!, f 15;
+#X obj 204 183 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X connect 25 0 27 0;
 #X connect 26 0 31 0;
 #X connect 27 0 31 0;
 #X connect 29 0 31 0;
 #X connect 30 0 31 0;
+#X connect 33 0 31 0;
 #X coords 0 416 1 415 85 22 0;
