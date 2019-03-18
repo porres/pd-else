@@ -31,16 +31,16 @@ static t_float convert(t_rescale *x, t_float f){
     t_float rangein = x->x_maxin - minin;
     t_float rangeout = x->x_maxout - minout;
     t_float exp = x->x_exp;
+    if(x->x_clip){
+        if(f < minin)
+            f = minin;
+        if(f > x->x_maxin)
+            f = x->x_maxin;
+    }
     t_float r = (f-minin) == 0 ? minout :
         (f-minin)/rangein > 0 ?
         minout + rangeout * pow((f-minin)/rangein, exp) :
         minout + rangeout * -pow((minin-f)/rangein, exp);
-    if(x->x_clip){
-        if(r < minout)
-            r = minout;
-        if(r > maxout)
-            r = maxout;
-    }
     return r;
 }
 
