@@ -1,13 +1,13 @@
-#N canvas 707 264 561 399 10;
-#X obj 4 273 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 483 242 561 424 10;
+#X obj 4 297 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 306 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 330 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 341 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 365 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 116 315 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 116 339 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 374 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 398 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 2 cnv 15 301 42 empty empty any2symbol 20 20 2 37 -233017
 -1 0;
@@ -31,31 +31,33 @@
 0;
 #X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 116 283 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 116 307 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 72 91 [any2symbol] converts any message to a symbol message.
+#X text 72 88 [any2symbol] converts any message to a symbol message.
 ;
-#X obj 211 208 else/any2symbol;
-#X text 141 284 anything;
-#X text 154 315 symbol;
-#X text 208 315 - the converted symbol message;
-#X text 152 350 (none);
-#X text 208 284 - any message to be converted to a symbol;
+#X obj 219 208 else/any2symbol;
+#X text 141 308 anything;
+#X text 154 339 symbol;
+#X text 208 339 - the converted symbol message;
+#X text 152 374 (none);
+#X text 208 308 - any message to be converted to a symbol;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 2 pd;
 #X obj 160 39 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
 #X obj 181 39 cnv 4 4 4 empty empty symbol 0 28 2 18 -233017 -1 0;
-#X msg 223 144 1 2 3 4;
-#X obj 182 163 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X msg 230 144 1 2 3 4;
+#X obj 189 163 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 203 120 a b c;
-#X floatatom 233 169 5 0 0 0 - - -, f 5;
-#X obj 211 238 else/display;
-#X msg 286 169 list symbol hi;
-#X connect 18 0 31 0;
+#X floatatom 240 169 5 0 0 0 - - -;
+#X obj 219 235 else/display;
+#X msg 210 119 list a b c;
+#X symbolatom 219 269 10 0 0 0 - - -;
+#X msg 298 170 hi there;
+#X connect 18 0 30 0;
 #X connect 27 0 18 0;
 #X connect 28 0 18 0;
 #X connect 29 0 18 0;
-#X connect 30 0 18 0;
-#X connect 32 0 18 0;
+#X connect 30 0 32 0;
+#X connect 31 0 18 0;
+#X connect 33 0 18 0;
