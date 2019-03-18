@@ -72,18 +72,18 @@ static t_int *rescale_perform1(t_int *w){
         float f = *in1++;
         float ol = *in2++; // Output LOW
         float oh = *in3++; // Output HIGH
+        if(x->x_clip){
+            if(f < -1)
+                f = -1;
+            if(f > 1)
+                f = 1;
+        }
         if(exp < 0)
             exp = 0;
         float r = f == -1 ? ol :
             (f + 1) / 2 > 0 ?
             ol + (oh - ol) * pow((f + 1) / 2, exp) :
             ol + (oh - ol) * -(pow(((-f - 1) / 2), exp));
-        if(x->x_clip){
-            if(r < ol)
-                r = ol;
-            if(r > oh)
-                r = oh;
-        }
         *out++ = r;
     }
     return (w + 7);
