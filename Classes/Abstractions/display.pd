@@ -1,4 +1,4 @@
-#N canvas 428 502 684 399 12;
+#N canvas 304 505 684 399 12;
 #X obj 463 165 namecanvas \$0-canvas, f 21;
 #X obj 42 47 inlet;
 #X obj 261 163 r \$0-fixed;
@@ -367,7 +367,7 @@
 9 -10 0 12 -228856 -1 -262144 100 256;
 #X text 104 47 not ready yet;
 #X restore 450 309 pd display_properties;
-#N canvas 288 342 947 641 init 0;
+#N canvas 671 334 947 641 init 1;
 #X obj 256 527 s \$0-size;
 #X msg 192 422 1, f 2;
 #X msg 376 390 1, f 2;
@@ -421,12 +421,6 @@
 \$2-display \$1 2 10 0 12 -233017 -66577 0 \, coords 0 1 1 -1 14 22
 2 100 100 1 \; \$2-canvas coords 0 1 1 -1 14 22 2 100 100 1;
 #X obj 374 169 pack symbol \$0;
-#X obj 632 78 symbol;
-#X msg 632 108 label_font 0 12 \, label_pos 2 10 \, size 10 \, label
-\$1, f 17;
-#X obj 632 168 s \$0-display;
-#X obj 632 54 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
 #X connect 1 0 5 0;
 #X connect 2 0 3 0;
 #X connect 4 0 3 0;
@@ -462,9 +456,6 @@
 #X connect 26 0 25 0;
 #X connect 28 0 27 0;
 #X connect 30 0 29 0;
-#X connect 31 0 32 0;
-#X connect 32 0 33 0;
-#X connect 34 0 31 0;
 #X restore 379 165 pd init;
 #X connect 1 0 5 0;
 #X connect 1 0 14 0;
