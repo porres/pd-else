@@ -41,6 +41,12 @@ static t_int *rescale_perform2(t_int *w){
         float ih = *in3++; // Intput HIGH
         float ol = *in4++; // Output LOW
         float oh = *in5++; // Output HIGH
+        if(x->x_clip){
+            if(f < il)
+                f = il;
+            if(f > ih)
+                f = ih;
+        }
         if(exp < 0)
             exp = 0;     
         float r_in = ih - il; // range input
@@ -49,12 +55,6 @@ static t_int *rescale_perform2(t_int *w){
             (f-il)/r_in > 0 ?
             ol + r_out * pow((f-il)/r_in, exp) :
             ol + r_out * -pow((il-f)/r_in, exp);
-        if(x->x_clip){
-            if(r < ol)
-                r = ol;
-            if(r > oh)
-                r = oh;
-        }
         *out++ = r;
     }
     return (w + 9);
