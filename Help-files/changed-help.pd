@@ -1,15 +1,15 @@
-#N canvas 850 133 563 573 10;
+#N canvas 842 218 562 550 10;
 #X obj 5 345 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 436 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 425 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 496 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 485 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 5 540 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 525 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 85 445 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 105 434 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 85 353 cnv 17 3 73 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 105 353 cnv 17 3 65 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 3 4 cnv 15 301 42 empty empty changed 20 20 2 37 -233017 -1
 0;
@@ -36,57 +36,58 @@
 0;
 #X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 143 354 anything;
-#X text 111 445 anything;
-#X msg 241 212 1 3;
-#X symbolatom 281 230 10 0 0 0 - - -, f 10;
-#X obj 281 210 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 163 354 anything;
+#X text 131 434 anything;
+#X msg 267 210 1 3;
+#X symbolatom 307 228 10 0 0 0 - - -;
+#X obj 307 208 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 158 41 cnv 4 4 4 empty empty it 0 28 2 18 -233017 -1 0;
 #X obj 182 41 cnv 4 4 4 empty empty changed 0 28 2 18 -233017 -1 0
 ;
-#X text 207 354 - any message to pass through;
-#X text 177 445 - any message that's different from the previous;
-#X obj 129 219 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 129 198 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 227 354 - any message to pass through, f 44;
+#X text 197 434 - any message that's different from the previous;
+#X obj 155 217 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 15 256;
+#X obj 155 196 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 174 161 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 200 159 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 171 371 bang;
-#X text 207 371 - force the data to be output;
-#X text 101 390 set <anything>;
-#X text 207 390 - set a current message inside the object;
+#X text 187 371 bang;
+#X text 127 387 set <anything>;
+#X text 227 387 - set a current message inside the object, f 44;
 #X text 62 87 [changed] passes its data input through only when it
 changed from the last receive message or the message that was set via
 arguments or messages. Unline [change] from Pd Vanilla \, it accepts
 any kind of messages.;
-#X msg 209 163 hi there;
-#X msg 227 188 list one 2 3;
-#X msg 287 255 set 1 3;
-#X text 92 165 outputs =>;
-#X text 351 254 <= sets message;
-#X obj 332 311 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X msg 235 161 hi there;
+#X msg 253 186 list one 2 3;
+#X msg 313 253 set 1 3;
+#X text 125 163 outputs =>;
+#X text 367 252 <= sets message;
+#X obj 358 309 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 85 468 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 105 457 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 139 468 bang;
-#X text 177 468 - bangs when data hasn't changed;
-#X text 356 312 <= didn't change;
-#X text 113 504 1) anything - initializes first message;
-#X text 209 520 (default: empty symbol atom);
-#X text 178 409 set;
-#X text 207 409 - sets to an empty symbol atom;
-#X obj 209 281 else/changed hi there;
-#X obj 209 310 else/display;
+#X text 159 457 bang;
+#X text 197 457 - bangs when data hasn't changed;
+#X text 382 310 <= didn't change;
+#X text 193 403 set;
+#X text 227 403 - sets to an empty symbol atom, f 44;
+#X obj 235 308 else/display;
+#X text 125 493 1) anything -;
+#X text 213 493 initializes first message (default: empty symbol atom)
+, f 28;
+#X obj 235 279 else/changed hi there;
+#X text 227 371 - force the last data to be output, f 44;
 #X connect 21 0 50 0;
 #X connect 22 0 50 0;
 #X connect 23 0 22 0;
 #X connect 28 0 50 0;
 #X connect 29 0 28 0;
 #X connect 30 0 50 0;
+#X connect 35 0 50 0;
 #X connect 36 0 50 0;
 #X connect 37 0 50 0;
-#X connect 38 0 50 0;
-#X connect 50 0 51 0;
-#X connect 50 1 41 0;
+#X connect 50 0 47 0;
+#X connect 50 1 40 0;
