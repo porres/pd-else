@@ -7,7 +7,6 @@
 
 typedef struct _xgate2{
     t_object    x_obj;
-    t_float     x_f;
     t_float     *x_ch_select; // main signal (channel selector)
     int         x_n_outlets; // outlets excluding main signal
     int         x_indexed; // outlets excluding main signal
@@ -106,7 +105,7 @@ static void *xgate2_new(t_symbol *s, int argc, t_atom *argv){
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     for (i = 0; i < n_outlets; i++)
         outlet_new((t_object *)x, &s_signal);
-    return (x);
+    return(x);
     errstate:
         pd_error(x, "[xgate2~]: improper args");
         return NULL;
@@ -120,7 +119,7 @@ void * xgate2_free(t_xgate2 *x){
 void xgate2_tilde_setup(void){
     xgate2_class = class_new(gensym("xgate2~"), (t_newmethod)xgate2_new,
                 (t_method)xgate2_free, sizeof(t_xgate2), CLASS_DEFAULT, A_GIMME, 0);
-    CLASS_MAINSIGNALIN(xgate2_class, t_xgate2, x_f);
+    class_addmethod(xgate2_class, nullfn, gensym("signal"), 0);
     class_addmethod(xgate2_class, (t_method)xgate2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xgate2_class, (t_method)xgate2_index, gensym("index"), A_FLOAT, 0);
 }
