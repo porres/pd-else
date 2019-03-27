@@ -1,4 +1,4 @@
-#N canvas 314 77 562 578 10;
+#N canvas 524 23 562 578 10;
 #X obj 2 428 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 2 477 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
@@ -95,7 +95,7 @@ them out when it's switched off. It has two sustain modes \, 'regular'
 0 1;
 #X text 679 242 On/Off;
 #X text 676 225 sustain;
-#X obj 29 144 keyboard 17 80 3 3;
+#X obj 29 144 keyboard 17 80 3 3 0;
 #X obj 76 307 else/suspedal;
 #X obj 572 265 else/suspedal;
 #X text 37 20 You can directly connect the [notein] object to acess
@@ -137,19 +137,19 @@ a patch with 2-voice polyphonic synth controlled by random notes.;
 #X obj 156 312 outlet~;
 #X obj 58 80 unpack;
 #X obj 171 165 else/adsr~ 150 100 0.5 500;
-#X obj 156 254 else/plateverb~ 50 0.6 0.25 0.8 0.8;
 #X obj 363 304 outlet~;
 #X obj 58 144 else/bl.tri~;
+#X obj 156 254 else/plate.rev~ 50 0.6 0.25 0.8 0.8;
 #X connect 0 0 6 0;
-#X connect 1 0 7 0;
-#X connect 2 0 9 0;
+#X connect 1 0 9 0;
+#X connect 2 0 8 0;
 #X connect 3 0 5 0;
 #X connect 5 0 2 0;
 #X connect 5 1 0 0;
 #X connect 6 0 1 1;
-#X connect 7 0 4 0;
-#X connect 7 1 8 0;
-#X connect 9 0 1 0;
+#X connect 8 0 1 0;
+#X connect 9 0 4 0;
+#X connect 9 1 7 0;
 #X restore 49 103 pd osc1;
 #X obj 49 35 inlet;
 #N canvas 358 23 457 381 osc2 0;
@@ -160,19 +160,19 @@ a patch with 2-voice polyphonic synth controlled by random notes.;
 #X obj 156 312 outlet~;
 #X obj 58 80 unpack;
 #X obj 171 165 else/adsr~ 150 100 0.5 500;
-#X obj 156 254 else/plateverb~ 50 0.6 0.25 0.8 0.8;
 #X obj 363 304 outlet~;
 #X obj 58 144 else/bl.tri~;
+#X obj 156 254 else/plate.rev~ 50 0.6 0.25 0.8 0.8;
 #X connect 0 0 6 0;
-#X connect 1 0 7 0;
-#X connect 2 0 9 0;
+#X connect 1 0 9 0;
+#X connect 2 0 8 0;
 #X connect 3 0 5 0;
 #X connect 5 0 2 0;
 #X connect 5 1 0 0;
 #X connect 6 0 1 1;
-#X connect 7 0 4 0;
-#X connect 7 1 8 0;
-#X connect 9 0 1 0;
+#X connect 8 0 1 0;
+#X connect 9 0 4 0;
+#X connect 9 1 7 0;
 #X restore 108 104 pd osc2;
 #X obj 50 172 outlet~;
 #X obj 147 175 outlet~;
@@ -217,9 +217,9 @@ a patch with 2-voice polyphonic synth controlled by random notes.;
 #N canvas 405 117 492 467 retrigger 0;
 #X obj 46 185 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
 -1 1;
-#X floatatom 46 252 3 0 0 0 - - -, f 3;
+#X floatatom 46 252 3 0 0 0 - - -;
 #X obj 129 354 pack float float;
-#X obj 175 178 keyboard 17 80 1 3;
+#X obj 175 178 keyboard 17 80 1 3 0;
 #X obj 129 274 else/display;
 #X obj 129 421 print retrigger;
 #X text 33 52 - mode <0>:;
@@ -249,7 +249,7 @@ off (unlike mode 1 \, which only sends one not off);
 #X obj 364 356 else/adsr~;
 #X text 332 381 The above objects interact well with [suspedal] and
 its retrigger modes., f 18;
-#X obj 128 384 else/display;
+#X obj 129 384 else/display;
 #X connect 0 0 1 0;
 #X connect 1 0 10 0;
 #X connect 2 0 26 0;
@@ -267,7 +267,7 @@ its retrigger modes., f 18;
 #X obj 227 289 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X msg 110 237 30 \$1;
-#X obj 179 184 keyboard 17 80 2 3;
+#X obj 179 184 keyboard 17 80 2 3 0;
 #X text 34 172 3) turn off note;
 #X obj 110 287 else/display;
 #X text 274 299 turn off sustain to send the note off from the held

@@ -151,13 +151,13 @@ each voice subpatch has [adsr~]'s status outlet to control a DSP switch
 for that subpatch - open and check it. You should also try pd's [clone]
 object for managing polyphonic synths.;
 #X obj 74 366 else/voices;
-#X obj 222 349 else/plateverb~ 50 0.75 0.5 0.5 0.5, f 18;
 #X text 152 287 open =>;
 #X obj 459 220 else/bl.saw~;
 #X obj 277 253 else/display;
 #X obj 204 253 else/display;
+#X obj 222 349 else/plate.rev~ 50 0.75 0.5 0.5 0.5, f 18;
 #X connect 0 0 12 0;
-#X connect 1 0 32 0;
+#X connect 1 0 31 0;
 #X connect 3 0 6 0;
 #X connect 5 0 6 1;
 #X connect 6 0 4 1;
@@ -170,20 +170,20 @@ object for managing polyphonic synths.;
 #X connect 12 0 7 0;
 #X connect 14 0 22 0;
 #X connect 15 0 14 0;
-#X connect 16 0 30 0;
+#X connect 16 0 34 0;
 #X connect 20 0 23 2;
-#X connect 21 0 34 0;
-#X connect 21 1 33 0;
+#X connect 21 0 33 0;
+#X connect 21 1 32 0;
 #X connect 22 0 25 0;
 #X connect 23 0 21 0;
 #X connect 23 1 21 1;
 #X connect 25 0 23 0;
 #X connect 25 1 23 1;
-#X connect 30 0 27 0;
-#X connect 30 1 27 1;
-#X connect 32 0 3 0;
-#X connect 33 0 26 0;
-#X connect 34 0 19 0;
+#X connect 31 0 3 0;
+#X connect 32 0 26 0;
+#X connect 33 0 19 0;
+#X connect 34 0 27 0;
+#X connect 34 1 27 1;
 #X restore 484 304 pd example;
 #X obj 357 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -308,7 +308,7 @@ value \, and the default value is "1"!, f 60;
 float value. With float values you don't need to turn the gate off
 before retriggering the envelope \, so even repeated values make the
 envelope restart the attack ramp. Try it below or on the right.;
-#X obj 416 17 keyboard 17 80 1 4;
+#X obj 416 17 keyboard 17 80 1 4 0;
 #X connect 0 0 7 0;
 #X connect 0 0 7 1;
 #X connect 1 0 0 0;
