@@ -70,6 +70,7 @@ touch.in.class.sources := Classes/Source/touch.in.c
 touch.out.class.sources := Classes/Source/touch.out.c
 
 # signal:
+above~.class.sources := Classes/Source/above~.c
 add~.class.sources := Classes/Source/add~.c
 allpass.2nd~.class.sources := Classes/Source/allpass.2nd~.c
 allpass.rev~.class.sources := Classes/Source/allpass.rev~.c

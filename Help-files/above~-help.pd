@@ -1,0 +1,131 @@
+#N canvas 605 23 562 516 10;
+#X obj 4 338 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 399 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 458 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 108 410 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 488 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 306 5 pd;
+#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 24 42 cnv 4 4 4 empty empty Threshold 0 28 2 18 -233017 -1 0
+;
+#X obj 108 42 cnv 4 4 4 empty empty detection 0 28 2 18 -233017 -1
+0;
+#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 108 377 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 108 351 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 155 468 1) float - initial threshold (default 0), f 49;
+#X obj 210 275 else/out~;
+#X text 134 350 float/signal - input signal, f 37;
+#X text 134 378 float/signal - set threshold, f 37;
+#X obj 4 5 cnv 15 301 42 empty empty above~ 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 5 graph;
+#N canvas 480 305 867 309 examples 0;
+#X obj 213 179 else/out~;
+#X obj 211 54 else/sine~ 0.5;
+#X obj 59 176 else/trig2bang~;
+#X obj 59 207 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 83 203 else/trig2bang~;
+#X obj 83 234 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 343 183 else/trig2bang~;
+#X obj 343 214 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 319 152 else/trig2bang~;
+#X obj 319 190 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 619 94 else/sine~ 0.5;
+#X obj 619 144 else/zerocross~;
+#X obj 493 187 else/trig2bang~;
+#X obj 493 218 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 517 214 else/trig2bang~;
+#X obj 517 245 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 634 185 else/trig2bang~;
+#X obj 634 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 658 212 else/trig2bang~;
+#X obj 658 243 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 111 105 else/above~;
+#X obj 211 107 else/above~ 0.25;
+#X obj 524 143 else/above~;
+#X text 453 51 with no threshold set \, [above~] behaves similarly
+to [zerocross~];
+#X connect 1 0 20 0;
+#X connect 1 0 21 0;
+#X connect 2 0 3 0;
+#X connect 4 0 5 0;
+#X connect 6 0 7 0;
+#X connect 8 0 9 0;
+#X connect 10 0 11 0;
+#X connect 10 0 22 0;
+#X connect 11 0 16 0;
+#X connect 11 1 18 0;
+#X connect 12 0 13 0;
+#X connect 14 0 15 0;
+#X connect 16 0 17 0;
+#X connect 18 0 19 0;
+#X connect 20 0 0 0;
+#X connect 20 0 2 0;
+#X connect 20 1 0 1;
+#X connect 20 1 6 0;
+#X connect 21 0 0 0;
+#X connect 21 0 4 0;
+#X connect 21 1 0 1;
+#X connect 21 1 8 0;
+#X connect 22 0 12 0;
+#X connect 22 1 14 0;
+#X restore 459 308 pd examples;
+#X obj 89 276 else/trig2bang~;
+#X obj 89 305 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 321 276 else/trig2bang~;
+#X obj 321 305 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 108 434 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 176 410 signal - impulse when raises past a threshold;
+#X text 176 434 signal - impulse when falls back or past a threshold
+;
+#X obj 210 199 else/display~;
+#X obj 210 172 else/randpulse~ 1;
+#X obj 210 234 else/above~ 0.1;
+#X text 42 93 [above~] sends an impulse on its left output when it
+detects a signal raising above and over a threshold. Conversely \,
+it outputs an impulse in its right outlet when the signal falling back
+to the threshold or past it. You can set the threshold value with the
+argument or the 2nd inlet., f 64;
+#X connect 24 0 25 0;
+#X connect 26 0 27 0;
+#X connect 31 0 33 0;
+#X connect 32 0 31 0;
+#X connect 33 0 18 0;
+#X connect 33 0 24 0;
+#X connect 33 1 18 1;
+#X connect 33 1 26 0;
