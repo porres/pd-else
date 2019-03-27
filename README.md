@@ -74,7 +74,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (297 objects):
+##Current Object list (299 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -356,7 +356,9 @@ Cross compiling is also possible with something like this
  - [impulse]
  - [pulse]
  
- **TRIGGERS: [24]**
+ **TRIGGERS: [26]**
+- [above]
+- [above~]
 - [bangdiv]
 - [coin]
 - [coin~]
