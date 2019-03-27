@@ -34,14 +34,14 @@
 #X obj 227 263 else/rm~;
 #X obj 227 293 else/tremolo~;
 #X obj 227 321 else/vibrato~;
-#X obj 229 409 else/plateverb~;
 #X obj 72 428 else/gran.player~;
 #X obj 230 434 else/player~;
 #X obj 230 472 else/rec.file~;
 #X obj 230 497 else/play.file~;
 #X obj 400 49 inlet;
 #X obj 394 99 switch~;
-#X connect 14 0 15 0;
+#X obj 229 409 else/plate.rev~;
+#X connect 13 0 14 0;
 #X restore 558 97 pd fx;
 #X obj 558 65 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
