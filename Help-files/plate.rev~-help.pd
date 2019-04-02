@@ -1,4 +1,4 @@
-#N canvas 877 71 563 604 10;
+#N canvas 565 97 559 590 10;
 #X obj 3 280 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 418 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -185,8 +185,6 @@
 #X text 161 345 damp <float>;
 #X text 161 361 size <float>;
 #X text 256 312 - pre delay in ms (0-1000), f 31;
-#X text 69 88 [plate.rev~] is a reverb asbtraction based on a patch
-by Tom Erbe implementing the Dattorro plate stereo reverb model.;
 #X text 167 376 wet <float>;
 #X text 256 377 - wet ratio (0-1), f 31;
 #X text 129 483 1) float - pre delay in ms (0-1000) - default 0, f
@@ -201,6 +199,9 @@ by Tom Erbe implementing the Dattorro plate stereo reverb model.;
 , f 52;
 #X text 203 393 clear;
 #X text 256 394 - clears delay buffers, f 31;
+#X text 69 88 [plate.rev~] is a reverb asbtraction based on a patch
+by Tom Erbe implementing the plate reverb model by Dattorro. It has
+a mono input and stereo output.;
 #X connect 28 0 29 0;
 #X connect 29 0 27 0;
 #X connect 29 1 27 1;

@@ -1,4 +1,4 @@
-#N canvas 641 83 562 537 10;
+#N canvas 539 36 562 537 10;
 #X obj 3 293 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 397 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -38,7 +38,7 @@
 #X text 252 426 - right channel output;
 #X obj 126 323 cnv 17 3 65 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#N canvas 566 84 839 507 example 0;
+#N canvas 447 148 839 507 example 0;
 #X obj 297 276 catch~ \$0-input;
 #X obj 701 185 throw~ \$0-input;
 #X obj 701 49 adc~ 1;
@@ -84,7 +84,7 @@
 #X obj 112 43 inlet;
 #X obj 112 95 f \$0;
 #X obj 112 72 else/lb;
-#X msg 112 118 \; \$1-decay 3 \; \$1-damping 10000 \; \$1-size 0.475
+#X msg 112 118 \; \$1-decay 3 \; \$1-damping 0.25 \; \$1-size 0.475
 ;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -101,8 +101,8 @@
 #X obj 458 221 hsl 128 15 0.1 100 1 0 empty \$0-decay empty -2 -8 0
 10 -228856 -1 -1 6253 1;
 #X floatatom 455 245 5 0 0 0 - - -;
-#X obj 526 249 hsl 128 15 0 22050 0 0 empty \$0-damping empty -2 -8
-0 10 -228856 -1 -1 5760 1;
+#X obj 526 249 hsl 128 15 0 1 0 0 empty \$0-damping empty -2 -8 0 10
+-228856 -1 -1 3175 1;
 #X floatatom 523 274 5 0 0 0 - - -;
 #X obj 591 281 hsl 128 15 0 1 0 0 empty \$0-size empty -2 -8 0 10 -228856
 -1 -1 6032 1;
@@ -113,10 +113,10 @@
 #X msg 588 330 size \$1;
 #X obj 86 331 else/randf 500 3000, f 12;
 #X msg 604 358 clear;
-#X obj 472 390 else/rev~;
 #X msg 455 269 decay \$1;
 #X text 499 220 decay;
-#X connect 0 0 45 0;
+#X obj 472 389 else/mono.rev~;
+#X connect 0 0 47 0;
 #X connect 2 0 11 0;
 #X connect 3 0 4 0;
 #X connect 5 0 6 0;
@@ -137,18 +137,18 @@
 #X connect 30 0 32 0;
 #X connect 32 0 12 0;
 #X connect 33 0 34 0;
-#X connect 34 0 46 0;
+#X connect 34 0 45 0;
 #X connect 35 0 36 0;
 #X connect 36 0 40 0;
 #X connect 37 0 38 0;
 #X connect 38 0 42 0;
-#X connect 40 0 45 1;
-#X connect 42 0 45 1;
+#X connect 40 0 47 1;
+#X connect 42 0 47 1;
 #X connect 43 0 20 1;
-#X connect 44 0 45 1;
-#X connect 45 0 29 0;
-#X connect 45 1 29 1;
-#X connect 46 0 45 1;
+#X connect 44 0 47 1;
+#X connect 45 0 47 1;
+#X connect 47 0 29 0;
+#X connect 47 1 29 1;
 #X restore 468 251 pd example;
 #X obj 3 3 cnv 15 301 42 empty empty mono.rev~ 20 20 2 37 -233017 -1
 0;
@@ -162,21 +162,21 @@
 #X text 161 358 size <float>;
 #X text 203 374 clear;
 #X text 256 375 - clears delay buffers, f 33;
-#X obj 202 190 else/rev~;
 #X text 155 324 decay <float>;
 #X text 256 324 - decay time in seconds, f 33;
-#X text 256 342 - high frequency damping in hertz;
 #X text 256 357 - room size (0-1), f 33;
 #X text 129 462 1) float - decay in seconds (default 4), f 57;
 #X text 129 477 2) float - room size (0-1) - (default 0.5), f 57;
-#X text 129 492 3) float - high frequnecy damping - (default 20000)
-;
 #X obj 83 40 cnv 4 4 4 empty empty reverb 0 28 2 18 -233017 -1 0;
-#X text 53 87 [mono.rev~] is a mono input but stereo out reverb asbtraction.
-It's based on a feedback delay network like vanilla's [rev3~] object
-\, but it offers a "room size" parameter whose typical value is around
-0.5 \, values closer to 0 and 1 may create unusual results., f 68
-;
-#X connect 27 0 32 0;
-#X connect 32 0 26 0;
-#X connect 32 1 26 1;
+#X obj 202 190 else/mono.rev~;
+#X text 53 87 [mono.rev~] is a reverb asbtraction with mono input but
+stereo output. It's based on a feedback delay network like vanilla's
+[rev3~] object \, but it offers a "room size" parameter whose typical
+value is around 0.5 \, values closer to 0 and 1 may create unusual
+results., f 70;
+#X text 256 342 - high frequency damping (0-1), f 33;
+#X text 129 492 3) float - high frequnecy damping - (default 0), f
+57;
+#X connect 27 0 38 0;
+#X connect 38 0 26 0;
+#X connect 38 1 26 1;
