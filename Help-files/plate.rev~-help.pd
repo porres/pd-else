@@ -1,4 +1,4 @@
-#N canvas 984 71 563 604 10;
+#N canvas 877 71 563 604 10;
 #X obj 3 280 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 418 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -28,12 +28,11 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 82 40 cnv 4 4 4 empty empty plate 0 28 2 18 -233017 -1 0;
+#X obj 21 40 cnv 4 4 4 empty empty Plate 0 28 2 18 -233017 -1 0;
 #X text 197 290 signal;
 #X text 256 290 - input signal;
 #X text 197 427 signal;
 #X text 252 427 - left channel output;
-#X obj 22 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
 #X obj 126 448 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 197 447 signal;
@@ -102,19 +101,19 @@
 #X obj 403 114 else/play.file~ violin.wav -loop;
 #X obj 497 420 else/plate.rev~;
 #X obj 453 207 hsl 128 15 0 1000 0 0 empty \$0-predelayms empty -2
--8 0 10 -228856 -1 -1 4370 1;
+-8 0 10 -228856 -1 -1 1270 1;
 #X floatatom 450 231 5 0 0 0 - - -;
 #X obj 513 234 hsl 128 15 0 1 0 0 empty \$0-cutoff empty -2 -8 0 10
--228856 -1 -1 12700 1;
+-228856 -1 -1 7620 1;
 #X floatatom 510 260 5 0 0 0 - - -;
 #X obj 587 260 hsl 128 15 0 1 0 0 empty \$0-damping empty -2 -8 0 10
--228856 -1 -1 0 1;
+-228856 -1 -1 3175 1;
 #X floatatom 584 285 5 0 0 0 - - -;
 #X obj 652 292 hsl 128 15 0 1 0 0 empty \$0-fbgain empty -2 -8 0 10
--228856 -1 -1 12700 1;
+-228856 -1 -1 10160 1;
 #X floatatom 649 315 5 0 0 0 - - -;
 #X obj 730 321 hsl 128 15 0 1 0 0 empty \$0-drywet empty -2 -8 0 10
--228856 -1 -1 12700 1;
+-228856 -1 -1 6350 1;
 #X floatatom 727 348 5 0 0 0 - - -;
 #X text 696 320 dry;
 #X text 864 322 wet;
@@ -177,7 +176,7 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X obj 129 40 cnv 4 4 4 empty empty reverb 0 28 2 18 -233017 -1 0;
+#X obj 68 40 cnv 4 4 4 empty empty reverb 0 28 2 18 -233017 -1 0;
 #X obj 218 213 else/out~;
 #X obj 146 141 else/play.file~ vacuous.wav 1 1;
 #X obj 146 175 else/plate.rev~ 50 0.6 0.25 0.8 0.8;
@@ -202,6 +201,6 @@ by Tom Erbe implementing the Dattorro plate stereo reverb model.;
 , f 52;
 #X text 203 393 clear;
 #X text 256 394 - clears delay buffers, f 31;
-#X connect 29 0 30 0;
-#X connect 30 0 28 0;
-#X connect 30 1 28 1;
+#X connect 28 0 29 0;
+#X connect 29 0 27 0;
+#X connect 29 1 27 1;
