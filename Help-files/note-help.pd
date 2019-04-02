@@ -1,68 +1,115 @@
-#N canvas 690 106 561 381 10;
-#X obj 3 195 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 581 84 561 476 10;
+#X obj 2 195 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 220 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 2 295 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 245 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 320 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X text 159 225 (none);
-#X text 159 200 (none);
-#X obj 3 354 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X text 158 300 (none);
+#X obj 2 446 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 304 3 pd;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Text 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 22 40 cnv 4 4 4 empty empty Text 0 28 2 18 -233017 -1 0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 3 3 cnv 15 301 42 empty empty note 20 20 2 37 -233017 -1 0;
+#X obj 2 3 cnv 15 301 42 empty empty note 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 3 3 graph;
-#X obj 64 40 cnv 4 4 4 empty empty note 0 28 2 18 -233017 -1 0;
-#X text 201 153 <=;
-#X text 219 153 the default display of [else/textbox], f 19;
-#X obj 3 275 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 117 283 -size <float>;
-#X text 111 300 -font <symbol>;
-#X text 211 283 - sets font size (default: patch's font size), f 47
+#X restore 2 3 graph;
+#X obj 63 40 cnv 4 4 4 empty empty note 0 28 2 18 -233017 -1 0;
+#X text 200 152 <=;
+#X text 218 152 the default display of [else/textbox], f 19;
+#X obj 2 350 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 116 358 -size <float>;
+#X text 110 375 -font <symbol>;
+#X text 210 358 - sets font size (default: patch's font size), f 47
 ;
-#X text 211 300 - sets font type (default: helvetica), f 47;
-#X obj 174 153 else/note 360 10 helvetica 0 0 0 note;
-#X text 129 316 -rgb <list>;
-#X text 211 316 - sets Red \, Green \, Blue colors (default 0 0 0)
+#X text 210 375 - sets font type (default: helvetica), f 47;
+#X obj 173 153 else/note 360 10 helvetica ? 0 0 0 0 note;
+#X text 128 391 -rgb <list>;
+#X text 210 391 - sets Red \, Green \, Blue colors (default 0 0 0)
 , f 47;
-#X text 99 333 -text <anything>;
-#X text 211 333 - sets text comment, f 47;
-#N canvas 872 292 452 275 details 0;
-#X text 64 51 When in edit mode \, you can click on the object to select
+#N canvas 752 298 449 357 details 0;
+#X text 59 57 When in edit mode \, you can click on the object to select
 it. Note that the whole text gets selected when you do it \, so if
 you start typing \, the text gets replaced., f 55;
-#X text 64 217 A semicolon can be used to break the text \, but it's
+#X text 59 223 A semicolon can be used to break the text \, but it's
 also possible to resize the object box in edit mode to break the text.
 , f 55;
-#X obj 65 18 else/note 720 20 Helvetica 0 0 0 Editing:;
-#X obj 181 101 else/note 720 20 Helvetica 200 0 0 [note];
-#X text 64 148 If you don't want to do that \, just make sure to click
+#X text 59 154 If you don't want to do that \, just make sure to click
 again so the whole comment text isn't selected \, and then you can
 click on the part you want to edit and type. The delete key is also
 enabled and you can use the arrow keys to navigate on the comment.
 , f 55;
-#X coords 0 275 1 274 85 60 0;
-#X restore 466 167 pd details;
-#X text 159 253 (none);
-#X text 65 87 [note] is a GUI meant only to display text notes. This
+#X text 76 288 When in edit mode \, you can click on the object to
+select it and then press <F5> to copy the comment from [else/note]
+into a Pd's comment box., f 50;
+#X obj 177 109 else/note 720 20 Helvetica ? 0 200 0 0 [note];
+#X obj 47 21 else/note 720 20 Helvetica ? 0 200 0 0 EDITING:;
+#X coords 0 357 1 356 85 60 0;
+#X restore 477 147 pd details;
+#X text 158 328 (none);
+#X text 98 425 -note <anything>;
+#X text 92 408 -receive <symbol>;
+#X text 210 408 - sets receive symbol, f 47;
+#X text 210 425 - sets text, f 47;
+#N canvas 648 227 668 408 messages 0;
+#X obj 72 286 else/note 0 50 helvetica ? 0 0 0 0 Note;
+#X msg 72 89 size 50;
+#X msg 91 118 size 30;
+#X msg 107 145 name helvetica;
+#X msg 122 174 name courier;
+#X msg 146 211 rgb 0 0 0;
+#X msg 150 241 rgb 150 100 50;
+#X msg 339 149 rgb 0 0 0;
+#X msg 320 121 rgb 200 0 0;
+#X text 58 30 You can also edit the properties of [note] with messages.
+, f 21;
+#X text 255 34 You can also set the note text with a message. The [note]
+object below has a receive symbol \, so you can send messages to it
+via a [send] object., f 52;
+#X msg 360 187 set text 1 2 3;
+#X msg 366 214 set Note;
+#X obj 319 270 else/note 0 50 helvetica note 200 0 0 0 Note;
+#X obj 320 243 s note;
+#X connect 1 0 0 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 14 0;
+#X connect 8 0 14 0;
+#X connect 11 0 14 0;
+#X connect 12 0 14 0;
+#X restore 478 169 pd messages;
+#X obj 96 207 cnv 17 3 80 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 141 206 set <anything>;
+#X text 246 222 - sets font size;
+#X text 129 254 receive <symbol>;
+#X text 246 238 - sets font type;
+#X text 246 254 - sets receive symbol;
+#X text 246 271 - sets RGB color (values from 0 to 255);
+#X text 147 271 rgb <f \, f \, f>;
+#X text 147 238 name <symbol>;
+#X text 153 222 size <float>;
+#X text 246 206 - sets text;
+#X text 64 87 [note] is a GUI meant only to display text notes. This
 is basically the same of Pd's comment but with the advantage of being
-able to set the font type \, size and color.;
+able to set the font type \, size and color. The object is still experimental.
+;
