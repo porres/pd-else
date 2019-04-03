@@ -93,18 +93,17 @@
 -1 -1;
 #X text 530 385 reload args;
 #X obj 366 377 else/out~;
-#X obj 374 51 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 374 51 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X text 399 53 play/stop;
-#X obj 374 87 else/play.file~ violin.wav -loop;
 #X obj 462 190 hsl 128 15 0.1 100 1 0 empty \$0-decay empty -2 -8 0
-10 -228856 -1 -1 6253 1;
+10 -228856 -1 -1 6453 1;
 #X floatatom 459 214 5 0 0 0 - - -;
 #X obj 530 218 hsl 128 15 0 1 0 0 empty \$0-damping empty -2 -8 0 10
--228856 -1 -1 3175 1;
+-228856 -1 -1 10700 1;
 #X floatatom 527 243 5 0 0 0 - - -;
 #X obj 595 250 hsl 128 15 0 1 0 0 empty \$0-size empty -2 -8 0 10 -228856
--1 -1 6032 1;
+-1 -1 9732 1;
 #X floatatom 592 273 5 0 0 0 - - -;
 #X text 563 217 damping;
 #X msg 527 265 damp \$1;
@@ -116,13 +115,14 @@
 #X text 503 189 decay;
 #X obj 366 343 else/stereo.rev~;
 #X obj 661 285 hsl 128 15 0 1 0 0 empty \$0-wet empty -2 -8 0 10 -228856
--1 -1 9525 1;
+-1 -1 10500 1;
 #X floatatom 658 308 5 0 0 0 - - -;
 #X msg 658 334 wet \$1;
 #X text 711 285 wet;
 #X obj 412 311 *~ -1;
-#X connect 0 0 47 0;
-#X connect 0 0 52 0;
+#X obj 374 87 else/play.file~ bubul.wav -loop;
+#X connect 0 0 46 0;
+#X connect 0 0 51 0;
 #X connect 2 0 11 0;
 #X connect 3 0 4 0;
 #X connect 5 0 6 0;
@@ -132,33 +132,33 @@
 #X connect 9 0 3 1;
 #X connect 10 0 3 0;
 #X connect 11 0 1 0;
-#X connect 13 0 32 0;
+#X connect 13 0 52 0;
 #X connect 15 0 20 0;
 #X connect 16 0 17 0;
 #X connect 18 0 16 1;
 #X connect 19 0 18 0;
-#X connect 19 0 43 0;
+#X connect 19 0 42 0;
 #X connect 20 0 16 0;
 #X connect 27 0 26 0;
-#X connect 30 0 32 0;
-#X connect 32 0 12 0;
-#X connect 33 0 34 0;
-#X connect 34 0 45 0;
-#X connect 35 0 36 0;
-#X connect 36 0 40 0;
-#X connect 37 0 38 0;
-#X connect 38 0 42 0;
-#X connect 40 0 47 2;
-#X connect 42 0 47 2;
-#X connect 43 0 20 1;
-#X connect 44 0 47 2;
-#X connect 45 0 47 2;
-#X connect 47 0 29 0;
-#X connect 47 1 29 1;
+#X connect 30 0 52 0;
+#X connect 32 0 33 0;
+#X connect 33 0 44 0;
+#X connect 34 0 35 0;
+#X connect 35 0 39 0;
+#X connect 36 0 37 0;
+#X connect 37 0 41 0;
+#X connect 39 0 46 2;
+#X connect 41 0 46 2;
+#X connect 42 0 20 1;
+#X connect 43 0 46 2;
+#X connect 44 0 46 2;
+#X connect 46 0 29 0;
+#X connect 46 1 29 1;
+#X connect 47 0 48 0;
 #X connect 48 0 49 0;
-#X connect 49 0 50 0;
-#X connect 50 0 47 2;
-#X connect 52 0 47 1;
+#X connect 49 0 46 2;
+#X connect 51 0 46 1;
+#X connect 52 0 12 0;
 #X restore 466 244 pd example;
 #X obj 3 3 cnv 15 301 42 empty empty stereo.rev~ 20 20 2 37 -233017
 -1 0;
