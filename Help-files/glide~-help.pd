@@ -72,9 +72,10 @@ signal input changes. The glide time in ms.;
 0;
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 457 260 else/glide2~;
-#X text 450 238 see also:;
+#X obj 457 230 else/glide2~;
+#X text 450 208 see also:;
 #X text 155 356 float/signal;
+#X obj 457 254 else/slew~;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 13 0 12 0;

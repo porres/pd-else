@@ -170,6 +170,7 @@ rotate~.class.sources := Classes/Source/rotate~.c
 sh~.class.sources := Classes/Source/sh~.c
 schmitt~.class.sources := Classes/Source/schmitt~.c
 stepnoise~.class.sources := Classes/Source/stepnoise~.c
+slew~.class.sources := Classes/Source/slew~.c
 sin~.class.sources := Classes/Source/sin~.c
 sig2float~.class.sources := Classes/Source/sig2float~.c
 s2f~.class.sources := Classes/Source/s2f~.c

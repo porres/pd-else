@@ -74,7 +74,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (301 objects):
+##Current Object list (302 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -336,7 +336,7 @@ Cross compiling is also possible with something like this
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [20]**
+**CONTROL: [21]**
  - [adsr~]
  - [asr~]
  - [autofade~]
@@ -347,6 +347,7 @@ Cross compiling is also possible with something like this
  - [envgen~]
  - [fader~]
  - [function~]
+ - [slew~]
  - [glide~]
  - [glide2~]
  - [ramp~]
