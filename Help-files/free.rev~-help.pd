@@ -1,4 +1,4 @@
-#N canvas 647 42 561 571 10;
+#N canvas 480 77 561 571 10;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -47,84 +47,85 @@
 #X obj 107 333 cnv 17 3 77 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
 #X text 191 312 signal;
-#X text 258 334 - room size (0-1), f 31;
 #X text 155 349 damp <float>;
 #X text 149 364 width <float>;
 #X text 258 364 - stereo width (0-1), f 31;
 #X text 161 378 wet <float>;
 #X text 197 393 clear;
 #X text 258 393 - clears delay lines, f 31;
-#X obj 214 214 else/out~;
-#X obj 177 178 else/free.rev~ 0.5 0.5 1 1;
+#X obj 250 214 else/out~;
 #X obj 155 139 else/imp~ 0.5;
 #X obj 253 138 else/imp~ 0.5 0.5;
 #X text 258 290 - left channel input signal, f 31;
 #X text 258 312 - rigth channel input signal, f 31;
 #X text 258 349 - high frequency damping (0-1), f 31;
-#N canvas 691 214 765 465 details 0;
-#X obj 353 206 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
+#N canvas 565 204 688 451 details 0;
+#X obj 277 193 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
 -1 -1 0 0;
-#X floatatom 350 232 5 0 0 0 - - -;
-#X floatatom 433 256 5 0 0 0 - - -;
-#X obj 566 290 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
+#X floatatom 274 219 5 0 0 0 - - -;
+#X floatatom 337 243 5 0 0 0 - - -;
+#X obj 470 277 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
 -1 -1 12700 0;
-#X floatatom 563 313 5 0 0 0 - - -;
-#X msg 563 337 wet \$1;
-#X msg 433 282 damp \$1;
-#X obj 436 233 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
--1 -1 9500 0;
-#X obj 499 261 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
+#X floatatom 467 300 5 0 0 0 - - -;
+#X msg 467 324 wet \$1;
+#X msg 337 269 damp \$1;
+#X obj 340 220 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
+-1 -1 0 0;
+#X obj 403 248 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 -228856
 -1 -1 12700 0;
-#X floatatom 496 284 5 0 0 0 - - -;
-#X msg 496 307 width \$1;
-#X msg 300 232 clear;
-#X obj 123 321 else/free.rev~ 0.5 0.5 0.5 0.5;
-#X obj 176 367 else/out~;
-#X text 68 119 The 'damp' meessage controls the high frequency damping
+#X floatatom 400 271 5 0 0 0 - - -;
+#X msg 400 294 width \$1;
+#X msg 224 219 clear;
+#X obj 181 350 else/out~;
+#X text 41 111 The 'damp' meessage controls the high frequency damping
 \, the higher the damping \, the less high frequencies are filtered
 out. A lowpass filter is included inside the feedback loop of each
 comb filter., f 49;
-#X text 408 51 The 'width' meessage controls how much both inputs are
+#X text 381 38 The 'width' meessage controls how much both inputs are
 mixed or not. When this is set to 1 \, we have two independent channels.
 For a mono input \, a 0 parameter is suited to create a stereo image
 from a single channel source., f 45;
-#X text 407 127 The 'wet' meessage controls the dry (0) and wet (1)
+#X text 380 114 The 'wet' meessage controls the dry (0) and wet (1)
 mix and the clear message clears up the delay lines., f 44;
-#X msg 350 258 liveness \$1;
-#X text 68 30 The freeverb algorithm is a simple implementation of
+#X obj 143 246 else/player~ stereo.wav 1 -loop, f 12;
+#X obj 143 308 else/free.rev~;
+#X text 41 22 The freeverb algorithm is a simple implementation of
 the standard Schroeder/Moorer reverb model. It is composed of eigth
 comb filters in parallel passing through four allpass filters in series.
-The 'liveness' meessage controls the decay time and affects the feedback
+The 'decay' message controls the decay time and affects the feedback
 parameter of the comb filters., f 49;
-#X obj 144 273 else/player~ stereo.wav 1 -loop, f 23;
+#X msg 274 245 decay \$1;
 #X connect 0 0 1 0;
-#X connect 1 0 17 0;
+#X connect 1 0 19 0;
 #X connect 2 0 6 0;
 #X connect 3 0 4 0;
 #X connect 4 0 5 0;
-#X connect 5 0 12 2;
-#X connect 6 0 12 2;
+#X connect 5 0 17 2;
+#X connect 6 0 17 2;
 #X connect 7 0 2 0;
 #X connect 8 0 9 0;
 #X connect 9 0 10 0;
-#X connect 10 0 12 2;
-#X connect 11 0 12 2;
-#X connect 12 0 13 0;
-#X connect 12 1 13 1;
-#X connect 17 0 12 2;
-#X connect 19 0 12 0;
-#X connect 19 1 12 1;
+#X connect 10 0 17 2;
+#X connect 11 0 17 2;
+#X connect 16 0 17 0;
+#X connect 16 1 17 1;
+#X connect 17 0 12 0;
+#X connect 17 1 12 1;
+#X connect 19 0 17 2;
 #X restore 464 247 pd details;
 #X text 70 87 [free.rev~] is a stereo reverb abstraction based on the
 widely known 'freeverb' algorithm.;
 #X text 258 378 - wet ratio (0-1), f 31;
-#X text 151 524 4) float - wet ratio (0-1) - default 0;
-#X text 131 334 liveness <float>;
-#X text 151 477 1) float - liveness (0-1) - default 0;
+#X text 151 524 4) float - wet ratio (0-1) - default 1;
 #X text 151 493 2) float - high frequency damping (0-1) - default 0
 ;
-#X text 151 508 3) float - stereo width (0-1) - default 0;
-#X connect 35 0 34 0;
-#X connect 35 1 34 1;
-#X connect 36 0 35 0;
-#X connect 37 0 35 1;
+#X text 151 508 3) float - stereo width (0-1) - default 0.5;
+#X obj 213 177 else/free.rev~;
+#X text 149 334 decay <float>;
+#X text 258 334 - decay or 'liveness' (0-1), f 31;
+#X text 151 477 1) float - decay or 'liveness' (0-1) - default 0.5
+;
+#X connect 34 0 45 0;
+#X connect 35 0 45 1;
+#X connect 45 0 33 0;
+#X connect 45 1 33 1;
