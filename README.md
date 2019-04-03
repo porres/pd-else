@@ -74,7 +74,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (302 objects):
+##Current Object list (303 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -201,7 +201,7 @@ Cross compiling is also possible with something like this
 - [loop]
 - [moses~]
 
-**AUDIO PROCESSING: [21]**
+**AUDIO PROCESSING: ASSORTED [19]**
 - [downsample~]
 - [conv~]
 - [fbdelay~]
@@ -210,8 +210,6 @@ Cross compiling is also possible with something like this
 - [crusher~]
 - [drive~]
 - [flanger~]
-- [noisegate~]
-- [norm~]
 - [freq.shift~]
 - [pitch.shift~]
 - [stretch.shift~]
@@ -223,6 +221,11 @@ Cross compiling is also possible with something like this
 - [morph~]
 - [freeze~]
 - [pvoc.freeze~]
+
+**AUDIO PROCESSING: DYNAMICS [3]**
+- [duck~]
+- [noisegate~]
+- [norm~]
 
 **AUDIO PROCESSING: REVERBERATION: [8]**
 - [allpass.rev~]
