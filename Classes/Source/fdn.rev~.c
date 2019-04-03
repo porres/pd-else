@@ -1,6 +1,4 @@
-// 12
-
-// This is Feedback Delay Network with a householder reflection feedback matrix (In - 2/n 11T)
+// A Feedback Delay Network with a householder matrix (In - 2/n 11T)
 // a modification of [creb/fdn~] by Alexandre Porres
 
 // TODO (from original code) - Add: delay time generation code / prime calculation for delay lengths
@@ -151,7 +149,7 @@ static void fdn_set(t_fdn *x, t_float size, t_float min, t_float max){
     fdn_delsizes(x);
 }
 
-static void fdn_exponential(t_fdn *x, t_float mode){
+static void fdn_exp(t_fdn *x, t_float mode){
     x->x_exp = (t_int)(mode != 0);
 }
 
@@ -424,7 +422,7 @@ void setup_fdn0x2erev_tilde(void){
     class_addmethod(fdn_class, (t_method)fdn_damping, gensym("damping"), A_DEFFLOAT, 0);
     class_addmethod(fdn_class, (t_method)fdn_set, gensym("set"),
                     A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(fdn_class, (t_method)fdn_exponential, gensym("exp"), A_DEFFLOAT, 0);
+    class_addmethod(fdn_class, (t_method)fdn_exp, gensym("exp"), A_DEFFLOAT, 0);
     class_addmethod(fdn_class, (t_method)fdn_clear, gensym("clear"), 0);
     class_addmethod(fdn_class, (t_method)fdn_print, gensym("print"), 0);
 }
