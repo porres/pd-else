@@ -418,7 +418,7 @@ void setup_fdn0x2erev_tilde(void){
     fdn_class = class_new(gensym("fdn.rev~"), (t_newmethod)fdn_new,
     	(t_method)fdn_free, sizeof(t_fdn), 0, A_GIMME, 0);
     class_addmethod(fdn_class, nullfn, gensym("signal"), 0);
-    class_addmethod(fdn_class, (t_method)fdn_dsp, gensym("dsp"), 0);
+    class_addmethod(fdn_class, (t_method)fdn_dsp, gensym("dsp"), A_CANT, 0);
     class_addlist(fdn_class, (t_method)fdn_list);
     class_addmethod(fdn_class, (t_method)fdn_time, gensym("time"), A_DEFFLOAT, 0);
     class_addmethod(fdn_class, (t_method)fdn_damping, gensym("damping"), A_DEFFLOAT, 0);
