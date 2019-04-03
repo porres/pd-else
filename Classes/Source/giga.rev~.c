@@ -45,7 +45,6 @@ typedef struct{
 
 typedef struct{
     t_object        x_obj;
-    int             x_bypass;       // bypass flag (not in original code)
     int             x_sr;           // sample rate
     float           x_in_bw;        // input bandwidth
     float           x_dry;          // dry level
@@ -352,10 +351,6 @@ static inline void gverb_late(t_gverb *x, t_floatarg f){
     x->x_late = f < 0.0f ? 0.0f : f > 1.0f ? 1.0f : f;
 }
 
-void gverb_bypass(t_gverb *x, t_floatarg f){
-    x->x_bypass = f != 0;
-}
-
 void gverb_clear(t_gverb *x){
     damper_clear(x->x_in_damper);
     for(int i = 0; i < 4; i++){
@@ -377,21 +372,12 @@ t_int *gverb_perform(t_int *w){
     t_float *out2 = (t_float *)(w[4]);
     int n = (int)(w[5]);
     t_float in;
-    if(x->x_bypass){
-        while(n--){
-            in = *input++;
-            *out1++ = in;
-            *out2++ = in;
-        }
-    }
-    else{
-        t_float outL, outR;
-        while(n--){
-            in = *input++;
-            gverb_do(x, in, &outL, &outR);
-            *out1++ = (in * x->x_dry) + (outL * x->x_wet);
-            *out2++ = (in * x->x_dry) + (outR * x->x_wet);
-        }
+    t_float outL, outR;
+    while(n--){
+        in = *input++;
+        gverb_do(x, in, &outL, &outR);
+        *out1++ = (in * x->x_dry) + (outL * x->x_wet);
+        *out2++ = (in * x->x_dry) + (outR * x->x_wet);
     }
     return(w+6);
 }
@@ -413,7 +399,6 @@ void gverb_print(t_gverb *x){
     post("    - early reflections level: %02.02f", x->x_early);
     post("    - late reflections level: %02.02f", x->x_late);
     post("    - wet level: %02.02f", x->x_wet);
-    post("    - bypass: %d", x->x_bypass);
     post("------------------------------------------------------");
 }
 
@@ -536,7 +521,6 @@ t_gverb *gverb_new(t_symbol *s, short ac, t_atom *av){
     x->x_late = late;
     x->x_maxdelay = x->x_sr*x->x_maxsize/340.0;
     x->x_largestdelay = x->x_sr*x->x_size/340.0;
-    x->x_bypass = 0;
     outlet_new(&x->x_obj, gensym("signal"));
     outlet_new(&x->x_obj, gensym("signal"));
 // Input damper
@@ -678,7 +662,6 @@ void setup_giga0x2erev_tilde(void){
     class_addmethod(gverb_class, (t_method)gverb_wet, gensym("wet"), A_FLOAT, 0);
     class_addmethod(gverb_class, (t_method)gverb_early, gensym("early"), A_FLOAT, 0);
     class_addmethod(gverb_class, (t_method)gverb_late, gensym("late"), A_FLOAT, 0);
-    class_addmethod(gverb_class, (t_method)gverb_bypass, gensym("bypass"), A_FLOAT, 0);
     class_addmethod(gverb_class, (t_method)gverb_clear, gensym("clear"), 0);
     class_addmethod(gverb_class, (t_method)gverb_print, gensym("print"), 0);
 }
