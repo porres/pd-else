@@ -74,7 +74,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (299 objects):
+##Current Object list (301 objects):
 
 **ASSORTED: [2]**
 - [table~]
@@ -224,13 +224,15 @@ Cross compiling is also possible with something like this
 - [freeze~]
 - [pvoc.freeze~]
 
-**AUDIO PROCESSING: REVERBERATION: [6]**
+**AUDIO PROCESSING: REVERBERATION: [8]**
+- [allpass.rev~]
+- [comb.rev~]
+- [mono.rev~]
+- [stereo.rev~]
 - [free.rev~]
 - [giga.rev~]
 - [plate.rev~]
 - [fdn.rev~]
-- [allpass.rev~]
-- [comb.rev~]
 
 **AUDIO PROCESSING: FILTERS [22]:**
 - [allpass.2nd~]
