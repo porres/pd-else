@@ -1,0 +1,82 @@
+#N canvas 1039 64 563 616 10;
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 306 4 graph;
+#X obj 23 41 cnv 4 4 4 empty empty Compressor 0 28 2 18 -233017 -1
+0;
+#X obj 4 4 cnv 15 301 42 empty empty compress~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 4 graph;
+#X obj 5 500 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 7 293 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 387 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 425 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 107 398 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 107 300 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 116 462 3) float;
+#X text 116 432 1) float;
+#X obj 107 323 cnv 17 3 57 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 181 300 signal - input signal;
+#X text 133 322 thresh <float> - sets threshold in dB, f 56;
+#X text 139 336 ratio <float> - sets attenuation ratio, f 55;
+#X text 133 350 attack <float> - sets attack time in ms, f 56;
+#X text 127 364 release <float> - sets release time in ms, f 57;
+#X text 116 447 2) float;
+#X text 181 462 - attack time in ms (default 10), f 46;
+#X text 181 447 - attenuation ratio (default 1), f 46;
+#X obj 192 227 else/out~;
+#N canvas 1078 68 453 391 example 0;
+#X obj 201 204 *~;
+#X obj 271 165 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 50 33 When a control input signal increases above a threshold
+level \, the input signal gets attenuated. The attenuation ratio relates
+to how much the control signal has exceeded the threshold. For instance
+\, if the signal has increased 10 dB over the threshold and the ratio
+is 1 \, then th einoput signal gets attenuated by 10 dB. A ratio of
+0.5 decreases 5 dB \, 2 corresponds to 20 dB and so on., f 58;
+#X obj 271 196 else/glide~ 500;
+#X obj 92 291 else/out~;
+#X obj 110 195 noise~;
+#X obj 201 158 osc~ 220;
+#X obj 110 241 else/duck~ -40 0.2 100 100 -mix;
+#X connect 0 0 7 1;
+#X connect 1 0 3 0;
+#X connect 3 0 0 1;
+#X connect 5 0 7 0;
+#X connect 6 0 0 0;
+#X connect 7 0 4 0;
+#X connect 7 0 4 1;
+#X restore 456 251 pd example;
+#X text 66 94 [compress~] is an abstraction that performes compression.
+It attenuates an input signal above a given threshold., f 57;
+#X obj 208 185 else/compress~;
+#X text 116 478 3) float;
+#X text 181 478 - release time in ms (default 10), f 46;
+#X text 181 432 - threshold in dB (default -10), f 46;
+#X text 181 399 signal - compressed signal, f 46;
+#X connect 31 0 28 0;
+#X connect 31 0 28 1;
