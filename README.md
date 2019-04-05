@@ -74,11 +74,12 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (303 objects):
+##Current Object list (304 objects):
 
-**ASSORTED: [2]**
+**ASSORTED: [3]**
 - [table~]
 - [nbang]
+- [meter]
 
 **FFT: [2]**
 - [hann~]

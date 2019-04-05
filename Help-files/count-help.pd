@@ -66,7 +66,6 @@ float sets a new reset point as well, f 53;
 #X obj 101 415 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 163 416 bang;
-#X text 208 416 - bang when reaching vount limits;
 #X obj 3 477 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 166 483 -alt - sets to alternating mode;
 #X text 208 341 - non-0 sets to alternating mode (between up/down)
@@ -232,6 +231,7 @@ value. It has modes for counting up \, down and alternating between
 them.;
 #X text 208 230 - sets new count value and outputs it, f 55;
 #X text 208 216 - counts, f 55;
-#X connect 19 0 54 0;
-#X connect 54 0 20 0;
-#X connect 54 1 32 0;
+#X text 208 416 - bang when reaching count limits;
+#X connect 19 0 53 0;
+#X connect 53 0 20 0;
+#X connect 53 1 32 0;
