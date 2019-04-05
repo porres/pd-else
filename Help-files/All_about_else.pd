@@ -1,39 +1,36 @@
-#N struct 1033-f float x;
-#N struct 2926-cell float x float y float cellsize float color;
-#N struct 2929-point float x0 float y0 float s;
-#N struct 2929-grid float x0 float y0 float s;
-#N canvas 771 177 442 411 10;
+#N canvas 691 214 441 402 10;
 #X declare -path else;
-#X text 44 180 Check declare's help file for more information.;
-#X obj 40 19 cnv 15 350 40 empty empty empty 12 13 0 18 -128992 -233080
+#X text 49 189 Check declare's help file for more information.;
+#X obj 45 28 cnv 15 350 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 352 42 2 100 100;
-#X restore 39 18 pd;
-#X obj 79 26 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 44 27 pd;
+#X obj 84 35 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 189 33 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 194 42 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 209 33 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 214 42 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 246 33 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 251 42 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 285 33 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 290 42 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 323 33 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 328 42 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 296 74 else/else-meta;
-#X obj 158 264 else/openfile http://www.github.com/porres/pd-else -h
+#X obj 301 83 else/else-meta;
+#X obj 163 303 else/openfile http://www.github.com/porres/pd-else -h
 ;
-#X obj 178 225 else/openfile README.pdf -h;
-#X text 45 119 You can install the ELSE library by adding its path
+#X obj 182 237 else/openfile README.pdf -h;
+#X text 50 128 You can install the ELSE library by adding its path
 in "Preferences=>Path". Alternatively \, you can use [declare] as follows:
 , f 51;
-#X obj 209 154 declare -path else;
-#X obj 158 297 else/openfile https://github.com/porres/pd-else/issues
+#X obj 214 163 declare -path else;
+#X obj 163 336 else/openfile https://github.com/porres/pd-else/issues
 -h;
-#X text 46 297 Bug/Issue report:;
-#X obj 265 343 else/All_objects;
-#X text 46 225 Check ELSE's readme:;
-#X text 47 264 ELSE's repository;
-#X text 49 344 All objetcs in the ELSE library:;
+#X text 51 336 Bug/Issue report:;
+#X text 50 237 Check ELSE's readme:;
+#X text 52 303 ELSE's repository;
+#X text 50 270 All objetcs in the ELSE library:;
+#X text 205 81 ELSE's meta =>;
+#X obj 254 270 else/openfile All_objects.pd -h;
