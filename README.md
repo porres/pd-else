@@ -12,7 +12,7 @@ This project is still in a beta phase, where drastic changes may occur and backw
 
 --------------------------------------------------------------------------
 
-	Copyright © 2017-2018 Alexandre Torres Porres <porres@gmail.com>
+	Copyright © 2017-2019 Alexandre Torres Porres <porres@gmail.com>
 
    This work is free. You can redistribute it and/or modify it under the
    terms of the Do What The Fuck You Want To Public License, Version 2,
