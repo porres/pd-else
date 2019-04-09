@@ -1,0 +1,18 @@
+#N canvas 168 66 577 253 12;
+#X obj 98 84 abs~;
+#X obj 98 161 else/lin2db~;
+#X obj 98 131 fexpr~ if($x > $y \, $x \, $y);
+#X obj 98 42 inlet~;
+#X obj 98 191 outlet~;
+#X obj 206 39 inlet;
+#X msg 206 98 clear;
+#X obj 206 72 route bang;
+#X text 318 104 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 320 85 Alexandre Torres Porres (2019);
+#X connect 0 0 2 0;
+#X connect 1 0 4 0;
+#X connect 2 0 1 0;
+#X connect 3 0 0 0;
+#X connect 5 0 7 0;
+#X connect 6 0 2 0;
+#X connect 7 0 6 0;

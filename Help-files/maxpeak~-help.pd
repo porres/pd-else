@@ -1,0 +1,59 @@
+#N canvas 697 171 564 386 10;
+#X obj 4 231 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 293 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 328 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 141 302 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 142 240 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 361 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Maximum 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 105 40 cnv 4 4 4 empty empty peak 0 28 2 18 -233017 -1 0;
+#X obj 149 40 cnv 4 4 4 empty empty amplitude 0 28 2 18 -233017 -1
+0;
+#X obj 3 3 cnv 15 301 42 empty empty maxpeak~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 3 graph;
+#X obj 304 133 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 152 134 else/rampnoise~ 0.1;
+#X obj 229 195 else/display~;
+#X text 62 89 [maxpeak~] returns the maximum peak amplitude so far
+in dB. If you send a bang in the right inlet \, it restarts.;
+#X obj 142 261 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 186 262 bang;
+#X text 174 241 signal;
+#X text 216 338 (none);
+#X text 174 302 signal;
+#X text 216 302 - maximum peak value so far \, in dB;
+#X text 216 262 - retsarts the object;
+#X text 216 241 - incomming signal;
+#X text 324 132 restarts;
+#X obj 229 168 else/maxpeak~;
+#X connect 19 0 32 1;
+#X connect 20 0 32 0;
+#X connect 32 0 21 0;
