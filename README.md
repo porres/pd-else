@@ -74,7 +74,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (305 objects):
+##Current Object list (306 objects):
 
 **ASSORTED: [3]**
 - [table~]
@@ -223,9 +223,10 @@ Cross compiling is also possible with something like this
 - [freeze~]
 - [pvoc.freeze~]
 
-**AUDIO PROCESSING: DYNAMICS [4]**
+**AUDIO PROCESSING: DYNAMICS [5]**
 - [compress~]
 - [duck~]
+- [expand~]
 - [noisegate~]
 - [norm~]
 
