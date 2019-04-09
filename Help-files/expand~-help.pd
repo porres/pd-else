@@ -55,7 +55,7 @@
 #X obj 184 143 else/play.file~ 1 kantele.wav 1 1;
 #X text 66 94 [expand~] is an abstraction that performes expanding.
 It attenuates an input signal below a given threshold.;
-#X obj 184 170 else/expand~ -15 50 10 10 0;
+#X obj 184 170 else/expand~ -15 5 10 10 0;
 #X connect 33 0 35 0;
 #X connect 35 0 28 0;
 #X connect 35 0 28 1;
