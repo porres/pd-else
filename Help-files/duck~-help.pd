@@ -1,4 +1,4 @@
-#N canvas 1039 64 563 616 10;
+#N canvas 623 55 563 616 10;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -67,7 +67,7 @@ f 53;
 #X obj 205 161 osc~ 440;
 #X obj 189 248 else/out~;
 #X obj 275 168 else/randpulse2~ 10;
-#N canvas 1078 68 453 391 example 0;
+#N canvas 987 68 453 391 example 0;
 #X obj 201 204 *~;
 #X obj 271 165 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
