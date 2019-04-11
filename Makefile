@@ -70,6 +70,7 @@ fromany.class.sources := Classes/Source/fromany.c
 toany.class.sources := Classes/Source/toany.c
 touch.in.class.sources := Classes/Source/touch.in.c
 touch.out.class.sources := Classes/Source/touch.out.c
+unmerge.class.sources := Classes/Source/unmerge.c
 
 # signal:
 above~.class.sources := Classes/Source/above~.c
