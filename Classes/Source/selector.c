@@ -25,7 +25,7 @@ static void selector_anything(t_selector *x, t_symbol *s, int ac, t_atom *av){
 
 static void selector_proxy_float(t_selector_proxy *x, t_float f){
     t_selector *master = x->p_master;
-    if(x->p_id < x->p_n){
+    if(x->p_id <= x->p_n){
         if(master->x_open == x->p_id)
             outlet_float(((t_object *)master)->ob_outlet, f);
     }
