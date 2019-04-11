@@ -1,0 +1,82 @@
+#N canvas 916 216 565 462 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Route 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 75 40 cnv 4 4 4 empty empty messages 0 28 2 18 -233017 -1 0
+;
+#X obj 3 3 cnv 15 301 42 empty empty router 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 3 graph;
+#X obj 2 290 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 343 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 384 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 94 299 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 94 321 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 94 355 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+;
+#X obj 2 432 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 138 322 float;
+#X text 120 299 anything;
+#X text 120 356 anything;
+#X text 186 322 - sets outlet number (0 is none), f 33;
+#X text 186 299 - message to send through a specified outlet;
+#X text 120 391 1) float;
+#X text 120 410 2) float;
+#X text 186 410 - sets initially open outlet (default 0 - none);
+#X text 186 357 - 'n' outlets for routing any received message;
+#X obj 299 142 vradio 15 1 0 4 sdvs asfgasgf empty 0 -8 0 10 -228856
+-1 -1 2;
+#X obj 299 212 nbx 2 15 -1e+37 1e+37 0 0 xfkvds asfmnv empty 0 -8 0
+12 -228856 -1 -1 2 256;
+#X text 317 142 none;
+#X text 317 157 1st;
+#X text 317 172 2nd;
+#X text 317 187 3rd;
+#X obj 160 243 else/display;
+#X obj 212 241 else/display;
+#X floatatom 160 140 5 0 0 0 - - -;
+#X obj 265 241 else/display;
+#X obj 130 141 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 68 90 [router] routes a message from the left inlet an outlet
+number specified by the float into the right inlet.;
+#X msg 186 186 hi;
+#X msg 176 160 1 2;
+#X text 336 211 outlet #;
+#X text 160 269 1;
+#X text 211 270 2;
+#X text 264 270 3;
+#X obj 160 213 else/router 3 2, f 18;
+#X text 186 391 - 'n' number of outlets (2 to 512 \, default 2);
+#X connect 28 0 29 0;
+#X connect 29 0 46 1;
+#X connect 36 0 46 0;
+#X connect 38 0 46 0;
+#X connect 40 0 46 0;
+#X connect 41 0 46 0;
+#X connect 46 0 34 0;
+#X connect 46 1 35 0;
+#X connect 46 2 37 0;

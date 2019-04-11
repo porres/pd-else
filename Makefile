@@ -61,6 +61,7 @@ rad2hz.class.sources := Classes/Source/rad2hz.c
 ratio2cents.class.sources := Classes/Source/ratio2cents.c
 rescale.class.sources := Classes/Source/rescale.c
 rint.class.sources := Classes/Source/rint.c
+router.class.sources := Classes/Source/router.c
 routeall.class.sources := Classes/Source/routeall.c
 routetype.class.sources := Classes/Source/routetype.c
 separate.class.sources := Classes/Source/separate.c
