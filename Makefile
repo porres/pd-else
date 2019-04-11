@@ -64,6 +64,7 @@ rint.class.sources := Classes/Source/rint.c
 router.class.sources := Classes/Source/router.c
 routeall.class.sources := Classes/Source/routeall.c
 routetype.class.sources := Classes/Source/routetype.c
+selector.class.sources := Classes/Source/selector.c
 separate.class.sources := Classes/Source/separate.c
 fromany.class.sources := Classes/Source/fromany.c
 toany.class.sources := Classes/Source/toany.c
