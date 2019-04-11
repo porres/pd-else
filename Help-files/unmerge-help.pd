@@ -37,7 +37,6 @@
 #X obj 82 316 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
 #X text 138 373 1) float;
-#X text 196 317 - the list composed of the joined messages, f 55;
 #X text 198 255 -;
 #X text 196 373 -;
 #X text 198 279 -;
@@ -46,7 +45,6 @@
 #X text 212 279 number of elements in a group, f 38;
 #X obj 82 340 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 196 338 - the list composed of the joined messages, f 55;
 #X text 137 317 anything;
 #X text 137 338 anything;
 #X text 208 373 number of outlets from 2-512 (default 2) \, there's
@@ -67,9 +65,11 @@ an extra outlet for the extra elements, f 50;
 #X text 78 91 [unmerge] separates the elements of a message in groups
 of any size (default 1). Each group is sent out a separate outlet \,
 extra elements are sent to an extra rightmost outlet.;
-#X connect 24 0 42 0;
-#X connect 40 0 42 1;
-#X connect 41 0 42 1;
-#X connect 42 0 37 0;
-#X connect 42 1 38 0;
-#X connect 42 2 39 0;
+#X text 196 317 - the bits of the unmerged message, f 55;
+#X text 196 338 - the extra elements of the message, f 55;
+#X connect 23 0 40 0;
+#X connect 38 0 40 1;
+#X connect 39 0 40 1;
+#X connect 40 0 35 0;
+#X connect 40 1 36 0;
+#X connect 40 2 37 0;
