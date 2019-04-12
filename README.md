@@ -74,7 +74,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (313 objects):
+##Current Object list (314 objects):
 
 **ASSORTED: [3]**
 - [table~]
@@ -208,9 +208,10 @@ Cross compiling is also possible with something like this
 - [loop]
 - [moses~]
 
-**AUDIO PROCESSING: ASSORTED [19]**
+**AUDIO PROCESSING: ASSORTED [20]**
 - [downsample~]
 - [conv~]
+- [chorus~]
 - [fbdelay~]
 - [ffdelay~]
 - [shaper~]

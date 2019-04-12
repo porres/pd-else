@@ -1,0 +1,80 @@
+#N canvas 1007 105 564 543 10;
+#X obj 169 251 else/out~;
+#X obj 212 184 nbx 5 14 -1e+37 1e+37 0 0 empty rate empty 0 -8 0 10
+-228856 -1 -1 0.05 256;
+#X obj 306 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 14 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 43 cnv 4 4 4 empty empty Chorus 0 28 2 18 -233017 -1 0;
+#X obj 458 14 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 14 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 14 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 29 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 29 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 6 graph;
+#X obj 3 6 cnv 15 301 42 empty empty chorus~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 6 graph;
+#X obj 7 318 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 415 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 450 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 159 425 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 160 326 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 146 459 1) float;
+#X text 210 458 -;
+#X obj 160 348 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 160 369 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 210 475 -;
+#X text 146 476 2) float;
+#X obj 5 513 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 274 184 nbx 5 14 -1e+37 1e+37 0 0 empty depth empty 0 -8 0 10
+-228856 -1 -1 50 256;
+#X text 218 164 rate;
+#X text 281 164 depth;
+#X text 206 347 float - rate in hertz;
+#X text 200 425 signal - output of vibrato;
+#X text 223 459 rate in hertz (default 0), f 40;
+#X obj 86 43 cnv 4 4 4 empty empty effect 0 28 2 18 -233017 -1 0;
+#X text 87 91 [chorus~] is a chorus effect abstraction.;
+#X obj 336 184 nbx 5 14 -0.99 0.99 0 0 empty feedback empty 0 -8 0
+10 -228856 -1 -1 0.75 256;
+#X text 335 163 feedback;
+#X text 199 325 signal - input to chorus;
+#X text 206 368 float - depth;
+#X obj 160 391 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+;
+#X text 206 390 float - feedback gain;
+#X obj 169 129 else/play.file~ guitar.wav 1 1;
+#X obj 169 210 else/chorus~, f 22;
+#X text 210 492 -;
+#X text 146 493 3) float;
+#X text 223 476 depth (default 0), f 40;
+#X text 223 493 feedback (default 0), f 40;
+#X msg 37 167 \; rate 0.7 \; depth 5 \; feedback -0.6;
+#X msg 435 223 \; rate 0.15 \; depth 10 \; feedback -0.8;
+#X msg 434 162 \; rate 0.1 \; depth 2.5 \; feedback 0.7;
+#X msg 37 224 \; rate 0.05 \; depth 50 \; feedback 0.75;
+#X connect 1 0 40 1;
+#X connect 25 0 40 2;
+#X connect 33 0 40 3;
+#X connect 39 0 40 0;
+#X connect 40 0 0 0;
+#X connect 40 0 0 1;
