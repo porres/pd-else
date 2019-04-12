@@ -74,7 +74,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (312 objects):
+##Current Object list (313 objects):
 
 **ASSORTED: [3]**
 - [table~]
@@ -94,7 +94,7 @@ Cross compiling is also possible with something like this
 - [loadbanger] / [lb]
 - [initmess]
 
-**MESSAGE MANAGEMENT: [18]**
+**MESSAGE MANAGEMENT: [19]**
 - [break] 
 - [makesymbol 
 - [separate] 
@@ -112,6 +112,7 @@ Cross compiling is also possible with something like this
 - [selector]
 - [sig2float~] / [s2f~]
 - [float2sig~] / [f2s~]
+- [merge]
 - [unmerge]
 
 **FILE MANAGEMENT: [1]**

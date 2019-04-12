@@ -44,6 +44,7 @@ initmess.class.sources := Classes/Source/initmess.c
 lb.class.sources := Classes/Source/lb.c
 loadbanger.class.sources := Classes/Source/loadbanger.c
 nbang.class.sources := Classes/Source/nbang.c
+merge.class.sources := Classes/Source/merge.c
 makesymbol.class.sources := Classes/Source/makesymbol.c
 note.in.class.sources := Classes/Source/note.in.c
 note.out.class.sources := Classes/Source/note.out.c
