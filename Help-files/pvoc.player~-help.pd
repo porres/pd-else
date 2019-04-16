@@ -1,4 +1,4 @@
-#N canvas 727 32 566 732 10;
+#N canvas 659 36 565 731 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -78,7 +78,7 @@ message), f 68;
 ;
 #X text 66 89 [pvoc.player~] is like [player~] but provides independent
 time stretching and pitch shifting via a phase vocoder., f 62;
-#X text 478 155 see also:;
+#X text 83 165 see also:;
 #X obj 97 533 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
 0;
 #X text 164 534 bang - a bang when finishing playing the buffer;
@@ -88,55 +88,120 @@ time stretching and pitch shifting via a phase vocoder., f 62;
 #X text 115 616 4) float;
 #X text 180 617 - loop <1: on \, 0: off> (default 0), f 46;
 #X text 180 600 - autostart <1: on \, 0: off> (default 0);
-#X obj 421 177 else/pvoc.live~ 100;
-#X obj 432 203 else/gran.player~;
-#X obj 462 229 else/player~;
-#X obj 134 203 else/out~;
-#X obj 134 147 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 26 187 else/pvoc.live~ 100;
+#X obj 37 206 else/gran.player~;
+#X obj 67 226 else/player~;
+#X obj 210 203 else/out~;
+#X obj 210 147 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 216 147 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 292 147 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 299 147 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 375 147 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 218 129 speed (%);
-#X text 298 128 transposition;
-#X text 317 164 cents;
-#X obj 134 175 else/pvoc.player~ stereo.wav;
-#N canvas 377 25 450 300 example 0;
-#X obj 176 193 else/out~;
-#X msg 161 91 open vacuous.wav;
-#X obj 172 127 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 294 129 speed (%);
+#X text 374 128 transposition;
+#X text 393 164 cents;
+#X obj 210 175 else/pvoc.player~ stereo.wav;
+#N canvas 727 23 540 328 example 0;
+#X msg 99 101 pause;
+#X msg 154 100 continue;
+#X obj 257 187 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X msg 232 127 loop \$1;
+#X obj 232 103 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 114 63 open stereo.wav;
-#X obj 243 131 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 326 131 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 245 113 speed (%);
-#X text 325 112 transposition;
-#X text 344 148 cents;
-#X msg 87 123 loop \$1;
-#X obj 87 100 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 326 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 196 128 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 161 159 else/pvoc.player~ stereo.wav;
-#X text 57 159 click: opens ==> a new file, f 16;
-#X connect 1 0 12 0;
-#X connect 2 0 12 0;
-#X connect 3 0 12 0;
-#X connect 4 0 12 1;
-#X connect 5 0 12 2;
-#X connect 9 0 12 0;
-#X connect 10 0 9 0;
-#X connect 12 0 0 0;
-#X connect 12 1 0 1;
-#X connect 12 2 11 0;
-#X restore 313 230 pd example;
+#X obj 175 240 else/out~;
+#X obj 340 238 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 361 236 <= finished;
+#X msg 140 78 open vacuous.wav;
+#X obj 175 128 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X text 84 201 click: opens a new file =>, f 13;
+#X msg 36 78 open stereo.wav;
+#X obj 232 151 else/pack2 range f f;
+#X floatatom 290 113 5 0 0 0 - - -;
+#X obj 293 89 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X floatatom 349 131 5 0 0 0 - - -;
+#X obj 352 110 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X text 333 89 minimum;
+#X text 393 110 maximum;
+#X obj 175 210 else/pvoc.player~ stereo.wav;
+#X text 113 35 Test the main message methods of [pvoc.player~].;
+#X obj 340 187 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 223 186 speed;
+#X text 389 185 transposition;
+#X connect 0 0 20 0;
+#X connect 1 0 20 0;
+#X connect 2 0 20 1;
+#X connect 3 0 20 0;
+#X connect 4 0 3 0;
+#X connect 5 0 20 0;
+#X connect 9 0 20 0;
+#X connect 10 0 20 0;
+#X connect 12 0 20 0;
+#X connect 13 0 20 0;
+#X connect 14 0 13 1;
+#X connect 15 0 14 0;
+#X connect 16 0 13 2;
+#X connect 17 0 16 0;
+#X connect 20 0 6 0;
+#X connect 20 1 6 1;
+#X connect 20 2 7 0;
+#X connect 22 0 20 2;
+#X restore 483 212 pd example;
 #X text 95 687 -range <float \, float>: sets sample range (default:
 0 1), f 65;
 #X text 127 377 range <f \, f> - sets sample's playing range (from
 0 to 1), f 68;
+#N canvas 574 23 692 497 multi-channel 0;
+#X obj 194 327 else/meter2~;
+#X obj 81 337 else/out~;
+#X obj 401 318 else/out~;
+#X msg 145 210 open violin.wav;
+#X obj 354 289 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 614 297 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 159 235 open stereo.wav;
+#X text 183 25 If you give an optional float argumewnt as the first
+argument \, it specifies the number of channels. If no float argument
+and no sound file are given \, then the default number of channels
+is 1 (mono). But if the first optional argument is not given and a
+file name is given \, then the number of channels is the same as the
+sound file's. The maximum number is 64 channels.;
+#X text 247 208 <= mono file;
+#X text 260 234 <= stereo file;
+#X text 184 110 If you have a file with less channels than specified
+(like a mono file in a stereo buffer player) \, the extra channels
+are silent. Conversely \, a file with more channels than specified
+(like a stereo file in a mono buffer player) has its remaining channels
+ignored.;
+#X msg 60 185 start;
+#X obj 401 233 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X msg 81 209 stop;
+#X obj 401 272 else/pvoc.player~ 1 stereo.wav -loop;
+#X obj 81 263 else/pvoc.player~ stereo.wav -loop -speed -100;
+#X connect 3 0 15 0;
+#X connect 6 0 15 0;
+#X connect 11 0 15 0;
+#X connect 12 0 14 0;
+#X connect 13 0 15 0;
+#X connect 14 0 2 0;
+#X connect 14 0 2 1;
+#X connect 14 1 5 0;
+#X connect 15 0 1 0;
+#X connect 15 0 0 0;
+#X connect 15 1 1 1;
+#X connect 15 1 0 1;
+#X connect 15 2 4 0;
+#X restore 447 231 pd multi-channel;
 #X connect 58 0 64 0;
 #X connect 59 0 64 1;
 #X connect 60 0 64 2;

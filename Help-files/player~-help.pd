@@ -1,4 +1,4 @@
-#N canvas 610 39 565 701 10;
+#N canvas 433 41 565 701 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -161,7 +161,7 @@ search for files relative to the parent patch., f 76;
 #X obj 286 141 else/pack2 range f f;
 #X floatatom 344 103 5 0 0 0 - - -;
 #X obj 347 79 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 1800 1;
+-1 -1 0 1;
 #X floatatom 403 121 5 0 0 0 - - -;
 #X obj 406 100 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
