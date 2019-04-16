@@ -1,7 +1,7 @@
-#N canvas 1007 105 564 543 10;
-#X obj 169 251 else/out~;
-#X obj 212 184 nbx 5 14 -1e+37 1e+37 0 0 empty rate empty 0 -8 0 10
--228856 -1 -1 0.05 256;
+#N canvas 473 52 564 543 10;
+#X obj 180 256 else/out~;
+#X obj 223 189 nbx 5 14 -1e+37 1e+37 0 0 empty rate empty 0 -8 0 10
+-228856 -1 -1 0 256;
 #X obj 306 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 14 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -45,36 +45,39 @@
 #X text 146 476 2) float;
 #X obj 5 513 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 274 184 nbx 5 14 -1e+37 1e+37 0 0 empty depth empty 0 -8 0 10
--228856 -1 -1 50 256;
-#X text 218 164 rate;
-#X text 281 164 depth;
+#X obj 285 189 nbx 5 14 -1e+37 1e+37 0 0 empty depth empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 229 169 rate;
+#X text 292 169 depth;
 #X text 206 347 float - rate in hertz;
 #X text 200 425 signal - output of vibrato;
 #X text 223 459 rate in hertz (default 0), f 40;
 #X obj 86 43 cnv 4 4 4 empty empty effect 0 28 2 18 -233017 -1 0;
-#X text 87 91 [chorus~] is a chorus effect abstraction.;
-#X obj 336 184 nbx 5 14 -0.99 0.99 0 0 empty feedback empty 0 -8 0
-10 -228856 -1 -1 0.75 256;
-#X text 335 163 feedback;
+#X obj 347 189 nbx 5 14 -0.99 0.99 0 0 empty feedback empty 0 -8 0
+10 -228856 -1 -1 0 256;
+#X text 346 168 feedback;
 #X text 199 325 signal - input to chorus;
 #X text 206 368 float - depth;
 #X obj 160 391 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
 #X text 206 390 float - feedback gain;
-#X obj 169 129 else/play.file~ guitar.wav 1 1;
-#X obj 169 210 else/chorus~, f 22;
+#X obj 180 134 else/play.file~ guitar.wav 1 1;
+#X obj 180 215 else/chorus~, f 22;
 #X text 210 492 -;
 #X text 146 493 3) float;
 #X text 223 476 depth (default 0), f 40;
 #X text 223 493 feedback (default 0), f 40;
-#X msg 37 167 \; rate 0.7 \; depth 5 \; feedback -0.6;
-#X msg 435 223 \; rate 0.15 \; depth 10 \; feedback -0.8;
-#X msg 434 162 \; rate 0.1 \; depth 2.5 \; feedback 0.7;
-#X msg 37 224 \; rate 0.05 \; depth 50 \; feedback 0.75;
-#X connect 1 0 40 1;
-#X connect 25 0 40 2;
-#X connect 33 0 40 3;
-#X connect 39 0 40 0;
-#X connect 40 0 0 0;
-#X connect 40 0 0 1;
+#X msg 48 172 \; rate 0.7 \; depth 5 \; feedback -0.6;
+#X msg 456 180 \; rate 0.15 \; depth 10 \; feedback -0.8;
+#X msg 455 119 \; rate 0.1 \; depth 2.5 \; feedback 0.7;
+#X msg 48 229 \; rate 0.05 \; depth 50 \; feedback 0.75;
+#X text 87 91 [chorus~] is a mono chorus effect abstraction. It uses
+a sine waveform and 2 extra voices.;
+#X obj 442 283 else/chorus2~ 1;
+#X text 440 263 see also:;
+#X connect 1 0 39 1;
+#X connect 25 0 39 2;
+#X connect 32 0 39 3;
+#X connect 38 0 39 0;
+#X connect 39 0 0 0;
+#X connect 39 0 0 1;

@@ -75,6 +75,8 @@
 #X text 68 89 [chorus2~] is a stereo chorus effect abstraction. The
 waveform is random. You can set the number of extra voices and all
 are placed in the stereo field differently., f 63;
+#X obj 437 272 else/chorus~;
+#X text 436 249 see also:;
 #X connect 0 0 44 0;
 #X connect 33 0 41 0;
 #X connect 41 0 34 0;
