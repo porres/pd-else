@@ -71,6 +71,8 @@ fromany.class.sources := Classes/Source/fromany.c
 toany.class.sources := Classes/Source/toany.c
 touch.in.class.sources := Classes/Source/touch.in.c
 touch.out.class.sources := Classes/Source/touch.out.c
+trigger2.class.sources := Classes/Source/trigger2.c
+t2.class.sources := Classes/Source/t2.c
 unmerge.class.sources := Classes/Source/unmerge.c
 
 # signal:

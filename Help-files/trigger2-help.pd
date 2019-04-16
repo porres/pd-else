@@ -1,0 +1,101 @@
+#N canvas 569 355 563 407 10;
+#X obj 4 261 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 296 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 331 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 106 305 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+;
+#X obj 107 270 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 381 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 165 161 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Sequence 0 28 2 18 -233017 -1 0
+;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 3 3 cnv 15 301 42 empty empty trigger2 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 3 graph;
+#X obj 103 40 cnv 4 4 4 empty empty messages 0 28 2 18 -233017 -1 0
+;
+#X text 137 271 anything;
+#X text 196 271 - a message that fires the sequence;
+#X text 108 340 1) anything -;
+#X text 196 340 message types (anything/a \, list/l \, bang/b \, float/f
+\, symbol/s \, pointer/p) or constant values (a float or a symbol)
+- default: bang bang, f 51;
+#X text 137 305 anything;
+#X obj 194 161 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 165 224 else/display;
+#X obj 228 224 else/display;
+#X obj 291 224 else/display;
+#X obj 354 224 else/display;
+#X text 40 193 see also:;
+#X obj 46 214 trigger;
+#X text 196 305 - the sequenced message;
+#X obj 165 194 else/trigger2 float bang 30 stop;
+#X obj 406 184 else/t2 f b 30 stop;
+#X text 406 164 abbreviated as:;
+#N canvas 581 179 662 308 conversion 0;
+#X msg 59 109 2.5;
+#X msg 157 109 bang;
+#X msg 99 109 23 64;
+#X msg 203 109 symbol dog;
+#X obj 99 201 else/display;
+#X obj 212 201 else/display;
+#X obj 325 201 else/display;
+#X obj 438 201 else/display;
+#X obj 552 201 else/display;
+#X msg 279 109 list a b;
+#X msg 345 109 dog cats;
+#X text 121 34 The [fire] object can convert an input message according
+to another type specified as the argument. Unlioke Vanilla's trigger
+\, [fire] can also convert "anythings".;
+#X obj 99 163 else/trigger2 float bang symbol list anything, f 76
+;
+#X connect 0 0 12 0;
+#X connect 1 0 12 0;
+#X connect 2 0 12 0;
+#X connect 3 0 12 0;
+#X connect 9 0 12 0;
+#X connect 10 0 12 0;
+#X connect 12 0 4 0;
+#X connect 12 1 5 0;
+#X connect 12 2 6 0;
+#X connect 12 3 7 0;
+#X connect 12 4 8 0;
+#X restore 466 227 pd conversion;
+#X obj 319 165 pi;
+#X text 60 91 The [trigger2] object is like trigger but can also sequences
+constant values. Each argument has a corresponding outlet and can set
+a message type or a constant value. If this update of trigger gets
+accepted in the next Vanilla update (0.50.0) \, this object will be
+deleted., f 70;
+#X connect 6 0 32 0;
+#X connect 24 0 32 0;
+#X connect 32 0 25 0;
+#X connect 32 1 26 0;
+#X connect 32 2 27 0;
+#X connect 32 3 28 0;
