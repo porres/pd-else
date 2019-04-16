@@ -1,4 +1,4 @@
-#N canvas 569 355 563 407 10;
+#N canvas 586 116 563 407 10;
 #X obj 4 261 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 296 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -70,29 +70,27 @@
 #X obj 552 201 else/display;
 #X msg 279 109 list a b;
 #X msg 345 109 dog cats;
-#X text 121 34 The [fire] object can convert an input message according
-to another type specified as the argument. Unlioke Vanilla's trigger
-\, [fire] can also convert "anythings".;
 #X obj 99 163 else/trigger2 float bang symbol list anything, f 76
 ;
-#X connect 0 0 12 0;
-#X connect 1 0 12 0;
-#X connect 2 0 12 0;
-#X connect 3 0 12 0;
-#X connect 9 0 12 0;
-#X connect 10 0 12 0;
-#X connect 12 0 4 0;
-#X connect 12 1 5 0;
-#X connect 12 2 6 0;
-#X connect 12 3 7 0;
-#X connect 12 4 8 0;
+#X text 121 34 You can convert an input message according to another
+type specified as the argument. Unlike Vanilla's trigger \, [trigger2]
+can also convert "anythings"., f 57;
+#X connect 0 0 11 0;
+#X connect 1 0 11 0;
+#X connect 2 0 11 0;
+#X connect 3 0 11 0;
+#X connect 9 0 11 0;
+#X connect 10 0 11 0;
+#X connect 11 0 4 0;
+#X connect 11 1 5 0;
+#X connect 11 2 6 0;
+#X connect 11 3 7 0;
+#X connect 11 4 8 0;
 #X restore 466 227 pd conversion;
-#X obj 319 165 pi;
-#X text 60 91 The [trigger2] object is like trigger but can also sequences
-constant values. Each argument has a corresponding outlet and can set
-a message type or a constant value. If this update of trigger gets
-accepted in the next Vanilla update (0.50.0) \, this object will be
-deleted., f 70;
+#X text 60 88 The [trigger2] is based on the Max version of trigger
+where you can also have constant values as arguments (a float or symbol)
+besides the message types. If Pd's trigger offers this in the next
+update (0.50.0) \, this object will be deleted., f 67;
 #X connect 6 0 32 0;
 #X connect 24 0 32 0;
 #X connect 32 0 25 0;
