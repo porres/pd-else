@@ -85,8 +85,6 @@ message), f 68;
 #X obj 251 40 cnv 4 4 4 empty empty player 0 28 2 18 -233017 -1 0;
 #X obj 181 40 cnv 4 4 4 empty empty vocoded 0 28 2 18 -233017 -1 0
 ;
-#X text 66 93 [pvoc.player~] is like [player~] but provides independent
-time stretching and pitch shifting via a phase vocoder., f 62;
 #X text 257 188 speed (%);
 #X text 337 187 transposition;
 #X text 356 223 cents;
@@ -110,13 +108,16 @@ time stretching and pitch shifting via a phase vocoder., f 62;
 #X obj 421 244 else/pvoc.live~ 100;
 #X obj 432 270 else/gran.player~;
 #X obj 462 296 else/player~;
-#X connect 13 0 66 0;
-#X connect 14 0 66 0;
-#X connect 15 0 66 0;
-#X connect 16 0 66 1;
-#X connect 17 0 66 2;
-#X connect 55 0 66 0;
-#X connect 56 0 55 0;
-#X connect 66 0 12 0;
-#X connect 66 1 12 1;
-#X connect 66 2 57 0;
+#X text 66 93 [pvoc.player~] is like [player~] but provides independent
+time stretching and pitch shifting via granulation and phase vocoder.
+, f 64;
+#X connect 13 0 65 0;
+#X connect 14 0 65 0;
+#X connect 15 0 65 0;
+#X connect 16 0 65 1;
+#X connect 17 0 65 2;
+#X connect 54 0 65 0;
+#X connect 55 0 54 0;
+#X connect 65 0 12 0;
+#X connect 65 1 12 1;
+#X connect 65 2 56 0;
