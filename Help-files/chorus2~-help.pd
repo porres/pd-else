@@ -1,0 +1,84 @@
+#N canvas 550 28 563 538 10;
+#X obj 324 170 hsl 128 15 -0.9 0.9 0 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 0 1;
+#X obj 306 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 14 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 43 cnv 4 4 4 empty empty Chorus 0 28 2 18 -233017 -1 0;
+#X obj 458 14 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 14 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 14 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 29 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 29 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 6 graph;
+#X obj 3 6 cnv 15 301 42 empty empty chorus2~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 6 graph;
+#X obj 7 308 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 405 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 436 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 163 413 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 164 316 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 210 458 -;
+#X obj 164 338 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 164 359 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 210 473 -;
+#X obj 5 508 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 210 337 float - rate in hertz;
+#X text 204 413 signal - output of vibrato;
+#X text 223 459 rate in hertz (default 0), f 40;
+#X obj 86 43 cnv 4 4 4 empty empty effect 0 28 2 18 -233017 -1 0;
+#X text 203 315 signal - input to chorus;
+#X text 210 358 float - depth;
+#X obj 164 381 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+;
+#X text 210 380 float - feedback gain;
+#X text 210 488 -;
+#X text 223 474 depth (default 0), f 40;
+#X text 223 489 feedback (default 0), f 40;
+#X obj 162 148 else/play.file~ guitar.wav 1 1, f 15;
+#X obj 162 246 else/out~;
+#X text 146 444 1) float;
+#X text 210 443 -;
+#X text 223 444 number of voices (obrigatory), f 40;
+#X text 146 459 2) float;
+#X text 146 474 3) float;
+#X text 146 489 4) float;
+#X obj 162 216 else/chorus2~ 8 0.7 15 -0.6;
+#X obj 215 194 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 268 194 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 321 194 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 216 179 rate;
+#X text 267 179 depth;
+#X text 357 193 feedback;
+#X text 68 89 [chorus2~] is a stereo chorus effect abstraction. The
+waveform is random. You can set the number of extra voices and all
+are placed in the stereo field differently., f 63;
+#X connect 0 0 44 0;
+#X connect 33 0 41 0;
+#X connect 41 0 34 0;
+#X connect 41 1 34 1;
+#X connect 42 0 41 1;
+#X connect 43 0 41 2;
+#X connect 44 0 41 3;
