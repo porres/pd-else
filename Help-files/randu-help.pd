@@ -1,0 +1,80 @@
+#N canvas 763 64 565 438 10;
+#X obj 4 245 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 323 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 374 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 107 253 cnv 17 3 43 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 106 331 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 107 301 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 106 352 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 437 cnv 1 550 1 empty empty empty 0 0 0 4 -262144 -262144
+0;
+#X obj 4 406 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 171 252 bang;
+#X text 165 302 float;
+#X text 172 352 bang;
+#X text 165 332 float;
+#X text 206 280 - reseeds the random number generator, f 42;
+#X text 206 302 - clears the memory and sets size, f 42;
+#X obj 229 131 bng 20 250 50 0 empty empty empty 0 -6 0 8 -216373 -66577
+-1;
+#X floatatom 298 161 5 0 0 0 - - -;
+#X msg 170 153 seed \$1;
+#X floatatom 170 131 5 0 0 0 - - -;
+#X text 181 208 random numbers, f 7;
+#X obj 298 214 bng 18 250 50 0 empty empty empty 0 -6 0 8 -216373 -66577
+-1;
+#X msg 268 136 restart;
+#X text 153 266 restart;
+#X text 123 280 seed <float>;
+#X text 206 352 - when the sequence restarts, f 38;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 162 41 cnv 4 4 4 empty empty (unrepeated) 0 28 2 18 -233017
+-1 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 3 4 cnv 15 301 42 empty empty randu 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 4 graph;
+#X text 331 160 'n';
+#X text 206 332 - random number output, f 38;
+#X text 206 266 - restarts a new sequence, f 42;
+#X text 152 383 1) float - sets size (default 1 \, maximum 65536);
+#X obj 24 41 cnv 4 4 4 empty empty Random 0 28 2 18 -233017 -1 0;
+#X obj 93 41 cnv 4 4 4 empty empty numbers 0 28 2 18 -233017 -1 0;
+#X text 318 216 restarted;
+#X text 206 252 - generates a new unrepeated random number;
+#X obj 229 211 else/display 3;
+#X text 64 89 [randu] generates random integer numbers in a range defined
+by the 'n' size (from 0 to n-1) without repeating them., f 60;
+#X obj 229 181 else/randu 5;
+#X connect 15 0 46 0;
+#X connect 16 0 46 1;
+#X connect 17 0 46 0;
+#X connect 18 0 17 0;
+#X connect 21 0 46 0;
+#X connect 46 0 44 0;
+#X connect 46 1 20 0;

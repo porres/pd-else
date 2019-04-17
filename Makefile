@@ -237,12 +237,13 @@ shared/buffer.c
 gui := shared/gui.c
     window.class.sources := Classes/Source/window.c $(gui)
 
-noise := shared/random.c
-    brown~.class.sources := Classes/Source/brown~.c $(noise)
-    gray~.class.sources := Classes/Source/gray~.c $(noise)
-    pinknoise~.class.sources := Classes/Source/pinknoise~.c $(noise)
-    clipnoise~.class.sources := Classes/Source/clipnoise~.c $(noise)
-    pluck~.class.sources := Classes/Source/pluck~.c $(noise)
+rand := shared/random.c
+    brown~.class.sources := Classes/Source/brown~.c $(rand)
+    gray~.class.sources := Classes/Source/gray~.c $(rand)
+    pinknoise~.class.sources := Classes/Source/pinknoise~.c $(rand)
+    clipnoise~.class.sources := Classes/Source/clipnoise~.c $(rand)
+    pluck~.class.sources := Classes/Source/pluck~.c $(rand)
+    randu.class.sources := Classes/Source/randu.c $(rand)
 
 midi := \
     shared/mifi.c \

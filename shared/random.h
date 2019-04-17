@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+int rand_int(unsigned int *statep, int range);
+void rand_seed(unsigned int *statep, unsigned int seed);
+
 // these are for pinknoise
 
 #if defined(__GNUC__)

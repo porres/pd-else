@@ -74,7 +74,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (316 objects):
+##Current Object list (317 objects):
 
 **ASSORTED: [3]**
 - [table~]
@@ -197,9 +197,10 @@ Cross compiling is also possible with something like this
 - [pi]
 - [e]
 
-**MATH: RANDOM: [6]**
+**MATH: RANDOM: [7]**
 - [randf]
 - [randf~]
+- [randu]
 - [randi]
 - [randi~]
 - [drunkard~]
