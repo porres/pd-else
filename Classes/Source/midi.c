@@ -1,3 +1,4 @@
+// based on cyclone's [seq]
 
 #include <stdlib.h>
 #include <stdio.h>
