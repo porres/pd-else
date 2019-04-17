@@ -244,7 +244,6 @@ static void comb_size(t_comb *x, t_floatarg f1){
 
 static void *comb_new(t_symbol *s, int argc, t_atom * argv){
     t_comb *x = (t_comb *)pd_new(comb_class);
-    
     //defaults
     t_float maxdel = COMB_DELAY;
     t_float initdel = COMB_MINMS;
@@ -252,14 +251,12 @@ static void *comb_new(t_symbol *s, int argc, t_atom * argv){
     t_float ffcoeff = COMB_DEFFF;
     t_float fbcoeff = COMB_DEFFB;
     x->x_sr = sys_getsr();
-    
     x->x_alloc = 0;
     x->x_sz = COMB_STACK;
     //clear out stack bufs, set pointer to stack
     x->x_ybuf = x->x_fbstack;
     x->x_xbuf = x->x_ffstack;
     comb_clear(x);
-    
     int argnum = 0; //current argument
     while(argc){
         if(argv -> a_type == A_FLOAT){
@@ -285,22 +282,14 @@ static void *comb_new(t_symbol *s, int argc, t_atom * argv){
         argc--;
         argv++;
     };
-    
-    
     x->x_maxdel = maxdel > 0 ? maxdel : COMB_DELAY;
     //ship off to the helper method to deal with allocation if necessary
     comb_sz(x);
     //boundschecking
-    //this is 1/44.1 (1/(sr*0.001) rounded up, good enough?
-    
-    if(initdel < COMB_MINMS){
+    if(initdel < COMB_MINMS) // 1/(sr*0.001) rounded up, good enough?
         initdel = COMB_MINMS;
-    }
-    else if(initdel > x->x_maxdel){
+    else if(initdel > x->x_maxdel)
         initdel = x->x_maxdel;
-    };
-    
-    
     //inlets outlets
     x->x_dellet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_dellet, initdel);

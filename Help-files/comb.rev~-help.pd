@@ -1,13 +1,13 @@
-#N canvas 577 23 574 618 10;
-#X obj 4 576 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 577 23 561 562 10;
+#X obj 4 536 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 4 300 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 288 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 482 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 464 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 116 309 cnv 17 3 46 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 116 297 cnv 17 3 46 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 175 236 else/out~;
+#X obj 205 226 else/out~;
 #X obj 4 4 cnv 15 301 42 empty empty comb.rev~ 20 20 2 37 -233017 -1
 0;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -33,10 +33,10 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 306 4 graph;
-#X text 191 308 signal - signal input to the filter, f 49;
+#X text 191 296 signal - signal input to the filter, f 49;
 #N canvas 381 159 855 396 Details 0;
-#X floatatom 529 195 5 0 1000 0 - - -, f 5;
-#X floatatom 572 162 8 0 100 0 - - -, f 8;
+#X floatatom 529 195 5 0 1000 0 - - -;
+#X floatatom 572 162 8 0 100 0 - - -;
 #X obj 575 138 hsl 128 15 -0.99 0.99 0 0 empty empty empty -2 -8 0
 10 -228856 -1 -1 0 1;
 #X obj 487 290 else/out~;
@@ -96,12 +96,12 @@
 #X text 409 65 The [comb.rev~] object performs a simple linear interpolation
 for delay time that falls in between sample values., f 61;
 #X text 626 161 (a);
-#X floatatom 615 212 8 0 100 0 - - -, f 8;
+#X floatatom 615 212 8 0 100 0 - - -;
 #X obj 618 188 hsl 128 15 -0.99 0.99 0 0 empty empty empty -2 -8 0
 10 -228856 -1 -1 0 1;
-#X floatatom 690 266 8 0 100 0 - - -, f 8;
+#X floatatom 690 266 8 0 100 0 - - -;
 #X obj 693 242 hsl 128 15 -0.99 0.99 0 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 5500 1;
+10 -228856 -1 -1 0 1;
 #X text 669 211 (b);
 #X text 744 265 (c);
 #X obj 487 250 else/comb.rev~ 500 1 0.9 0.99;
@@ -119,57 +119,56 @@ for delay time that falls in between sample values., f 61;
 #X connect 59 0 58 0;
 #X connect 62 0 3 0;
 #X connect 62 0 3 1;
-#X restore 438 257 pd Details and \; Filter Equation;
-#X text 131 490 1) float - maximum and initial delay time in ms (default
+#X restore 438 241 pd Details and \; Filter Equation;
+#X text 131 472 1) float - maximum and initial delay time in ms (default
 0), f 60;
-#X text 131 507 2) float - decay time in ms (default 0), f 60;
-#X text 240 324 - changes the maximum delay size (in ms), f 42;
-#X text 147 324 size <float>;
-#X text 198 341 clear - clears the delay buffer, f 48;
-#X text 132 524 3) float;
-#X text 132 541 4) float;
-#X text 132 556 5) float;
-#X text 185 539 - b: feedforward gain coefficient (default 0);
-#X text 185 554 - c: feedback gain coefficient (default 0);
-#X text 185 522 - a: input gain coefficient (default 0);
-#X obj 5 445 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X text 240 312 - changes the maximum delay size (in ms), f 42;
+#X text 147 312 size <float>;
+#X text 198 329 clear - clears the delay buffer, f 48;
+#X obj 5 433 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 115 360 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 115 348 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 115 380 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 115 368 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X obj 115 420 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
+#X obj 115 408 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
 ;
-#X obj 115 453 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 115 441 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 115 400 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 115 388 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X obj 115 400 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 115 388 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 183 454 signal;
-#X text 239 455 - output from comb filter;
-#X text 147 361 float/signal;
-#X text 147 380 float/signal;
-#X text 147 400 float/signal;
-#X text 147 420 float/signal;
-#X text 239 361 - D: delay time in ms;
-#X text 239 400 - b: feedforward gain coefficient;
-#X text 239 420 - c: feedback gain coefficient;
-#X text 239 380 - a: input gain coefficient;
-#X obj 222 160 hsl 128 15 40 400 0 0 empty empty empty -2 -8 0 10 -228856
+#X text 183 442 signal;
+#X text 239 443 - output from comb filter;
+#X text 147 349 float/signal;
+#X text 147 368 float/signal;
+#X text 147 388 float/signal;
+#X text 147 408 float/signal;
+#X text 239 349 - D: delay time in ms;
+#X text 239 388 - b: feedforward gain coefficient;
+#X text 239 408 - c: feedback gain coefficient;
+#X text 239 368 - a: input gain coefficient;
+#X obj 252 155 hsl 128 15 40 400 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 219 182 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 249 176 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -262144 -1 -1 0 256;
-#X obj 160 130 noise~;
-#X obj 175 159 *~;
-#X obj 221 131 else/pulse~ 1 0.05;
-#X obj 175 202 else/comb.rev~ 500 1 0.99 0.99;
+#X obj 162 125 noise~;
+#X obj 205 154 *~;
+#X obj 220 126 else/pulse~ 1 0.05;
+#X obj 205 197 else/comb.rev~ 500 1 0.99 0.99;
 #X text 61 89 Use [comb.rev~] as a reverberator \, comb filter and
 delay., f 67;
-#X connect 47 0 48 0;
-#X connect 48 0 52 1;
-#X connect 49 0 50 0;
-#X connect 50 0 52 0;
-#X connect 51 0 50 1;
-#X connect 52 0 4 1;
-#X connect 52 0 4 0;
+#X text 131 487 2) float - a: input gain coefficient (default 0),
+f 60;
+#X text 131 502 3) float - b: feedforward gain coefficient (default
+0), f 60;
+#X text 131 517 4) float - c: feedback gain coefficient (default 0)
+, f 60;
+#X connect 40 0 41 0;
+#X connect 41 0 45 1;
+#X connect 42 0 43 0;
+#X connect 43 0 45 0;
+#X connect 44 0 43 1;
+#X connect 45 0 4 1;
+#X connect 45 0 4 0;
