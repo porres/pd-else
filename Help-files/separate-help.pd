@@ -1,22 +1,22 @@
-#N canvas 637 119 561 439 10;
-#X obj 2 290 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 490 80 560 410 10;
+#X obj 2 260 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 342 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 2 312 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 375 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 345 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 81 299 cnv 17 3 37 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 81 269 cnv 17 3 37 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 81 351 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 81 321 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 2 412 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 382 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 175 298 symbol;
-#X text 164 351 anything;
-#X text 225 317 - sets the separator character;
-#X text 103 317 separator <symbol>;
-#X text 225 298 - the symbol to be converted to any message type;
-#X text 136 387 1) symbol - sets the separator character (default "space")
+#X text 175 268 symbol;
+#X text 164 321 anything;
+#X text 225 287 - sets the separator character;
+#X text 103 287 separator <symbol>;
+#X text 225 268 - the symbol to be converted to any message type;
+#X text 136 357 1) symbol - sets the separator character (default "space")
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -46,38 +46,35 @@
 #X text 70 90 [separate] allows you to separate a symbol into different
 elements by setting the character that separates one element from the
 others. The default separator is a "space"., f 61;
-#X obj 197 206 else/separate -;
-#X obj 197 233 else/display;
-#X obj 197 156 else/initmess symbol 1-2-3-4;
-#X symbolatom 197 182 10 0 0 0 - - -;
-#X text 224 351 - a separated message from a symbol;
-#N canvas 686 152 712 666 examples 0;
-#X symbolatom 316 125 20 0 0 0 - - -;
-#X msg 349 195 separator;
-#X msg 316 78 symbol 179.101.88.112;
-#X msg 327 101 symbol 255.255.0.0;
-#X msg 333 153 separator .;
-#X msg 223 152 separator /;
-#X symbolatom 164 126 20 0 0 0 - - -;
-#X msg 166 81 symbol 19/11/8/12;
-#X msg 177 104 symbol 1/2/3/4;
-#X obj 316 54 loadbang;
-#X text 413 195 <= space as separator;
-#X obj 316 238 else/separate .;
-#X obj 316 274 else/display;
-#X obj 188 452 else/display;
-#X msg 188 385 symbol C:/program/pd/patch.pd;
-#X obj 188 416 else/separate /;
-#X obj 245 490 list length;
-#X obj 245 515 - 1;
-#X obj 188 488 t a a;
-#X obj 188 542 list split;
-#X obj 216 572 else/display;
-#X text 154 358 Get a file name:;
-#X text 137 578 filename =>;
-#X obj 112 385 openpanel;
-#X obj 112 359 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 197 196 else/separate -;
+#X obj 197 223 else/display;
+#X obj 197 146 else/initmess symbol 1-2-3-4;
+#X symbolatom 197 172 10 0 0 0 - - -;
+#X text 224 321 - a separated message from a symbol;
+#N canvas 493 204 713 322 examples 0;
+#X symbolatom 201 99 20 0 0 0 - - -;
+#X msg 234 169 separator;
+#X msg 201 52 symbol 179.101.88.112;
+#X msg 212 75 symbol 255.255.0.0;
+#X msg 218 127 separator .;
+#X msg 108 126 separator /;
+#X symbolatom 49 100 20 0 0 0 - - -;
+#X msg 51 55 symbol 19/11/8/12;
+#X msg 62 78 symbol 1/2/3/4;
+#X obj 201 28 loadbang;
+#X text 298 169 <= space as separator;
+#X obj 201 212 else/separate .;
+#X obj 201 248 else/display;
+#X obj 471 165 else/display;
+#X msg 471 98 symbol C:/program/pd/patch.pd;
+#X obj 471 129 else/separate /;
+#X obj 471 222 else/display;
+#X text 437 71 Get a file name:;
+#X text 392 228 filename =>;
+#X obj 395 98 openpanel;
+#X obj 395 72 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 471 197 else/pick -1;
 #X connect 0 0 11 0;
 #X connect 1 0 11 0;
 #X connect 2 0 0 0;
@@ -89,17 +86,13 @@ others. The default separator is a "space"., f 61;
 #X connect 8 0 6 0;
 #X connect 9 0 2 0;
 #X connect 11 0 12 0;
-#X connect 13 0 18 0;
+#X connect 13 0 21 0;
 #X connect 14 0 15 0;
 #X connect 15 0 13 0;
-#X connect 16 0 17 0;
-#X connect 17 0 19 1;
-#X connect 18 0 19 0;
-#X connect 18 1 16 0;
-#X connect 19 1 20 0;
-#X connect 23 0 15 0;
-#X connect 24 0 23 0;
-#X restore 465 234 pd examples;
+#X connect 19 0 15 0;
+#X connect 20 0 19 0;
+#X connect 21 0 16 0;
+#X restore 465 214 pd examples;
 #X connect 25 0 26 0;
 #X connect 27 0 28 0;
 #X connect 28 0 25 0;
