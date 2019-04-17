@@ -74,7 +74,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (317 objects):
+##Current Object list (319 objects):
 
 **ASSORTED: [3]**
 - [table~]
@@ -94,15 +94,21 @@ Cross compiling is also possible with something like this
 - [loadbanger] / [lb]
 - [initmess]
 
-**MESSAGE MANAGEMENT: [20]**
+**LIST MANAGEMENT: [6]**
 - [break] 
-- [makesymbol 
+- [order]
+- [regroup] 
+- [scramble]
+- [merge]
+- [unmerge]
+
+**MESSAGE MANAGEMENT: [16]**
+- [makesymbol]
 - [separate] 
 - [fromany] 
 - [toany] 
 - [any2symbol]
 - [changed]
-- [order]
 - [hot]
 - [setmess]
 - [pack2]
@@ -110,11 +116,9 @@ Cross compiling is also possible with something like this
 - [routeall]
 - [routetype]
 - [selector]
-- [trigger2]
+- [trigger2] / [t2]
 - [sig2float~] / [s2f~]
 - [float2sig~] / [f2s~]
-- [merge]
-- [unmerge]
 
 **FILE MANAGEMENT: [1]**
 - [dir]
