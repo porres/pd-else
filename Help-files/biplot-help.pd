@@ -1,13 +1,13 @@
-#N canvas 482 52 562 300 10;
-#X obj 4 160 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 482 52 572 321 10;
+#X obj 4 190 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 197 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 227 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 230 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 260 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 5 260 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 290 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 109 168 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 109 198 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 89 40 cnv 4 4 4 empty empty plot 0 28 2 18 -233017 -1 0;
 #X obj 25 40 cnv 4 4 4 empty empty Biquad 0 28 2 18 -233017 -1 0;
@@ -16,11 +16,9 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 137 168 list;
-#X text 177 168 - list of coefficients as taken by [biquad~];
-#X text 76 87 [biplot] plots the filter response from biquad coefficients.
-, f 53;
-#N canvas 336 123 920 451 example 0;
+#X text 137 198 list;
+#X text 177 198 - list of coefficients as taken by [biquad~];
+#N canvas 449 143 920 451 example 0;
 #X obj 157 35 nbx 5 14 0.01 1 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0.01 256;
 #X obj 231 36 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 -228856
@@ -44,9 +42,9 @@ generates biquad coefficients.;
 #X connect 2 0 8 0;
 #X connect 5 0 8 0;
 #X connect 8 0 7 0;
-#X restore 251 121 pd example;
-#X text 322 122 <= click to open and check;
-#X text 181 239 (none);
+#X restore 198 134 pd example;
+#X text 269 135 <= click to open and check;
+#X text 181 269 (none);
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -64,7 +62,25 @@ generates biquad coefficients.;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 304 3 graph;
-#X obj 109 208 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 109 238 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 137 208 list;
-#X text 177 208 - list of coefficients is passed through;
+#X text 137 238 list;
+#X text 177 238 - list of coefficients is passed through;
+#N canvas 345 214 920 451 cascade 0;
+#X obj 6 132 else/biplot;
+#X obj 34 54 else/bicoeff eq 500 10 24;
+#X obj 109 82 else/bicoeff eq 900 10 24;
+#X obj 34 29 else/lb 2, f 13;
+#X obj 34 84 list;
+#X text 337 49 The [biplot] object can also take list you send to the
+[biquads~] object with multiples of 5! In this way \, the object plots
+the result of the cascading.;
+#X connect 1 0 4 0;
+#X connect 2 0 4 1;
+#X connect 3 0 1 0;
+#X connect 3 1 2 0;
+#X connect 4 0 0 0;
+#X restore 198 162 pd cascade;
+#X text 76 87 [biplot] plots the filter response from biquad coefficients
+\, the ones you send to [biquad~] or [else/biquads~]., f 61;
+#X text 269 162 <= click to open and check;
