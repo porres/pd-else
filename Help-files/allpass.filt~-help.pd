@@ -1,19 +1,18 @@
-#N canvas 553 42 564 465 10;
-#X obj 4 294 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 553 42 565 512 10;
+#X obj 4 334 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 371 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 411 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 404 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 444 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 3 437 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 477 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 129 380 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 420 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 129 302 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 342 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 201 302 signal;
-#X text 201 380 signal;
-#X obj 210 232 else/out~;
+#X text 201 342 signal;
+#X text 201 420 signal;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -29,20 +28,20 @@
 0;
 #X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 210 167 noise~;
-#X obj 271 146 nbx 5 14 10 10000 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 25.7132 256;
-#X obj 333 178 nbx 5 14 1 100 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 1.01815 256;
-#X text 250 380 - filtered signal;
-#X text 250 302 - signal to be filtered;
-#X obj 129 324 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 192 171 noise~;
+#X obj 265 153 nbx 5 14 10 10000 1 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 10 256;
+#X obj 324 185 nbx 5 14 1 100 1 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 1 256;
+#X text 250 420 - filtered signal;
+#X text 250 342 - signal to be filtered;
+#X obj 129 364 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 129 347 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 129 387 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 165 324 float/signal;
-#X text 165 347 float/signal;
-#X text 249 323 - central frequency in Hertz;
+#X text 165 364 float/signal;
+#X text 165 387 float/signal;
+#X text 249 363 - central frequency in Hertz;
 #X obj 2 3 cnv 15 301 42 empty empty allpass.filt~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -54,16 +53,17 @@ is an abstraction that stacks many [allpass.2nd~] objects in cascade.
 , f 63;
 #X obj 42 248 else/allpass.2nd~;
 #X text 44 227 see also:;
-#X text 250 347 - filter resonance (Q);
-#X text 391 173 resonance (default 1), f 11;
-#X text 329 137 resonant/center frequency (default 10), f 23;
-#X text 152 414 1) float - order from 2 to 64 (default 2);
-#X obj 210 200 else/allpass.filt~ 64;
-#X text 335 247 I know \, we can't actually hear any difference \,
-sorry :(, f 30;
-#X text 316 253 <=;
-#X connect 17 0 36 0;
-#X connect 18 0 36 1;
-#X connect 19 0 36 2;
-#X connect 36 0 8 0;
-#X connect 36 0 8 1;
+#X text 250 387 - filter resonance (Q);
+#X text 382 180 resonance (default 1), f 11;
+#X text 323 144 resonant/center frequency (default 10), f 23;
+#X text 152 454 1) float - order from 2 to 64 (default 2);
+#X obj 207 208 else/allpass.filt~ 4;
+#X obj 192 264 else/out~;
+#X obj 192 230 +~;
+#X connect 16 0 35 0;
+#X connect 16 0 37 0;
+#X connect 17 0 35 1;
+#X connect 18 0 35 2;
+#X connect 35 0 37 1;
+#X connect 37 0 36 0;
+#X connect 37 0 36 1;
