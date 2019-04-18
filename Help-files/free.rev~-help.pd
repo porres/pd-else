@@ -85,8 +85,6 @@ comb filter., f 49;
 mixed or not. When this is set to 1 \, we have two independent channels.
 For a mono input \, a 0 parameter is suited to create a stereo image
 from a single channel source., f 45;
-#X text 380 114 The 'wet' meessage controls the dry (0) and wet (1)
-mix and the clear message clears up the delay lines., f 44;
 #X obj 143 246 else/player~ stereo.wav 1 -loop, f 12;
 #X obj 143 308 else/free.rev~;
 #X text 41 22 The freeverb algorithm is a simple implementation of
@@ -95,23 +93,25 @@ comb filters in parallel passing through four allpass filters in series.
 The 'decay' message controls the decay time and affects the feedback
 parameter of the comb filters., f 49;
 #X msg 274 245 decay \$1;
+#X text 380 114 The 'wet' message controls the dry (0) and wet (1)
+mix and the clear message clears up the delay lines., f 44;
 #X connect 0 0 1 0;
-#X connect 1 0 19 0;
+#X connect 1 0 18 0;
 #X connect 2 0 6 0;
 #X connect 3 0 4 0;
 #X connect 4 0 5 0;
-#X connect 5 0 17 2;
-#X connect 6 0 17 2;
+#X connect 5 0 16 2;
+#X connect 6 0 16 2;
 #X connect 7 0 2 0;
 #X connect 8 0 9 0;
 #X connect 9 0 10 0;
-#X connect 10 0 17 2;
-#X connect 11 0 17 2;
-#X connect 16 0 17 0;
-#X connect 16 1 17 1;
-#X connect 17 0 12 0;
-#X connect 17 1 12 1;
-#X connect 19 0 17 2;
+#X connect 10 0 16 2;
+#X connect 11 0 16 2;
+#X connect 15 0 16 0;
+#X connect 15 1 16 1;
+#X connect 16 0 12 0;
+#X connect 16 1 12 1;
+#X connect 18 0 16 2;
 #X restore 464 247 pd details;
 #X text 70 87 [free.rev~] is a stereo reverb abstraction based on the
 widely known 'freeverb' algorithm.;
