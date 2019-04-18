@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-18 (Unreleased)
+### Version 1.0 beta-18 (Released April 21st 2019)
 
 Needs Pd 0.49-0 or above
 
@@ -20,7 +20,7 @@ This project is still in a beta phase, where drastic changes may occur and backw
  
    See License.txt https://github.com/porres/pd-else/blob/master/License.txt and http://www.wtfpl.net/ for more details
    
-   Other licenses may apply for specific objects and this is informed in the source code (such as the [giga.rev~] object). 
+   Other licenses may apply for specific objects and this is informed in the source code (example: the [giga.rev~] object). 
 
 --------------------------------------------------------------------------
 
