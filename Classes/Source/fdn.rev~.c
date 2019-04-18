@@ -1,5 +1,5 @@
-// A Feedback Delay Network with a householder matrix (In - 2/n 11T)
-// a modification of [creb/fdn~] by Alexandre Porres
+// Feedback Delay Networks with a householder matrix (In - 2/n 11T)
+// modified fom [creb/fdn~] by Porres
 
 // TODO (from original code) - Add: delay time generation code / prime calculation for delay lengths
 //       / more diffuse feedback matrix (hadamard) & check filtering code
@@ -177,12 +177,12 @@ static void fdn_list (t_fdn *x,  t_symbol *s, int argc, t_atom *argv){
 }
 
 static void fdn_print(t_fdn *x){
-    post("[fdn.rev~]: max delay lines %d, buffer size %d samples (%.2f ms)",
+/*    post("[fdn.rev~]: max delay lines %d, buffer size %d samples (%.2f ms)",
          x->x_ctl.c_maxorder, x->x_ctl.c_bufsize ,
          ((float)x->x_ctl.c_bufsize) * 1000 / sys_getsr());
     post("damping = %.2f%%, t60_lo = %.2f sec, t60_hi = %.2f sec",
-         x->x_damping * 100, x->x_t60_lo / 1000, x->x_t60_hi / 1000);
-    post("delay times:");
+         x->x_damping * 100, x->x_t60_lo / 1000, x->x_t60_hi / 1000);*/
+    post("[fdn.rev~]: delay times:");
     for(t_int i = 0; i < x->x_ctl.c_order; i++)
         post("line %d: %.2f ms", i + 1, x->x_ctl.c_time_ms[i]);
 }
@@ -292,7 +292,7 @@ static void *fdn_new(t_symbol *s, int ac, t_atom *av){
     dummy = NULL;
 ////////
     t_int order = 1024; // maximum order is 1024
-    t_int size = 19;
+    t_int size = 23;
     t_float t60 = 4;
     t_float damping = 0;
     x->x_exp = 0;
@@ -301,7 +301,7 @@ static void *fdn_new(t_symbol *s, int ac, t_atom *av){
     int flag = 0;
     while(ac > 0){
         if(av->a_type == A_FLOAT && !flag){
-            // t_float aval = atom_getfloatarg(0, ac, av);
+//            t_float aval = atom_getfloatarg(0, ac, av);
             switch(argnum){
                     /* case 0:
                      freq = aval;
@@ -368,18 +368,15 @@ static void *fdn_new(t_symbol *s, int ac, t_atom *av){
      if(order < 4)
          order = 4;
     order = ((int)order) & 0xfffffffc; // clip to powers of 2
-    
     if(size < 16) // size in samples
         size = 16;
     if(size > 30) // size in samples
         size = 30;
     size = pow(2, size);
-    
     t60 = (t60 < .01f ? .01f : t60) * 1000; // minimum 10 ms
     x->x_t60_lo = t60;
     x->x_damping = (damping < 0.f ? 0.f : damping > 100 ? 100 : damping) / 100;
     x->x_t60_hi = t60 + (10 - t60) * x->x_damping;
-    
     x->x_ctl.c_maxorder = order;
     x->x_ctl.c_bufsize = size;
     x->x_ctl.c_buf = (float *)malloc(sizeof(float) * size);
@@ -392,14 +389,17 @@ static void *fdn_new(t_symbol *s, int ac, t_atom *av){
     x->x_ctl.c_curvector = 0;
     x->x_ctl.c_vector[0] = &x->x_ctl.c_vectorbuffer[0];
     x->x_ctl.c_vector[1] = &x->x_ctl.c_vectorbuffer[order];
-
 // default input list
-    t_atom at[4];
-    SETFLOAT(at, 0.f);
-    SETFLOAT(at+1, 0.f);
-    SETFLOAT(at+2, 0.f);
-    SETFLOAT(at+3, 0.f);
-    fdn_list(x, &s_list, 4, at);
+    t_atom at[8];
+    SETFLOAT(at, 7.f);
+    SETFLOAT(at+1, 11.f);
+    SETFLOAT(at+2, 13.f);
+    SETFLOAT(at+3, 17.f);
+    SETFLOAT(at+4, 19.f);
+    SETFLOAT(at+5, 23.f);
+    SETFLOAT(at+6, 29.f);
+    SETFLOAT(at+7, 31.f);
+    fdn_list(x, &s_list, 8, at);
 // clear delay memory to zero
     fdn_clear(x);
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("time"));

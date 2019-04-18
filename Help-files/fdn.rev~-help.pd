@@ -1,4 +1,4 @@
-#N canvas 848 43 561 651 10;
+#N canvas 520 63 560 604 10;
 #X obj 2 5 cnv 15 301 42 empty empty fdn.rev~ 20 20 2 37 -233017 -1
 0;
 #X obj 305 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -24,125 +24,127 @@
 0;
 #X obj 501 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 108 163 bng 18 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
+#X obj 145 138 bng 18 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
 -1;
-#X obj 192 269 else/out~;
+#X obj 236 231 else/out~;
 #X obj 146 42 cnv 4 4 4 empty empty network 0 28 2 18 -233017 -1 0
 ;
-#X obj 1 332 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 1 290 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 1 493 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 1 455 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 1 546 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+#X obj 1 506 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 86 339 cnv 17 3 105 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 86 297 cnv 17 3 110 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X obj 86 450 cnv 17 3 17 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+#X obj 86 412 cnv 17 3 17 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
 -162280 0;
-#X text 151 339 signal;
-#X obj 86 471 cnv 17 3 17 empty \$0-pddp.cnv.let.2 2 5 9 0 16 -228856
+#X text 151 295 signal;
+#X obj 86 433 cnv 17 3 17 empty \$0-pddp.cnv.let.2 2 5 9 0 16 -228856
 -162280 0;
-#X text 157 473 float;
-#X obj 1 623 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#X text 157 435 float;
+#X obj 1 577 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 108 189 else/impseq~;
+#X obj 145 164 else/impseq~;
 #X obj 215 42 cnv 4 4 4 empty empty reverberator 0 28 2 18 -233017
 -1 0;
-#X obj 86 501 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 86 463 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X obj 86 522 cnv 17 3 17 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
+#X obj 86 484 cnv 17 3 17 empty \$0-pddp.cnv.let.1 1 5 9 0 16 -228856
 -162280 0;
-#X text 151 501 signal;
-#X text 151 523 signal;
-#X text 157 452 float;
-#X text 201 500 - left output of the FDN reverberator, f 41;
-#X text 201 523 - right output of the FDN reverberator, f 41;
-#X text 201 473 - high frequency damping in % (from 0 to 100);
-#X text 115 554 1) list;
-#X obj 1 577 cnv 3 550 3 empty \$0-pddp.cnv.argument flags 8 12 0 13
+#X text 151 463 signal;
+#X text 151 485 signal;
+#X text 157 414 float;
+#X text 201 462 - left output of the FDN reverberator, f 55;
+#X text 201 485 - right output of the FDN reverberator, f 55;
+#X text 201 435 - high frequency damping in % (from 0 to 100), f 55
+;
+#X obj 1 535 cnv 3 550 3 empty \$0-pddp.cnv.argument flags 8 12 0 13
 -228856 -1 0;
-#X text 116 586 -time <float>: t60 reverberation time in seconds (default
+#X text 116 543 -time <float>: t60 reverberation time in seconds (default
 4), f 64;
-#X text 98 601 -damping <float>: high frequency damping in % (default
+#X text 98 558 -damping <float>: high frequency damping in % (default
 0), f 67;
-#X text 201 452 - reverberation decay time in seconds (t60);
-#X text 201 339 - signal input to reverberate, f 55;
-#X text 115 387 time <float>;
-#X text 201 387 - reverberation decay time in seconds (t60), f 55
+#X text 115 323 time <float>;
+#X text 201 323 - reverberation decay time in seconds (t60), f 55
 ;
-#X text 97 401 damping <float>;
-#X text 201 401 - high frequency damping in % (from 0 to 100), f 55
+#X text 97 337 damping <float>;
+#X text 201 337 - high frequency damping in % (from 0 to 100), f 55
 ;
-#X text 157 415 clear;
-#X text 201 415 - clears the delay lines and reverberation, f 55;
-#X text 157 429 print;
-#X text 201 429 - print delay lines and other parameters in Pd's window
+#X text 157 379 clear;
+#X text 201 379 - clears the delay lines and reverberation, f 55;
+#X text 157 393 print;
+#X text 201 393 - print delay lines and other parameters in Pd's window
 ;
-#X text 163 353 list;
-#X text 201 353 - list of reflection times in ms, f 55;
-#X obj 228 203 nbx 4 14 0 20 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X obj 290 203 hsl 128 15 0.01 100 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
-#X text 203 202 t60;
-#X text 294 203 damping (0% - 100%);
-#X text 127 370 set <list>;
-#X text 171 554 - list of reflection times in ms (default: none);
-#X text 201 370 - set number of lines and min/max times;
-#N canvas 648 78 546 644 example 0;
-#X msg 80 165 print;
-#X obj 108 358 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 163 309 list;
+#N canvas 441 143 693 393 details 0;
+#X text 337 70 [fdn.rev~] uses a householder reflection feedback matrix.
+The main parameters are the reverberation decay time (t60) \, which
+is the time it takes to decrease 60dB in seconds. The damping parameter
+controls the decay of higher frequencies \, the higer the damping \,
+the less higher frequencies reverberate., f 47;
+#X obj 205 213 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 217 302 set 32 100 320;
-#X obj 245 547 else/out~;
-#X obj 154 218 else/initmess 29 31 37 67 82 110 172 221;
-#X text 165 198 specify delay line lengths individually;
-#X text 75 39 [fdn.rev~] is a feedback delay network reverberator that
-uses a householder reflection feedback matrix. The main parameters
-are the reverberation decay time (t60) \, which is the time it takes
-to decrease 60dB in seconds. The damping parameter controls the decay
-of higher frequencies \, the higer the damping \, the less higher frequencies
-reverberate., f 63;
-#X obj 276 455 nbx 3 14 0 20 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X obj 317 455 nbx 3 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X text 282 438 t60;
-#X text 317 437 damping;
-#X text 120 164 print parameters and delay lengths;
-#X text 334 279 sets number of delay lines \, minimum and maximum frequency
-, f 20;
-#X obj 108 382 else/impseq~;
-#X msg 201 276 set 8 10 80;
-#X msg 241 332 set 16 100 1015;
-#X obj 239 484 else/fdn.rev~;
-#X msg 257 364 set 8 10 2000;
-#X msg 279 392 set 64 50 175;
-#X connect 0 0 16 0;
-#X connect 1 0 13 0;
-#X connect 2 0 16 0;
-#X connect 4 0 16 0;
-#X connect 7 0 16 1;
-#X connect 8 0 16 2;
-#X connect 13 0 16 0;
-#X connect 14 0 16 0;
-#X connect 15 0 16 0;
-#X connect 16 0 3 0;
-#X connect 16 1 3 1;
-#X connect 17 0 16 0;
-#X connect 18 0 16 0;
-#X restore 461 298 pd example;
-#X obj 191 235 else/fdn.rev~;
-#X obj 191 169 else/initmess 29 31 37 67 82 110 172 221;
-#X text 202 149 specify delay line lengths individually;
-#X text 53 94 [fdn.rev~] is a feedback delay network reverberator that
-you can specify the number of delay lines and each length. The main
-parameters are: decay time (t60) and high frequencies damping., f
-72;
+#X msg 198 185 set 64 10 1000;
+#X obj 204 236 else/impseq~;
+#X msg 87 211 print;
+#X obj 188 311 else/out~;
+#X msg 140 75 29 31 37 67 82 110 172 221;
+#X obj 149 275 else/fdn.rev~ -time 6;
+#X msg 149 101 set 8 5 80;
+#X msg 118 45 7 11 13 17 19 23 29 31;
+#X msg 165 127 set 16 10 120;
+#X msg 180 154 set 32 3 77;
+#X msg 29 211 exp \$1;
+#X obj 29 185 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 337 155 A list of values sets the matrix. The size of the list
+sets the size of the matrix and needs to be a multiple of 4! Each float
+sets the delay time for each delay line., f 47;
+#X text 337 206 The set message sets the size of the matrix with the
+first element \, the two extra elements set the minimum and maximum
+delay times. By default they are spaced linearly \, but they can be
+exponentially spaced with the "exp" message., f 47;
+#X text 116 22 lits sets delay lines;
+#X text 261 45 default;
+#X connect 1 0 3 0;
+#X connect 2 0 7 0;
+#X connect 3 0 7 0;
+#X connect 4 0 7 0;
+#X connect 6 0 7 0;
+#X connect 7 0 5 0;
+#X connect 7 1 5 1;
+#X connect 8 0 7 0;
+#X connect 9 0 7 0;
+#X connect 10 0 7 0;
+#X connect 11 0 7 0;
+#X connect 12 0 7 0;
+#X connect 13 0 12 0;
+#X restore 473 260 pd details;
+#X obj 231 179 nbx 3 14 0.1 20 1 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0.1 256;
+#X obj 281 179 hsl 128 15 0.01 100 1 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 0 1;
+#X text 285 179 damping (0% - 100%);
+#X text 127 351 set <list>;
+#X text 76 88 [fdn.rev~] is a feedback delay network reverberator which
+can be used for late reflections (a.k.a reverb tail). The main parameters
+are: decay time (t60) and high frequency damping., f 66;
+#X text 201 414 - decay time in seconds (t60), f 55;
+#X text 201 351 - set number of lines and min/max times, f 55;
+#X text 121 365 exp <float>;
+#X text 201 365 - non zero sets delay times exponentially, f 55;
+#X text 151 514 (none);
+#X text 201 295 - input signal to reverberate, f 55;
+#X text 201 309 - sets reflection times in ms, f 55;
+#X obj 186 200 else/fdn.rev~, f 16;
+#X obj 234 159 hsl 128 15 0.01 10 1 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 0 1;
+#X text 263 159 decay (t60), f 12;
 #X connect 12 0 24 0;
-#X connect 24 0 58 0;
-#X connect 50 0 58 1;
-#X connect 51 0 58 2;
-#X connect 58 0 13 0;
-#X connect 58 1 13 1;
-#X connect 59 0 58 0;
+#X connect 24 0 59 0;
+#X connect 47 0 59 1;
+#X connect 48 0 59 2;
+#X connect 59 0 13 0;
+#X connect 59 1 13 1;
+#X connect 60 0 47 0;
