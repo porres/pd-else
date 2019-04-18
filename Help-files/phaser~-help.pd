@@ -1,0 +1,64 @@
+#N canvas 671 32 564 522 10;
+#X obj 185 272 else/out~;
+#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 42 cnv 4 4 4 empty empty Phaser 0 28 2 18 -233017 -1 0;
+#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 5 graph;
+#X obj 3 5 cnv 15 301 42 empty empty phaser~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 5 graph;
+#X obj 7 338 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 431 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 466 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 129 441 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 130 346 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 126 475 1) float;
+#X text 190 474 -;
+#X obj 130 368 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 130 389 cnv 17 3 35 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X obj 5 496 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 80 42 cnv 4 4 4 empty empty effect 0 28 2 18 -233017 -1 0;
+#X obj 185 157 else/play.file~ guitar.wav 1 1;
+#X obj 249 211 else/rescale~ 100 1000;
+#X text 190 441 signal - phaser output;
+#X text 189 367 signal - frequency;
+#X text 75 90 [phaser~] is a mono phaser effect abstraction. You can
+set the number of stages with the first argument \, which sets the
+order of the internal allpass filter (needs to be a multiple of 2).
+It requires a signal LFO to control the frequency sweep., f 71;
+#X text 189 345 signal - input to phaser;
+#X text 172 388 q <float> - internal allpass resonance (default 1)
+;
+#X text 160 406 wet <float> - dry/wet ratio from 0-1 (default 1);
+#X text 203 475 number of stages from 2 to 64 (default 2);
+#X obj 185 236 else/phaser~ 6, f 22;
+#X obj 249 187 osc~ 0.33;
+#X connect 23 0 32 0;
+#X connect 24 0 32 1;
+#X connect 32 0 0 0;
+#X connect 32 0 0 1;
+#X connect 33 0 24 0;
