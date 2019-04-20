@@ -205,29 +205,29 @@ off;
 #X restore 181 299 pd polysynth;
 #X obj 131 119 bng 30 250 50 0 empty empty empty 17 7 0 10 -216373
 -108187 -1;
-#X floatatom 195 99 5 0 0 0 - - -, f 5;
+#X floatatom 195 99 5 0 0 0 - - -;
 #X obj 195 49 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X text 318 154 generates raw MIDI note messages;
 #X text 221 48 generates random note-on messages;
 #X text 31 125 Flush them off;
 #X obj 156 343 ./out~;
-#X obj 195 155 else/pitchout;
-#X obj 195 74 else/randi 50 80;
-#X obj 195 262 else/pitchin;
 #X obj 195 127 pack f 100;
 #X obj 195 210 else/panic;
+#X obj 195 74 else/rand.i 50 80;
+#X obj 195 155 else/note.out;
+#X obj 195 262 else/note.in;
 #X connect 0 0 7 0;
 #X connect 0 0 7 1;
-#X connect 1 0 12 0;
-#X connect 2 0 11 0;
-#X connect 3 0 9 0;
-#X connect 8 0 12 0;
-#X connect 9 0 2 0;
-#X connect 10 0 0 0;
-#X connect 10 1 0 1;
-#X connect 11 0 8 0;
-#X connect 12 0 10 0;
+#X connect 1 0 9 0;
+#X connect 2 0 8 0;
+#X connect 3 0 10 0;
+#X connect 8 0 11 0;
+#X connect 9 0 12 0;
+#X connect 10 0 2 0;
+#X connect 11 0 9 0;
+#X connect 12 0 0 0;
+#X connect 12 1 0 1;
 #X restore 472 287 pd example;
 #X text 71 94 Like a "panic button" \, [panic] keeps track of raw Note-on
 messages that weren't switched off and "flushes" them by sending corresponding

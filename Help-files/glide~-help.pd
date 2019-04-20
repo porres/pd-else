@@ -21,7 +21,7 @@
 #X obj 227 230 *~;
 #X obj 145 157 else/brown~;
 #X obj 304 227 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 0 1;
+-1 -1 8743 1;
 #X obj 304 199 else/sig2float~;
 #X text 327 320 0;
 #X text 327 221 1;
@@ -33,7 +33,7 @@
 #X text 240 356 - input signal;
 #X text 239 398 - glide time in ms;
 #X text 240 435 - glided signal;
-#N canvas 907 204 522 312 example 0;
+#N canvas 699 216 522 312 example 0;
 #X obj 80 143 else/glide~ 1000;
 #X obj 80 185 osc~;
 #X obj 80 232 else/out~;
@@ -41,7 +41,7 @@
 #X obj 80 54 else/dust~ 1;
 #X text 165 53 <= random triggers;
 #X text 212 97 <= random values in 200-800 range;
-#X obj 80 97 else/randf~ 200 800;
+#X obj 80 97 else/rand.f~ 200 800;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 1 0 2 1;

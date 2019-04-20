@@ -66,61 +66,61 @@ the patch is located in by default).;
 #X msg 49 145 reset;
 #X text 161 542 atom -;
 #X obj 174 329 print dir;
-#N canvas 534 77 746 521 example 0;
-#X obj 430 304 else/dir;
-#X msg 430 271 seek \$1;
-#X obj 430 239 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 534 77 712 515 example 0;
+#X obj 432 307 else/dir;
+#X msg 432 274 seek \$1;
+#X obj 432 242 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 475 333 else/display;
-#X obj 430 370 else/display;
-#X msg 380 270 n;
-#X text 157 25 The 'n' message outputs the number of found files in
+#X obj 477 336 else/display;
+#X obj 432 373 else/display;
+#X msg 382 273 n;
+#X text 159 28 The 'n' message outputs the number of found files in
 the opened directory. The seek message can search for a file acording
 to a number. If the seek number is greater than the number of files
 \, then the search is wrapped according to the number of files. The
 seek number is indexed from 1 and cannot be <= 0!;
-#X msg 495 272 next;
-#X text 158 103 The 'next' message increments the seek value and will
+#X msg 497 275 next;
+#X text 160 106 The 'next' message increments the seek value and will
 also wrap according to the number of files.;
-#X obj 181 326 route float;
-#X msg 79 274 seek \$1;
-#X obj 139 389 pack symbol symbol;
-#X obj 79 353 else/display;
-#X obj 79 247 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 79 157 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X obj 183 329 route float;
+#X msg 81 277 seek \$1;
+#X obj 141 392 pack symbol symbol;
+#X obj 81 356 else/display;
+#X obj 81 250 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1 256;
+#X obj 81 160 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X msg 40 273 next;
-#X obj 139 445 else/display;
-#X msg 186 271 n \, dir, f 10;
-#X obj 79 306 else/dir;
-#X obj 186 246 loadbang;
-#X obj 79 221 else/randi 1 1;
-#X obj 160 198 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 308 256;
-#X msg 139 418 \$2/\$1;
-#X text 100 156 <= a random file from the "else" externals folder;
+#X msg 42 276 next;
+#X obj 141 448 else/display;
+#X msg 188 274 n \, dir, f 10;
+#X obj 81 309 else/dir;
+#X obj 188 249 loadbang;
+#X obj 168 201 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 687 256;
+#X msg 141 421 \$2/\$1;
+#X text 102 159 <= a random file from the "else" externals folder;
+#X obj 81 224 else/rand.i 1 1;
 #X connect 0 0 4 0;
 #X connect 0 1 3 0;
 #X connect 1 0 0 0;
 #X connect 2 0 1 0;
 #X connect 5 0 0 0;
 #X connect 7 0 0 0;
-#X connect 9 0 21 0;
+#X connect 9 0 20 0;
 #X connect 9 1 11 1;
 #X connect 10 0 18 0;
-#X connect 11 0 22 0;
+#X connect 11 0 21 0;
 #X connect 12 0 11 0;
 #X connect 13 0 10 0;
-#X connect 14 0 20 0;
+#X connect 14 0 23 0;
 #X connect 15 0 18 0;
 #X connect 17 0 18 0;
 #X connect 18 0 12 0;
 #X connect 18 1 9 0;
 #X connect 19 0 17 0;
-#X connect 20 0 13 0;
-#X connect 21 0 20 2;
-#X connect 22 0 16 0;
+#X connect 20 0 23 2;
+#X connect 21 0 16 0;
+#X connect 23 0 13 0;
 #X restore 464 256 pd example;
 #X text 179 450 n -;
 #X text 211 450 output number of found files in the right outlet;

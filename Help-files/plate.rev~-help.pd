@@ -58,7 +58,7 @@
 #X obj 71 158 outlet~;
 #X obj 71 121 else/oscbank~ 6 -ratio 1 3 5.01 7.02 9.03 11.04 -amp
 1 0.3 0.2 0.15 0.1 0.1, f 47;
-#X obj 71 70 else/randi 36 84;
+#X obj 72 70 else/rand.i 36 84;
 #X connect 0 0 3 0;
 #X connect 1 0 4 0;
 #X connect 3 0 2 0;
@@ -129,8 +129,8 @@
 #X text 689 292 room-size;
 #X msg 649 341 size \$1;
 #X msg 727 371 wet \$1;
-#X obj 111 361 else/randf 500 3000, f 12;
 #X msg 726 404 clear;
+#X obj 111 361 else/rand.f 500 3000, f 12;
 #X connect 0 0 33 0;
 #X connect 2 0 11 0;
 #X connect 3 0 4 0;
@@ -146,7 +146,7 @@
 #X connect 16 0 17 0;
 #X connect 18 0 16 1;
 #X connect 19 0 18 0;
-#X connect 19 0 58 0;
+#X connect 19 0 59 0;
 #X connect 20 0 16 0;
 #X connect 27 0 26 0;
 #X connect 30 0 32 0;
@@ -168,8 +168,8 @@
 #X connect 54 0 33 1;
 #X connect 56 0 33 1;
 #X connect 57 0 33 1;
-#X connect 58 0 20 1;
-#X connect 59 0 33 1;
+#X connect 58 0 33 1;
+#X connect 59 0 20 1;
 #X restore 457 242 pd example;
 #X obj 3 3 cnv 15 301 42 empty empty plate.rev~ 20 20 2 37 -233017
 -1 0;
