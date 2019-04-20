@@ -58,6 +58,7 @@ pack2.class.sources := Classes/Source/pack2.c
 quantizer.class.sources := Classes/Source/quantizer.c
 randf.class.sources := Classes/Source/randf.c
 randi.class.sources := Classes/Source/randi.c
+rands.class.sources := Classes/Source/rands.c
 rad2hz.class.sources := Classes/Source/rad2hz.c
 ratio2cents.class.sources := Classes/Source/ratio2cents.c
 rescale.class.sources := Classes/Source/rescale.c
@@ -243,7 +244,6 @@ rand := shared/random.c
     pinknoise~.class.sources := Classes/Source/pinknoise~.c $(rand)
     clipnoise~.class.sources := Classes/Source/clipnoise~.c $(rand)
     pluck~.class.sources := Classes/Source/pluck~.c $(rand)
-    randu.class.sources := Classes/Source/randu.c $(rand)
 
 midi := \
     shared/mifi.c \

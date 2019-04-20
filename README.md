@@ -206,7 +206,7 @@ Cross compiling is also possible with something like this
 **MATH: RANDOM: [7]**
 - [randf]
 - [randf~]
-- [randu]
+- [rands]
 - [randi]
 - [randi~]
 - [drunkard~]

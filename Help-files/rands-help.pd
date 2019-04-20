@@ -1,0 +1,138 @@
+#N canvas 459 101 564 526 10;
+#X obj 4 265 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 399 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 451 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 107 272 cnv 17 3 99 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 106 408 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 107 377 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 106 429 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 500 cnv 1 550 1 empty empty empty 0 0 0 4 -262144 -262144
+0;
+#X obj 4 499 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 171 272 bang;
+#X text 165 378 float;
+#X text 172 429 bang;
+#X text 165 409 float;
+#X obj 212 151 bng 20 250 50 0 empty empty empty 0 -6 0 8 -216373 -66577
+-1;
+#X floatatom 280 181 5 0 0 0 - - -;
+#X text 164 228 random numbers, f 7;
+#X obj 281 234 bng 18 250 50 0 empty empty empty 0 -6 0 8 -216373 -66577
+-1;
+#X msg 250 156 restart;
+#X text 153 344 restart;
+#X obj 306 9 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 8 pd;
+#X obj 345 16 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 16 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 16 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 17 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 31 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 31 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 3 8 cnv 15 301 42 empty empty rands 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 8 graph;
+#X text 313 180 'n';
+#X obj 24 45 cnv 4 4 4 empty empty Random 0 28 2 18 -233017 -1 0;
+#X obj 93 45 cnv 4 4 4 empty empty series 0 28 2 18 -233017 -1 0;
+#X obj 212 231 else/display 3;
+#X text 64 89 [rands] generates a series of random integer numbers
+in a range defined by the 'n' size (from 0 to n-1). You can set how
+many times an integer is output \, the default is once \, hence it
+generates an unrepeated random series.;
+#X text 301 236 finished;
+#X text 206 409 - random output, f 38;
+#X text 206 429 - when the sequence finishes, f 38;
+#X text 132 459 1) float - sets size (default 1), f 65;
+#X text 206 344 - restarts a new series, f 53;
+#X text 206 272 - generates a randm output, f 53;
+#X text 141 358 n <float>;
+#X text 206 358 - clears the memory and sets a new 'n' size, f 53
+;
+#X text 206 378 - clears the memory and sets a new 'n' size;
+#X text 132 477 2) list;
+#X text 186 477 - sets number of occurances for each element (default
+1);
+#X text 135 300 eq <float>;
+#X text 206 300 - sets an equal number of occurances for all elements
+;
+#X text 129 314 inc <float>;
+#X text 206 314 - increase by 1 the occurance of an element, f 53
+;
+#X obj 212 201 ./rands 5, f 12;
+#X text 171 286 list;
+#X text 206 286 - sets number of occurances for each element, f 53
+;
+#X text 135 330 set <f \, f>;
+#X text 206 330 - sets element and occurance, f 53;
+#N canvas 455 203 612 430 example 0;
+#X obj 371 256 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 276 242 until;
+#X obj 276 196 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 371 310 else/regroup;
+#X floatatom 351 223 5 0 12 0 - - -;
+#X obj 276 266 else/rands 12;
+#X obj 371 337 else/display;
+#X obj 79 166 tabread notes;
+#X floatatom 79 142 5 0 0 0 - - -;
+#X obj 271 122 array set notes;
+#X obj 274 147 table notes 5;
+#X obj 79 222 mtof;
+#X obj 79 251 makenote 1 5;
+#X obj 208 152 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 79 283 else/pluck~ 0 3000 10000;
+#X msg 271 86 30 34 39 41 46;
+#X obj 79 330 else/out~;
+#X obj 79 71 else/tempo 60 50 -on;
+#X obj 79 119 else/rands 5 4 1 3 2 1;
+#X obj 79 189 else/display;
+#X text 296 195 generate a series of unrepeated numbers, f 20;
+#X text 90 35 generate a random weigthed sequence;
+#X connect 0 0 1 1;
+#X connect 0 0 3 0;
+#X connect 1 0 5 0;
+#X connect 2 0 1 0;
+#X connect 3 0 6 0;
+#X connect 4 0 5 1;
+#X connect 5 0 3 0;
+#X connect 5 1 0 0;
+#X connect 7 0 19 0;
+#X connect 8 0 7 0;
+#X connect 11 0 12 0;
+#X connect 12 0 14 0;
+#X connect 12 1 14 1;
+#X connect 14 0 16 0;
+#X connect 14 0 16 1;
+#X connect 15 0 9 0;
+#X connect 17 0 18 0;
+#X connect 18 0 8 0;
+#X connect 18 1 13 0;
+#X connect 19 0 11 0;
+#X restore 461 228 pd example;
+#X connect 13 0 49 0;
+#X connect 14 0 49 1;
+#X connect 17 0 49 0;
+#X connect 49 0 32 0;
+#X connect 49 1 16 0;

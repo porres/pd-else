@@ -60,5 +60,5 @@ void brown_tilde_setup(void){
     brown_class = class_new(gensym("brown~"), (t_newmethod)brown_new,
                             0, sizeof(t_brown), 0, A_GIMME, 0);
     class_addmethod(brown_class, (t_method)brown_dsp, gensym("dsp"), A_CANT, 0);
-    class_addlist(brown_class, brown_float);
+    class_addfloat(brown_class, brown_float);
 }
