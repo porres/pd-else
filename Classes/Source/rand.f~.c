@@ -152,8 +152,8 @@ static void *randf_new(t_symbol *s, int ac, t_atom *av){
         return NULL;
 }
 
-void randf_tilde_setup(void){
-    randf_class = class_new(gensym("randf~"), (t_newmethod)randf_new,
+void setup_rand0x2ef_tilde(void){
+    randf_class = class_new(gensym("rand.f~"), (t_newmethod)randf_new,
         (t_method)randf_free, sizeof(t_randf), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(randf_class, nullfn, gensym("signal"), 0);
     class_addmethod(randf_class, (t_method)randf_dsp, gensym("dsp"), A_CANT, 0);

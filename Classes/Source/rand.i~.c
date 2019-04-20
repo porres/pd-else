@@ -146,8 +146,8 @@ static void *randi_new(t_symbol *s, int ac, t_atom *av){
         return NULL;
 }
 
-void randi_tilde_setup(void){
-    randi_class = class_new(gensym("randi~"), (t_newmethod)randi_new,
+void setup_rand0x2ei_tilde(void){
+    randi_class = class_new(gensym("rand.i~"), (t_newmethod)randi_new,
         (t_method)randi_free, sizeof(t_randi), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(randi_class, nullfn, gensym("signal"), 0);
     class_addmethod(randi_class, (t_method)randi_dsp, gensym("dsp"), A_CANT, 0);

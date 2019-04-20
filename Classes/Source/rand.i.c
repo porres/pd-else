@@ -94,8 +94,8 @@ errstate:
     return NULL;
 }
 
-void randi_setup(void){
-  randi_class = class_new(gensym("randi"), (t_newmethod)randi_new, 0, sizeof(t_randi), 0, A_GIMME, 0);
+void setup_rand0x2ei(void){
+  randi_class = class_new(gensym("rand.i"), (t_newmethod)randi_new, 0, sizeof(t_randi), 0, A_GIMME, 0);
   class_addmethod(randi_class, (t_method)randi_seed, gensym("seed"), A_DEFFLOAT, 0);
   class_addbang(randi_class, (t_method)randi_bang);
 }

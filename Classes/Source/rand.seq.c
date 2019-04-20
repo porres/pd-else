@@ -1,25 +1,19 @@
 
 #include "m_pd.h"
-#include <stdlib.h> // random
-#include <string.h> // memset
+#include <stdlib.h> // random function
+#include <string.h>
 
-/*#ifdef NT
-#include <io.h>
-#else
-#include <unistd.h>
-#endif*/
-
-typedef struct _rands{
+typedef struct _rand_seq{
     t_object     x_obj;
     t_int        x_nvalues;         // number of values
     t_int       *x_probs;           // probability of a value
     t_int       *x_ovalues;         // number of outputs of each value
     t_outlet    *x_bang_outlet;
-}t_rands;
+}t_rand_seq;
 
-static t_class *rands_class;
+static t_class *rand_seq_class;
 
-static void rands_list(t_rands *x, t_symbol*s, int ac, t_atom *av){
+static void rand_seq_list(t_rand_seq *x, t_symbol*s, int ac, t_atom *av){
     t_symbol *dummy = s;
     dummy = NULL;
     if(ac){
@@ -30,7 +24,7 @@ static void rands_list(t_rands *x, t_symbol*s, int ac, t_atom *av){
     }
 }
 
-static void rands_n(t_rands *x, t_float f){
+static void rand_seq_n(t_rand_seq *x, t_float f){
     t_int n = (t_int)f;
     if(n < 1)
         n = 1;
@@ -38,12 +32,12 @@ static void rands_n(t_rands *x, t_float f){
         x->x_nvalues = n;
         x->x_probs = (t_int*) getbytes(x->x_nvalues*sizeof(t_int));
         if(!x->x_probs){
-            error("rands : could not allocate buffer");
+            error("rand_seq : could not allocate buffer");
             return;
         }
         x->x_ovalues = (t_int*) getbytes(x->x_nvalues*sizeof(t_int));
         if(!x->x_ovalues){
-            error("rands : could not allocate buffer");
+            error("rand_seq : could not allocate buffer");
             return;
         }
         memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(t_int));
@@ -53,7 +47,7 @@ static void rands_n(t_rands *x, t_float f){
     }
 }
 
-static void rands_bang(t_rands *x){
+static void rand_seq_bang(t_rand_seq *x){
     t_int ei, ci;
     t_int *candidates;
     t_int nbcandidates = 0;
@@ -61,13 +55,13 @@ static void rands_bang(t_rands *x){
     for(ei = 0; ei < x->x_nvalues; ei++) // get number of eligible values
         nevalues += (*(x->x_probs+ei) - *(x->x_ovalues+ei));
     if(nevalues == 0){
-        post("[rands]: probabilities are null");
+        post("[rand_seq]: probabilities are null");
         outlet_bang(x->x_bang_outlet);
         return;
     }
     candidates = (t_int*) getbytes(nevalues*sizeof(t_int));
     if(!candidates){
-        error("rands : could not allocate buffer for internal computation");
+        error("rand_seq : could not allocate buffer for internal computation");
         return;
     }
     for(ei = 0; ei < x->x_nvalues; ei++){ // select eligible values
@@ -90,39 +84,39 @@ static void rands_bang(t_rands *x){
         freebytes(candidates,  nevalues*sizeof(t_int));
 }
 
-static void rands_set(t_rands *x, t_float f, t_float v){
+static void rand_seq_set(t_rand_seq *x, t_float f, t_float v){
     int i = (int)f;
     if(i < 0 || i >= x->x_nvalues){
-        post("[rands]: %d not available", i);
+        post("[rand_seq]: %d not available", i);
         return;
     }
     *(x->x_probs+i) = v < 0 ? 0 : (int)v;
 }
 
-static void rands_inc(t_rands *x, t_float f){
+static void rand_seq_inc(t_rand_seq *x, t_float f){
     int v = (int)f;
     if(v < 0 || v >= x->x_nvalues){
-        post("[rands]: %d not available", v);
+        post("[rand_seq]: %d not available", v);
         return;
     }
     *(x->x_probs+v) += 1;
 }
 
-static void rands_restart(t_rands *x){
+static void rand_seq_restart(t_rand_seq *x){
     memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(t_int));
 }
 
-static void rands_eq(t_rands *x, t_float f){
+static void rand_seq_eq(t_rand_seq *x, t_float f){
     int v = f < 1 ? 1 : (int)f;
     for(t_int ei = 0; ei < x->x_nvalues; ei++)
         *(x->x_probs+ei) = v;
     memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(t_int));
 }
 
-static t_rands *rands_new(t_symbol *s, int ac, t_atom *av){
+static t_rand_seq *rand_seq_new(t_symbol *s, int ac, t_atom *av){
     t_symbol *dummy = s;
     dummy = NULL;
-    t_rands *x = (t_rands *)pd_new(rands_class);
+    t_rand_seq *x = (t_rand_seq *)pd_new(rand_seq_class);
     x->x_nvalues = 1;
     if(ac){
         x->x_nvalues = av[0].a_w.w_float;
@@ -132,15 +126,15 @@ static t_rands *rands_new(t_symbol *s, int ac, t_atom *av){
         if(ac > x->x_nvalues) // ignore extra args
             ac = x->x_nvalues;
     }
-    // common fields for new and restored randss
+    // common fields for new and restored rand_seqs
     x->x_probs = (t_int*) getbytes(x->x_nvalues*sizeof(t_int));
     if(!x->x_probs){
-        error("rands : could not allocate buffer");
+        error("rand_seq : could not allocate buffer");
         return NULL;
     }
     x->x_ovalues = (t_int*) getbytes(x->x_nvalues*sizeof(t_int));
     if(!x->x_ovalues){
-        error("rands : could not allocate buffer");
+        error("rand_seq : could not allocate buffer");
         return NULL;
     }
     memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(t_int));
@@ -159,21 +153,21 @@ static t_rands *rands_new(t_symbol *s, int ac, t_atom *av){
     return(x);
 }
 
-static void rands_free(t_rands *x){
+static void rand_seq_free(t_rand_seq *x){
     if(x->x_probs)
         freebytes(x->x_probs, x->x_nvalues*sizeof(int));
     if(x->x_ovalues)
         freebytes(x->x_ovalues, x->x_nvalues*sizeof(int));
 }
 
-void rands_setup(void){
-    rands_class = class_new(gensym("rands"), (t_newmethod)rands_new,
-            (t_method)rands_free, sizeof(t_rands), 0, A_GIMME, 0);
-    class_addbang(rands_class, rands_bang);
-    class_addlist(rands_class, rands_list);
-    class_addmethod(rands_class, (t_method)rands_eq, gensym("eq"), A_FLOAT, 0);
-    class_addmethod(rands_class, (t_method)rands_inc, gensym("inc"), A_FLOAT, 0);
-    class_addmethod(rands_class, (t_method)rands_n, gensym("n"), A_FLOAT, 0);
-    class_addmethod(rands_class, (t_method)rands_set, gensym("set"), A_FLOAT, A_FLOAT, 0);
-    class_addmethod(rands_class, (t_method)rands_restart, gensym("restart"), 0);
+void setup_rand0x2eseq(void){
+    rand_seq_class = class_new(gensym("rand.seq"), (t_newmethod)rand_seq_new,
+            (t_method)rand_seq_free, sizeof(t_rand_seq), 0, A_GIMME, 0);
+    class_addbang(rand_seq_class, rand_seq_bang);
+    class_addlist(rand_seq_class, rand_seq_list);
+    class_addmethod(rand_seq_class, (t_method)rand_seq_eq, gensym("eq"), A_FLOAT, 0);
+    class_addmethod(rand_seq_class, (t_method)rand_seq_inc, gensym("inc"), A_FLOAT, 0);
+    class_addmethod(rand_seq_class, (t_method)rand_seq_n, gensym("n"), A_FLOAT, 0);
+    class_addmethod(rand_seq_class, (t_method)rand_seq_set, gensym("set"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(rand_seq_class, (t_method)rand_seq_restart, gensym("restart"), 0);
 }

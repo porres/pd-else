@@ -78,8 +78,8 @@ errstate:
     return NULL;
 }
 
-void randf_setup(void){
-  randf_class = class_new(gensym("randf"), (t_newmethod)randf_new, 0, sizeof(t_randf), 0, A_GIMME, 0);
+void setup_rand0x2ef_setup(void){
+  randf_class = class_new(gensym("rand.f"), (t_newmethod)randf_new, 0, sizeof(t_randf), 0, A_GIMME, 0);
   class_addmethod(randf_class, (t_method)randf_seed, gensym("seed"), A_DEFFLOAT, 0);
   class_addbang(randf_class, (t_method)randf_bang);
 }
