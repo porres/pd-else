@@ -1,4 +1,4 @@
-#N canvas 411 65 574 481 10;
+#N canvas 648 114 565 476 10;
 #X obj 2 3 cnv 15 301 42 empty empty rand.f 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -38,8 +38,8 @@
 ;
 #X obj 4 258 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X msg 149 179 seed \$1;
-#X obj 149 160 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X msg 139 169 seed \$1;
+#X obj 139 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 145 288 seed <float>;
 #X text 237 287 - sets seed value;
@@ -51,30 +51,29 @@
 ;
 #X text 237 311 - lowest random value;
 #X text 236 332 - highest random value;
-#X obj 271 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 264 164 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 335 175 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 328 165 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 279 153 low;
-#X text 346 155 high;
+#X text 272 143 low;
+#X text 339 145 high;
 #X text 164 399 floats set random's range \, 2 floats sets minimum
 and maximum - no arguments loads default values (0 and 1). 1 float
 sets maximum value (and lowest value is set to 0).;
-#X obj 225 160 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 215 150 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 225 231 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
 #X text 201 268 bang;
 #X text 194 311 float;
 #X text 194 332 float;
 #X text 195 364 float;
 #X text 237 267 - generate random number;
-#X text 61 91 [rand.f] generates random values for a given range when
-triggered with a bang.;
-#X obj 225 206 else/rand.f 0 100;
-#X connect 20 0 43 0;
+#X obj 215 196 else/rand.f 0 100;
+#X obj 215 221 else/display;
+#X text 71 97 [rand.f] generates random float values for a given range
+when triggered with a bang.;
+#X connect 20 0 41 0;
 #X connect 21 0 20 0;
-#X connect 30 0 43 1;
-#X connect 31 0 43 2;
-#X connect 35 0 43 0;
-#X connect 43 0 36 0;
+#X connect 30 0 41 1;
+#X connect 31 0 41 2;
+#X connect 35 0 41 0;
+#X connect 41 0 42 0;

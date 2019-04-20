@@ -1,6 +1,6 @@
-#N canvas 545 57 563 505 10;
-#X obj 2 3 cnv 15 301 42 empty empty randi~ 20 20 2 37 -233017 -1 0
-;
+#N canvas 545 57 563 493 10;
+#X obj 2 3 cnv 15 301 42 empty empty rand.i~ 20 20 2 37 -233017 -1
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
@@ -34,28 +34,28 @@
 #X obj 183 280 mtof~;
 #X obj 183 250 else/display~;
 #X obj 122 311 else/resonant~ 0 3000;
-#X obj 183 225 else/randi~ 60 84;
 #X obj 122 98 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 122 157 else/display~;
 #X obj 122 188 else/impulse~;
 #X obj 122 66 loadbang;
-#X obj 122 132 else/randi~ 1 15;
+#X obj 122 132 else/rand.i~ 1 15;
+#X obj 183 225 else/rand.i~ 60 84;
 #X connect 2 0 4 1;
 #X connect 3 0 2 0;
 #X connect 4 0 0 0;
 #X connect 4 0 0 1;
-#X connect 5 0 3 0;
-#X connect 6 0 10 0;
-#X connect 7 0 8 0;
-#X connect 8 0 4 0;
+#X connect 5 0 9 0;
+#X connect 6 0 7 0;
+#X connect 7 0 4 0;
+#X connect 7 0 10 0;
 #X connect 8 0 5 0;
 #X connect 9 0 6 0;
-#X connect 10 0 7 0;
+#X connect 10 0 3 0;
 #X restore 462 242 pd example;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -124,7 +124,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -158,9 +158,6 @@
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
 #X text 110 416 1) list -;
-#X text 61 91 [random~] generates random values for a given range when
-triggered. A trigger happens at positive to negative or negative to
-positive transitions.;
 #X text 237 283 - trigger signal;
 #X obj 111 326 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
@@ -177,7 +174,6 @@ positive transitions.;
 #X text 274 153 low;
 #X text 369 155 high;
 #X obj 175 164 else/imp~ 5;
-#X obj 175 206 else/randi~ 0 1, f 31;
 #X obj 175 237 else/display~;
 #X text 175 415 floats set random's range \, 2 floats sets minimum
 and maximum - no arguments loads default values (0 and 1). 1 float
@@ -200,9 +196,13 @@ sets maximum value (and lowest value is set to 0).;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X connect 13 0 34 0;
+#X obj 175 206 else/rand.i~ 0 1, f 31;
+#X text 61 91 [rand.i~] generates random integer values for a given
+range when triggered. A trigger happens at positive to negative or
+negative to positive transitions.;
+#X connect 13 0 44 0;
 #X connect 14 0 13 0;
-#X connect 29 0 34 1;
-#X connect 30 0 34 2;
-#X connect 33 0 34 0;
-#X connect 34 0 35 0;
+#X connect 28 0 44 1;
+#X connect 29 0 44 2;
+#X connect 32 0 44 0;
+#X connect 44 0 33 0;

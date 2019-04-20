@@ -1,6 +1,6 @@
 #N canvas 553 44 560 483 10;
-#X obj 2 3 cnv 15 301 42 empty empty randf~ 20 20 2 37 -233017 -1 0
-;
+#X obj 2 3 cnv 15 301 42 empty empty rand.f~ 20 20 2 37 -233017 -1
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
@@ -33,27 +33,27 @@
 #X text 50 28 Generating random resonant frequencies on impulse;
 #X obj 126 178 else/imp~ 2;
 #X obj 187 248 else/display~;
-#X obj 187 216 else/randf~ 200 500;
 #X obj 126 88 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 126 140 else/display~;
 #X obj 126 66 loadbang;
 #X obj 126 282 else/resonant~ 0 3000;
-#X obj 126 115 else/randf~ 1 3;
-#X connect 2 0 4 0;
-#X connect 2 0 8 0;
-#X connect 3 0 8 1;
-#X connect 4 0 3 0;
-#X connect 5 0 9 0;
-#X connect 6 0 2 0;
-#X connect 7 0 5 0;
-#X connect 8 0 0 0;
-#X connect 8 0 0 1;
-#X connect 9 0 6 0;
+#X obj 126 115 else/rand.f~ 1 3;
+#X obj 187 216 else/rand.f~ 200 500;
+#X connect 2 0 7 0;
+#X connect 2 0 9 0;
+#X connect 3 0 7 1;
+#X connect 4 0 8 0;
+#X connect 5 0 2 0;
+#X connect 6 0 4 0;
+#X connect 7 0 0 0;
+#X connect 7 0 0 1;
+#X connect 8 0 5 0;
+#X connect 9 0 3 0;
 #X restore 460 228 pd example;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -122,7 +122,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -159,9 +159,6 @@
 #X text 175 414 floats set random's range \, 2 floats sets minimum
 and maximum - no arguments loads default values (-1 and 1). 1 float
 sets maximum value (and lowest value is set to 0).;
-#X text 71 90 [random~] generates random values for a given range when
-triggered. A trigger happens at positive to negative or negative to
-positive transitions.;
 #X text 237 271 - trigger signal;
 #X obj 111 325 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
@@ -179,7 +176,6 @@ positive transitions.;
 #X text 390 150 high;
 #X obj 202 227 else/display~;
 #X obj 202 165 else/imp~ 5;
-#X obj 202 196 else/randf~, f 30;
 #X obj 98 40 cnv 4 4 4 empty empty float 0 28 2 18 -233017 -1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -200,9 +196,13 @@ positive transitions.;
 0;
 #X text 193 287 bang;
 #X text 237 286 - control rate trigger;
-#X connect 13 0 36 0;
+#X obj 202 196 else/rand.f~, f 30;
+#X text 71 90 [rand.f~] generates random float values for a given range
+when triggered. A trigger happens at positive to negative or negative
+to positive transitions.;
+#X connect 13 0 46 0;
 #X connect 14 0 13 0;
-#X connect 30 0 36 1;
-#X connect 31 0 36 2;
-#X connect 35 0 36 0;
-#X connect 36 0 34 0;
+#X connect 29 0 46 1;
+#X connect 30 0 46 2;
+#X connect 34 0 46 0;
+#X connect 46 0 33 0;
