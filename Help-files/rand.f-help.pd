@@ -1,5 +1,5 @@
 #N canvas 411 65 574 481 10;
-#X obj 2 3 cnv 15 301 42 empty empty randf 20 20 2 37 -233017 -1 0
+#X obj 2 3 cnv 15 301 42 empty empty rand.f 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -45,9 +45,6 @@
 #X text 237 287 - sets seed value;
 #X text 237 365 - random values;
 #X text 99 400 1) list -;
-#X text 61 91 [random~] generates random values for a given range when
-triggered. A trigger happens at positive to negative or negative to
-positive transitions.;
 #X obj 111 310 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 111 331 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
@@ -72,10 +69,12 @@ sets maximum value (and lowest value is set to 0).;
 #X text 194 332 float;
 #X text 195 364 float;
 #X text 237 267 - generate random number;
-#X obj 225 206 else/randf 0 100;
+#X text 61 91 [rand.f] generates random values for a given range when
+triggered with a bang.;
+#X obj 225 206 else/rand.f 0 100;
 #X connect 20 0 43 0;
 #X connect 21 0 20 0;
-#X connect 31 0 43 1;
-#X connect 32 0 43 2;
-#X connect 36 0 43 0;
-#X connect 43 0 37 0;
+#X connect 30 0 43 1;
+#X connect 31 0 43 2;
+#X connect 35 0 43 0;
+#X connect 43 0 36 0;
