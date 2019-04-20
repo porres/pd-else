@@ -1,7 +1,7 @@
-#N struct 1016-f float x;
-#N struct 1351-cell float x float y float cellsize float color;
-#N struct 1358-point float x0 float y0 float s;
-#N struct 1358-grid float x0 float y0 float s;
+#N struct 1007-f float x;
+#N struct 1384-cell float x float y float cellsize float color;
+#N struct 1391-point float x0 float y0 float s;
+#N struct 1391-grid float x0 float y0 float s;
 #N canvas 766 23 528 848 10;
 #X text 46 87 Assorted:;
 #X obj 46 111 else/table~;
@@ -106,10 +106,6 @@
 #X obj 44 3322 else/pi;
 #X obj 44 3348 else/e;
 #X text 44 3395 Math (random):;
-#X obj 44 3424 else/randf;
-#X obj 44 3450 else/randf~;
-#X obj 44 3476 else/randi;
-#X obj 44 3502 else/randi~;
 #X obj 44 3558 else/drunkard;
 #X obj 44 3584 else/drunkard~;
 #X obj 44 3653 else/loop;
@@ -427,4 +423,8 @@
 #X obj 44 1053 else/pick;
 #X obj 44 4078 else/phaser~;
 #X obj 44 4801 else/allpass.filt~;
-#X obj 44 3528 else/rands;
+#X obj 44 3424 else/rand.f;
+#X obj 44 3450 else/rand.f~;
+#X obj 44 3476 else/rand.i;
+#X obj 44 3502 else/rand.i~;
+#X obj 44 3528 else/rand.seq;
