@@ -1,6 +1,6 @@
 
 #include "m_pd.h"
-#include <stdlib.h> // random function
+#include <stdlib.h>
 #include <string.h>
 
 typedef struct _rand_seq{

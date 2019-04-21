@@ -1,4 +1,4 @@
-#N canvas 545 57 563 493 10;
+#N canvas 545 57 566 505 10;
 #X obj 2 3 cnv 15 301 42 empty empty rand.i~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -8,26 +8,19 @@
 #X obj 155 40 cnv 4 4 4 empty empty number 0 28 2 18 -233017 -1 0;
 #X obj 223 39 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
-#X obj 3 464 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 478 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 4 370 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 384 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 407 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 421 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 111 380 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 111 394 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 181 381 signal;
-#X text 181 284 signal;
-#X obj 113 284 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 4 274 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
+#X text 181 395 signal;
 #X msg 99 179 seed \$1;
 #X obj 99 160 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 145 304 seed <float>;
-#X text 237 303 - sets seed value;
-#X text 237 381 - random values;
+#X text 237 395 - random values;
 #N canvas 764 106 378 447 example 0;
 #X obj 122 354 else/out~;
 #X text 41 23 Generating random resonant frequencies on impulse;
@@ -157,16 +150,7 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
-#X text 110 416 1) list -;
-#X text 237 283 - trigger signal;
-#X obj 111 326 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X obj 111 347 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
-;
-#X text 144 327 float/signal;
-#X text 144 348 float/signal;
-#X text 237 327 - lowest random value;
-#X text 236 348 - highest random value;
+#X text 110 430 1) list -;
 #X obj 266 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 358 175 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -175,7 +159,7 @@
 #X text 369 155 high;
 #X obj 175 164 else/imp~ 5;
 #X obj 175 237 else/display~;
-#X text 175 415 floats set random's range \, 2 floats sets minimum
+#X text 175 429 floats set random's range \, 2 floats sets minimum
 and maximum - no arguments loads default values (0 and 1). 1 float
 sets maximum value (and lowest value is set to 0).;
 #X obj 93 40 cnv 4 4 4 empty empty integer 0 28 2 18 -233017 -1 0;
@@ -200,9 +184,27 @@ sets maximum value (and lowest value is set to 0).;
 #X text 61 91 [rand.i~] generates random integer values for a given
 range when triggered. A trigger happens at positive to negative or
 negative to positive transitions.;
-#X connect 13 0 44 0;
-#X connect 14 0 13 0;
-#X connect 28 0 44 1;
-#X connect 29 0 44 2;
-#X connect 32 0 44 0;
-#X connect 44 0 33 0;
+#X text 181 283 signal;
+#X obj 113 283 cnv 17 3 47 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 273 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X text 145 315 seed <float>;
+#X text 237 314 - sets seed value;
+#X text 237 282 - trigger signal;
+#X obj 111 336 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 111 357 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 144 337 float/signal;
+#X text 144 358 float/signal;
+#X text 237 337 - lowest random value;
+#X text 236 358 - highest random value;
+#X text 193 298 bang;
+#X text 237 297 - control rate trigger;
+#X connect 10 0 32 0;
+#X connect 11 0 10 0;
+#X connect 16 0 32 1;
+#X connect 17 0 32 2;
+#X connect 20 0 32 0;
+#X connect 32 0 21 0;
