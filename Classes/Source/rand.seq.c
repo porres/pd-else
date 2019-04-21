@@ -72,7 +72,7 @@ static void rand_seq_bang(t_rand_seq *x){
             }
         }
     }
-    int chosen = random() % nbcandidates;
+    int chosen = rand() % nbcandidates;
     int v = *(candidates+chosen);
     outlet_float(x->x_obj.ob_outlet, v);
     *(x->x_ovalues+v) = *(x->x_ovalues+v) + 1;
