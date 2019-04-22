@@ -98,14 +98,14 @@ loop;
 #X text 136 522 -offset <float>;
 #X msg 389 179 -3 3;
 #X msg 344 179 20 15;
-#N canvas 911 248 448 379 array_sweep 0;
-#X text 93 35 [loop] is very useful for sweeping through arrays.;
-#X obj 45 74 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#N canvas 766 265 477 314 array_sweep 1;
+#X text 96 19 [loop] is very useful for sweeping through arrays.;
+#X obj 54 47 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 186 131 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
--66577 0;
+#X obj 213 97 cnv 15 198 138 empty empty empty 20 12 0 14 -233017 -66577
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array \$0-array 100 float 1;
+#X array array_\$0 100 float 1;
 #A 0 -0.857145 -0.700001 -0.657143 -0.6 -0.585727 -0.585727 -0.585727
 -0.580965 -0.576203 -0.571441 -0.547631 -0.523821 -0.500011 -0.457153
 -0.300006 -0.171432 -0.0714296 5.96046e-07 0.0285727 0.0571448 0.0857168
@@ -121,26 +121,24 @@ loop;
 0.585715 0.642858 0.67143 0.685715 0.700001 0.728573 0.800002 0.971432
 0.985717;
 #X coords 0 1 99 -1 200 140 1 0 0;
-#X restore 185 130 graph;
-#X obj 45 135 expr size("$s1");
-#X obj 45 111 symbol \$0-array;
-#X obj 45 188 else/loop;
-#X text 389 257 0;
-#X text 388 126 1;
-#X obj 45 242 tabread \$0-array;
-#X obj 45 270 else/display;
-#X obj 45 214 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X restore 212 96 graph;
+#X obj 54 130 else/loop;
+#X text 416 223 0;
+#X text 415 92 1;
+#X obj 54 212 else/display;
+#X obj 54 156 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 99 256;
-#X floatatom 45 162 5 0 0 0 - - -, f 5;
-#X obj 45 303 print array_values;
-#X connect 1 0 5 0;
-#X connect 4 0 12 0;
-#X connect 5 0 4 0;
-#X connect 6 0 11 0;
-#X connect 9 0 10 0;
-#X connect 10 0 13 0;
+#X floatatom 54 104 5 0 0 0 - - -;
+#X obj 54 245 print array_values;
+#X obj 54 77 expr size("array_\$0");
+#X obj 54 184 tabread array_\$0;
+#X connect 1 0 11 0;
+#X connect 4 0 8 0;
+#X connect 7 0 10 0;
+#X connect 8 0 12 0;
+#X connect 9 0 4 0;
 #X connect 11 0 9 0;
-#X connect 12 0 6 0;
+#X connect 12 0 7 0;
 #X restore 456 254 pd array_sweep;
 #X text 21 210 one value sets number of iterations, f 13;
 #X text 219 211 two values set start and end, f 14;
@@ -214,7 +212,7 @@ is given \, or start value if there are more arguments (default 1)
 -1;
 #X obj 134 213 print counter;
 #X obj 110 182 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 10 256;
+-228856 -1 -1 0 256;
 #X msg 170 121 step \$1;
 #X msg 118 108 8 0 2;
 #X text 20 19 The 3rd argument or element in a list defines a step
@@ -224,7 +222,7 @@ with the "step" message., f 50;
 -1;
 #X obj 478 190 print counter;
 #X obj 447 157 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 12 256;
+-228856 -1 -1 0 256;
 #X obj 447 131 else/loop 5 -step 3;
 #X obj 170 98 nbx 3 14 0 10 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
