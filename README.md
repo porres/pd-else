@@ -74,7 +74,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (324 objects):
+##Current Object list (325 objects):
 
 **ASSORTED: [3]**
 - [table~]
@@ -85,14 +85,13 @@ Cross compiling is also possible with something like this
 - [hann~]
 - [bin.shift~]
 
-**PATCH/SUBPATCH MANAGEMENT: [7]**
+**PATCH/SUBPATCH MANAGEMENT: [6]**
 - [args]
 - [blocksize~]
 - [click]
 - [properties]
 - [window]
 - [loadbanger] / [lb]
-- [initmess]
 
 **LIST MANAGEMENT: [7]**
 - [break] 
@@ -103,7 +102,7 @@ Cross compiling is also possible with something like this
 - [merge]
 - [unmerge]
 
-**MESSAGE MANAGEMENT: [17]**
+**MESSAGE MANAGEMENT: [19]**
 - [makesymbol]
 - [separate] 
 - [fromany] 
@@ -111,6 +110,8 @@ Cross compiling is also possible with something like this
 - [any2symbol]
 - [changed]
 - [hot]
+- [initmess]
+- [message]
 - [setmess]
 - [pack2]
 - [pick]

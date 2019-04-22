@@ -1,8 +1,8 @@
 #N struct 1007-f float x;
-#N struct 1352-cell float x float y float cellsize float color;
-#N struct 1359-point float x0 float y0 float s;
-#N struct 1359-grid float x0 float y0 float s;
-#N canvas 766 23 528 848 10;
+#N struct 1381-cell float x float y float cellsize float color;
+#N struct 1388-point float x0 float y0 float s;
+#N struct 1388-grid float x0 float y0 float s;
+#N canvas 632 23 528 848 10;
 #X text 46 87 Assorted:;
 #X obj 46 111 else/table~;
 #X obj 46 137 else/nbang;
@@ -16,14 +16,14 @@
 #X obj 46 448 else/window;
 #X obj 46 474 else/loadbanger;
 #X obj 159 474 else/lb;
-#X obj 46 500 else/initmess;
-#X obj 44 586 else/break;
-#X obj 44 873 else/fromany;
-#X obj 44 899 else/toany;
-#X obj 44 925 else/any2symbol;
-#X obj 44 951 else/changed;
-#X obj 44 611 else/order;
-#X obj 44 977 else/hot;
+#X obj 44 954 else/initmess;
+#X obj 44 545 else/break;
+#X obj 44 827 else/fromany;
+#X obj 44 853 else/toany;
+#X obj 44 879 else/any2symbol;
+#X obj 44 905 else/changed;
+#X obj 44 570 else/order;
+#X obj 44 931 else/hot;
 #X obj 44 1003 else/setmess;
 #X obj 44 1029 else/pack2;
 #X obj 44 1104 else/routeall;
@@ -285,7 +285,7 @@
 #X obj 49 9301 else/mov.rms~;
 #X obj 49 9327 else/vu~;
 #X obj 49 9353 else/zerocross~;
-#N canvas 261 23 1013 626 GUI 1;
+#N canvas 261 23 1013 626 GUI 0;
 #X obj 196 -411 else/mtx.ctl;
 #X text 74 -395 [else/mtx.ctl] =>;
 #X obj 50 -289 else/biplot;
@@ -327,7 +327,7 @@
 #X text 386 529 [else/spectrograph~];
 #X restore 55 9442 pd GUI;
 #X text 46 320 Patch/subpatch management:;
-#X text 44 790 Message management:;
+#X text 44 749 Message management:;
 #X text 41 1289 File management:;
 #X text 50 9413 GUI:;
 #X text 12 9476 =============================================================================
@@ -370,7 +370,7 @@
 , f 77;
 #X text 21 1265 =============================================================================
 , f 77;
-#X text 20 766 =============================================================================
+#X text 20 725 =============================================================================
 , f 77;
 #X text 20 296 =============================================================================
 , f 77;
@@ -383,10 +383,10 @@
 , f 77;
 #X text 46 9507 Extra:;
 #X obj 44 5441 else/sample~;
-#X obj 44 848 else/separate;
+#X obj 44 802 else/separate;
 #X obj 44 5589 else/rec~;
 #X obj 43 3776 else/conv~;
-#X obj 44 823 else/makesymbol;
+#X obj 44 777 else/makesymbol;
 #X obj 43 7175 else/xmod2~;
 #X text 41 4491 Audio Processing (reverberation):;
 #X obj 44 4700 else/fdn.rev~;
@@ -411,17 +411,17 @@
 #X obj 44 1156 else/selector;
 #X obj 44 1969 else/avg;
 #X obj 44 1995 else/mov.avg;
-#X obj 44 735 else/unmerge;
-#X obj 44 709 else/merge;
+#X obj 44 694 else/unmerge;
+#X obj 44 668 else/merge;
 #X obj 43 3801 else/chorus~;
 #X obj 44 1180 else/trigger2;
 #X obj 156 1180 else/t2;
-#X text 20 529 =============================================================================
+#X text 20 498 =============================================================================
 , f 77;
-#X text 44 561 List management:;
-#X obj 44 636 else/regroup;
-#X obj 44 661 else/scramble;
-#X obj 44 686 else/sort;
+#X text 44 520 List management:;
+#X obj 44 595 else/regroup;
+#X obj 44 620 else/scramble;
+#X obj 44 645 else/sort;
 #X obj 44 1053 else/pick;
 #X obj 44 4078 else/phaser~;
 #X obj 44 4801 else/allpass.filt~;
@@ -430,3 +430,4 @@
 #X obj 44 3476 else/rand.i;
 #X obj 44 3502 else/rand.i~;
 #X obj 44 3528 else/rand.seq;
+#X obj 44 978 else/message;
