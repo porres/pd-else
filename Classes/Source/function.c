@@ -11,7 +11,6 @@
 
 #include <m_pd.h>
 #include <g_canvas.h>
-// #include <stdio.h>
 #include <string.h>
 #include <math.h>
 
@@ -134,6 +133,7 @@ static void function_generate(t_function *x, int ac, t_atom* av){
             if (*val < x->x_min)
                 x->x_min = *val;
         }
+        *val++;
     }
     if(x->x_max == x->x_min){
         if(x->x_max == 0)
