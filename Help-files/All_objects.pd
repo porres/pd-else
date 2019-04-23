@@ -1,8 +1,8 @@
 #N struct 1007-f float x;
-#N struct 1381-cell float x float y float cellsize float color;
-#N struct 1388-point float x0 float y0 float s;
-#N struct 1388-grid float x0 float y0 float s;
-#N canvas 632 23 528 848 10;
+#N struct 1352-cell float x float y float cellsize float color;
+#N struct 1359-point float x0 float y0 float s;
+#N struct 1359-grid float x0 float y0 float s;
+#N canvas 531 76 574 422 10;
 #X text 46 87 Assorted:;
 #X obj 46 111 else/table~;
 #X obj 46 137 else/nbang;

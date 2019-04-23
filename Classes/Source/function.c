@@ -203,7 +203,7 @@ static int function_x_next_doodle(t_function *x, struct _glist *glist, int xpos,
         dx2 *= dx2;
         dy2 *= dy2;
         tval = sqrt(dx2+dy2);
-        if (tval <= minval){
+        if(tval <= minval){
             minval = tval;
             insertpos = i;
         }
@@ -422,7 +422,7 @@ static void function_motion(t_function *x, t_floatarg dx, t_floatarg dy){
         x->x_pointer_y += dy;
     }
     function_followpointer(x,x->glist);
-/* "if resizing" (MAKE THIS HAPPEN IN EDIT MODE AND WHEN CLICKING THE BOTTOM RIGHT CORNER) !!!!!!!!
+/* "resizing" (MAKE THIS HAPPEN IN EDIT MODE AND WHEN CLICKING THE BOTTOM RIGHT CORNER) !!!!!!!!
     else{
         x->x_width += dx;
         x->x_height += dy;
