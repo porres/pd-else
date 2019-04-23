@@ -95,27 +95,22 @@ static void function_duration(t_function* x, t_float dur){
 }
 
 static void function_generate(t_function *x, int ac, t_atom* av){
-    t_float* dur;
-    t_float* val;
     t_float tdur = 0;
-    if(!ac)
-        return;
     x->x_duration[0] = 0;
     x->x_last_state = ac >> 1;
     function_resize(x, ac >> 1);
-    dur = x->x_duration;
-    val = x->x_points;
-    if(ac){ // get the first value
-        *val = atom_getfloat(av++);
-        *dur = 0.0;
-        x->x_max = *val;
-        x->x_min = *val;
-    }
-    dur++;
+    t_float *dur = x->x_duration;
+    t_float *val = x->x_points;
+// get 1st value
+    *val = atom_getfloat(av++);
+    x->x_max = x->x_min = *val;
+    post("1st *val = %f", *val);
     val++;
+    *dur = 0.0;
+    dur++;
     ac--;
 // get the following
-    for(; ac > 0; ac--){ // change this to while
+    while(ac > 0){
         tdur += atom_getfloat(av++);
         *dur++ = tdur;
         ac--;
@@ -133,15 +128,16 @@ static void function_generate(t_function *x, int ac, t_atom* av){
             if (*val < x->x_min)
                 x->x_min = *val;
         }
+        ac--;
         *val++;
     }
     if(x->x_max == x->x_min){
         if(x->x_max == 0)
             x->x_max = 1;
         else{
-            if(x->x_max >0){
+            if(x->x_max > 0){
                 x->x_min = 0;
-                if (x->x_max < 1)
+                if(x->x_max < 1)
                     x->x_max = 1;
             }
             else
