@@ -104,32 +104,30 @@ static void function_generate(t_function *x, int ac, t_atom* av){
 // get 1st value
     *val = atom_getfloat(av++);
     x->x_max = x->x_min = *val;
-    post("1st *val = %f", *val);
     val++;
     *dur = 0.0;
     dur++;
     ac--;
-// get the following
+// get other values
     while(ac > 0){
         tdur += atom_getfloat(av++);
         *dur++ = tdur;
         ac--;
         if(ac > 0){
-            *val = atom_getfloat(av++);
-            if (*val > x->x_max)
+            *val++ = atom_getfloat(av++);
+            if(*val > x->x_max)
                 x->x_max = *val;
-            if (*val < x->x_min)
+            if(*val < x->x_min)
                 x->x_min = *val;
         }
         else{
-            *val = 0;
-            if (*val > x->x_max)
+            *val++ = 0;
+            if(*val > x->x_max)
                 x->x_max = *val;
-            if (*val < x->x_min)
+            if(*val < x->x_min)
                 x->x_min = *val;
         }
         ac--;
-        *val++;
     }
     if(x->x_max == x->x_min){
         if(x->x_max == 0)
