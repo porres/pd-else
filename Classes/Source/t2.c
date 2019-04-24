@@ -147,23 +147,27 @@ static void *t2_new(t_symbol *s, int argc, t_atom *argv){
     }
     x->x_n = argc;
     x->x_vec = (t_t2out *)getbytes(argc * sizeof(*x->x_vec));
-    for (i = 0, ap = argv, u = x->x_vec; i < argc; u++, ap++, i++){
+    for(i = 0, ap = argv, u = x->x_vec; i < argc; u++, ap++, i++){
         t_atomtype thistype = ap->a_type;
         char c;
         if (thistype == TR_SYMBOL){
-            if (strlen(ap->a_w.w_symbol->s_name) == 1)
-                c = ap->a_w.w_symbol->s_name[0];
-            else if (strcmp(ap->a_w.w_symbol->s_name, "anything") == 0)
+            if (strcmp(ap->a_w.w_symbol->s_name, "anything") == 0
+                     || strcmp(ap->a_w.w_symbol->s_name, "a") == 0)
                 c = 'a';
-            else if (strcmp(ap->a_w.w_symbol->s_name, "bang") == 0)
+            else if (strcmp(ap->a_w.w_symbol->s_name, "bang") == 0
+                     || strcmp(ap->a_w.w_symbol->s_name, "b") == 0)
                 c = 'b';
-            else if (strcmp(ap->a_w.w_symbol->s_name, "float") == 0)
+            else if (strcmp(ap->a_w.w_symbol->s_name, "float") == 0
+                     || strcmp(ap->a_w.w_symbol->s_name, "f") == 0)
                 c = 'f';
-            else if (strcmp(ap->a_w.w_symbol->s_name, "list") == 0)
+            else if (strcmp(ap->a_w.w_symbol->s_name, "list") == 0
+                     || strcmp(ap->a_w.w_symbol->s_name, "l") == 0)
                 c = 'l';
-            else if (strcmp(ap->a_w.w_symbol->s_name, "pointer") == 0)
+            else if (strcmp(ap->a_w.w_symbol->s_name, "pointer") == 0
+                     || strcmp(ap->a_w.w_symbol->s_name, "p") == 0)
                 c = 'p';
-            else if (strcmp(ap->a_w.w_symbol->s_name, "symbol") == 0)
+            else if (strcmp(ap->a_w.w_symbol->s_name, "symbol") == 0
+                     || strcmp(ap->a_w.w_symbol->s_name, "s") == 0)
                 c = 's';
             else c = 'S';
         }
