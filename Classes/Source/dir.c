@@ -14,6 +14,7 @@ typedef struct dir{
     DIR      *x_dir;
     char      x_directory[MAXPDSTRING];
     t_symbol *x_getdir;
+    t_symbol *x_dir_name;
     t_int     x_nfiles;
     t_int     x_ignored;
     t_int     x_seek;
@@ -24,7 +25,7 @@ typedef struct dir{
 static void dir_seek(t_dir *x, t_float f){
     t_int seek = (int)f;
     if(seek <= 0){
-        pd_error(x, "dir: seek value cannot be <= 0");
+        pd_error(x, "[dir]: seek value cannot be <= 0");
         return;
     }
     seek = ((seek - 1) % x->x_nfiles) + 1;
@@ -46,7 +47,7 @@ static void dir_next(t_dir *x){
 
 static void dir_open(t_dir *x, t_symbol *dirname){
     if(!strcmp(dirname->s_name, "")){
-        pd_error(x, "dir: no symbol given to 'open'");
+        pd_error(x, "[dir]: no symbol given to 'open'");
         return;
     }
     char tempdir[MAXPDSTRING];
@@ -65,19 +66,16 @@ static void dir_open(t_dir *x, t_symbol *dirname){
         strncpy(x->x_directory, dirname->s_name, MAXPDSTRING);
     else // relative to current dir
         sprintf(x->x_directory, "%s/%s", x->x_directory, dirname->s_name );
-    
 // temp
     DIR *temp = opendir(x->x_directory);
     if(!temp){
-        pd_error(x, "dir: cannot open '%s'", dirname->s_name);
         strcpy(x->x_directory, tempdir); // restore original directory
-        // closedir()
-        closedir(temp);
+        pd_error(x, "[dir]: cannot open '%s'", dirname->s_name);
+        temp = NULL;
         return;
     }
     else
         closedir(temp);
-// open
     x->x_dir = opendir(x->x_directory);
     rewinddir(x->x_dir);
     x->x_nfiles = x->x_ignored = 0;
@@ -88,8 +86,6 @@ static void dir_open(t_dir *x, t_symbol *dirname){
         else
             x->x_ignored++;
     }
-// close
-    rewinddir(x->x_dir); // not needed!
     closedir(x->x_dir);
 }
 
@@ -136,6 +132,7 @@ static void *dir_new(t_floatarg f){
         }
     }
     x->x_getdir = canvas_getdir(canvas);
+    x->x_dir_name = NULL;
     x->x_nfiles = x->x_ignored = x->x_seek = 0;
     strncpy(x->x_directory, x->x_getdir->s_name, MAXPDSTRING);
     x->x_dir = opendir(x->x_getdir->s_name);
