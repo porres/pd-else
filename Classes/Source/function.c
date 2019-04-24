@@ -22,7 +22,7 @@ typedef struct _function{
     t_object    x_obj;
     t_glist*    glist;
     int         x_state;
-    int         x_last_state;
+    int         x_n_states;
     t_float*    x_points;
     t_float*    x_duration;
     t_float     x_total_duration;
@@ -44,33 +44,46 @@ typedef struct _function{
 // REMOVE THIS!!!
 static void function_print(t_function* x){
     post("---===### function settings ###===---");
-    post("x_state:          %d",   x->x_state);
-    post("x_x_last_state:     %d",   x->x_last_state);
+    post("x_x_n_states:     %d",   x->x_n_states);
     post("total duration:   %.2f", x->x_total_duration);
     post("min:              %.2f", x->x_min);
     post("max:              %.2f", x->x_max);
+    
+    post("args:");
+    t_int i = 0;
+    post("%d = %f", i, x->x_points[x->x_state = 0]);
+    i++;
+    t_int ac = x->x_n_states * 2 + 1;
+    while(i < ac){
+        t_float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
+        post("%d = %f", i, dur);
+        i++;
+        x->x_state++;
+        post("%d = %f", i, x->x_points[x->x_state]);
+        i++;
+    }
     post("---===### function settings ###===---");
 }
 
 ////// BANG  ///////////////////////////////////////////////////////////////////////////////////
 static void function_bang(t_function *x){
-    t_int n = x->x_last_state + 1;
-    t_int ac = n * 2 - 1;
-    t_atom a[ac];
-    t_int j = 0;
-    SETFLOAT(a+j, x->x_points[0]);
-    j++;
-    x->x_state = 1;
-    for(t_int i = 0; i < n - 1; i++){
-        SETFLOAT(a+j, x->x_duration[x->x_state] - x->x_duration[x->x_state-1]);
-        j++;
-        SETFLOAT(a+j, x->x_points[x->x_state]);
-        j++;
+    t_int ac = x->x_n_states * 2 + 1;
+    t_atom at[ac];
+// get 1st
+    SETFLOAT(at, x->x_points[x->x_state = 0]);
+    t_int i = 1;
+// get rest
+    while(i < ac){
+        t_float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
+        SETFLOAT(at+i, dur); // duration
+        i++;
         x->x_state++;
+        SETFLOAT(at+i, x->x_points[x->x_state]); // point
+        i++;
     }
-    outlet_list(x->x_obj.ob_outlet, &s_list, ac, a);
+    outlet_list(x->x_obj.ob_outlet, &s_list, ac, at);
     if(x->x_send_sym != &s_ && x->x_send_sym->s_thing)
-        pd_list(x->x_send_sym->s_thing, &s_list, ac, a);
+        pd_list(x->x_send_sym->s_thing, &s_list, ac, at);
 }
 
 // GUI SHIT /////////////////////////////////////////////////////////////////////////////////////
@@ -89,15 +102,15 @@ static void function_duration(t_function* x, t_float dur){
         return;
     }
     x->x_total_duration = dur;
-    float f = dur/x->x_duration[x->x_last_state];
-    for(t_int i = 1; i <= x->x_last_state; i++)
+    float f = dur/x->x_duration[x->x_n_states];
+    for(t_int i = 1; i <= x->x_n_states; i++)
         x->x_duration[i] *= f;
 }
 
 static void function_generate(t_function *x, int ac, t_atom* av){
     t_float tdur = 0;
     x->x_duration[0] = 0;
-    x->x_last_state = ac >> 1;
+    x->x_n_states = ac >> 1;
     function_resize(x, ac >> 1);
     t_float *dur = x->x_duration;
     t_float *val = x->x_points;
@@ -193,11 +206,11 @@ static int function_x_next_doodle(t_function *x, struct _glist *glist, int xpos,
     float yBase =  x->x_min;
     if(xpos >text_xpix(&x->x_obj, glist) + x->x_width)
         xpos = text_xpix(&x->x_obj, glist) + x->x_width;
-    xscale = x->x_width/x->x_duration[x->x_last_state];
+    xscale = x->x_width/x->x_duration[x->x_n_states];
     yscale = x->x_height;
     dxpos = text_xpix(&x->x_obj, glist); // + BORDERWIDTH; // why not ???
     dypos = text_ypix(&x->x_obj, glist) + BORDERWIDTH;
-    for(i = 0; i <= x->x_last_state; i++){
+    for(i = 0; i <= x->x_n_states; i++){
         float dx2 = (dxpos + (x->x_duration[i] * xscale)) - xpos;
         float dy2 = (dypos + yscale - ((x->x_points[i] - yBase) / ySize * yscale)) - ypos;
         dx2 *= dx2;
@@ -213,18 +226,18 @@ static int function_x_next_doodle(t_function *x, struct _glist *glist, int xpos,
             insertpos++;
         while (((dxpos + (x->x_duration[insertpos-1] * xscale)) - xpos) >0)
             insertpos--;
-        if(x->x_last_state + 1 >= x->x_states)
+        if(x->x_n_states + 1 >= x->x_states)
             function_resize(x, x->x_states + 1);
-        for(i = x->x_last_state; i >= insertpos; i--){
+        for(i = x->x_n_states; i >= insertpos; i--){
             x->x_duration[i + 1] = x->x_duration[i];
             x->x_points[i + 1] = x->x_points[i];
         }
-        x->x_duration[insertpos] = (float)(xpos-dxpos)/x->x_width*x->x_duration[x->x_last_state++];
+        x->x_duration[insertpos] = (float)(xpos-dxpos)/x->x_width*x->x_duration[x->x_n_states++];
         x->x_pointer_x = xpos;
         x->x_pointer_y = ypos;
     }
     else{
-        x->x_pointer_x = text_xpix(&x->x_obj,glist) + x->x_duration[insertpos]*x->x_width/x->x_duration[x->x_last_state];
+        x->x_pointer_x = text_xpix(&x->x_obj,glist) + x->x_duration[insertpos]*x->x_width/x->x_duration[x->x_n_states];
         x->x_pointer_y = ypos;
     }
     x->x_grabbed = insertpos;
@@ -238,12 +251,12 @@ static void function_create_doodles(t_function *x, t_glist *glist){
     float ySize = x->x_max - x->x_min;
     float yBase =  x->x_min;
     float yvalue;
-    xscale = x->x_width/x->x_duration[x->x_last_state];
+    xscale = x->x_width/x->x_duration[x->x_n_states];
     yscale = x->x_height;
     xpos = text_xpix(&x->x_obj, glist);
     ypos = (int)(text_ypix(&x->x_obj, glist) + x->x_height);
     int i;
-    for(i = 0; i <= x->x_last_state; i++){
+    for(i = 0; i <= x->x_n_states; i++){
         yvalue = (x->x_points[i] - yBase) / ySize * yscale;
         sprintf(guistr,".x%lx.c create oval %d %d %d %d -tags %lxD%d",
                 (unsigned long)glist_getcanvas(glist),
@@ -281,10 +294,10 @@ static void function_create(t_function *x, t_glist *glist){
              xpos + x->x_width + BORDERWIDTH,
              ypos + x->x_height + BORDERWIDTH, // + 2 here
              x, BACKGROUNDCOLOR, BORDER_LINE_SIZE);
-    xscale = x->x_width / x->x_duration[x->x_last_state];
+    xscale = x->x_width / x->x_duration[x->x_n_states];
     yscale = x->x_height;
     sys_vgui(".x%lx.c create line", glist_getcanvas(glist));
-    for(t_int i = 0; i <= x->x_last_state; i++){
+    for(t_int i = 0; i <= x->x_n_states; i++){
         sys_vgui(" %d %d ", (int)(xpos + x->x_duration[i]*xscale),
                  (int)(ypos + x->x_height - (x->x_points[i]-yBase) / ySize*yscale));
     }
@@ -303,10 +316,10 @@ static void function_update(t_function *x, t_glist *glist){
              xpos - BORDERWIDTH, ypos - BORDERWIDTH,
              xpos + x->x_width + BORDERWIDTH,
              ypos + x->x_height + BORDERWIDTH); // + 2 here
-    xscale = x->x_width / x->x_duration[x->x_last_state];
+    xscale = x->x_width / x->x_duration[x->x_n_states];
     yscale = x->x_height;
     sys_vgui(".x%lx.c coords %lxP", glist_getcanvas(glist), x);
-    for(t_int i = 0; i <= x->x_last_state; i++)
+    for(t_int i = 0; i <= x->x_n_states; i++)
         sys_vgui(" %d %d ",(int)(xpos + x->x_duration[i]*xscale),
                  (int)(ypos + x->x_height - (x->x_points[i] - yBase) / ySize*yscale));
     sys_vgui("\n");
@@ -392,10 +405,10 @@ static void function_vis(t_gobj *z, t_glist *glist, int vis){
 
 static void function_followpointer(t_function* x,t_glist* glist){
     float dur;
-    float xscale = x->x_duration[x->x_last_state] / x->x_width;
+    float xscale = x->x_duration[x->x_n_states] / x->x_width;
     float ySize = x->x_max - x->x_min;
     float yBase =  x->x_min;
-    if((x->x_grabbed > 0) && (x->x_grabbed < x->x_last_state)){
+    if((x->x_grabbed > 0) && (x->x_grabbed < x->x_n_states)){
         dur = (x->x_pointer_x - text_xpix(&x->x_obj,glist))*xscale;
         if(dur < x->x_duration[x->x_grabbed-1])
             dur = x->x_duration[x->x_grabbed-1];
@@ -431,12 +444,12 @@ static void function_motion(t_function *x, t_floatarg dx, t_floatarg dy){
 }
 
 static void function_key(t_function *x, t_floatarg f){
-    if(f == 8.0 && x->x_grabbed < x->x_last_state &&  x->x_grabbed >0){
-        for(t_int i = x->x_grabbed; i <= x->x_last_state; i++){
+    if(f == 8.0 && x->x_grabbed < x->x_n_states &&  x->x_grabbed >0){
+        for(t_int i = x->x_grabbed; i <= x->x_n_states; i++){
             x->x_duration[i] = x->x_duration[i+1];
             x->x_points[i] = x->x_points[i+1];
         }
-        x->x_last_state--;
+        x->x_n_states--;
         x->x_grabbed--;
         function_update(x, x->glist);
         function_bang(x);
@@ -461,6 +474,43 @@ static int function_newclick(t_function *x, struct _glist *glist,
         }
     }
     return(1);
+}
+
+static void function_save(t_gobj *z, t_binbuf *b){
+    t_function *x = (t_function *)z;
+    binbuf_addv(b,
+                "ssiis",
+                gensym("#X"),
+                gensym("obj"),
+                (t_int)x->x_obj.te_xpix,
+                (t_int)x->x_obj.te_ypix,
+                atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf))
+                );
+    
+/*    binbuf_addv(b, "ii",
+                (t_int)x->x_width,
+                (t_int)x->x_height
+                ); */
+    
+    binbuf_addv(b, "f",
+                (t_float)x->x_points[x->x_state = 0]
+                );
+    
+                t_int i = 1;
+                t_int ac = x->x_n_states * 2 + 1;
+                while(i < ac){
+                    t_float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
+                    binbuf_addv(b, "f",
+                                (t_float)dur
+                                );
+                    i++;
+                    x->x_state++;
+                    binbuf_addv(b, "f",
+                                (t_float)x->x_points[x->x_state]
+                                );
+                    i++;
+                }
+    binbuf_addv(b, ";");
 }
 
 ///////////////////// METHODS /////////////////////
@@ -658,6 +708,8 @@ void function_setup(void){
     class_addmethod(function_class, (t_method)function_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_key, gensym("key"), A_FLOAT, 0);
 // widget
+    class_setwidget(function_class, &function_widgetbehavior);
+    class_setsavefn(function_class, function_save);
     function_widgetbehavior.w_getrectfn  = function_getrect;
     function_widgetbehavior.w_displacefn = function_displace;
     function_widgetbehavior.w_selectfn   = function_select;
@@ -665,5 +717,4 @@ void function_setup(void){
     function_widgetbehavior.w_deletefn   = function_delete;
     function_widgetbehavior.w_visfn      = function_vis;
     function_widgetbehavior.w_clickfn    = (t_clickfn)function_newclick;
-    class_setwidget(function_class, &function_widgetbehavior);
 }
