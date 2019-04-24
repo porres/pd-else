@@ -50,6 +50,7 @@ typedef struct _note{
     int             x_active;
     int             x_ready;
     t_symbol       *x_receive_sym;
+    t_symbol       *x_selector;
 }t_note;
 
 static t_class *note_class;
@@ -358,7 +359,7 @@ static void note_save(t_gobj *z, t_binbuf *b){
                 gensym("obj"),
                 (int)t->te_xpix,
                 (int)t->te_ypix,
-                atom_getsymbol(binbuf_getvec(x->x_ob.te_binbuf)),
+                x->x_selector,
                 x->x_pixwidth,
                 x->x_fontsize,
                 x->x_fontfamily,
@@ -467,7 +468,7 @@ static void note_list(t_note *x, t_symbol *s, int ac, t_atom *av){
             t_binbuf *bb = binbuf_new();
             int argc = binbuf_getnatom(x->x_binbuf);
             binbuf_addv(bb, "siissiiii",
-                        atom_getsymbol(binbuf_getvec(x->x_ob.te_binbuf)),
+                        x->x_selector,
                         x->x_pixwidth,
                         x->x_fontsize,
                         x->x_fontfamily,
@@ -661,8 +662,7 @@ static void note_attrparser(t_note *x, int argc, t_atom * argv){
 
 static void *note_new(t_symbol *s, int ac, t_atom *av){
     t_note *x = (t_note *)pd_new(note_class);
-    t_symbol *dummy = s;
-    dummy = NULL;
+    x->x_selector = s;
     t_text *t = (t_text *)x;
     t->te_type = T_TEXT;
     x->x_glist = canvas_getcurrent();
