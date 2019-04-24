@@ -69,7 +69,6 @@
 #X text 407 158 1;
 #X obj 152 360 else/out~;
 #X obj 195 287 else/function~;
-#X obj 195 131 else/initmess -1 0.5 1 0.5 -1;
 #X text 406 254 -1;
 #X obj 74 204 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 200 256;
@@ -84,15 +83,16 @@ below!;
 #X obj 270 334 else/graph~ 441 6 -1 1;
 #X obj 198 166 else/function -1 0.5 1 0.5 -1;
 #X msg 131 132 print;
+#X obj 195 131 else/initmess -1 0.5 1 0.5 -1;
 #X connect 2 0 1 1;
 #X connect 2 0 1 0;
-#X connect 2 0 10 0;
-#X connect 3 0 11 0;
-#X connect 5 0 7 0;
-#X connect 6 0 5 0;
-#X connect 7 0 2 0;
-#X connect 11 0 2 0;
-#X connect 12 0 11 0;
+#X connect 2 0 9 0;
+#X connect 4 0 6 0;
+#X connect 5 0 4 0;
+#X connect 6 0 2 0;
+#X connect 10 0 2 0;
+#X connect 11 0 10 0;
+#X connect 12 0 10 0;
 #X restore 463 277 pd function~;
 #N canvas 600 144 627 441 envgen~ 0;
 #X obj 261 234 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
