@@ -65,7 +65,7 @@
 200) | -send <symbol> (default none) | -receive <symbol> (default none)
 | -duration <float> | -min <float> (default 0) | -max <float> (default
 1), f 66;
-#N canvas 521 43 527 508 function~ 0;
+#N canvas 769 53 527 508 function~ 1;
 #X text 407 158 1;
 #X obj 152 360 else/out~;
 #X obj 195 287 else/function~;
@@ -81,16 +81,18 @@ the function internally.;
 #X text 69 66 Note also that you can have any kind of breakpoints function
 and also draw something like a waveform in the range from -1 to 1 as
 below!;
-#X obj 198 164 else/function;
 #X obj 270 334 else/graph~ 441 6 -1 1;
+#X obj 198 166 else/function -1 0.5 1 0.5 -1;
+#X msg 131 132 print;
 #X connect 2 0 1 1;
 #X connect 2 0 1 0;
-#X connect 2 0 11 0;
-#X connect 3 0 10 0;
+#X connect 2 0 10 0;
+#X connect 3 0 11 0;
 #X connect 5 0 7 0;
 #X connect 6 0 5 0;
 #X connect 7 0 2 0;
-#X connect 10 0 2 0;
+#X connect 11 0 2 0;
+#X connect 12 0 11 0;
 #X restore 463 277 pd function~;
 #N canvas 600 144 627 441 envgen~ 0;
 #X obj 261 234 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -112,7 +114,7 @@ Since [function] is always outputing a list \, you can use something
 like [setmess] and only trigger the envelope when sending it a bang
 or a float. Check the help file of [envgen~] for more details on how
 it works., f 60;
-#X obj 315 145 else/function;
+#X obj 315 145 else/function 0 50 1 50 0.6 300 0.6 200 0;
 #X connect 0 0 2 0;
 #X connect 2 0 3 1;
 #X connect 3 0 4 1;
@@ -145,8 +147,8 @@ generator. This means you can have line segments in any range. The
 minimum and maximum graph values are calculated automatically from
 a list input \, but you can change that with the min/max messages.
 ;
-#X obj 101 143 else/function;
-#X obj 468 226 else/function;
+#X obj 101 143 else/function 0 1000 0;
+#X obj 468 226 else/function 0 1000 0;
 #X msg 465 192 -1 100 1 100 0 \, min -2 \, max 2;
 #X connect 0 0 10 0;
 #X connect 4 0 5 0;
@@ -156,7 +158,7 @@ a list input \, but you can change that with the min/max messages.
 #X text 67 86 [function] is a breakpoints function GUI to be used with
 [function~] or [envgen~]. You can click and draw on it or send it lists.
 ;
-#X obj 190 164 else/function;
+#X obj 190 164 else/function 0 500 1 500 0;
 #X text 243 486 - sets breakpoints function (default: 0 1000 0);
 #X text 243 456 - breakpoints function for [envgen~]/[function~];
 #X connect 28 0 47 0;
