@@ -358,7 +358,7 @@ static void note_save(t_gobj *z, t_binbuf *b){
                 gensym("obj"),
                 (int)t->te_xpix,
                 (int)t->te_ypix,
-                atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
+                atom_getsymbol(binbuf_getvec(x->x_ob.te_binbuf)),
                 x->x_pixwidth,
                 x->x_fontsize,
                 x->x_fontfamily,
@@ -467,7 +467,7 @@ static void note_list(t_note *x, t_symbol *s, int ac, t_atom *av){
             t_binbuf *bb = binbuf_new();
             int argc = binbuf_getnatom(x->x_binbuf);
             binbuf_addv(bb, "siissiiii",
-                        atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
+                        atom_getsymbol(binbuf_getvec(x->x_ob.te_binbuf)),
                         x->x_pixwidth,
                         x->x_fontsize,
                         x->x_fontfamily,
