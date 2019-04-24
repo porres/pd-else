@@ -17,40 +17,39 @@ static t_class *makeshift_class;
 #define note_NUMCOLORS   3
 
 typedef struct _note{
-    t_object   x_ob;
-    t_glist   *x_glist;
-    t_canvas  *x_canvas;
-    t_symbol  *x_bindsym;
-    char       x_tag[32];
-    char       x_texttag[32];
-    char       x_outlinetag[32];
-    t_clock   *x_transclock;
-    t_binbuf  *x_binbuf;
-    char      *x_textbuf;
-    int        x_textbufsize;
-    int        x_pixwidth;
-    int        x_bbset;
-    int        x_bbpending;
-    int        x_x1;
-    int        x_y1;
-    int        x_x2;
-    int        x_y2;
-    int        x_newx2;
-    int        x_dragon;
-    int        x_fontsize;    // requested size
-    t_symbol  *x_fontfamily;  // requested family
-    int        x_fontprops;   // 0: reg, 1: bold, 2: italic, 3: bolditalic (unused)
-    t_symbol  *x_encoding;    // requested encoding (unused)
-    unsigned char  x_red;
-    unsigned char  x_green;
-    unsigned char  x_blue;
-    char       x_color[8];
-    int        x_selstart;
-    int        x_selend;
-    int        x_active;
-    int        x_ready;
-    t_symbol  *x_receive_sym;
-    t_symbol  *x_selector;
+    t_object        x_ob;
+    t_glist        *x_glist;
+    t_canvas       *x_canvas;
+    t_symbol       *x_bindsym;
+    char            x_tag[32];
+    char            x_texttag[32];
+    char            x_outlinetag[32];
+    t_clock        *x_transclock;
+    t_binbuf       *x_binbuf;
+    char           *x_textbuf;
+    int             x_textbufsize;
+    int             x_pixwidth;
+    int             x_bbset;
+    int             x_bbpending;
+    int             x_x1;
+    int             x_y1;
+    int             x_x2;
+    int             x_y2;
+    int             x_newx2;
+    int             x_dragon;
+    int             x_fontsize;    // requested size
+    t_symbol       *x_fontfamily;  // requested family
+    int             x_fontprops;   // 0: reg, 1: bold, 2: italic, 3: bolditalic (unused)
+    t_symbol       *x_encoding;    // requested encoding (unused)
+    unsigned char   x_red;
+    unsigned char   x_green;
+    unsigned char   x_blue;
+    char            x_color[8];
+    int             x_selstart;
+    int             x_selend;
+    int             x_active;
+    int             x_ready;
+    t_symbol       *x_receive_sym;
 }t_note;
 
 static t_class *note_class;
@@ -80,7 +79,7 @@ static void note_draw(t_note *x){
             (float)(text_ypix((t_text *)x, x->x_glist) + note_TMARGIN),
             x->x_fontfamily->s_name, x->x_fontsize,
             (glist_isselected(x->x_glist, &x->x_glist->gl_gobj) ? "blue" : x->x_color),
-            "\"\"", // encoding
+            "\"\"", // encoding <= remove!!!
             x->x_textbufsize, x->x_textbuf, x->x_pixwidth);
     x->x_bbpending = 1;
     sys_gui(outbuf);
@@ -359,7 +358,7 @@ static void note_save(t_gobj *z, t_binbuf *b){
                 gensym("obj"),
                 (int)t->te_xpix,
                 (int)t->te_ypix,
-                x->x_selector,
+                atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
                 x->x_pixwidth,
                 x->x_fontsize,
                 x->x_fontfamily,
@@ -467,11 +466,16 @@ static void note_list(t_note *x, t_symbol *s, int ac, t_atom *av){
             t_text *newt, *oldt = (t_text *)x;
             t_binbuf *bb = binbuf_new();
             int argc = binbuf_getnatom(x->x_binbuf);
-            binbuf_addv(bb, "siissiiii", x->x_selector, x->x_pixwidth,
-                        x->x_fontsize, x->x_fontfamily,
+            binbuf_addv(bb, "siissiiii",
+                        atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
+                        x->x_pixwidth,
+                        x->x_fontsize,
+                        x->x_fontfamily,
                         (x->x_receive_sym != &s_ ? x->x_receive_sym : gensym("?")),
                         x->x_fontprops,
-                        (int)x->x_red, (int)x->x_green, (int)x->x_blue);
+                        (int)x->x_red,
+                        (int)x->x_green,
+                        (int)x->x_blue);
             binbuf_add(bb, argc, binbuf_getvec(x->x_binbuf));
             canvas_setcurrent(x->x_glist);
             newt = (t_text *)pd_new(makeshift_class);
@@ -657,6 +661,8 @@ static void note_attrparser(t_note *x, int argc, t_atom * argv){
 
 static void *note_new(t_symbol *s, int ac, t_atom *av){
     t_note *x = (t_note *)pd_new(note_class);
+    t_symbol *dummy = s;
+    dummy = NULL;
     t_text *t = (t_text *)x;
     t->te_type = T_TEXT;
     x->x_glist = canvas_getcurrent();
@@ -669,7 +675,6 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     x->x_pixwidth = x->x_fontsize = x->x_fontprops = x->x_bbpending = 0;
     x->x_red = x->x_green = x->x_blue = x->x_textbufsize = 0;
     x->x_bbset = x->x_ready = x->x_dragon = 0;
-    x->x_selector = s;
     x->x_receive_sym = &s_;
     x->x_transclock = clock_new(x, (t_method)note_transtick);
     char buf[32];
