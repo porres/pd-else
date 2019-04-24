@@ -1,4 +1,4 @@
-#N canvas 591 136 566 598 10;
+#N canvas 590 100 566 598 10;
 #X obj 24 40 cnv 4 4 4 empty empty Function 0 28 2 18 -233017 -1 0
 ;
 #X obj 102 40 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
@@ -65,7 +65,7 @@
 200) | -send <symbol> (default none) | -receive <symbol> (default none)
 | -duration <float> | -min <float> (default 0) | -max <float> (default
 1), f 66;
-#N canvas 769 53 527 508 function~ 1;
+#N canvas 769 53 527 508 function~ 0;
 #X text 407 158 1;
 #X obj 152 360 else/out~;
 #X obj 195 287 else/function~;
@@ -94,27 +94,27 @@ below!;
 #X connect 11 0 10 0;
 #X connect 12 0 10 0;
 #X restore 463 277 pd function~;
-#N canvas 600 144 627 441 envgen~ 0;
-#X obj 261 234 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 600 144 625 463 envgen~ 0;
+#X obj 261 237 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 524 139 1;
-#X obj 261 314 else/envgen~;
-#X obj 134 291 *~;
-#X obj 91 338 else/out~;
-#X obj 312 258 else/setmess;
-#X text 523 235 0;
-#X obj 134 222 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 524 142 1;
+#X obj 261 317 else/envgen~;
+#X obj 134 294 *~;
+#X obj 91 341 else/out~;
+#X obj 312 261 else/setmess;
+#X text 523 238 0;
+#X obj 134 225 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -262144 -1 -1 200 256;
-#X msg 312 285 0 50 1 50 0.6 300 0.6 200 0;
-#X obj 312 112 else/initmess 0 50 1 50 0.6 300 0.6 200 0;
-#X obj 134 255 else/bl.tri~;
-#X obj 134 193 else/initmess 200;
-#X text 134 24 Here's an example on how to use [function] with [envgen~].
+#X msg 312 288 0 50 1 50 0.6 300 0.6 200 0;
+#X obj 312 115 else/initmess 0 50 1 50 0.6 300 0.6 200 0;
+#X obj 134 258 else/bl.tri~;
+#X obj 134 196 else/initmess 200;
+#X text 134 27 Here's an example on how to use [function] with [envgen~].
 Since [function] is always outputing a list \, you can use something
 like [setmess] and only trigger the envelope when sending it a bang
 or a float. Check the help file of [envgen~] for more details on how
 it works., f 60;
-#X obj 315 145 else/function 0 50 1 50 0.6 300 0.6 200 0;
+#X obj 315 148 else/function 0 50 1 50 0.6 300 0.6 200 0;
 #X connect 0 0 2 0;
 #X connect 2 0 3 1;
 #X connect 3 0 4 1;
