@@ -116,7 +116,6 @@ static void function_generate(t_function *x, int ac, t_atom* av){
     t_float* val = x->x_points;
 // get 1st value
     *val = atom_getfloat(av++);
-    x->x_max = x->x_min = *val;
     *dur = 0.0;
     dur++;
     ac--;
@@ -138,19 +137,6 @@ static void function_generate(t_function *x, int ac, t_atom* av){
                 x->x_max = *val;
             if(*val < x->x_min)
                 x->x_min = *val;
-        }
-    }
-    if(x->x_max == x->x_min){
-        if(x->x_max == 0)
-            x->x_max = 1;
-        else{
-            if(x->x_max >0){
-                x->x_min = 0;
-                if (x->x_max < 1)
-                    x->x_max = 1;
-            }
-            else
-                x->x_max = 0;
         }
     }
 }
@@ -529,11 +515,37 @@ static void function_list(t_function *x, t_symbol* s, int ac,t_atom *av){
 
 static void function_min(t_function *x, t_floatarg f){
     x->x_min = f;
+    if(x->x_max == x->x_min){
+        if(x->x_max == 0)
+            x->x_max = 1;
+        else{
+            if(x->x_max > 0){
+                x->x_min = 0;
+                if(x->x_max < 1)
+                    x->x_max = 1;
+            }
+            else
+                x->x_max = 0;
+        }
+    }
     function_update(x, x->glist);
 }
 
 static void function_max(t_function *x, t_floatarg f){
     x->x_max = f;
+    if(x->x_max == x->x_min){
+        if(x->x_max == 0)
+            x->x_max = 1;
+        else{
+            if(x->x_max > 0){
+                x->x_min = 0;
+                if(x->x_max < 1)
+                    x->x_max = 1;
+            }
+            else
+                x->x_max = 0;
+        }
+    }
     function_update(x, x->glist);
 }
 
@@ -574,6 +586,8 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
 // Default Args
     x->x_width = 200;
     x->x_height = 100;
+    x->x_min = 0;
+    x->x_max = 1;
     t_float initialDuration = 0;
     x->x_receive_sym = x->x_send_sym = &s_;
     t_atom a[3];
@@ -598,7 +612,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                 n = 0;
             }
             cursym = atom_getsymbolarg(0, ac, av);
-            if(!strcmp(cursym->s_name, "-duration")){
+            if(!strcmp(cursym->s_name, "-resize")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     t_float curfloat = atom_getfloatarg(1, ac, av);
                     initialDuration = curfloat < 0 ? 0 : curfloat; // min width is 40
@@ -672,6 +686,20 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
         else
             goto errstate;
     };
+    if(x->x_max == x->x_min){
+        if(x->x_max == 0)
+            x->x_max = 1;
+        else{
+            if(x->x_max > 0){
+                x->x_min = 0;
+                if(x->x_max < 1)
+                    x->x_max = 1;
+            }
+            else
+                x->x_max = 0;
+        }
+        function_update(x, x->glist);
+    }
     if(!symarg && n > 2)
         function_generate(x, n, av);
      if(initialDuration > 0)
@@ -698,7 +726,7 @@ void function_setup(void){
     class_addmethod(function_class, (t_method)function_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_min, gensym("min"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_max, gensym("max"), A_FLOAT, 0);
-    class_addmethod(function_class, (t_method)function_duration, gensym("duration"), A_FLOAT, 0);
+    class_addmethod(function_class, (t_method)function_duration, gensym("resize"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_send, gensym("send"), A_SYMBOL, 0);
     class_addmethod(function_class, (t_method)function_receive, gensym("receive"), A_SYMBOL, 0);
 ///
