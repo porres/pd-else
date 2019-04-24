@@ -14,7 +14,6 @@ typedef struct dir{
     DIR      *x_dir;
     char      x_directory[MAXPDSTRING];
     t_symbol *x_getdir;
-    t_symbol *x_dir_name;
     t_int     x_nfiles;
     t_int     x_ignored;
     t_int     x_seek;
@@ -116,10 +115,29 @@ static void dir_bang(t_dir *x){
     dir_dump(x);
 }
 
-static void *dir_new(t_floatarg f){
+static void *dir_new(t_symbol *s, int ac, t_atom* av){
     t_dir *x = (t_dir *)pd_new(dir_class);
+    t_symbol *dummy = s; // get rid of warning
+    dummy = NULL; // get rid of warning
     t_canvas *canvas = canvas_getcurrent();
-    int depth = (int)f;
+    int depth = 0;
+    t_symbol *dirname = &s_;
+    int symarg = 0;
+    while(ac > 0){
+        if(av->a_type == A_FLOAT && !symarg){
+             depth = (int)atom_getfloatarg(0, ac, av);
+            ac--;
+            av++;
+        }
+        else if(av->a_type == A_SYMBOL && !symarg){
+            symarg = 1;
+            dirname = atom_getsymbolarg(0, ac, av);
+            ac--;
+            av++;
+        }
+        ac--;
+        av++;
+    }
     if(depth < 0)
         depth = 0;
     while(!canvas->gl_env)
@@ -132,7 +150,6 @@ static void *dir_new(t_floatarg f){
         }
     }
     x->x_getdir = canvas_getdir(canvas);
-    x->x_dir_name = NULL;
     x->x_nfiles = x->x_ignored = x->x_seek = 0;
     strncpy(x->x_directory, x->x_getdir->s_name, MAXPDSTRING);
     x->x_dir = opendir(x->x_getdir->s_name);
@@ -144,13 +161,15 @@ static void *dir_new(t_floatarg f){
             x->x_ignored++;
     }
     closedir(x->x_dir);
+    if(dirname != &s_)
+        dir_open(x, dirname);
     x->x_out1 = outlet_new(&x->x_obj, &s_anything);
     x->x_out2 = outlet_new(&x->x_obj, &s_symbol);
     return(x);
 }
 
 void dir_setup(void){
-    dir_class = class_new(gensym("dir"), (t_newmethod)dir_new, 0, sizeof(t_dir), 0, A_DEFFLOAT, 0);
+    dir_class = class_new(gensym("dir"), (t_newmethod)dir_new, 0, sizeof(t_dir), 0, A_GIMME, 0);
     class_addbang(dir_class, dir_bang);
     class_addmethod(dir_class, (t_method)dir_n, gensym("n"), 0);
     class_addmethod(dir_class, (t_method)dir_dir, gensym("dir"), 0);
