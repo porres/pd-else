@@ -81,6 +81,12 @@
 #X restore 76 59 pd messages;
 #X obj 71 91 namecanvas \$0-sampler;
 #N canvas 105 383 897 372 \$0-readsf 0;
+#X obj 20 21 r \$0-readsf~;
+#X obj 390 56 r \$0-spigot;
+#X obj 351 78 spigot;
+#X obj 351 105 s \$0-to_symbol;
+#X connect 1 0 2 1;
+#X connect 2 0 3 0;
 #X restore 74 162 pd \$0-readsf;
 #N canvas 588 115 593 557 dynamic 0;
 #X obj 347 259 s pd-\$0-readsf;
@@ -158,7 +164,7 @@
 #X connect 23 1 26 0;
 #X connect 24 0 25 0;
 #X connect 25 0 23 0;
-#X connect 26 0 8 0;
+#X connect 26 0 2 0;
 #X connect 28 0 24 1;
 #X connect 29 0 1 0;
 #X connect 30 0 32 0;
