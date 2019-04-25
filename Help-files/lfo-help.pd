@@ -1,4 +1,4 @@
-#N canvas 460 72 560 625 10;
+#N canvas 669 93 560 625 10;
 #X obj 23 41 cnv 4 4 4 empty empty Control 0 28 2 18 -233017 -1 0;
 #X obj 3 595 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
@@ -43,7 +43,7 @@
 #X text 139 419 float;
 #X text 139 325 float;
 #X obj 195 219 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 4208 1;
+-228856 -1 -1 7305 1;
 #X text 180 447 - sets frequency in hertz (default 0), f 55;
 #X text 180 461 - sets initial phase from 0 - 1 (default 0), f 55
 ;
@@ -78,11 +78,9 @@
 -1 to 1), f 61;
 #X text 161 553 - sets waveform to square and width (from 0 to 1),
 f 61;
-#X text 192 342 sets waveform (sine \, tri \, saw \, vsawup and square)
-;
 #N canvas 589 52 433 412 waveforms 0;
 #X obj 153 299 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 5427 1;
+-228856 -1 -1 6872 1;
 #X text 25 97 You can set the waveform with a flag and with a message.
 Note that "square" and "vsaw" take an optional width argument., f
 58;
@@ -106,15 +104,15 @@ of these objects for more details.;
 #X restore 445 257 pd waveforms;
 #N canvas 599 96 464 425 refresh 0;
 #X obj 49 148 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 3926 1;
+-228856 -1 -1 7900 1;
 #X obj 266 246 mtof;
 #X obj 266 224 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 39.3838 256;
+-228856 -1 -1 36.5755 256;
 #X obj 160 95 nbx 5 14 5 500 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 5 256;
 #X obj 49 122 else/lfo 0.25 0 250;
 #X obj 266 105 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 6178 1;
+-228856 -1 -1 4329 1;
 #X obj 266 200 else/rescale 30 42;
 #X obj 266 79 else/lfo 5.3 0 270 -tri;
 #X obj 65 344 else/out~;
@@ -144,39 +142,43 @@ from the waveforms., f 66;
 #X connect 15 0 12 0;
 #X connect 15 1 12 1;
 #X restore 428 279 pd refresh rate;
-#N canvas 358 164 409 547 rescale 0;
+#N canvas 905 217 409 547 rescale 0;
 #X text 38 16 The output range if from 0 to 127 \, which is the whole
 MIDI default range. Use the [rescale] object if you want a different
 range for the output., f 53;
 #X obj 119 108 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 6146 1;
+-228856 -1 -1 897 1;
 #X obj 119 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 98.8091 256;
+-228856 -1 -1 14.4172 256;
 #X obj 119 253 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 589.012 256;
-#X obj 119 281 else/bicoeff resonant 500 50;
+-228856 -1 -1 256.761 256;
 #X text 179 254 cutoff in hertz;
 #X obj 118 355 biquad~;
 #X obj 118 427 else/out~;
-#X obj 119 82 else/lfo 0.015 -tri;
 #X obj 119 226 else/rescale 200 700;
-#X obj 141 318 else/bl.saw~ 35;
 #X obj 118 384 else/plate.rev~ 50 0.9 0.9 0.9 0.7, f 18;
+#X obj 138 329 else/bl.saw~;
+#X obj 138 308 sig~ 35;
+#X obj 119 281 else/bicoeff lowpass 500 30;
+#X obj 119 82 else/lfo 0.15 -tri;
 #X connect 1 0 2 0;
-#X connect 2 0 9 0;
-#X connect 3 0 4 0;
-#X connect 4 0 6 0;
-#X connect 6 0 11 0;
-#X connect 8 0 1 0;
-#X connect 9 0 3 0;
-#X connect 10 0 6 0;
-#X connect 11 0 7 0;
-#X connect 11 1 7 1;
+#X connect 2 0 7 0;
+#X connect 3 0 11 0;
+#X connect 5 0 8 0;
+#X connect 7 0 3 0;
+#X connect 8 0 6 0;
+#X connect 8 1 6 1;
+#X connect 9 0 5 0;
+#X connect 10 0 9 0;
+#X connect 11 0 5 0;
+#X connect 12 0 1 0;
 #X restore 457 234 pd rescale;
 #X text 64 91 [lfo] is a control rate LFO with some common waveforms.
 It doesn't need the DSP on to function \,, f 73;
 #X obj 195 192 else/lfo 0.25 -tri;
+#X text 192 342 sets waveform (sine \, tri \, saw \, vsaw and square)
+;
 #X connect 17 0 18 0;
-#X connect 18 0 58 0;
-#X connect 21 0 58 1;
-#X connect 58 0 24 0;
+#X connect 18 0 57 0;
+#X connect 21 0 57 1;
+#X connect 57 0 24 0;
