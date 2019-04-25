@@ -1,9 +1,8 @@
-#N canvas 453 27 565 699 10;
+#N canvas 559 27 565 699 10;
 #X obj 244 200 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X msg 125 209 start;
 #X msg 173 209 stop;
-#X msg 270 200 open;
 #X msg 205 174 loop \$1;
 #X obj 205 154 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -69,7 +68,7 @@ file in a mono sampler) has its remaining channels ignored.;
 1;
 #X obj 251 294 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 541 343 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 541 350 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X msg 120 240 open stereo.wav;
 #X text 122 30 If you give an optional float argumewnt as the first
@@ -81,7 +80,7 @@ sound file's. The maximum number is 64 channels.;
 #X text 208 213 <= mono file;
 #X text 221 239 <= stereo file;
 #X obj 62 268 else/play.file~ stereo.wav -loop;
-#X obj 340 318 else/play.file~ 1 stereo.aif -loop;
+#X obj 340 319 else/play.file~ 1 stereo.wav -loop;
 #X connect 3 0 13 0;
 #X connect 5 0 13 0;
 #X connect 6 0 14 0;
@@ -113,7 +112,7 @@ sound file's. The maximum number is 64 channels.;
 #X text 182 605 - autostart <1: on \, 0: off> (default 0), f 45;
 #X text 116 620 4) float;
 #X text 182 621 - loop <1: on \, 0: off> (default 0), f 45;
-#X text 116 581 1) float;
+#X text 116 563 1) float;
 #X text 180 562 -;
 #X text 222 429 opens a file with the symbol name (no symbol opens
 dialog box) and starts playing, f 50;
@@ -121,7 +120,6 @@ dialog box) and starts playing, f 50;
 #X obj 39 317 else/player~;
 #X text 55 259 click: opens a new file =>;
 #X obj 64 41 cnv 4 4 4 empty empty sound 0 28 2 18 -233017 -1 0;
-#X msg 280 226 set vacuous.wav;
 #X obj 221 258 else/play.file~ violin.wav 1 1;
 #X text 128 459 set <symbol> -;
 #X text 222 458 sets a file to open next time it starts playing, f
@@ -130,14 +128,18 @@ dialog box) and starts playing, f 50;
 to read files from your computer. Note that the file sample needs to
 be at the same sample rate as Pd's. The object is also able to search
 for files relative to the parent patch., f 62;
-#X connect 0 0 56 0;
-#X connect 1 0 56 0;
-#X connect 2 0 56 0;
-#X connect 3 0 56 0;
-#X connect 4 0 56 0;
-#X connect 5 0 4 0;
-#X connect 30 0 56 0;
-#X connect 55 0 56 0;
-#X connect 56 0 29 0;
-#X connect 56 0 29 1;
-#X connect 56 1 36 0;
+#X msg 277 201 open bagal.aif;
+#X msg 287 224 open;
+#X msg 327 228 set dholak.aif;
+#X connect 0 0 54 0;
+#X connect 1 0 54 0;
+#X connect 2 0 54 0;
+#X connect 3 0 54 0;
+#X connect 4 0 3 0;
+#X connect 29 0 54 0;
+#X connect 54 0 28 0;
+#X connect 54 0 28 1;
+#X connect 54 1 35 0;
+#X connect 58 0 54 0;
+#X connect 59 0 54 0;
+#X connect 60 0 54 0;

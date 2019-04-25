@@ -17,8 +17,10 @@ typedef struct dir{
     t_int     x_nfiles;
     t_int     x_ignored;
     t_int     x_seek;
+    t_int     x_init;
     t_outlet *x_out1;
     t_outlet *x_out2;
+    t_outlet *x_out3;
 }t_dir;
 
 static void dir_seek(t_dir *x, t_float f){
@@ -69,12 +71,16 @@ static void dir_open(t_dir *x, t_symbol *dirname){
     DIR *temp = opendir(x->x_directory);
     if(!temp){
         strcpy(x->x_directory, tempdir); // restore original directory
-        pd_error(x, "[dir]: cannot open '%s'", dirname->s_name);
+        if(x->x_init)
+            pd_error(x, "[dir]: cannot open '%s'", dirname->s_name);
         temp = NULL;
+        outlet_float(x->x_out3, 0);
         return;
     }
-    else
+    else{
         closedir(temp);
+        outlet_float(x->x_out3, 1);
+    }
     x->x_dir = opendir(x->x_directory);
     rewinddir(x->x_dir);
     x->x_nfiles = x->x_ignored = 0;
@@ -161,10 +167,13 @@ static void *dir_new(t_symbol *s, int ac, t_atom* av){
             x->x_ignored++;
     }
     closedir(x->x_dir);
-    if(dirname != &s_)
-        dir_open(x, dirname);
     x->x_out1 = outlet_new(&x->x_obj, &s_anything);
     x->x_out2 = outlet_new(&x->x_obj, &s_symbol);
+    x->x_out3 = outlet_new(&x->x_obj, &s_float);
+    x->x_init = 1;
+    if(dirname != &s_)
+        dir_open(x, dirname);
+    x->x_init = 0;
     return(x);
 }
 
