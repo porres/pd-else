@@ -16,7 +16,7 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#N canvas 447 148 850 485 example 0;
+#N canvas 581 96 850 485 example 0;
 #X obj 702 182 throw~ \$0-input;
 #X obj 702 46 adc~ 1;
 #X obj 72 186 *~;
@@ -41,7 +41,7 @@
 #X connect 4 0 0 0;
 #X restore 25 156 pd tone;
 #X obj 702 71 else/gain~;
-#X obj 407 142 throw~ \$0-input;
+#X obj 408 142 throw~ \$0-input;
 #X msg 363 81 open;
 #X text 81 45 Test the reverb with many sound input sources, f 25
 ;
@@ -59,7 +59,6 @@
 #X obj 407 79 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 432 81 play/stop;
-#X obj 407 115 else/play.file~ violin.wav -loop;
 #X obj 299 274 catch~ \$0-input;
 #N canvas 311 360 450 300 init 0;
 #X obj 112 43 inlet;
@@ -99,6 +98,7 @@
 #X obj 393 357 else/mono.rev~;
 #X obj 38 334 noise~;
 #X obj 87 328 else/rand.f 500 3000, f 12;
+#X obj 408 115 else/play.file~ didge.aif -loop;
 #X connect 1 0 10 0;
 #X connect 2 0 3 0;
 #X connect 4 0 5 0;
@@ -108,33 +108,33 @@
 #X connect 8 0 2 1;
 #X connect 9 0 2 0;
 #X connect 10 0 0 0;
-#X connect 12 0 26 0;
+#X connect 12 0 51 0;
 #X connect 14 0 15 0;
 #X connect 16 0 14 1;
 #X connect 17 0 16 0;
-#X connect 17 0 51 0;
+#X connect 17 0 50 0;
 #X connect 18 0 14 0;
-#X connect 24 0 26 0;
-#X connect 26 0 11 0;
-#X connect 27 0 49 0;
-#X connect 29 0 28 0;
-#X connect 32 0 33 0;
-#X connect 33 0 43 0;
-#X connect 34 0 35 0;
-#X connect 35 0 39 0;
-#X connect 36 0 37 0;
-#X connect 37 0 41 0;
-#X connect 39 0 49 1;
-#X connect 41 0 49 1;
-#X connect 42 0 49 1;
-#X connect 43 0 49 1;
+#X connect 24 0 51 0;
+#X connect 26 0 48 0;
+#X connect 28 0 27 0;
+#X connect 31 0 32 0;
+#X connect 32 0 42 0;
+#X connect 33 0 34 0;
+#X connect 34 0 38 0;
+#X connect 35 0 36 0;
+#X connect 36 0 40 0;
+#X connect 38 0 48 1;
+#X connect 40 0 48 1;
+#X connect 41 0 48 1;
+#X connect 42 0 48 1;
+#X connect 44 0 45 0;
 #X connect 45 0 46 0;
-#X connect 46 0 47 0;
-#X connect 47 0 49 1;
-#X connect 49 0 31 0;
-#X connect 49 1 31 1;
-#X connect 50 0 18 0;
-#X connect 51 0 18 1;
+#X connect 46 0 48 1;
+#X connect 48 0 30 0;
+#X connect 48 1 30 1;
+#X connect 49 0 18 0;
+#X connect 50 0 18 1;
+#X connect 51 0 11 0;
 #X restore 468 265 pd example;
 #X obj 3 3 cnv 15 301 42 empty empty mono.rev~ 20 20 2 37 -233017 -1
 0;
