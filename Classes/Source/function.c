@@ -3,7 +3,7 @@
 // memory realloc often crashes but pointer seems ok! 'STATES' set to 100 prevents it
 #define STATES  100   // Number of points
 
-#define BACKGROUNDCOLOR "white"
+#define BACKGROUNDCOLOR "gray"
 #define FRONTCOLOR "black"
 #define BORDER_LINE_SIZE 1
 #define BORDERWIDTH 3
@@ -116,6 +116,10 @@ static void function_generate(t_function *x, int ac, t_atom* av){
     t_float* val = x->x_points;
 // get 1st value
     *val = atom_getfloat(av++);
+    if(*val > x->x_max)
+        x->x_max = *val;
+    if(*val < x->x_min)
+        x->x_min = *val;
     *dur = 0.0;
     dur++;
     ac--;
