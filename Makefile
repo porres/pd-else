@@ -259,6 +259,7 @@ midi := \
 datafiles = \
 $(wildcard Classes/Abstractions/*.pd) \
 $(wildcard Help-files/*.pd) \
+$(wildcard Help-files/*.aif) \
 $(wildcard Help-files/*.wav) \
 $(wildcard Help-files/*.gif) \
 $(wildcard Help-files/*.mid) \
