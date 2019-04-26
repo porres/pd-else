@@ -3,7 +3,6 @@
 // memory realloc often crashes but pointer seems ok! 'STATES' set to 100 prevents it
 #define STATES  100   // Number of points
 
-#define BACKGROUNDCOLOR "gray"
 #define FRONTCOLOR "black"
 #define BORDER_LINE_SIZE 1
 #define BORDERWIDTH 3
@@ -31,6 +30,8 @@ typedef struct _function{
     t_float     x_min;
     t_float     x_max;
     t_int       x_states;   // bug ???
+    unsigned char  x_fgcolor[3];
+    unsigned char  x_bgcolor[3];
 // widget parameters
     int         x_width;
     int         x_height;
@@ -232,10 +233,9 @@ static int function_x_next_doodle(t_function *x, struct _glist *glist, int xpos,
     return insertpos;
 }
 
-static void function_create_doodles(t_function *x, t_glist *glist){
+static void function_doodles_create(t_function *x, t_glist *glist){
     float xscale, yscale;
     int xpos, ypos;
-    char guistr[255];
     float ySize = x->x_max - x->x_min;
     float yBase =  x->x_min;
     float yvalue;
@@ -243,19 +243,20 @@ static void function_create_doodles(t_function *x, t_glist *glist){
     yscale = x->x_height;
     xpos = text_xpix(&x->x_obj, glist);
     ypos = (int)(text_ypix(&x->x_obj, glist) + x->x_height);
+    char fgcolor[20];
+    sprintf(fgcolor, "#%2.2x%2.2x%2.2x", x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
     int i;
     for(i = 0; i <= x->x_n_states; i++){
         yvalue = (x->x_points[i] - yBase) / ySize * yscale;
-        sprintf(guistr,".x%lx.c create oval %d %d %d %d -tags %lxD%d",
-                (unsigned long)glist_getcanvas(glist),
-                (int)(xpos + (x->x_duration[i] * xscale) - 2),
-                (int)(ypos - yvalue - 2),
-                (int)(xpos + (x->x_duration[i] * xscale) + 2),
-                (int)(ypos - yvalue + 2),
-                (unsigned long)x,
-                i);
-        strcat(guistr," -fill "FRONTCOLOR"\n");
-        sys_vgui("%s", guistr);
+        sys_vgui(".x%lx.c create oval %d %d %d %d  -tags %lxD%d -fill %s\n",
+                 (unsigned long)glist_getcanvas(glist),
+                 (int)(xpos + (x->x_duration[i] * xscale) - 3),
+                 (int)(ypos - yvalue - 3),
+                 (int)(xpos + (x->x_duration[i] * xscale) + 3),
+                 (int)(ypos - yvalue + 3),
+                 (unsigned long)x,
+                 i,
+                 fgcolor);
     }
     x->x_numdoodles = i;
 }
@@ -267,7 +268,7 @@ static void function_delete_doodles(t_function *x, t_glist *glist){
 
 static void function_update_doodles(t_function *x, t_glist *glist){
     function_delete_doodles(x, glist);
-    function_create_doodles(x, glist); // LATER only create new doodles if necessary
+    function_doodles_create(x, glist); // LATER only create new doodles if necessary
 }
 
 static void function_create(t_function *x, t_glist *glist){
@@ -277,11 +278,17 @@ static void function_create(t_function *x, t_glist *glist){
     float yBase =  x->x_min;
     xpos = text_xpix(&x->x_obj, glist);
     ypos = (int) text_ypix(&x->x_obj, glist);
+    char bgcolor[20];
+    sprintf(bgcolor, "#%2.2x%2.2x%2.2x", x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d  -tags %lxS -fill %s -width %d\n",
-             glist_getcanvas(glist), xpos - BORDERWIDTH, ypos - BORDERWIDTH,
+             glist_getcanvas(glist),
+             xpos - BORDERWIDTH,
+             ypos - BORDERWIDTH,
              xpos + x->x_width + BORDERWIDTH,
              ypos + x->x_height + BORDERWIDTH, // + 2 here
-             x, BACKGROUNDCOLOR, BORDER_LINE_SIZE);
+             x,
+             bgcolor,
+             BORDER_LINE_SIZE);
     xscale = x->x_width / x->x_duration[x->x_n_states];
     yscale = x->x_height;
     sys_vgui(".x%lx.c create line", glist_getcanvas(glist));
@@ -289,8 +296,10 @@ static void function_create(t_function *x, t_glist *glist){
         sys_vgui(" %d %d ", (int)(xpos + x->x_duration[i]*xscale),
                  (int)(ypos + x->x_height - (x->x_points[i]-yBase) / ySize*yscale));
     }
-    sys_vgui(" -tags %lxP -fill %s\n", x, FRONTCOLOR);
-    function_create_doodles(x, glist);
+    char fgcolor[20];
+    sprintf(fgcolor, "#%2.2x%2.2x%2.2x", x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+    sys_vgui(" -tags %lxP -fill %s -width %d\n", x, fgcolor, 2);
+    function_doodles_create(x, glist);
 }
 
 static void function_update(t_function *x, t_glist *glist){
@@ -588,6 +597,12 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     x->x_grabbed = 0;
     x->glist = (t_glist*) canvas_getcurrent();
 // Default Args
+    x->x_fgcolor[0] = 50;
+    x->x_fgcolor[1] = 50;
+    x->x_fgcolor[2] = 50;
+    x->x_bgcolor[0] = 220;
+    x->x_bgcolor[1] = 220;
+    x->x_bgcolor[2] = 220;
     x->x_width = 200;
     x->x_height = 100;
     x->x_min = 0;
@@ -721,6 +736,23 @@ static void function_free(t_function *x){
          pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym); 
 }
 
+static void function_fgcolor(t_function *x, t_float r, t_float g, t_float b){
+    x->x_fgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : (int)r;
+    x->x_fgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : (int)g;
+    x->x_fgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : (int)b;
+    function_erase(x, x->glist);
+    function_drawme(x, x->glist, 1);
+    function_update(x, x->glist);
+}
+
+static void function_bgcolor(t_function *x, t_float r, t_float g, t_float b){
+    x->x_bgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : (int)r;
+    x->x_bgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : (int)g;
+    x->x_bgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : (int)b;
+    function_erase(x, x->glist);
+    function_drawme(x, x->glist, 1);
+}
+
 void function_setup(void){
     function_class = class_new(gensym("function"), (t_newmethod)function_new,
         (t_method)function_free, sizeof(t_function), 0, A_GIMME,0);
@@ -733,6 +765,10 @@ void function_setup(void){
     class_addmethod(function_class, (t_method)function_duration, gensym("resize"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_send, gensym("send"), A_SYMBOL, 0);
     class_addmethod(function_class, (t_method)function_receive, gensym("receive"), A_SYMBOL, 0);
+    class_addmethod(function_class, (t_method)function_bgcolor, gensym("bgcolor"),
+                    A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(function_class, (t_method)function_fgcolor, gensym("fgcolor"),
+                    A_FLOAT, A_FLOAT, A_FLOAT, 0);
 ///
     class_addmethod(function_class, (t_method)function_print, gensym("print"), 0);
     class_addmethod(function_class, (t_method)function_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
