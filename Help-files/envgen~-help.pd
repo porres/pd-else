@@ -128,14 +128,14 @@ or [vline~].;
 #X text 744 126 AR (attack \, release);
 #X obj 42 291 else/sig2float~;
 #X obj 42 322 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+-1 -1 4950 1;
 #X obj 42 173 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 127 233 start \, duration \, target;
 #X text 87 197 duration \, target;
 #X obj 296 242 else/sig2float~;
 #X obj 296 275 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+-1 -1 4950 1;
 #X obj 296 163 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 192 338 else/setdsp~;
@@ -163,7 +163,7 @@ The set message sets the envelope without triggering it.;
 (in ms) and target value (this is the opposite order of the [line]
 family of objects in Pd Vanilla)., f 36;
 #X obj 738 346 vsl 20 80 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+-1 -1 3950 1;
 #X obj 738 316 else/sig2float~;
 #X text 761 342 1;
 #X obj 738 289 else/envgen~;
@@ -472,7 +472,8 @@ values less than 0 are clipped to 0)., f 57;
 #X msg 181 332 0 50 1 50 0.6 300 0.6 200 0;
 #X obj 130 366 else/envgen~ -retrigger 10;
 #X obj 54 348 osc~ 440;
-#X obj 184 191 else/function;
+#X obj 184 191 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 50 1 50 0.6 300 0.6 200 0;
 #X text 56 17 Here's an example on how to use [function] with [envgen~].
 Since [function] is always outputing a list you can use something like
 [setmess] and only trigger the envelope when sending a bang or a float.

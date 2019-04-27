@@ -1,7 +1,7 @@
 #N struct 1007-f float x;
-#N struct 1352-cell float x float y float cellsize float color;
-#N struct 1359-point float x0 float y0 float s;
-#N struct 1359-grid float x0 float y0 float s;
+#N struct 1688-cell float x float y float cellsize float color;
+#N struct 1695-point float x0 float y0 float s;
+#N struct 1695-grid float x0 float y0 float s;
 #N canvas 531 76 574 422 10;
 #X text 46 87 Assorted:;
 #X obj 46 111 else/table~;
@@ -293,7 +293,8 @@
 #X obj 390 73 else/pic ;
 #X text 278 70 [else/pic] =>;
 #X obj 452 68 else/colors;
-#X obj 694 29 else/function;
+#X obj 694 29 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 1000 0;
 #X text 563 63 [else/function] =>;
 #X obj 62 505 else/slider2d;
 #X obj 803 721 else/display;

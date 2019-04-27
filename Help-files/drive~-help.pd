@@ -149,9 +149,9 @@
 #X text 250 300 - signal input;
 #X obj 205 197 else/drive~;
 #X obj 268 154 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.944882 256;
+-228856 -1 -1 0 256;
 #X obj 271 132 hsl 128 15 0 10 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 1200 1;
+-1 -1 0 1;
 #X text 252 370 - the distorted signal;
 #X text 250 339 - drive factor;
 #N canvas 473 131 474 293 modes 0;

@@ -69,7 +69,7 @@
 #X obj 187 131 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 190 164 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 500 1 500 0;
+50 50 0 0 0 0 0 500 1 500 0;
 #N canvas 621 344 819 446 input 0;
 #X msg 98 104 0 100 1 100 0.6 350 0.6 250 0;
 #X text 93 82 ADSR (attack \, decay \, sustain \, release);
@@ -91,9 +91,9 @@ minimum and maximum graph values are calculated automatically from
 a list input \, but you can change that with the min/max messages.
 ;
 #X obj 101 143 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 1000 0;
+50 50 0 0 0 0 0 1000 0;
 #X obj 468 226 else/function 200 100 empty empty -2 2 220 220 220 50
-50 50 -1 100 1 100 0;
+50 50 1 0 0 0 -1 100 1 100 0;
 #X obj 465 169 loadbang;
 #X msg 465 192 -1 100 1 100 0 \, min -2 \, max 2;
 #X connect 0 0 10 0;
@@ -121,7 +121,7 @@ below!;
 #X msg 131 132 print;
 #X obj 195 131 else/initmess -1 0.5 1 0.5 -1;
 #X obj 198 166 else/function 200 100 empty empty -1 1 220 220 220 50
-50 50 -1 0.5 1 0.5 -1;
+50 50 1 0 0 0 -1 0.5 1 0.5 -1;
 #X connect 2 0 1 1;
 #X connect 2 0 1 0;
 #X connect 2 0 9 0;
@@ -153,7 +153,7 @@ like [setmess] and only trigger the envelope when sending it a bang
 or a float. Check the help file of [envgen~] for more details on how
 it works., f 60;
 #X obj 315 148 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 50 1 50 0.6 300 0.6 200 0;
+50 50 0 0 0 0 0 50 1 50 0.6 300 0.6 200 0;
 #X connect 0 0 2 0;
 #X connect 2 0 3 1;
 #X connect 3 0 4 1;
