@@ -1,15 +1,15 @@
-#N canvas 590 100 572 644 10;
+#N canvas 618 35 564 649 10;
 #X obj 4 309 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 476 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 492 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 505 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 521 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 614 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 622 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 99 317 cnv 17 3 153 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 99 317 cnv 17 3 170 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 99 484 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 99 500 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 189 315 list;
 #X text 223 315 - sets and outputs breakpoints function, f 41;
@@ -19,17 +19,17 @@
 #X text 147 371 max <float>;
 #X text 223 357 - sets minimum graph boundary, f 41;
 #X text 223 371 - sets maximum graph boundary, f 41;
-#X text 189 485 list;
+#X text 189 501 list;
 #X text 129 385 height <float>;
 #X text 135 399 width <float>;
 #X text 223 385 - sets heigth, f 41;
 #X text 223 399 - sets width, f 41;
-#X obj 4 535 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 4 551 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 135 441 send <symbol>;
 #X text 223 441 - sets send symbol, f 41;
 #X text 117 455 receive <symbol>;
 #X text 223 455 - sets receive symbol, f 41;
-#X text 223 484 - breakpoints function for [envgen~]/[function~];
+#X text 223 500 - breakpoints function for [envgen~]/[function~];
 #X text 129 343 resize <float>;
 #X text 223 343 - resizes overall duration, f 41;
 #X text 111 413 fgcolor <f \, f \, f>;
@@ -166,12 +166,14 @@ it works., f 60;
 #X connect 11 0 7 0;
 #X connect 13 0 5 0;
 #X restore 474 253 pd envgen~;
-#X text 89 542 -heigth <float> (default 100) | -width <float> (default
+#X text 177 528 (none);
+#X text 99 557 -heigth <float> (default 100) | -width <float> (default
 200) | -send <symbol> (default none) | -receive <symbol> (default none)
 | -bgcolor <f \, f \, f> | -fgcolor <f \, f \, f> | -resize <float>
-| -min <float> (default 0) | -max <float> (default 1) | -set <list>
-(default 0 1000 0) - sets the function., f 65;
-#X text 177 512 (none);
+| -min <float> (default 0) | -max <float> (default 1) | -init | -set
+<list> (default 0 1000 0) - sets the function., f 65;
+#X text 141 470 init <float>;
+#X text 223 470 - nonzero sets to init mode, f 41;
 #X connect 44 0 47 0;
 #X connect 46 0 47 0;
 #X connect 47 0 45 0;

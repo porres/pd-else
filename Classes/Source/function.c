@@ -30,6 +30,7 @@ typedef struct _function{
     unsigned char  x_fgcolor[3];
     unsigned char  x_bgcolor[3];
     int         x_width;
+    int         x_init;
     int         x_height;
     int         x_numdoodles;
     int         x_grabbed; // for moving points
@@ -479,7 +480,7 @@ static void function_save(t_gobj *z, t_binbuf *b){
                 (t_int)x->x_obj.te_ypix,
                 atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf))
                 );
-    binbuf_addv(b, "iissffiiiiii",
+    binbuf_addv(b, "iissffiiiiiiiiii",
                 (t_int)x->x_width,
                 (t_int)x->x_height,
                 x->x_send_sym == &s_ ? gensym("empty") : x->x_send_sym,
@@ -491,7 +492,11 @@ static void function_save(t_gobj *z, t_binbuf *b){
                 (t_int)x->x_bgcolor[2],
                 (t_int)x->x_fgcolor[0],
                 (t_int)x->x_fgcolor[1],
-                (t_int)x->x_fgcolor[2]
+                (t_int)x->x_fgcolor[2],
+                x->x_init,
+                0, // placeholder
+                0, // placeholder
+                0  // placeholder
                 );
     binbuf_addv(b, "f",
                 (t_float)x->x_points[x->x_state = 0]
@@ -565,6 +570,10 @@ static void function_max(t_function *x, t_floatarg f){
     function_update(x, x->glist);
 }
 
+static void function_init(t_function *x, t_floatarg f){
+    x->x_init = (int)(f != 0);
+}
+
 static void function_height(t_function *x, t_floatarg f){
     x->x_height = f < 20 ? 20 : f;
     function_update(x, x->glist);
@@ -588,9 +597,32 @@ static void function_receive(t_function *x, t_symbol *s){
     }
 }
 
+static void function_fgcolor(t_function *x, t_float r, t_float g, t_float b){
+    x->x_fgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : (int)r;
+    x->x_fgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : (int)g;
+    x->x_fgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : (int)b;
+    function_erase(x, x->glist);
+    function_drawme(x, x->glist, 1);
+    function_update(x, x->glist);
+}
+
+static void function_bgcolor(t_function *x, t_float r, t_float g, t_float b){
+    x->x_bgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : (int)r;
+    x->x_bgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : (int)g;
+    x->x_bgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : (int)b;
+    function_erase(x, x->glist);
+    function_drawme(x, x->glist, 1);
+}
+
+static void function_loadbang(t_function *x, t_floatarg action){
+    if(action == LB_LOAD && x->x_init)
+        function_bang(x);
+}
+
 ///////////////////// NEW / FREE / SETUP /////////////////////
 static void *function_new(t_symbol *s, int ac, t_atom* av){
     t_function *x = (t_function *)pd_new(function_class);
+    outlet_new(&x->x_obj, &s_anything);
     t_symbol *cursym = s; // get rid of warning
     x->x_state = 0;
     x->x_states = STATES;
@@ -598,11 +630,13 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     x->glist = (t_glist*) canvas_getcurrent();
     x->x_points = getbytes(x->x_states*sizeof(t_float));
     x->x_duration = getbytes(x->x_states*sizeof(t_float));
+    t_int envset = 0;
     t_float initialDuration = 0;
 // Default Args
     x->x_width = 200;
     x->x_height = 100;
     x->x_receive_sym = x->x_send_sym = &s_;
+    x->x_init = 0;
     x->x_min = 0;
     x->x_max = 1;
     x->x_bgcolor[0] = 220;
@@ -615,7 +649,6 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     SETFLOAT(a, 0);
     SETFLOAT(a+1, 1000);
     SETFLOAT(a+2, 0);
-    function_generate(x, 3, a);
 ////////////////////////////////// GET ARGS ///////////////////////////////////////////
     if(ac && av->a_type == A_FLOAT){ // 1ST Width
         x->x_width = (int)av->a_w.w_float;
@@ -663,16 +696,32 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                                                 if(ac && av->a_type == A_FLOAT){ // FG Blue
                                                     x->x_fgcolor[2] = (unsigned char)av->a_w.w_float;
                                                     ac--; av++;
-                                                    if(ac && av->a_type == A_FLOAT){ // Set Env
-                                                        int i = 0;
-                                                        int j = ac;
-                                                        while(j && (av+i)->a_type == A_FLOAT){
-                                                            i++;
-                                                            j--;
+                                                    if(ac && av->a_type == A_FLOAT){ // Init
+                                                        x->x_init = (int)(av->a_w.w_float != 0);
+                                                        ac--; av++;
+                                                        if(ac && av->a_type == A_FLOAT){ // placeholder
+                                                            ac--; av++;
+                                                            if(ac && av->a_type == A_FLOAT){ // placeholder
+                                                                ac--; av++;
+                                                                if(ac && av->a_type == A_FLOAT){ // placeholder
+                                                                    ac--; av++;
+                                                                    if(ac && av->a_type == A_FLOAT){ // Set Env
+                                                                        int i = 0;
+                                                                        int j = ac;
+                                                                        while(j && (av+i)->a_type == A_FLOAT){
+                                                                            i++;
+                                                                            j--;
+                                                                        }
+                                                                        if(i % 2){
+                                                                            envset = 1;
+                                                                            function_generate(x, i, av);
+                                                                        }
+                                                                        av += i;
+                                                                        ac -= i;
+                                                                    }
+                                                                }
+                                                            }
                                                         }
-                                                        function_generate(x, i, av);
-                                                        av += i;
-                                                        ac -= i;
                                                     }
                                                 }
                                             }
@@ -698,6 +747,11 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                 }
                 else
                     goto errstate;
+            }
+            else if(!strcmp(cursym->s_name, "-init")){
+                x->x_init = 1;
+                ac--;
+                av++;
             }
             else if(!strcmp(cursym->s_name, "-width")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
@@ -801,8 +855,10 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                         i++;
                         j--;
                     }
-                    if(i % 2)
+                    if(i % 2){
+                        envset = 1;
                         function_generate(x, i, av);
+                    }
                     else
                         pd_error(x, "[function]: needs an odd list of floats");
                     av += i;
@@ -831,11 +887,12 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
         }
         function_update(x, x->glist);
     }
+    if(!envset)
+        function_generate(x, 3, a);
     if(initialDuration > 0)
         function_duration(x, initialDuration);
 /////////////////////////////////////////////////////////////////////////////////////
-     outlet_new(&x->x_obj, &s_anything);
-     return (x);
+     return(x);
 errstate:
     pd_error(x, "[function]: improper args");
     return NULL;
@@ -846,28 +903,14 @@ static void function_free(t_function *x){
          pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym); 
 }
 
-static void function_fgcolor(t_function *x, t_float r, t_float g, t_float b){
-    x->x_fgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : (int)r;
-    x->x_fgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : (int)g;
-    x->x_fgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : (int)b;
-    function_erase(x, x->glist);
-    function_drawme(x, x->glist, 1);
-    function_update(x, x->glist);
-}
-
-static void function_bgcolor(t_function *x, t_float r, t_float g, t_float b){
-    x->x_bgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : (int)r;
-    x->x_bgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : (int)g;
-    x->x_bgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : (int)b;
-    function_erase(x, x->glist);
-    function_drawme(x, x->glist, 1);
-}
-
 void function_setup(void){
     function_class = class_new(gensym("function"), (t_newmethod)function_new,
         (t_method)function_free, sizeof(t_function), 0, A_GIMME,0);
     class_addbang(function_class, function_bang);
     class_addlist(function_class, function_list);
+    class_addmethod(function_class, (t_method)function_loadbang,
+                    gensym("loadbang"), A_DEFFLOAT, 0);
+    class_addmethod(function_class, (t_method)function_init, gensym("init"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_height, gensym("height"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_min, gensym("min"), A_FLOAT, 0);
