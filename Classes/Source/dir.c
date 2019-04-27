@@ -177,8 +177,15 @@ static void *dir_new(t_symbol *s, int ac, t_atom* av){
     return(x);
 }
 
+static void dire_free(t_dir *x){
+    outlet_free(x->x_out1);
+    outlet_free(x->x_out2);
+    outlet_free(x->x_out3);
+}
+
 void dir_setup(void){
-    dir_class = class_new(gensym("dir"), (t_newmethod)dir_new, 0, sizeof(t_dir), 0, A_GIMME, 0);
+    dir_class = class_new(gensym("dir"), (t_newmethod)dir_new, (t_method)function_free,
+            sizeof(t_dir), 0, A_GIMME, 0);
     class_addbang(dir_class, dir_bang);
     class_addmethod(dir_class, (t_method)dir_n, gensym("n"), 0);
     class_addmethod(dir_class, (t_method)dir_dir, gensym("dir"), 0);
