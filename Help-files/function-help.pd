@@ -75,18 +75,19 @@ the function internally.;
 and also draw something like a waveform in the range from -1 to 1 as
 below!;
 #X obj 270 334 else/graph~ 441 6 -1 1;
-#X obj 198 166 else/function -1 0.5 1 0.5 -1;
 #X msg 131 132 print;
 #X obj 195 131 else/initmess -1 0.5 1 0.5 -1;
+#X obj 198 166 else/function 200 100 empty empty -1 1 220 220 220 50
+50 50 -1 0.5 1 0.5 -1;
 #X connect 2 0 1 1;
 #X connect 2 0 1 0;
 #X connect 2 0 9 0;
 #X connect 4 0 6 0;
 #X connect 5 0 4 0;
 #X connect 6 0 2 0;
-#X connect 10 0 2 0;
-#X connect 11 0 10 0;
-#X connect 12 0 10 0;
+#X connect 10 0 12 0;
+#X connect 11 0 12 0;
+#X connect 12 0 2 0;
 #X restore 463 277 pd function~;
 #N canvas 600 144 625 463 envgen~ 0;
 #X obj 261 237 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -108,7 +109,8 @@ Since [function] is always outputing a list \, you can use something
 like [setmess] and only trigger the envelope when sending it a bang
 or a float. Check the help file of [envgen~] for more details on how
 it works., f 60;
-#X obj 315 148 else/function 0 50 1 50 0.6 300 0.6 200 0;
+#X obj 315 148 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 50 1 50 0.6 300 0.6 200 0;
 #X connect 0 0 2 0;
 #X connect 2 0 3 1;
 #X connect 3 0 4 1;
@@ -121,7 +123,7 @@ it works., f 60;
 #X connect 11 0 7 0;
 #X connect 13 0 5 0;
 #X restore 474 253 pd envgen~;
-#N canvas 722 344 819 446 input 0;
+#N canvas 621 344 819 446 input 0;
 #X msg 98 104 0 100 1 100 0.6 350 0.6 250 0;
 #X text 93 82 ADSR (attack \, decay \, sustain \, release);
 #X text 29 17 The list input needs to be an odd number of elements
@@ -141,18 +143,21 @@ generator. This means you can have line segments in any range. The
 minimum and maximum graph values are calculated automatically from
 a list input \, but you can change that with the min/max messages.
 ;
-#X obj 101 143 else/function 0 1000 0;
-#X obj 468 226 else/function 0 1000 0;
 #X msg 465 192 -1 100 1 100 0 \, min -2 \, max 2;
-#X connect 0 0 10 0;
+#X obj 101 143 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 1000 0;
+#X obj 468 226 else/function 200 100 empty empty -2 2 220 220 220 50
+50 50 -1 100 1 100 0;
+#X obj 465 169 loadbang;
+#X connect 0 0 11 0;
 #X connect 4 0 5 0;
-#X connect 10 0 4 0;
-#X connect 12 0 11 0;
+#X connect 10 0 12 0;
+#X connect 11 0 4 0;
+#X connect 13 0 10 0;
 #X restore 486 230 pd input;
 #X text 67 86 [function] is a breakpoints function GUI to be used with
 [function~] or [envgen~]. You can click and draw on it or send it lists.
 ;
-#X obj 190 164 else/function 0 500 1 500 0;
 #X text 223 514 - sets breakpoints function (default: 0 1000 0);
 #X text 223 484 - breakpoints function for [envgen~]/[function~];
 #X text 129 343 resize <float>;
@@ -165,6 +170,8 @@ a list input \, but you can change that with the min/max messages.
 200) | -send <symbol> (default none) | -receive <symbol> (default none)
 | -bgcolor <f \, f \, f> | -fgcolor <f \, f \, f> | -resize <float>
 | -min <float> (default 0) | -max <float> (default 1), f 65;
-#X connect 26 0 44 0;
-#X connect 29 0 44 0;
-#X connect 44 0 27 0;
+#X obj 190 164 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 1000 0;
+#X connect 26 0 53 0;
+#X connect 29 0 53 0;
+#X connect 53 0 27 0;
