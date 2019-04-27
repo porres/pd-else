@@ -1,4 +1,41 @@
-#N canvas 590 100 572 631 10;
+#N canvas 590 100 572 644 10;
+#X obj 4 309 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 476 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 505 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 4 614 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 99 317 cnv 17 3 153 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 99 484 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 189 315 list;
+#X text 223 315 - sets and outputs breakpoints function, f 41;
+#X text 189 329 bang;
+#X text 223 329 - outputs breakpoints function, f 41;
+#X text 147 357 min <float>;
+#X text 147 371 max <float>;
+#X text 223 357 - sets minimum graph boundary, f 41;
+#X text 223 371 - sets maximum graph boundary, f 41;
+#X text 189 485 list;
+#X text 129 385 height <float>;
+#X text 135 399 width <float>;
+#X text 223 385 - sets heigth, f 41;
+#X text 223 399 - sets width, f 41;
+#X obj 4 535 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 135 441 send <symbol>;
+#X text 223 441 - sets send symbol, f 41;
+#X text 117 455 receive <symbol>;
+#X text 223 455 - sets receive symbol, f 41;
+#X text 223 484 - breakpoints function for [envgen~]/[function~];
+#X text 129 343 resize <float>;
+#X text 223 343 - resizes overall duration, f 41;
+#X text 111 413 fgcolor <f \, f \, f>;
+#X text 223 413 - sets RGB color of foreground, f 41;
+#X text 111 427 bgcolor <f \, f \, f>;
+#X text 223 427 - sets RGB color of background, f 41;
 #X obj 24 40 cnv 4 4 4 empty empty Function 0 28 2 18 -233017 -1 0
 ;
 #X obj 102 40 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
@@ -24,41 +61,47 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 3 graph;
-#X obj 4 309 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X text 67 86 [function] is a breakpoints function GUI to be used with
+[function~] or [envgen~]. You can click and draw on it or send it lists.
 ;
-#X obj 4 476 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 505 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
-0;
-#X obj 4 594 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
-0;
-#X obj 99 317 cnv 17 3 153 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 99 484 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X text 189 315 list;
-#X text 223 315 - sets and outputs breakpoints function, f 41;
-#X text 189 329 bang;
-#X text 223 329 - outputs breakpoints function, f 41;
-#X text 147 357 min <float>;
-#X text 147 371 max <float>;
-#X text 223 357 - sets minimum graph boundary, f 41;
-#X text 223 371 - sets maximum graph boundary, f 41;
 #X obj 215 132 else/initmess 0 500 1 500 0;
 #X obj 187 276 else/display;
-#X text 189 485 list;
 #X obj 187 131 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 129 385 height <float>;
-#X text 135 399 width <float>;
-#X text 223 385 - sets heigth, f 41;
-#X text 223 399 - sets width, f 41;
-#X obj 4 535 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 189 514 list;
-#X text 135 441 send <symbol>;
-#X text 223 441 - sets send symbol, f 41;
-#X text 117 455 receive <symbol>;
-#X text 223 455 - sets receive symbol, f 41;
+#X obj 190 164 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 500 1 500 0;
+#N canvas 621 344 819 446 input 0;
+#X msg 98 104 0 100 1 100 0.6 350 0.6 250 0;
+#X text 93 82 ADSR (attack \, decay \, sustain \, release);
+#X text 29 17 The list input needs to be an odd number of elements
+of at least 3 floats. The syntax is the same as the [function~] object:
+point1 \, period \, point2 \, period \, point3 \, etc...;
+#X text 42 345 You can also have an input via the interface. You can
+click on a point and drag it around. A point is removed if you click
+on it and hit delete. Click anywhere in the graph where there's not
+a point and you create a new one.;
+#X obj 98 273 else/setmess;
+#X msg 98 301 0 100 1 100 0.6 350 0.6 250 0;
+#X text 674 322 -2;
+#X text 677 219 2;
+#X text 677 271 0;
+#X text 416 87 The [function] object works also as an all purpose line
+generator. This means you can have line segments in any range. The
+minimum and maximum graph values are calculated automatically from
+a list input \, but you can change that with the min/max messages.
+;
+#X obj 101 143 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 1000 0;
+#X obj 468 226 else/function 200 100 empty empty -2 2 220 220 220 50
+50 50 -1 100 1 100 0;
+#X obj 465 169 loadbang;
+#X msg 465 192 -1 100 1 100 0 \, min -2 \, max 2;
+#X connect 0 0 10 0;
+#X connect 4 0 5 0;
+#X connect 10 0 4 0;
+#X connect 12 0 13 0;
+#X connect 13 0 11 0;
+#X restore 486 230 pd input;
 #N canvas 769 53 527 508 function~ 0;
 #X text 407 158 1;
 #X obj 152 360 else/out~;
@@ -123,55 +166,12 @@ it works., f 60;
 #X connect 11 0 7 0;
 #X connect 13 0 5 0;
 #X restore 474 253 pd envgen~;
-#N canvas 621 344 819 446 input 0;
-#X msg 98 104 0 100 1 100 0.6 350 0.6 250 0;
-#X text 93 82 ADSR (attack \, decay \, sustain \, release);
-#X text 29 17 The list input needs to be an odd number of elements
-of at least 3 floats. The syntax is the same as the [function~] object:
-point1 \, period \, point2 \, period \, point3 \, etc...;
-#X text 42 345 You can also have an input via the interface. You can
-click on a point and drag it around. A point is removed if you click
-on it and hit delete. Click anywhere in the graph where there's not
-a point and you create a new one.;
-#X obj 98 273 else/setmess;
-#X msg 98 301 0 100 1 100 0.6 350 0.6 250 0;
-#X text 674 322 -2;
-#X text 677 219 2;
-#X text 677 271 0;
-#X text 416 87 The [function] object works also as an all purpose line
-generator. This means you can have line segments in any range. The
-minimum and maximum graph values are calculated automatically from
-a list input \, but you can change that with the min/max messages.
-;
-#X msg 465 192 -1 100 1 100 0 \, min -2 \, max 2;
-#X obj 101 143 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 1000 0;
-#X obj 468 226 else/function 200 100 empty empty -2 2 220 220 220 50
-50 50 -1 100 1 100 0;
-#X obj 465 169 loadbang;
-#X connect 0 0 11 0;
-#X connect 4 0 5 0;
-#X connect 10 0 12 0;
-#X connect 11 0 4 0;
-#X connect 13 0 10 0;
-#X restore 486 230 pd input;
-#X text 67 86 [function] is a breakpoints function GUI to be used with
-[function~] or [envgen~]. You can click and draw on it or send it lists.
-;
-#X text 223 514 - sets breakpoints function (default: 0 1000 0);
-#X text 223 484 - breakpoints function for [envgen~]/[function~];
-#X text 129 343 resize <float>;
-#X text 223 343 - resizes overall duration, f 41;
-#X text 111 413 fgcolor <f \, f \, f>;
-#X text 223 413 - sets RGB color of foreground, f 41;
-#X text 111 427 bgcolor <f \, f \, f>;
-#X text 223 427 - sets RGB color of background, f 41;
 #X text 89 542 -heigth <float> (default 100) | -width <float> (default
 200) | -send <symbol> (default none) | -receive <symbol> (default none)
 | -bgcolor <f \, f \, f> | -fgcolor <f \, f \, f> | -resize <float>
-| -min <float> (default 0) | -max <float> (default 1), f 65;
-#X obj 190 164 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 1000 0;
-#X connect 26 0 53 0;
-#X connect 29 0 53 0;
-#X connect 53 0 27 0;
+| -min <float> (default 0) | -max <float> (default 1) | -set <list>
+(default 0 1000 0) - sets the function., f 65;
+#X text 177 512 (none);
+#X connect 44 0 47 0;
+#X connect 46 0 47 0;
+#X connect 47 0 45 0;

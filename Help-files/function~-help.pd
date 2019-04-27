@@ -55,34 +55,37 @@
 #N canvas 549 146 637 614 example 0;
 #X obj 115 449 else/out~;
 #X obj 232 415 else/graph~ 441 10 1.015 -1.015;
-#X msg 189 169 -1 0.5 1 0.5 -1;
-#X msg 162 123 -1 1 1;
-#X msg 176 145 1 1 -1;
+#X msg 189 164 -1 0.5 1 0.5 -1;
+#X msg 162 118 -1 1 1;
+#X msg 176 140 1 1 -1;
 #X obj 77 165 phasor~ 200;
-#X msg 196 197 -1 0.25 1 0.5 1 0.25 -1;
+#X msg 196 192 -1 0.25 1 0.5 1 0.25 -1;
 #X obj 77 143 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 209 121 sawtooth;
-#X text 224 143 inverted sawtooth;
-#X text 292 168 triangular wave;
-#X text 346 197 trapezoid;
+#X text 209 116 sawtooth;
+#X text 224 138 inverted sawtooth;
+#X text 292 163 triangular wave;
+#X text 346 192 trapezoid;
 #X text 89 33 The [function~] object allows line segments and in any
 range. Here we use it in the -1 to 1 range to generate waveforms and
 use them as oscillators with a [phasor~] input., f 62;
-#X obj 214 237 else/function 1 1 -1;
 #X text 431 276 <== the [function] object is quite convenient for use
 with [function~]. Check its help file for more info, f 18;
 #X obj 158 373 else/function~ 1 100 -1;
-#X connect 2 0 15 0;
-#X connect 3 0 15 0;
-#X connect 4 0 15 0;
-#X connect 5 0 15 0;
-#X connect 6 0 15 0;
+#X obj 208 247 else/function 200 100 empty empty -1 1 220 220 220 50
+50 50 -1 1 1;
+#X obj 205 220 else/initmess -1 1 1;
+#X connect 2 0 14 0;
+#X connect 3 0 14 0;
+#X connect 4 0 14 0;
+#X connect 5 0 14 0;
+#X connect 6 0 14 0;
 #X connect 7 0 5 0;
-#X connect 13 0 15 0;
-#X connect 15 0 0 0;
-#X connect 15 0 0 1;
-#X connect 15 0 1 0;
+#X connect 14 0 0 0;
+#X connect 14 0 0 1;
+#X connect 14 0 1 0;
+#X connect 15 0 14 0;
+#X connect 16 0 15 0;
 #X restore 472 241 pd example;
 #X text 72 87 [function~] generates functions from arguments/list input.
 Input values from 0 to 1 reads the function. It needs an odd number
