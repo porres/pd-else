@@ -1,10 +1,7 @@
-// porres 2018
 
 // memory realloc often crashes but pointer seems ok! 'STATES' set to 100 prevents it
 #define STATES  100   // Number of points
 
-#define FRONTCOLOR "black"
-#define BORDER_LINE_SIZE 1
 #define BORDERWIDTH 3
 #define IOHEIGHT 1
 
@@ -32,7 +29,6 @@ typedef struct _function{
     t_int       x_states;   // bug ???
     unsigned char  x_fgcolor[3];
     unsigned char  x_bgcolor[3];
-// widget parameters
     int         x_width;
     int         x_height;
     int         x_numdoodles;
@@ -42,7 +38,7 @@ typedef struct _function{
     float       x_pointer_y;
 }t_function;
 
-// REMOVE THIS!!!
+// REMOVE THIS!!! Only here for now to debug...
 static void function_print(t_function* x){
     post("---===### function settings ###===---");
     post("x_x_n_states:     %d",   x->x_n_states);
@@ -288,7 +284,7 @@ static void function_create(t_function *x, t_glist *glist){
              ypos + x->x_height + BORDERWIDTH, // + 2 here
              x,
              bgcolor,
-             BORDER_LINE_SIZE);
+             1); // BORDER_LINE_SIZE
     xscale = x->x_width / x->x_duration[x->x_n_states];
     yscale = x->x_height;
     sys_vgui(".x%lx.c create line", glist_getcanvas(glist));
@@ -483,16 +479,23 @@ static void function_save(t_gobj *z, t_binbuf *b){
                 (t_int)x->x_obj.te_ypix,
                 atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf))
                 );
-    
-/*    binbuf_addv(b, "ii",
+    binbuf_addv(b, "iissffiiiiii",
                 (t_int)x->x_width,
-                (t_int)x->x_height
-                ); */
-    
+                (t_int)x->x_height,
+                x->x_send_sym == &s_ ? gensym("empty") : x->x_send_sym,
+                x->x_receive_sym == &s_ ? gensym("empty") : x->x_receive_sym,
+                x->x_min,
+                x->x_max,
+                (t_int)x->x_bgcolor[0],
+                (t_int)x->x_bgcolor[1],
+                (t_int)x->x_bgcolor[2],
+                (t_int)x->x_fgcolor[0],
+                (t_int)x->x_fgcolor[1],
+                (t_int)x->x_fgcolor[2]
+                );
     binbuf_addv(b, "f",
                 (t_float)x->x_points[x->x_state = 0]
                 );
-    
                 t_int i = 1;
                 t_int ac = x->x_n_states * 2 + 1;
                 while(i < ac){
@@ -591,50 +594,105 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     t_symbol *cursym = s; // get rid of warning
     x->x_state = 0;
     x->x_states = STATES;
-    x->x_points = getbytes(x->x_states*sizeof(t_float));
-    x->x_duration = getbytes(x->x_states*sizeof(t_float));
-// widget
     x->x_grabbed = 0;
     x->glist = (t_glist*) canvas_getcurrent();
+    x->x_points = getbytes(x->x_states*sizeof(t_float));
+    x->x_duration = getbytes(x->x_states*sizeof(t_float));
+    t_float initialDuration = 0;
 // Default Args
-    x->x_fgcolor[0] = 50;
-    x->x_fgcolor[1] = 50;
-    x->x_fgcolor[2] = 50;
+    x->x_width = 200;
+    x->x_height = 100;
+    x->x_receive_sym = x->x_send_sym = &s_;
+    x->x_min = 0;
+    x->x_max = 1;
     x->x_bgcolor[0] = 220;
     x->x_bgcolor[1] = 220;
     x->x_bgcolor[2] = 220;
-    x->x_width = 200;
-    x->x_height = 100;
-    x->x_min = 0;
-    x->x_max = 1;
-    t_float initialDuration = 0;
-    x->x_receive_sym = x->x_send_sym = &s_;
+    x->x_fgcolor[0] = 50;
+    x->x_fgcolor[1] = 50;
+    x->x_fgcolor[2] = 50;
     t_atom a[3];
     SETFLOAT(a, 0);
     SETFLOAT(a+1, 1000);
     SETFLOAT(a+2, 0);
     function_generate(x, 3, a);
-/////////////////////////////////////////////////////////////////////////////////////
-    int symarg = 0;
-    int n = 0;
-    while(ac > 0){
-        if((av+n)->a_type == A_FLOAT && !symarg){
-            n++;
-            ac--;
-        }
-        else if((av+n)->a_type == A_SYMBOL){
-            if(!symarg){
-                symarg = 1;
-                if(n > 2)
-                    function_generate(x, n, av);
-                av += n;
-                n = 0;
+////////////////////////////////// GET ARGS ///////////////////////////////////////////
+    if(ac && av->a_type == A_FLOAT){ // 1ST Width
+        x->x_width = (int)av->a_w.w_float;
+        ac--; av++;
+        if(ac && av->a_type == A_FLOAT){ // 2ND Height
+            x->x_height = (int)av->a_w.w_float;
+            ac--; av++;
+            if(ac && av->a_type == A_SYMBOL){ // 3RD Send
+                if(av->a_w.w_symbol == gensym("empty")){ //  sets empty symbol
+                    ac--; av++;
+                }
+                else{
+                    x->x_send_sym = av->a_w.w_symbol;
+                    ac--; av++;
+                }
+                if(ac && av->a_type == A_SYMBOL){ // 4TH Receive
+                    if(av->a_w.w_symbol == gensym("empty")){ //  sets empty symbol
+                        ac--; av++;
+                    }
+                    else{
+                        x->x_receive_sym = av->a_w.w_symbol;
+                        ac--; av++;
+                    }
+                    if(ac && av->a_type == A_FLOAT){ // 5TH Min
+                        x->x_min = av->a_w.w_float;
+                        ac--; av++;
+                        if(ac && av->a_type == A_FLOAT){ // 6TH Max
+                            x->x_max = av->a_w.w_float;
+                            ac--; av++;
+                            if(ac && av->a_type == A_FLOAT){ // BG Red
+                                x->x_bgcolor[0] = (unsigned char)av->a_w.w_float;
+                                ac--; av++;
+                                if(ac && av->a_type == A_FLOAT){ // BG Green
+                                    x->x_bgcolor[1] = (unsigned char)av->a_w.w_float;
+                                    ac--; av++;
+                                    if(ac && av->a_type == A_FLOAT){ // BG Blue
+                                        x->x_bgcolor[2] = (unsigned char)av->a_w.w_float;
+                                        ac--; av++;
+                                        if(ac && av->a_type == A_FLOAT){ // FG Red
+                                            x->x_fgcolor[0] = (unsigned char)av->a_w.w_float;
+                                            ac--; av++;
+                                            if(ac && av->a_type == A_FLOAT){ // FG Green
+                                                x->x_fgcolor[1] = (unsigned char)av->a_w.w_float;
+                                                ac--; av++;
+                                                if(ac && av->a_type == A_FLOAT){ // FG Blue
+                                                    x->x_fgcolor[2] = (unsigned char)av->a_w.w_float;
+                                                    ac--; av++;
+                                                    if(ac && av->a_type == A_FLOAT){ // Set Env
+                                                        int i = 0;
+                                                        int j = ac;
+                                                        while(j && (av+i)->a_type == A_FLOAT){
+                                                            i++;
+                                                            j--;
+                                                        }
+                                                        function_generate(x, i, av);
+                                                        av += i;
+                                                        ac -= i;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
+        }
+    }
+    while(ac > 0){
+        if(av->a_type == A_SYMBOL){
             cursym = atom_getsymbolarg(0, ac, av);
             if(!strcmp(cursym->s_name, "-resize")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     t_float curfloat = atom_getfloatarg(1, ac, av);
-                    initialDuration = curfloat < 0 ? 0 : curfloat; // min width is 40
+                    initialDuration = curfloat < 0 ? 0 : curfloat;
                     ac -= 2;
                     av += 2;
                 }
@@ -645,26 +703,6 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     t_float curfloat = atom_getfloatarg(1, ac, av);
                     x->x_width = curfloat < 40 ? 40 : curfloat; // min width is 40
-                    ac -= 2;
-                    av += 2;
-                }
-                else
-                    goto errstate;
-            }
-            else if(!strcmp(cursym->s_name, "-min")){
-                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
-                    x->x_min = atom_getfloatarg(1, ac, av);
-                    function_update(x, x->glist);
-                    ac -= 2;
-                    av += 2;
-                }
-                else
-                    goto errstate;
-            }
-            else if(!strcmp(cursym->s_name, "-max")){
-                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
-                    x->x_max = atom_getfloatarg(1, ac, av);
-                    function_update(x, x->glist);
                     ac -= 2;
                     av += 2;
                 }
@@ -699,6 +737,80 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                 else
                     goto errstate;
             }
+            else if(!strcmp(cursym->s_name, "-min")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    x->x_min = atom_getfloatarg(1, ac, av);
+                    function_update(x, x->glist);
+                    ac -= 2;
+                    av += 2;
+                }
+                else
+                    goto errstate;
+            }
+            else if(!strcmp(cursym->s_name, "-max")){
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    x->x_max = atom_getfloatarg(1, ac, av);
+                    function_update(x, x->glist);
+                    ac -= 2;
+                    av += 2;
+                }
+                else
+                    goto errstate;
+            }
+            else if(!strcmp(cursym->s_name, "-bgcolor")){
+                if(ac >= 4 && (av+1)->a_type == A_FLOAT
+                   && (av+2)->a_type == A_FLOAT
+                   && (av+3)->a_type == A_FLOAT){
+                    t_int r = (t_int)atom_getfloatarg(1, ac, av);
+                    t_int g = (t_int)atom_getfloatarg(2, ac, av);
+                    t_int b = (t_int)atom_getfloatarg(3, ac, av);
+                    x->x_bgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : r;
+                    x->x_bgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : g;
+                    x->x_bgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : b;
+                    ac -= 4;
+                    av += 4;
+                }
+                else
+                    goto errstate;
+            }
+            else if(!strcmp(cursym->s_name, "-fgcolor")){
+                if(ac >= 4 && (av+1)->a_type == A_FLOAT
+                   && (av+2)->a_type == A_FLOAT
+                   && (av+3)->a_type == A_FLOAT){
+                    t_int r = (t_int)atom_getfloatarg(1, ac, av);
+                    t_int g = (t_int)atom_getfloatarg(2, ac, av);
+                    t_int b = (t_int)atom_getfloatarg(3, ac, av);
+                    x->x_fgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : r;
+                    x->x_fgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : g;
+                    x->x_fgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : b;
+                    ac -= 4;
+                    av += 4;
+                }
+                else
+                    goto errstate;
+            }
+            else if(!strcmp(cursym->s_name, "-set")){
+                if(ac >= 4 && (av+1)->a_type == A_FLOAT
+                   && (av+2)->a_type == A_FLOAT
+                   && (av+3)->a_type == A_FLOAT){
+                    ac--;
+                    av++;
+                    int i = 0;
+                    int j = ac;
+                    while(j && (av+i)->a_type == A_FLOAT){
+                        i++;
+                        j--;
+                    }
+                    if(i % 2)
+                        function_generate(x, i, av);
+                    else
+                        pd_error(x, "[function]: needs an odd list of floats");
+                    av += i;
+                    ac -= i;
+                }
+                else
+                    goto errstate;
+            }
             else
                 goto errstate;
         }
@@ -719,9 +831,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
         }
         function_update(x, x->glist);
     }
-    if(!symarg && n > 2)
-        function_generate(x, n, av);
-     if(initialDuration > 0)
+    if(initialDuration > 0)
         function_duration(x, initialDuration);
 /////////////////////////////////////////////////////////////////////////////////////
      outlet_new(&x->x_obj, &s_anything);
