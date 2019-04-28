@@ -1,41 +1,41 @@
-#N canvas 618 35 564 649 10;
+#N canvas 509 29 567 660 10;
 #X obj 4 309 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 492 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 503 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 521 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 532 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 622 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 633 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 99 317 cnv 17 3 170 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 99 317 cnv 17 3 183 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 99 500 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 99 511 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 189 315 list;
 #X text 223 315 - sets and outputs breakpoints function, f 41;
-#X text 189 329 bang;
-#X text 223 329 - outputs breakpoints function, f 41;
-#X text 147 357 min <float>;
-#X text 147 371 max <float>;
-#X text 223 357 - sets minimum graph boundary, f 41;
-#X text 223 371 - sets maximum graph boundary, f 41;
-#X text 189 501 list;
-#X text 129 385 height <float>;
-#X text 135 399 width <float>;
-#X text 223 385 - sets heigth, f 41;
-#X text 223 399 - sets width, f 41;
-#X obj 4 551 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 135 441 send <symbol>;
-#X text 223 441 - sets send symbol, f 41;
-#X text 117 455 receive <symbol>;
-#X text 223 455 - sets receive symbol, f 41;
-#X text 223 500 - breakpoints function for [envgen~]/[function~];
-#X text 129 343 resize <float>;
-#X text 223 343 - resizes overall duration, f 41;
-#X text 111 413 fgcolor <f \, f \, f>;
-#X text 223 413 - sets RGB color of foreground, f 41;
-#X text 111 427 bgcolor <f \, f \, f>;
-#X text 223 427 - sets RGB color of background, f 41;
+#X text 189 343 bang;
+#X text 223 343 - outputs breakpoints function, f 41;
+#X text 147 371 min <float>;
+#X text 147 385 max <float>;
+#X text 223 371 - sets minimum graph boundary, f 41;
+#X text 223 385 - sets maximum graph boundary, f 41;
+#X text 189 512 list;
+#X text 129 399 height <float>;
+#X text 135 413 width <float>;
+#X text 223 399 - sets heigth, f 41;
+#X text 223 413 - sets width, f 41;
+#X obj 4 562 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 135 455 send <symbol>;
+#X text 223 455 - sets send symbol, f 41;
+#X text 117 469 receive <symbol>;
+#X text 223 469 - sets receive symbol, f 41;
+#X text 223 511 - breakpoints function for [envgen~]/[function~];
+#X text 129 357 resize <float>;
+#X text 223 357 - resizes overall duration, f 41;
+#X text 111 427 fgcolor <f \, f \, f>;
+#X text 223 427 - sets RGB color of foreground, f 41;
+#X text 111 441 bgcolor <f \, f \, f>;
+#X text 223 441 - sets RGB color of background, f 41;
 #X obj 24 40 cnv 4 4 4 empty empty Function 0 28 2 18 -233017 -1 0
 ;
 #X obj 102 40 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
@@ -68,40 +68,6 @@
 #X obj 187 276 else/display;
 #X obj 187 131 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 190 164 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 500 1 500 0;
-#N canvas 621 344 819 446 input 0;
-#X msg 98 104 0 100 1 100 0.6 350 0.6 250 0;
-#X text 93 82 ADSR (attack \, decay \, sustain \, release);
-#X text 29 17 The list input needs to be an odd number of elements
-of at least 3 floats. The syntax is the same as the [function~] object:
-point1 \, period \, point2 \, period \, point3 \, etc...;
-#X text 42 345 You can also have an input via the interface. You can
-click on a point and drag it around. A point is removed if you click
-on it and hit delete. Click anywhere in the graph where there's not
-a point and you create a new one.;
-#X obj 98 273 else/setmess;
-#X msg 98 301 0 100 1 100 0.6 350 0.6 250 0;
-#X text 674 322 -2;
-#X text 677 219 2;
-#X text 677 271 0;
-#X text 416 87 The [function] object works also as an all purpose line
-generator. This means you can have line segments in any range. The
-minimum and maximum graph values are calculated automatically from
-a list input \, but you can change that with the min/max messages.
-;
-#X obj 101 143 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 1000 0;
-#X obj 468 226 else/function 200 100 empty empty -2 2 220 220 220 50
-50 50 1 0 0 0 -1 100 1 100 0;
-#X obj 465 169 loadbang;
-#X msg 465 192 -1 100 1 100 0 \, min -2 \, max 2;
-#X connect 0 0 10 0;
-#X connect 4 0 5 0;
-#X connect 10 0 4 0;
-#X connect 12 0 13 0;
-#X connect 13 0 11 0;
-#X restore 486 230 pd input;
 #N canvas 769 53 527 508 function~ 0;
 #X text 407 158 1;
 #X obj 152 360 else/out~;
@@ -131,28 +97,28 @@ below!;
 #X connect 10 0 12 0;
 #X connect 11 0 12 0;
 #X connect 12 0 2 0;
-#X restore 463 277 pd function~;
-#N canvas 600 144 625 463 envgen~ 0;
-#X obj 261 237 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X restore 468 249 pd function~;
+#N canvas 600 144 526 424 envgen~ 0;
+#X obj 179 231 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 524 142 1;
-#X obj 261 317 else/envgen~;
-#X obj 134 294 *~;
-#X obj 91 341 else/out~;
-#X obj 312 261 else/setmess;
-#X text 523 238 0;
-#X obj 134 225 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 442 136 1;
+#X obj 179 311 else/envgen~;
+#X obj 52 288 *~;
+#X obj 52 336 else/out~;
+#X obj 230 255 else/setmess;
+#X text 441 232 0;
+#X obj 52 219 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -262144 -1 -1 200 256;
-#X msg 312 288 0 50 1 50 0.6 300 0.6 200 0;
-#X obj 312 115 else/initmess 0 50 1 50 0.6 300 0.6 200 0;
-#X obj 134 258 else/bl.tri~;
-#X obj 134 196 else/initmess 200;
-#X text 134 27 Here's an example on how to use [function] with [envgen~].
+#X msg 230 282 0 50 1 50 0.6 300 0.6 200 0;
+#X obj 230 109 else/initmess 0 50 1 50 0.6 300 0.6 200 0;
+#X obj 52 252 else/bl.tri~;
+#X obj 52 190 else/initmess 200;
+#X text 56 24 Here's an example on how to use [function] with [envgen~].
 Since [function] is always outputing a list \, you can use something
 like [setmess] and only trigger the envelope when sending it a bang
 or a float. Check the help file of [envgen~] for more details on how
-it works., f 60;
-#X obj 315 148 else/function 200 100 empty empty 0 1 220 220 220 50
+it works., f 64;
+#X obj 233 142 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 50 1 50 0.6 300 0.6 200 0;
 #X connect 0 0 2 0;
 #X connect 2 0 3 1;
@@ -165,15 +131,80 @@ it works., f 60;
 #X connect 10 0 3 0;
 #X connect 11 0 7 0;
 #X connect 13 0 5 0;
-#X restore 474 253 pd envgen~;
-#X text 177 528 (none);
-#X text 99 557 -heigth <float> (default 100) | -width <float> (default
+#X restore 480 229 pd envgen~;
+#X text 177 539 (none);
+#X text 141 484 init <float>;
+#X text 223 484 - nonzero sets to init mode, f 41;
+#X obj 190 164 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 500 1 500 0;
+#X text 153 329 set <list>;
+#X text 223 329 - sets breakpoints function, f 41;
+#X text 99 568 -heigth <float> (default 100) | -width <float> (default
 200) | -send <symbol> (default none) | -receive <symbol> (default none)
 | -bgcolor <f \, f \, f> | -fgcolor <f \, f \, f> | -resize <float>
 | -min <float> (default 0) | -max <float> (default 1) | -init | -set
-<list> (default 0 1000 0) - sets the function., f 65;
-#X text 141 470 init <float>;
-#X text 223 470 - nonzero sets to init mode, f 41;
-#X connect 44 0 47 0;
-#X connect 46 0 47 0;
-#X connect 47 0 45 0;
+<list> (default 0 1000 0)., f 65;
+#N canvas 531 76 598 533 messages 0;
+#X text 287 442 -2;
+#X text 290 339 2;
+#X text 290 391 0;
+#X obj 81 346 else/function 200 100 empty empty -2 2 220 220 220 50
+50 50 1 0 0 0 -1 100 1 100 0;
+#X obj 78 169 loadbang;
+#X msg 78 192 -1 100 1 100 0 \, min -2 \, max 2;
+#X text 160 100 You can also set different minimum/maximum points min/max
+messages or flags \, but the values are clipped to the given minimum
+and maximum points of the lines so the points are never outside the
+graph bound.;
+#X text 160 23 The [function] serves as an all purpose line generator
+interface. This means you can have line segments in any range. By default
+\, the range is from 0 to 1 \, but if a list input is given with points
+outside that range \, the minimum and maximum points are updated accordingly
+so the line segments fit into the GUI display.;
+#X obj 78 461 else/display;
+#X msg 111 243 resize 1000 \, bang;
+#X msg 96 217 min -1.5 \, max 1.5;
+#X text 302 179 The resize message or flag resizes the duration of
+each line segment so the overall duration is the same as the given
+value in ms., f 34;
+#X msg 148 275 bgcolor 220 220 220 \, fgcolor 50 50 50 \, width 200
+\, height 100;
+#X msg 172 304 bgcolor 50 50 50 \, fgcolor 175 0 0 \, width 150 \,
+height 75;
+#X text 438 251 default;
+#X text 264 251 set dimension/colors;
+#X connect 3 0 8 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X connect 9 0 3 0;
+#X connect 10 0 3 0;
+#X connect 12 0 3 0;
+#X connect 13 0 3 0;
+#X restore 473 270 pd messages;
+#N canvas 626 94 512 468 in/out 0;
+#X text 103 101 ADSR (attack \, decay \, sustain \, release);
+#X obj 106 208 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 1000 1;
+#X obj 103 328 else/display;
+#X obj 103 127 else/initmess 0 100 1 100 0.6 350 0.6 250 0;
+#X text 66 386 You can also generate an output via the interface. You
+can click on a point and drag it around. A point is removed if you
+click on it and hit delete. Click anywhere in the graph where there's
+not a point and you create a new one.;
+#X obj 77 128 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 58 28 An odd list of at least 3 floats sets the envelope function.
+The syntax is the same as the [function~] object (point1 \, period
+\, point2 \, period \, point3 \, etc.) - an output is then generated
+with the list values for [envgen~] or [function~]. A bang forces an
+output of the stored line fucntion.;
+#X msg 131 163 set 0 1000 1;
+#X text 215 164 set message only sets (doesn't output);
+#X connect 1 0 2 0;
+#X connect 3 0 1 0;
+#X connect 5 0 1 0;
+#X connect 7 0 1 0;
+#X restore 486 209 pd in/out;
+#X connect 44 0 52 0;
+#X connect 46 0 52 0;
+#X connect 52 0 45 0;
