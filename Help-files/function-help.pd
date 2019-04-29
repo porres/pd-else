@@ -1,15 +1,15 @@
-#N canvas 646 23 567 660 10;
+#N canvas 565 23 565 673 10;
 #X obj 4 309 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 503 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 517 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 532 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 546 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 633 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 645 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 99 317 cnv 17 3 183 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 99 317 cnv 17 3 196 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 99 511 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 99 525 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 189 315 list;
 #X text 223 315 - sets and outputs breakpoints function, f 41;
@@ -19,23 +19,21 @@
 #X text 147 385 max <float>;
 #X text 223 371 - sets minimum graph boundary, f 41;
 #X text 223 385 - sets maximum graph boundary, f 41;
-#X text 189 512 list;
-#X text 129 399 height <float>;
-#X text 135 413 width <float>;
-#X text 223 399 - sets heigth, f 41;
-#X text 223 413 - sets width, f 41;
-#X obj 4 562 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 135 455 send <symbol>;
-#X text 223 455 - sets send symbol, f 41;
-#X text 117 469 receive <symbol>;
-#X text 223 469 - sets receive symbol, f 41;
-#X text 223 511 - breakpoints function for [envgen~]/[function~];
-#X text 129 357 resize <float>;
-#X text 223 357 - resizes overall duration, f 41;
-#X text 111 427 fgcolor <f \, f \, f>;
-#X text 223 427 - sets RGB color of foreground, f 41;
-#X text 111 441 bgcolor <f \, f \, f>;
-#X text 223 441 - sets RGB color of background, f 41;
+#X text 189 526 list;
+#X text 129 413 height <float>;
+#X text 135 427 width <float>;
+#X text 223 413 - sets heigth, f 41;
+#X text 223 427 - sets width, f 41;
+#X obj 4 576 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 135 469 send <symbol>;
+#X text 223 469 - sets send symbol, f 41;
+#X text 117 483 receive <symbol>;
+#X text 223 483 - sets receive symbol, f 41;
+#X text 223 525 - breakpoints function for [envgen~]/[function~];
+#X text 111 441 fgcolor <f \, f \, f>;
+#X text 223 441 - sets RGB color of foreground, f 41;
+#X text 111 455 bgcolor <f \, f \, f>;
+#X text 223 455 - sets RGB color of background, f 41;
 #X obj 24 40 cnv 4 4 4 empty empty Function 0 28 2 18 -233017 -1 0
 ;
 #X obj 102 40 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
@@ -97,7 +95,7 @@ below!;
 #X connect 10 0 12 0;
 #X connect 11 0 12 0;
 #X connect 12 0 2 0;
-#X restore 468 249 pd function~;
+#X restore 469 225 pd function~;
 #N canvas 600 144 526 424 envgen~ 0;
 #X obj 179 231 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -131,57 +129,61 @@ it works., f 64;
 #X connect 10 0 3 0;
 #X connect 11 0 7 0;
 #X connect 13 0 5 0;
-#X restore 480 229 pd envgen~;
-#X text 177 539 (none);
-#X text 141 484 init <float>;
-#X text 223 484 - nonzero sets to init mode, f 41;
+#X restore 481 205 pd envgen~;
+#X text 177 553 (none);
+#X text 141 498 init <float>;
+#X text 223 498 - nonzero sets to init mode, f 41;
 #X obj 190 164 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 500 1 500 0;
 #X text 153 329 set <list>;
 #X text 223 329 - sets breakpoints function, f 41;
-#X text 99 568 -heigth <float> (default 100) | -width <float> (default
+#X text 99 582 -heigth <float> (default 100) | -width <float> (default
 200) | -send <symbol> (default none) | -receive <symbol> (default none)
 | -bgcolor <f \, f \, f> | -fgcolor <f \, f \, f> | -resize <float>
 | -min <float> (default 0) | -max <float> (default 1) | -init | -set
 <list> (default 0 1000 0)., f 65;
 #N canvas 531 76 598 533 messages 0;
-#X text 287 442 -2;
-#X text 290 339 2;
-#X text 290 391 0;
+#X text 58 438 -2;
+#X text 64 337 2;
+#X text 61 388 0;
 #X obj 81 346 else/function 200 100 empty empty -2 2 220 220 220 50
 50 50 1 0 0 0 -1 100 1 100 0;
 #X obj 78 169 loadbang;
 #X msg 78 192 -1 100 1 100 0 \, min -2 \, max 2;
-#X text 160 100 You can also set different minimum/maximum points min/max
+#X text 151 91 You can also set different minimum/maximum points min/max
 messages or flags \, but the values are clipped to the given minimum
 and maximum points of the lines so the points are never outside the
 graph bound.;
-#X text 160 23 The [function] serves as an all purpose line generator
+#X text 151 14 The [function] serves as an all purpose line generator
 interface. This means you can have line segments in any range. By default
 \, the range is from 0 to 1 \, but if a list input is given with points
 outside that range \, the minimum and maximum points are updated accordingly
 so the line segments fit into the GUI display.;
 #X obj 78 461 else/display;
-#X msg 111 243 resize 1000 \, bang;
 #X msg 96 217 min -1.5 \, max 1.5;
-#X text 302 179 The resize message or flag resizes the duration of
-each line segment so the overall duration is the same as the given
-value in ms., f 34;
 #X msg 148 275 bgcolor 220 220 220 \, fgcolor 50 50 50 \, width 200
 \, height 100;
 #X msg 172 304 bgcolor 50 50 50 \, fgcolor 175 0 0 \, width 150 \,
 height 75;
-#X text 438 251 default;
-#X text 264 251 set dimension/colors;
+#X text 461 257 default;
+#X text 273 255 set dimension/colors;
+#X msg 111 243 duration 1000 \, bang;
+#X text 302 181 The duration message or flag resizes the duration of
+each line segment so the overall duration is the same as the given
+value in ms., f 36;
+#X msg 58 142 resize;
+#X text 151 144 The resize message resizes the graph bounds to the
+min/max values.;
 #X connect 3 0 8 0;
 #X connect 4 0 5 0;
 #X connect 5 0 3 0;
 #X connect 9 0 3 0;
 #X connect 10 0 3 0;
-#X connect 12 0 3 0;
-#X connect 13 0 3 0;
-#X restore 473 270 pd messages;
-#N canvas 392 93 832 476 in/out 1;
+#X connect 11 0 3 0;
+#X connect 14 0 3 0;
+#X connect 16 0 3 0;
+#X restore 474 246 pd messages;
+#N canvas 392 93 832 476 in/out 0;
 #X text 91 100 ADSR (attack \, decay \, sustain \, release);
 #X obj 94 207 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 100 1 100 0.6 350 0.6 250 0;
@@ -202,7 +204,7 @@ output of the stored line fucntion.;
 #X text 203 163 set message only sets (doesn't output);
 #X text 509 116 ADSR (attack \, decay \, sustain \, release);
 #X obj 512 253 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0.5 100 1 100 0.6 350 0.6 250 0;
+50 50 0 0 0 0 0 100 1 100 0.6 350 0.6 250 0;
 #X obj 509 373 else/display;
 #X obj 509 142 else/initmess 0 100 1 100 0.6 350 0.6 250 0;
 #X obj 483 143 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -225,7 +227,33 @@ second number of the list., f 51;
 #X connect 15 0 10 0;
 #X connect 17 0 18 0;
 #X connect 18 0 10 0;
-#X restore 486 209 pd in/out;
-#X connect 44 0 52 0;
-#X connect 46 0 52 0;
-#X connect 52 0 45 0;
+#X restore 487 185 pd in/out;
+#X text 117 357 duration <float>;
+#X text 223 357 - resets overall duration, f 41;
+#X text 129 399 resize <float>;
+#X text 223 399 - sets new graph bounds according to min/max;
+#N canvas 628 163 478 384 more 0;
+#X obj 315 268 else/display;
+#X obj 77 184 else/function 200 100 function-out function-in 0 1 220
+220 220 50 50 50 1 0 0 0 0 1000 1;
+#X obj 315 234 r function-out;
+#X obj 313 191 s function-in;
+#X obj 313 168 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 349 168 init 1;
+#X obj 74 143 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 74 310 else/display;
+#X text 59 44 The init message or flag outputs the last saved state
+of [function] when loading the patch. The "send"/"receive" messages
+and flags set a symbol name to send to and receive messages from [function].
+when they're provided \, the inlet and outlet are not drawn.;
+#X connect 1 0 7 0;
+#X connect 2 0 0 0;
+#X connect 4 0 3 0;
+#X connect 5 0 3 0;
+#X connect 6 0 1 0;
+#X restore 492 266 pd more \; messages;
+#X connect 42 0 50 0;
+#X connect 44 0 50 0;
+#X connect 50 0 43 0;

@@ -114,7 +114,7 @@ static void function_bang(t_function *x){
 }
 
 // GUI SHIT /////////////////////////////////////////////////////////////////////////////////////
-static void function_resize(t_function* x,int ns){
+static void function_set_new_size(t_function* x,int ns){
     if(ns > x->x_states){
         int newargs = ns*sizeof(t_float);
         x->x_duration = resizebytes(x->x_duration, x->x_states*sizeof(t_float), newargs);
@@ -138,7 +138,7 @@ static void function_generate(t_function *x, int ac, t_atom* av){
     t_float tdur = 0;
     x->x_duration[0] = 0;
     x->x_n_states = ac >> 1;
-    function_resize(x, ac >> 1);
+    function_set_new_size(x, ac >> 1);
     t_float* dur = x->x_duration;
     t_float* val = x->x_points;
 // get 1st value
@@ -243,7 +243,7 @@ static int function_x_next_doodle(t_function *x, struct _glist *glist, int xpos,
         while (((dxpos + (x->x_duration[insertpos-1] * xscale)) - xpos) >0)
             insertpos--;
         if(x->x_n_states + 1 >= x->x_states)
-            function_resize(x, x->x_states + 1);
+            function_set_new_size(x, x->x_states + 1);
         for(i = x->x_n_states; i >= insertpos; i--){
             x->x_duration[i + 1] = x->x_duration[i];
             x->x_points[i + 1] = x->x_points[i];
@@ -630,7 +630,7 @@ static void function_max(t_function *x, t_floatarg f){
     }
 }
 
-static void function_fit(t_function *x){
+static void function_resize(t_function *x){
     x->x_max = x->x_max_point;
     x->x_min = x->x_min_point;
     if(glist_isvisible(x->glist))
@@ -644,6 +644,7 @@ static void function_init(t_function *x, t_floatarg f){
 static void function_height(t_function *x, t_floatarg f){
     x->x_height = f < 20 ? 20 : f;
     function_update(x, x->glist);
+    canvas_fixlinesfor(x->glist, (t_text*) x);
 }
 
 static void function_width(t_function *x, t_floatarg f){
@@ -808,7 +809,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     while(ac > 0){
         if(av->a_type == A_SYMBOL){
             cursym = atom_getsymbolarg(0, ac, av);
-            if(!strcmp(cursym->s_name, "-resize")){
+            if(!strcmp(cursym->s_name, "-duration")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     t_float curfloat = atom_getfloatarg(1, ac, av);
                     initialDuration = curfloat < 0 ? 0 : curfloat;
@@ -968,14 +969,14 @@ void function_setup(void){
     class_addlist(function_class, function_list);
     class_addmethod(function_class, (t_method)function_loadbang,
                     gensym("loadbang"), A_DEFFLOAT, 0);
-    class_addmethod(function_class, (t_method)function_fit, gensym("fit"), A_GIMME, 0);
+    class_addmethod(function_class, (t_method)function_resize, gensym("resize"), A_GIMME, 0);
     class_addmethod(function_class, (t_method)function_set, gensym("set"), A_GIMME, 0);
     class_addmethod(function_class, (t_method)function_init, gensym("init"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_height, gensym("height"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_min, gensym("min"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_max, gensym("max"), A_FLOAT, 0);
-    class_addmethod(function_class, (t_method)function_duration, gensym("resize"), A_FLOAT, 0);
+    class_addmethod(function_class, (t_method)function_duration, gensym("duration"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_send, gensym("send"), A_SYMBOL, 0);
     class_addmethod(function_class, (t_method)function_receive, gensym("receive"), A_SYMBOL, 0);
     class_addmethod(function_class, (t_method)function_bgcolor, gensym("bgcolor"),
