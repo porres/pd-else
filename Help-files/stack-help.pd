@@ -1,4 +1,4 @@
-#N canvas 665 62 566 499 10;
+#N canvas 550 61 564 530 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -24,65 +24,111 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 4 301 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 278 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 384 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 412 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 439 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 467 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 147 393 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 145 421 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 147 310 cnv 17 3 43 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 145 287 cnv 17 3 90 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 470 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 498 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 201 323 bang;
-#X obj 147 360 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 201 285 bang;
+#X obj 145 387 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 177 307 anything;
-#X text 177 393 anything;
-#X text 195 338 clear;
-#X text 195 361 float;
-#X floatatom 283 211 5 0 0 0 - - -;
-#X obj 324 271 bng 17 250 50 0 empty empty empty 17 7 1 10 -228856
+#X text 177 387 anything;
+#X text 177 421 anything;
+#X text 195 316 clear;
+#X obj 282 247 bng 17 250 50 0 empty empty empty 17 7 1 10 -228856
 -1 -1;
-#X msg 193 190 clear;
-#X obj 267 269 else/display;
-#X obj 324 198 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
--1;
-#X floatatom 324 222 3 0 0 0 - - -;
-#X obj 228 147 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X msg 205 196 clear;
+#X obj 195 245 else/display;
+#X obj 195 171 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 252 148 a \, b \, c;
-#X msg 267 174 1 2 \, 3 4 \, 5 6;
-#X obj 267 246 else/stack;
-#X text 231 393 - the stored message;
-#X obj 147 414 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X msg 296 194 1 2 \, 3 4 \, 5 6;
+#X text 231 421 - the stored message;
+#X obj 145 442 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 201 414 bang;
-#X text 231 414 - when the stack is empty;
-#X text 183 146 output;
-#X text 78 84 [stack] stacks and stores messages and removes and outputs
-them one by one when receiving bangs. The order they are stored is
-defined by the argument or second inlet. By default (>= 0) we have
-a FIFO (First In First Out) storage. If negative \, we have a LIFO
-(Last In First Out)., f 67;
-#X text 358 214 >= 0 (FIFO);
-#X text 364 229 < 0 (LIFO);
-#X text 231 307 - input messages to be stacked, f 38;
-#X text 231 323 - outputs and removes a message;
-#X text 231 338 - clears the stack, f 38;
-#X text 231 361 - set order: >= 0 (FIFO) / < 0 (LIFO);
-#X text 135 448 1) float - set order: >= 0 (FIFO) / < 0 (LIFO) - default
-0;
-#X text 344 197 sets order:;
-#X text 345 271 bang if empty;
-#X connect 24 0 33 0;
-#X connect 26 0 33 0;
-#X connect 28 0 29 0;
-#X connect 29 0 33 1;
-#X connect 30 0 33 0;
-#X connect 31 0 33 0;
-#X connect 32 0 33 0;
-#X connect 33 0 27 0;
-#X connect 33 1 25 0;
+#X text 201 442 bang;
+#X text 231 442 - when the stack is empty;
+#X text 168 152 output;
+#X text 231 387 - input messages to be stacked, f 38;
+#X text 231 285 - outputs and removes a message, f 38;
+#X text 231 315 - clears the stack, f 38;
+#X text 303 247 bang if empty;
+#X floatatom 262 142 5 0 0 0 - - -;
+#N canvas 561 74 377 247 dump 0;
+#X obj 171 140 bng 17 250 50 0 empty empty empty 17 7 1 10 -228856
+-1 -1;
+#X obj 114 137 else/display;
+#X text 192 140 bang if empty;
+#X floatatom 171 79 5 0 0 0 - - -;
+#X text 212 78 store messages;
+#X msg 114 77 dump;
+#X obj 114 175 print;
+#X obj 114 110 else/stack;
+#X text 55 38 A dump message outputs all stored messages.;
+#X connect 1 0 6 0;
+#X connect 3 0 7 1;
+#X connect 5 0 7 0;
+#X connect 7 0 1 0;
+#X connect 7 1 0 0;
+#X restore 489 213 pd dump;
+#X text 303 141 store messages;
+#X msg 282 167 a \, b c \, list x y \, symbol hi;
+#X text 201 300 dump;
+#X msg 152 182 fifo;
+#X msg 116 182 lifo;
+#X text 201 331 fifo;
+#X text 231 331 - set order to 'fifo';
+#X text 201 346 lifo;
+#X text 231 346 - set order to 'lifo';
+#X text 175 476 1) symbol - sets order \, <fifo> (default) or <lifo>
+;
+#X text 68 84 [stack] is an abstraction based on [text] that stacks
+and stores messages and removes and outputs them one by one when receiving
+bangs. An argument defines the order \, which can be 'fifo' (first
+in first out) or 'lifo' (last in first out)., f 67;
+#X text 231 300 - outputs all messages and clears them;
+#X text 159 363 vis <float>;
+#X obj 195 221 else/stack lifo;
+#X text 231 363 - non zero opens [text] window \, 0 closes it.;
+#N canvas 561 74 504 285 vis 0;
+#X obj 244 204 bng 17 250 50 0 empty empty empty 17 7 1 10 -228856
+-1 -1;
+#X obj 157 202 else/display;
+#X obj 157 128 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 258 151 1 2 \, 3 4 \, 5 6;
+#X text 265 204 bang if empty;
+#X floatatom 224 99 5 0 0 0 - - -;
+#X text 265 98 store messages;
+#X msg 244 124 a \, b c \, list x y \, symbol hi;
+#X msg 98 129 vis \$1;
+#X obj 98 109 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X text 82 29 The [stack] object is based on Pd Vanilla's [text] object.
+And you can open its window with the 'vis' message. This also means
+you can manually edit the contents of stack!;
+#X obj 157 178 else/stack, f 15;
+#X connect 2 0 11 0;
+#X connect 3 0 11 1;
+#X connect 5 0 11 1;
+#X connect 7 0 11 1;
+#X connect 8 0 11 0;
+#X connect 9 0 8 0;
+#X connect 11 0 1 0;
+#X connect 11 1 0 0;
+#X restore 495 237 pd vis;
+#X connect 24 0 52 0;
+#X connect 26 0 52 0;
+#X connect 27 0 52 1;
+#X connect 37 0 52 1;
+#X connect 40 0 52 1;
+#X connect 42 0 52 0;
+#X connect 43 0 52 0;
+#X connect 52 0 25 0;
+#X connect 52 1 23 0;
