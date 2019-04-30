@@ -5,6 +5,14 @@
 
 #define ENVGEN_MAX_SIZE  512 // maximum line segments
 
+
+static t_class *envgen_proxy_class;
+
+typedef struct _envgen_proxy{
+    t_pd              p_pd;
+    struct _envgen  *p_owner;
+}t_envgen_proxy;
+
 typedef struct _envgenseg{
     float  s_target;
     float  s_delta;
@@ -12,6 +20,7 @@ typedef struct _envgenseg{
 
 typedef struct _envgen{
     t_object        x_obj;
+    t_envgen_proxy x_proxy;
     float           x_value;
     float           x_target;
     float           x_delta;
@@ -44,6 +53,30 @@ static t_class *envgen_class;
 static void copy_atoms(t_atom *src, t_atom *dst, int n){
     while(n--)
         *dst++ = *src++;
+}
+
+static void envgen_proxy_init(t_envgen_proxy * p, t_envgen *x){
+    p->p_pd = envgen_proxy_class;
+    p->p_owner = x;
+}
+
+static void envgen_proxy_list(t_envgen_proxy *p, t_symbol *s, int ac, t_atom *av){
+    t_envgen *x = p->p_owner;
+//
+    t_symbol *dummy = s;
+    dummy = NULL;
+    t_atom *a;
+    t_int n;
+    for(n = 0, a = av; n < ac; n++, a++)
+        if(a->a_type != A_FLOAT){
+            pd_error(x, "[envgen~]: needs to only contain floats");
+            return;
+        }
+    if(!ac)
+        return;
+    x->x_ac = ac;
+    x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
+    copy_atoms(av, x->x_av, x->x_ac);
 }
 
 static void envgen_retarget(t_envgen *x){
@@ -167,7 +200,7 @@ static void envgen_set(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     t_int n;
     for(n = 0, a = av; n < ac; n++, a++)
         if(a->a_type != A_FLOAT){
-            pd_error(x, "envgen~: set needs to only contain floats");
+            pd_error(x, "[envgen~]: set needs to only contain floats");
             return;
         }
     if(!ac)
@@ -184,7 +217,7 @@ static void envgen_list(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     t_int n;
     for(n = 0, a = av; n < ac; n++, a++)
         if(a->a_type != A_FLOAT){
-            pd_error(x, "envgen~: list needs to only contain floats");
+            pd_error(x, "[envgen~]: list needs to only contain floats");
             return;
         }
     if(!ac)
@@ -400,6 +433,8 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
         }
     }
 /////////////////////////////////////////////////////////////////////////////////////
+    envgen_proxy_init(&x->x_proxy, x);
+    inlet_new(&x->x_obj, &x->x_proxy.p_pd, 0, 0);
     outlet_new((t_object *)x, &s_signal);
     x->x_out2 = outlet_new((t_object *)x, &s_float);
     x->x_clock = clock_new(x, (t_method)envgen_tick);
@@ -428,4 +463,7 @@ void envgen_tilde_setup(void){
     class_addmethod(envgen_class, (t_method)envgen_suspoint, gensym("suspoint"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_maxsustain, gensym("maxsustain"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_retrigger, gensym("retrigger"), A_FLOAT, 0);
+    envgen_proxy_class = (t_class *)class_new(gensym("envgen proxy"),
+                                               0, 0, sizeof(t_envgen_proxy), 0, 0);
+    class_addanything(envgen_proxy_class, envgen_proxy_list);
 }

@@ -1,39 +1,39 @@
-#N canvas 414 35 562 679 10;
-#X obj 4 308 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 540 23 562 679 10;
+#X obj 4 306 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 529 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 527 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 558 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 556 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 653 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 651 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 99 316 cnv 17 3 208 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 99 314 cnv 17 3 208 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 99 537 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 99 535 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 189 328 list;
-#X text 223 328 - sets and outputs breakpoints function, f 44;
-#X text 189 356 bang;
-#X text 223 356 - outputs breakpoints function, f 44;
-#X text 147 384 min <float>;
-#X text 147 398 max <float>;
-#X text 223 384 - sets minimum graph boundary, f 44;
-#X text 223 398 - sets maximum graph boundary, f 44;
-#X text 189 538 list;
-#X text 129 426 height <float>;
-#X text 135 440 width <float>;
-#X text 223 426 - sets heigth, f 44;
-#X text 223 440 - sets width, f 44;
-#X obj 4 586 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 135 482 send <symbol>;
-#X text 223 482 - sets send symbol, f 44;
-#X text 117 496 receive <symbol>;
-#X text 223 496 - sets receive symbol, f 44;
-#X text 223 537 - breakpoints function for [envgen~]/[function~];
-#X text 111 454 fgcolor <f \, f \, f>;
-#X text 223 454 - sets RGB color of foreground, f 44;
-#X text 111 468 bgcolor <f \, f \, f>;
-#X text 223 468 - sets RGB color of background, f 44;
+#X text 189 326 list;
+#X text 223 326 - sets and outputs breakpoints function, f 44;
+#X text 189 354 bang;
+#X text 223 354 - outputs breakpoints function, f 44;
+#X text 147 382 min <float>;
+#X text 147 396 max <float>;
+#X text 223 382 - sets minimum graph boundary, f 44;
+#X text 223 396 - sets maximum graph boundary, f 44;
+#X text 189 536 list;
+#X text 129 424 height <float>;
+#X text 135 438 width <float>;
+#X text 223 424 - sets heigth, f 44;
+#X text 223 438 - sets width, f 44;
+#X obj 4 584 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 135 480 send <symbol>;
+#X text 223 480 - sets send symbol, f 44;
+#X text 117 494 receive <symbol>;
+#X text 223 494 - sets receive symbol, f 44;
+#X text 223 535 - breakpoints function for [envgen~]/[function~];
+#X text 111 452 fgcolor <f \, f \, f>;
+#X text 223 452 - sets RGB color of foreground, f 44;
+#X text 111 466 bgcolor <f \, f \, f>;
+#X text 223 466 - sets RGB color of background, f 44;
 #X obj 24 40 cnv 4 4 4 empty empty Function 0 28 2 18 -233017 -1 0
 ;
 #X obj 102 40 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
@@ -59,9 +59,9 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 3 graph;
-#X obj 215 132 else/initmess 0 500 1 500 0;
-#X obj 187 276 else/display;
-#X obj 187 131 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 214 129 else/initmess 0 500 1 500 0;
+#X obj 186 273 else/display;
+#X obj 186 128 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #N canvas 769 53 527 508 function~ 0;
 #X text 407 158 1;
@@ -92,49 +92,44 @@ below!;
 #X connect 10 0 12 0;
 #X connect 11 0 12 0;
 #X connect 12 0 2 0;
-#X restore 469 205 pd function~;
-#N canvas 600 144 526 424 envgen~ 0;
-#X obj 179 231 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X restore 468 201 pd function~;
+#N canvas 600 144 519 378 envgen~ 0;
+#X obj 156 188 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 442 136 1;
-#X obj 179 311 else/envgen~;
-#X obj 52 288 *~;
-#X obj 52 336 else/out~;
-#X obj 230 255 else/setmess;
-#X text 441 232 0;
-#X obj 52 219 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 437 120 1;
+#X obj 156 241 else/envgen~;
+#X obj 47 232 *~;
+#X obj 47 280 else/out~;
+#X text 436 216 0;
+#X obj 47 163 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -262144 -1 -1 200 256;
-#X msg 230 282 0 50 1 50 0.6 300 0.6 200 0;
-#X obj 230 109 else/initmess 0 50 1 50 0.6 300 0.6 200 0;
-#X obj 52 252 else/bl.tri~;
-#X obj 52 190 else/initmess 200;
-#X text 56 24 Here's an example on how to use [function] with [envgen~].
-Since [function] is always outputing a list \, you can use something
-like [setmess] and only trigger the envelope when sending it a bang
-or a float. Check the help file of [envgen~] for more details on how
-it works., f 64;
-#X obj 233 142 else/function 200 100 empty empty 0 1 220 220 220 50
+#X obj 225 93 else/initmess 0 50 1 50 0.6 300 0.6 200 0;
+#X obj 47 196 else/bl.tri~;
+#X obj 47 134 else/initmess 200;
+#X obj 228 126 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 50 1 50 0.6 300 0.6 200 0;
+#X text 66 30 Here's an example on how to use [function] with [envgen~].
+Since [function] is always outputing a list \, you can use the second
+inlet. Check the help file of [envgen~] for more details on how it
+works., f 64;
 #X connect 0 0 2 0;
 #X connect 2 0 3 1;
 #X connect 3 0 4 1;
 #X connect 3 0 4 0;
-#X connect 5 0 8 0;
-#X connect 5 0 2 0;
+#X connect 6 0 8 0;
 #X connect 7 0 10 0;
-#X connect 9 0 13 0;
-#X connect 10 0 3 0;
-#X connect 11 0 7 0;
-#X connect 13 0 5 0;
-#X restore 481 185 pd envgen~;
-#X text 177 565 (none);
-#X text 141 510 init <float>;
-#X text 223 510 - nonzero sets to init mode, f 44;
-#X obj 190 164 else/function 200 100 empty empty 0 1 220 220 220 50
+#X connect 8 0 3 0;
+#X connect 9 0 6 0;
+#X connect 10 0 2 1;
+#X restore 480 181 pd envgen~;
+#X text 177 563 (none);
+#X text 141 508 init <float>;
+#X text 223 508 - nonzero sets to init mode, f 44;
+#X obj 189 161 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 500 1 500 0;
-#X text 153 342 set <list>;
-#X text 223 342 - sets breakpoints function, f 44;
-#X text 99 591 -heigth <float> (default 100) | -width <float> (default
+#X text 153 340 set <list>;
+#X text 223 340 - sets breakpoints function, f 44;
+#X text 99 589 -heigth <float> (default 100) | -width <float> (default
 200) | -send <symbol> (default none) | -receive <symbol> (default none)
 | -bgcolor <f \, f \, f> | -fgcolor <f \, f \, f> | -resize <float>
 | -min <float> (default 0) | -max <float> (default 1) | -init | -set
@@ -179,7 +174,7 @@ min/max values.;
 #X connect 11 0 3 0;
 #X connect 14 0 3 0;
 #X connect 16 0 3 0;
-#X restore 474 246 pd messages;
+#X restore 473 242 pd messages;
 #N canvas 392 93 832 476 in/out 0;
 #X text 91 100 ADSR (attack \, decay \, sustain \, release);
 #X obj 94 207 else/function 200 100 empty empty 0 1 220 220 220 50
@@ -224,11 +219,11 @@ second number of the list., f 51;
 #X connect 15 0 10 0;
 #X connect 17 0 18 0;
 #X connect 18 0 10 0;
-#X restore 487 165 pd in/out;
-#X text 117 370 duration <float>;
-#X text 223 370 - resets overall duration, f 44;
-#X text 129 412 resize <float>;
-#X text 223 412 - sets new graph bounds according to min/max;
+#X restore 486 161 pd in/out;
+#X text 117 368 duration <float>;
+#X text 223 368 - resets overall duration, f 44;
+#X text 129 410 resize <float>;
+#X text 223 410 - sets new graph bounds according to min/max;
 #N canvas 668 153 473 393 more 0;
 #X obj 314 263 else/display;
 #X obj 76 179 else/function 200 100 function-out function-in 0 1 220
@@ -248,9 +243,9 @@ when they're provided \, the inlet and outlet are not drawn.;
 #X connect 2 0 0 0;
 #X connect 4 0 3 0;
 #X connect 5 0 1 0;
-#X restore 492 266 pd more \; messages;
-#X text 183 313 float;
-#X text 223 314 - values from 0-1 are treated as indexes, f 44;
+#X restore 491 262 pd more \; messages;
+#X text 183 311 float;
+#X text 223 312 - values from 0-1 are treated as indexes, f 44;
 #N canvas 538 99 519 511 float 0;
 #X obj 203 245 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 100 1 100 0.6 350 0.6 250 0;
@@ -287,7 +282,7 @@ it as a control message instead., f 70;
 #X connect 8 0 10 1;
 #X connect 9 0 8 0;
 #X connect 11 0 6 0;
-#X restore 493 225 pd float;
+#X restore 492 221 pd float;
 #X text 67 86 [function] is a breakpoints function GUI \, mainly used
 with [function~] or [envgen~]. You can click and draw on it or send
 it lists.;
