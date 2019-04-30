@@ -1,3 +1,4 @@
+// based on [tof/brakpoints]
 
 // memory realloc may crash but pointer seems ok! 'STATES' prevents it
 #define STATES  100   // Remove this, make it work better...
@@ -44,7 +45,7 @@ typedef struct _function{
 // REMOVE THIS!!! Only here for now to debug...
 static void function_print(t_function* x){
     post("---===### function settings ###===---");
-    post("x_x_n_states:     %d",   x->x_n_states);
+    post("x_n_states:     %d",   x->x_n_states);
     post("total duration:   %.2f", x->x_total_duration);
     post("min:              %.2f", x->x_min);
     post("max:              %.2f", x->x_max);
@@ -550,8 +551,35 @@ static void function_save(t_gobj *z, t_binbuf *b){
 
 ///////////////////// METHODS /////////////////////
 static void function_float(t_function *x, t_floatarg f){
-    f = 0;
-    pd_error(x, "[function]: no method for float");
+    t_float val;
+    f = f < 0 ? 0 : f > 1 ? 1 : f;
+    if(f == 0){
+        val = x->x_points[0];
+        outlet_float(x->x_obj.ob_outlet, val);
+        if(x->x_send_sym != &s_)
+            pd_float(x->x_send_sym->s_thing, f);
+        return;
+    }
+    if(f == 1){
+        val = x->x_points[x->x_n_states];
+        outlet_float(x->x_obj.ob_outlet, val);
+        if(x->x_send_sym != &s_)
+            pd_float(x->x_send_sym->s_thing, f);
+        return;
+    }
+    f *= x->x_duration[x->x_n_states];
+    if(x->x_state > x->x_n_states)
+        x->x_state = x->x_n_states;
+    while((x->x_state > 0) && (f < x->x_duration[x->x_state-1]))
+        x->x_state--;
+    while((x->x_state <  x->x_n_states) && (x->x_duration[x->x_state] < f))
+        x->x_state++;
+    val = x->x_points[x->x_state-1] + (f - x->x_duration[x->x_state-1])
+    * (x->x_points[x->x_state] - x->x_points[x->x_state-1])
+    / (x->x_duration[x->x_state] - x->x_duration[x->x_state-1]);
+    outlet_float(x->x_obj.ob_outlet,val);
+    if(x->x_send_sym != &s_)
+        pd_float(x->x_send_sym->s_thing, val);
 }
 
 static void function_set(t_function *x, t_symbol* s, int ac,t_atom *av){
@@ -740,7 +768,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                         ac--; av++;
                     }
                     else{
-                        x->x_receive_sym = av->a_w.w_symbol;
+                        pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = av->a_w.w_symbol);
                         ac--; av++;
                     }
                     if(ac && av->a_type == A_FLOAT){ // 5TH Min
@@ -958,7 +986,7 @@ errstate:
 
 static void function_free(t_function *x){
     if(x->x_receive_sym != &s_)
-         pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym); 
+         pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
 }
 
 void function_setup(void){
