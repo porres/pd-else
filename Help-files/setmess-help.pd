@@ -60,35 +60,6 @@ zero argument makes the message go through.;
 #X text 157 359 float;
 #X text 202 359 - non zero makes the message go through;
 #X text 314 203 <= sets argument;
-#N canvas 555 119 522 512 [envgen~] 0;
-#X obj 133 259 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 396 147 1;
-#X obj 118 361 *~;
-#X obj 75 408 else/out~;
-#X obj 184 266 else/setmess;
-#X text 395 243 0;
-#X obj 184 120 else/initmess 0 50 1 50 0.6 300 0.6 200 0;
-#X msg 184 294 0 50 1 50 0.6 300 0.6 200 0;
-#X obj 133 328 else/envgen~ -retrigger 10;
-#X obj 57 310 osc~ 440;
-#X obj 187 153 else/function;
-#X text 60 31 There are some objects in Pd that can benefit from a
-"set" message - [envgen~] is an example \, and we can use [function]
-with [setmess] to prevent [envgen~] from bein retriggered when using
-[function]. Check the help files of these objects f you've never heard
-of them.;
-#X text 108 193 [function];
-#X connect 0 0 8 0;
-#X connect 2 0 3 1;
-#X connect 2 0 3 0;
-#X connect 4 0 7 0;
-#X connect 4 0 8 0;
-#X connect 6 0 10 0;
-#X connect 8 0 2 1;
-#X connect 9 0 2 0;
-#X connect 10 0 4 0;
-#X restore 446 277 pd [envgen~];
 #X connect 19 0 18 0;
 #X connect 20 0 21 0;
 #X connect 21 0 19 0;
