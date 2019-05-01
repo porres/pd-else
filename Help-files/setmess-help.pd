@@ -1,15 +1,15 @@
-#N canvas 512 151 560 481 10;
-#X obj 4 328 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 481 121 562 424 10;
+#X obj 4 272 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 385 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 329 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 420 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 364 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 87 394 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 117 338 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 87 337 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 117 281 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 453 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 397 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 3 cnv 15 301 42 empty empty setmess 20 20 2 37 -233017 -1
 0;
@@ -24,8 +24,7 @@
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
 #X obj 23 40 cnv 4 4 4 empty empty Set 0 28 2 18 -233017 -1 0;
-#X obj 54 40 cnv 4 4 4 empty empty messages 0 28 2 18 -233017 -1 0
-;
+#X obj 54 40 cnv 4 4 4 empty empty message 0 28 2 18 -233017 -1 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -36,34 +35,35 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 188 280 else/display;
-#X msg 188 251 set any message;
-#X text 308 154 <= click;
-#X obj 188 222 else/setmess 1;
-#X obj 269 201 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X msg 188 142 set any message;
-#X msg 201 166 1 2 3 4 5 6 7;
-#X obj 216 194 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X text 136 338 anything;
-#X text 202 338 - message to be set in a message;
-#X text 136 395 anything;
-#X text 202 395 - output sets a message with the input;
-#X text 139 428 1) float - non zero makes the message go through;
-#X obj 87 358 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 103 234 else/display;
+#X obj 75 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 166 282 anything;
+#X text 232 282 - message to be set in a message;
+#X text 166 339 anything;
+#X obj 117 302 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 157 359 float;
-#X text 202 359 - non zero makes the message go through;
-#X text 290 202 <= sets argument;
-#X obj 109 220 loadbang;
-#X text 69 86 [setmess] sets messages with the received input. A non
-zero argument makes the message go through. This is useful to create
-messages that are saved with the patch.;
-#X connect 19 0 18 0;
-#X connect 21 0 19 0;
-#X connect 22 0 21 1;
-#X connect 23 0 21 0;
-#X connect 24 0 21 0;
-#X connect 25 0 21 0;
-#X connect 35 0 19 0;
+#X obj 103 207 else/setmess ratio;
+#X obj 124 40 cnv 4 4 4 empty empty selector 0 28 2 18 -233017 -1 0
+;
+#X msg 307 234;
+#X obj 338 207 else/initmess set;
+#X obj 307 181 else/setmess set;
+#X text 178 303 symbol;
+#X text 232 303 - message selector;
+#X msg 208 181 amp;
+#X msg 103 151 0.1 0.6 0.3 0.7;
+#X text 119 182 new selector:;
+#X text 78 88 [setmess] sets a user defined selector for an incoming
+message. By default we have an empty selector \, which ends up removing
+selectors such as "symbol" or "list"., f 63;
+#X msg 307 156 incoming message;
+#X text 173 372 1) symbol - selector (default none);
+#X text 232 339 - output a message with a new selector;
+#X connect 19 0 24 0;
+#X connect 24 0 18 0;
+#X connect 27 0 26 0;
+#X connect 28 0 26 0;
+#X connect 31 0 24 1;
+#X connect 32 0 24 0;
+#X connect 35 0 28 0;
