@@ -98,7 +98,7 @@ loop;
 #X text 136 522 -offset <float>;
 #X msg 389 179 -3 3;
 #X msg 344 179 20 15;
-#N canvas 766 265 477 314 array_sweep 1;
+#N canvas 766 265 477 314 array_sweep 0;
 #X text 96 19 [loop] is very useful for sweeping through arrays.;
 #X obj 54 47 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -127,7 +127,7 @@ loop;
 #X text 415 92 1;
 #X obj 54 212 else/display;
 #X obj 54 156 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 99 256;
+-228856 -1 -1 0 256;
 #X floatatom 54 104 5 0 0 0 - - -;
 #X obj 54 245 print array_values;
 #X obj 54 77 expr size("array_\$0");

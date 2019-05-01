@@ -16,6 +16,7 @@ typedef struct _loop{
     t_int       x_step;
     t_int       x_upwards;
     t_int       x_status;
+    t_int       x_b;
     t_outlet   *x_bangout;
 }t_loop;
 
@@ -26,7 +27,10 @@ static void loop_do_loop(t_loop *x){ // The Actual Loop
     if(x->x_upwards){
         if(x->x_iter){
             while(x->x_count <= x->x_target * x->x_step){
-                outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
+                if(x->x_b)
+                    outlet_bang(((t_object *)x)->ob_outlet);
+                else
+                    outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
                 x->x_count += x->x_step;
                 if(x->x_status == PAUSED)
                     return;
@@ -34,7 +38,10 @@ static void loop_do_loop(t_loop *x){ // The Actual Loop
         }
         else{
             while(x->x_count <= x->x_target){
-                outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
+                if(x->x_b)
+                    outlet_bang(((t_object *)x)->ob_outlet);
+                else
+                    outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
                 x->x_count += x->x_step;
                 if(x->x_status == PAUSED)
                     return;
@@ -43,7 +50,10 @@ static void loop_do_loop(t_loop *x){ // The Actual Loop
     }
     else{
         while(x->x_count >= x->x_target){
-            outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
+            if(x->x_b)
+                outlet_bang(((t_object *)x)->ob_outlet);
+            else
+                outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
             x->x_count -= x->x_step;
             if(x->x_status == PAUSED)
                 return;
@@ -113,6 +123,7 @@ static void *loop_new(t_symbol *s, int argc, t_atom *argv){
     x->x_status = OFF;
     t_float f1 = 0, f2 = 0, offset = 0, step = 1;
     x->x_upwards = x->x_iter = 1;
+    x->x_b = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
     while(argc > 0){
@@ -151,6 +162,14 @@ static void *loop_new(t_symbol *s, int argc, t_atom *argv){
                 argnum += 2;
                 argc -= 2;
                 argv+= 2;
+                if(argv->a_type == A_FLOAT)
+                    goto errstate;
+            }
+            else if(!strcmp(curarg->s_name, "-b")){
+                x->x_b = 1;
+                argnum++;
+                argc--;
+                argv++;
                 if(argv->a_type == A_FLOAT)
                     goto errstate;
             }
