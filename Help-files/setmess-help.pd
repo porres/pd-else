@@ -1,4 +1,4 @@
-#N canvas 705 161 560 481 10;
+#N canvas 512 151 560 481 10;
 #X obj 4 328 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 385 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -36,20 +36,16 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 212 281 else/display;
-#X msg 212 252;
-#X obj 130 163 loadbang;
-#X msg 130 191 set;
-#X text 332 155 <= click;
-#X obj 212 223 else/setmess 1;
-#X obj 293 202 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 188 280 else/display;
+#X msg 188 251 set any message;
+#X text 308 154 <= click;
+#X obj 188 222 else/setmess 1;
+#X obj 269 201 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 212 143 set any message;
-#X msg 225 167 1 2 3 4 5 6 7;
-#X obj 240 195 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X msg 188 142 set any message;
+#X msg 201 166 1 2 3 4 5 6 7;
+#X obj 216 194 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
-#X text 68 89 [setmess] sets messages with the received input. A non
-zero argument makes the message go through.;
 #X text 136 338 anything;
 #X text 202 338 - message to be set in a message;
 #X text 136 395 anything;
@@ -59,12 +55,15 @@ zero argument makes the message go through.;
 ;
 #X text 157 359 float;
 #X text 202 359 - non zero makes the message go through;
-#X text 314 203 <= sets argument;
+#X text 290 202 <= sets argument;
+#X obj 109 220 loadbang;
+#X text 69 86 [setmess] sets messages with the received input. A non
+zero argument makes the message go through. This is useful to create
+messages that are saved with the patch.;
 #X connect 19 0 18 0;
-#X connect 20 0 21 0;
 #X connect 21 0 19 0;
-#X connect 23 0 19 0;
-#X connect 24 0 23 1;
-#X connect 25 0 23 0;
-#X connect 26 0 23 0;
-#X connect 27 0 23 0;
+#X connect 22 0 21 1;
+#X connect 23 0 21 0;
+#X connect 24 0 21 0;
+#X connect 25 0 21 0;
+#X connect 35 0 19 0;
