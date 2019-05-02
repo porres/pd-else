@@ -1,4 +1,4 @@
-#N canvas 653 90 564 446 10;
+#N canvas 482 72 564 446 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -40,9 +40,9 @@
 #X text 161 398 clicking on the outputs the message;
 #X obj 235 217 else/display;
 #X text 182 190 click =>;
-#X obj 235 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 235 164 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#N canvas 499 175 411 458 syntax 1;
+#N canvas 846 173 411 458 syntax 0;
 #X text 30 20 Like a regular message box \, a comma will split the
 message in different ones inside the same box.;
 #X obj 122 62 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
@@ -80,8 +80,8 @@ you can, f 50;
 #X text 226 258 bang;
 #X obj 98 41 cnv 4 4 4 empty empty box 0 28 2 18 -233017 -1 0;
 #X obj 235 189 else/message a b c;
-#X text 32 178 see also:;
-#X obj 29 200 else/initmess;
+#X text 42 187 see also:;
+#X obj 39 209 else/initmess;
 #X text 256 258 - outputs the message;
 #X text 202 274 anything;
 #X text 256 274 - sets and outputs the message;
