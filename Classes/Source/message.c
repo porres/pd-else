@@ -5,16 +5,45 @@
 #include <string.h>
 
 static t_class *message_class;
+static t_class *message_proxy_class;
+
+typedef struct _message_proxy{
+    t_pd              p_pd;
+    struct _message  *p_owner;
+}t_message_proxy;
 
 typedef struct _message{
-  t_object      x_obj;
-  t_int         x_ac;
-  t_int         x_first;
-  t_atom       *x_atom;
-  t_atom       *x_av;
-  t_symbol     *x_s;
-  t_symbol     *x_sel;
+    t_object      x_obj;
+    t_message_proxy x_proxy;
+    t_int         x_ac;
+    t_int         x_first;
+    t_atom       *x_atom;
+    t_atom       *x_av;
+    t_symbol     *x_s;
+    t_symbol     *x_sel;
 }t_message;
+
+static void message_proxy_init(t_message_proxy * p, t_message *x){
+    p->p_pd = message_proxy_class;
+    p->p_owner = x;
+}
+
+static void message_proxy_anything(t_message_proxy *p, t_symbol *s, int ac, t_atom *av){
+    t_message *x = p->p_owner;
+    x->x_first = 1;
+    x->x_sel = s;
+    if(!ac){
+        x->x_ac = 0;
+        x->x_av = NULL;
+        x->x_sel = NULL;
+    }
+    else{
+        x->x_ac = ac;
+        x->x_av = x->x_atom = (t_atom *)getbytes(x->x_ac * sizeof(t_atom));
+        for(int i = 0; i < ac; i++)
+            x->x_av[i] = x->x_atom[i] = av[i];
+    }
+}
 
 static void message_send(t_message *x, t_symbol *s, int ac, t_atom *av){
     if(!ac){ // only a selector (but not ";" or ",")
@@ -143,9 +172,26 @@ static void message_output(t_message *x){
         message_send(x, x->x_sel, x->x_ac, x->x_atom);
 }
 
+static void message_any(t_message *x, t_symbol *s, int ac, t_atom *av){
+    x->x_first = 1;
+    x->x_sel = s;
+    if(!ac){
+        x->x_ac = 0;
+        x->x_av = NULL;
+        x->x_sel = NULL;
+    }
+    else{
+        x->x_ac = ac;
+        x->x_av = x->x_atom = (t_atom *)getbytes(x->x_ac * sizeof(t_atom));
+        for(int i = 0; i < ac; i++)
+            x->x_av[i] = x->x_atom[i] = av[i];
+    }
+    message_output(x);
+}
+
 static void message_free(t_message *x){
-  if(x->x_av)
-    freebytes(x->x_av, x->x_ac * sizeof(t_atom));
+    if(x->x_av)
+        freebytes(x->x_av, x->x_ac * sizeof(t_atom));
 }
 
 static void *message_new(t_symbol *s, int ac, t_atom *av){
@@ -170,13 +216,20 @@ static void *message_new(t_symbol *s, int ac, t_atom *av){
         for(i = 0; i < ac; i++)
             x->x_av[i] = x->x_atom[i] = av[i];
     }
+    message_proxy_init(&x->x_proxy, x);
+    inlet_new(&x->x_obj, &x->x_proxy.p_pd, 0, 0);
     outlet_new(&x->x_obj, &s_anything);
     return(x);
 }
 
 void message_setup(void){
-  message_class = class_new(gensym("message"), (t_newmethod)message_new,
-        (t_method)message_free, sizeof(t_message), 0, A_GIMME, 0);
-  class_addbang(message_class, (t_method)message_output);
-  class_addmethod(message_class, (t_method)message_output, gensym("click"), 0);
+    message_class = class_new(gensym("message"), (t_newmethod)message_new,
+                    (t_method)message_free, sizeof(t_message), 0, A_GIMME, 0);
+    class_addbang(message_class, (t_method)message_output);
+    class_addanything(message_class, (t_method)message_any);
+    class_addmethod(message_class, (t_method)message_output, gensym("click"), 0);
+    message_proxy_class = (t_class *)class_new(gensym("message proxy"),
+                                    0, 0, sizeof(t_message_proxy), 0, 0);
+    class_addanything(message_proxy_class, message_proxy_anything);
 }
+
