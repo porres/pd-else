@@ -1,4 +1,4 @@
-#N canvas 482 72 564 446 10;
+#N canvas 502 96 564 446 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -6,7 +6,8 @@
 #X restore 305 4 pd;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 26 41 cnv 4 4 4 empty empty Message 0 28 2 18 -233017 -1 0;
+#X obj 89 41 cnv 4 4 4 empty empty messages 0 28 2 18 -233017 -1 0
+;
 #X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -42,7 +43,7 @@
 #X text 182 190 click =>;
 #X obj 235 164 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#N canvas 846 173 411 458 syntax 0;
+#N canvas 747 184 411 458 syntax 0;
 #X text 30 20 Like a regular message box \, a comma will split the
 message in different ones inside the same box.;
 #X obj 122 62 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
@@ -78,7 +79,7 @@ you can, f 50;
 #X restore 477 219 pd syntax;
 #X text 172 369 1) anything -;
 #X text 226 258 bang;
-#X obj 98 41 cnv 4 4 4 empty empty box 0 28 2 18 -233017 -1 0;
+#X obj 35 41 cnv 4 4 4 empty empty Store 0 28 2 18 -233017 -1 0;
 #X obj 235 189 else/message a b c;
 #X text 42 187 see also:;
 #X obj 39 209 else/initmess;
@@ -89,13 +90,13 @@ you can, f 50;
 ;
 #X text 202 296 anything;
 #X text 256 296 - sets the message;
-#X text 71 87 The [message] object stores and outputs any kind of message
-in pd. As an object \, \$1/\$2 loads arguments when used in an abstraction
-\, so the syntax is not the same as a message box. Non4theless \, it
-deals with comma and semicolons in the same way as regular message
-boxes. See [pd syntax] for more details., f 69;
 #X text 257 369 message output, f 16;
 #X msg 340 165 1 2 3;
+#X text 71 87 The [message] object stores and outputs any kind of message
+in Pd. As an object \, \$1/\$2 loads arguments when used in an abstraction
+\, so the syntax is not the same as a message box. Nonetheless \, it
+deals with comma and semicolons in the same way as regular message
+boxes. See [pd syntax] for more details., f 69;
 #X connect 23 0 28 0;
 #X connect 28 0 21 0;
-#X connect 39 0 28 1;
+#X connect 38 0 28 1;
