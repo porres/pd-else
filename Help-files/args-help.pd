@@ -1,5 +1,5 @@
-#N struct 1169-point float x0 float y0 float s;
-#N struct 1169-grid float x0 float y0 float s;
+#N struct 1084-point float x0 float y0 float s;
+#N struct 1084-grid float x0 float y0 float s;
 #N canvas 458 31 563 399 10;
 #X obj 25 41 cnv 4 4 4 empty empty Manage 0 28 2 18 -233017 -1 0;
 #X obj 90 41 cnv 4 4 4 empty empty arguments 0 28 2 18 -233017 -1 0
@@ -174,18 +174,18 @@ $%d-test, f 27;
 #X text 24 278 If you were hoping for a vanilla solution to load arguments
 \, Below there's a subpatch that does that! Just copy and paste it
 into your abstraction:;
-#X obj 542 178 else/args-example 1 2 3;
 #X text 428 39 Next we have the same abstraction with no arguments
 set. Note how you can also send any message to it and it'll change
 the arguments. But they'll be valid only if you save the patch.;
 #X text 454 282 Note that you can have [else/args] anywhere inside
 an abstraction \, like deep buried inside many layers of subpatches.
 ;
+#X obj 542 178 else/args-example;
 #X connect 0 0 6 0;
 #X connect 6 0 1 0;
-#X connect 7 0 14 0;
-#X connect 9 0 14 0;
-#X connect 14 0 8 0;
+#X connect 7 0 16 0;
+#X connect 9 0 16 0;
+#X connect 16 0 8 0;
 #X restore 466 171 pd example1;
 #N canvas 360 200 719 463 example2 0;
 #X text 32 31 The [slider2] abstraction in else uses [else/args] to
