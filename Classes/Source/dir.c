@@ -33,12 +33,10 @@ static void dir_seek(t_dir *x, t_float f){
     x->x_seek = seek;
     seek += x->x_ignored;
     x->x_dir = opendir(x->x_directory);
-    rewinddir(x->x_dir);
     struct dirent *result = NULL;
     for(t_int i = 0; i < seek; i++)
         result = readdir(x->x_dir);
     outlet_symbol(x->x_out1, gensym(result->d_name));
-    rewinddir(x->x_dir);
     closedir(x->x_dir);
 }
 
@@ -82,7 +80,6 @@ static void dir_open(t_dir *x, t_symbol *dirname){
         outlet_float(x->x_out3, 1);
     }
     x->x_dir = opendir(x->x_directory);
-    rewinddir(x->x_dir);
     x->x_nfiles = x->x_ignored = 0;
     struct dirent *result = NULL;
     while((result = readdir(x->x_dir))){
@@ -104,12 +101,10 @@ static void dir_reset(t_dir *x){
 
 static void dir_dump(t_dir *x){
     x->x_dir = opendir(x->x_directory);
-    rewinddir(x->x_dir);
     struct dirent *result = NULL;
     while((result = readdir(x->x_dir)))
         if(strncmp(result->d_name, ".", 1 ))
             outlet_symbol(x->x_out1, gensym(result->d_name));
-    rewinddir(x->x_dir);
     closedir(x->x_dir);
 }
 
