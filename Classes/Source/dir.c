@@ -110,6 +110,7 @@ static void dir_dump(t_dir *x){
         if(strncmp(result->d_name, ".", 1 ))
             outlet_symbol(x->x_out1, gensym(result->d_name));
     rewinddir(x->x_dir);
+    closedir(x->x_dir);
 }
 
 static void dir_dir(t_dir *x){
