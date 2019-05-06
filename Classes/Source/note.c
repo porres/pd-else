@@ -1,4 +1,4 @@
-// based on cyclone's comment
+// based on our work in cyclone's comment
 
 #include <string.h>
 #include <ctype.h>
@@ -15,7 +15,7 @@
 #define note_NUMCOLORS   3
 
 typedef struct _note{
-    t_object        x_ob;
+    t_object        x_obj;
     t_glist        *x_glist;
     t_canvas       *x_canvas;
     t_symbol       *x_bindsym;
@@ -48,7 +48,7 @@ typedef struct _note{
     int             x_active;
     int             x_ready;
     t_symbol       *x_receive_sym;
-    t_symbol       *x_selector;
+    t_symbol       *x_rcv_unexpanded;
 }t_note;
 
 static t_class *note_class;
@@ -57,9 +57,11 @@ static t_class *notesink_class;
 static t_pd *notesink = 0;
 
 static void note_receive(t_note *x, t_symbol *s){
-    if(s != &s_){
-        if(x->x_receive_sym != &s_) pd_unbind(&x->x_ob.ob_pd, x->x_receive_sym);
-        pd_bind(&x->x_ob.ob_pd, x->x_receive_sym = s);
+    t_symbol *rcv = canvas_realizedollar(x->x_glist, x->x_rcv_unexpanded = s);
+    if(rcv != &s_){
+        if(x->x_receive_sym != &s_)
+            pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
+        pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = rcv);
     }
 }
 
@@ -342,17 +344,27 @@ static void note_vis(t_gobj *z, t_glist *glist, int vis){
  
 static void note_save(t_gobj *z, t_binbuf *b){
     t_note *x = (t_note *)z;
-    t_text *t = (t_text *)x;
-    note_validate(x, 0);
-    t_symbol *receive = x->x_receive_sym;
+    
+    t_binbuf *bb = x->x_obj.te_binbuf;
+    
+    int arg_n = 4; // receive argument number
+    if(binbuf_getnatom(bb) >= arg_n){
+        char buf[80];
+        atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
+        post("buf = %s", gensym(buf)->s_name);
+    }
+    
+    note_validate(x, 0); // needed?
+    
+    t_symbol *receive = x->x_rcv_unexpanded;
     if(receive == &s_)
         receive = gensym("empty");
     binbuf_addv(b, "ssiisiissiiii",
                 gensym("#X"),
                 gensym("obj"),
-                (int)t->te_xpix,
-                (int)t->te_ypix,
-                x->x_selector,
+                (int)x->x_obj.te_xpix,
+                (int)x->x_obj.te_ypix,
+                atom_getsymbol(binbuf_getvec(bb)),
                 x->x_pixwidth,
                 x->x_fontsize,
                 x->x_fontfamily,
@@ -467,7 +479,8 @@ static void note_free(t_note *x){
         pd_unbind((t_pd *)x, gensym("#key"));
         pd_unbind((t_pd *)x, gensym("#keyname"));
     }
-    if(x->x_receive_sym != &s_) pd_unbind(&x->x_ob.ob_pd, x->x_receive_sym);
+    if(x->x_receive_sym != &s_)
+        pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
     if (x->x_transclock) clock_free(x->x_transclock);
     if(x->x_bindsym){
         pd_unbind((t_pd *)x, x->x_bindsym);
@@ -609,7 +622,8 @@ static void note_attrparser(t_note *x, int argc, t_atom * argv){
 
 static void *note_new(t_symbol *s, int ac, t_atom *av){
     t_note *x = (t_note *)pd_new(note_class);
-    x->x_selector = s;
+    t_symbol *dummy = s;
+    dummy = NULL;
     t_text *t = (t_text *)x;
     t->te_type = T_TEXT;
     x->x_glist = canvas_getcurrent();
@@ -622,7 +636,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     x->x_pixwidth = x->x_fontsize = x->x_fontprops = x->x_bbpending = 0;
     x->x_red = x->x_green = x->x_blue = x->x_textbufsize = 0;
     x->x_bbset = x->x_ready = x->x_dragon = 0;
-    x->x_receive_sym = &s_;
+    x->x_receive_sym = x->x_rcv_unexpanded = &s_;
     x->x_transclock = clock_new(x, (t_method)note_transtick);
     char buf[32];
     sprintf(buf, "note%lx", (unsigned long)x);
