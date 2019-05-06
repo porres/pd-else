@@ -340,7 +340,6 @@ static void note_vis(t_gobj *z, t_glist *glist, int vis){
     else sys_vgui(".x%lx.c delete %s\n", x->x_canvas, x->x_tag);
 }
  
-
 static void note_save(t_gobj *z, t_binbuf *b){
     t_note *x = (t_note *)z;
     t_text *t = (t_text *)x;
@@ -486,7 +485,6 @@ static void note_set(t_note *x, t_symbol *s, int argc, t_atom * argv){
         binbuf_clear(x->x_binbuf);
         binbuf_restore(x->x_binbuf, argc, argv);
         binbuf_gettext(x->x_binbuf, &x->x_textbuf, &x->x_textbufsize);
-        note_update(x);
         sys_vgui(".x%lx.c delete %s\n", x->x_canvas, x->x_tag);
         canvas_dirty(x->x_glist, 1);
         note_draw(x);
