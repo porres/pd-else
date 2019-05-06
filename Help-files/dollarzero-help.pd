@@ -1,0 +1,59 @@
+#N canvas 569 92 565 418 10;
+#X obj 4 268 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 323 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 358 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 146 332 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 147 277 cnv 17 3 34 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 391 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 209 156 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 191 278 bang;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Expand 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X text 139 157 get value;
+#X obj 85 40 cnv 4 4 4 empty empty dollar 0 28 2 18 -233017 -1 0;
+#X obj 3 3 cnv 15 301 42 empty empty dollarzero 20 20 2 37 -233017
+-1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 3 graph;
+#X obj 135 40 cnv 4 4 4 empty empty zero 0 28 2 18 -233017 -1 0;
+#X msg 240 146 symbol \\\$0-x;
+#X text 221 278 - get the dollar zero value as a symbol;
+#X text 221 295 - a symbol to be expanded;
+#X symbolatom 267 170 10 0 0 0 - - -;
+#X obj 240 228 else/display;
+#X text 179 295 symbol;
+#X text 179 332 symbol;
+#X text 221 332 - the expanded symbol;
+#X obj 240 198 else/dollarzero;
+#X text 65 88 [dollarzero] gets and expands the value of "\$0" inside
+a symbol into the patch ID value \, in case there is one. It can also
+get and expand to the the value of a parent patch., f 55;
+#X text 207 367 1) float - depth (default 0);
+#X connect 6 0 30 0;
+#X connect 22 0 30 0;
+#X connect 25 0 30 0;
+#X connect 30 0 26 0;
