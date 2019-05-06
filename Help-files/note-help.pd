@@ -67,7 +67,7 @@ into a Pd's comment box., f 50;
 #X text 92 408 -receive <symbol>;
 #X text 210 408 - sets receive symbol, f 47;
 #X text 210 425 - sets text, f 47;
-#N canvas 648 227 668 408 messages 0;
+#N canvas 673 231 668 408 messages 0;
 #X obj 72 286 else/note 0 50 helvetica ? 0 0 0 0 Note;
 #X msg 72 89 size 50;
 #X msg 91 118 size 30;
@@ -84,7 +84,7 @@ object below has a receive symbol \, so you can send messages to it
 via a [send] object., f 52;
 #X msg 360 187 set text 1 2 3;
 #X msg 366 214 set Note;
-#X obj 319 270 else/note 0 50 helvetica \$0-note 0 0 0 0 Note;
+#X obj 319 270 else/note 0 50 helvetica 1003-note 0 0 0 0 Note;
 #X obj 320 243 s \$0-note;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
