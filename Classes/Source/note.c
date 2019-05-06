@@ -48,6 +48,8 @@ typedef struct _note{
     int             x_active;
     int             x_ready;
     t_symbol       *x_receive_sym;
+    int             x_rcv_set;
+    int             x_flag;
     t_symbol       *x_rcv_unexpanded;
 }t_note;
 
@@ -63,6 +65,11 @@ static void note_receive(t_note *x, t_symbol *s){
             pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
         pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = rcv);
     }
+}
+
+static void note_set_receive(t_note *x, t_symbol *s){
+    x->x_rcv_set = 1;
+    note_receive(x, s);
 }
 
 static void note_draw(t_note *x){
@@ -344,21 +351,33 @@ static void note_vis(t_gobj *z, t_glist *glist, int vis){
  
 static void note_save(t_gobj *z, t_binbuf *b){
     t_note *x = (t_note *)z;
-    
     t_binbuf *bb = x->x_obj.te_binbuf;
-    
-    int arg_n = 4; // receive argument number
-    if(binbuf_getnatom(bb) >= arg_n){
-        char buf[80];
-        atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
-        post("buf = %s", gensym(buf)->s_name);
+    if(!x->x_rcv_set){ // no receive set, search arguments
+        int n_args = binbuf_getnatom(bb); // number of arguments
+        if(n_args > 0){ // we have arguments, let's search them
+            char buf[80];
+            if(x->x_flag){ // search for receive name in flag
+                for(int i = 0;  i < n_args; i++){
+                    atom_string(binbuf_getvec(bb) + i, buf, 80);
+                    if(!strcmp(buf, "-receive")){
+                        i++;
+                        atom_string(binbuf_getvec(bb) + i, buf, 80);
+                        x->x_rcv_unexpanded = gensym(buf);
+                        break;
+                    }
+                }
+            }
+            else{ // search receive argument
+                int arg_n = 4; // receive argument number
+                if(n_args >= arg_n){ // we have it, get it
+                    atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
+                    x->x_rcv_unexpanded = gensym(buf);
+                }
+            }
+        }
+        if(x->x_rcv_unexpanded == &s_) // if nothing found, set to "empty"
+            x->x_rcv_unexpanded = gensym("empty");
     }
-    
-    note_validate(x, 0); // needed?
-    
-    t_symbol *receive = x->x_rcv_unexpanded;
-    if(receive == &s_)
-        receive = gensym("empty");
     binbuf_addv(b, "ssiisiissiiii",
                 gensym("#X"),
                 gensym("obj"),
@@ -368,7 +387,7 @@ static void note_save(t_gobj *z, t_binbuf *b){
                 x->x_pixwidth,
                 x->x_fontsize,
                 x->x_fontfamily,
-                receive,
+                x->x_rcv_unexpanded,
                 x->x_fontprops,
                 (int)x->x_red,
                 (int)x->x_green,
@@ -531,7 +550,7 @@ static void note_size(t_note *x, t_floatarg f){
     note_draw(x);
 }
 
-static void note_attrparser(t_note *x, int argc, t_atom * argv){
+static void note_flag_parser(t_note *x, int argc, t_atom * argv){
     t_atom* comlist = t_getbytes(argc * sizeof(*comlist));
     int i, comlen = 0; //eventual length of note list comlist
     for(i = 0; i < argc; i++){
@@ -559,6 +578,7 @@ static void note_attrparser(t_note *x, int argc, t_atom * argv){
                 };
             }
             else if(!strcmp(cursym->s_name, "-receive")){
+                x->x_flag = 1;
                 i++;
                 if((argc-i) > 0){
                     if(argv[i].a_type == A_SYMBOL)
@@ -633,6 +653,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     x->x_encoding = x->x_fontfamily = 0;
     x->x_canvas = 0;
     x->x_textbuf = 0;
+    x->x_rcv_set = x->x_flag = 0;
     x->x_pixwidth = x->x_fontsize = x->x_fontprops = x->x_bbpending = 0;
     x->x_red = x->x_green = x->x_blue = x->x_textbufsize = 0;
     x->x_bbset = x->x_ready = x->x_dragon = 0;
@@ -687,7 +708,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     if(!x->x_fontfamily) x->x_fontfamily = gensym("helvetica");
     sprintf(x->x_color, "#%2.2x%2.2x%2.2x", x->x_red, x->x_green, x->x_blue);
     x->x_binbuf = binbuf_new();
-    if(ac) note_attrparser(x, ac, av);
+    if(ac) note_flag_parser(x, ac, av);
     else{
         t_atom at;
         SETSYMBOL(&at, gensym("note"));
@@ -696,7 +717,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     return(x);
 }
 
-/*CYCLONE_OBJ_API*/ void note_setup(void){
+void note_setup(void){
     note_class = class_new(gensym("note"), (t_newmethod)note_new, (t_method)note_free,
                               sizeof(t_note), CLASS_DEFAULT, A_GIMME, 0);
     class_addfloat(note_class, note_float);
@@ -705,7 +726,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
                     gensym("rgb"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(note_class, (t_method)note_name,
                     gensym("name"), A_SYMBOL, 0);
-    class_addmethod(note_class, (t_method)note_receive,
+    class_addmethod(note_class, (t_method)note_set_receive,
                     gensym("receive"), A_SYMBOL, 0);
     class_addmethod(note_class, (t_method)note_size,
                     gensym("size"), A_FLOAT, 0);
