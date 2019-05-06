@@ -5,8 +5,6 @@
 #include "m_pd.h"
 #include "g_canvas.h"
 
-static t_class *makeshift_class;
-
 #define note_LMARGIN     1
 #define note_RMARGIN     1
 #define note_TMARGIN     2
@@ -126,10 +124,8 @@ static void note_update(t_note *x){
 
 static void note_validate(t_note *x, t_glist *glist){
     if(!x->x_ready){
-        t_text *t = (t_text *)x;
-        binbuf_free(t->te_binbuf);
-        t->te_binbuf = x->x_binbuf;
-        if(x->x_textbuf) freebytes(x->x_textbuf, x->x_textbufsize);
+        if(x->x_textbuf)
+            freebytes(x->x_textbuf, x->x_textbufsize);
         binbuf_gettext(x->x_binbuf, &x->x_textbuf, &x->x_textbufsize);
         x->x_ready = 1;
     }
@@ -245,9 +241,6 @@ t_floatarg x1, t_floatarg y1, t_floatarg x2, t_floatarg y2){
     x1 = x2 = y1 = y2 = 0;
     if(bindsym->s_thing == x){
         pd_unbind(x, bindsym);  // if note gone, unbind
-        /* #ifdef note_DEBUG
-         post("sink: %s unbound", bindsym->s_name);
-         #endif */
     }
 }
 
@@ -353,7 +346,8 @@ static void note_save(t_gobj *z, t_binbuf *b){
     t_text *t = (t_text *)x;
     note_validate(x, 0);
     t_symbol *receive = x->x_receive_sym;
-    if(receive == &s_) receive = gensym("?");
+    if(receive == &s_)
+        receive = gensym("empty");
     binbuf_addv(b, "ssiisiissiiii",
                 gensym("#X"),
                 gensym("obj"),
@@ -368,7 +362,7 @@ static void note_save(t_gobj *z, t_binbuf *b){
                 (int)x->x_red,
                 (int)x->x_green,
                 (int)x->x_blue);
-    binbuf_addbinbuf(b, t->te_binbuf); // the actual note
+    binbuf_addbinbuf(b, x->x_binbuf); // the actual note
     binbuf_addv(b, ";");
 }
 
@@ -379,7 +373,7 @@ static t_widgetbehavior note_widgetbehavior ={
     note_activate,
     note_delete,
     note_vis,
-    0, // click
+    0,
 };
 
 // this fires if a transform request was sent to a symbol we are bound to
@@ -463,52 +457,6 @@ static void note_list(t_note *x, t_symbol *s, int ac, t_atom *av){
                 x->x_selend++;
             x->x_selstart = x->x_selend;
         }
-        else if (!strcmp(keysym->s_name, "F4")){
-            t_text *newt, *oldt = (t_text *)x;
-            t_binbuf *bb = binbuf_new();
-            int argc = binbuf_getnatom(x->x_binbuf);
-            binbuf_addv(bb, "siissiiii",
-                        x->x_selector,
-                        x->x_pixwidth,
-                        x->x_fontsize,
-                        x->x_fontfamily,
-                        (x->x_receive_sym != &s_ ? x->x_receive_sym : gensym("?")),
-                        x->x_fontprops,
-                        (int)x->x_red,
-                        (int)x->x_green,
-                        (int)x->x_blue);
-            binbuf_add(bb, argc, binbuf_getvec(x->x_binbuf));
-            canvas_setcurrent(x->x_glist);
-            newt = (t_text *)pd_new(makeshift_class);
-            newt->te_width = 0;
-            newt->te_type = T_OBJECT;
-            newt->te_binbuf = bb;
-            newt->te_xpix = oldt->te_xpix;
-            newt->te_ypix = oldt->te_ypix;
-            glist_add(x->x_glist, &newt->te_g);
-            glist_noselect(x->x_glist);
-            glist_select(x->x_glist, &newt->te_g);
-            gobj_activate(&newt->te_g, x->x_glist, 1);
-            x->x_glist->gl_editor->e_textdirty = 1;  // force evaluation
-            canvas_unsetcurrent(x->x_glist);
-            canvas_dirty(x->x_glist, 1);
-            clock_delay(x->x_transclock, 0);  // LATER rethink
-            goto donelist;
-        }
-        else if (!strcmp(keysym->s_name, "F5")){
-            t_text *t = (t_text *)x;
-            t_binbuf *bb = binbuf_new();
-            int argc = binbuf_getnatom(x->x_binbuf);
-            binbuf_addv(bb, "ii", (int)t->te_xpix + 5, (int)t->te_ypix + 5);
-            binbuf_add(bb, argc, binbuf_getvec(x->x_binbuf));
-            canvas_setcurrent(x->x_glist);
-            typedmess((t_pd *)x->x_glist, gensym("text"),
-                      argc + 2, binbuf_getvec(bb));
-            canvas_unsetcurrent(x->x_glist);
-            canvas_dirty(x->x_glist, 1);
-            binbuf_free(bb);
-            goto donelist;
-        }
         else goto donelist;
         note_update(x);
     }
@@ -534,14 +482,15 @@ static void note_free(t_note *x){
 static void note_set(t_note *x, t_symbol *s, int argc, t_atom * argv){
     t_symbol *dummy = s;
     dummy = NULL;
-    binbuf_clear(x->x_binbuf);
-    binbuf_restore(x->x_binbuf, argc, argv);
-    t_text *t = (t_text *)x;
-    t->te_binbuf = x->x_binbuf;
-    binbuf_gettext(x->x_binbuf, &x->x_textbuf, &x->x_textbufsize);
-    sys_vgui(".x%lx.c delete %s\n", x->x_canvas, x->x_tag);
-    canvas_dirty(x->x_glist, 1);
-    note_draw(x);
+    if(argc){
+        binbuf_clear(x->x_binbuf);
+        binbuf_restore(x->x_binbuf, argc, argv);
+        binbuf_gettext(x->x_binbuf, &x->x_textbuf, &x->x_textbufsize);
+        note_update(x);
+        sys_vgui(".x%lx.c delete %s\n", x->x_canvas, x->x_tag);
+        canvas_dirty(x->x_glist, 1);
+        note_draw(x);
+    }
 }
 
 static void note_rgb(t_note *x, t_floatarg r, t_floatarg g, t_floatarg b){
@@ -695,12 +644,13 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
                 x->x_fontfamily = av->a_w.w_symbol;
                 ac--; av++;
                 if(ac && av->a_type == A_SYMBOL){ // 4TH RECEIVE
-                    if (av->a_w.w_symbol != gensym("?")){ //  '?' sets empty receive symbol
+                    if (av->a_w.w_symbol != gensym("empty")){
                         note_receive(x, av->a_w.w_symbol);
                         ac--; av++;
                     }
-                    else
+                    else{
                         ac--; av++;
+                    }
                     if (ac && av->a_type == A_FLOAT){
                         x->x_fontprops = (int)av->a_w.w_float;
                         ac--; av++;
@@ -759,11 +709,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     class_addmethod(note_class, (t_method)note__motionhook,
                     gensym("_motion"), A_SYMBOL, A_FLOAT, A_FLOAT, 0);
     class_setwidget(note_class, &note_widgetbehavior);
-//    class_setpropertiesfn(note_class, note_properties);
     class_setsavefn(note_class, note_save);
-    
-    makeshift_class = class_new(gensym("text"), 0, 0,
-                                sizeof(t_text), CLASS_NOINLET | CLASS_PATCHABLE, 0);
     
     notesink_class = class_new(gensym("_notesink"), 0, 0,
                                   sizeof(t_pd), CLASS_PD, 0);
