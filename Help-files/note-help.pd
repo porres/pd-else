@@ -32,7 +32,6 @@
 #X restore 2 3 graph;
 #X obj 63 40 cnv 4 4 4 empty empty note 0 28 2 18 -233017 -1 0;
 #X text 200 152 <=;
-#X text 218 152 the default display of [else/textbox], f 19;
 #X obj 2 350 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 116 358 -size <float>;
 #X text 110 375 -font <symbol>;
@@ -43,31 +42,25 @@
 #X text 128 391 -rgb <list>;
 #X text 210 391 - sets Red \, Green \, Blue colors (default 0 0 0)
 , f 47;
-#N canvas 752 298 449 357 details 0;
-#X text 59 57 When in edit mode \, you can click on the object to select
+#N canvas 752 298 457 296 details 0;
+#X text 62 71 When in edit mode \, you can click on the object to select
 it. Note that the whole text gets selected when you do it \, so if
 you start typing \, the text gets replaced., f 55;
-#X text 59 223 A semicolon can be used to break the text \, but it's
+#X text 62 237 A semicolon can be used to break the text \, but it's
 also possible to resize the object box in edit mode to break the text.
 , f 55;
-#X text 59 154 If you don't want to do that \, just make sure to click
+#X obj 180 123 else/note 720 20 Helvetica ? 0 200 0 0 [note];
+#X obj 50 35 else/note 720 20 Helvetica ? 0 200 0 0 EDITING:;
+#X text 62 168 If you don't want to do that \, just make sure to click
 again so the whole comment text isn't selected \, and then you can
 click on the part you want to edit and type. The delete key is also
-enabled and you can use the arrow keys to navigate on the comment.
-, f 55;
-#X text 76 288 When in edit mode \, you can click on the object to
-select it and then press <F5> to copy the comment from [else/note]
-into a Pd's comment box., f 50;
-#X obj 177 109 else/note 720 20 Helvetica ? 0 200 0 0 [note];
-#X obj 47 21 else/note 720 20 Helvetica ? 0 200 0 0 EDITING:;
-#X coords 0 357 1 356 85 60 0;
+enabled and you can use the arrow keys for navigation., f 55;
+#X coords 0 296 1 295 85 60 0;
 #X restore 477 147 pd details;
 #X text 158 328 (none);
 #X text 98 425 -note <anything>;
 #X text 92 408 -receive <symbol>;
-#X text 210 408 - sets receive symbol, f 47;
-#X text 210 425 - sets text, f 47;
-#N canvas 673 231 668 408 messages 0;
+#N canvas 673 231 629 379 messages 0;
 #X obj 72 286 else/note 0 50 helvetica ? 0 0 0 0 Note;
 #X msg 72 89 size 50;
 #X msg 91 118 size 30;
@@ -75,17 +68,17 @@ into a Pd's comment box., f 50;
 #X msg 122 174 name courier;
 #X msg 146 211 rgb 0 0 0;
 #X msg 150 241 rgb 150 100 50;
-#X msg 339 149 rgb 0 0 0;
-#X msg 320 121 rgb 200 0 0;
+#X msg 339 139 rgb 0 0 0;
+#X msg 320 111 rgb 200 0 0;
 #X text 58 30 You can also edit the properties of [note] with messages.
 , f 21;
 #X text 255 34 You can also set the note text with a message. The [note]
 object below has a receive symbol \, so you can send messages to it
 via a [send] object., f 52;
-#X msg 360 187 set text 1 2 3;
-#X msg 366 214 set Note;
-#X obj 319 270 else/note 0 50 helvetica 1003-note 0 0 0 0 Note;
-#X obj 320 243 s \$0-note;
+#X msg 360 177 set text 1 2 3;
+#X msg 366 204 set Note;
+#X obj 319 270 else/note 0 50 helvetica \$0-note 0 0 0 0 Note;
+#X obj 320 233 s \$0-note;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
@@ -109,7 +102,9 @@ via a [send] object., f 52;
 #X text 147 238 name <symbol>;
 #X text 153 222 size <float>;
 #X text 246 206 - sets text;
-#X text 64 87 [note] is a GUI meant only to display text notes. This
+#X text 218 152 the default display of [else/note], f 19;
+#X text 74 87 [note] is a GUI meant only to display text notes. This
 is basically the same of Pd's comment but with the advantage of being
-able to set the font type \, size and color. The object is still experimental.
-;
+able to set the font type \, size and color., f 57;
+#X text 210 408 - sets receive symbol (default 'empty'), f 47;
+#X text 210 425 - sets text (default 'note'), f 47;
