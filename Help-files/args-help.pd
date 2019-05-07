@@ -1,5 +1,5 @@
-#N struct 1087-point float x0 float y0 float s;
-#N struct 1087-grid float x0 float y0 float s;
+#N struct 1034-point float x0 float y0 float s;
+#N struct 1034-grid float x0 float y0 float s;
 #N canvas 499 110 563 399 10;
 #X obj 25 41 cnv 4 4 4 empty empty Manage 0 28 2 18 -233017 -1 0;
 #X obj 90 41 cnv 4 4 4 empty empty arguments 0 28 2 18 -233017 -1 0
@@ -173,7 +173,7 @@ an abstraction \, like deep buried inside many layers of subpatches.
 #X connect 7 0 16 0;
 #X connect 9 0 16 0;
 #X restore 466 171 pd example1;
-#N canvas 360 200 719 463 example2 0;
+#N canvas 360 200 719 463 example2 1;
 #X text 32 31 The [slider2] abstraction in else uses [else/args] to
 update the arguments when it receives messages that change its parameters.
 For example \, the "size" message., f 51;
@@ -181,9 +181,9 @@ For example \, the "size" message., f 51;
 #X obj 162 334 else/display;
 #X msg 162 166 size \$1;
 #X obj 165 127 hsl 100 15 18 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 7000 1;
+-1 -1 2000 1;
 #X obj 162 147 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 95.0707 256;
+-228856 -1 -1 40.0202 256;
 #X text 376 28 Change the size below and duplicate the object to see
 how the duplicate now has the same size. this is also how GUI objects
 normally behave in Pd by the way., f 51;
