@@ -1,6 +1,6 @@
-#N struct 1084-point float x0 float y0 float s;
-#N struct 1084-grid float x0 float y0 float s;
-#N canvas 458 31 563 399 10;
+#N struct 1087-point float x0 float y0 float s;
+#N struct 1087-grid float x0 float y0 float s;
+#N canvas 499 110 563 399 10;
 #X obj 25 41 cnv 4 4 4 empty empty Manage 0 28 2 18 -233017 -1 0;
 #X obj 90 41 cnv 4 4 4 empty empty arguments 0 28 2 18 -233017 -1 0
 ;
@@ -34,30 +34,18 @@
 #X obj 6 373 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 238 174 else/args;
-#X text 225 352 (none);
 #X text 178 251 bang - output arguments list;
 #X text 150 299 anything -;
-#N canvas 680 170 449 400 break 0;
-#X obj 105 82 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#N canvas 680 170 458 240 break 0;
+#X obj 105 96 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 105 156 else/display;
-#X text 61 158 args;
-#X obj 105 277 route -freq -amp;
-#X obj 151 306 else/display;
-#X obj 105 345 else/display;
-#X obj 105 203 else/break -;
-#X text 46 26 You can use break to split an argument list and furtherly
-route it.;
-#X text 128 81 <= get arguments;
-#X text 190 203 <= this would also be inside the abstraction \, of
-course, f 23;
-#X obj 105 110 else/args-example -freq 100 200 -amp 1 0.5;
-#X connect 0 0 10 0;
-#X connect 1 0 6 0;
-#X connect 3 0 5 0;
-#X connect 3 1 4 0;
-#X connect 6 0 3 0;
-#X connect 10 0 1 0;
+#X text 128 95 <= get arguments;
+#X obj 105 124 else/args-example -freq 100 200 -amp 1 0.5;
+#X text 46 30 You can use a break character to split an argument list
+and furtherly route it. Open the subpatch below.;
+#X obj 105 163 print;
+#X connect 0 0 2 0;
+#X connect 2 0 4 0;
 #X restore 467 212 pd break;
 #X obj 238 148 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -182,10 +170,8 @@ an abstraction \, like deep buried inside many layers of subpatches.
 ;
 #X obj 542 178 else/args-example;
 #X connect 0 0 6 0;
-#X connect 6 0 1 0;
 #X connect 7 0 16 0;
 #X connect 9 0 16 0;
-#X connect 16 0 8 0;
 #X restore 466 171 pd example1;
 #N canvas 360 200 719 463 example2 0;
 #X text 32 31 The [slider2] abstraction in else uses [else/args] to
@@ -195,9 +181,9 @@ For example \, the "size" message., f 51;
 #X obj 162 334 else/display;
 #X msg 162 166 size \$1;
 #X obj 165 127 hsl 100 15 18 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 7000 1;
 #X obj 162 147 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 95.0707 256;
 #X text 376 28 Change the size below and duplicate the object to see
 how the duplicate now has the same size. this is also how GUI objects
 normally behave in Pd by the way., f 51;
@@ -206,5 +192,6 @@ normally behave in Pd by the way., f 51;
 #X connect 4 0 5 0;
 #X connect 5 0 3 0;
 #X restore 466 192 pd example2;
-#X connect 16 0 23 0;
-#X connect 21 0 16 0;
+#X text 161 352 1) symbol - break charactor (default none);
+#X connect 16 0 22 0;
+#X connect 20 0 16 0;
