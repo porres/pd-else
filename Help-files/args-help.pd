@@ -72,7 +72,6 @@ help patch), f 47;
 change them. It is useful for the management of variable number of
 arguments in abstractions \, and also to change/set them up.;
 #X text 154 269 anything - sets new arguments;
-#X text 161 352 1) symbol - break charactor (default none);
 #N canvas 458 265 833 404 example 0;
 #X obj 92 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -193,5 +192,6 @@ this subpacth \, you'll see the new arguments. If you savew the patch
 #X connect 15 0 1 0;
 #X connect 16 0 14 0;
 #X restore 466 191 pd example;
+#X text 161 352 1) symbol - break character (default none);
 #X connect 16 0 22 0;
 #X connect 20 0 16 0;
