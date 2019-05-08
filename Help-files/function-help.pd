@@ -224,26 +224,6 @@ second number of the list., f 51;
 #X text 131 416 resize <float>;
 #X text 225 416 - sets new graph bounds according to min/max, f 45
 ;
-#N canvas 668 153 473 393 more 0;
-#X obj 314 263 else/display;
-#X obj 76 179 else/function 200 100 function-out function-in 0 1 220
-220 220 50 50 50 1 0 0 0 0 1000 1;
-#X obj 314 229 r function-out;
-#X obj 312 186 s function-in;
-#X obj 312 163 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 73 138 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X obj 73 305 else/display;
-#X text 58 39 The init message or flag outputs the last saved state
-of [function] when loading the patch. The "send"/"receive" messages
-and flags set a symbol name to send to and receive messages from [function].
-when they're provided \, the inlet and outlet are not drawn.;
-#X connect 1 0 6 0;
-#X connect 2 0 0 0;
-#X connect 4 0 3 0;
-#X connect 5 0 1 0;
-#X restore 491 250 pd more \; messages;
 #X text 185 303 float;
 #X text 225 304 - values from 0-1 are treated as indexes, f 45;
 #X text 67 84 [function] is a breakpoints function GUI \, mainly used
@@ -264,13 +244,13 @@ it lists.;
 #X obj 109 476 else/out~;
 #X msg 254 230 0 \, 1 1000;
 #X obj 400 411 vsl 18 110 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 7139 1;
+-1 -1 0 1;
 #X text 55 62 In this example we convert the function output to signals
 with a ramp and use it to control the amplitude. But you can just use
 it as a control message instead., f 70;
 #X msg 118 248 i \$1;
 #X obj 118 227 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 65.5 256;
+-228856 -1 -1 0 256;
 #X text 55 12 Alternatively \, you can have a float input from 0 to
 1 into [function] and they'll be treatet as indexes and the amplitude
 value will then be output. This is useful if you want to control a
@@ -298,6 +278,32 @@ A linear interpolation is performed with both a float input and using
 #X restore 480 209 pd float/i;
 #X text 161 317 i <float>;
 #X text 225 318 - indexes of table (function value is output);
+#N canvas 668 153 567 407 send 0;
+#X obj 345 283 else/display;
+#X obj 99 210 else/function 200 100 function-out function-in 0 1 220
+220 220 50 50 50 1 0 0 0 0.53 395 1 260 0 345 0.58;
+#X obj 345 249 r function-out;
+#X obj 343 183 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 68 160 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 96 336 else/display;
+#X obj 343 206 s function-in;
+#X text 93 33 The init message or flag outputs the last saved state
+of [function] when loading the patch. The "send"/"receive" messages
+and flags set a symbol name to send to and receive messages from [function].
+when they're provided \, the inlet and outlet are not drawn. You can
+reset a send or receive name to empty again by seting the name to "empty".
+, f 67;
+#X obj 96 140 initmess send function-out \, receive function-in;
+#X msg 116 174 send empty \, receive empty;
+#X connect 1 0 5 0;
+#X connect 2 0 0 0;
+#X connect 3 0 6 0;
+#X connect 4 0 1 0;
+#X connect 8 0 1 0;
+#X connect 9 0 1 0;
+#X restore 491 250 pd send \; receive;
 #X connect 41 0 49 0;
 #X connect 43 0 49 0;
 #X connect 49 0 42 0;

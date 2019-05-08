@@ -767,8 +767,9 @@ static void function_width(t_function *x, t_floatarg f){
 
 static void function_send(t_function *x, t_symbol *s){
     t_symbol *snd = canvas_realizedollar(x->x_glist, x->x_snd_unexpanded = s);
-    if(s != &s_)
-        x->x_send_sym = snd;
+    if(s == gensym("empty"))
+        snd = &s_;
+    x->x_send_sym = snd;
     function_erase(x, x->x_glist);
     function_drawme(x, x->x_glist, 1);
 }
@@ -781,10 +782,17 @@ static void function_set_send(t_function *x, t_symbol *s){
 static void function_receive(t_function *x, t_symbol *s){
     t_symbol *rcv = canvas_realizedollar(x->x_glist, x->x_rcv_unexpanded = s);
     function_erase(x, x->x_glist);
+    if(s == gensym("empty"))
+        rcv = &s_;
     if(rcv != &s_){
         if(x->x_receive_sym != &s_)
             pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
         pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = rcv);
+    }
+    else{
+        if(x->x_receive_sym != &s_)
+            pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
+        x->x_receive_sym = rcv;
     }
     function_drawme(x, x->x_glist, 1);
 }
