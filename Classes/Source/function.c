@@ -608,15 +608,14 @@ static void function_save(t_gobj *z, t_binbuf *b){
 ///////////////////// METHODS /////////////////////
 static void function_float(t_function *x, t_floatarg f){
     t_float val;
-    f = f < 0 ? 0 : f > 1 ? 1 : f;
-    if(f == 0){
+    if(f <= 0){
         val = x->x_points[0];
         outlet_float(x->x_obj.ob_outlet, val);
         if(x->x_send_sym != &s_)
             pd_float(x->x_send_sym->s_thing, f);
         return;
     }
-    if(f == 1){
+    if(f >= 1){
         val = x->x_points[x->x_n_states];
         outlet_float(x->x_obj.ob_outlet, val);
         if(x->x_send_sym != &s_)
@@ -624,6 +623,36 @@ static void function_float(t_function *x, t_floatarg f){
         return;
     }
     f *= x->x_duration[x->x_n_states];
+    if(x->x_state > x->x_n_states)
+        x->x_state = x->x_n_states;
+    while((x->x_state > 0) && (f < x->x_duration[x->x_state-1]))
+        x->x_state--;
+    while((x->x_state <  x->x_n_states) && (x->x_duration[x->x_state] < f))
+        x->x_state++;
+    val = x->x_points[x->x_state-1] + (f - x->x_duration[x->x_state-1])
+    * (x->x_points[x->x_state] - x->x_points[x->x_state-1])
+    / (x->x_duration[x->x_state] - x->x_duration[x->x_state-1]);
+    outlet_float(x->x_obj.ob_outlet,val);
+    if(x->x_send_sym != &s_)
+        pd_float(x->x_send_sym->s_thing, val);
+}
+
+static void function_i(t_function *x, t_floatarg f){
+    t_float val;
+    if(f <= 0){
+        val = x->x_points[0];
+        outlet_float(x->x_obj.ob_outlet, val);
+        if(x->x_send_sym != &s_)
+            pd_float(x->x_send_sym->s_thing, f);
+        return;
+    }
+    if(f >= x->x_duration[x->x_n_states]){
+        val = x->x_points[x->x_n_states];
+        outlet_float(x->x_obj.ob_outlet, val);
+        if(x->x_send_sym != &s_)
+            pd_float(x->x_send_sym->s_thing, f);
+        return;
+    }
     if(x->x_state > x->x_n_states)
         x->x_state = x->x_n_states;
     while((x->x_state > 0) && (f < x->x_duration[x->x_state-1]))
@@ -1075,6 +1104,7 @@ void function_setup(void){
                     gensym("loadbang"), A_DEFFLOAT, 0);
     class_addmethod(function_class, (t_method)function_resize, gensym("resize"), A_GIMME, 0);
     class_addmethod(function_class, (t_method)function_set, gensym("set"), A_GIMME, 0);
+    class_addmethod(function_class, (t_method)function_i, gensym("i"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_init, gensym("init"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_height, gensym("height"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_width, gensym("width"), A_FLOAT, 0);
