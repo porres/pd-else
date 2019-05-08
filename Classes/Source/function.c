@@ -368,12 +368,10 @@ static void function_drawme(t_function *x, t_glist *glist, int firsttime){
 static void function_erase(t_function* x, t_glist* glist){
     sys_vgui(".x%lx.c delete %lxS\n", glist_getcanvas(glist), x);
     sys_vgui(".x%lx.c delete %lxP\n", glist_getcanvas(glist), x);
-    if(x->x_receive_sym == &s_){
-        sys_vgui(".x%lx.c delete %lxi0\n", glist_getcanvas(glist), x);
-        sys_vgui(".x%lx.c delete %lxo0\n", glist_getcanvas(glist), x);
-        sys_vgui(".x%lx.c delete %lxo1\n", glist_getcanvas(glist), x);
-        sys_vgui(".x%lx.c delete %lxo2\n", glist_getcanvas(glist), x);
-    }
+    sys_vgui(".x%lx.c delete %lxi0\n", glist_getcanvas(glist), x);
+    sys_vgui(".x%lx.c delete %lxo0\n", glist_getcanvas(glist), x);
+    sys_vgui(".x%lx.c delete %lxo1\n", glist_getcanvas(glist), x);
+    sys_vgui(".x%lx.c delete %lxo2\n", glist_getcanvas(glist), x);
     function_delete_doodles(x,glist);
 }
 
@@ -742,6 +740,8 @@ static void function_send(t_function *x, t_symbol *s){
     t_symbol *snd = canvas_realizedollar(x->x_glist, x->x_snd_unexpanded = s);
     if(s != &s_)
         x->x_send_sym = snd;
+    function_erase(x, x->x_glist);
+    function_drawme(x, x->x_glist, 1);
 }
 
 static void function_set_send(t_function *x, t_symbol *s){
@@ -751,11 +751,13 @@ static void function_set_send(t_function *x, t_symbol *s){
 
 static void function_receive(t_function *x, t_symbol *s){
     t_symbol *rcv = canvas_realizedollar(x->x_glist, x->x_rcv_unexpanded = s);
+    function_erase(x, x->x_glist);
     if(rcv != &s_){
         if(x->x_receive_sym != &s_)
             pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
         pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = rcv);
     }
+    function_drawme(x, x->x_glist, 1);
 }
 
 static void function_set_receive(t_function *x, t_symbol *s){
