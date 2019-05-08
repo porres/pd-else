@@ -1,16 +1,10 @@
-#N struct 1165-point float x0 float y0 float s;
-#N struct 1165-grid float x0 float y0 float s;
-#N struct 1015-point float x0 float y0 float s;
-#N struct 1015-grid float x0 float y0 float s;
-#N struct 1016-point float x0 float y0 float s;
-#N struct 1016-grid float x0 float y0 float s;
-#N struct 1025-point float x0 float y0 float s;
-#N struct 1025-grid float x0 float y0 float s;
+#N struct 1009-point float x0 float y0 float s;
+#N struct 1010-point float x0 float y0 float s;
+#N struct 1017-point float x0 float y0 float s;
+#N struct 1018-point float x0 float y0 float s;
+#N struct 1022-point float x0 float y0 float s;
 #N struct 1026-point float x0 float y0 float s;
-#N struct 1026-grid float x0 float y0 float s;
-#N struct 1031-point float x0 float y0 float s;
-#N struct 1031-grid float x0 float y0 float s;
-#N canvas 528 84 562 500 10;
+#N canvas 528 84 564 547 10;
 #N canvas 742 101 474 489 example 0;
 #X obj 205 260 else/float2sig~ 100;
 #X obj 244 288 else/float2sig~ 100;
@@ -35,7 +29,7 @@
 #X connect 9 0 3 0;
 #X connect 9 1 2 0;
 #X connect 10 0 9 0;
-#X restore 470 289 pd example;
+#X restore 469 277 pd example;
 #X obj 2 3 cnv 15 301 42 empty empty slider2d 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -63,46 +57,46 @@
 0;
 #X obj 6 318 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 399 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 433 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 429 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 6 472 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 463 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 522 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 90 325 cnv 17 3 70 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 82 325 cnv 17 3 102 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 90 406 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 82 440 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 196 406 list;
-#X text 195 338 list;
-#X text 137 436 -size <float>: sets x/y size (default: 127), f 55
+#X text 193 440 list;
+#X text 192 338 list;
+#X text 141 469 -size <float>: sets x/y size (default: 127), f 55
 ;
-#X text 137 451 -range: sets x/y range <float \, float> (default: 0
+#X text 141 484 -range: sets x/y range <float \, float> (default: 0
 \, 127);
-#X obj 210 284 else/display;
-#X text 111 352 set <float \, float>;
-#X text 235 352 - sets x and y, f 51;
-#X text 235 338 - sets x \, y and outputs it, f 51;
-#X text 147 366 size <float>;
-#X text 235 366 - sets size, f 51;
-#X obj 210 149 else/slider2d;
-#X text 99 380 range <float \, float>;
+#X text 108 352 set <float \, float>;
+#X text 232 352 - sets x and y, f 52;
+#X text 232 338 - sets x \, y and outputs it, f 52;
+#X text 144 366 size <float>;
+#X text 232 366 - sets size, f 52;
+#X text 96 380 range <float \, float>;
 #N canvas 703 239 348 386 size 0;
-#X obj 115 178 else/slider2d -size 64;
-#X obj 115 320 else/display;
-#X msg 115 152 size \$1;
-#X obj 118 113 hsl 100 15 18 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 115 133 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#X obj 115 188 else/slider2d 127 0 127 0 127;
+#X obj 115 330 else/display;
+#X msg 115 162 size \$1;
+#X obj 118 123 hsl 100 15 18 127 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 9900 1;
+#X obj 115 143 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 127 256;
 #X text 45 19 You can set the size with the "-size" flag or with the
 size message., f 42;
 #X text 45 53 The object below is initialized with a size of 64 via
 the -size flag, f 42;
+#X obj 115 100 else/initmess 127;
 #X connect 0 0 1 0;
 #X connect 2 0 0 0;
 #X connect 3 0 4 0;
 #X connect 4 0 2 0;
-#X restore 488 240 pd size;
+#X connect 7 0 3 0;
+#X restore 487 237 pd size;
 #N canvas 703 239 409 345 set-values 0;
 #X obj 142 304 else/display;
 #X obj 142 163 else/slider2d;
@@ -115,51 +109,58 @@ output the incoming value., f 56;
 #X connect 1 0 0 0;
 #X connect 4 0 1 0;
 #X connect 5 0 1 0;
-#X restore 452 215 pd set-values;
-#N canvas 495 158 654 396 range 0;
-#X obj 110 195 else/slider2d -range -1 1;
-#X obj 110 333 else/display;
-#X text 355 22 The next update releases shall include independent parameters
-for x and y range. But meanwhile \, you can also just use the [rescale]
-object for convenient rescaling., f 44;
-#X msg 110 133 range 0 127;
-#X msg 135 164 range -1 1;
-#X obj 378 104 else/slider2d;
-#X obj 378 251 unpack float float;
-#X obj 378 278 else/rescale -1 1;
-#X obj 498 278 else/rescale 0 100;
-#X obj 498 306 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 378 306 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 78 147 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X restore 451 217 pd set-values;
+#N canvas 654 177 506 440 range 0;
+#X obj 291 233 else/slider2d 127 -1 1 0 127;
+#X obj 102 360 else/display;
+#X msg 179 167 range 0 127;
+#X msg 102 167 range -1 1;
+#X obj 70 174 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X text 34 21 By default \, the slider output range is from 0 to 127
-\, but you can change it with the -range flag or the range message.
-The object below is initialized with a range from -1 to 1 by default.
-, f 44;
-#X text 34 87 Note that a bang rescales the last output according to
-the new range., f 44;
-#X connect 0 0 1 0;
-#X connect 3 0 0 0;
-#X connect 4 0 0 0;
-#X connect 5 0 6 0;
-#X connect 6 0 7 0;
-#X connect 6 1 8 0;
-#X connect 7 0 10 0;
-#X connect 8 0 9 0;
-#X connect 11 0 0 0;
-#X restore 483 265 pd range;
+#X obj 102 220 else/slider2d 127 0 127 0 127;
+#X obj 291 378 else/display;
+#X msg 280 129 xrange 0 127;
+#X msg 291 152 xrange -1 1;
+#X msg 317 179 yrange 0 127;
+#X msg 325 199 yrange -1 1;
+#X obj 179 143 loadbang;
+#X text 64 30 By default \, the slider output range is from 0 to 127
+\, but you can change it with the -range flag or the range message
+\, which sets the range for both x and y dimenstions. But you can also
+set independent range for both x and y with the -xrange \, -yrange
+or xrange \, yrange messages. Note that a bang rescales the last output
+according to the new range., f 64;
+#X connect 0 0 6 0;
+#X connect 2 0 5 0;
+#X connect 2 0 0 0;
+#X connect 3 0 5 0;
+#X connect 4 0 5 0;
+#X connect 5 0 1 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X connect 11 0 2 0;
+#X restore 481 257 pd range;
+#X text 192 324 bang;
+#X text 232 324 - outputs last values, f 52;
+#X text 232 439 - x/y values;
+#X text 71 88 [slider2d] is an abstraction based on data structures
+and a two dimensional slider GUI., f 53;
+#X obj 210 284 else/display;
+#X obj 210 149 else/slider2d;
 #X text 92 203 click and drag =>;
 #X obj 210 124 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 134 288 x/y values:;
-#X text 195 324 bang;
-#X text 235 324 - outputs last values, f 51;
-#X text 235 405 - x/y values;
-#X text 235 380 - sets range (minimum and maximumvalues of x and y)
+#X text 141 501 -xrange / -yrange (set x/y range independently);
+#X text 232 380 - sets range (minimum and maximum values of x and y)
 ;
-#X text 71 88 [slider2d] is an abstraction based on data structures
-and a two dimensional slider GUI., f 53;
-#X connect 29 0 23 0;
-#X connect 35 0 29 0;
+#X text 232 395 - sets range (minimum and maximum values of x), f
+52;
+#X text 232 410 - sets range (minimum and maximum values of y), f
+52;
+#X text 90 395 xrange <float \, float>;
+#X text 90 410 yrange <float \, float>;
+#X connect 37 0 36 0;
+#X connect 39 0 37 0;
