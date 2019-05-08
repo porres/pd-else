@@ -50,7 +50,7 @@
 and furtherly route it. This is the same as using the [break] object
 aftwerwards. Open the subpatch below.;
 #X obj 25 185 print Full;
-#X obj 354 180 print broken;
+#X obj 354 180 print Broken;
 #X connect 0 0 2 0;
 #X connect 2 0 6 0;
 #X connect 2 0 11 0;
