@@ -60,10 +60,17 @@ static t_pd *notesink = 0;
 
 static void note_receive(t_note *x, t_symbol *s){
     t_symbol *rcv = canvas_realizedollar(x->x_glist, x->x_rcv_unexpanded = s);
+    if(rcv == gensym("empty"))
+        rcv == &s_;
     if(rcv != &s_){
         if(x->x_receive_sym != &s_)
             pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
         pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = rcv);
+    }
+    else{
+        if(x->x_receive_sym != &s_)
+            pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
+        x->x_receive_sym = rcv;
     }
 }
 
