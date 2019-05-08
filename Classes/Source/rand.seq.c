@@ -4,11 +4,11 @@
 #include <string.h>
 
 typedef struct _rand_seq{
-    t_object     x_obj;
-    t_int        x_nvalues;         // number of values
-    t_int       *x_probs;           // probability of a value
-    t_int       *x_ovalues;         // number of outputs of each value
-    t_outlet    *x_bang_outlet;
+    t_object   x_obj;
+    int        x_nvalues;         // number of values
+    int       *x_probs;           // probability of a value
+    int       *x_ovalues;         // number of outputs of each value
+    t_outlet  *x_bang_outlet;
 }t_rand_seq;
 
 static t_class *rand_seq_class;
@@ -19,28 +19,30 @@ static void rand_seq_list(t_rand_seq *x, t_symbol*s, int ac, t_atom *av){
     if(ac){
         if(ac > x->x_nvalues)
             ac = x->x_nvalues;
-        for(int i = 0; i < ac; i++)
-            *(x->x_probs + i) = (int)av[i].a_w.w_float;
+        for(int i = 0; i < ac; i++){
+            int v = (int)av[i].a_w.w_float;
+            *(x->x_probs + i) = v < 0 ? 0 : v;
+        }
     }
 }
 
 static void rand_seq_n(t_rand_seq *x, t_float f){
-    t_int n = (t_int)f;
+    int n = (int)f;
     if(n < 1)
         n = 1;
     if(n != x->x_nvalues){
         x->x_nvalues = n;
-        x->x_probs = (t_int*) getbytes(x->x_nvalues*sizeof(t_int));
+        x->x_probs = (int*) getbytes(x->x_nvalues*sizeof(int));
         if(!x->x_probs){
             error("rand_seq : could not allocate buffer");
             return;
         }
-        x->x_ovalues = (t_int*) getbytes(x->x_nvalues*sizeof(t_int));
+        x->x_ovalues = (int*) getbytes(x->x_nvalues*sizeof(int));
         if(!x->x_ovalues){
             error("rand_seq : could not allocate buffer");
             return;
         }
-        memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(t_int));
+        memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(int));
         int eq = 1; // default value
         for(int i = 0; i < x->x_nvalues; i++)
             *(x->x_probs+i) = eq;
@@ -48,10 +50,10 @@ static void rand_seq_n(t_rand_seq *x, t_float f){
 }
 
 static void rand_seq_bang(t_rand_seq *x){
-    t_int ei, ci;
-    t_int *candidates;
-    t_int nbcandidates = 0;
-    t_int nevalues = 0;
+    int ei, ci;
+    int *candidates;
+    int nbcandidates = 0;
+    int nevalues = 0;
     for(ei = 0; ei < x->x_nvalues; ei++) // get number of eligible values
         nevalues += (*(x->x_probs+ei) - *(x->x_ovalues+ei));
     if(nevalues == 0){
@@ -59,7 +61,7 @@ static void rand_seq_bang(t_rand_seq *x){
         outlet_bang(x->x_bang_outlet);
         return;
     }
-    candidates = (t_int*) getbytes(nevalues*sizeof(t_int));
+    candidates = (int*) getbytes(nevalues*sizeof(int));
     if(!candidates){
         error("rand_seq : could not allocate buffer for internal computation");
         return;
@@ -78,10 +80,10 @@ static void rand_seq_bang(t_rand_seq *x){
     *(x->x_ovalues+v) = *(x->x_ovalues+v) + 1;
     if(nbcandidates == 1 ){ // end of the serial
         outlet_bang(x->x_bang_outlet);
-        memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(t_int));
+        memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(int));
     }
     if(candidates)
-        freebytes(candidates,  nevalues*sizeof(t_int));
+        freebytes(candidates,  nevalues*sizeof(int));
 }
 
 static void rand_seq_set(t_rand_seq *x, t_float f, t_float v){
@@ -103,14 +105,14 @@ static void rand_seq_inc(t_rand_seq *x, t_float f){
 }
 
 static void rand_seq_restart(t_rand_seq *x){
-    memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(t_int));
+    memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(int));
 }
 
 static void rand_seq_eq(t_rand_seq *x, t_float f){
     int v = f < 1 ? 1 : (int)f;
-    for(t_int ei = 0; ei < x->x_nvalues; ei++)
+    for(int ei = 0; ei < x->x_nvalues; ei++)
         *(x->x_probs+ei) = v;
-    memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(t_int));
+    memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(int));
 }
 
 static t_rand_seq *rand_seq_new(t_symbol *s, int ac, t_atom *av){
@@ -127,17 +129,17 @@ static t_rand_seq *rand_seq_new(t_symbol *s, int ac, t_atom *av){
             ac = x->x_nvalues;
     }
     // common fields for new and restored rand_seqs
-    x->x_probs = (t_int*) getbytes(x->x_nvalues*sizeof(t_int));
+    x->x_probs = (int*) getbytes(x->x_nvalues*sizeof(int));
     if(!x->x_probs){
         error("rand_seq : could not allocate buffer");
         return NULL;
     }
-    x->x_ovalues = (t_int*) getbytes(x->x_nvalues*sizeof(t_int));
+    x->x_ovalues = (int*) getbytes(x->x_nvalues*sizeof(int));
     if(!x->x_ovalues){
         error("rand_seq : could not allocate buffer");
         return NULL;
     }
-    memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(t_int));
+    memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(int));
     int eq = 1; // default value
     for(int i = 0; i < x->x_nvalues; i++){
         if(ac){
