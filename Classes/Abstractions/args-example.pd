@@ -1,100 +1,22 @@
-#N canvas 482 247 733 420 10;
-#X obj 79 355 outlet;
-#X obj 79 106 inlet;
-#X text 113 33 This is an example of an abstraction with [else/args]
-\, used in its help file (args-help.pd).;
-#X obj 79 169 else/args;
-#X obj 79 267 else/display;
-#X text 413 238 <==;
-#X text 441 225 put this subpatch in your abstraction to load arguments
-, f 29;
-#X text 290 139 If you were hoping for a vanilla solution. Below there's
-a subopatch that behaves exactly like [args]! Just copy and paste it
-into another abstraction, f 56;
-#X text 101 317 <= list of arguments;
-#N canvas 732 23 708 707 load_args 0;
-#X obj 358 251 makefilename $%d;
-#X obj 272 327 pack f \$0;
-#X text 192 79 Maximum attempts, f 8;
-#X obj 484 338 send pd-\$0-test_arg;
-#X msg 358 282 obj 37 135 list append \$1, f 14;
-#X obj 59 101 r \$0-noarg;
-#X obj 206 219 select;
-#X obj 272 219 trigger float float float;
-#X msg 151 85 4096;
-#X text 257 87 (that might be engouh);
-#X obj 484 245 makefilename $%d-test;
-#N canvas 344 339 309 232 \$0-test_arg 0;
-#X obj 10 60 symbol \$7-test;
-#X obj 133 60 makefilename $%d-test;
-#X obj 37 135 list append \$7;
-#X obj 10 10 r 1029-i;
-#X obj 10 35 trigger bang float;
-#X obj 10 85 sel s;
-#X obj 37 110 b;
-#X obj 37 160 s 1029-arg;
-#X obj 10 185 s 1029-noarg;
-#X connect 0 0 5 0;
-#X connect 1 0 5 1;
-#X connect 2 0 7 0;
+#N canvas 482 247 593 430 10;
+#X obj 86 353 outlet;
+#X obj 86 94 inlet;
+#X text 120 31 This is an example of an abstraction with [else/args]
+\, used in its help file (args-help.pd)., f 54;
+#X obj 86 197 else/args;
+#X obj 86 265 else/display;
+#X obj 328 265 else/display;
+#X text 108 315 <= list of arguments;
+#X obj 328 197 else/args -;
+#X obj 328 353 outlet;
+#X text 342 315 <= broken list of arguments;
+#X text 330 159 Breaks the argument list if the first character is
+'-'., f 28;
+#X obj 86 134 trigger bang bang;
+#X connect 1 0 11 0;
 #X connect 3 0 4 0;
 #X connect 4 0 0 0;
-#X connect 4 1 1 0;
 #X connect 5 0 8 0;
-#X connect 5 1 6 0;
-#X connect 6 0 2 0;
-#X restore 498 178 pd \$0-test_arg;
-#X obj 153 438 r \$0-arg;
-#X text 180 631 list of arguments, f 9;
-#X msg 272 380 \; pd-\$2-test_arg obj 10 10 r \$2-i \; pd-\$2-test_arg
-obj 10 35 trigger bang float \; pd-\$2-test_arg obj 10 85 sel s \;
-pd-\$2-test_arg obj 37 110 b \; pd-\$2-test_arg obj 37 160 s \$2-arg
-\; pd-\$2-test_arg obj 10 185 s \$2-noarg \; pd-\$2-test_arg connect
-3 0 4 0 \; pd-\$2-test_arg connect 4 1 1 0 \; pd-\$2-test_arg connect
-4 0 0 0 \; pd-\$2-test_arg connect 1 0 5 1 \; pd-\$2-test_arg connect
-0 0 5 0 \; pd-\$2-test_arg connect 5 1 6 0 \; pd-\$2-test_arg connect
-6 0 2 0 \; pd-\$2-test_arg connect 2 0 7 0 \; pd-\$2-test_arg connect
-5 0 8 0 \; \$2-i \$1 \;;
-#X msg 484 272 clear \, obj 10 60 symbol \$1 \, obj 133 60 makefilename
-$%d-test, f 27;
-#X obj 119 638 outlet;
-#X obj 151 157 until;
-#X obj 206 189 + 1;
-#X msg 233 147 0;
-#X obj 151 123 trigger float bang float;
-#X obj 151 188 float;
-#X obj 151 55 inlet;
-#X msg 153 463 append \$1;
-#X obj 120 492 list store;
-#X connect 0 0 4 0;
-#X connect 1 0 14 0;
-#X connect 4 0 3 0;
-#X connect 5 0 17 1;
-#X connect 5 0 24 0;
-#X connect 6 0 24 0;
-#X connect 6 1 7 0;
-#X connect 7 0 1 0;
-#X connect 7 1 0 0;
-#X connect 7 2 10 0;
-#X connect 8 0 20 0;
-#X connect 10 0 15 0;
-#X connect 12 0 23 0;
-#X connect 15 0 3 0;
-#X connect 17 0 21 0;
-#X connect 18 0 21 1;
-#X connect 18 0 6 0;
-#X connect 19 0 21 1;
-#X connect 20 0 17 0;
-#X connect 20 1 19 0;
-#X connect 20 2 6 1;
-#X connect 21 0 18 0;
-#X connect 22 0 8 0;
-#X connect 23 0 24 0;
-#X connect 24 0 16 0;
-#X restore 321 239 pd load_args;
-#X obj 321 284 else/display;
-#X connect 1 0 3 0;
-#X connect 1 0 9 0;
-#X connect 3 0 4 0;
-#X connect 4 0 0 0;
-#X connect 9 0 10 0;
+#X connect 7 0 5 0;
+#X connect 11 0 3 0;
+#X connect 11 1 7 0;

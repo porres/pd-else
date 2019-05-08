@@ -5,25 +5,23 @@
 
 static t_class *args_class;
 
-typedef struct _args
-{
+typedef struct _args{
     t_object  x_obj;
     t_canvas  *x_canvas;
     int        x_argc;
-//    int        x_dirty;
+    //    int        x_dirty;
     t_atom    *x_argv;
     int             x_break;
+    int             x_broken;
     char            x_separator;
-} t_args;
+}t_args;
 
-static void copy_atoms(t_atom *src, t_atom *dst, int n)
-{
+static void copy_atoms(t_atom *src, t_atom *dst, int n){
     while(n--)
         *dst++ = *src++;
 }
 
-static void args_list(t_args *x, t_symbol *s, int argc, t_atom *argv)
-{
+static void args_list(t_args *x, t_symbol *s, int argc, t_atom *argv){
     t_symbol *dummy = s;
     dummy = NULL;
     t_binbuf* b = x->x_canvas->gl_obj.te_binbuf;
@@ -39,8 +37,8 @@ static void args_list(t_args *x, t_symbol *s, int argc, t_atom *argv)
     x->x_argc = argc;
     x->x_argv = getbytes(argc * sizeof(*(x->x_argv)));
     copy_atoms(argv, x->x_argv, argc);
-//    if(x->x_dirty)
-//        canvas_dirty(x->x_canvas, 1);
+    //    if(x->x_dirty)
+    //        canvas_dirty(x->x_canvas, 1);
 }
 
 static void args_break(t_args *x, t_symbol *s, int ac, t_atom *av){
@@ -52,21 +50,21 @@ static void args_break(t_args *x, t_symbol *s, int ac, t_atom *av){
             // i is starting point & j is broken item
             int j = i + 1;
             // j starts as next item from previous iteration (and as 0 in the first iteration)
-            for (j; j < ac; j++){
+            while (j < ac){
+                j++;
                 if ((av+j)->a_type == A_SYMBOL && x->x_separator == (atom_getsymbol(av+j))->s_name[0]){
+                    x->x_broken = 1;
                     break;
                 }
             }
             // n is number of extra elements in the broken message (that's why we have - 1)
             n = j - i - 1;
             if(first){
-                if(n == 0) // it's a selector
-                    if(!strcmp(s->s_name, "list")){ // if selector is list, do nothing
-                    }
-                    else
-                        outlet_anything(x->x_obj.ob_outlet, s, n, av - 1); // output selector
-                    else
-                        outlet_anything(x->x_obj.ob_outlet, s, n, av);
+                if(av->a_type == A_SYMBOL &&
+                   x->x_separator == (atom_getsymbol(av))->s_name[0])
+                    outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(av), n-1, av+1);
+                else
+                    outlet_anything(x->x_obj.ob_outlet, s, n, av);
                 first = 0;
             }
             else
@@ -76,24 +74,22 @@ static void args_break(t_args *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-static void args_bang(t_args *x)
-{
+static void args_bang(t_args *x){
     if(x->x_argv){
-        if (x->x_break)
+        if(x->x_break){
             args_break(x, &s_list, x->x_argc, x->x_argv);
+        }
         else
             outlet_list(x->x_obj.ob_outlet, &s_list, x->x_argc, x->x_argv);
     }
 }
 
-static void args_free(t_args *x)
-{
+static void args_free(t_args *x){
     if(x->x_argc)
         freebytes(x->x_argv, x->x_argc * sizeof(x->x_argv));
 }
 
-static void *args_new(t_symbol *s, int ac, t_atom* av)
-{
+static void *args_new(t_symbol *s, int ac, t_atom* av){
     t_symbol *dummy = s;
     dummy = NULL;
     t_args *x = (t_args *)pd_new(args_class);
@@ -102,7 +98,8 @@ static void *args_new(t_symbol *s, int ac, t_atom* av)
     while(!x->x_canvas->gl_env)
         x->x_canvas = x->x_canvas->gl_owner;
     int argc;
-//    x->x_dirty = 0;
+    x->x_break = x->x_broken = 0;
+    //    x->x_dirty = 0;
     t_atom *argv;
     canvas_setcurrent(x->x_canvas);
     canvas_getargs(&argc, &argv);
@@ -118,10 +115,9 @@ static void *args_new(t_symbol *s, int ac, t_atom* av)
     return (x);
 }
 
-void args_setup(void)
-{
+void args_setup(void){
     args_class = class_new(gensym("args"), (t_newmethod)args_new,
-                (t_method)args_free, sizeof(t_args), 0, A_GIMME, 0);
+                           (t_method)args_free, sizeof(t_args), 0, A_GIMME, 0);
     class_addlist(args_class, (t_method)args_list);
     class_addbang(args_class, (t_method)args_bang);
 }
