@@ -133,6 +133,8 @@ static void ffdelay_dsp(t_ffdelay *x, t_signal **sp){
 }
 
 static void *ffdelay_new(t_symbol *s, int argc, t_atom * argv){
+    t_symbol *dummy = s;
+    dummy = NULL;
     t_ffdelay *x;
     x = (t_ffdelay *)pd_new(ffdelay_class);
     x->x_sr_khz = sys_getsr() * 0.001;
