@@ -1,4 +1,4 @@
-#N canvas 581 84 561 476 10;
+#N canvas 482 88 561 476 10;
 #X obj 2 195 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 2 295 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -72,23 +72,23 @@ enabled and you can use the arrow keys for navigation., f 55;
 #X msg 320 111 rgb 200 0 0;
 #X text 58 30 You can also edit the properties of [note] with messages.
 , f 21;
-#X text 255 34 You can also set the note text with a message. The [note]
-object below has a receive symbol \, so you can send messages to it
-via a [send] object., f 52;
 #X msg 360 177 set text 1 2 3;
 #X msg 366 204 set Note;
 #X obj 319 270 else/note 0 50 helvetica \$0-note 0 0 0 0 Note;
 #X obj 320 233 s \$0-note;
+#X text 255 34 The [note] object below has a receive symbol \, so you
+can send messages to it via a [send] object. IF you set a receive name
+as "empty" then it it can't receive messages anymore., f 52;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
 #X connect 4 0 0 0;
 #X connect 5 0 0 0;
 #X connect 6 0 0 0;
-#X connect 7 0 14 0;
-#X connect 8 0 14 0;
-#X connect 11 0 14 0;
-#X connect 12 0 14 0;
+#X connect 7 0 13 0;
+#X connect 8 0 13 0;
+#X connect 10 0 13 0;
+#X connect 11 0 13 0;
 #X restore 478 169 pd messages;
 #X obj 96 207 cnv 17 3 80 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
