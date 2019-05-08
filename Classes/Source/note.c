@@ -646,7 +646,7 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
     dummy = NULL;
     t_text *t = (t_text *)x;
     t->te_type = T_TEXT;
-    x->x_glist = canvas_getcurrent();
+    x->x_glist = (t_glist*) canvas_getcurrent();
     sprintf(x->x_tag, "all%lx", (unsigned long)x);
     sprintf(x->x_texttag, "t%lx", (unsigned long)x);
     sprintf(x->x_outlinetag, "h%lx", (unsigned long)x);
