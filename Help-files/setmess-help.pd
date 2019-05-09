@@ -1,15 +1,15 @@
-#N canvas 481 121 562 424 10;
+#N canvas 481 121 562 438 10;
 #X obj 4 272 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 329 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 345 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 364 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 380 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 117 338 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 117 354 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 117 281 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 117 281 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 397 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 411 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 3 cnv 15 301 42 empty empty setmess 20 20 2 37 -233017 -1
 0;
@@ -38,10 +38,10 @@
 #X obj 103 234 else/display;
 #X obj 75 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X text 166 282 anything;
-#X text 232 282 - message to be set in a message;
-#X text 166 339 anything;
-#X obj 117 302 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 166 295 anything;
+#X text 232 295 - message to be set in a message;
+#X text 166 355 anything;
+#X obj 117 318 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 103 207 else/setmess ratio;
 #X obj 124 40 cnv 4 4 4 empty empty selector 0 28 2 18 -233017 -1 0
@@ -49,8 +49,8 @@
 #X msg 307 234;
 #X obj 338 207 else/initmess set;
 #X obj 307 181 else/setmess set;
-#X text 178 303 symbol;
-#X text 232 303 - message selector;
+#X text 178 319 symbol;
+#X text 232 319 - message selector;
 #X msg 208 181 amp;
 #X msg 103 151 0.1 0.6 0.3 0.7;
 #X text 119 182 new selector:;
@@ -58,8 +58,10 @@
 message. By default we have an empty selector \, which ends up removing
 selectors such as "symbol" or "list"., f 63;
 #X msg 307 156 incoming message;
-#X text 173 372 1) symbol - selector (default none);
-#X text 232 339 - output a message with a new selector;
+#X text 173 388 1) symbol - selector (default none);
+#X text 232 355 - output a message with a new selector;
+#X text 190 281 bang;
+#X text 231 281 - outputs last message;
 #X connect 19 0 24 0;
 #X connect 24 0 18 0;
 #X connect 27 0 26 0;
