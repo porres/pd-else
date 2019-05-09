@@ -1,5 +1,5 @@
-# Makefile.pdlibbuilder dated 2018-01-23
-version = 0.5.0
+# Makefile.pdlibbuilder dated 2018-03-15
+version = 0.5.1
 
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -96,11 +96,11 @@ version = 0.5.0
 # - CC
 # - CXX
 # - INSTALL
+# - STRIP
 # - DESTDIR
 #
 # Deprecated path variables:
 #
-# - PD_PATH
 # - pdincludepath
 # - pdbinpath
 # - objectsdir
@@ -167,7 +167,7 @@ version = 0.5.0
 # Makefile.pdlibbuilder will try to build all classes into a single library
 # executable (but it will force exit if lib.setup.sources is undefined).
 # If your makefile defines 'make-lib-executable=yes' as the library default,
-# this can still be overriden with 'make-lib-executable=no' as command argument
+# this can still be overridden with 'make-lib-executable=no' as command argument
 # to build individual class executables (the Makefile.pdlibbuilder default.)
 #
 # suppress-wunused:
@@ -213,9 +213,9 @@ version = 0.5.0
 # INSTALL
 # Definition of install program.
 #
-# PD_PATH:
-# Equivalent to PDDIR. Supported for compatibility with pd-extended central
-# makefile, but deprecated otherwise.
+# STRIP
+# Name of strip program. Default 'strip' can be overridden in cross compilation
+# environments.
 #
 # objectsdir:
 # Root directory for installation of Pd library directories, like PDLIBDIR but
@@ -242,7 +242,13 @@ version = 0.5.0
 #
 # OSX:      /Applications/Pd*.app/Contents/Resources/src
 #
-# Windows:  %PROGRAMFILES%/pd/src
+# Windows:  %PROGRAMFILES%/Pd/src
+#           %PROGRAMFILES(X86)%/Pd/src (32 bit builds on 64 bit Windows)
+#
+# Default search path for binary pd.dll (Windows), overridable by PDBINDIR
+#
+#           %PROGRAMFILES%/Pd/bin
+#           %PROGRAMFILES(X86)%/Pd/bin (32 bit builds on 64 bit Windows)
 #
 # Default location to install pd libraries is platform dependent, and
 # overridable by PDLIBDIR:
@@ -321,7 +327,6 @@ version = 0.5.0
 # - decide whether to use -static-libgcc or shared dll in MinGW
 # - cygwin support
 # - android support
-# - Windows 64 bit support
 # - figure out how to handle '$' in filenames
 # - add makefile template targets dpkg-source dist libdir distclean tags?
 #
@@ -445,7 +450,7 @@ ifeq ($(uname), Darwin)
   system = Darwin
 endif
 
-ifeq ($(filter MINGW% MSYS, $(uname)), $(uname)) 
+ifeq ($(filter MINGW% MSYS%, $(uname)), $(uname)) 
   system = Windows
 endif
 
@@ -538,7 +543,6 @@ ifeq ($(system), Linux)
   cxx.ldlibs := -lc -lm -lstdc++
   shared.extension = so
   shared.ldflags := -rdynamic -fPIC -shared -Wl,-soname,$(shared.lib)
-  stripflags = --strip-unneeded -R .note -R .comment
 endif
 
 
@@ -566,7 +570,6 @@ ifeq ($(system), Darwin)
   shared.ldflags = -dynamiclib -undefined dynamic_lookup \
     -install_name @loader_path/$(shared.lib) \
     -compatibility_version 1 -current_version 1.0
-  stripflags = -x
   version.flag := $(filter $(cflags), -mmacosx-version-min=%)
   ifeq ($(target.arch), i386)
     cxx.flags := -fcheck-new
@@ -587,20 +590,33 @@ endif
 
 # Standard paths on Windows contain spaces, and GNU make functions treat such
 # paths as lists, with unintended effects. Therefore we must use shell function
-# ls instead of make's wildcard, and probe for each standard path individually.
-# Using double quotes around paths with spaces is obligatory. Since some path
-# variables are assembled or re-expanded later, great care must be taken to put
-# quotes at appropriate points throughout the makefile. Thanks, Bill.
+# ls instead of make's wildcard when probing for a path, and use double quotes
+# when specifying a path in a command argument.
 
-# paths for 32-bit executables on 64-bit Windows aren't yet defined here (TODO)
+# Default paths in Mingw / Mingw-w64 environments. 'PROGRAMFILES' is standard
+# location for builds with native architecture, 'ProgramFiles(x86)' for i686
+# builds on x86_64 Windows (detection method by Lucas Cordiviola). Curly braces
+# required because of parentheses in variable name.
 ifeq ($(system), Windows)
   pkglibdir := $(APPDATA)/Pd
-  ifndef pdbinpath
-    pdbinpath := $(shell ls -d "$(PROGRAMFILES)/pd/bin")
+  ifeq ($(MINGW_CHOST), i686-w64-mingw32)
+    programfiles := ${ProgramFiles(x86)}
+  else
+    programfiles := $(PROGRAMFILES)
   endif
-  ifndef pdincludepath
-    pdincludepath := $(shell ls -d "$(PROGRAMFILES)/pd/src")
+  pdbinpath := $(programfiles)/Pd/bin
+  pdincludepath := $(programfiles)/Pd/src
+endif
+
+# Store default path to pd.dll in PDBINDIR if the latter is not user-defined.
+# For include path this is done in the platform-independent paths section below,
+# but for PDBINDIR it is done here so ld flags can be evaluated as immediate
+# variables.
+ifeq ($(system), Windows)
+  ifdef PDDIR
+    PDBINDIR := $(PDDIR)/bin
   endif
+  PDBINDIR ?= $(pdbinpath)
 endif
 
 # TODO: decide whether -mms-bitfields should be specified.
@@ -616,16 +632,16 @@ ifeq ($(system), Windows)
   endif
   extension = dll
   c.flags :=
-  c.ldflags = -static-libgcc -shared \
-    -Wl,--enable-auto-import "$(pdbinpath)/pd.dll"
+  c.ldflags := -static-libgcc -shared \
+    -Wl,--enable-auto-import "$(PDBINDIR)/pd.dll"
   c.ldlibs :=
   cxx.flags := -fcheck-new
-  cxx.ldflags = -static-libstdc++ -shared \
-    -Wl,--enable-auto-import "$(pdbinpath)/pd.dll"
+  cxx.ldflags := -static-libgcc -static-libstdc++ -shared \
+    -Wl,--enable-auto-import "$(PDBINDIR)/pd.dll"
   cxx.ldlibs :=
   shared.extension = dll
-  shared.ldflags = -static-libgcc -shared "$(pdbinpath)/pd.dll"
-  stripflags = --strip-unneeded -R .note -R .comment
+  shared.ldflags := -static-libgcc -shared "$(PDBINDIR)/pd.dll"
+  stripflags = --strip-all
 endif
 
 
@@ -634,17 +650,14 @@ endif
 
 # Platform-dependent default paths are specified above, but overridable.
 # Path variables in upper case can be defined as make command argument or in the
-# environment. 'PD_PATH' and 'objectsdir' are supported for compatibility with
+# environment. Variable 'objectsdir' is supported for compatibility with
 # the build system that pd-l2ork has inherited from pd-extended.
 
-PDDIR ?= $(PD_PATH)
 PDINCLUDEDIR ?= $(pdincludepath)
-PDBINDIR ?= $(pdbinpath)
 PDLIBDIR ?= $(firstword $(objectsdir) $(pkglibdir))
 
-ifneq ($(PDDIR),)
+ifdef PDDIR
   PDINCLUDEDIR := $(wildcard $(PDDIR)/src)
-  PDBINDIR := $(wildcard $(PDDIR)/bin)
 endif
 
 # base path where all components of the lib will be installed by default
@@ -734,6 +747,11 @@ endif
 # store path to Pd API m_pd.h if it is found
 ifdef PDINCLUDEDIR
   mpdh := $(shell ls "$(PDINCLUDEDIR)/m_pd.h")
+endif
+
+# store path to pd.dll; if not found, ls will give a useful error
+ifeq ($(system), Windows)
+  pddll := $(shell ls "$(PDBINDIR)/pd.dll")
 endif
 
 # print Makefile.pdlibbuilder version
@@ -1033,9 +1051,32 @@ endef
 ################################################################################
 
 
+#=== strip =====================================================================
+
+
+# Stripping of installed binaries will only be done when variable 'stripflags'
+# is defined non-empty. No default definition is provided except for Windows
+# where the unstripped binaries are large, especially in the case of Mingw-w64.
+
+# Note: while stripping all symbols ('-s' or '--strip-all') is possible for
+# Linux and Windows, in the case of OSX only non-global symbols can be stripped
+# (option '-x' or '--discard-all').
+
+# Make definition of strip command overridable so it can be defined in an
+# environment for cross-compilation.
+STRIP ?= strip
+
+# Commands in 'strip-executables' will be executed conditionally in the rule for
+# target 'install-executables'.
+strip-executables = cd "$(installpath)" && \
+  $(foreach v, $(executables), $(STRIP) $(stripflags) '$v';)
+
+
+#=== install ===================================================================
+
+
 # Install targets depend on successful exit status of target all because nothing
 # must be installed in case of a build error.
-
 
 # -p = preserve time stamps
 # -m = set permission mode (as in chmod)
@@ -1062,6 +1103,7 @@ install-executables: all
 	$(INSTALL_PROGRAM) '$v' "$(installpath)";)
 	$(info ++++ info: executables of lib $(lib.name) installed \
         from $(CURDIR) to $(installpath))
+	$(if $(stripflags), $(strip-executables),)
 
 install-datafiles: all
 	$(INSTALL_DIR) -v "$(installpath)"

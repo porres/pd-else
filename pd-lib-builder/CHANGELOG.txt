@@ -1,5 +1,15 @@
 Changelog for Makefile.pdlibbuilder.
 
+v0.5.1, dated 2018-03-15
+Fixes and improvements for Windows builds:
+- properly evaluate variables 'PDDIR' and 'PDBINDIR' to find pd.dll
+- define default path of 32 bit Pd on 64 bit Windows
+- link C++ externals with standard C libs on Windows, they don't load otherwise
+- strip installed Windows binaries by default
+(issues #34, #39, #41, #42 respectively)
+Warning for all platforms: variable 'PD_PATH' is no longer supported, use the
+equivalent 'PDDIR'.
+
 v0.5.0, dated 2018-01-23
 Implement target architecture detection for Windows builds,
 and set appropriate options for 32 and 64 bit (used to be for 32 bit only).
