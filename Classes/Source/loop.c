@@ -17,7 +17,7 @@ typedef struct _loop{
     t_int       x_upwards;
     t_int       x_status;
     t_int       x_b;
-    t_outlet   *x_bangout;
+    t_outlet   *x_count_outlet;
 }t_loop;
 
 static t_class *loop_class;
@@ -28,9 +28,9 @@ static void loop_do_loop(t_loop *x){ // The Actual Loop
         if(x->x_iter){
             while(x->x_count <= x->x_target * x->x_step){
                 if(x->x_b)
-                    outlet_bang(((t_object *)x)->ob_outlet);
+                    outlet_bang(x->x_count_outlet);
                 else
-                    outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
+                    outlet_float(x->x_count_outlet, x->x_count + x->x_offset);
                 x->x_count += x->x_step;
                 if(x->x_status == PAUSED)
                     return;
@@ -39,9 +39,9 @@ static void loop_do_loop(t_loop *x){ // The Actual Loop
         else{
             while(x->x_count <= x->x_target){
                 if(x->x_b)
-                    outlet_bang(((t_object *)x)->ob_outlet);
+                    outlet_bang(x->x_count_outlet);
                 else
-                    outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
+                    outlet_float(x->x_count_outlet, x->x_count + x->x_offset);
                 x->x_count += x->x_step;
                 if(x->x_status == PAUSED)
                     return;
@@ -51,15 +51,15 @@ static void loop_do_loop(t_loop *x){ // The Actual Loop
     else{
         while(x->x_count >= x->x_target){
             if(x->x_b)
-                outlet_bang(((t_object *)x)->ob_outlet);
+                outlet_bang(x->x_count_outlet);
             else
-                outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
+                outlet_float(x->x_count_outlet, x->x_count + x->x_offset);
             x->x_count -= x->x_step;
             if(x->x_status == PAUSED)
                 return;
         }
     }
-    outlet_bang(x->x_bangout);
+    outlet_bang(((t_object *)x)->ob_outlet);
     x->x_status = OFF;
 }
 
@@ -210,8 +210,8 @@ static void *loop_new(t_symbol *s, int argc, t_atom *argv){
         x->x_upwards = x->x_counter_start < x->x_target;
     }
     inlet_new((t_object *)x, (t_pd *)x, &s_float, gensym("set"));
-    outlet_new((t_object *)x, &s_float);
-    x->x_bangout = outlet_new((t_object *)x, &s_bang);
+    outlet_new((t_object *)x, &s_bang);
+    x->x_count_outlet = outlet_new((t_object *)x, &s_float);
     return (x);
 errstate:
     pd_error(x, "loop: improper args");
