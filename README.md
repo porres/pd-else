@@ -74,7 +74,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (329 objects):
+##Current Object list (330 objects):
 
 **ASSORTED: [3]**
 - [table~]
@@ -95,12 +95,13 @@ Cross compiling is also possible with something like this
 - [window]
 - [loadbanger] / [lb]
 
-**LIST MANAGEMENT: [7]**
+**LIST MANAGEMENT: [8]**
 - [break] 
 - [order]
 - [regroup] 
 - [scramble]
 - [sort]
+- [reverse]
 - [merge]
 - [unmerge]
 

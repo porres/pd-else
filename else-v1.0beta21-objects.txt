@@ -252,6 +252,7 @@ resonant~	x
 resonant2~	x
 resonbank~	x
 resonbank2~	x
+reverse	x
 rint~	x
 rint	x
 rm~	x
