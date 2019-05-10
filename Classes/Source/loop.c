@@ -70,6 +70,16 @@ static void loop_bang(t_loop *x){
     }
 }
 
+static void loop_set(t_loop *x, t_float f){
+    if(f < 1){
+        pd_error(x, "loop: number of iterations need to be >= 1");
+        return;
+    }
+    x->x_counter_start = 0;
+    x->x_target = (int)f - 1;
+    x->x_upwards = x->x_iter = 1;
+}
+
 static void loop_float(t_loop *x, t_float f){
     if(f < 1){
         pd_error(x, "loop: number of iterations need to be >= 1");
@@ -82,6 +92,8 @@ static void loop_float(t_loop *x, t_float f){
 }
 
 static void loop_list(t_loop *x, t_symbol *s, int ac, t_atom *av){
+    t_symbol *dummy = s;
+    dummy = NULL;
     x->x_counter_start = (int)atom_getfloat(av);
     x->x_target = (int)atom_getfloat(av+1);
     if(ac == 3){
@@ -119,6 +131,8 @@ static void loop_step(t_loop *x, t_float f){
 }
 
 static void *loop_new(t_symbol *s, int argc, t_atom *argv){
+    t_symbol *dummy = s;
+    dummy = NULL;
     t_loop *x = (t_loop *)pd_new(loop_class);
     x->x_status = OFF;
     t_float f1 = 0, f2 = 0, offset = 0, step = 1;
@@ -149,7 +163,7 @@ static void *loop_new(t_symbol *s, int argc, t_atom *argv){
         }
         else if(argv->a_type == A_SYMBOL){
             t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-            if(!strcmp(curarg->s_name, "-offset")){
+            if(curarg == gensym("-offset")){
                 offset = atom_getfloatarg(0, argc, argv+1);
             argnum += 2;
             argc -= 2;
@@ -157,7 +171,7 @@ static void *loop_new(t_symbol *s, int argc, t_atom *argv){
             if(argv->a_type == A_FLOAT)
                 goto errstate;
             }
-            else if(!strcmp(curarg->s_name, "-step")){
+            else if(curarg == gensym("-step")){
                 step = atom_getfloatarg(0, argc, argv+1);
                 argnum += 2;
                 argc -= 2;
@@ -165,7 +179,7 @@ static void *loop_new(t_symbol *s, int argc, t_atom *argv){
                 if(argv->a_type == A_FLOAT)
                     goto errstate;
             }
-            else if(!strcmp(curarg->s_name, "-b")){
+            else if(curarg == gensym("-b")){
                 x->x_b = 1;
                 argnum++;
                 argc--;
@@ -195,6 +209,7 @@ static void *loop_new(t_symbol *s, int argc, t_atom *argv){
         x->x_target = (int)f2;
         x->x_upwards = x->x_counter_start < x->x_target;
     }
+    inlet_new((t_object *)x, (t_pd *)x, &s_float, gensym("set"));
     outlet_new((t_object *)x, &s_float);
     x->x_bangout = outlet_new((t_object *)x, &s_bang);
     return (x);
@@ -212,4 +227,5 @@ void loop_setup(void){
     class_addmethod(loop_class, (t_method)loop_continue, gensym("continue"), 0);
     class_addmethod(loop_class, (t_method)loop_offset, gensym("offset"), A_DEFFLOAT, 0);
     class_addmethod(loop_class, (t_method)loop_step, gensym("step"), A_DEFFLOAT, 0);
+    class_addmethod(loop_class, (t_method)loop_set, gensym("set"), A_DEFFLOAT, 0);
 }
