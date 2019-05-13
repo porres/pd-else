@@ -3,18 +3,20 @@
 static t_class *routetype_class;
 
 typedef struct _routetype{
-    t_object    x_obj;
-    t_int       x_b;
-    t_int       x_f;
-    t_int       x_s;
-    t_int       x_l;
-    t_int       x_a;
-    t_int       x_r;
+    t_object     x_obj;
+    int          x_b;
+    int          x_f;
+    int          x_s;
+    int          x_l;
+    int          x_a;
+    int          x_p;
+    int          x_r;
     t_outlet    *x_out_bang;
     t_outlet    *x_out_float;
     t_outlet    *x_out_symbol;
     t_outlet    *x_out_list;
     t_outlet    *x_out_anything;
+    t_outlet    *x_out_pointer;
     t_outlet    *x_out_reject;
 } t_routetype;
 
@@ -40,6 +42,8 @@ static void routetype_symbol(t_routetype *x, t_symbol *s){
 }
 
 static void routetype_list(t_routetype *x, t_symbol *sel, int argc, t_atom *argv){
+    t_symbol *dummy = sel;
+    dummy = NULL;
     if(argc == 0){
         routetype_bang(x);
         return;
@@ -65,38 +69,50 @@ static void routetype_anything(t_routetype *x, t_symbol *sel, int argc, t_atom *
         outlet_anything(x->x_out_reject, sel, argc, argv);
 }
 
+static void routetype_pointer(t_routetype *x, t_gpointer *gp){
+    if(x->x_p)
+        outlet_pointer(x->x_out_pointer, gp);
+    else if(x->x_r)
+        outlet_pointer(x->x_out_pointer, gp);
+}
+
 static void *routetype_new(t_symbol *s, int argc, t_atom *argv){
     t_routetype *x = (t_routetype *)pd_new(routetype_class);
+    t_symbol *dummy = s;
+    dummy = NULL;
     x->x_b = x->x_f = x->x_s = x->x_l = x->x_a = x->x_r = 0;
-    t_int c = argc;
+    int c = argc;
     if(!argc){
         x->x_out_reject = outlet_new(&x->x_obj, &s_anything);
         x->x_r = 1;
     }
     else{
-        t_int n = 0;
         while(argc > 0){
             if(argv->a_type == A_SYMBOL){
                 t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-                if(strcmp(curarg->s_name, "f") == 0 || strcmp(curarg->s_name, "float") == 0){
+                if(curarg == gensym("f") || curarg == gensym("float")){
                     x->x_out_float = outlet_new(&x->x_obj, &s_float);
                     x->x_f = 1;
                 }
-                else if(strcmp(curarg->s_name, "b") == 0 || strcmp(curarg->s_name, "bang") == 0){
+                else if(curarg == gensym("b") || curarg == gensym("bang")){
                     x->x_out_bang = outlet_new(&x->x_obj, &s_bang);
                     x->x_b = 1;
                 }
-                else if(strcmp(curarg->s_name, "s") == 0 || strcmp(curarg->s_name, "symbol") == 0){
+                else if(curarg == gensym("s") || curarg == gensym("symbol")){
                     x->x_out_symbol = outlet_new(&x->x_obj, &s_symbol);
                     x->x_s = 1;
                 }
-                else if(strcmp(curarg->s_name, "l") == 0 || strcmp(curarg->s_name, "list") == 0){
+                else if(curarg == gensym("l") || curarg == gensym("list")){
                     x->x_out_list = outlet_new(&x->x_obj, &s_list);
                     x->x_l = 1;
                 }
-                else if(strcmp(curarg->s_name, "a") == 0 || strcmp(curarg->s_name, "anything") == 0){
+                else if(curarg == gensym("a") || curarg == gensym("anything")){
                     x->x_out_anything = outlet_new(&x->x_obj, &s_anything);
                     x->x_a = 1;
+                }
+                else if(curarg == gensym("p") || curarg == gensym("pointer")){
+                    x->x_out_pointer = outlet_new(&x->x_obj, &s_pointer);
+                    x->x_p = 1;
                 }
                 else
                     goto errstate;
@@ -106,7 +122,7 @@ static void *routetype_new(t_symbol *s, int argc, t_atom *argv){
             argv++;
             argc--;
         }
-        if(c < 5){
+        if(c < 6){
             x->x_out_reject = outlet_new(&x->x_obj, &s_anything);
             x->x_r = 1;
         }
@@ -125,4 +141,5 @@ void routetype_setup(void){
     class_addsymbol(routetype_class, routetype_symbol);
     class_addlist(routetype_class, routetype_list);
     class_addanything(routetype_class, routetype_anything);
+    class_addpointer(routetype_class, routetype_pointer);
 }

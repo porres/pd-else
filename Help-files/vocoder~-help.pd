@@ -1,4 +1,4 @@
-#N canvas 734 199 561 584 10;
+#N canvas 565 68 561 584 10;
 #X obj 187 151 else/bl.saw~;
 #X obj 187 129 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-hz1 empty 0 -8 0
 10 -228856 -1 -1 60 256;
@@ -65,7 +65,7 @@ of channels., f 47;
 abstraction.;
 #X text 223 485 filter q for each channel (default 50);
 #X obj 187 250 else/out~;
-#N canvas 705 271 532 461 example 0;
+#N canvas 692 227 532 461 example 1;
 #X text 103 36 In this example you can control the frequency of each
 frequency band channel from an array.;
 #X msg 282 355 q \$1;
