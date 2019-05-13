@@ -770,8 +770,10 @@ static void function_send(t_function *x, t_symbol *s){
     if(s == gensym("empty"))
         snd = &s_;
     x->x_send_sym = snd;
-    function_erase(x, x->x_glist);
-    function_drawme(x, x->x_glist, 1);
+    if(glist_isvisible(x->x_glist)){
+        function_erase(x, x->x_glist);
+        function_drawme(x, x->x_glist, 1);
+    }
 }
 
 static void function_set_send(t_function *x, t_symbol *s){
@@ -781,7 +783,8 @@ static void function_set_send(t_function *x, t_symbol *s){
 
 static void function_receive(t_function *x, t_symbol *s){
     t_symbol *rcv = canvas_realizedollar(x->x_glist, x->x_rcv_unexpanded = s);
-    function_erase(x, x->x_glist);
+    if(glist_isvisible(x->x_glist))
+        function_erase(x, x->x_glist);
     if(s == gensym("empty"))
         rcv = &s_;
     if(rcv != &s_){
@@ -794,7 +797,8 @@ static void function_receive(t_function *x, t_symbol *s){
             pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
         x->x_receive_sym = rcv;
     }
-    function_drawme(x, x->x_glist, 1);
+    if(glist_isvisible(x->x_glist))
+        function_drawme(x, x->x_glist, 1);
 }
 
 static void function_set_receive(t_function *x, t_symbol *s){
