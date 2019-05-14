@@ -257,6 +257,7 @@ rint~	x
 rint	x
 rm~	x
 rms~	x
+rotate	x
 rotate~	x
 routeall	x
 router	x

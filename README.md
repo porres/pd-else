@@ -74,7 +74,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (330 objects):
+##Current Object list (331 objects):
 
 **ASSORTED: [3]**
 - [table~]
@@ -94,16 +94,6 @@ Cross compiling is also possible with something like this
 - [properties]
 - [window]
 - [loadbanger] / [lb]
-
-**LIST MANAGEMENT: [8]**
-- [break] 
-- [order]
-- [regroup] 
-- [scramble]
-- [sort]
-- [reverse]
-- [merge]
-- [unmerge]
 
 **MESSAGE MANAGEMENT: [20]**
 - [makesymbol]
@@ -126,6 +116,17 @@ Cross compiling is also possible with something like this
 - [trigger2] / [t2]
 - [sig2float~] / [s2f~]
 - [float2sig~] / [f2s~]
+
+**LIST/MESSAGE MANAGEMENT: [9]**
+- [break] 
+- [order]
+- [regroup] 
+- [scramble]
+- [sort]
+- [reverse]
+- [rotate]
+- [merge]
+- [unmerge]
 
 **FILE MANAGEMENT: [1]**
 - [dir]
