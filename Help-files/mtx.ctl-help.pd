@@ -1,7 +1,7 @@
 #N struct 1007-cell float x float y float cellsize float color;
 #N struct 1024-cell float x float y float cellsize float color;
 #N struct 1027-cell float x float y float cellsize float color;
-#N canvas 505 23 564 575 10;
+#N canvas 505 23 567 603 10;
 #X msg 248 164 1 0 \$1;
 #X obj 248 140 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -32,21 +32,21 @@
 0;
 #X obj 6 306 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 462 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 474 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 492 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 504 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 547 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 574 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 121 313 cnv 17 3 143 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 121 313 cnv 17 3 156 empty empty 0 5 9 0 16 -228856 -162280
 0;
-#X obj 121 469 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 121 481 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 204 469 list;
-#X text 243 469 - column \, row and status;
-#X text 188 497 1) float - number of columns (default 3), f 47;
-#X text 188 512 2) float - number of rows (default 3), f 47;
-#X text 188 527 3) float - cell size in pixels (default 20), f 47
+#X text 204 481 list;
+#X text 243 481 - column \, row and status;
+#X text 188 509 1) float - number of columns (default 3), f 47;
+#X text 188 524 2) float - number of rows (default 3), f 47;
+#X text 188 539 3) float - cell size in pixels (default 20), f 47
 ;
 #X text 203 313 list;
 #X text 155 411 rows <float>;
@@ -116,7 +116,7 @@ cells in the grid can be either on or off. The output is a list with
 #X obj 215 432 *~ 1;
 #X obj 174 119 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 174 207 else/mtx.ctl 8 3;
+#X obj 174 207 else/mtx.ctl 8 3 20 0 0 0 0 0 0 0 0 0 0 0 0;
 #X obj 174 144 else/count 7;
 #X msg 122 81 set 0 0 1 \, set 1 1 1 \, set 2 2 1 \, set 3 1 1 \, set
 4 0 1 \, set 4 2 1 \, set 5 1 1 \, set 6 0 1 \, set 6 2 1 \, set 7
@@ -152,15 +152,18 @@ cells in the grid can be either on or off. The output is a list with
 #X text 197 369 flush;
 #X text 243 369 - flushes all cell values, f 41;
 #X text 191 383 export;
-#X text 243 383 - exports internal array, f 41;
 #X text 197 327 float;
 #X text 243 327 - sets row values for column specified by float;
 #X obj 248 197 else/mtx.ctl;
 #X text 191 397 import;
-#X text 243 397 - imports from external array, f 41;
-#X connect 0 0 52 0;
+#X text 149 455 embed <float>;
+#X text 243 383 - export contents as an array, f 41;
+#X text 243 397 - import contents as an array, f 41;
+#X text 188 554 4) float - embed flag \, (default 0), f 47;
+#X text 243 455 - non zero save internal contents with the object;
+#X connect 0 0 51 0;
 #X connect 1 0 0 0;
-#X connect 36 0 52 0;
-#X connect 38 0 52 0;
+#X connect 36 0 51 0;
+#X connect 38 0 51 0;
 #X connect 39 0 38 0;
-#X connect 52 0 44 0;
+#X connect 51 0 44 0;
