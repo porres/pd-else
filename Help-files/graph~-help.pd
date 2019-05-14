@@ -1,15 +1,15 @@
-#N canvas 630 69 559 528 10;
-#X obj 1 498 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#N canvas 719 138 558 545 10;
+#X obj 1 518 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 1 321 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 1 319 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 1 408 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 1 421 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 1 435 cnv 3 550 3 empty \$0-pddp.cnv.argument flags 8 12 0 13
+#X obj 1 448 cnv 3 550 3 empty \$0-pddp.cnv.argument flags 8 12 0 13
 -228856 -1 0;
-#X obj 85 330 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 85 328 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 192 329 signal;
+#X text 192 327 signal;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -133,41 +133,46 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X text 175 415 (none);
-#X text 240 329 - incoming signal to graph;
+#X text 175 428 (none);
+#X text 240 327 - incoming signal to graph;
 #X obj 2 3 cnv 15 301 42 empty empty graph~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 85 353 cnv 17 3 49 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
+#X obj 85 351 cnv 17 3 64 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
 -162280 0;
-#X text 240 353 - buffer size in samples, f 27;
-#X text 173 442 - buffer size in samples (default 441 \, minumum 64)
-;
+#X text 240 351 - buffer size in samples, f 27;
+#X text 191 454 - buffer size in samples (default 441 \, minumum 64)
+, f 51;
 #X text 61 87 [graph~] is a very simple but convenient abstraction
 for visualizing audio signals.;
-#X text 156 353 size <float>;
-#X text 240 369 - number of buffers to skip;
-#X text 156 369 skip <float>;
-#X text 173 459 - buffer skip (default 0);
-#X obj 320 118 nbx 5 14 64 44100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 64 256;
-#X msg 320 139 size \$1;
-#X obj 346 177 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X msg 346 198 skip \$1;
-#X text 88 442 -size <float>;
-#X text 88 459 -skip <float>;
-#X text 173 478 - 2 floats sets upper and lower graph range (default
-1 -1);
-#X text 40 478 -range <float \, float>;
-#X text 108 386 range <float \, float>;
-#X text 240 386 - sets min/max range;
-#X obj 125 131 noise~;
-#X obj 125 163 else/graph~;
+#X text 156 351 size <float>;
+#X text 240 367 - number of buffers to skip;
+#X text 156 367 skip <float>;
+#X text 191 469 - buffer skip (default 0), f 51;
+#X obj 330 118 nbx 5 14 64 44100 0 1 empty empty empty 0 -8 0 10 -228856
+-1 -1 441 256;
+#X msg 330 139 size \$1;
+#X obj 356 177 nbx 5 14 0 100 0 1 empty empty empty 0 -8 0 10 -228856
+-1 -1 10 256;
+#X msg 356 198 skip \$1;
+#X text 106 454 -size <float>;
+#X text 106 469 -skip <float>;
+#X text 58 484 -range <float \, float>;
+#X text 108 384 range <float \, float>;
+#X obj 135 131 noise~;
+#X obj 135 163 else/graph~ 441 10 -1 1 200 140;
+#X text 70 499 -dim <float \, float>;
+#X text 191 484 - set upper and lower graph range (default 1 -1),
+f 51;
+#X text 120 400 dim <float \, float>;
+#X text 240 384 - set min/max range;
+#X text 240 400 - set horizontal/vertical dimensions;
+#X text 191 499 - set horizontal/vertical dimensions (default 200 140)
+;
 #X connect 29 0 30 0;
-#X connect 30 0 40 1;
+#X connect 30 0 38 1;
 #X connect 31 0 32 0;
-#X connect 32 0 40 1;
-#X connect 39 0 40 0;
+#X connect 32 0 38 1;
+#X connect 37 0 38 0;
