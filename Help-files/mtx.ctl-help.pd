@@ -1,7 +1,6 @@
 #N struct 1007-cell float x float y float cellsize float color;
-#N struct 1024-cell float x float y float cellsize float color;
 #N struct 1027-cell float x float y float cellsize float color;
-#N canvas 505 23 567 603 10;
+#N canvas 682 107 569 587 10;
 #X msg 248 164 1 0 \$1;
 #X obj 248 140 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -32,29 +31,29 @@
 0;
 #X obj 6 306 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 474 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 460 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 504 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 490 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 574 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 560 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 121 313 cnv 17 3 156 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 121 313 cnv 17 3 142 empty empty 0 5 9 0 16 -228856 -162280
 0;
-#X obj 121 481 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 121 467 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 204 481 list;
-#X text 243 481 - column \, row and status;
-#X text 188 509 1) float - number of columns (default 3), f 47;
-#X text 188 524 2) float - number of rows (default 3), f 47;
-#X text 188 539 3) float - cell size in pixels (default 20), f 47
+#X text 204 467 list;
+#X text 243 467 - column \, row and status;
+#X text 188 495 1) float - number of columns (default 3), f 47;
+#X text 188 510 2) float - number of rows (default 3), f 47;
+#X text 188 525 3) float - cell size in pixels (default 20), f 47
 ;
 #X text 203 313 list;
-#X text 155 411 rows <float>;
-#X text 137 426 columns <float>;
-#X text 243 411 - sets number of rows, f 41;
-#X text 243 426 - sets number of columns, f 41;
-#X text 155 441 size <float>;
-#X text 243 441 - sets cell size in pixels, f 41;
+#X text 155 397 rows <float>;
+#X text 137 412 columns <float>;
+#X text 243 397 - sets number of rows, f 41;
+#X text 243 412 - sets number of columns, f 41;
+#X text 155 427 size <float>;
+#X text 243 427 - sets cell size in pixels, f 41;
 #X text 110 219 click on the cells =>;
 #X text 49 88 [mtx.ctl] provides a user matrix interface control. The
 cells in the grid can be either on or off. The output is a list with
@@ -90,80 +89,30 @@ cells in the grid can be either on or off. The output is a list with
 #X connect 18 0 19 0;
 #X connect 18 1 19 1;
 #X connect 21 0 17 0;
-#X restore 444 245 pd mtx~;
+#X restore 485 261 pd mtx~;
 #X msg 202 164 clear;
-#X text 197 355 clear;
+#X text 197 341 clear;
 #X msg 308 169 set 2 1 \$1;
 #X obj 308 146 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 167 341 set <list>;
+#X text 167 327 set <list>;
 #X text 243 313 - sets column \, row \, status and outputs it;
-#X text 243 341 - sets column \, row and status (no output);
-#X text 243 355 - clears active cells (no output), f 41;
+#X text 243 327 - sets column \, row and status (no output);
+#X text 243 341 - clears active cells (no output), f 41;
 #X obj 248 269 else/display;
-#N canvas 723 26 606 572 drum-pattern 0;
-#X obj 122 56 loadbang;
-#X msg 73 88 clear;
-#X obj 174 171 hradio 20 1 0 8 empty empty empty 0 -8 0 10 -228856
--1 -1 0;
-#X obj 174 285 route 0 1 2, f 21;
-#X msg 113 352 open bagal.aif;
-#X obj 113 382 else/play.file~;
-#X msg 215 352 open dholak.aif;
-#X obj 215 382 else/play.file~;
-#X obj 300 407 else/pluck~ 50 2500 10000;
-#X obj 349 351 impseq~;
-#X obj 215 432 *~ 1;
-#X obj 174 119 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 174 207 else/mtx.ctl 8 3 20 0 0 0 0 0 0 0 0 0 0 0 0;
-#X obj 174 144 else/count 7;
-#X msg 122 81 set 0 0 1 \, set 1 1 1 \, set 2 2 1 \, set 3 1 1 \, set
-4 0 1 \, set 4 2 1 \, set 5 1 1 \, set 6 0 1 \, set 6 2 1 \, set 7
-1 1, f 54;
-#X obj 215 470 else/out~;
-#X text 365 221 Here's how to use [mtx.ctl] as a drum pattern interface
-, f 28;
-#X obj 215 315 sel 1;
-#X obj 256 315 sel 1;
-#X obj 174 315 sel 1;
-#X connect 0 0 14 0;
-#X connect 1 0 12 0;
-#X connect 2 0 12 0;
-#X connect 3 0 19 0;
-#X connect 3 1 17 0;
-#X connect 3 2 18 0;
-#X connect 4 0 5 0;
-#X connect 5 0 10 0;
-#X connect 6 0 7 0;
-#X connect 7 0 10 0;
-#X connect 8 0 10 0;
-#X connect 9 0 8 1;
-#X connect 10 0 15 0;
-#X connect 10 0 15 1;
-#X connect 11 0 13 0;
-#X connect 12 0 3 0;
-#X connect 13 0 2 0;
-#X connect 14 0 12 0;
-#X connect 17 0 6 0;
-#X connect 18 0 9 0;
-#X connect 19 0 4 0;
-#X restore 444 266 pd drum-pattern;
-#X text 197 369 flush;
-#X text 243 369 - flushes all cell values, f 41;
-#X text 191 383 export;
-#X text 197 327 float;
-#X text 243 327 - sets row values for column specified by float;
+#X text 197 355 flush;
+#X text 243 355 - flushes all cell values, f 41;
+#X text 191 369 export;
 #X obj 248 197 else/mtx.ctl;
-#X text 191 397 import;
-#X text 149 455 embed <float>;
-#X text 243 383 - export contents as an array, f 41;
-#X text 243 397 - import contents as an array, f 41;
-#X text 188 554 4) float - embed flag \, (default 0), f 47;
-#X text 243 455 - non zero save internal contents with the object;
-#X connect 0 0 51 0;
+#X text 191 383 import;
+#X text 149 441 embed <float>;
+#X text 243 369 - export contents as an array, f 41;
+#X text 243 383 - import contents as an array, f 41;
+#X text 188 540 4) float - embed flag \, (default 0), f 47;
+#X text 243 441 - non zero save internal contents with the object;
+#X connect 0 0 48 0;
 #X connect 1 0 0 0;
-#X connect 36 0 51 0;
-#X connect 38 0 51 0;
+#X connect 36 0 48 0;
+#X connect 38 0 48 0;
 #X connect 39 0 38 0;
-#X connect 51 0 44 0;
+#X connect 48 0 44 0;
