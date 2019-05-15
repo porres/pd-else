@@ -1,5 +1,7 @@
-#N struct 1357-cell float x float y float cellsize float color;
-#N struct 1364-point float x0 float y0 float s;
+#N struct 1365-cell float x float y float cellsize float color;
+#N struct 1372-point float x0 float y0 float s;
+#N struct 1435-slot float x float y float slotsize float color float
+width float bordercolor;
 #N canvas 764 119 574 422 10;
 #X text 44 86 Assorted:;
 #X obj 44 110 else/table~;
@@ -283,7 +285,7 @@
 #X obj 47 9454 else/mov.rms~;
 #X obj 47 9480 else/vu~;
 #X obj 47 9506 else/zerocross~;
-#N canvas 295 196 1014 430 GUI 0;
+#N canvas 291 110 1030 741 GUI 0;
 #X obj 195 50 else/mtx.ctl;
 #X text 73 66 [else/mtx.ctl] =>;
 #X obj 49 172 else/biplot;
@@ -324,6 +326,8 @@
 #X text 240 632 [else/note];
 #X obj 59 928 else/spectrograph~;
 #X text 385 990 [else/spectrograph~];
+#X obj 737 975 else/drum.seq;
+#X text 645 989 [else/drumseq];
 #X restore 53 9595 pd GUI;
 #X text 44 319 Patch/subpatch management:;
 #X text 42 859 Message management:;

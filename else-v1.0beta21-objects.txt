@@ -78,6 +78,7 @@ display~	x
 dollarzero	x
 downsample~	x
 drive~	x
+drum.seq	x
 drunkard	x
 drunkard~	x
 duck~	x
