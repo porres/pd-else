@@ -1,9 +1,9 @@
-#N struct 1052-cell float x float y float cellsize float color float
+#N struct 1042-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1055-cell float x float y float cellsize float color float
+#N struct 1023-slot float x float y float slotsize float color float
 width float bordercolor;
 #N canvas 505 23 564 546 10;
-#X obj 238 117 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 238 117 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 2 2 cnv 15 301 42 empty empty drum.seq 20 20 2 37 -233017 -1
 0;
@@ -79,7 +79,6 @@ and query for the track values., f 65;
 #X text 243 301 - sets slot value and output tracks values;
 #X text 188 455 1) float - number of tracks (default 2), f 47;
 #X text 188 470 2) float - number of slots (default 8), f 47;
-#X obj 238 198 else/drum.seq 4 2 20 0 0 0 0 0 0 0 0 0 0 0 0;
 #X obj 238 252 print track/slot-value;
 #X text 105 210 click on the slots =>;
 #N canvas 675 42 539 551 drum 0;
@@ -107,7 +106,7 @@ pattern sequencer patch, f 40;
 #X msg 236 130 import 1 0 0 0 1 0 1 0 0 1 0 1 0 1 0 1 0 0 1 0 1 0 1
 0, f 31;
 #X obj 142 93 else/tempo 120;
-#X obj 142 177 else/drum.seq 3 8;
+#X obj 142 177 else/drum.seq 3 8 20 0 0 0 0 0 0 0 0 0 0 0 0;
 #X connect 0 0 13 0;
 #X connect 0 1 14 0;
 #X connect 0 2 15 0;
@@ -127,13 +126,15 @@ pattern sequencer patch, f 40;
 #X connect 13 0 1 0;
 #X connect 14 0 3 0;
 #X connect 15 0 6 0;
+#X connect 17 0 19 0;
 #X connect 18 0 21 0;
 #X connect 19 0 21 0;
 #X connect 20 0 8 0;
 #X connect 21 0 0 0;
 #X restore 483 231 pd drum \; sequencer;
+#X obj 238 197 else/drum.seq 2 4;
 #X connect 0 0 42 0;
-#X connect 30 0 51 0;
-#X connect 42 0 51 0;
-#X connect 44 0 51 0;
-#X connect 51 0 52 0;
+#X connect 30 0 54 0;
+#X connect 42 0 54 0;
+#X connect 44 0 54 0;
+#X connect 54 0 51 0;
