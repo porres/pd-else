@@ -1,9 +1,9 @@
-#N struct 1049-slot float x float y float slotsize float color float
+#N struct 1007-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1051-slot float x float y float slotsize float color float
+#N struct 1023-slot float x float y float slotsize float color float
 width float bordercolor;
-#N canvas 557 23 564 546 10;
-#X obj 238 117 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#N canvas 495 50 564 546 10;
+#X obj 238 117 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 2 2 cnv 15 301 42 empty empty drum.seq 20 20 2 37 -233017 -1
 0;
@@ -77,55 +77,51 @@ and query for the track values., f 65;
 #X text 188 470 2) float - number of slots (default 8), f 47;
 #X obj 238 252 print track/slot-value;
 #X text 105 210 click on the slots =>;
-#N canvas 675 42 525 551 drum 0;
-#X obj 144 263 route 0 1 2, f 21;
-#X msg 83 337 open bagal.aif;
-#X obj 83 361 else/play.file~;
-#X msg 185 337 open dholak.aif;
-#X obj 185 361 else/play.file~;
-#X obj 241 392 else/pluck~ 50 2500 10000;
-#X obj 290 327 impseq~;
-#X obj 185 417 *~ 1;
-#X obj 144 133 else/count 7;
-#X obj 185 455 else/out~;
-#X obj 144 51 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#N canvas 675 42 531 571 drum 0;
+#X obj 149 271 route 0 1 2, f 21;
+#X obj 246 390 else/pluck~ 50 2500 10000;
+#X obj 295 342 impseq~;
+#X obj 149 141 else/count 7;
+#X obj 160 456 else/out~;
+#X obj 149 59 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 96 105 reset;
-#X obj 96 83 sel 0;
-#X obj 144 300 sel 1;
-#X obj 185 300 sel 1;
-#X obj 226 300 sel 1;
-#X text 206 47 Here's an example ohow to use [drum.seq] for a drum
+#X msg 101 113 reset;
+#X obj 101 91 sel 0;
+#X obj 149 308 sel 1;
+#X obj 190 308 sel 1;
+#X obj 231 308 sel 1;
+#X text 211 55 Here's an example ohow to use [drum.seq] for a drum
 pattern sequencer patch, f 40;
-#X msg 88 142 clear;
-#X obj 144 95 else/tempo 120;
-#X obj 144 179 else/drum.seq 3 8 20 0 0 0 0 0 0 0 0 0 0 0 0;
-#X obj 253 127 else/initmess import 1 0 0 0 1 0 1 0 0 1 0 1 0 1 0 1
+#X msg 93 150 clear;
+#X obj 149 103 else/tempo 120;
+#X obj 149 187 else/drum.seq 3 8 20 0 0 0 0 0 0 0 0 0 0 0 0;
+#X obj 258 135 else/initmess import 1 0 0 0 1 0 1 0 0 1 0 1 0 1 0 1
 0 0 1 0 1 0 1 0, f 34;
-#X text 79 52 on/off =>;
-#X connect 0 0 13 0;
-#X connect 0 1 14 0;
-#X connect 0 2 15 0;
-#X connect 1 0 2 0;
-#X connect 2 0 7 0;
-#X connect 3 0 4 0;
-#X connect 4 0 7 0;
+#X text 84 60 on/off =>;
+#X obj 135 417 else/spread~ 3 2, f 19;
+#X obj 88 346 else/play.file~ 1 bagal.aif, f 15;
+#X obj 190 346 else/play.file~ dholak.aif, f 15;
+#X connect 0 0 8 0;
+#X connect 0 1 9 0;
+#X connect 0 2 10 0;
+#X connect 1 0 17 2;
+#X connect 2 0 1 1;
+#X connect 3 0 14 0;
 #X connect 5 0 7 0;
-#X connect 6 0 5 1;
-#X connect 7 0 9 0;
-#X connect 7 0 9 1;
-#X connect 8 0 19 0;
-#X connect 10 0 12 0;
-#X connect 10 0 18 0;
-#X connect 11 0 8 0;
-#X connect 12 0 11 0;
-#X connect 13 0 1 0;
-#X connect 14 0 3 0;
-#X connect 15 0 6 0;
-#X connect 17 0 19 0;
-#X connect 18 0 8 0;
-#X connect 19 0 0 0;
-#X connect 20 0 19 0;
+#X connect 5 0 13 0;
+#X connect 6 0 3 0;
+#X connect 7 0 6 0;
+#X connect 8 0 18 0;
+#X connect 9 0 19 0;
+#X connect 10 0 2 0;
+#X connect 12 0 14 0;
+#X connect 13 0 3 0;
+#X connect 14 0 0 0;
+#X connect 15 0 14 0;
+#X connect 17 0 4 0;
+#X connect 17 1 4 1;
+#X connect 18 0 17 0;
+#X connect 19 0 17 1;
 #X restore 483 231 pd drum \; sequencer;
 #X obj 238 197 else/drum.seq 2 4 20 0 0 0 0 0 0 0 0 0 0 0 0;
 #X text 149 357 slots <float>;
