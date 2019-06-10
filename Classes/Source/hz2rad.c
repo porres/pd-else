@@ -74,6 +74,6 @@ void hz2rad_setup(void)
 			  (t_method)hz2rad_free,sizeof(t_hz2rad),0, A_DEFFLOAT, 0);
   class_addfloat(hz2rad_class,(t_method)hz2rad_float);
   class_addlist(hz2rad_class,(t_method)hz2rad_list);
-  class_addmethod(hz2rad_class,(t_method)hz2rad_set,gensym("set"),A_DEFFLOAT,0);
+  class_addmethod(hz2rad_class,(t_method)hz2rad_set,gensym("set"), A_DEFFLOAT, 0);
   class_addbang(hz2rad_class,(t_method)hz2rad_bang);
 }

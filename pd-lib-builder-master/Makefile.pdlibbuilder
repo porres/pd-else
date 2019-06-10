@@ -450,7 +450,7 @@ ifeq ($(uname), Darwin)
   system = Darwin
 endif
 
-ifeq ($(filter MINGW% MSYS%, $(uname)), $(uname)) 
+ifeq ($(filter MINGW% MSYS%, $(uname)), $(uname))
   system = Windows
 endif
 
@@ -514,11 +514,11 @@ else ifeq ($(target.arch), armv7l)
 # Intel 32 bit, build with SSE and SSE2 instructions
 else ifeq ($(findstring $(target.arch), i386 i686), $(target.arch))
   arch.c.flags = -march=pentium4 -mfpmath=sse -msse -msse2
-  
+
 # Intel/AMD 64 bit, build with SSE, SSE2 and SSE3 instructions
 else ifeq ($(findstring $(target.arch), x86_64), $(target.arch))
   arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3
-  
+
 # if none of the above architectures detected
 else
   arch.c.flags =
@@ -574,11 +574,14 @@ ifeq ($(system), Darwin)
   ifeq ($(target.arch), i386)
     cxx.flags := -fcheck-new
     arch := ppc i386 x86_64
-    version.flag ?= -mmacosx-version-min=10.4
+    version.flag = -mmacosx-version-min=10.4
   endif
   ifeq ($(target.arch), x86_64)
     arch := i386 x86_64
-    version.flag ?= -mmacosx-version-min=10.5
+    version.flag = -mmacosx-version-min=10.6
+  endif
+  ifneq ($(filter -mmacosx-version-min=%, $(cflags)),)
+    version.flag := $(filter -mmacosx-version-min=%, $(cflags))
   endif
   arch.c.flags := $(addprefix -arch , $(arch)) $(version.flag)
   arch.ld.flags := $(arch.c.flags)
