@@ -1,88 +1,88 @@
-#N canvas 493 23 563 592 10;
-#X obj 3 3 cnv 15 301 42 empty empty voices 20 20 2 37 -233017 -1 0
+#N canvas 445 55 563 590 10;
+#X obj 2 3 cnv 15 301 42 empty empty voices 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 3 3 graph;
-#X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X restore 2 3 graph;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
-#X obj 346 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 459 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 479 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 516 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 465 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 503 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1;
-#X restore 306 3 graph;
-#X obj 23 39 cnv 4 4 4 empty empty Polyphonic 0 28 2 18 -233017 -1
+#X restore 305 3 graph;
+#X obj 22 39 cnv 4 4 4 empty empty Polyphonic 0 28 2 18 -233017 -1
 0;
-#X obj 111 39 cnv 4 4 4 empty empty voice 0 28 2 18 -233017 -1 0;
-#X obj 156 39 cnv 4 4 4 empty empty allocator 0 28 2 18 -233017 -1
+#X obj 110 39 cnv 4 4 4 empty empty voice 0 28 2 18 -233017 -1 0;
+#X obj 155 39 cnv 4 4 4 empty empty allocator 0 28 2 18 -233017 -1
 0;
-#X obj 5 565 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 563 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 7 287 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 6 287 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 434 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 432 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 466 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 464 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 103 442 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 102 440 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X obj 104 295 cnv 17 3 110 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 103 295 cnv 17 3 110 empty empty 0 5 9 0 16 -228856 -162280
 0;
-#X obj 5 508 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 104 411 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 4 506 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 103 409 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 186 295 list - MIDI note messages (note and velocity pair)
+#X text 185 293 list - MIDI note messages (note and velocity pair)
 , f 56;
-#X text 126 358 retrig <float> - non zero sets to retrigger mode.,
+#X text 125 349 retrig <float> - non zero sets to retrigger mode.,
 f 66;
-#X text 180 374 clear - clears memory without output, f 57;
-#X text 180 391 flush - clears memory and output hanging notes, f
+#X text 179 363 clear - clears memory without output, f 57;
+#X text 179 377 flush - clears memory and output hanging notes, f
 57;
-#X text 138 548 -list <float>: sets to list mode and index offset (default
+#X text 137 546 -list <float>: sets to list mode and index offset (default
 0), f 61;
-#X text 126 342 offset <float> - sets index offset (in the context
+#X text 125 335 offset <float> - sets index offset (in the context
 of "list" mode), f 66;
-#X obj 181 234 else/display;
-#X obj 239 234 else/display;
-#X obj 298 233 else/display;
-#X msg 181 164 60 \$1;
-#X obj 181 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 180 234 else/display;
+#X obj 238 234 else/display;
+#X obj 297 233 else/display;
+#X msg 180 164 60 \$1;
+#X obj 180 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
-#X obj 227 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 226 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
-#X obj 272 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 271 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
-#X msg 227 164 63 \$1;
-#X msg 272 164 66 \$1;
-#X obj 318 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 226 164 63 \$1;
+#X msg 271 164 66 \$1;
+#X obj 317 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
-#X msg 318 164 69 \$1;
-#X text 44 84 [voices] is used to implement polyphonic synths. It's
+#X msg 317 164 69 \$1;
+#X text 43 84 [voices] is used to implement polyphonic synths. It's
 like Pd Vanilla's [poly] object \, but with more functionalities. By
 default \, it routes the voices to different outlets \, but it also
 has a list mode like [poly]., f 71;
-#X text 186 442 list - note messages, f 57;
-#X text 180 310 float - note pitch values, f 57;
-#X text 180 411 float - note velocity values, f 57;
-#X text 162 473 1) float - sets number of voices (default 1);
-#X text 162 488 2) float - non zero sets voice stealing (default 0)
+#X text 185 440 list - note messages, f 57;
+#X text 179 307 float - note pitch values, f 57;
+#X text 179 409 float - note velocity values, f 57;
+#X text 161 471 1) float - sets number of voices (default 1);
+#X text 161 486 2) float - non zero sets voice stealing (default 0)
 ;
-#X obj 364 140 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 363 140 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
-#X msg 364 165 72 \$1;
-#X obj 181 208 else/voices 2, f 20;
-#X text 161 262 voice 1;
-#X text 222 262 voice 2;
+#X msg 363 165 72 \$1;
+#X obj 180 208 else/voices 2, f 20;
+#X text 160 262 voice 1;
+#X text 221 262 voice 2;
 #N canvas 845 290 441 432 steal 0;
 #X obj 139 268 else/display;
 #X obj 197 268 else/display;
@@ -137,8 +137,8 @@ on message and will output that message as an "extra".;
 #X connect 13 2 2 0;
 #X connect 16 0 17 0;
 #X connect 17 0 13 0;
-#X restore 493 186 pd steal;
-#X text 283 262 extra;
+#X restore 492 186 pd steal;
+#X text 282 262 extra;
 #N canvas 361 237 521 308 retrigger 0;
 #X text 107 69 - retrig <0>:;
 #X text 107 95 - retrig <1>:;
@@ -155,7 +155,7 @@ allocation. The modes are:, f 77;
 #X obj 193 346 else/display;
 #X obj 248 346 else/display;
 #X obj 304 346 else/display;
-#X obj 193 117 keyboard 17 80 1 4;
+#X obj 193 117 keyboard 17 80 1 4 0;
 #X obj 328 176 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 2
 2;
 #X text 353 175 sustain;
@@ -185,7 +185,7 @@ with [keyboard] by pressing the same note., f 77;
 #X restore 229 194 pd retrig_0;
 #X text 32 149 See examples in the subpatches below:;
 #N canvas 266 23 479 392 retrig_1 0;
-#X obj 182 98 keyboard 17 80 1 4;
+#X obj 182 98 keyboard 17 80 1 4 0;
 #X obj 317 157 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 2
 2;
 #X text 342 156 sustain;
@@ -218,7 +218,7 @@ will be sent to free this allocated voice., f 70;
 #X connect 11 1 8 1;
 #X restore 229 225 pd retrig_1;
 #N canvas 380 41 509 397 retrig_2 0;
-#X obj 174 99 keyboard 17 80 1 4;
+#X obj 174 99 keyboard 17 80 1 4 0;
 #X obj 309 158 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 2
 2;
 #X text 334 157 sustain;
@@ -251,11 +251,11 @@ f 70;
 #X connect 14 1 4 0;
 #X connect 14 2 5 0;
 #X restore 229 256 pd retrig_2;
-#X restore 469 207 pd retrigger;
+#X restore 468 207 pd retrigger;
 #N canvas 698 101 477 404 release 0;
 #X obj 99 323 else/display;
 #X obj 158 323 else/display;
-#X obj 99 130 keyboard 17 80 1 4;
+#X obj 99 130 keyboard 17 80 1 4 0;
 #X obj 217 323 else/display;
 #X obj 276 325 else/display;
 #X obj 336 323 else/display;
@@ -280,45 +280,42 @@ to finish before using that voice allocation for a new note., f 65
 #X connect 9 0 10 0;
 #X connect 10 0 11 0;
 #X connect 11 0 8 0;
-#X restore 481 228 pd release;
-#N canvas 636 123 639 504 list 0;
-#X obj 161 289 else/display;
-#X msg 111 182 60 \$1;
-#X obj 111 150 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X restore 480 228 pd release;
+#N canvas 598 162 627 508 list 0;
+#X obj 142 319 else/display;
+#X msg 99 202 60 \$1;
+#X obj 99 170 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 127
 127;
-#X obj 161 224 else/display;
-#X obj 161 150 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 142 244 else/display;
+#X obj 142 170 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 127
 127;
-#X obj 211 150 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 186 170 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 127
 127;
-#X obj 261 150 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 232 170 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 127
 127;
-#X msg 161 182 61 \$1;
-#X msg 211 182 62 \$1;
-#X msg 261 182 63 \$1;
-#X obj 332 316 else/display;
-#X obj 467 206 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 142 202 61 \$1;
+#X msg 186 202 62 \$1;
+#X msg 232 202 63 \$1;
+#X obj 353 316 else/display;
+#X obj 524 216 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 332 134 keyboard 17 80 1 3;
-#X obj 332 235 else/suspedal -retrig 3;
-#X text 332 345 voices;
-#X obj 527 315 else/display;
-#X text 525 345 extra;
-#X obj 161 261 else/voices 4 -list;
-#X obj 332 289 else/voices 4 1 -retrig 2 -list 1;
-#X msg 59 226 offset \$1;
-#X obj 59 203 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 353 144 keyboard 17 80 1 3 0;
+#X obj 353 245 else/suspedal -retrig 3, f 29;
+#X text 353 345 voices;
+#X obj 548 315 else/display;
+#X text 546 345 extra;
+#X obj 142 291 else/voices 4 -list;
+#X obj 353 289 else/voices 4 1 -retrig 2 -list 1;
+#X msg 51 250 offset \$1;
+#X obj 51 227 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 81 21 You can set [voices] to operate in "list mode" with the
--list flag. This mode makes itmore like [poly] \, where it outputs
-a list with voice index \, pitch and velocity., f 72;
-#X text 81 62 The -list flag takes an optional float argument that
+#X text 62 72 The -list flag takes an optional float argument that
 sets the voice index offset \, which is 0 by default. You can also
 set a different index offset with the "offset" message (this is only
 possible in the context of "list mode")., f 72;
 #N canvas 719 64 505 333 clone_example 0;
 #X obj 54 252 else/out~;
-#X obj 40 77 keyboard 17 80 2 4;
+#X obj 40 77 keyboard 17 80 2 4 0;
 #X text 211 175 In this subpatch we have [voices] feeding [clone] \,
 which loads 4 instances of a patch named "voice.pd"., f 43;
 #X text 211 267 check clone's help file and lick on in to open the
@@ -360,9 +357,18 @@ different instances of "voice.pd"., f 43;
 #X connect 7 0 8 0;
 #X connect 8 0 0 0;
 #X connect 8 1 0 1;
-#X restore 374 447 pd clone_example;
-#X text 129 396 This mode is particularly useful for using with [clone]
+#X restore 442 412 pd clone_example;
+#X text 70 405 This mode is particularly useful for using with [clone]
 to implement polyphonic synths \, check the subpatch below:;
+#X msg 206 265 voices \$1;
+#X msg 206 239 2;
+#X msg 246 239 4;
+#X text 62 18 You can set [voices] to operate in "list mode" with the
+-list flag. This mode makes it more like [poly] \, where it outputs
+a list with voice index \, pitch and velocity. You can also change
+the number of voices in this mode \, which causes the object to flush
+and clear its memory., f 72;
+#X obj 253 317 else/display;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 17 0;
@@ -377,17 +383,23 @@ to implement polyphonic synths \, check the subpatch below:;
 #X connect 13 0 18 0;
 #X connect 13 1 18 1;
 #X connect 17 0 0 0;
+#X connect 17 1 28 0;
 #X connect 18 0 10 0;
 #X connect 18 1 15 0;
 #X connect 19 0 17 0;
 #X connect 20 0 19 0;
-#X restore 498 250 pd list;
-#X text 175 530 -retrig: sets to retrigger mode <0 \, 1 or 2> (default
+#X connect 24 0 17 0;
+#X connect 25 0 24 0;
+#X connect 26 0 24 0;
+#X restore 497 250 pd list;
+#X text 174 528 -retrig: sets to retrigger mode <0 \, 1 or 2> (default
 0);
-#X obj 120 156 notein;
-#X obj 120 180 pack;
-#X text 144 515 -rel <float>: sets release time in ms (default 0);
-#X text 144 326 rel <float> - sets a release time in ms, f 63;
+#X obj 119 156 notein;
+#X obj 119 180 pack;
+#X text 143 513 -rel <float>: sets release time in ms (default 0);
+#X text 143 321 rel <float> - sets a release time in ms, f 63;
+#X text 125 391 voices <float> - sets number of voices (in list mode
+only), f 66;
 #X connect 30 0 46 0;
 #X connect 31 0 30 0;
 #X connect 32 0 34 0;

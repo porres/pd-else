@@ -1,3 +1,5 @@
+// porres 2018-2019
+
 #include "m_pd.h"
 #include <string.h>
 
@@ -225,7 +227,7 @@ static void voices_offset(t_voices *x, t_float f){
     if(x->x_list_mode)
         x->x_offset = (int)f;
     else
-        post("[voices]: offset is not pertinent when not in list mode");
+        post("[voices]: 'offset' is not pertinent when not in list mode");
 }
 
 static void voices_steal(t_voices *x, t_float f){
@@ -236,13 +238,6 @@ static void voices_release(t_voices *x, t_float f){
     x->x_release = f;
     if(x->x_release < 0)
         x->x_release = 0;
-}
-
-static void voices_voices(t_voices *x, t_float f){
-    if(x->x_list_mode){
-        n = (int)f;
-        x->x_n = n < 1 ? 1 : n;
-    }
 }
 
 static void voices_retrig(t_voices *x, t_float f){
@@ -283,6 +278,27 @@ static void voices_flush(t_voices *x){
     x->x_count = 0;
 }
 
+static void voices_voices(t_voices *x, t_float f){
+    if(x->x_list_mode){
+        t_voice *v;
+        int n = (int)f < 1 ? 1 : (int)f;
+        if(n == x->x_n)
+            return;
+        voices_flush(x);
+        if(x->x_vec)
+            freebytes(x->x_vec, x->x_n * sizeof(*x->x_vec));
+        x->x_vec = (t_voice *)getbytes(n * sizeof(*x->x_vec));
+        x->x_n = n;
+        int i;
+        for(v = x->x_vec, i = n; i--; v++){ // initialize voices
+            v->v_pitch = v->v_used = v->v_count = 0;
+            v->v_clock = clock_new(v, (t_method)voice_tick);
+        }
+    }
+    else
+        post("[voices]: 'voices' is not pertinent when not in list mode");
+}
+
 static void voices_clear(t_voices *x){
     t_voice *v;
     int i;
@@ -305,6 +321,8 @@ static void voices_free(t_voices *x){
 }
 
 static void *voices_new(t_symbol *s, int argc, t_atom *argv){
+    t_symbol *dummy = s;
+    dummy = NULL;
     t_voices *x = (t_voices *)pd_new(voices_class);
     t_voice *v;
 // default
