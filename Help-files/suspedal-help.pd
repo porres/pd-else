@@ -91,42 +91,35 @@ them out when it's switched off. It has two sustain modes \, 'regular'
 #X obj 151 248 ctlin 64 1;
 #X obj 151 274 tgl 22 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
 0 1;
-#X obj 647 233 tgl 22 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
+#X obj 657 242 tgl 22 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
 0 1;
-#X text 679 242 On/Off;
-#X text 676 225 sustain;
+#X text 689 251 On/Off;
+#X text 686 234 sustain;
 #X obj 29 144 keyboard 17 80 3 3 0;
 #X obj 76 307 else/suspedal;
-#X obj 572 265 else/suspedal;
-#X text 37 20 You can directly connect the [notein] object to acess
-MIDI note messages from an external controller and access the MIDI
-message from an actual sustain pedal (which is normallu controller
-number 64) and feed it to the [suspedal] object.;
+#X obj 582 274 else/suspedal;
 #X text 38 81 In the example below we have the [else/keyboard] object
 instead.;
 #X obj 76 336 pack float float;
 #X obj 76 390 print Note-Message;
 #X obj 76 360 else/display;
-#X text 431 20 The default sustain mode - used in this example - holds
-any note off messages when it is on. Below \, we use [suspedal] in
-a patch with 2-voice polyphonic synth controlled by random notes.;
-#X msg 518 215 flush;
-#X obj 518 177 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
+#X msg 528 224 flush;
+#X obj 528 186 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 471 178 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 481 187 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 471 216 clear;
-#X obj 572 154 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X msg 481 225 clear;
+#X obj 582 163 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 572 80 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 582 89 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 572 178 makenote 127 250;
-#X obj 572 105 else/tempo 40 50;
-#X obj 572 199 pack float float;
-#X obj 572 226 else/display;
-#X text 598 82 random pitches;
-#X text 613 153 pitch;
-#X obj 572 295 else/voices 2 1;
+#X obj 582 187 makenote 127 250;
+#X obj 582 114 else/tempo 40 50;
+#X obj 582 208 pack float float;
+#X obj 582 235 else/display;
+#X text 608 91 random pitches;
+#X text 623 162 pitch;
+#X obj 582 304 else/voices 2 1;
 #N canvas 887 396 225 222 oscillators 0;
 #N canvas 358 23 457 381 osc1 0;
 #X obj 171 110 / 127;
@@ -182,39 +175,47 @@ a patch with 2-voice polyphonic synth controlled by random notes.;
 #X connect 2 0 3 0;
 #X connect 2 1 4 0;
 #X connect 5 0 2 0;
-#X restore 572 325 pd oscillators;
-#X obj 585 367 else/out~;
+#X restore 582 334 pd oscillators;
+#X obj 595 367 else/out~;
 #X obj 76 261 else/display;
-#X obj 572 129 else/rand.i 60 80;
+#X obj 582 138 else/rand.i 60 80;
+#X text 37 20 You can directly connect the [notein] object to acess
+MIDI note messages from an external controller and access the MIDI
+message from an actual sustain pedal (which is normally controller
+number 64) and feed it to the [suspedal] object.;
+#X text 441 20 The default sustain mode - used in this example - holds
+any note off messages when it is on. Below \, we use [suspedal] in
+a patch with 2-voice polyphonic synth controlled by random notes. This
+example uses [voices] but you can also use vanilla's [poly].;
 #X connect 0 0 1 0;
 #X connect 1 0 6 2;
 #X connect 2 0 7 2;
-#X connect 5 0 29 0;
-#X connect 6 0 10 0;
-#X connect 6 1 10 1;
-#X connect 7 0 26 0;
-#X connect 7 1 26 1;
-#X connect 10 0 12 0;
-#X connect 12 0 11 0;
-#X connect 14 0 7 0;
-#X connect 15 0 14 0;
-#X connect 16 0 17 0;
-#X connect 17 0 7 0;
+#X connect 5 0 27 0;
+#X connect 6 0 9 0;
+#X connect 6 1 9 1;
+#X connect 7 0 24 0;
+#X connect 7 1 24 1;
+#X connect 9 0 11 0;
+#X connect 11 0 10 0;
+#X connect 12 0 7 0;
+#X connect 13 0 12 0;
+#X connect 14 0 15 0;
+#X connect 15 0 7 0;
+#X connect 16 0 18 0;
+#X connect 17 0 19 0;
 #X connect 18 0 20 0;
-#X connect 19 0 21 0;
-#X connect 20 0 22 0;
-#X connect 20 1 22 1;
-#X connect 21 0 30 0;
-#X connect 22 0 23 0;
-#X connect 23 0 7 0;
-#X connect 26 0 27 0;
-#X connect 26 1 27 1;
-#X connect 27 0 28 0;
-#X connect 27 1 28 1;
-#X connect 29 0 6 0;
-#X connect 30 0 18 0;
+#X connect 18 1 20 1;
+#X connect 19 0 28 0;
+#X connect 20 0 21 0;
+#X connect 21 0 7 0;
+#X connect 24 0 25 0;
+#X connect 24 1 25 1;
+#X connect 25 0 26 0;
+#X connect 25 1 26 1;
+#X connect 27 0 6 0;
+#X connect 28 0 16 0;
 #X restore 479 188 pd example;
-#N canvas 405 117 492 467 retrigger 0;
+#N canvas 592 175 492 467 retrigger 0;
 #X obj 46 185 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
 -1 1;
 #X floatatom 46 252 3 0 0 0 - - -;
@@ -281,14 +282,14 @@ note, f 26;
 #X text 34 189 5) retrigger note;
 #X text 254 299 6);
 #X text 255 285 2) turn on sustain (tonal mode);
-#X text 52 19 In the 'tonal' mode \, as in the design of piano sustain
-pedals \, you cam sustain notes that are currently on but not the new
-ones after you switch it on., f 62;
-#X text 52 63 This allows you to sustain a bass/chord while being able
-to use both hands to play further notes. This feature also allows you
-to have a use for a sustain pedal with [mono]., f 62;
 #X obj 337 386 else/mono;
 #X text 315 362 see also:;
+#X text 52 19 In the 'tonal' mode \, as in the design of piano sustain
+pedals \, you can sustain notes that are currently on but not the new
+ones after you switch it on., f 62;
+#X text 52 63 This allows you to sustain a bass/chord while being able
+to use both hands to play further notes. This is useful for [poly]
+or [voices] \, but also [mono]., f 62;
 #X connect 0 0 2 0;
 #X connect 1 0 10 2;
 #X connect 2 0 5 0;

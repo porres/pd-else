@@ -238,6 +238,13 @@ static void voices_release(t_voices *x, t_float f){
         x->x_release = 0;
 }
 
+static void voices_voices(t_voices *x, t_float f){
+    if(x->x_list_mode){
+        n = (int)f;
+        x->x_n = n < 1 ? 1 : n;
+    }
+}
+
 static void voices_retrig(t_voices *x, t_float f){
     x->x_retrig = (int)f;
     if(x->x_retrig < 0)
@@ -419,6 +426,7 @@ void voices_setup(void){
     class_addmethod(voices_class, (t_method)voices_steal, gensym("steal"), A_FLOAT, 0);
     class_addmethod(voices_class, (t_method)voices_retrig, gensym("retrig"), A_FLOAT, 0);
     class_addmethod(voices_class, (t_method)voices_release, gensym("rel"), A_FLOAT, 0);
+    class_addmethod(voices_class, (t_method)voices_voices, gensym("voices"), A_FLOAT, 0);
     class_addmethod(voices_class, (t_method)voices_flush, gensym("flush"), 0);
     class_addmethod(voices_class, (t_method)voices_clear, gensym("clear"), 0);
 }
