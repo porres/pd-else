@@ -49,29 +49,28 @@
 #X restore 3 3 graph;
 #X text 70 92 [iterate] splits a message to individual elements (floats/symbols)
 and outputs them sequentially., f 70;
-#N canvas 831 245 473 280 example 0;
-#X msg 290 97 60 63 67;
-#X obj 290 159 makenote 64 500;
-#X obj 330 191 noteout;
-#X text 271 68 a chord from list;
-#X obj 290 125 else/iterate;
-#X obj 65 90 array get ex_\$0;
-#X obj 65 67 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#N canvas 726 140 492 338 example 1;
+#X msg 310 121 60 63 67;
+#X obj 310 183 makenote 64 500;
+#X obj 350 215 noteout;
+#X text 300 92 a chord from list;
+#X obj 310 149 else/iterate;
+#X obj 75 136 array get ex_\$0;
+#X obj 75 113 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
-#X obj 65 202 print;
-#X obj 87 158 array define -k ex_\$0 16;
-#A 0 -0.926697 -0.786695 -0.586691 -0.446689 -0.373354 -0.286686 -0.226685
--0.100016 -1.46627e-05 0.179988 0.319991 0.426659 0.533328 0.639996
-0.813332 0.860014;
-#X obj 65 115 else/iterate -1;
-#X text 86 64 iterate an array;
+#X obj 75 161 else/iterate;
+#X obj 75 188 print;
+#X obj 66 62 array define -k ex_\$0 16;
+#A 0 -0.74668 0.293338 0.340005 0.0133328 -0.346673 -0.120003 0.600009
+0.666677 0.553342 0.253337 -0.0800021 -0.180004 0.320005 0.533342 0.553342
+0.860014;
 #X connect 0 0 4 0;
 #X connect 1 0 2 0;
 #X connect 1 1 2 1;
 #X connect 4 0 1 0;
-#X connect 5 0 9 0;
+#X connect 5 0 7 0;
 #X connect 6 0 5 0;
-#X connect 9 0 7 0;
+#X connect 7 0 8 0;
 #X restore 452 220 pd example;
 #X msg 185 139 1 2 3;
 #X floatatom 300 192 5 0 0 0 - - -;
@@ -85,11 +84,8 @@ and outputs them sequentially., f 70;
 #X text 100 396 1) float - direction \, >= 0 is left to right (default)
 \, < 0 is reverse, f 69;
 #X obj 231 214 else/iterate;
-#X obj 155 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
 #X connect 12 0 38 0;
 #X connect 30 0 38 0;
 #X connect 31 0 38 1;
 #X connect 33 0 38 0;
 #X connect 38 0 5 0;
-#X connect 39 0 38 0;

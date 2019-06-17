@@ -1,28 +1,27 @@
-#N struct 1365-cell float x float y float cellsize float color;
-#N struct 1372-point float x0 float y0 float s;
-#N struct 1435-slot float x float y float slotsize float color float
-width float bordercolor;
+#N struct 1007-f float x;
+#N struct 1358-cell float x float y float cellsize float color;
+#N struct 1365-point float x0 float y0 float s;
 #N canvas 764 119 574 422 10;
-#X text 44 86 Assorted:;
-#X obj 44 110 else/table~;
-#X obj 44 136 else/nbang;
-#X text 44 214 FFT:;
-#X obj 44 238 else/hann~;
-#X obj 44 264 else/bin.shift~;
-#X obj 44 343 else/args;
-#X obj 44 369 else/blocksize~;
-#X obj 44 395 else/click;
-#X obj 44 478 else/properties;
-#X obj 44 504 else/window;
-#X obj 44 530 else/loadbanger;
-#X obj 157 530 else/lb;
+#X text 44 66 Assorted:;
+#X obj 44 90 else/table~;
+#X obj 44 116 else/nbang;
+#X text 44 194 FFT:;
+#X obj 44 218 else/hann~;
+#X obj 44 244 else/bin.shift~;
+#X obj 44 323 else/args;
+#X obj 44 349 else/blocksize~;
+#X obj 44 375 else/click;
+#X obj 44 458 else/properties;
+#X obj 44 484 else/window;
+#X obj 44 510 else/loadbanger;
+#X obj 157 510 else/lb;
 #X obj 42 1064 else/initmess;
-#X obj 42 601 else/break;
+#X obj 42 581 else/break;
 #X obj 42 937 else/fromany;
 #X obj 42 963 else/toany;
 #X obj 42 989 else/any2symbol;
 #X obj 42 1015 else/changed;
-#X obj 42 626 else/order;
+#X obj 42 606 else/order;
 #X obj 42 1041 else/hot;
 #X obj 42 1113 else/setmess;
 #X obj 42 1139 else/pack2;
@@ -329,7 +328,7 @@ width float bordercolor;
 #X obj 737 975 else/drum.seq;
 #X text 645 989 [else/drumseq];
 #X restore 53 9595 pd GUI;
-#X text 44 319 Patch/subpatch management:;
+#X text 44 299 Patch/subpatch management:;
 #X text 42 859 Message management:;
 #X text 39 1419 File management:;
 #X text 48 9566 GUI:;
@@ -375,11 +374,11 @@ width float bordercolor;
 , f 77;
 #X text 18 835 =============================================================================
 , f 77;
-#X text 18 295 =============================================================================
+#X text 18 275 =============================================================================
 , f 77;
-#X text 18 194 =============================================================================
+#X text 18 174 =============================================================================
 , f 77;
-#X text 17 55 =============================================================================
+#X text 17 35 =============================================================================
 , f 77;
 #X obj 47 9698 else/cmul~;
 #X text 10 9792 =============================================================================
@@ -406,24 +405,24 @@ width float bordercolor;
 #X obj 36 4512 else/duck~;
 #X text 39 3857 Audio Processing (assorted):;
 #X obj 41 8146 else/slew~;
-#X obj 44 164 else/meter;
-#X text 41 29 ALL OBJECTS IN THE ELSE LIBRARY:;
+#X obj 44 144 else/meter;
+#X text 41 9 ALL OBJECTS IN THE ELSE LIBRARY:;
 #X obj 46 9731 else/output~;
 #X obj 36 4484 else/compress~;
 #X obj 42 1188 else/router;
 #X obj 42 1263 else/selector;
 #X obj 42 2099 else/avg;
 #X obj 42 2125 else/mov.avg;
-#X obj 42 804 else/unmerge;
-#X obj 42 778 else/merge;
+#X obj 42 806 else/unmerge;
+#X obj 42 780 else/merge;
 #X obj 41 3931 else/chorus~;
 #X obj 42 1310 else/trigger2;
 #X obj 154 1310 else/t2;
-#X text 18 554 =============================================================================
+#X text 18 534 =============================================================================
 , f 77;
-#X obj 42 651 else/regroup;
-#X obj 42 676 else/scramble;
-#X obj 42 701 else/sort;
+#X obj 42 631 else/regroup;
+#X obj 42 656 else/scramble;
+#X obj 42 681 else/sort;
 #X obj 42 1163 else/pick;
 #X obj 42 4208 else/phaser~;
 #X obj 42 4931 else/allpass.filt~;
@@ -435,8 +434,9 @@ width float bordercolor;
 #X obj 42 1088 else/message;
 #X obj 41 8293 else/lfnoise;
 #X obj 42 1287 else/stack;
-#X obj 44 423 else/dollarzero;
-#X obj 44 449 else/receiver;
-#X obj 41 726 else/reverse;
-#X text 42 576 Message/List management:;
-#X obj 41 751 else/rotate;
+#X obj 44 403 else/dollarzero;
+#X obj 44 429 else/receiver;
+#X obj 41 728 else/reverse;
+#X text 42 556 Message/List management:;
+#X obj 41 753 else/rotate;
+#X obj 42 704 else/iterate;
