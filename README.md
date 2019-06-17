@@ -74,7 +74,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (332 objects):
+##Current Object list (333 objects):
 
 **ASSORTED: [3]**
 - [table~]
@@ -117,10 +117,11 @@ Cross compiling is also possible with something like this
 - [sig2float~] / [s2f~]
 - [float2sig~] / [f2s~]
 
-**LIST/MESSAGE MANAGEMENT: [9]**
+**LIST/MESSAGE MANAGEMENT: [10]**
 - [break] 
 - [order]
 - [regroup] 
+- [iterate]
 - [scramble]
 - [sort]
 - [reverse]
