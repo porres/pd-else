@@ -1,7 +1,7 @@
 #N canvas 613 281 645 310 10;
 #X obj 101 204 list store;
 #X obj 74 38 inlet;
-#X obj 101 244 outlet;
+#X obj 101 264 outlet;
 #X text 331 142 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 333 123 Alexandre Torres Porres (2017);
 #X obj 74 67 route bang;
@@ -23,6 +23,7 @@
 #X obj 72 165 t f f;
 #X obj 117 192 - 1;
 #X obj 111 221 - 1;
+#X obj 257 148 r \$0-stop;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 1 0 4 0;
@@ -43,6 +44,7 @@
 #X connect 13 1 14 0;
 #X connect 14 0 11 1;
 #X connect 15 0 11 1;
+#X connect 16 0 0 1;
 #X restore 74 153 pd iter;
 #X obj 131 97 t b a;
 #X obj 211 38 inlet;
@@ -58,7 +60,9 @@
 #X connect 4 0 2 0;
 #X restore 211 67 pd dir;
 #X obj 180 157 v size_\$0;
+#X obj 158 227 s \$0-stop;
 #X connect 0 0 2 0;
+#X connect 0 1 12 0;
 #X connect 1 0 5 0;
 #X connect 5 0 7 0;
 #X connect 5 1 8 0;
