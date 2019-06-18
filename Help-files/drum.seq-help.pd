@@ -1,6 +1,6 @@
-#N struct 1106-slot float x float y float slotsize float color float
+#N struct 1021-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1104-slot float x float y float slotsize float color float
+#N struct 1023-slot float x float y float slotsize float color float
 width float bordercolor;
 #N canvas 560 53 564 546 10;
 #X obj 23 39 cnv 4 4 4 empty empty Drum 0 28 2 18 -233017 -1 0;
@@ -37,7 +37,6 @@ width float bordercolor;
 #X obj 121 427 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 204 427 list;
-#X text 243 427 - column \, row and status;
 #X text 188 485 3) float - cell size in pixels (default 20), f 47
 ;
 #X text 203 287 list;
@@ -54,8 +53,6 @@ width float bordercolor;
 #X text 243 401 - non zero save internal contents with the object;
 #X obj 150 39 cnv 4 4 4 empty empty pattern 0 28 2 18 -233017 -1 0
 ;
-#X text 49 88 [drum.seq] provides a drum grid so you can send a float
-and query for the track values., f 65;
 #X text 243 287 - sets track \, slot and status (no output), f 42
 ;
 #X text 243 301 - sets slot value and output tracks values;
@@ -111,30 +108,34 @@ pattern sequencer patch, f 40;
 #X connect 19 0 21 0;
 #X connect 20 0 8 0;
 #X connect 21 0 0 0;
-#X restore 483 231 pd drum \; sequencer;
+#X restore 476 231 pd drum \; sequencer;
 #X text 143 357 tracks <float>;
 #X text 149 372 slots <float>;
 #X text 243 357 - sets number of tracks (clears data), f 41;
 #X text 243 372 - sets number of slots (clears data), f 41;
 #X text 243 387 - sets cell size in pixels (clears data), f 41;
-#X obj 238 117 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 210 125 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 195 141 clear;
-#X msg 238 141 0 0 \$1 \, 0 3 \$1 \, 1 1 \$1;
-#X obj 251 166 hradio 20 1 0 4 empty empty empty 0 -8 0 10 -228856
--1 -1 3;
-#X text 325 201 <= track 0;
-#X text 325 221 <= track 1;
-#X text 104 210 click on the slots =>;
-#X obj 238 198 else/drum.seq 2 4 20 0 0 0 0 0 0 0 0 0 0 0 0;
-#X obj 238 252 print track-value;
+#X msg 167 149 clear;
+#X msg 210 149 0 0 \$1 \, 0 3 \$1 \, 1 1 \$1;
+#X obj 223 174 hradio 20 1 0 4 empty empty empty 0 -8 0 10 -228856
+-1 -1 0;
+#X text 297 208 <= track 0;
+#X text 297 228 <= track 1;
+#X text 76 217 click on the slots =>;
+#X obj 210 205 else/drum.seq 2 4 20 0 0 0 0 0 0 0 0 0 0 0 0;
+#X obj 210 254 print track-value;
 #X obj 2 2 cnv 15 301 42 empty empty drum.seq 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 2 graph;
-#X connect 44 0 46 0;
-#X connect 45 0 51 0;
-#X connect 46 0 51 0;
-#X connect 47 0 51 0;
-#X connect 51 0 52 0;
+#X text 243 427 - track and slot value;
+#X text 49 86 [drum.seq] is similar to [mtx.ctl] \, but provides a
+drum grid so you can send a float and query for the track values.,
+f 65;
+#X connect 42 0 44 0;
+#X connect 43 0 49 0;
+#X connect 44 0 49 0;
+#X connect 45 0 49 0;
+#X connect 49 0 50 0;
