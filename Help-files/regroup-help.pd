@@ -1,16 +1,16 @@
-#N canvas 522 50 568 553 10;
-#X obj 371 196 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 635 99 568 553 10;
+#X obj 329 203 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 159 248 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 188 211 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 357 275 nbx 3 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
 #X text 397 273 group size;
-#X floatatom 204 204 5 0 0 0 - - -;
-#X text 95 251 remainder;
-#X msg 258 222 list g h i j k;
-#X msg 246 197 a b c d e f;
-#X msg 156 204 clear;
+#X floatatom 164 248 5 0 0 0 - - -;
+#X text 124 214 remainder;
+#X msg 219 201 list g h i j k;
+#X msg 246 223 a b c d e f;
+#X msg 116 248 clear;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -70,12 +70,12 @@ gets reagrouped into smaller messages., f 67;
 #X obj 4 497 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 147 506 -trim: trims selectors (list/symbol) on the output
 ;
-#X obj 398 237 else/loop 13;
+#X obj 356 244 else/loop 13;
 #X text 78 136 A bang message sends the remaining stored elements that
 haven't reached the group size yet. So you can send a bang afterwards
 to force an output. A group size of zero keeps regrouping indefinitely
 until a bang is given., f 67;
-#X obj 371 217 t b b;
+#X obj 329 224 t b b;
 #X connect 0 0 46 0;
 #X connect 1 0 41 0;
 #X connect 2 0 41 1;
