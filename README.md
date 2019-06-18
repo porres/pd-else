@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-21 (Unreleased)
+### Version 1.0 beta-21 (Released: June 18th 2019)
 
 Needs Pd 0.49-0 or above
 
@@ -32,9 +32,7 @@ I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" 
 
 --------------------------------------------------------------------------
 
-**"EL Locus Solus"** is run by me, Alexandre Torres Porres. It organizes cultural events/concerts and music technology courses <http://alexandre-torres.wixsite.com/el-locus-solus> where a Live Electronics tutorial is provided with examples in Pure Data for its courses. These have just been translated and completely rewritten to english with plans of being accompanied by a book. The first versions are available at: <https://github.com/porres/Live-Electronic-Music-Tutorial>.
-
-It is advisable to also download this tutorial as it solely depends on the ELSE library and it is a great didactic companion to this library, in which might be merged into a single download in the future.
+**"EL Locus Solus"** is run by me, Alexandre Torres Porres. It organizes cultural events/concerts and music technology courses <http://alexandre-torres.wixsite.com/el-locus-solus> where a Live Electronics tutorial is provided with examples in Pure Data for its courses. These have just been translated and completely rewritten to english with plans of being accompanied by a book. The first versions are available at: <https://github.com/porres/Live-Electronic-Music-Tutorial>. It is advisable to also download this tutorial as it solely depends on the ELSE library and it is a great didactic companion to this library, in which might be merged into a single download in the future.
 
 These examples were first developed for the now abandoned Pd Extended, making extensive use of the existing objects available in Pd Extended's libraries. Even though Pd Extended had many externals, there was the need at some point for something "else" - thus, this library emerged with the goal of providing more objects to include missing functionalities in the Pd Ecossystem.
 
