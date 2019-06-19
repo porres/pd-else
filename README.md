@@ -72,7 +72,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (335 objects):
+##Current Object list (336 objects):
 
 **ASSORTED: [3]**
 - [table~]
@@ -115,7 +115,7 @@ Cross compiling is also possible with something like this
 - [sig2float~] / [s2f~]
 - [float2sig~] / [f2s~]
 
-**LIST/MESSAGE MANAGEMENT: [12]**
+**LIST/MESSAGE MANAGEMENT: [13]**
 - [break] 
 - [order]
 - [regroup] 
@@ -126,6 +126,7 @@ Cross compiling is also possible with something like this
 - [rotate]
 - [sum]
 - [stream]
+- [slice] 
 - [merge]
 - [unmerge]
 
