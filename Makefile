@@ -72,6 +72,7 @@ receiver.class.sources := Classes/Source/receiver.c
 selector.class.sources := Classes/Source/selector.c
 separate.class.sources := Classes/Source/separate.c
 slice.class.sources := Classes/Source/slice.c
+sort.class.sources := Classes/Source/sort.c
 fromany.class.sources := Classes/Source/fromany.c
 toany.class.sources := Classes/Source/toany.c
 touch.in.class.sources := Classes/Source/touch.in.c
