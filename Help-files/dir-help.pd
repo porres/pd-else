@@ -83,7 +83,7 @@ also wrap according to the number of files.;
 #X obj 91 402 pack symbol symbol;
 #X obj 81 366 else/display;
 #X obj 81 250 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 153 256;
+-228856 -1 -1 0 256;
 #X obj 81 160 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X msg 42 276 next;
@@ -130,7 +130,7 @@ the number of found files, f 47;
 ;
 #X text 210 434 increments seek value and outputs file;
 #X text 147 127 <= opens parent directory;
-#N canvas 635 167 482 451 open 0;
+#N canvas 635 167 481 480 open 0;
 #X text 66 24 The 'open' message expects a symbol defining a directory.
 If the symbol starts with "/" \, then it means the symbol specifies
 an absolute path. Otherwise \, [dir] will look for directories relative
@@ -148,8 +148,11 @@ and "open ." will just reopen the same directory. You can also use
 in the parent directory.;
 #X obj 91 297 else/display 2;
 #X text 121 301 "1" if successfully opened \, "0" otherwise;
-#X text 57 394 If the contents of your directory changes \, you need
-to use the 'reopen' message to reload the direcory's contents.;
+#X text 55 420 If you change the contents of your directory \, you
+need to use the 'reopen' message to reload the direcory's contents.
+;
+#X text 54 386 Opening a directory also loads its contents so you can
+query for files.;
 #X connect 2 1 3 0;
 #X connect 2 2 7 0;
 #X connect 4 0 2 0;
@@ -226,10 +229,9 @@ contents., f 42;
 #X connect 4 0 0 0;
 #X connect 6 0 0 0;
 #X restore 454 203 pd extension;
-#X text 210 321 opens a directory specified by the symbol;
-#X text 148 335 reopen-;
-#X text 210 335 reopens the last opened directory (if contents changed)
-;
+#X text 154 335 reopen-;
+#X text 210 321 opens a directory and loads contents;
+#X text 210 335 reloads contents of the last opened directory;
 #X connect 16 0 17 0;
 #X connect 17 0 34 0;
 #X connect 17 1 37 0;
