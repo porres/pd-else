@@ -31,7 +31,6 @@ typedef struct dir{
     t_int       x_seek;
     t_int       x_init;
     t_sortdata  x_inbuf1;
-    t_sortdata  x_outbuf1;
     t_outlet   *x_out1;
     t_outlet   *x_out2;
     t_outlet   *x_out3;
@@ -47,21 +46,18 @@ static void sort_swap(t_atom *av, int i, int j){
 static int sort_sort_cmp(t_atom *a1, t_atom *a2){
     if(a1->a_type == A_FLOAT && a2->a_type == A_SYMBOL)
         return (-1);
-    if(a1->a_type == A_SYMBOL && a2->a_type == A_FLOAT)
+    else if(a1->a_type == A_SYMBOL && a2->a_type == A_FLOAT)
         return (1);
-    if(a1->a_type == A_FLOAT && a2->a_type == A_FLOAT){
+    else if(a1->a_type == A_FLOAT && a2->a_type == A_FLOAT){
         if(a1->a_w.w_float < a2->a_w.w_float)
             return (-1);
-        if(a1->a_w.w_float > a2->a_w.w_float)
+        else if(a1->a_w.w_float > a2->a_w.w_float)
             return (1);
-        return (0);
+        else
+            return (0);
     }
-    if(a1->a_type == A_SYMBOL && a2->a_type == A_SYMBOL)
+    else
         return (strcmp(a1->a_w.w_symbol->s_name, a2->a_w.w_symbol->s_name));
-    if(a1->a_type == A_POINTER)
-        return (1);
-    if(a2->a_type == A_POINTER)
-        return (-1);
 }
 
 static void sort_qsort(t_dir *x, t_atom *av1, int left, int right){
@@ -162,6 +158,7 @@ static void dir_load(t_dir *x, t_symbol *dirname, int out){
         else
             x->x_ignored++;
     }
+    closedir(x->x_dir);
     sort(x, &x->x_inbuf1, x->x_nfiles, x->x_filelist);
 }
 
@@ -210,7 +207,6 @@ static void sortdata_free(t_sortdata *d){
 
 static void dir_free(t_dir *x){
     sortdata_free(&x->x_inbuf1);
-    sortdata_free(&x->x_outbuf1);
     outlet_free(x->x_out1);
     outlet_free(x->x_out2);
     outlet_free(x->x_out3);
@@ -224,12 +220,9 @@ static void sortdata_init(t_sortdata *d){
 
 static void *dir_new(t_symbol *s, int ac, t_atom* av){
     t_dir *x = (t_dir *)pd_new(dir_class);
-    t_symbol *dummy = s; // get rid of warning
-    dummy = NULL; // get rid of warning
+    s = NULL; // get rid of warning
     x->x_inbuf1.d_max = MAXN;
-    x->x_outbuf1.d_max = MAXN;
     sortdata_init(&x->x_inbuf1);
-    sortdata_init(&x->x_outbuf1);
     t_canvas *canvas = canvas_getcurrent();
     int depth = 0;
     t_symbol *dirname = &s_;
