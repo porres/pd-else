@@ -63,43 +63,45 @@
 #X msg 48 128 reset;
 #X text 160 494 atom -;
 #X obj 150 290 print dir;
-#N canvas 534 77 711 593 example 0;
-#X msg 372 274 seek \$1;
-#X obj 372 242 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 534 77 722 608 example 0;
+#X msg 374 274 seek \$1;
+#X obj 374 242 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 424 336 else/display;
-#X obj 372 373 else/display;
-#X msg 322 273 n;
-#X text 159 28 The 'n' message outputs the number of found files in
+#X obj 426 336 else/display;
+#X obj 374 373 else/display;
+#X msg 324 273 n;
+#X text 161 28 The 'n' message outputs the number of found files in
 the opened directory. The seek message can search for a file acording
 to a number. If the seek number is greater than the number of files
 \, then the search is wrapped according to the number of files. The
 seek number is indexed from 1 and cannot be <= 0!;
-#X msg 437 275 next;
-#X text 160 106 The 'next' message increments the seek value and will
+#X msg 439 275 next;
+#X text 162 106 The 'next' message increments the seek value and will
 also wrap according to the number of files.;
-#X obj 133 339 route float;
-#X msg 81 277 seek \$1;
-#X obj 91 402 pack symbol symbol;
-#X obj 81 366 else/display;
-#X obj 81 250 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 135 339 route float;
+#X msg 83 277 seek \$1;
+#X obj 93 402 pack symbol symbol;
+#X obj 83 366 else/display;
+#X obj 83 250 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 81 160 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X obj 83 160 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X msg 42 276 next;
-#X obj 91 458 else/display;
-#X msg 188 274 n \, dir, f 10;
-#X obj 81 309 else/dir;
-#X obj 188 249 loadbang;
-#X obj 168 201 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X msg 44 276 next;
+#X obj 93 458 else/display;
+#X msg 190 274 n \, dir, f 10;
+#X obj 83 309 else/dir;
+#X obj 190 249 loadbang;
+#X obj 170 201 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 357 256;
-#X msg 91 431 \$2/\$1;
-#X text 102 159 <= a random file from the "else" externals folder;
-#X obj 81 224 else/rand.i 1 1;
-#X obj 372 307 else/dir -ext .wav;
-#X text 147 512 Note that the files aere sorted with case sensitivity
+#X msg 93 431 \$2/\$1;
+#X text 104 159 <= a random file from the "else" externals folder;
+#X obj 83 224 else/rand.i 1 1;
+#X obj 374 307 else/dir -ext .wav;
+#X text 149 512 Note that the files aere sorted with case sensitivity
 \, in ghe same was as in the shell/terminal. This means upper case
-letters are sorted before lower case letters.;
+letters are sorted before lower case letters., f 57;
+#X text 149 552 By the way \, the maximum number of files [dir] can
+load is 2ˆ15 (32.768);
 #X connect 0 0 23 0;
 #X connect 1 0 0 0;
 #X connect 4 0 23 0;
