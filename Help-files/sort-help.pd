@@ -1,4 +1,4 @@
-#N canvas 493 60 561 502 10;
+#N canvas 492 79 561 502 10;
 #X obj 4 3 cnv 15 301 42 empty empty sort 20 20 2 37 -233017 -1 0;
 #X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -53,23 +53,24 @@
 #X text 155 419 list -;
 #X text 209 420 the sorted list as indexes of the original input;
 #X obj 234 210 else/sort -1;
-#X msg 114 152 4 1 3 2 b c z x t;
 #X obj 234 151 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 134 318 anything -;
 #X text 207 319 a message to sort, f 51;
 #X text 170 335 bang;
 #X text 207 336 outputs the last incoming message sorted, f 51;
-#X text 62 86 [sort] sorts messages in ascending or descending order.
-A bang outputs the last incoming message. If you change the sorting
-order you can use the bang message to change the sorting direction
-of the last incoming message.;
 #X text 117 451 1) float - order >= is ascending \, descending otherwise
 (default 0), f 67;
+#X text 62 85 [sort] sorts messages in ascending or descending order.
+A bang outputs the last incoming message. If you change the sorting
+order you can use the bang message to change the sorting direction
+of the last incoming message. Note upper case letters are sorted before
+lower case letters., f 70;
+#X msg 94 152 4 1 3 2 b c Z w x t;
 #X connect 20 0 32 0;
 #X connect 21 0 32 1;
 #X connect 22 0 32 1;
 #X connect 32 0 19 0;
 #X connect 32 1 27 0;
 #X connect 33 0 32 0;
-#X connect 34 0 32 0;
+#X connect 40 0 32 0;

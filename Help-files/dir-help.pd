@@ -63,7 +63,7 @@
 #X msg 48 128 reset;
 #X text 160 494 atom -;
 #X obj 150 290 print dir;
-#N canvas 534 77 712 515 example 0;
+#N canvas 534 77 711 593 example 0;
 #X msg 372 274 seek \$1;
 #X obj 372 242 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -97,6 +97,9 @@ also wrap according to the number of files.;
 #X text 102 159 <= a random file from the "else" externals folder;
 #X obj 81 224 else/rand.i 1 1;
 #X obj 372 307 else/dir -ext .wav;
+#X text 147 512 Note that the files aere sorted with case sensitivity
+\, in ghe same was as in the shell/terminal. This means upper case
+letters are sorted before lower case letters.;
 #X connect 0 0 23 0;
 #X connect 1 0 0 0;
 #X connect 4 0 23 0;
@@ -118,7 +121,7 @@ also wrap according to the number of files.;
 #X connect 22 0 12 0;
 #X connect 23 0 3 0;
 #X connect 23 1 2 0;
-#X restore 466 222 pd example;
+#X restore 467 222 pd example;
 #X text 178 406 n -;
 #X text 210 406 output number of found files in the right outlet;
 #X text 210 378 dump files from directory in the left outlet;
@@ -157,7 +160,7 @@ query for files.;
 #X connect 2 2 7 0;
 #X connect 4 0 2 0;
 #X connect 5 0 4 0;
-#X restore 483 165 pd open;
+#X restore 484 165 pd open;
 #X text 136 554 1) float -;
 #X text 130 594 1) symbol -;
 #X text 210 554 (optional) relative directory level \, 0 is current
@@ -208,8 +211,11 @@ folder. The default is the directory specified by the first argument.
 #X connect 2 0 1 0;
 #X connect 7 0 9 0;
 #X connect 9 1 6 0;
-#X restore 454 184 pd arguments;
-#N canvas 862 120 329 298 extension 0;
+#X restore 455 184 pd arguments;
+#X text 154 335 reopen-;
+#X text 210 321 opens a directory and loads contents;
+#X text 210 335 reloads contents of the last opened directory;
+#N canvas 862 120 329 298 extension-flag 0;
 #X obj 95 181 else/dir -ext .wav;
 #X obj 67 130 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -228,10 +234,7 @@ contents., f 42;
 #X connect 3 0 0 0;
 #X connect 4 0 0 0;
 #X connect 6 0 0 0;
-#X restore 454 203 pd extension;
-#X text 154 335 reopen-;
-#X text 210 321 opens a directory and loads contents;
-#X text 210 335 reloads contents of the last opened directory;
+#X restore 425 203 pd extension-flag;
 #X connect 16 0 17 0;
 #X connect 17 0 34 0;
 #X connect 17 1 37 0;
