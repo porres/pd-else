@@ -1,4 +1,4 @@
-// porres 2018
+// porres 2018-2019
 
 #include "m_pd.h"
 #include <math.h>
@@ -15,7 +15,6 @@ typedef struct _envgen_proxy{
 typedef struct _envgenseg{
     float  target;  // line target
     float  ms;      // line time in ms
-    float  exp;     // line exponentiality
 }t_envgen_line;
 
 typedef struct _envgen{
@@ -79,11 +78,16 @@ static void envgen_proxy_list(t_proxy *p, t_symbol *s, int ac, t_atom *av){
     copy_atoms(av, x->x_av, x->x_ac);
 }
 
-static void envgen_retarget(t_envgen *x){
+static void envgen_retarget(t_envgen *x, int skip){
     x->x_target = x->x_curseg->target;
-    x->x_power = x->x_at_exp[x->x_line_n].a_w.w_float;
+    if(skip)
+        x->x_power = 1;
+    else{
+        x->x_power = x->x_at_exp[x->x_line_n].a_w.w_float;
+        x->x_line_n++;
+    }
     x->x_nleft = (int)(x->x_curseg->ms * sys_getsr()*0.001 + 0.5);
-    x->x_n_lines--, x->x_curseg++, x->x_line_n++;
+    x->x_n_lines--, x->x_curseg++;
     if(x->x_nleft == 0){ // stupid line's gonna be ignored
         x->x_value = x->x_target;
         x->x_delta = x->x_inc = 0;
@@ -158,7 +162,7 @@ static void envgen_attack(t_envgen *x, int ac, t_atom *av){
         line_point++;
     }
     x->x_curseg = x->x_lines;
-    envgen_retarget(x);
+    envgen_retarget(x, skip1st);
     if(x->x_pause)
         x->x_pause = 0;
     if(!x->x_status)
@@ -181,7 +185,7 @@ static void envgen_release(t_envgen *x, int ac, t_atom *av){
     x->x_target = x->x_lines->target;
     x->x_curseg = x->x_lines;
     x->x_release = 0;
-    envgen_retarget(x);
+    envgen_retarget(x, 0);
     if(x->x_pause)
         x->x_pause = 0;
 }
@@ -304,7 +308,7 @@ static t_int *envgen_perform(t_int *w){
                 x->x_value = x->x_target;
                 x->x_inc = 0;
                 if(x->x_n_lines > 0) // there's more, retaerget to the next
-                        envgen_retarget(x);
+                        envgen_retarget(x, 0);
                 else if(!x->x_release) // there's no release, so we're done.
                     clock_delay(x->x_clock, 0);
             }
