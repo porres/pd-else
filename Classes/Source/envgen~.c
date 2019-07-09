@@ -82,23 +82,17 @@ static void envgen_proxy_list(t_proxy *p, t_symbol *s, int ac, t_atom *av){
 static void envgen_retarget(t_envgen *x){
     x->x_target = x->x_curseg->target;
     x->x_power = x->x_at_exp[x->x_line_n].a_w.w_float;
-    if(x->x_power < 0)
-        x->x_power = 0;
     x->x_nleft = (int)(x->x_curseg->ms * sys_getsr()*0.001 + 0.5);
     x->x_n_lines--, x->x_curseg++, x->x_line_n++;
     if(x->x_nleft == 0){ // stupid line's gonna be ignored
         x->x_value = x->x_target;
         x->x_delta = x->x_inc = 0;
         x->x_power = x->x_at_exp[x->x_line_n].a_w.w_float;
-        if(x->x_power < 0)
-            x->x_power = 0;
         while(x->x_n_lines && // others to be ignored
               !(int)(x->x_curseg->ms * sys_getsr()*0.001 + 0.5)){
             x->x_value = x->x_target = x->x_curseg->target;
             x->x_n_lines--, x->x_curseg++, x->x_line_n++;
             x->x_power = x->x_at_exp[x->x_line_n].a_w.w_float;
-            if(x->x_power < 0)
-                x->x_power = 0;
         }
     }
     else{
@@ -106,8 +100,12 @@ static void envgen_retarget(t_envgen *x){
         x->x_n = x->x_nleft;
         x->x_nleft--; // update it already
         float step = (float)(x->x_n-x->x_nleft)/(float)x->x_n;
-        if(x->x_power != 1)
-            step = pow(step, x->x_power);
+        if(fabs(x->x_power) != 1){
+            if(x->x_power < 0)
+                step = 1-pow(1-step, 1./fabs(x->x_power));
+            else
+                step = pow(step, x->x_power);
+        }
         x->x_inc = step * x->x_delta;
     }
 }
@@ -294,8 +292,12 @@ static t_int *envgen_perform(t_int *w){
             if(x->x_nleft > 0){ // increase
                 x->x_nleft--;
                 float step = (float)(x->x_n-x->x_nleft)/(float)x->x_n;
-                if(x->x_power != 1)
-                    step = pow(step, x->x_power);
+                if(fabs(x->x_power) != 1){
+                    if(x->x_power < 0)
+                        step = 1-pow(1-step, 1./fabs(x->x_power));
+                    else
+                        step = pow(step, x->x_power);
+                }
                 x->x_inc = step * x->x_delta;
             }
             else if(x->x_nleft == 0){ // reached target
@@ -337,8 +339,8 @@ static void envgen_resume(t_envgen *x){
 static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     t_symbol *cursym = s; // avoid warning
     t_envgen *x = (t_envgen *)pd_new(envgen_class);
-    x->x_gain = 1;
-    x->x_lastin = x->x_maxsustain = x->x_retrigger = x->x_value = x->x_power = 0;
+    x->x_gain = x->x_power = 1;
+    x->x_lastin = x->x_maxsustain = x->x_retrigger = x->x_value = 0;
     x->x_nleft = x->x_n_lines = x->x_line_n = x->x_pause = x->x_release = 0;
     x->x_suspoint = x->x_legato = 0;
     x->x_lines = x->x_n_lineini;
