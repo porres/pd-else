@@ -82,17 +82,23 @@ static void envgen_proxy_list(t_proxy *p, t_symbol *s, int ac, t_atom *av){
 static void envgen_retarget(t_envgen *x){
     x->x_target = x->x_curseg->target;
     x->x_power = x->x_at_exp[x->x_line_n].a_w.w_float;
+    if(x->x_power < 0)
+        x->x_power = 0;
     x->x_nleft = (int)(x->x_curseg->ms * sys_getsr()*0.001 + 0.5);
     x->x_n_lines--, x->x_curseg++, x->x_line_n++;
     if(x->x_nleft == 0){ // stupid line's gonna be ignored
         x->x_value = x->x_target;
         x->x_delta = x->x_inc = 0;
         x->x_power = x->x_at_exp[x->x_line_n].a_w.w_float;
+        if(x->x_power < 0)
+            x->x_power = 0;
         while(x->x_n_lines && // others to be ignored
               !(int)(x->x_curseg->ms * sys_getsr()*0.001 + 0.5)){
             x->x_value = x->x_target = x->x_curseg->target;
             x->x_n_lines--, x->x_curseg++, x->x_line_n++;
             x->x_power = x->x_at_exp[x->x_line_n].a_w.w_float;
+            if(x->x_power < 0)
+                x->x_power = 0;
         }
     }
     else{
@@ -100,7 +106,9 @@ static void envgen_retarget(t_envgen *x){
         x->x_n = x->x_nleft;
         x->x_nleft--; // update it already
         float step = (float)(x->x_n-x->x_nleft)/(float)x->x_n;
-        x->x_inc = pow(step, x->x_power) * x->x_delta;
+        if(x->x_power != 1)
+            step = pow(step, x->x_power);
+        x->x_inc = step * x->x_delta;
     }
 }
 
@@ -286,7 +294,9 @@ static t_int *envgen_perform(t_int *w){
             if(x->x_nleft > 0){ // increase
                 x->x_nleft--;
                 float step = (float)(x->x_n-x->x_nleft)/(float)x->x_n;
-                x->x_inc = pow(step, x->x_power) * x->x_delta;
+                if(x->x_power != 1)
+                    step = pow(step, x->x_power);
+                x->x_inc = step * x->x_delta;
             }
             else if(x->x_nleft == 0){ // reached target
                 x->x_value = x->x_target;
@@ -334,7 +344,8 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     x->x_lines = x->x_n_lineini;
     x->x_curseg = 0;
     t_atom at[2];
-    for(int i = 0; i < MAX_SEGS; i++) // set exponential list to linear
+    int i;
+    for(i = 0; i < MAX_SEGS; i++) // set exponential list to linear
         SETFLOAT(x->x_at_exp+i, 1);
     SETFLOAT(at, 0);
     SETFLOAT(at+1, 0);
@@ -362,6 +373,17 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     x->x_value = atom_getfloatarg(1, ac, av);
                     ac-=2, av+=2;
+                }
+                else goto errstate;
+            }
+            else if(cursym == gensym("-exp")){
+                if(ac >= 2){
+                    ac--, av++;
+                    i = 0;
+                    while(ac || av->a_type == A_FLOAT){
+                        SETFLOAT(x->x_at_exp+i, av->a_w.w_float);
+                        ac--, av++, i++;
+                    }
                 }
                 else goto errstate;
             }
