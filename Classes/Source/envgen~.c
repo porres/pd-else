@@ -2,7 +2,7 @@
 
 #include "m_pd.h"
 
-#define ENVGEN_MAX_SIZE  512 // maximum line segments
+#define MAX_SEGS  1024 // maximum line segments
 
 static t_class *envgen_proxy;
 
@@ -32,7 +32,6 @@ typedef struct _envgen{
     t_atom         *x_av_rel;
     float           x_value;
     float           x_target;
-    float           x_delta;
     float           x_inc;
     float           x_lastin;
     float           x_maxsustain;
@@ -43,7 +42,7 @@ typedef struct _envgen{
     t_outlet       *x_out2;
     t_envgen_line  *x_curseg;
     t_envgen_line  *x_lines;
-    t_envgen_line   x_n_lineini[ENVGEN_MAX_SIZE];
+    t_envgen_line   x_n_lineini[MAX_SEGS];
 }t_envgen;
 
 static t_class *envgen_class;
@@ -59,9 +58,9 @@ static void envgen_proxy_init(t_proxy * p, t_envgen *x){
 }
 
 static void envgen_proxy_list(t_proxy *p, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
     if(!ac)
         return;
+    s = NULL;
     t_envgen *x = p->p_owner;
     for(int n = 0; n < ac; n++)
         if((av+n)->a_type != A_FLOAT){
@@ -81,7 +80,7 @@ static void envgen_retarget(t_envgen *x){
         x->x_value = x->x_target;
         x->x_inc = 0;
         while(x->x_n_lines && // next delta also == 0 && lines
-              !(int)(x->x_curseg->delta * sys_getsr() * 0.001 + 0.5)){
+              !(int)(x->x_curseg->delta * sys_getsr()*0.001 + 0.5)){
             x->x_value = x->x_target = x->x_curseg->target;
             x->x_n_lines--, x->x_curseg++;
         }
@@ -92,40 +91,35 @@ static void envgen_retarget(t_envgen *x){
     }
 }
 
-static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+static void envgen_attack(t_envgen *x, int ac, t_atom *av){
     int odd = ac % 2;
-    int n_lines = ac / 2;
+    int n_lines = ac/2;
     int skip1st = 0;
     if(odd){
-        if(x->x_legato){
-            av++; // we have skipped the 1st atom
-            ac--;
-        }
+        if(x->x_legato)
+            av++, ac--; // skip 1st atom
         else{
-            n_lines++; // add an extra segment
+            n_lines++; // add extra segment
             skip1st = 1; // for release
         }
     }
-    if(n_lines > ENVGEN_MAX_SIZE){
-        n_lines = ENVGEN_MAX_SIZE;
-        odd = 0;
-    };
-    if(x->x_suspoint){ // we have a sustain point
-        if(n_lines - skip1st >= x->x_suspoint){ // limit # segs to suspoint and define release
-            n_lines = x->x_suspoint;
-            x->x_release = 1; // we have a release ramp!
+    if(n_lines > MAX_SEGS)
+        n_lines = MAX_SEGS, odd = 0;
+    if(x->x_suspoint){ // find sustain point
+        if((n_lines - skip1st) >= x->x_suspoint){ // we have a release!
+            x->x_release = 1;
+            n_lines = x->x_suspoint; // limit n_lines to suspoint
             int n = 2*n_lines + skip1st;
-            x->x_ac_rel = (ac -= n);
+            x->x_ac_rel = (ac -= n); // release n
             x->x_av_rel = getbytes(x->x_ac_rel*sizeof(*(x->x_av_rel)));
-            copy_atoms(av+n, x->x_av_rel, x->x_ac_rel);
+            copy_atoms(av+n, x->x_av_rel, x->x_ac_rel); // copy release ramp
             if(x->x_maxsustain > 0)
                 clock_delay(x->x_sus_clock, x->x_maxsustain);
         }
-        else
+        else // no release
             x->x_release = 0;
     }
-    else
+    else // no release
         x->x_release = 0;
 // attack
     x->x_n_lines = n_lines; // define number of line segments
@@ -151,12 +145,10 @@ static void envgen_attack(t_envgen *x, t_symbol *s, int ac, t_atom *av){
         outlet_float(x->x_out2, x->x_status = 1); // turn on status
 }
 
-static void envgen_release(t_envgen *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
+static void envgen_release(t_envgen *x, int ac, t_atom *av){
     if(ac < 2)
         return;
     int n_lines = ac/2;
-// release
     x->x_n_lines = n_lines; // define number of line segments
     t_envgen_line *line_point = x->x_lines;
     while(n_lines--){
@@ -181,13 +173,13 @@ static void envgen_tick(t_envgen *x){
 
 static void envgen_sus_tick(t_envgen *x){
     if(x->x_release)
-        envgen_release(x, &s_list, x->x_ac_rel, x->x_av_rel);
+        envgen_release(x, x->x_ac_rel, x->x_av_rel);
 }
 
 static void envgen_set(t_envgen *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
     if(!ac)
         return;
+    s = NULL;
     for(int n = 0; n < ac; n++)
         if((av+n)->a_type != A_FLOAT){
             pd_error(x, "[envgen~]: set needs to only contain floats");
@@ -199,8 +191,6 @@ static void envgen_set(t_envgen *x, t_symbol *s, int ac, t_atom *av){
 
 static void envgen_list(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(!ac)
-        return;
     for(int n = 0; n < ac; n++)
         if((av+n)->a_type != A_FLOAT){
             pd_error(x, "[envgen~]: list needs to only contain floats");
@@ -209,26 +199,26 @@ static void envgen_list(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     x->x_ac = ac;
     x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
     copy_atoms(av, x->x_av, x->x_ac);
-    envgen_attack(x, &s_list, x->x_ac, x->x_av);
+    envgen_attack(x, x->x_ac, x->x_av);
 }
 
 static void envgen_bang(t_envgen *x){
-    envgen_attack(x, &s_list, x->x_ac, x->x_av);
+    envgen_attack(x, x->x_ac, x->x_av);
 }
 
 static void envgen_rel(t_envgen *x){
     if(x->x_release)
-        envgen_release(x, &s_list, x->x_ac_rel, x->x_av_rel);
+        envgen_release(x, x->x_ac_rel, x->x_av_rel);
 }
 
 static void envgen_float(t_envgen *x, t_floatarg f){
     if(f != 0){
         x->x_gain = f;
-        envgen_attack(x, &s_list, x->x_ac, x->x_av);
+        envgen_attack(x, x->x_ac, x->x_av);
     }
     else{
         if(x->x_release)
-            envgen_release(x, &s_list, x->x_ac_rel, x->x_av_rel);
+            envgen_release(x, x->x_ac_rel, x->x_av_rel);
     }
 }
 
@@ -254,33 +244,33 @@ static void envgen_suspoint(t_envgen *x, t_floatarg f){
 }
 
 static t_int *envgen_perform(t_int *w){
-    t_envgen *x = (t_envgen *)(w[1]);
-    t_int n = (int)(w[2]);
-    t_float *in = (t_float *)(w[3]);
-    t_float *out = (t_float *)(w[4]);
-    float lastin = x->x_lastin;
+    t_envgen   *x = (t_envgen *)(w[1]);
+    t_int       n = (int)(w[2]);
+    t_float    *in = (t_float *)(w[3]);
+    t_float    *out = (t_float *)(w[4]);
+    float       lastin = x->x_lastin;
     while(n--){
         t_float f = *in++;
-        if(f != 0 && lastin == 0){
+        if(f != 0 && lastin == 0){ // set attack ramp
             x->x_gain = f;
-            envgen_attack(x, &s_list, x->x_ac, x->x_av);
+            envgen_attack(x, x->x_ac, x->x_av);
         }
-        else if(x->x_release && f == 0 && lastin != 0)
-            envgen_release(x, &s_list, x->x_ac_rel, x->x_av_rel);
+        else if(x->x_release && f == 0 && lastin != 0) // set release ramp
+            envgen_release(x, x->x_ac_rel, x->x_av_rel);
         if(PD_BIGORSMALL(x->x_value))
             x->x_value = 0;
         *out++ = x->x_value;
-        if(!x->x_pause && x->x_status){ // update
-            if(x->x_nleft > 0){ // inc
+        if(!x->x_pause && x->x_status){ // not paused and 'on' => let's update
+            if(x->x_nleft > 0){ // increase
                 x->x_value += x->x_inc;
                 x->x_nleft--;
             }
-            else if(x->x_nleft == 0){ // target
+            else if(x->x_nleft == 0){ // reached target
                 x->x_value = x->x_target;
-                if(x->x_n_lines > 0) // next
+                if(x->x_n_lines > 0) // there's more, retaerget to the next
                         envgen_retarget(x);
-                else if(!x->x_release) // off
-                    clock_delay(x->x_clock, 0); // over!!!!!
+                else if(!x->x_release) // there's no release, so we're done.
+                    clock_delay(x->x_clock, 0);
             }
         }
         lastin = f;
@@ -295,7 +285,7 @@ static void envgen_dsp(t_envgen *x, t_signal **sp){
 
 static void envgen_free(t_envgen *x){
     if(x->x_lines != x->x_n_lineini)
-        freebytes(x->x_lines, ENVGEN_MAX_SIZE*sizeof(*x->x_lines));
+        freebytes(x->x_lines, MAX_SEGS*sizeof(*x->x_lines));
     if(x->x_clock)
         clock_free(x->x_clock);
     if(x->x_sus_clock)
@@ -318,12 +308,11 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     x->x_nleft = x->x_n_lines = x->x_pause = x->x_release = x->x_suspoint = x->x_legato = 0;
     x->x_lines = x->x_n_lineini;
     x->x_curseg = 0;
-    x->x_ac = 2;
-    x->x_av = getbytes(2*sizeof(*(x->x_av)));
     t_atom at[2];
     SETFLOAT(at, 0);
     SETFLOAT(at+1, 0);
-    copy_atoms(at, x->x_av, x->x_ac);
+    x->x_av = getbytes(2*sizeof(*(x->x_av)));
+    copy_atoms(at, x->x_av, x->x_ac = 2);
     int symarg = 0, n = 0;
     while(ac > 0){
         if((av+n)->a_type == A_FLOAT && !symarg)
