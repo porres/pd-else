@@ -11,25 +11,26 @@
 static t_class *dir_class;
 
 typedef struct _sortdata{
-    int      d_maxn;    // as allocated
-    int      d_natoms;  // as used
-    t_atom  *d_buf;
-    t_atom   d_bufini[MAXN];
+    int      maxn;  // as allocated
+    int      n;     // as used
+    t_atom  *buf;
+    t_atom   bufini[MAXN];
 }t_sortdata;
 
 typedef struct dir{
     t_object    x_obj;
     DIR        *x_dir;
     char        x_directory[MAXPDSTRING];
-    t_symbol   *x_getdir; // default directory
+    t_symbol   *x_getdir;   // default directory
     t_symbol   *x_ext;
-    t_atom      x_filelist[MAXN];
-    t_int       x_nfiles;
+    t_atom      x_files[MAXN];
+    t_int       x_n;
     t_int       x_seek;
     t_sortdata  x_inbuf;
     t_outlet   *x_out1;
     t_outlet   *x_out2;
     t_outlet   *x_out3;
+    t_outlet   *x_out4;
 }t_dir;
 
 static void sort_swap(t_atom *av, int i, int j){
@@ -58,10 +59,10 @@ static int sort_compare(t_atom *a1, t_atom *a2){
 static void sort_qsort(t_dir *x, t_atom *av1, int left, int right){
     if(left >= right)
         return;
-    sort_swap(av1, left, (left + right)/2);
+    sort_swap(av1, left, (left+right)/2);
     int last = left;
     for(int i = left+1; i <= right; i++){
-        if((sort_compare(av1 + i, av1 + left)) < 0)
+        if((sort_compare(av1+i, av1+left)) < 0)
             sort_swap(av1, ++last, i);
     }
     sort_swap(av1, left, last);
@@ -71,40 +72,40 @@ static void sort_qsort(t_dir *x, t_atom *av1, int left, int right){
 
 static void dir_sort(t_dir *x, t_sortdata *d, int ac, t_atom *av){
     if(ac){
-        if(ac > d->d_maxn)
-            ac = d->d_maxn;
-        d->d_natoms = ac;
-        memcpy(d->d_buf, av, ac*sizeof(*d->d_buf));
-        sort_qsort(x, d->d_buf, 0, ac-1);
+        if(ac > d->maxn)
+            ac = d->maxn;
+        d->n = ac;
+        memcpy(d->buf, av, ac*sizeof(*d->buf));
+        sort_qsort(x, d->buf, 0, ac-1);
     }
 }
 
 static void dir_load(t_dir *x){
     x->x_dir = opendir(x->x_directory);
-    x->x_nfiles = 0;
+    x->x_n = 0;
     struct dirent *result = NULL;
     while((result = readdir(x->x_dir))){
         if(strncmp(result->d_name, ".", 1)){
             if(x->x_ext == &s_){
-                SETSYMBOL(x->x_filelist + x->x_nfiles, gensym(result->d_name));
-                x->x_nfiles++;
+                SETSYMBOL(x->x_files + x->x_n, gensym(result->d_name));
+                x->x_n++;
             }
             else{
                 int extlen = strlen(x->x_ext->s_name);
                 int len = strlen(result->d_name);
                 const char *extension = &result->d_name[len-extlen];
                 if(!strcmp(extension, x->x_ext->s_name)){
-                    SETSYMBOL(x->x_filelist+x->x_nfiles, gensym(result->d_name));
-                    x->x_nfiles++;
+                    SETSYMBOL(x->x_files+x->x_n, gensym(result->d_name));
+                    x->x_n++;
                 }
             }
         }
     }
     closedir(x->x_dir);
-    dir_sort(x, &x->x_inbuf, x->x_inbuf.d_natoms = x->x_nfiles, x->x_filelist);
+    dir_sort(x, &x->x_inbuf, x->x_inbuf.n = x->x_n, x->x_files);
 }
 
-static void dir_load_dir(t_dir *x, t_symbol *dirname, int init){
+static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
     if(!strcmp(dirname->s_name, "")){
         pd_error(x, "[dir]: no symbol given to 'open'");
         return;
@@ -124,55 +125,56 @@ static void dir_load_dir(t_dir *x, t_symbol *dirname, int init){
         strncpy(x->x_directory, dirname->s_name, MAXPDSTRING);
     else // relative to current dir
         sprintf(x->x_directory, "%s/%s", x->x_directory, dirname->s_name );
-// search
-    DIR *temp = opendir(x->x_directory);
+    DIR *temp = opendir(x->x_directory); // let's search it
     if(!temp){ // didn't find
         temp = NULL; // ???
         strcpy(x->x_directory, tempdir); // restore original directory
-        if(init)
-            pd_error(x, "[dir]: cannot open '%s'", dirname->s_name);
+        if(init){
+            pd_error(x, "[dir]: cannot open '%s', opening '%s' instead",
+                     dirname->s_name, x->x_directory);
+            dir_load(x);
+        }
         else
-            outlet_float(x->x_out3, 0);
+            outlet_float(x->x_out4, 0);
         return;
     }
     else{ // found it
         closedir(temp);
         if(!init)
-            outlet_float(x->x_out3, 1);
+            outlet_float(x->x_out4, 1);
         dir_load(x);
     }
 }
 
 static void dir_open(t_dir *x, t_symbol *dirname){
-    dir_load_dir(x, dirname, 0);
+    dir_loadir(x, dirname, 0);
 }
 
-static void dir_ext(t_dir *x, t_symbol *ext){ // IMPROVE THIS!!!!!!
-    if(!strcmp(ext->s_name, ""))
-        x->x_ext = &s_;
-    else
+static void dir_ext(t_dir *x, t_symbol *ext){
+    if(x->x_ext != ext){
         x->x_ext = ext;
-    dir_load(x); // reload
+        dir_load(x); // reload
+    }
 }
 
 static void dir_seek(t_dir *x, t_float f){
     int i = (int)f;
     if(i < 1)
         i = 1;
-    if(x->x_nfiles){
-        x->x_seek = i = ((i - 1) % x->x_nfiles) + 1;
-        outlet_list(((t_object *)x)->ob_outlet, &s_list, 1, x->x_inbuf.d_buf+i-1);
+    if(x->x_n){
+        x->x_seek = i = ((i-1) % x->x_n) + 1;
+        outlet_list(((t_object *)x)->ob_outlet, &s_list, 1, x->x_inbuf.buf+i-1);
     }
     else
         post("[dir]: no files found to seek for");
 }
 
 static void dir_next(t_dir *x){
-    dir_seek(x, x->x_seek + 1);
+    dir_seek(x, x->x_seek+1);
 }
 
 static void dir_n(t_dir *x){
-    outlet_float(x->x_out2, x->x_nfiles);
+    outlet_float(x->x_out3, x->x_n);
 }
 
 static void dir_reset(t_dir *x){ // reset to default
@@ -180,9 +182,9 @@ static void dir_reset(t_dir *x){ // reset to default
 }
 
 static void dir_dump(t_dir *x){
-    if(x->x_inbuf.d_natoms){
-        for(int i = 0; i < x->x_inbuf.d_natoms; i++)
-            outlet_list(((t_object *)x)->ob_outlet, &s_list, 1, x->x_inbuf.d_buf+i);
+    if(x->x_inbuf.n){
+        for(int i = 0; i < x->x_inbuf.n; i++)
+            outlet_list(((t_object *)x)->ob_outlet, &s_list, 1, x->x_inbuf.buf+i);
     }
     else
         post("[dir]: no files found");
@@ -193,13 +195,14 @@ static void dir_dir(t_dir *x){
 }
 
 static void dir_bang(t_dir *x){
+    dir_n(x);
     dir_dir(x);
     dir_dump(x);
 }
 
 static void sortdata_free(t_sortdata *d){
-    if(d->d_buf != d->d_bufini)
-        freebytes(d->d_buf, d->d_maxn * sizeof(*d->d_buf));
+    if(d->buf != d->bufini)
+        freebytes(d->buf, d->maxn*sizeof(*d->buf));
 }
 
 static void dir_free(t_dir *x){
@@ -207,12 +210,13 @@ static void dir_free(t_dir *x){
     outlet_free(x->x_out1);
     outlet_free(x->x_out2);
     outlet_free(x->x_out3);
+    outlet_free(x->x_out4);
 }
 
 static void sortdata_init(t_sortdata *d){
-    d->d_natoms = 0;
-    d->d_maxn = MAXN;
-    d->d_buf = d->d_bufini;
+    d->n = 0;
+    d->maxn = MAXN;
+    d->buf = d->bufini;
 }
 
 static void *dir_new(t_symbol *s, int ac, t_atom* av){
@@ -225,41 +229,32 @@ static void *dir_new(t_symbol *s, int ac, t_atom* av){
     while(ac > 0){
         if(av->a_type == A_FLOAT && !symarg && !flag){
             depth = (int)atom_getfloatarg(0, ac, av);
-            ac--;
-            av++;
+            ac--, av++;
         }
         else if(av->a_type == A_SYMBOL){
-            if(!symarg)
-                symarg = 1;
+            if(!symarg) symarg = 1;
             t_symbol *cursym = atom_getsymbolarg(0, ac, av);
             if(!strcmp(cursym->s_name, "-ext") && !flag){
                 flag = 1;
                 if(ac == 2 && (av+1)->a_type == A_SYMBOL){
                     x->x_ext = atom_getsymbolarg(1, ac, av);
-                    ac -= 2;
-                    av += 2;
+                    ac-=2, av+=2;
                 }
-                else
-                    goto errstate;
+                else goto errstate;
             }
             else if(!flag){
-                if(!symarg)
-                    symarg = 1;
+                if(!symarg) symarg = 1;
                 dirname = cursym;
-                ac--;
-                av++;
+                ac--, av++;
             }
-            else
-                goto errstate;
+            else goto errstate;
         }
-        else
-            goto errstate;
+        else goto errstate;
     }
     t_canvas *canvas = canvas_getcurrent();
     while(!canvas->gl_env)
         canvas = canvas->gl_owner;
-    if(depth < 0)
-        depth = 0;
+    if(depth < 0) depth = 0;
     while(depth--){
         if(canvas->gl_owner){
             canvas = canvas->gl_owner;
@@ -269,10 +264,11 @@ static void *dir_new(t_symbol *s, int ac, t_atom* av){
     }
     x->x_getdir = canvas_getdir(canvas); // default
     strncpy(x->x_directory, x->x_getdir->s_name, MAXPDSTRING); // default
-    dirname == &s_ ? dir_load_dir(x, x->x_getdir, 1) : dir_load_dir(x, dirname, 1);
+    dirname == &s_ ? dir_loadir(x, x->x_getdir, 1) : dir_loadir(x, dirname, 1);
     x->x_out1 = outlet_new(&x->x_obj, &s_anything);
     x->x_out2 = outlet_new(&x->x_obj, &s_symbol);
     x->x_out3 = outlet_new(&x->x_obj, &s_float);
+    x->x_out4 = outlet_new(&x->x_obj, &s_float);
     return(x);
 errstate:
     pd_error(x, "[dir]: improper args");
