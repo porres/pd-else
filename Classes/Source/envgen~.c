@@ -12,8 +12,8 @@ typedef struct _envgen_proxy{
 }t_proxy;
 
 typedef struct _envgenseg{
-    float  target;
-    float  delta;
+    float  target;  // line target
+    float  ms;      // line time in ms
 }t_envgen_line;
 
 typedef struct _envgen{
@@ -74,19 +74,20 @@ static void envgen_proxy_list(t_proxy *p, t_symbol *s, int ac, t_atom *av){
 
 static void envgen_retarget(t_envgen *x){
     x->x_target = x->x_curseg->target;
-    x->x_nleft = (int)(x->x_curseg->delta * sys_getsr()* 0.001 + 0.5);
+    x->x_nleft = (int)(x->x_curseg->ms * sys_getsr()*0.001 + 0.5);
     x->x_n_lines--, x->x_curseg++;
     if(x->x_nleft == 0){
         x->x_value = x->x_target;
         x->x_inc = 0;
-        while(x->x_n_lines && // next delta also == 0 && lines
-              !(int)(x->x_curseg->delta * sys_getsr()*0.001 + 0.5)){
+        while(x->x_n_lines && // next ms also == 0 && lines
+              !(int)(x->x_curseg->ms * sys_getsr()*0.001 + 0.5)){
             x->x_value = x->x_target = x->x_curseg->target;
             x->x_n_lines--, x->x_curseg++;
         }
     }
     else{
-        x->x_value += (x->x_inc = (x->x_target-x->x_value)/(float)x->x_nleft);
+        x->x_inc = (x->x_target - x->x_value) / (float)x->x_nleft;
+        x->x_value += x->x_inc;
         x->x_nleft--;
     }
 }
@@ -125,15 +126,15 @@ static void envgen_attack(t_envgen *x, int ac, t_atom *av){
     x->x_n_lines = n_lines; // define number of line segments
     t_envgen_line *line_point = x->x_lines;
     if(odd && !x->x_legato){ // initialize 1st segment
-        line_point->delta = x->x_status ? x->x_retrigger : 0;
+        line_point->ms = x->x_status ? x->x_retrigger : 0;
         line_point->target = (av++)->a_w.w_float * x->x_gain;
         line_point++;
         n_lines--;
     }
     while(n_lines--){
-        line_point->delta = (av++)->a_w.w_float;
-        if(line_point->delta < 0)
-            line_point->delta = 0;
+        line_point->ms = (av++)->a_w.w_float;
+        if(line_point->ms < 0)
+            line_point->ms = 0;
         line_point->target = (av++)->a_w.w_float * x->x_gain;
         line_point++;
     }
@@ -152,9 +153,9 @@ static void envgen_release(t_envgen *x, int ac, t_atom *av){
     x->x_n_lines = n_lines; // define number of line segments
     t_envgen_line *line_point = x->x_lines;
     while(n_lines--){
-        line_point->delta = av++->a_w.w_float;
-        if(line_point->delta < 0)
-            line_point->delta = 0;
+        line_point->ms = av++->a_w.w_float;
+        if(line_point->ms < 0)
+            line_point->ms = 0;
         line_point->target = av++->a_w.w_float * x->x_gain;
         line_point++;
     }
