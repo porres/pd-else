@@ -10,38 +10,47 @@ typedef struct _rescale{
     t_object    x_obj;
     t_outlet   *x_outlet;
     t_atom     *x_at;
-    t_int       x_bytes;
-    t_float     x_f;
-    t_float     x_minin;
-    t_float     x_maxin;
-    t_float     x_minout;
-    t_float     x_maxout;
-    t_float     x_exp;
-    t_int       x_clip;
+    int         x_bytes;
+    int         x_clip;
+    float       x_f;
+    float       x_minin;
+    float       x_maxin;
+    float       x_minout;
+    float       x_maxout;
+    float       x_exp;
 }t_rescale;
 
 void rescale_clip(t_rescale *x, t_floatarg f){
     x->x_clip = f != 0;
 }
 
-static t_float convert(t_rescale *x, t_float f){
-    t_float minin = x->x_minin;
-    t_float minout = x->x_minout;
-    t_float maxout = x->x_maxout;
-    t_float rangein = x->x_maxin - minin;
-    t_float rangeout = x->x_maxout - minout;
-    t_float exp = x->x_exp;
+static float convert(t_rescale *x, float f){
+    float minin = x->x_minin;
+    float minout = x->x_minout;
+    float rangein = x->x_maxin - minin;
+    float rangeout = x->x_maxout - minout;
+    float exp = x->x_exp;
     if(x->x_clip){
         if(f < minin)
             f = minin;
         if(f > x->x_maxin)
-            f = x->x_maxin;
+            f = x->x_maxout;
     }
-    t_float r = (f-minin) == 0 ? minout :
-        (f-minin)/rangein > 0 ?
-        minout + rangeout * pow((f-minin)/rangein, exp) :
-        minout + rangeout * -pow((minin-f)/rangein, exp);
-    return r;
+    if(f == minin)
+        return(minout);
+    if(f == x->x_maxin)
+        return(x->x_maxout);
+    if(fabs(exp) == 1) // linear
+        return(minout + rangeout * (f-minin)/rangein);
+    else if(exp >= 0){ // exponential
+        float p = (f-minin)/rangein;
+        return(minout + rangeout * copysign(pow(fabs(p), exp), p));
+    }
+    else{ // negative exponential
+        exp = 1./fabs(exp);
+        float p = 1 - ((f-minin)/rangein);
+        return(minout + (rangeout * (1 - copysign(pow(fabs(p), exp), p))));
+    }
 }
 
 static void rescale_bang(t_rescale *x){
@@ -53,8 +62,7 @@ static void rescale_float(t_rescale *x, t_floatarg f){
 }
 
 static void rescale_list(t_rescale *x, t_symbol *s, int ac, t_atom *av){
-    t_symbol *dummy = s;
-    dummy = NULL; // avoid warning
+    s = NULL; // avoid warning
     int old_bytes = x->x_bytes, i = 0;
     x->x_bytes = ac*sizeof(t_atom);
     x->x_at = (t_atom *)t_resizebytes(x->x_at, old_bytes, x->x_bytes);
@@ -63,12 +71,12 @@ static void rescale_list(t_rescale *x, t_symbol *s, int ac, t_atom *av){
     outlet_list(x->x_outlet, 0, ac, x->x_at);
 }
 
-static void rescale_set(t_rescale *x, t_float f){
+static void rescale_set(t_rescale *x, t_floatarg f){
     x->x_f = f;
 }
 
 static void rescale_exp(t_rescale *x, t_floatarg f){
-    x->x_exp = f < 0. ? 0. : f;
+    x->x_exp = f;
 }
 
 static void rescale_free(t_rescale *x){
@@ -77,7 +85,7 @@ static void rescale_free(t_rescale *x){
 
 static void *rescale_new(t_symbol *s, int ac, t_atom *av){
     t_rescale *x = (t_rescale *)pd_new(rescale_class);
-    t_symbol *sym = s;
+    t_symbol *sym = s; // avoid warning
     x->x_minin = 0;
     x->x_maxin = 127;
     x->x_minout = 0;
@@ -94,7 +102,7 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
         if(numargs <= 3){
             while(ac){
                 if(av->a_type == A_FLOAT && !flag){
-                    t_float argval = atom_getfloatarg(0, ac, av);
+                    float argval = atom_getfloatarg(0, ac, av);
                     switch(argnum){
                         case 0:
                             x->x_minout = argval;
@@ -127,7 +135,7 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
         else{ // numargs = 4 || 5
             while(ac){
                 if(av->a_type == A_FLOAT && !flag){
-                    t_float argval = atom_getfloatarg(0, ac, av);
+                    float argval = atom_getfloatarg(0, ac, av);
                     switch(argnum){
                         case 0:
                             x->x_minin = argval;
@@ -142,7 +150,7 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
                             x->x_maxout = argval;
                             break;
                         case 4:
-                            x->x_exp = argval < 0 ? 0 : argval;
+                            x->x_exp = argval;
                             break;
                         default:
                             break;
