@@ -1,4 +1,4 @@
-#N canvas 653 56 567 602 10;
+#N canvas 737 42 567 602 10;
 #X obj 4 308 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -10,7 +10,7 @@
 #X obj 94 316 cnv 17 3 92 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 116 154 hsl 180 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12700 1;
+-1 -1 0 1;
 #X obj 222 181 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 172 337 bang;
@@ -25,7 +25,7 @@
 #X connect 3 0 1 0;
 #X restore 490 284 pd lists;
 #X obj 113 182 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 90.1061 256;
+-228856 -1 -1 0 256;
 #X obj 2 3 cnv 15 301 42 empty empty rescale 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -108,9 +108,9 @@ rightmost inlets. But if you give 4 or more arguments \, [rescale]
 is initialized with more inlets so you can set all range parameters.
 , f 74;
 #X obj 51 371 hsl 180 15 -127 127 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 7600 1;
+-228856 -1 -1 0 1;
 #X obj 48 399 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -19.1564 256;
+-228856 -1 -1 0 256;
 #X obj 159 416 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 233 417 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -119,20 +119,20 @@ is initialized with more inlets so you can set all range parameters.
 #X text 232 397 max-out;
 #X obj 86 443 else/rescale -10 10 -clip;
 #X obj 86 477 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -10 256;
+-228856 -1 -1 0 256;
 #X msg 312 407 clip \$1;
 #X obj 312 382 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 383 384 hsl 180 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 1400 1;
+-1 -1 0 1;
 #X obj 380 412 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -1.68715 256;
+-228856 -1 -1 0 256;
 #X obj 380 495 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -16.8715 256;
+-228856 -1 -1 0 256;
 #X obj 380 457 else/rescale -1 1 -10 10;
 #X floatatom 639 173 0 1 1.2 0 - - -;
 #X obj 642 149 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 6350 1;
+-1 -1 1800 1;
 #X obj 635 396 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
 -66577 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -165,10 +165,6 @@ is initialized with more inlets so you can set all range parameters.
 #X obj 639 256 trigger float float;
 #X obj 639 197 trigger bang float, f 23;
 #X obj 639 297 else/rescale;
-#X text 545 20 The third or fifth argument or the "exp" message specify
-the exponential factor (must be greater than 0) where 1 gives you linear
-scaling (no exponential). It's like raising to the power of the given
-exponential \, try it below (with values from 0.1 to 10)., f 56;
 #X msg 775 261 exp \$1;
 #X obj 639 103 loadbang;
 #X msg 639 125 1;
@@ -176,6 +172,10 @@ exponential \, try it below (with values from 0.1 to 10)., f 56;
 the output range. By default \, [rescale] will not clip the values
 to the output range but keep scaling outside that boundary with the
 same conversion parameters., f 71;
+#X text 545 20 The third or fifth argument or the "exp" message specify
+the exponential factor. For positive values \, it's like raising to
+the power of the given exponential \, try it below (with values from
+0.1 to 10)., f 56;
 #X connect 0 0 1 0;
 #X connect 1 0 4 0;
 #X connect 2 0 4 1;
@@ -204,12 +204,12 @@ same conversion parameters., f 71;
 #X connect 44 0 46 0;
 #X connect 44 1 42 1;
 #X connect 45 0 43 0;
-#X connect 45 1 48 0;
+#X connect 45 1 47 0;
 #X connect 46 0 42 0;
-#X connect 48 0 46 0;
-#X connect 49 0 50 0;
-#X connect 50 0 36 0;
-#X restore 466 243 pd arguments;
+#X connect 47 0 46 0;
+#X connect 48 0 49 0;
+#X connect 49 0 36 0;
+#X restore 466 223 pd arguments;
 #X obj 93 418 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
 #X text 166 418 float;
@@ -245,6 +245,97 @@ output values;
 #X text 198 549 -clip: sets clipping on (default off);
 #X text 222 390 - <1> turns clipping on \, <0> off;
 #X text 124 392 clip <float>;
+#N canvas 579 93 575 556 negative-exponential 0;
+#X floatatom 312 122 0 1 1.2 0 - - -;
+#X obj 315 98 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 69 365 cnv 15 198 138 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-positive 128 float 0;
+#X coords 0 1 127 0 200 140 1 0 0;
+#X restore 68 364 graph;
+#X text 323 98 exponential factor;
+#X text 55 494 0;
+#X text 53 362 1;
+#N canvas 187 131 322 252 loop 0;
+#X obj 109 38 inlet;
+#X msg 109 96 128;
+#X obj 160 155 + 1;
+#X msg 208 96 0;
+#X obj 109 120 until;
+#X obj 109 70 trigger bang bang;
+#X obj 109 152 float;
+#X obj 109 185 outlet;
+#X connect 0 0 5 0;
+#X connect 1 0 4 0;
+#X connect 2 0 6 1;
+#X connect 3 0 6 1;
+#X connect 4 0 6 0;
+#X connect 5 0 1 0;
+#X connect 5 1 3 0;
+#X connect 6 0 2 0;
+#X connect 6 0 7 0;
+#X restore 110 205 pd loop;
+#X obj 110 232 trigger float float;
+#X obj 110 173 trigger bang float, f 23;
+#X obj 110 273 else/rescale;
+#X msg 245 237 exp \$1;
+#X obj 329 365 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
+-66577 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-negative 128 float 0;
+#X coords 0 1 127 0 200 140 1 0 0;
+#X restore 328 364 graph;
+#X text 315 494 0;
+#X text 313 362 1;
+#N canvas 187 131 322 252 loop 0;
+#X obj 109 38 inlet;
+#X msg 109 96 128;
+#X obj 160 155 + 1;
+#X msg 208 96 0;
+#X obj 109 120 until;
+#X obj 109 70 trigger bang bang;
+#X obj 109 152 float;
+#X obj 109 185 outlet;
+#X connect 0 0 5 0;
+#X connect 1 0 4 0;
+#X connect 2 0 6 1;
+#X connect 3 0 6 1;
+#X connect 4 0 6 0;
+#X connect 5 0 1 0;
+#X connect 5 1 3 0;
+#X connect 6 0 2 0;
+#X connect 6 0 7 0;
+#X restore 312 210 pd loop;
+#X obj 312 237 trigger float float;
+#X obj 312 178 trigger bang float, f 23;
+#X obj 312 278 else/rescale;
+#X msg 447 242 exp \$1;
+#X obj 312 155 * -1;
+#X obj 110 302 tabwrite \$0-positive;
+#X obj 312 307 tabwrite \$0-negative;
+#X text 102 30 Negative exponentials are allowed. In this casde \,
+it's like the curve shape has been mirrored in reverse.;
+#X connect 0 0 9 0;
+#X connect 0 0 21 0;
+#X connect 1 0 0 0;
+#X connect 7 0 8 0;
+#X connect 8 0 10 0;
+#X connect 8 1 22 1;
+#X connect 9 0 7 0;
+#X connect 9 1 11 0;
+#X connect 10 0 22 0;
+#X connect 11 0 10 0;
+#X connect 16 0 17 0;
+#X connect 17 0 19 0;
+#X connect 17 1 23 1;
+#X connect 18 0 16 0;
+#X connect 18 1 20 0;
+#X connect 19 0 23 0;
+#X connect 20 0 19 0;
+#X connect 21 0 18 0;
+#X restore 400 243 pd negative-exponential;
 #X connect 5 0 11 0;
 #X connect 6 0 35 0;
 #X connect 11 0 35 0;
