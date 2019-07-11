@@ -470,22 +470,17 @@ static void function_save(t_gobj *z, t_binbuf *b){
 static void function_bang(t_function *x){
     int ac = x->x_n_states * 2 + 1;
     t_atom at[ac];
-    // get 1st
-    SETFLOAT(at, x->x_min_point = x->x_max_point = x->x_points[x->x_state = 0]);
-    int i = 1;
-    // get rest
-    while(i < ac){
+    SETFLOAT(at, x->x_min_point = x->x_max_point = x->x_points[x->x_state = 0]); // get 1st
+    for(int i = 1; i < ac; i++){ // get the rest
         float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
         SETFLOAT(at+i, dur); // duration
-        i++;
-        x->x_state++;
+        i++, x->x_state++;
         float point = x->x_points[x->x_state];
         if(point < x->x_min_point)
             x->x_min_point = point;
         if(point > x->x_max_point)
             x->x_max_point = point;
         SETFLOAT(at+i, point);
-        i++;
     }
     outlet_list(x->x_obj.ob_outlet, &s_list, ac, at);
     if(x->x_send_sym != &s_ && x->x_send_sym->s_thing)
@@ -535,10 +530,11 @@ static void function_float(t_function *x, t_floatarg f){
 }
 
 static float function_interpolate(t_function* x, float f){
-    return(x->x_points[x->x_state-1] +
-           (f - x->x_duration[x->x_state-1]) *
-           (x->x_points[x->x_state] - x->x_points[x->x_state-1]) /
-           (x->x_duration[x->x_state] - x->x_duration[x->x_state-1]));
+    float point = x->x_points[x->x_state];
+    float point_m1 = x->x_points[x->x_state-1];
+    float dur = x->x_duration[x->x_state];
+    float dur_m1 = x->x_duration[x->x_state-1];
+    return(point_m1 + (f-dur_m1) * (point-point_m1)/(dur-dur_m1));
 }
 
 static void function_i(t_function *x, t_floatarg f){
@@ -804,14 +800,13 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     SETFLOAT(a+1, 1000);
     SETFLOAT(a+2, 0);
 ////////////////////////////////// GET ARGS ///////////////////////////////////////////
-    int v;
     if(ac && av->a_type == A_FLOAT){ // 1ST Width
-        v = (int)av->a_w.w_float;
-        x->x_width = v < 40 ? 40 : v; // min width is 40
+        int w = (int)av->a_w.w_float;
+        x->x_width = w < 40 ? 40 : w; // min width is 40
         ac--; av++;
         if(ac && av->a_type == A_FLOAT){ // 2ND Height
-            v = (int)av->a_w.w_float;
-            x->x_height = v < 20 ? 20 : v; // min height is 20
+            int h = (int)av->a_w.w_float;
+            x->x_height = h < 20 ? 20 : h; // min height is 20
             ac--; av++;
             if(ac && av->a_type == A_SYMBOL){ // 3RD Send
                 if(av->a_w.w_symbol == gensym("empty")){ //  sets empty symbol
@@ -866,8 +861,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                                                                         int i = 0;
                                                                         int j = ac;
                                                                         while(j && (av+i)->a_type == A_FLOAT){
-                                                                            i++;
-                                                                            j--;
+                                                                            i++; j--;
                                                                         }
                                                                         if(i % 2 == 0)
                                                                             pd_error(x, "[function]: needs an odd list of floats");
@@ -879,8 +873,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                                                                             envset = 1;
                                                                             function_set_beeakpoints(x, i, av);
                                                                         }
-                                                                        av += i;
-                                                                        ac -= i;
+                                                                        av+=i; ac-=i;
                                                                     }
                                                                 }
                                                             }
