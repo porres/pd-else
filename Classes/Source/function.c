@@ -1,7 +1,5 @@
 
-// memory realloc may crash but pointer seems ok! 'STATES' prevents it
-#define STATES  100   // Remove this, make it work better...
-
+#define MAX_SIZE 1024
 #define BORDERWIDTH 3
 #define IOHEIGHT 1
 
@@ -21,6 +19,8 @@ typedef struct _function{
     int             x_rcv_set;
     int             x_snd_set;
     int             x_flag;
+    int             x_s_flag;
+    int             x_r_flag;
     float          *x_points;
     float          *x_duration;
     float           x_total_duration;
@@ -32,7 +32,6 @@ typedef struct _function{
     float           x_max;
     float           x_min_point;
     float           x_max_point;
-    int             x_states;       // bug ???
     unsigned char   x_fgcolor[3];
     unsigned char   x_bgcolor[3];
     int             x_width;
@@ -45,103 +44,9 @@ typedef struct _function{
     float           x_pointer_y;
 }t_function;
 
-// REMOVE THIS!!! (debug only)...
-static void function_print(t_function* x){
-    post("---===### function settings ###===---");
-    post("x_n_states:     %d",   x->x_n_states);
-    post("total duration:   %.2f", x->x_total_duration);
-    post("min:              %.2f", x->x_min);
-    post("max:              %.2f", x->x_max);
-    post("args:");
-    int i = 0;
-    post("%d = %f", i, x->x_points[x->x_state = 0]);
-    i++;
-    int ac = x->x_n_states * 2 + 1;
-    while(i < ac){
-        float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
-        post("%d = %f", i, dur);
-        i++;
-        x->x_state++;
-        post("%d = %f", i, x->x_points[x->x_state]);
-        i++;
-    }
-    post("---===### function settings ###===---");
-}
-
-////// Output ///////////////////////////////////////////////////////////
-static void function_output(t_function *x){
-    int ac = x->x_n_states * 2 + 1;
-    t_atom at[ac];
-    // get 1st
-    SETFLOAT(at, x->x_min_point = x->x_max_point = x->x_points[x->x_state = 0]);
-    int i = 1;
-    // get rest
-    while(i < ac){
-        float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
-        SETFLOAT(at+i, dur); // duration
-        i++;
-        x->x_state++;
-        float point = x->x_points[x->x_state];
-        if(point < x->x_min_point)
-            x->x_min_point = point;
-        if(point > x->x_max_point)
-            x->x_max_point = point;
-        SETFLOAT(at+i, point);
-        i++;
-    }
-    outlet_list(x->x_obj.ob_outlet, &s_list, ac, at);
-    if(x->x_send_sym != &s_ && x->x_send_sym->s_thing)
-        pd_list(x->x_send_sym->s_thing, &s_list, ac, at);
-}
+static void function_bang(t_function *x);
 
 // GUI FUNCTIONS //////////////////////////////////////////////////////////////////////////////
-static void function_set_new_size(t_function* x,int ns){
-    if(ns > x->x_states){
-        int newargs = ns*sizeof(float);
-        x->x_duration = resizebytes(x->x_duration, x->x_states*sizeof(float), newargs);
-        x->x_points = resizebytes(x->x_points, x->x_states*sizeof(float), newargs);
-        x->x_states = ns;
-    }
-}
-
-static void function_generate(t_function *x, int ac, t_atom* av){
-    float tdur = 0;
-    x->x_duration[0] = 0;
-    x->x_n_states = ac >> 1;
-    function_set_new_size(x, ac >> 1);
-    float* dur = x->x_duration;
-    float* val = x->x_points;
-// get 1st value
-    *val = atom_getfloat(av++);
-    x->x_max_point = x->x_min_point = *val;
-    *dur = 0.0;
-    dur++;
-    ac--;
-// get others
-    while(ac--){
-        tdur += atom_getfloat(av++);
-        *dur++ = tdur;
-        if(ac--){
-            *++val = atom_getfloat(av++);
-            if(*val > x->x_max_point)
-                x->x_max_point = *val;
-            if(*val < x->x_min_point)
-                x->x_min_point = *val;
-        }
-        else{
-            *++val = 0; 
-            if(*val > x->x_max_point)
-                x->x_max_point = *val;
-            if(*val < x->x_min_point)
-                x->x_min_point = *val;
-        }
-    }
-    if(x->x_min_point < x->x_min)
-        x->x_min = x->x_min_point;
-    if(x->x_max_point > x->x_max)
-        x->x_max = x->x_max_point;
-}
-
 static void draw_inlet_and_outlet(t_function *x, t_glist *glist, int firsttime){
     int x_onset, y_onset;
     int xpos = text_xpix(&x->x_obj, glist);
@@ -179,56 +84,7 @@ static void draw_inlet_and_outlet(t_function *x, t_glist *glist, int firsttime){
     }
 }
 
-static int function_x_next_dot(t_function *x, struct _glist *glist, int xpos,int ypos){
-    float xscale, yscale;
-    int dxpos, dypos;
-    float minval = 100000.0;
-    float tval;
-    int i;
-    int insertpos = -1;
-    float ySize = x->x_max - x->x_min;
-    float yBase =  x->x_min;
-    if(xpos >text_xpix(&x->x_obj, glist) + x->x_width)
-        xpos = text_xpix(&x->x_obj, glist) + x->x_width;
-    xscale = x->x_width/x->x_duration[x->x_n_states];
-    yscale = x->x_height;
-    dxpos = text_xpix(&x->x_obj, glist); // + BORDERWIDTH; // why not ???
-    dypos = text_ypix(&x->x_obj, glist) + BORDERWIDTH;
-    for(i = 0; i <= x->x_n_states; i++){
-        float dx2 = (dxpos + (x->x_duration[i] * xscale)) - xpos;
-        float dy2 = (dypos + yscale - ((x->x_points[i] - yBase) / ySize * yscale)) - ypos;
-        dx2 *= dx2;
-        dy2 *= dy2;
-        tval = sqrt(dx2+dy2);
-        if(tval <= minval){
-            minval = tval;
-            insertpos = i;
-        }
-    }
-    if(minval > 8 && insertpos >= 0){ // decide if we want to make a new one
-        while (((dxpos + (x->x_duration[insertpos] * xscale)) - xpos) < 0)
-            insertpos++;
-        while (((dxpos + (x->x_duration[insertpos-1] * xscale)) - xpos) >0)
-            insertpos--;
-        if(x->x_n_states + 1 >= x->x_states)
-            function_set_new_size(x, x->x_states + 1);
-        for(i = x->x_n_states; i >= insertpos; i--){
-            x->x_duration[i + 1] = x->x_duration[i];
-            x->x_points[i + 1] = x->x_points[i];
-        }
-        x->x_duration[insertpos] = (float)(xpos-dxpos)/x->x_width*x->x_duration[x->x_n_states++];
-        x->x_pointer_x = xpos;
-        x->x_pointer_y = ypos;
-    }
-    else{
-        x->x_pointer_x = text_xpix(&x->x_obj,glist) + x->x_duration[insertpos]*x->x_width/x->x_duration[x->x_n_states];
-        x->x_pointer_y = ypos;
-    }
-    x->x_grabbed = insertpos;
-    return insertpos;
-}
-
-static void function_dots_create(t_function *x, t_glist *glist){
+static void function_create_dots(t_function *x, t_glist *glist){
     float xscale, yscale;
     int xpos, ypos;
     float ySize = x->x_max - x->x_min;
@@ -261,11 +117,6 @@ static void function_delete_dots(t_function *x, t_glist *glist){
         sys_vgui(".x%lx.c delete %lxD%d\n", glist_getcanvas(glist), x, i);
 }
 
-static void function_update_dots(t_function *x, t_glist *glist){
-    function_delete_dots(x, glist);
-    function_dots_create(x, glist); // LATER only create new dots if necessary
-}
-
 static void function_create(t_function *x, t_glist *glist){
     float xscale, yscale;
     int xpos, ypos;
@@ -294,7 +145,7 @@ static void function_create(t_function *x, t_glist *glist){
     char fgcolor[20];
     sprintf(fgcolor, "#%2.2x%2.2x%2.2x", x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
     sys_vgui(" -tags %lxP -fill %s -width %d\n", x, fgcolor, 2);
-    function_dots_create(x, glist);
+    function_create_dots(x, glist);
 }
 
 static void function_update(t_function *x, t_glist *glist){
@@ -315,8 +166,8 @@ static void function_update(t_function *x, t_glist *glist){
         sys_vgui(" %d %d ",(int)(xpos + x->x_duration[i]*xscale),
                  (int)(ypos + x->x_height - (x->x_points[i] - yBase) / ySize*yscale));
     sys_vgui("\n");
-    function_update_dots(x, glist);
-    draw_inlet_and_outlet(x, glist, 0); // again ???
+    function_delete_dots(x, glist);
+    function_create_dots(x, glist);
 }
 
 static void function_drawme(t_function *x, t_glist *glist, int firsttime){
@@ -412,7 +263,7 @@ static void function_followpointer(t_function* x,t_glist* glist){
     else if(grabbed > 1.0)
         grabbed = 1.0;
     x->x_points[x->x_grabbed] = grabbed * ySize + yBase;
-    function_output(x);
+    function_bang(x);
 }
 
 static void function_motion(t_function *x, t_floatarg dx, t_floatarg dy){
@@ -434,7 +285,7 @@ static void function_motion(t_function *x, t_floatarg dx, t_floatarg dy){
 }
 
 static void function_key(t_function *x, t_floatarg f){
-    if(f == 8.0 && x->x_grabbed < x->x_n_states &&  x->x_grabbed >0){
+    if(f == 8.0 && x->x_grabbed > 0 && x->x_grabbed < x->x_n_states){
         for(int i = x->x_grabbed; i <= x->x_n_states; i++){
             x->x_duration[i] = x->x_duration[i+1];
             x->x_points[i] = x->x_points[i+1];
@@ -442,20 +293,64 @@ static void function_key(t_function *x, t_floatarg f){
         x->x_n_states--;
         x->x_grabbed--;
         function_update(x, x->x_glist);
-        function_output(x);
+        function_bang(x);
     }
+}
+
+static void function_next_dot(t_function *x, struct _glist *glist, int xpos,int ypos){
+    float xscale, yscale;
+    int dxpos, dypos, i, insertpos = -1;
+    float tval, minval = 1000000000000.0; // stupidly high number
+    float ySize = x->x_max - x->x_min;
+    float yBase =  x->x_min;
+    if(xpos > text_xpix(&x->x_obj, glist) + x->x_width)
+        xpos = text_xpix(&x->x_obj, glist) + x->x_width;
+    xscale = x->x_width / x->x_duration[x->x_n_states];
+    yscale = x->x_height;
+    dxpos = text_xpix(&x->x_obj, glist); // + BORDERWIDTH; // why not ???
+    dypos = text_ypix(&x->x_obj, glist) + BORDERWIDTH;
+    for(i = 0; i <= x->x_n_states; i++){
+        float dx2 = (dxpos + (x->x_duration[i] * xscale)) - xpos;
+        float dy2 = (dypos + yscale - ((x->x_points[i] - yBase) / ySize * yscale)) - ypos;
+        tval = sqrt(dx2*dx2 + dy2*dy2);
+        if(tval <= minval){
+            minval = tval;
+            insertpos = i;
+        }
+    }
+    if(minval > 8 && insertpos >= 0){ // decide if we want to make a new one
+        while(((dxpos + (x->x_duration[insertpos] * xscale)) - xpos) < 0)
+            insertpos++;
+        while (((dxpos + (x->x_duration[insertpos-1] * xscale)) - xpos) >0)
+            insertpos--;
+        for(i = x->x_n_states; i >= insertpos; i--){
+            x->x_duration[i + 1] = x->x_duration[i];
+            x->x_points[i + 1] = x->x_points[i];
+        }
+        x->x_duration[insertpos] = (float)(xpos-dxpos)/x->x_width*x->x_duration[x->x_n_states++];
+        x->x_pointer_x = xpos;
+        x->x_pointer_y = ypos;
+    }
+    else{
+        x->x_pointer_x = text_xpix(&x->x_obj,glist) + x->x_duration[insertpos]*x->x_width/x->x_duration[x->x_n_states];
+        x->x_pointer_y = ypos;
+    }
+    x->x_grabbed = insertpos;
 }
 
 static int function_newclick(t_function *x, struct _glist *glist,
             int xpos, int ypos, int shift, int alt, int dbl, int doit){
     alt = dbl = 0; // remove warning
-// check if user wants to resize
-    float wxpos = text_xpix(&x->x_obj, glist);
-    float wypos = text_ypix(&x->x_obj, glist);
     if(doit){
+        if(x->x_n_states + 1 > MAX_SIZE){
+            pd_error(x, "[function]: too many lines, maximum is %d", MAX_SIZE);
+            return(0); // useless/unused
+        }
+        float wxpos = text_xpix(&x->x_obj, glist);
+        float wypos = text_ypix(&x->x_obj, glist);
         if((xpos >= wxpos) && (xpos <= wxpos + x->x_width) \
-           && (ypos >= wypos ) && (ypos <= wypos + x->x_height)){
-            function_x_next_dot(x, glist, xpos, ypos);
+           && (ypos >= wypos) && (ypos <= wypos + x->x_height)){
+            function_next_dot(x, glist, xpos, ypos);
             glist_grab(x->x_glist, &x->x_obj.te_g, (t_glistmotionfn) function_motion,
                 (t_glistkeyfn) function_key, xpos, ypos);
             x->x_shift = shift;
@@ -463,7 +358,7 @@ static int function_newclick(t_function *x, struct _glist *glist,
             function_update(x, glist);
         }
     }
-    return(1);
+    return(1); // useless/unused
 }
 
 static void function_save(t_gobj *z, t_binbuf *b){
@@ -474,18 +369,20 @@ static void function_save(t_gobj *z, t_binbuf *b){
     char buf[80];
     if(!x->x_snd_set){ // no send set, search arguments
         if(n_args > 0){ // we have arguments, let's search them
-            if(x->x_flag){ // search for receive name in flags
-                for(i = 0;  i < n_args; i++){
-                    atom_string(binbuf_getvec(bb) + i, buf, 80);
-                    if(!strcmp(buf, "-send")){
-                        i++;
+            if(x->x_flag){ // we got flags
+                if(x->x_s_flag){ // we got a search flag, let's get it
+                    for(i = 0;  i < n_args; i++){
                         atom_string(binbuf_getvec(bb) + i, buf, 80);
-                        x->x_snd_unexpanded = gensym(buf);
-                        break;
+                        if(!strcmp(buf, "-send")){
+                            i++;
+                            atom_string(binbuf_getvec(bb) + i, buf, 80);
+                            x->x_snd_unexpanded = gensym(buf);
+                            break;
+                        }
                     }
                 }
             }
-            else{ // search receive argument
+            else{ // we got no flags, let's search for argument
                 int arg_n = 3; // receive argument number
                 if(n_args >= arg_n){ // we have it, get it
                     atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
@@ -494,23 +391,25 @@ static void function_save(t_gobj *z, t_binbuf *b){
             }
         }
     }
-    if(x->x_snd_unexpanded == &s_) // if nothing found, set to "empty"
+    if(x->x_snd_unexpanded == &s_) // if no symbol, set to "empty"
         x->x_snd_unexpanded = gensym("empty");
     if(!x->x_rcv_set){ // no receive set, search arguments
         if(n_args > 0){ // we have arguments, let's search them
             if(x->x_flag){ // search for receive name in flags
-                for(i = 0;  i < n_args; i++){
-                    atom_string(binbuf_getvec(bb) + i, buf, 80);
-                    if(!strcmp(buf, "-receive")){
-                        i++;
+                if(x->x_r_flag){ // we got a receive flag, let's get it
+                    for(i = 0;  i < n_args; i++){
                         atom_string(binbuf_getvec(bb) + i, buf, 80);
-                        post("buf = %s", buf);
-                        x->x_rcv_unexpanded = gensym(buf);
-                        break;
+                        if(!strcmp(buf, "-receive")){
+                            i++;
+                            atom_string(binbuf_getvec(bb) + i, buf, 80);
+                            post("buf = %s", buf);
+                            x->x_rcv_unexpanded = gensym(buf);
+                            break;
+                        }
                     }
                 }
             }
-            else{ // search receive argument
+            else{ // we got no flags, let's search for argument
                 int arg_n = 4; // receive argument number
                 if(n_args >= arg_n){ // we have it, get it
                     atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
@@ -519,7 +418,7 @@ static void function_save(t_gobj *z, t_binbuf *b){
             }
         }
     }
-    if(x->x_rcv_unexpanded == &s_) // if nothing found, set to "empty"
+    if(x->x_rcv_unexpanded == &s_) // if no symbol, set to "empty"
         x->x_rcv_unexpanded = gensym("empty");
     binbuf_addv(b,
                 "ssiis",
@@ -567,7 +466,31 @@ static void function_save(t_gobj *z, t_binbuf *b){
     binbuf_addv(b, ";");
 }
 
-///////////////////// METHODS /////////////////////
+///////////////////// METHODS /////////////////////////////////////////////////////////////
+static void function_bang(t_function *x){
+    int ac = x->x_n_states * 2 + 1;
+    t_atom at[ac];
+    // get 1st
+    SETFLOAT(at, x->x_min_point = x->x_max_point = x->x_points[x->x_state = 0]);
+    int i = 1;
+    // get rest
+    while(i < ac){
+        float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
+        SETFLOAT(at+i, dur); // duration
+        i++;
+        x->x_state++;
+        float point = x->x_points[x->x_state];
+        if(point < x->x_min_point)
+            x->x_min_point = point;
+        if(point > x->x_max_point)
+            x->x_max_point = point;
+        SETFLOAT(at+i, point);
+        i++;
+    }
+    outlet_list(x->x_obj.ob_outlet, &s_list, ac, at);
+    if(x->x_send_sym != &s_ && x->x_send_sym->s_thing)
+        pd_list(x->x_send_sym->s_thing, &s_list, ac, at);
+}
 
 static void function_duration(t_function* x, t_floatarg dur){
     if(dur < 1){
@@ -611,6 +534,13 @@ static void function_float(t_function *x, t_floatarg f){
         pd_float(x->x_send_sym->s_thing, val);
 }
 
+static float function_interpolate(t_function* x, float f){
+    return(x->x_points[x->x_state-1] +
+           (f - x->x_duration[x->x_state-1]) *
+           (x->x_points[x->x_state] - x->x_points[x->x_state-1]) /
+           (x->x_duration[x->x_state] - x->x_duration[x->x_state-1]));
+}
+
 static void function_i(t_function *x, t_floatarg f){
     float val;
     if(f <= 0){
@@ -633,23 +563,61 @@ static void function_i(t_function *x, t_floatarg f){
         x->x_state--;
     while((x->x_state <  x->x_n_states) && (x->x_duration[x->x_state] < f))
         x->x_state++;
-    val = x->x_points[x->x_state-1] + (f - x->x_duration[x->x_state-1])
-    * (x->x_points[x->x_state] - x->x_points[x->x_state-1])
-    / (x->x_duration[x->x_state] - x->x_duration[x->x_state-1]);
+    val = function_interpolate(x, f);
     outlet_float(x->x_obj.ob_outlet,val);
     if(x->x_send_sym != &s_)
         pd_float(x->x_send_sym->s_thing, val);
 }
 
+static void function_set_beeakpoints(t_function *x, int ac, t_atom* av){
+    float tdur = 0;
+    x->x_duration[0] = 0;
+    x->x_n_states = ac >> 1;
+    float* dur = x->x_duration;
+    float* val = x->x_points;
+    // get 1st value
+    *val = atom_getfloat(av++);
+    x->x_max_point = x->x_min_point = *val;
+    *dur = 0.0;
+    dur++;
+    ac--;
+    // get others
+    while(ac--){
+        tdur += atom_getfloat(av++);
+        *dur++ = tdur;
+        if(ac--){
+            *++val = atom_getfloat(av++);
+            if(*val > x->x_max_point)
+                x->x_max_point = *val;
+            if(*val < x->x_min_point)
+                x->x_min_point = *val;
+        }
+        else{
+            *++val = 0;
+            if(*val > x->x_max_point)
+                x->x_max_point = *val;
+            if(*val < x->x_min_point)
+                x->x_min_point = *val;
+        }
+    }
+    if(x->x_min_point < x->x_min)
+        x->x_min = x->x_min_point;
+    if(x->x_max_point > x->x_max)
+        x->x_max = x->x_max_point;
+}
+
 static void function_set(t_function *x, t_symbol* s, int ac,t_atom *av){
-    t_symbol *dummy = s;
-    dummy = NULL;
+    if((ac >> 1) > MAX_SIZE){
+        pd_error(x, "[function]: too many lines, maximum is %d", MAX_SIZE);
+        return;
+    }
+    s = NULL;
     if(ac > 2 && ac % 2){
-        function_generate(x, ac, av);
+        function_set_beeakpoints(x, ac, av);
         if(glist_isvisible(x->x_glist))
             function_drawme(x, x->x_glist, 0);
     }
-    else if(ac == 2){
+    else if(ac == 2){ // set a single point value
         int i = (int)av->a_w.w_float;
         av++;
         if(i < 0)
@@ -670,32 +638,34 @@ static void function_set(t_function *x, t_symbol* s, int ac,t_atom *av){
 }
 
 static void function_list(t_function *x, t_symbol* s, int ac,t_atom *av){
-    t_symbol *dummy = s;
-    dummy = NULL;
+    if((ac >> 1) > MAX_SIZE){
+        pd_error(x, "[function]: too many lines, maximum is %d", MAX_SIZE);
+        return;
+    }
+    s = NULL;
     if(ac > 2 && ac % 2){
-        function_generate(x, ac, av);
+        function_set_beeakpoints(x, ac, av);
         if(glist_isvisible(x->x_glist))
             function_drawme(x, x->x_glist, 0);
         outlet_list(x->x_obj.ob_outlet, &s_list, ac, av);
         if(x->x_send_sym != &s_ && x->x_send_sym->s_thing)
             pd_list(x->x_send_sym->s_thing, &s_list, ac, av);
     }
-    else if(ac == 2){
+    else if(ac == 2){ // set a single point value
         int i = (int)av->a_w.w_float;
         av++;
         if(i < 0)
             i = 0;
         if(i > x->x_n_states)
             i = x->x_n_states;
-        float v = av->a_w.w_float;
-        x->x_points[i] = v;
+        float v = x->x_points[i] = av->a_w.w_float;
         if(v < x->x_min_point)
             x->x_min_point = x->x_min = v;
         if(v > x->x_max_point)
             x->x_max_point = x->x_max = v;
         if(glist_isvisible(x->x_glist))
             function_drawme(x, x->x_glist, 0);
-        function_output(x);
+        function_bang(x);
     }
     else
         post("[function] wrong format for 'list' message");
@@ -799,7 +769,7 @@ static void function_bgcolor(t_function *x, t_floatarg r, t_floatarg g, t_floata
 
 static void function_loadbang(t_function *x, t_floatarg action){
     if(action == LB_LOAD && x->x_init)
-        function_output(x);
+        function_bang(x);
 }
 
 ///////////////////// NEW / FREE / SETUP /////////////////////
@@ -808,17 +778,16 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     outlet_new(&x->x_obj, &s_anything);
     t_symbol *cursym = s; // get rid of warning
     x->x_state = 0;
-    x->x_states = STATES;
     x->x_grabbed = 0;
     x->x_glist = (t_glist*) canvas_getcurrent();
-    x->x_points = getbytes(x->x_states*sizeof(float));
-    x->x_duration = getbytes(x->x_states*sizeof(float));
+    x->x_points = getbytes((MAX_SIZE+1)*sizeof(float));
+    x->x_duration = getbytes((MAX_SIZE+1)*sizeof(float));
     int envset = 0;
     float initialDuration = 0;
 // Default Args
     x->x_width = 200;
     x->x_height = 100;
-    x->x_rcv_set = x->x_snd_set = x->x_flag = 0;
+    x->x_rcv_set = x->x_snd_set = x->x_flag = x->x_s_flag = x->x_r_flag = 0;
     x->x_receive_sym = x->x_rcv_unexpanded = &s_;
     x->x_send_sym = x->x_snd_unexpanded = &s_;
     x->x_init = 0;
@@ -900,9 +869,15 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                                                                             i++;
                                                                             j--;
                                                                         }
-                                                                        if(i % 2){
+                                                                        if(i % 2 == 0)
+                                                                            pd_error(x, "[function]: needs an odd list of floats");
+                                                                        else if(i >> 1 > MAX_SIZE){
+                                                                            pd_error(x, "[function]: too many lines, maximum is %d", MAX_SIZE);
+                                                                            goto errstate;
+                                                                        }
+                                                                        else{
                                                                             envset = 1;
-                                                                            function_generate(x, i, av);
+                                                                            function_set_beeakpoints(x, i, av);
                                                                         }
                                                                         av += i;
                                                                         ac -= i;
@@ -928,6 +903,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             cursym = atom_getsymbolarg(0, ac, av);
             if(!strcmp(cursym->s_name, "-duration")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    x->x_flag = 1;
                     float curfloat = atom_getfloatarg(1, ac, av);
                     initialDuration = curfloat < 0 ? 0 : curfloat;
                     ac -= 2;
@@ -937,12 +913,14 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                     goto errstate;
             }
             else if(!strcmp(cursym->s_name, "-init")){
+                x->x_flag = 1;
                 x->x_init = 1;
                 ac--;
                 av++;
             }
             else if(!strcmp(cursym->s_name, "-width")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    x->x_flag = 1;
                     float curfloat = atom_getfloatarg(1, ac, av);
                     x->x_width = curfloat < 40 ? 40 : curfloat; // min width is 40
                     ac -= 2;
@@ -953,6 +931,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             }
             else if(!strcmp(cursym->s_name, "-height")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    x->x_flag = 1;
                     float curfloat = atom_getfloatarg(1, ac, av);
                     x->x_height = curfloat < 20 ? 20 : curfloat; // min width is 20
                     ac -= 2;
@@ -963,7 +942,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             }
             else if(!strcmp(cursym->s_name, "-send")){
                 if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
-                    x->x_flag = 1;
+                    x->x_flag = x->x_s_flag = 1;
                     x->x_send_sym = atom_getsymbolarg(1, ac, av);
                     ac -= 2;
                     av += 2;
@@ -973,7 +952,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             }
             else if(!strcmp(cursym->s_name, "-receive")){
                 if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
-                    x->x_flag = 1;
+                    x->x_flag = x->x_r_flag = 1;
                     pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = atom_getsymbolarg(1, ac, av));
                     ac -= 2;
                     av += 2;
@@ -983,6 +962,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             }
             else if(!strcmp(cursym->s_name, "-min")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    x->x_flag = 1;
                     x->x_min = atom_getfloatarg(1, ac, av);
                     ac -= 2;
                     av += 2;
@@ -992,6 +972,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             }
             else if(!strcmp(cursym->s_name, "-max")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    x->x_flag = 1;
                     x->x_max = atom_getfloatarg(1, ac, av);
                     ac -= 2;
                     av += 2;
@@ -1003,6 +984,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                 if(ac >= 4 && (av+1)->a_type == A_FLOAT
                    && (av+2)->a_type == A_FLOAT
                    && (av+3)->a_type == A_FLOAT){
+                    x->x_flag = 1;
                     int r = (int)atom_getfloatarg(1, ac, av);
                     int g = (int)atom_getfloatarg(2, ac, av);
                     int b = (int)atom_getfloatarg(3, ac, av);
@@ -1019,6 +1001,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                 if(ac >= 4 && (av+1)->a_type == A_FLOAT
                    && (av+2)->a_type == A_FLOAT
                    && (av+3)->a_type == A_FLOAT){
+                    x->x_flag = 1;
                     int r = (int)atom_getfloatarg(1, ac, av);
                     int g = (int)atom_getfloatarg(2, ac, av);
                     int b = (int)atom_getfloatarg(3, ac, av);
@@ -1035,6 +1018,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                 if(ac >= 4 && (av+1)->a_type == A_FLOAT
                    && (av+2)->a_type == A_FLOAT
                    && (av+3)->a_type == A_FLOAT){
+                    x->x_flag = 1;
                     ac--;
                     av++;
                     int i = 0;
@@ -1043,12 +1027,16 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                         i++;
                         j--;
                     }
-                    if(i % 2){
-                        envset = 1;
-                        function_generate(x, i, av);
-                    }
-                    else
+                    if(i % 2 == 0)
                         pd_error(x, "[function]: needs an odd list of floats");
+                    else if(i >> 1 > MAX_SIZE){
+                        pd_error(x, "[function]: too many lines, maximum is %d", MAX_SIZE);
+                        goto errstate;
+                    }
+                    else{
+                        envset = 1;
+                        function_set_beeakpoints(x, i, av);
+                    }
                     av += i;
                     ac -= i;
                 }
@@ -1062,7 +1050,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             goto errstate;
     };
     if(!envset)
-        function_generate(x, 3, a);
+        function_set_beeakpoints(x, 3, a);
 // set min/max
     float temp = x->x_max;
     if(x->x_min > x->x_max){
@@ -1095,10 +1083,33 @@ static void function_free(t_function *x){
          pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
 }
 
+/* (debug only)...
+static void function_print(t_function* x){
+    post("---===### function settings ###===---");
+    post("x_n_states:     %d",   x->x_n_states);
+    post("total duration:   %.2f", x->x_total_duration);
+    post("min:              %.2f", x->x_min);
+    post("max:              %.2f", x->x_max);
+    post("args:");
+    int i = 0;
+    post("%d = %f", i, x->x_points[x->x_state = 0]);
+    i++;
+    int ac = x->x_n_states * 2 + 1;
+    while(i < ac){
+        float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
+        post("%d = %f", i, dur);
+        i++;
+        x->x_state++;
+        post("%d = %f", i, x->x_points[x->x_state]);
+        i++;
+    }
+    post("---===### function settings ###===---");
+} */
+
 void function_setup(void){
     function_class = class_new(gensym("function"), (t_newmethod)function_new,
         (t_method)function_free, sizeof(t_function), 0, A_GIMME,0);
-    class_addbang(function_class, function_output);
+    class_addbang(function_class, function_bang);
     class_addfloat(function_class, function_float);
     class_addlist(function_class, function_list);
     class_addmethod(function_class, (t_method)function_loadbang,
@@ -1118,11 +1129,10 @@ void function_setup(void){
                     A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_fgcolor, gensym("fgcolor"),
                     A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(function_class, (t_method)function_print, gensym("print"), 0);
-///
+//    class_addmethod(function_class, (t_method)function_print, gensym("print"), 0); // debug
+// GUI
     class_addmethod(function_class, (t_method)function_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_key, gensym("key"), A_FLOAT, 0);
-// widget
     class_setwidget(function_class, &function_widgetbehavior);
     class_setsavefn(function_class, function_save);
     function_widgetbehavior.w_getrectfn  = function_getrect;

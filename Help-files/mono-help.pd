@@ -193,6 +193,8 @@ first note on is given., f 65;
 #X restore 482 227 pd legato;
 #X obj 240 225 else/display;
 #X obj 327 224 else/display;
+#X text 27 207 see also:;
+#X obj 38 226 else/voices;
 #X connect 0 0 1 0;
 #X connect 1 0 46 0;
 #X connect 2 0 3 0;
