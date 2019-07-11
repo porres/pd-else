@@ -1,4 +1,3 @@
-// based on [tof/brakpoints]
 
 // memory realloc may crash but pointer seems ok! 'STATES' prevents it
 #define STATES  100   // Remove this, make it work better...
@@ -11,57 +10,55 @@
 #include <string.h>
 #include <math.h>
 
+static t_class *function_class;
 t_widgetbehavior function_widgetbehavior;
 
-static t_class *function_class;
-
 typedef struct _function{
-    t_object    x_obj;
-    t_glist*    x_glist;
-    int         x_state;
-    int         x_n_states;
-    t_float*    x_points;
-    t_float*    x_duration;
-    t_float     x_total_duration;
-    t_symbol   *x_receive_sym;
-    t_symbol   *x_send_sym;
-    int         x_rcv_set;
-    int         x_snd_set;
-    int         x_flag;
-    t_symbol   *x_rcv_unexpanded;
-    t_symbol   *x_snd_unexpanded;
-    t_float     x_min;
-    t_float     x_max;
-    t_float     x_min_point;
-    t_float     x_max_point;
-    t_int       x_states;   // bug ???
-    unsigned char  x_fgcolor[3];
-    unsigned char  x_bgcolor[3];
-    int         x_width;
-    int         x_init;
-    int         x_height;
-    int         x_numdoodles;
-    int         x_grabbed; // for moving points
-    int         x_shift; // move 100th
-    float       x_pointer_x;
-    float       x_pointer_y;
+    t_object        x_obj;
+    t_glist*        x_glist;
+    int             x_state;
+    int             x_n_states;
+    int             x_rcv_set;
+    int             x_snd_set;
+    int             x_flag;
+    float          *x_points;
+    float          *x_duration;
+    float           x_total_duration;
+    t_symbol       *x_receive_sym;
+    t_symbol       *x_send_sym;
+    t_symbol       *x_rcv_unexpanded;
+    t_symbol       *x_snd_unexpanded;
+    float           x_min;
+    float           x_max;
+    float           x_min_point;
+    float           x_max_point;
+    int             x_states;       // bug ???
+    unsigned char   x_fgcolor[3];
+    unsigned char   x_bgcolor[3];
+    int             x_width;
+    int             x_init;
+    int             x_height;
+    int             x_numdots;
+    int             x_grabbed;      // for moving points
+    int             x_shift;        // move 100th
+    float           x_pointer_x;
+    float           x_pointer_y;
 }t_function;
 
-// REMOVE THIS!!! Only here for now to debug...
+// REMOVE THIS!!! (debug only)...
 static void function_print(t_function* x){
     post("---===### function settings ###===---");
     post("x_n_states:     %d",   x->x_n_states);
     post("total duration:   %.2f", x->x_total_duration);
     post("min:              %.2f", x->x_min);
     post("max:              %.2f", x->x_max);
-    
     post("args:");
-    t_int i = 0;
+    int i = 0;
     post("%d = %f", i, x->x_points[x->x_state = 0]);
     i++;
-    t_int ac = x->x_n_states * 2 + 1;
+    int ac = x->x_n_states * 2 + 1;
     while(i < ac){
-        t_float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
+        float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
         post("%d = %f", i, dur);
         i++;
         x->x_state++;
@@ -71,42 +68,20 @@ static void function_print(t_function* x){
     post("---===### function settings ###===---");
 }
 
-////////////////////////////////////////////////
-static void function_set_min_max(t_function *x){
-    t_float temp = x->x_max;
-    if(x->x_min > x->x_max){
-        x->x_max = x->x_min;
-        x->x_min = temp;
-    }
-    else if(x->x_max == x->x_min){
-        if(x->x_max == 0) // max & min = 0
-            x->x_max = 1;
-        else{
-            if(x->x_max > 0){
-                x->x_min = 0; // set min to 0
-                if(x->x_max < 1)
-                    x->x_max = 1; // set max to 1
-            }
-            else
-                x->x_max = 0;
-        }
-    }
-}
-
-////// BANG  ///////////////////////////////////////////////////////////////////////////////////
-static void function_bang(t_function *x){
-    t_int ac = x->x_n_states * 2 + 1;
+////// Output ///////////////////////////////////////////////////////////
+static void function_output(t_function *x){
+    int ac = x->x_n_states * 2 + 1;
     t_atom at[ac];
-// get 1st
+    // get 1st
     SETFLOAT(at, x->x_min_point = x->x_max_point = x->x_points[x->x_state = 0]);
-    t_int i = 1;
-// get rest
+    int i = 1;
+    // get rest
     while(i < ac){
-        t_float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
+        float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
         SETFLOAT(at+i, dur); // duration
         i++;
         x->x_state++;
-        t_float point = x->x_points[x->x_state];
+        float point = x->x_points[x->x_state];
         if(point < x->x_min_point)
             x->x_min_point = point;
         if(point > x->x_max_point)
@@ -119,34 +94,23 @@ static void function_bang(t_function *x){
         pd_list(x->x_send_sym->s_thing, &s_list, ac, at);
 }
 
-// GUI SHIT /////////////////////////////////////////////////////////////////////////////////////
+// GUI FUNCTIONS //////////////////////////////////////////////////////////////////////////////
 static void function_set_new_size(t_function* x,int ns){
     if(ns > x->x_states){
-        int newargs = ns*sizeof(t_float);
-        x->x_duration = resizebytes(x->x_duration, x->x_states*sizeof(t_float), newargs);
-        x->x_points = resizebytes(x->x_points, x->x_states*sizeof(t_float), newargs);
+        int newargs = ns*sizeof(float);
+        x->x_duration = resizebytes(x->x_duration, x->x_states*sizeof(float), newargs);
+        x->x_points = resizebytes(x->x_points, x->x_states*sizeof(float), newargs);
         x->x_states = ns;
     }
 }
 
-static void function_duration(t_function* x, t_float dur){
-    if(dur < 1){
-        post("function: minimum duration is 1 ms");
-        return;
-    }
-    x->x_total_duration = dur;
-    float f = dur/x->x_duration[x->x_n_states];
-    for(t_int i = 1; i <= x->x_n_states; i++)
-        x->x_duration[i] *= f;
-}
-
 static void function_generate(t_function *x, int ac, t_atom* av){
-    t_float tdur = 0;
+    float tdur = 0;
     x->x_duration[0] = 0;
     x->x_n_states = ac >> 1;
     function_set_new_size(x, ac >> 1);
-    t_float* dur = x->x_duration;
-    t_float* val = x->x_points;
+    float* dur = x->x_duration;
+    float* val = x->x_points;
 // get 1st value
     *val = atom_getfloat(av++);
     x->x_max_point = x->x_min_point = *val;
@@ -179,7 +143,6 @@ static void function_generate(t_function *x, int ac, t_atom* av){
         x->x_max = x->x_max_point;
 }
 
-// MORE GUI SHIT //////////////////////////////////////////////////////////////////////////
 static void draw_inlet_and_outlet(t_function *x, t_glist *glist, int firsttime){
     int x_onset, y_onset;
     int xpos = text_xpix(&x->x_obj, glist);
@@ -217,7 +180,7 @@ static void draw_inlet_and_outlet(t_function *x, t_glist *glist, int firsttime){
     }
 }
 
-static int function_x_next_doodle(t_function *x, struct _glist *glist, int xpos,int ypos){
+static int function_x_next_dot(t_function *x, struct _glist *glist, int xpos,int ypos){
     float xscale, yscale;
     int dxpos, dypos;
     float minval = 100000.0;
@@ -266,7 +229,7 @@ static int function_x_next_doodle(t_function *x, struct _glist *glist, int xpos,
     return insertpos;
 }
 
-static void function_doodles_create(t_function *x, t_glist *glist){
+static void function_dots_create(t_function *x, t_glist *glist){
     float xscale, yscale;
     int xpos, ypos;
     float ySize = x->x_max - x->x_min;
@@ -276,8 +239,8 @@ static void function_doodles_create(t_function *x, t_glist *glist){
     yscale = x->x_height;
     xpos = text_xpix(&x->x_obj, glist);
     ypos = (int)(text_ypix(&x->x_obj, glist) + x->x_height);
-    char fgcolor[20];
-    sprintf(fgcolor, "#%2.2x%2.2x%2.2x", x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+    char color[20];
+    sprintf(color, "#%2.2x%2.2x%2.2x", x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
     int i;
     for(i = 0; i <= x->x_n_states; i++){
         yvalue = (x->x_points[i] - yBase) / ySize * yscale;
@@ -289,19 +252,19 @@ static void function_doodles_create(t_function *x, t_glist *glist){
                  (int)(ypos - yvalue + 3),
                  (unsigned long)x,
                  i,
-                 fgcolor);
+                 color);
     }
-    x->x_numdoodles = i;
+    x->x_numdots = i;
 }
 
-static void function_delete_doodles(t_function *x, t_glist *glist){
-    for(t_int i = 0; i <= x->x_numdoodles; i++)
-        sys_vgui(".x%lx.c delete %lxD%d\n",glist_getcanvas(glist), x, i);
+static void function_delete_dots(t_function *x, t_glist *glist){
+    for(int i = 0; i <= x->x_numdots; i++)
+        sys_vgui(".x%lx.c delete %lxD%d\n", glist_getcanvas(glist), x, i);
 }
 
-static void function_update_doodles(t_function *x, t_glist *glist){
-    function_delete_doodles(x, glist);
-    function_doodles_create(x, glist); // LATER only create new doodles if necessary
+static void function_update_dots(t_function *x, t_glist *glist){
+    function_delete_dots(x, glist);
+    function_dots_create(x, glist); // LATER only create new dots if necessary
 }
 
 static void function_create(t_function *x, t_glist *glist){
@@ -310,7 +273,7 @@ static void function_create(t_function *x, t_glist *glist){
     float ySize = x->x_max - x->x_min;
     float yBase =  x->x_min;
     xpos = text_xpix(&x->x_obj, glist);
-    ypos = (int) text_ypix(&x->x_obj, glist);
+    ypos = (int)text_ypix(&x->x_obj, glist);
     char bgcolor[20];
     sprintf(bgcolor, "#%2.2x%2.2x%2.2x", x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d  -tags %lxS -fill %s -width %d\n",
@@ -325,14 +288,14 @@ static void function_create(t_function *x, t_glist *glist){
     xscale = x->x_width / x->x_duration[x->x_n_states];
     yscale = x->x_height;
     sys_vgui(".x%lx.c create line", glist_getcanvas(glist));
-    for(t_int i = 0; i <= x->x_n_states; i++){
+    for(int i = 0; i <= x->x_n_states; i++){
         sys_vgui(" %d %d ", (int)(xpos + x->x_duration[i]*xscale),
                  (int)(ypos + x->x_height - (x->x_points[i]-yBase) / ySize*yscale));
     }
     char fgcolor[20];
     sprintf(fgcolor, "#%2.2x%2.2x%2.2x", x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
     sys_vgui(" -tags %lxP -fill %s -width %d\n", x, fgcolor, 2);
-    function_doodles_create(x, glist);
+    function_dots_create(x, glist);
 }
 
 static void function_update(t_function *x, t_glist *glist){
@@ -349,11 +312,11 @@ static void function_update(t_function *x, t_glist *glist){
     xscale = x->x_width / x->x_duration[x->x_n_states];
     yscale = x->x_height;
     sys_vgui(".x%lx.c coords %lxP", glist_getcanvas(glist), x);
-    for(t_int i = 0; i <= x->x_n_states; i++)
+    for(int i = 0; i <= x->x_n_states; i++)
         sys_vgui(" %d %d ",(int)(xpos + x->x_duration[i]*xscale),
                  (int)(ypos + x->x_height - (x->x_points[i] - yBase) / ySize*yscale));
     sys_vgui("\n");
-    function_update_doodles(x, glist);
+    function_update_dots(x, glist);
     draw_inlet_and_outlet(x, glist, 0); // again ???
 }
 
@@ -372,7 +335,7 @@ static void function_erase(t_function* x, t_glist* glist){
     sys_vgui(".x%lx.c delete %lxo0\n", glist_getcanvas(glist), x);
     sys_vgui(".x%lx.c delete %lxo1\n", glist_getcanvas(glist), x);
     sys_vgui(".x%lx.c delete %lxo2\n", glist_getcanvas(glist), x);
-    function_delete_doodles(x,glist);
+    function_delete_dots(x,glist);
 }
 
 /* ------------------------ widgetbehaviour----------------------------- */
@@ -450,7 +413,7 @@ static void function_followpointer(t_function* x,t_glist* glist){
     else if(grabbed > 1.0)
         grabbed = 1.0;
     x->x_points[x->x_grabbed] = grabbed * ySize + yBase;
-    function_bang(x);
+    function_output(x);
 }
 
 static void function_motion(t_function *x, t_floatarg dx, t_floatarg dy){
@@ -473,14 +436,14 @@ static void function_motion(t_function *x, t_floatarg dx, t_floatarg dy){
 
 static void function_key(t_function *x, t_floatarg f){
     if(f == 8.0 && x->x_grabbed < x->x_n_states &&  x->x_grabbed >0){
-        for(t_int i = x->x_grabbed; i <= x->x_n_states; i++){
+        for(int i = x->x_grabbed; i <= x->x_n_states; i++){
             x->x_duration[i] = x->x_duration[i+1];
             x->x_points[i] = x->x_points[i+1];
         }
         x->x_n_states--;
         x->x_grabbed--;
         function_update(x, x->x_glist);
-        function_bang(x);
+        function_output(x);
     }
 }
 
@@ -493,7 +456,7 @@ static int function_newclick(t_function *x, struct _glist *glist,
     if(doit){
         if((xpos >= wxpos) && (xpos <= wxpos + x->x_width) \
            && (ypos >= wypos ) && (ypos <= wypos + x->x_height)){
-            function_x_next_doodle(x, glist, xpos, ypos);
+            function_x_next_dot(x, glist, xpos, ypos);
             glist_grab(x->x_glist, &x->x_obj.te_g, (t_glistmotionfn) function_motion,
                 (t_glistkeyfn) function_key, xpos, ypos);
             x->x_shift = shift;
@@ -563,42 +526,42 @@ static void function_save(t_gobj *z, t_binbuf *b){
                 "ssiis",
                 gensym("#X"),
                 gensym("obj"),
-                (t_int)x->x_obj.te_xpix,
-                (t_int)x->x_obj.te_ypix,
+                (int)x->x_obj.te_xpix,
+                (int)x->x_obj.te_ypix,
                 atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf))
                 );
     binbuf_addv(b, "iissffiiiiiiiiii",
-                (t_int)x->x_width,
-                (t_int)x->x_height,
+                (int)x->x_width,
+                (int)x->x_height,
                 x->x_snd_unexpanded,
                 x->x_rcv_unexpanded,
                 x->x_min,
                 x->x_max,
-                (t_int)x->x_bgcolor[0],
-                (t_int)x->x_bgcolor[1],
-                (t_int)x->x_bgcolor[2],
-                (t_int)x->x_fgcolor[0],
-                (t_int)x->x_fgcolor[1],
-                (t_int)x->x_fgcolor[2],
+                (int)x->x_bgcolor[0],
+                (int)x->x_bgcolor[1],
+                (int)x->x_bgcolor[2],
+                (int)x->x_fgcolor[0],
+                (int)x->x_fgcolor[1],
+                (int)x->x_fgcolor[2],
                 x->x_init,
                 0, // placeholder
                 0, // placeholder
                 0  // placeholder
                 );
     binbuf_addv(b, "f",
-                (t_float)x->x_points[x->x_state = 0]
+                (float)x->x_points[x->x_state = 0]
                 );
                 i = 1;
-                t_int ac = x->x_n_states * 2 + 1;
+                int ac = x->x_n_states * 2 + 1;
                 while(i < ac){
-                    t_float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
+                    float dur = x->x_duration[x->x_state+1] - x->x_duration[x->x_state];
                     binbuf_addv(b, "f",
-                                (t_float)dur
+                                (float)dur
                                 );
                     i++;
                     x->x_state++;
                     binbuf_addv(b, "f",
-                                (t_float)x->x_points[x->x_state]
+                                (float)x->x_points[x->x_state]
                                 );
                     i++;
                 }
@@ -606,8 +569,20 @@ static void function_save(t_gobj *z, t_binbuf *b){
 }
 
 ///////////////////// METHODS /////////////////////
+
+static void function_duration(t_function* x, t_floatarg dur){
+    if(dur < 1){
+        post("function: minimum duration is 1 ms");
+        return;
+    }
+    x->x_total_duration = dur;
+    float f = dur/x->x_duration[x->x_n_states];
+    for(int i = 1; i <= x->x_n_states; i++)
+        x->x_duration[i] *= f;
+}
+
 static void function_float(t_function *x, t_floatarg f){
-    t_float val;
+    float val;
     if(f <= 0){
         val = x->x_points[0];
         outlet_float(x->x_obj.ob_outlet, val);
@@ -638,7 +613,7 @@ static void function_float(t_function *x, t_floatarg f){
 }
 
 static void function_i(t_function *x, t_floatarg f){
-    t_float val;
+    float val;
     if(f <= 0){
         val = x->x_points[0];
         outlet_float(x->x_obj.ob_outlet, val);
@@ -676,13 +651,13 @@ static void function_set(t_function *x, t_symbol* s, int ac,t_atom *av){
             function_drawme(x, x->x_glist, 0);
     }
     else if(ac == 2){
-        t_int i = (int)av->a_w.w_float;
+        int i = (int)av->a_w.w_float;
         av++;
         if(i < 0)
             i = 0;
         if(i > x->x_n_states)
             i = x->x_n_states;
-        t_float v = av->a_w.w_float;
+        float v = av->a_w.w_float;
         x->x_points[i] = v;
         if(v < x->x_min_point)
             x->x_min_point = x->x_min = v;
@@ -707,13 +682,13 @@ static void function_list(t_function *x, t_symbol* s, int ac,t_atom *av){
             pd_list(x->x_send_sym->s_thing, &s_list, ac, av);
     }
     else if(ac == 2){
-        t_int i = (int)av->a_w.w_float;
+        int i = (int)av->a_w.w_float;
         av++;
         if(i < 0)
             i = 0;
         if(i > x->x_n_states)
             i = x->x_n_states;
-        t_float v = av->a_w.w_float;
+        float v = av->a_w.w_float;
         x->x_points[i] = v;
         if(v < x->x_min_point)
             x->x_min_point = x->x_min = v;
@@ -721,7 +696,7 @@ static void function_list(t_function *x, t_symbol* s, int ac,t_atom *av){
             x->x_max_point = x->x_max = v;
         if(glist_isvisible(x->x_glist))
             function_drawme(x, x->x_glist, 0);
-        function_bang(x);
+        function_output(x);
     }
     else
         post("[function] wrong format for 'list' message");
@@ -806,7 +781,7 @@ static void function_set_receive(t_function *x, t_symbol *s){
     function_receive(x, s);
 }
 
-static void function_fgcolor(t_function *x, t_float r, t_float g, t_float b){
+static void function_fgcolor(t_function *x, t_floatarg r, t_floatarg g, t_floatarg b){
     x->x_fgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : (int)r;
     x->x_fgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : (int)g;
     x->x_fgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : (int)b;
@@ -815,7 +790,7 @@ static void function_fgcolor(t_function *x, t_float r, t_float g, t_float b){
     function_update(x, x->x_glist);
 }
 
-static void function_bgcolor(t_function *x, t_float r, t_float g, t_float b){
+static void function_bgcolor(t_function *x, t_floatarg r, t_floatarg g, t_floatarg b){
     x->x_bgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : (int)r;
     x->x_bgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : (int)g;
     x->x_bgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : (int)b;
@@ -825,7 +800,7 @@ static void function_bgcolor(t_function *x, t_float r, t_float g, t_float b){
 
 static void function_loadbang(t_function *x, t_floatarg action){
     if(action == LB_LOAD && x->x_init)
-        function_bang(x);
+        function_output(x);
 }
 
 ///////////////////// NEW / FREE / SETUP /////////////////////
@@ -837,10 +812,10 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     x->x_states = STATES;
     x->x_grabbed = 0;
     x->x_glist = (t_glist*) canvas_getcurrent();
-    x->x_points = getbytes(x->x_states*sizeof(t_float));
-    x->x_duration = getbytes(x->x_states*sizeof(t_float));
-    t_int envset = 0;
-    t_float initialDuration = 0;
+    x->x_points = getbytes(x->x_states*sizeof(float));
+    x->x_duration = getbytes(x->x_states*sizeof(float));
+    int envset = 0;
+    float initialDuration = 0;
 // Default Args
     x->x_width = 200;
     x->x_height = 100;
@@ -861,7 +836,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
     SETFLOAT(a+1, 1000);
     SETFLOAT(a+2, 0);
 ////////////////////////////////// GET ARGS ///////////////////////////////////////////
-    t_int v;
+    int v;
     if(ac && av->a_type == A_FLOAT){ // 1ST Width
         v = (int)av->a_w.w_float;
         x->x_width = v < 40 ? 40 : v; // min width is 40
@@ -954,7 +929,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             cursym = atom_getsymbolarg(0, ac, av);
             if(!strcmp(cursym->s_name, "-duration")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
-                    t_float curfloat = atom_getfloatarg(1, ac, av);
+                    float curfloat = atom_getfloatarg(1, ac, av);
                     initialDuration = curfloat < 0 ? 0 : curfloat;
                     ac -= 2;
                     av += 2;
@@ -969,7 +944,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             }
             else if(!strcmp(cursym->s_name, "-width")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
-                    t_float curfloat = atom_getfloatarg(1, ac, av);
+                    float curfloat = atom_getfloatarg(1, ac, av);
                     x->x_width = curfloat < 40 ? 40 : curfloat; // min width is 40
                     ac -= 2;
                     av += 2;
@@ -979,7 +954,7 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
             }
             else if(!strcmp(cursym->s_name, "-height")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
-                    t_float curfloat = atom_getfloatarg(1, ac, av);
+                    float curfloat = atom_getfloatarg(1, ac, av);
                     x->x_height = curfloat < 20 ? 20 : curfloat; // min width is 20
                     ac -= 2;
                     av += 2;
@@ -1029,9 +1004,9 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                 if(ac >= 4 && (av+1)->a_type == A_FLOAT
                    && (av+2)->a_type == A_FLOAT
                    && (av+3)->a_type == A_FLOAT){
-                    t_int r = (t_int)atom_getfloatarg(1, ac, av);
-                    t_int g = (t_int)atom_getfloatarg(2, ac, av);
-                    t_int b = (t_int)atom_getfloatarg(3, ac, av);
+                    int r = (int)atom_getfloatarg(1, ac, av);
+                    int g = (int)atom_getfloatarg(2, ac, av);
+                    int b = (int)atom_getfloatarg(3, ac, av);
                     x->x_bgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : r;
                     x->x_bgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : g;
                     x->x_bgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : b;
@@ -1045,9 +1020,9 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
                 if(ac >= 4 && (av+1)->a_type == A_FLOAT
                    && (av+2)->a_type == A_FLOAT
                    && (av+3)->a_type == A_FLOAT){
-                    t_int r = (t_int)atom_getfloatarg(1, ac, av);
-                    t_int g = (t_int)atom_getfloatarg(2, ac, av);
-                    t_int b = (t_int)atom_getfloatarg(3, ac, av);
+                    int r = (int)atom_getfloatarg(1, ac, av);
+                    int g = (int)atom_getfloatarg(2, ac, av);
+                    int b = (int)atom_getfloatarg(3, ac, av);
                     x->x_fgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : r;
                     x->x_fgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : g;
                     x->x_fgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : b;
@@ -1087,14 +1062,29 @@ static void *function_new(t_symbol *s, int ac, t_atom* av){
         else
             goto errstate;
     };
-    function_set_min_max(x);
-    if(!envset){
+    if(!envset)
         function_generate(x, 3, a);
-        function_set_min_max(x);
+// set min/max
+    float temp = x->x_max;
+    if(x->x_min > x->x_max){
+        x->x_max = x->x_min;
+        x->x_min = temp;
+    }
+    else if(x->x_max == x->x_min){
+        if(x->x_max == 0) // max & min = 0
+            x->x_max = 1;
+        else{
+            if(x->x_max > 0){
+                x->x_min = 0; // set min to 0
+                if(x->x_max < 1)
+                    x->x_max = 1; // set max to 1
+            }
+            else
+                x->x_max = 0;
+        }
     }
     if(initialDuration > 0)
         function_duration(x, initialDuration);
-/////////////////////////////////////////////////////////////////////////////////////
      return(x);
 errstate:
     pd_error(x, "[function]: improper args");
@@ -1109,7 +1099,7 @@ static void function_free(t_function *x){
 void function_setup(void){
     function_class = class_new(gensym("function"), (t_newmethod)function_new,
         (t_method)function_free, sizeof(t_function), 0, A_GIMME,0);
-    class_addbang(function_class, function_bang);
+    class_addbang(function_class, function_output);
     class_addfloat(function_class, function_float);
     class_addlist(function_class, function_list);
     class_addmethod(function_class, (t_method)function_loadbang,
@@ -1129,8 +1119,8 @@ void function_setup(void){
                     A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_fgcolor, gensym("fgcolor"),
                     A_FLOAT, A_FLOAT, A_FLOAT, 0);
-///
     class_addmethod(function_class, (t_method)function_print, gensym("print"), 0);
+///
     class_addmethod(function_class, (t_method)function_motion, gensym("motion"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_key, gensym("key"), A_FLOAT, 0);
 // widget
