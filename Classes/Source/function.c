@@ -121,16 +121,15 @@ static void function_generate(t_function *x, int ac, t_atom* av){
     while(ac--){
         tdur += atom_getfloat(av++);
         *dur++ = tdur;
-        *val++;
         if(ac--){
-            *val = atom_getfloat(av++);
+            *++val = atom_getfloat(av++);
             if(*val > x->x_max_point)
                 x->x_max_point = *val;
             if(*val < x->x_min_point)
                 x->x_min_point = *val;
         }
         else{
-            *val = 0; // ??
+            *++val = 0; 
             if(*val > x->x_max_point)
                 x->x_max_point = *val;
             if(*val < x->x_min_point)
