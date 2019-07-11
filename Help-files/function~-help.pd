@@ -54,7 +54,6 @@
 #X obj 192 239 else/display~ 8;
 #N canvas 549 146 637 614 example 0;
 #X obj 115 449 else/out~;
-#X obj 232 415 else/graph~ 441 10 1.015 -1.015;
 #X msg 189 164 -1 0.5 1 0.5 -1;
 #X msg 162 118 -1 1 1;
 #X msg 176 140 1 1 -1;
@@ -73,19 +72,20 @@ use them as oscillators with a [phasor~] input., f 62;
 with [function~]. Check its help file for more info, f 18;
 #X obj 158 373 else/function~ 1 100 -1;
 #X obj 208 247 else/function 200 100 empty empty -1 1 220 220 220 50
-50 50 -1 1 1;
+50 50 1 0 0 0 -1 1 1;
 #X obj 205 220 else/initmess -1 1 1;
-#X connect 2 0 14 0;
-#X connect 3 0 14 0;
-#X connect 4 0 14 0;
-#X connect 5 0 14 0;
-#X connect 6 0 14 0;
-#X connect 7 0 5 0;
-#X connect 14 0 0 0;
-#X connect 14 0 0 1;
-#X connect 14 0 1 0;
+#X obj 232 415 else/graph~ 441 8 -1.05 1.05 200 140;
+#X connect 1 0 13 0;
+#X connect 2 0 13 0;
+#X connect 3 0 13 0;
+#X connect 4 0 13 0;
+#X connect 5 0 13 0;
+#X connect 6 0 4 0;
+#X connect 13 0 0 0;
+#X connect 13 0 0 1;
+#X connect 13 0 16 0;
+#X connect 14 0 13 0;
 #X connect 15 0 14 0;
-#X connect 16 0 15 0;
 #X restore 472 241 pd example;
 #X text 72 87 [function~] generates functions from arguments/list input.
 Input values from 0 to 1 reads the function. It needs an odd number

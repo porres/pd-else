@@ -1,18 +1,18 @@
-#N canvas 703 23 564 519 10;
+#N canvas 703 23 562 494 10;
 #X obj 23 40 cnv 4 4 4 empty empty Hann 0 28 2 18 -233017 -1 0;
-#X obj 3 491 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 466 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 376 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 359 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 416 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 399 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 455 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 438 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 94 425 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 134 408 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 93 386 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 133 369 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 150 426 signal;
+#X text 190 409 signal;
 #X obj 2 3 cnv 15 301 42 empty empty hann~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -36,17 +36,18 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 157 185 else/hann~;
-#X text 149 386 signal;
-#X text 155 465 (none);
-#X obj 157 156 sig~ 1;
-#X obj 157 214 else/graph~;
-#X obj 395 260 block~ 256;
-#X text 197 386 - input to hann window;
-#X text 197 427 - output of hann window;
+#X obj 125 176 else/hann~;
+#X text 189 369 signal;
+#X text 253 446 (none);
+#X obj 125 147 sig~ 1;
+#X obj 125 205 else/graph~ 256 0 -1 1 200 140;
+#X obj 449 250 block~ 256;
+#X text 237 369 - input to hann window;
+#X text 237 410 - output of hann window;
 #X text 75 91 [hann~] is an abstraction that applies a hann window
 into a signal input. the window size is the same as the block size.
 This is meant for FFT analysis., f 52;
 #X obj 483 79 else/setdsp~;
+#X text 356 233 Block size of this example patch :, f 19;
 #X connect 19 0 23 0;
 #X connect 22 0 19 0;

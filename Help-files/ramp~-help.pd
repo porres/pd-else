@@ -1,4 +1,4 @@
-#N canvas 545 41 561 637 10;
+#N canvas 497 41 561 637 10;
 #X obj 4 263 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 455 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -22,10 +22,10 @@
 #X obj 107 40 cnv 4 4 4 empty empty ramp 0 28 2 18 -233017 -1 0;
 #X obj 194 134 else/imp~ 1;
 #X obj 194 216 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 16807 256;
+-228856 -1 -1 10932 256;
 #X obj 194 190 else/sig2float~;
 #X obj 197 239 hsl 128 15 0 44100 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 4840 1;
+-228856 -1 -1 3148 1;
 #X obj 163 135 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 150 462 signal;
@@ -288,7 +288,7 @@ in hz and sr is the sampling rate).;
 #X text 193 510 - increment value (default 1), f 43;
 #X text 193 524 - minimum value (default 0), f 43;
 #X text 193 538 - maximum value (default 2ˆ32 - 1), f 43;
-#N canvas 248 51 501 678 read 0;
+#N canvas 625 64 501 678 read 0;
 #X obj 284 175 soundfiler;
 #X floatatom 284 202 0 0 0 0 - - -;
 #X text 374 228 sample size;
@@ -366,10 +366,10 @@ speeds with negative increment values.;
 #X text 192 360 - (re)starts incrementing;
 #N canvas 277 120 1052 471 examples-1 0;
 #X obj 71 258 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 21.8929 256;
+-228856 -1 -1 103.668 256;
 #X obj 71 229 else/sig2float~;
 #X obj 71 293 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 2189 1;
+-1 -1 10367 1;
 #X obj 71 170 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 470 202 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -665,7 +665,7 @@ it'll reset back to the reset point and stop after reaching the limits.
 #X restore 462 175 pd examples-1;
 #N canvas 480 163 823 384 examples-2 0;
 #X obj 521 278 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 105.518 256;
+-228856 -1 -1 90.83 256;
 #X obj 521 249 else/sig2float~;
 #X obj 574 147 *~;
 #X obj 614 146 else/pulse~ 1;
@@ -673,7 +673,7 @@ it'll reset back to the reset point and stop after reaching the limits.
 #X text 642 322 127;
 #X text 573 322 63.5;
 #X obj 524 305 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 10552 1;
+-1 -1 9083 1;
 #X obj 574 113 sig~ 0.0025;
 #X text 25 21 The "start" and "stop" messages starts and stops incrementing.
 The "reset" message stops and goes back to the reset point. The "set"

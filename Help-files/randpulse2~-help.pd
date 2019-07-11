@@ -182,18 +182,18 @@ the third argument or via the 'seed' message.;
 #X text 209 337 - non zero sets to random gate value mode (default
 0);
 #N canvas 622 221 464 378 rand 0;
-#X obj 185 200 else/graph~ 441 3;
+#X obj 201 204 else/graph~ 441 3;
 #X text 47 23 By default \, gate values in [randopulse2~] are "1" \,
 but you can set it to random mode with the second argument (non zero
 value) \, where it gives you random positive and negative values (in
 hte range from -1 to 1). You can also use the "rand" message to change
 this.;
 #X msg 69 132 rand \$1;
-#X obj 69 107 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 69 107 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 86 241 else/out~;
 #X obj 129 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 100 256;
+-228856 -1 -1 0 256;
 #X obj 129 168 else/randpulse2~ 1500 1;
 #X obj 132 105 hsl 128 15 100 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
