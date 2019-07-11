@@ -99,7 +99,7 @@ static void function_create_dots(t_function *x, t_glist *glist){
     int i;
     for(i = 0; i <= x->x_n_states; i++){
         yvalue = (x->x_points[i] - yBase) / ySize * yscale;
-        sys_vgui(".x%lx.c create oval %d %d %d %d  -tags %lxD%d -fill %s\n",
+        sys_vgui(".x%lx.c create oval %d %d %d %d -width 2 -tags %lxD%d -fill %s\n",
                  (unsigned long)glist_getcanvas(glist),
                  (int)(xpos + (x->x_duration[i] * xscale) - 3),
                  (int)(ypos - yvalue - 3),
