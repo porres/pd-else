@@ -1,57 +1,56 @@
-#N canvas 669 111 558 438 10;
-#X obj 2 4 cnv 15 301 42 empty empty function~ 20 20 2 37 -233017 -1
+#N canvas 634 102 558 461 10;
+#X obj 2 3 cnv 15 301 42 empty empty function~ 20 20 2 37 -233017 -1
 0;
-#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 4 graph;
+#X restore 2 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 304 4 pd;
-#X obj 344 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 304 3 pd;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 22 41 cnv 4 4 4 empty empty Function 0 28 2 18 -233017 -1 0
+#X obj 22 40 cnv 4 4 4 empty empty Function 0 28 2 18 -233017 -1 0
 ;
-#X obj 93 41 cnv 4 4 4 empty empty Generator 0 28 2 18 -233017 -1 0
+#X obj 93 40 cnv 4 4 4 empty empty Generator 0 28 2 18 -233017 -1 0
 ;
-#X obj 457 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 477 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 514 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 463 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 467 71 setdsp~ 1;
-#X obj 1 410 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#X obj 467 70 setdsp~ 1;
+#X obj 1 434 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 1 279 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 1 278 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 1 340 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 1 334 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 1 381 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+#X obj 1 368 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 110 289 cnv 17 3 40 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 110 285 cnv 17 3 42 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 188 308 list;
-#X text 140 290 float/signal;
-#X obj 110 352 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X text 188 297 list;
+#X text 140 283 float/signal;
+#X obj 110 343 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 176 353 signal;
-#X text 226 353 - function output, f 35;
-#X text 228 290 - values from 0 to 1 reads function;
-#X text 136 389 1) list;
-#X text 198 389 - 3 or more floats set function, f 40;
-#X text 228 308 - 3 or more floats set function, f 35;
-#X obj 192 209 else/function~ 1 1 -1;
-#X obj 192 186 nbx 5 14 0 1 0 0 empty empty empty 0 -8 0 10 -228856
+#X text 176 344 signal;
+#X text 226 344 - function output, f 35;
+#X text 228 283 - values from 0 to 1 reads function, f 48;
+#X text 107 376 1) list;
+#X text 228 297 - 3 or more floats set function, f 48;
+#X obj 192 208 else/function~ 1 1 -1;
+#X obj 192 185 nbx 5 14 0 1 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X obj 195 162 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 195 161 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 192 239 else/display~ 8;
+#X obj 192 238 else/display~ 8;
 #N canvas 549 146 637 614 example 0;
 #X obj 115 449 else/out~;
 #X msg 189 164 -1 0.5 1 0.5 -1;
@@ -86,12 +85,78 @@ with [function~]. Check its help file for more info, f 18;
 #X connect 13 0 16 0;
 #X connect 14 0 13 0;
 #X connect 15 0 14 0;
-#X restore 472 241 pd example;
-#X text 72 87 [function~] generates functions from arguments/list input.
+#X restore 472 216 pd example;
+#X text 72 86 [function~] generates functions from arguments/list input.
 Input values from 0 to 1 reads the function. It needs an odd number
 of elements in a list \, staring with 3 values \, the syntax is (point1
 \, period \, point2 \, period \, point3 \, etc...). The overall sum
 of periods is normalized to 1!;
-#X connect 27 0 30 0;
+#X text 159 376 - 3 or more floats to set the function (default no
+functon);
+#X obj 6 405 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 150 413 -exp <list> (default '1' for all segments), f 45;
+#X text 152 311 exp <list>;
+#X text 228 311 - sets exponential values for each line segment, f
+48;
+#N canvas 316 162 889 476 exponential 1;
+#X obj 81 325 else/out~;
+#X obj 40 168 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 194 296 else/graph~ 441 8 -1.05 1.05 200 140;
+#X obj 333 135 else/rescale;
+#X obj 333 157 else/rescale~;
+#X text 46 77 The exponential factor is the same as used in [else/rescale]
+and [else/rescale~]. Check these objects for more details:;
+#X obj 40 190 phasor~ 200;
+#X obj 124 243 else/function~ -1 0.5 1 0.5 -1 -exp 2 2, f 30;
+#X obj 479 328 else/out~;
+#X obj 523 151 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 100 256;
+#X obj 596 294 else/graph~ 441 8 -1.05 1.05 200 140;
+#X text 780 250 parabolic waveform, f 9;
+#X msg 207 211 exp 2 2;
+#X msg 124 187 exp \$1 \$1;
+#X obj 126 142 hsl 128 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X floatatom 123 164 5 0 0 0 - - -;
+#X text 46 18 The 'exp' message or flag sets exponential factors for
+each line. By default \, they're "1" (linear). For values >= 0 \, it's
+like raising to the power of the given exponential. Negative values
+are accepted and offer a mirrored/reversed curve. Check below.;
+#X msg 196 188 exp -2 -2;
+#X obj 523 252 else/function~ 0 0.5 1 0.5 0 0.5 -1 0.5 0 -exp -2 -2
+2 2, f 41;
+#X obj 619 144 expr -$f1 \; -$f1 \; $f1 \; $f1;
+#X obj 619 201 pack f f f f;
+#X obj 619 223 else/setmess exp;
+#X obj 622 97 hsl 128 15 2 10 1 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X floatatom 619 121 5 0 0 0 - - -;
+#X obj 523 173 phasor~ 100;
+#X connect 1 0 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 0 0;
+#X connect 7 0 0 1;
+#X connect 7 0 2 0;
+#X connect 9 0 24 0;
+#X connect 12 0 7 0;
+#X connect 13 0 7 0;
+#X connect 14 0 15 0;
+#X connect 15 0 13 0;
+#X connect 17 0 7 0;
+#X connect 18 0 8 0;
+#X connect 18 0 8 1;
+#X connect 18 0 10 0;
+#X connect 19 0 20 0;
+#X connect 19 1 20 1;
+#X connect 19 2 20 2;
+#X connect 19 3 20 3;
+#X connect 20 0 21 0;
+#X connect 21 0 18 0;
+#X connect 22 0 23 0;
+#X connect 23 0 19 0;
+#X connect 24 0 18 0;
+#X restore 449 236 pd exponential;
+#X connect 26 0 29 0;
+#X connect 27 0 26 0;
 #X connect 28 0 27 0;
-#X connect 29 0 28 0;

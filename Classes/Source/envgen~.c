@@ -105,10 +105,18 @@ static void envgen_retarget(t_envgen *x, int skip){
         x->x_nleft--; // update it already
         float step = (float)(x->x_n-x->x_nleft)/(float)x->x_n;
         if(fabs(x->x_power) != 1){
-            if(x->x_power < 0)
-                step = 1-pow(1-step, 1./fabs(x->x_power));
-            else
-                step = pow(step, x->x_power);
+            if(x->x_power >= 0){ // positive exponential
+                if(x->x_delta > 0) // ascending
+                    step = pow(step, x->x_power);
+                else
+                    step = 1-pow(1-step, x->x_power);
+            }
+            else{ // negative exponential
+                if(x->x_delta >= 0) // ascending
+                    step = 1-pow(1-step, fabs(x->x_power));
+                else
+                    step = pow(step, fabs(x->x_power));
+            }
         }
         x->x_inc = step * x->x_delta;
     }
@@ -297,10 +305,18 @@ static t_int *envgen_perform(t_int *w){
                 x->x_nleft--;
                 float step = (float)(x->x_n-x->x_nleft)/(float)x->x_n;
                 if(fabs(x->x_power) != 1){
-                    if(x->x_power < 0)
-                        step = 1-pow(1-step, 1./fabs(x->x_power));
-                    else
-                        step = pow(step, x->x_power);
+                    if(x->x_power >= 0){ // positive exponential
+                        if(x->x_delta > 0) // ascending
+                            step = pow(step, x->x_power);
+                        else
+                            step = 1-pow(1-step, x->x_power);
+                    }
+                    else{ // negative exponential
+                        if(x->x_delta >= 0) // ascending
+                            step = 1-pow(1-step, fabs(x->x_power));
+                        else
+                            step = pow(step, fabs(x->x_power));
+                    }
                 }
                 x->x_inc = step * x->x_delta;
             }
