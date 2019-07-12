@@ -47,9 +47,8 @@ static float convert(t_rescale *x, float f){
         return(minout + rangeout * copysign(pow(fabs(p), exp), p));
     }
     else{ // negative exponential
-        exp = 1./fabs(exp);
         float p = 1 - ((f-minin)/rangein);
-        return(minout + (rangeout * (1 - copysign(pow(fabs(p), exp), p))));
+        return(minout + (rangeout * (1 - copysign(pow(fabs(p), -exp), p))));
     }
 }
 
