@@ -1,4 +1,4 @@
-#N canvas 737 42 567 602 10;
+#N canvas 298 65 567 602 10;
 #X obj 4 308 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -132,7 +132,7 @@ is initialized with more inlets so you can set all range parameters.
 #X obj 380 457 else/rescale -1 1 -10 10;
 #X floatatom 639 173 0 1 1.2 0 - - -;
 #X obj 642 149 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 1800 1;
+-1 -1 6350 1;
 #X obj 635 396 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
 -66577 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -143,25 +143,6 @@ is initialized with more inlets so you can set all range parameters.
 #X text 841 525 0;
 #X text 839 393 1;
 #X obj 639 326 tabwrite \$0-exponential;
-#N canvas 187 131 322 252 loop 0;
-#X obj 109 38 inlet;
-#X msg 109 96 128;
-#X obj 160 155 + 1;
-#X msg 208 96 0;
-#X obj 109 120 until;
-#X obj 109 70 trigger bang bang;
-#X obj 109 152 float;
-#X obj 109 185 outlet;
-#X connect 0 0 5 0;
-#X connect 1 0 4 0;
-#X connect 2 0 6 1;
-#X connect 3 0 6 1;
-#X connect 4 0 6 0;
-#X connect 5 0 1 0;
-#X connect 5 1 3 0;
-#X connect 6 0 2 0;
-#X connect 6 0 7 0;
-#X restore 639 229 pd loop;
 #X obj 639 256 trigger float float;
 #X obj 639 197 trigger bang float, f 23;
 #X obj 639 297 else/rescale;
@@ -176,6 +157,7 @@ same conversion parameters., f 71;
 the exponential factor. For positive values \, it's like raising to
 the power of the given exponential \, try it below (with values from
 0.1 to 10)., f 56;
+#X obj 639 229 else/loop 128;
 #X connect 0 0 1 0;
 #X connect 1 0 4 0;
 #X connect 2 0 4 1;
@@ -198,17 +180,17 @@ the power of the given exponential \, try it below (with values from
 #X connect 31 0 32 0;
 #X connect 32 0 34 0;
 #X connect 34 0 33 0;
-#X connect 35 0 45 0;
+#X connect 35 0 44 0;
 #X connect 36 0 35 0;
-#X connect 43 0 44 0;
-#X connect 44 0 46 0;
-#X connect 44 1 42 1;
-#X connect 45 0 43 0;
-#X connect 45 1 47 0;
-#X connect 46 0 42 0;
-#X connect 47 0 46 0;
-#X connect 48 0 49 0;
-#X connect 49 0 36 0;
+#X connect 43 0 45 0;
+#X connect 43 1 42 1;
+#X connect 44 0 51 0;
+#X connect 44 1 46 0;
+#X connect 45 0 42 0;
+#X connect 46 0 45 0;
+#X connect 47 0 48 0;
+#X connect 48 0 36 0;
+#X connect 51 0 43 0;
 #X restore 466 223 pd arguments;
 #X obj 93 418 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
@@ -248,7 +230,7 @@ output values;
 #N canvas 579 93 575 556 negative-exponential 0;
 #X floatatom 312 122 0 1 1.2 0 - - -;
 #X obj 315 98 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 1400 1;
 #X obj 69 365 cnv 15 198 138 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;

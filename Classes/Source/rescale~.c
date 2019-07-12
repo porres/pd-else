@@ -95,14 +95,13 @@ static t_int *rescale_perform1(t_int *w){
             r = oh;
         else if(fabs(exp) == 1) // linear
             r = ol + rangeout * (f+1)*0.5;
-        else if(exp >= 0){
+        else if(exp >= 0){ // positive exponential
             float p = (f+1)*0.5;
             r = ol + rangeout * copysign(pow(fabs(p), exp), p);
         }
-        else{
-            exp = 1./fabs(exp);
-            float p = 1-((f+1)*0.5);
-            r = ol + rangeout * (1-copysign(pow(fabs(p), exp), p));
+        else{ // negative exponential
+            float p = 1-(f+1)*0.5;
+            r = ol + rangeout * (1-copysign(pow(fabs(p), -exp), p));
         }
         *out++ = r;
     }
