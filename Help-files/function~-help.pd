@@ -1,4 +1,4 @@
-#N canvas 566 74 558 461 10;
+#N canvas 557 121 558 449 10;
 #X obj 2 3 cnv 15 301 42 empty empty function~ 20 20 2 37 -233017 -1
 0;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -26,54 +26,54 @@
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 467 70 setdsp~ 1;
-#X obj 1 434 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#X obj 2 422 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 1 278 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 1 266 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 1 334 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 1 322 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 1 368 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+#X obj 1 356 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 110 285 cnv 17 3 42 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 110 273 cnv 17 3 42 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 188 297 list;
-#X text 140 283 float/signal;
-#X obj 110 343 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X text 188 285 list;
+#X text 140 271 float/signal;
+#X obj 110 331 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 176 344 signal;
-#X text 226 344 - function output, f 35;
-#X text 228 283 - values from 0 to 1 reads function, f 48;
-#X text 107 376 1) list;
-#X text 228 297 - 3 or more floats set function, f 48;
-#X obj 192 208 else/function~ 1 1 -1;
-#X obj 192 185 nbx 5 14 0 1 0 0 empty empty empty 0 -8 0 10 -228856
+#X text 176 332 signal;
+#X text 226 332 - function output, f 35;
+#X text 228 271 - values from 0 to 1 reads function, f 48;
+#X text 107 364 1) list;
+#X text 228 285 - 3 or more floats set function, f 48;
+#X obj 192 207 else/function~ 1 1 -1;
+#X obj 192 184 nbx 5 14 0 1 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X obj 195 161 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 195 160 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 192 238 else/display~ 8;
-#N canvas 549 146 637 614 example 0;
-#X obj 115 449 else/out~;
-#X msg 189 164 -1 0.5 1 0.5 -1;
-#X msg 162 118 -1 1 1;
-#X msg 176 140 1 1 -1;
-#X obj 77 165 phasor~ 200;
-#X msg 196 192 -1 0.25 1 0.5 1 0.25 -1;
-#X obj 77 143 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 192 232 else/display~ 8;
+#N canvas 549 146 550 551 example 0;
+#X obj 90 414 else/out~;
+#X msg 164 129 -1 0.5 1 0.5 -1;
+#X msg 137 83 -1 1 1;
+#X msg 151 105 1 1 -1;
+#X obj 52 130 phasor~ 200;
+#X msg 171 157 -1 0.25 1 0.5 1 0.25 -1;
+#X obj 52 108 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 209 116 sawtooth;
-#X text 224 138 inverted sawtooth;
-#X text 292 163 triangular wave;
-#X text 346 192 trapezoid;
-#X text 89 33 The [function~] object allows line segments and in any
+#X text 184 81 sawtooth;
+#X text 199 103 inverted sawtooth;
+#X text 267 128 triangular wave;
+#X text 321 157 trapezoid;
+#X text 75 20 The [function~] object allows line segments and in any
 range. Here we use it in the -1 to 1 range to generate waveforms and
 use them as oscillators with a [phasor~] input., f 62;
-#X text 431 276 <== the [function] object is quite convenient for use
+#X text 395 234 <== the [function] object is quite convenient for use
 with [function~]. Check its help file for more info, f 18;
-#X obj 158 373 else/function~ 1 100 -1;
-#X obj 208 247 else/function 200 100 empty empty -1 1 220 220 220 50
+#X obj 133 338 else/function~ 1 100 -1;
+#X obj 183 212 else/function 200 100 empty empty -1 1 220 220 220 50
 50 50 1 0 0 0 -1 1 1;
-#X obj 205 220 else/initmess -1 1 1;
-#X obj 232 415 else/graph~ 441 8 -1.05 1.05 200 140;
+#X obj 180 185 else/initmess -1 1 1;
+#X obj 207 380 else/graph~ 441 8 -1.05 1.05 200 140;
 #X connect 1 0 13 0;
 #X connect 2 0 13 0;
 #X connect 3 0 13 0;
@@ -91,71 +91,67 @@ Input values from 0 to 1 reads the function. It needs an odd number
 of elements in a list \, staring with 3 values \, the syntax is (point1
 \, period \, point2 \, period \, point3 \, etc...). The overall sum
 of periods is normalized to 1!;
-#X text 159 376 - 3 or more floats to set the function (default no
+#X text 159 364 - 3 or more floats to set the function (default no
 functon);
-#X obj 6 405 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 150 413 -exp <list> (default '1' for all segments), f 45;
-#X text 152 311 exp <list>;
-#X text 228 311 - sets exponential values for each line segment, f
+#X obj 6 393 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 150 401 -exp <list> (default '1' for all segments), f 45;
+#X text 152 299 exp <list>;
+#X text 228 299 - sets exponential values for each line segment, f
 48;
-#N canvas 538 187 889 476 exponential 0;
-#X obj 81 325 else/out~;
-#X obj 40 168 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 376 187 854 435 exponential 0;
+#X obj 83 295 else/out~;
+#X obj 42 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 194 296 else/graph~ 441 8 -1.05 1.05 200 140;
-#X obj 40 190 phasor~ 200;
-#X obj 124 243 else/function~ -1 0.5 1 0.5 -1 -exp 2 2, f 30;
-#X obj 479 328 else/out~;
-#X obj 523 151 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 196 266 else/graph~ 441 8 -1.05 1.05 200 140;
+#X obj 42 160 phasor~ 200;
+#X obj 126 213 else/function~ -1 0.5 1 0.5 -1 -exp 2 2, f 30;
+#X obj 457 296 else/out~;
+#X obj 501 109 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 596 294 else/graph~ 441 8 -1.05 1.05 200 140;
-#X text 780 250 parabolic waveform, f 9;
-#X msg 207 211 exp 2 2;
-#X msg 124 187 exp \$1 \$1;
-#X obj 126 142 hsl 128 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 123 164 5 0 0 0 - - -;
-#X text 46 18 The 'exp' message or flag sets exponential factors for
+#X obj 574 266 else/graph~ 441 8 -1.05 1.05 200 140;
+#X text 758 208 parabolic waveform, f 9;
+#X msg 145 179 exp 2 2;
+#X text 38 19 The 'exp' message or flag sets exponential factors for
 each line. By default \, they're "1" (linear). For values >= 0 \, it's
 like raising to the power of the given exponential. Negative values
 are accepted and offer a mirrored/reversed curve. Check below.;
-#X msg 196 188 exp -2 -2;
-#X obj 523 252 else/function~ 0 0.5 1 0.5 0 0.5 -1 0.5 0 -exp -2 -2
+#X msg 136 158 exp -2 -2;
+#X obj 501 210 else/function~ 0 0.5 1 0.5 0 0.5 -1 0.5 0 -exp -2 -2
 2 2, f 41;
-#X obj 619 144 expr -$f1 \; -$f1 \; $f1 \; $f1;
-#X obj 619 201 pack f f f f;
-#X obj 619 223 else/setmess exp;
-#X obj 622 97 hsl 128 15 2 10 1 0 empty empty empty -2 -8 0 10 -228856
+#X obj 597 102 expr -$f1 \; -$f1 \; $f1 \; $f1;
+#X obj 597 159 pack f f f f;
+#X obj 597 181 else/setmess exp;
+#X obj 600 55 hsl 128 15 2 25 1 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 619 121 5 0 0 0 - - -;
-#X obj 523 173 phasor~ 100;
-#X obj 323 102 else/rescale;
-#X obj 323 124 else/rescale~;
-#X text 45 82 The exponential factor is the same as used in [else/rescale]
+#X floatatom 597 79 5 0 0 0 - - -;
+#X obj 501 131 phasor~ 100;
+#X obj 315 103 else/rescale;
+#X obj 315 125 else/rescale~;
+#X text 37 83 The exponential factor is the same as used in [else/rescale]
 and [else/rescale~]. Check them out as well:;
+#X msg 126 137 exp 1 1;
+#X text 470 20 Here's how to create parabolic waveforms:;
 #X connect 1 0 3 0;
 #X connect 3 0 4 0;
 #X connect 4 0 0 0;
 #X connect 4 0 0 1;
 #X connect 4 0 2 0;
-#X connect 6 0 21 0;
+#X connect 6 0 18 0;
 #X connect 9 0 4 0;
-#X connect 10 0 4 0;
-#X connect 11 0 12 0;
-#X connect 12 0 10 0;
-#X connect 14 0 4 0;
-#X connect 15 0 5 0;
-#X connect 15 0 5 1;
-#X connect 15 0 7 0;
+#X connect 11 0 4 0;
+#X connect 12 0 5 0;
+#X connect 12 0 5 1;
+#X connect 12 0 7 0;
+#X connect 13 0 14 0;
+#X connect 13 1 14 1;
+#X connect 13 2 14 2;
+#X connect 13 3 14 3;
+#X connect 14 0 15 0;
+#X connect 15 0 12 0;
 #X connect 16 0 17 0;
-#X connect 16 1 17 1;
-#X connect 16 2 17 2;
-#X connect 16 3 17 3;
-#X connect 17 0 18 0;
-#X connect 18 0 15 0;
-#X connect 19 0 20 0;
-#X connect 20 0 16 0;
-#X connect 21 0 15 0;
+#X connect 17 0 13 0;
+#X connect 18 0 12 0;
+#X connect 22 0 4 0;
 #X restore 449 236 pd exponential;
 #X connect 26 0 29 0;
 #X connect 27 0 26 0;
