@@ -284,6 +284,7 @@ slew	x
 sig2float~	x
 sin~	x
 sine~	x
+slice	x
 slider2d	x
 sort	x
 spectrograph~	x
@@ -296,7 +297,9 @@ status	x
 status~	x
 stepnoise~	x
 stereo.rev~	x
+stream	x
 stretch.shift~	x
+sum	x
 susloop~	x
 suspedal	x
 svfilter~	x
