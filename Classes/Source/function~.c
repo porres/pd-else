@@ -36,11 +36,10 @@ static t_sample function_interpolate(t_function* x, t_sample f){
                 return(point_m1 + (1-pow(1-frac, power)) * dif);
         }
         else{
-            power = 1./fabs(power);
             if(point_m1 < point) // ascending
-                return(point_m1 + (1-pow(1-frac, power)) * dif);
+                return(point_m1 + (1-pow(1-frac, -power)) * dif);
             else // descending` (invert)
-                return(point_m1 + pow(frac, power) * dif);
+                return(point_m1 + pow(frac, -power) * dif);
         }
     }
 }
