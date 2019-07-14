@@ -4,7 +4,7 @@
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-22 (Released july 12th 2019)
+### Version 1.0 beta-23 (Unreleased)
 
 Needs Pd 0.49-0 or above
 
@@ -72,7 +72,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (336 objects):
+##Current Object list (337 objects):
 
 **ASSORTED: [3]**
 - [table~]
@@ -368,7 +368,7 @@ Cross compiling is also possible with something like this
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [23]**
+**CONTROL: [24]**
  - [adsr~]
  - [asr~]
  - [autofade~]
@@ -380,6 +380,7 @@ Cross compiling is also possible with something like this
  - [fader~]
  - [function~]
  - [slew~]
+ - [slew2~]
  - [glide~]
  - [glide2~]
  - [ramp~]

@@ -280,7 +280,8 @@ setdsp~	x
 setmess	x
 sh~	x
 shaper~	x
-slew	x
+slew~	x
+slew2~	x
 sig2float~	x
 sin~	x
 sine~	x
