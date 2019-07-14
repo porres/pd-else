@@ -1,38 +1,39 @@
-#N canvas 597 123 561 519 10;
-#X obj 4 348 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 172 95 565 520 10;
+#X obj 4 349 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 426 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 427 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 459 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 460 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 491 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 492 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 129 435 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 436 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 129 356 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 357 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 191 435 signal;
-#X obj 23 40 cnv 4 4 4 empty empty Linear 0 28 2 18 -233017 -1 0;
-#X obj 83 40 cnv 4 4 4 empty empty glide 0 28 2 18 -233017 -1 0;
-#X obj 129 399 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 191 436 signal;
+#X obj 23 41 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
+#X obj 80 41 cnv 4 4 4 empty empty glide/portamento 0 28 2 18 -233017
+-1 0;
+#X obj 129 400 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 155 399 float/signal;
-#X obj 184 274 else/out~;
-#X obj 227 230 *~;
-#X obj 145 157 else/brown~;
-#X obj 304 227 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 8743 1;
-#X obj 304 199 else/sig2float~;
-#X text 327 320 0;
-#X text 327 221 1;
-#X obj 2 3 cnv 15 301 42 empty empty glide~ 20 20 2 37 -233017 -1 0
+#X text 155 400 float/signal;
+#X obj 184 275 else/out~;
+#X obj 227 231 *~;
+#X obj 145 158 else/brown~;
+#X obj 304 228 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 2620 1;
+#X obj 304 200 else/sig2float~;
+#X text 327 321 0;
+#X text 327 222 1;
+#X obj 2 4 cnv 15 301 42 empty empty glide~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 2 3 graph;
-#X text 240 356 - input signal;
-#X text 239 398 - glide time in ms;
-#X text 240 435 - glided signal;
+#X restore 2 4 graph;
+#X text 240 357 - input signal;
+#X text 239 399 - glide time in ms;
+#X text 240 436 - glided signal;
 #N canvas 699 216 522 312 example 0;
 #X obj 80 143 else/glide~ 1000;
 #X obj 80 185 osc~;
@@ -47,39 +48,39 @@
 #X connect 1 0 2 1;
 #X connect 4 0 7 0;
 #X connect 7 0 0 0;
-#X restore 471 307 pd example;
-#X text 61 86 [glide~] generates a linear glide/portamento from its
-signal input changes. The glide time in ms.;
-#X text 185 465 1) float - glide time in ms (default 0);
-#X obj 242 140 else/pulse~ 0.5;
-#X obj 242 169 else/glide~ 1000;
-#X text 197 374 reset;
-#X text 240 374 - resets glide to input value;
-#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X restore 471 308 pd example;
+#X text 185 466 1) float - glide time in ms (default 0);
+#X obj 242 141 else/pulse~ 0.5;
+#X obj 242 170 else/glide~ 1000;
+#X text 197 375 reset;
+#X text 240 375 - resets glide to input value;
+#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 304 3 pd;
-#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 304 4 pd;
+#X obj 344 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 457 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 457 230 else/glide2~;
-#X text 450 208 see also:;
-#X text 155 356 float/signal;
-#X obj 457 254 else/slew~;
+#X obj 457 231 else/glide2~;
+#X text 450 209 see also:;
+#X text 155 357 float/signal;
+#X obj 457 255 else/slew~;
+#X text 61 90 [glide~] generates a glide/portamento from its signal
+input changes. The glide time in ms.;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 13 0 12 0;
 #X connect 15 0 14 0;
-#X connect 26 0 27 0;
-#X connect 27 0 12 1;
-#X connect 27 0 15 0;
+#X connect 25 0 26 0;
+#X connect 26 0 12 1;
+#X connect 26 0 15 0;

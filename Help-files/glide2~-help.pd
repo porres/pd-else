@@ -1,85 +1,77 @@
-#N canvas 635 50 561 541 10;
-#X obj 4 368 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 446 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 479 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
-0;
-#X obj 6 511 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
-0;
-#X obj 129 455 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 129 376 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X text 191 455 signal;
-#X obj 23 40 cnv 4 4 4 empty empty Exponential 0 28 2 18 -233017 -1
-0;
-#X obj 117 40 cnv 4 4 4 empty empty glide 0 28 2 18 -233017 -1 0;
-#X obj 129 419 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X text 155 419 float/signal;
-#X obj 184 294 else/out~;
-#X obj 227 250 *~;
-#X obj 158 173 else/brown~;
-#X text 240 394 - clears filter's memory;
-#X obj 304 247 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 4180 1;
-#X obj 304 219 else/sig2float~;
-#X text 327 340 0;
-#X text 327 241 1;
-#X obj 2 3 cnv 15 301 42 empty empty glide2~ 20 20 2 37 -233017 -1
-0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1;
-#X restore 2 3 graph;
-#X obj 242 160 else/pulse~ 0.5;
-#X text 240 376 - input signal;
-#X text 239 418 - glide time in ms;
-#X text 240 455 - glided signal;
-#X text 185 485 1) float - glide time in ms (default 1000);
-#N canvas 716 92 505 349 example 0;
-#X obj 80 185 osc~;
-#X obj 80 232 else/out~;
-#X obj 80 54 else/stepnoise~ 1;
-#X obj 80 97 else/rescale~ 200 800;
-#X text 194 53 <= random numbers generated once a second;
-#X text 218 97 <= values rescaled to 200-800 range;
-#X text 190 143 <= values are glided \, generating a portamento;
-#X obj 80 143 else/glide2~ 1000;
-#X connect 0 0 1 0;
-#X connect 0 0 1 1;
-#X connect 2 0 3 0;
-#X connect 3 0 7 0;
-#X connect 7 0 0 0;
-#X restore 463 328 pd example;
-#X text 61 86 [glide2~] is a one pole filter that creates an exponential
-glide/portamento for its signal input changes. The glide time in ms
-is how long it takes for the signal to converge to within 0.01% of
-the target value.;
-#X obj 242 188 else/glide2~ 1000;
-#X text 197 394 reset;
-#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 735 80 562 545 10;
+#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 304 3 pd;
-#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 304 4 pd;
+#X obj 344 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 457 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 155 376 float/signal;
-#X connect 12 0 11 0;
-#X connect 12 0 11 1;
-#X connect 13 0 12 0;
-#X connect 16 0 15 0;
-#X connect 21 0 28 0;
-#X connect 28 0 12 1;
-#X connect 28 0 16 0;
+#X obj 3 518 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 6 343 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 429 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 466 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 96 352 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 97 439 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 182 352 signal;
+#X text 237 352 - incoming signal to smooth out;
+#X text 180 438 signal;
+#X text 169 475 1) float;
+#X text 169 496 2) float;
+#X obj 97 378 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 97 402 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 187 377 float;
+#X text 237 438 - smoothed out/filtered signal;
+#X text 187 401 float;
+#X obj 451 268 else/glide~;
+#X text 449 247 see also:;
+#X obj 491 69 else/setdsp~;
+#X text 236 377 - ramp-up time in ms;
+#X text 237 401 - ramp-down time in ms;
+#X text 237 475 - ramp-up time in ms (default 0);
+#X text 237 496 - ramp-down time in ms (default 0);
+#X obj 155 266 else/out~;
+#X obj 198 222 *~;
+#X obj 116 149 else/brown~;
+#X obj 275 219 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 27 1;
+#X obj 275 191 else/sig2float~;
+#X text 298 312 0;
+#X text 298 213 1;
+#X obj 213 132 else/pulse~ 0.5;
+#X obj 213 160 else/slew~ 1000 500;
+#X text 60 91 [glide2~] is just like [glide~] but has distinct ramp
+times for both up and down.;
+#X obj 23 40 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
+#X obj 80 40 cnv 4 4 4 empty empty glide/portamento 0 28 2 18 -233017
+-1 0;
+#X obj 2 4 cnv 15 301 42 empty empty glide2~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 4 graph;
+#X obj 451 290 else/slew~;
+#X connect 32 0 31 0;
+#X connect 32 0 31 1;
+#X connect 33 0 32 0;
+#X connect 35 0 34 0;
+#X connect 38 0 39 0;
+#X connect 39 0 32 1;
+#X connect 39 0 35 0;
