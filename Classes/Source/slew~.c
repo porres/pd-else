@@ -12,6 +12,7 @@ typedef struct _slew {
     t_outlet   *x_out;
     t_float     x_sr_khz;
     double      x_ynm1;
+    int         x_reset;
 }t_slew;
 
 static t_class *slew_class;
@@ -26,13 +27,19 @@ static t_int *slew_perform(t_int *w){
     t_float sr_khz = x->x_sr_khz;
     while(n--){
         double xn = *in1++, ms = *in2++, a, yn;
-        if (ms <= 0)
-            *out++ = xn;
+        if(x->x_reset){ // reset
+            x->x_reset = 0;
+            *out++ = yn = xn;
+        }
         else{
-            a = exp(LOG001 / (ms * sr_khz));
-            yn = xn + a*(ynm1 - xn);
-            *out++ = yn;
-            ynm1 = yn;
+            if(ms <= 0)
+                *out++ = xn;
+            else{
+                a = exp(LOG001 / (ms * sr_khz));
+                yn = xn + a*(ynm1 - xn);
+                *out++ = yn;
+                ynm1 = yn;
+            }
         }
     }
     x->x_ynm1 = ynm1;
@@ -45,13 +52,14 @@ static void slew_dsp(t_slew *x, t_signal **sp){
 }
 
 static void slew_reset(t_slew *x){
-    x->x_ynm1 = 0.;
+    x->x_reset = 1;
 }
 
 static void *slew_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     t_slew *x = (t_slew *)pd_new(slew_class);
-    float ms = 1000;
+    float ms = 0;
+    x->x_reset = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
     while(argc > 0){

@@ -1,17 +1,17 @@
-#N canvas 402 84 563 535 10;
+#N canvas 635 50 564 561 10;
 #X obj 4 364 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 442 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 460 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 475 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 493 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 507 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 535 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 129 451 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 469 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 129 372 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 191 451 signal;
+#X text 191 469 signal;
 #X obj 23 40 cnv 4 4 4 empty empty Exponential 0 28 2 18 -233017 -1
 0;
 #X obj 117 40 cnv 4 4 4 empty empty slew 0 28 2 18 -233017 -1 0;
@@ -22,10 +22,10 @@
 #X obj 227 250 *~;
 #X obj 148 173 else/brown~;
 #X obj 304 247 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 5635 1;
+-1 -1 1961 1;
 #X text 327 340 0;
 #X text 327 241 1;
-#X obj 2 3 cnv 15 301 42 empty empty slew~ 20 20 2 37 -233017 -1 0
+#X obj 2 3 cnv 15 301 42 empty empty slew2~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -39,13 +39,13 @@
 #X obj 80 97 else/rescale~ 200 800;
 #X text 194 53 <= random numbers generated once a second;
 #X text 218 97 <= values rescaled to 200-800 range;
-#X obj 80 143 else/slew~ 1000;
-#X text 190 143 <= values are slewed \, generating a portamento;
+#X text 210 143 <= values are slewed \, generating a portamento;
+#X obj 80 143 else/slew2~ 1000 500;
 #X connect 0 0 1 0;
 #X connect 0 0 1 1;
 #X connect 2 0 3 0;
-#X connect 3 0 6 0;
-#X connect 6 0 0 0;
+#X connect 3 0 7 0;
+#X connect 7 0 0 0;
 #X restore 463 328 pd example;
 #X text 197 390 reset;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -66,24 +66,29 @@
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X text 155 372 float/signal;
-#X obj 242 188 else/slew~ 1000;
 #X obj 304 219 else/s2f~;
 #X text 240 390 - resets the filter;
-#X text 239 414 - slew time in ms;
-#X text 240 451 - slewed signal;
-#X text 185 481 1) float - slew time in ms (default 0);
-#X text 52 87 [slew~] is a one pole filter that creates an exponential
-glide/portamento for its signal input changes. The slew time in ms
-is how long it takes for the signal to converge to within 0.01% of
-the target value. Note that the rising ramp is different than the descending
-ramp \, unlike [glide~]., f 73;
+#X text 240 469 - slewed signal;
+#X text 52 87 [slew2~] is like [slew~] but has a different time for
+ramp up and ramp down. The slew time in ms is how long it takes for
+the signal to converge to within 0.01% of the target value. Note that
+the rising ramp is different than the descending ramp \, unlike [glide2~].
+, f 73;
+#X obj 242 188 else/slew2~ 1000 500;
+#X obj 129 437 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 155 437 float/signal;
+#X text 239 414 - slew uptime in ms;
+#X text 239 436 - slew downtime in ms;
+#X text 185 499 1) float - slew uptime in ms (default 0);
+#X text 185 514 1) float - slew downtime in ms (default 0);
 #X text 443 223 see also:;
-#X obj 444 269 else/glide~;
-#X obj 445 247 else/slew2~;
+#X obj 445 247 else/slew~;
+#X obj 444 269 else/glide2~;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 13 0 12 0;
-#X connect 19 0 32 0;
-#X connect 32 0 12 1;
-#X connect 32 0 33 0;
-#X connect 33 0 14 0;
+#X connect 19 0 36 0;
+#X connect 32 0 14 0;
+#X connect 36 0 12 1;
+#X connect 36 0 32 0;
