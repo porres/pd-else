@@ -3,6 +3,8 @@
 #include "m_pd.h"
 #include <math.h>
 
+#define LOG001 log(0.001)
+
 typedef struct _asr{
     t_object x_obj;
     t_inlet  *x_inlet_attack;
@@ -13,12 +15,12 @@ typedef struct _asr{
     t_float  x_last;
     t_float  x_target;
     t_float  x_sr_khz;
-    t_outlet  *x_out2;
+    t_outlet *x_out2;
     double   x_incr;
+    int      x_slew;
     int      x_nleft;
     int      x_gate_status;
 } t_asr;
-
 
 static t_class *asr_class;
 
@@ -27,6 +29,10 @@ static void asr_float(t_asr *x, t_floatarg f){
         outlet_float(x->x_out2, x->x_status = 1);
     }
     x->x_f_gate = f;
+}
+
+static void asr_slew(t_asr *x, t_floatarg f){
+    x->x_slew = (int)(f != 0);
 }
 
 static t_int *asr_perform(t_int *w){
@@ -73,23 +79,35 @@ static t_int *asr_perform(t_int *w){
         }
 // "attack / sustain" phase
         if(gate_status){
-            if(nleft > 0){ // "attack" not over
-                *out++ = last += incr;
-                nleft--;
+            if(!x->x_slew){ // linear
+                if(nleft > 0){ // "attack" not over
+                    *out++ = last += incr;
+                    nleft--;
+                }
+                else // "sustain" phase
+                    *out++ = last = target;
             }
-            else // "sustain" phase
-                *out++ = target;
+            else{
+                double a = exp(LOG001 / n_attack);
+                *out++ = last = target + a*(last - target);
+            }
         }
 // "release" phase
         else{
-            if(nleft > 0){ // "release" not over
-                *out++ = last += incr;
-                nleft--;
+            if(!x->x_slew){ // linear
+                if(nleft > 0){ // "release" not over
+                    *out++ = last += incr;
+                    nleft--;
+                }
+                else{ // "release" over
+                    if(status)
+                        outlet_float(x->x_out2, status = 0);
+                    *out++ = last = 0;
+                }
             }
-            else{ // "release" over
-                if(status)
-                    outlet_float(x->x_out2, status = 0);
-                *out++ = 0;
+            else{
+                double a = exp(LOG001 / n_release);
+                *out++ = last = target + a*(last - target);
             }
         }
     };
@@ -108,27 +126,69 @@ static void asr_dsp(t_asr *x, t_signal **sp){
             sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
-static void *asr_new(t_floatarg a, t_floatarg r){
+static void *asr_new(t_symbol *s, int ac, t_atom *av){
     t_asr *x = (t_asr *)pd_new(asr_class);
+    t_symbol *cursym = s; // avoid warning
     x->x_sr_khz = sys_getsr() * 0.001;
     x->x_last = 0.;
     x->x_target = 0.;
     x->x_incr = 0.;
     x->x_nleft = 0;
     x->x_gate_status = 0;
+    x->x_slew = 0;
+    float a = 0, r = 0;
+    int symarg = 0;
+    int argnum = 0;
+    while(ac > 0){
+        if(av->a_type == A_FLOAT && !symarg){
+            float argval = atom_getfloatarg(0, ac, av);
+            switch(argnum){
+                case 0:
+                    a = argval;
+                    break;
+                case 1:
+                    r = argval;
+                    break;
+                default:
+                    break;
+            };
+            argnum++;
+            ac--;
+            av++;
+        }
+        else if(av->a_type == A_SYMBOL){
+            if(!symarg)
+                symarg = 1;
+            cursym = atom_getsymbolarg(0, ac, av);
+            if(cursym == gensym("-slew")){
+                if(ac == 1){
+                    ac--, av++;
+                    x->x_slew = 1;
+                }
+                else goto errstate;
+            }
+            else goto errstate;
+        }
+        else goto errstate;
+    }
     x->x_inlet_attack = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_attack, a);
     x->x_inlet_release = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_release, r);
     outlet_new((t_object *)x, &s_signal);
     x->x_out2 = outlet_new((t_object *)x, &s_float);
-    return (x);
+    return(x);
+errstate:
+    pd_error(x, "[asr~]: improper args");
+    return NULL;
 }
 
 void asr_tilde_setup(void){
     asr_class = class_new(gensym("asr~"), (t_newmethod)asr_new, 0,
-				 sizeof(t_asr), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
+				 sizeof(t_asr), 0, A_GIMME, 0);
     class_addmethod(asr_class, nullfn, gensym("signal"), 0);
     class_addmethod(asr_class, (t_method) asr_dsp, gensym("dsp"), A_CANT, 0);
     class_addfloat(asr_class, (t_method)asr_float);
+    class_addmethod(asr_class, (t_method)asr_slew, gensym("slew"), A_DEFFLOAT, 0);
+    
 }

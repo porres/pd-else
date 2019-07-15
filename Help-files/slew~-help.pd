@@ -22,7 +22,7 @@
 #X obj 227 250 *~;
 #X obj 148 173 else/brown~;
 #X obj 304 247 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 5635 1;
+-1 -1 0 1;
 #X text 327 340 0;
 #X text 327 241 1;
 #X obj 2 3 cnv 15 301 42 empty empty slew~ 20 20 2 37 -233017 -1 0

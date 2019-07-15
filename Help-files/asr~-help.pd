@@ -1,44 +1,44 @@
-#N canvas 421 73 562 583 10;
-#X obj 5 374 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 504 67 565 591 10;
+#X obj 5 346 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 452 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 430 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 510 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 488 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 5 557 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 565 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 130 461 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 108 439 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 130 382 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 108 354 cnv 17 3 32 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 206 461 signal;
+#X text 184 439 signal;
 #X obj 24 40 cnv 4 4 4 empty empty Attack/Sustain/Release 0 28 2 18
 -233017 -1 0;
 #X obj 199 40 cnv 4 4 4 empty empty gated 0 28 2 18 -233017 -1 0;
-#X obj 130 405 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 108 389 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 164 405 float/signal;
-#X obj 148 306 else/out~;
-#X obj 191 262 *~;
-#X obj 268 259 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+#X text 142 389 float/signal;
+#X obj 138 285 else/out~;
+#X obj 181 246 *~;
+#X obj 258 243 vsl 18 90 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
 -1 -1 0 1;
-#X obj 268 231 else/sig2float~;
-#X text 291 349 0;
-#X text 291 255 1;
+#X obj 258 215 else/sig2float~;
+#X text 281 324 0;
+#X text 281 239 1;
 #X obj 3 3 cnv 15 301 42 empty empty asr~ 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 3 graph;
-#X text 165 382 float/signal;
-#X text 260 404 - attack time in ms;
-#X obj 130 426 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X text 143 354 float/signal;
+#X text 238 388 - attack time in ms;
+#X obj 108 409 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 164 426 float/signal;
-#X text 260 425 - release time in ms;
-#X text 260 461 - envelope signal;
-#X text 156 516 1) float - attack time in ms (default 0);
-#X text 156 536 2) float - release time in ms (default 0);
-#X obj 206 170 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 142 409 float/signal;
+#X text 238 408 - release time in ms;
+#X text 238 439 - envelope signal;
+#X text 144 494 1) float - attack time in ms (default 0);
+#X text 144 514 2) float - release time in ms (default 0);
+#X obj 196 154 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 249 40 cnv 4 4 4 empty empty envelope 0 28 2 18 -233017 -1 0
 ;
@@ -59,14 +59,14 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 120 218 osc~ 440;
-#X text 261 382 - gate values;
-#X obj 273 173 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 110 202 osc~ 440;
+#X text 239 354 - gate values;
+#X obj 263 159 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 341 173 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 331 159 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 274 155 attack;
-#X text 343 155 release;
+#X text 264 141 attack;
+#X text 333 141 release;
 #N canvas 506 218 842 467 example 0;
 #X obj 644 160 else/display~ 7;
 #X obj 498 170 else/display~ 7;
@@ -186,16 +186,11 @@ object for managing polyphonic synths.;
 #X connect 32 1 22 1;
 #X connect 33 0 19 0;
 #X connect 34 0 1 0;
-#X restore 475 310 pd example;
-#X obj 206 201 else/asr~ 1000 500, f 23;
-#X text 344 287 see also:;
-#X obj 341 310 else/adsr~;
-#X text 68 86 [asr~] is a linear attack/sustain/release gated envelope.
-At a gate on value (transition from 0 to any value) \, [asr~] goes
-from 0 to that value at the specified attack time in ms. A gate off
-(transition from any value to 0) makes [asr~] go to 0 at the specified
-release time in ms., f 69;
-#X text 166 171 gate;
+#X restore 475 289 pd example;
+#X obj 196 185 else/asr~ 1000 500, f 23;
+#X text 348 260 see also:;
+#X obj 345 283 else/adsr~;
+#X text 156 155 gate;
 #N canvas 610 131 414 421 triggered 0;
 #X obj 195 204 else/display~ 7;
 #X obj 139 331 else/out~;
@@ -218,11 +213,11 @@ gate so you can trigger the envelope.;
 #X connect 6 0 3 1;
 #X connect 8 0 9 0;
 #X connect 9 0 0 0;
-#X restore 457 275 pd triggered \; by impulses;
-#X obj 131 484 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X restore 457 258 pd triggered \; by impulses;
+#X obj 109 462 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 212 484 float;
-#X text 259 484 - envelope status (on: 1 / off: 0);
+#X text 190 462 float;
+#X text 237 462 - envelope status (on: 1 / off: 0);
 #N canvas 549 257 434 440 status 0;
 #X obj 280 329 switch~;
 #X obj 280 261 tgl 50 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
@@ -257,7 +252,7 @@ of a subpatch or abstraction with [switch~].;
 #X connect 13 0 5 0;
 #X connect 13 1 1 0;
 #X connect 14 0 13 0;
-#X restore 481 252 pd status;
+#X restore 481 218 pd status;
 #N canvas 768 211 409 373 fader~ 0;
 #X obj 140 259 *~;
 #X obj 140 294 else/out~;
@@ -280,7 +275,107 @@ linear envelopes from [asr~]'s output.;
 #X connect 6 0 4 0;
 #X connect 7 0 4 0;
 #X connect 8 0 4 0;
-#X restore 481 334 pd fader~;
+#X restore 481 308 pd fader~;
+#X text 143 369 slew <float>;
+#X obj 5 534 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 163 543 -slew: sets to slew mode (defaul \, linear);
+#X text 239 369 - non zero sets to "slew" mode \, "linear" otherwise
+;
+#X text 68 86 [asr~] is an attack/sustain/release gated envelope. At
+a gate on (transition from 0 to any value) \, [asr~] goes from 0 to
+that value at the specified attack time in ms. A gate off (transition
+from any value to 0) makes [asr~] go to 0 at the specified release
+time in ms., f 69;
+#N canvas 591 95 494 456 slew 0;
+#X obj 390 182 else/setdsp~;
+#X obj 349 127 else/slew~;
+#X text 349 106 see also:;
+#X obj 49 287 cnv 15 398 138 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-slew 441 float 1;
+#A 0 0.0384884 0.0754954 0.111078 0.145291 0.178188 0.209818 0.240231
+0.269473 0.29759 0.324624 0.350618 0.375612 0.399644 0.42275 0.444968
+0.46633 0.48687 0.50662 0.525609 0.543868 0.561423 0.578303 0.594534
+0.61014 0.625145 0.639572 0.653445 0.666783 0.679608 0.691939 0.703796
+0.715196 0.726158 0.736698 0.746832 0.756576 0.765945 0.774953 0.783615
+0.791943 0.799951 0.807651 0.815054 0.822172 0.829016 0.835597 0.841925
+0.848009 0.853859 0.859483 0.864892 0.870092 0.875092 0.879899 0.884522
+0.888966 0.89324 0.897349 0.9013 0.905099 0.908751 0.912263 0.91564
+0.918887 0.922009 0.925011 0.927897 0.930672 0.93334 0.935906 0.938373
+0.940745 0.943025 0.945218 0.947327 0.949354 0.951303 0.953178 0.95498
+0.956712 0.958378 0.95998 0.961521 0.963002 0.964426 0.965795 0.967111
+0.968377 0.969594 0.970765 0.97189 0.972972 0.974012 0.975012 0.975974
+0.976899 0.977788 0.978643 0.979465 0.980255 0.981015 0.981746 0.982448
+0.983124 0.983773 0.984398 0.984998 0.985576 0.986131 0.986665 0.987178
+0.987672 0.988146 0.988602 0.989041 0.989463 0.989868 0.990258 0.990633
+0.990994 0.99134 0.991674 0.991994 0.992302 0.992599 0.992883 0.993157
+0.993421 0.993674 0.993917 0.994152 0.994377 0.994593 0.994801 0.995001
+0.995194 0.995379 0.995557 0.995728 0.995892 0.99605 0.996202 0.996348
+0.996489 0.996624 0.996754 0.996879 0.996999 0.997114 0.997226 0.997332
+0.997435 0.997534 0.997629 0.99772 0.997808 0.997892 0.997973 0.998051
+0.998126 0.998198 0.998268 0.998334 0.998398 0.99846 0.998519 0.998576
+0.998631 0.998684 0.998734 0.998783 0.99883 0.998875 0.998918 0.99896
+0.999 0.999038 0.999075 0.999111 0.999145 0.999178 0.99921 0.99924
+0.999269 0.999298 0.999325 0.999351 0.999376 0.9994 0.999423 0.999445
+0.999466 0.999487 0.999507 0.999526 0.999544 0.999561 0.999578 0.999595
+0.99961 0.999625 0.99964 0.999654 0.999667 0.99968 0.999692 0.999704
+0.999715 0.999726 0.999737 0.999747 0.999757 0.999766 0.999775 0.999784
+0.999792 0.9998 0.999808 0.999815 0.999822 0.999829 0.999836 0.999842
+0.999848 0.999854 0.999859 0.999865 0.99987 0.999875 0.99988 0.999884
+0.999889 0.999893 0.999897 0.999901 0.999905 0.999909 0.999912 0.999916
+0.999919 0.999922 0.999925 0.999928 0.999931 0.999933 0.999936 0.999938
+0.999941 0.999943 0.999945 0.999947 0.999949 0.999951 0.999953 0.999955
+0.999957 0.999958 0.99996 0.999961 0.999963 0.999964 0.999966 0.999967
+0.999968 0.999969 0.961482 0.924476 0.888895 0.854683 0.821787 0.790158
+0.759746 0.730505 0.702389 0.675355 0.649362 0.624369 0.600338 0.577232
+0.555015 0.533654 0.513114 0.493365 0.474376 0.456118 0.438563 0.421684
+0.405454 0.389848 0.374844 0.360417 0.346545 0.333207 0.320382 0.308051
+0.296195 0.284795 0.273834 0.263294 0.25316 0.243417 0.234048 0.22504
+0.216378 0.20805 0.200043 0.192344 0.184941 0.177822 0.170978 0.164398
+0.15807 0.151986 0.146137 0.140512 0.135104 0.129904 0.124904 0.120097
+0.115475 0.11103 0.106757 0.102648 0.0986972 0.0948985 0.091246 0.0877341
+0.0843574 0.0811106 0.0779888 0.0749871 0.072101 0.0693259 0.0666577
+0.0640921 0.0616253 0.0592535 0.0569729 0.0547801 0.0526717 0.0506445
+0.0486953 0.0468211 0.045019 0.0432863 0.0416203 0.0400184 0.0384781
+0.0369972 0.0355732 0.0342041 0.0328876 0.0316218 0.0304047 0.0292345
+0.0281093 0.0270274 0.0259872 0.024987 0.0240253 0.0231006 0.0222115
+0.0213566 0.0205346 0.0197443 0.0189843 0.0182537 0.0175511 0.0168756
+0.0162261 0.0156016 0.0150011 0.0144237 0.0138686 0.0133348 0.0128216
+0.0123281 0.0118536 0.0113974 0.0109587 0.0105369 0.0101314 0.00974144
+0.0093665 0.009006 0.00865938 0.00832609 0.00800563 0.00769751 0.00740125
+0.00711638 0.00684249 0.00657913 0.00632591 0.00608244 0.00584833 0.00562324
+0.00540681 0.00519871 0.00499862 0.00480623 0.00462125 0.00444338 0.00427237
+0.00410793 0.00394982 0.0037978 0.00365163 0.00351108 0.00337595 0.00324601
+0.00312108 0.00300095 0.00288545 0.0027744 0.00266761 0.00256494 0.00246622
+0.0023713 0.00228003 0.00219228 0.0021079 0.00202677 0.00194877 0.00187376
+0.00180164 0.0017323 0.00166563 0.00160152 0.00153988 0.00148061 0.00142363
+0.00136883 0.00131615 0.00126549 0.00121679 0.00116995 0.00112492 0.00108163
+0.00104 0.000999969;
+#X coords 0 1 440 0 400 140 1 0 0;
+#X restore 48 286 graph;
+#X obj 148 114 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 84 160 slew \$1;
+#X obj 84 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 161 200 else/asr~ 4 4 -slew;
+#X obj 161 151 else/timed.gate~ 6;
+#X text 47 19 By defqult \, [asr~] is linear \, but it can operate
+in "slew" mode \, which implements a one pole filter \, much like the
+[slew~] object. This is a non-liner/exponential mode that simulates
+how analog gear work. The attack or release time represent how long
+it takes for the signal to converge to within 0.01% of the target value.
+The slew mode is set with the -slew flag or "slew" message., f 65
+;
+#X obj 149 243 tabwrite~ \$0-slew;
+#X connect 5 0 9 0;
+#X connect 5 0 11 0;
+#X connect 6 0 8 0;
+#X connect 7 0 6 0;
+#X connect 8 0 11 0;
+#X connect 9 0 8 0;
+#X restore 492 238 pd slew;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;
