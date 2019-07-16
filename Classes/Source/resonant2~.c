@@ -4,6 +4,7 @@
 #include <math.h>
 
 #define PI M_PI
+#define LOG001 log(0.001)
 
 typedef struct _resonant2 {
     t_object    x_obj;
@@ -45,6 +46,7 @@ static t_int *resonant2_perform(t_int *w){
     while (nblock--){
         double xn = *in1++, f = *in2++, t1 = *in3++, t2 = *in4++;
         double q, omega, alphaQ, cos_w, a0, a2, b0, b1, b2, y1n, y2n;
+        double a = 0, b = 0;
         if (f < 0.000001)
             f = 0.000001;
         if (f > nyq - 0.000001)
@@ -52,6 +54,7 @@ static t_int *resonant2_perform(t_int *w){
         if (t1 <= 0)
             y1n = 0; // attack = 0
         else{
+            a = 1000 * log(1000) / t1;
             q = f * (PI * t1/1000) / log(1000); // t60
             omega = f * PI/nyq;
             alphaQ = sin(omega) / (2*q);
@@ -66,6 +69,7 @@ static t_int *resonant2_perform(t_int *w){
         if (t2 <= 0)
             y2n = xn; // no decay
         else{
+            b = 1000 * log(1000) / t2;
             q = f * (PI * t2/1000) / log(1000); // t60
             omega = f * PI/nyq;
             alphaQ = sin(omega) / (2*q);
@@ -77,7 +81,9 @@ static t_int *resonant2_perform(t_int *w){
             b2 = (alphaQ - 1) / b0;
             y2n = a0 * xn + a2 * x2nm2 + b1 * y2nm1 + b2 * y2nm2;
             }
-        *out++ = y2n - y1n; // decay - attack
+        double t = log(a/b) / (a-b);
+        double n = fabs(1/(exp(-b*t) - exp(-a*t)));
+        *out++ = (y2n - y1n) * n; // decay - attack
         x1nm2 = x1nm1;
         x1nm1 = xn;
         y1nm2 = y1nm1;
@@ -111,6 +117,7 @@ static void resonant2_clear(t_resonant2 *x){
 
 static void *resonant2_new(t_symbol *s, int argc, t_atom *argv){
     t_resonant2 *x = (t_resonant2 *)pd_new(resonant2_class);
+    s = NULL;
     float freq = 0;
     float reson1 = 0;
     float reson2 = 0;
