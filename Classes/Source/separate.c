@@ -45,7 +45,6 @@ static void separate_separator(t_separate *x, t_symbol *s, int argc, t_atom * ar
     if(!argc)
         x->x_separator = gensym(" ");
     else if(argc == 1 && argv->a_type == A_SYMBOL)
-//        x->x_separator = atom_getsymbol(argv)->s_name[0];
         x->x_separator = atom_getsymbolarg(0, argc, argv);
     else
         pd_error(x, "separator message needs to contain only one symbol");
@@ -65,18 +64,21 @@ static void separate_symbol(t_separate *x, t_symbol *s){
         char* newstr = t_getbytes(iptlen * sizeof(*newstr));
         memset(newstr, '\0', iptlen);
         strcpy(newstr,s->s_name);
-        int atompos = 0; // position in atom
         //parsing by token
         char * ret = mtok(newstr, sep);
+        int i = 0;
         while(ret != NULL){
             if(strlen(ret) > 0){
                     t_symbol * cursym = gensym(ret);
-                    SETSYMBOL(&out[atompos], cursym);
-                atompos++; //increment position in atom
+                    SETSYMBOL(&out[i], cursym);
+                i++; //increment position in atom
             };
             ret = mtok(NULL,sep);
         };
-        outlet_anything(((t_object *)x)->ob_outlet, out->a_w.w_symbol, atompos-1, out+1);
+        if(i == 1)
+            outlet_symbol(((t_object *)x)->ob_outlet, out->a_w.w_symbol);
+        else
+            outlet_list(((t_object *)x)->ob_outlet, &s_list, i, out);
         t_freebytes(out, iptlen * sizeof(*out));
         t_freebytes(newstr, iptlen * sizeof(*newstr));
     };
