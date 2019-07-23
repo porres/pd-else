@@ -276,24 +276,19 @@ linear envelopes from [asr~]'s output.;
 #X connect 7 0 4 0;
 #X connect 8 0 4 0;
 #X restore 481 308 pd fader~;
-#X text 143 369 slew <float>;
 #X obj 5 534 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 163 543 -slew: sets to slew mode (defaul \, linear);
-#X text 239 369 - non zero sets to "slew" mode \, "linear" otherwise
-;
 #X text 68 86 [asr~] is an attack/sustain/release gated envelope. At
 a gate on (transition from 0 to any value) \, [asr~] goes from 0 to
 that value at the specified attack time in ms. A gate off (transition
 from any value to 0) makes [asr~] go to 0 at the specified release
 time in ms., f 69;
-#N canvas 275 180 494 456 slew 0;
+#N canvas 275 180 494 456 log 0;
 #X obj 390 182 else/setdsp~;
-#X obj 349 127 else/slew~;
 #X text 349 106 see also:;
 #X obj 49 287 cnv 15 398 138 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array \$0-slew 441 float 1;
+#X array \$0-log 441 float 1;
 #A 0 0.0384884 0.0754954 0.111078 0.145291 0.178188 0.209818 0.240231
 0.269473 0.29759 0.324624 0.350618 0.375612 0.399644 0.42275 0.444968
 0.46633 0.48687 0.50662 0.525609 0.543868 0.561423 0.578303 0.594534
@@ -356,25 +351,30 @@ time in ms., f 69;
 #X restore 48 286 graph;
 #X obj 148 114 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 84 160 slew \$1;
 #X obj 84 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 161 200 else/asr~ 4 4 -slew;
 #X obj 161 151 else/timed.gate~ 6;
-#X obj 149 243 tabwrite~ \$0-slew;
+#X obj 349 127 else/lag~;
+#X obj 161 200 else/asr~ 4 4 -log;
 #X text 47 19 By default \, [asr~] is linear \, but it can operate
-in "slew" mode \, which implements a one pole filter (like in the [slew~]
-object). This is a non-liner/exponential mode that simulates how analog
+in "logarithmic" mode \, which implements a one pole filter (like in
+the [lag~] object). This is a non-liner mode that simulates how analog
 gear work. The attack or release time represent how long it takes for
-the signal to converge to within 0.01% of the target value. The slew
-mode is set with the -slew flag or "slew" message., f 65;
-#X connect 5 0 9 0;
+the signal to converge to within 0.01% of the target value. The log
+mode is set with the -log flag or "log" message., f 65;
+#X msg 84 160 log \$1;
+#X obj 149 243 tabwrite~ \$0-log;
+#X connect 4 0 6 0;
+#X connect 4 0 11 0;
 #X connect 5 0 10 0;
 #X connect 6 0 8 0;
-#X connect 7 0 6 0;
-#X connect 8 0 10 0;
-#X connect 9 0 8 0;
-#X restore 492 238 pd slew;
+#X connect 8 0 11 0;
+#X connect 10 0 8 0;
+#X restore 498 238 pd log;
+#X text 149 369 log <float>;
+#X text 239 369 - non zero sets to "log" mode \, "linear" otherwise
+;
+#X text 163 543 -log: sets to slew mode (defaul \, linear);
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;

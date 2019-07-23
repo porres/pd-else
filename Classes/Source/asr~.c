@@ -17,7 +17,7 @@ typedef struct _asr{
     t_float  x_sr_khz;
     t_outlet *x_out2;
     double   x_incr;
-    int      x_slew;
+    int      x_log;
     int      x_nleft;
     int      x_gate_status;
 } t_asr;
@@ -31,8 +31,8 @@ static void asr_float(t_asr *x, t_floatarg f){
     x->x_f_gate = f;
 }
 
-static void asr_slew(t_asr *x, t_floatarg f){
-    x->x_slew = (int)(f != 0);
+static void asr_log(t_asr *x, t_floatarg f){
+    x->x_log = (int)(f != 0);
 }
 
 static t_int *asr_perform(t_int *w){
@@ -79,7 +79,7 @@ static t_int *asr_perform(t_int *w){
         }
 // "attack / sustain" phase
         if(gate_status){
-            if(!x->x_slew){ // linear
+            if(!x->x_log){ // linear
                 if(nleft > 0){ // "attack" not over
                     *out++ = last += incr;
                     nleft--;
@@ -94,7 +94,7 @@ static t_int *asr_perform(t_int *w){
         }
 // "release" phase
         else{
-            if(!x->x_slew){ // linear
+            if(!x->x_log){ // linear
                 if(nleft > 0){ // "release" not over
                     *out++ = last += incr;
                     nleft--;
@@ -135,7 +135,7 @@ static void *asr_new(t_symbol *s, int ac, t_atom *av){
     x->x_incr = 0.;
     x->x_nleft = 0;
     x->x_gate_status = 0;
-    x->x_slew = 0;
+    x->x_log = 0;
     float a = 0, r = 0;
     int symarg = 0;
     int argnum = 0;
@@ -160,10 +160,10 @@ static void *asr_new(t_symbol *s, int ac, t_atom *av){
             if(!symarg)
                 symarg = 1;
             cursym = atom_getsymbolarg(0, ac, av);
-            if(cursym == gensym("-slew")){
+            if(cursym == gensym("-log")){
                 if(ac == 1){
                     ac--, av++;
-                    x->x_slew = 1;
+                    x->x_log = 1;
                 }
                 else goto errstate;
             }
@@ -189,6 +189,6 @@ void asr_tilde_setup(void){
     class_addmethod(asr_class, nullfn, gensym("signal"), 0);
     class_addmethod(asr_class, (t_method) asr_dsp, gensym("dsp"), A_CANT, 0);
     class_addfloat(asr_class, (t_method)asr_float);
-    class_addmethod(asr_class, (t_method)asr_slew, gensym("slew"), A_DEFFLOAT, 0);
+    class_addmethod(asr_class, (t_method)asr_log, gensym("log"), A_DEFFLOAT, 0);
     
 }

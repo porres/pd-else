@@ -21,7 +21,7 @@
 #X obj 114 300 else/out~;
 #X obj 157 263 *~;
 #X obj 225 268 vsl 18 80 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 3950 1;
+-1 -1 0 1;
 #X obj 225 241 else/sig2float~;
 #X text 248 341 0;
 #X text 248 264 1;
@@ -87,7 +87,7 @@ amplitude.;
 #X text 88 344 see also:;
 #N canvas 179 291 434 315 voice1 0;
 #X obj 73 46 inlet;
-#X obj 313 163 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 313 163 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 313 215 switch~;
 #X obj 163 219 *~;
@@ -231,7 +231,7 @@ gate so you can trigger the envelope with an impulse., f 54;
 #X connect 7 0 9 0;
 #X connect 9 0 5 0;
 #X restore 466 271 pd triggered \; by impulses;
-#X obj 391 233 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 391 233 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 391 260 else/display;
 #X obj 95 536 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
@@ -358,19 +358,23 @@ linear envelopes from [adsr~]'s output.;
 #X connect 7 0 4 0;
 #X connect 8 0 4 0;
 #X restore 490 326 pd fader~;
-#X text 163 643 -slew: sets to slew mode (defaul \, linear);
 #X obj 5 633 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 131 397 slew <float>;
 #X text 227 397 - non zero sets to "slew" mode \, "linear" otherwise
 ;
-#N canvas 591 95 494 456 slew 0;
+#X text 68 88 [adsr~] is an attack/decay/sustain/release gated envelope.
+At a gate on (transition from 0 to any value) \, the attack ramp is
+generated \, then a decay ramp goes to the sustain point (specified
+as a ratio of the gate value). A gate off (transition from any value
+to 0) makes [adsr~] go to 0 at the specified release time in ms.,
+f 68;
+#N canvas 591 95 494 456 log 1;
 #X obj 390 182 else/setdsp~;
-#X obj 349 127 else/slew~;
 #X text 349 106 see also:;
 #X obj 49 287 cnv 15 398 138 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array \$0-slew 441 float 1;
+#X array \$0-log 441 float 1;
 #A 0 0.099372 0.188869 0.269473 0.342067 0.407447 0.46633 0.519362
 0.567124 0.61014 0.648881 0.683772 0.715196 0.743498 0.768987 0.791943
 0.812618 0.831239 0.848009 0.863112 0.876715 0.888966 0.9 0.909937
@@ -426,32 +430,27 @@ linear envelopes from [adsr~]'s output.;
 #X restore 48 286 graph;
 #X obj 148 114 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 84 160 slew \$1;
 #X obj 84 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 161 151 else/timed.gate~ 6;
-#X obj 149 243 tabwrite~ \$0-slew;
+#X obj 161 200 else/adsr~ 1.5 2 0.5 4 -log;
+#X obj 349 127 else/lag~;
+#X msg 84 160 log \$1;
+#X obj 149 243 tabwrite~ \$0-log;
 #X text 47 19 By defqult \, [adsr~] is linear \, but it can operate
-in "slew" mode \, which implements a one pole filter \, much like the
-[slew~] object. This is a non-liner/exponential mode that simulates
-how analog gear work. The attack or release time represent how long
-it takes for the signal to converge to within 0.01% of the target value.
-The slew mode is set with the -slew flag or "slew" message., f 65
-;
-#X obj 161 200 else/adsr~ 1.5 2 0.5 4 -slew;
-#X connect 5 0 8 0;
+in "log" mode \, which implements a one pole filter \, much like the
+[lag~] object. This is a non-liner mode that simulates how analog gear
+work. The attack or release time represent how long it takes for the
+signal to converge to within 0.01% of the target value. The log mode
+is set with the -log flag or "log" message., f 65;
+#X connect 4 0 6 0;
+#X connect 4 0 10 0;
 #X connect 5 0 9 0;
-#X connect 6 0 11 0;
-#X connect 7 0 6 0;
-#X connect 8 0 11 0;
-#X connect 11 0 9 0;
-#X restore 501 229 pd slew;
-#X text 68 88 [adsr~] is an attack/decay/sustain/release gated envelope.
-At a gate on (transition from 0 to any value) \, the attack ramp is
-generated \, then a decay ramp goes to the sustain point (specified
-as a ratio of the gate value). A gate off (transition from any value
-to 0) makes [adsr~] go to 0 at the specified release time in ms.,
-f 68;
+#X connect 6 0 7 0;
+#X connect 7 0 10 0;
+#X connect 9 0 7 0;
+#X restore 508 229 pd log;
+#X text 163 643 -log: sets to log mode (default \, linear);
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;
