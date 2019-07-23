@@ -39,7 +39,7 @@ static t_int *slew2_perform(t_int *w){
             if(xn >= ynm1)
                 a = ms_up > 0 ? exp(LOG001 / (ms_up * sr_khz)) : 0;
             else
-                a = ms_up > 0 ? exp(LOG001 / (ms_down * sr_khz)) : 0;
+                a = ms_down > 0 ? exp(LOG001 / (ms_down * sr_khz)) : 0;
             if(a == 0)
                 *out++ = yn = xn;
             else
