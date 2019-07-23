@@ -1,4 +1,4 @@
-#N canvas 402 84 563 535 10;
+#N canvas 381 94 563 535 10;
 #X obj 4 364 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 442 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -20,9 +20,9 @@
 #X text 155 415 float/signal;
 #X obj 184 294 else/out~;
 #X obj 227 250 *~;
-#X obj 148 173 else/brown~;
+#X obj 151 192 else/brown~;
 #X obj 304 247 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 0 1;
+-1 -1 64 1;
 #X text 327 340 0;
 #X text 327 241 1;
 #X obj 2 3 cnv 15 301 42 empty empty slew~ 20 20 2 37 -233017 -1 0
@@ -30,7 +30,7 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 242 160 else/pulse~ 0.5;
+#X obj 242 164 else/pulse~ 0.5;
 #X text 240 372 - input signal;
 #N canvas 716 92 505 349 example 0;
 #X obj 80 185 osc~;
@@ -66,20 +66,42 @@
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X text 155 372 float/signal;
-#X obj 242 188 else/slew~ 1000;
+#X obj 242 192 else/slew~ 1000;
 #X obj 304 219 else/s2f~;
 #X text 240 390 - resets the filter;
 #X text 239 414 - slew time in ms;
 #X text 240 451 - slewed signal;
 #X text 185 481 1) float - slew time in ms (default 0);
+#X text 443 223 see also:;
+#X obj 444 269 else/glide~;
+#X obj 445 247 else/slew2~;
 #X text 52 87 [slew~] is a one pole filter that creates an exponential
 glide/portamento for its signal input changes. The slew time in ms
 is how long it takes for the signal to converge to within 0.01% of
 the target value. Note that the rising ramp is different than the descending
-ramp \, unlike [glide~]., f 73;
-#X text 443 223 see also:;
-#X obj 444 269 else/glide~;
-#X obj 445 247 else/slew2~;
+ramp \, unlike [glide~]. the same kind of filter is used in other objects
+from the ELSE library (decay~/asr~/adsr~)., f 73;
+#N canvas 553 279 542 313 rpole~ 0;
+#X obj 145 225 rpole~;
+#X floatatom 151 110 5 0 1000 0 - - -;
+#X obj 178 171 expr exp(ln(0.001) / ($f1 * $f2));
+#X text 57 109 decay time (ms);
+#X floatatom 178 198 0 0 0 0 - - -;
+#X text 66 198 filter coefficient;
+#X obj 373 141 else/sr~ -khz;
+#X text 122 32 This is how to implement the one pole filter with [rpole~].
+Or better \, how to convert the time in ms to a filter coefficient
+to be used in [rpole~]., f 50;
+#X obj 151 138 sel 0;
+#X msg 151 171 0, f 2;
+#X connect 1 0 8 0;
+#X connect 2 0 4 0;
+#X connect 4 0 0 1;
+#X connect 6 0 2 1;
+#X connect 8 0 9 0;
+#X connect 8 1 2 0;
+#X connect 9 0 4 0;
+#X restore 469 307 pd rpole~;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 13 0 12 0;

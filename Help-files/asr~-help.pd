@@ -1,4 +1,4 @@
-#N canvas 504 67 565 591 10;
+#N canvas 420 37 565 591 10;
 #X obj 5 346 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 430 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -286,7 +286,7 @@ a gate on (transition from 0 to any value) \, [asr~] goes from 0 to
 that value at the specified attack time in ms. A gate off (transition
 from any value to 0) makes [asr~] go to 0 at the specified release
 time in ms., f 69;
-#N canvas 591 95 494 456 slew 0;
+#N canvas 275 180 494 456 slew 0;
 #X obj 390 182 else/setdsp~;
 #X obj 349 127 else/slew~;
 #X text 349 106 see also:;
@@ -361,19 +361,18 @@ time in ms., f 69;
 1;
 #X obj 161 200 else/asr~ 4 4 -slew;
 #X obj 161 151 else/timed.gate~ 6;
-#X text 47 19 By defqult \, [asr~] is linear \, but it can operate
-in "slew" mode \, which implements a one pole filter \, much like the
-[slew~] object. This is a non-liner/exponential mode that simulates
-how analog gear work. The attack or release time represent how long
-it takes for the signal to converge to within 0.01% of the target value.
-The slew mode is set with the -slew flag or "slew" message., f 65
-;
 #X obj 149 243 tabwrite~ \$0-slew;
+#X text 47 19 By default \, [asr~] is linear \, but it can operate
+in "slew" mode \, which implements a one pole filter (like in the [slew~]
+object). This is a non-liner/exponential mode that simulates how analog
+gear work. The attack or release time represent how long it takes for
+the signal to converge to within 0.01% of the target value. The slew
+mode is set with the -slew flag or "slew" message., f 65;
 #X connect 5 0 9 0;
-#X connect 5 0 11 0;
+#X connect 5 0 10 0;
 #X connect 6 0 8 0;
 #X connect 7 0 6 0;
-#X connect 8 0 11 0;
+#X connect 8 0 10 0;
 #X connect 9 0 8 0;
 #X restore 492 238 pd slew;
 #X connect 12 0 11 0;

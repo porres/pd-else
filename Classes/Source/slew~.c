@@ -1,4 +1,4 @@
-// Porres 2017
+// Porres 2019
 
 #include "m_pd.h"
 #include <math.h>
@@ -23,22 +23,20 @@ static t_int *slew_perform(t_int *w){
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
     t_float *out = (t_float *)(w[5]);
-    double ynm1 = x->x_ynm1;
     t_float sr_khz = x->x_sr_khz;
+    double ynm1 = x->x_ynm1;
     while(n--){
-        double xn = *in1++, ms = *in2++, a, yn;
+        double xn = *in1++, ms = *in2++;
         if(x->x_reset){ // reset
             x->x_reset = 0;
-            *out++ = yn = xn;
+            *out++ = ynm1 = xn;
         }
         else{
             if(ms <= 0)
-                *out++ = xn;
+                *out++ = ynm1 = xn;
             else{
-                a = exp(LOG001 / (ms * sr_khz));
-                yn = xn + a*(ynm1 - xn);
-                *out++ = yn;
-                ynm1 = yn;
+                double a = exp(LOG001 / (ms * sr_khz));
+                *out++ = ynm1 = xn + a*(ynm1 - xn);
             }
         }
     }
@@ -55,42 +53,18 @@ static void slew_reset(t_slew *x){
     x->x_reset = 1;
 }
 
-static void *slew_new(t_symbol *s, int argc, t_atom *argv){
-    s = NULL;
+static void *slew_new(t_floatarg f){
     t_slew *x = (t_slew *)pd_new(slew_class);
-    float ms = 0;
     x->x_reset = 0;
-/////////////////////////////////////////////////////////////////////////////////////
-    int argnum = 0;
-    while(argc > 0){
-        if(argv -> a_type == A_FLOAT){ //if current argument is a float
-            t_float argval = atom_getfloatarg(0, argc, argv);
-            switch(argnum){
-                case 0:
-                    ms = argval;
-                default:
-                    break;
-            };
-            argnum++;
-            argc--;
-            argv++;
-        }
-        else
-                goto errstate;
-    };
-/////////////////////////////////////////////////////////////////////////////////////
     x->x_inlet_ms = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_ms, ms);
+    pd_float((t_pd *)x->x_inlet_ms, f);
     x->x_out = outlet_new((t_object *)x, &s_signal);
     return(x);
-errstate:
-    pd_error(x, "[slew~]: improper args");
-    return NULL;
 }
 
 void slew_tilde_setup(void){
     slew_class = class_new(gensym("slew~"), (t_newmethod)slew_new, 0,
-            sizeof(t_slew), 0, A_GIMME, 0);
+            sizeof(t_slew), 0, A_DEFFLOAT, 0);
     CLASS_MAINSIGNALIN(slew_class, t_slew, x_in);
     class_addmethod(slew_class, (t_method)slew_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(slew_class, (t_method)slew_reset, gensym("reset"), 0);
