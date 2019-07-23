@@ -1,6 +1,6 @@
-#N struct 1356-cell float x float y float cellsize float color;
-#N struct 1363-point float x0 float y0 float s;
-#N struct 1379-slot float x float y float slotsize float color float
+#N struct 1789-cell float x float y float cellsize float color;
+#N struct 1796-point float x0 float y0 float s;
+#N struct 1812-slot float x float y float slotsize float color float
 width float bordercolor;
 #N canvas 598 118 574 422 10;
 #X text 56 75 Assorted:;
@@ -405,7 +405,6 @@ width float bordercolor;
 #X text 48 4536 Audio Processing (dynamics):;
 #X obj 48 4592 else/duck~;
 #X text 51 3937 Audio Processing (assorted):;
-#X obj 53 8226 else/slew~;
 #X obj 56 153 else/meter;
 #X text 53 18 ALL OBJECTS IN THE ELSE LIBRARY:;
 #X obj 58 9837 else/output~;
@@ -444,4 +443,5 @@ width float bordercolor;
 #X obj 53 786 else/sum;
 #X obj 53 834 else/stream;
 #X obj 53 810 else/slice;
-#X obj 53 8252 else/slew2~;
+#X obj 53 8226 else/lag~;
+#X obj 53 8252 else/lag2~;
