@@ -22,7 +22,7 @@
 #X obj 227 231 *~;
 #X obj 145 158 else/brown~;
 #X obj 304 228 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 8554 1;
+-1 -1 7568 1;
 #X obj 304 200 else/sig2float~;
 #X text 327 321 0;
 #X text 327 222 1;
@@ -74,7 +74,6 @@
 #X obj 457 211 else/glide2~;
 #X text 450 189 see also:;
 #X text 155 357 float/signal;
-#X obj 457 235 else/slew~;
 #X text 61 90 [glide~] generates a glide/portamento from its signal
 input changes. The glide time in ms.;
 #N canvas 410 147 532 514 exponential 0;
@@ -177,6 +176,7 @@ input changes. The glide time in ms.;
 linear);
 #X text 161 391 exp <float>;
 #X text 240 391 - sets exponential factor;
+#X obj 457 235 else/lag~;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 13 0 12 0;

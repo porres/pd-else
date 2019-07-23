@@ -5,7 +5,7 @@
 
 #define LOG001 log(0.001)
 
-typedef struct _slew {
+typedef struct _lag{
     t_object    x_obj;
     t_float     x_in;
     t_inlet    *x_inlet_ms;
@@ -13,12 +13,12 @@ typedef struct _slew {
     t_float     x_sr_khz;
     double      x_ynm1;
     int         x_reset;
-}t_slew;
+}t_lag;
 
-static t_class *slew_class;
+static t_class *lag_class;
 
-static t_int *slew_perform(t_int *w){
-    t_slew *x = (t_slew *)(w[1]);
+static t_int *lag_perform(t_int *w){
+    t_lag *x = (t_lag *)(w[1]);
     int n = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
@@ -44,17 +44,17 @@ static t_int *slew_perform(t_int *w){
     return(w+6);
 }
 
-static void slew_dsp(t_slew *x, t_signal **sp){
+static void lag_dsp(t_lag *x, t_signal **sp){
     x->x_sr_khz = sp[0]->s_sr * 0.001;
-    dsp_add(slew_perform, 5, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
+    dsp_add(lag_perform, 5, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
 }
 
-static void slew_reset(t_slew *x){
+static void lag_reset(t_lag *x){
     x->x_reset = 1;
 }
 
-static void *slew_new(t_floatarg f){
-    t_slew *x = (t_slew *)pd_new(slew_class);
+static void *lag_new(t_floatarg f){
+    t_lag *x = (t_lag *)pd_new(lag_class);
     x->x_reset = 0;
     x->x_inlet_ms = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_ms, f);
@@ -62,10 +62,10 @@ static void *slew_new(t_floatarg f){
     return(x);
 }
 
-void slew_tilde_setup(void){
-    slew_class = class_new(gensym("slew~"), (t_newmethod)slew_new, 0,
-            sizeof(t_slew), 0, A_DEFFLOAT, 0);
-    CLASS_MAINSIGNALIN(slew_class, t_slew, x_in);
-    class_addmethod(slew_class, (t_method)slew_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(slew_class, (t_method)slew_reset, gensym("reset"), 0);
+void lag_tilde_setup(void){
+    lag_class = class_new(gensym("lag~"), (t_newmethod)lag_new, 0,
+            sizeof(t_lag), 0, A_DEFFLOAT, 0);
+    CLASS_MAINSIGNALIN(lag_class, t_lag, x_in);
+    class_addmethod(lag_class, (t_method)lag_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(lag_class, (t_method)lag_reset, gensym("reset"), 0);
 }
