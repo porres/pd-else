@@ -30,7 +30,7 @@ void * rint_new(void){
 }
 
 void rint_tilde_setup(void) {
-    rint_class = class_new(gensym("int~"),
+    rint_class = class_new(gensym("rint~"),
         (t_newmethod) rint_new, 0, sizeof(t_rint), 0, 0);
     class_addmethod(rint_class, nullfn, gensym("signal"), 0);
     class_addmethod(rint_class, (t_method)rint_dsp, gensym("dsp"), A_CANT, 0);

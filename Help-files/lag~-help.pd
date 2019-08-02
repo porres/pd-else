@@ -1,4 +1,4 @@
-#N canvas 381 94 564 535 10;
+#N canvas 674 23 564 535 10;
 #X obj 4 364 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 442 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -22,7 +22,7 @@
 #X obj 227 250 *~;
 #X obj 151 192 else/brown~;
 #X obj 304 247 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 9796 1;
+-1 -1 0 1;
 #X text 327 340 0;
 #X text 327 241 1;
 #X obj 1 3 cnv 15 301 42 empty empty lag~ 20 20 2 37 -233017 -1 0;
