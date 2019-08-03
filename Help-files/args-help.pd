@@ -1,4 +1,4 @@
-#N canvas 499 110 563 399 10;
+#N canvas 2856 205 563 399 10;
 #X obj 25 41 cnv 4 4 4 empty empty Manage 0 28 2 18 -233017 -1 0;
 #X obj 90 41 cnv 4 4 4 empty empty arguments 0 28 2 18 -233017 -1 0
 ;
@@ -72,7 +72,7 @@ help patch), f 47;
 change them. It is useful for the management of variable number of
 arguments in abstractions \, and also to change/set them up.;
 #X text 154 269 anything - sets new arguments;
-#N canvas 458 265 833 404 example 0;
+#N canvas 2822 236 833 404 example 0;
 #X obj 92 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 92 225 else/display;
@@ -87,93 +87,6 @@ is a very simple example on how it works.;
 -1 -1;
 #X obj 543 255 else/display;
 #X msg 573 168 1 2 3;
-#N canvas 572 23 708 707 load_args 0;
-#X obj 380 295 makefilename $%d;
-#X obj 294 371 pack f \$0;
-#X text 192 79 Maximum attempts, f 8;
-#X obj 506 382 send pd-\$0-test_arg;
-#X msg 380 326 obj 37 135 list append \$1, f 14;
-#X obj 59 101 r \$0-noarg;
-#X obj 206 219 select;
-#X obj 294 263 trigger float float float;
-#X msg 151 85 4096;
-#X text 257 87 (that might be engouh);
-#X obj 506 289 makefilename $%d-test;
-#N canvas 344 339 309 232 \$0-test_arg 0;
-#X obj 10 60 symbol \$1-test;
-#X obj 133 60 makefilename $%d-test;
-#X obj 37 135 list append \$1;
-#X obj 10 10 r 1069-i;
-#X obj 10 35 trigger bang float;
-#X obj 10 85 sel s;
-#X obj 37 110 b;
-#X obj 37 160 s 1069-arg;
-#X obj 10 185 s 1069-noarg;
-#X connect 0 0 5 0;
-#X connect 1 0 5 1;
-#X connect 2 0 7 0;
-#X connect 3 0 4 0;
-#X connect 4 0 0 0;
-#X connect 4 1 1 0;
-#X connect 5 0 8 0;
-#X connect 5 1 6 0;
-#X connect 6 0 2 0;
-#X restore 498 178 pd \$0-test_arg;
-#X obj 55 417 r \$0-arg;
-#X text 198 651 list of arguments, f 9;
-#X msg 294 424 \; pd-\$2-test_arg obj 10 10 r \$2-i \; pd-\$2-test_arg
-obj 10 35 trigger bang float \; pd-\$2-test_arg obj 10 85 sel s \;
-pd-\$2-test_arg obj 37 110 b \; pd-\$2-test_arg obj 37 160 s \$2-arg
-\; pd-\$2-test_arg obj 10 185 s \$2-noarg \; pd-\$2-test_arg connect
-3 0 4 0 \; pd-\$2-test_arg connect 4 1 1 0 \; pd-\$2-test_arg connect
-4 0 0 0 \; pd-\$2-test_arg connect 1 0 5 1 \; pd-\$2-test_arg connect
-0 0 5 0 \; pd-\$2-test_arg connect 5 1 6 0 \; pd-\$2-test_arg connect
-6 0 2 0 \; pd-\$2-test_arg connect 2 0 7 0 \; pd-\$2-test_arg connect
-5 0 8 0 \; \$2-i \$1 \;;
-#X msg 506 316 clear \, obj 10 60 symbol \$1 \, obj 133 60 makefilename
-$%d-test, f 27;
-#X obj 137 658 outlet;
-#X obj 151 157 until;
-#X obj 206 189 + 1;
-#X msg 207 148 0;
-#X obj 151 188 float;
-#X obj 151 55 inlet;
-#X obj 137 494 list store;
-#X msg 55 448 append \$1;
-#X obj 151 123 trigger float bang float bang;
-#X connect 0 0 4 0;
-#X connect 1 0 14 0;
-#X connect 4 0 3 0;
-#X connect 5 0 17 1;
-#X connect 5 0 22 0;
-#X connect 6 0 22 0;
-#X connect 6 1 7 0;
-#X connect 7 0 1 0;
-#X connect 7 1 0 0;
-#X connect 7 2 10 0;
-#X connect 8 0 24 0;
-#X connect 10 0 15 0;
-#X connect 12 0 23 0;
-#X connect 15 0 3 0;
-#X connect 17 0 20 0;
-#X connect 18 0 20 1;
-#X connect 18 0 6 0;
-#X connect 19 0 20 1;
-#X connect 20 0 18 0;
-#X connect 21 0 8 0;
-#X connect 22 0 16 0;
-#X connect 23 0 22 0;
-#X connect 24 0 17 0;
-#X connect 24 1 19 0;
-#X connect 24 2 6 1;
-#X connect 24 3 22 1;
-#X restore 51 341 pd load_args;
-#X text 137 340 <==;
-#X text 165 333 put this subpatch in your abstraction to load arguments
-, f 29;
-#X text 24 278 If you were hoping for a vanilla solution to load arguments
-\, Below there's a subpatch that does that! Just copy and paste it
-into your abstraction:;
 #X text 452 311 Note that you can have [else/args] anywhere inside
 an abstraction \, like deep buried inside many layers of subpatches.
 ;
@@ -185,12 +98,16 @@ to [args] \, it'll change the arguments to it. You can query the new
 arguments right away with a bang message and if you close and reopen
 this subpacth \, you'll see the new arguments. If you savew the patch
 \, the new arguments are saved with the patch.;
-#X connect 0 0 15 0;
-#X connect 6 0 14 0;
-#X connect 8 0 14 0;
-#X connect 14 0 7 0;
-#X connect 15 0 1 0;
-#X connect 16 0 14 0;
+#X text 62 298 Note that as of Pd 0.5 \, there's a vanilla solution
+to load arguments \, with the new [pdcontrol] object. Check it out.
+, f 42;
+#X obj 234 353 pdcontrol;
+#X connect 0 0 11 0;
+#X connect 6 0 10 0;
+#X connect 8 0 10 0;
+#X connect 10 0 7 0;
+#X connect 11 0 1 0;
+#X connect 12 0 10 0;
 #X restore 466 191 pd example;
 #X text 161 352 1) symbol - break character (default none);
 #X connect 16 0 22 0;

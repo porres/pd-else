@@ -1,4 +1,4 @@
-#N canvas 482 247 593 430 10;
+#N canvas 652 205 593 430 10;
 #X obj 86 353 outlet;
 #X obj 86 94 inlet;
 #X text 120 31 This is an example of an abstraction with [else/args]
@@ -12,7 +12,7 @@
 #X text 342 315 <= broken list of arguments;
 #X text 330 159 Breaks the argument list if the first character is
 '-'., f 28;
-#X obj 86 134 trigger bang bang;
+#X obj 86 134 trigger anything anything;
 #X connect 1 0 11 0;
 #X connect 3 0 4 0;
 #X connect 4 0 0 0;
