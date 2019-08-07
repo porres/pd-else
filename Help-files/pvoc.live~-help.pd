@@ -1,4 +1,4 @@
-#N canvas 690 154 562 522 10;
+#N canvas 690 154 561 581 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -23,59 +23,59 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 187 228 else/out~;
-#X obj 248 148 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 152 278 else/out~;
+#X obj 229 172 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 326 148 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 284 198 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 4 496 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 546 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 6 293 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 6 343 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 393 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 443 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 430 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 480 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 130 403 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 130 453 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 130 302 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 130 352 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 130 325 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 130 375 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 130 348 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 130 398 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
 #X obj 102 40 cnv 4 4 4 empty empty Time-Stretch 0 28 2 18 -233017
 -1 0;
-#X text 250 130 speed (%);
-#X text 341 128 cents;
-#X text 476 210 see also:;
-#X text 175 303 signal - audio signal input, f 51;
-#X text 181 326 float - sets speed, f 50;
-#X obj 130 370 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X text 297 170 speed (%);
+#X text 353 197 cents;
+#X text 476 260 see also:;
+#X text 175 353 signal - audio signal input, f 51;
+#X text 181 376 float - sets speed, f 50;
+#X obj 130 420 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 181 349 float - sets transposition in cents, f 50;
-#X text 187 370 bang - resets to the beggining of the delay line,
+#X text 181 399 float - sets transposition in cents, f 50;
+#X text 187 420 bang - resets to the beggining of the delay line,
 f 49;
-#X text 52 88 [stretch~] is like [gran.player~] \, but for live input.
+#X text 148 507 2) float - sets playing speed (default 100), f 61
+;
+#X text 148 523 3) float - sets transposition in cents (default 0)
+, f 61;
+#X obj 174 141 else/play.file~ 1 violin.wav 1 1;
+#X obj 339 221 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 361 220 <= reset;
+#X text 175 454 signal - processed output;
+#X obj 174 243 else/pvoc.live~ 6000 50 -600;
+#X text 148 489 1) float - sets buffer size in ms (obrigatory \, no
+default), f 61;
+#X obj 429 284 else/pvoc.player~;
+#X obj 418 306 else/stretch.shift~;
+#X text 52 88 [pvoc.live~] is like [pvoc.player~] \, but for live input.
 It provides independent time stretching and pitch shifting via granulation.
 , f 69;
-#X text 148 457 2) float - sets playing speed (default 100), f 61
-;
-#X text 148 473 3) float - sets transposition in cents (default 0)
-, f 61;
-#X obj 127 137 else/play.file~ 1 violin.wav 1 1, f 16;
-#X obj 374 171 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 396 175 <= reset;
-#X text 175 404 signal - processed output;
-#X obj 209 193 else/pvoc.live~ 6000 50 -600;
-#X text 148 439 1) float - sets buffer size in ms (obrigatory \, no
-default), f 61;
-#X obj 429 234 else/pvoc.player~;
-#X obj 418 256 else/stretch.shift~;
-#X connect 12 0 38 1;
-#X connect 13 0 38 2;
-#X connect 34 0 38 0;
-#X connect 35 0 38 3;
-#X connect 38 0 11 0;
-#X connect 38 0 11 1;
+#X connect 12 0 37 1;
+#X connect 13 0 37 2;
+#X connect 33 0 37 0;
+#X connect 34 0 37 3;
+#X connect 37 0 11 0;
+#X connect 37 0 11 1;
