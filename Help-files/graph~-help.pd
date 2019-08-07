@@ -1,4 +1,4 @@
-#N canvas 719 138 558 545 10;
+#N canvas 787 23 558 545 10;
 #X obj 1 518 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 1 319 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -155,24 +155,24 @@ for visualizing audio signals.;
 -1 -1 441 256;
 #X msg 330 139 size \$1;
 #X obj 356 177 nbx 5 14 0 100 0 1 empty empty empty 0 -8 0 10 -228856
--1 -1 10 256;
+-1 -1 0 256;
 #X msg 356 198 skip \$1;
 #X text 106 454 -size <float>;
 #X text 106 469 -skip <float>;
 #X text 58 484 -range <float \, float>;
 #X text 108 384 range <float \, float>;
-#X obj 135 131 noise~;
-#X obj 135 163 else/graph~ 441 10 -1 1 200 140;
+#X obj 135 163 else/graph~ 441 0 -1 1 200 140;
 #X text 70 499 -dim <float \, float>;
-#X text 191 484 - set upper and lower graph range (default 1 -1),
-f 51;
 #X text 120 400 dim <float \, float>;
 #X text 240 384 - set min/max range;
 #X text 240 400 - set horizontal/vertical dimensions;
 #X text 191 499 - set horizontal/vertical dimensions (default 200 140)
 ;
+#X text 191 484 - set lower and upper graph range (default -1 1),
+f 51;
+#X obj 135 131 noise~;
 #X connect 29 0 30 0;
-#X connect 30 0 38 1;
+#X connect 30 0 37 1;
 #X connect 31 0 32 0;
-#X connect 32 0 38 1;
-#X connect 37 0 38 0;
+#X connect 32 0 37 1;
+#X connect 44 0 37 0;
