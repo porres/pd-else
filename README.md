@@ -10,12 +10,11 @@
 
 
 
-
    This work is free. You can redistribute it and/or modify it under the
    terms of the Do What The Fuck You Want To Public License, Version 2,
    as published by Sam Hocevar. 
  
-   See License.txt https://github.com/porres/pd-else/blob/master/License.txt and <http://www.wtfpl.net/> for more details
+   See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
    
    Other licenses may apply for specific objects and this is informed in the source code (example: the [giga.rev~] object). 
 
@@ -30,7 +29,7 @@ This project is still in a beta phase, where drastic changes may occur and backw
 
 ### Acknowldegdements
 
-Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I needed during my first coding attempts and contributing to this library with the objects: [median~] and [keyboard]. 
+Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I first started coding and contributing to this library with the objects: [median~] and [keyboard]. 
 
 I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also contributing with the [float2bits], [brown~],  [gray~] and [pinknoise~] objects.
 
