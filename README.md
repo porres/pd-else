@@ -1,28 +1,32 @@
-#### Welcome to the readme of EL Locus Solus' Else library for Pd 
+--------------------------------------------------------------------------
 
 # ELSE - EL Locus Solus' Externals
 
---------------------------------------------------------------------------
-
-### Version 1.0 beta-23 (Unreleased)
-
-Needs Pd 0.49-0 or above
-
-This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. Find the latest and all releases at: https://github.com/porres/pd-else/releases
 
 --------------------------------------------------------------------------
 
-	Copyright © 2017-2019 Alexandre Torres Porres <porres@gmail.com>
+
+	Copyright © 2017-2019 Alexandre Torres Porres
+
+
+
 
    This work is free. You can redistribute it and/or modify it under the
    terms of the Do What The Fuck You Want To Public License, Version 2,
    as published by Sam Hocevar. 
  
-   See License.txt https://github.com/porres/pd-else/blob/master/License.txt and http://www.wtfpl.net/ for more details
+   See License.txt https://github.com/porres/pd-else/blob/master/License.txt and <http://www.wtfpl.net/> for more details
    
    Other licenses may apply for specific objects and this is informed in the source code (example: the [giga.rev~] object). 
 
 --------------------------------------------------------------------------
+
+
+### Version 1.0 beta-23 (Unreleased)
+
+Needs Pd **0.50-0** or above
+
+This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. Find the latest and all releases at: <https://github.com/porres/pd-else/releases>.
 
 ### Acknowldegdements
 
