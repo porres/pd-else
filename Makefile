@@ -80,6 +80,7 @@ touch.out.class.sources := Classes/Source/touch.out.c
 trigger2.class.sources := Classes/Source/trigger2.c
 t2.class.sources := Classes/Source/t2.c
 unmerge.class.sources := Classes/Source/unmerge.c
+window.class.sources := Classes/Source/window.c
 
 # signal:
 above~.class.sources := Classes/Source/above~.c
@@ -240,9 +241,6 @@ shared/magic.c \
 shared/buffer.c
     wavetable~.class.sources = Classes/Source/wavetable~.c $(bufmagic)
     wt~.class.sources = Classes/Source/wt~.c $(bufmagic)
-
-gui := shared/gui.c
-    window.class.sources := Classes/Source/window.c $(gui)
 
 rand := shared/random.c
     brown~.class.sources := Classes/Source/brown~.c $(rand)
