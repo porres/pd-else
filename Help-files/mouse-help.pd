@@ -1,0 +1,48 @@
+#N canvas 646 188 564 361 12;
+#X obj 2 218 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 257 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 293 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 123 267 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 3 348 cnv 1 550 1 empty empty empty 0 0 0 4 -262144 -262144
+0;
+#X obj 3 331 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 198 266 -;
+#X text 158 266 float;
+#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 24 42 cnv 4 4 4 empty empty Grab 0 28 2 18 -233017 -1 0;
+#X obj 72 42 cnv 4 4 4 empty empty mouse 0 28 2 18 -233017 -1 0;
+#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 306 5 graph;
+#X obj 4 5 cnv 15 301 42 empty empty mouse 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 5 graph;
+#X obj 246 145 else/mouse;
+#X text 213 266 mouse click status (1: on / 0: off), f 43;
+#X text 158 227 (none);
+#X text 158 302 (none);
+#X obj 246 177 else/display;
+#X text 51 92 [mouse] grabs mouse interaction (only click so far).
+Click and see. This works for any click Pd receives in any window \,
+not only this patch's., f 62;
+#X connect 20 0 24 0;

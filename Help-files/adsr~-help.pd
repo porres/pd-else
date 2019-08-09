@@ -1,4 +1,4 @@
-#N canvas 411 40 565 694 10;
+#N canvas 575 35 565 694 10;
 #X obj 5 362 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 507 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -359,16 +359,13 @@ linear envelopes from [adsr~]'s output.;
 #X connect 8 0 4 0;
 #X restore 490 326 pd fader~;
 #X obj 5 633 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 131 397 slew <float>;
-#X text 227 397 - non zero sets to "slew" mode \, "linear" otherwise
-;
 #X text 68 88 [adsr~] is an attack/decay/sustain/release gated envelope.
 At a gate on (transition from 0 to any value) \, the attack ramp is
 generated \, then a decay ramp goes to the sustain point (specified
 as a ratio of the gate value). A gate off (transition from any value
 to 0) makes [adsr~] go to 0 at the specified release time in ms.,
 f 68;
-#N canvas 591 95 494 456 log 1;
+#N canvas 591 95 494 456 log 0;
 #X obj 390 182 else/setdsp~;
 #X text 349 106 see also:;
 #X obj 49 287 cnv 15 398 138 empty empty empty 20 12 0 14 -233017 -66577
@@ -451,6 +448,9 @@ is set with the -log flag or "log" message., f 65;
 #X connect 9 0 7 0;
 #X restore 508 229 pd log;
 #X text 163 643 -log: sets to log mode (default \, linear);
+#X text 137 397 log <float>;
+#X text 227 397 - non zero sets to "log" mode \, "linear" otherwise
+;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;

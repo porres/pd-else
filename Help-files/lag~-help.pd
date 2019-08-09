@@ -38,13 +38,13 @@
 #X obj 81 101 else/rescale~ 200 800;
 #X text 195 57 <= random numbers generated once a second;
 #X text 219 101 <= values rescaled to 200-800 range;
-#X text 172 147 <= values are slewed \, generating a portamento;
 #X obj 81 147 else/lag~ 1000;
+#X text 172 147 <= values are lagged \, generating a portamento;
 #X connect 0 0 1 0;
 #X connect 0 0 1 1;
 #X connect 2 0 3 0;
-#X connect 3 0 7 0;
-#X connect 7 0 0 0;
+#X connect 3 0 6 0;
+#X connect 6 0 0 0;
 #X restore 463 328 pd example;
 #X text 197 390 reset;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -67,8 +67,6 @@
 #X text 155 372 float/signal;
 #X obj 304 219 else/s2f~;
 #X text 240 390 - resets the filter;
-#X text 239 414 - slew time in ms;
-#X text 240 451 - slewed signal;
 #X text 443 213 see also:;
 #X obj 444 259 else/glide~;
 #N canvas 553 279 542 313 rpole~ 0;
@@ -101,10 +99,12 @@ how long it takes for the signal to converge to within 0.01% of the
 target value. Note that the rising ramp is different than the descending
 ramp \, unlike [glide~]. the same kind of filter is used in other objects
 from the ELSE library (decay~/asr~/adsr~)., f 73;
+#X text 239 414 - lag time in ms;
+#X text 240 451 - lagged signal;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 13 0 12 0;
-#X connect 19 0 39 0;
+#X connect 19 0 37 0;
 #X connect 32 0 14 0;
-#X connect 39 0 12 1;
-#X connect 39 0 32 0;
+#X connect 37 0 12 1;
+#X connect 37 0 32 0;

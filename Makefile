@@ -214,6 +214,9 @@ zerocross~.class.sources := Classes/Source/zerocross~.c
 
 # dependencies:
 
+gui := shared/mouse_gui.c
+    mouse.class.sources := Classes/Source/mouse.c $(gui)
+
 magic := shared/magic.c
     sine~.class.sources := Classes/Source/sine~.c $(magic)
     cosine~.class.sources := Classes/Source/cosine~.c $(magic)

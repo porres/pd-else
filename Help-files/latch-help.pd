@@ -1,0 +1,55 @@
+#N struct 1022-cell float cellsize float color;
+#N canvas 534 42 566 459 10;
+#X obj 2 3 cnv 15 301 42 empty empty latch 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X obj 23 40 cnv 4 4 4 empty empty Latch 0 28 2 18 -233017 -1 0;
+#X obj 69 40 cnv 4 4 4 empty empty button 0 28 2 18 -233017 -1 0;
+#X obj 125 40 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 304 3 pd;
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 6 338 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 372 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 403 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 431 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 121 345 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 121 379 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 155 346 size <float>;
+#X obj 238 301 else/display;
+#X obj 238 191 else/latch 20;
+#X text 243 346 - sets button size in pixels, f 41;
+#X text 197 379 float;
+#X text 243 379 - latch status (on: 1 or off: 0);
+#X text 157 409 -size <float>: sets button size (default 20), f 47
+;
+#X text 49 89 [latch] is a GUI button that responds to mouse clicks.
+When clicked on \, it sends a "1" value \, and outputs "0" when releasing
+the mouse button., f 69;
+#X text 181 193 click =>;
+#X msg 238 162 size \$1;
+#X floatatom 238 140 5 20 100 0 - - -;
+#X connect 21 0 20 0;
+#X connect 28 0 21 0;
+#X connect 29 0 28 0;

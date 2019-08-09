@@ -65,14 +65,14 @@ object below reports the activity., f 43;
 #X obj 109 271 print depth-0;
 #X obj 404 233 print depth-1;
 #X obj 376 83 else/window 1;
-#X text 341 273 Note that the depth is not obly for subpatches \, but
-also abstractions!!, f 37;
 #X obj 81 93 metro 1000;
 #X obj 81 67 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
 #X obj 81 148 else/display;
 #X text 104 68 keep querying status;
-#X connect 0 0 18 0;
+#X text 341 273 Note that the depth is not only for subpatches \, but
+also abstractions!!, f 37;
+#X connect 0 0 17 0;
 #X connect 1 0 9 0;
 #X connect 1 1 8 0;
 #X connect 4 0 11 0;
@@ -83,9 +83,9 @@ also abstractions!!, f 37;
 #X connect 10 0 13 0;
 #X connect 11 0 13 0;
 #X connect 14 0 5 0;
-#X connect 16 0 0 0;
-#X connect 17 0 16 0;
-#X connect 18 0 1 0;
+#X connect 15 0 0 0;
+#X connect 16 0 15 0;
+#X connect 17 0 1 0;
 #X restore 449 251 pd subpatch;
 #X text 459 228 example:;
 #X obj 135 299 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0

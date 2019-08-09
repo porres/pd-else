@@ -1,4 +1,4 @@
-#N canvas 420 37 565 591 10;
+#N canvas 649 171 565 591 10;
 #X obj 5 346 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 430 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -374,7 +374,7 @@ mode is set with the -log flag or "log" message., f 65;
 #X text 149 369 log <float>;
 #X text 239 369 - non zero sets to "log" mode \, "linear" otherwise
 ;
-#X text 163 543 -log: sets to slew mode (defaul \, linear);
+#X text 163 543 -log: sets to log mode (defaul \, linear);
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;

@@ -146,6 +146,7 @@ lag~	x
 lag2~	x
 lastvalue	x
 lastvalue~	x
+latch	x
 latoocarfian~	x
 lb	x
 lfnoise	x
@@ -182,6 +183,7 @@ mono	x
 mono.rev~	x
 morph~	x
 moses~	x
+mouse	x
 mov.avg	x
 mov.avg~	x
 mov.rms~	x
