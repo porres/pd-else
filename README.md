@@ -27,7 +27,7 @@ Needs Pd **0.50-0** or above
 
 This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. Find the latest and all releases at: <https://github.com/porres/pd-else/releases>.
 
-### Acknowldegdements
+### Acknowledgdements
 
 Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I first started coding and contributing to this library with the objects: [median~] and [keyboard]. 
 
