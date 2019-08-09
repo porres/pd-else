@@ -27,7 +27,7 @@ Needs Pd **0.50-0** or above
 
 This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. Find the latest and all releases at: <https://github.com/porres/pd-else/releases>.
 
-### Acknowldegdements
+### Acknowledgdements
 
 Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I first started coding and contributing to this library with the objects: [median~] and [keyboard]. 
 
@@ -51,11 +51,11 @@ It will still take a little while for ELSE to stabilize into a final version. Fo
 
 Look for the latest releases in https://github.com/porres/pd-else/releases - but ELSE is also available via 'deken' (Pd's external manager). In Pd, just go for Help => Find Externals and search for 'else'.
 
-###Installing ELSE:
+### Installing ELSE:
 
 This release needs Pd Vanilla 0.49-0 or above, it doesn't work in Pd Extended/Purr Data. ELSE comes with a set of separate binaries, so all you need to is add the "else" path to Pd via "Preferences => Path" or using the [declare] object.
 
-####Building ELSE for Pd Vanilla:
+#### Building ELSE for Pd Vanilla:
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
 
