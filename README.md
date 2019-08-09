@@ -53,7 +53,7 @@ Look for the latest releases in https://github.com/porres/pd-else/releases - but
 
 ### Installing ELSE:
 
-This release needs Pd Vanilla 0.50-0 or above (Pd Extended/Purr Data aren't supported). ELSE comes as a set of separate binaries and abstractions, so all you need to is add the "else" path to Pd via "Preferences => Path" or using the [declare] object.
+This release needs Pd Vanilla 0.50-0 or above (Pd Extended/Purr Data aren't supported). ELSE comes as a set of separate binaries and abstractions, so all you need to is add the "else" path to Pd via "Preferences => Path" or use the [declare] object.
 
 #### Building ELSE for Pd Vanilla:
 
@@ -63,7 +63,7 @@ ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check t
 
 * Installing with pdlibbuilder
 
-go to the pd-else folder and use "objectsdir" to set a relative path for your build, something like:
+Go to the pd-else folder and use "objectsdir" to set a relative path for your build, something like:
 
 <pre>make install objectsdir=../else-build</pre>
 
@@ -75,7 +75,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-##Current Object list (339 objects):
+## Current Object list (339 objects):
 
 **ASSORTED: [4]**
 - [table~]
