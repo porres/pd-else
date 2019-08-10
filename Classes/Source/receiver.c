@@ -18,6 +18,7 @@ typedef struct _receiver
     t_object         x_obj;
     t_receiver_proxy  x_proxy;
     t_symbol        *x_sym;
+    int        x_bound;
 } t_receiver;
 
 static void receiver_proxy_init(t_receiver_proxy * p, t_receiver *x)
@@ -29,8 +30,10 @@ static void receiver_proxy_init(t_receiver_proxy * p, t_receiver *x)
 static void receiver_proxy_symbol(t_receiver_proxy *p, t_symbol* s)
 {
     t_receiver *x = p->p_owner;
-    pd_unbind(&x->x_obj.ob_pd, x->x_sym);
+    if(x->x_bound)
+        pd_unbind(&x->x_obj.ob_pd, x->x_sym);
     pd_bind(&x->x_obj.ob_pd, x->x_sym = s);
+    x->x_bound = 1;
 }
 
 static void receiver_bang(t_receiver *x)
@@ -67,11 +70,15 @@ static void *receiver_new(t_symbol *s)
 {
     t_receiver *x = (t_receiver *)pd_new(receiver_class);
     x->x_sym = s;
-    pd_bind(&x->x_obj.ob_pd, s);
     if (!*x->x_sym->s_name)
     {
         receiver_proxy_init(&x->x_proxy, x);
         inlet_new(&x->x_obj, &x->x_proxy.p_pd, 0, 0);
+        x->x_bound = 0;
+    }
+    else{
+        pd_bind(&x->x_obj.ob_pd, s);
+        x->x_bound = 1;
     }
     outlet_new(&x->x_obj, 0);
     return (x);
