@@ -22,10 +22,10 @@
 #X obj 107 40 cnv 4 4 4 empty empty ramp 0 28 2 18 -233017 -1 0;
 #X obj 194 134 else/imp~ 1;
 #X obj 194 216 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 4172 256;
+-228856 -1 -1 21216 256;
 #X obj 194 190 else/sig2float~;
 #X obj 197 239 hsl 128 15 0 44100 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 1201 1;
+-228856 -1 -1 6110 1;
 #X obj 163 135 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 150 462 signal;
@@ -288,72 +288,70 @@ in hz and sr is the sampling rate).;
 #X text 193 510 - increment value (default 1), f 43;
 #X text 193 524 - minimum value (default 0), f 43;
 #X text 193 538 - maximum value (default 2ˆ32 - 1), f 43;
-#N canvas 913 136 501 678 read 0;
-#X obj 284 175 soundfiler;
-#X floatatom 284 202 0 0 0 0 - - -;
-#X text 374 228 sample size;
-#X obj 371 179 table \$0-sample;
-#X text 51 345 The [ramp~] object loops automatically \, you can set
+#N canvas 651 61 532 688 read 0;
+#X floatatom 280 207 0 0 0 0 - - -;
+#X text 370 233 sample size;
+#X text 76 353 The [ramp~] object loops automatically \, you can set
 different loop points and a reset/restart value outside the loop.,
-f 61;
-#X obj 111 587 else/out~;
-#X obj 128 482 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+f 68;
+#X obj 133 599 else/out~;
+#X obj 150 494 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 74 483 restart;
-#X obj 80 267 else/out~;
-#X obj 129 106 hsl 128 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 126 160 else/float2sig~ 100 1;
-#X obj 126 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 97 132 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X text 45 132 restart;
-#X obj 97 191 else/ramp~, f 15;
-#X obj 137 392 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 96 495 restart;
+#X obj 85 267 else/out~;
+#X obj 134 106 hsl 128 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 10400 1;
+#X obj 131 160 else/float2sig~ 100 1;
+#X obj 131 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1.27559 256;
+#X obj 102 132 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 50 132 restart;
+#X obj 102 191 else/ramp~, f 15;
+#X obj 159 404 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 137 413 select 0 1;
-#X msg 165 481 mode 0;
-#X obj 284 226 value \$0-size;
-#X obj 326 476 value \$0-size;
-#X msg 224 481 mode 1;
-#X msg 311 446 50000;
-#X text 42 19 [ramp~] is very convenient for driving [tabread4~] to
+#X obj 159 425 select 0 1;
+#X msg 187 493 mode 0;
+#X obj 280 231 value \$0-size;
+#X obj 348 488 value \$0-size;
+#X msg 246 493 mode 1;
+#X msg 333 458 50000;
+#X text 69 17 [ramp~] is very convenient for driving [tabread4~] to
 read samples at different speeds. With an increment of "1" \, it reads
 at the original speed \, at "2" it reads twice as fast \, "0.5" half
 as fast \, and so on. Note it can also play it backwards at different
-speeds with negative increment values.;
-#X obj 284 140 else/initmess read -resize ./vacuous.wav \$0-sample
-, f 26;
-#X obj 128 546 else/table~ \$0-sample 0 1;
-#X obj 128 511 else/ramp~ 1 10000 50000 0 -off;
-#X text 157 391 on/off loop;
-#X obj 97 227 else/table~ \$0-sample 0 1;
-#X connect 0 0 1 0;
-#X connect 1 0 14 3;
-#X connect 1 0 18 0;
-#X connect 6 0 25 0;
-#X connect 9 0 11 0;
-#X connect 10 0 14 1;
-#X connect 11 0 10 0;
-#X connect 12 0 14 0;
-#X connect 14 0 27 0;
-#X connect 15 0 16 0;
-#X connect 16 0 19 0;
-#X connect 16 0 20 0;
-#X connect 16 1 17 0;
-#X connect 16 1 6 0;
-#X connect 16 1 21 0;
-#X connect 17 0 25 0;
-#X connect 19 0 25 3;
-#X connect 20 0 25 0;
-#X connect 21 0 25 3;
-#X connect 23 0 0 0;
-#X connect 24 0 5 0;
-#X connect 24 0 5 1;
-#X connect 25 0 24 0;
-#X connect 27 0 8 0;
-#X connect 27 0 8 1;
+speeds with negative increment values., f 69;
+#X obj 150 558 else/table~ \$0-sample 0 1;
+#X obj 150 523 else/ramp~ 1 10000 50000 0 -off;
+#X text 179 403 on/off loop;
+#X obj 102 227 else/table~ \$0-sample 0 1;
+#X obj 280 182 else/sample~ \$0-sample vacuous.wav;
+#X msg 280 158 show;
+#X connect 0 0 12 3;
+#X connect 0 0 16 0;
+#X connect 4 0 22 0;
+#X connect 7 0 9 0;
+#X connect 8 0 12 1;
+#X connect 9 0 8 0;
+#X connect 10 0 12 0;
+#X connect 12 0 24 0;
+#X connect 13 0 14 0;
+#X connect 14 0 17 0;
+#X connect 14 0 18 0;
+#X connect 14 1 15 0;
+#X connect 14 1 4 0;
+#X connect 14 1 19 0;
+#X connect 15 0 22 0;
+#X connect 17 0 22 3;
+#X connect 18 0 22 0;
+#X connect 19 0 22 3;
+#X connect 21 0 3 0;
+#X connect 21 0 3 1;
+#X connect 22 0 21 0;
+#X connect 24 0 6 0;
+#X connect 24 0 6 1;
+#X connect 25 0 0 0;
+#X connect 26 0 25 0;
 #X restore 450 216 pd read buffers;
 #X text 156 299 float;
 #X text 192 299 - jump to the float's value;
@@ -366,10 +364,10 @@ speeds with negative increment values.;
 #X text 192 360 - (re)starts incrementing;
 #N canvas 277 120 1052 471 examples-1 0;
 #X obj 71 258 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 50.0276 256;
+-228856 -1 -1 69.6834 256;
 #X obj 71 229 else/sig2float~;
 #X obj 71 293 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 5003 1;
+-1 -1 6968 1;
 #X obj 71 170 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 470 202 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -665,7 +663,7 @@ it'll reset back to the reset point and stop after reaching the limits.
 #X restore 462 175 pd examples-1;
 #N canvas 480 163 823 384 examples-2 0;
 #X obj 521 278 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 73.93 256;
+-228856 -1 -1 116.54 256;
 #X obj 521 249 else/sig2float~;
 #X obj 574 147 *~;
 #X obj 614 146 else/pulse~ 1;
@@ -673,7 +671,7 @@ it'll reset back to the reset point and stop after reaching the limits.
 #X text 642 322 127;
 #X text 573 322 63.5;
 #X obj 524 305 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 7393 1;
+-1 -1 11654 1;
 #X obj 574 113 sig~ 0.0025;
 #X text 25 21 The "start" and "stop" messages starts and stops incrementing.
 The "reset" message stops and goes back to the reset point. The "set"
