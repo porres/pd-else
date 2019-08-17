@@ -75,7 +75,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (340 objects):
+## Current Object list (341 objects):
 
 **ASSORTED: [4]**
 - [table~]
@@ -156,13 +156,14 @@ Cross compiling is also possible with something like this
 - [voices]
 - [suspedal]
 
-**MATH: FUNCTIONS: [24]**
+**MATH: FUNCTIONS: [25]**
 - [add~]
 - [add]
 - [median]
 - [avg]
 - [mov.avg]
 - [count]
+- [common.div]
 - [ceil]
 - [ceil~]
 - [factor]

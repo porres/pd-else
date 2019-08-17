@@ -36,6 +36,7 @@ properties.class.sources := Classes/Source/properties.c
 break.class.sources := Classes/Source/break.c
 cents2ratio.class.sources := Classes/Source/cents2ratio.c
 changed.class.sources := Classes/Source/changed.c
+common.div.class.sources := Classes/Source/common.div.c
 coin.class.sources := Classes/Source/coin.c
 dir.class.sources := Classes/Source/dir.c
 dollarzero.class.sources := Classes/Source/dollarzero.c
