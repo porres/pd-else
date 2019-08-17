@@ -37,6 +37,7 @@ bpm	x
 break	x
 brickwall~	x
 brown~ 	x
+button	x
 car2pol	x
 car2pol~	x
 ceil	x
@@ -148,7 +149,6 @@ lag~	x
 lag2~	x
 lastvalue	x
 lastvalue~	x
-latch	x
 latoocarfian~	x
 lb	x
 lfnoise	x
