@@ -92,6 +92,7 @@ envgen~	x
 eq~	x
 expand~	x
 f2s~	x
+factor	x
 fader~	x
 fbdelay~	x
 fbsine~	x

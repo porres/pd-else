@@ -50,6 +50,7 @@ makesymbol.class.sources := Classes/Source/makesymbol.c
 message.class.sources := Classes/Source/message.c
 note.in.class.sources := Classes/Source/note.in.c
 note.out.class.sources := Classes/Source/note.out.c
+factor.class.sources := Classes/Source/factor.c
 float2bits.class.sources := Classes/Source/float2bits.c
 panic.class.sources := Classes/Source/panic.c
 pgm.in.class.sources := Classes/Source/pgm.in.c
