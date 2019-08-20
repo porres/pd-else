@@ -34,6 +34,7 @@ typedef struct _envgen{
     float           x_power;
     float           x_value;
     float           x_target;
+    float           x_last_target;
     float           x_inc;
     float           x_delta;
     float           x_lastin;
@@ -108,7 +109,7 @@ static void envgen_retarget(t_envgen *x, int skip){
     x->x_nleft = (int)(x->x_curseg->ms * sys_getsr()*0.001 + 0.5);
     x->x_n_lines--, x->x_curseg++;
     if(x->x_nleft == 0){ // stupid line's gonna be ignored
-        x->x_value = x->x_target;
+        x->x_value = x->x_last_target = x->x_target;
         x->x_delta = x->x_inc = 0;
         x->x_power = x->x_at_exp[x->x_line_n].a_w.w_float;
         while(x->x_n_lines && // others to be ignored
@@ -119,7 +120,7 @@ static void envgen_retarget(t_envgen *x, int skip){
         }
     }
     else{
-        x->x_delta = (x->x_target - x->x_value);
+        x->x_delta = (x->x_target - (x->x_last_target = x->x_value));
         x->x_n = x->x_nleft;
         x->x_nleft--; // update it already
         x->x_inc = x->x_delta != 0 ? envgen_get_step(x) * x->x_delta : 0;
@@ -131,10 +132,10 @@ static void envgen_attack(t_envgen *x, int ac, t_atom *av){
     int odd = ac % 2;
     int n_lines = ac/2;
     int skip1st = 0;
-    if(odd){
-        if(x->x_legato)
+    if(odd){ // non legato mode, restart from first value
+        if(x->x_legato) // actually legato
             av++, ac--; // skip 1st atom
-        else{
+        else{ // ok, non legato really
             n_lines++; // add extra segment
             skip1st = 1; // for release
         }
@@ -288,11 +289,11 @@ static void envgen_suspoint(t_envgen *x, t_floatarg f){
 }
 
 static t_int *envgen_perform(t_int *w){
-    t_envgen   *x = (t_envgen *)(w[1]);
-    t_int       n = (int)(w[2]);
-    t_float    *in = (t_float *)(w[3]);
-    t_float    *out = (t_float *)(w[4]);
-    float       lastin = x->x_lastin;
+    t_envgen *x = (t_envgen *)(w[1]);
+    int n = (int)(w[2]);
+    t_float *in = (t_float *)(w[3]);
+    t_float *out = (t_float *)(w[4]);
+    float lastin = x->x_lastin;
     while(n--){
         t_float f = *in++;
         if(f != 0 && lastin == 0){ // set attack ramp
@@ -301,20 +302,20 @@ static t_int *envgen_perform(t_int *w){
         }
         else if(x->x_release && f == 0 && lastin != 0) // set release ramp
             envgen_release(x, x->x_ac_rel, x->x_av_rel);
-        if(PD_BIGORSMALL(x->x_value))
+        if(PD_BIGORSMALL(x->x_value)) // ??????????????
             x->x_value = 0;
-        *out++ = x->x_value + x->x_inc;
+        *out++ = x->x_value = x->x_last_target + x->x_inc;
         if(!x->x_pause && x->x_status){ // not paused and 'on' => let's update
             if(x->x_nleft > 0){ // increase
                 x->x_nleft--;
                 x->x_inc = x->x_delta != 0 ? envgen_get_step(x) * x->x_delta : 0;
             }
-            else if(x->x_nleft == 0){ // reached target
-                x->x_value = x->x_target;
+            else if(x->x_nleft == 0){ // reached target, update!
+                x->x_last_target = x->x_target;
                 x->x_inc = 0;
-                if(x->x_n_lines > 0) // there's more, retaerget to the next
-                        envgen_retarget(x, 0);
-                else if(!x->x_release) // there's no release, so we're done.
+                if(x->x_n_lines > 0) // there's more, retarget to the next
+                    envgen_retarget(x, 0);
+                else if(!x->x_release) // there's no release, we're done.
                     clock_delay(x->x_clock, 0);
             }
         }
@@ -349,7 +350,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     t_symbol *cursym = s; // avoid warning
     t_envgen *x = (t_envgen *)pd_new(envgen_class);
     x->x_gain = x->x_power = 1;
-    x->x_lastin = x->x_maxsustain = x->x_retrigger = x->x_value = 0;
+    x->x_lastin = x->x_maxsustain = x->x_retrigger = x->x_value = x->x_last_target = 0;
     x->x_nleft = x->x_n_lines = x->x_line_n = x->x_pause = x->x_release = 0;
     x->x_suspoint = x->x_legato = 0;
     x->x_lines = x->x_n_lineini;
@@ -434,6 +435,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
             copy_atoms(av, x->x_av, x->x_ac = n);
         }
     }
+    x->x_last_target = x->x_value;
     envgen_proxy_init(&x->x_proxy, x);
     inlet_new(&x->x_obj, &x->x_proxy.p_pd, 0, 0);
     outlet_new((t_object *)x, &s_signal);
