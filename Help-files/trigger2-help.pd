@@ -1,4 +1,4 @@
-#N canvas 586 116 563 407 10;
+#N canvas 458 88 563 407 10;
 #X obj 4 261 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 296 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -58,23 +58,48 @@
 #X obj 165 194 else/trigger2 float bang 30 stop;
 #X obj 406 184 else/t2 f b 30 stop;
 #X text 406 164 abbreviated as:;
-#N canvas 581 179 662 308 conversion 0;
-#X msg 59 109 2.5;
-#X msg 157 109 bang;
-#X msg 99 109 23 64;
-#X msg 203 109 symbol dog;
-#X obj 99 201 else/display;
-#X obj 212 201 else/display;
-#X obj 325 201 else/display;
-#X obj 438 201 else/display;
-#X obj 552 201 else/display;
-#X msg 279 109 list a b;
-#X msg 345 109 dog cats;
-#X obj 99 163 else/trigger2 float bang symbol list anything, f 76
+#N canvas 581 179 650 630 conversion 0;
+#X msg 62 106 2.5;
+#X msg 160 106 bang;
+#X msg 102 106 23 64;
+#X msg 206 106 symbol dog;
+#X obj 102 198 else/display;
+#X obj 215 198 else/display;
+#X obj 328 198 else/display;
+#X obj 441 198 else/display;
+#X obj 555 198 else/display;
+#X msg 282 106 list a b;
+#X msg 348 106 dog cats;
+#X obj 102 160 else/trigger2 float bang symbol list anything, f 76
 ;
-#X text 121 34 You can convert an input message according to another
-type specified as the argument. Unlike Vanilla's trigger \, [trigger2]
-can also convert "anythings"., f 57;
+#X text 120 294 The creation arguments: bang \, float \, symbol \,
+list and pointer reflect special message types (or 'selectors'). The
+'anything' type is just any type - either these special types or even
+others (such as "dog my cats" \, which has the 'dogs' selector). When
+converting message types \, this is what happens., f 62;
+#X text 142 364 - bang: any input message can be converted to a bang.
+, f 64;
+#X text 142 380 - float: a list that starts with a float lets it through
+\, other message types convert to "0"., f 64;
+#X text 142 408 - symbol: a list that starts with a symbol lets it
+through. An anything message like "dog my cats" will convert the selector
+to a symbol. A float message or a list that starts with a float become
+"symbol float" \, and bang becomes "symbol bang"., f 64;
+#X text 142 557 - anything: whatever comes in \, comes out \, there's
+no conversion., f 64;
+#X text 142 529 - pointer: no other messages can be converted to a
+pointer \, and a pointer should only be converted to a bang., f 64
+;
+#X text 120 265 About message types and conversions:;
+#X text 142 458 - list: any message that is not a list will get a list
+selector \, in the case "dog my cats" \, the list selector is added.
+Note that a bang comes as a zero element list message \, which gets
+automatically converted to a bang. A one element float list also becomes
+a float and a one element symbol list becomes a symbol message as well.
+, f 64;
+#X text 123 30 You can convert an input message according to another
+type specified as the argument. The main difference to Vanilla's trigger
+is that [trigger2] can also convert "anythings"., f 57;
 #X connect 0 0 11 0;
 #X connect 1 0 11 0;
 #X connect 2 0 11 0;
@@ -89,8 +114,9 @@ can also convert "anythings"., f 57;
 #X restore 466 227 pd conversion;
 #X text 60 88 The [trigger2] is based on the Max version of trigger
 where you can also have constant values as arguments (a float or symbol)
-besides the message types. If Pd's trigger offers this in the next
-update (0.50.0) \, this object will be deleted., f 67;
+besides the message types. If Pd's trigger offers similar features
+in the next updates (as proposed) \, this can be deleted from ELSE.
+, f 67;
 #X connect 6 0 32 0;
 #X connect 24 0 32 0;
 #X connect 32 0 25 0;
