@@ -39,7 +39,7 @@ I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" 
 
 These examples were first developed for the now abandoned Pd Extended, making extensive use of the existing objects available in Pd Extended's libraries. Even though Pd Extended had many externals, there was the need at some point for something "else" - thus, this library emerged with the goal of providing more objects to include missing functionalities in the Pd Ecossystem.
 
-But the library grew to encompass functionalities found in other Pd objects/libraries in Pd Extended as well, with a different design and more functionalities. This was done in order to remove ALL the dependencies of the didactic material from these other libraries - with the goal to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving attention. I'm also involved in maintaining Cyclone, a legacy library for Pd (see: <https://github.com/porres/pd-cyclone>). But ELSE also superseded even cyclone for the purposes of my didactic material.
+But the library grew to encompass functionalities found in other Pd objects/libraries in Pd Extended as well, with a different design and more functionalities. This was done in order to remove ALL the dependencies of the didactic material from these other libraries - with the goal to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving attention. I'm also involved in maintaining Cyclone, a legacy library for Pd (see: <https://github.com/porres/pd-cyclone>). But ELSE also superseds cyclone for the purposes of my didactic material.
 
 The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. So that's it, ELSE is becoming a quite big library and keeps growing and growing. 
 
@@ -75,7 +75,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (341 objects):
+## Current Object list (342 objects):
 
 **ASSORTED: [4]**
 - [table~]
@@ -456,6 +456,7 @@ Cross compiling is also possible with something like this
 - [latch]
 - [keyboard]
 - [graph~]
+- [range.hsl]
 - [spectrograph~]
 - [meter~]
 - [meter2~]
