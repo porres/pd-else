@@ -1,4 +1,4 @@
-#N canvas 2856 205 563 399 10;
+#N canvas 445 193 563 399 10;
 #X obj 25 41 cnv 4 4 4 empty empty Manage 0 28 2 18 -233017 -1 0;
 #X obj 90 41 cnv 4 4 4 empty empty arguments 0 28 2 18 -233017 -1 0
 ;
@@ -72,7 +72,7 @@ help patch), f 47;
 change them. It is useful for the management of variable number of
 arguments in abstractions \, and also to change/set them up.;
 #X text 154 269 anything - sets new arguments;
-#N canvas 2822 236 833 404 example 0;
+#N canvas 523 262 833 404 example 0;
 #X obj 92 149 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 92 225 else/display;
@@ -90,7 +90,7 @@ is a very simple example on how it works.;
 #X text 452 311 Note that you can have [else/args] anywhere inside
 an abstraction \, like deep buried inside many layers of subpatches.
 ;
-#X obj 543 221 else/args-example;
+#X obj 543 221 else/args-example a b c;
 #X obj 92 186 else/args-example 1 2 3;
 #X msg 584 193 list a b c;
 #X text 426 36 When you send any message (float \, list \, symbol)
@@ -98,10 +98,10 @@ to [args] \, it'll change the arguments to it. You can query the new
 arguments right away with a bang message and if you close and reopen
 this subpacth \, you'll see the new arguments. If you savew the patch
 \, the new arguments are saved with the patch.;
-#X text 62 298 Note that as of Pd 0.5 \, there's a vanilla solution
+#X obj 234 353 pdcontrol;
+#X text 62 298 Note that as of Pd 0.50.0 \, there's a vanilla solution
 to load arguments \, with the new [pdcontrol] object. Check it out.
 , f 42;
-#X obj 234 353 pdcontrol;
 #X connect 0 0 11 0;
 #X connect 6 0 10 0;
 #X connect 8 0 10 0;
