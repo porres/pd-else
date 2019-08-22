@@ -213,10 +213,6 @@ static int mouse_gui_setup(void){
     class_addmethod(mouse_gui_class, (t_method)mouse_gui__vised,
                     ps__vised, A_SYMBOL, A_FLOAT, 0);
     
-    /* if older than 0.43, create an 0.43-style pdsend */
-    sys_gui("if {[llength [info procs ::pdsend]] == 0} {");
-    sys_gui("proc ::pdsend {args} {::pd \"[join $args { }] ;\"}}\n");
-    
     /* Protect against pdCmd being called (via "Canvas <Destroy>" binding)
      during Tcl_Finalize().  FIXME this should be a standard exit handler. */
     sys_gui("proc mouse_gui_exithook {cmd op} {proc ::pdsend {} {}}\n");
