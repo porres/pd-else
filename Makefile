@@ -49,6 +49,7 @@ nbang.class.sources := Classes/Source/nbang.c
 merge.class.sources := Classes/Source/merge.c
 makesymbol.class.sources := Classes/Source/makesymbol.c
 message.class.sources := Classes/Source/message.c
+mouse.class.sources := Classes/Source/mouse.c
 note.in.class.sources := Classes/Source/note.in.c
 note.out.class.sources := Classes/Source/note.out.c
 factor.class.sources := Classes/Source/factor.c
@@ -213,11 +214,6 @@ xselect2~.class.sources := Classes/Source/xselect2~.c
 wrap2.class.sources := Classes/Source/wrap2.c
 wrap2~.class.sources := Classes/Source/wrap2~.c
 zerocross~.class.sources := Classes/Source/zerocross~.c
-
-# dependencies:
-
-gui := shared/mouse_gui.c
-    mouse.class.sources := Classes/Source/mouse.c $(gui)
 
 magic := shared/magic.c
     sine~.class.sources := Classes/Source/sine~.c $(magic)
