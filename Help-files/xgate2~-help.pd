@@ -82,19 +82,19 @@ mode. You can also use the index message to change bewteen modes.;
 #X text 110 475 1) float - number of output channels (default/min 2
 \, max 500), f 69;
 #X text 197 445 - routed outputs with crossfade;
-#X obj 190 132 hsl 128 15 0 3 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 187 153 0 0 0 0 - - -;
-#X obj 187 183 else/xgate2~ 4;
+#X obj 190 125 hsl 128 15 0 3 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 12700 1;
+#X floatatom 187 145 0 0 0 0 - - -;
+#X obj 187 189 else/xgate2~ 4;
 #X text 61 86 [xgate2~] routes an input signal to 'n' specified outlets
 with equal power crossfade between two adjacent channels.;
-#X obj 268 156 noise~;
+#X obj 268 158 noise~;
 #X obj 149 217 else/meter2~;
 #X obj 241 217 else/meter2~;
-#X text 190 132 select output channel;
+#X text 190 125 select output channel;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -163,7 +163,7 @@ with equal power crossfade between two adjacent channels.;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -198,10 +198,12 @@ with equal power crossfade between two adjacent channels.;
 #X restore 505 71 pd;
 #X text 197 412 - input channel to be routed;
 #X text 197 373 - channel selection;
+#X obj 187 167 sig~;
 #X connect 29 0 30 0;
-#X connect 30 0 31 0;
+#X connect 30 0 40 0;
 #X connect 31 0 34 0;
 #X connect 31 1 34 1;
 #X connect 31 2 35 0;
 #X connect 31 3 35 1;
 #X connect 33 0 31 1;
+#X connect 40 0 31 0;
