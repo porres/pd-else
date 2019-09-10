@@ -198,6 +198,7 @@ note	x
 note.in	x
 note.out	x
 nyquist~	x
+op~	x
 openfile	x
 order	x
 oscbank~	x

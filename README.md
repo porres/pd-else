@@ -75,7 +75,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (342 objects):
+## Current Object list (343 objects):
 
 **ASSORTED: [4]**
 - [table~]
@@ -183,7 +183,7 @@ Cross compiling is also possible with something like this
 - [wrap2]
 - [wrap2~]
 
-**MATH: CONVERSION: [26]**
+**MATH: CONVERSION: [27]**
 - [hex2dec]
 - [bpm]
 - [dec2hex]
@@ -210,6 +210,7 @@ Cross compiling is also possible with something like this
 - [pol2car~]
 - [rescale]
 - [rescale~]
+- [op~]
 
 **MATH: CONSTANT VALUES: [4]**
 - [sr~]

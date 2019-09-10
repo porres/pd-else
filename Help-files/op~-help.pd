@@ -1,0 +1,125 @@
+#N canvas 478 65 562 449 10;
+#X obj 4 261 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 340 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 372 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 4 422 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 306 3 pd;
+#X obj 346 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 22 40 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
+#X obj 459 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 4 4 cnv 15 301 42 empty empty op~ 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 4 graph;
+#X obj 77 40 cnv 4 4 4 empty empty operator 0 28 2 18 -233017 -1 0
+;
+#X obj 116 348 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 117 270 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 149 349 signal - dsp status: 1 (for on) or 0 (for off);
+#X text 173 288 <symbol> - operator type (> \, < \, >= \, <= \, ==
+or !=), f 51;
+#X text 137 384 1) symbol - operator type: > (default) \, < \, >= \,
+<= \, == or !=;
+#X text 137 399 2) float;
+#X text 197 399 - inlet value (default 0);
+#X obj 116 309 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 185 271 signal - input to operator, f 49;
+#X text 149 310 float/signal - secondary operator value;
+#X obj 265 155 sig~ 5;
+#X obj 265 128 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 265 219 else/display~;
+#X obj 487 90 else/setdsp~;
+#X obj 265 187 else/op~ == 5;
+#N canvas 262 137 847 264 operators 0;
+#X obj 501 170 display~;
+#X obj 501 107 sig~ 5;
+#X obj 501 137 op~ == 5;
+#X floatatom 501 81 5 0 0 0 - - -;
+#X obj 582 170 display~;
+#X obj 582 107 sig~ 5;
+#X floatatom 582 81 5 0 0 0 - - -;
+#X obj 582 137 op~ != 5;
+#X obj 91 170 display~;
+#X obj 91 107 sig~ 5;
+#X floatatom 91 81 5 0 0 0 - - -;
+#X obj 91 137 op~ > 5;
+#X text 83 55 greater than;
+#X obj 193 170 display~;
+#X obj 193 107 sig~ 5;
+#X floatatom 193 81 5 0 0 0 - - -;
+#X text 185 55 less than;
+#X obj 193 137 op~ < 5;
+#X obj 286 170 display~;
+#X obj 286 107 sig~ 5;
+#X floatatom 286 81 5 0 0 0 - - -;
+#X text 278 49 greater than;
+#X obj 388 170 display~;
+#X obj 388 107 sig~ 5;
+#X floatatom 388 81 5 0 0 0 - - -;
+#X text 380 49 less than;
+#X text 278 61 or equal to;
+#X text 379 61 or equal to;
+#X obj 286 137 op~ >= 5;
+#X obj 388 137 op~ <= 5;
+#X text 492 55 equal to;
+#X text 574 55 not equal to;
+#X obj 725 92 else/setdsp~;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 1 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 4 0;
+#X connect 9 0 11 0;
+#X connect 10 0 9 0;
+#X connect 11 0 8 0;
+#X connect 14 0 17 0;
+#X connect 15 0 14 0;
+#X connect 17 0 13 0;
+#X connect 19 0 28 0;
+#X connect 20 0 19 0;
+#X connect 23 0 29 0;
+#X connect 24 0 23 0;
+#X connect 28 0 18 0;
+#X connect 29 0 22 0;
+#X restore 449 216 pd operators;
+#X msg 226 155 <;
+#X msg 196 155 <=;
+#X msg 167 155 >;
+#X msg 137 155 >=;
+#X msg 107 155 ==;
+#X msg 76 155 !=;
+#X text 69 86 [op~] is a signal operator \, where the operator is defined
+by the first argument. This is more efficient than using [expr~].,
+f 63;
+#X connect 26 0 30 0;
+#X connect 27 0 26 0;
+#X connect 30 0 28 0;
+#X connect 32 0 30 0;
+#X connect 33 0 30 0;
+#X connect 34 0 30 0;
+#X connect 35 0 30 0;
+#X connect 36 0 30 0;
+#X connect 37 0 30 0;
