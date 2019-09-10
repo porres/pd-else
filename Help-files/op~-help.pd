@@ -1,11 +1,11 @@
-#N canvas 451 65 561 448 10;
-#X obj 4 261 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 451 65 561 444 10;
+#X obj 4 254 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 340 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 327 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 372 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 359 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 422 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 419 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -31,24 +31,20 @@
 #X restore 3 4 graph;
 #X obj 77 40 cnv 4 4 4 empty empty operator 0 28 2 18 -233017 -1 0
 ;
-#X obj 116 348 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 79 335 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 117 270 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 80 263 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 149 349 signal - dsp status: 1 (for on) or 0 (for off);
-#X text 173 288 <symbol> - operator type (> \, < \, >= \, <= \, ==
-or !=), f 51;
-#X text 137 384 1) symbol - operator type: > (default) \, < \, >= \,
-<= \, == or !=;
-#X text 137 399 2) float;
-#X obj 116 309 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 137 336 signal - dsp status: 1 (for on) or 0 (for off);
+#X text 119 398 2) float;
+#X obj 79 302 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 185 271 signal - input to operator, f 49;
+#X text 137 264 signal - input to operator, f 49;
 #X obj 267 158 sig~ 5;
 #X obj 267 131 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 267 222 else/display~;
-#X obj 491 70 else/setdsp~;
+#X obj 490 63 else/setdsp~;
 #X obj 267 190 else/op~ == 5;
 #N canvas 277 170 970 391 operators 0;
 #X obj 46 315 display~;
@@ -184,23 +180,28 @@ or !=), f 51;
 #X text 51 87 [op~] is a signal operator (comparison and bitwise).
 The operator is defined by the first argument. This is more efficient
 than using [expr~]., f 66;
-#X text 149 310 float/signal - secondary operator value (ignored for
+#X text 101 304 float/signal - secondary operator value (ignored for
 bitnot);
-#X text 197 399 - inlet value (default 0) - ignored for bitnot;
-#X connect 24 0 28 0;
-#X connect 25 0 24 0;
+#X text 179 398 - inlet value (default 0) - ignored for bitnot;
+#X text 119 369 1) symbol -;
+#X text 125 281 <symbol> - operator type (> \, < \, >= \, <= \, ==
+\, != \, && \, || \, &. | \, ~ or ^), f 70;
+#X text 191 369 operator type: > (default) \, < \, >= \, <= \, == \,
+!= \, && \, || \, &. | \, ~ or ^, f 46;
+#X connect 22 0 26 0;
+#X connect 23 0 22 0;
+#X connect 26 0 24 0;
 #X connect 28 0 26 0;
-#X connect 30 0 28 0;
-#X connect 31 0 28 0;
-#X connect 32 0 28 0;
-#X connect 33 0 28 0;
-#X connect 34 0 28 0;
-#X connect 35 0 28 0;
-#X connect 36 0 28 0;
-#X connect 37 0 28 0;
-#X connect 38 0 28 0;
-#X connect 39 0 28 0;
-#X connect 40 0 28 0;
-#X connect 41 0 28 0;
-#X connect 42 0 28 0;
-#X connect 43 0 28 0;
+#X connect 29 0 26 0;
+#X connect 30 0 26 0;
+#X connect 31 0 26 0;
+#X connect 32 0 26 0;
+#X connect 33 0 26 0;
+#X connect 34 0 26 0;
+#X connect 35 0 26 0;
+#X connect 36 0 26 0;
+#X connect 37 0 26 0;
+#X connect 38 0 26 0;
+#X connect 39 0 26 0;
+#X connect 40 0 26 0;
+#X connect 41 0 26 0;
