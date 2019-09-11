@@ -75,7 +75,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (344 objects):
+## Current Object list (345 objects):
 
 **ASSORTED: [4]**
 - [table~]
@@ -429,13 +429,14 @@ Cross compiling is also possible with something like this
 - [trig2bang~]
 - [trighold~]
 
-**SIGNAL ANALYSIS: [12]**
+**ANALYSIS: [13]**
 - [changed~]
 - [changed2~]
 - [detect~]
 - [lastvalue~]
 - [median~]
 - [peak~]
+- [range]
 - [range~]
 - [maxpeak~]
 - [rms~]
