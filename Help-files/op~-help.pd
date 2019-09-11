@@ -42,7 +42,7 @@
 #X text 137 264 signal - input to operator, f 49;
 #X obj 278 160 sig~ 5;
 #X obj 278 133 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 8 256;
 #X obj 278 220 else/display~;
 #X obj 490 63 else/setdsp~;
 #X obj 278 192 else/op~ == 5;
@@ -173,12 +173,12 @@
 #X msg 86 160 !=;
 #X msg 27 160 &&;
 #X msg 57 160 ||;
-#X msg 420 162 ^;
-#X msg 331 162 &;
-#X msg 360 162 |;
-#X msg 391 162 ~;
-#X msg 451 162 >>;
-#X msg 480 162 <<;
+#X msg 420 160 ^;
+#X msg 331 160 &;
+#X msg 360 160 |;
+#X msg 391 160 ~;
+#X msg 451 160 >>;
+#X msg 480 160 <<;
 #X text 101 304 float/signal - secondary operator value (ignored for
 bitnot);
 #X text 179 398 - inlet value (default 0) - ignored for bitnot;
@@ -187,9 +187,9 @@ bitnot);
 \, != \, && \, || \, &. | \, ~ or ^), f 70;
 #X text 191 369 operator type: > (default) \, < \, >= \, <= \, == \,
 != \, && \, || \, &. | \, ~ or ^, f 46;
-#X text 51 87 [op~] is a signal operator \, which is defined by the
-first argument (and can be either comparison or bitwise). This is more
-efficient than using [expr~]., f 67;
+#X text 51 85 [op~] is a signal operator (either comparison or bitwise)
+\, which is defined by the first argument. This is more efficient than
+using [expr~] (which also contains all these operators)., f 67;
 #X connect 22 0 26 0;
 #X connect 23 0 22 0;
 #X connect 26 0 24 0;
