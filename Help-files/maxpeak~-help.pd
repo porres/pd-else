@@ -64,6 +64,7 @@ outlet sends bangs when the input is clipped (exceeds 0 dB)., f 61
 #X obj 196 146 adc~ 1;
 #X text 291 164 <= resets;
 #X text 291 230 <= clipped;
+#X obj 490 78 else/setdsp~;
 #X connect 19 0 29 1;
 #X connect 29 0 20 0;
 #X connect 29 1 30 0;

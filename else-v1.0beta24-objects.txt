@@ -249,6 +249,7 @@ rand.i~	x
 rand.seq	x
 randpulse~	x
 randpulse2~	x
+range~	x
 range.hsl	x
 ratio2cents	x
 ratio2cents~	x
