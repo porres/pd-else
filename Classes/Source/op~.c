@@ -10,75 +10,55 @@ typedef struct _op{
     int         x_op;
 }t_op;
 
-typedef unsigned long shared_t_bitmask;
-
-int32_t bitwise_getbitmask(int ac, t_atom *av){
-    int32_t result = 0;
-    if(sizeof(shared_t_bitmask) >= sizeof(int32_t)){
-        int32_t nbits = sizeof(int32_t) * 8;
-        if (ac > nbits)
-            ac = nbits;
-        while(ac--){
-            if(av->a_type == A_FLOAT &&
-                (int)av->a_w.w_float)  /* CHECKED */
-                result += 1 << ac;
-            av++;
-        }
-    }
-    return(result);
-}
-
 static t_int *op_perform(t_int *w){
     t_op *x = (t_op *)(w[1]);
     t_sample *in1 = (t_sample *)(w[2]);
     t_sample *in2 = (t_sample *)(w[3]);
     t_sample *out = (t_sample *)(w[4]);
     int n = (int)(w[5]);
-    while(n--){
-        switch(x->x_op){
-            case 0: // lt
-                *out++ = *in1++ < *in2++;
-                break;
-            case 1: // gt
-                *out++ = *in1++ > *in2++;
-                break;
-            case 2: // le
-                *out++ = *in1++ <= *in2++;
-                break;
-            case 3: // ge
-                *out++ = *in1++ >= *in2++;
-                break;
-            case 4: // ne
-                *out++ = *in1++ != *in2++;
-                break;
-            case 5: // eq
-                *out++ = *in1++ == *in2++;
-                break;
-            case 6: // and
-                *out++ = *in1++ && *in2++;
-                break;
-            case 7: // or
-                *out++ = *in1++ || *in2++;
-                break;
-            case 8: // bitand
-                *out++ = (t_float)(((int32_t)*in1++) & ((int32_t)*in2++));
-                break;
-            case 9: // bitor
-                *out++ = (t_float)(((int32_t)*in1++) | ((int32_t)*in2++));
-                break;
-            case 10: // bitnot
-                *out++ = (t_float)(~((int32_t)*in1++));
-                break;
-            case 11: // bitexclusive
-                *out++ = (t_float)(((int32_t)*in1++) ^ ((int32_t)*in2++));
-                break;
-            case 12: // bit shift left
-                *out++ = (t_float)(((int32_t)*in1++) << ((int32_t)*in2++));
-                break;
-            case 13: // bit shift right
-                *out++ = (t_float)(((int32_t)*in1++) >> ((int32_t)*in2++));
-                break;
-        }
+    switch(x->x_op){
+        case 0: // lt
+            while(n--) *out++ = *in1++ < *in2++;
+            break;
+        case 1: // gt
+            while(n--) *out++ = *in1++ > *in2++;
+            break;
+        case 2: // le
+            while(n--) *out++ = *in1++ <= *in2++;
+            break;
+        case 3: // ge
+            while(n--) *out++ = *in1++ >= *in2++;
+            break;
+        case 4: // ne
+            while(n--) *out++ = *in1++ != *in2++;
+            break;
+        case 5: // eq
+            while(n--) *out++ = *in1++ == *in2++;
+            break;
+        case 6: // and
+            while(n--) *out++ = *in1++ && *in2++;
+            break;
+        case 7: // or
+            while(n--) *out++ = *in1++ || *in2++;
+            break;
+        case 8: // bitand
+            while(n--) *out++ = (t_float)(((int32_t)*in1++) & ((int32_t)*in2++));
+            break;
+        case 9: // bitor
+            while(n--) *out++ = (t_float)(((int32_t)*in1++) | ((int32_t)*in2++));
+            break;
+        case 10: // bitnot
+            while(n--) *out++ = (t_float)(~((int32_t)*in1++));
+            break;
+        case 11: // bitxor
+            while(n--) *out++ = (t_float)(((int32_t)*in1++) ^ ((int32_t)*in2++));
+            break;
+        case 12: // bit shift left
+            while(n--) *out++ = (t_float)(((int32_t)*in1++) << ((int32_t)*in2++));
+            break;
+        case 13: // bit shift right
+            while(n--) *out++ = (t_float)(((int32_t)*in1++) >> ((int32_t)*in2++));
+            break;
     }
     return(w+6);
 }
