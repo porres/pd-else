@@ -206,6 +206,9 @@ order	x
 oscbank~	x
 oscbank2~	x
 out~	x
+out1~	x
+out4~	x
+out8~	x
 output~	x
 pack2~	x
 pan2~	x

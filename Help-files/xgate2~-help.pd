@@ -47,7 +47,7 @@ to non-indexed, f 69;
 #N canvas 876 133 436 477 modes 0;
 #X text 51 131 In non-indexed mode \, the selection input values are
 from 0 (first channel) to 1 (last channel).;
-#X text 243 266 set to non-indexed mode with the second argument,
+#X text 243 286 set to non-indexed mode with the second argument,
 f 24;
 #X msg 64 226 index \$1;
 #X obj 64 203 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
@@ -57,16 +57,15 @@ part represents the channel (indexed from 0) and the fractional part
 the crossfading point.;
 #X obj 137 182 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 134 202 0 0 0 0 - - -;
-#X obj 134 227 else/float2sig~ 10;
+#X floatatom 134 205 0 0 0 0 - - -;
+#X obj 134 230 else/float2sig~ 10;
 #X text 152 182 select channels;
 #X text 49 24 You can set the operation mode of [xgate2~] with the
 second argument \, 1 sets to indexed mode (default) and 0 sets to non-indexed
 mode. You can also use the index message to change bewteen modes.;
-#X obj 134 268 else/xgate2~ 4 0;
-#X obj 273 229 osc~ 440;
-#X obj 100 320 else/meter2~;
-#X obj 196 320 else/meter2~;
+#X obj 134 288 else/xgate2~ 4 0;
+#X obj 227 257 osc~ 440;
+#X obj 131 326 else/meter4~;
 #X connect 2 0 10 0;
 #X connect 3 0 2 0;
 #X connect 5 0 6 0;
@@ -74,8 +73,8 @@ mode. You can also use the index message to change bewteen modes.;
 #X connect 7 0 10 0;
 #X connect 10 0 12 0;
 #X connect 10 1 12 1;
-#X connect 10 2 13 0;
-#X connect 10 3 13 1;
+#X connect 10 2 12 2;
+#X connect 10 3 12 3;
 #X connect 11 0 10 1;
 #X restore 483 331 pd modes;
 #X obj 101 40 cnv 4 4 4 empty empty input 0 28 2 18 -233017 -1 0;
@@ -89,12 +88,10 @@ mode. You can also use the index message to change bewteen modes.;
 #X text 61 86 [xgate2~] routes an input signal to 'n' specified outlets
 with equal power crossfade between two adjacent channels.;
 #X obj 268 158 noise~;
-#X obj 149 217 else/meter2~;
-#X obj 241 217 else/meter2~;
 #X text 190 125 select output channel;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -163,7 +160,7 @@ with equal power crossfade between two adjacent channels.;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -199,11 +196,12 @@ with equal power crossfade between two adjacent channels.;
 #X text 197 412 - input channel to be routed;
 #X text 197 373 - channel selection;
 #X obj 187 167 sig~;
+#X obj 180 219 else/meter4~;
 #X connect 29 0 30 0;
-#X connect 30 0 40 0;
-#X connect 31 0 34 0;
-#X connect 31 1 34 1;
-#X connect 31 2 35 0;
-#X connect 31 3 35 1;
+#X connect 30 0 38 0;
+#X connect 31 0 39 0;
+#X connect 31 1 39 1;
+#X connect 31 2 39 2;
+#X connect 31 3 39 3;
 #X connect 33 0 31 1;
-#X connect 40 0 31 0;
+#X connect 38 0 31 0;
