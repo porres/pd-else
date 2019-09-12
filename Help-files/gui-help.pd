@@ -1,0 +1,63 @@
+#N canvas 482 110 567 359 10;
+#X obj 5 232 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 267 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 302 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 138 241 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 5 335 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 307 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 306 6 pd;
+#X obj 346 14 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 24 43 cnv 4 4 4 empty empty Run 0 28 2 18 -233017 -1 0;
+#X obj 63 43 cnv 4 4 4 empty empty gui 0 28 2 18 -233017 -1 0;
+#X obj 459 14 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 14 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 14 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 29 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 29 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 92 43 cnv 4 4 4 empty empty commands 0 28 2 18 -233017 -1 0
+;
+#X obj 4 6 cnv 15 301 42 empty empty gui 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 4 6 graph;
+#X text 172 242 gui <anything>;
+#X text 208 311 none;
+#X text 208 277 none;
+#X text 264 242 - gui command;
+#X msg 125 156 gui ::pd_menucommands::menu_aboutpd;
+#X text 346 157 tcl/tk command;
+#X text 72 94 [gui] sends a command directly to the tcl/tk interpreter
+used for Pd's gui.;
+#N canvas 855 44 491 355 system 0;
+#X text 81 236 (note: because you can't use open and close braces in
+Pd \, this can be very awkward. It is perhaps best to define tcl/tk
+functions in a "gui plug-in" that can be called eastil from Pd. Also
+\, O/S variations will make it hard to make perfectly portable patches
+using system commands.), f 52;
+#X text 55 33 You can also run system commands via the gui. What commands
+you can run depends on your operating system. If you're in linux or
+Mac OS you can get the time and date like this:;
+#X msg 94 106 gui pdsend [concat date [exec date]];
+#X obj 179 141 r date;
+#X obj 179 169 else/display;
+#X obj 94 138 else/gui;
+#X connect 2 0 5 0;
+#X connect 3 0 4 0;
+#X restore 488 202 pd system;
+#X obj 125 191 else/gui;
+#X connect 22 0 26 0;
+#X coords 0 359 1 358 94 40 0;
