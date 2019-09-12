@@ -75,7 +75,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (345 objects):
+## Current Object list (346 objects):
 
 **ASSORTED: [4]**
 - [table~]
@@ -362,10 +362,11 @@ Cross compiling is also possible with something like this
 - [xmod~]
 - [xmod2~]
 
-**SIGNAL ROUTING: [11]**
+**SIGNAL ROUTING: [12]**
 - [balance~]
 - [pan2~]
 - [pan4~]
+- [pan8~]
 - [spread~]
 - [rotate~]
 - [xfade~]
