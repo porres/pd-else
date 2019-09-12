@@ -1,5 +1,5 @@
-#N struct 1004-rectangle float x float c;
 #N struct 1004-point float x0 float y0 float s;
+#N struct 1006-point float x0 float y0 float s;
 #N canvas 590 23 561 567 10;
 #X obj 3 332 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -167,21 +167,21 @@
 #X text 242 452 - Left-Back channel;
 #X text 242 473 - Right-Back channel;
 #X text 149 517 2) float - initial Y pan value (default 0);
-#X floatatom 250 207 5 0 0 0 - - -, f 5;
-#X floatatom 309 206 5 0 0 0 - - -, f 5;
+#X floatatom 250 207 5 0 0 0 - - -;
+#X floatatom 309 206 5 0 0 0 - - -;
 #X obj 192 254 env~;
 #X obj 231 254 env~;
 #X obj 270 254 env~;
 #X obj 309 254 env~;
 #X obj 309 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 85.0459 256;
+-228856 -1 -1 89.3377 256;
 #X obj 192 154 noise~;
 #X obj 270 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 88.091 256;
+-228856 -1 -1 89.3377 256;
 #X obj 231 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.0596 256;
+-228856 -1 -1 89.3377 256;
 #X obj 192 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 89.0145 256;
+-228856 -1 -1 89.3377 256;
 #X text 230 295 left;
 #X text 230 309 front;
 #X text 269 308 front;
@@ -199,6 +199,29 @@
 #X text 242 431 - Left-Front channel;
 #X obj 250 115 else/slider2d -size 64 -range -1 1;
 #X obj 250 187 unpack f f;
+#N canvas 692 138 429 534 example 0;
+#X floatatom 192 262 5 0 0 0 - - -;
+#X floatatom 251 261 5 0 0 0 - - -;
+#X obj 134 209 noise~;
+#X text 177 260 X;
+#X text 237 260 Y;
+#X obj 134 282 else/pan4~, f 20;
+#X obj 192 90 else/slider2d 127 0 127 0 127;
+#X obj 192 242 unpack f f;
+#X obj 143 325 else/meter4~;
+#X obj 108 105 else/setdsp~;
+#X text 127 42 Use it with [meter4~];
+#X connect 0 0 5 1;
+#X connect 1 0 5 2;
+#X connect 2 0 5 0;
+#X connect 5 0 8 0;
+#X connect 5 1 8 1;
+#X connect 5 2 8 2;
+#X connect 5 3 8 3;
+#X connect 6 0 7 0;
+#X connect 7 0 0 0;
+#X connect 7 1 1 0;
+#X restore 467 289 pd example;
 #X connect 38 0 60 1;
 #X connect 39 0 60 2;
 #X connect 40 0 48 0;
