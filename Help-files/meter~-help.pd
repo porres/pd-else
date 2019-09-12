@@ -39,8 +39,8 @@
 0;
 #X text 199 321 - incoming mono signal to be vu-metered;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -109,7 +109,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -154,8 +154,8 @@
 #X obj 91 389 dac~;
 #X obj 112 233 else/meter~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -224,7 +224,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -270,7 +270,7 @@ and [dac~], f 52;
 #X connect 7 0 6 0;
 #X connect 7 0 6 1;
 #X connect 7 1 9 0;
-#X restore 472 280 pd example;
+#X restore 472 251 pd example;
 #X obj 251 137 osc~ 180;
 #X obj 251 166 else/meter~;
 #X text 129 226 [else/meter~] ==>;
@@ -285,5 +285,13 @@ and [dac~], f 52;
 #X text 85 89 [meter~] is a convenient mono VU-meter abstraction based
 on [else/vu~] and vanilla's [vu] GUI object. See also [meter2~] \,
 [meter4~] and [meter8~]., f 52;
+#N canvas 444 393 562 295 see 1;
+#X obj 66 78 else/meter2~;
+#X obj 174 78 else/meter4~;
+#X obj 328 78 else/meter8~;
+#X text 61 50 else/meter2~;
+#X text 186 52 else/meter4~;
+#X text 374 52 else/meter8~;
+#X restore 467 277 pd see also;
 #X connect 25 0 26 0;
 #X coords 0 476 1 475 74 39 0;
