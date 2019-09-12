@@ -1,4 +1,4 @@
-#N canvas 681 115 562 525 10;
+#N canvas 464 87 562 525 10;
 #X obj 2 493 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 2 310 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -141,9 +141,9 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 506 73 pd;
-#X obj 231 164 else/meter2~;
-#X obj 231 136 osc~ 180;
-#X obj 296 136 osc~ 190;
+#X obj 226 164 else/meter2~;
+#X obj 226 136 osc~ 180;
+#X obj 291 136 osc~ 190;
 #X text 179 453 - window size for the [vu~] objects, f 60;
 #X text 179 469 - hop size for the [vu~] objects, f 60;
 #X obj 101 340 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
@@ -184,9 +184,7 @@
 #X connect 8 0 0 0;
 #X connect 10 0 0 1;
 #X restore 462 280 pd example;
-#X text 84 89 [meter2~] is a convenient stereo VU-meter abstraction
-based on [else/vu~] and vanilla's [vu] GUI., f 54;
-#X text 97 221 [else/meter2~] ==>;
+#X text 92 221 [else/meter2~] ==>;
 #X obj 101 378 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
 #X text 129 378 signal;
@@ -200,6 +198,9 @@ based on [else/vu~] and vanilla's [vu] GUI., f 54;
 #X text 144 424 list;
 #X text 180 424 - vu values (RMS/peak amplitude in dBFS) of inputs
 ;
+#X text 84 89 [meter2~] is a convenient stereo VU-meter abstraction
+based on [else/vu~] and vanilla's [vu] GUI. See also [meter~] \, [meter4~]
+and [meter8~]., f 54;
 #X connect 22 0 21 0;
 #X connect 23 0 21 1;
 #X coords 0 525 1 524 74 39 0;

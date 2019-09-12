@@ -278,11 +278,12 @@ and [dac~], f 52;
 -162280 0;
 #X text 149 357 signal;
 #X text 199 357 - incoming mono signal is passed through;
-#X text 85 89 [meter~] is a convenient mono VU-meter abstraction based
-on [else/vu~] and vanilla's [vu] GUI object., f 52;
 #X obj 121 379 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
 -162280 0;
 #X text 163 380 list;
 #X text 199 380 - vu values (RMS and peak amplitude in dBFS);
+#X text 85 89 [meter~] is a convenient mono VU-meter abstraction based
+on [else/vu~] and vanilla's [vu] GUI object. See also [meter2~] \,
+[meter4~] and [meter8~]., f 52;
 #X connect 25 0 26 0;
 #X coords 0 476 1 475 74 39 0;

@@ -75,7 +75,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (346 objects):
+## Current Object list (348 objects):
 
 **ASSORTED: [4]**
 - [table~]
@@ -445,7 +445,7 @@ Cross compiling is also possible with something like this
 - [vu~]
 - [zerocross~]
 
-**GUI: [22]**
+**GUI: [24]**
 - [mtx.ctl]
 - [biplot]
 - [pic]
@@ -464,6 +464,8 @@ Cross compiling is also possible with something like this
 - [spectrograph~]
 - [meter~]
 - [meter2~]
+- [meter4~]
+- [meter8~]
 - [note]
 - [mix2~]
 - [mix4~]

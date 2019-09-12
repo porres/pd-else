@@ -178,6 +178,8 @@ message	x
 meter	x
 meter~	x
 meter2~	x
+meter4~	x
+meter8~	x
 midi	x
 mix2~	x
 mix4~	x
