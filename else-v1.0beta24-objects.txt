@@ -248,6 +248,7 @@ quantizer~	x
 rad2hz	x
 rad2hz~	x
 ramp~	x
+rampnoise	x
 rampnoise~	x
 rand.f	x
 rand.f~	x
@@ -310,6 +311,7 @@ stack	x
 standard~	x
 status	x
 status~	x
+stepnoise	x
 stepnoise~	x
 stereo.rev~	x
 stream	x
