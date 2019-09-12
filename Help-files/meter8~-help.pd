@@ -161,6 +161,8 @@
 #X text 73 85 [meter4~] is a convenient qudraphonic VU-meter abstraction
 based on [else/vu~] and vanilla's [vu] GUI - see also: [meter~] \,
 [meter2~] and [meter4~].;
+#X obj 444 238 else/out8~;
+#X text 449 212 see also:;
 #X connect 28 0 31 0;
 #X connect 28 0 31 1;
 #X connect 32 0 31 4;

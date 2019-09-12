@@ -1,4 +1,4 @@
-#N canvas 270 108 560 597 10;
+#N canvas 381 86 564 638 10;
 #X obj 2 3 cnv 15 301 42 empty empty xgate~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -23,7 +23,7 @@
 #X obj 195 40 cnv 4 4 4 empty empty crossfade 0 28 2 18 -233017 -1
 0;
 #X obj 101 40 cnv 4 4 4 empty empty input 0 28 2 18 -233017 -1 0;
-#X obj 187 131 noise~;
+#X obj 187 127 noise~;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
 -262144 0 1;
@@ -128,35 +128,33 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X obj 161 195 else/meter2~;
-#X obj 265 193 else/meter2~;
-#X obj 187 168 else/xgate~ 4 1000 3;
+#X obj 187 164 else/xgate~ 4 1000 3;
 #X text 61 86 [xgate~] routes between multiple outputs with crossfading.
 ;
-#X obj 4 341 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 396 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 443 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 498 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 475 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 530 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 558 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 613 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 97 452 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 97 507 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X text 152 349 signal;
-#X obj 97 349 cnv 17 3 87 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 152 404 signal;
+#X obj 97 404 cnv 17 3 87 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 158 367 float;
-#X text 116 385 time <float>;
-#X text 194 385 - crossfade time in ms;
-#X obj 3 531 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 161 538 -lin;
-#X text 195 538 - sets crossfade type to linear (default is equal power)
+#X text 158 422 float;
+#X text 116 440 time <float>;
+#X text 194 440 - crossfade time in ms;
+#X obj 3 586 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 161 593 -lin;
+#X text 195 593 - sets crossfade type to linear (default is equal power)
 ;
-#X text 176 422 ep;
-#X text 170 404 lin;
-#N canvas 840 91 418 509 crossfade_modes 1;
-#X floatatom 98 159 3 0 1 0 - - -, f 3;
+#X text 176 477 ep;
+#X text 170 459 lin;
+#N canvas 840 91 418 509 crossfade_modes 0;
+#X floatatom 98 159 3 0 1 0 - - -;
 #X obj 98 121 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X msg 127 219 ep;
@@ -181,27 +179,34 @@ the object with the -lin flag.;
 #X connect 7 0 10 0;
 #X connect 10 0 12 0;
 #X connect 12 0 8 0;
-#X restore 426 307 pd crossfade_modes;
-#X text 194 404 - change crossfade type to linear;
-#X text 194 422 - change crossfade type to equal power;
-#X text 141 496 2) float - crossfade time in ms (default 0 - no crossfade)
+#X restore 427 367 pd crossfade_modes;
+#X text 194 459 - change crossfade type to linear;
+#X text 194 477 - change crossfade type to equal power;
+#X text 141 551 2) float - crossfade time in ms (default 0 - no crossfade)
 ;
-#X text 141 511 3) float - initially selected channel (default 0: none)
+#X text 141 566 3) float - initially selected channel (default 0: none)
 , f 58;
-#X obj 240 121 hradio 15 1 0 5 empty empty empty 0 -8 0 10 -228856
+#X obj 240 117 hradio 15 1 0 5 empty empty empty 0 -8 0 10 -228856
 -1 -1 4;
-#X floatatom 240 144 5 0 0 0 - - -, f 5;
-#X text 280 143 select output (0 = none);
-#X text 194 367 - selected outlet (0 is none);
-#X text 194 349 - input signal to route;
-#X text 152 454 signal;
-#X text 194 454 - routed output;
-#X text 141 481 1) float - number of outlets/channels (default 1 \,
+#X floatatom 240 140 5 0 0 0 - - -;
+#X text 280 139 select output (0 = none);
+#X text 194 422 - selected outlet (0 is none);
+#X text 194 404 - input signal to route;
+#X text 152 509 signal;
+#X text 194 509 - routed output;
+#X text 141 536 1) float - number of outlets/channels (default 1 \,
 max 500);
-#X connect 13 0 17 0;
-#X connect 17 0 15 0;
-#X connect 17 1 15 1;
-#X connect 17 2 16 0;
-#X connect 17 3 16 1;
-#X connect 39 0 40 0;
-#X connect 40 0 17 0;
+#X obj 195 188 else/meter4~;
+#X text 79 240 [else/meter4~] =>;
+#X obj 199 331 else/out4~;
+#X connect 13 0 15 0;
+#X connect 15 0 45 0;
+#X connect 15 1 45 1;
+#X connect 15 2 45 2;
+#X connect 15 3 45 3;
+#X connect 37 0 38 0;
+#X connect 38 0 15 0;
+#X connect 45 0 47 0;
+#X connect 45 1 47 1;
+#X connect 45 2 47 2;
+#X connect 45 3 47 3;

@@ -44,7 +44,7 @@
 ;
 #X text 110 491 2) float - <1> sets to indexed mode (default) <0> sets
 to non-indexed, f 69;
-#N canvas 876 133 436 477 modes 0;
+#N canvas 876 133 462 559 modes 0;
 #X text 51 131 In non-indexed mode \, the selection input values are
 from 0 (first channel) to 1 (last channel).;
 #X text 243 286 set to non-indexed mode with the second argument,
@@ -66,6 +66,7 @@ mode. You can also use the index message to change bewteen modes.;
 #X obj 134 288 else/xgate2~ 4 0;
 #X obj 227 257 osc~ 440;
 #X obj 131 326 else/meter4~;
+#X obj 138 484 else/out4~;
 #X connect 2 0 10 0;
 #X connect 3 0 2 0;
 #X connect 5 0 6 0;
@@ -76,13 +77,17 @@ mode. You can also use the index message to change bewteen modes.;
 #X connect 10 2 12 2;
 #X connect 10 3 12 3;
 #X connect 11 0 10 1;
+#X connect 12 0 13 0;
+#X connect 12 1 13 1;
+#X connect 12 2 13 2;
+#X connect 12 3 13 3;
 #X restore 483 331 pd modes;
 #X obj 101 40 cnv 4 4 4 empty empty input 0 28 2 18 -233017 -1 0;
 #X text 110 475 1) float - number of output channels (default/min 2
 \, max 500), f 69;
 #X text 197 445 - routed outputs with crossfade;
 #X obj 190 125 hsl 128 15 0 3 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12700 1;
+-1 -1 0 1;
 #X floatatom 187 145 0 0 0 0 - - -;
 #X obj 187 189 else/xgate2~ 4;
 #X text 61 86 [xgate2~] routes an input signal to 'n' specified outlets
@@ -90,8 +95,8 @@ with equal power crossfade between two adjacent channels.;
 #X obj 268 158 noise~;
 #X text 190 125 select output channel;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -160,7 +165,7 @@ with equal power crossfade between two adjacent channels.;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
