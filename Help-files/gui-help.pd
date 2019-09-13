@@ -1,43 +1,42 @@
-#N canvas 482 110 567 359 10;
-#X obj 5 232 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 544 220 562 361 10;
+#X obj 4 230 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 267 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 265 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 302 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 300 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 138 241 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 137 239 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 5 335 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 333 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 307 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 306 6 pd;
-#X obj 346 14 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 24 43 cnv 4 4 4 empty empty Run 0 28 2 18 -233017 -1 0;
-#X obj 63 43 cnv 4 4 4 empty empty gui 0 28 2 18 -233017 -1 0;
-#X obj 459 14 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 41 cnv 4 4 4 empty empty Run 0 28 2 18 -233017 -1 0;
+#X obj 62 41 cnv 4 4 4 empty empty gui 0 28 2 18 -233017 -1 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 479 14 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 516 14 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 465 29 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 503 29 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 92 43 cnv 4 4 4 empty empty commands 0 28 2 18 -233017 -1 0
+#X obj 91 41 cnv 4 4 4 empty empty commands 0 28 2 18 -233017 -1 0
 ;
-#X obj 4 6 cnv 15 301 42 empty empty gui 20 20 2 37 -233017 -1 0;
+#X obj 3 4 cnv 15 301 42 empty empty gui 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 4 6 graph;
-#X text 208 311 none;
-#X text 208 277 none;
-#X text 241 242 - gui command;
-#X text 323 157 tcl/tk command;
+#X restore 3 4 graph;
+#X text 207 309 none;
+#X text 207 275 none;
+#X text 240 240 - gui command;
 #N canvas 855 44 491 355 system 0;
 #X text 81 236 (note: because you can't use open and close braces in
 Pd \, this can be very awkward. It is perhaps best to define tcl/tk
@@ -53,11 +52,47 @@ Mac OS you can get the time and date like this:;
 #X msg 94 106 pdsend [concat date [exec date]];
 #X connect 2 0 3 0;
 #X connect 5 0 4 0;
-#X restore 488 202 pd system;
-#X obj 125 191 else/gui;
-#X text 72 94 [gui] sends a command directly to the tcl/tk interpreter
+#X restore 487 180 pd system;
+#X obj 182 193 else/gui;
+#X text 71 92 [gui] sends a command directly to the tcl/tk interpreter
 (via 'sys_gui') used for Pd's gui.;
-#X text 184 242 anything;
-#X msg 125 157 ::pd_menucommands::menu_aboutpd;
-#X connect 26 0 23 0;
-#X coords 0 359 1 358 94 40 0;
+#X text 183 240 anything;
+#X msg 182 161 ::pd_menucommands::menu_aboutpd;
+#X msg 142 138 menu_helpbrowser;
+#N canvas 436 235 794 578 example 0;
+#X obj 385 194 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 385 216 else/colors -hex;
+#X obj 173 324 else/display;
+#X obj 173 243 else/name;
+#X msg 429 267 black;
+#X msg 419 245 green;
+#X obj 173 369 else/gui;
+#X msg 601 262 60;
+#X msg 584 239 30;
+#X msg 563 215 10;
+#X text 176 164 Setting a border color and thickness:;
+#X obj 173 292 else/pack2 s configure -highlightcolor black -highlightthickness
+10, f 69;
+#X obj 173 217 loadbang;
+#X msg 173 267 set \$1;
+#X obj 132 266 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 108 248 click:;
+#X connect 0 0 1 0;
+#X connect 1 0 11 3;
+#X connect 2 0 6 0;
+#X connect 3 0 13 0;
+#X connect 4 0 11 3;
+#X connect 5 0 11 3;
+#X connect 7 0 11 5;
+#X connect 8 0 11 5;
+#X connect 9 0 11 5;
+#X connect 11 0 2 0;
+#X connect 12 0 3 0;
+#X connect 13 0 11 0;
+#X connect 14 0 11 0;
+#X restore 481 203 pd example;
+#X connect 25 0 22 0;
+#X connect 26 0 22 0;
+#X coords 0 361 1 360 94 40 0;

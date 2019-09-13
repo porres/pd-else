@@ -1,4 +1,4 @@
-#N struct 1511-pixel float color;
+#N struct 1003-pixel float color;
 #N canvas 546 23 560 610 10;
 #X obj 248 158 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -57,7 +57,7 @@
 #X obj 357 166 int;
 #X obj 396 166 int;
 #X obj 435 166 int;
-#X symbolatom 318 295 8 0 0 0 - - -, f 8;
+#X symbolatom 318 295 8 0 0 0 - - -;
 #X text 427 257 converts to hexadecimal;
 #X obj 318 361 else/colors;
 #X text 391 361 converts to RGB (default);
@@ -106,7 +106,7 @@ to "ds" (Pd's Data Structures format)., f 38;
 #X obj 4 555 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
 #X text 161 563 clicking on the object opens color picker;
 #X obj 248 244 else/colors;
-#N canvas 575 174 685 387 gui 1;
+#N canvas 575 174 685 387 gui 0;
 #X obj 24 246 else/pack2 rgb 0 0 0;
 #X obj 63 108 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
 -262144 -1 0 0;
@@ -122,7 +122,7 @@ to "ds" (Pd's Data Structures format)., f 38;
 #X text 188 86 GUI;
 #X text 537 82 Data Structures;
 #N canvas 4 23 450 300 \$0-DS 0;
-#X scalar 1511-pixel 0 \;;
+#X scalar 1003-pixel 0 \;;
 #X coords 0 0 1 1 90 250 2 100 100;
 #X restore 540 104 pd \$0-DS;
 #N canvas 148 23 292 236 set-gui 0;
