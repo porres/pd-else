@@ -53,6 +53,7 @@ message.class.sources := Classes/Source/message.c
 mouse.class.sources := Classes/Source/mouse.c
 note.in.class.sources := Classes/Source/note.in.c
 note.out.class.sources := Classes/Source/note.out.c
+name.class.sources := Classes/Source/name.c
 factor.class.sources := Classes/Source/factor.c
 float2bits.class.sources := Classes/Source/float2bits.c
 panic.class.sources := Classes/Source/panic.c

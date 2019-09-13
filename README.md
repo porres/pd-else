@@ -75,7 +75,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (354 objects):
+## Current Object list (355 objects):
 
 **ASSORTED: [4]**
 - [table~]
@@ -87,7 +87,7 @@ Cross compiling is also possible with something like this
 - [hann~]
 - [bin.shift~]
 
-**PATCH/SUBPATCH MANAGEMENT: [8]**
+**PATCH/SUBPATCH MANAGEMENT: [9]**
 - [args]
 - [dollarzero]
 - [receiver]
@@ -95,6 +95,7 @@ Cross compiling is also possible with something like this
 - [click]
 - [properties]
 - [window]
+- [name]
 - [loadbanger] / [lb]
 
 **MESSAGE MANAGEMENT: [20]**
