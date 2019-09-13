@@ -34,14 +34,10 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 4 6 graph;
-#X text 172 242 gui <anything>;
 #X text 208 311 none;
 #X text 208 277 none;
-#X text 264 242 - gui command;
-#X msg 125 156 gui ::pd_menucommands::menu_aboutpd;
-#X text 346 157 tcl/tk command;
-#X text 72 94 [gui] sends a command directly to the tcl/tk interpreter
-used for Pd's gui.;
+#X text 241 242 - gui command;
+#X text 323 157 tcl/tk command;
 #N canvas 855 44 491 355 system 0;
 #X text 81 236 (note: because you can't use open and close braces in
 Pd \, this can be very awkward. It is perhaps best to define tcl/tk
@@ -51,13 +47,17 @@ using system commands.), f 52;
 #X text 55 33 You can also run system commands via the gui. What commands
 you can run depends on your operating system. If you're in linux or
 Mac OS you can get the time and date like this:;
-#X msg 94 106 gui pdsend [concat date [exec date]];
 #X obj 179 141 r date;
 #X obj 179 169 else/display;
 #X obj 94 138 else/gui;
-#X connect 2 0 5 0;
-#X connect 3 0 4 0;
+#X msg 94 106 pdsend [concat date [exec date]];
+#X connect 2 0 3 0;
+#X connect 5 0 4 0;
 #X restore 488 202 pd system;
 #X obj 125 191 else/gui;
-#X connect 22 0 26 0;
+#X text 72 94 [gui] sends a command directly to the tcl/tk interpreter
+(via 'sys_gui') used for Pd's gui.;
+#X text 184 242 anything;
+#X msg 125 157 ::pd_menucommands::menu_aboutpd;
+#X connect 26 0 23 0;
 #X coords 0 359 1 358 94 40 0;

@@ -112,10 +112,10 @@ used to emulate a hot inlet., f 50;
 #X obj 189 213 else/display;
 #X text 125 362 1) anything;
 #X text 203 327 - the formatted symbol;
-#N canvas 648 238 422 332 separate 0;
+#N canvas 648 238 417 424 separate 0;
 #X obj 128 203 else/separate;
 #X obj 128 165 else/display;
-#X obj 128 269 else/display;
+#X obj 128 349 else/display;
 #X text 63 28 You can use the [separate] object to split the symbol
 into different elements. check its help file for more details., f
 51;
@@ -123,7 +123,7 @@ into different elements. check its help file for more details., f
 #X obj 128 97 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 128 234 unpack s s s;
-#X obj 162 269 else/display;
+#X obj 162 309 else/display;
 #X obj 197 269 else/display;
 #X connect 0 0 6 0;
 #X connect 1 0 0 0;
@@ -266,7 +266,7 @@ shorter (%G uses a capital "E")., f 47;
 #X obj 292 467 else/display;
 #X obj 292 434 else/makesymbol %g;
 #X obj 292 396 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.1 256;
+-228856 -1 -1 0 256;
 #X msg 292 332 1e-07;
 #X msg 306 365 0.1;
 #X obj 135 435 else/makesymbol %+#.3g;
