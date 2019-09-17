@@ -75,18 +75,18 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (357 objects):
+## Current Object list (356 objects):
 
-**ASSORTED: [3]**
+**ASSORTED: [03]**
 - [table~]
 - [nbang]
 - [meter]
 
-**FFT: [2]**
+**FFT: [02]**
 - [hann~]
 - [bin.shift~]
 
-**PATCH/SUBPATCH MANAGEMENT: [10]**
+**PATCH/SUBPATCH MANAGEMENT: [09]**
 - [args]
 - [dollarzero]
 - [receiver]
@@ -95,7 +95,6 @@ Cross compiling is also possible with something like this
 - [properties]
 - [window]
 - [canvas.name]
-- [canvas.wname]
 - [loadbanger] / [lb]
 
 **MESSAGE MANAGEMENT: [20]**
@@ -135,7 +134,7 @@ Cross compiling is also possible with something like this
 - [merge]
 - [unmerge]
 
-**FILE MANAGEMENT: [1]**
+**FILE MANAGEMENT: [01]**
 - [dir]
 
 **MIDI: [17]**
@@ -213,13 +212,13 @@ Cross compiling is also possible with something like this
 - [rescale~]
 - [op~]
 
-**MATH: CONSTANT VALUES: [4]**
+**MATH: CONSTANT VALUES: [04]**
 - [sr~]
 - [nyquist~]
 - [pi]
 - [e]
 
-**MATH: RANDOM: [7]**
+**MATH: RANDOM: [07]**
 - [randf]
 - [randf~]
 - [rands]
@@ -228,7 +227,7 @@ Cross compiling is also possible with something like this
 - [drunkard~]
 - [drunkard]
 
-**LOGIC: [2]**
+**LOGIC: [02]**
 - [loop]
 - [moses~]
 
@@ -255,14 +254,14 @@ Cross compiling is also possible with something like this
 - [pvoc.freeze~]
 - [phaser~]
 
-**AUDIO PROCESSING: DYNAMICS [5]**
+**AUDIO PROCESSING: DYNAMICS [05]**
 - [compress~]
 - [duck~]
 - [expand~]
 - [noisegate~]
 - [norm~]
 
-**AUDIO PROCESSING: REVERBERATION: [9]**
+**AUDIO PROCESSING: REVERBERATION: [09]**
 - [allpass.rev~]
 - [comb.rev~]
 - [echo.rev~]
@@ -298,7 +297,7 @@ Cross compiling is also possible with something like this
 - [resonant2~]
 - [svfilter~]
 
-**SAMPLING/PLAYING/GRANULATION: [8]**
+**SAMPLING/PLAYING/GRANULATION: [08]**
 - [player~]
 - [gran.player~]
 - [pvoc.player~]
@@ -308,7 +307,7 @@ Cross compiling is also possible with something like this
 - [play.file~]
 - [sample~]
 
-**PHYSICAL MODELLING: [1]**
+**PHYSICAL MODELLING: [01]**
 - [pluck~]
 
 **OSCILLATORS (DETERMINISTIC GENERATORS): [24]**
@@ -481,6 +480,6 @@ Cross compiling is also possible with something like this
 - [setdsp~]
 - [openfile]
 
-**EXTRA: [2]**
+**EXTRA: [02]**
 - [output~]
 - [cmul~]
