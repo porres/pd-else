@@ -18,7 +18,8 @@
 0;
 #X obj 504 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 5 6 cnv 15 301 42 empty empty name 20 20 2 37 -233017 -1 0;
+#X obj 5 6 cnv 15 301 42 empty empty canvas.name 20 20 2 37 -233017
+-1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 4 5 graph;
@@ -34,7 +35,6 @@
 #X obj 156 266 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 184 305 1) float -;
-#X text 62 94 [name] gives you the canvas name symbol., f 73;
 #X obj 156 232 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 201 233 bang;
@@ -53,17 +53,19 @@
 -1;
 #X obj 275 162 else/display;
 #X text 275 195 this subpatch's;
-#X obj 275 131 else/name;
-#X obj 57 129 else/name 1;
 #X text 53 33 You can set a level number to query for the name of the
 parent patch (1) or parent's parent patch (2) and so on...;
+#X obj 57 128 else/canvas.name 1;
+#X obj 275 131 else/canvas.name;
 #X connect 0 0 7 0;
-#X connect 3 0 6 0;
-#X connect 6 0 4 0;
+#X connect 3 0 8 0;
 #X connect 7 0 1 0;
+#X connect 8 0 4 0;
 #X restore 492 188 pd depth;
-#X obj 214 156 else/name;
 #X text 238 233 - outputs canvas name;
-#X connect 25 0 28 0;
-#X connect 28 0 24 0;
+#X obj 214 156 else/canvas.name;
+#X text 62 94 [canvas.name] gives you the canvas name symbol., f 73
+;
+#X connect 24 0 28 0;
+#X connect 28 0 23 0;
 #X coords 0 361 1 360 94 40 0;

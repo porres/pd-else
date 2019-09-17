@@ -38,6 +38,9 @@ break	x
 brickwall~	x
 brown~ 	x
 button	x
+canvas.mouse	x
+canvas.name	x
+canvas.wname	x
 car2pol	x
 car2pol~	x
 ceil	x

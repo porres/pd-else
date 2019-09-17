@@ -75,19 +75,18 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (355 objects):
+## Current Object list (357 objects):
 
-**ASSORTED: [4]**
+**ASSORTED: [3]**
 - [table~]
 - [nbang]
 - [meter]
-- [mouse]
 
 **FFT: [2]**
 - [hann~]
 - [bin.shift~]
 
-**PATCH/SUBPATCH MANAGEMENT: [9]**
+**PATCH/SUBPATCH MANAGEMENT: [10]**
 - [args]
 - [dollarzero]
 - [receiver]
@@ -95,7 +94,8 @@ Cross compiling is also possible with something like this
 - [click]
 - [properties]
 - [window]
-- [name]
+- [canvas.name]
+- [canvas.wname]
 - [loadbanger] / [lb]
 
 **MESSAGE MANAGEMENT: [20]**
@@ -377,7 +377,9 @@ Cross compiling is also possible with something like this
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [26]**
+**CONTROL: [28]**
+ - [mouse]
+ - [canvas.mouse]
  - [adsr~]
  - [asr~]
  - [autofade~]
