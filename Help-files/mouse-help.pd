@@ -35,13 +35,13 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 5 graph;
-#X obj 225 183 else/mouse;
+#X obj 309 176 else/mouse;
 #X text 158 398 (none);
-#X obj 225 215 else/display;
-#X floatatom 258 215 5 0 0 0 - - -;
-#X floatatom 313 215 5 0 0 0 - - -;
-#X msg 225 153 zero;
-#X msg 177 153 reset;
+#X obj 309 208 else/display;
+#X floatatom 342 208 5 0 0 0 - - -;
+#X floatatom 397 208 5 0 0 0 - - -;
+#X msg 309 146 zero;
+#X msg 261 146 reset;
 #X obj 123 258 cnv 17 3 34 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 157 319 float - mouse click status (1: on / 0: off);
@@ -56,6 +56,10 @@
 #X text 51 92 [mouse] grabs mouse interaction (click and coordinates).
 Click and see. This works for any click Pd receives in any window \,
 not only this patch's., f 62;
+#X text 72 158 see also:;
+#X obj 74 182 else/canvas.mouse;
+#X text 50 204 for coordinates relative to specific windows, f 24
+;
 #X connect 18 0 20 0;
 #X connect 18 1 21 0;
 #X connect 18 2 22 0;
