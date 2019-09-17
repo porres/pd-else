@@ -256,6 +256,7 @@ rand.f~	x
 rand.i	x
 rand.i~	x
 rand.seq	x
+randpulse	x
 randpulse~	x
 randpulse2~	x
 range	x

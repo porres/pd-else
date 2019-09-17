@@ -88,10 +88,10 @@ f 55;
 -228856 -1 -1 0 256;
 #X obj 501 60 hsl 128 15 0.1 100 1 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 498 175 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 498 175 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 513 283 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 180 256;
+-228856 -1 -1 160 256;
 #X text 37 279 You can change the rate with the -rate flag or the "rate"
 message. This affects the period resolution, f 55;
 #X connect 1 0 0 0;
@@ -104,6 +104,8 @@ message. This affects the period resolution, f 55;
 #X connect 9 0 8 0;
 #X connect 10 0 4 0;
 #X restore 442 244 pd rate;
+#X text 41 221 see also:;
+#X obj 43 246 else/pulse~;
 #X connect 26 0 46 0;
 #X connect 28 0 39 0;
 #X connect 38 0 46 2;
