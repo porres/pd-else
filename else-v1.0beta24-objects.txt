@@ -258,6 +258,7 @@ rand.i~	x
 rand.seq	x
 randpulse	x
 randpulse~	x
+randpulse2	x
 randpulse2~	x
 range	x
 range~	x

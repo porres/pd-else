@@ -75,7 +75,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (357 objects):
+## Current Object list (358 objects):
 
 **ASSORTED: [03]**
 - [table~]
@@ -377,7 +377,7 @@ Cross compiling is also possible with something like this
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [29]**
+**CONTROL: [30]**
  - [mouse]
  - [canvas.mouse]
  - [adsr~]
@@ -407,6 +407,7 @@ Cross compiling is also possible with something like this
  - [impulse]
  - [pulse]
  - [randpulse]
+ - [randpulse2]
  
  **TRIGGERS: [26]**
 - [above]

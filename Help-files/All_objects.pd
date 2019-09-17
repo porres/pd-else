@@ -1,8 +1,8 @@
-#N struct 1451-cell float x float y float cellsize float color;
-#N struct 1458-point float x0 float y0 float s;
-#N struct 1474-slot float x float y float slotsize float color float
+#N struct 1358-cell float x float y float cellsize float color;
+#N struct 1365-point float x0 float y0 float s;
+#N struct 1381-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1476-cell float cellsize float color;
+#N struct 1383-cell float cellsize float color;
 #N canvas 644 83 537 532 10;
 #X text 56 67 Assorted:;
 #X obj 56 91 else/table~;
@@ -250,41 +250,41 @@ width float bordercolor;
 #X obj 54 8532 else/lfo;
 #X obj 54 8611 else/impulse;
 #X obj 54 8641 else/pulse;
-#X text 54 8715 Triggers:;
-#X obj 54 8800 else/bangdiv;
-#X obj 54 8830 else/coin;
-#X obj 54 8860 else/coin~;
-#X obj 54 8890 else/dust~;
-#X obj 54 8920 else/dust2~;
-#X obj 54 8950 else/gatehold~;
-#X obj 54 8980 else/gate2imp~;
-#X obj 54 9010 else/pimp~;
-#X obj 54 9040 else/tempo;
-#X obj 54 9070 else/tempo~;
-#X obj 54 9100 else/pulsecount~;
-#X obj 54 9130 else/pulsediv~;
-#X obj 54 9160 else/sh~;
-#X obj 54 9190 else/schmitt;
-#X obj 54 9220 else/schmitt~;
-#X obj 54 9250 else/status;
-#X obj 54 9280 else/status~;
-#X obj 54 9310 else/trig.delay~;
-#X obj 54 9340 else/trig.delay2~;
-#X obj 54 9370 else/toggleff~;
-#X obj 54 9400 else/timed.gate~;
-#X obj 54 9430 else/match~;
-#X obj 54 9460 else/trig2bang~;
-#X obj 54 9490 else/trighold~;
-#X obj 58 9569 else/changed~;
-#X obj 58 9594 else/changed2~;
-#X obj 58 9620 else/detect~;
-#X obj 59 9645 else/lastvalue;
-#X obj 59 9670 else/median~;
-#X obj 59 9747 else/peak~;
-#X obj 59 9772 else/rms~;
-#X obj 59 9798 else/mov.rms~;
-#X obj 59 9824 else/vu~;
-#X obj 59 9850 else/zerocross~;
+#X text 54 8735 Triggers:;
+#X obj 54 8820 else/bangdiv;
+#X obj 54 8850 else/coin;
+#X obj 54 8880 else/coin~;
+#X obj 54 8910 else/dust~;
+#X obj 54 8940 else/dust2~;
+#X obj 54 8970 else/gatehold~;
+#X obj 54 9000 else/gate2imp~;
+#X obj 54 9030 else/pimp~;
+#X obj 54 9060 else/tempo;
+#X obj 54 9090 else/tempo~;
+#X obj 54 9120 else/pulsecount~;
+#X obj 54 9150 else/pulsediv~;
+#X obj 54 9180 else/sh~;
+#X obj 54 9210 else/schmitt;
+#X obj 54 9240 else/schmitt~;
+#X obj 54 9270 else/status;
+#X obj 54 9300 else/status~;
+#X obj 54 9330 else/trig.delay~;
+#X obj 54 9360 else/trig.delay2~;
+#X obj 54 9390 else/toggleff~;
+#X obj 54 9420 else/timed.gate~;
+#X obj 54 9450 else/match~;
+#X obj 54 9480 else/trig2bang~;
+#X obj 54 9510 else/trighold~;
+#X obj 58 9589 else/changed~;
+#X obj 58 9614 else/changed2~;
+#X obj 58 9640 else/detect~;
+#X obj 59 9665 else/lastvalue;
+#X obj 59 9690 else/median~;
+#X obj 59 9767 else/peak~;
+#X obj 59 9792 else/rms~;
+#X obj 59 9818 else/mov.rms~;
+#X obj 59 9844 else/vu~;
+#X obj 59 9870 else/zerocross~;
 #N canvas 205 93 1034 785 GUI 0;
 #X obj 175 -356 else/mtx.ctl;
 #X obj 49 -250 else/biplot;
@@ -340,18 +340,18 @@ width float bordercolor;
 #X obj 390 699 else/out8~;
 #X obj 67 -344 else/gui;
 #X text 165 -378 [else/mtx.ctl];
-#X restore 65 9939 pd GUI;
+#X restore 65 9959 pd GUI;
 #X text 56 324 Patch/subpatch management:;
 #X text 54 977 Message management:;
 #X text 51 1537 File management:;
-#X text 60 9910 GUI:;
-#X text 22 9973 =============================================================================
+#X text 60 9930 GUI:;
+#X text 22 9993 =============================================================================
 , f 77;
-#X text 22 9884 =============================================================================
+#X text 22 9904 =============================================================================
 , f 77;
-#X text 22 9515 =============================================================================
+#X text 22 9535 =============================================================================
 , f 77;
-#X text 22 8696 =============================================================================
+#X text 22 8716 =============================================================================
 , f 77;
 #X text 22 7894 =============================================================================
 , f 77;
@@ -393,10 +393,10 @@ width float bordercolor;
 , f 77;
 #X text 29 41 =============================================================================
 , f 77;
-#X obj 59 10042 else/cmul~;
-#X text 22 10136 =============================================================================
+#X obj 59 10062 else/cmul~;
+#X text 22 10156 =============================================================================
 , f 77;
-#X text 56 10004 Extra:;
+#X text 56 10024 Extra:;
 #X obj 54 5746 else/sample~;
 #X obj 54 1030 else/separate;
 #X obj 54 5894 else/rec~;
@@ -408,8 +408,8 @@ width float bordercolor;
 #X obj 54 4979 else/free.rev~;
 #X obj 54 4928 else/plate.rev~;
 #X obj 54 4952 else/giga.rev~;
-#X obj 54 8740 else/above;
-#X obj 54 8770 else/above~;
+#X obj 54 8760 else/above;
+#X obj 54 8790 else/above~;
 #X obj 54 4876 else/mono.rev~;
 #X obj 54 4900 else/stereo.rev~;
 #X text 19 4607 =============================================================================
@@ -419,7 +419,7 @@ width float bordercolor;
 #X text 51 4032 Audio Processing (assorted):;
 #X obj 56 145 else/meter;
 #X text 53 19 ALL OBJECTS IN THE ELSE LIBRARY:;
-#X obj 58 10075 else/output~;
+#X obj 58 10095 else/output~;
 #X obj 48 4659 else/compress~;
 #X obj 54 1306 else/router;
 #X obj 54 1381 else/selector;
@@ -460,12 +460,13 @@ width float bordercolor;
 #X obj 54 2356 else/factor;
 #X obj 54 2255 else/common.div;
 #X obj 54 2772 else/op~;
-#X obj 59 9722 else/range~;
-#X text 56 9538 Analysis:;
-#X obj 59 9695 else/range;
+#X obj 59 9742 else/range~;
+#X text 56 9558 Analysis:;
+#X obj 59 9715 else/range;
 #X obj 53 7636 else/pan8~, f 14;
 #X obj 53 8505 else/lfnoise;
 #X obj 54 8586 else/rampnoise;
 #X obj 54 8559 else/stepnoise;
 #X obj 56 398 else/canvas.name;
 #X obj 54 8669 else/randpulse;
+#X obj 54 8694 else/randpulse2;
