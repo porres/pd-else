@@ -35,7 +35,6 @@ args.class.sources := Classes/Source/args.c
 click.class.sources := Classes/Source/click.c
 canvas.mouse.class.sources := Classes/Source/canvas.mouse.c
 canvas.name.class.sources := Classes/Source/canvas.name.c
-canvas.wname.class.sources := Classes/Source/canvas.wname.c
 properties.class.sources := Classes/Source/properties.c
 break.class.sources := Classes/Source/break.c
 cents2ratio.class.sources := Classes/Source/cents2ratio.c
