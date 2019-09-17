@@ -137,7 +137,8 @@ Cross compiling is also possible with something like this
 **FILE MANAGEMENT: [01]**
 - [dir]
 
-**MIDI: [17]**
+**MIDI: [18]**
+- [midi]
 - [sysrt.in]
 - [sysrt.out]
 - [ctl.in]
@@ -219,11 +220,11 @@ Cross compiling is also possible with something like this
 - [e]
 
 **MATH: RANDOM: [07]**
-- [randf]
-- [randf~]
-- [rands]
-- [randi]
-- [randi~]
+- [rand.f]
+- [rand.f~]
+- [rand.seq]
+- [rand.i]
+- [rand.i~]
 - [drunkard~]
 - [drunkard]
 
@@ -449,7 +450,7 @@ Cross compiling is also possible with something like this
 - [vu~]
 - [zerocross~]
 
-**GUI: [28]**
+**GUI: [29]**
 - [gui]
 - [mtx.ctl]
 - [biplot]
@@ -465,7 +466,7 @@ Cross compiling is also possible with something like this
 - [out8~]
 - [gain~]
 - [gain2~]
-- [latch]
+- [button]
 - [keyboard]
 - [graph~]
 - [range.hsl]

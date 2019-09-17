@@ -91,7 +91,6 @@ dust2~	x
 e	x
 echo.rev~	x
 envelope~	x
-envelope	x
 envgen~	x
 eq~	x
 expand~	x
@@ -117,7 +116,6 @@ fromany	x
 function~	x
 gain~	x
 gain2~	x
-gate~	x
 gate2imp~	x
 gatehold~	x
 gbman~	x
@@ -217,6 +215,7 @@ pack2~	x
 pan2~	x
 pan4~	x
 pan8~	x
+panic	x
 parabolic~	x
 peak~	x
 pgm.in	x
@@ -259,6 +258,7 @@ rand.i~	x
 rand.seq	x
 randpulse~	x
 randpulse2~	x
+range	x
 range~	x
 range.hsl	x
 ratio2cents	x
@@ -283,6 +283,7 @@ rotate~	x
 routeall	x
 router	x
 routetype	x
+s2f~	x
 sample~	x
 samps2ms~	x
 samps2ms	x
@@ -350,6 +351,7 @@ wavetable~	x
 window	x
 wrap2	x
 wrap2~	x
+wt~	x
 xfade~	x
 xgate~	x
 xgate2~	x
