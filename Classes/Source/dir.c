@@ -130,7 +130,10 @@ static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
         temp = NULL; // ???
         strcpy(x->x_directory, tempdir); // restore original directory
         if(init){
-            pd_error(x, "[dir]: cannot open '%s', opening '%s' instead",
+            if(dirname->s_name == x->x_directory)
+                pd_error(x, "[dir]: cannot open default directory '%s'");
+            else
+                pd_error(x, "[dir]: cannot open '%s', opening '%s' instead",
                      dirname->s_name, x->x_directory);
             dir_load(x);
         }
