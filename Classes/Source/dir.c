@@ -106,12 +106,15 @@ static void dir_load(t_dir *x){
 }
 
 static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
+    post("===> dir_loadir");
+    post("dirname->s_name = %s", dirname->s_name);
     if(!strcmp(dirname->s_name, "")){
         pd_error(x, "[dir]: no symbol given to 'open'");
         return;
     }
     char tempdir[MAXPDSTRING];
     strcpy(tempdir, x->x_directory);
+    post("tempdir->s_name (x->x_directory) = %s", tempdir->s_name);
     if(!strcmp(dirname->s_name, "..")){ // parent dir
         char *last_slash;
         last_slash = strrchr(x->x_directory, '/');
@@ -123,15 +126,24 @@ static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
     }
     else if(!strncmp(dirname->s_name, "/", 1)) // absolute path
         strncpy(x->x_directory, dirname->s_name, MAXPDSTRING);
-    else // relative to current dir
-        sprintf(x->x_directory, "%s/%s", x->x_directory, dirname->s_name );
+    else {// relative to current dir
+        post("relative to current dir");
+        sprintf(x->x_directory, "%s/%s", x->x_directory, dirname->s_name);
+    }
+    post("opendir(x->x_directory) - let's search it");
     DIR *temp = opendir(x->x_directory); // let's search it
     if(!temp){ // didn't find
+        post("(!temp): didn't find");
         temp = NULL; // ???
         strcpy(x->x_directory, tempdir); // restore original directory
+        post("restore original directory, x->x_directory = %s", x->x_directory->s_name);
         if(init){
-            if(dirname->s_name == x->x_directory)
-                pd_error(x, "[dir]: cannot open default directory '%s'");
+            post("INIT");
+            post("dirname = '%s' & x->x_directory = '%s'", dirname->s_name, dirname->s_name);
+            if(dirname->s_name == x->x_directory-s_name){
+                pd_error(x, "[dir]: cannot open default directory '%s'", x->x_directory->s_name);
+                post("dirname->s_name = x->x_directory");
+            }
             else
                 pd_error(x, "[dir]: cannot open '%s', opening '%s' instead",
                      dirname->s_name, x->x_directory);
@@ -267,6 +279,7 @@ static void *dir_new(t_symbol *s, int ac, t_atom* av){
     }
     x->x_getdir = canvas_getdir(canvas); // default
     strncpy(x->x_directory, x->x_getdir->s_name, MAXPDSTRING); // default
+    post("init: x->x_directory = %s", x->x_directory->s_name);
     dirname == &s_ ? dir_loadir(x, x->x_getdir, 1) : dir_loadir(x, dirname, 1);
     x->x_out1 = outlet_new(&x->x_obj, &s_anything);
     x->x_out2 = outlet_new(&x->x_obj, &s_symbol);
