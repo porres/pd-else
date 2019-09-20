@@ -180,6 +180,7 @@ static void dir_n(t_dir *x){
 
 static void dir_reset(t_dir *x){ // reset to default
     strncpy(x->x_directory, x->x_getdir->s_name, MAXPDSTRING);
+    dir_loadir(x, x->x_getdir, 0);
 }
 
 static void dir_dump(t_dir *x){
