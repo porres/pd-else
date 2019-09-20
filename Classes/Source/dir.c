@@ -114,7 +114,7 @@ static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
     }
     char tempdir[MAXPDSTRING];
     strcpy(tempdir, x->x_directory);
-    post("tempdir->s_name (x->x_directory) = %s", tempdir->s_name);
+    post("tempdir (x->x_directory) = %s", tempdir);
     if(!strcmp(dirname->s_name, "..")){ // parent dir
         char *last_slash;
         last_slash = strrchr(x->x_directory, '/');
@@ -136,12 +136,12 @@ static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
         post("(!temp): didn't find");
         temp = NULL; // ???
         strcpy(x->x_directory, tempdir); // restore original directory
-        post("restore original directory, x->x_directory = %s", x->x_directory->s_name);
+        post("restore original directory, x->x_directory = %s", x->x_directory);
         if(init){
             post("INIT");
             post("dirname = '%s' & x->x_directory = '%s'", dirname->s_name, dirname->s_name);
-            if(dirname->s_name == x->x_directory-s_name){
-                pd_error(x, "[dir]: cannot open default directory '%s'", x->x_directory->s_name);
+            if(dirname->s_name == x->x_directory){
+                pd_error(x, "[dir]: cannot open default directory '%s'", x->x_directory);
                 post("dirname->s_name = x->x_directory");
             }
             else
@@ -279,7 +279,7 @@ static void *dir_new(t_symbol *s, int ac, t_atom* av){
     }
     x->x_getdir = canvas_getdir(canvas); // default
     strncpy(x->x_directory, x->x_getdir->s_name, MAXPDSTRING); // default
-    post("init: x->x_directory = %s", x->x_directory->s_name);
+    post("init: x->x_directory = %s", x->x_directory);
     dirname == &s_ ? dir_loadir(x, x->x_getdir, 1) : dir_loadir(x, dirname, 1);
     x->x_out1 = outlet_new(&x->x_obj, &s_anything);
     x->x_out2 = outlet_new(&x->x_obj, &s_symbol);
