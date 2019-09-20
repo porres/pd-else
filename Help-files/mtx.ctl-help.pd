@@ -1,8 +1,8 @@
-#N struct 1007-cell float x float y float cellsize float color;
-#N struct 1027-cell float x float y float cellsize float color;
-#N canvas 682 107 569 587 10;
-#X msg 248 164 1 0 \$1;
-#X obj 248 140 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#N struct 1020-cell float x float y float cellsize float color;
+#N struct 1023-cell float x float y float cellsize float color;
+#N canvas 336 23 563 599 10;
+#X msg 278 156 1 0 \$1;
+#X obj 278 132 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 2 2 cnv 15 301 42 empty empty mtx.ctl 20 20 2 37 -233017 -1
 0;
@@ -29,58 +29,58 @@
 0;
 #X obj 501 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 6 306 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 6 303 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 460 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 473 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 490 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 503 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 560 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 573 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 121 313 cnv 17 3 142 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 121 310 cnv 17 3 142 empty empty 0 5 9 0 16 -228856 -162280
 0;
-#X obj 121 467 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 121 480 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 204 467 list;
-#X text 243 467 - column \, row and status;
-#X text 188 495 1) float - number of columns (default 3), f 47;
-#X text 188 510 2) float - number of rows (default 3), f 47;
-#X text 188 525 3) float - cell size in pixels (default 20), f 47
+#X text 204 480 list;
+#X text 243 480 - column \, row and status;
+#X text 188 508 1) float - number of columns (default 3), f 47;
+#X text 188 523 2) float - number of rows (default 3), f 47;
+#X text 188 538 3) float - cell size in pixels (default 20), f 47
 ;
-#X text 203 313 list;
-#X text 155 397 rows <float>;
-#X text 137 412 columns <float>;
-#X text 243 397 - sets number of rows, f 41;
-#X text 243 412 - sets number of columns, f 41;
-#X text 155 427 size <float>;
-#X text 243 427 - sets cell size in pixels, f 41;
-#X text 110 219 click on the cells =>;
+#X text 203 310 list;
+#X text 155 410 rows <float>;
+#X text 137 425 columns <float>;
+#X text 243 410 - sets number of rows, f 41;
+#X text 243 425 - sets number of columns, f 41;
+#X text 155 440 size <float>;
+#X text 243 440 - sets cell size in pixels, f 41;
+#X text 148 224 click on the cells =>;
 #X text 49 88 [mtx.ctl] provides a user matrix interface control. The
 cells in the grid can be either on or off. The output is a list with
 3 floats that specify: column \, row and status., f 69;
-#N canvas 631 247 470 327 mtx~ 0;
-#X text 118 75 0;
-#X text 133 75 1;
-#X text 147 75 2;
-#X text 162 75 3;
-#X obj 198 68 osc~ 300;
-#X obj 231 90 osc~ 400;
-#X obj 264 112 osc~ 500;
-#X obj 297 135 osc~ 600;
-#X text 209 192 0;
-#X text 202 156 0;
-#X text 236 156 1;
-#X text 269 156 2;
-#X text 303 157 3;
-#X text 58 91 output 0;
-#X text 58 106 output 1;
-#X text 76 75 input:;
-#X text 252 193 1;
-#X obj 114 132 else/display;
-#X obj 198 171 else/mtx~ 4 2 100;
-#X obj 204 207 else/out~;
-#X text 54 27 [mtx.ctl] is very convenient for controlling [mtx~];
-#X obj 114 89 else/mtx.ctl 4 2 15;
+#N canvas 631 247 405 311 mtx~ 0;
+#X text 112 75 0;
+#X text 127 75 1;
+#X text 141 75 2;
+#X text 156 75 3;
+#X obj 192 68 osc~ 300;
+#X obj 225 90 osc~ 400;
+#X obj 258 112 osc~ 500;
+#X obj 291 135 osc~ 600;
+#X text 203 192 0;
+#X text 196 156 0;
+#X text 230 156 1;
+#X text 263 156 2;
+#X text 297 157 3;
+#X text 52 91 output 0;
+#X text 52 106 output 1;
+#X text 70 75 input:;
+#X text 246 193 1;
+#X obj 108 132 else/display;
+#X obj 192 171 else/mtx~ 4 2 100;
+#X obj 198 207 else/out~;
+#X text 48 27 [mtx.ctl] is very convenient for controlling [mtx~];
+#X obj 108 89 else/mtx.ctl 4 2 15;
 #X connect 4 0 18 0;
 #X connect 5 0 18 1;
 #X connect 6 0 18 2;
@@ -89,30 +89,34 @@ cells in the grid can be either on or off. The output is a list with
 #X connect 18 0 19 0;
 #X connect 18 1 19 1;
 #X connect 21 0 17 0;
-#X restore 485 261 pd mtx~;
-#X msg 202 164 clear;
-#X text 197 341 clear;
-#X msg 308 169 set 2 1 \$1;
-#X obj 308 146 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X restore 492 274 pd mtx~;
+#X msg 232 166 clear;
+#X text 197 354 clear;
+#X msg 338 156 set 2 1 \$1;
+#X obj 338 133 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 167 327 set <list>;
-#X text 243 313 - sets column \, row \, status and outputs it;
-#X text 243 327 - sets column \, row and status (no output);
-#X text 243 341 - clears active cells (no output), f 41;
-#X obj 248 269 else/display;
-#X text 197 355 flush;
-#X text 243 355 - flushes all cell values, f 41;
-#X text 191 369 export;
-#X obj 248 197 else/mtx.ctl;
-#X text 191 383 import;
-#X text 149 441 embed <float>;
-#X text 243 369 - export contents as an array, f 41;
-#X text 243 383 - import contents as an array, f 41;
-#X text 188 540 4) float - embed flag \, (default 0), f 47;
-#X text 243 441 - non zero save internal contents with the object;
+#X text 167 324 set <list>;
+#X text 243 310 - sets column \, row \, status and outputs it;
+#X text 243 324 - sets column \, row and status (no output);
+#X text 243 354 - clears active cells (no output), f 41;
+#X obj 278 271 else/display;
+#X text 197 368 flush;
+#X text 243 368 - flushes all cell values, f 41;
+#X text 191 382 export;
+#X obj 278 201 else/mtx.ctl 3 3 20 0 0 0 0 0 0 0 0 0 0 0 0;
+#X text 191 396 import;
+#X text 149 454 embed <float>;
+#X text 243 382 - export contents as an array, f 41;
+#X text 243 396 - import contents as an array, f 41;
+#X text 188 553 4) float - embed flag \, (default 0), f 47;
+#X text 243 454 - non zero save internal contents with the object;
+#X msg 356 177 get 2 1;
+#X text 167 339 get <list>;
+#X text 243 339 - outputs value of column/row, f 41;
 #X connect 0 0 48 0;
 #X connect 1 0 0 0;
 #X connect 36 0 48 0;
 #X connect 38 0 48 0;
 #X connect 39 0 38 0;
 #X connect 48 0 44 0;
+#X connect 55 0 48 0;
