@@ -1,6 +1,6 @@
-#N struct 1010-point float x0 float y0 float s;
-#N struct 1011-point float x0 float y0 float s;
-#N struct 1195-point float x0 float y0 float s;
+#N struct 1004-point float x0 float y0 float s;
+#N struct 1005-point float x0 float y0 float s;
+#N struct 1036-point float x0 float y0 float s;
 #N canvas 430 52 561 659 10;
 #X obj 3 434 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -56,14 +56,14 @@
 #X obj 158 374 env~;
 #X obj 197 374 env~;
 #X obj 197 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1209 256;
+-228856 -1 -1 92.1493 256;
 #X obj 113 224 noise~;
 #X obj 158 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1209 256;
+-228856 -1 -1 92.1493 256;
 #X obj 119 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1209 256;
+-228856 -1 -1 92.1493 256;
 #X obj 80 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1209 256;
+-228856 -1 -1 92.1493 256;
 #X text 172 312 X;
 #X text 281 314 Y;
 #X obj 236 374 env~;
@@ -71,13 +71,13 @@
 #X obj 314 374 env~;
 #X obj 353 374 env~;
 #X obj 353 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1209 256;
+-228856 -1 -1 92.1493 256;
 #X obj 314 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1209 256;
+-228856 -1 -1 92.1493 256;
 #X obj 275 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1209 256;
+-228856 -1 -1 92.1493 256;
 #X obj 236 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1209 256;
+-228856 -1 -1 92.1493 256;
 #X obj 189 292 unpack;
 #X text 69 88 [pan8~] is an 8-channel equal power (sin/cos) panner.
 It has two modes of operation and a spread parameter.;

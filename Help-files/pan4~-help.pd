@@ -35,8 +35,8 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -105,7 +105,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -174,14 +174,14 @@
 #X obj 270 254 env~;
 #X obj 309 254 env~;
 #X obj 309 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 89.5342 256;
 #X obj 192 154 noise~;
 #X obj 270 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 89.5342 256;
 #X obj 231 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 89.5342 256;
 #X obj 192 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 89.5342 256;
 #X text 230 295 left;
 #X text 230 309 front;
 #X text 269 308 front;
@@ -206,12 +206,13 @@
 #X text 177 260 X;
 #X text 237 260 Y;
 #X obj 134 282 else/pan4~, f 20;
-#X obj 192 90 else/slider2d 127 0 127 0 127;
+#X obj 192 90 else/slider2d 127 -1 1 -1 1;
 #X obj 192 242 unpack f f;
 #X obj 143 325 else/meter4~;
-#X obj 108 105 else/setdsp~;
+#X obj 92 94 else/setdsp~;
 #X obj 152 493 else/out4~;
-#X text 108 41 Use it with [meter4~] and [out4~];
+#X text 108 19 Use it with [meter4~] and [out4~];
+#X obj 192 61 else/initmess set 0 0;
 #X connect 0 0 5 1;
 #X connect 1 0 5 2;
 #X connect 2 0 5 0;
@@ -226,6 +227,7 @@
 #X connect 8 1 10 1;
 #X connect 8 2 10 2;
 #X connect 8 3 10 3;
+#X connect 12 0 6 0;
 #X restore 467 289 pd example;
 #X connect 38 0 60 1;
 #X connect 39 0 60 2;
