@@ -87,7 +87,7 @@ amplitude.;
 #X text 88 344 see also:;
 #N canvas 179 291 434 315 voice1 0;
 #X obj 73 46 inlet;
-#X obj 313 163 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 313 163 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 313 215 switch~;
 #X obj 163 219 *~;
@@ -451,6 +451,10 @@ is set with the -log flag or "log" message., f 65;
 #X text 137 397 log <float>;
 #X text 227 397 - non zero sets to "log" mode \, "linear" otherwise
 ;
+#X obj 391 294 sel 0;
+#X obj 391 322 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 408 322 done;
 #X connect 12 0 11 0;
 #X connect 12 0 11 1;
 #X connect 14 0 13 0;
@@ -461,7 +465,9 @@ is set with the -log flag or "log" message., f 65;
 #X connect 41 0 66 3;
 #X connect 42 0 66 4;
 #X connect 60 0 61 0;
+#X connect 61 0 78 0;
 #X connect 66 0 12 1;
 #X connect 66 0 14 0;
 #X connect 66 1 60 0;
 #X connect 70 0 66 0;
+#X connect 78 0 79 0;

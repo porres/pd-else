@@ -2819,10 +2819,16 @@ and [else/rescale~]. Check them out as well:;
 #X connect 14 0 3 0;
 #X restore 457 138 pd exponential;
 #X obj 289 169 else/s2f~;
+#X obj 376 183 sel 0;
+#X obj 376 215 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 396 214 done;
 #X connect 48 0 49 1;
 #X connect 48 0 49 0;
 #X connect 50 0 48 0;
 #X connect 51 0 69 0;
 #X connect 69 0 48 1;
 #X connect 69 0 76 0;
+#X connect 69 1 77 0;
 #X connect 76 0 53 0;
+#X connect 77 0 78 0;

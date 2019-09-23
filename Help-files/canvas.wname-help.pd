@@ -1,0 +1,71 @@
+#N canvas 368 101 568 356 10;
+#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 2 pd;
+#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 57 39 cnv 4 4 4 empty empty window 0 28 2 18 -233017 -1 0;
+#X obj 21 39 cnv 4 4 4 empty empty Get 0 28 2 18 -233017 -1 0;
+#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 3 2 cnv 15 301 42 empty empty canvas.wname 20 20 2 37 -233017
+-1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 1 graph;
+#X obj 121 39 cnv 4 4 4 empty empty name 0 28 2 18 -233017 -1 0;
+#X obj 8 220 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 255 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 289 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 7 321 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 154 263 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 182 298 1) float -;
+#X obj 154 229 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 199 230 bang;
+#X text 187 265 symbol;
+#X text 236 264 - canvas name;
+#X obj 176 180 else/display;
+#X obj 176 126 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 253 298 depth level (default 0), f 25;
+#N canvas 756 329 466 261 depth 0;
+#X obj 57 96 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 57 160 else/display;
+#X text 57 193 parent's name;
+#X obj 275 98 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 275 162 else/display;
+#X text 275 195 this subpatch's;
+#X text 53 33 You can set a level number to query for the name of the
+parent patch (1) or parent's parent patch (2) and so on...;
+#X obj 57 128 else/canvas.wname 1;
+#X obj 275 131 else/canvas.wname;
+#X connect 0 0 7 0;
+#X connect 3 0 8 0;
+#X connect 7 0 1 0;
+#X connect 8 0 4 0;
+#X restore 489 189 pd depth;
+#X text 236 230 - outputs canvas name;
+#X obj 176 152 else/canvas.wname;
+#X text 90 91 [canvas.wname] gives you the canvas' window name symbol.
+;
+#X connect 24 0 28 0;
+#X connect 28 0 23 0;
+#X coords 0 356 1 355 94 40 0;
