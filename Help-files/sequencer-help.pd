@@ -1,16 +1,16 @@
-#N canvas 662 65 562 411 10;
+#N canvas 455 172 560 374 10;
 #X obj 4 218 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 319 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 280 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 354 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 315 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 101 328 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 111 289 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 386 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 347 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 25 40 cnv 4 4 4 empty empty data 0 28 2 18 -233017 -1 0;
-#X obj 102 226 cnv 17 3 84 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 112 226 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 166 226 bang;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -33,56 +33,115 @@
 #X text 160 243 float;
 #X obj 67 40 cnv 4 4 4 empty empty sequencer 0 28 2 18 -233017 -1 0
 ;
-#X text 200 242 - sets a single sequence value and outputs it;
-#X text 166 259 list;
-#X text 130 276 set <list>;
-#X text 200 258 - of floats sets sequence values and outputs the first
-;
-#X text 200 328 - values from a sequence;
-#X text 151 363 1) list - list of floats sets the sequence (default
+#X text 130 259 set <list>;
+#X text 200 289 - values from a sequence;
+#X text 151 324 1) list - list of floats sets the sequence (default
 0);
 #X text 200 226 - generates value from sequence;
-#X text 200 275 - sets one or more values without outputing them;
-#X text 118 293 goto <float>;
-#X text 200 292 - goes to a position index in the sequence (from 1)
-;
 #N canvas 803 160 399 333 example 0;
-#X obj 73 39 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
-;
+#X obj 159 30 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
 #X obj 73 153 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 73 99 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-228856 -1 -1 100 256;
+#X obj 159 91 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 73 65 else/tempo 120 100;
-#X obj 160 177 else/decay2~ 50 2000;
-#X obj 160 100 impseq~;
-#X obj 145 208 *~;
-#X obj 123 243 else/out~;
-#X text 151 38 A sequence of frequencies.;
+#X obj 159 56 else/tempo 120 100;
+#X obj 159 178 else/decay2~ 50 2000;
+#X obj 144 208 *~;
+#X obj 122 243 else/out~;
+#X text 251 94 A sequence of frequencies., f 13;
 #X obj 73 178 else/bl.saw~;
 #X obj 73 124 else/sequencer 50 100 80 120 60 150 100 70;
 #X connect 0 0 3 0;
-#X connect 1 0 9 0;
-#X connect 2 0 5 0;
-#X connect 2 0 10 0;
+#X connect 1 0 8 0;
+#X connect 2 0 9 0;
+#X connect 2 0 4 0;
 #X connect 3 0 2 0;
-#X connect 4 0 6 1;
-#X connect 5 0 4 0;
-#X connect 6 0 7 0;
-#X connect 6 0 7 1;
-#X connect 9 0 6 0;
-#X connect 10 0 1 0;
-#X restore 475 188 pd example;
+#X connect 4 0 5 1;
+#X connect 5 0 6 0;
+#X connect 5 0 6 1;
+#X connect 8 0 5 0;
+#X connect 9 0 1 0;
+#X restore 475 163 pd example;
 #X text 68 89 When receiving a bang \, [sequencer] sends a value from
 a given sequence.;
-#X obj 193 124 else/tempo 120 -on;
 #X obj 193 182 else/display;
-#X text 160 328 float;
+#X text 160 289 float;
 #X obj 3 3 cnv 15 301 42 empty empty sequencer 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X obj 193 154 else/sequencer 10 5 0 2 3 7 9 1 4 11 6 8;
-#X connect 30 0 35 0;
-#X connect 35 0 31 0;
+#X text 200 242 - goes to a position index in the sequence (from 1)
+;
+#N canvas 457 198 744 472 +examples 0;
+#X obj 176 88 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 90 261 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 150 256;
+#X obj 176 124 else/tempo 120 100;
+#X obj 176 286 else/decay2~ 50 2000;
+#X obj 161 316 *~;
+#X obj 139 351 else/out~;
+#X text 268 182 A sequence of frequencies., f 13;
+#X obj 90 286 else/bl.saw~;
+#X obj 90 232 else/sequencer 50 100 80 120 60 150 100 70;
+#X obj 90 157 else/count 8;
+#X floatatom 90 182 5 0 0 0 - - -;
+#X msg 90 206 \$1 \, bang;
+#X msg 90 119 up;
+#X msg 121 119 down;
+#X msg 41 119 alt \$1;
+#X obj 41 97 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
+;
+#X text 70 25 Use [count] if you want to also have the sequence being
+read in different directions., f 44;
+#X obj 519 84 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 438 257 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 120 256;
+#X obj 519 120 else/tempo 120 100;
+#X obj 519 282 else/decay2~ 50 2000;
+#X obj 504 312 *~;
+#X obj 477 347 else/out~;
+#X text 616 178 A sequence of frequencies., f 13;
+#X obj 438 282 else/bl.saw~;
+#X obj 438 228 else/sequencer 50 100 80 120 60 150 100 70;
+#X floatatom 438 178 5 0 0 0 - - -;
+#X msg 438 202 \$1 \, bang;
+#X obj 438 153 else/rand.i 1 8;
+#X text 429 42 Or [rand.i] for random input values.;
+#X connect 0 0 2 0;
+#X connect 1 0 7 0;
+#X connect 2 0 3 0;
+#X connect 2 0 9 0;
+#X connect 3 0 4 1;
+#X connect 4 0 5 0;
+#X connect 4 0 5 1;
+#X connect 7 0 4 0;
+#X connect 8 0 1 0;
+#X connect 9 0 10 0;
+#X connect 10 0 11 0;
+#X connect 11 0 8 0;
+#X connect 12 0 9 0;
+#X connect 13 0 9 0;
+#X connect 14 0 9 0;
+#X connect 15 0 14 0;
+#X connect 17 0 19 0;
+#X connect 18 0 24 0;
+#X connect 19 0 20 0;
+#X connect 19 0 28 0;
+#X connect 20 0 21 1;
+#X connect 21 0 22 0;
+#X connect 21 0 22 1;
+#X connect 24 0 21 0;
+#X connect 25 0 18 0;
+#X connect 26 0 27 0;
+#X connect 27 0 25 0;
+#X connect 28 0 26 0;
+#X restore 463 185 pd +examples;
+#X text 200 258 - sets a new sequence;
+#X obj 193 124 else/tempo 120 -on;
+#X connect 28 0 24 0;
+#X connect 32 0 28 0;
