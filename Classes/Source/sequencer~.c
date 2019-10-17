@@ -1,20 +1,20 @@
-// Porres 2017 from mask~
+// Porres 2019
 
 #include "m_pd.h"
 #include <stdlib.h>
 
 static t_class *sequencer_class;
 
-#define MAXLEN 1024
+#define MAXLEN 4096
 
 typedef struct _sequencer{
     t_object    x_obj;
     float       x_lastin;
+    float       x_output;
     int         x_bang;
     int         x_index;
-    float      *x_seq;
-    float       x_output;
     int         x_length;
+    float      *x_seq;
 }t_sequencer;
 
 static void sequencer_bang(t_sequencer *x){
@@ -35,11 +35,6 @@ static void sequencer_set(t_sequencer *x, t_symbol *s, int ac, t_atom * av){
             x->x_seq[i] = atom_getfloatarg(i, ac, av);
         x->x_index = 0;
     }
-}
-
-static void sequencer_list(t_sequencer *x, t_symbol *s, int ac, t_atom * av){
-    sequencer_set(x, s, ac, av);
-    x->x_bang = 1;
 }
 
 t_int *sequencer_perform(t_int *w){
@@ -77,7 +72,7 @@ void *sequencer_new(t_symbol *s, int ac, t_atom *av){
     t_sequencer *x = (t_sequencer *)pd_new(sequencer_class);
     x->x_index = 0;
     x->x_output = 0;
-    x->x_seq = (float *) malloc(MAXLEN * sizeof(float));
+    x->x_seq = (float *)malloc(MAXLEN * sizeof(float));
     if(ac == 0){
         x->x_length = 1;
         x->x_seq[0] = 0;
@@ -100,5 +95,4 @@ void sequencer_tilde_setup(void){
     class_addmethod(sequencer_class,(t_method)sequencer_set, gensym("set"),A_GIMME,0);
     class_addbang(sequencer_class, (t_method)sequencer_bang);
     class_addfloat(sequencer_class, (t_method)sequencer_float);
-    class_addlist(sequencer_class, (t_method)sequencer_list);
 }
