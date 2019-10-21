@@ -335,6 +335,7 @@ trig.delay~	x
 trig.delay2~	x
 tempo	x
 tempo~	x
+timed.gate	x
 timed.gate~	x
 toany	x
 toggleff~	x

@@ -1,4 +1,4 @@
-#N canvas 736 118 561 528 10;
+#N canvas 736 118 562 526 10;
 #X obj 4 287 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 400 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -16,11 +16,8 @@
 #X text 228 377 - gate time in ms;
 #X text 176 441 1) float - gate time in ms (default 0 \, no gate);
 #X text 184 409 signal;
-#X obj 23 40 cnv 4 4 4 empty empty Timed 0 28 2 18 -233017 -1 0;
-#X obj 73 40 cnv 4 4 4 empty empty gate 0 28 2 18 -233017 -1 0;
-#X obj 113 40 cnv 4 4 4 empty empty from 0 28 2 18 -233017 -1 0;
-#X obj 156 40 cnv 4 4 4 empty empty impulses 0 28 2 18 -233017 -1 0
-;
+#X obj 71 40 cnv 4 4 4 empty empty timed 0 28 2 18 -233017 -1 0;
+#X obj 121 40 cnv 4 4 4 empty empty gate 0 28 2 18 -233017 -1 0;
 #X obj 3 3 cnv 15 301 42 empty empty timed.gate~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -44,8 +41,8 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -114,7 +111,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -159,7 +156,7 @@
 #X msg 86 171 -0.9;
 #X msg 128 171 13;
 #X obj 203 196 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 100 256;
+-228856 -1 -1 0 256;
 #X text 260 192 ms;
 #X text 203 177 gate time;
 #X obj 309 194 else/zerocross~;
@@ -171,8 +168,8 @@
 #X obj 74 341 else/display~ 9;
 #X text 69 222 random impulses;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -241,7 +238,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -309,12 +306,12 @@ gate value from a signal or float input., f 53;
 #X msg 298 164 retrigger \$1;
 #X obj 298 142 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 35 24 By default \, a gate needs to finish before another one
+#X text 67 24 By default \, a gate needs to finish before another one
 is triggered \, but you can change to "retrigger" mode \, where a new
 timed gate starts before the last was finished., f 53;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -383,7 +380,7 @@ timed gate starts before the last was finished., f 53;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -417,13 +414,13 @@ timed gate starts before the last was finished., f 53;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 71 161 pd;
 #X obj 176 159 else/dust2~ 5;
-#X text 35 87 You can to retrigger mode with the retrigger message
-or the third argument., f 53;
 #X obj 176 203 else/timed.gate~ 500;
-#X connect 1 0 7 0;
+#X text 67 87 You can set to retrigger mode with the retrigger message
+or the third argument., f 53;
+#X connect 1 0 6 0;
 #X connect 2 0 1 0;
-#X connect 5 0 7 0;
-#X connect 7 0 0 0;
+#X connect 5 0 6 0;
+#X connect 6 0 0 0;
 #X restore 459 254 pd retrigger;
 #X obj 134 197 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -436,12 +433,13 @@ if 0 or less is given \, no gate is output.;
 #X text 227 340 - gate time in ms;
 #X text 115 355 retrigger <float>;
 #X text 157 340 ms <float>;
-#X connect 33 0 49 0;
-#X connect 34 0 49 0;
-#X connect 35 0 49 0;
-#X connect 36 0 49 1;
-#X connect 39 0 51 0;
-#X connect 40 0 39 0;
-#X connect 48 0 49 0;
-#X connect 49 0 32 0;
-#X connect 51 0 28 0;
+#X obj 16 40 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
+#X connect 31 0 47 0;
+#X connect 32 0 47 0;
+#X connect 33 0 47 0;
+#X connect 34 0 47 1;
+#X connect 37 0 49 0;
+#X connect 38 0 37 0;
+#X connect 46 0 47 0;
+#X connect 47 0 30 0;
+#X connect 49 0 26 0;
