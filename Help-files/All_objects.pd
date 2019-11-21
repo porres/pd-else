@@ -1,9 +1,9 @@
-#N struct 1371-cell float x float y float cellsize float color;
-#N struct 1378-point float x0 float y0 float s;
-#N struct 1394-slot float x float y float slotsize float color float
+#N struct 1358-cell float x float y float cellsize float color;
+#N struct 1365-point float x0 float y0 float s;
+#N struct 1381-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1396-cell float cellsize float color;
-#N canvas 646 83 537 532 10;
+#N struct 1383-cell float cellsize float color;
+#N canvas 711 30 537 532 10;
 #X text 56 57 Assorted:;
 #X obj 56 81 else/table~;
 #X obj 56 107 else/nbang;
@@ -274,17 +274,17 @@ width float bordercolor;
 #X obj 54 9424 else/timed.gate~;
 #X obj 54 9484 else/match~;
 #X obj 54 9514 else/trig2bang~;
-#X obj 54 9544 else/trighold~;
-#X obj 58 9623 else/changed~;
-#X obj 58 9648 else/changed2~;
-#X obj 58 9674 else/detect~;
-#X obj 59 9699 else/lastvalue;
-#X obj 59 9724 else/median~;
-#X obj 59 9801 else/peak~;
-#X obj 59 9826 else/rms~;
-#X obj 59 9852 else/mov.rms~;
-#X obj 59 9878 else/vu~;
-#X obj 59 9904 else/zerocross~;
+#X obj 54 9567 else/trighold~;
+#X obj 58 9643 else/changed~;
+#X obj 58 9668 else/changed2~;
+#X obj 58 9694 else/detect~;
+#X obj 59 9719 else/lastvalue;
+#X obj 59 9744 else/median~;
+#X obj 59 9821 else/peak~;
+#X obj 59 9846 else/rms~;
+#X obj 59 9872 else/mov.rms~;
+#X obj 59 9898 else/vu~;
+#X obj 59 9924 else/zerocross~;
 #N canvas 205 93 1034 785 GUI 0;
 #X obj 175 -356 else/mtx.ctl;
 #X obj 49 -250 else/biplot;
@@ -340,16 +340,16 @@ width float bordercolor;
 #X obj 390 699 else/out8~;
 #X obj 67 -344 else/gui;
 #X text 165 -378 [else/mtx.ctl];
-#X restore 65 9993 pd GUI;
+#X restore 65 10013 pd GUI;
 #X text 56 303 Patch/subpatch management:;
 #X text 54 981 Message management:;
 #X text 51 1541 File management:;
-#X text 60 9964 GUI:;
-#X text 22 10027 =============================================================================
+#X text 60 9984 GUI:;
+#X text 22 10047 =============================================================================
 , f 77;
-#X text 22 9938 =============================================================================
+#X text 22 9958 =============================================================================
 , f 77;
-#X text 22 9569 =============================================================================
+#X text 22 9591 =============================================================================
 , f 77;
 #X text 22 8720 =============================================================================
 , f 77;
@@ -393,10 +393,10 @@ width float bordercolor;
 , f 77;
 #X text 29 34 =============================================================================
 , f 77;
-#X obj 59 10096 else/cmul~;
-#X text 22 10190 =============================================================================
+#X obj 59 10116 else/cmul~;
+#X text 22 10210 =============================================================================
 , f 77;
-#X text 56 10058 Extra:;
+#X text 56 10078 Extra:;
 #X obj 54 5750 else/sample~;
 #X obj 54 1034 else/separate;
 #X obj 54 5898 else/rec~;
@@ -419,7 +419,7 @@ width float bordercolor;
 #X text 51 4036 Audio Processing (assorted):;
 #X obj 56 133 else/meter;
 #X text 53 12 ALL OBJECTS IN THE ELSE LIBRARY:;
-#X obj 58 10129 else/output~;
+#X obj 58 10149 else/output~;
 #X obj 48 4663 else/compress~;
 #X obj 54 1310 else/router;
 #X obj 54 1385 else/selector;
@@ -460,9 +460,9 @@ width float bordercolor;
 #X obj 54 2360 else/factor;
 #X obj 54 2259 else/common.div;
 #X obj 54 2776 else/op~;
-#X obj 59 9776 else/range~;
-#X text 56 9592 Analysis:;
-#X obj 59 9749 else/range;
+#X obj 59 9796 else/range~;
+#X text 56 9614 Analysis:;
+#X obj 59 9769 else/range;
 #X obj 53 7640 else/pan8~, f 14;
 #X obj 53 8509 else/lfnoise;
 #X obj 54 8590 else/rampnoise;
@@ -472,3 +472,4 @@ width float bordercolor;
 #X obj 54 8698 else/randpulse2;
 #X obj 56 401 else/canvas.wname;
 #X obj 54 9453 else/timed.gate;
+#X obj 54 9540 else/trig2bang;

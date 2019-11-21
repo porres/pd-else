@@ -75,7 +75,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (359 objects):
+## Current Object list (360 objects):
 
 **ASSORTED: [03]**
 - [table~]
@@ -409,7 +409,7 @@ Cross compiling is also possible with something like this
  - [randpulse]
  - [randpulse2]
  
- **TRIGGERS: [27]**
+ **TRIGGERS: [28]**
 - [above]
 - [above~]
 - [bangdiv]
@@ -435,6 +435,7 @@ Cross compiling is also possible with something like this
 - [timed.gate]
 - [timed.gate~]
 - [match~]
+- [trig2bang]
 - [trig2bang~]
 - [trighold~]
 
