@@ -164,21 +164,23 @@ static void vu_tilde_dsp(t_sigvu *x, t_signal **sp)
     dsp_add(vu_tilde_perform, 3, x, sp[0]->s_vec, sp[0]->s_n);
 }
 
-static void vu_tilde_tick(t_sigvu *x) // clock callback function
-{
-    outlet_float(x->x_out_peak, powtodb(x->x_result_peak));
-    outlet_float(x->x_out_rms, powtodb(x->x_result_vu));
+t_float pow2db(t_float f){
+    if(f <= 0)
+        return(-999);
+    else if(f == 1)
+        return(0);
+    else{
+        float val = log(f) * 10./LOGTEN ;
+        return(val < -999 ? -999 : val);
+    }
 }
 
-t_float powtodb(t_float f)
-    {
-        if (f <= 0) return (-999);
-        else
-        {
-            t_float val = 10./LOGTEN * log(f);
-            return (val < -999 ? -999 : val);
-        }
-    }
+
+static void vu_tilde_tick(t_sigvu *x) // clock callback function
+{
+    outlet_float(x->x_out_peak, pow2db(x->x_result_peak));
+    outlet_float(x->x_out_rms, pow2db(x->x_result_vu));
+}
                               
 static void vu_tilde_free(t_sigvu *x)  // cleanup
 {
