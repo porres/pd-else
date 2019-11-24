@@ -1,6 +1,6 @@
-#N struct 1004-point float x0 float y0 float s;
-#N struct 1005-point float x0 float y0 float s;
-#N canvas 590 23 561 567 10;
+#N struct 1078-point float x0 float y0 float xs float ys;
+#N struct 1081-point float x0 float y0 float xs float ys;
+#N canvas 752 23 561 567 10;
 #X obj 3 332 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 402 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -174,14 +174,14 @@
 #X obj 270 254 env~;
 #X obj 309 254 env~;
 #X obj 309 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 89.5342 256;
+-228856 -1 -1 89.1608 256;
 #X obj 192 154 noise~;
 #X obj 270 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 89.5342 256;
+-228856 -1 -1 89.1608 256;
 #X obj 231 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 89.5342 256;
+-228856 -1 -1 89.1608 256;
 #X obj 192 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 89.5342 256;
+-228856 -1 -1 89.1608 256;
 #X text 230 295 left;
 #X text 230 309 front;
 #X text 269 308 front;
@@ -197,7 +197,6 @@
 #X obj 192 227 else/pan4~, f 20;
 #X text 242 410 - Left-Back channel;
 #X text 242 431 - Left-Front channel;
-#X obj 250 115 else/slider2d -size 64 -range -1 1;
 #X obj 250 187 unpack f f;
 #N canvas 692 138 429 608 example 0;
 #X floatatom 192 262 5 0 0 0 - - -;
@@ -206,13 +205,13 @@
 #X text 177 260 X;
 #X text 237 260 Y;
 #X obj 134 282 else/pan4~, f 20;
-#X obj 192 90 else/slider2d 127 -1 1 -1 1;
+#X obj 192 90 else/slider2d 127 127 -1 1 -1 1;
 #X obj 192 242 unpack f f;
 #X obj 143 325 else/meter4~;
 #X obj 92 94 else/setdsp~;
 #X obj 152 493 else/out4~;
 #X text 108 19 Use it with [meter4~] and [out4~];
-#X obj 192 61 else/initmess set 0 0;
+#X obj 192 61 else/initmess 0 0;
 #X connect 0 0 5 1;
 #X connect 1 0 5 2;
 #X connect 2 0 5 0;
@@ -229,6 +228,7 @@
 #X connect 8 3 10 3;
 #X connect 12 0 6 0;
 #X restore 467 289 pd example;
+#X obj 250 114 else/slider2d 64 64 -1 1 -1 1;
 #X connect 38 0 60 1;
 #X connect 39 0 60 2;
 #X connect 40 0 48 0;
@@ -240,6 +240,6 @@
 #X connect 60 1 41 0;
 #X connect 60 2 42 0;
 #X connect 60 3 43 0;
-#X connect 63 0 64 0;
-#X connect 64 0 38 0;
-#X connect 64 1 39 0;
+#X connect 63 0 38 0;
+#X connect 63 1 39 0;
+#X connect 65 0 63 0;

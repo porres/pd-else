@@ -1,7 +1,7 @@
-#N struct 1004-point float x0 float y0 float s;
-#N struct 1005-point float x0 float y0 float s;
-#N struct 1036-point float x0 float y0 float s;
-#N canvas 430 52 561 659 10;
+#N struct 1004-point float x0 float y0 float xs float ys;
+#N struct 1135-point float x0 float y0 float xs float ys;
+#N struct 1040-point float x0 float y0 float xs float ys;
+#N canvas 697 131 561 659 10;
 #X obj 3 434 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 527 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -56,14 +56,14 @@
 #X obj 158 374 env~;
 #X obj 197 374 env~;
 #X obj 197 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1493 256;
+-228856 -1 -1 92.1994 256;
 #X obj 113 224 noise~;
 #X obj 158 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1493 256;
+-228856 -1 -1 92.1994 256;
 #X obj 119 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1493 256;
+-228856 -1 -1 92.1994 256;
 #X obj 80 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1493 256;
+-228856 -1 -1 92.1994 256;
 #X text 172 312 X;
 #X text 281 314 Y;
 #X obj 236 374 env~;
@@ -71,17 +71,17 @@
 #X obj 314 374 env~;
 #X obj 353 374 env~;
 #X obj 353 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1493 256;
+-228856 -1 -1 92.1994 256;
 #X obj 314 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1493 256;
+-228856 -1 -1 92.1994 256;
 #X obj 275 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1493 256;
+-228856 -1 -1 92.1994 256;
 #X obj 236 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1493 256;
+-228856 -1 -1 92.1994 256;
 #X obj 189 292 unpack;
 #X text 69 88 [pan8~] is an 8-channel equal power (sin/cos) panner.
 It has two modes of operation and a spread parameter.;
-#X obj 189 154 else/slider2d 127 -1 1 -1 1;
+#X obj 189 154 else/slider2d 127 127 -1 1 -1 1;
 #X text 189 184 3;
 #X text 271 267 8;
 #X text 223 267 1;
@@ -104,7 +104,7 @@ It has two modes of operation and a spread parameter.;
 #X text 127 246 x;
 #X text 183 246 y;
 #X floatatom 236 263 8 -1 1 0 - - -;
-#X obj 122 92 else/slider2d 127 -1 1 -1 1;
+#X obj 122 92 else/slider2d 127 127 -1 1 -1 1;
 #X text 122 122 3;
 #X text 204 205 8;
 #N canvas 638 23 399 387 set 0;
@@ -112,7 +112,7 @@ It has two modes of operation and a spread parameter.;
 #X msg 105 245 1 \$1;
 #X obj 105 220 expr ($f1/8) * twopi;
 #X obj 105 118 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
--1 -1 4;
+-1 -1 0;
 #X obj 105 153 * -1;
 #X text 107 102 1;
 #X text 122 102 2;
@@ -186,7 +186,7 @@ It has two modes of operation and a spread parameter.;
 #X connect 22 1 1 0;
 #X restore 478 380 pd mode-0;
 #N canvas 594 57 443 593 mode-1 0;
-#X obj 112 87 else/slider2d 127 -1 1 -1 1;
+#X obj 112 87 else/slider2d 127 127 -1 1 -1 1;
 #X obj 285 119 setdsp~ 1;
 #X text 234 141 3;
 #X text 215 97 2;
@@ -245,6 +245,7 @@ It has two modes of operation and a spread parameter.;
 #X text 248 387 <= [else/meter8~];
 #X obj 55 295 else/pan8~ -mode 1, f 29;
 #X obj 97 501 else/out8~;
+#X text 170 206 5;
 #X connect 0 0 20 0;
 #X connect 9 0 0 0;
 #X connect 11 0 22 1;
