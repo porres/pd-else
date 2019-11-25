@@ -1,10 +1,12 @@
 #N canvas 509 94 260 190 10;
 #X obj 52 50 inlet;
-#X obj 52 132 outlet;
+#X obj 72 132 outlet;
 #X obj 52 74 t f b;
 #X text 139 75 porres 2017 \, for else library, f 12;
-#X obj 52 109 f \$1;
+#X obj 72 109 f \$1;
+#X obj 93 48 inlet;
 #X connect 0 0 2 0;
 #X connect 2 0 4 1;
 #X connect 2 1 4 0;
 #X connect 4 0 1 0;
+#X connect 5 0 4 1;
