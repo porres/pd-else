@@ -1,7 +1,10 @@
-#N struct 1031-point float x0 float y0 float xs float ys;
-#N struct 1032-point float x0 float y0 float xs float ys;
-#N struct 1063-point float x0 float y0 float xs float ys;
-#N canvas 314 102 561 659 10;
+#N struct 1123-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N struct 1167-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N struct 1145-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N canvas 470 23 561 659 10;
 #X obj 3 434 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 527 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -49,62 +52,16 @@
 #X obj 123 483 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
 #X text 152 484 float/signal;
-#X floatatom 189 314 5 0 0 0 - - -;
-#X floatatom 246 313 5 0 0 0 - - -;
-#X obj 80 374 env~;
-#X obj 119 374 env~;
-#X obj 158 374 env~;
-#X obj 197 374 env~;
-#X obj 197 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1329 256;
-#X obj 113 224 noise~;
-#X obj 158 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1329 256;
-#X obj 119 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1329 256;
-#X obj 80 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1329 256;
-#X text 172 312 X;
-#X text 281 314 Y;
-#X obj 236 374 env~;
-#X obj 275 374 env~;
-#X obj 314 374 env~;
-#X obj 353 374 env~;
-#X obj 353 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1329 256;
-#X obj 314 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1329 256;
-#X obj 275 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1329 256;
-#X obj 236 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.1329 256;
-#X obj 189 292 unpack;
 #X text 69 88 [pan8~] is an 8-channel equal power (sin/cos) panner.
 It has two modes of operation and a spread parameter.;
-#X obj 189 154 else/slider2d 127 127 -1 1 0 127 0;
-#X text 189 184 3;
-#X text 271 267 8;
-#X text 223 267 1;
-#X text 188 232 2;
-#X text 222 150 4;
-#X text 270 150 5;
-#X text 306 185 6;
-#X text 305 233 7;
-#X text 87 413 1;
-#X text 128 413 2;
-#X text 166 413 3;
-#X text 207 413 4;
-#X text 244 413 5;
-#X text 285 413 6;
-#X text 324 413 7;
-#X text 366 413 8;
 #N canvas 514 97 466 573 mode-0 0;
 #X floatatom 122 263 8 0 0 0 - - -;
 #X floatatom 179 263 8 0 0 0 - - -;
 #X text 127 246 x;
 #X text 183 246 y;
 #X floatatom 236 263 8 -1 1 0 - - -;
-#X obj 122 92 else/slider2d 127 127 -1 1 0 127 0;
+#X obj 122 92 else/slider2d 127 127 -1 1 -1 1 0 255 255 255 0 0 0 1
+0;
 #X text 122 122 3;
 #X text 204 205 8;
 #N canvas 638 23 399 387 set 0;
@@ -112,7 +69,7 @@ It has two modes of operation and a spread parameter.;
 #X msg 105 245 1 \$1;
 #X obj 105 220 expr ($f1/8) * twopi;
 #X obj 105 118 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
--1 -1 0;
+-1 -1 7;
 #X obj 105 153 * -1;
 #X text 107 102 1;
 #X text 122 102 2;
@@ -186,13 +143,14 @@ It has two modes of operation and a spread parameter.;
 #X connect 22 1 1 0;
 #X restore 478 380 pd mode-0;
 #N canvas 594 57 443 593 mode-1 0;
-#X obj 112 87 else/slider2d 127 127 -1 1 0 127 0;
+#X obj 112 87 else/slider2d 127 127 -1 1 -1 1 0 255 255 255 0 0 0 1
+0;
 #X obj 285 119 setdsp~ 1;
-#X text 234 141 3;
+#X text 234 142 3;
 #X text 215 97 2;
 #X text 170 79 1;
 #X text 125 97 8;
-#X text 107 142 7;
+#X text 107 143 7;
 #X text 125 187 6;
 #X text 214 187 4;
 #N canvas 371 23 399 387 set 0;
@@ -200,7 +158,7 @@ It has two modes of operation and a spread parameter.;
 #X msg 105 245 1 \$1;
 #X obj 105 220 expr ($f1/8) * twopi;
 #X obj 105 118 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
--1 -1 2;
+-1 -1 7;
 #X obj 105 153 * -1;
 #X obj 105 199 mod 8;
 #X obj 105 176 + 2;
@@ -283,37 +241,85 @@ It has two modes of operation and a spread parameter.;
 #X text 240 463 - X horizontal value: from -1 (Left) to 1 (Right);
 #X text 240 484 - Y vertical value: from -1 (Back) to 1 (Front);
 #X text 240 505 - spread parameter (from -1 to 1);
+#X obj 498 63 else/setdsp~;
+#X floatatom 189 314 5 0 0 0 - - -;
+#X floatatom 246 313 5 0 0 0 - - -;
+#X obj 80 374 env~;
+#X obj 119 374 env~;
+#X obj 158 374 env~;
+#X obj 197 374 env~;
+#X obj 197 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 92.1229 256;
+#X obj 113 224 noise~;
+#X obj 158 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 92.1229 256;
+#X obj 119 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 92.1229 256;
+#X obj 80 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 92.1229 256;
+#X text 172 312 X;
+#X text 281 314 Y;
+#X obj 236 374 env~;
+#X obj 275 374 env~;
+#X obj 314 374 env~;
+#X obj 353 374 env~;
+#X obj 353 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 92.1229 256;
+#X obj 314 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 92.1229 256;
+#X obj 275 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 92.1229 256;
+#X obj 236 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 92.1229 256;
+#X obj 189 292 unpack;
+#X text 189 184 3;
+#X text 271 267 8;
+#X text 223 267 1;
+#X text 188 232 2;
+#X text 222 150 4;
+#X text 270 150 5;
+#X text 306 185 6;
+#X text 305 233 7;
+#X text 87 413 1;
+#X text 128 413 2;
+#X text 166 413 3;
+#X text 207 413 4;
+#X text 244 413 5;
+#X text 285 413 6;
+#X text 324 413 7;
+#X text 366 413 8;
 #X floatatom 303 316 8 -1 1 0 - - -;
 #X obj 306 295 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X text 345 294 spread;
 #X text 342 232 The spread parameter controls how much the sound spreads
 to the adjacent speakers., f 21;
-#X obj 498 63 else/setdsp~;
 #X obj 132 337 else/pan8~, f 29;
 #X obj 189 129 else/initmess 0 0;
-#X connect 25 0 82 1;
-#X connect 26 0 82 2;
-#X connect 27 0 35 0;
-#X connect 28 0 34 0;
-#X connect 29 0 33 0;
-#X connect 30 0 31 0;
-#X connect 32 0 82 0;
-#X connect 38 0 45 0;
-#X connect 39 0 44 0;
-#X connect 40 0 43 0;
-#X connect 41 0 42 0;
-#X connect 46 0 25 0;
-#X connect 46 1 26 0;
-#X connect 48 0 46 0;
-#X connect 77 0 82 3;
+#X obj 189 154 else/slider2d 127 127 -1 1 -1 1 0 255 255 255 0 0 0
+1 0;
+#X connect 39 0 81 1;
+#X connect 40 0 81 2;
+#X connect 41 0 49 0;
+#X connect 42 0 48 0;
+#X connect 43 0 47 0;
+#X connect 44 0 45 0;
+#X connect 46 0 81 0;
+#X connect 52 0 59 0;
+#X connect 53 0 58 0;
+#X connect 54 0 57 0;
+#X connect 55 0 56 0;
+#X connect 60 0 39 0;
+#X connect 60 1 40 0;
+#X connect 77 0 81 3;
 #X connect 78 0 77 0;
-#X connect 82 0 27 0;
-#X connect 82 1 28 0;
-#X connect 82 2 29 0;
-#X connect 82 3 30 0;
-#X connect 82 4 38 0;
-#X connect 82 5 39 0;
-#X connect 82 6 40 0;
-#X connect 82 7 41 0;
-#X connect 83 0 48 0;
+#X connect 81 0 41 0;
+#X connect 81 1 42 0;
+#X connect 81 2 43 0;
+#X connect 81 3 44 0;
+#X connect 81 4 52 0;
+#X connect 81 5 53 0;
+#X connect 81 6 54 0;
+#X connect 81 7 55 0;
+#X connect 82 0 83 0;
+#X connect 83 0 60 0;

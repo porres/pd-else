@@ -1,5 +1,7 @@
-#N struct 1078-point float x0 float y0 float xs float ys;
-#N struct 1081-point float x0 float y0 float xs float ys;
+#N struct 1017-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N struct 1031-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
 #N canvas 752 23 561 567 10;
 #X obj 3 332 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -174,14 +176,14 @@
 #X obj 270 254 env~;
 #X obj 309 254 env~;
 #X obj 309 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 89.1608 256;
+-228856 -1 -1 87.9259 256;
 #X obj 192 154 noise~;
 #X obj 270 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 89.1608 256;
+-228856 -1 -1 93.8883 256;
 #X obj 231 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 89.1608 256;
+-228856 -1 -1 86.2328 256;
 #X obj 192 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 89.1608 256;
+-228856 -1 -1 80.2703 256;
 #X text 230 295 left;
 #X text 230 309 front;
 #X text 269 308 front;
@@ -205,7 +207,8 @@
 #X text 177 260 X;
 #X text 237 260 Y;
 #X obj 134 282 else/pan4~, f 20;
-#X obj 192 90 else/slider2d 127 127 -1 1 -1 1;
+#X obj 192 90 else/slider2d 127 127 -1 1 -1 1 0 255 255 255 0 0 0 1
+;
 #X obj 192 242 unpack f f;
 #X obj 143 325 else/meter4~;
 #X obj 92 94 else/setdsp~;
@@ -228,7 +231,8 @@
 #X connect 8 3 10 3;
 #X connect 12 0 6 0;
 #X restore 467 289 pd example;
-#X obj 250 114 else/slider2d 64 64 -1 1 -1 1;
+#X obj 250 114 else/slider2d 64 64 -1 1 -1 1 0 255 255 255 0 0 0 1
+;
 #X connect 38 0 60 1;
 #X connect 39 0 60 2;
 #X connect 40 0 48 0;
