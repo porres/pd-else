@@ -1,46 +1,50 @@
-#N struct 1190-point float x0 float y0 float xs float ys float bg float
-fg float in;
-#N struct 1205-point float x0 float y0 float xs float ys float bg float
-fg float in;
-#N struct 1220-point float x0 float y0 float xs float ys float bg float
-fg float in;
-#N struct 1235-point float x0 float y0 float xs float ys float bg float
-fg float in;
-#N struct 1250-point float x0 float y0 float xs float ys float bg float
-fg float in;
-#N struct 1265-point float x0 float y0 float xs float ys float bg float
-fg float in;
-#N struct 1280-point float x0 float y0 float xs float ys float bg float
-fg float in;
-#N struct 1310-point float x0 float y0 float xs float ys float bg float
-fg float in;
-#N struct 1175-point float x0 float y0 float xs float ys float bg float
-fg float in;
-#N struct 1295-point float x0 float y0 float xs float ys float bg float
-fg float in;
-#N canvas 486 23 565 693 10;
-#N canvas 607 188 480 354 example 0;
-#X obj 64 271 else/out~;
-#X obj 295 197 else/display~;
-#X obj 179 197 else/display~;
-#X obj 64 232 else/lowpass~ 150 0.5, f 39;
-#X obj 64 168 else/brown~;
-#X obj 179 32 else/slider2d 250 80 150 1500 0.5 10 1 162 184 255 112
+#N struct 1005-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N struct 1018-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N struct 1029-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N struct 1042-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N struct 1063-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N struct 1074-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N struct 1085-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N struct 1096-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N struct 1107-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N struct 1118-point float x0 float y0 float xs float ys float bg float
+fg float in float gridx float gridy;
+#N canvas 486 23 565 716 10;
+#N canvas 607 188 500 380 example 0;
+#X obj 64 291 else/out~;
+#X obj 64 252 else/lowpass~ 150 0.5, f 39;
+#X obj 64 188 else/brown~;
+#X obj 179 52 else/slider2d 250 80 150 1500 0.5 10 1 162 184 255 112
 0 28;
-#X obj 179 168 else/f2s~ 100;
-#X obj 295 168 else/f2s~ 100;
-#X obj 179 129 unpack float float;
-#X connect 1 0 3 2;
-#X connect 2 0 3 1;
-#X connect 3 0 0 0;
-#X connect 3 0 0 1;
-#X connect 4 0 3 0;
-#X connect 5 0 8 0;
-#X connect 6 0 2 0;
-#X connect 7 0 1 0;
-#X connect 8 0 6 0;
-#X connect 8 1 7 0;
-#X restore 477 287 pd example;
+#X obj 179 218 else/f2s~ 100;
+#X obj 295 218 else/f2s~ 100;
+#X obj 179 149 unpack float float;
+#X obj 179 24 else/initmess 750 8;
+#X obj 179 185 nbx 8 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
+-228856 -1 -1 750 256;
+#X obj 295 185 nbx 8 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
+-228856 -1 -1 8 256;
+#X connect 1 0 0 0;
+#X connect 1 0 0 1;
+#X connect 2 0 1 0;
+#X connect 3 0 6 0;
+#X connect 4 0 1 1;
+#X connect 5 0 1 2;
+#X connect 6 0 8 0;
+#X connect 6 1 9 0;
+#X connect 7 0 3 0;
+#X connect 8 0 4 0;
+#X connect 9 0 5 0;
+#X restore 477 283 pd example;
 #X obj 2 3 cnv 15 301 42 empty empty slider2d 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -68,19 +72,20 @@ fg float in;
 0;
 #X obj 6 318 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 511 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 523 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 543 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 6 665 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 555 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 690 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 82 325 cnv 17 3 180 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 80 325 cnv 17 3 192 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 82 520 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 80 532 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 193 520 list;
+#X text 193 532 list;
 #X text 192 338 list;
-#X text 87 551 -size <float>: sets x/y size (default: 127), f 70;
-#X text 87 581 -range: sets x/y range <float \, float> (default: 0
+#X text 104 563 -size <float>: sets x/y size (default: 127), f 70
+;
+#X text 104 593 -range: sets x/y range <float \, float> (default: 0
 \, 127), f 70;
 #X text 108 352 set <float \, float>;
 #X text 232 352 - sets x and y, f 52;
@@ -100,17 +105,17 @@ output the incoming value., f 56;
 #X connect 3 0 5 0;
 #X connect 4 0 5 0;
 #X connect 5 0 0 0;
-#X restore 459 187 pd set-values;
+#X restore 459 183 pd set-values;
 #N canvas 654 177 506 440 range 0;
 #X obj 291 233 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0;
+0 0;
 #X obj 102 360 else/display;
 #X msg 179 167 range 0 127;
 #X msg 102 167 range -1 1;
 #X obj 70 174 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 102 220 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0;
+0 0;
 #X obj 291 378 else/display;
 #X msg 280 129 xrange 0 127;
 #X msg 291 152 xrange -1 1;
@@ -134,10 +139,10 @@ according to the new range., f 64;
 #X connect 9 0 0 0;
 #X connect 10 0 0 0;
 #X connect 11 0 2 0;
-#X restore 489 247 pd range;
+#X restore 489 243 pd range;
 #X text 192 324 bang;
 #X text 232 324 - outputs last values, f 52;
-#X text 232 519 - x/y values;
+#X text 232 531 - x/y values;
 #X text 71 86 [slider2d] is an abstraction based on data structures
 and a two dimensional slider GUI., f 53;
 #X obj 210 284 else/display;
@@ -145,7 +150,7 @@ and a two dimensional slider GUI., f 53;
 #X obj 210 124 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 134 288 x/y values:;
-#X text 87 596 -xrange / -yrange (set x/y range independently), f
+#X text 104 608 -xrange / -yrange (set x/y range independently), f
 70;
 #X text 232 411 - sets range (minimum and maximum values of x and y)
 ;
@@ -155,24 +160,10 @@ and a two dimensional slider GUI., f 53;
 52;
 #X text 90 426 xrange <float \, float>;
 #X text 90 441 yrange <float \, float>;
-#X text 87 611 -line <float>: non zero sets line visibility (default:
+#X text 104 623 -line <float>: non zero sets line visibility (default:
 1), f 70;
 #X text 144 456 line <float>;
 #X text 232 456 - non zero sets line visibility, f 52;
-#N canvas 703 239 348 386 line 0;
-#X obj 115 188 else/slider2d 127 127 0 127 0 127 0;
-#X obj 115 330 else/display;
-#X obj 115 100 else/initmess 64 64;
-#X msg 141 155 line \$1;
-#X obj 141 127 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X text 45 19 You can set the 'line' visibility with the line message
-or '-line' flag. Line is visible by default., f 42;
-#X connect 0 0 1 0;
-#X connect 2 0 0 0;
-#X connect 3 0 0 0;
-#X connect 4 0 3 0;
-#X restore 495 227 pd line;
 #N canvas 465 252 629 454 resize 0;
 #X obj 66 378 else/display;
 #X msg 66 200 size \$1;
@@ -204,7 +195,7 @@ or '-line' flag. Line is visible by default., f 42;
 #X obj 270 232 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
 0;
 #X obj 66 233 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
-;
+0;
 #X connect 1 0 19 0;
 #X connect 2 0 3 0;
 #X connect 3 0 1 0;
@@ -220,8 +211,8 @@ or '-line' flag. Line is visible by default., f 42;
 #X connect 17 0 10 0;
 #X connect 18 0 5 0;
 #X connect 19 0 0 0;
-#X restore 483 207 pd resize;
-#X text 87 566 -xsize / -ysize (set x/y size independently), f 70
+#X restore 483 203 pd resize;
+#X text 104 578 -xsize / -ysize (set x/y size independently), f 70
 ;
 #X text 138 381 xsize <float>;
 #X text 232 381 - sets x (horizontal) size, f 52;
@@ -260,14 +251,40 @@ messages and '-bgcolor'/'-fgcolor' flags., f 40;
 #X connect 9 0 0 0;
 #X connect 9 0 2 0;
 #X connect 9 0 1 0;
-#X restore 483 267 pd colors;
-#X text 87 626 -bgcolor <f \, f \, f>: sets background color in RGB
+#X restore 483 263 pd colors;
+#X text 104 652 -bgcolor <f \, f \, f>: sets background color in RGB
 (default 255 255 255), f 70;
-#X text 87 642 -fgcolor <f \, f \, f>: sets frontground color in RGB
+#X text 104 667 -fgcolor <f \, f \, f>: sets frontground color in RGB
 (default 0 0 0), f 70;
-#X text 114 471 bgcolor <f \, f \, f>;
-#X text 226 471 - sets background color in RGB, f 53;
-#X text 114 488 fgcolor <f \, f \, f>;
-#X text 226 488 - sets frontground color in RGB, f 53;
-#X connect 37 0 55 0;
-#X connect 55 0 35 0;
+#X text 114 486 bgcolor <f \, f \, f>;
+#X text 226 486 - sets background color in RGB, f 53;
+#X text 114 500 fgcolor <f \, f \, f>;
+#X text 226 500 - sets frontground color in RGB, f 53;
+#N canvas 495 251 331 438 line-grid 0;
+#X obj 77 222 else/slider2d 127 127 0 127 0 127 0 255 255 255 0 0 0
+0;
+#X obj 77 364 else/display;
+#X obj 77 134 else/initmess 64 64;
+#X msg 103 189 line \$1;
+#X obj 103 161 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 43 19 You can set the 'line' visibility with the line message
+or '-line' flag. Line is visible by default., f 40;
+#X obj 170 161 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X msg 170 189 grid \$1;
+#X text 43 62 There's also a grid visibility option (invisible by default).
+You can set it with the 'grid' message or '-grid' flag., f 40;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 3 0;
+#X connect 6 0 7 0;
+#X connect 7 0 0 0;
+#X restore 465 223 pd line-grid;
+#X text 104 638 -grid <float>: non zero sets grid visibility (default:
+0), f 70;
+#X text 144 471 grid <float>;
+#X text 232 471 - non zero sets grid visibility, f 52;
+#X connect 37 0 54 0;
+#X connect 54 0 35 0;
