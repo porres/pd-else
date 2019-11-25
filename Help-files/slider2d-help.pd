@@ -1,20 +1,32 @@
-#N struct 1059-point float x0 float y0 float xs float ys;
-#N struct 1094-point float x0 float y0 float xs float ys;
-#N struct 1064-point float x0 float y0 float xs float ys;
-#N struct 1069-point float x0 float y0 float xs float ys;
-#N struct 1074-point float x0 float y0 float xs float ys;
-#N struct 1079-point float x0 float y0 float xs float ys;
-#N struct 1084-point float x0 float y0 float xs float ys;
-#N struct 1089-point float x0 float y0 float xs float ys;
-#N struct 1054-point float x0 float y0 float xs float ys;
-#N canvas 376 33 563 619 10;
-#N canvas 607 188 488 366 example 0;
+#N struct 1190-point float x0 float y0 float xs float ys float bg float
+fg float in;
+#N struct 1205-point float x0 float y0 float xs float ys float bg float
+fg float in;
+#N struct 1220-point float x0 float y0 float xs float ys float bg float
+fg float in;
+#N struct 1235-point float x0 float y0 float xs float ys float bg float
+fg float in;
+#N struct 1250-point float x0 float y0 float xs float ys float bg float
+fg float in;
+#N struct 1265-point float x0 float y0 float xs float ys float bg float
+fg float in;
+#N struct 1280-point float x0 float y0 float xs float ys float bg float
+fg float in;
+#N struct 1310-point float x0 float y0 float xs float ys float bg float
+fg float in;
+#N struct 1175-point float x0 float y0 float xs float ys float bg float
+fg float in;
+#N struct 1295-point float x0 float y0 float xs float ys float bg float
+fg float in;
+#N canvas 486 23 565 693 10;
+#N canvas 607 188 480 354 example 0;
 #X obj 64 271 else/out~;
 #X obj 295 197 else/display~;
 #X obj 179 197 else/display~;
 #X obj 64 232 else/lowpass~ 150 0.5, f 39;
 #X obj 64 168 else/brown~;
-#X obj 179 32 else/slider2d 250 80 150 1500 0.5 10 1;
+#X obj 179 32 else/slider2d 250 80 150 1500 0.5 10 1 162 184 255 112
+0 28;
 #X obj 179 168 else/f2s~ 100;
 #X obj 295 168 else/f2s~ 100;
 #X obj 179 129 unpack float float;
@@ -56,21 +68,20 @@
 0;
 #X obj 6 318 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 477 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 511 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 507 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 6 591 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 543 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 665 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 82 325 cnv 17 3 148 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 82 325 cnv 17 3 180 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 82 484 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 82 520 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 193 484 list;
+#X text 193 520 list;
 #X text 192 338 list;
-#X text 141 513 -size <float>: sets x/y size (default: 127), f 57
-;
-#X text 141 543 -range: sets x/y range <float \, float> (default: 0
-\, 127), f 57;
+#X text 87 551 -size <float>: sets x/y size (default: 127), f 70;
+#X text 87 581 -range: sets x/y range <float \, float> (default: 0
+\, 127), f 70;
 #X text 108 352 set <float \, float>;
 #X text 232 352 - sets x and y, f 52;
 #X text 232 338 - sets x \, y and outputs it, f 52;
@@ -89,15 +100,17 @@ output the incoming value., f 56;
 #X connect 3 0 5 0;
 #X connect 4 0 5 0;
 #X connect 5 0 0 0;
-#X restore 459 207 pd set-values;
+#X restore 459 187 pd set-values;
 #N canvas 654 177 506 440 range 0;
-#X obj 291 233 else/slider2d 127 127 0 127 0 127 1;
+#X obj 291 233 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
+0;
 #X obj 102 360 else/display;
 #X msg 179 167 range 0 127;
 #X msg 102 167 range -1 1;
 #X obj 70 174 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 102 220 else/slider2d 127 127 0 127 0 127 1;
+#X obj 102 220 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
+0;
 #X obj 291 378 else/display;
 #X msg 280 129 xrange 0 127;
 #X msg 291 152 xrange -1 1;
@@ -121,10 +134,10 @@ according to the new range., f 64;
 #X connect 9 0 0 0;
 #X connect 10 0 0 0;
 #X connect 11 0 2 0;
-#X restore 489 267 pd range;
+#X restore 489 247 pd range;
 #X text 192 324 bang;
 #X text 232 324 - outputs last values, f 52;
-#X text 232 483 - x/y values;
+#X text 232 519 - x/y values;
 #X text 71 86 [slider2d] is an abstraction based on data structures
 and a two dimensional slider GUI., f 53;
 #X obj 210 284 else/display;
@@ -132,8 +145,8 @@ and a two dimensional slider GUI., f 53;
 #X obj 210 124 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 134 288 x/y values:;
-#X text 141 558 -xrange / -yrange (set x/y range independently), f
-57;
+#X text 87 596 -xrange / -yrange (set x/y range independently), f
+70;
 #X text 232 411 - sets range (minimum and maximum values of x and y)
 ;
 #X text 232 426 - sets range (minimum and maximum values of x), f
@@ -142,8 +155,8 @@ and a two dimensional slider GUI., f 53;
 52;
 #X text 90 426 xrange <float \, float>;
 #X text 90 441 yrange <float \, float>;
-#X text 141 573 -line <float>: non zero sets line visibility (default:
-1);
+#X text 87 611 -line <float>: non zero sets line visibility (default:
+1), f 70;
 #X text 144 456 line <float>;
 #X text 232 456 - non zero sets line visibility, f 52;
 #N canvas 703 239 348 386 line 0;
@@ -159,58 +172,102 @@ or '-line' flag. Line is visible by default., f 42;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
 #X connect 4 0 3 0;
-#X restore 495 247 pd line;
-#N canvas 465 252 697 473 resize 0;
-#X obj 78 378 else/display;
-#X msg 78 200 size \$1;
-#X obj 81 141 hsl 100 15 18 127 0 0 empty empty empty -2 -8 0 10 -228856
+#X restore 495 227 pd line;
+#N canvas 465 252 629 454 resize 0;
+#X obj 66 378 else/display;
+#X msg 66 200 size \$1;
+#X obj 69 141 hsl 100 15 18 127 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 9900 1;
-#X obj 78 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 66 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 127 256;
-#X obj 78 108 else/initmess 127;
-#X obj 282 378 else/display;
-#X obj 285 141 hsl 100 15 18 127 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 66 108 else/initmess 127;
+#X obj 270 378 else/display;
+#X obj 273 141 hsl 100 15 18 127 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 9900 1;
-#X obj 282 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 270 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 127 256;
-#X obj 282 108 else/initmess 127;
-#X msg 282 200 xsize \$1;
-#X obj 451 378 else/display;
-#X obj 454 141 hsl 100 15 18 127 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 270 108 else/initmess 127;
+#X msg 270 200 xsize \$1;
+#X obj 439 378 else/display;
+#X obj 442 141 hsl 100 15 18 127 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 9900 1;
-#X obj 451 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 439 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 127 256;
-#X obj 451 108 else/initmess 127;
-#X msg 451 200 ysize \$1;
-#X text 69 32 You can set the size with the '-size' flag or with the
+#X obj 439 108 else/initmess 127;
+#X msg 439 200 ysize \$1;
+#X text 57 32 You can set the size with the '-size' flag or with the
 'size' message., f 25;
-#X text 271 34 You can also set x and y dimensions independently with
+#X text 259 34 You can also set x and y dimensions independently with
 '-xsize'/'-ysize' flags or the 'xsize'/'ysize' messages., f 51;
-#X obj 451 232 else/slider2d 127 127 0 127 0 127 1;
-#X obj 78 233 else/slider2d 127 127 0 127 0 127 1;
-#X obj 282 232 else/slider2d 127 127 0 127 0 127 1;
-#X connect 1 0 18 0;
+#X obj 439 232 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
+0;
+#X obj 270 232 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
+0;
+#X obj 66 233 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
+;
+#X connect 1 0 19 0;
 #X connect 2 0 3 0;
 #X connect 3 0 1 0;
 #X connect 4 0 2 0;
 #X connect 6 0 7 0;
 #X connect 7 0 9 0;
 #X connect 8 0 6 0;
-#X connect 9 0 19 0;
+#X connect 9 0 18 0;
 #X connect 11 0 12 0;
 #X connect 12 0 14 0;
 #X connect 13 0 11 0;
 #X connect 14 0 17 0;
 #X connect 17 0 10 0;
-#X connect 18 0 0 0;
-#X connect 19 0 5 0;
-#X restore 483 227 pd resize;
-#X text 141 528 -xsize / -ysize (set x/y size independently), f 57
+#X connect 18 0 5 0;
+#X connect 19 0 0 0;
+#X restore 483 207 pd resize;
+#X text 87 566 -xsize / -ysize (set x/y size independently), f 70
 ;
 #X text 138 381 xsize <float>;
 #X text 232 381 - sets x (horizontal) size, f 52;
 #X text 138 396 ysize <float>;
 #X text 232 396 - sets y (vertical) size, f 52;
 #X obj 210 149 else/slider2d 127 127 0 127 0 127 1;
+#N canvas 554 48 505 533 colors 0;
+#X obj 236 153 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
+-262144 -1 12700 0;
+#X obj 285 153 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4033
+-262144 -1 12700 0;
+#X obj 334 153 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
+-262144 -1 12700 0;
+#X obj 95 153 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
+-262144 -1 0 0;
+#X obj 132 153 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4033
+-262144 -1 0 0;
+#X obj 169 153 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
+-262144 -1 0 0;
+#X obj 58 305 pack2 fgcolor 0 0 0;
+#X obj 187 371 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
+0;
+#X obj 187 305 pack2 bgcolor 255 255 255;
+#X obj 285 121 else/initmess set 255;
+#X text 105 48 You can set background and frontground colors with 'bgcolor'/'fgcolor'
+messages and '-bgcolor'/'-fgcolor' flags., f 40;
+#X text 103 92 Colors are in RGB.;
+#X connect 0 0 8 1;
+#X connect 1 0 8 2;
+#X connect 2 0 8 3;
+#X connect 3 0 6 1;
+#X connect 4 0 6 2;
+#X connect 5 0 6 3;
+#X connect 6 0 7 0;
+#X connect 8 0 7 0;
+#X connect 9 0 0 0;
+#X connect 9 0 2 0;
+#X connect 9 0 1 0;
+#X restore 483 267 pd colors;
+#X text 87 626 -bgcolor <f \, f \, f>: sets background color in RGB
+(default 255 255 255), f 70;
+#X text 87 642 -fgcolor <f \, f \, f>: sets frontground color in RGB
+(default 0 0 0), f 70;
+#X text 114 471 bgcolor <f \, f \, f>;
+#X text 226 471 - sets background color in RGB, f 53;
+#X text 114 488 fgcolor <f \, f \, f>;
+#X text 226 488 - sets frontground color in RGB, f 53;
 #X connect 37 0 55 0;
 #X connect 55 0 35 0;
