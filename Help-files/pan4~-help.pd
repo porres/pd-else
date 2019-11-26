@@ -1,8 +1,8 @@
-#N struct 1017-point float x0 float y0 float xs float ys float bg float
-fg float in float gridx float gridy;
-#N struct 1031-point float x0 float y0 float xs float ys float bg float
-fg float in float gridx float gridy;
-#N canvas 752 23 561 567 10;
+#N struct 1062-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
+#N struct 1051-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
+#N canvas 590 23 561 567 10;
 #X obj 3 332 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 402 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -176,14 +176,14 @@ fg float in float gridx float gridy;
 #X obj 270 254 env~;
 #X obj 309 254 env~;
 #X obj 309 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 87.9259 256;
+-228856 -1 -1 0 256;
 #X obj 192 154 noise~;
 #X obj 270 279 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 93.8883 256;
+-228856 -1 -1 95.3004 256;
 #X obj 231 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 86.2328 256;
+-228856 -1 -1 0 256;
 #X obj 192 278 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 80.2703 256;
+-228856 -1 -1 0 256;
 #X text 230 295 left;
 #X text 230 309 front;
 #X text 269 308 front;
@@ -200,39 +200,47 @@ fg float in float gridx float gridy;
 #X text 242 410 - Left-Back channel;
 #X text 242 431 - Left-Front channel;
 #X obj 250 187 unpack f f;
-#N canvas 692 138 429 608 example 0;
-#X floatatom 192 262 5 0 0 0 - - -;
-#X floatatom 251 261 5 0 0 0 - - -;
-#X obj 134 209 noise~;
-#X text 177 260 X;
-#X text 237 260 Y;
-#X obj 134 282 else/pan4~, f 20;
-#X obj 192 90 else/slider2d 127 127 -1 1 -1 1 0 255 255 255 0 0 0 1
+#N canvas 692 138 433 576 example 1;
+#X floatatom 189 255 5 0 0 0 - - -;
+#X floatatom 245 254 5 0 0 0 - - -;
+#X obj 97 198 noise~;
+#X text 174 253 X;
+#X text 231 253 Y;
+#X obj 134 322 else/pan4~, f 19;
+#X obj 141 352 else/meter4~;
+#X obj 92 84 else/setdsp~;
+#X obj 147 498 else/out4~;
+#X text 108 21 Use it with [meter4~] and [out4~];
+#X obj 189 57 else/initmess set 0 0;
+#X obj 189 279 else/f2s~ 10;
+#X obj 189 235 unpack;
+#X obj 245 299 else/f2s~ 10;
+#X text 178 206 1;
+#X text 179 82 2;
+#X text 317 80 3;
+#X text 316 208 4;
+#X obj 189 85 else/slider2d 127 127 -1 1 -1 1 0 210 210 210 0 0 0 1
 ;
-#X obj 192 242 unpack f f;
-#X obj 143 325 else/meter4~;
-#X obj 92 94 else/setdsp~;
-#X obj 152 493 else/out4~;
-#X text 108 19 Use it with [meter4~] and [out4~];
-#X obj 192 61 else/initmess 0 0;
-#X connect 0 0 5 1;
-#X connect 1 0 5 2;
+#X connect 0 0 11 0;
+#X connect 1 0 13 0;
 #X connect 2 0 5 0;
-#X connect 5 0 8 0;
-#X connect 5 1 8 1;
-#X connect 5 2 8 2;
-#X connect 5 3 8 3;
-#X connect 6 0 7 0;
-#X connect 7 0 0 0;
-#X connect 7 1 1 0;
-#X connect 8 0 10 0;
-#X connect 8 1 10 1;
-#X connect 8 2 10 2;
-#X connect 8 3 10 3;
-#X connect 12 0 6 0;
+#X connect 5 0 6 0;
+#X connect 5 1 6 1;
+#X connect 5 2 6 2;
+#X connect 5 3 6 3;
+#X connect 6 0 8 0;
+#X connect 6 1 8 1;
+#X connect 6 2 8 2;
+#X connect 6 3 8 3;
+#X connect 10 0 18 0;
+#X connect 11 0 5 1;
+#X connect 12 0 0 0;
+#X connect 12 1 1 0;
+#X connect 13 0 5 2;
+#X connect 18 0 12 0;
 #X restore 467 289 pd example;
-#X obj 250 114 else/slider2d 64 64 -1 1 -1 1 0 255 255 255 0 0 0 1
-;
+#X obj 250 115 else/slider2d 64 64 0 127 0 127 1 210 210 210 0 0 0
+1;
 #X connect 38 0 60 1;
 #X connect 39 0 60 2;
 #X connect 40 0 48 0;
