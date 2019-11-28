@@ -112,12 +112,12 @@ static void *args_new(t_symbol *s, int ac, t_atom* av){
         x->x_break = 1;
     }
     outlet_new(&x->x_obj, 0);
-    return (x);
+    return(x);
 }
 
 void args_setup(void){
     args_class = class_new(gensym("args"), (t_newmethod)args_new,
-                           (t_method)args_free, sizeof(t_args), 0, A_GIMME, 0);
+        (t_method)args_free, sizeof(t_args), 0, A_GIMME, 0);
     class_addlist(args_class, (t_method)args_list);
     class_addbang(args_class, (t_method)args_bang);
 }

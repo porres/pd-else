@@ -1,4 +1,4 @@
-#N canvas 569 92 565 418 10;
+#N canvas 466 63 565 418 10;
 #X obj 4 268 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 323 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -32,7 +32,6 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 139 157 get value;
 #X obj 85 40 cnv 4 4 4 empty empty dollar 0 28 2 18 -233017 -1 0;
 #X obj 3 3 cnv 15 301 42 empty empty dollarzero 20 20 2 37 -233017
 -1 0;
@@ -49,11 +48,32 @@
 #X text 179 332 symbol;
 #X text 221 332 - the expanded symbol;
 #X obj 240 198 else/dollarzero;
-#X text 65 88 [dollarzero] gets and expands the value of "\$0" inside
-a symbol into the patch ID value \, in case there is one. It can also
-get and expand to the the value of a parent patch., f 55;
 #X text 207 367 1) float - depth (default 0);
-#X connect 6 0 30 0;
-#X connect 22 0 30 0;
-#X connect 25 0 30 0;
-#X connect 30 0 26 0;
+#X text 86 156 expand just "\$0" =>;
+#X text 65 88 [dollarzero] gets and expands the value of "\$0" (the
+patch ID value). It can also get and expand to the the value of a parent
+patch with the 'depth' argument., f 58;
+#N canvas 670 189 447 296 depth 0;
+#X text 53 28 The depth level is convenient for abstractions \, so
+you can query for the "\$0" value of a parent patch. By default \,
+the depth level is 0 \, which means this main patch and its subpatches
+values of "\$0".;
+#X obj 208 156 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 239 146 symbol \\\$0-x;
+#X symbolatom 266 170 10 0 0 0 - - -;
+#X obj 239 228 else/display;
+#X text 85 156 expand just "\$0" =>;
+#X obj 239 198 else/dollarzero 1;
+#X text 56 83 In the case there's no parent patch \, then the "\$0"
+is the same as this patch's.;
+#X text 199 261 same as the parent window;
+#X connect 1 0 6 0;
+#X connect 2 0 6 0;
+#X connect 3 0 6 0;
+#X connect 6 0 4 0;
+#X restore 461 232 pd depth;
+#X connect 6 0 29 0;
+#X connect 21 0 29 0;
+#X connect 24 0 29 0;
+#X connect 29 0 25 0;
