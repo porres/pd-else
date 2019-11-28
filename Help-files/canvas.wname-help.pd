@@ -1,4 +1,4 @@
-#N canvas 368 101 568 356 10;
+#N canvas 509 99 568 356 10;
 #X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -20,9 +20,6 @@
 0;
 #X obj 3 2 cnv 15 301 42 empty empty canvas.wname 20 20 2 37 -233017
 -1 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 2 1 graph;
 #X obj 121 39 cnv 4 4 4 empty empty name 0 28 2 18 -233017 -1 0;
 #X obj 8 220 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -61,11 +58,30 @@ parent patch (1) or parent's parent patch (2) and so on...;
 #X connect 3 0 8 0;
 #X connect 7 0 1 0;
 #X connect 8 0 4 0;
-#X restore 489 189 pd depth;
+#X restore 465 161 pd depth;
 #X text 236 230 - outputs canvas name;
 #X obj 176 152 else/canvas.wname;
 #X text 90 91 [canvas.wname] gives you the canvas' window name symbol.
 ;
-#X connect 24 0 28 0;
-#X connect 28 0 23 0;
+#N canvas 625 72 450 300 example 0;
+#X obj 119 149 else/display;
+#X obj 119 95 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 119 121 else/canvas.wname;
+#X obj 119 191 else/receiver;
+#X obj 119 67 loadbang;
+#X text 63 29 Receive and print all messages from this canvas window.
+;
+#X obj 119 222 print canvas-messages;
+#X connect 0 0 3 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 6 0;
+#X connect 4 0 1 0;
+#X restore 465 182 pd example;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 1 graph;
+#X connect 23 0 27 0;
+#X connect 27 0 22 0;
 #X coords 0 356 1 355 94 40 0;

@@ -1,4 +1,4 @@
-#N canvas 461 38 568 413 12;
+#N canvas 365 64 565 436 12;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -25,23 +25,21 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 3 233 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 235 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 354 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 356 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 7 387 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 7 409 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 165 242 (none);
-#X text 174 363 1) float - depth (default 0);
-#X obj 212 200 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 165 244 (none);
+#X text 124 365 1) float - depth (default 0);
+#X obj 212 202 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#N canvas 680 164 550 286 depth 0;
-#X floatatom 298 214 5 0 0 0 - - -;
-#X floatatom 363 214 5 0 0 0 - - -;
-#X obj 233 215 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#N canvas 519 342 550 286 depth 0;
+#X obj 233 216 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 284 213 x;
-#X text 403 214 y;
+#X text 284 215 x;
+#X text 348 215 y;
 #X text 194 215 click;
 #X text 45 119 Below \, the object gets information when you interact
 with the parent window., f 62;
@@ -52,31 +50,71 @@ and so on. The depth gets clipped to the maximum level. If you do not
 specify a float as the first argument \, the default level is "0" (which
 is the current patch's directory)., f 66;
 #X obj 233 168 else/canvas.mouse 1;
-#X connect 8 0 2 0;
-#X connect 8 1 0 0;
-#X connect 8 2 1 0;
-#X restore 467 199 pd depth;
+#X obj 298 218 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 435 256;
+#X obj 363 218 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 179 256;
+#X connect 6 0 0 0;
+#X connect 6 1 7 0;
+#X connect 6 2 8 0;
+#X restore 481 173 pd depth;
+#X obj 2 275 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 123 285 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 157 284 float - mouse click status (1: on / 0: off);
+#X obj 123 307 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 123 329 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X text 157 306 float - hozirontal coordinate;
+#X text 157 328 float - vertical coordinate;
+#X obj 328 202 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 179 256;
+#X obj 270 202 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 435 256;
+#X obj 212 165 else/canvas.mouse;
+#X text 51 176 see also:;
+#X obj 54 199 else/mouse;
+#X text 124 383 2) float - non zero sets "position mode" (default 0)
+;
+#N canvas 702 91 639 604 position-mode 0;
+#N canvas 351 58 545 514 gop 0;
+#X obj 130 381 else/canvas.mouse 1 1;
+#X obj 130 421 outlet;
+#X obj 202 421 outlet;
+#X obj 274 421 outlet;
+#X obj 51 51 cnv 15 398 298 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 0 2 3 0;
+#X coords 0 -1 1 1 400 300 2 50 50;
+#X restore 95 196 pd gop;
+#X obj 95 513 tgl 30 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 291 519 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
+-228856 -1 -1 -35 256;
+#X obj 488 519 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
+-228856 -1 -1 -130 256;
+#X text 273 518 X;
+#X text 470 518 Y;
+#X text 130 518 Click;
+#X text 86 38 A second optional argument sets to "position-mode" \,
+which resets the position coordinates according to the position of
+the subpatch/abstraction in the parent patch. Therefore \, this option
+only makes sense if the depth level is more than zero., f 59;
+#X text 87 120 This is particularly useful for a graph on parent subpatch
+or abstraction \, because the (0 \, 0) coordinates correspond to the
+top left corner of the graph. See below., f 59;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 0 2 3 0;
+#X restore 425 198 pd position-mode;
 #X text 56 92 [canva.smouse] gets mouse click and mouse coordinates
 when your mouse is interacting with the canvas window. An optional
-argument sets the depth level., f 55;
-#X obj 2 273 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 123 283 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X text 157 282 float - mouse click status (1: on / 0: off);
-#X obj 123 305 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X obj 123 327 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
-;
-#X text 157 304 float - hozirontal coordinate;
-#X text 157 326 float - vertical coordinate;
-#X obj 329 200 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 157 256;
-#X obj 270 200 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 413 256;
-#X obj 212 163 else/canvas.mouse;
-#X text 51 174 see also:;
-#X obj 54 197 else/mouse;
-#X connect 30 0 18 0;
-#X connect 30 1 29 0;
-#X connect 30 2 28 0;
+argument sets the depth level. This object doesn't output anything
+if in edit mode., f 65;
+#X connect 29 0 18 0;
+#X connect 29 1 28 0;
+#X connect 29 2 27 0;
