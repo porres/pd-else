@@ -2,7 +2,6 @@
 
 #include "m_pd.h"
 #include "g_canvas.h"
-#include <string.h>
 
 static t_class *receiver_class;
 static t_class *receiver_proxy_class;
