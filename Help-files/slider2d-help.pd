@@ -1,28 +1,28 @@
-#N struct 1317-point float x0 float y0 float xs float ys float fg float
+#N struct 1335-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1328-point float x0 float y0 float xs float ys float fg float
+#N struct 1346-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1339-point float x0 float y0 float xs float ys float fg float
+#N struct 1357-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1350-point float x0 float y0 float xs float ys float fg float
+#N struct 1368-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1361-point float x0 float y0 float xs float ys float fg float
+#N struct 1379-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1372-point float x0 float y0 float xs float ys float fg float
+#N struct 1390-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1383-point float x0 float y0 float xs float ys float fg float
+#N struct 1401-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1394-point float x0 float y0 float xs float ys float fg float
+#N struct 1412-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1438-point float x0 float y0 float xs float ys float fg float
+#N struct 1423-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1405-point float x0 float y0 float xs float ys float fg float
+#N struct 1434-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1416-point float x0 float y0 float xs float ys float fg float
+#N struct 1445-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1427-point float x0 float y0 float xs float ys float fg float
+#N struct 1456-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1306-point float x0 float y0 float xs float ys float fg float
+#N struct 1324-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 510 50 561 564 10;
 #X obj 2 3 cnv 15 301 42 empty empty slider2d 20 20 2 37 -233017 -1
@@ -101,7 +101,7 @@ output the incoming value., f 56;
 #X msg 159 139 set 64 64;
 #X msg 136 108 97 100;
 #X obj 136 169 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 0 1 0 empty empty;
+0 0 0 0 0 0 empty empty;
 #X connect 3 0 5 0;
 #X connect 4 0 5 0;
 #X connect 5 0 0 0;
@@ -249,10 +249,7 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #X connect 6 0 7 0;
 #X connect 7 0 0 0;
 #X restore 128 185 pd line-grid;
-#X obj 359 221 else/display;
 #X text 249 126 click and drag =>;
-#X obj 359 61 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
 #X text 283 225 x/y values:;
 #X text 63 91 [slider2d] is a two dimensional slider GUI abstraction.
 , f 31;
@@ -264,7 +261,7 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #X obj 88 92 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
 #X obj 88 141 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
-0 0 0 59.8 68.1999 empty empty;
+0 0 0 0 0 empty empty;
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;
 #X connect 4 0 0 0;
@@ -337,8 +334,8 @@ the patch., f 46;
 #X obj 65 309 display;
 #X msg 354 74 receive \\\$0-slider2d-rcv \, send \\\$0-slider2d-snd
 , f 25;
-#X obj 354 224 slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0 0 0
-0 0 0 \\\$0-slider2d-snd \\\$0-slider2d-rcv;
+#X obj 354 234 slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0 0 0
+0 30 36 \\\$0-slider2d-snd \\\$0-slider2d-rcv;
 #X text 74 53 You can also set send/receive names with the 'send'/'receive'
 messages or '-send'/'-receive' flags., f 31;
 #X text 75 112 Make sure to escape "\$0" properly with ""., f 24;
@@ -362,9 +359,12 @@ messages or '-send'/'-receive' flags., f 31;
 #X connect 13 0 2 0;
 #X connect 14 0 3 0;
 #X restore 128 205 pd send/receive;
-#X obj 359 89 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
-0 0 0 55.3998 50.1997 empty empty;
 #X text 271 152 press shift for fine tuning, f 11;
-#X connect 53 0 64 0;
-#X connect 64 0 51 0;
+#X obj 359 221 else/display;
+#X obj 359 61 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 359 89 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
+0 0 0 55 87 empty empty;
+#X connect 64 0 65 0;
+#X connect 65 0 63 0;
 #X coords 0 564 1 563 85 60 0;
