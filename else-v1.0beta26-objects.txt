@@ -51,6 +51,7 @@ changed	x
 changed~	x
 changed2~	x
 chorus~	x
+circle	x
 clipnoise~	x
 click	x
 clock	x

@@ -2,7 +2,6 @@
 
 # ELSE - EL Locus Solus' Externals
 
-
 --------------------------------------------------------------------------
 
 
@@ -13,9 +12,9 @@
    This work is free. You can redistribute it and/or modify it under the
    terms of the Do What The Fuck You Want To Public License, Version 2,
    as published by Sam Hocevar. 
- 
+
    See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
-   
+
    Other licenses may apply for specific objects and this is informed in the source code (example: the [giga.rev~] object). 
 
 --------------------------------------------------------------------------
@@ -60,22 +59,19 @@ This release needs Pd Vanilla 0.50-0 or above (Pd Extended/Purr Data aren't supp
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
 
 <pre>make pdincludepath=~/pd-0.50-0/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.50-0/bin/)</pre>
-
 * Installing with pdlibbuilder
 
 Go to the pd-else folder and use "objectsdir" to set a relative path for your build, something like:
 
 <pre>make install objectsdir=../else-build</pre>
-
 Then move it to your preferred install folder for Pd and add it to the path.
 
 Cross compiling is also possible with something like this
 
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=../</pre>
-
 --------------------------------------------------------------------------
 
-## Current Object list (360 objects):
+## Current Object list (361 objects):
 
 **ASSORTED: [03]**
 - [table~]
@@ -408,7 +404,7 @@ Cross compiling is also possible with something like this
  - [pulse]
  - [randpulse]
  - [randpulse2]
- 
+
  **TRIGGERS: [28]**
 - [above]
 - [above~]
@@ -454,13 +450,15 @@ Cross compiling is also possible with something like this
 - [vu~]
 - [zerocross~]
 
-**GUI: [29]**
+**GUI: [30]**
+
 - [gui]
 - [mtx.ctl]
 - [biplot]
 - [pic]
 - [colors]
 - [function]
+- [circle]
 - [slider2d]
 - [display]
 - [display~]
