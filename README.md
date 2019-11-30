@@ -82,14 +82,16 @@ Cross compiling is also possible with something like this
 - [hann~]
 - [bin.shift~]
 
-**PATCH/SUBPATCH MANAGEMENT: [09]**
+**PATCH/SUBPATCH MANAGEMENT: [10]**
+
 - [args]
 - [dollarzero]
 - [receiver]
 - [blocksize~]
 - [click]
 - [properties]
-- [window]
+- [canvas.active]
+- [canvas.wname]
 - [canvas.name]
 - [loadbanger] / [lb]
 

@@ -16,8 +16,8 @@
 #X text 234 202 status;
 #X obj 209 230 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 1 256;
-#X obj 4 4 cnv 15 301 42 empty empty window 20 20 2 37 -233017 -1 0
-;
+#X obj 4 4 cnv 15 301 42 empty empty canvas.active 20 20 2 37 -233017
+-1 0;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -43,11 +43,9 @@
 #X obj 130 41 cnv 4 4 4 empty empty window 0 28 2 18 -233017 -1 0;
 #X obj 198 41 cnv 4 4 4 empty empty activity 0 28 2 18 -233017 -1 0
 ;
-#X obj 209 173 else/window;
 #X text 150 368 1) float - depth \, default 0 (current window);
 #X obj 209 256 print parent;
-#N canvas 527 185 629 336 subpatch 0;
-#X obj 81 121 else/window;
+#N canvas 550 429 629 336 subpatch 0;
 #X obj 81 181 select 0 1;
 #X text 106 151 status;
 #X text 17 22 When this subpatch's window is active \, the [window]
@@ -64,7 +62,6 @@ object below reports the activity., f 43;
 #X msg 376 198 the parent is inactive;
 #X obj 109 271 print depth-0;
 #X obj 404 233 print depth-1;
-#X obj 376 83 else/window 1;
 #X obj 81 93 metro 1000;
 #X obj 81 67 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
@@ -72,31 +69,34 @@ object below reports the activity., f 43;
 #X text 104 68 keep querying status;
 #X text 341 273 Note that the depth is not only for subpatches \, but
 also abstractions!!, f 37;
-#X connect 0 0 17 0;
-#X connect 1 0 9 0;
-#X connect 1 1 8 0;
-#X connect 4 0 11 0;
-#X connect 4 1 10 0;
-#X connect 5 0 4 0;
-#X connect 8 0 12 0;
+#X obj 81 121 else/canvas.active;
+#X obj 376 83 else/canvas.active 1;
+#X connect 0 0 8 0;
+#X connect 0 1 7 0;
+#X connect 3 0 10 0;
+#X connect 3 1 9 0;
+#X connect 4 0 3 0;
+#X connect 7 0 11 0;
+#X connect 8 0 11 0;
 #X connect 9 0 12 0;
-#X connect 10 0 13 0;
-#X connect 11 0 13 0;
-#X connect 14 0 5 0;
+#X connect 10 0 12 0;
+#X connect 13 0 18 0;
+#X connect 14 0 13 0;
 #X connect 15 0 0 0;
-#X connect 16 0 15 0;
-#X connect 17 0 1 0;
+#X connect 18 0 15 0;
+#X connect 19 0 4 0;
 #X restore 449 251 pd subpatch;
 #X text 459 228 example:;
 #X obj 135 299 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 173 300 bang -;
 #X text 222 299 resend window activity report;
-#X text 64 91 The [window] object outputs 1 when a patch canvas becomes
-active (that is when it's the front-most window) \, and outputs 0 when
-inactive. It can also query the activity status from a parent patch
-with the depth argument: a depth of 1 goes up to the parent patch \,
-2 queries the parent's parent and so on., f 70;
+#X obj 209 173 else/canvas.active;
+#X text 64 91 The [canvas.active] object outputs 1 when a patch canvas
+becomes active (that is when it's the front-most window) \, and outputs
+0 when inactive. It can also query the activity status from a parent
+patch with the depth argument: a depth of 1 goes up to the parent patch
+\, 2 queries the parent's parent and so on., f 70;
 #X connect 4 0 9 0;
-#X connect 9 0 26 0;
-#X connect 24 0 4 0;
+#X connect 9 0 25 0;
+#X connect 31 0 4 0;

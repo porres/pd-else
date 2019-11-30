@@ -1,12 +1,12 @@
-#N struct 1854-cell float x float y float cellsize float color;
-#N struct 1861-point float x0 float y0 float xs float ys float fg float
+#N struct 1358-cell float x float y float cellsize float color;
+#N struct 1365-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1885-slot float x float y float slotsize float color float
+#N struct 1389-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1887-cell float cellsize float color;
-#N struct 1981-point float x0 float y0 float xs float ys float fg float
+#N struct 1391-cell float cellsize float color;
+#N struct 1401-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1981-pixel float x float y float color;
+#N struct 1401-pixel float x float y float color;
 #N canvas 711 30 537 532 10;
 #X text 56 57 Assorted:;
 #X obj 56 81 else/table~;
@@ -16,9 +16,8 @@ in float gridx float gridy;
 #X obj 56 253 else/bin.shift~;
 #X obj 56 327 else/args;
 #X obj 56 353 else/blocksize~;
-#X obj 56 428 else/click;
-#X obj 56 509 else/properties;
-#X obj 56 535 else/window;
+#X obj 56 452 else/click;
+#X obj 56 478 else/properties;
 #X obj 56 561 else/loadbanger;
 #X obj 169 561 else/lb;
 #X obj 54 1186 else/initmess;
@@ -300,7 +299,7 @@ in float gridx float gridy;
 50 50 0 0 0 0 0 1000 0;
 #X text 563 -359 [else/function] =>;
 #X obj 74 88 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
-0 0 0 6 3 empty empty;
+0 0 0 0 0 empty empty;
 #X obj 907 741 else/display;
 #X obj 908 773 else/display~;
 #X text 787 743 [else/display] =>;
@@ -453,8 +452,8 @@ in float gridx float gridy;
 #X obj 54 3837 else/rand.seq;
 #X obj 54 1210 else/message;
 #X obj 54 1409 else/stack;
-#X obj 56 454 else/dollarzero;
-#X obj 56 480 else/receiver;
+#X obj 56 507 else/dollarzero;
+#X obj 56 533 else/receiver;
 #X obj 53 779 else/reverse;
 #X text 54 607 Message/List management:;
 #X obj 53 804 else/rotate;
@@ -475,9 +474,10 @@ in float gridx float gridy;
 #X obj 53 8509 else/lfnoise;
 #X obj 54 8590 else/rampnoise;
 #X obj 54 8563 else/stepnoise;
-#X obj 56 377 else/canvas.name;
+#X obj 56 401 else/canvas.name;
 #X obj 54 8673 else/randpulse;
 #X obj 54 8698 else/randpulse2;
-#X obj 56 401 else/canvas.wname;
+#X obj 56 425 else/canvas.wname;
 #X obj 54 9453 else/timed.gate;
 #X obj 54 9540 else/trig2bang;
+#X obj 56 377 else/canvas.active;

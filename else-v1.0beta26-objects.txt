@@ -38,6 +38,7 @@ break	x
 brickwall~	x
 brown~ 	x
 button	x
+canvas.active	x
 canvas.mouse	x
 canvas.name	x
 canvas.wname	x
@@ -354,7 +355,6 @@ voices	x
 vsaw~	x
 vu~	x
 wavetable~	x
-window	x
 wrap2	x
 wrap2~	x
 wt~	x

@@ -33,6 +33,7 @@ suspedal.class.sources := Classes/Source/suspedal.c
 voices.class.sources := Classes/Source/voices.c
 args.class.sources := Classes/Source/args.c
 click.class.sources := Classes/Source/click.c
+canvas.active.class.sources := Classes/Source/canvas.active.c
 canvas.mouse.class.sources := Classes/Source/canvas.mouse.c
 canvas.name.class.sources := Classes/Source/canvas.name.c
 canvas.wname.class.sources := Classes/Source/canvas.wname.c
@@ -87,7 +88,6 @@ touch.out.class.sources := Classes/Source/touch.out.c
 trigger2.class.sources := Classes/Source/trigger2.c
 t2.class.sources := Classes/Source/t2.c
 unmerge.class.sources := Classes/Source/unmerge.c
-window.class.sources := Classes/Source/window.c
 
 # signal:
 above~.class.sources := Classes/Source/above~.c
