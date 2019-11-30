@@ -1,9 +1,12 @@
-#N struct 1248-point float x0 float y0 float xs float ys float fg float
+#N struct 1139-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1237-point float x0 float y0 float xs float ys float fg float
+#N struct 1139-pixel float x float y float color;
+#N struct 1150-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1226-point float x0 float y0 float xs float ys float fg float
+#N struct 1150-pixel float x float y float color;
+#N struct 1128-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
+#N struct 1128-pixel float x float y float color;
 #N canvas 430 52 563 659 10;
 #X obj 3 434 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -54,7 +57,7 @@ in float gridx float gridy;
 #X text 152 484 float/signal;
 #X text 69 88 [pan8~] is an 8-channel equal power (sin/cos) panner.
 It has two modes of operation and a spread parameter.;
-#N canvas 514 97 449 628 mode-0 0;
+#N canvas 868 162 449 628 mode-0 0;
 #X floatatom 122 263 8 0 0 0 - - -;
 #X floatatom 179 263 8 0 0 0 - - -;
 #X text 127 246 x;
@@ -106,11 +109,10 @@ It has two modes of operation and a spread parameter.;
 #X obj 122 229 unpack;
 #X text 258 433 <= [else/meter8~];
 #X obj 107 542 else/out8~;
-#X text 271 148 <= [else/slider2d];
 #X obj 122 288 else/f2s~ 50;
 #X obj 179 310 else/f2s~ 50;
-#X obj 122 92 else/slider2d 127 127 -1 1 -1 1 0 224 224 224 0 0 0 1
-;
+#X obj 122 92 circle 127 -1 1 -1 1 0 225 225 225 0 0 0 1 0 0 63.5 63.5
+empty empty;
 #X text 122 122 3;
 #X text 204 205 8;
 #X text 156 205 1;
@@ -119,10 +121,10 @@ It has two modes of operation and a spread parameter.;
 #X text 203 88 5;
 #X text 239 123 6;
 #X text 238 171 7;
-#X connect 0 0 17 0;
-#X connect 1 0 18 0;
+#X connect 0 0 16 0;
+#X connect 1 0 17 0;
 #X connect 4 0 11 3;
-#X connect 5 0 19 0;
+#X connect 5 0 18 0;
 #X connect 6 0 4 0;
 #X connect 8 0 11 0;
 #X connect 11 0 12 0;
@@ -143,20 +145,18 @@ It has two modes of operation and a spread parameter.;
 #X connect 12 7 15 7;
 #X connect 13 0 0 0;
 #X connect 13 1 1 0;
-#X connect 17 0 11 1;
-#X connect 18 0 11 2;
-#X connect 19 0 13 0;
+#X connect 16 0 11 1;
+#X connect 17 0 11 2;
+#X connect 18 0 13 0;
 #X restore 478 380 pd mode-0;
 #N canvas 594 57 406 625 mode-1 0;
-#X obj 118 87 else/slider2d 127 127 -1 1 -1 1 0 224 224 224 0 0 0 1
-;
 #X obj 37 89 setdsp~ 1;
 #N canvas 371 23 399 387 set 0;
 #X obj 105 290 pack;
 #X msg 105 245 1 \$1;
 #X obj 105 220 expr ($f1/8) * twopi;
 #X obj 105 118 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
--1 -1 5;
+-1 -1 2;
 #X obj 105 153 * -1;
 #X obj 105 199 mod 8;
 #X obj 105 176 + 2;
@@ -201,9 +201,10 @@ It has two modes of operation and a spread parameter.;
 #X text 254 427 <= [else/meter8~];
 #X obj 61 335 else/pan8~ -mode 1, f 29;
 #X obj 103 541 else/out8~;
-#X text 264 143 <= [else/slider2d];
 #X obj 118 291 else/f2s~ 50;
 #X obj 175 313 else/f2s~ 50;
+#X obj 118 87 circle 127 -1 1 -1 1 0 225 225 225 0 0 0 1 0 0 97 105.155
+empty empty;
 #X text 240 141 3;
 #X text 221 97 2;
 #X text 176 79 1;
@@ -212,33 +213,33 @@ It has two modes of operation and a spread parameter.;
 #X text 131 187 6;
 #X text 220 187 4;
 #X text 176 206 5;
-#X connect 0 0 13 0;
-#X connect 2 0 0 0;
-#X connect 4 0 18 0;
-#X connect 5 0 19 0;
-#X connect 8 0 15 3;
-#X connect 9 0 8 0;
+#X connect 1 0 18 0;
+#X connect 3 0 16 0;
+#X connect 4 0 17 0;
+#X connect 7 0 14 3;
+#X connect 8 0 7 0;
+#X connect 10 0 14 0;
 #X connect 11 0 15 0;
-#X connect 12 0 16 0;
-#X connect 12 1 16 1;
-#X connect 12 2 16 2;
-#X connect 12 3 16 3;
-#X connect 12 4 16 4;
-#X connect 12 5 16 5;
-#X connect 12 6 16 6;
-#X connect 12 7 16 7;
-#X connect 13 0 4 0;
-#X connect 13 1 5 0;
-#X connect 15 0 12 0;
-#X connect 15 1 12 1;
-#X connect 15 2 12 2;
-#X connect 15 3 12 3;
-#X connect 15 4 12 4;
-#X connect 15 5 12 5;
-#X connect 15 6 12 6;
-#X connect 15 7 12 7;
-#X connect 18 0 15 1;
-#X connect 19 0 15 2;
+#X connect 11 1 15 1;
+#X connect 11 2 15 2;
+#X connect 11 3 15 3;
+#X connect 11 4 15 4;
+#X connect 11 5 15 5;
+#X connect 11 6 15 6;
+#X connect 11 7 15 7;
+#X connect 12 0 3 0;
+#X connect 12 1 4 0;
+#X connect 14 0 11 0;
+#X connect 14 1 11 1;
+#X connect 14 2 11 2;
+#X connect 14 3 11 3;
+#X connect 14 4 11 4;
+#X connect 14 5 11 5;
+#X connect 14 6 11 6;
+#X connect 14 7 11 7;
+#X connect 16 0 14 1;
+#X connect 17 0 14 2;
+#X connect 18 0 12 0;
 #X restore 478 402 pd mode-1;
 #X text 242 535 - channel outputs;
 #X obj 123 504 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
@@ -259,14 +260,14 @@ It has two modes of operation and a spread parameter.;
 #X obj 158 374 env~;
 #X obj 197 374 env~;
 #X obj 197 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.2291 256;
-#X obj 113 224 noise~;
+-228856 -1 -1 93.6542 256;
+#X obj 132 224 noise~;
 #X obj 158 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.2291 256;
+-228856 -1 -1 91.7375 256;
 #X obj 119 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.2291 256;
+-228856 -1 -1 89.1679 256;
 #X obj 80 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.2291 256;
+-228856 -1 -1 87.5795 256;
 #X text 172 312 X;
 #X text 281 314 Y;
 #X obj 236 374 env~;
@@ -274,13 +275,13 @@ It has two modes of operation and a spread parameter.;
 #X obj 314 374 env~;
 #X obj 353 374 env~;
 #X obj 353 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.2291 256;
+-228856 -1 -1 88.4578 256;
 #X obj 314 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.2291 256;
+-228856 -1 -1 90.9329 256;
 #X obj 275 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.2291 256;
+-228856 -1 -1 93.1752 256;
 #X obj 236 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.2291 256;
+-228856 -1 -1 94.1832 256;
 #X obj 189 292 unpack;
 #X text 87 413 1;
 #X text 128 413 2;
@@ -297,17 +298,17 @@ It has two modes of operation and a spread parameter.;
 #X text 342 232 The spread parameter controls how much the sound spreads
 to the adjacent speakers., f 21;
 #X obj 132 337 else/pan8~, f 29;
-#X obj 189 129 else/initmess 0 0;
-#X obj 189 155 else/slider2d 127 127 -1 1 -1 1 0 224 224 224 0 0 0
-1;
-#X text 189 186 3;
-#X text 271 269 8;
-#X text 223 269 1;
-#X text 188 234 2;
-#X text 222 152 4;
-#X text 270 152 5;
-#X text 306 187 6;
-#X text 305 235 7;
+#X obj 189 146 circle 127 -1 1 -1 1 0 225 225 225 0 0 0 1 0 0 71 90.8262
+empty empty;
+#X text 189 177 3;
+#X text 271 260 8;
+#X text 223 260 1;
+#X text 188 225 2;
+#X text 222 143 4;
+#X text 270 143 5;
+#X text 306 178 6;
+#X text 305 226 7;
+#X text 331 174 <= [else/circle];
 #X connect 39 0 73 1;
 #X connect 40 0 73 2;
 #X connect 41 0 49 0;
@@ -331,5 +332,4 @@ to the adjacent speakers., f 21;
 #X connect 73 5 53 0;
 #X connect 73 6 54 0;
 #X connect 73 7 55 0;
-#X connect 74 0 75 0;
-#X connect 75 0 60 0;
+#X connect 74 0 60 0;
