@@ -1,36 +1,36 @@
-#N struct 1156-point float x0 float y0 float xs float ys float fg float
+#N struct 1006-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1156-pixel float x float y float color;
-#N struct 1255-point float x0 float y0 float xs float ys float fg float
+#N struct 1006-pixel float x float y float color;
+#N struct 1021-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1255-pixel float x float y float color;
-#N struct 1266-point float x0 float y0 float xs float ys float fg float
+#N struct 1021-pixel float x float y float color;
+#N struct 1032-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1266-pixel float x float y float color;
-#N struct 1299-point float x0 float y0 float xs float ys float fg float
+#N struct 1032-pixel float x float y float color;
+#N struct 1045-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1299-pixel float x float y float color;
-#N struct 1288-point float x0 float y0 float xs float ys float fg float
+#N struct 1045-pixel float x float y float color;
+#N struct 1056-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1288-pixel float x float y float color;
-#N struct 1310-point float x0 float y0 float xs float ys float fg float
+#N struct 1056-pixel float x float y float color;
+#N struct 1069-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1310-pixel float x float y float color;
-#N struct 1334-point float x0 float y0 float xs float ys float fg float
+#N struct 1069-pixel float x float y float color;
+#N struct 1082-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1334-pixel float x float y float color;
-#N struct 1233-point float x0 float y0 float xs float ys float fg float
+#N struct 1082-pixel float x float y float color;
+#N struct 1295-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1233-pixel float x float y float color;
-#N struct 1345-point float x0 float y0 float xs float ys float fg float
+#N struct 1295-pixel float x float y float color;
+#N struct 1108-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1345-pixel float x float y float color;
-#N struct 1145-point float x0 float y0 float xs float ys float fg float
+#N struct 1108-pixel float x float y float color;
+#N struct 1121-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1145-pixel float x float y float color;
-#N struct 1200-point float x0 float y0 float xs float ys float fg float
+#N struct 1121-pixel float x float y float color;
+#N struct 1134-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1200-pixel float x float y float color;
+#N struct 1134-pixel float x float y float color;
 #N canvas 590 49 562 535 10;
 #X obj 2 4 cnv 15 301 42 empty empty circle 20 20 2 37 -233017 -1 0
 ;
@@ -95,19 +95,19 @@ in float gridx float gridy;
 #X text 232 405 - sets frontground color in RGB, f 52;
 #X text 144 376 grid <float>;
 #X text 232 376 - non zero sets grid visibility, f 52;
-#N canvas 774 104 395 378 set-values 0;
+#N canvas 774 104 396 372 set-values 0;
 #X obj 136 310 else/display;
 #X text 27 23 If you send it a list of x/y coordinates \, the [circle]
 object will clip it inside its range and output it.;
 #X text 27 59 The "set" message behaves similarly \, it just doesn't
 output the incoming value., f 56;
-#X msg 159 139 set 64 64;
-#X msg 136 108 97 100;
-#X obj 136 169 else/circle 127 0 127 0 127 1 255 255 255 0 0 0 0 0
-0 63.5 63.5 empty empty;
-#X connect 3 0 5 0;
-#X connect 4 0 5 0;
-#X connect 5 0 0 0;
+#X msg 159 139 set 0 0;
+#X obj 136 169 circle 127 -1 1 -1 1 1 255 255 255 0 0 0 1 0 0 0.5 0.5
+empty empty;
+#X msg 136 108 0.5 0.5;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 0;
 #X restore 38 145 pd set-values;
 #N canvas 633 23 519 426 range 0;
 #X obj 105 359 else/display;
@@ -153,8 +153,8 @@ according to the new range., f 64;
 #X obj 83 105 else/initmess 127;
 #X text 74 29 You can set the size with the '-size' flag or with the
 'size' message., f 25;
-#X obj 83 230 else/circle 127 -1 1 -1 1 1 255 255 255 0 0 0 1 0 0 91.5
-93.5 empty empty;
+#X obj 83 230 else/circle 127 -1 1 -1 1 1 255 255 255 0 0 0 1 0 0 63.5
+63.5 empty empty;
 #X connect 1 0 6 0;
 #X connect 2 0 3 0;
 #X connect 3 0 1 0;
@@ -225,8 +225,8 @@ messages and '-bgcolor'/'-fgcolor' flags., f 70;
 #X msg 88 116 jump \$1;
 #X obj 88 92 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
-#X obj 88 141 else/circle 127 -1 1 -1 1 1 255 255 255 0 0 0 1 0 0 109
-86 empty empty;
+#X obj 88 141 else/circle 127 -1 1 -1 1 1 255 255 255 0 0 0 1 0 0 63.5
+63.5 empty empty;
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;
 #X connect 4 0 0 0;
@@ -237,7 +237,7 @@ messages and '-bgcolor'/'-fgcolor' flags., f 70;
 in 'init mode' \, where it outputs the last saved value when you load
 the patch., f 46;
 #X obj 141 124 else/circle 127 -1 1 -1 1 1 255 255 255 0 0 0 1 0 1
-0 0 empty empty;
+63.5 63.5 empty empty;
 #X msg 141 91 0 0;
 #X connect 2 0 0 0;
 #X connect 3 0 2 0;
@@ -267,14 +267,98 @@ the patch., f 46;
 #X text 212 485 <= click to open;
 #X text 144 419 init <float>;
 #X text 232 419 - non zero sets to init mode, f 52;
-#N canvas 605 187 500 428 example 0;
-#X obj 179 212 unpack float float;
-#X obj 179 34 else/initmess 750 8;
-#X obj 179 65 else/circle 127 0 127 0 127 1 255 255 255 0 0 0 0 0 0
-63.5 63.5 empty empty;
-#X text 42 87 [pan8~];
-#X connect 1 0 2 0;
-#X connect 2 0 0 0;
+#N canvas 1001 80 426 641 example 0;
+#X obj 56 126 setdsp~ 1;
+#N canvas 371 23 399 387 set 0;
+#X obj 105 290 pack;
+#X msg 105 245 1 \$1;
+#X obj 105 220 expr ($f1/8) * twopi;
+#X obj 105 118 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
+-1 -1 4;
+#X obj 105 153 * -1;
+#X obj 105 199 mod 8;
+#X obj 105 176 + 2;
+#X text 107 102 1;
+#X text 122 102 2;
+#X text 137 102 3;
+#X text 152 102 4;
+#X text 167 102 5;
+#X text 182 102 6;
+#X text 197 102 7;
+#X text 212 102 8;
+#X obj 105 267 else/pol2car;
+#X obj 105 320 outlet;
+#X obj 265 237 v twopi;
+#X obj 265 211 pi 2;
+#X obj 221 286 else/initmess 0 0;
+#X connect 0 0 16 0;
+#X connect 1 0 15 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 6 0;
+#X connect 5 0 2 0;
+#X connect 6 0 5 0;
+#X connect 15 0 0 0;
+#X connect 15 1 0 1;
+#X connect 18 0 17 0;
+#X connect 19 0 16 0;
+#X coords 0 -1 1 1 132 42 2 100 100;
+#X restore 137 63 pd set;
+#X text 278 75 <= set speaker;
+#X floatatom 137 304 8 0 0 0 - - -;
+#X floatatom 194 304 8 0 0 0 - - -;
+#X text 142 287 x;
+#X text 198 287 y;
+#X floatatom 251 304 8 -1 1 0 - - -;
+#X obj 254 276 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X text 293 275 spread;
+#X obj 80 250 noise~;
+#X obj 80 403 else/meter8~;
+#X obj 137 270 unpack;
+#X text 273 464 <= [else/meter8~];
+#X obj 80 372 else/pan8~ -mode 1, f 29;
+#X obj 122 578 else/out8~;
+#X obj 137 328 else/f2s~ 50;
+#X obj 194 350 else/f2s~ 50;
+#X obj 137 124 circle 127 -1 1 -1 1 0 225 225 225 0 0 0 1 0 0 67 45.6192
+empty empty;
+#X text 64 23 Here's an example to use it with [pan8~].;
+#X text 265 179 3;
+#X text 244 130 2;
+#X text 195 110 1;
+#X text 147 131 8;
+#X text 127 180 7;
+#X text 147 227 6;
+#X text 243 228 4;
+#X text 195 250 5;
+#X connect 1 0 18 0;
+#X connect 3 0 16 0;
+#X connect 4 0 17 0;
+#X connect 7 0 14 3;
+#X connect 8 0 7 0;
+#X connect 10 0 14 0;
+#X connect 11 0 15 0;
+#X connect 11 1 15 1;
+#X connect 11 2 15 2;
+#X connect 11 3 15 3;
+#X connect 11 4 15 4;
+#X connect 11 5 15 5;
+#X connect 11 6 15 6;
+#X connect 11 7 15 7;
+#X connect 12 0 3 0;
+#X connect 12 1 4 0;
+#X connect 14 0 11 0;
+#X connect 14 1 11 1;
+#X connect 14 2 11 2;
+#X connect 14 3 11 3;
+#X connect 14 4 11 4;
+#X connect 14 5 11 5;
+#X connect 14 6 11 6;
+#X connect 14 7 11 7;
+#X connect 16 0 14 1;
+#X connect 17 0 14 2;
+#X connect 18 0 12 0;
 #X restore 92 226 pd example;
 #N canvas 757 48 559 404 send/receive 0;
 #X obj 65 309 display;
@@ -294,7 +378,7 @@ messages or '-send'/'-receive' flags., f 31;
 #X text 76 154 Setting these to 'empty' removes the send/receive symbols.
 , f 32;
 #X obj 354 234 else/circle 127 -1 1 -1 1 1 255 255 255 0 0 0 1 0 0
-68.5 84.0777 empty empty;
+63.5 63.5 \\\$0-circle-snd \\\$0-circle-rcv;
 #X msg 169 215 0 0;
 #X msg 65 222 0 0;
 #X connect 1 0 13 0;
@@ -318,7 +402,7 @@ messages or '-send'/'-receive' flags., f 31;
 1;
 #X msg 180 312 grid \$1;
 #X obj 108 348 else/circle 127 0 127 0 127 1 255 255 255 0 0 0 1 0
-0 75.5 84.3878 empty empty;
+0 63.5 63.5 empty empty;
 #X msg 108 286 mode \$1;
 #X obj 108 209 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -228856
 -1 -1 1;
