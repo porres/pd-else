@@ -48,7 +48,7 @@
 #X text 202 407 - floats set: inlet \, outlet and on <non-0> or off
 <0>, f 56;
 #X text 202 453 - clears all connections, f 56;
-#X obj 151 201 else/mtx.ctl 4 2 15;
+#X obj 151 201 else/mtx.ctl 4 2 15 0 0 0 0 0 0 0 0 0 0 0 0;
 #X obj 253 304 else/mtx~ 4 2 100;
 #X obj 259 339 else/out~;
 #X obj 2 6 cnv 15 301 42 empty empty mtx~ 20 20 2 37 -233017 -1 0;
