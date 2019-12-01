@@ -102,7 +102,7 @@ static void *unmerge_new(t_symbol *s, int ac, t_atom* av){
                 t_float aval = atom_getfloatarg(0, ac, av);
                 switch(argnum){
                     case 0:
-                        n = (int)(aval != 0);
+                        n = (int)aval;
                         break;
                     case 1:
                         x->x_size = aval;
