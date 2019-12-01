@@ -1,4 +1,4 @@
-#N struct 1003-point float x0 float y0 float xs float ys float fg float
+#N struct 1008-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 732 31 474 323 10;
 #N canvas 430 192 597 299 \$0-point 0;
@@ -1014,9 +1014,9 @@ line bgcolor fgcolor grid jump init send receive, f 113;
 #X connect 11 16 12 1;
 #X connect 13 0 11 0;
 #X restore 43 70 pd route;
-#N canvas 422 170 163 206 xy-out 0;
+#N canvas 422 170 163 206 xy-out 1;
 #X obj 48 149 outlet;
-#N canvas 308 373 470 285 set-coords 0;
+#N canvas 308 373 470 285 set-coords 1;
 #X obj 174 168 s \$0-coords;
 #X obj 180 123 set \$0-point x0 y0;
 #X obj 285 96 receive \$0-pointer;
@@ -1045,16 +1045,16 @@ line bgcolor fgcolor grid jump init send receive, f 113;
 #X connect 11 0 10 0;
 #X connect 12 0 8 0;
 #X restore 48 60 pd set-coords;
-#N canvas 481 30 703 350 mouse 0;
+#N canvas 481 30 703 386 mouse 0;
 #X obj 79 148 v jump_\$0;
 #X obj 79 121 select 1;
-#X obj 107 304 outlet;
-#X obj 250 127 v jump_\$0;
-#X obj 250 99 r \$0-jump;
-#X obj 247 250 v ysize_\$0;
-#X obj 247 200 v xsize_\$0;
-#X obj 247 172 r \$0-xsize;
-#X obj 247 222 r \$0-ysize;
+#X obj 107 328 outlet;
+#X obj 250 137 v jump_\$0;
+#X obj 250 109 r \$0-jump;
+#X obj 247 280 v ysize_\$0;
+#X obj 247 210 v xsize_\$0;
+#X obj 247 182 r \$0-xsize;
+#X obj 247 252 r \$0-ysize;
 #X obj 384 193 v steady_y_\$0;
 #X obj 351 228 v steady_x_\$0;
 #X obj 351 116 r \$0-coords;
@@ -1277,7 +1277,7 @@ ysize_\$0 \; $f2 \; $f3, f 31;
 #X obj 191 101 cnv 15 125 125 empty \$0-bg_cnv empty 20 12 0 14 -262144
 -66577 0;
 #N canvas 375 63 604 469 \$0-point-cnv 0;
-#X scalar 1003-point 0 4 127 127 0 126 63.5 63.5 \;;
+#X scalar 1008-point 0 0 127 127 0 126 63.5 63.5 \;;
 #X coords 0 127 127 0 127 127 2 0 0;
 #X restore 190 100 pd \$0-point-cnv;
 #X obj 147 38 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
@@ -1288,3 +1288,4 @@ ysize_\$0 \; $f2 \; $f3, f 31;
 #X connect 6 0 2 0;
 #X connect 9 0 4 0;
 #X connect 12 0 2 1;
+#X coords 0 127 127 0 127 127 2 190 100;

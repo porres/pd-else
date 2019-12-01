@@ -1,4 +1,4 @@
-#N canvas 323 153 565 413 10;
+#N canvas 508 181 565 413 10;
 #X obj 264 203 else/receiver;
 #X obj 4 265 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -37,9 +37,6 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X text 67 88 [receiver] is much like [receive] \, but can have an
-inlet when no argument is given to set its receive name with a symbol.
-;
 #X obj 402 203 s \$0-x;
 #X floatatom 402 176 5 0 0 0 - - -;
 #X floatatom 264 233 5 0 0 0 - - -;
@@ -56,11 +53,13 @@ inlet when no argument is given to set its receive name with a symbol.
 #X obj 167 210 send;
 #X floatatom 124 179 5 0 0 0 - - -;
 #X obj 264 130 loadbang;
-#X connect 0 0 22 0;
-#X connect 21 0 20 0;
+#X text 67 88 [receiver] is much like [receive] \, but has an inlet
+to set its receive name with a symbol.;
+#X connect 0 0 21 0;
+#X connect 20 0 19 0;
+#X connect 29 0 0 0;
 #X connect 30 0 0 0;
 #X connect 31 0 0 0;
-#X connect 32 0 0 0;
-#X connect 32 0 33 1;
-#X connect 34 0 33 0;
-#X connect 35 0 30 0;
+#X connect 31 0 32 1;
+#X connect 33 0 32 0;
+#X connect 34 0 29 0;
