@@ -1,4 +1,4 @@
-#N canvas 652 205 593 430 10;
+#N canvas 619 23 600 556 10;
 #X obj 86 353 outlet;
 #X obj 86 94 inlet;
 #X text 120 31 This is an example of an abstraction with [else/args]
@@ -13,6 +13,13 @@
 #X text 330 159 Breaks the argument list if the first character is
 '-'., f 28;
 #X obj 86 134 else/trigger2 anything anything;
+#X text 90 478 A float argument specifies this patch (0 \, the default)
+\, owning patch (1) \, its own owner (2) \, and so on - ownership number
+is silently reduced if owners don't exist \, so here anything greater
+than zero would be ignored., f 65;
+#X text 91 422 Note that you can have [else/args] anywhere inside an
+abstraction \, like deep buried inside many layers of subpatches.,
+f 64;
 #X connect 1 0 11 0;
 #X connect 3 0 4 0;
 #X connect 4 0 0 0;
