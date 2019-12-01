@@ -9,7 +9,7 @@ typedef struct _args{
     t_object  x_obj;
     t_canvas  *x_canvas;
     int        x_argc;
-    //    int        x_dirty;
+//    int        x_dirty;
     t_atom    *x_argv;
     int             x_break;
     int             x_broken;
@@ -57,8 +57,7 @@ static void args_break(t_args *x, t_symbol *s, int ac, t_atom *av){
                     break;
                 }
             }
-            // n is number of extra elements in the broken message (that's why we have - 1)
-            n = j - i - 1;
+            n = j - i - 1; // n = # of extra elements in broken message (so we have - 1)
             if(first){
                 if(av->a_type == A_SYMBOL &&
                    x->x_separator == (atom_getsymbol(av))->s_name[0])
@@ -76,9 +75,8 @@ static void args_break(t_args *x, t_symbol *s, int ac, t_atom *av){
 
 static void args_bang(t_args *x){
     if(x->x_argv){
-        if(x->x_break){
+        if(x->x_break)
             args_break(x, &s_list, x->x_argc, x->x_argv);
-        }
         else
             outlet_list(x->x_obj.ob_outlet, &s_list, x->x_argc, x->x_argv);
     }
@@ -95,22 +93,36 @@ static void *args_new(t_symbol *s, int ac, t_atom* av){
     t_args *x = (t_args *)pd_new(args_class);
     t_glist *glist = (t_glist *)canvas_getcurrent();
     x->x_canvas = (t_canvas*)glist_getcanvas(glist);
-    while(!x->x_canvas->gl_env)
-        x->x_canvas = x->x_canvas->gl_owner;
+    int depth = 0;
     int argc;
+    t_atom *argv;
     x->x_break = x->x_broken = 0;
     //    x->x_dirty = 0;
-    t_atom *argv;
+    if(ac && av->a_type == A_SYMBOL){
+        x->x_separator = atom_getsymbol(av)->s_name[0];
+        x->x_break = 1;
+        ac--;
+        av++;
+    }
+    if(ac && av->a_type == A_FLOAT)
+        depth = (int)atom_getfloat(av);
+    if (depth < 0)
+        depth = 0;
+    while(!x->x_canvas->gl_env)
+        x->x_canvas = x->x_canvas->gl_owner;
+    while(depth--){
+        if(x->x_canvas->gl_owner){
+            x->x_canvas = x->x_canvas->gl_owner;
+            while(!x->x_canvas->gl_env)
+                x->x_canvas = x->x_canvas->gl_owner;
+        }
+    }
     canvas_setcurrent(x->x_canvas);
     canvas_getargs(&argc, &argv);
     x->x_argc = argc;
     x->x_argv = getbytes(argc * sizeof(*(x->x_argv)));
     copy_atoms(argv, x->x_argv, argc);
     canvas_unsetcurrent(x->x_canvas);
-    if(ac && av->a_type == A_SYMBOL){
-        x->x_separator = atom_getsymbol(av)->s_name[0];
-        x->x_break = 1;
-    }
     outlet_new(&x->x_obj, 0);
     return(x);
 }
