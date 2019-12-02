@@ -1,4 +1,4 @@
-#N canvas 709 23 561 469 10;
+#N canvas 629 78 560 478 10;
 #X obj 3 4 cnv 15 301 42 empty empty match~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -25,25 +25,25 @@
 0;
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 3 319 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 314 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 353 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 364 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 409 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 420 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 92 362 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 92 373 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X obj 93 327 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 93 322 cnv 17 3 37 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 440 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 451 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 157 362 signal -;
+#X text 157 373 signal -;
 #X obj 149 41 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
 #X obj 170 41 cnv 4 4 4 empty empty numbers 0 28 2 18 -233017 -1 0
 ;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -112,7 +112,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -151,21 +151,16 @@
 #X obj 287 259 else/trig2bang~;
 #X obj 287 282 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 182 208 nbx 2 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 182 181 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X text 219 329 the signal to be matched;
-#X text 147 418 1) list;
-#X text 206 417 - values to match to (default 0);
+#X text 210 324 the signal to be matched;
+#X text 147 429 1) list;
+#X text 206 428 - values to match to (default 0);
 #X text 91 269 matches argument =>, f 12;
 #X text 308 281 <= unmatched;
-#X obj 92 384 cnv 17 3 17 empty empty r 5 9 0 16 -228856 -162280 0
+#X obj 92 395 cnv 17 3 17 empty empty r 5 9 0 16 -228856 -162280 0
 ;
-#X text 218 363 impulse when signal matches an argument;
-#X text 157 384 signal -;
-#X text 218 385 impulse when signal doesn't match arguments;
-#X text 115 328 float/signal -;
+#X text 218 374 impulse when signal matches an argument;
+#X text 157 395 signal -;
+#X text 218 396 impulse when signal doesn't match arguments;
 #N canvas 697 133 526 370 example 0;
 #X obj 81 183 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -215,9 +210,14 @@
 #X text 62 123 When a signal value corresponds to one of the arguments
 \, an impulse is sent to its corresponding outlet. Otherwise \, the
 rightmost outlet sends an impulse., f 58;
+#X obj 182 177 else/pulse~ 1;
+#X obj 182 201 else/display~;
+#X text 157 324 signal -;
+#X text 169 343 list;
+#X text 199 342 - one or more floats reset argument values;
 #X connect 24 0 23 0;
 #X connect 25 0 26 0;
-#X connect 27 0 40 0;
-#X connect 28 0 27 0;
-#X connect 40 0 24 0;
-#X connect 40 1 25 0;
+#X connect 37 0 24 0;
+#X connect 37 1 25 0;
+#X connect 40 0 41 0;
+#X connect 41 0 37 0;
