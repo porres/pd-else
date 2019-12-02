@@ -71,7 +71,7 @@ Cross compiling is also possible with something like this
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=../</pre>
 --------------------------------------------------------------------------
 
-## Current Object list (361 objects):
+## Current Object list (362 objects):
 
 **ASSORTED: [03]**
 - [table~]
@@ -82,13 +82,14 @@ Cross compiling is also possible with something like this
 - [hann~]
 - [bin.shift~]
 
-**PATCH/SUBPATCH MANAGEMENT: [10]**
+**PATCH/SUBPATCH MANAGEMENT: [11]**
 
 - [args]
 - [dollarzero]
 - [receiver]
 - [blocksize~]
 - [click]
+- [savechange]
 - [properties]
 - [canvas.active]
 - [canvas.wname]

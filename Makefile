@@ -27,16 +27,17 @@ colors.class.sources := Classes/Source/colors.c
 pic.class.sources := Classes/Source/pic.c
 
 # control:
+args.class.sources := Classes/Source/args.c
 ctl.in.class.sources := Classes/Source/ctl.in.c
 ctl.out.class.sources := Classes/Source/ctl.out.c
 suspedal.class.sources := Classes/Source/suspedal.c
 voices.class.sources := Classes/Source/voices.c
-args.class.sources := Classes/Source/args.c
 click.class.sources := Classes/Source/click.c
 canvas.active.class.sources := Classes/Source/canvas.active.c
 canvas.mouse.class.sources := Classes/Source/canvas.mouse.c
 canvas.name.class.sources := Classes/Source/canvas.name.c
 canvas.wname.class.sources := Classes/Source/canvas.wname.c
+savechange.class.sources := Classes/Source/savechange.c
 properties.class.sources := Classes/Source/properties.c
 break.class.sources := Classes/Source/break.c
 cents2ratio.class.sources := Classes/Source/cents2ratio.c

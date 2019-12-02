@@ -292,6 +292,7 @@ s2f~	x
 sample~	x
 samps2ms~	x
 samps2ms	x
+savechange	x
 saw~	x
 saw2~	x
 scramble	x

@@ -1,0 +1,55 @@
+#N canvas 528 86 568 412 10;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 54 41 cnv 4 4 4 empty empty save 0 28 2 18 -233017 -1 0;
+#X obj 21 41 cnv 4 4 4 empty empty Set 0 28 2 18 -233017 -1 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 3 4 cnv 15 301 42 empty empty savechange 20 20 2 37 -233017
+-1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 4 graph;
+#X obj 156 41 cnv 4 4 4 empty empty status 0 28 2 18 -233017 -1 0;
+#X obj 8 283 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 316 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 7 348 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 7 382 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 171 292 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 203 326 (none);
+#X obj 95 41 cnv 4 4 4 empty empty change 0 28 2 18 -233017 -1 0;
+#X msg 218 221 0;
+#X msg 210 199 1;
+#X text 209 293 float;
+#X text 246 293 - non zero;
+#X text 177 359 1) float - depth (default 0);
+#X text 61 90 [savechange] sets the save change status of a patch.
+When you make changes to a patch \, Pd asks you if you want to save
+changes when you close the patch. This object allows you to set this
+status and ask you if you want to save changes or not., f 73;
+#X text 239 198 <= ask to save changes;
+#X text 249 220 <= don't ask;
+#X obj 210 245 else/savechange;
+#X text 61 142 The depth level (set by the argument) is convenient
+for abstractions \, so you can set the state of a parent patch. By
+default \, the depth level is 0 \, which means this patch., f 73;
+#X connect 20 0 28 0;
+#X connect 21 0 28 0;
