@@ -147,6 +147,8 @@ void canvas_active_gui_getscreen(void){
 typedef struct _canvas_active{
     t_object   x_ob;
     t_symbol  *x_cnvame;
+    t_canvas  *x_canvas;
+    t_outlet  *x_outlet;
     int        x_on;
 }t_canvas_active;
 
@@ -155,11 +157,15 @@ static t_class *canvas_active_class;
 static void canvas_active_dofocus(t_canvas_active *x, t_symbol *s, t_floatarg f){
     if((int)f){
         int on = (s == x->x_cnvame);
-        if(on != x->x_on) // ???
+        if(on != x->x_on){ // ???
+            outlet_float(x->x_outlet, glist_isvisible(x->x_canvas));
             outlet_float(((t_object *)x)->ob_outlet, x->x_on = on);
+        }
     }
-    else if(x->x_on && s == x->x_cnvame) // ???
+    else if(x->x_on && s == x->x_cnvame){ // ???
+            outlet_float(x->x_outlet, glist_isvisible(x->x_canvas));
             outlet_float(((t_object *)x)->ob_outlet, x->x_on = 0);
+        }
 }
 
 void canvas_active_unbindfocus(t_pd *master){
@@ -169,14 +175,15 @@ void canvas_active_unbindfocus(t_pd *master){
         if(!canvas_active_gui_sink->g_psfocus->s_thing)
             sys_gui("canvas_active_gui_refocus\n");
     }
-    // else bug("canvas_active_unbindfocus");
 }
 
 static void canvas_active_free(t_canvas_active *x){
     canvas_active_unbindfocus((t_pd *)x);
+    outlet_free(x->x_outlet);
 }
 
 static void canvas_active_bang(t_canvas_active *x){
+    outlet_float(x->x_outlet, glist_isvisible(x->x_canvas));
     outlet_float(((t_object *)x)->ob_outlet, x->x_on);
 }
 
@@ -199,11 +206,13 @@ static void *canvas_active_new(t_floatarg f){
         canvas = canvas->gl_owner;
         depth--;
     }
+    x->x_canvas = canvas;
     char buf[32];
     sprintf(buf, ".x%lx.c", (unsigned long)canvas);
     x->x_cnvame = gensym(buf);
     x->x_on = 0;
     outlet_new((t_object *)x, &s_float);
+    x->x_outlet = outlet_new(&x->x_ob, 0);
     canvas_active_gui_bindfocus((t_pd *)x);
     return(x);
 }

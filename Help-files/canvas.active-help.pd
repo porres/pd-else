@@ -1,102 +1,140 @@
-#N canvas 544 44 562 419 10;
-#X obj 1 289 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 544 44 562 463 10;
+#X obj 1 315 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 1 322 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 1 348 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 1 359 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 1 405 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 135 332 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 135 358 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 209 200 tgl 18 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
+#X obj 156 201 tgl 18 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
 1 1;
-#X obj 1 392 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 1 438 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 167 333 float -;
-#X text 222 332 window status (0 inactive / 1 active);
-#X text 234 202 status;
-#X obj 209 230 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 167 359 float -;
+#X text 108 201 status;
+#X obj 156 231 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 1 256;
-#X obj 4 4 cnv 15 301 42 empty empty canvas.active 20 20 2 37 -233017
+#X obj 4 5 cnv 15 301 42 empty empty canvas.active 20 20 2 37 -233017
 -1 0;
-#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 3 4 graph;
-#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 3 5 graph;
+#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 24 41 cnv 4 4 4 empty empty Report 0 28 2 18 -233017 -1 0;
-#X obj 82 41 cnv 4 4 4 empty empty patch 0 28 2 18 -233017 -1 0;
-#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 24 42 cnv 4 4 4 empty empty Report 0 28 2 18 -233017 -1 0;
+#X obj 82 42 cnv 4 4 4 empty empty patch 0 28 2 18 -233017 -1 0;
+#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
-#X restore 306 4 graph;
-#X obj 130 41 cnv 4 4 4 empty empty window 0 28 2 18 -233017 -1 0;
-#X obj 198 41 cnv 4 4 4 empty empty activity 0 28 2 18 -233017 -1 0
+#X restore 306 5 graph;
+#X obj 130 42 cnv 4 4 4 empty empty window 0 28 2 18 -233017 -1 0;
+#X obj 198 42 cnv 4 4 4 empty empty activity/visibility 0 28 2 18 -233017
+-1 0;
+#X text 150 414 1) float - depth \, default 0 (current window);
+#X obj 135 325 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 150 368 1) float - depth \, default 0 (current window);
-#X obj 209 256 print parent;
-#N canvas 550 429 629 336 subpatch 0;
-#X obj 81 181 select 0 1;
-#X text 106 151 status;
-#X text 17 22 When this subpatch's window is active \, the [window]
-object below reports the activity., f 43;
-#X obj 376 143 select 0 1;
-#X obj 376 111 tgl 18 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
+#X text 173 326 bang -;
+#X obj 156 174 else/canvas.active;
+#X obj 261 197 tgl 18 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
 1 1;
-#X text 401 113 status;
-#X text 311 22 When this subpatch's window is active \, the [window]
+#X obj 261 227 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1 256;
+#X obj 156 277 print parent-status;
+#X obj 261 253 print parent-visibility;
+#X text 222 325 resend window activity/visibility report;
+#X obj 135 382 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 167 383 float -;
+#X text 222 358 window activity (0 inactive / 1 active);
+#X text 222 382 window visibility (0 invisible / 1 visible);
+#X text 64 92 The [canvas.active] object outputs activity status -
+1 when the window becomes active (when it's the front-most window)
+and 0 when inactive. It also reports if the window is visible (1) or
+not (0) It can also query the activityof a parent patch with the depth
+argument (1 goes up to the parent patch \, 2 queries the parent's parent
+and so on)., f 70;
+#N canvas 609 221 775 464 subpatch 0;
+#X obj 85 300 select 0 1;
+#X text 21 21 When this subpatch's window is active \, the [window]
 object below reports the activity., f 43;
-#X msg 109 207 this subptach is active;
-#X msg 81 236 this subptach is inactive;
-#X msg 404 169 the parent is active;
-#X msg 376 198 the parent is inactive;
-#X obj 109 271 print depth-0;
-#X obj 404 233 print depth-1;
-#X obj 81 93 metro 1000;
-#X obj 81 67 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
+#X obj 440 242 select 0 1;
+#X obj 440 210 tgl 18 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
+1 1;
+#X text 375 21 When this subpatch's window is active \, the [window]
+object below reports the activity., f 43;
+#X msg 113 326 this subptach is active;
+#X msg 85 355 this subptach is inactive;
+#X msg 468 268 the parent is active;
+#X msg 440 297 the parent is inactive;
+#X obj 113 390 print depth-0;
+#X obj 468 332 print depth-1;
+#X obj 85 92 metro 1000;
+#X obj 85 66 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
-#X obj 81 148 else/display;
-#X text 104 68 keep querying status;
-#X text 341 273 Note that the depth is not only for subpatches \, but
+#X obj 85 147 else/display;
+#X text 108 67 keep querying status;
+#X text 448 382 Note that the depth is not only for subpatches \, but
 also abstractions!!, f 37;
-#X obj 81 121 else/canvas.active;
-#X obj 376 83 else/canvas.active 1;
-#X connect 0 0 8 0;
-#X connect 0 1 7 0;
-#X connect 3 0 10 0;
-#X connect 3 1 9 0;
-#X connect 4 0 3 0;
-#X connect 7 0 11 0;
-#X connect 8 0 11 0;
-#X connect 9 0 12 0;
-#X connect 10 0 12 0;
-#X connect 13 0 18 0;
-#X connect 14 0 13 0;
-#X connect 15 0 0 0;
-#X connect 18 0 15 0;
-#X connect 19 0 4 0;
-#X restore 449 251 pd subpatch;
-#X text 459 228 example:;
-#X obj 135 299 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X text 173 300 bang -;
-#X text 222 299 resend window activity report;
-#X obj 209 173 else/canvas.active;
-#X text 64 91 The [canvas.active] object outputs 1 when a patch canvas
-becomes active (that is when it's the front-most window) \, and outputs
-0 when inactive. It can also query the activity status from a parent
-patch with the depth argument: a depth of 1 goes up to the parent patch
-\, 2 queries the parent's parent and so on., f 70;
-#X connect 4 0 9 0;
-#X connect 9 0 25 0;
-#X connect 31 0 4 0;
+#X obj 85 120 else/canvas.active;
+#X obj 440 82 else/canvas.active 1;
+#X obj 190 190 select 0 1;
+#X obj 218 280 print depth-0;
+#X msg 218 216 this subptach is visible;
+#X msg 190 245 this subptach is invisible;
+#X text 465 212 activity;
+#X obj 557 142 select 0 1;
+#X obj 557 110 tgl 18 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
+1 1;
+#X obj 585 232 print depth-1;
+#X obj 190 147 else/display;
+#X text 110 150 activity;
+#X text 215 150 visibility;
+#X text 582 112 visibility;
+#X msg 585 168 the parent is visible;
+#X msg 557 197 the parent is invisible;
+#X connect 0 0 6 0;
+#X connect 0 1 5 0;
+#X connect 2 0 8 0;
+#X connect 2 1 7 0;
+#X connect 3 0 2 0;
+#X connect 5 0 9 0;
+#X connect 6 0 9 0;
+#X connect 7 0 10 0;
+#X connect 8 0 10 0;
+#X connect 11 0 16 0;
+#X connect 12 0 11 0;
+#X connect 13 0 0 0;
+#X connect 16 0 13 0;
+#X connect 16 1 26 0;
+#X connect 17 0 3 0;
+#X connect 17 1 24 0;
+#X connect 18 0 21 0;
+#X connect 18 1 20 0;
+#X connect 20 0 19 0;
+#X connect 21 0 19 0;
+#X connect 23 0 31 0;
+#X connect 23 1 30 0;
+#X connect 24 0 23 0;
+#X connect 26 0 18 0;
+#X connect 30 0 25 0;
+#X connect 31 0 25 0;
+#X restore 462 271 pd subpatch;
+#X text 472 248 example:;
+#X connect 4 0 8 0;
+#X connect 8 0 29 0;
+#X connect 26 0 4 0;
+#X connect 26 1 27 0;
+#X connect 27 0 28 0;
+#X connect 28 0 30 0;
