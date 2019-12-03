@@ -158,6 +158,7 @@ lb	x
 lfnoise	x
 lfnoise~	x
 lfo	x
+limit	x
 lin2db	x
 lin2db~	x
 lincong~	x
