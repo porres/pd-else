@@ -71,7 +71,7 @@ Cross compiling is also possible with something like this
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=../</pre>
 --------------------------------------------------------------------------
 
-## Current Object list (363 objects):
+## Current Object list (364 objects):
 
 **ASSORTED: [03]**
 - [table~]
