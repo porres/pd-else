@@ -270,12 +270,13 @@ midi := \
 datafiles = \
 $(wildcard Classes/Abstractions/*.pd) \
 $(wildcard Help-files/*.pd) \
-$(wildcard Help-files/*.aif) \
-$(wildcard Help-files/*.wav) \
-$(wildcard Help-files/*.gif) \
-$(wildcard Help-files/*.mid) \
+$(wildcard extra/*.pd) \
+$(wildcard extra/*.aif) \
+$(wildcard extra/*.wav) \
+$(wildcard extra/*.gif) \
+$(wildcard extra/*.mid) \
+$(wildcard extra/*.txt) \
 $(wildcard *.txt) \
-else-meta.pd \
 README.pdf
 
 #########################################################################
