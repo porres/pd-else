@@ -1,6 +1,5 @@
 
 #include "m_pd.h"
-#include <math.h>
 #include "g_canvas.h"
 
 static t_class *canvas_wname_class;
