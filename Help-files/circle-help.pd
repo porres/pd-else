@@ -1,24 +1,24 @@
-#N struct 1285-point float x0 float y0 float xs float ys float fg float
+#N struct 1292-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1031-point float x0 float y0 float xs float ys float fg float
+#N struct 1325-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1052-point float x0 float y0 float xs float ys float fg float
+#N struct 1354-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1075-point float x0 float y0 float xs float ys float fg float
+#N struct 1385-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1096-point float x0 float y0 float xs float ys float fg float
+#N struct 1414-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1119-point float x0 float y0 float xs float ys float fg float
+#N struct 1445-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1142-point float x0 float y0 float xs float ys float fg float
+#N struct 1476-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1193-point float x0 float y0 float xs float ys float fg float
+#N struct 1535-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1218-point float x0 float y0 float xs float ys float fg float
+#N struct 1568-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1243-point float x0 float y0 float xs float ys float fg float
+#N struct 1601-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1264-point float x0 float y0 float xs float ys float fg float
+#N struct 1630-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 492 61 565 552 10;
 #X obj 2 3 cnv 15 301 42 empty empty circle 20 20 2 37 -233017 -1 0
@@ -134,7 +134,7 @@ according to the new range., f 64;
 #X obj 86 138 hsl 100 15 18 127 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 9900 1;
 #X obj 83 168 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 127 256;
+-228856 -1 -1 0 256;
 #X text 74 29 You can set the size with the '-size' flag or with the
 'size' message., f 25;
 #X obj 83 230 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255 0
@@ -220,7 +220,7 @@ circle) / 'bgcolor2' (outside circle) / 'fgcolor' messages and '-bgcolor1'
 in 'init mode' \, where it outputs the last saved value when you load
 the patch., f 46;
 #X obj 140 124 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
-0 0 0 1 0 1 0.5 0.5 empty empty;
+0 0 0 1 0 1 127 127 empty empty;
 #X msg 139 91 0.5 0.5;
 #X connect 2 0 0 0;
 #X connect 3 0 2 0;
@@ -350,7 +350,6 @@ RGB (default 255 255 255), f 75;
 25;
 #X text 74 53 You can also set send/receive names with the 'send'/'receive'
 messages or '-send'/'-receive' flags., f 31;
-#X text 75 112 Make sure to escape "\$0" properly with ""., f 24;
 #X msg 372 123 receive \\\$0-rcv \, send \\\$0-snd, f 16;
 #X obj 169 243 send \$0-circle-rcv;
 #X obj 169 269 receive \$0-circle-snd;
@@ -363,14 +362,16 @@ messages or '-send'/'-receive' flags., f 31;
 #X msg 169 215 0 0;
 #X msg 65 222 0 0;
 #X obj 354 234 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
-0 0 0 1 0 0 63.5 63.5 empty empty;
-#X connect 1 0 14 0;
-#X connect 4 0 14 0;
-#X connect 6 0 7 0;
-#X connect 9 0 0 0;
-#X connect 10 0 14 0;
-#X connect 12 0 5 0;
-#X connect 13 0 8 0;
+0 0 0 1 0 0 126.035 52.4741 empty empty;
+#X text 76 110 Make sure to escape "\$0" properly with backlashes (as
+in: "\\\$0")., f 24;
+#X connect 1 0 13 0;
+#X connect 3 0 13 0;
+#X connect 5 0 6 0;
+#X connect 8 0 0 0;
+#X connect 9 0 13 0;
+#X connect 11 0 4 0;
+#X connect 12 0 7 0;
 #X restore 128 205 pd send/receive;
 #X text 272 168 press shift for fine tuning, f 11;
 #X obj 359 223 else/display;
@@ -396,7 +397,7 @@ f 40;
 #X text 45 123 There's also a grid visibility option (visible by default).
 You can set it with the 'grid' message or '-grid' flag., f 40;
 #X obj 109 345 else/circle 127 -1 1 -1 1 0 255 255 255 255 255 255
-0 0 0 0 0 0 67.5 88.5 empty empty;
+0 0 0 0 0 0 63.5 63.5 empty empty;
 #X connect 1 0 2 0;
 #X connect 2 0 11 0;
 #X connect 3 0 11 0;
@@ -406,14 +407,14 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #X restore 128 185 pd mode-grid;
 #X text 49 86 [circle] is a two dimensional slider GUI abstraction
 (see also [else/slider2d)., f 40;
-#X obj 359 89 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255 0
-0 0 1 0 0 63.5 63.5 empty empty;
 #X text 108 390 bgcolor1 <f \, f \, f>;
 #X text 108 406 bgcolor2 <f \, f \, f>;
 #X text 232 390 - sets background color inside circle in RGB, f 52
 ;
 #X text 232 406 - sets background color outside circle in RGB, f 52
 ;
-#X connect 56 0 59 0;
-#X connect 59 0 55 0;
+#X obj 359 89 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255 0
+0 0 1 0 0 63.734 63.4991 empty empty;
+#X connect 56 0 63 0;
+#X connect 63 0 55 0;
 #X coords 0 552 1 551 85 60 0;

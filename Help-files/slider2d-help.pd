@@ -265,7 +265,7 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #N canvas 700 46 429 340 init 0;
 #X obj 141 269 else/display;
 #X obj 141 124 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 1 64 64 empty empty, f 63;
+0 0 0 1 0 0 empty empty, f 63;
 #X text 77 33 With the 'init' message or '-init' flag \, the GUI operates
 in 'init mode' \, where it outputs the last saved value when you load
 the patch., f 46;
@@ -334,7 +334,6 @@ the patch., f 46;
 0 0 0 empty empty;
 #X text 74 53 You can also set send/receive names with the 'send'/'receive'
 messages or '-send'/'-receive' flags., f 31;
-#X text 75 112 Make sure to escape "\$0" properly with ""., f 24;
 #X msg 372 123 receive \\\$0-rcv \, send \\\$0-snd, f 16;
 #X msg 169 215 64 64;
 #X obj 169 243 send \$0-slider2d-rcv;
@@ -345,13 +344,15 @@ messages or '-send'/'-receive' flags., f 31;
 #X msg 386 181 receive empty \, send empty, f 16;
 #X text 76 154 Setting these to 'empty' removes the send/receive symbols.
 , f 32;
-#X connect 0 0 11 0;
+#X text 75 112 Make sure to escape "\$0" properly with backlashes (as
+in: "\\\$0")., f 24;
+#X connect 0 0 10 0;
 #X connect 2 0 3 0;
-#X connect 6 0 3 0;
-#X connect 7 0 8 0;
-#X connect 9 0 10 0;
-#X connect 12 0 1 0;
-#X connect 13 0 3 0;
+#X connect 5 0 3 0;
+#X connect 6 0 7 0;
+#X connect 8 0 9 0;
+#X connect 11 0 1 0;
+#X connect 12 0 3 0;
 #X restore 128 205 pd send/receive;
 #X text 271 165 press shift for fine tuning, f 11;
 #X obj 359 221 else/display;
