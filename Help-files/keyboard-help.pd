@@ -21,7 +21,7 @@
 #X obj 163 361 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 58 361 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 91 256;
 #X text 54 378 MIDI Note;
 #X text 162 377 Velocity;
 #X obj 216 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
@@ -74,7 +74,7 @@ generates them from mouse clicking. Right click it for properties!
 #X text 256 488 - set number of octaves;
 #X text 164 503 lowc <float>;
 #X text 256 503 - set C# of lowest C;
-#N canvas 672 55 486 581 example 0;
+#N canvas 795 23 486 581 example 0;
 #X obj 69 135 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 69 367 poly 4 1;
@@ -87,7 +87,7 @@ generates them from mouse clicking. Right click it for properties!
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
@@ -123,7 +123,7 @@ generates them from mouse clicking. Right click it for properties!
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
@@ -159,7 +159,7 @@ generates them from mouse clicking. Right click it for properties!
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
@@ -195,7 +195,7 @@ generates them from mouse clicking. Right click it for properties!
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
@@ -238,7 +238,7 @@ synths., f 58;
 #X text 233 171 Try clicking and dragging \, it also works and slides
 through chromatically!, f 26;
 #X obj 257 433 else/out~;
-#X obj 69 264 keyboard 17 80 3 2 1;
+#X obj 69 264 keyboard 17 80 3 2 0;
 #X connect 0 0 5 0;
 #X connect 1 0 2 0;
 #X connect 1 1 2 1;
@@ -262,201 +262,21 @@ through chromatically!, f 26;
 #X text 90 157 octave up;
 #X text 100 180 octave down;
 #X text 258 542 - velocity of MIDI note value;
-#X obj 58 241 keyboard 17 80 4 3 1;
-#X text 147 681 5) float - toggle mode on <1> or off <0> (default 0)
-;
 #X text 152 518 toggle <float>;
-#X text 256 518 - sets toggle mode on of off;
 #N canvas 672 55 486 581 toggle-mode 0;
-#X obj 69 135 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 69 367 poly 4 1;
-#X obj 69 395 pack f f f;
-#X obj 69 423 route 1 2 3 4;
-#X obj 69 234 makenote 100 1500;
-#X obj 69 163 metro 800;
-#X obj 69 198 expr random(36 \, 72);
-#X obj 270 389 catch~ \$0-voice;
-#N canvas 870 145 477 340 voice 0;
-#X obj 125 33 inlet;
-#X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 125 186 *~;
-#X obj 128 247 *~;
-#X obj 398 223 switch~;
-#X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
-#X obj 38 185 else/sine~;
-#X obj 125 136 else/sine~;
-#X obj 125 65 unpack float float;
-#X obj 213 136 else/adsr~ 500 200 0.5 1000;
-#X obj 262 179 else/sig2float~;
-#X obj 128 278 throw~ \$0-voice;
-#X obj 39 144 * 1.497;
-#X connect 0 0 10 0;
-#X connect 1 0 11 0;
-#X connect 2 0 5 0;
-#X connect 3 0 8 2;
-#X connect 4 0 13 0;
-#X connect 6 0 9 0;
-#X connect 6 0 14 0;
-#X connect 8 0 4 0;
-#X connect 9 0 3 0;
-#X connect 10 0 6 0;
-#X connect 10 1 1 0;
-#X connect 11 0 3 1;
-#X connect 11 0 4 1;
-#X connect 11 0 12 0;
-#X connect 11 1 2 0;
-#X connect 12 0 7 0;
-#X connect 14 0 8 0;
-#X restore 69 526 pd voice;
-#N canvas 1014 119 477 340 voice 0;
-#X obj 125 33 inlet;
-#X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 125 186 *~;
-#X obj 128 247 *~;
-#X obj 398 223 switch~;
-#X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
-#X obj 38 185 else/sine~;
-#X obj 125 136 else/sine~;
-#X obj 125 65 unpack float float;
-#X obj 213 136 else/adsr~ 500 200 0.5 1000;
-#X obj 262 179 else/sig2float~;
-#X obj 128 278 throw~ \$0-voice;
-#X obj 39 144 * 1.497;
-#X connect 0 0 10 0;
-#X connect 1 0 11 0;
-#X connect 2 0 5 0;
-#X connect 3 0 8 2;
-#X connect 4 0 13 0;
-#X connect 6 0 9 0;
-#X connect 6 0 14 0;
-#X connect 8 0 4 0;
-#X connect 9 0 3 0;
-#X connect 10 0 6 0;
-#X connect 10 1 1 0;
-#X connect 11 0 3 1;
-#X connect 11 0 4 1;
-#X connect 11 0 12 0;
-#X connect 11 1 2 0;
-#X connect 12 0 7 0;
-#X connect 14 0 8 0;
-#X restore 91 502 pd voice;
-#N canvas 1014 119 477 340 voice 0;
-#X obj 125 33 inlet;
-#X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 125 186 *~;
-#X obj 128 247 *~;
-#X obj 398 223 switch~;
-#X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
-#X obj 38 185 else/sine~;
-#X obj 125 136 else/sine~;
-#X obj 125 65 unpack float float;
-#X obj 213 136 else/adsr~ 500 200 0.5 1000;
-#X obj 262 179 else/sig2float~;
-#X obj 128 278 throw~ \$0-voice;
-#X obj 39 144 * 1.497;
-#X connect 0 0 10 0;
-#X connect 1 0 11 0;
-#X connect 2 0 5 0;
-#X connect 3 0 8 2;
-#X connect 4 0 13 0;
-#X connect 6 0 9 0;
-#X connect 6 0 14 0;
-#X connect 8 0 4 0;
-#X connect 9 0 3 0;
-#X connect 10 0 6 0;
-#X connect 10 1 1 0;
-#X connect 11 0 3 1;
-#X connect 11 0 4 1;
-#X connect 11 0 12 0;
-#X connect 11 1 2 0;
-#X connect 12 0 7 0;
-#X connect 14 0 8 0;
-#X restore 113 476 pd voice;
-#N canvas 1014 119 477 340 voice 0;
-#X obj 125 33 inlet;
-#X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 125 186 *~;
-#X obj 128 247 *~;
-#X obj 398 223 switch~;
-#X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
-#X obj 38 185 else/sine~;
-#X obj 125 136 else/sine~;
-#X obj 125 65 unpack float float;
-#X obj 213 136 else/adsr~ 500 200 0.5 1000;
-#X obj 262 179 else/sig2float~;
-#X obj 128 278 throw~ \$0-voice;
-#X obj 39 144 * 1.497;
-#X connect 0 0 10 0;
-#X connect 1 0 11 0;
-#X connect 2 0 5 0;
-#X connect 3 0 8 2;
-#X connect 4 0 13 0;
-#X connect 6 0 9 0;
-#X connect 6 0 14 0;
-#X connect 8 0 4 0;
-#X connect 9 0 3 0;
-#X connect 10 0 6 0;
-#X connect 10 1 1 0;
-#X connect 11 0 3 1;
-#X connect 11 0 4 1;
-#X connect 11 0 12 0;
-#X connect 11 1 2 0;
-#X connect 12 0 7 0;
-#X connect 14 0 8 0;
-#X restore 135 452 pd voice;
-#X text 39 29 [keyboard] displaying randomly generated notes and driving
-a [poly] with 4 voices. Also see that each voice subpatch has [adsr~]'s
-status outlet to control the DSP status for that subpatch - open and
-check it. You should also try pd's [clone] object for managing polyphonic
-synths., f 58;
-#X obj 360 522 clone;
-#X text 284 523 see also:;
-#X text 233 171 Try clicking and dragging \, it also works and slides
-through chromatically!, f 26;
-#X obj 257 433 else/out~;
-#X obj 69 264 keyboard 17 80 3 2 1;
-#X connect 0 0 5 0;
-#X connect 1 0 2 0;
-#X connect 1 1 2 1;
-#X connect 1 2 2 2;
-#X connect 2 0 3 0;
-#X connect 3 0 8 0;
-#X connect 3 1 9 0;
-#X connect 3 2 10 0;
-#X connect 3 3 11 0;
-#X connect 4 0 17 0;
-#X connect 4 1 17 1;
-#X connect 5 0 6 0;
-#X connect 6 0 4 0;
-#X connect 7 0 16 0;
-#X connect 7 0 16 1;
-#X connect 17 0 1 0;
 #X restore 438 366 pd toggle-mode;
+#X obj 58 241 keyboard 17 80 4 3 0;
+#X text 256 518 - sets toggle mode on of off (not yet);
+#X text 147 681 5) float - toggle mode on <1> or off <0> (default 0)
+- (not yet), f 66;
 #X connect 9 0 11 0;
 #X connect 9 1 10 0;
 #X connect 14 0 16 0;
-#X connect 15 0 57 0;
-#X connect 15 1 57 1;
+#X connect 15 0 59 0;
+#X connect 15 1 59 1;
 #X connect 16 0 17 0;
 #X connect 17 0 15 0;
-#X connect 51 0 57 0;
+#X connect 51 0 59 0;
 #X connect 52 0 51 0;
 #X connect 53 0 51 0;
-#X connect 57 0 9 0;
+#X connect 59 0 9 0;
