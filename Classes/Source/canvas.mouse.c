@@ -18,18 +18,12 @@ typedef struct _canvas_mouse{
     t_outlet               *x_outlet_y;
     t_canvas               *x_canvas;
     int                     x_edit;
-    int                     x_init;
     int                     x_pos;
 }t_canvas_mouse;
 
 static void canvas_mouse_proxy_any(t_canvas_mouse_proxy *p, t_symbol*s, int ac, t_atom *av){
     ac = 0;
     if(p->p_parent){
-        if(p->p_parent->x_init){
-            if(s == gensym("setbounds"))
-                p->p_parent->x_edit = 0;
-            p->p_parent->x_init = 0;
-        }
         t_canvas *cnv = p->p_parent->x_canvas;
         float x = av->a_w.w_float;
         float y = (av+1)->a_w.w_float;
@@ -81,8 +75,6 @@ static void *canvas_mouse_new(t_floatarg f1, t_floatarg f2){
     t_glist *glist = (t_glist *)canvas_getcurrent();
     t_canvas *canvas = (t_canvas*)glist_getcanvas(glist);
     x->x_canvas = canvas;
-    x->x_init = 1;
-    x->x_edit = 1;
     int depth = f1 < 0 ? 0 : (int)f1;
     x->x_pos = f2 != 0;
     while(depth--){
@@ -91,6 +83,7 @@ static void *canvas_mouse_new(t_floatarg f1, t_floatarg f2){
             canvas = canvas->gl_owner;
         }
     }
+    x->x_edit = canvas->gl_edit;
     char buf[MAXPDSTRING];
     snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)canvas);
     buf[MAXPDSTRING-1] = 0;
