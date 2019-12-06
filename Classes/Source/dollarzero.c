@@ -7,33 +7,25 @@ static t_class *dollarzero_class;
 
 typedef struct _dollarzero{
     t_object         x_obj;
-    t_glist        *x_glist;
+    t_glist        *x_canvas;
 }t_dollarzero;
 
 static void dollarzero_bang(t_dollarzero *x){
-    t_symbol *out = canvas_realizedollar(x->x_glist, gensym("$0"));
+    t_symbol *out = canvas_realizedollar(x->x_canvas, gensym("$0"));
     outlet_symbol(x->x_obj.ob_outlet, out);
 }
 
 static void dollarzero_symbol(t_dollarzero *x, t_symbol *s){
-    t_symbol *out = canvas_realizedollar(x->x_glist, s);
+    t_symbol *out = canvas_realizedollar(x->x_canvas, s);
     outlet_symbol(x->x_obj.ob_outlet, out);
 }
 
 static void *dollarzero_new(t_floatarg f){
     t_dollarzero *x = (t_dollarzero *)pd_new(dollarzero_class);
-    t_canvas *canvas = canvas_getcurrent();
     int depth = f < 0 ? 0 : (int)f;
-    while(!canvas->gl_env)
-        canvas = canvas->gl_owner;
-    while(depth--){
-        if(canvas->gl_owner){
-            canvas = canvas->gl_owner;
-            while(!canvas->gl_env)
-                canvas = canvas->gl_owner;
-        }
-    }
-    x->x_glist = canvas;
+    x->x_canvas = canvas_getrootfor(canvas_getcurrent());
+    while(depth-- && x->x_canvas->gl_owner)
+        x->x_canvas = canvas_getrootfor(x->x_canvas->gl_owner);
     outlet_new(&x->x_obj, 0);
     return (x);
 }
