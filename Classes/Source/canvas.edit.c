@@ -16,24 +16,17 @@ typedef struct _edit{
     t_object        x_obj;
     t_edit_proxy   *x_proxy;
     t_canvas       *x_canvas;
-    int             x_edit;
 }t_edit;
 
 static void edit_loadbang(t_edit *x, t_float f){
-    if((int)f == LB_LOAD){
-        x->x_edit = x->x_canvas->gl_edit;
-        outlet_float(x->x_obj.ob_outlet, x->x_edit);
-    }
+    if((int)f == LB_LOAD)
+        outlet_float(x->x_obj.ob_outlet, x->x_canvas->gl_edit);
 }
-
-/* static void edit_bang(t_edit *x){
-    outlet_float(x->x_obj.ob_outlet, x->x_edit);
-}*/
 
 static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
     ac = 0;
     if(p->p_cnv && s == gensym("editmode"))
-        outlet_float(p->p_cnv->x_obj.ob_outlet, p->p_cnv->x_edit = (int)(av->a_w.w_float));
+        outlet_float(p->p_cnv->x_obj.ob_outlet, (int)(av->a_w.w_float));
 }
 
 static void edit_proxy_free(t_edit_proxy *p){
@@ -67,7 +60,6 @@ static void *edit_new(t_floatarg f1){
             canvas = canvas->gl_owner;
         }
     }
-    x->x_edit = canvas->gl_edit;
     char buf[MAXPDSTRING];
     snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)canvas);
     buf[MAXPDSTRING-1] = 0;
@@ -79,7 +71,6 @@ static void *edit_new(t_floatarg f1){
 void setup_canvas0x2eedit(void){
     edit_class = class_new(gensym("canvas.edit"), (t_newmethod)edit_new,
         (t_method)edit_free, sizeof(t_edit), CLASS_NOINLET, A_DEFFLOAT, 0);
-//    class_addbang(edit_class, edit_bang);
     class_addmethod(edit_class, (t_method)edit_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy),
         CLASS_NOINLET | CLASS_PD, 0);
