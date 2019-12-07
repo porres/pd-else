@@ -157,15 +157,11 @@ static t_class *canvas_active_class;
 static void canvas_active_dofocus(t_canvas_active *x, t_symbol *s, t_floatarg f){
     if((int)f){
         int on = (s == x->x_cnvame);
-        if(on != x->x_on){ // ???
-            outlet_float(x->x_outlet, glist_isvisible(x->x_canvas));
+        if(on != x->x_on)
             outlet_float(((t_object *)x)->ob_outlet, x->x_on = on);
-        }
     }
-    else if(x->x_on && s == x->x_cnvame){ // ???
-            outlet_float(x->x_outlet, glist_isvisible(x->x_canvas));
+    else if(x->x_on && s == x->x_cnvame)
             outlet_float(((t_object *)x)->ob_outlet, x->x_on = 0);
-        }
 }
 
 void canvas_active_unbindfocus(t_pd *master){
@@ -180,11 +176,6 @@ void canvas_active_unbindfocus(t_pd *master){
 static void canvas_active_free(t_canvas_active *x){
     canvas_active_unbindfocus((t_pd *)x);
     outlet_free(x->x_outlet);
-}
-
-static void canvas_active_bang(t_canvas_active *x){
-    outlet_float(x->x_outlet, glist_isvisible(x->x_canvas));
-    outlet_float(((t_object *)x)->ob_outlet, x->x_on);
 }
 
 void canvas_active_gui_bindfocus(t_pd *master){
@@ -212,14 +203,12 @@ static void *canvas_active_new(t_floatarg f){
     x->x_cnvame = gensym(buf);
     x->x_on = 0;
     outlet_new((t_object *)x, &s_float);
-    x->x_outlet = outlet_new(&x->x_ob, 0);
     canvas_active_gui_bindfocus((t_pd *)x);
     return(x);
 }
 
 void setup_canvas0x2eactive(void){
     canvas_active_class = class_new(gensym("canvas.active"), (t_newmethod)canvas_active_new,
-        (t_method)canvas_active_free, sizeof(t_canvas_active), 0, A_DEFFLOAT, 0);
-    class_addbang(canvas_active_class, canvas_active_bang);
+        (t_method)canvas_active_free, sizeof(t_canvas_active), CLASS_NOINLET, A_DEFFLOAT, 0);
     class_addmethod(canvas_active_class, (t_method)canvas_active_dofocus, gensym("_focus"), A_SYMBOL, A_FLOAT, 0);
 }
