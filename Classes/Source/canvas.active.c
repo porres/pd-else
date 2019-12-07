@@ -146,17 +146,13 @@ void active_gui_getscreen(void){
 typedef struct _active{
     t_object   x_obj;
     t_symbol  *x_cname;
-    t_canvas  *x_canvas;
-    int        x_on;
 }t_active;
 
 static t_class *active_class;
 
 static void active_dofocus(t_active *x, t_symbol *s, t_floatarg f){
-    if((int)f && s == x->x_cname && !x->x_on)
-        outlet_float(x->x_obj.ob_outlet, x->x_on = 1);
-    else if(!(int)f && s == x->x_cname && x->x_on)
-        outlet_float(x->x_obj.ob_outlet, x->x_on = 0);
+    if(s == x->x_cname)
+        outlet_float(x->x_obj.ob_outlet, f);
 }
 
 static void active_free(t_active *x){ // unbind focus
@@ -170,14 +166,13 @@ static void active_free(t_active *x){ // unbind focus
 static void *active_new(t_floatarg f){
     t_active *x = (t_active *)pd_new(active_class);
     t_glist *glist = (t_glist *)canvas_getcurrent();
-    x->x_canvas = (t_canvas*)glist_getcanvas(glist);
+    t_canvas *cnv = (t_canvas*)glist_getcanvas(glist);
     int depth = (int)f < 0 ? 0 : (int)f;
-    while(depth-- && x->x_canvas)
-        x->x_canvas = x->x_canvas->gl_owner;
+    while(depth-- && cnv)
+        cnv = cnv->gl_owner;
     char buf[32];
-    sprintf(buf, ".x%lx.c", (unsigned long)x->x_canvas);
+    sprintf(buf, ".x%lx.c", (unsigned long)cnv);
     x->x_cname = gensym(buf);
-    x->x_on = 0;
     outlet_new((t_object *)x, &s_float);
 // bind focus
     gui_validate(1);
