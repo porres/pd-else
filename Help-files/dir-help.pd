@@ -1,4 +1,4 @@
-#N canvas 782 102 562 676 10;
+#N canvas 477 95 562 676 10;
 #X obj 23 40 cnv 4 4 4 empty empty Acess 0 28 2 18 -233017 -1 0;
 #X obj 77 40 cnv 4 4 4 empty empty file 0 28 2 18 -233017 -1 0;
 #X obj 2 3 cnv 15 301 42 empty empty dir 20 20 2 37 -233017 -1 0;
@@ -76,7 +76,7 @@ also wrap according to the number of files., f 74;
 #X obj 83 383 else/display;
 #X obj 99 261 else/dir, f 15;
 #X obj 186 153 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 378 256;
+-228856 -1 -1 364 256;
 #X msg 83 356 \$2/\$1;
 #X obj 99 176 else/rand.i 1 1;
 #X obj 394 255 else/dir -ext .wav;
@@ -114,7 +114,7 @@ number of files. The seek number is indexed from '1' and clipped to
 #X connect 17 2 2 0;
 #X connect 18 0 15 0;
 #X connect 19 0 13 0;
-#X restore 467 235 pd example;
+#X restore 468 240 pd example;
 #X text 181 415 n -;
 #X text 213 415 output number of found files in the right outlet,
 f 54;
@@ -158,7 +158,7 @@ remains), f 63;
 #X connect 2 3 6 0;
 #X connect 4 0 2 0;
 #X connect 5 0 4 0;
-#X restore 485 197 pd open;
+#X restore 486 202 pd open;
 #X text 139 567 1) float -;
 #X text 133 604 1) symbol -;
 #X text 213 567 (optional) relative directory level \, 0 is current
@@ -215,7 +215,7 @@ for a 'x' subfolder. You can also use '..' to specify a parent patch
 #X connect 6 1 4 0;
 #X connect 11 0 12 0;
 #X connect 12 1 10 0;
-#X restore 456 178 pd arguments;
+#X restore 457 183 pd arguments;
 #X text 157 344 reopen-;
 #X text 213 330 opens a directory and loads contents, f 54;
 #X text 213 344 reloads contents of the last opened directory, f 54
@@ -239,7 +239,7 @@ and you don't need a 'reopen' message for that., f 42;
 #X connect 3 0 0 0;
 #X connect 5 0 0 0;
 #X connect 8 0 0 0;
-#X restore 425 216 pd extension-flag;
+#X restore 426 221 pd extension-flag;
 #X text 87 86 [dir] accesses files from a given directory.;
 #X obj 158 246 else/display 4;
 #X obj 82 520 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
@@ -261,6 +261,23 @@ and you don't need a 'reopen' message for that., f 42;
 #X text 170 202 <= same as "n \, dir \, dump";
 #X text 224 178 <= same as "bang";
 #X text 55 276 'directory' =>;
+#N canvas 448 220 587 308 openpanel 0;
+#X obj 103 77 openpanel 1;
+#X obj 103 44 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 103 132 else/dir;
+#X obj 148 157 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X msg 103 105 open \$1 \, dir;
+#X obj 118 190 else/display;
+#X text 209 72 You can use [openpanel] to search for a directory to
+open., f 31;
+#X connect 0 0 4 0;
+#X connect 1 0 0 0;
+#X connect 2 1 5 0;
+#X connect 2 3 3 0;
+#X connect 4 0 2 0;
+#X restore 457 162 pd openpanel;
 #X connect 16 0 17 0;
 #X connect 17 0 72 0;
 #X connect 17 1 33 0;

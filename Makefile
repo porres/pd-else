@@ -34,6 +34,7 @@ suspedal.class.sources := Classes/Source/suspedal.c
 voices.class.sources := Classes/Source/voices.c
 click.class.sources := Classes/Source/click.c
 canvas.active.class.sources := Classes/Source/canvas.active.c
+canvas.edit.class.sources := Classes/Source/canvas.edit.c
 canvas.mouse.class.sources := Classes/Source/canvas.mouse.c
 canvas.name.class.sources := Classes/Source/canvas.name.c
 canvas.wname.class.sources := Classes/Source/canvas.wname.c
