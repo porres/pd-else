@@ -1,4 +1,4 @@
-#N canvas 555 129 560 342 10;
+#N canvas 555 129 560 341 10;
 #X obj 1 211 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 1 244 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -11,7 +11,7 @@
 0;
 #X text 167 255 float -;
 #X text 112 182 status;
-#X obj 4 5 cnv 15 301 42 empty empty canvas.active 20 20 2 37 -233017
+#X obj 4 5 cnv 15 301 42 empty empty canvas.vis 20 20 2 37 -233017
 -1 0;
 #X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -21,7 +21,6 @@
 #X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
 #X obj 24 42 cnv 4 4 4 empty empty Report 0 28 2 18 -233017 -1 0;
-#X obj 82 42 cnv 4 4 4 empty empty patch 0 28 2 18 -233017 -1 0;
 #X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -35,55 +34,53 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 306 5 graph;
-#X obj 130 42 cnv 4 4 4 empty empty window 0 28 2 18 -233017 -1 0;
-#X obj 198 42 cnv 4 4 4 empty empty activity/visibility 0 28 2 18 -233017
--1 0;
+#X obj 82 42 cnv 4 4 4 empty empty window 0 28 2 18 -233017 -1 0;
+#X obj 150 42 cnv 4 4 4 empty empty visibility 0 28 2 18 -233017 -1
+0;
 #X text 150 290 1) float - depth \, default 0 (current window);
-#X obj 160 151 else/canvas.active;
-#X text 222 254 window activity (0 inactive / 1 active);
 #N canvas 761 302 389 296 subpatch 0;
 #X obj 132 108 else/display;
-#X obj 132 81 else/canvas.active;
-#X text 157 111 activity;
 #X obj 151 241 print subptach;
-#X msg 136 206 is inactive;
-#X msg 151 177 is active;
 #X obj 132 151 sel 0 1;
-#X text 55 26 The [canvas.active] reports this subpatch's window activity.
+#X text 55 26 The [canvas.vis] reports this subpatch's window visibility.
 , f 43;
-#X connect 0 0 6 0;
-#X connect 1 0 0 0;
-#X connect 4 0 3 0;
-#X connect 5 0 3 0;
-#X connect 6 0 4 0;
-#X connect 6 1 5 0;
+#X obj 132 81 else/canvas.vis;
+#X text 157 111 visibility;
+#X msg 136 206 is invisible;
+#X msg 151 177 is visible;
+#X connect 0 0 2 0;
+#X connect 2 0 6 0;
+#X connect 2 1 7 0;
+#X connect 4 0 0 0;
+#X connect 6 0 1 0;
+#X connect 7 0 1 0;
 #X restore 437 153 pd subpatch;
 #N canvas 635 220 372 345 depth-1 0;
-#X obj 107 114 tgl 18 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
-1 1;
 #X text 57 278 Note that the depth is not only for subpatches \, but
 also abstractions!!, f 37;
-#X obj 107 86 else/canvas.active 1;
-#X text 132 113 activity;
-#X obj 126 231 print parent;
-#X msg 111 201 is inactive;
-#X msg 126 172 is active;
-#X obj 107 146 sel 0 1;
-#X text 61 20 With the depth argument of 1 \, this [canvas.active]
-reports the parent patch activity., f 35;
-#X connect 0 0 7 0;
-#X connect 2 0 0 0;
-#X connect 5 0 4 0;
-#X connect 6 0 4 0;
-#X connect 7 0 5 0;
-#X connect 7 1 6 0;
+#X text 61 20 With the depth argument of 1 \, this [canvas.vis] reports
+the parent patch visibility., f 35;
+#X obj 107 102 else/display;
+#X obj 126 235 print subptach;
+#X obj 107 145 sel 0 1;
+#X text 132 105 visibility;
+#X msg 111 200 is invisible;
+#X msg 126 171 is visible;
+#X obj 107 75 else/canvas.vis 1;
+#X connect 2 0 4 0;
+#X connect 4 0 6 0;
+#X connect 4 1 7 0;
+#X connect 6 0 3 0;
+#X connect 7 0 3 0;
+#X connect 8 0 2 0;
 #X restore 437 177 pd depth-1;
 #X text 367 153 examples:;
 #X obj 160 178 else/display;
-#X text 64 88 The [canvas.active] object outputs activity status. It
-sends 1 if the window is active (when it's the front-most window) and
-0 when inactive. It can also query the parent status with the depth
-argument (1 goes up to the parent patch \, 2 queries the parent's parent
-and so on)., f 71;
 #X text 164 221 (none);
-#X connect 22 0 27 0;
+#X obj 160 151 else/canvas.vis;
+#X text 64 88 The [canvas.vis] object outputs visibility status. It
+sends 1 if the window is visible and 0 when it's not. It can also query
+the parent status with the depth argument (1 goes up to the parent
+patch \, 2 queries the parent's parent and so on)., f 71;
+#X text 222 254 window visibility (0 invisible / 1 visible);
+#X connect 26 0 24 0;
