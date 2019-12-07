@@ -175,7 +175,6 @@ void canvas_active_unbindfocus(t_pd *master){
 
 static void canvas_active_free(t_canvas_active *x){
     canvas_active_unbindfocus((t_pd *)x);
-    outlet_free(x->x_outlet);
 }
 
 void canvas_active_gui_bindfocus(t_pd *master){
