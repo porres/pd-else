@@ -21,6 +21,7 @@
 #X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
 #X obj 24 42 cnv 4 4 4 empty empty Report 0 28 2 18 -233017 -1 0;
+#X obj 82 42 cnv 4 4 4 empty empty patch 0 28 2 18 -233017 -1 0;
 #X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -34,9 +35,9 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 306 5 graph;
-#X obj 81 42 cnv 4 4 4 empty empty window 0 28 2 18 -233017 -1 0;
-#X obj 149 42 cnv 4 4 4 empty empty activity 0 28 2 18 -233017 -1 0
-;
+#X obj 130 42 cnv 4 4 4 empty empty window 0 28 2 18 -233017 -1 0;
+#X obj 198 42 cnv 4 4 4 empty empty activity/visibility 0 28 2 18 -233017
+-1 0;
 #X text 150 290 1) float - depth \, default 0 (current window);
 #X obj 160 151 else/canvas.active;
 #X text 222 254 window activity (0 inactive / 1 active);
@@ -85,4 +86,4 @@ sends 1 if the window is active (when it's the front-most window) and
 argument (1 goes up to the parent patch \, 2 queries the parent's parent
 and so on)., f 71;
 #X text 164 221 (none);
-#X connect 21 0 26 0;
+#X connect 22 0 27 0;
