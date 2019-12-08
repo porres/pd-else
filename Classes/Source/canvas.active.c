@@ -11,10 +11,8 @@ typedef struct _active_gui{
 }t_active_gui;
 
 static t_class *active_gui_class;
-static t_active_gui *gui_sink = 0;
-static t_symbol *ps_hashactive_gui;
-static t_symbol *ps__active_gui;
-static t_symbol *ps__focus;
+
+t_active_gui *gui_sink = 0;
 
 static void active_gui_anything(void){
 } // Dummy
@@ -26,7 +24,7 @@ static void active_gui__focus(t_active_gui *snk, t_symbol *s, t_floatarg f){
         t_atom at[2];
         SETSYMBOL(&at[0], s);
         SETFLOAT(&at[1], f);
-        pd_typedmess(snk->g_psfocus->s_thing, ps__focus, 2, at);
+        pd_typedmess(snk->g_psfocus->s_thing, gensym("_focus"), 2, at);
     }
 }
 
@@ -47,25 +45,22 @@ static void active_gui__refocus(t_active_gui *snk){
 }
 
 static int active_gui_setup(void){
-    ps_hashactive_gui = gensym("#active_gui");
-    ps__active_gui = gensym("_active_gui");
-    ps__focus = gensym("_focus");
-    if(ps_hashactive_gui->s_thing){
-        if(strcmp(class_getname(*ps_hashactive_gui->s_thing), ps__active_gui->s_name))
+    if(gensym("#active_gui")->s_thing){
+        if(strcmp(class_getname(*gensym("#active_gui")->s_thing), gensym("_active_gui")->s_name))
             // bug("active_gui_setup"); // avoid something (e.g. receive) bind to #active_gui
             return (0);
         else{ // FIXME compatibility test
-            active_gui_class = *ps_hashactive_gui->s_thing;
+            active_gui_class = *gensym("#active_gui")->s_thing;
             return(1);
         }
     }
-    active_gui_class = class_new(ps__active_gui, 0, 0,
+    active_gui_class = class_new(gensym("_active_gui"), 0, 0,
         sizeof(t_active_gui), CLASS_PD | CLASS_NOINLET, 0);
     class_addanything(active_gui_class, active_gui_anything);
     class_addmethod(active_gui_class, (t_method)active_gui__refocus,
         gensym("_refocus"), 0);
     class_addmethod(active_gui_class, (t_method)active_gui__focus,
-        ps__focus, A_SYMBOL, A_FLOAT, 0);
+        gensym("_focus"), A_SYMBOL, A_FLOAT, 0);
     
     /* Protect against pdCmd being called (via "Canvas <Destroy>" binding)
      during Tcl_Finalize().  FIXME this should be a standard exit handler. */
@@ -105,12 +100,12 @@ static int active_gui_setup(void){
 
 static int gui_validate(int dosetup){
     if(dosetup && !gui_sink && (active_gui_class || active_gui_setup())){
-        if(ps_hashactive_gui->s_thing)
-            gui_sink = (t_active_gui *)ps_hashactive_gui->s_thing;
+        if(gensym("#active_gui")->s_thing)
+            gui_sink = (t_active_gui *)gensym("#active_gui")->s_thing;
         else{
             gui_sink = (t_active_gui *)pd_new(active_gui_class);
-            gui_sink->g_psgui = ps_hashactive_gui;
-            pd_bind((t_pd *)gui_sink, ps_hashactive_gui); // never unbound
+            gui_sink->g_psgui = gensym("#active_gui");
+            pd_bind((t_pd *)gui_sink, gensym("#active_gui")); // never unbound
         }
     }
     if(active_gui_class && gui_sink)
