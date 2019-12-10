@@ -1,4 +1,3 @@
-// porres 2019
 
 #include "m_pd.h"
 #include "g_canvas.h"
@@ -18,6 +17,7 @@ typedef struct _canvas_mouse{
     t_outlet               *x_outlet_x;
     t_outlet               *x_outlet_y;
     t_canvas               *x_canvas;
+    int                     x_edit;
     int                     x_pos;
 }t_canvas_mouse;
 
@@ -31,18 +31,20 @@ static void canvas_mouse_proxy_any(t_canvas_mouse_proxy *p, t_symbol*s, int ac, 
             x -= (float)cnv->gl_obj.te_xpix;
             y -= (float)cnv->gl_obj.te_ypix;
         }
-        if(s == gensym("motion")){
+        if(s == gensym("editmode"))
+            p->p_parent->x_edit = (int)(av->a_w.w_float);
+        if(s == gensym("motion") && !p->p_parent->x_edit){
             outlet_float(p->p_parent->x_outlet_x, x);
             outlet_float(p->p_parent->x_outlet_y, y);
         }
-        else if(s == gensym("mouse")){
+        else if(s == gensym("mouse") && !p->p_parent->x_edit){
             if(((av+2)->a_w.w_float) == 1){
                 outlet_float(p->p_parent->x_outlet_x, x);
                 outlet_float(p->p_parent->x_outlet_y, y);
                 outlet_float(p->p_parent->x_obj.ob_outlet, 1);
             }
         }
-        else if(s == gensym("mouseup")){
+        else if(s == gensym("mouseup") && !p->p_parent->x_edit){
             if((av+2)->a_w.w_float)
                 outlet_float(p->p_parent->x_obj.ob_outlet, 0);
         };
@@ -81,6 +83,7 @@ static void *canvas_mouse_new(t_floatarg f1, t_floatarg f2){
             canvas = canvas->gl_owner;
         }
     }
+    x->x_edit = canvas->gl_edit;
     char buf[MAXPDSTRING];
     snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)canvas);
     buf[MAXPDSTRING-1] = 0;
