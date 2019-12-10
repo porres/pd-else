@@ -45,10 +45,10 @@ static t_int *rescale_perform2(t_int *w){
         float exp = x->x_exp;
         float r;
         if(x->x_clip){
-            if(f < -1)
-                f = -1;
-            if(f > 1)
-                f = 1;
+            if(f < il)
+                f = il;
+            if(f > ih)
+                f = ih;
         }
         if(f == il)
             r = ol;
