@@ -30,16 +30,16 @@ static float convert(t_rescale *x, float f){
     float rangein = x->x_maxin - minin;
     float rangeout = x->x_maxout - minout;
     float exp = x->x_exp;
-    if(x->x_clip){
-        if(f < minin)
-            f = minin;
-        if(f > x->x_maxin)
-            f = x->x_maxout;
-    }
     if(f == minin)
         return(minout);
     if(f == x->x_maxin)
         return(x->x_maxout);
+    if(x->x_clip){
+        if(f < minin)
+            return(minout);
+        else if(f > x->x_maxin)
+            return(x->x_maxout);
+    }
     if(fabs(exp) == 1) // linear
         return(minout + rangeout * (f-minin)/rangein);
     else if(exp >= 0){ // exponential
