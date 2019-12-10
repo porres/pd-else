@@ -253,17 +253,11 @@ static void *dir_new(t_symbol *s, int ac, t_atom* av){
         }
         else goto errstate;
     }
-    t_canvas *canvas = canvas_getcurrent();
-    while(!canvas->gl_env)
-        canvas = canvas->gl_owner;
-    if(depth < 0) depth = 0;
-    while(depth--){
-        if(canvas->gl_owner){
-            canvas = canvas->gl_owner;
-            while(!canvas->gl_env)
-                canvas = canvas->gl_owner;
-        }
-    }
+    t_canvas *canvas = canvas_getrootfor(canvas_getcurrent());
+    if(depth < 0)
+        depth = 0;
+    while(depth-- && canvas->gl_owner)
+        canvas = canvas_getrootfor(canvas->gl_owner);
     x->x_getdir = canvas_getdir(canvas); // default
     strncpy(x->x_directory, x->x_getdir->s_name, MAXPDSTRING); // default
     dirname == &s_ ? dir_loadir(x, x->x_getdir, 1) : dir_loadir(x, dirname, 1);
