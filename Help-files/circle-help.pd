@@ -1,28 +1,28 @@
-#N struct 1006-point float x0 float y0 float xs float ys float fg float
+#N struct 1585-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1033-point float x0 float y0 float xs float ys float fg float
+#N struct 1608-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1056-point float x0 float y0 float xs float ys float fg float
+#N struct 1631-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1081-point float x0 float y0 float xs float ys float fg float
+#N struct 1654-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1104-point float x0 float y0 float xs float ys float fg float
+#N struct 1677-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1129-point float x0 float y0 float xs float ys float fg float
+#N struct 1700-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1154-point float x0 float y0 float xs float ys float fg float
+#N struct 1723-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1207-point float x0 float y0 float xs float ys float fg float
+#N struct 1746-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1234-point float x0 float y0 float xs float ys float fg float
+#N struct 1769-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1261-point float x0 float y0 float xs float ys float fg float
+#N struct 1792-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N struct 1284-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1307-point float x0 float y0 float xs float ys float fg float
+#N struct 1815-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N canvas 492 61 559 578 10;
+#N canvas 601 55 559 578 10;
 #X obj 2 4 cnv 15 301 42 empty empty circle 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -171,7 +171,6 @@ according to the new range., f 64;
 #X obj 310 193 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
 -262144 -1 12700 0;
 #X obj 247 350 else/pack2 bgcolor2 255 255 255, f 11;
-#X obj 268 146 else/initmess set 255;
 #X obj 149 433 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
 0 0 0 1 0 0 63.5 63.5 empty empty 1;
 #X obj 418 196 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
@@ -181,42 +180,43 @@ according to the new range., f 64;
 #X obj 460 196 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
 -262144 -1 12700 0;
 #X obj 397 353 else/pack2 bgcolor 255 255 255, f 11;
-#X text 423 126 set both backgrounds, f 21;
-#X obj 418 149 else/initmess 255;
-#X obj 71 146 else/initmess 0;
+#X text 423 123 set both backgrounds, f 21;
 #X text 57 24 You can set background colors (different colors for inside
 and outside the circle) and frontground colors with 'bgcolor1' (inside
 circle) / 'bgcolor2' (outside circle) / 'fgcolor' messages and '-bgcolor1'
 / '-bgcolor2' / '-fgcolor' flags. You can also set both background
 colors with the '-fgcolor' flag or 'fgcolor' message., f 83;
+#X obj 418 146 else/initmess set 255;
+#X obj 268 146 else/initmess set 255;
+#X obj 71 146 else/initmess set 0;
 #X connect 1 0 8 1;
 #X connect 2 0 8 2;
 #X connect 3 0 8 3;
 #X connect 4 0 7 1;
 #X connect 5 0 7 2;
 #X connect 6 0 7 3;
-#X connect 7 0 14 0;
-#X connect 8 0 14 0;
+#X connect 7 0 13 0;
+#X connect 8 0 13 0;
 #X connect 9 0 12 1;
 #X connect 10 0 12 2;
 #X connect 11 0 12 3;
-#X connect 12 0 14 0;
-#X connect 13 0 1 0;
-#X connect 13 0 3 0;
-#X connect 13 0 2 0;
-#X connect 13 0 9 0;
-#X connect 13 0 10 0;
-#X connect 13 0 11 0;
-#X connect 15 0 18 1;
-#X connect 16 0 18 2;
-#X connect 17 0 18 3;
-#X connect 18 0 14 0;
+#X connect 12 0 13 0;
+#X connect 14 0 17 1;
+#X connect 15 0 17 2;
+#X connect 16 0 17 3;
+#X connect 17 0 13 0;
+#X connect 20 0 14 0;
 #X connect 20 0 15 0;
 #X connect 20 0 16 0;
-#X connect 20 0 17 0;
-#X connect 21 0 4 0;
-#X connect 21 0 6 0;
-#X connect 21 0 5 0;
+#X connect 21 0 1 0;
+#X connect 21 0 3 0;
+#X connect 21 0 2 0;
+#X connect 21 0 9 0;
+#X connect 21 0 10 0;
+#X connect 21 0 11 0;
+#X connect 22 0 4 0;
+#X connect 22 0 6 0;
+#X connect 22 0 5 0;
 #X restore 62 165 pd colors;
 #X text 248 143 click and drag =>;
 #X text 283 228 x/y values:;
@@ -330,7 +330,7 @@ in RGB (default 255 255 255), f 76;
 #X obj 194 350 else/f2s~ 50;
 #X text 64 23 Here's an example to use it with [pan8~].;
 #X obj 137 124 else/circle 127 -1 1 -1 1 0 230 230 230 255 255 255
-0 0 0 1 0 0 34.5324 32.6911 empty empty 1;
+0 0 0 1 0 0 63.5 63.5 empty empty 1;
 #X text 265 179 3;
 #X text 244 130 2;
 #X text 195 110 1;
@@ -437,7 +437,7 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #X text 232 402 - sets background color outside circle in RGB, f 52
 ;
 #X obj 359 90 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255 0
-0 0 1 0 0 63.5 63.5 empty empty 1;
+0 0 1 0 0 67.7077 64.0843 empty empty 1;
 #N canvas 700 46 382 360 clip 0;
 #X obj 117 149 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
 0 0 0 1 0 0 63.5 63.5 empty empty 1;
