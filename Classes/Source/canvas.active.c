@@ -160,10 +160,9 @@ static void active_free(t_active *x){ // unbind focus
 
 static void *active_new(t_floatarg f){
     t_active *x = (t_active *)pd_new(active_class);
-    t_glist *glist = (t_glist *)canvas_getcurrent();
-    t_canvas *cnv = (t_canvas*)glist_getcanvas(glist);
+    t_canvas *cnv = canvas_getcurrent();
     int depth = (int)f < 0 ? 0 : (int)f;
-    while(depth-- && cnv)
+    while(depth-- && cnv->gl_owner)
         cnv = cnv->gl_owner;
     char buf[32];
     sprintf(buf, ".x%lx.c", (unsigned long)cnv);

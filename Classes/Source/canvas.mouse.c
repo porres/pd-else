@@ -72,20 +72,14 @@ static void canvas_mouse_free(t_canvas_mouse *x){
 
 static void *canvas_mouse_new(t_floatarg f1, t_floatarg f2){
     t_canvas_mouse *x = (t_canvas_mouse *)pd_new(canvas_mouse_class);
-    t_glist *glist = (t_glist *)canvas_getcurrent();
-    t_canvas *canvas = (t_canvas*)glist_getcanvas(glist);
-    x->x_canvas = canvas;
+    x->x_canvas = canvas_getcurrent();
     int depth = f1 < 0 ? 0 : (int)f1;
     x->x_pos = f2 != 0;
-    while(depth--){
-        if(canvas->gl_owner){
-            x->x_canvas = canvas;
-            canvas = canvas->gl_owner;
-        }
-    }
-    x->x_edit = canvas->gl_edit;
+    while(depth-- && x->x_canvas->gl_owner)
+        x->x_canvas = x->x_canvas->gl_owner;
+    x->x_edit = x->x_canvas->gl_edit;
     char buf[MAXPDSTRING];
-    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)canvas);
+    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)x->x_canvas);
     buf[MAXPDSTRING-1] = 0;
     x->x_proxy = canvas_mouse_proxy_new(x, gensym(buf));
     outlet_new(&x->x_obj, 0);

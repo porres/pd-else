@@ -50,16 +50,10 @@ static void canvas_vis_free(t_canvas_vis *x){
 
 static void *canvas_vis_new(t_floatarg f1){
     t_canvas_vis *x = (t_canvas_vis *)pd_new(canvas_vis_class);
-    t_glist *glist = (t_glist *)canvas_getcurrent();
-    t_canvas *canvas = (t_canvas*)glist_getcanvas(glist);
-    x->x_canvas = canvas;
+    x->x_canvas = canvas_getcurrent();
     int depth = f1 < 0 ? 0 : (int)f1;
-    while(depth--){
-        if(canvas->gl_owner){
-            x->x_canvas = canvas;
-            canvas = canvas->gl_owner;
-        }
-    }
+    while(depth-- && x->x_canvas->gl_owner)
+        x->x_canvas = x->x_canvas->gl_owner;
     char buf[MAXPDSTRING];
     snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)canvas);
     buf[MAXPDSTRING-1] = 0;

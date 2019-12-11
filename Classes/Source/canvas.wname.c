@@ -17,7 +17,7 @@ static void *canvas_wname_new(t_floatarg f){
     t_canvas_wname *x = (t_canvas_wname *)pd_new(canvas_wname_class);
     t_canvas *canvas = canvas_getcurrent();
     int depth = f < 0 ? 0 : (int)f;
-    while(depth-- && canvas)
+    while(depth-- && canvas->gl_owner)
         canvas = canvas->gl_owner;
     char buf[MAXPDSTRING];
     snprintf(buf, MAXPDSTRING, ".x%lx", (long unsigned int)canvas);

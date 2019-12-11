@@ -50,18 +50,12 @@ static void edit_free(t_edit *x){
 
 static void *edit_new(t_floatarg f1){
     t_edit *x = (t_edit *)pd_new(edit_class);
-    t_glist *glist = (t_glist *)canvas_getcurrent();
-    t_canvas *canvas = (t_canvas*)glist_getcanvas(glist);
-    x->x_canvas = canvas;
+    x->x_canvas = canvas_getcurrent();
     int depth = f1 < 0 ? 0 : (int)f1;
-    while(depth--){
-        if(canvas->gl_owner){
-            x->x_canvas = canvas;
-            canvas = canvas->gl_owner;
-        }
-    }
+    while(depth-- && x->x_canvas->gl_owner)
+        x->x_canvas = x->x_canvas->gl_owner;
     char buf[MAXPDSTRING];
-    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)canvas);
+    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)x->x_canvas);
     buf[MAXPDSTRING-1] = 0;
     x->x_proxy = edit_proxy_new(x, gensym(buf));
     outlet_new(&x->x_obj, 0);
