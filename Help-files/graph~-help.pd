@@ -7,7 +7,7 @@
 13 -228856 -1 0;
 #X obj 1 448 cnv 3 550 3 empty \$0-pddp.cnv.argument flags 8 12 0 13
 -228856 -1 0;
-#X obj 85 328 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 85 328 cnv 17 3 87 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
 #X text 192 327 signal;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -30,8 +30,8 @@
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -100,7 +100,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -140,8 +140,6 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 85 351 cnv 17 3 64 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
--162280 0;
 #X text 240 351 - buffer size in samples, f 27;
 #X text 191 454 - buffer size in samples (default 441 \, minumum 64)
 , f 51;
@@ -151,12 +149,12 @@ for visualizing audio signals.;
 #X text 240 367 - number of buffers to skip;
 #X text 156 367 skip <float>;
 #X text 191 469 - buffer skip (default 0), f 51;
-#X obj 330 118 nbx 5 14 64 44100 0 1 empty empty empty 0 -8 0 10 -228856
+#X obj 382 149 nbx 5 14 64 44100 0 1 empty empty empty 0 -8 0 10 -228856
 -1 -1 441 256;
-#X msg 330 139 size \$1;
-#X obj 356 177 nbx 5 14 0 100 0 1 empty empty empty 0 -8 0 10 -228856
+#X msg 382 170 size \$1;
+#X obj 408 208 nbx 5 14 0 100 0 1 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X msg 356 198 skip \$1;
+#X msg 408 229 skip \$1;
 #X text 106 454 -size <float>;
 #X text 106 469 -skip <float>;
 #X text 58 484 -range <float \, float>;
@@ -171,8 +169,11 @@ for visualizing audio signals.;
 #X text 191 484 - set lower and upper graph range (default -1 1),
 f 51;
 #X obj 135 131 noise~;
-#X connect 29 0 30 0;
-#X connect 30 0 37 1;
-#X connect 31 0 32 0;
-#X connect 32 0 37 1;
-#X connect 44 0 37 0;
+#X obj 382 261 s \$0-set;
+#X obj 196 134 r \$0-set;
+#X connect 28 0 29 0;
+#X connect 29 0 44 0;
+#X connect 30 0 31 0;
+#X connect 31 0 44 0;
+#X connect 43 0 36 0;
+#X connect 45 0 36 0;

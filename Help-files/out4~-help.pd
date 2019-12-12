@@ -7,24 +7,23 @@
 13 -228856 -1 0;
 #X obj 1 406 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 80 250 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0-3 5 9 0 16 -228856
+#X obj 76 250 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0-3 5 9 0 16 -228856
 -162280 0;
 #X text 128 250 signal;
-#X obj 80 273 cnv 17 3 98 empty \$0-pddp.cnv.let.2 4 5 9 0 16 -228856
+#X obj 76 273 cnv 17 3 98 empty \$0-pddp.cnv.let.2 0 5 9 0 16 -228856
 -162280 0;
-#X text 134 273 float;
 #X obj 216 147 osc~ 440;
 #X text 178 429 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear), f 60;
 #N canvas 522 161 803 382 examples 0;
-#X obj 90 236 osc~ 440;
+#X obj 90 198 osc~ 440;
 #X msg 534 242 mode \$1;
 #X obj 534 165 vradio 15 1 0 3 \$0-dummy \$0-dummy-set empty 0 -8 0
 10 -228856 -1 -1 1;
 #X text 518 180 dB;
 #X text 494 194 linear;
 #X floatatom 534 218 5 0 0 0 - - -;
-#X obj 447 243 osc~ 440;
+#X obj 437 249 osc~ 440;
 #X text 457 144 slider scaling:;
 #X text 488 164 quartic;
 #X msg 670 294 ramp \$1;
@@ -43,17 +42,17 @@ slider value input in the right outlet.;
 -1 -1 0 1;
 #X text 623 198 maximum gain;
 #X obj 90 309 else/out4~;
-#X obj 180 159 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 177 179 5 0 0 0 - - -;
-#X text 192 159 set slider (0-1);
-#X msg 231 247 on;
-#X msg 231 274 off;
-#X text 258 247 DSP on;
-#X text 257 275 DSP off;
-#X msg 203 209 mute;
-#X text 238 209 mute button;
-#X obj 447 285 else/out4~;
+#X obj 173 167 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 400 1;
+#X floatatom 170 187 5 0 0 0 - - -;
+#X text 185 167 set slider (0-1);
+#X msg 230 236 on;
+#X msg 230 263 off;
+#X text 257 236 DSP on;
+#X text 256 264 DSP off;
+#X msg 222 211 mute;
+#X text 257 211 mute button;
+#X obj 379 291 else/out4~;
 #X text 18 22 [out4~] allows you to switch the DSP engine on or off
 \, dac~ output on or off and mute/unmute without any clicks!;
 #X text 20 65 If the DSP is on when you load [out4~] \, it checks the
@@ -62,27 +61,32 @@ DSP state and loads the GUI accordingly.;
 is "quartic"). You can set a linear gain multiplier \, which needs
 to be greater than zero and also represents the maximum linear gain
 achieved.;
+#X msg 170 209 set \$1;
+#X obj 602 332 s \$0-set;
+#X obj 379 234 r \$0-set;
 #X connect 0 0 17 0;
 #X connect 0 0 17 1;
 #X connect 0 0 17 2;
 #X connect 0 0 17 3;
-#X connect 1 0 27 4;
+#X connect 1 0 32 0;
 #X connect 2 0 5 0;
 #X connect 5 0 1 0;
 #X connect 6 0 27 0;
 #X connect 6 0 27 1;
 #X connect 6 0 27 2;
 #X connect 6 0 27 3;
-#X connect 9 0 27 4;
+#X connect 9 0 32 0;
 #X connect 10 0 9 0;
-#X connect 13 0 27 4;
+#X connect 13 0 32 0;
 #X connect 14 0 13 0;
 #X connect 15 0 14 0;
 #X connect 18 0 19 0;
-#X connect 19 0 17 4;
-#X connect 21 0 17 4;
-#X connect 22 0 17 4;
-#X connect 25 0 17 4;
+#X connect 19 0 31 0;
+#X connect 21 0 17 0;
+#X connect 22 0 17 0;
+#X connect 25 0 17 0;
+#X connect 31 0 17 0;
+#X connect 33 0 27 0;
 #X restore 472 153 pd examples;
 #X text 116 289 <on/off>;
 #X text 92 339 gain <float>;
@@ -347,14 +351,14 @@ same as the output. We have then two non linear modes:;
 #X text 131 185 quartic;
 #X text 174 223 dB;
 #X obj 463 301 osc~ 440;
-#X msg 550 314 gain \$1;
+#X msg 543 309 gain \$1;
 #X obj 441 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 550 291 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 543 286 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 550 177 vsl 15 80 0.1 2 0 0 empty empty empty 0 -9 0 10 -233017
+#X obj 543 172 vsl 15 80 0.1 2 0 0 empty empty empty 0 -9 0 10 -233017
 -1 -1 0 1;
-#X text 556 272 max gain;
+#X text 549 267 max gain;
 #X text 417 196 dB;
 #X text 70 265 entry (slider) value;
 #X text 290 121 dB: This mode adopts a decibel scale with a range of
@@ -374,14 +378,14 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X connect 23 0 34 1;
 #X connect 23 0 34 2;
 #X connect 23 0 34 3;
-#X connect 24 0 34 4;
+#X connect 24 0 34 1;
 #X connect 25 0 33 0;
 #X connect 26 0 24 0;
 #X connect 27 0 26 0;
 #X connect 33 0 26 0;
 #X restore 466 176 pd scaling \; modes & gain;
 #X obj 216 181 else/out4~ 1 0;
-#X obj 281 148 else/brown~;
+#X obj 303 148 else/brown~;
 #X text 80 86 [out4~] is a variant of [out~] and a convenient quadraphonic
 output abstraction. It has controls for mute \, DSP on/off \, ramp
 time \, maximum gain and scaling mode. Note that you need to specify
@@ -394,8 +398,9 @@ at least 4 output channels in preferences => audio., f 62;
 #X text 83 34 See also:;
 #X obj 222 78 else/out1~;
 #X restore 473 211 pd see also;
-#X connect 8 0 42 0;
-#X connect 8 0 42 1;
-#X connect 43 0 42 2;
-#X connect 43 0 42 3;
+#X text 98 273 set <float>;
+#X connect 7 0 41 1;
+#X connect 7 0 41 0;
+#X connect 42 0 41 2;
+#X connect 42 0 41 3;
 #X coords 0 475 1 474 74 39 0;
