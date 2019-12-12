@@ -1,20 +1,18 @@
-#N canvas 322 127 565 536 10;
-#X text 149 418 1) float;
-#X text 149 436 2) float;
-#X text 205 452 - sets maximum value (default 127);
-#X text 205 436 - sets minimum value (default 0);
-#X obj 109 270 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#N canvas 445 137 565 515 10;
+#X text 149 398 1) float;
+#X text 149 416 2) float;
+#X text 205 432 - sets maximum value (default 127);
+#X text 205 416 - sets minimum value (default 0);
+#X obj 109 267 cnv 17 3 77 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 109 293 cnv 17 3 72 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 109 360 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 109 380 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X text 210 270 -;
-#X text 210 294 -;
-#X text 132 332 seed <float> -;
-#X text 225 332 seeds the internal random number generator, f 50;
-#X text 149 452 3) float;
-#X text 150 352 p <float> -;
+#X text 210 266 -;
+#X text 210 282 -;
+#X text 132 314 seed <float> -;
+#X text 225 314 seeds the internal random number generator, f 50;
+#X text 149 432 3) float;
+#X text 150 330 p <float> -;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -42,36 +40,36 @@
 #X restore 2 3 graph;
 #X obj 153 40 cnv 4 4 4 empty empty algorithm 0 28 2 18 -233017 -1
 0;
-#X obj 4 509 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 489 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 6 258 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 371 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 351 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 407 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 387 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 476 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 89 487 -seed <float> - sets seed | -p <float> - sets probability
+#X obj 6 456 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 89 467 -seed <float> - sets seed | -p <float> - sets probability
 (default 70), f 70;
-#X text 225 352 sets probability of a positive step in %, f 50;
-#X text 205 418 - sets step range (default 1);
-#X text 132 312 step <float> -;
-#X text 225 312 sets step range, f 50;
+#X text 225 330 sets probability of a positive step in %, f 50;
+#X text 205 398 - sets step range (default 1);
+#X text 132 298 step <float> -;
+#X text 225 298 sets step range, f 50;
 #X obj 206 226 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12267 1;
+-1 -1 0 1;
 #X obj 479 77 else/setdsp~;
 #X text 67 93 [drunkard~] generates random nvalues within a given step
 range from the last output. When reaching the bounds \, the values
 get wrapped., f 63;
-#X text 166 270 signal;
-#X text 225 270 impulses triggers a random output, f 50;
-#X text 165 383 signal;
-#X text 210 383 - random value as result of the random walk;
-#X text 178 294 list;
-#X text 225 294 two floats set lower and upper bound, f 50;
+#X text 166 266 signal;
+#X text 225 266 impulses triggers a random output, f 50;
+#X text 165 363 signal;
+#X text 210 363 - random value as result of the random walk;
+#X text 178 282 list;
+#X text 225 282 two floats set lower and upper bound, f 50;
 #X obj 203 174 else/drunkard~;
 #X obj 203 201 else/s2f~;
 #X obj 203 142 else/impulse~ 50;
-#X connect 45 0 46 0;
-#X connect 46 0 36 0;
-#X connect 47 0 45 0;
+#X connect 44 0 45 0;
+#X connect 45 0 35 0;
+#X connect 46 0 44 0;
