@@ -1,11 +1,11 @@
-#N canvas 553 42 565 512 10;
+#N canvas 455 41 564 535 10;
 #X obj 4 334 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 411 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 444 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 3 477 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 507 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 129 420 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
@@ -30,9 +30,9 @@
 0;
 #X obj 192 171 noise~;
 #X obj 265 153 nbx 5 14 10 10000 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 10 256;
+-1 -1 500 256;
 #X obj 324 185 nbx 5 14 1 100 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 1 256;
+-1 -1 5 256;
 #X text 250 420 - filtered signal;
 #X text 250 342 - signal to be filtered;
 #X obj 129 364 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
@@ -54,16 +54,18 @@ is an abstraction that stacks many [allpass.2nd~] objects in cascade.
 #X obj 42 248 else/allpass.2nd~;
 #X text 44 227 see also:;
 #X text 250 387 - filter resonance (Q);
-#X text 382 180 resonance (default 1), f 11;
-#X text 323 144 resonant/center frequency (default 10), f 23;
 #X text 152 454 1) float - order from 2 to 64 (default 2);
-#X obj 207 208 else/allpass.filt~ 4;
 #X obj 192 264 else/out~;
 #X obj 192 230 +~;
-#X connect 16 0 35 0;
+#X text 152 485 3) float - q (default 1), f 41;
+#X text 152 469 2) float - frequency in hz (default 10), f 41;
+#X obj 207 208 else/allpass.filt~ 4;
+#X text 323 144 resonant/center frequency, f 23;
+#X text 382 180 q - resonance;
+#X connect 16 0 34 0;
 #X connect 16 0 37 0;
-#X connect 17 0 35 1;
-#X connect 18 0 35 2;
-#X connect 35 0 37 1;
-#X connect 37 0 36 0;
-#X connect 37 0 36 1;
+#X connect 17 0 37 1;
+#X connect 18 0 37 2;
+#X connect 34 0 33 0;
+#X connect 34 0 33 1;
+#X connect 37 0 34 1;

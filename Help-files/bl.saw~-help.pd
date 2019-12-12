@@ -1,4 +1,4 @@
-#N canvas 371 38 567 492 10;
+#N canvas 371 38 567 513 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -20,7 +20,7 @@
 0;
 #X obj 203 41 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
 0;
-#X obj 3 460 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 480 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 229 188 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -32,7 +32,6 @@
 #X restore 2 4 graph;
 #X obj 22 41 cnv 4 4 4 empty empty Bandlimited 0 28 2 18 -233017 -1
 0;
-#X text 235 438 (none);
 #X text 60 141 Because this is an abstraction and Pd is still limited
 in the way it handles it \, this object does not have any arguments.
 , f 67;
@@ -40,7 +39,6 @@ in the way it handles it \, this object does not have any arguments.
 #X obj 212 248 else/out~;
 #X obj 3 427 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 229 213 else/bl.saw~;
 #X obj 452 266 else/saw~;
 #X obj 3 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -66,6 +64,11 @@ in the way it handles it \, this object does not have any arguments.
 but it is bandlimited with the upsampling/filtering technique. This
 makes the object quite ineficient CPU wise \, but is an easy way to
 implement a bandlimited oscillator., f 67;
-#X connect 11 0 21 0;
-#X connect 21 0 19 0;
-#X connect 21 0 19 1;
+#X text 159 439 1) float;
+#X text 218 458 - initial phase offset (default 0);
+#X text 218 439 - frequency in hertz (default 0);
+#X text 159 458 2) float;
+#X obj 229 213 else/bl.saw~ 400;
+#X connect 11 0 40 0;
+#X connect 40 0 18 0;
+#X connect 40 0 18 1;
