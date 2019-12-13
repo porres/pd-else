@@ -1,4 +1,4 @@
-// based on cyclone's active
+// porres 2019
 
 #include "m_pd.h"
 #include "g_canvas.h"
@@ -14,9 +14,8 @@ static t_class *active_gui_class;
 
 t_active_gui *gui_sink = 0;
 
-
 static void active_gui__focus(t_active_gui *snk, t_symbol *s, t_floatarg f){
-    if(!snk->g_psfocus) // bug("active_gui__focus");
+    if(!snk->g_psfocus) // bug
         return;
     if(snk->g_psfocus->s_thing){
         t_atom at[2];
@@ -36,7 +35,7 @@ static void gui_dobindfocus(t_active_gui *snk){ // once for all objects
 }
 
 static void active_gui__refocus(t_active_gui *snk){
-    if(!snk->g_psfocus) // bug("active_gui__refocus");
+    if(!snk->g_psfocus) // bug
         return;
     if(snk->g_psfocus->s_thing) // if new master bound in gray period, restore gui bindings
         gui_dobindfocus(snk);
@@ -45,17 +44,14 @@ static void active_gui__refocus(t_active_gui *snk){
 static int active_gui_setup(void){
     if(gensym("#active_gui")->s_thing){
         if(strcmp(class_getname(*gensym("#active_gui")->s_thing), gensym("_active_gui")->s_name))
-            // bug("active_gui_setup"); // avoid something (e.g. receive) bind to #active_gui
-            return (0);
-        else{ // FIXME compatibility test
+            return(0); // bug - avoid something (e.g. receive) bind to #active_gui
+        else{
             active_gui_class = *gensym("#active_gui")->s_thing;
             return(1);
         }
     }
     active_gui_class = class_new(gensym("_active_gui"), 0, 0,
-        sizeof(t_active_gui), CLASS_PD | CLASS_NOINLET, 0);
-//    class_addanything(active_gui_class, active_gui_anything);
-    class_addmethod(active_gui_class, (t_method)active_gui__refocus,
+        sizeof(t_active_gui), CLASS_PD | CLASS_NOINLET, 0);    class_addmethod(active_gui_class, (t_method)active_gui__refocus,
         gensym("_refocus"), 0);
     class_addmethod(active_gui_class, (t_method)active_gui__focus,
         gensym("_focus"), A_SYMBOL, A_FLOAT, 0);
@@ -106,9 +102,7 @@ void active_gui_getscreen(void){
         sys_gui("active_gui_getscreen\n");
 }
 
-/////////////  CLASS!!!
-
-typedef struct _active{
+typedef struct _active{ /////////////  [canvas.active] CLASS!!!
     t_object   x_obj;
     t_symbol  *x_cname;
 }t_active;
@@ -116,15 +110,13 @@ typedef struct _active{
 static t_class *active_class;
 
 static void active_dofocus(t_active *x, t_symbol *s, t_floatarg f){
-    if(s == x->x_cname)
-        outlet_float(x->x_obj.ob_outlet, f);
+    if(s == x->x_cname) outlet_float(x->x_obj.ob_outlet, f);
 }
 
 static void active_free(t_active *x){ // unbind focus
     if(active_gui_class && gui_sink && gui_sink->g_psfocus && gui_sink->g_psfocus->s_thing){
         pd_unbind((t_pd *)x, gui_sink->g_psfocus);
-        if(!gui_sink->g_psfocus->s_thing)
-            sys_gui("active_gui_refocus\n");
+        if(!gui_sink->g_psfocus->s_thing) sys_gui("active_gui_refocus\n");
     }
 }
 
