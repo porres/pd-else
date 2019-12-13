@@ -98,41 +98,13 @@ static int active_gui_setup(void){
     return(1);
 }
 
-static int gui_validate(int dosetup){
-    if(dosetup && !gui_sink && (active_gui_class || active_gui_setup())){
-        if(gensym("#active_gui")->s_thing)
-            gui_sink = (t_active_gui *)gensym("#active_gui")->s_thing;
-        else{
-            gui_sink = (t_active_gui *)pd_new(active_gui_class);
-            gui_sink->g_psgui = gensym("#active_gui");
-            pd_bind((t_pd *)gui_sink, gensym("#active_gui")); // never unbound
-        }
-    }
-    if(active_gui_class && gui_sink)
-        return(1);
-    else // bug("gui_validate");
-        return(0);
-}
-
-static int gui_focusvalidate(int dosetup){
-    if(dosetup && !gui_sink->g_psfocus){
-        gui_sink->g_psfocus = gensym("#active_focus");
-        sys_gui("event add <<active_focusin>> <FocusIn>\n");
-        sys_gui("event add <<active_focusout>> <FocusOut>\n");
-    }
-    if(gui_sink->g_psfocus)
-        return(1);
-    else // bug("gui_focusvalidate");
-        return(0);
-}
-
 void active_gui_getscreenfocused(void){
-    if(gui_validate(0))
+    if(active_gui_class && gui_sink)
         sys_gui("active_gui_getscreenfocused\n");
 }
 
 void active_gui_getscreen(void){
-    if(gui_validate(0))
+    if(active_gui_class && gui_sink)
         sys_gui("active_gui_getscreen\n");
 }
 
@@ -151,7 +123,7 @@ static void active_dofocus(t_active *x, t_symbol *s, t_floatarg f){
 }
 
 static void active_free(t_active *x){ // unbind focus
-    if(gui_validate(0) && gui_focusvalidate(0) && gui_sink->g_psfocus->s_thing){
+    if(active_gui_class && gui_sink && gui_sink->g_psfocus && gui_sink->g_psfocus->s_thing){
         pd_unbind((t_pd *)x, gui_sink->g_psfocus);
         if(!gui_sink->g_psfocus->s_thing)
             sys_gui("active_gui_refocus\n");
@@ -169,8 +141,20 @@ static void *active_new(t_floatarg f){
     x->x_cname = gensym(buf);
     outlet_new((t_object *)x, &s_float);
 // bind focus
-    gui_validate(1);
-    gui_focusvalidate(1);
+    if(!gui_sink && (active_gui_class || active_gui_setup())){
+        if(gensym("#active_gui")->s_thing)
+            gui_sink = (t_active_gui *)gensym("#active_gui")->s_thing;
+        else{
+            gui_sink = (t_active_gui *)pd_new(active_gui_class);
+            gui_sink->g_psgui = gensym("#active_gui");
+            pd_bind((t_pd *)gui_sink, gensym("#active_gui")); // never unbound
+        }
+    }
+    if(!gui_sink->g_psfocus){ // focusvalidate
+        gui_sink->g_psfocus = gensym("#active_focus");
+        sys_gui("event add <<active_focusin>> <FocusIn>\n");
+        sys_gui("event add <<active_focusout>> <FocusOut>\n");
+    }
     if(!gui_sink->g_psfocus->s_thing)
         gui_dobindfocus(gui_sink);
     pd_bind((t_pd *)x, gui_sink->g_psfocus);
