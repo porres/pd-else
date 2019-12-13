@@ -14,8 +14,6 @@ static t_class *active_gui_class;
 
 t_active_gui *gui_sink = 0;
 
-static void active_gui_anything(void){
-} // Dummy
 
 static void active_gui__focus(t_active_gui *snk, t_symbol *s, t_floatarg f){
     if(!snk->g_psfocus) // bug("active_gui__focus");
@@ -28,7 +26,7 @@ static void active_gui__focus(t_active_gui *snk, t_symbol *s, t_floatarg f){
     }
 }
 
-static void gui_dobindfocus(t_active_gui *snk){
+static void gui_dobindfocus(t_active_gui *snk){ // once for all objects
     sys_vgui("bind Canvas <<active_focusin>> \
              {if {[active_gui_ispatcher %%W]} \
              {pdsend {%s _focus %%W 1}}}\n", snk->g_psgui->s_name);
@@ -56,7 +54,7 @@ static int active_gui_setup(void){
     }
     active_gui_class = class_new(gensym("_active_gui"), 0, 0,
         sizeof(t_active_gui), CLASS_PD | CLASS_NOINLET, 0);
-    class_addanything(active_gui_class, active_gui_anything);
+//    class_addanything(active_gui_class, active_gui_anything);
     class_addmethod(active_gui_class, (t_method)active_gui__refocus,
         gensym("_refocus"), 0);
     class_addmethod(active_gui_class, (t_method)active_gui__focus,
