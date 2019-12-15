@@ -110,6 +110,7 @@ typedef struct _active{ /////////////  [canvas.active] CLASS!!!
 static t_class *active_class;
 
 static void active_dofocus(t_active *x, t_symbol *s, t_floatarg f){
+    post("x_cname = %s / s = %s / f = %f", x->x_cname, s, f);
     if(s == x->x_cname) outlet_float(x->x_obj.ob_outlet, f);
 }
 
