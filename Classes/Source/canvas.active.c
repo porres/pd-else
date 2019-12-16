@@ -4,13 +4,39 @@
 #include "g_canvas.h"
 #include <string.h>
 
+static t_class *active_class, *active_gui_class, *mouse_proxy_class;
+
 typedef struct _active_gui{
     t_pd       g_pd;
     t_symbol  *g_psgui;
     t_symbol  *g_psfocus;
 }t_active_gui;
 
-static t_class *active_gui_class;
+typedef struct _mouse_proxy{
+    t_object    p_obj;
+    t_symbol   *p_sym;
+    t_clock    *p_clock;
+    struct      _active *p_parent;
+}t_mouse_proxy;
+
+typedef struct _active{
+    t_object         x_obj;
+    t_mouse_proxy   *x_proxy;
+    t_symbol        *x_cname;
+    int              x_right_click;
+}t_active;
+
+static void mouse_proxy_any(t_mouse_proxy *p, t_symbol*s, int ac, t_atom *av){
+    ac = 0;
+    if(p->p_parent && s == gensym("mouse"))
+        p->p_parent->x_right_click = (av+2)->a_w.w_float != 1;
+}
+
+static void mouse_proxy_free(t_mouse_proxy *p){
+    pd_unbind(&p->p_obj.ob_pd, p->p_sym);
+    clock_free(p->p_clock);
+    pd_free(&p->p_obj.ob_pd);
+}
 
 t_active_gui *gui_sink = 0;
 
@@ -102,15 +128,9 @@ void active_gui_getscreen(void){
         sys_gui("active_gui_getscreen\n");
 }
 
-typedef struct _active{ /////////////  [canvas.active] CLASS!!!
-    t_object   x_obj;
-    t_symbol  *x_cname;
-}t_active;
-
-static t_class *active_class;
-
 static void active_dofocus(t_active *x, t_symbol *s, t_floatarg f){
     post("x_cname = %s / s = %s / f = %f", x->x_cname->s_name, s->s_name, f);
+    post("x->x_right_click = %d", x->x_right_click);
     if(s == x->x_cname) outlet_float(x->x_obj.ob_outlet, f);
 }
 
@@ -119,17 +139,30 @@ static void active_free(t_active *x){ // unbind focus
         pd_unbind((t_pd *)x, gui_sink->g_psfocus);
         if(!gui_sink->g_psfocus->s_thing) sys_gui("active_gui_refocus\n");
     }
+    x->x_proxy->p_parent = NULL;
+    clock_delay(x->x_proxy->p_clock, 0);
+}
+
+static t_mouse_proxy * mouse_proxy_new(t_active *x, t_symbol*s){
+    t_mouse_proxy *p = (t_mouse_proxy*)pd_new(mouse_proxy_class);
+    p->p_parent = x;
+    pd_bind(&p->p_obj.ob_pd, p->p_sym = s);
+    p->p_clock = clock_new(p, (t_method)mouse_proxy_free);
+    return(p);
 }
 
 static void *active_new(t_floatarg f){
     t_active *x = (t_active *)pd_new(active_class);
     t_canvas *cnv = canvas_getcurrent();
+    x->x_right_click = 0;
     int depth = (int)f < 0 ? 0 : (int)f;
     while(depth-- && cnv->gl_owner)
         cnv = cnv->gl_owner;
-    char buf[32];
-    sprintf(buf, ".x%lx.c", (unsigned long)cnv);
+    char buf[MAXPDSTRING];
+    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)cnv);
+    buf[MAXPDSTRING-1] = 0;
     x->x_cname = gensym(buf);
+    x->x_proxy = mouse_proxy_new(x, x->x_cname);
     outlet_new((t_object *)x, &s_float);
 // bind focus
     if(!gui_sink && (active_gui_class || active_gui_setup())){
@@ -155,5 +188,8 @@ static void *active_new(t_floatarg f){
 void setup_canvas0x2eactive(void){
     active_class = class_new(gensym("canvas.active"), (t_newmethod)active_new,
         (t_method)active_free, sizeof(t_active), CLASS_NOINLET, A_DEFFLOAT, 0);
+    mouse_proxy_class = class_new(0, 0, 0, sizeof(t_mouse_proxy),
+        CLASS_NOINLET | CLASS_PD, 0);
+    class_addanything(mouse_proxy_class, mouse_proxy_any);
     class_addmethod(active_class, (t_method)active_dofocus, gensym("_focus"), A_SYMBOL, A_FLOAT, 0);
 }
