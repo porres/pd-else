@@ -131,7 +131,8 @@ void active_gui_getscreen(void){
 static void active_dofocus(t_active *x, t_symbol *s, t_floatarg f){
     post("x_cname = %s / s = %s / f = %f", x->x_cname->s_name, s->s_name, f);
     post("x->x_right_click = %d", x->x_right_click);
-    if(s == x->x_cname) outlet_float(x->x_obj.ob_outlet, f);
+    if(s == x->x_cname)
+        outlet_float(x->x_obj.ob_outlet, f);
 }
 
 static void active_free(t_active *x){ // unbind focus
@@ -161,8 +162,10 @@ static void *active_new(t_floatarg f){
     char buf[MAXPDSTRING];
     snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)cnv);
     buf[MAXPDSTRING-1] = 0;
+    x->x_proxy = mouse_proxy_new(x, gensym(buf));
+    snprintf(buf, MAXPDSTRING-1, ".x%lx.c", (unsigned long)cnv);
+    buf[MAXPDSTRING-1] = 0;
     x->x_cname = gensym(buf);
-    x->x_proxy = mouse_proxy_new(x, x->x_cname);
     outlet_new((t_object *)x, &s_float);
 // bind focus
     if(!gui_sink && (active_gui_class || active_gui_setup())){
