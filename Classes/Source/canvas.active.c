@@ -131,7 +131,7 @@ void active_gui_getscreen(void){
 static void active_dofocus(t_active *x, t_symbol *s, t_floatarg f){
     post("x_cname = %s / s = %s / f = %f", x->x_cname->s_name, s->s_name, f);
     post("x->x_right_click = %d", x->x_right_click);
-    if(s == x->x_cname)
+    if(s == x->x_cname && !x->x_right_click)
         outlet_float(x->x_obj.ob_outlet, f);
 }
 
