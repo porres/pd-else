@@ -24,6 +24,7 @@ typedef struct _active{
     t_mouse_proxy   *x_proxy;
     t_symbol        *x_cname;
     int              x_right_click;
+    int              x_on;
 }t_active;
 
 static void mouse_proxy_any(t_mouse_proxy *p, t_symbol*s, int ac, t_atom *av){
@@ -129,10 +130,17 @@ void active_gui_getscreen(void){
 }
 
 static void active_dofocus(t_active *x, t_symbol *s, t_floatarg f){
-    post("x_cname = %s / s = %s / f = %f", x->x_cname->s_name, s->s_name, f);
-    post("x->x_right_click = %d", x->x_right_click);
-    if(s == x->x_cname && !x->x_right_click)
-        outlet_float(x->x_obj.ob_outlet, f);
+    int active = (int)(f != 0);
+    if(active){ // some window is active
+        int this_window = (s == x->x_cname);
+        if(x->x_on != this_window)
+            outlet_float(x->x_obj.ob_outlet, x->x_on = this_window);
+    }
+    else{ // f = 0
+        if(s == x->x_cname && x->x_on && !x->x_right_click)
+            outlet_float(x->x_obj.ob_outlet, x->x_on = 0);
+    }
+    
 }
 
 static void active_free(t_active *x){ // unbind focus
@@ -155,7 +163,7 @@ static t_mouse_proxy * mouse_proxy_new(t_active *x, t_symbol*s){
 static void *active_new(t_floatarg f){
     t_active *x = (t_active *)pd_new(active_class);
     t_canvas *cnv = canvas_getcurrent();
-    x->x_right_click = 0;
+    x->x_right_click = x->x_on = 0;
     int depth = (int)f < 0 ? 0 : (int)f;
     while(depth-- && cnv->gl_owner)
         cnv = cnv->gl_owner;
