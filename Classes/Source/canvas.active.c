@@ -4,13 +4,7 @@
 #include "g_canvas.h"
 #include <string.h>
 
-static t_class *active_class, *active_gui_class, *mouse_proxy_class;
-
-typedef struct _active_gui{
-    t_pd       g_pd;
-    t_symbol  *g_psgui;
-    t_symbol  *g_psfocus;
-}t_active_gui;
+static t_class *mouse_proxy_class, *active_gui_class, *active_class;
 
 typedef struct _mouse_proxy{
     t_object    p_obj;
@@ -19,6 +13,12 @@ typedef struct _mouse_proxy{
     struct      _active *p_parent;
 }t_mouse_proxy;
 
+typedef struct _active_gui{
+    t_pd       g_pd;
+    t_symbol  *g_psgui;
+    t_symbol  *g_psfocus;
+}t_active_gui;
+
 typedef struct _active{
     t_object         x_obj;
     t_mouse_proxy   *x_proxy;
@@ -26,18 +26,6 @@ typedef struct _active{
     int              x_right_click;
     int              x_on;
 }t_active;
-
-static void mouse_proxy_any(t_mouse_proxy *p, t_symbol*s, int ac, t_atom *av){
-    ac = 0;
-    if(p->p_parent && s == gensym("mouse"))
-        p->p_parent->x_right_click = (av+2)->a_w.w_float != 1;
-}
-
-static void mouse_proxy_free(t_mouse_proxy *p){
-    pd_unbind(&p->p_obj.ob_pd, p->p_sym);
-    clock_free(p->p_clock);
-    pd_free(&p->p_obj.ob_pd);
-}
 
 t_active_gui *gui_sink = 0;
 
@@ -143,13 +131,16 @@ static void active_dofocus(t_active *x, t_symbol *s, t_floatarg f){
     
 }
 
-static void active_free(t_active *x){ // unbind focus
-    if(active_gui_class && gui_sink && gui_sink->g_psfocus && gui_sink->g_psfocus->s_thing){
-        pd_unbind((t_pd *)x, gui_sink->g_psfocus);
-        if(!gui_sink->g_psfocus->s_thing) sys_gui("active_gui_refocus\n");
-    }
-    x->x_proxy->p_parent = NULL;
-    clock_delay(x->x_proxy->p_clock, 0);
+static void mouse_proxy_any(t_mouse_proxy *p, t_symbol*s, int ac, t_atom *av){
+    ac = 0;
+    if(p->p_parent && s == gensym("mouse"))
+        p->p_parent->x_right_click = (av+2)->a_w.w_float != 1;
+}
+
+static void mouse_proxy_free(t_mouse_proxy *p){
+    pd_unbind(&p->p_obj.ob_pd, p->p_sym);
+    clock_free(p->p_clock);
+    pd_free(&p->p_obj.ob_pd);
 }
 
 static t_mouse_proxy * mouse_proxy_new(t_active *x, t_symbol*s){
@@ -158,6 +149,15 @@ static t_mouse_proxy * mouse_proxy_new(t_active *x, t_symbol*s){
     pd_bind(&p->p_obj.ob_pd, p->p_sym = s);
     p->p_clock = clock_new(p, (t_method)mouse_proxy_free);
     return(p);
+}
+
+static void active_free(t_active *x){ // unbind focus
+    if(active_gui_class && gui_sink && gui_sink->g_psfocus && gui_sink->g_psfocus->s_thing){
+        pd_unbind((t_pd *)x, gui_sink->g_psfocus);
+        if(!gui_sink->g_psfocus->s_thing) sys_gui("active_gui_refocus\n");
+    }
+    x->x_proxy->p_parent = NULL;
+    clock_delay(x->x_proxy->p_clock, 0);
 }
 
 static void *active_new(t_floatarg f){
