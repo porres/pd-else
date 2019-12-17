@@ -119,16 +119,13 @@ void active_gui_getscreen(void){
 
 static void active_dofocus(t_active *x, t_symbol *s, t_floatarg f){
     int active = (int)(f != 0);
+    int this_window = (s == x->x_cname);
     if(active){ // some window is active
-        int this_window = (s == x->x_cname);
         if(x->x_on != this_window)
             outlet_float(x->x_obj.ob_outlet, x->x_on = this_window);
     }
-    else{ // f = 0
-        if(s == x->x_cname && x->x_on && !x->x_right_click)
-            outlet_float(x->x_obj.ob_outlet, x->x_on = 0);
-    }
-    
+    else if(this_window && x->x_on && !x->x_right_click) 
+        outlet_float(x->x_obj.ob_outlet, x->x_on = 0);
 }
 
 static void mouse_proxy_any(t_mouse_proxy *p, t_symbol*s, int ac, t_atom *av){
