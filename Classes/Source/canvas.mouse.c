@@ -22,8 +22,7 @@ typedef struct _canvas_mouse{
 }t_canvas_mouse;
 
 static void canvas_mouse_proxy_any(t_canvas_mouse_proxy *p, t_symbol*s, int ac, t_atom *av){
-    ac = 0;
-    if(p->p_parent){
+    if(p->p_parent && ac){
         t_canvas *cnv = p->p_parent->x_canvas;
         float x = av->a_w.w_float;
         float y = (av+1)->a_w.w_float;
@@ -72,19 +71,23 @@ static void canvas_mouse_free(t_canvas_mouse *x){
 
 static void *canvas_mouse_new(t_floatarg f1, t_floatarg f2){
     t_canvas_mouse *x = (t_canvas_mouse *)pd_new(canvas_mouse_class);
-    x->x_canvas = canvas_getcurrent();
+    t_canvas *canvas = x->x_canvas = canvas_getcurrent();
     int depth = f1 < 0 ? 0 : (int)f1;
     x->x_pos = f2 != 0;
-    while(depth-- && x->x_canvas->gl_owner)
-        x->x_canvas = x->x_canvas->gl_owner;
+    while(depth--){
+        if(canvas->gl_owner){
+            x->x_canvas = canvas;
+            canvas = canvas->gl_owner;
+        }
+    }
     x->x_edit = x->x_canvas->gl_edit;
     char buf[MAXPDSTRING];
-    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)x->x_canvas);
+    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)canvas);
     buf[MAXPDSTRING-1] = 0;
     x->x_proxy = canvas_mouse_proxy_new(x, gensym(buf));
     outlet_new(&x->x_obj, 0);
-    x->x_outlet_x =  outlet_new(&x->x_obj, &s_);
-    x->x_outlet_y =  outlet_new(&x->x_obj, &s_);
+    x->x_outlet_x = outlet_new(&x->x_obj, &s_);
+    x->x_outlet_y = outlet_new(&x->x_obj, &s_);
     return(x);
 }
 
