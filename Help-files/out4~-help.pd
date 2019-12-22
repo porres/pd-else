@@ -1,4 +1,4 @@
-#N canvas 430 87 563 475 10;
+#N canvas 569 81 563 475 10;
 #X obj 1 447 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 1 242 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -43,7 +43,7 @@ slider value input in the right outlet.;
 #X text 623 198 maximum gain;
 #X obj 90 309 else/out4~;
 #X obj 173 167 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 400 1;
+-1 -1 0 1;
 #X floatatom 170 187 5 0 0 0 - - -;
 #X text 185 167 set slider (0-1);
 #X msg 230 236 on;
@@ -386,19 +386,19 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X restore 466 176 pd scaling \; modes & gain;
 #X obj 216 181 else/out4~ 1 0;
 #X obj 303 148 else/brown~;
-#X text 80 86 [out4~] is a variant of [out~] and a convenient quadraphonic
-output abstraction. It has controls for mute \, DSP on/off \, ramp
-time \, maximum gain and scaling mode. Note that you need to specify
-at least 4 output channels in preferences => audio., f 62;
 #X text 178 250 - incoming signals (routed to [dac~ 1 2 3 4]), f 60
 ;
 #N canvas 477 417 534 169 see 0;
 #X obj 105 78 else/out~;
 #X obj 342 78 else/out8~;
 #X text 83 34 See also:;
-#X obj 222 78 else/out1~;
+#X obj 222 77 else/out2~;
 #X restore 473 211 pd see also;
 #X text 98 273 set <float>;
+#X text 80 86 [out4~] is a convenient quadraphonic input/output abstraction.
+It has controls for mute \, DSP on/off \, ramp time \, maximum gain
+and scaling mode. Note that you need to specify at least 4 output channels
+in preferences => audio., f 62;
 #X connect 7 0 41 1;
 #X connect 7 0 41 0;
 #X connect 42 0 41 2;

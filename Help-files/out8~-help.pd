@@ -1,4 +1,4 @@
-#N canvas 430 87 562 477 10;
+#N canvas 518 105 562 477 10;
 #X obj 1 449 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 1 244 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -390,6 +390,7 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X connect 23 0 34 5;
 #X connect 23 0 34 6;
 #X connect 23 0 34 7;
+#X connect 24 0 34 0;
 #X connect 25 0 33 0;
 #X connect 26 0 24 0;
 #X connect 27 0 26 0;
@@ -398,18 +399,18 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #N canvas 477 417 534 169 see 0;
 #X text 83 34 See also:;
 #X obj 105 78 else/out~;
-#X obj 222 78 else/out1~;
 #X obj 342 78 else/out4~;
+#X obj 222 78 else/out2~;
 #X restore 473 213 pd see also;
 #X obj 216 183 else/out8~ 1 0;
 #X obj 303 150 else/brown~;
-#X text 80 88 [out8~] is a variant of [out~] and a convenient quadraphonic
-output abstraction. It has controls for mute \, DSP on/off \, ramp
-time \, maximum gain and scaling mode. Note that you need to specify
-at least 4 output channels in preferences => audio., f 62;
 #X text 178 252 - incoming signals (routed to [dac~ 1 2 3 4 5 6 7 8])
 , f 60;
 #X text 98 275 set <float>;
+#X text 80 88 [out8~] is a convenient octaphonic input/output abstraction.
+It has controls for mute \, DSP on/off \, ramp time \, maximum gain
+and scaling mode. Note that you need to specify at least 8 output channels
+in preferences => audio., f 62;
 #X connect 7 0 42 1;
 #X connect 7 0 42 2;
 #X connect 7 0 42 3;
