@@ -225,7 +225,7 @@ to set the envelope (default 0 0), f 51;
 #X text 29 30 A non-zero input triggers the envelope as a "gate on"
 message and sets an overall gain (which is 1 by default). A zero value
 is ignored if there's no sustain point., f 57;
-#X obj 398 115 else/keyboard 17 80 2 4;
+#X obj 398 115 keyboard 17 80 2 4;
 #X obj 398 215 unpack;
 #X obj 398 305 bl.tri~;
 #X text 392 25 When you set a sustain point \, with the sustain message
@@ -260,8 +260,6 @@ sustain time and it will sustain indefinitely until it receives a release.
 #X obj 193 219 else/rand.f 0.25 1;
 #X obj 456 441 else/out2~;
 #X obj 186 429 else/out2~;
-#X obj 559 274 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
 #X text 392 81 Here's [envgen~] as an ADSR envelope:, f 39;
 #X connect 0 0 2 0;
 #X connect 1 0 32 0;
@@ -293,7 +291,6 @@ sustain time and it will sustain indefinitely until it receives a release.
 #X connect 33 1 36 1;
 #X connect 34 0 0 0;
 #X connect 35 0 13 0;
-#X connect 38 0 20 0;
 #X restore 451 176 pd gate-sustain;
 #N canvas 267 107 1028 416 legato-retrigger 0;
 #X obj 73 222 *~;
