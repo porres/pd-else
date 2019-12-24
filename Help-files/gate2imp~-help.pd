@@ -56,6 +56,5 @@ is the same as the gate.;
 #X connect 21 0 24 0;
 #X connect 22 0 21 0;
 #X connect 24 0 26 0;
-#X connect 24 0 26 1;
 #X connect 24 0 25 0;
 #X connect 25 0 27 0;

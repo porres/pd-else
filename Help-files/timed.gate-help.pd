@@ -78,7 +78,7 @@ gate value from a signal or float input., f 53;
 #X text 176 472 3) float - non-zero sets to retrigger mode;
 #N canvas 757 226 402 311 retrigger 0;
 #X msg 172 175 retrigger \$1;
-#X obj 172 153 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 172 153 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 35 24 By default \, a gate needs to finish before another one
 is triggered \, but you can change to "retrigger" mode \, where a new

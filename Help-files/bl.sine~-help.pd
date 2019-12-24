@@ -49,7 +49,7 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 212 282 else/out~;
+#X obj 229 282 else/out~;
 #X text 267 428 sine wave signal;
 #X text 165 376 float/signal -;
 #X obj 22 40 cnv 4 4 4 empty empty Bandlimited 0 28 2 18 -233017 -1
@@ -73,4 +73,3 @@ in the way it handles it \, this object does not have any arguments.
 #X obj 229 247 else/bl.sine~ 400;
 #X connect 24 0 41 0;
 #X connect 41 0 28 0;
-#X connect 41 0 28 1;

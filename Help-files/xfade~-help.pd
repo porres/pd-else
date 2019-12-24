@@ -152,7 +152,6 @@
 #X obj 297 137 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X floatatom 294 158 0 0 0 0 - - -;
-#X obj 175 252 else/out~;
 #X text 279 136 A;
 #X text 429 136 B;
 #X obj 148 156 noise~;
@@ -173,14 +172,15 @@ sources that can have 1 to 64 channels each.;
 #X text 159 429 1) float - number of 'n' channels for each source (default
 1), f 61;
 #X obj 294 179 else/float2sig~ 100;
+#X obj 163 252 else/out2~;
 #X connect 25 0 26 0;
-#X connect 26 0 44 0;
-#X connect 30 0 31 0;
-#X connect 30 0 33 0;
-#X connect 31 0 33 1;
-#X connect 32 0 33 3;
-#X connect 33 0 27 0;
-#X connect 33 1 27 1;
-#X connect 34 0 32 0;
-#X connect 34 0 33 2;
-#X connect 44 0 33 4;
+#X connect 26 0 43 0;
+#X connect 29 0 30 0;
+#X connect 29 0 32 0;
+#X connect 30 0 32 1;
+#X connect 31 0 32 3;
+#X connect 32 0 44 0;
+#X connect 32 1 44 1;
+#X connect 33 0 31 0;
+#X connect 33 0 32 2;
+#X connect 43 0 32 4;

@@ -65,7 +65,7 @@
 #X obj 3 486 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X obj 194 191 else/flanger~ 0.1 20 -0.6 -tri;
 #X obj 125 130 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 150 256;
+-228856 -1 -1 0 256;
 #X text 268 127 rate;
 #X text 334 127 depth;
 #X text 96 495 -tri - sets waveform to triangular (default sine);
@@ -77,6 +77,5 @@
 #X connect 24 0 40 2;
 #X connect 25 0 40 3;
 #X connect 40 0 21 0;
-#X connect 40 0 21 1;
 #X connect 41 0 48 0;
 #X connect 48 0 40 0;

@@ -144,7 +144,7 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X obj 176 233 else/out~;
+#X obj 218 233 else/out~;
 #X text 154 460 2) float;
 #X obj 25 40 cnv 4 4 4 empty empty Phase 0 28 2 18 -233017 -1 0;
 #X obj 122 325 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
@@ -169,13 +169,13 @@
 #X restore 2 3 graph;
 #X obj 247 40 cnv 4 4 4 empty empty pair 0 28 2 18 -233017 -1 0;
 #X obj 176 165 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 193 256;
+-228856 -1 -1 0 256;
 #X obj 240 166 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 248 256;
+-228856 -1 -1 0 256;
 #X obj 305 147 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.464567 256;
+-228856 -1 -1 0 256;
 #X obj 308 125 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 9300 1;
+-1 -1 0 1;
 #X obj 305 165 else/float2sig~ 10;
 #X obj 219 197 else/pmosc~;
 #X text 60 86 [pmosc~] is a pair of sinusoidal oscillators \, where
@@ -189,4 +189,3 @@ one modulates the phase input of another., f 61;
 #X connect 46 0 45 0;
 #X connect 47 0 48 2;
 #X connect 48 0 23 0;
-#X connect 48 0 23 1;

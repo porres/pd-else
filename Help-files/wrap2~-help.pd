@@ -170,8 +170,8 @@ maximum. No arguments loads default values (-1 and 1). 1 float sets
 maximum value (and lowest value is set to 0). If the maximum value
 is less than the minimum \, the maximum becomes the minimum and vice-versa.
 ;
-#N canvas 823 173 457 419 waveshape 0;
-#X obj 73 258 else/out~;
+#N canvas 823 173 451 438 waveshape 0;
+#X obj 142 198 else/out~;
 #X obj 116 126 *~;
 #X obj 196 92 hsl 128 15 1 4 1 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
@@ -180,14 +180,13 @@ is less than the minimum \, the maximum becomes the minimum and vice-versa.
 #X obj 116 89 osc~ 98.5;
 #X text 69 35 Wrapping is also a type of waveshaping technique.;
 #X obj 116 167 else/wrap2~;
-#X obj 190 218 else/graph~ 447 5;
+#X obj 117 266 else/graph~ 447 5;
 #X obj 193 135 else/float2sig~ 100 1;
 #X connect 1 0 6 0;
 #X connect 2 0 3 0;
 #X connect 3 0 8 0;
 #X connect 4 0 1 0;
 #X connect 6 0 0 0;
-#X connect 6 0 0 1;
 #X connect 6 0 7 0;
 #X connect 8 0 1 1;
 #X restore 443 229 pd waveshape;

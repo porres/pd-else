@@ -198,7 +198,7 @@ the object with the -lin flag.;
 max 500);
 #X obj 195 188 else/meter4~;
 #X text 79 240 [else/meter4~] =>;
-#X obj 199 331 else/out4~;
+#X obj 186 336 else/out4~;
 #X connect 13 0 15 0;
 #X connect 15 0 45 0;
 #X connect 15 1 45 1;

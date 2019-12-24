@@ -68,5 +68,4 @@ DC offset when the p parameter is lower.;
 #X connect 16 0 35 0;
 #X connect 31 0 32 0;
 #X connect 32 0 35 1;
-#X connect 35 0 36 1;
 #X connect 35 0 36 0;

@@ -23,7 +23,7 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 152 232 else/out~;
+#X obj 174 232 else/out~;
 #X obj 256 174 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 339 174 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -76,4 +76,3 @@ It provides independent time stretching and pitch shifting via granulation.
 #X connect 32 0 35 0;
 #X connect 33 0 35 0;
 #X connect 35 0 11 0;
-#X connect 35 0 11 1;

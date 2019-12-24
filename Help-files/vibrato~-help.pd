@@ -1,6 +1,6 @@
-#N canvas 309 23 566 527 12;
-#X obj 170 264 else/out~;
-#X obj 251 198 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 309 23 566 527 10;
+#X obj 190 264 else/out~;
+#X obj 248 198 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 306 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -45,11 +45,11 @@
 #X text 136 475 2) float;
 #X obj 5 499 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 313 198 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 307 198 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 257 178 rate;
-#X text 320 178 depth;
-#X obj 190 224 else/vibrato~ 3 30;
+#X text 254 178 rate;
+#X text 314 178 depth;
+#X obj 190 224 else/vibrato~ 3 30, f 20;
 #X text 69 93 [vibrato~] is a pitch shifter abstraction with an LFO
 controlling the pitch deviation in cents., f 54;
 #X text 189 341 signal - input to vibrato;
@@ -58,9 +58,8 @@ controlling the pitch deviation in cents., f 54;
 #X text 190 419 signal - output of vibrato;
 #X text 213 455 rate in hertz (default 0), f 40;
 #X text 213 475 transposition depth in cents (default 0);
-#X obj 190 150 else/play.file~ violin.wav 1 1;
+#X obj 190 147 else/play.file~ violin.wav 1 1;
 #X connect 1 0 28 1;
 #X connect 25 0 28 2;
 #X connect 28 0 0 0;
-#X connect 28 0 0 1;
 #X connect 36 0 28 0;

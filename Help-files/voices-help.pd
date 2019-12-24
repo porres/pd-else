@@ -314,7 +314,6 @@ sets the voice index offset \, which is 0 by default. You can also
 set a different index offset with the "offset" message (this is only
 possible in the context of "list mode")., f 72;
 #N canvas 719 64 505 333 clone_example 0;
-#X obj 54 252 else/out~;
 #X obj 40 77 keyboard 17 80 2 4 0;
 #X text 211 175 In this subpatch we have [voices] feeding [clone] \,
 which loads 4 instances of a patch named "voice.pd"., f 43;
@@ -351,12 +350,13 @@ the list sent by [voices]) \, the MIDI note messages are routed to
 different instances of "voice.pd"., f 43;
 #X obj 40 182 else/voices 4 1 -list;
 #X obj 40 211 clone 4 voice 4;
-#X connect 1 0 7 0;
-#X connect 4 0 1 0;
-#X connect 5 0 4 0;
+#X obj 41 248 else/out2~;
+#X connect 0 0 6 0;
+#X connect 3 0 0 0;
+#X connect 4 0 3 0;
+#X connect 6 0 7 0;
 #X connect 7 0 8 0;
-#X connect 8 0 0 0;
-#X connect 8 1 0 1;
+#X connect 7 1 8 1;
 #X restore 364 428 pd clone_example;
 #X msg 206 265 voices \$1;
 #X msg 206 239 2;

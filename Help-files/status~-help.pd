@@ -52,7 +52,6 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 231 237 else/out~;
 #X obj 221 139 else/randpulse~ 1;
 #X obj 221 164 else/display~;
 #X obj 221 196 else/status~;
@@ -63,7 +62,8 @@ impulse in the right outlet for "non-zero to zero" transitions., f
 66;
 #X text 444 247 see also:;
 #X obj 437 269 else/status;
+#X obj 214 237 else/out2~;
+#X connect 31 0 32 0;
 #X connect 32 0 33 0;
-#X connect 33 0 34 0;
-#X connect 34 0 31 0;
-#X connect 34 1 31 1;
+#X connect 33 0 38 0;
+#X connect 33 1 38 1;

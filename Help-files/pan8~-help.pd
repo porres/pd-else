@@ -1,8 +1,8 @@
-#N struct 1060-point float x0 float y0 float size float fg float in
+#N struct 1069-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1104-point float x0 float y0 float size float fg float in
+#N struct 1113-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1144-point float x0 float y0 float size float fg float in
+#N struct 1153-point float x0 float y0 float size float fg float in
 float grid;
 #N canvas 669 53 563 659 10;
 #X obj 3 434 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -109,7 +109,7 @@ It has two modes of operation and a spread parameter.;
 #X obj 137 339 else/f2s~ 50;
 #X obj 194 361 else/f2s~ 50;
 #X obj 137 143 circle 127 -1 1 -1 1 0 225 225 225 250 250 250 1 0 0
-1 1 0 67 72 empty empty 1;
+1 1 0 0 0 empty empty 1;
 #X text 137 173 3;
 #X text 219 256 8;
 #X text 171 256 1;
@@ -202,7 +202,7 @@ It has two modes of operation and a spread parameter.;
 #X obj 122 351 else/f2s~ 50;
 #X obj 179 373 else/f2s~ 50;
 #X obj 122 147 circle 127 -1 1 -1 1 0 225 225 225 250 250 250 1 0 0
-1 1 0 97 80 empty empty 1;
+1 1 0 0 0 empty empty 1;
 #X text 250 202 3;
 #X text 229 153 2;
 #X text 180 133 1;
@@ -259,14 +259,14 @@ It has two modes of operation and a spread parameter.;
 #X obj 158 374 env~;
 #X obj 197 374 env~;
 #X obj 197 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.169 256;
+-228856 -1 -1 91.9943 256;
 #X obj 132 224 noise~;
 #X obj 158 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.169 256;
+-228856 -1 -1 91.9943 256;
 #X obj 119 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.169 256;
+-228856 -1 -1 91.9943 256;
 #X obj 80 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.169 256;
+-228856 -1 -1 91.9943 256;
 #X text 172 312 X;
 #X text 281 314 Y;
 #X obj 236 374 env~;
@@ -274,13 +274,13 @@ It has two modes of operation and a spread parameter.;
 #X obj 314 374 env~;
 #X obj 353 374 env~;
 #X obj 353 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.169 256;
+-228856 -1 -1 91.9943 256;
 #X obj 314 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.169 256;
+-228856 -1 -1 91.9943 256;
 #X obj 275 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.169 256;
+-228856 -1 -1 91.9943 256;
 #X obj 236 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 92.169 256;
+-228856 -1 -1 91.9943 256;
 #X obj 189 292 unpack;
 #X text 87 413 1;
 #X text 128 413 2;

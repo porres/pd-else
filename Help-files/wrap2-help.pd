@@ -17,10 +17,10 @@
 #X text 178 284 set;
 #X text 136 247 float/list;
 #N canvas 919 164 262 235 lists 0;
-#X text 50 26 It also works with lists:;
-#X obj 48 107 else/wrap2;
-#X obj 48 138 else/display;
-#X obj 48 71 else/initmess -0.7 0.7 1.3;
+#X text 55 34 It also works with lists:;
+#X obj 53 115 else/wrap2;
+#X obj 53 146 else/display;
+#X obj 53 79 else/initmess -0.7 0.7 1.3;
 #X connect 1 0 2 0;
 #X connect 3 0 1 0;
 #X restore 481 213 pd lists;

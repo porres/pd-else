@@ -52,7 +52,6 @@ send a list of ramp time for each filter in the bank.;
 #X connect 5 0 7 0;
 #X connect 6 0 7 0;
 #X connect 7 0 0 0;
-#X connect 7 0 0 1;
 #X restore 469 239 pd example;
 #X text 135 400 1) float - number of resonant filters (default 1),
 f 57;
@@ -94,4 +93,3 @@ f 57;
 #X restore 304 3 graph;
 #X connect 13 0 35 0;
 #X connect 35 0 14 0;
-#X connect 35 0 14 1;

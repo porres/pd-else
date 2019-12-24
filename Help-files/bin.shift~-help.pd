@@ -51,7 +51,7 @@
 Pd Vanilla's [lrshift~] object \, which acts in any block size and
 shifts samples to the left or right., f 64;
 #X obj 255 164 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -2 256;
+-228856 -1 -1 0 256;
 #X obj 74 197 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 74 247 print~ input;

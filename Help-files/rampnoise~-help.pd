@@ -1,7 +1,7 @@
 #N canvas 297 50 564 526 10;
 #X obj 250 229 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X obj 225 317 else/out~;
+#X obj 247 317 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty rampnoise~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -44,7 +44,6 @@ noise generator.;
 objects. Here we control the frequency of an oscillator.;
 #X obj 153 102 else/rampnoise~ 10;
 #X connect 0 0 1 0;
-#X connect 0 0 1 1;
 #X connect 2 0 0 0;
 #X connect 4 0 2 0;
 #X restore 478 348 pd control;
@@ -70,14 +69,14 @@ objects. Here we control the frequency of an oscillator.;
 #X obj 84 176 else/sig2float~;
 #X obj 234 179 else/sig2float~;
 #X obj 84 214 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 6549 1;
+-1 -1 0 1;
 #X obj 234 214 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 5941 1;
+-1 -1 0 1;
 #X obj 313 260 setdsp~;
 #X obj 84 142 else/rampnoise~ 1;
 #X obj 234 142 else/rampnoise~ 1;
 #X msg 234 101 seed \$1;
-#X floatatom 234 77 5 0 0 0 - - -, f 5;
+#X floatatom 234 77 5 0 0 0 - - -;
 #X text 81 18 Sync [rampnoise~] objects with a seed value;
 #X msg 234 53 1023;
 #X connect 1 0 3 0;
@@ -100,4 +99,3 @@ objects. Here we control the frequency of an oscillator.;
 #X connect 0 0 12 0;
 #X connect 12 0 19 0;
 #X connect 19 0 1 0;
-#X connect 19 0 1 1;

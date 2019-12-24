@@ -79,5 +79,4 @@ It uses an internal comb filter and has only one extra voice.;
 #X connect 31 0 36 3;
 #X connect 35 0 36 0;
 #X connect 36 0 0 0;
-#X connect 36 0 0 1;
 #X connect 46 0 42 0;

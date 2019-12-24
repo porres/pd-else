@@ -1,7 +1,7 @@
 #N canvas 312 23 561 480 10;
 #X obj 238 173 hsl 128 15 1 5000 1 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 217 270 else/out~;
+#X obj 235 270 else/out~;
 #X obj 3 4 cnv 15 301 42 empty empty dust~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -76,4 +76,3 @@ is that it only produces actual impulses (one non zero value in between
 #X connect 0 0 20 0;
 #X connect 20 0 25 0;
 #X connect 25 0 1 0;
-#X connect 25 0 1 1;

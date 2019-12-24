@@ -76,35 +76,35 @@
 #X text 80 199 1;
 #X obj 282 187 else/player~ violin.wav 1 1;
 #X obj 282 253 else/out~;
-#N canvas 446 119 731 419 waveshaping 0;
-#X obj 62 166 cnv 15 248 148 empty empty empty 20 12 0 14 -233017 -66577
+#N canvas 446 119 729 465 waveshaping 0;
+#X obj 65 198 cnv 15 248 148 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-t_func 4099 float 0;
 #X coords 0 1 4098 -1 250 150 1 0 0;
-#X restore 61 165 graph;
+#X restore 64 197 graph;
 #X obj 407 97 *~;
 #X obj 486 43 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0.1 256;
 #X obj 489 22 hsl 128 15 0.1 1 0 1 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X text 520 22 Amplitude;
-#X obj 479 250 else/graph~ 512 14;
-#X obj 364 284 else/out~;
+#X obj 408 303 else/graph~ 512 14;
+#X obj 430 233 else/out~;
 #X obj 486 64 else/float2sig~ 50;
 #X obj 407 47 osc~ 110;
-#X text 18 31 Here's an example of waveshaping with a given transfer
+#X text 21 63 Here's an example of waveshaping with a given transfer
 function \, but on a sine wave as a synthesis technique., f 56;
 #X text 565 102 using the "set" message to set an array, f 15;
 #X obj 471 107 else/initmess set \$0-t_func, f 14;
-#X obj 145 324 else/initmess \; \$0-t_func cosinesum 4096 1 -1 1 0.3
+#X obj 148 356 else/initmess \; \$0-t_func cosinesum 4096 1 -1 1 0.3
 0.2 0.9 \, normalize, f 27;
 #X obj 407 206 else/shaper~ -filter 0;
 #X msg 474 181 filter \$1;
 #X obj 474 159 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 496 159 removes DC offset;
-#X text 18 65 This particular transfer function generates a DC Offset
+#X text 21 97 This particular transfer function generates a DC Offset
 \, but [shaper~] filters out the DC component (0Hz) with an internal
 high pass filter set at 5 hz. This filter is on by default \, but you
 can turn it off with the -filter flag or message., f 56;
@@ -116,7 +116,6 @@ can turn it off with the -filter flag or message., f 56;
 #X connect 12 0 14 0;
 #X connect 14 0 6 0;
 #X connect 14 0 7 0;
-#X connect 14 0 7 1;
 #X connect 15 0 14 0;
 #X connect 16 0 15 0;
 #X restore 442 246 pd waveshaping;
@@ -135,7 +134,6 @@ scratch effect. Check below., f 65;
 #X connect 0 0 6 0;
 #X connect 3 0 2 0;
 #X connect 6 0 5 0;
-#X connect 6 0 5 1;
 #X restore 484 288 pd more;
 #X text 70 87 [shaper~] performs waveshaping with transfer functions
 \, in which signal input values (from -1 to 1) are mapped to the the
@@ -161,7 +159,7 @@ function (default 1)., f 55;
 #X text 83 521 -norm <float>:;
 #X text 173 520 sets normalization on <1> (default) or off <0>, f
 57;
-#N canvas 296 80 934 513 chebyshev 0;
+#N canvas 296 80 933 586 chebyshev 0;
 #X text 22 14 If you don't give [shaper~] an array with a transfer
 function \, it uses an internal one by default. This internal transfer
 function represents a summation of chebyshev polinomials., f 70;
@@ -174,7 +172,7 @@ the argument "1" \, which is the first order polinomial \, which is
 just a linear function. Hence \, it represents the fundamental., f
 70;
 #X obj 58 228 osc~ 200;
-#X obj 194 349 else/graph~ 441 8;
+#X obj 128 414 else/graph~ 441 8;
 #X msg 143 237 1 1;
 #X msg 127 212 1;
 #X obj 128 319 else/shaper~;
@@ -189,19 +187,19 @@ or as a list input. The object \, by default \, normalizes the transfer
 fucntion to output values between -1 and 1 \, but you can change that
 with the "norm" message or flag., f 70;
 #X obj 672 248 osc~ 200;
-#X obj 667 332 else/graph~ 441 8;
+#X obj 600 389 else/graph~ 441 8;
 #X msg 599 174 norm \$1;
 #X obj 599 154 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X msg 634 196 0.5;
 #X msg 523 162 dc \$1;
 #X obj 526 123 hsl 100 15 0 0.5 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 4500 1;
+-1 -1 0 1;
 #X obj 523 143 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.227273 256;
+-228856 -1 -1 0 256;
 #X msg 663 219 0.5 0.5;
-#X obj 85 382 else/out~;
-#X obj 557 352 else/out~;
+#X obj 142 352 else/out~;
+#X obj 615 321 else/out~;
 #X obj 600 289 else/shaper~ 0.5 -norm 0 -dc 0.5 -filter 0;
 #X text 482 81 you can set the DC offset with the "dc" message or flag.
 , f 70;
@@ -213,7 +211,6 @@ to be off as well., f 70;
 #X connect 5 0 7 0;
 #X connect 6 0 7 0;
 #X connect 7 0 4 0;
-#X connect 7 0 23 1;
 #X connect 7 0 23 0;
 #X connect 10 0 7 0;
 #X connect 11 0 7 0;
@@ -227,7 +224,6 @@ to be off as well., f 70;
 #X connect 21 0 19 0;
 #X connect 22 0 25 0;
 #X connect 25 0 15 0;
-#X connect 25 0 24 1;
 #X connect 25 0 24 0;
 #X restore 454 267 pd chebyshev;
 #X text 187 354 - harmonic weigths for internal transfer function;
@@ -240,4 +236,3 @@ off <0>;
 #X text 173 536 sets DC filter on <1> (default) or off <0>, f 57;
 #X connect 28 0 49 0;
 #X connect 49 0 29 0;
-#X connect 49 0 29 1;

@@ -69,4 +69,3 @@ the order of the filter (from 2nd order to 100th order).;
 #X connect 26 0 38 1;
 #X connect 28 0 26 0;
 #X connect 38 0 27 0;
-#X connect 38 0 27 1;

@@ -33,10 +33,10 @@
 #X obj 150 416 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 137 289 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.772232 256;
+-228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -105,7 +105,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -143,13 +143,13 @@
 #N canvas 431 69 643 374 downsampling 0;
 #X obj 95 136 noise~;
 #X obj 140 143 else/imp~ 100;
-#X obj 77 222 else/out~;
+#X obj 95 222 else/out~;
 #X obj 143 94 hsl 128 15 100 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 140 121 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 401 130 noise~;
-#X obj 383 216 else/out~;
+#X obj 401 216 else/out~;
 #X obj 455 88 hsl 128 15 100 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 452 115 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -174,10 +174,8 @@ generator will behave the same way for both modes!;
 #X connect 7 0 8 0;
 #X connect 8 0 10 0;
 #X connect 9 0 6 0;
-#X connect 9 0 6 1;
 #X connect 10 0 9 1;
 #X connect 12 0 2 0;
-#X connect 12 0 2 1;
 #X restore 443 279 pd downsampling;
 #X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
@@ -263,7 +261,6 @@ it to trigger mode with the "-tr" flag as in:, f 55;
 #X obj 243 353 else/display~;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
-#X connect 2 0 1 1;
 #X connect 2 0 11 0;
 #X connect 3 0 2 0;
 #X connect 4 0 2 0;
@@ -282,6 +279,5 @@ it., f 62;
 #X connect 26 0 18 0;
 #X connect 33 0 26 0;
 #X connect 34 0 20 0;
-#X connect 34 0 20 1;
 #X connect 34 0 33 1;
 #X connect 41 0 33 0;

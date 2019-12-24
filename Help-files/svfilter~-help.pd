@@ -97,7 +97,6 @@ simultaneously in parallel (in this order from left to right)., f
 #X connect 42 0 57 0;
 #X connect 52 0 54 0;
 #X connect 54 0 53 0;
-#X connect 54 0 53 1;
 #X connect 56 0 54 0;
 #X connect 56 1 54 1;
 #X connect 56 2 54 2;

@@ -39,7 +39,7 @@
 #X obj 606 75 hsl 128 15 20 20000 1 0 empty \$0-Hz-set empty -2 -8
 0 10 -228856 -1 -1 0 1;
 #X obj 545 111 noise~;
-#X obj 527 183 else/out~;
+#X obj 545 183 else/out~;
 #X text 55 92 y[n] = a0 * x[n] + a2 * x[n-2] + b1 * y[n-1] + b2 * y[n-2]
 ;
 #X text 61 118 a0 \, a2 \, b1 and b2 are calculated as a function of
@@ -83,7 +83,6 @@ below. The graph considers a sample rate of 44.1Khz.;
 #X connect 6 0 17 2;
 #X connect 7 0 17 1;
 #X connect 17 0 3 0;
-#X connect 17 0 3 1;
 #X connect 18 0 19 0;
 #X restore 432 223 pd filter formula \; and response;
 #X text 200 420 - central frequency in Hertz;
@@ -113,7 +112,6 @@ the message methods.;
 #X connect 8 0 10 0;
 #X connect 9 0 8 0;
 #X connect 10 0 0 0;
-#X connect 10 0 0 1;
 #X restore 467 198 pd resonance;
 #X text 210 60 (constant skirt);
 #X obj 216 153 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -149,10 +147,8 @@ gain filter" \, whereas [resonant~] is a constant skirt filter.;
 #X connect 2 0 5 0;
 #X connect 2 0 6 0;
 #X connect 5 0 4 0;
-#X connect 5 0 4 1;
 #X connect 5 0 9 0;
 #X connect 6 0 3 0;
-#X connect 6 0 3 1;
 #X connect 6 0 10 0;
 #X restore 366 261 pd [bandpass~]_vs_[resonant~];
 #X msg 159 180 clear;
@@ -161,12 +157,11 @@ gain filter" \, whereas [resonant~] is a constant skirt filter.;
 f 24;
 #N canvas 466 163 843 347 resonator 0;
 #X text 33 14 Resonator:;
-#X obj 72 130 noise~;
-#X obj 72 184 *~;
-#X obj 72 275 else/out~;
-#X obj 87 158 else/pulse~ 0.5 0.25;
-#X obj 72 232 else/resonant~ 400 1000;
-#X obj 240 233 else/resonant~ 700 2000;
+#X obj 228 128 noise~;
+#X obj 228 182 *~;
+#X obj 243 156 else/pulse~ 0.5 0.25;
+#X obj 65 218 else/resonant~ 400 1000;
+#X obj 228 218 else/resonant~ 700 2000;
 #X text 33 43 The Q parameter affecting the gain of the filter makes
 it so that it acts as a 'resonator' \, where it will resonate at the
 resonant frequency for a period of time after the input signal has
@@ -177,7 +172,7 @@ for the [resonant~] object.;
 #X text 449 233 The decay time is given in "T60" \, which is the time
 it takes to decay 60 dB. You can convert from decay time to Q and vice
 versa with a formula implemented in the subpatch below.;
-#X obj 533 100 else/out~;
+#X obj 554 100 else/out~;
 #X obj 554 68 else/resonant~ 1000 1000;
 #X obj 554 40 else/dust~ 5;
 #X text 642 40 random excitation;
@@ -246,15 +241,15 @@ versa with a formula implemented in the subpatch below.;
 #X connect 28 0 11 0;
 #X connect 29 0 28 0;
 #X restore 567 298 pd T60 and Q conversion;
+#X obj 141 256 else/out2~;
 #X connect 1 0 2 0;
+#X connect 2 0 4 0;
 #X connect 2 0 5 0;
-#X connect 2 0 6 0;
-#X connect 4 0 2 1;
-#X connect 5 0 3 0;
-#X connect 6 0 3 1;
+#X connect 3 0 2 1;
+#X connect 4 0 14 0;
+#X connect 5 0 14 1;
+#X connect 10 0 9 0;
 #X connect 11 0 10 0;
-#X connect 11 0 10 1;
-#X connect 12 0 11 0;
 #X restore 469 286 pd resonator;
 #X text 59 90 [resonant~] is a resonator that you can specify a decay
 time in ms \, or a Q factor. Like [bandpass~] \, it is a 2nd order
@@ -282,5 +277,4 @@ the filter.;
 #X connect 28 0 46 0;
 #X connect 40 0 41 0;
 #X connect 41 0 8 0;
-#X connect 41 0 8 1;
 #X connect 46 0 41 0;

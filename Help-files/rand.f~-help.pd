@@ -47,7 +47,6 @@
 #X connect 5 0 2 0;
 #X connect 6 0 4 0;
 #X connect 7 0 0 0;
-#X connect 7 0 0 1;
 #X connect 8 0 5 0;
 #X connect 9 0 3 0;
 #X restore 460 228 pd example;

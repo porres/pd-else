@@ -46,7 +46,7 @@
 #X text 220 494 - attack time in ms (default 10), f 46;
 #X text 220 479 - attenuation ratio (default 1), f 46;
 #X obj 234 207 else/out~;
-#X text 77 93 [compress~] is an abstraction that performes compression.
+#X text 77 90 [compress~] is an abstraction that performes compression.
 It attenuates an input signal above a given threshold., f 57;
 #X text 220 509 - release time in ms (default 10), f 46;
 #X text 220 464 - threshold in dB (default -10), f 46;
@@ -56,7 +56,7 @@ It attenuates an input signal above a given threshold., f 57;
 #X text 155 524 5) float;
 #X text 153 369 gain <float> - output gain adjustment in dB, f 58
 ;
-#X obj 209 133 else/play.file~ 1 kantele.wav 1 1;
+#X obj 234 137 else/play.file~ 1 kantele.wav 1 1;
 #X obj 115 434 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 195 435 float - reduction in dB, f 45;
@@ -70,7 +70,6 @@ to 512);
 ;
 #X obj 234 168 else/compress~ -30 5 5 5 12 256;
 #X connect 36 0 40 0;
-#X connect 36 0 40 1;
+#X connect 36 0 44 0;
 #X connect 44 0 27 0;
-#X connect 44 0 27 1;
 #X connect 44 1 39 0;

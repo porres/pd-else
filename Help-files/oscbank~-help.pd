@@ -47,7 +47,7 @@ for each oscillator in the bank.;
 #X text 242 101 click on the messages below to alter between them,
 f 27;
 #X obj 82 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 148 256;
+-228856 -1 -1 0 256;
 #X msg 168 138 ratio 1 2.5 3 3.7 4.2 5.1 5.9 6 \, phase 0 0.5 0.25
 0 0.1 0.9 0.75 0.1 \, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 38;
 #X msg 182 185 ratio 0.5 1.4 2.9 3.1 3.3 4.9 5.8 6.9 \, phase 0.5 0
@@ -59,7 +59,6 @@ f 27;
 #X connect 5 0 7 0;
 #X connect 6 0 7 0;
 #X connect 7 0 0 0;
-#X connect 7 0 0 1;
 #X connect 8 0 7 0;
 #X restore 468 237 pd example;
 #X text 239 404 - the oscillator bank output;
@@ -76,7 +75,7 @@ f 27;
 #X obj 151 239 else/out~;
 #X msg 224 151 ratio 0.51 1 1.9 2.3 \, amp 0.9 0.5 0.5 0.6, f 21;
 #X obj 151 157 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 348 256;
+-228856 -1 -1 0 256;
 #X obj 432 269 else/oscbank2~ 1;
 #X text 148 313 float/signal;
 #X text 73 501 -ratio <list>: sets list of ratios for all oscillators
@@ -99,4 +98,3 @@ oscillator is specified as a ratio of that frequency., f 68;
 #X connect 33 0 43 0;
 #X connect 34 0 43 0;
 #X connect 43 0 32 0;
-#X connect 43 0 32 1;

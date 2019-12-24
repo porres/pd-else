@@ -79,7 +79,6 @@ the crossfading point.;
 #X connect 10 0 12 0;
 #X connect 11 0 10 0;
 #X connect 12 0 1 0;
-#X connect 12 0 1 1;
 #X restore 484 275 pd modes;
 #X obj 186 211 else/xselect2~ 3, f 35;
 #X text 61 86 [xselect2~] selects between multiple inputs with equal
@@ -108,4 +107,3 @@ power crossfade between two adjacent channels.;
 #X connect 19 0 20 0;
 #X connect 20 0 32 0;
 #X connect 32 0 7 0;
-#X connect 32 0 7 1;

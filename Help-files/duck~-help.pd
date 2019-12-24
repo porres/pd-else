@@ -76,7 +76,7 @@ to how much the control signal has exceeded the threshold. For instance
 is 1 \, then th einoput signal gets attenuated by 10 dB. A ratio of
 0.5 decreases 5 dB \, 2 corresponds to 20 dB and so on., f 58;
 #X obj 287 185 else/glide~ 500;
-#X obj 98 272 else/out~;
+#X obj 120 272 else/out~;
 #X obj 120 176 noise~;
 #X obj 213 149 osc~ 220;
 #X obj 120 222 else/duck~ -40 0.2 100 100 -mix, f 16;
@@ -86,9 +86,7 @@ is 1 \, then th einoput signal gets attenuated by 10 dB. A ratio of
 #X connect 5 0 7 0;
 #X connect 6 0 0 0;
 #X connect 7 0 4 0;
-#X connect 7 0 4 1;
 #X restore 442 270 pd example;
 #X connect 22 0 39 0;
-#X connect 22 0 39 1;
 #X connect 38 0 22 0;
 #X connect 40 0 22 1;

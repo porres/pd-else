@@ -83,7 +83,6 @@ below!;
 #X obj 195 131 else/initmess -1 0.5 1 0.5 -1;
 #X obj 198 166 else/function 200 100 empty empty -1 1 220 220 220 50
 50 50 1 0 0 0 -1 0.5 1 0.5 -1;
-#X connect 2 0 1 1;
 #X connect 2 0 1 0;
 #X connect 2 0 9 0;
 #X connect 4 0 6 0;
@@ -114,12 +113,12 @@ inlet. Check the help file of [envgen~] for more details on how it
 works., f 64;
 #X connect 0 0 2 0;
 #X connect 2 0 3 1;
-#X connect 3 0 4 1;
 #X connect 3 0 4 0;
 #X connect 6 0 8 0;
 #X connect 7 0 10 0;
 #X connect 8 0 3 0;
 #X connect 9 0 6 0;
+#X connect 10 0 2 1;
 #X restore 480 169 pd envgen~;
 #X text 179 567 (none);
 #X text 143 514 init <float>;
@@ -235,22 +234,20 @@ it lists.;
 #X obj 217 412 else/display;
 #X obj 172 174 else/initmess 0 100 1 100 0.6 350 0.6 250 0;
 #X obj 220 201 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 11900 1;
 #X floatatom 217 225 0 0 0 0 - - -;
-#X obj 254 256 line;
+#X obj 294 256 line;
 #X obj 217 448 else/f2s~ 10;
 #X obj 108 433 *~;
 #X obj 108 400 osc~ 440;
 #X obj 109 476 else/out~;
-#X msg 254 230 0 \, 1 1000;
-#X obj 400 411 vsl 18 110 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X msg 294 230 0 \, 1 1000;
 #X text 55 62 In this example we convert the function output to signals
 with a ramp and use it to control the amplitude. But you can just use
 it as a control message instead., f 70;
 #X msg 118 248 i \$1;
 #X obj 118 227 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 17 256;
 #X text 55 12 Alternatively \, you can have a float input from 0 to
 1 into [function] and they'll be treatet as indexes and the amplitude
 value will then be output. This is useful if you want to control a
@@ -262,7 +259,6 @@ the table. The number of index is the same as the envelope dursation.
 A linear interpolation is performed with both a float input and using
 'i'., f 70;
 #X connect 0 0 1 0;
-#X connect 0 0 11 0;
 #X connect 1 0 6 0;
 #X connect 2 0 0 0;
 #X connect 3 0 4 0;
@@ -270,11 +266,10 @@ A linear interpolation is performed with both a float input and using
 #X connect 5 0 0 0;
 #X connect 6 0 7 1;
 #X connect 7 0 9 0;
-#X connect 7 0 9 1;
 #X connect 8 0 7 0;
 #X connect 10 0 5 0;
-#X connect 13 0 0 0;
-#X connect 14 0 13 0;
+#X connect 12 0 0 0;
+#X connect 13 0 12 0;
 #X restore 480 209 pd float/i;
 #X text 161 317 i <float>;
 #X text 225 318 - indexes of table (function value is output);

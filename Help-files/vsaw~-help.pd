@@ -37,27 +37,26 @@
 -228856 -1 -1 0 256;
 #X text 278 135 <= hz;
 #X text 184 434 3) float;
-#N canvas 823 159 457 411 width 0;
-#X obj 64 253 else/out~;
-#X obj 137 82 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+#N canvas 823 159 436 429 width 0;
+#X obj 134 191 else/out~;
+#X obj 145 82 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 134 107 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -1 256;
-#X obj 134 132 else/float2sig~ 10;
-#X obj 181 213 else/graph~ 300 43;
-#X obj 107 162 else/vsaw~ 200;
-#X text 27 20 A width of 0 or 1 makes it a sawtooth like waveform \,
+#X obj 142 107 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 142 132 else/float2sig~ 10;
+#X obj 115 257 else/graph~ 300 43;
+#X obj 115 162 else/vsaw~ 200;
+#X text 35 20 A width of 0 or 1 makes it a sawtooth like waveform \,
 while beteen 0 and 1 makes it triangular variants., f 53;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X connect 3 0 5 1;
 #X connect 5 0 0 0;
-#X connect 5 0 0 1;
 #X connect 5 0 4 0;
 #X restore 494 193 pd width;
 #X text 243 434 - initial phase offset (default 0);
 #X text 243 402 - frequency in hertz (default 0), f 34;
-#X obj 201 202 else/out~;
+#X obj 218 202 else/out~;
 #N canvas 410 232 920 431 waveform 0;
 #X obj 373 76 cnv 15 198 148 empty empty empty 20 12 0 14 -241406 -66577
 0;
@@ -280,8 +279,8 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X obj 258 224 else/sig2float~;
 #X text 223 139 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -350,7 +349,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -389,10 +388,10 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X msg 189 140 1;
 #X msg 111 140 0.5;
 #X obj 258 250 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 2456 1;
+-1 -1 0 1;
 #X obj 82 221 else/sig2float~;
 #X obj 82 252 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 2456 1;
+-1 -1 0 1;
 #X obj 82 191 else/vsaw~ 1 1;
 #X obj 258 200 else/vsaw~ 1 1;
 #X obj 522 229 else/vsaw~ 200 0.75;
@@ -413,7 +412,6 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X connect 21 0 19 0;
 #X connect 22 0 10 0;
 #X connect 23 0 1 0;
-#X connect 23 0 1 1;
 #X connect 24 0 28 0;
 #X connect 25 0 28 0;
 #X connect 26 0 28 0;
@@ -424,16 +422,16 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X text 405 38 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 - where 1 is also the start of another
 cycle.;
-#X obj 497 189 else/out~;
+#X obj 513 179 else/out~;
 #X text 609 137 Phase Modulation:;
 #X obj 594 109 osc~ 50.05;
 #X text 348 116 1;
 #X obj 210 116 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 207 141 4 0 0 0 - - -, f 4;
+#X floatatom 207 141 4 0 0 0 - - -;
 #X text 188 116 0;
 #X obj 223 207 +~;
-#X obj 207 244 else/out~;
+#X obj 223 244 else/out~;
 #X obj 513 136 else/vsaw~ 200;
 #X obj 238 172 else/vsaw~ 100 1 0.5;
 #X obj 114 173 else/vsaw~ 100 1;
@@ -445,9 +443,7 @@ feature is phase modulation., f 54;
 #X connect 5 0 6 0;
 #X connect 6 0 12 3;
 #X connect 8 0 9 0;
-#X connect 8 0 9 1;
 #X connect 10 0 1 0;
-#X connect 10 0 1 1;
 #X connect 11 0 8 1;
 #X connect 12 0 8 0;
 #X restore 450 233 pd phase offset;
@@ -456,4 +452,3 @@ feature is phase modulation., f 54;
 #X text 165 294 float/signal - pulse width (from 0 to 1);
 #X connect 18 0 29 0;
 #X connect 29 0 24 0;
-#X connect 29 0 24 1;

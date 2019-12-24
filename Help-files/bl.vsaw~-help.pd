@@ -34,7 +34,7 @@
 in the way it handles it \, this object does not have any arguments.
 , f 74;
 #X text 452 245 see also:;
-#X obj 212 249 else/out~;
+#X obj 228 249 else/out~;
 #X obj 3 447 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
 #X obj 452 267 else/vsaw~;
@@ -75,4 +75,3 @@ implement a bandlimited oscillator., f 74;
 #X text 233 471 - initial width (default 0), f 34;
 #X connect 10 0 33 0;
 #X connect 33 0 17 0;
-#X connect 33 0 17 1;

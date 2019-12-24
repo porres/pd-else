@@ -1,6 +1,6 @@
 #N canvas 748 23 559 549 10;
 #X obj 226 169 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 9200 1;
+10 -228856 -1 -1 0 1;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -32,13 +32,13 @@
 #X text 160 366 signal;
 #X text 147 399 1) float;
 #X obj 223 193 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 6571.54 256;
+-228856 -1 -1 0 256;
 #X text 124 316 float/signal;
 #X text 207 316 - frequency in hertz (negative values accepted);
 #X obj 173 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
 #X text 282 193 rate in Hz;
-#X obj 180 243 else/out~;
+#X obj 223 243 else/out~;
 #X text 172 333 list;
 #X text 83 135 The output rate of the equation is given in hertz (default:
 nyquist).;
@@ -67,6 +67,5 @@ nyquist).;
 #X text 90 193 setting => 'a' & 'b', f 10;
 #X connect 0 0 17 0;
 #X connect 17 0 31 0;
-#X connect 31 0 22 1;
 #X connect 31 0 22 0;
 #X connect 32 0 31 0;

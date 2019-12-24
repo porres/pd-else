@@ -1,6 +1,6 @@
 #N canvas 565 68 568 567 10;
 #X obj 179 117 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 60 256;
+-228856 -1 -1 0 256;
 #X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -57,17 +57,17 @@ of channels., f 47;
 #X text 60 90 [vocoder~] is classic cross synthesis channel vocoder
 abstraction., f 67;
 #X obj 179 238 else/out~;
-#N canvas 692 227 532 461 example 0;
-#X text 103 36 In this example you can control the frequency of each
+#N canvas 692 227 432 485 example 0;
+#X text 41 27 In this example you can control the frequency of each
 frequency band channel from an array.;
-#X obj 282 322 nbx 3 16 50 1000 0 0 empty empty empty 0 -8 0 12 -228856
+#X obj 257 354 nbx 3 16 50 1000 0 0 empty empty empty 0 -8 0 12 -228856
 -1 -1 50 256;
-#X obj 91 192 else/bl.saw~;
-#X obj 91 166 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-hz2 empty 0 -8 0
+#X obj 146 297 else/bl.saw~;
+#X obj 146 271 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-hz2 empty 0 -8 0
 10 -228856 -1 -1 74 256;
-#X obj 191 94 else/play.file~ voice.wav 1 1;
-#X obj 93 377 else/out~;
-#X obj 136 348 else/vocoder~ 28 75;
+#X obj 201 324 else/play.file~ voice.wav 1 1;
+#X obj 146 409 else/out~;
+#X obj 146 380 else/vocoder~ 28 75;
 #N canvas 490 23 564 470 bands 0;
 #X obj 277 318 array get \$0-bands;
 #X obj 277 413 outlet;
@@ -112,15 +112,14 @@ frequency band channel from an array.;
 #X connect 16 0 5 0;
 #X connect 17 0 10 0;
 #X coords 0 -1 1 1 210 167 2 50 40;
-#X restore 219 134 pd bands;
+#X restore 65 90 pd bands;
 #X connect 1 0 6 2;
 #X connect 2 0 6 0;
 #X connect 3 0 2 0;
 #X connect 4 0 6 1;
-#X connect 6 0 5 1;
 #X connect 6 0 5 0;
 #X connect 7 0 6 0;
-#X restore 441 259 pd example;
+#X restore 470 267 pd example;
 #X obj 179 209 else/vocoder~ 16 75;
 #X obj 179 139 else/bl.saw~ 60;
 #X obj 290 188 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -135,6 +134,5 @@ frequency band channel from an array.;
 #X connect 0 0 37 0;
 #X connect 32 0 36 1;
 #X connect 36 0 34 0;
-#X connect 36 0 34 1;
 #X connect 37 0 36 0;
 #X connect 38 0 36 2;

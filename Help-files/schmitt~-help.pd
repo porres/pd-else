@@ -50,7 +50,7 @@
 #X text 167 466 2) float;
 #X text 237 450 - sets low threshold (default 0);
 #X obj 164 212 vsl 20 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 4950 1;
+-1 -1 0 1;
 #X text 152 256 0;
 #X text 152 205 1;
 #X text 140 230 0.5;

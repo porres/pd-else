@@ -80,4 +80,3 @@ granulation., f 69;
 #X connect 13 0 41 3;
 #X connect 38 0 41 0;
 #X connect 41 0 11 0;
-#X connect 41 0 11 1;

@@ -38,6 +38,7 @@ canvas.edit.class.sources := Classes/Source/canvas.edit.c
 canvas.mouse.class.sources := Classes/Source/canvas.mouse.c
 canvas.name.class.sources := Classes/Source/canvas.name.c
 canvas.wname.class.sources := Classes/Source/canvas.wname.c
+canvas.vis.class.sources := Classes/Source/canvas.vis.c
 savechange.class.sources := Classes/Source/savechange.c
 properties.class.sources := Classes/Source/properties.c
 break.class.sources := Classes/Source/break.c

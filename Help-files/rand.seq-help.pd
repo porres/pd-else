@@ -124,7 +124,6 @@ generates an unrepeated random sequence.;
 #X connect 11 0 13 0;
 #X connect 11 1 13 1;
 #X connect 13 0 15 0;
-#X connect 13 0 15 1;
 #X connect 14 0 8 0;
 #X connect 16 0 19 0;
 #X connect 17 0 10 0;

@@ -30,9 +30,9 @@
 0;
 #X obj 192 171 noise~;
 #X obj 265 153 nbx 5 14 10 10000 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 500 256;
+-1 -1 10 256;
 #X obj 324 185 nbx 5 14 1 100 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 5 256;
+-1 -1 1 256;
 #X text 250 420 - filtered signal;
 #X text 250 342 - signal to be filtered;
 #X obj 129 364 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
@@ -67,5 +67,4 @@ is an abstraction that stacks many [allpass.2nd~] objects in cascade.
 #X connect 17 0 37 1;
 #X connect 18 0 37 2;
 #X connect 34 0 33 0;
-#X connect 34 0 33 1;
 #X connect 37 0 34 1;

@@ -22,7 +22,7 @@
 ;
 #X text 155 421 float/signal;
 #X obj 175 263 else/out~;
-#X obj 218 219 *~;
+#X obj 175 219 *~;
 #X obj 295 188 else/sig2float~;
 #X text 321 210 1;
 #X obj 146 161 osc~ 440;
@@ -59,7 +59,6 @@ takes to reach the maximum value (which is always shorter \, so it's
 just an alternative to minimize the harsh attack of [decay~])., f
 62;
 #X connect 0 0 6 0;
-#X connect 0 0 6 1;
 #X connect 1 0 0 0;
 #X connect 2 0 5 1;
 #X connect 3 0 5 0;
@@ -68,7 +67,7 @@ just an alternative to minimize the harsh attack of [decay~])., f
 #X connect 5 0 0 1;
 #X restore 495 246 pd more;
 #X obj 295 216 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 5449 1;
+-1 -1 0 1;
 #X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -100,7 +99,7 @@ just an alternative to minimize the harsh attack of [decay~])., f
 parameter. It is based on SuperCollider's "Decay2" UGEN.;
 #N canvas 608 162 627 364 control 0;
 #X obj 88 234 else/out~;
-#X obj 131 190 *~;
+#X obj 88 190 *~;
 #X obj 208 187 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
 -1 -1 0 1;
 #X obj 208 159 else/sig2float~;
@@ -110,9 +109,9 @@ parameter. It is based on SuperCollider's "Decay2" UGEN.;
 -1;
 #X obj 69 128 else/gray~;
 #X obj 352 256 else/out~;
-#X obj 395 212 *~;
+#X obj 352 212 *~;
 #X obj 472 209 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 4950 1;
+-1 -1 0 1;
 #X obj 472 181 else/sig2float~;
 #X text 497 252 0;
 #X text 497 203 1;
@@ -130,12 +129,10 @@ parameter. It is based on SuperCollider's "Decay2" UGEN.;
 \, such as bangs and float input. A bang will trigger the object with
 the last received float input (which is 1 by default).;
 #X connect 1 0 0 0;
-#X connect 1 0 0 1;
 #X connect 3 0 2 0;
 #X connect 6 0 19 0;
 #X connect 7 0 1 0;
 #X connect 9 0 8 0;
-#X connect 9 0 8 1;
 #X connect 11 0 10 0;
 #X connect 14 0 9 0;
 #X connect 15 0 20 0;
@@ -233,7 +230,6 @@ the last received float input (which is 1 by default).;
 #X connect 7 0 5 0;
 #X restore 489 269 pd shape;
 #X connect 13 0 12 0;
-#X connect 13 0 12 1;
 #X connect 14 0 25 0;
 #X connect 16 0 13 0;
 #X connect 34 0 13 1;

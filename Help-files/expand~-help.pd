@@ -56,4 +56,3 @@ It attenuates an input signal below a given threshold.;
 #X obj 184 167 else/expand~ -15 5 10 10 0;
 #X connect 32 0 34 0;
 #X connect 34 0 27 0;
-#X connect 34 0 27 1;

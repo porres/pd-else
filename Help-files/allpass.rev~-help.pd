@@ -53,8 +53,8 @@
 #X text 387 211 Decay time (ms);
 #N canvas 522 182 855 362 Details 0;
 #X text 172 254 D = Delay time in ms;
-#X floatatom 553 209 5 0 1000 0 - - -, f 5;
-#X floatatom 630 210 8 0 100 0 - - -, f 8;
+#X floatatom 553 209 5 0 1000 0 - - -;
+#X floatatom 630 210 8 0 100 0 - - -;
 #X obj 633 186 hsl 128 15 -1000 1000 0 0 empty empty empty -2 -8 0
 10 -228856 -1 -1 0 1;
 #X obj 477 272 else/out~;
@@ -129,7 +129,6 @@ the expression: a = exp(log(0.001) * D/t60).;
 #X connect 53 0 51 0;
 #X connect 56 0 59 0;
 #X connect 59 0 4 0;
-#X connect 59 0 4 1;
 #X restore 438 287 pd Details and \; Filter Equation;
 #X text 156 411 float/signal - delay time (im ms), f 54;
 #X text 156 436 float/signal - decay time (in ms), f 54;
@@ -163,7 +162,6 @@ also change that with the "gain" message., f 72;
 #X connect 3 0 4 0;
 #X connect 4 0 6 0;
 #X connect 6 0 2 0;
-#X connect 6 0 2 1;
 #X restore 459 262 pd gain mode;
 #X text 146 388 gain <float>;
 #X obj 175 232 else/allpass.rev~ 100 1000;
@@ -178,5 +176,4 @@ in energy (but you can change this parameter to a gain coefficient).
 #X connect 25 0 38 0;
 #X connect 37 0 10 1;
 #X connect 38 0 43 1;
-#X connect 43 0 11 1;
 #X connect 43 0 11 0;

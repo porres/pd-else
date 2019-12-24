@@ -79,13 +79,13 @@
 #X obj 89 326 else/rand.f 500 3000, f 12;
 #X obj 410 113 else/play.file~ didge.aif -loop;
 #X obj 479 202 hsl 128 15 0.1 100 1 0 empty \$0-decay empty -2 -8 0
-10 -228856 -1 -1 0 1;
+10 -228856 -1 -1 6253 1;
 #X floatatom 476 226 5 0 0 0 - - -;
 #X obj 547 230 hsl 128 15 0 1 0 0 empty \$0-damping empty -2 -8 0 10
--228856 -1 -1 0 1;
+-228856 -1 -1 3175 1;
 #X floatatom 544 255 5 0 0 0 - - -;
 #X obj 612 262 hsl 128 15 0 1 0 0 empty \$0-size empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 6032 1;
 #X floatatom 609 285 5 0 0 0 - - -;
 #X text 580 229 damping;
 #X msg 544 277 damp \$1;
@@ -95,7 +95,7 @@
 #X msg 476 250 decay \$1;
 #X text 520 201 decay;
 #X obj 678 297 hsl 128 15 0 1 0 0 empty \$0-wet empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 9525 1;
 #X floatatom 675 320 5 0 0 0 - - -;
 #X msg 675 346 wet \$1;
 #X text 728 297 wet;
@@ -120,7 +120,6 @@
 #X connect 26 0 31 0;
 #X connect 28 0 27 0;
 #X connect 31 0 30 0;
-#X connect 31 1 30 1;
 #X connect 32 0 18 0;
 #X connect 33 0 18 1;
 #X connect 34 0 11 0;
@@ -145,7 +144,6 @@
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X obj 30 40 cnv 4 4 4 empty empty Mono 0 28 2 18 -233017 -1 0;
-#X obj 202 236 else/out~;
 #X obj 202 170 else/play.file~ vacuous.wav 1 1;
 #X obj 83 40 cnv 4 4 4 empty empty reverb 0 28 2 18 -233017 -1 0;
 #X obj 202 204 else/mono.rev~;
@@ -193,6 +191,7 @@ value is around 0.5 \, values closer to 0 and 1 may create unusual
 results. Changing size values may generates unusual artifacts (you
 can clear the delay buffers when you do it to prevent it \, but you
 may get clicks)., f 70;
-#X connect 13 0 15 0;
-#X connect 15 0 12 0;
-#X connect 15 1 12 1;
+#X obj 198 235 else/out2~;
+#X connect 12 0 14 0;
+#X connect 14 0 45 0;
+#X connect 14 1 45 1;

@@ -39,16 +39,16 @@
 0);
 #X text 200 226 - generates value from sequence;
 #N canvas 803 160 399 333 example 0;
-#X obj 159 30 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 159 30 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 73 153 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 100 256;
+-228856 -1 -1 0 256;
 #X obj 159 91 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 159 56 else/tempo 120 100;
 #X obj 159 178 else/decay2~ 50 2000;
 #X obj 144 208 *~;
-#X obj 122 243 else/out~;
+#X obj 144 243 else/out~;
 #X text 251 94 A sequence of frequencies., f 13;
 #X obj 73 178 else/bl.saw~;
 #X obj 73 124 else/sequencer 50 100 80 120 60 150 100 70;
@@ -59,7 +59,6 @@
 #X connect 3 0 2 0;
 #X connect 4 0 5 1;
 #X connect 5 0 6 0;
-#X connect 5 0 6 1;
 #X connect 8 0 5 0;
 #X connect 9 0 1 0;
 #X restore 475 163 pd example;
@@ -76,14 +75,14 @@ a given sequence.;
 #X text 200 242 - goes to a position index in the sequence (from 1)
 ;
 #N canvas 457 198 744 472 +examples 0;
-#X obj 176 88 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 176 88 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 90 261 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 150 256;
+-228856 -1 -1 0 256;
 #X obj 176 124 else/tempo 120 100;
 #X obj 176 286 else/decay2~ 50 2000;
 #X obj 161 316 *~;
-#X obj 139 351 else/out~;
+#X obj 161 351 else/out~;
 #X text 268 182 A sequence of frequencies., f 13;
 #X obj 90 286 else/bl.saw~;
 #X obj 90 232 else/sequencer 50 100 80 120 60 150 100 70;
@@ -97,14 +96,14 @@ a given sequence.;
 ;
 #X text 70 25 Use [count] if you want to also have the sequence being
 read in different directions., f 44;
-#X obj 519 84 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 519 84 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 438 257 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 120 256;
+-228856 -1 -1 0 256;
 #X obj 519 120 else/tempo 120 100;
 #X obj 519 282 else/decay2~ 50 2000;
 #X obj 504 312 *~;
-#X obj 477 347 else/out~;
+#X obj 504 347 else/out~;
 #X text 616 178 A sequence of frequencies., f 13;
 #X obj 438 282 else/bl.saw~;
 #X obj 438 228 else/sequencer 50 100 80 120 60 150 100 70;
@@ -118,7 +117,6 @@ read in different directions., f 44;
 #X connect 2 0 9 0;
 #X connect 3 0 4 1;
 #X connect 4 0 5 0;
-#X connect 4 0 5 1;
 #X connect 7 0 4 0;
 #X connect 8 0 1 0;
 #X connect 9 0 10 0;
@@ -134,7 +132,6 @@ read in different directions., f 44;
 #X connect 19 0 28 0;
 #X connect 20 0 21 1;
 #X connect 21 0 22 0;
-#X connect 21 0 22 1;
 #X connect 24 0 21 0;
 #X connect 25 0 18 0;
 #X connect 26 0 27 0;
