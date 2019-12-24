@@ -1,4 +1,4 @@
-#N canvas 135 174 937 588 10;
+#N canvas 428 176 937 588 10;
 #X obj 53 102 cnv 15 198 138 empty \$0-bgcnv empty 20 12 0 14 -233017
 -66577 0;
 #N canvas 576 23 391 220 guts 0;
@@ -358,35 +358,19 @@
 #X connect 7 0 0 0;
 #X connect 9 0 8 0;
 #X connect 10 0 0 0;
-#X restore 95 63 pd guts;
+#X restore 111 45 pd guts;
 #X text 344 49 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 346 30 Alexandre Torres Porres (2017-2018);
-#X obj 150 64 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+#X obj 166 46 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 199 44 namecanvas \$0-patch;
 #N canvas 929 310 511 457 \$0-array-cnv 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array     \  \  \  \    \ \  \ \   441 float 1;
-#A 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-0 0;
-#X coords 0 1 441 -1 198 138 2 50 100;
-#X restore 100 20 graph;
 #X coords 0 1 100 -1 200 140 2 99 19;
 #X restore 52 101 pd \$0-array-cnv;
-#X obj 58 34 inlet~ fwd;
+#X obj 74 16 inlet~ fwd;
+#X obj 74 69 outlet~;
 #X connect 4 0 1 2;
 #X connect 7 0 1 0;
+#X connect 7 0 8 0;
 #X connect 7 1 1 1;
 #X coords 0 1 100 -1 202 142 2 51 100;
