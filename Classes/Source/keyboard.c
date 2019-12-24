@@ -579,8 +579,8 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
         init_8ves = atom_getfloat(av++), ac--;
     if(ac) // 4th ARGUMENT: Lowest C ("First C")
         init_low_c = atom_getfloat(av++), ac--;
-    if(ac) // 5th ARGUMENT: Toggle Mode)
-        tgl = (t_int)(atom_getfloat(av++) != 0), ac--;
+//    if(ac) // 5th ARGUMENT: Toggle Mode)
+//        tgl = (t_int)(atom_getfloat(av++) != 0), ac--;
     x->x_out = outlet_new(&x->x_obj, &s_list);
     floatinlet_new(&x->x_obj, &x->velocity_input);
 // Set Parameters
