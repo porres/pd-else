@@ -21,7 +21,7 @@
 #X obj 163 361 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 58 361 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 73 256;
 #X text 54 378 MIDI Note;
 #X text 162 377 Velocity;
 #X obj 216 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
@@ -67,7 +67,6 @@ generates them from mouse clicking. Right click it for properties!
 #X text 256 443 - set key width;
 #X text 158 443 width <float>;
 #X text 152 458 height <float>;
-#X text 256 458 - set keybioard width;
 #X text 170 473 oct <float>;
 #X text 256 473 - transpose octaves up or down;
 #X text 164 488 8ves <float>;
@@ -238,7 +237,7 @@ synths., f 58;
 #X text 233 171 Try clicking and dragging \, it also works and slides
 through chromatically!, f 26;
 #X obj 270 433 else/out~;
-#X obj 69 264 keyboard 17 80 3 2;
+#X obj 69 264 else/keyboard 17 80 3 2;
 #X connect 0 0 5 0;
 #X connect 1 0 2 0;
 #X connect 1 1 2 1;
@@ -263,15 +262,16 @@ through chromatically!, f 26;
 #X text 256 542 - velocity of MIDI note value;
 #X text 152 518 toggle <float>;
 #X text 256 518 - sets toggle mode on of off (not yet);
-#X obj 58 241 keyboard 17 80 4 3;
+#X obj 58 241 else/keyboard 17 80 4 3;
+#X text 256 458 - set keyboard width;
 #X connect 9 0 11 0;
 #X connect 9 1 10 0;
 #X connect 14 0 16 0;
-#X connect 15 0 59 0;
-#X connect 15 1 59 1;
+#X connect 15 0 58 0;
+#X connect 15 1 58 1;
 #X connect 16 0 17 0;
 #X connect 17 0 15 0;
-#X connect 51 0 59 0;
-#X connect 52 0 51 0;
-#X connect 53 0 51 0;
-#X connect 59 0 9 0;
+#X connect 50 0 58 0;
+#X connect 51 0 50 0;
+#X connect 52 0 50 0;
+#X connect 58 0 9 0;
