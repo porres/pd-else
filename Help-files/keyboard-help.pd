@@ -238,7 +238,7 @@ synths., f 58;
 #X text 233 171 Try clicking and dragging \, it also works and slides
 through chromatically!, f 26;
 #X obj 270 433 else/out~;
-#X obj 69 264 else/keyboard 17 80 3 2;
+#X obj 69 264 keyboard 17 80 3 2;
 #X connect 0 0 5 0;
 #X connect 1 0 2 0;
 #X connect 1 1 2 1;
@@ -263,7 +263,7 @@ through chromatically!, f 26;
 #X text 256 542 - velocity of MIDI note value;
 #X text 152 518 toggle <float>;
 #X text 256 518 - sets toggle mode on of off (not yet);
-#X obj 58 241 else/keyboard 17 80 4 3;
+#X obj 58 241 keyboard 17 80 4 3;
 #X connect 9 0 11 0;
 #X connect 9 1 10 0;
 #X connect 14 0 16 0;
