@@ -1,28 +1,28 @@
-#N struct 1149-point float x0 float y0 float xs float ys float fg float
+#N struct 1179-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1162-point float x0 float y0 float xs float ys float fg float
+#N struct 1192-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1171-point float x0 float y0 float xs float ys float fg float
+#N struct 1201-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1186-point float x0 float y0 float xs float ys float fg float
+#N struct 1216-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1195-point float x0 float y0 float xs float ys float fg float
+#N struct 1225-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1204-point float x0 float y0 float xs float ys float fg float
+#N struct 1234-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1213-point float x0 float y0 float xs float ys float fg float
+#N struct 1243-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1222-point float x0 float y0 float xs float ys float fg float
+#N struct 1252-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1235-point float x0 float y0 float xs float ys float fg float
+#N struct 1265-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1246-point float x0 float y0 float xs float ys float fg float
+#N struct 1276-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1256-point float x0 float y0 float xs float ys float fg float
+#N struct 1286-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1267-point float x0 float y0 float xs float ys float fg float
+#N struct 1297-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1280-point float x0 float y0 float xs float ys float fg float
+#N struct 1310-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 510 50 561 564 10;
 #X obj 2 3 cnv 15 301 42 empty empty slider2d 20 20 2 37 -233017 -1
@@ -323,7 +323,6 @@ the patch., f 46;
 #X connect 8 0 10 0;
 #X connect 9 0 3 0;
 #X connect 10 0 0 0;
-#X connect 10 0 0 1;
 #X restore 92 225 pd example;
 #N canvas 757 48 552 413 send/receive 0;
 #X msg 65 222 64 64;
