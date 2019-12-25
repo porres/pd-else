@@ -1,4 +1,3 @@
-// from moonlib
 
 #include "m_pd.h"
 #include "m_imp.h"
@@ -12,8 +11,6 @@
 #pragma warning( disable : 4305 )
 #endif
 
-// ------------------------ pic ----------------------------- //
-
 static t_class *pic_class;
 
 typedef struct _pic{
@@ -24,22 +21,22 @@ typedef struct _pic{
     t_symbol   *x_filename;
     t_symbol   *x_arg;
     int         x_def_img;
-} t_pic;
+}t_pic;
 
 //////////////////////////// widget helper functions /////////////////////////////
 
-const char *pic_get_filename(t_pic *x,char *file){
+const char *pic_get_filename(t_pic *x, const char *file){
     static char fname[MAXPDSTRING];
     char *bufptr;
-    int fd = open_via_path(canvas_getdir(glist_getcanvas(x->x_glist))->s_name, file, "",
-                           fname, &bufptr, MAXPDSTRING, 1);
+    int fd = open_via_path(canvas_getdir(glist_getcanvas(x->x_glist))->s_name,
+                file, "", fname, &bufptr, MAXPDSTRING, 1);
     if(fd > 0){
         fname[strlen(fname)] = '/';
         close(fd);
-        return fname;
+        return(fname);
     }
     else
-        return 0;
+        return(0);
 }
 
 void pic_draw(t_pic *x, t_glist *glist, int displace){
@@ -118,6 +115,7 @@ static void pic_save(t_gobj *z, t_binbuf *b){
     t_pic *x = (t_pic *)z;
     if(x->x_filename == gensym("else_pic_def_img"))
         x->x_filename = x->x_arg != &s_ ? x->x_arg : &s_;
+//        x->x_filename = x->x_arg; // why not this?
     binbuf_addv(b, "ssiiss", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
         atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_filename);
     binbuf_addv(b, ";");
@@ -129,7 +127,7 @@ void pic_open(t_gobj *z,t_symbol *file){
     if(fname){
         x->x_filename = file;
         if(glist_isvisible(x->x_glist)){
-            sys_vgui("image create photo img%x\n", x); // if no local image ?
+            sys_vgui("image create photo img%x\n",x); // if no local image ?
             sys_vgui("img%x blank\n", x);
             sys_vgui("img%x configure -file {%s}\n", x, fname);
             if(x->x_def_img)
@@ -144,12 +142,12 @@ void pic_open(t_gobj *z,t_symbol *file){
 t_widgetbehavior pic_widgetbehavior;
 
 static void pic_setwidget(void){
-    pic_widgetbehavior.w_getrectfn =  pic_getrect;
+    pic_widgetbehavior.w_getrectfn  =  pic_getrect;
     pic_widgetbehavior.w_displacefn = pic_displace;
-    pic_widgetbehavior.w_selectfn =   pic_select;
-    pic_widgetbehavior.w_deletefn =   pic_delete;
-    pic_widgetbehavior.w_visfn =      pic_vis;
-    pic_widgetbehavior.w_clickfn = NULL;
+    pic_widgetbehavior.w_selectfn   = pic_select;
+    pic_widgetbehavior.w_deletefn   = pic_delete;
+    pic_widgetbehavior.w_visfn      = pic_vis;
+    pic_widgetbehavior.w_clickfn    = NULL;
 }
 
 static void *pic_new(t_symbol *name){
@@ -176,7 +174,6 @@ void pic_setup(void){
     pic_setwidget();
     class_setwidget(pic_class, &pic_widgetbehavior);
     class_setsavefn(pic_class, &pic_save);
-// default image (?)
     sys_vgui("image create photo else_pic_def_img -data {R0lGODdhJwAnAMQAAAAAAAsLCxMTExwcHCIiIisrKzw8PERERExMTFRUVF1dXWVlZW1tbXNzc3t7e4ODg42NjZOTk5qamqSkpK2trbS0tLy8vMPDw8zMzNTU1Nzc3OPj4+3t7fT09P///wAAACH5BAkKAB8ALAAAAAAnACcAAAX/oCeOJKlRTzIARwNVWinPNNYAeK4HjNXRQNLGkRsIArnAYIVbZILAjAFAYAICgmxyQMBZoDJNt1vUGc0CAAY86iioSdwgkTjIzQAEh+2hwHFpAhQbHIUZRGk5XRRsbldxazIQAFZpCz9QGjqUABM0HHZIjwMxUBgAiUh6QJOVAE9QGVRGBQCMQBJ/qGpgHUQ5l0GtOWmwUBwTCwoRe0AbZDhIBRt8Hh2YQURWKw/VfMOKvN5BHA+cObUR40EZCOc4tQzY6yUXONACXQzN9CUWV9twRJjXT4S9M/e8FJTBoVYiTgxKLSRRQdcKCAQnejDHZIUDjTNuJFphDOSICAAKUQiIZzLMpgstZWR4sKABzJgzMuLcyXMdBwsTKEjcqcFdjls4HRXgsuJmTHu1EjbYOeFdmgT8TFaEtiJYzA13UnbiWfERgAY6QdoQgGBCWiAhAAA7\n");
     sys_vgui("}\n");
 }
