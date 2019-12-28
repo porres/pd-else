@@ -37,9 +37,6 @@
 #X text 226 381 - open an image file named by the symbol;
 #X msg 221 141 open tklogo.gif;
 #X msg 244 167 open pdlogo.gif;
-#X text 81 89 [pic] loads image pictures \, so far \, it only works
-with file types: .gif \, .ppm & .pgm. When you click on the picture
-\, it sends a bang.;
 #X obj 221 335 else/display;
 #X obj 91 459 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
@@ -95,16 +92,17 @@ the send/receive symbols., f 67;
 #X msg 151 298 open green.gif;
 #X msg 124 327 open red.gif;
 #X obj 104 402 outlet;
-#X obj 207 245 else/initmess \; \$0-set open red.gif;
 #X obj 104 104 else/pic red.gif empty empty;
+#X obj 67 40 else/initmess open red.gif;
 #X connect 0 0 1 0;
 #X connect 0 0 6 0;
 #X connect 1 0 5 0;
 #X connect 1 1 4 0;
-#X connect 3 0 8 0;
+#X connect 3 0 7 0;
 #X connect 4 0 2 0;
 #X connect 5 0 2 0;
-#X connect 8 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 7 0;
 #X coords 0 -1 1 1 121 121 2 100 100;
 #X restore 135 110 pd;
 #X obj 135 252 else/display;
@@ -114,6 +112,9 @@ the send/receive symbols., f 67;
 #X restore 478 329 pd example;
 #X obj 221 194 else/pic pdlogo.gif empty empty;
 #X text 145 201 click the image ===->, f 12;
-#X connect 19 0 38 0;
-#X connect 20 0 38 0;
-#X connect 38 0 22 0;
+#X text 81 89 [pic] loads image pictures that you can interact with
+When you click on the picture \, it sends a bang. It only works with
+file types: .gif \, .ppm & .pgm.;
+#X connect 19 0 37 0;
+#X connect 20 0 37 0;
+#X connect 37 0 21 0;
