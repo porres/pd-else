@@ -21,6 +21,7 @@ typedef struct _pic{
      int        x_height;
      int        x_snd_set;
      int        x_rcv_set;
+     int        x_bound;
      t_symbol  *x_fullname;
      t_symbol  *x_filename;
      t_symbol  *x_x;
@@ -57,17 +58,6 @@ static int pic_click(t_pic *x, struct _glist *glist, int xpos, int ypos, int shi
     return(1); // avoid warning
 }
 
-static void pic_draw(t_pic *x, t_glist *glist, int firsttime){
-     if(firsttime){
-        sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_pic -tags %lximage\n",
-                 glist_getcanvas(glist), text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist), x->x_fullname, x);
-        sys_vgui("pdsend \"%s _imagesize [image width %lx_pic] [image height %lx_pic]\"\n",
-                 x->x_x->s_name, x->x_fullname, x->x_fullname);
-     }
-     else sys_vgui(".x%lx.c coords %lximage %d %d\n", glist_getcanvas(glist), x,
-            text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist));
-}
-
 void pic_erase(t_pic* x,t_glist* glist){
      sys_vgui(".x%lx.c delete %lximage\n", glist_getcanvas(glist), x);
 }
@@ -87,7 +77,8 @@ static void pic_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     x->x_obj.te_ypix += dy;
     sys_vgui(".x%lx.c coords %lxSEL %d %d %d %d\n", glist_getcanvas(glist), x, text_xpix(&x->x_obj, glist),
         text_ypix(&x->x_obj, glist), text_xpix(&x->x_obj, glist) + x->x_width, text_ypix(&x->x_obj, glist) + x->x_height);
-    pic_draw(x, glist, 0);
+    sys_vgui(".x%lx.c coords %lximage %d %d\n", glist_getcanvas(glist), x,
+           text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist));
     canvas_fixlinesfor(glist, (t_text*)x);
 }
 
@@ -108,8 +99,12 @@ static void pic_delete(t_gobj *z, t_glist *glist){
 }
        
 static void pic_vis(t_gobj *z, t_glist *glist, int vis){
-    t_pic* s = (t_pic*)z;
-    vis ? pic_draw(s, glist, 1) : pic_erase(s, glist);
+    t_pic* x = (t_pic*)z;
+    if(vis)
+        sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_pic -tags %lximage\n",
+                 glist_getcanvas(glist), text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist), x->x_fullname, x);
+    else
+        pic_erase(x, glist);
 }
 
 static void pic_save(t_gobj *z, t_binbuf *b){
@@ -141,10 +136,13 @@ static void pic_save(t_gobj *z, t_binbuf *b){
 static void pic_imagesize_callback(t_pic *x, t_float w, t_float h){
     x->x_width = w;
     x->x_height = h;
-    canvas_fixlinesfor(x->x_glist, (t_text*)x);
+    if(glist_isvisible(x->x_glist))
+        canvas_fixlinesfor(x->x_glist, (t_text*)x);
     pd_unbind(&x->x_obj.ob_pd, x->x_x);
-    if(x->x_receive != &s_)
+    if(x->x_receive != &s_){
         pd_bind(&x->x_obj.ob_pd, x->x_receive);
+        x->x_bound = 1;
+    }
 }
 
 void pic_open(t_pic* x, t_symbol *filename){
@@ -155,12 +153,18 @@ void pic_open(t_pic* x, t_symbol *filename){
                 x->x_filename = filename;
                 x->x_fullname = gensym(file_name_open);
                 sys_vgui("if { [info exists %lx_pic] == 0 } { image create photo %lx_pic -file \"%s\"\n set %lx_pic 1\n} \n",
-                        x->x_fullname, x->x_fullname, file_name_open, x->x_fullname);
+                    x->x_fullname, x->x_fullname, file_name_open, x->x_fullname);
                 if(x->x_receive != &s_)
                     pd_unbind(&x->x_obj.ob_pd, x->x_receive);
                 pd_bind(&x->x_obj.ob_pd, x->x_x);
-                pic_erase(x, x->x_glist);
-                pic_draw(x, x->x_glist, 1);
+                if(glist_isvisible(x->x_glist)){
+                    pic_erase(x, x->x_glist);
+                    sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_pic -tags %lximage\n",
+                        glist_getcanvas(x->x_glist), text_xpix(&x->x_obj, x->x_glist), text_ypix(&x->x_obj,
+                        x->x_glist), x->x_fullname, x);
+                }
+                sys_vgui("pdsend \"%s _imagesize [image width %lx_pic] [image height %lx_pic]\"\n",
+                         x->x_x->s_name, x->x_fullname, x->x_fullname);
             }
             else
                 pd_error(x, "[pic]: error opening file '%s'", filename->s_name);
@@ -183,10 +187,20 @@ static void pic_receive(t_pic *x, t_symbol *s){
         x->x_rcv_raw = s;
         x->x_rcv_set = 1;
         t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_rcv_raw);
-        if(rcv != &s_){
-            if(x->x_receive != &s_)
+        if(rcv == &s_){
+            if(rcv != x->x_receive){
+                if(x->x_bound){
+                    pd_unbind(&x->x_obj.ob_pd, x->x_receive);
+                    x->x_bound = 0;
+                }
+                x->x_receive = rcv;
+            }
+        }
+        else if(rcv != x->x_receive){
+            if(x->x_bound)
                 pd_unbind(&x->x_obj.ob_pd, x->x_receive);
             pd_bind(&x->x_obj.ob_pd, x->x_receive = rcv);
+            x->x_bound = 1;
         }
     }
 }
@@ -213,7 +227,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
     pd_bind(&x->x_obj.ob_pd, x->x_x);
     x->x_glist = (t_glist*)canvas_getcurrent();
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_filename = &s_;
-    int loaded = x->x_rcv_set = x->x_snd_set = 0;
+    int loaded = x->x_rcv_set = x->x_snd_set = x->x_bound = 0;
     x->x_fullname = NULL;
     if(ac && (av)->a_type == A_SYMBOL)
         x->x_filename = atom_getsymbol(av);
@@ -232,7 +246,10 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
         if(fname){
             loaded = 1;
             x->x_fullname = gensym(fname);
-            sys_vgui("if { [info exists %lx_pic] == 0 } { image create photo %lx_pic -file \"%s\"\n set %lx_pic 1\n} \n", x->x_fullname, x->x_fullname, fname, x->x_fullname);
+            sys_vgui("if { [info exists %lx_pic] == 0 } { image create photo %lx_pic -file \"%s\"\n set %lx_pic 1\n} \n",
+                    x->x_fullname, x->x_fullname, fname, x->x_fullname);
+            sys_vgui("pdsend \"%s _imagesize [image width %lx_pic] [image height %lx_pic]\"\n",
+                     x->x_x->s_name, x->x_fullname, x->x_fullname);
         }
         else
             pd_error(x, "[pic]: error opening file '%s'", x->x_filename->s_name);
