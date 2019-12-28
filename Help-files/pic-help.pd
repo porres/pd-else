@@ -1,4 +1,4 @@
-#N canvas 463 23 560 452 10;
+#N canvas 569 79 564 593 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -23,27 +23,41 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 4 324 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 374 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 359 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 439 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 394 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 474 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 111 333 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 383 cnv 17 3 48 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 427 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 564 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 140 334 open <symbol>;
-#X text 226 334 - open an image file named by the symbol;
-#X text 182 368 (none);
-#X msg 292 159 open tklogo.gif;
-#X msg 272 127 open pdlogo.gif;
-#X text 81 94 [pic] loads image pictures \, so far \, it only works
-with file types: .gif \, .ppm & .pgm;
-#X text 428 256 <= default image;
-#X text 133 402 1) symbol - file to open (default \, internal question
-mark image), f 64;
-#X obj 273 248 else/pic pdlogo.gif;
-#X obj 400 262 else/pic ;
-#X connect 20 0 25 0;
+#X text 140 384 open <symbol>;
+#X text 226 384 - open an image file named by the symbol;
+#X msg 290 170 open tklogo.gif;
+#X msg 270 138 open pdlogo.gif;
+#X obj 270 199 else/pic pdlogo.gif;
+#X obj 119 310 else/pic;
+#X text 66 310 default image:, f 7;
+#X text 81 89 [pic] loads image pictures \, so far \, it only works
+with file types: .gif \, .ppm & .pgm. When you click on the picture
+\, it sends a bang.;
+#X obj 270 340 else/display;
+#X text 173 243 click on it =>;
+#X obj 91 449 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 194 450 bang;
+#X text 226 450 - a bang is output if you click on the image;
+#X text 140 400 send <symbol>;
+#X text 226 400 - sets a send symbol;
+#X text 122 415 receive <symbol>;
+#X text 226 415 - sets a receive symbol;
+#X obj 4 504 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 182 482 (none);
+#X text 153 512 -file <symbol>: filename to open, f 57;
+#X text 153 528 -send <symbol>: send symbol, f 57;
+#X text 153 544 -receive <symbol>: receive symbol, f 57;
+#X connect 19 0 21 0;
+#X connect 20 0 21 0;
 #X connect 21 0 25 0;
