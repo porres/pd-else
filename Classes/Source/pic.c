@@ -23,6 +23,7 @@ typedef struct _pic{
      int        x_rcv_set;
      int        x_bound;
      int        x_bound_to_x;
+     int        x_init;
      int        x_def_img;
      t_symbol  *x_fullname;
      t_symbol  *x_filename;
@@ -121,9 +122,19 @@ static void pic_vis(t_gobj *z, t_glist *glist, int vis){
                      glist_getcanvas(glist), x, "pic_def_img");
         }
         else{
-            if(x->x_bound_to_x)
+            if(!x->x_init){
+                x->x_init = 1;
+                if(x->x_receive != &s_ && x->x_bound){
+                    pd_unbind(&x->x_obj.ob_pd, x->x_receive);
+                    x->x_bound = 0;
+                }
+                if(!x->x_bound_to_x){
+                    pd_bind(&x->x_obj.ob_pd, x->x_x);
+                    x->x_bound_to_x = 1;
+                }
                 sys_vgui("pdsend \"%s _imagesize [image width %lx_pic] [image height %lx_pic]\"\n",
                      x->x_x->s_name, x->x_fullname, x->x_fullname);
+            }
             sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_pic -tags %lximage\n",
                      glist_getcanvas(glist), text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist), x->x_fullname, x);
         }
@@ -268,7 +279,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
     x->x_bound_to_x = 1;
     x->x_glist = (t_glist*)canvas_getcurrent();
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_filename = &s_;
-    int loaded = x->x_rcv_set = x->x_snd_set = x->x_bound = x->x_def_img = 0;
+    int loaded = x->x_rcv_set = x->x_snd_set = x->x_bound = x->x_def_img = x->x_init = 0;
     x->x_fullname = NULL;
     if(ac && (av)->a_type == A_SYMBOL)
         x->x_filename = atom_getsymbol(av);
@@ -289,6 +300,10 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
             x->x_fullname = gensym(fname);
             sys_vgui("if { [info exists %lx_pic] == 0 } { image create photo %lx_pic -file \"%s\"\n set %lx_pic 1\n} \n",
                     x->x_fullname, x->x_fullname, fname, x->x_fullname);
+            if(x->x_receive != &s_){
+                pd_bind(&x->x_obj.ob_pd, x->x_receive);
+                x->x_bound = 1;
+            }
         }
         else
             pd_error(x, "[pic]: error opening file '%s'", x->x_filename->s_name);

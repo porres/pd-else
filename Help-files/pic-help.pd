@@ -37,12 +37,10 @@
 #X text 226 381 - open an image file named by the symbol;
 #X msg 221 141 open tklogo.gif;
 #X msg 244 167 open pdlogo.gif;
-#X obj 221 194 else/pic pdlogo.gif empty empty;
 #X text 81 89 [pic] loads image pictures \, so far \, it only works
 with file types: .gif \, .ppm & .pgm. When you click on the picture
 \, it sends a bang.;
 #X obj 221 335 else/display;
-#X text 123 240 click on it =>;
 #X obj 91 459 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 194 460 bang;
@@ -57,7 +55,6 @@ with file types: .gif \, .ppm & .pgm. When you click on the picture
 -1 -1;
 #X obj 103 357 else/display;
 #X msg 120 175 send empty \, receive empty;
-#X obj 103 211 else/pic pdlogo.gif \$0-pic-snd \$0-pic-rcv;
 #X text 92 47 You can set send/receive names with the 2nd and 3rd argument
 or the 'send'/'receive' messages - make sure to escape "\$0" properly
 with backlashes (as in: "\\\$0"). Setting these to 'empty' removes
@@ -66,20 +63,23 @@ the send/receive symbols., f 67;
 ;
 #X obj 349 250 r \$0-pic-snd;
 #X obj 347 207 s \$0-pic-rcv;
-#X connect 1 0 8 0;
-#X connect 3 0 4 0;
-#X connect 4 0 2 0;
-#X connect 6 0 4 0;
-#X connect 7 0 0 0;
+#X obj 103 211 else/pic pdlogo.gif \$0-pic-snd \$0-pic-rcv;
+#X msg 41 161 status;
+#X connect 1 0 7 0;
+#X connect 3 0 8 0;
+#X connect 5 0 8 0;
+#X connect 6 0 0 0;
+#X connect 8 0 2 0;
+#X connect 9 0 8 0;
 #X restore 490 296 pd send \; receive;
 #X text 153 511 2) <symbol>: send symbol (default 'empty'), f 57;
 #X text 153 527 3) <symbol>: receive symbol (default 'empty'), f 57
 ;
 #N canvas 679 192 385 212 default 0;
-#X obj 216 122 else/pic empty empty empty;
 #X text 89 52 When you have an empty filename or error opening a file
 \, pic lods a default image of a question mark:, f 34;
 #X text 109 132 default image =>;
+#X obj 216 122 else/pic empty empty empty;
 #X restore 480 274 pd default;
 #X text 194 396 bang;
 #X text 226 396 - outputs a bang, f 40;
@@ -87,7 +87,7 @@ the send/receive symbols., f 67;
 , f 57;
 #N canvas 846 246 395 353 example 0;
 #N canvas 457 127 400 491 (subpatch) 0;
-#X obj 104 232 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 104 232 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 124 270 sel 0 1;
 #X obj 151 363 s \$0-set;
@@ -95,16 +95,16 @@ the send/receive symbols., f 67;
 #X msg 151 298 open green.gif;
 #X msg 124 327 open red.gif;
 #X obj 104 402 outlet;
-#X obj 104 104 else/pic green.gif empty empty;
 #X obj 207 245 else/initmess \; \$0-set open red.gif;
+#X obj 104 104 else/pic red.gif empty empty;
 #X connect 0 0 1 0;
 #X connect 0 0 6 0;
 #X connect 1 0 5 0;
 #X connect 1 1 4 0;
-#X connect 3 0 7 0;
+#X connect 3 0 8 0;
 #X connect 4 0 2 0;
 #X connect 5 0 2 0;
-#X connect 7 0 0 0;
+#X connect 8 0 0 0;
 #X coords 0 -1 1 1 121 121 2 100 100;
 #X restore 135 110 pd;
 #X obj 135 252 else/display;
@@ -112,6 +112,8 @@ the send/receive symbols., f 67;
 #X text 267 164 <= open;
 #X connect 0 0 1 0;
 #X restore 478 329 pd example;
-#X connect 19 0 21 0;
-#X connect 20 0 21 0;
-#X connect 21 0 23 0;
+#X obj 221 194 else/pic pdlogo.gif empty empty;
+#X text 145 201 click the image ===->, f 12;
+#X connect 19 0 38 0;
+#X connect 20 0 38 0;
+#X connect 38 0 22 0;
