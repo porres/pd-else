@@ -150,6 +150,7 @@ void pic_open(t_pic* x, t_symbol *filename){
         if(filename != x->x_filename){
             const char *file_name_open = pic_get_filename(x, filename->s_name); // path
             if(file_name_open){
+                canvas_dirty(x->x_glist, 1);
                 x->x_filename = filename;
                 x->x_fullname = gensym(file_name_open);
                 sys_vgui("if { [info exists %lx_pic] == 0 } { image create photo %lx_pic -file \"%s\"\n set %lx_pic 1\n} \n",
@@ -178,7 +179,11 @@ static void pic_send(t_pic *x, t_symbol *s){
     if(s != gensym("")){
         x->x_snd_raw = s;
         x->x_snd_set = 1;
-        x->x_send = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_snd_raw);
+        t_symbol *snd = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_snd_raw);
+        if(snd != x->x_send){
+            canvas_dirty(x->x_glist, 1);
+            x->x_send = snd;
+        }
     }
 }
 
@@ -189,6 +194,7 @@ static void pic_receive(t_pic *x, t_symbol *s){
         t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_rcv_raw);
         if(rcv == &s_){
             if(rcv != x->x_receive){
+                canvas_dirty(x->x_glist, 1);
                 if(x->x_bound){
                     pd_unbind(&x->x_obj.ob_pd, x->x_receive);
                     x->x_bound = 0;
@@ -260,6 +266,8 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
         const char *fname = pic_get_filename(x, "question.gif"); 
         x->x_fullname = gensym(fname);
         sys_vgui("if { [info exists %lx_pic] == 0 } { image create photo %lx_pic -file \"%s\"\n set %lx_pic 1\n} \n", x->x_fullname, x->x_fullname, fname, x->x_fullname);
+        sys_vgui("pdsend \"%s _imagesize [image width %lx_pic] [image height %lx_pic]\"\n",
+                 x->x_x->s_name, x->x_fullname, x->x_fullname);
     }
     x->x_outlet = outlet_new(&x->x_obj, &s_bang);
     return(x);
