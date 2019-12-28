@@ -1,4 +1,4 @@
-#N canvas 482 88 561 476 10;
+#N canvas 701 23 561 476 10;
 #X obj 2 195 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 2 295 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -60,25 +60,31 @@ enabled and you can use the arrow keys for navigation., f 55;
 #X text 158 328 (none);
 #X text 98 425 -note <anything>;
 #X text 92 408 -receive <symbol>;
-#N canvas 673 231 629 379 messages 0;
-#X obj 72 286 else/note 0 50 helvetica ? 0 0 0 0 Note;
-#X msg 72 89 size 50;
-#X msg 91 118 size 30;
-#X msg 107 145 name helvetica;
-#X msg 122 174 name courier;
-#X msg 146 211 rgb 0 0 0;
-#X msg 150 241 rgb 150 100 50;
-#X msg 339 139 rgb 0 0 0;
-#X msg 320 111 rgb 200 0 0;
-#X text 58 30 You can also edit the properties of [note] with messages.
+#N canvas 836 209 699 451 messages 0;
+#X obj 85 245 else/note 0 50 helvetica ? 0 0 0 0 Note;
+#X msg 85 48 size 50;
+#X msg 104 77 size 30;
+#X msg 120 104 name helvetica;
+#X msg 135 133 name courier;
+#X msg 159 170 rgb 0 0 0;
+#X msg 163 200 rgb 150 100 50;
+#X msg 414 155 rgb 0 0 0;
+#X msg 395 127 rgb 200 0 0;
+#X text 159 42 You can also edit the properties of [note] with messages.
 , f 21;
-#X msg 360 177 set text 1 2 3;
-#X msg 366 204 set Note;
-#X obj 319 270 else/note 0 50 helvetica \$0-note 0 0 0 0 Note;
-#X obj 320 233 s \$0-note;
-#X text 255 34 The [note] object below has a receive symbol \, so you
+#X msg 435 193 set text 1 2 3;
+#X msg 441 220 set Note;
+#X obj 391 341 else/note 0 50 helvetica \$0-note 0 0 0 0 Note;
+#X obj 395 249 s \$0-note;
+#X text 367 46 The [note] object below has a receive symbol \, so you
 can send messages to it via a [send] object. IF you set a receive name
-as "empty" then it it can't receive messages anymore., f 52;
+as "empty" then it it can't receive messages anymore., f 39;
+#X obj 391 283 else/initmess receive \\\$0-note;
+#X msg 422 311 receive empty;
+#X text 53 323 You can also set a receive name with the 'receive' messages
+or '-receive' flag. Make sure to escape "\$0" properly with backlashes
+(as in: "\\\$0") when using messages. Setting it to 'empty' removes
+the receive symbol., f 40;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
@@ -89,6 +95,8 @@ as "empty" then it it can't receive messages anymore., f 52;
 #X connect 8 0 13 0;
 #X connect 10 0 13 0;
 #X connect 11 0 13 0;
+#X connect 15 0 12 0;
+#X connect 16 0 12 0;
 #X restore 478 169 pd messages;
 #X obj 96 207 cnv 17 3 80 empty empty 0 5 9 0 16 -228856 -162280 0
 ;

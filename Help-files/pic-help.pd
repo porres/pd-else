@@ -1,4 +1,4 @@
-#N canvas 569 79 564 593 10;
+#N canvas 637 43 563 574 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -23,41 +23,68 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 4 374 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 371 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 439 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 449 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 474 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 484 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 91 383 cnv 17 3 48 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 381 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 564 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 547 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 140 384 open <symbol>;
-#X text 226 384 - open an image file named by the symbol;
-#X msg 290 170 open tklogo.gif;
-#X msg 270 138 open pdlogo.gif;
-#X obj 270 199 else/pic pdlogo.gif;
-#X obj 119 310 else/pic;
-#X text 66 310 default image:, f 7;
+#X text 140 381 open <symbol>;
+#X text 226 381 - open an image file named by the symbol;
+#X msg 221 141 open tklogo.gif;
+#X msg 244 167 open pdlogo.gif;
+#X obj 221 194 else/pic pdlogo.gif empty empty;
 #X text 81 89 [pic] loads image pictures \, so far \, it only works
 with file types: .gif \, .ppm & .pgm. When you click on the picture
 \, it sends a bang.;
-#X obj 270 340 else/display;
-#X text 173 243 click on it =>;
-#X obj 91 449 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 221 335 else/display;
+#X text 123 240 click on it =>;
+#X obj 91 459 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 194 450 bang;
-#X text 226 450 - a bang is output if you click on the image;
-#X text 140 400 send <symbol>;
-#X text 226 400 - sets a send symbol;
-#X text 122 415 receive <symbol>;
-#X text 226 415 - sets a receive symbol;
-#X obj 4 504 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 182 482 (none);
-#X text 153 512 -file <symbol>: filename to open, f 57;
-#X text 153 528 -send <symbol>: send symbol, f 57;
-#X text 153 544 -receive <symbol>: receive symbol, f 57;
+#X text 194 460 bang;
+#X text 226 460 - a bang is output if you click on the image;
+#X text 140 412 send <symbol>;
+#X text 226 412 - sets a send symbol, f 40;
+#X text 122 427 receive <symbol>;
+#X text 226 427 - sets a receive symbol, f 40;
+#N canvas 766 187 594 440 send 0;
+#X obj 349 284 else/display;
+#X obj 347 184 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 103 357 else/display;
+#X msg 120 175 send empty \, receive empty;
+#X obj 103 211 else/pic pdlogo.gif \$0-pic-snd \$0-pic-rcv;
+#X text 92 47 You can set send/receive names with the 2nd and 3rd argument
+or the 'send'/'receive' messages - make sure to escape "\$0" properly
+with backlashes (as in: "\\\$0"). Setting these to 'empty' removes
+the send/receive symbols., f 67;
+#X obj 103 141 initmess send \\\$0-pic-snd \, receive \\\$0-pic-rcv
+;
+#X obj 349 250 r \$0-pic-snd;
+#X obj 347 207 s \$0-pic-rcv;
+#X connect 1 0 8 0;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X connect 6 0 4 0;
+#X connect 7 0 0 0;
+#X restore 490 318 pd send \; receive;
+#X text 153 495 1) <symbol>: filename to open (default 'empty'), f
+57;
+#X text 153 511 2) <symbol>: send symbol (default 'empty'), f 57;
+#X text 153 527 3) <symbol>: receive symbol (default 'empty'), f 57
+;
+#N canvas 679 192 385 212 default 0;
+#X obj 229 114 else/pic empty empty empty;
+#X text 89 52 When you have an empty filename or error opening a file
+\, pic lods a default image of a question mark:, f 34;
+#X text 116 121 default image =>;
+#X restore 480 296 pd default;
+#X text 194 396 bang;
+#X text 226 396 - outputs a bang, f 40;
 #X connect 19 0 21 0;
 #X connect 20 0 21 0;
-#X connect 21 0 25 0;
+#X connect 21 0 23 0;

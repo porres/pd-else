@@ -234,7 +234,7 @@ it lists.;
 #X obj 217 412 else/display;
 #X obj 172 174 else/initmess 0 100 1 100 0.6 350 0.6 250 0;
 #X obj 220 201 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 11900 1;
+-1 -1 0 1;
 #X floatatom 217 225 0 0 0 0 - - -;
 #X obj 294 256 line;
 #X obj 217 448 else/f2s~ 10;
@@ -247,7 +247,7 @@ with a ramp and use it to control the amplitude. But you can just use
 it as a control message instead., f 70;
 #X msg 118 248 i \$1;
 #X obj 118 227 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 17 256;
+-228856 -1 -1 0 256;
 #X text 55 12 Alternatively \, you can have a float input from 0 to
 1 into [function] and they'll be treatet as indexes and the amplitude
 value will then be output. This is useful if you want to control a
@@ -273,31 +273,30 @@ A linear interpolation is performed with both a float input and using
 #X restore 480 209 pd float/i;
 #X text 161 317 i <float>;
 #X text 225 318 - indexes of table (function value is output);
-#N canvas 668 153 567 407 send 0;
+#N canvas 782 252 584 411 send 0;
 #X obj 345 283 else/display;
-#X obj 99 210 else/function 200 100 function-out function-in 0 1 220
-220 220 50 50 50 1 0 0 0 0.53 395 1 260 0 345 0.58;
-#X obj 345 249 r function-out;
+#X obj 99 210 else/function 200 100 \$0-function-out \$0-function-in
+0 1 220 220 220 50 50 50 1 0 0 0 0.53 400 1 255 0 345 0.58;
 #X obj 343 183 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 68 160 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 96 336 else/display;
-#X obj 343 206 s function-in;
-#X text 93 33 The init message or flag outputs the last saved state
-of [function] when loading the patch. The "send"/"receive" messages
-and flags set a symbol name to send to and receive messages from [function].
-when they're provided \, the inlet and outlet are not drawn. You can
-reset a send or receive name to empty again by seting the name to "empty".
-, f 67;
-#X obj 96 140 initmess send function-out \, receive function-in;
 #X msg 116 174 send empty \, receive empty;
-#X connect 1 0 5 0;
-#X connect 2 0 0 0;
-#X connect 3 0 6 0;
-#X connect 4 0 1 0;
-#X connect 8 0 1 0;
-#X connect 9 0 1 0;
+#X obj 96 140 else/initmess send \\\$0-function-out \, receive \\\$0-function-in
+;
+#X obj 343 205 s \$0-function-in;
+#X obj 345 249 r \$0-function-out;
+#X text 93 33 You can also set send/receive names with the 'send'/'receive'
+messages or '-send'/'-receive' flags. Make sure to escape "\$0" properly
+with backlashes (as in: "\\\$0") when using messages. Setting these
+to 'empty' removes the send/receive symbols., f 67;
+#X connect 1 0 4 0;
+#X connect 2 0 7 0;
+#X connect 3 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 1 0;
+#X connect 8 0 0 0;
 #X restore 491 250 pd send \; receive;
 #X connect 41 0 49 0;
 #X connect 43 0 49 0;

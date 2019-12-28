@@ -1,4 +1,3 @@
-// imagebang
 
 #include <m_pd.h>
 #include <g_canvas.h>
@@ -20,11 +19,15 @@ typedef struct _pic{
      t_glist   *x_glist;
      int        x_width;
      int        x_height;
+     int        x_snd_set;
+     int        x_rcv_set;
      t_symbol  *x_fullname;
      t_symbol  *x_filename;
      t_symbol  *x_x;
      t_symbol  *x_receive;
+     t_symbol  *x_rcv_raw;
      t_symbol  *x_send;
+     t_symbol  *x_snd_raw;
      t_outlet  *x_outlet;
 }t_pic;
 
@@ -48,10 +51,10 @@ static int pic_click(t_pic *x, struct _glist *glist, int xpos, int ypos, int shi
     glist = NULL, xpos = ypos = shift = alt = dbl = 0;
     if(doit){
         outlet_bang(x->x_outlet);
-        if(x->x_send && x->x_send->s_thing)
+        if(x->x_send != &s_ && x->x_send->s_thing)
             pd_bang(x->x_send->s_thing);
     }
-    return(1); // why?
+    return(1); // avoid warning
 }
 
 static void pic_draw(t_pic *x, t_glist *glist, int firsttime){
@@ -109,12 +112,38 @@ static void pic_vis(t_gobj *z, t_glist *glist, int vis){
     vis ? pic_draw(s, glist, 1) : pic_erase(s, glist);
 }
 
+static void pic_save(t_gobj *z, t_binbuf *b){
+    t_pic *x = (t_pic *)z;
+    t_binbuf *bb = x->x_obj.te_binbuf;
+    int n_args = binbuf_getnatom(bb); // number of arguments
+    char buf[80];
+    if(n_args > 0){
+        if(n_args > 2 && !x->x_snd_set){
+            atom_string(binbuf_getvec(bb) + 2, buf, 80);
+            x->x_snd_raw = gensym(buf);
+        }
+        if(n_args > 3 && !x->x_rcv_set){
+            atom_string(binbuf_getvec(bb) + 3, buf, 80);
+            x->x_rcv_raw = gensym(buf);
+        }
+    }
+    if(x->x_filename == &s_)
+        x->x_filename = gensym("empty");
+    if(x->x_snd_raw == &s_)
+        x->x_snd_raw = gensym("empty");
+    if(x->x_rcv_raw == &s_)
+        x->x_rcv_raw = gensym("empty");
+    binbuf_addv(b, "ssiissss", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
+        atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_filename, x->x_snd_raw, x->x_rcv_raw);
+    binbuf_addv(b, ";");
+}
+
 static void pic_imagesize_callback(t_pic *x, t_float w, t_float h){
     x->x_width = w;
     x->x_height = h;
     canvas_fixlinesfor(x->x_glist, (t_text*)x);
     pd_unbind(&x->x_obj.ob_pd, x->x_x);
-    if(x->x_receive)
+    if(x->x_receive != &s_)
         pd_bind(&x->x_obj.ob_pd, x->x_receive);
 }
 
@@ -127,7 +156,7 @@ void pic_open(t_pic* x, t_symbol *filename){
                 x->x_fullname = gensym(file_name_open);
                 sys_vgui("if { [info exists %lx_pic] == 0 } { image create photo %lx_pic -file \"%s\"\n set %lx_pic 1\n} \n",
                         x->x_fullname, x->x_fullname, file_name_open, x->x_fullname);
-                if(x->x_receive)
+                if(x->x_receive != &s_)
                     pd_unbind(&x->x_obj.ob_pd, x->x_receive);
                 pd_bind(&x->x_obj.ob_pd, x->x_x);
                 pic_erase(x, x->x_glist);
@@ -141,33 +170,38 @@ void pic_open(t_pic* x, t_symbol *filename){
         pd_error(x, "[pic]: open needs a file name");
 }
 
+static void pic_send(t_pic *x, t_symbol *s){
+    if(s != gensym("")){
+        x->x_snd_raw = s;
+        x->x_snd_set = 1;
+        x->x_send = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_snd_raw);
+    }
+}
+
+static void pic_receive(t_pic *x, t_symbol *s){
+    if(s != gensym("")){
+        x->x_rcv_raw = s;
+        x->x_rcv_set = 1;
+        t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_rcv_raw);
+        if(rcv != &s_){
+            if(x->x_receive != &s_)
+                pd_unbind(&x->x_obj.ob_pd, x->x_receive);
+            pd_bind(&x->x_obj.ob_pd, x->x_receive = rcv);
+        }
+    }
+}
+
+static void pic_bang(t_pic *x){
+    outlet_bang(x->x_outlet);
+    if(x->x_send != &s_ && x->x_send->s_thing)
+        pd_bang(x->x_send->s_thing);
+}
+
 static void pic_free(t_pic *x){ // if variable is unset and image is unused then delete them
     sys_vgui("if { [info exists %lx_pic] == 1 && [image inuse %lx_pic] == 0} { image delete %lx_pic \n unset %lx_pic\n} \n",
         x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
-    if(x->x_receive)
+    if(x->x_receive != &s_)
         pd_unbind(&x->x_obj.ob_pd, x->x_receive);
-}
-
-static void pic_status(t_pic *x){
-    post("width:    %d", x->x_width);
-    post("height:   %d", x->x_height);
-    post("fullname: %s", x->x_fullname->s_name);
-    post("filename: %s", x->x_filename ? x->x_filename->s_name : "");
-    post("receive:  %s", x->x_receive ? x->x_receive->s_name : "empty");
-    post("send:     %s", x->x_send ? x->x_send->s_name : "empty");
-}
-
-static void pic_setsend(t_pic *x, t_symbol *s){
-    if(s != gensym(""))
-        x->x_send = s;
-}
-
-static void pic_setreceive(t_pic *x, t_symbol *s){
-    if(s != gensym("")){
-        if(x->x_receive)
-            pd_unbind(&x->x_obj.ob_pd, x->x_receive);
-        pd_bind(&x->x_obj.ob_pd, x->x_receive = s);
-    }
 }
 
 static void *pic_new(t_symbol *s, int ac, t_atom *av){
@@ -178,19 +212,22 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
     x->x_x = gensym(buf);
     pd_bind(&x->x_obj.ob_pd, x->x_x);
     x->x_glist = (t_glist*)canvas_getcurrent();
-    x->x_send = NULL;
-    x->x_receive = NULL;
+    x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_filename = &s_;
+    int loaded = x->x_rcv_set = x->x_snd_set = 0;
     x->x_fullname = NULL;
-    x->x_filename = NULL;
     if(ac && (av)->a_type == A_SYMBOL)
         x->x_filename = atom_getsymbol(av);
-    if((av+1)->a_type == A_SYMBOL)
-        x->x_send = atom_getsymbol(av+1);
-    if((av+2)->a_type == A_SYMBOL)
-        x->x_receive = atom_getsymbol(av+2);
-    int loaded = 0;
-    if(ac && (av)->a_type == A_SYMBOL){
-        x->x_filename = atom_getsymbol(av);
+    if((av+1)->a_type == A_SYMBOL){
+        t_symbol *snd = atom_getsymbol(av+1);
+        if(snd != gensym("empty"))
+            x->x_send = snd;
+    }
+    if((av+2)->a_type == A_SYMBOL){
+        t_symbol *rcv = atom_getsymbol(av+2);
+        if(rcv != gensym("empty"))
+            x->x_receive = rcv;
+    }
+    if(x->x_filename !=  &s_ && x->x_filename !=  gensym("empty")){
         const char *fname = pic_get_filename(x, x->x_filename->s_name); // full path
         if(fname){
             loaded = 1;
@@ -201,23 +238,23 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
             pd_error(x, "[pic]: error opening file '%s'", x->x_filename->s_name);
     }
     if(!loaded){ // default image
+        x->x_width = 28;
+        x->x_height = 33;
         const char *fname = pic_get_filename(x, "question.gif"); 
         x->x_fullname = gensym(fname);
         sys_vgui("if { [info exists %lx_pic] == 0 } { image create photo %lx_pic -file \"%s\"\n set %lx_pic 1\n} \n", x->x_fullname, x->x_fullname, fname, x->x_fullname);
     }
-    x->x_outlet = outlet_new(&x->x_obj, &s_float);
+    x->x_outlet = outlet_new(&x->x_obj, &s_bang);
     return(x);
 }
 
 void pic_setup(void){
-    pic_class = class_new(gensym("pic"), (t_newmethod)pic_new, (t_method)pic_free,
-                sizeof(t_pic),0, A_GIMME,0);
-    class_addmethod(pic_class, (t_method)pic_imagesize_callback, gensym("_imagesize"),
-                A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(pic_class, (t_method)pic_status, gensym("status"), 0);
+    pic_class = class_new(gensym("pic"), (t_newmethod)pic_new, (t_method)pic_free, sizeof(t_pic),0, A_GIMME,0);
+    class_addbang(pic_class, pic_bang);
+    class_addmethod(pic_class, (t_method)pic_imagesize_callback, gensym("_imagesize"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(pic_class, (t_method)pic_open, gensym("open"), A_SYMBOL, 0);
-    class_addmethod(pic_class, (t_method)pic_setsend, gensym("send"), A_DEFSYMBOL, 0);
-    class_addmethod(pic_class, (t_method)pic_setreceive, gensym("receive"), A_DEFSYMBOL, 0);
+    class_addmethod(pic_class, (t_method)pic_send, gensym("send"), A_DEFSYMBOL, 0);
+    class_addmethod(pic_class, (t_method)pic_receive, gensym("receive"), A_DEFSYMBOL, 0);
     pic_widgetbehavior.w_getrectfn =  pic_getrect;
     pic_widgetbehavior.w_displacefn = pic_displace;
     pic_widgetbehavior.w_selectfn =   pic_select;
@@ -225,7 +262,7 @@ void pic_setup(void){
     pic_widgetbehavior.w_visfn =      pic_vis;
     pic_widgetbehavior.w_clickfn =    (t_clickfn)pic_click;
     class_setwidget(pic_class, &pic_widgetbehavior);
-// class_setsavefn(pic_class, &pic_save);
+    class_setsavefn(pic_class, &pic_save);
 /*    sys_vgui("image create photo pic_def_img -data {R0lGODdhJwAnAMQAAAAAAAsLCxMTExwcHCIiIisrKzw8PERERExMTFRUVF1dXWVlZW1tbXNzc3t7e4ODg42NjZOTk5qamqSkpK2trbS0tLy8vMPDw8zMzNTU1Nzc3OPj4+3t7fT09P///wAAACH5BAkKAB8ALAAAAAAnACcAAAX/oCeOJKlRTzIARwNVWinPNNYAeK4HjNXRQNLGkRsIArnAYIVbZILAjAFAYAICgmxyQMBZoDJNt1vUGc0CAAY86iioSdwgkTjIzQAEh+2hwHFpAhQbHIUZRGk5XRRsbldxazIQAFZpCz9QGjqUABM0HHZIjwMxUBgAiUh6QJOVAE9QGVRGBQCMQBJ/qGpgHUQ5l0GtOWmwUBwTCwoRe0AbZDhIBRt8Hh2YQURWKw/VfMOKvN5BHA+cObUR40EZCOc4tQzY6yUXONACXQzN9CUWV9twRJjXT4S9M/e8FJTBoVYiTgxKLSRRQdcKCAQnejDHZIUDjTNuJFphDOSICAAKUQiIZzLMpgstZWR4sKABzJgzMuLcyXMdBwsTKEjcqcFdjls4HRXgsuJmTHu1EjbYOeFdmgT8TFaEtiJYzA13UnbiWfERgAY6QdoQgGBCWiAhAAA7\n");
     sys_vgui("}\n");*/
 }
