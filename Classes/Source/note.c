@@ -63,11 +63,15 @@ static void note_receive(t_note *x, t_symbol *s){
     if(rcv == gensym("empty"))
         rcv == &s_;
     if(rcv != &s_){
-        if(x->x_receive_sym != &s_)
-            pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
-        pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = rcv);
+        if(rcv != x->x_receive){
+            canvas_dirty(x->x_glist, 1);
+            if(x->x_receive_sym != &s_)
+                pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
+            pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = rcv);
+        }
     }
     else{
+        canvas_dirty(x->x_glist, 1);
         if(x->x_receive_sym != &s_)
             pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
         x->x_receive_sym = rcv;

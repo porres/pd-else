@@ -492,10 +492,13 @@ static void function_duration(t_function* x, t_floatarg dur){
         post("function: minimum duration is 1 ms");
         return;
     }
-    x->x_total_duration = dur;
-    float f = dur/x->x_duration[x->x_n_states];
-    for(int i = 1; i <= x->x_n_states; i++)
-        x->x_duration[i] *= f;
+    if(dur != x->x_total_duration){
+        canvas_dirty(x->x_glist, 1);
+        x->x_total_duration = dur;
+        float f = dur/x->x_duration[x->x_n_states];
+        for(int i = 1; i <= x->x_n_states; i++)
+            x->x_duration[i] *= f;
+    }
 }
 
 static void function_float(t_function *x, t_floatarg f){
@@ -608,6 +611,7 @@ static void function_set(t_function *x, t_symbol* s, int ac,t_atom *av){
         return;
     }
     s = NULL;
+    canvas_dirty(x->x_glist, 1);
     if(ac > 2 && ac % 2){
         function_set_beeakpoints(x, ac, av);
         if(glist_isvisible(x->x_glist))
@@ -669,56 +673,76 @@ static void function_list(t_function *x, t_symbol* s, int ac,t_atom *av){
 
 static void function_min(t_function *x, t_floatarg f){
     if(f <= x->x_min_point){
-        x->x_min = f;
-        if(glist_isvisible(x->x_glist))
-            function_update(x, x->x_glist);
+        if(x->x_min != f){
+            canvas_dirty(x->x_glist, 1);
+            x->x_min = f;
+            if(glist_isvisible(x->x_glist))
+                function_update(x, x->x_glist);
+        }
     }
 }
 
 static void function_max(t_function *x, t_floatarg f){
     if(f >= x->x_max_point){
-        x->x_max = f;
+        if(x->x_max != f){
+            canvas_dirty(x->x_glist, 1);
+            x->x_max = f;
+            if(glist_isvisible(x->x_glist))
+                function_update(x, x->x_glist);
+        }
+    }
+}
+
+static void function_resize(t_function *x){
+    if(x->x_max != x->x_max_point || x->x_min != x->x_min_point){
+        canvas_dirty(x->x_glist, 1);
+        x->x_max = x->x_max_point;
+        x->x_min = x->x_min_point;
         if(glist_isvisible(x->x_glist))
             function_update(x, x->x_glist);
     }
 }
 
-static void function_resize(t_function *x){
-    x->x_max = x->x_max_point;
-    x->x_min = x->x_min_point;
-    if(glist_isvisible(x->x_glist))
-        function_update(x, x->x_glist);
-}
-
 static void function_init(t_function *x, t_floatarg f){
-    x->x_init = (int)(f != 0);
+    int init = (int)(f != 0);
+    if(x->x_init != init){
+        canvas_dirty(x->x_glist, 1);
+        x->x_init = init;
+    }
 }
 
 static void function_height(t_function *x, t_floatarg f){
-    x->x_height = f < 20 ? 20 : f;
-    function_update(x, x->x_glist);
-    canvas_fixlinesfor(x->x_glist, (t_text*) x);
+    int height = f < 20 ? 20 : (int)f;
+    if(x->x_height != height){
+        x->x_height = height;
+        canvas_dirty(x->x_glist, 1);
+        function_update(x, x->x_glist);
+        canvas_fixlinesfor(x->x_glist, (t_text*) x);
+    }
 }
 
 static void function_width(t_function *x, t_floatarg f){
-    x->x_width = f < 40 ? 40 : f;
-    function_update(x, x->x_glist);
+    int width = f < 40 ? 40 : (int)f;
+    if(x->x_width != width){
+        x->x_width = width;
+        canvas_dirty(x->x_glist, 1);
+        function_update(x, x->x_glist);
+    }
 }
 
 static void function_send(t_function *x, t_symbol *s){
     t_symbol *snd = canvas_realizedollar(x->x_glist, x->x_snd_unexpanded = s);
     if(s == gensym("empty"))
         snd = &s_;
-    x->x_send_sym = snd;
-    if(glist_isvisible(x->x_glist)){
-        function_erase(x, x->x_glist);
-        function_drawme(x, x->x_glist, 1);
+    if(x->x_send_sym != snd){
+        x->x_send_sym = snd;
+        x->x_snd_set = 1;
+        canvas_dirty(x->x_glist, 1);
+        if(glist_isvisible(x->x_glist)){
+            function_erase(x, x->x_glist);
+            function_drawme(x, x->x_glist, 1);
+        }
     }
-}
-
-static void function_set_send(t_function *x, t_symbol *s){
-    x->x_snd_set = 1;
-    function_send(x, s);
 }
 
 static void function_receive(t_function *x, t_symbol *s){
@@ -727,40 +751,51 @@ static void function_receive(t_function *x, t_symbol *s){
         function_erase(x, x->x_glist);
     if(s == gensym("empty"))
         rcv = &s_;
-    if(rcv != &s_){
-        if(x->x_receive_sym != &s_)
-            pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
-        pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = rcv);
+    if(x->x_receive_sym != rcv){
+        x->x_rcv_set = 1;
+        canvas_dirty(x->x_glist, 1);
+        if(rcv != &s_){
+            if(x->x_receive_sym != &s_)
+                pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
+            pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = rcv);
+        }
+        else{
+            if(x->x_receive_sym != &s_)
+                pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
+            x->x_receive_sym = rcv;
+        }
+        if(glist_isvisible(x->x_glist))
+            function_drawme(x, x->x_glist, 1);
     }
-    else{
-        if(x->x_receive_sym != &s_)
-            pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
-        x->x_receive_sym = rcv;
-    }
-    if(glist_isvisible(x->x_glist))
-        function_drawme(x, x->x_glist, 1);
-}
-
-static void function_set_receive(t_function *x, t_symbol *s){
-    x->x_rcv_set = 1;
-    function_receive(x, s);
 }
 
 static void function_fgcolor(t_function *x, t_floatarg r, t_floatarg g, t_floatarg b){
-    x->x_fgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : (int)r;
-    x->x_fgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : (int)g;
-    x->x_fgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : (int)b;
-    function_erase(x, x->x_glist);
-    function_drawme(x, x->x_glist, 1);
-    function_update(x, x->x_glist);
+    int red = r < 0 ? 0 : r > 255 ? 255 : (int)r;
+    int green = g < 0 ? 0 : g > 255 ? 255 : (int)g;
+    int blue = b < 0 ? 0 : b > 255 ? 255 : (int)b;
+    if(x->x_fgcolor[0] != red || x->x_fgcolor[1] != green || x->x_fgcolor[2] != blue){
+        canvas_dirty(x->x_glist, 1);
+        x->x_fgcolor[0] = red;
+        x->x_fgcolor[1] = green;
+        x->x_fgcolor[2] = blue;
+        function_erase(x, x->x_glist);
+        function_drawme(x, x->x_glist, 1);
+        function_update(x, x->x_glist);
+    }
 }
 
 static void function_bgcolor(t_function *x, t_floatarg r, t_floatarg g, t_floatarg b){
-    x->x_bgcolor[0] = r < 0 ? 0 : r > 255 ? 255 : (int)r;
-    x->x_bgcolor[1] = g < 0 ? 0 : g > 255 ? 255 : (int)g;
-    x->x_bgcolor[2] = b < 0 ? 0 : b > 255 ? 255 : (int)b;
-    function_erase(x, x->x_glist);
-    function_drawme(x, x->x_glist, 1);
+    int red = r < 0 ? 0 : r > 255 ? 255 : (int)r;
+    int green = g < 0 ? 0 : g > 255 ? 255 : (int)g;
+    int blue = b < 0 ? 0 : b > 255 ? 255 : (int)b;
+    if(x->x_bgcolor[0] != red || x->x_bgcolor[1] != green || x->x_bgcolor[2] != blue){
+        canvas_dirty(x->x_glist, 1);
+        x->x_bgcolor[0] = red;
+        x->x_bgcolor[1] = green;
+        x->x_bgcolor[2] = blue;
+        function_erase(x, x->x_glist);
+        function_drawme(x, x->x_glist, 1);
+    }
 }
 
 static void function_loadbang(t_function *x, t_floatarg action){
@@ -1107,7 +1142,7 @@ void function_setup(void){
     class_addlist(function_class, function_list);
     class_addmethod(function_class, (t_method)function_loadbang,
                     gensym("loadbang"), A_DEFFLOAT, 0);
-    class_addmethod(function_class, (t_method)function_resize, gensym("resize"), A_GIMME, 0);
+    class_addmethod(function_class, (t_method)function_resize, gensym("resize"), 0);
     class_addmethod(function_class, (t_method)function_set, gensym("set"), A_GIMME, 0);
     class_addmethod(function_class, (t_method)function_i, gensym("i"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_init, gensym("init"), A_FLOAT, 0);
@@ -1116,8 +1151,8 @@ void function_setup(void){
     class_addmethod(function_class, (t_method)function_min, gensym("min"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_max, gensym("max"), A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_duration, gensym("duration"), A_FLOAT, 0);
-    class_addmethod(function_class, (t_method)function_set_send, gensym("send"), A_SYMBOL, 0);
-    class_addmethod(function_class, (t_method)function_set_receive, gensym("receive"), A_SYMBOL, 0);
+    class_addmethod(function_class, (t_method)function_send, gensym("send"), A_SYMBOL, 0);
+    class_addmethod(function_class, (t_method)function_receive, gensym("receive"), A_SYMBOL, 0);
     class_addmethod(function_class, (t_method)function_bgcolor, gensym("bgcolor"),
                     A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(function_class, (t_method)function_fgcolor, gensym("fgcolor"),

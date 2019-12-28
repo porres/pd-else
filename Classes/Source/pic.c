@@ -178,9 +178,9 @@ void pic_open(t_pic* x, t_symbol *filename){
 static void pic_send(t_pic *x, t_symbol *s){
     if(s != gensym("")){
         x->x_snd_raw = s;
-        x->x_snd_set = 1;
         t_symbol *snd = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_snd_raw);
         if(snd != x->x_send){
+            x->x_snd_set = 1;
             canvas_dirty(x->x_glist, 1);
             x->x_send = snd;
         }
@@ -190,10 +190,10 @@ static void pic_send(t_pic *x, t_symbol *s){
 static void pic_receive(t_pic *x, t_symbol *s){
     if(s != gensym("")){
         x->x_rcv_raw = s;
-        x->x_rcv_set = 1;
         t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_rcv_raw);
         if(rcv == &s_){
             if(rcv != x->x_receive){
+                x->x_rcv_set = 1;
                 canvas_dirty(x->x_glist, 1);
                 if(x->x_bound){
                     pd_unbind(&x->x_obj.ob_pd, x->x_receive);
@@ -203,6 +203,8 @@ static void pic_receive(t_pic *x, t_symbol *s){
             }
         }
         else if(rcv != x->x_receive){
+            x->x_rcv_set = 1;
+            canvas_dirty(x->x_glist, 1);
             if(x->x_bound)
                 pd_unbind(&x->x_obj.ob_pd, x->x_receive);
             pd_bind(&x->x_obj.ob_pd, x->x_receive = rcv);
