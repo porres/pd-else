@@ -72,19 +72,19 @@ the send/receive symbols., f 67;
 #X connect 6 0 4 0;
 #X connect 7 0 0 0;
 #X restore 490 318 pd send \; receive;
-#X text 153 495 1) <symbol>: filename to open (default 'empty'), f
-57;
 #X text 153 511 2) <symbol>: send symbol (default 'empty'), f 57;
 #X text 153 527 3) <symbol>: receive symbol (default 'empty'), f 57
 ;
 #N canvas 679 192 385 212 default 0;
-#X obj 229 114 else/pic empty empty empty;
+#X obj 216 122 else/pic empty empty empty;
 #X text 89 52 When you have an empty filename or error opening a file
 \, pic lods a default image of a question mark:, f 34;
-#X text 116 121 default image =>;
+#X text 109 132 default image =>;
 #X restore 480 296 pd default;
 #X text 194 396 bang;
 #X text 226 396 - outputs a bang, f 40;
+#X text 153 495 1) <symbol>: filename to open (default internal image)
+, f 57;
 #X connect 19 0 21 0;
 #X connect 20 0 21 0;
 #X connect 21 0 23 0;
