@@ -22,6 +22,7 @@ typedef struct _pic{
      int        x_snd_set;
      int        x_rcv_set;
      int        x_bound;
+     int        x_def_img;
      t_symbol  *x_fullname;
      t_symbol  *x_filename;
      t_symbol  *x_x;
@@ -33,7 +34,7 @@ typedef struct _pic{
 }t_pic;
 
 // widget helper functions
-static const char* pic_get_filename(t_pic *x, const char *file){
+static const char* pic_filepath(t_pic *x, const char *file){
     static char fname[MAXPDSTRING];
     char *bufptr;
     int fd;
@@ -59,7 +60,11 @@ static int pic_click(t_pic *x, struct _glist *glist, int xpos, int ypos, int shi
 }
 
 void pic_erase(t_pic* x,t_glist* glist){
-     sys_vgui(".x%lx.c delete %lximage\n", glist_getcanvas(glist), x);
+    if(x->x_def_img){
+        sys_vgui(".x%lx.c delete %xS\n", glist_getcanvas(glist), x);
+    }
+    else
+        sys_vgui(".x%lx.c delete %lximage\n", glist_getcanvas(glist), x);
 }
 
 // ------------------------ image widgetbehaviour-------------------------------------------
@@ -77,8 +82,15 @@ static void pic_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     x->x_obj.te_ypix += dy;
     sys_vgui(".x%lx.c coords %lxSEL %d %d %d %d\n", glist_getcanvas(glist), x, text_xpix(&x->x_obj, glist),
         text_ypix(&x->x_obj, glist), text_xpix(&x->x_obj, glist) + x->x_width, text_ypix(&x->x_obj, glist) + x->x_height);
-    sys_vgui(".x%lx.c coords %lximage %d %d\n", glist_getcanvas(glist), x,
-           text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist));
+    if(x->x_def_img){
+        sys_vgui(".x%lx.c coords %xS \
+                 %d %d\n", glist_getcanvas(glist), x,
+                 text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist));
+    }
+    else{
+        sys_vgui(".x%lx.c coords %lximage %d %d\n", glist_getcanvas(glist), x,
+               text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist));
+    }
     canvas_fixlinesfor(glist, (t_text*)x);
 }
 
@@ -100,11 +112,18 @@ static void pic_delete(t_gobj *z, t_glist *glist){
        
 static void pic_vis(t_gobj *z, t_glist *glist, int vis){
     t_pic* x = (t_pic*)z;
-    if(vis)
-        sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_pic -tags %lximage\n",
-                 glist_getcanvas(glist), text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist), x->x_fullname, x);
-    else
-        pic_erase(x, glist);
+    if(vis){
+        if(x->x_def_img){ // USING DEFAULT PIC
+            sys_vgui(".x%lx.c create image %d %d -anchor nw -tags %xS\n", glist_getcanvas(glist),
+                     text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist), x);
+            sys_vgui(".x%lx.c itemconfigure %xS -image %s\n",
+                     glist_getcanvas(glist), x, "pic_def_img");
+        }
+        else
+            sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_pic -tags %lximage\n",
+            glist_getcanvas(glist), text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist), x->x_fullname, x);
+    }
+    else pic_erase(x, glist);
 }
 
 static void pic_save(t_gobj *z, t_binbuf *b){
@@ -122,7 +141,7 @@ static void pic_save(t_gobj *z, t_binbuf *b){
             x->x_rcv_raw = gensym(buf);
         }
     }
-    if(x->x_filename == &s_)
+    if(x->x_filename == &s_ || x->x_filename == gensym("pic_def_img"))
         x->x_filename = gensym("empty");
     if(x->x_snd_raw == &s_)
         x->x_snd_raw = gensym("empty");
@@ -148,7 +167,7 @@ static void pic_imagesize_callback(t_pic *x, t_float w, t_float h){
 void pic_open(t_pic* x, t_symbol *filename){
     if(filename){
         if(filename != x->x_filename){
-            const char *file_name_open = pic_get_filename(x, filename->s_name); // path
+            const char *file_name_open = pic_filepath(x, filename->s_name); // path
             if(file_name_open){
                 canvas_dirty(x->x_glist, 1);
                 x->x_filename = filename;
@@ -166,6 +185,10 @@ void pic_open(t_pic* x, t_symbol *filename){
                 }
                 sys_vgui("pdsend \"%s _imagesize [image width %lx_pic] [image height %lx_pic]\"\n",
                          x->x_x->s_name, x->x_fullname, x->x_fullname);
+                 if(x->x_def_img){
+                     x->x_def_img = 0;
+                //     sys_vgui(".x%lx.c itemconfigure %xS -image img%x\n", glist_getcanvas(x->x_glist), x, x);
+                 }
             }
             else
                 pd_error(x, "[pic]: error opening file '%s'", filename->s_name);
@@ -178,9 +201,9 @@ void pic_open(t_pic* x, t_symbol *filename){
 static void pic_send(t_pic *x, t_symbol *s){
     if(s != gensym("")){
         x->x_snd_raw = s;
+        x->x_snd_set = 1;
         t_symbol *snd = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_snd_raw);
         if(snd != x->x_send){
-            x->x_snd_set = 1;
             canvas_dirty(x->x_glist, 1);
             x->x_send = snd;
         }
@@ -190,10 +213,10 @@ static void pic_send(t_pic *x, t_symbol *s){
 static void pic_receive(t_pic *x, t_symbol *s){
     if(s != gensym("")){
         x->x_rcv_raw = s;
+        x->x_rcv_set = 1;
         t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_rcv_raw);
         if(rcv == &s_){
             if(rcv != x->x_receive){
-                x->x_rcv_set = 1;
                 canvas_dirty(x->x_glist, 1);
                 if(x->x_bound){
                     pd_unbind(&x->x_obj.ob_pd, x->x_receive);
@@ -203,8 +226,6 @@ static void pic_receive(t_pic *x, t_symbol *s){
             }
         }
         else if(rcv != x->x_receive){
-            x->x_rcv_set = 1;
-            canvas_dirty(x->x_glist, 1);
             if(x->x_bound)
                 pd_unbind(&x->x_obj.ob_pd, x->x_receive);
             pd_bind(&x->x_obj.ob_pd, x->x_receive = rcv);
@@ -235,7 +256,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
     pd_bind(&x->x_obj.ob_pd, x->x_x);
     x->x_glist = (t_glist*)canvas_getcurrent();
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_filename = &s_;
-    int loaded = x->x_rcv_set = x->x_snd_set = x->x_bound = 0;
+    int loaded = x->x_rcv_set = x->x_snd_set = x->x_bound = x->x_def_img = 0;
     x->x_fullname = NULL;
     if(ac && (av)->a_type == A_SYMBOL)
         x->x_filename = atom_getsymbol(av);
@@ -250,7 +271,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
             x->x_receive = rcv;
     }
     if(x->x_filename !=  &s_ && x->x_filename !=  gensym("empty")){
-        const char *fname = pic_get_filename(x, x->x_filename->s_name); // full path
+        const char *fname = pic_filepath(x, x->x_filename->s_name); // full path
         if(fname){
             loaded = 1;
             x->x_fullname = gensym(fname);
@@ -263,13 +284,20 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
             pd_error(x, "[pic]: error opening file '%s'", x->x_filename->s_name);
     }
     if(!loaded){ // default image
-        x->x_width = 28;
-        x->x_height = 33;
-        const char *fname = pic_get_filename(x, "question.gif"); 
+        x->x_width = x->x_height = 38;
+        x->x_filename = gensym("pic_def_img");
+              x->x_def_img = 1;
+        
+/*        const char *fname = pic_filepath(x, "question.gif");
         x->x_fullname = gensym(fname);
-        sys_vgui("if { [info exists %lx_pic] == 0 } { image create photo %lx_pic -file \"%s\"\n set %lx_pic 1\n} \n", x->x_fullname, x->x_fullname, fname, x->x_fullname);
-        sys_vgui("pdsend \"%s _imagesize [image width %lx_pic] [image height %lx_pic]\"\n",
-                 x->x_x->s_name, x->x_fullname, x->x_fullname);
+        sys_vgui("if { [info exists %lx_pic] == 0 } { image create photo %lx_pic -file \"%s\"\n set %lx_pic 1\n} \n", x->x_fullname, x->x_fullname, fname, x->x_fullname);*/
+        
+        
+        pd_unbind(&x->x_obj.ob_pd, x->x_x);
+        if(x->x_receive != &s_){
+            pd_bind(&x->x_obj.ob_pd, x->x_receive);
+            x->x_bound = 1;
+        }
     }
     x->x_outlet = outlet_new(&x->x_obj, &s_bang);
     return(x);
@@ -290,6 +318,6 @@ void pic_setup(void){
     pic_widgetbehavior.w_clickfn =    (t_clickfn)pic_click;
     class_setwidget(pic_class, &pic_widgetbehavior);
     class_setsavefn(pic_class, &pic_save);
-/*    sys_vgui("image create photo pic_def_img -data {R0lGODdhJwAnAMQAAAAAAAsLCxMTExwcHCIiIisrKzw8PERERExMTFRUVF1dXWVlZW1tbXNzc3t7e4ODg42NjZOTk5qamqSkpK2trbS0tLy8vMPDw8zMzNTU1Nzc3OPj4+3t7fT09P///wAAACH5BAkKAB8ALAAAAAAnACcAAAX/oCeOJKlRTzIARwNVWinPNNYAeK4HjNXRQNLGkRsIArnAYIVbZILAjAFAYAICgmxyQMBZoDJNt1vUGc0CAAY86iioSdwgkTjIzQAEh+2hwHFpAhQbHIUZRGk5XRRsbldxazIQAFZpCz9QGjqUABM0HHZIjwMxUBgAiUh6QJOVAE9QGVRGBQCMQBJ/qGpgHUQ5l0GtOWmwUBwTCwoRe0AbZDhIBRt8Hh2YQURWKw/VfMOKvN5BHA+cObUR40EZCOc4tQzY6yUXONACXQzN9CUWV9twRJjXT4S9M/e8FJTBoVYiTgxKLSRRQdcKCAQnejDHZIUDjTNuJFphDOSICAAKUQiIZzLMpgstZWR4sKABzJgzMuLcyXMdBwsTKEjcqcFdjls4HRXgsuJmTHu1EjbYOeFdmgT8TFaEtiJYzA13UnbiWfERgAY6QdoQgGBCWiAhAAA7\n");
-    sys_vgui("}\n");*/
+    sys_vgui("image create photo pic_def_img -data {R0lGODdhJwAnAMQAAAAAAAsLCxMTExwcHCIiIisrKzw8PERERExMTFRUVF1dXWVlZW1tbXNzc3t7e4ODg42NjZOTk5qamqSkpK2trbS0tLy8vMPDw8zMzNTU1Nzc3OPj4+3t7fT09P///wAAACH5BAkKAB8ALAAAAAAnACcAAAX/oCeOJKlRTzIARwNVWinPNNYAeK4HjNXRQNLGkRsIArnAYIVbZILAjAFAYAICgmxyQMBZoDJNt1vUGc0CAAY86iioSdwgkTjIzQAEh+2hwHFpAhQbHIUZRGk5XRRsbldxazIQAFZpCz9QGjqUABM0HHZIjwMxUBgAiUh6QJOVAE9QGVRGBQCMQBJ/qGpgHUQ5l0GtOWmwUBwTCwoRe0AbZDhIBRt8Hh2YQURWKw/VfMOKvN5BHA+cObUR40EZCOc4tQzY6yUXONACXQzN9CUWV9twRJjXT4S9M/e8FJTBoVYiTgxKLSRRQdcKCAQnejDHZIUDjTNuJFphDOSICAAKUQiIZzLMpgstZWR4sKABzJgzMuLcyXMdBwsTKEjcqcFdjls4HRXgsuJmTHu1EjbYOeFdmgT8TFaEtiJYzA13UnbiWfERgAY6QdoQgGBCWiAhAAA7\n");
+    sys_vgui("}\n");
 }
