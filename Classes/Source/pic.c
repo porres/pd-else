@@ -1,3 +1,4 @@
+// porres 2018-2019
 
 #include <m_pd.h>
 #include <g_canvas.h>
@@ -34,7 +35,7 @@ typedef struct _pic{
      t_outlet  *x_outlet;
 }t_pic;
 
-// widget helper functions
+// helper functions
 static const char* pic_filepath(t_pic *x, const char *file){
     static char fname[MAXPDSTRING];
     char *bufptr;
@@ -49,16 +50,14 @@ static const char* pic_filepath(t_pic *x, const char *file){
         return(0);
 }
 
-static void pic_imagesize_callback(t_pic *x, t_float w, t_float h){
+static void pic_picsize_callback(t_pic *x, t_float w, t_float h){
     x->x_width = w;
     x->x_height = h;
     if(glist_isvisible(x->x_glist))
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
-    if(x->x_bound_to_x){
-        pd_unbind(&x->x_obj.ob_pd, x->x_x);
-        x->x_bound_to_x = 0;
-    }
-    if(x->x_receive != &s_ && !x->x_bound){
+    pd_unbind(&x->x_obj.ob_pd, x->x_x);
+    x->x_bound_to_x = 0;
+    if(x->x_receive != &s_){
         pd_bind(&x->x_obj.ob_pd, x->x_receive);
         x->x_bound = 1;
     }
@@ -122,7 +121,7 @@ static void pic_vis(t_gobj *z, t_glist *glist, int vis){
                 glist_getcanvas(glist), text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist), x->x_fullname, x);
             if(!x->x_init){
                 x->x_init = 1;
-                if(x->x_receive != &s_ && x->x_bound){
+                if(x->x_bound){
                     pd_unbind(&x->x_obj.ob_pd, x->x_receive);
                     x->x_bound = 0;
                 }
@@ -130,7 +129,7 @@ static void pic_vis(t_gobj *z, t_glist *glist, int vis){
                     pd_bind(&x->x_obj.ob_pd, x->x_x);
                     x->x_bound_to_x = 1;
                 }
-                sys_vgui("pdsend \"%s _imagesize [image width %lx_pic] [image height %lx_pic]\"\n",
+                sys_vgui("pdsend \"%s _picsize [image width %lx_pic] [image height %lx_pic]\"\n",
                      x->x_x->s_name, x->x_fullname, x->x_fullname);
             }
         }
@@ -175,7 +174,7 @@ void pic_open(t_pic* x, t_symbol *filename){
                x->x_fullname = gensym(file_name_open);
                sys_vgui("if { [info exists %lx_pic] == 0 } { image create photo %lx_pic -file \"%s\"\n set %lx_pic 1\n} \n",
                 x->x_fullname, x->x_fullname, file_name_open, x->x_fullname);
-                if(x->x_receive != &s_ && x->x_bound){
+                if(x->x_bound){
                     pd_unbind(&x->x_obj.ob_pd, x->x_receive);
                     x->x_bound = 0;
                 }
@@ -189,7 +188,7 @@ void pic_open(t_pic* x, t_symbol *filename){
                         glist_getcanvas(x->x_glist), text_xpix(&x->x_obj, x->x_glist), text_ypix(&x->x_obj,
                         x->x_glist), x->x_fullname, x); // CREATE NEW IMAGE
                 }
-                sys_vgui("pdsend \"%s _imagesize [image width %lx_pic] [image height %lx_pic]\"\n",
+                sys_vgui("pdsend \"%s _picsize [image width %lx_pic] [image height %lx_pic]\"\n",
                          x->x_x->s_name, x->x_fullname, x->x_fullname);
                  if(x->x_def_img)
                      x->x_def_img = 0;
@@ -241,8 +240,7 @@ static void pic_bang(t_pic *x){
         pd_bang(x->x_send->s_thing);
 }
 
-static void pic_free(t_pic *x){ // if variable is unset and image is unused then delete them
-    // delete default ?
+static void pic_free(t_pic *x){ // delete if variable is unset and image is unused
     sys_vgui("if { [info exists %lx_pic] == 1 && [image inuse %lx_pic] == 0} { image delete %lx_pic \n unset %lx_pic\n} \n",
         x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
     if(x->x_receive != &s_)
@@ -305,7 +303,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
 void pic_setup(void){
     pic_class = class_new(gensym("pic"), (t_newmethod)pic_new, (t_method)pic_free, sizeof(t_pic),0, A_GIMME,0);
     class_addbang(pic_class, pic_bang);
-    class_addmethod(pic_class, (t_method)pic_imagesize_callback, gensym("_imagesize"), A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(pic_class, (t_method)pic_picsize_callback, gensym("_picsize"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(pic_class, (t_method)pic_open, gensym("open"), A_SYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_send, gensym("send"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_receive, gensym("receive"), A_DEFSYMBOL, 0);

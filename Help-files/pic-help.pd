@@ -80,18 +80,23 @@ the send/receive symbols., f 67;
 #X text 226 396 - outputs a bang, f 40;
 #X text 153 495 1) <symbol>: filename to open (default internal image)
 , f 57;
-#N canvas 846 246 395 353 example 0;
+#X obj 221 194 else/pic pdlogo.gif empty empty;
+#X text 145 201 click the image ===->, f 12;
+#X text 81 89 [pic] loads image pictures that you can interact with.
+When you click on the picture \, it sends a bang. It only works with
+file types: .gif \, .ppm & .pgm.;
+#N canvas 846 246 417 578 example 0;
 #N canvas 457 127 400 491 (subpatch) 0;
 #X obj 104 232 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 124 270 sel 0 1;
 #X obj 151 363 s \$0-set;
-#X obj 104 69 r \$0-set;
+#X obj 104 39 r \$0-set;
 #X msg 151 298 open green.gif;
 #X msg 124 327 open red.gif;
 #X obj 104 402 outlet;
 #X obj 104 104 else/pic red.gif empty empty;
-#X obj 67 40 else/initmess open red.gif;
+#X obj 148 72 else/initmess open red.gif;
 #X connect 0 0 1 0;
 #X connect 0 0 6 0;
 #X connect 1 0 5 0;
@@ -102,17 +107,37 @@ the send/receive symbols., f 67;
 #X connect 7 0 0 0;
 #X connect 8 0 7 0;
 #X coords 0 -1 1 1 121 121 2 100 100;
-#X restore 135 110 pd;
-#X obj 135 252 else/display;
-#X text 126 52 Using [pic] to create toggle on/off buttons, f 21;
-#X text 267 164 <= open;
+#X restore 136 95 pd;
+#X obj 136 237 else/display;
+#X text 127 37 Using [pic] to create toggle on/off buttons, f 21;
+#X text 268 149 <= open;
+#N canvas 457 127 474 484 (subpatch) 0;
+#X msg 117 275 open green.gif;
+#X msg 217 295 open red.gif;
+#X obj 104 402 outlet;
+#X obj 104 104 else/pic red.gif empty empty;
+#X obj 217 334 s \$0-set2;
+#X obj 104 29 r \$0-set2;
+#X obj 155 65 else/initmess open red.gif;
+#X obj 217 261 delay 250;
+#X text 283 261 <= flash time;
+#X connect 0 0 4 0;
+#X connect 1 0 4 0;
+#X connect 3 0 2 0;
+#X connect 3 0 0 0;
+#X connect 3 0 7 0;
+#X connect 5 0 3 0;
+#X connect 6 0 3 0;
+#X connect 7 0 1 0;
+#X coords 0 -1 1 1 121 121 2 100 100;
+#X restore 138 351 pd;
+#X obj 138 493 else/display;
+#X text 270 405 <= open;
+#X text 83 290 Note you can also adapat the patch above to behave like
+a bang with a flash time. See below., f 41;
 #X connect 0 0 1 0;
+#X connect 4 0 5 0;
 #X restore 478 329 pd example;
-#X obj 221 194 else/pic pdlogo.gif empty empty;
-#X text 145 201 click the image ===->, f 12;
-#X text 81 89 [pic] loads image pictures that you can interact with.
-When you click on the picture \, it sends a bang. It only works with
-file types: .gif \, .ppm & .pgm.;
-#X connect 19 0 37 0;
-#X connect 20 0 37 0;
-#X connect 37 0 21 0;
+#X connect 19 0 36 0;
+#X connect 20 0 36 0;
+#X connect 36 0 21 0;
