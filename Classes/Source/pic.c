@@ -49,6 +49,22 @@ static const char* pic_filepath(t_pic *x, const char *file){
         return(0);
 }
 
+static void pic_imagesize_callback(t_pic *x, t_float w, t_float h){
+    x->x_width = w;
+    x->x_height = h;
+    if(glist_isvisible(x->x_glist))
+        canvas_fixlinesfor(x->x_glist, (t_text*)x);
+    if(x->x_bound_to_x){
+        pd_unbind(&x->x_obj.ob_pd, x->x_x);
+        x->x_bound_to_x = 0;
+    }
+    if(x->x_receive != &s_ && !x->x_bound){
+        pd_bind(&x->x_obj.ob_pd, x->x_receive);
+        x->x_bound = 1;
+    }
+}
+
+// ------------------------ pic widgetbehaviour-------------------------------------------
 static int pic_click(t_pic *x, struct _glist *glist, int xpos, int ypos, int shift, int alt, int dbl, int doit){
     glist = NULL, xpos = ypos = shift = alt = dbl = 0;
     if(doit){
@@ -59,12 +75,6 @@ static int pic_click(t_pic *x, struct _glist *glist, int xpos, int ypos, int shi
     return(1); // avoid warning
 }
 
-void pic_erase(t_pic* x,t_glist* glist){
-    x->x_def_img ? sys_vgui(".x%lx.c delete %xS\n", glist_getcanvas(glist), x):
-        sys_vgui(".x%lx.c delete %lximage\n", glist_getcanvas(glist), x);
-}
-
-// ------------------------ image widgetbehaviour-------------------------------------------
 static void pic_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
     t_pic* x = (t_pic*)z;
     *xp1 = text_xpix(&x->x_obj, glist);
@@ -79,12 +89,7 @@ static void pic_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     x->x_obj.te_ypix += dy;
     sys_vgui(".x%lx.c coords %lxSEL %d %d %d %d\n", glist_getcanvas(glist), x, text_xpix(&x->x_obj, glist),
         text_ypix(&x->x_obj, glist), text_xpix(&x->x_obj, glist) + x->x_width, text_ypix(&x->x_obj, glist) + x->x_height);
-    if(x->x_def_img){
-        sys_vgui(".x%lx.c coords %xS \
-                 %d %d\n", glist_getcanvas(glist), x,
-                 text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist));
-    }
-    else sys_vgui(".x%lx.c coords %lximage %d %d\n", glist_getcanvas(glist), x,
+    sys_vgui(".x%lx.c coords %lximage %d %d\n", glist_getcanvas(glist), x,
                text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist));
     canvas_fixlinesfor(glist, (t_text*)x);
 }
@@ -107,11 +112,10 @@ static void pic_delete(t_gobj *z, t_glist *glist){
 static void pic_vis(t_gobj *z, t_glist *glist, int vis){
     t_pic* x = (t_pic*)z;
     if(vis){
-        if(x->x_def_img){ // USING DEFAULT PIC
-            sys_vgui(".x%lx.c create image %d %d -anchor nw -tags %xS\n", glist_getcanvas(glist),
+        if(x->x_def_img){ // DEFAULT PIC
+            sys_vgui(".x%lx.c create image %d %d -anchor nw -tags %lximage\n", glist_getcanvas(glist),
                      text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist), x);
-            sys_vgui(".x%lx.c itemconfigure %xS -image %s\n",
-                     glist_getcanvas(glist), x, "pic_def_img");
+            sys_vgui(".x%lx.c itemconfigure %lximage -image %s\n", glist_getcanvas(glist), x, "pic_def_img");
         }
         else{
             sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_pic -tags %lximage\n",
@@ -131,7 +135,8 @@ static void pic_vis(t_gobj *z, t_glist *glist, int vis){
             }
         }
     }
-    else pic_erase(x, glist);
+    else  // ERASE
+        sys_vgui(".x%lx.c delete %lximage\n", glist_getcanvas(glist), x);
 }
 
 static void pic_save(t_gobj *z, t_binbuf *b){
@@ -149,7 +154,7 @@ static void pic_save(t_gobj *z, t_binbuf *b){
             x->x_rcv_raw = gensym(buf);
         }
     }
-    if(x->x_filename == &s_ || x->x_filename == gensym("pic_def_img"))
+    if(x->x_filename == &s_)
         x->x_filename = gensym("empty");
     if(x->x_snd_raw == &s_)
         x->x_snd_raw = gensym("empty");
@@ -160,21 +165,7 @@ static void pic_save(t_gobj *z, t_binbuf *b){
     binbuf_addv(b, ";");
 }
 
-static void pic_imagesize_callback(t_pic *x, t_float w, t_float h){
-    x->x_width = w;
-    x->x_height = h;
-    if(glist_isvisible(x->x_glist))
-        canvas_fixlinesfor(x->x_glist, (t_text*)x);
-    if(x->x_bound_to_x){
-        pd_unbind(&x->x_obj.ob_pd, x->x_x);
-        x->x_bound_to_x = 0;
-    }
-    if(x->x_receive != &s_ && !x->x_bound){
-        pd_bind(&x->x_obj.ob_pd, x->x_receive);
-        x->x_bound = 1;
-    }
-}
-
+//------------------------------- METHODS --------------------------------------------
 void pic_open(t_pic* x, t_symbol *filename){
     if(filename){
         if(filename != x->x_filename){
@@ -193,10 +184,10 @@ void pic_open(t_pic* x, t_symbol *filename){
                     x->x_bound_to_x = 1;
                 }
                 if(glist_isvisible(x->x_glist)){
-                    pic_erase(x, x->x_glist);
+                    sys_vgui(".x%lx.c delete %lximage\n", glist_getcanvas(x->x_glist), x); // ERASE
                     sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_pic -tags %lximage\n",
                         glist_getcanvas(x->x_glist), text_xpix(&x->x_obj, x->x_glist), text_ypix(&x->x_obj,
-                        x->x_glist), x->x_fullname, x);
+                        x->x_glist), x->x_fullname, x); // CREATE NEW IMAGE
                 }
                 sys_vgui("pdsend \"%s _imagesize [image width %lx_pic] [image height %lx_pic]\"\n",
                          x->x_x->s_name, x->x_fullname, x->x_fullname);
@@ -299,8 +290,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
     }
     if(!loaded){ // default image
         x->x_width = x->x_height = 38;
-        x->x_filename = gensym("pic_def_img");
-              x->x_def_img = 1;
+        x->x_def_img = 1;
         pd_unbind(&x->x_obj.ob_pd, x->x_x);
         x->x_bound_to_x = 0;
         if(x->x_receive != &s_){
