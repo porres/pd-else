@@ -61,13 +61,11 @@ the send/receive symbols., f 67;
 #X obj 349 250 r \$0-pic-snd;
 #X obj 347 207 s \$0-pic-rcv;
 #X obj 103 211 else/pic pdlogo.gif \$0-pic-snd \$0-pic-rcv;
-#X msg 41 161 status;
 #X connect 1 0 7 0;
 #X connect 3 0 8 0;
 #X connect 5 0 8 0;
 #X connect 6 0 0 0;
 #X connect 8 0 2 0;
-#X connect 9 0 8 0;
 #X restore 490 296 pd send \; receive;
 #X text 153 511 2) <symbol>: send symbol (default 'empty'), f 57;
 #X text 153 527 3) <symbol>: receive symbol (default 'empty'), f 57

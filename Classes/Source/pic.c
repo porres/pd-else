@@ -3,7 +3,6 @@
 #include <g_canvas.h>
 #include <unistd.h>
 #include <string.h>
-#include <stdio.h>
 
 #ifdef _MSC_VER
 #pragma warning( disable : 4244 )
@@ -39,8 +38,7 @@ typedef struct _pic{
 static const char* pic_filepath(t_pic *x, const char *file){
     static char fname[MAXPDSTRING];
     char *bufptr;
-    int fd;
-    fd = open_via_path(canvas_getdir(glist_getcanvas(x->x_glist))->s_name,
+    int fd = open_via_path(canvas_getdir(glist_getcanvas(x->x_glist))->s_name,
         file, "", fname, &bufptr, MAXPDSTRING, 1);
     if(fd > 0){
         fname[strlen(fname)]='/';
@@ -62,10 +60,7 @@ static int pic_click(t_pic *x, struct _glist *glist, int xpos, int ypos, int shi
 }
 
 void pic_erase(t_pic* x,t_glist* glist){
-    if(x->x_def_img){
-        sys_vgui(".x%lx.c delete %xS\n", glist_getcanvas(glist), x);
-    }
-    else
+    x->x_def_img ? sys_vgui(".x%lx.c delete %xS\n", glist_getcanvas(glist), x):
         sys_vgui(".x%lx.c delete %lximage\n", glist_getcanvas(glist), x);
 }
 
@@ -89,10 +84,8 @@ static void pic_displace(t_gobj *z, t_glist *glist, int dx, int dy){
                  %d %d\n", glist_getcanvas(glist), x,
                  text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist));
     }
-    else{
-        sys_vgui(".x%lx.c coords %lximage %d %d\n", glist_getcanvas(glist), x,
+    else sys_vgui(".x%lx.c coords %lximage %d %d\n", glist_getcanvas(glist), x,
                text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist));
-    }
     canvas_fixlinesfor(glist, (t_text*)x);
 }
 
@@ -103,8 +96,7 @@ static void pic_select(t_gobj *z, t_glist *glist, int state){
             glist_getcanvas(glist), text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist),
             text_xpix(&x->x_obj, glist) + x->x_width, text_ypix(&x->x_obj, glist) + x->x_height, x);
      }
-     else
-         sys_vgui(".x%lx.c delete %lxSEL\n", glist_getcanvas(glist), x);
+     else sys_vgui(".x%lx.c delete %lxSEL\n", glist_getcanvas(glist), x);
 }
 
 static void pic_delete(t_gobj *z, t_glist *glist){
@@ -122,6 +114,8 @@ static void pic_vis(t_gobj *z, t_glist *glist, int vis){
                      glist_getcanvas(glist), x, "pic_def_img");
         }
         else{
+            sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_pic -tags %lximage\n",
+                glist_getcanvas(glist), text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist), x->x_fullname, x);
             if(!x->x_init){
                 x->x_init = 1;
                 if(x->x_receive != &s_ && x->x_bound){
@@ -135,8 +129,6 @@ static void pic_vis(t_gobj *z, t_glist *glist, int vis){
                 sys_vgui("pdsend \"%s _imagesize [image width %lx_pic] [image height %lx_pic]\"\n",
                      x->x_x->s_name, x->x_fullname, x->x_fullname);
             }
-            sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_pic -tags %lximage\n",
-                     glist_getcanvas(glist), text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist), x->x_fullname, x);
         }
     }
     else pic_erase(x, glist);
@@ -212,19 +204,16 @@ void pic_open(t_pic* x, t_symbol *filename){
                      x->x_def_img = 0;
                 canvas_dirty(x->x_glist, 1);
             }
-            else
-                pd_error(x, "[pic]: error opening file '%s'", filename->s_name);
+            else pd_error(x, "[pic]: error opening file '%s'", filename->s_name);
         }
     }
-    else
-        pd_error(x, "[pic]: open needs a file name");
+    else pd_error(x, "[pic]: open needs a file name");
 }
 
 static void pic_send(t_pic *x, t_symbol *s){
     if(s != gensym("")){
-        x->x_snd_raw = s;
         x->x_snd_set = 1;
-        t_symbol *snd = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_snd_raw);
+        t_symbol *snd = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_snd_raw = s);
         if(snd != x->x_send){
             canvas_dirty(x->x_glist, 1);
             x->x_send = snd;
@@ -234,9 +223,8 @@ static void pic_send(t_pic *x, t_symbol *s){
 
 static void pic_receive(t_pic *x, t_symbol *s){
     if(s != gensym("")){
-        x->x_rcv_raw = s;
         x->x_rcv_set = 1;
-        t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_rcv_raw);
+        t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_rcv_raw = s);
         if(rcv == &s_){
             if(rcv != x->x_receive){
                 canvas_dirty(x->x_glist, 1);
@@ -263,6 +251,7 @@ static void pic_bang(t_pic *x){
 }
 
 static void pic_free(t_pic *x){ // if variable is unset and image is unused then delete them
+    // delete default ?
     sys_vgui("if { [info exists %lx_pic] == 1 && [image inuse %lx_pic] == 0} { image delete %lx_pic \n unset %lx_pic\n} \n",
         x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
     if(x->x_receive != &s_)
@@ -330,12 +319,12 @@ void pic_setup(void){
     class_addmethod(pic_class, (t_method)pic_open, gensym("open"), A_SYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_send, gensym("send"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_receive, gensym("receive"), A_DEFSYMBOL, 0);
-    pic_widgetbehavior.w_getrectfn =  pic_getrect;
+    pic_widgetbehavior.w_getrectfn  = pic_getrect;
     pic_widgetbehavior.w_displacefn = pic_displace;
-    pic_widgetbehavior.w_selectfn =   pic_select;
-    pic_widgetbehavior.w_deletefn =   pic_delete;
-    pic_widgetbehavior.w_visfn =      pic_vis;
-    pic_widgetbehavior.w_clickfn =    (t_clickfn)pic_click;
+    pic_widgetbehavior.w_selectfn   = pic_select;
+    pic_widgetbehavior.w_deletefn   = pic_delete;
+    pic_widgetbehavior.w_visfn      = pic_vis;
+    pic_widgetbehavior.w_clickfn    = (t_clickfn)pic_click;
     class_setwidget(pic_class, &pic_widgetbehavior);
     class_setsavefn(pic_class, &pic_save);
     sys_vgui("image create photo pic_def_img -data {R0lGODdhJwAnAMQAAAAAAAsLCxMTExwcHCIiIisrKzw8PERERExMTFRUVF1dXWVlZW1tbXNzc3t7e4ODg42NjZOTk5qamqSkpK2trbS0tLy8vMPDw8zMzNTU1Nzc3OPj4+3t7fT09P///wAAACH5BAkKAB8ALAAAAAAnACcAAAX/oCeOJKlRTzIARwNVWinPNNYAeK4HjNXRQNLGkRsIArnAYIVbZILAjAFAYAICgmxyQMBZoDJNt1vUGc0CAAY86iioSdwgkTjIzQAEh+2hwHFpAhQbHIUZRGk5XRRsbldxazIQAFZpCz9QGjqUABM0HHZIjwMxUBgAiUh6QJOVAE9QGVRGBQCMQBJ/qGpgHUQ5l0GtOWmwUBwTCwoRe0AbZDhIBRt8Hh2YQURWKw/VfMOKvN5BHA+cObUR40EZCOc4tQzY6yUXONACXQzN9CUWV9twRJjXT4S9M/e8FJTBoVYiTgxKLSRRQdcKCAQnejDHZIUDjTNuJFphDOSICAAKUQiIZzLMpgstZWR4sKABzJgzMuLcyXMdBwsTKEjcqcFdjls4HRXgsuJmTHu1EjbYOeFdmgT8TFaEtiJYzA13UnbiWfERgAY6QdoQgGBCWiAhAAA7\n");
