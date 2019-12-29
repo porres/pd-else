@@ -47,8 +47,8 @@
 #X text 122 427 receive <symbol>;
 #X text 226 427 - sets a receive symbol, f 40;
 #N canvas 766 187 594 440 send 0;
-#X obj 349 284 else/display;
-#X obj 347 184 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 340 311 else/display;
+#X obj 338 211 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 103 357 else/display;
 #X msg 120 175 send empty \, receive empty;
@@ -58,8 +58,8 @@ with backlashes (as in: "\\\$0"). Setting these to 'empty' removes
 the send/receive symbols., f 67;
 #X obj 103 141 initmess send \\\$0-pic-snd \, receive \\\$0-pic-rcv
 ;
-#X obj 349 250 r \$0-pic-snd;
-#X obj 347 207 s \$0-pic-rcv;
+#X obj 340 277 r \$0-pic-snd;
+#X obj 338 234 s \$0-pic-rcv;
 #X obj 103 211 else/pic pdlogo.gif \$0-pic-snd \$0-pic-rcv;
 #X connect 1 0 7 0;
 #X connect 3 0 8 0;
@@ -110,7 +110,7 @@ the send/receive symbols., f 67;
 #X restore 478 329 pd example;
 #X obj 221 194 else/pic pdlogo.gif empty empty;
 #X text 145 201 click the image ===->, f 12;
-#X text 81 89 [pic] loads image pictures that you can interact with
+#X text 81 89 [pic] loads image pictures that you can interact with.
 When you click on the picture \, it sends a bang. It only works with
 file types: .gif \, .ppm & .pgm.;
 #X connect 19 0 37 0;
