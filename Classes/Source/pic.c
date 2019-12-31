@@ -10,29 +10,41 @@
 #pragma warning( disable : 4305 )
 #endif
 
-static t_class *pic_class;
+#define IOHEIGHT 2
 
+static t_class *pic_class, *edit_proxy_class;
 t_widgetbehavior pic_widgetbehavior;
 
+typedef struct _edit_proxy{
+    t_object    p_obj;
+    t_symbol   *p_sym;
+    t_clock    *p_clock;
+    struct      _pic *p_cnv;
+}t_edit_proxy;
+
 typedef struct _pic{
-     t_object   x_obj;
-     t_glist   *x_glist;
-     int        x_width;
-     int        x_height;
-     int        x_snd_set;
-     int        x_rcv_set;
-     int        x_bound;
-     int        x_bound_to_x;
-     int        x_init;
-     int        x_def_img;
-     t_symbol  *x_fullname;
-     t_symbol  *x_filename;
-     t_symbol  *x_x;
-     t_symbol  *x_receive;
-     t_symbol  *x_rcv_raw;
-     t_symbol  *x_send;
-     t_symbol  *x_snd_raw;
-     t_outlet  *x_outlet;
+     t_object       x_obj;
+     t_glist       *x_glist;
+     t_edit_proxy  *x_proxy;
+     t_canvas      *x_canvas;
+     int            x_width;
+     int            x_height;
+     int            x_snd_set;
+     int            x_rcv_set;
+     int            x_bound;
+     int            x_bound_to_x;
+     int            x_edit;
+     int            x_init;
+     int            x_def_img;
+     int            x_sel;
+     t_symbol      *x_fullname;
+     t_symbol      *x_filename;
+     t_symbol      *x_x;
+     t_symbol      *x_receive;
+     t_symbol      *x_rcv_raw;
+     t_symbol      *x_send;
+     t_symbol      *x_snd_raw;
+     t_outlet      *x_outlet;
 }t_pic;
 
 // helper functions
@@ -52,8 +64,26 @@ static const char* pic_filepath(t_pic *x, const char *file){
 static void pic_picsize_callback(t_pic *x, t_float w, t_float h){
     x->x_width = w;
     x->x_height = h;
-    if(glist_isvisible(x->x_glist))
+    if(glist_isvisible(x->x_glist)){
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
+        if(x->x_edit){
+            t_canvas *cv = glist_getcanvas(x->x_glist);
+            int xpos = text_xpix(&x->x_obj, x->x_glist);
+            int ypos = text_ypix(&x->x_obj, x->x_glist);
+            sys_vgui(".x%lx.c delete %lxSEL\n", cv, x);
+            sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
+            sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
+            if(x->x_sel) sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lxSEL -outline blue\n",
+                cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x);
+            else sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lxSEL -outline black\n",
+                cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x);
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n",
+                cv, xpos, ypos, xpos+IOWIDTH, ypos+IOHEIGHT, x);
+            ypos += x->x_height;
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
+                cv, xpos, ypos, xpos+IOWIDTH, ypos-IOHEIGHT, x);
+        }
+    }
     pd_unbind(&x->x_obj.ob_pd, x->x_x);
     x->x_bound_to_x = 0;
     if(x->x_receive != &s_){
@@ -75,31 +105,44 @@ static int pic_click(t_pic *x, struct _glist *glist, int xpos, int ypos, int shi
 
 static void pic_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
     t_pic* x = (t_pic*)z;
-    *xp1 = text_xpix(&x->x_obj, glist);
-    *yp1 = text_ypix(&x->x_obj, glist);
-    *xp2 = text_xpix(&x->x_obj, glist) + x->x_width;
-    *yp2 = text_ypix(&x->x_obj, glist) + x->x_height;
+    int xpos = *xp1 = text_xpix(&x->x_obj, glist);
+    int ypos = *yp1 = text_ypix(&x->x_obj, glist);
+    *xp2 = xpos + x->x_width;
+    *yp2 = ypos + x->x_height;
 }
 
 static void pic_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_pic *x = (t_pic *)z;
     x->x_obj.te_xpix += dx;
     x->x_obj.te_ypix += dy;
-    sys_vgui(".x%lx.c coords %lxSEL %d %d %d %d\n", glist_getcanvas(glist), x, text_xpix(&x->x_obj, glist),
-        text_ypix(&x->x_obj, glist), text_xpix(&x->x_obj, glist) + x->x_width, text_ypix(&x->x_obj, glist) + x->x_height);
-    sys_vgui(".x%lx.c coords %lx_pic %d %d\n", glist_getcanvas(glist), x,
-               text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist));
+    int xpos = text_xpix(&x->x_obj, glist);
+    int ypos = text_ypix(&x->x_obj, glist);
+    t_canvas *cv = glist_getcanvas(glist);
+    sys_vgui(".x%lx.c coords %lxSEL %d %d %d %d\n", cv, x, xpos, ypos, xpos+x->x_width, ypos+x->x_height);
+    sys_vgui(".x%lx.c coords %lx_pic %d %d\n", cv, x, xpos, ypos);
+    sys_vgui(".x%lx.c coords %lx_in %d %d %d %d\n", cv, x, xpos, ypos, xpos+IOWIDTH, ypos+IOHEIGHT);
+    ypos += x->x_height;
+    sys_vgui(".x%lx.c coords %lx_out %d %d %d %d\n", cv, x, xpos, ypos, xpos+IOWIDTH, ypos-IOHEIGHT);
     canvas_fixlinesfor(glist, (t_text*)x);
 }
 
 static void pic_select(t_gobj *z, t_glist *glist, int state){
     t_pic *x = (t_pic *)z;
+    int xpos = text_xpix(&x->x_obj, glist);
+    int ypos = text_ypix(&x->x_obj, glist);
+    t_canvas *cv = glist_getcanvas(glist);
+    x->x_sel = state;
     if(state){
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lxSEL -outline blue\n",
-            glist_getcanvas(glist), text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist),
-            text_xpix(&x->x_obj, glist) + x->x_width, text_ypix(&x->x_obj, glist) + x->x_height, x);
+        sys_vgui(".x%lx.c delete %lxSEL\n", cv, x);
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lxSEL -outline blue -width 1\n",
+            cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x);
      }
-     else sys_vgui(".x%lx.c delete %lxSEL\n", glist_getcanvas(glist), x);
+    else{
+        sys_vgui(".x%lx.c delete %lxSEL\n", cv, x);
+        if(x->x_edit)
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lxSEL -outline black\n",
+                cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x);
+    }
 }
 
 static void pic_delete(t_gobj *z, t_glist *glist){
@@ -108,15 +151,26 @@ static void pic_delete(t_gobj *z, t_glist *glist){
        
 static void pic_vis(t_gobj *z, t_glist *glist, int vis){
     t_pic* x = (t_pic*)z;
+    t_canvas *cv = glist_getcanvas(glist);
     if(vis){
+        int xpos = text_xpix(&x->x_obj, glist);
+        int ypos = text_ypix(&x->x_obj, glist);
         if(x->x_def_img){ // DEFAULT PIC
-            sys_vgui(".x%lx.c create image %d %d -anchor nw -tags %lx_pic\n", glist_getcanvas(glist),
-                     text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist), x);
-            sys_vgui(".x%lx.c itemconfigure %lx_pic -image %s\n", glist_getcanvas(glist), x, "pic_def_img");
+            sys_vgui(".x%lx.c create image %d %d -anchor nw -tags %lx_pic\n", cv, xpos, ypos, x);
+            sys_vgui(".x%lx.c itemconfigure %lx_pic -image %s\n", cv, x, "pic_def_img");
+            if(x->x_edit){
+                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lxSEL -outline black\n",
+                    cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x);
+                sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n",
+                    cv, xpos, ypos, xpos+IOWIDTH, ypos+IOHEIGHT, x);
+                ypos += x->x_height;
+                sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
+                    cv, xpos, ypos, xpos+IOWIDTH, ypos-IOHEIGHT, x);
+            }
         }
         else{
             sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_pic\n",
-                glist_getcanvas(glist), text_xpix(&x->x_obj, glist), text_ypix(&x->x_obj, glist), x->x_fullname, x);
+                cv, xpos, ypos, x->x_fullname, x);
             if(!x->x_init){
                 x->x_init = 1;
                 if(x->x_bound){
@@ -130,9 +184,23 @@ static void pic_vis(t_gobj *z, t_glist *glist, int vis){
                 sys_vgui("pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"\n",
                      x->x_x->s_name, x->x_fullname, x->x_fullname);
             }
+            else if(x->x_edit){
+                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lxSEL -outline black\n",
+                    cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x);
+                sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n",
+                    cv, xpos, ypos, xpos+IOWIDTH, ypos+IOHEIGHT, x);
+                ypos += x->x_height;
+                sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
+                    cv, xpos, ypos, xpos+IOWIDTH, ypos-IOHEIGHT, x);
+            }
         }
     }
-    else sys_vgui(".x%lx.c delete %lx_pic\n", glist_getcanvas(glist), x); // ERASE
+    else{
+        sys_vgui(".x%lx.c delete %lx_pic\n", cv, x); // ERASE
+        sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
+        sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
+        sys_vgui(".x%lx.c delete %lxSEL\n", cv, x); // if edit?
+    }
 }
 
 static void pic_save(t_gobj *z, t_binbuf *b){
@@ -167,16 +235,21 @@ void pic_open(t_pic* x, t_symbol *filename){
         if(filename != x->x_filename){
             const char *file_name_open = pic_filepath(x, filename->s_name); // path
             if(file_name_open){
+                t_canvas *cv = glist_getcanvas(x->x_glist);
+                int xpos = text_xpix(&x->x_obj, x->x_glist);
+                int ypos = text_ypix(&x->x_obj, x->x_glist);
                 x->x_filename = filename;
                 x->x_fullname = gensym(file_name_open);
                 sys_vgui("if { [info exists %lx_picname] == 0 } { image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n} \n",
                 x->x_fullname, x->x_fullname, file_name_open, x->x_fullname);
                 if(glist_isvisible(x->x_glist)){
-                    sys_vgui(".x%lx.c delete %lx_pic\n", glist_getcanvas(x->x_glist), x); // ERASE
+                    sys_vgui(".x%lx.c delete %lx_pic\n", cv, x); // ERASE
                     sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_pic\n",
-                        glist_getcanvas(x->x_glist), text_xpix(&x->x_obj, x->x_glist), text_ypix(&x->x_obj,
-                        x->x_glist), x->x_fullname, x); // CREATE NEW IMAGE
+                        cv, xpos, ypos, x->x_fullname, x); // CREATE NEW IMAGE
                 }
+                sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
+                sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
+                sys_vgui(".x%lx.c delete %lxSEL\n", cv, x);
                 if(x->x_bound){
                     pd_unbind(&x->x_obj.ob_pd, x->x_receive);
                     x->x_bound = 0;
@@ -237,22 +310,71 @@ static void pic_bang(t_pic *x){
         pd_bang(x->x_send->s_thing);
 }
 
+static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
+    ac = 0;
+    if(p->p_cnv && s == gensym("editmode")){
+        t_canvas *cv = glist_getcanvas(p->p_cnv->x_glist);
+        if((p->p_cnv->x_edit = (int)(av->a_w.w_float))){
+            int x = text_xpix(&p->p_cnv->x_obj, p->p_cnv->x_glist);
+            int y = text_ypix(&p->p_cnv->x_obj, p->p_cnv->x_glist);
+            int width = p->p_cnv->x_width;
+            int height = p->p_cnv->x_height;
+            sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
+            sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lxSEL -outline black\n",
+                cv, x, y, x+width, y+height, p->p_cnv);
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n",
+                cv, x, y, x+IOWIDTH, y+IOHEIGHT, p->p_cnv);
+            y += height;
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
+                cv, x, y, x+IOWIDTH, y-IOHEIGHT, p->p_cnv);
+        }
+        else{
+            sys_vgui(".x%lx.c delete %lxSEL\n", cv, p->p_cnv);
+            sys_vgui(".x%lx.c delete %lx_in\n", cv, p->p_cnv);
+            sys_vgui(".x%lx.c delete %lx_out\n", cv, p->p_cnv);
+        }
+    }
+}
+
+//-------------------------------------------------------------------------------------
+static void edit_proxy_free(t_edit_proxy *p){
+    pd_unbind(&p->p_obj.ob_pd, p->p_sym);
+    clock_free(p->p_clock);
+    pd_free(&p->p_obj.ob_pd);
+}
+
+static t_edit_proxy * edit_proxy_new(t_pic *x, t_symbol *s){
+    t_edit_proxy *p = (t_edit_proxy*)pd_new(edit_proxy_class);
+    p->p_cnv = x;
+    pd_bind(&p->p_obj.ob_pd, p->p_sym = s);
+    p->p_clock = clock_new(p, (t_method)edit_proxy_free);
+    return(p);
+}
+
 static void pic_free(t_pic *x){ // delete if variable is unset and image is unused
     sys_vgui("if { [info exists %lx_picname] == 1 && [image inuse %lx_picname] == 0} { image delete %lx_picname \n unset %lx_picname\n} \n",
         x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
     if(x->x_receive != &s_)
         pd_unbind(&x->x_obj.ob_pd, x->x_receive);
+    x->x_proxy->p_cnv = NULL;
+    clock_delay(x->x_proxy->p_clock, 0);
 }
 
 static void *pic_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_pic *x = (t_pic *)pd_new(pic_class);
+    x->x_canvas = canvas_getcurrent();
+    x->x_glist = (t_glist*)x->x_canvas;
     char buf[MAXPDSTRING];
+    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)x->x_canvas);
+    buf[MAXPDSTRING-1] = 0;
+    x->x_proxy = edit_proxy_new(x, gensym(buf));
     sprintf(buf, "#%lx", (long)x);
     x->x_x = gensym(buf);
     pd_bind(&x->x_obj.ob_pd, x->x_x);
     x->x_bound_to_x = 1;
-    x->x_glist = (t_glist*)canvas_getcurrent();
+    x->x_edit = x->x_canvas->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_filename = &s_;
     int loaded = x->x_rcv_set = x->x_snd_set = x->x_bound = x->x_def_img = x->x_init = 0;
     x->x_fullname = NULL;
@@ -304,6 +426,8 @@ void pic_setup(void){
     class_addmethod(pic_class, (t_method)pic_open, gensym("open"), A_SYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_send, gensym("send"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_receive, gensym("receive"), A_DEFSYMBOL, 0);
+    edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
+    class_addanything(edit_proxy_class, edit_proxy_any);
     pic_widgetbehavior.w_getrectfn  = pic_getrect;
     pic_widgetbehavior.w_displacefn = pic_displace;
     pic_widgetbehavior.w_selectfn   = pic_select;
