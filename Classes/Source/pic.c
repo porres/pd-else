@@ -241,7 +241,6 @@ static void pic_save(t_gobj *z, t_binbuf *b){
                         if(!strcmp(buf, "-receive")){
                             i++;
                             atom_string(binbuf_getvec(bb) + i, buf, 80);
-                            post("buf = %s", buf);
                             x->x_rcv_raw = gensym(buf);
                             break;
                         }
@@ -507,7 +506,6 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
                     ac-=2, av+=2;
                 }
                 else goto errstate;
-                ac--, av++;
             }
             else if(cursym == gensym("-receive")){
                 if(ac >= 2 && (av+1)->a_type == A_SYMBOL){

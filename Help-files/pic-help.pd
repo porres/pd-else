@@ -1,4 +1,4 @@
-#N canvas 637 43 563 599 10;
+#N canvas 637 43 560 607 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -23,39 +23,34 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 4 371 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 368 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 449 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 446 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 484 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 513 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 91 378 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 582 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 91 381 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 4 572 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
-0;
-#X text 140 381 open <symbol>;
-#X text 226 381 - open an image file named by the symbol;
+#X text 120 378 open <symbol>;
+#X text 206 378 - open an image file named by the symbol;
 #X msg 221 141 open tklogo.gif;
 #X msg 244 167 open pdlogo.gif;
-#X obj 221 335 else/display;
-#X obj 91 459 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 221 334 else/display;
+#X obj 91 456 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 194 460 bang;
-#X text 226 460 - a bang is output if you click on the image;
-#X text 140 412 send <symbol>;
-#X text 226 412 - sets a send symbol, f 40;
-#X text 122 427 receive <symbol>;
-#X text 226 427 - sets a receive symbol, f 40;
+#X text 174 457 bang;
+#X text 206 457 - a bang is output if you click on the image;
+#X text 120 409 send <symbol>;
+#X text 206 409 - sets a send symbol, f 40;
+#X text 102 424 receive <symbol>;
+#X text 206 424 - sets a receive symbol, f 40;
 #N canvas 766 187 577 540 send 0;
 #X obj 349 314 else/display;
 #X obj 347 214 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 112 360 else/display;
 #X msg 129 178 send empty \, receive empty;
-#X text 101 50 You can set send/receive names with the 2nd and 3rd
-argument or the 'send'/'receive' messages - make sure to escape "\$0"
-properly with backlashes (as in: "\\\$0"). Setting these to 'empty'
-removes the send/receive symbols., f 67;
 #X obj 112 144 initmess send \\\$0-pic-snd \, receive \\\$0-pic-rcv
 ;
 #X obj 349 280 r \$0-pic-snd;
@@ -64,24 +59,24 @@ removes the send/receive symbols., f 67;
 the corresponding inlet/outlet does not get drawn when you're in edit
 mode. This is an indicative that the object has a send or receive symbol.
 , f 57;
-#X obj 112 214 else/pic -file pdlogo.gif -send \$0-pic-snd -receive
-\$0-pic-rcv;
-#X connect 1 0 7 0;
-#X connect 3 0 9 0;
-#X connect 5 0 9 0;
-#X connect 6 0 0 0;
-#X connect 9 0 2 0;
+#X obj 112 214 else/pic 0 pdlogo.gif \$0-pic-snd \$0-pic-rcv;
+#X text 101 50 You can set send/receive names with the -send/-receive
+flags or the 'send'/'receive' messages - make sure to escape "\$0"
+properly with backlashes (as in: "\\\$0"). Setting these to 'empty'
+removes the send/receive symbols., f 67;
+#X connect 1 0 6 0;
+#X connect 3 0 8 0;
+#X connect 4 0 8 0;
+#X connect 5 0 0 0;
+#X connect 8 0 2 0;
 #X restore 490 273 pd send \; receive;
-#X text 153 511 2) <symbol>: send symbol (default 'empty'), f 57;
-#X text 153 527 3) <symbol>: receive symbol (default 'empty'), f 57
-;
-#X text 194 396 bang;
-#X text 226 396 - outputs a bang, f 40;
+#X text 174 393 bang;
+#X text 206 393 - outputs a bang, f 40;
 #X text 145 201 click the image ===->, f 12;
 #X text 81 89 [pic] loads image pictures that you can interact with.
 When you click on the picture \, it sends a bang. It only works with
 file types: .gif \, .ppm & .pgm.;
-#N canvas 662 128 433 653 examples 0;
+#N canvas 662 128 446 653 examples 0;
 #N canvas 457 127 474 484 (subpatch) 0;
 #X msg 117 275 open green.gif;
 #X msg 217 295 open red.gif;
@@ -101,12 +96,12 @@ file types: .gif \, .ppm & .pgm.;
 #X connect 8 0 0 0;
 #X connect 8 0 6 0;
 #X coords 0 -1 1 1 121 121 2 100 100;
-#X restore 150 408 pd;
-#X obj 150 550 else/display;
-#X text 282 462 <= open;
-#X text 98 280 You can also connect the bang output into a counter
+#X restore 164 407 pd;
+#X obj 164 549 else/display;
+#X text 296 461 <= open;
+#X text 112 279 You can also connect the bang output into a counter
 and make it go through a sequence of images., f 37;
-#X text 94 340 Anothe idea is that you can also adapat the patch above
+#X text 108 339 Anothe idea is that you can also adapat the patch above
 to behave like a bang with a flash time. See below., f 41;
 #N canvas 457 127 400 491 (subpatch) 0;
 #X obj 104 232 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
@@ -129,10 +124,10 @@ to behave like a bang with a flash time. See below., f 41;
 #X connect 7 0 8 0;
 #X connect 8 0 0 0;
 #X coords 0 -1 1 1 121 121 2 100 100;
-#X restore 148 93 pd;
-#X obj 148 232 else/display;
-#X text 280 147 <= open;
-#X text 90 48 Using [pic] to create toggle on/off buttons. See subpatch
+#X restore 162 92 pd;
+#X obj 162 231 else/display;
+#X text 294 146 <= open;
+#X text 104 47 Using [pic] to create toggle on/off buttons. See subpatch
 below:, f 35;
 #X connect 0 0 1 0;
 #X connect 5 0 6 0;
@@ -147,21 +142,29 @@ in edit mode., f 35;
 #X obj 209 122 else/pic 0 empty empty empty;
 #X restore 496 241 pd more details;
 #X f 7;
-#X text 153 495 1) <symbol>: filename to open (default empty);
 #N canvas 835 231 468 365 outline 0;
 #X msg 181 155 outline \$1;
 #X obj 181 118 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
+#X obj 181 188 else/pic 0 tklogo.gif empty empty;
 #X text 66 45 You can always have an outline of the picture (and not
 only while in edit mode) if you set the outline mode with the 'outline'
-message or 4th argument.;
-#X obj 181 188 else/pic 0 tklogo.gif empty empty;
-#X connect 0 0 3 0;
+message or the -outline flag.;
+#X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X restore 478 307 pd outline;
-#X text 153 544 4) <float>: non zero sets to outline mode (default
-0), f 57;
 #X obj 221 194 else/pic 0 pdlogo.gif empty empty;
-#X connect 19 0 41 0;
-#X connect 20 0 41 0;
-#X connect 41 0 21 0;
+#X obj 4 484 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X text 162 492 (none);
+#X text 93 520 -file <symbol>: filename to open (default empty), f
+57;
+#X text 93 534 -send <symbol>: send symbol (default 'empty'), f 57
+;
+#X text 93 548 -receive <symbol>: receive symbol (default 'empty')
+, f 57;
+#X text 93 563 -outline: sets to outline mode (default no outline)
+, f 57;
+#X connect 19 0 37 0;
+#X connect 20 0 37 0;
+#X connect 37 0 21 0;
