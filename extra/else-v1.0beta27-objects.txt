@@ -42,6 +42,8 @@ canvas.active	x
 canvas.mouse	x
 canvas.name	x
 canvas.wname	x
+canvas.edit	x
+canvas.vis	x
 car2pol	x
 car2pol~	x
 ceil	x

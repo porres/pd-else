@@ -28,9 +28,9 @@ This project is still in a beta phase, where drastic changes may occur and backw
 
 ### Acknowledgements
 
-Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I first started coding and contributing to this library with the objects: [median~] and [keyboard]. 
+Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I first started coding and collaborating with the objects: [median~] and [keyboard]. 
 
-I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also contributing with the [float2bits], [brown~],  [gray~] and [pinknoise~] objects.
+I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also collaborating with the [float2bits], [brown~],  [gray~] and [pinknoise~] objects.
 
 --------------------------------------------------------------------------
 
@@ -48,17 +48,18 @@ It will still take a little while for ELSE to stabilize into a final version. Fo
 
 ### Downloading ELSE:
 
-Look for the latest releases in https://github.com/porres/pd-else/releases - but ELSE is also available via 'deken' (Pd's external manager). In Pd, just go for Help => Find Externals and search for 'else'.
+Look for the latest releases in https://github.com/porres/pd-else/releases - but ELSE is also available via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else').
 
 ### Installing ELSE:
 
-This release needs Pd Vanilla 0.50-0 or above (Pd Extended/Purr Data aren't supported). ELSE comes as a set of separate binaries and abstractions, so all you need to is add the "else" path to Pd via "Preferences => Path" or use the [declare] object.
+This release needs Pd Vanilla 0.51-0 or above (Pd Extended/Purr Data aren't supported). ELSE comes as a set of separate binaries and abstractions, so all you need to is add the "else" path to Pd via "Preferences => Path" or use the [declare] object.
 
 #### Building ELSE for Pd Vanilla:
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
 
-<pre>make pdincludepath=~/pd-0.50-0/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.50-0/bin/)</pre>
+<pre>make pdincludepath=~/pd-0.51-0/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.51-0/bin/)</pre>
+
 * Installing with pdlibbuilder
 
 Go to the pd-else folder and use "objectsdir" to set a relative path for your build, something like:
@@ -71,7 +72,7 @@ Cross compiling is also possible with something like this
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=../</pre>
 --------------------------------------------------------------------------
 
-## Current Object list (364 objects):
+## Current Object list (366 objects):
 
 **ASSORTED: [03]**
 - [table~]
@@ -82,7 +83,7 @@ Cross compiling is also possible with something like this
 - [hann~]
 - [bin.shift~]
 
-**PATCH/SUBPATCH MANAGEMENT: [11]**
+**PATCH/SUBPATCH MANAGEMENT: [13]**
 
 - [args]
 - [dollarzero]
@@ -92,6 +93,8 @@ Cross compiling is also possible with something like this
 - [savechange]
 - [properties]
 - [canvas.active]
+- [canvas.edit]
+- [canvas.vis]
 - [canvas.wname]
 - [canvas.name]
 - [loadbanger] / [lb]
