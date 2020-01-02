@@ -1,4 +1,4 @@
-#N canvas 637 43 563 574 10;
+#N canvas 637 43 563 599 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -31,7 +31,7 @@
 0;
 #X obj 91 381 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 547 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 572 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 140 381 open <symbol>;
 #X text 226 381 - open an image file named by the symbol;
@@ -46,76 +46,47 @@
 #X text 226 412 - sets a send symbol, f 40;
 #X text 122 427 receive <symbol>;
 #X text 226 427 - sets a receive symbol, f 40;
-#N canvas 766 187 594 440 send 0;
-#X obj 340 311 else/display;
-#X obj 338 211 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 766 187 596 568 send 0;
+#X obj 349 314 else/display;
+#X obj 347 214 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 103 357 else/display;
-#X msg 120 175 send empty \, receive empty;
-#X text 92 47 You can set send/receive names with the 2nd and 3rd argument
-or the 'send'/'receive' messages - make sure to escape "\$0" properly
-with backlashes (as in: "\\\$0"). Setting these to 'empty' removes
-the send/receive symbols., f 67;
-#X obj 103 141 initmess send \\\$0-pic-snd \, receive \\\$0-pic-rcv
+#X obj 112 360 else/display;
+#X msg 129 178 send empty \, receive empty;
+#X text 101 50 You can set send/receive names with the 2nd and 3rd
+argument or the 'send'/'receive' messages - make sure to escape "\$0"
+properly with backlashes (as in: "\\\$0"). Setting these to 'empty'
+removes the send/receive symbols., f 67;
+#X obj 112 144 initmess send \\\$0-pic-snd \, receive \\\$0-pic-rcv
 ;
-#X obj 340 277 r \$0-pic-snd;
-#X obj 338 234 s \$0-pic-rcv;
-#X obj 103 211 else/pic pdlogo.gif \$0-pic-snd \$0-pic-rcv;
+#X obj 349 280 r \$0-pic-snd;
+#X obj 347 237 s \$0-pic-rcv;
+#X obj 112 214 else/pic pdlogo.gif \$0-pic-snd \$0-pic-rcv 0;
+#X text 127 432 Note that when you set a receive or send symbol \,
+the corresponding inlet/outlet does not get drawn when you're in edit
+mode. This is an indicative that the object has a send or receive symbol.
+, f 57;
 #X connect 1 0 7 0;
 #X connect 3 0 8 0;
 #X connect 5 0 8 0;
 #X connect 6 0 0 0;
 #X connect 8 0 2 0;
-#X restore 490 296 pd send \; receive;
+#X restore 490 273 pd send \; receive;
 #X text 153 511 2) <symbol>: send symbol (default 'empty'), f 57;
 #X text 153 527 3) <symbol>: receive symbol (default 'empty'), f 57
 ;
-#N canvas 679 192 385 212 default 0;
-#X text 89 52 When you have an empty filename or error opening a file
-\, pic lods a default image of a question mark:, f 34;
-#X text 109 132 default image =>;
-#X obj 216 122 else/pic empty empty empty;
-#X restore 480 274 pd default;
 #X text 194 396 bang;
 #X text 226 396 - outputs a bang, f 40;
-#X text 153 495 1) <symbol>: filename to open (default internal image)
-, f 57;
-#X obj 221 194 else/pic pdlogo.gif empty empty;
+#X obj 221 194 else/pic pdlogo.gif empty empty 0;
 #X text 145 201 click the image ===->, f 12;
 #X text 81 89 [pic] loads image pictures that you can interact with.
 When you click on the picture \, it sends a bang. It only works with
 file types: .gif \, .ppm & .pgm.;
-#N canvas 662 128 433 655 examples 0;
-#N canvas 457 127 400 491 (subpatch) 0;
-#X obj 104 232 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 124 270 sel 0 1;
-#X obj 151 363 s \$0-set;
-#X obj 104 39 r \$0-set;
-#X msg 151 298 open green.gif;
-#X msg 124 327 open red.gif;
-#X obj 104 402 outlet;
-#X obj 104 104 else/pic red.gif empty empty;
-#X obj 148 72 else/initmess open red.gif;
-#X connect 0 0 1 0;
-#X connect 0 0 6 0;
-#X connect 1 0 5 0;
-#X connect 1 1 4 0;
-#X connect 3 0 7 0;
-#X connect 4 0 2 0;
-#X connect 5 0 2 0;
-#X connect 7 0 0 0;
-#X connect 8 0 7 0;
-#X coords 0 -1 1 1 121 121 2 100 100;
-#X restore 136 95 pd;
-#X obj 136 234 else/display;
-#X text 127 37 Using [pic] to create toggle on/off buttons, f 21;
-#X text 268 149 <= open;
+#N canvas 662 128 433 653 examples 0;
 #N canvas 457 127 474 484 (subpatch) 0;
 #X msg 117 275 open green.gif;
 #X msg 217 295 open red.gif;
 #X obj 104 402 outlet;
-#X obj 104 104 else/pic red.gif empty empty;
+#X obj 104 104 else/pic red.gif empty empty 0;
 #X obj 217 334 s \$0-set2;
 #X obj 104 29 r \$0-set2;
 #X obj 155 65 else/initmess open red.gif;
@@ -130,16 +101,66 @@ file types: .gif \, .ppm & .pgm.;
 #X connect 6 0 3 0;
 #X connect 7 0 1 0;
 #X coords 0 -1 1 1 121 121 2 100 100;
-#X restore 138 410 pd;
-#X obj 138 552 else/display;
-#X text 270 464 <= open;
-#X text 86 282 You can also connect the bang output into a counter
+#X restore 150 408 pd;
+#X obj 150 550 else/display;
+#X text 282 462 <= open;
+#X text 98 280 You can also connect the bang output into a counter
 and make it go through a sequence of images., f 37;
-#X text 82 342 Anothe idea is that you can also adapat the patch above
+#X text 94 340 Anothe idea is that you can also adapat the patch above
 to behave like a bang with a flash time. See below., f 41;
+#N canvas 457 127 400 491 (subpatch) 0;
+#X obj 104 232 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 124 270 sel 0 1;
+#X obj 151 363 s \$0-set;
+#X obj 104 39 r \$0-set;
+#X msg 151 298 open green.gif;
+#X msg 124 327 open red.gif;
+#X obj 104 402 outlet;
+#X obj 104 104 else/pic red.gif empty empty 0;
+#X obj 148 72 else/initmess open red.gif;
 #X connect 0 0 1 0;
-#X connect 4 0 5 0;
+#X connect 0 0 6 0;
+#X connect 1 0 5 0;
+#X connect 1 1 4 0;
+#X connect 3 0 7 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 7 0 0 0;
+#X connect 8 0 7 0;
+#X coords 0 -1 1 1 121 121 2 100 100;
+#X restore 148 93 pd;
+#X obj 148 232 else/display;
+#X text 280 147 <= open;
+#X text 90 48 Using [pic] to create toggle on/off buttons. See subpatch
+below:, f 35;
+#X connect 0 0 1 0;
+#X connect 5 0 6 0;
 #X restore 472 329 pd examples;
-#X connect 19 0 36 0;
-#X connect 20 0 36 0;
-#X connect 36 0 21 0;
+#N canvas 823 287 390 342 more 0;
+#X text 82 52 When you have an empty filename or error opening a file
+\, pic lods a default image of a question mark:, f 34;
+#X text 102 132 default image =>;
+#X obj 209 122 else/pic empty empty empty 0;
+#X text 90 206 Now please get into and out of edit mode so you can
+see how the [pic] object creates an outline and inlet/outlet when you're
+in edit mode., f 35;
+#X restore 496 241 pd more details;
+#X f 7;
+#X text 153 495 1) <symbol>: filename to open (default empty);
+#N canvas 835 231 468 365 outline 0;
+#X obj 181 188 else/pic tklogo.gif empty empty 1;
+#X msg 181 155 outline \$1;
+#X obj 181 118 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X text 66 45 You can always have an outline of the picture (and not
+only while in edit mode) if you set the outline mode with the 'outline'
+message or 4th argument.;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X restore 478 307 pd outline;
+#X text 153 544 4) <float>: non zero sets to outline mode (default
+0), f 57;
+#X connect 19 0 34 0;
+#X connect 20 0 34 0;
+#X connect 34 0 21 0;

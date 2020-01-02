@@ -16,17 +16,28 @@ typedef struct _edit{
     t_object        x_obj;
     t_edit_proxy   *x_proxy;
     t_canvas       *x_canvas;
+    int            x_edit;
 }t_edit;
 
 static void edit_loadbang(t_edit *x, t_float f){
     if((int)f == LB_LOAD)
-        outlet_float(x->x_obj.ob_outlet, x->x_canvas->gl_edit);
+        outlet_float(x->x_obj.ob_outlet, x->x_edit = x->x_canvas->gl_edit);
 }
 
 static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
     ac = 0;
-    if(p->p_cnv && s == gensym("editmode"))
-        outlet_float(p->p_cnv->x_obj.ob_outlet, (int)(av->a_w.w_float));
+    if(p->p_cnv){
+        if(s == gensym("editmode")){
+            int arg = (int)(av->a_w.w_float);
+            if(p->p_cnv->x_edit != arg)
+                outlet_float(p->p_cnv->x_obj.ob_outlet, p->p_cnv->x_edit = arg);
+        }
+        else if(s == gensym("obj") || s == gensym("msg") || s == gensym("floatatom")
+                || s == gensym("text")){
+            if(av->a_w.w_float == 0 && p->p_cnv->x_edit == 0)
+                outlet_float(p->p_cnv->x_obj.ob_outlet, p->p_cnv->x_edit = 1);
+        }
+    }
 }
 
 static void edit_proxy_free(t_edit_proxy *p){
