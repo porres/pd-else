@@ -149,9 +149,9 @@ in edit mode., f 35;
 #X f 7;
 #X text 153 495 1) <symbol>: filename to open (default empty);
 #N canvas 835 231 468 365 outline 0;
-#X obj 181 188 else/pic tklogo.gif empty empty 1;
+#X obj 181 188 else/pic tklogo.gif empty empty 0;
 #X msg 181 155 outline \$1;
-#X obj 181 118 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 181 118 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 66 45 You can always have an outline of the picture (and not
 only while in edit mode) if you set the outline mode with the 'outline'
