@@ -10,8 +10,6 @@
 #pragma warning( disable : 4305 )
 #endif
 
-#define IOHEIGHT 2
-
 static t_class *pic_class, *edit_proxy_class;
 t_widgetbehavior pic_widgetbehavior;
 
@@ -82,10 +80,10 @@ static void pic_size_callback(t_pic *x, t_float w, t_float h){
                 cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x);
             if(x->x_edit && x->x_receive == &s_)
                 sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n",
-                    cv, xpos, ypos, xpos+IOWIDTH, ypos+IOHEIGHT, x);
+                    cv, xpos, ypos, xpos+IOWIDTH, ypos+IHEIGHT-1, x);
             if(x->x_edit && x->x_send == &s_)
                 sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
-                    cv, xpos, ypos+x->x_height, xpos+IOWIDTH, ypos+x->x_height-IOHEIGHT, x);
+                    cv, xpos, ypos+x->x_height, xpos+IOWIDTH, ypos+x->x_height-IHEIGHT-1, x);
         }
     }
     pd_unbind(&x->x_obj.ob_pd, x->x_x);
@@ -124,9 +122,9 @@ static void pic_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     sys_vgui(".x%lx.c coords %lxSEL %d %d %d %d\n", cv, obj, x, y, x+w, y+h);
     sys_vgui(".x%lx.c coords %lx_pic %d %d\n", cv, obj, x, y);
     if(obj->x_receive == &s_)
-        sys_vgui(".x%lx.c coords %lx_in %d %d %d %d\n", cv, obj, x, y, x+IOWIDTH, y+IOHEIGHT);
+        sys_vgui(".x%lx.c coords %lx_in %d %d %d %d\n", cv, obj, x, y, x+IOWIDTH, y+IHEIGHT-1);
     if(obj->x_send == &s_)
-        sys_vgui(".x%lx.c coords %lx_out %d %d %d %d\n", cv, obj, x, y+h, x+IOWIDTH, y+h-IOHEIGHT);
+        sys_vgui(".x%lx.c coords %lx_out %d %d %d %d\n", cv, obj, x, y+h, x+IOWIDTH, y+h-IHEIGHT-1);
     canvas_fixlinesfor(glist, (t_text*)obj);
 }
 
@@ -190,10 +188,10 @@ static void pic_vis(t_gobj *z, t_glist *glist, int vis){
         sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
         if(x->x_edit && x->x_receive == &s_)
             sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n",
-                     cv, xpos, ypos, xpos+IOWIDTH, ypos+IOHEIGHT, x);
+                     cv, xpos, ypos, xpos+IOWIDTH, ypos+IHEIGHT-1, x);
         if(x->x_edit && x->x_send == &s_)
             sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
-                cv, xpos, ypos+x->x_height, xpos+IOWIDTH, ypos+x->x_height-IOHEIGHT, x);
+                cv, xpos, ypos+x->x_height, xpos+IOWIDTH, ypos+x->x_height-IHEIGHT-1, x);
     }
     else{
         sys_vgui(".x%lx.c delete %lx_pic\n", cv, x); // ERASE
@@ -324,7 +322,7 @@ static void pic_send(t_pic *x, t_symbol *s){
                 int ypos = text_ypix(&x->x_obj, x->x_glist) + x->x_height;
                 if(x->x_edit)
                     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
-                             cv, xpos, ypos, xpos+IOWIDTH, ypos-IOHEIGHT, x);
+                             cv, xpos, ypos, xpos+IOWIDTH, ypos-IHEIGHT-1, x);
             }
         }
     }
@@ -332,23 +330,23 @@ static void pic_send(t_pic *x, t_symbol *s){
 
 static void pic_receive(t_pic *x, t_symbol *s){
     if(s != gensym("")){
-        x->x_rcv_set = 1;
-        t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, x->x_rcv_raw = s);
+        t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, s);
         if(rcv != x->x_receive){
             x->x_rcv_set = 1;
+            x->x_rcv_raw = s;
+            x->x_receive = rcv;
             canvas_dirty(x->x_glist, 1);
             t_canvas *cv = glist_getcanvas(x->x_glist);
             int xpos = text_xpix(&x->x_obj, x->x_glist);
             int ypos = text_ypix(&x->x_obj, x->x_glist);
             if(x->x_bound)
                 pd_unbind(&x->x_obj.ob_pd, x->x_receive);
-            x->x_receive = rcv;
             sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
             if(rcv == &s_){
                 x->x_bound = 0;
                 if(x->x_edit)
                     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n",
-                        cv, xpos, ypos, xpos+IOWIDTH, ypos+IOHEIGHT, x);
+                        cv, xpos, ypos, xpos+IOWIDTH, ypos+IHEIGHT-1, x);
             }
             else{
                 pd_bind(&x->x_obj.ob_pd, x->x_receive);
@@ -406,10 +404,10 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
                              cv, x, y, x+w, y+h, p->p_cnv);
                 if(p->p_cnv->x_receive == &s_)
                     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n",
-                        cv, x, y, x+IOWIDTH, y+IOHEIGHT, p->p_cnv);
+                        cv, x, y, x+IOWIDTH, y+IHEIGHT-1, p->p_cnv);
                 if(p->p_cnv->x_send == &s_)
                     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
-                        cv, x, y+h, x+IOWIDTH, y+h-IOHEIGHT, p->p_cnv);
+                        cv, x, y+h, x+IOWIDTH, y+h-IHEIGHT-1, p->p_cnv);
             }
             else{
                 if(!p->p_cnv->x_outline)
@@ -609,7 +607,7 @@ void pic_setup(void){
     sys_vgui("image create photo pic_def_img -data {R0lGODdhJwAnAMQAAAAAAAsLCxMTExwcHCIiIisrKzw8PERERExMTFRUVF1dXWVlZW1tbXNzc3t7e4ODg42NjZOTk5qamqSkpK2trbS0tLy8vMPDw8zMzNTU1Nzc3OPj4+3t7fT09P///wAAACH5BAkKAB8ALAAAAAAnACcAAAX/oCeOJKlRTzIARwNVWinPNNYAeK4HjNXRQNLGkRsIArnAYIVbZILAjAFAYAICgmxyQMBZoDJNt1vUGc0CAAY86iioSdwgkTjIzQAEh+2hwHFpAhQbHIUZRGk5XRRsbldxazIQAFZpCz9QGjqUABM0HHZIjwMxUBgAiUh6QJOVAE9QGVRGBQCMQBJ/qGpgHUQ5l0GtOWmwUBwTCwoRe0AbZDhIBRt8Hh2YQURWKw/VfMOKvN5BHA+cObUR40EZCOc4tQzY6yUXONACXQzN9CUWV9twRJjXT4S9M/e8FJTBoVYiTgxKLSRRQdcKCAQnejDHZIUDjTNuJFphDOSICAAKUQiIZzLMpgstZWR4sKABzJgzMuLcyXMdBwsTKEjcqcFdjls4HRXgsuJmTHu1EjbYOeFdmgT8TFaEtiJYzA13UnbiWfERgAY6QdoQgGBCWiAhAAA7\n");
     sys_vgui("}\n");
     
-    sys_vgui("if {[catch {pd}] } {\n");
+    sys_vgui("if {[catch {pd}]} {\n");
     sys_vgui("    proc pd {args} {pdsend [join $args \" \"]}\n");
     sys_vgui("}\n");
     
@@ -661,11 +659,8 @@ void pic_setup(void){
     sys_vgui("    set $var_rcv $rcv\n");
     sys_vgui("\n");
     sys_vgui("    toplevel $id\n");
-    sys_vgui("    wm title $id {pic}\n");
+    sys_vgui("    wm title $id {[pic] Properties}\n");
     sys_vgui("    wm protocol $id WM_DELETE_WINDOW [concat pic_cancel $id]\n");
-    sys_vgui("\n");
-    sys_vgui("    label $id.label -text {pic properties}\n");
-    sys_vgui("    pack $id.label -side top\n");
     sys_vgui("\n");
     sys_vgui("    frame $id.pic\n");
     sys_vgui("    pack $id.pic -side top\n");
