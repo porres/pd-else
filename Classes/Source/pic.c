@@ -83,7 +83,7 @@ static void pic_size_callback(t_pic *x, t_float w, t_float h){
                     cv, xpos, ypos, xpos+IOWIDTH, ypos+IHEIGHT-1, x);
             if(x->x_edit && x->x_send == &s_)
                 sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
-                    cv, xpos, ypos+x->x_height, xpos+IOWIDTH, ypos+x->x_height-IHEIGHT-1, x);
+                    cv, xpos, ypos+x->x_height, xpos+IOWIDTH, ypos+x->x_height-IHEIGHT+1, x);
         }
     }
     pd_unbind(&x->x_obj.ob_pd, x->x_x);
@@ -124,7 +124,7 @@ static void pic_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     if(obj->x_receive == &s_)
         sys_vgui(".x%lx.c coords %lx_in %d %d %d %d\n", cv, obj, x, y, x+IOWIDTH, y+IHEIGHT-1);
     if(obj->x_send == &s_)
-        sys_vgui(".x%lx.c coords %lx_out %d %d %d %d\n", cv, obj, x, y+h, x+IOWIDTH, y+h-IHEIGHT-1);
+        sys_vgui(".x%lx.c coords %lx_out %d %d %d %d\n", cv, obj, x, y+h, x+IOWIDTH, y+h-IHEIGHT+1);
     canvas_fixlinesfor(glist, (t_text*)obj);
 }
 
@@ -191,7 +191,7 @@ static void pic_vis(t_gobj *z, t_glist *glist, int vis){
                      cv, xpos, ypos, xpos+IOWIDTH, ypos+IHEIGHT-1, x);
         if(x->x_edit && x->x_send == &s_)
             sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
-                cv, xpos, ypos+x->x_height, xpos+IOWIDTH, ypos+x->x_height-IHEIGHT-1, x);
+                cv, xpos, ypos+x->x_height, xpos+IOWIDTH, ypos+x->x_height-IHEIGHT+1, x);
     }
     else{
         sys_vgui(".x%lx.c delete %lx_pic\n", cv, x); // ERASE
@@ -268,6 +268,8 @@ static void pic_save(t_gobj *z, t_binbuf *b){
 //------------------------------- METHODS --------------------------------------------
 void pic_open(t_pic* x, t_symbol *filename){
     if(filename){
+        if(filename == gensym("empty") && x->x_def_img)
+            return;
         if(filename != x->x_filename){
             const char *file_name_open = pic_filepath(x, filename->s_name); // path
             if(file_name_open){
@@ -310,7 +312,6 @@ static void pic_send(t_pic *x, t_symbol *s){
     if(s != gensym("")){
         t_symbol *snd = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, s);
         if(snd != x->x_send){
-            post("snd = %s, x->x_send = %s", snd->s_name, x->x_send->s_name);
             x->x_snd_raw = s;
             x->x_send = snd;
             x->x_snd_set = 1;
@@ -322,7 +323,7 @@ static void pic_send(t_pic *x, t_symbol *s){
                 int ypos = text_ypix(&x->x_obj, x->x_glist) + x->x_height;
                 if(x->x_edit)
                     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
-                             cv, xpos, ypos, xpos+IOWIDTH, ypos-IHEIGHT-1, x);
+                             cv, xpos, ypos, xpos+IOWIDTH, ypos-IHEIGHT+1, x);
             }
         }
     }
@@ -407,7 +408,7 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
                         cv, x, y, x+IOWIDTH, y+IHEIGHT-1, p->p_cnv);
                 if(p->p_cnv->x_send == &s_)
                     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
-                        cv, x, y+h, x+IOWIDTH, y+h-IHEIGHT-1, p->p_cnv);
+                        cv, x, y+h, x+IOWIDTH, y+h-IHEIGHT+1, p->p_cnv);
             }
             else{
                 if(!p->p_cnv->x_outline)
@@ -432,7 +433,7 @@ void pic_properties(t_gobj *z, t_glist *gl){
     gfxstub_new(&x->x_obj.ob_pd, x, buf);
 }
 
-static void pic_apply(t_pic *x, t_symbol *name, t_floatarg outline, t_symbol *snd, t_symbol *rcv){
+static void pic_ok(t_pic *x, t_symbol *name, t_floatarg outline, t_symbol *snd, t_symbol *rcv){
     pic_open(x, name);
     pic_outline(x, outline);
     pic_send(x, snd);
@@ -536,7 +537,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
                 }
                 else goto errstate;
             }
-            else if(cursym == gensym("-file")){
+            else if(cursym == gensym("-open")){
                 if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
                     sym = atom_getsymbolarg(1, ac, av);
                     x->x_flag = 1;
@@ -591,7 +592,7 @@ void pic_setup(void){
     class_addmethod(pic_class, (t_method)pic_open, gensym("open"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_send, gensym("send"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_size_callback, gensym("_picsize"), A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(pic_class, (t_method)pic_apply, gensym("apply"), A_SYMBOL, A_FLOAT, A_SYMBOL, A_SYMBOL, 0);
+    class_addmethod(pic_class, (t_method)pic_ok, gensym("ok"), A_SYMBOL, A_FLOAT, A_SYMBOL, A_SYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_receive, gensym("receive"), A_DEFSYMBOL, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
@@ -604,24 +605,12 @@ void pic_setup(void){
     class_setwidget(pic_class, &pic_widgetbehavior);
     class_setsavefn(pic_class, &pic_save);
     class_setpropertiesfn(pic_class, &pic_properties);
-    sys_vgui("image create photo pic_def_img -data {R0lGODdhJwAnAMQAAAAAAAsLCxMTExwcHCIiIisrKzw8PERERExMTFRUVF1dXWVlZW1tbXNzc3t7e4ODg42NjZOTk5qamqSkpK2trbS0tLy8vMPDw8zMzNTU1Nzc3OPj4+3t7fT09P///wAAACH5BAkKAB8ALAAAAAAnACcAAAX/oCeOJKlRTzIARwNVWinPNNYAeK4HjNXRQNLGkRsIArnAYIVbZILAjAFAYAICgmxyQMBZoDJNt1vUGc0CAAY86iioSdwgkTjIzQAEh+2hwHFpAhQbHIUZRGk5XRRsbldxazIQAFZpCz9QGjqUABM0HHZIjwMxUBgAiUh6QJOVAE9QGVRGBQCMQBJ/qGpgHUQ5l0GtOWmwUBwTCwoRe0AbZDhIBRt8Hh2YQURWKw/VfMOKvN5BHA+cObUR40EZCOc4tQzY6yUXONACXQzN9CUWV9twRJjXT4S9M/e8FJTBoVYiTgxKLSRRQdcKCAQnejDHZIUDjTNuJFphDOSICAAKUQiIZzLMpgstZWR4sKABzJgzMuLcyXMdBwsTKEjcqcFdjls4HRXgsuJmTHu1EjbYOeFdmgT8TFaEtiJYzA13UnbiWfERgAY6QdoQgGBCWiAhAAA7\n");
-    sys_vgui("}\n");
-    
+    sys_vgui("image create photo pic_def_img -data {R0lGODdhJwAnAMQAAAAAAAsLCxMTExwcHCIiIisrKzw8PERERExMTFRUVF1dXWVlZW1tbXNzc3t7e4ODg42NjZOTk5qamqSkpK2trbS0tLy8vMPDw8zMzNTU1Nzc3OPj4+3t7fT09P///wAAACH5BAkKAB8ALAAAAAAnACcAAAX/oCeOJKlRTzIARwNVWinPNNYAeK4HjNXRQNLGkRsIArnAYIVbZILAjAFAYAICgmxyQMBZoDJNt1vUGc0CAAY86iioSdwgkTjIzQAEh+2hwHFpAhQbHIUZRGk5XRRsbldxazIQAFZpCz9QGjqUABM0HHZIjwMxUBgAiUh6QJOVAE9QGVRGBQCMQBJ/qGpgHUQ5l0GtOWmwUBwTCwoRe0AbZDhIBRt8Hh2YQURWKw/VfMOKvN5BHA+cObUR40EZCOc4tQzY6yUXONACXQzN9CUWV9twRJjXT4S9M/e8FJTBoVYiTgxKLSRRQdcKCAQnejDHZIUDjTNuJFphDOSICAAKUQiIZzLMpgstZWR4sKABzJgzMuLcyXMdBwsTKEjcqcFdjls4HRXgsuJmTHu1EjbYOeFdmgT8TFaEtiJYzA13UnbiWfERgAY6QdoQgGBCWiAhAAA7}\n");
     sys_vgui("if {[catch {pd}]} {\n");
     sys_vgui("    proc pd {args} {pdsend [join $args \" \"]}\n");
     sys_vgui("}\n");
     
     sys_vgui("proc pic_ok {id} {\n");
-    sys_vgui("    pic_apply $id\n");
-    sys_vgui("    pic_cancel $id\n");
-    sys_vgui("}\n");
-
-    sys_vgui("proc pic_cancel {id} {\n");
-    sys_vgui("    set cmd [concat $id cancel \\;]\n");
-    sys_vgui("    pd $cmd\n");
-    sys_vgui("}\n");
-    
-    sys_vgui("proc pic_apply {id} {\n");
     sys_vgui("    set vid [string trimleft $id .]\n");
     sys_vgui("    set var_name [concat var_name_$vid]\n");
     sys_vgui("    set var_outline [concat var_outline_$vid]\n");
@@ -633,11 +622,17 @@ void pic_setup(void){
     sys_vgui("    global $var_snd\n");
     sys_vgui("    global $var_rcv\n");
     sys_vgui("\n");
-    sys_vgui("    set cmd [concat $id apply \\\n");
+    sys_vgui("    set cmd [concat $id ok \\\n");
     sys_vgui("        [eval concat $$var_name] \\\n");
     sys_vgui("        [eval concat $$var_outline] \\\n");
     sys_vgui("        [eval concat $$var_snd] \\\n");
     sys_vgui("        [eval concat $$var_rcv] \\;]\n");
+    sys_vgui("    pd $cmd\n");
+    sys_vgui("    pic_cancel $id\n");
+    sys_vgui("}\n");
+
+    sys_vgui("proc pic_cancel {id} {\n");
+    sys_vgui("    set cmd [concat $id cancel \\;]\n");
     sys_vgui("    pd $cmd\n");
     sys_vgui("}\n");
     
@@ -681,12 +676,8 @@ void pic_setup(void){
     sys_vgui("    frame $id.buttonframe\n");
     sys_vgui("    pack $id.buttonframe -side bottom -fill x -pady 2m\n");
     sys_vgui("    button $id.buttonframe.cancel -text {Cancel} -command \"pic_cancel $id\"\n");
-    sys_vgui("    button $id.buttonframe.apply -text {Apply} -command \"pic_apply $id\"\n");
     sys_vgui("    button $id.buttonframe.ok -text {OK} -command \"pic_ok $id\"\n");
     sys_vgui("    pack $id.buttonframe.cancel -side left -expand 1\n");
-    sys_vgui("    pack $id.buttonframe.apply -side left -expand 1\n");
     sys_vgui("    pack $id.buttonframe.ok -side left -expand 1\n");
-    sys_vgui("\n");
-    sys_vgui("    focus $id.pic.name\n");
     sys_vgui("}\n");
 }

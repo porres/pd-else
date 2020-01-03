@@ -133,15 +133,18 @@ below:, f 35;
 #X connect 0 0 1 0;
 #X connect 5 0 6 0;
 #X restore 472 329 pd examples;
-#N canvas 823 287 390 342 more 0;
-#X text 102 132 default image =>;
-#X text 90 206 Now please get into and out of edit mode so you can
+#N canvas 823 287 400 363 more 0;
+#X text 105 128 default image =>;
+#X text 92 246 Now please get into and out of edit mode so you can
 see how the [pic] object creates an outline and inlet/outlet when you're
 in edit mode., f 35;
-#X obj 209 122 else/pic 0 empty empty empty;
-#X text 82 52 When you have an empty filename or error opening a file
-(via message \, flag or properties window) \, [pic] lods a default
-image of a question mark:, f 34;
+#X obj 212 118 else/pic 0 empty empty empty;
+#X text 61 47 When you have an empty filename or an error opening a
+file (via properties window \, flag or message) \, [pic] loads a default
+image of a question mark:, f 43;
+#X text 79 173 Note that once you have a loaded image \, setting the
+filename to "empty doesn't draw the question mark image back., f 39
+;
 #X restore 496 241 pd more details;
 #X f 7;
 #N canvas 835 231 468 365 outline 0;
@@ -160,18 +163,18 @@ a non zero value sets to outline mode.;
 #X obj 4 485 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
 #X text 178 492 (none);
-#X text 133 518 -file <symbol>: filename to open (default empty),
-f 57;
-#X text 133 532 -send <symbol>: send symbol (default 'empty'), f 57
-;
-#X text 133 546 -receive <symbol>: receive symbol (default 'empty')
-, f 57;
 #X text 133 560 -outline: sets to outline mode (default no outline)
 , f 57;
 #X text 107 210 click the image for bang =======>, f 17;
 #X text 107 243 right click for properties =====>, f 17;
 #X text 124 405 outline <float>;
 #X text 222 405 - non zero sets to outline mode, f 40;
+#X text 133 518 -open <symbol>: sets file name to open (default 'empty')
+, f 57;
+#X text 133 532 -send <symbol>: sets send symbol (default 'empty')
+, f 57;
+#X text 133 546 -receive <symbol>: sets receive symbol (default 'empty')
+, f 57;
 #X connect 19 0 36 0;
 #X connect 20 0 36 0;
 #X connect 36 0 21 0;
