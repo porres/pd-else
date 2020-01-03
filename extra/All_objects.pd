@@ -1,10 +1,10 @@
-#N struct 1358-cell float x float y float cellsize float color;
-#N struct 1365-point float x0 float y0 float xs float ys float fg float
+#N struct 1382-cell float x float y float cellsize float color;
+#N struct 1389-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1389-slot float x float y float slotsize float color float
+#N struct 1413-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1391-cell float cellsize float color;
-#N struct 1400-point float x0 float y0 float size float fg float in
+#N struct 1415-cell float cellsize float color;
+#N struct 1603-point float x0 float y0 float size float fg float in
 float grid;
 #N canvas 711 30 537 532 10;
 #X text 57 75 Assorted:;
@@ -288,64 +288,64 @@ float grid;
 #X obj 60 10006 else/vu~;
 #X obj 60 10032 else/zerocross~;
 #N canvas 360 23 1007 792 GUI 0;
-#X obj 175 -356 else/mtx.ctl;
-#X obj 49 -250 else/biplot;
-#X text 51 -284 [else/biplot];
-#X text 278 -352 [else/pic] =>;
-#X obj 452 -354 else/colors;
-#X obj 694 -393 else/function 200 100 empty empty 0 1 220 220 220 50
+#X obj 175 40 else/mtx.ctl;
+#X obj 49 139 else/biplot;
+#X text 51 117 [else/biplot];
+#X text 278 44 [else/pic] =>;
+#X obj 452 42 else/colors;
+#X obj 710 18 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 1000 0;
-#X text 563 -359 [else/function] =>;
-#X obj 74 88 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
+#X text 579 52 [else/function] =>;
+#X obj 74 481 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
 0 0 0 0 0 empty empty;
-#X obj 907 741 else/display;
-#X obj 908 773 else/display~;
-#X text 787 743 [else/display] =>;
-#X text 779 776 [else/display~] =>;
-#X text 70 64 [else/slider2d];
-#X obj 60 729 else/out~;
-#X obj 587 692 else/gain~;
-#X text 616 705 <= [else/gain~];
-#X obj 732 691 else/gain2~;
-#X text 629 766 [else/gain2~] =>;
-#X obj 47 529 else/graph~;
-#X text 50 505 [else/graph~];
-#X obj 419 286 else/meter~;
-#X obj 492 286 else/meter2~;
-#X obj 61 286 else/mix2~;
-#X obj 165 286 else/mix4~;
-#X text 54 261 [else/mix2~];
-#X text 164 260 [else/mix4~];
-#X obj 451 -320 else/openfile;
-#X obj 623 558 else/setdsp~;
-#X text 466 83 [else/keyboard];
-#X obj 853 661 else/note 720 20 helvetica ? 0 0 0 0 note;
-#X text 832 646 [else/note];
-#X obj 259 529 else/spectrograph~;
-#X text 271 506 [else/spectrograph~];
-#X obj 752 502 else/drum.seq;
-#X text 756 481 [else/drumseq];
-#X obj 447 108 else/keyboard 17 80 4 3;
-#X text 767 586 [else/button] =>;
-#X obj 874 584 else/button 20;
-#X obj 576 469 else/range.hsl;
-#X text 455 469 [else/range.hsl] =>;
-#X obj 575 287 else/meter4~;
-#X obj 692 287 else/meter8~;
-#X text 390 268 [else/meter~];
-#X text 478 268 [else/meter2~];
-#X text 578 268 [else/meter4~];
-#X text 728 268 [else/meter8~];
-#X text 587 539 [else/setdsp~];
-#X obj 280 729 else/out4~;
-#X obj 390 729 else/out8~;
-#X obj 67 -344 else/gui;
-#X text 165 -378 [else/mtx.ctl];
-#X obj 265 86 else/circle 127 -1 1 -1 1 1 255 255 255 0 0 0 1 0 0 1
-1 0 63.5 63.5 empty empty 1;
-#X text 285 63 [else/circle];
-#X obj 170 729 else/out2~;
-#X obj 360 -356 else/pic 0 empty empty empty;
+#X obj 907 1123 else/display;
+#X obj 908 1155 else/display~;
+#X text 787 1125 [else/display] =>;
+#X text 779 1158 [else/display~] =>;
+#X text 70 457 [else/slider2d];
+#X obj 60 1111 else/out~;
+#X obj 587 1074 else/gain~;
+#X text 616 1087 <= [else/gain~];
+#X obj 732 1073 else/gain2~;
+#X text 629 1148 [else/gain2~] =>;
+#X obj 47 911 else/graph~;
+#X text 50 887 [else/graph~];
+#X obj 419 668 else/meter~;
+#X obj 492 668 else/meter2~;
+#X obj 61 668 else/mix2~;
+#X obj 165 668 else/mix4~;
+#X text 54 643 [else/mix2~];
+#X text 164 642 [else/mix4~];
+#X obj 451 76 else/openfile;
+#X obj 623 940 else/setdsp~;
+#X text 466 465 [else/keyboard];
+#X obj 853 1043 else/note 720 20 helvetica ? 0 0 0 0 note;
+#X text 832 1028 [else/note];
+#X obj 259 911 else/spectrograph~;
+#X text 271 888 [else/spectrograph~];
+#X obj 752 884 else/drum.seq;
+#X text 756 863 [else/drumseq];
+#X obj 447 490 else/keyboard 17 80 4 3;
+#X text 767 968 [else/button] =>;
+#X obj 874 966 else/button 20;
+#X obj 576 851 else/range.hsl;
+#X text 455 851 [else/range.hsl] =>;
+#X obj 575 669 else/meter4~;
+#X obj 692 669 else/meter8~;
+#X text 390 650 [else/meter~];
+#X text 478 650 [else/meter2~];
+#X text 578 650 [else/meter4~];
+#X text 728 650 [else/meter8~];
+#X text 587 921 [else/setdsp~];
+#X obj 280 1111 else/out4~;
+#X obj 390 1111 else/out8~;
+#X obj 67 50 else/gui;
+#X text 165 18 [else/mtx.ctl];
+#X text 285 456 [else/circle];
+#X obj 170 1111 else/out2~;
+#X obj 360 40 else/pic 0 empty empty empty;
+#X obj 265 479 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
+0 0 0 1 0 0 63.5 63.5 empty empty 1;
 #X restore 66 10121 pd GUI;
 #X text 57 321 Patch/subpatch management:;
 #X text 55 1067 Message management:;
