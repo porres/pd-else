@@ -149,7 +149,7 @@
 #X text 109 512 mode <float>;
 #X text 195 512 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear);
-#N canvas 715 46 548 654 examples 0;
+#N canvas 715 46 548 676 examples 0;
 #X msg 424 307 mode \$1;
 #X obj 424 230 vradio 15 1 0 3 \$0-dummy \$0-dummy-set empty 0 -8 0
 10 -228856 -1 -1 0;
@@ -159,9 +159,9 @@
 #X text 407 209 slider scaling:;
 #X text 442 229 quartic;
 #X obj 315 134 nbx 5 14 -100 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
+-1 -1 44 256;
 #X obj 396 140 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 10000 1;
 #X floatatom 393 160 5 0 0 0 - - -;
 #X obj 162 484 else/meter2~;
 #X obj 218 368 else/gain2~;
@@ -172,33 +172,37 @@
 #X text 312 111 set pan (channel 2);
 #X text 398 140 set gain (channel 3);
 #X text 64 402 you can use [gain2~] as a master leveler, f 21;
-#X obj 68 153 osc~ 80;
-#X obj 124 153 osc~ 120;
-#X obj 180 153 osc~ 150;
-#X obj 237 153 osc~ 170;
 #X text 86 40 [mix4~] has 3 scaling modes for its slider (the default
 is "quartic"). The rightmost inlet sets scaling mode \, gain and pan
 values., f 60;
 #X obj 68 183 else/mix4~;
 #X obj 392 355 s \$0-set;
 #X obj 39 128 r \$0-set;
-#X connect 0 0 25 0;
+#X obj 168 632 dac~;
+#X obj 68 153 osc~ 180;
+#X obj 124 153 osc~ 220;
+#X obj 180 153 osc~ 250;
+#X obj 237 153 osc~ 270;
+#X obj 437 473 else/setdsp~;
+#X connect 0 0 21 0;
 #X connect 1 0 4 0;
 #X connect 4 0 0 0;
 #X connect 7 0 15 0;
 #X connect 8 0 9 0;
 #X connect 9 0 14 0;
+#X connect 10 0 23 0;
+#X connect 10 1 23 1;
 #X connect 11 0 10 0;
 #X connect 11 1 10 1;
-#X connect 14 0 25 0;
-#X connect 15 0 25 0;
-#X connect 19 0 24 0;
-#X connect 20 0 24 1;
-#X connect 21 0 24 2;
-#X connect 22 0 24 3;
-#X connect 24 0 11 0;
-#X connect 24 1 11 1;
-#X connect 26 0 24 0;
+#X connect 14 0 21 0;
+#X connect 15 0 21 0;
+#X connect 20 0 11 0;
+#X connect 20 1 11 1;
+#X connect 22 0 20 0;
+#X connect 24 0 20 0;
+#X connect 25 0 20 1;
+#X connect 26 0 20 2;
+#X connect 27 0 20 3;
 #X restore 474 288 pd examples;
 #N canvas 754 160 434 484 scaling 0;
 #X obj 91 57 cnv 15 198 198 empty empty empty 20 12 0 14 -253888 -66577
