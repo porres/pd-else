@@ -94,12 +94,14 @@ static void function_create_dots(t_function *x, t_glist *glist){
     yscale = x->x_height;
     xpos = text_xpix(&x->x_obj, glist);
     ypos = (int)(text_ypix(&x->x_obj, glist) + x->x_height);
-    char color[20];
-    sprintf(color, "#%2.2x%2.2x%2.2x", x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+    char fgcolor[20];
+    sprintf(fgcolor, "#%2.2x%2.2x%2.2x", x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+    char bgcolor[20];
+    sprintf(bgcolor, "#%2.2x%2.2x%2.2x", x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
     int i;
     for(i = 0; i <= x->x_n_states; i++){
         yvalue = (x->x_points[i] - yBase) / ySize * yscale;
-        sys_vgui(".x%lx.c create oval %d %d %d %d -width 2 -tags %lxD%d -fill %s\n",
+        sys_vgui(".x%lx.c create oval %d %d %d %d -width 2 -tags %lxD%d -outline %s -fill %s\n",
                  (unsigned long)glist_getcanvas(glist),
                  (int)(xpos + (x->x_duration[i] * xscale) - 3),
                  (int)(ypos - yvalue - 3),
@@ -107,7 +109,8 @@ static void function_create_dots(t_function *x, t_glist *glist){
                  (int)(ypos - yvalue + 3),
                  (unsigned long)x,
                  i,
-                 color);
+                 fgcolor,
+                 bgcolor);
     }
     x->x_numdots = i;
 }
