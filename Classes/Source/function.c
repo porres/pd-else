@@ -1056,8 +1056,8 @@ static void function_free(t_function *x){
 
 static void function_zoom(t_function *x, t_floatarg zoom){
     float mul = zoom == 1.0 ? 0.5 : 2.0;
-    x->x_width *= mul;
-    x->x_height *= mul;
+    x->x_width = (int)((float)x->x_width * mul);
+    x->x_height = (int)((float)x->x_height * mul);
     x->x_zoom = (int)zoom;
     function_update(x, x->x_glist);
 }
