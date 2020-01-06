@@ -111,11 +111,9 @@ static void function_draw(t_function *x, t_glist *glist){
     sprintf(fgcolor, "#%2.2x%2.2x%2.2x", x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
     float xscale = x->x_width / x->x_dur[x->x_n_states];
     float yscale = x->x_height;
-    int border = BORDERWIDTH;// * x->x_zoom;
+    int border = BORDERWIDTH;
     sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline black -tags %lx_rect -fill %s\n", cv, // RECTANGLE
-        xpos - border, ypos - border, xpos + x->x_width + border,
-        ypos + x->x_height + border,
-        x->x_zoom, x, bgcolor);
+        xpos-border, ypos-border, xpos+x->x_width+border, ypos+x->x_height+border, x->x_zoom, x, bgcolor);
     sys_vgui(".x%lx.c create line", cv); // LINES
     for(int i = 0; i <= x->x_n_states; i++)
         sys_vgui(" %d %d ", (int)(xpos + x->x_dur[i]*xscale),
@@ -178,35 +176,13 @@ static void function_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_function *x = (t_function *)z;
     x->x_obj.te_xpix += dx;
     x->x_obj.te_ypix += dy;
-    int i, xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
     t_canvas *cv = glist_getcanvas(x->x_glist);
-// rectangle
-    sys_vgui(".x%lx.c coords %lx_rect %d %d %d %d\n", cv, x, xpos-BORDERWIDTH, ypos-BORDERWIDTH,
-        xpos+x->x_width+BORDERWIDTH, ypos+x->x_height+BORDERWIDTH);
-    float range = x->x_max - x->x_min;
-    float min =  x->x_min;
-    float xscale = x->x_width / x->x_dur[x->x_n_states];
-// lines
-    sys_vgui(".x%lx.c coords %lx_line", cv, x);
-    for(i = 0; i <= x->x_n_states; i++)
-        sys_vgui(" %d %d ", (int)(xpos + x->x_dur[i]*xscale),
-                (int)(ypos + x->x_height - (x->x_points[i] - min) / range*x->x_height));
-    sys_vgui("\n");
-// dots
-    int yvalue;
-    for(i = 0; i <= x->x_n_states; i++){
-        yvalue = (int)((x->x_points[i] - min) / range * x->x_height);
-        sys_vgui(".x%lx.c coords %lx_dots%d %d %d %d %d\n", cv, x, i,
-            xpos+(int)(x->x_dur[i]*xscale)-3*x->x_zoom, ypos+x->x_height-yvalue-3*x->x_zoom,
-            xpos+(int)(x->x_dur[i]*xscale)+3*x->x_zoom, ypos+x->x_height-yvalue+3*x->x_zoom);
-    }
-// inlet
-    sys_vgui(".x%lx.c coords %lx_in %d %d %d %d\n", cv, x, xpos-BORDERWIDTH,
-        ypos-BORDERWIDTH+1, xpos-BORDERWIDTH+IOWIDTH, ypos-BORDERWIDTH+1+IOHEIGHT);
-// outlet
-    sys_vgui(".x%lx.c coords %lx_out %d %d %d %d\n", cv, x, xpos-BORDERWIDTH,
-        ypos+x->x_height-1+BORDERWIDTH, xpos-BORDERWIDTH+IOWIDTH,
-        ypos+x->x_height-1+BORDERWIDTH-IOHEIGHT);
+    sys_vgui(".x%lx.c move %lx_rect %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
+    sys_vgui(".x%lx.c move %lx_line %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
+    sys_vgui(".x%lx.c move %lx_in %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
+    sys_vgui(".x%lx.c move %lx_out %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
+    for(int i = 0; i <= x->x_n_states; i++)
+        sys_vgui(".x%lx.c move %lx_dots%d %d %d\n", cv, x, i, dx * x->x_zoom, dy * x->x_zoom);
     canvas_fixlinesfor(glist, (t_text*)x);
 }
 
