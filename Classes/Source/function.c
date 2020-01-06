@@ -112,7 +112,7 @@ static void function_draw(t_function *x, t_glist *glist){
     float xscale = x->x_width / x->x_dur[x->x_n_states];
     float yscale = x->x_height;
     int border = BORDERWIDTH;// * x->x_zoom;
-    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -tags %lx_rect -fill %s\n", cv, // RECTANGLE
+    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline black -tags %lx_rect -fill %s\n", cv, // RECTANGLE
         xpos - border, ypos - border, xpos + x->x_width + border,
         ypos + x->x_height + border,
         x->x_zoom, x, bgcolor);
@@ -123,13 +123,10 @@ static void function_draw(t_function *x, t_glist *glist){
     sys_vgui(" -tags %lx_line -fill %s -width %d\n", x, fgcolor, 2*x->x_zoom);
     function_draw_dots(x, glist);
     function_draw_in_outlet(x, glist);
-    if(x->x_sel){ 
-        sys_vgui(".x%lx.c delete %lx_sel\n", cv, x);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -tags %lx_sel -outline blue\n", cv,
-            xpos-border, ypos-border, xpos+x->x_width+border, ypos+x->x_height+border, x->x_zoom, x);
-    }
+    if(x->x_sel)
+        sys_vgui(".x%lx.c itemconfigure %lx_rect -outline blue\n", cv, x);
     else
-       sys_vgui(".x%lx.c delete %lx_sel\n", cv, x);
+        sys_vgui(".x%lx.c itemconfigure %lx_rect -outline black\n", cv, x);
 }
 
 static void function_delete_dots(t_function *x, t_glist *glist){
@@ -203,16 +200,9 @@ static void function_displace(t_gobj *z, t_glist *glist, int dx, int dy){
             xpos+(int)(x->x_dur[i]*xscale)-3*x->x_zoom, ypos+x->x_height-yvalue-3*x->x_zoom,
             xpos+(int)(x->x_dur[i]*xscale)+3*x->x_zoom, ypos+x->x_height-yvalue+3*x->x_zoom);
     }
-// selection
-    sys_vgui(".x%lx.c coords %lx_sel %d %d %d %d\n", cv, x, xpos-BORDERWIDTH, ypos-BORDERWIDTH,
-        xpos+ x->x_width+BORDERWIDTH, ypos+x->x_height+BORDERWIDTH);
 // inlet
     sys_vgui(".x%lx.c coords %lx_in %d %d %d %d\n", cv, x, xpos-BORDERWIDTH,
         ypos-BORDERWIDTH+1, xpos-BORDERWIDTH+IOWIDTH, ypos-BORDERWIDTH+1+IOHEIGHT);
-    
-    
-    
-    
 // outlet
     sys_vgui(".x%lx.c coords %lx_out %d %d %d %d\n", cv, x, xpos-BORDERWIDTH,
         ypos+x->x_height-1+BORDERWIDTH, xpos-BORDERWIDTH+IOWIDTH,
@@ -223,16 +213,10 @@ static void function_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 static void function_select(t_gobj *z, t_glist *glist, int selected){
     t_function *x = (t_function *)z;
     t_canvas *cv = glist_getcanvas(glist);
-    if((x->x_sel = selected)){
-        int xpos = text_xpix(&x->x_obj, glist);
-        int ypos = text_ypix(&x->x_obj, glist);
-        sys_vgui(".x%lx.c delete %lx_sel\n", cv, x);
-        sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -tags %lx_sel -outline blue\n", cv,
-            xpos-BORDERWIDTH, ypos-BORDERWIDTH, xpos+x->x_width+BORDERWIDTH, ypos+x->x_height+BORDERWIDTH,
-            x->x_zoom, x);
-    }
+    if((x->x_sel = selected))
+        sys_vgui(".x%lx.c itemconfigure %lx_rect -outline blue\n", cv, x);
     else
-        sys_vgui(".x%lx.c delete %lx_sel\n", cv, x);
+        sys_vgui(".x%lx.c itemconfigure %lx_rect -outline black\n", cv, x);
 }
 
 static void function_delete(t_gobj *z, t_glist *glist){
@@ -745,11 +729,12 @@ static void function_fgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
     int vis = glist_isvisible(x->x_glist);
     if(vis && (x->x_fgcolor[0] != r || x->x_fgcolor[1] != g || x->x_fgcolor[2] != b)){
         canvas_dirty(x->x_glist, 1);
-        x->x_fgcolor[0] = r;
-        x->x_fgcolor[1] = g;
-        x->x_fgcolor[2] = b;
-        function_erase(x, x->x_glist);
-        function_draw(x, x->x_glist);
+        t_canvas *cv = glist_getcanvas(x->x_glist);
+        sys_vgui(".x%lx.c itemconfigure %lx_line -fill #%2.2x%2.2x%2.2x\n", cv,
+            x, x->x_fgcolor[0] = r, x->x_fgcolor[1] = g, x->x_fgcolor[2] = b);
+        for(int i = 0; i <= x->x_n_states; i++)
+            sys_vgui(".x%lx.c itemconfigure %lx_dots%d -outline #%2.2x%2.2x%2.2x\n", cv,
+                     x, i, x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
     }
 }
 
@@ -760,11 +745,12 @@ static void function_bgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
     int vis = glist_isvisible(x->x_glist);
     if(vis && (x->x_bgcolor[0] != r || x->x_bgcolor[1] != g || x->x_bgcolor[2] != b)){
         canvas_dirty(x->x_glist, 1);
-        x->x_bgcolor[0] = r;
-        x->x_bgcolor[1] = g;
-        x->x_bgcolor[2] = b;
-        function_erase(x, x->x_glist);
-        function_draw(x, x->x_glist);
+        t_canvas *cv = glist_getcanvas(x->x_glist);
+        sys_vgui(".x%lx.c itemconfigure %lx_rect -fill #%2.2x%2.2x%2.2x\n", cv,
+            x, x->x_bgcolor[0] = r, x->x_bgcolor[1] = g, x->x_bgcolor[2] = b);
+        for(int i = 0; i <= x->x_n_states; i++)
+            sys_vgui(".x%lx.c itemconfigure %lx_dots%d -fill #%2.2x%2.2x%2.2x\n", cv,
+                     x, i, x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
     }
 }
 
