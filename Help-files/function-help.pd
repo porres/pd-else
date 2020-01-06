@@ -59,9 +59,9 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 2 graph;
-#X obj 214 126 else/initmess 0 500 1 500 0;
-#X obj 186 268 else/display;
-#X obj 186 125 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 217 126 else/initmess 0 500 1 500 0;
+#X obj 189 268 else/display;
+#X obj 189 125 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #N canvas 769 53 527 508 function~ 0;
 #X text 407 158 1;
@@ -121,7 +121,7 @@ works., f 64;
 #X text 179 567 (none);
 #X text 143 514 init <float>;
 #X text 225 514 - nonzero sets to init mode, f 45;
-#X obj 189 157 else/function 200 100 empty empty 0 1 220 220 220 50
+#X obj 192 157 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 500 1 500 0;
 #X text 155 346 set <list>;
 #X text 225 346 - sets breakpoints function, f 45;
@@ -171,51 +171,6 @@ values., f 35;
 #X connect 14 0 3 0;
 #X connect 16 0 3 0;
 #X restore 473 230 pd messages;
-#N canvas 392 93 767 481 in/out 0;
-#X text 88 100 ADSR (attack \, decay \, sustain \, release);
-#X obj 91 207 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 100 1 100 0.6 350 0.6 250 0;
-#X obj 88 327 else/display;
-#X obj 88 126 else/initmess 0 100 1 100 0.6 350 0.6 250 0;
-#X obj 62 127 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X text 43 27 An odd list of at least 3 floats sets the envelope function.
-The syntax is the same as the [function~] object (point1 \, period
-\, point2 \, period \, point3 \, etc.) - an output is then generated
-with the list values for [envgen~] or [function~]. A bang forces an
-output of the stored line fucntion.;
-#X msg 116 162 set 0 1000 1;
-#X text 200 163 set message only sets (doesn't output);
-#X obj 489 252 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 100 1 100 0.6 350 0.6 250 0;
-#X obj 486 372 else/display;
-#X obj 486 138 else/initmess 0 100 1 100 0.6 350 0.6 250 0, f 22;
-#X obj 460 142 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 588 181 set message only sets (doesn't output), f 21;
-#X msg 505 183 0 0.5;
-#X text 468 34 A list of 2 floats sets the point number specified by
-the first number (countiing from 0) with the value specified by the
-second number of the list., f 40;
-#X obj 561 185 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X msg 561 214 set 0 \$1;
-#X text 45 374 You can also generate an output via the interface. You
-can click on a point and drag it around. A point is removed if you
-click on it and hit delete. Click anywhere in the graph where there's
-not a point and you create a new one. If you press shift while dragging
-the clicked point \, you have fine tuning., f 62;
-#X connect 1 0 2 0;
-#X connect 3 0 1 0;
-#X connect 4 0 1 0;
-#X connect 6 0 1 0;
-#X connect 8 0 9 0;
-#X connect 10 0 8 0;
-#X connect 11 0 8 0;
-#X connect 13 0 8 0;
-#X connect 15 0 16 0;
-#X connect 16 0 8 0;
-#X restore 486 149 pd in/out;
 #X text 119 374 duration <float>;
 #X text 225 374 - resets overall duration, f 45;
 #X text 131 416 resize <float>;
@@ -293,9 +248,54 @@ to 'empty' removes the send/receive symbols., f 67;
 #X connect 6 0 1 0;
 #X connect 8 0 0 0;
 #X restore 491 250 pd send \; receive;
-#X text 67 84 [function] is a breakpoints function GUI \, mainly used
+#X text 58 84 [function] is a breakpoints function GUI \, mainly used
 with [function~] or [envgen~]. You can click and drag on it or send
-it lists.;
+it lists., f 59;
+#N canvas 392 93 767 481 basic 0;
+#X text 88 100 ADSR (attack \, decay \, sustain \, release);
+#X obj 91 207 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 100 1 100 0.6 350 0.6 250 0;
+#X obj 88 327 else/display;
+#X obj 88 126 else/initmess 0 100 1 100 0.6 350 0.6 250 0;
+#X obj 62 127 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 43 27 An odd list of at least 3 floats sets the envelope function.
+The syntax is the same as the [function~] object (point1 \, period
+\, point2 \, period \, point3 \, etc.) - an output is then generated
+with the list values for [envgen~] or [function~]. A bang forces an
+output of the stored line fucntion.;
+#X msg 116 162 set 0 1000 1;
+#X text 202 157 set message only sets (doesn't output), f 22;
+#X obj 489 252 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 100 1 100 0.6 350 0.6 250 0;
+#X obj 486 372 else/display;
+#X obj 486 138 else/initmess 0 100 1 100 0.6 350 0.6 250 0, f 22;
+#X obj 460 142 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 588 181 set message only sets (doesn't output), f 21;
+#X msg 505 183 0 0.5;
+#X text 468 34 A list of 2 floats sets the point number specified by
+the first number (countiing from 0) with the value specified by the
+second number of the list., f 40;
+#X obj 561 185 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X msg 561 214 set 0 \$1;
+#X text 45 374 You can also generate an output via the interface. You
+can click on a point and drag it around. A point is removed if you
+click on it and hit delete. Click anywhere in the graph where there's
+not a point and you create a new one. If you press shift while dragging
+the clicked point \, you have fine tuning., f 62;
+#X connect 1 0 2 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 6 0 1 0;
+#X connect 8 0 9 0;
+#X connect 10 0 8 0;
+#X connect 11 0 8 0;
+#X connect 13 0 8 0;
+#X connect 15 0 16 0;
+#X connect 16 0 8 0;
+#X restore 492 149 pd basic;
 #X connect 41 0 49 0;
 #X connect 43 0 49 0;
 #X connect 49 0 42 0;

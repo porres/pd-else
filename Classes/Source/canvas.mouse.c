@@ -1,3 +1,4 @@
+// porres 2019-2020
 
 #include "m_pd.h"
 #include "g_canvas.h"
@@ -19,6 +20,7 @@ typedef struct _canvas_mouse{
     t_canvas               *x_canvas;
     int                     x_edit;
     int                     x_pos;
+    int                     x_zoom;
 }t_canvas_mouse;
 
 static void canvas_mouse_proxy_any(t_canvas_mouse_proxy *p, t_symbol*s, int ac, t_atom *av){
@@ -26,10 +28,12 @@ static void canvas_mouse_proxy_any(t_canvas_mouse_proxy *p, t_symbol*s, int ac, 
         t_canvas *cnv = p->p_parent->x_canvas;
         float x = av->a_w.w_float;
         float y = (av+1)->a_w.w_float;
-        if(p->p_parent->x_pos){
-            x -= (float)cnv->gl_obj.te_xpix;
-            y -= (float)cnv->gl_obj.te_ypix;
-        }
+        if(s == gensym("zoom"))
+            p->p_parent->x_zoom = (int)(av->a_w.w_float);
+        x = (int)(x/p->p_parent->x_zoom);
+        y = (int)(y/p->p_parent->x_zoom);
+        if(p->p_parent->x_pos)
+            x -= (float)cnv->gl_obj.te_xpix, y -= (float)cnv->gl_obj.te_ypix;
         if(s == gensym("editmode"))
             p->p_parent->x_edit = (int)(av->a_w.w_float);
         if(s == gensym("motion") && !p->p_parent->x_edit){
@@ -69,9 +73,14 @@ static void canvas_mouse_free(t_canvas_mouse *x){
     clock_delay(x->x_proxy->p_clock, 0);
 }
 
+static void canvas_mouse_zoom(t_canvas_mouse *x, t_floatarg zoom){
+    x->x_zoom = zoom;
+}
+
 static void *canvas_mouse_new(t_floatarg f1, t_floatarg f2){
     t_canvas_mouse *x = (t_canvas_mouse *)pd_new(canvas_mouse_class);
     t_canvas *canvas = x->x_canvas = canvas_getcurrent();
+    t_glist *glist = (t_glist*)x->x_canvas;
     int depth = f1 < 0 ? 0 : (int)f1;
     x->x_pos = f2 != 0;
     while(depth--){
@@ -80,6 +89,7 @@ static void *canvas_mouse_new(t_floatarg f1, t_floatarg f2){
             canvas = canvas->gl_owner;
         }
     }
+    x->x_zoom = glist->gl_zoom;
     x->x_edit = x->x_canvas->gl_edit;
     char buf[MAXPDSTRING];
     snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)canvas);
@@ -93,8 +103,8 @@ static void *canvas_mouse_new(t_floatarg f1, t_floatarg f2){
 
 void setup_canvas0x2emouse(void){
     canvas_mouse_class = class_new(gensym("canvas.mouse"), (t_newmethod)canvas_mouse_new,
-        (t_method)canvas_mouse_free, sizeof(t_canvas_mouse), CLASS_NOINLET,
-        A_DEFFLOAT, A_DEFFLOAT, 0);
+        (t_method)canvas_mouse_free, sizeof(t_canvas_mouse), CLASS_NOINLET, A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(canvas_mouse_class, (t_method)canvas_mouse_zoom, gensym("zoom"), A_CANT, 0);
     canvas_mouse_proxy_class = class_new(0, 0, 0, sizeof(t_canvas_mouse_proxy),
         CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(canvas_mouse_proxy_class, canvas_mouse_proxy_any);
