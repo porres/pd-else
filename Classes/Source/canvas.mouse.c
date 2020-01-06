@@ -43,13 +43,13 @@ static void canvas_mouse_proxy_any(t_canvas_mouse_proxy *p, t_symbol*s, int ac, 
         if(s == gensym("editmode"))
             p->p_parent->x_edit = (int)(av->a_w.w_float);
         if(s == gensym("motion") && !p->p_parent->x_edit){
-            outlet_float(p->p_parent->x_outlet_x, (float)x);
             outlet_float(p->p_parent->x_outlet_y, (float)y);
+            outlet_float(p->p_parent->x_outlet_x, (float)x);
         }
         else if(s == gensym("mouse") && !p->p_parent->x_edit){
             if(((av+2)->a_w.w_float) == 1){
-                outlet_float(p->p_parent->x_outlet_x, (float)x);
                 outlet_float(p->p_parent->x_outlet_y, (float)y);
+                outlet_float(p->p_parent->x_outlet_x, (float)x);
                 outlet_float(p->p_parent->x_obj.ob_outlet, 1.0);
             }
         }
@@ -75,7 +75,7 @@ static void canvas_mouse_proxy_free(t_canvas_mouse_proxy *p){
     pd_free(&p->p_obj.ob_pd);
 }
 
-static t_canvas_mouse_proxy * canvas_mouse_proxy_new(t_canvas_mouse *x, t_symbol*s){
+static t_canvas_mouse_proxy *canvas_mouse_proxy_new(t_canvas_mouse *x, t_symbol *s){
     t_canvas_mouse_proxy *p = (t_canvas_mouse_proxy*)pd_new(canvas_mouse_proxy_class);
     p->p_parent = x;
     pd_bind(&p->p_obj.ob_pd, p->p_sym = s);
@@ -94,12 +94,8 @@ static void *canvas_mouse_new(t_floatarg f1, t_floatarg f2){
     x->x_offset_x = x->x_offset_y = x->x_x = x->x_y = 0;
     int depth = f1 < 0 ? 0 : (int)f1;
     x->x_pos = f2 != 0;
-    while(depth--){
-        if(cv->gl_owner){
-            x->x_canvas = cv;
-            cv = cv->gl_owner;
-        }
-    }
+    while(depth-- && cv->gl_owner)
+        x->x_canvas = cv, cv = cv->gl_owner;
     x->x_edit = x->x_canvas->gl_edit;
     char buf[MAXPDSTRING];
     snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)cv);
