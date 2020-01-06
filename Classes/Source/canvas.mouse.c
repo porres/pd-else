@@ -20,38 +20,53 @@ typedef struct _canvas_mouse{
     t_canvas               *x_canvas;
     int                     x_edit;
     int                     x_pos;
-    int                     x_zoom;
+    int                     x_offset_x;
+    int                     x_offset_y;
+    int                     x_x;
+    int                     x_y;
 }t_canvas_mouse;
 
 static void canvas_mouse_proxy_any(t_canvas_mouse_proxy *p, t_symbol*s, int ac, t_atom *av){
     if(p->p_parent && ac){
         t_canvas *cnv = p->p_parent->x_canvas;
-        float x = av->a_w.w_float;
-        float y = (av+1)->a_w.w_float;
-        if(s == gensym("zoom"))
-            p->p_parent->x_zoom = (int)(av->a_w.w_float);
-        x = (int)(x/p->p_parent->x_zoom);
-        y = (int)(y/p->p_parent->x_zoom);
-        if(p->p_parent->x_pos)
-            x -= (float)cnv->gl_obj.te_xpix, y -= (float)cnv->gl_obj.te_ypix;
+        int zoom = ((t_glist*)cnv)->gl_zoom;
+        int x = (int)(av->a_w.w_float / zoom);
+        int y = (int)((av+1)->a_w.w_float / zoom);
+        if(p->p_parent->x_pos){
+            x -= cnv->gl_obj.te_xpix;
+            y -= cnv->gl_obj.te_ypix;
+        }
+        p->p_parent->x_x = x;
+        p->p_parent->x_y = y;
+        x -= p->p_parent->x_offset_x;
+        y -= p->p_parent->x_offset_y;
         if(s == gensym("editmode"))
             p->p_parent->x_edit = (int)(av->a_w.w_float);
         if(s == gensym("motion") && !p->p_parent->x_edit){
-            outlet_float(p->p_parent->x_outlet_x, x);
-            outlet_float(p->p_parent->x_outlet_y, y);
+            outlet_float(p->p_parent->x_outlet_x, (float)x);
+            outlet_float(p->p_parent->x_outlet_y, (float)y);
         }
         else if(s == gensym("mouse") && !p->p_parent->x_edit){
             if(((av+2)->a_w.w_float) == 1){
-                outlet_float(p->p_parent->x_outlet_x, x);
-                outlet_float(p->p_parent->x_outlet_y, y);
-                outlet_float(p->p_parent->x_obj.ob_outlet, 1);
+                outlet_float(p->p_parent->x_outlet_x, (float)x);
+                outlet_float(p->p_parent->x_outlet_y, (float)y);
+                outlet_float(p->p_parent->x_obj.ob_outlet, 1.0);
             }
         }
         else if(s == gensym("mouseup") && !p->p_parent->x_edit){
             if((av+2)->a_w.w_float)
-                outlet_float(p->p_parent->x_obj.ob_outlet, 0);
+                outlet_float(p->p_parent->x_obj.ob_outlet, 0.0);
         };
     }
+}
+
+static void canvas_mouse_reset(t_canvas_mouse *x){
+    x->x_offset_x = x->x_offset_y = 0;
+}
+
+static void canvas_mouse_zero(t_canvas_mouse *x){
+    x->x_offset_x = x->x_x;
+    x->x_offset_y = x->x_y;
 }
 
 static void canvas_mouse_proxy_free(t_canvas_mouse_proxy *p){
@@ -73,26 +88,21 @@ static void canvas_mouse_free(t_canvas_mouse *x){
     clock_delay(x->x_proxy->p_clock, 0);
 }
 
-static void canvas_mouse_zoom(t_canvas_mouse *x, t_floatarg zoom){
-    x->x_zoom = zoom;
-}
-
 static void *canvas_mouse_new(t_floatarg f1, t_floatarg f2){
     t_canvas_mouse *x = (t_canvas_mouse *)pd_new(canvas_mouse_class);
-    t_canvas *canvas = x->x_canvas = canvas_getcurrent();
-    t_glist *glist = (t_glist*)x->x_canvas;
+    t_canvas *cv = x->x_canvas = canvas_getcurrent();
+    x->x_offset_x = x->x_offset_y = x->x_x = x->x_y = 0;
     int depth = f1 < 0 ? 0 : (int)f1;
     x->x_pos = f2 != 0;
     while(depth--){
-        if(canvas->gl_owner){
-            x->x_canvas = canvas;
-            canvas = canvas->gl_owner;
+        if(cv->gl_owner){
+            x->x_canvas = cv;
+            cv = cv->gl_owner;
         }
     }
-    x->x_zoom = glist->gl_zoom;
     x->x_edit = x->x_canvas->gl_edit;
     char buf[MAXPDSTRING];
-    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)canvas);
+    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)cv);
     buf[MAXPDSTRING-1] = 0;
     x->x_proxy = canvas_mouse_proxy_new(x, gensym(buf));
     outlet_new(&x->x_obj, 0);
@@ -103,9 +113,9 @@ static void *canvas_mouse_new(t_floatarg f1, t_floatarg f2){
 
 void setup_canvas0x2emouse(void){
     canvas_mouse_class = class_new(gensym("canvas.mouse"), (t_newmethod)canvas_mouse_new,
-        (t_method)canvas_mouse_free, sizeof(t_canvas_mouse), CLASS_NOINLET, A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(canvas_mouse_class, (t_method)canvas_mouse_zoom, gensym("zoom"), A_CANT, 0);
-    canvas_mouse_proxy_class = class_new(0, 0, 0, sizeof(t_canvas_mouse_proxy),
-        CLASS_NOINLET | CLASS_PD, 0);
+        (t_method)canvas_mouse_free, sizeof(t_canvas_mouse), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(canvas_mouse_class, (t_method)canvas_mouse_zero, gensym("zero"), 0);
+    class_addmethod(canvas_mouse_class, (t_method)canvas_mouse_reset, gensym("reset"), 0);
+    canvas_mouse_proxy_class = class_new(0, 0, 0, sizeof(t_canvas_mouse_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(canvas_mouse_proxy_class, canvas_mouse_proxy_any);
 }
