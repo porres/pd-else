@@ -130,16 +130,15 @@ static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
         temp = NULL; // ???
         strcpy(x->x_directory, tempdir); // restore original directory
         if(init){
-            if(dirname->s_name == x->x_directory)
-                pd_error(x, "[dir]: cannot open '%s', opening '%s' instead",
-                     dirname->s_name, x->x_directory);
+            pd_error(x, "[dir]: cannot open '%s', opening '%s' instead",
+                dirname->s_name, x->x_directory);
             dir_load(x);
         }
         else
             outlet_float(x->x_out4, 0);
         return;
     }
-    else{ // found it
+    else{ 
         closedir(temp);
         dir_load(x);
         if(!init)
@@ -180,7 +179,7 @@ static void dir_n(t_dir *x){
 
 static void dir_reset(t_dir *x){ // reset to default
     strncpy(x->x_directory, x->x_getdir->s_name, MAXPDSTRING);
-    dir_loadir(x, x->x_getdir, 0);
+    dir_loadir(x, x->x_getdir, 1);
 }
 
 static void dir_dump(t_dir *x){
