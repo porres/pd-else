@@ -141,9 +141,9 @@ static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
     }
     else{ // found it
         closedir(temp);
+        dir_load(x);
         if(!init)
             outlet_float(x->x_out4, 1);
-        dir_load(x);
     }
 }
 
