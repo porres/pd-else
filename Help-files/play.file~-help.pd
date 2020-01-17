@@ -123,13 +123,14 @@ dialog box) and starts playing, f 50;
 #X text 128 459 set <symbol> -;
 #X text 222 458 sets a file to open next time it starts playing, f
 50;
-#X text 75 89 [play.file~] is a convenient abstraction based on [readsf~]
-to read files from your computer. Note that the file sample needs to
-be at the same sample rate as Pd's. The object is also able to search
-for files relative to the parent patch., f 62;
 #X msg 277 201 open bagal.aif;
 #X msg 287 224 open;
 #X msg 327 228 set dholak.aif;
+#X text 58 89 [play.file~] is a convenient abstraction based on [readsf~]
+to read files from your computer. Note that the file sample needs to
+be at the same sample rate as Pd's. The object can open files with
+absolute paths and is also able to search for files relative to the
+parent patch., f 69;
 #X connect 0 0 54 0;
 #X connect 1 0 54 0;
 #X connect 2 0 54 0;
@@ -138,6 +139,6 @@ for files relative to the parent patch., f 62;
 #X connect 29 0 54 0;
 #X connect 54 0 28 0;
 #X connect 54 1 35 0;
+#X connect 57 0 54 0;
 #X connect 58 0 54 0;
 #X connect 59 0 54 0;
-#X connect 60 0 54 0;
