@@ -130,6 +130,10 @@ static void sr_dsp(t_sr *x, t_signal **sp){
     dsp_add(sr_perform, 1, x);
 }
 
+static void sr_free(t_blocksize *x){
+    clock_free(x->x_clock);
+}
+
 static void *sr_new(t_symbol *s, int ac, t_atom *av){
     t_sr *x = (t_sr *)pd_new(sr_class);
     get_settings(&x->x_settings);
@@ -165,7 +169,7 @@ static void *sr_new(t_symbol *s, int ac, t_atom *av){
 
 void sr_tilde_setup(void){
     sr_class = class_new(gensym("sr~"), (t_newmethod)sr_new,
-        0, sizeof(t_sr), 0, A_GIMME, 0);
+        (t_method)sr_free, sizeof(t_sr), 0, A_GIMME, 0);
     class_addmethod(sr_class, nullfn, gensym("signal"), 0);
     class_addmethod(sr_class, (t_method)sr_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(sr_class, (t_method)sr_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
