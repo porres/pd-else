@@ -130,7 +130,7 @@ static void sr_dsp(t_sr *x, t_signal **sp){
     dsp_add(sr_perform, 1, x);
 }
 
-static void sr_free(t_blocksize *x){
+static void sr_free(t_sr *x){
     clock_free(x->x_clock);
 }
 
