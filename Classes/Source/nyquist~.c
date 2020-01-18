@@ -13,7 +13,7 @@ typedef struct _nyquist{
     float       x_sr;
     int         x_khz;
     int         x_period;
-} t_nyquist;
+}t_nyquist;
 
 static void nyquist_bang(t_nyquist *x){
     x->x_sr = x->x_new_sr = sys_getsr();
