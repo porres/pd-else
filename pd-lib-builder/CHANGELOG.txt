@@ -1,5 +1,12 @@
 Changelog for Makefile.pdlibbuilder.
 
+v0.6.0, dated 2019-12-21
+- detect target platform (OS and architecture) rather than build platform (#55)
+- introduce optional user variable 'PLATFORM' for cross compilation
+- no longer build OSX/MacOS fat binaries by default (#21, #50)
+- do build fat binaries when 'extension=d_fat' is specified for OSX/MacOS
+- fix bug where minimum OSX/MacOS version wasn't defined, and set it to 10.6
+
 v0.5.1, dated 2018-03-15
 Fixes and improvements for Windows builds:
 - properly evaluate variables 'PDDIR' and 'PDBINDIR' to find pd.dll
@@ -32,7 +39,7 @@ Respect cflag for minimum OSX version when defined by lib makefile.
 (bugfix, pull request #22, commit 48c4127)
 
 v0.4.0, dated 2016-10-14
-Introduced path variables PDDIR, PDINCLUDEDIR, PDBINDIR, PDLIBDIR which can 
+Introduced path variables PDDIR, PDINCLUDEDIR, PDBINDIR, PDLIBDIR which can
 also be defined in environment.
 (feature, issue #27, commit b0dab72)
 

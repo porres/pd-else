@@ -1,5 +1,5 @@
-# Makefile.pdlibbuilder dated 2018-03-15
-version = 0.5.1
+# Makefile.pdlibbuilder dated 2019-12-21
+version = 0.6.0
 
 # Helper makefile for Pure Data external libraries.
 # Written by Katja Vetter March-June 2015 for the public domain. No warranties.
@@ -99,6 +99,10 @@ version = 0.5.1
 # - STRIP
 # - DESTDIR
 #
+# Optional user variables for make command line or environment:
+#
+# - PLATFORM
+#
 # Deprecated path variables:
 #
 # - pdincludepath
@@ -194,6 +198,13 @@ version = 0.5.1
 # DESTDIR:
 # Prepended path component for staged install.
 #
+# PLATFORM:
+# Target platform for cross compilation in the form of GNU triplet:
+# cpu-vendor-os. Example: x86_64-w64-mingw32. This specifies the tool chain that
+# pdlibbuilder will use, if installed and locatable. System and architecture
+# will then be autodefined accordingly. In most cases no other variables need to
+# be overridden.
+#
 # CPPFLAGS:
 # Preprocessor flags which are not strictly required for building.
 #
@@ -279,6 +290,7 @@ version = 0.5.1
 # vars: print makefile variables
 # allvars: print all variables
 # depend: print generated prerequisites
+# dumpmachine: print compiler output of option '-dumpmachine'
 # coffee: dummy target
 #
 # Variable $(executables) expands to class executables plus optional shared lib,
@@ -430,8 +442,35 @@ endif
 
 
 ################################################################################
-### platform detection #########################################################
+### target platform detection ##################################################
 ################################################################################
+
+
+#=== target platform ===========================================================
+
+
+# PLATFORM: optional user variable to define target platform for cross
+# compilation. Redefine build tools accordingly. PLATFORM should match
+# the exact target prefix of tools present in $PATH, like x86_64-w64-mingw32,
+# x86_64-apple-darwin12 etc. Tool definitions are exported to ensure submakes
+# will get the same.
+
+ifneq ($(PLATFORM),)
+  ifneq ($(findstring darwin, $(PLATFORM)),)
+    export CC = $(PLATFORM)-cc
+    export CXX = $(PLATFORM)-c++
+    export CPP = $(PLATFORM)-cc
+  else
+    export CC = $(PLATFORM)-gcc
+    export CXX = $(PLATFORM)-g++
+    export CPP = $(PLATFORM)-cpp
+  endif
+  STRIP = $(PLATFORM)-strip
+endif
+
+# Let (native or cross-) compiler report target triplet and isolate individual
+# words therein to facilitate later processing.
+target.triplet := $(subst -, ,$(shell $(CC) -dumpmachine))
 
 
 #=== operating system ==========================================================
@@ -440,26 +479,16 @@ endif
 # The following systems are defined: Linux, Darwin, Windows. GNU and
 # GNU/kFreeBSD are treated as Linux to get the same options.
 
-uname := $(shell uname)
-
-ifeq ($(findstring $(uname), Linux GNU GNU/kFreeBSD), $(uname))
+ifneq ($(filter linux gnu% kfreebsd, $(target.triplet)),)
   system = Linux
 endif
 
-ifeq ($(uname), Darwin)
+ifneq ($(filter darwin%, $(target.triplet)),)
   system = Darwin
 endif
 
-ifeq ($(filter MINGW% MSYS%, $(uname)), $(uname))
+ifneq ($(filter mingw% cygwin%, $(target.triplet)),)
   system = Windows
-endif
-
-# Unfortunately not all Mingw versions provide a link cc > gcc, therefore
-# gcc is hardcoded here (but not if CC is redefined).
-ifeq ($(system), Windows)
-  ifeq ($(origin CC), default)
-    CC = gcc
-  endif
 endif
 
 # evaluate possible system-specific multiline defines from library makefile
@@ -472,24 +501,13 @@ $(eval $(for$(system)))
 #=== architecture ==============================================================
 
 
-# native architecture of the build machine
-build.arch := $(shell uname -m)
+# The following CPU names can be processed by pdlibbuilder:
+# i*86    Intel 32 bit
+# x86_64  Intel 64 bit
+# arm     ARM 32 bit
+# aarch64 ARM 64 bit
 
-# Target architecture as reported by compiler. Give precedence to eventual
-# user-defined compiler. The first field of <cpu>-<vendor>-<os> is extracted.
-ifneq ($(origin CXX), default)
-  dumpmachine.cpu = $(firstword $(subst -, ,$(shell $(CXX) -dumpmachine)))
-else
-  dumpmachine.cpu = $(firstword $(subst -, ,$(shell $(CC) -dumpmachine)))
-endif
-
-# Target architecture as reported by compiler is only used for Windows at the
-# moment. For other systems this still has to be tested.
-ifeq ($(system), Windows)
-  target.arch = $(dumpmachine.cpu)
-else
-  target.arch = $(build.arch)
-endif
+target.arch := $(firstword $(target.triplet))
 
 
 ################################################################################
@@ -501,22 +519,27 @@ endif
 
 
 # Set architecture-dependent cflags, mainly for Linux. For Mac and Windows,
-# arch.c.flags are overriden below.
+# arch.c.flags are overriden below. To see gcc's default architecture flags:
+# $ gcc -Q --help=target
 
-# Raspberry Pi 1st generation
-ifeq ($(target.arch), armv6l)
+# ARMv6: Raspberry Pi 1st gen, not detectable from target.arch
+ifeq ($(shell uname), armv6l)
   arch.c.flags = -march=armv6 -mfpu=vfp -mfloat-abi=hard
 
-# Beagle, Udoo, RPi2 etc.
-else ifeq ($(target.arch), armv7l)
+# ARMv7: Beagle, Udoo, RPi2 etc.
+else ifeq ($(target.arch), arm)
   arch.c.flags = -march=armv7-a -mfpu=vfpv3 -mfloat-abi=hard
 
+# ARMv8 64 bit, not tested yet
+else ifeq ($(target.arch), aarch64)
+  arch.c.flags = -mcpu=cortex-a53
+
 # Intel 32 bit, build with SSE and SSE2 instructions
-else ifeq ($(findstring $(target.arch), i386 i686), $(target.arch))
+else ifneq ($(filter i%86, $(target.arch)),)
   arch.c.flags = -march=pentium4 -mfpmath=sse -msse -msse2
 
 # Intel/AMD 64 bit, build with SSE, SSE2 and SSE3 instructions
-else ifeq ($(findstring $(target.arch), x86_64), $(target.arch))
+else ifeq ($(target.arch), x86_64)
   arch.c.flags = -march=core2 -mfpmath=sse -msse -msse2 -msse3
 
 # if none of the above architectures detected
@@ -549,11 +572,8 @@ endif
 #=== flags and paths for Darwin ================================================
 
 
-# On OSX we try to build fat binaries by default. It is assumed that OSX i386
-# can build for ppc and OSX x86_64 can't. TODO: try to refine this condition.
-# LLVM-clang doesn't support -fcheck-new, therefore this flag is omitted for
-# OSX x86_64.
-
+# LLVM-clang doesn't support -fcheck-new, therefore this flag is only used when
+# compiling with g++.
 
 ifeq ($(system), Darwin)
   pkglibdir = $(HOME)/Library/Pd
@@ -570,18 +590,18 @@ ifeq ($(system), Darwin)
   shared.ldflags = -dynamiclib -undefined dynamic_lookup \
     -install_name @loader_path/$(shared.lib) \
     -compatibility_version 1 -current_version 1.0
-  version.flag := $(filter $(cflags), -mmacosx-version-min=%)
-  ifeq ($(target.arch), i386)
+  ifneq ($(filter %g++, $(CXX)),)
     cxx.flags := -fcheck-new
-    arch := ppc i386 x86_64
-    version.flag = -mmacosx-version-min=10.4
   endif
-  ifeq ($(target.arch), x86_64)
+  ifeq ($(extension), d_fat)
     arch := i386 x86_64
-    version.flag = -mmacosx-version-min=10.6
+  else
+    arch := $(target.arch)
   endif
   ifneq ($(filter -mmacosx-version-min=%, $(cflags)),)
     version.flag := $(filter -mmacosx-version-min=%, $(cflags))
+  else
+    version.flag = -mmacosx-version-min=10.6
   endif
   arch.c.flags := $(addprefix -arch , $(arch)) $(version.flag)
   arch.ld.flags := $(arch.c.flags)
@@ -602,7 +622,7 @@ endif
 # required because of parentheses in variable name.
 ifeq ($(system), Windows)
   pkglibdir := $(APPDATA)/Pd
-  ifeq ($(MINGW_CHOST), i686-w64-mingw32)
+  ifeq ($(target.arch), i686)
     programfiles := ${ProgramFiles(x86)}
   else
     programfiles := $(PROGRAMFILES)
@@ -625,9 +645,9 @@ endif
 # TODO: decide whether -mms-bitfields should be specified.
 ifeq ($(system), Windows)
   cpp.flags := -DMSW -DNT
-  ifeq ($(filter i%86 mingw32, $(target.arch)), $(target.arch))
+  ifeq ($(target.arch), i686)
      arch.c.flags := -march=pentium4 -msse -msse2 -mfpmath=sse
-  else ifeq (x86_64, $(target.arch))
+  else ifeq ($(target.arch), x86_64)
     cpp.flags := -DMSW -DNT -DPD_LONGINTTYPE=__int64
     arch.c.flags := -march=core2 -msse -msse2 -msse3 -mfpmath=sse
   else
@@ -731,6 +751,18 @@ compile-cxx := $(CXX)
 # At this point most variables are defined. Now do some checks and info's
 # before rules begin.
 
+# print Makefile.pdlibbuilder version before possible termination
+$(info ++++ info: using Makefile.pdlibbuilder version $(version))
+
+# Terminate if target triplet remained empty, to avoid all sorts of confusing
+# scenarios and spurious bugs.
+ifeq ($(target.triplet),)
+  $(error Command "$(CC) -dumpmachine" did not return a target triplet, \
+  needed for a build. \
+  Is compiler "$(CC)" installed in your PATH? ($(PATH)). \
+  Does compiler "$(CC)" support option "-dumpmachine"?)
+endif
+
 # 'forward declaration' of default target, needed to do checks
 all:
 
@@ -756,9 +788,6 @@ endif
 ifeq ($(system), Windows)
   pddll := $(shell ls "$(PDBINDIR)/pd.dll")
 endif
-
-# print Makefile.pdlibbuilder version
-$(info ++++ info: using Makefile.pdlibbuilder version $(version))
 
 # when making target all, check if m_pd.h is found and print info about it
 ifeq ($(goals), all)
@@ -1278,6 +1307,16 @@ help:
 	@echo
 	@echo "  Default paths are listed in the doc sections in Makefile.pdlibbuilder."
 	@echo
+
+
+#=== platform test =============================================================
+
+
+# This target can be used to test if the compiler for specified PLATFORM is
+# correctly defined and available.
+
+dumpmachine:
+	@$(CC) -dumpmachine
 
 
 #=== dummy target ==============================================================
