@@ -30,7 +30,7 @@
 #X obj 238 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
 #X text 282 207 rate in Hz;
-#X obj 223 257 else/out~;
+#X obj 180 257 else/out~;
 #X text 172 347 list;
 #X text 83 149 The output rate of the equation is given in hertz (default:
 nyquist).;
@@ -73,4 +73,5 @@ to a range of -1 to 1 automatically.;
 0;
 #X connect 0 0 11 0;
 #X connect 11 0 25 0;
+#X connect 25 0 18 1;
 #X connect 25 0 18 0;

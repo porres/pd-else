@@ -30,7 +30,7 @@
 -162280 0;
 #X text 162 305 signal;
 #X text 168 327 float;
-#X obj 224 228 else/out~;
+#X obj 181 228 else/out~;
 #X obj 1 355 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
 #X obj 120 367 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
@@ -56,4 +56,5 @@ frequency of 0 Hz bypasses the input signal., f 63;
 #X text 212 367 - ring modulated signal;
 #X connect 0 0 26 0;
 #X connect 26 0 17 0;
+#X connect 26 0 17 1;
 #X connect 27 0 26 1;

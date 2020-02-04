@@ -1,10 +1,10 @@
-#N struct 1069-point float x0 float y0 float size float fg float in
-float grid;
-#N struct 1113-point float x0 float y0 float size float fg float in
-float grid;
-#N struct 1153-point float x0 float y0 float size float fg float in
-float grid;
-#N canvas 669 53 563 659 10;
+#N struct 1034-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
+#N struct 1085-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
+#N struct 1132-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
+#N canvas 430 52 563 659 10;
 #X obj 3 434 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 527 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -54,12 +54,12 @@ float grid;
 #X text 152 484 float/signal;
 #X text 69 88 [pan8~] is an 8-channel equal power (sin/cos) panner.
 It has two modes of operation and a spread parameter.;
-#N canvas 868 162 441 689 mode-0 0;
-#X floatatom 137 314 8 0 0 0 - - -;
-#X floatatom 194 314 8 0 0 0 - - -;
-#X text 142 297 x;
-#X text 198 297 y;
-#X floatatom 251 314 8 -1 1 0 - - -;
+#N canvas 868 162 449 628 mode-0 0;
+#X floatatom 122 263 8 0 0 0 - - -;
+#X floatatom 179 263 8 0 0 0 - - -;
+#X text 127 246 x;
+#X text 183 246 y;
+#X floatatom 236 263 8 -1 1 0 - - -;
 #N canvas 638 23 399 387 set 0;
 #X obj 105 290 pack;
 #X msg 105 245 1 \$1;
@@ -94,31 +94,30 @@ It has two modes of operation and a spread parameter.;
 #X connect 18 0 17 0;
 #X connect 19 0 14 0;
 #X coords 0 -1 1 1 132 42 2 100 100;
-#X restore 137 83 pd set;
-#X obj 254 286 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X restore 122 32 pd set;
+#X obj 239 235 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X text 293 285 spread;
-#X obj 80 260 noise~;
-#X obj 53 130 else/setdsp~;
-#X text 280 101 <= set speaker;
-#X obj 80 392 else/pan8~, f 29;
-#X obj 80 423 else/meter8~;
-#X obj 137 280 unpack;
-#X text 273 484 <= [else/meter8~];
-#X obj 109 595 else/out8~;
-#X obj 137 339 else/f2s~ 50;
-#X obj 194 361 else/f2s~ 50;
-#X obj 137 143 circle 127 -1 1 -1 1 0 225 225 225 250 250 250 1 0 0
-1 1 0 0 0 empty empty 1;
-#X text 137 173 3;
-#X text 219 256 8;
-#X text 171 256 1;
-#X text 136 221 2;
-#X text 170 139 4;
-#X text 218 139 5;
-#X text 254 174 6;
-#X text 253 222 7;
-#X text 39 28 Mode 0 has this speakers settings:;
+#X text 278 234 spread;
+#X obj 65 209 noise~;
+#X obj 38 79 else/setdsp~;
+#X text 265 50 <= set speaker;
+#X obj 65 341 else/pan8~, f 29;
+#X obj 65 372 else/meter8~;
+#X obj 122 229 unpack;
+#X text 258 433 <= [else/meter8~];
+#X obj 107 542 else/out8~;
+#X obj 122 288 else/f2s~ 50;
+#X obj 179 310 else/f2s~ 50;
+#X obj 122 92 circle 127 -1 1 -1 1 0 225 225 225 250 250 250 1 0 0
+1 1 0 0 0 empty empty;
+#X text 122 122 3;
+#X text 204 205 8;
+#X text 156 205 1;
+#X text 121 170 2;
+#X text 155 88 4;
+#X text 203 88 5;
+#X text 239 123 6;
+#X text 238 171 7;
 #X connect 0 0 16 0;
 #X connect 1 0 17 0;
 #X connect 4 0 11 3;
@@ -147,8 +146,8 @@ It has two modes of operation and a spread parameter.;
 #X connect 17 0 11 2;
 #X connect 18 0 13 0;
 #X restore 478 380 pd mode-0;
-#N canvas 858 179 451 669 mode-1 0;
-#X obj 41 149 setdsp~ 1;
+#N canvas 594 57 401 624 mode-1 0;
+#X obj 41 89 setdsp~ 1;
 #N canvas 371 23 399 387 set 0;
 #X obj 105 290 pack;
 #X msg 105 245 1 \$1;
@@ -183,35 +182,34 @@ It has two modes of operation and a spread parameter.;
 #X connect 18 0 17 0;
 #X connect 19 0 16 0;
 #X coords 0 -1 1 1 132 42 2 100 100;
-#X restore 122 86 pd set;
-#X text 263 98 <= set speaker;
-#X floatatom 122 327 8 0 0 0 - - -;
-#X floatatom 179 327 8 0 0 0 - - -;
-#X text 127 310 x;
-#X text 183 310 y;
-#X floatatom 236 327 8 -1 1 0 - - -;
-#X obj 239 299 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X restore 122 26 pd set;
+#X text 263 38 <= set speaker;
+#X floatatom 122 267 8 0 0 0 - - -;
+#X floatatom 179 267 8 0 0 0 - - -;
+#X text 127 250 x;
+#X text 183 250 y;
+#X floatatom 236 267 8 -1 1 0 - - -;
+#X obj 239 239 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X text 278 298 spread;
-#X obj 65 273 noise~;
-#X obj 65 426 else/meter8~;
-#X obj 122 293 unpack;
-#X text 258 487 <= [else/meter8~];
-#X obj 65 395 else/pan8~ -mode 1, f 29;
-#X obj 95 601 else/out8~;
-#X obj 122 351 else/f2s~ 50;
-#X obj 179 373 else/f2s~ 50;
-#X obj 122 147 circle 127 -1 1 -1 1 0 225 225 225 250 250 250 1 0 0
-1 1 0 0 0 empty empty 1;
-#X text 250 202 3;
-#X text 229 153 2;
-#X text 180 133 1;
-#X text 132 154 8;
-#X text 112 203 7;
-#X text 132 250 6;
-#X text 228 251 4;
-#X text 180 273 5;
-#X text 39 28 Mode 1 has this speakers settings:;
+#X text 278 238 spread;
+#X obj 65 213 noise~;
+#X obj 65 366 else/meter8~;
+#X obj 122 233 unpack;
+#X text 258 427 <= [else/meter8~];
+#X obj 65 335 else/pan8~ -mode 1, f 29;
+#X obj 107 541 else/out8~;
+#X obj 122 291 else/f2s~ 50;
+#X obj 179 313 else/f2s~ 50;
+#X obj 122 87 circle 127 -1 1 -1 1 0 225 225 225 250 250 250 1 0 0
+1 1 0 58.0205 126.763 empty empty;
+#X text 250 142 3;
+#X text 229 93 2;
+#X text 180 73 1;
+#X text 132 94 8;
+#X text 112 143 7;
+#X text 132 190 6;
+#X text 228 191 4;
+#X text 180 213 5;
 #X connect 1 0 18 0;
 #X connect 3 0 16 0;
 #X connect 4 0 17 0;
@@ -259,14 +257,14 @@ It has two modes of operation and a spread parameter.;
 #X obj 158 374 env~;
 #X obj 197 374 env~;
 #X obj 197 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 91.9943 256;
+-228856 -1 -1 92.4194 256;
 #X obj 132 224 noise~;
 #X obj 158 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 91.9943 256;
+-228856 -1 -1 92.362 256;
 #X obj 119 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 91.9943 256;
+-228856 -1 -1 92.2391 256;
 #X obj 80 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 91.9943 256;
+-228856 -1 -1 92.1221 256;
 #X text 172 312 X;
 #X text 281 314 Y;
 #X obj 236 374 env~;
@@ -274,13 +272,13 @@ It has two modes of operation and a spread parameter.;
 #X obj 314 374 env~;
 #X obj 353 374 env~;
 #X obj 353 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 91.9943 256;
+-228856 -1 -1 92.0804 256;
 #X obj 314 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 91.9943 256;
+-228856 -1 -1 92.1394 256;
 #X obj 275 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 91.9943 256;
+-228856 -1 -1 92.2632 256;
 #X obj 236 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 91.9943 256;
+-228856 -1 -1 92.3788 256;
 #X obj 189 292 unpack;
 #X text 87 413 1;
 #X text 128 413 2;
@@ -298,7 +296,7 @@ It has two modes of operation and a spread parameter.;
 to the adjacent speakers., f 21;
 #X obj 132 337 else/pan8~, f 29;
 #X obj 189 146 circle 127 -1 1 -1 1 0 225 225 225 250 250 250 1 0 0
-1 1 0 63.5 63.5 empty empty 1;
+1 1 0 63 65 empty empty;
 #X text 189 177 3;
 #X text 271 260 8;
 #X text 223 260 1;

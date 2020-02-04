@@ -1,4 +1,4 @@
-#N canvas 518 105 562 477 10;
+#N canvas 430 87 562 477 10;
 #X obj 1 449 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 1 244 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -7,35 +7,36 @@
 13 -228856 -1 0;
 #X obj 1 408 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 70 252 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0-7 5 9 0 16 -228856
+#X obj 80 252 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0-7 5 9 0 16 -228856
 -162280 0;
 #X text 128 252 signal;
-#X obj 70 275 cnv 17 3 98 empty \$0-pddp.cnv.let.2 0 5 9 0 16 -228856
+#X obj 80 275 cnv 17 3 98 empty \$0-pddp.cnv.let.2 8 5 9 0 16 -228856
 -162280 0;
+#X text 134 275 float;
 #X obj 216 149 osc~ 440;
 #X text 178 431 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear), f 60;
 #N canvas 522 161 803 382 examples 0;
 #X obj 90 236 osc~ 440;
-#X obj 427 268 osc~ 440;
+#X obj 447 243 osc~ 440;
 #X text 19 101 The rightmost inlet sets several controls: slider value
 \, mute \, DSP on and off \, scaling modes \, maximum gain and ramp
 time.;
 #X text 406 72 You can also set a ramp time for the slider value \,
 the default is 20 ms and the minimum is 5 ms. This also affects the
 slider value input in the right outlet.;
-#X obj 90 319 else/out8~;
-#X obj 390 310 else/out8~;
-#X obj 186 161 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 90 309 else/out8~;
+#X obj 447 285 else/out8~;
+#X obj 180 159 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 183 181 5 0 0 0 - - -;
-#X text 198 161 set slider (0-1);
-#X msg 261 247 on;
-#X msg 261 274 off;
-#X text 288 247 DSP on;
-#X text 287 275 DSP off;
-#X msg 233 209 mute;
-#X text 268 209 mute button;
+#X floatatom 177 179 5 0 0 0 - - -;
+#X text 192 159 set slider (0-1);
+#X msg 231 247 on;
+#X msg 231 274 off;
+#X text 258 247 DSP on;
+#X text 257 275 DSP off;
+#X msg 203 209 mute;
+#X text 238 209 mute button;
 #X msg 534 242 mode \$1;
 #X obj 534 165 vradio 15 1 0 3 \$0-dummy \$0-dummy-set empty 0 -8 0
 10 -228856 -1 -1 1;
@@ -61,9 +62,6 @@ to be greater than zero and also represents the maximum linear gain
 achieved.;
 #X text 20 65 If the DSP is on when you load [out8~] \, it checks the
 DSP state and loads the GUI accordingly.;
-#X msg 183 209 set \$1;
-#X obj 602 333 s \$0-set;
-#X obj 390 241 r \$0-set;
 #X connect 0 0 4 0;
 #X connect 0 0 4 1;
 #X connect 0 0 4 2;
@@ -81,20 +79,18 @@ DSP state and loads the GUI accordingly.;
 #X connect 1 0 5 6;
 #X connect 1 0 5 7;
 #X connect 6 0 7 0;
-#X connect 7 0 31 0;
-#X connect 9 0 4 0;
-#X connect 10 0 4 0;
-#X connect 13 0 4 0;
-#X connect 15 0 32 0;
+#X connect 7 0 4 8;
+#X connect 9 0 4 8;
+#X connect 10 0 4 8;
+#X connect 13 0 4 8;
+#X connect 15 0 5 8;
 #X connect 16 0 19 0;
 #X connect 19 0 15 0;
-#X connect 22 0 32 0;
+#X connect 22 0 5 8;
 #X connect 23 0 22 0;
-#X connect 24 0 32 0;
+#X connect 24 0 5 8;
 #X connect 25 0 24 0;
 #X connect 26 0 25 0;
-#X connect 31 0 4 0;
-#X connect 33 0 5 0;
 #X restore 472 155 pd examples;
 #X text 116 291 <on/off>;
 #X text 92 341 gain <float>;
@@ -390,7 +386,7 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X connect 23 0 34 5;
 #X connect 23 0 34 6;
 #X connect 23 0 34 7;
-#X connect 24 0 34 0;
+#X connect 24 0 34 8;
 #X connect 25 0 33 0;
 #X connect 26 0 24 0;
 #X connect 27 0 26 0;
@@ -399,24 +395,23 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #N canvas 477 417 534 169 see 0;
 #X text 83 34 See also:;
 #X obj 105 78 else/out~;
+#X obj 222 78 else/out1~;
 #X obj 342 78 else/out4~;
-#X obj 222 78 else/out2~;
 #X restore 473 213 pd see also;
 #X obj 216 183 else/out8~ 1 0;
-#X obj 303 150 else/brown~;
+#X obj 281 150 else/brown~;
+#X text 80 88 [out8~] is a variant of [out~] and a convenient quadraphonic
+output abstraction. It has controls for mute \, DSP on/off \, ramp
+time \, maximum gain and scaling mode. Note that you need to specify
+at least 4 output channels in preferences => audio., f 62;
 #X text 178 252 - incoming signals (routed to [dac~ 1 2 3 4 5 6 7 8])
 , f 60;
-#X text 98 275 set <float>;
-#X text 80 88 [out8~] is a convenient octaphonic input/output abstraction.
-It has controls for mute \, DSP on/off \, ramp time \, maximum gain
-and scaling mode. Note that you need to specify at least 8 output channels
-in preferences => audio., f 62;
-#X connect 7 0 42 1;
-#X connect 7 0 42 2;
-#X connect 7 0 42 3;
-#X connect 7 0 42 0;
-#X connect 43 0 42 4;
-#X connect 43 0 42 5;
-#X connect 43 0 42 6;
-#X connect 43 0 42 7;
+#X connect 8 0 43 0;
+#X connect 8 0 43 1;
+#X connect 8 0 43 2;
+#X connect 8 0 43 3;
+#X connect 44 0 43 4;
+#X connect 44 0 43 5;
+#X connect 44 0 43 6;
+#X connect 44 0 43 7;
 #X coords 0 477 1 476 74 39 0;

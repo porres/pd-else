@@ -40,7 +40,7 @@
 #X obj 206 187 else/scramble;
 #X obj 281 217 else/display;
 #X obj 206 217 else/display;
-#X msg 206 130 10 20 30;
+#X msg 206 130 10 20 30, f 8;
 #X msg 222 159 a b c d e;
 #X text 79 89 [scramble] scrambles an input message. The right outlet
 sends the scrambled indexes (from 0).;

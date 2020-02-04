@@ -18,6 +18,7 @@
 #X obj 105 358 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
 #X text 133 288 float/signal;
+#X obj 222 218 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty autofade~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -228,8 +229,8 @@ as raising the input to the power of 4, f 31;
 #X obj 572 176 pow~ 4;
 #X restore 298 31 pd quartic;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -298,7 +299,7 @@ as raising the input to the power of 4, f 31;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -360,6 +361,7 @@ the fading curves available, f 32;
 #X connect 18 0 19 0;
 #X connect 19 0 20 0;
 #X connect 20 0 7 0;
+#X connect 20 0 7 1;
 #X restore 475 251 pd curves;
 #X text 238 442 (optional) fade types <quartic \, sin \, sqrt \, lin
 \, hann \, lin \, hannsin \, linsin> (default: quartic), f 47;
@@ -407,12 +409,11 @@ for 7 different fading curves., f 64;
 #X text 368 219 <= status;
 #X text 225 413 - a 1 or 0 is sent when the fade in/out is finished
 ;
-#X obj 209 218 else/out2~;
-#X connect 14 0 38 0;
-#X connect 16 0 49 1;
-#X connect 38 0 49 0;
-#X connect 40 0 49 0;
-#X connect 45 0 49 2;
-#X connect 49 0 55 0;
-#X connect 49 1 55 1;
-#X connect 49 2 52 0;
+#X connect 15 0 39 0;
+#X connect 17 0 50 1;
+#X connect 39 0 50 0;
+#X connect 41 0 50 0;
+#X connect 46 0 50 2;
+#X connect 50 0 11 0;
+#X connect 50 1 11 1;
+#X connect 50 2 53 0;

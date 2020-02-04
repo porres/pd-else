@@ -70,7 +70,7 @@ is no maximum value.;
 -1 -1 0 256;
 #X text 174 136 on/off;
 #X obj 185 244 else/impseq~;
-#X obj 185 278 else/out~;
+#X obj 169 278 else/out~;
 #X text 298 143 swing (%);
 #X obj 185 186 else/tempo 60 10 -on;
 #X text 42 17 The swing paraneter sets a tempo deviation for irregular
@@ -82,6 +82,7 @@ to a deviation from 60 to 120 bpm and 60 to 30 bpm.;
 #X connect 2 0 5 0;
 #X connect 3 0 8 2;
 #X connect 5 0 6 0;
+#X connect 5 0 6 1;
 #X connect 8 0 2 0;
 #X restore 483 218 pd swing;
 #X text 170 293 bang -;
@@ -96,7 +97,7 @@ to a deviation from 60 to 120 bpm and 60 to 30 bpm.;
 #X obj 142 100 else/tempo 30 -on;
 #X obj 189 139 else/tempo 70 -on;
 #X obj 189 198 else/impseq~;
-#X obj 189 245 else/out~;
+#X obj 177 245 else/out~;
 #X obj 142 166 bng 20 50 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X text 51 24 You can sync a [tempo] object to an external sync source
@@ -106,6 +107,7 @@ with an incoming bang.;
 #X connect 1 0 5 0;
 #X connect 2 0 0 0;
 #X connect 3 0 4 0;
+#X connect 3 0 4 1;
 #X restore 490 241 pd sync;
 #X text 164 310 start -;
 #X text 225 310 turn the metronome on;
@@ -133,7 +135,7 @@ bpm or ms. It has a swing parameter and is turned on and off by a toggle.
 #X text 28 23 You can set a tempo subdivision with the -div flag or
 the "div" message". You can also use object like [count] and [bangdiv]
 to manage tempo subdivisions.;
-#X obj 118 114 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 118 114 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 118 181 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -142,25 +144,25 @@ to manage tempo subdivisions.;
 #X obj 222 254 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 118 331 else/impseq~;
+#X obj 163 375 else/out~;
 #X obj 118 297 sel 1;
-#X obj 205 331 else/impseq~;
-#X obj 205 298 b;
+#X obj 206 331 else/impseq~;
+#X obj 206 298 b;
 #X obj 118 153 else/tempo 30 -on -div 4;
 #X obj 118 265 else/display;
 #X obj 118 238 else/count 1 4;
-#X obj 118 375 else/out2~;
-#X connect 1 0 10 0;
+#X connect 1 0 11 0;
 #X connect 2 0 4 0;
-#X connect 2 0 12 0;
+#X connect 2 0 13 0;
 #X connect 4 0 5 0;
-#X connect 6 0 13 0;
-#X connect 7 0 6 0;
-#X connect 7 1 9 0;
-#X connect 8 0 13 1;
-#X connect 9 0 8 0;
-#X connect 10 0 2 0;
-#X connect 11 0 7 0;
-#X connect 12 0 11 0;
+#X connect 6 0 7 0;
+#X connect 8 0 6 0;
+#X connect 8 1 10 0;
+#X connect 9 0 7 1;
+#X connect 10 0 9 0;
+#X connect 11 0 2 0;
+#X connect 12 0 8 0;
+#X connect 13 0 12 0;
 #X restore 447 196 pd subdivision;
 #N canvas 820 257 387 259 ms 0;
 #X obj 139 87 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0

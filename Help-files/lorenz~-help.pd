@@ -68,7 +68,7 @@
 #X obj 208 154 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 135 154 rate in Hz;
-#X obj 208 202 else/out~;
+#X obj 165 202 else/out~;
 #N canvas 805 41 482 473 parameters 0;
 #X obj 66 113 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
@@ -76,20 +76,20 @@
 -228856 -1 -1 0 256;
 #X text 93 112 rate in Hz;
 #X obj 87 395 else/out~;
-#X floatatom 87 180 5 0 0 0 - - -;
-#X floatatom 169 181 5 0 0 0 - - -;
+#X floatatom 87 180 5 0 0 0 - - -, f 5;
+#X floatatom 169 181 5 0 0 0 - - -, f 5;
 #X text 85 161 x[n-1];
 #X text 167 161 y[n-1];
-#X floatatom 252 179 5 0 0 0 - - -;
+#X floatatom 252 179 5 0 0 0 - - -, f 5;
 #X text 250 161 z[n-1];
 #X text 110 228 list sets initial values of x \, y and z, f 24;
 #X text 245 317 sets coefficients 's' \, 'r' \, 'b' & 'h', f 21;
 #X text 61 60 You can also set previous values of x \, y and z with
 a list.;
-#X floatatom 165 276 5 0 0 0 - - -;
-#X floatatom 224 276 5 0 0 0 - - -;
-#X floatatom 283 276 5 0 0 0 - - -;
-#X floatatom 343 276 5 0 0 0 - - -;
+#X floatatom 165 276 5 0 0 0 - - -, f 5;
+#X floatatom 224 276 5 0 0 0 - - -, f 5;
+#X floatatom 283 276 5 0 0 0 - - -, f 5;
+#X floatatom 343 276 5 0 0 0 - - -, f 5;
 #X text 201 275 s;
 #X text 260 275 r;
 #X text 321 275 b;
@@ -111,6 +111,7 @@ or via the "coeffs" message.;
 #X connect 15 0 24 3;
 #X connect 16 0 24 4;
 #X connect 21 0 3 0;
+#X connect 21 0 3 1;
 #X connect 22 0 21 0;
 #X connect 23 0 21 0;
 #X connect 24 0 21 0;
@@ -131,4 +132,5 @@ N. Lorenz while studying mathematical models of the atmosphere.;
 #X text 88 291 coeffs <f \, f \, f \, f>;
 #X connect 41 0 42 0;
 #X connect 42 0 46 0;
+#X connect 46 0 44 1;
 #X connect 46 0 44 0;

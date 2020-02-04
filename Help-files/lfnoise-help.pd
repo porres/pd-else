@@ -35,15 +35,15 @@
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 209 142 hsl 128 15 0.1 1 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 9900 1;
 #X obj 206 168 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.601904 256;
 #X text 233 142 rate in Hz;
 #X obj 89 41 cnv 4 4 4 empty empty LFNoise 0 28 2 18 -233017 -1 0;
 #X text 146 393 float;
 #X text 146 325 float;
 #X obj 206 219 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 2454 1;
+-228856 -1 -1 4882 1;
 #X obj 81 363 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 187 325 - frequency in hertz up to 100 (negative values accepted)
@@ -57,31 +57,31 @@
 MIDI default range. Use the [rescale] object if you want a different
 range for the output., f 53;
 #X obj 127 109 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 2287 1;
+-228856 -1 -1 5971 1;
 #X obj 127 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 36.7731 256;
+-228856 -1 -1 95.9873 256;
 #X obj 127 254 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 344.776 256;
+-228856 -1 -1 577.903 256;
 #X text 187 255 cutoff in hertz;
 #X obj 127 365 biquad~;
+#X obj 127 437 else/out~;
 #X obj 127 394 else/plate.rev~ 50 0.9 0.9 0.9 0.7, f 18;
 #X obj 127 83 else/lfnoise 0.5 1;
 #X obj 160 335 else/bl.saw~;
 #X obj 160 312 sig~ 35;
 #X obj 127 227 else/rescale 200 700;
 #X obj 127 282 else/bicoeff lowpass 500 20;
-#X obj 137 437 else/out2~;
 #X connect 1 0 2 0;
-#X connect 2 0 10 0;
-#X connect 3 0 11 0;
-#X connect 5 0 6 0;
-#X connect 6 0 12 0;
-#X connect 6 1 12 1;
-#X connect 7 0 1 0;
-#X connect 8 0 5 0;
-#X connect 9 0 8 0;
-#X connect 10 0 3 0;
-#X connect 11 0 5 0;
+#X connect 2 0 11 0;
+#X connect 3 0 12 0;
+#X connect 5 0 7 0;
+#X connect 7 0 6 0;
+#X connect 7 1 6 1;
+#X connect 8 0 1 0;
+#X connect 9 0 5 0;
+#X connect 10 0 9 0;
+#X connect 11 0 3 0;
+#X connect 12 0 5 0;
 #X restore 471 274 pd rescale;
 #X text 64 91 [lfnoise] is a control rate LFNoise with some common
 waveforms. It doesn't need the DSP on to function \,, f 74;
@@ -95,7 +95,7 @@ waveforms. It doesn't need the DSP on to function \,, f 74;
 ;
 #X text 187 452 - seed (default internal), f 55;
 #X msg 121 161 interp \$1;
-#X obj 121 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 121 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X text 151 365 bang;
 #X text 187 365 - reset to a new random value;

@@ -25,9 +25,9 @@ filters that you can use separately or in combination to form a crossover
 filter.;
 #X obj 195 173 noise~;
 #X obj 309 158 hsl 128 15 200 2000 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
+-228856 -1 -1 6300 1;
 #X obj 306 179 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 1092.91 256;
 #X text 258 331 - clears filter's memory;
 #X text 258 312 - signal to be filtered;
 #X text 258 353 - cutoff frequency;
@@ -66,7 +66,7 @@ filter.;
 #X text 94 92 [crossover~] is a of 3rd order butterworth crossover
 filter.;
 #X obj 195 201 else/crossover~ 500;
-#X obj 208 236 else/out2~;
+#X obj 215 237 else/out~;
 #X connect 14 0 40 0;
 #X connect 15 0 16 0;
 #X connect 16 0 40 1;

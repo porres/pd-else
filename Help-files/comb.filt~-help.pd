@@ -102,6 +102,7 @@ expression: a = exp(log(0.001) * D/t60).;
 #X connect 4 0 5 0;
 #X connect 5 0 52 0;
 #X connect 52 0 3 0;
+#X connect 52 0 3 1;
 #X restore 438 242 pd Details and \; Filter Equation;
 #X text 119 422 1) float - maximum and initial delay time in ms (default
 0), f 61;
@@ -119,12 +120,12 @@ expression: a = exp(log(0.001) * D/t60).;
 #X text 169 329 float/signal;
 #X text 169 352 float/signal;
 #X obj 284 133 hsl 128 15 40 400 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 3000 1;
 #X obj 281 155 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 0 256;
+-262144 -1 -1 125.039 256;
 #X floatatom 364 182 5 0 0 0 - - -;
 #X obj 367 158 hsl 128 15 -2000 2000 0 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 0 1;
+10 -228856 -1 -1 12700 1;
 #X msg 140 141 clear;
 #X text 250 329 - frequency in hz;
 #X obj 191 140 else/imp~ 1;
@@ -150,6 +151,7 @@ or the -gain flag. You can also change that with the "gain" message.
 #X connect 3 0 5 0;
 #X connect 4 0 3 0;
 #X connect 5 0 2 0;
+#X connect 5 0 2 1;
 #X restore 457 217 pd gain mode;
 #X text 119 454 3) float -;
 #X obj 5 481 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
@@ -171,3 +173,4 @@ mode);
 #X connect 33 0 36 0;
 #X connect 35 0 36 0;
 #X connect 36 0 4 0;
+#X connect 36 0 4 1;

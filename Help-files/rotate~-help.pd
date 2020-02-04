@@ -13,8 +13,9 @@
 #X obj 23 40 cnv 4 4 4 empty empty Channel 0 28 2 18 -233017 -1 0;
 #X obj 89 40 cnv 4 4 4 empty empty rotation 0 28 2 18 -233017 -1 0
 ;
+#X obj 187 240 else/out~;
 #X obj 306 178 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 3175 1;
 #X obj 119 335 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
 0;
 #X text 163 336 float/signal;
@@ -44,6 +45,7 @@
 #X obj 187 150 osc~ 440;
 #X text 186 405 1) float;
 #N canvas 736 79 608 362 example 0;
+#X obj 405 231 else/out~;
 #X obj 428 124 osc~ 440;
 #X obj 394 94 osc~ 220;
 #X obj 394 183 else/rotate~;
@@ -61,14 +63,14 @@
 #X obj 111 289 else/display~;
 #X obj 138 289 else/display~;
 #X obj 172 193 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 -1 256;
 #X msg 207 164 -1;
 #X msg 197 141 -0.75;
 #X msg 188 119 -0.5;
 #X msg 173 96 -0.25;
 #X msg 157 74 0;
 #X obj 252 193 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 1 256;
 #X msg 237 74 0;
 #X msg 287 164 1;
 #X msg 277 141 0.75;
@@ -76,33 +78,32 @@
 #X msg 253 96 0.25;
 #X text 47 27 Here's how the rotation works for more than 2 channels.
 , f 29;
-#X obj 387 231 else/out2~;
-#X connect 0 0 2 1;
-#X connect 1 0 2 0;
-#X connect 2 0 28 0;
-#X connect 2 1 28 1;
-#X connect 4 0 2 2;
-#X connect 5 0 9 0;
-#X connect 8 0 9 4;
-#X connect 9 0 6 0;
-#X connect 9 1 7 0;
-#X connect 9 2 13 0;
-#X connect 9 3 14 0;
-#X connect 10 0 9 1;
-#X connect 11 0 9 2;
-#X connect 12 0 9 3;
-#X connect 15 0 8 0;
-#X connect 16 0 15 0;
-#X connect 17 0 15 0;
-#X connect 18 0 15 0;
-#X connect 19 0 15 0;
-#X connect 20 0 15 0;
-#X connect 21 0 8 0;
-#X connect 22 0 21 0;
-#X connect 23 0 21 0;
-#X connect 24 0 21 0;
-#X connect 25 0 21 0;
-#X connect 26 0 21 0;
+#X connect 1 0 3 1;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X connect 3 1 0 1;
+#X connect 5 0 3 2;
+#X connect 6 0 10 0;
+#X connect 9 0 10 4;
+#X connect 10 0 7 0;
+#X connect 10 1 8 0;
+#X connect 10 2 14 0;
+#X connect 10 3 15 0;
+#X connect 11 0 10 1;
+#X connect 12 0 10 2;
+#X connect 13 0 10 3;
+#X connect 16 0 9 0;
+#X connect 17 0 16 0;
+#X connect 18 0 16 0;
+#X connect 19 0 16 0;
+#X connect 20 0 16 0;
+#X connect 21 0 16 0;
+#X connect 22 0 9 0;
+#X connect 23 0 22 0;
+#X connect 24 0 22 0;
+#X connect 25 0 22 0;
+#X connect 26 0 22 0;
+#X connect 27 0 22 0;
 #X restore 470 270 pd example;
 #X msg 303 147 0;
 #X msg 331 147 0.5;
@@ -119,13 +120,12 @@
 #X text 243 405 - number of channels (minimum and default: 2);
 #X obj 187 209 else/rotate~;
 #X msg 265 147 -0.5;
-#X obj 179 240 else/out2~;
-#X connect 8 0 32 0;
-#X connect 21 0 35 1;
-#X connect 22 0 35 0;
-#X connect 25 0 8 0;
-#X connect 26 0 8 0;
-#X connect 32 0 35 2;
-#X connect 35 0 37 0;
-#X connect 35 1 37 1;
+#X connect 9 0 33 0;
+#X connect 22 0 36 1;
+#X connect 23 0 36 0;
+#X connect 26 0 9 0;
+#X connect 27 0 9 0;
+#X connect 33 0 36 2;
 #X connect 36 0 8 0;
+#X connect 36 1 8 1;
+#X connect 37 0 9 0;

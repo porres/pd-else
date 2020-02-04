@@ -1,5 +1,5 @@
 #N canvas 521 23 575 391 10;
-#X obj 227 180 else/out~;
+#X obj 184 180 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty clipnoise~ 20 20 2 37 -233017
 -1 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -33,12 +33,12 @@
 #X text 184 295 signal;
 #X obj 227 136 else/clipnoise~;
 #X text 233 296 - clipped noise;
-#X obj 153 213 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 312 202 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 1 256;
 #X text 92 89 [clipnoise~] generates white noise whose values are either
 -1 or 1 This produces the maximum energy and peak to peak amplitude.
 ;
-#X obj 153 187 else/rms~;
+#X obj 312 172 else/rms~;
 #X text 179 335 1) float - sets seed, f 45;
 #X obj 155 262 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
@@ -49,7 +49,7 @@
 #X msg 518 52 507;
 #X text 549 51 <= set seed;
 #X obj 368 54 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 14 256;
 #X obj 368 110 else/clipnoise~;
 #X obj 518 110 else/clipnoise~;
 #X obj 518 147 else/downsample~ 5;
@@ -75,5 +75,6 @@
 #X connect 14 0 11 0;
 #X restore 470 207 pd seed;
 #X connect 17 0 0 0;
+#X connect 17 0 0 1;
 #X connect 17 0 21 0;
 #X connect 21 0 19 0;

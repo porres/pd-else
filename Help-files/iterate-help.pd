@@ -71,7 +71,7 @@ and outputs them sequentially., f 70;
 #X connect 5 0 7 0;
 #X connect 6 0 5 0;
 #X connect 7 0 8 0;
-#X restore 467 234 pd example;
+#X restore 452 221 pd example;
 #X msg 185 140 1 2 3;
 #X floatatom 300 193 5 0 0 0 - - -;
 #X text 336 192 direction;

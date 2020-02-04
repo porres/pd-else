@@ -54,7 +54,7 @@ or a bang \, [sequencer~] sends a signal value from a given sequence.
 #N canvas 803 153 457 364 example 0;
 #X obj 78 97 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
-#X obj 79 288 else/out~;
+#X obj 62 288 else/out~;
 #X obj 79 246 else/resonant2~ 500 100 1000;
 #X obj 78 162 else/impseq~ 1 0.5 1 0.5 0 1 0.5 0.25 0;
 #X obj 134 205 else/sequencer~ 500 900 300 700 200 600 400 800;
@@ -63,6 +63,7 @@ or a bang \, [sequencer~] sends a signal value from a given sequence.
 #X obj 78 123 else/tempo~ 180;
 #X connect 0 0 6 0;
 #X connect 2 0 1 0;
+#X connect 2 0 1 1;
 #X connect 3 0 2 0;
 #X connect 3 0 4 0;
 #X connect 4 0 2 1;

@@ -126,8 +126,8 @@ It can also initialize a symbol value and it doesn't create a list
 selector for you. Moreover \, you can change many elements with a list
 message and an element that was initialized as a float can become a
 symbol and vice versa., f 75;
-#X symbolatom 293 160 10 0 0 0 - - -;
-#X symbolatom 218 159 10 0 0 0 - - -;
+#X symbolatom 293 160 10 0 0 0 - - -, f 10;
+#X symbolatom 218 159 10 0 0 0 - - -, f 10;
 #X text 201 333 same as "set" \, but it forces an output, f 56;
 #X text 199 397 the number of elements defines the number of inlets.
 A float or a symbol will define an initial value (default: two floats

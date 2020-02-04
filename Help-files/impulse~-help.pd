@@ -67,6 +67,7 @@ to periodically trigger processes such as with [sh~] below.;
 #X connect 4 0 3 0;
 #X connect 8 0 0 1;
 #X connect 8 0 6 0;
+#X connect 8 0 6 1;
 #X connect 12 0 2 0;
 #X restore 481 195 pd example;
 #X obj 285 213 else/out~;
@@ -103,7 +104,7 @@ phase is synced to the given value. The phase values are from 0 to
 LFOs and control with MIDI. A sync with audio is usefull for the "hard
 sync" technique \, where an oscillator is synced according to the frequency
 of a master frequency., f 44;
-#X obj 539 242 else/out~;
+#X obj 517 242 else/out~;
 #X obj 576 143 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 110 256;
 #X text 675 170 Master oscillator;
@@ -138,8 +139,11 @@ to another phase value.;
 #X connect 9 0 12 0;
 #X connect 12 0 19 1;
 #X connect 18 0 17 0;
+#X connect 18 0 17 1;
 #X connect 19 0 8 0;
+#X connect 19 0 8 1;
 #X connect 20 0 16 0;
+#X connect 20 0 16 1;
 #X connect 21 0 25 0;
 #X connect 22 0 25 0;
 #X connect 23 0 25 0;
@@ -147,19 +151,19 @@ to another phase value.;
 #X connect 25 0 18 1;
 #X restore 498 219 pd sync;
 #N canvas 430 175 780 341 phase 0;
-#X obj 472 186 else/out~;
+#X obj 457 186 else/out~;
 #X text 587 142 Phase Modulation:;
 #X obj 571 115 osc~ 50.01;
 #X text 28 31 The second argument sets an initial phase (or "phase
 offset"). This is also settable with the third inlet. This allows you
 to control two oscillators with the same frequency falling in and out
 of phase. Another feature is phase modulation., f 53;
-#X obj 97 256 else/out~;
+#X obj 79 256 else/out~;
 #X obj 97 220 +~;
 #X text 334 119 1;
 #X obj 202 119 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 199 143 4 0 0 0 - - -;
+#X floatatom 199 143 4 0 0 0 - - -, f 4;
 #X text 182 119 0;
 #X obj 199 167 else/float2sig~ 10;
 #X text 387 46 The phase values are wrapped into the 0-1 range \, since
@@ -170,10 +174,12 @@ cycle).;
 #X obj 112 193 else/impulse~ 1;
 #X connect 2 0 12 2;
 #X connect 5 0 4 0;
+#X connect 5 0 4 1;
 #X connect 7 0 8 0;
 #X connect 8 0 10 0;
 #X connect 10 0 14 2;
 #X connect 12 0 0 0;
+#X connect 12 0 0 1;
 #X connect 13 0 5 0;
 #X connect 14 0 5 1;
 #X restore 450 243 pd phase offset;
@@ -188,4 +194,6 @@ sync and phase modulation., f 57;
 #X obj 468 166 else/bl.imp~;
 #X connect 6 0 38 0;
 #X connect 38 0 7 0;
+#X connect 38 0 7 1;
 #X connect 39 0 22 0;
+#X connect 39 0 22 1;

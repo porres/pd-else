@@ -58,8 +58,8 @@ values to decimal ones.;
 #X text 183 337 - the converted decimal value;
 #X text 135 372 1) symbol - hexadecimal value to convert (default 0)
 ;
-#X symbolatom 208 146 10 0 0 0 - - -;
-#X symbolatom 295 145 10 0 0 0 - - -;
+#X symbolatom 208 146 10 0 0 0 - - -, f 10;
+#X symbolatom 295 145 10 0 0 0 - - -, f 10;
 #X obj 208 179 else/hex2dec ff;
 #X connect 1 0 35 0;
 #X connect 33 0 35 0;

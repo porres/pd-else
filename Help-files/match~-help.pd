@@ -183,7 +183,7 @@
 #X obj 182 213 else/resonant~ 1500 750, f 14;
 #X text 214 70 A sequencer patch;
 #X obj 69 32 phasor~ 0.75;
-#X obj 182 281 else/out2~;
+#X obj 182 281 else/out~;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
 #X connect 4 0 1 0;
@@ -200,8 +200,8 @@
 #X connect 10 0 11 0;
 #X connect 12 0 17 1;
 #X connect 13 0 17 0;
-#X connect 14 0 17 0;
 #X connect 14 0 17 1;
+#X connect 14 0 17 0;
 #X connect 16 0 5 0;
 #X restore 463 257 pd example;
 #X obj 182 230 else/match~ 1, f 18;

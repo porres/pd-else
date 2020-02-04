@@ -139,7 +139,7 @@
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
 #N canvas 512 142 541 446 pulse 0;
-#X obj 97 326 else/out~;
+#X obj 81 326 else/out~;
 #X obj 155 204 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 152 229 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -162,7 +162,9 @@ second inlet.;
 #X connect 2 0 6 0;
 #X connect 6 0 8 1;
 #X connect 8 0 0 0;
+#X connect 8 0 0 1;
 #X connect 10 0 9 0;
+#X connect 10 0 9 1;
 #X restore 446 180 pd pulse width;
 #X obj 3 3 cnv 15 301 42 empty empty randpulse~ 20 20 2 37 -233017
 -1 0;

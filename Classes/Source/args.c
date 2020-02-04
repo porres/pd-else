@@ -9,6 +9,7 @@ typedef struct _args{
     t_object  x_obj;
     t_canvas  *x_canvas;
     int        x_argc;
+//    int        x_dirty;
     t_atom    *x_argv;
     int             x_break;
     int             x_broken;
@@ -36,6 +37,8 @@ static void args_list(t_args *x, t_symbol *s, int argc, t_atom *argv){
     x->x_argc = argc;
     x->x_argv = getbytes(argc * sizeof(*(x->x_argv)));
     copy_atoms(argv, x->x_argv, argc);
+    //    if(x->x_dirty)
+    //        canvas_dirty(x->x_canvas, 1);
 }
 
 static void args_break(t_args *x, t_symbol *s, int ac, t_atom *av){
@@ -88,11 +91,13 @@ static void *args_new(t_symbol *s, int ac, t_atom* av){
     t_symbol *dummy = s;
     dummy = NULL;
     t_args *x = (t_args *)pd_new(args_class);
-    x->x_canvas = canvas_getrootfor(canvas_getcurrent());
+    t_glist *glist = (t_glist *)canvas_getcurrent();
+    x->x_canvas = (t_canvas*)glist_getcanvas(glist);
     int depth = 0;
     int argc;
     t_atom *argv;
     x->x_break = x->x_broken = 0;
+    //    x->x_dirty = 0;
     if(ac && av->a_type == A_SYMBOL){
         x->x_separator = atom_getsymbol(av)->s_name[0];
         x->x_break = 1;
@@ -101,10 +106,17 @@ static void *args_new(t_symbol *s, int ac, t_atom* av){
     }
     if(ac && av->a_type == A_FLOAT)
         depth = (int)atom_getfloat(av);
-    if(depth < 0)
+    if (depth < 0)
         depth = 0;
-    while(depth-- && x->x_canvas->gl_owner)
-        x->x_canvas = canvas_getrootfor(x->x_canvas->gl_owner);
+    while(!x->x_canvas->gl_env)
+        x->x_canvas = x->x_canvas->gl_owner;
+    while(depth--){
+        if(x->x_canvas->gl_owner){
+            x->x_canvas = x->x_canvas->gl_owner;
+            while(!x->x_canvas->gl_env)
+                x->x_canvas = x->x_canvas->gl_owner;
+        }
+    }
     canvas_setcurrent(x->x_canvas);
     canvas_getargs(&argc, &argv);
     x->x_argc = argc;

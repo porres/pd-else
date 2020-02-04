@@ -30,7 +30,7 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 315 180 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 2 256;
 #X obj 65 40 cnv 4 4 4 empty empty element 0 28 2 18 -233017 -1 0;
 #X obj 129 40 cnv 4 4 4 empty empty from 0 28 2 18 -233017 -1 0;
 #X obj 172 40 cnv 4 4 4 empty empty message 0 28 2 18 -233017 -1 0

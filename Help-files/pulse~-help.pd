@@ -35,8 +35,8 @@
 -1 -1 0 256;
 #X text 274 143 <= hz;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -105,7 +105,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -139,7 +139,7 @@
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 72 pd;
 #N canvas 512 142 490 395 pulse 0;
-#X obj 177 314 else/out~;
+#X obj 161 314 else/out~;
 #X obj 213 192 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 210 217 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -158,6 +158,7 @@ second inlet.;
 #X connect 1 0 2 0;
 #X connect 2 0 7 0;
 #X connect 4 0 0 0;
+#X connect 4 0 0 1;
 #X connect 7 0 4 1;
 #X restore 450 171 pd pulse width;
 #X obj 3 4 cnv 15 301 42 empty empty pulse~ 20 20 2 37 -233017 -1 0
@@ -169,7 +170,7 @@ second inlet.;
 #X text 398 21 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 - where 1 is also the start of another
 cycle.;
-#X obj 514 156 else/out~;
+#X obj 498 156 else/out~;
 #X text 615 110 Phase Modulation:;
 #X obj 514 110 else/pulse~ 200;
 #X obj 601 83 osc~ 50.05;
@@ -182,7 +183,7 @@ cycle.;
 #X obj 62 222 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 267 194 else/sig2float~;
-#X obj 267 222 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 267 222 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 267 164 else/pulse~ 1;
 #X obj 62 163 else/pulse~ 1 0.5 0.5;
@@ -191,6 +192,7 @@ This is also settable with the fourth inlet. In such a way \, you have
 two objects with the same frequency falling out and back in sync. Another
 feature is phase modulation.;
 #X connect 3 0 1 0;
+#X connect 3 0 1 1;
 #X connect 4 0 3 3;
 #X connect 6 0 7 0;
 #X connect 7 0 14 3;
@@ -238,8 +240,8 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X obj 266 224 else/sig2float~;
 #X text 223 139 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -308,7 +310,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -341,9 +343,9 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 424 222 pd;
-#X obj 88 254 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 88 254 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 266 257 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 266 257 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 266 200 else/pulse~ 1;
 #X msg 35 141 0;
@@ -360,6 +362,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X connect 2 0 5 0;
 #X connect 5 0 10 2;
 #X connect 10 0 1 0;
+#X connect 10 0 1 1;
 #X connect 11 0 15 0;
 #X connect 12 0 16 0;
 #X connect 17 0 12 0;

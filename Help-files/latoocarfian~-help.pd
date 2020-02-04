@@ -44,7 +44,7 @@
 #X obj 186 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
 #X text 279 201 rate in Hz;
-#X obj 223 250 else/out~;
+#X obj 180 250 else/out~;
 #X text 192 358 list;
 #N canvas 894 143 430 452 parameters 0;
 #X text 25 19 By default \, the initial k \, x and y values are 1 \,
@@ -56,8 +56,8 @@
 -228856 -1 -1 0 256;
 #X text 91 69 rate in Hz;
 #X obj 106 310 else/out~;
-#X floatatom 106 141 5 0 0 0 - - -;
-#X floatatom 163 142 5 0 0 0 - - -;
+#X floatatom 106 141 5 0 0 0 - - -, f 5;
+#X floatatom 163 142 5 0 0 0 - - -, f 5;
 #X text 96 121 y[n-1];
 #X text 162 121 x[n-1];
 #X text 205 140 list sets initial values of y[n-1] and x[n-1], f 24
@@ -69,10 +69,10 @@
 single value or oscillate in a cycle. According to the reference \,
 'a' and 'b' should be from -3 to +3 \, and 'c' and 'd' from 0.5 to
 1.5.;
-#X floatatom 176 203 5 0 0 0 - - -;
-#X floatatom 237 203 5 0 0 0 - - -;
-#X floatatom 298 203 5 0 0 0 - - -;
-#X floatatom 359 203 5 0 0 0 - - -;
+#X floatatom 176 203 5 0 0 0 - - -, f 5;
+#X floatatom 237 203 5 0 0 0 - - -, f 5;
+#X floatatom 298 203 5 0 0 0 - - -, f 5;
+#X floatatom 359 203 5 0 0 0 - - -, f 5;
 #X text 212 202 a;
 #X text 271 202 b;
 #X text 332 202 c;
@@ -85,6 +85,7 @@ single value or oscillate in a cycle. According to the reference \,
 #X connect 6 0 23 1;
 #X connect 10 0 12 0;
 #X connect 12 0 4 0;
+#X connect 12 0 4 1;
 #X connect 14 0 22 1;
 #X connect 15 0 22 2;
 #X connect 16 0 22 3;
@@ -122,4 +123,5 @@ The reference is "Chaos In Wonderland" (pg. 26) by Clifford Pickover.
 #X text 102 339 coeffs <f \, f \, f \, f>;
 #X connect 0 0 17 0;
 #X connect 17 0 33 0;
+#X connect 33 0 24 1;
 #X connect 33 0 24 0;

@@ -163,7 +163,7 @@
 #X text 187 565 - sets Q/Slope (default 1), f 53;
 #X obj 208 223 biquad~;
 #X obj 145 178 noise~;
-#X obj 208 248 else/out~;
+#X obj 165 248 else/out~;
 #X obj 208 148 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 281 148 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -179,7 +179,7 @@
 #X text 187 581 - sets gain in db (default 0), f 53;
 #X text 91 349 list <f \, f \, f>;
 #N canvas 399 107 917 580 details 0;
-#X floatatom 566 183 5 0 0 0 - - -;
+#X floatatom 566 183 5 0 0 0 - - -, f 5;
 #X msg 466 95 lowpass;
 #X msg 474 115 highpass;
 #X obj 507 183 nbx 5 14 0.1 100 1 0 empty empty empty 0 -8 0 10 -228856
@@ -288,6 +288,7 @@ and gain, f 55;
 #X text 103 381 gain <float>;
 #X text 187 381 - sets gain in db and outputs coefficients, f 57;
 #X connect 37 0 39 0;
+#X connect 37 0 39 1;
 #X connect 38 0 37 0;
 #X connect 40 0 55 0;
 #X connect 41 0 55 1;

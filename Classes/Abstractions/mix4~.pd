@@ -1,4 +1,5 @@
-#N canvas 447 182 967 384 10;
+#N canvas 194 205 967 384 10;
+#X obj 416 41 inlet~;
 #X obj 500 297 outlet~;
 #N canvas 341 432 316 326 gain~ 0;
 #N canvas 251 205 450 331 quartic 0;
@@ -262,6 +263,7 @@
 #X connect 17 0 19 0;
 #X connect 18 0 20 0;
 #X restore 834 185 pd set_GUI;
+#X obj 834 140 inlet;
 #N canvas 262 23 503 388 pan 0;
 #X obj 80 218 pan2~;
 #X obj 152 217 pan2~;
@@ -580,7 +582,7 @@
 24 9 0 14 -228856 -79060 -99865 0 1;
 #X obj 238 105 vsl 43 150 0 1 0 0 \$0-slider3 \$0-set-slider3 empty
 24 9 0 14 -228856 -79060 -99865 0 1;
-#X obj 158 101 cnv 1 47 2 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 158 101 cnv 1 33 2 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X obj 194 100 cnv 1 1 173 empty empty empty 20 12 0 14 -1 -66577 0
 ;
@@ -588,26 +590,23 @@
 ;
 #X obj 281 100 cnv 1 1 173 empty empty empty 20 12 0 14 -1 -66577 0
 ;
-#X obj 416 41 inlet~ fwd;
-#X obj 214 101 cnv 2 22 2 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 200 101 cnv 1 33 2 empty empty empty 20 12 0 14 -233017 -66577
 0;
-#X obj 239 101 cnv 2 22 2 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 242 101 cnv 1 33 2 empty empty empty 20 12 0 14 -233017 -66577
 0;
-#X obj 270 101 cnv 2 10 2 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 284 101 cnv 1 34 2 empty empty empty 20 12 0 14 -233017 -66577
 0;
-#X obj 283 101 cnv 1 35 2 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#X connect 1 0 6 0;
-#X connect 2 0 4 0;
-#X connect 4 0 6 1;
-#X connect 6 0 0 0;
-#X connect 6 1 3 0;
-#X connect 7 0 8 0;
-#X connect 8 0 11 0;
+#X connect 0 0 2 0;
+#X connect 2 0 8 0;
+#X connect 3 0 5 0;
+#X connect 5 0 8 1;
+#X connect 7 0 6 0;
+#X connect 8 0 1 0;
+#X connect 8 1 4 0;
 #X connect 9 0 10 0;
-#X connect 10 0 11 1;
-#X connect 11 0 0 0;
-#X connect 11 1 3 0;
-#X connect 41 0 1 0;
-#X connect 41 1 5 0;
+#X connect 10 0 13 0;
+#X connect 11 0 12 0;
+#X connect 12 0 13 1;
+#X connect 13 0 1 0;
+#X connect 13 1 4 0;
 #X coords 0 0 1 1 176 175 2 150 100;

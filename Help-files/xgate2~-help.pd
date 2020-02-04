@@ -66,7 +66,7 @@ mode. You can also use the index message to change bewteen modes.;
 #X obj 134 288 else/xgate2~ 4 0;
 #X obj 227 257 osc~ 440;
 #X obj 131 326 else/meter4~;
-#X obj 126 484 else/out4~;
+#X obj 138 484 else/out4~;
 #X connect 2 0 10 0;
 #X connect 3 0 2 0;
 #X connect 5 0 6 0;

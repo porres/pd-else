@@ -5,7 +5,7 @@
 13 -228856 -1 0;
 #X obj 1 438 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
 0 13 -228856 -1 0;
-#X obj 85 319 cnv 17 3 88 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 85 319 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
 #X text 182 318 signal;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -35,8 +35,10 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 146 335 size <float>;
-#X obj 54 128 noise~;
+#X obj 85 342 cnv 17 3 64 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
+-162280 0;
+#X text 146 342 size <float>;
+#X obj 54 127 noise~;
 #X text 61 87 [spectrograph~] is a simple convenient abstraction for
 visualizing spectrographs.;
 #X msg 392 185 size \$1;
@@ -153,10 +155,10 @@ visualizing spectrographs.;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 499 61 pd;
 #X obj 417 277 s \$0-set;
-#X obj 115 127 r \$0-set;
+#X obj 347 129 r \$0-set;
 #X text 175 445 (none);
-#X text 158 351 db <float>;
-#X obj 54 158 ./spectrograph~ 1024 0 0 300 140;
+#X text 158 358 db <float>;
+#X obj 54 157 ./spectrograph~ 1024 0 0 300 140;
 #X obj 1 532 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 1 462 cnv 3 550 3 empty \$0-pddp.cnv.argument flags 8 12 0 13
@@ -164,7 +166,7 @@ visualizing spectrographs.;
 #X text 106 468 -size <float>;
 #X text 70 513 -dim <float \, float>;
 #X text 118 483 -db <float>;
-#X text 152 368 log <float>;
+#X text 152 375 log <float>;
 #X text 112 498 -log <float>;
 #X text 191 513 - set horizontal/vertical dimensions (default 300 140)
 ;
@@ -173,17 +175,17 @@ f 51;
 #X text 191 498 - non zero sets to log freq scale (default linear)
 , f 51;
 #X text 191 468 - FFT size (default 1024 \, min 128), f 51;
-#X text 225 385 - set horizontal/vertical dimensions;
-#X text 230 368 - non zero sets to log freq scale;
-#X text 230 351 - non zero sets to dB amp scale;
-#X text 229 335 - sets FFT size;
-#X text 111 385 dim <float \, float>;
-#X connect 20 0 34 0;
-#X connect 22 0 30 0;
-#X connect 23 0 24 0;
-#X connect 24 0 30 0;
-#X connect 25 0 30 0;
-#X connect 26 0 25 0;
-#X connect 27 0 22 0;
-#X connect 28 0 22 0;
-#X connect 31 0 34 0;
+#X text 104 392 -dim <float \, float>;
+#X text 225 392 - set horizontal/vertical dimensions;
+#X text 230 375 - non zero sets to log freq scale;
+#X text 230 358 - non zero sets to dB amp scale;
+#X text 229 342 - sets FFT size;
+#X connect 21 0 35 0;
+#X connect 23 0 31 0;
+#X connect 24 0 25 0;
+#X connect 25 0 31 0;
+#X connect 26 0 31 0;
+#X connect 27 0 26 0;
+#X connect 28 0 23 0;
+#X connect 29 0 23 0;
+#X connect 32 0 35 1;

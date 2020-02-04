@@ -1,7 +1,7 @@
 #N canvas 653 70 562 563 10;
-#X obj 184 284 out~;
+#X obj 180 284 out~;
 #X obj 229 199 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 12700 1;
 #X obj 250 222 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -77,3 +77,4 @@ and spectral morphing., f 76;
 #X connect 16 0 37 1;
 #X connect 17 0 37 0;
 #X connect 37 0 0 0;
+#X connect 37 0 0 1;

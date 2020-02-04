@@ -24,6 +24,7 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
+#X obj 184 213 else/out~;
 #X obj 180 41 cnv 4 4 4 empty empty line 0 28 2 18 -233017 -1 0;
 #X obj 1 480 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
@@ -46,7 +47,7 @@
 #N canvas 610 195 670 302 examples 0;
 #X obj 497 94 osc~ 0.1;
 #X text 96 88 vibrato;
-#X obj 87 194 else/out~;
+#X obj 65 194 else/out~;
 #X text 385 67 feedforward flanger;
 #X obj 389 173 +~;
 #X obj 87 159 else/ffdelay~ 512 -samps;
@@ -54,14 +55,16 @@
 #X obj 497 119 else/rescale~ 0 10;
 #X obj 228 134 else/rescale~ 0 512;
 #X obj 228 107 osc~ 1;
-#X obj 389 208 else/out~;
+#X obj 373 208 else/out~;
 #X text 48 20 A couple of examples with some delay effects fun you
 can have :, f 63;
 #X obj 87 122 else/bl.saw~ 80;
 #X obj 389 108 else/bl.saw~ 40;
 #X connect 0 0 7 0;
+#X connect 4 0 10 1;
 #X connect 4 0 10 0;
 #X connect 5 0 2 0;
+#X connect 5 0 2 1;
 #X connect 6 0 4 1;
 #X connect 7 0 6 1;
 #X connect 8 0 5 1;
@@ -107,7 +110,7 @@ f 44;
 #X connect 3 0 0 0;
 #X connect 3 0 4 0;
 #X connect 4 0 0 1;
-#X restore 440 241 pd interpolation;
+#X restore 439 240 pd interpolation;
 #X text 227 301 - changes the delay size, f 41;
 #X text 185 285 signal - signal input into the delay line, f 48;
 #X text 173 400 1) float - initial/maximum delay time (default 0),
@@ -122,13 +125,15 @@ f 64;
 it to operate in time units specified by the number of samples. In
 the same way \, this affects both delay time and delay size., f 64
 ;
+#X obj 559 251 else/out~;
 #X obj 559 151 else/impseq~;
 #X obj 559 123 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X msg 660 145 size 22050;
 #X msg 670 172 size 44100;
 #X obj 755 184 nbx 5 14 22050 44100 1 0 empty empty empty 0 -8 0 10
--228856 -1 -1 22050 256;
+-228856 -1 -1 44100 256;
+#X obj 67 237 else/out~;
 #X obj 67 137 else/impseq~;
 #X obj 67 109 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -136,6 +141,7 @@ the same way \, this affects both delay time and delay size., f 64
 #X text 32 22 By default \, the delay size is 1000 ms \, but if you
 give it an argument \, it sets both the delay time and also the delay
 size., f 64;
+#X obj 261 236 else/out~;
 #X obj 261 136 else/impseq~;
 #X obj 261 108 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -144,34 +150,30 @@ argument \, you can use the -size flag/message, f 64;
 #X obj 304 193 else/ffdelay~ 100 -size 500;
 #X obj 602 208 else/ffdelay~ 22050 -samps;
 #X obj 463 165 nbx 5 14 100 500 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 100 256;
-#X obj 261 236 else/out2~;
-#X obj 67 237 else/out2~;
-#X obj 559 251 else/out2~;
-#X connect 2 0 15 0;
-#X connect 2 0 19 0;
+-1 -1 500 256;
 #X connect 3 0 2 0;
-#X connect 4 0 15 0;
-#X connect 5 0 15 0;
-#X connect 6 0 15 1;
-#X connect 7 0 9 0;
-#X connect 7 0 18 0;
-#X connect 8 0 7 0;
-#X connect 9 0 18 1;
-#X connect 11 0 14 0;
-#X connect 11 0 17 0;
-#X connect 12 0 11 0;
-#X connect 14 0 17 1;
-#X connect 15 0 19 1;
-#X connect 16 0 14 1;
+#X connect 3 0 18 0;
+#X connect 4 0 3 0;
+#X connect 5 0 18 0;
+#X connect 6 0 18 0;
+#X connect 7 0 18 1;
+#X connect 9 0 8 0;
+#X connect 9 0 11 0;
+#X connect 10 0 9 0;
+#X connect 11 0 8 1;
+#X connect 14 0 13 0;
+#X connect 14 0 17 0;
+#X connect 15 0 14 0;
+#X connect 17 0 13 1;
+#X connect 18 0 2 1;
+#X connect 19 0 17 1;
 #X restore 475 192 pd details;
 #X text 40 207 see also:;
 #X obj 41 229 else/fbdelay~;
 #X obj 487 65 else/setdsp~;
-#X obj 184 213 else/out2~;
-#X connect 28 0 37 0;
-#X connect 28 0 47 0;
-#X connect 29 0 28 0;
-#X connect 34 0 35 0;
-#X connect 35 0 37 1;
-#X connect 37 0 47 1;
+#X connect 29 0 12 0;
+#X connect 29 0 38 0;
+#X connect 30 0 29 0;
+#X connect 35 0 36 0;
+#X connect 36 0 38 1;
+#X connect 38 0 12 1;

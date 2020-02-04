@@ -1,7 +1,7 @@
 #N canvas 758 118 390 175 10;
-#X declare -path /Users/porres/Documents/Pd/externals/else;
+#X obj 54 31 inlet~;
 #X obj 54 136 outlet~;
-#N canvas 442 499 303 251 guts 0;
+#N canvas 442 499 303 251 guts 1;
 #N canvas 540 206 304 252 fft 0;
 #X obj 75 107 *~;
 #X obj 75 135 rfft~;
@@ -57,22 +57,9 @@
 #X obj 115 51 inlet~;
 #X obj 198 50 inlet~;
 #N canvas 190 116 483 248 \$0-clone 0;
-#X obj 100 50 inlet~;
-#X obj 300 50 inlet~;
-#X obj 100 100 clone ./convpartition 32 IR.wav 1012 2048;
-#X obj 100 150 outlet~;
-#X obj 300 150 outlet~;
-#X connect 0 0 2 0;
-#X connect 1 0 2 1;
-#X connect 2 0 3 0;
-#X connect 2 1 4 0;
 #X restore 126 132 pd \$0-clone;
 #X obj 111 213 outlet~;
 #X obj 195 211 outlet~;
-#X connect 0 0 2 0;
-#X connect 1 0 2 1;
-#X connect 2 0 3 0;
-#X connect 2 1 4 0;
 #X restore 68 118 pd \$0-conv;
 #X obj 68 34 inlet~;
 #X obj 68 207 outlet~;
@@ -94,7 +81,7 @@
 #X obj 118 56 inlet;
 #N canvas 617 194 891 770 load-IR 0;
 #X obj 147 202 soundfiler;
-#X msg 147 171 symbol IR.wav;
+#X msg 147 171 read \$1;
 #X obj 147 252 sel 0;
 #X obj 114 501 print error:;
 #X msg 114 457 [conv~] could not load Impulse Response;
@@ -257,8 +244,6 @@
 #X obj 436 138 send pd-\$0-path;
 #X msg 436 114 clear \, obj 30 20 declare -path \$1;
 #N canvas 360 224 493 100 \$0-path 0;
-#X obj 30 20 declare -path /Users/porres/Documents/Pd/externals/else
-;
 #X restore 538 138 pd \$0-path;
 #X obj 188 62 else/loadbanger 2 -init;
 #X obj 313 426 expr ceil(2*$f2/$f1);
@@ -347,7 +332,7 @@
 #X restore 54 84 pd guts;
 #X text 148 85 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 150 66 Alexandre Torres Porres (2019);
-#X obj 54 31 inlet~ fwd;
-#X connect 1 0 0 0;
-#X connect 4 0 1 0;
-#X connect 4 1 1 1;
+#X obj 111 31 inlet;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 5 0 2 1;

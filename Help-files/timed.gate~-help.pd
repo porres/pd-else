@@ -421,7 +421,7 @@ or the third argument., f 53;
 #X connect 2 0 1 0;
 #X connect 5 0 6 0;
 #X connect 6 0 0 0;
-#X restore 463 254 pd retrigger;
+#X restore 459 254 pd retrigger;
 #X obj 134 197 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 86 221 else/timed.gate~ 500;

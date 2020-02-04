@@ -1,4 +1,4 @@
-#N canvas 714 23 567 486 10;
+#N canvas 714 23 567 498 10;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -23,36 +23,39 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X obj 5 457 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 471 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 7 271 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 7 276 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 353 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 7 367 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 386 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 400 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 107 362 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 107 376 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 107 278 cnv 17 3 70 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 107 283 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 146 423 3) float;
-#X text 146 393 1) float;
-#X text 181 275 signal - input signal, f 48;
-#X text 133 289 thresh <float> - sets threshold in dB, f 56;
-#X text 139 303 ratio <float> - sets attenuation ratio, f 55;
-#X text 133 317 attack <float> - sets attack time in ms, f 56;
-#X text 127 331 release <float> - sets release time in ms, f 57;
-#X text 146 408 2) float;
-#X text 211 423 - attack time in ms (default 10), f 46;
-#X text 211 408 - attenuation ratio (default 1), f 46;
-#X obj 184 206 else/out~;
-#X text 211 438 - release time in ms (default 10), f 46;
-#X text 211 393 - threshold in dB (default -10), f 46;
-#X text 181 363 signal - compressed signal, f 46;
-#X text 146 438 4) float;
-#X obj 184 140 else/play.file~ 1 kantele.wav 1 1;
+#X text 116 437 3) float;
+#X text 116 407 1) float;
+#X obj 107 306 cnv 17 3 55 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 181 283 signal - input signal;
+#X text 133 305 thresh <float> - sets threshold in dB, f 56;
+#X text 139 319 ratio <float> - sets attenuation ratio, f 55;
+#X text 133 333 attack <float> - sets attack time in ms, f 56;
+#X text 127 347 release <float> - sets release time in ms, f 57;
+#X text 116 422 2) float;
+#X text 181 437 - attack time in ms (default 10), f 46;
+#X text 181 422 - attenuation ratio (default 1), f 46;
+#X obj 184 209 else/out~;
+#X text 181 452 - release time in ms (default 10), f 46;
+#X text 181 407 - threshold in dB (default -10), f 46;
+#X text 181 377 signal - compressed signal, f 46;
+#X text 116 452 4) float;
+#X obj 184 143 else/play.file~ 1 kantele.wav 1 1;
 #X text 66 94 [expand~] is an abstraction that performes expanding.
 It attenuates an input signal below a given threshold.;
-#X obj 184 167 else/expand~ -15 5 10 10 0;
-#X connect 32 0 34 0;
-#X connect 34 0 27 0;
+#X obj 184 170 else/expand~ -15 5 10 10 0;
+#X connect 33 0 35 0;
+#X connect 35 0 28 0;
+#X connect 35 0 28 1;

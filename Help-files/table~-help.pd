@@ -63,9 +63,9 @@ accepts indexes from 0 to 1 by default.;
 #X obj 212 186 else/table~ \$0-table;
 #X text 156 252 float/signal - sets index/phase, f 62;
 #X text 234 327 - table values;
-#N canvas 521 112 553 394 oscillator 0;
-#X obj 146 127 else/out~;
-#X obj 126 195 else/graph~ 441 11;
+#N canvas 521 112 552 338 oscillator 0;
+#X obj 83 173 else/out~;
+#X obj 197 142 else/graph~ 441 11;
 #X obj 126 93 else/table~;
 #X obj 126 34 nbx 6 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -76,6 +76,7 @@ a wavetable oscillator like [tabosc4~] or [else/wavetable~]. Note that
 besides the first argument \, the "set" message followed by an array
 name sets an array to be read., f 47;
 #X connect 2 0 0 0;
+#X connect 2 0 0 1;
 #X connect 2 0 1 0;
 #X connect 3 0 4 0;
 #X connect 4 0 2 0;

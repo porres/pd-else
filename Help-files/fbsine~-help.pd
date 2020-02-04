@@ -171,10 +171,10 @@ so the internal phase is synced to the given value. The phase values
 are from 0 to 1 and values beyond that are wrapped within this range.
 ;
 #X obj 69 261 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 1109 1;
+-1 -1 6018 1;
 #X obj 69 223 else/sig2float~;
 #X obj 255 261 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 1109 1;
+-1 -1 6018 1;
 #X obj 255 229 else/sig2float~;
 #X text 232 144 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
@@ -311,25 +311,26 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X connect 26 0 21 2;
 #X connect 27 0 21 2;
 #X connect 28 0 1 0;
+#X connect 28 0 1 1;
 #X restore 491 256 pd sync;
-#N canvas 430 175 722 329 phase 0;
-#X text 445 45 The phase values are wrapped into the 0-1 range \, since
+#N canvas 430 175 820 339 phase 0;
+#X text 441 29 The phase values are wrapped into the 0-1 range \, since
 the phase cycle is from 0 to 1 - where 1 is also the start of another
-cycle., f 36;
-#X obj 486 181 else/out~;
-#X text 592 148 Phase Modulation:;
-#X obj 579 121 osc~ 50.01;
-#X text 391 113 1;
-#X obj 80 231 else/out~;
-#X obj 257 113 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+cycle.;
+#X obj 532 168 else/out~;
+#X text 653 115 Phase Modulation:;
+#X obj 640 88 osc~ 50.01;
+#X text 388 108 1;
+#X obj 59 226 else/out~;
+#X obj 254 108 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 254 138 0 0 0 0 - - -;
-#X text 235 113 0;
-#X obj 80 195 +~;
-#X obj 80 137 else/fbsine~ 220;
-#X obj 486 148 else/fbsine~ 200;
-#X obj 95 168 else/fbsine~ 220 0 0.5, f 27;
-#X text 31 26 The third argument sets an initial phase (or "phase offset").
+#X floatatom 251 133 0 0 0 0 - - -;
+#X text 232 108 0;
+#X obj 77 190 +~;
+#X obj 77 132 else/fbsine~ 220;
+#X obj 547 115 else/fbsine~ 200;
+#X obj 92 163 else/fbsine~ 220 0 0.5, f 27;
+#X text 28 21 The third argument sets an initial phase (or "phase offset").
 This is also settable with the fourth inlet. In such a way \, you have
 two objects with the same frequency falling in and out of phase. Another
 feature is phase modulation.;
@@ -337,8 +338,10 @@ feature is phase modulation.;
 #X connect 6 0 7 0;
 #X connect 7 0 12 3;
 #X connect 9 0 5 0;
+#X connect 9 0 5 1;
 #X connect 10 0 9 0;
 #X connect 11 0 1 0;
+#X connect 11 0 1 1;
 #X connect 12 0 9 1;
 #X restore 443 281 pd phase offset;
 #X obj 3 3 cnv 15 301 42 empty empty fbsine~ 20 20 2 37 -233017 -1
@@ -347,7 +350,7 @@ feature is phase modulation.;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X text 213 480 - frequency in hertz (default 0);
-#X obj 207 249 else/out~;
+#X obj 190 249 else/out~;
 #X text 261 444 sine wave signal;
 #X text 154 499 2) float;
 #X obj 207 214 else/fbsine~ 440;
@@ -410,6 +413,7 @@ turns the output into chaotic noise. Common values are usually in the
 #X obj 279 263 else/float2sig~ 10;
 #X obj 256 290 else/fbsine~;
 #X connect 2 0 5 0;
+#X connect 2 0 5 1;
 #X connect 3 0 4 0;
 #X connect 4 0 9 0;
 #X connect 7 0 2 0;
@@ -417,6 +421,7 @@ turns the output into chaotic noise. Common values are usually in the
 #X connect 8 0 7 0;
 #X connect 9 0 2 1;
 #X connect 9 0 10 1;
+#X connect 10 0 6 1;
 #X connect 10 0 6 0;
 #X restore 467 206 pd feedback;
 #X text 268 366 feedback value;
@@ -490,9 +495,11 @@ filter for comparison.;
 #X connect 7 0 6 0;
 #X connect 8 0 7 0;
 #X connect 11 0 5 0;
+#X connect 11 0 5 1;
 #X connect 13 0 11 1;
 #X connect 13 0 15 1;
 #X connect 15 0 2 0;
+#X connect 15 0 2 1;
 #X restore 449 231 pd mean filter;
 #X obj 238 188 else/float2sig~ 10;
 #X text 213 539 - mean filter: on <1> or off <0> (default 0);
@@ -505,6 +512,7 @@ filter for comparison.;
 ;
 #X connect 20 0 30 0;
 #X connect 30 0 27 0;
+#X connect 30 0 27 1;
 #X connect 31 0 34 0;
 #X connect 34 0 47 0;
 #X connect 47 0 30 1;

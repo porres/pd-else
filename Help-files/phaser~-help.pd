@@ -1,5 +1,5 @@
-#N canvas 671 32 568 518 10;
-#X obj 185 236 else/out~;
+#N canvas 671 32 564 522 10;
+#X obj 185 272 else/out~;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -23,44 +23,42 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 5 graph;
-#X obj 7 302 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 7 338 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 393 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 7 431 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 428 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 466 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 129 403 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 441 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 130 310 cnv 17 3 47 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 130 346 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 126 437 1) float;
-#X text 190 436 -;
-#X obj 130 366 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 126 475 1) float;
+#X text 190 474 -;
+#X obj 130 368 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 5 491 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 130 389 cnv 17 3 35 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X obj 5 496 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 80 42 cnv 4 4 4 empty empty effect 0 28 2 18 -233017 -1 0;
-#X obj 185 165 else/play.file~ guitar.wav 1 1, f 15;
-#X obj 314 179 else/rescale~ 100 1000;
-#X text 190 403 signal - phaser output;
-#X text 189 365 signal - frequency;
+#X obj 185 157 else/play.file~ guitar.wav 1 1;
+#X obj 249 211 else/rescale~ 100 1000;
+#X text 190 441 signal - phaser output;
+#X text 189 367 signal - frequency;
 #X text 75 90 [phaser~] is a mono phaser effect abstraction. You can
 set the number of stages with the first argument \, which sets the
 order of the internal allpass filter (needs to be a multiple of 2).
 It requires a signal LFO to control the frequency sweep., f 71;
-#X text 189 309 signal - input to phaser, f 47;
-#X text 203 437 number of stages from 2 to 64 (default 2);
-#X obj 314 155 osc~ 0.33;
-#X text 190 452 -;
-#X text 126 453 2) float;
-#X text 190 467 -;
-#X text 126 468 3) float;
-#X obj 185 203 else/phaser~ 6 2 0.7, f 22;
-#X text 203 453 q- resonance (default 1), f 34;
-#X text 203 468 dry/wet ratio from 0-1 (default 1);
-#X text 171 325 q <float> - internal allpass resonance;
-#X text 159 343 wet <float> - dry/wet ratio from 0-1, f 52;
-#X connect 22 0 34 0;
-#X connect 23 0 34 1;
-#X connect 29 0 23 0;
-#X connect 34 0 0 0;
+#X text 189 345 signal - input to phaser;
+#X text 172 388 q <float> - internal allpass resonance (default 1)
+;
+#X text 160 406 wet <float> - dry/wet ratio from 0-1 (default 1);
+#X text 203 475 number of stages from 2 to 64 (default 2);
+#X obj 185 236 else/phaser~ 6, f 22;
+#X obj 249 187 osc~ 0.33;
+#X connect 23 0 32 0;
+#X connect 24 0 32 1;
+#X connect 32 0 0 0;
+#X connect 32 0 0 1;
+#X connect 33 0 24 0;

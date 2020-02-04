@@ -32,14 +32,14 @@
 #X obj 224 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
 #X obj 200 335 clip~ -1 1;
-#X text 280 335 <=== cause it \; can get Loud!!!;
+#X text 270 335 <=== cause it \; can get Loud!!!;
 #X text 131 256 rate in Hz;
 #X text 211 486 - gingerbread man map chaotic signal;
 #X text 151 536 2) float;
 #X text 151 554 3) float;
 #X msg 281 280 1.2 2.1;
 #X obj 200 305 else/gbman~;
-#X obj 200 368 else/out~;
+#X obj 157 360 else/out~;
 #X msg 272 256 0.3 -0.2;
 #X text 332 280 (default);
 #X text 176 454 list;
@@ -83,6 +83,7 @@ The given reference is: Devaney \, R. L. "The Gingerbreadman." Algorithm
 #X connect 0 0 12 0;
 #X connect 12 0 25 0;
 #X connect 18 0 26 0;
+#X connect 18 0 26 1;
 #X connect 24 0 25 0;
 #X connect 25 0 18 0;
 #X connect 27 0 25 0;

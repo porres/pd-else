@@ -1,4 +1,4 @@
-#N struct 1469-cell float x float y float cellsize float color;
+#N struct 1036-cell float x float y float cellsize float color;
 #N canvas 489 23 573 655 10;
 #X obj 9 401 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -21,7 +21,7 @@
 #X obj 286 219 osc~ 400;
 #X obj 319 241 osc~ 500;
 #X obj 352 264 osc~ 600;
-#X text 227 333 0;
+#X text 264 324 0;
 #X text 257 289 0;
 #X text 291 289 1;
 #X text 324 289 2;
@@ -35,7 +35,7 @@
 #X text 112 232 input:;
 #X text 186 572 - 'n' number of inputs (1 to 512 \, default 1);
 #X text 186 589 - 'n' number of outputs (1 to 512 \, default 1);
-#X text 335 330 1;
+#X text 307 324 1;
 #X obj 151 251 else/display;
 #X text 153 454 clear;
 #X text 159 439 dump;
@@ -50,6 +50,7 @@
 #X text 202 453 - clears all connections, f 56;
 #X obj 151 201 else/mtx.ctl 4 2 15 0 0 0 0 0 0 0 0 0 0 0 0;
 #X obj 253 304 else/mtx~ 4 2 100;
+#X obj 259 339 else/out~;
 #X obj 2 6 cnv 15 301 42 empty empty mtx~ 20 20 2 37 -233017 -1 0;
 #X obj 305 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -84,19 +85,18 @@ is the sum of the inlets' signals. Use [mtx.ctl] to control it., f
 64;
 #X obj 92 532 cnv 1 3 17 empty empty r 5 9 0 16 -228856 -162280 0;
 #X msg 235 171 dump;
-#X obj 383 332 print dump;
+#X obj 380 347 print dump;
 #X text 162 534 list;
 #X text 197 533 - all connections list rom dump message;
-#X obj 241 338 else/out2~;
 #X connect 12 0 42 0;
 #X connect 13 0 42 1;
 #X connect 14 0 42 2;
 #X connect 15 0 42 3;
 #X connect 30 0 42 0;
 #X connect 41 0 30 0;
-#X connect 42 0 65 0;
-#X connect 42 1 65 1;
-#X connect 42 2 62 0;
-#X connect 58 0 42 0;
-#X connect 58 0 41 0;
-#X connect 61 0 42 0;
+#X connect 42 0 43 0;
+#X connect 42 1 43 1;
+#X connect 42 2 63 0;
+#X connect 59 0 42 0;
+#X connect 59 0 41 0;
+#X connect 62 0 42 0;

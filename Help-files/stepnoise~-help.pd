@@ -1,7 +1,7 @@
 #N canvas 575 55 562 536 10;
 #X obj 250 230 hsl 128 15 20 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X obj 247 318 else/out~;
+#X obj 225 318 else/out~;
 #X obj 23 41 cnv 4 4 4 empty empty Step 0 28 2 18 -233017 -1 0;
 #X obj 65 41 cnv 4 4 4 empty empty noise 0 28 2 18 -233017 -1 0;
 #X obj 2 508 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
@@ -45,6 +45,7 @@ noise generator.;
 objects. Here we control the frequency of an oscillator.;
 #X obj 153 103 else/stepnoise~ 10;
 #X connect 0 0 1 0;
+#X connect 0 0 1 1;
 #X connect 2 0 0 0;
 #X connect 4 0 2 0;
 #X restore 467 343 pd control;
@@ -75,12 +76,12 @@ objects. Here we control the frequency of an oscillator.;
 #X obj 84 176 else/sig2float~;
 #X obj 234 179 else/sig2float~;
 #X obj 84 214 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+-1 -1 8066 1;
 #X obj 234 214 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+-1 -1 4764 1;
 #X obj 313 260 setdsp~;
 #X msg 234 101 seed \$1;
-#X floatatom 234 77 5 0 0 0 - - -;
+#X floatatom 234 77 5 0 0 0 - - -, f 5;
 #X msg 234 53 1023;
 #X obj 84 142 else/stepnoise~ 1;
 #X obj 234 142 else/stepnoise~ 1;
@@ -99,3 +100,4 @@ objects. Here we control the frequency of an oscillator.;
 #X connect 0 0 10 0;
 #X connect 10 0 15 0;
 #X connect 15 0 1 0;
+#X connect 15 0 1 1;

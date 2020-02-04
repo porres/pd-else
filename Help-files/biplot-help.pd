@@ -19,19 +19,19 @@
 #X text 137 198 list;
 #X text 177 198 - list of coefficients as taken by [biquad~];
 #N canvas 449 143 920 451 example 0;
-#X obj 127 35 nbx 5 14 0.01 1 1 0 empty empty empty 0 -8 0 10 -228856
+#X obj 157 35 nbx 5 14 0.01 1 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0.01 256;
-#X obj 201 36 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 -228856
+#X obj 231 36 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X obj 54 36 nbx 5 14 20 20000 1 0 empty empty empty 0 -8 0 10 -228856
+#X obj 84 36 nbx 5 14 20 20000 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 20 256;
-#X text 65 19 Freq;
-#X text 133 18 Q;
-#X obj 27 36 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X text 95 19 Freq;
+#X text 163 18 Q;
+#X obj 57 36 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X text 209 16 gain;
+#X text 239 16 gain;
 #X obj 6 132 else/biplot;
-#X obj 54 70 else/bicoeff eq 500 10 24;
+#X obj 84 70 else/bicoeff eq 500 10 24;
 #X text 341 25 The [biplot] object takes a list of biquad coefficients
 in the same order and format as the [biquad~] object from vanilla.
 Therefore \, it can plot any biquad filter.;
@@ -68,10 +68,10 @@ generates biquad coefficients.;
 #X text 177 238 - list of coefficients is passed through;
 #N canvas 345 214 920 451 cascade 0;
 #X obj 6 132 else/biplot;
-#X obj 24 54 else/bicoeff eq 500 10 24;
-#X obj 99 82 else/bicoeff eq 900 10 24;
-#X obj 24 29 else/lb 2, f 13;
-#X obj 24 84 list;
+#X obj 34 54 else/bicoeff eq 500 10 24;
+#X obj 109 82 else/bicoeff eq 900 10 24;
+#X obj 34 29 else/lb 2, f 13;
+#X obj 34 84 list;
 #X text 337 49 The [biplot] object can also take list you send to the
 [biquads~] object with multiples of 5! In this way \, the object plots
 the result of the cascading.;

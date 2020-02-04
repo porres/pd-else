@@ -41,8 +41,8 @@
 #X obj 145 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -111,7 +111,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -149,6 +149,7 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
+#X obj 196 218 else/out~;
 #X text 154 501 2) float;
 #X obj 25 40 cnv 4 4 4 empty empty Cross 0 28 2 18 -233017 -1 0;
 #X obj 122 352 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
@@ -193,6 +194,8 @@
 -191407 -1 -1 0 256;
 #X obj 282 137 nbx 5 14 -1e+37 1e+37 0 0 empty freq2 empty 0 -8 0 10
 -191407 -1 -1 0 256;
+#X obj 103 258 else/out~;
+#X obj 255 257 else/out~;
 #X text 379 110 index 2;
 #X text 169 109 index 1;
 #X text 81 117 Freq 1;
@@ -235,17 +238,19 @@ in with the subpatches below \, compare., f 32;
 #X connect 15 0 4 0;
 #X restore 72 467 pd Cross_Phase_Modulation;
 #X obj 140 361 hsl 128 15 0.01 1 1 0 empty index1 empty -2 -8 0 10
--228856 -1 -1 0 1;
+-228856 -1 -1 10800 1;
 #X obj 137 388 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.502097 256;
 #X obj 72 387 nbx 5 14 -1e+37 1e+37 0 0 empty freq1 empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 125 256;
 #X obj 351 362 hsl 128 15 0.01 1 1 0 empty index2 empty -2 -8 0 10
--191407 -1 -1 0 1;
+-191407 -1 -1 6100 1;
 #X obj 348 389 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--191407 -1 -1 0 256;
+-191407 -1 -1 0.0913335 256;
 #X obj 281 388 nbx 5 14 -1e+37 1e+37 0 0 empty freq2 empty 0 -8 0 10
--191407 -1 -1 0 256;
+-191407 -1 -1 141 256;
+#X obj 102 509 else/out~;
+#X obj 264 508 else/out~;
 #X text 378 361 index 2;
 #X text 168 360 index 1;
 #X text 80 368 Freq 1;
@@ -291,38 +296,34 @@ in with the subpatches below \, compare., f 32;
 #X restore 73 216 pd Cross_Freq_Modulation;
 #X obj 264 468 else/xmod~ -pm;
 #X obj 244 217 else/xmod~;
-#X obj 103 508 else/out2~;
-#X obj 263 508 else/out2~;
-#X obj 235 257 else/out2~;
-#X obj 100 258 else/out2~;
 #X connect 0 0 1 0;
-#X connect 1 0 22 1;
-#X connect 1 0 24 1;
-#X connect 2 0 22 0;
-#X connect 2 0 24 0;
+#X connect 1 0 26 1;
+#X connect 1 0 28 1;
+#X connect 2 0 26 0;
+#X connect 2 0 28 0;
 #X connect 3 0 4 0;
-#X connect 4 0 22 3;
-#X connect 4 0 24 3;
-#X connect 5 0 22 2;
-#X connect 5 0 24 2;
-#X connect 11 0 25 0;
-#X connect 11 1 25 1;
-#X connect 12 0 13 0;
-#X connect 13 0 11 1;
-#X connect 13 0 23 1;
-#X connect 14 0 11 0;
-#X connect 14 0 23 0;
-#X connect 15 0 16 0;
-#X connect 16 0 11 3;
-#X connect 16 0 23 3;
-#X connect 17 0 11 2;
-#X connect 17 0 23 2;
-#X connect 22 0 28 0;
-#X connect 22 1 28 1;
-#X connect 23 0 26 0;
-#X connect 23 1 26 1;
-#X connect 24 0 27 0;
-#X connect 24 1 27 1;
+#X connect 4 0 26 3;
+#X connect 4 0 28 3;
+#X connect 5 0 26 2;
+#X connect 5 0 28 2;
+#X connect 13 0 20 0;
+#X connect 13 1 20 1;
+#X connect 14 0 15 0;
+#X connect 15 0 13 1;
+#X connect 15 0 27 1;
+#X connect 16 0 13 0;
+#X connect 16 0 27 0;
+#X connect 17 0 18 0;
+#X connect 18 0 13 3;
+#X connect 18 0 27 3;
+#X connect 19 0 13 2;
+#X connect 19 0 27 2;
+#X connect 26 0 6 0;
+#X connect 26 1 6 1;
+#X connect 27 0 21 0;
+#X connect 27 1 21 1;
+#X connect 28 0 7 0;
+#X connect 28 1 7 1;
 #X restore 480 253 pd details;
 #X obj 3 563 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 225 316 pm -;
@@ -335,10 +336,9 @@ modulation), f 63;
 It can perform either frequency (default) or phase modulation., f
 61;
 #X obj 160 182 else/xmod~ 150 400 305 350;
-#X obj 196 218 else/out2~;
-#X connect 21 0 59 0;
-#X connect 31 0 59 1;
-#X connect 32 0 59 2;
-#X connect 33 0 59 3;
-#X connect 59 0 60 0;
-#X connect 59 1 60 1;
+#X connect 21 0 60 0;
+#X connect 32 0 60 1;
+#X connect 33 0 60 2;
+#X connect 34 0 60 3;
+#X connect 60 0 25 0;
+#X connect 60 1 25 1;

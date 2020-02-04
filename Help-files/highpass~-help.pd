@@ -13,7 +13,7 @@
 ;
 #X text 181 288 signal;
 #X text 181 439 signal;
-#X obj 175 217 else/out~;
+#X obj 151 217 else/out~;
 #X obj 185 155 noise~;
 #X obj 242 140 nbx 5 14 100 10000 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 100 256;
@@ -78,6 +78,7 @@ b2 * y[n-2];
 #X obj 12 316 else/biplot;
 #X connect 0 0 8 0;
 #X connect 8 0 1 0;
+#X connect 8 0 1 1;
 #X connect 9 0 11 0;
 #X connect 10 0 12 0;
 #X connect 11 0 8 2;
@@ -114,6 +115,7 @@ the message methods.;
 #X connect 4 0 8 0;
 #X connect 5 0 8 0;
 #X connect 8 0 2 0;
+#X connect 8 0 2 1;
 #X restore 464 214 pd resonance;
 #X text 118 487 2) float - resonance (default 1) \, either in 'Q' (default)
 or 'bw', f 65;
@@ -157,3 +159,4 @@ or 'bw', f 65;
 #X connect 20 0 19 0;
 #X connect 26 0 41 0;
 #X connect 41 0 8 0;
+#X connect 41 0 8 1;

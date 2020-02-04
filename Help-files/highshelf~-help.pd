@@ -43,7 +43,7 @@
 #X obj 614 70 hsl 128 15 20 20000 1 0 empty \$0-Hz-set empty -2 -8
 0 10 -228856 -1 -1 0 1;
 #X obj 558 116 noise~;
-#X obj 558 208 else/out~;
+#X obj 542 208 else/out~;
 #X obj 664 143 nbx 5 14 1e-06 1 0 0 \$0-Q empty empty 0 -8 0 10 -228856
 -1 -1 1e-06 256;
 #X obj 611 94 nbx 4 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
@@ -94,6 +94,7 @@ f * PI/nyquist \; G = pow(10 \, db/40) \; alphaS = sin(w) * sqrt((G*G
 #X connect 11 0 17 3;
 #X connect 15 0 16 0;
 #X connect 17 0 3 0;
+#X connect 17 0 3 1;
 #X restore 429 244 pd filter formula \; and response;
 #X msg 230 127 clear;
 #X text 230 311 - clears filter's memory if you blow it up;
@@ -131,3 +132,4 @@ f * PI/nyquist \; G = pow(10 \, db/40) \; alphaS = sin(w) * sqrt((G*G
 #X connect 22 0 21 0;
 #X connect 26 0 37 0;
 #X connect 37 0 8 0;
+#X connect 37 0 8 1;

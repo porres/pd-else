@@ -55,7 +55,7 @@ equation \; y[n] = 1 - a * y[n-1]^2 + b * y[n-2];
 #X text 197 353 - floats set 'a' and 'b' \, respectively;
 #X obj 221 228 else/henon~;
 #X text 108 353 coeffs <f \, f>;
-#X obj 221 262 else/out~;
+#X obj 199 262 else/out~;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -76,3 +76,4 @@ equation \; y[n] = 1 - a * y[n-1]^2 + b * y[n-2];
 #X connect 0 0 11 0;
 #X connect 11 0 36 0;
 #X connect 36 0 38 0;
+#X connect 36 0 38 1;

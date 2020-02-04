@@ -22,6 +22,7 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
+#X obj 219 235 out~;
 #X obj 122 314 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 165 315 float/signal -;
@@ -81,48 +82,47 @@
 #X text 34 86 freq1;
 #X text 33 128 freq2;
 #X obj 75 88 hsl 300 15 1 20000 1 0 \$0-hz1 xcxcvsd empty -2 -6 0 8
--228856 -1 -1 0 1;
+-228856 -1 -1 18200 1;
 #X obj 75 130 hsl 300 15 1 20000 1 0 \$0-hz2 adsdlflkjdss empty -2
--6 0 8 -162280 -262144 -1 0 1;
+-6 0 8 -162280 -262144 -1 23600 1;
 #X obj 76 151 hsl 300 15 1 20000 1 0 \$0-index2 aadffkmjriifj empty
--2 -6 0 8 -128992 -262144 -1 0 1;
+-2 -6 0 8 -128992 -262144 -1 24938 1;
 #X obj 76 110 hsl 300 15 1 20000 1 0 \$0-index1 fssdfgsd empty -2 -6
-0 8 -191407 -1 -1 0 1;
+0 8 -191407 -1 -1 23000 1;
 #X obj 58 210 nbx 5 14 -1e+37 1e+37 0 0 sdsqqwwwrety \$0-hz1 empty
-0 -8 0 10 -228856 -1 -1 0 256;
+0 -8 0 10 -228856 -1 -1 414.971 256;
 #X obj 146 210 nbx 5 14 -1e+37 1e+37 0 0 sffvkvkjnv984caz \$0-index1
-empty 0 -8 0 10 -191407 -1 -1 0 256;
+empty 0 -8 0 10 -191407 -1 -1 2034.63 256;
 #X obj 238 210 nbx 5 14 -1e+37 1e+37 0 0 ee3e3edmncdnvb \$0-hz2 empty
-0 -8 0 10 -162280 -262144 -1 0 256;
+0 -8 0 10 -162280 -262144 -1 2481.95 256;
 #X obj 329 210 nbx 5 14 -1e+37 1e+37 0 0 ffkkfiashjhhfa \$0-index2
-empty 0 -8 0 10 -99865 -262144 -1 0 256;
+empty 0 -8 0 10 -99865 -262144 -1 3817.63 256;
 #X text 29 108 index1;
 #X text 30 153 index1;
 #X text 175 35 Have fun...;
 #X obj 175 303 else/xmod2~;
+#X obj 185 341 else/out~;
 #X obj 58 244 else/f2s~ 100;
 #X obj 146 244 else/f2s~ 100;
 #X obj 238 244 else/f2s~ 100;
 #X obj 328 244 else/f2s~ 100;
-#X obj 164 341 else/out2~;
-#X connect 6 0 14 0;
-#X connect 7 0 15 0;
-#X connect 8 0 16 0;
-#X connect 9 0 17 0;
-#X connect 13 0 18 0;
-#X connect 13 1 18 1;
-#X connect 14 0 13 0;
-#X connect 15 0 13 1;
-#X connect 16 0 13 2;
-#X connect 17 0 13 3;
+#X connect 6 0 15 0;
+#X connect 7 0 16 0;
+#X connect 8 0 17 0;
+#X connect 9 0 18 0;
+#X connect 13 0 14 0;
+#X connect 13 1 14 1;
+#X connect 15 0 13 0;
+#X connect 16 0 13 1;
+#X connect 17 0 13 2;
+#X connect 18 0 13 3;
 #X restore 460 255 pd example;
 #X text 70 89 [xmod2~] performs is a variant of [xmod~] \, but only
 performs frequency modulation (so far) and uses a different and cheap
 sine waveform that promotes more chaotic and cool sounds., f 63;
-#X obj 216 235 out2~;
-#X connect 42 0 50 0;
-#X connect 43 0 50 1;
-#X connect 44 0 50 2;
-#X connect 45 0 50 3;
-#X connect 50 0 53 0;
-#X connect 50 1 53 1;
+#X connect 43 0 51 0;
+#X connect 44 0 51 1;
+#X connect 45 0 51 2;
+#X connect 46 0 51 3;
+#X connect 51 0 11 0;
+#X connect 51 1 11 1;

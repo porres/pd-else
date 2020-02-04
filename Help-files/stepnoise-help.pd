@@ -44,7 +44,7 @@
 #X text 157 357 float;
 #X text 156 309 float;
 #X obj 245 204 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 3772 1;
+-228856 -1 -1 6869 1;
 #X text 197 309 - frequency in hertz up to 100 (negative values accepted)
 ;
 #X text 139 388 1) float;
@@ -53,25 +53,25 @@
 MIDI default range. Use the [rescale] object if you want a different
 range for the output., f 53;
 #X obj 133 112 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 4305 1;
+-228856 -1 -1 3341 1;
 #X obj 133 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 69.2092 256;
+-228856 -1 -1 53.7034 256;
 #X obj 133 257 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 472.477 256;
+-228856 -1 -1 411.431 256;
 #X text 193 258 cutoff in hertz;
+#X obj 133 370 else/out~;
 #X obj 133 327 else/plate.rev~ 50 0.9 0.9 0.9 0.7, f 18;
 #X obj 133 230 else/rescale 200 700;
 #X obj 133 285 osc~;
 #X obj 133 86 else/stepnoise 3;
-#X obj 144 370 else/out2~;
 #X connect 1 0 2 0;
-#X connect 2 0 6 0;
-#X connect 3 0 7 0;
-#X connect 5 0 9 0;
-#X connect 5 1 9 1;
-#X connect 6 0 3 0;
-#X connect 7 0 5 0;
-#X connect 8 0 1 0;
+#X connect 2 0 7 0;
+#X connect 3 0 8 0;
+#X connect 6 0 5 0;
+#X connect 6 1 5 1;
+#X connect 7 0 3 0;
+#X connect 8 0 6 0;
+#X connect 9 0 1 0;
 #X restore 475 263 pd rescale;
 #X text 197 388 - frequency in hertz (default 0), f 55;
 #X text 114 326 seed <float>;

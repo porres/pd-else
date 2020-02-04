@@ -10,7 +10,7 @@
 #X obj 3 352 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 201 144 hsl 180 15 0 1000 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 7100 1;
 #X obj 3 3 cnv 15 301 42 empty empty ms2samps~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080

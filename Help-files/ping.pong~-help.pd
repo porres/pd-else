@@ -27,6 +27,7 @@
 #X text 68 94 [ping.pong~] is a ping pong delay object;
 #X obj 156 133 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
+#X obj 223 244 else/out~;
 #X obj 156 164 else/impseq~;
 #X obj 4 314 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -61,10 +62,9 @@
 #X obj 192 204 else/ping.pong~ 200 0.7;
 #X text 274 141 time;
 #X text 348 145 feedback;
-#X obj 223 244 else/out2~;
-#X connect 14 0 15 0;
-#X connect 15 0 36 0;
-#X connect 34 0 36 1;
-#X connect 35 0 36 2;
-#X connect 36 0 39 0;
-#X connect 36 1 39 1;
+#X connect 14 0 16 0;
+#X connect 16 0 37 0;
+#X connect 35 0 37 1;
+#X connect 36 0 37 2;
+#X connect 37 0 15 0;
+#X connect 37 1 15 1;

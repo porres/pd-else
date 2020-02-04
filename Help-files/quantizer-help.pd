@@ -79,7 +79,7 @@ or 3 (ceil) - default 0, f 50;
 #X msg 115 185 mode \$1;
 #X obj 115 89 vradio 16 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
 -1 2;
-#X floatatom 115 161 3 0 0 0 - - -;
+#X floatatom 115 161 3 0 0 0 - - -, f 3;
 #X text 136 89 0: round - rounds to nearest step;
 #X text 136 105 1: truncate - truncates to step;
 #X text 136 122 2: floor - approximates to lower step;

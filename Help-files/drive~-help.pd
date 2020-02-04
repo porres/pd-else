@@ -31,8 +31,8 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -101,7 +101,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -139,7 +139,7 @@
 #X obj 133 338 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 162 339 float/signal;
-#X obj 205 227 else/out~;
+#X obj 184 227 else/out~;
 #X obj 205 135 osc~ 440;
 #X obj 3 4 cnv 15 301 42 empty empty drive~ 20 20 2 37 -233017 -1 0
 ;
@@ -184,6 +184,7 @@ by applying non-linear transfer functions.;
 #X obj 268 175 else/float2sig~ 50;
 #X connect 21 0 25 0;
 #X connect 25 0 20 0;
+#X connect 25 0 20 1;
 #X connect 26 0 39 0;
 #X connect 27 0 26 0;
 #X connect 35 0 25 0;

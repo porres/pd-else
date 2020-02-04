@@ -16,10 +16,18 @@ static void savechange_float(t_savechange *x, t_floatarg f){
 
 static void *savechange_new(t_floatarg f){
     t_savechange *x = (t_savechange *)pd_new(savechange_class);
-    x->x_canvas = canvas_getrootfor(canvas_getcurrent());
+    t_glist *glist = (t_glist *)canvas_getcurrent();
+    x->x_canvas = (t_canvas*)glist_getcanvas(glist);
     int depth = f < 0 ? 0 : (int)f;
-    while(depth-- && x->x_canvas->gl_owner)
-        x->x_canvas = canvas_getrootfor(x->x_canvas->gl_owner);
+    while(!x->x_canvas->gl_env)
+        x->x_canvas = x->x_canvas->gl_owner;
+    while(depth--){
+        if(x->x_canvas->gl_owner){
+            x->x_canvas = x->x_canvas->gl_owner;
+            while(!x->x_canvas->gl_env)
+                x->x_canvas = x->x_canvas->gl_owner;
+        }
+    }
     return(x);
 }
 
