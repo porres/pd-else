@@ -84,6 +84,7 @@ below!;
 50 50 1 0 0 0 -1 0.5 1 0.5 -1;
 #X connect 2 0 1 0;
 #X connect 2 0 9 0;
+#X connect 2 0 1 1;
 #X connect 4 0 6 0;
 #X connect 5 0 4 0;
 #X connect 6 0 2 0;
@@ -112,6 +113,7 @@ works., f 64;
 #X connect 0 0 2 0;
 #X connect 2 0 3 1;
 #X connect 3 0 4 0;
+#X connect 3 0 4 1;
 #X connect 6 0 8 0;
 #X connect 7 0 10 0;
 #X connect 8 0 3 0;
@@ -190,7 +192,7 @@ values., f 35;
 #X obj 217 448 else/f2s~ 10;
 #X obj 108 433 *~;
 #X obj 108 400 osc~ 440;
-#X obj 109 476 else/out~;
+#X obj 108 476 else/out~;
 #X msg 294 230 0 \, 1 1000;
 #X text 55 62 In this example we convert the function output to signals
 with a ramp and use it to control the amplitude. But you can just use
@@ -216,6 +218,7 @@ A linear interpolation is performed with both a float input and using
 #X connect 5 0 0 0;
 #X connect 6 0 7 1;
 #X connect 7 0 9 0;
+#X connect 7 0 9 1;
 #X connect 8 0 7 0;
 #X connect 10 0 5 0;
 #X connect 12 0 0 0;
