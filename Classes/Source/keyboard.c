@@ -107,7 +107,7 @@ static void keyboard_mousepress(t_keyboard* x, t_float xpix, t_float ypix, t_flo
         return;
 //    post("mousepress: %d (x) & %d (id)", (int)x, (int)id);
     if((int)x != (int)id){ // Check if it's the right instance to receive this message
-        post("!=");
+//        post("!=");
         return;
     }
     keyboard_mapclick(x, xpix, ypix, MOUSE_PRESS);

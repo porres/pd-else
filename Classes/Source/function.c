@@ -1,7 +1,7 @@
 // porres
 
 #define MAX_SIZE 1024
-#define BORDERWIDTH 3
+#define BORDERWIDTH 0
 #define IOHEIGHT 1
 
 #include <m_pd.h>
@@ -50,24 +50,16 @@ static void function_bang(t_function *x);
 
 // DRAW FUNCTIONS //////////////////////////////////////////////////////////////////////////////
 static void function_draw_in_outlet(t_function *x, t_glist *glist){
-    int xpos = text_xpix(&x->x_obj, glist);
-    int ypos = text_ypix(&x->x_obj, glist);
+    int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist), zoom = x->x_zoom;
     t_canvas *cv =  glist_getcanvas(glist);
     sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
     sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
-    int border = BORDERWIDTH; // * x->x_zoom;
     if(x->x_receive == &s_) // Intlet
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n", cv,
-            xpos-border, ypos-border+1,
-            x->x_zoom == 1 ? xpos-border+IOWIDTH : xpos-border+IOWIDTH*x->x_zoom,
-            x->x_zoom == 1 ? ypos-border+1+IOHEIGHT : ypos-border+1+IOHEIGHT*x->x_zoom, x);
-    if(x->x_send == &s_){ // Outlet
-        ypos += x->x_height;
+            xpos, ypos+1, xpos+IOWIDTH*zoom, ypos+1+zoom, x);
+    if(x->x_send == &s_) // Outlet
         sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n", cv,
-            xpos-border, ypos-1+border,
-            x->x_zoom == 1 ? xpos-border+IOWIDTH : xpos-border+IOWIDTH*x->x_zoom,
-            x->x_zoom == 1 ? ypos-1+border-IOHEIGHT : ypos-1+border-IOHEIGHT*x->x_zoom, x);
-    }
+            xpos, ypos+x->x_height-1, xpos+IOWIDTH*zoom, ypos+x->x_height-zoom*zoom, x);
 }
 
 static void function_draw_dots(t_function *x, t_glist *glist){
