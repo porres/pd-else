@@ -370,7 +370,7 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
 // Set Properties
 static void keyboard_set_properties(t_keyboard *x, t_floatarg space,
             t_floatarg height, t_floatarg octaves, t_floatarg low_c, t_floatarg tgl){
-    x->x_toggle_mode = tgl != 0;
+    x->x_toggle_mode = 0; // tgl != 0;
     x->height = (height < 10) ? 10 : height;
 // clip octaves from 1 to 10
     if(octaves < 1)
@@ -460,7 +460,7 @@ void keyboard_float(t_keyboard *x, t_floatarg note){
             for(i = 0 ; i < x->octaves * 12; i++){ // first dispatch note off
                 short key = i % 12;
                 if(x->notes[i] < 0){ // stop play Keyb or mouse
-                    if( key != 1 && key != 3 && key !=6 && key != 8 && key != 10){
+                    if(key != 1 && key != 3 && key !=6 && key != 8 && key != 10){
                         if(x->first_c + i == 60) // Middle C
                             sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #F0FFFF\n", x->canvas, x, i);
                         else
@@ -550,7 +550,7 @@ static void keyboard_low_c(t_keyboard *x, t_floatarg f){
 }
 
 static void keyboard_toggle(t_keyboard *x, t_floatarg f){
-    keyboard_set_properties(x, x->space, x->height, x->octaves, x->low_c, f);
+//    keyboard_set_properties(x, x->space, x->height, x->octaves, x->low_c, f);
 }
 
 /* ------------------------ Free / New / Setup ------------------------------*/
@@ -580,7 +580,7 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
     if(ac) // 4th ARGUMENT: Lowest C ("First C")
         init_low_c = atom_getfloat(av++), ac--;
     if(ac) // 5th ARGUMENT: Toggle Mode)
-        tgl = (t_int)(atom_getfloat(av++) != 0), ac--;
+        tgl = 0; // (t_int)(atom_getfloat(av++) != 0), ac--;
     x->x_out = outlet_new(&x->x_obj, &s_list);
     floatinlet_new(&x->x_obj, &x->velocity_input);
 // Set Parameters
