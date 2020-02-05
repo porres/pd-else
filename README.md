@@ -20,7 +20,7 @@
 --------------------------------------------------------------------------
 
 
-### Version 1.0 beta-27 (Released february 8th 2020)
+### Version 1.0 beta-27 (Released february 5th 2020)
 
 Needs Pd **0.50-2** or above
 
