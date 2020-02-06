@@ -1,4 +1,4 @@
-#N canvas 623 55 563 616 10;
+#N canvas 623 55 563 611 10;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -23,53 +23,51 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X obj 5 592 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 582 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 7 314 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 7 306 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 444 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 7 434 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 482 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 472 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 107 455 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 107 445 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 107 321 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 107 313 cnv 17 3 90 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 7 559 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 116 519 3) float;
-#X text 116 489 1) float;
-#X obj 107 343 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 7 549 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 116 509 3) float;
+#X text 116 479 1) float;
+#X obj 107 411 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 107 366 cnv 17 3 74 empty empty 2 5 9 0 16 -228856 -162280 0
-;
-#X text 116 534 4) float;
-#X obj 205 206 else/duck~;
-#X text 181 321 signal - input signal;
-#X text 181 343 signal - control signal;
+#X text 116 524 4) float;
+#X obj 205 198 else/duck~, f 12;
+#X text 181 313 signal - input signal, f 48;
+#X text 181 411 signal - control signal, f 48;
 #X text 66 94 [duck~] is an abstraction that performes a duck volume
 effect (a.k.a sidechain compression). It attenuates an input signal
 according to the level of a control signal. you can also mix the ducked
 signal with the control input signal., f 61;
-#X text 133 365 thresh <float> - sets threshold in dB, f 56;
-#X text 139 379 ratio <float> - sets attenuation ratio, f 55;
-#X text 133 393 attack <float> - sets attack time in ms, f 56;
-#X text 127 407 release <float> - sets release time in ms, f 57;
-#X text 181 456 signal - ducked signal alone or mixed with control
+#X text 133 328 thresh <float> - sets threshold in dB, f 56;
+#X text 139 342 ratio <float> - sets attenuation ratio, f 55;
+#X text 133 356 attack <float> - sets attack time in ms, f 56;
+#X text 127 370 release <float> - sets release time in ms, f 57;
+#X text 181 446 signal - ducked signal alone or mixed with control
 signal;
-#X text 151 421 mix <float> - non zero mixes with control signal,
+#X text 151 384 mix <float> - non zero mixes with control signal,
 f 53;
-#X text 190 568 -mix: mixes with control signal;
-#X text 181 489 - threshold in dB (default -60), f 46;
-#X text 116 504 2) float;
-#X text 181 519 - attack time in ms (default 10), f 46;
-#X text 181 504 - attenuation ratio (default 1), f 46;
-#X text 181 534 - release time in ms (default 10), f 46;
-#X obj 205 161 osc~ 440;
-#X obj 189 248 else/out~;
-#X obj 275 168 else/randpulse2~ 10;
-#N canvas 987 68 453 391 example 0;
-#X obj 201 204 *~;
-#X obj 271 165 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 190 558 -mix: mixes with control signal;
+#X text 181 479 - threshold in dB (default -60), f 46;
+#X text 116 494 2) float;
+#X text 181 509 - attack time in ms (default 10), f 46;
+#X text 181 494 - attenuation ratio (default 1), f 46;
+#X text 181 524 - release time in ms (default 10), f 46;
+#X obj 205 162 osc~ 440;
+#X obj 205 241 else/out~;
+#X obj 274 162 else/randpulse2~ 10;
+#N canvas 832 127 453 375 example 0;
+#X obj 213 185 *~;
+#X obj 287 154 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 50 33 When a control input signal increases above a threshold
 level \, the input signal gets attenuated. The attenuation ratio relates
@@ -77,20 +75,18 @@ to how much the control signal has exceeded the threshold. For instance
 \, if the signal has increased 10 dB over the threshold and the ratio
 is 1 \, then th einoput signal gets attenuated by 10 dB. A ratio of
 0.5 decreases 5 dB \, 2 corresponds to 20 dB and so on., f 58;
-#X obj 271 196 else/glide~ 500;
-#X obj 92 291 else/out~;
-#X obj 110 195 noise~;
-#X obj 201 158 osc~ 220;
-#X obj 110 241 else/duck~ -40 0.2 100 100 -mix;
+#X obj 287 185 else/glide~ 500;
+#X obj 120 272 else/out~;
+#X obj 120 176 noise~;
+#X obj 213 149 osc~ 220;
+#X obj 120 222 else/duck~ -40 0.2 100 100 -mix, f 16;
 #X connect 0 0 7 1;
 #X connect 1 0 3 0;
 #X connect 3 0 0 1;
 #X connect 5 0 7 0;
 #X connect 6 0 0 0;
 #X connect 7 0 4 0;
-#X connect 7 0 4 1;
-#X restore 442 278 pd example;
-#X connect 23 0 40 0;
-#X connect 23 0 40 1;
-#X connect 39 0 23 0;
-#X connect 41 0 23 1;
+#X restore 442 270 pd example;
+#X connect 22 0 39 0;
+#X connect 38 0 22 0;
+#X connect 40 0 22 1;

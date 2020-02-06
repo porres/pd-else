@@ -40,9 +40,8 @@
 #X obj 7 492 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 166 267 damp <float> - high frequency damping (0-1), f 50
 ;
-#N canvas 756 177 562 453 example 1;
+#N canvas 756 177 562 453 example 0;
 #X msg 70 172 print;
-#X obj 122 355 else/out~;
 #X obj 338 47 vradio 15 1 0 10 empty empty empty 0 -8 0 10 -228856
 -1 -1 0;
 #N canvas 728 150 712 728 presets 0;
@@ -125,7 +124,7 @@ early 0.795 \, late 0.04, f 66;
 #X text 358 167 - cathedral;
 #X text 358 182 - canyon;
 #X obj 139 208 else/player~ bubul.wav 1 1;
-#N canvas 492 167 892 519 controls 1;
+#N canvas 492 167 892 519 controls 0;
 #X floatatom 27 73 0 1 300 0 - - -;
 #X msg 39 289 dry \$1;
 #X msg 116 306 early \$1;
@@ -237,14 +236,15 @@ You can also open [pd controls] to test each parameter independently
 and read a bit more about how they affect the reverb unit., f 42;
 #X obj 122 278 else/giga.rev~ -size 100 -damp 1 -bw 0.7 -dry 1 -early
 0.18 -late 1 -spread 1, f 24;
-#X connect 0 0 19 0;
-#X connect 2 0 3 0;
-#X connect 3 0 17 0;
-#X connect 3 0 19 0;
-#X connect 15 0 19 0;
-#X connect 16 0 19 0;
-#X connect 19 0 1 0;
-#X connect 19 1 1 1;
+#X obj 152 355 else/out2~;
+#X connect 0 0 18 0;
+#X connect 1 0 2 0;
+#X connect 2 0 16 0;
+#X connect 2 0 18 0;
+#X connect 14 0 18 0;
+#X connect 15 0 18 0;
+#X connect 18 0 19 0;
+#X connect 18 1 19 1;
 #X restore 476 198 pd example;
 #X obj 216 115 else/player~ vacuous.wav 1 1;
 #X text 208 394 print - print parameters on Pd Window, f 43;
@@ -286,9 +286,9 @@ by Juhana Sadeharju., f 64;
 50), f 66;
 #X text 114 623 -wet <float>: wet level (default 1), f 66;
 #X obj 216 142 else/giga.rev~;
-#X obj 216 170 else/out~;
 #X text 172 366 wet <float> - wet gain level (0-1) - master of early/late
 ;
+#X obj 213 170 else/out2~;
 #X connect 22 0 47 0;
-#X connect 47 0 48 0;
-#X connect 47 1 48 1;
+#X connect 47 0 49 0;
+#X connect 47 1 49 1;

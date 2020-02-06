@@ -48,10 +48,10 @@
 #X text 237 505 - ramp-up time in ms (default 0);
 #X text 237 526 - ramp-down time in ms (default 0);
 #X obj 155 266 else/out~;
-#X obj 198 222 *~;
+#X obj 155 222 *~;
 #X obj 116 149 else/brown~;
 #X obj 275 219 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 674 1;
+-1 -1 0 1;
 #X obj 275 191 else/sig2float~;
 #X text 298 312 0;
 #X text 298 213 1;
@@ -83,7 +83,6 @@ linear);
 #X obj 80 97 else/rand.f~ 200 800;
 #X obj 80 143 else/glide2~ 1000 500;
 #X connect 0 0 1 0;
-#X connect 0 0 1 1;
 #X connect 3 0 6 0;
 #X connect 6 0 7 0;
 #X connect 7 0 0 0;
@@ -185,7 +184,6 @@ linear);
 #X obj 213 160 else/glide2~ 1000 500;
 #X obj 451 220 else/lag~;
 #X connect 32 0 31 0;
-#X connect 32 0 31 1;
 #X connect 33 0 32 0;
 #X connect 35 0 34 0;
 #X connect 38 0 52 0;

@@ -78,7 +78,6 @@ the expression: a = exp(log(0.001) * D/t60).;
 #X connect 28 0 32 0;
 #X connect 32 0 36 0;
 #X connect 36 0 27 0;
-#X connect 36 0 27 1;
 #X restore 437 279 pd Details and \; Filter Equation;
 #X obj 102 41 cnv 4 4 4 empty empty delay 0 28 2 18 -233017 -1 0;
 #N canvas 611 210 498 284 gain 0;
@@ -99,7 +98,6 @@ f 72;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 3 0 2 0;
-#X connect 3 0 2 1;
 #X connect 4 0 3 0;
 #X connect 5 0 4 0;
 #X restore 456 255 pd gain mode;
@@ -164,7 +162,6 @@ value if given), f 46;
 it to operate in time units specified by the number of samples. In
 the same way \, this affects both delay time and delay size., f 64
 ;
-#X obj 550 252 else/out~;
 #X obj 550 142 else/impseq~;
 #X obj 550 114 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -172,11 +169,9 @@ the same way \, this affects both delay time and delay size., f 64
 #X msg 666 142 size 44100;
 #X obj 687 187 nbx 5 14 0 44100 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X obj 79 230 else/out~;
 #X obj 79 130 else/impseq~;
 #X obj 79 102 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 281 232 else/out~;
 #X obj 281 132 else/impseq~;
 #X obj 281 104 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -195,23 +190,26 @@ argument \, you can use the -size flag/message., f 64;
 #X obj 593 209 else/fbdelay~ 22050 0.5 1 -samps;
 #X obj 690 167 hsl 128 15 0 44100 0 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
+#X obj 79 230 else/out2~;
+#X obj 281 232 else/out2~;
+#X obj 550 251 else/out2~;
+#X connect 1 0 16 0;
+#X connect 1 0 20 0;
 #X connect 2 0 1 0;
-#X connect 2 0 19 0;
-#X connect 3 0 2 0;
-#X connect 4 0 19 0;
-#X connect 5 0 19 0;
-#X connect 6 0 19 1;
-#X connect 8 0 7 0;
-#X connect 8 0 14 0;
+#X connect 3 0 16 0;
+#X connect 4 0 16 0;
+#X connect 5 0 16 1;
+#X connect 6 0 11 0;
+#X connect 6 0 18 0;
+#X connect 7 0 6 0;
+#X connect 8 0 15 0;
+#X connect 8 0 19 0;
 #X connect 9 0 8 0;
-#X connect 11 0 10 0;
-#X connect 11 0 18 0;
-#X connect 12 0 11 0;
-#X connect 14 0 7 1;
-#X connect 17 0 18 1;
-#X connect 18 0 10 1;
-#X connect 19 0 1 1;
-#X connect 20 0 6 0;
+#X connect 11 0 18 1;
+#X connect 14 0 15 1;
+#X connect 15 0 19 1;
+#X connect 16 0 20 1;
+#X connect 17 0 5 0;
 #X restore 486 233 pd size;
 #X obj 178 224 else/fbdelay~ 100 2000;
 #X text 229 520 feedback mode: <0> ("t60") or <non-0> (gain mode) \,
@@ -222,5 +220,4 @@ default 0, f 50;
 #X connect 27 0 57 2;
 #X connect 28 0 57 1;
 #X connect 30 0 25 1;
-#X connect 57 0 26 1;
 #X connect 57 0 26 0;

@@ -38,7 +38,7 @@
 #X obj 642 62 hsl 128 15 20 20000 1 0 empty \$0-Hz-set empty -2 -8
 0 10 -228856 -1 -1 0 1;
 #X obj 564 107 noise~;
-#X obj 590 200 else/out~;
+#X obj 606 200 else/out~;
 #X obj 672 135 nbx 5 14 1e-06 10 0 0 \$0-Q empty empty 0 -8 0 10 -228856
 -1 -1 1e-06 256;
 #X obj 639 86 nbx 4 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
@@ -88,7 +88,6 @@ b0 \;;
 #X connect 9 0 17 3;
 #X connect 15 0 16 0;
 #X connect 17 0 3 0;
-#X connect 17 0 3 1;
 #X restore 429 244 pd filter formula \; and response;
 #X msg 219 130 clear;
 #X text 223 314 - clears filter's memory if you blow it up;
@@ -129,7 +128,6 @@ the message methods.;
 #X connect 4 0 8 0;
 #X connect 5 0 8 0;
 #X connect 8 0 2 0;
-#X connect 8 0 2 1;
 #X restore 464 218 pd resonance;
 #X obj 2 3 cnv 15 301 42 empty empty eq~ 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -162,4 +160,3 @@ can be used as a peak and a notch filter.;
 #X connect 20 0 19 0;
 #X connect 24 0 46 0;
 #X connect 46 0 8 0;
-#X connect 46 0 8 1;

@@ -1,15 +1,15 @@
-#N canvas 787 23 558 545 10;
-#X obj 1 518 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#N canvas 667 136 558 617 10;
+#X obj 1 578 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 1 319 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#X obj 1 379 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 1 421 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 1 481 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X obj 1 448 cnv 3 550 3 empty \$0-pddp.cnv.argument flags 8 12 0 13
+#X obj 1 508 cnv 3 550 3 empty \$0-pddp.cnv.argument flags 8 12 0 13
 -228856 -1 0;
-#X obj 85 328 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 85 388 cnv 17 3 87 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X text 192 327 signal;
+#X text 192 387 signal;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -30,8 +30,8 @@
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -100,7 +100,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -133,46 +133,52 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X text 175 428 (none);
-#X text 240 327 - incoming signal to graph;
+#X text 240 387 - incoming signal to graph;
 #X obj 2 3 cnv 15 301 42 empty empty graph~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 85 351 cnv 17 3 64 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
--162280 0;
-#X text 240 351 - buffer size in samples, f 27;
-#X text 191 454 - buffer size in samples (default 441 \, minumum 64)
+#X text 240 411 - buffer size in samples, f 27;
+#X text 191 514 - buffer size in samples (default 441 \, minumum 64)
 , f 51;
 #X text 61 87 [graph~] is a very simple but convenient abstraction
 for visualizing audio signals.;
-#X text 156 351 size <float>;
-#X text 240 367 - number of buffers to skip;
-#X text 156 367 skip <float>;
-#X text 191 469 - buffer skip (default 0), f 51;
-#X obj 330 118 nbx 5 14 64 44100 0 1 empty empty empty 0 -8 0 10 -228856
+#X text 156 411 size <float>;
+#X text 240 427 - number of buffers to skip;
+#X text 156 427 skip <float>;
+#X text 191 529 - buffer skip (default 0), f 51;
+#X obj 382 149 nbx 5 14 64 44100 0 1 empty empty empty 0 -8 0 10 -228856
 -1 -1 441 256;
-#X msg 330 139 size \$1;
-#X obj 356 177 nbx 5 14 0 100 0 1 empty empty empty 0 -8 0 10 -228856
+#X msg 382 170 size \$1;
+#X obj 408 208 nbx 5 14 0 100 0 1 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X msg 356 198 skip \$1;
-#X text 106 454 -size <float>;
-#X text 106 469 -skip <float>;
-#X text 58 484 -range <float \, float>;
-#X text 108 384 range <float \, float>;
+#X msg 408 229 skip \$1;
+#X text 106 514 -size <float>;
+#X text 106 529 -skip <float>;
+#X text 58 544 -range <float \, float>;
+#X text 108 444 range <float \, float>;
 #X obj 135 163 else/graph~ 441 0 -1 1 200 140;
-#X text 70 499 -dim <float \, float>;
-#X text 120 400 dim <float \, float>;
-#X text 240 384 - set min/max range;
-#X text 240 400 - set horizontal/vertical dimensions;
-#X text 191 499 - set horizontal/vertical dimensions (default 200 140)
+#X text 70 559 -dim <float \, float>;
+#X text 120 460 dim <float \, float>;
+#X text 240 444 - set min/max range;
+#X text 240 460 - set horizontal/vertical dimensions;
+#X text 191 559 - set horizontal/vertical dimensions (default 200 140)
 ;
-#X text 191 484 - set lower and upper graph range (default -1 1),
+#X text 191 544 - set lower and upper graph range (default -1 1),
 f 51;
 #X obj 135 131 noise~;
+#X obj 382 261 s \$0-set;
+#X obj 196 134 r \$0-set;
+#X obj 135 316 else/out~;
+#X obj 85 488 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 192 488 signal;
+#X text 240 488 - input signal comes out here;
+#X connect 27 0 28 0;
+#X connect 28 0 43 0;
 #X connect 29 0 30 0;
-#X connect 30 0 37 1;
-#X connect 31 0 32 0;
-#X connect 32 0 37 1;
-#X connect 44 0 37 0;
+#X connect 30 0 43 0;
+#X connect 35 0 45 0;
+#X connect 42 0 35 0;
+#X connect 44 0 35 0;

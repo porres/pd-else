@@ -32,7 +32,7 @@
 #X obj 73 270 cnv 17 3 72 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 70 41 cnv 4 4 4 empty empty of 0 28 2 18 -233017 -1 0;
-#X obj 147 191 else/out~;
+#X obj 190 191 else/out~;
 #X text 128 407 2) float - ramp time in ms (default 10), f 57;
 #X text 104 270 freq <list>;
 #X text 110 287 amp <list>;
@@ -55,7 +55,6 @@ for each oscillator in the bank.;
 #X connect 4 0 6 0;
 #X connect 5 0 6 0;
 #X connect 6 0 0 0;
-#X connect 6 0 0 1;
 #X restore 461 168 pd example;
 #X text 181 270 - list of frequencies for all oscillators in the bank
 ;
@@ -86,5 +85,4 @@ f 57;
 ;
 #X obj 190 141 else/oscbank2~ 4 -freq 360 440 590 720 -amp 0.9 0.5
 0.5 0.6, f 30;
-#X connect 39 0 17 1;
 #X connect 39 0 17 0;

@@ -80,7 +80,7 @@ sound file's. The maximum number is 64 channels.;
 #X text 221 239 <= stereo file;
 #X obj 62 268 else/play.file~ stereo.wav -loop;
 #X obj 340 319 else/play.file~ 1 stereo.wav -loop;
-#X obj 62 332 else/out~;
+#X obj 62 332 else/out2~;
 #X connect 2 0 12 0;
 #X connect 4 0 12 0;
 #X connect 5 0 13 0;

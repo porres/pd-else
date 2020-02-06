@@ -1,5 +1,5 @@
 #N canvas 214 104 562 436 10;
-#X symbolatom 224 198 10 0 0 0 - - -, f 10;
+#X symbolatom 224 198 10 0 0 0 - - -;
 #X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;

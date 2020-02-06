@@ -44,7 +44,7 @@
 #X text 146 362 float;
 #X text 146 315 float;
 #X obj 241 210 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 3319 1;
+-228856 -1 -1 1381 1;
 #X text 187 315 - frequency in hertz up to 100 (negative values accepted)
 ;
 #X text 187 332 -;
@@ -54,31 +54,31 @@
 MIDI default range. Use the [rescale] object if you want a different
 range for the output., f 53;
 #X obj 127 109 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 714 1;
+-228856 -1 -1 3689 1;
 #X obj 127 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 11.4803 256;
+-228856 -1 -1 59.2972 256;
 #X obj 127 254 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 245.198 256;
+-228856 -1 -1 433.454 256;
 #X text 187 255 cutoff in hertz;
 #X obj 127 365 biquad~;
-#X obj 127 437 else/out~;
 #X obj 127 394 else/plate.rev~ 50 0.9 0.9 0.9 0.7, f 18;
 #X obj 160 335 else/bl.saw~;
 #X obj 160 312 sig~ 35;
 #X obj 127 227 else/rescale 200 700;
 #X obj 127 282 else/bicoeff lowpass 500 20;
 #X obj 127 83 else/rampnoise 0.5;
+#X obj 137 437 else/out2~;
 #X connect 1 0 2 0;
-#X connect 2 0 10 0;
-#X connect 3 0 11 0;
-#X connect 5 0 7 0;
-#X connect 7 0 6 0;
-#X connect 7 1 6 1;
-#X connect 8 0 5 0;
-#X connect 9 0 8 0;
-#X connect 10 0 3 0;
-#X connect 11 0 5 0;
-#X connect 12 0 1 0;
+#X connect 2 0 9 0;
+#X connect 3 0 10 0;
+#X connect 5 0 6 0;
+#X connect 6 0 12 0;
+#X connect 6 1 12 1;
+#X connect 7 0 5 0;
+#X connect 8 0 7 0;
+#X connect 9 0 3 0;
+#X connect 10 0 5 0;
+#X connect 11 0 1 0;
 #X restore 471 274 pd rescale;
 #X text 187 392 - frequency in hertz (default 0), f 55;
 #X text 64 91 [rampnoise] is a control rate ramp noise. It doesn't

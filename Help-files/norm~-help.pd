@@ -51,7 +51,7 @@
 #X text 230 365 - signal to be normalized;
 #X msg 273 280 \$3;
 #X obj 273 330 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -999 256;
+-228856 -1 -1 0 256;
 #X obj 273 305 else/rint;
 #X text 175 454 1) float - normalize level in dBFS (default 0);
 #X text 229 387 - normalize level in dBFS;
@@ -71,4 +71,3 @@ It takes a normalization value in dBFS and a window analysis size.
 #X connect 31 0 30 0;
 #X connect 37 0 26 1;
 #X connect 37 0 27 0;
-#X connect 37 0 27 1;

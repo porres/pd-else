@@ -160,8 +160,8 @@ is less than the minimum \, the maximum becomes the minimum and vice-versa.
 #X text 74 90 [fold~] folds between a low and high value. This is like
 a mirroring function \, where an out of bounds value folds back until
 it is in the given range., f 56;
-#N canvas 771 156 457 419 wavefolding 0;
-#X obj 73 258 else/out~;
+#N canvas 771 156 456 444 wavefolding 0;
+#X obj 139 200 else/out~;
 #X obj 116 167 else/fold~;
 #X obj 116 126 *~;
 #X obj 196 92 hsl 128 15 1 8 0 0 empty empty empty -2 -8 0 10 -228856
@@ -170,10 +170,9 @@ it is in the given range., f 56;
 -1 -1 1 256;
 #X text 96 35 Wavefolding: a type of waveshaping technique.;
 #X obj 116 89 osc~ 98.5;
-#X obj 189 208 else/graph~ 447 5;
+#X obj 116 267 else/graph~ 447 5;
 #X obj 192 135 else/float2sig~ 100 1;
 #X connect 1 0 0 0;
-#X connect 1 0 0 1;
 #X connect 1 0 7 0;
 #X connect 2 0 1 0;
 #X connect 3 0 4 0;

@@ -1,28 +1,28 @@
-#N struct 1006-point float x0 float y0 float xs float ys float fg float
+#N struct 1656-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1019-point float x0 float y0 float xs float ys float fg float
+#N struct 1669-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1028-point float x0 float y0 float xs float ys float fg float
+#N struct 1678-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1043-point float x0 float y0 float xs float ys float fg float
+#N struct 1693-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1052-point float x0 float y0 float xs float ys float fg float
+#N struct 1702-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1061-point float x0 float y0 float xs float ys float fg float
+#N struct 1711-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1070-point float x0 float y0 float xs float ys float fg float
+#N struct 1720-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1079-point float x0 float y0 float xs float ys float fg float
+#N struct 1729-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1092-point float x0 float y0 float xs float ys float fg float
+#N struct 1742-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1103-point float x0 float y0 float xs float ys float fg float
+#N struct 1753-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1113-point float x0 float y0 float xs float ys float fg float
+#N struct 1763-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1124-point float x0 float y0 float xs float ys float fg float
+#N struct 1774-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1137-point float x0 float y0 float xs float ys float fg float
+#N struct 1787-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 796 121 561 564 10;
 #X obj 2 3 cnv 15 301 42 empty empty slider2d 20 20 2 37 -233017 -1
@@ -265,7 +265,7 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #N canvas 700 46 429 340 init 0;
 #X obj 141 269 else/display;
 #X obj 141 124 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 1 0 0 empty empty, f 63;
+0 0 0 1 64 64 empty empty, f 63;
 #X text 77 33 With the 'init' message or '-init' flag \, the GUI operates
 in 'init mode' \, where it outputs the last saved value when you load
 the patch., f 46;
@@ -323,7 +323,6 @@ the patch., f 46;
 #X connect 8 0 10 0;
 #X connect 9 0 3 0;
 #X connect 10 0 0 0;
-#X connect 10 0 0 1;
 #X restore 92 225 pd example;
 #N canvas 757 48 552 413 send/receive 0;
 #X msg 65 222 64 64;

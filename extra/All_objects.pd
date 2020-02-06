@@ -1,10 +1,10 @@
-#N struct 1352-cell float x float y float cellsize float color;
-#N struct 1359-point float x0 float y0 float xs float ys float fg float
+#N struct 1382-cell float x float y float cellsize float color;
+#N struct 1389-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1383-slot float x float y float slotsize float color float
+#N struct 1413-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1385-cell float cellsize float color;
-#N struct 1394-point float x0 float y0 float size float fg float in
+#N struct 1415-cell float cellsize float color;
+#N struct 1603-point float x0 float y0 float size float fg float in
 float grid;
 #N canvas 711 30 537 532 10;
 #X text 57 75 Assorted:;
@@ -325,7 +325,7 @@ float grid;
 #X text 271 888 [else/spectrograph~];
 #X obj 752 884 else/drum.seq;
 #X text 756 863 [else/drumseq];
-#X obj 447 490 keyboard 17 80 4 3 0;
+#X obj 447 490 else/keyboard 17 80 4 3;
 #X text 767 968 [else/button] =>;
 #X obj 874 966 else/button 20;
 #X obj 576 851 else/range.hsl;
@@ -342,10 +342,10 @@ float grid;
 #X obj 67 50 else/gui;
 #X text 165 18 [else/mtx.ctl];
 #X text 285 456 [else/circle];
+#X obj 170 1111 else/out2~;
 #X obj 360 40 else/pic 0 empty empty empty;
 #X obj 265 479 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
 0 0 0 1 0 0 63.5 63.5 empty empty 1;
-#X obj 170 1111 else/out1~;
 #X restore 66 10121 pd GUI;
 #X text 57 321 Patch/subpatch management:;
 #X text 55 1067 Message management:;

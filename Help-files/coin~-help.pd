@@ -40,11 +40,10 @@
 ;
 #X text 146 395 float/signal;
 #X obj 315 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 100 256;
+-228856 -1 -1 0 256;
 #X text 138 499 2) float - seed value (default: internal);
-#X obj 234 258 else/out~;
 #X obj 318 177 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12700 1;
+-1 -1 0 1;
 #X text 138 483 1) float - probability in percentage (default 50);
 #X obj 216 157 else/imp~ 5;
 #X text 239 331 - impulse signal;
@@ -56,7 +55,7 @@
 #X obj 216 222 else/coin~ 75 100;
 #X text 329 177 number of chances;
 #X obj 238 197 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 344 256;
+-228856 -1 -1 0 256;
 #X text 243 180 total;
 #X obj 6 522 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 164 531 -seed <float> - seed value (default: internal);
@@ -66,7 +65,7 @@ as the number of changes out of a total number of chances (default
 \, 50 out of 100 - that is 50%). The right outlet sends a bang when
 it wasn't passed., f 69;
 #X text 163 240 passed =>;
-#X text 311 239 <= not passed;
+#X text 317 239 <= not passed;
 #X obj 115 332 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 189 349 float;
@@ -112,11 +111,12 @@ a simple markov chain., f 29;
 #X connect 16 0 3 0;
 #X connect 17 0 8 0;
 #X restore 473 285 pd example;
-#X connect 17 0 32 0;
+#X obj 222 258 else/out2~;
+#X connect 17 0 31 0;
 #X connect 18 0 17 0;
-#X connect 21 0 32 1;
-#X connect 24 0 21 0;
-#X connect 26 0 32 0;
-#X connect 32 0 23 0;
-#X connect 32 1 23 1;
-#X connect 34 0 32 0;
+#X connect 21 0 31 1;
+#X connect 23 0 21 0;
+#X connect 25 0 31 0;
+#X connect 31 0 47 0;
+#X connect 31 1 47 1;
+#X connect 33 0 31 0;

@@ -63,6 +63,5 @@ value is the default. The number of stages are up to 20 \, but you
 can see how that generates extreme results., f 62;
 #X connect 23 0 24 0;
 #X connect 24 0 11 0;
-#X connect 24 0 11 1;
 #X connect 31 0 32 0;
 #X connect 31 0 24 1;

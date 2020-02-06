@@ -20,9 +20,9 @@
 --------------------------------------------------------------------------
 
 
-### Version 1.0 beta-27 (Released february 5th 2020)
+### Version 1.0 beta-28 (Unreleased)
 
-Needs Pd **0.50-2** or above
+Needs Pd **0.51.0** or above
 
 This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. Find the latest and all releases at: <https://github.com/porres/pd-else/releases>.
 
@@ -52,13 +52,13 @@ Look for the latest releases in https://github.com/porres/pd-else/releases - but
 
 ### Installing ELSE:
 
-This release needs Pd Vanilla 0.50-2 or above (Pd Extended/Purr Data aren't supported). ELSE comes as a set of separate binaries and abstractions, so all you need to is add the "else" path to Pd via "Preferences => Path" or use the [declare] object.
+This release needs Pd Vanilla 0.51-0 or above (Pd Extended/Purr Data aren't supported). ELSE comes as a set of separate binaries and abstractions, so all you need to is add the "else" path to Pd via "Preferences => Path" or use the [declare] object.
 
 #### Building ELSE for Pd Vanilla:
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
 
-<pre>make pdincludepath=~/pd-0.50-2/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.50-2/bin/)</pre>
+<pre>make pdincludepath=~/pd-0.51-0/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.51-0/bin/)</pre>
 
 * Installing with pdlibbuilder
 

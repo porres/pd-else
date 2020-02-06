@@ -47,7 +47,6 @@
 ;
 #X obj 185 156 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 185 242 else/out~;
 #X text 351 165 delay time;
 #X text 214 336 - delay time in ms;
 #X text 214 371 - delayed trigger;
@@ -60,8 +59,9 @@ receiving a trigger to delay \, following triggers received before
 its delayed output are ignored., f 64;
 #X obj 228 211 else/trig.delay2~ 500;
 #X obj 438 276 else/trig.delay~;
-#X connect 5 0 34 1;
-#X connect 25 0 32 0;
-#X connect 32 0 34 0;
-#X connect 32 0 26 0;
-#X connect 34 0 26 1;
+#X obj 185 242 else/out2~;
+#X connect 5 0 33 1;
+#X connect 25 0 31 0;
+#X connect 31 0 33 0;
+#X connect 31 0 35 0;
+#X connect 33 0 35 1;

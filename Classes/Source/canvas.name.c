@@ -1,6 +1,5 @@
 
 #include "m_pd.h"
-#include <math.h>
 #include "g_canvas.h"
 
 static t_class *canvas_name_class;
@@ -18,19 +17,17 @@ static void *canvas_name_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     t_canvas_name *x = (t_canvas_name *)pd_new(canvas_name_class);
     t_canvas *canvas = canvas_getcurrent();
-    outlet_new(&x->x_obj, &s_);
     int depth = 0;
     if(argc && argv->a_type == A_FLOAT){
         float f = argv->a_w.w_float;
         depth = f < 0 ? 0 : (int)f;
     }
-    while(depth && canvas){
+    while(depth-- && canvas->gl_owner)
         canvas = canvas->gl_owner;
-        depth--;
-    }
     char buf[MAXPDSTRING];
     snprintf(buf, MAXPDSTRING, ".x%lx.c", (long unsigned int)canvas);
     x->x_name = gensym(buf);
+    outlet_new(&x->x_obj, &s_);
     return(void *)x;
 }
 

@@ -26,7 +26,6 @@
 0;
 #X obj 145 138 bng 18 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
 -1;
-#X obj 236 231 else/out~;
 #X obj 146 42 cnv 4 4 4 empty empty network 0 28 2 18 -233017 -1 0
 ;
 #X obj 1 290 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -88,7 +87,6 @@ the less higher frequencies reverberate., f 47;
 #X msg 198 185 set 64 10 1000;
 #X obj 204 236 else/impseq~;
 #X msg 87 211 print;
-#X obj 188 311 else/out~;
 #X msg 140 75 29 31 37 67 82 110 172 221;
 #X obj 149 275 else/fdn.rev~ -time 6;
 #X msg 149 101 set 8 5 80;
@@ -107,25 +105,26 @@ delay times. By default they are spaced linearly \, but they can be
 exponentially spaced with the "exp" message., f 47;
 #X text 116 22 lits sets delay lines;
 #X text 261 45 default;
+#X obj 162 309 else/out2~;
 #X connect 1 0 3 0;
-#X connect 2 0 7 0;
-#X connect 3 0 7 0;
-#X connect 4 0 7 0;
-#X connect 6 0 7 0;
-#X connect 7 0 5 0;
-#X connect 7 1 5 1;
-#X connect 8 0 7 0;
-#X connect 9 0 7 0;
-#X connect 10 0 7 0;
-#X connect 11 0 7 0;
-#X connect 12 0 7 0;
-#X connect 13 0 12 0;
+#X connect 2 0 6 0;
+#X connect 3 0 6 0;
+#X connect 4 0 6 0;
+#X connect 5 0 6 0;
+#X connect 6 0 17 0;
+#X connect 6 1 17 1;
+#X connect 7 0 6 0;
+#X connect 8 0 6 0;
+#X connect 9 0 6 0;
+#X connect 10 0 6 0;
+#X connect 11 0 6 0;
+#X connect 12 0 11 0;
 #X restore 473 260 pd details;
-#X obj 231 179 nbx 3 14 0.1 20 1 0 empty empty empty 0 -8 0 10 -228856
+#X obj 232 179 nbx 3 14 0.1 20 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0.1 256;
-#X obj 281 179 hsl 128 15 0.01 100 1 0 empty empty empty -2 -8 0 10
+#X obj 282 179 hsl 128 15 0.01 100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X text 285 179 damping (0% - 100%);
+#X text 286 179 damping (0% - 100%);
 #X text 127 351 set <list>;
 #X text 76 88 [fdn.rev~] is a feedback delay network reverberator which
 can be used for late reflections (a.k.a reverb tail). The main parameters
@@ -138,13 +137,14 @@ are: decay time (t60) and high frequency damping., f 66;
 #X text 201 295 - input signal to reverberate, f 55;
 #X text 201 309 - sets reflection times in ms, f 55;
 #X obj 186 200 else/fdn.rev~, f 16;
-#X obj 234 159 hsl 128 15 0.01 10 1 0 empty empty empty -2 -8 0 10
+#X obj 235 159 hsl 128 15 0.01 10 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X text 263 159 decay (t60), f 12;
-#X connect 12 0 24 0;
-#X connect 24 0 59 0;
-#X connect 47 0 59 1;
-#X connect 48 0 59 2;
-#X connect 59 0 13 0;
-#X connect 59 1 13 1;
-#X connect 60 0 47 0;
+#X text 264 159 decay (t60), f 12;
+#X obj 187 228 else/out2~;
+#X connect 12 0 23 0;
+#X connect 23 0 58 0;
+#X connect 46 0 58 1;
+#X connect 47 0 58 2;
+#X connect 58 0 61 0;
+#X connect 58 1 61 1;
+#X connect 59 0 46 0;

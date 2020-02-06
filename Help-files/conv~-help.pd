@@ -25,40 +25,38 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 5 graph;
-#X obj 8 422 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 8 418 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 8 267 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 8 337 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 8 333 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 8 375 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 8 371 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 142 348 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 142 344 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 141 275 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 141 275 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 184 206 else/out~;
-#X text 117 400 2) symbol;
-#X text 123 383 1) float;
-#X text 181 384 -;
-#X text 214 277 signal - input signal;
-#X text 214 349 signal - output signal;
-#X obj 184 143 else/play.file~ 1 vacuous.wav 1 -loop;
-#X obj 184 175 else/conv~ 1024 IR.wav;
+#X obj 169 200 else/out~;
+#X text 117 396 2) symbol;
+#X text 123 379 1) float;
+#X text 181 380 -;
+#X text 214 275 signal - input signal, f 28;
+#X text 214 345 signal - output signal;
+#X obj 169 137 else/play.file~ 1 vacuous.wav 1 -loop;
+#X obj 169 169 else/conv~ 1024 IR.wav;
 #X text 76 90 [conv~] is an abstraction that performs partitioned convolution.
 It takes a partition size and Impulse Response sound file., f 65;
-#X obj 141 297 cnv 17 3 35 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 178 291 size <float> - sets partition size;
+#X text 172 308 load <symbol> - loads IR sound file;
+#X text 183 396 - file name to open as impulse response (default none)
 ;
-#X text 178 298 size <float> - sets partition size;
-#X text 172 315 load <symbol> - loads IR sound file;
-#X text 183 400 - file name to open as impulse response (default none)
-;
-#X text 194 383 optional: partition size (default 1024 \, minimum 64)
+#X text 194 379 optional: partition size (default 1024 \, minimum 64)
 , f 53;
 #N canvas 702 243 459 313 cpu-heavy 0;
 #X obj 201 177 else/out~;
 #X obj 97 148 switch~;
-#X obj 97 122 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 97 122 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X floatatom 98 207 5 0 0 0 - - -;
 #X obj 98 179 else/meter;
@@ -71,10 +69,8 @@ a bigger IR file so it's heavier on your machine. Test it.;
 #X connect 2 0 1 0;
 #X connect 4 0 3 0;
 #X connect 5 0 0 0;
-#X connect 5 0 0 1;
 #X connect 6 0 5 0;
 #X connect 7 0 6 0;
-#X restore 432 226 pd cpu-heavy;
+#X restore 449 234 pd cpu-heavy;
 #X connect 24 0 25 0;
 #X connect 25 0 18 0;
-#X connect 25 0 18 1;

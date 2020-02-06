@@ -71,6 +71,5 @@ biquad sections in cascade. The maximum number of filter stages is
 #X connect 23 0 21 0;
 #X connect 24 0 25 0;
 #X connect 25 0 17 0;
-#X connect 25 0 17 1;
 #X connect 32 0 25 0;
 #X connect 33 0 32 0;

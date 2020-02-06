@@ -1,4 +1,4 @@
-#N canvas 371 38 563 491 10;
+#N canvas 371 38 565 521 10;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -18,10 +18,10 @@
 0;
 #X obj 202 41 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
 0;
-#X obj 3 462 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 492 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 239 189 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 368 256;
+-228856 -1 -1 0 256;
 #X text 299 188 <= hz;
 #X obj 3 5 cnv 15 301 42 empty empty bl.wavetable~ 20 20 2 37 -233017
 -1 0;
@@ -31,7 +31,7 @@
 #X obj 22 42 cnv 4 4 4 empty empty Bandlimited 0 28 2 18 -233017 -1
 0;
 #X text 452 245 see also:;
-#X obj 222 249 else/out~;
+#X obj 239 249 else/out~;
 #X obj 3 429 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
 #X obj 3 315 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -70,7 +70,6 @@ besides the array name., f 74;
 #X connect 5 0 2 0;
 #X restore 115 241 pd table;
 #X text 27 241 check table =>;
-#X obj 239 214 else/bl.wavetable~ \$0-table;
 #X obj 123 405 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 201 406 signal;
@@ -83,6 +82,10 @@ besides the array name., f 74;
 ;
 #X text 165 369 float/signal - phase offset (modulation input), f
 50;
-#X connect 10 0 30 0;
-#X connect 30 0 16 0;
-#X connect 30 0 16 1;
+#X text 174 470 3) float;
+#X text 228 455 - sets frequency in Hz (default 0), f 43;
+#X text 228 470 - sets phase offset (default 0), f 43;
+#X text 174 455 2) float;
+#X obj 239 214 else/bl.wavetable~ \$0-table 400;
+#X connect 10 0 41 0;
+#X connect 41 0 16 0;

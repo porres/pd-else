@@ -56,6 +56,5 @@ y[n-2] - 0.05;
 , f 51;
 #X connect 18 0 24 0;
 #X connect 20 0 19 0;
-#X connect 20 0 19 1;
 #X connect 21 0 20 0;
 #X connect 24 0 20 0;

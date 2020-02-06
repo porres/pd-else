@@ -184,8 +184,8 @@ size.;
 \, both of which inherited it from the [env~] object in Pd Vanilla.
 ;
 #X obj 516 201 else/vu~ 4096;
-#X floatatom 526 228 9 0 0 0 - - -, f 9;
-#X floatatom 591 227 9 0 0 0 - - -, f 9;
+#X floatatom 526 228 9 0 0 0 - - -;
+#X floatatom 591 227 9 0 0 0 - - -;
 #X connect 3 0 5 0;
 #X connect 4 0 5 0;
 #X connect 6 0 7 0;

@@ -64,7 +64,10 @@ parent patch (1) or parent's parent patch (2) and so on...;
 #X restore 489 193 pd depth;
 #X text 236 234 - outputs canvas name;
 #X obj 186 156 else/canvas.name;
-#X text 90 95 [canvas.name] gives you the canvas name symbol.;
+#X text 90 90 [canvas.name] gives you the canvas name symbol \, so
+you manipulate canvas widgets (see help file of else/gui).;
+#X obj 43 190 else/gui;
+#X text 40 163 see also:;
 #X connect 24 0 28 0;
 #X connect 28 0 23 0;
 #X coords 0 357 1 356 94 40 0;

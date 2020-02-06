@@ -13,7 +13,7 @@
 ;
 #X obj 167 289 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 218 177 else/out~;
+#X obj 239 177 else/out~;
 #X obj 23 40 cnv 4 4 4 empty empty Gray 0 28 2 18 -233017 -1 0;
 #X obj 162 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
@@ -85,4 +85,3 @@ spectrum is emphasized towards lower frequencies., f 62;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X connect 22 0 7 0;
-#X connect 22 0 7 1;

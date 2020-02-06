@@ -26,11 +26,11 @@
 #X text 155 451 float/signal;
 #X text 197 429 clear;
 #X obj 177 300 else/out~;
-#X obj 220 256 *~;
+#X obj 177 256 *~;
 #X obj 151 185 else/brown~;
 #X text 240 429 - clears filter's memory;
 #X obj 297 253 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 4502 1;
+-1 -1 0 1;
 #X obj 297 225 else/sig2float~;
 #X text 320 247 1;
 #X text 239 450 - decay time in ms;
@@ -38,7 +38,7 @@
 #X text 185 517 1) float - time in ms (default 1000);
 #N canvas 544 265 662 364 control 0;
 #X obj 102 249 else/out~;
-#X obj 145 205 *~;
+#X obj 102 205 *~;
 #X obj 222 202 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
 -1 -1 0 1;
 #X obj 222 174 else/sig2float~;
@@ -49,9 +49,9 @@
 #X obj 160 143 else/decay~ 4000;
 #X obj 83 143 else/gray~;
 #X obj 366 271 else/out~;
-#X obj 409 227 *~;
+#X obj 366 227 *~;
 #X obj 486 224 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 4950 1;
+-1 -1 0 1;
 #X obj 486 196 else/sig2float~;
 #X text 512 218 1;
 #X obj 424 165 else/decay~ 4000;
@@ -68,14 +68,12 @@ the last received float input (which is 1 by default).;
 #X text 506 317 -1;
 #X msg 537 124 -1;
 #X connect 1 0 0 0;
-#X connect 1 0 0 1;
 #X connect 3 0 2 0;
 #X connect 6 0 7 0;
 #X connect 7 0 1 1;
 #X connect 7 0 3 0;
 #X connect 8 0 1 0;
 #X connect 10 0 9 0;
-#X connect 10 0 9 1;
 #X connect 12 0 11 0;
 #X connect 14 0 10 1;
 #X connect 14 0 12 0;
@@ -198,7 +196,6 @@ The decay time (in ms) is how long it takes for the signal to decay
 60dB. The same filter is also used in other objects from the ELSE library
 (asr~/adsr~/lag~/lag2~)., f 63;
 #X connect 16 0 15 0;
-#X connect 16 0 15 1;
 #X connect 17 0 16 0;
 #X connect 20 0 19 0;
 #X connect 38 0 16 1;

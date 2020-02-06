@@ -59,12 +59,12 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X obj 217 177 ./avg 4, f 12;
 #X text 213 307 the average so far, f 45;
 #X text 51 91 [avg] calculates the mean average of all received numbers
 so far. A clear message resets the object.;
 #X text 120 142 resets;
-#X connect 9 0 38 0;
-#X connect 17 0 38 0;
-#X connect 38 0 18 0;
-#X connect 38 1 19 0;
+#X obj 217 177 else/avg 4, f 12;
+#X connect 9 0 41 0;
+#X connect 17 0 41 0;
+#X connect 41 0 18 0;
+#X connect 41 1 19 0;

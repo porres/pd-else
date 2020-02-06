@@ -1,30 +1,30 @@
-#N canvas 667 58 562 584 10;
-#X obj 2 546 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 667 58 560 657 10;
+#X obj 2 620 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 2 403 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 2 462 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 480 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 2 539 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 517 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 576 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 99 434 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 99 493 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 167 412 signal;
-#X obj 100 489 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 167 471 signal;
+#X obj 100 548 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 99 412 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 99 471 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X floatatom 203 177 0 1 10000 0 - - -;
-#X text 131 436 float/signal;
+#X text 131 495 float/signal;
 #X obj 206 156 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12700 1;
+-1 -1 0 1;
 #X floatatom 272 209 0 1 10000 0 - - -;
 #X obj 275 188 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 5700 1;
-#X obj 99 456 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+-1 -1 0 1;
+#X obj 99 515 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 131 458 float/signal;
-#X text 167 490 signal;
+#X text 131 517 float/signal;
+#X text 167 549 signal;
 #X obj 2 5 cnv 15 301 42 empty empty crusher~ 20 20 2 37 -233017 -1
 0;
 #X obj 305 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -50,8 +50,8 @@
 #X obj 501 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -120,7 +120,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -153,22 +153,23 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 504 73 pd;
-#X obj 123 285 else/out~;
+#X obj 179 241 else/out~;
 #X text 213 156 bit crushing (0-1);
 #X obj 122 170 osc~ 100;
-#X obj 234 249 else/graph~ 143 50;
+#X obj 166 304 else/graph~ 143 50;
 #X obj 122 148 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 267 256;
+-228856 -1 -1 0 256;
 #X obj 166 211 else/crusher~;
-#X text 179 524 none;
-#X text 223 490 - resampled and quantized signal;
-#X text 222 437 - bit reduction from 0-1;
-#X text 222 459 - decimation (sample rate reduction) from 0-1;
-#X text 223 411 - signal to be crushed (resampled and quantized);
+#X text 223 549 - resampled and quantized signal;
+#X text 222 496 - bit reduction from 0-1;
+#X text 222 518 - decimation (sample rate reduction) from 0-1;
+#X text 223 470 - signal to be crushed (resampled and quantized);
 #X text 62 90 [crusher~] is a bit-crusher/reducer and decimator abstraction
 based on the objects [quantizer~] and [downsample~] \, where an input
 signal is resampled and quantized., f 62;
 #X text 290 188 decimation (0-1);
+#X text 179 583 1) float - bit reduction;
+#X text 179 599 2) float - decimation;
 #X connect 8 0 33 1;
 #X connect 10 0 8 0;
 #X connect 11 0 33 2;
@@ -176,5 +177,4 @@ signal is resampled and quantized., f 62;
 #X connect 30 0 33 0;
 #X connect 32 0 30 0;
 #X connect 33 0 28 0;
-#X connect 33 0 28 1;
 #X connect 33 0 31 0;

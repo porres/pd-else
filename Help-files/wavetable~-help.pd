@@ -55,29 +55,28 @@
 50;
 #X text 146 275 float/signal - sets frequency in hertz, f 62;
 #X text 228 392 - array name (optional \, default none), f 43;
-#N canvas 750 137 488 500 set 0;
-#X obj 122 245 nbx 6 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 750 137 490 555 set 0;
+#X obj 124 250 nbx 6 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 79 359 else/out~;
-#X obj 193 328 else/graph~ 441 11;
-#X obj 248 111 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
+#X obj 143 314 else/out~;
+#X obj 125 381 else/graph~ 441 11;
+#X obj 250 116 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
 -66577 0;
 #N canvas 0 50 450 250 (subpatch) 0;
 #X array \$0-saw 4099 float 4;
 #X coords 0 1 4098 -1 200 140 1 0 0;
-#X restore 247 110 graph;
-#X obj 122 279 else/wavetable~ 110;
-#X text 43 16 Besides the first argument \, the "set" message followed
+#X restore 249 115 graph;
+#X obj 124 284 else/wavetable~ 110;
+#X text 45 21 Besides the first argument \, the "set" message followed
 by an array name sets an entire array to be used as a waveform. If
 no name is given or if you send a name that doesn't correspond to an
 exist array \, then the output is silent., f 65;
-#X obj 54 202 else/initmess set \$0-saw, f 14;
-#X text 24 91 generate-saw;
-#X obj 23 111 else/initmess \; \$0-saw sinesum 4096 1 0.5 0.333333
+#X obj 56 207 else/initmess set \$0-saw, f 14;
+#X text 26 96 generate-saw;
+#X obj 25 116 else/initmess \; \$0-saw sinesum 4096 1 0.5 0.333333
 0.25 0.2 0.166667 0.125 \, normalize, f 34;
 #X connect 0 0 5 0;
 #X connect 5 0 1 0;
-#X connect 5 0 1 1;
 #X connect 5 0 2 0;
 #X connect 7 0 5 0;
 #X restore 501 196 pd set;
@@ -94,19 +93,19 @@ exist array \, then the output is silent., f 65;
 , f 43;
 #X msg 41 134 0;
 #X obj 35 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 1316 1;
+-1 -1 0 1;
 #X obj 35 211 else/sig2float~;
 #X msg 75 134 0.25;
 #X msg 152 133 0.75;
 #X msg 195 133 1;
 #X msg 117 133 0.5;
 #X obj 236 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 1316 1;
+-1 -1 0 1;
 #X obj 236 217 else/sig2float~;
 #X text 229 132 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -175,7 +174,7 @@ exist array \, then the output is silent., f 65;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -260,7 +259,6 @@ to the frequency of a master oscillator, f 44;
 #X connect 24 0 9 0;
 #X connect 25 0 15 0;
 #X connect 28 0 0 0;
-#X connect 28 0 0 1;
 #X restore 495 217 pd sync;
 #N canvas 675 66 419 529 phase 0;
 #X obj 73 446 else/out~;
@@ -274,7 +272,7 @@ offset"). This is also settable with the third inlet. This allows you
 to control two oscillators with the same frequency falling in and out
 of phase. Another feature is phase modulation., f 53;
 #X text 384 110 1;
-#X obj 63 247 else/out~;
+#X obj 81 247 else/out~;
 #X obj 81 211 +~;
 #X obj 252 110 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
@@ -286,17 +284,15 @@ of phase. Another feature is phase modulation., f 53;
 #X obj 73 405 else/wavetable~ \$0-saw 200;
 #X connect 2 0 14 2;
 #X connect 7 0 6 0;
-#X connect 7 0 6 1;
 #X connect 8 0 9 0;
 #X connect 9 0 11 0;
 #X connect 11 0 13 2;
 #X connect 12 0 7 0;
 #X connect 13 0 7 1;
 #X connect 14 0 0 0;
-#X connect 14 0 0 1;
 #X restore 489 239 pd phase;
 #X obj 209 146 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 45 256;
+-228856 -1 -1 0 256;
 #X text 84 87 [wavetable~] is an interpolating wavetable oscillator
 like Pd Vanilla's [tabosc4~]. It accepts negative frequencies \, has
 inlets for phase sync and phase modulation.;
@@ -306,7 +302,7 @@ waveform, f 62;
 #X obj 40 240 else/bl.wavetable~;
 #X obj 343 207 else/out~;
 #X obj 343 144 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 63 256;
+-228856 -1 -1 0 256;
 #X obj 209 169 else/wavetable~ \$0-table 110, f 15;
 #X text 423 148 (alias);
 #X obj 343 169 else/wt~ \$0-table 110;
@@ -314,6 +310,4 @@ waveform, f 62;
 #X connect 35 0 42 0;
 #X connect 41 0 44 0;
 #X connect 42 0 7 0;
-#X connect 42 0 7 1;
 #X connect 44 0 40 0;
-#X connect 44 0 40 1;

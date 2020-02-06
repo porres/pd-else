@@ -22,10 +22,10 @@
 #X obj 107 40 cnv 4 4 4 empty empty ramp 0 28 2 18 -233017 -1 0;
 #X obj 194 134 else/imp~ 1;
 #X obj 194 216 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 21216 256;
+-228856 -1 -1 0 256;
 #X obj 194 190 else/sig2float~;
 #X obj 197 239 hsl 128 15 0 44100 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 6110 1;
+-228856 -1 -1 0 1;
 #X obj 163 135 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 150 462 signal;
@@ -41,14 +41,14 @@
 ;
 #X text 114 435 float/signal;
 #X text 192 462 - the ramp signal;
-#N canvas 852 143 428 508 frequency 0;
+#N canvas 852 143 427 643 frequency 0;
 #X obj 93 168 /~;
 #X obj 74 265 expr~ sin($v1);
 #X obj 74 226 else/ramp~;
 #X obj 93 196 *~;
 #X obj 108 138 else/sr~;
 #X obj 131 172 else/pi 2;
-#X obj 31 355 else/out~;
+#X obj 92 309 else/out~;
 #X text 152 109 Hertz;
 #X text 163 139 sample rate;
 #X text 193 173 max = 2*pi;
@@ -57,12 +57,11 @@ in hertz (oscillating between min and max values) \, then the increment
 value should be (max - min) * freq / sr (where freq is the frequency
 in hz and sr is the sampling rate).;
 #X text 157 226 (Having an oscillator the hard way);
-#X obj 151 308 else/graph~ 500 6;
+#X obj 74 386 else/graph~ 500 6;
 #X obj 93 109 sig~ 440;
 #X connect 0 0 3 0;
-#X connect 1 0 6 1;
-#X connect 1 0 6 0;
 #X connect 1 0 12 0;
+#X connect 1 0 6 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 1;
 #X connect 4 0 0 1;
@@ -71,8 +70,8 @@ in hz and sr is the sampling rate).;
 #X connect 13 0 0 0;
 #X restore 468 236 pd frequency;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -141,7 +140,7 @@ in hz and sr is the sampling rate).;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -178,8 +177,8 @@ in hz and sr is the sampling rate).;
 #X text 192 414 - sets the minimum value (default 0);
 #X text 192 435 - sets the maximum value (default 2ˆ32 - 1);
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -248,7 +247,7 @@ in hz and sr is the sampling rate).;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -294,16 +293,16 @@ in hz and sr is the sampling rate).;
 #X text 76 353 The [ramp~] object loops automatically \, you can set
 different loop points and a reset/restart value outside the loop.,
 f 68;
-#X obj 133 599 else/out~;
+#X obj 150 599 else/out~;
 #X obj 150 494 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 96 495 restart;
-#X obj 85 267 else/out~;
+#X obj 102 267 else/out~;
 #X obj 134 106 hsl 128 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 10400 1;
+-1 -1 0 1;
 #X obj 131 160 else/float2sig~ 100 1;
 #X obj 131 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1.27559 256;
+-228856 -1 -1 0 256;
 #X obj 102 132 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 50 132 restart;
@@ -346,10 +345,8 @@ speeds with negative increment values., f 69;
 #X connect 18 0 22 0;
 #X connect 19 0 22 3;
 #X connect 21 0 3 0;
-#X connect 21 0 3 1;
 #X connect 22 0 21 0;
 #X connect 24 0 6 0;
-#X connect 24 0 6 1;
 #X connect 25 0 0 0;
 #X connect 26 0 25 0;
 #X restore 450 216 pd read buffers;
@@ -364,14 +361,14 @@ speeds with negative increment values., f 69;
 #X text 192 360 - (re)starts incrementing;
 #N canvas 277 120 1052 471 examples-1 0;
 #X obj 71 258 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 69.6834 256;
+-228856 -1 -1 0 256;
 #X obj 71 229 else/sig2float~;
 #X obj 71 293 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 6968 1;
+-1 -1 0 1;
 #X obj 71 170 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 470 202 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -1 256;
+-228856 -1 -1 0 256;
 #X obj 470 173 else/sig2float~;
 #X obj 470 237 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 0 1;
@@ -434,8 +431,8 @@ it'll reset back to the reset point and stop after reaching the limits.
 , f 49;
 #X obj 808 224 else/ramp~ 1 0 88200 -mode 2;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -504,7 +501,7 @@ it'll reset back to the reset point and stop after reaching the limits.
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -538,8 +535,8 @@ it'll reset back to the reset point and stop after reaching the limits.
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 644 285 pd;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -608,7 +605,7 @@ it'll reset back to the reset point and stop after reaching the limits.
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -663,7 +660,7 @@ it'll reset back to the reset point and stop after reaching the limits.
 #X restore 462 175 pd examples-1;
 #N canvas 480 163 823 384 examples-2 0;
 #X obj 521 278 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 116.54 256;
+-228856 -1 -1 0 256;
 #X obj 521 249 else/sig2float~;
 #X obj 574 147 *~;
 #X obj 614 146 else/pulse~ 1;
@@ -671,7 +668,7 @@ it'll reset back to the reset point and stop after reaching the limits.
 #X text 642 322 127;
 #X text 573 322 63.5;
 #X obj 524 305 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 11654 1;
+-1 -1 0 1;
 #X obj 574 113 sig~ 0.0025;
 #X text 25 21 The "start" and "stop" messages starts and stops incrementing.
 The "reset" message stops and goes back to the reset point. The "set"
@@ -682,12 +679,12 @@ that value.;
 #X msg 186 173 stop;
 #X msg 154 121 reset;
 #X obj 154 302 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 63.5 256;
+-228856 -1 -1 0 256;
 #X text 149 346 0;
 #X text 275 346 127;
 #X text 206 346 63.5;
 #X obj 157 329 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 6350 1;
+-1 -1 0 1;
 #X obj 311 185 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 314 160 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856

@@ -10,9 +10,9 @@
 #X obj 3 352 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 201 144 hsl 180 15 0 44100 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 17900 1;
+-228856 -1 -1 0 1;
 #X obj 198 168 nbx 5 14 0 44100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 44100 256;
+-1 -1 0 256;
 #X obj 3 3 cnv 15 301 42 empty empty samps2ms 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -36,7 +36,7 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 198 224 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1000 256;
+-228856 -1 -1 0 256;
 #X obj 23 40 cnv 4 4 4 empty empty Convert 0 28 2 18 -233017 -1 0;
 #X obj 90 40 cnv 4 4 4 empty empty samples 0 28 2 18 -233017 -1 0;
 #X obj 156 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;

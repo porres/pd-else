@@ -1,4 +1,4 @@
-#N canvas 514 155 562 552 12;
+#N canvas 420 54 562 552 12;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -42,13 +42,12 @@
 #X restore 2 3 graph;
 #X obj 194 229 else/out~;
 #X text 144 445 2) float;
-#X obj 263 162 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 263 147 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 332 163 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 332 148 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 401 163 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 401 148 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 194 157 bl.saw~;
 #X text 60 87 [flanger~] is a simple flanger FX object.;
 #X text 156 301 signal -;
 #X text 219 301 flanger input;
@@ -65,19 +64,18 @@
 #X text 144 465 3) float;
 #X obj 3 486 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X obj 194 191 else/flanger~ 0.1 20 -0.6 -tri;
-#X obj 194 130 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-hz empty 0 -8 0
-10 -228856 -1 -1 150 256;
-#X obj 46 198 else/initmess \; \$0-hz 150;
-#X text 268 142 rate;
-#X text 334 142 depth;
+#X obj 125 130 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 268 127 rate;
+#X text 334 127 depth;
 #X text 96 495 -tri - sets waveform to triangular (default sine);
-#X text 404 142 coefficient;
+#X text 404 127 coefficient;
 #X text 220 362 coefficient for feedforward/feedback lines;
 #X text 207 465 - coefficient (default 0);
-#X connect 23 0 41 1;
-#X connect 24 0 41 2;
-#X connect 25 0 41 3;
-#X connect 26 0 41 0;
-#X connect 41 0 21 0;
-#X connect 41 0 21 1;
-#X connect 42 0 26 0;
+#X obj 125 157 else/bl.saw~ 150;
+#X connect 23 0 40 1;
+#X connect 24 0 40 2;
+#X connect 25 0 40 3;
+#X connect 40 0 21 0;
+#X connect 41 0 48 0;
+#X connect 48 0 40 0;

@@ -51,29 +51,29 @@
 #X obj 195 160 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 192 232 else/display~ 8;
-#N canvas 549 146 550 551 example 0;
-#X obj 90 414 else/out~;
-#X msg 164 129 -1 0.5 1 0.5 -1;
-#X msg 137 83 -1 1 1;
-#X msg 151 105 1 1 -1;
-#X obj 52 130 phasor~ 200;
-#X msg 171 157 -1 0.25 1 0.5 1 0.25 -1;
-#X obj 52 108 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 549 146 544 616 example 0;
+#X obj 154 368 else/out~;
+#X msg 169 129 -1 0.5 1 0.5 -1;
+#X msg 142 83 -1 1 1;
+#X msg 156 105 1 1 -1;
+#X obj 57 130 phasor~ 200;
+#X msg 176 157 -1 0.25 1 0.5 1 0.25 -1;
+#X obj 57 108 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 184 81 sawtooth;
-#X text 199 103 inverted sawtooth;
-#X text 267 128 triangular wave;
-#X text 321 157 trapezoid;
-#X text 75 20 The [function~] object allows line segments and in any
+#X text 189 81 sawtooth;
+#X text 204 103 inverted sawtooth;
+#X text 272 128 triangular wave;
+#X text 326 157 trapezoid;
+#X text 80 20 The [function~] object allows line segments and in any
 range. Here we use it in the -1 to 1 range to generate waveforms and
 use them as oscillators with a [phasor~] input., f 62;
-#X text 395 234 <== the [function] object is quite convenient for use
+#X text 400 234 <== the [function] object is quite convenient for use
 with [function~]. Check its help file for more info, f 18;
-#X obj 133 338 else/function~ 1 100 -1;
-#X obj 183 212 else/function 200 100 empty empty -1 1 220 220 220 50
+#X obj 138 338 else/function~ 1 100 -1;
+#X obj 188 212 else/function 200 100 empty empty -1 1 220 220 220 50
 50 50 1 0 0 0 -1 1 1;
-#X obj 180 185 else/initmess -1 1 1;
-#X obj 207 380 else/graph~ 441 8 -1.05 1.05 200 140;
+#X obj 185 185 else/initmess -1 1 1;
+#X obj 138 431 else/graph~ 441 8 -1.05 1.05 200 140;
 #X connect 1 0 13 0;
 #X connect 2 0 13 0;
 #X connect 3 0 13 0;
@@ -81,7 +81,6 @@ with [function~]. Check its help file for more info, f 18;
 #X connect 5 0 13 0;
 #X connect 6 0 4 0;
 #X connect 13 0 0 0;
-#X connect 13 0 0 1;
 #X connect 13 0 16 0;
 #X connect 14 0 13 0;
 #X connect 15 0 14 0;
@@ -98,49 +97,47 @@ functon);
 #X text 152 299 exp <list>;
 #X text 228 299 - sets exponential values for each line segment, f
 48;
-#N canvas 376 187 854 435 exponential 0;
-#X obj 83 295 else/out~;
-#X obj 42 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 376 187 851 495 exponential 0;
+#X obj 150 255 else/out~;
+#X obj 48 139 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 196 266 else/graph~ 441 8 -1.05 1.05 200 140;
-#X obj 42 160 phasor~ 200;
-#X obj 126 213 else/function~ -1 0.5 1 0.5 -1 -exp 2 2, f 30;
-#X obj 457 296 else/out~;
-#X obj 501 109 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 131 318 else/graph~ 441 8 -1.05 1.05 200 140;
+#X obj 48 161 phasor~ 200;
+#X obj 132 214 else/function~ -1 0.5 1 0.5 -1 -exp 2 2, f 30;
+#X obj 525 259 else/out~;
+#X obj 507 110 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 574 266 else/graph~ 441 8 -1.05 1.05 200 140;
-#X text 758 208 parabolic waveform, f 9;
-#X msg 145 179 exp 2 2;
-#X text 38 19 The 'exp' message or flag sets exponential factors for
+#X obj 507 329 else/graph~ 441 8 -1.05 1.05 200 140;
+#X text 764 209 parabolic waveform, f 9;
+#X msg 151 180 exp 2 2;
+#X text 44 20 The 'exp' message or flag sets exponential factors for
 each line. By default \, they're "1" (linear). For values >= 0 \, it's
 like raising to the power of the given exponential. Negative values
 are accepted and offer a mirrored/reversed curve. Check below.;
-#X msg 136 158 exp -2 -2;
-#X obj 501 210 else/function~ 0 0.5 1 0.5 0 0.5 -1 0.5 0 -exp -2 -2
+#X msg 142 159 exp -2 -2;
+#X obj 507 211 else/function~ 0 0.5 1 0.5 0 0.5 -1 0.5 0 -exp -2 -2
 2 2, f 41;
-#X obj 597 102 expr -$f1 \; -$f1 \; $f1 \; $f1;
-#X obj 597 159 pack f f f f;
-#X obj 597 181 else/setmess exp;
-#X obj 600 55 hsl 128 15 2 25 1 0 empty empty empty -2 -8 0 10 -228856
+#X obj 603 103 expr -$f1 \; -$f1 \; $f1 \; $f1;
+#X obj 603 160 pack f f f f;
+#X obj 603 182 else/setmess exp;
+#X obj 606 56 hsl 128 15 2 25 1 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 597 79 5 0 0 0 - - -;
-#X obj 501 131 phasor~ 100;
-#X obj 315 103 else/rescale;
-#X obj 315 125 else/rescale~;
-#X text 37 83 The exponential factor is the same as used in [else/rescale]
+#X floatatom 603 80 5 0 0 0 - - -;
+#X obj 507 132 phasor~ 100;
+#X obj 321 104 else/rescale;
+#X obj 321 126 else/rescale~;
+#X text 43 84 The exponential factor is the same as used in [else/rescale]
 and [else/rescale~]. Check them out as well:;
-#X msg 126 137 exp 1 1;
-#X text 470 20 Here's how to create parabolic waveforms:;
+#X msg 132 138 exp 1 1;
+#X text 476 21 Here's how to create parabolic waveforms:;
 #X connect 1 0 3 0;
 #X connect 3 0 4 0;
 #X connect 4 0 0 0;
-#X connect 4 0 0 1;
 #X connect 4 0 2 0;
 #X connect 6 0 18 0;
 #X connect 9 0 4 0;
 #X connect 11 0 4 0;
 #X connect 12 0 5 0;
-#X connect 12 0 5 1;
 #X connect 12 0 7 0;
 #X connect 13 0 14 0;
 #X connect 13 1 14 1;
