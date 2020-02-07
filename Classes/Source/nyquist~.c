@@ -72,12 +72,12 @@ static void nyquist_free(t_nyquist *x){
     clock_free(x->x_clock);
 }
 
-static void *nyquist_new(t_symbol *s, int argc, t_atom *argv){
+static void *nyquist_new(t_symbol *s, int ac, t_atom *av){
     t_nyquist *x = (t_nyquist *)pd_new(nyquist_class);
+    s = NULL;
     x->x_khz = x->x_period = 0;
-    if(argv -> a_type == A_SYMBOL){
-        t_symbol *curarg = s; // get rid of warning
-        curarg = atom_getsymbolarg(0, argc, argv);
+    if(ac && av->a_type == A_SYMBOL){
+        t_symbol *curarg = atom_getsymbolarg(0, ac, av);
         if(!strcmp(curarg->s_name, "-khz"))
             x->x_khz = 1;
         else if(!strcmp(curarg->s_name, "-ms"))
@@ -92,7 +92,7 @@ static void *nyquist_new(t_symbol *s, int argc, t_atom *argv){
     return(x);
 errstate:
     pd_error(x, "[nyquist~]: improper args");
-    return NULL;
+    return(NULL);
 }
 
 void nyquist_tilde_setup(void){
