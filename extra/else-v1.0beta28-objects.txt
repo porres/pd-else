@@ -39,11 +39,12 @@ brickwall~	x
 brown~ 	x
 button	x
 canvas.active	x
+canvas.edit	x
 canvas.mouse	x
 canvas.name	x
-canvas.wname	x
-canvas.edit	x
+canvas.setname	x
 canvas.vis	x
+canvas.wname	x
 car2pol	x
 car2pol~	x
 ceil	x
@@ -295,7 +296,6 @@ s2f~	x
 sample~	x
 samps2ms~	x
 samps2ms	x
-savechange	x
 saw~	x
 saw2~	x
 scramble	x
