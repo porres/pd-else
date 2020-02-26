@@ -112,32 +112,22 @@ static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
         pd_error(x, "[dir]: no symbol given to 'open'");
         return;
     }
-    else if(dirname == x->x_getdir){ // do nothing
-        post("dirname == x->x_getdir");
-    }
-    else if(!strcmp(dirname->s_name, ".")){ // do nothing / reopen same dir
-        post("do nothing / reopen");
+    else if(dirname == x->x_getdir || !strcmp(dirname->s_name, "."){ // do nothing
     }
     else if(!strcmp(dirname->s_name, "..")){ // parent dir
-        post("parent");
         char *last_slash;
         last_slash = strrchr(x->x_directory, '/');
         *last_slash = '\0';
         if(!strcmp(x->x_directory, ""))
             strcpy(x->x_directory, "/");
     }
-    else if(!strncmp(dirname->s_name, "/", 1) || !strncmp(dirname->s_name, ":", 2)){ // absolute
-        post("absolute");
+    else if(!strncmp(dirname->s_name, "/", 1) || !strncmp(dirname->s_name, ":", 2)) // absolute
         strncpy(x->x_directory, dirname->s_name, MAXPDSTRING);
-    }
-    else{ // relative to current dir
-        post("relative");
+    else // relative to current dir
         sprintf(x->x_directory, "%s/%s", x->x_directory, dirname->s_name );
-    }
-// let's search it
+// search
     DIR *temp = opendir(x->x_directory);
     if(!temp){ // didn't find
-        post("didn't find");
         temp = NULL; // ???
         strcpy(x->x_directory, tempdir); // restore original directory
         if(init){
