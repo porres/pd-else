@@ -112,7 +112,7 @@ static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
         pd_error(x, "[dir]: no symbol given to 'open'");
         return;
     }
-    else if(dirname == x->x_getdir || !strcmp(dirname->s_name, "."){ // do nothing
+    else if(dirname == x->x_getdir || !strcmp(dirname->s_name, ".")){ // do nothing
     }
     else if(!strcmp(dirname->s_name, "..")){ // parent dir
         char *last_slash;
