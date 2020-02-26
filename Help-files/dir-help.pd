@@ -85,10 +85,8 @@ remains), f 63;
 #X obj 72 520 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 72 602 else/dir;
-#X obj 117 627 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
-1;
 #X msg 72 575 open \$1 \, dir;
-#X obj 87 660 else/display;
+#X obj 87 664 else/display;
 #X text 96 515 You can use [openpanel] to search for a directory to
 open., f 31;
 #X text 66 20 The 'open' message expects a symbol defining a directory.
@@ -106,17 +104,18 @@ sends an open flag ("1" if the directory has been successfully openned
 query for files. If you change the contents of your directory \, you
 need to use the 'reopen' message to reload the direcory's contents.
 , f 79;
-#X connect 1 1 17 0;
+#X obj 117 625 else/display 2;
+#X connect 1 1 16 0;
 #X connect 1 3 4 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;
-#X connect 8 0 12 0;
+#X connect 8 0 11 0;
 #X connect 9 0 8 0;
-#X connect 10 1 13 0;
-#X connect 10 3 11 0;
-#X connect 12 0 10 0;
-#X connect 16 0 1 0;
-#X restore 486 252 pd open;
+#X connect 10 1 12 0;
+#X connect 10 3 20 0;
+#X connect 11 0 10 0;
+#X connect 15 0 1 0;
+#X restore 486 248 pd open;
 #X text 139 617 1) float -;
 #X text 133 654 1) symbol -;
 #X text 213 617 (optional) relative directory level \, 0 is current
@@ -171,7 +170,7 @@ open] subpatch)., f 75;
 #X connect 5 1 0 0;
 #X connect 10 0 13 0;
 #X connect 13 1 7 0;
-#X restore 457 233 pd arguments;
+#X restore 457 227 pd arguments;
 #X text 213 380 opens a directory and loads contents, f 54;
 #X text 213 394 reloads contents of the last opened directory, f 54
 ;
@@ -194,7 +193,7 @@ and you don't need a 'reopen' message for that., f 42;
 #X connect 3 0 0 0;
 #X connect 5 0 0 0;
 #X connect 8 0 0 0;
-#X restore 426 271 pd extension-flag;
+#X restore 426 269 pd extension-flag;
 #X text 87 86 [dir] accesses files from a given directory.;
 #X obj 158 293 else/display 4;
 #X obj 82 570 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
@@ -213,7 +212,7 @@ and you don't need a 'reopen' message for that., f 42;
 #X obj 202 269 else/display 2;
 #X text 174 244 <= same as "n \, dir \, dump";
 #X text 233 220 <= same as "bang";
-#X text 55 323 'directory' =>;
+#X text 58 323 'directory' =>;
 #X text 155 177 <= sends directory path (second outlet);
 #X text 138 135 <= resets to patch's directory;
 #X text 156 198 <= sends number of files (third outlet);
@@ -237,7 +236,7 @@ also wrap according to the number of files., f 74;
 #X obj 83 383 else/display;
 #X obj 99 261 else/dir, f 15;
 #X obj 186 153 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 783 256;
+-228856 -1 -1 366 256;
 #X msg 83 356 \$2/\$1;
 #X obj 99 176 else/rand.i 1 1;
 #X obj 394 255 else/dir -ext .wav;
