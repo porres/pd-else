@@ -5,7 +5,7 @@
 --------------------------------------------------------------------------
 
 
-	Copyright © 2017-2019 Alexandre Torres Porres
+	Copyright © 2017-2020 Alexandre Torres Porres
 
 
 
