@@ -1,0 +1,81 @@
+#N canvas 734 131 565 359 10;
+#X obj 1 225 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 1 258 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 1 293 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 185 268 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 216 158 tgl 18 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
+0 1;
+#X obj 1 326 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 217 269 float -;
+#X text 173 160 status;
+#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 24 42 cnv 4 4 4 empty empty Report 0 28 2 18 -233017 -1 0;
+#X obj 82 42 cnv 4 4 4 empty empty zoom 0 28 2 18 -233017 -1 0;
+#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 306 5 graph;
+#X obj 130 42 cnv 4 4 4 empty empty status 0 28 2 18 -233017 -1 0;
+#X text 140 302 1) float - depth \, default 0 (current window);
+#X text 458 162 example:;
+#N canvas 800 286 473 314 depth 0;
+#X obj 82 126 tgl 18 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
+0 1;
+#X obj 82 153 sel 0 1;
+#X obj 266 127 tgl 18 0 empty empty empty 0 -6 0 8 -216373 -66577 -1
+0 1;
+#X obj 266 154 sel 0 1;
+#X obj 266 227 print parent-status;
+#X obj 82 226 print subpatch-status;
+#X text 78 36 You can also query the parent status with the depth argument
+(1 goes up to the parent patch \, 2 queries the parent's parent and
+so on)., f 46;
+#X msg 82 177 not in zoom mode;
+#X msg 101 200 in zoom mode;
+#X msg 266 178 not in zoom mode;
+#X msg 285 202 in zoom mode;
+#X obj 82 106 else/canvas.zoom;
+#X obj 266 107 else/canvas.zoom 1;
+#X connect 0 0 1 0;
+#X connect 1 0 7 0;
+#X connect 1 1 8 0;
+#X connect 2 0 3 0;
+#X connect 3 0 9 0;
+#X connect 3 1 10 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 9 0 4 0;
+#X connect 10 0 4 0;
+#X connect 11 0 0 0;
+#X connect 12 0 2 0;
+#X restore 459 185 pd depth;
+#X obj 216 186 else/display;
+#X text 183 233 (none);
+#X obj 216 135 else/canvas.zoom;
+#X text 79 91 The [canvas.zoom] object outputs zoom status - 1 when
+the window is in zoom mode and 0 when it is not.;
+#X text 272 268 zoom status;
+#X obj 4 5 cnv 15 301 42 empty empty canvas.zoom 20 20 2 37 -233017
+-1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 5 graph;
+#X connect 4 0 22 0;
+#X connect 24 0 4 0;

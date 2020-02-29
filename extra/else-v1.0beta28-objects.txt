@@ -45,6 +45,7 @@ canvas.name	x
 canvas.setname	x
 canvas.vis	x
 canvas.wname	x
+canvas.zoom	x
 car2pol	x
 car2pol~	x
 ceil	x
