@@ -41,6 +41,7 @@ typedef struct _pic{
      int            x_flag;
      int            x_s_flag;
      int            x_r_flag;
+     int            x_size;
      t_symbol      *x_fullname;
      t_symbol      *x_filename;
      t_symbol      *x_x;
@@ -104,12 +105,12 @@ static void pic_size_callback(t_pic *x, t_float w, t_float h){
         pd_bind(&x->x_obj.ob_pd, x->x_receive);
         x->x_bound = 1;
     }
-/*    if(1){
+    if(x->x_size){
         t_atom at[2];
         SETFLOAT(at, w);
         SETFLOAT(at+1, h);
         outlet_list(x->x_obj.ob_outlet, &s_list, 2, at);
-    }*/
+    }
 }
 
 // ------------------------ pic widgetbehaviour-------------------------------------------------------------------
@@ -271,8 +272,9 @@ static void pic_save(t_gobj *z, t_binbuf *b){
         x->x_snd_raw = gensym("empty");
     if(x->x_rcv_raw == &s_)
         x->x_rcv_raw = gensym("empty");
-    binbuf_addv(b, "ssiisisss", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
-        atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_outline, x->x_filename, x->x_snd_raw, x->x_rcv_raw);
+    binbuf_addv(b, "ssiisisssi", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
+        atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_outline, x->x_filename, x->x_snd_raw,
+        x->x_rcv_raw, x->x_size);
     binbuf_addv(b, ";");
 }
 
@@ -425,10 +427,9 @@ static void pic_tick(t_pic *x){
     outlet_float(x->x_outlet, x->x_width);
 }
 
-static void pic_size(t_pic *x){
-    clock_delay(x->x_clock, 10);
+static void pic_size(t_pic *x, t_floatarg f){
+    x->x_size = (int)(f != 0);
 }
-
 
 static void pic_bang(t_pic *x){
     outlet_bang(x->x_outlet);
@@ -476,19 +477,21 @@ void pic_properties(t_gobj *z, t_glist *gl){
     gl = NULL;
     t_pic *x = (t_pic *)z;
     char buf[256];
-    sprintf(buf, "pic_properties %%s %s %d %s %s\n",
+    sprintf(buf, "pic_properties %%s %s %d %s %s %d\n",
         x->x_filename == &s_ ? gensym("empty")->s_name : x->x_filename->s_name,
         x->x_outline,
         x->x_send == &s_ ? gensym("empty")->s_name : x->x_send->s_name,
-        x->x_receive == &s_ ? gensym("empty")->s_name : x->x_receive->s_name);
+        x->x_receive == &s_ ? gensym("empty")->s_name : x->x_receive->s_name,
+        x->x_size);
     gfxstub_new(&x->x_obj.ob_pd, x, buf);
 }
 
-static void pic_ok(t_pic *x, t_symbol *name, t_floatarg outline, t_symbol *snd, t_symbol *rcv){
+static void pic_ok(t_pic *x, t_symbol *name, t_floatarg outline, t_symbol *snd, t_symbol *rcv, t_floatarg sz){
     pic_open(x, name);
     pic_outline(x, outline);
     pic_send(x, snd);
     pic_receive(x, rcv);
+    pic_size(x, sz);
 }
 
 //-------------------------------------------------------------------------------------
@@ -533,7 +536,8 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
     x->x_bound_to_x = 1;
     x->x_edit = x->x_canvas->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_filename = &s_;
-    int loaded = x->x_rcv_set = x->x_snd_set = x->x_bound = x->x_def_img = x->x_init = x->x_outline = x->x_flag = 0;
+    int loaded = x->x_rcv_set = x->x_snd_set = x->x_bound = x->x_def_img = x->x_init = 0;
+    x->x_outline = x->x_flag = x->x_size = 0;
     x->x_fullname = NULL;
     if(ac && av->a_type == A_FLOAT){ // 1ST outline
         x->x_outline = (int)(av->a_w.w_float != 0);
@@ -545,20 +549,24 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
                 x->x_filename = av->a_w.w_symbol;
                 ac--, av++;
             }
-        }
-        if(ac && av->a_type == A_SYMBOL){ // 3RD Send
-            if(av->a_w.w_symbol == gensym("empty")) // ignore
-                ac--, av++;
-            else{
-                x->x_send = av->a_w.w_symbol;
-                ac--, av++;
-            }
-            if(ac && av->a_type == A_SYMBOL){ // 4TH Receive
+            if(ac && av->a_type == A_SYMBOL){ // 3RD Send
                 if(av->a_w.w_symbol == gensym("empty")) // ignore
-                    ac--, av++;
+                ac--, av++;
                 else{
-                    x->x_receive = av->a_w.w_symbol;
+                    x->x_send = av->a_w.w_symbol;
                     ac--, av++;
+                }
+                if(ac && av->a_type == A_SYMBOL){ // 4TH Receive
+                    if(av->a_w.w_symbol == gensym("empty")) // ignore
+                        ac--, av++;
+                    else{
+                        x->x_receive = av->a_w.w_symbol;
+                        ac--, av++;
+                    }
+                    if(ac && av->a_type == A_FLOAT){ // 1ST outline
+                        x->x_size = (int)(av->a_w.w_float != 0);
+                        ac--; av++;
+                    }
                 }
             }
         }
@@ -569,6 +577,10 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
             cursym = atom_getsymbolarg(0, ac, av);
             if(cursym == gensym("-outline")){ // no arg
                 x->x_outline = x->x_flag = 1;
+                ac--, av++;
+            }
+            else if(cursym == gensym("-size")){ // no arg
+                x->x_size = 1;
                 ac--, av++;
             }
             else if(cursym == gensym("-send")){
@@ -644,7 +656,7 @@ void pic_setup(void){
     pic_class = class_new(gensym("pic"), (t_newmethod)pic_new, (t_method)pic_free, sizeof(t_pic),0, A_GIMME,0);
     class_addbang(pic_class, pic_bang);
     class_addmethod(pic_class, (t_method)pic_outline, gensym("outline"), A_DEFFLOAT, 0);
-    class_addmethod(pic_class, (t_method)pic_size, gensym("size"), 0);
+    class_addmethod(pic_class, (t_method)pic_size, gensym("size"), A_DEFFLOAT, 0);
     class_addmethod(pic_class, (t_method)pic_open, gensym("open"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_set, gensym("set"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_send, gensym("send"), A_DEFSYMBOL, 0);
@@ -674,17 +686,20 @@ void pic_setup(void){
     sys_vgui("    set var_outline [concat var_outline_$vid]\n");
     sys_vgui("    set var_snd [concat var_snd_$vid]\n");
     sys_vgui("    set var_rcv [concat var_rcv_$vid]\n");
+    sys_vgui("    set var_size [concat var_size_$vid]\n");
     sys_vgui("\n");
     sys_vgui("    global $var_name\n");
     sys_vgui("    global $var_outline\n");
     sys_vgui("    global $var_snd\n");
     sys_vgui("    global $var_rcv\n");
+    sys_vgui("    global $var_size\n");
     sys_vgui("\n");
     sys_vgui("    set cmd [concat $id ok \\\n");
     sys_vgui("        [eval concat $$var_name] \\\n");
     sys_vgui("        [eval concat $$var_outline] \\\n");
     sys_vgui("        [eval concat $$var_snd] \\\n");
-    sys_vgui("        [eval concat $$var_rcv] \\;]\n");
+    sys_vgui("        [eval concat $$var_rcv] \\\n");
+    sys_vgui("        [eval concat $$var_size] \\;]\n");
     sys_vgui("    pd $cmd\n");
     sys_vgui("    pic_cancel $id\n");
     sys_vgui("}\n");
@@ -694,22 +709,25 @@ void pic_setup(void){
     sys_vgui("    pd $cmd\n");
     sys_vgui("}\n");
     
-    sys_vgui("proc pic_properties {id name outline snd rcv} {\n");
+    sys_vgui("proc pic_properties {id name outline snd rcv sz} {\n");
     sys_vgui("    set vid [string trimleft $id .]\n");
     sys_vgui("    set var_name [concat var_name_$vid]\n");
     sys_vgui("    set var_outline [concat var_outline_$vid]\n");
     sys_vgui("    set var_snd [concat var_snd_$vid]\n");
     sys_vgui("    set var_rcv [concat var_rcv_$vid]\n");
+    sys_vgui("    set var_size [concat var_size_$vid]\n");
     sys_vgui("\n");
     sys_vgui("    global $var_name\n");
     sys_vgui("    global $var_outline\n");
     sys_vgui("    global $var_snd\n");
     sys_vgui("    global $var_rcv\n");
+    sys_vgui("    global $var_size\n");
     sys_vgui("\n");
     sys_vgui("    set $var_name $name\n");
     sys_vgui("    set $var_outline $outline\n");
     sys_vgui("    set $var_snd $snd\n");
     sys_vgui("    set $var_rcv $rcv\n");
+    sys_vgui("    set $var_size $sz\n");
     sys_vgui("\n");
     sys_vgui("    toplevel $id\n");
     sys_vgui("    wm title $id {[pic] Properties}\n");
@@ -730,6 +748,12 @@ void pic_setup(void){
     sys_vgui("    label $id.snd_rcv.lrcv -text \"Receive symbol:\"\n");
     sys_vgui("    entry $id.snd_rcv.rcv -textvariable $var_rcv -width 7\n");
     sys_vgui("    pack $id.snd_rcv.lsnd $id.snd_rcv.snd $id.snd_rcv.lrcv $id.snd_rcv.rcv -side left\n");
+    sys_vgui("\n");
+    sys_vgui("    frame $id.picsize\n");
+    sys_vgui("    pack $id.picsize -side top\n");
+    sys_vgui("    label $id.picsize.lsz -text \"Report Size:\"\n");
+    sys_vgui("    entry $id.picsize.sz -textvariable $var_size -width 1\n");
+    sys_vgui("    pack $id.picsize.lsz $id.picsize.sz -side left\n");
     sys_vgui("\n");
     sys_vgui("    frame $id.buttonframe\n");
     sys_vgui("    pack $id.buttonframe -side bottom -fill x -pady 2m\n");
