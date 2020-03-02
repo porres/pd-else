@@ -277,6 +277,47 @@ static void pic_save(t_gobj *z, t_binbuf *b){
 }
 
 //------------------------------- METHODS --------------------------------------------
+void pic_set(t_pic* x, t_symbol *filename){
+    if(filename){
+        if(filename == gensym("empty") && x->x_def_img)
+            return;
+        if(filename != x->x_filename){
+            const char *file_name_open = pic_filepath(x, filename->s_name); // path
+            if(file_name_open){
+                t_canvas *cv = glist_getcanvas(x->x_glist);
+                int xpos = text_xpix(&x->x_obj, x->x_glist);
+                int ypos = text_ypix(&x->x_obj, x->x_glist);
+                x->x_filename = filename;
+                x->x_fullname = gensym(file_name_open);
+                sys_vgui("if { [info exists %lx_picname] == 0 } { image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n} \n",
+                x->x_fullname, x->x_fullname, file_name_open, x->x_fullname);
+                if(glist_isvisible(x->x_glist)){
+                    sys_vgui(".x%lx.c delete %lx_pic\n", cv, x); // ERASE
+                    sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
+                    sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
+                    sys_vgui(".x%lx.c delete %lxSEL\n", cv, x);
+                    sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_pic\n",
+                        cv, xpos, ypos, x->x_fullname, x); // CREATE NEW IMAGE
+                }
+                if(x->x_bound){
+                    pd_unbind(&x->x_obj.ob_pd, x->x_receive);
+                    x->x_bound = 0;
+                }
+                if(!x->x_bound_to_x){
+                    pd_bind(&x->x_obj.ob_pd, x->x_x);
+                    x->x_bound_to_x = 1;
+                }
+                sys_vgui("pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"\n",
+                         x->x_x->s_name, x->x_fullname, x->x_fullname);
+                 if(x->x_def_img)
+                     x->x_def_img = 0;
+            }
+            else pd_error(x, "[pic]: error opening file '%s'", filename->s_name);
+        }
+    }
+    else pd_error(x, "[pic]: set needs a file name");
+}
+
 void pic_open(t_pic* x, t_symbol *filename){
     if(filename){
         if(filename == gensym("empty") && x->x_def_img)
@@ -605,6 +646,7 @@ void pic_setup(void){
     class_addmethod(pic_class, (t_method)pic_outline, gensym("outline"), A_DEFFLOAT, 0);
     class_addmethod(pic_class, (t_method)pic_size, gensym("size"), 0);
     class_addmethod(pic_class, (t_method)pic_open, gensym("open"), A_DEFSYMBOL, 0);
+    class_addmethod(pic_class, (t_method)pic_set, gensym("set"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_send, gensym("send"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_size_callback, gensym("_picsize"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(pic_class, (t_method)pic_ok, gensym("ok"), A_SYMBOL, A_FLOAT, A_SYMBOL, A_SYMBOL, 0);
