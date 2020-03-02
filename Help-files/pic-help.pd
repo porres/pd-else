@@ -1,4 +1,4 @@
-#N canvas 637 43 564 604 10;
+#N canvas 599 77 559 654 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -25,26 +25,26 @@
 #X restore 3 3 graph;
 #X obj 4 366 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 455 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 478 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 512 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 107 375 cnv 17 3 73 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 547 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 98 373 cnv 17 3 99 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 578 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 629 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 136 375 open <symbol>;
-#X text 222 375 - open an image file named by the symbol;
+#X text 127 371 open <symbol>;
+#X text 213 371 - open an image file named by the symbol, f 50;
 #X msg 221 141 open tklogo.gif;
 #X msg 244 167 open pdlogo.gif;
 #X obj 221 334 else/display;
-#X obj 107 462 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 98 485 cnv 17 3 28 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 190 463 bang;
-#X text 222 463 - a bang is output if you click on the image;
-#X text 136 419 send <symbol>;
-#X text 222 419 - sets a send symbol, f 40;
-#X text 118 434 receive <symbol>;
-#X text 222 434 - sets a receive symbol, f 40;
+#X text 181 484 bang;
+#X text 213 484 - a bang is output if you click on the image;
+#X text 127 429 send <symbol>;
+#X text 213 429 - sets a send symbol, f 50;
+#X text 109 444 receive <symbol>;
+#X text 213 444 - sets a receive symbol, f 50;
 #N canvas 766 187 571 549 send 0;
 #X obj 355 346 else/display;
 #X obj 353 246 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -71,13 +71,13 @@ properties \, you also need to escape woth backlashes., f 67;
 #X connect 4 0 8 0;
 #X connect 5 0 0 0;
 #X connect 8 0 2 0;
-#X restore 490 295 pd send \; receive;
-#X text 190 390 bang;
-#X text 222 390 - outputs a bang, f 40;
+#X restore 490 256 pd send \; receive;
+#X text 181 400 bang;
+#X text 213 400 - outputs a bang, f 50;
 #X text 81 89 [pic] loads image pictures that you can interact with.
 When you click on the picture \, it sends a bang. It only works with
 file types: .gif \, .ppm & .pgm.;
-#N canvas 662 128 446 653 examples 0;
+#N canvas 662 128 651 373 examples 0;
 #N canvas 457 127 474 484 (subpatch) 0;
 #X msg 117 275 open green.gif;
 #X msg 217 295 open red.gif;
@@ -97,12 +97,12 @@ file types: .gif \, .ppm & .pgm.;
 #X connect 8 0 0 0;
 #X connect 8 0 6 0;
 #X coords 0 -1 1 1 121 121 2 100 100;
-#X restore 164 407 pd;
-#X obj 164 549 else/display;
-#X text 296 461 <= open;
-#X text 112 279 You can also connect the bang output into a counter
+#X restore 412 121 pd;
+#X obj 412 263 else/display;
+#X text 544 175 <= open;
+#X text 63 269 You can also connect the bang output into a counter
 and make it go through a sequence of images., f 37;
-#X text 108 339 Anothe idea is that you can also adapat the patch above
+#X text 356 53 Anothe idea is that you can also adapat the patch above
 to behave like a bang with a flash time. See below., f 41;
 #N canvas 457 127 400 491 (subpatch) 0;
 #X obj 104 232 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
@@ -125,14 +125,14 @@ to behave like a bang with a flash time. See below., f 41;
 #X connect 7 0 8 0;
 #X connect 8 0 0 0;
 #X coords 0 -1 1 1 121 121 2 100 100;
-#X restore 162 92 pd;
-#X obj 162 231 else/display;
-#X text 294 146 <= open;
-#X text 104 47 Using [pic] to create toggle on/off buttons. See subpatch
+#X restore 113 82 pd;
+#X obj 113 221 else/display;
+#X text 245 136 <= open;
+#X text 55 37 Using [pic] to create toggle on/off buttons. See subpatch
 below:, f 35;
 #X connect 0 0 1 0;
 #X connect 5 0 6 0;
-#X restore 472 329 pd examples;
+#X restore 472 310 pd examples;
 #N canvas 823 287 400 363 more 0;
 #X text 105 128 default image =>;
 #X text 92 246 Now please get into and out of edit mode so you can
@@ -145,7 +145,7 @@ image of a question mark:, f 43;
 #X text 79 173 Note that once you have a loaded image \, setting the
 filename to "empty doesn't draw the question mark image back., f 39
 ;
-#X restore 496 241 pd more details;
+#X restore 496 202 pd more details;
 #X f 7;
 #N canvas 835 231 468 365 outline 0;
 #X msg 181 155 outline \$1;
@@ -158,23 +158,69 @@ message \, the -outline flag or via properties window \, in which case
 a non zero value sets to outline mode.;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
-#X restore 478 273 pd outline;
+#X restore 478 234 pd outline;
 #X obj 221 194 else/pic 0 pdlogo.gif empty empty;
-#X obj 4 485 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 520 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X text 178 492 (none);
-#X text 133 560 -outline: sets to outline mode (default no outline)
+#X text 169 527 (none);
+#X text 124 595 -outline: sets to outline mode (default no outline)
 , f 57;
 #X text 107 210 click the image for bang =======>, f 17;
 #X text 107 243 right click for properties =====>, f 17;
-#X text 124 405 outline <float>;
-#X text 222 405 - non zero sets to outline mode, f 40;
-#X text 133 518 -open <symbol>: sets file name to open (default 'empty')
+#X text 115 415 outline <float>;
+#X text 213 415 - non zero sets to outline mode, f 50;
+#X text 124 553 -open <symbol>: sets file name to open (default 'empty')
 , f 57;
-#X text 133 532 -send <symbol>: sets send symbol (default 'empty')
+#X text 124 567 -send <symbol>: sets send symbol (default 'empty')
 , f 57;
-#X text 133 546 -receive <symbol>: sets receive symbol (default 'empty')
+#X text 124 581 -receive <symbol>: sets receive symbol (default 'empty')
 , f 57;
+#X text 133 386 set <symbol>;
+#X text 213 386 - same as open \, but pd doesn't ask to save changes
+;
+#X text 181 499 list;
+#X text 213 499 - pic dimension when loading images;
+#N canvas 663 122 711 748 zoom 0;
+#X obj 33 81 else/canvas.zoom;
+#X text 17 12 When in zoom mode \, [pic] cannot zoom into the loaded
+image. A possible workaround is to use [canvas.zoom] and load an image
+twice as big when the patch window gets zoomed in., f 52;
+#X obj 33 195 else/pic 0 pdlogo.gif empty empty;
+#X msg 33 147 open pdlogo.gif;
+#X msg 139 148 open pdlogo-big.gif;
+#X obj 33 102 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 33 124 select 0 1, f 36;
+#X obj 33 334 else/display;
+#X connect 0 0 5 0;
+#X connect 2 0 7 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 6 0;
+#X connect 6 0 3 0;
+#X connect 6 1 4 0;
+#X restore 496 331 pd zoom;
+#X text 124 609 -size: sets to "report size" mode (default no report)
+, f 57;
+#X text 133 458 size <float>;
+#X text 213 458 - non zero sets to report size mode, f 50;
+#N canvas 651 230 503 428 size 0;
+#X msg 215 133 open tklogo.gif;
+#X msg 238 159 open pdlogo.gif;
+#X obj 215 197 else/pic 0 pdlogo.gif empty empty;
+#X obj 151 131 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X msg 151 158 size \$1;
+#X obj 215 341 else/display;
+#X text 82 40 You can set [pic] to report the image size after it loads
+with the -size' flag or 'size' message. In this case \, it sends a
+list of width and height.;
+#X connect 0 0 2 0;
+#X connect 1 0 2 0;
+#X connect 2 0 5 0;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X restore 496 289 pd size;
 #X connect 19 0 36 0;
 #X connect 20 0 36 0;
 #X connect 36 0 21 0;
