@@ -1,4 +1,4 @@
-#N canvas 433 41 565 701 10;
+#N canvas 564 85 565 701 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -124,11 +124,6 @@ playing, f 62;
 #X text 127 413 set <symbol> - sets a file to open (needs a reload
 message), f 68;
 #X obj 63 202 else/play.file~;
-#X text 39 85 [player~] is a convenient abstraction based on [soundfiler]
-and [tabread4~]. It offers many playing capabilities on arrays and
-it's more versatile than [play.file~]. For instance \, you can play
-in different speeds and even backwards. The object is also able to
-search for files relative to the parent patch., f 76;
 #X obj 63 226 else/pvoc.player~;
 #X obj 63 249 else/gran.player~;
 #X text 77 658 -range <float \, float>: sets sample range (default
@@ -197,8 +192,12 @@ search for files relative to the parent patch., f 76;
 1;
 #X obj 232 192 else/player~ stereo.wav;
 #X obj 224 219 else/out2~;
-#X connect 61 0 64 0;
-#X connect 62 0 61 0;
+#X text 39 85 [player~] is a convenient abstraction based on [soundfiler]
+and [tabread4~]. It offers many playing capabilities on arrays and
+it's more versatile than [play.file~]. For instance \, you can play
+in different speeds and even backwards., f 76;
+#X connect 60 0 63 0;
+#X connect 61 0 60 0;
+#X connect 62 0 63 0;
 #X connect 63 0 64 0;
-#X connect 64 0 65 0;
-#X connect 64 1 65 1;
+#X connect 63 1 64 1;
