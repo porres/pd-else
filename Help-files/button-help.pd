@@ -1,5 +1,4 @@
-#N struct 1006-cell float cellsize float color;
-#N canvas 534 42 563 456 10;
+#N canvas 816 51 565 459 10;
 #X obj 2 3 cnv 15 301 42 empty empty button 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -36,19 +35,19 @@
 #X obj 121 379 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 155 346 size <float>;
-#X obj 238 301 else/display;
 #X text 243 346 - sets button size in pixels, f 41;
 #X text 197 379 float;
 #X text 243 379 - latch status (on: 1 or off: 0);
 #X text 157 409 -size <float>: sets button size (default 20), f 47
 ;
-#X text 181 193 click =>;
-#X msg 238 162 size \$1;
-#X floatatom 238 140 5 20 100 0 - - -;
-#X obj 238 191 else/button 20;
 #X text 49 89 [button] is a GUI button that responds to mouse clicks.
 When clicked on \, it sends a "1" value \, and outputs "0" when releasing
 the mouse button., f 69;
-#X connect 25 0 27 0;
-#X connect 26 0 25 0;
-#X connect 27 0 19 0;
+#X obj 238 301 else/display;
+#X text 181 193 click =>;
+#X msg 238 162 size \$1;
+#X floatatom 238 140 5 20 100 0 - - -;
+#X obj 238 189 else/button 20;
+#X connect 26 0 28 0;
+#X connect 27 0 26 0;
+#X connect 28 0 24 0;
