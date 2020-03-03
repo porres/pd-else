@@ -1,4 +1,4 @@
-#N canvas 559 27 565 699 10;
+#N canvas 737 23 565 699 10;
 #X obj 244 200 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X msg 125 209 start;
@@ -119,26 +119,25 @@ dialog box) and starts playing, f 50;
 #X obj 39 317 else/player~;
 #X text 55 259 click: opens a new file =>;
 #X obj 64 41 cnv 4 4 4 empty empty sound 0 28 2 18 -233017 -1 0;
-#X obj 221 258 else/play.file~ violin.wav 1 1;
 #X text 128 459 set <symbol> -;
 #X text 222 458 sets a file to open next time it starts playing, f
 50;
-#X msg 277 201 open bagal.aif;
-#X msg 287 224 open;
-#X msg 327 228 set dholak.aif;
+#X msg 279 229 open;
 #X text 58 89 [play.file~] is a convenient abstraction based on [readsf~]
 to read files from your computer. Note that the file sample needs to
 be at the same sample rate as Pd's. The object can open files with
 absolute paths and is also able to search for files relative to the
 parent patch., f 69;
-#X connect 0 0 54 0;
-#X connect 1 0 54 0;
-#X connect 2 0 54 0;
-#X connect 3 0 54 0;
+#X msg 270 201 open MouthBow.wav;
+#X obj 221 258 else/play.file~ violin.wav 1 1;
+#X text 314 230 <= opens dialog;
+#X connect 0 0 59 0;
+#X connect 1 0 59 0;
+#X connect 2 0 59 0;
+#X connect 3 0 59 0;
 #X connect 4 0 3 0;
-#X connect 29 0 54 0;
-#X connect 54 0 28 0;
-#X connect 54 1 35 0;
-#X connect 57 0 54 0;
-#X connect 58 0 54 0;
-#X connect 59 0 54 0;
+#X connect 29 0 59 0;
+#X connect 56 0 59 0;
+#X connect 58 0 59 0;
+#X connect 59 0 28 0;
+#X connect 59 1 35 0;
