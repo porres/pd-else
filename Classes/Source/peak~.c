@@ -161,13 +161,13 @@ static void peak_tilde_dsp(t_sigpeak *x, t_signal **sp)
     dsp_add(peak_tilde_perform, 3, x, sp[0]->s_vec, sp[0]->s_n);
 }
 
-t_float pow2db(t_float f){
+t_float amp2db(t_float f){
     if(f <= 0)
         return(-999);
     else if(f == 1)
         return(0);
     else{
-        float val = log(f) * 10./LOGTEN ;
+        float val = log(f) * 20./LOGTEN ;
         return(val < -999 ? -999 : val);
     }
 }
@@ -175,9 +175,9 @@ t_float pow2db(t_float f){
 static void peak_tilde_tick(t_sigpeak *x) // clock callback function
 {
     if(x->x_db)
-        outlet_float(x->x_outlet, pow2db(x->x_result));
+        outlet_float(x->x_outlet, amp2db(x->x_result));
     else
-        outlet_float(x->x_outlet, sqrtf(x->x_result));
+        outlet_float(x->x_outlet, x->x_result);
 }
 
 static void peak_tilde_free(t_sigpeak *x)  // cleanup
