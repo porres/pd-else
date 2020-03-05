@@ -1,6 +1,6 @@
-#N struct 2092-slot float x float y float slotsize float color float
+#N struct 1015-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 2094-slot float x float y float slotsize float color float
+#N struct 1011-slot float x float y float slotsize float color float
 width float bordercolor;
 #N canvas 560 53 564 546 10;
 #X obj 23 39 cnv 4 4 4 empty empty Drum 0 28 2 18 -233017 -1 0;
