@@ -39,6 +39,7 @@ brickwall~	x
 brown~ 	x
 button	x
 canvas.active	x
+canvas.bounds	x
 canvas.edit	x
 canvas.mouse	x
 canvas.name	x
