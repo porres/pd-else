@@ -1,12 +1,13 @@
 --------------------------------------------------------------------------
 
-# ELSE - EL Locus Solus' Externals
+# ELSE - EL Locus Solus' Externals 
 
---------------------------------------------------------------------------
+
+**ELSE** is an external library for the Pure Data programming language; 
+Download Pure Data at: http://msp.ucsd.edu/software.html 
 
 
 	Copyright © 2017-2020 Alexandre Torres Porres
-
 
 
    This work is free. You can redistribute it and/or modify it under the
@@ -18,7 +19,6 @@
    Other licenses may apply for specific objects and this is informed in the source code (example: the [giga.rev~] object). 
 
 --------------------------------------------------------------------------
-
 
 ### Version 1.0 beta-28 (Unreleased)
 
