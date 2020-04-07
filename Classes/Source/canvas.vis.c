@@ -13,20 +13,17 @@ typedef struct _canvas_vis_proxy{
 }t_canvas_vis_proxy;
 
 typedef struct _canvas_vis{
-    t_object        x_obj;
-    t_canvas_vis_proxy   *x_proxy;
-    t_canvas       *x_canvas;
+    t_object            x_obj;
+    t_canvas_vis_proxy *x_proxy;
+    t_canvas           *x_canvas;
 }t_canvas_vis;
-
-static void canvas_vis_loadbang(t_canvas_vis *x, t_float f){
-    if((int)f == LB_LOAD)
-        outlet_float(x->x_obj.ob_outlet, glist_isvisible(x->x_canvas));
-}
 
 static void canvas_vis_proxy_any(t_canvas_vis_proxy *p, t_symbol *s, int ac, t_atom *av){
     ac = 0;
     if(p->p_cnv && s == gensym("map"))
         outlet_float(p->p_cnv->x_obj.ob_outlet, (int)(av->a_w.w_float));
+    else if(p->p_cnv && s == gensym("menuclose"))
+        outlet_float(p->p_cnv->x_obj.ob_outlet, 0);
 }
 
 static void canvas_vis_proxy_free(t_canvas_vis_proxy *p){
@@ -65,7 +62,6 @@ static void *canvas_vis_new(t_floatarg f1){
 void setup_canvas0x2evis(void){
     canvas_vis_class = class_new(gensym("canvas.vis"), (t_newmethod)canvas_vis_new,
         (t_method)canvas_vis_free, sizeof(t_canvas_vis), CLASS_NOINLET, A_DEFFLOAT, 0);
-    class_addmethod(canvas_vis_class, (t_method)canvas_vis_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     canvas_vis_proxy_class = class_new(0, 0, 0, sizeof(t_canvas_vis_proxy),
         CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(canvas_vis_proxy_class, canvas_vis_proxy_any);
