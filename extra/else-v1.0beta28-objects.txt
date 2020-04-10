@@ -98,6 +98,7 @@ dust~	x
 dust2~	x
 e	x
 echo.rev~	x
+else	x
 envelope~	x
 envgen~	x
 eq~	x

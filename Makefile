@@ -14,6 +14,9 @@ uname := $(shell uname -s)
 # Sources: ##############################################################
 #########################################################################
 
+# Lib:
+else.class.sources := Classes/Source/else.c
+
 # EXTRA:
 cmul~.class.sources := Classes/Source/cmul~.c
 

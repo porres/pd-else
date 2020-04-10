@@ -52,7 +52,7 @@ Look for the latest releases in https://github.com/porres/pd-else/releases - but
 
 ### Installing ELSE:
 
-This release needs Pd Vanilla 0.51-0 or above (Pd Extended/Purr Data aren't supported). ELSE comes as a set of separate binaries and abstractions, so all you need to is add the "else" path to Pd via "Preferences => Path" or use the [declare] object.
+This release needs Pd Vanilla 0.51-0 or above (Pd Extended/Purr Data aren't supported). ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path. Nonetheless, it can also be loaded as a library via "Preferences => Startup" or with [declare -lib else], and this is the oficial way of loading 'else' - even though that all this does is just print the library information on Pd's terminal window. 
 
 #### Building ELSE for Pd Vanilla:
 
@@ -72,12 +72,13 @@ Cross compiling is also possible with something like this
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=../</pre>
 --------------------------------------------------------------------------
 
-## Current Object list (368 objects):
+## Current Object list (369 objects):
 
 **ASSORTED: [03]**
 - [table~]
 - [nbang]
 - [meter]
+- [else]
 
 **FFT: [02]**
 - [hann~]

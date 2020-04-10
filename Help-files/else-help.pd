@@ -1,0 +1,50 @@
+#N canvas 711 28 561 457 10;
+#X declare -lib else;
+#X msg 257 329 about;
+#X obj 3 427 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 61 160 Check declare's help file for more information.;
+#X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 306 3 pd;
+#X obj 346 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 459 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 31 40 cnv 4 4 4 empty empty The 0 28 2 18 -233017 -1 0;
+#X obj 68 40 cnv 4 4 4 empty empty ELSE 0 28 2 18 -233017 -1 0;
+#X obj 126 40 cnv 4 4 4 empty empty library 0 28 2 18 -233017 -1 0
+;
+#X obj 281 132 declare -lib else;
+#X text 63 98 The ELSE library is a set of separate binaries and abstractions
+\, but you can also load it via "Preferences => Startup" or \, alternatively
+\, you can use [declare] as follows:, f 71;
+#X text 63 189 What this does is add some information about the ELSE
+library in Pd's window and loads else's path to Pd so you can load
+the abtractions and separate binaries., f 71;
+#X text 64 291 See https://github.com/porres/pd-else for more details.
+, f 64;
+#X obj 257 354 else/else;
+#X obj 282 393 else/All_about_else;
+#X text 119 394 Check "All About ELSE" =>;
+#X text 63 233 Creating the else external object is the same as loading
+it as a library \, so you still have yet this another alternative.
+the object itself doesn't do anything and only accepts the "about"
+message \, which prints basic information (version \, release date)
+on the terminal., f 71;
+#X obj 4 3 cnv 15 301 42 empty empty else(library) 20 20 0 33 -233017
+-1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 2 graph;
+#X connect 0 0 18 0;
