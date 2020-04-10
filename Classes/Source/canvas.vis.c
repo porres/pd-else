@@ -45,6 +45,10 @@ static void canvas_vis_free(t_canvas_vis *x){
     clock_delay(x->x_proxy->p_clock, 0);
 }
 
+void canvas_vis_bang(t_canvas_vis *x){
+    outlet_float(x->x_obj.ob_outlet, glist_isvisible(x->x_canvas));
+}
+
 static void *canvas_vis_new(t_floatarg f1){
     t_canvas_vis *x = (t_canvas_vis *)pd_new(canvas_vis_class);
     x->x_canvas = canvas_getcurrent();
@@ -61,7 +65,8 @@ static void *canvas_vis_new(t_floatarg f1){
 
 void setup_canvas0x2evis(void){
     canvas_vis_class = class_new(gensym("canvas.vis"), (t_newmethod)canvas_vis_new,
-        (t_method)canvas_vis_free, sizeof(t_canvas_vis), CLASS_NOINLET, A_DEFFLOAT, 0);
+        (t_method)canvas_vis_free, sizeof(t_canvas_vis), CLASS_DEFAULT, A_DEFFLOAT, 0);
+    class_addbang(canvas_vis_class, canvas_vis_bang);
     canvas_vis_proxy_class = class_new(0, 0, 0, sizeof(t_canvas_vis_proxy),
         CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(canvas_vis_proxy_class, canvas_vis_proxy_any);
