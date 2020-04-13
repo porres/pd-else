@@ -41,8 +41,10 @@ button	x
 canvas.active	x
 canvas.bounds	x
 canvas.edit	x
+canvas.gop	x
 canvas.mouse	x
 canvas.name	x
+canvas.pos	x
 canvas.setname	x
 canvas.vis	x
 canvas.wname	x
