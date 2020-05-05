@@ -1,4 +1,4 @@
-#N canvas 679 246 562 492 10;
+#N canvas 645 175 562 492 10;
 #X obj 1 465 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 1 233 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -43,17 +43,9 @@
 #X text 19 101 The rightmost inlet sets several controls: slider value
 \, mute \, DSP on and off \, scaling modes \, maximum gain and ramp
 time.;
-#X text 18 22 [out~] allows you to switch the DSP engine on or off
-\, dac~ output on or off and mute/unmute without any clicks!;
-#X text 20 65 If the DSP is on when you load [out~] \, it checks the
-DSP state and loads the GUI accordingly.;
 #X text 406 72 You can also set a ramp time for the slider value \,
 the default is 20 ms and the minimum is 5 ms. This also affects the
 slider value input in the right outlet.;
-#X text 406 11 [out~] has 3 scaling modes for its slider (the default
-is "quartic"). You can set a linear gain multiplier \, which needs
-to be greater than zero and also represents the maximum linear gain
-achieved.;
 #X msg 602 248 gain \$1;
 #X obj 602 222 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -65,25 +57,33 @@ achieved.;
 #X msg 166 209 set \$1;
 #X obj 90 309 else/out2~;
 #X obj 440 302 else/out2~;
+#X text 406 11 [out2~] has 3 scaling modes for its slider (the default
+is "quartic"). You can set a linear gain multiplier \, which needs
+to be greater than zero and also represents the maximum linear gain
+achieved.;
+#X text 18 22 [out2~] allows you to switch the DSP engine on or off
+\, dac~ output on or off and mute/unmute without any clicks!;
+#X text 20 65 If the DSP is on when you load [out2~] \, it checks the
+DSP state and loads the GUI accordingly.;
 #X connect 0 0 1 0;
-#X connect 1 0 31 0;
-#X connect 3 0 32 0;
-#X connect 4 0 32 0;
-#X connect 7 0 32 0;
-#X connect 7 0 32 1;
-#X connect 8 0 29 0;
+#X connect 1 0 28 0;
+#X connect 3 0 29 0;
+#X connect 4 0 29 0;
+#X connect 7 0 29 0;
+#X connect 7 0 29 1;
+#X connect 8 0 26 0;
 #X connect 9 0 12 0;
 #X connect 12 0 8 0;
-#X connect 13 0 33 0;
-#X connect 13 0 33 1;
-#X connect 16 0 29 0;
+#X connect 13 0 30 0;
+#X connect 13 0 30 1;
+#X connect 16 0 26 0;
 #X connect 17 0 16 0;
-#X connect 18 0 32 0;
-#X connect 25 0 29 0;
-#X connect 26 0 25 0;
-#X connect 27 0 26 0;
-#X connect 30 0 33 0;
-#X connect 31 0 32 0;
+#X connect 18 0 29 0;
+#X connect 22 0 26 0;
+#X connect 23 0 22 0;
+#X connect 24 0 23 0;
+#X connect 27 0 30 0;
+#X connect 28 0 29 0;
 #X restore 469 146 pd examples;
 #X text 116 272 <on/off>;
 #X text 92 322 gain <float>;
