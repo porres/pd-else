@@ -120,12 +120,6 @@ static void bandpass_q(t_bandpass *x)
     x->x_bw = 0;
 }
 
-static void *bandpass_tilde_new(t_symbol *s, int argc, t_atom *argv)
-{
-    t_bandpass *x = (t_bandpass *)pd_new(bandpass_class);
-    return (x);
-}
-
 
 static void *bandpass_new(t_symbol *s, int argc, t_atom *argv)
 {
