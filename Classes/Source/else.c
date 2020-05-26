@@ -11,8 +11,8 @@ t_class *else_obj_class;
 static int printed;
 
 static int min_major = 0;
-static int min_minor = 51;
-static int min_bugfix = 0;
+static int min_minor = 50;
+static int min_bugfix = 3;
 static int else_beta_version = 28;
 
 void print_else_obj(t_else_obj *x){
@@ -29,7 +29,7 @@ void print_else_obj(t_else_obj *x){
     post("License: Do What The Fuck You Want To Public License, unless otherwise noted");
     post("Version: 1.0 beta %d; Unreleased", else_beta_version);
     if(min_major >= major && min_minor >= minor && min_bugfix >= bugfix){
-        post("ELSE 1.0 beta %d needs at least Pd %d.%d-%d, you have %d.%d-%d",
+        post("ELSE 1.0 beta %d needs at least Pd %d.%d-%d (you have %d.%d-%d, you're good!)",
              else_beta_version,
              min_major,
              min_minor,
