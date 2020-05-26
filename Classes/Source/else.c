@@ -11,8 +11,8 @@ t_class *else_obj_class;
 static int printed;
 
 static int min_major = 0;
-static int min_minor = 50;
-static int min_bugfix = 3;
+static int min_minor = 51;
+static int min_bugfix = 0;
 static int else_beta_version = 28;
 
 void print_else_obj(t_else_obj *x){
@@ -39,7 +39,7 @@ void print_else_obj(t_else_obj *x){
              bugfix);
     }
     else{
-        pd_error(x, "ELSE 1.0 beta %d needs at least Pd %d.%d-%d, you have %d.%d-%d, please upgrade",
+        pd_error(x, "ELSE 1.0 beta %d needs at least Pd %d.%d-%d (you have %d.%d-%d, please upgrade!)",
             else_beta_version,
             min_major,
             min_minor,
