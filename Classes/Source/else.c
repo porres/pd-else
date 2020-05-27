@@ -35,7 +35,9 @@ void print_else_obj(t_else_obj *x){
         pd_error(x, "ELSE 1.0 beta %d needs at least Pd %d.%d-%d (you have %d.%d-%d, please upgrade!)",
             else_beta_version, min_major, min_minor, min_bugfix, major, minor, bugfix);
     post("Loading the ELSE library added %s", else_obj_dir);
-    post("to Pd's path so the its objects can be loaded");
+    post("to Pd's path so its objects can be loaded");
+    post("----------------------------------------------------------------------------------");
+    post("   ~~~~~~~~~~|| ELSE - EL Locus Solus' Externals for Pure Data ||~~~~~~~~~~");
     post("----------------------------------------------------------------------------------");
     post("");
 }
