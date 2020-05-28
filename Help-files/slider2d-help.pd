@@ -1,30 +1,30 @@
-#N struct 1656-point float x0 float y0 float xs float ys float fg float
+#N struct 1369-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1669-point float x0 float y0 float xs float ys float fg float
+#N struct 1378-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1678-point float x0 float y0 float xs float ys float fg float
+#N struct 1387-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1693-point float x0 float y0 float xs float ys float fg float
+#N struct 1396-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1702-point float x0 float y0 float xs float ys float fg float
+#N struct 1405-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1711-point float x0 float y0 float xs float ys float fg float
+#N struct 1414-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1720-point float x0 float y0 float xs float ys float fg float
+#N struct 1423-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1729-point float x0 float y0 float xs float ys float fg float
+#N struct 1432-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1742-point float x0 float y0 float xs float ys float fg float
+#N struct 1441-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1753-point float x0 float y0 float xs float ys float fg float
+#N struct 1450-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1763-point float x0 float y0 float xs float ys float fg float
+#N struct 1459-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1774-point float x0 float y0 float xs float ys float fg float
+#N struct 1468-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1787-point float x0 float y0 float xs float ys float fg float
+#N struct 1137-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N canvas 796 121 561 564 10;
+#N canvas 585 70 561 564 10;
 #X obj 2 3 cnv 15 301 42 empty empty slider2d 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -201,7 +201,7 @@ according to the new range., f 64;
 -262144 -1 0 0;
 #X obj 51 316 pack2 fgcolor 0 0 0;
 #X obj 180 372 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 1 64 64 empty empty;
+0 0 0 1 0 0 empty empty;
 #X obj 180 316 pack2 bgcolor 255 255 255;
 #X text 119 31 You can set background and frontground colors with 'bgcolor'/'fgcolor'
 messages and '-bgcolor'/'-fgcolor' flags., f 40;
@@ -227,7 +227,7 @@ messages and '-bgcolor'/'-fgcolor' flags., f 40;
 #X restore 62 164 pd colors;
 #N canvas 495 251 331 438 line-grid 0;
 #X obj 79 224 else/slider2d 127 127 0 127 0 127 0 255 255 255 0 0 0
-0 0 1 64 64 empty empty;
+0 0 1 0 0 empty empty;
 #X obj 79 366 else/display;
 #X msg 105 191 line \$1;
 #X obj 105 163 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
@@ -265,7 +265,7 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #N canvas 700 46 429 340 init 0;
 #X obj 141 269 else/display;
 #X obj 141 124 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 1 64 64 empty empty, f 63;
+0 0 0 1 0 0 empty empty, f 63;
 #X text 77 33 With the 'init' message or '-init' flag \, the GUI operates
 in 'init mode' \, where it outputs the last saved value when you load
 the patch., f 46;
@@ -358,7 +358,7 @@ in: "\\\$0")., f 24;
 #X obj 359 61 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 359 89 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
-0 0 0 0 0 empty empty;
+0 0 0 18 73 empty empty;
 #X text 56 90 [slider2d] is a two dimensional slider GUI abstraction
 (see also [else/circle)., f 42;
 #X connect 63 0 64 0;
