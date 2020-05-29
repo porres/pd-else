@@ -141,9 +141,9 @@ static int keyboard_mapclick(t_keyboard* x, t_float xpix, t_float ypix, t_int ev
 
 // Mouse press
 static void keyboard_mousepress(t_keyboard* x, t_float xpix, t_float ypix, t_float id){
-    if((int)x != (int)id) // Check if it's the right instance to receive this message
+    if(x->glist->gl_edit) // give up if in edit mode
         return;
-    if(x->glist->gl_edit) // If edit mode, give up!
+    if((int)x != (int)id) // give up if not the right instance
         return;
     keyboard_mapclick(x, xpix, ypix, MOUSE_PRESS);
     keyboard_play(x);
