@@ -446,12 +446,13 @@ static void keyboard_save(t_gobj *z, t_binbuf *b){
                 gensym("obj"),
                 (t_int)x->x_obj.te_xpix,
                 (t_int)x->x_obj.te_ypix,
-                gensym("keyboard"),
+                atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
                 (t_int)x->space,
                 (t_int)x->height,
                 (t_int)x->octaves,
                 (t_int)x->low_c,
-                (t_int)x->x_toggle_mode);
+                (t_int)x->x_toggle_mode
+                );
     binbuf_addv(b, ";");
 }
 
@@ -510,31 +511,13 @@ void keyboard_float(t_keyboard *x, t_floatarg note){
     }
 }
 
-static void keyboard_oct(t_keyboard *x, t_floatarg f){
-    f = (int)(f);
-    if(f != 0){
-        float target;
-        if(x->low_c + f < 0)
-            target = 0;
-        else if(x->low_c + f > 8)
-            target = 8;
-        else
-            target = x->low_c + f;
-        if(x->low_c != target){
-            keyboard_erase(x);
-            keyboard_set_properties(x, x->space, x->height, x->octaves, target, x->x_toggle_mode);
-            keyboard_draw(x);
-        }
-    }
-}
-
 static void keyboard_height(t_keyboard *x, t_floatarg f){
     f = (int)(f);
     if(f < 10)
         f = 10;
     if(x->height != f){
         keyboard_erase(x);
-        keyboard_set_properties(x, x->space, f, x->octaves, x->low_c, x->x_toggle_mode);
+        x->height = f;
         keyboard_draw(x);
     }
 }
@@ -545,7 +528,8 @@ static void keyboard_width(t_keyboard *x, t_floatarg f){
         f = 7;
     if(x->space != f){
         keyboard_erase(x);
-        keyboard_set_properties(x, f, x->height, x->octaves, x->low_c, x->x_toggle_mode);
+        x->space = f;
+        x->width = ((int)(x->space)) * 7 * (int)x->octaves;
         keyboard_draw(x);
     }
 }
@@ -558,7 +542,8 @@ static void keyboard_8ves(t_keyboard *x, t_floatarg f){
         f = 1;
     if(x->octaves != f){
         keyboard_erase(x);
-        keyboard_set_properties(x, x->space, x->height, f, x->low_c, x->x_toggle_mode);
+        x->octaves = f;
+        x->width = x->space * 7 * x->octaves;
         keyboard_draw(x);
     }
 }
@@ -571,14 +556,21 @@ static void keyboard_low_c(t_keyboard *x, t_floatarg f){
         f = 0;
     if(x->low_c != f){
         keyboard_erase(x);
-        keyboard_set_properties(x, x->space, x->height, x->octaves, f, x->x_toggle_mode);
+        x->low_c = f;
+        x->first_c = ((int)(x->low_c * 12)) + 12;
         keyboard_draw(x);
     }
 }
 
+static void keyboard_oct(t_keyboard *x, t_floatarg f){
+    keyboard_low_c(x, x->low_c + (int)(f));
+}
+
 static void keyboard_toggle(t_keyboard *x, t_floatarg f){
-    keyboard_flush(x);
-    keyboard_set_properties(x, x->space, x->height, x->octaves, x->low_c, f);
+    int tgl = f != 0 ? 1 : 0;
+    if(x->x_toggle_mode && !tgl)
+        keyboard_flush(x);
+    x->x_toggle_mode = tgl;
 }
 
 /* ------------------------ Free / New / Setup ------------------------------*/
