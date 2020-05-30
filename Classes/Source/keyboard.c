@@ -65,60 +65,6 @@ static void keyboard_play(t_keyboard* x){
     }
 }
 
-/* -------------------- MOUSE Events ----------------------------------*/
-
-// TOGGLE MODE
-static void keyboard_play_tgl(t_keyboard* x, t_float xpix, t_float ypix){
-    ypix = 0;
-    short i, wcounter, bcounter;
-    wcounter = bcounter = 0;
-    t_atom a[2];
-    for(i = 0 ; i < x->octaves * 12 ; i++){
-        short key = i % 12;
-        if(key == 4 || key == 11)
-            bcounter++;
-//        post("i = %d, key = %d, bcounter = %d", i, key, bcounter);
-        if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10){ // <==== BLACK KEY
-            if(xpix > x->x_obj.te_xpix + ((bcounter + 1) * (int)x->space) - ((int)(0.3f * x->space))
-            && xpix < x->x_obj.te_xpix + ((bcounter + 1) * (int)x->space) + ((int)(0.3f * x->space))
-            ){
-//                post("black");
-                x->notes[i] = x->notes[i] == MOUSE_PRESS ? MOUSE_RELEASE : MOUSE_PRESS;
-                if(x->notes[i] == MOUSE_PRESS) // Press Black Key
-                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #6666FF\n", x->canvas, x, i);
-                else // Release Black key
-                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #000000\n", x->canvas, x, i);
-                SETFLOAT(a, ((int)x->first_c) + i);
-                SETFLOAT(a+1, x->notes[i] = x->notes[i] == MOUSE_PRESS ? MOUSE_PRESS : 0);
-                outlet_list(x->x_out, &s_list, 2, a);
-                return; // Avoid to play the white below
-            }
-            bcounter++;
-            continue;
-        }
-        else{ // <==== WHITE KEY
-//            post("white");
-            if(xpix > x->x_obj.te_xpix + wcounter * (int)x->space && xpix < x->x_obj.te_xpix + (wcounter + 1) * (int)x->space){
-//                post("bingo");
-                x->notes[i] = x->notes[i] == MOUSE_PRESS ? MOUSE_RELEASE : MOUSE_PRESS;
-                if(x->notes[i] == MOUSE_PRESS) // Press White Key
-                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #9999FF\n", x->canvas, x, i);
-                else{ // Release White key
-                    if(x->first_c + i == 60) // Middle C
-                         sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #F0FFFF\n", x->canvas, x, i);
-                    else
-                         sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #FFFFFF\n", x->canvas, x, i);
-                }
-                SETFLOAT(a, ((int)x->first_c) + i);
-                SETFLOAT(a+1, x->notes[i] = x->notes[i] == MOUSE_PRESS ? MOUSE_PRESS : 0);
-                outlet_list(x->x_out, &s_list, 2, a);
-                return;
-            }
-            wcounter++;
-        }
-    }
-}
-
 static int keyboard_mapclick(t_keyboard* x, t_float xpix, t_float ypix){
     ypix = 0;
     short i, wcounter, bcounter;
@@ -148,6 +94,79 @@ static int keyboard_mapclick(t_keyboard* x, t_float xpix, t_float ypix){
     return(-1);
 }
 
+// TOGGLE MODE
+static void keyboard_play_tgl(t_keyboard* x, t_float xpix, t_float ypix){
+    ypix = 0;
+    short i, wcounter, bcounter;
+    wcounter = bcounter = 0;
+    t_atom a[2];
+    for(i = 0 ; i < x->octaves * 12 ; i++){
+        short key = i % 12;
+        if(key == 4 || key == 11)
+            bcounter++;
+        if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10){ // <==== BLACK KEY
+            if(xpix > x->x_obj.te_xpix + ((bcounter + 1) * (int)x->space) - ((int)(0.3f * x->space))
+            && xpix < x->x_obj.te_xpix + ((bcounter + 1) * (int)x->space) + ((int)(0.3f * x->space))
+            ){
+                x->notes[i] = x->notes[i] == MOUSE_PRESS ? MOUSE_RELEASE : MOUSE_PRESS;
+                if(x->notes[i] == MOUSE_PRESS) // Press Black Key
+                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #6666FF\n", x->canvas, x, i);
+                else // Release Black key
+                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #000000\n", x->canvas, x, i);
+                SETFLOAT(a, ((int)x->first_c) + i);
+                SETFLOAT(a+1, x->notes[i] = x->notes[i] == MOUSE_PRESS ? MOUSE_PRESS : 0);
+                outlet_list(x->x_out, &s_list, 2, a);
+                return; // Avoid to play the white below
+            }
+            bcounter++;
+            continue;
+        }
+        else{ // <==== WHITE KEY
+            if(xpix > x->x_obj.te_xpix + wcounter * (int)x->space && xpix < x->x_obj.te_xpix + (wcounter + 1) * (int)x->space){
+                x->notes[i] = x->notes[i] == MOUSE_PRESS ? MOUSE_RELEASE : MOUSE_PRESS;
+                if(x->notes[i] == MOUSE_PRESS) // Press White Key
+                    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #9999FF\n", x->canvas, x, i);
+                else{ // Release White key
+                    if(x->first_c + i == 60) // Middle C
+                         sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #F0FFFF\n", x->canvas, x, i);
+                    else
+                         sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #FFFFFF\n", x->canvas, x, i);
+                }
+                SETFLOAT(a, ((int)x->first_c) + i);
+                SETFLOAT(a+1, x->notes[i] = x->notes[i] == MOUSE_PRESS ? MOUSE_PRESS : 0);
+                outlet_list(x->x_out, &s_list, 2, a);
+                return;
+            }
+            wcounter++;
+        }
+    }
+}
+
+// FLUSH
+static void keyboard_flush(t_keyboard* x){
+    if(!x->x_toggle_mode)
+        return;
+    t_atom a[2];
+    for(short i = 0 ; i < x->octaves * 12 ; i++){
+        if(x->notes[i] > 0){
+            short key = i % 12;
+            if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10) // <==== BLACK KEY
+                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #000000\n", x->canvas, x, i);
+            else{
+                if(x->first_c + i == 60) // Middle C
+                     sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #F0FFFF\n", x->canvas, x, i);
+                else
+                     sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #FFFFFF\n", x->canvas, x, i);
+            }
+            SETFLOAT(a, ((int)x->first_c) + i);
+            SETFLOAT(a+1, x->notes[i] = 0);
+            outlet_list(x->x_out, &s_list, 2, a);
+        }
+    }
+}
+
+
+/* -------------------- MOUSE Events ----------------------------------*/
 // Mouse press
 static void keyboard_mousepress(t_keyboard* x, t_float xpix, t_float ypix, t_float id){
     if(x->glist->gl_edit) // give up if in edit mode
@@ -558,6 +577,7 @@ static void keyboard_low_c(t_keyboard *x, t_floatarg f){
 }
 
 static void keyboard_toggle(t_keyboard *x, t_floatarg f){
+    keyboard_flush(x);
     keyboard_set_properties(x, x->space, x->height, x->octaves, x->low_c, f);
 }
 
@@ -608,6 +628,7 @@ void keyboard_setup(void){
     class_addmethod(keyboard_class, (t_method)keyboard_oct, gensym("oct"), A_DEFFLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_low_c, gensym("lowc"), A_DEFFLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_toggle, gensym("toggle"), A_DEFFLOAT, 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_flush, gensym("flush"), 0);
 // Methods to receive TCL/TK events
     class_addmethod(keyboard_class, (t_method)keyboard_mousepress,gensym("_mousepress"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_mouserelease,gensym("_mouserelease"), A_FLOAT, A_FLOAT, A_FLOAT, 0); 
