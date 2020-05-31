@@ -55,7 +55,7 @@ static void keyboard_play(t_keyboard* x){
     for(i = 0 ; i < x->octaves * 12; i++){
         short key = i % 12;
         if(x->notes[i] > 0){ // play Keyb or mouse
-            if( key != 1 && key != 3 && key !=6 && key != 8 && key != 10)
+            if(key != 1 && key != 3 && key !=6 && key != 8 && key != 10)
                 sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #9999FF\n", x->canvas, x, i);
             else
                 sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #6666FF\n", x->canvas, x, i);
@@ -71,7 +71,40 @@ static void keyboard_play(t_keyboard* x){
 static int keyboard_mapclick(t_keyboard* x, float xpix, float ypix){
     ypix = 0;
     short i, wcounter, bcounter;
-    float size = x->space * x->x_zoom;
+    float size = x->space;
+    float xpos = x->x_obj.te_xpix * x->x_zoom;
+    wcounter = bcounter = 0;
+    for(i = 0 ; i < x->octaves * 12 ; i++){
+        short key = i % 12;
+        if(key == 4 || key == 11)
+            bcounter++;
+        if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10){ // <==== BLACK KEY
+            if(xpix > xpos + ((bcounter + 1) * (int)size) - ((int)(0.3f * size))
+                 && xpix < xpos + ((bcounter + 1) * (int)size) + ((int)(0.3f * size))
+                ){
+                x->notes[i] = MOUSE_PRESS;
+                return(i); // Avoid to play the white below
+            }
+            bcounter++;
+            continue;
+        }
+        else{ // <==== WHITE KEY
+            if(xpix > xpos + wcounter * (int)size &&
+            xpix < xpos + (wcounter + 1) * (int)size)
+            {
+                x->notes[i] = MOUSE_PRESS;
+                return(i);
+            }
+            wcounter++;
+        }
+    }
+    return(-1);
+}
+
+/*static int keyboard_get_i(t_keyboard* x, float xpix, float ypix){
+    ypix = 0;
+    short i, wcounter, bcounter;
+    float size = x->space;
     wcounter = bcounter = 0;
     for(i = 0 ; i < x->octaves * 12 ; i++){
         short key = i % 12;
@@ -82,7 +115,7 @@ static int keyboard_mapclick(t_keyboard* x, float xpix, float ypix){
                  && xpix < x->x_obj.te_xpix + ((bcounter + 1) * (int)size) + ((int)(0.3f * size))
                 ){
                 x->notes[i] = MOUSE_PRESS;
-                return i; // Avoid to play the white below
+                return(i); // Avoid to play the white below
             }
             bcounter++;
             continue;
@@ -90,28 +123,30 @@ static int keyboard_mapclick(t_keyboard* x, float xpix, float ypix){
         else{ // <==== WHITE KEY
             if(xpix > x->x_obj.te_xpix + wcounter * (int)size && xpix < x->x_obj.te_xpix + (wcounter + 1) * (int)size){
                 x->notes[i] = MOUSE_PRESS;
-                return i;
+                return(i);
             }
             wcounter++;
         }
     }
     return(-1);
-}
+}*/
 
 // TOGGLE MODE
 static void keyboard_play_tgl(t_keyboard* x, float xpix, float ypix){
     ypix = 0;
     short i, wcounter, bcounter;
-    float size = x->space * x->x_zoom;
+    float size = x->space;// * x->x_zoom;
+    float xpos = x->x_obj.te_xpix * x->x_zoom;
     wcounter = bcounter = 0;
     t_atom a[2];
     for(i = 0 ; i < x->octaves * 12 ; i++){
         short key = i % 12;
+        post("key = %d", key);
         if(key == 4 || key == 11)
             bcounter++;
         if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10){ // <==== BLACK KEY
-            if(xpix > x->x_obj.te_xpix + ((bcounter + 1) * (int)size) - ((int)(0.3f * size))
-            && xpix < x->x_obj.te_xpix + ((bcounter + 1) * (int)size) + ((int)(0.3f * size))
+            if(xpix > xpos + ((bcounter + 1) * (int)size) - ((int)(0.3f * size))
+            && xpix < xpos + ((bcounter + 1) * (int)size) + ((int)(0.3f * size))
             ){
                 x->notes[i] = x->notes[i] == MOUSE_PRESS ? MOUSE_RELEASE : MOUSE_PRESS;
                 if(x->notes[i] == MOUSE_PRESS) // Press Black Key
@@ -127,7 +162,7 @@ static void keyboard_play_tgl(t_keyboard* x, float xpix, float ypix){
             continue;
         }
         else{ // <==== WHITE KEY
-            if(xpix > x->x_obj.te_xpix + wcounter * (int)size && xpix < x->x_obj.te_xpix + (wcounter + 1) * (int)size){
+            if(xpix > xpos + wcounter * (int)size && xpix < xpos + (wcounter + 1) * (int)size){
                 x->notes[i] = x->notes[i] == MOUSE_PRESS ? MOUSE_RELEASE : MOUSE_PRESS;
                 if(x->notes[i] == MOUSE_PRESS) // Press White Key
                     sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill #9999FF\n", x->canvas, x, i);
