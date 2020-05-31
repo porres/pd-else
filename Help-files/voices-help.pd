@@ -92,7 +92,7 @@ off message on the first allocated voice so the extra incoming voice
 you haven't sent the object a note off message. Then \, when you eventually
 send a note off message \, the object won't find a corresponding note
 on message and will output that message as an "extra".;
-#X obj 151 160 keyboard 25 80 1 4 1;
+#X obj 151 160 else/keyboard 25 80 1 4 1;
 #X connect 3 0 0 0;
 #X connect 3 1 1 0;
 #X connect 3 2 2 0;
@@ -117,7 +117,7 @@ allocation. The modes are:, f 77;
 #X obj 193 346 else/display;
 #X obj 248 346 else/display;
 #X obj 304 346 else/display;
-#X obj 193 117 keyboard 17 80 1 4 0;
+#X obj 193 117 else/keyboard 17 80 1 4 0;
 #X obj 328 176 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 2
 2;
 #X text 353 175 sustain;
@@ -147,7 +147,7 @@ with [keyboard] by pressing the same note., f 77;
 #X restore 229 194 pd retrig_0;
 #X text 32 149 See examples in the subpatches below:;
 #N canvas 266 23 479 392 retrig_1 0;
-#X obj 182 98 keyboard 17 80 1 4 0;
+#X obj 182 98 else/keyboard 17 80 1 4 0;
 #X obj 317 157 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 2
 2;
 #X text 342 156 sustain;
@@ -180,7 +180,7 @@ will be sent to free this allocated voice., f 70;
 #X connect 11 1 8 1;
 #X restore 229 225 pd retrig_1;
 #N canvas 380 41 509 397 retrig_2 0;
-#X obj 174 99 keyboard 17 80 1 4 0;
+#X obj 174 99 else/keyboard 17 80 1 4 0;
 #X obj 309 158 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 2
 2;
 #X text 334 157 sustain;
@@ -217,7 +217,7 @@ f 70;
 #N canvas 698 101 477 404 release 0;
 #X obj 99 323 else/display;
 #X obj 158 323 else/display;
-#X obj 99 130 keyboard 17 80 1 4 0;
+#X obj 99 130 else/keyboard 17 80 1 4 0;
 #X obj 217 323 else/display;
 #X obj 276 325 else/display;
 #X obj 336 323 else/display;
@@ -261,7 +261,7 @@ to finish before using that voice allocation for a new note., f 65
 #X obj 353 316 else/display;
 #X obj 524 216 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 353 144 keyboard 17 80 1 3 0;
+#X obj 353 144 else/keyboard 17 80 1 3 0;
 #X obj 353 245 else/suspedal -retrig 3, f 29;
 #X text 353 345 voices;
 #X obj 548 315 else/display;
@@ -276,7 +276,7 @@ sets the voice index offset \, which is 0 by default. You can also
 set a different index offset with the "offset" message (this is only
 possible in the context of "list mode")., f 72;
 #N canvas 719 64 505 333 clone_example 0;
-#X obj 40 77 keyboard 17 80 2 4 0;
+#X obj 40 77 else/keyboard 17 80 2 4 0;
 #X text 211 175 In this subpatch we have [voices] feeding [clone] \,
 which loads 4 instances of a patch named "voice.pd"., f 43;
 #X text 211 267 check clone's help file and lick on in to open the
@@ -365,7 +365,7 @@ to implement polyphonic synths \, check the subpatch ==========================>
 only), f 66;
 #X text 46 223 see also:;
 #X obj 47 246 else/mono;
-#X obj 200 136 keyboard 22 60 1 4 1;
+#X obj 200 136 else/keyboard 22 60 1 4 1;
 #X connect 36 0 27 0;
 #X connect 36 1 28 0;
 #X connect 36 2 29 0;

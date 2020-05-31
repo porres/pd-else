@@ -305,7 +305,7 @@ value \, and the default value is "1"!, f 60;
 float value. With float values you don't need to turn the gate off
 before retriggering the envelope \, so even repeated values make the
 envelope restart the attack ramp. Try it below or on the right.;
-#X obj 416 17 keyboard 17 80 1 4 0;
+#X obj 416 17 else/keyboard 17 80 1 4 0;
 #X connect 0 0 7 0;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
