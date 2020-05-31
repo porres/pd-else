@@ -1,9 +1,5 @@
 // Written By Flávio Schiavoni and Alexandre Porres
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
 #include "m_pd.h"
 #include "g_canvas.h"
 
@@ -30,7 +26,6 @@ typedef struct _keyboard{
 }t_keyboard;
 
 /* ------------------------- Keyboard Play ------------------------------*/
-
 static void keyboard_play(t_keyboard* x){
     int i;
 // Note off
@@ -101,36 +96,6 @@ static int keyboard_mapclick(t_keyboard* x, float xpix, float ypix){
     return(-1);
 }
 
-/*static int keyboard_get_i(t_keyboard* x, float xpix, float ypix){
-    ypix = 0;
-    short i, wcounter, bcounter;
-    float size = x->x_space;
-    wcounter = bcounter = 0;
-    for(i = 0 ; i < x->x_octaves * 12 ; i++){
-        short key = i % 12;
-        if(key == 4 || key == 11)
-            bcounter++;
-        if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10){ // <==== BLACK KEY
-            if(xpix > x->x_obj.te_xpix + ((bcounter + 1) * (int)size) - ((int)(0.3f * size))
-                 && xpix < x->x_obj.te_xpix + ((bcounter + 1) * (int)size) + ((int)(0.3f * size))
-                ){
-                x->x_notes[i] = MOUSE_PRESS;
-                return(i); // Avoid to play the white below
-            }
-            bcounter++;
-            continue;
-        }
-        else{ // <==== WHITE KEY
-            if(xpix > x->x_obj.te_xpix + wcounter * (int)size && xpix < x->x_obj.te_xpix + (wcounter + 1) * (int)size){
-                x->x_notes[i] = MOUSE_PRESS;
-                return(i);
-            }
-            wcounter++;
-        }
-    }
-    return(-1);
-}*/
-
 // TOGGLE MODE
 static void keyboard_play_tgl(t_keyboard* x, float xpix, float ypix){
     ypix = 0;
@@ -141,7 +106,7 @@ static void keyboard_play_tgl(t_keyboard* x, float xpix, float ypix){
     t_atom a[2];
     for(i = 0 ; i < x->x_octaves * 12 ; i++){
         short key = i % 12;
-        post("key = %d", key);
+//        post("key = %d", key);
         if(key == 4 || key == 11)
             bcounter++;
         if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10){ // <==== BLACK KEY
@@ -206,7 +171,6 @@ static void keyboard_flush(t_keyboard* x){
 }
 
 /* -------------------- MOUSE Events ----------------------------------*/
-
 // Mouse press
 static void keyboard_mousepress(t_keyboard* x, float xpix, float ypix, float id){
     if((int)x != (int)id) // Check if it's the right instance to receive this message
@@ -245,7 +209,8 @@ static void keyboard_mousemotion(t_keyboard* x, float xpix, float ypix, float id
         return;
     if(x->x_toggle_mode || x->x_glist->gl_edit) // Give up if toggle or edit mode!
         return;
-    if((int)xpix < x->x_obj.te_xpix || (int)xpix > x->x_obj.te_xpix + x->x_width)
+    if((int)xpix < x->x_obj.te_xpix * x->x_zoom
+    || (int)xpix > x->x_obj.te_xpix * x->x_zoom + x->x_width)
         return;
     int actual = 0;
     for(int i = 0; i < x->x_octaves * 12; i++){ // find actual key playing;
@@ -254,15 +219,14 @@ static void keyboard_mousemotion(t_keyboard* x, float xpix, float ypix, float id
             break;
         }
     }
-    int new_drag = keyboard_mapclick(x, (int)xpix, (int)ypix);
-    if(new_drag != -1 && actual != new_drag){
+    int new_dragged_i = keyboard_mapclick(x, (int)xpix, (int)ypix);
+    if(new_dragged_i != -1 && actual != new_dragged_i){
         x->x_notes[actual] = MOUSE_RELEASE;
         keyboard_play(x);
     }
 }
 
 /* ------------------------ GUI SHIT----------------------------- */
-
 // Erase the GUI
 static void keyboard_erase(t_keyboard *x){
     sys_vgui(".x%lx.c delete %xrr\n", x->x_cv, x);
@@ -335,7 +299,6 @@ static void keyboard_draw(t_keyboard *x){
 }
 
 /* ------------------------ widgetbehaviour----------------------------- */
-
 // GET RECT
 static void keyboard_getrect(t_gobj *z, t_glist *owner, int *xp1, int *yp1, int *xp2, int *yp2){
     t_keyboard *x = (t_keyboard *)z;
@@ -385,7 +348,6 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
 }
 
 /* ------------------------ GUI Behaviour -----------------------------*/
-
 // Set Properties
 static void keyboard_set_properties(t_keyboard *x, float space,
             float height, float octaves, float low_c, float tgl){
@@ -470,7 +432,6 @@ static void keyboard_apply(t_keyboard *x, float space, float height,
 }
 
 /* ------------------------- Methods ------------------------------*/
-
 void keyboard_float(t_keyboard *x, t_floatarg note){
     t_atom a[2];
     SETFLOAT(a, note);
@@ -570,7 +531,6 @@ static void keyboard_toggle(t_keyboard *x, t_floatarg f){
 }
 
 /* ------------------------ Free / New / Setup ------------------------------*/
-
 // Free
 void keyboard_free(t_keyboard *x){
     pd_unbind(&x->x_obj.ob_pd, gensym("keyboard"));
