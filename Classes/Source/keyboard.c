@@ -29,10 +29,10 @@ typedef struct _keyboard{
 }t_keyboard;
 
 /* ------------------------- Keyboard Play ------------------------------*/
+
 static void keyboard_play(t_keyboard* x){
     int i;
-// dispatch note off
-    for(i = 0 ; i < x->octaves * 12; i++){
+    for(i = 0 ; i < x->octaves * 12; i++){ // first, dispatch note off
         short key = i % 12;
         if(x->notes[i] < 0){ // stop play Keyb or mouse
             if(key != 1 && key != 3 && key !=6 && key != 8 && key != 10){
@@ -49,7 +49,7 @@ static void keyboard_play(t_keyboard* x){
             outlet_list(x->x_out, &s_list, 2, a);
         }
     }
-// dispatch note on
+    // then dispatch note on
     for(i = 0 ; i < x->octaves * 12; i++){
         short key = i % 12;
         if(x->notes[i] > 0){ // play Keyb or mouse
@@ -65,6 +65,7 @@ static void keyboard_play(t_keyboard* x){
     }
 }
 
+//Map mouse event position
 static int keyboard_mapclick(t_keyboard* x, t_float xpix, t_float ypix){
     ypix = 0;
     short i, wcounter, bcounter;
@@ -165,13 +166,13 @@ static void keyboard_flush(t_keyboard* x){
     }
 }
 
-
 /* -------------------- MOUSE Events ----------------------------------*/
+
 // Mouse press
 static void keyboard_mousepress(t_keyboard* x, t_float xpix, t_float ypix, t_float id){
-    if(x->glist->gl_edit) // give up if in edit mode
+    if((int)x != (int)id) // Check if it's the right instance to receive this message
         return;
-    if((int)x != (int)id) // give up if not the right instance
+    if(x->glist->gl_edit) // If edit mode, give up!
         return;
     if(x->x_toggle_mode)
         keyboard_play_tgl(x, xpix, ypix);
@@ -190,8 +191,8 @@ static void keyboard_mouserelease(t_keyboard* x, t_float xpix, t_float ypix, t_f
         return;
     int play = 0;
     for(t_int i = 0 ; i < x->octaves * 12; i++){
-        if(x->notes[i] > 0){
-            x->notes[i] = MOUSE_RELEASE; 
+        if(x->notes[i] == MOUSE_PRESS){
+            x->notes[i] = MOUSE_RELEASE;
             play = 1;
         }
     }
@@ -199,15 +200,16 @@ static void keyboard_mouserelease(t_keyboard* x, t_float xpix, t_float ypix, t_f
         keyboard_play(x);
 }
 
-// Mouse Motion/Drag event
+// Mouse Drag event
 static void keyboard_mousemotion(t_keyboard* x, t_float xpix, t_float ypix, t_float id){
     if((int)x != (int)id) // Check if it's the right instance to receive this message
         return;
     if(x->x_toggle_mode || x->glist->gl_edit) // Give up if toggle or edit mode!
         return;
-    if((int)xpix < x->x_obj.te_xpix || (int)xpix > x->x_obj.te_xpix + x->width)
+    if((int)xpix < x->x_obj.te_xpix
+    || (int)xpix > x->x_obj.te_xpix + x->width)
         return;
-    int i, actual = 0, new_drag = 0;
+    int i,actual = 0, new_drag = 0;
     for(i = 0 ; i < x->octaves * 12; i++){ // find actual key playing;
         if(x->notes[i] == MOUSE_PRESS){
             actual = i;
@@ -383,12 +385,9 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
         sys_vgui(".x%lx.c bind %xrr <ButtonPress-1> {\n keyboard_mousepress \"%d\" %%x %%y %%b\n}\n", cv, x, x);
         sys_vgui(".x%lx.c bind %xrr <ButtonRelease-1> {\n keyboard_mouserelease \"%d\" %%x %%y %%b\n}\n", cv, x, x);
         sys_vgui(".x%lx.c bind %xrr <B1-Motion> {\n keyboard_mousemotion \"%d\" %%x %%y\n}\n", cv, x, x);
-        sys_vgui(".x%lx.c bind %xrr <KeyPress> {\n keyboard_keydown \"%d\" %%N\n}\n", cv, x, x);
-        sys_vgui(".x%lx.c bind %xrr <KeyRelease> {\n keyboard_keyup \"%d\" %%N\n}\n", cv, x, x);
     }
-    else{
+    else
         keyboard_erase(x);
-    }
 }
 
 /* ------------------------ GUI Behaviour -----------------------------*/
@@ -396,6 +395,7 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
 // Set Properties
 static void keyboard_set_properties(t_keyboard *x, t_floatarg space,
             t_floatarg height, t_floatarg octaves, t_floatarg low_c, t_floatarg tgl){
+    x->x_toggle_mode = 0; // tgl != 0;
     x->height = (height < 10) ? 10 : height;
 // clip octaves from 1 to 10
     if(octaves < 1)
@@ -421,6 +421,7 @@ static void keyboard_set_properties(t_keyboard *x, t_floatarg space,
         x->notes[i] = 0;
 // toggle
     x->x_toggle_mode = tgl != 0;
+
 }
 
 // Keyboard Properties
@@ -446,13 +447,12 @@ static void keyboard_save(t_gobj *z, t_binbuf *b){
                 gensym("obj"),
                 (t_int)x->x_obj.te_xpix,
                 (t_int)x->x_obj.te_ypix,
-                atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
+                gensym("keyboard"),
                 (t_int)x->space,
                 (t_int)x->height,
                 (t_int)x->octaves,
                 (t_int)x->low_c,
-                (t_int)x->x_toggle_mode
-                );
+                (t_int)x->x_toggle_mode);
     binbuf_addv(b, ";");
 }
 
@@ -568,8 +568,9 @@ static void keyboard_oct(t_keyboard *x, t_floatarg f){
 
 static void keyboard_toggle(t_keyboard *x, t_floatarg f){
     int tgl = f != 0 ? 1 : 0;
-    if(x->x_toggle_mode && !tgl)
+    if(x->x_toggle_mode && !tgl){
         keyboard_flush(x);
+    }
     x->x_toggle_mode = tgl;
 }
 
@@ -601,10 +602,9 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
         init_low_c = atom_getfloat(av++), ac--;
     if(ac) // 5th ARGUMENT: Toggle Mode)
         tgl = (t_int)(atom_getfloat(av++) != 0), ac--;
+    keyboard_set_properties(x, init_space, init_height, init_8ves, init_low_c, tgl);
     x->x_out = outlet_new(&x->x_obj, &s_list);
     floatinlet_new(&x->x_obj, &x->velocity_input);
-// Set Parameters
-    keyboard_set_properties(x, init_space, init_height, init_8ves, init_low_c, tgl);
     pd_bind(&x->x_obj.ob_pd, gensym("keyboard"));
     return(void *) x;
 }

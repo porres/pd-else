@@ -52,21 +52,9 @@ f 66;
 0), f 61;
 #X text 125 335 offset <float> - sets index offset (in the context
 of "list" mode), f 66;
-#X obj 190 234 else/display;
-#X obj 248 234 else/display;
-#X obj 307 233 else/display;
-#X msg 190 164 60 \$1;
-#X obj 190 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X obj 236 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X obj 281 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X msg 236 164 63 \$1;
-#X msg 281 164 66 \$1;
-#X obj 327 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X msg 327 164 69 \$1;
+#X obj 200 234 else/display;
+#X obj 258 234 else/display;
+#X obj 317 233 else/display;
 #X text 43 84 [voices] is used to implement polyphonic synths. It's
 like Pd Vanilla's [poly] object \, but with more functionalities. By
 default \, it routes the voices to different outlets \, but it also
@@ -77,68 +65,42 @@ has a list mode like [poly]., f 71;
 #X text 161 471 1) float - sets number of voices (default 1);
 #X text 161 486 2) float - non zero sets voice stealing (default 0)
 ;
-#X obj 373 140 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 200 208 else/voices 2, f 20;
+#X text 180 262 voice 1;
+#X text 241 262 voice 2;
+#N canvas 779 126 443 445 steal 0;
+#X obj 151 282 else/display;
+#X obj 209 282 else/display;
+#X obj 268 281 else/display;
+#X obj 151 256 else/voices 2, f 20;
+#X text 150 311 voice 1;
+#X text 211 311 voice 2;
+#X obj 69 187 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 127;
-#X msg 373 165 72 \$1;
-#X obj 190 208 else/voices 2, f 20;
-#X text 170 262 voice 1;
-#X text 231 262 voice 2;
-#N canvas 845 290 441 432 steal 0;
-#X obj 139 268 else/display;
-#X obj 197 268 else/display;
-#X obj 256 267 else/display;
-#X msg 139 198 60 \$1;
-#X obj 139 173 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X obj 185 173 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X obj 230 173 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X msg 185 198 63 \$1;
-#X msg 230 198 66 \$1;
-#X obj 276 173 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X msg 276 198 69 \$1;
-#X obj 322 174 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X msg 322 199 72 \$1;
-#X obj 139 242 else/voices 2, f 20;
-#X text 138 297 voice 1;
-#X text 199 297 voice 2;
-#X obj 57 173 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X msg 57 198 steal \$1;
-#X text 37 17 In regular mode \, [voices] allocates the given number
+#X msg 69 212 steal \$1;
+#X text 39 19 In regular mode \, [voices] allocates the given number
 of voices and extra voices are sent to its rightmost outlet. After
 a voice is allocated \, the object needs to receive a corresponding
 note-off message so that voice can be used again.;
-#X text 37 82 But you can set the object to "voice stealing" mode with
+#X text 39 84 But you can set the object to "voice stealing" mode with
 the second argument or the "steal" message. This mode forces a note
 off message on the first allocated voice so the extra incoming voice
 "steals" it.;
-#X text 257 297 extra;
-#X text 42 335 The rightmost outlet can still send messages when in
+#X text 269 311 extra;
+#X text 44 340 The rightmost outlet can still send messages when in
 "voice stealing" mode. This happens when a voice has been stolen but
 you haven't sent the object a note off message. Then \, when you eventually
 send a note off message \, the object won't find a corresponding note
 on message and will output that message as an "extra".;
-#X connect 3 0 13 0;
-#X connect 4 0 3 0;
-#X connect 5 0 7 0;
-#X connect 6 0 8 0;
-#X connect 7 0 13 0;
-#X connect 8 0 13 0;
-#X connect 9 0 10 0;
-#X connect 10 0 13 0;
-#X connect 11 0 12 0;
-#X connect 12 0 13 0;
-#X connect 13 0 0 0;
-#X connect 13 1 1 0;
-#X connect 13 2 2 0;
-#X connect 16 0 17 0;
-#X connect 17 0 13 0;
+#X obj 151 160 keyboard 25 80 1 4 1;
+#X connect 3 0 0 0;
+#X connect 3 1 1 0;
+#X connect 3 2 2 0;
+#X connect 6 0 7 0;
+#X connect 7 0 3 0;
+#X connect 12 0 3 0;
 #X restore 492 186 pd steal;
-#X text 292 262 extra;
+#X text 302 262 extra;
 #N canvas 361 237 521 308 retrigger 0;
 #X text 107 69 - retrig <0>:;
 #X text 107 95 - retrig <1>:;
@@ -151,7 +113,7 @@ to "extra" outlet, f 43;
 ways of handling repeated note on messages. In this context \, a repeated
 note on is a note that hasn't had a note off message to free its voice
 allocation. The modes are:, f 77;
-#N canvas 266 23 563 448 retrig_0 0;
+#N canvas 767 131 563 448 retrig_0 0;
 #X obj 193 346 else/display;
 #X obj 248 346 else/display;
 #X obj 304 346 else/display;
@@ -395,27 +357,19 @@ to implement polyphonic synths \, check the subpatch ==========================>
 #X restore 497 250 pd list;
 #X text 174 528 -retrig: sets to retrigger mode <0 \, 1 or 2> (default
 0);
-#X obj 129 156 notein;
-#X obj 129 180 pack;
+#X obj 138 151 notein;
+#X obj 138 175 pack;
 #X text 143 513 -rel <float>: sets release time in ms (default 0);
 #X text 143 321 rel <float> - sets a release time in ms, f 63;
 #X text 125 391 voices <float> - sets number of voices (in list mode
 only), f 66;
 #X text 46 223 see also:;
 #X obj 47 246 else/mono;
-#X connect 30 0 46 0;
-#X connect 31 0 30 0;
-#X connect 32 0 34 0;
-#X connect 33 0 35 0;
-#X connect 34 0 46 0;
-#X connect 35 0 46 0;
-#X connect 36 0 37 0;
-#X connect 37 0 46 0;
-#X connect 44 0 45 0;
+#X obj 200 136 keyboard 22 60 1 4 1;
+#X connect 36 0 27 0;
+#X connect 36 1 28 0;
+#X connect 36 2 29 0;
 #X connect 45 0 46 0;
-#X connect 46 0 27 0;
-#X connect 46 1 28 0;
-#X connect 46 2 29 0;
-#X connect 55 0 56 0;
-#X connect 55 1 56 1;
-#X connect 56 0 46 0;
+#X connect 45 1 46 1;
+#X connect 46 0 36 0;
+#X connect 52 0 36 0;
