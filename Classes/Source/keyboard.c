@@ -55,19 +55,15 @@ static void keyboard_note_off(t_keyboard* x, int i){
 
 // TOGGLE MODE
 static void keyboard_play_tgl(t_keyboard* x, int i){
-    x->x_notes[i] = x->x_notes[i] ? 0 : 127;
+    int vel = (x->x_notes[i] = x->x_notes[i] ? 0 : 127);
     short key = i % 12;
     if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10) // black
-        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", x->x_cv, x, i, x->x_notes[i] ? BLACK_ON : BLACK_OFF);
-     else{ // white
-         if(x->x_notes[i])
-             sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", x->x_cv, x, i, WHITE_ON);
-         else
-             sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", x->x_cv, x, i,  i == 60 ? MIDDLE_C : WHITE_OFF);
-    }
+        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", x->x_cv, x, i, vel ? BLACK_ON : BLACK_OFF);
+     else // white
+        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", x->x_cv, x, i, vel ? WHITE_ON : i == 60 ? MIDDLE_C : WHITE_OFF);
     t_atom a[2];
     SETFLOAT(a, (float)(x->x_first_c + i));
-    SETFLOAT(a+1, x->x_notes[i]);
+    SETFLOAT(a+1, vel);
     outlet_list(x->x_out, &s_list, 2, a);
 }
 
@@ -79,11 +75,8 @@ static void keyboard_flush(t_keyboard* x){
     for(short i = 0 ; i < x->x_octaves * 12 ; i++){
         float note = (float)(x->x_first_c + i);
         if(x->x_notes[i] > 0){
-            short key = i % 12;
-            if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10) // <= BLACK KEY
-                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", x->x_cv, x, i, BLACK_OFF);
-            else
-                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", x->x_cv, x, i, note == 60 ? MIDDLE_C : WHITE_OFF);
+            short key = i % 12, c4 = (note == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
+            sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", x->x_cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
             SETFLOAT(a, (float)(x->x_first_c + i));
             SETFLOAT(a+1, x->x_notes[i] = 0);
             outlet_list(x->x_out, &s_list, 2, a);
@@ -169,16 +162,9 @@ static void keyboard_erase(t_keyboard *x){
 
 // Draw the GUI
 static void keyboard_draw(t_keyboard *x){
-    int xpos = text_xpix(&x->x_obj, x->x_glist);
-    int ypos = text_ypix(&x->x_obj, x->x_glist);
-//    sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %xrr -fill #FFFFFF\n", // Main rectangle
+    int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %xrr\n", // Main rectangle
-             x->x_cv,
-             xpos,
-             ypos,
-             xpos + x->x_width,
-             ypos + x->x_height,
-             x);
+        x->x_cv, xpos, ypos, xpos + x->x_width, ypos + x->x_height, x);
     int i, wcounter, bcounter;
     wcounter = bcounter = 0;
     for(i = 0 ; i < x->x_octaves * 12 ; i++){ // white keys 1st (blacks overlay it)
@@ -325,9 +311,8 @@ t_widgetbehavior keyboard_widgetbehavior ={
 
 // Apply changes of property windows
 static void keyboard_apply(t_keyboard *x, float w, float h, float oct, float low_c, float tgl){
-    keyboard_erase(x);
     keyboard_set_properties(x, w, h, oct, low_c, tgl);
-    keyboard_draw(x);
+    keyboard_erase(x), keyboard_draw(x);
 }
 
 /* ------------------------- Methods ------------------------------*/
@@ -352,39 +337,34 @@ void keyboard_float(t_keyboard *x, t_floatarg note){
 static void keyboard_height(t_keyboard *x, t_floatarg f){
     f =  f < 10 ? 10 : (int)(f);
     if(x->x_height != f){
-        keyboard_erase(x);
         x->x_height = f;
-        keyboard_draw(x);
+        keyboard_erase(x), keyboard_draw(x);
     }
 }
 
 static void keyboard_width(t_keyboard *x, t_floatarg f){
     f = f < 7 ? 7 : (int)(f);
     if(x->x_space != f){
-        keyboard_erase(x);
         x->x_space = f;
         x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
-        keyboard_draw(x);
+        keyboard_erase(x), keyboard_draw(x);
     }
 }
 
 static void keyboard_8ves(t_keyboard *x, t_floatarg f){
     f = f > 10 ? 10 : f < 1 ? 1 : (int)(f);
     if(x->x_octaves != f){
-        keyboard_erase(x);
         x->x_octaves = f;
         x->x_width = x->x_space * 7 * x->x_octaves;
-        keyboard_draw(x);
+        keyboard_erase(x), keyboard_draw(x);
     }
 }
 
 static void keyboard_low_c(t_keyboard *x, t_floatarg f){
     f = f > 8 ? 8 : f < 0 ? 0 : (int)(f);
     if(x->x_low_c != f){
-        keyboard_erase(x);
-        x->x_low_c = f;
-        x->x_first_c = ((int)(x->x_low_c * 12)) + 12;
-        keyboard_draw(x);
+        x->x_first_c = ((int)((x->x_low_c = f) * 12)) + 12;
+        keyboard_erase(x), keyboard_draw(x);
     }
 }
 
