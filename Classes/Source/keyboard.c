@@ -41,12 +41,8 @@ static void keyboard_note_on(t_keyboard* x, int i){
 }
 
 static void keyboard_note_off(t_keyboard* x, int i){
-    short key = i % 12;
-    short black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
-    if(black)
-        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", x->x_cv, x, i, BLACK_OFF);
-    else
-        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", x->x_cv, x, i, i == 60 ? MIDDLE_C : WHITE_OFF);
+    short key = i % 12, c4 = (i == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
+    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", x->x_cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
     t_atom a[2];
     SETFLOAT(a, (float)(x->x_first_c + i));
     SETFLOAT(a+1, x->x_notes[i] = 0);
@@ -55,7 +51,7 @@ static void keyboard_note_off(t_keyboard* x, int i){
 
 // TOGGLE MODE
 static void keyboard_play_tgl(t_keyboard* x, int i){
-    int vel = (x->x_notes[i] = x->x_notes[i] ? 0 : 127);
+    int vel = (x->x_notes[i] = (x->x_notes[i] ? 0 : 127));
     short key = i % 12;
     if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10) // black
         sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", x->x_cv, x, i, vel ? BLACK_ON : BLACK_OFF);
@@ -87,31 +83,31 @@ static void keyboard_flush(t_keyboard* x){
 /* -------------------- MOUSE Events ----------------------------------*/
 // Map mouse event position and find corresponding note
 static int find_note(t_keyboard* x, float xpix, float ypix){
-    ypix = 0;
-    short i, wcounter, bcounter;
-    float size = x->x_space;
-    float xpos = x->x_obj.te_xpix * x->x_zoom;
-//    post("size = %d / xpos = %d", (int)size, (int)xpos);
-//    post("xpix = %d / ypix - xpos = %d", (int)xpix, (int)xpix - (int)xpos);
-    wcounter = bcounter = 0;
-    for(i = 0; i < x->x_octaves * 12; i++){
-        short key = i % 12;
-        if(key == 4 || key == 11)
-            bcounter++;
-        if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10){ // <= BLACK KEY
-            if(xpix > xpos + ((bcounter + 1) * size) - ((int)(size / 3.f))
-            && xpix < xpos + ((bcounter + 1) * size) + ((int)(size / 3.f)))
-                return(i);
-            bcounter++;
+    float xpos = xpix - x->x_obj.te_xpix * x->x_zoom;
+    float ypos = ypix - x->x_obj.te_ypix * x->x_zoom;
+    int sz = (int)x->x_space;
+    int b_sz = (int)(x->x_space / 3.f);
+    int white_key = (int)(xpos / x->x_space) % 7;
+    int white_note = (white_key * 2) - (white_key > 2);
+    int oct = (int)((xpos / x->x_space) / 7);
+    int i = white_note + oct*12;
+    if(ypos < x->x_height*2/3){ // find black keys
+        if(white_key == 0 || white_key == 3){ // find sharp
+            if(xpos > (white_key+1 + oct*7) * sz - b_sz)
+                return(i+1);
         }
-        else{ // <= WHITE KEY
-            if(xpix > xpos + wcounter * size //
-            && xpix < xpos + (wcounter + 1) * ((int)(size)))// * 2.f/3.f)))
-                return(i);
-            wcounter++;
+        else if(white_key == 2 || white_key == 6){ // find flat
+            if(xpos < (white_key + oct*7) * sz + b_sz)
+                return(i-1);
+        }
+        else if(white_key == 1 || white_key == 4 || white_key == 5){ // find both
+            if(xpos < (white_key + oct*7) * sz + b_sz)
+                return(i-1);
+            else if(xpos > (white_key+1 + oct*7) * sz - b_sz)
+                return(i+1);
         }
     }
-    return(-1);
+    return(i);
 }
 
 // Mouse press
@@ -137,7 +133,6 @@ static void keyboard_mouserelease(t_keyboard* x, float xpix, float ypix, float i
 
 // Mouse Drag event
 static void keyboard_mousemotion(t_keyboard* x, float xpix, float ypix, float id){
-    ypix = 0;
     if((int)x != (int)id) // Check if it's the right instance to receive this message
         return;
     if(x->x_toggle_mode || x->x_glist->gl_edit) // Give up if toggle or edit mode!
@@ -156,8 +151,8 @@ static void keyboard_mousemotion(t_keyboard* x, float xpix, float ypix, float id
 // Erase the GUI
 static void keyboard_erase(t_keyboard *x){
     sys_vgui(".x%lx.c delete %xrr\n", x->x_cv, x);
-    for(int i = 0; i < x->x_octaves * 12; i++)
-        sys_vgui(".x%lx.c delete %xrrk%d\n", x->x_cv, x, i);
+//    for(int i = 0; i < x->x_octaves * 12; i++)
+//        sys_vgui(".x%lx.c delete %xrrk%d\n", x->x_cv, x, i);
 }
 
 // Draw the GUI
@@ -165,42 +160,42 @@ static void keyboard_draw(t_keyboard *x){
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %xrr\n", // Main rectangle
         x->x_cv, xpos, ypos, xpos + x->x_width, ypos + x->x_height, x);
-    int i, wcounter, bcounter;
-    wcounter = bcounter = 0;
+    int i, wcount, bcount;
+    wcount = bcount = 0;
     for(i = 0 ; i < x->x_octaves * 12 ; i++){ // white keys 1st (blacks overlay it)
         short key = i % 12;
         if(key != 1 && key != 3 && key != 6 && key != 8 && key != 10){
             sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill %s\n",
                      x->x_cv,
-                     xpos + wcounter * (int)x->x_space,
+                     xpos + wcount * (int)x->x_space,
                      ypos,
-                     xpos + (wcounter + 1) * (int)x->x_space,
+                     xpos + (wcount + 1) * (int)x->x_space,
                      ypos + x->x_height,
                      x,
                      i,
                      x,
                      x->x_first_c + i == 60 ? MIDDLE_C : WHITE_OFF);
-            wcounter++;
+            wcount++;
         }
     }
     for(i = 0 ; i < x->x_octaves * 12 ; i++){ // Black keys
         short key = i % 12;
         if(key == 4 || key == 11){
-            bcounter++;
+            bcount++;
             continue;
         }
         if(key == 1 || key == 3 || key ==6 || key == 8 || key == 10){
             sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill %s\n",
                      x->x_cv,
-                     xpos + ((bcounter + 1) * (int)x->x_space) - ((int)(x->x_space / 3.f)) ,
+                     xpos + ((bcount + 1) * (int)x->x_space) - ((int)(x->x_space / 3.f)) ,
                      ypos,
-                     xpos + ((bcounter + 1) * (int)x->x_space) + ((int)(x->x_space / 3.f)) ,
+                     xpos + ((bcount + 1) * (int)x->x_space) + ((int)(x->x_space / 3.f)) ,
                      ypos + x->x_height * 2/3,
                      x,
                      i,
                      x,
                      BLACK_OFF);
-            bcounter++;
+            bcount++;
         }
     }
     canvas_fixlinesfor(x->x_glist, (t_text *)x);
