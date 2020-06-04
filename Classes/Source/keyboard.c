@@ -42,10 +42,11 @@ static void keyboard_note_on(t_keyboard* x, int i){
 
 static void keyboard_note_off(t_keyboard* x, int i){
     t_canvas *cv =  glist_getcanvas(x->x_glist);
-    short key = i % 12, c4 = (i == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
+    int note = i + x->x_first_c;
+    short key = i % 12, c4 = (note == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
     sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
     t_atom a[2];
-    SETFLOAT(a, (float)(x->x_first_c + i));
+    SETFLOAT(a, note);
     SETFLOAT(a+1, x->x_notes[i] = 0);
     outlet_list(x->x_out, &s_list, 2, a);
 }
@@ -72,11 +73,11 @@ static void keyboard_flush(t_keyboard* x){
     t_canvas *cv =  glist_getcanvas(x->x_glist);
     t_atom a[2];
     for(short i = 0 ; i < x->x_octaves * 12 ; i++){
-        float note = (float)(x->x_first_c + i);
+        int note = x->x_first_c + i;
         if(x->x_notes[i] > 0){
             short key = i % 12, c4 = (note == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
             sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
-            SETFLOAT(a, (float)(x->x_first_c + i));
+            SETFLOAT(a, note);
             SETFLOAT(a+1, x->x_notes[i] = 0);
             outlet_list(x->x_out, &s_list, 2, a);
         }
@@ -336,37 +337,55 @@ void keyboard_float(t_keyboard *x, t_floatarg note){
 static void keyboard_height(t_keyboard *x, t_floatarg f){
     f =  f < 10 ? 10 : (int)(f);
     if(x->x_height != f){
+        canvas_dirty(x->x_glist, 1);
         x->x_height = f;
-        keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
+        if(glist_isvisible(x->x_glist)){
+            keyboard_erase(x, x->x_glist);
+            keyboard_draw(x, x->x_glist);
+        }
     }
 }
 
 static void keyboard_width(t_keyboard *x, t_floatarg f){
     f = f < 7 ? 7 : (int)(f);
     if(x->x_space != f){
+        canvas_dirty(x->x_glist, 1);
         x->x_space = f;
         x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
-        keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
+        if(glist_isvisible(x->x_glist)){
+            keyboard_erase(x, x->x_glist);
+            keyboard_draw(x, x->x_glist);
+        }
     }
 }
 
 static void keyboard_8ves(t_keyboard *x, t_floatarg f){
     f = f > 10 ? 10 : f < 1 ? 1 : (int)(f);
     if(x->x_octaves != f){
+        canvas_dirty(x->x_glist, 1);
         x->x_octaves = f;
         x->x_width = x->x_space * 7 * x->x_octaves;
-        post("fuck = %d", glist_isvisible(x->x_glist));
-        if(!glist_isvisible(x->x_glist))
-            return;
-        keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
+        if(glist_isvisible(x->x_glist)){
+            keyboard_erase(x, x->x_glist);
+            keyboard_draw(x, x->x_glist);
+        }
     }
 }
 
 static void keyboard_low_c(t_keyboard *x, t_floatarg f){
     f = f > 8 ? 8 : f < 0 ? 0 : (int)(f);
     if(x->x_low_c != f){
-        x->x_first_c = ((int)((x->x_low_c = f) * 12)) + 12;
-        keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
+        canvas_dirty(x->x_glist, 1);
+        if(glist_isvisible(x->x_glist)){
+                t_canvas *cv =  glist_getcanvas(x->x_glist);
+                int i = (int)(60 - x->x_first_c);
+                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, WHITE_OFF);
+                x->x_first_c = ((int)((x->x_low_c = f) * 12)) + 12;
+                i = (int)(60 - x->x_first_c);
+                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, MIDDLE_C);
+        }
+        else
+            x->x_first_c = ((int)((x->x_low_c = f) * 12)) + 12;
     }
 }
 
@@ -376,10 +395,14 @@ static void keyboard_oct(t_keyboard *x, t_floatarg f){
 
 static void keyboard_toggle(t_keyboard *x, t_floatarg f){
     int tgl = f != 0;
-    if(x->x_toggle_mode && !tgl)
-        keyboard_flush(x);
-    x->x_toggle_mode = tgl;
+    if(tgl != x->x_toggle_mode){
+        canvas_dirty(x->x_glist, 1);
+        if(x->x_toggle_mode)
+            keyboard_flush(x);
+        x->x_toggle_mode = tgl;
+    }
 }
+
 
 /* ------------------------ Free / New / Setup ------------------------------*/
 // Free
@@ -419,7 +442,6 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
 }
 
 static void keyboard_zoom(t_keyboard *x, t_floatarg zoom){
-//    post("fuck = %d", glist_isvisible(x->x_glist));
     if(!glist_isvisible(x->x_glist))
         return;
     float mul = zoom == 1.0 ? 0.5 : 2.0;
