@@ -117,8 +117,8 @@ static void keyboard_mousepress(t_keyboard* x, float xpix, float ypix, float id)
         return;
     if(x->x_glist->gl_edit) // If edit mode, give up!
         return;
-    float xpos = xpix - text_xpix(&x->x_obj, x->x_glist) * x->x_zoom;
-    float ypos = ypix - text_ypix(&x->x_obj, x->x_glist)* x->x_zoom;
+    float xpos = xpix - text_xpix(&x->x_obj, x->x_glist);
+    float ypos = ypix - text_ypix(&x->x_obj, x->x_glist);;
     int note = find_note(x, xpos, ypos);
     if(note >= 0)
         x->x_toggle_mode ? keyboard_play_tgl(x, note) : keyboard_note_on(x, x->x_last_note = note);
@@ -140,8 +140,8 @@ static void keyboard_mousemotion(t_keyboard* x, float xpix, float ypix, float id
         return;
     if(x->x_toggle_mode || x->x_glist->gl_edit) // Give up if toggle or edit mode!
         return;
-    float xpos = text_xpix(&x->x_obj, x->x_glist) * x->x_zoom;
-    float ypos = text_ypix(&x->x_obj, x->x_glist)* x->x_zoom;
+    float xpos = text_xpix(&x->x_obj, x->x_glist);
+    float ypos = text_ypix(&x->x_obj, x->x_glist);
     if(xpix < xpos || xpix > xpos + x->x_width) // ignore if out of bounds
         return;
     int new_note = find_note(x, xpix - xpos, ypix - ypos);
