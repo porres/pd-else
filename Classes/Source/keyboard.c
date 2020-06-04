@@ -14,7 +14,6 @@ static t_class *keyboard_class;
 typedef struct _keyboard{
     t_object    x_obj;
     t_glist    *x_glist;
-    t_glist    *x_glist_vis;
     int        *x_notes;        // to store which notes should be played
     int         x_last_note;    // to store last note
     float       x_vel_in;       // to store the second inlet values
@@ -237,7 +236,7 @@ static void keyboard_delete(t_gobj *z, t_glist *glist){
 // VIS
 static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
     t_keyboard *x = (t_keyboard *)z;
-    t_canvas *cv = glist_getcanvas(x->x_glist_vis = glist);
+    t_canvas *cv = glist_getcanvas(glist);
     if(vis){
         keyboard_draw(x, glist);
         sys_vgui(".x%lx.c bind %xrr <ButtonPress-1> {\n keyboard_mousepress \"%d\" %%x %%y %%b\n}\n", cv, x, x);
