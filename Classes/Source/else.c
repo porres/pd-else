@@ -24,7 +24,7 @@ void print_else_obj(t_else_obj *x){
     post("----------------------------------------------------------------------------------");
     post("   ~~~~~~~~~~|| ELSE - EL Locus Solus' Externals for Pure Data ||~~~~~~~~~~");
     post("----------------------------------------------------------------------------------");
-    post("Version: 1.0 beta %d; Unreleased", else_beta_version);
+    post("Version: 1.0 beta %d; Released june 7th 2020", else_beta_version);
     post("Author: Alexandre Torres Porres");
     post("Repositoty: https://github.com/porres/pd-else");
     post("License: Do What The Fuck You Want To Public License, unless otherwise noted");
@@ -36,6 +36,9 @@ void print_else_obj(t_else_obj *x){
             else_beta_version, min_major, min_minor, min_bugfix, major, minor, bugfix);
     post("Loading the ELSE library added %s", else_obj_dir);
     post("to Pd's path so its objects can be loaded");
+    post("----------------------------------------------------------------------------------");
+    post("NOTE: This library also includes the ""LIVE ELECTRONICS TUTORIAL"" by Alex Porres");
+    post("that depends on this library. Find its folder inside the 'else' folder.")
     post("----------------------------------------------------------------------------------");
     post("   ~~~~~~~~~~|| ELSE - EL Locus Solus' Externals for Pure Data ||~~~~~~~~~~");
     post("----------------------------------------------------------------------------------");

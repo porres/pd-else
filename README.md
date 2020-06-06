@@ -9,7 +9,6 @@ Download Pure Data at: http://msp.ucsd.edu/software.html
 
 	Copyright © 2017-2020 Alexandre Torres Porres
 
-
    This work is free. You can redistribute it and/or modify it under the
    terms of the Do What The Fuck You Want To Public License, Version 2,
    as published by Sam Hocevar. 
@@ -20,7 +19,7 @@ Download Pure Data at: http://msp.ucsd.edu/software.html
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-28 (Released june 6th 2020)
+### Version 1.0 beta-28 (Released june 7th 2020)
 
 Needs Pd **0.51.0** or above
 
@@ -49,6 +48,7 @@ It will still take a little while for ELSE to stabilize into a final version. Fo
 ### Downloading ELSE:
 
 Look for the latest releases in https://github.com/porres/pd-else/releases - but ELSE is also available via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). Note that since version 1.0 beta 28,  the downloads of ELSE also contain the live eletronics tutorial mentioned above as part of the package. If you're downloading from Pd, searching for either 'else' or 'live electronics tutorial' gets you to the same download.
+Downloading from Pd unzips to a folder called 'else' and you should find the 'live electronics tutorial' folder inside it. Check also its README!
 
 ### Installing ELSE:
 
