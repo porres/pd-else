@@ -38,7 +38,7 @@ void print_else_obj(t_else_obj *x){
     post("to Pd's path so its objects can be loaded");
     post("----------------------------------------------------------------------------------");
     post("NOTE: This library also includes the ""LIVE ELECTRONICS TUTORIAL"" by Alex Porres");
-    post("that depends on this library. Find its folder inside the 'else' folder.")
+    post("that depends on this library. Find its folder inside the 'else' folder.");
     post("----------------------------------------------------------------------------------");
     post("   ~~~~~~~~~~|| ELSE - EL Locus Solus' Externals for Pure Data ||~~~~~~~~~~");
     post("----------------------------------------------------------------------------------");
