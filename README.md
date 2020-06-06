@@ -20,7 +20,7 @@ Download Pure Data at: http://msp.ucsd.edu/software.html
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-28 (Unreleased)
+### Version 1.0 beta-28 (Released june 6th 2020)
 
 Needs Pd **0.51.0** or above
 
@@ -34,11 +34,11 @@ I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" 
 
 --------------------------------------------------------------------------
 
-**"EL Locus Solus"** is run by me, Alexandre Torres Porres. It organizes cultural events/concerts and music technology courses <http://alexandre-torres.wixsite.com/el-locus-solus> where a Live Electronics tutorial is provided with examples in Pure Data for its courses. These have just been translated and completely rewritten to english with plans of being accompanied by a book. The first versions are available at: <https://github.com/porres/Live-Electronic-Music-Tutorial>. It is advisable to also download this tutorial as it solely depends on the ELSE library and it is a great didactic companion to this library, in which might be merged into a single download in the future.
+**"EL Locus Solus"** organizes cultural events/concerts and music technology courses () <http://alexandre-torres.wixsite.com/el-locus-solus> ) where a Live Electronics tutorial is provided with examples in Pure Data for its courses. These have just been translated and completely rewritten to english with plans of being accompanied by a book. The first versions are available at: <https://github.com/porres/Live-Electronic-Music-Tutorial>. This tutorial it solely depends on the ELSE library and it is a great didactic companion to this library. You can download both the library and the tutorial as a single download directly from Pure Data.
 
 These examples were first developed for the now abandoned Pd Extended, making extensive use of the existing objects available in Pd Extended's libraries. Even though Pd Extended had many externals, there was the need at some point for something "else" - thus, this library emerged with the goal of providing more objects to include missing functionalities in the Pd Ecossystem.
 
-But the library grew to encompass functionalities found in other Pd objects/libraries in Pd Extended as well, with a different design and more functionalities. This was done in order to remove ALL the dependencies of the didactic material from these other libraries - with the goal to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving attention. I'm also involved in maintaining Cyclone, a legacy library for Pd (see: <https://github.com/porres/pd-cyclone>). But ELSE also superseds cyclone for the purposes of my didactic material.
+But the library grew to encompass functionalities found in other Pd objects/libraries from old Pd Extended as well, with a different design and more functionalities. This was done in order to remove ALL the dependencies of the didactic material from these other libraries - with the goal to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving attention. I'm also involved in maintaining Cyclone, a legacy library for Pd (see: <https://github.com/porres/pd-cyclone>). But ELSE also superseeds cyclone for the purposes of this didactic material.
 
 The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. So that's it, ELSE is becoming a quite big library and keeps growing and growing. 
 
@@ -48,7 +48,7 @@ It will still take a little while for ELSE to stabilize into a final version. Fo
 
 ### Downloading ELSE:
 
-Look for the latest releases in https://github.com/porres/pd-else/releases - but ELSE is also available via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else').
+Look for the latest releases in https://github.com/porres/pd-else/releases - but ELSE is also available via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). Not that the available download there also contains the live eletronics tutorial mentioned above.
 
 ### Installing ELSE:
 
