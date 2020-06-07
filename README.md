@@ -19,7 +19,7 @@ Download Pure Data at: http://msp.ucsd.edu/software.html
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-28 (Released june 8th 2020)
+### Version 1.0-0 beta-28 (Released june 8th 2020)
 
 Needs Pd **0.51-0** or above
 
@@ -47,8 +47,8 @@ It will still take a little while for ELSE to stabilize into a final version. Fo
 
 ### Downloading ELSE:
 
-Look for the latest releases in https://github.com/porres/pd-else/releases - but ELSE is also available via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). Note that since version 1.0 beta 28,  the downloads of ELSE also contain the live eletronics tutorial mentioned above as part of the package. If you're downloading from Pd, searching for either 'else' or 'live electronics tutorial' gets you to the same download.
-Downloading from Pd unzips to a folder called 'else' and you should find the 'live electronics tutorial' folder inside it. Check also its README!
+Look for the latest releases in https://github.com/porres/pd-else/releases - but ELSE is also available via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). Note that since version 1.0-0 beta 28,  the downloads of ELSE also contain the live eletronics tutorial mentioned above as part of the package. If you're downloading from Pd, searching for either 'else' or 'live electronics tutorial' gets you to the same download.
+Downloading from Pd unzips to two folders, onde called 'else', where the library resides, and another name 'live electronics tutorial' (check also its README).
 
 ### Installing ELSE:
 
