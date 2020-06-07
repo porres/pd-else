@@ -1,9 +1,9 @@
-#N canvas 711 28 563 435 10;
+#N canvas 711 28 564 612 10;
 #X declare -lib else;
-#X msg 242 300 about;
-#X obj 3 409 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X msg 253 303 about;
+#X obj 3 584 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 61 160 Check declare's help file for more information.;
+#X text 61 153 Check declare's help file for more information.;
 #X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -25,24 +25,52 @@
 #X obj 68 40 cnv 4 4 4 empty empty ELSE 0 28 2 18 -233017 -1 0;
 #X obj 126 40 cnv 4 4 4 empty empty library 0 28 2 18 -233017 -1 0
 ;
-#X obj 281 132 declare -lib else;
-#X text 63 98 The ELSE library is a set of separate binaries and abstractions
-\, but you can also load it via "Preferences => Startup" or \, alternatively
-\, you can use [declare] as follows:, f 71;
-#X text 63 189 What this does is add some information about the ELSE
-library in Pd's window and loads else's path to Pd so you can load
-the abtractions and separate binaries., f 71;
-#X obj 242 325 else/else;
-#X obj 282 375 else/All_about_else;
-#X text 119 376 Check "All About ELSE" =>;
+#X obj 281 125 declare -lib else;
+#X obj 253 351 else/else;
+#X obj 69 383 else/All_about_else;
 #X obj 4 3 cnv 15 301 42 empty empty else(library) 20 20 0 33 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 2 graph;
-#X text 63 233 Creating the else external object also loads it as a
-library \, but you should really use declare instead. The object itself
-doesn't do anything and only accepts the "about" message \, which prints
-basic information (version \, release date) on the terminal., f 71
+#X obj 4 469 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X connect 0 0 17 0;
+#X obj 4 517 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 552 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 123 477 cnv 17 3 32 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 123 526 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 242 561 (none);
+#X text 157 476 about;
+#X text 145 493 version;
+#X text 207 476 - prints library information on the terimnal;
+#X text 163 526 list;
+#X text 207 493 - outputs version informaton as a list;
+#X text 207 527 - version (major \, minor \, bugfix \, status \, status
+number);
+#X text 63 226 Creating the else external object also loads it as a
+library \, but you should really use declare instead. The object itself
+doesn't do much. It accepts the "about" message that prints basic information
+(version \, release date \, etc) on the terminal and it also accepts
+the 'version' message that sends the version information as a list.
+, f 71;
+#X msg 271 327 version;
+#X obj 253 377 else/display;
+#X obj 253 413 else/makesymbol %d.%d-%d_%s-%d;
+#X symbolatom 253 441 16 0 0 0 - - -;
+#X text 58 357 Check "All About ELSE":;
+#X text 63 91 The ELSE library is a set of separate binaries and abstractions
+\, but you can load it via "Preferences => Startup" or \, alternatively
+\, you can use [declare] as follows:, f 71;
+#X text 63 182 This is the official way to load the library and ehat
+this does is add some information about the ELSE library in Pd's window
+and loads else's path to Pd so you can load the abtractions and separate
+binaries., f 71;
+#X connect 0 0 15 0;
+#X connect 15 0 33 0;
+#X connect 32 0 15 0;
+#X connect 33 0 34 0;
+#X connect 34 0 35 0;
