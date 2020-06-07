@@ -389,10 +389,10 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X text 178 250 - incoming signals (routed to [dac~ 1 2 3 4]), f 60
 ;
 #N canvas 477 417 534 169 see 0;
-#X obj 105 78 else/out~;
 #X obj 342 78 else/out8~;
 #X text 83 34 See also:;
 #X obj 222 77 else/out2~;
+#X obj 105 77 else/out1~;
 #X restore 473 211 pd see also;
 #X text 98 273 set <float>;
 #X text 80 86 [out4~] is a convenient quadraphonic input/output abstraction.

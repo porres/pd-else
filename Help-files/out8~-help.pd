@@ -398,9 +398,9 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X restore 466 178 pd scaling \; modes & gain;
 #N canvas 477 417 534 169 see 0;
 #X text 83 34 See also:;
-#X obj 105 78 else/out~;
 #X obj 342 78 else/out4~;
 #X obj 222 78 else/out2~;
+#X obj 105 78 else/out1~;
 #X restore 473 213 pd see also;
 #X obj 216 183 else/out8~ 1 0;
 #X obj 303 150 else/brown~;

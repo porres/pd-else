@@ -218,8 +218,8 @@ openfile	x
 order	x
 oscbank~	x
 oscbank2~	x
-out~	x
 out1~	x
+out2~	x
 out4~	x
 out8~	x
 output~	x

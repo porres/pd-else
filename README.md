@@ -19,9 +19,9 @@ Download Pure Data at: http://msp.ucsd.edu/software.html
 
 --------------------------------------------------------------------------
 
-### Version 1.0 beta-28 (Released june 7th 2020)
+### Version 1.0 beta-28 (Released june 8th 2020)
 
-Needs Pd **0.51.0** or above
+Needs Pd **0.51-0** or above
 
 This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. Find the latest and all releases at: <https://github.com/porres/pd-else/releases>.
 
@@ -474,8 +474,8 @@ Cross compiling is also possible with something like this
 - [slider2d]
 - [display]
 - [display~]
-- [out~]
 - [out1~]
+- [out2~]
 - [out4~]
 - [out8~]
 - [gain~]

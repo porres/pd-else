@@ -392,7 +392,7 @@ and scaling mode.;
 #X obj 342 78 else/out8~;
 #X obj 222 78 else/out4~;
 #X text 83 34 See also:;
-#X obj 105 78 else/out~;
+#X obj 105 78 else/out1~;
 #X restore 469 203 pd see also;
 #X connect 8 0 45 0;
 #X connect 46 0 45 1;
