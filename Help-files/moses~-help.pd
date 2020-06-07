@@ -75,7 +75,7 @@
 ;
 #X text 288 166 <= splits at middle C;
 #X obj 166 132 else/rand.f~ 30 90;
-#X obj 207 501 else/out2~;
+#X obj 207 501 else/out~;
 #X connect 0 0 2 0;
 #X connect 0 0 6 0;
 #X connect 1 0 3 0;
@@ -117,7 +117,7 @@
 #X obj 239 151 else/moses~ 80;
 #X obj 158 130 else/moses~ 50;
 #X obj 77 76 else/rand.f~ 0 100;
-#X obj 267 510 else/out2~;
+#X obj 267 510 else/out~;
 #X connect 0 0 1 0;
 #X connect 0 1 18 0;
 #X connect 1 0 3 0;

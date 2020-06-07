@@ -100,7 +100,7 @@ and the recording goes on indefinitely. The maxtime needs to be at
 least twice the fade time \, otherwise it is ignored and the recording
 goes on indefinitely as well.;
 #X obj 56 367 else/plate.rev~ 50 0.6 0.25 0.8 0.8;
-#X obj 173 531 else/out2~;
+#X obj 173 531 else/out~;
 #X connect 3 0 10 0;
 #X connect 5 0 8 2;
 #X connect 6 0 11 0;
@@ -115,7 +115,7 @@ goes on indefinitely as well.;
 #X text 53 91 [rec.file~] is a convenient abstraction based on [writesf~]
 \, so it records sample files that you can load with other objects
 \, such as [sample~] \, [play.file~] \, [player~] and others.;
-#X obj 325 198 else/out2~;
+#X obj 325 198 else/out~;
 #X connect 36 0 43 0;
 #X connect 40 0 43 2;
 #X connect 41 0 48 0;

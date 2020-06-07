@@ -191,7 +191,7 @@ value is around 0.5 \, values closer to 0 and 1 may create unusual
 results. Changing size values may generates unusual artifacts (you
 can clear the delay buffers when you do it to prevent it \, but you
 may get clicks)., f 70;
-#X obj 198 235 else/out2~;
+#X obj 198 235 else/out~;
 #X connect 12 0 14 0;
 #X connect 14 0 45 0;
 #X connect 14 1 45 1;

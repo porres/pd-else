@@ -87,7 +87,7 @@ is the sum of the inlets' signals. Use [mtx.ctl] to control it., f
 #X obj 383 332 print dump;
 #X text 162 534 list;
 #X text 197 533 - all connections list rom dump message;
-#X obj 241 338 else/out2~;
+#X obj 241 338 else/out~;
 #X connect 12 0 42 0;
 #X connect 13 0 42 1;
 #X connect 14 0 42 2;

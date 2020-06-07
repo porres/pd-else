@@ -63,7 +63,7 @@ range for the output., f 53;
 #X obj 133 230 else/rescale 200 700;
 #X obj 133 285 osc~;
 #X obj 133 86 else/stepnoise 3;
-#X obj 144 370 else/out2~;
+#X obj 144 370 else/out~;
 #X connect 1 0 2 0;
 #X connect 2 0 6 0;
 #X connect 3 0 7 0;

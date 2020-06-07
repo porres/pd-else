@@ -120,7 +120,7 @@
 #X obj 85 301 else/rand.f 500 3000, f 12;
 #X obj 592 415 s \$0-set;
 #X obj 339 312 r \$0-set;
-#X obj 322 377 else/out2~;
+#X obj 322 377 else/out~;
 #X connect 0 0 49 0;
 #X connect 0 0 44 0;
 #X connect 2 0 11 0;
@@ -194,7 +194,7 @@
 #X text 197 384 signal;
 #X text 256 280 - left input signal;
 #X text 256 384 - right input signal;
-#X obj 217 207 else/out2~;
+#X obj 217 207 else/out~;
 #X connect 34 0 40 0;
 #X connect 34 1 40 1;
 #X connect 40 0 48 0;

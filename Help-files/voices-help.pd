@@ -312,7 +312,7 @@ the list sent by [voices]) \, the MIDI note messages are routed to
 different instances of "voice.pd"., f 43;
 #X obj 40 182 else/voices 4 1 -list;
 #X obj 40 211 clone 4 voice 4;
-#X obj 41 248 else/out2~;
+#X obj 41 248 else/out~;
 #X connect 0 0 6 0;
 #X connect 3 0 0 0;
 #X connect 4 0 3 0;

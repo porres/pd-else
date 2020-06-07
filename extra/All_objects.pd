@@ -3,7 +3,7 @@
 in float gridx float gridy;
 #N struct 1382-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1397-point float x0 float y0 float size float fg float in
+#N struct 1396-point float x0 float y0 float size float fg float in
 float grid;
 #N canvas 555 23 537 532 10;
 #X text 57 70 Assorted:;
@@ -340,11 +340,11 @@ float grid;
 #X obj 67 50 else/gui;
 #X text 165 18 [else/mtx.ctl];
 #X text 285 456 [else/circle];
-#X obj 170 1111 else/out2~;
 #X obj 360 40 else/pic 0 empty empty empty 0;
 #X obj 265 479 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
 0 0 0 1 0 0 63.5 63.5 empty empty 1;
 #X obj 60 1111 else/out1~;
+#X obj 170 1111 else/out~;
 #X restore 66 10200 pd GUI;
 #X text 57 346 Patch/subpatch management:;
 #X text 55 1146 Message management:;

@@ -80,7 +80,7 @@ cells in the grid can be either on or off. The output is a list with
 #X obj 192 171 else/mtx~ 4 2 100;
 #X text 48 27 [mtx.ctl] is very convenient for controlling [mtx~];
 #X obj 108 89 else/mtx.ctl 4 2 15;
-#X obj 177 207 else/out2~;
+#X obj 177 207 else/out~;
 #X connect 4 0 18 0;
 #X connect 5 0 18 1;
 #X connect 6 0 18 2;

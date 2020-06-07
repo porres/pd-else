@@ -76,7 +76,7 @@
 #X msg 253 96 0.25;
 #X text 47 27 Here's how the rotation works for more than 2 channels.
 , f 29;
-#X obj 387 231 else/out2~;
+#X obj 387 231 else/out~;
 #X connect 0 0 2 1;
 #X connect 1 0 2 0;
 #X connect 2 0 28 0;
@@ -119,7 +119,7 @@
 #X text 243 405 - number of channels (minimum and default: 2);
 #X obj 187 209 else/rotate~;
 #X msg 265 147 -0.5;
-#X obj 179 240 else/out2~;
+#X obj 179 240 else/out~;
 #X connect 8 0 32 0;
 #X connect 21 0 35 1;
 #X connect 22 0 35 0;

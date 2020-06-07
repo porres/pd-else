@@ -190,9 +190,9 @@ argument \, you can use the -size flag/message., f 64;
 #X obj 593 209 else/fbdelay~ 22050 0.5 1 -samps;
 #X obj 690 167 hsl 128 15 0 44100 0 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X obj 79 230 else/out2~;
-#X obj 281 232 else/out2~;
-#X obj 550 251 else/out2~;
+#X obj 79 230 else/out~;
+#X obj 281 232 else/out~;
+#X obj 550 251 else/out~;
 #X connect 1 0 16 0;
 #X connect 1 0 20 0;
 #X connect 2 0 1 0;

@@ -93,7 +93,7 @@ parameter of the comb filters., f 49;
 mix and the clear message clears up the delay lines., f 44;
 #X obj 395 412 s \$0-set;
 #X obj 65 238 r \$0-set;
-#X obj 93 347 else/out2~;
+#X obj 93 347 else/out~;
 #X connect 0 0 1 0;
 #X connect 1 0 17 0;
 #X connect 2 0 6 0;
@@ -125,7 +125,7 @@ widely known 'freeverb' algorithm.;
 #X text 258 287 - decay or 'liveness' (0-1), f 31;
 #X text 151 450 1) float - decay or 'liveness' (0-1) - default 0.5
 ;
-#X obj 190 199 else/out2~;
+#X obj 190 199 else/out~;
 #X connect 32 0 43 0;
 #X connect 33 0 43 1;
 #X connect 43 0 47 0;

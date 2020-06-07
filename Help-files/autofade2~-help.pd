@@ -414,7 +414,7 @@ control and uses internal lookup tables for 7 different fading curves.
 #X obj 354 248 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 377 249 <= status;
-#X obj 201 247 else/out2~;
+#X obj 201 247 else/out~;
 #X connect 13 0 42 0;
 #X connect 15 0 45 1;
 #X connect 37 0 45 0;

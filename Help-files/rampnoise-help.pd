@@ -67,7 +67,7 @@ range for the output., f 53;
 #X obj 127 227 else/rescale 200 700;
 #X obj 127 282 else/bicoeff lowpass 500 20;
 #X obj 127 83 else/rampnoise 0.5;
-#X obj 137 437 else/out2~;
+#X obj 137 437 else/out~;
 #X connect 1 0 2 0;
 #X connect 2 0 9 0;
 #X connect 3 0 10 0;

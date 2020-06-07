@@ -148,7 +148,7 @@ to manage tempo subdivisions.;
 #X obj 118 153 else/tempo 30 -on -div 4;
 #X obj 118 265 else/display;
 #X obj 118 238 else/count 1 4;
-#X obj 118 375 else/out2~;
+#X obj 118 375 else/out~;
 #X connect 1 0 10 0;
 #X connect 2 0 4 0;
 #X connect 2 0 12 0;

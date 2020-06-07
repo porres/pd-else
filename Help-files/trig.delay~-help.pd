@@ -163,7 +163,7 @@
 \, [trig.delay~] sends an impulse delayed by a given time in ms. Any
 triggers which arrive before the delayed output resets and reschedules
 the delay \, in the same way as the [delay] object.;
-#X obj 176 246 else/out2~;
+#X obj 176 246 else/out~;
 #X connect 5 0 33 1;
 #X connect 26 0 32 0;
 #X connect 32 0 33 0;

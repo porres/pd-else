@@ -98,7 +98,7 @@ the decay time \, then the polarity of the impulse response is inverted.
 #X obj 603 212 else/resonant2~ 500 100 1000, f 15;
 #X text 580 344 <= compare;
 #X text 532 284 compare =>;
-#X obj 48 426 else/out2~;
+#X obj 48 426 else/out~;
 #X connect 0 0 3 0;
 #X connect 0 0 4 0;
 #X connect 0 0 19 0;

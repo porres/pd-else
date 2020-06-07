@@ -97,7 +97,7 @@ a sequence value of "0" works as a rest.;
 #X msg 195 140 goto 1;
 #X obj 44 129 else/tempo~ 180;
 #X obj 253 203 else/tempo~ 120;
-#X obj 166 311 else/out2~;
+#X obj 166 311 else/out~;
 #X connect 0 0 3 0;
 #X connect 0 0 8 0;
 #X connect 0 0 9 0;

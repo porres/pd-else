@@ -186,7 +186,7 @@ number 64) and feed it to the [suspedal] object.;
 any note off messages when it is on. Below \, we use [suspedal] in
 a patch with 2-voice polyphonic synth controlled by random notes. This
 example uses [voices] but you can also use vanilla's [poly].;
-#X obj 580 367 else/out2~;
+#X obj 580 367 else/out~;
 #X connect 0 0 1 0;
 #X connect 1 0 6 2;
 #X connect 2 0 7 2;

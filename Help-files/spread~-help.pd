@@ -60,7 +60,7 @@
 #X obj 288 191 else/resonant~ 1100 100;
 #X text 107 50 It's good to test this example with headphones.;
 #X obj 75 93 else/tempo~ 160 -on;
-#X obj 160 367 else/out2~;
+#X obj 160 367 else/out~;
 #X connect 0 0 9 0;
 #X connect 0 1 9 1;
 #X connect 1 0 2 0;

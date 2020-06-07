@@ -475,7 +475,7 @@ Cross compiling is also possible with something like this
 - [display]
 - [display~]
 - [out1~]
-- [out2~]
+- [out~]
 - [out4~]
 - [out8~]
 - [gain~]

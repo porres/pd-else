@@ -75,7 +75,7 @@ direction as there'd be in the case of a ring modulation.;
 #X text 66 118 [freq.shift~] is the same as a conjunction of the [hilbert~]
 and [complex-mod~] abstractions available as "extra" in Pd Vanilla.
 ;
-#X obj 157 322 else/out2~;
+#X obj 157 322 else/out~;
 #X connect 0 0 1 0;
 #X connect 0 1 1 1;
 #X connect 1 0 9 0;

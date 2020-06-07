@@ -61,7 +61,7 @@
 #X obj 192 204 else/ping.pong~ 200 0.7;
 #X text 274 141 time;
 #X text 348 145 feedback;
-#X obj 223 244 else/out2~;
+#X obj 223 244 else/out~;
 #X connect 14 0 15 0;
 #X connect 15 0 36 0;
 #X connect 34 0 36 1;

@@ -104,7 +104,7 @@ empty 0 -8 0 10 -99865 -262144 -1 0 256;
 #X obj 146 244 else/f2s~ 100;
 #X obj 238 244 else/f2s~ 100;
 #X obj 328 244 else/f2s~ 100;
-#X obj 164 341 else/out2~;
+#X obj 164 341 else/out~;
 #X connect 6 0 14 0;
 #X connect 7 0 15 0;
 #X connect 8 0 16 0;
@@ -119,7 +119,7 @@ empty 0 -8 0 10 -99865 -262144 -1 0 256;
 #X text 70 89 [xmod2~] performs is a variant of [xmod~] \, but only
 performs frequency modulation (so far) and uses a different and cheap
 sine waveform that promotes more chaotic and cool sounds., f 63;
-#X obj 216 235 out2~;
+#X obj 216 235 out~;
 #X connect 42 0 50 0;
 #X connect 43 0 50 1;
 #X connect 44 0 50 2;

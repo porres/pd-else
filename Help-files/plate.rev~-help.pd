@@ -130,7 +130,7 @@
 #X obj 111 361 else/rand.f 500 3000, f 12;
 #X obj 526 429 s \$0-set;
 #X obj 386 385 r \$0-set;
-#X obj 364 457 else/out2~;
+#X obj 364 457 else/out~;
 #X connect 0 0 32 0;
 #X connect 2 0 11 0;
 #X connect 3 0 4 0;
@@ -202,7 +202,7 @@
 #X text 69 88 [plate.rev~] is a reverb asbtraction based on a patch
 by Tom Erbe implementing the plate reverb model by Dattorro. It has
 a mono input and stereo output.;
-#X obj 211 214 else/out2~;
+#X obj 211 214 else/out~;
 #X connect 26 0 27 0;
 #X connect 27 0 46 0;
 #X connect 27 1 46 1;

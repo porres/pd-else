@@ -94,7 +94,7 @@ ignored.;
 #X obj 56 268 else/player~ stereo.wav -loop -speed -100;
 #X msg 56 214 stop;
 #X obj 346 277 else/player~ 1 stereo.wav -loop;
-#X obj 56 342 else/out2~;
+#X obj 56 342 else/out~;
 #X connect 2 0 12 0;
 #X connect 5 0 12 0;
 #X connect 10 0 12 0;
@@ -163,7 +163,7 @@ message), f 68;
 #X msg 286 164 show;
 #X msg 329 164 hide;
 #X text 107 25 Test the main message methods of [player~].;
-#X obj 160 242 else/out2~;
+#X obj 160 242 else/out~;
 #X connect 0 0 13 0;
 #X connect 1 0 13 0;
 #X connect 2 0 13 0;
@@ -191,7 +191,7 @@ message), f 68;
 #X obj 232 160 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 232 192 else/player~ stereo.wav;
-#X obj 224 219 else/out2~;
+#X obj 224 219 else/out~;
 #X text 39 85 [player~] is a convenient abstraction based on [soundfiler]
 and [tabread4~]. It offers many playing capabilities on arrays and
 it's more versatile than [play.file~]. For instance \, you can play

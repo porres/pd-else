@@ -155,7 +155,7 @@ object for managing polyphonic synths.;
 #X obj 222 349 else/plate.rev~ 50 0.75 0.5 0.5 0.5, f 18;
 #X obj 178 120 else/rand.i 48 72;
 #X obj 459 148 else/rand.f~ 50 150;
-#X obj 233 395 else/out2~;
+#X obj 233 395 else/out~;
 #X connect 0 0 11 0;
 #X connect 1 0 28 0;
 #X connect 3 0 6 0;

@@ -111,7 +111,7 @@ a simple markov chain., f 29;
 #X connect 16 0 3 0;
 #X connect 17 0 8 0;
 #X restore 473 285 pd example;
-#X obj 222 258 else/out2~;
+#X obj 222 258 else/out~;
 #X connect 17 0 31 0;
 #X connect 18 0 17 0;
 #X connect 21 0 31 1;

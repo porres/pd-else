@@ -105,7 +105,7 @@ delay times. By default they are spaced linearly \, but they can be
 exponentially spaced with the "exp" message., f 47;
 #X text 116 22 lits sets delay lines;
 #X text 261 45 default;
-#X obj 162 309 else/out2~;
+#X obj 162 309 else/out~;
 #X connect 1 0 3 0;
 #X connect 2 0 6 0;
 #X connect 3 0 6 0;
@@ -140,7 +140,7 @@ are: decay time (t60) and high frequency damping., f 66;
 #X obj 235 159 hsl 128 15 0.01 10 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X text 264 159 decay (t60), f 12;
-#X obj 187 228 else/out2~;
+#X obj 187 228 else/out~;
 #X connect 12 0 23 0;
 #X connect 23 0 58 0;
 #X connect 46 0 58 1;

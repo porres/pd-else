@@ -62,7 +62,7 @@ impulse in the right outlet for "non-zero to zero" transitions., f
 66;
 #X text 444 247 see also:;
 #X obj 437 269 else/status;
-#X obj 214 237 else/out2~;
+#X obj 214 237 else/out~;
 #X connect 31 0 32 0;
 #X connect 32 0 33 0;
 #X connect 33 0 38 0;

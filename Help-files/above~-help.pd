@@ -75,7 +75,7 @@
 #X obj 524 143 else/above~;
 #X text 453 51 with no threshold set \, [above~] behaves similarly
 to [zerocross~];
-#X obj 214 179 else/out2~;
+#X obj 214 179 else/out~;
 #X connect 0 0 19 0;
 #X connect 0 0 20 0;
 #X connect 1 0 2 0;
@@ -120,7 +120,7 @@ argument or the 2nd inlet., f 69;
 #X text 176 406 signal - impulse when raises above a threshold;
 #X text 176 430 signal - impulse when falls back or below a threshold
 ;
-#X obj 210 271 else/out2~;
+#X obj 210 271 else/out~;
 #X connect 23 0 24 0;
 #X connect 25 0 26 0;
 #X connect 28 0 30 0;
