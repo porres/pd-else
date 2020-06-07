@@ -1,4 +1,4 @@
-#N canvas 645 175 562 492 10;
+#N canvas 607 95 562 492 10;
 #X obj 1 465 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 1 233 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -385,15 +385,26 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X text 98 256 set <float>;
 #X obj 221 168 else/out2~ 1 0;
 #X obj 308 135 osc~ 660;
-#X text 84 87 [out2~] is a convenient stereo input/output abstraction.
-It has controls for mute \, DSP on/off \, ramp time \, maximum gain
-and scaling mode.;
 #N canvas 477 417 534 169 see 0;
 #X obj 342 78 else/out8~;
 #X obj 222 78 else/out4~;
 #X text 83 34 See also:;
 #X obj 105 78 else/out1~;
 #X restore 469 203 pd see also;
+#X text 79 86 [out2~] is a convenient mono/stereo input and stereo
+output abstraction. It has controls for mute \, DSP on/off \, ramp
+time \, maximum gain and scaling mode.;
+#N canvas 767 210 368 317 mono-input 0;
+#X obj 110 124 osc~ 440;
+#X obj 110 157 else/out2~;
+#X text 68 20 If you have just one mono input into the [out2~] object
+\, it sends its signals to both outputs., f 33;
+#X text 54 243 Conecting a second source to the right inlet makes it
+a stereo input again and vice-versa., f 38;
+#X text 68 64 Hence \, you don't need to bother and connect the same
+source into the two inlets., f 33;
+#X connect 0 0 1 0;
+#X restore 457 124 pd mono-input;
 #X connect 8 0 45 0;
 #X connect 46 0 45 1;
 #X coords 0 492 1 491 74 39 0;
