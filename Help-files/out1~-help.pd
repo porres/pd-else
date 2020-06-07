@@ -387,7 +387,7 @@ change it with the -ch flag to route it to other outputs., f 52;
 #X obj 342 78 else/out8~;
 #X obj 222 78 else/out4~;
 #X text 83 34 See also:;
-#X obj 105 78 else/out2~;
+#X obj 105 78 else/out~;
 #X restore 472 203 pd see also;
 #X text 85 88 [out1~] is cariant of [out~] and a convenient mono output
 abstraction. It has controls for mute \, DSP on/off \, ramp time \,

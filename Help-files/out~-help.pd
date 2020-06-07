@@ -53,36 +53,34 @@ slider value input in the right outlet.;
 -1 -1 0 1;
 #X text 623 198 maximum gain;
 #X obj 604 328 s \$0-set;
-#X obj 380 266 r \$0-set;
+#X obj 457 272 r \$0-set;
 #X msg 166 209 set \$1;
-#X obj 90 309 else/out2~;
-#X obj 440 302 else/out2~;
-#X text 406 11 [out2~] has 3 scaling modes for its slider (the default
+#X obj 90 309 else/out~;
+#X text 18 22 [out~] allows you to switch the DSP engine on or off
+\, dac~ output on or off and mute/unmute without any clicks!;
+#X text 20 65 If the DSP is on when you load [out~] \, it checks the
+DSP state and loads the GUI accordingly.;
+#X text 406 11 [out~] has 3 scaling modes for its slider (the default
 is "quartic"). You can set a linear gain multiplier \, which needs
 to be greater than zero and also represents the maximum linear gain
 achieved.;
-#X text 18 22 [out2~] allows you to switch the DSP engine on or off
-\, dac~ output on or off and mute/unmute without any clicks!;
-#X text 20 65 If the DSP is on when you load [out2~] \, it checks the
-DSP state and loads the GUI accordingly.;
+#X obj 440 302 else/out~;
 #X connect 0 0 1 0;
 #X connect 1 0 28 0;
 #X connect 3 0 29 0;
 #X connect 4 0 29 0;
 #X connect 7 0 29 0;
-#X connect 7 0 29 1;
 #X connect 8 0 26 0;
 #X connect 9 0 12 0;
 #X connect 12 0 8 0;
-#X connect 13 0 30 0;
-#X connect 13 0 30 1;
+#X connect 13 0 33 0;
 #X connect 16 0 26 0;
 #X connect 17 0 16 0;
 #X connect 18 0 29 0;
 #X connect 22 0 26 0;
 #X connect 23 0 22 0;
 #X connect 24 0 23 0;
-#X connect 27 0 30 0;
+#X connect 27 0 33 0;
 #X connect 28 0 29 0;
 #X restore 469 146 pd examples;
 #X text 116 272 <on/off>;
@@ -94,8 +92,7 @@ DSP state and loads the GUI accordingly.;
 #X text 92 289 mode <float>;
 #X text 178 289 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear), f 60;
-#X obj 2 3 cnv 15 301 42 empty empty out2~ 20 20 2 37 -233017 -1 0
-;
+#X obj 2 3 cnv 15 301 42 empty empty out~ 20 20 2 37 -233017 -1 0;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -373,9 +370,8 @@ input amplitude \, and "0.5" half of it. This is useful if your input
 isn't loud enough \, if it is too high or even if you're using multiple
 [out~] objects as they all add to the same output.;
 #X obj 441 225 else/db2lin;
-#X obj 463 344 else/out2~;
+#X obj 463 344 else/out~;
 #X connect 23 0 35 0;
-#X connect 23 0 35 1;
 #X connect 24 0 35 0;
 #X connect 25 0 34 0;
 #X connect 26 0 24 0;
@@ -383,7 +379,6 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X connect 34 0 26 0;
 #X restore 463 169 pd scaling \; modes & gain;
 #X text 98 256 set <float>;
-#X obj 221 168 else/out2~ 1 0;
 #X obj 308 135 osc~ 660;
 #N canvas 477 417 534 169 see 0;
 #X obj 342 78 else/out8~;
@@ -391,20 +386,21 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X text 83 34 See also:;
 #X obj 105 78 else/out1~;
 #X restore 469 203 pd see also;
-#X text 79 86 [out2~] is a convenient mono/stereo input and stereo
-output abstraction. It has controls for mute \, DSP on/off \, ramp
-time \, maximum gain and scaling mode.;
 #N canvas 767 210 368 317 mono-input 0;
 #X obj 110 124 osc~ 440;
-#X obj 110 157 else/out2~;
-#X text 68 20 If you have just one mono input into the [out2~] object
-\, it sends its signals to both outputs., f 33;
 #X text 54 243 Conecting a second source to the right inlet makes it
 a stereo input again and vice-versa., f 38;
 #X text 68 64 Hence \, you don't need to bother and connect the same
 source into the two inlets., f 33;
-#X connect 0 0 1 0;
+#X obj 110 157 else/out~;
+#X text 68 20 If you have just one mono input into the [out~] object
+\, it sends its signals to both outputs., f 33;
+#X connect 0 0 3 0;
 #X restore 457 124 pd mono-input;
-#X connect 8 0 45 0;
-#X connect 46 0 45 1;
+#X obj 221 167 else/out~ 1 0;
+#X text 79 86 [out~] is a convenient mono/stereo input and stereo output
+abstraction. It has controls for mute \, DSP on/off \, ramp time \,
+maximum gain and scaling mode.;
+#X connect 8 0 48 0;
+#X connect 45 0 48 1;
 #X coords 0 492 1 491 74 39 0;
