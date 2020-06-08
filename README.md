@@ -19,7 +19,7 @@ Download Pure Data at: http://msp.ucsd.edu/software.html
 
 --------------------------------------------------------------------------
 
-### Version 1.0-0 beta-28 (Released june 8th 2020)
+### Version 1.0-0 beta-29 (Unreleased)
 
 Needs Pd **0.51-0** or above
 
@@ -72,9 +72,9 @@ Cross compiling is also possible with something like this
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=../</pre>
 --------------------------------------------------------------------------
 
-## Current Object list (370 objects):
+## Current Object list (371 objects):
 
-**ASSORTED: [03]**
+**ASSORTED: [04]**
 - [table~]
 - [nbang]
 - [meter]
