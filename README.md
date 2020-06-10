@@ -2,9 +2,9 @@
 
 # ELSE - EL Locus Solus' Externals 
 
-
 **ELSE** is an external library for the Pure Data programming language; 
-Download Pure Data at: http://msp.ucsd.edu/software.html 
+
+
 
 
 	Copyright © 2017-2020 Alexandre Torres Porres
@@ -19,19 +19,39 @@ Download Pure Data at: http://msp.ucsd.edu/software.html
 
 --------------------------------------------------------------------------
 
-### Version 1.0-0 beta-29 (Unreleased)
+### - ABOUT
 
-Needs Pd **0.51-0** or above
+### - Version 1.0-0 beta-28 With Live Electronics Tutorial 
 
-This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. Find the latest and all releases at: <https://github.com/porres/pd-else/releases>.
+###  - Released june 12th 2020
 
-### Acknowledgements
 
-Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I first started coding and collaborating with the objects: [median~] and [keyboard]. 
 
-I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also collaborating with the [float2bits], [brown~],  [gray~] and [pinknoise~] objects.
+​	ELSE is a big library that provides a cohesive system for computer music, it also serves as a basis for an Live Electronics Tutorial by the same author: Alexandre Torres Porres.
+
+​	This version of ELSE needs **Pd 0.51-0** or above, download Pure Data from: http://msp.ucsd.edu/software.html 
+
+​	This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. 
+
+​	This library's repository resides at <https://github.com/porres/pd-else/>.
 
 --------------------------------------------------------------------------
+
+### Downloading ELSE:
+
+​	You can get ELSE from https://github.com/porres/pd-else/releases - where all releases are available, but ELSE is also found via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). Note that since version 1.0-0 beta 28,  the downloads of ELSE also contain the "live eletronics tutorial" mentioned above as part of the package. Look for the 'live-electronics-tutorial' folder inside it (check also its README on how to install it).
+
+​	Instructions on how to build ELSE are provided below.
+
+### Installing ELSE:
+
+​	ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path. Nonetheless, it can also be loaded as a library via "Preferences => Startup" or with [declare -lib else], and this is the oficial way of loading 'else' - even though that all this does is just print the library information on Pd's terminal window. 
+
+​	It's important to stress this release needs Pd Vanilla 0.51-0 or above (Pd Extended/Purr Data aren't supported). 
+
+--------------------------------------------------------------------------
+
+### More About ELSE
 
 **"EL Locus Solus"** organizes cultural events/concerts and music technology courses () <http://alexandre-torres.wixsite.com/el-locus-solus> ) where a Live Electronics tutorial is provided with examples in Pure Data for its courses. These have just been translated and completely rewritten to english with plans of being accompanied by a book. The first versions are available at: <https://github.com/porres/Live-Electronic-Music-Tutorial>. This tutorial it solely depends on the ELSE library and it is a great didactic companion to this library. Both the library and the tutorial are provided as a single download, directly from Pure Data or GitHub.
 
@@ -44,15 +64,6 @@ The goal of ELSE also outgrew the didactic material and includes now objects not
 It will still take a little while for ELSE to stabilize into a final version. For now, it's at an early "Beta" stage of development, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. 
 
 --------------------------------------------------------------------------
-
-### Downloading ELSE:
-
-Look for the latest releases in https://github.com/porres/pd-else/releases - but ELSE is also available via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). Note that since version 1.0-0 beta 28,  the downloads of ELSE also contain the live eletronics tutorial mentioned above as part of the package. If you're downloading from Pd, searching for either 'else' or 'live electronics tutorial' gets you to the same download.
-Downloading from Pd unzips to two folders, onde called 'else', where the library resides, and another name 'live electronics tutorial' (check also its README).
-
-### Installing ELSE:
-
-This release needs Pd Vanilla 0.51-0 or above (Pd Extended/Purr Data aren't supported). ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path. Nonetheless, it can also be loaded as a library via "Preferences => Startup" or with [declare -lib else], and this is the oficial way of loading 'else' - even though that all this does is just print the library information on Pd's terminal window. 
 
 #### Building ELSE for Pd Vanilla:
 
@@ -70,6 +81,15 @@ Then move it to your preferred install folder for Pd and add it to the path.
 Cross compiling is also possible with something like this
 
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=../</pre>
+
+--------------------------------------------------------------------------
+
+### Acknowledgements
+
+Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I first started coding and collaborating with the objects: [median~] and [keyboard]. 
+
+I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also collaborating with the [float2bits], [brown~],  [gray~] and [pinknoise~] objects.
+
 --------------------------------------------------------------------------
 
 ## Current Object list (371 objects):
