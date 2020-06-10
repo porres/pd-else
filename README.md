@@ -1,33 +1,35 @@
 --------------------------------------------------------------------------
 
-# ELSE - EL Locus Solus' Externals 
+# ELSE - EL Locus Solus' Externals   
 
-**ELSE** is an external library for the Pure Data programming language; 
+### for the Pure Data programming language
+
+
+
+### Version: 1.0-0 beta-28 With Live Electronics Tutorial 
+
+###   Released: june 11th 2020
 
 
 
 
 	Copyright © 2017-2020 Alexandre Torres Porres
 
+  
+
    This work is free. You can redistribute it and/or modify it under the
    terms of the Do What The Fuck You Want To Public License, Version 2,
-   as published by Sam Hocevar. 
-
-   See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
+   as published by Sam Hocevar. See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
 
    Other licenses may apply for specific objects and this is informed in the source code (example: the [giga.rev~] object). 
 
+
+
 --------------------------------------------------------------------------
 
-### - ABOUT
+###   About ELSE
 
-### - Version 1.0-0 beta-28 With Live Electronics Tutorial 
-
-###  - Released june 12th 2020
-
-
-
-​	ELSE is a big library that provides a cohesive system for computer music, it also serves as a basis for an Live Electronics Tutorial by the same author: Alexandre Torres Porres.
+​	ELSE is a big library that provides a cohesive system for computer music, it also serves as a basis for an Live Electronics Tutorial by the same author: Alexandre Torres Porres. This tutorial is also found as part of the download of the ELSE library.
 
 ​	This version of ELSE needs **Pd 0.51-0** or above, download Pure Data from: http://msp.ucsd.edu/software.html 
 
@@ -35,19 +37,27 @@
 
 ​	This library's repository resides at <https://github.com/porres/pd-else/>.
 
+
+
 --------------------------------------------------------------------------
 
 ### Downloading ELSE:
 
-​	You can get ELSE from https://github.com/porres/pd-else/releases - where all releases are available, but ELSE is also found via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). Note that since version 1.0-0 beta 28,  the downloads of ELSE also contain the "live eletronics tutorial" mentioned above as part of the package. Look for the 'live-electronics-tutorial' folder inside it (check also its README on how to install it).
+​	You can get ELSE from https://github.com/porres/pd-else/releases - where all releases are available, but ELSE is also found via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). Note that since version 1.0-0 beta 28,  the downloads of ELSE also contain a "live eletronics tutorial" as part of the package (as mentioned above). Look for the 'live-electronics-tutorial' folder inside it and also check its README on how to install it.
 
 ​	Instructions on how to build ELSE are provided below.
+
+
+
+--------------------------------------------------------------------------
 
 ### Installing ELSE:
 
 ​	ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path. Nonetheless, it can also be loaded as a library via "Preferences => Startup" or with [declare -lib else], and this is the oficial way of loading 'else' - even though that all this does is just print the library information on Pd's terminal window. 
 
 ​	It's important to stress this release needs Pd Vanilla 0.51-0 or above (Pd Extended/Purr Data aren't supported). 
+
+
 
 --------------------------------------------------------------------------
 
@@ -62,6 +72,8 @@ But the library grew to encompass functionalities found in other Pd objects/libr
 The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. So that's it, ELSE is becoming a quite big library and keeps growing and growing. 
 
 It will still take a little while for ELSE to stabilize into a final version. For now, it's at an early "Beta" stage of development, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. 
+
+
 
 --------------------------------------------------------------------------
 
@@ -82,13 +94,17 @@ Cross compiling is also possible with something like this
 
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=../</pre>
 
+
+
 --------------------------------------------------------------------------
 
 ### Acknowledgements
 
-Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I first started coding and collaborating with the objects: [median~] and [keyboard]. 
+​	Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I first started coding and collaborating with the objects: [median~] and [keyboard]. 
 
-I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also collaborating with the [float2bits], [brown~],  [gray~] and [pinknoise~] objects.
+​	I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also collaborating with the [float2bits], [brown~],  [gray~] and [pinknoise~] objects.
+
+
 
 --------------------------------------------------------------------------
 
