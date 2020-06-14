@@ -1,13 +1,13 @@
-#N canvas 611 28 565 670 10;
-#X obj 5 340 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 607 23 560 739 10;
+#X obj 5 405 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 511 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 576 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 544 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 609 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 643 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 711 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 116 349 cnv 17 3 133 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 116 414 cnv 17 3 133 empty empty 0 5 9 0 16 -228856 -162280
 0;
 #X obj 110 41 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
 #X obj 26 41 cnv 4 4 4 empty empty Keyboard 0 28 2 18 -233017 -1 0
@@ -17,27 +17,31 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X obj 58 286 unpack float float;
-#X obj 163 311 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 127 256;
-#X obj 58 311 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 94 256;
-#X text 223 311 Velocity;
-#X obj 434 75 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 58 336 unpack float float;
+#X obj 163 361 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 58 361 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 54 378 MIDI Note;
+#X text 162 377 Velocity;
+#X obj 216 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 200 349 float;
-#X text 200 487 float;
-#X text 250 349 - MIDI Note value;
-#X text 250 364 - MIDI Note and Velocity values;
-#X text 164 364 list <f \, f>;
-#X obj 116 487 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 216 208 makenote 100 200;
+#X obj 216 160 metro 300;
+#X obj 216 182 expr random(48 \, 96);
+#X text 206 414 float;
+#X text 206 552 float;
+#X text 256 414 - MIDI Note value;
+#X text 256 429 - MIDI Note and Velocity values;
+#X text 170 429 list <f \, f>;
+#X obj 116 552 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 115 521 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 115 586 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 259 521 - MIDI Note and Velocity values;
-#X text 170 521 list <f \, f>;
-#X text 140 570 2) float - height in pixels (default 80);
-#X text 140 588 3) float - number of octaves (default 4);
+#X text 259 586 - MIDI Note and Velocity values;
+#X text 170 586 list <f \, f>;
+#X text 147 636 2) float - height in pixels (default 80);
+#X text 147 654 3) float - number of octaves (default 4);
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -55,17 +59,18 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1;
 #X restore 306 4 graph;
-#X text 214 76 [keyboard] is a GUI that receives MIDI notes and also
+#X text 55 90 [keyboard] is a GUI that receives MIDI notes and also
 generates them from mouse clicking. Right click it for properties!
-, f 25;
-#X text 250 378 - set key width;
-#X text 152 378 width <float>;
-#X text 146 393 height <float>;
-#X text 164 423 oct <float>;
-#X text 250 423 - transpose octaves up or down;
-#X text 158 408 8ves <float>;
-#X text 250 408 - set number of octaves;
-#X text 158 438 lowc <float>;
+, f 64;
+#X text 256 443 - set key width;
+#X text 158 443 width <float>;
+#X text 152 458 height <float>;
+#X text 170 473 oct <float>;
+#X text 256 473 - transpose octaves up or down;
+#X text 164 488 8ves <float>;
+#X text 256 488 - set number of octaves;
+#X text 164 503 lowc <float>;
+#X text 256 503 - set C# of lowest C;
 #N canvas 795 23 468 538 example 0;
 #X obj 57 116 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -75,7 +80,7 @@ generates them from mouse clicking. Right click it for properties!
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
@@ -111,7 +116,7 @@ generates them from mouse clicking. Right click it for properties!
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
@@ -240,19 +245,21 @@ through chromatically!, f 26;
 #X connect 15 1 5 0;
 #X connect 15 2 6 0;
 #X connect 15 3 7 0;
-#X restore 470 284 pd example;
-#X msg 58 155 oct \$1;
-#X msg 58 107 1;
-#X msg 68 130 -1;
-#X text 90 107 octave up;
-#X text 100 130 octave down;
-#X text 250 487 - velocity of MIDI note value;
-#X text 146 453 toggle <float>;
-#X obj 58 191 else/keyboard 17 80 4 3 0;
-#X text 250 393 - set keyboard width;
-#X text 250 453 - sets toggle mode on of off;
-#X text 140 622 5) float - non zero sets to toggle mode;
-#N canvas 858 93 442 448 toggle 0;
+#X restore 450 342 pd example;
+#X msg 58 205 oct \$1;
+#X msg 58 157 1;
+#X msg 68 180 -1;
+#X text 90 157 octave up;
+#X text 100 180 octave down;
+#X text 256 552 - velocity of MIDI note value;
+#X text 152 518 toggle <float>;
+#X obj 58 241 else/keyboard 17 80 4 3 0;
+#X text 256 458 - set keyboard width;
+#X text 256 518 - sets toggle mode on of off;
+#X text 147 672 4) float - number of lowest C (default 3 - that is
+"C3");
+#X text 147 688 5) float - non zero sets to toggle mode;
+#N canvas 795 23 442 448 toggle 0;
 #X obj 299 400 clone;
 #X text 223 401 see also:;
 #X obj 255 318 else/out~;
@@ -265,7 +272,7 @@ hanging notes., f 36;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
@@ -423,25 +430,18 @@ hanging notes., f 36;
 #X connect 10 0 9 0;
 #X connect 11 0 3 0;
 #X connect 12 0 2 0;
-#X restore 476 304 pd toggle;
-#X text 140 552 1) float - white key width in pixels (default 17);
-#X text 200 469 flush;
-#X text 250 469 - flushes Note On keys (when in toggle mode);
-#X obj 434 119 else/rand.i 48 96;
-#X text 250 438 - set lowest C octave number;
-#X text 140 606 4) float - octave number of lowest C (default 3 - that
-is "C3"), f 63;
-#X obj 434 144 makenote 127 500;
-#X obj 434 96 metro 500;
-#X text 18 312 Pitch;
+#X restore 456 366 pd toggle;
+#X text 147 618 1) float - white key width in pixels (default 17);
+#X text 206 534 flush;
+#X text 256 534 - flushes Note On keys (when in toggle mode);
 #X connect 9 0 11 0;
 #X connect 9 1 10 0;
-#X connect 13 0 62 0;
-#X connect 43 0 50 0;
-#X connect 44 0 43 0;
-#X connect 45 0 43 0;
-#X connect 50 0 9 0;
-#X connect 58 0 61 0;
-#X connect 61 0 50 0;
-#X connect 61 1 50 1;
-#X connect 62 0 58 0;
+#X connect 14 0 16 0;
+#X connect 15 0 55 0;
+#X connect 15 1 55 1;
+#X connect 16 0 17 0;
+#X connect 17 0 15 0;
+#X connect 48 0 55 0;
+#X connect 49 0 48 0;
+#X connect 50 0 48 0;
+#X connect 55 0 9 0;
