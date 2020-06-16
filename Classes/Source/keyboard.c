@@ -10,6 +10,7 @@
 #define MIDDLE_C    "#F0FFFF" // color of Middle C when off
 
 static t_class *keyboard_class;
+static t_widgetbehavior keyboard_widgetbehavior;
 
 typedef struct _keyboard{
     t_object    x_obj;
@@ -27,6 +28,9 @@ typedef struct _keyboard{
     int         x_toggle_mode;
     int         x_norm;
     int         x_zoom;
+    int         x_shift;
+    int         x_xpos;
+    int         x_ypos;
     t_outlet   *x_out;
 }t_keyboard;
 
@@ -90,7 +94,6 @@ static void keyboard_flush(t_keyboard* x){
 }
 
 /* -------------------- MOUSE Events ----------------------------------*/
-// Map mouse event position and find corresponding note
 static int find_note(t_keyboard* x, float xpos, float ypos){
     int sz = (int)x->x_space;
     int b_sz = (int)(x->x_space / 3.f);
@@ -119,22 +122,32 @@ static int find_note(t_keyboard* x, float xpos, float ypos){
     return(x->x_first_c+i);
 }
 
-// Mouse press
-static void keyboard_mousepress(t_keyboard* x, float xpix, float ypix, float id){
-    if((int)x != (int)id) // Check if it's the right instance to receive this message
+static void keyboard_motion(t_keyboard *x, t_floatarg dx, t_floatarg dy){
+    if(x->x_toggle_mode || x->x_shift || x->x_glist->gl_edit) // ignore if toggle or edit mode!
         return;
-    if(x->x_glist->gl_edit) // If edit mode, give up!
+    x->x_xpos += dx, x->x_ypos += dy;
+    if(x->x_xpos < 0 || x->x_xpos >= x->x_width) // ignore if out of bounds
         return;
-    float xpos = xpix - text_xpix(&x->x_obj, x->x_glist);
-    float ypos = ypix - text_ypix(&x->x_obj, x->x_glist);;
-    int note = find_note(x, xpos, ypos);
-    if(note >= 0)
-        x->x_toggle_mode ? keyboard_play_tgl(x, note) : keyboard_note_on(x, x->x_last_note = note);
+    int note = find_note(x, x->x_xpos, x->x_ypos);
+    if(note != x->x_last_note){
+        keyboard_note_off(x, x->x_last_note);
+        keyboard_note_on(x, x->x_last_note = note);
+    }
+}
+
+static int keyboard_click(t_keyboard *x, t_glist *gl, int click_x, int click_y, int shift, int alt, int dbl, int doit){
+    alt = dbl = 0; // remove warning
+    if(doit){
+        x->x_xpos = click_x - text_xpix(&x->x_obj, gl), x->x_ypos = click_y - text_ypix(&x->x_obj, gl);
+        glist_grab(gl, &x->x_obj.te_g, (t_glistmotionfn)keyboard_motion, 0, click_x, click_y);
+        int note = find_note(x, x->x_xpos, x->x_ypos);
+        x->x_toggle_mode || shift ? keyboard_play_tgl(x, note) : keyboard_note_on(x, x->x_last_note = note);
+    }
+    return(1);
 }
 
 // Mouse release
-static void keyboard_mouserelease(t_keyboard* x, float xpix, float ypix, float id){
-    xpix = ypix = 0; // <================================================================  DON'T NEED THESE!!!!
+static void keyboard_mouserelease(t_keyboard* x, float id){
     if((int)x != (int)id) // Check if it's the right instance to receive this message
         return;
     if(x->x_toggle_mode || x->x_glist->gl_edit) // Give up if toggle or edit mode!
@@ -142,22 +155,6 @@ static void keyboard_mouserelease(t_keyboard* x, float xpix, float ypix, float i
     keyboard_note_off(x, x->x_last_note);
 }
 
-// Mouse Drag event
-static void keyboard_mousemotion(t_keyboard* x, float xpix, float ypix, float id){
-    if((int)x != (int)id) // Check if it's the right instance to receive this message
-        return;
-    if(x->x_toggle_mode || x->x_glist->gl_edit) // Give up if toggle or edit mode!
-        return;
-    float xpos = text_xpix(&x->x_obj, x->x_glist);
-    float ypos = text_ypix(&x->x_obj, x->x_glist);
-    if(xpix < xpos || xpix > xpos + x->x_width) // ignore if out of bounds
-        return;
-    int new_note = find_note(x, xpix - xpos, ypix - ypos);
-    if(new_note == -1 || new_note == x->x_last_note)
-        return;
-    keyboard_note_off(x, x->x_last_note);
-    keyboard_note_on(x, x->x_last_note = new_note);
-}
 
 /* ------------------------ GUI SHIT----------------------------- */
 // Erase the GUI
@@ -250,9 +247,7 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
     t_canvas *cv = glist_getcanvas(glist);
     if(vis){
         keyboard_draw(x, glist);
-        sys_vgui(".x%lx.c bind %xrr <ButtonPress-1> {\n keyboard_mousepress \"%d\" %%x %%y %%b\n}\n", cv, x, x);
-        sys_vgui(".x%lx.c bind %xrr <ButtonRelease-1> {\n keyboard_mouserelease \"%d\" %%x %%y %%b\n}\n", cv, x, x);
-        sys_vgui(".x%lx.c bind %xrr <B1-Motion> {\n keyboard_mousemotion \"%d\" %%x %%y\n}\n", cv, x, x);
+        sys_vgui(".x%lx.c bind %xrr <ButtonRelease-1> {\n keyboard_mouserelease \"%d\" %%b\n}\n", cv, x, x);
     }
     else
         keyboard_erase(x, glist);
@@ -303,16 +298,6 @@ static void keyboard_save(t_gobj *z, t_binbuf *b){
                 (int)x->x_toggle_mode);
     binbuf_addv(b, ";");
 }
-
-t_widgetbehavior keyboard_widgetbehavior ={
-    keyboard_getrect,
-    keyboard_displace,
-    keyboard_select,
-    NULL, // Activate not used
-    keyboard_delete,
-    keyboard_vis,
-    NULL, // can't use it because it doesn't have press and release
-};
 
 // Apply changes of property windows
 static void keyboard_apply(t_keyboard *x, float w, float h, float oct, float low_c, float tgl){
@@ -401,8 +386,6 @@ static void keyboard_toggle(t_keyboard *x, t_floatarg f){
     int tgl = f != 0;
     if(tgl != x->x_toggle_mode){
         canvas_dirty(x->x_glist, 1);
-        if(x->x_toggle_mode)
-            keyboard_flush(x);
         x->x_toggle_mode = tgl;
     }
 }
@@ -482,12 +465,16 @@ void keyboard_setup(void){
     class_addmethod(keyboard_class, (t_method)keyboard_flush, gensym("flush"), 0);
     class_addmethod(keyboard_class, (t_method)keyboard_zoom, gensym("zoom"), A_CANT, 0);
 // Methods to receive TCL/TK events
-    class_addmethod(keyboard_class, (t_method)keyboard_mousepress,gensym("_mousepress"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(keyboard_class, (t_method)keyboard_mouserelease,gensym("_mouserelease"), A_FLOAT, A_FLOAT, A_FLOAT, 0); 
-    class_addmethod(keyboard_class, (t_method)keyboard_mousemotion,gensym("_mousemotion"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_mouserelease,gensym("_mouserelease"), A_FLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_apply, gensym("apply"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
-// Widget
+// GUI
     class_setwidget(keyboard_class, &keyboard_widgetbehavior);
+    keyboard_widgetbehavior.w_getrectfn  = keyboard_getrect;
+    keyboard_widgetbehavior.w_displacefn = keyboard_displace;
+    keyboard_widgetbehavior.w_selectfn   = keyboard_select;
+    keyboard_widgetbehavior.w_deletefn   = keyboard_delete;
+    keyboard_widgetbehavior.w_visfn      = keyboard_vis;
+    keyboard_widgetbehavior.w_clickfn    = (t_clickfn)keyboard_click;
     class_setsavefn(keyboard_class, keyboard_save);
     class_setpropertiesfn(keyboard_class, keyboard_properties);
     
@@ -495,22 +482,22 @@ void keyboard_setup(void){
     sys_vgui("    proc pd {args} {pdsend [join $args \" \"]}\n");
     sys_vgui("}\n");
     
-    sys_vgui("proc keyboard_mousepress {id x y b} {\n");
+/*    sys_vgui("proc keyboard_mousepress {id x y b} {\n");
     sys_vgui("    if {$b == 1} {\n");
     sys_vgui("        pd [concat keyboard _mousepress $x $y $id\\;]\n");
     sys_vgui("    }\n");
-    sys_vgui("}\n");
+    sys_vgui("}\n");*/
     
-    sys_vgui("proc keyboard_mouserelease {id x y b} {\n");
+    sys_vgui("proc keyboard_mouserelease {id b} {\n");
     sys_vgui("    if {$b == 1} {\n");
-    sys_vgui("        pd [concat keyboard _mouserelease $x $y $id\\;]\n");
+    sys_vgui("        pd [concat keyboard _mouserelease $id\\;]\n");
     sys_vgui("    }\n");
     sys_vgui("}\n");
     
-    sys_vgui("proc keyboard_mousemotion {id x y} {\n");
+/*    sys_vgui("proc keyboard_mousemotion {id x y} {\n");
     sys_vgui("    set cmd [concat keyboard _mousemotion $x $y $id\\;]\n");
     sys_vgui("    pd $cmd\n");
-    sys_vgui("}\n");
+    sys_vgui("}\n");*/
     
     sys_vgui("proc keyboard_ok {id} {\n");
     sys_vgui("    keyboard_apply $id\n");
