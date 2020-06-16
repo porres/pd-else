@@ -15,7 +15,7 @@ static t_widgetbehavior keyboard_widgetbehavior;
 typedef struct _keyboard{
     t_object    x_obj;
     t_glist    *x_glist;
-    int        *x_tgl_notes;        // to store which notes should be played
+    int        *x_tgl_notes;    // to store which notes should be played
     int         x_velocity;     // to store velocity
     int         x_last_note;    // to store last note
     float       x_vel_in;       // to store the second inlet values
@@ -148,7 +148,7 @@ static int keyboard_click(t_keyboard *x, t_glist *gl, int click_x, int click_y, 
 }
 
 static void keyboard_mouserelease(t_keyboard* x){
-    if(x->x_toggle_mode || x->x_shift || x->x_glist->gl_edit) // Give up if toggle or edit mode!
+    if(x->x_toggle_mode || x->x_shift || x->x_glist->gl_edit) // ignore if toggle/edit mode!
         return;
     keyboard_note_off(x, x->x_last_note);
 }
@@ -245,7 +245,7 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
     t_canvas *cv = glist_getcanvas(glist);
     if(vis){
         keyboard_draw(x, glist);
-        sys_vgui(".x%lx.c bind %xrr <ButtonRelease-1> {\n keyboard_mouserelease %s %%b\n}\n", cv, x, x->x_bindsym->s_name); // child
+        sys_vgui(".x%lx.c bind %xrr <ButtonRelease-1> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindsym->s_name);
     }
     else
         keyboard_erase(x, glist);
@@ -468,7 +468,6 @@ void keyboard_setup(void){
     class_addmethod(keyboard_class, (t_method)keyboard_flush, gensym("flush"), 0);
     class_addmethod(keyboard_class, (t_method)keyboard_zoom, gensym("zoom"), A_CANT, 0);
 // Methods to receive TCL/TK events
-//    class_addmethod(keyboard_class, (t_method)keyboard_mouserelease, gensym("_mouserelease"), A_FLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_mouserelease, gensym("_mouserelease"), 0);
     class_addmethod(keyboard_class, (t_method)keyboard_apply, gensym("apply"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
 // GUI
@@ -485,13 +484,7 @@ void keyboard_setup(void){
     sys_vgui("if {[catch {pd}] } {\n");
     sys_vgui("    proc pd {args} {pdsend [join $args \" \"]}\n");
     sys_vgui("}\n");
-    
-    sys_vgui("proc keyboard_mouserelease {id b} {\n");
-    sys_vgui("    if {$b == 1} {\n");
-    sys_vgui("        pd [concat $id _mouserelease \\;]\n");
-    sys_vgui("    }\n");
-    sys_vgui("}\n");
-    
+
     sys_vgui("proc keyboard_ok {id} {\n");
     sys_vgui("    keyboard_apply $id\n");
     sys_vgui("    keyboard_cancel $id\n");
