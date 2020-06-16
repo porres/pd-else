@@ -142,22 +142,13 @@ static int keyboard_click(t_keyboard *x, t_glist *gl, int click_x, int click_y, 
         x->x_xpos = click_x - text_xpix(&x->x_obj, gl), x->x_ypos = click_y - text_ypix(&x->x_obj, gl);
         glist_grab(gl, &x->x_obj.te_g, (t_glistmotionfn)keyboard_motion, 0, click_x, click_y);
         int note = find_note(x, x->x_xpos, x->x_ypos);
-        x->x_toggle_mode || shift ? keyboard_play_tgl(x, note) : keyboard_note_on(x, x->x_last_note = note);
+        x->x_toggle_mode || (x->x_shift = shift) ? keyboard_play_tgl(x, note) : keyboard_note_on(x, x->x_last_note = note);
     }
     return(1);
 }
 
-// Mouse release
-/*static void keyboard_mouserelease(t_keyboard* x, float id){
-    if((int)x != (int)id) // Check if it's the right instance to receive this message
-        return;
-    if(x->x_toggle_mode || x->x_glist->gl_edit) // Give up if toggle or edit mode!
-        return;
-    keyboard_note_off(x, x->x_last_note);
-}*/
-
 static void keyboard_mouserelease(t_keyboard* x){
-    if(x->x_toggle_mode || x->x_glist->gl_edit) // Give up if toggle or edit mode!
+    if(x->x_toggle_mode || x->x_shift || x->x_glist->gl_edit) // Give up if toggle or edit mode!
         return;
     keyboard_note_off(x, x->x_last_note);
 }
@@ -254,8 +245,7 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
     t_canvas *cv = glist_getcanvas(glist);
     if(vis){
         keyboard_draw(x, glist);
-//        sys_vgui(".x%lx.c bind %xrr <ButtonRelease-1> {\n keyboard_mouserelease \"%d\" %%b\n}\n", cv, x, x);
-        sys_vgui(".x%lx.c bind %xrr <ButtonRelease-1> {\n keyboard_mouserelease %s %%b\n}\n", cv, x, x->x_bindsym->s_name);
+        sys_vgui(".x%lx.c bind %xrr <ButtonRelease-1> {\n keyboard_mouserelease %s %%b\n}\n", cv, x, x->x_bindsym->s_name); // child
     }
     else
         keyboard_erase(x, glist);
@@ -410,8 +400,7 @@ static void keyboard_norm(t_keyboard *x, t_floatarg f){
 /* ------------------------ Free / New / Setup ------------------------------*/
 // Free
 void keyboard_free(t_keyboard *x){
-    pd_unbind(&x->x_obj.ob_pd, gensym("keyboard"));
-//    pd_unbind(&x->x_obj.ob_pd, x->x_bindsym);
+    pd_unbind(&x->x_obj.ob_pd, x->x_bindsym);
     gfxstub_deleteforkey(x);
 }
 
@@ -447,10 +436,9 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
         x->x_tgl_notes[i] = 0;
     x->x_out = outlet_new(&x->x_obj, &s_list);
     floatinlet_new(&x->x_obj, &x->x_vel_in);
-    pd_bind(&x->x_obj.ob_pd, gensym("keyboard"));
-/*    char buf[64];
+    char buf[64];
     sprintf(buf, "rel_%lx", (unsigned long)x);
-    pd_bind(&x->x_obj.ob_pd, x->x_bindsym = gensym(buf));*/
+    pd_bind(&x->x_obj.ob_pd, x->x_bindsym = gensym(buf));
     return(void *)x;
 }
 
@@ -497,12 +485,6 @@ void keyboard_setup(void){
     sys_vgui("if {[catch {pd}] } {\n");
     sys_vgui("    proc pd {args} {pdsend [join $args \" \"]}\n");
     sys_vgui("}\n");
-    
-/*    sys_vgui("proc keyboard_mouserelease {id b} {\n");
-    sys_vgui("    if {$b == 1} {\n");
-    sys_vgui("        pd [concat keyboard _mouserelease $id\\;]\n");
-    sys_vgui("    }\n");
-    sys_vgui("}\n");*/
     
     sys_vgui("proc keyboard_mouserelease {id b} {\n");
     sys_vgui("    if {$b == 1} {\n");
