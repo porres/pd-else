@@ -15,6 +15,7 @@ typedef struct _keyboard{
     t_object    x_obj;
     t_glist    *x_glist;
     int        *x_notes;        // to store which notes should be played
+    int         x_velocity;     // to store velocity
     int         x_last_note;    // to store last note
     float       x_vel_in;       // to store the second inlet values
     float       x_space;
@@ -24,61 +25,65 @@ typedef struct _keyboard{
     int         x_first_c;
     int         x_low_c;
     int         x_toggle_mode;
+    int         x_norm;
     int         x_zoom;
     t_outlet   *x_out;
 }t_keyboard;
 
 /* ------------------------- Keyboard Play ------------------------------*/
-static void keyboard_note_on(t_keyboard* x, int i){
+static void keyboard_note_on(t_keyboard* x, int note){
+    int i = note - x->x_first_c;
     t_canvas *cv =  glist_getcanvas(x->x_glist);
-    short key = i % 12;
-    short black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
+    short key = note % 12, black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
     sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_ON : WHITE_ON);
     t_atom a[2];
-    SETFLOAT(a, (float)(x->x_first_c + i));
-    SETFLOAT(a+1, x->x_notes[i] = 127);
+    SETFLOAT(a, note);
+    SETFLOAT(a+1, x->x_velocity);
     outlet_list(x->x_out, &s_list, 2, a);
 }
 
-static void keyboard_note_off(t_keyboard* x, int i){
-    t_canvas *cv =  glist_getcanvas(x->x_glist);
-    int note = i + x->x_first_c;
-    short key = i % 12, c4 = (note == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
-    sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
+static void keyboard_note_off(t_keyboard* x, int note){
+    int i = note - x->x_first_c;
+    if(x->x_notes[note] == 0){
+        t_canvas *cv =  glist_getcanvas(x->x_glist);
+        short key = note % 12, c4 = (note == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
+        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
+    }
     t_atom a[2];
     SETFLOAT(a, note);
-    SETFLOAT(a+1, x->x_notes[i] = 0);
+    SETFLOAT(a+1, 0);
     outlet_list(x->x_out, &s_list, 2, a);
 }
 
 // TOGGLE MODE
-static void keyboard_play_tgl(t_keyboard* x, int i){
+static void keyboard_play_tgl(t_keyboard* x, int note){
+    int i = note - x->x_first_c;
     t_canvas *cv =  glist_getcanvas(x->x_glist);
-    int vel = (x->x_notes[i] = (x->x_notes[i] ? 0 : 127));
+    int on = x->x_notes[note] = x->x_notes[note] ? 0 : 1;
     short key = i % 12;
     if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10) // black
-        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, vel ? BLACK_ON : BLACK_OFF);
+        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, on ? BLACK_ON : BLACK_OFF);
      else // white
-        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, vel ? WHITE_ON : i == 60 ? MIDDLE_C : WHITE_OFF);
+        sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, on ? WHITE_ON : note == 60 ? MIDDLE_C : WHITE_OFF);
     t_atom a[2];
-    SETFLOAT(a, (float)(x->x_first_c + i));
-    SETFLOAT(a+1, vel);
+    SETFLOAT(a, note);
+    SETFLOAT(a+1, on ? x->x_velocity : 0);
     outlet_list(x->x_out, &s_list, 2, a);
 }
 
 // FLUSH
 static void keyboard_flush(t_keyboard* x){
-    if(!x->x_toggle_mode)
-        return;
     t_canvas *cv =  glist_getcanvas(x->x_glist);
     t_atom a[2];
-    for(short i = 0 ; i < x->x_octaves * 12 ; i++){
-        int note = x->x_first_c + i;
-        if(x->x_notes[i] > 0){
-            short key = i % 12, c4 = (note == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
-            sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
+    for(int note = 0 ; note < 256 ; note++){
+        if(x->x_notes[note] > 0){
+            int i = note - x->x_first_c;
+            if(i >= 0 && x->x_glist->gl_havewindow){
+                short key = i % 12, c4 = (i == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
+                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
+            }
             SETFLOAT(a, note);
-            SETFLOAT(a+1, x->x_notes[i] = 0);
+            SETFLOAT(a+1, x->x_notes[note] = 0);
             outlet_list(x->x_out, &s_list, 2, a);
         }
     }
@@ -94,22 +99,24 @@ static int find_note(t_keyboard* x, float xpos, float ypos){
     int oct = (int)((xpos / x->x_space) / 7);
     int i = white_note + oct*12;
     if(ypos < x->x_height*2/3){ // find black keys
+        x->x_velocity = x->x_norm > 0 ? x->x_norm : (int)((ypos / (x->x_height*2/3)) * 127);
         if(white_key == 0 || white_key == 3){ // find sharp
             if(xpos > (white_key+1 + oct*7) * sz - b_sz)
-                return(i+1);
+                return(x->x_first_c+i+1);
         }
         else if(white_key == 2 || white_key == 6){ // find flat
             if(xpos < (white_key + oct*7) * sz + b_sz)
-                return(i-1);
+                return(x->x_first_c+i-1);
         }
         else if(white_key == 1 || white_key == 4 || white_key == 5){ // find both
             if(xpos < (white_key + oct*7) * sz + b_sz)
-                return(i-1);
+                return(x->x_first_c+i-1);
             else if(xpos > (white_key+1 + oct*7) * sz - b_sz)
-                return(i+1);
+                return(x->x_first_c+i+1);
         }
     }
-    return(i);
+    x->x_velocity = x->x_norm > 0 ? x->x_norm : (int)((ypos / x->x_height) * 127);
+    return(x->x_first_c+i);
 }
 
 // Mouse press
@@ -169,6 +176,8 @@ static void keyboard_draw(t_keyboard *x, t_glist* glist){
     for(i = 0 ; i < x->x_octaves * 12 ; i++){ // white keys 1st (blacks overlay it)
         short key = i % 12;
         if(key != 1 && key != 3 && key != 6 && key != 8 && key != 10){
+            int on = x->x_notes[x->x_first_c+i];
+            int c4 = x->x_first_c + i == 60;
             sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill %s\n",
                      cv,
                      xpos + wcount * (int)x->x_space,
@@ -178,7 +187,7 @@ static void keyboard_draw(t_keyboard *x, t_glist* glist){
                      x,
                      i,
                      x,
-                     x->x_first_c + i == 60 ? MIDDLE_C : WHITE_OFF);
+                     on ? WHITE_ON : c4 ? MIDDLE_C : WHITE_OFF);
             wcount++;
         }
     }
@@ -189,6 +198,7 @@ static void keyboard_draw(t_keyboard *x, t_glist* glist){
             continue;
         }
         if(key == 1 || key == 3 || key ==6 || key == 8 || key == 10){
+            int on = x->x_notes[x->x_first_c+i];
             sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill %s\n",
                      cv,
                      xpos + ((bcount + 1) * (int)x->x_space) - ((int)(x->x_space / 3.f)) ,
@@ -198,7 +208,7 @@ static void keyboard_draw(t_keyboard *x, t_glist* glist){
                      x,
                      i,
                      x,
-                     BLACK_OFF);
+                     on ? BLACK_ON : BLACK_OFF);
             bcount++;
         }
     }
@@ -260,10 +270,6 @@ static void keyboard_set_properties(t_keyboard *x, float space,
     x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
     x->x_first_c = ((int)(x->x_low_c * 12)) + 12;
     x->x_toggle_mode = tgl != 0;
-// get and clear notes
-    x->x_notes = getbytes(sizeof(int) * 12 * x->x_octaves);
-    for(int i = 0; i < 12 * x->x_octaves; i++)
-        x->x_notes[i] = 0;
 }
 
 // Keyboard Properties
@@ -315,7 +321,13 @@ static void keyboard_apply(t_keyboard *x, float w, float h, float oct, float low
 }
 
 /* ------------------------- Methods ------------------------------*/
-void keyboard_float(t_keyboard *x, t_floatarg note){
+void keyboard_float(t_keyboard *x, t_floatarg f){
+    int note = (int)f;
+    if(x->x_vel_in < 0)
+        x->x_vel_in = 0;
+    if(x->x_vel_in > 127)
+        x->x_vel_in = 127;
+    int on = x->x_notes[note] = x->x_vel_in > 0;
     t_atom a[2];
     SETFLOAT(a, note);
     SETFLOAT(a+1, x->x_vel_in);
@@ -323,8 +335,7 @@ void keyboard_float(t_keyboard *x, t_floatarg note){
     if(x->x_glist->gl_havewindow){
         t_canvas *cv =  glist_getcanvas(x->x_glist);
         if(note > x->x_first_c && note < x->x_first_c + (x->x_octaves * 12)){
-            int i = (int)(note - x->x_first_c);
-            int on = (x->x_notes[i] = x->x_vel_in) > 0;
+            int i = note - x->x_first_c;
             short key = i % 12;
             if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10) // black
                 sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, on ? BLACK_ON : BLACK_OFF);
@@ -366,8 +377,6 @@ static void keyboard_8ves(t_keyboard *x, t_floatarg f){
         x->x_octaves = f;
         x->x_width = x->x_space * 7 * x->x_octaves;
         if(glist_isvisible(x->x_glist)){
-            keyboard_erase(x, x->x_glist);
-            keyboard_draw(x, x->x_glist);
         }
     }
 }
@@ -376,16 +385,11 @@ static void keyboard_low_c(t_keyboard *x, t_floatarg f){
     f = f > 8 ? 8 : f < 0 ? 0 : (int)(f);
     if(x->x_low_c != f){
         canvas_dirty(x->x_glist, 1);
+        x->x_first_c = ((int)((x->x_low_c = f) * 12)) + 12;
         if(glist_isvisible(x->x_glist)){
-                t_canvas *cv =  glist_getcanvas(x->x_glist);
-                int i = (int)(60 - x->x_first_c);
-                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, WHITE_OFF);
-                x->x_first_c = ((int)((x->x_low_c = f) * 12)) + 12;
-                i = (int)(60 - x->x_first_c);
-                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, MIDDLE_C);
+            keyboard_erase(x, x->x_glist);
+            keyboard_draw(x, x->x_glist);
         }
-        else
-            x->x_first_c = ((int)((x->x_low_c = f) * 12)) + 12;
     }
 }
 
@@ -403,6 +407,13 @@ static void keyboard_toggle(t_keyboard *x, t_floatarg f){
     }
 }
 
+static void keyboard_norm(t_keyboard *x, t_floatarg f){
+    int norm = f < 0 ? 0 : f > 127 ? 127 : (int)f;
+    if(norm != x->x_norm){
+        canvas_dirty(x->x_glist, 1);
+        x->x_norm = norm;
+    }
+}
 
 /* ------------------------ Free / New / Setup ------------------------------*/
 // Free
@@ -419,6 +430,7 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
     x->x_glist = (t_glist*)canvas_getcurrent();
     x->x_zoom = x->x_glist->gl_zoom;
     x->x_last_note = -1;
+    x->x_norm = x->x_velocity = 0;
     int tgl = 0;
     float init_space = 17;
     float init_height = 80;
@@ -435,6 +447,9 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
     if(ac) // 5th ARGUMENT: Toggle Mode)
         tgl = (int)(atom_getfloat(av++) != 0), ac--;
     keyboard_set_properties(x, init_space, init_height, init_8ves, init_low_c, tgl);
+    x->x_notes = getbytes(sizeof(int) * 256);
+    for(int i = 0; i < 256; i++)
+        x->x_notes[i] = 0;
     x->x_out = outlet_new(&x->x_obj, &s_list);
     floatinlet_new(&x->x_obj, &x->x_vel_in);
     pd_bind(&x->x_obj.ob_pd, gensym("keyboard"));
@@ -463,6 +478,7 @@ void keyboard_setup(void){
     class_addmethod(keyboard_class, (t_method)keyboard_oct, gensym("oct"), A_DEFFLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_low_c, gensym("lowc"), A_DEFFLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_toggle, gensym("toggle"), A_DEFFLOAT, 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_norm, gensym("norm"), A_DEFFLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_flush, gensym("flush"), 0);
     class_addmethod(keyboard_class, (t_method)keyboard_zoom, gensym("zoom"), A_CANT, 0);
 // Methods to receive TCL/TK events
