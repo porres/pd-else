@@ -148,9 +148,15 @@ static int keyboard_click(t_keyboard *x, t_glist *gl, int click_x, int click_y, 
 }
 
 // Mouse release
-static void keyboard_mouserelease(t_keyboard* x, float id){
+/*static void keyboard_mouserelease(t_keyboard* x, float id){
     if((int)x != (int)id) // Check if it's the right instance to receive this message
         return;
+    if(x->x_toggle_mode || x->x_glist->gl_edit) // Give up if toggle or edit mode!
+        return;
+    keyboard_note_off(x, x->x_last_note);
+}*/
+
+static void keyboard_mouserelease(t_keyboard* x){
     if(x->x_toggle_mode || x->x_glist->gl_edit) // Give up if toggle or edit mode!
         return;
     keyboard_note_off(x, x->x_last_note);
@@ -248,10 +254,8 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
     t_canvas *cv = glist_getcanvas(glist);
     if(vis){
         keyboard_draw(x, glist);
-        sys_vgui(".x%lx.c bind %xrr <ButtonRelease-1> {\n keyboard_mouserelease \"%d\" %%b\n}\n", cv, x, x);
-// failed attempts:
-// sys_vgui(".x%lx.c bind %s <ButtonRelease-1> {\n keyboard_mouserelease \"%d\" %%b\n}\n", cv, x->x_bindsym->s_name, x);
-// sys_vgui("bind %s <ButtonRelease-1> {pdsend [concat %s _mouserelease\\;]}\n", cv, x->x_bindsym->s_name);
+//        sys_vgui(".x%lx.c bind %xrr <ButtonRelease-1> {\n keyboard_mouserelease \"%d\" %%b\n}\n", cv, x, x);
+        sys_vgui(".x%lx.c bind %xrr <ButtonRelease-1> {\n keyboard_mouserelease %s %%b\n}\n", cv, x, x->x_bindsym->s_name);
     }
     else
         keyboard_erase(x, glist);
@@ -476,7 +480,8 @@ void keyboard_setup(void){
     class_addmethod(keyboard_class, (t_method)keyboard_flush, gensym("flush"), 0);
     class_addmethod(keyboard_class, (t_method)keyboard_zoom, gensym("zoom"), A_CANT, 0);
 // Methods to receive TCL/TK events
-    class_addmethod(keyboard_class, (t_method)keyboard_mouserelease,gensym("_mouserelease"), A_FLOAT, 0);
+//    class_addmethod(keyboard_class, (t_method)keyboard_mouserelease, gensym("_mouserelease"), A_FLOAT, 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_mouserelease, gensym("_mouserelease"), 0);
     class_addmethod(keyboard_class, (t_method)keyboard_apply, gensym("apply"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
 // GUI
     class_setwidget(keyboard_class, &keyboard_widgetbehavior);
@@ -493,9 +498,15 @@ void keyboard_setup(void){
     sys_vgui("    proc pd {args} {pdsend [join $args \" \"]}\n");
     sys_vgui("}\n");
     
-    sys_vgui("proc keyboard_mouserelease {id b} {\n");
+/*    sys_vgui("proc keyboard_mouserelease {id b} {\n");
     sys_vgui("    if {$b == 1} {\n");
     sys_vgui("        pd [concat keyboard _mouserelease $id\\;]\n");
+    sys_vgui("    }\n");
+    sys_vgui("}\n");*/
+    
+    sys_vgui("proc keyboard_mouserelease {id b} {\n");
+    sys_vgui("    if {$b == 1} {\n");
+    sys_vgui("        pd [concat $id _mouserelease \\;]\n");
     sys_vgui("    }\n");
     sys_vgui("}\n");
     
