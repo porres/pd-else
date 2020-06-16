@@ -15,7 +15,7 @@ static t_widgetbehavior keyboard_widgetbehavior;
 typedef struct _keyboard{
     t_object    x_obj;
     t_glist    *x_glist;
-    int        *x_notes;        // to store which notes should be played
+    int        *x_tgl_notes;        // to store which notes should be played
     int         x_velocity;     // to store velocity
     int         x_last_note;    // to store last note
     float       x_vel_in;       // to store the second inlet values
@@ -31,6 +31,7 @@ typedef struct _keyboard{
     int         x_shift;
     int         x_xpos;
     int         x_ypos;
+    t_symbol   *x_bindsym;
     t_outlet   *x_out;
 }t_keyboard;
 
@@ -48,7 +49,7 @@ static void keyboard_note_on(t_keyboard* x, int note){
 
 static void keyboard_note_off(t_keyboard* x, int note){
     int i = note - x->x_first_c;
-    if(x->x_notes[note] == 0){
+    if(x->x_tgl_notes[note] == 0){
         t_canvas *cv =  glist_getcanvas(x->x_glist);
         short key = note % 12, c4 = (note == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
         sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
@@ -63,7 +64,7 @@ static void keyboard_note_off(t_keyboard* x, int note){
 static void keyboard_play_tgl(t_keyboard* x, int note){
     int i = note - x->x_first_c;
     t_canvas *cv =  glist_getcanvas(x->x_glist);
-    int on = x->x_notes[note] = x->x_notes[note] ? 0 : 1;
+    int on = x->x_tgl_notes[note] = x->x_tgl_notes[note] ? 0 : 1;
     short key = i % 12;
     if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10) // black
         sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, on ? BLACK_ON : BLACK_OFF);
@@ -80,14 +81,14 @@ static void keyboard_flush(t_keyboard* x){
     t_canvas *cv =  glist_getcanvas(x->x_glist);
     t_atom a[2];
     for(int note = 0 ; note < 256 ; note++){
-        if(x->x_notes[note] > 0){
+        if(x->x_tgl_notes[note] > 0){
             int i = note - x->x_first_c;
             if(i >= 0 && x->x_glist->gl_havewindow){
                 short key = i % 12, c4 = (i == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
                 sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
             }
             SETFLOAT(a, note);
-            SETFLOAT(a+1, x->x_notes[note] = 0);
+            SETFLOAT(a+1, x->x_tgl_notes[note] = 0);
             outlet_list(x->x_out, &s_list, 2, a);
         }
     }
@@ -173,7 +174,7 @@ static void keyboard_draw(t_keyboard *x, t_glist* glist){
     for(i = 0 ; i < x->x_octaves * 12 ; i++){ // white keys 1st (blacks overlay it)
         short key = i % 12;
         if(key != 1 && key != 3 && key != 6 && key != 8 && key != 10){
-            int on = x->x_notes[x->x_first_c+i];
+            int on = x->x_tgl_notes[x->x_first_c+i];
             int c4 = x->x_first_c + i == 60;
             sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill %s\n",
                      cv,
@@ -195,7 +196,7 @@ static void keyboard_draw(t_keyboard *x, t_glist* glist){
             continue;
         }
         if(key == 1 || key == 3 || key ==6 || key == 8 || key == 10){
-            int on = x->x_notes[x->x_first_c+i];
+            int on = x->x_tgl_notes[x->x_first_c+i];
             sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags {%xrrk%d %xrr} -fill %s\n",
                      cv,
                      xpos + ((bcount + 1) * (int)x->x_space) - ((int)(x->x_space / 3.f)) ,
@@ -248,6 +249,9 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
     if(vis){
         keyboard_draw(x, glist);
         sys_vgui(".x%lx.c bind %xrr <ButtonRelease-1> {\n keyboard_mouserelease \"%d\" %%b\n}\n", cv, x, x);
+// failed attempts:
+// sys_vgui(".x%lx.c bind %s <ButtonRelease-1> {\n keyboard_mouserelease \"%d\" %%b\n}\n", cv, x->x_bindsym->s_name, x);
+// sys_vgui("bind %s <ButtonRelease-1> {pdsend [concat %s _mouserelease\\;]}\n", cv, x->x_bindsym->s_name);
     }
     else
         keyboard_erase(x, glist);
@@ -256,7 +260,7 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
 /* ------------------------ GUI Behaviour -----------------------------*/
 // Set Properties
 static void keyboard_set_properties(t_keyboard *x, float space,
-        float height, float oct, float low_c, float tgl){
+        float height, float oct, float low_c, float tgl, float vel){
     x->x_toggle_mode = 0; // tgl != 0;
     x->x_height = (height < 10) ? 10 : height;
     x->x_octaves = oct < 1 ? 1 : oct > 10 ? 10 : oct;
@@ -265,6 +269,7 @@ static void keyboard_set_properties(t_keyboard *x, float space,
     x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
     x->x_first_c = ((int)(x->x_low_c * 12)) + 12;
     x->x_toggle_mode = tgl != 0;
+    x->x_norm = vel < 0 ? 0 : vel > 127 ? 127 : vel;
 }
 
 // Keyboard Properties
@@ -301,7 +306,7 @@ static void keyboard_save(t_gobj *z, t_binbuf *b){
 
 // Apply changes of property windows
 static void keyboard_apply(t_keyboard *x, float w, float h, float oct, float low_c, float tgl){
-    keyboard_set_properties(x, w, h, oct, low_c, tgl);
+    keyboard_set_properties(x, w, h, oct, low_c, tgl, 0);
     keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
 }
 
@@ -312,7 +317,7 @@ void keyboard_float(t_keyboard *x, t_floatarg f){
         x->x_vel_in = 0;
     if(x->x_vel_in > 127)
         x->x_vel_in = 127;
-    int on = x->x_notes[note] = x->x_vel_in > 0;
+    int on = x->x_tgl_notes[note] = x->x_vel_in > 0;
     t_atom a[2];
     SETFLOAT(a, note);
     SETFLOAT(a+1, x->x_vel_in);
@@ -402,6 +407,7 @@ static void keyboard_norm(t_keyboard *x, t_floatarg f){
 // Free
 void keyboard_free(t_keyboard *x){
     pd_unbind(&x->x_obj.ob_pd, gensym("keyboard"));
+//    pd_unbind(&x->x_obj.ob_pd, x->x_bindsym);
     gfxstub_deleteforkey(x);
 }
 
@@ -414,7 +420,7 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
     x->x_zoom = x->x_glist->gl_zoom;
     x->x_last_note = -1;
     x->x_norm = x->x_velocity = 0;
-    int tgl = 0;
+    int tgl = 0, vel = 0;
     float init_space = 17;
     float init_height = 80;
     float init_8ves = 4;
@@ -429,14 +435,19 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
         init_low_c = atom_getfloat(av++), ac--;
     if(ac) // 5th ARGUMENT: Toggle Mode)
         tgl = (int)(atom_getfloat(av++) != 0), ac--;
-    keyboard_set_properties(x, init_space, init_height, init_8ves, init_low_c, tgl);
-    x->x_notes = getbytes(sizeof(int) * 256);
+    if(ac) // 6th ARGUMENT: Normalization)
+        vel = (int)(atom_getfloat(av++) != 0), ac--;
+    keyboard_set_properties(x, init_space, init_height, init_8ves, init_low_c, tgl, vel);
+    x->x_tgl_notes = getbytes(sizeof(int) * 256);
     for(int i = 0; i < 256; i++)
-        x->x_notes[i] = 0;
+        x->x_tgl_notes[i] = 0;
     x->x_out = outlet_new(&x->x_obj, &s_list);
     floatinlet_new(&x->x_obj, &x->x_vel_in);
     pd_bind(&x->x_obj.ob_pd, gensym("keyboard"));
-    return(void *) x;
+/*    char buf[64];
+    sprintf(buf, "rel_%lx", (unsigned long)x);
+    pd_bind(&x->x_obj.ob_pd, x->x_bindsym = gensym(buf));*/
+    return(void *)x;
 }
 
 static void keyboard_zoom(t_keyboard *x, t_floatarg zoom){
@@ -482,22 +493,11 @@ void keyboard_setup(void){
     sys_vgui("    proc pd {args} {pdsend [join $args \" \"]}\n");
     sys_vgui("}\n");
     
-/*    sys_vgui("proc keyboard_mousepress {id x y b} {\n");
-    sys_vgui("    if {$b == 1} {\n");
-    sys_vgui("        pd [concat keyboard _mousepress $x $y $id\\;]\n");
-    sys_vgui("    }\n");
-    sys_vgui("}\n");*/
-    
     sys_vgui("proc keyboard_mouserelease {id b} {\n");
     sys_vgui("    if {$b == 1} {\n");
     sys_vgui("        pd [concat keyboard _mouserelease $id\\;]\n");
     sys_vgui("    }\n");
     sys_vgui("}\n");
-    
-/*    sys_vgui("proc keyboard_mousemotion {id x y} {\n");
-    sys_vgui("    set cmd [concat keyboard _mousemotion $x $y $id\\;]\n");
-    sys_vgui("    pd $cmd\n");
-    sys_vgui("}\n");*/
     
     sys_vgui("proc keyboard_ok {id} {\n");
     sys_vgui("    keyboard_apply $id\n");
