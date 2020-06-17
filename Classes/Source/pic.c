@@ -31,8 +31,6 @@ typedef struct _pic{
      int            x_height;
      int            x_snd_set;
      int            x_rcv_set;
-     int            x_bound;
-     int            x_bound_to_x;
      int            x_edit;
      int            x_init;
      int            x_def_img;
@@ -98,12 +96,6 @@ static void pic_size_callback(t_pic *x, t_float w, t_float h){
                 cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
             pic_draw_inlet(x);
         }
-    }
-    pd_unbind(&x->x_obj.ob_pd, x->x_x);
-    x->x_bound_to_x = 0;
-    if(x->x_receive != &s_){
-        pd_bind(&x->x_obj.ob_pd, x->x_receive);
-        x->x_bound = 1;
     }
     if(x->x_size){
         t_atom at[2];
@@ -188,14 +180,6 @@ static void pic_vis(t_gobj *z, t_glist *glist, int vis){
                 cv, xpos, ypos, x->x_fullname, x);
             if(!x->x_init){
                 x->x_init = 1;
-                if(x->x_bound){
-                    pd_unbind(&x->x_obj.ob_pd, x->x_receive);
-                    x->x_bound = 0;
-                }
-                if(!x->x_bound_to_x){
-                    pd_bind(&x->x_obj.ob_pd, x->x_x);
-                    x->x_bound_to_x = 1;
-                }
                 sys_vgui("pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"\n",
                      x->x_x->s_name, x->x_fullname, x->x_fullname);
             }
@@ -301,14 +285,6 @@ void pic_set(t_pic* x, t_symbol *filename){
                     sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_pic\n",
                         cv, xpos, ypos, x->x_fullname, x); // CREATE NEW IMAGE
                 }
-                if(x->x_bound){
-                    pd_unbind(&x->x_obj.ob_pd, x->x_receive);
-                    x->x_bound = 0;
-                }
-                if(!x->x_bound_to_x){
-                    pd_bind(&x->x_obj.ob_pd, x->x_x);
-                    x->x_bound_to_x = 1;
-                }
                 sys_vgui("pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"\n",
                          x->x_x->s_name, x->x_fullname, x->x_fullname);
                  if(x->x_def_img)
@@ -342,14 +318,6 @@ void pic_open(t_pic* x, t_symbol *filename){
                     sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_pic\n",
                         cv, xpos, ypos, x->x_fullname, x); // CREATE NEW IMAGE
                 }
-                if(x->x_bound){
-                    pd_unbind(&x->x_obj.ob_pd, x->x_receive);
-                    x->x_bound = 0;
-                }
-                if(!x->x_bound_to_x){
-                    pd_bind(&x->x_obj.ob_pd, x->x_x);
-                    x->x_bound_to_x = 1;
-                }
                 sys_vgui("pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"\n",
                          x->x_x->s_name, x->x_fullname, x->x_fullname);
                  if(x->x_def_img)
@@ -382,23 +350,20 @@ static void pic_receive(t_pic *x, t_symbol *s){
     if(s != gensym("")){
         t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, s);
         if(rcv != x->x_receive){
+            canvas_dirty(x->x_glist, 1);
+            if(x->x_receive != &s_)
+                pd_unbind(&x->x_obj.ob_pd, x->x_receive);
             x->x_rcv_set = 1;
             x->x_rcv_raw = s;
             x->x_receive = rcv;
-            canvas_dirty(x->x_glist, 1);
-            t_canvas *cv = glist_getcanvas(x->x_glist);
-            if(x->x_bound)
-                pd_unbind(&x->x_obj.ob_pd, x->x_receive);
-            sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
-            if(rcv == &s_){
-                x->x_bound = 0;
+            t_canvas *cv = glist_getcanvas(x->x_glist); // <= BUG????????????
+            sys_vgui(".x%lx.c delete %lx_in\n", cv, x); // <= BUG????????????
+            if(x->x_receive == &s_){
                 if(x->x_edit)
                     pic_draw_inlet(x);
             }
-            else{
+            else
                 pd_bind(&x->x_obj.ob_pd, x->x_receive);
-                x->x_bound = 1;
-            }
         }
     }
 }
@@ -514,6 +479,7 @@ static void pic_free(t_pic *x){ // delete if variable is unset and image is unus
         x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
     if(x->x_receive != &s_)
         pd_unbind(&x->x_obj.ob_pd, x->x_receive);
+    pd_unbind(&x->x_obj.ob_pd, x->x_x);
     x->x_proxy->p_cnv = NULL;
     clock_delay(x->x_proxy->p_clock, 0);
     if(x->x_clock)
@@ -531,12 +497,10 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
     buf[MAXPDSTRING-1] = 0;
     x->x_proxy = edit_proxy_new(x, gensym(buf));
     sprintf(buf, "#%lx", (long)x);
-    x->x_x = gensym(buf);
-    pd_bind(&x->x_obj.ob_pd, x->x_x);
-    x->x_bound_to_x = 1;
+    pd_bind(&x->x_obj.ob_pd, x->x_x = gensym(buf));
     x->x_edit = x->x_canvas->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_filename = &s_;
-    int loaded = x->x_rcv_set = x->x_snd_set = x->x_bound = x->x_def_img = x->x_init = 0;
+    int loaded = x->x_rcv_set = x->x_snd_set = x->x_def_img = x->x_init = 0;
     x->x_outline = x->x_flag = x->x_size = 0;
     x->x_fullname = NULL;
     if(ac && av->a_type == A_FLOAT){ // 1ST outline
@@ -624,10 +588,6 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
             x->x_fullname = gensym(fname);
             sys_vgui("if { [info exists %lx_picname] == 0 } { image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n} \n",
                     x->x_fullname, x->x_fullname, fname, x->x_fullname);
-            if(x->x_receive != &s_){
-                pd_bind(&x->x_obj.ob_pd, x->x_receive);
-                x->x_bound = 1;
-            }
         }
         else
             pd_error(x, "[pic]: error opening file '%s'", x->x_filename->s_name);
@@ -635,13 +595,9 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
     if(!loaded){ // default image
         x->x_width = x->x_height = 38;
         x->x_def_img = 1;
-        pd_unbind(&x->x_obj.ob_pd, x->x_x);
-        x->x_bound_to_x = 0;
-        if(x->x_receive != &s_){
-            pd_bind(&x->x_obj.ob_pd, x->x_receive);
-            x->x_bound = 1;
-        }
     }
+    if(x->x_receive != &s_)
+        pd_bind(&x->x_obj.ob_pd, x->x_receive);
     x->x_snd_raw = x->x_send;
     x->x_rcv_raw = x->x_receive;
     x->x_outlet = outlet_new(&x->x_obj, &s_bang);
