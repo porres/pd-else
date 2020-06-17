@@ -245,7 +245,7 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
     t_canvas *cv = glist_getcanvas(glist);
     if(vis){
         keyboard_draw(x, glist);
-        sys_vgui(".x%lx.c bind %xrr <ButtonRelease-1> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindsym->s_name);
+        sys_vgui(".x%lx.c bind %xrr <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_bindsym->s_name);
     }
     else
         keyboard_erase(x, glist);
