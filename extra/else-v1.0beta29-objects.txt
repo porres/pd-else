@@ -120,6 +120,7 @@ floor	x
 floor~	x
 fold	x
 fold~	x
+format	x
 free.rev~	x
 freeze~	x
 freq.shift~	x
@@ -183,7 +184,6 @@ mtx~	x
 mtx.ctl	x
 mag	x
 mag~	x
-makesymbol	x
 median~	x
 median	x
 merge	x

@@ -141,7 +141,7 @@ Cross compiling is also possible with something like this
 - [loadbanger] / [lb]
 
 **MESSAGE MANAGEMENT: [21]**
-- [makesymbol]
+- [format]
 - [separate] 
 - [fromany] 
 - [toany] 
