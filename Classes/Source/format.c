@@ -4,12 +4,12 @@
 #include "m_pd.h"
 
 // Pattern types
-#define MAKESYMBOL_LITERAL      1
-#define MAKESYMBOL_MINSLOTTYPE  2
-#define MAKESYMBOL_INT          2
-#define MAKESYMBOL_FLOAT        3
-#define MAKESYMBOL_CHAR         4
-#define MAKESYMBOL_STRING       5
+#define format_LITERAL      1
+#define format_MINSLOTTYPE  2
+#define format_INT          2
+#define format_FLOAT        3
+#define format_CHAR         4
+#define format_STRING       5
 
 /* Numbers:  assuming max 62 digits preceding a decimal point in any
  fixed-point representation of a t_float (39 in my system)
@@ -19,21 +19,21 @@
  Strings:  for the time being, any string longer than max width would
  be truncated (somehow compatible with Str256, but LATER warn-and-allow). */
 /* LATER rethink it all */
-#define MAKESYMBOL_MAXPRECISION  192
-#define MAKESYMBOL_MAXWIDTH      512
+#define format_MAXPRECISION  192
+#define format_MAXWIDTH      512
 
-typedef struct _makesymbol{
+typedef struct _format{
     t_object  x_ob;
     int       x_nslots;
     int       x_nproxies;  // as requested (and allocated)
     t_pd    **x_proxies;
     int       x_fsize;     // as allocated (i.e. including a terminating 0)
     char     *x_fstring;
-}t_makesymbol;
+}t_format;
 
-typedef struct _makesymbol_proxy{
+typedef struct _format_proxy{
     t_object        p_ob;
-    t_makesymbol   *p_master;
+    t_format   *p_master;
     int             p_id;
     int             p_type;  // value #defined above
     char           *p_pattern;
@@ -41,13 +41,13 @@ typedef struct _makesymbol_proxy{
     t_atom          p_atom;  // input
     int             p_size;
     int             p_valid;
-}t_makesymbol_proxy;
+}t_format_proxy;
 
-static t_class *makesymbol_class;
-static t_class *makesymbol_proxy_class;
+static t_class *format_class;
+static t_class *format_proxy_class;
 
 // LATER: use snprintf (should be available on all systems)
-static void makesymbol_proxy_checkit(t_makesymbol_proxy *x, char *buf){
+static void format_proxy_checkit(t_format_proxy *x, char *buf){
     int result = 0, valid = 0;
     char *pattend = x->p_pattend;
     if(pattend){
@@ -55,55 +55,55 @@ static void makesymbol_proxy_checkit(t_makesymbol_proxy *x, char *buf){
         *pattend = 0;
         if(x->p_atom.a_type == A_FLOAT){
             t_float f = x->p_atom.a_w.w_float;
-            if(x->p_type == MAKESYMBOL_INT) // CHECKME large/negative values
+            if(x->p_type == format_INT) // CHECKME large/negative values
                 result = sprintf(buf, x->p_pattern, (long)f);
-            else if(x->p_type == MAKESYMBOL_FLOAT)
+            else if(x->p_type == format_FLOAT)
                 result = sprintf(buf, x->p_pattern, f);
-            else if(x->p_type == MAKESYMBOL_CHAR) // a 0 input into %c nulls output
+            else if(x->p_type == format_CHAR) // a 0 input into %c nulls output
     // float into %c is truncated, but CHECKME large/negative values
                 result = sprintf(buf, x->p_pattern, (unsigned char)f);
-            else if(x->p_type == MAKESYMBOL_STRING){ // a float into %s is ok
-                char tmp[64];  // rethink
-                sprintf(tmp, "%g", f);
-                result = sprintf(buf, x->p_pattern, tmp);
+            else if(x->p_type == format_STRING){ // a float into %s is ok
+                char temp[64];  // rethink
+                sprintf(temp, "%g", f);
+                result = sprintf(buf, x->p_pattern, temp);
             }
             else
-                pd_error(x, "[makesymbol]: can't convert float (this shouldn't happen)");
+                pd_error(x, "[format]: can't convert float (this shouldn't happen)");
             if(result > 0)
                 valid = 1;
         }
         else if (x->p_atom.a_type == A_SYMBOL){
             t_symbol *s = x->p_atom.a_w.w_symbol;
-            if(x->p_type == MAKESYMBOL_STRING){
-                if (strlen(s->s_name) > MAKESYMBOL_MAXWIDTH){
-                    strncpy(buf, s->s_name, MAKESYMBOL_MAXWIDTH);
-                    buf[MAKESYMBOL_MAXWIDTH] = 0;
-                    result = MAKESYMBOL_MAXWIDTH;
+            if(x->p_type == format_STRING){
+                if (strlen(s->s_name) > format_MAXWIDTH){
+                    strncpy(buf, s->s_name, format_MAXWIDTH);
+                    buf[format_MAXWIDTH] = 0;
+                    result = format_MAXWIDTH;
                 }
                 else result = sprintf(buf, x->p_pattern, s->s_name);
                 if (result >= 0)
                     valid = 1;
             }
             else
-                pd_error(x, "[makesymbol]: can't convert (type mismatch)");
+                pd_error(x, "[format]: can't convert (type mismatch)");
         }
         *pattend = tmp;
     }
     else
-        pd_error(x, "makesymbol_proxy_checkit"); // ????
+        pd_error(x, "format_proxy_checkit"); // ????
     if((x->p_valid = valid))
         x->p_size = result;
     else
         x->p_size = 0;
 }
 
-static void makesymbol_dooutput(t_makesymbol *x){
+static void format_dooutput(t_format *x){
     int i, outsize;
     char *outstring;
     outsize = x->x_fsize;  // strlen() + 1
     // LATER consider subtracting format pattern sizes
     for(i = 0; i < x->x_nslots; i++){
-        t_makesymbol_proxy *y = (t_makesymbol_proxy *)x->x_proxies[i];
+        t_format_proxy *y = (t_format_proxy *)x->x_proxies[i];
         if (y->p_valid)
             outsize += y->p_size;
         else // invalid input
@@ -113,13 +113,13 @@ static void makesymbol_dooutput(t_makesymbol *x){
         char *inp = x->x_fstring;
         char *outp = outstring;
         for (i = 0; i < x->x_nslots; i++){
-            t_makesymbol_proxy *y = (t_makesymbol_proxy *)x->x_proxies[i];
+            t_format_proxy *y = (t_format_proxy *)x->x_proxies[i];
             int len = y->p_pattern - inp;
             if (len > 0){
                 strncpy(outp, inp, len);
                 outp += len;
             }
-            makesymbol_proxy_checkit(y, outp);
+            format_proxy_checkit(y, outp);
             outp += y->p_size;  /* p_size is never negative */
             inp = y->p_pattend;
         }
@@ -130,30 +130,30 @@ static void makesymbol_dooutput(t_makesymbol *x){
     }
 }
 
-static void makesymbol_proxy_bang(t_makesymbol_proxy *x){
-    makesymbol_dooutput(x->p_master);
+static void format_proxy_bang(t_format_proxy *x){
+    format_dooutput(x->p_master);
 }
 
-static void makesymbol_proxy_float(t_makesymbol_proxy *x, t_float f){
-    char buf[MAKESYMBOL_MAXWIDTH + 1];  /* LATER rethink */
+static void format_proxy_float(t_format_proxy *x, t_float f){
+    char buf[format_MAXWIDTH + 1];  /* LATER rethink */
     SETFLOAT(&x->p_atom, f);
-    makesymbol_proxy_checkit(x, buf);
+    format_proxy_checkit(x, buf);
     if (x->p_id == 0 && x->p_valid)
-        makesymbol_dooutput(x->p_master);  // CHECKED: only first inlet
+        format_dooutput(x->p_master);  // CHECKED: only first inlet
 }
 
-static void makesymbol_proxy_symbol(t_makesymbol_proxy *x, t_symbol *s){
-    char buf[MAKESYMBOL_MAXWIDTH + 1];  // LATER rethink
+static void format_proxy_symbol(t_format_proxy *x, t_symbol *s){
+    char buf[format_MAXWIDTH + 1];  // LATER rethink
     if (s && *s->s_name)
         SETSYMBOL(&x->p_atom, s);
     else
         SETFLOAT(&x->p_atom, 0);
-    makesymbol_proxy_checkit(x, buf);
+    format_proxy_checkit(x, buf);
     if (x->p_id == 0 && x->p_valid)
-        makesymbol_dooutput(x->p_master);  // CHECKED: only first inlet
+        format_dooutput(x->p_master);  // CHECKED: only first inlet
 }
 
-static void makesymbol_dolist(t_makesymbol *x, t_symbol *s, int ac, t_atom *av, int startid){
+static void format_dolist(t_format *x, t_symbol *s, int ac, t_atom *av, int startid){
     t_symbol *dummy = s;
     dummy = NULL;
     int cnt = x->x_nslots - startid;
@@ -163,65 +163,65 @@ static void makesymbol_dolist(t_makesymbol *x, t_symbol *s, int ac, t_atom *av, 
         int id;
         for(id = startid + ac, av += ac; id >= startid; id--, av--){
             if(av->a_type == A_FLOAT)
-                makesymbol_proxy_float((t_makesymbol_proxy *)x->x_proxies[id], av->a_w.w_float);
+                format_proxy_float((t_format_proxy *)x->x_proxies[id], av->a_w.w_float);
             else if(av->a_type == A_SYMBOL)
-                makesymbol_proxy_symbol((t_makesymbol_proxy *)x->x_proxies[id], av->a_w.w_symbol);
+                format_proxy_symbol((t_format_proxy *)x->x_proxies[id], av->a_w.w_symbol);
         }
     }
 }
 
-static void makesymbol_doanything(t_makesymbol *x, t_symbol *s, int ac, t_atom *av, int startid){
+static void format_doanything(t_format *x, t_symbol *s, int ac, t_atom *av, int startid){
     if(s && s != &s_){
-        makesymbol_dolist(x, 0, ac, av, startid + 1);
-        makesymbol_proxy_symbol((t_makesymbol_proxy *)x->x_proxies[startid], s);
+        format_dolist(x, 0, ac, av, startid + 1);
+        format_proxy_symbol((t_format_proxy *)x->x_proxies[startid], s);
     }
     else
-        makesymbol_dolist(x, 0, ac, av, startid);
+        format_dolist(x, 0, ac, av, startid);
 }
 
-static void makesymbol_proxy_list(t_makesymbol_proxy *x, t_symbol *s, int ac, t_atom *av){
-    makesymbol_dolist(x->p_master, s, ac, av, x->p_id);
+static void format_proxy_list(t_format_proxy *x, t_symbol *s, int ac, t_atom *av){
+    format_dolist(x->p_master, s, ac, av, x->p_id);
 }
 
-static void makesymbol_proxy_anything(t_makesymbol_proxy *x, t_symbol *s, int ac, t_atom *av){
-    makesymbol_doanything(x->p_master, s, ac, av, x->p_id);
+static void format_proxy_anything(t_format_proxy *x, t_symbol *s, int ac, t_atom *av){
+    format_doanything(x->p_master, s, ac, av, x->p_id);
 }
 
-static void makesymbol_bang(t_makesymbol *x){
+static void format_bang(t_format *x){
     if (x->x_nslots)
-        makesymbol_proxy_bang((t_makesymbol_proxy *)x->x_proxies[0]);
+        format_proxy_bang((t_format_proxy *)x->x_proxies[0]);
     else if(x->x_fsize >= 2)
         outlet_symbol(((t_object *) x)->ob_outlet, gensym(x->x_fstring));
     else
-        pd_error(x, "[makesymbol]: no arguments given");
+        pd_error(x, "[format]: no arguments given");
 }
 
-static void makesymbol_float(t_makesymbol *x, t_float f){
+static void format_float(t_format *x, t_float f){
     if (x->x_nslots)
-        makesymbol_proxy_float((t_makesymbol_proxy *)x->x_proxies[0], f);
+        format_proxy_float((t_format_proxy *)x->x_proxies[0], f);
     else
-        pd_error(x, "[makesymbol]: can't convert (type mismatch)");
+        pd_error(x, "[format]: can't convert (type mismatch)");
 }
 
-static void makesymbol_symbol(t_makesymbol *x, t_symbol *s){
+static void format_symbol(t_format *x, t_symbol *s){
     if(x->x_nslots)
-        makesymbol_proxy_symbol((t_makesymbol_proxy *)x->x_proxies[0], s);
+        format_proxy_symbol((t_format_proxy *)x->x_proxies[0], s);
     else
-        pd_error(x, "[makesymbol]: can't convert (type mismatch)");
+        pd_error(x, "[format]: can't convert (type mismatch)");
 }
 
-static void makesymbol_list(t_makesymbol *x, t_symbol *s, int ac, t_atom *av){
+static void format_list(t_format *x, t_symbol *s, int ac, t_atom *av){
     if(x->x_nslots)
-        makesymbol_dolist(x, s, ac, av, 0);
+        format_dolist(x, s, ac, av, 0);
     else
-        pd_error(x, "[makesymbol]: can't convert (type mismatch)");
+        pd_error(x, "[format]: can't convert (type mismatch)");
 }
 
-static void makesymbol_anything(t_makesymbol *x, t_symbol *s, int ac, t_atom *av){
+static void format_anything(t_format *x, t_symbol *s, int ac, t_atom *av){
     if (x->x_nslots)
-        makesymbol_doanything(x, s, ac, av, 0);
+        format_doanything(x, s, ac, av, 0);
     else
-        pd_error(x, "[makesymbol]: can't convert (type mismatch)");
+        pd_error(x, "[format]: can't convert (type mismatch)");
 }
 
 // adjusted binbuf_gettext(), LATER do it right
@@ -252,7 +252,7 @@ static char *makename_getstring(int ac, t_atom *av, int *sizep){
 }
 
 // used 2x, 1st (x==0) counts valid patterns, 2nd inits proxies and shrinks %%
-static int makesymbol_get_type(t_makesymbol *x, char **patternp){
+static int format_get_type(t_format *x, char **patternp){
     int type = 0;
     char errstring[MAXPDSTRING];
     char *ptr;
@@ -271,14 +271,14 @@ static int makesymbol_get_type(t_makesymbol *x, char **patternp){
             }
             *numfield = 10 * *numfield + *ptr - '0';
             if(dotseen){
-                if(precision > MAKESYMBOL_MAXPRECISION){
+                if(precision > format_MAXPRECISION){
                     if(x)
                         sprintf(errstring, "precision field too large");
                     break;
                 }
             }
             else{
-                if(width > MAKESYMBOL_MAXWIDTH){
+                if(width > format_MAXWIDTH){
                     if(x)
                         sprintf(errstring, "width field too large");
                     break;
@@ -289,24 +289,24 @@ static int makesymbol_get_type(t_makesymbol *x, char **patternp){
         if(*numfield)
             numfield = 0;
         if(strchr("pdiouxX", *ptr)){ // INT
-            type = MAKESYMBOL_INT;
+            type = format_INT;
             break;
         }
         else if(strchr("eEfFgG", *ptr)){ // FLOAT
             // needed to include if(modifier) to prevent %lf and stuff
-            type = MAKESYMBOL_FLOAT;
+            type = format_FLOAT;
             break;
         }
         else if(strchr("c", *ptr)){ // CHAR
-            type = MAKESYMBOL_CHAR;
+            type = format_CHAR;
             break;
         }
         else if(strchr("s", *ptr)){
-            type = MAKESYMBOL_STRING;
+            type = format_STRING;
             break;
         }
         else if(*ptr == '%'){
-            type = MAKESYMBOL_LITERAL;
+            type = format_LITERAL;
             if(x){ // buffer-shrinking hack
                 char *p1 = ptr, *p2 = ptr + 1;
                 do
@@ -358,11 +358,11 @@ static int makesymbol_get_type(t_makesymbol *x, char **patternp){
     return(type);
 }
 
-static void makesymbol_free(t_makesymbol *x){
+static void format_free(t_format *x){
     if (x->x_proxies){
         int i = x->x_nslots;
         while (i--){
-            t_makesymbol_proxy *y = (t_makesymbol_proxy *)x->x_proxies[i];
+            t_format_proxy *y = (t_format_proxy *)x->x_proxies[i];
             pd_free((t_pd *)y);
         }
         freebytes(x->x_proxies, x->x_nproxies * sizeof(*x->x_proxies));
@@ -371,10 +371,10 @@ static void makesymbol_free(t_makesymbol *x){
         freebytes(x->x_fstring, x->x_fsize);
 }
 
-static void *makesymbol_new(t_symbol *s, int ac, t_atom *av){
+static void *format_new(t_symbol *s, int ac, t_atom *av){
     t_symbol *dummy = s;
     dummy = NULL;
-    t_makesymbol *x;
+    t_format *x;
     int fsize;
     char *fstring;
     char *p1, *p2;
@@ -385,12 +385,12 @@ static void *makesymbol_new(t_symbol *s, int ac, t_atom *av){
     while((p2 = strchr(p1, '%'))){
         int type;
         p1 = p2 + 1;
-        type = makesymbol_get_type(0, &p1);
-        if(type >= MAKESYMBOL_MINSLOTTYPE)
+        type = format_get_type(0, &p1);
+        if(type >= format_MINSLOTTYPE)
             nproxies++;
     }
     if(!nproxies){ // no arguments creates with an inlet and prints errors
-        x = (t_makesymbol *)pd_new(makesymbol_class);
+        x = (t_format *)pd_new(format_class);
         x->x_nslots = 0;
         x->x_nproxies = 0;
         x->x_proxies = 0;
@@ -399,7 +399,7 @@ static void *makesymbol_new(t_symbol *s, int ac, t_atom *av){
         p1 = fstring;
         while ((p2 = strchr(p1, '%'))){
             p1 = p2 + 1;
-            makesymbol_get_type(x, &p1);
+            format_get_type(x, &p1);
         };
         outlet_new((t_object *)x, &s_symbol);
         return (x);
@@ -409,13 +409,13 @@ static void *makesymbol_new(t_symbol *s, int ac, t_atom *av){
         return (0);
     }
     for (nslots = 0; nslots < nproxies; nslots++)
-        if (!(proxies[nslots] = pd_new(makesymbol_proxy_class))) break;
+        if (!(proxies[nslots] = pd_new(format_proxy_class))) break;
     if (!nslots){
         freebytes(fstring, fsize);
         freebytes(proxies, nproxies * sizeof(*proxies));
         return (0);
     }
-    x = (t_makesymbol *)pd_new(makesymbol_class);
+    x = (t_format *)pd_new(format_class);
     x->x_nslots = nslots;
     x->x_nproxies = nproxies;
     x->x_proxies = proxies;
@@ -426,17 +426,17 @@ static void *makesymbol_new(t_symbol *s, int ac, t_atom *av){
     while((p2 = strchr(p1, '%'))){
         int type;
         p1 = p2 + 1;
-        type = makesymbol_get_type(x, &p1);
-        if(type >= MAKESYMBOL_MINSLOTTYPE){
+        type = format_get_type(x, &p1);
+        if(type >= format_MINSLOTTYPE){
             if(i < nslots){
-                char buf[MAKESYMBOL_MAXWIDTH + 1];  // LATER rethink
-                t_makesymbol_proxy *y = (t_makesymbol_proxy *)proxies[i];
+                char buf[format_MAXWIDTH + 1];  // LATER rethink
+                t_format_proxy *y = (t_format_proxy *)proxies[i];
                 y->p_master = x;
                 y->p_id = i;
                 y->p_type = type;
                 y->p_pattern = p2;
                 y->p_pattend = p1;
-                if(type == MAKESYMBOL_STRING)
+                if(type == format_STRING)
                     SETSYMBOL(&y->p_atom, &s_);
                 else
                     SETFLOAT(&y->p_atom, 0);
@@ -444,7 +444,7 @@ static void *makesymbol_new(t_symbol *s, int ac, t_atom *av){
                 y->p_valid = 0;
                 if(i) // creates inlets for valid '%'
                     inlet_new((t_object *)x, (t_pd *)y, 0, 0);
-                makesymbol_proxy_checkit(y, buf);
+                format_proxy_checkit(y, buf);
                 i++;
             }
         }
@@ -453,20 +453,20 @@ static void *makesymbol_new(t_symbol *s, int ac, t_atom *av){
     return(x);
 }
 
-void makesymbol_setup(void){
-    makesymbol_class = class_new(gensym("makesymbol"), (t_newmethod)makesymbol_new,
-        (t_method)makesymbol_free, sizeof(t_makesymbol), 0, A_GIMME, 0);
-    class_addbang(makesymbol_class, makesymbol_bang);
-    class_addfloat(makesymbol_class, makesymbol_float);
-    class_addsymbol(makesymbol_class, makesymbol_symbol);
-    class_addlist(makesymbol_class, makesymbol_list);
-    class_addanything(makesymbol_class, makesymbol_anything);
-    makesymbol_proxy_class = class_new(gensym("_makesymbol_proxy"), 0, 0,
-        sizeof(t_makesymbol_proxy), CLASS_PD | CLASS_NOINLET, 0);
-    class_addbang(makesymbol_proxy_class, makesymbol_proxy_bang);
-    class_addfloat(makesymbol_proxy_class, makesymbol_proxy_float);
-    class_addsymbol(makesymbol_proxy_class, makesymbol_proxy_symbol);
-    class_addlist(makesymbol_proxy_class, makesymbol_proxy_list);
-    class_addanything(makesymbol_proxy_class, makesymbol_proxy_anything);
+void format_setup(void){
+    format_class = class_new(gensym("format"), (t_newmethod)format_new,
+        (t_method)format_free, sizeof(t_format), 0, A_GIMME, 0);
+    class_addbang(format_class, format_bang);
+    class_addfloat(format_class, format_float);
+    class_addsymbol(format_class, format_symbol);
+    class_addlist(format_class, format_list);
+    class_addanything(format_class, format_anything);
+    format_proxy_class = class_new(gensym("_format_proxy"), 0, 0,
+        sizeof(t_format_proxy), CLASS_PD | CLASS_NOINLET, 0);
+    class_addbang(format_proxy_class, format_proxy_bang);
+    class_addfloat(format_proxy_class, format_proxy_float);
+    class_addsymbol(format_proxy_class, format_proxy_symbol);
+    class_addlist(format_proxy_class, format_proxy_list);
+    class_addanything(format_proxy_class, format_proxy_anything);
 }
 

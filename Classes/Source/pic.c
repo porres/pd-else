@@ -607,7 +607,7 @@ void pic_setup(void){
     class_addmethod(pic_class, (t_method)pic_size, gensym("size"), A_DEFFLOAT, 0);
     class_addmethod(pic_class, (t_method)pic_latch, gensym("latch"), A_DEFFLOAT, 0);
     class_addmethod(pic_class, (t_method)pic_open, gensym("open"), A_DEFSYMBOL, 0);
-//    class_addmethod(pic_class, (t_method)pic_set, gensym("set"), A_DEFSYMBOL, 0);
+    class_addmethod(pic_class, (t_method)pic_set, gensym("set"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_send, gensym("send"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_ok, gensym("ok"), A_SYMBOL, A_FLOAT, A_SYMBOL, A_SYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_receive, gensym("receive"), A_DEFSYMBOL, 0);

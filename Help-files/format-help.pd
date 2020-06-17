@@ -25,13 +25,13 @@
 #X obj 473 233 else/display;
 #X msg 568 80 64 64;
 #X obj 568 140 else/display;
-#X text 34 26 The arguments in [makesymbol] are used to format a symbol
+#X text 34 26 The arguments in [format] are used to format a symbol
 message and can be floats or symbols. Inlets are created for any possible
 variables (like %d or %f) - note that symbol variables (%s and %d)
 are initialized empty and float variables (all the rest) are initialized
 as "0"., f 57;
-#X obj 55 200 else/makesymbol %.2fdB;
-#X obj 223 199 else/makesymbol a-%d;
+#X obj 55 200 else/format %.2fdB;
+#X obj 223 199 else/format a-%d;
 #X floatatom 247 380 5 0 0 0 - - -;
 #X text 463 28 A list input spreads the values to the inlets;
 #X obj 209 380 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -41,21 +41,20 @@ to a %s variable \, but if sent to another type \, a conversion error
 is given in Pd's window. A float will give an error only if no variables
 are given (which is useful if you just want to create a single symbol
 with spaces).;
-#X obj 568 112 else/makesymbol char %d = %c;
-#X obj 247 413 else/makesymbol no variables;
-#X obj 69 416 else/makesymbol %d;
+#X obj 568 112 else/format char %d = %c;
+#X obj 247 413 else/format no variables;
+#X obj 69 416 else/format %d;
 #X obj 513 378 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 543 440 else/display;
 #X obj 690 352 nbx 4 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
 #X msg 554 374 B;
-#X obj 543 407 else/makesymbol %s-%d.wav;
+#X obj 543 407 else/format %s-%d.wav;
 #X msg 690 378 \$1 \, bang;
 #X text 458 295 A bang in any inlet forces an output \, this can be
 used to emulate a hot inlet., f 50;
-#X obj 473 202 else/makesymbol %c%c%c: What is it good for?, f 46
-;
+#X obj 473 202 else/format %c%c%c: What is it good for?, f 46;
 #X msg 543 347 A 1;
 #X connect 1 0 15 0;
 #X connect 2 0 16 0;
@@ -77,7 +76,7 @@ used to emulate a hot inlet., f 50;
 #X connect 31 0 11 0;
 #X connect 32 0 28 0;
 #X restore 465 196 pd examples;
-#X obj 159 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 170 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 170 258 bang;
 #X text 146 277 anything;
@@ -103,13 +102,14 @@ used to emulate a hot inlet., f 50;
 0;
 #X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 84 41 cnv 4 4 4 empty empty symbols 0 28 2 18 -233017 -1 0;
-#X obj 2 4 cnv 15 301 42 empty empty makesymbol 20 20 2 37 -233017
--1 0;
+#X obj 84 41 cnv 4 4 4 empty empty messages 0 28 2 18 -233017 -1 0
+;
+#X obj 2 4 cnv 15 301 42 empty empty format 20 20 2 37 -233017 -1 0
+;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 4 graph;
-#X obj 189 213 else/display;
+#X obj 200 213 else/display;
 #X text 125 362 1) anything;
 #X text 203 327 - the formatted symbol;
 #N canvas 648 238 417 424 separate 0;
@@ -119,7 +119,7 @@ used to emulate a hot inlet., f 50;
 #X text 63 28 You can use the [separate] object to split the symbol
 into different elements. check its help file for more details., f
 51;
-#X obj 128 134 else/makesymbol A B C, f 22;
+#X obj 128 134 else/format A B C, f 22;
 #X obj 128 97 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 128 234 unpack s s s;
@@ -139,7 +139,7 @@ into different elements. check its help file for more details., f
 #X msg 141 101 97;
 #X text 89 36 %c: converts integers to characters according to the
 ASCII table, f 35;
-#X obj 141 139 else/makesymbol %c;
+#X obj 141 139 else/format %c;
 #X connect 1 0 3 0;
 #X connect 3 0 0 0;
 #X restore 106 148 pd %c;
@@ -149,7 +149,7 @@ ASCII table, f 35;
 #X msg 161 177 symbol hi;
 #X text 75 38 %s: assumes the value of a string of characters \, which
 is just any input here in Pd., f 35;
-#X obj 130 206 else/makesymbol %s;
+#X obj 130 206 else/format %s;
 #X obj 130 112 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X connect 0 0 4 0;
@@ -169,10 +169,10 @@ from -2ˆ31 to 2ˆ31 - 1 (but since Pd uses 32 bit floats \, there's
 no enough precision for this)., f 48;
 #X text 96 39 %d or %i: both convert to a signed integer. There are
 no differences., f 39;
-#X obj 74 144 else/makesymbol %d;
-#X obj 202 144 else/makesymbol %d;
-#X obj 159 382 else/makesymbol %i;
-#X obj 179 586 else/makesymbol %+i;
+#X obj 74 144 else/format %d;
+#X obj 202 144 else/format %d;
+#X obj 159 382 else/format %i;
+#X obj 179 586 else/format %+i;
 #X obj 179 621 else/display;
 #X obj 202 103 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -195,7 +195,7 @@ values., f 29;
 #X text 81 49 %u: converts to an unsigned 32 bits integer. The range
 of values go from 0 to 2ˆ32 - 1 (but since Pd uses 32 bit floats \,
 there's no enough precision for this)., f 52;
-#X obj 186 154 else/makesymbol %u;
+#X obj 186 154 else/format %u;
 #X obj 186 120 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X connect 2 0 0 0;
@@ -210,17 +210,17 @@ there's no enough precision for this)., f 52;
 #X msg 252 329 1e-11;
 #X text 96 45 %f or %F: gets the value of a decimal floating point
 number but does not use the scientific notation., f 39;
-#X obj 85 154 else/makesymbol %f;
-#X obj 213 154 else/makesymbol %F;
-#X obj 93 364 else/makesymbol %.2f;
-#X obj 252 362 else/makesymbol %.11F;
+#X obj 85 154 else/format %f;
+#X obj 213 154 else/format %F;
+#X obj 93 364 else/format %.2f;
+#X obj 252 362 else/format %.11F;
 #X obj 170 521 else/display;
 #X obj 170 452 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 91 267 You can also set a precision after the decimal point
 \, and the "+" flag can be used to force a "+" sign for positive values.
 , f 47;
-#X obj 170 486 else/makesymbol %+.1f;
+#X obj 170 486 else/format %+.1f;
 #X obj 213 114 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X connect 2 0 9 0;
@@ -238,8 +238,8 @@ number but does not use the scientific notation., f 39;
 #X obj 138 218 else/display;
 #X obj 266 217 else/display;
 #X msg 266 122 0.1;
-#X obj 138 183 else/makesymbol %e;
-#X obj 266 184 else/makesymbol %+.3E;
+#X obj 138 183 else/format %e;
+#X obj 266 184 else/format %+.3E;
 #X text 67 40 %e and %E: converts a float to scientific notation. You
 can also set a precision after the decimal point an d the "+" flag.
 The %E alternative uses a capital "E" instead of lowercase.;
@@ -260,16 +260,16 @@ The %E alternative uses a capital "E" instead of lowercase.;
 #X msg 181 98 4;
 #X text 104 39 %g and %G: only converts to scientific notation if it's
 shorter (%G uses a capital "E")., f 47;
-#X obj 122 174 else/makesymbol %.3G;
-#X obj 260 172 else/makesymbol %.8g;
+#X obj 122 174 else/format %.3G;
+#X obj 260 172 else/format %.8g;
 #X obj 135 468 else/display;
 #X obj 292 467 else/display;
-#X obj 292 434 else/makesymbol %g;
+#X obj 292 434 else/format %g;
 #X obj 292 396 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X msg 292 332 1e-07;
 #X msg 306 365 0.1;
-#X obj 135 435 else/makesymbol %+#.3g;
+#X obj 135 435 else/format %+#.3g;
 #X text 99 276 The "#" flag can be use to display integers with float
 precision., f 43;
 #X connect 2 0 7 0;
@@ -292,7 +292,7 @@ precision., f 43;
 #X floatatom 139 99 5 0 0 0 - - -;
 #X text 82 46 %o: converts to an unsigned octal.;
 #X obj 139 163 else/display;
-#X obj 139 128 else/makesymbol %o;
+#X obj 139 128 else/format %o;
 #X connect 0 0 3 0;
 #X connect 3 0 2 0;
 #X restore 106 342 pd %o;
@@ -304,12 +304,12 @@ precision., f 43;
 #X text 92 39 %x: converts to an unsigned hexadecimal value and uses
 lowercase letters \; %X: uses capital letters \; %p uses lowercase
 and is preceded by "0x".;
-#X obj 197 163 else/makesymbol %X;
-#X obj 327 163 else/makesymbol %p;
+#X obj 197 163 else/format %X;
+#X obj 327 163 else/format %p;
 #X msg 216 333 255;
 #X obj 216 407 else/display;
-#X obj 216 372 else/makesymbol %#X;
-#X obj 77 163 else/makesymbol %#x;
+#X obj 216 372 else/format %#X;
+#X obj 77 163 else/format %#x;
 #X text 117 271 The "#" flag can also be used to force the "0x" prefix
 (or "0X" in the case of %X)., f 48;
 #X connect 1 0 5 0;
@@ -330,7 +330,7 @@ and is preceded by "0x".;
 -1 -1;
 #X text 54 45 %%: is converted to a literal "%". This prevents it from
 being interpreted as a pattern., f 39;
-#X obj 146 152 else/makesymbol %%c;
+#X obj 146 152 else/format %%c;
 #X connect 1 0 3 0;
 #X connect 3 0 0 0;
 #X restore 106 119 pd %%;
@@ -348,20 +348,20 @@ You can also use flags "+" and "#" \, plus a precision field. The modifiers
 #X text 223 200 - Signed decimal integer;
 #X restore 459 174 pd variables;
 #X text 203 258 - outputs the symbol;
-#X msg 189 150 file;
-#X obj 336 155 nbx 4 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
+#X msg 200 150 file;
+#X obj 323 155 nbx 4 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X obj 189 180 else/makesymbol %s %d.wav;
-#X text 80 88 [makesymbol] formats symbols much like [makefilename]
-\, but it accepts more than one variable \, where each corresponds
-to an inlet. It also allows to create symbols with spaces., f 59;
+#X text 80 88 [format] formats symbols much like [makefilename] \,
+but it accepts more than one variable \, where each corresponds to
+an inlet. It also allows to create symbols with spaces., f 59;
 #X text 158 327 symbol;
 #X text 216 276 float/symbol atoms to format a symbol (the leftmost
 inlet takes messages with more than one item and sends the remaining
 items to the next inlets)., f 51;
 #X text 215 362 atoms that may contain '%' variables (obrigatory \,
 no default), f 36;
-#X connect 6 0 32 0;
-#X connect 30 0 32 0;
-#X connect 31 0 32 1;
-#X connect 32 0 24 0;
+#X obj 200 180 else/format %s %d.wav;
+#X connect 6 0 36 0;
+#X connect 30 0 36 0;
+#X connect 31 0 36 1;
+#X connect 36 0 24 0;
