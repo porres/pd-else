@@ -254,16 +254,15 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
 /* ------------------------ GUI Behaviour -----------------------------*/
 // Set Properties
 static void keyboard_set_properties(t_keyboard *x, float space,
-        float height, float oct, float low_c, float tgl, float vel){
-    x->x_toggle_mode = 0; // tgl != 0;
+        float height, float oct, float low_c, float vel, float tgl){
+    x->x_space = (space < 7) ? 7 : space; // key width
     x->x_height = (height < 10) ? 10 : height;
     x->x_octaves = oct < 1 ? 1 : oct > 10 ? 10 : oct;
     x->x_low_c = low_c < 0 ? 0 : low_c > 8 ? 8 : low_c;
-    x->x_space = (space < 7) ? 7 : space; // key width
+    x->x_norm = vel < 0 ? 0 : vel > 127 ? 127 : vel;
+    x->x_toggle_mode = (tgl != 0);
     x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
     x->x_first_c = ((int)(x->x_low_c * 12)) + 12;
-    x->x_toggle_mode = tgl != 0;
-    x->x_norm = vel < 0 ? 0 : vel > 127 ? 127 : vel;
 }
 
 // Keyboard Properties
@@ -271,11 +270,12 @@ void keyboard_properties(t_gobj *z, t_glist *owner){
     owner = NULL;
     t_keyboard *x = (t_keyboard *)z;
     char cmdbuf[256];
-    sprintf(cmdbuf, "keyboard_properties %%s %d %d %d %d %d\n",
+    sprintf(cmdbuf, "keyboard_properties %%s %d %d %d %d %d %d\n",
         (int)x->x_space,
         (int)x->x_height,
         (int)x->x_octaves,
         (int)x->x_low_c,
+        (int)x->x_norm,
         (int)x->x_toggle_mode);
     gfxstub_new(&x->x_obj.ob_pd, x, cmdbuf);
 }
@@ -284,7 +284,7 @@ void keyboard_properties(t_gobj *z, t_glist *owner){
 static void keyboard_save(t_gobj *z, t_binbuf *b){
     t_keyboard *x = (t_keyboard *)z;
     binbuf_addv(b,
-                "ssiisiiiii",
+                "ssiisiiiiii",
                 gensym("#X"),
                 gensym("obj"),
                 (int)x->x_obj.te_xpix,
@@ -294,13 +294,21 @@ static void keyboard_save(t_gobj *z, t_binbuf *b){
                 (int)x->x_height / x->x_zoom,
                 (int)x->x_octaves,
                 (int)x->x_low_c,
-                (int)x->x_toggle_mode);
+                (int)x->x_toggle_mode,
+                (int)x->x_norm);
     binbuf_addv(b, ";");
 }
 
 // Apply changes of property windows
-static void keyboard_apply(t_keyboard *x, float w, float h, float oct, float low_c, float tgl){
-    keyboard_set_properties(x, w, h, oct, low_c, tgl, 0);
+static void keyboard_apply(t_keyboard *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    float w = atom_getfloatarg(0, ac, av);
+    float h = atom_getfloatarg(1, ac, av);
+    float oct = atom_getfloatarg(2, ac, av);
+    float low_c = atom_getfloatarg(3, ac, av);
+    float norm = atom_getfloatarg(4, ac, av);
+    float tgl = atom_getfloatarg(5, ac, av);
+    keyboard_set_properties(x, w, h, oct, low_c, norm, tgl);
     keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
 }
 
@@ -401,7 +409,6 @@ static void keyboard_norm(t_keyboard *x, t_floatarg f){
 // Free
 void keyboard_free(t_keyboard *x){
     pd_unbind(&x->x_obj.ob_pd, x->x_bindsym);
-    pd_unbind(&x->x_obj.ob_pd, gensym("keyboard_rcv"));
     gfxstub_deleteforkey(x);
 }
 
@@ -431,7 +438,7 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
         tgl = (int)(atom_getfloat(av++) != 0), ac--;
     if(ac) // 6th ARGUMENT: Normalization)
         vel = (int)(atom_getfloat(av++) != 0), ac--;
-    keyboard_set_properties(x, init_space, init_height, init_8ves, init_low_c, tgl, vel);
+    keyboard_set_properties(x, init_space, init_height, init_8ves, init_low_c, vel, tgl);
     x->x_tgl_notes = getbytes(sizeof(int) * 256);
     for(int i = 0; i < 256; i++)
         x->x_tgl_notes[i] = 0;
@@ -440,7 +447,6 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
     char buf[64];
     sprintf(buf, "rel_%lx", (unsigned long)x);
     pd_bind(&x->x_obj.ob_pd, x->x_bindsym = gensym(buf));
-    pd_bind(&x->x_obj.ob_pd, gensym("keyboard_rcv"));
     return(void *)x;
 }
 
@@ -471,7 +477,7 @@ void keyboard_setup(void){
     class_addmethod(keyboard_class, (t_method)keyboard_zoom, gensym("zoom"), A_CANT, 0);
 // Methods to receive TCL/TK events
     class_addmethod(keyboard_class, (t_method)keyboard_mouserelease, gensym("_mouserelease"), 0);
-    class_addmethod(keyboard_class, (t_method)keyboard_apply, gensym("apply"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_apply, gensym("apply"), A_GIMME, 0);
 // GUI
     class_setwidget(keyboard_class, &keyboard_widgetbehavior);
     keyboard_widgetbehavior.w_getrectfn  = keyboard_getrect;
@@ -503,12 +509,14 @@ void keyboard_setup(void){
     sys_vgui("    set var_height [concat var_height_$vid]\n");
     sys_vgui("    set var_octaves [concat var_octaves_$vid]\n");
     sys_vgui("    set var_low_c [concat var_low_c_$vid]\n");
+    sys_vgui("    set var_norm [concat var_norm_$vid]\n");
     sys_vgui("    set var_tgl [concat var_tgl_$vid]\n");
     sys_vgui("\n");
     sys_vgui("    global $var_width\n");
     sys_vgui("    global $var_height\n");
     sys_vgui("    global $var_octaves\n");
     sys_vgui("    global $var_low_c\n");
+    sys_vgui("    global $var_norm\n");
     sys_vgui("    global $var_tgl\n");
     sys_vgui("\n");
     sys_vgui("    set cmd [concat $id apply \\\n");
@@ -516,28 +524,32 @@ void keyboard_setup(void){
     sys_vgui("        [eval concat $$var_height] \\\n");
     sys_vgui("        [eval concat $$var_octaves] \\\n");
     sys_vgui("        [eval concat $$var_low_c] \\\n");
+    sys_vgui("        [eval concat $$var_norm] \\\n");
     sys_vgui("        [eval concat $$var_tgl] \\;]\n");
     sys_vgui("    pd $cmd\n");
     sys_vgui("}\n");
     
-    sys_vgui("proc keyboard_properties {id width height octaves low_c tgl} {\n");
+    sys_vgui("proc keyboard_properties {id width height octaves low_c norm tgl} {\n");
     sys_vgui("    set vid [string trimleft $id .]\n");
     sys_vgui("    set var_width [concat var_width_$vid]\n");
     sys_vgui("    set var_height [concat var_height_$vid]\n");
     sys_vgui("    set var_octaves [concat var_octaves_$vid]\n");
     sys_vgui("    set var_low_c [concat var_low_c_$vid]\n");
+    sys_vgui("    set var_norm [concat var_norm_$vid]\n");
     sys_vgui("    set var_tgl [concat var_tgl_$vid]\n");
     sys_vgui("\n");
     sys_vgui("    global $var_width\n");
     sys_vgui("    global $var_height\n");
     sys_vgui("    global $var_octaves\n");
     sys_vgui("    global $var_low_c\n");
+    sys_vgui("    global $var_norm\n");
     sys_vgui("    global $var_tgl\n");
     sys_vgui("\n");
     sys_vgui("    set $var_width $width\n");
     sys_vgui("    set $var_height $height\n");
     sys_vgui("    set $var_octaves $octaves\n");
     sys_vgui("    set $var_low_c $low_c\n");
+    sys_vgui("    set $var_norm $norm\n");
     sys_vgui("    set $var_tgl $tgl\n");
     sys_vgui("\n");
     sys_vgui("    toplevel $id\n");
@@ -566,9 +578,11 @@ void keyboard_setup(void){
 // new tgl mode
     sys_vgui("    frame $id.mode\n");
     sys_vgui("    pack $id.mode -side top\n");
+    sys_vgui("    label $id.mode.lnorm -text \"Velocity Normalization:\"\n");
+    sys_vgui("    entry $id.mode.norm -textvariable $var_norm -width 4\n");
     sys_vgui("    label $id.mode.ltgl -text \"Toggle Mode:\"\n");
     sys_vgui("    checkbutton $id.mode.tgl -variable $var_tgl \n");
-    sys_vgui("    pack $id.mode.ltgl $id.mode.tgl -side left\n");
+    sys_vgui("    pack $id.mode.lnorm $id.mode.norm $id.mode.ltgl $id.mode.tgl -side left\n");
     sys_vgui("\n");
 //
     sys_vgui("    frame $id.buttonframe\n");
