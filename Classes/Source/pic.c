@@ -358,7 +358,7 @@ static void pic_receive(t_pic *x, t_symbol *s){
 }
 
 static void pic_outline(t_pic *x, t_float f){
-    int outline = (int)(f !=0);
+    int outline = (int)(f != 0);
     if(x->x_outline != outline){
         x->x_outline = outline;
         canvas_dirty(x->x_glist, 1);
@@ -375,19 +375,19 @@ static void pic_outline(t_pic *x, t_float f){
     }
 }
 
-static void pic_latch(t_pic *x, t_floatarg f){
-    int latch =  (int)(f != 0);
-    if(latch != x->x_latch){
+static void pic_size(t_pic *x, t_float f){
+    int size = (int)(f != 0);
+    if(x->x_size != size){
+        x->x_size = size;
         canvas_dirty(x->x_glist, 1);
-        x->x_latch = latch;
     }
 }
 
-static void pic_size(t_pic *x, t_floatarg f){
-    int sz =  (int)(f != 0);
-    if(sz != x->x_size){
+static void pic_latch(t_pic *x, t_float f){
+    int latch = (int)(f != 0);
+    if(x->x_latch != latch){
+        x->x_latch = latch;
         canvas_dirty(x->x_glist, 1);
-        x->x_size = sz;
     }
 }
 
@@ -433,21 +433,24 @@ void pic_properties(t_gobj *z, t_glist *gl){
     gl = NULL;
     t_pic *x = (t_pic *)z;
     char buf[256];
-    sprintf(buf, "pic_properties %%s %s %d %s %s %d\n",
+    sprintf(buf, "pic_properties %%s %s %d %d %d %s %s \n",
         x->x_filename == &s_ ? gensym("empty")->s_name : x->x_filename->s_name,
         x->x_outline,
+        x->x_size,
+        x->x_latch,
         x->x_send == &s_ ? gensym("empty")->s_name : x->x_send->s_name,
-        x->x_receive == &s_ ? gensym("empty")->s_name : x->x_receive->s_name,
-        x->x_size);
+        x->x_receive == &s_ ? gensym("empty")->s_name : x->x_receive->s_name);
     gfxstub_new(&x->x_obj.ob_pd, x, buf);
 }
 
-static void pic_ok(t_pic *x, t_symbol *name, t_floatarg outline, t_symbol *snd, t_symbol *rcv, t_floatarg sz){
-    pic_open(x, name);
-    pic_outline(x, outline);
-    pic_send(x, snd);
-    pic_receive(x, rcv);
-    pic_size(x, sz);
+static void pic_ok(t_pic *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    pic_open(x, atom_getsymbolarg(0, ac, av));
+    pic_outline(x, atom_getfloatarg(1, ac, av));
+    pic_size(x, atom_getfloatarg(2, ac, av));
+    pic_latch(x, atom_getfloatarg(3, ac, av));
+    pic_send(x, atom_getsymbolarg(4, ac, av));
+    pic_receive(x, atom_getsymbolarg(5, ac, av));
 }
 
 //-------------------------------------------------------------------------------------
@@ -537,11 +540,11 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
                 ac--, av++;
             }
             else if(cursym == gensym("-size")){ // no arg
-                x->x_size = 1;
+                x->x_size = x->x_flag = 1;
                 ac--, av++;
             }
             else if(cursym == gensym("-latch")){ // no arg
-                x->x_latch = 1;
+                x->x_latch = x->x_flag = 1;
                 ac--, av++;
             }
             else if(cursym == gensym("-send")){
@@ -612,7 +615,8 @@ void pic_setup(void){
     class_addmethod(pic_class, (t_method)pic_open, gensym("open"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_set, gensym("set"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_send, gensym("send"), A_DEFSYMBOL, 0);
-    class_addmethod(pic_class, (t_method)pic_ok, gensym("ok"), A_SYMBOL, A_FLOAT, A_SYMBOL, A_SYMBOL, 0);
+    class_addmethod(pic_class, (t_method)pic_ok, gensym("ok"), A_GIMME, 0);
+//    class_addmethod(pic_class, (t_method)pic_ok, gensym("ok"), A_SYMBOL, A_FLOAT, A_FLOAT, A_FLOAT, A_SYMBOL, A_SYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_receive, gensym("receive"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(pic_class, (t_method)pic_size_callback, gensym("_picsize"), A_DEFFLOAT, A_DEFFLOAT, 0);
@@ -637,22 +641,25 @@ void pic_setup(void){
     sys_vgui("    set vid [string trimleft $id .]\n");
     sys_vgui("    set var_name [concat var_name_$vid]\n");
     sys_vgui("    set var_outline [concat var_outline_$vid]\n");
+    sys_vgui("    set var_size [concat var_size_$vid]\n");
+    sys_vgui("    set var_latch [concat var_latch_$vid]\n");
     sys_vgui("    set var_snd [concat var_snd_$vid]\n");
     sys_vgui("    set var_rcv [concat var_rcv_$vid]\n");
-    sys_vgui("    set var_size [concat var_size_$vid]\n");
     sys_vgui("\n");
     sys_vgui("    global $var_name\n");
     sys_vgui("    global $var_outline\n");
+    sys_vgui("    global $var_size\n");
+    sys_vgui("    global $var_latch\n");
     sys_vgui("    global $var_snd\n");
     sys_vgui("    global $var_rcv\n");
-    sys_vgui("    global $var_size\n");
     sys_vgui("\n");
     sys_vgui("    set cmd [concat $id ok \\\n");
     sys_vgui("        [eval concat $$var_name] \\\n");
     sys_vgui("        [eval concat $$var_outline] \\\n");
+    sys_vgui("        [eval concat $$var_size] \\\n");
+    sys_vgui("        [eval concat $$var_latch] \\\n");
     sys_vgui("        [eval concat $$var_snd] \\\n");
-    sys_vgui("        [eval concat $$var_rcv] \\\n");
-    sys_vgui("        [eval concat $$var_size] \\;]\n");
+    sys_vgui("        [eval concat $$var_rcv] \\;]\n");
     sys_vgui("    pd $cmd\n");
     sys_vgui("    pic_cancel $id\n");
     sys_vgui("}\n");
@@ -662,25 +669,28 @@ void pic_setup(void){
     sys_vgui("    pd $cmd\n");
     sys_vgui("}\n");
     
-    sys_vgui("proc pic_properties {id name outline snd rcv sz} {\n");
+    sys_vgui("proc pic_properties {id name outline size latch snd rcv} {\n");
     sys_vgui("    set vid [string trimleft $id .]\n");
     sys_vgui("    set var_name [concat var_name_$vid]\n");
     sys_vgui("    set var_outline [concat var_outline_$vid]\n");
+    sys_vgui("    set var_size [concat var_size_$vid]\n");
+    sys_vgui("    set var_latch [concat var_latch_$vid]\n");
     sys_vgui("    set var_snd [concat var_snd_$vid]\n");
     sys_vgui("    set var_rcv [concat var_rcv_$vid]\n");
-    sys_vgui("    set var_size [concat var_size_$vid]\n");
     sys_vgui("\n");
     sys_vgui("    global $var_name\n");
     sys_vgui("    global $var_outline\n");
+    sys_vgui("    global $var_size\n");
+    sys_vgui("    global $var_latch\n");
     sys_vgui("    global $var_snd\n");
     sys_vgui("    global $var_rcv\n");
-    sys_vgui("    global $var_size\n");
     sys_vgui("\n");
     sys_vgui("    set $var_name $name\n");
     sys_vgui("    set $var_outline $outline\n");
+    sys_vgui("    set $var_size $size\n");
+    sys_vgui("    set $var_latch $latch\n");
     sys_vgui("    set $var_snd $snd\n");
     sys_vgui("    set $var_rcv $rcv\n");
-    sys_vgui("    set $var_size $sz\n");
     sys_vgui("\n");
     sys_vgui("    toplevel $id\n");
     sys_vgui("    wm title $id {[pic] Properties}\n");
@@ -689,24 +699,26 @@ void pic_setup(void){
     sys_vgui("    frame $id.pic\n");
     sys_vgui("    pack $id.pic -side top\n");
     sys_vgui("    label $id.pic.lname -text \"File Name:\"\n");
-    sys_vgui("    entry $id.pic.name -textvariable $var_name -width 7\n");
+    sys_vgui("    entry $id.pic.name -textvariable $var_name -width 30\n");
     sys_vgui("    label $id.pic.loutline -text \"Outline:\"\n");
-    sys_vgui("    entry $id.pic.outline -textvariable $var_outline -width 1\n");
+    sys_vgui("    checkbutton $id.pic.outline -variable $var_outline \n");
     sys_vgui("    pack $id.pic.lname $id.pic.name $id.pic.loutline $id.pic.outline -side left\n");
+    sys_vgui("\n");
+    sys_vgui("    frame $id.sz_latch\n");
+    sys_vgui("    pack $id.sz_latch -side top\n");
+    sys_vgui("    label $id.sz_latch.lsize -text \"Report Size:\"\n");
+    sys_vgui("    checkbutton $id.sz_latch.size -variable $var_size \n");
+    sys_vgui("    label $id.sz_latch.llatch -text \"Latch Mode:\"\n");
+    sys_vgui("    checkbutton $id.sz_latch.latch -variable $var_latch \n");
+    sys_vgui("    pack $id.sz_latch.lsize $id.sz_latch.size $id.sz_latch.llatch $id.sz_latch.latch -side left\n");
     sys_vgui("\n");
     sys_vgui("    frame $id.snd_rcv\n");
     sys_vgui("    pack $id.snd_rcv -side top\n");
     sys_vgui("    label $id.snd_rcv.lsnd -text \"Send symbol:\"\n");
-    sys_vgui("    entry $id.snd_rcv.snd -textvariable $var_snd -width 7\n");
+    sys_vgui("    entry $id.snd_rcv.snd -textvariable $var_snd -width 12\n");
     sys_vgui("    label $id.snd_rcv.lrcv -text \"Receive symbol:\"\n");
-    sys_vgui("    entry $id.snd_rcv.rcv -textvariable $var_rcv -width 7\n");
+    sys_vgui("    entry $id.snd_rcv.rcv -textvariable $var_rcv -width 12\n");
     sys_vgui("    pack $id.snd_rcv.lsnd $id.snd_rcv.snd $id.snd_rcv.lrcv $id.snd_rcv.rcv -side left\n");
-    sys_vgui("\n");
-    sys_vgui("    frame $id.picsize\n");
-    sys_vgui("    pack $id.picsize -side top\n");
-    sys_vgui("    label $id.picsize.lsz -text \"Report Size:\"\n");
-    sys_vgui("    entry $id.picsize.sz -textvariable $var_size -width 1\n");
-    sys_vgui("    pack $id.picsize.lsz $id.picsize.sz -side left\n");
     sys_vgui("\n");
     sys_vgui("    frame $id.buttonframe\n");
     sys_vgui("    pack $id.buttonframe -side bottom -fill x -pady 2m\n");
