@@ -49,6 +49,7 @@ typedef struct _pic{
      t_outlet      *x_outlet;
 }t_pic;
 
+
 // ------------------------ draw inlet --------------------------------------------------------------------
 static void pic_draw_io_let(t_pic *x){
     t_canvas *cv = glist_getcanvas(x->x_glist);
@@ -260,9 +261,9 @@ static void pic_save(t_gobj *z, t_binbuf *b){
         x->x_snd_raw = gensym("empty");
     if(x->x_rcv_raw == &s_)
         x->x_rcv_raw = gensym("empty");
-    binbuf_addv(b, "ssiisisssii", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
+    binbuf_addv(b, "ssiisisssi", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
         atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_outline, x->x_filename, x->x_snd_raw,
-        x->x_rcv_raw, x->x_size, x->x_latch);
+        x->x_rcv_raw, x->x_size);
     binbuf_addv(b, ";");
 }
 
@@ -375,7 +376,7 @@ static void pic_outline(t_pic *x, t_float f){
 }
 
 static void pic_latch(t_pic *x, t_floatarg f){
-    int latch =  (int)(f);
+    int latch =  (int)(f != 0);
     if(latch != x->x_latch){
         canvas_dirty(x->x_glist, 1);
         x->x_latch = latch;
@@ -383,10 +384,10 @@ static void pic_latch(t_pic *x, t_floatarg f){
 }
 
 static void pic_size(t_pic *x, t_floatarg f){
-    int sz =  (int)(f);
+    int sz =  (int)(f != 0);
     if(sz != x->x_size){
         canvas_dirty(x->x_glist, 1);
-        x->x_size = (sz != 0);
+        x->x_size = sz;
     }
 }
 
@@ -432,24 +433,21 @@ void pic_properties(t_gobj *z, t_glist *gl){
     gl = NULL;
     t_pic *x = (t_pic *)z;
     char buf[256];
-    sprintf(buf, "pic_properties %%s %s %d %s %s %d %d\n",
+    sprintf(buf, "pic_properties %%s %s %d %s %s %d\n",
         x->x_filename == &s_ ? gensym("empty")->s_name : x->x_filename->s_name,
         x->x_outline,
         x->x_send == &s_ ? gensym("empty")->s_name : x->x_send->s_name,
         x->x_receive == &s_ ? gensym("empty")->s_name : x->x_receive->s_name,
-        x->x_size,
-        x->x_latch);
+        x->x_size);
     gfxstub_new(&x->x_obj.ob_pd, x, buf);
 }
 
-static void pic_ok(t_pic *x, t_symbol *name, t_floatarg outline,
-        t_symbol *snd, t_symbol *rcv, t_floatarg sz, t_floatarg latch){
+static void pic_ok(t_pic *x, t_symbol *name, t_floatarg outline, t_symbol *snd, t_symbol *rcv, t_floatarg sz){
     pic_open(x, name);
     pic_outline(x, outline);
     pic_send(x, snd);
     pic_receive(x, rcv);
     pic_size(x, sz);
-    pic_latch(x, latch);
 }
 
 //-------------------------------------------------------------------------------------
@@ -642,22 +640,19 @@ void pic_setup(void){
     sys_vgui("    set var_snd [concat var_snd_$vid]\n");
     sys_vgui("    set var_rcv [concat var_rcv_$vid]\n");
     sys_vgui("    set var_size [concat var_size_$vid]\n");
-    sys_vgui("    set var_latch [concat var_latch_$vid]\n");
     sys_vgui("\n");
     sys_vgui("    global $var_name\n");
     sys_vgui("    global $var_outline\n");
     sys_vgui("    global $var_snd\n");
     sys_vgui("    global $var_rcv\n");
     sys_vgui("    global $var_size\n");
-    sys_vgui("    global $var_latch\n");
     sys_vgui("\n");
     sys_vgui("    set cmd [concat $id ok \\\n");
     sys_vgui("        [eval concat $$var_name] \\\n");
     sys_vgui("        [eval concat $$var_outline] \\\n");
     sys_vgui("        [eval concat $$var_snd] \\\n");
     sys_vgui("        [eval concat $$var_rcv] \\\n");
-    sys_vgui("        [eval concat $$var_size] \\\n");
-    sys_vgui("        [eval concat $$var_latch] \\;]\n");
+    sys_vgui("        [eval concat $$var_size] \\;]\n");
     sys_vgui("    pd $cmd\n");
     sys_vgui("    pic_cancel $id\n");
     sys_vgui("}\n");
@@ -667,28 +662,25 @@ void pic_setup(void){
     sys_vgui("    pd $cmd\n");
     sys_vgui("}\n");
     
-    sys_vgui("proc pic_properties {id name outline snd rcv sz latch} {\n");
+    sys_vgui("proc pic_properties {id name outline snd rcv sz} {\n");
     sys_vgui("    set vid [string trimleft $id .]\n");
     sys_vgui("    set var_name [concat var_name_$vid]\n");
     sys_vgui("    set var_outline [concat var_outline_$vid]\n");
     sys_vgui("    set var_snd [concat var_snd_$vid]\n");
     sys_vgui("    set var_rcv [concat var_rcv_$vid]\n");
     sys_vgui("    set var_size [concat var_size_$vid]\n");
-    sys_vgui("    set var_latch [concat var_latch_$vid]\n");
     sys_vgui("\n");
     sys_vgui("    global $var_name\n");
     sys_vgui("    global $var_outline\n");
     sys_vgui("    global $var_snd\n");
     sys_vgui("    global $var_rcv\n");
     sys_vgui("    global $var_size\n");
-    sys_vgui("    global $var_latch\n");
     sys_vgui("\n");
     sys_vgui("    set $var_name $name\n");
     sys_vgui("    set $var_outline $outline\n");
     sys_vgui("    set $var_snd $snd\n");
     sys_vgui("    set $var_rcv $rcv\n");
     sys_vgui("    set $var_size $sz\n");
-    sys_vgui("    set $var_latch $latch\n");
     sys_vgui("\n");
     sys_vgui("    toplevel $id\n");
     sys_vgui("    wm title $id {[pic] Properties}\n");
@@ -714,9 +706,7 @@ void pic_setup(void){
     sys_vgui("    pack $id.picsize -side top\n");
     sys_vgui("    label $id.picsize.lsz -text \"Report Size:\"\n");
     sys_vgui("    entry $id.picsize.sz -textvariable $var_size -width 1\n");
-    sys_vgui("    label $id.picsize.llatch -text \"Latch Mode:\"\n");
-    sys_vgui("    entry $id.picsize.latch -textvariable $var_latch -width 1\n");
-    sys_vgui("    pack $id.picsize.lsz $id.picsize.sz $id.picsize.llatch $id.picsize.latch -side left\n");
+    sys_vgui("    pack $id.picsize.lsz $id.picsize.sz -side left\n");
     sys_vgui("\n");
     sys_vgui("    frame $id.buttonframe\n");
     sys_vgui("    pack $id.buttonframe -side bottom -fill x -pady 2m\n");
