@@ -401,6 +401,7 @@ static void keyboard_norm(t_keyboard *x, t_floatarg f){
 // Free
 void keyboard_free(t_keyboard *x){
     pd_unbind(&x->x_obj.ob_pd, x->x_bindsym);
+    pd_unbind(&x->x_obj.ob_pd, gensym("keyboard_rcv"));
     gfxstub_deleteforkey(x);
 }
 
@@ -439,6 +440,7 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
     char buf[64];
     sprintf(buf, "rel_%lx", (unsigned long)x);
     pd_bind(&x->x_obj.ob_pd, x->x_bindsym = gensym(buf));
+    pd_bind(&x->x_obj.ob_pd, gensym("keyboard_rcv"));
     return(void *)x;
 }
 
@@ -565,7 +567,7 @@ void keyboard_setup(void){
     sys_vgui("    frame $id.mode\n");
     sys_vgui("    pack $id.mode -side top\n");
     sys_vgui("    label $id.mode.ltgl -text \"Toggle Mode:\"\n");
-    sys_vgui("    entry $id.mode.tgl -textvariable $var_tgl -width 2\n");
+    sys_vgui("    checkbutton $id.mode.tgl -variable $var_tgl \n");
     sys_vgui("    pack $id.mode.ltgl $id.mode.tgl -side left\n");
     sys_vgui("\n");
 //
