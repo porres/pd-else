@@ -59,8 +59,6 @@ the 'version' message that sends the version information as a list.
 , f 71;
 #X msg 271 327 version;
 #X obj 253 377 else/display;
-#X obj 253 413 else/makesymbol %d.%d-%d_%s-%d;
-#X symbolatom 253 441 16 0 0 0 - - -;
 #X text 58 357 Check "All About ELSE":;
 #X text 63 91 The ELSE library is a set of separate binaries and abstractions
 \, but you can load it via "Preferences => Startup" or \, alternatively
@@ -69,8 +67,10 @@ the 'version' message that sends the version information as a list.
 this does is add some information about the ELSE library in Pd's window
 and loads else's path to Pd so you can load the abtractions and separate
 binaries., f 71;
+#X obj 253 436 else/display;
+#X obj 253 409 else/format ELSE %d.%d-%d_%s-%d;
 #X connect 0 0 15 0;
 #X connect 15 0 33 0;
 #X connect 32 0 15 0;
-#X connect 33 0 34 0;
-#X connect 34 0 35 0;
+#X connect 33 0 38 0;
+#X connect 38 0 37 0;
