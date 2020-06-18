@@ -112,10 +112,10 @@ static void format_dooutput(t_format *x){
     if(outsize > 0 && (outstring = getbytes(outsize))){
         char *inp = x->x_fstring;
         char *outp = outstring;
-        for (i = 0; i < x->x_nslots; i++){
+        for(i = 0; i < x->x_nslots; i++){
             t_format_proxy *y = (t_format_proxy *)x->x_proxies[i];
             int len = y->p_pattern - inp;
-            if (len > 0){
+            if(len > 0){
                 strncpy(outp, inp, len);
                 outp += len;
             }
@@ -125,7 +125,7 @@ static void format_dooutput(t_format *x){
         }
         strcpy(outp, inp);
         outp = outstring;
-        while (*outp == ' ' || *outp == '\t' || *outp == '\n' || *outp == '\r')
+        while(*outp == ' ' || *outp == '\t' || *outp == '\n' || *outp == '\r')
             outp++;
         if(*outp){
             t_binbuf *bb = binbuf_new();
@@ -135,10 +135,9 @@ static void format_dooutput(t_format *x){
             ac = binbuf_getnatom(bb);
             av = binbuf_getvec(bb);
             if(ac){
-                if (av->a_type == A_SYMBOL)
-                  outlet_anything(((t_object *)x)->ob_outlet,
-                          av->a_w.w_symbol, ac - 1, av + 1);
-                else if (av->a_type == A_FLOAT){
+                if(av->a_type == A_SYMBOL)
+                  outlet_anything(((t_object *)x)->ob_outlet, av->a_w.w_symbol, ac - 1, av + 1);
+                else if(av->a_type == A_FLOAT){
                     if(ac > 1)
                         outlet_list(((t_object *)x)->ob_outlet, &s_list, ac, av);
                     else
@@ -152,7 +151,7 @@ static void format_dooutput(t_format *x){
 }
 
 static void format_proxy_bang(t_format_proxy *x){
-    format_dooutput(x->p_master);
+    pd_error(x, "[format]: no method for bang in secondary inlets");
 }
 
 static void format_proxy_float(t_format_proxy *x, t_float f){
@@ -209,40 +208,38 @@ static void format_proxy_anything(t_format_proxy *x, t_symbol *s, int ac, t_atom
 }
 
 static void format_bang(t_format *x){
-    if (x->x_nslots)
-        format_proxy_bang((t_format_proxy *)x->x_proxies[0]);
-    else if(x->x_fsize >= 2)
-        outlet_symbol(((t_object *) x)->ob_outlet, gensym(x->x_fstring));
+    if(x->x_nslots)
+        format_dooutput(x);
     else
-        pd_error(x, "[format]: no arguments given");
+        pd_error(x, "[format]: no variable arguments given");
 }
 
 static void format_float(t_format *x, t_float f){
-    if (x->x_nslots)
+    if(x->x_nslots)
         format_proxy_float((t_format_proxy *)x->x_proxies[0], f);
     else
-        pd_error(x, "[format]: can't convert (type mismatch)");
+        pd_error(x, "[format]: no variable arguments given");
 }
 
 static void format_symbol(t_format *x, t_symbol *s){
     if(x->x_nslots)
         format_proxy_symbol((t_format_proxy *)x->x_proxies[0], s);
     else
-        pd_error(x, "[format]: can't convert (type mismatch)");
+        pd_error(x, "[format]: no variable arguments given");
 }
 
 static void format_list(t_format *x, t_symbol *s, int ac, t_atom *av){
     if(x->x_nslots)
         format_dolist(x, s, ac, av, 0);
     else
-        pd_error(x, "[format]: can't convert (type mismatch)");
+        pd_error(x, "[format]: no variable arguments given");
 }
 
 static void format_anything(t_format *x, t_symbol *s, int ac, t_atom *av){
     if (x->x_nslots)
         format_doanything(x, s, ac, av, 0);
     else
-        pd_error(x, "[format]: can't convert (type mismatch)");
+        pd_error(x, "[format]: no variable arguments given");
 }
 
 // adjusted binbuf_gettext(), LATER do it right

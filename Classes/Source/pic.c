@@ -50,7 +50,7 @@ typedef struct _pic{
 }t_pic;
 
 
-// ------------------------ draw inlet -------------------------------------------------------
+// ------------------------ draw inlet --------------------------------------------------------------------
 static void pic_draw_io_let(t_pic *x){
     t_canvas *cv = glist_getcanvas(x->x_glist);
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
@@ -64,20 +64,20 @@ static void pic_draw_io_let(t_pic *x){
             cv, xpos, ypos+x->x_height, xpos+IOWIDTH*x->x_zoom, ypos+x->x_height-IHEIGHT*x->x_zoom, x);
 }
 
-// --------------------------------------------------------------------------------------------
-
+// --------------------------------------------------------------------------------------------------------
 // helper functions
-static const char* pic_filepath(t_pic *x, const char *file){
+static const char* pic_filepath(t_pic *x, const char *filename){
     static char fname[MAXPDSTRING];
     char *bufptr;
     int fd = open_via_path(canvas_getdir(glist_getcanvas(x->x_glist))->s_name,
-        file, "", fname, &bufptr, MAXPDSTRING, 1);
+        filename, "", fname, &bufptr, MAXPDSTRING, 1);
     if(fd > 0){
         fname[strlen(fname)]='/';
         close(fd);
         return(fname);
     }
-    else return(0);
+    else
+        return(0);
 }
 
 static void pic_size_callback(t_pic *x, t_float w, t_float h){
@@ -125,10 +125,8 @@ static int pic_click(t_pic *x, struct _glist *glist, int xpos, int ypos, int shi
 
 static void pic_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
     t_pic* x = (t_pic*)z;
-    int xpos = *xp1 = text_xpix(&x->x_obj, glist);
-    int ypos = *yp1 = text_ypix(&x->x_obj, glist);
-    *xp2 = xpos + x->x_width;
-    *yp2 = ypos + x->x_height;
+    int xpos = *xp1 = text_xpix(&x->x_obj, glist), ypos = *yp1 = text_ypix(&x->x_obj, glist);
+    *xp2 = xpos + x->x_width, *yp2 = ypos + x->x_height;
 }
 
 static void pic_displace(t_gobj *z, t_glist *glist, int dx, int dy){
@@ -171,8 +169,7 @@ static void pic_vis(t_gobj *z, t_glist *glist, int vis){
     t_pic* x = (t_pic*)z;
     t_canvas *cv = glist_getcanvas(glist);
     if(vis){
-        int xpos = text_xpix(&x->x_obj, glist);
-        int ypos = text_ypix(&x->x_obj, glist);
+        int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
         if(x->x_def_img){ // DEFAULT PIC
             sys_vgui(".x%lx.c create image %d %d -anchor nw -tags %lx_picture\n",
                 cv, xpos, ypos, x);
@@ -367,9 +364,7 @@ static void pic_outline(t_pic *x, t_float f){
         canvas_dirty(x->x_glist, 1);
         t_canvas *cv = glist_getcanvas(x->x_glist);
         if(x->x_outline){
-            int xpos = text_xpix(&x->x_obj, x->x_glist);
-            int ypos = text_ypix(&x->x_obj, x->x_glist);
-//            sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
+            int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
             if(x->x_sel) sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline blue -width %d\n",
                 cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
             else sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
@@ -381,11 +376,19 @@ static void pic_outline(t_pic *x, t_float f){
 }
 
 static void pic_latch(t_pic *x, t_floatarg f){
-    x->x_latch = (int)(f != 0);
+    int latch =  (int)(f != 0);
+    if(latch != x->x_latch){
+        canvas_dirty(x->x_glist, 1);
+        x->x_latch = latch;
+    }
 }
 
 static void pic_size(t_pic *x, t_floatarg f){
-    x->x_size = (int)(f != 0);
+    int sz =  (int)(f != 0);
+    if(sz != x->x_size){
+        canvas_dirty(x->x_glist, 1);
+        x->x_size = sz;
+    }
 }
 
 static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
@@ -463,7 +466,7 @@ static t_edit_proxy * edit_proxy_new(t_pic *x, t_symbol *s){
 }
 
 static void pic_free(t_pic *x){ // delete if variable is unset and image is unused
-    sys_vgui("if { [info exists %lx_picname] == 1 && [image inuse %lx_picname] == 0} { image delete %lx_picname \n unset %lx_picname\n} \n",
+    sys_vgui("if { [info exists %lx_picname] == 1 && [image inuse %lx_picname] == 0} { image delete %lx_picname \n unset %lx_picname\n}\n",
         x->x_fullname, x->x_fullname, x->x_fullname, x->x_fullname);
     if(x->x_receive != &s_)
         pd_unbind(&x->x_obj.ob_pd, x->x_receive);
@@ -580,7 +583,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
         if(fname){
             loaded = 1;
             x->x_fullname = gensym(fname);
-            sys_vgui("if { [info exists %lx_picname] == 0 } { image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n} \n",
+            sys_vgui("if { [info exists %lx_picname] == 0 } { image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n}\n",
                     x->x_fullname, x->x_fullname, fname, x->x_fullname);
         }
         else
