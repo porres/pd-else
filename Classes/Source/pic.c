@@ -596,10 +596,12 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
         x->x_width = x->x_height = 38;
         x->x_def_img = 1;
     }
+    x->x_snd_raw = x->x_send;
+    x->x_send = canvas_realizedollar(x->x_glist, x->x_send)
+    x->x_rcv_raw = x->x_receive;
+    x->x_receive = canvas_realizedollar(x->x_glist, x->x_receive)
     if(x->x_receive != &s_)
         pd_bind(&x->x_obj.ob_pd, x->x_receive);
-    x->x_snd_raw = x->x_send;
-    x->x_rcv_raw = x->x_receive;
     x->x_outlet = outlet_new(&x->x_obj, &s_bang);
     return(x);
     errstate:
