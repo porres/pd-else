@@ -1,4 +1,4 @@
-// Written By Flávio Schiavoni and Alexandre Porres
+// Prototype By Flávio Schiavoni, developed by Alexandre Porres
 
 #include "m_pd.h"
 #include "g_canvas.h"
@@ -9,30 +9,48 @@
 #define WHITE_OFF   "#FFFFFF"
 #define MIDDLE_C    "#F0FFFF" // color of Middle C when off
 
-static t_class *keyboard_class;
+static t_class *keyboard_class, *edit_proxy_class;
 static t_widgetbehavior keyboard_widgetbehavior;
 
+typedef struct _edit_proxy{
+    t_object    p_obj;
+    t_symbol   *p_sym;
+    t_clock    *p_clock;
+    struct      _keyboard *p_cnv;
+}t_edit_proxy;
+
 typedef struct _keyboard{
-    t_object    x_obj;
-    t_glist    *x_glist;
-    int        *x_tgl_notes;    // to store which notes should be played
-    int         x_velocity;     // to store velocity
-    int         x_last_note;    // to store last note
-    float       x_vel_in;       // to store the second inlet values
-    float       x_space;
-    int         x_width;
-    int         x_height;
-    int         x_octaves;
-    int         x_first_c;
-    int         x_low_c;
-    int         x_toggle_mode;
-    int         x_norm;
-    int         x_zoom;
-    int         x_shift;
-    int         x_xpos;
-    int         x_ypos;
-    t_symbol   *x_bindsym;
-    t_outlet   *x_out;
+    t_object       x_obj;
+    t_glist       *x_glist;
+    t_edit_proxy  *x_proxy;
+    int           *x_tgl_notes;    // to store which notes should be played
+    int            x_velocity;     // to store velocity
+    int            x_last_note;    // to store last note
+    float          x_vel_in;       // to store the second inlet values
+    float          x_space;
+    int            x_width;
+    int            x_height;
+    int            x_octaves;
+    int            x_first_c;
+    int            x_low_c;
+    int            x_toggle_mode;
+    int            x_norm;
+    int            x_zoom;
+    int            x_shift;
+    int            x_xpos;
+    int            x_ypos;
+    int            x_snd_set;
+    int            x_rcv_set;
+    int            x_flag;
+    int            x_s_flag;
+    int            x_r_flag;
+    int            x_edit;
+    t_symbol      *x_receive;
+    t_symbol      *x_rcv_raw;
+    t_symbol      *x_send;
+    t_symbol      *x_snd_raw;
+    t_symbol      *x_bindsym;
+    t_outlet      *x_out;
 }t_keyboard;
 
 /* ------------------------- Keyboard Play ------------------------------*/
@@ -41,10 +59,13 @@ static void keyboard_note_on(t_keyboard* x, int note){
     t_canvas *cv =  glist_getcanvas(x->x_glist);
     short key = note % 12, black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
     sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_ON : WHITE_ON);
-    t_atom a[2];
-    SETFLOAT(a, note);
-    SETFLOAT(a+1, x->x_velocity);
-    outlet_list(x->x_out, &s_list, 2, a);
+    int ac = 2;
+    t_atom at[ac];
+    SETFLOAT(at, note);
+    SETFLOAT(at+1, x->x_velocity);
+    outlet_list(x->x_out, &s_list, ac, at);
+    if(x->x_send != &s_ && x->x_send->s_thing)
+        pd_list(x->x_send->s_thing, &s_list, ac, at);
 }
 
 static void keyboard_note_off(t_keyboard* x, int note){
@@ -54,10 +75,13 @@ static void keyboard_note_off(t_keyboard* x, int note){
         short key = note % 12, c4 = (note == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
         sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
     }
-    t_atom a[2];
-    SETFLOAT(a, note);
-    SETFLOAT(a+1, 0);
-    outlet_list(x->x_out, &s_list, 2, a);
+    int ac = 2;
+    t_atom at[ac];
+    SETFLOAT(at, note);
+    SETFLOAT(at+1, 0);
+    outlet_list(x->x_out, &s_list, ac, at);
+    if(x->x_send != &s_ && x->x_send->s_thing)
+        pd_list(x->x_send->s_thing, &s_list, ac, at);
 }
 
 // TOGGLE MODE
@@ -70,28 +94,13 @@ static void keyboard_play_tgl(t_keyboard* x, int note){
         sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, on ? BLACK_ON : BLACK_OFF);
      else // white
         sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, on ? WHITE_ON : note == 60 ? MIDDLE_C : WHITE_OFF);
-    t_atom a[2];
-    SETFLOAT(a, note);
-    SETFLOAT(a+1, on ? x->x_velocity : 0);
-    outlet_list(x->x_out, &s_list, 2, a);
-}
-
-// FLUSH
-static void keyboard_flush(t_keyboard* x){
-    t_canvas *cv =  glist_getcanvas(x->x_glist);
-    t_atom a[2];
-    for(int note = 0 ; note < 256 ; note++){
-        if(x->x_tgl_notes[note] > 0){
-            int i = note - x->x_first_c;
-            if(i >= 0 && x->x_glist->gl_havewindow){
-                short key = i % 12, c4 = (i == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
-                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
-            }
-            SETFLOAT(a, note);
-            SETFLOAT(a+1, x->x_tgl_notes[note] = 0);
-            outlet_list(x->x_out, &s_list, 2, a);
-        }
-    }
+    int ac = 2;
+    t_atom at[ac];
+    SETFLOAT(at, note);
+    SETFLOAT(at+1, on ? x->x_velocity : 0);
+    outlet_list(x->x_out, &s_list, ac, at);
+    if(x->x_send != &s_ && x->x_send->s_thing)
+        pd_list(x->x_send->s_thing, &s_list, ac, at);
 }
 
 /* -------------------- MOUSE Events ----------------------------------*/
@@ -104,6 +113,8 @@ static int find_note(t_keyboard* x, float xpos, float ypos){
     int i = white_note + oct*12;
     if(ypos < x->x_height*2/3){ // find black keys
         x->x_velocity = x->x_norm > 0 ? x->x_norm : (int)((ypos / (x->x_height*2/3)) * 127);
+        if(x->x_velocity <= 0)
+            x->x_velocity = 1;
         if(white_key == 0 || white_key == 3){ // find sharp
             if(xpos > (white_key+1 + oct*7) * sz - b_sz)
                 return(x->x_first_c+i+1);
@@ -120,6 +131,8 @@ static int find_note(t_keyboard* x, float xpos, float ypos){
         }
     }
     x->x_velocity = x->x_norm > 0 ? x->x_norm : (int)((ypos / x->x_height) * 127);
+    if(x->x_velocity <= 0)
+        x->x_velocity = 1;
     return(x->x_first_c+i);
 }
 
@@ -136,11 +149,11 @@ static void keyboard_motion(t_keyboard *x, t_floatarg dx, t_floatarg dy){
     }
 }
 
-static int keyboard_click(t_keyboard *x, t_glist *gl, int click_x, int click_y, int shift, int alt, int dbl, int doit){
+static int keyboard_click(t_keyboard *x, t_glist *gl, int xpos, int ypos, int shift, int alt, int dbl, int doit){
     alt = dbl = 0; // remove warning
     if(doit){
-        x->x_xpos = click_x - text_xpix(&x->x_obj, gl), x->x_ypos = click_y - text_ypix(&x->x_obj, gl);
-        glist_grab(gl, &x->x_obj.te_g, (t_glistmotionfn)keyboard_motion, 0, click_x, click_y);
+        x->x_xpos = xpos - text_xpix(&x->x_obj, gl), x->x_ypos = ypos - text_ypix(&x->x_obj, gl);
+        glist_grab(gl, &x->x_obj.te_g, (t_glistmotionfn)keyboard_motion, 0, xpos, ypos);
         int note = find_note(x, x->x_xpos, x->x_ypos);
         x->x_toggle_mode || (x->x_shift = shift) ? keyboard_play_tgl(x, note) : keyboard_note_on(x, x->x_last_note = note);
     }
@@ -153,11 +166,29 @@ static void keyboard_mouserelease(t_keyboard* x){
     keyboard_note_off(x, x->x_last_note);
 }
 
-
 /* ------------------------ GUI SHIT----------------------------- */
 // Erase the GUI
 static void keyboard_erase(t_keyboard *x, t_glist *glist){
-    sys_vgui(".x%lx.c delete %xrr\n", glist_getcanvas(glist), x);
+    t_canvas *cv = glist_getcanvas(glist);
+    sys_vgui(".x%lx.c delete %xrr\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_in1\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_in2\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
+}
+
+// draw inlet
+static void keyboard_draw_io_let(t_keyboard *x){
+    t_canvas *cv = glist_getcanvas(x->x_glist);
+    int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
+    if(x->x_edit && x->x_receive == &s_){
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in1\n",
+            cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom), x);
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in2\n",
+            cv, xpos+x->x_width, ypos, xpos+x->x_width-(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom), x);
+    }
+    if(x->x_edit && x->x_send == &s_)
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
+            cv, xpos, ypos+x->x_height, xpos+IOWIDTH*x->x_zoom, ypos+x->x_height-IHEIGHT*x->x_zoom, x);
 }
 
 // Draw the GUI
@@ -208,6 +239,7 @@ static void keyboard_draw(t_keyboard *x, t_glist* glist){
         }
     }
     canvas_fixlinesfor(x->x_glist, (t_text *)x);
+    keyboard_draw_io_let(x);
 }
 
 /* ------------------------ widgetbehaviour----------------------------- */
@@ -223,8 +255,12 @@ static void keyboard_getrect(t_gobj *z, t_glist *owner, int *xp1, int *yp1, int 
 // DISPLACE
 void keyboard_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     t_keyboard *x = (t_keyboard *)z;
+    t_canvas *cv = glist_getcanvas(glist);
     x->x_obj.te_xpix += dx, x->x_obj.te_ypix += dy;
-    sys_vgui(".x%lx.c move %xrr %d %d\n", glist_getcanvas(glist), x, dx * x->x_zoom, dy * x->x_zoom);
+    sys_vgui(".x%lx.c move %xrr %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
+    sys_vgui(".x%lx.c move %lx_in1 %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
+    sys_vgui(".x%lx.c move %lx_in2 %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
+    sys_vgui(".x%lx.c move %lx_out %d %d\n", cv, x, dx * x->x_zoom, dy * x->x_zoom);
     canvas_fixlinesfor(glist, (t_text *)x);
 }
 
@@ -283,8 +319,63 @@ void keyboard_properties(t_gobj *z, t_glist *owner){
 // Save Properties
 static void keyboard_save(t_gobj *z, t_binbuf *b){
     t_keyboard *x = (t_keyboard *)z;
+    t_binbuf *bb = x->x_obj.te_binbuf;
+    int n_args = binbuf_getnatom(bb), i = 0; // number of arguments
+    char buf[80];
+    if(!x->x_snd_set){ // no send set, search arguments/flags
+        if(n_args > 0){ // we have arguments, let's search them
+            if(x->x_flag){ // we got flags
+                if(x->x_s_flag){ // we got a search flag, let's get it
+                    for(i = 0;  i < n_args; i++){
+                        atom_string(binbuf_getvec(bb) + i, buf, 80);
+                        if(gensym(buf) == gensym("-send")){
+                            i++;
+                            atom_string(binbuf_getvec(bb) + i, buf, 80);
+                            x->x_snd_raw = gensym(buf);
+                            break;
+                        }
+                    }
+                }
+            }
+            else{ // we got no flags, let's search for argument
+                int arg_n = 7; // receive argument number
+                if(n_args >= arg_n){ // we have it, get it
+                    atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
+                    x->x_snd_raw = gensym(buf);
+                }
+            }
+        }
+    }
+    if(!x->x_rcv_set){ // no receive set, search arguments
+        if(n_args > 0){ // we have arguments, let's search them
+            if(x->x_flag){ // search for receive name in flags
+                if(x->x_r_flag){ // we got a receive flag, let's get it
+                    for(i = 0;  i < n_args; i++){
+                        atom_string(binbuf_getvec(bb) + i, buf, 80);
+                        if(gensym(buf) == gensym("-receive")){
+                            i++;
+                            atom_string(binbuf_getvec(bb) + i, buf, 80);
+                            x->x_rcv_raw = gensym(buf);
+                            break;
+                        }
+                    }
+                }
+            }
+            else{ // we got no flags, let's search for argument
+                int arg_n = 8; // receive argument number
+                if(n_args >= arg_n){ // we have it, get it
+                    atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
+                    x->x_rcv_raw = gensym(buf);
+                }
+            }
+        }
+    }
+    if(x->x_snd_raw == &s_)
+        x->x_snd_raw = gensym("empty");
+    if(x->x_rcv_raw == &s_)
+        x->x_rcv_raw = gensym("empty");
     binbuf_addv(b,
-                "ssiisiiiiii",
+                "ssiisiiiiiiss",
                 gensym("#X"),
                 gensym("obj"),
                 (int)x->x_obj.te_xpix,
@@ -295,7 +386,9 @@ static void keyboard_save(t_gobj *z, t_binbuf *b){
                 (int)x->x_octaves,
                 (int)x->x_low_c,
                 (int)x->x_toggle_mode,
-                (int)x->x_norm);
+                (int)x->x_norm,
+                x->x_snd_raw,
+                x->x_rcv_raw);
     binbuf_addv(b, ";");
 }
 
@@ -320,10 +413,13 @@ void keyboard_float(t_keyboard *x, t_floatarg f){
     if(x->x_vel_in > 127)
         x->x_vel_in = 127;
     int on = x->x_tgl_notes[note] = x->x_vel_in > 0;
-    t_atom a[2];
-    SETFLOAT(a, note);
-    SETFLOAT(a+1, x->x_vel_in);
-    outlet_list(x->x_out, &s_list, 2, a);
+    int ac = 2;
+    t_atom at[ac];
+    SETFLOAT(at, note);
+    SETFLOAT(at+1, x->x_vel_in);
+    outlet_list(x->x_out, &s_list, ac, at);
+    if(x->x_send != &s_ && x->x_send->s_thing)
+        pd_list(x->x_send->s_thing, &s_list, ac, at);
     if(x->x_glist->gl_havewindow){
         t_canvas *cv =  glist_getcanvas(x->x_glist);
         if(note > x->x_first_c && note < x->x_first_c + (x->x_octaves * 12)){
@@ -342,11 +438,9 @@ static void keyboard_height(t_keyboard *x, t_floatarg f){
     if(x->x_height != f){
         canvas_dirty(x->x_glist, 1);
         x->x_height = f;
-        if(glist_isvisible(x->x_glist)){
-            keyboard_erase(x, x->x_glist);
-            keyboard_draw(x, x->x_glist);
+        if(glist_isvisible(x->x_glist))
+            keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
         }
-    }
 }
 
 static void keyboard_width(t_keyboard *x, t_floatarg f){
@@ -355,10 +449,8 @@ static void keyboard_width(t_keyboard *x, t_floatarg f){
         canvas_dirty(x->x_glist, 1);
         x->x_space = f;
         x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
-        if(glist_isvisible(x->x_glist)){
-            keyboard_erase(x, x->x_glist);
-            keyboard_draw(x, x->x_glist);
-        }
+        if(glist_isvisible(x->x_glist))
+            keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
     }
 }
 
@@ -368,8 +460,8 @@ static void keyboard_8ves(t_keyboard *x, t_floatarg f){
         canvas_dirty(x->x_glist, 1);
         x->x_octaves = f;
         x->x_width = x->x_space * 7 * x->x_octaves;
-        if(glist_isvisible(x->x_glist)){
-        }
+        if(glist_isvisible(x->x_glist))
+            keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
     }
 }
 
@@ -378,10 +470,8 @@ static void keyboard_low_c(t_keyboard *x, t_floatarg f){
     if(x->x_low_c != f){
         canvas_dirty(x->x_glist, 1);
         x->x_first_c = ((int)((x->x_low_c = f) * 12)) + 12;
-        if(glist_isvisible(x->x_glist)){
-            keyboard_erase(x, x->x_glist);
-            keyboard_draw(x, x->x_glist);
-        }
+        if(glist_isvisible(x->x_glist))
+            keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
     }
 }
 
@@ -405,49 +495,92 @@ static void keyboard_norm(t_keyboard *x, t_floatarg f){
     }
 }
 
-/* ------------------------ Free / New / Setup ------------------------------*/
-// Free
-void keyboard_free(t_keyboard *x){
-    pd_unbind(&x->x_obj.ob_pd, x->x_bindsym);
-    gfxstub_deleteforkey(x);
+// SEND
+static void keyboard_send(t_keyboard *x, t_symbol *s){
+    if(s != gensym("")){
+        t_symbol *snd = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, s);
+        if(snd != x->x_send){
+            x->x_snd_raw = s;
+            x->x_send = snd;
+            x->x_snd_set = 1;
+            canvas_dirty(x->x_glist, 1);
+            t_canvas *cv = glist_getcanvas(x->x_glist);
+            sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
+            if(x->x_send == &s_ && x->x_edit)
+                keyboard_draw_io_let(x);
+        }
+    }
 }
 
-// New
-void * keyboard_new(t_symbol *s, int ac, t_atom* av){
-    t_symbol *dummy = s;
-    dummy = NULL;
-    t_keyboard *x = (t_keyboard *) pd_new(keyboard_class);
-    x->x_glist = (t_glist*)canvas_getcurrent();
-    x->x_zoom = x->x_glist->gl_zoom;
-    x->x_last_note = -1;
-    x->x_norm = x->x_velocity = 0;
-    int tgl = 0, vel = 0;
-    float init_space = 17;
-    float init_height = 80;
-    float init_8ves = 4;
-    float init_low_c = 3;
-    if(ac) // 1st ARGUMENT: WIDTH
-        init_space = atom_getfloat(av++), ac--;
-    if(ac) // 2nd ARGUMENT: HEIGHT
-        init_height = atom_getfloat(av++), ac--;
-    if(ac) // 3rd ARGUMENT: Octaves
-        init_8ves = atom_getfloat(av++), ac--;
-    if(ac) // 4th ARGUMENT: Lowest C ("First C")
-        init_low_c = atom_getfloat(av++), ac--;
-    if(ac) // 5th ARGUMENT: Toggle Mode)
-        tgl = (int)(atom_getfloat(av++) != 0), ac--;
-    if(ac) // 6th ARGUMENT: Normalization)
-        vel = (int)(atom_getfloat(av++) != 0), ac--;
-    keyboard_set_properties(x, init_space, init_height, init_8ves, init_low_c, vel, tgl);
-    x->x_tgl_notes = getbytes(sizeof(int) * 256);
-    for(int i = 0; i < 256; i++)
-        x->x_tgl_notes[i] = 0;
-    x->x_out = outlet_new(&x->x_obj, &s_list);
-    floatinlet_new(&x->x_obj, &x->x_vel_in);
-    char buf[64];
-    sprintf(buf, "rel_%lx", (unsigned long)x);
-    pd_bind(&x->x_obj.ob_pd, x->x_bindsym = gensym(buf));
-    return(void *)x;
+// RECEIVE
+static void keyboard_receive(t_keyboard *x, t_symbol *s){
+    if(s != gensym("")){
+        t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, s);
+        if(rcv != x->x_receive){
+            canvas_dirty(x->x_glist, 1);
+            if(x->x_receive != &s_)
+                pd_unbind(&x->x_obj.ob_pd, x->x_receive);
+            x->x_rcv_set = 1;
+            x->x_rcv_raw = s;
+            x->x_receive = rcv;
+            if(x->x_receive != &s_){
+                t_canvas *cv = glist_getcanvas(x->x_glist);
+                sys_vgui(".x%lx.c delete %lx_in1\n", cv, x);
+                sys_vgui(".x%lx.c delete %lx_in2\n", cv, x);
+                pd_bind(&x->x_obj.ob_pd, x->x_receive);
+            }
+            else{
+                if(x->x_edit)
+                    keyboard_draw_io_let(x);
+            }
+        }
+    }
+}
+
+// FLUSH
+static void keyboard_flush(t_keyboard* x){
+    t_canvas *cv =  glist_getcanvas(x->x_glist);
+    int ac = 2;
+    t_atom at[ac];
+    for(int note = 0 ; note < 256 ; note++){
+        if(x->x_tgl_notes[note] > 0){
+            int i = note - x->x_first_c;
+            if(i >= 0 && x->x_glist->gl_havewindow){
+                short key = i % 12, c4 = (i == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
+                sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
+            }
+            SETFLOAT(at, note);
+            SETFLOAT(at+1, x->x_tgl_notes[note] = 0);
+            outlet_list(x->x_out, &s_list, ac, at);
+            if(x->x_send != &s_ && x->x_send->s_thing)
+                pd_list(x->x_send->s_thing, &s_list, ac, at);
+        }
+    }
+}
+
+static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
+    int edit = ac = 0;
+    if(p->p_cnv){
+        if(s == gensym("editmode"))
+            edit = (int)(av->a_w.w_float);
+        else if(s == gensym("obj") || s == gensym("msg") || s == gensym("floatatom") || s == gensym("text")){
+            if(av->a_w.w_float == 0)
+                edit = 1;
+        }
+        else
+            return;
+        if(p->p_cnv->x_edit != edit){
+            p->p_cnv->x_edit = edit;
+            if(edit)
+                keyboard_draw_io_let(p->p_cnv);
+            else{
+                t_canvas *cv = glist_getcanvas(p->p_cnv->x_glist);
+                sys_vgui(".x%lx.c delete %lx_in1\n", cv, p->p_cnv);
+                sys_vgui(".x%lx.c delete %lx_in2\n", cv, p->p_cnv);
+                sys_vgui(".x%lx.c delete %lx_out\n", cv, p->p_cnv);
+            }
+        }
+    }
 }
 
 static void keyboard_zoom(t_keyboard *x, t_floatarg zoom){
@@ -459,6 +592,186 @@ static void keyboard_zoom(t_keyboard *x, t_floatarg zoom){
     x->x_height = (int)((float)x->x_height * mul);
     x->x_zoom = (int)zoom;
     keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
+}
+
+/* ------------------------ Free / New / Setup ------------------------------*/
+// Free
+
+static void edit_proxy_free(t_edit_proxy *p){
+    pd_unbind(&p->p_obj.ob_pd, p->p_sym);
+    clock_free(p->p_clock);
+    pd_free(&p->p_obj.ob_pd);
+}
+
+static t_edit_proxy * edit_proxy_new(t_keyboard *x, t_symbol *s){
+    t_edit_proxy *p = (t_edit_proxy*)pd_new(edit_proxy_class);
+    p->p_cnv = x;
+    pd_bind(&p->p_obj.ob_pd, p->p_sym = s);
+    p->p_clock = clock_new(p, (t_method)edit_proxy_free);
+    return(p);
+}
+
+void keyboard_free(t_keyboard *x){
+    if(x->x_receive != &s_)
+        pd_unbind(&x->x_obj.ob_pd, x->x_receive);
+    pd_unbind(&x->x_obj.ob_pd, x->x_bindsym);
+    x->x_proxy->p_cnv = NULL;
+    clock_delay(x->x_proxy->p_clock, 0);
+    gfxstub_deleteforkey(x);
+}
+
+// New
+void * keyboard_new(t_symbol *s, int ac, t_atom* av){
+    s = NULL;
+    t_keyboard *x = (t_keyboard *) pd_new(keyboard_class);
+    t_canvas *cv = canvas_getcurrent();
+    x->x_glist = (t_glist*)cv;
+    char buf[MAXPDSTRING];
+    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)cv);
+    buf[MAXPDSTRING-1] = 0;
+    x->x_proxy = edit_proxy_new(x, gensym(buf));
+    sprintf(buf, "#%lx", (long)x);
+    pd_bind(&x->x_obj.ob_pd, x->x_bindsym = gensym(buf));
+    x->x_edit = cv->gl_edit;
+    x->x_zoom = x->x_glist->gl_zoom;
+    x->x_last_note = -1;
+    x->x_norm = x->x_velocity = 0;
+    x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = &s_;
+    int tgl = 0;
+    int vel = 0;
+    float init_space = 17;
+    float init_height = 80;
+    float init_8ves = 4;
+    float init_low_c = 3;
+    t_symbol *snd = &s_;
+    t_symbol *rcv = &s_;
+    if(ac && av->a_type == A_FLOAT){ // 1st Width
+        init_space = av->a_w.w_float;
+        ac--; av++;
+        if(ac && av->a_type == A_FLOAT){ // 2nd Height
+            init_height = av->a_w.w_float;
+            ac--, av++;
+            if(ac && av->a_type == A_FLOAT){ // 3rd Octaves
+                init_8ves = av->a_w.w_float;
+                ac--; av++;
+                if(ac && av->a_type == A_FLOAT){ // 4th Low C
+                    init_low_c = av->a_w.w_float;
+                    ac--; av++;
+                    if(ac && av->a_type == A_FLOAT){ // 5th Toggle
+                        tgl = (int)(av->a_w.w_float != 0);
+                        ac--; av++;
+                        if(ac && av->a_type == A_FLOAT){ // 6th Norm
+                            vel = (int)(av->a_w.w_float);
+                            ac--; av++;
+                            if(ac && av->a_type == A_SYMBOL){ // 7th send
+                                if(av->a_w.w_symbol == gensym("empty")) // ignore empty symbol
+                                    ac--, av++;
+                                else{
+                                    snd = av->a_w.w_symbol;
+                                    ac--, av++;
+                                }
+                                if(ac && av->a_type == A_SYMBOL){ // 8th receive
+                                    if(av->a_w.w_symbol == gensym("empty")) // ignore empty symbol
+                                        ac--, av++;
+                                    else{
+                                        rcv = av->a_w.w_symbol;
+                                        ac--, av++;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    t_symbol *cursym = NULL, *sym = NULL;
+    while(ac > 0){
+        if(av->a_type == A_SYMBOL){
+            cursym = atom_getsymbolarg(0, ac, av);
+            if(cursym == gensym("-width")){
+                x->x_flag = 1;
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    init_space = atom_getfloatarg(1, ac, av);
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
+            }
+            else if(cursym == gensym("-height")){
+                x->x_flag = 1;
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    init_height = atom_getfloatarg(1, ac, av);
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
+            }
+            else if(cursym == gensym("-oct")){
+                x->x_flag = 1;
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    init_8ves = atom_getfloatarg(1, ac, av);
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
+            }
+            
+            else if(cursym == gensym("-lowc")){
+                x->x_flag = 1;
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    init_low_c = atom_getfloatarg(1, ac, av);
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
+            }
+            else if(cursym == gensym("-tgl"))
+                x->x_flag = tgl = 1;
+            else if(cursym == gensym("-norm")){
+                x->x_flag = 1;
+                if(ac >= 2 && (av+1)->a_type == A_FLOAT){
+                    vel = atom_getfloatarg(1, ac, av);
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
+            }
+            else if(cursym == gensym("-send")){
+                if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
+                    sym = atom_getsymbolarg(1, ac, av);
+                    x->x_flag = x->x_s_flag = 1;
+                    if(sym != gensym("empty"))
+                        snd = sym;
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
+            }
+            else if(cursym == gensym("-receive")){
+                if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
+                    sym = atom_getsymbolarg(1, ac, av);
+                    x->x_flag = x->x_r_flag = 1;
+                    if(sym != gensym("empty"))
+                        rcv = sym;
+                    ac-=2, av+=2;
+                }
+                else goto errstate;
+            }
+            else goto errstate;
+        }
+        else goto errstate;
+    };
+    x->x_snd_raw = snd;
+    x->x_send = canvas_realizedollar(x->x_glist, x->x_snd_raw);
+    x->x_rcv_raw = rcv;
+    x->x_receive = canvas_realizedollar(x->x_glist, x->x_rcv_raw);
+    if(x->x_receive != &s_)
+        pd_bind(&x->x_obj.ob_pd, x->x_receive);
+    keyboard_set_properties(x, init_space, init_height, init_8ves, init_low_c, vel, tgl);
+    x->x_tgl_notes = getbytes(sizeof(int) * 256);
+    for(int i = 0; i < 256; i++)
+        x->x_tgl_notes[i] = 0;
+    x->x_out = outlet_new(&x->x_obj, &s_list);
+    floatinlet_new(&x->x_obj, &x->x_vel_in);
+    return(void *)x;
+    errstate:
+        pd_error(x, "[keyboard]: improper args");
+        return(NULL);
 }
 
 // Setup
@@ -474,7 +787,11 @@ void keyboard_setup(void){
     class_addmethod(keyboard_class, (t_method)keyboard_toggle, gensym("toggle"), A_DEFFLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_norm, gensym("norm"), A_DEFFLOAT, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_flush, gensym("flush"), 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_send, gensym("send"), A_DEFSYMBOL, 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_receive, gensym("receive"), A_DEFSYMBOL, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_zoom, gensym("zoom"), A_CANT, 0);
+    edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
+    class_addanything(edit_proxy_class, edit_proxy_any);
 // Methods to receive TCL/TK events
     class_addmethod(keyboard_class, (t_method)keyboard_mouserelease, gensym("_mouserelease"), 0);
     class_addmethod(keyboard_class, (t_method)keyboard_apply, gensym("apply"), A_GIMME, 0);

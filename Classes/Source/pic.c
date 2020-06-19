@@ -476,6 +476,7 @@ static void pic_free(t_pic *x){ // delete if variable is unset and image is unus
     pd_unbind(&x->x_obj.ob_pd, x->x_x);
     x->x_proxy->p_cnv = NULL;
     clock_delay(x->x_proxy->p_clock, 0);
+    gfxstub_deleteforkey(x);
 }
 
 static void *pic_new(t_symbol *s, int ac, t_atom *av){
