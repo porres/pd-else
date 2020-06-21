@@ -36,6 +36,7 @@ typedef struct _pic{
      int            x_outline;
      int            x_s_flag;
      int            x_r_flag;
+     int            x_flag;
      int            x_size;
      int            x_latch;
      t_symbol      *x_fullname;
@@ -117,14 +118,16 @@ static void pic_get_snd_rcv(t_pic* x){
     char buf[128];
     if(!x->x_snd_set){ // no send set, search arguments/flags
         if(n_args > 0){ // we have arguments, let's search them
-            if(x->x_s_flag){ // we got a search flag, let's get it
-                for(i = 0;  i < n_args; i++){
-                    atom_string(binbuf_getvec(bb) + i, buf, 80);
-                    if(gensym(buf) == gensym("-send")){
-                        i++;
+            if(x->x_flag){ // arguments are flags actually
+                if(x->x_s_flag){ // we got a search flag, let's get it
+                    for(i = 0;  i < n_args; i++){
                         atom_string(binbuf_getvec(bb) + i, buf, 80);
-                        x->x_snd_raw = gensym(buf);
-                        break;
+                        if(gensym(buf) == gensym("-send")){
+                            i++;
+                            atom_string(binbuf_getvec(bb) + i, buf, 80);
+                            x->x_snd_raw = gensym(buf);
+                            break;
+                        }
                     }
                 }
             }
@@ -141,26 +144,30 @@ static void pic_get_snd_rcv(t_pic* x){
         x->x_snd_raw = gensym("empty");
     if(!x->x_rcv_set){ // no receive set, search arguments
         if(n_args > 0){ // we have arguments, let's search them
-            if(x->x_r_flag){ // we got a receive flag, let's get it
-                for(i = 0;  i < n_args; i++){
-                    atom_string(binbuf_getvec(bb) + i, buf, 80);
-                    if(gensym(buf) == gensym("-receive")){
-                        i++;
+            if(x->x_flag){ // arguments are flags actually
+                if(x->x_r_flag){ // we got a receive flag, let's get it
+                    for(i = 0;  i < n_args; i++){
                         atom_string(binbuf_getvec(bb) + i, buf, 80);
-                        x->x_rcv_raw = gensym(buf);
-                        break;
+                        if(gensym(buf) == gensym("-receive")){
+                            i++;
+                            atom_string(binbuf_getvec(bb) + i, buf, 80);
+                            x->x_rcv_raw = gensym(buf);
+                            break;
+                        }
                     }
                 }
-            }
-            else{ // we got no flags, let's search for argument
-                int arg_n = 4; // receive argument number
-                if(n_args >= arg_n){ // we have it, get it
-                    atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
-                    x->x_rcv_raw = gensym(buf);
+                else{ // we got no flags, let's search for argument
+                    int arg_n = 4; // receive argument number
+                    if(n_args >= arg_n){ // we have it, get it
+                        atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
+                        x->x_rcv_raw = gensym(buf);
+                    }
                 }
             }
         }
     }
+    if(x->x_rcv_raw == &s_)
+        x->x_rcv_raw = gensym("empty");
 }
 
 // ------------------------ pic widgetbehaviour-------------------------------------------------------------------
@@ -536,21 +543,21 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
         if(av->a_type == A_SYMBOL){
             cursym = atom_getsymbolarg(0, ac, av);
             if(cursym == gensym("-outline")){ // no arg
-                x->x_outline = 1;
+                x->x_flag = x->x_outline = 1;
                 ac--, av++;
             }
             else if(cursym == gensym("-size")){ // no arg
-                x->x_size = 1;
+                x->x_flag = x->x_size = 1;
                 ac--, av++;
             }
             else if(cursym == gensym("-latch")){ // no arg
-                x->x_latch = 1;
+                x->x_flag = x->x_latch = 1;
                 ac--, av++;
             }
             else if(cursym == gensym("-send")){
                 if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
                     sym = atom_getsymbolarg(1, ac, av);
-                    x->x_s_flag = 1;
+                    x->x_flag = x->x_s_flag = 1;
                     if(sym != gensym("empty"))
                         x->x_send = sym;
                     ac-=2, av+=2;
@@ -560,7 +567,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
             else if(cursym == gensym("-receive")){
                 if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
                     sym = atom_getsymbolarg(1, ac, av);
-                    x->x_r_flag = 1;
+                    x->x_flag = x->x_r_flag = 1;
                     if(sym != gensym("empty"))
                         x->x_receive = sym;
                     ac-=2, av+=2;
@@ -569,6 +576,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
             }
             else if(cursym == gensym("-open")){
                 if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
+                    x->x_flag = 1;
                     sym = atom_getsymbolarg(1, ac, av);
                     if(sym != gensym("empty"))
                         x->x_filename = sym;

@@ -84,6 +84,64 @@ static void keyboard_note_off(t_keyboard* x, int note){
         pd_list(x->x_send->s_thing, &s_list, ac, at);
 }
 
+static void keyboard_get_snd_rcv(t_keyboard* x){
+    t_binbuf *bb = x->x_obj.te_binbuf;
+    int n_args = binbuf_getnatom(bb), i = 0; // number of arguments
+    char buf[128];
+    if(!x->x_snd_set){ // no send set, search arguments/flags
+        if(n_args > 0){ // we have arguments, let's search them
+            if(x->x_flag){ // arguments are flags actually
+                if(x->x_s_flag){ // we got a search flag, let's get it
+                    for(i = 0;  i < n_args; i++){
+                        atom_string(binbuf_getvec(bb) + i, buf, 80);
+                        if(gensym(buf) == gensym("-send")){
+                            i++;
+                            atom_string(binbuf_getvec(bb) + i, buf, 80);
+                            x->x_snd_raw = gensym(buf);
+                            break;
+                        }
+                    }
+                }
+            }
+            else{ // we got no flags, let's search for argument
+                int arg_n = 7; // receive argument number
+                if(n_args >= arg_n){ // we have it, get it
+                    atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
+                    x->x_snd_raw = gensym(buf);
+                }
+            }
+        }
+    }
+    if(x->x_snd_raw == &s_)
+        x->x_snd_raw = gensym("empty");
+    if(!x->x_rcv_set){ // no receive set, search arguments
+        if(n_args > 0){ // we have arguments, let's search them
+            if(x->x_flag){ // arguments are flags actually
+                if(x->x_r_flag){ // we got a receive flag, let's get it
+                    for(i = 0;  i < n_args; i++){
+                        atom_string(binbuf_getvec(bb) + i, buf, 80);
+                        if(gensym(buf) == gensym("-receive")){
+                            i++;
+                            atom_string(binbuf_getvec(bb) + i, buf, 80);
+                            x->x_rcv_raw = gensym(buf);
+                            break;
+                        }
+                    }
+                }
+            }
+            else{ // we got no flags, let's search for argument
+                int arg_n = 8; // receive argument number
+                if(n_args >= arg_n){ // we have it, get it
+                    atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
+                    x->x_rcv_raw = gensym(buf);
+                }
+            }
+        }
+    }
+    if(x->x_rcv_raw == &s_)
+        x->x_rcv_raw = gensym("empty");
+}
+
 // TOGGLE MODE
 static void keyboard_play_tgl(t_keyboard* x, int note){
     int i = note - x->x_first_c;
@@ -287,124 +345,6 @@ static void keyboard_vis(t_gobj *z, t_glist *glist, int vis){
         keyboard_erase(x, glist);
 }
 
-/* ------------------------ GUI Behaviour -----------------------------*/
-// Set Properties
-static void keyboard_set_properties(t_keyboard *x, float space,
-        float height, float oct, float low_c, float vel, float tgl){
-    x->x_space = (space < 7) ? 7 : space; // key width
-    x->x_height = (height < 10) ? 10 : height;
-    x->x_octaves = oct < 1 ? 1 : oct > 10 ? 10 : oct;
-    x->x_low_c = low_c < 0 ? 0 : low_c > 8 ? 8 : low_c;
-    x->x_norm = vel < 0 ? 0 : vel > 127 ? 127 : vel;
-    x->x_toggle_mode = (tgl != 0);
-    x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
-    x->x_first_c = ((int)(x->x_low_c * 12)) + 12;
-}
-
-// Keyboard Properties
-void keyboard_properties(t_gobj *z, t_glist *owner){
-    owner = NULL;
-    t_keyboard *x = (t_keyboard *)z;
-    char cmdbuf[256];
-    sprintf(cmdbuf, "keyboard_properties %%s %d %d %d %d %d %d\n",
-        (int)x->x_space,
-        (int)x->x_height,
-        (int)x->x_octaves,
-        (int)x->x_low_c,
-        (int)x->x_norm,
-        (int)x->x_toggle_mode);
-    gfxstub_new(&x->x_obj.ob_pd, x, cmdbuf);
-}
-
-// Save Properties
-static void keyboard_save(t_gobj *z, t_binbuf *b){
-    t_keyboard *x = (t_keyboard *)z;
-    t_binbuf *bb = x->x_obj.te_binbuf;
-    int n_args = binbuf_getnatom(bb), i = 0; // number of arguments
-    char buf[80];
-    if(!x->x_snd_set){ // no send set, search arguments/flags
-        if(n_args > 0){ // we have arguments, let's search them
-            if(x->x_flag){ // we got flags
-                if(x->x_s_flag){ // we got a search flag, let's get it
-                    for(i = 0;  i < n_args; i++){
-                        atom_string(binbuf_getvec(bb) + i, buf, 80);
-                        if(gensym(buf) == gensym("-send")){
-                            i++;
-                            atom_string(binbuf_getvec(bb) + i, buf, 80);
-                            x->x_snd_raw = gensym(buf);
-                            break;
-                        }
-                    }
-                }
-            }
-            else{ // we got no flags, let's search for argument
-                int arg_n = 7; // receive argument number
-                if(n_args >= arg_n){ // we have it, get it
-                    atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
-                    x->x_snd_raw = gensym(buf);
-                }
-            }
-        }
-    }
-    if(!x->x_rcv_set){ // no receive set, search arguments
-        if(n_args > 0){ // we have arguments, let's search them
-            if(x->x_flag){ // search for receive name in flags
-                if(x->x_r_flag){ // we got a receive flag, let's get it
-                    for(i = 0;  i < n_args; i++){
-                        atom_string(binbuf_getvec(bb) + i, buf, 80);
-                        if(gensym(buf) == gensym("-receive")){
-                            i++;
-                            atom_string(binbuf_getvec(bb) + i, buf, 80);
-                            x->x_rcv_raw = gensym(buf);
-                            break;
-                        }
-                    }
-                }
-            }
-            else{ // we got no flags, let's search for argument
-                int arg_n = 8; // receive argument number
-                if(n_args >= arg_n){ // we have it, get it
-                    atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
-                    x->x_rcv_raw = gensym(buf);
-                }
-            }
-        }
-    }
-    if(x->x_snd_raw == &s_)
-        x->x_snd_raw = gensym("empty");
-    if(x->x_rcv_raw == &s_)
-        x->x_rcv_raw = gensym("empty");
-    binbuf_addv(b,
-                "ssiisiiiiiiss",
-                gensym("#X"),
-                gensym("obj"),
-                (int)x->x_obj.te_xpix,
-                (int)x->x_obj.te_ypix,
-                atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
-                (int)x->x_space / x->x_zoom,
-                (int)x->x_height / x->x_zoom,
-                (int)x->x_octaves,
-                (int)x->x_low_c,
-                (int)x->x_toggle_mode,
-                (int)x->x_norm,
-                x->x_snd_raw,
-                x->x_rcv_raw);
-    binbuf_addv(b, ";");
-}
-
-// Apply changes of property windows
-static void keyboard_apply(t_keyboard *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    float w = atom_getfloatarg(0, ac, av);
-    float h = atom_getfloatarg(1, ac, av);
-    float oct = atom_getfloatarg(2, ac, av);
-    float low_c = atom_getfloatarg(3, ac, av);
-    float norm = atom_getfloatarg(4, ac, av);
-    float tgl = atom_getfloatarg(5, ac, av);
-    keyboard_set_properties(x, w, h, oct, low_c, norm, tgl);
-    keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
-}
-
 /* ------------------------- Methods ------------------------------*/
 void keyboard_float(t_keyboard *x, t_floatarg f){
     int note = (int)f;
@@ -594,6 +534,74 @@ static void keyboard_zoom(t_keyboard *x, t_floatarg zoom){
     keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
 }
 
+/* ------------------------ GUI Behaviour -----------------------------*/
+// Set Properties
+static void keyboard_set_properties(t_keyboard *x, float space, float height, float oct,
+        float low_c, float vel, float tgl){
+    x->x_space = (space < 7) ? 7 : space; // key width
+    x->x_height = (height < 10) ? 10 : height;
+    x->x_octaves = oct < 1 ? 1 : oct > 10 ? 10 : oct;
+    x->x_low_c = low_c < 0 ? 0 : low_c > 8 ? 8 : low_c;
+    x->x_norm = vel < 0 ? 0 : vel > 127 ? 127 : vel;
+    x->x_toggle_mode = (tgl != 0);
+    x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
+    x->x_first_c = ((int)(x->x_low_c * 12)) + 12;
+}
+
+// Keyboard Properties
+void keyboard_properties(t_gobj *z, t_glist *owner){
+    owner = NULL;
+    t_keyboard *x = (t_keyboard *)z;
+    keyboard_get_snd_rcv(x);
+    char cmdbuf[256];
+    sprintf(cmdbuf, "keyboard_properties %%s %d %d %d %d %d %d {%s} {%s}\n",
+        (int)x->x_space,
+        (int)x->x_height,
+        (int)x->x_octaves,
+        (int)x->x_low_c,
+        (int)x->x_norm,
+        (int)x->x_toggle_mode,
+        x->x_snd_raw->s_name,
+        x->x_rcv_raw->s_name);
+    gfxstub_new(&x->x_obj.ob_pd, x, cmdbuf);
+}
+
+// Save Properties
+static void keyboard_save(t_gobj *z, t_binbuf *b){
+    t_keyboard *x = (t_keyboard *)z;
+    keyboard_get_snd_rcv(x);
+    binbuf_addv(b,
+                "ssiisiiiiiiss",
+                gensym("#X"),
+                gensym("obj"),
+                (int)x->x_obj.te_xpix,
+                (int)x->x_obj.te_ypix,
+                atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
+                (int)x->x_space / x->x_zoom,
+                (int)x->x_height / x->x_zoom,
+                (int)x->x_octaves,
+                (int)x->x_low_c,
+                (int)x->x_toggle_mode,
+                (int)x->x_norm,
+                x->x_snd_raw,
+                x->x_rcv_raw);
+    binbuf_addv(b, ";");
+}
+
+// Apply changes of property windows
+static void keyboard_apply(t_keyboard *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    float w = atom_getfloatarg(0, ac, av);
+    float h = atom_getfloatarg(1, ac, av);
+    float oct = atom_getfloatarg(2, ac, av);
+    float low_c = atom_getfloatarg(3, ac, av);
+    float norm = atom_getfloatarg(4, ac, av);
+    float tgl = atom_getfloatarg(5, ac, av);
+    keyboard_send(x, atom_getsymbolarg(6, ac, av));
+    keyboard_receive(x, atom_getsymbolarg(7, ac, av));
+    keyboard_set_properties(x, w, h, oct, low_c, norm, tgl);
+    keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
+}
 /* ------------------------ Free / New / Setup ------------------------------*/
 // Free
 
@@ -828,6 +836,8 @@ void keyboard_setup(void){
     sys_vgui("    set var_low_c [concat var_low_c_$vid]\n");
     sys_vgui("    set var_norm [concat var_norm_$vid]\n");
     sys_vgui("    set var_tgl [concat var_tgl_$vid]\n");
+    sys_vgui("    set var_snd [concat var_snd_$vid]\n");
+    sys_vgui("    set var_rcv [concat var_rcv_$vid]\n");
     sys_vgui("\n");
     sys_vgui("    global $var_width\n");
     sys_vgui("    global $var_height\n");
@@ -835,6 +845,11 @@ void keyboard_setup(void){
     sys_vgui("    global $var_low_c\n");
     sys_vgui("    global $var_norm\n");
     sys_vgui("    global $var_tgl\n");
+    sys_vgui("    global $var_snd\n");
+    sys_vgui("    global $var_rcv\n");
+    sys_vgui("\n");
+    sys_vgui("    set hhhsnd [string map {\"$\" {\\$}} [unspace_text [eval concat $$var_snd]]]\n");
+    sys_vgui("    set hhhrcv [string map {\"$\" {\\$}} [unspace_text [eval concat $$var_rcv]]]\n");
     sys_vgui("\n");
     sys_vgui("    set cmd [concat $id apply \\\n");
     sys_vgui("        [eval concat $$var_width] \\\n");
@@ -842,11 +857,12 @@ void keyboard_setup(void){
     sys_vgui("        [eval concat $$var_octaves] \\\n");
     sys_vgui("        [eval concat $$var_low_c] \\\n");
     sys_vgui("        [eval concat $$var_norm] \\\n");
-    sys_vgui("        [eval concat $$var_tgl] \\;]\n");
+    sys_vgui("        [eval concat $$var_tgl] \\\n");
+    sys_vgui("        $hhhsnd \\\n");
+    sys_vgui("        $hhhrcv \\;]\n");
     sys_vgui("    pd $cmd\n");
     sys_vgui("}\n");
-    
-    sys_vgui("proc keyboard_properties {id width height octaves low_c norm tgl} {\n");
+    sys_vgui("proc keyboard_properties {id width height octaves low_c norm tgl snd rcv} {\n");
     sys_vgui("    set vid [string trimleft $id .]\n");
     sys_vgui("    set var_width [concat var_width_$vid]\n");
     sys_vgui("    set var_height [concat var_height_$vid]\n");
@@ -854,6 +870,8 @@ void keyboard_setup(void){
     sys_vgui("    set var_low_c [concat var_low_c_$vid]\n");
     sys_vgui("    set var_norm [concat var_norm_$vid]\n");
     sys_vgui("    set var_tgl [concat var_tgl_$vid]\n");
+    sys_vgui("    set var_snd [concat var_snd_$vid]\n");
+    sys_vgui("    set var_rcv [concat var_rcv_$vid]\n");
     sys_vgui("\n");
     sys_vgui("    global $var_width\n");
     sys_vgui("    global $var_height\n");
@@ -861,6 +879,8 @@ void keyboard_setup(void){
     sys_vgui("    global $var_low_c\n");
     sys_vgui("    global $var_norm\n");
     sys_vgui("    global $var_tgl\n");
+    sys_vgui("    global $var_snd\n");
+    sys_vgui("    global $var_rcv\n");
     sys_vgui("\n");
     sys_vgui("    set $var_width $width\n");
     sys_vgui("    set $var_height $height\n");
@@ -868,6 +888,8 @@ void keyboard_setup(void){
     sys_vgui("    set $var_low_c $low_c\n");
     sys_vgui("    set $var_norm $norm\n");
     sys_vgui("    set $var_tgl $tgl\n");
+    sys_vgui("    set $var_snd $snd\n");
+    sys_vgui("    set $var_rcv $rcv\n");
     sys_vgui("\n");
     sys_vgui("    toplevel $id\n");
     sys_vgui("    wm title $id {Keyboard}\n");
@@ -901,7 +923,15 @@ void keyboard_setup(void){
     sys_vgui("    checkbutton $id.mode.tgl -variable $var_tgl \n");
     sys_vgui("    pack $id.mode.lnorm $id.mode.norm $id.mode.ltgl $id.mode.tgl -side left\n");
     sys_vgui("\n");
-//
+// send / receive
+    sys_vgui("    frame $id.snd_rcv\n");
+    sys_vgui("    pack $id.snd_rcv -side top\n");
+    sys_vgui("    label $id.snd_rcv.lsnd -text \"Send symbol:\"\n");
+    sys_vgui("    entry $id.snd_rcv.snd -textvariable $var_snd -width 12\n");
+    sys_vgui("    label $id.snd_rcv.lrcv -text \"Receive symbol:\"\n");
+    sys_vgui("    entry $id.snd_rcv.rcv -textvariable $var_rcv -width 12\n");
+    sys_vgui("    pack $id.snd_rcv.lsnd $id.snd_rcv.snd $id.snd_rcv.lrcv $id.snd_rcv.rcv -side left\n");
+    sys_vgui("\n");
     sys_vgui("    frame $id.buttonframe\n");
     sys_vgui("    pack $id.buttonframe -side bottom -fill x -pady 2m\n");
     sys_vgui("    button $id.buttonframe.cancel -text {Cancel} -command \"keyboard_cancel $id\"\n");
