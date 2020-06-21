@@ -120,7 +120,7 @@ static void pic_get_snd_rcv(t_pic* x){
             if(x->x_s_flag){ // we got a search flag, let's get it
                 for(i = 0;  i < n_args; i++){
                     atom_string(binbuf_getvec(bb) + i, buf, 80);
-                    if(!strcmp(buf, "-send")){
+                    if(gensym(buf) == gensym("-send")){
                         i++;
                         atom_string(binbuf_getvec(bb) + i, buf, 80);
                         x->x_snd_raw = gensym(buf);
@@ -144,7 +144,7 @@ static void pic_get_snd_rcv(t_pic* x){
             if(x->x_r_flag){ // we got a receive flag, let's get it
                 for(i = 0;  i < n_args; i++){
                     atom_string(binbuf_getvec(bb) + i, buf, 80);
-                    if(!strcmp(buf, "-receive")){
+                    if(gensym(buf) == gensym("-receive")){
                         i++;
                         atom_string(binbuf_getvec(bb) + i, buf, 80);
                         x->x_rcv_raw = gensym(buf);
@@ -433,7 +433,7 @@ void pic_properties(t_gobj *z, t_glist *gl){
         x->x_filename = gensym("empty");
     pic_get_snd_rcv(x);
     char buffer[512];
-    sprintf(buffer, "pic_properties %%s %s %d %d %d {%s} {%s} \n",
+    sprintf(buffer, "pic_properties %%s {%s} %d %d %d {%s} {%s} \n",
         x->x_filename->s_name,
         x->x_outline,
         x->x_size,
