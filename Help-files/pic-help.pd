@@ -45,34 +45,34 @@
 #X text 213 445 - sets a send symbol, f 50;
 #X text 109 460 receive <symbol>;
 #X text 213 460 - sets a receive symbol, f 50;
-#N canvas 614 194 481 484 send 0;
-#X obj 317 290 else/display;
-#X obj 73 316 else/display;
-#X obj 317 256 r \$0-pic-snd;
-#X text 73 386 Note that when you set a receive or send symbol \, the
+#N canvas 614 194 494 501 send 0;
+#X obj 317 306 else/display;
+#X obj 73 332 else/display;
+#X obj 317 272 r \$0-pic-snd;
+#X text 73 402 Note that when you set a receive or send symbol \, the
 corresponding inlet/outlet does not get drawn when you're in edit mode.
 This is an indicative that the object has a send or receive symbol.
 , f 57;
-#X obj 73 170 else/pic 1 pdlogo.gif \$0-pic-snd \$0-pic-rcv 0;
-#X text 47 23 You can set send/receive names with the -send/-receive
+#X obj 73 186 else/pic 1 pdlogo.gif \$0-pic-snd empty 0;
+#X text 47 39 You can set send/receive names with the -send/-receive
 flags or the 'send'/'receive' messages - make sure to escape "\$0"
 properly with backslashes (as in: "\\\$0"). Setting these to 'empty'
 removes the send/receive symbols., f 67;
-#X text 210 228 <= click;
-#X obj 73 100 else/initmess send \\\$0-pic-snd \, receive \\\$0-pic-rcv
+#X text 210 244 <= click;
+#X obj 73 116 else/initmess send \\\$0-pic-snd \, receive \\\$0-pic-rcv
 ;
-#X obj 320 207 s \$0-pic-rcv;
-#X msg 320 178 latch \$1;
-#X obj 320 154 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 320 223 s \$0-pic-rcv;
+#X msg 320 194 latch \$1;
+#X obj 320 170 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
-#X msg 90 134 send empty \, receive empty;
+#X msg 90 150 send empty \, receive empty;
 #X connect 2 0 0 0;
 #X connect 4 0 1 0;
 #X connect 7 0 4 0;
 #X connect 9 0 8 0;
 #X connect 10 0 9 0;
 #X connect 11 0 4 0;
-#X restore 490 256 pd send \; receive;
+#X restore 481 225 pd send \; receive;
 #N canvas 662 128 675 552 examples 0;
 #N canvas 457 127 474 484 (subpatch) 0;
 #X msg 117 275 open green.gif;
@@ -159,20 +159,38 @@ images for each state., f 36;
 #X connect 0 0 1 0;
 #X connect 3 0 4 0;
 #X connect 10 0 11 0;
-#X restore 472 310 pd examples;
-#N canvas 823 287 400 363 more 0;
-#X text 105 128 default image =>;
-#X text 92 246 Now please get into and out of edit mode so you can
+#X restore 463 279 pd examples;
+#N canvas 616 241 776 349 more 0;
+#X text 67 109 default image =>;
+#X text 23 209 Now please get into and out of edit mode so you can
 see how the [pic] object creates an outline and inlet/outlet when you're
-in edit mode., f 35;
-#X obj 212 118 else/pic 0 empty empty empty 0;
-#X text 61 48 When you have an empty filename or an error opening a
+in edit mode., f 50;
+#X obj 174 99 else/pic 0 empty empty empty 0;
+#X text 14 30 When you have an empty filename or an error opening a
 file (via properties window \, flag or message) \, [pic] loads a default
-image of a question mark:, f 43;
-#X text 79 173 Note that once you have a loaded image \, setting the
-filename to "empty doesn't draw the question mark image back., f 39
+image of a question mark:, f 51;
+#X text 23 160 Note that once you have a loaded image \, setting the
+filename to "empty doesn't draw the question mark image back., f 50
 ;
-#X restore 496 202 pd more details;
+#X text 367 94 For instance \, below \, we have \$0 used in the send
+symbol. Using something like "\$1" is also possible and useful if you're
+using the object in an abstraction \, then you can load a value passed
+as an argument into a parameter., f 59;
+#X obj 397 301 else/display;
+#X obj 397 163 else/pic 0 pdlogo.gif \$0-snd empty 0;
+#X obj 567 192 r \$0-snd;
+#X obj 567 217 else/display;
+#X text 20 259 Note that when you set a receive or send symbol \, the
+corresponding inlet/outlet does not get drawn when you're in edit mode.
+This is an indicative that the object has a send or receive symbol.
+, f 52;
+#X text 367 27 Also note that all the parameters that you can set by
+inserting a symbol into a field in the properties window can also load
+dollar sign arguments (\$0 \, \$1 \, \$2 \, and so on). Namely \, these
+parameters are: name and send/receive symbols., f 59;
+#X connect 7 0 6 0;
+#X connect 8 0 9 0;
+#X restore 487 171 pd more details;
 #X f 7;
 #N canvas 835 231 468 365 outline 0;
 #X msg 181 155 outline \$1;
@@ -185,7 +203,7 @@ message \, the -outline flag or via properties window \, in which case
 a non zero value sets to outline mode.;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
-#X restore 478 234 pd outline;
+#X restore 469 203 pd outline;
 #X obj 229 197 else/pic 0 pdlogo.gif empty empty 0;
 #X obj 4 532 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
@@ -224,7 +242,7 @@ twice as big when the patch window gets zoomed in., f 52;
 #X connect 5 0 6 0;
 #X connect 6 0 3 0;
 #X connect 6 1 4 0;
-#X restore 496 331 pd zoom;
+#X restore 487 300 pd zoom;
 #X text 124 621 -size: sets to "report size" mode (default no report)
 , f 57;
 #X text 133 430 size <float>;
@@ -245,7 +263,7 @@ list of width and height.;
 #X connect 2 0 5 0;
 #X connect 3 0 4 0;
 #X connect 4 0 2 0;
-#X restore 496 289 pd size;
+#X restore 487 258 pd size;
 #X text 127 400 latch <float>;
 #X text 43 89 [pic] loads image pictures that you can interact with.
 It only works with file types: .gif \, .ppm & .pgm. you click on the
@@ -261,6 +279,9 @@ releasing (when in latch mode)., f 68;
 #X text 213 514 - pic width/height when in report size mode;
 #X text 124 636 -latch: sets to "latch" mode (default "bang" mode)
 , f 57;
+#N canvas 1077 244 447 314 loading-args 1;
+#X obj 165 224 else/pic 0 empty empty empty 0;
+#X restore 433 322 pd loading-args \; in properties;
 #X connect 19 0 33 0;
 #X connect 20 0 33 0;
 #X connect 33 0 21 0;
