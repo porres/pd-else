@@ -34,7 +34,6 @@ typedef struct _pic{
      int            x_def_img;
      int            x_sel;
      int            x_outline;
-     int            x_flag;
      int            x_s_flag;
      int            x_r_flag;
      int            x_size;
@@ -109,6 +108,58 @@ static void pic_mouserelease(t_pic* x){
         outlet_float(x->x_outlet, 0);
         if(x->x_send != &s_ && x->x_send->s_thing)
             pd_float(x->x_send->s_thing, 0);
+    }
+}
+
+static void pic_get_snd_rcv(t_pic* x){
+    t_binbuf *bb = x->x_obj.te_binbuf;
+    int n_args = binbuf_getnatom(bb), i = 0; // number of arguments
+    char buf[128];
+    if(!x->x_snd_set){ // no send set, search arguments/flags
+        if(n_args > 0){ // we have arguments, let's search them
+            if(x->x_s_flag){ // we got a search flag, let's get it
+                for(i = 0;  i < n_args; i++){
+                    atom_string(binbuf_getvec(bb) + i, buf, 80);
+                    if(!strcmp(buf, "-send")){
+                        i++;
+                        atom_string(binbuf_getvec(bb) + i, buf, 80);
+                        x->x_snd_raw = gensym(buf);
+                        break;
+                    }
+                }
+            }
+            else{ // we got no flags, let's search for argument
+                int arg_n = 3; // receive argument number
+                if(n_args >= arg_n){ // we have it, get it
+                    atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
+                    x->x_snd_raw = gensym(buf);
+                }
+            }
+        }
+    }
+    if(x->x_snd_raw == &s_)
+        x->x_snd_raw = gensym("empty");
+    if(!x->x_rcv_set){ // no receive set, search arguments
+        if(n_args > 0){ // we have arguments, let's search them
+            if(x->x_r_flag){ // we got a receive flag, let's get it
+                for(i = 0;  i < n_args; i++){
+                    atom_string(binbuf_getvec(bb) + i, buf, 80);
+                    if(!strcmp(buf, "-receive")){
+                        i++;
+                        atom_string(binbuf_getvec(bb) + i, buf, 80);
+                        x->x_rcv_raw = gensym(buf);
+                        break;
+                    }
+                }
+            }
+            else{ // we got no flags, let's search for argument
+                int arg_n = 4; // receive argument number
+                if(n_args >= arg_n){ // we have it, get it
+                    atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
+                    x->x_rcv_raw = gensym(buf);
+                }
+            }
+        }
     }
 }
 
@@ -204,63 +255,9 @@ static void pic_vis(t_gobj *z, t_glist *glist, int vis){
 
 static void pic_save(t_gobj *z, t_binbuf *b){
     t_pic *x = (t_pic *)z;
-    t_binbuf *bb = x->x_obj.te_binbuf;
-    int n_args = binbuf_getnatom(bb), i = 0; // number of arguments
-    char buf[80];
-    if(!x->x_snd_set){ // no send set, search arguments/flags
-        if(n_args > 0){ // we have arguments, let's search them
-            if(x->x_flag){ // we got flags
-                if(x->x_s_flag){ // we got a search flag, let's get it
-                    for(i = 0;  i < n_args; i++){
-                        atom_string(binbuf_getvec(bb) + i, buf, 80);
-                        if(!strcmp(buf, "-send")){
-                            i++;
-                            atom_string(binbuf_getvec(bb) + i, buf, 80);
-                            x->x_snd_raw = gensym(buf);
-                            break;
-                        }
-                    }
-                }
-            }
-            else{ // we got no flags, let's search for argument
-                int arg_n = 3; // receive argument number
-                if(n_args >= arg_n){ // we have it, get it
-                    atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
-                    x->x_snd_raw = gensym(buf);
-                }
-            }
-        }
-    }
-    if(!x->x_rcv_set){ // no receive set, search arguments
-        if(n_args > 0){ // we have arguments, let's search them
-            if(x->x_flag){ // search for receive name in flags
-                if(x->x_r_flag){ // we got a receive flag, let's get it
-                    for(i = 0;  i < n_args; i++){
-                        atom_string(binbuf_getvec(bb) + i, buf, 80);
-                        if(!strcmp(buf, "-receive")){
-                            i++;
-                            atom_string(binbuf_getvec(bb) + i, buf, 80);
-                            x->x_rcv_raw = gensym(buf);
-                            break;
-                        }
-                    }
-                }
-            }
-            else{ // we got no flags, let's search for argument
-                int arg_n = 4; // receive argument number
-                if(n_args >= arg_n){ // we have it, get it
-                    atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
-                    x->x_rcv_raw = gensym(buf);
-                }
-            }
-        }
-    }
     if(x->x_filename == &s_)
         x->x_filename = gensym("empty");
-    if(x->x_snd_raw == &s_)
-        x->x_snd_raw = gensym("empty");
-    if(x->x_rcv_raw == &s_)
-        x->x_rcv_raw = gensym("empty");
+    pic_get_snd_rcv(x);
     binbuf_addv(b, "ssiisisssi", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
         atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_outline, x->x_filename, x->x_snd_raw,
         x->x_rcv_raw, x->x_size);
@@ -321,7 +318,7 @@ void pic_open(t_pic* x, t_symbol *filename){
 
 static void pic_send(t_pic *x, t_symbol *s){
     if(s != gensym("")){
-        t_symbol *snd = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, s);
+        t_symbol *snd = (s == gensym("empty")) ? &s_ : canvas_realizedollar(x->x_glist, s);
         if(snd != x->x_send){
             x->x_snd_raw = s;
             x->x_send = snd;
@@ -432,15 +429,18 @@ static void pic_zoom(t_pic *x, t_floatarg zoom){
 void pic_properties(t_gobj *z, t_glist *gl){
     gl = NULL;
     t_pic *x = (t_pic *)z;
-    char buf[256];
-    sprintf(buf, "pic_properties %%s %s %d %d %d %s %s \n",
-        x->x_filename == &s_ ? gensym("empty")->s_name : x->x_filename->s_name,
+    if(x->x_filename ==  &s_)
+        x->x_filename = gensym("empty");
+    pic_get_snd_rcv(x);
+    char buffer[512];
+    sprintf(buffer, "pic_properties %%s %s %d %d %d {%s} {%s} \n",
+        x->x_filename->s_name,
         x->x_outline,
         x->x_size,
         x->x_latch,
-        x->x_send == &s_ ? gensym("empty")->s_name : x->x_send->s_name,
-        x->x_receive == &s_ ? gensym("empty")->s_name : x->x_receive->s_name);
-    gfxstub_new(&x->x_obj.ob_pd, x, buf);
+        x->x_snd_raw->s_name,
+        x->x_rcv_raw->s_name);
+    gfxstub_new(&x->x_obj.ob_pd, x, buffer);
 }
 
 static void pic_ok(t_pic *x, t_symbol *s, int ac, t_atom *av){
@@ -476,7 +476,6 @@ static void pic_free(t_pic *x){ // delete if variable is unset and image is unus
     pd_unbind(&x->x_obj.ob_pd, x->x_x);
     x->x_proxy->p_cnv = NULL;
     clock_delay(x->x_proxy->p_clock, 0);
-    gfxstub_deleteforkey(x);
 }
 
 static void *pic_new(t_symbol *s, int ac, t_atom *av){
@@ -494,7 +493,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
     x->x_edit = cv->gl_edit;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = x->x_filename = &s_;
     int loaded = x->x_rcv_set = x->x_snd_set = x->x_def_img = x->x_init = x->x_latch = 0;
-    x->x_outline = x->x_flag = x->x_size = 0;
+    x->x_outline = x->x_size = 0;
     x->x_fullname = NULL;
     if(ac && av->a_type == A_FLOAT){ // 1ST outline
         x->x_outline = (int)(av->a_w.w_float != 0);
@@ -537,21 +536,21 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
         if(av->a_type == A_SYMBOL){
             cursym = atom_getsymbolarg(0, ac, av);
             if(cursym == gensym("-outline")){ // no arg
-                x->x_outline = x->x_flag = 1;
+                x->x_outline = 1;
                 ac--, av++;
             }
             else if(cursym == gensym("-size")){ // no arg
-                x->x_size = x->x_flag = 1;
+                x->x_size = 1;
                 ac--, av++;
             }
             else if(cursym == gensym("-latch")){ // no arg
-                x->x_latch = x->x_flag = 1;
+                x->x_latch = 1;
                 ac--, av++;
             }
             else if(cursym == gensym("-send")){
                 if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
                     sym = atom_getsymbolarg(1, ac, av);
-                    x->x_flag = x->x_s_flag = 1;
+                    x->x_s_flag = 1;
                     if(sym != gensym("empty"))
                         x->x_send = sym;
                     ac-=2, av+=2;
@@ -561,7 +560,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
             else if(cursym == gensym("-receive")){
                 if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
                     sym = atom_getsymbolarg(1, ac, av);
-                    x->x_flag = x->x_r_flag = 1;
+                    x->x_r_flag = 1;
                     if(sym != gensym("empty"))
                         x->x_receive = sym;
                     ac-=2, av+=2;
@@ -571,7 +570,6 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
             else if(cursym == gensym("-open")){
                 if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
                     sym = atom_getsymbolarg(1, ac, av);
-                    x->x_flag = 1;
                     if(sym != gensym("empty"))
                         x->x_filename = sym;
                     ac-=2, av+=2;
@@ -597,10 +595,6 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
         x->x_width = x->x_height = 38;
         x->x_def_img = 1;
     }
-    x->x_snd_raw = x->x_send;
-    x->x_send = canvas_realizedollar(x->x_glist, x->x_send)
-    x->x_rcv_raw = x->x_receive;
-    x->x_receive = canvas_realizedollar(x->x_glist, x->x_receive)
     if(x->x_receive != &s_)
         pd_bind(&x->x_obj.ob_pd, x->x_receive);
     x->x_outlet = outlet_new(&x->x_obj, &s_bang);
@@ -619,7 +613,6 @@ void pic_setup(void){
     class_addmethod(pic_class, (t_method)pic_set, gensym("set"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_send, gensym("send"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_ok, gensym("ok"), A_GIMME, 0);
-//    class_addmethod(pic_class, (t_method)pic_ok, gensym("ok"), A_SYMBOL, A_FLOAT, A_FLOAT, A_FLOAT, A_SYMBOL, A_SYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_receive, gensym("receive"), A_DEFSYMBOL, 0);
     class_addmethod(pic_class, (t_method)pic_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(pic_class, (t_method)pic_size_callback, gensym("_picsize"), A_DEFFLOAT, A_DEFFLOAT, 0);
@@ -656,13 +649,16 @@ void pic_setup(void){
     sys_vgui("    global $var_snd\n");
     sys_vgui("    global $var_rcv\n");
     sys_vgui("\n");
+    sys_vgui("    set hhhsnd [string map {\"$\" {\\$}} [unspace_text [eval concat $$var_snd]]]\n");
+    sys_vgui("    set hhhrcv [string map {\"$\" {\\$}} [unspace_text [eval concat $$var_rcv]]]\n");
+    sys_vgui("\n");
     sys_vgui("    set cmd [concat $id ok \\\n");
     sys_vgui("        [eval concat $$var_name] \\\n");
     sys_vgui("        [eval concat $$var_outline] \\\n");
     sys_vgui("        [eval concat $$var_size] \\\n");
     sys_vgui("        [eval concat $$var_latch] \\\n");
-    sys_vgui("        [eval concat $$var_snd] \\\n");
-    sys_vgui("        [eval concat $$var_rcv] \\;]\n");
+    sys_vgui("        $hhhsnd \\\n");
+    sys_vgui("        $hhhrcv \\;]\n");
     sys_vgui("    pd $cmd\n");
     sys_vgui("    pic_cancel $id\n");
     sys_vgui("}\n");
