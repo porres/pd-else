@@ -1,4 +1,4 @@
-#N canvas 608 27 567 708 10;
+#N canvas 649 24 567 708 10;
 #X obj 5 336 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 534 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -57,12 +57,12 @@ generates them from mouse clicking. Right click it for properties!
 #X text 164 411 8ves <float>;
 #X text 256 411 - set number of octaves, f 42;
 #X text 164 425 lowc <float>;
-#N canvas 751 116 538 585 example 0;
-#X obj 66 132 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 66 221 makenote 100 1500;
-#X obj 66 162 metro 800;
-#X obj 273 356 catch~ \$0-voice;
+#N canvas 751 116 540 558 example 0;
+#X obj 67 98 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
+;
+#X obj 67 187 makenote 100 1500;
+#X obj 67 128 metro 800;
+#X obj 274 322 catch~ \$0-voice;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
@@ -98,7 +98,7 @@ generates them from mouse clicking. Right click it for properties!
 #X connect 11 1 2 0;
 #X connect 12 0 7 0;
 #X connect 14 0 8 0;
-#X restore 66 485 pd voice;
+#X restore 67 451 pd voice;
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
@@ -134,7 +134,7 @@ generates them from mouse clicking. Right click it for properties!
 #X connect 11 1 2 0;
 #X connect 12 0 7 0;
 #X connect 14 0 8 0;
-#X restore 87 461 pd voice;
+#X restore 88 427 pd voice;
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
@@ -170,7 +170,7 @@ generates them from mouse clicking. Right click it for properties!
 #X connect 11 1 2 0;
 #X connect 12 0 7 0;
 #X connect 14 0 8 0;
-#X restore 109 435 pd voice;
+#X restore 110 401 pd voice;
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
@@ -206,21 +206,18 @@ generates them from mouse clicking. Right click it for properties!
 #X connect 11 1 2 0;
 #X connect 12 0 7 0;
 #X connect 14 0 8 0;
-#X restore 131 411 pd voice;
-#X obj 379 495 clone;
-#X text 303 494 see also:;
-#X text 292 188 Try clicking and dragging \, it also works and slides
+#X restore 132 377 pd voice;
+#X obj 380 461 clone;
+#X text 304 460 see also:;
+#X text 293 154 Try clicking and dragging \, it also works and slides
 through chromatically!, f 26;
-#X obj 280 421 else/out~;
-#X obj 66 251 else/keyboard 19 80 3 2 0 0 empty empty;
-#X obj 66 187 else/rand.i 36 72;
-#X obj 66 377 else/voices 4 1;
-#X obj 66 342 else/display 7;
-#X obj 273 382 else/plate.rev~ 50 0.6 0.25 0.8 0.8, f 18;
-#X text 99 48 First \, please get into and out of edit mode so you
-can see how the [keyboard] object draws the two inlets and an outlet
-when you're in edit mode., f 52;
-#X text 203 103 In this example [keyboard] displays randomly generated
+#X obj 281 387 else/out~;
+#X obj 67 217 else/keyboard 19 80 3 2 0 0 empty empty;
+#X obj 67 153 else/rand.i 36 72;
+#X obj 67 343 else/voices 4 1;
+#X obj 67 308 else/display 7;
+#X obj 274 348 else/plate.rev~ 50 0.6 0.25 0.8 0.8, f 18;
+#X text 204 69 In this example [keyboard] displays randomly generated
 notes and driving 4 voices. Also see that each voice subpatch has [adsr~]'s
 status outlet to control the DSP status for that subpatch - open and
 check it. You should also try pd's [clone] object for managing polyphonic
@@ -777,28 +774,33 @@ the there's no normalization and velocity depends where you click.
 #X connect 13 0 12 0;
 #X connect 13 1 12 1;
 #X restore 467 282 pd normalize;
-#N canvas 849 143 531 511 send/receive 0;
-#X obj 59 291 else/keyboard 19 80 3 3 0 0 \$0-keyboard-snd \$0-keyboard-rcv
-;
-#X msg 71 264 send empty \, receive empty;
+#N canvas 752 109 519 566 send/receive 0;
 #X text 48 22 You can set send/receive names with the -send/-receive
 flags or the 'send'/'receive' messages - make sure to escape "\$0"
 properly with backslashes (as in: "\\\$0"). Setting these to 'empty'
 removes the send/receive symbols., f 67;
-#X text 209 391 Note that when you set a receive or send symbol \,
+#X obj 51 99 else/keyboard 19 80 3 3 0 0 empty empty;
+#X obj 54 353 else/keyboard 19 80 3 3 0 0 \$0-keyboard-snd \$0-keyboard-rcv
+;
+#X msg 66 326 send empty \, receive empty;
+#X text 204 453 Note that when you set a receive or send symbol \,
 the corresponding inlet/outlet does not get drawn when you're in edit
 mode. This is an indicative that the object has a send or receive symbol.
 , f 41;
-#X obj 51 99 else/keyboard 19 80 3 3 0 0 empty empty;
-#X obj 59 237 initmess send \\\$0-keyboard-snd \, receive \\\$0-keyboard-rcv
+#X obj 54 299 initmess send \\\$0-keyboard-snd \, receive \\\$0-keyboard-rcv
 ;
-#X obj 51 198 s \$0-keyboard-rcv;
-#X obj 63 402 r \$0-keyboard-snd;
-#X obj 63 431 else/display;
-#X connect 1 0 0 0;
-#X connect 4 0 6 0;
-#X connect 5 0 0 0;
+#X obj 51 225 s \$0-keyboard-rcv;
+#X obj 58 464 r \$0-keyboard-snd;
+#X obj 58 493 else/display;
+#X text 158 190 Note you can send a list to the keyboard object;
+#X obj 51 193 else/display;
+#X text 172 209 This way you don't need to use both inlets and just
+rely on the built in receive symbol, f 45;
+#X connect 1 0 10 0;
+#X connect 3 0 2 0;
+#X connect 5 0 2 0;
 #X connect 7 0 8 0;
+#X connect 10 0 6 0;
 #X restore 449 305 pd send/receive;
 #X text 158 481 send <symbol>;
 #X text 256 481 - sets send symbol, f 42;
@@ -814,6 +816,35 @@ symbol (default 'empty') | -receive <symbol>: sets receive symbol (default
 #X obj 4 569 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
 #X text 259 576 (none);
+#N canvas 846 100 573 577 more 0;
+#X text 108 358 For instance \, below \, we have \$0 used in the send
+symbol. Using something like "\$1" is also possible and useful if you're
+using the object in an abstraction \, then you can load a value passed
+as an argument into a parameter., f 59;
+#X obj 411 437 r \$0-snd;
+#X obj 411 462 else/display;
+#X text 83 234 Note that when you set a receive or send symbol \, the
+corresponding inlets/outlet does not get drawn when you're in edit
+mode. This is an indicative that the object has a send or receive symbol.
+, f 67;
+#X obj 130 429 else/keyboard 17 80 2 3 0 0 \$0-snd empty;
+#X text 84 284 Also note that all the parameters that you can set by
+inserting a symbol into a field in the properties window can also load
+dollar sign arguments (\$0 \, \$1 \, \$2 \, and so on). Namely \, these
+parameters are: key width \, height \, normalization \, and send/receive
+symbols., f 67;
+#X text 132 525 The bluish "C" note indicates it is C4 (Midi note "60")
+;
+#X obj 55 88 else/keyboard 17 80 4 3 0 0 empty empty;
+#X text 64 22 This is the default [keyboard] object. Please get into
+and out of edit mode so you can see how the [keyboard] object creates
+two inlets and an outlet when you're in edit mode. The bluish "C" note
+indicates it is C4 (Midi note "60")., f 75;
+#X obj 55 178 else/display;
+#X connect 1 0 2 0;
+#X connect 7 0 9 0;
+#X restore 499 173 pd more details;
+#X f 7;
 #X connect 9 0 53 0;
 #X connect 41 0 50 0;
 #X connect 52 0 54 0;
