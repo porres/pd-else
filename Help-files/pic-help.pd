@@ -1,4 +1,4 @@
-#N canvas 676 23 561 680 10;
+#N canvas 502 46 561 680 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -45,32 +45,33 @@
 #X text 213 445 - sets a send symbol, f 50;
 #X text 109 460 receive <symbol>;
 #X text 213 460 - sets a receive symbol, f 50;
-#N canvas 766 187 571 549 send 0;
-#X obj 355 346 else/display;
-#X obj 353 246 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 118 377 else/display;
-#X msg 135 195 send empty \, receive empty;
-#X obj 118 161 initmess send \\\$0-pic-snd \, receive \\\$0-pic-rcv
-;
-#X obj 355 312 r \$0-pic-snd;
-#X obj 353 269 s \$0-pic-rcv;
-#X text 118 447 Note that when you set a receive or send symbol \,
-the corresponding inlet/outlet does not get drawn when you're in edit
-mode. This is an indicative that the object has a send or receive symbol.
+#N canvas 614 194 481 484 send 0;
+#X obj 317 290 else/display;
+#X obj 73 316 else/display;
+#X obj 317 256 r \$0-pic-snd;
+#X text 73 386 Note that when you set a receive or send symbol \, the
+corresponding inlet/outlet does not get drawn when you're in edit mode.
+This is an indicative that the object has a send or receive symbol.
 , f 57;
-#X obj 118 231 else/pic 0 pdlogo.gif \$0-pic-snd \$0-pic-rcv 0;
-#X text 91 27 You can set send/receive names with the -send/-receive
+#X obj 73 170 else/pic 1 pdlogo.gif \$0-pic-snd \$0-pic-rcv 0;
+#X text 47 23 You can set send/receive names with the -send/-receive
 flags or the 'send'/'receive' messages - make sure to escape "\$0"
-properly with backlashes (as in: "\\\$0"). Setting these to 'empty'
+properly with backslashes (as in: "\\\$0"). Setting these to 'empty'
 removes the send/receive symbols., f 67;
-#X text 91 85 Note that when setting send and receive symbols via the
-properties \, you also need to escape woth backlashes., f 67;
-#X connect 1 0 6 0;
-#X connect 3 0 8 0;
-#X connect 4 0 8 0;
-#X connect 5 0 0 0;
-#X connect 8 0 2 0;
+#X text 210 228 <= click;
+#X obj 73 100 else/initmess send \\\$0-pic-snd \, receive \\\$0-pic-rcv
+;
+#X obj 320 207 s \$0-pic-rcv;
+#X msg 320 178 latch \$1;
+#X obj 320 154 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X msg 90 134 send empty \, receive empty;
+#X connect 2 0 0 0;
+#X connect 4 0 1 0;
+#X connect 7 0 4 0;
+#X connect 9 0 8 0;
+#X connect 10 0 9 0;
+#X connect 11 0 4 0;
 #X restore 490 256 pd send \; receive;
 #N canvas 662 128 675 552 examples 0;
 #N canvas 457 127 474 484 (subpatch) 0;
@@ -165,7 +166,7 @@ images for each state., f 36;
 see how the [pic] object creates an outline and inlet/outlet when you're
 in edit mode., f 35;
 #X obj 212 118 else/pic 0 empty empty empty 0;
-#X text 61 47 When you have an empty filename or an error opening a
+#X text 61 48 When you have an empty filename or an error opening a
 file (via properties window \, flag or message) \, [pic] loads a default
 image of a question mark:, f 43;
 #X text 79 173 Note that once you have a loaded image \, setting the
@@ -252,7 +253,7 @@ picture and it sends a bang (default) or 1 when clicking and 0 when
 releasing (when in latch mode)., f 68;
 #X text 146 209 click the image =====>, f 12;
 #X msg 168 168 latch \$1;
-#X obj 168 143 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 168 143 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X text 213 400 - non-zero sets to latch mode, f 50;
 #X text 175 499 float;
