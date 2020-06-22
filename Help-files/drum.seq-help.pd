@@ -77,7 +77,7 @@ width float bordercolor;
 #X obj 236 114 loadbang;
 #X msg 86 140 clear;
 #X msg 236 137 import 1 0 0 0 1 0 1 0 0 1 0 1 0 1 0 1 0 0 1 0 1 0 1
-0, f 31;
+0, f 27;
 #X obj 142 93 else/tempo 120;
 #X obj 142 185 drum.seq 3 8 20 0 0 0 0 0 0 0 0 0 0 0 0;
 #X obj 301 298 print drum.seq;
