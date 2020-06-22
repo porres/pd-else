@@ -362,9 +362,8 @@ void keyboard_float(t_keyboard *x, t_floatarg f){
         pd_list(x->x_send->s_thing, &s_list, ac, at);
     if(x->x_glist->gl_havewindow){
         t_canvas *cv =  glist_getcanvas(x->x_glist);
-        if(note > x->x_first_c && note < x->x_first_c + (x->x_octaves * 12)){
-            int i = note - x->x_first_c;
-            short key = i % 12;
+        if(note >= x->x_first_c && note < x->x_first_c + (x->x_octaves * 12)){
+            int i = note - x->x_first_c, key = i % 12;
             if(key == 1 || key == 3 || key == 6 || key == 8 || key == 10) // black
                 sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, on ? BLACK_ON : BLACK_OFF);
             else // white
@@ -848,9 +847,6 @@ void keyboard_setup(void){
     sys_vgui("    global $var_snd\n");
     sys_vgui("    global $var_rcv\n");
     sys_vgui("\n");
-    sys_vgui("    set hhhsnd [string map {\"$\" {\\$}} [unspace_text [eval concat $$var_snd]]]\n");
-    sys_vgui("    set hhhrcv [string map {\"$\" {\\$}} [unspace_text [eval concat $$var_rcv]]]\n");
-    sys_vgui("\n");
     sys_vgui("    set cmd [concat $id apply \\\n");
     sys_vgui("        [eval concat $$var_width] \\\n");
     sys_vgui("        [eval concat $$var_height] \\\n");
@@ -858,8 +854,8 @@ void keyboard_setup(void){
     sys_vgui("        [eval concat $$var_low_c] \\\n");
     sys_vgui("        [eval concat $$var_norm] \\\n");
     sys_vgui("        [eval concat $$var_tgl] \\\n");
-    sys_vgui("        $hhhsnd \\\n");
-    sys_vgui("        $hhhrcv \\;]\n");
+    sys_vgui("        [string map {\"$\" {\\$} \" \" {\\ } \";\" \"\" \",\" \"\" \"\\\\\" \"\" \"\\{\" \"\" \"\\}\" \"\"} [eval concat $$var_snd]] \\\n");
+    sys_vgui("        [string map {\"$\" {\\$} \" \" {\\ } \";\" \"\" \",\" \"\" \"\\\\\" \"\" \"\\{\" \"\" \"\\}\" \"\"} [eval concat $$var_rcv]] \\;]\n");
     sys_vgui("    pd $cmd\n");
     sys_vgui("}\n");
     sys_vgui("proc keyboard_properties {id width height octaves low_c norm tgl snd rcv} {\n");
@@ -888,8 +884,8 @@ void keyboard_setup(void){
     sys_vgui("    set $var_low_c $low_c\n");
     sys_vgui("    set $var_norm $norm\n");
     sys_vgui("    set $var_tgl $tgl\n");
-    sys_vgui("    set $var_snd $snd\n");
-    sys_vgui("    set $var_rcv $rcv\n");
+    sys_vgui("    set $var_snd [string map {{\\ } \" \"} $snd]\n"); // remove escape from space
+    sys_vgui("    set $var_rcv [string map {{\\ } \" \"} $rcv]\n"); // remove escape from space
     sys_vgui("\n");
     sys_vgui("    toplevel $id\n");
     sys_vgui("    wm title $id {Keyboard}\n");
