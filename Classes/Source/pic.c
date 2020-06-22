@@ -156,12 +156,12 @@ static void pic_get_snd_rcv(t_pic* x){
                         }
                     }
                 }
-                else{ // we got no flags, let's search for argument
-                    int arg_n = 4; // receive argument number
-                    if(n_args >= arg_n){ // we have it, get it
-                        atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
-                        x->x_rcv_raw = gensym(buf);
-                    }
+            }
+            else{ // we got no flags, let's search for argument
+                int arg_n = 4; // receive argument number
+                if(n_args >= arg_n){ // we have it, get it
+                    atom_string(binbuf_getvec(bb) + arg_n, buf, 80);
+                    x->x_rcv_raw = gensym(buf);
                 }
             }
         }
@@ -265,9 +265,9 @@ static void pic_save(t_gobj *z, t_binbuf *b){
     if(x->x_filename == &s_)
         x->x_filename = gensym("empty");
     pic_get_snd_rcv(x);
-    binbuf_addv(b, "ssiisisssi", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
+    binbuf_addv(b, "ssiisisssii", gensym("#X"), gensym("obj"), x->x_obj.te_xpix, x->x_obj.te_ypix,
         atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)), x->x_outline, x->x_filename, x->x_snd_raw,
-        x->x_rcv_raw, x->x_size);
+        x->x_rcv_raw, x->x_size, x->x_latch);
     binbuf_addv(b, ";");
 }
 
@@ -483,6 +483,7 @@ static void pic_free(t_pic *x){ // delete if variable is unset and image is unus
     pd_unbind(&x->x_obj.ob_pd, x->x_x);
     x->x_proxy->p_cnv = NULL;
     clock_delay(x->x_proxy->p_clock, 0);
+    gfxstub_deleteforkey(x);
 }
 
 static void *pic_new(t_symbol *s, int ac, t_atom *av){
@@ -502,6 +503,7 @@ static void *pic_new(t_symbol *s, int ac, t_atom *av){
     int loaded = x->x_rcv_set = x->x_snd_set = x->x_def_img = x->x_init = x->x_latch = 0;
     x->x_outline = x->x_size = 0;
     x->x_fullname = NULL;
+    
     if(ac && av->a_type == A_FLOAT){ // 1ST outline
         x->x_outline = (int)(av->a_w.w_float != 0);
         ac--; av++;
@@ -640,7 +642,6 @@ void pic_setup(void){
     sys_vgui("if {[catch {pd}]} {\n");
     sys_vgui("    proc pd {args} {pdsend [join $args \" \"]}\n");
     sys_vgui("}\n");
-    
     sys_vgui("proc pic_ok {id} {\n");
     sys_vgui("    set vid [string trimleft $id .]\n");
     sys_vgui("    set var_name [concat var_name_$vid]\n");
@@ -657,25 +658,20 @@ void pic_setup(void){
     sys_vgui("    global $var_snd\n");
     sys_vgui("    global $var_rcv\n");
     sys_vgui("\n");
-    sys_vgui("    set hhhsnd [string map {\"$\" {\\$}} [unspace_text [eval concat $$var_snd]]]\n");
-    sys_vgui("    set hhhrcv [string map {\"$\" {\\$}} [unspace_text [eval concat $$var_rcv]]]\n");
-    sys_vgui("\n");
     sys_vgui("    set cmd [concat $id ok \\\n");
-    sys_vgui("        [eval concat $$var_name] \\\n");
+    sys_vgui("        [string map {\" \" {\\ } \";\" \"\" \",\" \"\" \"\\\\\" \"\" \"\\{\" \"\" \"\\}\" \"\"} [eval concat $$var_name]] \\\n");
     sys_vgui("        [eval concat $$var_outline] \\\n");
     sys_vgui("        [eval concat $$var_size] \\\n");
     sys_vgui("        [eval concat $$var_latch] \\\n");
-    sys_vgui("        $hhhsnd \\\n");
-    sys_vgui("        $hhhrcv \\;]\n");
+    sys_vgui("        [string map {\"$\" {\\$} \" \" {\\ } \";\" \"\" \",\" \"\" \"\\\\\" \"\" \"\\{\" \"\" \"\\}\" \"\"} [eval concat $$var_snd]] \\\n");
+    sys_vgui("        [string map {\"$\" {\\$} \" \" {\\ } \";\" \"\" \",\" \"\" \"\\\\\" \"\" \"\\{\" \"\" \"\\}\" \"\"} [eval concat $$var_rcv]] \\;]\n");
     sys_vgui("    pd $cmd\n");
     sys_vgui("    pic_cancel $id\n");
     sys_vgui("}\n");
-
     sys_vgui("proc pic_cancel {id} {\n");
     sys_vgui("    set cmd [concat $id cancel \\;]\n");
     sys_vgui("    pd $cmd\n");
     sys_vgui("}\n");
-    
     sys_vgui("proc pic_properties {id name outline size latch snd rcv} {\n");
     sys_vgui("    set vid [string trimleft $id .]\n");
     sys_vgui("    set var_name [concat var_name_$vid]\n");
@@ -692,12 +688,12 @@ void pic_setup(void){
     sys_vgui("    global $var_snd\n");
     sys_vgui("    global $var_rcv\n");
     sys_vgui("\n");
-    sys_vgui("    set $var_name $name\n");
+    sys_vgui("    set $var_name [string map {{\\ } \" \"} $name]\n"); // remove escape from space
     sys_vgui("    set $var_outline $outline\n");
     sys_vgui("    set $var_size $size\n");
     sys_vgui("    set $var_latch $latch\n");
-    sys_vgui("    set $var_snd $snd\n");
-    sys_vgui("    set $var_rcv $rcv\n");
+    sys_vgui("    set $var_snd [string map {{\\ } \" \"} $snd]\n"); // remove escape from space
+    sys_vgui("    set $var_rcv [string map {{\\ } \" \"} $rcv]\n"); // remove escape from space
     sys_vgui("\n");
     sys_vgui("    toplevel $id\n");
     sys_vgui("    wm title $id {[pic] Properties}\n");
