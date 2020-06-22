@@ -40,6 +40,7 @@ static void routeall_symbol(t_routeall *x, t_symbol *s){
 }
 
 static void routeall_list(t_routeall *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_int n;
     t_symbol *arg;
     if(ac == 0){
@@ -77,17 +78,12 @@ static void routeall_anything(t_routeall *x, t_symbol *s, int ac, t_atom *av){
                 return;
             }
         }
-        else{
-            if(x->x_av[n].a_w.w_float == atom_getfloat(av)){
-                outlet_anything(x->x_outs[n], s, ac, av);
-                return;
-            }
-        }
     }
     outlet_anything(x->x_out_unmatch, s, ac, av);
 }
 
 static void *routeall_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_routeall *x = (t_routeall *)pd_new(routeall_class);
     t_outlet **outs;
     if(!argc){
