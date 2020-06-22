@@ -1,4 +1,4 @@
-#N canvas 649 24 567 708 10;
+#N canvas 505 23 567 708 10;
 #X obj 5 336 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 534 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -774,7 +774,7 @@ the there's no normalization and velocity depends where you click.
 #X connect 13 0 12 0;
 #X connect 13 1 12 1;
 #X restore 467 282 pd normalize;
-#N canvas 752 109 519 566 send/receive 0;
+#N canvas 645 30 517 652 send/receive 0;
 #X text 48 22 You can set send/receive names with the -send/-receive
 flags or the 'send'/'receive' messages - make sure to escape "\$0"
 properly with backslashes (as in: "\\\$0"). Setting these to 'empty'
@@ -796,6 +796,11 @@ mode. This is an indicative that the object has a send or receive symbol.
 #X obj 51 193 else/display;
 #X text 172 209 This way you don't need to use both inlets and just
 rely on the built in receive symbol, f 45;
+#X text 50 550 Note that inside the properties window you don't need
+to escape the special characters of "$" and also spaces \, both of
+which are allowed. Also note that other special characters are not
+allowed \, such as braces \, backslashes \, commas and semicolons.
+, f 69;
 #X connect 1 0 10 0;
 #X connect 3 0 2 0;
 #X connect 5 0 2 0;
