@@ -1,13 +1,13 @@
-#N canvas 483 242 561 424 10;
+#N canvas 695 76 562 449 10;
 #X obj 4 297 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 330 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 356 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 365 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 391 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 116 339 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 116 365 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 398 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 424 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 2 cnv 15 301 42 empty empty any2symbol 20 20 2 37 -233017
 -1 0;
@@ -37,9 +37,8 @@
 ;
 #X obj 219 208 else/any2symbol;
 #X text 141 308 anything;
-#X text 154 339 symbol;
-#X text 208 339 - the converted symbol message;
-#X text 152 374 (none);
+#X text 154 365 symbol;
+#X text 208 365 - the converted symbol message;
 #X text 208 308 - any message to be converted to a symbol;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
@@ -54,10 +53,41 @@
 #X msg 210 119 list a b c;
 #X symbolatom 219 269 10 0 0 0 - - -;
 #X msg 298 170 hi there;
-#X connect 18 0 30 0;
+#X text 148 400 1) symbol - separator (default space);
+#N canvas 781 110 488 398 separator 0;
+#X msg 124 158 1 2 3 4;
+#X obj 113 279 else/display;
+#X msg 104 133 list a b c;
+#X symbolatom 113 323 10 0 0 0 - - -;
+#X msg 138 183 hi there;
+#X msg 213 137 \ ;
+#X msg 224 187 \\\,;
+#X msg 240 216 -;
+#X text 243 137 <= this s a space escaped with a backslash., f 17
+;
+#X text 251 186 <= a comma.;
+#X obj 113 242 else/any2symbol -;
+#X text 34 39 When you join lists into a symbol \, you can set a new
+"separator" character instead of a space (default). The argument sets
+a new separator and you can also do it via the second inlet. It accepts
+any message type and considers only the first character., f 66;
+#X connect 0 0 10 0;
+#X connect 1 0 3 0;
+#X connect 2 0 10 0;
+#X connect 4 0 10 0;
+#X connect 5 0 10 1;
+#X connect 6 0 10 1;
+#X connect 7 0 10 1;
+#X connect 10 0 1 0;
+#X restore 444 259 pd separator;
+#X obj 116 329 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 141 330 anything;
+#X text 208 330 - a new separator;
+#X connect 18 0 29 0;
+#X connect 26 0 18 0;
 #X connect 27 0 18 0;
 #X connect 28 0 18 0;
-#X connect 29 0 18 0;
-#X connect 30 0 32 0;
-#X connect 31 0 18 0;
-#X connect 33 0 18 0;
+#X connect 29 0 31 0;
+#X connect 30 0 18 0;
+#X connect 32 0 18 0;
