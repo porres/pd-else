@@ -17,6 +17,7 @@
 
   
 
+
    This work is free. You can redistribute it and/or modify it under the
    terms of the Do What The Fuck You Want To Public License, Version 2,
    as published by Sam Hocevar. See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
@@ -108,7 +109,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (371 objects):
+## Current Object list (369 objects):
 
 **ASSORTED: [04]**
 - [table~]
@@ -140,11 +141,9 @@ Cross compiling is also possible with something like this
 - [canvas.zoom]
 - [loadbanger] / [lb]
 
-**MESSAGE MANAGEMENT: [21]**
+**MESSAGE MANAGEMENT: [19]**
 - [format]
 - [separate] 
-- [fromany] 
-- [toany] 
 - [any2symbol]
 - [changed]
 - [hot]
