@@ -1,4 +1,4 @@
-#N canvas 583 51 561 680 10;
+#N canvas 620 51 561 680 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -207,7 +207,7 @@ a non zero value sets to outline mode.;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X restore 469 229 pd outline;
-#X obj 229 197 else/pic 0 pd\ logo.gif empty empty 0 0;
+#X obj 229 197 else/pic 0 pdlogo.gif empty empty 0 0;
 #X obj 4 532 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
 #X text 259 539 (none);
@@ -231,18 +231,18 @@ a non zero value sets to outline mode.;
 #X text 17 12 When in zoom mode \, [pic] cannot zoom into the loaded
 image. A possible workaround is to use [canvas.zoom] and load an image
 twice as big when the patch window gets zoomed in., f 52;
-#X obj 33 195 else/pic 0 pd\ logo.gif empty empty 0 0;
+#X obj 33 195 else/pic 0 pdlogo.gif empty empty 0 0;
 #X obj 33 102 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 33 124 select 0 1, f 40;
 #X obj 33 334 else/display;
-#X msg 151 152 set pd\ logo-big.gif;
-#X msg 33 152 set pd\ logo.gif;
+#X msg 33 152 set pdlogo.gif;
+#X msg 151 152 set pdlogo-big.gif;
 #X connect 0 0 3 0;
 #X connect 2 0 5 0;
 #X connect 3 0 4 0;
-#X connect 4 0 7 0;
-#X connect 4 1 6 0;
+#X connect 4 0 6 0;
+#X connect 4 1 7 0;
 #X connect 6 0 2 0;
 #X connect 7 0 2 0;
 #X restore 487 330 pd zoom;
@@ -282,30 +282,30 @@ releasing (when in latch mode)., f 68;
 #X text 213 514 - pic width/height when in report size mode;
 #X text 124 636 -latch: sets to "latch" mode (default "bang" mode)
 , f 57;
-#X msg 229 144 open tk\ logo.gif;
-#X msg 252 170 open pd\ logo.gif;
 #N canvas 835 231 478 475 open/set 0;
-#X obj 153 397 else/display;
-#X obj 153 259 else/pic 0 tk\ logo.gif empty empty 0 0;
-#X msg 153 206 open tk\ logo.gif;
-#X msg 176 232 set pd\ logo.gif;
+#X obj 153 414 else/display;
+#X obj 153 276 else/pic 0 tklogo.gif empty empty 0 0;
 #X text 62 32 The open and set messages are basically the same \, but
 opening a file will make pd ask you if you want to save changes when
 you close the patch. Since this can be an undesired annoyance \, you
 can use the 'set' message instead.;
-#X text 62 84 Note you can use backslash to escape spaces in a message.
-You can also open an image by typing a new file name into the properties
-window., f 59;
-#X text 62 124 Nonetheless \, inside the properties window you don't
+#X text 62 141 Nonetheless \, inside the properties window you don't
 need to escape spaces with backslashes. Also note that other special
 characters are not allowed in the properties window \, such as braces
 \, backslashes \, commas and semicolons., f 59;
+#X msg 153 223 open tklogo.gif;
+#X msg 176 249 set pdlogo.gif;
+#X text 61 84 Note you can use backslash to escape spaces in a message
+so you can open file names that contain spaces. You can also open an
+image by typing a new file name into the properties window.;
 #X connect 1 0 0 0;
-#X connect 2 0 1 0;
-#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
 #X restore 463 206 pd open/set;
+#X msg 229 145 open tklogo.gif;
+#X msg 252 170 open pdlogo.gif;
 #X connect 31 0 19 0;
 #X connect 52 0 31 0;
 #X connect 53 0 52 0;
-#X connect 59 0 31 0;
 #X connect 60 0 31 0;
+#X connect 61 0 31 0;

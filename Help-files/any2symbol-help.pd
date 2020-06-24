@@ -54,36 +54,41 @@
 #X symbolatom 219 269 10 0 0 0 - - -;
 #X msg 298 170 hi there;
 #X text 148 400 1) symbol - separator (default space);
-#N canvas 781 110 488 398 separator 0;
-#X msg 124 158 1 2 3 4;
-#X obj 113 279 else/display;
-#X msg 104 133 list a b c;
-#X symbolatom 113 323 10 0 0 0 - - -;
-#X msg 138 183 hi there;
-#X msg 213 137 \ ;
-#X msg 224 187 \\\,;
-#X msg 240 216 -;
-#X text 243 137 <= this s a space escaped with a backslash., f 17
+#N canvas 781 110 471 388 separator 0;
+#X msg 128 173 1 2 3 4;
+#X msg 108 148 list a b c;
+#X symbolatom 117 328 10 0 0 0 - - -;
+#X msg 142 198 hi there;
+#X msg 209 128 \ ;
+#X msg 263 210 \\\,;
+#X msg 276 240 -;
+#X text 239 128 <= this s a space escaped with a backslash., f 17
 ;
-#X text 251 186 <= a comma.;
-#X obj 113 242 else/any2symbol -;
-#X text 34 39 When you join lists into a symbol \, you can set a new
+#X text 290 209 <= a comma.;
+#X text 31 34 When you join lists into a symbol \, you can set a new
 "separator" character instead of a space (default). The argument sets
 a new separator and you can also do it via the second inlet. It accepts
 any message type and considers only the first character., f 66;
-#X connect 0 0 10 0;
-#X connect 1 0 3 0;
-#X connect 2 0 10 0;
-#X connect 4 0 10 0;
-#X connect 5 0 10 1;
-#X connect 6 0 10 1;
-#X connect 7 0 10 1;
-#X connect 10 0 1 0;
-#X restore 444 259 pd separator;
+#X msg 313 240 /;
+#X obj 117 277 else/any2symbol \\\\, f 25;
+#X msg 245 179 \\\\;
+#X text 273 178 <= a backslash;
+#X connect 0 0 11 0;
+#X connect 1 0 11 0;
+#X connect 3 0 11 0;
+#X connect 4 0 11 1;
+#X connect 5 0 11 1;
+#X connect 6 0 11 1;
+#X connect 10 0 11 1;
+#X connect 11 0 2 0;
+#X connect 12 0 11 1;
+#X restore 457 228 pd separator;
 #X obj 116 329 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 141 330 anything;
 #X text 208 330 - a new separator;
+#X text 380 262 see also:;
+#X obj 452 263 else/separate;
 #X connect 18 0 29 0;
 #X connect 26 0 18 0;
 #X connect 27 0 18 0;
