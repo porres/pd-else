@@ -38,28 +38,28 @@ void print_else_obj(t_else_obj *x){
     int major = 0, minor = 0, bugfix = 0;
     sys_getversion(&major, &minor, &bugfix);
     post("");
-    post("--------------------------------------------------------------------------------------");
-    post("     ~~~~~~~~~~|| ELSE - EL Locus Solus' Externals for Pure Data ||~~~~~~~~~~");
-    post("--------------------------------------------------------------------------------------");
-    post("Version: 1.0-0 %s-%d; Released june 11th 2020", STATUS, status_number);
-    post("Author: Alexandre Torres Porres");
-    post("Repositoty: https://github.com/porres/pd-else");
-    post("License: Do What The Fuck You Want To Public License, unless otherwise noted");
+    post("------------------------------------------------------------------------------------------");
+    post("        ~~~~~~~~~~|| ELSE - EL Locus Solus' Externals for Pure Data ||~~~~~~~~~~");
+    post("------------------------------------------------------------------------------------------");
+    post("- Version: 1.0-0 %s-%d; Released june 11th 2020", STATUS, status_number);
+    post("- Author: Alexandre Torres Porres");
+    post("- Repositoty: https://github.com/porres/pd-else");
+    post("- License: Do What The Fuck You Want To Public License, unless otherwise noted");
     if(min_major >= major && min_minor >= minor && min_bugfix >= bugfix)
-        post("ELSE 1.0.-0 %s-%d needs at least Pd %d.%d-%d (you have %d.%d-%d, you're good!)",
+        post("- ELSE 1.0.-0 %s-%d needs at least Pd %d.%d-%d (you have %d.%d-%d, you're good!)",
              STATUS, status_number, min_major, min_minor, min_bugfix, major, minor, bugfix);
     else
-        pd_error(x, "ELSE 1.0-0 %s-%d needs at least Pd %d.%d-%d (you have %d.%d-%d, please upgrade!)",
+        pd_error(x, "- ELSE 1.0-0 %s-%d needs at least Pd %d.%d-%d (you have %d.%d-%d, please upgrade!)",
             STATUS, status_number, min_major, min_minor, min_bugfix, major, minor, bugfix);
-    post("Loading the ELSE library added %s", else_obj_dir);
+    post("- Loading the ELSE library added %s", else_obj_dir);
     post("to Pd's path so its objects can be loaded");
-    post("--------------------------------------------------------------------------------------");
-    post("NOTE: This library also includes a tutorial by Alexandre Torres Porres that depends on");
+    post("------------------------------------------------------------------------------------------");
+    post("- NOTE: This library also includes a tutorial by Alexandre Torres Porres that depends on");
     post("this library. Find the 'live-electronics-folder' folder inside the 'else' folder.");
     post("Please check its README on how to install it");
-    post("--------------------------------------------------------------------------------------");
-    post("     ~~~~~~~~~~|| ELSE - EL Locus Solus' Externals for Pure Data ||~~~~~~~~~~");
-    post("--------------------------------------------------------------------------------------");
+    post("------------------------------------------------------------------------------------------");
+    post("        ~~~~~~~~~~|| ELSE - EL Locus Solus' Externals for Pure Data ||~~~~~~~~~~");
+    post("------------------------------------------------------------------------------------------");
     post("");
 }
 
