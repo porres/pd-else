@@ -327,14 +327,16 @@ static void pic_send(t_pic *x, t_symbol *s){
     if(s != gensym("")){
         t_symbol *snd = (s == gensym("empty")) ? &s_ : canvas_realizedollar(x->x_glist, s);
         if(snd != x->x_send){
+            canvas_dirty(x->x_glist, 1);
             x->x_snd_raw = s;
             x->x_send = snd;
             x->x_snd_set = 1;
-            canvas_dirty(x->x_glist, 1);
-            t_canvas *cv = glist_getcanvas(x->x_glist);
-            sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
-            if(x->x_send == &s_ && x->x_edit)
-                pic_draw_io_let(x);
+            if(x->x_edit && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+                if(x->x_send == &s_)
+                    pic_draw_io_let(x);
+                else
+                    sys_vgui(".x%lx.c delete %lx_out\n", glist_getcanvas(x->x_glist), x);
+            }
         }
     }
 }
@@ -349,14 +351,15 @@ static void pic_receive(t_pic *x, t_symbol *s){
             x->x_rcv_set = 1;
             x->x_rcv_raw = s;
             x->x_receive = rcv;
-            t_canvas *cv = glist_getcanvas(x->x_glist); // <= BUG????????????
-            sys_vgui(".x%lx.c delete %lx_in\n", cv, x); // <= BUG????????????
             if(x->x_receive == &s_){
-                if(x->x_edit)
+                if(x->x_edit && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
                     pic_draw_io_let(x);
             }
-            else
+            else{
                 pd_bind(&x->x_obj.ob_pd, x->x_receive);
+                if(x->x_edit && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+                    sys_vgui(".x%lx.c delete %lx_in\n", glist_getcanvas(x->x_glist), x);
+            }
         }
     }
 }
@@ -366,16 +369,19 @@ static void pic_outline(t_pic *x, t_float f){
     if(x->x_outline != outline){
         x->x_outline = outline;
         canvas_dirty(x->x_glist, 1);
-        t_canvas *cv = glist_getcanvas(x->x_glist);
-        if(x->x_outline){
-            int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-            if(x->x_sel) sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline blue -width %d\n",
-                cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
-            else sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
-                cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+            t_canvas *cv = glist_getcanvas(x->x_glist);
+            if(x->x_outline){
+                int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
+                if(x->x_sel) sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline blue -width %d\n",
+                    cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
+                else sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
+                    cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
+            }
+            else if(!x->x_edit)
+                sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
+
         }
-        else if(!x->x_edit)
-            sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
     }
 }
 

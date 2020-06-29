@@ -443,10 +443,12 @@ static void keyboard_send(t_keyboard *x, t_symbol *s){
             x->x_send = snd;
             x->x_snd_set = 1;
             canvas_dirty(x->x_glist, 1);
-            t_canvas *cv = glist_getcanvas(x->x_glist);
-            sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
-            if(x->x_send == &s_ && x->x_edit)
-                keyboard_draw_io_let(x);
+            if(x->x_edit && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+                if(x->x_send == &s_)
+                    keyboard_draw_io_let(x);
+                else
+                    sys_vgui(".x%lx.c delete %lx_out\n", glist_getcanvas(x->x_glist), x);
+            }
         }
     }
 }
@@ -462,15 +464,17 @@ static void keyboard_receive(t_keyboard *x, t_symbol *s){
             x->x_rcv_set = 1;
             x->x_rcv_raw = s;
             x->x_receive = rcv;
-            if(x->x_receive != &s_){
-                t_canvas *cv = glist_getcanvas(x->x_glist);
-                sys_vgui(".x%lx.c delete %lx_in1\n", cv, x);
-                sys_vgui(".x%lx.c delete %lx_in2\n", cv, x);
-                pd_bind(&x->x_obj.ob_pd, x->x_receive);
+            if(x->x_receive == &s_){
+                if(x->x_edit && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+                    keyboard_draw_io_let(x);
             }
             else{
-                if(x->x_edit)
-                    keyboard_draw_io_let(x);
+                pd_bind(&x->x_obj.ob_pd, x->x_receive);
+                if(x->x_edit && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+                    t_canvas *cv = glist_getcanvas(x->x_glist);
+                    sys_vgui(".x%lx.c delete %lx_in1\n", cv, x);
+                    sys_vgui(".x%lx.c delete %lx_in2\n", cv, x);
+                }
             }
         }
     }
