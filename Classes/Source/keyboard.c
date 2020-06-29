@@ -377,7 +377,7 @@ static void keyboard_height(t_keyboard *x, t_floatarg f){
     if(x->x_height != f){
         canvas_dirty(x->x_glist, 1);
         x->x_height = f;
-        if(glist_isvisible(x->x_glist))
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
         }
 }
@@ -388,7 +388,7 @@ static void keyboard_width(t_keyboard *x, t_floatarg f){
         canvas_dirty(x->x_glist, 1);
         x->x_space = f;
         x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
-        if(glist_isvisible(x->x_glist))
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
     }
 }
@@ -399,7 +399,7 @@ static void keyboard_8ves(t_keyboard *x, t_floatarg f){
         canvas_dirty(x->x_glist, 1);
         x->x_octaves = f;
         x->x_width = x->x_space * 7 * x->x_octaves;
-        if(glist_isvisible(x->x_glist))
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
     }
 }
@@ -409,7 +409,7 @@ static void keyboard_low_c(t_keyboard *x, t_floatarg f){
     if(x->x_low_c != f){
         canvas_dirty(x->x_glist, 1);
         x->x_first_c = ((int)((x->x_low_c = f) * 12)) + 12;
-        if(glist_isvisible(x->x_glist))
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
     }
 }
@@ -523,7 +523,7 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
 }
 
 static void keyboard_zoom(t_keyboard *x, t_floatarg zoom){
-    if(!glist_isvisible(x->x_glist))
+    if(!glist_isvisible(x->x_glist) || !gobj_shouldvis((t_gobj *)x, x->x_glist))
         return;
     float mul = zoom == 1.0 ? 0.5 : 2.0;
     x->x_space = (int)((float)x->x_space * mul);

@@ -83,7 +83,7 @@ static const char* pic_filepath(t_pic *x, const char *filename){
 static void pic_size_callback(t_pic *x, t_float w, t_float h){
     x->x_width = w;
     x->x_height = h;
-    if(glist_isvisible(x->x_glist)){
+    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
         if(x->x_edit || x->x_outline){
             t_canvas *cv = glist_getcanvas(x->x_glist);
@@ -284,7 +284,7 @@ void pic_set(t_pic* x, t_symbol *filename){
                 x->x_fullname = gensym(file_name_open);
                 sys_vgui("if { [info exists %lx_picname] == 0 } { image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n} \n",
                     x->x_fullname, x->x_fullname, file_name_open, x->x_fullname);
-                if(glist_isvisible(x->x_glist))
+                if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
                     sys_vgui(".x%lx.c itemconfigure %lx_picture -image %lx_picname\n", cv, x, x->x_fullname);
                 sys_vgui("pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"\n",
                          x->x_x->s_name, x->x_fullname, x->x_fullname);
@@ -309,7 +309,7 @@ void pic_open(t_pic* x, t_symbol *filename){
                 x->x_fullname = gensym(file_name_open);
                 sys_vgui("if { [info exists %lx_picname] == 0 } { image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n} \n",
                     x->x_fullname, x->x_fullname, file_name_open, x->x_fullname);
-                if(glist_isvisible(x->x_glist))
+                if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
                     sys_vgui(".x%lx.c itemconfigure %lx_picture -image %lx_picname\n", cv, x, x->x_fullname);
                 sys_vgui("pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"\n",
                          x->x_x->s_name, x->x_fullname, x->x_fullname);

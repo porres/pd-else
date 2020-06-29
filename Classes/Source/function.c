@@ -192,6 +192,7 @@ static void function_delete(t_gobj *z, t_glist *glist){
 }
 
 static void function_vis(t_gobj *z, t_glist *glist, int vis){
+    post("vis = %d", vis);
     vis ? function_draw((t_function*)z, glist) : function_erase((t_function*)z, glist);
 }
 
@@ -546,7 +547,7 @@ static void function_set(t_function *x, t_symbol* s, int ac,t_atom *av){
     canvas_dirty(x->x_glist, 1);
     if(ac > 2 && ac % 2){
         function_set_beeakpoints(x, ac, av);
-        if(glist_isvisible(x->x_glist))
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             function_update(x, x->x_glist);
     }
     else if(ac == 2){ // set a single point value
@@ -562,7 +563,7 @@ static void function_set(t_function *x, t_symbol* s, int ac,t_atom *av){
             x->x_min_point = x->x_min = v;
         if(v > x->x_max_point)
             x->x_max_point = x->x_max = v;
-        if(glist_isvisible(x->x_glist))
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             function_update(x, x->x_glist);
     }
     else
@@ -577,7 +578,7 @@ static void function_list(t_function *x, t_symbol* s, int ac,t_atom *av){
     s = NULL;
     if(ac > 2 && ac % 2){
         function_set_beeakpoints(x, ac, av);
-        if(glist_isvisible(x->x_glist))
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             function_update(x, x->x_glist);
         outlet_list(x->x_obj.ob_outlet, &s_list, ac, av);
         if(x->x_send != &s_ && x->x_send->s_thing)
@@ -595,7 +596,7 @@ static void function_list(t_function *x, t_symbol* s, int ac,t_atom *av){
             x->x_min_point = x->x_min = v;
         if(v > x->x_max_point)
             x->x_max_point = x->x_max = v;
-        if(glist_isvisible(x->x_glist))
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             function_update(x, x->x_glist);
         function_bang(x);
     }
@@ -608,7 +609,7 @@ static void function_min(t_function *x, t_floatarg f){
         if(x->x_min != f){
             canvas_dirty(x->x_glist, 1);
             x->x_min = f;
-            if(glist_isvisible(x->x_glist))
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
                 function_update(x, x->x_glist);
         }
     }
@@ -619,7 +620,7 @@ static void function_max(t_function *x, t_floatarg f){
         if(x->x_max != f){
             canvas_dirty(x->x_glist, 1);
             x->x_max = f;
-            if(glist_isvisible(x->x_glist))
+            if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
                 function_update(x, x->x_glist);
         }
     }
@@ -630,7 +631,7 @@ static void function_resize(t_function *x){
         canvas_dirty(x->x_glist, 1);
         x->x_max = x->x_max_point;
         x->x_min = x->x_min_point;
-        if(glist_isvisible(x->x_glist))
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             function_update(x, x->x_glist);
     }
 }
@@ -669,7 +670,7 @@ static void function_send(t_function *x, t_symbol *s){
         x->x_send = snd;
         x->x_snd_set = 1;
         canvas_dirty(x->x_glist, 1);
-        if(glist_isvisible(x->x_glist))
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             function_draw_in_outlet(x, x->x_glist);
     }
 }
@@ -685,7 +686,7 @@ static void function_receive(t_function *x, t_symbol *s){
         if(rcv != &s_)
             pd_bind(&x->x_obj.ob_pd, rcv);
         x->x_receive = rcv;
-        if(glist_isvisible(x->x_glist))
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             function_draw_in_outlet(x, x->x_glist);
     }
 }
@@ -694,7 +695,7 @@ static void function_fgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
     int r = red < 0 ? 0 : red > 255 ? 255 : (int)red;
     int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
     int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
-    int vis = glist_isvisible(x->x_glist);
+    int vis = (glist_isvisible(x->x_glist) || gobj_shouldvis((t_gobj *)x, x->x_glist));
     if(vis && (x->x_fgcolor[0] != r || x->x_fgcolor[1] != g || x->x_fgcolor[2] != b)){
         canvas_dirty(x->x_glist, 1);
         t_canvas *cv = glist_getcanvas(x->x_glist);
@@ -710,7 +711,7 @@ static void function_bgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
     int r = red < 0 ? 0 : red > 255 ? 255 : (int)red;
     int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
     int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
-    int vis = glist_isvisible(x->x_glist);
+    int vis = (glist_isvisible(x->x_glist) || gobj_shouldvis((t_gobj *)x, x->x_glist));
     if(vis && (x->x_bgcolor[0] != r || x->x_bgcolor[1] != g || x->x_bgcolor[2] != b)){
         canvas_dirty(x->x_glist, 1);
         t_canvas *cv = glist_getcanvas(x->x_glist);
