@@ -33,8 +33,11 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
                 outlet_float(p->p_cnv->x_obj.ob_outlet, p->p_cnv->x_edit = arg);
         }
         else if(s == gensym("obj") || s == gensym("msg") || s == gensym("floatatom")
-                || s == gensym("text")){
-            if(av->a_w.w_float == 0 && p->p_cnv->x_edit == 0)
+        || s == gensym("symbolatom") || s == gensym("text") || s == gensym("bng")
+        || s == gensym("toggle") || s == gensym("numbox") || s == gensym("vslider")
+        || s == gensym("hslider") || s == gensym("vradio") || s == gensym("hradio")
+        || s == gensym("vumeter") || s == gensym("mycnv")){
+            if(p->p_cnv->x_edit == 0)
                 outlet_float(p->p_cnv->x_obj.ob_outlet, p->p_cnv->x_edit = 1);
         }
     }

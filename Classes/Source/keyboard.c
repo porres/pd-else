@@ -506,9 +506,12 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
     if(p->p_cnv){
         if(s == gensym("editmode"))
             edit = (int)(av->a_w.w_float);
-        else if(s == gensym("obj") || s == gensym("msg") || s == gensym("floatatom") || s == gensym("text")){
-            if(av->a_w.w_float == 0)
-                edit = 1;
+         else if(s == gensym("obj") || s == gensym("msg") || s == gensym("floatatom")
+        || s == gensym("symbolatom") || s == gensym("text") || s == gensym("bng")
+        || s == gensym("toggle") || s == gensym("numbox") || s == gensym("vslider")
+        || s == gensym("hslider") || s == gensym("vradio") || s == gensym("hradio")
+        || s == gensym("vumeter") || s == gensym("mycnv")){
+            edit = 1;
         }
         else
             return;
