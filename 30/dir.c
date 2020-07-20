@@ -118,8 +118,10 @@ static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
         return;
     }
     else if(dirname == x->x_getdir || !strcmp(dirname->s_name, ".")){ // do nothing
+        post("do nothing");
     }
     else if(!strcmp(dirname->s_name, "..")){ // parent dir
+    post("parent");
         char *last_slash;
         last_slash = strrchr(x->x_directory, '/');
         *last_slash = '\0';
@@ -131,8 +133,11 @@ static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
         strncpy(x->x_directory, dirname->s_name, MAXPDSTRING);
         post("x->x_directory = %s", x->x_directory);
     }
-    else // relative to current dir
-        sprintf(x->x_directory, "%s/%s", x->x_directory, dirname->s_name );
+    else{ // relative to current dir
+        post("relative");
+        sprintf(x->x_directory, "%s/%s", x->x_directory, dirname->s_name);
+        post("x->x_directory = %s", x->x_directory);
+    }
 // search
     DIR *temp = opendir(x->x_directory);
     if(!temp){ // didn't find
