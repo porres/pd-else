@@ -110,6 +110,7 @@ static void dir_load(t_dir *x){
 }
 
 static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
+    post("loadir dirname (%s) init (%d)", dirname->s_name, init);
     char tempdir[MAXPDSTRING];
     strcpy(tempdir, x->x_directory); // tempdir = x->x_directory
     if(!strcmp(dirname->s_name, "")){
@@ -157,6 +158,7 @@ static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
 }
 
 static void dir_open(t_dir *x, t_symbol *dirname){
+    post("open %s", dirname->s_name);
     dir_loadir(x, dirname, 0);
 }
 
@@ -274,6 +276,7 @@ static void *dir_new(t_symbol *s, int ac, t_atom* av){
     x->x_out2 = outlet_new(&x->x_obj, &s_symbol);
     x->x_out3 = outlet_new(&x->x_obj, &s_float);
     x->x_out4 = outlet_new(&x->x_obj, &s_float);
+    post("dir debug");
     return(x);
 errstate:
     pd_error(x, "[dir]: improper args");
