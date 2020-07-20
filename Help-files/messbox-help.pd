@@ -1,4 +1,4 @@
-#N canvas 743 142 559 536 10;
+#N canvas 814 50 561 564 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -24,20 +24,20 @@
 #X restore 3 4 graph;
 #X obj 4 305 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 420 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 450 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 453 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 125 430 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 483 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 125 460 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 126 314 cnv 17 3 102 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 122 315 cnv 17 3 130 empty empty 0 5 9 0 16 -228856 -162280
 0;
-#X obj 4 509 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 539 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 195 430 anything;
-#X obj 4 481 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
-#X text 249 430 - the message;
+#X text 195 460 anything;
+#X obj 4 511 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
+#X text 249 460 - the message;
 #X obj 180 274 else/display;
-#N canvas 1081 283 428 454 syntax 0;
+#N canvas 1147 125 428 454 syntax 0;
 #X text 38 19 Like a regular message box \, a comma will split the
 message in different ones inside the same box.;
 #X obj 106 186 print Message;
@@ -61,7 +61,7 @@ box into a send object. Try typing something like =>;
 #X text 218 313 bang;
 #X obj 35 41 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
 #X text 39 244 see also:;
-#X text 248 313 - outputs the message, f 33;
+#X text 248 313 - outputs the message, f 42;
 #X obj 150 41 cnv 4 4 4 empty empty box 0 28 2 18 -233017 -1 0;
 #X obj 180 198 else/messbox 200 60 235 235 235 0 0 0 0 12;
 #X text 71 87 The [messbox] object is an object you can type in messages
@@ -76,19 +76,23 @@ boxes. See [pd syntax] for more details., f 69;
 #X text 68 164 output message =>;
 #X text 68 209 click and type =>;
 #X text 388 215 <= shift+click to output;
-#X text 248 327 - sets the message, f 33;
+#X text 248 327 - sets the message, f 42;
 #X text 158 327 set <anything>;
 #X text 140 341 append <anything>;
-#X text 248 341 - appends to the message, f 33;
-#X text 146 356 fontsize <float>;
-#X text 248 356 - sets font size, f 33;
-#X text 170 370 bold <float>;
-#X text 248 370 - non zero sets to bold, f 33;
-#X text 248 384 - RGB background color, f 33;
-#X text 140 384 bgcolor <f \, f \, f>;
-#X text 140 399 fgcolor <f \, f \, f>;
-#X text 248 399 - RGB foreground (text) color, f 33;
-#X text 161 488 "shift + clicking" on the outputs the message;
+#X text 248 341 - appends to the message, f 42;
+#X text 146 386 fontsize <float>;
+#X text 248 386 - sets font size, f 42;
+#X text 170 400 bold <float>;
+#X text 248 400 - non zero sets to bold, f 42;
+#X text 248 414 - RGB background color, f 42;
+#X text 140 414 bgcolor <f \, f \, f>;
+#X text 140 429 fgcolor <f \, f \, f>;
+#X text 248 429 - RGB foreground (text) color, f 42;
+#X text 161 518 "shift + clicking" on the outputs the message;
+#X text 212 355 clear;
+#X text 248 355 - clears the message, f 42;
+#X text 128 369 size <float \, float>;
+#X text 248 370 - sets dimension size (width and height), f 42;
 #X connect 27 0 20 0;
 #X connect 30 0 27 0;
 #X connect 31 0 27 0;

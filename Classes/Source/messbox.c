@@ -446,12 +446,12 @@ void messbox_setup(void) {
     class_addmethod(messbox_class, (t_method)messbox_size, gensym("size"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(messbox_class, (t_method)messbox_fontsize, gensym("fontsize"), A_DEFFLOAT, 0);
     class_addmethod(messbox_class, (t_method)messbox_bold, gensym("bold"), A_DEFFLOAT, 0);
-	class_addmethod(messbox_class, (t_method)messbox_output, gensym("output"), A_GIMME, 0);
 	class_addmethod(messbox_class, (t_method)messbox_set, gensym("set"), A_GIMME, 0);
 	class_addmethod(messbox_class, (t_method)messbox_append, gensym("append"), A_GIMME, 0);
 	class_addmethod(messbox_class, (t_method)messbox_clear, gensym("clear"), A_GIMME, 0);
 	class_addmethod(messbox_class, (t_method)messbox_bgcolor, gensym("bgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
 	class_addmethod(messbox_class, (t_method)messbox_fgcolor, gensym("fgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(messbox_class, (t_method)messbox_output, gensym("output"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(messbox_class, (t_method)messbox_resize_callback, gensym("_resize"), A_FLOAT, 0);
     class_addmethod(messbox_class, (t_method)messbox_motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);
