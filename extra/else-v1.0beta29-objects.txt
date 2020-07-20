@@ -187,6 +187,7 @@ median~	x
 median	x
 merge	x
 message	x
+messbox	x
 meter	x
 meter~	x
 meter2~	x

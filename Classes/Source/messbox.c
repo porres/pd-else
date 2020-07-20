@@ -16,29 +16,31 @@
 #define BORDER          5
 
 typedef struct _messbox{
-    t_object   x_obj;
-    t_canvas  *x_canvas;
-    t_glist   *x_glist;
-    t_symbol  *x_bind_sym;
-    int        x_height;
-    int        x_open;
-    int        x_width;
-    int        x_resizing;
-    int        x_active;
-    t_symbol  *x_bgcolor;
-    t_symbol  *x_fgcolor;
-    int        x_font_size;
-    t_symbol  *x_font_weight;
-    int        x_selected;
-    char      *tcl_namespace;
-    char      *x_cv_id;
-    char      *frame_id;
-    char      *text_id;
-    char      *handle_id;
-    char      *window_tag;
-    char      *all_tag;
-    t_outlet* x_data_outlet;
-    t_clock  *x_clock;
+    t_object        x_obj;
+    t_canvas       *x_canvas;
+    t_glist        *x_glist;
+    t_symbol       *x_bind_sym;
+    int             x_height;
+    int             x_open;
+    int             x_width;
+    int             x_resizing;
+    int             x_active;
+    char            x_fgcolor[8];
+    unsigned int    x_fg[3];    // fg RGB color
+    char            x_bgcolor[8];
+    unsigned int    x_bg[3];    // bg RGB color
+    int             x_font_size;
+    t_symbol       *x_font_weight;
+    int             x_selected;
+    char           *tcl_namespace;
+    char           *x_cv_id;
+    char           *frame_id;
+    char           *text_id;
+    char           *handle_id;
+    char           *window_tag;
+    char           *all_tag;
+    t_outlet       *x_data_outlet;
+    t_clock        *x_clock;
 }t_messbox;
 
 static t_class *messbox_class;
@@ -72,7 +74,7 @@ static void set_tk_widget_ids(t_messbox *x, t_canvas *canvas){
 static void draw_box(t_messbox *x){
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
     sys_vgui("%s create rectangle %d %d %d %d -outline black -fill \"%s\" -width 1 -tags %x_outline\n",
-        x->x_cv_id, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x->x_bgcolor->s_name, x);
+        x->x_cv_id, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x->x_bgcolor, x);
     sys_vgui("%s create rectangle %d %d %d %d -fill black -tags {%x_inlet %s}\n",
         x->x_cv_id, xpos, ypos, xpos+IOWIDTH, ypos+IHEIGHT, x, x->all_tag);
     sys_vgui("%s create rectangle %d %d %d %d -fill black -tags {%x_outlet %s}\n",
@@ -82,7 +84,6 @@ static void draw_box(t_messbox *x){
 static void erase_box(t_messbox *x){
     sys_vgui("%s delete %x_outline\n", x->x_cv_id, x);
     sys_vgui("%s delete %x_inlet\n", x->x_cv_id, x);
-//    sys_vgui("destroy %s\n", x->inlet_id);
     sys_vgui("%s delete %x_outlet\n", x->x_cv_id, x);
 }
 
@@ -96,7 +97,7 @@ static void messbox_draw(t_messbox *x, t_glist *glist){
     sys_vgui("frame %s\n", x->frame_id);
     sys_vgui("text %s -font {{%s} %d %s} -highlightthickness 0 -bg \"%s\" -fg \"%s\"\n",
         x->text_id, FONT_NAME, x->x_font_size, x->x_font_weight->s_name,
-        x->x_bgcolor->s_name, x->x_fgcolor->s_name);
+        x->x_bgcolor, x->x_fgcolor);
     sys_vgui("pack %s -side left -fill both -expand 1\n", x->text_id);
     sys_vgui("pack %s -side bottom -fill both -expand 1\n", x->frame_id);
 //    bind_button_events;
@@ -128,6 +129,9 @@ static void messbox_draw(t_messbox *x, t_glist *glist){
 static void messbox_erase(t_messbox* x,t_glist* glist){
 //    post("messbox_erase");
     set_tk_widget_ids(x, glist_getcanvas(glist));
+    sys_vgui("%s delete %x_outline\n", x->x_cv_id, x);
+    sys_vgui("%s delete %x_inlet\n", x->x_cv_id, x);
+    sys_vgui("%s delete %x_outlet\n", x->x_cv_id, x);
     sys_vgui("destroy %s\n", x->frame_id);
     sys_vgui("%s delete %s\n", x->x_cv_id, x->all_tag);
 }
@@ -181,7 +185,7 @@ static void messbox_select(t_gobj *z, t_glist *glist, int state){
             x->handle_id, x->x_bind_sym->s_name);
     }
     else{
-        sys_vgui("%s configure -fg %s -state normal -cursor xterm\n", x->text_id, x->x_fgcolor->s_name);
+        sys_vgui("%s configure -fg %s -state normal -cursor xterm\n", x->text_id, x->x_fgcolor);
         sys_vgui("destroy %s\n", x->handle_id);
         x->x_selected = 0;
     }
@@ -278,14 +282,21 @@ static void messbox_set(t_messbox* x,  t_symbol *s, int argc, t_atom *argv){
         sys_vgui("%s configure -state disabled\n", x->text_id);
 }
 
-void messbox_bgcolor(t_messbox* x, t_symbol* bgcol){
-	x->x_bgcolor = bgcol;
-	sys_vgui("%s configure -background \"%s\" \n", x->text_id, x->x_bgcolor->s_name);
+void messbox_bgcolor(t_messbox* x, t_floatarg r, t_floatarg g, t_floatarg b){
+    x->x_bg[0] = r < 0 ? 0 : r > 255 ? 255 : (int)r;
+    x->x_bg[1] = g < 1 ? 0 : g > 255 ? 255 : (int)g;
+    x->x_bg[2] = b < 2 ? 0 : b > 255 ? 255 : (int)b;
+    sprintf(x->x_bgcolor, "#%2.2x%2.2x%2.2x", x->x_bg[0], x->x_bg[1], x->x_bg[2]);
+	sys_vgui("%s configure -background \"%s\"\n", x->text_id, x->x_bgcolor);
+    sys_vgui("%s itemconfigure %x_outline -fill %s\n", x->x_cv_id, (unsigned long)x, x->x_bgcolor);
 }
 
-void messbox_fgcolor(t_messbox* x, t_symbol* fgcol){
-	x->x_fgcolor = fgcol;
-	sys_vgui("%s configure -foreground \"%s\" \n", x->text_id, x->x_fgcolor->s_name);
+void messbox_fgcolor(t_messbox* x, t_floatarg r, t_floatarg g, t_floatarg b){
+    x->x_fg[0] = r < 0 ? 0 : r > 255 ? 255 : (int)r;
+    x->x_fg[1] = g < 1 ? 0 : g > 255 ? 255 : (int)g;
+    x->x_fg[2] = b < 2 ? 0 : b > 255 ? 255 : (int)b;
+    sprintf(x->x_fgcolor, "#%2.2x%2.2x%2.2x", x->x_fg[0], x->x_fg[1], x->x_fg[2]);
+	sys_vgui("%s configure -foreground \"%s\" \n", x->text_id, x->x_fgcolor);
 }
 
 static void messbox_bold(t_messbox *x, t_float bold){
@@ -306,7 +317,7 @@ static void messbox_size(t_messbox *x, t_float width, t_float height){
     x->x_width = width < MIN_WIDTH ? MIN_WIDTH : (int)width;
     if(glist_isvisible(x->x_glist)){
         sys_vgui("%s itemconfigure %s -width %d -height %d\n",
-            x->x_cv_id, x->window_tag, x->x_width, x->x_height);
+            x->x_cv_id, x->window_tag, x->x_width-BORDER*2, x->x_height-BORDER*2);
         canvas_fixlinesfor(x->x_glist, (t_text *)x);
         erase_box(x), draw_box(x);
     }
@@ -328,7 +339,6 @@ static void messbox_key(void *z, t_floatarg f){
 
 static int messbox_click(t_gobj *z, t_glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
     xpix = ypix = alt = dbl = 0;
-//    post("click = %d", doit);
     if(doit){
         t_messbox *x = (t_messbox *)z;
         x->x_active = 1;
@@ -350,8 +360,20 @@ static void messbox_motion_callback(t_messbox *x, t_floatarg f1, t_floatarg f2){
 //    post("messbox_motion_callback");
     if(x->x_resizing){
         int dx = (int)f1, dy = (int)f2;
+        int w = x->x_width, h = x->x_height;
         if(glist_isvisible(x->x_glist)){
-            x->x_width += dx, x->x_height += dy;
+            if(w+dx < MIN_WIDTH){
+                x->x_width = MIN_WIDTH;
+                dx = MIN_WIDTH - w;
+            }
+            else
+                x->x_width+=dx;
+            if(h+dy < MIN_HEIGHT){
+                x->x_height = MIN_HEIGHT;
+                dy = MIN_HEIGHT-h;
+            }
+            else
+                x->x_height+=dy;
             sys_vgui("%s itemconfigure %s -width %d -height %d\n",
                 x->x_cv_id, x->window_tag, x->x_width-BORDER*2, x->x_height-BORDER*2);
             sys_vgui("%s move RSZ %d %d\n", x->x_cv_id, dx, dy);
@@ -363,10 +385,11 @@ static void messbox_motion_callback(t_messbox *x, t_floatarg f1, t_floatarg f2){
 
 static void messbox_save(t_gobj *z, t_binbuf *b){
     t_messbox *x = (t_messbox *)z;
-    binbuf_addv(b, "ssiisiiss;", &s__X, gensym("obj"),
-        x->x_obj.te_xpix, x->x_obj.te_ypix,
-        atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
-        x->x_width, x->x_height, x->x_bgcolor, x->x_fgcolor);
+    binbuf_addv(b, "ssiisiiiiiiiiii;", &s__X, gensym("obj"),
+        x->x_obj.te_xpix, x->x_obj.te_ypix, atom_getsymbol(binbuf_getvec(x->x_obj.te_binbuf)),
+        x->x_width, x->x_height, x->x_bg[0], x->x_bg[1], x->x_bg[2],
+        x->x_fg[0], x->x_fg[1], x->x_fg[2],
+        x->x_font_weight == gensym("bold"), x->x_font_size);
 }
 
 static void messbox_free(t_messbox *x){
@@ -380,17 +403,28 @@ static void *messbox_new(t_symbol *s, int argc, t_atom *argv){
     t_messbox *x = (t_messbox *)pd_new(messbox_class);
     char buf[MAXPDSTRING];
     x->x_font_size = 12;
-    x->x_font_weight = gensym("normal");
+    int weigth = 0;
     x->x_selected = 0;
     x->x_width = x->x_height = 130;
-    x->x_bgcolor = gensym("grey90");
-    x->x_fgcolor = gensym("black");
-    if(argc == 4){
+    x->x_bg[0] = x->x_bg[1] = x->x_bg[2] = 235;
+    x->x_fg[0] = x->x_fg[1] = x->x_fg[2] = 0;
+    if(argc){
 		x->x_width = atom_getint(argv);
 		x->x_height = atom_getint(argv+1);
-		x->x_bgcolor = atom_getsymbol(argv+2);
-		x->x_fgcolor = atom_getsymbol(argv+3);
+		x->x_bg[0] = (unsigned int)atom_getfloatarg(2, argc, argv);
+        x->x_bg[1] = (unsigned int)atom_getfloatarg(3, argc, argv);
+        x->x_bg[2] = (unsigned int)atom_getfloatarg(4, argc, argv);
+        x->x_fg[0] = (unsigned int)atom_getfloatarg(5, argc, argv);
+        x->x_fg[1] = (unsigned int)atom_getfloatarg(6, argc, argv);
+        x->x_fg[2] = (unsigned int)atom_getfloatarg(7, argc, argv);
+        weigth = (int)(atom_getfloatarg(8, argc, argv) != 0);
+        x->x_font_size = (int)(atom_getfloatarg(9, argc, argv));
     }
+    if(x->x_font_size < 8)
+        x->x_font_size = 8;
+    sprintf(x->x_bgcolor, "#%2.2x%2.2x%2.2x", x->x_bg[0], x->x_bg[1], x->x_bg[2]);
+    sprintf(x->x_fgcolor, "#%2.2x%2.2x%2.2x", x->x_fg[0], x->x_fg[1], x->x_fg[2]);
+    x->x_font_weight = weigth ? gensym("bold") : gensym("normal");
     x->x_clock = clock_new(x, (t_method)messbox_tick);
     x->x_resizing = x->x_active = x->x_open = 0;
     x->x_data_outlet = outlet_new(&x->x_obj, &s_float);
@@ -416,8 +450,8 @@ void messbox_setup(void) {
 	class_addmethod(messbox_class, (t_method)messbox_set, gensym("set"), A_GIMME, 0);
 	class_addmethod(messbox_class, (t_method)messbox_append, gensym("append"), A_GIMME, 0);
 	class_addmethod(messbox_class, (t_method)messbox_clear, gensym("clear"), A_GIMME, 0);
-	class_addmethod(messbox_class, (t_method)messbox_bgcolor, gensym("bgcolor"), A_DEFSYMBOL, 0);
-	class_addmethod(messbox_class, (t_method)messbox_fgcolor, gensym("fgcolor"), A_DEFSYMBOL, 0);
+	class_addmethod(messbox_class, (t_method)messbox_bgcolor, gensym("bgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
+	class_addmethod(messbox_class, (t_method)messbox_fgcolor, gensym("fgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(messbox_class, (t_method)messbox_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(messbox_class, (t_method)messbox_resize_callback, gensym("_resize"), A_FLOAT, 0);
     class_addmethod(messbox_class, (t_method)messbox_motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);

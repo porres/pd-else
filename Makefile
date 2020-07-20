@@ -64,6 +64,7 @@ nbang.class.sources := Classes/Source/nbang.c
 merge.class.sources := Classes/Source/merge.c
 format.class.sources := Classes/Source/format.c
 message.class.sources := Classes/Source/message.c
+messbox.class.sources := Classes/Source/messbox.c
 mouse.class.sources := Classes/Source/mouse.c
 note.in.class.sources := Classes/Source/note.in.c
 note.out.class.sources := Classes/Source/note.out.c

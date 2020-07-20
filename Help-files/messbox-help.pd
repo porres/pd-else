@@ -1,0 +1,94 @@
+#N canvas 743 142 559 536 10;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 78 41 cnv 4 4 4 empty empty message 0 28 2 18 -233017 -1 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 3 4 cnv 15 301 42 empty empty messbox 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 4 graph;
+#X obj 4 305 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 420 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 453 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 125 430 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 126 314 cnv 17 3 102 empty empty 0 5 9 0 16 -228856 -162280
+0;
+#X obj 4 509 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 195 430 anything;
+#X obj 4 481 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
+#X text 249 430 - the message;
+#X obj 180 274 else/display;
+#N canvas 1081 283 428 454 syntax 0;
+#X text 38 19 Like a regular message box \, a comma will split the
+message in different ones inside the same box.;
+#X obj 106 186 print Message;
+#X obj 120 398 print Message;
+#X obj 347 324 r f;
+#X obj 347 350 else/display;
+#X obj 120 287 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 106 109 else/messbox 200 60 235 235 235 0 0 0 0 12;
+#X msg 107 75 set 1 \\\, 2 \\\, 3 \, bang;
+#X obj 120 318 else/messbox 200 60 235 235 235 0 0 0 0 12;
+#X text 338 242 \; f 8;
+#X text 42 229 It can also deal with semicolons \, which turn the message
+box into a send object. Try typing something like =>;
+#X connect 3 0 4 0;
+#X connect 5 0 8 0;
+#X connect 6 0 1 0;
+#X connect 7 0 6 0;
+#X connect 8 0 2 0;
+#X restore 475 277 pd syntax;
+#X text 218 313 bang;
+#X obj 35 41 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
+#X text 39 244 see also:;
+#X text 248 313 - outputs the message, f 33;
+#X obj 150 41 cnv 4 4 4 empty empty box 0 28 2 18 -233017 -1 0;
+#X obj 180 198 else/messbox 200 60 235 235 235 0 0 0 0 12;
+#X text 71 87 The [messbox] object is an object you can type in messages
+while in run mode \, like atom boxes. Any message type is possible.
+It deals with comma and semicolons in the same way as regular message
+boxes. See [pd syntax] for more details., f 69;
+#X obj 41 266 else/message;
+#X obj 180 164 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 210 163 set this is a message;
+#X text 351 161 <= set message;
+#X text 68 164 output message =>;
+#X text 68 209 click and type =>;
+#X text 388 215 <= shift+click to output;
+#X text 248 327 - sets the message, f 33;
+#X text 158 327 set <anything>;
+#X text 140 341 append <anything>;
+#X text 248 341 - appends to the message, f 33;
+#X text 146 356 fontsize <float>;
+#X text 248 356 - sets font size, f 33;
+#X text 170 370 bold <float>;
+#X text 248 370 - non zero sets to bold, f 33;
+#X text 248 384 - RGB background color, f 33;
+#X text 140 384 bgcolor <f \, f \, f>;
+#X text 140 399 fgcolor <f \, f \, f>;
+#X text 248 399 - RGB foreground (text) color, f 33;
+#X text 161 488 "shift + clicking" on the outputs the message;
+#X connect 27 0 20 0;
+#X connect 30 0 27 0;
+#X connect 31 0 27 0;
