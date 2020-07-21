@@ -106,26 +106,19 @@ static void dir_load(t_dir *x){
 }
 
 static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
-    char tempdir[MAXPDSTRING];
-    strcpy(tempdir, x->x_directory); // tempdir = x->x_directory
-    DIR *temp;
-    // check if absolute for windows
-    char *pch = strchr(dirname->s_name, ':');
-    while(pch != NULL){
-        if(pch-dirname->s_name == 1){
-            strncpy(x->x_directory, dirname->s_name, MAXPDSTRING);
-            goto search;
-        }
-        pch=strchr(pch+1, 's');
-    }
-    if(!strncmp(dirname->s_name, "/", 1)){ // absolute mac/linux
-        strncpy(x->x_directory, dirname->s_name, MAXPDSTRING);
-        goto search;
-    }
-    else if(!strcmp(dirname->s_name, "")){
+    if(!strcmp(dirname->s_name, "")){
         pd_error(x, "[dir]: no symbol given to 'open'");
         return;
     }
+    char tempdir[MAXPDSTRING];
+    strcpy(tempdir, x->x_directory); // tempdir = x->x_directory
+    char *pch = strchr(dirname->s_name, ':');
+    if(pch-dirname->s_name == 1){ // absolute windows
+            post("gotcha");
+            strncpy(x->x_directory, dirname->s_name, MAXPDSTRING);
+    }
+    else if(!strncmp(dirname->s_name, "/", 1)) // absolute mac/linux
+        strncpy(x->x_directory, dirname->s_name, MAXPDSTRING);
     else if(dirname == x->x_getdir || !strcmp(dirname->s_name, ".")){ // do nothing
     }
     else if(!strcmp(dirname->s_name, "..")){ // parent dir
@@ -135,11 +128,9 @@ static void dir_loadir(t_dir *x, t_symbol *dirname, int init){
         if(!strcmp(x->x_directory, ""))
             strcpy(x->x_directory, "/");
     }
-    else{ // relative to current dir
+    else // relative to current dir
         sprintf(x->x_directory, "%s/%s", x->x_directory, dirname->s_name);
-    };
-    search:
-    temp = opendir(x->x_directory);
+    DIR *temp = opendir(x->x_directory);
     if(!temp){ // didn't find
         temp = NULL; // ???
         strcpy(x->x_directory, tempdir); // restore original directory
