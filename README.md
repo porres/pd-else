@@ -8,7 +8,7 @@
 
 ### Version: 1.0-0 beta-29 With Live Electronics Tutorial 
 
-###   Unreleased
+###   Released july 22nd 2020
 
 
 
@@ -16,7 +16,6 @@
 	Copyright © 2017-2020 Alexandre Torres Porres
 
   
-
 
 
    This work is free. You can redistribute it and/or modify it under the
