@@ -1,4 +1,0 @@
-#N canvas 644 124 323 395 10;
-#X obj 93 197 clone 1 test2;
-#X msg 100 162 all open ./;
-#X connect 1 0 0 0;
