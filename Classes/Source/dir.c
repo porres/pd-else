@@ -1,4 +1,4 @@
-// porres 2019 - sort code from 'sort' class (based M. Barber's code)
+// porres 2019-2020 - sort code from 'sort' class (based M. Barber's code)
 
 #include "m_pd.h"
 #include "g_canvas.h"
