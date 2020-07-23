@@ -15,9 +15,9 @@ static t_class *separate_class;
 char *mtok(char *input, char *delimiter){
     // adapted from stack overflow (designed to work like strtok)
     static char *string;
-    if (input != NULL)     //if not passed null, use static var
+    if(input != NULL)     //if not passed null, use static var
         string = input;
-    if (string == NULL)    //if reached the end, just return the static var (so it seems)
+    if(string == NULL)    //if reached the end, just return the static var (so it seems)
         return string;
     //return pointer of first occurence of delim
     //added, keep going until first non delim
@@ -36,18 +36,17 @@ char *mtok(char *input, char *delimiter){
     // set thing pointed to at end as null char, advance pointer to after delim
     *end = '\0';
     string = end + strlen(delimiter);
-    return temp;
+    return(temp);
 }
 
 static void separate_separator(t_separate *x, t_symbol *s, int argc, t_atom * argv){
-    t_symbol *dummy = s;
-    dummy = NULL;
+    s = NULL;
     if(!argc)
         x->x_separator = gensym(" ");
     else if(argc == 1 && argv->a_type == A_SYMBOL)
         x->x_separator = atom_getsymbolarg(0, argc, argv);
     else
-        pd_error(x, "separator message needs to contain only one symbol");
+        pd_error(x, "[separate]: separator message needs to contain only one symbol");
 }
 
 static void separate_symbol(t_separate *x, t_symbol *s){
@@ -86,16 +85,16 @@ static void separate_symbol(t_separate *x, t_symbol *s){
 }
 
 static void *separate_new(t_symbol * s, int argc, t_atom * argv){
-    t_symbol *dummy = s;
-    dummy = NULL;
+    s = NULL;
     t_separate *x = (t_separate *)pd_new(separate_class);
-    outlet_new((t_object *)x, &s_anything);
-    if(argc == 0 || (argc == 1 && argv->a_type == A_SYMBOL)){
-            separate_separator(x, 0, argc, argv);
+    x->x_separator = gensym(" ");
+    if(argc){
+        if(argv->a_type == A_SYMBOL)
+            x->x_separator = atom_getsymbolarg(0, argc, argv);
+        else
+           goto errstate;
     }
-    else
-        goto
-            errstate;
+    outlet_new((t_object *)x, &s_anything);
     return(x);
 	errstate:
 		pd_error(x, "[separate]: improper args");
@@ -104,8 +103,7 @@ static void *separate_new(t_symbol * s, int argc, t_atom * argv){
 
 void separate_setup(void){
     separate_class = class_new(gensym("separate"), (t_newmethod)separate_new, 0,
-				 sizeof(t_separate), 0, A_GIMME, 0);
+        sizeof(t_separate), 0, A_GIMME, 0);
     class_addsymbol(separate_class, separate_symbol);
-    class_addmethod(separate_class, (t_method)separate_separator,
-                    gensym("separator"), A_GIMME, 0);
+    class_addmethod(separate_class, (t_method)separate_separator, gensym("separator"), A_GIMME, 0);
 }

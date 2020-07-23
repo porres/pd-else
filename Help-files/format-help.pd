@@ -9,7 +9,7 @@
 ;
 #X obj 1 397 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#N canvas 500 234 836 506 examples 0;
+#N canvas 751 101 836 506 examples 0;
 #X text 52 149 float example;
 #X obj 55 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -47,18 +47,17 @@ with spaces).;
 #X obj 513 378 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 543 440 else/display;
-#X obj 666 352 nbx 4 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
+#X obj 666 370 nbx 4 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 86 256;
 #X msg 554 374 B;
 #X obj 543 407 else/format %s-%d.wav;
-#X msg 666 378 \$1 \, bang;
 #X text 458 295 A bang in any inlet forces an output \, this can be
 used to emulate a hot inlet., f 50;
 #X obj 473 202 else/format %c%c%c: What is it good for?, f 46;
 #X msg 543 347 A 1;
 #X connect 1 0 15 0;
 #X connect 2 0 16 0;
-#X connect 3 0 31 0;
+#X connect 3 0 30 0;
 #X connect 5 0 23 0;
 #X connect 12 0 21 0;
 #X connect 15 0 8 0;
@@ -69,12 +68,11 @@ used to emulate a hot inlet., f 50;
 #X connect 22 0 10 0;
 #X connect 23 0 4 0;
 #X connect 24 0 28 0;
-#X connect 26 0 29 0;
+#X connect 26 0 28 1;
 #X connect 27 0 28 0;
 #X connect 28 0 25 0;
-#X connect 29 0 28 1;
-#X connect 31 0 11 0;
-#X connect 32 0 28 0;
+#X connect 30 0 11 0;
+#X connect 31 0 28 0;
 #X restore 468 213 pd examples;
 #X obj 150 151 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -327,7 +325,7 @@ You can also use flags "+" and "#" \, plus a precision field. The modifiers
 #X restore 462 191 pd variables;
 #X msg 180 150 file;
 #X obj 351 155 nbx 4 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
+-1 -1 19 256;
 #X text 216 280 float/symbol atoms to format a symbol (the leftmost
 inlet takes messages with more than one item and sends the remaining
 items to the next inlets)., f 51;
