@@ -39,6 +39,7 @@ click.class.sources := Classes/Source/click.c
 canvas.active.class.sources := Classes/Source/canvas.active.c
 canvas.bounds.class.sources := Classes/Source/canvas.bounds.c
 canvas.edit.class.sources := Classes/Source/canvas.edit.c
+canvas.fontsize.class.sources := Classes/Source/canvas.fontsize.c
 canvas.gop.class.sources := Classes/Source/canvas.gop.c
 canvas.mouse.class.sources := Classes/Source/canvas.mouse.c
 canvas.pos.class.sources := Classes/Source/canvas.pos.c

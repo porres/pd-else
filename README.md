@@ -6,9 +6,9 @@
 
 
 
-### Version: 1.0-0 beta-29 With Live Electronics Tutorial 
+### Version: 1.0-0 beta-30 With Live Electronics Tutorial 
 
-###   Released july 22nd 2020
+###   Unreleased
 
 
 
@@ -16,6 +16,7 @@
 	Copyright © 2017-2020 Alexandre Torres Porres
 
   
+
 
 
    This work is free. You can redistribute it and/or modify it under the
@@ -124,7 +125,7 @@ Cross compiling is also possible with something like this
 **PATCH/SUBPATCH MANAGEMENT: [17]**
 
 - [args]
-- [dollarzero]
+- [dollsym]
 - [receiver]
 - [blocksize~]
 - [click]

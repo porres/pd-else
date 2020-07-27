@@ -89,7 +89,7 @@ detect~	x
 dir	x
 display	x
 display~	x
-dollarzero	x
+dollsym	x
 downsample~	x
 drive~	x
 drum.seq	x
