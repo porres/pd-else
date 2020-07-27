@@ -637,8 +637,8 @@
 #X obj 746 331 s \$0-r-sym;
 #X obj 174 202 symbol;
 #X obj 632 182 symbol;
-#X obj 280 269 else/dollarzero 1;
-#X obj 746 249 else/dollarzero 1;
+#X obj 280 269 else/dollsym 1;
+#X obj 746 249 else/dollsym 1;
 #X obj 632 215 sel empty;
 #X obj 174 235 sel empty;
 #X obj 298 321 s \$0-set-s-sym;
@@ -874,8 +874,8 @@
 #X obj 284 224 s \$0-r-sym;
 #X obj 60 75 symbol;
 #X obj 233 75 symbol;
-#X obj 111 142 else/dollarzero 1;
-#X obj 284 142 else/dollarzero 1;
+#X obj 111 142 else/dollsym 1;
+#X obj 284 142 else/dollsym 1;
 #X obj 233 108 sel empty;
 #X obj 60 108 sel empty;
 #X obj 131 194 s \$0-set-s-sym;

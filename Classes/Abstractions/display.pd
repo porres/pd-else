@@ -199,7 +199,7 @@
 #X obj 59 447 outlet;
 #X obj 59 212 else/changed;
 #X obj 59 239 t s b;
-#X obj 98 129 else/dollarzero 1;
+#X obj 98 129 else/dollsym 1;
 #X obj 98 157 trigger symbol bang;
 #X connect 0 0 16 0;
 #X connect 1 0 2 0;
