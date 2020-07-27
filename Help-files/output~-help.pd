@@ -80,8 +80,8 @@ f 60;
 #N canvas 437 158 932 533 examples 0;
 #X obj 208 188 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 208 208 5 0 0 0 - - -, f 5;
-#X floatatom 208 359 5 0 0 0 - - -, f 5;
+#X floatatom 208 208 5 0 0 0 - - -;
+#X floatatom 208 359 5 0 0 0 - - -;
 #X text 223 187 set slider (0-1);
 #X msg 269 262 on;
 #X msg 269 284 off;
@@ -97,7 +97,7 @@ f 60;
 10 -228856 -1 -1 0;
 #X text 612 166 dB;
 #X text 588 180 linear;
-#X floatatom 638 204 5 0 0 0 - - -, f 5;
+#X floatatom 638 204 5 0 0 0 - - -;
 #X text 49 338 scaled => stereo output, f 9;
 #X text 213 336 <= slider value;
 #X obj 555 259 osc~ 440;
@@ -307,10 +307,6 @@ fades in and out when turning it on and off!;
 as a variant of [ezoutput~] from PDDP. This is an improved \, redesigned
 and backwards compatible version by Alexandre Porres with extra features.
 , f 70;
-#X text 97 555 This was first made to be included in Purr Data for
-Pd-l2ork made \, which carries this version of [output~] by default.
-Nonetheless \, this is a vanilla compatible version made available
-in the ELSE library., f 70;
 #X obj 76 231 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 76 252 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
@@ -324,6 +320,9 @@ in the ELSE library., f 70;
 #X obj 76 275 cnv 17 3 111 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
 #X obj 202 166 ./output~;
-#X connect 0 0 61 0;
-#X connect 0 0 61 1;
+#X text 97 555 This was first developed to be included in Purr Data
+\, which also carries [output~]. This is a vanilla compatible version
+made available in the ELSE library., f 70;
+#X connect 0 0 60 0;
+#X connect 0 0 60 1;
 #X coords 0 626 1 625 74 39 0;
