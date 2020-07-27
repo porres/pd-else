@@ -1,0 +1,67 @@
+#N canvas 792 120 561 348 10;
+#X obj 2 216 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 249 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 2 284 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 206 259 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 2 317 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 238 260 float -;
+#X obj 5 4 cnv 15 301 42 empty empty fontsize 20 20 2 37 -233017 -1
+0;
+#X obj 308 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 4 4 graph;
+#X obj 347 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 25 41 cnv 4 4 4 empty empty Report 0 28 2 18 -233017 -1 0;
+#X obj 83 41 cnv 4 4 4 empty empty font 0 28 2 18 -233017 -1 0;
+#X obj 460 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 480 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 517 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 466 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 504 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 307 4 graph;
+#X obj 121 41 cnv 4 4 4 empty empty size 0 28 2 18 -233017 -1 0;
+#X text 476 155 example:;
+#N canvas 935 108 480 385 depth 0;
+#X obj 141 180 else/display;
+#X obj 264 180 else/display;
+#X text 60 87 See the example below with an abstraction., f 47;
+#X text 59 38 The depth level is convenient for abstractions \, so
+you can get the font size of a parent patch. By default \, the depth
+level is 0 \, which means this main patch and its subpatches.;
+#X obj 141 140 else/fontsize-example;
+#X text 56 288 A float argument specifies this patch (0 \, the default)
+\, owning patch (1) \, its own owner (2) \, and so on - ownership number
+is silently reduced if owners don't exist \, so here anything greater
+than one would be ignored., f 62;
+#X text 56 245 Note that you can have [fontsize] anywhere inside a
+patch or an abstraction \, like deep buried inside many layers of subpatches.
+The font size is the same., f 62;
+#X connect 4 0 0 0;
+#X connect 4 1 1 0;
+#X restore 477 178 pd depth;
+#X obj 226 179 else/display;
+#X text 204 224 (none);
+#X text 293 259 font size;
+#X text 161 183 font size;
+#X obj 226 148 else/fontsize;
+#X text 82 86 The [fontsize] object outputs the patch's font size when
+the object is loaded and when it changes via the font menu. It can
+also get the parent patch's font size with the depth argument., f
+51;
+#X text 141 293 1) float - depth \, default 0 (current);
+#X connect 25 0 21 0;

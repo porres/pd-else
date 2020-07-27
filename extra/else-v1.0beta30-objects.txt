@@ -120,6 +120,7 @@ floor	x
 floor~	x
 fold	x
 fold~	x
+fontsize	x
 format	x
 free.rev~	x
 freeze~	x

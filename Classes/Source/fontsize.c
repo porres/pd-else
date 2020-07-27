@@ -1,4 +1,4 @@
-// porres 2019
+// porres 2020
 
 #include "m_pd.h"
 #include "g_canvas.h"
@@ -15,7 +15,7 @@ typedef struct _fontsize_proxy{
 typedef struct _fontsize{
     t_object        x_obj;
     t_fontsize_proxy *x_proxy;
-    t_canvas       *x_canvas;
+    t_canvas       *x_cv;
 }t_fontsize;
 
 static void fontsize_proxy_any(t_fontsize_proxy *p, t_symbol *s, int ac, t_atom *av){
@@ -40,7 +40,7 @@ static t_fontsize_proxy * fontsize_proxy_new(t_fontsize *x, t_symbol*s){
 
 static void fontsize_loadbang(t_fontsize *x, t_float f){
     if((int)f == LB_LOAD)
-        outlet_float(x->x_obj.ob_outlet, glist_getfont(x->x_canvas));
+        outlet_float(x->x_obj.ob_outlet, glist_getfont(x->x_cv));
 }
 
 static void fontsize_free(t_fontsize *x){
@@ -50,20 +50,20 @@ static void fontsize_free(t_fontsize *x){
 
 static void *fontsize_new(t_floatarg f1){
     t_fontsize *x = (t_fontsize *)pd_new(fontsize_class);
-    x->x_canvas = canvas_getcurrent();
+    x->x_cv = canvas_getrootfor(canvas_getcurrent());
     int depth = f1 < 0 ? 0 : (int)f1;
-    while(depth-- && x->x_canvas->gl_owner)
-        x->x_canvas = x->x_canvas->gl_owner;
+    while(depth-- && x->x_cv->gl_owner)
+        x->x_cv = canvas_getrootfor(x->x_cv->gl_owner);
     char buf[MAXPDSTRING];
-    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)x->x_canvas);
+    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)x->x_cv);
     buf[MAXPDSTRING-1] = 0;
     x->x_proxy = fontsize_proxy_new(x, gensym(buf));
     outlet_new(&x->x_obj, 0);
     return(x);
 }
 
-void setup_canvas0x2efontsize(void){
-    fontsize_class = class_new(gensym("canvas.fontsize"), (t_newmethod)fontsize_new,
+void fontsize_setup(void){
+    fontsize_class = class_new(gensym("fontsize"), (t_newmethod)fontsize_new,
         (t_method)fontsize_free, sizeof(t_fontsize), CLASS_NOINLET, A_DEFFLOAT, 0);
     class_addmethod(fontsize_class, (t_method)fontsize_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     fontsize_proxy_class = class_new(0, 0, 0, sizeof(t_fontsize_proxy),
