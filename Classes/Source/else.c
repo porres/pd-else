@@ -45,7 +45,7 @@ void print_else_obj(t_else_obj *x){
     post("- Author: Alexandre Torres Porres");
     post("- Repositoty: https://github.com/porres/pd-else");
     post("- License: Do What The Fuck You Want To Public License, unless otherwise noted");
-    if(major > = min_major && minor >= min_minor && bugfix >= min_bugfix)
+    if(major >= min_major && minor >= min_minor && bugfix >= min_bugfix)
         post("- ELSE 1.0.-0 %s-%d needs at least Pd %d.%d-%d (you have %d.%d-%d, you're good!)",
              STATUS, status_number, min_major, min_minor, min_bugfix, major, minor, bugfix);
     else
