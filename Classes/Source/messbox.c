@@ -222,28 +222,17 @@ static void messbox_bang(t_messbox* x){
     }
 }
 
-static void messbox_do_clear(t_messbox* x){
-    sys_vgui("%s configure -state normal\n", x->text_id);
-    sys_vgui("%s delete 0.0 end \n", x->text_id);
-    if(!x->x_active)
-        sys_vgui("%s configure -state disabled\n", x->text_id);
-}
-
-static void messbox_clear(t_messbox* x, t_symbol *s, int ac, t_atom *av){
-    x->x_open ? outlet_anything(x->x_obj.ob_outlet, s, ac, av) : messbox_do_clear(x);
-}
-
 static void messbox_append(t_messbox* x,  t_symbol *s, int ac, t_atom *av){
     if(x->x_open)
         outlet_anything(x->x_obj.ob_outlet, s, ac, av);
     else{
         sys_vgui("%s configure -state normal\n", x->text_id);
         for(int i = 0; i < ac; i++){
-            t_symbol *tmp_symbol = atom_getsymbolarg(i, ac, av);
-            if(tmp_symbol == &s_)
+            t_symbol *sym = atom_getsymbolarg(i, ac, av);
+            if(sym == &s_)
                 sys_vgui("lappend ::%s::list %g\n", x->tcl_namespace, atom_getfloatarg(i, ac , av));
             else
-                sys_vgui("lappend ::%s::list %s\n", x->tcl_namespace, tmp_symbol->s_name);
+                sys_vgui("lappend ::%s::list %s\n", x->tcl_namespace, sym->s_name);
         }
         sys_vgui("append ::%s::list \" \"\n", x->tcl_namespace);
         sys_vgui("%s insert end $::%s::list ; unset ::%s::list\n", x->text_id, x->tcl_namespace, x->tcl_namespace);
@@ -259,7 +248,20 @@ static void messbox_set(t_messbox *x, t_symbol *s, int ac, t_atom *av){
     else{
         sys_vgui("%s configure -state normal\n", x->text_id);
         sys_vgui("%s delete 0.0 end \n", x->text_id);
-        messbox_append(x, s, ac, av);
+        if(ac){
+            for(int i = 0; i < ac; i++){
+                t_symbol *sym = atom_getsymbolarg(i, ac, av);
+                if(sym == &s_)
+                    sys_vgui("lappend ::%s::list %g\n", x->tcl_namespace, atom_getfloatarg(i, ac , av));
+                else
+                    sys_vgui("lappend ::%s::list %s\n", x->tcl_namespace, sym->s_name);
+            }
+            sys_vgui("append ::%s::list \" \"\n", x->tcl_namespace);
+            sys_vgui("%s insert end $::%s::list ; unset ::%s::list\n", x->text_id, x->tcl_namespace, x->tcl_namespace);
+            sys_vgui("%s yview end-2char\n", x->text_id);
+        }
+        if(!x->x_active)
+            sys_vgui("%s configure -state disabled\n", x->text_id);
     }
 }
 
@@ -333,6 +335,7 @@ static void messbox_size(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void messbox_key(void *z, t_floatarg f){
+//    post("key = %d", (int)f);
     if(f == 0){
         t_messbox *x = z;
         sys_vgui("%s configure -state disabled\n", x->text_id);
@@ -343,6 +346,7 @@ static void messbox_key(void *z, t_floatarg f){
 static int messbox_click(t_gobj *z, t_glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
     xpix = ypix = alt = dbl = 0;
     if(doit){
+//        post("do it");
         t_messbox *x = (t_messbox *)z;
         x->x_active = 1;
         sys_vgui("%s configure -state normal\n", x->text_id);
@@ -518,7 +522,6 @@ void messbox_setup(void){
     class_addmethod(messbox_class, (t_method)messbox_output, gensym("output"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_set, gensym("set"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_append, gensym("append"), A_GIMME, 0);
-    class_addmethod(messbox_class, (t_method)messbox_clear, gensym("clear"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_bgcolor, gensym("bgcolor"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_fgcolor, gensym("fgcolor"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
