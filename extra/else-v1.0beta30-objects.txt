@@ -16,6 +16,7 @@ balance~	x
 bandpass~	x
 bandstop~	x
 bangdiv	x
+batch.rec~	x
 bend.in	x
 bend.out	x
 bicoeff	x
