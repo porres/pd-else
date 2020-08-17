@@ -8,7 +8,7 @@
 
 ### Version: 1.0-0 beta-30 With Live Electronics Tutorial 
 
-###   Unreleased
+###   Released august 18th 2020
 
 
 
@@ -62,7 +62,7 @@
 
 ​	ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path. Nonetheless, it can also be loaded as a library via "Preferences => Startup" or with [declare -lib else], and this is the oficial way of loading 'else' - even though that all this does is just print the library information on Pd's terminal window. 
 
-​	It's important to stress this release needs Pd Vanilla 0.51-0 or above (Pd Extended/Purr Data aren't supported). 
+​	It's important to stress this release needs Pd Vanilla 0.51-1 or above (Pd Extended/Purr Data aren't supported). 
 
 
 
@@ -88,7 +88,7 @@ It will still take a little while for ELSE to stabilize into a final version. Fo
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
 
-<pre>make pdincludepath=~/pd-0.51-0/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.51-0/bin/)</pre>
+<pre>make pdincludepath=~/pd-0.51-1/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.51-1/bin/)</pre>
 
 * Installing with pdlibbuilder
 
