@@ -1,4 +1,4 @@
-#N canvas 744 74 565 592 10;
+#N canvas 507 70 565 592 10;
 #X obj 5 565 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 5 201 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -161,22 +161,45 @@ save multichannel files., f 62;
 #X obj 170 173 else/sample~ \$0-sample stereo.wav;
 #X text 218 472 - buffer name (default sample_\$0), f 44;
 #X text 146 547 -ch <float> - sets number of channels (default 1);
-#N canvas 635 420 834 477 rec/play 1;
-#X obj 206 118 else/sample~ buf_\$0 -ch 2;
-#X obj 162 223 else/rec~ buf_\$0 2;
-#X obj 214 167 else/cusp~ 50;
-#X obj 267 195 else/rampnoise~ 90;
-#X obj 162 183 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#N canvas 754 82 467 586 rec/play 0;
+#X obj 121 335 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X obj 73 136 else/setdsp~;
-#X text 43 34 You can use [sample~] to define a buffer that you can
+#X obj 74 200 else/setdsp~;
+#X obj 113 423 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 118 496 else/out~;
+#X msg 211 237 show;
+#X obj 113 458 else/tabplayer~ buf_\$0 2 -loop 1;
+#X obj 173 319 else/cusp~ 250;
+#X obj 226 347 else/rampnoise~ 490;
+#X text 50 339 record =>;
+#X text 145 426 <= play;
+#X msg 192 195 ms 2000;
+#X text 251 237 <= click;
+#X text 34 28 You can use [sample~] to define a buffer that you can
 record into. Below we have a stereo buffer. By default \, the buffer
-size is one second \, as below. You can use [tabwrite~] or [else/rec~]
-to record into arrays with multi-channel support., f 56;
-#X obj 153 301;
-#X connect 2 0 1 1;
-#X connect 3 0 1 2;
-#X connect 4 0 1 0;
+size is one second. You can set the size at creation by using flags
+either in samples (with '-size') or in ms (with '-ms'). Note that if
+you are using [sample~] to load files \, this will also set a maximum
+size for the loaded sample. You can change the size with the 'size'
+or 'ms' messages \, which will also set a maximum limit for loading
+samples., f 61;
+#X text 33 124 You can use [tabwrite~] or \, alternatively \, [else/rec~]
+from ELSE to record into arrays with multi-channel support. Moreover
+\, you can use [tabplay~] or better yet \, [tabplayer~] from ELSE (which
+also has multi-channel support)., f 64;
+#X text 250 195 <= change from default (1 second) to 2 seconds, f
+24;
+#X obj 121 375 else/rec~ buf_\$0 2;
+#X obj 192 267 else/sample~ buf_\$0 -ch 2;
+#X connect 0 0 15 0;
+#X connect 2 0 5 0;
+#X connect 4 0 16 0;
+#X connect 5 0 3 0;
+#X connect 5 1 3 1;
+#X connect 6 0 15 1;
+#X connect 7 0 15 2;
+#X connect 10 0 16 0;
 #X restore 472 169 pd rec/play;
 #X connect 21 0 58 0;
 #X connect 22 0 58 0;
