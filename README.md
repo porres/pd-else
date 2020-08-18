@@ -6,9 +6,9 @@
 
 
 
-### Version: 1.0-0 beta-30 With Live Electronics Tutorial 
+### Version: 1.0-0 beta-31 With Live Electronics Tutorial 
 
-###   Released august 18th 2020
+###   Unreleased
 
 
 
