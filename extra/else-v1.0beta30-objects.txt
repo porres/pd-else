@@ -343,6 +343,7 @@ sysrt.in	x
 sysrt.out	x
 t2	x
 table~	x
+tabplayer~	x
 tremolo~	x
 trig.delay~	x
 trig.delay2~	x

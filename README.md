@@ -22,6 +22,7 @@
 
 
 
+
    This work is free. You can redistribute it and/or modify it under the
    terms of the Do What The Fuck You Want To Public License, Version 2,
    as published by Sam Hocevar. See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
@@ -115,7 +116,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (372 objects):
+## Current Object list (373 objects):
 
 **ASSORTED: [04]**
 - [table~]
@@ -348,7 +349,7 @@ Cross compiling is also possible with something like this
 - [resonant2~]
 - [svfilter~]
 
-**SAMPLING/PLAYING/GRANULATION: [09]**
+**SAMPLING/PLAYING/GRANULATION: [10]**
 
 - [player~]
 - [gran.player~]
@@ -358,6 +359,7 @@ Cross compiling is also possible with something like this
 - [batch.rec~]
 - [rec.file~]
 - [play.file~]
+- [tabplayer~]
 - [sample~]
 
 **PHYSICAL MODELLING: [01]**
