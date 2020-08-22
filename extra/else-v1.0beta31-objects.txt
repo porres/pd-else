@@ -226,6 +226,7 @@ out4~	x
 out8~	x
 output~	x
 pack2~	x
+pad	x
 pan2~	x
 pan4~	x
 pan8~	x

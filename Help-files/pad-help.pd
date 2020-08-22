@@ -1,0 +1,60 @@
+#N canvas 767 23 564 474 10;
+#X obj 6 354 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 388 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 417 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 6 446 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 111 362 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 25 43 cnv 4 4 4 empty empty Mouse 0 28 2 18 -233017 -1 0;
+#X obj 85 43 cnv 4 4 4 empty empty pad 0 28 2 18 -233017 -1 0;
+#X obj 308 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 307 6 pd;
+#X obj 347 14 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 460 14 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 480 14 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 517 14 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 466 29 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 504 29 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 111 395 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 160 395 anything;
+#X obj 4 6 cnv 15 301 42 empty empty pad 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 4 6 graph;
+#X text 184 425 none;
+#X obj 241 196 else/pad 50 75;
+#X text 152 213 [else/pad] =>;
+#X obj 308 311 else/display;
+#X obj 241 311 else/display;
+#X obj 241 282 route list click, f 23;
+#X text 223 395 - list of coords or click message;
+#X text 357 315 click \, shift \, alt;
+#X text 154 315 coords (x \, y);
+#X msg 241 139 dim 100 50;
+#X msg 253 165 dim 50 75;
+#X text 148 362 dim <f \, f>;
+#X text 223 362 - set dimension (horizontal and vertical);
+#X text 63 93 [pad] is a GUI that reports mouse click information and
+mouse coordinates over the GUI area. The click message also reports
+if you have the shift and alt key pressed., f 77;
+#X text 322 149 (default 127 127);
+#X connect 20 0 24 0;
+#X connect 24 0 23 0;
+#X connect 24 1 22 0;
+#X connect 28 0 20 0;
+#X connect 29 0 20 0;
+#X coords 0 474 1 473 127 127 0;
