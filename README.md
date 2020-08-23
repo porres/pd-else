@@ -117,7 +117,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (374 objects):
+## Current Object list (375 objects):
 
 **ASSORTED: [04]**
 - [table~]
@@ -392,9 +392,11 @@ Cross compiling is also possible with something like this
 - [bl.vsaw~]
 - [bl.wavetable~]
 
-**CHAOTIC GENERATORS: [24]**
+**CHAOTIC/NOISE GENERATORS: [25]**
+
 - [brown~] 
 - [clipnoise~] 
+- [perlin~] 
 - [crackle~] 
 - [cusp~] 
 - [fbsine~] 

@@ -233,6 +233,7 @@ pan8~	x
 panic	x
 parabolic~	x
 peak~	x
+perlin~	x
 pgm.in	x
 pgm.out	x
 phaser~	x

@@ -1,0 +1,29 @@
+#N canvas 480 51 1039 548 12;
+#X floatatom 83 73 5 0 0 0 - - -;
+#X floatatom 165 73 5 0 0 0 - - -;
+#X obj 467 212 scope~ 398 177 18 3 128 -1 1 0 0 0 0 205 229 232 74
+79 77 96 98 102 0 empty;
+#X floatatom 508 176 5 0 0 0 - - -;
+#X floatatom 853 176 5 0 0 0 - - -;
+#X obj 84 111 perlin~ 632;
+#X obj 106 377 out~;
+#X obj 98 296 else/plate.rev~ 50 0.6 0.25 0.8 0.6;
+#X obj 81 16 hsl 128 15 100 10000 0 0 empty empty empty -2 -8 0 10
+-262144 -1 -1 2200 1;
+#X msg 99 42 100;
+#X msg 137 46 5000;
+#X obj 360 268 meter~;
+#X obj 56 198 sig~ 400;
+#X obj 146 208 drive~ 1.5;
+#X connect 0 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 1;
+#X connect 5 0 13 0;
+#X connect 7 0 6 0;
+#X connect 7 1 6 1;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X connect 13 0 7 0;
+#X connect 13 0 11 0;
+#X connect 13 0 2 0;
