@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 ​	Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I first started coding and collaborating with the objects: [median~] and [keyboard]. 
 
-​	I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also collaborating with the [float2bits], [brown~],  [gray~] and [pinknoise~] objects.
+​	I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also collaborating with the [float2bits], [brown~],  [gray~], [perlin~] and [pinknoise~] objects.
 
 
 

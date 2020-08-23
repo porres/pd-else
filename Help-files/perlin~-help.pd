@@ -1,29 +1,54 @@
-#N canvas 480 51 1039 548 12;
-#X floatatom 83 73 5 0 0 0 - - -;
-#X floatatom 165 73 5 0 0 0 - - -;
-#X obj 467 212 scope~ 398 177 18 3 128 -1 1 0 0 0 0 205 229 232 74
-79 77 96 98 102 0 empty;
-#X floatatom 508 176 5 0 0 0 - - -;
-#X floatatom 853 176 5 0 0 0 - - -;
-#X obj 84 111 perlin~ 632;
-#X obj 106 377 out~;
-#X obj 98 296 else/plate.rev~ 50 0.6 0.25 0.8 0.6;
-#X obj 81 16 hsl 128 15 100 10000 0 0 empty empty empty -2 -8 0 10
--262144 -1 -1 2200 1;
-#X msg 99 42 100;
-#X msg 137 46 5000;
-#X obj 360 268 meter~;
-#X obj 56 198 sig~ 400;
-#X obj 146 208 drive~ 1.5;
-#X connect 0 0 5 0;
-#X connect 3 0 2 0;
-#X connect 4 0 2 1;
-#X connect 5 0 13 0;
-#X connect 7 0 6 0;
-#X connect 7 1 6 1;
-#X connect 8 0 0 0;
-#X connect 9 0 0 0;
-#X connect 10 0 0 0;
-#X connect 13 0 7 0;
-#X connect 13 0 11 0;
-#X connect 13 0 2 0;
+#N canvas 884 86 563 393 10;
+#X obj 194 128 hsl 128 15 100 10000 1 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 0 1;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Perlin 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 75 40 cnv 4 4 4 empty empty noise 0 28 2 18 -233017 -1 0;
+#X obj 3 367 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 3 266 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 302 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 338 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 94 311 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 92 276 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 160 312 signal;
+#X text 147 345 1) float;
+#X obj 191 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.4 256;
+#X text 124 276 float/signal;
+#X obj 123 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
+0;
+#X obj 191 202 else/out~;
+#X text 207 345 - sets frequency in hertz (default: nyquist);
+#X obj 2 3 cnv 15 301 42 empty empty perlin~ 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#X text 250 152 frequency in Hz;
+#X text 207 313 - perlin noise signal;
+#X obj 191 177 else/perlin~ 666;
+#X text 207 276 - frequency in hertz;
+#X text 65 89 [perlin~] is a perlin noise generator abstraction. It
+takes a frequency value in hertz (negative values are not allowed).
+, f 65;
+#X connect 0 0 17 0;
+#X connect 17 0 26 0;
+#X connect 26 0 20 0;
