@@ -1,6 +1,6 @@
 #N canvas 884 86 563 393 10;
 #X obj 194 128 hsl 128 15 100 10000 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
+-228856 -1 -1 5700 1;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -31,7 +31,7 @@
 #X text 160 312 signal;
 #X text 147 345 1) float;
 #X obj 191 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.4 256;
+-228856 -1 -1 790.019 256;
 #X text 124 276 float/signal;
 #X obj 123 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
@@ -47,8 +47,8 @@
 #X obj 191 177 else/perlin~ 666;
 #X text 207 276 - frequency in hertz;
 #X text 65 89 [perlin~] is a perlin noise generator abstraction. It
-takes a frequency value in hertz (negative values are not allowed).
-, f 65;
+takes a frequency value in hertz (values under 0 and above nyquist
+are aliased)., f 62;
 #X connect 0 0 17 0;
 #X connect 17 0 26 0;
 #X connect 26 0 20 0;
