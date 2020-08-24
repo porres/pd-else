@@ -21,14 +21,14 @@ else.class.sources := Classes/Source/else.c
 cmul~.class.sources := Classes/Source/cmul~.c
 
 # GUI:
-gui.class.sources := Classes/Source/gui.c
-pad.class.sources := Classes/Source/pad.c
-function.class.sources := Classes/Source/function.c
+pic.class.sources := Classes/Source/pic.c
 keyboard.class.sources := Classes/Source/keyboard.c
+function.class.sources := Classes/Source/function.c
+pad.class.sources := Classes/Source/pad.c
 note.class.sources := Classes/Source/note.c
 openfile.class.sources := Classes/Source/openfile.c
 colors.class.sources := Classes/Source/colors.c
-pic.class.sources := Classes/Source/pic.c
+gui.class.sources := Classes/Source/gui.c
 
 # control:
 args.class.sources := Classes/Source/args.c

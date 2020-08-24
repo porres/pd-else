@@ -3,12 +3,20 @@
 #include "m_pd.h"
 #include "g_canvas.h"
 
-t_widgetbehavior pad_widgetbehavior;
-static t_class *pad_class;
+static t_class *pad_class, *edit_proxy_class;
+static t_widgetbehavior pad_widgetbehavior;
+
+typedef struct _edit_proxy{
+    t_object    p_obj;
+    t_symbol   *p_sym;
+    t_clock    *p_clock;
+    struct      _pad *p_cnv;
+}t_edit_proxy;
 
 typedef struct _pad{
     t_object        x_obj;
     t_glist        *x_glist;
+    t_edit_proxy   *x_proxy;
     t_symbol       *x_bindname;
     int             x_x;
     int             x_y;
@@ -16,18 +24,34 @@ typedef struct _pad{
     int             x_h;
     int             x_sel;
     int             x_zoom;
+    int             x_edit;
     unsigned char   x_color[3];
 }t_pad;
+
+static void pad_draw_io_let(t_pad *x){
+    if(x->x_edit){
+        t_canvas *cv = glist_getcanvas(x->x_glist);
+        int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_in\n",
+            cv, xpos, ypos, xpos+(IOWIDTH*x->x_zoom), ypos+(IHEIGHT*x->x_zoom), x);
+        sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags %lx_out\n",
+            cv, xpos, ypos+x->x_h, xpos+IOWIDTH*x->x_zoom, ypos+x->x_h-IHEIGHT*x->x_zoom, x);
+    }
+}
 
 static void pad_draw(t_pad *x, t_glist *glist){
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline %s -fill #%2.2x%2.2x%2.2x -tags %lxBASE\n",
         glist_getcanvas(glist), xpos, ypos, xpos + x->x_w*x->x_zoom, ypos + x->x_h*x->x_zoom,
         x->x_zoom, x->x_sel ? "blue" : "black", x->x_color[0], x->x_color[1], x->x_color[2], x);
+    pad_draw_io_let(x);
 }
 
 static void pad_erase(t_pad* x, t_glist* glist){
-    sys_vgui(".x%lx.c delete %lxBASE\n", glist_getcanvas(glist), x);
+    t_canvas *cv = glist_getcanvas(glist);
+    sys_vgui(".x%lx.c delete %lxBASE\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
 }
 
 static void pad_update(t_pad *x){
@@ -89,9 +113,11 @@ static void pad_save(t_gobj *z, t_binbuf *b){
 }
 
 static void pad_mouserelease(t_pad* x){
-    t_atom at[1];
-    SETFLOAT(at, 0);
-    outlet_anything(x->x_obj.ob_outlet, gensym("click"), 1, at);
+    if(!x->x_glist->gl_edit){ // ignore if toggle or edit mode!
+        t_atom at[1];
+        SETFLOAT(at, 0);
+        outlet_anything(x->x_obj.ob_outlet, gensym("click"), 1, at);
+    }
 }
 
 static void pad_motion(t_pad *x, t_floatarg dx, t_floatarg dy){
@@ -169,13 +195,65 @@ static void pad_zoom(t_pad *x, t_floatarg zoom){
     pad_update(x);
 }
 
+static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
+    int edit = ac = 0;
+    if(p->p_cnv){
+        if(s == gensym("editmode"))
+            edit = (int)(av->a_w.w_float);
+         else if(s == gensym("obj") || s == gensym("msg") || s == gensym("floatatom")
+        || s == gensym("symbolatom") || s == gensym("text") || s == gensym("bng")
+        || s == gensym("toggle") || s == gensym("numbox") || s == gensym("vslider")
+        || s == gensym("hslider") || s == gensym("vradio") || s == gensym("hradio")
+        || s == gensym("vumeter") || s == gensym("mycnv")){
+            edit = 1;
+        }
+        else
+            return;
+        if(p->p_cnv->x_edit != edit){
+            p->p_cnv->x_edit = edit;
+            if(edit)
+                pad_draw_io_let(p->p_cnv);
+            else{
+                t_canvas *cv = glist_getcanvas(p->p_cnv->x_glist);
+                sys_vgui(".x%lx.c delete %lx_in\n", cv, p->p_cnv);
+                sys_vgui(".x%lx.c delete %lx_out\n", cv, p->p_cnv);
+            }
+        }
+    }
+}
+
+static void pad_free(t_pad *x){
+    pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
+    x->x_proxy->p_cnv = NULL;
+    clock_delay(x->x_proxy->p_clock, 0);
+    gfxstub_deleteforkey(x);
+}
+
+static void edit_proxy_free(t_edit_proxy *p){
+    pd_unbind(&p->p_obj.ob_pd, p->p_sym);
+    clock_free(p->p_clock);
+    pd_free(&p->p_obj.ob_pd);
+}
+
+static t_edit_proxy * edit_proxy_new(t_pad *x, t_symbol *s){
+    t_edit_proxy *p = (t_edit_proxy*)pd_new(edit_proxy_class);
+    p->p_cnv = x;
+    pd_bind(&p->p_obj.ob_pd, p->p_sym = s);
+    p->p_clock = clock_new(p, (t_method)edit_proxy_free);
+    return(p);
+}
+
 static void *pad_new(t_symbol *s, int ac, t_atom *av){
     t_pad *x = (t_pad *)pd_new(pad_class);
-    x->x_glist = (t_glist *)canvas_getcurrent();
+    t_canvas *cv = canvas_getcurrent();
+    x->x_glist = (t_glist*)cv;
     char buf[MAXPDSTRING];
+    snprintf(buf, MAXPDSTRING-1, ".x%lx", (unsigned long)cv);
+    buf[MAXPDSTRING-1] = 0;
+    x->x_proxy = edit_proxy_new(x, gensym(buf));
     sprintf(buf, "#%lx", (long)x);
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
-    x->x_zoom = x->x_glist->gl_zoom;
+    x->x_edit = cv->gl_edit;    x->x_zoom = x->x_glist->gl_zoom;
     x->x_x = x->x_y = 0;
     x->x_color[0] = x->x_color[1] = x->x_color[2] = 255;
     int w = 127, h = 127;
@@ -236,11 +314,6 @@ static void *pad_new(t_symbol *s, int ac, t_atom *av){
         return(NULL);
 }
 
-static void pad_free(t_pad *x){
-    pd_unbind(&x->x_obj.ob_pd, x->x_bindname);
-    gfxstub_deleteforkey(x);
-}
-
 void pad_setup(void){
     pad_class = class_new(gensym("pad"), (t_newmethod)pad_new,
         (t_method)pad_free, sizeof(t_pad), 0, A_GIMME, 0);
@@ -250,6 +323,8 @@ void pad_setup(void){
     class_addmethod(pad_class, (t_method)pad_color, gensym("color"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(pad_class, (t_method)pad_mouserelease, gensym("_mouserelease"), 0);
+    edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
+    class_addanything(edit_proxy_class, edit_proxy_any);
     pad_widgetbehavior.w_getrectfn  = pad_getrect;
     pad_widgetbehavior.w_displacefn = pad_displace;
     pad_widgetbehavior.w_selectfn   = pad_select;
