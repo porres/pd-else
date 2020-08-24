@@ -1,6 +1,6 @@
-#N struct 1006-point float x0 float y0 float xs float ys float fg float
+#N struct 1017-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N canvas 568 100 704 407 10;
+#N canvas 239 119 704 407 10;
 #N canvas 430 192 597 299 \$0-point 0;
 #X obj 20 101 r \$0-vis;
 #X obj 292 79 r \$0-grid;
@@ -34,7 +34,7 @@ fg float in float gridx float gridy, f 93;
 #X connect 6 0 12 0;
 #X restore 68 181 pd \$0-point;
 #X obj 190 10 inlet;
-#N canvas 405 251 322 254 init 0;
+#N canvas 299 202 322 254 init 0;
 #X obj 45 28 inlet;
 #N canvas 256 42 291 311 args 0;
 #X obj 75 31 inlet;
@@ -789,7 +789,7 @@ fg float in float gridx float gridy, f 93;
 #X connect 9 1 1 0;
 #X connect 9 1 2 0;
 #X restore 216 63 pd set-ysize;
-#N canvas 647 566 722 441 resize 0;
+#N canvas 211 542 722 441 resize 0;
 #X obj 76 175 list append 0 0;
 #X obj 163 142 r \$0-coords;
 #X obj 76 322 else/rescale 0 127 0 127;
@@ -1397,7 +1397,7 @@ ysize_\$0 \; $f2 \; $f3, f 31;
 #X connect 24 0 1 0;
 #X connect 25 0 24 1;
 #X connect 26 0 24 0;
-#X restore 69 88 pd steady/jump;
+#X restore 69 89 pd steady/jump;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X connect 2 0 3 0;
@@ -1413,7 +1413,7 @@ ysize_\$0 \; $f2 \; $f3, f 31;
 #X obj 191 101 cnv 15 125 125 empty \$0-bg_cnv empty 20 12 0 14 -262144
 -66577 0;
 #N canvas 375 63 604 469 \$0-point-cnv 0;
-#X scalar 1006-point 64 64 127 127 0 126 63.5 63.5 \;;
+#X scalar 1017-point 0 0 127 127 0 126 63.5 63.5 \;;
 #X coords 0 127 127 0 127 127 2 0 0;
 #X restore 190 100 pd \$0-point-cnv;
 #X connect 1 0 8 0;
