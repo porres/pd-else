@@ -1,30 +1,30 @@
-#N struct 1369-point float x0 float y0 float xs float ys float fg float
+#N struct 1006-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1378-point float x0 float y0 float xs float ys float fg float
+#N struct 1019-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1387-point float x0 float y0 float xs float ys float fg float
+#N struct 1028-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1396-point float x0 float y0 float xs float ys float fg float
+#N struct 1043-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1405-point float x0 float y0 float xs float ys float fg float
+#N struct 1052-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1414-point float x0 float y0 float xs float ys float fg float
+#N struct 1061-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1423-point float x0 float y0 float xs float ys float fg float
+#N struct 1070-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1432-point float x0 float y0 float xs float ys float fg float
+#N struct 1079-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1441-point float x0 float y0 float xs float ys float fg float
+#N struct 1092-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1450-point float x0 float y0 float xs float ys float fg float
+#N struct 1103-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1459-point float x0 float y0 float xs float ys float fg float
+#N struct 1113-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1468-point float x0 float y0 float xs float ys float fg float
+#N struct 1124-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N struct 1137-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N canvas 585 70 561 564 10;
+#N canvas 747 58 561 564 10;
 #X obj 2 3 cnv 15 301 42 empty empty slider2d 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -92,7 +92,7 @@ in float gridx float gridy;
 #X text 232 434 - sets frontground color in RGB, f 52;
 #X text 144 405 grid <float>;
 #X text 232 405 - non zero sets grid visibility, f 52;
-#N canvas 774 104 395 378 set-values 0;
+#N canvas 692 110 395 378 set-values 0;
 #X obj 136 310 else/display;
 #X text 27 23 If you send it a list of x/y coordinates \, the [slider2d]
 object will clip it inside its range and output it.;
@@ -101,7 +101,7 @@ output the incoming value., f 56;
 #X msg 159 139 set 64 64;
 #X msg 136 108 97 100;
 #X obj 136 169 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 0 0 0 empty empty;
+0 0 0 0 64 64 empty empty;
 #X connect 3 0 5 0;
 #X connect 4 0 5 0;
 #X connect 5 0 0 0;
@@ -124,9 +124,9 @@ set independent range for both x and y with the -xrange \, -yrange
 or xrange \, yrange messages. Note that a bang rescales the last output
 according to the new range., f 64;
 #X obj 294 232 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 0 0 0 empty empty;
+0 0 0 0 66 70 empty empty;
 #X obj 105 219 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 0 0 0 empty empty;
+0 0 0 0 85 84 empty empty;
 #X connect 1 0 10 0;
 #X connect 1 0 11 0;
 #X connect 2 0 11 0;
@@ -138,7 +138,7 @@ according to the new range., f 64;
 #X connect 10 0 4 0;
 #X connect 11 0 0 0;
 #X restore 128 144 pd range;
-#N canvas 465 252 629 454 resize 0;
+#N canvas 502 197 629 454 resize 0;
 #X obj 66 378 else/display;
 #X msg 66 200 size \$1;
 #X obj 69 141 hsl 100 15 18 127 0 0 empty empty empty -2 -8 0 10 -228856
@@ -162,11 +162,11 @@ according to the new range., f 64;
 #X text 259 34 You can also set x and y dimensions independently with
 '-xsize'/'-ysize' flags or the 'xsize'/'ysize' messages., f 51;
 #X obj 439 232 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 0 0 0 empty empty;
+0 0 0 0 51 78.2053 empty empty;
 #X obj 270 232 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 0 0 0 empty empty;
+0 0 0 0 112.889 9 empty empty;
 #X obj 66 233 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
-0 0 0 0 0 empty empty;
+0 0 0 89 28 empty empty;
 #X obj 66 108 else/initmess 127;
 #X obj 270 108 else/initmess 127;
 #X obj 439 108 else/initmess 127;
@@ -186,7 +186,7 @@ according to the new range., f 64;
 #X connect 18 0 5 0;
 #X connect 19 0 9 0;
 #X restore 128 164 pd resize;
-#N canvas 441 38 469 540 colors 0;
+#N canvas 459 67 469 540 colors 0;
 #X obj 229 164 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
 -262144 -1 12700 0;
 #X obj 278 164 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4033
@@ -201,7 +201,7 @@ according to the new range., f 64;
 -262144 -1 0 0;
 #X obj 51 316 pack2 fgcolor 0 0 0;
 #X obj 180 372 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 1 0 0 empty empty;
+0 0 0 1 64 64 empty empty;
 #X obj 180 316 pack2 bgcolor 255 255 255;
 #X text 119 31 You can set background and frontground colors with 'bgcolor'/'fgcolor'
 messages and '-bgcolor'/'-fgcolor' flags., f 40;
@@ -225,16 +225,16 @@ messages and '-bgcolor'/'-fgcolor' flags., f 40;
 #X connect 13 0 4 0;
 #X connect 13 0 5 0;
 #X restore 62 164 pd colors;
-#N canvas 495 251 331 438 line-grid 0;
-#X obj 79 224 else/slider2d 127 127 0 127 0 127 0 255 255 255 0 0 0
-0 0 1 0 0 empty empty;
+#N canvas 560 241 331 438 line-grid 0;
+#X obj 79 224 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
+1 0 1 45 86 empty empty;
 #X obj 79 366 else/display;
 #X msg 105 191 line \$1;
-#X obj 105 163 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 105 163 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X text 45 21 You can set the 'line' visibility with the line message
 or '-line' flag. Line is visible by default., f 40;
-#X obj 172 163 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 172 163 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X msg 172 191 grid \$1;
 #X text 45 64 There's also a grid visibility option (invisible by default).
@@ -249,15 +249,15 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #X restore 128 185 pd line-grid;
 #X text 249 140 click and drag =>;
 #X text 283 225 x/y values:;
-#N canvas 465 252 311 361 jump 0;
+#N canvas 696 312 311 361 jump 0;
 #X obj 88 286 else/display;
 #X text 78 31 You can set the size with the '-size' flag or with the
 'size' message., f 25;
 #X msg 88 116 jump \$1;
-#X obj 88 92 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
+#X obj 88 92 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
 ;
 #X obj 88 141 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
-0 0 0 0 0 empty empty;
+0 1 0 60 51 empty empty;
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;
 #X connect 4 0 0 0;
@@ -265,7 +265,7 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #N canvas 700 46 429 340 init 0;
 #X obj 141 269 else/display;
 #X obj 141 124 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 1 0 0 empty empty, f 63;
+0 0 0 1 64 64 empty empty, f 63;
 #X text 77 33 With the 'init' message or '-init' flag \, the GUI operates
 in 'init mode' \, where it outputs the last saved value when you load
 the patch., f 46;
@@ -273,7 +273,7 @@ the patch., f 46;
 #X connect 1 0 0 0;
 #X connect 3 0 1 0;
 #X restore 75 205 pd init;
-#N canvas 495 227 586 201 flags 0;
+#N canvas 690 298 586 201 flags 0;
 #X text 100 29 -size <float>: sets x/y size (default: 127), f 70;
 #X text 100 59 -range: sets x/y range <float \, float> (default: 0
 \, 127), f 70;
@@ -324,13 +324,13 @@ the patch., f 46;
 #X connect 9 0 3 0;
 #X connect 10 0 0 0;
 #X restore 92 225 pd example;
-#N canvas 757 48 552 413 send/receive 0;
+#N canvas 911 146 552 413 send/receive 0;
 #X msg 65 222 64 64;
 #X obj 65 309 display;
 #X msg 354 74 receive \\\$0-slider2d-rcv \, send \\\$0-slider2d-snd
 , f 25;
 #X obj 354 234 slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0 0 0
-0 0 0 empty empty;
+0 51 72 empty empty;
 #X text 74 53 You can also set send/receive names with the 'send'/'receive'
 messages or '-send'/'-receive' flags., f 31;
 #X msg 372 123 receive \\\$0-rcv \, send \\\$0-snd, f 16;
@@ -358,7 +358,7 @@ in: "\\\$0")., f 24;
 #X obj 359 61 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 359 89 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
-0 0 0 18 73 empty empty;
+0 0 0 0 0 empty empty;
 #X text 56 90 [slider2d] is a two dimensional slider GUI abstraction
 (see also [else/circle)., f 42;
 #X connect 63 0 64 0;
