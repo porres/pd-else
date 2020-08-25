@@ -1,4 +1,4 @@
-#N canvas 381 86 564 638 10;
+#N canvas 645 109 561 611 10;
 #X obj 2 3 cnv 15 301 42 empty empty xgate~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -137,7 +137,7 @@
 ;
 #X obj 4 530 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 613 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 585 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 97 507 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
@@ -147,39 +147,8 @@
 #X text 158 422 float;
 #X text 116 440 time <float>;
 #X text 194 440 - crossfade time in ms;
-#X obj 3 586 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 161 593 -lin;
-#X text 195 593 - sets crossfade type to linear (default is equal power)
-;
 #X text 176 477 ep;
 #X text 170 459 lin;
-#N canvas 840 91 418 509 crossfade_modes 0;
-#X floatatom 98 159 3 0 1 0 - - -;
-#X obj 98 121 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X msg 127 219 ep;
-#X msg 137 248 lin;
-#X text 22 62 You can also change the crossfade mode to linear and
-equal power with the 'lin' and 'ep' messages \, respectively.;
-#X text 154 219 change to equal power (default);
-#X text 166 247 change to linear;
-#X obj 115 187 sig~ 1;
-#X obj 98 349 vsl 17 128 0 1 0 0 sdgdfg sdfhjmjmj empty 0 -9 0 10 -228856
--1 -1 0 1;
-#X obj 326 402 else/setdsp~;
-#X obj 98 280 else/xgate~ 1 2000 -lin;
-#X text 21 14 By default \, [xgate~] adopts an equal power crossfading
-function (sin/cos). You can set it to linear crossfade when creating
-the object with the -lin flag.;
-#X obj 98 311 else/sig2float~;
-#X connect 0 0 10 0;
-#X connect 1 0 0 0;
-#X connect 2 0 10 0;
-#X connect 3 0 10 0;
-#X connect 7 0 10 0;
-#X connect 10 0 12 0;
-#X connect 12 0 8 0;
-#X restore 427 367 pd crossfade_modes;
 #X text 194 459 - change crossfade type to linear;
 #X text 194 477 - change crossfade type to equal power;
 #X text 141 551 2) float - crossfade time in ms (default 0 - no crossfade)
@@ -200,13 +169,13 @@ max 500);
 #X text 79 240 [else/meter4~] =>;
 #X obj 186 336 else/out4~;
 #X connect 13 0 15 0;
-#X connect 15 0 45 0;
-#X connect 15 1 45 1;
-#X connect 15 2 45 2;
-#X connect 15 3 45 3;
-#X connect 37 0 38 0;
-#X connect 38 0 15 0;
-#X connect 45 0 47 0;
-#X connect 45 1 47 1;
-#X connect 45 2 47 2;
-#X connect 45 3 47 3;
+#X connect 15 0 41 0;
+#X connect 15 1 41 1;
+#X connect 15 2 41 2;
+#X connect 15 3 41 3;
+#X connect 33 0 34 0;
+#X connect 34 0 15 0;
+#X connect 41 0 43 0;
+#X connect 41 1 43 1;
+#X connect 41 2 43 2;
+#X connect 41 3 43 3;

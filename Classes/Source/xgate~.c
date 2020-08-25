@@ -1,6 +1,7 @@
 // porres 2017
 
 #include "m_pd.h"
+#include <stdlib.h>
 #include <math.h>
 
 static t_class *xgate_class;
@@ -96,37 +97,14 @@ static void xgate_time(t_xgate *x, t_floatarg ms) {
             x->x_counter[i] = x->x_counter[i] / last_fade_in_samps * x->x_fade_in_samps;
 }
 
-void xgate_lin(t_xgate *x) {
-    if(x->x_last_fadetype != LINEAR){ // change to linear
-        int i;
-        for(i = 0; i < x->x_outlets; i++){
-            if(x->x_counter[i]) // adjust counter
-                x->x_counter[i] = x->x_fade[i] * x->x_fade_in_samps;
-        }
-        x->x_last_fadetype = x->x_fadetype = LINEAR;
-    }
-}
-
-void xgate_ep(t_xgate *x) {
-    if(x->x_last_fadetype != EPOWER){ // change to equal power
-        int i;
-        for(i = 0; i < x->x_outlets; i++) {
-            if(x->x_counter[i]){ // adjust counter
-                double ep = 2 - ((acos(x->x_fade[i]) + HALF_PI) / HALF_PI);
-                x->x_counter[i] = ep * x->x_fade_in_samps;
-            }
-        }
-        x->x_last_fadetype = x->x_fadetype = EPOWER;
-    }
-}
-
-static void *xgate_new(t_symbol *s, int argc, t_atom *argv) {
+static void *xgate_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_xgate *x = (t_xgate *)pd_new(xgate_class);
     x->x_sr_khz = sys_getsr() * 0.001;
     t_float ch = 1, ms = 0, fade_mode = EPOWER, init_channel = 0;
     int i;
     int argnum = 0;
-    while(argc > 0){
+    while(argc){
         if(argv -> a_type == A_FLOAT) { //if current argument is a float
             t_float argval = atom_getfloatarg(0, argc, argv);
             switch(argnum){
@@ -141,21 +119,10 @@ static void *xgate_new(t_symbol *s, int argc, t_atom *argv) {
                 default:
                     break;
             };
-            argnum++;
-            argc--;
-            argv++;
         }
-        else if (argv -> a_type == A_SYMBOL){
-            t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-            if(strcmp(curarg->s_name, "-lin")==0) {
-                fade_mode = LINEAR;
-                argc--;
-                argv++;
-                }
-            else{
-                goto errstate;
-            };
-        }
+        argnum++;
+        argc--;
+        argv++;
     };
     x->x_fadetype = x->x_last_fadetype = fade_mode;
     x->x_outlets = ch < 1 ? 1 : ch;
@@ -172,19 +139,14 @@ static void *xgate_new(t_symbol *s, int argc, t_atom *argv) {
         x->x_fade[i] = 0;
     }
     xgate_float(x, init_channel);
-    return (x);
-    errstate:
-        pd_error(x, "xgate~: improper args");
-        return NULL;
+    return(x);
 }
 
 void xgate_tilde_setup(void) {
     xgate_class = class_new(gensym("xgate~"), (t_newmethod)xgate_new, 0,
-                             sizeof(t_xgate), CLASS_DEFAULT, A_GIMME, 0);
+        sizeof(t_xgate), CLASS_DEFAULT, A_GIMME, 0);
     class_addfloat(xgate_class, (t_method)xgate_float);
     class_addmethod(xgate_class, nullfn, gensym("signal"), 0);
     class_addmethod(xgate_class, (t_method)xgate_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xgate_class, (t_method)xgate_time, gensym("time"), A_FLOAT, 0);
-    class_addmethod(xgate_class, (t_method)xgate_lin, gensym("lin"), 0);
-    class_addmethod(xgate_class, (t_method)xgate_ep, gensym("ep"), 0);
 }
