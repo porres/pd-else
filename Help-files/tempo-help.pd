@@ -1,13 +1,13 @@
-#N canvas 627 87 566 624 10;
-#X obj 4 268 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 753 82 560 638 10;
+#X obj 4 262 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 448 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 477 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 484 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 125 450 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 125 457 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 595 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 611 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -33,32 +33,30 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 3 graph;
-#X obj 125 278 cnv 17 3 113 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 125 272 cnv 17 3 124 empty empty 0 5 9 0 16 -228856 -162280
 0;
-#X obj 125 397 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 125 404 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 156 487 1) float;
-#X text 156 506 2) float;
+#X text 156 494 1) float;
+#X text 156 513 2) float;
 #X obj 226 129 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 212 487 - bpm (default 0);
 #X obj 299 176 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 4 530 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 185 540 -on;
-#X text 210 540 - initially turn it on;
+#X obj 4 537 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 185 544 -on;
+#X text 210 544 - initially turn it on;
 #X obj 226 232 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 252 128 on/off;
-#X text 308 155 BPM;
-#X text 225 276 toggle (on/off);
-#X text 164 276 float -;
-#X text 164 398 float -;
-#X obj 125 419 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X text 225 270 toggle (on/off);
+#X text 164 270 float -;
+#X text 164 405 float -;
+#X obj 125 426 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 164 420 float -;
-#X text 170 450 bang -;
-#X text 212 506 - swing deviation in % (default 0);
+#X text 164 427 float -;
+#X text 170 457 bang -;
+#X text 212 513 - swing deviation in % (default 0);
 #N canvas 837 109 444 372 swing 0;
 #X text 43 96 The minimum swing value is 0 (no deviation) and there
 is no maximum value.;
@@ -83,13 +81,13 @@ to a deviation from 60 to 120 bpm and 60 to 30 bpm.;
 #X connect 3 0 8 2;
 #X connect 5 0 6 0;
 #X connect 8 0 2 0;
-#X restore 483 218 pd swing;
-#X text 170 293 bang -;
-#X text 226 420 swing deviation parameter (in %);
+#X restore 492 213 pd swing;
+#X text 170 287 bang -;
+#X text 226 427 swing deviation parameter (in %);
 #X obj 190 129 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 154 130 sync;
-#X text 225 293 sync the metronome;
+#X text 225 287 sync the metronome;
 #N canvas 837 109 449 327 sync 0;
 #X obj 189 166 bng 20 50 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -106,29 +104,28 @@ with an incoming bang.;
 #X connect 1 0 5 0;
 #X connect 2 0 0 0;
 #X connect 3 0 4 0;
-#X restore 490 241 pd sync;
-#X text 164 310 start -;
-#X text 225 310 turn the metronome on;
-#X text 170 342 stop -;
-#X text 225 342 turn the metronome off;
+#X restore 498 234 pd sync;
+#X text 164 304 start -;
+#X text 225 304 turn the metronome on;
+#X text 170 336 stop -;
+#X text 225 336 turn the metronome off;
 #X msg 237 157 start;
 #X msg 244 177 stop;
 #X text 65 85 The [tempo] object sends bang at a time specified in
 bpm or ms. It has a swing parameter and is turned on and off by a toggle.
 , f 61;
-#X text 182 359 ms -;
-#X text 176 375 bpm -;
-#X text 185 558 -ms;
-#X text 225 359 sets time measure to ms;
-#X text 225 375 sets time measure to bpm;
-#X text 210 557 - sets time measure to ms (default bpm);
-#X text 225 450 bangs at metronome beat;
-#X text 226 398 tempo in ms or bpm;
-#X obj 226 206 else/tempo 60;
-#X text 131 576 -div <float>;
-#X text 210 574 - sets tempo subdivision (default 1);
-#X text 140 326 div <float>;
-#X text 223 324 sets tempo subdivision;
+#X text 182 353 ms -;
+#X text 176 383 bpm -;
+#X text 185 562 -ms;
+#X text 225 353 sets time measure to ms;
+#X text 225 383 sets time measure to bpm;
+#X text 210 561 - sets time measure to ms (default bpm);
+#X text 225 457 bangs at metronome beat;
+#X obj 226 206 else/tempo 60, f 25;
+#X text 131 592 -div <float>;
+#X text 210 592 - sets tempo subdivision (default 1);
+#X text 140 320 div <float>;
+#X text 223 318 sets tempo subdivision;
 #N canvas 837 109 401 473 subdivision 0;
 #X text 28 23 You can set a tempo subdivision with the -div flag or
 the "div" message". You can also use object like [count] and [bangdiv]
@@ -161,8 +158,14 @@ to manage tempo subdivisions.;
 #X connect 10 0 2 0;
 #X connect 11 0 7 0;
 #X connect 12 0 11 0;
-#X restore 447 196 pd subdivision;
-#N canvas 820 257 387 259 ms 0;
+#X restore 456 191 pd subdivision;
+#X text 308 155 BPM (or another setting);
+#X text 182 368 hz -;
+#X text 225 368 sets time measure to hertz;
+#X text 226 405 tempo in ms \, hz or bpm;
+#X text 185 577 -hz;
+#X text 210 576 - sets time measure to hertz (default bpm);
+#N canvas 965 191 713 275 ms/hz 0;
 #X obj 139 87 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 139 164 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -171,15 +174,33 @@ to manage tempo subdivisions.;
 #X msg 176 89 ms;
 #X msg 185 110 bpm;
 #X obj 139 136 else/tempo 150 -ms;
-#X text 53 34 You can set the tempo either as bpm or ms.;
+#X text 53 34 You can set the tempo as bpm \, hz or ms.;
+#X obj 391 101 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 391 178 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 380 80 on/off;
+#X obj 391 150 else/tempo 2 -hz;
+#X obj 358 116 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X msg 454 84 hz 1 \, bang;
+#X msg 470 113 bpm 100 \, bang;
+#X text 345 21 As with other Pd objects \, a message with more than
+one element gets spread in the inlets., f 39;
 #X connect 0 0 5 0;
 #X connect 3 0 5 0;
 #X connect 4 0 5 0;
 #X connect 5 0 1 0;
-#X restore 501 174 pd ms;
-#X connect 20 0 58 0;
-#X connect 22 0 58 1;
-#X connect 39 0 58 0;
-#X connect 47 0 58 0;
-#X connect 48 0 58 0;
-#X connect 58 0 26 0;
+#X connect 7 0 10 0;
+#X connect 10 0 8 0;
+#X connect 11 0 10 0;
+#X connect 12 0 10 0;
+#X connect 13 0 10 0;
+#X restore 492 169 pd ms/hz;
+#X text 212 494 - bpm/hz/ms (default 0);
+#X connect 20 0 55 0;
+#X connect 21 0 55 1;
+#X connect 37 0 55 0;
+#X connect 45 0 55 0;
+#X connect 46 0 55 0;
+#X connect 55 0 25 0;
