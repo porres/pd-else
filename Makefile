@@ -21,6 +21,7 @@ else.class.sources := Classes/Source/else.c
 cmul~.class.sources := Classes/Source/cmul~.c
 
 # GUI:
+button.class.sources := Classes/Source/button.c
 pic.class.sources := Classes/Source/pic.c
 keyboard.class.sources := Classes/Source/keyboard.c
 function.class.sources := Classes/Source/function.c

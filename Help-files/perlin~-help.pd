@@ -1,6 +1,6 @@
 #N canvas 925 42 558 417 10;
 #X obj 222 151 hsl 128 15 100 10000 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 4200 1;
+-228856 -1 -1 0 1;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -31,7 +31,7 @@
 #X text 160 334 signal;
 #X text 147 367 1) float;
 #X obj 219 175 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 458.582 256;
+-228856 -1 -1 0 256;
 #X text 124 298 float/signal;
 #X obj 123 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
@@ -49,7 +49,7 @@
 #X text 74 86 [perlin~] is an abastraction that implements 1-dimensional
 Perlin Noise (a type of gradient noise developed by Ken Perlin). It
 generates noise at signal rate and takes a frequency value in hertz
-(values under 0 and above nyquist are aliased)., f 60;
+(values under 0 and above nyquist are aliased)., f 64;
 #X connect 0 0 17 0;
 #X connect 17 0 27 0;
 #X connect 27 0 20 0;
