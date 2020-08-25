@@ -7,21 +7,21 @@
 static t_class *tempo_class;
 
 typedef struct _tempo{
-    t_object x_obj;
-    double  x_phase;
-    int        x_val;
-    t_inlet  *x_inlet_tempo;
-    t_inlet  *x_inlet_swing;
-    t_inlet  *x_inlet_sync;
-    t_outlet *x_outlet_dsp_0;
-    t_float x_sr;
-    t_float x_gate;
-    t_float x_div;
-    t_float x_deviation;
-    t_float x_last_gate;
-    t_float x_last_sync;
-    t_float x_swing;
-    t_float x_ms;
+    t_object    x_obj;
+    double      x_phase;
+    int         x_val;
+    t_inlet    *x_inlet_tempo;
+    t_inlet    *x_inlet_swing;
+    t_inlet    *x_inlet_sync;
+    t_outlet   *x_outlet_dsp_0;
+    t_float     x_sr;
+    t_float     x_gate;
+    t_float     x_div;
+    t_float     x_deviation;
+    t_float     x_last_gate;
+    t_float     x_last_sync;
+    t_float     x_swing;
+    t_float     x_mode;
 } t_tempo;
 
 static void tempo_bang(t_tempo *x){
@@ -52,12 +52,12 @@ static t_int *tempo_perform(t_int *w){
             tempo = 0;
         else
             tempo *= deviation;
-        double hz;
-        if(x->x_ms)
-            hz = 1000. / tempo;
-        else
-            hz = tempo / 60.;
-        hz *= x->x_div;
+        double t = (double)tempo;
+        if(x->x_mode == 0)
+            t /= 60.;
+        else if(x->x_mode == 1)
+            t = 1000. / t;
+        double hz = (t * (double)x->x_div);
         double phase_step = hz / sr; // phase_step
         if(phase_step > 1)
             phase_step = 1;
@@ -99,12 +99,34 @@ static void tempo_div(t_tempo *x, t_floatarg f){
     x->x_div = f < 1 ? 1 : f;
 }
 
-static void tempo_bpm(t_tempo *x){
-    x->x_ms = 0;
+static void tempo_bpm(t_tempo *x, t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
+    if(argc){
+        pd_float((t_pd *)x->x_inlet_tempo, atom_getfloatarg(0, argc, argv));
+        if(argc == 2)
+            pd_float((t_pd *)x->x_inlet_swing, atom_getfloatarg(1, argc, argv));
+    }
+    x->x_mode = 0;
 }
 
-static void tempo_ms(t_tempo *x){
-    x->x_ms = 1;
+static void tempo_ms(t_tempo *x, t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
+    if(argc){
+        pd_float((t_pd *)x->x_inlet_tempo, atom_getfloatarg(0, argc, argv));
+        if(argc == 2)
+            pd_float((t_pd *)x->x_inlet_swing, atom_getfloatarg(1, argc, argv));
+    }
+    x->x_mode = 1;
+}
+
+static void tempo_hz(t_tempo *x, t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
+    if(argc){
+        pd_float((t_pd *)x->x_inlet_tempo, atom_getfloatarg(0, argc, argv));
+        if(argc == 2)
+            pd_float((t_pd *)x->x_inlet_swing, atom_getfloatarg(1, argc, argv));
+    }
+    x->x_mode = 2;
 }
 
 static void *tempo_free(t_tempo *x){
@@ -122,7 +144,7 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
     t_float init_swing = 0;
     t_float init_tempo = 0;
     t_float on = 0;
-    t_float ms = 0;
+    t_float mode = 0;
     t_float div = 1;
     static int init_seed = 74599;
     x->x_val = (init_seed *= 1319);
@@ -153,7 +175,12 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
                 argv++;
             }
             else if(!strcmp(curarg->s_name, "-ms")){
-                ms = 1;
+                mode = 1;
+                argc--;
+                argv++;
+            }
+            else if(!strcmp(curarg->s_name, "-hz")){
+                mode = 2;
                 argc--;
                 argv++;
             }
@@ -178,7 +205,7 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
     if(div < 1)
         div = 1;
     x->x_div = div;
-    x->x_ms = ms != 0;
+    x->x_mode = mode;
     x->x_last_sync = 0;
     x->x_last_gate = 0;
     x->x_swing = init_swing;
@@ -202,8 +229,9 @@ void tempo_tilde_setup(void){
             sizeof(t_tempo), CLASS_DEFAULT, A_GIMME, 0);
     CLASS_MAINSIGNALIN(tempo_class, t_tempo, x_gate);
     class_addmethod(tempo_class, (t_method)tempo_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(tempo_class, (t_method)tempo_ms, gensym("ms"), 0);
-    class_addmethod(tempo_class, (t_method)tempo_bpm, gensym("bpm"), 0);
+    class_addmethod(tempo_class, (t_method)tempo_ms, gensym("ms"), A_GIMME, 0);
+    class_addmethod(tempo_class, (t_method)tempo_hz, gensym("hz"), A_GIMME, 0);
+    class_addmethod(tempo_class, (t_method)tempo_bpm, gensym("bpm"), A_GIMME, 0);
     class_addmethod(tempo_class, (t_method)tempo_div, gensym("div"), A_DEFFLOAT, 0);
     class_addbang(tempo_class, tempo_bang);
 }
