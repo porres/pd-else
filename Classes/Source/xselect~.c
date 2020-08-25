@@ -1,6 +1,7 @@
 // porres 2017
 
 #include "m_pd.h"
+#include <stdlib.h>
 #include <math.h>
 
 static t_class *xselect_class;
@@ -87,31 +88,8 @@ static void xselect_time(t_xselect *x, t_floatarg ms) {
             x->x_counter[i] = x->x_counter[i] / last_fade_in_samps * x->x_fade_in_samps;
 }
 
-void xselect_lin(t_xselect *x) {
-    if(x->x_last_fadetype != LINEAR){ // change to linear
-        int i;
-        for(i = 0; i < x->x_ninlets; i++){
-            if(x->x_counter[i]) // adjust counter
-                x->x_counter[i] = x->x_fade[i] * x->x_fade_in_samps;
-        }
-        x->x_last_fadetype = x->x_fadetype = LINEAR;
-    }
-}
-
-void xselect_ep(t_xselect *x) {
-    if(x->x_last_fadetype != EPOWER){ // change to equal power
-        int i;
-        for(i = 0; i < x->x_ninlets; i++) {
-            if(x->x_counter[i]){ // adjust counter
-                double ep = 2 - ((acos(x->x_fade[i]) + HALF_PI) / HALF_PI);
-                x->x_counter[i] = ep * x->x_fade_in_samps;
-            }
-        }
-        x->x_last_fadetype = x->x_fadetype = EPOWER;
-    }
-}
-
-static void *xselect_new(t_symbol *s, int argc, t_atom *argv) {
+static void *xselect_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_xselect *x = (t_xselect *)pd_new(xselect_class);
     x->x_sr_khz = sys_getsr() * 0.001;
     t_float ch = 1, ms = 0, fade_mode = EPOWER, init_channel = 0;
@@ -132,21 +110,10 @@ static void *xselect_new(t_symbol *s, int argc, t_atom *argv) {
                 default:
                     break;
             };
-            argnum++;
-            argc--;
-            argv++;
-        }
-        else if (argv -> a_type == A_SYMBOL){
-            t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-            if(strcmp(curarg->s_name, "-lin")==0) {
-                fade_mode = LINEAR;
-                argc--;
-                argv++;
-                }
-            else{
-                goto errstate;
-            };
-        }
+        };
+        argnum++;
+        argc--;
+        argv++;
     };
     x->x_fadetype = x->x_last_fadetype = fade_mode;
     x->x_ninlets = ch < 1 ? 1 : ch;
@@ -165,18 +132,13 @@ static void *xselect_new(t_symbol *s, int argc, t_atom *argv) {
     }
     xselect_float(x, init_channel);
     return (x);
-    errstate:
-        pd_error(x, "xselect~: improper args");
-        return NULL;
 }
 
 void xselect_tilde_setup(void) {
     xselect_class = class_new(gensym("xselect~"), (t_newmethod)xselect_new, 0,
-                             sizeof(t_xselect), CLASS_DEFAULT, A_GIMME, 0);
+        sizeof(t_xselect), CLASS_DEFAULT, A_GIMME, 0);
     class_addfloat(xselect_class, (t_method)xselect_float);
     class_addmethod(xselect_class, nullfn, gensym("signal"), 0);
     class_addmethod(xselect_class, (t_method)xselect_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(xselect_class, (t_method)xselect_time, gensym("time"), A_FLOAT, 0);
-    class_addmethod(xselect_class, (t_method)xselect_lin, gensym("lin"), 0);
-    class_addmethod(xselect_class, (t_method)xselect_ep, gensym("ep"), 0);
 }

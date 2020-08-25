@@ -1,4 +1,4 @@
-#N canvas 645 109 561 611 10;
+#N canvas 645 109 561 583 10;
 #X obj 2 3 cnv 15 301 42 empty empty xgate~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -129,31 +129,25 @@
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
 #X obj 187 164 else/xgate~ 4 1000 3;
-#X text 61 86 [xgate~] routes between multiple outputs with crossfading.
-;
 #X obj 4 396 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 498 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 464 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 530 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 496 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 585 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 551 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 97 507 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 97 473 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
 #X text 152 404 signal;
-#X obj 97 404 cnv 17 3 87 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 97 404 cnv 17 3 53 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 158 422 float;
 #X text 116 440 time <float>;
 #X text 194 440 - crossfade time in ms;
-#X text 176 477 ep;
-#X text 170 459 lin;
-#X text 194 459 - change crossfade type to linear;
-#X text 194 477 - change crossfade type to equal power;
-#X text 141 551 2) float - crossfade time in ms (default 0 - no crossfade)
+#X text 141 517 2) float - crossfade time in ms (default 0 - no crossfade)
 ;
-#X text 141 566 3) float - initially selected channel (default 0: none)
+#X text 141 532 3) float - initially selected channel (default 0: none)
 , f 58;
 #X obj 240 117 hradio 15 1 0 5 empty empty empty 0 -8 0 10 -228856
 -1 -1 4;
@@ -161,21 +155,23 @@
 #X text 280 139 select output (0 = none);
 #X text 194 422 - selected outlet (0 is none);
 #X text 194 404 - input signal to route;
-#X text 152 509 signal;
-#X text 194 509 - routed output;
-#X text 141 536 1) float - number of outlets/channels (default 1 \,
+#X text 152 475 signal;
+#X text 194 475 - routed output;
+#X text 141 502 1) float - number of outlets/channels (default 1 \,
 max 500);
 #X obj 195 188 else/meter4~;
 #X text 79 240 [else/meter4~] =>;
 #X obj 186 336 else/out4~;
+#X text 61 86 [xgate~] routes between multiple outputs with equal power
+crossfading.;
 #X connect 13 0 15 0;
-#X connect 15 0 41 0;
-#X connect 15 1 41 1;
-#X connect 15 2 41 2;
-#X connect 15 3 41 3;
-#X connect 33 0 34 0;
-#X connect 34 0 15 0;
-#X connect 41 0 43 0;
-#X connect 41 1 43 1;
-#X connect 41 2 43 2;
-#X connect 41 3 43 3;
+#X connect 15 0 36 0;
+#X connect 15 1 36 1;
+#X connect 15 2 36 2;
+#X connect 15 3 36 3;
+#X connect 28 0 29 0;
+#X connect 29 0 15 0;
+#X connect 36 0 38 0;
+#X connect 36 1 38 1;
+#X connect 36 2 38 2;
+#X connect 36 3 38 3;

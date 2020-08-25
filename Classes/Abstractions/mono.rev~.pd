@@ -988,7 +988,7 @@ of the matrix, f 33;
 #X msg 189 145 damp \$1;
 #X obj 71 121 unpack float float float float;
 #X msg 248 144 wet \$1;
-#X msg 147 93 1 0.5 0 1;
+#X msg 147 93 1 0.5 0 0.5;
 #X connect 0 0 6 0;
 #X connect 1 0 0 0;
 #X connect 1 1 8 0;

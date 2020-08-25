@@ -1,4 +1,4 @@
-#N canvas 596 172 559 503 10;
+#N canvas 672 170 559 503 10;
 #X obj 4 310 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 383 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -79,7 +79,7 @@ the crossfading point.;
 #X connect 10 0 12 0;
 #X connect 11 0 10 0;
 #X connect 12 0 1 0;
-#X restore 484 275 pd modes;
+#X restore 484 251 pd modes;
 #X obj 186 211 else/xselect2~ 3, f 35;
 #X text 61 86 [xselect2~] selects between multiple inputs with equal
 power crossfade between two adjacent channels.;
@@ -100,6 +100,27 @@ power crossfade between two adjacent channels.;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
+#N canvas 960 163 467 356 example 0;
+#X obj 85 112 else/tempo~ 60 100 -on;
+#X obj 85 144 else/rand.i~ 0 3;
+#X obj 85 177 else/display~;
+#X obj 85 282 else/out~;
+#X obj 144 195 noise~;
+#X text 106 38 An example on how to change the input channel at signal
+rate., f 32;
+#X obj 85 247 else/xselect2~ 4, f 40;
+#X obj 322 219 else/cusp~ 1000;
+#X obj 262 195 else/perlin~ 400;
+#X obj 203 195 osc~ 700;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 6 0;
+#X connect 4 0 6 1;
+#X connect 6 0 3 0;
+#X connect 7 0 6 4;
+#X connect 8 0 6 3;
+#X connect 9 0 6 2;
+#X restore 471 276 pd example;
 #X connect 15 0 32 1;
 #X connect 16 0 32 3;
 #X connect 17 0 32 2;

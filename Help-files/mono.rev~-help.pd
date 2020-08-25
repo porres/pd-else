@@ -182,7 +182,6 @@
 57;
 #X text 256 377 - room size (0-1), f 33;
 #X text 167 377 wet <float>;
-#X text 129 515 4) float - wet ratio - (default 1), f 57;
 #X text 129 470 1) float - decay in seconds (default 1), f 57;
 #X text 53 82 [mono.rev~] is a reverb asbtraction with mono input but
 stereo output. It's based on a feedback delay network like vanilla's
@@ -192,6 +191,7 @@ results. Changing size values may generates unusual artifacts (you
 can clear the delay buffers when you do it to prevent it \, but you
 may get clicks)., f 70;
 #X obj 198 235 else/out~;
+#X text 129 515 4) float - wet ratio - (default 0.5), f 57;
 #X connect 12 0 14 0;
-#X connect 14 0 45 0;
-#X connect 14 1 45 1;
+#X connect 14 0 44 0;
+#X connect 14 1 44 1;

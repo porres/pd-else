@@ -56,7 +56,7 @@ f 24;
 part represents the channel (indexed from 0) and the fractional part
 the crossfading point.;
 #X obj 137 182 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 12700 1;
 #X floatatom 134 205 0 0 0 0 - - -;
 #X obj 134 230 else/float2sig~ 10;
 #X text 152 182 select channels;
@@ -81,7 +81,7 @@ mode. You can also use the index message to change bewteen modes.;
 #X connect 12 1 13 1;
 #X connect 12 2 13 2;
 #X connect 12 3 13 3;
-#X restore 483 331 pd modes;
+#X restore 483 308 pd modes;
 #X obj 101 40 cnv 4 4 4 empty empty input 0 28 2 18 -233017 -1 0;
 #X text 110 475 1) float - number of output channels (default/min 2
 \, max 500), f 69;
@@ -95,8 +95,8 @@ with equal power crossfade between two adjacent channels.;
 #X obj 268 158 noise~;
 #X text 190 125 select output channel;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -165,7 +165,7 @@ with equal power crossfade between two adjacent channels.;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -202,6 +202,29 @@ with equal power crossfade between two adjacent channels.;
 #X text 197 373 - channel selection;
 #X obj 187 167 sig~;
 #X obj 180 219 else/meter4~;
+#N canvas 960 163 307 506 example 1;
+#X obj 77 250 else/meter4~;
+#X obj 72 408 else/out4~;
+#X obj 166 182 noise~;
+#X obj 85 213 else/xgate2~ 4;
+#X obj 85 112 else/tempo~ 60 100 -on;
+#X obj 85 144 else/rand.i~ 0 3;
+#X obj 85 177 else/display~;
+#X text 58 33 An example on how to change the route output channel
+at signal rate., f 28;
+#X connect 0 0 1 0;
+#X connect 0 1 1 1;
+#X connect 0 2 1 2;
+#X connect 0 3 1 3;
+#X connect 2 0 3 1;
+#X connect 3 0 0 0;
+#X connect 3 1 0 1;
+#X connect 3 2 0 2;
+#X connect 3 3 0 3;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 6 0 3 0;
+#X restore 471 330 pd example;
 #X connect 29 0 30 0;
 #X connect 30 0 38 0;
 #X connect 31 0 39 0;
