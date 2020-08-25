@@ -1,37 +1,35 @@
-#N canvas 801 47 560 499 10;
+#N canvas 801 47 559 486 10;
 #X obj 23 40 cnv 4 4 4 empty empty Gingerbread 0 28 2 18 -233017 -1
 0;
 #X obj 123 40 cnv 4 4 4 empty empty man 0 28 2 18 -233017 -1 0;
 #X obj 163 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 -233017 -1 0
 ;
-#X obj 3 471 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 461 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 338 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 328 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 387 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 377 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 424 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 414 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 100 397 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 100 387 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 99 348 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 99 338 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 2 3 cnv 15 301 42 empty empty gbman 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 211 348 - frequency in hertz (negative values accepted);
 #X obj 224 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
 0;
-#X msg 250 254 1.2 2.1;
-#X msg 243 233 0.3 -0.2;
-#X text 301 254 (default);
-#X text 176 367 list;
-#X text 302 233 initial feedback values;
-#X text 211 368 - 2 floats set y[n-1] and y[n-2] \, respectively;
-#X text 211 450 - initial feedback value of y[n-2] (default 2.1);
-#X text 211 432 - sets initial feedback value of y[n-1] (default 1.2)
+#X msg 239 246 1.2 2.1;
+#X msg 232 225 0.3 -0.2;
+#X text 290 246 (default);
+#X text 155 357 list;
+#X text 190 358 - 2 floats set y[n-1] and y[n-2] \, respectively;
+#X text 191 440 - initial feedback value of y[n-2] (default 2.1);
+#X text 191 422 - sets initial feedback value of y[n-1] (default 1.2)
 ;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -57,22 +55,24 @@
 \, the initial feedback values of y[n-1] and y[n-2] are 1.2 and 2.1
 \, respectively \, but can be changed via arguments or as a list input.
 , f 71;
-#X text 176 348 bang;
-#X obj 211 309 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1.10054 256;
-#X obj 211 238 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 155 338 bang;
+#X obj 200 301 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 1.1 256;
+#X obj 200 230 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 211 280 else/gbman;
-#X obj 211 173 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 200 170 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 211 199 else/tempo 2 -hz;
-#X text 169 398 float;
-#X text 211 399 - gingerbread man map chaotic value;
-#X text 151 432 1) float;
-#X text 151 450 2) float;
-#X connect 13 0 34 0;
-#X connect 14 0 34 0;
-#X connect 33 0 34 0;
-#X connect 34 0 32 0;
-#X connect 35 0 36 0;
-#X connect 36 0 33 0;
+#X obj 200 196 else/tempo 2 -hz;
+#X text 148 388 float;
+#X text 131 422 1) float;
+#X text 131 440 2) float;
+#X obj 200 272 else/gbman 0.3 -0.2;
+#X text 291 225 set initial state values;
+#X text 190 338 - get output of y[n];
+#X text 190 389 - value of y[n];
+#X connect 12 0 37 0;
+#X connect 13 0 37 0;
+#X connect 31 0 37 0;
+#X connect 32 0 33 0;
+#X connect 33 0 31 0;
+#X connect 37 0 30 0;
