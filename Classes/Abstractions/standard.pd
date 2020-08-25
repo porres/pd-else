@@ -1,0 +1,66 @@
+#N canvas 339 210 640 389 12;
+#X obj 82 37 inlet;
+#X obj 82 326 outlet;
+#N canvas 1030 215 605 571 init 0;
+#X obj 91 100 else/args;
+#X obj 91 124 t l b;
+#X obj 91 75 loadbang;
+#X obj 73 38 inlet;
+#X obj 252 150 else/pi 2;
+#X obj 265 210 v two_pi_\$0;
+#X obj 78 276 v k_\$0;
+#X obj 252 245 v pi_\$0;
+#X obj 266 183 * 2;
+#X msg 123 152 1 0.5 0;
+#X obj 72 185 unpack f f f;
+#X obj 131 210 v yn_\$0;
+#X obj 118 243 v xn_\$0;
+#X obj 33 79 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X connect 0 0 1 0;
+#X connect 1 0 10 0;
+#X connect 1 1 9 0;
+#X connect 2 0 0 0;
+#X connect 3 0 10 0;
+#X connect 4 0 8 0;
+#X connect 4 0 7 0;
+#X connect 8 0 5 0;
+#X connect 9 0 10 0;
+#X connect 10 0 6 0;
+#X connect 10 1 12 0;
+#X connect 10 2 11 0;
+#X connect 13 0 1 0;
+#X restore 133 103 pd init;
+#X text 333 100 Alexandre Torres Porres (2020);
+#X obj 82 72 route bang list;
+#X obj 373 264 v yn_\$0;
+#X obj 227 264 v xn_\$0;
+#X obj 227 205 expr if(xn_\$0 < 0 \, xn_\$0 + two_pi_\$0 \, xn_\$0)
+, f 18;
+#X obj 82 145 expr (xn_\$0 - pi_\$0) / pi_\$0 \; fmod(xn_\$0 + yn_\$0
+\, two_pi_\$0) \; fmod(yn_\$0 + k_\$0 * sin(xn_\$0) \, two_pi_\$0)
+;
+#X floatatom 403 211 0 0 0 0 - - -;
+#X floatatom 196 300 0 0 0 0 - - -;
+#X floatatom 100 225 0 0 0 0 - - -;
+#X obj 41 94 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X msg 165 45 1 0.5 0;
+#X obj 526 213 expr sin(0.5);
+#X floatatom 529 251 0 0 0 0 - - -;
+#X obj 517 158 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X connect 0 0 4 0;
+#X connect 4 0 8 0;
+#X connect 4 1 2 0;
+#X connect 7 0 6 0;
+#X connect 8 0 1 0;
+#X connect 8 0 11 0;
+#X connect 8 1 7 0;
+#X connect 8 1 10 0;
+#X connect 8 2 5 0;
+#X connect 8 2 9 0;
+#X connect 12 0 8 0;
+#X connect 13 0 2 0;
+#X connect 14 0 15 0;
+#X connect 16 0 14 0;

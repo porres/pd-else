@@ -96,13 +96,13 @@ static t_int *standard_perform(t_int *w)
             trig = (phase <= 0.);
             if (phase <= 0.) phase = phase + 1.;
             }
-        if (trig) // update
-            {
+        if(trig){ // update
             yn = fmod(yn + k * sin(xn), TWOPI);
             xn = fmod(xn + yn, TWOPI);
-            if (xn < 0) xn = xn + TWOPI;
+            if (xn < 0)
+                xn = xn + TWOPI;
             output = lastout = (xn - PI) * RECPI;
-            }
+        }
         else output = lastout; // last output
         *out++ = output;
         phase += phase_step;
