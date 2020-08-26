@@ -68,15 +68,15 @@ f 49;
 #X text 148 510 4) float - sets grain size in ms (default 25), f 61
 ;
 #X obj 168 140 else/play.file~ violin.wav 1 1, f 15;
-#X text 148 461 1) float - sets buffer size in ms (default 1000),
-f 61;
 #X text 139 323 size <float> - sets buffer size in ms, f 57;
 #X obj 168 183 else/stretch.shift~ 60000 20 -600 300;
 #X text 47 88 [stretch.shift~] is like [gran.player~] \, but for live
 input. It provides independent time stretching and pitch shifting via
 granulation., f 69;
-#X obj 416 248 else/pvoc.live~ 1000;
-#X connect 12 0 41 2;
-#X connect 13 0 41 3;
-#X connect 38 0 41 0;
-#X connect 41 0 11 0;
+#X obj 447 248 else/pvoc.live~;
+#X text 148 461 1) float - sets buffer size in ms (default 5000),
+f 61;
+#X connect 12 0 40 2;
+#X connect 13 0 40 3;
+#X connect 38 0 40 0;
+#X connect 40 0 11 0;
