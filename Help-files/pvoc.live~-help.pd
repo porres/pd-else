@@ -1,4 +1,4 @@
-#N canvas 690 154 565 519 10;
+#N canvas 853 154 565 519 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -63,14 +63,14 @@ f 49;
 -1 -1;
 #X text 175 397 signal - processed output;
 #X obj 174 197 else/pvoc.live~ 6000 50 -600;
-#X text 148 432 1) float - sets buffer size in ms (obrigatory \, no
-default), f 61;
 #X obj 429 238 else/pvoc.player~;
 #X obj 418 260 else/stretch.shift~;
 #X text 52 89 [pvoc.live~] is like [pvoc.player~] \, but for live input.
 It provides independent time stretching and pitch shifting via granulation.
 , f 69;
 #X text 86 154 reset =>;
+#X text 148 432 1) float - sets buffer size in ms (default 5000),
+f 61;
 #X connect 12 0 35 1;
 #X connect 13 0 35 2;
 #X connect 32 0 35 0;
