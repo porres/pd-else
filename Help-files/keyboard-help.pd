@@ -1,4 +1,4 @@
-#N canvas 505 23 567 708 10;
+#N canvas 764 57 567 708 10;
 #X obj 5 336 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 534 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -783,10 +783,6 @@ removes the send/receive symbols., f 67;
 #X obj 54 353 else/keyboard 19 80 3 3 0 0 \$0-keyboard-snd \$0-keyboard-rcv
 ;
 #X msg 66 326 send empty \, receive empty;
-#X text 204 453 Note that when you set a receive or send symbol \,
-the corresponding inlet/outlet does not get drawn when you're in edit
-mode. This is an indicative that the object has a send or receive symbol.
-, f 41;
 #X obj 54 299 initmess send \\\$0-keyboard-snd \, receive \\\$0-keyboard-rcv
 ;
 #X obj 51 225 s \$0-keyboard-rcv;
@@ -801,11 +797,15 @@ to escape the special characters of "$" and also spaces \, both of
 which are allowed. Also note that other special characters are not
 allowed \, such as braces \, backslashes \, commas and semicolons.
 , f 69;
-#X connect 1 0 10 0;
+#X text 204 453 Note that when you set a receive or send symbol \,
+the corresponding inlets/outlet does not get drawn when you're in edit
+mode. This is an indicative that the object has a send or receive symbol.
+, f 41;
+#X connect 1 0 9 0;
 #X connect 3 0 2 0;
-#X connect 5 0 2 0;
-#X connect 7 0 8 0;
-#X connect 10 0 6 0;
+#X connect 4 0 2 0;
+#X connect 6 0 7 0;
+#X connect 9 0 5 0;
 #X restore 449 305 pd send/receive;
 #X text 158 481 send <symbol>;
 #X text 256 481 - sets send symbol, f 42;
@@ -848,7 +848,7 @@ indicates it is C4 (Midi note "60")., f 75;
 #X obj 55 178 else/display;
 #X connect 1 0 2 0;
 #X connect 7 0 9 0;
-#X restore 499 173 pd more details;
+#X restore 499 179 pd more details;
 #X f 7;
 #X connect 9 0 53 0;
 #X connect 41 0 50 0;
