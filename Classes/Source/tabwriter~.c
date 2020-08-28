@@ -177,6 +177,7 @@ static void tabwriter_free(t_tabwriter *x){
     freebytes(x->x_ivecs, x->x_numchans * sizeof(*x->x_ivecs));
     if(x->x_clock)
         clock_free(x->x_clock);
+    pd_unbind(&x->x_obj.ob_pd, gensym("pd-dsp-stopped"));
 }
 
 static void tabwriter_start(t_tabwriter *x, t_float start){
