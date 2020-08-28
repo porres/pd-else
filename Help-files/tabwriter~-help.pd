@@ -15,14 +15,14 @@
 ;
 #X text 126 531 2) float;
 #X msg 354 173 loop \$1;
-#X obj 354 151 tgl 15 0 empty empty empty 0 -6 0 8 -228856 -1 -1 1
+#X obj 354 151 tgl 15 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
 1;
 #X text 34 145 1;
 #X text 27 258 -1;
 #X text 126 514 1) symbol;
 #X text 191 514 - array name (required), f 57;
 #X obj 438 213 noise~;
-#N canvas 624 333 697 420 multichannel 0;
+#N canvas 766 207 697 420 multichannel 0;
 #X obj 154 256 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
 1;
 #X obj 444 150 cnv 15 198 98 empty empty empty 20 12 0 14 -233017 -66577
@@ -145,7 +145,7 @@ flags/messages., f 36;
 #X obj 499 62 else/setdsp~;
 #X msg 297 140 rec;
 #X msg 309 170 stop;
-#X obj 254 161 tgl 30 0 empty empty empty 0 -6 0 8 -228856 -1 -1 1
+#X obj 254 161 tgl 30 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
 1;
 #X text 108 304 float/signal;
 #X text 162 320 rec;

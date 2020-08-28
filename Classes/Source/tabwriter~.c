@@ -1,12 +1,11 @@
-// based on cyclone's tabwriterord~
+// porres 2020
 
 #include "m_pd.h"
 #include "m_imp.h"
 #include "buffer.h"
-// #include <string.h>
 
-#define MAXBD 1E+32 // cheap higher bound for boundary points
-#define DRAW_PERIOD  500.  // draw period
+#define MAXBD           1E+32 // cheap higher bound for boundary points
+#define DRAW_PERIOD     500.  // draw period
 
 typedef struct _tabwriter{
     t_object    x_obj;
@@ -14,19 +13,19 @@ typedef struct _tabwriter{
     t_float     x_f; // dummy input float
     t_float    *x_gate_vec; // gate signal vector
     t_float     x_last_gate;
-    t_int         x_continue_flag;
-    t_int         x_loop_flag;
-    t_int         x_phase;       // write head
+    t_int       x_continue_flag;
+    t_int       x_loop_flag;
+    t_int       x_phase;       // write head
     t_float     x_sync; // output sync value
     t_clock    *x_clock;
     double      x_clocklasttick;
-    t_int         x_isrunning;
-    t_int         x_newrun;
+    t_int       x_isrunning;
+    t_int       x_newrun;
     t_float     x_start; // start position (in ms) vector
     t_float     x_end; // endposition (in ms) vec
     t_outlet    *x_outlet;
     t_float     x_ksr;
-    t_int         x_numchans;
+    t_int       x_numchans;
     t_float   **x_ivecs; // input vectors
     t_float    *x_ovec; // signal output
 }t_tabwriter;
@@ -44,8 +43,6 @@ static void tabwriter_tick(t_tabwriter *x){ // Redraw!
         buffer_redraw(x->x_buffer);
         x->x_clocklasttick = clock_getlogicaltime();
     }
-    else
-        clock_delay(x->x_clock, DRAW_PERIOD - timesince);
 }
 
 static void tabwriter_set(t_tabwriter *x, t_symbol *s){
@@ -64,7 +61,7 @@ static int tabwriter_startpoint(t_tabwriter *x, t_floatarg f){
 		startindex = 0;
     else if(startindex >= npts) // make it the last index addressable
 		startindex = npts - 1;
-    return startindex;
+    return(startindex);
 }
 
 static int tabwriter_endpoint(t_tabwriter *x, t_floatarg f){
@@ -87,6 +84,13 @@ static void tabwriter_loop(t_tabwriter *x, t_floatarg f){
 
 static void tabwriter_tabwriter(t_tabwriter *x){
     x->x_isrunning = x->x_newrun = 1;
+}
+
+static void tabwriter_rec(t_tabwriter *x){
+    if(!x->x_continue_flag)
+        x->x_phase = 0.;
+    x->x_isrunning = 1;
+    buffer_redraw(x->x_buffer);
 }
 
 static void tabwriter_stop(t_tabwriter *x){
@@ -290,7 +294,8 @@ errstate:
 }
 
 void tabwriter_tilde_setup(void){
-    tabwriter_class = class_new(gensym("tabwriter~"), (t_newmethod)tabwriter_new, (t_method)tabwriter_free, sizeof(t_tabwriter), CLASS_DEFAULT, A_GIMME, 0);
+    tabwriter_class = class_new(gensym("tabwriter~"), (t_newmethod)tabwriter_new, (t_method)tabwriter_free,
+        sizeof(t_tabwriter), CLASS_DEFAULT, A_GIMME, 0);
     CLASS_MAINSIGNALIN(tabwriter_class, t_tabwriter, x_f);
     class_addbang(tabwriter_class, tabwriter_draw);
     class_addmethod(tabwriter_class, (t_method)tabwriter_dsp, gensym("dsp"), A_CANT, 0);
@@ -301,5 +306,6 @@ void tabwriter_tilde_setup(void){
     class_addmethod(tabwriter_class, (t_method)tabwriter_start, gensym("start"), A_FLOAT, 0);
     class_addmethod(tabwriter_class, (t_method)tabwriter_end, gensym("end"), A_FLOAT, 0);
     class_addmethod(tabwriter_class, (t_method)tabwriter_tabwriter, gensym("tabwriter"), 0);
+    class_addmethod(tabwriter_class, (t_method)tabwriter_rec, gensym("rec"), 0);
     class_addmethod(tabwriter_class, (t_method)tabwriter_stop, gensym("stop"), 0);
 }
