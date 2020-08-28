@@ -253,7 +253,7 @@ magic := shared/magic.c
 buf := shared/buffer.c
     shaper~.class.sources = Classes/Source/shaper~.c $(buf)
     table~.class.sources = Classes/Source/table~.c $(buf)
-    rec~.class.sources = Classes/Source/rec~.c $(buf)
+    tabwriter~.class.sources = Classes/Source/tabwriter~.c $(buf)
 
 bufmagic := \
 shared/magic.c \

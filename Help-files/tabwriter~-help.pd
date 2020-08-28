@@ -15,15 +15,15 @@
 ;
 #X text 126 531 2) float;
 #X msg 354 173 loop \$1;
-#X obj 354 151 tgl 15 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
+#X obj 354 151 tgl 15 0 empty empty empty 0 -6 0 8 -228856 -1 -1 1
 1;
 #X text 34 145 1;
 #X text 27 258 -1;
 #X text 126 514 1) symbol;
 #X text 191 514 - array name (required), f 57;
-#X obj 402 213 noise~;
-#N canvas 532 437 686 429 multichannel 0;
-#X obj 143 266 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
+#X obj 438 213 noise~;
+#N canvas 624 333 697 420 multichannel 0;
+#X obj 154 256 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
 1;
 #X obj 444 150 cnv 15 198 98 empty empty empty 20 12 0 14 -233017 -66577
 0;
@@ -45,19 +45,19 @@ number (starting from zero) and "-" \, such as: "0-" \, "1-" \, "2-"
 when you specify it with a second argument. The number of channels
 defines the number 'n' of inlets - where the first outlets are the
 channel inputs and the two righmost are the range intlets.;
-#X obj 303 266 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
+#X obj 324 256 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
 1;
-#X msg 480 301 show, f 5;
-#X obj 480 332 else/sample~ buff_\$0 -size 44100 -ch 2, f 24;
-#X obj 303 363 else/display~;
-#X obj 143 365 else/display~;
+#X msg 501 290 show, f 5;
+#X obj 501 322 else/sample~ buff_\$0 -size 44100 -ch 2, f 24;
+#X obj 324 353 else/display~;
+#X obj 154 355 else/display~;
 #X obj 48 285 else/setdsp~;
 #X text 29 170 You can manually set multi channel arrays in Pd like
 that or use the [sample~] object \, which does this internally.;
-#X obj 369 299 adc~;
-#X obj 195 290 noise~;
-#X obj 143 334 else/rec~ smp_\$0 2;
-#X obj 303 333 else/rec~ buff_\$0 2;
+#X obj 396 290 adc~;
+#X obj 224 290 noise~;
+#X obj 154 324 else/tabwriter~ smp_\$0 2;
+#X obj 324 323 else/tabwriter~ buff_\$0 2;
 #X connect 0 0 16 0;
 #X connect 7 0 17 0;
 #X connect 8 0 9 0;
@@ -111,20 +111,21 @@ that or use the [sample~] object \, which does this internally.;
 #X obj 84 41 cnv 4 4 4 empty empty signals 0 28 2 18 -233017 -1 0;
 #X obj 142 41 cnv 4 4 4 empty empty into 0 28 2 18 -233017 -1 0;
 #X obj 183 41 cnv 4 4 4 empty empty arrays 0 28 2 18 -233017 -1 0;
-#X obj 2 4 cnv 15 301 42 empty empty rec~ 20 20 2 37 -233017 -1 0;
+#X obj 2 4 cnv 15 301 42 empty empty tabwriter~ 20 20 2 37 -233017
+-1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 4 graph;
 #X text 102 365 start <float>;
 #X text 114 380 end <float>;
 #X obj 297 264 else/display~;
-#N canvas 429 93 396 442 flags 0;
+#N canvas 1003 74 396 442 flags 0;
 #X text 92 223 1;
 #X text 85 336 -1;
 #X text 99 355 0;
 #X text 178 355 1000;
 #X text 263 355 2000;
-#X obj 246 83 noise~;
+#X obj 312 83 noise~;
 #X obj 123 78 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 101 377 |-------- time in ms --------|;
@@ -134,17 +135,17 @@ that or use the [sample~] object \, which does this internally.;
 #X array \$0-test 88200 float 0;
 #X coords 0 1 88199 -1 170 120 1 0 0;
 #X restore 107 229 graph;
-#X obj 123 127 else/rec~ \$0-test -loop 1 -start 500 -end 1500 -continue
-1, f 21;
 #X text 95 25 continue \, loop \, start and end can be indicated as
 flags/messages., f 36;
-#X connect 5 0 10 1;
-#X connect 6 0 10 0;
+#X obj 123 127 else/tabwriter~ \$0-test -loop 1 -start 500 -end 1500
+-continue 1, f 32;
+#X connect 5 0 11 1;
+#X connect 6 0 11 0;
 #X restore 492 243 pd flags;
 #X obj 499 62 else/setdsp~;
 #X msg 297 140 rec;
 #X msg 309 170 stop;
-#X obj 254 161 tgl 30 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
+#X obj 254 161 tgl 30 0 empty empty empty 0 -6 0 8 -228856 -1 -1 1
 1;
 #X text 108 304 float/signal;
 #X text 162 320 rec;
@@ -158,7 +159,6 @@ flags/messages., f 36;
 ;
 #X text 203 474 sync output: sfrom 0 (start point) to 1 (end point)
 - zero is output When not recording, f 45;
-#X obj 297 238 else/rec~ \$0-array;
 #X text 190 304 - gate: non-zero starts recording \, 0 stops it, f
 58;
 #X text 190 380 - end point in ms (default array's initial size),
@@ -169,16 +169,17 @@ f 56;
 , f 56;
 #X text 202 425 non-zero enables loop recording \, 0 disables it,
 f 56;
-#X text 55 88 [rec~] records up to 64 signal channels into arrays and
-can be triggered with sample accuracy., f 51;
 #X obj 254 207 sig~;
-#X connect 9 0 65 0;
+#X obj 297 238 else/tabwriter~ \$0-array;
+#X text 55 88 [tabwriter~] records up to 64 signal channels into arrays
+and can be triggered with sample accuracy., f 51;
+#X connect 9 0 71 0;
 #X connect 10 0 9 0;
-#X connect 15 0 65 1;
+#X connect 15 0 71 1;
 #X connect 21 0 62 0;
-#X connect 52 0 65 0;
-#X connect 53 0 65 0;
-#X connect 54 0 72 0;
-#X connect 62 0 65 0;
-#X connect 65 0 49 0;
-#X connect 72 0 65 0;
+#X connect 52 0 71 0;
+#X connect 53 0 71 0;
+#X connect 54 0 70 0;
+#X connect 62 0 71 0;
+#X connect 70 0 71 0;
+#X connect 71 0 49 0;

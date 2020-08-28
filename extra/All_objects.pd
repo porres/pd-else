@@ -1,9 +1,9 @@
-#N struct 1352-cell float x float y float cellsize float color;
-#N struct 1359-point float x0 float y0 float xs float ys float fg float
+#N struct 1342-cell float x float y float cellsize float color;
+#N struct 1349-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1382-slot float x float y float slotsize float color float
+#N struct 1372-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1396-point float x0 float y0 float size float fg float in
+#N struct 1387-point float x0 float y0 float size float fg float in
 float grid;
 #N canvas 913 35 537 527 10;
 #X text 57 70 Assorted:;
@@ -156,10 +156,10 @@ float grid;
 #X obj 55 5807 else/resonant2~;
 #X obj 55 5834 else/svfilter~;
 #X text 54 5884 Sampling/Playing/Granulation:;
-#X obj 55 6021 else/pvoc.player~;
-#X obj 55 5996 else/gran.player~;
+#X obj 55 6046 else/pvoc.player~;
+#X obj 55 6021 else/gran.player~;
 #X obj 55 5941 else/player~;
-#X obj 55 6072 else/rec.file~;
+#X obj 55 6097 else/rec.file~;
 #X obj 55 6149 else/play.file~;
 #X text 53 6200 Physical Modelling:;
 #X obj 55 6230 else/pluck~;
@@ -405,7 +405,6 @@ float grid;
 #X text 57 10333 Extra:;
 #X obj 55 5917 else/sample~;
 #X obj 55 1229 else/separate;
-#X obj 55 6123 else/rec~;
 #X obj 54 4252 else/conv~;
 #X obj 54 7739 else/xmod2~;
 #X text 52 4967 Audio Processing (reverberation):;
@@ -488,7 +487,8 @@ float grid;
 #X obj 55 1204 else/format;
 #X obj 57 701 else/dollsym;
 #X obj 57 422 else/fontsize;
-#X obj 55 6098 else/batch.rec~;
+#X obj 55 6123 else/batch.rec~;
 #X obj 55 5966 else/tabplayer~;
 #X obj 56 7129 else/perlin~;
-#X obj 55 6047 else/pvoc.live~;
+#X obj 55 6072 else/pvoc.live~;
+#X obj 56 5993 else/tabwriter~;

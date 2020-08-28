@@ -282,7 +282,6 @@ range.hsl	x
 ratio2cents	x
 ratio2cents~	x
 rec.file~	x
-rec~	x
 receiver	x
 regroup	x
 rescale	x
@@ -346,6 +345,7 @@ sysrt.out	x
 t2	x
 table~	x
 tabplayer~	x
+tabwriter~	x
 tremolo~	x
 trig.delay~	x
 trig.delay2~	x
