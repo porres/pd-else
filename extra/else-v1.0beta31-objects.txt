@@ -17,6 +17,7 @@ bandpass~	x
 bandstop~	x
 bangdiv	x
 batch.rec~	x
+batch.write~	x
 bend.in	x
 bend.out	x
 bicoeff	x

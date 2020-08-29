@@ -1,47 +1,46 @@
-#N canvas 677 68 560 608 10;
-#X obj 1 580 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 628 62 558 607 10;
+#X obj 1 576 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 298 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 466 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 469 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 507 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 503 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
 #X obj 77 305 cnv 17 3 135 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 144 474 signal;
 #X text 144 445 signal;
-#X obj 78 474 cnv 17 3 26 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 78 477 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 126 531 2) float;
+#X text 126 527 2) float;
 #X msg 354 173 loop \$1;
 #X obj 354 151 tgl 15 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
 1;
 #X text 34 145 1;
 #X text 27 258 -1;
-#X text 126 514 1) symbol;
-#X text 191 514 - array name (required), f 57;
+#X text 126 510 1) symbol;
+#X text 191 510 - array name (required), f 57;
 #X obj 438 213 noise~;
 #N canvas 766 207 697 420 multichannel 0;
-#X obj 154 256 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
+#X obj 144 256 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
 1;
-#X obj 444 150 cnv 15 198 98 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 454 151 cnv 15 198 98 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 1 80 450 300 (subpatch) 0;
 #X array 1-smp_\$0 22050 float 0;
 #X coords 0 1 22049 -1 200 100 1 0 0;
-#X restore 443 149 graph;
-#X obj 445 30 cnv 15 198 98 empty empty empty 20 12 0 14 -233017 -66577
+#X restore 453 150 graph;
+#X obj 455 31 cnv 15 198 98 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 1 80 450 300 (subpatch) 0;
 #X array 0-smp_\$0 22050 float 0;
 #X coords 0 1 22049 -1 200 100 1 0 0;
-#X restore 444 29 graph;
-#X text 29 117 If more than one channel is set \, the name convention
+#X restore 454 30 graph;
+#X text 40 107 If more than one channel is set \, the name convention
 for multi channel arrays is the table name preceded by the channel
 number (starting from zero) and "-" \, such as: "0-" \, "1-" \, "2-"
 \, "3-" \, and so on..., f 60;
-#X text 29 52 Multi channel recording is possible (up to 64 channels)
+#X text 40 42 Multi channel recording is possible (up to 64 channels)
 when you specify it with a second argument. The number of channels
 defines the number 'n' of inlets - where the first outlets are the
 channel inputs and the two righmost are the range intlets.;
@@ -49,24 +48,26 @@ channel inputs and the two righmost are the range intlets.;
 1;
 #X msg 501 290 show, f 5;
 #X obj 501 322 else/sample~ buff_\$0 -size 44100 -ch 2, f 24;
-#X obj 324 353 else/display~;
-#X obj 154 355 else/display~;
 #X obj 48 285 else/setdsp~;
-#X text 29 170 You can manually set multi channel arrays in Pd like
+#X text 40 160 You can manually set multi channel arrays in Pd like
 that or use the [sample~] object \, which does this internally.;
 #X obj 396 290 adc~;
-#X obj 224 290 noise~;
-#X obj 154 324 else/tabwriter~ smp_\$0 2;
-#X obj 324 323 else/tabwriter~ buff_\$0 2;
-#X connect 0 0 16 0;
-#X connect 7 0 17 0;
+#X obj 214 290 noise~;
+#X obj 144 324 else/tabwriter~ smp_\$0 2;
+#X obj 324 324 else/tabwriter~ buff_\$0 2;
+#X obj 324 353 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 144 355 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X connect 0 0 14 0;
+#X connect 7 0 15 0;
 #X connect 8 0 9 0;
-#X connect 14 0 17 1;
-#X connect 14 1 17 2;
-#X connect 15 0 16 1;
-#X connect 15 0 16 2;
-#X connect 16 0 11 0;
-#X connect 17 0 10 0;
+#X connect 12 0 15 1;
+#X connect 12 1 15 2;
+#X connect 13 0 14 1;
+#X connect 13 0 14 2;
+#X connect 14 0 17 0;
+#X connect 15 0 16 0;
 #X restore 451 267 pd multichannel;
 #X obj 50 152 cnv 15 168 118 empty empty empty 20 12 0 14 -233017 -66577
 0;
@@ -78,10 +79,9 @@ that or use the [sample~] object \, which does this internally.;
 1;
 #X text 190 350 - sets array for recording signals, f 58;
 #X text 108 425 loop <float>;
-#X obj 3 552 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 3 548 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 190 365 - start point in ms (default 0), f 58;
-#X text 191 531 -;
-#X text 191 474 -;
+#X text 191 527 -;
 #X text 190 425 -;
 #X text 190 410 -;
 #X text 190 395 -;
@@ -89,7 +89,7 @@ that or use the [sample~] object \, which does this internally.;
 #X array \$0-array 88200 float 0;
 #X coords 0 1 88199 -1 170 120 1 0 0;
 #X restore 49 151 graph;
-#X text 203 531 channels to record \, max 64 \, default 1, f 55;
+#X text 203 527 channels to record \, max 64 \, default 1, f 55;
 #X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -118,7 +118,6 @@ that or use the [sample~] object \, which does this internally.;
 #X restore 2 4 graph;
 #X text 102 365 start <float>;
 #X text 114 380 end <float>;
-#X obj 297 264 else/display~;
 #N canvas 1003 74 396 442 flags 0;
 #X text 92 223 1;
 #X text 85 336 -1;
@@ -152,13 +151,10 @@ flags/messages., f 36;
 #X text 190 320 - (re)starts recording, f 58;
 #X text 156 335 stop;
 #X text 190 335 - stops recording, f 58;
-#X text 134 559 -continue <f> | -loop <f> | -start <f> | -end <f>;
 #X text 84 410 continue <float>;
 #X msg 412 178 continue \$1;
 #X text 190 445 - signal to record into an array channel 'n', f 58
 ;
-#X text 203 474 sync output: sfrom 0 (start point) to 1 (end point)
-- zero is output When not recording, f 45;
 #X text 190 304 - gate: non-zero starts recording \, 0 stops it, f
 58;
 #X text 190 380 - end point in ms (default array's initial size),
@@ -170,16 +166,24 @@ f 56;
 #X text 202 425 non-zero enables loop recording \, 0 disables it,
 f 56;
 #X obj 254 207 sig~;
-#X obj 297 238 else/tabwriter~ \$0-array;
 #X text 55 88 [tabwriter~] records up to 64 signal channels into arrays
 and can be triggered with sample accuracy., f 51;
-#X connect 9 0 71 0;
-#X connect 10 0 9 0;
-#X connect 15 0 71 1;
-#X connect 21 0 62 0;
-#X connect 52 0 71 0;
-#X connect 53 0 71 0;
-#X connect 54 0 70 0;
-#X connect 62 0 71 0;
-#X connect 70 0 71 0;
-#X connect 71 0 49 0;
+#X obj 297 265 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 320 267 when finishing;
+#X text 156 477 bang;
+#X text 190 477 - when recording reaches the end of the array, f 58
+;
+#X obj 297 238 else/tabwriter~ \$0-array;
+#X text 73 555 -continue <f> | -loop <f> | -start <f> | -end <f> |
+-ch <f> (# of channels), f 75;
+#X connect 8 0 71 0;
+#X connect 9 0 8 0;
+#X connect 14 0 71 1;
+#X connect 20 0 58 0;
+#X connect 49 0 71 0;
+#X connect 50 0 71 0;
+#X connect 51 0 65 0;
+#X connect 58 0 71 0;
+#X connect 65 0 71 0;
+#X connect 71 0 67 0;

@@ -1,4 +1,4 @@
-#N canvas 598 49 565 522 10;
+#N canvas 655 49 565 520 10;
 #X obj 7 494 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 7 264 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -24,7 +24,6 @@ to save to, f 65;
 #X obj 7 426 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 182 388 - (optional) file name to save to (default file.wav)
 ;
-#X text 182 405 - number of channels to record (default 1), f 52;
 #X text 221 300 sets file name (no symbol opens dialog box), f 52
 ;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -72,10 +71,14 @@ file - that you can load with objects like [sample~] \, [play.file~]
 \, the last set value is used., f 52;
 #X text 162 437 -time <float>: sets time in ms (default 0);
 #X text 152 151 record 1 second;
-#X connect 33 0 35 0;
-#X connect 33 1 35 1;
-#X connect 34 0 33 0;
-#X connect 38 0 31 0;
-#X connect 39 0 38 0;
-#X connect 40 0 38 1;
-#X connect 41 0 38 0;
+#X text 182 405 - number of channels to record (default 1 \, max 64)
+, f 52;
+#X text 487 212 see also:;
+#X obj 456 234 else/batch.rec~;
+#X connect 32 0 34 0;
+#X connect 32 1 34 1;
+#X connect 33 0 32 0;
+#X connect 37 0 30 0;
+#X connect 38 0 37 0;
+#X connect 39 0 37 1;
+#X connect 40 0 37 0;
