@@ -1,4 +1,4 @@
-#N canvas 728 115 567 456 10;
+#N canvas 704 97 567 456 10;
 #X obj 7 428 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 7 279 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -9,7 +9,7 @@
 0;
 #X obj 90 355 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 89 324 cnv 17 3 17 empty empty 0-n 5 9 0 16 -228856 -162280
+#X obj 90 324 cnv 17 3 17 empty empty 0-n 5 9 0 16 -228856 -162280
 0;
 #X text 128 302 set <symbol> -;
 #X text 116 387 1) symbol;
@@ -17,7 +17,7 @@
 #X obj 90 285 cnv 17 3 32 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 163 324 signal - signal inputs to record for each channel;
-#X text 163 356 bang - outputs a bang when stops recording;
+#X text 163 355 bang - outputs a bang when stops recording;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -42,15 +42,15 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 58 254 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X obj 58 247 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 492 78 else/setdsp~;
 #X obj 70 41 cnv 4 4 4 empty empty batch 0 28 2 18 -233017 -1 0;
-#X obj 72 197 else/brown~;
-#X obj 223 196 noise~;
-#X obj 58 226 else/batch.write~ \$0-batch 2;
+#X obj 72 190 else/brown~;
+#X obj 223 189 noise~;
+#X obj 58 219 else/batch.write~ \$0-batch 2;
 #X obj 223 137 else/sample~ \$0-batch -ch 2, f 28;
-#X obj 58 165 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X obj 58 158 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X text 176 285 bang -;
 #X text 221 285 record the whole array., f 52;
@@ -63,11 +63,11 @@ an object like [sample~])., f 65;
 , f 52;
 #X text 475 221 see also:;
 #X obj 444 243 else/batch.rec~;
-#X obj 283 217 else/out~;
-#X obj 294 190 else/tabplayer~ \$0-batch 2;
-#X msg 294 167 start;
+#X obj 293 215 else/out~;
+#X obj 304 190 else/tabplayer~ \$0-batch 2;
+#X msg 304 167 start;
 #X text 167 137 click =>;
-#X text 81 167 <= record;
+#X text 81 160 <= record;
 #X connect 27 0 29 0;
 #X connect 28 0 29 1;
 #X connect 29 0 24 0;
