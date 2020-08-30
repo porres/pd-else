@@ -41,7 +41,7 @@ void print_else_obj(t_else_obj *x){
     post("-------------------------------------------------------------------------------");
     post("  ~~~~~~~~~~|| ELSE - EL Locus Solus' Externals for Pure Data ||~~~~~~~~~~");
     post("-------------------------------------------------------------------------------");
-    post("- Version: 1.0-0 %s-%d; Unreleased", STATUS, status_number);
+    post("- Version: 1.0-0 %s-%d; Released August 30th 2020", STATUS, status_number);
     post("- Author: Alexandre Torres Porres");
     post("- Repositoty: https://github.com/porres/pd-else");
     post("- License: Do What The Fuck You Want To Public License, unless otherwise noted");

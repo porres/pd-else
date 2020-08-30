@@ -8,7 +8,7 @@
 
 ### Version: 1.0-0 beta-31 With Live Electronics Tutorial 
 
-###   Unreleased
+###   Released august 30th 2020
 
 
 
@@ -16,6 +16,7 @@
 	Copyright © 2017-2020 Alexandre Torres Porres
 
   
+
 
 
 
@@ -39,7 +40,7 @@
 
 ​	ELSE is a big library that provides a cohesive system for computer music, it also serves as a basis for an Live Electronics Tutorial by the same author: Alexandre Torres Porres. This tutorial is also found as part of the download of the ELSE library.
 
-​	This version of ELSE needs **Pd 0.51-0** or above, download Pure Data from: http://msp.ucsd.edu/software.html 
+​	This version of ELSE needs **Pd 0.51-1* or above, download Pure Data from: http://msp.ucsd.edu/software.html 
 
 ​	This project is still in a beta phase, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. 
 
