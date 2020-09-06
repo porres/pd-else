@@ -12,7 +12,7 @@ typedef struct _unmerge{
 static t_class *unmerge_class;
 
 static void unmerge_list(t_unmerge *x, t_symbol *s, int ac, t_atom *av){
-    int size = x->x_size < 1 ? 1 : (int)x->x_size;
+    int size = x->x_size < 1 ? 1 : x->x_size;
     int nouts = x->x_nouts;
     int length = size * nouts;
     int extra = (ac - length);
