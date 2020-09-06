@@ -3,76 +3,66 @@
 
 typedef struct _unmerge{
     t_object    x_obj;
-    int         x_numouts; //number of outlets not including extra outlet
+    int         x_nouts; //number of outlets not including extra outlet
     float       x_size;
     int         x_trim;
-    t_outlet  **x_outlets; //numouts + 1 for extra outlet
+    t_outlet  **x_outlets; //nouts + 1 for extra outlet
 }t_unmerge;
 
 static t_class *unmerge_class;
 
-static void unmerge_list(t_unmerge *x, t_symbol *s, int argc, t_atom *argv){
+static void unmerge_list(t_unmerge *x, t_symbol *s, int ac, t_atom *av){
     int size = x->x_size < 1 ? 1 : (int)x->x_size;
-    int numouts = x->x_numouts;
-    int numleft = argc;
-    int i;
-    for(i = 0; i < numouts; i++){
-        if(numleft >= size){ // if only one... out float
-            if(size == 1 && argv->a_type == A_FLOAT)
-                outlet_float(x->x_outlets[i], argv->a_w.w_float);
-            else if(argv->a_type == A_FLOAT) // if first is float... out list
-                outlet_list(x->x_outlets[i],  &s_list, size, argv);
-            else if(!x->x_trim)
-                outlet_anything(x->x_outlets[i],  &s_list, size, argv);
-            else{
-                s = atom_getsymbolarg(0, size, argv);
-                outlet_anything(x->x_outlets[i], s, size-1, argv+1);
-            }
-            numleft -= size;
-            argv += size;
-        }
-        else if ((numleft > 0) && (numleft < size)){
-            if(numleft == 1 && argv->a_type == A_FLOAT)
-                outlet_float(x->x_outlets[i], argv->a_w.w_float);
-            else if(argv->a_type == A_FLOAT) // if first is float... out list
-                outlet_list(x->x_outlets[i],  &s_list, numleft, argv);
-            else if(!x->x_trim)
-                outlet_anything(x->x_outlets[i], &s_list, numleft, argv);
-            else{
-                s = atom_getsymbolarg(0, size, argv);
-                outlet_anything(x->x_outlets[i], s, size-1, argv+1);
-            }
-            numleft = 0;
-            break;
-        }
-        else if(numleft <= 0)
-            break;
-    };
-    if(numleft){ // extra outlet
-        if(numleft == 1 && argv->a_type == A_FLOAT)
-            outlet_float(x->x_outlets[i], argv->a_w.w_float);
-        else if(argv->a_type == A_FLOAT) // if first is float... out list
-            outlet_list(x->x_outlets[numouts],  &s_list, numleft, argv);
-        else if(!x->x_trim)
-            outlet_anything(x->x_outlets[numouts], &s_list, numleft, argv);
+    int nouts = x->x_nouts;
+    int length = size * nouts;
+    int extra = (ac - length);
+    if(extra > 0){ // extra outlet
+        if(extra == 1 && av->a_type == A_FLOAT)
+            outlet_float(x->x_outlets[nouts], (av+length)->a_w.w_float);
+        else if(av->a_type == A_FLOAT) // if first is float... out list
+            outlet_list(x->x_outlets[nouts],  &s_list, extra, av+length);
         else{
-            s = atom_getsymbolarg(0, size, argv);
-            outlet_anything(x->x_outlets[numouts], s, numleft-1, argv+1);
+            if(!x->x_trim)
+                outlet_anything(x->x_outlets[nouts], &s_list, extra, av+length);
+            else{
+                s = atom_getsymbolarg(0, length, av+length);
+                outlet_anything(x->x_outlets[nouts], s, extra-1, av+length+1);
+            }
         }
+        ac -= extra;
     };
+    for(int i = (nouts - 1); i >= 0; i--){
+        int j = (i * size);
+        int n = ac - j;
+        if(n > 0){
+            if(n == 1 && av->a_type == A_FLOAT)
+                outlet_float(x->x_outlets[i], (av+j)->a_w.w_float);
+            else if(av->a_type == A_FLOAT)
+                outlet_list(x->x_outlets[i],  &s_list, n, av+j);
+            else if(!x->x_trim)
+                outlet_anything(x->x_outlets[i],  &s_list, n, av+j);
+            else{
+                s = atom_getsymbolarg(0, n, av+j);
+                outlet_anything(x->x_outlets[i], s, n-1, av+j+1);
+            }
+        }
+        else
+            n = 0;
+        ac -= n;
+    }
 }
 
-static void unmerge_anything(t_unmerge * x, t_symbol *s, int argc, t_atom * argv){
+static void unmerge_anything(t_unmerge * x, t_symbol *s, int ac, t_atom * av){
     if(s){
         int i;
-        t_atom* newlist = t_getbytes((argc + 1) * sizeof(*newlist));
+        t_atom* newlist = t_getbytes((ac + 1) * sizeof(*newlist));
         SETSYMBOL(&newlist[0],s);
-        for(i=0;i<argc;i++)
-            newlist[i+1] = argv[i];
-        unmerge_list(x, NULL, argc+1, newlist);
-        t_freebytes(newlist, (argc + 1) * sizeof(*newlist));
+        for(i=0;i<ac;i++)
+            newlist[i+1] = av[i];
+        unmerge_list(x, NULL, ac+1, newlist);
+        t_freebytes(newlist, (ac + 1) * sizeof(*newlist));
     }
-    else unmerge_list(x, NULL, argc, argv);
+    else unmerge_list(x, NULL, ac, av);
 }
 
 static void unmerge_float(t_unmerge *x, t_float f){
@@ -85,7 +75,7 @@ static void unmerge_symbol(t_unmerge *x, t_symbol *s){
 
 static void unmerge_free(t_unmerge *x){
     if (x->x_outlets)
-        freebytes(x->x_outlets, (x->x_numouts+1) * sizeof(*x->x_outlets));
+        freebytes(x->x_outlets, (x->x_nouts+1) * sizeof(*x->x_outlets));
 }
 
 static void *unmerge_new(t_symbol *s, int ac, t_atom* av){
@@ -128,10 +118,10 @@ static void *unmerge_new(t_symbol *s, int ac, t_atom* av){
         };
     }
 /////////////////////////////////////////////////////////////////////////////////////
-    x->x_numouts = n < 2 ? 2 : n > 512 ? 512 : n;
-    x->x_outlets = (t_outlet **)getbytes((x->x_numouts+1) * sizeof(t_outlet *));
+    x->x_nouts = n < 2 ? 2 : n > 512 ? 512 : n;
+    x->x_outlets = (t_outlet **)getbytes((x->x_nouts+1) * sizeof(t_outlet *));
     floatinlet_new(&x->x_obj, &x->x_size);
-    for(int i = 0; i <= x->x_numouts; i++)
+    for(int i = 0; i <= x->x_nouts; i++)
         x->x_outlets[i] = outlet_new(&x->x_obj, &s_anything);
     return(x);
     errstate:
