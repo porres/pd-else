@@ -53,16 +53,12 @@ static void unmerge_list(t_unmerge *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void unmerge_anything(t_unmerge * x, t_symbol *s, int ac, t_atom * av){
-    if(s){
-        int i;
-        t_atom* newlist = t_getbytes((ac + 1) * sizeof(*newlist));
-        SETSYMBOL(&newlist[0],s);
-        for(i=0;i<ac;i++)
-            newlist[i+1] = av[i];
-        unmerge_list(x, NULL, ac+1, newlist);
-        t_freebytes(newlist, (ac + 1) * sizeof(*newlist));
-    }
-    else unmerge_list(x, NULL, ac, av);
+    t_atom *newlist = t_getbytes((ac+1) * sizeof(*newlist));
+    SETSYMBOL(&newlist[0], s);
+    for(int i = 0; i < ac; i++)
+        newlist[i+1] = av[i];
+    unmerge_list(x, NULL, ac+1, newlist);
+    t_freebytes(newlist, (ac+1) * sizeof(*newlist));
 }
 
 static void unmerge_float(t_unmerge *x, t_float f){
