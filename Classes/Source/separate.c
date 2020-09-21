@@ -34,7 +34,7 @@ static void separate_separator(t_separate *x, t_symbol *s, int ac, t_atom *av){
     else if(av->a_type == A_SYMBOL)
         set_separator(x, atom_getsymbol(av));
     else if(av->a_type == A_FLOAT)
-        pd_error(x, "[separate]: separator needs be a symbol");
+        pd_error(x, "[separate]: separator needs to be a symbol character");
 }
 
 /*int ishex(const char *s){

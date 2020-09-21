@@ -1,4 +1,4 @@
-#N canvas 856 169 562 449 10;
+#N canvas 723 126 562 449 10;
 #X obj 4 297 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 356 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -9,17 +9,12 @@
 ;
 #X obj 4 424 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 2 cnv 15 301 42 empty empty unite 20 20 2 37 -233017 -1 0
-;
 #X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1;
-#X restore 2 2 graph;
 #X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 39 cnv 4 4 4 empty empty Convert 0 28 2 18 -233017 -1 0;
-#X obj 90 39 cnv 4 4 4 empty empty anything 0 28 2 18 -233017 -1 0
+#X obj 23 39 cnv 4 4 4 empty empty Unite 0 28 2 18 -233017 -1 0;
+#X obj 72 39 cnv 4 4 4 empty empty messages 0 28 2 18 -233017 -1 0
 ;
 #X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
@@ -40,8 +35,8 @@
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 2 pd;
-#X obj 160 39 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
-#X obj 181 39 cnv 4 4 4 empty empty symbol 0 28 2 18 -233017 -1 0;
+#X obj 147 39 cnv 4 4 4 empty empty into 0 28 2 18 -233017 -1 0;
+#X obj 204 39 cnv 4 4 4 empty empty symbol 0 28 2 18 -233017 -1 0;
 #X msg 230 144 1 2 3 4;
 #X obj 189 163 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -51,7 +46,7 @@
 #X symbolatom 219 269 10 0 0 0 - - -;
 #X msg 298 170 hi there;
 #X text 148 400 1) symbol - separator (default space);
-#N canvas 1005 169 531 511 separator 0;
+#N canvas 924 177 531 511 separator 0;
 #X msg 122 254 1 2 3 4;
 #X msg 102 229 list a b c;
 #X symbolatom 117 458 10 0 0 0 - - -;
@@ -99,10 +94,16 @@ any message type and considers only the first character., f 66;
 #X text 208 330 - set separator;
 #X text 72 88 [unite] unites messages into a symbol message.;
 #X obj 440 256 else/any2symbol;
-#X connect 24 0 36 0;
-#X connect 25 0 36 0;
-#X connect 26 0 36 0;
-#X connect 27 0 29 0;
-#X connect 28 0 36 0;
-#X connect 30 0 36 0;
-#X connect 36 0 27 0;
+#X obj 184 39 cnv 4 4 4 empty empty a 0 28 2 18 -233017 -1 0;
+#X obj 3 2 cnv 15 301 42 empty empty unite 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 2 graph;
+#X connect 22 0 34 0;
+#X connect 23 0 34 0;
+#X connect 24 0 34 0;
+#X connect 25 0 27 0;
+#X connect 26 0 34 0;
+#X connect 28 0 34 0;
+#X connect 34 0 25 0;
