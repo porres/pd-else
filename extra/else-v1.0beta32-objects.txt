@@ -341,6 +341,7 @@ sum	x
 susloop~	x
 suspedal	x
 svfilter~	x
+symbol2any	x
 sysrt.in	x
 sysrt.out	x
 t2	x
@@ -362,6 +363,7 @@ trig2bang	x
 trig2bang~	x
 trigger2	x
 trighold~	x
+unite	x
 unmerge	x
 vibrato~	x
 vocoder~	x
