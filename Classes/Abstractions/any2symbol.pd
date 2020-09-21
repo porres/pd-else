@@ -38,13 +38,6 @@
 #X restore 133 171 pd drip;
 #X obj 133 208 route float symbol;
 #X obj 133 238 makefilename %g;
-#X obj 414 36 inlet;
-#X obj 414 187 list fromsymbol;
-#X obj 414 224 f;
-#X obj 310 91 else/args;
-#X obj 310 64 loadbang;
-#X obj 310 120 route bang;
-#X obj 414 150 makefilename %s;
 #X connect 0 0 8 0;
 #X connect 2 0 4 0;
 #X connect 2 1 9 0;
@@ -60,17 +53,9 @@
 #X connect 10 0 11 0;
 #X connect 10 1 7 0;
 #X connect 11 0 7 0;
-#X connect 12 0 18 0;
-#X connect 13 0 14 0;
-#X connect 14 0 5 1;
-#X connect 15 0 17 0;
-#X connect 16 0 15 0;
-#X connect 17 1 18 0;
-#X connect 18 0 13 0;
 #X restore 405 120 pd list-any;
 #X text 529 139 Part of ELSE \; https://github.com/porres/pd-else;
 #X obj 54 87 route symbol float bang, f 59;
-#X obj 468 48 inlet;
 #X text 531 120 Alexandre Torres Porres (2018-2020);
 #X connect 0 0 1 0;
 #X connect 2 0 6 0;
@@ -80,4 +65,3 @@
 #X connect 6 1 0 0;
 #X connect 6 2 3 0;
 #X connect 6 3 4 0;
-#X connect 7 0 4 1;
