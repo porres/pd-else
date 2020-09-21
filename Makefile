@@ -93,6 +93,7 @@ routetype.class.sources := Classes/Source/routetype.c
 receiver.class.sources := Classes/Source/receiver.c
 selector.class.sources := Classes/Source/selector.c
 separate.class.sources := Classes/Source/separate.c
+symbol2any.class.sources := Classes/Source/symbol2any.c
 slice.class.sources := Classes/Source/slice.c
 sort.class.sources := Classes/Source/sort.c
 touch.in.class.sources := Classes/Source/touch.in.c
