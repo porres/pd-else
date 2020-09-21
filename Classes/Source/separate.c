@@ -1,109 +1,162 @@
-// adapted from cyclone's fromsymbol
 
+#include "m_pd.h"
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
-#include "m_pd.h"
 
 typedef struct _separate{
-    t_object   x_ob;
-    t_symbol  *x_separator;
+    t_object    x_obj;
+    t_symbol   *separator;
+    t_atom     *av;
+    int         ac, arg_n; // "arg_n" is the number of reserved atoms (might be > ac)
 }t_separate;
 
 static t_class *separate_class;
 
-char *mtok(char *input, char *delimiter){
-    // adapted from stack overflow (designed to work like strtok)
-    static char *string;
-    if(input != NULL)     //if not passed null, use static var
-        string = input;
-    if(string == NULL)    //if reached the end, just return the static var (so it seems)
-        return string;
-    //return pointer of first occurence of delim
-    //added, keep going until first non delim
-    char *end = strstr(string, delimiter);
-    while(end == string){
-        *end = '\0';
-        string = end + strlen(delimiter);
-        end = strstr(string, delimiter);
-    };
-    if(end == NULL){    //if not found, just return the string
-        char *temp = string;
-        string = NULL;
-        return temp;
+static void set_separator(t_separate *x, t_symbol *s){
+    if(s == gensym("empty")){
+        x->separator = NULL;
+        return;
     }
-    char *temp = string;
-    // set thing pointed to at end as null char, advance pointer to after delim
-    *end = '\0';
-    string = end + strlen(delimiter);
-    return(temp);
+    if(strlen(s->s_name) > 1){
+        pd_error(x, "[separate]: separator symbol must contain not more than one character");
+        return;
+    }
+    else
+        x->separator = s;
 }
 
-static void separate_separator(t_separate *x, t_symbol *s, int argc, t_atom * argv){
+static void separate_separator(t_separate *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(!argc)
-        x->x_separator = gensym(" ");
-    else if(argc == 1 && argv->a_type == A_SYMBOL)
-        x->x_separator = atom_getsymbolarg(0, argc, argv);
+    if(!ac){
+        x->separator = NULL;
+        return;
+    }
+    else if(av->a_type == A_SYMBOL)
+        set_separator(x, atom_getsymbol(av));
+    else if(av->a_type == A_FLOAT)
+        pd_error(x, "[separate]: separator needs be a symbol");
+}
+
+/*int ishex(const char *s){
+    while(*s){ // check for x/X
+        if(*s == 'x' || *s == 'X')
+            return(1);
+        s++;
+    };
+    return(0);
+}*/
+
+int ishex(const char *s){
+    s++;
+    if(*s == 'x' || *s == 'X')
+        return(1);
     else
-        pd_error(x, "[separate]: separator message needs to contain only one symbol");
+        return(0);
+}
+
+static void string2atom(t_atom *ap, char* cp, int clen){
+    char *buffer = getbytes(sizeof(char)*(clen+1));
+    char *endptr[1];
+    t_float ftest;
+    strncpy(buffer, cp, clen);
+    buffer[clen] = 0;
+    ftest = strtod(buffer, endptr);
+    if(buffer+clen != *endptr) // strtof() failed, we have a symbol
+        SETSYMBOL(ap, gensym(buffer));
+    else{ // probably a number, let's test for hexadecimal (inf/nan are still floats)
+        if(ishex(buffer))
+            SETSYMBOL(ap, gensym(buffer));
+        else
+            SETFLOAT(ap, ftest);
+    }
+    freebytes(buffer, sizeof(char)*(clen+1));
+}
+
+static void separate_process(t_separate *x, t_symbol *s){
+    char *cc;
+    char *deli;
+    int   dell;
+    char *cp, *d;
+    int i = 1;
+    if(s == NULL){
+        x->ac = 0;
+        return;
+    }
+    cc = (char*)s->s_name;
+    cp = cc;
+    if(x->separator == NULL || x->separator == gensym("")){
+        i = strlen(cc);
+        if(x->arg_n < i){ // resize if necessary
+            freebytes(x->av, x->arg_n *sizeof(t_atom));
+            x->arg_n = i+10;
+            x->av = getbytes(x->arg_n *sizeof(t_atom));
+        }
+        x->ac = i;
+        while(i--)
+            string2atom(x->av+i, cc+i, 1);
+        if(x->ac)
+            outlet_list(x->x_obj.ob_outlet, &s_list, x->ac, x->av);
+        return;
+    }
+    deli = (char*)x->separator->s_name;
+    dell = strlen(deli);
+    while((d = strstr(cp, deli))){ // get the number of items
+        if(d != NULL && d != cp)
+            i++;
+        cp = d+dell;
+    }
+    if(x->arg_n < i){ // resize if necessary
+        freebytes(x->av, x->arg_n *sizeof(t_atom));
+        x->arg_n = i+10;
+        x->av = getbytes(x->arg_n *sizeof(t_atom));
+    }
+    x->ac = i;
+    /* parse the items into the list-buffer */
+    i = 0;
+    /* find the first item */
+    cp = cc;
+    while(cp == (d = strstr(cp,deli)))
+        cp += dell;
+    while((d = strstr(cp, deli))){
+        if(d != cp){
+            string2atom(x->av+i, cp, d-cp);
+            i++;
+        }
+        cp = d+dell;
+    }
+    if(cp)
+        string2atom(x->av+i, cp, strlen(cp));
+    if(x->ac)
+        outlet_list(x->x_obj.ob_outlet, &s_list, x->ac, x->av);
 }
 
 static void separate_symbol(t_separate *x, t_symbol *s){
-    long unsigned int seplen = strlen(x->x_separator->s_name);
-    seplen++;
-    char *sep = t_getbytes(seplen * sizeof(*sep));
-    memset(sep, '\0', seplen);
-    strcpy(sep, x->x_separator->s_name);
-    if(s){
-        long unsigned int iptlen = strlen(s->s_name); // length of input string
-// allocate t_atom[] on length of string (hacky way of making sure there's enough space)
-        t_atom* out = t_getbytes(iptlen * sizeof(*out));
-        iptlen++;
-        char* newstr = t_getbytes(iptlen * sizeof(*newstr));
-        memset(newstr, '\0', iptlen);
-        strcpy(newstr,s->s_name);
-        //parsing by token
-        char * ret = mtok(newstr, sep);
-        int i = 0;
-        while(ret != NULL){
-            if(strlen(ret) > 0){
-                    t_symbol * cursym = gensym(ret);
-                    SETSYMBOL(&out[i], cursym);
-                i++; //increment position in atom
-            };
-            ret = mtok(NULL,sep);
-        };
-        if(i == 1)
-            outlet_symbol(((t_object *)x)->ob_outlet, out->a_w.w_symbol);
-        else
-            outlet_list(((t_object *)x)->ob_outlet, &s_list, i, out);
-        t_freebytes(out, iptlen * sizeof(*out));
-        t_freebytes(newstr, iptlen * sizeof(*newstr));
-    };
-    t_freebytes(sep, seplen * sizeof(*sep));
+    if(!s || s == gensym(""))
+        outlet_bang(x->x_obj.ob_outlet);
+    else
+       separate_process(x, s);
 }
 
-static void *separate_new(t_symbol * s, int argc, t_atom * argv){
-    s = NULL;
+static void *separate_new(t_symbol *s, int ac, t_atom *av){
     t_separate *x = (t_separate *)pd_new(separate_class);
-    x->x_separator = gensym(" ");
-    if(argc){
-        if(argv->a_type == A_SYMBOL)
-            x->x_separator = atom_getsymbolarg(0, argc, argv);
-        else
-           goto errstate;
+    s = NULL;
+    x->ac = 0;
+    x->arg_n = 16;
+    x->av = getbytes(x->arg_n *sizeof(t_atom));
+    x->separator =  gensym(" "); //
+    if(ac){
+        if(av->a_type == A_SYMBOL)
+            set_separator(x, atom_getsymbol(av));
+        else if(av->a_type == A_FLOAT)
+            pd_error(x, "[separate]: separator needs be a symbol");
     }
-    outlet_new((t_object *)x, &s_anything);
+    outlet_new(&x->x_obj, 0);
     return(x);
-	errstate:
-		pd_error(x, "[separate]: improper args");
-		return NULL;
 }
 
 void separate_setup(void){
-    separate_class = class_new(gensym("separate"), (t_newmethod)separate_new, 0,
-        sizeof(t_separate), 0, A_GIMME, 0);
+    separate_class = class_new(gensym("separate"), (t_newmethod)separate_new,
+        0, sizeof(t_separate), 0, A_GIMME, 0);
     class_addsymbol(separate_class, separate_symbol);
     class_addmethod(separate_class, (t_method)separate_separator, gensym("separator"), A_GIMME, 0);
 }
