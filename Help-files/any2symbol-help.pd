@@ -53,7 +53,7 @@
 #X msg 210 119 list a b c;
 #X symbolatom 219 269 10 0 0 0 - - -;
 #X msg 298 170 hi there;
-#X text 368 241 see also:;
+#X text 435 218 see also:;
 #X text 221 380 (none);
 #X obj 440 241 else/symbol2any;
 #X obj 470 265 else/unite;

@@ -39,9 +39,9 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X text 379 214 see also:;
-#X obj 191 227 else/display;
-#X symbolatom 191 176 10 0 0 0 - - -;
+#X text 38 194 see also:;
+#X obj 241 229 else/display;
+#X symbolatom 241 178 10 0 0 0 - - -;
 #X text 195 331 list;
 #X text 232 331 - list with separated elements from a symbol;
 #X text 70 88 [separate] allows you to separate a symbol into a list
@@ -50,9 +50,9 @@ element from the others. The default separator is a "space"., f 63
 ;
 #X text 109 296 separator <symbol>;
 #X text 231 296 - set separator symbol;
-#X obj 191 150 else/initmess symbol 1\ 2\ 3\ 4;
-#X obj 191 200 else/separate;
-#X text 86 151 symbols with ==> escaped spaces, f 16;
+#X obj 241 148 else/initmess symbol 1\ 2\ 3\ 4;
+#X obj 241 202 else/separate;
+#X text 136 149 symbols with ==> escaped spaces, f 16;
 #N canvas 1040 109 523 585 examples 0;
 #X obj 185 189 else/display;
 #X obj 185 158 else/separate /;
@@ -86,7 +86,7 @@ another backslash., f 43;
 #X connect 13 0 1 0;
 #X connect 14 0 12 0;
 #X connect 17 0 12 0;
-#X restore 466 175 pd examples;
+#X restore 465 230 pd examples;
 #N canvas 923 40 580 575 separator 0;
 #X symbolatom 226 209 20 0 0 0 - - -;
 #X msg 226 160 symbol 179.101.88.112;
@@ -131,10 +131,10 @@ from the input symbol. You can set the empty seaparator with an empty
 #X connect 16 0 15 0;
 #X connect 17 0 15 0;
 #X connect 20 0 15 0;
-#X restore 460 152 pd separator;
+#X restore 459 207 pd separator;
 #X text 231 279 - the symbol to be converted to a list;
-#X obj 446 216 else/unite;
-#X obj 446 240 else/symbol2any;
+#X obj 42 216 else/unite;
+#X obj 42 240 else/symbol2any;
 #X connect 22 0 29 0;
 #X connect 28 0 22 0;
 #X connect 29 0 21 0;

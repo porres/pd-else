@@ -37,14 +37,14 @@
 #X restore 305 2 pd;
 #X obj 147 39 cnv 4 4 4 empty empty into 0 28 2 18 -233017 -1 0;
 #X obj 204 39 cnv 4 4 4 empty empty symbol 0 28 2 18 -233017 -1 0;
-#X msg 230 144 1 2 3 4;
-#X obj 189 163 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X msg 247 145 1 2 3 4;
+#X obj 206 164 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X floatatom 240 169 5 0 0 0 - - -;
-#X obj 219 235 else/display;
-#X msg 210 119 list a b c;
-#X symbolatom 219 269 10 0 0 0 - - -;
-#X msg 298 170 hi there;
+#X floatatom 257 170 5 0 0 0 - - -;
+#X obj 236 236 else/display;
+#X msg 227 120 list a b c;
+#X symbolatom 236 270 10 0 0 0 - - -;
+#X msg 315 171 hi there;
 #X text 148 400 1) symbol - separator (default space);
 #N canvas 924 177 531 511 separator 0;
 #X msg 122 254 1 2 3 4;
@@ -84,16 +84,16 @@ any message type and considers only the first character., f 66;
 #X connect 14 0 6 0;
 #X connect 17 0 6 0;
 #X connect 19 0 6 0;
-#X restore 457 198 pd separator;
+#X restore 459 251 pd separator;
 #X obj 116 329 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 380 232 see also:;
-#X obj 452 233 else/separate;
-#X obj 219 208 else/unite;
+#X text 39 208 see also:;
+#X obj 42 229 else/separate;
+#X obj 236 209 else/unite;
 #X text 153 330 symbol;
 #X text 208 330 - set separator;
-#X text 72 88 [unite] unites messages into a symbol message.;
-#X obj 440 256 else/any2symbol;
+#X text 72 87 [unite] unites messages into a symbol message.;
+#X obj 42 252 else/any2symbol;
 #X obj 184 39 cnv 4 4 4 empty empty a 0 28 2 18 -233017 -1 0;
 #X obj 3 2 cnv 15 301 42 empty empty unite 20 20 2 37 -233017 -1 0
 ;
