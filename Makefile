@@ -261,7 +261,7 @@ shared/magic.c \
 shared/buffer.c
     wavetable~.class.sources = Classes/Source/wavetable~.c $(bufmagic)
     wt~.class.sources = Classes/Source/wt~.c $(bufmagic)
-    tabplayer~.class.sources = Classes/Source/t   abplayer~.c $(bufmagic)
+    tabplayer~.class.sources = Classes/Source/tabplayer~.c $(bufmagic)
 
 rand := shared/random.c
     brown~.class.sources := Classes/Source/brown~.c $(rand)
