@@ -84,35 +84,36 @@ another backslash., f 43;
 #X connect 14 0 12 0;
 #X connect 17 0 12 0;
 #X restore 465 230 pd examples;
-#N canvas 874 99 695 441 separator 0;
-#X symbolatom 217 222 20 0 0 0 - - -;
-#X msg 217 173 symbol 179.101.88.112;
-#X msg 228 197 symbol 255.255.0.0;
-#X symbolatom 161 108 20 0 0 0 - - -;
-#X msg 161 59 symbol 19/11/8/12;
-#X msg 173 83 symbol 1/2/3/4;
-#X obj 217 140 loadbang;
-#X obj 217 377 else/display;
-#X msg 239 260 symbol a\ b\ c\ d;
-#X symbolatom 239 288 20 0 0 0 - - -;
-#X text 463 170 <= space as;
-#X text 481 180 separator;
-#X obj 217 341 else/separate empty, f 31;
-#X text 326 40 By default \, [separate] loads a space character as
+#N canvas 874 99 683 434 separator 0;
+#X symbolatom 203 210 20 0 0 0 - - -;
+#X msg 203 161 symbol 179.101.88.112;
+#X msg 214 185 symbol 255.255.0.0;
+#X symbolatom 147 96 20 0 0 0 - - -;
+#X msg 147 47 symbol 19/11/8/12;
+#X msg 159 71 symbol 1/2/3/4;
+#X obj 203 128 loadbang;
+#X obj 203 365 else/display;
+#X msg 225 248 symbol a\ b\ c\ d;
+#X symbolatom 225 276 20 0 0 0 - - -;
+#X text 449 168 <= space as;
+#X text 467 178 separator;
+#X obj 203 329 else/separate empty, f 31;
+#X msg 71 98 symbol;
+#X text 69 43 empty symbol becomes a bang, f 7;
+#X msg 386 170 symbol \ ;
+#X msg 400 192 symbol .;
+#X msg 410 213 symbol /;
+#X msg 426 258 symbol;
+#X symbolatom 386 292 10 0 0 0 - - -;
+#X text 299 39 By default \, [separate] loads a space character as
 a separator. You can change that with the separator message. The separator
-needs to be a symbol with only one character. The exception is "empty"
-\, which loads an empty separator and thus separates all characters
-from the input symbol. You can set the empty seaparator with an empty
-"separator" message as well., f 51;
-#X text 483 260 <= also empty separator;
-#X msg 109 230 symbol;
-#X text 54 212 empty symbol becomes a bang, f 7;
-#X msg 400 172 symbol \ ;
-#X msg 414 194 symbol .;
-#X msg 424 215 symbol /;
-#X msg 432 238 symbol empty;
-#X msg 440 260 symbol;
-#X symbolatom 400 304 10 0 0 0 - - -;
+needs to be a symbol \, and can be any kind of symbol (with more than
+one character). The execption is the "empty" symbol \, which loads
+an empty separator and thus separates all characters from the input
+symbol. This is also set with an empty symbol., f 55;
+#X text 471 258 <= empty symbol also sets empty separator, f 21;
+#X msg 419 235 symbol empty;
+#X text 501 236 <= empty separator;
 #X connect 0 0 12 0;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
@@ -123,13 +124,13 @@ from the input symbol. You can set the empty seaparator with an empty
 #X connect 8 0 9 0;
 #X connect 9 0 12 0;
 #X connect 12 0 7 0;
-#X connect 15 0 12 0;
-#X connect 17 0 22 0;
-#X connect 18 0 22 0;
-#X connect 19 0 22 0;
-#X connect 20 0 22 0;
-#X connect 21 0 22 0;
-#X connect 22 0 12 1;
+#X connect 13 0 12 0;
+#X connect 15 0 19 0;
+#X connect 16 0 19 0;
+#X connect 17 0 19 0;
+#X connect 18 0 19 0;
+#X connect 19 0 12 1;
+#X connect 22 0 19 0;
 #X restore 459 207 pd separator;
 #X text 233 279 - the symbol to be converted to a list;
 #X obj 42 215 else/unite;

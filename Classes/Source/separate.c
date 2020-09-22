@@ -3,6 +3,7 @@
 #include "m_pd.h"
 #include <stdlib.h>
 #include <string.h>
+#include <s_utf8.h>
 
 typedef struct _separate{
     t_object    x_obj;
@@ -19,34 +20,29 @@ static void set_separator(t_separate *x, t_symbol *s){
         x->separator = NULL;
         return;
     }
-    if(strlen(s->s_name) > 1){
-        pd_error(x, "[separate]: separator symbol must contain not more than one character");
-        return;
-    }
     else
         x->separator = s;
 }
 
 int ishex(const char *s){
     s++;
-    if(*s == 'x' || *s == 'X')
-        return(1);
-    else
-        return(0);
+    return(*s == 'x' || *s == 'X');
 }
 
-static void string2atom(t_atom *ap, char* cp, int clen){
+static void string2atom(t_separate *x, t_atom *ap, char* cp, int clen){
     char *buf = getbytes(sizeof(char)*(clen+1));
     char *endptr[1];
-    t_float ftest;
     strncpy(buf, cp, clen);
     buf[clen] = 0;
-    ftest = strtod(buf, endptr);
-    if(buf+clen != *endptr) // strtof() failed, we have a symbol
+    t_float ftest = strtod(buf, endptr);
+    if(buf+clen != *endptr){ // strtof() failed, we have a symbol
         SETSYMBOL(ap, gensym(buf));
+    }
     else{ // probably a number
         if(ishex(buf)) // test for hexadecimal (inf/nan are still floats)
             SETSYMBOL(ap, gensym(buf));
+        else if(gensym(buf) == gensym("")) // if symbol ends with separator
+            x->ac--;
         else
             SETFLOAT(ap, ftest);
     }
@@ -54,33 +50,39 @@ static void string2atom(t_atom *ap, char* cp, int clen){
 }
 
 static void separate_process(t_separate *x, t_symbol *s){
-    char *cc;
-    char *deli;
-    int   dell;
-    char *cp, *d;
-    int i = 1;
-    if(s == NULL){
-        x->ac = 0;
-        return;
-    }
-    cc = (char*)s->s_name;
-    cp = cc;
+    char *cc = (char*)s->s_name;
+    char *cp = cc;
     if(x->separator == NULL || x->separator == gensym("")){
-        i = strlen(cc);
-        if(x->arg_n < i){ // resize if necessary
+        int len = strlen(cc); // BUG
+        if(x->arg_n < len){ // resize if necessary
             freebytes(x->av, x->arg_n *sizeof(t_atom));
-            x->arg_n = i+10;
+            x->arg_n = len+10;
             x->av = getbytes(x->arg_n *sizeof(t_atom));
         }
-        x->ac = i;
-        while(i--)
-            string2atom(x->av+i, cc+i, 1);
-        if(x->ac)
-            outlet_list(x->x_obj.ob_outlet, &s_list, x->ac, x->av);
+        int total_chars = 0;
+        for(int i = 0; i < len; i++){
+            unsigned char c = s->s_name[i];
+            if(c < 128 || c > 191)
+                total_chars++;
+        }
+        x->ac = total_chars;
+        int nchars = 1;
+        while(len--){
+            unsigned char c = s->s_name[len];
+            if(c < 128 || c > 191){
+                string2atom(x, x->av+total_chars-1, cc+len, nchars);
+                nchars = 1;
+                total_chars--;
+            }
+            else
+                nchars++;
+        }
         return;
     }
-    deli = (char*)x->separator->s_name;
-    dell = strlen(deli);
+    int i = 1;
+    char *deli = (char*)x->separator->s_name;
+    int dell = strlen(deli);
+    char *d;
     while((d = strstr(cp, deli))){ // get the number of items
         if(d != NULL && d != cp)
             i++;
@@ -100,22 +102,25 @@ static void separate_process(t_separate *x, t_symbol *s){
         cp += dell;
     while((d = strstr(cp, deli))){
         if(d != cp){
-            string2atom(x->av+i, cp, d-cp);
+            string2atom(x, x->av+i, cp, d-cp);
             i++;
         }
         cp = d+dell;
     }
     if(cp)
-        string2atom(x->av+i, cp, strlen(cp));
-    if(x->ac)
-        outlet_list(x->x_obj.ob_outlet, &s_list, x->ac, x->av);
+        string2atom(x, x->av+i, cp, strlen(cp));
 }
 
 static void separate_symbol(t_separate *x, t_symbol *s){
-    if(!s || s == gensym(""))
+    if(!s || s == gensym("") || s == NULL){
+        x->ac = 0;
         outlet_bang(x->x_obj.ob_outlet);
-    else
+    }
+    else{
        separate_process(x, s);
+        if(x->ac)
+            outlet_list(x->x_obj.ob_outlet, &s_list, x->ac, x->av);
+    }
 }
 
 static void *separate_new(t_symbol *s, int ac, t_atom *av){
@@ -128,8 +133,11 @@ static void *separate_new(t_symbol *s, int ac, t_atom *av){
     if(ac){
         if(av->a_type == A_SYMBOL)
             set_separator(x, atom_getsymbol(av));
-        else if(av->a_type == A_FLOAT)
-            pd_error(x, "[separate]: separator needs be a symbol");
+        else if(av->a_type == A_FLOAT){
+            char buf[256];
+            sprintf(buf, "%g", atom_getfloat(av));
+            set_separator(x, gensym(buf));
+        }
     }
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("symbol"), gensym(""));
     outlet_new(&x->x_obj, 0);
@@ -140,4 +148,5 @@ void separate_setup(void){
     separate_class = class_new(gensym("separate"), (t_newmethod)separate_new,
         0, sizeof(t_separate), 0, A_GIMME, 0);
     class_addsymbol(separate_class, separate_symbol);
-    class_addmethod(separate_class, (t_method)set_separator, gensym(""), A_SYMBOL, 0);}
+    class_addmethod(separate_class, (t_method)set_separator, gensym(""), A_SYMBOL, 0);
+}
