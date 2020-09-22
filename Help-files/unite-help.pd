@@ -1,4 +1,4 @@
-#N canvas 723 126 562 449 10;
+#N canvas 681 85 562 449 10;
 #X obj 4 297 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 356 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -50,10 +50,6 @@
 #X msg 102 229 list a b c;
 #X symbolatom 117 458 10 0 0 0 - - -;
 #X msg 136 279 hi there;
-#X text 57 34 When you join lists into a symbol \, you can set a new
-"separator" character instead of a space (default). The argument sets
-a new separator and you can also do it via the second inlet. It accepts
-any message type and considers only the first character., f 66;
 #X obj 117 417 else/unite \\\\, f 25;
 #X symbolatom 264 389 10 0 0 0 - - -;
 #X text 330 209 <= a comma.;
@@ -70,19 +66,25 @@ any message type and considers only the first character., f 66;
 #X text 387 332 <= no separator;
 #X msg 311 361 symbol;
 #X text 360 361 <= no separator;
-#X connect 0 0 5 0;
-#X connect 1 0 5 0;
-#X connect 3 0 5 0;
-#X connect 5 0 2 0;
-#X connect 6 0 5 1;
-#X connect 9 0 6 0;
-#X connect 10 0 6 0;
-#X connect 11 0 6 0;
-#X connect 12 0 6 0;
-#X connect 13 0 6 0;
-#X connect 14 0 6 0;
-#X connect 17 0 6 0;
-#X connect 19 0 6 0;
+#X text 57 34 When you join lists into a symbol \, you can set a new
+"separator" character instead of a space (default). The argument sets
+a new separator and you can also do it via the second inlet. It accepts
+any symbol (even if with more than one character) - the exception is
+"symbol empty" \, which sets an empty separator (that is no separator).
+An empty symbol also sets no separator., f 66;
+#X connect 0 0 4 0;
+#X connect 1 0 4 0;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 1;
+#X connect 8 0 5 0;
+#X connect 9 0 5 0;
+#X connect 10 0 5 0;
+#X connect 11 0 5 0;
+#X connect 12 0 5 0;
+#X connect 13 0 5 0;
+#X connect 16 0 5 0;
+#X connect 18 0 5 0;
 #X restore 459 251 pd separator;
 #X obj 116 329 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
