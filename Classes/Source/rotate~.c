@@ -12,6 +12,7 @@ typedef struct _rotate{
     t_float    *x_inbuf;
     t_float   **x_ins;      // array of input signal vectors
     t_float   **x_outs;     // array of output signal vectors
+    t_inlet    *x_inlet_pos
 }t_rotate;
 
 static t_int *rotate_perform(t_int *w){
@@ -65,7 +66,7 @@ static void rotate_dsp(t_rotate *x, t_signal **sp){
         sigvec[i] = (t_int *) calloc(sizeof(t_int), 1);
     sigvec[0] = (t_int *)x; // object
     sigvec[pointer_count - 1] = (t_int *)sp[0]->s_n; // block size
-    for(i = 1; i < pointer_count - 1; i++) // attach inlet and all outlets
+    for(i = 1; i < pointer_count - 1; i++) // inlet and outlets
         sigvec[i] = (t_int *)sp[i-1]->s_vec;
     dsp_addv(rotate_perform, pointer_count, (t_int *)sigvec);
     free(sigvec);
@@ -86,15 +87,15 @@ static void *rotate_new(t_floatarg f1, t_floatarg f2){
         ch = 2;
     x->x_ch = ch;
     float pos = f2;
-    pos = 0;
 // allocate in chs plus 1 for controlling the pan
     int i;
-    for(i = 0; i < x->x_ch; i++)
-        inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"),gensym("signal"));
+    for(i = 1; i < x->x_ch; i++)
+        inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("signal"));
+    x->x_inlet_pos = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+    pd_float((t_pd *)x->x_inlet_pos, pos);
     for(i = 0; i < x->x_ch; i++)
         outlet_new(&x->x_obj, gensym("signal"));
     x->x_inbuf = (t_float *) malloc((x->x_ch + 1) * sizeof(t_float));
-// for better compatibility with Max 6
     x->x_ins = (t_float **) malloc((x->x_ch + 1) * sizeof(t_float *));
     x->x_outs = (t_float **) malloc(x->x_ch * sizeof(t_float *));
     for(i = 0; i < x->x_ch + 1; i++)
