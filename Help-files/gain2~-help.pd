@@ -1,27 +1,26 @@
-#N canvas 795 117 567 641 10;
-#X obj 2 328 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#N canvas 834 95 563 643 10;
+#X obj 2 327 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
-#X obj 2 461 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+#X obj 2 465 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
 13 -228856 -1 0;
-#X text 137 336 signal;
-#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
-#X restore 305 5 pd;
-#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 42 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
-#X obj 74 42 cnv 4 4 4 empty empty gain 0 28 2 18 -233017 -1 0;
-#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 41 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
+#X obj 74 41 cnv 4 4 4 empty empty gain 0 28 2 18 -233017 -1 0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
@@ -126,28 +125,19 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 506 73 pd;
-#X obj 264 300 dac~;
-#X obj 295 279 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X restore 506 72 pd;
+#X obj 264 299 dac~;
+#X obj 295 278 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 276 146 osc~ 440;
-#X text 101 383 gain <float>;
-#X text 101 399 ramp <float>;
-#X text 187 351 - sets slider (range is clipped to 0-1), f 58;
-#X text 187 399 - sets ramp time in ms for slider values (default 20)
-, f 58;
-#X text 187 383 - sets max gain (values <= 0 are ignored), f 58;
-#X obj 83 468 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+#X obj 276 145 osc~ 440;
+#X obj 83 472 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
 -162280 0;
-#X obj 83 514 cnv 17 3 17 empty \$0-pddp.cnv.let.0 2 5 9 0 16 -228856
+#X obj 83 518 cnv 17 3 17 empty \$0-pddp.cnv.let.0 2 5 9 0 16 -228856
 -162280 0;
-#X text 143 469 signal;
-#X text 149 515 float;
-#X text 193 515 - slider value \, from 0-1 (independent of maximum
+#X text 143 473 signal;
+#X text 149 519 float;
+#X text 193 519 - slider value \, from 0-1 (independent of maximum
 gain);
-#X text 101 367 mode <float>;
-#X text 187 367 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
-2 (linear);
 #N canvas 835 185 915 382 examples 0;
 #X msg 468 118 mode \$1;
 #X obj 468 41 vradio 15 1 0 3 \$0-dummy \$0-dummy-set empty 0 -8 0
@@ -167,12 +157,12 @@ gain);
 -1 -1 0 1;
 #X text 615 139 maximum gain;
 #X obj 536 100 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 6600 1;
+-1 -1 0 1;
 #X floatatom 533 120 5 0 0 0 - - -;
 #X text 548 100 set slider (0-1);
 #X obj 359 333 dac~;
 #X obj 390 315 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.519685 256;
+-228856 -1 -1 0 256;
 #X obj 390 168 noise~;
 #X obj 758 61 adc~;
 #X text 628 19 Use it in conjunction with [else/meter2~];
@@ -211,7 +201,7 @@ achieved., f 40;
 #X connect 23 2 17 0;
 #X connect 25 0 23 0;
 #X connect 26 0 24 0;
-#X restore 468 222 pd examples;
+#X restore 468 221 pd examples;
 #N canvas 619 192 678 490 scaling 0;
 #X obj 32 57 cnv 15 198 198 empty empty empty 20 12 0 14 -253888 -66577
 0;
@@ -462,47 +452,40 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X connect 34 0 35 0;
 #X connect 34 1 35 1;
 #X connect 36 0 26 0;
-#X restore 462 248 pd scaling \; modes & gain;
-#X text 153 207 [else/gain2~] ==>;
-#X obj 276 172 else/gain2~;
-#X obj 83 437 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
+#X restore 462 247 pd scaling \; modes & gain;
+#X text 153 206 [else/gain2~] ==>;
+#X obj 276 171 else/gain2~ 1 0 20 0 0;
+#X obj 83 441 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
 -162280 0;
-#X text 137 437 signal;
-#X text 187 336 - left channel signal whose gain will be adjusted,
-f 58;
-#X text 187 437 - right channel signal whose gain will be adjusted
+#X text 137 441 signal;
+#X text 187 441 - right channel signal whose gain will be adjusted
 ;
-#X text 193 469 - the adjusted gain signal of the left channel;
-#X text 143 491 signal;
-#X text 193 491 - the adjusted gain signal of the right channel;
-#X obj 83 491 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
+#X text 193 473 - the adjusted gain signal of the left channel;
+#X text 143 495 signal;
+#X text 193 495 - the adjusted gain signal of the right channel;
+#X obj 83 495 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
 -162280 0;
-#X obj 3 5 cnv 15 301 42 empty empty gain2~ 20 20 2 37 -233017 -1 0
+#X obj 3 4 cnv 15 301 42 empty empty gain2~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 3 5 graph;
-#X text 107 351 set <float>;
-#X obj 5 614 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+#X restore 3 4 graph;
+#X obj 5 618 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
-#X obj 5 541 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 79 548 -max <float>: sets max gain (needs to be > 0 \, default
+#X obj 5 545 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 79 552 -max <float>: sets max gain (needs to be > 0 \, default
 1), f 75;
-#X text 73 563 -mode <float>: sets scaling mode: 0 (quartic \, default)
+#X text 73 567 -mode <float>: sets scaling mode: 0 (quartic \, default)
 \, 1 (dB) or 2 (linear), f 76;
-#X text 73 579 -ramp <float>: sets ramp time (minimum 5 \, default
+#X text 73 583 -ramp <float>: sets ramp time (minimum 5 \, default
 20), f 76;
-#X text 121 594 -init: sets to init mode (default no init), f 68;
-#X text 80 86 [gain2~] is a convenient stereo gain abstraction \, so
+#X text 121 598 -init: sets to init mode (default no init), f 68;
+#X text 80 85 [gain2~] is a convenient stereo gain abstraction \, so
 you can adjust a stereo signal's gain. It has controls for ramp time
 \, maximum gain \, scaling mode and init., f 55;
-#X text 101 415 init <float>;
-#X text 187 415 - non zero sets to init mode, f 58;
-#X obj 85 334 cnv 17 3 96 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
--162280 0;
-#X text 38 169 see also:;
-#X text 78 253 <= [else/gain~];
-#X obj 50 193 else/gain~;
+#X text 38 168 see also:;
+#X text 78 252 <= [else/gain~];
+#X obj 50 192 else/gain~;
 #N canvas 926 211 421 431 init 0;
 #X obj 114 61 noise~;
 #X msg 94 28 init 1;
@@ -517,10 +500,33 @@ saved., f 25;
 #X connect 3 0 5 0;
 #X connect 3 1 5 1;
 #X connect 4 0 3 1;
-#X restore 491 284 pd init;
-#X connect 16 0 32 1;
-#X connect 16 0 32 0;
-#X connect 32 0 14 0;
-#X connect 32 1 14 1;
-#X connect 32 2 15 0;
-#X coords 0 641 1 640 74 39 0;
+#X restore 491 283 pd init;
+#X obj 247 145 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 170 144 mute/unmute;
+#X text 103 421 init <float>;
+#X text 189 421 - non zero sets to init mode, f 58;
+#X obj 84 334 cnv 17 3 100 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
+-162280 0;
+#X text 139 334 signal;
+#X text 103 392 gain <float>;
+#X text 103 407 ramp <float>;
+#X text 189 362 - sets slider (range is clipped to 0-1), f 58;
+#X text 189 407 - sets ramp time in ms for slider values (default 20)
+, f 58;
+#X text 189 392 - sets max gain (values <= 0 are ignored), f 58;
+#X text 103 377 mode <float>;
+#X text 189 377 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
+2 (linear);
+#X text 189 334 - incoming signal whose gain will be adjusted, f 58
+;
+#X text 109 362 set <float>;
+#X text 151 348 bang;
+#X text 189 348 - mute/unmute, f 58;
+#X connect 15 0 24 1;
+#X connect 15 0 24 0;
+#X connect 24 0 13 0;
+#X connect 24 1 13 1;
+#X connect 24 2 14 0;
+#X connect 45 0 24 0;
+#X coords 0 643 1 642 74 39 0;
