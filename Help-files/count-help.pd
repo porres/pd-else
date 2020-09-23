@@ -171,8 +171,6 @@ after reaching a limit (minimum or maximum value), f 64;
 #X connect 8 0 0 0;
 #X connect 8 1 2 0;
 #X restore 459 158 pd direction;
-#X text 198 446 1 float sets: max / 2 floats set: min & max / 3 floats
-sets: min \, max & reset point, f 45;
 #N canvas 732 167 504 363 messages 0;
 #X obj 176 319 nbx 2 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -224,7 +222,6 @@ float sets a new reset point as well, f 53;
 #X connect 25 1 2 0;
 #X restore 465 180 pd messages;
 #X text 208 394 - count value;
-#X text 106 498 -reset <float> - sets reset value;
 #X obj 228 151 else/count 1 4;
 #X text 68 87 [count] counts and wraps between a minimum and maximum
 value. It has modes for counting up \, down and alternating between
@@ -232,6 +229,9 @@ them.;
 #X text 208 230 - sets new count value and outputs it, f 55;
 #X text 208 216 - counts, f 55;
 #X text 208 416 - bang when reaching count limits;
-#X connect 19 0 53 0;
-#X connect 53 0 20 0;
-#X connect 53 1 32 0;
+#X text 198 446 1 float sets: max / 2 floats set: min & max / 3 floats
+sets: min \, max & start/reset point, f 45;
+#X text 106 498 -reset <float> - sets start & reset value;
+#X connect 19 0 51 0;
+#X connect 51 0 20 0;
+#X connect 51 1 32 0;
