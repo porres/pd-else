@@ -1,4 +1,4 @@
-#N canvas 730 71 563 570 10;
+#N canvas 362 127 563 570 10;
 #X obj 4 543 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 4 315 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -132,10 +132,10 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 508 74 pd;
-#X obj 248 282 dac~;
-#X obj 282 282 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 268 282 dac~;
+#X obj 302 282 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 269 133 osc~ 440;
+#X obj 289 133 osc~ 440;
 #X text 106 368 gain <float>;
 #X text 106 383 ramp <float>;
 #X text 192 338 - sets slider (range is clipped to 0-1), f 58;
@@ -149,11 +149,11 @@
 #X text 154 448 float;
 #X text 198 448 - slider value \, from 0-1 (independent of maximum
 gain);
-#X text 163 210 [else/gain~] ==>;
+#X text 183 210 [else/gain~] ==>;
 #X text 106 353 mode <float>;
 #X text 192 353 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear);
-#N canvas 668 181 809 380 examples 0;
+#N canvas 246 286 809 380 examples 0;
 #X msg 259 213 mode \$1;
 #X obj 259 136 vradio 15 1 0 3 \$0-dummy \$0-dummy-set empty 0 -8 0
 10 -228856 -1 -1 0;
@@ -460,10 +460,10 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X connect 26 0 24 0;
 #X connect 27 0 26 0;
 #X connect 35 0 26 0;
-#X restore 460 234 pd scaling \; modes & gain;
+#X restore 460 236 pd scaling \; modes & gain;
 #X text 192 323 - incoming signal whose gain will be adjusted, f 58
 ;
-#X obj 269 166 else/gain~;
+#X obj 289 166 else/gain~;
 #X text 112 338 set <float>;
 #X obj 5 6 cnv 15 301 42 empty empty gain~ 20 20 2 37 -233017 -1 0
 ;
@@ -495,6 +495,9 @@ saved., f 25;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
 #X restore 490 269 pd init;
+#X obj 48 188 else/gain2~;
+#X text 38 164 see also:;
+#X text 88 246 <= [else/gain2~];
 #X connect 19 0 36 0;
 #X connect 36 0 17 0;
 #X connect 36 0 17 1;
