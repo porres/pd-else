@@ -1,5 +1,5 @@
-#N canvas 605 198 563 456 10;
-#X obj 3 428 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 605 198 561 469 10;
+#X obj 3 441 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 4 303 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -42,7 +42,7 @@
 0;
 #X obj 221 181 else/brown~;
 #X obj 187 150 osc~ 440;
-#X text 186 405 1) float;
+#X text 136 404 1) float;
 #N canvas 736 79 608 362 example 0;
 #X obj 428 124 osc~ 440;
 #X obj 394 94 osc~ 220;
@@ -116,10 +116,12 @@
 #X text 66 88 [rotate~] performs equal power rotation for 'n' channels
 (default 2). It takes a position control in which a full cycle is from
 0 to 1 \, negative values from 0 to -1 are wrapped., f 69;
-#X text 243 405 - number of channels (minimum and default: 2);
+#X text 193 404 - number of channels (minimum and default: 2);
 #X obj 187 209 else/rotate~;
 #X msg 265 147 -0.5;
 #X obj 179 240 else/out~;
+#X text 136 420 2) float;
+#X text 193 420 - rotation position (default: 0);
 #X connect 8 0 32 0;
 #X connect 21 0 35 1;
 #X connect 22 0 35 0;
