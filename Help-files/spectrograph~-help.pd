@@ -1,4 +1,4 @@
-#N canvas 623 24 560 561 10;
+#N canvas 680 55 558 558 10;
 #X obj 1 310 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
 -228856 -1 0;
 #X obj 1 411 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
@@ -36,18 +36,16 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X text 146 335 size <float>;
-#X obj 54 128 noise~;
-#X text 61 87 [spectrograph~] is a simple convenient abstraction for
-visualizing spectrographs.;
-#X msg 392 185 size \$1;
-#X obj 417 208 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 60 126 noise~;
+#X msg 420 183 size \$1;
+#X obj 445 206 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X msg 417 229 db \$1;
-#X msg 462 229 log \$1;
-#X obj 462 208 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 445 227 db \$1;
+#X msg 490 227 log \$1;
+#X obj 490 206 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 431 162 1024;
-#X msg 392 162 256;
+#X msg 459 160 1024;
+#X msg 420 160 256;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
 -262144 1 1;
@@ -152,11 +150,11 @@ visualizing spectrographs.;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 499 61 pd;
-#X obj 417 277 s \$0-set;
-#X obj 115 127 r \$0-set;
+#X obj 445 275 s \$0-set;
+#X obj 109 129 r \$0-set;
 #X text 175 445 (none);
 #X text 158 351 db <float>;
-#X obj 54 158 ./spectrograph~ 1024 0 0 300 140;
+#X obj 60 158 ./spectrograph~ 1024 1 0 300 140;
 #X obj 1 532 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 1 462 cnv 3 550 3 empty \$0-pddp.cnv.argument flags 8 12 0 13
@@ -178,12 +176,17 @@ f 51;
 #X text 230 351 - non zero sets to dB amp scale;
 #X text 229 335 - sets FFT size;
 #X text 111 385 dim <float \, float>;
-#X connect 20 0 34 0;
-#X connect 22 0 30 0;
-#X connect 23 0 24 0;
-#X connect 24 0 30 0;
-#X connect 25 0 30 0;
-#X connect 26 0 25 0;
-#X connect 27 0 22 0;
-#X connect 28 0 22 0;
-#X connect 31 0 34 0;
+#X text 366 285 Nyquist;
+#X text 27 285 0 Hz;
+#X text 46 87 [spectrograph~] is an abstraction for visualizing FFT
+amplitudes from 0hz to Nyquist. It uses a hann table for the abalysis.
+, f 64;
+#X connect 20 0 33 0;
+#X connect 21 0 29 0;
+#X connect 22 0 23 0;
+#X connect 23 0 29 0;
+#X connect 24 0 29 0;
+#X connect 25 0 24 0;
+#X connect 26 0 21 0;
+#X connect 27 0 21 0;
+#X connect 30 0 33 0;
