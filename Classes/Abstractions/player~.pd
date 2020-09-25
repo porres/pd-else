@@ -1,7 +1,7 @@
 #N canvas 557 149 493 349 10;
-#X declare -path /Users/porres/Desktop/git/pd-else/Help-files;
+#X declare -path /Users/porres/Documents/Pd/externals/else;
 #X obj 76 28 inlet;
-#N canvas 825 175 289 217 messages 0;
+#N canvas 825 175 289 217 messages 1;
 #X obj 28 14 inlet;
 #X msg 28 140 vis \$1;
 #X msg 28 113 1;
@@ -26,7 +26,7 @@
 #X connect 7 0 2 0;
 #X restore 111 92 pd norm;
 #X obj 95 115 s \$0-sr;
-#N canvas 851 254 535 457 ramp~ 0;
+#N canvas 308 273 535 457 ramp~ 0;
 #X obj 182 383 s~ \$0-tabread4~;
 #X obj 217 308 *~;
 #X obj 293 239 / 100;
@@ -104,8 +104,12 @@
 #X connect 12 0 13 0;
 #X connect 13 0 14 0;
 #X connect 13 1 11 0;
-#X restore 405 270 pd range;
+#X restore 405 290 pd range;
+#X obj 441 209 else/ms2samps;
 #X obj 169 129 route start pause continue speed loop stop range;
+#X obj 172 150 route bang;
+#X obj 220 174 t b f;
+#X msg 441 231 \$1 \, start;
 #X connect 1 0 24 1;
 #X connect 2 0 13 0;
 #X connect 3 0 1 1;
@@ -115,11 +119,11 @@
 #X connect 7 0 19 0;
 #X connect 7 1 14 0;
 #X connect 9 0 21 0;
-#X connect 11 0 29 0;
+#X connect 11 0 30 0;
 #X connect 12 0 11 0;
 #X connect 13 0 1 0;
 #X connect 14 0 15 0;
-#X connect 14 1 29 0;
+#X connect 14 1 30 0;
 #X connect 15 0 16 0;
 #X connect 15 1 19 0;
 #X connect 16 0 24 0;
@@ -128,7 +132,7 @@
 #X connect 19 1 3 0;
 #X connect 21 0 26 0;
 #X connect 21 1 27 0;
-#X connect 22 0 29 0;
+#X connect 22 0 30 0;
 #X connect 23 0 22 0;
 #X connect 24 0 0 0;
 #X connect 24 1 10 0;
@@ -137,14 +141,20 @@
 #X connect 27 0 25 0;
 #X connect 28 0 24 2;
 #X connect 28 1 24 3;
-#X connect 29 0 19 0;
-#X connect 29 1 4 0;
-#X connect 29 2 3 0;
-#X connect 29 3 17 0;
-#X connect 29 3 2 0;
-#X connect 29 4 20 0;
-#X connect 29 5 16 0;
-#X connect 29 6 28 0;
+#X connect 29 0 33 0;
+#X connect 30 0 31 0;
+#X connect 30 1 4 0;
+#X connect 30 2 3 0;
+#X connect 30 3 17 0;
+#X connect 30 3 2 0;
+#X connect 30 4 20 0;
+#X connect 30 5 16 0;
+#X connect 30 6 28 0;
+#X connect 31 0 19 0;
+#X connect 31 1 32 0;
+#X connect 32 0 3 0;
+#X connect 32 1 29 0;
+#X connect 33 0 24 0;
 #X restore 199 98 pd ramp~;
 #N canvas 271 317 468 477 load 0;
 #X obj 156 207 symbol;
@@ -382,7 +392,7 @@
 #X obj 199 60 else/dir 1;
 #X msg 363 56 clear \, obj 30 20 declare -path \$1;
 #N canvas 169 23 493 100 \$0-path 0;
-#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/Help-files
+#X obj 30 20 declare -path /Users/porres/Documents/Pd/externals/else
 ;
 #X restore 465 80 pd \$0-path;
 #X msg 166 254 100;
@@ -483,16 +493,16 @@
 #N canvas 871 121 479 442 \$0-buffers 0;
 #X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
 0;
-#N canvas 0 22 450 300 ch0_1011 0;
-#X array 0-buffer_1011 87741 float 2;
+#N canvas 0 22 450 300 ch0_1077 0;
+#X array 0-buffer_1077 87741 float 2;
 #X coords 0 1 87741 -1 450 82 2 0 0;
-#X restore 5 19 pd ch0_1011;
+#X restore 5 19 pd ch0_1077;
 #X obj 6 120 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
 0;
-#N canvas 0 22 450 300 ch1_1011 0;
-#X array 1-buffer_1011 87741 float 2;
+#N canvas 0 22 450 300 ch1_1077 0;
+#X array 1-buffer_1077 87741 float 2;
 #X coords 0 1 87741 -1 450 82 2 0 0;
-#X restore 5 119 pd ch1_1011;
+#X restore 5 119 pd ch1_1077;
 #X coords 0 0 0 0 10 20 0;
 #X restore 419 308 pd \$0-buffers;
 #X msg 52 208 obj \$2 200 r \$1-didit \, obj \$2 240 outlet \, connect
