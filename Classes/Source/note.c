@@ -64,14 +64,14 @@ static void note_receive(t_note *x, t_symbol *s){
         rcv = &s_;
     if(rcv != &s_){
         if(rcv != x->x_receive_sym){
-            canvas_dirty(x->x_glist, 1);
+//            canvas_dirty(x->x_glist, 1);
             if(x->x_receive_sym != &s_)
                 pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
             pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = rcv);
         }
     }
     else{
-        canvas_dirty(x->x_glist, 1);
+//        canvas_dirty(x->x_glist, 1);
         if(x->x_receive_sym != &s_)
             pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
         x->x_receive_sym = rcv;
@@ -529,7 +529,7 @@ static void note_set(t_note *x, t_symbol *s, int argc, t_atom * argv){
         binbuf_restore(x->x_binbuf, argc, argv);
         binbuf_gettext(x->x_binbuf, &x->x_textbuf, &x->x_textbufsize);
         sys_vgui(".x%lx.c delete %s\n", x->x_canvas, x->x_tag);
-        canvas_dirty(x->x_glist, 1);
+//        canvas_dirty(x->x_glist, 1);
         note_draw(x);
     }
 }
@@ -541,7 +541,7 @@ static void note_rgb(t_note *x, t_floatarg r, t_floatarg g, t_floatarg b){
     sprintf(x->x_color, "#%2.2x%2.2x%2.2x", x->x_red, x->x_green, x->x_blue);
     note_update(x);
     sys_vgui(".x%lx.c delete %s\n", x->x_canvas, x->x_tag);
-    canvas_dirty(x->x_glist, 1);
+//    canvas_dirty(x->x_glist, 1);
     note_draw(x);
 }
 
@@ -549,7 +549,7 @@ static void note_name(t_note *x, t_symbol *name){
     x->x_fontfamily = name;
     note_update(x);
     sys_vgui(".x%lx.c delete %s\n", x->x_canvas, x->x_tag);
-    canvas_dirty(x->x_glist, 1);
+//    canvas_dirty(x->x_glist, 1);
     note_draw(x);
 }
 
@@ -557,7 +557,7 @@ static void note_size(t_note *x, t_floatarg f){
     x->x_fontsize = (int)f < 5 ? 5 : (int)f;
     note_update(x);
     sys_vgui(".x%lx.c delete %s\n", x->x_canvas, x->x_tag);
-    canvas_dirty(x->x_glist, 1);
+//    canvas_dirty(x->x_glist, 1);
     note_draw(x);
 }
 
