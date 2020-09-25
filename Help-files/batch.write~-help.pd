@@ -55,7 +55,6 @@
 #X text 176 285 bang -;
 #X text 221 285 record the whole array., f 52;
 #X text 221 302 sets array name, f 52;
-#X text 182 387 - (optional) array name to write to;
 #X text 59 85 [batch.write~] is a convenient abstraction based on [tabwriter~]
 and the 'fast-forward' message to pd that batch records to arrays (from
 an object like [sample~])., f 65;
@@ -68,10 +67,11 @@ an object like [sample~])., f 65;
 #X msg 304 167 start;
 #X text 167 137 click =>;
 #X text 81 160 <= record;
+#X text 182 387 - array name to write to (default sample_\$0);
 #X connect 27 0 29 0;
 #X connect 28 0 29 1;
 #X connect 29 0 24 0;
 #X connect 31 0 29 0;
+#X connect 40 0 39 0;
+#X connect 40 1 39 1;
 #X connect 41 0 40 0;
-#X connect 41 1 40 1;
-#X connect 42 0 41 0;
