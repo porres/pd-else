@@ -1,9 +1,9 @@
 #N canvas 343 417 805 447 10;
-#X obj 101 101 cnv 10 12 20 empty \$0-display empty 2 10 0 12 -199730
--69635 0;
+#X obj 101 101 cnv 10 12 20 empty \$0-display 0 2 10 0 12 -199730 -69635
+0;
 #X obj 101 101 cnv 1 6 1 empty empty empty 20 12 0 14 -1 -66577 0;
 #X obj 101 136 namecanvas \$0-canvas, f 11;
-#N canvas 684 266 682 472 init 0;
+#N canvas 472 259 682 472 init 0;
 #X obj 122 142 float \$1;
 #X obj 122 191 moses;
 #X obj 122 167 int;
@@ -43,8 +43,10 @@
 #X obj 380 275 expr $f2 < $f1 \; $f2 > $f1 \; $f2;
 #X obj 352 235 expr 64 / $f1 \; if(\$2 <= 0 \, 100 \, \$2);
 #X obj 352 209 else/sr~ -khz;
-#X obj 73 75 else/loadbanger 3;
 #X obj 50 429 outlet;
+#X obj 71 15 else/lb -init;
+#X obj 71 44 delay 0;
+#X obj 73 75 t b b b;
 #X connect 0 0 2 0;
 #X connect 1 0 6 0;
 #X connect 1 0 9 0;
@@ -73,9 +75,11 @@
 #X connect 20 0 19 0;
 #X connect 20 1 19 1;
 #X connect 21 0 20 0;
-#X connect 22 0 23 0;
-#X connect 22 1 0 0;
-#X connect 22 2 11 0;
+#X connect 23 0 24 0;
+#X connect 24 0 25 0;
+#X connect 25 0 22 0;
+#X connect 25 1 0 0;
+#X connect 25 2 11 0;
 #X restore 343 81 pd init;
 #X obj 309 215 list prepend;
 #X obj 397 185 r \$0-fixed;
