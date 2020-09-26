@@ -5,6 +5,7 @@
 #include <math.h>
 #include <m_pd.h>
 #include <m_imp.h>
+
 static t_class *colors_class;
 
 typedef struct _colors{
@@ -22,7 +23,6 @@ static void colors_pick(t_colors *x){
 }
 
 static void colors_bang(t_colors *x){
-//    post("bang, hex = %d", x->x_hex);
     if(x->x_hex)
         outlet_symbol(x->x_obj.ob_outlet, gensym(x->x_color));
     else{ // RGB related
@@ -125,12 +125,106 @@ static void colors_gui(t_colors *x, t_floatarg gui){
     colors_bang(x);
 }
 
-static void colors_rgb(t_colors *x, t_floatarg r, t_floatarg g, t_floatarg b){
-    unsigned int red = (unsigned int)(r > 255 ? 255 : r < 0 ? 0 : r);
-    unsigned int green = (unsigned int)(g > 255 ? 255 : g < 0 ? 0 : g);
-    unsigned int blue = (unsigned int)(b > 255 ? 255 : b < 0 ? 0 : b);
+static void colors_gray(t_colors *x, t_floatarg g){
+    float gray = (g > 100 ? 1 : g < 0 ? 0 : g/100.);
+    unsigned int rgb = (unsigned int)(rint(255 * gray));
+    char hex[MAXPDSTRING];
+    sprintf(hex, "#%02x%02x%02x", rgb, rgb, rgb);
+    strncpy(x->x_color, hex, 7);
+    colors_bang(x);
+}
+
+static void colors_cmyk(t_colors *x, t_floatarg c, t_floatarg m, t_floatarg y, t_floatarg k){
+    float oneminusc = 1 - (c > 100 ? 1 : c < 0 ? 0 : c/100.);
+    float oneminusm = 1 - (m > 100 ? 1 : m < 0 ? 0 : m/100.);
+    float oneminusy = 1 - (y > 100 ? 1 : y < 0 ? 0 : y/100.);
+    float oneminusk = 1 - (k > 100 ? 1 : k < 0 ? 0 : k/100.);
+    unsigned int red = (unsigned int)(rint(255 * oneminusc * oneminusk));
+    unsigned int green = (unsigned int)(rint(255 * oneminusm * oneminusk));
+    unsigned int blue = (unsigned int)(rint(255 * oneminusy * oneminusk));
     char hex[MAXPDSTRING];
     sprintf(hex, "#%02x%02x%02x", red, green, blue);
+    strncpy(x->x_color, hex, 7);
+    colors_bang(x);
+}
+
+static void colors_rgb(t_colors *x, t_floatarg r, t_floatarg g, t_floatarg b){
+    unsigned int red = (unsigned int)(r > 255 ? 255 : r < 0 ? 0 : rint(r));
+    unsigned int green = (unsigned int)(g > 255 ? 255 : g < 0 ? 0 : rint(g));
+    unsigned int blue = (unsigned int)(b > 255 ? 255 : b < 0 ? 0 : rint(b));
+    char hex[MAXPDSTRING];
+    sprintf(hex, "#%02x%02x%02x", red, green, blue);
+    strncpy(x->x_color, hex, 7);
+    colors_bang(x);
+}
+
+static void colors_hsv(t_colors *x, t_floatarg H, t_floatarg S, t_floatarg V){
+    if(H > 360)
+        H = 360;
+    if(H < 0)
+        H = 0;
+    float s = S > 100 ? 1 : S < 0 ? 0 : S/100.;
+    float v = V > 100 ? 1 : V < 0 ? 0 : V/100.;
+    float C = s*v;
+    float X = C*(1-fabs(fmod(H/60.0, 2)-1));
+    float m = v-C;
+    float r,g,b;
+    if(H >= 0 && H < 60)
+        r = C, g = X, b = 0;
+    else if(H >= 60 && H < 120)
+        r = X, g = C, b = 0;
+    else if(H >= 120 && H < 180)
+        r = 0, g = C, b = X;
+    else if(H >= 180 && H < 240)
+        r = 0, g = X, b = C;
+    else if(H >= 240 && H < 300)
+        r = X, g = 0, b = C;
+    else
+        r = C, g = 0, b = X;
+    int R = rint((r+m)*255);
+    int G = rint((g+m)*255);
+    int B = rint((b+m)*255);
+    char hex[MAXPDSTRING];
+    sprintf(hex, "#%02x%02x%02x", R, G, B);
+    strncpy(x->x_color, hex, 7);
+    colors_bang(x);
+}
+
+float HueToRGB(float v1, float v2, float vH){
+    if (vH < 0)
+        vH += 1;
+    if (vH > 1)
+        vH -= 1;
+    if ((6 * vH) < 1)
+        return (v1 + (v2 - v1) * 6 * vH);
+    if ((2 * vH) < 1)
+        return v2;
+    if ((3 * vH) < 2)
+        return (v1 + (v2 - v1) * ((2.0f / 3) - vH) * 6);
+    return v1;
+}
+
+static void colors_hsl(t_colors *x, t_floatarg H, t_floatarg S, t_floatarg L){
+    unsigned char R = 0, G = 0, B = 0;
+    if(H > 360)
+        H = 360;
+    if(H < 0)
+        H = 0;
+    L = L > 100 ? 1 : L < 0 ? 0 : L/100.;
+    S = S > 100 ? 1 : S < 0 ? 0 : S/100.;
+    if(S == 0)
+        R = G = B = (unsigned char)(L * 255);
+    else{
+        float v1, v2;
+        float hue = (float)H / 360;
+        v2 = (L < 0.5) ? (L * (1 + S)) : ((L + S) - (L * S));
+        v1 = 2 * L - v2;
+        R = (unsigned char)rint((255 * HueToRGB(v1, v2, hue + (1.0f / 3))));
+        G = (unsigned char)rint((255 * HueToRGB(v1, v2, hue)));
+        B = (unsigned char)rint((255 * HueToRGB(v1, v2, hue - (1.0f / 3))));
+    }
+    char hex[MAXPDSTRING];
+    sprintf(hex, "#%02x%02x%02x", R, G, B);
     strncpy(x->x_color, hex, 7);
     colors_bang(x);
 }
@@ -170,7 +264,11 @@ void colors_setup(void){
     colors_class = class_new(gensym("colors"), (t_newmethod)colors_new,
                 (t_method)colors_free, sizeof(t_colors), 0, A_DEFSYMBOL, 0);
     class_addbang(colors_class, (t_method)colors_bang);
+    class_addmethod(colors_class, (t_method)colors_hsl, gensym("hsl"), A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(colors_class, (t_method)colors_hsv, gensym("hsv"), A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(colors_class, (t_method)colors_rgb, gensym("rgb"), A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
+    class_addmethod(colors_class, (t_method)colors_gray, gensym("gray"), A_DEFFLOAT, 0);
+    class_addmethod(colors_class, (t_method)colors_cmyk, gensym("cmyk"), A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(colors_class, (t_method)colors_pick, gensym("pick"), 0);
     class_addmethod(colors_class, (t_method)colors_convert_to, gensym("to"), A_DEFSYMBOL, 0);
     class_addmethod(colors_class, (t_method)colors_hex, gensym("hex"), A_DEFSYMBOL, 0);

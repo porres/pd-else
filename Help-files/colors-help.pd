@@ -1,5 +1,5 @@
 #N struct 1003-pixel float color;
-#N canvas 546 23 560 610 10;
+#N canvas 710 23 560 662 10;
 #X obj 248 158 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -29,52 +29,86 @@
 #X restore 3 4 graph;
 #X obj 4 306 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 432 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 483 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 467 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 518 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 105 441 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 105 492 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 106 315 cnv 17 3 112 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 106 312 cnv 17 3 166 empty empty 0 5 9 0 16 -228856 -162280
 0;
-#X obj 4 583 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 634 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 168 316 bang;
+#X text 198 312 bang;
 #X text 154 232 click opens color picker =>, f 15;
 #X msg 269 212 rgb 127 127 127;
 #X msg 209 193 pick;
 #X msg 263 189 hex #feabc4;
 #X text 271 159 convert/output;
 #X text 95 193 open color picker;
-#N canvas 573 40 595 448 convert 0;
-#X obj 318 189 else/pack2 rgb 0 0 0;
-#X obj 357 24 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
+#N canvas 994 43 697 764 convert 0;
+#X obj 380 191 else/pack2 rgb 0 0 0;
+#X obj 419 26 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
 -262144 -1 0 0;
-#X obj 396 24 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4033
+#X obj 458 26 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4033
 -262144 -1 0 0;
-#X obj 435 24 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
+#X obj 497 26 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
 -262144 -1 0 0;
-#X obj 357 166 int;
-#X obj 396 166 int;
-#X obj 435 166 int;
-#X symbolatom 318 295 8 0 0 0 - - -;
-#X text 427 257 converts to hexadecimal;
-#X obj 318 361 else/colors;
-#X text 391 361 converts to RGB (default);
-#X obj 318 258 else/colors -hex;
-#X obj 94 256 else/colors;
-#X msg 114 165 to rgb \, hex #ab1f4c;
-#X msg 94 139 to hex \, rgb 127 127 127;
-#X msg 318 327 hex \$1;
-#X msg 126 199 to ds \, bang;
-#X msg 142 223 to gui \, bang;
-#X text 53 68 You can define the output format with a flag \, and also
+#X obj 419 168 int;
+#X obj 458 168 int;
+#X obj 497 168 int;
+#X symbolatom 380 287 8 0 0 0 - - -;
+#X text 489 259 converts to hexadecimal;
+#X obj 380 335 else/colors;
+#X text 453 335 converts to RGB (default);
+#X obj 380 260 else/colors -hex;
+#X obj 116 258 else/colors;
+#X msg 136 167 to rgb \, hex #ab1f4c;
+#X msg 116 141 to hex \, rgb 127 127 127;
+#X msg 380 311 hex \$1;
+#X msg 148 201 to ds \, bang;
+#X msg 164 225 to gui \, bang;
+#X text 75 70 You can define the output format with a flag \, and also
 with the "to" message., f 40;
-#X text 46 334 Be aware that when you lose resolution when you convert
+#X text 68 336 Be aware that when you lose resolution when you convert
 to "ds" (Pd's Data Structures format)., f 38;
-#X obj 94 285 else/display;
-#X obj 318 217 else/display;
-#X obj 318 397 else/display;
+#X obj 116 287 else/display;
+#X obj 380 219 else/display;
+#X obj 380 365 else/display;
+#X obj 57 608 else/pack2 cmyk 0 0 0 0;
+#X obj 104 458 vsl 15 128 0 100 0 0 empty \$0-cyan empty 0 -9 0 10
+-4096 -1 -1 4600 1;
+#X obj 128 458 vsl 15 128 0 100 0 0 empty \$0-yellow empty 0 -9 0 10
+-262081 -1 -1 8800 1;
+#X obj 154 458 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 -258112
+-1 -1 9200 1;
+#X obj 183 458 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 -1
+-262144 -1 12700 1;
+#X obj 57 641 else/colors;
+#X obj 57 670 else/display;
+#X obj 451 455 vsl 15 128 0 360 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 7400 1;
+#X obj 390 642 else/pack2 hsl 0 0 0;
+#X obj 544 642 else/pack2 hsv 0 0 0;
+#X floatatom 451 594 8 0 0 0 - - -;
+#X obj 511 455 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 3400 1;
+#X floatatom 511 594 8 0 0 0 - - -;
+#X obj 581 455 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 7700 1;
+#X floatatom 581 594 8 0 0 0 - - -;
+#X obj 390 673 else/colors;
+#X obj 390 702 else/display;
+#X obj 544 673 else/colors;
+#X obj 544 702 else/display;
+#X text 483 420 HSL & HSV;
+#X obj 245 462 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 5600 1;
+#X obj 245 669 else/display;
+#X msg 245 608 gray \$1;
+#X obj 245 640 else/colors -hex;
+#X text 283 516 <= gray scale;
+#X text 37 429 CMYK values (from \, 0 to 100);
 #X connect 0 0 21 0;
 #X connect 1 0 4 0;
 #X connect 2 0 5 0;
@@ -92,21 +126,75 @@ to "ds" (Pd's Data Structures format)., f 38;
 #X connect 16 0 12 0;
 #X connect 17 0 12 0;
 #X connect 21 0 11 0;
-#X restore 472 257 pd convert;
-#X text 198 316 - output/convert color;
-#X text 114 348 rgb <f \, f \, f>;
-#X text 198 332 - open color picker;
-#X text 168 332 pick;
-#X text 120 364 hex <symbol>;
-#X text 126 411 to <symbol>;
-#X text 144 441 anything;
-#X text 242 475 none;
-#X obj 4 496 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 152 504 -hex - sets to hexadecimal output (default RGB);
-#X obj 4 555 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
-#X text 161 563 clicking on the object opens color picker;
+#X connect 23 0 28 0;
+#X connect 24 0 23 1;
+#X connect 25 0 23 2;
+#X connect 26 0 23 3;
+#X connect 27 0 23 4;
+#X connect 28 0 29 0;
+#X connect 30 0 33 0;
+#X connect 31 0 38 0;
+#X connect 32 0 40 0;
+#X connect 33 0 31 1;
+#X connect 33 0 32 1;
+#X connect 34 0 35 0;
+#X connect 35 0 31 2;
+#X connect 35 0 32 2;
+#X connect 36 0 37 0;
+#X connect 37 0 31 3;
+#X connect 37 0 32 3;
+#X connect 38 0 39 0;
+#X connect 40 0 41 0;
+#X connect 43 0 45 0;
+#X connect 45 0 46 0;
+#X connect 46 0 44 0;
+#X restore 472 252 pd convert;
+#X text 228 312 - output/convert color;
+#X text 144 344 rgb <f \, f \, f>;
+#X text 228 328 - open color picker;
+#X text 198 328 pick;
+#X text 150 360 hex <symbol>;
+#X text 156 463 to <symbol>;
+#X text 174 492 anything;
+#X text 232 526 none;
+#X obj 4 547 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 142 555 -hex - sets to hexadecimal output (default RGB);
+#X obj 4 606 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
+#X text 151 614 clicking on the object opens color picker;
 #X obj 248 244 else/colors;
-#N canvas 575 174 685 387 gui 0;
+#X text 228 464 -;
+#X text 156 375 gui <float>;
+#X text 162 390 ds <float>;
+#X text 228 344 - RGB (Red \, Green and Blue) color values;
+#X text 229 360 - hexadecimal color value;
+#X text 229 375 - GUI color value;
+#X text 142 570 -gui - sets to GUI output (default RGB);
+#X text 148 585 -ds - sets to Data Structures output (default RGB)
+;
+#X text 340 188 color in hexadecimal;
+#X text 369 210 color in RGB;
+#X text 229 390 - Data Structures color value;
+#X text 241 463 set conversion to "rgb" \, "hex" \, "gui" or "ds";
+#X text 81 275 output (RGB by default) =>;
+#X text 228 492 - color values (in RGB \, hex \, gui or ds);
+#X text 77 88 [colors] is a color picker and converter. You can set
+the output format and also convert from other input formats. Colors
+that you pick and colors you send to the object are stored and recalled
+next time you open the color picker. This object is quite useful for
+setting color properties inside abstractions., f 66;
+#X obj 248 272 else/display;
+#X text 120 405 cmyk <f \, f \, f \, f>;
+#X text 228 405 - CMYK (Cyan \, Magente Yellow and Key) color values
+;
+#X text 144 419 hsl <f \, f \, f>;
+#X text 144 433 hsv <f \, f \, f>;
+#X text 150 448 gray <float>;
+#X text 228 419 - HSL (Hue \, Saturation and Lightness) color values
+;
+#X text 228 433 - HSV (Hue \, Saturation and Value) color values,
+f 50;
+#X text 228 448 - grayscale value from 0 to 100;
+#N canvas 810 173 685 387 gui/DS 0;
 #X obj 24 246 else/pack2 rgb 0 0 0;
 #X obj 63 108 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
 -262144 -1 0 0;
@@ -176,30 +264,9 @@ color resolution. See examples below.;
 #X connect 16 0 18 0;
 #X connect 18 0 11 0;
 #X connect 19 0 10 0;
-#X restore 495 278 pd gui;
-#X text 198 412 -;
-#X text 126 379 gui <float>;
-#X text 132 394 ds <float>;
-#X text 198 348 - RGB (Red \, Green and Blue) color values;
-#X text 199 363 - hexadecimal color value;
-#X text 199 378 - GUI color value;
-#X text 152 519 -gui - sets to GUI output (default RGB);
-#X text 158 534 -ds - sets to Data Structures output (default RGB)
-;
-#X text 340 188 color in hexadecimal;
-#X text 369 210 color in RGB;
-#X text 199 393 - Data Structures color value;
-#X text 211 411 set conversion to "rgb" \, "hex" \, "gui" or "ds";
-#X text 81 275 output (RGB by default) =>;
-#X text 198 441 - color values (in RGB \, hex \, gui or ds);
-#X text 77 88 [colors] is a color picker and converter. You can set
-the output format and also convert from other input formats. Colors
-that you pick and colors you send to the object are stored and recalled
-next time you open the color picker. This object is quite useful for
-setting color properties inside abstractions., f 66;
-#X obj 248 272 else/display;
+#X restore 478 273 pd gui/DS;
 #X connect 0 0 39 0;
 #X connect 21 0 39 0;
 #X connect 22 0 39 0;
 #X connect 23 0 39 0;
-#X connect 39 0 56 0;
+#X connect 39 0 55 0;
