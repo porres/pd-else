@@ -1,5 +1,5 @@
-#N canvas 206 306 585 327 12;
-#X obj 68 141 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#N canvas 800 355 585 327 12;
+#X obj 68 141 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 167 36 inlet;
 #X obj 334 43 inlet;
@@ -91,29 +91,29 @@
 #X obj 141 94 trigger bang bang;
 #X obj 257 326 s \$0-freq;
 #X obj 357 220 s \$0-rate;
-#X obj 62 59 else/lb 3, f 23;
 #X obj 257 275 unpack float float;
 #X obj 114 287 v phase_\$0;
 #X msg 114 257 1;
 #X obj 114 227 sel 1;
 #X obj 114 189 expr phase_\$0 == 0 && dir_\$0 == 1, f 18;
+#X obj 62 59 else/lb -init 3, f 23;
 #X connect 2 0 1 0;
 #X connect 4 0 3 0;
 #X connect 5 0 6 0;
 #X connect 6 0 7 0;
-#X connect 7 0 12 0;
-#X connect 7 1 12 0;
+#X connect 7 0 11 0;
+#X connect 7 1 11 0;
 #X connect 7 2 10 0;
-#X connect 8 0 16 0;
+#X connect 8 0 15 0;
 #X connect 8 1 5 0;
-#X connect 11 0 0 0;
-#X connect 11 1 8 0;
-#X connect 11 2 2 0;
-#X connect 12 0 9 0;
-#X connect 12 1 4 0;
+#X connect 11 0 9 0;
+#X connect 11 1 4 0;
+#X connect 13 0 12 0;
 #X connect 14 0 13 0;
 #X connect 15 0 14 0;
-#X connect 16 0 15 0;
+#X connect 16 0 0 0;
+#X connect 16 1 8 0;
+#X connect 16 2 2 0;
 #X restore 68 86 pd init;
 #X obj 167 71 route float rate;
 #N canvas 42 226 400 314 rate 0;

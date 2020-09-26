@@ -355,7 +355,7 @@
 #X obj 107 227 f \$5;
 #X obj 107 254 s \$0-mix;
 #X obj 239 166 s \$0-cutoff;
-#X obj 136 43 else/loadbanger 5;
+#X obj 136 43 else/loadbanger -init 5;
 #X connect 0 0 1 0;
 #X connect 2 0 9 0;
 #X connect 3 0 4 0;

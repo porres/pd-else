@@ -12,12 +12,12 @@
 #X obj 147 84 else/args;
 #X obj 188 161 outlet;
 #X obj 232 159 outlet;
-#X obj 147 48 else/lb 2;
 #X obj 151 122 unpack s f f;
-#X connect 0 0 4 0;
-#X connect 3 0 0 0;
-#X connect 4 1 1 0;
-#X connect 4 2 2 0;
+#X obj 147 47 else/lb -init;
+#X connect 0 0 3 0;
+#X connect 3 1 1 0;
+#X connect 3 2 2 0;
+#X connect 4 0 0 0;
 #X restore 76 17 pd init;
 #X f 18;
 #X connect 0 0 8 0;

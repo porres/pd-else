@@ -2,16 +2,16 @@
 #X obj 59 149 fexpr~ if($x1 < $f2 \, $x1 \, $y1) \; if($x1 >= $f2 \,
 $x1 \, $y2);
 #X obj 273 119 f \$1;
-#X obj 289 88 loadbang;
 #X obj 273 51 inlet;
 #X obj 59 51 inlet~;
 #X obj 59 223 outlet~;
 #X obj 273 220 outlet~;
 #X text 336 154 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 338 135 Alexandre Torres Porres (2018);
-#X connect 0 0 5 0;
-#X connect 0 1 6 0;
+#X obj 289 88 else/lb -init;
+#X connect 0 0 4 0;
+#X connect 0 1 5 0;
 #X connect 1 0 0 1;
 #X connect 2 0 1 0;
-#X connect 3 0 1 0;
-#X connect 4 0 0 0;
+#X connect 3 0 0 0;
+#X connect 8 0 1 0;

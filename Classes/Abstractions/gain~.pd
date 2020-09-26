@@ -7,7 +7,7 @@
 #X obj 145 299 s \$0-set-slider;
 #X msg 37 247 0;
 #X obj 37 38 inlet;
-#X obj 37 152 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 37 152 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 155 78 s \$0-set-slider;
 #X obj 37 181 select 1 0;
@@ -272,7 +272,6 @@
 #X restore 63 182 pd gain~;
 #X obj 63 36 inlet~ fwd;
 #N canvas 782 232 281 300 init 0;
-#X obj 70 46 else/lb 2;
 #N canvas 1191 184 574 684 route 0;
 #X obj 239 35 inlet;
 #X obj 98 267 r \$0-to-max;
@@ -375,11 +374,12 @@
 #X obj 121 100 s \$0-arg-list;
 #X msg 121 75 1 0 20 0 0;
 #X obj 70 167 else/args -;
-#X connect 0 0 5 0;
-#X connect 0 1 4 0;
-#X connect 2 0 5 0;
-#X connect 4 0 3 0;
-#X connect 5 0 1 0;
+#X obj 70 46 else/lb -init 2;
+#X connect 1 0 4 0;
+#X connect 3 0 2 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 0;
+#X connect 5 1 3 0;
 #X restore 203 63 pd init;
 #X connect 7 0 6 0;
 #X connect 12 0 3 0;

@@ -1,5 +1,5 @@
-#N canvas 325 298 908 414 10;
-#N canvas 132 667 545 276 guts 1;
+#N canvas 583 274 908 414 10;
+#N canvas 132 667 545 276 guts 0;
 #X obj 243 67 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X text 261 66 before saving;

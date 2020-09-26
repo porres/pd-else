@@ -5,7 +5,6 @@
 #X obj 106 41 inlet;
 #X obj 193 108 f \$1;
 #X obj 234 108 f \$2;
-#X obj 234 68 loadbang;
 #X obj 160 42 inlet;
 #X obj 59 41 inlet;
 #X obj 59 244 outlet;
@@ -14,12 +13,13 @@
 #X text 299 130 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 301 111 Alexandre Torres Porres (2017);
 #X obj 59 218 change;
+#X obj 234 69 else/lb -init;
 #X connect 3 0 1 0;
 #X connect 4 0 1 0;
 #X connect 5 0 2 0;
-#X connect 6 0 4 0;
-#X connect 6 0 5 0;
-#X connect 7 0 2 0;
-#X connect 8 0 10 0;
-#X connect 10 0 13 0;
-#X connect 13 0 9 0;
+#X connect 6 0 2 0;
+#X connect 7 0 9 0;
+#X connect 9 0 12 0;
+#X connect 12 0 8 0;
+#X connect 13 0 4 0;
+#X connect 13 0 5 0;

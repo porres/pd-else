@@ -3,7 +3,7 @@
 #X obj 126 211 expr~ $v1 >= $f2;
 #X msg 241 171 -100;
 #X obj 268 93 else/args;
-#X floatatom 286 172 5 0 0 0 - - -, f 5;
+#X floatatom 286 172 5 0 0 0 - - -;
 #X obj 332 171 unpack;
 #X obj 126 238 else/glide~ 10;
 #X obj 51 37 inlet~;
@@ -14,10 +14,10 @@
 #X obj 378 171 s \$0-size;
 #X obj 136 100 r \$0-size;
 #X msg 96 134 size \$1;
-#X obj 268 70 loadbang;
 #X text 262 251 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 264 232 Alexandre Torres Porres (2018);
 #X obj 76 170 else/mov.rms~ 256 -db;
+#X obj 268 70 else/lb -init;
 #X connect 0 0 8 0;
 #X connect 1 0 6 0;
 #X connect 2 0 1 1;
@@ -27,7 +27,7 @@
 #X connect 5 1 6 1;
 #X connect 6 0 0 1;
 #X connect 7 0 0 0;
-#X connect 7 0 18 0;
+#X connect 7 0 17 0;
 #X connect 9 0 1 1;
 #X connect 10 0 11 0;
 #X connect 11 0 2 0;
@@ -35,7 +35,7 @@
 #X connect 11 2 5 0;
 #X connect 11 3 12 0;
 #X connect 13 0 14 0;
-#X connect 13 0 18 1;
-#X connect 14 0 18 0;
-#X connect 15 0 3 0;
-#X connect 18 0 1 0;
+#X connect 13 0 17 1;
+#X connect 14 0 17 0;
+#X connect 17 0 1 0;
+#X connect 18 0 3 0;

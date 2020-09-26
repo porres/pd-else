@@ -73,7 +73,7 @@
 #X obj 112 43 inlet;
 #X obj 113 154 clone -x \$1 ./oscclone2 \$1;
 #X obj 210 71 else/args;
-#X obj 210 46 loadbang;
+#X obj 210 46 else/lb -init;
 #X connect 3 0 6 0;
 #X connect 3 1 6 1;
 #X connect 3 2 6 2;

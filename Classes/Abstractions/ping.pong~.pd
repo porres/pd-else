@@ -18,13 +18,13 @@
 #X obj 306 31 inlet;
 #X obj 306 90 f \$1;
 #X obj 369 93 f \$2;
-#X obj 429 61 loadbang;
 #X obj 369 160 clip -1 1;
 #X obj 135 306 delwrite~ \$0-pong 5000;
 #X obj 104 334 delwrite~ \$0-ping 5000;
+#X obj 429 61 else/lb -init;
 #X connect 0 0 10 0;
-#X connect 0 0 22 0;
-#X connect 1 0 21 0;
+#X connect 0 0 21 0;
+#X connect 1 0 20 0;
 #X connect 2 0 0 1;
 #X connect 2 0 1 1;
 #X connect 3 0 9 0;
@@ -40,7 +40,7 @@
 #X connect 15 0 18 0;
 #X connect 16 0 17 0;
 #X connect 17 0 12 0;
-#X connect 18 0 20 0;
-#X connect 19 0 18 0;
-#X connect 19 0 17 0;
-#X connect 20 0 6 0;
+#X connect 18 0 19 0;
+#X connect 19 0 6 0;
+#X connect 22 0 18 0;
+#X connect 22 0 17 0;

@@ -1,5 +1,5 @@
 #N canvas 626 278 528 467 10;
-#X obj 35 214 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 35 214 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 67 342 metro;
 #X obj 35 33 inlet;
@@ -34,13 +34,13 @@
 #X obj 243 224 max 0;
 #X obj 243 249 v tempo_\$0;
 #X msg 313 90 1;
-#X obj 92 50 else/loadbanger 3;
 #X obj 370 108 max 1;
 #X obj 370 133 v div_\$0;
 #X obj 243 181 unpack float float;
 #X obj 141 142 route -on -ms -hz float list -div;
 #X msg 206 226 2;
-#X connect 0 0 17 0;
+#X obj 92 50 else/loadbanger -init 3;
+#X connect 0 0 16 0;
 #X connect 1 0 0 0;
 #X connect 3 0 4 0;
 #X connect 5 0 6 0;
@@ -48,20 +48,20 @@
 #X connect 7 0 5 1;
 #X connect 9 0 8 0;
 #X connect 10 0 11 0;
-#X connect 12 0 15 0;
-#X connect 13 0 5 0;
-#X connect 13 1 1 0;
-#X connect 13 2 12 0;
-#X connect 14 0 15 0;
-#X connect 16 0 10 0;
-#X connect 16 1 9 0;
-#X connect 17 0 7 0;
-#X connect 17 1 3 0;
-#X connect 17 2 18 0;
-#X connect 17 3 16 0;
-#X connect 17 4 16 0;
-#X connect 17 5 14 0;
-#X connect 18 0 4 0;
+#X connect 12 0 14 0;
+#X connect 13 0 14 0;
+#X connect 15 0 10 0;
+#X connect 15 1 9 0;
+#X connect 16 0 7 0;
+#X connect 16 1 3 0;
+#X connect 16 2 17 0;
+#X connect 16 3 15 0;
+#X connect 16 4 15 0;
+#X connect 16 5 13 0;
+#X connect 17 0 4 0;
+#X connect 18 0 5 0;
+#X connect 18 1 1 0;
+#X connect 18 2 12 0;
 #X restore 78 182 pd args;
 #N canvas 178 249 507 478 time 0;
 #X obj 69 35 inlet;

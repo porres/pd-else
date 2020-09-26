@@ -1,8 +1,8 @@
 #N canvas 615 301 354 334 10;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -18,7 +18,6 @@
 #X obj 243 190 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 243 213 switch~;
-#X obj 180 96 loadbang;
 #X obj 180 120 else/args;
 #X obj 180 177 != 0;
 #X obj 180 147 route float;
@@ -99,26 +98,27 @@
 #X obj 61 143 route float bang;
 #X obj 361 185 r pd;
 #X obj 361 250 change -1;
+#X obj 180 96 else/lb -init;
 #X connect 1 0 2 0;
-#X connect 3 0 4 0;
-#X connect 4 0 6 0;
-#X connect 5 0 0 0;
-#X connect 6 0 5 0;
-#X connect 6 1 1 0;
-#X connect 6 1 8 0;
-#X connect 7 0 1 0;
-#X connect 7 0 9 0;
-#X connect 8 0 18 0;
-#X connect 9 0 18 0;
-#X connect 10 0 18 0;
-#X connect 13 0 12 0;
-#X connect 14 0 16 0;
-#X connect 15 0 0 0;
-#X connect 16 0 15 0;
-#X connect 16 1 0 0;
+#X connect 3 0 5 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 0;
+#X connect 5 1 1 0;
+#X connect 5 1 7 0;
+#X connect 6 0 1 0;
+#X connect 6 0 8 0;
+#X connect 7 0 17 0;
+#X connect 8 0 17 0;
+#X connect 9 0 17 0;
+#X connect 12 0 11 0;
+#X connect 13 0 15 0;
+#X connect 14 0 0 0;
+#X connect 15 0 14 0;
+#X connect 15 1 0 0;
+#X connect 16 0 9 0;
 #X connect 17 0 10 0;
-#X connect 18 0 11 0;
-#X connect 18 0 13 0;
+#X connect 17 0 12 0;
+#X connect 18 0 3 0;
 #X restore 51 67 pd guts;
 #X msg 59 230 \; pd dsp \$1;
 #X connect 2 0 9 0;

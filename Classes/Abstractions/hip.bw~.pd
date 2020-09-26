@@ -95,7 +95,6 @@
 #N canvas 812 204 309 241 args 0;
 #X obj 21 206 outlet;
 #X obj 67 35 inlet;
-#X obj 83 64 loadbang;
 #X obj 94 175 v even_\$0;
 #X obj 235 175 v order_\$0;
 #X obj 94 139 expr 1 - (order_\$0 % 2) \; min(max($f1 \, 2) \, 100)
@@ -106,15 +105,16 @@
 #X text 73 15 order;
 #X obj 21 148 f \$1;
 #X obj 67 90 f \$2;
-#X connect 1 0 11 0;
-#X connect 2 0 11 0;
-#X connect 5 0 3 0;
+#X obj 83 64 else/lb -init;
+#X connect 1 0 10 0;
+#X connect 4 0 2 0;
+#X connect 4 1 3 0;
+#X connect 5 0 9 0;
 #X connect 5 1 4 0;
-#X connect 6 0 10 0;
-#X connect 6 1 5 0;
-#X connect 7 0 10 0;
-#X connect 10 0 0 0;
-#X connect 11 0 6 0;
+#X connect 6 0 9 0;
+#X connect 9 0 0 0;
+#X connect 10 0 5 0;
+#X connect 11 0 10 0;
 #X restore 103 85 pd args;
 #X text 40 25 audio;
 #X text 100 25 cutoff;

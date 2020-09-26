@@ -60,10 +60,10 @@
 #X obj 60 191 v wrap_\$0;
 #X obj 60 143 route float;
 #X obj 60 166 != 0;
-#X obj 72 92 loadbang;
 #X obj 72 118 f \$2;
 #X obj 60 17 inlet;
 #X obj 60 62 route wrap;
+#X obj 72 92 else/lb -init;
 #X connect 1 0 2 0;
 #X connect 2 0 8 0;
 #X connect 2 0 9 0;
@@ -78,10 +78,10 @@
 #X connect 8 0 7 0;
 #X connect 11 0 12 0;
 #X connect 12 0 10 0;
-#X connect 13 0 14 0;
-#X connect 14 0 11 0;
-#X connect 15 0 16 0;
-#X connect 16 0 11 0;
+#X connect 13 0 11 0;
+#X connect 14 0 15 0;
+#X connect 15 0 11 0;
+#X connect 16 0 13 0;
 #X restore 124 90 pd set;
 #X obj 67 61 inlet~ fwd;
 #X connect 0 0 1 0;

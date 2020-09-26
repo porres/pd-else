@@ -27,9 +27,9 @@
 #X obj 235 471 expr 1 / ($f1 * 1.5);
 #X msg 464 166 1 -1;
 #X msg 384 350 2048;
-#X obj 384 321 loadbang;
 #X obj 384 383 s \$0-size;
 #X obj 332 41 inlet;
+#X obj 383 322 else/lb -init;
 #X connect 0 0 10 0;
 #X connect 1 0 9 0;
 #X connect 3 0 11 0;
@@ -63,6 +63,6 @@
 #X connect 24 1 19 0;
 #X connect 25 0 16 1;
 #X connect 26 0 24 0;
-#X connect 27 0 29 0;
-#X connect 28 0 27 0;
-#X connect 30 0 13 0;
+#X connect 27 0 28 0;
+#X connect 29 0 13 0;
+#X connect 30 0 27 0;
