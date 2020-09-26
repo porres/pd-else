@@ -3,16 +3,17 @@
 #N canvas 1172 118 479 442 \$0-buffers 0;
 #X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
 0;
-#N canvas 0 22 450 300 ch0_1145 0;
-#X array 0-1122-sample 87741 float 2;
-#X coords 0 1 87741 -1 450 82 2 0 0;
-#X restore 5 19 pd ch0_1145;
-#X obj 6 120 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
+#N canvas 0 22 450 300 ch0_1061 0;
+#X array sample_1061 44100 float 2;
+#X array sample_1061 44100 float 2;
+#X coords 0 1 44100 -1 450 82 2 0 0;
+#X restore 5 19 pd ch0_1061;
+#X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
 0;
-#N canvas 0 22 450 300 ch1_1145 0;
-#X array 1-1122-sample 87741 float 2;
-#X coords 0 1 87741 -1 450 82 2 0 0;
-#X restore 5 119 pd ch1_1145;
+#N canvas 0 22 450 300 ch0_1061 0;
+#X array sample_1061 44100 float 2;
+#X coords 0 1 44100 -1 450 82 2 0 0;
+#X restore 5 19 pd ch0_1061;
 #X coords 0 0 0 0 10 20 0;
 #X restore 247 161 pd \$0-buffers;
 #X obj 89 99 soundfiler;
@@ -942,14 +943,14 @@
 #X connect 2 0 0 0;
 #X restore 157 63 pd init;
 #X obj 89 222 route bang;
-#X obj 98 164 loadbang;
 #X obj 89 190 else/message;
+#X obj 98 164 else/lb -init;
 #X connect 0 0 3 0;
 #X connect 2 0 5 0;
 #X connect 2 1 4 0;
 #X connect 3 0 2 0;
 #X connect 4 0 5 1;
-#X connect 5 0 12 0;
+#X connect 5 0 11 0;
 #X connect 10 1 6 0;
-#X connect 11 0 12 0;
-#X connect 12 0 10 0;
+#X connect 11 0 10 0;
+#X connect 12 0 11 0;
