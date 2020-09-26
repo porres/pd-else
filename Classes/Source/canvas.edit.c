@@ -19,6 +19,10 @@ typedef struct _edit{
     int            x_edit;
 }t_edit;
 
+static void edit_bang(t_edit *x){
+    outlet_float(x->x_obj.ob_outlet, x->x_edit = x->x_canvas->gl_edit);
+}
+
 static void edit_loadbang(t_edit *x, t_float f){
     if((int)f == LB_LOAD)
         outlet_float(x->x_obj.ob_outlet, x->x_edit = x->x_canvas->gl_edit);
@@ -78,9 +82,10 @@ static void *edit_new(t_floatarg f1){
 
 void setup_canvas0x2eedit(void){
     edit_class = class_new(gensym("canvas.edit"), (t_newmethod)edit_new,
-        (t_method)edit_free, sizeof(t_edit), CLASS_NOINLET, A_DEFFLOAT, 0);
+        (t_method)edit_free, sizeof(t_edit), CLASS_DEFAULT, A_DEFFLOAT, 0);
     class_addmethod(edit_class, (t_method)edit_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy),
         CLASS_NOINLET | CLASS_PD, 0);
+    class_addbang(edit_class, edit_bang);
     class_addanything(edit_proxy_class, edit_proxy_any);
 }

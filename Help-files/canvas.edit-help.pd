@@ -75,7 +75,10 @@ so on)., f 46;
 #X connect 11 0 5 0;
 #X restore 459 185 pd depth;
 #X obj 216 186 else/display;
-#X text 183 233 (none);
 #X text 272 268 edit status;
+#X obj 185 234 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 223 234 bang -;
+#X text 272 234 query for edit status;
 #X connect 4 0 26 0;
 #X connect 23 0 4 0;
