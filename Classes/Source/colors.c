@@ -78,7 +78,7 @@ static void colors_convert_to(t_colors *x, t_symbol *s){
         x->x_hex = x->x_gui = x->x_rgb = 0;
         x->x_ds = 1;
     }
-    else if(s == gensym("gui")){
+    else if(s == gensym("iemgui")){
         x->x_hex = x->x_ds = x->x_rgb = 0;
         x->x_gui = 1;
     }
@@ -251,7 +251,7 @@ static void *colors_new(t_symbol *s){
     strcpy(x->x_color,"#ffffff"); // initial color    
     if(s == gensym("-hex"))
         x->x_hex = 1;
-    else if(s == gensym("-gui"))
+    else if(s == gensym("-iemgui"))
         x->x_gui = 1;
     else if(s == gensym("-ds"))
         x->x_ds = 1;
@@ -272,7 +272,7 @@ void colors_setup(void){
     class_addmethod(colors_class, (t_method)colors_pick, gensym("pick"), 0);
     class_addmethod(colors_class, (t_method)colors_convert_to, gensym("to"), A_DEFSYMBOL, 0);
     class_addmethod(colors_class, (t_method)colors_hex, gensym("hex"), A_DEFSYMBOL, 0);
-    class_addmethod(colors_class, (t_method)colors_gui, gensym("gui"), A_DEFFLOAT, 0);
+    class_addmethod(colors_class, (t_method)colors_gui, gensym("iemgui"), A_DEFFLOAT, 0);
     class_addmethod(colors_class, (t_method)colors_ds, gensym("ds"), A_DEFFLOAT, 0);
     class_addmethod(colors_class, (t_method)colors_picked_color, gensym("picked_color"), A_DEFSYMBOL, 0);
     class_addmethod(colors_class, (t_method)colors_pick, gensym("click"), 0);
