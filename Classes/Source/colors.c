@@ -25,7 +25,7 @@ static void colors_pick(t_colors *x){
 static void colors_bang(t_colors *x){
     if(x->x_hex)
         outlet_symbol(x->x_obj.ob_outlet, gensym(x->x_color));
-    else{ // RGB related
+    else{
         unsigned int red, green, blue;
         sscanf(x->x_color, "#%02x%02x%02x", &red, &green, &blue);
         if(x->x_rgb){
@@ -95,17 +95,17 @@ static void colors_ds(t_colors *x, t_floatarg ds){
     t_float red = (int)(ds/100);
     if(red > 8)
         red = 8;
-    unsigned int r = (int)(red * 255./8. + 0.5);
+    unsigned char r = (int)(red * 255./8. + 0.5);
     
     t_float green = (int)(fmod(ds, 100) / 10);
     if(green > 8)
         green = 8;
-    unsigned int g = (int)(green * 255./8. + 0.5);
+    unsigned char g = (int)(green * 255./8. + 0.5);
     
     t_float blue = (int)(fmod(ds, 10));
     if(blue > 8)
         blue = 8;
-    unsigned int b = (int)(blue * 255./8. + 0.5);
+    unsigned char b = (int)(blue * 255./8. + 0.5);
     
     char hex[MAXPDSTRING];
     sprintf(hex, "#%02x%02x%02x", r, g, b);
@@ -191,17 +191,17 @@ static void colors_hsv(t_colors *x, t_floatarg H, t_floatarg S, t_floatarg V){
 }
 
 float HueToRGB(float v1, float v2, float vH){
-    if (vH < 0)
+    if(vH < 0)
         vH += 1;
-    if (vH > 1)
+    if(vH > 1)
         vH -= 1;
-    if ((6 * vH) < 1)
+    if((6 * vH) < 1)
         return (v1 + (v2 - v1) * 6 * vH);
-    if ((2 * vH) < 1)
-        return v2;
-    if ((3 * vH) < 2)
-        return (v1 + (v2 - v1) * ((2.0f / 3) - vH) * 6);
-    return v1;
+    if((2 * vH) < 1)
+        return(v2);
+    if((3 * vH) < 2)
+        return(v1 + (v2 - v1) * ((2.0f / 3) - vH) * 6);
+    return(v1);
 }
 
 static void colors_hsl(t_colors *x, t_floatarg H, t_floatarg S, t_floatarg L){
@@ -248,15 +248,15 @@ static void *colors_new(t_symbol *s){
     x->x_id = gensym(buf);
     pd_bind(&x->x_obj.ob_pd, x->x_id);
     outlet_new(&x->x_obj, &s_list);
-    strcpy(x->x_color,"#ffffff"); // initial color    
-    if(s == gensym("-hex"))
-        x->x_hex = 1;
+    strcpy(x->x_color,"#ffffff"); // initial color
+    if(s == gensym("-rgb"))
+        x->x_rgb = 1;
     else if(s == gensym("-iemgui"))
         x->x_gui = 1;
     else if(s == gensym("-ds"))
         x->x_ds = 1;
     else
-        x->x_rgb = 1;
+        x->x_hex = 1; // default
     return(x);
 }
 
