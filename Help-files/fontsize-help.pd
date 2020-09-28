@@ -1,15 +1,15 @@
-#N canvas 792 120 561 348 10;
-#X obj 2 216 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 792 120 562 367 10;
+#X obj 2 236 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 249 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 2 269 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 284 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 304 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 206 259 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 166 279 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 2 317 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 337 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 238 260 float -;
+#X text 198 280 float -;
 #X obj 5 4 cnv 15 301 42 empty empty fontsize 20 20 2 37 -233017 -1
 0;
 #X obj 308 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -35,7 +35,7 @@
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 307 4 graph;
 #X obj 121 41 cnv 4 4 4 empty empty size 0 28 2 18 -233017 -1 0;
-#X text 476 155 example:;
+#X text 476 175 example:;
 #N canvas 935 108 480 385 depth 0;
 #X obj 141 180 else/display;
 #X obj 264 180 else/display;
@@ -53,15 +53,20 @@ patch or an abstraction \, like deep buried inside many layers of subpatches.
 The font size is the same., f 62;
 #X connect 4 0 0 0;
 #X connect 4 1 1 0;
-#X restore 477 178 pd depth;
-#X obj 226 179 else/display;
-#X text 204 224 (none);
-#X text 293 259 font size;
-#X text 161 183 font size;
-#X obj 226 148 else/fontsize;
-#X text 82 86 The [fontsize] object outputs the patch's font size when
-the object is loaded and when it changes via the font menu. It can
-also get the parent patch's font size with the depth argument., f
-51;
-#X text 141 293 1) float - depth \, default 0 (current);
-#X connect 25 0 21 0;
+#X restore 477 198 pd depth;
+#X obj 226 199 else/display;
+#X text 253 279 font size;
+#X text 161 203 font size;
+#X obj 226 168 else/fontsize;
+#X text 141 313 1) float - depth \, default 0 (current);
+#X obj 226 145 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 166 244 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 204 244 bang -;
+#X text 253 244 report font size;
+#X text 85 88 The [fontsize] object outputs the patch's font size when
+the object is loaded and when it changes via the font menu. You can
+also query with a bang message., f 53;
+#X connect 24 0 21 0;
+#X connect 26 0 24 0;
