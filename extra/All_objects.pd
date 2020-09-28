@@ -1,9 +1,9 @@
-#N struct 1333-cell float x float y float cellsize float color;
-#N struct 1340-point float x0 float y0 float xs float ys float fg float
+#N struct 1335-cell float x float y float cellsize float color;
+#N struct 1342-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1364-slot float x float y float slotsize float color float
+#N struct 1366-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1378-point float x0 float y0 float size float fg float in
+#N struct 1380-point float x0 float y0 float size float fg float in
 float grid;
 #N canvas 606 56 558 543 10;
 #X text 57 70 Assorted:;
@@ -286,7 +286,7 @@ float grid;
 #N canvas 574 44 977 809 GUI 0;
 #X obj 144 45 else/mtx.ctl;
 #X obj 39 155 else/biplot;
-#X text 50 122 [else/biplot];
+#X text 39 132 [else/biplot];
 #X text 237 79 [else/pic] =>;
 #X obj 570 75 else/colors;
 #X obj 709 23 else/function 200 100 empty empty 0 1 220 220 220 50
