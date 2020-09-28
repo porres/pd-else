@@ -64,14 +64,14 @@ static void note_receive(t_note *x, t_symbol *s){
         rcv = &s_;
     if(rcv != &s_){
         if(rcv != x->x_receive_sym){
-//            canvas_dirty(x->x_glist, 1);
+            canvas_dirty(x->x_glist, 1);
             if(x->x_receive_sym != &s_)
                 pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
             pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = rcv);
         }
     }
     else{
-//        canvas_dirty(x->x_glist, 1);
+        canvas_dirty(x->x_glist, 1);
         if(x->x_receive_sym != &s_)
             pd_unbind(&x->x_obj.ob_pd, x->x_receive_sym);
         x->x_receive_sym = rcv;
@@ -529,7 +529,7 @@ static void note_set(t_note *x, t_symbol *s, int argc, t_atom * argv){
         binbuf_restore(x->x_binbuf, argc, argv);
         binbuf_gettext(x->x_binbuf, &x->x_textbuf, &x->x_textbufsize);
         sys_vgui(".x%lx.c delete %s\n", x->x_canvas, x->x_tag);
-//        canvas_dirty(x->x_glist, 1);
+        canvas_dirty(x->x_glist, 1);
         note_draw(x);
     }
 }
@@ -541,7 +541,7 @@ static void note_rgb(t_note *x, t_floatarg r, t_floatarg g, t_floatarg b){
     sprintf(x->x_color, "#%2.2x%2.2x%2.2x", x->x_red, x->x_green, x->x_blue);
     note_update(x);
     sys_vgui(".x%lx.c delete %s\n", x->x_canvas, x->x_tag);
-//    canvas_dirty(x->x_glist, 1);
+    canvas_dirty(x->x_glist, 1);
     note_draw(x);
 }
 
@@ -549,7 +549,7 @@ static void note_name(t_note *x, t_symbol *name){
     x->x_fontfamily = name;
     note_update(x);
     sys_vgui(".x%lx.c delete %s\n", x->x_canvas, x->x_tag);
-//    canvas_dirty(x->x_glist, 1);
+    canvas_dirty(x->x_glist, 1);
     note_draw(x);
 }
 
@@ -557,7 +557,7 @@ static void note_size(t_note *x, t_floatarg f){
     x->x_fontsize = (int)f < 5 ? 5 : (int)f;
     note_update(x);
     sys_vgui(".x%lx.c delete %s\n", x->x_canvas, x->x_tag);
-//    canvas_dirty(x->x_glist, 1);
+    canvas_dirty(x->x_glist, 1);
     note_draw(x);
 }
 
@@ -593,7 +593,7 @@ static void note_flag_parser(t_note *x, int argc, t_atom * argv){
                 i++;
                 if((argc-i) > 0){
                     if(argv[i].a_type == A_SYMBOL)
-                        note_receive(x, atom_getsymbolarg(i, argc, argv));
+                        pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = atom_getsymbolarg(i, argc, argv));
                     else i--;
                 };
             }
@@ -688,13 +688,12 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
                 x->x_fontfamily = av->a_w.w_symbol;
                 ac--; av++;
                 if(ac && av->a_type == A_SYMBOL){ // 4TH RECEIVE
-                    if (av->a_w.w_symbol != gensym("empty")){
-                        note_receive(x, av->a_w.w_symbol);
+                    if(av->a_w.w_symbol != gensym("empty")){
+                        pd_bind(&x->x_obj.ob_pd, x->x_receive_sym = av->a_w.w_symbol);
                         ac--; av++;
                     }
-                    else{
+                    else
                         ac--; av++;
-                    }
                     if (ac && av->a_type == A_FLOAT){
                         x->x_fontprops = (int)av->a_w.w_float;
                         ac--; av++;
@@ -730,36 +729,34 @@ static void *note_new(t_symbol *s, int ac, t_atom *av){
 
 void note_setup(void){
     note_class = class_new(gensym("note"), (t_newmethod)note_new, (t_method)note_free,
-                              sizeof(t_note), CLASS_DEFAULT, A_GIMME, 0);
+        sizeof(t_note), CLASS_DEFAULT, A_GIMME, 0);
     class_addfloat(note_class, note_float);
     class_addlist(note_class, note_list);
     class_addmethod(note_class, (t_method)note_rgb,
-                    gensym("rgb"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
+        gensym("rgb"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(note_class, (t_method)note_name,
-                    gensym("name"), A_SYMBOL, 0);
+        gensym("name"), A_SYMBOL, 0);
     class_addmethod(note_class, (t_method)note_set_receive,
-                    gensym("receive"), A_SYMBOL, 0);
+        gensym("receive"), A_SYMBOL, 0);
     class_addmethod(note_class, (t_method)note_size,
-                    gensym("size"), A_FLOAT, 0);
+        gensym("size"), A_FLOAT, 0);
     class_addmethod(note_class, (t_method)note_set,
-                    gensym("set"), A_GIMME, 0);
+        gensym("set"), A_GIMME, 0);
     class_addmethod(note_class, (t_method)note__bboxhook,
-                    gensym("_bbox"),
-                    A_SYMBOL, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+        gensym("_bbox"), A_SYMBOL, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(note_class, (t_method)note__clickhook,
-                    gensym("_click"), A_GIMME, 0);
+        gensym("_click"), A_GIMME, 0);
     class_addmethod(note_class, (t_method)note__releasehook,
-                    gensym("_release"), A_SYMBOL, 0);
+        gensym("_release"), A_SYMBOL, 0);
     class_addmethod(note_class, (t_method)note__motionhook,
-                    gensym("_motion"), A_SYMBOL, A_FLOAT, A_FLOAT, 0);
+        gensym("_motion"), A_SYMBOL, A_FLOAT, A_FLOAT, 0);
     class_setwidget(note_class, &note_widgetbehavior);
     class_setsavefn(note_class, note_save);
-    
     notesink_class = class_new(gensym("_notesink"), 0, 0,
-                                  sizeof(t_pd), CLASS_PD, 0);
+        sizeof(t_pd), CLASS_PD, 0);
     class_addanything(notesink_class, notesink_anything);
     class_addmethod(notesink_class, (t_method)notesink__bboxhook,
-                    gensym("_bbox"), A_SYMBOL, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+        gensym("_bbox"), A_SYMBOL, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     
     sys_gui("proc note_bbox {target cvname tag} {\n\
             pdsend \"$target _bbox $target [$cvname bbox $tag]\"}\n");
