@@ -32,7 +32,7 @@ fg float in float gridx float gridy, f 93;
 #X connect 6 0 12 0;
 #X restore 68 181 pd \$0-point;
 #X obj 190 10 inlet;
-#N canvas 1202 111 512 285 init 1;
+#N canvas 1202 111 512 285 init 0;
 #X obj 50 42 inlet;
 #N canvas 256 42 291 311 args 0;
 #X obj 75 31 inlet;
