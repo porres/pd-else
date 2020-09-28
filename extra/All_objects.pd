@@ -1,11 +1,11 @@
-#N struct 1335-cell float x float y float cellsize float color;
-#N struct 1342-point float x0 float y0 float xs float ys float fg float
+#N struct 1333-cell float x float y float cellsize float color;
+#N struct 1340-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1366-slot float x float y float slotsize float color float
+#N struct 1364-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1380-point float x0 float y0 float size float fg float in
+#N struct 1378-point float x0 float y0 float size float fg float in
 float grid;
-#N canvas 606 56 558 543 10;
+#N canvas 608 68 558 543 10;
 #X text 57 70 Assorted:;
 #X obj 57 124 else/table~;
 #X obj 57 150 else/nbang;

@@ -60,7 +60,7 @@ dollsym.class.sources := Classes/Source/dollsym.c
 hot.class.sources := Classes/Source/hot.c
 hz2rad.class.sources := Classes/Source/hz2rad.c
 initmess.class.sources := Classes/Source/initmess.c
-lb.class.sources := Classes/Source/lb.c
+lb.class.sources := Classes/Aliases/lb.c
 loadbanger.class.sources := Classes/Source/loadbanger.c
 nbang.class.sources := Classes/Source/nbang.c
 merge.class.sources := Classes/Source/merge.c
@@ -99,7 +99,7 @@ sort.class.sources := Classes/Source/sort.c
 touch.in.class.sources := Classes/Source/touch.in.c
 touch.out.class.sources := Classes/Source/touch.out.c
 trigger2.class.sources := Classes/Source/trigger2.c
-t2.class.sources := Classes/Source/t2.c
+t2.class.sources := Classes/Aliases/t2.c
 unmerge.class.sources := Classes/Source/unmerge.c
 
 # signal:
@@ -142,7 +142,7 @@ fbdelay~.class.sources := Classes/Source/fbdelay~.c
 ffdelay~.class.sources := Classes/Source/ffdelay~.c
 fbsine2~.class.sources := Classes/Source/fbsine2~.c
 float2sig~.class.sources := Classes/Source/float2sig~.c
-f2s~.class.sources := Classes/Source/f2s~.c
+f2s~.class.sources := Classes/Aliases/f2s~.c
 fdn.rev~.class.sources := Classes/Source/fdn.rev~.c
 floor.class.sources := Classes/Source/floor.c
 floor~.class.sources := Classes/Source/floor~.c
@@ -209,7 +209,7 @@ lag~.class.sources := Classes/Source/lag~.c
 lag2~.class.sources := Classes/Source/lag2~.c
 sin~.class.sources := Classes/Source/sin~.c
 sig2float~.class.sources := Classes/Source/sig2float~.c
-s2f~.class.sources := Classes/Source/s2f~.c
+s2f~.class.sources := Classes/Aliases/s2f~.c
 sequencer~.class.sources := Classes/Source/sequencer~.c
 sr~.class.sources := Classes/Source/sr~.c
 status~.class.sources := Classes/Source/status~.c
@@ -238,9 +238,9 @@ magic := shared/magic.c
     sine~.class.sources := Classes/Source/sine~.c $(magic)
     cosine~.class.sources := Classes/Source/cosine~.c $(magic)
     fbsine~.class.sources := Classes/Source/fbsine~.c $(magic)
-    imp~.class.sources := Classes/Source/imp~.c $(magic)
+    imp~.class.sources := Classes/Aliases/imp~.c $(magic)
     impulse~.class.sources := Classes/Source/impulse~.c $(magic)
-    imp2~.class.sources := Classes/Source/imp2~.c $(magic)
+    imp2~.class.sources := Classes/Aliases/imp2~.c $(magic)
     impulse2~.class.sources := Classes/Source/impulse2~.c $(magic)
     parabolic~.class.sources := Classes/Source/parabolic~.c $(magic)
     pulse~.class.sources := Classes/Source/pulse~.c $(magic)
@@ -260,7 +260,7 @@ bufmagic := \
 shared/magic.c \
 shared/buffer.c
     wavetable~.class.sources = Classes/Source/wavetable~.c $(bufmagic)
-    wt~.class.sources = Classes/Source/wt~.c $(bufmagic)
+    wt~.class.sources = Classes/Aliases/wt~.c $(bufmagic)
     tabplayer~.class.sources = Classes/Source/tabplayer~.c $(bufmagic)
 
 rand := shared/random.c
