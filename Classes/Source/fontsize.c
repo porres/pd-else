@@ -38,6 +38,10 @@ static t_fontsize_proxy * fontsize_proxy_new(t_fontsize *x, t_symbol*s){
     return(p);
 }
 
+static void font_bang(t_fontsize *x){
+    outlet_float(x->x_obj.ob_outlet, glist_getfont(x->x_cv));
+}
+
 static void fontsize_loadbang(t_fontsize *x, t_float f){
     if((int)f == LB_LOAD)
         outlet_float(x->x_obj.ob_outlet, glist_getfont(x->x_cv));
@@ -64,9 +68,10 @@ static void *fontsize_new(t_floatarg f1){
 
 void fontsize_setup(void){
     fontsize_class = class_new(gensym("fontsize"), (t_newmethod)fontsize_new,
-        (t_method)fontsize_free, sizeof(t_fontsize), CLASS_NOINLET, A_DEFFLOAT, 0);
+        (t_method)fontsize_free, sizeof(t_fontsize), CLASS_DEFAULT, A_DEFFLOAT, 0);
     class_addmethod(fontsize_class, (t_method)fontsize_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     fontsize_proxy_class = class_new(0, 0, 0, sizeof(t_fontsize_proxy),
         CLASS_NOINLET | CLASS_PD, 0);
+    class_addbang(fontsize_class, font_bang);
     class_addanything(fontsize_proxy_class, fontsize_proxy_any);
 }

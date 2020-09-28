@@ -19,6 +19,10 @@ typedef struct _zoom{
     int            x_zoom;
 }t_zoom;
 
+static void zoom_bang(t_zoom *x){
+    outlet_float(x->x_obj.ob_outlet, (x->x_zoom = x->x_canvas->gl_zoom) == 2);
+}
+
 static void zoom_loadbang(t_zoom *x, t_float f){
     if((int)f == LB_LOAD)
         outlet_float(x->x_obj.ob_outlet, (x->x_zoom = x->x_canvas->gl_zoom) == 2);
@@ -70,9 +74,9 @@ static void *zoom_new(t_floatarg f1){
 
 void setup_canvas0x2ezoom(void){
     zoom_class = class_new(gensym("canvas.zoom"), (t_newmethod)zoom_new,
-        (t_method)zoom_free, sizeof(t_zoom), CLASS_NOINLET, A_DEFFLOAT, 0);
+        (t_method)zoom_free, sizeof(t_zoom), CLASS_DEFAULT, A_DEFFLOAT, 0);
     class_addmethod(zoom_class, (t_method)zoom_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
-    zoom_proxy_class = class_new(0, 0, 0, sizeof(t_zoom_proxy),
-        CLASS_NOINLET | CLASS_PD, 0);
+    zoom_proxy_class = class_new(0, 0, 0, sizeof(t_zoom_proxy), CLASS_NOINLET | CLASS_PD, 0);
+    class_addbang(zoom_class, zoom_bang);
     class_addanything(zoom_proxy_class, zoom_proxy_any);
 }
