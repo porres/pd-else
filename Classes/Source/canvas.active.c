@@ -1,4 +1,4 @@
-// porres 2019
+// porres 2019, based on cyclone active
 
 #include "m_pd.h"
 #include "g_canvas.h"
@@ -196,8 +196,7 @@ static void *active_new(t_floatarg f){
 void setup_canvas0x2eactive(void){
     active_class = class_new(gensym("canvas.active"), (t_newmethod)active_new,
         (t_method)active_free, sizeof(t_active), CLASS_NOINLET, A_DEFFLOAT, 0);
-    mouse_proxy_class = class_new(0, 0, 0, sizeof(t_mouse_proxy),
-        CLASS_NOINLET | CLASS_PD, 0);
+    mouse_proxy_class = class_new(0, 0, 0, sizeof(t_mouse_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(mouse_proxy_class, mouse_proxy_any);
     class_addmethod(active_class, (t_method)active_dofocus, gensym("_focus"), A_SYMBOL, A_FLOAT, 0);
 }
