@@ -1,28 +1,28 @@
-#N struct 1006-point float x0 float y0 float xs float ys float fg float
+#N struct 1626-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1019-point float x0 float y0 float xs float ys float fg float
+#N struct 1639-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1028-point float x0 float y0 float xs float ys float fg float
+#N struct 1648-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1043-point float x0 float y0 float xs float ys float fg float
+#N struct 1663-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1052-point float x0 float y0 float xs float ys float fg float
+#N struct 1672-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1061-point float x0 float y0 float xs float ys float fg float
+#N struct 1681-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1070-point float x0 float y0 float xs float ys float fg float
+#N struct 1690-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1079-point float x0 float y0 float xs float ys float fg float
+#N struct 1699-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1092-point float x0 float y0 float xs float ys float fg float
+#N struct 1712-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1103-point float x0 float y0 float xs float ys float fg float
+#N struct 1723-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1113-point float x0 float y0 float xs float ys float fg float
+#N struct 1733-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1124-point float x0 float y0 float xs float ys float fg float
+#N struct 1744-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1137-point float x0 float y0 float xs float ys float fg float
+#N struct 1757-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 747 58 561 564 10;
 #X obj 2 3 cnv 15 301 42 empty empty slider2d 20 20 2 37 -233017 -1
@@ -227,14 +227,14 @@ messages and '-bgcolor'/'-fgcolor' flags., f 40;
 #X restore 62 164 pd colors;
 #N canvas 560 241 331 438 line-grid 0;
 #X obj 79 224 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
-1 0 1 45 86 empty empty;
+1 0 1 64 64 empty empty;
 #X obj 79 366 else/display;
 #X msg 105 191 line \$1;
-#X obj 105 163 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 105 163 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 45 21 You can set the 'line' visibility with the line message
 or '-line' flag. Line is visible by default., f 40;
-#X obj 172 163 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 172 163 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X msg 172 191 grid \$1;
 #X text 45 64 There's also a grid visibility option (invisible by default).
@@ -254,7 +254,7 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #X text 78 31 You can set the size with the '-size' flag or with the
 'size' message., f 25;
 #X msg 88 116 jump \$1;
-#X obj 88 92 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+#X obj 88 92 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
 #X obj 88 141 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
 0 1 0 60 51 empty empty;
@@ -265,11 +265,11 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #N canvas 700 46 429 340 init 0;
 #X obj 141 269 else/display;
 #X obj 141 124 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 1 64 64 empty empty, f 63;
+0 0 0 1 99 40 empty empty, f 63;
 #X text 77 33 With the 'init' message or '-init' flag \, the GUI operates
 in 'init mode' \, where it outputs the last saved value when you load
 the patch., f 46;
-#X msg 141 95 64 64;
+#X msg 141 95 99 40;
 #X connect 1 0 0 0;
 #X connect 3 0 1 0;
 #X restore 75 205 pd init;

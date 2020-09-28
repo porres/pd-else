@@ -1,11 +1,11 @@
-#N canvas 713 95 486 301 10;
+#N canvas 371 93 486 301 10;
 #X text 226 125 Alexandre Torres Porres (2016);
 #X text 224 144 Part of ELSE \; https://github.com/porres/pd-else;
 #X obj 33 251 outlet~;
 #X obj 150 105 vsl 26 91 0 1 0 0 \$0-slider \$0-set-slider empty 24
-9 0 14 -228856 -1 -1 0 1;
+9 0 14 -228856 -1 -1 2400 1;
 #X text 226 105 [gain~]: Mono Gain;
-#X obj 150 252 outlet;
+#X obj 231 252 outlet;
 #X obj 150 220 r \$0-slider;
 #X obj 151 103 cnv 1 24 1 empty empty empty 20 12 0 14 -233017 -66577
 0;
@@ -154,7 +154,7 @@
 0;
 #X obj 13 36 inlet~ fwd;
 #N canvas 782 232 281 300 init 0;
-#N canvas 251 244 574 684 route 0;
+#N canvas 436 23 574 684 route 0;
 #X obj 239 35 inlet;
 #X obj 98 267 r \$0-to-max;
 #X obj 375 363 s \$0-set-mode_arg;
@@ -191,14 +191,15 @@
 #X obj 363 313 clip 0 2;
 #X obj 363 287 int;
 #X obj 384 479 max 5;
-#X obj 125 452 r \$0-to-init;
-#X obj 125 481 != 0;
-#X obj 125 512 sel 1;
+#X obj 125 432 r \$0-to-init;
+#X obj 125 461 != 0;
+#X obj 125 492 sel 1;
 #X obj 124 615 s \$0-set-slider;
 #X obj 178 556 f;
 #X obj 384 563 s \$0-ramp;
 #X msg 124 588 set \$1;
 #X obj 178 588 s \$0-slider-init;
+#X obj 131 519 del 0;
 #X connect 0 0 17 0;
 #X connect 1 0 27 0;
 #X connect 4 0 3 0;
@@ -233,10 +234,11 @@
 #X connect 36 0 37 0;
 #X connect 37 0 4 0;
 #X connect 37 0 38 0;
-#X connect 38 0 40 0;
+#X connect 38 0 44 0;
 #X connect 40 0 42 0;
 #X connect 40 0 43 0;
 #X connect 42 0 39 0;
+#X connect 44 0 40 0;
 #X restore 70 204 pd route;
 #N canvas 429 237 398 303 set-args 0;
 #X obj 125 77 r \$0-set-mode_arg;
@@ -246,11 +248,13 @@
 #X obj 218 146 r \$0-set-value_arg;
 #X obj 187 124 r \$0-set-init_arg;
 #X obj 156 100 r \$0-set-ramp_arg;
+#X floatatom 206 231 5 0 0 0 - - -;
 #X connect 0 0 3 1;
 #X connect 1 0 3 0;
 #X connect 3 0 2 0;
 #X connect 4 0 3 4;
 #X connect 5 0 3 3;
+#X connect 5 0 7 0;
 #X connect 6 0 3 2;
 #X restore 91 139 pd set-args;
 #X obj 121 100 s \$0-arg-list;
@@ -393,10 +397,12 @@
 #X connect 7 4 5 0;
 #X connect 7 5 6 0;
 #X restore 120 73 pd set_GUI;
+#X obj 236 219 r \$0-slider-init;
 #X connect 6 0 5 0;
 #X connect 10 0 2 0;
 #X connect 10 1 13 0;
 #X connect 11 0 10 1;
 #X connect 16 0 10 0;
 #X connect 16 1 18 0;
+#X connect 19 0 5 0;
 #X coords 0 0 1 1 26 102 2 150 100;

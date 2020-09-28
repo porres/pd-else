@@ -1,28 +1,28 @@
-#N struct 1006-point float x0 float y0 float size float fg float in
+#N struct 1950-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1024-point float x0 float y0 float size float fg float in
+#N struct 1972-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1038-point float x0 float y0 float size float fg float in
+#N struct 1990-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1054-point float x0 float y0 float size float fg float in
+#N struct 2010-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1068-point float x0 float y0 float size float fg float in
+#N struct 2028-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1084-point float x0 float y0 float size float fg float in
+#N struct 2048-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1100-point float x0 float y0 float size float fg float in
+#N struct 2068-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1144-point float x0 float y0 float size float fg float in
+#N struct 2116-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1162-point float x0 float y0 float size float fg float in
+#N struct 2138-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1180-point float x0 float y0 float size float fg float in
+#N struct 2160-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1194-point float x0 float y0 float size float fg float in
+#N struct 2178-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1208-point float x0 float y0 float size float fg float in
+#N struct 2196-point float x0 float y0 float size float fg float in
 float grid;
-#N canvas 643 55 559 578 10;
+#N canvas 741 27 559 578 10;
 #X obj 2 4 cnv 15 301 42 empty empty circle 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -148,7 +148,7 @@ according to the new range., f 64;
 #X connect 5 0 0 0;
 #X connect 6 0 2 0;
 #X restore 128 165 pd resize;
-#N canvas 704 135 629 625 colors 0;
+#N canvas 906 124 736 630 colors 0;
 #X text 58 88 Colors are in RGB.;
 #X obj 170 198 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
 -262144 -1 12700 0;
@@ -170,8 +170,6 @@ according to the new range., f 64;
 #X obj 310 193 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
 -262144 -1 12700 0;
 #X obj 247 350 else/pack2 bgcolor2 255 255 255, f 11;
-#X obj 247 433 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
-0 0 0 1 0 0 63.5 63.5 empty empty 1;
 #X obj 418 196 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
 -262144 -1 12700 0;
 #X obj 439 196 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4033
@@ -189,34 +187,36 @@ colors with the '-fgcolor' flag or 'fgcolor' message., f 83;
 #X obj 29 350 else/pack2 fgcolor 0 0 0, f 11;
 #X obj 268 146 else/initmess 255;
 #X obj 418 146 else/initmess 255;
+#X obj 247 433 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
+0 0 0 1 0 0 63.5 63.5 empty empty 1;
 #X connect 1 0 7 1;
 #X connect 2 0 7 2;
 #X connect 3 0 7 3;
-#X connect 4 0 20 1;
-#X connect 5 0 20 2;
-#X connect 6 0 20 3;
-#X connect 7 0 12 0;
+#X connect 4 0 19 1;
+#X connect 5 0 19 2;
+#X connect 6 0 19 3;
+#X connect 7 0 22 0;
 #X connect 8 0 11 1;
 #X connect 9 0 11 2;
 #X connect 10 0 11 3;
-#X connect 11 0 12 0;
-#X connect 13 0 16 1;
-#X connect 14 0 16 2;
-#X connect 15 0 16 3;
-#X connect 16 0 12 0;
-#X connect 19 0 4 0;
-#X connect 19 0 6 0;
-#X connect 19 0 5 0;
-#X connect 20 0 12 0;
-#X connect 21 0 1 0;
-#X connect 21 0 3 0;
-#X connect 21 0 2 0;
-#X connect 21 0 8 0;
-#X connect 21 0 9 0;
-#X connect 21 0 10 0;
-#X connect 22 0 13 0;
-#X connect 22 0 14 0;
-#X connect 22 0 15 0;
+#X connect 11 0 22 0;
+#X connect 12 0 15 1;
+#X connect 13 0 15 2;
+#X connect 14 0 15 3;
+#X connect 15 0 22 0;
+#X connect 18 0 4 0;
+#X connect 18 0 6 0;
+#X connect 18 0 5 0;
+#X connect 19 0 22 0;
+#X connect 20 0 1 0;
+#X connect 20 0 3 0;
+#X connect 20 0 2 0;
+#X connect 20 0 8 0;
+#X connect 20 0 9 0;
+#X connect 20 0 10 0;
+#X connect 21 0 12 0;
+#X connect 21 0 13 0;
+#X connect 21 0 14 0;
 #X restore 62 165 pd colors;
 #X text 248 143 click and drag =>;
 #X text 283 228 x/y values:;
@@ -233,14 +233,14 @@ colors with the '-fgcolor' flag or 'fgcolor' message., f 83;
 #X connect 3 0 2 0;
 #X connect 4 0 0 0;
 #X restore 74 186 pd jump;
-#N canvas 858 191 428 345 init 0;
+#N canvas 858 191 410 355 init 0;
 #X obj 140 269 else/display;
 #X text 76 33 With the 'init' message or '-init' flag \, the GUI operates
 in 'init mode' \, where it outputs the last saved value when you load
 the patch., f 46;
 #X msg 140 91 0.5 0.5;
 #X obj 140 124 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
-0 0 0 1 0 1 95.25 95.25 empty empty 1;
+0 0 0 1 0 1 0.5 0.5 empty empty 1;
 #X connect 2 0 3 0;
 #X connect 3 0 0 0;
 #X restore 128 205 pd init;
@@ -329,7 +329,7 @@ in RGB (default 255 255 255), f 76;
 #X obj 137 328 else/f2s~ 50;
 #X obj 194 350 else/f2s~ 50;
 #X text 64 23 Here's an example to use it with [pan8~].;
-#X obj 137 124 else/circle 127 -1 1 -1 1 0 230 230 230 255 255 255
+#X obj 137 124 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
 0 0 0 1 0 0 0 0 empty empty 1;
 #X text 265 179 3;
 #X text 244 130 2;
