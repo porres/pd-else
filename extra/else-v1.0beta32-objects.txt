@@ -127,6 +127,7 @@ format	x
 free.rev~	x
 freeze~	x
 freq.shift~	x
+function	x
 function~	x
 gain~	x
 gain2~	x
