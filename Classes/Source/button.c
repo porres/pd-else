@@ -62,7 +62,7 @@ static void button_update(t_button *x){
         t_canvas *cv = glist_getcanvas(x->x_glist);
         sys_vgui(".x%lx.c coords %lxBASE %d %d %d %d\n", cv, x, xpos, ypos,
             xpos + x->x_w*x->x_zoom, ypos + x->x_h*x->x_zoom);
-        canvas_fixlinesfor(glist_getcanvas(x->x_glist), (t_text*)x);
+        canvas_fixlinesfor(x->x_glist, (t_text*)x);
     }
 }
 
@@ -147,7 +147,11 @@ static void button_size(t_button *x, t_floatarg f){
     if(s != x->x_w || s != x->x_h){
         x->x_w = s; x->x_h = s;
         canvas_dirty(x->x_glist, 1);
-        button_update(x);
+        button_erase(x, x->x_glist);
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+            button_draw(x, x->x_glist);
+            canvas_fixlinesfor(x->x_glist, (t_text*)x);
+        }
     }
 }
 
@@ -156,7 +160,11 @@ static void button_dim(t_button *x, t_floatarg f1, t_floatarg f2){
     if(w != x->x_w || h != x->x_h){
         x->x_w = w; x->x_h = h;
         canvas_dirty(x->x_glist, 1);
-        button_update(x);
+        button_erase(x, x->x_glist);
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+            button_draw(x, x->x_glist);
+            canvas_fixlinesfor(x->x_glist, (t_text*)x);
+        }
     }
 }
 
@@ -165,7 +173,9 @@ static void button_width(t_button *x, t_floatarg f){
     if(w != x->x_w){
         x->x_w = w;
         canvas_dirty(x->x_glist, 1);
-        button_update(x);
+        button_erase(x, x->x_glist);
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+            button_draw(x, x->x_glist);
     }
 }
 
@@ -174,7 +184,11 @@ static void button_height(t_button *x, t_floatarg f){
     if(h != x->x_h){
         x->x_h = h;
         canvas_dirty(x->x_glist, 1);
-        button_update(x);
+        button_erase(x, x->x_glist);
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+            button_draw(x, x->x_glist);
+            canvas_fixlinesfor(x->x_glist, (t_text*)x);
+        }
     }
 }
 
@@ -182,11 +196,10 @@ static void button_fgcolor(t_button *x, t_floatarg red, t_floatarg green, t_floa
     int r = red < 0 ? 0 : red > 255 ? 255 : (int)red;
     int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
     int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
-    int vis = (glist_isvisible(x->x_glist) || gobj_shouldvis((t_gobj *)x, x->x_glist));
-    if(vis && (x->x_fgcolor[0] != r || x->x_fgcolor[1] != g || x->x_fgcolor[2] != b)){
+    if(x->x_fgcolor[0] != r || x->x_fgcolor[1] != g || x->x_fgcolor[2] != b){
         x->x_fgcolor[0] = r; x->x_fgcolor[1] = g; x->x_fgcolor[2] = b;
         canvas_dirty(x->x_glist, 1);
-        if(x->x_state)
+        if(x->x_state && (glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)))
             sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n", glist_getcanvas(x->x_glist), x, r, g, b);
     }
 }
@@ -195,11 +208,10 @@ static void button_bgcolor(t_button *x, t_floatarg red, t_floatarg green, t_floa
     int r = red < 0 ? 0 : red > 255 ? 255 : (int)red;
     int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
     int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
-    int vis = (glist_isvisible(x->x_glist) || gobj_shouldvis((t_gobj *)x, x->x_glist));
-    if(vis && (x->x_bgcolor[0] != r || x->x_bgcolor[1] != g || x->x_bgcolor[2] != b)){
+    if(x->x_bgcolor[0] != r || x->x_bgcolor[1] != g || x->x_bgcolor[2] != b){
         x->x_bgcolor[0] = r; x->x_bgcolor[1] = g; x->x_bgcolor[2] = b;
         canvas_dirty(x->x_glist, 1);
-        if(!x->x_state)
+        if(!x->x_state && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n", glist_getcanvas(x->x_glist), x, r, g, b);
     }
 }

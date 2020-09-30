@@ -646,8 +646,9 @@ static void function_height(t_function *x, t_floatarg f){
     if(x->x_height != height){
         x->x_height = height * x->x_zoom;
         canvas_dirty(x->x_glist, 1);
+        function_erase(x, x->x_glist);
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
-            function_update(x, x->x_glist);
+            function_draw(x, x->x_glist);
             canvas_fixlinesfor(x->x_glist, (t_text*) x);
         }
     }
@@ -658,8 +659,9 @@ static void function_width(t_function *x, t_floatarg f){
     if(x->x_width != width){
         x->x_width = width * x->x_zoom;
         canvas_dirty(x->x_glist, 1);
+        function_erase(x, x->x_glist);
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-            function_update(x, x->x_glist);
+            function_draw(x, x->x_glist);
     }
 }
 
@@ -704,15 +706,19 @@ static void function_fgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
     int r = red < 0 ? 0 : red > 255 ? 255 : (int)red;
     int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
     int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
-    int vis = (glist_isvisible(x->x_glist) || gobj_shouldvis((t_gobj *)x, x->x_glist));
-    if(vis && (x->x_fgcolor[0] != r || x->x_fgcolor[1] != g || x->x_fgcolor[2] != b)){
+    if(x->x_fgcolor[0] != r || x->x_fgcolor[1] != g || x->x_fgcolor[2] != b){
         canvas_dirty(x->x_glist, 1);
-        t_canvas *cv = glist_getcanvas(x->x_glist);
-        sys_vgui(".x%lx.c itemconfigure %lx_line -fill #%2.2x%2.2x%2.2x\n", cv,
-            x, x->x_fgcolor[0] = r, x->x_fgcolor[1] = g, x->x_fgcolor[2] = b);
-        for(int i = 0; i <= x->x_n_states; i++)
-            sys_vgui(".x%lx.c itemconfigure %lx_dots%d -outline #%2.2x%2.2x%2.2x\n", cv,
-                     x, i, x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+        x->x_fgcolor[0] = r;
+        x->x_fgcolor[1] = g;
+        x->x_fgcolor[2] = b;
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+            t_canvas *cv = glist_getcanvas(x->x_glist);
+            sys_vgui(".x%lx.c itemconfigure %lx_line -fill #%2.2x%2.2x%2.2x\n", cv,
+                x, x->x_fgcolor[0] = r, x->x_fgcolor[1] = g, x->x_fgcolor[2] = b);
+            for(int i = 0; i <= x->x_n_states; i++)
+                sys_vgui(".x%lx.c itemconfigure %lx_dots%d -outline #%2.2x%2.2x%2.2x\n", cv,
+                         x, i, x->x_fgcolor[0], x->x_fgcolor[1], x->x_fgcolor[2]);
+        }
     }
 }
 
@@ -720,15 +726,19 @@ static void function_bgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
     int r = red < 0 ? 0 : red > 255 ? 255 : (int)red;
     int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
     int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
-    int vis = (glist_isvisible(x->x_glist) || gobj_shouldvis((t_gobj *)x, x->x_glist));
-    if(vis && (x->x_bgcolor[0] != r || x->x_bgcolor[1] != g || x->x_bgcolor[2] != b)){
+    if(x->x_bgcolor[0] != r || x->x_bgcolor[1] != g || x->x_bgcolor[2] != b){
         canvas_dirty(x->x_glist, 1);
-        t_canvas *cv = glist_getcanvas(x->x_glist);
-        sys_vgui(".x%lx.c itemconfigure %lx_rect -fill #%2.2x%2.2x%2.2x\n", cv,
-            x, x->x_bgcolor[0] = r, x->x_bgcolor[1] = g, x->x_bgcolor[2] = b);
-        for(int i = 0; i <= x->x_n_states; i++)
-            sys_vgui(".x%lx.c itemconfigure %lx_dots%d -fill #%2.2x%2.2x%2.2x\n", cv,
-                     x, i, x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+        x->x_bgcolor[0] = r;
+        x->x_bgcolor[1] = g;
+        x->x_bgcolor[2] = b;
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+            t_canvas *cv = glist_getcanvas(x->x_glist);
+            sys_vgui(".x%lx.c itemconfigure %lx_rect -fill #%2.2x%2.2x%2.2x\n", cv,
+                x, x->x_bgcolor[0] = r, x->x_bgcolor[1] = g, x->x_bgcolor[2] = b);
+            for(int i = 0; i <= x->x_n_states; i++)
+                sys_vgui(".x%lx.c itemconfigure %lx_dots%d -fill #%2.2x%2.2x%2.2x\n", cv,
+                         x, i, x->x_bgcolor[0], x->x_bgcolor[1], x->x_bgcolor[2]);
+        }
     }
 }
 

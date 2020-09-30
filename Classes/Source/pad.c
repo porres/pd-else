@@ -28,6 +28,13 @@ typedef struct _pad{
     unsigned char   x_color[3];
 }t_pad;
 
+static void pad_erase(t_pad* x, t_glist* glist){
+    t_canvas *cv = glist_getcanvas(glist);
+    sys_vgui(".x%lx.c delete %lxBASE\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
+}
+
 static void pad_draw_io_let(t_pad *x){
     if(x->x_edit){
         t_canvas *cv = glist_getcanvas(x->x_glist);
@@ -47,19 +54,10 @@ static void pad_draw(t_pad *x, t_glist *glist){
     pad_draw_io_let(x);
 }
 
-static void pad_erase(t_pad* x, t_glist* glist){
-    t_canvas *cv = glist_getcanvas(glist);
-    sys_vgui(".x%lx.c delete %lxBASE\n", cv, x);
-    sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
-    sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
-}
-
 static void pad_update(t_pad *x){
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
-        int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-        t_canvas *cv = glist_getcanvas(x->x_glist);
-        sys_vgui(".x%lx.c coords %lxBASE %d %d %d %d\n", cv, x, xpos, ypos,
-            xpos + x->x_w*x->x_zoom, ypos + x->x_h*x->x_zoom);
+        pad_erase(x, x->x_glist);
+        pad_draw(x, x->x_glist);
         canvas_fixlinesfor(glist_getcanvas(x->x_glist), (t_text*)x);
     }
 }
@@ -184,11 +182,12 @@ static void pad_color(t_pad *x, t_floatarg red, t_floatarg green, t_floatarg blu
     int r = red < 0 ? 0 : red > 255 ? 255 : (int)red;
     int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
     int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
-    int vis = (glist_isvisible(x->x_glist) || gobj_shouldvis((t_gobj *)x, x->x_glist));
-    if(vis && (x->x_color[0] != r || x->x_color[1] != g || x->x_color[2] != b)){
+    if((x->x_color[0] != r || x->x_color[1] != g || x->x_color[2] != b)){
         x->x_color[0] = r; x->x_color[1] = g; x->x_color[2] = b;
         canvas_dirty(x->x_glist, 1);
-        sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n", glist_getcanvas(x->x_glist), x, r, g, b);
+        if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
+            sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
+            glist_getcanvas(x->x_glist), x, r, g, b);
     }
 }
 
@@ -203,7 +202,7 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
     if(p->p_cnv){
         if(s == gensym("editmode"))
             edit = (int)(av->a_w.w_float);
-         else if(s == gensym("obj") || s == gensym("msg") || s == gensym("floatatom")
+        else if(s == gensym("obj") || s == gensym("msg") || s == gensym("floatatom")
         || s == gensym("symbolatom") || s == gensym("text") || s == gensym("bng")
         || s == gensym("toggle") || s == gensym("numbox") || s == gensym("vslider")
         || s == gensym("hslider") || s == gensym("vradio") || s == gensym("hradio")
@@ -256,7 +255,8 @@ static void *pad_new(t_symbol *s, int ac, t_atom *av){
     x->x_proxy = edit_proxy_new(x, gensym(buf));
     sprintf(buf, "#%lx", (long)x);
     pd_bind(&x->x_obj.ob_pd, x->x_bindname = gensym(buf));
-    x->x_edit = cv->gl_edit;    x->x_zoom = x->x_glist->gl_zoom;
+    x->x_edit = cv->gl_edit;
+    x->x_zoom = x->x_glist->gl_zoom;
     x->x_x = x->x_y = 0;
     x->x_color[0] = x->x_color[1] = x->x_color[2] = 255;
     int w = 127, h = 127;
@@ -320,6 +320,7 @@ static void *pad_new(t_symbol *s, int ac, t_atom *av){
 void pad_setup(void){
     pad_class = class_new(gensym("pad"), (t_newmethod)pad_new,
         (t_method)pad_free, sizeof(t_pad), 0, A_GIMME, 0);
+    class_addmethod(pad_class, (t_method)pad_test, gensym("test"), 0);
     class_addmethod(pad_class, (t_method)pad_dim, gensym("dim"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_height, gensym("height"), A_FLOAT, 0);
