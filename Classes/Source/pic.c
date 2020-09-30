@@ -80,30 +80,6 @@ static const char* pic_filepath(t_pic *x, const char *filename){
         return(0);
 }
 
-static void pic_size_callback(t_pic *x, t_float w, t_float h){
-    x->x_width = w;
-    x->x_height = h;
-    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
-        canvas_fixlinesfor(x->x_glist, (t_text*)x);
-        if(x->x_edit || x->x_outline){
-            t_canvas *cv = glist_getcanvas(x->x_glist);
-            int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-            sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
-            if(x->x_sel) sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline blue -width %d\n",
-                cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
-            else sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
-                cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
-            pic_draw_io_let(x);
-        }
-    }
-    if(x->x_size){
-        t_atom at[2];
-        SETFLOAT(at, w);
-        SETFLOAT(at+1, h);
-        outlet_list(x->x_obj.ob_outlet, &s_list, 2, at);
-    }
-}
-
 static void pic_mouserelease(t_pic* x){
     if(x->x_latch){
         outlet_float(x->x_outlet, 0);
@@ -222,42 +198,52 @@ static void pic_select(t_gobj *z, t_glist *glist, int state){
 static void pic_delete(t_gobj *z, t_glist *glist){
     canvas_deletelinesfor(glist, (t_text *)z);
 }
-       
-static void pic_vis(t_gobj *z, t_glist *glist, int vis){
-    t_pic* x = (t_pic*)z;
+
+static void pic_draw(t_pic* x, struct _glist *glist, t_floatarg vis){
+//    post("pic_draw");
     t_canvas *cv = glist_getcanvas(glist);
-    if(vis){
-        int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
-        if(x->x_def_img){ // DEFAULT PIC
-            sys_vgui(".x%lx.c create image %d %d -anchor nw -tags %lx_picture\n",
-                cv, xpos, ypos, x);
-            sys_vgui(".x%lx.c itemconfigure %lx_picture -image %s\n",
-                cv, x, "pic_def_img");
-            if(x->x_edit || x->x_outline)
-                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
-                    cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
-        }
-        else{
-            sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_picture\n",
-                cv, xpos, ypos, x->x_fullname, x);
-            if(!x->x_init){
-                x->x_init = 1;
-                sys_vgui("pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"\n",
-                     x->x_x->s_name, x->x_fullname, x->x_fullname);
-            }
-            else if(x->x_edit || x->x_outline)
-                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
-                    cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
-        }
-        pic_draw_io_let(x);
-        sys_vgui(".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_x->s_name);
+    int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
+    int visible = (glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist));
+    if(x->x_def_img && (visible || vis)){ // DEFAULT PIC
+        sys_vgui(".x%lx.c create image %d %d -anchor nw -tags %lx_picture\n",
+            cv, xpos, ypos, x);
+        sys_vgui(".x%lx.c itemconfigure %lx_picture -image %s\n",
+            cv, x, "pic_def_img");
+        if(x->x_edit || x->x_outline)
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
+                cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
     }
     else{
-        sys_vgui(".x%lx.c delete %lx_picture\n", cv, x); // ERASE
-        sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
-        sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
-        sys_vgui(".x%lx.c delete %lx_outline\n", cv, x); // if edit?
+//        post("!x->x_def_img");
+        if(visible || vis){
+//            post("visible (%d) || vis (%d)", visible, vis);
+            sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_picture\n", cv, xpos, ypos, x->x_fullname, x);
+        }
+        if(!x->x_init)
+            x->x_init = 1;
+        else if((visible || vis) && (x->x_edit || x->x_outline))
+            sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
+                cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
+        sys_vgui("pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"\n",
+             x->x_x->s_name, x->x_fullname, x->x_fullname);
     }
+    sys_vgui(".x%lx.c bind %lx_picture <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", cv, x, x->x_x->s_name);
+    pic_draw_io_let(x);
+         
+}
+
+static void pic_erase(t_pic* x, struct _glist *glist){
+//    post("erase");
+    t_canvas *cv = glist_getcanvas(glist);
+    sys_vgui(".x%lx.c delete %lx_picture\n", cv, x); // ERASE
+    sys_vgui(".x%lx.c delete %lx_in\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_out\n", cv, x);
+    sys_vgui(".x%lx.c delete %lx_outline\n", cv, x); // if edit?
+}
+
+static void pic_vis(t_gobj *z, t_glist *glist, int vis){
+    t_pic* x = (t_pic*)z;
+    vis ? pic_draw(x, glist, 1) : pic_erase(x, glist);
 }
 
 static void pic_save(t_gobj *z, t_binbuf *b){
@@ -272,29 +258,35 @@ static void pic_save(t_gobj *z, t_binbuf *b){
 }
 
 //------------------------------- METHODS --------------------------------------------
-void pic_set(t_pic* x, t_symbol *filename){
-    if(filename){
-        if(filename == gensym("empty") && x->x_def_img)
-            return;
-        if(filename != x->x_filename){
-            const char *file_name_open = pic_filepath(x, filename->s_name); // path
-            if(file_name_open){
-                t_canvas *cv = glist_getcanvas(x->x_glist);
-                x->x_filename = filename;
-                x->x_fullname = gensym(file_name_open);
-                sys_vgui("if { [info exists %lx_picname] == 0 } { image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n} \n",
-                    x->x_fullname, x->x_fullname, file_name_open, x->x_fullname);
-                if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-                    sys_vgui(".x%lx.c itemconfigure %lx_picture -image %lx_picname\n", cv, x, x->x_fullname);
-                sys_vgui("pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"\n",
-                         x->x_x->s_name, x->x_fullname, x->x_fullname);
-                 if(x->x_def_img)
-                     x->x_def_img = 0;
-            }
-            else pd_error(x, "[pic]: error opening file '%s'", filename->s_name);
+static void pic_size_callback(t_pic *x, t_float w, t_float h){ // callback
+//    post("callback");
+    x->x_width = w;
+    x->x_height = h;
+    if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+//        post("visible");
+        t_canvas *cv = glist_getcanvas(x->x_glist);
+        int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
+        sys_vgui(".x%lx.c create image %d %d -anchor nw -image %lx_picname -tags %lx_picture\n", cv, xpos, ypos, x->x_fullname, x);
+        canvas_fixlinesfor(x->x_glist, (t_text*)x);
+        if(x->x_edit || x->x_outline){
+            sys_vgui(".x%lx.c delete %lx_outline\n", cv, x);
+            if(x->x_sel)
+                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline blue -width %d\n",
+                cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
+            else
+                sys_vgui(".x%lx.c create rectangle %d %d %d %d -tags %lx_outline -outline black -width %d\n",
+                cv, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x, x->x_zoom);
+            pic_draw_io_let(x);
         }
     }
-    else pd_error(x, "[pic]: set needs a file name");
+    else
+        pic_erase(x, x->x_glist);
+    if(x->x_size){
+        t_atom at[2];
+        SETFLOAT(at, w);
+        SETFLOAT(at+1, h);
+        outlet_list(x->x_obj.ob_outlet, &s_list, 2, at);
+    }
 }
 
 void pic_open(t_pic* x, t_symbol *filename){
@@ -304,23 +296,26 @@ void pic_open(t_pic* x, t_symbol *filename){
         if(filename != x->x_filename){
             const char *file_name_open = pic_filepath(x, filename->s_name); // path
             if(file_name_open){
-                t_canvas *cv = glist_getcanvas(x->x_glist);
+//                post("file_name_open");
                 x->x_filename = filename;
                 x->x_fullname = gensym(file_name_open);
+                if(x->x_def_img)
+                    x->x_def_img = 0;
+                pic_erase(x, x->x_glist);
                 sys_vgui("if { [info exists %lx_picname] == 0 } { image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n} \n",
                     x->x_fullname, x->x_fullname, file_name_open, x->x_fullname);
-                if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
-                    sys_vgui(".x%lx.c itemconfigure %lx_picture -image %lx_picname\n", cv, x, x->x_fullname);
-                sys_vgui("pdsend \"%s _picsize [image width %lx_picname] [image height %lx_picname]\"\n",
-                         x->x_x->s_name, x->x_fullname, x->x_fullname);
-                 if(x->x_def_img)
-                     x->x_def_img = 0;
+                pic_draw(x, x->x_glist, 0);
                 canvas_dirty(x->x_glist, 1);
             }
             else pd_error(x, "[pic]: error opening file '%s'", filename->s_name);
         }
     }
     else pd_error(x, "[pic]: open needs a file name");
+}
+
+void pic_set(t_pic* x, t_symbol *filename){
+    pic_open(x, filename);
+    canvas_dirty(x->x_glist, 0);
 }
 
 static void pic_send(t_pic *x, t_symbol *s){
