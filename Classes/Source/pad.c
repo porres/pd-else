@@ -320,7 +320,6 @@ static void *pad_new(t_symbol *s, int ac, t_atom *av){
 void pad_setup(void){
     pad_class = class_new(gensym("pad"), (t_newmethod)pad_new,
         (t_method)pad_free, sizeof(t_pad), 0, A_GIMME, 0);
-    class_addmethod(pad_class, (t_method)pad_test, gensym("test"), 0);
     class_addmethod(pad_class, (t_method)pad_dim, gensym("dim"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(pad_class, (t_method)pad_height, gensym("height"), A_FLOAT, 0);
