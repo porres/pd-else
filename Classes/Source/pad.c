@@ -55,8 +55,8 @@ static void pad_draw(t_pad *x, t_glist *glist){
 }
 
 static void pad_update(t_pad *x){
+    pad_erase(x, x->x_glist);
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
-        pad_erase(x, x->x_glist);
         pad_draw(x, x->x_glist);
         canvas_fixlinesfor(glist_getcanvas(x->x_glist), (t_text*)x);
     }
