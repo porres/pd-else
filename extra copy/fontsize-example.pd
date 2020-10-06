@@ -3,9 +3,9 @@
 #X floatatom 447 176 5 0 0 0 - - -;
 #X obj 247 220 outlet;
 #X floatatom 247 176 5 0 0 0 - - -;
-#X obj 447 127 else/fontsize;
-#X obj 247 127 else/fontsize 1;
-#X text 82 33 This is an example of an abstraction with [else/fontsize]
+#X obj 447 127 fontsize;
+#X obj 247 127 fontsize 1;
+#X text 82 33 This is an example of an abstraction with [fontsize]
 \, used in its help file (fontsize-help.pd).;
 #X text 78 156 parent patch's font size ====>, f 15;
 #X text 514 173 <= this patch's;

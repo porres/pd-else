@@ -16,13 +16,13 @@
 #X obj 102 242 osc~;
 #X obj 102 132 unpack;
 #X obj 148 333 /~ \$2;
-#X obj 166 240 else/adsr~ 500 100 0.75 2500;
-#X obj 166 271 else/fader~;
+#X obj 166 240 adsr~ 500 100 0.75 2500;
+#X obj 166 271 fader~;
 #X text 294 171 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 296 152 Alexandre Torres Porres (2018);
 #X text 215 91 This is a patch used in conjunction with clone as an
 example in ELSE's documentation, f 43;
-#X obj 148 372 else/plate.rev~ 50 0.6 0.25 0.8 0.8;
+#X obj 148 372 plate.rev~ 50 0.6 0.25 0.8 0.8;
 #X connect 0 0 11 0;
 #X connect 1 0 13 0;
 #X connect 2 0 12 0;

@@ -10,17 +10,17 @@
 #X text 35 252 Alexandre Torres Porres (2017);
 #X obj 379 279 sel 0;
 #X msg 379 303 1;
-#X obj 122 189 else/resonant2~;
+#X obj 122 189 resonant2~;
 #X obj 177 25 inlet;
 #X text 37 316 This is an abstraction used on the [resonbank2~] object
 , f 27;
 #X obj 292 283 /~ \$1;
 #X obj 379 256 f \$1;
-#X obj 307 201 else/float2sig~;
-#X obj 145 153 else/float2sig~;
-#X obj 158 114 else/float2sig~;
-#X obj 177 62 else/float2sig~;
-#X obj 379 232 else/lb -init;
+#X obj 307 201 float2sig~;
+#X obj 145 153 float2sig~;
+#X obj 158 114 float2sig~;
+#X obj 177 62 float2sig~;
+#X obj 379 232 lb -init;
 #X connect 1 0 17 0;
 #X connect 2 0 11 0;
 #X connect 3 0 18 0;
