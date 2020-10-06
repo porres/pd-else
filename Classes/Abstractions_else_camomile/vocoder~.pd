@@ -75,7 +75,7 @@
 #X connect 10 0 0 0;
 #X connect 10 1 6 0;
 #X restore 247 45 pd args;
-#X obj 41 131 clone \$1 ./vocoder.band_clone, f 35;
+#X obj 41 131 clone \$1 vocoder.band_clone, f 35;
 #X obj 41 162 norm~ -6;
 #X obj 41 84 noisegate~ -60 50, f 15;
 #X obj 41 33 inlet~ fwd;

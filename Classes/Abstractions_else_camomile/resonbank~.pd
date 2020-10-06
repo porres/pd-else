@@ -71,7 +71,7 @@
 #X restore 112 117 pd route;
 #X obj 61 221 outlet~;
 #X obj 190 93 args;
-#X obj 61 175 clone -x \$1 ./resonclone \$1;
+#X obj 61 175 clone -x \$1 resonclone \$1;
 #X obj 53 34 inlet~ fwd;
 #X obj 190 62 lb -init;
 #X connect 2 0 6 1;

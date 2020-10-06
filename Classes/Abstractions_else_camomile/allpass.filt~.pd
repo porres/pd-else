@@ -43,9 +43,9 @@
 #X msg 137 364 connect \$1 0 1 0, f 8;
 #X obj 191 272 expr 50 + 25 * $f1 \; $f1 + 1 \; $f1 + 2;
 #X obj 221 323 pack f f f \$0;
-#X msg 221 347 obj 60 \$1 ./allpass_unit \$4 \, connect \$2 0 \$3 0
+#X msg 221 347 obj 60 \$1 allpass_unit \$4 \, connect \$2 0 \$3 0
 , f 47;
-#X msg 230 377 obj 60 50 ./allpass_unit \$1 \, connect 0 0 2 0;
+#X msg 230 377 obj 60 50 allpass_unit \$1 \, connect 0 0 2 0;
 #X obj 92 39 args;
 #X obj 92 84 unpack float float float;
 #X obj 168 111 s \$0-hz;

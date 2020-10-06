@@ -1,5 +1,5 @@
-#N canvas 668 181 598 342 10;
-#N canvas 962 256 523 256 guts 0;
+#N canvas 255 313 598 342 10;
+#N canvas 404 536 523 256 guts 1;
 #X obj 243 67 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X text 261 66 before saving;
@@ -89,7 +89,7 @@
 #X connect 0 0 1 0;
 #X connect 1 0 3 0;
 #X restore 44 102 pd read-table;
-#N canvas 323 108 600 444 set 0;
+#N canvas 290 445 600 444 set 0;
 #X obj 109 224 tabwrite \$0-log_index;
 #X obj 109 254 table \$0-log_index 1024;
 #X obj 110 284 table \$0-Amp 1024;

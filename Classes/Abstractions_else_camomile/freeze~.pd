@@ -43,7 +43,7 @@
 #X text 263 154 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 265 135 Alexandre Torres Porres (2018);
 #X obj 47 83 sigmund~ -npts 2048 -hop 512 -npeak 50 tracks;
-#X obj 73 154 clone 50 ./freeze.osc.clone~;
+#X obj 73 154 clone 50 freeze.osc.clone~;
 #X obj 41 52 inlet~ fwd;
 #X connect 1 0 6 0;
 #X connect 2 0 1 2;

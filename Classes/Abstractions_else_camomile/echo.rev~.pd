@@ -23,13 +23,13 @@
 #X f 13;
 #X obj 145 350 pack f f f f \$0;
 #X obj 118 229 sel 0;
-#X msg 145 374 obj 60 \$1 ./echo_unit \$4 \$5 \, connect \$2 0 \$3
+#X msg 145 374 obj 60 \$1 echo_unit \$4 \$5 \, connect \$2 0 \$3
 0 \, connect \$2 1 \$3 1, f 47;
 #X obj 106 379 f \$0;
 #X obj 46 42 f \$1;
 #X obj 91 118 clip 4 20;
 #X msg 41 411 connect \$1 0 1 0 \, connect \$1 1 1 0;
-#X msg 126 444 obj 60 50 ./echo_unit 5 \$1 \, connect 0 0 2 0;
+#X msg 126 444 obj 60 50 echo_unit 5 \$1 \, connect 0 0 2 0;
 #X obj 41 360 + 1;
 #X obj 145 279 expr 50 + 25 * $f1 \; $f1 + 1 \; $f1 + 2 \; p_\$0[$f1]
 ;

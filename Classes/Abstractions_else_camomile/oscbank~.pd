@@ -75,7 +75,7 @@
 #X connect 9 0 8 0;
 #X restore 155 183 pd route;
 #X obj 104 287 outlet~;
-#X obj 104 241 clone -x \$1 ./oscclone \$1;
+#X obj 104 241 clone -x \$1 oscclone \$1;
 #X obj 88 93 inlet~ fwd;
 #X obj 88 66 r \$0-freq;
 #X connect 2 0 5 1;

@@ -71,7 +71,7 @@
 #X connect 9 3 3 0;
 #X restore 112 96 pd route;
 #X obj 112 43 inlet;
-#X obj 113 154 clone -x \$1 ./oscclone2 \$1;
+#X obj 113 154 clone -x \$1 oscclone2 \$1;
 #X obj 210 71 args;
 #X obj 210 46 lb -init;
 #X connect 3 0 6 0;

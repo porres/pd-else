@@ -2,7 +2,7 @@
 #X text 316 157 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 318 138 Alexandre Torres Porres (2017);
 #X obj 65 220 outlet~;
-#X obj 65 174 clone -x \$1 ./bpclone \$1;
+#X obj 65 174 clone -x \$1 bpclone \$1;
 #N canvas 505 98 698 549 load_args 0;
 #X obj 95 268 order;
 #X obj 176 269 order;

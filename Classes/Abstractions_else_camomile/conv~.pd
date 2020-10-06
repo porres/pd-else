@@ -102,7 +102,7 @@
 #X obj 485 480 r \$0-size;
 #X obj 387 501 list append;
 #X msg 387 536 \; pd-\$3-clone clear \, obj 100 50 inlet~ \, obj 300
-50 inlet~ \, obj 100 100 clone ./convpartition \$1 \$2 \$3 \$4 \, obj
+50 inlet~ \, obj 100 100 clone convpartition \$1 \$2 \$3 \$4 \, obj
 100 150 outlet~ \, obj 300 150 outlet~ \, connect 0 0 2 0 \, connect
 2 0 3 0 \, connect 1 0 2 1 \, connect 2 1 4 0 \; pd-\$3-conv connect
 0 0 2 0 \, connect 1 0 2 1 \, connect 2 0 3 0 \, connect 2 1 4 0 \;
@@ -167,7 +167,7 @@
 #X obj 439 486 r \$0-size;
 #X obj 341 507 list append;
 #X msg 341 542 \; pd-\$3-clone clear \, obj 100 50 inlet~ \, obj 300
-50 inlet~ \, obj 100 100 clone ./convpartition \$1 \$2 \$3 \$4 \, obj
+50 inlet~ \, obj 100 100 clone convpartition \$1 \$2 \$3 \$4 \, obj
 100 150 outlet~ \, obj 300 150 outlet~ \, connect 0 0 2 0 \, connect
 2 0 3 0 \, connect 1 0 2 1 \, connect 2 1 4 0 \; pd-\$3-conv connect
 0 0 2 0 \, connect 1 0 2 1 \, connect 2 0 3 0 \, connect 2 1 4 0 \;
@@ -259,7 +259,7 @@
 #X obj 416 671 r \$0-size;
 #X obj 318 692 list append;
 #X msg 318 727 \; pd-\$3-clone clear \, obj 100 50 inlet~ \, obj 300
-50 inlet~ \, obj 100 100 clone ./convpartition \$1 \$2 \$3 \$4 \, obj
+50 inlet~ \, obj 100 100 clone convpartition \$1 \$2 \$3 \$4 \, obj
 100 150 outlet~ \, obj 300 150 outlet~ \, connect 0 0 2 0 \, connect
 2 0 3 0 \, connect 1 0 2 1 \, connect 2 1 4 0 \; pd-\$3-conv connect
 0 0 2 0 \, connect 1 0 2 1 \, connect 2 0 3 0 \, connect 2 1 4 0 \;
