@@ -19,7 +19,7 @@ static void gray_float(t_gray *x, t_floatarg f){
     x->x_base = x->x_rstate.s1 ^ x->x_rstate.s2 ^ x->x_rstate.s3;
 }
 
-uint32_t random_trand(uint32_t* s1, uint32_t* s2, uint32_t* s3 ){
+static uint32_t random_trand(uint32_t* s1, uint32_t* s2, uint32_t* s3 ){
     // This function is provided for speed in inner loops where the
     // state variables are loaded into registers.
     // Thus updating the instance variables can

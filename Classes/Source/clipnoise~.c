@@ -16,7 +16,7 @@ static void clipnoise_float(t_clipnoise *x, t_floatarg f){
     random_init(&x->x_rstate, f);
 }
 
-uint32_t random_trand(uint32_t* s1, uint32_t* s2, uint32_t* s3 ){
+static uint32_t random_trand(uint32_t* s1, uint32_t* s2, uint32_t* s3 ){
     // This function is provided for speed in inner loops where the
     // state variables are loaded into registers.
     // Thus updating the instance variables can
@@ -27,7 +27,7 @@ uint32_t random_trand(uint32_t* s1, uint32_t* s2, uint32_t* s3 ){
     return *s1 ^ *s2 ^ *s3;
 }
 
-float random_frand(uint32_t* s1, uint32_t* s2, uint32_t* s3)
+static float random_frand(uint32_t* s1, uint32_t* s2, uint32_t* s3)
 {
     // return a float from -1.0 to +0.999...
     union { uint32_t i; float f; } u;        // union for floating point conversion of result
