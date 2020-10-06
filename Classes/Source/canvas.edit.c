@@ -40,7 +40,7 @@ static void edit_proxy_any(t_edit_proxy *p, t_symbol *s, int ac, t_atom *av){
         || s == gensym("symbolatom") || s == gensym("text") || s == gensym("bng")
         || s == gensym("toggle") || s == gensym("numbox") || s == gensym("vslider")
         || s == gensym("hslider") || s == gensym("vradio") || s == gensym("hradio")
-        || s == gensym("vumeter") || s == gensym("mycnv")){
+        || s == gensym("vumeter") || s == gensym("mycnv") || s == gensym("selectall")){
             if(p->p_cnv->x_edit == 0)
                 outlet_float(p->p_cnv->x_obj.ob_outlet, p->p_cnv->x_edit = 1);
         }

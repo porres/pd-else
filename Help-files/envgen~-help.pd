@@ -1,24 +1,24 @@
-#N canvas 498 31 558 662 10;
-#X obj 4 637 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 576 51 558 662 10;
+#X obj 4 638 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 6 263 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 6 264 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 501 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 502 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 547 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 548 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 85 270 cnv 17 3 207 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 85 271 cnv 17 3 207 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 85 507 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 85 508 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 167 507 signal;
-#X text 179 296 list;
-#X obj 85 527 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 167 508 signal;
+#X text 179 297 list;
+#X obj 85 528 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 173 392 pause;
-#X text 167 406 resume;
-#X text 218 392 - pauses the output, f 53;
-#X text 218 507 - envelope signal, f 25;
+#X text 173 393 pause;
+#X text 167 407 resume;
+#X text 218 393 - pauses the output, f 53;
+#X text 218 508 - envelope signal, f 25;
 #X obj 23 40 cnv 4 4 4 empty empty Envelope 0 28 2 18 -233017 -1 0
 ;
 #X obj 101 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
@@ -45,11 +45,11 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 304 3 graph;
-#X text 218 296 -;
-#X text 143 323 set <list>;
-#X text 179 283 bang;
-#X text 173 527 float;
-#X text 219 527 - status: 1 <on> \, 0 <off>;
+#X text 218 297 -;
+#X text 143 324 set <list>;
+#X text 179 284 bang;
+#X text 173 528 float;
+#X text 219 528 - status: 1 <on> \, 0 <off>;
 #N canvas 525 23 476 517 status 0;
 #X obj 360 293 switch~;
 #X obj 360 225 tgl 50 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
@@ -83,24 +83,23 @@ floats and bangs., f 62;
 #X connect 10 0 4 0;
 #X connect 10 1 1 0;
 #X restore 487 217 pd status;
-#X text 218 322 - sets the envelope and doesn't run it, f 53;
-#X text 218 406 - resumes the envelope after being paused, f 53;
-#X text 113 336 setgain <float>;
-#X text 230 297 sets and runs envelope. Lists are pairs of duration
+#X text 218 323 - sets the envelope and doesn't run it, f 53;
+#X text 218 407 - resumes the envelope after being paused, f 53;
+#X text 113 337 setgain <float>;
+#X text 230 298 sets and runs envelope. Lists are pairs of duration
 & target. If odd \, 1st float is the starting point, f 51;
-#X text 218 336 - sets overall gain, f 53;
-#X text 138 552 1) list -;
-#X obj 6 582 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 101 448 retrigger <float>;
-#X text 218 448 - retrigger time in ms, f 53;
-#X text 119 462 legato <float>;
-#X text 218 462 - non-0 sets to legato mode, f 53;
-#X text 107 420 suspoint <float>;
-#X text 218 420 - sets sustain point, f 53;
-#X text 167 364 attack;
-#X text 218 283 - attacks the envelope with the last gate on value
+#X text 218 337 - sets overall gain, f 53;
+#X obj 6 583 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 101 449 retrigger <float>;
+#X text 218 449 - retrigger time in ms, f 53;
+#X text 119 463 legato <float>;
+#X text 218 463 - non-0 sets to legato mode, f 53;
+#X text 107 421 suspoint <float>;
+#X text 218 421 - sets sustain point, f 53;
+#X text 167 365 attack;
+#X text 218 284 - attacks the envelope with the last gate on value
 , f 53;
-#X text 161 378 release;
+#X text 161 379 release;
 #N canvas 382 99 897 458 basic 0;
 #X msg 507 107 pause;
 #X msg 550 107 resume;
@@ -191,19 +190,17 @@ the same as using the right inlet.;
 #X connect 41 0 39 0;
 #X connect 43 0 12 1;
 #X restore 492 99 pd basic;
-#X obj 171 173 *~;
-#X obj 171 203 else/out~;
-#X obj 141 141 osc~ 440;
-#X obj 229 117 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 151 172 *~;
+#X obj 151 203 else/out~;
+#X obj 136 141 osc~ 440;
+#X obj 209 116 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 196 552 a float sets an initial output value \, a list of floats
-to set the envelope (default 0 0), f 51;
-#X obj 289 193 vsl 18 58 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+#X obj 269 193 vsl 18 58 0 1 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 0 1;
-#X text 309 243 0;
-#X text 310 190 1;
-#X text 95 434 maxsustain <float>;
-#X text 218 434 - sets maximum sustain lengthn in ms, f 53;
+#X text 289 243 0;
+#X text 290 187 1;
+#X text 95 435 maxsustain <float>;
+#X text 218 435 - sets maximum sustain lengthn in ms, f 53;
 #N canvas 225 131 1050 530 gate-sustain 0;
 #X obj 78 249 else/display;
 #X obj 178 347 *~;
@@ -225,7 +222,7 @@ to set the envelope (default 0 0), f 51;
 #X text 29 30 A non-zero input triggers the envelope as a "gate on"
 message and sets an overall gain (which is 1 by default). A zero value
 is ignored if there's no sustain point., f 57;
-#X obj 398 115 keyboard 17 80 2 4;
+#X obj 398 115 keyboard 17 80 2 4 0 0 empty empty;
 #X obj 398 215 unpack;
 #X obj 398 305 bl.tri~;
 #X text 392 25 When you set a sustain point \, with the sustain message
@@ -409,10 +406,10 @@ and can also retrigger the envelope., f 47;
 #X connect 14 0 3 0;
 #X connect 15 0 4 0;
 #X restore 487 196 pd signal;
-#X text 218 269 - gate: on/attack (non-0) or off/release (0), f 53
+#X text 218 270 - gate: on/attack (non-0) or off/release (0), f 53
 ;
-#X text 218 378 - same as a gate off, f 53;
-#X text 218 364 - same as bang or gate on, f 53;
+#X text 218 379 - same as a gate off, f 53;
+#X text 218 365 - same as bang or gate on, f 53;
 #N canvas 579 112 482 447 duration 0;
 #X obj 37 269 else/setdsp~;
 #X obj 140 352 else/envgen~;
@@ -502,16 +499,16 @@ for more details on how it works., f 65;
 #X connect 8 0 2 1;
 #X connect 10 0 6 0;
 #X restore 475 236 pd function;
-#X obj 85 481 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 85 482 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 218 481 - sets the envelope and doesn't run it, f 53;
-#X text 178 482 list;
-#X obj 229 142 else/envgen~ 1000 1 500 0;
-#X text 131 269 float/signal;
-#X text 143 350 exp <list>;
-#X text 218 350 - sets exponential values for each line segment, f
+#X text 218 482 - sets the envelope and doesn't run it, f 53;
+#X text 178 483 list;
+#X obj 209 141 else/envgen~ 1000 1 500 0;
+#X text 131 270 float/signal;
+#X text 143 351 exp <list>;
+#X text 218 351 - sets exponential values for each line segment, f
 53;
-#X text 90 587 -exp <list> (default '1' for all segments) | -init <float>
+#X text 90 588 -exp <list> (default '1' for all segments) | -init <float>
 (default 0) | -retrigger <float> (default 0) | -suspoint <float> (default
 0) | -legato (sets to legato mode on \, default is off) | -maxsustain
 <float> (default 0 - no maxsustain), f 70;
@@ -777,7 +774,7 @@ be considered an all purpose line segment generator.;
 0.758132 0.758341 0.758549 0.758757 0.758965 0.759173 0.759381 0.759589
 0.759796 0.760004 0.760211 0.760418 0.760625 0.760832 0.761039 0.761245
 0.761452 0.761658 0.761864 0.76207 0.762276 0.762482 0.762688 0.762893
-0.763099;
+0.763099 ;
 #A 2000 0.763304 0.763509 0.763714 0.763919 0.764124 0.764328 0.764533
 0.764737 0.764941 0.765145 0.765349 0.765553 0.765757 0.76596 0.766164
 0.766367 0.76657 0.766773 0.766976 0.767179 0.767381 0.767584 0.767786
@@ -2812,16 +2809,23 @@ and [else/rescale~]. Check them out as well:;
 #X connect 13 0 4 0;
 #X connect 14 0 3 0;
 #X restore 457 138 pd exponential;
-#X obj 289 169 else/s2f~;
-#X obj 376 183 sel 0;
-#X obj 376 215 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 269 168 else/s2f~;
+#X obj 356 192 sel 0;
+#X obj 356 219 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 396 214 done;
-#X connect 48 0 49 0;
-#X connect 50 0 48 0;
-#X connect 51 0 69 0;
-#X connect 69 0 48 1;
-#X connect 69 0 76 0;
-#X connect 69 1 77 0;
-#X connect 76 0 53 0;
-#X connect 77 0 78 0;
+#X text 376 218 done;
+#X obj 356 167 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 228 553 a float sets an initial output value \, a list floats
+sets the envelope (default 0 0), f 44;
+#X text 219 553 -;
+#X text 161 554 1) list;
+#X connect 47 0 48 0;
+#X connect 49 0 47 0;
+#X connect 50 0 67 0;
+#X connect 67 0 47 1;
+#X connect 67 0 74 0;
+#X connect 67 1 78 0;
+#X connect 74 0 51 0;
+#X connect 75 0 76 0;
+#X connect 78 0 75 0;
