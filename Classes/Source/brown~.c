@@ -17,6 +17,14 @@ static void brown_float(t_brown *x, t_floatarg f){
     random_init(&x->x_rstate, f);
 }
 
+float random_frand(uint32_t* s1, uint32_t* s2, uint32_t* s3)
+{
+    // return a float from -1.0 to +0.999...
+    union { uint32_t i; float f; } u;        // union for floating point conversion of result
+    u.i = 0x40000000 | (random_trand(s1, s2, s3) >> 9);
+    return u.f - 3.f;
+}
+
 static t_int *brown_perform(t_int *w){
     t_brown *x = (t_brown *)(w[1]);
     int nblock = (t_int)(w[2]);
@@ -45,6 +53,7 @@ static void brown_dsp(t_brown *x, t_signal **sp){
 }
 
 static void *brown_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_brown *x = (t_brown *)pd_new(brown_class);
     x->x_lastout = 0;
     static int seed = 1;

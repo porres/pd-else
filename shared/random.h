@@ -109,13 +109,3 @@ inline uint32_t random_trand(uint32_t* s1, uint32_t* s2, uint32_t* s3 )
 	*s3 = ((*s3 &  (uint32_t)-16) << 17) ^ (((*s3 <<  3) ^  *s3) >> 11);
 	return *s1 ^ *s2 ^ *s3;
 }
-
-inline float random_frand(uint32_t* s1, uint32_t* s2, uint32_t* s3)
-{
-	// return a float from -1.0 to +0.999...
-	union { uint32_t i; float f; } u;		// union for floating point conversion of result
-	u.i = 0x40000000 | (random_trand(s1, s2, s3) >> 9);
-	return u.f - 3.f;
-}
-
-
