@@ -211,7 +211,7 @@ static void rms_tilde_dsp(t_sigrms *x, t_signal **sp)
     dsp_add(rms_tilde_perform, 3, x, sp[0]->s_vec, sp[0]->s_n);
 }
 
-t_float pow2db(t_float f){
+t_float pow2db_rms_tilde(t_float f){
     if(f <= 0)
         return(-999);
     else if(f == 1)
@@ -224,7 +224,7 @@ t_float pow2db(t_float f){
 
 static void rms_tilde_tick(t_sigrms *x){ // clock callback function
     if(x->x_db)
-        outlet_float(x->x_outlet, pow2db(x->x_result));
+        outlet_float(x->x_outlet, pow2db_rms_tilde(x->x_result));
     else
         outlet_float(x->x_outlet, sqrtf(x->x_result));
 }

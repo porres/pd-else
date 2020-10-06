@@ -21,7 +21,7 @@ void rescale_exp(t_rescale *x, t_floatarg f){
     x->x_exp = f;
 }
 
-void rescale_clip(t_rescale *x, t_floatarg f){
+void rescale_clip_tilde(t_rescale *x, t_floatarg f){
     x->x_clip = f != 0;
 }
 
@@ -251,5 +251,5 @@ void rescale_tilde_setup(void){
     class_addmethod(rescale_class, nullfn, gensym("signal"), 0);
     class_addmethod(rescale_class, (t_method)rescale_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(rescale_class, (t_method)rescale_exp, gensym("exp"), A_FLOAT, 0);
-    class_addmethod(rescale_class, (t_method)rescale_clip, gensym("clip"), A_FLOAT, 0);
+    class_addmethod(rescale_class, (t_method)rescale_clip_tilde, gensym("clip"), A_FLOAT, 0);
 }
