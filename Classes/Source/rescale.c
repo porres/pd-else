@@ -20,7 +20,7 @@ typedef struct _rescale{
     float       x_exp;
 }t_rescale;
 
-void rescale_clip(t_rescale *x, t_floatarg f){
+static void rescale_clip(t_rescale *x, t_floatarg f){
     x->x_clip = f != 0;
 }
 

@@ -156,7 +156,7 @@ static void vu_tilde_dsp(t_sigvu *x, t_signal **sp){
     dsp_add(vu_tilde_perform, 3, x, sp[0]->s_vec, sp[0]->s_n);
 }
 
-t_float amp2db(t_float f){
+static float amp2db(t_float f){
     if(f <= 0)
         return(-999);
     else if(f == 1)
@@ -167,7 +167,7 @@ t_float amp2db(t_float f){
     }
 }
 
-t_float pow2db(t_float f){
+static float pow2db(t_float f){
     if(f <= 0)
         return(-999);
     else if(f == 1)
