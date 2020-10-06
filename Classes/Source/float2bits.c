@@ -1,8 +1,7 @@
 // matt barber and porres (2017)
 
 #include "m_pd.h"
-
-// #include <stdlib.h> // ???
+#include <stdlib.h>
 
 #ifndef HAVE_ALLOCA     /* can work without alloca() but we never need it */
 #define HAVE_ALLOCA 1
