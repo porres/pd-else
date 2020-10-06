@@ -1,7 +1,7 @@
 // from cyclone's magic stuff by matt barber
 
 #include <m_pd.h>
-#include <magic.h>
+#include "magic.h"
 #include <g_canvas.h>
 #include <stdint.h>
 
