@@ -1,9 +1,9 @@
-#N struct 1333-cell float x float y float cellsize float color;
-#N struct 1340-point float x0 float y0 float xs float ys float fg float
+#N struct 1331-cell float x float y float cellsize float color;
+#N struct 1338-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1364-slot float x float y float slotsize float color float
+#N struct 1362-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1378-point float x0 float y0 float size float fg float in
+#N struct 1376-point float x0 float y0 float size float fg float in
 float grid;
 #N canvas 817 68 558 543 10;
 #X declare -path else;
@@ -49,7 +49,6 @@ float grid;
 #X obj 55 2160 clock;
 #X obj 55 2186 panic;
 #X obj 55 2212 mono;
-#X obj 55 2238 voice;
 #X obj 55 2264 suspedal;
 #X text 55 2311 Math functions:;
 #X obj 55 2338 add;
@@ -497,3 +496,4 @@ float grid;
 #X obj 55 1295 symbol2any;
 #X obj 57 650 canvas.click;
 #X obj 324 24 declare -path else;
+#X obj 55 2238 voices;
