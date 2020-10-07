@@ -14,7 +14,6 @@ float grid;
 #X obj 57 296 bin.shift~;
 #X obj 57 370 args;
 #X obj 57 396 blocksize~;
-#X obj 57 650 click;
 #X obj 57 676 properties;
 #X obj 57 755 loadbanger;
 #X obj 170 755 lb;
@@ -289,11 +288,11 @@ float grid;
 #X text 39 132 [biplot];
 #X text 237 79 [pic] =>;
 #X obj 570 75 colors;
-#X obj 709 23 function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 1000 0;
+#X obj 709 23 function 200 100 empty empty 0 1 220 220 220 50 50 50
+0 0 0 0 0 1000 0;
 #X text 578 30 [function] =>;
-#X obj 73 486 slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
-0 0 0 0 0 empty empty;
+#X obj 73 486 slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0 0 0
+0 0 0 empty empty;
 #X obj 906 1128 display;
 #X obj 907 1160 display~;
 #X text 786 1130 [display] =>;
@@ -338,8 +337,8 @@ float grid;
 #X text 134 23 [mtx.ctl];
 #X text 284 461 [circle];
 #X obj 319 75 pic 0 empty empty empty 0 0;
-#X obj 264 484 circle 127 -1 1 -1 1 1 255 255 255 255 255 255
-0 0 0 1 0 0 63.5 63.5 empty empty 1;
+#X obj 264 484 circle 127 -1 1 -1 1 1 255 255 255 255 255 255 0 0 0
+1 0 0 63.5 63.5 empty empty 1;
 #X obj 59 1116 out1~;
 #X obj 169 1116 out~;
 #X obj 761 945 messbox 150 50 235 235 235 0 0 0 0 10;
@@ -495,3 +494,4 @@ float grid;
 #X obj 55 6180 batch.write~;
 #X obj 55 1223 unite;
 #X obj 55 1295 symbol2any;
+#X obj 57 650 canvas.click;
