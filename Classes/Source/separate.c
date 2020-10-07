@@ -24,7 +24,7 @@ static void set_separator(t_separate *x, t_symbol *s){
         x->separator = s;
 }
 
-int ishex(const char *s){
+statc int ishex(const char *s){
     s++;
     return(*s == 'x' || *s == 'X');
 }

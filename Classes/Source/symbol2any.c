@@ -15,7 +15,7 @@ typedef struct _symbol2any{
 static t_class *symbol2any_class;
 
 // helper ---------------------------------------------------------------------------
-int ishex(const char *s){
+static int ishex(const char *s){
     s++;
     if(*s == 'x' || *s == 'X')
         return(1);
