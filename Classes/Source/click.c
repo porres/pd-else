@@ -153,7 +153,7 @@ static void *click_new(t_floatarg f){
         while(!canvas->gl_env)
             canvas = canvas->gl_owner;
     }
-        class_addmethod(class, (t_method)click_click, gensym("click"), 0);
+    class_addmethod(class, (t_method)click_click, gensym("click"), 0);
     addObjectToCanvas((t_pd*)canvas, (t_pd*)x);
     #endif
     x->x_click_bangout = outlet_new((t_object *)x, &s_bang);
