@@ -1,4 +1,5 @@
-#N canvas 665 64 495 404 10;
+#N canvas 665 64 536 404 10;
+#X declare -path else;
 #X obj 52 32 inlet;
 #X obj 259 364 outlet;
 #X obj 165 32 inlet;
@@ -170,7 +171,7 @@
 #N canvas 271 67 413 287 tri 0;
 #X obj 142 63 inlet;
 #X obj 141 184 outlet;
-#X obj 141 145 else/fold;
+#X obj 141 145 fold;
 #X obj 142 94 * 2;
 #X obj 142 121 + 0.5;
 #X connect 0 0 3 0;
@@ -202,7 +203,7 @@
 #X obj 116 141 expr ($f1 + 1) * 0.5;
 #X obj 116 162 expr 1 - $f1;
 #X floatatom 172 206 5 0 0 0 - - -;
-#X obj 147 93 else/lb -init;
+#X obj 147 93 lb -init;
 #X connect 0 0 5 0;
 #X connect 0 0 6 0;
 #X connect 2 0 3 0;
@@ -346,7 +347,7 @@
 #X obj 246 103 wrap;
 #X obj 52 212 float;
 #N canvas 441 105 462 293 args 0;
-#X obj 72 77 else/args;
+#X obj 72 77 args;
 #X obj 129 190 s \$0-symbol;
 #X obj 72 132 route bang;
 #X obj 222 224 s \$0-hz;
@@ -354,10 +355,10 @@
 #X obj 363 223 s \$0-rate;
 #X obj 45 49 t b b;
 #X obj 45 224 s \$0-lb;
-#X obj 72 103 else/break -;
-#X obj 129 161 else/routetype a;
+#X obj 72 103 break -;
+#X obj 129 161 routetype a;
 #X obj 222 188 unpack float float float;
-#X obj 45 18 else/lb -init;
+#X obj 45 18 lb -init;
 #X connect 0 0 8 0;
 #X connect 2 1 9 0;
 #X connect 6 0 7 0;
@@ -378,6 +379,7 @@
 #X text 263 203 Alexandre Torres Porres (2018);
 #X obj 78 307 * 5;
 #X obj 166 246 metro 5;
+#X obj 366 71 declare -path else;
 #X connect 0 0 9 0;
 #X connect 2 0 8 0;
 #X connect 3 1 16 0;

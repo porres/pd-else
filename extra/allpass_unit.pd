@@ -1,9 +1,11 @@
-#N canvas 652 106 488 252 10;
-#X obj 70 48 inlet~;
-#X obj 69 128 else/allpass.2nd~;
-#X obj 71 172 outlet~;
-#X obj 113 90 r~ \$1-freq;
-#X obj 204 94 r~ \$1-q;
+#N canvas 652 256 488 252 10;
+#X declare -path else;
+#X obj 69 53 inlet~;
+#X obj 69 133 allpass.2nd~;
+#X obj 69 177 outlet~;
+#X obj 103 95 r~ \$1-freq;
+#X obj 194 95 r~ \$1-q;
+#X obj 294 99 declare -path else;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 3 0 1 1;

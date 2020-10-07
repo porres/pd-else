@@ -1,7 +1,8 @@
 #N canvas 557 149 493 349 10;
-#X declare -path /Users/porres/Documents/Pd/externals/else;
+#X declare -path /Users/porres/Desktop/git/pd-else/Camomile;
+#X declare -path else;
 #X obj 76 28 inlet;
-#N canvas 825 175 289 217 messages 1;
+#N canvas 825 175 289 217 messages 0;
 #X obj 28 14 inlet;
 #X msg 28 140 vis \$1;
 #X msg 28 113 1;
@@ -11,9 +12,9 @@
 #X obj 60 32 inlet;
 #X obj 60 124 v ch_\$0;
 #X obj 60 96 trigger bang float;
-#X obj 60 152 else/loop;
+#X obj 60 152 loop;
 #X msg 249 155 set \$1;
-#X obj 60 180 else/pack2 float buffer_\$0 float;
+#X obj 60 180 pack2 float buffer_\$0 float;
 #X msg 60 204 \; \$1-\$2 normalize \$3;
 #X obj 60 69 route float;
 #X connect 0 0 7 0;
@@ -68,7 +69,7 @@
 #X obj 77 300 sel 0 1;
 #X msg 261 98 start;
 #X obj 261 78 r \$0-start;
-#X obj 182 351 else/ramp~ -mode 2;
+#X obj 182 351 ramp~ -mode 2;
 #X msg 96 351 set \$1 \, \$1 \, bang, f 8;
 #X obj 53 325 v l_\$0;
 #X obj 96 325 v h_\$0;
@@ -105,7 +106,7 @@
 #X connect 13 0 14 0;
 #X connect 13 1 11 0;
 #X restore 405 290 pd range;
-#X obj 441 209 else/ms2samps;
+#X obj 441 209 ms2samps;
 #X obj 169 129 route start pause continue speed loop stop range;
 #X obj 172 150 route bang;
 #X obj 220 174 t b f;
@@ -172,7 +173,7 @@
 #X obj 51 259 t b s;
 #X obj 51 290 v autostart_\$0;
 #X obj 51 320 sel 1;
-#X obj 172 161 else/canvas.click;
+#X obj 172 161 canvas.click;
 #X obj 183 266 list prepend read -resize;
 #X obj 274 145 symbol;
 #X obj 100 63 route open set reload;
@@ -217,23 +218,28 @@
 #X restore 76 59 pd messages;
 #X obj 71 91 namecanvas \$0-sampler;
 #N canvas 330 379 895 258 \$0-tabread 0;
+#X obj 20 20 r~ 1003-tabread4~;
+#X obj 20 100 tabread4~ 0-buffer_1003;
+#X obj 20 200 outlet~;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
 #X restore 74 162 pd \$0-tabread;
-#N canvas 872 174 572 396 dynamic 0;
+#N canvas 872 174 694 434 init 0;
 #X obj 298 268 s pd-\$0-tabread;
-#X obj 208 156 else/loop;
+#X obj 208 156 loop;
 #X obj 208 206 * 60;
 #X obj 208 225 + 20;
 #X obj 265 238 + 5;
-#X obj 298 101 else/loop;
+#X obj 298 101 loop;
 #N canvas 369 114 958 663 load-args 0;
 #X obj 210 195 samplerate~;
 #X obj 210 216 s \$0-sr;
 #X obj 220 140 send pd-\$0-buffers;
 #X msg 220 93 clear;
-#X obj 67 178 else/args;
+#X obj 67 178 args;
 #X obj 628 400 r \$0-size;
-#X obj 487 424 else/loop;
-#X obj 487 447 else/pack2 f buffer_\$0 f;
+#X obj 487 424 loop;
+#X obj 487 447 pack2 f buffer_\$0 f;
 #X msg 628 423 set \$1;
 #X text 261 87 if abstraction got corrupted, f 14;
 #N canvas 266 331 522 301 init-buffers 0;
@@ -275,7 +281,7 @@
 #X obj 67 24 inlet;
 #X obj 211 165 s \$0-init-buflist;
 #X obj 233 119 send pd-\$0-tabread;
-#X obj 67 211 else/break -;
+#X obj 67 211 break -;
 #X obj 56 525 sel 0;
 #X msg 35 556 1;
 #X obj 112 546 b;
@@ -300,7 +306,7 @@
 #X msg 78 100 \$3;
 #X obj 120 19 inlet;
 #X obj 78 129 outlet;
-#X obj 21 48 else/pack2 read s;
+#X obj 21 48 pack2 read s;
 #X connect 0 1 1 0;
 #X connect 1 0 3 0;
 #X connect 2 0 4 1;
@@ -325,7 +331,7 @@
 #X msg 205 184 \$1;
 #X obj 205 254 s \$0-symbol_arg;
 #X obj 148 161 route bang;
-#X obj 205 206 else/routetype anything;
+#X obj 205 206 routetype anything;
 #X obj 205 230 symbol;
 #X text 239 184 2nd is filename;
 #X obj 87 110 t l l;
@@ -389,10 +395,10 @@
 #X msg 143 522 1;
 #X obj 531 503 r \$0-init-buflist;
 #X obj 363 80 send pd-\$0-path;
-#X obj 199 60 else/dir 1;
+#X obj 199 60 dir 1;
 #X msg 363 56 clear \, obj 30 20 declare -path \$1;
 #N canvas 169 23 493 100 \$0-path 0;
-#X obj 30 20 declare -path /Users/porres/Documents/Pd/externals/else
+#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/Camomile
 ;
 #X restore 465 80 pd \$0-path;
 #X msg 166 254 100;
@@ -488,21 +494,15 @@
 #X obj 154 139 + 5;
 #X obj 126 139 + 6;
 #X text 27 22 Dynamic Patching;
-#X obj 137 22 else/loadbanger -init 5, f 48;
+#X obj 137 22 loadbanger -init 5, f 48;
 #X obj 46 70 v ch_\$0;
 #N canvas 871 121 479 442 \$0-buffers 0;
 #X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
 0;
-#N canvas 0 22 450 300 ch0_1077 0;
-#X array 0-buffer_1077 87741 float 2;
-#X coords 0 1 87741 -1 450 82 2 0 0;
-#X restore 5 19 pd ch0_1077;
-#X obj 6 120 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
-0;
-#N canvas 0 22 450 300 ch1_1077 0;
-#X array 1-buffer_1077 87741 float 2;
-#X coords 0 1 87741 -1 450 82 2 0 0;
-#X restore 5 119 pd ch1_1077;
+#N canvas 0 22 450 300 ch0_1003 0;
+#X array 0-buffer_1003 100 float 2;
+#X coords 0 1 0 -1 450 82 2 0 0;
+#X restore 5 19 pd ch0_1003;
 #X coords 0 0 0 0 10 20 0;
 #X restore 419 308 pd \$0-buffers;
 #X msg 52 208 obj \$2 200 r \$1-didit \, obj \$2 240 outlet \, connect
@@ -510,6 +510,7 @@
 #X obj 52 180 pack \$0 f f f f;
 #X obj 46 93 t b f;
 #X obj 208 180 t f f, f 6;
+#X obj 494 164 declare -path else;
 #X connect 1 0 34 0;
 #X connect 2 0 3 0;
 #X connect 3 0 19 0;
@@ -552,5 +553,5 @@
 #X connect 34 0 2 0;
 #X connect 34 1 4 0;
 #X connect 34 1 19 1;
-#X restore 73 121 pd dynamic patching;
+#X restore 73 121 pd init;
 #X connect 0 0 1 0;

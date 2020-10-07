@@ -1,4 +1,5 @@
-#N canvas 530 254 795 442 12;
+#N canvas 586 235 795 442 12;
+#X declare -path else;
 #X obj 121 129 list length;
 #X obj 66 160 t l l;
 #X obj 121 182 until;
@@ -15,7 +16,7 @@
 #X obj 194 58 t l b;
 #X obj 192 25 inlet;
 #X obj 164 230 outlet;
-#X obj 231 102 else/regroup 1;
+#X obj 231 102 regroup 1;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X connect 2 0 7 0;
@@ -40,7 +41,7 @@
 #X obj 194 58 t l b;
 #X obj 192 25 inlet;
 #X obj 164 230 outlet;
-#X obj 231 102 else/regroup 1;
+#X obj 231 102 regroup 1;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X connect 2 0 7 0;
@@ -52,13 +53,14 @@
 #X connect 8 0 1 0;
 #X restore 296 286 pd scramble;
 #X obj 296 316 list;
-#X obj 66 82 else/routetype anything bang;
-#X obj 140 252 else/regroup;
-#X obj 389 191 else/regroup;
-#X obj 360 153 else/rand.seq;
-#X obj 121 214 else/rand.seq;
+#X obj 66 82 routetype anything bang;
+#X obj 140 252 regroup;
+#X obj 389 191 regroup;
+#X obj 360 153 rand.seq;
+#X obj 121 214 rand.seq;
 #X text 452 262 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 454 243 Alexandre Torres Porres (2019);
+#X obj 512 195 declare -path else;
 #X connect 0 0 6 0;
 #X connect 1 0 7 0;
 #X connect 1 1 0 0;

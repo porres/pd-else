@@ -1,10 +1,11 @@
-#N canvas 587 300 472 224 10;
+#N canvas 657 251 558 229 10;
+#X declare -path else;
 #X obj 112 163 outlet;
 #X obj 112 33 inlet;
 #X obj 187 33 inlet;
 #X obj 187 163 outlet;
-#X text 233 85 Part of ELSE \; https://github.com/porres/pd-else;
-#X text 235 66 Alexandre Torres Porres (2018);
+#X text 288 114 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 290 95 Alexandre Torres Porres (2018);
 #N canvas 345 27 585 688 monophonic 0;
 #X obj 215 634 outlet;
 #X obj 272 634 outlet;
@@ -22,7 +23,7 @@
 #X obj 212 296 v idx_\$0;
 #X obj 348 290 sel 1;
 #X obj 365 210 v low_\$0;
-#X obj 245 213 else/loop 10;
+#X obj 245 213 loop 10;
 #X msg 331 217 0;
 #X obj 144 321 > 0;
 #X obj 144 350 sel 0 1;
@@ -33,7 +34,7 @@
 #X obj 215 609 unpack f f;
 #X obj 80 433 r \$0-flush;
 #X obj 71 405 trigger b b;
-#X obj 107 44 else/voices 10 1 -list -retrig 1;
+#X obj 107 44 voices 10 1 -list -retrig 1;
 #X obj 215 520 expr last_\$0 = notes_\$0[idx_\$0] \; velocities_\$0[idx_\$0]
 ;
 #X obj 215 491 sel 1;
@@ -127,7 +128,7 @@
 #X connect 9 0 2 0;
 #X restore 112 75 pd route;
 #N canvas 168 529 726 211 init 0;
-#X obj 15 60 else/args;
+#X obj 15 60 args;
 #X msg 15 132 0;
 #X msg 56 132 1;
 #X msg 97 132 2;
@@ -144,11 +145,11 @@
 #X array order_\$0 10 float 2;
 #X coords 0 127 10 0 150 100 1 0 0;
 #X restore 533 48 graph;
-#X obj 15 83 else/break -;
+#X obj 15 83 break -;
 #X obj 15 106 route -last -high -low float;
 #X obj 138 133 != 0;
 #X obj 138 165 v legato_\$0;
-#X obj 15 36 else/lb -init;
+#X obj 15 36 lb -init;
 #X connect 0 0 8 0;
 #X connect 1 0 4 0;
 #X connect 2 0 4 0;
@@ -194,6 +195,7 @@
 #X connect 9 0 7 0;
 #X connect 10 0 4 0;
 #X restore 187 134 pd legato;
+#X obj 318 64 declare -path else;
 #X connect 1 0 7 0;
 #X connect 2 0 6 1;
 #X connect 6 0 0 0;

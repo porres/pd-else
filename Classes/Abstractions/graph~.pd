@@ -1,7 +1,8 @@
 #N canvas 476 119 937 588 10;
+#X declare -path else;
 #X obj 53 102 cnv 15 198 138 empty \$0-bgcnv empty 20 12 0 14 -233017
 -66577 0;
-#N canvas 576 23 484 271 guts 0;
+#N canvas 576 23 556 264 guts 0;
 #X obj 125 173 tabwrite~;
 #X obj 241 69 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -29,7 +30,7 @@
 #X obj 106 77 r \$0-metro;
 #X obj 106 131 metro;
 #X obj 106 166 outlet;
-#X obj 77 78 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1 1
+#X obj 77 78 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
 #X obj 77 46 r \$0-metro-tgl;
 #X connect 0 0 2 1;
@@ -88,8 +89,8 @@
 #X obj 587 326 s \$0-parent;
 #X obj 307 203 r \$0-skip;
 #X obj 472 223 r \$0-range;
-#X obj 427 260 else/changed;
-#X obj 571 257 else/changed;
+#X obj 427 260 changed;
+#X obj 571 257 changed;
 #X obj 626 220 r \$0-set-dim;
 #X connect 0 0 12 0;
 #X connect 1 0 16 0;
@@ -128,9 +129,9 @@
 #X obj 86 53 inlet;
 #X obj 86 219 outlet;
 #X obj 173 106 r \$0-skip;
-#X obj 86 193 else/changed 441 0 -1 1;
+#X obj 86 193 changed 441 0 -1 1;
 #X msg 434 131 set \$1 \$2;
-#X obj 86 161 else/pack2 441 0 -1 1 140 200, f 73;
+#X obj 86 161 pack2 441 0 -1 1 140 200, f 73;
 #X obj 434 104 r \$0-set-dim;
 #X connect 0 0 10 0;
 #X connect 1 0 10 1;
@@ -318,7 +319,7 @@
 #X obj 225 291 route float list;
 #X obj 198 263 t b a;
 #X obj 141 239 route bang;
-#X obj 141 208 else/args -;
+#X obj 141 208 args -;
 #N canvas 588 367 629 538 set-dim 0;
 #X obj 172 378 s \$0-bgcnv;
 #X msg 172 349 vis_size \$1 \$2;
@@ -370,11 +371,11 @@
 #X connect 21 0 22 0;
 #X connect 22 0 12 0;
 #X restore 313 209 pd set-dim;
-#X obj 108 61 else/lb -init;
+#X obj 108 61 lb -init;
 #X obj 108 81 del 0;
 #X obj 108 154 t b b;
-#X obj 108 113 else/nbang;
-#X obj 166 84 else/lb;
+#X obj 108 113 nbang;
+#X obj 166 84 lb;
 #X connect 2 0 5 0;
 #X connect 4 0 11 0;
 #X connect 5 0 4 0;
@@ -394,8 +395,9 @@
 #X connect 16 0 15 0;
 #X connect 17 0 16 0;
 #X restore 126 70 pd set-args;
-#X obj 230 150 else/canvas.setname \$0-patch 1;
-#X obj 230 170 else/canvas.setname \$0-parent 2;
+#X obj 230 150 canvas.setname \$0-patch 1;
+#X obj 230 170 canvas.setname \$0-parent 2;
+#X obj 380 77 declare -path else;
 #X connect 1 0 9 0;
 #X connect 3 0 7 0;
 #X connect 4 0 11 0;

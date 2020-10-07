@@ -1,9 +1,10 @@
-#N canvas 371 93 486 301 10;
+#N canvas 548 111 486 301 10;
+#X declare -path else;
 #X text 226 125 Alexandre Torres Porres (2016);
 #X text 224 144 Part of ELSE \; https://github.com/porres/pd-else;
 #X obj 33 251 outlet~;
 #X obj 150 105 vsl 26 91 0 1 0 0 \$0-slider \$0-set-slider empty 24
-9 0 14 -228856 -1 -1 2400 1;
+9 0 14 -228856 -1 -1 0 1;
 #X text 226 105 [gain~]: Mono Gain;
 #X obj 231 252 outlet;
 #X obj 150 220 r \$0-slider;
@@ -244,7 +245,7 @@
 #X obj 125 77 r \$0-set-mode_arg;
 #X obj 95 54 r \$0-set-max_arg;
 #X obj 95 227 outlet;
-#X obj 95 183 else/pack2 1 0 20 0 0;
+#X obj 95 183 pack2 1 0 20 0 0;
 #X obj 218 146 r \$0-set-value_arg;
 #X obj 187 124 r \$0-set-init_arg;
 #X obj 156 100 r \$0-set-ramp_arg;
@@ -259,8 +260,8 @@
 #X restore 91 139 pd set-args;
 #X obj 121 100 s \$0-arg-list;
 #X msg 121 75 1 0 20 0 0;
-#X obj 70 167 else/args -;
-#X obj 70 46 else/lb -init 2;
+#X obj 70 167 args -;
+#X obj 70 46 lb -init 2;
 #X connect 1 0 4 0;
 #X connect 3 0 2 0;
 #X connect 4 0 0 0;
@@ -269,7 +270,7 @@
 #X restore 203 73 pd init;
 #N canvas 457 395 385 241 set_GUI 0;
 #X obj 74 23 inlet;
-#X obj 124 66 else/canvas.setname \$0-cnv 2;
+#X obj 124 66 canvas.setname \$0-cnv 2;
 #N canvas 581 229 344 388 value 0;
 #X obj 155 41 inlet;
 #X obj 145 299 s \$0-set-slider;
@@ -398,6 +399,7 @@
 #X connect 7 5 6 0;
 #X restore 120 73 pd set_GUI;
 #X obj 236 219 r \$0-slider-init;
+#X obj 308 63 declare -path else;
 #X connect 6 0 5 0;
 #X connect 10 0 2 0;
 #X connect 10 1 13 0;

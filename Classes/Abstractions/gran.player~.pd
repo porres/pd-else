@@ -1,9 +1,10 @@
-#N canvas 426 176 643 437 10;
-#X declare -path /Users/porres/Documents/Pd/externals/else;
+#N canvas 504 145 643 437 10;
+#X declare -path /Users/porres/Desktop/git/pd-else/Camomile;
+#X declare -path else;
 #X obj 44 59 inlet;
 #X obj 95 59 inlet;
 #X obj 147 59 inlet;
-#N canvas 792 383 427 251 guts 0;
+#N canvas 792 383 637 268 guts 0;
 #X obj 74 83 inlet;
 #X obj 163 83 inlet;
 #X obj 249 84 inlet;
@@ -11,9 +12,9 @@
 #X text 158 57 speed;
 #N canvas 815 269 328 176 dynamic-patching 0;
 #N canvas 102 225 883 653 load-args 0;
-#X obj 99 117 else/args;
+#X obj 99 117 args;
 #X obj 99 43 inlet;
-#X obj 99 150 else/break -;
+#X obj 99 150 break -;
 #X obj 98 339 sel 0;
 #X msg 77 370 1;
 #X obj 142 371 b;
@@ -48,7 +49,7 @@
 #N canvas 621 356 434 343 \$0-buffers 0;
 #X obj 20 50 table 1003-ch1;
 #X restore 194 98 pd \$0-buffers;
-#X obj 43 111 else/loop;
+#X obj 43 111 loop;
 #X obj 43 209 makefilename \$0-ch%d, f 12;
 #X obj 43 251 t s s;
 #X obj 70 287 pack symbol float;
@@ -75,10 +76,10 @@
 #X msg 248 113 clear;
 #X obj 228 172 s \$0-init-buflist;
 #X obj 380 156 send pd-\$0-path;
-#X obj 323 105 else/dir 1;
+#X obj 323 105 dir 1;
 #X msg 380 132 clear \, obj 30 20 declare -path \$1;
 #N canvas 169 23 493 100 \$0-path 0;
-#X obj 30 20 declare -path /Users/porres/Documents/Pd/externals/else
+#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/Camomile
 ;
 #X restore 499 167 pd \$0-path;
 #X obj 194 35 inlet;
@@ -117,7 +118,7 @@
 #X msg 205 184 \$1;
 #X obj 205 254 s \$0-symbol_arg;
 #X obj 148 161 route bang;
-#X obj 205 206 else/routetype anything;
+#X obj 205 206 routetype anything;
 #X obj 205 230 symbol;
 #X text 239 184 2nd is filename;
 #X obj 87 110 t l l;
@@ -229,7 +230,7 @@
 #X connect 40 6 28 0;
 #X connect 42 0 41 0;
 #X restore 223 71 pd load-args;
-#X obj 82 41 else/loadbanger -init 3, f 24;
+#X obj 82 41 loadbanger -init 3, f 24;
 #N canvas 624 52 474 517 initialize 0;
 #X obj 117 382 s \$0-file;
 #X obj 104 270 r \$0-symbol_arg;
@@ -296,7 +297,7 @@
 #X obj 352 240 pack float float float float \$0;
 #X obj 352 158 trigger float float;
 #X obj 136 44 inlet;
-#X obj 352 129 else/loop;
+#X obj 352 129 loop;
 #X obj 136 92 v ch_\$0;
 #X obj 80 282 s \$0-player;
 #X obj 144 188 + 7;
@@ -306,8 +307,8 @@
 #X msg 80 238 obj \$3 285 outlet \, connect 7 1 \$2 0;
 #X obj 80 211 pack float float float;
 #X obj 209 174 expr 20 + 140 * $f1;
-#X msg 352 267 obj \$4 260 else/gran~ \$5 ch\$1 \, obj \$4 285 outlet~
-\, connect \$2 0 \$3 0, f 51;
+#X msg 352 267 obj \$4 260 gran~ \$5 ch\$1 \, obj \$4 285 outlet~ \,
+connect \$2 0 \$3 0, f 51;
 #X obj 136 113 trigger float float float;
 #X connect 1 0 5 1;
 #X connect 2 0 5 2;
@@ -359,7 +360,7 @@
 #X obj 166 89 route open set reload, f 33;
 #X obj 294 217 r \$0-file;
 #X obj 166 35 inlet;
-#X obj 81 151 else/canvas.click;
+#X obj 81 151 canvas.click;
 #X obj 262 404 s \$0-size;
 #X msg 235 456 start;
 #X obj 235 480 s \$0-ramp;
@@ -460,6 +461,7 @@ range;
 #X connect 36 7 32 0;
 #X connect 36 8 35 0;
 #X restore 74 168 pd route;
+#X obj 369 122 declare -path else;
 #X connect 0 0 9 0;
 #X connect 1 0 7 0;
 #X connect 2 0 6 0;

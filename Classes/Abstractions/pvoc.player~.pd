@@ -1,5 +1,6 @@
 #N canvas 777 85 643 437 10;
-#X declare -path /Users/porres/Documents/Pd/externals/else;
+#X declare -path /Users/porres/Desktop/git/pd-else/Camomile;
+#X declare -path else;
 #X obj 44 59 inlet;
 #X obj 95 59 inlet;
 #X obj 147 59 inlet;
@@ -17,9 +18,9 @@
 #X obj 298 460 +;
 #X obj 241 492 pack f f f;
 #X obj 389 312 *;
-#X obj 269 361 else/samps2ms;
-#X obj 389 281 else/hot;
-#X obj 389 230 else/cents2ratio;
+#X obj 269 361 samps2ms;
+#X obj 389 281 hot;
+#X obj 389 230 cents2ratio;
 #X obj 389 409 s \$0-new-hop;
 #X obj 241 562 s \$0-to-envgen~;
 #X msg 298 286 set \$1 4;
@@ -65,7 +66,7 @@
 #X obj 297 222 r \$0-file;
 #X obj 503 489 outlet;
 #X obj 182 40 inlet;
-#X obj 84 156 else/canvas.click;
+#X obj 84 156 canvas.click;
 #X obj 238 497 outlet;
 #X text 195 498 start;
 #X connect 0 0 8 0;
@@ -161,7 +162,7 @@
 #X obj 71 92 / 100;
 #X obj 87 62 r \$0-speed;
 #X obj 131 200 *;
-#X obj 131 175 else/hot;
+#X obj 131 175 hot;
 #X obj 176 147 / 4;
 #X obj 71 26 inlet;
 #X obj 176 26 inlet;
@@ -178,7 +179,7 @@
 #N canvas 903 104 481 494 + 0;
 #X obj 122 115 +;
 #X obj 291 236 r \$0-size;
-#X obj 234 338 else/wrap2;
+#X obj 234 338 wrap2;
 #X obj 91 61 inlet;
 #X obj 234 433 outlet;
 #X obj 137 61 inlet;
@@ -250,9 +251,9 @@
 #X text 146 57 speed;
 #N canvas 825 436 328 176 dynamic-patching 0;
 #N canvas 523 125 891 639 load-args 0;
-#X obj 99 117 else/args;
+#X obj 99 117 args;
 #X obj 99 43 inlet;
-#X obj 99 150 else/break -;
+#X obj 99 150 break -;
 #X obj 100 333 sel 0;
 #X msg 79 364 1;
 #X obj 144 365 b;
@@ -288,7 +289,7 @@
 #N canvas 621 356 434 343 \$0-buffers 0;
 #X obj 20 50 table 1003-ch1;
 #X restore 194 98 pd \$0-buffers;
-#X obj 43 111 else/loop;
+#X obj 43 111 loop;
 #X obj 43 209 makefilename \$0-ch%d, f 12;
 #X obj 43 251 t s s;
 #X obj 70 287 pack symbol float;
@@ -315,10 +316,10 @@
 #X msg 161 119 clear;
 #X obj 141 178 s \$0-init-buflist;
 #X obj 293 162 send pd-\$0-path;
-#X obj 236 111 else/dir 1;
+#X obj 236 111 dir 1;
 #X msg 293 138 clear \, obj 30 20 declare -path \$1;
 #N canvas 169 23 493 100 \$0-path 0;
-#X obj 30 20 declare -path /Users/porres/Documents/Pd/externals/else
+#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/Camomile
 ;
 #X restore 412 173 pd \$0-path;
 #X obj 107 41 inlet;
@@ -349,7 +350,7 @@
 #X msg 205 184 \$1;
 #X obj 205 254 s \$0-symbol_arg;
 #X obj 148 161 route bang;
-#X obj 205 206 else/routetype anything;
+#X obj 205 206 routetype anything;
 #X obj 205 230 symbol;
 #X text 239 184 2nd is filename;
 #X obj 87 110 t l l;
@@ -458,15 +459,15 @@
 #X obj 375 312 s \$0-player;
 #X obj 420 214 + 7;
 #X obj 466 211 + 8;
-#X msg 375 268 obj \$4 260 else/pvoc~ \$5 ch\$1 \, obj \$4 285 outlet~
-\, connect \$2 0 \$3 0, f 51;
+#X msg 375 268 obj \$4 260 pvoc~ \$5 ch\$1 \, obj \$4 285 outlet~ \,
+connect \$2 0 \$3 0, f 51;
 #X obj 466 186 * 2;
 #X obj 375 210 + 1;
 #X obj 512 193 expr 20 + 130 * $f1;
 #X obj 375 241 pack float float float float \$0;
 #X obj 375 159 trigger float float;
 #X obj 102 39 inlet;
-#X obj 375 137 else/loop;
+#X obj 375 137 loop;
 #X obj 84 268 s \$0-player;
 #X obj 129 170 + 7;
 #X obj 175 167 + 8;
@@ -505,7 +506,7 @@
 #X connect 20 1 16 0;
 #X connect 20 2 10 0;
 #X restore 152 104 pd create-pvocs;
-#X obj 82 41 else/loadbanger -init 3, f 24;
+#X obj 82 41 loadbanger -init 3, f 24;
 #N canvas 1062 116 324 605 initialize 0;
 #X obj 124 122 s \$0-window_size;
 #X obj 124 97 v wsize_\$0;
@@ -542,6 +543,7 @@
 #X connect 2 1 1 0;
 #X connect 2 2 0 0;
 #X restore 102 168 pd dynamic-patching;
+#X obj 118 214 declare -path else;
 #X connect 0 0 5 0;
 #X connect 1 0 5 1;
 #X connect 2 0 5 2;

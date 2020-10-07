@@ -1,4 +1,5 @@
 #N canvas 891 101 490 330 10;
+#X declare -path else;
 #X obj 89 31 inlet;
 #N canvas 1172 118 479 442 \$0-buffers 0;
 #X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
@@ -30,7 +31,7 @@
 #X obj 88 218 pack s f;
 #X obj 88 189 symbol;
 #X msg 88 246 \; \$1 const 0;
-#X obj 202 146 else/loop;
+#X obj 202 146 loop;
 #X connect 0 0 1 1;
 #X connect 1 0 2 0;
 #X connect 3 0 5 0;
@@ -51,7 +52,7 @@
 #X obj 231 149 send pd-\$0-buffers;
 #X obj 212 54 inlet;
 #X obj 287 58 inlet;
-#X obj 153 95 else/canvas.click;
+#X obj 153 95 canvas.click;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
@@ -71,7 +72,7 @@
 #X obj 107 280 symbol;
 #X obj 107 317 pack s f;
 #X msg 108 345 \; \$1 normalize \$2;
-#X obj 134 220 else/loop 1 0;
+#X obj 134 220 loop 1 0;
 #X obj 61 78 route bang float;
 #X msg 61 103 1;
 #X connect 0 0 6 0;
@@ -99,7 +100,7 @@
 #X obj 106 77 route load reload, f 36;
 #N canvas 901 337 346 454 set-extension 0;
 #X obj 73 39 inlet;
-#X obj 73 65 else/separate .;
+#X obj 73 65 separate .;
 #X obj 73 95 list;
 #X obj 73 150 list length;
 #X obj 73 120 t l l;
@@ -206,9 +207,9 @@
 #X obj 201 311 makefilename;
 #X obj 227 288 r \$0-makefilename;
 #N canvas 584 23 789 768 search-here 0;
-#X obj 427 106 else/separate /;
+#X obj 427 106 separate /;
 #X obj 284 440 select s;
-#X obj 164 213 else/regroup 1;
+#X obj 164 213 regroup 1;
 #X obj 164 283 makefilename %s/;
 #X msg 256 255 set %s/;
 #X obj 164 237 symbol;
@@ -232,8 +233,8 @@
 #X msg 464 692 set \$1;
 #X obj 464 726 s \$0-makefilename;
 #X obj 464 643 makefilename %s/%%s;
-#X obj 379 602 else/dir 1;
-#X obj 124 394 else/dir 1;
+#X obj 379 602 dir 1;
+#X obj 124 394 dir 1;
 #X msg 398 688 set %s;
 #X obj 353 79 t b s;
 #X msg 379 576 reopen \, dir;
@@ -330,7 +331,7 @@
 #N canvas 455 115 447 732 split-extension 0;
 #X obj 56 43 inlet;
 #X obj 226 651 outlet;
-#X obj 125 213 else/separate .;
+#X obj 125 213 separate .;
 #X obj 125 243 list;
 #X obj 125 298 list length;
 #X obj 125 268 t l l;
@@ -466,7 +467,7 @@
 #X msg 399 143 -aiff;
 #X obj 213 143 r \$0-sr;
 #X obj 52 213 list prepend;
-#X obj 121 184 else/pack2 write -rate 0 -bytes 2 -wave;
+#X obj 121 184 pack2 write -rate 0 -bytes 2 -wave;
 #X obj 352 87 r \$0-wave;
 #X obj 399 116 r \$0-aiff;
 #X obj 274 143 r \$0-depth;
@@ -520,8 +521,8 @@
 #X obj 83 314 symbol;
 #X msg 243 293 \; \$1-\$3 resize \$2;
 #X msg 103 371 \; \$1 resize \$2;
-#X obj 176 101 else/ms2samps;
-#X obj 167 231 else/loop;
+#X obj 176 101 ms2samps;
+#X obj 167 231 loop;
 #X obj 147 164 max 1;
 #X obj 24 93 r \$0-set-size;
 #X obj 120 137 t b f;
@@ -569,11 +570,11 @@
 #X obj 323 244 unpack f f;
 #X obj 313 344 trigger f f;
 #X obj 262 478 s \$0-size;
-#X obj 373 157 else/loop;
-#X obj 323 305 else/ms2samps;
-#X obj 380 271 else/ms2samps;
-#X obj 47 275 else/ms2samps;
-#X obj 141 240 else/ms2samps;
+#X obj 373 157 loop;
+#X obj 323 305 ms2samps;
+#X obj 380 271 ms2samps;
+#X obj 47 275 ms2samps;
+#X obj 141 240 ms2samps;
 #X obj 373 182 t b f;
 #X connect 0 0 14 0;
 #X connect 1 0 26 0;
@@ -631,7 +632,7 @@
 #X obj 249 217 pack float symbol symbol;
 #X msg 249 242 \; \$1-\$2 rename \$1-\$3;
 #X msg 135 337 \; \$1 rename \$2;
-#X obj 162 186 else/loop;
+#X obj 162 186 loop;
 #X obj 135 311 list append;
 #X obj 135 283 symbol;
 #X connect 0 0 11 1;
@@ -713,9 +714,9 @@
 #X obj 180 287 s \$0-resize;
 #X msg 180 257 0;
 #N canvas 584 23 789 815 search-here 0;
-#X obj 427 106 else/separate /;
+#X obj 427 106 separate /;
 #X obj 284 440 select s;
-#X obj 164 213 else/regroup 1;
+#X obj 164 213 regroup 1;
 #X obj 164 283 makefilename %s/;
 #X msg 256 255 set %s/;
 #X obj 164 237 symbol;
@@ -739,8 +740,8 @@
 #X msg 430 703 set \$1;
 #X obj 430 737 s \$0-makefilename;
 #X obj 430 654 makefilename %s/%%s;
-#X obj 379 602 else/dir 1;
-#X obj 124 394 else/dir 1;
+#X obj 379 602 dir 1;
+#X obj 124 394 dir 1;
 #X msg 372 670 set %s;
 #X obj 353 79 t b s;
 #X msg 379 576 reopen \, dir;
@@ -791,10 +792,10 @@
 #X obj 408 213 t s s;
 #X obj 323 513 max 1;
 #X obj 323 540 min 64;
-#X obj 197 112 else/args -;
+#X obj 197 112 args -;
 #X obj 202 186 *;
 #X obj 229 186 r \$0-kh;
-#X obj 116 370 else/dollsym 1;
+#X obj 116 370 dollsym 1;
 #X obj 117 347 symbol sample_\\\$0;
 #X connect 1 0 4 0;
 #X connect 2 0 3 0;
@@ -847,7 +848,7 @@
 #X obj 250 91 r \$0-name;
 #X obj 291 136 r \$0-size;
 #X obj 108 69 sel 1;
-#X obj 135 104 else/loop;
+#X obj 135 104 loop;
 #N canvas 659 107 781 593 dynamic-patching 0;
 #X obj 363 502 send pd-\$0-buffers;
 #X msg 363 118 \$1;
@@ -943,8 +944,9 @@
 #X connect 2 0 0 0;
 #X restore 157 63 pd init;
 #X obj 89 222 route bang;
-#X obj 89 190 else/message;
-#X obj 98 164 else/lb -init;
+#X obj 89 190 message;
+#X obj 98 164 lb -init;
+#X obj 283 66 declare -path else;
 #X connect 0 0 3 0;
 #X connect 2 0 5 0;
 #X connect 2 1 4 0;

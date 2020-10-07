@@ -1,9 +1,10 @@
 #N canvas 784 224 509 405 10;
+#X declare -path else;
 #X obj 145 256 wrap;
 #X obj 145 281 sel 0;
 #X obj 94 178 + 1;
 #X obj 106 207 / 1;
-#X obj 257 119 else/args;
+#X obj 257 119 args;
 #X obj 257 146 route float list;
 #X obj 257 174 unpack;
 #X obj 296 222 s \$0-div;
@@ -22,13 +23,14 @@
 #X obj 56 177 f -1;
 #X obj 316 172 - 1;
 #X obj 63 261 sel 0;
-#X obj 63 282 else/nbang 1;
+#X obj 63 282 nbang 1;
 #X obj 56 55 route bang div start;
 #X obj 95 85 route float;
 #X obj 178 120 s \$0-start;
 #X obj 178 101 - 1;
 #X obj 178 81 route float;
-#X obj 257 97 else/lb -init;
+#X obj 257 97 lb -init;
+#X obj 313 61 declare -path else;
 #X connect 0 0 1 0;
 #X connect 1 0 13 0;
 #X connect 2 0 3 0;

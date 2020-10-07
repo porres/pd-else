@@ -1,12 +1,13 @@
 #N canvas 133 173 1166 439 10;
+#X declare -path else;
 #X obj 51 151 cnv 15 176 144 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X obj 181 158 vu 15 120 \$0-R empty -1 -8 0 10 -1 -1 1 0;
 #X obj 163 158 vu 15 120 \$0-L empty -1 -8 0 10 -1 -1 0 0;
 #X obj 789 12 inlet~;
-#X obj 807 44 else/vu~;
+#X obj 807 44 vu~;
 #X obj 878 14 inlet~;
-#X obj 891 46 else/vu~;
+#X obj 891 46 vu~;
 #X obj 976 197 pack;
 #X obj 1008 197 pack;
 #X text 43 51 Part of ELSE \; https://github.com/porres/pd-else;
@@ -64,11 +65,11 @@
 #X connect 10 3 4 1;
 #X restore 890 87 pd meter;
 #X obj 629 12 inlet~;
-#X obj 642 44 else/vu~;
+#X obj 642 44 vu~;
 #X obj 718 14 inlet~;
 #X obj 719 332 outlet~;
 #X obj 629 333 outlet~;
-#X obj 728 44 else/vu~;
+#X obj 728 44 vu~;
 #X obj 145 158 vu 15 120 \$0-L empty -1 -8 0 10 -1 -1 0 0;
 #X obj 127 158 vu 15 120 \$0-L empty -1 -8 0 10 -1 -1 0 0;
 #N canvas 628 467 496 411 meter 0;
@@ -121,14 +122,14 @@
 #X restore 646 80 pd meter;
 #X obj 98 151 cnv 1 7 1 empty empty empty 20 12 0 14 -1 -66577 0;
 #X obj 123 151 cnv 1 7 1 empty empty empty 20 12 0 14 -1 -66577 0;
-#X obj 930 229 else/merge 4;
+#X obj 930 229 merge 4;
 #X obj 909 197 pack;
 #X obj 943 197 pack;
 #X text 45 32 Alexandre Torres Porres (2019);
 #X obj 449 12 inlet~;
-#X obj 467 44 else/vu~;
+#X obj 467 44 vu~;
 #X obj 538 14 inlet~;
-#X obj 551 46 else/vu~;
+#X obj 551 46 vu~;
 #X obj 539 332 outlet~;
 #X obj 449 333 outlet~;
 #N canvas 628 467 496 411 meter 0;
@@ -180,11 +181,11 @@
 #X connect 10 3 4 1;
 #X restore 550 87 pd meter;
 #X obj 289 12 inlet~;
-#X obj 302 44 else/vu~;
+#X obj 302 44 vu~;
 #X obj 378 14 inlet~;
 #X obj 379 332 outlet~;
 #X obj 289 333 outlet~;
-#X obj 388 44 else/vu~;
+#X obj 388 44 vu~;
 #N canvas 628 467 496 411 meter 0;
 #X obj 121 63 inlet;
 #X obj 267 63 inlet;
@@ -253,7 +254,7 @@
 #X obj 909 285 list;
 #X obj 851 220 pack;
 #X obj 883 220 pack;
-#X obj 805 252 else/merge 4;
+#X obj 805 252 merge 4;
 #X obj 784 220 pack;
 #X obj 818 220 pack;
 #X text 56 279 1;
@@ -264,6 +265,7 @@
 #X text 146 279 6;
 #X text 165 279 7;
 #X text 183 279 8;
+#X obj 1003 65 declare -path else;
 #X connect 3 0 4 0;
 #X connect 3 0 13 0;
 #X connect 4 0 7 0;

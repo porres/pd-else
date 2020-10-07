@@ -1,6 +1,7 @@
 #N canvas 758 118 390 175 10;
+#X declare -path else;
 #X obj 54 136 outlet~;
-#N canvas 442 499 303 251 guts 0;
+#N canvas 442 499 436 254 guts 0;
 #N canvas 540 206 304 252 fft 0;
 #X obj 75 107 *~;
 #X obj 75 135 rfft~;
@@ -12,7 +13,7 @@
 #X array \$0-square 2048 float 2;
 #X coords 0 1 2048 -1 200 140 1;
 #X restore 231 98 graph;
-#X obj 58 144 else/loop;
+#X obj 58 144 loop;
 #X obj 58 196 s \$0-square;
 #X msg 58 170 \$1 1;
 #X obj 57 229 tabreceive~ \$0-square, f 22;
@@ -95,14 +96,14 @@
 #X obj 147 80 symbol;
 #X obj 147 111 trigger symbol symbol;
 #X obj 147 227 expr ceil(2*$f1/ w_\$0);
-#X obj 147 141 else/changed -1;
+#X obj 147 141 changed -1;
 #X obj 55 78 r \$0-ir-file;
 #X msg 55 105 set symbol \$1;
 #X obj 387 464 list append \$0;
 #X obj 485 480 r \$0-size;
 #X obj 387 501 list append;
 #X msg 387 536 \; pd-\$3-clone clear \, obj 100 50 inlet~ \, obj 300
-50 inlet~ \, obj 100 100 clone ./convpartition \$1 \$2 \$3 \$4 \, obj
+50 inlet~ \, obj 100 100 clone convpartition \$1 \$2 \$3 \$4 \, obj
 100 150 outlet~ \, obj 300 150 outlet~ \, connect 0 0 2 0 \, connect
 2 0 3 0 \, connect 1 0 2 1 \, connect 2 1 4 0 \; pd-\$3-conv connect
 0 0 2 0 \, connect 1 0 2 1 \, connect 2 0 3 0 \, connect 2 1 4 0 \;
@@ -167,7 +168,7 @@
 #X obj 439 486 r \$0-size;
 #X obj 341 507 list append;
 #X msg 341 542 \; pd-\$3-clone clear \, obj 100 50 inlet~ \, obj 300
-50 inlet~ \, obj 100 100 clone ./convpartition \$1 \$2 \$3 \$4 \, obj
+50 inlet~ \, obj 100 100 clone convpartition \$1 \$2 \$3 \$4 \, obj
 100 150 outlet~ \, obj 300 150 outlet~ \, connect 0 0 2 0 \, connect
 2 0 3 0 \, connect 1 0 2 1 \, connect 2 1 4 0 \; pd-\$3-conv connect
 0 0 2 0 \, connect 1 0 2 1 \, connect 2 0 3 0 \, connect 2 1 4 0 \;
@@ -221,7 +222,7 @@
 #X obj 606 357 s \$0-block;
 #X obj 243 236 log 2;
 #X obj 243 261 expr pow(2 \, ceil($f1));
-#X obj 188 92 else/args;
+#X obj 188 92 args;
 #X obj 243 182 unpack float symbol;
 #X obj 313 451 sel 0;
 #X obj 393 554 print error:;
@@ -244,7 +245,7 @@
 #X msg 436 114 clear \, obj 30 20 declare -path \$1;
 #N canvas 360 224 493 100 \$0-path 0;
 #X restore 538 138 pd \$0-path;
-#X obj 188 62 else/loadbanger 2 -init;
+#X obj 188 62 loadbanger 2 -init;
 #X obj 313 426 expr ceil(2*$f2/$f1);
 #X obj 243 210 max 32;
 #X obj 317 401 s \$0-set-change;
@@ -259,12 +260,12 @@
 #X obj 416 671 r \$0-size;
 #X obj 318 692 list append;
 #X msg 318 727 \; pd-\$3-clone clear \, obj 100 50 inlet~ \, obj 300
-50 inlet~ \, obj 100 100 clone ./convpartition \$1 \$2 \$3 \$4 \, obj
+50 inlet~ \, obj 100 100 clone convpartition \$1 \$2 \$3 \$4 \, obj
 100 150 outlet~ \, obj 300 150 outlet~ \, connect 0 0 2 0 \, connect
 2 0 3 0 \, connect 1 0 2 1 \, connect 2 1 4 0 \; pd-\$3-conv connect
 0 0 2 0 \, connect 1 0 2 1 \, connect 2 0 3 0 \, connect 2 1 4 0 \;
 \$3-ir-file symbol \$2 \; \$3-load bang;
-#X obj 379 81 else/dir 1;
+#X obj 379 81 dir 1;
 #X msg 379 57 dir;
 #X connect 0 0 28 1;
 #X connect 1 0 0 0;
@@ -319,6 +320,7 @@
 #X connect 42 1 25 0;
 #X connect 43 0 42 0;
 #X restore 217 62 pd init;
+#X obj 269 101 declare -path else;
 #X connect 0 0 2 0;
 #X connect 0 1 2 1;
 #X connect 1 0 4 0;
