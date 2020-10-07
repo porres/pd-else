@@ -631,7 +631,7 @@
 #X obj 249 217 pack float symbol symbol;
 #X msg 249 242 \; \$1-\$2 rename \$1-\$3;
 #X msg 135 337 \; \$1 rename \$2;
-#X obj 162 186 /loop;
+#X obj 162 186 loop;
 #X obj 135 311 list append;
 #X obj 135 283 symbol;
 #X connect 0 0 11 1;
