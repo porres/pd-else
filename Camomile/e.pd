@@ -9,7 +9,7 @@
 #X obj 145 151 args;
 #X obj 145 173 route bang float;
 #X obj 191 206 t b f;
-#X obj 283 281 click;
+#X obj 283 281 canvas.click;
 #X obj 248 371 * 1;
 #X obj 191 268 exp;
 #X obj 145 128 lb -init;

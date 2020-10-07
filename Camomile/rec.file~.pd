@@ -18,7 +18,7 @@
 #X obj 29 123 != 0;
 #X obj 265 162 route bang;
 #X obj 304 224 savepanel;
-#X obj 353 157 click;
+#X obj 353 157 canvas.click;
 #X obj 304 315 pack2;
 #X msg 331 278 set \$1;
 #X msg 397 282 set \$1;
