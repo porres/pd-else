@@ -42,7 +42,6 @@ brown~ 	x
 button	x
 canvas.active	x
 canvas.bounds	x
-canvas.click	x
 canvas.edit	x
 canvas.gop	x
 canvas.mouse	x
@@ -63,6 +62,7 @@ changed~	x
 changed2~	x
 chorus~	x
 circle	x
+click	x
 clipnoise~	x
 clock	x
 cmul~	x

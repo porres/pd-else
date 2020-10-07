@@ -117,7 +117,7 @@
 #X obj 224 146 symbol;
 #X obj 117 115 route bang;
 #X obj 156 177 savepanel;
-#X obj 205 110 canvas.click;
+#X obj 205 110 click;
 #X obj 117 68 inlet;
 #X obj 156 273 outlet;
 #X connect 0 0 8 0;

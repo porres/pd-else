@@ -494,6 +494,6 @@ float grid;
 #X obj 55 6180 batch.write~;
 #X obj 55 1223 unite;
 #X obj 55 1295 symbol2any;
-#X obj 57 650 canvas.click;
+#X obj 57 650 click;
 #X obj 324 24 declare -path else;
 #X obj 55 2238 voices;
