@@ -65,7 +65,7 @@
 #X obj 297 222 r \$0-file;
 #X obj 503 489 outlet;
 #X obj 182 40 inlet;
-#X obj 84 156 else/click;
+#X obj 84 156 else/canvas.click;
 #X obj 238 497 outlet;
 #X text 195 498 start;
 #X connect 0 0 8 0;

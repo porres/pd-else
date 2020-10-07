@@ -18,8 +18,8 @@
 0;
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 3 4 cnv 15 301 42 empty empty click 20 20 2 37 -233017 -1 0
-;
+#X obj 3 4 cnv 15 301 42 empty empty canvas.click 20 20 2 37 -233017
+-1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 4 graph;
@@ -44,15 +44,11 @@
 #X obj 128 187 outlet;
 #X obj 128 139 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 128 96 else/click 1;
+#X obj 128 96 else/canvas.click 1;
 #X connect 1 0 0 0;
 #X connect 2 0 1 0;
 #X restore 202 253 pd a_subpatch;
 #X obj 115 41 cnv 4 4 4 empty empty clicks 0 28 2 18 -233017 -1 0;
-#X text 53 96 [clik] sends a bang when you put it in an abstraction
-or a subpatch and click on the parent. This is useful for making non
-graphical abstractions respond to a click in the same way compiled
-objects can., f 73;
 #X text 118 396 1) float -;
 #N canvas 485 293 780 341 modes 0;
 #X text 65 78 The default mode is "abstraction" mode. In this mode
@@ -72,9 +68,9 @@ a subpatch. But you should really only use this if you want a subpatch
 to respond to a click \, as this is the only mode that'll make it happen.
 ;
 #N canvas 4 23 450 300 subpatch 0;
-#X obj 227 130 else/click;
 #X obj 227 162 outlet;
-#X connect 0 0 1 0;
+#X obj 227 130 else/canvas.click 1;
+#X connect 1 0 0 0;
 #X coords 0 -1 1 1 100 60 1 100 100;
 #X restore 555 143 pd subpatch;
 #X obj 555 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
@@ -86,13 +82,17 @@ respond to clicks \, so the [click] object doesn't respond either.
 #X restore 471 281 pd modes;
 #X text 53 137 See below how it sends a bang when you click on the
 subpatch. Note that you can still open the subpatch with right click
-and then "open"., f 73;
+and then "open"., f 77;
 #X text 290 252 <= click me;
 #X obj 258 216 else/player~;
 #X text 189 396 sets mode \, 0 (default) is "abstraction" mode \, non-zero
 is "subpatch" mode., f 45;
 #X obj 140 216 else/play.file~;
 #X obj 356 216 else/rec.file~;
-#X text 112 182 These objects in else use [click] \, so click on them:
-;
+#X text 53 96 [canvas.click] sends a bang when you put it in an abstraction
+or a subpatch and click on the parent. This is useful for making non
+graphical abstractions respond to a click in the same way compiled
+objects can., f 77;
+#X text 102 182 These objects in else use [canvas.lick] \, so click
+on them:;
 #X connect 23 0 14 0;

@@ -359,7 +359,7 @@
 #X obj 166 89 route open set reload, f 33;
 #X obj 294 217 r \$0-file;
 #X obj 166 35 inlet;
-#X obj 81 151 else/click;
+#X obj 81 151 else/canvas.click;
 #X obj 262 404 s \$0-size;
 #X msg 235 456 start;
 #X obj 235 480 s \$0-ramp;

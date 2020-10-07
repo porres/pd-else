@@ -51,7 +51,7 @@
 #X obj 231 149 send pd-\$0-buffers;
 #X obj 212 54 inlet;
 #X obj 287 58 inlet;
-#X obj 153 95 else/click;
+#X obj 153 95 else/canvas.click;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;

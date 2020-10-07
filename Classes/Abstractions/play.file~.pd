@@ -16,7 +16,7 @@
 #X obj 98 220 route bang;
 #X obj 261 551 symbol;
 #X obj 345 445 r \$0-to_symbol;
-#X obj 105 247 else/click;
+#X obj 105 247 else/canvas.click;
 #X msg 345 663 open \$1 \, 1;
 #X obj 98 48 inlet;
 #X obj 345 698 outlet;

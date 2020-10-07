@@ -172,7 +172,7 @@
 #X obj 51 259 t b s;
 #X obj 51 290 v autostart_\$0;
 #X obj 51 320 sel 1;
-#X obj 172 161 else/click;
+#X obj 172 161 else/canvas.click;
 #X obj 183 266 list prepend read -resize;
 #X obj 274 145 symbol;
 #X obj 100 63 route open set reload;
