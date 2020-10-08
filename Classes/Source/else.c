@@ -33,8 +33,6 @@ static void else_obj_version(t_else_obj *x){
 }
 
 void print_else_obj(t_else_obj *x){
-    char else_obj_dir[MAXPDSTRING];
-    strcpy(else_obj_dir, else_obj_class->c_externdir->s_name);
     int major = 0, minor = 0, bugfix = 0;
     sys_getversion(&major, &minor, &bugfix);
     post("");
@@ -43,7 +41,7 @@ void print_else_obj(t_else_obj *x){
     post("-------------------------------------------------------------------------------");
     post("- Version: 1.0-0 %s-%d; Unreleased", STATUS, status_number);
     post("- Author: Alexandre Torres Porres");
-    post("- Repositoty: https://github.com/porres/pd-else");
+    post("- Repository: https://github.com/porres/pd-else");
     post("- License: Do What The Fuck You Want To Public License, unless otherwise noted");
     if(major >= min_major && minor >= min_minor && bugfix >= min_bugfix)
         post("- ELSE 1.0.-0 %s-%d needs at least Pd %d.%d-%d (you have %d.%d-%d, you're good!)",
@@ -51,8 +49,6 @@ void print_else_obj(t_else_obj *x){
     else
         pd_error(x, "- ELSE 1.0-0 %s-%d needs at least Pd %d.%d-%d (you have %d.%d-%d, please upgrade!)",
             STATUS, status_number, min_major, min_minor, min_bugfix, major, minor, bugfix);
-    post("- Loading the ELSE library added %s", else_obj_dir);
-    post("to Pd's path so its objects can be loaded");
     post("-------------------------------------------------------------------------------");
     post("- NOTE: This library also includes a tutorial by Alexandre Torres Porres");
     post("that depends on this library. Find the 'live-electronics-folder' folder");
@@ -84,16 +80,6 @@ void else_setup(void){
     t_else_obj *x = (t_else_obj *)pd_new(else_obj_class);
     class_addmethod(else_obj_class, (t_method)else_obj_about, gensym("about"), 0);
     class_addmethod(else_obj_class, (t_method)else_obj_version, gensym("version"), 0);
-    char else_obj_dir[MAXPDSTRING];
-    strcpy(else_obj_dir, else_obj_class->c_externdir->s_name);
-    char encoded[MAXPDSTRING+1];
-    sprintf(encoded, "+%s", else_obj_dir);
-
-    t_atom ap[2];
-    SETSYMBOL(ap, gensym(encoded));
-    SETFLOAT (ap+1, 0.f);
-    pd_typedmess(gensym("pd")->s_thing, gensym("add-to-path"), 2, ap);
-
    if(!printed){
        print_else_obj(x);
        printed = 1;
