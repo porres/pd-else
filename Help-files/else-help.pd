@@ -1,7 +1,7 @@
-#N canvas 711 28 565 578 10;
+#N canvas 711 28 565 609 10;
 #X declare -path else;
-#X msg 253 263 about;
-#X obj 3 544 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X msg 275 292 about;
+#X obj 3 574 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 61 153 Check declare's help file for more information.;
 #X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -24,47 +24,49 @@
 #X obj 31 40 cnv 4 4 4 empty empty The 0 28 2 18 -233017 -1 0;
 #X obj 68 40 cnv 4 4 4 empty empty ELSE 0 28 2 18 -233017 -1 0;
 #X obj 126 40 cnv 4 4 4 empty empty binary 0 28 2 18 -233017 -1 0;
-#X obj 4 3 cnv 15 301 42 empty empty else 20 20 0 33 -233017 -1 0;
+#X obj 4 4 cnv 15 301 42 empty empty else 20 20 0 33 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 3 2 graph;
-#X obj 4 429 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X restore 3 3 graph;
+#X obj 4 459 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 477 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 507 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 512 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 542 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 123 437 cnv 17 3 32 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 123 467 cnv 17 3 32 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 123 486 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 123 516 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 242 521 (none);
-#X text 157 436 about;
-#X text 145 453 version;
-#X text 207 436 - prints library information on the terimnal;
-#X text 163 486 list;
-#X text 207 453 - outputs version informaton as a list;
-#X text 207 487 - version (major \, minor \, bugfix \, status \, status
+#X text 242 551 (none);
+#X text 157 466 about;
+#X text 145 483 version;
+#X text 163 516 list;
+#X text 207 517 - version (major \, minor \, bugfix \, status \, status
 number);
-#X msg 271 287 version;
-#X obj 253 337 else/display;
-#X text 58 317 Check "All About ELSE":;
-#X obj 253 396 else/display;
+#X msg 293 316 version;
+#X obj 275 366 else/display;
+#X text 69 359 Check "All About ELSE":;
+#X obj 275 425 else/display;
 #X text 63 91 The ELSE library is a set of separate binaries and abstractions
 but you can load it via "Preferences => Path" or \, alternatively \,
 you can use [declare] as follows:, f 71;
 #X obj 281 125 declare -path else;
-#X obj 253 311 else;
-#X obj 253 369 format ELSE %d.%d-%d_%s-%d;
-#X obj 69 343 All_about_else;
+#X obj 275 340 else;
+#X obj 275 398 format ELSE %d.%d-%d_%s-%d;
+#X obj 85 387 All_about_else;
 #X text 63 182 The else binary does nothing but give some basic information
 about the ELSE library in Pd's window at creation time (but only once
 if multiple else objects are loaded). It accepts the "about" message
 that prints basic information (version \, release date \, etc) on the
 terminal on demand and also accepts the 'version' message that sends
 the version information as a list., f 71;
-#X connect 0 0 34 0;
-#X connect 28 0 34 0;
-#X connect 29 0 35 0;
-#X connect 34 0 29 0;
-#X connect 35 0 31 0;
+#X text 63 256 you can also load the binary via startup just so it
+prints the library info when you start Pd., f 71;
+#X text 207 466 - prints library information on the terminal;
+#X text 207 483 - outputs version information as a list;
+#X connect 0 0 32 0;
+#X connect 26 0 32 0;
+#X connect 27 0 33 0;
+#X connect 32 0 27 0;
+#X connect 33 0 29 0;
