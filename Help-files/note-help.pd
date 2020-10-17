@@ -1,12 +1,10 @@
-#N canvas 701 23 561 476 10;
-#X obj 2 195 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 723 106 565 591 10;
+#X obj 2 419 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 295 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 2 320 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 444 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X text 158 300 (none);
-#X obj 2 446 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X text 158 424 (none);
+#X obj 4 562 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -31,88 +29,204 @@
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X obj 63 40 cnv 4 4 4 empty empty note 0 28 2 18 -233017 -1 0;
-#X text 200 152 <=;
-#X obj 2 350 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 116 358 -size <float>;
-#X text 110 375 -font <symbol>;
-#X text 210 358 - sets font size (default: patch's font size), f 47
+#X text 100 159 <=;
+#X obj 2 474 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 158 453 (none);
+#X obj 3 226 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X text 210 375 - sets font type (default: helvetica), f 47;
-#X obj 173 153 else/note 360 10 helvetica ? 0 0 0 0 note;
-#X text 128 391 -rgb <list>;
-#X text 210 391 - sets Red \, Green \, Blue colors (default 0 0 0)
-, f 47;
-#N canvas 752 298 457 296 details 0;
-#X text 62 71 When in edit mode \, you can click on the object to select
-it. Note that the whole text gets selected when you do it \, so if
-you start typing \, the text gets replaced., f 55;
-#X text 62 237 A semicolon can be used to break the text \, but it's
-also possible to resize the object box in edit mode to break the text.
-, f 55;
-#X obj 180 123 else/note 720 20 Helvetica ? 0 200 0 0 [note];
-#X obj 50 35 else/note 720 20 Helvetica ? 0 200 0 0 EDITING:;
-#X text 62 168 If you don't want to do that \, just make sure to click
-again so the whole comment text isn't selected \, and then you can
-click on the part you want to edit and type. The delete key is also
-enabled and you can use the arrow keys for navigation., f 55;
-#X coords 0 296 1 295 85 60 0;
-#X restore 477 147 pd details;
-#X text 158 328 (none);
-#X text 98 425 -note <anything>;
-#X text 92 408 -receive <symbol>;
-#N canvas 836 209 699 451 messages 0;
-#X obj 85 245 else/note 0 50 helvetica ? 0 0 0 0 Note;
-#X msg 85 48 size 50;
-#X msg 104 77 size 30;
-#X msg 120 104 name helvetica;
-#X msg 135 133 name courier;
-#X msg 159 170 rgb 0 0 0;
-#X msg 163 200 rgb 150 100 50;
-#X msg 414 155 rgb 0 0 0;
-#X msg 395 127 rgb 200 0 0;
-#X text 159 42 You can also edit the properties of [note] with messages.
-, f 21;
-#X msg 435 193 set text 1 2 3;
-#X msg 441 220 set Note;
-#X obj 391 341 else/note 0 50 helvetica \$0-note 0 0 0 0 Note;
-#X obj 395 249 s \$0-note;
-#X text 367 46 The [note] object below has a receive symbol \, so you
-can send messages to it via a [send] object. IF you set a receive name
-as "empty" then it it can't receive messages anymore., f 39;
-#X obj 391 283 else/initmess receive \\\$0-note;
-#X msg 422 311 receive empty;
-#X text 53 323 You can also set a receive name with the 'receive' messages
-or '-receive' flag. Make sure to escape "\$0" properly with backlashes
-(as in: "\\\$0") when using messages. Setting it to 'empty' removes
-the receive symbol., f 40;
-#X connect 1 0 0 0;
-#X connect 2 0 0 0;
-#X connect 3 0 0 0;
-#X connect 4 0 0 0;
-#X connect 5 0 0 0;
-#X connect 6 0 0 0;
-#X connect 7 0 13 0;
-#X connect 8 0 13 0;
-#X connect 10 0 13 0;
-#X connect 11 0 13 0;
-#X connect 15 0 12 0;
-#X connect 16 0 12 0;
-#X restore 478 169 pd messages;
-#X obj 96 207 cnv 17 3 80 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 74 233 cnv 17 3 180 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 141 206 set <anything>;
-#X text 246 222 - sets font size;
-#X text 129 254 receive <symbol>;
-#X text 246 238 - sets font type;
-#X text 246 254 - sets receive symbol;
-#X text 246 271 - sets RGB color (values from 0 to 255);
-#X text 147 271 rgb <f \, f \, f>;
-#X text 147 238 name <symbol>;
-#X text 153 222 size <float>;
-#X text 246 206 - sets text;
-#X text 218 152 the default display of [else/note], f 19;
-#X text 74 87 [note] is a GUI meant only to display text notes. This
+#X text 122 233 set <anything>;
+#X text 214 289 - sets font size, f 54;
+#X text 110 401 receive <symbol>;
+#X text 214 401 - sets receive symbol, f 54;
+#X text 104 247 append <anything>;
+#X text 104 331 underline <float>;
+#X text 214 331 - non zero sets underline, f 54;
+#X text 104 373 bgcolor <f \, f \, f>;
+#X text 146 387 bg <float>;
+#X text 214 387 - background flag (0 supresses background), f 54;
+#X text 214 359 - sets RGB text color (values from 0 to 255), f 54
+;
+#X text 214 373 - sets RGB background color (values from 0 to 255)
+, f 54;
+#X text 98 261 prepend <anything>;
+#X text 214 233 - sets a new text note, f 54;
+#X text 214 247 - appends a message to the note, f 54;
+#X text 214 261 - prepends a message to the note, f 54;
+#X text 134 289 size <float>;
+#X text 128 275 font <symbol>;
+#X text 214 275 - sets font name, f 54;
+#X text 134 303 bold <float>;
+#X text 122 317 italic <float>;
+#X text 214 303 - non zero sets to bold, f 54;
+#X text 214 317 - non zero sets to italic, f 54;
+#X text 134 345 just <float>;
+#X text 214 345 - sets justification (0: left \, 1: center \, 2: right)
+, f 54;
+#X text 116 359 color <f \, f \, f>;
+#X text 87 483 -font <symbol> (default: dejavu sans mono) | -bold <float>
+(default 0) | -italic <float> (default 0) | -size <float> (default
+patch's) | -just <float> (default 0) | -color <f \, f \, f> (default
+0 0 0) | -bgcolor <f \, f \, f> (default 255 255 255) | -bg <float>
+(default 0) | @note <anything>: sets note (default "note") | -underline
+<float> (default 0) | @receive <symbol> (default 'empty'), f 72;
+#X obj 59 162 ./note 425 10 dejavu\ sans\ mono empty 0 0 0 0 0 255
+255 255 0 0 note;
+#X obj 216 154 else/note 131 20 Times empty 3 150 0 0 1 230 235 240
+1 1 Hi \, I'm the [note] object !;
+#X text 118 159 the default [else/note], f 11;
+#N canvas 534 83 886 580 details 0;
+#X obj 159 295 else/note 425 50 arial empty 0 0 0 0 0 100 150 100 0
+0 note;
+#X obj 542 378 else/note 380 50 Dejavu\ Sans\ Mono \$0-note 0 0 0 0
+0 255 255 255 0 0 note;
+#X msg 655 187 set hi \, append there;
+#X msg 665 210 set note \, prepend this;
+#X msg 676 233 set note;
+#X obj 626 275 s \$0-note;
+#X msg 533 189 underline \$1;
+#X obj 533 165 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X msg 226 236 bgcolor 100 150 100;
+#X msg 232 258 bgcolor 190 90 200;
+#X msg 364 265 bg \$1;
+#X obj 364 242 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 42 50 You can edit the properties of [note] with messages.
+, f 15;
+#X text 39 375 After setting a background color you can use the 'bg'
+flag to turn it off or on again., f 62;
+#X obj 542 315 loadbang;
+#X msg 542 340 receive \\\$0-note;
+#X text 39 404 [note] uses "Dejavu Sans Mono" as its default font.
+This is the same default font that Pd uses and includes. But Pd doesn't
+offer yet the italic and bold+italic variants. So you need to manually
+install this font in its fullness if you want to use these variants.
+, f 62;
+#X text 395 32 When in edit mode \, [note] shows its inlet and an outline.
+The [note] object below has a receive symbol \, so you can send messages
+to it via a [send] object. In this case \, the inlet is supressed \,
+so we don't see it. Besides the properties window \, the receive symbol
+can be set with the receive message or the @receive attribute. If you
+set a receive name as "empty" then it it can't receive messages anymore
+and the inlet is show again., f 74;
+#X msg 159 18 size 50;
+#X msg 167 38 size 30;
+#X msg 177 74 font times;
+#X msg 186 94 font arial;
+#X msg 192 114 font arial\ black;
+#X msg 198 133 font helvetica;
+#X msg 205 155 font Dejavu\ Sans\ Mono;
+#X msg 216 186 color 0 0 0;
+#X msg 222 206 color 150 100 50;
+#X obj 79 145 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X msg 46 225 bold \$1;
+#X obj 46 198 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X msg 79 172 italic \$1;
+#X msg 630 125 color 200 0 0;
+#X msg 642 147 color 0 0 0;
+#X text 39 465 [note] will attempt to open a font name that corresponds
+to your given name. If such a font name doesn't exist \, it'll open
+some other font you have on your system instead that it thinks is best
+for what you requested \, and you'll have no idea which one it is.
+Just be sure you have the fonts you want properly installed., f 62
+;
+#X text 493 469 Note: when in edit mode \, you can click on the object
+to select it and then press <F5> to copy the text from [else/note]
+into a vanilla comment box. So far \, this is the only way to copy
+the text from note into Pd (control+c / control+v doesn't work).,
+f 53;
+#X connect 2 0 5 0;
+#X connect 3 0 5 0;
+#X connect 4 0 5 0;
+#X connect 6 0 5 0;
+#X connect 7 0 6 0;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X connect 11 0 10 0;
+#X connect 14 0 15 0;
+#X connect 15 0 1 0;
+#X connect 18 0 0 0;
+#X connect 19 0 0 0;
+#X connect 20 0 0 0;
+#X connect 21 0 0 0;
+#X connect 22 0 0 0;
+#X connect 23 0 0 0;
+#X connect 24 0 0 0;
+#X connect 25 0 0 0;
+#X connect 26 0 0 0;
+#X connect 27 0 30 0;
+#X connect 28 0 0 0;
+#X connect 29 0 28 0;
+#X connect 30 0 0 0;
+#X connect 31 0 5 0;
+#X connect 32 0 5 0;
+#X restore 477 149 pd details;
+#N canvas 800 75 549 514 +details 0;
+#X obj 188 340 else/note 151 20 dejavu\ sans\ mono empty 0 0 0 0 0
+200 200 200 1 1 note can be justified in different ways;
+#X obj 188 223 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -228856
+-1 -1 1;
+#X floatatom 188 280 3 0 0 0 - - -;
+#X text 206 222 left;
+#X text 206 237 center;
+#X text 206 253 right;
+#X text 79 128 And when you have more than one line \, you can set
+three kinds of justification parametrers: left (0: default) \, center
+(1) and right (2). This does not affect notes with just one line.,
+f 66;
+#X msg 188 305 just \$1;
+#X text 79 47 By default \, [note] has a maximum width limit of 425
+pixels (like Pd's comment). If it exceeds this limit \, the note will
+break into a new line with the last word that did not fit. But when
+in edit mode you can see a bar to the right that allows you to resize
+the object. If you click and drag it \, you'll set a new maximum width
+to the point where you release the mouse button., f 66;
+#X connect 1 0 2 0;
+#X connect 2 0 7 0;
+#X connect 7 0 0 0;
+#X restore 471 169 pd +details;
+#N canvas 932 96 604 504 examples 0;
+#X msg 205 24 set 1 \\\, 2;
+#X msg 417 62 prepend 1 \\\, 2 \\\,;
+#X msg 398 24 set 3 \\\, 4!;
+#X msg 223 62 append \\\, 3 \\\, 4!;
+#X obj 205 97 else/note 120 16 dejavu\ sans\ mono empty 0 0 0 0 0 255
+255 255 0 0 note;
+#X obj 398 97 else/note 120 16 dejavu\ sans\ mono empty 0 0 0 0 0 255
+255 255 0 0 note;
+#X msg 64 212 set カラオケ, f 11;
+#X obj 64 242 else/note 243 60 dejavu\ sans\ mono empty 0 20 25 30
+1 225 215 215 1 0 カラオケ;
+#X obj 351 194 else/note 151 50 dejavu\ sans\ mono empty 0 160 40 50
+0 225 215 215 0 0 عَلَيْكُمْ ٱلسَّلَامُ;
+#X msg 359 346 set 晚安, f 8;
+#X obj 359 371 else/note 166 80 dejavu\ sans\ mono empty 1 200 205
+210 1 75 85 95 1 0 晚安;
+#X msg 90 335 set हिन्दी;
+#X obj 90 365 else/note 425 80 dejavu\ sans\ mono empty 0 200 100 100
+0 200 200 200 0 0 हिन्दी;
+#X msg 351 156 set عَلَيْكُمْ \, append ٱلسَّلَامُ
+;
+#X text 51 39 You can use backslash to escape symbols like '$' \, commas
+and semicolons., f 22;
+#X text 86 141 [note] also takes characters from different alphabets
+like elsewhere in Pd (such as in messages or comments)., f 29;
+#X connect 0 0 4 0;
+#X connect 1 0 5 0;
+#X connect 2 0 5 0;
+#X connect 3 0 4 0;
+#X connect 6 0 7 0;
+#X connect 9 0 10 0;
+#X connect 11 0 12 0;
+#X connect 13 0 8 0;
+#X restore 472 190 pd examples;
+#X text 77 86 [note] is a GUI meant only to display text notes. This
 is basically the same of Pd's comment but with the advantage of being
-able to set the font type \, size and color., f 57;
-#X text 210 408 - sets receive symbol (default 'empty'), f 47;
-#X text 210 425 - sets text (default 'note'), f 47;
+able to set the font \, size \, color \, background color \, bold \,
+italic \, underline and justification., f 68;
+#X text 351 161 <== right click for properties, f 10;

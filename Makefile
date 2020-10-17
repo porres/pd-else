@@ -26,7 +26,6 @@ pic.class.sources := Classes/Source/pic.c
 keyboard.class.sources := Classes/Source/keyboard.c
 function.class.sources := Classes/Source/function.c
 pad.class.sources := Classes/Source/pad.c
-note.class.sources := Classes/Source/note.c
 openfile.class.sources := Classes/Source/openfile.c
 colors.class.sources := Classes/Source/colors.c
 gui.class.sources := Classes/Source/gui.c
@@ -275,6 +274,10 @@ midi := \
     shared/file.c \
     shared/grow.c
     midi.class.sources := Classes/Source/midi.c $(midi)
+    
+# GUI:
+utf := shared/s_utf8.c
+	note.class.sources := Classes/Source/note.c $(utf)
 
 #########################################################################
 
