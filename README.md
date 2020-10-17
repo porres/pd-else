@@ -30,6 +30,7 @@
 
 
 
+
    This work is free. You can redistribute it and/or modify it under the
    terms of the Do What The Fuck You Want To Public License, Version 2,
    as published by Sam Hocevar. See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
@@ -123,7 +124,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (378 objects):
+## Current Object list (379 objects):
 
 **ASSORTED: [04]**
 - [table~]
@@ -522,7 +523,7 @@ Cross compiling is also possible with something like this
 - [vu~]
 - [zerocross~]
 
-**GUI: [32]**
+**GUI: [33]**
 
 - [gui]
 - [pad]
@@ -556,6 +557,7 @@ Cross compiling is also possible with something like this
 - [mix4~]
 - [setdsp~]
 - [openfile]
+- [oscilloscope~]
 
 **EXTRA: [02]**
 - [output~]

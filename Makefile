@@ -279,6 +279,9 @@ midi := \
 utf := shared/s_utf8.c
 	note.class.sources := Classes/Source/note.c $(utf)
 
+smagic := shared/magic.c
+    oscilloscope~.class.sources := Classes/Source/oscilloscope.c $(smagic)
+
 #########################################################################
 
 # extra files
