@@ -180,9 +180,6 @@ sets maximum value (and lowest value is set to 0).;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 175 206 else/rand.i~ 0 1, f 31;
-#X text 61 91 [rand.i~] generates random integer values for a given
-range when triggered. A trigger happens at positive to negative or
-negative to positive transitions.;
 #X text 181 283 signal;
 #X obj 113 283 cnv 17 3 47 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
@@ -201,6 +198,10 @@ negative to positive transitions.;
 #X text 236 358 - highest random value;
 #X text 193 298 bang;
 #X text 237 297 - control rate trigger;
+#X text 61 91 [rand.i~] generates random integer values for a given
+range when triggered. A trigger happens at positive to negative or
+negative to positive transitions. Use the seed message if you want
+a reproducible output.;
 #X connect 10 0 32 0;
 #X connect 11 0 10 0;
 #X connect 16 0 32 1;

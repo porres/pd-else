@@ -69,8 +69,9 @@ sets maximum value (and lowest value is set to 0).;
 #X text 237 267 - generate random number;
 #X obj 215 196 else/rand.f 0 100;
 #X obj 215 221 else/display;
-#X text 71 97 [rand.f] generates random float values for a given range
-when triggered with a bang.;
+#X text 71 88 [rand.f] generates random float values for a given range
+when triggered with a bang. Use the seed message if you want a reproducible
+output., f 56;
 #X connect 20 0 41 0;
 #X connect 21 0 20 0;
 #X connect 30 0 41 1;
