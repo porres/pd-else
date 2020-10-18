@@ -1,6 +1,6 @@
+// porres
+
 #include "m_pd.h"
-#include "m_imp.h"
-#include <string.h>
 
 typedef struct else_obj{
     t_object x_obj;
@@ -72,8 +72,6 @@ static void *else_obj_new(void){
     outlet_new((t_object *)x, 0);
     return(x);
 }
-
-/* ----------------------------- SETUP ------------------------------ */
 
 void else_setup(void){
     else_obj_class = class_new(gensym("else"), else_obj_new, 0, sizeof(t_else_obj), 0, 0);
