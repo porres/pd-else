@@ -1,4 +1,4 @@
-#N canvas 785 61 564 689 10;
+#N canvas 749 119 564 689 10;
 #X obj 4 660 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 5 313 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -21,13 +21,8 @@
 #X text 205 592 (none);
 #X obj 4 612 cnv 3 550 3 empty empty attributes 8 12 0 13 -228856 -1
 0;
-#X text 194 544 - sets "bufsize": number of lines in buffer, f 58
-;
 #X text 194 498 - onset time delay between displays (default 0), f
 58;
-#X text 194 335 - sets "calccount": samples per line (2-8192 \, default
-256);
-#X text 194 365 - sets "calccount" (samples per line), f 58;
 #X text 194 380 - sets number of lines in buffer (8-256 \, default
 128), f 58;
 #X text 194 396 - sets vertical range (default -1 1), f 58;
@@ -37,18 +32,18 @@ or 2 (down);
 0), f 58;
 #X text 194 455 - <1> sets alternate drawing style (default 0), f
 58;
-#N canvas 524 167 1005 419 X-Y_Mode 0;
-#X obj 834 95 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#N canvas 524 167 911 417 X-Y_Mode 0;
+#X obj 728 88 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 831 114 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 725 110 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X msg 761 41 588;
-#X msg 725 41 550;
-#X msg 694 41 441;
-#X msg 665 41 220;
-#X msg 795 41 660;
-#X msg 827 41 1760;
-#X text 70 110 When in X-Y mode \, [oscilloscope~] plots points whose
+#X msg 685 39 588;
+#X msg 649 39 550;
+#X msg 618 39 441;
+#X msg 589 39 220;
+#X msg 719 39 660;
+#X msg 751 39 1760;
+#X text 57 110 When in X-Y mode \, [oscilloscope~] plots points whose
 horizontal axis (X) corresponds to the signal's values coming into
 the left inlet and whose vertical axis (Y) corresponds to the signal's
 values coming into the right inlet. If the two signals are identical
@@ -57,24 +52,24 @@ be seen. If the two signals are identical and 180 degrees out of phase
 \, a straight line decreasing from left to right will be seen. Other
 combinations may produce circles \, ellipses \, and Lissajous figures.
 ;
-#X text 70 247 When in X-Y mode \, there's an averaging algorithm for
+#X text 57 247 When in X-Y mode \, there's an averaging algorithm for
 the calccount parameter \, where a representative sample from this
 period is used. So it requires small values for a better representation
 (only 2 in the examples below).;
-#X obj 533 94 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 492 92 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 726 90 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 650 88 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X msg 633 41 1;
-#X obj 533 176 else/oscilloscope~ 200 200 5 3 200 -1 1 50 0 0 0 205
-229 232 74 79 77 96 98 102 0 empty;
-#X text 70 73 If signals are connected to both the left and right inlets
+#X msg 557 39 1;
+#X obj 492 174 else/oscilloscope~ 200 200 5 3 200 -1 1 50 0 0 0 30
+30 30 190 190 190 160 160 160 0 empty;
+#X text 57 73 If signals are connected to both the left and right inlets
 \, [oscilloscope~] operates in X-Y mode.;
-#X text 72 317 Change the phase of the oscillator to check how it affects
+#X text 59 317 Change the phase of the oscillator to check how it affects
 the plot \, then try different frequencies.;
-#X text 859 94 change phase;
-#X obj 533 135 else/sine~ 440;
-#X obj 726 136 else/sine~ 440;
+#X text 753 88 change phase;
+#X obj 492 133 else/sine~ 440;
+#X obj 685 134 else/sine~ 440;
 #X connect 0 0 1 0;
 #X connect 1 0 18 1;
 #X connect 2 0 11 0;
@@ -95,73 +90,69 @@ the plot \, then try different frequencies.;
 #X obj 31 194 cnv 5 5 5 empty empty 1 0 0 0 16 -262144 -162280 0;
 #X obj 19 300 cnv 5 5 5 empty empty -1 0 0 0 16 -262144 -162280 0;
 #X obj 30 246 cnv 5 5 5 empty empty 0 0 0 0 16 -262144 -162280 0;
-#X text 269 140 Samples per line (2-8192);
-#X text 269 162 Number of lines in buffer (8-256);
 #X text 65 113 frequency;
-#N canvas 809 79 533 593 appearance_colors 0;
-#X obj 46 96 vsl 15 128 0 255 0 0 rjhfkjfbws \$0-Rf empty 0 -9 0 10
--258049 -262144 -1 10210 1;
-#X floatatom 46 238 5 0 0 0 - - -;
-#X msg 41 327 fgcolor \$1 \$2 \$3;
-#X obj 84 96 vsl 15 128 0 255 0 0 xaslkdjla \$0-Gf empty 0 -9 0 10
--4033 -262144 -1 11405 1;
-#X floatatom 84 238 5 0 0 0 - - -;
-#X obj 124 96 vsl 15 128 0 255 0 0 qdaskjlf \$0-Bf empty 0 -9 0 10
--64 -262144 -1 11555 1;
-#X floatatom 124 238 5 0 0 0 - - -;
-#X obj 185 96 vsl 15 128 0 255 0 0 rjhfkjfbws \$0-Rb empty 0 -9 0 10
--258049 -262144 -1 3685 1;
-#X floatatom 185 238 5 0 0 0 - - -;
-#X obj 223 96 vsl 15 128 0 255 0 0 xaslkdjla \$0-Gb empty 0 -9 0 10
--4033 -262144 -1 3935 1;
-#X floatatom 223 238 5 0 0 0 - - -;
-#X obj 263 96 vsl 15 128 0 255 0 0 qdaskjlf \$0-Bb empty 0 -9 0 10
--64 -262144 -1 3835 1;
-#X floatatom 263 238 5 0 0 0 - - -;
-#X msg 177 329 bgcolor \$1 \$2 \$3;
-#X obj 318 96 vsl 15 128 0 255 0 0 rjhfkjfbws \$0-Rg empty 0 -9 0 10
--258049 -262144 -1 9800 1;
-#X floatatom 318 238 5 0 0 0 - - -;
-#X obj 356 96 vsl 15 128 0 255 0 0 xaslkdjla \$0-Gg empty 0 -9 0 10
--4033 -262144 -1 9500 1;
-#X floatatom 356 238 5 0 0 0 - - -;
-#X obj 396 96 vsl 15 128 0 255 0 0 qdaskjlf \$0-Bg empty 0 -9 0 10
--64 -262144 -1 11200 1;
-#X floatatom 396 238 5 0 0 0 - - -;
-#X msg 325 329 gridcolor \$1 \$2 \$3;
-#X obj 307 370 osc~ 24;
-#X obj 177 405 else/oscilloscope~ 250 133 10 3 185 -1 1 0 0 0 -0.333333
-205 228 232 73 79 77 255 255 255 0 empty;
-#X obj 41 267 else/pack2 f f f;
-#X obj 177 267 else/pack2 f f f;
-#X obj 325 267 else/pack2 f f f;
-#X text 137 27 RGB colors (values from 0-255) for fgcolor (front/signal)
+#N canvas 809 79 758 543 appearance_colors 0;
+#X obj 395 306 osc~ 24;
+#X obj 326 341 else/oscilloscope~ 250 133 10 3 185 -1 1 0 0 0 -0.333333
+30 30 30 190 190 190 160 160 160 0 empty;
+#X text 472 79 RGB colors (values from 0-255) for fgcolor (front/signal)
 \, bgcolor (background) & grid (gridcolor)., f 35;
+#X obj 55 217 else/pack2 fgcolor f f f, f 13;
+#X obj 67 49 vsl 15 128 0 255 0 0 rjhfkjfbws \$0-Rf empty 0 -9 0 10
+-258049 -262144 -1 0 1;
+#X floatatom 67 191 5 0 0 0 - - -;
+#X obj 105 49 vsl 15 128 0 255 0 0 xaslkdjla \$0-Gf empty 0 -9 0 10
+-4033 -262144 -1 0 1;
+#X floatatom 105 191 5 0 0 0 - - -;
+#X obj 145 49 vsl 15 128 0 255 0 0 qdaskjlf \$0-Bf empty 0 -9 0 10
+-64 -262144 -1 0 1;
+#X floatatom 145 191 5 0 0 0 - - -;
+#X obj 193 217 else/pack2 bgcolor f f f, f 13;
+#X obj 326 217 else/pack2 gridcolor f f f, f 15;
+#X obj 346 49 vsl 15 128 0 255 0 0 rjhfkjfbws \$0-Rg empty 0 -9 0 10
+-258049 -262144 -1 0 1;
+#X floatatom 346 191 5 0 0 0 - - -;
+#X obj 384 49 vsl 15 128 0 255 0 0 xaslkdjla \$0-Gg empty 0 -9 0 10
+-4033 -262144 -1 0 1;
+#X floatatom 384 191 5 0 0 0 - - -;
+#X obj 424 49 vsl 15 128 0 255 0 0 qdaskjlf \$0-Bg empty 0 -9 0 10
+-64 -262144 -1 0 1;
+#X floatatom 424 191 5 0 0 0 - - -;
+#X obj 366 266 else/initmess fgcolor 30 30 30 \, bgcolor 190 190 190
+\, gridcolor 160 160 160, f 40;
+#X text 547 245 default;
+#X obj 205 49 vsl 15 128 0 255 0 0 rjhfkjfbws \$0-Rb empty 0 -9 0 10
+-258049 -262144 -1 0 1;
+#X floatatom 205 191 5 0 0 0 - - -;
+#X obj 243 49 vsl 15 128 0 255 0 0 xaslkdjla \$0-Gb empty 0 -9 0 10
+-4033 -262144 -1 0 1;
+#X floatatom 243 191 5 0 0 0 - - -;
+#X obj 283 49 vsl 15 128 0 255 0 0 qdaskjlf \$0-Bb empty 0 -9 0 10
+-64 -262144 -1 0 1;
+#X floatatom 283 191 5 0 0 0 - - -;
 #X connect 0 0 1 0;
-#X connect 1 0 23 0;
-#X connect 2 0 22 0;
-#X connect 3 0 4 0;
-#X connect 4 0 23 1;
-#X connect 5 0 6 0;
-#X connect 6 0 23 2;
-#X connect 7 0 8 0;
-#X connect 8 0 24 0;
-#X connect 9 0 10 0;
-#X connect 10 0 24 1;
-#X connect 11 0 12 0;
-#X connect 12 0 24 2;
-#X connect 13 0 22 0;
+#X connect 3 0 1 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 1;
+#X connect 6 0 7 0;
+#X connect 7 0 3 2;
+#X connect 8 0 9 0;
+#X connect 9 0 3 3;
+#X connect 10 0 1 0;
+#X connect 11 0 1 0;
+#X connect 12 0 13 0;
+#X connect 13 0 11 1;
 #X connect 14 0 15 0;
-#X connect 15 0 25 0;
+#X connect 15 0 11 2;
 #X connect 16 0 17 0;
-#X connect 17 0 25 1;
-#X connect 18 0 19 0;
-#X connect 19 0 25 2;
-#X connect 20 0 22 0;
-#X connect 21 0 22 0;
-#X connect 23 0 2 0;
-#X connect 24 0 13 0;
-#X connect 25 0 20 0;
+#X connect 17 0 11 3;
+#X connect 18 0 1 0;
+#X connect 20 0 21 0;
+#X connect 21 0 10 1;
+#X connect 22 0 23 0;
+#X connect 23 0 10 2;
+#X connect 24 0 25 0;
+#X connect 25 0 10 3;
 #X restore 294 263 pd appearance_colors;
 #N canvas 724 132 767 456 appearance_others 0;
 #X msg 176 171 delay 1000;
@@ -182,8 +173,8 @@ to analternate drawing style \, that affects some kinds of signals
 1.2).;
 #X text 38 21 You can set the vertical (signal amplitude) range and
 the onset delay (time between displays) with messages.;
-#X obj 582 257 else/oscilloscope~ 100 50 256 3 128 -1 1 0 0 0 0 205
-229 232 74 79 77 96 98 102 0 empty;
+#X obj 582 257 else/oscilloscope~ 100 50 256 3 128 -1 1 0 0 0 0 30
+30 30 190 190 190 160 160 160 0 empty;
 #X obj 554 106 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 554 149 select 0 1;
@@ -206,7 +197,7 @@ the onset delay (time between displays) with messages.;
 #X connect 6 0 5 0;
 #X restore 81 231 pd square;
 #X obj 163 297 else/oscilloscope~ 219 108 10 3 185 -1.2 1.2 0 0 0 -0.333333
-205 229 232 74 79 77 96 98 102 0 empty;
+30 30 30 190 190 190 160 160 160 0 empty;
 #X msg 507 204 dim 100 50;
 #X msg 582 204 dim 50 100;
 #X text 471 49 There's also a "dim" message/flag for setting the size
@@ -226,54 +217,51 @@ of your [oscilloscope~]., f 41;
 #X connect 20 0 13 0;
 #X connect 21 0 13 0;
 #X restore 425 263 pd appearance_others;
-#N canvas 820 129 427 442 mouse 0;
-#X obj 135 134 else/oscilloscope~ 130 130 47 3 128 -1 1 0 0 0 0 205
-229 232 74 79 77 96 98 102 0 empty;
-#X text 61 359 And as noted \, if you right click on it (in edit mode
+#N canvas 877 183 459 413 mouse 0;
+#X text 93 342 And as noted \, if you right click on it (in edit mode
 or not) you can access its properties., f 50;
 #X text 44 36 When you click on [oscilloscope~] with your mouse \,
 the display freezes for as long as you hold the mouse button down.
 ;
-#X text 54 312 When in edit mode \, you can resize the object by clicking
+#X text 86 295 When in edit mode \, you can resize the object by clicking
 and dragging on its bottom right corner., f 51;
 #X obj 135 96 else/rampnoise~ 40;
-#X connect 4 0 0 0;
+#X obj 135 133 else/oscilloscope~ 184 115 256 3 128 -1 1 0 0 0 0 0
+0 0 190 190 190 100 100 100 0 empty;
+#X connect 3 0 4 0;
 #X restore 357 240 pd mouse;
-#X text 71 86 [oscilloscope~] displays a signal in the style of an
-oscilloscope., f 66;
+#X text 223 74 [oscilloscope~] displays a signal in the style of an
+oscilloscope., f 35;
 #X obj 237 202 else/note 425 12 helvetica empty 0 200 0 0 0 255 255
 255 0 0 <= Right click for properties!;
 #X text 114 395 range <f \, f>;
 #X text 84 412 fgcolor <f \, f \, f>;
 #X text 84 427 bgcolor <f \, f \, f>;
 #X text 72 441 gridcolor <f \, f \, f>;
-#X obj 218 141 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 219 141 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 219 163 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 220 163 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 499 69 else/setdsp~;
 #N canvas 954 174 335 328 Y_Mode 0;
-#X obj 93 144 else/oscilloscope~ 130 130 11 3 128 -1 1 0 0 0 0 205
-229 232 74 79 77 96 98 102 0 empty;
+#X obj 93 144 else/oscilloscope~ 130 130 11 3 128 -1 1 0 0 0 0 30 30
+30 190 190 190 160 160 160 0 empty;
 #X text 53 33 If a signal is only fed to the second inlet \, [oscilloscope~]
 displays in "Y Mode" only., f 31;
 #X obj 216 102 osc~ 60;
 #X connect 2 0 0 1;
 #X restore 491 240 pd Y_Mode;
-#X text 126 349 dim <f \, f>;
-#X text 194 350 - sets width/height (default 130 130), f 58;
+#X text 126 364 dim <f \, f>;
 #X obj 43 154 osc~ 2;
 #X text 90 512 receive <symbol>;
-#X text 84 364 calccount <float>;
-#X text 96 380 bufsize <float>;
 #X text 84 455 drawstyle <float>;
 #X text 96 469 trigger <float>;
 #X text 84 484 triglevel <float>;
 #X text 108 498 delay <float>;
 #X text 194 512 - receive symbol (default empty), f 58;
 #N canvas 1073 204 501 352 receive 0;
-#X obj 67 175 else/oscilloscope~ 130 130 2 3 128 -1 1 100 0 0 0 205
-229 232 74 79 77 96 98 102 0 \$0-rcv;
+#X obj 67 175 else/oscilloscope~ 130 130 2 3 128 -1 1 100 0 0 0 30
+30 30 190 190 190 160 160 160 0 \$0-rcv;
 #X obj 311 272 s \$0-rcv;
 #X obj 67 130 noise~;
 #X msg 311 205 2 128;
@@ -293,91 +281,6 @@ the inlets are shown., f 73;
 #X connect 3 0 1 0;
 #X connect 4 0 1 0;
 #X restore 485 285 pd receive;
-#N canvas 693 173 824 342 buffer 0;
-#X floatatom 507 119 5 0 0 0 - - -;
-#X floatatom 678 120 5 8 256 0 - - -;
-#X obj 507 93 unpack float float, f 29;
-#X msg 507 38 256 10;
-#X obj 534 149 osc~ 20;
-#X msg 521 66 10 256;
-#X text 715 114 lines per display, f 9;
-#X text 442 115 samples per line, f 8;
-#X text 33 134 Therefore \, the number of samples (or period) displayed
-in the oscilloscope is equal to: bufsize * calccount. The number of
-samples also affect the time between displays. If the number of samples
-is small \, the refresh rate speed is high \, so you may want to use
-the "onset delay" message to decrease the speed between displays.;
-#X text 34 228 bufsize & calccount are similar \, but they have different
-effects. Lets check the example in this subpatch with two settings.
-Both have the same display period in samples (2560) \, but one is displayed
-as a buffer made of 10 lines and 256 samples per line and the other
-as a buffer made of 256 lines and 10 samples per line.;
-#X text 564 66 10 samples per line \, 256 lines;
-#X text 554 38 256 samples per line \, 10 lines;
-#X text 32 30 "bufsize" sets the number of lines in the display (possible
-values from 8 to 256 - default is 128). The number of samples represented
-by each line is set by "calccount" (possible values from 2 to 8192
-- default is 256). For each line \, the maximum and minimum values
-within the period in samples are used to generate the line. So the
-smallest line is 2 samples/points long.;
-#X obj 507 180 else/oscilloscope~ 178 126 10 3 256 -1 1 0 0 0 -0.333333
-205 229 232 74 79 77 96 98 102 0 empty;
-#X connect 0 0 13 0;
-#X connect 1 0 13 1;
-#X connect 2 0 0 0;
-#X connect 2 1 1 0;
-#X connect 3 0 2 0;
-#X connect 4 0 13 0;
-#X connect 5 0 2 0;
-#X restore 352 285 pd buffer;
-#N canvas 678 146 755 422 trigger 0;
-#X obj 456 176 vsl 15 126 -1 1 0 1 empty empty empty 0 -9 0 10 -228856
--1 -1 9500 1;
-#X obj 638 38 vradio 20 1 1 3 empty empty empty 0 -8 0 10 -228856 -1
--1 1;
-#X msg 638 129 trigger \$1;
-#X floatatom 638 108 5 0 0 0 - - -;
-#X msg 543 101 triglevel \$1;
-#X obj 456 322 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.52 256;
-#X obj 456 347 s \$0-slider;
-#X obj 543 47 r \$0-slider;
-#X floatatom 543 73 5 0 0 0 - - -;
-#X obj 474 91 osc~ 150;
-#X text 662 39 0) none;
-#X text 663 59 1) Up;
-#X text 663 80 2) Down;
-#X text 33 32 The delay onset period determines when to display a new
-waveform. In conjunction to it \, the trigger mode determines when
-a new waveform trace begins (following the delay period).;
-#X text 33 96 The default mode is "trigger 0" \, which is "none mode"
-\, where the signal is displayed the way it is.;
-#X text 35 140 "trigger 1" is "up mode" \, in which - following the
-delay period - a new display is triggered only when the signal goes
-from below the trigger level to being equal to it or above it.;
-#X text 34 205 "trigger 2" sets to down mode \, in which - following
-the delay period - a new display is shown only when the signal goes
-from above the trigger level to being equal to it or below it.;
-#X text 35 273 The "triglevel <float>" message sets the threshold for
-the trigger modes "1" (up) and "2" (down). In these cases \, as described
-above \, the waveform must increase or decrease past this value to
-trigger a new display. If you are displaying a periodic waveform \,
-some changes to the trigger level will shift the waveform to the left
-or right.;
-#X obj 474 175 else/oscilloscope~ 201 129 2 3 256 -1 1 50 0 1 0.52
-205 229 232 74 79 77 96 98 102 0 empty;
-#X connect 0 0 5 0;
-#X connect 1 0 3 0;
-#X connect 2 0 18 0;
-#X connect 3 0 2 0;
-#X connect 4 0 18 0;
-#X connect 5 0 6 0;
-#X connect 7 0 8 0;
-#X connect 8 0 4 0;
-#X connect 9 0 18 0;
-#X restore 416 285 pd trigger;
-#X obj 43 190 else/oscilloscope~ 183 112 256 3 128 -1 1 0 0 0 0 205
-229 232 74 79 77 96 98 102 0 empty;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -412,8 +315,107 @@ f f> | -range <f f> | -trigger <f> | -triglevel <f> | -bufsize <f>
 ;
 #X text 194 427 - sets background RGB color (values 0-255), f 58;
 #X text 194 441 - sets grid RGB color (values 0-255), f 58;
-#X connect 25 0 26 0;
-#X connect 26 0 48 0;
-#X connect 42 0 60 0;
-#X connect 43 0 60 1;
-#X connect 48 0 60 0;
+#X text 90 349 nsamples <float>;
+#X text 102 380 nlines <float>;
+#X text 194 350 - sets number of samples per line, f 58;
+#X text 194 544 - sets "nlines"., f 58;
+#X text 194 335 - sets "nsamples": samples per line (2-8192 \, default
+256), f 58;
+#X text 194 365 - sets width/height (default 200 100), f 58;
+#X obj 43 191 else/oscilloscope~ 184 115 256 3 128 -1 1 0 0 0 0 32
+32 32 187 187 187 159 159 159 0 empty;
+#N canvas 693 173 824 342 buffer_period 0;
+#X floatatom 507 119 5 0 0 0 - - -;
+#X floatatom 678 120 5 8 256 0 - - -;
+#X obj 507 93 unpack float float, f 29;
+#X msg 507 38 256 10;
+#X obj 534 149 osc~ 20;
+#X msg 521 66 10 256;
+#X text 715 114 lines per display, f 9;
+#X text 442 115 samples per line, f 8;
+#X text 564 66 10 samples per line \, 256 lines;
+#X text 554 38 256 samples per line \, 10 lines;
+#X obj 507 180 else/oscilloscope~ 178 126 10 3 256 -1 1 0 0 0 -0.333333
+30 30 30 190 190 190 160 160 160 0 empty;
+#X text 33 42 "nlines" sets the number of lines in the display (possible
+values from 8 to 256 - default is 128). The number of samples represented
+by each line is set by "nsamples" (possible values from 2 to 8192 -
+default is 256). For each line \, the maximum and minimum values within
+the period in samples are used to generate the line. So the smallest
+line is 2 samples/points long., f 62;
+#X text 34 136 Therefore \, the total number of samples (or period)
+displayed in the oscilloscope is equal to: nsamples * nlines. This
+total number of samples also affects the time between displays. If
+the number of samples is small \, the refresh rate speed is high \,
+so you may want to use the "delay" message to increase the speed between
+displays., f 62;
+#X text 35 220 Lets check the example to the right with two settings.
+Both have the same display period in samples (2560) \, but one is displayed
+as a buffer made of 10 lines and 256 samples per line and the other
+as a buffer made of 256 lines and 10 samples per line., f 62;
+#X connect 0 0 10 0;
+#X connect 1 0 10 1;
+#X connect 2 0 0 0;
+#X connect 2 1 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 10 0;
+#X connect 5 0 2 0;
+#X restore 276 285 pd buffer_period;
+#N canvas 678 146 864 402 delay_trigger 0;
+#X obj 461 197 vsl 15 126 -1 1 0 1 empty empty empty 0 -9 0 10 -191407
+-1 -1 6200 1;
+#X obj 598 67 vradio 17 1 1 3 empty empty empty 0 -8 0 10 -228856 -1
+-1 1;
+#X msg 598 148 trigger \$1;
+#X floatatom 598 126 5 0 0 0 - - -;
+#X msg 503 130 triglevel \$1;
+#X obj 461 343 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 -0.008 256;
+#X obj 461 368 s \$0-slider;
+#X obj 503 76 r \$0-slider;
+#X floatatom 503 102 5 0 0 0 - - -;
+#X text 617 67 0) none;
+#X text 617 84 1) Up;
+#X text 617 102 2) Down;
+#X text 52 119 The default mode is "trigger 0" \, which is "none mode"
+\, where the signal is displayed the way it is., f 57;
+#X text 52 149 "trigger 1" is "up mode" \, in which - following the
+delay period - a new display is triggered only when the signal goes
+from below the trigger level to being equal to it or above it.;
+#X text 52 200 "trigger 2" sets to down mode \, in which - following
+the delay period - a new display is shown only when the signal goes
+from above the trigger level to being equal to it or below it., f
+57;
+#X text 52 251 The "triglevel <float>" message sets the threshold for
+the trigger modes "1" (up) and "2" (down). In these cases \, as described
+above \, the waveform must increase or decrease past this value to
+trigger a new display. If you are displaying a periodic waveform \,
+some changes to the trigger level will shift the waveform to the left
+or right., f 57;
+#X obj 479 196 else/oscilloscope~ 266 131 2 3 256 -1 1 50 0 1 -0.008
+30 30 30 190 190 190 160 160 160 0 empty;
+#X msg 706 151 delay \$1;
+#X floatatom 706 123 5 0 0 0 - - -;
+#X text 52 76 The delay onset period determines when to display a new
+waveform. The trigger mode determines when a new waveform trace begins
+(following the delay period).;
+#X obj 479 28 else/rampnoise~ 300;
+#X connect 0 0 5 0;
+#X connect 1 0 3 0;
+#X connect 2 0 16 0;
+#X connect 3 0 2 0;
+#X connect 4 0 16 0;
+#X connect 5 0 6 0;
+#X connect 7 0 8 0;
+#X connect 8 0 4 0;
+#X connect 17 0 16 0;
+#X connect 18 0 17 0;
+#X connect 20 0 16 0;
+#X restore 380 285 pd delay_trigger;
+#X text 270 140 Number of samples per line;
+#X text 270 162 Number of lines in buffer;
+#X connect 22 0 23 0;
+#X connect 23 0 42 0;
+#X connect 37 0 72 0;
+#X connect 38 0 72 1;
+#X connect 42 0 72 0;
