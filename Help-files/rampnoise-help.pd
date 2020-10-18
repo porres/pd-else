@@ -44,7 +44,7 @@
 #X text 146 362 float;
 #X text 146 315 float;
 #X obj 241 210 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 1381 1;
+-228856 -1 -1 1018 1;
 #X text 187 315 - frequency in hertz up to 100 (negative values accepted)
 ;
 #X text 187 332 -;
@@ -54,11 +54,11 @@
 MIDI default range. Use the [rescale] object if you want a different
 range for the output., f 53;
 #X obj 127 109 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 3689 1;
+-228856 -1 -1 2696 1;
 #X obj 127 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 59.2972 256;
+-228856 -1 -1 43.3381 256;
 #X obj 127 254 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 433.454 256;
+-228856 -1 -1 370.623 256;
 #X text 187 255 cutoff in hertz;
 #X obj 127 365 biquad~;
 #X obj 127 394 else/plate.rev~ 50 0.9 0.9 0.9 0.7, f 18;
@@ -81,14 +81,15 @@ range for the output., f 53;
 #X connect 11 0 1 0;
 #X restore 471 274 pd rescale;
 #X text 187 392 - frequency in hertz (default 0), f 55;
-#X text 64 91 [rampnoise] is a control rate ramp noise. It doesn't
-need the DSP on to function \,, f 58;
 #X obj 76 238 else/rampnoise~;
 #X text 104 332 seed <float>;
 #X text 199 332 sets seed;
 #X obj 241 181 else/rampnoise 2;
 #X text 79 213 see also:;
 #X text 187 363 - ramp noise's waveform in the range from 0 - 127;
+#X text 64 91 [rampnoise] is a control rate ramp noise. It doesn't
+need the DSP on to function. Give it a seed value if you want a reproducible
+output.;
 #X connect 17 0 18 0;
-#X connect 18 0 33 0;
-#X connect 33 0 23 0;
+#X connect 18 0 32 0;
+#X connect 32 0 23 0;
