@@ -8,25 +8,12 @@
 
 ### Version: 1.0-0 beta-32 With Live Electronics Tutorial 
 
-###   Unreleased
+###   Released: October 19th 2020
 
 
 
 
 	Copyright © 2017-2020 Alexandre Torres Porres
-
-  
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -69,7 +56,7 @@
 
 ### Installing ELSE:
 
-​	ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path. Nonetheless, it can also be loaded as a library via "Preferences => Startup" or with [declare -lib else], and this is the oficial way of loading 'else' - even though that all this does is just print the library information on Pd's terminal window. 
+​	ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path or use [declare -path else]. ELSE comes with a binary that you can use load via "Preferences => Startup" or with [declare -lib else], but all that this does is print information of whaty version of ELSE you got wehn you open Pd.  You can also just load the 'else' external for that same purpose, check its help file. 
 
 ​	It's important to stress this release needs Pd Vanilla 0.51-1 or above (Pd Extended/Purr Data aren't supported). 
 

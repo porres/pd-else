@@ -7,4 +7,4 @@ signal modules and building blocks for audio patching, f 47;
 #X text 37 172 WEBSITE https://github.com/porres/pd-else, f 47;
 #X text 37 139 LICENSE WTFPL or as otherwise noted, f 47;
 #X text 37 105 VERSION 1.0-beta32, f 47;
-#X text 37 122 RELEASE_DATE: Unreleased, f 47;
+#X text 37 122 RELEASE_DATE: Released October 19th 2020, f 47;
