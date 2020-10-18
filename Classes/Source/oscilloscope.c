@@ -940,11 +940,11 @@ static void *scope_new(t_symbol *s, int ac, t_atom *av){
     x->x_bufsize = x->x_xymode = x->x_frozen = x->x_precount = sh->h_selectedmode = sh->h_dragon = 0;
     x->x_flag = x->x_r_flag = x->x_rcv_set = x->x_select = 0;
     x->x_phase = x->x_bufphase = x->x_precount = 0;
-    float width = 130, height = 130, period = 256, bufsize = x->x_lastbufsize = 128; // def values
+    float width = 200, height = 100, period = 256, bufsize = x->x_lastbufsize = 128; // def values
     float minval = -1, maxval = 1, delay = 0, drawstyle = 0, trigger = 0, triglevel = 0; // def
-    unsigned char bgred = 74, bggreen = 79, bgblue = 77;    // default bg color
-    unsigned char fgred = 205, fggreen = 229, fgblue = 232; // default fg color
-    unsigned char grred = 96, grgreen = 98, grblue = 102;   // default grid color
+    unsigned char bgred = 190, bggreen = 190, bgblue = 190;    // default bg color
+    unsigned char fgred = 30, fggreen = 30, fgblue =3 0; // default fg color
+    unsigned char grred = 160, grgreen = 160, grblue = 160;   // default grid color
     float f_r = 0, f_g = 0, f_b = 0, b_r = 0, b_g = 0, b_b = 0, g_r = 0, g_g = 0, g_b = 0;
     int fcolset = 0, bcolset = 0, gcolset = 0; // flag for colorset
     if(ac){
@@ -1205,8 +1205,8 @@ void oscilloscope_tilde_setup(void){
     class_addmethod(scope_class, nullfn, gensym("signal"), 0);
     class_addmethod(scope_class, (t_method) scope_dsp, gensym("dsp"), A_CANT, 0);
     class_addfloat(scope_class, (t_method)scope_period);
-    class_addmethod(scope_class, (t_method)scope_period, gensym("calccount"), A_FLOAT, 0);
-    class_addmethod(scope_class, (t_method)scope_bufsize, gensym("bufsize"), A_FLOAT, 0);
+    class_addmethod(scope_class, (t_method)scope_period, gensym("nsamples"), A_FLOAT, 0);
+    class_addmethod(scope_class, (t_method)scope_bufsize, gensym("nlines"), A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_dim, gensym("dim"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_delay, gensym("delay"), A_FLOAT, 0);
