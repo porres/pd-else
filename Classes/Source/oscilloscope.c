@@ -943,7 +943,7 @@ static void *scope_new(t_symbol *s, int ac, t_atom *av){
     float width = 200, height = 100, period = 256, bufsize = x->x_lastbufsize = 128; // def values
     float minval = -1, maxval = 1, delay = 0, drawstyle = 0, trigger = 0, triglevel = 0; // def
     unsigned char bgred = 190, bggreen = 190, bgblue = 190;    // default bg color
-    unsigned char fgred = 30, fggreen = 30, fgblue =3 0; // default fg color
+    unsigned char fgred = 30, fggreen = 30, fgblue = 30; // default fg color
     unsigned char grred = 160, grgreen = 160, grblue = 160;   // default grid color
     float f_r = 0, f_g = 0, f_b = 0, b_r = 0, b_g = 0, b_b = 0, g_r = 0, g_g = 0, g_b = 0;
     int fcolset = 0, bcolset = 0, gcolset = 0; // flag for colorset
