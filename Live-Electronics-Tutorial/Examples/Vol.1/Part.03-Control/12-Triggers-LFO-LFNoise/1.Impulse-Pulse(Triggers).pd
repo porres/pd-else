@@ -1,0 +1,143 @@
+#N canvas 334 97 953 738 12;
+#X declare -path else;
+#X obj 577 405 out~;
+#X obj 577 371 zerocross~;
+#X obj 224 235 display~;
+#X obj 224 181 pulse~ 1;
+#X obj 250 355 dust~ 1;
+#X obj 337 355 dust2~ 1;
+#X obj 95 384 out~;
+#X obj 38 515 nbx 5 14 -50 50 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0 256;
+#X obj 38 570 display~ 7;
+#X obj 38 541 randpulse~ 1;
+#X obj 575 146 status~;
+#X obj 728 159 toggleff~;
+#X obj 160 515 nbx 5 14 -50 50 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 0 256;
+#X obj 160 570 display~ 7;
+#X obj 160 541 randpulse2~ 1;
+#X obj 575 108 pulse~ 1;
+#X obj 489 175 trig2bang~;
+#X obj 489 205 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 575 173 trig2bang~;
+#X obj 575 203 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 621 204 trig2bang~;
+#X obj 621 234 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 728 116 impulse~ 1;
+#X obj 728 188 display~;
+#X obj 812 187 display~;
+#X obj 812 159 timed.gate~ 500;
+#X obj 577 339 rampnoise~ 10;
+#X obj 763 374 schmitt~;
+#X obj 763 401 changed~;
+#X obj 763 426 changed2~;
+#X text 26 274 Many other objects in the ELSE library generate impulses
+or gates. The [tempo~] object is a metronome that sends impulses \,
+[dust~] and [dust2~] also generate impulses \, but at random intervals
+and with random values.;
+#X text 728 94 impulse to pulse:;
+#X text 509 84 pulse to impulse:;
+#X obj 489 145 gate2imp~;
+#X text 20 10 Pulse and Impulse generators are widely used to control
+patches as "triggers" and the ELSE library has many objects that respond
+to them. A single impulse can be thought of as a "bang" \, whereas
+pulses are gates \, which can be thought of as on/off switches \, like
+a toggle.;
+#X obj 87 182 impulse~ 1;
+#X obj 87 236 display~;
+#X text 475 258 Other objects in ELSE generate impulses as part of
+a signal analysis. See [zerocross~] \, for instance \, that outputs
+impulses when a signal crosses from negative to positive or positive
+to negative. Check also these other objects related to [zerocross~]:
+, f 65;
+#X text 747 348 related:;
+#X obj 689 540 impulse 1;
+#X obj 783 540 pulse 1;
+#X obj 689 574 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 783 574 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 549 574 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 95 354 tempo~ 60 100 -on;
+#X obj 549 540 tempo 60 100 -on;
+#X text 497 472 The ELSE library also provides control version objects
+for impulse and pulse generators. In the case of [impulse] and [tempo]
+\, the outputs are bangs.;
+#X obj 224 208 rand.i~ 10 20;
+#X obj 87 209 rand.i~ 10 20;
+#X text 20 98 It all depends on how the triggered object was programmed.
+The [rand.i~] object is trigered at positive to negative or negative
+to positive transitions \, so you can use either an impulse or a gate
+to trigger it.;
+#X obj 365 167 setdsp~;
+#X obj 779 23 declare -path else;
+#X obj 384 545 randpulse2 1;
+#X obj 278 545 randpulse 1;
+#X floatatom 278 575 8 0 0 0 - - -;
+#X obj 384 579 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X text 26 453 The [randpulse~] generates random gate values and [randpulse2~]
+alternates between entre 0 e 1 at irregular time intervals (control
+versions are also available).;
+#X obj 318 627 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 318 686 display~ 3;
+#X obj 318 653 timed.gate~ 500;
+#X text 62 635 The [timed.gate~] object sends a timed gate spcecified
+by its argument (500 ms in the right example)., f 31;
+#X obj 688 627 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 688 683 else/display;
+#X obj 688 653 timed.gate 500;
+#X text 480 13 Other objects from the ELSE library convert pulses into
+impulses and vice versa. The [trig2bang~] object converts it to a bang.
+See below., f 37;
+#X text 537 634 There are also the control version [timed.gate] and
+[trig2bang], f 18;
+#X obj 826 653 trig2bang;
+#X obj 826 627 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 826 683 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 250 384 out~;
+#X connect 1 0 0 0;
+#X connect 3 0 47 0;
+#X connect 4 0 69 0;
+#X connect 5 0 69 1;
+#X connect 7 0 9 0;
+#X connect 9 0 8 0;
+#X connect 10 0 18 0;
+#X connect 10 1 20 0;
+#X connect 11 0 23 0;
+#X connect 12 0 14 0;
+#X connect 14 0 13 0;
+#X connect 15 0 10 0;
+#X connect 15 0 33 0;
+#X connect 16 0 17 0;
+#X connect 18 0 19 0;
+#X connect 20 0 21 0;
+#X connect 22 0 11 0;
+#X connect 22 0 25 0;
+#X connect 25 0 24 0;
+#X connect 26 0 1 0;
+#X connect 33 0 16 0;
+#X connect 35 0 48 0;
+#X connect 39 0 41 0;
+#X connect 40 0 42 0;
+#X connect 44 0 6 0;
+#X connect 45 0 43 0;
+#X connect 47 0 2 0;
+#X connect 48 0 36 0;
+#X connect 52 0 55 0;
+#X connect 53 0 54 0;
+#X connect 57 0 59 0;
+#X connect 59 0 58 0;
+#X connect 61 0 63 0;
+#X connect 63 0 62 0;
+#X connect 66 0 68 0;
+#X connect 67 0 66 0;

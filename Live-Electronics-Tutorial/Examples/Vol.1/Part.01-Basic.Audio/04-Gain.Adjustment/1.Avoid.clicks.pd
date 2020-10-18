@@ -1,0 +1,71 @@
+#N canvas 430 83 939 513 12;
+#X declare -path else;
+#X obj 540 259 *~;
+#X obj 558 232 line~;
+#X msg 558 209 \$1 10;
+#X obj 515 361 dac~;
+#X obj 162 201 *~;
+#X obj 180 139 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+0.05;
+#X obj 106 161 osc~ 440;
+#X floatatom 180 172 5 0 0 0 - - -;
+#X obj 558 163 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+0.05;
+#X text 580 162 On/Off;
+#X text 602 224 Fade In/Out;
+#X obj 483 195 osc~ 440;
+#X obj 185 247 graph~ 1038 9;
+#X obj 137 265 dac~;
+#X obj 567 320 graph~ 1038 9;
+#X floatatom 558 187 5 0 0 0 - - -;
+#X obj 770 182 float2sig~ 10;
+#X obj 43 264 setdsp~ 1;
+#X obj 752 210 *~;
+#X obj 752 245 dac~;
+#X obj 699 168 osc~ 440;
+#X obj 770 155 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+0.05;
+#X text 791 155 On/Off;
+#X text 202 139 On/Off;
+#X text 41 143 oscillator at 440Hz, f 11;
+#X obj 833 309 display~;
+#X obj 833 255 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 833 282 f2s~ 500;
+#X text 741 282 abbreviation;
+#X obj 727 26 declare -path else;
+#X text 17 57 Below \, we use use [*~] to turn audio on (by multiplying
+by "1") and turn it off (or "mute" by multiplying by "0"). But note
+how this generates discontinuities in the signal that do not sound
+good \, we call these "clicks".;
+#X text 464 163 no clicks =>;
+#X text 67 425 The clicks happen by the fact that the speaker needs
+to jump abruptly when the sound comes in or out. In order to avoid
+clicks \, this needs to be smoothened., f 53;
+#X text 475 57 The native [line~] object can be used to generate a
+quick smoothened ramp to avoid clicks with a fast fade in/out (here
+at 10 ms). Another option is to use [float2sig~] (or [f2s~] for short)
+from ELSE \, which converts floats to signal but also generates linear
+ramps., f 61;
+#X connect 0 0 3 0;
+#X connect 0 0 3 1;
+#X connect 0 0 14 0;
+#X connect 1 0 0 1;
+#X connect 2 0 1 0;
+#X connect 4 0 12 0;
+#X connect 4 0 13 0;
+#X connect 4 0 13 1;
+#X connect 5 0 7 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 1;
+#X connect 8 0 15 0;
+#X connect 11 0 0 0;
+#X connect 15 0 2 0;
+#X connect 16 0 18 1;
+#X connect 18 0 19 0;
+#X connect 18 0 19 1;
+#X connect 18 0 14 0;
+#X connect 20 0 18 0;
+#X connect 21 0 16 0;
+#X connect 26 0 27 0;
+#X connect 27 0 25 0;

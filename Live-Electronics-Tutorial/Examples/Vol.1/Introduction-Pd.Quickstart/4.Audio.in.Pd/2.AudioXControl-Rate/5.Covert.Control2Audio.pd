@@ -1,0 +1,47 @@
+#N canvas 639 67 468 645 12;
+#X declare -lib else;
+#X obj 149 561 vline~;
+#X obj 139 492 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 236 516 random 100;
+#X obj 236 556 sig~;
+#X floatatom 289 556 0 0 0 0 - - -;
+#X obj 236 594 print~ SIG;
+#X obj 139 592 print~ VLINE;
+#X obj 174 194 sig~;
+#X obj 174 147 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X floatatom 174 169 5 0 0 0 - - -;
+#X obj 174 222 display~;
+#X obj 236 490 metro 1 1 samps;
+#X obj 236 466 loadbang;
+#X text 58 267 But then we have the [vline~] object \, which offers
+a more accurate convertion. It is mostly a line/envelope generator
+as we'll see \, but it can also be used for this type of conversion.
+, f 47;
+#X text 60 331 Below \, we have [metro] sending bangs at each sample.
+We use this to generate random values from 0 to 99 with the native
+[random] object., f 47;
+#X text 122 144 click:;
+#X text 89 492 click:;
+#X obj 307 156 setdsp~;
+#X obj 290 19 declare -lib else;
+#X text 53 55 The native [sig~] object converts control data to audio
+signal. But \, as we've seen \, Pd usually has an inherent control
+rate that prevents more than one control value affecting an audio block
+\, so it can only convert one value per block., f 48;
+#X text 60 384 Click on the bang and see how [vline~] is capable of
+generating a block of audio with one random value per sample \, but
+[sig~] can only convert the last received value., f 47;
+#X connect 0 0 6 0;
+#X connect 1 0 5 0;
+#X connect 1 0 6 0;
+#X connect 2 0 3 0;
+#X connect 2 0 0 0;
+#X connect 2 0 4 0;
+#X connect 3 0 5 0;
+#X connect 7 0 10 0;
+#X connect 8 0 9 0;
+#X connect 9 0 7 0;
+#X connect 11 0 2 0;
+#X connect 12 0 11 0;

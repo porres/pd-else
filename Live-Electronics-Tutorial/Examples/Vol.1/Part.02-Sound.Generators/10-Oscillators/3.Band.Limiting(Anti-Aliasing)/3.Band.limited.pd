@@ -1,0 +1,71 @@
+#N canvas 405 269 826 433 12;
+#X declare -path else;
+#X obj 255 339 out~;
+#X obj 255 301 bl.saw~;
+#X obj 278 260 impulse~;
+#X obj 570 171 bl.sine~;
+#X obj 576 195 bl.saw~;
+#X obj 570 220 bl.saw2~;
+#X obj 558 242 bl.square~;
+#X obj 635 171 bl.tri~;
+#X obj 635 194 bl.vsaw~;
+#X obj 635 219 bl.imp~;
+#X obj 635 242 bl.imp2~;
+#X obj 587 267 bl.wavetable~;
+#X obj 278 189 nbx 5 14 -1e+37 1e+37 0 0 empty Hz empty 0 -8 0 10 -228856
+-1 -1 0 256;
+#N canvas 786 159 417 234 sequencer 0;
+#X obj 180 135 mtof;
+#X obj 75 74 metro 200;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array sequencer 16 float 3;
+#A 0 -6 -8 -8 -3 -8 1 4 4 -3 -5 -5 -1 2 6 7 7;
+#X coords 0 12 16 -12 100 70 1;
+#X restore 240 71 graph;
+#X obj 75 135 v i;
+#X obj 180 163 outlet;
+#X obj 75 49 inlet;
+#X obj 75 97 expr (i + 1) % 16 \; sequencer[i] + 41;
+#X connect 0 0 4 0;
+#X connect 1 0 6 0;
+#X connect 5 0 1 0;
+#X connect 6 0 3 0;
+#X connect 6 1 0 0;
+#X restore 278 163 pd sequencer;
+#X obj 278 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 87 135 tgl 15 0 empty metro empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 87 159 metro;
+#X obj 87 255 display~ 5;
+#X obj 87 229 glide~;
+#X obj 87 184 expr random($f2 \, $f2*3) \; random (600 \, 1200);
+#X text 138 257 slave;
+#X text 339 188 master;
+#X text 35 17 The ELSE library offers some variants of its oscillators
+in the band limited version. These are abstractions that rely on the
+oversmapling + filtering technique. These objects start with "bl."
+(from "band limited"). Below we have [bl.saw~] \, an anti aliased sawtooth
+oscillator that has all features from \, including hard sync \, check
+it out., f 57;
+#X text 508 313 Hard sync generates aliasing because any significant
+discontinuity in the signal can generate artifacts and components over
+the Nyquist., f 37;
+#X obj 618 25 declare -path else;
+#X text 473 74 And here are the other variants from ELSE. There's even
+[bl.sine~] \, because you can generate aliasing with hard sync and
+even other techniques such as phase or frequency modulation., f 42
+;
+#X connect 1 0 0 0;
+#X connect 2 0 1 1;
+#X connect 12 0 2 0;
+#X connect 12 0 19 1;
+#X connect 13 0 12 0;
+#X connect 14 0 13 0;
+#X connect 15 0 16 0;
+#X connect 16 0 19 0;
+#X connect 17 0 1 0;
+#X connect 18 0 17 0;
+#X connect 19 0 18 0;
+#X connect 19 1 16 1;
+#X connect 19 1 18 1;

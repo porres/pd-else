@@ -1,0 +1,125 @@
+#N canvas 526 149 1080 562 12;
+#X floatatom 94 247 5 0 0 0 - - -;
+#X floatatom 94 313 5 0 0 0 - - -;
+#X floatatom 147 246 5 0 0 0 - - -;
+#X floatatom 147 312 5 0 0 0 - - -;
+#X obj 306 316 dac~;
+#N canvas 686 173 437 383 sum 0;
+#X obj 112 88 inlet;
+#X obj 112 176 outlet;
+#X obj 112 134 + 1;
+#X obj 244 87 inlet;
+#X obj 244 175 outlet;
+#X obj 244 129 + 2;
+#X text 99 58 LEFT INLET;
+#X text 232 55 RIGH INLET;
+#X text 85 37 Corresponds to;
+#X text 216 37 Corresponds to;
+#X text 89 209 Corresponds to;
+#X text 220 209 Corresponds to;
+#X text 100 229 LEFT OUTLET;
+#X text 236 227 RIGH OUTLET;
+#X text 57 284 Note that the name of the subpatch is shown in the title
+bar on top of the patch window!, f 45;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 5 0 4 0;
+#X restore 102 278 pd sum;
+#X text 78 214 Subpatches:;
+#X obj 348 235 osc~ 440;
+#X text 157 280 <= click to open =>;
+#X symbolatom 642 315 10 0 0 0 - - -;
+#X floatatom 730 314 5 0 0 0 - - -;
+#X msg 642 224 bang;
+#X floatatom 792 201 5 0 0 0 - - -;
+#X floatatom 792 323 5 0 0 0 - - -;
+#X obj 642 258 abstraction-1 example 1, f 13;
+#X text 597 193 Abstractions:;
+#X text 42 478 Abstractions behave like objects. They load arguments
+\, which are loaded in the abstraction by the usage of dollar signs
+within objects - not to be confused with the usage of dollar signs
+inside messages!, f 64;
+#X text 522 257 click to open =>;
+#X obj 686 467 savestate;
+#X obj 826 467 clone;
+#X text 570 503 And also check out the help file of [clone] \, which
+can load multiple instances of an abstraction in a Pd patch., f 66
+;
+#X text 564 384 Check out the help file of [savestate] \, which can
+save a list of parameters (or its 'state') from the abstraction when
+you save the owning patch. Note the the 'state' is not saved as a list
+of arguments \, but as a hidden list in the patch., f 66;
+#X text 43 13 A subpatch (a subwindow of a patch) is part of the same
+patch file and used to better organize your code into sections. To
+create it \, use the [pd] object and a subwindow is automatically created.
+You can also give it a name argument just to name the subwindow (but
+it doesn't really affect it)., f 64;
+#X text 43 96 Data goes in and out of a subpatch via inlets/outlets
+\, created by corresponding [inlet] / [outlet] objects. To deal with
+audio signal \, use the signal variants: [inlet~] and [outlet~]. Note
+that [inlet~] can also receive control data with the 'fwd' argument.
+Check the help file of [inlet~] for more details and how it can also
+take default signal values., f 64;
+#X msg 266 234 volume \$1;
+#X obj 269 207 hsl 128 15 0 0.1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#N canvas 274 307 729 287 gain 0;
+#X obj 79 136 *~;
+#X obj 79 195 outlet~;
+#X obj 79 40 inlet~ fwd;
+#X obj 146 77 route volume;
+#X obj 146 134 line~;
+#X msg 146 105 \$1 10;
+#X text 276 79 the 'fwd' argument creates a second outlet that receives
+control messages \, such as the "volume" messages from the parent patch.
+Here we use the [route] object to get the float values from the "volume"
+messages.;
+#X connect 0 0 1 0;
+#X connect 2 0 0 0;
+#X connect 2 1 3 0;
+#X connect 3 0 5 0;
+#X connect 4 0 0 1;
+#X connect 5 0 4 0;
+#X restore 306 279 pd gain;
+#X msg 384 297 \; pd dsp 1;
+#X obj 384 271 loadbang;
+#X text 528 273 (right click & choose help), f 14;
+#X text 42 369 An abstraction is a separate Pd patch (a separate file
+document) that is loaded in another patch. It is also a kind of external
+\, even though not being a compiled object. For a patch to be loaded
+as an abstraction \, it must be in a folder that Pd automatically searches
+for such as the user added paths (Pd => Preferences => Path) or in
+the same folder as the patch that loads it., f 64;
+#X text 521 354 ----------------------------------------------------------------------------
+, f 76;
+#X text 556 10 A patch that has a subpatch or an abstraction is called
+the parent (so subpatches/abstractions are "children"). The “Graph
+on Parent” is an option in a patch window’s properties to allow
+it to display graphical contents on the parent patch \, be it a subpatch
+or an abstraction! To open the properties window \, right click on
+the subpatch or abstraction. Alternatively right click on an empty
+space inside the window of a subpatch or abstraction., f 67;
+#X text 900 260 <= right click and choose "open" or load properties
+, f 18;
+#X text 556 119 When set to “Graph on Parent” \, you can also hide
+the name of the abstraction and its arguments. The “Graph on Parent”
+option hides object boxes \, message boxes and cord connections \,
+but other GUI elements are shown (including arrays \, atom boxes and
+comments)., f 67;
+#X obj 792 230 abstraction-2 17;
+#X connect 0 0 5 0;
+#X connect 2 0 5 1;
+#X connect 5 0 1 0;
+#X connect 5 1 3 0;
+#X connect 7 0 26 0;
+#X connect 11 0 14 0;
+#X connect 12 0 35 0;
+#X connect 14 0 9 0;
+#X connect 14 1 10 0;
+#X connect 24 0 26 0;
+#X connect 25 0 24 0;
+#X connect 26 0 4 0;
+#X connect 26 0 4 1;
+#X connect 28 0 27 0;
+#X connect 35 0 13 0;

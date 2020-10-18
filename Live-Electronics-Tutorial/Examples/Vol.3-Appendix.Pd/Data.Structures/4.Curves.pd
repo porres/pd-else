@@ -1,0 +1,45 @@
+#N struct 1006-DS float color float x float y;
+#N canvas 449 122 460 376 12;
+#N canvas 408 46 478 607 template 0;
+#X obj 144 301 drawcurve color 2 0 0 50 100 100 0;
+#X obj 106 549 filledcurve color 0 5 0 100 100 100 50 50;
+#X text 123 126 draw the color number variable;
+#X obj 105 153 drawnumber color 100 50 color color=;
+#X text 44 210 And now we include curved shapes. The [drawcurve] works
+in the same way as [drawpolygon] object. The first argument is a float
+that defines the color (again defined by the "color" float as defined
+in [struct])., f 51;
+#X text 51 349 The second argument is the line width of the curve in
+pixels. The next arguments are pairs of point coordinates to connect
+with the line \, which is now curved. Here we have just three pairs
+of coordinates (0/0) \, (50/100) and (100/0) - so a curved line is
+drawn to connect these three dots., f 52;
+#X text 84 473 The [filledcurve] object is also similar to [filledpolygon]
+\, it needs an extra first argument to set interior color and now all
+dots are connected to form a closed shape, f 43;
+#X obj 96 83 struct \$0-DS float color float x float y;
+#X text 94 26 Data Structure named "\$0-DS" holding a float called
+"color" and x/y coordinates., f 43;
+#X restore 196 115 pd template;
+#X text 42 22 Now let's have more fun with curved shapes. See the [pd
+template] subpatch for details. As in the last example \, click and
+drag the "color" number to see the colors changing., f 52;
+#N canvas 938 199 282 196 \$0-display 1;
+#X scalar 1006-DS 500 50 50 \;;
+#X restore 196 142 pd \$0-display;
+#X obj 213 283 pointer;
+#X obj 62 117 loadbang;
+#X msg 62 146 500 50 50;
+#X obj 62 312 append \$0-DS color x y;
+#X msg 283 203 clear \, vis 1;
+#X obj 283 227 s pd-\$0-display;
+#X msg 213 256 traverse \$1 \, bang;
+#X obj 62 177 trigger2 list pd-\$0-display bang;
+#X connect 3 0 6 3;
+#X connect 4 0 5 0;
+#X connect 5 0 10 0;
+#X connect 7 0 8 0;
+#X connect 9 0 3 0;
+#X connect 10 0 6 0;
+#X connect 10 1 9 0;
+#X connect 10 2 7 0;

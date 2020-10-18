@@ -1,0 +1,49 @@
+#N canvas 491 93 942 368 12;
+#X declare -path else;
+#X obj 700 220 downsample~;
+#X obj 790 80 initmess \; \$0-sr 44100;
+#X obj 553 207 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 44100 256;
+#X obj 556 184 hsl 100 15 400 44099 1 0 empty \$0-sr empty -2 -8 0
+10 -228856 -1 -1 9900 1;
+#X text 613 207 Hertz;
+#X obj 511 266 out~;
+#X obj 511 230 sh~;
+#X obj 553 231 impulse~;
+#X obj 774 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 44100 256;
+#X obj 777 176 hsl 100 15 400 44099 1 0 empty \$0-sr empty -2 -8 0
+10 -228856 -1 -1 9900 1;
+#X text 832 197 Hertz;
+#X obj 700 256 out~;
+#X obj 494 119 send~ \$0-audio;
+#X obj 511 160 receive~ \$0-audio;
+#X obj 700 146 receive~ \$0-audio;
+#X text 29 100 We can still perform downsampling if we do not actually
+reduce the sample rate \, but we need to do an upsampling to go back
+to the original sample rate., f 60;
+#X text 30 263 A simpler alternative is to use [downsample~] from ELSE
+\, which only needs a downsampling frequency value., f 60;
+#X text 495 54 [play.file~] plays audio files;
+#X obj 769 23 declare -path else;
+#X obj 494 80 play.file~ bubul.wav 1 1;
+#X text 29 60 The "decimator" is a process that consist in reducing
+the sample rate of a signal - also known as "downsampling"., f 60
+;
+#X text 29 155 In the upsampling process \, there aren't that many
+options. One is to "hold" \, where we keep the same value for all the
+new sample values. One way to implement this is with [sh~] \, from
+ELSE \, which is a "sample and hold" unit that collects a sample value
+when receiving impulses (given by [impulse~]) and holds such values
+until the next trigger. The frequency at wich it receives impulses
+is the downsampled frequency.;
+#X connect 0 0 11 0;
+#X connect 2 0 7 0;
+#X connect 3 0 2 0;
+#X connect 6 0 5 0;
+#X connect 7 0 6 1;
+#X connect 8 0 0 1;
+#X connect 9 0 8 0;
+#X connect 13 0 6 0;
+#X connect 14 0 0 0;
+#X connect 19 0 12 0;

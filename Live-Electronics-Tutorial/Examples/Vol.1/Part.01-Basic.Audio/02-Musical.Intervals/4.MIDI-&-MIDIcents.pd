@@ -1,0 +1,112 @@
+#N canvas 747 110 829 738 12;
+#X declare -path else;
+#X obj 109 648 ftom;
+#X obj 139 614 nbx 5 14 -1e+37 1e+37 0 0 empty empty Hz 18 -6 0 10
+-228856 -1 -1 0 256;
+#X text 159 646 =;
+#X obj 109 689 nbx 5 14 -1e+37 1e+37 0 0 empty empty MIDI 18 -6 0 10
+-228856 -1 -1 0 256;
+#X obj 250 152 nbx 5 14 0 127 0 0 empty empty MIDI 60 7 0 10 -228856
+-1 -1 0 256;
+#X obj 250 174 mtof;
+#X obj 250 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty Hz 60 7 0 10 -228856
+-1 -1 0 256;
+#X msg 250 99 60;
+#X msg 270 124 69;
+#X obj 180 492 + 69;
+#X obj 180 462 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 180 520 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 180 381 / 440;
+#X obj 180 356 nbx 5 14 20 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 20 256;
+#X obj 191 688 nbx 5 14 -1e+37 1e+37 0 0 empty empty MIDI 18 -6 0 10
+-228856 -1 -1 0 256;
+#X obj 557 127 nbx 5 14 -1e+37 1e+37 0 0 empty empty MIDI 60 7 0 10
+-228856 -1 -1 0 256;
+#X obj 485 156 mtof;
+#X obj 485 191 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 60 7 0 10
+-228856 -1 -1 0 256;
+#X text 530 157 =;
+#X obj 557 190 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 60 7 0 10
+-228856 -1 -1 0 256;
+#X obj 562 579 mtof;
+#X obj 562 609 osc~;
+#X obj 210 279 cnv 15 197 15 empty empty empty 20 12 0 14 -228856 -66577
+0;
+#X obj 562 645 out~;
+#X obj 562 555 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 18 -6 0
+10 -228856 -1 -1 0 256;
+#X text 278 99 Middle C;
+#X text 298 125 Middle A;
+#X text 237 355 Frequency in Hertz;
+#X text 243 520 MIDI Pitch;
+#X text 227 381 Interval ratio to middle A;
+#X text 471 81 If we invert the formula \, we get the [mtof] expression:
+, f 28;
+#X obj 191 647 expr 12 * log($f1/440)/log(2) + 69;
+#X obj 557 158 expr pow(2 \, ($f1 - 69)/12) * 440;
+#X obj 587 498 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 562 467 / 100;
+#X obj 562 442 nbx 7 14 -1200 1200 0 0 empty cents empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 518 440 Cents;
+#X obj 565 417 hsl 128 15 0 1200 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 562 527 + 60;
+#X text 644 497 MIDI pitch;
+#X text 628 554 MIDI & MIDI-Cents;
+#X text 210 277 semitones = 12 * Log2(ratio);
+#X text 35 226 Now let's try to convert frequency to MIDI pitch \,
+we can start with the conversion from interval ratio to semitones given
+before \, where:, f 53;
+#X text 460 338 Below we have a MIDI pitch value added to an interval
+in cents. To adapt the cents value to MIDI cents \, we just need to
+divide it by 100!, f 46;
+#X text 35 310 Now we need a reference point \, like middle A (440Hz).
+So any frequency input becomes an interval ratio to 440Hz., f 53;
+#X text 238 454 semitones difference to middle A, f 20;
+#X text 217 492 sum to middle A in MIDI;
+#X obj 180 408 log 2;
+#X obj 180 436 * 12;
+#X obj 653 23 declare -path else;
+#X text 460 240 MIDI data is only about integer values from 0 to 127
+\, but in Pd we have more resolution with floats. Therefore \, we have
+a finer resolution after the decimal point. You can also consider this
+extra resolution as "MIDI-Cents" \, where 0.01 is equal to one cent!
+, f 46;
+#X text 617 189 Hertz;
+#X text 35 22 The MIDI protocol has data with 7 bits \, which gives
+us integer values from 0 to 127 A MIDI pitch value is in that range
+and the number 60 represents middle C. The native object [mtof] ("MIDI
+to Frequency") converts MIDI pitch data to hertz., f 56;
+#X text 42 560 This is the opposite conversion from [mtof] \, and we
+also have a native object for that: [ftom].;
+#X connect 0 0 3 0;
+#X connect 1 0 0 0;
+#X connect 1 0 31 0;
+#X connect 4 0 5 0;
+#X connect 5 0 6 0;
+#X connect 7 0 4 0;
+#X connect 8 0 4 0;
+#X connect 9 0 11 0;
+#X connect 10 0 9 0;
+#X connect 12 0 47 0;
+#X connect 13 0 12 0;
+#X connect 15 0 16 0;
+#X connect 15 0 32 0;
+#X connect 16 0 17 0;
+#X connect 20 0 21 0;
+#X connect 21 0 23 0;
+#X connect 24 0 20 0;
+#X connect 31 0 14 0;
+#X connect 32 0 19 0;
+#X connect 33 0 38 1;
+#X connect 34 0 38 0;
+#X connect 35 0 34 0;
+#X connect 37 0 35 0;
+#X connect 38 0 24 0;
+#X connect 47 0 48 0;
+#X connect 48 0 10 0;

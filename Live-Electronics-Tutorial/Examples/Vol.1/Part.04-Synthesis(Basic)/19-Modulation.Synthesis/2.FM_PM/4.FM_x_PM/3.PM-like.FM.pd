@@ -1,0 +1,50 @@
+#N canvas 575 23 513 639 12;
+#X declare -path else;
+#X obj 161 376 sine~;
+#X obj 137 278 f2s~ 50;
+#X obj 210 377 *~;
+#X obj 259 372 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 192 428 *~;
+#X obj 210 340 *~;
+#X obj 228 311 f2s~ 10;
+#X obj 228 284 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 137 256 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 137 465 +~;
+#X text 136 234 Carrier;
+#X text 318 370 Index;
+#X obj 137 510 sine~;
+#X obj 137 552 out~;
+#X obj 262 345 hsl 128 15 1 10 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 259 399 f2s~ 50;
+#X obj 231 255 hsl 128 15 0.5 2 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X text 41 129 Nonetheless \, it is quite common to see FM patches
+that do multiply the modulator frequency by the modulation index. This
+is clearly an adaptation to make the FM more like PM. This is quite
+easy to implement and does not complicate the patch very much.;
+#X text 223 428 <= multiply index by modulator freq., f 18;
+#X text 288 281 Harmonic Ratio;
+#X obj 316 22 declare -path else;
+#X text 41 59 We've seen how to generate FM patches that produce the
+same result as PM for didactical purposes only \, as it is not quite
+practical to do that (just use PM if that's what you want).;
+#X connect 0 0 4 0;
+#X connect 1 0 5 0;
+#X connect 1 0 9 0;
+#X connect 2 0 4 1;
+#X connect 3 0 15 0;
+#X connect 4 0 9 1;
+#X connect 5 0 0 0;
+#X connect 5 0 2 0;
+#X connect 6 0 5 1;
+#X connect 7 0 6 0;
+#X connect 8 0 1 0;
+#X connect 9 0 12 0;
+#X connect 12 0 13 0;
+#X connect 14 0 3 0;
+#X connect 15 0 2 1;
+#X connect 16 0 7 0;

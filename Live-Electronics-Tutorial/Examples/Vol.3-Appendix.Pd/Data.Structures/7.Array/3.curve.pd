@@ -1,0 +1,52 @@
+#N struct 1007-DS float x float y array 1007-table 1007-element;
+#N struct 1007-element float y;
+#N canvas 430 110 534 429 12;
+#X obj 378 295 pointer;
+#N canvas 420 281 476 299 template 0;
+#X text 59 30 Data Structure named "\$0-DS" holding coordinates floats
+"x/y" and an array named "\$0-table" using the element struct named
+"\$0-f" defined in the other subpatch., f 49;
+#X obj 126 229 plot curve \$0-table 900 2 0 0 20;
+#X obj 49 115 struct \$0-DS float x float y array \$0-table \$0-element
+;
+#X text 116 176 The drawing instruction now does specify that it draws
+a 'curve'., f 33;
+#X restore 360 181 pd template;
+#X obj 76 323 display;
+#X text 104 324 <= sets size;
+#X obj 269 325 append \$0-DS x y;
+#X obj 76 353 array size -s \$0-DS \$0-table;
+#X obj 63 153 initmess \; pd-\$0-display clear \, vis 1 \; \$0-pointer
+traverse pd-\$0-display \, bang \; \$0-coords 10 105 \; \$0-size 16
+;
+#N canvas 1005 255 334 221 \$0-display 1;
+#X scalar 1007-DS 10 105 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \;
+0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; \;;
+#X coords 0 221 1 220 0 0 0;
+#X restore 360 208 pd \$0-display;
+#X obj 378 265 r \$0-pointer;
+#X obj 269 284 r \$0-coords;
+#X obj 76 295 r \$0-size;
+#N canvas 442 23 480 272 \$0-element 0;
+#X obj 92 216 filledpolygon 0 0 1 -2 -2 2 -2 2 2 -2 2;
+#X text 89 186 draw a black dot to represent the value:;
+#X obj 167 138 struct \$0-element float y;
+#X text 33 28 The element is defined as a struct of name "\$0-element"
+containing now both a float named "x" and "y". Since these are the
+special variable names for the horizontal and vertical coordinates
+\, this means you can drag this element both vertically and horizonatly.
+;
+#X restore 360 155 pd \$0-element;
+#X text 66 21 If the [plot] object has a 'curve' argument \, it plots
+the array with a belzier curve. We can see then how the actual value
+position \, represented by the black dot \, may easily not fall inside
+the curve. Since Data Structure arrays do not offer "jump on click"
+\, it might be really hard to find the actual position of the array
+value so you can click on the dor and edit it. Open subpatches below
+for more details.;
+#X connect 0 0 4 2;
+#X connect 2 0 5 0;
+#X connect 4 0 5 1;
+#X connect 8 0 0 0;
+#X connect 9 0 4 0;
+#X connect 10 0 2 0;

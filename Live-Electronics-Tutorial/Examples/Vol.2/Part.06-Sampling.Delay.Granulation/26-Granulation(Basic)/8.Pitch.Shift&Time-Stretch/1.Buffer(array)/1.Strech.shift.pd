@@ -1,0 +1,239 @@
+#N canvas 263 104 915 523 12;
+#X declare -path else;
+#X obj 144 343 vline~;
+#X obj 82 320 float;
+#X text 618 317 cents;
+#X obj 608 337 nbx 5 16 -1e+37 1e+37 0 0 empty cents empty 0 -8 0 13
+-228856 -1 -1 -400 256;
+#X obj 519 337 nbx 4 16 -1e+37 1e+37 0 0 empty tempo empty 0 -8 0 13
+-228856 -1 -1 5 256;
+#X obj 698 337 nbx 4 16 64 8192 0 0 empty grao empty 0 -8 0 13 -228856
+-1 -1 4096 256;
+#X obj 144 270 + 64;
+#X text 481 317 velocidade (%);
+#X msg 808 370 2048;
+#X msg 815 392 4096;
+#X msg 820 413 8192;
+#X msg 799 348 1024;
+#X obj 144 295 wrap2;
+#X obj 163 444 out~;
+#X text 184 295 <= loop;
+#X obj 163 373 wrap2~;
+#X text 215 372 <= loop;
+#X obj 519 409 out~;
+#X text 65 245 counter;
+#X obj 375 388 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#N canvas 681 47 615 349 buffer 0;
+#X obj 347 165 table \$0-buffer;
+#X obj 232 175 soundfiler;
+#X obj 69 85 openpanel;
+#X obj 69 108 list append \$0-buffer;
+#X msg 69 132 read -resize \$1 \$2;
+#X obj 69 49 inlet;
+#X obj 281 206 s \$0-size;
+#X msg 232 237 \; tempo 5 \; cents -400 \; grao 4096;
+#X obj 232 205 t b f;
+#X obj 232 120 initmess read -resize bubul.wav \$0-buffer;
+#X connect 1 0 8 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X connect 5 0 2 0;
+#X connect 8 0 7 0;
+#X connect 8 1 6 0;
+#X connect 9 0 1 0;
+#X restore 375 414 pd buffer;
+#X obj 163 402 tabread4~ \$0-buffer;
+#X obj 82 269 bang~;
+#X obj 144 320 pack;
+#X obj 215 321 blocksize~ -ms;
+#X text 144 249 + grain size (= block size);
+#X text 475 67 Now for pitch shiffting. The transposition is given
+by a new grain size other than the block size. If it's bigger \, we
+read it faster \, and slower otherwise. In order to avoid a faster
+read speed \, we need to compensate by changing the read points of
+the overlapping grains., f 59;
+#X text 24 116 In this example \, the grain size is the same as the
+block size (64 by default but changeable inside subpatches with [block~]).
+Below we have a simple patch that shows us how to read a sample with
+[vline~]. We have a counter with the block size as the increment in
+a loop with the sample size \, this gives us the destination index
+to access with [tabread4~] \, the time of the grain is given by [blocksize~].
+;
+#X text 710 315 size;
+#X obj 799 441 s \$0-size;
+#X text 796 311 powers of 2, f 6;
+#X text 475 144 For instance \, an octave higher reads twice as fast.
+But if the next grain starts where it would for a normal speed \, this
+is compensated and that would be half the step. So if you have independent
+controls of size and step \, you have independent Pitch Shift and Time
+Stretch., f 59;
+#X text 475 226 The [block~] object only resizes the block to powers
+of two \, so these are the only possible grain sizes. Open the subpatch
+below to see how it works., f 59;
+#N canvas 472 113 921 744 Pitch-Shit/Time-Stretch 0;
+#X obj 173 697 outlet~;
+#X obj 134 42 inlet;
+#X obj 237 44 inlet;
+#X obj 362 44 inlet;
+#X obj 80 250 bang~;
+#X obj 243 522 phasor~;
+#X obj 173 632 *~;
+#X obj 237 100 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
+-236782 -1 -1 -400 256;
+#X obj 225 607 *~;
+#X obj 173 665 +~;
+#X obj 134 130 / 100;
+#X obj 174 347 +;
+#X msg 385 218 set \$1;
+#X obj 362 163 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
+-257904 -1 -1 4096 256;
+#X obj 134 101 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
+-204800 -1 -1 5 256;
+#X text 317 99 cents;
+#X floatatom 237 308 0 0 0 0 - - -;
+#X floatatom 301 323 0 0 0 0 - - -;
+#X obj 362 422 / 2;
+#X floatatom 362 454 8 0 0 0 - - -;
+#X floatatom 237 420 0 0 0 0 - - -;
+#X obj 107 467 +~;
+#X obj 80 294 f;
+#X text 389 422 overlap;
+#X text 117 102 %;
+#X obj 237 385 / 2;
+#X text 265 386 overlap;
+#X obj 116 306 wrap2;
+#X obj 237 232 hot;
+#X obj 107 494 wrap2~;
+#X obj 41 524 wrap2~;
+#X obj 225 633 ffdelay~ 4096 -samps;
+#X obj 237 133 cents2ratio;
+#X obj 41 576 tabread4~ \$0-buffer, f 9;
+#X obj 107 530 tabread4~ \$0-buffer, f 9;
+#X obj 237 261 *;
+#X obj 301 297 samps2ms;
+#X text 370 324 size in ms;
+#X text 376 140 size;
+#X obj 385 246 block~;
+#X obj 243 551 envelope~;
+#X obj 243 492 blocksize~ -hz;
+#X text 261 607 overlap;
+#X obj 165 500 r \$0-size;
+#X obj 134 206 hot;
+#X obj 134 235 *;
+#X obj 116 282 +;
+#X floatatom 237 166 8 0 0 0 - - -;
+#X text 192 166 ratio;
+#X obj 148 282 r \$0-size;
+#X obj 80 355 t f f;
+#X obj 107 393 pack f f f;
+#X text 172 308 new size;
+#X text 137 18 Speed;
+#X text 221 21 transposition;
+#X text 346 20 grain size;
+#X text 170 239 step;
+#X obj 134 260 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-204800 -1 -1 204.8 256;
+#X obj 107 423 envgen~;
+#X text 493 237 The step parameter defines the speed from a percentage
+of the grain size. This is the step where the next grain starts. The
+transposition in cents is converted to ratio and defines a new grain
+size., f 54;
+#X text 493 306 The [envgen~] object then reads the grain with a start
+point (dependent on the step parameter) \, a duration (from the grain
+size in ms) and destination point (from the "new size")., f 54;
+#X text 493 370 We need to read two overlapped grains. The second grain
+needs to have an adjusted read point according to the new grain size.
+The envelope also needs to be overlapped and a delay object is what
+actually performs the overlap. A [phasor~] drives the envelopes and
+its frequency depends on the block size (given by [blocksize~]).,
+f 54;
+#X floatatom 117 332 5 0 0 0 - - -;
+#X connect 1 0 14 0;
+#X connect 2 0 7 0;
+#X connect 3 0 13 0;
+#X connect 4 0 22 0;
+#X connect 5 0 40 0;
+#X connect 6 0 9 0;
+#X connect 7 0 32 0;
+#X connect 8 0 31 0;
+#X connect 9 0 0 0;
+#X connect 10 0 44 0;
+#X connect 11 0 51 2;
+#X connect 12 0 39 0;
+#X connect 13 0 12 0;
+#X connect 13 0 18 0;
+#X connect 13 0 28 1;
+#X connect 13 0 36 0;
+#X connect 13 0 44 1;
+#X connect 14 0 10 0;
+#X connect 16 0 11 1;
+#X connect 16 0 25 0;
+#X connect 17 0 51 1;
+#X connect 18 0 19 0;
+#X connect 19 0 31 1;
+#X connect 20 0 21 1;
+#X connect 21 0 29 0;
+#X connect 22 0 46 0;
+#X connect 22 0 50 0;
+#X connect 25 0 20 0;
+#X connect 27 0 22 1;
+#X connect 28 0 35 0;
+#X connect 28 1 35 1;
+#X connect 29 0 34 0;
+#X connect 30 0 33 0;
+#X connect 31 0 9 1;
+#X connect 32 0 47 0;
+#X connect 33 0 6 0;
+#X connect 34 0 8 0;
+#X connect 35 0 16 0;
+#X connect 36 0 17 0;
+#X connect 40 0 6 1;
+#X connect 40 0 8 1;
+#X connect 41 0 5 0;
+#X connect 43 0 29 2;
+#X connect 43 0 30 2;
+#X connect 44 0 45 0;
+#X connect 44 1 45 1;
+#X connect 45 0 57 0;
+#X connect 46 0 27 0;
+#X connect 47 0 28 0;
+#X connect 49 0 27 2;
+#X connect 49 0 62 0;
+#X connect 50 0 51 0;
+#X connect 50 1 11 0;
+#X connect 51 0 58 0;
+#X connect 57 0 46 1;
+#X connect 58 0 21 0;
+#X connect 58 0 30 0;
+#X restore 519 363 pd Pitch-Shit/Time-Stretch;
+#X obj 202 271 r \$0-size;
+#X text 273 269 sample size;
+#X obj 714 25 declare -path else;
+#X text 24 25 So far \, any change in speed alters the pitch and vice
+versa \, but now we'll implement independent pitch shiftting and time
+stretching with granular methods. This example is actually the basis
+of the phase vocoder example we'll see when dealing with complex FFT
+processes. Other examples and methods will be presented next.;
+#X connect 0 0 15 0;
+#X connect 1 0 6 0;
+#X connect 3 0 33 1;
+#X connect 4 0 33 0;
+#X connect 5 0 33 2;
+#X connect 6 0 12 0;
+#X connect 8 0 29 0;
+#X connect 9 0 29 0;
+#X connect 10 0 29 0;
+#X connect 11 0 29 0;
+#X connect 12 0 1 1;
+#X connect 12 0 23 0;
+#X connect 15 0 21 0;
+#X connect 19 0 20 0;
+#X connect 21 0 13 0;
+#X connect 22 0 1 0;
+#X connect 23 0 0 0;
+#X connect 24 0 23 1;
+#X connect 33 0 17 0;
+#X connect 34 0 12 2;
+#X connect 34 0 15 2;

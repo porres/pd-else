@@ -1,0 +1,41 @@
+#N canvas 615 76 548 670 12;
+#X declare -path else;
+#X obj 135 340 *~;
+#X obj 242 358 * -1;
+#X obj 209 382 clip~ -1 1;
+#X obj 276 322 nbx 5 22 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
+-228856 -1 -1 0 256;
+#X obj 279 296 hsl 128 17 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 153 231 nbx 5 22 -1e+37 1e+37 0 0 empty \$0-dB empty 0 -8 0
+15 -228856 -1 -1 0 256;
+#X text 237 234 dB;
+#X floatatom 153 289 7 0 0 0 - - -;
+#X obj 153 264 db2lin;
+#X obj 209 434 meter~;
+#X obj 290 427 graph~ 441 5;
+#X obj 209 601 out~;
+#X text 65 115 We have just two parameters in this patch \, a gain
+adjustment that we can use to give the input signal a boost and a peak
+clip value.;
+#X text 310 296 peak clip;
+#X obj 153 313 float2sig~ 10 1;
+#X text 207 290 Ratio;
+#X text 66 63 The native [clip~] object just clips the input signal
+into a given range \, so we can use it to generate clipping distortion.
+;
+#X obj 325 26 declare -path else;
+#X obj 134 185 play.file~ bubul.wav 1 1;
+#X connect 0 0 2 0;
+#X connect 1 0 2 1;
+#X connect 2 0 9 0;
+#X connect 2 0 10 0;
+#X connect 3 0 2 2;
+#X connect 3 0 1 0;
+#X connect 4 0 3 0;
+#X connect 5 0 8 0;
+#X connect 7 0 14 0;
+#X connect 8 0 7 0;
+#X connect 9 0 11 0;
+#X connect 14 0 0 1;
+#X connect 18 0 0 0;

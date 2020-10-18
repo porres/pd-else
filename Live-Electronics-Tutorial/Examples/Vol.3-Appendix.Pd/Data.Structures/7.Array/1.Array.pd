@@ -1,0 +1,107 @@
+#N struct 1006-DS float x float y array 1006-table 1006-element;
+#N struct 1006-element float y;
+#N canvas 298 172 820 539 12;
+#X obj 693 140 pointer;
+#X obj 433 173 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 266 256;
+#N canvas 505 382 518 264 template 0;
+#X obj 339 183 plot \$0-table;
+#X text 50 25 And now we have the Data Structure for the array. It
+is named "\$0-DS" and holds the coordinates floats "x/y" and an array
+named "\$0-table" using the array's element struct named "\$0-f" defined
+in the other subpatch., f 58;
+#X text 75 169 The [plot] object is used to give drawing instructions
+for arrays. It needs the array name ("\$0-table")., f 35;
+#X obj 74 116 struct \$0-DS float x float y array \$0-table \$0-element
+;
+#X restore 164 180 pd template;
+#X obj 469 429 pointer;
+#X obj 469 486 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 397 248 The [getsize] object is similar to [setsize]. It needs
+a struct name and an array name \, which can be given as arguments.
+It sends the array size when it receives a pointer to it. Here we use
+the [pointer] object to send it a pointer. We use the "traverse" message
+and then ask for the "next" object \, so we get the pointer to the
+first object instead of the head of the list., f 54;
+#X text 83 350 When you create a subpatch \, on its properties you
+have "Y units per pixel" set to "-1"., f 39;
+#X text 83 398 This makes the array values inverted \, so you need
+to change it to "1" in the propeties., f 39;
+#X text 51 326 IMPORTANT NOTE:, f 19;
+#X text 39 17 This example shows how to add and set an "array". An
+array is a collection of elements of the same data type \, which can
+be a float \, a symbol \, a text and even an array itself., f 49;
+#X obj 584 169 append \$0-DS x y;
+#X obj 433 200 setsize \$0-DS \$0-table;
+#X obj 469 457 getsize \$0-DS \$0-table;
+#X text 422 17 When creating an array \, you also need to set its size.
+We do it here with the [setsize] object. In a similar fashion \, this
+object needs a struct name \, the array name and a pointer to it in
+the right inlet., f 44;
+#X text 83 446 Check the properties for [pd display] and see that it
+has been corrected (right click on it and select "properties")., f
+39;
+#N canvas 1089 316 316 192 \$0-display 0;
+#X scalar 1006-DS 25 75 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \;
+0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0
+\; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \;
+0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; -2 \; -3
+\; -3.44444 \; -3.88889 \; -4.33333 \; -4.77778 \; -5.22222 \; -5.66667
+\; -6.11111 \; -6.55556 \; -7 \; -7.28572 \; -7.57143 \; -7.85714 \;
+-8.14286 \; -8.42857 \; -8.71429 \; -9 \; -9.28572 \; -9.57143 \; -9.85714
+\; -10.1429 \; -10.4286 \; -10.7143 \; -11 \; -11.05 \; -11.1 \; -11.15
+\; -11.2 \; -11.25 \; -11.3 \; -11.35 \; -11.4 \; -11.45 \; -11.5 \;
+-11.55 \; -11.6 \; -11.65 \; -11.7 \; -11.75 \; -11.8 \; -11.85 \;
+-11.9 \; -11.95 \; -12 \; -12 \; -12 \; -12 \; -12 \; -12 \; -12 \;
+-12 \; -12 \; -12 \; -12 \; -12 \; -12 \; -12 \; -12 \; -12 \; -12
+\; -12 \; -12 \; -12 \; -12 \; -12 \; -12 \; -12 \; -12 \; -12 \; -12
+\; -12 \; -12 \; -12 \; -12 \; -12 \; -11.8333 \; -11.6667 \; -11.5
+\; -11.3333 \; -11.1667 \; -11 \; -10.8333 \; -10.6667 \; -10.5 \;
+-10.3333 \; -10.1667 \; -10 \; -9.4 \; -8.8 \; -8.2 \; -7.6 \; -7 \;
+-6.57143 \; -6.14286 \; -5.71428 \; -5.28571 \; -4.85714 \; -4.42857
+\; -4 \; -3 \; -2 \; -1 \; 0 \; 1 \; 2 \; 3 \; 3.66667 \; 4.33333 \;
+5 \; 6 \; 7 \; 8 \; 9 \; 9 \; 10 \; 10 \; 10 \; 10 \; 10 \; 10 \; 10
+\; 10 \; 10 \; 10 \; 10 \; 10 \; 10 \; 10 \; 10 \; 10 \; 10 \; 10 \;
+10 \; 10 \; 10 \; 10 \; 10 \; 10.3333 \; 10.6667 \; 11 \; 11 \; 11
+\; 11 \; 11.5 \; 12 \; 13 \; 13 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0
+\; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \;
+0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0
+\; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \;
+0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0
+\; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; \;;
+#X coords 0 192 1 191 0 0 0;
+#X restore 275 168 pd \$0-display;
+#X obj 433 139 r \$0-size;
+#X obj 584 130 r \$0-coords;
+#X obj 693 113 r \$0-pointer;
+#X obj 469 400 message traverse pd-\$0-display \, next;
+#X obj 469 379 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 490 375 <= click;
+#X obj 75 219 initmess \; pd-\$0-display clear \, vis 1 \; \$0-pointer
+traverse pd-\$0-display \, bang \; \$0-coords 25 75 \; \$0-size 266
+;
+#N canvas 692 43 560 299 \$0-element 0;
+#X obj 180 147 struct \$0-element float y;
+#X text 77 38 The element of an array specifies the data type the array
+includes. It is here defined as a struct of name "\$0-element" containing
+only a float named "y". Since 'y' is also the special variable name
+for the vertical coordinate \, this means you can drag this element
+vertically \, as in Pd's arrays., f 61;
+#X text 83 198 Note that the struct name is the same as the subpatch
+name. This is required!, f 61;
+#X restore 164 154 pd \$0-element;
+#X text 40 83 Things now get a bit more complicated as we need a [struct]
+to define the element of an array in a separate subpatch ([pd \$0-element]).
+Check the subpatches below., f 49;
+#X connect 0 0 10 2;
+#X connect 1 0 11 0;
+#X connect 3 0 12 0;
+#X connect 10 0 11 1;
+#X connect 12 0 4 0;
+#X connect 16 0 1 0;
+#X connect 17 0 10 0;
+#X connect 18 0 0 0;
+#X connect 19 0 3 0;
+#X connect 20 0 19 0;

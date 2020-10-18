@@ -1,0 +1,81 @@
+#N canvas 438 58 837 582 12;
+#X declare -path else;
+#X obj 500 157 impulse~ 300;
+#X text 558 134 Hz;
+#X obj 275 183 nbx 5 14 1 100 0 1 empty empty empty 0 -8 0 10 -228856
+-1 -1 24 256;
+#X obj 194 260 cnv 15 198 138 empty empty empty 20 12 0 14 -228856
+-66577 0;
+#N canvas 0 22 474 324 (subpatch) 0;
+#X array impulse 4099 float 0;
+#X coords 0 1 4098 -1 200 140 1 0 0;
+#X restore 193 259 graph;
+#X text 176 257 1;
+#X text 171 382 -1;
+#X obj 58 261 nbx 5 14 -1e+37 1e+37 0 1 empty empty empty 0 -8 0 10
+-228856 -1 -1 79 256;
+#X obj 58 322 out~;
+#X obj 516 195 out~;
+#X obj 500 265 graph~;
+#X obj 500 134 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 699 450 setdsp~ 1;
+#X obj 609 471 impseq~;
+#X obj 609 510 dac~;
+#X obj 609 444 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 36 52 Not a surprise \, but here's another waveform you can
+generate with a sum of partials \, but that you'd need an infinite
+sum to generate a perfect waveform., f 52;
+#X text 36 103 In the case of impulses \, all partials need to have
+the same amplitude \, and this means that an impulse contains all frequencies
+equally distributed. See [pd impulse] for more., f 52;
+#X text 58 180 enter the number of harmonics:;
+#N canvas 334 220 531 395 Impulse 0;
+#X obj 83 24 inlet;
+#X floatatom 83 58 5 0 0 0 - - -;
+#X msg 161 282 normalize 1;
+#X obj 161 253 trigger bang anything;
+#X obj 161 200 list prepend sinesum 4096;
+#X obj 161 226 list trim;
+#X text 156 56 Impulse: all partials are equal to 1!;
+#X obj 83 86 trigger bang float bang;
+#X obj 162 172 list store;
+#X msg 162 140 append 1;
+#X obj 162 114 until;
+#X obj 305 318 send impulse;
+#X connect 0 0 1 0;
+#X connect 1 0 7 0;
+#X connect 2 0 11 0;
+#X connect 3 0 2 0;
+#X connect 3 1 11 0;
+#X connect 4 0 5 0;
+#X connect 5 0 3 0;
+#X connect 7 0 8 0;
+#X connect 7 1 10 0;
+#X connect 7 2 8 1;
+#X connect 8 0 4 0;
+#X connect 9 0 8 0;
+#X connect 10 0 9 0;
+#X restore 275 213 pd Impulse;
+#X text 54 434 A perfect impulse occurs when we have only one single
+sample with a value other than 0 (usually 1). This type of signal is
+widely used as a type of trigger \, sort of like a "bang" \, but with
+audio rate timing resolution., f 73;
+#X text 54 486 The [impseq~] external from ELSE generates a sequence
+of impulses. By default \, it generates an impulse with an amplitude
+of 1 \, and we can use bangs to generate it., f 73;
+#X text 425 58 The [impulse~] (or [imp~] for short) object from ELSE
+is an impulse oscillator that generated a single sample with a value
+of 1 at the beggining of each period., f 49;
+#X obj 636 15 declare -path else;
+#X obj 58 289 tabosc4~ impulse;
+#X connect 0 0 9 0;
+#X connect 0 0 10 0;
+#X connect 2 0 19 0;
+#X connect 7 0 24 0;
+#X connect 11 0 0 0;
+#X connect 13 0 14 1;
+#X connect 13 0 14 0;
+#X connect 15 0 13 0;
+#X connect 24 0 8 0;

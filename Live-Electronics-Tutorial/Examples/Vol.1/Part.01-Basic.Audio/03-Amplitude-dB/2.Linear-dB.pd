@@ -1,0 +1,72 @@
+#N canvas 648 84 534 720 12;
+#X declare -path else;
+#X obj 135 342 nbx 8 14 1e-05 1 1 0 empty empty empty 18 -6 0 10 -228856
+-1 -1 1e-05 256;
+#X obj 135 485 nbx 8 14 0 100 0 0 empty empty empty 18 -6 0 10 -228856
+-1 -1 0 256;
+#X obj 138 320 hsl 128 15 1e-05 1 0 0 \$0-linear empty empty -2 -8
+0 10 -228856 -1 -1 0 1;
+#X floatatom 135 389 0 0 0 0 - - -;
+#X floatatom 135 435 0 0 0 0 - - -;
+#X obj 135 366 / 1e-05;
+#X floatatom 135 534 7 0 0 0 - - -;
+#X obj 135 509 expr pow(10 \, $f1 / 20);
+#X obj 135 559 * 1e-05;
+#X text 67 578 linear;
+#X text 59 593 amplitude;
+#X text 84 434 log =>;
+#X obj 135 460 * 20;
+#X text 108 482 dB;
+#X obj 184 200 cnv 15 215 40 empty empty empty 20 12 0 14 -228856 -66577
+0;
+#X text 257 218 10;
+#X text 194 205 dB = 20 Log (amp / 0.00001);
+#X obj 369 493 rmstodb;
+#X obj 369 518 nbx 8 14 0 100 0 0 empty empty empty 18 -6 0 10 -228856
+-1 -1 0 256;
+#X obj 369 469 nbx 8 14 1e-05 1 1 0 empty \$0-linear empty 18 -6 0
+10 -228856 -1 -1 1e-05 256;
+#X obj 369 541 dbtorms;
+#X text 41 51 Amplitude values are normally expressed in dB. Amplitude
+values between -1 and 1 \, as we have in digital audio \, are linear
+values \, as opposed to values in dB \, which are logarithmic., f
+62;
+#X text 51 256 Now input amplitudes from 1e-05 to 1 return values between
+0 and 100 dB. See this conversion and the opposite conversion being
+done in a patch and with native Pd objects;
+#X text 192 533 <= ratio;
+#X text 194 366 <= reference amplitude;
+#X text 222 341 <= linear amplitude;
+#X text 72 389 ratio =>;
+#X text 318 467 linear;
+#X text 347 515 dB;
+#X text 315 573 linear;
+#X text 84 637 The [rmstodb] and [dbtorms] objects give the idea that
+"linear" is a synonim of "rms" \, which is not true. The "RMS" can
+actually be expressed either as a linear amplitude or in dB., f 54
+;
+#X obj 135 412 log 10;
+#X text 41 114 A dB value indicates a proportion/ratio to a reference
+amplitude. Hence \, it is not different than a musical interval! There
+are different types of dB scale \, each with a different reference
+value. Considering the reference as 1e-05 (or 0.00001) \, the conversion
+to dB from a linear amplitude ("amp") is given as:, f 62;
+#X obj 300 19 declare -path else;
+#X obj 135 587 display;
+#X obj 369 572 display;
+#X text 191 412 convert ratio to a log scale;
+#X connect 0 0 5 0;
+#X connect 1 0 7 0;
+#X connect 2 0 0 0;
+#X connect 3 0 31 0;
+#X connect 4 0 12 0;
+#X connect 5 0 3 0;
+#X connect 6 0 8 0;
+#X connect 7 0 6 0;
+#X connect 8 0 34 0;
+#X connect 12 0 1 0;
+#X connect 17 0 18 0;
+#X connect 18 0 20 0;
+#X connect 19 0 17 0;
+#X connect 20 0 35 0;
+#X connect 31 0 4 0;
