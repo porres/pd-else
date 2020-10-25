@@ -346,13 +346,8 @@ static void seq_setmode(t_seq *x, int newmode){
     }
 }
 
-static void seq_settimescale(t_seq *x, float newtimescale){
-    if (newtimescale < 1e-20)
-        x->x_newtimescale = 1e-20;
-    else if (newtimescale > 1e20)
-        x->x_newtimescale = 1e20;
-    else
-        x->x_newtimescale = newtimescale;
+static void seq_settimescale(t_seq *x, t_floatarg f){
+    x->x_newtimescale = f < 1e-20 ? 1e-20 : f > 1e20 ? 1e20 : f;
 }
 
 static void seq_clocktick(t_seq *x){
@@ -489,12 +484,16 @@ static void seq_record(t_seq *x){ // stops playback, resets recording
 }
 
 static void seq_start(t_seq *x, t_floatarg f){
-    if (f < -SEQ_STARTEPSILON) // FIXME
+    if(f < -SEQ_STARTEPSILON) // FIXME
         seq_setmode(x, SEQ_SLAVEMODE); // ticks
     else{
         seq_settimescale(x, (f > SEQ_STARTEPSILON ? (100. / f) : 1.));
         seq_setmode(x, SEQ_PLAYMODE);  /* CHECKED 'start' stops recording */
     }
+}
+
+static void seq_dump(t_seq *x){
+    seq_start(x, 1e20);
 }
 
 static void seq_stop(t_seq *x){
@@ -573,11 +572,11 @@ static void seq_tempo(t_seq *x, t_floatarg f){ // not available in Max
         if (x->x_mode == SEQ_PLAYMODE)
             seq_startplayback(x, 0);
     }
-    /* FIXME else pause, LATER reverse playback if (f < -SEQ_TEMPOEPSILON) */
+    // FIXME else pause, LATER reverse playback if (f < -SEQ_TEMPOEPSILON)
 }
 
 static int seq_eventcomparehook(const void *e1, const void *e2){
-    return (((t_seqevent *)e1)->e_delta > ((t_seqevent *)e2)->e_delta ? 1 : -1);
+    return(((t_seqevent *)e1)->e_delta > ((t_seqevent *)e2)->e_delta ? 1 : -1);
 }
 
 static int seq_tempocomparehook(const void *t1, const void *t2){
@@ -856,10 +855,14 @@ static void seq_dowrite(t_seq *x, t_symbol *fn){
 }
 
 static void seq_readhook(t_pd *z, t_symbol *fn, int ac, t_atom *av){
+    ac = 0;
+    av = NULL;
     seq_doread((t_seq *)z, fn, 0);
 }
 
 static void seq_writehook(t_pd *z, t_symbol *fn, int ac, t_atom *av){
+    ac = 0;
+    av = NULL;
     seq_dowrite((t_seq *)z, fn);
 }
 
@@ -941,6 +944,7 @@ void midi_setup(void){
     class_addmethod(seq_class, (t_method)seq_record, gensym("record"), 0);
     class_addmethod(seq_class, (t_method)seq_start, gensym("start"), A_DEFFLOAT, 0);
     class_addmethod(seq_class, (t_method)seq_stop, gensym("stop"), 0);
+    class_addmethod(seq_class, (t_method)seq_dump, gensym("dump"), 0);
     class_addmethod(seq_class, (t_method)seq_read, gensym("open"), A_DEFSYM, 0);
     class_addmethod(seq_class, (t_method)seq_write, gensym("save"), A_DEFSYM, 0);
     class_addmethod(seq_class, (t_method)seq_panic, gensym("panic"), 0);
