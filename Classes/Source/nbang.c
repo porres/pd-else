@@ -43,8 +43,8 @@ static void nbang_proxy_setup(void){
 // non proxy stuff
 static void nbang_bang(t_nbang *x){
     if(x->x_count < x->x_n){
-        outlet_bang(((t_object *)x)->ob_outlet);
         x->x_count++;
+        outlet_bang(((t_object *)x)->ob_outlet);
     }
     else
         outlet_bang(x->x_r_bng);
