@@ -51,9 +51,7 @@ static void nbang_bang(t_nbang *x){
 }
 
 static void nbang_n(t_nbang *x, t_floatarg f){
-    if(f < 1)
-        f = 1;
-    x->x_n = (int)f;
+    x->x_n = f < 0 ? 0 : (int)f;
 }
 
 static void nbang_count(t_nbang *x, t_floatarg f){
@@ -68,8 +66,8 @@ static void nbang_reset(t_nbang *x){
 
 static void *nbang_new(t_floatarg f1, t_floatarg f2){
     t_nbang *x = (t_nbang *)pd_new(nbang_class);
-    if(f1 < 1)
-        (f1 = 1);
+    if(f1 < 0)
+        (f1 = 0);
     x->x_n = (int)f1;
     if(f2 < 0)
         (f2 = 0);
@@ -83,7 +81,7 @@ static void *nbang_new(t_floatarg f1, t_floatarg f2){
 
 void nbang_setup(void){
     nbang_class = class_new(gensym("nbang"), (t_newmethod)nbang_new, 0, sizeof(t_nbang),
-                            0, A_DEFFLOAT, A_DEFFLOAT, 0);
+        0, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addbang(nbang_class, nbang_bang);
     class_addmethod(nbang_class, (t_method)nbang_reset, gensym("reset"), 0);
     class_addmethod(nbang_class, (t_method)nbang_n, gensym("n"), A_DEFFLOAT, 0);
