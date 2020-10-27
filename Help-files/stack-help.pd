@@ -1,4 +1,4 @@
-#N canvas 602 76 564 537 10;
+#N canvas 602 76 561 571 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -26,22 +26,22 @@
 #X restore 3 3 graph;
 #X obj 4 278 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 421 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 431 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 476 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 483 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 145 430 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 125 439 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 145 287 cnv 17 3 103 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 125 287 cnv 17 3 113 empty empty 0 5 9 0 16 -228856 -162280
 0;
-#X obj 4 507 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 543 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 201 285 bang;
-#X obj 145 396 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 181 285 bang;
+#X obj 125 406 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 177 396 anything;
-#X text 177 430 anything;
-#X text 195 316 clear;
+#X text 157 406 anything;
+#X text 157 439 anything;
+#X text 175 328 clear;
 #X obj 282 247 bng 17 250 50 0 empty empty empty 17 7 1 10 -228856
 -1 -1;
 #X msg 205 196 clear;
@@ -49,87 +49,127 @@
 #X obj 195 171 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X msg 296 194 1 2 \, 3 4 \, 5 6;
-#X text 231 430 - the stored message;
-#X obj 145 451 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 211 439 - the stored message;
+#X obj 125 460 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 201 451 bang;
-#X text 231 451 - when the stack is empty;
+#X text 181 460 bang;
+#X text 211 460 - when the stack is empty;
 #X text 168 152 output;
-#X text 231 396 - input messages to be stacked, f 38;
-#X text 231 285 - outputs and removes a message, f 38;
-#X text 231 315 - clears the stack, f 38;
+#X text 211 406 - input messages to be stacked, f 38;
+#X text 211 285 - outputs and removes a message, f 38;
+#X text 211 327 - clears the stack, f 38;
 #X text 303 247 bang if empty;
 #X floatatom 262 142 5 0 0 0 - - -;
-#N canvas 561 74 377 247 dump 0;
-#X obj 171 140 bng 17 250 50 0 empty empty empty 17 7 1 10 -228856
--1 -1;
-#X obj 114 137 else/display;
-#X text 192 140 bang if empty;
-#X floatatom 171 79 5 0 0 0 - - -;
-#X text 212 78 store messages;
-#X msg 114 77 dump;
-#X obj 114 175 print;
-#X obj 114 110 else/stack;
-#X text 55 38 A dump message outputs all stored messages.;
-#X connect 1 0 6 0;
-#X connect 3 0 7 1;
-#X connect 5 0 7 0;
-#X connect 7 0 1 0;
-#X connect 7 1 0 0;
-#X restore 495 203 pd dump;
 #X text 303 141 store messages;
 #X msg 282 167 a \, b c \, list x y \, symbol hi;
-#X text 201 300 dump;
+#X text 181 300 dump;
 #X msg 152 182 fifo;
 #X msg 116 182 lifo;
-#X text 201 331 fifo;
-#X text 231 331 - set order to 'fifo';
-#X text 201 346 lifo;
-#X text 231 346 - set order to 'lifo';
-#X text 175 485 1) symbol - sets order \, <fifo> (default) or <lifo>
+#X text 181 343 fifo;
+#X text 211 343 - set order to 'fifo';
+#X text 181 358 lifo;
+#X text 211 358 - set order to 'lifo';
+#X text 125 492 1) symbol - sets order \, <fifo> (default) or <lifo>
 ;
 #X text 68 84 [stack] is an abstraction based on [text] that stacks
 and stores messages and removes and outputs them one by one when receiving
 bangs. An argument defines the order \, which can be 'fifo' (first
 in first out) or 'lifo' (last in first out)., f 67;
-#X text 231 300 - outputs all messages and clears them;
+#X text 211 300 - outputs all messages and clears them;
 #X obj 195 221 else/stack lifo;
-#X text 201 361 open;
-#X text 231 361 - opens [text] window;
-#X text 195 376 close;
-#X text 231 376 - closes [text] window;
-#N canvas 817 250 504 285 open 0;
-#X obj 244 204 bng 17 250 50 0 empty empty empty 17 7 1 10 -228856
+#A saved;
+#X text 181 373 open;
+#X text 211 373 - opens [text] window;
+#X text 175 388 close;
+#X text 211 388 - closes [text] window;
+#N canvas 817 250 503 298 open 0;
+#X obj 258 219 bng 17 250 50 0 empty empty empty 17 7 1 10 -228856
 -1 -1;
-#X obj 157 202 else/display;
-#X obj 157 128 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 171 217 else/display;
+#X obj 171 143 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 258 151 1 2 \, 3 4 \, 5 6;
-#X text 265 204 bang if empty;
-#X floatatom 224 99 5 0 0 0 - - -;
-#X text 265 98 store messages;
-#X msg 244 124 a \, b c \, list x y \, symbol hi;
+#X msg 272 166 1 2 \, 3 4 \, 5 6;
+#X text 279 219 bang if empty;
+#X floatatom 238 114 5 0 0 0 - - -;
+#X text 279 113 store messages;
+#X msg 258 139 a \, b c \, list x y \, symbol hi;
+#X obj 171 193 else/stack, f 15;
+#A saved;
+#X msg 85 144 open;
+#X msg 122 144 close;
 #X text 82 29 The [stack] object is based on Pd Vanilla's [text] object.
-And you can open its window with the 'vis' message. This also means
-you can manually edit the contents of stack!;
-#X obj 157 178 else/stack, f 15;
-#X msg 71 129 open;
-#X msg 108 129 close;
-#X connect 2 0 9 0;
-#X connect 3 0 9 1;
-#X connect 5 0 9 1;
-#X connect 7 0 9 1;
-#X connect 9 0 1 0;
-#X connect 9 1 0 0;
-#X connect 10 0 9 0;
-#X connect 11 0 9 0;
-#X restore 489 226 pd open \; close;
-#X connect 24 0 51 0;
-#X connect 26 0 51 0;
-#X connect 27 0 51 1;
-#X connect 37 0 51 1;
-#X connect 40 0 51 1;
-#X connect 42 0 51 0;
-#X connect 43 0 51 0;
-#X connect 51 0 25 0;
-#X connect 51 1 23 0;
+And you can open its window with the 'open' message and close it with
+the 'close' message. Clicking on the object also opens it. This also
+means you can manually edit the contents of stack!;
+#X connect 2 0 8 0;
+#X connect 3 0 8 1;
+#X connect 5 0 8 1;
+#X connect 7 0 8 1;
+#X connect 8 0 1 0;
+#X connect 8 1 0 0;
+#X connect 9 0 8 0;
+#X connect 10 0 8 0;
+#X restore 490 187 pd open \; close;
+#N canvas 800 197 377 247 dump/export 0;
+#X obj 171 159 bng 17 250 50 0 empty empty empty 17 7 1 10 -228856
+-1 -1;
+#X obj 114 156 else/display;
+#X text 192 159 bang if empty;
+#X floatatom 171 98 5 0 0 0 - - -;
+#X text 212 97 store messages;
+#X msg 114 96 dump;
+#X obj 114 194 print;
+#X obj 114 129 else/stack;
+#A saved;
+#X msg 57 94 export;
+#X text 53 17 A dump message outputs all stored messages and clears
+the memory. The export message outputs all stored messages but keeps
+the information., f 42;
+#X connect 1 0 6 0;
+#X connect 3 0 7 1;
+#X connect 5 0 7 0;
+#X connect 7 0 1 0;
+#X connect 7 1 0 0;
+#X connect 8 0 7 0;
+#X restore 455 221 pd dump/export;
+#N canvas 800 197 435 311 store 0;
+#X obj 229 224 bng 17 250 50 0 empty empty empty 17 7 1 10 -228856
+-1 -1;
+#X obj 131 222 else/display;
+#X text 250 224 bang if empty;
+#X msg 62 159 store \$1;
+#X obj 62 135 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X text 90 51 You can store messages with the object if it has the
+'-store' flag \, or you can set this via the store message., f 41
+;
+#X msg 130 147 open;
+#X msg 229 154 a \, b c \, list x y \, symbol hi;
+#X msg 184 126 clear;
+#X obj 184 151 t a b;
+#X obj 130 199 else/stack -store;
+#A saved a \; b c \; list x y \; list hi \;;
+#X connect 3 0 10 0;
+#X connect 4 0 3 0;
+#X connect 6 0 10 0;
+#X connect 7 0 10 1;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X connect 9 1 7 0;
+#X connect 10 0 1 0;
+#X connect 10 1 0 0;
+#X restore 491 243 pd store;
+#X obj 4 513 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 171 522 -store: stores stack with the patch;
+#X text 169 314 export;
+#X text 211 314 - outputs all messages;
+#X text 95 221 click to open => the editor, f 16;
+#X connect 24 0 50 0;
+#X connect 26 0 50 0;
+#X connect 27 0 50 1;
+#X connect 37 0 50 1;
+#X connect 39 0 50 1;
+#X connect 41 0 50 0;
+#X connect 42 0 50 0;
+#X connect 50 0 25 0;
+#X connect 50 1 23 0;
