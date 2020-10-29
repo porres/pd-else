@@ -42,40 +42,42 @@
 #X restore 2 3 graph;
 #X text 200 351 - goes to a position index in the sequence (from 1)
 ;
-#N canvas 920 150 648 473 +examples 0;
-#X obj 324 36 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#N canvas 920 150 666 484 +examples 0;
+#X obj 338 36 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 324 72 else/tempo 120 100;
-#X floatatom 228 130 5 0 0 0 - - -;
-#X msg 228 67 up;
-#X msg 259 67 down;
-#X msg 179 67 alt \$1;
-#X obj 179 45 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 338 72 else/tempo 120 100;
+#X floatatom 242 130 5 0 0 0 - - -;
+#X msg 242 67 up;
+#X msg 273 67 down;
+#X msg 193 67 alt \$1;
+#X obj 193 45 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 352 25 Use [count] if you want to also have the sequence being
+#X text 366 25 Use [count] if you want to also have the sequence being
 read in different directions., f 29;
-#X obj 354 107 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 368 107 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 354 133 else/tempo 120 100;
-#X floatatom 354 191 5 0 0 0 - - -;
-#X text 383 101 Or [rand.i] for random input values., f 20;
-#X obj 228 105 else/count 1 11;
-#X obj 354 166 else/rand.i 1 11;
-#X obj 64 98 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
+#X obj 368 133 else/tempo 120 100;
+#X floatatom 368 191 5 0 0 0 - - -;
+#X text 397 101 Or [rand.i] for random input values., f 20;
+#X obj 242 105 else/count 1 11;
+#X obj 368 166 else/rand.i 1 11;
+#X obj 78 98 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
-#X obj 227 261 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 64 155 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X obj 241 261 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 100 256;
+#X obj 78 155 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 64 124 else/tempo 120 100;
-#X obj 332 326 else/decay2~ 50 2000;
-#X obj 317 356 *~;
-#X obj 317 391 else/out~;
-#X obj 227 326 else/bl.saw~;
-#X obj 227 288 trigger float bang;
-#X obj 227 232 else/sequencer 50 - 100 - 80 120 60 - 150 100 70;
-#X text 530 218 A sequence of frequencies with pauses., f 15;
-#X text 55 60 Feed it with bang from tempo, f 15;
+#X obj 78 124 else/tempo 120 100;
+#X obj 346 326 else/decay2~ 50 2000;
+#X obj 331 356 *~;
+#X obj 331 391 else/out~;
+#X obj 241 326 else/bl.saw~;
+#X obj 241 288 trigger float bang;
+#X obj 241 232 else/sequencer 50 - 100 - 80 120 60 - 150 100 70;
+#X text 544 218 A sequence of frequencies with pauses., f 15;
+#X text 69 60 Feed it with bang from tempo, f 15;
+#X obj 34 158 sel 0;
+#X msg 34 181 goto 1;
 #X connect 0 0 1 0;
 #X connect 1 0 12 0;
 #X connect 2 0 23 0;
@@ -89,6 +91,7 @@ read in different directions., f 29;
 #X connect 12 0 2 0;
 #X connect 13 0 10 0;
 #X connect 14 0 17 0;
+#X connect 14 0 26 0;
 #X connect 15 0 22 0;
 #X connect 16 0 23 0;
 #X connect 17 0 16 0;
@@ -98,6 +101,8 @@ read in different directions., f 29;
 #X connect 22 0 21 0;
 #X connect 22 1 18 0;
 #X connect 23 0 15 0;
+#X connect 26 0 27 0;
+#X connect 27 0 23 0;
 #X restore 471 263 pd +examples;
 #X obj 185 285 print sequence;
 #X text 200 320 - gets element(s) from sequence;
