@@ -1,16 +1,16 @@
-#N canvas 499 162 565 404 10;
+#N canvas 675 89 565 404 10;
 #X obj 4 238 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 309 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 344 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 108 318 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 104 318 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 3 376 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 25 40 cnv 4 4 4 empty empty Signal 0 28 2 18 -233017 -1 0;
-#X obj 108 245 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 104 245 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 160 259 bang;
 #X text 145 318 signal;
@@ -36,7 +36,6 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 154 274 float;
 #X obj 79 40 cnv 4 4 4 empty empty sequencer 0 28 2 18 -233017 -1 0
 ;
 #X text 124 289 set <list>;
@@ -77,5 +76,6 @@ or a bang \, [sequencer~] sends a signal value from a given sequence.
 f 55;
 #X text 194 259 - control trigger to generate value from sequence,
 f 55;
-#X connect 31 0 23 0;
-#X connect 33 0 31 0;
+#X text 112 274 goto <float>;
+#X connect 30 0 22 0;
+#X connect 32 0 30 0;
