@@ -72,7 +72,7 @@
 #X obj 187 81 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 91 234 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 70 256;
+-228856 -1 -1 50 256;
 #X obj 187 117 else/tempo 120 100;
 #X obj 196 289 else/decay2~ 50 2000;
 #X obj 181 319 *~;
@@ -159,7 +159,7 @@ read in different directions., f 44;
 #X connect 5 0 8 0;
 #X connect 7 0 4 0;
 #X connect 8 0 7 0;
-#X restore 489 278 pd chords;
+#X restore 489 276 pd chords;
 #X text 118 349 goto <float>;
 #X text 160 334 float;
 #X text 200 333 - sets index (from 1) and outputs it;
