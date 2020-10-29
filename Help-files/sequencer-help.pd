@@ -33,28 +33,30 @@
 #X obj 67 40 cnv 4 4 4 empty empty sequencer 0 28 2 18 -233017 -1 0
 ;
 #X text 130 365 set <list>;
-#N canvas 803 160 399 333 example 0;
-#X obj 159 30 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#N canvas 947 183 399 399 example 0;
+#X obj 73 34 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
+;
 #X obj 73 153 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 159 91 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-228856 -1 -1 150 256;
+#X obj 73 91 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 159 56 else/tempo 120 100;
-#X obj 159 178 else/decay2~ 50 2000;
-#X obj 144 208 *~;
-#X obj 144 243 else/out~;
-#X text 251 94 A sequence of frequencies., f 13;
-#X obj 73 178 else/bl.saw~;
-#X obj 73 124 else/sequencer 50 100 80 120 60 150 100 70;
+#X obj 73 60 else/tempo 120 100;
+#X obj 178 218 else/decay2~ 50 2000;
+#X obj 163 248 *~;
+#X obj 163 283 else/out~;
+#X obj 73 218 else/bl.saw~;
+#X obj 73 180 trigger float bang;
+#X obj 73 124 else/sequencer 50 - 100 - 80 120 60 - 150 100 70;
+#X text 136 98 A sequence of frequencies with pauses.;
 #X connect 0 0 3 0;
 #X connect 1 0 8 0;
-#X connect 2 0 4 0;
 #X connect 2 0 9 0;
 #X connect 3 0 2 0;
 #X connect 4 0 5 1;
 #X connect 5 0 6 0;
-#X connect 8 0 5 0;
+#X connect 7 0 5 0;
+#X connect 8 0 7 0;
+#X connect 8 1 4 0;
 #X connect 9 0 1 0;
 #X restore 483 236 pd example;
 #X obj 204 250 else/display;
@@ -66,91 +68,97 @@
 #X restore 2 3 graph;
 #X text 200 348 - goes to a position index in the sequence (from 1)
 ;
-#N canvas 457 198 744 472 +examples 0;
-#X obj 196 98 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#N canvas 719 198 751 455 +examples 0;
+#X obj 187 81 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X obj 100 251 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 196 134 else/tempo 120 100;
-#X obj 196 276 else/decay2~ 50 2000;
-#X obj 181 306 *~;
-#X obj 181 341 else/out~;
-#X obj 100 276 else/bl.saw~;
-#X obj 100 222 else/sequencer 50 100 80 120 60 150 100 70;
-#X floatatom 100 192 5 0 0 0 - - -;
-#X msg 100 129 up;
-#X msg 131 129 down;
-#X msg 51 129 alt \$1;
-#X obj 51 107 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X text 80 45 Use [count] if you want to also have the sequence being
+#X obj 91 234 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 70 256;
+#X obj 187 117 else/tempo 120 100;
+#X obj 196 289 else/decay2~ 50 2000;
+#X obj 181 319 *~;
+#X obj 181 354 else/out~;
+#X obj 91 289 else/bl.saw~;
+#X floatatom 91 175 5 0 0 0 - - -;
+#X msg 91 112 up;
+#X msg 122 112 down;
+#X msg 42 112 alt \$1;
+#X obj 42 90 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
+;
+#X text 71 28 Use [count] if you want to also have the sequence being
 read in different directions., f 44;
-#X obj 529 94 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 431 83 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 448 247 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 529 130 else/tempo 120 100;
-#X obj 529 272 else/decay2~ 50 2000;
-#X obj 514 302 *~;
-#X obj 514 337 else/out~;
-#X obj 448 272 else/bl.saw~;
-#X obj 448 218 else/sequencer 50 100 80 120 60 150 100 70;
-#X floatatom 448 188 5 0 0 0 - - -;
-#X obj 448 163 else/rand.i 1 8;
-#X text 439 62 Or [rand.i] for random input values.;
-#X obj 100 167 else/count 1 8;
-#X text 426 247 hz;
-#X text 80 249 hz;
+#X obj 431 226 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 150 256;
+#X obj 431 109 else/tempo 120 100;
+#X floatatom 431 167 5 0 0 0 - - -;
+#X text 430 35 Or [rand.i] for random input values., f 20;
+#X text 409 226 hz;
+#X text 71 232 hz;
+#X obj 91 205 else/sequencer 50 - 100 - 80 120 60 - 150 100 70;
+#X obj 91 257 trigger float bang;
+#X obj 91 150 else/count 1 11;
+#X obj 431 142 else/rand.i 1 11;
+#X obj 431 196 else/sequencer 50 - 100 - 80 120 60 - 150 100 70;
+#X obj 536 283 else/decay2~ 50 2000;
+#X obj 521 313 *~;
+#X obj 521 348 else/out~;
+#X obj 431 283 else/bl.saw~;
+#X obj 431 251 trigger float bang;
 #X connect 0 0 2 0;
-#X connect 1 0 6 0;
-#X connect 2 0 3 0;
-#X connect 2 0 25 0;
+#X connect 1 0 21 0;
+#X connect 2 0 22 0;
 #X connect 3 0 4 1;
 #X connect 4 0 5 0;
 #X connect 6 0 4 0;
-#X connect 7 0 1 0;
-#X connect 8 0 7 0;
-#X connect 9 0 25 0;
-#X connect 10 0 25 0;
-#X connect 11 0 25 0;
-#X connect 12 0 11 0;
-#X connect 14 0 16 0;
-#X connect 15 0 20 0;
-#X connect 16 0 17 0;
-#X connect 16 0 23 0;
-#X connect 17 0 18 1;
-#X connect 18 0 19 0;
-#X connect 20 0 18 0;
-#X connect 21 0 15 0;
-#X connect 22 0 21 0;
-#X connect 23 0 22 0;
-#X connect 25 0 8 0;
+#X connect 7 0 20 0;
+#X connect 8 0 22 0;
+#X connect 9 0 22 0;
+#X connect 10 0 22 0;
+#X connect 11 0 10 0;
+#X connect 13 0 15 0;
+#X connect 14 0 29 0;
+#X connect 15 0 23 0;
+#X connect 16 0 24 0;
+#X connect 20 0 1 0;
+#X connect 21 0 6 0;
+#X connect 21 1 3 0;
+#X connect 22 0 7 0;
+#X connect 23 0 16 0;
+#X connect 24 0 14 0;
+#X connect 25 0 26 1;
+#X connect 26 0 27 0;
+#X connect 28 0 26 0;
+#X connect 29 0 28 0;
+#X connect 29 1 25 0;
 #X restore 471 256 pd +examples;
 #X text 200 364 - sets a new sequence;
 #X obj 204 283 print sequence;
-#X obj 147 149 else/tempo 60 -on;
 #X text 200 317 - gets element(s) from sequence;
 #X text 200 395 - element(s) from a sequence;
 #X text 141 430 1) list - list of elements sets the sequence (default
 0);
-#N canvas 1000 89 450 444 chords 0;
-#X obj 113 178 else/keyboard 17 80 2 4 0 0 empty empty;
-#X obj 113 283 else/voices 4 1 -list;
-#X obj 113 312 clone 4 voice 4;
-#X obj 113 349 else/out~;
-#X obj 113 147 makenote 127 700;
-#X obj 113 115 else/sequencer 60-63-67 70 72 75 65-68-71;
+#N canvas 1000 89 449 462 chords 0;
+#X obj 113 198 else/keyboard 17 80 2 4 0 0 empty empty;
+#X obj 113 303 else/voices 4 1 -list;
+#X obj 113 332 clone 4 voice 4;
+#X obj 113 369 else/out~;
+#X obj 113 167 makenote 127 700;
 #X obj 113 80 else/tempo 50 20 -on;
 #X text 126 25 Use "-" to join notes into chords in a sequence., f
 26;
+#X obj 113 135 else/sequencer 60-63-67 70 72 75 - 65-68-71;
+#X obj 113 104 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X connect 2 1 3 1;
 #X connect 4 0 0 0;
 #X connect 4 1 0 1;
-#X connect 5 0 4 0;
-#X connect 6 0 5 0;
+#X connect 5 0 8 0;
+#X connect 7 0 4 0;
+#X connect 8 0 7 0;
 #X restore 489 278 pd chords;
 #X text 118 349 goto <float>;
 #X text 160 334 float;
@@ -166,9 +174,10 @@ are sent without a symbol selector \, and a "bang" comes out as a proper
 #X obj 147 224 route bang;
 #X obj 147 252 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
+#X obj 147 149 else/tempo 60 -on;
 #X connect 19 0 26 0;
-#X connect 27 0 36 0;
-#X connect 35 0 38 0;
-#X connect 36 0 35 0;
-#X connect 38 0 39 0;
-#X connect 38 1 19 0;
+#X connect 34 0 37 0;
+#X connect 35 0 34 0;
+#X connect 37 0 38 0;
+#X connect 37 1 19 0;
+#X connect 39 0 35 0;
