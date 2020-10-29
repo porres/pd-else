@@ -1,18 +1,18 @@
-#N canvas 455 172 560 374 10;
-#X obj 4 218 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 710 99 561 405 10;
+#X obj 4 248 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 280 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 310 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 315 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 345 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 111 289 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 111 319 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 347 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 377 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 25 40 cnv 4 4 4 empty empty data 0 28 2 18 -233017 -1 0;
-#X obj 112 226 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 112 256 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 166 226 bang;
+#X text 166 256 bang;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -30,14 +30,10 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X text 160 243 float;
+#X text 160 273 float;
 #X obj 67 40 cnv 4 4 4 empty empty sequencer 0 28 2 18 -233017 -1 0
 ;
-#X text 130 259 set <list>;
-#X text 200 289 - values from a sequence;
-#X text 151 324 1) list - list of floats sets the sequence (default
-0);
-#X text 200 226 - generates value from sequence;
+#X text 130 289 set <list>;
 #N canvas 803 160 399 333 example 0;
 #X obj 159 30 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -54,25 +50,22 @@
 #X obj 73 124 else/sequencer 50 100 80 120 60 150 100 70;
 #X connect 0 0 3 0;
 #X connect 1 0 8 0;
-#X connect 2 0 9 0;
 #X connect 2 0 4 0;
+#X connect 2 0 9 0;
 #X connect 3 0 2 0;
 #X connect 4 0 5 1;
 #X connect 5 0 6 0;
 #X connect 8 0 5 0;
 #X connect 9 0 1 0;
-#X restore 475 163 pd example;
-#X text 68 89 When receiving a bang \, [sequencer] sends a value from
-a given sequence.;
-#X obj 193 182 else/display;
-#X text 160 289 float;
+#X restore 338 213 pd example;
+#X obj 149 187 else/display;
+#X text 160 319 float;
 #X obj 3 3 cnv 15 301 42 empty empty sequencer 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X obj 193 154 else/sequencer 10 5 0 2 3 7 9 1 4 11 6 8;
-#X text 200 242 - goes to a position index in the sequence (from 1)
+#X text 200 272 - goes to a position index in the sequence (from 1)
 ;
 #N canvas 457 198 744 472 +examples 0;
 #X obj 176 88 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
@@ -137,8 +130,37 @@ read in different directions., f 44;
 #X connect 26 0 27 0;
 #X connect 27 0 25 0;
 #X connect 28 0 26 0;
-#X restore 463 185 pd +examples;
-#X text 200 258 - sets a new sequence;
-#X obj 193 124 else/tempo 120 -on;
-#X connect 28 0 24 0;
-#X connect 32 0 28 0;
+#X restore 408 213 pd +examples;
+#X text 200 288 - sets a new sequence;
+#X obj 149 219 print sequence;
+#X obj 149 131 else/tempo 60 -on;
+#X text 65 87 When receiving a bang \, [sequencer] sends an element
+(float or symbol) from a given sequence. Elements joined by "-" are
+sent together., f 69;
+#X text 200 256 - gets element(s) from sequence;
+#X text 200 319 - element(s) from a sequence;
+#X text 141 354 1) list - list of elements sets the sequence (default
+0);
+#N canvas 1000 89 450 444 chords 0;
+#X obj 113 178 else/keyboard 17 80 2 4 0 0 empty empty;
+#X obj 113 283 else/voices 4 1 -list;
+#X obj 113 312 clone 4 voice 4;
+#X obj 113 349 else/out~;
+#X obj 113 147 makenote 127 700;
+#X obj 113 115 else/sequencer 60-63-67 70 72 75 65-68-71;
+#X obj 113 80 else/tempo 50 20 -on;
+#X text 126 25 Use "-" to join notes into chords in a sequence., f
+26;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 2 1 3 1;
+#X connect 4 0 0 0;
+#X connect 4 1 0 1;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X restore 489 213 pd chords;
+#X obj 149 159 else/sequencer 1-2-3 4 5 six 7-eight-9 ten bang;
+#X connect 20 0 27 0;
+#X connect 28 0 34 0;
+#X connect 34 0 20 0;
