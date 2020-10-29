@@ -1,4 +1,4 @@
-#N canvas 559 36 563 590 10;
+#N canvas 645 46 563 590 10;
 #X obj 2 3 cnv 15 301 42 empty empty voices 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -92,7 +92,7 @@ off message on the first allocated voice so the extra incoming voice
 you haven't sent the object a note off message. Then \, when you eventually
 send a note off message \, the object won't find a corresponding note
 on message and will output that message as an "extra".;
-#X obj 151 160 else/keyboard 25 80 1 4 1;
+#X obj 151 160 else/keyboard 25 80 1 4 1 0 empty empty;
 #X connect 3 0 0 0;
 #X connect 3 1 1 0;
 #X connect 3 2 2 0;
@@ -101,7 +101,7 @@ on message and will output that message as an "extra".;
 #X connect 12 0 3 0;
 #X restore 492 186 pd steal;
 #X text 302 262 extra;
-#N canvas 361 237 521 308 retrigger 0;
+#N canvas 667 236 521 308 retrigger 0;
 #X text 107 69 - retrig <0>:;
 #X text 107 95 - retrig <1>:;
 #X text 191 95 retrigger on the same voice allocation, f 43;
@@ -113,27 +113,27 @@ to "extra" outlet, f 43;
 ways of handling repeated note on messages. In this context \, a repeated
 note on is a note that hasn't had a note off message to free its voice
 allocation. The modes are:, f 77;
-#N canvas 767 131 563 448 retrig_0 0;
-#X obj 193 346 else/display;
-#X obj 248 346 else/display;
-#X obj 304 346 else/display;
-#X obj 193 117 else/keyboard 17 80 1 4 0;
-#X obj 328 176 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 2
+#N canvas 767 131 463 458 retrig_0 0;
+#X obj 130 353 else/display;
+#X obj 185 353 else/display;
+#X obj 241 353 else/display;
+#X obj 130 124 else/keyboard 17 80 1 4 0 0 empty empty;
+#X obj 265 183 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 2;
-#X text 353 175 sustain;
-#X obj 193 240 pack float float;
-#X obj 193 210 else/suspedal -retrig 3;
-#X obj 328 149 loadbang;
-#X obj 193 273 else/display;
-#X text 186 378 voice 1;
-#X text 240 378 voice 2;
-#X text 302 379 extra;
-#X obj 193 316 else/voices 2, f 19;
-#X text 35 32 The first example below is the default behaviour (retrig
+#X text 290 182 sustain;
+#X obj 130 247 pack float float;
+#X obj 130 217 else/suspedal -retrig 3;
+#X obj 265 156 loadbang;
+#X obj 130 280 else/display;
+#X text 123 385 voice 1;
+#X text 177 385 voice 2;
+#X text 239 386 extra;
+#X obj 130 323 else/voices 2, f 19;
+#X text 39 32 The first example below is the default behaviour (retrig
 0). For that \, we use [suspedal] in retrig mode 3 \, which sends note
 off for all repeated note ons when the sustain is switched off. This
 setting allows you to route repeated notes to a different patch. Test
-with [keyboard] by pressing the same note., f 77;
+with [keyboard] by pressing the same note., f 63;
 #X connect 3 0 7 0;
 #X connect 4 0 7 2;
 #X connect 6 0 9 0;
@@ -146,78 +146,74 @@ with [keyboard] by pressing the same note., f 77;
 #X connect 13 2 2 0;
 #X restore 229 194 pd retrig_0;
 #X text 32 149 See examples in the subpatches below:;
-#N canvas 266 23 479 392 retrig_1 0;
-#X obj 182 98 else/keyboard 17 80 1 4 0;
-#X obj 317 157 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 2
+#N canvas 616 116 479 392 retrig_1 0;
+#X obj 147 98 else/keyboard 17 80 1 4 0 0 empty empty;
+#X obj 282 157 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 2
 2;
-#X text 342 156 sustain;
-#X obj 182 315 else/display;
-#X obj 237 315 else/display;
-#X obj 293 315 else/display;
-#X obj 182 285 else/voices 2, f 19;
-#X obj 182 247 else/display;
-#X obj 182 221 pack float float;
-#X obj 317 130 loadbang;
-#X msg 97 225 retrig 1;
-#X obj 182 191 else/suspedal -retrig 1;
+#X text 307 156 sustain;
+#X obj 147 315 else/display;
+#X obj 214 315 else/display;
+#X obj 282 315 else/display;
+#X obj 147 247 else/display;
+#X obj 147 221 pack float float;
+#X obj 282 130 loadbang;
+#X obj 147 191 else/suspedal -retrig 1;
 #X text 28 22 For mode "1" \, we use [suspedal] also in retrigger mode
 1 \, because [voices] sends repeated note on messages to the same output
 and when the sustain pedal is switched off \, a single note off message
 will be sent to free this allocated voice., f 70;
-#X text 180 341 voice 1;
-#X text 234 341 voice 2;
-#X text 296 342 extra;
-#X connect 0 0 11 0;
-#X connect 1 0 11 2;
-#X connect 6 0 3 0;
-#X connect 6 1 4 0;
-#X connect 6 2 5 0;
+#X text 145 341 voice 1;
+#X text 211 341 voice 2;
+#X text 285 342 extra;
+#X obj 147 285 else/voices 2 -retrig 1;
+#X connect 0 0 9 0;
+#X connect 1 0 9 2;
+#X connect 6 0 14 0;
 #X connect 7 0 6 0;
-#X connect 8 0 7 0;
-#X connect 9 0 1 0;
-#X connect 10 0 6 0;
-#X connect 11 0 8 0;
-#X connect 11 1 8 1;
+#X connect 8 0 1 0;
+#X connect 9 0 7 0;
+#X connect 9 1 7 1;
+#X connect 14 0 3 0;
+#X connect 14 1 4 0;
+#X connect 14 2 5 0;
 #X restore 229 225 pd retrig_1;
-#N canvas 380 41 509 397 retrig_2 0;
-#X obj 174 99 else/keyboard 17 80 1 4 0;
-#X obj 309 158 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 2
+#N canvas 755 189 509 397 retrig_2 0;
+#X obj 174 99 else/keyboard 17 80 1 4 0 0 empty empty;
+#X obj 309 158 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 2;
 #X text 334 157 sustain;
 #X obj 174 316 else/display;
-#X obj 229 316 else/display;
-#X obj 285 316 else/display;
+#X obj 247 316 else/display;
+#X obj 321 316 else/display;
 #X obj 174 248 else/display;
 #X obj 174 222 pack float float;
 #X obj 309 131 loadbang;
 #X text 172 342 voice 1;
-#X text 226 342 voice 2;
-#X text 288 343 extra;
-#X msg 89 226 retrig 2;
+#X text 244 342 voice 2;
+#X text 324 343 extra;
 #X obj 174 192 else/suspedal -retrig 3;
-#X obj 174 286 else/voices 2 1, f 19;
-#X text 20 23 For mode "2" \, we use [suspedal] also in retrigger mode
-3 again. This example also uses "voice stealing". Now \, each repeated
-note alternates bewteen the allocated voices. When the sustain pedal
-is switched off \, note off messages for all note ons are given.,
-f 70;
-#X connect 0 0 13 0;
-#X connect 1 0 13 2;
-#X connect 6 0 14 0;
+#X obj 174 286 else/voices 2 1 -retrig 2;
+#X text 20 23 For mode "2" \, we use [suspedal] in retrigger mode 3
+This example also uses "voice stealing". Now \, each repeated note
+alternates bewteen the allocated voices. When the sustain pedal is
+switched off \, note off messages for all note ons are given., f 70
+;
+#X connect 0 0 12 0;
+#X connect 1 0 12 2;
+#X connect 6 0 13 0;
 #X connect 7 0 6 0;
 #X connect 8 0 1 0;
-#X connect 12 0 14 0;
-#X connect 13 0 7 0;
-#X connect 13 1 7 1;
-#X connect 14 0 3 0;
-#X connect 14 1 4 0;
-#X connect 14 2 5 0;
+#X connect 12 0 7 0;
+#X connect 12 1 7 1;
+#X connect 13 0 3 0;
+#X connect 13 1 4 0;
+#X connect 13 2 5 0;
 #X restore 229 256 pd retrig_2;
 #X restore 468 207 pd retrigger;
 #N canvas 698 101 477 404 release 0;
 #X obj 99 323 else/display;
 #X obj 158 323 else/display;
-#X obj 99 130 else/keyboard 17 80 1 4 0;
+#X obj 99 130 else/keyboard 17 80 1 4 0 0 empty empty;
 #X obj 217 323 else/display;
 #X obj 276 325 else/display;
 #X obj 336 323 else/display;
@@ -261,7 +257,7 @@ to finish before using that voice allocation for a new note., f 65
 #X obj 353 316 else/display;
 #X obj 524 216 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 353 144 else/keyboard 17 80 1 3 0;
+#X obj 353 144 else/keyboard 17 80 1 3 0 0 empty empty;
 #X obj 353 245 else/suspedal -retrig 3, f 29;
 #X text 353 345 voices;
 #X obj 548 315 else/display;
@@ -276,7 +272,7 @@ sets the voice index offset \, which is 0 by default. You can also
 set a different index offset with the "offset" message (this is only
 possible in the context of "list mode")., f 72;
 #N canvas 719 64 505 333 clone_example 0;
-#X obj 40 77 else/keyboard 17 80 2 4 0;
+#X obj 40 77 else/keyboard 17 80 2 4 0 0 empty empty;
 #X text 211 175 In this subpatch we have [voices] feeding [clone] \,
 which loads 4 instances of a patch named "voice.pd"., f 43;
 #X text 211 267 check clone's help file and lick on in to open the
@@ -365,7 +361,7 @@ to implement polyphonic synths \, check the subpatch ==========================>
 only), f 66;
 #X text 46 223 see also:;
 #X obj 47 246 else/mono;
-#X obj 200 136 else/keyboard 22 60 1 4 1;
+#X obj 200 136 else/keyboard 22 60 1 4 1 0 empty empty;
 #X connect 36 0 27 0;
 #X connect 36 1 28 0;
 #X connect 36 2 29 0;
