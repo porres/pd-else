@@ -4,7 +4,6 @@
 #X obj 103 45 inlet~;
 #X obj 155 45 inlet~;
 #X obj 78 163 outlet~;
-#X obj 78 132 brickwall~;
 #X obj 78 102 saw~;
 #X obj 246 69 block~ 64 1 16;
 #X text 227 117 Part of ELSE \; https://github.com/porres/pd-else;
@@ -22,10 +21,11 @@
 #X restore 50 15 pd init;
 #X f 18;
 #X obj 237 33 declare -path else;
-#X connect 0 0 5 0;
-#X connect 1 0 5 1;
-#X connect 2 0 5 2;
-#X connect 4 0 3 0;
-#X connect 5 0 4 0;
-#X connect 9 0 0 0;
-#X connect 9 1 2 0;
+#X obj 78 132 brickwall~;
+#X connect 0 0 4 0;
+#X connect 1 0 4 1;
+#X connect 2 0 4 2;
+#X connect 4 0 10 0;
+#X connect 8 0 0 0;
+#X connect 8 1 2 0;
+#X connect 10 0 3 0;
