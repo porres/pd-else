@@ -1,10 +1,12 @@
 #N struct 1006-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1047-point float x0 float y0 float xs float ys float fg float
+#N struct 1019-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1056-point float x0 float y0 float xs float ys float fg float
+#N struct 1028-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1038-point float x0 float y0 float xs float ys float fg float
+#N struct 1043-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
+#N struct 1065-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 747 58 561 564 10;
 #X obj 2 3 cnv 15 301 42 empty empty slider3d 20 20 2 37 -233017 -1
@@ -182,8 +184,6 @@ according to the new range., f 64;
 #X obj 162 164 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
 -262144 -1 0 0;
 #X obj 51 316 pack2 fgcolor 0 0 0;
-#X obj 180 372 else/slider3d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 1 64 64 empty empty;
 #X obj 180 316 pack2 bgcolor 255 255 255;
 #X text 119 31 You can set background and frontground colors with 'bgcolor'/'fgcolor'
 messages and '-bgcolor'/'-fgcolor' flags., f 40;
@@ -191,21 +191,23 @@ messages and '-bgcolor'/'-fgcolor' flags., f 40;
 #X obj 215 345 else/initmess set 64 64;
 #X obj 278 132 else/initmess 255;
 #X obj 125 131 else/initmess 0;
-#X connect 0 0 8 1;
-#X connect 1 0 8 2;
-#X connect 2 0 8 3;
+#X obj 180 372 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
+0 0 0 1 64 64 empty empty;
+#X connect 0 0 7 1;
+#X connect 1 0 7 2;
+#X connect 2 0 7 3;
 #X connect 3 0 6 1;
 #X connect 4 0 6 2;
 #X connect 5 0 6 3;
-#X connect 6 0 7 0;
-#X connect 8 0 7 0;
-#X connect 11 0 7 0;
-#X connect 12 0 0 0;
-#X connect 12 0 2 0;
-#X connect 12 0 1 0;
-#X connect 13 0 3 0;
-#X connect 13 0 4 0;
-#X connect 13 0 5 0;
+#X connect 6 0 13 0;
+#X connect 7 0 13 0;
+#X connect 10 0 13 0;
+#X connect 11 0 0 0;
+#X connect 11 0 2 0;
+#X connect 11 0 1 0;
+#X connect 12 0 3 0;
+#X connect 12 0 4 0;
+#X connect 12 0 5 0;
 #X restore 62 164 pd colors;
 #N canvas 560 241 331 438 line-grid 0;
 #X obj 79 224 else/slider3d 127 127 0 127 0 127 1 255 255 255 0 0 0
