@@ -1,4 +1,4 @@
-#N canvas 620 51 561 680 10;
+#N canvas 734 23 561 680 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -51,7 +51,7 @@
 corresponding inlet/outlet does not get drawn when you're in edit mode.
 This is an indicative that the object has a send or receive symbol.
 , f 57;
-#X obj 73 186 else/pic 1 pdlogo.gif \$0-pic-snd \$0-pic-rcv 0 0;
+#X obj 73 186 else/pic 1 else/pdlogo.gif \$0-pic-snd \$0-pic-rcv 0 0;
 #X text 47 39 You can set send/receive names with the -send/-receive
 flags or the 'send'/'receive' messages - make sure to escape "\$0"
 properly with backslashes (as in: "\\\$0"). Setting these to 'empty'
@@ -78,15 +78,15 @@ allowed \, such as braces \, backslashes \, commas and semicolons.
 #X restore 481 251 pd send \; receive;
 #N canvas 662 128 675 552 examples 0;
 #N canvas 457 127 474 484 (subpatch) 0;
-#X msg 117 275 open green.gif;
-#X msg 217 295 open red.gif;
+#X msg 117 275 open else/green.gif;
+#X msg 217 295 open else/red.gif;
 #X obj 104 402 outlet;
 #X obj 217 334 s \$0-set2;
 #X obj 104 29 r \$0-set2;
-#X obj 155 65 else/initmess open red.gif;
+#X obj 155 65 else/initmess open else/red.gif;
 #X obj 217 261 delay 250;
 #X text 283 261 <= flash time;
-#X obj 104 104 else/pic 0 red.gif empty empty 0 0;
+#X obj 104 104 else/pic 0 else/red.gif empty empty 0 0;
 #X connect 0 0 3 0;
 #X connect 1 0 3 0;
 #X connect 4 0 8 0;
@@ -105,11 +105,11 @@ allowed \, such as braces \, backslashes \, commas and semicolons.
 #X obj 124 270 sel 0 1;
 #X obj 151 363 s \$0-set;
 #X obj 104 39 r \$0-set;
-#X msg 151 298 open green.gif;
-#X msg 124 327 open red.gif;
+#X msg 151 298 open else/green.gif;
+#X msg 124 327 open else/red.gif;
 #X obj 104 402 outlet;
-#X obj 148 72 else/initmess open red.gif;
-#X obj 104 104 else/pic 0 red.gif empty empty 0 0;
+#X obj 148 72 else/initmess open else/red.gif;
+#X obj 104 104 else/pic 0 else/red.gif empty empty 0 0;
 #X connect 0 0 1 0;
 #X connect 0 0 6 0;
 #X connect 1 0 5 0;
@@ -133,11 +133,11 @@ gif for instance., f 37;
 #X text 72 276 Another idea is that you can also adapat the patch above
 to behave like a bang with a flash time. See below., f 41;
 #N canvas 457 127 474 484 (subpatch) 0;
-#X msg 214 283 open green.gif;
-#X msg 121 283 open red.gif;
+#X msg 214 283 open else/green.gif;
+#X msg 121 283 open else/red.gif;
 #X obj 104 402 outlet;
-#X obj 133 66 else/initmess open red.gif;
-#X obj 104 104 else/pic 0 red.gif empty empty 0 1;
+#X obj 133 66 else/initmess open else/red.gif;
+#X obj 104 104 else/pic 0 else/red.gif empty empty 0 1;
 #X obj 214 315 s \$0-set3;
 #X obj 104 28 r \$0-set3;
 #X obj 121 238 select 0, f 16;
@@ -180,7 +180,7 @@ symbol. Using something like "\$1" is also possible and useful if you're
 using the object in an abstraction \, then you can load a value passed
 as an argument into a parameter., f 59;
 #X obj 397 301 else/display;
-#X obj 397 163 else/pic 0 pdlogo.gif \$0-snd empty 0 0;
+#X obj 397 163 else/pic 0 else/pdlogo.gif \$0-snd empty 0 0;
 #X obj 567 192 r \$0-snd;
 #X obj 567 217 else/display;
 #X text 20 259 Note that when you set a receive or send symbol \, the
@@ -199,7 +199,7 @@ parameters are: name and send/receive symbols., f 59;
 #X msg 181 155 outline \$1;
 #X obj 181 118 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 181 188 else/pic 0 tklogo.gif empty empty 0 0;
+#X obj 181 188 else/pic 0 else/tklogo.gif empty empty 0 0;
 #X text 66 33 You can always have an outline of the picture (and not
 only while in edit mode) if you set the outline mode with the 'outline'
 message \, the -outline flag or via properties window \, in which case
@@ -207,7 +207,7 @@ a non zero value sets to outline mode.;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X restore 469 229 pd outline;
-#X obj 229 197 else/pic 0 pdlogo.gif empty empty 0 0;
+#X obj 229 197 else/pic 0 else/pdlogo.gif empty empty 0 0;
 #X obj 4 532 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
 #X text 259 539 (none);
@@ -231,13 +231,13 @@ a non zero value sets to outline mode.;
 #X text 17 12 When in zoom mode \, [pic] cannot zoom into the loaded
 image. A possible workaround is to use [canvas.zoom] and load an image
 twice as big when the patch window gets zoomed in., f 52;
-#X obj 33 195 else/pic 0 pdlogo.gif empty empty 0 0;
+#X obj 33 195 else/pic 0 else/pdlogo.gif empty empty 0 0;
 #X obj 33 102 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 33 124 select 0 1, f 40;
 #X obj 33 334 else/display;
-#X msg 33 152 set pdlogo.gif;
-#X msg 151 152 set pdlogo-big.gif;
+#X msg 33 152 set else/pdlogo.gif;
+#X msg 151 152 set else/pdlogo-big.gif;
 #X connect 0 0 3 0;
 #X connect 2 0 5 0;
 #X connect 3 0 4 0;
@@ -251,9 +251,9 @@ twice as big when the patch window gets zoomed in., f 52;
 #X text 133 430 size <float>;
 #X text 213 430 - non zero sets to report size mode, f 50;
 #N canvas 651 230 503 428 size 0;
-#X msg 215 133 open tklogo.gif;
-#X msg 238 159 open pdlogo.gif;
-#X obj 215 197 else/pic 0 pdlogo.gif empty empty 1 0;
+#X msg 215 133 open else/tklogo.gif;
+#X msg 238 159 open else/pdlogo.gif;
+#X obj 215 197 else/pic 0 else/pdlogo.gif empty empty 1 0;
 #X obj 151 131 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X msg 151 158 size \$1;
@@ -284,7 +284,7 @@ releasing (when in latch mode)., f 68;
 , f 57;
 #N canvas 835 231 478 475 open/set 0;
 #X obj 153 414 else/display;
-#X obj 153 276 else/pic 0 tklogo.gif empty empty 0 0;
+#X obj 153 276 else/pic 0 else/tklogo.gif empty empty 0 0;
 #X text 62 32 The open and set messages are basically the same \, but
 opening a file will make pd ask you if you want to save changes when
 you close the patch. Since this can be an undesired annoyance \, you
@@ -293,8 +293,8 @@ can use the 'set' message instead.;
 need to escape spaces with backslashes. Also note that other special
 characters are not allowed in the properties window \, such as braces
 \, backslashes \, commas and semicolons., f 59;
-#X msg 153 223 open tklogo.gif;
-#X msg 176 249 set pdlogo.gif;
+#X msg 153 223 open else/tklogo.gif;
+#X msg 176 249 set else/pdlogo.gif;
 #X text 61 84 Note you can use backslash to escape spaces in a message
 so you can open file names that contain spaces. You can also open an
 image by typing a new file name into the properties window.;
@@ -302,8 +302,8 @@ image by typing a new file name into the properties window.;
 #X connect 4 0 1 0;
 #X connect 5 0 1 0;
 #X restore 463 206 pd open/set;
-#X msg 229 145 open tklogo.gif;
-#X msg 252 170 open pdlogo.gif;
+#X msg 229 145 open else/tklogo.gif;
+#X msg 252 170 open else/pdlogo.gif;
 #X connect 31 0 19 0;
 #X connect 52 0 31 0;
 #X connect 53 0 52 0;
