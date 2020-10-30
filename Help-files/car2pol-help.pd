@@ -1,8 +1,8 @@
-#N struct 1010-point float x0 float y0 float xs float ys float fg float
+#N struct 1009-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1019-point float x0 float y0 float xs float ys float fg float
+#N struct 1018-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N canvas 628 167 561 491 10;
+#N canvas 676 159 561 491 10;
 #X obj 1 287 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 1 365 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -17,7 +17,7 @@ in float gridx float gridy;
 ;
 #X obj 100 376 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 1 464 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 1 462 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 198 439 (none), f 7;
 #X text 134 314 float;
@@ -80,15 +80,17 @@ to polar coordinates (amplitude / phase).;
 #X obj 101 164 else/display;
 #X obj 101 204 else/car2pol;
 #X obj 170 242 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 -2.47562 256;
 #X obj 101 243 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.395655 256;
 #X obj 101 273 else/pol2car;
 #X obj 101 310 pack;
 #X text 63 12 cartesian x polar converstion;
 #X text 203 97 <= click/drag;
-#X obj 101 342 else/slider2d -size 90 -range -1 1;
-#X obj 101 55 else/slider2d -size 90 -range -1 1;
+#X obj 101 342 else/slider2d 90 90 0 127 0 127 1 255 255 255 0 0 0
+0 0 0 -0.311111 -0.244444 empty empty;
+#X obj 101 55 else/slider2d 90 90 0 127 0 127 1 255 255 255 0 0 0 0
+0 0 31 34 empty empty;
 #X connect 0 0 1 0;
 #X connect 1 0 3 0;
 #X connect 1 1 2 0;
