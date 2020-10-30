@@ -1,13 +1,10 @@
-#N canvas 703 149 485 347 10;
+#N canvas 852 105 485 347 10;
 #X declare -path else;
 #N canvas 348 60 465 617 \$0-Allpass-stages 0;
 #X obj 60 19 inlet~;
 #X obj 60 864 outlet~;
 #X obj 60 50 allpass_unit 1006;
-#X obj 60 50 allpass_unit 1005;
 #X connect 0 0 2 0;
-#X connect 0 0 2 0;
-#X connect 2 0 1 0;
 #X connect 2 0 1 0;
 #X restore 62 163 pd \$0-Allpass-stages;
 #N canvas 652 370 484 311 set 0;
