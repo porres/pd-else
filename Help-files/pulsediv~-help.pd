@@ -1,4 +1,4 @@
-#N canvas 363 23 565 576 10;
+#N canvas 644 104 565 576 10;
 #X obj 4 377 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 469 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -161,8 +161,8 @@
 a number of triggers corresponding to a division value.;
 #X msg 217 215 start \$1;
 #X msg 167 249 div \$1;
-#X floatatom 217 194 5 0 0 0 - - -, f 5;
-#X floatatom 167 229 5 0 0 0 - - -, f 5;
+#X floatatom 217 194 5 0 0 0 - - -;
+#X floatatom 167 229 5 0 0 0 - - -;
 #X text 60 131 The first trigger in the count is output. A starting
 value lets you start in the middle of a count. If the start value is
 negative \, it adds that many counts to the first time the output is

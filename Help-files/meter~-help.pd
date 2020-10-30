@@ -1,4 +1,4 @@
-#N canvas 620 141 561 476 10;
+#N canvas 654 122 561 476 10;
 #X obj 2 448 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 2 313 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13

@@ -1,4 +1,4 @@
-#N canvas 315 110 561 437 10;
+#N canvas 670 178 561 437 10;
 #X obj 1 333 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 1 365 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
@@ -10,9 +10,9 @@
 #X text 203 167 Real;
 #X text 377 167 Imaginary;
 #X obj 243 168 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 135 256;
+-228856 -1 -1 0 256;
 #X obj 318 168 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 61 256;
+-228856 -1 -1 0 256;
 #X obj 4 5 cnv 15 301 42 empty empty mag~ 20 20 2 37 -233017 -1 0;
 #X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -45,15 +45,15 @@
 #X text 123 75 Real;
 #X text 303 75 Imaginary;
 #X obj 163 76 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 75 256;
+-228856 -1 -1 0 256;
 #X obj 244 76 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 63 256;
+-228856 -1 -1 0 256;
 #X text 43 17 the "power" argument gets the power magnitude result
 \, that is the sum of the squares of the real and imaginary part.;
 #X text 59 131 Power Amplitude;
 #X text 222 129 Imaginary;
 #X obj 163 130 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 9594 256;
+-228856 -1 -1 0 256;
 #X obj 163 98 else/mag power;
 #X connect 2 0 8 0;
 #X connect 3 0 8 1;
