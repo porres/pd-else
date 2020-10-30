@@ -1,4 +1,4 @@
-#N canvas 705 225 564 546 10;
+#N canvas 765 154 564 546 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -77,7 +77,6 @@ bangs. An argument defines the order \, which can be 'fifo' (first
 in first out) or 'lifo' (last in first out)., f 67;
 #X text 231 300 - outputs all messages and clears them;
 #X obj 195 221 else/stack lifo;
-#A saved;
 #X text 201 361 open;
 #X text 231 361 - opens [text] window;
 #X text 195 376 close;
@@ -94,7 +93,6 @@ in first out) or 'lifo' (last in first out)., f 67;
 #X text 279 113 store messages;
 #X msg 258 139 a \, b c \, list x y \, symbol hi;
 #X obj 171 193 else/stack, f 15;
-#A saved;
 #X msg 85 144 open;
 #X msg 122 144 close;
 #X text 82 29 The [stack] object is based on Pd Vanilla's [text] object.
@@ -120,7 +118,6 @@ means you can manually edit the contents of stack!;
 #X msg 114 96 dump;
 #X obj 114 194 print;
 #X obj 114 129 else/stack;
-#A saved;
 #X msg 57 94 export;
 #X text 53 17 A dump message outputs all stored messages and clears
 the memory. The export message outputs all stored messages but keeps
@@ -148,7 +145,6 @@ the information., f 42;
 #X msg 184 126 clear;
 #X obj 184 151 t a b;
 #X obj 130 199 else/stack -store;
-#A saved a \; b c \; list x y \; list hi \;;
 #X connect 3 0 10 0;
 #X connect 4 0 3 0;
 #X connect 6 0 10 0;

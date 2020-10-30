@@ -1,4 +1,4 @@
-#N canvas 583 184 561 435 10;
+#N canvas 684 165 561 435 10;
 #X obj 23 41 cnv 4 4 4 empty empty Control 0 28 2 18 -233017 -1 0;
 #X obj 3 410 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
@@ -44,7 +44,7 @@
 #X text 157 357 float;
 #X text 156 309 float;
 #X obj 251 210 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 2875 1;
+-228856 -1 -1 6296 1;
 #X text 197 309 - frequency in hertz up to 100 (negative values accepted)
 ;
 #X text 139 388 1) float;
@@ -53,11 +53,11 @@
 MIDI default range. Use the [rescale] object if you want a different
 range for the output., f 53;
 #X obj 133 112 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 6333 1;
+-228856 -1 -1 5511 1;
 #X obj 133 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 101.806 256;
+-228856 -1 -1 88.5943 256;
 #X obj 133 257 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 600.813 256;
+-228856 -1 -1 548.796 256;
 #X text 193 258 cutoff in hertz;
 #X obj 133 327 else/plate.rev~ 50 0.9 0.9 0.9 0.7, f 18;
 #X obj 133 230 else/rescale 200 700;

@@ -1,4 +1,4 @@
-#N canvas 649 27 560 604 10;
+#N canvas 667 78 561 589 10;
 #X obj 4 276 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 457 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -36,8 +36,8 @@
 ;
 #X text 110 434 float/signal;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -106,7 +106,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -140,8 +140,8 @@
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
+-262144 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -210,7 +210,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -307,21 +307,21 @@ speeds with negative increment values., f 69;
 #X obj 135 147 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 135 229 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 120000 256;
+-228856 -1 -1 0 256;
 #X obj 135 203 else/sig2float~;
 #X obj 138 252 hsl 128 15 0 120000 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 12700 1;
+-228856 -1 -1 0 1;
 #X obj 135 176 else/susloop~ 1 40000 80000 120000;
 #N canvas 370 72 437 245 signal 0;
 #X obj 196 160 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 69336 256;
+-228856 -1 -1 0 256;
 #X obj 196 134 else/sig2float~;
 #X obj 199 183 hsl 128 15 0 120000 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 7338 1;
+-228856 -1 -1 0 1;
 #X obj 196 107 else/susloop~ 1 40000 80000 120000;
 #X obj 196 69 else/pulse~ 0.1;
 #X obj 74 109 else/sig2float~;
-#X obj 74 152 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 74 152 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 180 32 triggering with pulses;
 #X connect 0 0 2 0;
@@ -357,11 +357,11 @@ restart, f 57;
 , f 57;
 #X text 110 413 size <float>;
 #X obj 336 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -0.677165 256;
+-228856 -1 -1 0 256;
 #X text 163 146 ("trigger"/"release");
 #X text 44 146 gate (on/off);
 #X obj 339 130 hsl 128 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 4200 1;
+-1 -1 0 1;
 #X text 374 130 increment;
 #X connect 32 0 36 0;
 #X connect 33 0 35 0;

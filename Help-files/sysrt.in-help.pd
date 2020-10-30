@@ -1,24 +1,24 @@
-#N canvas 679 26 573 527 10;
-#X text 140 233 clock;
-#X text 188 232 start;
-#X text 230 232 continue;
-#X text 288 232 stop;
-#X text 332 233 active;
-#X text 382 232 reset;
-#X obj 150 145 midirealtimein;
-#X obj 150 213 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 704 97 560 482 10;
+#X text 126 223 clock;
+#X text 174 222 start;
+#X text 216 222 continue;
+#X text 274 222 stop;
+#X text 318 223 active;
+#X text 368 222 reset;
+#X obj 136 139 midirealtimein;
+#X obj 136 203 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 198 213 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 184 203 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 247 213 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 233 203 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 295 213 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 281 203 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 344 213 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 330 203 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 393 213 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 379 203 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 330 245 sensing;
+#X text 316 235 sensing;
 #X obj 23 42 cnv 4 4 4 empty empty Midi 0 28 2 18 -233017 -1 0;
 #X obj 65 42 cnv 4 4 4 empty empty system/real-time 0 28 2 18 -233017
 -1 0;
@@ -45,52 +45,52 @@
 0;
 #X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 2 270 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 2 265 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 154 281 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 154 274 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 193 283 float;
-#X text 238 283 - raw MIDI data stream;
-#X obj 2 304 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X text 191 275 float;
+#X text 238 275 - raw MIDI data stream;
+#X obj 2 296 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 458 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 426 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X text 239 386 -;
-#X obj 154 314 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 238 366 -;
+#X obj 154 304 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 238 314 -;
-#X obj 154 383 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X text 238 307 -;
+#X obj 154 365 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 238 339 -;
-#X obj 154 336 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 238 326 -;
+#X obj 154 324 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 238 363 -;
-#X obj 154 360 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X text 238 348 -;
+#X obj 154 345 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 238 432 -;
-#X obj 154 429 cnv 17 3 17 empty empty 5 5 9 0 16 -228856 -162280 0
+#X text 238 406 -;
+#X obj 154 405 cnv 17 3 17 empty empty 5 5 9 0 16 -228856 -162280 0
 ;
-#X text 238 409 -;
-#X obj 154 406 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
+#X text 238 387 -;
+#X obj 154 385 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
 ;
-#X text 197 314 bang;
-#X text 197 339 bang;
-#X text 197 363 bang;
-#X text 198 386 bang;
-#X text 197 409 bang;
-#X text 198 432 bang;
-#X text 253 313 bang at MIDI clock, f 31;
-#X text 253 339 bang at MIDI start, f 31;
-#X text 253 363 bang at MIDI continue;
-#X text 254 386 bang at MIDI stop;
-#X text 253 409 bang at MIDI active sensing;
-#X text 254 432 bang at MIDI reset;
-#X text 192 466 (none);
-#X obj 2 489 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X text 197 307 bang;
+#X text 197 326 bang;
+#X text 197 348 bang;
+#X text 198 366 bang;
+#X text 198 387 bang;
+#X text 198 406 bang;
+#X text 253 307 bang at MIDI clock, f 30;
+#X text 253 326 bang at MIDI start, f 30;
+#X text 253 348 bang at MIDI continue, f 30;
+#X text 253 366 bang at MIDI stop, f 30;
+#X text 253 387 bang at MIDI active sensing, f 30;
+#X text 253 406 bang at MIDI reset, f 30;
+#X text 192 433 (none);
+#X obj 2 455 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 79 93 [sysrt.in] detects System and real-time MIDI messages
 from raw MIDI data.;
-#X obj 150 178 else/sysrt.in, f 41;
+#X obj 136 170 else/sysrt.in, f 41;
 #X connect 6 0 60 0;
 #X connect 60 0 7 0;
 #X connect 60 1 8 0;
