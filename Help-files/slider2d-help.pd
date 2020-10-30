@@ -12,7 +12,15 @@ in float gridx float gridy;
 in float gridx float gridy;
 #N struct 1070-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
+#N struct 1081-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
 #N struct 1092-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
+#N struct 1119-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
+#N struct 1128-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
+#N struct 1110-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 747 58 561 564 10;
 #X obj 2 3 cnv 15 301 42 empty empty slider2d 20 20 2 37 -233017 -1
@@ -216,8 +224,6 @@ messages and '-bgcolor'/'-fgcolor' flags., f 40;
 #X connect 12 0 5 0;
 #X restore 62 164 pd colors;
 #N canvas 560 241 331 438 line-grid 0;
-#X obj 79 224 else/slider3d 127 127 0 127 0 127 1 255 255 255 0 0 0
-1 0 1 64 64 empty empty;
 #X obj 79 366 else/display;
 #X msg 105 191 line \$1;
 #X obj 105 163 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
@@ -230,11 +236,13 @@ or '-line' flag. Line is visible by default., f 40;
 #X text 45 64 There's also a grid visibility option (invisible by default).
 You can set it with the 'grid' message or '-grid' flag., f 40;
 #X obj 79 136 else/initmess set 64 64;
-#X connect 0 0 1 0;
-#X connect 2 0 0 0;
-#X connect 3 0 2 0;
-#X connect 5 0 6 0;
-#X connect 6 0 0 0;
+#X obj 79 224 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
+1 0 1 64 64 empty empty;
+#X connect 1 0 8 0;
+#X connect 2 0 1 0;
+#X connect 4 0 5 0;
+#X connect 5 0 8 0;
+#X connect 7 0 8 0;
 #X connect 8 0 0 0;
 #X restore 128 185 pd line-grid;
 #X text 249 140 click and drag =>;
@@ -246,7 +254,7 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #X msg 88 116 jump \$1;
 #X obj 88 92 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0 1
 ;
-#X obj 88 141 else/slider3d 127 127 0 127 0 127 1 255 255 255 0 0 0
+#X obj 88 141 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
 0 1 0 60 51 empty empty;
 #X connect 2 0 4 0;
 #X connect 3 0 2 0;
@@ -254,14 +262,14 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #X restore 74 185 pd jump;
 #N canvas 700 46 429 340 init 0;
 #X obj 141 269 else/display;
-#X obj 141 124 else/slider3d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 1 99 40 empty empty, f 63;
 #X text 77 33 With the 'init' message or '-init' flag \, the GUI operates
 in 'init mode' \, where it outputs the last saved value when you load
 the patch., f 46;
 #X msg 141 95 99 40;
-#X connect 1 0 0 0;
-#X connect 3 0 1 0;
+#X obj 141 124 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
+0 0 0 1 99 40 empty empty, f 63;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
 #X restore 75 205 pd init;
 #N canvas 690 298 586 201 flags 0;
 #X text 100 29 -size <float>: sets x/y size (default: 127), f 70;
@@ -319,8 +327,6 @@ the patch., f 46;
 #X obj 65 309 display;
 #X msg 354 74 receive \\\$0-slider3d-rcv \, send \\\$0-slider3d-snd
 , f 25;
-#X obj 354 234 slider3d 127 127 0 127 0 127 1 255 255 255 0 0 0 0 0
-0 51 72 empty empty;
 #X text 74 53 You can also set send/receive names with the 'send'/'receive'
 messages or '-send'/'-receive' flags., f 31;
 #X msg 372 123 receive \\\$0-rcv \, send \\\$0-snd, f 16;
@@ -335,13 +341,15 @@ messages or '-send'/'-receive' flags., f 31;
 , f 32;
 #X text 75 112 Make sure to escape "\$0" properly with backlashes (as
 in: "\\\$0")., f 24;
-#X connect 0 0 10 0;
-#X connect 2 0 3 0;
-#X connect 5 0 3 0;
-#X connect 6 0 7 0;
-#X connect 8 0 9 0;
-#X connect 11 0 1 0;
-#X connect 12 0 3 0;
+#X obj 354 234 slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0 0 0
+0 51 72 empty empty;
+#X connect 0 0 9 0;
+#X connect 2 0 14 0;
+#X connect 4 0 14 0;
+#X connect 5 0 6 0;
+#X connect 7 0 8 0;
+#X connect 10 0 1 0;
+#X connect 11 0 14 0;
 #X restore 128 205 pd send/receive;
 #X text 271 165 press shift for fine tuning, f 11;
 #X obj 359 221 else/display;
