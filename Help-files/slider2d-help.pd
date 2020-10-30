@@ -1,28 +1,10 @@
-#N struct 1626-point float x0 float y0 float xs float ys float fg float
+#N struct 1006-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1639-point float x0 float y0 float xs float ys float fg float
+#N struct 1047-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1648-point float x0 float y0 float xs float ys float fg float
+#N struct 1056-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1663-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
-#N struct 1672-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
-#N struct 1681-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
-#N struct 1690-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
-#N struct 1699-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
-#N struct 1712-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
-#N struct 1723-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
-#N struct 1733-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
-#N struct 1744-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
-#N struct 1757-point float x0 float y0 float xs float ys float fg float
+#N struct 1038-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 747 58 561 564 10;
 #X obj 2 3 cnv 15 301 42 empty empty slider3d 20 20 2 37 -233017 -1
@@ -100,13 +82,13 @@ object will clip it inside its range and output it.;
 output the incoming value., f 56;
 #X msg 159 139 set 64 64;
 #X msg 136 108 97 100;
-#X obj 136 169 else/slider3d 127 127 0 127 0 127 1 255 255 255 0 0
+#X obj 136 169 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
 0 0 0 0 64 64 empty empty;
 #X connect 3 0 5 0;
 #X connect 4 0 5 0;
 #X connect 5 0 0 0;
 #X restore 38 144 pd set-values;
-#N canvas 633 23 518 435 range 0;
+#N canvas 633 23 520 433 range 0;
 #X obj 105 359 else/display;
 #X msg 182 166 range 0 127;
 #X msg 105 166 range -1 1;
@@ -123,20 +105,20 @@ output the incoming value., f 56;
 set independent range for both x and y with the -xrange \, -yrange
 or xrange \, yrange messages. Note that a bang rescales the last output
 according to the new range., f 64;
-#X obj 294 232 else/slider3d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 0 66 70 empty empty;
-#X obj 105 219 else/slider3d 127 127 0 127 0 127 1 255 255 255 0 0
+#X obj 105 219 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
 0 0 0 0 85 84 empty empty;
+#X obj 294 232 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
+0 0 0 0 66 70 empty empty;
 #X connect 1 0 10 0;
 #X connect 1 0 11 0;
-#X connect 2 0 11 0;
-#X connect 3 0 11 0;
-#X connect 5 0 10 0;
-#X connect 6 0 10 0;
-#X connect 7 0 10 0;
-#X connect 8 0 10 0;
-#X connect 10 0 4 0;
-#X connect 11 0 0 0;
+#X connect 2 0 10 0;
+#X connect 3 0 10 0;
+#X connect 5 0 11 0;
+#X connect 6 0 11 0;
+#X connect 7 0 11 0;
+#X connect 8 0 11 0;
+#X connect 10 0 0 0;
+#X connect 11 0 4 0;
 #X restore 128 144 pd range;
 #N canvas 502 197 629 454 resize 0;
 #X obj 66 378 else/display;
@@ -305,9 +287,9 @@ the patch., f 46;
 #X obj 179 159 unpack float float;
 #X obj 179 34 else/initmess 750 8;
 #X obj 179 195 nbx 8 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 750 256;
+-228856 -1 -1 0 256;
 #X obj 295 195 nbx 8 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 8 256;
+-228856 -1 -1 0 256;
 #X text 42 87 An example with [lowpass~], f 16;
 #X obj 64 198 noise~;
 #X obj 179 61 else/slider3d 250 80 150 1500 5 20 1 162 184 255 112
@@ -357,10 +339,10 @@ in: "\\\$0")., f 24;
 #X obj 359 221 else/display;
 #X obj 359 61 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 359 89 else/slider3d 127 127 0 127 0 127 1 255 255 255 0 0 0
-0 0 0 0 0 empty empty;
 #X text 56 90 [slider3d] is a two dimensional slider GUI abstraction
 (see also [else/circle)., f 42;
-#X connect 63 0 64 0;
-#X connect 64 0 62 0;
+#X obj 359 88 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
+0 0 0 0 0 empty empty;
+#X connect 63 0 65 0;
+#X connect 65 0 62 0;
 #X coords 0 564 1 563 85 60 0;
