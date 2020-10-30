@@ -1,7 +1,7 @@
-#N canvas 332 70 563 378 10;
+#N canvas 606 90 563 378 10;
 #X obj 210 207 else/display;
 #X obj 210 144 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 216 256;
+-228856 -1 -1 0 256;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;

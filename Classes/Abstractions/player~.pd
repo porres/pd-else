@@ -1,6 +1,5 @@
-#N canvas 685 170 493 349 10;
-#X declare -path /Users/porres/Desktop/git/pd-else/Classes/Abstractions
-;
+#N canvas 557 149 493 349 10;
+#X declare -path /Users/porres/Desktop/git/pd-else/Camomile;
 #X declare -path else;
 #X obj 76 28 inlet;
 #N canvas 825 175 289 217 messages 0;
@@ -219,8 +218,8 @@
 #X restore 76 59 pd messages;
 #X obj 71 91 namecanvas \$0-sampler;
 #N canvas 330 379 895 258 \$0-tabread 0;
-#X obj 20 20 r~ 1070-tabread4~;
-#X obj 20 100 tabread4~ 0-buffer_1070;
+#X obj 20 20 r~ 1003-tabread4~;
+#X obj 20 100 tabread4~ 0-buffer_1003;
 #X obj 20 200 outlet~;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
@@ -399,7 +398,7 @@
 #X obj 199 60 dir 1;
 #X msg 363 56 clear \, obj 30 20 declare -path \$1;
 #N canvas 169 23 493 100 \$0-path 0;
-#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/Classes/Abstractions
+#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/Camomile
 ;
 #X restore 465 80 pd \$0-path;
 #X msg 166 254 100;
@@ -500,10 +499,10 @@
 #N canvas 871 121 479 442 \$0-buffers 0;
 #X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
 0;
-#N canvas 0 22 450 300 ch0_1070 0;
-#X array 0-buffer_1070 100 float 2;
+#N canvas 0 22 450 300 ch0_1003 0;
+#X array 0-buffer_1003 100 float 2;
 #X coords 0 1 0 -1 450 82 2 0 0;
-#X restore 5 19 pd ch0_1070;
+#X restore 5 19 pd ch0_1003;
 #X coords 0 0 0 0 10 20 0;
 #X restore 419 308 pd \$0-buffers;
 #X msg 52 208 obj \$2 200 r \$1-didit \, obj \$2 240 outlet \, connect
@@ -555,9 +554,4 @@
 #X connect 34 1 4 0;
 #X connect 34 1 19 1;
 #X restore 73 121 pd init;
-#X obj 20 200 outlet~;
-#X obj 80 200 r 1070-didit;
-#X obj 80 240 outlet;
 #X connect 0 0 1 0;
-#X connect 3 0 5 0;
-#X connect 6 0 7 0;
