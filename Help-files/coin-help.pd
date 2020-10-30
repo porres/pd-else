@@ -1,4 +1,4 @@
-#N canvas 296 115 564 529 10;
+#N canvas 652 145 564 529 10;
 #X obj 4 3 cnv 15 301 42 empty empty coin 20 20 2 37 -233017 -1 0;
 #X obj 308 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;

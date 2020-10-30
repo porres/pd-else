@@ -236,7 +236,7 @@ also wrap according to the number of files., f 74;
 #X obj 83 383 else/display;
 #X obj 99 261 else/dir, f 15;
 #X obj 186 153 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 366 256;
+-228856 -1 -1 380 256;
 #X msg 83 356 \$2/\$1;
 #X obj 99 176 else/rand.i 1 1;
 #X obj 394 255 else/dir -ext .wav;

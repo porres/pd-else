@@ -1,26 +1,26 @@
-#N struct 1950-point float x0 float y0 float size float fg float in
+#N struct 1006-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1972-point float x0 float y0 float size float fg float in
+#N struct 1028-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1990-point float x0 float y0 float size float fg float in
+#N struct 1046-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2010-point float x0 float y0 float size float fg float in
+#N struct 1066-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2028-point float x0 float y0 float size float fg float in
+#N struct 1084-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2048-point float x0 float y0 float size float fg float in
+#N struct 1104-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2068-point float x0 float y0 float size float fg float in
+#N struct 1124-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2116-point float x0 float y0 float size float fg float in
+#N struct 1172-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2138-point float x0 float y0 float size float fg float in
+#N struct 1194-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2160-point float x0 float y0 float size float fg float in
+#N struct 1216-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2178-point float x0 float y0 float size float fg float in
+#N struct 1234-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2196-point float x0 float y0 float size float fg float in
+#N struct 1252-point float x0 float y0 float size float fg float in
 float grid;
 #N canvas 741 27 559 578 10;
 #X obj 2 4 cnv 15 301 42 empty empty circle 20 20 2 37 -233017 -1 0
@@ -244,7 +244,7 @@ the patch., f 46;
 #X connect 2 0 3 0;
 #X connect 3 0 0 0;
 #X restore 128 205 pd init;
-#N canvas 533 288 614 254 flags 0;
+#N canvas 689 272 614 254 flags 0;
 #X text 94 33 -size <float>: sets x/y size (default: 127), f 71;
 #X text 94 93 -line <float>: non zero sets line visibility (default:
 1), f 71;
@@ -437,7 +437,7 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #X text 232 402 - sets background color outside circle in RGB, f 52
 ;
 #X obj 359 90 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255 0
-0 0 1 0 0 63.5 63.5 empty empty 1;
+0 0 1 0 0 10.3348 30.7766 empty empty 1;
 #N canvas 700 46 382 360 clip 0;
 #X obj 117 149 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
 0 0 0 1 0 0 63.5 63.5 empty empty 0;

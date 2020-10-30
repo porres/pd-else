@@ -74,10 +74,10 @@
 #X text 225 402 sets probability of a positive step in %, f 50;
 #X text 205 523 - sets step range (default 1);
 #X obj 236 227 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12696 1;
+-1 -1 0 1;
 #X text 132 343 step <float> -;
 #X text 225 343 sets step range, f 50;
-#X obj 233 141 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 233 141 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X floatatom 233 254 0 0 0 0 - - -;
 #X text 89 96 [drunkard] generates random numbers within a given step
