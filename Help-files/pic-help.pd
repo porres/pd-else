@@ -51,7 +51,8 @@
 corresponding inlet/outlet does not get drawn when you're in edit mode.
 This is an indicative that the object has a send or receive symbol.
 , f 57;
-#X obj 73 186 else/pic 1 else/pdlogo.gif \$0-pic-snd \$0-pic-rcv 0 0;
+#X obj 73 186 else/pic 1 else/pdlogo.gif \$0-pic-snd \$0-pic-rcv 0
+0;
 #X text 47 39 You can set send/receive names with the -send/-receive
 flags or the 'send'/'receive' messages - make sure to escape "\$0"
 properly with backslashes (as in: "\\\$0"). Setting these to 'empty'
@@ -234,10 +235,10 @@ twice as big when the patch window gets zoomed in., f 52;
 #X obj 33 195 else/pic 0 else/pdlogo.gif empty empty 0 0;
 #X obj 33 102 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 33 124 select 0 1, f 40;
+#X obj 33 124 select 0 1, f 44;
 #X obj 33 334 else/display;
 #X msg 33 152 set else/pdlogo.gif;
-#X msg 151 152 set else/pdlogo-big.gif;
+#X msg 163 152 set else/pdlogo-big.gif;
 #X connect 0 0 3 0;
 #X connect 2 0 5 0;
 #X connect 3 0 4 0;
