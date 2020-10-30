@@ -1,4 +1,4 @@
-#N canvas 604 80 703 525 10;
+#N canvas 579 138 703 525 10;
 #X declare -path else;
 #X obj 180 350 expr 60000 / ($f1 * 24);
 #X obj 90 85 midirealtimein;

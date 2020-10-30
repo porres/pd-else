@@ -95,5 +95,4 @@ void sequencer_tilde_setup(void){
     class_addmethod(sequencer_class,(t_method)sequencer_set, gensym("set"), A_GIMME, 0);
     class_addmethod(sequencer_class,(t_method)sequencer_goto, gensym("goto"), A_FLOAT, 0);
     class_addbang(sequencer_class, (t_method)sequencer_bang);
-//    class_addfloat(sequencer_class, (t_method)sequencer_float);
 }

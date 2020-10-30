@@ -1,8 +1,8 @@
-#N canvas 749 82 516 269 10;
+#N canvas 702 218 516 269 10;
 #X declare -path else;
 #X obj 73 193 outlet~;
 #N canvas 148 122 574 437 freeze 0;
-#X obj 249 294 tgl 15 1 empty freee empty 17 7 0 10 -228856 -1 -1 0
+#X obj 249 294 tgl 15 1 empty freee empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 325 20 inlet;
 #X obj 325 83 != 0;

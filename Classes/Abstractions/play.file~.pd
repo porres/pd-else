@@ -1,4 +1,4 @@
-#N canvas 645 451 853 361 10;
+#N canvas 548 254 853 361 10;
 #X declare -path else;
 #X obj 76 28 inlet;
 #N canvas 563 283 351 320 messages 0;
@@ -409,8 +409,15 @@
 #X obj 384 56 r \$0-spigot;
 #X obj 351 78 spigot;
 #X obj 351 105 s \$0-to_symbol;
+#X obj 20 100 readsf~ 1;
+#X obj 20 200 outlet~;
+#X obj 80 200 s 1069-didit;
+#X connect 0 0 4 0;
 #X connect 1 0 2 1;
 #X connect 2 0 3 0;
+#X connect 4 0 5 0;
+#X connect 4 1 2 0;
+#X connect 4 1 6 0;
 #X restore 74 162 pd \$0-readsf;
 #N canvas 588 115 593 557 init 0;
 #X obj 347 259 s pd-\$0-readsf;
@@ -934,4 +941,9 @@
 #X connect 24 3 6 0;
 #X connect 24 4 11 0;
 #X restore 73 121 pd init;
+#X obj 20 200 outlet~;
+#X obj 80 200 r 1069-didit;
+#X obj 80 240 outlet;
 #X connect 0 0 1 0;
+#X connect 3 0 5 0;
+#X connect 6 0 7 0;

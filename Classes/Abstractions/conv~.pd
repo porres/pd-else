@@ -1,4 +1,6 @@
-#N canvas 758 118 390 175 10;
+#N canvas 739 296 390 175 10;
+#X declare -path /Users/porres/Desktop/git/pd-else/Classes/Abstractions
+;
 #X declare -path else;
 #X obj 54 136 outlet~;
 #N canvas 442 499 436 254 guts 0;
@@ -244,6 +246,8 @@
 #X obj 436 138 send pd-\$0-path;
 #X msg 436 114 clear \, obj 30 20 declare -path \$1;
 #N canvas 360 224 493 100 \$0-path 0;
+#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/Classes/Abstractions
+;
 #X restore 538 138 pd \$0-path;
 #X obj 188 62 loadbanger 2 -init;
 #X obj 313 426 expr ceil(2*$f2/$f1);

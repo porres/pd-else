@@ -1,4 +1,4 @@
-#N canvas 434 231 822 289 10;
+#N canvas 540 183 822 289 10;
 #X obj 171 120 makefilename %g;
 #X obj 288 205 outlet;
 #X obj 54 48 inlet;

@@ -1,4 +1,4 @@
-#N canvas 240 31 1040 458 10;
+#N canvas 456 218 1040 458 10;
 #X declare -path else;
 #N canvas 660 137 340 350 plot 0;
 #N canvas 902 365 351 322 init 0;
@@ -182,7 +182,6 @@
 #X obj 101 151 trigger bang list;
 #X obj 101 178 loop 400;
 #X obj 83 39 inlet;
-#X obj 101 116 regroup 5;
 #X obj 146 71 s \$0-init;
 #N canvas 473 23 604 534 tabwrite-amp 0;
 #X obj 136 55 inlet;
@@ -241,17 +240,18 @@
 #X restore 200 266 pd tabwrite-phase;
 #X obj 83 69 t b l b;
 #X msg 52 99 clear;
-#X connect 1 0 7 0;
-#X connect 1 1 8 0;
+#X obj 101 116 group 5;
+#X connect 1 0 6 0;
+#X connect 1 1 7 0;
 #X connect 2 0 3 0;
 #X connect 2 1 1 1;
 #X connect 3 0 1 0;
-#X connect 4 0 9 0;
-#X connect 5 0 2 0;
+#X connect 4 0 8 0;
+#X connect 8 0 9 0;
+#X connect 8 1 10 0;
+#X connect 8 2 5 0;
 #X connect 9 0 10 0;
-#X connect 9 1 5 0;
-#X connect 9 2 6 0;
-#X connect 10 0 5 0;
+#X connect 10 0 2 0;
 #X restore 29 198 pd plot;
 #X obj 101 103 cnv 15 898 283 empty empty empty 18 9 1 15 -262144 -1
 0;

@@ -1,4 +1,4 @@
-#N canvas 724 184 716 405 10;
+#N canvas 636 188 716 405 10;
 #X declare -path else;
 #X text 369 185 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 369 164 Alexandre Torres Porres (2017);

@@ -1,4 +1,4 @@
-#N canvas 335 294 524 513 12;
+#N canvas 645 181 524 513 12;
 #X declare -path else;
 #X obj 250 395 table tab_\$0 \$1;
 #X obj 111 334 s tab_\$0;

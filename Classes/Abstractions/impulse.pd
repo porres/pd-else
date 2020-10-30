@@ -1,6 +1,6 @@
-#N canvas 800 355 666 329 12;
+#N canvas 633 206 666 329 12;
 #X declare -path else;
-#X obj 68 141 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 68 141 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X obj 167 36 inlet;
 #X obj 334 43 inlet;

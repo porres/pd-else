@@ -1,4 +1,4 @@
-#N canvas 986 413 467 404 10;
+#N canvas 689 239 467 404 10;
 #X obj 14 106 hsl 66 20 0 1 0 0 \$0-slider \$0-set-slider volume 19
 7 1 13 -228856 -1 -1 0 1;
 #X obj 83 94 tgl 16 0 \$0-dsp-toggle \$0-dsp-toggle-set off 3 6 1 9

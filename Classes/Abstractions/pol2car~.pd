@@ -1,4 +1,4 @@
-#N canvas 144 23 509 255 10;
+#N canvas 669 262 509 255 10;
 #X obj 87 99 expr~ cos($v2) * $v1 \; sin($v2) * $v1;
 #X obj 87 161 outlet~;
 #X obj 210 161 outlet~;

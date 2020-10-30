@@ -1,4 +1,4 @@
-#N canvas 462 365 618 260 10;
+#N canvas 607 259 618 260 10;
 #X declare -path else;
 #X text 246 49 cents;
 #X text 191 47 speed;
@@ -217,6 +217,8 @@ f 35;
 #X obj 102 245 outlet~;
 #X obj 100 200 delwrite~ \$0-buffer 5150;
 #X obj 100 200 delwrite~ \$0-buffer 5150;
+#X obj 100 200 delwrite~ \$0-buffer 5150;
+#X connect 0 0 2 0;
 #X connect 0 0 2 0;
 #X connect 0 0 2 0;
 #X restore 61 126 pd \$0-delwrite;
