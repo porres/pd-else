@@ -1,4 +1,4 @@
-#N canvas 419 231 969 408 10;
+#N canvas 282 475 969 408 10;
 #X declare -path else;
 #X obj 175 70 inlet~ fwd;
 #N canvas 931 564 561 522 guts 0;
@@ -144,8 +144,5 @@ connect 2 0 6 0, f 35;
 #X obj 99 236 outlet;
 #X text 93 299 Alexandre Torres Porres (2020) \; Part of ELSE \; https://github.com/porres/pd-else
 ;
-#X obj 175 175 tabwriter~ -ch 1;
-#X connect 0 0 6 1;
 #X connect 0 1 1 0;
-#X connect 2 0 6 0;
 #X connect 3 0 4 0;

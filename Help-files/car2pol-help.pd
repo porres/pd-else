@@ -1,6 +1,8 @@
-#N struct 1115-point float x0 float y0 float xs float ys;
-#N struct 1118-point float x0 float y0 float xs float ys;
-#N canvas 547 208 561 491 10;
+#N struct 1010-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
+#N struct 1019-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
+#N canvas 628 167 561 491 10;
 #X obj 1 287 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 1 365 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -78,23 +80,23 @@ to polar coordinates (amplitude / phase).;
 #X obj 101 164 else/display;
 #X obj 101 204 else/car2pol;
 #X obj 170 242 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.837981 256;
+-228856 -1 -1 0 256;
 #X obj 101 243 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.597939 256;
-#X obj 101 342 else/slider2d -size 90 -range -1 1;
+-228856 -1 -1 0 256;
 #X obj 101 273 else/pol2car;
 #X obj 101 310 pack;
 #X text 63 12 cartesian x polar converstion;
 #X text 203 97 <= click/drag;
+#X obj 101 342 else/slider2d -size 90 -range -1 1;
 #X obj 101 55 else/slider2d -size 90 -range -1 1;
 #X connect 0 0 1 0;
 #X connect 1 0 3 0;
 #X connect 1 1 2 0;
-#X connect 2 0 5 1;
-#X connect 3 0 5 0;
-#X connect 5 0 6 0;
-#X connect 5 1 6 1;
-#X connect 6 0 4 0;
+#X connect 2 0 4 1;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 4 1 5 1;
+#X connect 5 0 8 0;
 #X connect 9 0 0 0;
 #X restore 461 248 pd example;
 #X text 462 187 see also:;
