@@ -424,7 +424,6 @@ static void function_duration(t_function* x, t_floatarg dur){
         return;
     }
     if(dur != x->x_total_duration){
-        canvas_dirty(x->x_glist, 1);
         x->x_total_duration = dur;
         float f = dur/x->x_dur[x->x_n_states];
         for(int i = 1; i <= x->x_n_states; i++)
@@ -541,7 +540,6 @@ static void function_set(t_function *x, t_symbol* s, int ac,t_atom *av){
         return;
     }
     s = NULL;
-    canvas_dirty(x->x_glist, 1);
     if(ac > 2 && ac % 2){
         function_set_beeakpoints(x, ac, av);
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
@@ -604,7 +602,6 @@ static void function_list(t_function *x, t_symbol* s, int ac,t_atom *av){
 static void function_min(t_function *x, t_floatarg f){
     if(f <= x->x_min_point){
         if(x->x_min != f){
-            canvas_dirty(x->x_glist, 1);
             x->x_min = f;
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             function_update(x, x->x_glist);
@@ -615,7 +612,6 @@ static void function_min(t_function *x, t_floatarg f){
 static void function_max(t_function *x, t_floatarg f){
     if(f >= x->x_max_point){
         if(x->x_max != f){
-            canvas_dirty(x->x_glist, 1);
             x->x_max = f;
             if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
                 function_update(x, x->x_glist);
@@ -625,7 +621,6 @@ static void function_max(t_function *x, t_floatarg f){
 
 static void function_resize(t_function *x){
     if(x->x_max != x->x_max_point || x->x_min != x->x_min_point){
-        canvas_dirty(x->x_glist, 1);
         x->x_max = x->x_max_point;
         x->x_min = x->x_min_point;
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
@@ -635,17 +630,14 @@ static void function_resize(t_function *x){
 
 static void function_init(t_function *x, t_floatarg f){
     int init = (int)(f != 0);
-    if(x->x_init != init){
-        canvas_dirty(x->x_glist, 1);
+    if(x->x_init != init)
         x->x_init = init;
-    }
 }
 
 static void function_height(t_function *x, t_floatarg f){
     int height = f < 20 ? 20 : (int)f;
     if(x->x_height != height){
         x->x_height = height * x->x_zoom;
-        canvas_dirty(x->x_glist, 1);
         function_erase(x, x->x_glist);
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
             function_draw(x, x->x_glist);
@@ -658,7 +650,6 @@ static void function_width(t_function *x, t_floatarg f){
     int width = f < 40 ? 40 : (int)f;
     if(x->x_width != width){
         x->x_width = width * x->x_zoom;
-        canvas_dirty(x->x_glist, 1);
         function_erase(x, x->x_glist);
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             function_draw(x, x->x_glist);
@@ -671,7 +662,6 @@ static void function_send(t_function *x, t_symbol *s){
         x->x_snd_raw = s;
         x->x_send = snd;
         x->x_snd_set = 1;
-        canvas_dirty(x->x_glist, 1);
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
             if(x->x_send == &s_)
                 function_draw_in_outlet(x);
@@ -687,7 +677,6 @@ static void function_receive(t_function *x, t_symbol *s){
     if(rcv != x->x_receive){
         x->x_rcv_raw = s;
         x->x_rcv_set = 1;
-        canvas_dirty(x->x_glist, 1);
         if(x->x_receive != &s_)
             pd_unbind(&x->x_obj.ob_pd, x->x_receive);
         if(rcv != &s_)
@@ -707,7 +696,6 @@ static void function_fgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
     int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
     int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
     if(x->x_fgcolor[0] != r || x->x_fgcolor[1] != g || x->x_fgcolor[2] != b){
-        canvas_dirty(x->x_glist, 1);
         x->x_fgcolor[0] = r;
         x->x_fgcolor[1] = g;
         x->x_fgcolor[2] = b;
@@ -727,7 +715,6 @@ static void function_bgcolor(t_function *x, t_floatarg red, t_floatarg green, t_
     int g = green < 0 ? 0 : green > 255 ? 255 : (int)green;
     int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
     if(x->x_bgcolor[0] != r || x->x_bgcolor[1] != g || x->x_bgcolor[2] != b){
-        canvas_dirty(x->x_glist, 1);
         x->x_bgcolor[0] = r;
         x->x_bgcolor[1] = g;
         x->x_bgcolor[2] = b;
