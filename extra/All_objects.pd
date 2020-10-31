@@ -1,9 +1,9 @@
-#N struct 1331-cell float x float y float cellsize float color;
-#N struct 1338-point float x0 float y0 float xs float ys float fg float
+#N struct 1335-cell float x float y float cellsize float color;
+#N struct 1342-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1362-slot float x float y float slotsize float color float
+#N struct 1366-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1376-point float x0 float y0 float size float fg float in
+#N struct 1380-point float x0 float y0 float size float fg float in
 float grid;
 #N canvas 817 68 558 543 10;
 #X declare -path else;
@@ -439,7 +439,6 @@ float grid;
 #X obj 167 1639 t2;
 #X text 31 780 =============================================================================
 , f 77;
-#X obj 55 877 regroup;
 #X obj 55 902 scramble;
 #X obj 55 927 sort;
 #X obj 55 1492 pick;
@@ -452,6 +451,7 @@ float grid;
 #X obj 55 4044 rand.seq;
 #X obj 55 1417 message;
 #X obj 55 1616 stack;
+#A saved;
 #X obj 57 727 receiver;
 #X obj 54 974 reverse;
 #X text 55 802 Message/List management:;
@@ -501,3 +501,4 @@ float grid;
 #X obj 57 650 click;
 #X obj 324 24 declare -path else;
 #X obj 55 2238 voices;
+#X obj 55 877 group;
