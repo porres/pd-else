@@ -296,7 +296,6 @@ void pic_open(t_pic* x, t_symbol *filename){
         if(filename != x->x_filename){
             const char *file_name_open = pic_filepath(x, filename->s_name); // path
             if(file_name_open){
-//                post("file_name_open");
                 x->x_filename = filename;
                 x->x_fullname = gensym(file_name_open);
                 if(x->x_def_img)
@@ -305,7 +304,6 @@ void pic_open(t_pic* x, t_symbol *filename){
                 sys_vgui("if { [info exists %lx_picname] == 0 } { image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n} \n",
                     x->x_fullname, x->x_fullname, file_name_open, x->x_fullname);
                 pic_draw(x, x->x_glist, 0);
-                canvas_dirty(x->x_glist, 1);
             }
             else pd_error(x, "[pic]: error opening file '%s'", filename->s_name);
         }
@@ -315,14 +313,12 @@ void pic_open(t_pic* x, t_symbol *filename){
 
 void pic_set(t_pic* x, t_symbol *filename){
     pic_open(x, filename);
-    canvas_dirty(x->x_glist, 0);
 }
 
 static void pic_send(t_pic *x, t_symbol *s){
     if(s != gensym("")){
         t_symbol *snd = (s == gensym("empty")) ? &s_ : canvas_realizedollar(x->x_glist, s);
         if(snd != x->x_send){
-            canvas_dirty(x->x_glist, 1);
             x->x_snd_raw = s;
             x->x_send = snd;
             x->x_snd_set = 1;
@@ -340,7 +336,6 @@ static void pic_receive(t_pic *x, t_symbol *s){
     if(s != gensym("")){
         t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, s);
         if(rcv != x->x_receive){
-            canvas_dirty(x->x_glist, 1);
             if(x->x_receive != &s_)
                 pd_unbind(&x->x_obj.ob_pd, x->x_receive);
             x->x_rcv_set = 1;
@@ -363,7 +358,6 @@ static void pic_outline(t_pic *x, t_float f){
     int outline = (int)(f != 0);
     if(x->x_outline != outline){
         x->x_outline = outline;
-        canvas_dirty(x->x_glist, 1);
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
             t_canvas *cv = glist_getcanvas(x->x_glist);
             if(x->x_outline){
@@ -382,17 +376,14 @@ static void pic_outline(t_pic *x, t_float f){
 
 static void pic_size(t_pic *x, t_float f){
     int size = (int)(f != 0);
-    if(x->x_size != size){
+    if(x->x_size != size)
         x->x_size = size;
-        canvas_dirty(x->x_glist, 1);
-    }
 }
 
 static void pic_latch(t_pic *x, t_float f){
     int latch = (int)(f != 0);
     if(x->x_latch != latch){
         x->x_latch = latch;
-        canvas_dirty(x->x_glist, 1);
     }
 }
 
@@ -463,6 +454,7 @@ static void pic_ok(t_pic *x, t_symbol *s, int ac, t_atom *av){
     pic_latch(x, atom_getfloatarg(3, ac, av));
     pic_send(x, atom_getsymbolarg(4, ac, av));
     pic_receive(x, atom_getsymbolarg(5, ac, av));
+    canvas_dirty(x->x_glist, 1);
 }
 
 //-------------------------------------------------------------------------------------

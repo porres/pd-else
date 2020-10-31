@@ -1,9 +1,9 @@
-#N struct 1335-cell float x float y float cellsize float color;
-#N struct 1342-point float x0 float y0 float xs float ys float fg float
+#N struct 1333-cell float x float y float cellsize float color;
+#N struct 1340-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1366-slot float x float y float slotsize float color float
+#N struct 1364-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1380-point float x0 float y0 float size float fg float in
+#N struct 1378-point float x0 float y0 float size float fg float in
 float grid;
 #N canvas 817 68 558 543 10;
 #X declare -path else;
@@ -282,7 +282,7 @@ float grid;
 #X obj 60 10187 mov.rms~;
 #X obj 60 10213 vu~;
 #X obj 60 10239 zerocross~;
-#N canvas 574 44 978 936 GUI 0;
+#N canvas 755 48 978 936 GUI 0;
 #X obj 145 69 mtx.ctl;
 #X obj 40 179 biplot;
 #X text 40 156 [biplot];
@@ -347,8 +347,8 @@ float grid;
 #X text 335 51 [pad] =>;
 #X obj 447 519 keyboard 17 80 4 3 0 0 empty empty;
 #X text 248 1295 oscilloscope~ =>;
-#X obj 367 1238 oscilloscope~ 130 130 256 3 128 -1 1 0 0 0 0 205 229
-232 74 79 77 96 98 102 0 empty;
+#X obj 369 1249 else/oscilloscope~ 200 100 256 3 128 -1 1 0 0 0 0 30
+30 30 190 190 190 160 160 160 0 empty;
 #X restore 66 10328 pd GUI;
 #X text 57 346 Patch/subpatch management:;
 #X text 54 1174 Message management:;
