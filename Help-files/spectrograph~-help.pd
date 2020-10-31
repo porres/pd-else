@@ -179,10 +179,8 @@ f 51;
 #X text 46 87 [spectrograph~] is an abstraction for visualizing FFT
 amplitudes from 0hz to Nyquist. It uses a hann table for the abalysis.
 , f 64;
-#X obj 60 158 spectrograph~ 1024 0 0 300 140 100;
 #X obj 60 126 noise~;
 #N canvas 988 95 431 534 rate 0;
-#X obj 72 273 spectrograph~ 1024 0 0 300 140 100;
 #X obj 70 19 noise~;
 #X msg 102 175 rate \$1;
 #X obj 115 212 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -198,13 +196,14 @@ amplitudes from 0hz to Nyquist. It uses a hann table for the abalysis.
 #X text 145 113 default;
 #X text 119 65 graph rate rate in ms;
 #X floatatom 102 142 5 0 1000 0 - - -;
-#X connect 1 0 0 0;
-#X connect 2 0 0 0;
-#X connect 3 0 0 0;
-#X connect 6 0 12 0;
-#X connect 7 0 12 0;
-#X connect 8 0 12 0;
-#X connect 12 0 2 0;
+#X obj 72 273 else/spectrograph~ 1024 0 0 300 140 100;
+#X connect 0 0 12 0;
+#X connect 1 0 12 0;
+#X connect 2 0 12 0;
+#X connect 5 0 11 0;
+#X connect 6 0 11 0;
+#X connect 7 0 11 0;
+#X connect 11 0 1 0;
 #X restore 493 282 pd rate;
 #X text 219 332 bang;
 #X text 255 332 - graphs when rate is 0;
@@ -212,6 +211,7 @@ amplitudes from 0hz to Nyquist. It uses a hann table for the abalysis.
 #X text 250 407 - sets graph rate in ms;
 #X text 106 540 -rate <float>;
 #X text 191 540 - sets graph rate in ms (default 100), f 51;
+#X obj 60 158 else/spectrograph~ 1024 0 0 300 140 100;
 #X connect 20 0 28 0;
 #X connect 21 0 22 0;
 #X connect 22 0 28 0;
@@ -219,5 +219,5 @@ amplitudes from 0hz to Nyquist. It uses a hann table for the abalysis.
 #X connect 24 0 23 0;
 #X connect 25 0 20 0;
 #X connect 26 0 20 0;
-#X connect 29 0 51 0;
-#X connect 52 0 51 0;
+#X connect 29 0 59 0;
+#X connect 51 0 59 0;

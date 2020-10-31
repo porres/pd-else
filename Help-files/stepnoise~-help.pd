@@ -74,7 +74,6 @@ objects. Here we control the frequency of an oscillator.;
 -1 -1 0 1;
 #X obj 268 264 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 0 1;
-#X obj 347 310 setdsp~;
 #X msg 268 151 seed \$1;
 #X floatatom 268 127 5 0 0 0 - - -;
 #X msg 268 103 1023;
@@ -83,14 +82,15 @@ objects. Here we control the frequency of an oscillator.;
 #X text 132 27 Sync [stepnoise~] objects with a seed value. The default
 is a unique value for each instance based on the system time., f 43
 ;
+#X obj 347 310 else/setdsp~;
 #X connect 1 0 3 0;
 #X connect 2 0 4 0;
-#X connect 6 0 9 0;
-#X connect 6 0 10 0;
+#X connect 5 0 8 0;
+#X connect 5 0 9 0;
+#X connect 6 0 5 0;
 #X connect 7 0 6 0;
-#X connect 8 0 7 0;
-#X connect 9 0 1 0;
-#X connect 10 0 2 0;
+#X connect 8 0 1 0;
+#X connect 9 0 2 0;
 #X restore 484 319 pd seed;
 #X text 123 419 seed <float>;
 #X text 216 420 - sets seed;

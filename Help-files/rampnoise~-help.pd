@@ -68,7 +68,6 @@ objects. Here we control the frequency of an oscillator.;
 -1 -1 0 1;
 #X obj 234 234 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 0 1;
-#X obj 313 280 setdsp~;
 #X obj 84 162 else/rampnoise~ 1;
 #X obj 234 162 else/rampnoise~ 1;
 #X msg 234 121 seed \$1;
@@ -77,14 +76,15 @@ objects. Here we control the frequency of an oscillator.;
 #X text 81 18 Sync [rampnoise~] objects with a seed value. The default
 is a unique value for each instance based on the system time., f 48
 ;
+#X obj 313 280 else/setdsp~;
 #X connect 1 0 3 0;
 #X connect 2 0 4 0;
-#X connect 6 0 1 0;
-#X connect 7 0 2 0;
-#X connect 8 0 6 0;
+#X connect 5 0 1 0;
+#X connect 6 0 2 0;
+#X connect 7 0 5 0;
+#X connect 7 0 6 0;
 #X connect 8 0 7 0;
 #X connect 9 0 8 0;
-#X connect 10 0 9 0;
 #X restore 495 324 pd seed;
 #X obj 91 391 cnv 17 3 37 empty empty 0 5 9 0 16 -228856 -162280 0
 ;

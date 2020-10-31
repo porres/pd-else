@@ -257,7 +257,6 @@
 #X obj 284 141 symbol \$0-sample;
 #X obj 284 116 loadbang;
 #X text 374 248 sample size;
-#X msg 284 170 read -resize ./vacuous.wav \$1;
 #X obj 371 199 table \$0-sample;
 #X obj 287 411 else/out~;
 #X text 233 310 restart;
@@ -278,28 +277,29 @@
 #X obj 97 191 else/susloop~, f 15;
 #X obj 97 279 else/out~;
 #X msg 56 159 stop;
-#X obj 287 370 table~ \$0-sample 0 1;
 #X text 42 19 [ramp~] is very convenient for driving [tabread4~] or
 [else/table~] to read samples at different speeds. With an increment
 of "1" \, it reads at the original speed \, at "2" it reads twice as
 fast \, "0.5" half as fast. Note it can also play it backwards at different
 speeds with negative increment values., f 69;
+#X obj 287 370 else/table~ \$0-sample 0 1;
+#X msg 284 170 read -resize else/vacuous.wav \$1;
 #X connect 0 0 1 0;
-#X connect 1 0 15 0;
-#X connect 2 0 5 0;
+#X connect 1 0 14 0;
+#X connect 2 0 23 0;
 #X connect 3 0 2 0;
-#X connect 5 0 0 0;
-#X connect 9 0 20 0;
-#X connect 10 0 12 0;
-#X connect 11 0 19 1;
-#X connect 12 0 11 0;
-#X connect 13 0 19 0;
-#X connect 16 0 22 0;
-#X connect 17 0 16 0;
-#X connect 18 0 16 0;
-#X connect 19 0 9 0;
-#X connect 21 0 19 0;
-#X connect 22 0 7 0;
+#X connect 8 0 19 0;
+#X connect 9 0 11 0;
+#X connect 10 0 18 1;
+#X connect 11 0 10 0;
+#X connect 12 0 18 0;
+#X connect 15 0 22 0;
+#X connect 16 0 15 0;
+#X connect 17 0 15 0;
+#X connect 18 0 8 0;
+#X connect 20 0 18 0;
+#X connect 22 0 6 0;
+#X connect 23 0 0 0;
 #X restore 450 245 pd read buffers;
 #X text 192 510 - loop start (default 0), f 57;
 #X text 192 526 - loop end (default 2ˆ32 - 1), f 57;

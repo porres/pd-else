@@ -123,13 +123,12 @@ The "reload" message reloads the last opened file.;
 ;
 #X text 146 532 -ms <float> - sets maximum buffer size in ms, f 45
 ;
-#N canvas 1251 201 454 461 details 0;
+#N canvas 1006 207 454 461 details 0;
 #X text 150 60 <= check internal array;
 #X text 69 138 Similar to:;
 #X text 267 139 <= click to open;
 #X obj 67 201 soundfiler;
 #X obj 153 139 table vanilla_\$0;
-#X obj 67 168 else/initmess read -resize violin.wav vanilla_\$0;
 #X text 31 246 But [sample~] is also able to define multi channel arrays
 (up to 64). The convention for channel ordering is the buffer name
 preceded by the channel number (from 0) and "-". For instance \, a
@@ -145,9 +144,11 @@ the name "test" generates an internal array also named: "test".;
 \, [tabplay~] \, [tabread4~] and [array]) to access the internal arrays
 of [sample~]. In the case of a multi channel buffer \, you have to
 give it the correct table name according to a specific channel.;
+#X obj 67 168 else/initmess read -resize else/violin.wav vanilla_\$0
+;
 #X obj 117 86 else/sample~ else_\$0 violin.wav;
-#X connect 5 0 3 0;
-#X connect 8 0 11 0;
+#X connect 7 0 11 0;
+#X connect 10 0 3 0;
 #X restore 479 128 pd details;
 #X text 111 173 click =>;
 #X obj 84 209 cnv 17 3 214 empty empty 0 5 9 0 16 -228856 -162280 0
@@ -165,7 +166,7 @@ save multichannel files., f 62;
 #X obj 121 335 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 74 200 else/setdsp~;
-#X obj 113 423 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 113 423 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 114 495 else/out~;
 #X msg 211 237 show;

@@ -64,7 +64,7 @@ read in different directions., f 29;
 #X obj 78 98 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
 #X obj 241 261 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 100 256;
+-228856 -1 -1 0 256;
 #X obj 78 155 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 78 124 else/tempo 120 100;
@@ -172,7 +172,6 @@ the same time. This may also add a symbol/list selector., f 42;
 #X obj 193 97 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
 -1 0;
 #X obj 193 187 else/setmess set;
-#X obj 193 211 display;
 #X obj 61 246 else/sequencer;
 #X obj 193 71 loadbang;
 #X text 51 19 Use [text] to store many sequence presets.;
@@ -180,14 +179,15 @@ the same time. This may also add a symbol/list selector., f 42;
 #A set 1 2 3 4 5 six 7 eight 9 ten \; 40 50 60 70 \; a b c d e f g
 \; ping pléin póing;
 #X obj 193 164 text get \$0-presets;
-#X connect 1 0 6 0;
+#X obj 193 211 else/display;
+#X connect 1 0 5 0;
 #X connect 2 0 1 0;
-#X connect 3 0 10 0;
-#X connect 4 0 5 0;
-#X connect 5 0 6 0;
-#X connect 6 0 0 0;
-#X connect 7 0 3 0;
-#X connect 10 0 4 0;
+#X connect 3 0 9 0;
+#X connect 4 0 10 0;
+#X connect 5 0 0 0;
+#X connect 6 0 3 0;
+#X connect 9 0 4 0;
+#X connect 10 0 5 0;
 #X restore 501 223 pd text;
 #X connect 18 0 24 0;
 #X connect 32 0 35 0;

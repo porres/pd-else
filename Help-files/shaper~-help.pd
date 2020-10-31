@@ -126,14 +126,14 @@ For example \, an LFO sine wave can scan through an audio sample forward
 and reverse \, accelerating and decelerating \, resulting in a turntable
 scratch effect. Check below., f 65;
 #X obj 240 166 soundfiler;
-#X obj 240 130 else/initmess read -resize violin.wav \$0-violin, f
-26;
 #X obj 314 166 table \$0-violin;
 #X obj 69 160 else/out~;
 #X obj 69 125 else/shaper~ \$0-violin;
-#X connect 0 0 6 0;
-#X connect 3 0 2 0;
-#X connect 6 0 5 0;
+#X obj 240 130 else/initmess read -resize else/violin.wav \$0-violin
+, f 26;
+#X connect 0 0 5 0;
+#X connect 5 0 4 0;
+#X connect 6 0 2 0;
 #X restore 484 288 pd more;
 #X text 70 87 [shaper~] performs waveshaping with transfer functions
 \, in which signal input values (from -1 to 1) are mapped to the the

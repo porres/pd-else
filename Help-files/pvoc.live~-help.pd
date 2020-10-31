@@ -69,8 +69,8 @@ It provides independent time stretching and pitch shifting via granulation.
 #X text 86 154 reset =>;
 #X text 148 432 1) float - sets buffer size in ms (default 5000),
 f 61;
-#X obj 429 238 else/pvoc.playerz~;
-#X obj 418 260 else/stretch.shiftz~;
+#X obj 418 260 else/stretch.shift~;
+#X obj 429 238 else/pvoc.player~;
 #X connect 12 0 35 1;
 #X connect 13 0 35 2;
 #X connect 32 0 35 0;

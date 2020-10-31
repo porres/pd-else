@@ -1,4 +1,4 @@
-#N canvas 618 133 564 586 10;
+#N canvas 633 120 564 586 10;
 #X obj 5 317 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 435 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -66,7 +66,6 @@
 #X obj 116 132 else/impseq~ 1 0.5 0.25 0.1;
 #X obj 116 101 else/tempo~ 120 -on;
 #X obj 144 158 else/trighold~;
-#X obj 144 180 display~;
 #X obj 474 201 / 127;
 #X obj 399 202 mtof;
 #X obj 369 95 t b b;
@@ -85,23 +84,24 @@ Atrigger happens when there is a 0 to non 0 transition \, and this
 values determines the amplitude., f 46;
 #X obj 369 119 else/rand.i 28 56;
 #X obj 403 142 else/rand.i 50 127;
+#X obj 144 180 else/display~;
 #X connect 1 0 3 0;
-#X connect 1 0 9 1;
+#X connect 1 0 8 1;
 #X connect 2 0 1 0;
-#X connect 3 0 4 0;
-#X connect 5 0 12 1;
-#X connect 6 0 12 0;
-#X connect 7 0 16 0;
-#X connect 7 1 17 0;
-#X connect 8 0 7 0;
-#X connect 9 0 0 0;
-#X connect 10 0 6 0;
-#X connect 10 1 5 0;
-#X connect 12 0 13 0;
-#X connect 14 0 6 0;
-#X connect 14 1 5 0;
-#X connect 16 0 14 0;
-#X connect 17 0 14 1;
+#X connect 3 0 17 0;
+#X connect 4 0 11 1;
+#X connect 5 0 11 0;
+#X connect 6 0 15 0;
+#X connect 6 1 16 0;
+#X connect 7 0 6 0;
+#X connect 8 0 0 0;
+#X connect 9 0 5 0;
+#X connect 9 1 4 0;
+#X connect 11 0 12 0;
+#X connect 13 0 5 0;
+#X connect 13 1 4 0;
+#X connect 15 0 13 0;
+#X connect 16 0 13 1;
 #X restore 483 252 pd trigger;
 #N canvas 719 317 431 313 negative 0;
 #X obj 223 143 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10

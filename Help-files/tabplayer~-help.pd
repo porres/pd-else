@@ -1,4 +1,4 @@
-#N canvas 845 69 566 612 10;
+#N canvas 719 110 566 612 10;
 #X obj 8 586 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 9 304 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -47,14 +47,6 @@ a zero signal.;
 #X text 181 472 - the playback of a channel, f 61;
 #X obj 225 154 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#N canvas 577 100 351 116 load 0;
-#X obj 32 52 soundfiler;
-#X obj 241 55 table \$0-violin;
-#X obj 32 76 outlet;
-#X obj 32 20 else/initmess read -resize violin.wav \$0-violin;
-#X connect 0 0 2 0;
-#X connect 3 0 0 0;
-#X restore 45 194 pd load \; sample;
 #X msg 266 178 stop;
 #X msg 264 154 start;
 #X msg 166 172 loop \$1;
@@ -134,10 +126,10 @@ be resumed), f 33;
 #X obj 80 300 else/out~;
 #X obj 463 253 else/tabplayer~ \$0-violin;
 #X obj 462 291 else/out~;
-#X text 584 189 play 1st second backwards, f 25;
+#X text 584 189 play 1st second backwards;
 #X text 603 220 play 1st second;
 #X text 572 155 play half second from 250 ms;
-#X text 535 119 play from 1 second, f 18;
+#X text 535 119 play from 1 second;
 #X text 410 39 The 'start' message takes up to 2 floats that specify:
 1) starting point in the array (in ms) \, 2) end point (in ms). If
 no floats are given \, then it playes from the start to the end.,
@@ -239,12 +231,13 @@ may also loop - more functionalities comming soon.;
 #X text 101 360 start <f \, f>;
 #X text 193 360 start playing \, if no float is given \, array is played
 from start to end. 1st float sets start and 2nd sets end (in ms);
-#X connect 12 0 61 0;
-#X connect 13 0 44 0;
-#X connect 14 0 61 0;
-#X connect 15 0 61 0;
-#X connect 16 0 61 0;
-#X connect 17 0 16 0;
-#X connect 44 0 43 0;
-#X connect 61 0 59 0;
-#X connect 61 1 30 0;
+#X obj 45 179 else/sample~ \$0-violin violin.wav, f 12;
+#X connect 12 0 60 0;
+#X connect 13 0 60 0;
+#X connect 14 0 60 0;
+#X connect 15 0 60 0;
+#X connect 16 0 15 0;
+#X connect 43 0 42 0;
+#X connect 60 0 58 0;
+#X connect 60 1 29 0;
+#X connect 65 0 43 0;
