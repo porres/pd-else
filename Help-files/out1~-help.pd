@@ -375,13 +375,13 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X text 179 444 - sets output channel (default 1), f 60;
 #N canvas 522 161 394 214 -ch 0;
 #X obj 207 86 osc~ 440;
-#X obj 207 118 ./out1~ -ch 2;
 #X obj 77 86 osc~ 440;
-#X obj 77 119 ./out1~ -ch 1;
 #X text 24 28 By default \, [out1~] routes to [dac~ 1] \, but you can
 change it with the -ch flag to route it to other outputs., f 52;
-#X connect 0 0 1 0;
-#X connect 2 0 3 0;
+#X obj 77 119 else/out1~ -ch 1;
+#X obj 207 118 else/out1~ -ch 2;
+#X connect 0 0 4 0;
+#X connect 1 0 3 0;
 #X restore 502 181 pd -ch;
 #N canvas 477 417 534 169 see 0;
 #X obj 342 78 else/out8~;

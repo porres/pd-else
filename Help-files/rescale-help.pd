@@ -1,4 +1,4 @@
-#N canvas 298 65 567 602 10;
+#N canvas 662 128 567 602 10;
 #X obj 4 308 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -230,7 +230,7 @@ output values;
 #N canvas 579 93 575 556 negative-exponential 0;
 #X floatatom 312 122 0 1 1.2 0 - - -;
 #X obj 315 98 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 1400 1;
+-1 -1 0 1;
 #X obj 69 365 cnv 15 198 138 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;

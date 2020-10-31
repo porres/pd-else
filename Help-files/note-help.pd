@@ -71,8 +71,6 @@ patch's) | -just <float> (default 0) | -color <f \, f \, f> (default
 0 0 0) | -bgcolor <f \, f \, f> (default 255 255 255) | -bg <float>
 (default 0) | @note <anything>: sets note (default "note") | -underline
 <float> (default 0) | @receive <symbol> (default 'empty'), f 72;
-#X obj 59 162 ./note 425 10 dejavu\ sans\ mono empty 0 0 0 0 0 255
-255 255 0 0 note;
 #X obj 216 154 else/note 131 20 Times empty 3 150 0 0 1 230 235 240
 1 1 Hi \, I'm the [note] object !;
 #X text 118 159 the default [else/note], f 11;
@@ -230,3 +228,5 @@ is basically the same of Pd's comment but with the advantage of being
 able to set the font \, size \, color \, background color \, bold \,
 italic \, underline and justification., f 68;
 #X text 351 161 <== right click for properties, f 10;
+#X obj 59 162 else/note 425 10 dejavu\ sans\ mono empty 0 0 0 0 0 255
+255 255 0 0 note;

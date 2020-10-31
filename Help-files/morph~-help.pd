@@ -1,5 +1,4 @@
 #N canvas 653 106 562 563 10;
-#X obj 184 284 out~;
 #X obj 229 199 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 250 222 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
@@ -72,8 +71,9 @@ and spectral morphing., f 76;
 #X text 135 495 1) float - amplitude cross fade (default 1 - "B");
 #X text 135 513 2) float - initial phase cross fade (default -1 - "A")
 ;
-#X connect 1 0 37 2;
-#X connect 2 0 37 3;
-#X connect 16 0 37 1;
-#X connect 17 0 37 0;
-#X connect 37 0 0 0;
+#X obj 184 284 else/out~;
+#X connect 0 0 36 2;
+#X connect 1 0 36 3;
+#X connect 15 0 36 1;
+#X connect 16 0 36 0;
+#X connect 36 0 45 0;

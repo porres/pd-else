@@ -95,7 +95,6 @@ If the symbol starts with "/" (non windows machines) or "c:" (for instance
 path. Otherwise \, [dir] will look for directories relative to the
 current directory., f 77;
 #X msg 73 295 reset \, dir;
-#X obj 63 408 display;
 #X text 145 295 resets to the default directory;
 #X text 66 187 When using the open message \, the rightmost outlet
 sends an open flag ("1" if the directory has been successfully openned
@@ -105,14 +104,15 @@ query for files. If you change the contents of your directory \, you
 need to use the 'reopen' message to reload the direcory's contents.
 , f 79;
 #X obj 117 625 else/display 2;
-#X connect 1 1 16 0;
+#X obj 63 408 else/display;
+#X connect 1 1 20 0;
 #X connect 1 3 4 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;
 #X connect 8 0 11 0;
 #X connect 9 0 8 0;
 #X connect 10 1 12 0;
-#X connect 10 3 20 0;
+#X connect 10 3 19 0;
 #X connect 11 0 10 0;
 #X connect 15 0 1 0;
 #X restore 486 248 pd open;

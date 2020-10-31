@@ -1,4 +1,4 @@
-#N canvas 378 37 564 554 10;
+#N canvas 707 135 564 554 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -49,7 +49,7 @@
 #X msg 127 246 symbol a;
 #X msg 175 269 a;
 #X msg 264 259 1;
-#X floatatom 271 285 5 0 0 0 - - -, f 5;
+#X floatatom 271 285 5 0 0 0 - - -;
 #X msg 206 227 list a b;
 #X msg 321 287 unmatched;
 #X text 163 455 anything -;
@@ -76,7 +76,7 @@ to the rightmost outlet., f 66;
 \, it will be able to match and route accordingly.;
 #X obj 101 178 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X symbolatom 118 202 10 0 0 0 - - -, f 10;
+#X symbolatom 118 202 10 0 0 0 - - -;
 #X obj 212 252 else/display;
 #X obj 101 253 else/display;
 #X obj 101 229 else/routeall float;

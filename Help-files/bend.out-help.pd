@@ -54,12 +54,12 @@ from 0 to 16383 \, whereas the default behaviour is a normalized output
 (floats from -1 to 1), f 57;
 #X obj 187 103 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 187 192 display;
 #X obj 187 130 else/bend.out -raw;
 #X obj 187 158 else/bend.in -raw;
-#X connect 1 0 3 0;
+#X obj 187 192 else/display;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
 #X connect 3 0 4 0;
-#X connect 4 0 2 0;
 #X restore 505 224 pd raw;
 #X text 238 270 - pitch bend values;
 #X text 253 324 raw MIDI stream, f 31;
