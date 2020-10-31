@@ -1,13 +1,13 @@
-#N canvas 674 297 911 601 10;
+#N canvas 565 228 911 601 10;
 #X declare -path else;
 #X obj 129 201 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -262144
--262144 -262144 9200 0;
+-262144 -262144 0 0;
 #X obj 34 35 inlet;
 #N canvas 525 239 460 647 guts 0;
 #X obj 38 29 inlet;
 #X obj 38 573 outlet;
-#X obj 60 351 s \$0-set.values;
-#X obj 60 367 r \$0-set.values;
+#X obj 52 351 s \$0-set.values;
+#X obj 52 367 r \$0-set.values;
 #N canvas 1065 284 336 520 draw 0;
 #X obj 149 130 r \$0-width;
 #X obj 193 254 r \$0-height;
@@ -56,9 +56,9 @@
 #X connect 18 0 9 0;
 #X connect 19 0 12 0;
 #X connect 20 0 19 2;
-#X restore 60 395 pd draw;
-#X obj 167 418 r \$0-max;
-#X obj 134 397 r \$0-min;
+#X restore 52 395 pd draw;
+#X obj 137 419 r \$0-max;
+#X obj 112 397 r \$0-min;
 #X obj 75 285 sort;
 #X obj 38 441 rescale 0 1 0 127;
 #N canvas 681 159 356 278 list 0;
@@ -720,7 +720,7 @@
 #X obj 38 323 message, f 17;
 #X obj 209 344 canvas.setname \$0-this-patch 1;
 #X obj 209 364 canvas.setname \$0-parent 2;
-#N canvas 68 23 696 500 init 0;
+#N canvas 521 341 696 500 init 0;
 #X obj 61 118 args -;
 #N canvas 444 172 654 485 size 0;
 #X obj 210 302 - 7;
@@ -909,8 +909,8 @@
 #X obj 363 167 r \$0-set-fgcolor;
 #X obj 449 193 r \$0-set-s-sym;
 #X obj 478 216 r \$0-set-r-sym;
-#X obj 133 242 pack2 135 17 0 127 0 255 255 255 96 96 96 empty
-empty;
+#X obj 133 242 pack2 135 17 0 127 0 255 255 255 96 96 96 empty empty
+;
 #X obj 134 275 outlet;
 #X obj 52 145 r \$0-setarg;
 #X connect 0 0 8 2;
@@ -934,7 +934,7 @@ float float float symbol symbol float, f 51;
 #X obj 426 230 route -width -height -range -mode -bgcolor -fgcolor
 -send -receive, f 38;
 #X msg 103 143 135 17 0 127 0 255 255 255 96 96 96 empty empty;
-#X obj 61 71 lb -init;
+#X obj 61 71 lb;
 #X connect 0 0 9 0;
 #X connect 6 0 2 0;
 #X connect 7 0 4 0;
@@ -981,7 +981,7 @@ float float float symbol symbol float, f 51;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;
 #X connect 4 0 2 1;
-#X restore 58 477 pd send;
+#X restore 57 475 pd send;
 #N canvas 68 23 450 392 receive 0;
 #X obj 115 139 receiver;
 #X obj 115 71 r \$0-r-sym;
@@ -991,7 +991,7 @@ float float float symbol symbol float, f 51;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
 #X restore 66 105 pd receive;
-#X obj 298 314 declare -path else;
+#X obj 298 301 declare -path else;
 #X connect 0 0 17 0;
 #X connect 3 0 4 0;
 #X connect 5 0 8 4;
@@ -1024,7 +1024,7 @@ float float float symbol symbol float, f 51;
 #X text 86 101 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 85 82 Alexandre Torres Porres (2019);
 #X obj 126 169 r \$0-slider.r;
-#X obj 191 202 cnv 1 1 13 empty \$0-cnv empty 20 12 0 14 -99865 -66577
+#X obj 127 202 cnv 1 1 13 empty \$0-cnv empty 20 12 0 14 -99865 -66577
 0;
 #X connect 0 0 2 1;
 #X connect 1 0 2 0;
