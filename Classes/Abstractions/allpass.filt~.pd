@@ -1,11 +1,7 @@
 #N canvas 852 105 485 347 10;
-#X declare -path else;
 #N canvas 348 60 465 617 \$0-Allpass-stages 0;
 #X obj 60 19 inlet~;
 #X obj 60 864 outlet~;
-#X obj 60 50 allpass_unit 1006;
-#X connect 0 0 2 0;
-#X connect 2 0 1 0;
 #X restore 62 163 pd \$0-Allpass-stages;
 #N canvas 652 370 484 311 set 0;
 #X obj 199 195 s~ \$0-q;
@@ -14,7 +10,7 @@
 #X obj 63 186 s~ \$0-freq;
 #X obj 64 28 inlet~;
 #X obj 63 118 clip~ 10;
-#X obj 108 67 sr~;
+#X obj 108 67 else/sr~;
 #X obj 199 29 inlet~;
 #X obj 199 135 max~ 0.1;
 #X connect 2 0 5 2;
@@ -33,7 +29,7 @@
 #X obj 175 60 r \$0-q;
 #X obj 175 91 inlet~;
 #N canvas 723 101 551 466 init 0;
-#X obj 164 227 loop;
+#X obj 164 227 else/loop;
 #X obj 137 204 t f f;
 #X obj 164 251 sel 0;
 #X obj 164 322 f \$0;
@@ -47,14 +43,14 @@
 #X msg 137 364 connect \$1 0 1 0, f 8;
 #X obj 191 272 expr 50 + 25 * $f1 \; $f1 + 1 \; $f1 + 2;
 #X obj 221 323 pack f f f \$0;
-#X msg 221 347 obj 60 \$1 allpass_unit \$4 \, connect \$2 0 \$3 0,
-f 47;
-#X msg 230 377 obj 60 50 allpass_unit \$1 \, connect 0 0 2 0;
-#X obj 92 39 args;
+#X msg 221 347 obj 60 \$1 ./allpass_unit \$4 \, connect \$2 0 \$3 0
+, f 47;
+#X msg 230 377 obj 60 50 ./allpass_unit \$1 \, connect 0 0 2 0;
+#X obj 92 39 else/args;
 #X obj 92 84 unpack float float float;
 #X obj 168 111 s \$0-hz;
 #X obj 233 111 s \$0-q;
-#X obj 92 11 lb -init 2;
+#X obj 92 11 else/lb -init 2;
 #X msg 257 84 1;
 #X msg 168 58 10;
 #X obj 35 61 route bang;
@@ -90,7 +86,6 @@ f 47;
 #X connect 23 0 9 0;
 #X connect 23 1 17 0;
 #X restore 239 91 pd init;
-#X obj 320 89 declare -path else;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
