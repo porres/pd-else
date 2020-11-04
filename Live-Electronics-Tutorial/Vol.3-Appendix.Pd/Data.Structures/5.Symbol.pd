@@ -1,5 +1,6 @@
 #N struct 1003-DS float x float y symbol sym;
-#N canvas 385 30 590 477 12;
+#N canvas 385 30 587 533 12;
+#X declare -path else;
 #N canvas 440 205 535 580 template 0;
 #X obj 57 348 filledpolygon 999 0 5 5 5 105 5 105 55 5 55;
 #X text 194 231 The instruction is to draw the "sym" variable in the
@@ -20,32 +21,33 @@ see how the coordinates get updated., f 45;
 the same as [dranumber]. There is literal no difference \, it is really
 the same object. Maybe in the future they will become actual different
 objects \, but so far is just an alias., f 57;
-#X restore 298 158 pd template;
-#X symbolatom 49 302 10 0 0 0 - - -;
-#X msg 49 236 symbol banana;
-#X msg 57 271 symbol apple;
-#X obj 302 275 pointer;
-#X obj 192 142 loadbang;
-#X msg 192 171 50 50;
-#X text 59 24 This example shows how to add and set a symbol variable.
+#X restore 303 202 pd template;
+#X symbolatom 54 346 10 0 0 0 - - -;
+#X msg 54 280 symbol banana;
+#X msg 62 315 symbol apple;
+#X obj 307 319 pointer;
+#X obj 197 186 loadbang;
+#X msg 197 215 50 50;
+#X text 64 68 This example shows how to add and set a symbol variable.
 See [pd template] for the declaration and drawing instructions.;
-#X text 79 388 When setting a symbol with [set] \, you need an extra
+#X text 84 432 When setting a symbol with [set] \, you need an extra
 "-symbol" argument. Unfortunately \, you cannot set floats and symbols
 with the same [set] object., f 62;
-#X text 42 202 set symbol:;
-#X obj 49 333 set -symbol \$0-DS sym;
-#X obj 193 303 append \$0-DS x y;
-#X text 60 63 We use [append] to add our Data Structure object in [pd
-display]. Note that you cannot set the symbol variable with [append]
+#X text 47 246 set symbol:;
+#X obj 54 377 set -symbol \$0-DS sym;
+#X obj 198 347 append \$0-DS x y;
+#X text 65 107 We use [append] to add our Data Structure object in
+[pd display]. Note that you cannot set the symbol variable with [append]
 when adding the object. We need to use the [set] object for that.,
 f 65;
 #N canvas 1048 133 358 171 \$0-display 1;
 #X scalar 1003-DS 50 50 symbol \;;
-#X restore 388 158 pd \$0-display;
-#X obj 413 266 s pd-\$0-display;
-#X msg 413 240 clear \, vis 1;
-#X obj 192 202 trigger2 list pd-\$0-display bang;
-#X msg 302 232 traverse \$1 \, bang, f 12;
+#X restore 393 202 pd \$0-display;
+#X obj 418 310 s pd-\$0-display;
+#X msg 418 284 clear \, vis 1;
+#X obj 197 246 trigger2 list pd-\$0-display bang;
+#X msg 307 276 traverse \$1 \, bang, f 12;
+#X obj 371 24 declare -path else;
 #X connect 1 0 10 0;
 #X connect 2 0 1 0;
 #X connect 3 0 1 0;

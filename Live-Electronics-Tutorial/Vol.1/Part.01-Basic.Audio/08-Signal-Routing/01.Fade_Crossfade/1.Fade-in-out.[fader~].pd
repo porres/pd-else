@@ -1,5 +1,5 @@
 #N canvas 442 80 800 623 12;
-#X declare -lib else;
+#X declare -path else;
 #X obj 129 480 *~;
 #X obj 84 418 osc~ 440;
 #X obj 262 402 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -55,10 +55,10 @@ to use (linear by default)., f 48;
 #X obj 271 214 s2f~;
 #X obj 240 500 s2f~;
 #X obj 662 487 s2f~;
-#X obj 610 35 declare -lib else;
 #X text 31 39 We've seen short fade ins/outs to avoid clicks \, which
 can be done with [line~] or [float2sig~] - but these provide only linear
 fades., f 53;
+#X obj 610 35 declare -path else;
 #X connect 0 0 18 0;
 #X connect 1 0 0 0;
 #X connect 2 0 19 1;

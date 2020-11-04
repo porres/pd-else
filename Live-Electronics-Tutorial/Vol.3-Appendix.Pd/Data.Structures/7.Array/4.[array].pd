@@ -11,7 +11,6 @@ defined in the other subpatch., f 53;
 #X obj 60 118 struct \$0-DS float x float y array \$0-table \$0-element
 ;
 #X restore 356 259 pd template;
-#X obj 119 481 display;
 #X obj 190 378 nbx 3 16 0 15 0 0 empty empty empty 0 -8 0 12 -228856
 -1 -1 0 256;
 #X obj 97 378 nbx 4 16 -100 100 0 0 empty empty empty 0 -8 0 12 -228856
@@ -24,7 +23,7 @@ defined in the other subpatch., f 53;
 #X text 38 472 get size, f 4;
 #X text 328 520 <= get/set size;
 #X text 58 405 set:;
-#X text 147 482 <= sets size;
+#X text 160 482 <= sets size;
 #X text 77 14 You can also use the [array] object to set \, get and
 do all sorts of operations in a Data Structure array (as well with
 other regular arrays in Pd)., f 50;
@@ -37,8 +36,7 @@ the [element] and [set] objects as well., f 50;
 #X text 77 154 Check in [pd element] that we also added a drawing instruction
 for the float element as well.;
 #N canvas 965 238 334 221 \$0-display 1;
-#X scalar 1010-DS 10 105 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \;
-0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; \;;
+#X scalar 1010-DS 10 105 \; 0 \; \;;
 #X coords 0 221 1 220 0 0 0;
 #X restore 356 285 pd \$0-display;
 #X obj 421 356 r \$0-pointer;
@@ -58,14 +56,15 @@ containing only a float named "y". Since this is also the special variable
 name for the vertical coordinate \, this means you can drag this element
 vertically \, as in Pd's arrays., f 61;
 #X restore 356 233 pd \$0-element;
-#X connect 0 0 15 2;
-#X connect 2 0 16 0;
-#X connect 3 0 17 1;
-#X connect 4 0 17 0;
-#X connect 8 0 16 0;
-#X connect 15 0 16 1;
-#X connect 15 0 17 2;
-#X connect 16 0 7 0;
-#X connect 20 0 0 0;
-#X connect 21 0 15 0;
-#X connect 22 0 2 0;
+#X floatatom 119 481 5 0 0 0 - - -;
+#X connect 0 0 14 2;
+#X connect 2 0 16 1;
+#X connect 3 0 16 0;
+#X connect 7 0 15 0;
+#X connect 14 0 15 1;
+#X connect 14 0 16 2;
+#X connect 15 0 6 0;
+#X connect 19 0 0 0;
+#X connect 20 0 14 0;
+#X connect 21 0 24 0;
+#X connect 24 0 15 0;

@@ -1,12 +1,12 @@
 #N canvas 447 127 958 515 12;
-#X declare -lib else;
+#X declare -path else;
 #X obj 699 364 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 850 362 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 76 275 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X obj 76 330 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 76 330 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 76 248 loadbang;
 #X obj 699 331 threshold~ 0.5 0 0.5 0;
@@ -30,11 +30,11 @@
 #X obj 699 270 pulse~ 1;
 #X obj 759 411 timer;
 #X obj 76 452 nbx 3 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 500 256;
+-228856 -1 -1 0 256;
 #X obj 327 450 nbx 8 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 500.68 256;
+-228856 -1 -1 0 256;
 #X obj 759 442 nbx 8 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 500.68 256;
+-228856 -1 -1 0 256;
 #X obj 76 303 metro 500;
 #X obj 181 248 pulse~ 1;
 #X obj 699 298 display~;
@@ -58,7 +58,6 @@ accurate trigger and can be thought of the audio counterpart of a bang.
 [status~] object sends an impulse at every transition and we can the
 measures the time interval with [detect~] object from ELSE and get
 the same perfect result: 500 ms., f 62;
-#X obj 775 25 declare -lib else;
 #X text 255 245 <= frequency of 1 Hz \, period of 1000ms (500ms for
 on "1" and off "0"), f 24;
 #X text 507 127 The issue comes when we use an object like [trig2bang~]
@@ -68,6 +67,7 @@ with audio block transitions! So note how [timer] does not measure
 a perfect 500 ms then. The same unperfect result is given by Pd's native
 [threshold~] \, which reports bangs when the signal exceeds a threshold
 value \, and another when it falls back below., f 62;
+#X obj 775 25 declare -path else;
 #X connect 0 0 20 0;
 #X connect 1 0 20 1;
 #X connect 2 0 24 0;

@@ -1,6 +1,6 @@
-#N struct 1124-point float x0 float y0 float size float fg float in
+#N struct 1004-point float x0 float y0 float size float fg float in
 float grid;
-#N canvas 453 62 829 720 12;
+#N canvas 537 38 829 720 12;
 #X declare -path else;
 #X obj 209 196 hsl 128 15 0.05 1 1 1 empty amp empty -2 -8 0 10 -228856
 -1 -1 11480 1;
@@ -49,23 +49,23 @@ complex sine is then composed of two sine waves with this phase difference.
 #X restore 76 219 pd Complex-Sinusoid;
 #X obj 600 31 declare -path else;
 #X obj 76 361 circle 127 -1 1 -1 1 2 225 225 225 230 230 230 1 0 0
-1 1 0 0.439805 -0.607516 empty empty 1;
-#X obj 244 270 pic 0 gif/complex-sine.gif empty empty 0;
+1 1 0 -0.0568445 0.747843 empty empty 1;
+#X obj 244 270 pic 0 gif/complex-sine.gif empty empty 0 0;
 #X text 329 563 === Projection in Time ===>;
 #X text 406 498 Cosine;
 #X text 426 369 Sine;
-#N canvas 518 158 606 667 animation 0;
+#N canvas 782 158 606 667 animation 0;
 #X text 98 20 Here we have an animation of the projection of the complex
 sine in two dimensions. Note how they are out of phase by 90 degress.
 , f 59;
-#N canvas 273 23 739 842 animation 0;
-#X obj 101 201 pic 0 ./gif/sc-frame04.gif empty \$0-pic 1;
+#N canvas 616 23 739 842 animation 0;
+#X obj 101 201 pic 0 ./gif/sc-frame29.gif empty \$0-pic 1 0;
 #X obj 101 134 count 1 29;
-#X obj 101 163 format set ./gif/sc-frame%02d.gif;
 #X obj 101 106 tempo 250 -ms -on;
-#X connect 1 0 2 0;
-#X connect 2 0 0 0;
-#X connect 3 0 1 0;
+#X obj 101 163 format open ./gif/sc-frame%02d.gif;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 0 0;
 #X coords 0 -1 1 1 502 535 2 100 200;
 #X restore 49 96 pd animation;
 #X restore 380 666 pd animation;

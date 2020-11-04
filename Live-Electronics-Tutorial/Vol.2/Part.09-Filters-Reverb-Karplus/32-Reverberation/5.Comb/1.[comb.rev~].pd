@@ -1,4 +1,4 @@
-#N canvas 281 23 896 640 12;
+#N canvas 572 34 896 640 12;
 #X declare -path else;
 #X floatatom 614 192 5 -1 1 0 - a -;
 #X floatatom 657 239 5 -1 1 0 - b -;

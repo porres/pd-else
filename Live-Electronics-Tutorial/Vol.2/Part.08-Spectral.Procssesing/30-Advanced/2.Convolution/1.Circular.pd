@@ -1,4 +1,4 @@
-#N canvas 401 135 900 438 12;
+#N canvas 555 85 900 438 12;
 #X declare -path else;
 #X obj 89 270 r~ \$0-sample1;
 #X obj 251 269 r~ \$0-sample2;

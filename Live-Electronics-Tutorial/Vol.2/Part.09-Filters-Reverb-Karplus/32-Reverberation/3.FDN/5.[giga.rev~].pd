@@ -14,7 +14,7 @@ by feedforward delay lines and late reflections from a FDN., f 50
 #X text 73 156 This unit is actually more a building block that you
 can use to build a good reverb. So it is not that user friendly.,
 f 50;
-#X text 73 206 It has lots of parameters fo tweaking and is rather
+#X text 73 206 It has lots of parameters for tweaking and is rather
 complex. Check its help files for more details., f 50;
 #X connect 1 0 4 0;
 #X connect 1 1 4 1;

@@ -1,5 +1,5 @@
 #N canvas 456 109 1001 636 12;
-#X declare -lib else;
+#X declare -path else;
 #X obj 660 346 lop~;
 #X obj 199 320 osc~;
 #X obj 199 260 sig~ 440;
@@ -36,7 +36,6 @@ the cutoff frequency., f 59;
 data can be generated at a higher rate \, because only one control
 value for the cutoff frequency will affect the audio block output.
 , f 60;
-#X obj 808 32 declare -lib else;
 #X text 48 23 We've seen how audio objects operate in the Sample Rate.
 Computer music systems commonly have a distinction between a given
 sample rate and a control rate (which is the rate that control messages
@@ -58,6 +57,7 @@ rate of about 1.45 ms., f 62;
 rate \, this structure (where control messages can only affect a block
 of audio once) generates in practice an intrinsical control rate for
 Pd that also depends on the block size and sample rate!;
+#X obj 808 32 declare -path else;
 #X connect 0 0 8 0;
 #X connect 1 0 7 0;
 #X connect 2 0 9 0;

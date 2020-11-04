@@ -1,5 +1,5 @@
 #N canvas 446 23 509 638 12;
-#X declare -lib else;
+#X declare -path else;
 #X floatatom 240 200 5 0 0 0 - - -;
 #X obj 243 179 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
@@ -26,7 +26,6 @@
 #X text 203 384 source 2;
 #X obj 240 225 f2s~ 10;
 #X obj 314 462 f2s~ 10;
-#X obj 321 26 declare -lib else;
 #X obj 150 546 out~;
 #X text 52 78 The [xfade~] object \, from ELSE \, performs a sin/cos
 equal power crossfade between two sound sources of any number of channels
@@ -34,6 +33,7 @@ equal power crossfade between two sound sources of any number of channels
 of channels. Without an argument \, the default is just one channel.
 ;
 #X text 245 509 two channel sources;
+#X obj 321 26 declare -path else;
 #X connect 0 0 20 0;
 #X connect 1 0 0 0;
 #X connect 2 0 13 0;
@@ -43,8 +43,8 @@ of channels. Without an argument \, the default is just one channel.
 #X connect 9 0 21 0;
 #X connect 10 0 12 0;
 #X connect 11 0 12 1;
-#X connect 12 0 23 0;
-#X connect 12 1 23 1;
+#X connect 12 0 22 0;
+#X connect 12 1 22 1;
 #X connect 13 0 4 0;
 #X connect 20 0 13 2;
 #X connect 21 0 12 4;

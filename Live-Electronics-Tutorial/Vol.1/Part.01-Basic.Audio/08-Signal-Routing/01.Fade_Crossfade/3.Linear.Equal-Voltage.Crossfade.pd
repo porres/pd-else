@@ -1,5 +1,5 @@
 #N canvas 294 34 924 613 12;
-#X declare -lib else;
+#X declare -path else;
 #X obj 236 431 *~;
 #X obj 104 439 *~;
 #X obj 257 327 hsl 128 15 0 1 0 0 pan-set empty empty -2 -8 0 10 -228856
@@ -7,7 +7,7 @@
 #X obj 811 161 vsl 15 196 0 1 0 0 empty r empty 0 -9 0 10 -228856 -70738
 -1 0 1;
 #X obj 494 161 vsl 15 196 0 1 0 0 empty l empty 0 -9 0 10 -228856 -70738
--1 19500 1;
+-1 0 1;
 #X floatatom 811 372 0 0 0 0 - - -;
 #X floatatom 494 372 0 0 0 0 - - -;
 #X obj 512 160 hsl 296 200 0 1 0 0 pan pan-set empty -2 -8 0 10 -228856
@@ -139,7 +139,7 @@
 #X obj 134 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 811 440 nbx 8 14 -200 0 0 0 empty empty empty 18 -6 0 10 -228856
--1 -1 -200 256;
+-1 -1 0 256;
 #X obj 494 440 nbx 8 14 -200 0 0 0 empty empty empty 18 -6 0 10 -228856
 -1 -1 0 256;
 #X text 468 438 dB;
@@ -200,7 +200,7 @@ the crossfading and returns the dB amplitudes of each source., f 61
 #X text 687 463 <= always equal to one, f 12;
 #X obj 644 431 +;
 #X obj 644 463 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+-228856 -1 -1 0 256;
 #X text 473 70 In the central position of a linear crossfade \, both
 sources are multiplied by 0.5 \, which means a decrease of -6 dB.;
 #X text 461 519 We call a linear function a type of constant amplitude
@@ -210,7 +210,7 @@ to one! Check above.;
 #X text 527 370 <= linear amp;
 #X text 710 372 linear amp =>;
 #X text 64 293 Alternate between sources:;
-#X obj 718 29 declare -lib else;
+#X obj 718 29 declare -path else;
 #X connect 0 0 27 1;
 #X connect 1 0 27 0;
 #X connect 2 0 41 0;

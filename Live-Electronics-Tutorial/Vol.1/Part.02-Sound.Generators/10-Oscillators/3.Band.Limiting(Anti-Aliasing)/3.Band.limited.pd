@@ -1,8 +1,6 @@
-#N canvas 405 269 826 433 12;
+#N canvas 546 254 826 433 12;
 #X declare -path else;
 #X obj 255 339 out~;
-#X obj 255 301 bl.saw~;
-#X obj 278 260 impulse~;
 #X obj 570 171 bl.sine~;
 #X obj 576 195 bl.saw~;
 #X obj 570 220 bl.saw2~;
@@ -13,7 +11,7 @@
 #X obj 635 242 bl.imp2~;
 #X obj 587 267 bl.wavetable~;
 #X obj 278 189 nbx 5 14 -1e+37 1e+37 0 0 empty Hz empty 0 -8 0 10 -228856
--1 -1 0 256;
+-1 -1 55 256;
 #N canvas 786 159 417 234 sequencer 0;
 #X obj 180 135 mtof;
 #X obj 75 74 metro 200;
@@ -32,14 +30,12 @@
 #X connect 6 0 3 0;
 #X connect 6 1 0 0;
 #X restore 278 163 pd sequencer;
-#X obj 278 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 278 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X obj 87 135 tgl 15 0 empty metro empty 17 7 0 10 -228856 -1 -1 0
+#X obj 87 135 tgl 15 0 empty metro empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 87 159 metro;
 #X obj 87 255 display~ 5;
-#X obj 87 229 glide~;
-#X obj 87 184 expr random($f2 \, $f2*3) \; random (600 \, 1200);
 #X text 138 257 slave;
 #X text 339 188 master;
 #X text 35 17 The ELSE library offers some variants of its oscillators
@@ -56,16 +52,22 @@ the Nyquist., f 37;
 [bl.sine~] \, because you can generate aliasing with hard sync and
 even other techniques such as phase or frequency modulation., f 42
 ;
-#X connect 1 0 0 0;
-#X connect 2 0 1 1;
-#X connect 12 0 2 0;
-#X connect 12 0 19 1;
-#X connect 13 0 12 0;
-#X connect 14 0 13 0;
-#X connect 15 0 16 0;
-#X connect 16 0 19 0;
-#X connect 17 0 1 0;
-#X connect 18 0 17 0;
-#X connect 19 0 18 0;
-#X connect 19 1 16 1;
-#X connect 19 1 18 1;
+#X obj 87 184 expr random($f2 \, $f2*3) \; random (600 \, 1200);
+#X obj 278 260 impulse~;
+#X obj 87 229 glide~;
+#X text 298 137 <= click;
+#X obj 255 301 bl.saw~;
+#X connect 10 0 22 1;
+#X connect 10 0 23 0;
+#X connect 11 0 10 0;
+#X connect 12 0 11 0;
+#X connect 12 0 13 0;
+#X connect 13 0 14 0;
+#X connect 14 0 22 0;
+#X connect 15 0 26 0;
+#X connect 22 0 24 0;
+#X connect 22 1 14 1;
+#X connect 22 1 24 1;
+#X connect 23 0 26 1;
+#X connect 24 0 15 0;
+#X connect 26 0 0 0;

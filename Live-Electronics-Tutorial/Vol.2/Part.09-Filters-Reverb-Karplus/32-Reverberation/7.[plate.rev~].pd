@@ -1,6 +1,6 @@
-#N canvas 595 49 570 511 12;
+#N canvas 595 49 537 515 12;
 #X declare -path else;
-#X obj 210 291 bng 30 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 188 298 bng 30 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #N canvas 797 186 322 336 test 0;
 #X obj 36 155 osc~;
@@ -26,23 +26,23 @@
 #X connect 8 0 7 0;
 #X connect 9 0 5 0;
 #X connect 10 0 3 0;
-#X restore 210 334 pd test;
-#X text 72 247 Check its help file for more details on how it works.
+#X restore 188 341 pd test;
+#X text 41 236 Check its help file for more details on how it works.
 ;
-#X obj 210 363 plate.rev~ 50 0.6 0.25 0.8 0.8, f 16;
-#X text 71 59 The [plate.rev~] object is a reverb asbtraction available
-in the ELSE library. It is based on a patch by Tom Erbe implementing
-the Dattorro plate stereo reverb model (it turns a mono input into
-a stereo output).;
-#X text 71 138 It combines allpass filters and a feedback delay network.
+#X obj 188 370 plate.rev~ 50 0.6 0.25 0.8 0.8, f 16;
+#X text 42 130 It combines allpass filters and a feedback delay network.
 It has an internal filter to control the crossover frequency and high
-frequency dammping as [rev2~] and [rev3~].;
-#X text 70 197 One important characteristic of this reverb is that
+frequency dammping as [rev2~] and [rev3~]., f 65;
+#X text 42 179 One important characteristic of this reverb is that
 it uses LFOs to modulate some of the allpass filters as a way to produce
-more dinamic results.;
-#X obj 303 17 declare -path else;
-#X obj 218 415 out~;
+more dinamic results., f 65;
+#X obj 274 25 declare -path else;
+#X obj 196 422 out~;
+#X text 42 67 The [plate.rev~] object is a reverb asbtraction available
+in the ELSE library. It is based on a patch by Tom Erbe implementing
+the Dattorro plate stereo reverb model \, and it turns a mono input
+into a stereo output)., f 65;
 #X connect 0 0 1 0;
 #X connect 1 0 3 0;
-#X connect 3 0 8 0;
-#X connect 3 1 8 1;
+#X connect 3 0 7 0;
+#X connect 3 1 7 1;

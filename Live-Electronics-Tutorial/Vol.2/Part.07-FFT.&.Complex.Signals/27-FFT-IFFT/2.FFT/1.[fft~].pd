@@ -1,69 +1,10 @@
-#N canvas 401 100 950 511 12;
+#N canvas 533 72 950 511 12;
 #X declare -path else;
-#X obj 642 165 nbx 4 14 0 44.1 0 0 empty Khz Khz 0 -6 0 10 -228856
--1 -1 5 256;
-#X floatatom 520 207 0 0 0 0 - - -;
-#X text 500 206 Hz;
-#X obj 702 164 nbx 4 14 0 1 0 0 empty empty phase 0 -6 0 10 -228856
--1 -1 0 256;
-#X msg 712 189 0;
-#X msg 743 189 0.25;
-#X msg 782 189 0.5;
-#X msg 814 188 0.75;
-#X obj 642 239 osc~ 5000;
-#X text 682 290 Imaginary;
-#X text 604 286 Real;
-#N canvas 151 65 812 573 plot 0;
-#X text 106 355 Amplitude;
-#X obj 389 382 tgl 15 0 empty empty empty 0 -6 0 10 -262144 -1 -1 1
-1;
-#X obj 389 403 metro 205;
-#X obj 389 356 loadbang;
-#X obj 53 289 tabwrite~ \$0-Re;
-#X obj 411 289 tabwrite~ \$0-Im;
-#X obj 175 482 tabwrite~ \$0-Amplitude;
-#X obj 175 333 car2pol~;
-#X text 240 358 Phase;
-#X obj 389 429 s \$0-bang;
-#X obj 428 233 r \$0-bang;
-#X obj 243 408 r \$0-bang;
-#X obj 228 453 tabwrite~ \$0-Phase;
-#X obj 176 45 inlet~;
-#X obj 410 54 inlet~;
-#X text 418 87 Imaginary;
-#X text 189 84 Real;
-#X obj 594 194 setdsp~ 1;
-#X obj 553 300 initmess \; Khz 5 \; \$0-Re xticks 0 32 1 \; \$0-Im
-xticks 0 32 1 \; \$0-Phase xticks 0 32 1 \; \$0-Amplitude xticks 0
-32 1;
-#X obj 175 144 expr~ if(abs($v1) < 0.01 \, 0 \, $v1) \; if(abs($v2)
-< 0.01 \, 0 \, $v2);
-#X connect 1 0 2 0;
-#X connect 2 0 9 0;
-#X connect 3 0 1 0;
-#X connect 7 0 6 0;
-#X connect 7 1 12 0;
-#X connect 10 0 5 0;
-#X connect 10 0 4 0;
-#X connect 11 0 6 0;
-#X connect 11 0 12 0;
-#X connect 13 0 19 0;
-#X connect 14 0 19 1;
-#X connect 19 0 4 0;
-#X connect 19 0 7 0;
-#X connect 19 1 5 0;
-#X connect 19 1 7 1;
-#X restore 627 316 pd plot;
-#X obj 520 165 nbx 3 14 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 0 256;
-#X text 502 145 "Harmonic";
-#X obj 642 196 * 1000;
-#X obj 520 183 expr $i1 * band;
 #X text 20 265 A FFT decomposes a periodic function into pure tones
 defined by Cosine (real) and Sine (imaginary) amplitudes. Hence \,
 we have two outputs in the frequency domain - where the left outlet
 is the real part \, and the right outlet is the imaginary part.;
-#N canvas 785 61 662 630 graphs 0;
+#N canvas 979 61 662 630 graphs 0;
 #X obj 10 6 cnv 15 630 610 empty empty empty 20 12 0 14 -33289 -66577
 0;
 #X obj 25 15 cnv 15 600 280 empty empty Cartesian 20 12 0 14 -262130
@@ -174,17 +115,75 @@ form \, but musicians are used to the polar form representation \,
 whith Amplitude and Initial Phase - thus we convert to polar as well.
 The amplitude values are up to half the block size and the Initial
 Phase is in radians.;
+#X obj 642 165 nbx 4 14 0 44.1 0 0 empty Khz Khz 0 -6 0 10 -228856
+-1 -1 5 256;
+#X floatatom 520 207 0 0 0 0 - - -;
+#X text 500 206 Hz;
+#X obj 702 164 nbx 4 14 0 1 0 0 empty empty phase 0 -6 0 10 -228856
+-1 -1 0 256;
+#X msg 712 189 0;
+#X msg 743 189 0.25;
+#X msg 782 189 0.5;
+#X msg 814 188 0.75;
+#X obj 642 239 osc~ 5000;
+#X text 682 290 Imaginary;
+#X text 604 286 Real;
+#N canvas 220 113 812 573 plot 0;
+#X text 106 355 Amplitude;
+#X obj 389 382 tgl 15 0 empty empty empty 0 -6 0 10 -262144 -1 -1 1
+1;
+#X obj 389 403 metro 205;
+#X obj 389 356 loadbang;
+#X obj 53 289 tabwrite~ \$0-Re;
+#X obj 411 289 tabwrite~ \$0-Im;
+#X obj 175 482 tabwrite~ \$0-Amplitude;
+#X obj 175 333 car2pol~;
+#X text 240 358 Phase;
+#X obj 389 429 s \$0-bang;
+#X obj 428 233 r \$0-bang;
+#X obj 243 408 r \$0-bang;
+#X obj 228 453 tabwrite~ \$0-Phase;
+#X obj 176 45 inlet~;
+#X obj 410 54 inlet~;
+#X text 418 87 Imaginary;
+#X text 189 84 Real;
+#X obj 175 144 expr~ if(abs($v1) < 0.01 \, 0 \, $v1) \; if(abs($v2)
+< 0.01 \, 0 \, $v2);
+#X obj 553 300 initmess \; Khz 5 \; \$0-Re xticks 0 32 1 \; \$0-Im
+xticks 0 32 1 \; \$0-Phase xticks 0 32 1 \; \$0-Amplitude xticks 0
+32 1 \; pd dsp 1;
+#X connect 1 0 2 0;
+#X connect 2 0 9 0;
+#X connect 3 0 1 0;
+#X connect 7 0 6 0;
+#X connect 7 1 12 0;
+#X connect 10 0 5 0;
+#X connect 10 0 4 0;
+#X connect 11 0 6 0;
+#X connect 11 0 12 0;
+#X connect 13 0 17 0;
+#X connect 14 0 17 1;
+#X connect 17 0 4 0;
+#X connect 17 0 7 0;
+#X connect 17 1 5 0;
+#X connect 17 1 7 1;
+#X restore 627 316 pd plot;
+#X obj 520 165 nbx 3 14 0 127 0 0 empty empty empty 0 -8 0 12 -228856
+-1 -1 0 256;
+#X text 502 145 "Harmonic";
+#X obj 642 196 * 1000;
+#X obj 520 183 expr $i1 * band;
 #X obj 642 270 fft~;
-#X connect 0 0 14 0;
-#X connect 1 0 8 0;
-#X connect 3 0 8 1;
-#X connect 4 0 8 1;
-#X connect 5 0 8 1;
-#X connect 6 0 8 1;
-#X connect 7 0 8 1;
-#X connect 8 0 27 0;
-#X connect 12 0 15 0;
-#X connect 14 0 8 0;
-#X connect 15 0 1 0;
-#X connect 27 0 11 0;
-#X connect 27 1 11 1;
+#X connect 11 0 25 0;
+#X connect 12 0 19 0;
+#X connect 14 0 19 1;
+#X connect 15 0 19 1;
+#X connect 16 0 19 1;
+#X connect 17 0 19 1;
+#X connect 18 0 19 1;
+#X connect 19 0 27 0;
+#X connect 23 0 26 0;
+#X connect 25 0 19 0;
+#X connect 26 0 12 0;
+#X connect 27 0 22 0;
+#X connect 27 1 22 1;

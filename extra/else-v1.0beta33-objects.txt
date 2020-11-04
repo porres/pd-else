@@ -140,6 +140,7 @@ glide2~	x
 gran.player~	x
 graph~	x
 gray~	x
+group	x
 gui	x
 hann~	x
 henon~	x
@@ -286,7 +287,6 @@ ratio2cents	x
 ratio2cents~	x
 rec.file~	x
 receiver	x
-regroup	x
 rescale	x
 rescale~	x
 resonant~	x

@@ -1,5 +1,6 @@
 #N struct 1004-DS float x float y float n;
 #N canvas 269 44 871 522 12;
+#X declare -path else;
 #X obj 167 133 pointer;
 #X obj 43 24 loadbang;
 #N canvas 106 323 439 197 template 0;
@@ -10,11 +11,11 @@
 "x/y" and float called "n", f 43;
 #X restore 303 231 pd template;
 #X obj 43 338 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 127 256;
+-228856 -1 -1 0 256;
 #X obj 201 405 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 64 256;
+-1 -1 0 256;
 #X obj 298 406 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 64 256;
+-1 -1 0 256;
 #X obj 271 435 hot;
 #X msg 289 376 set \$1;
 #X text 175 403 "x";
@@ -22,10 +23,10 @@
 #X obj 43 50 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X msg 43 120 127 64 64;
-#X text 468 89 In this example we'll "get" and "set" the value of the
-float and its coordinates with the [get] and [set] objects. These objects
-need a pointer to the data structure \, which is given by the outlet
-of [append]., f 47;
+#X text 468 124 In this example we'll "get" and "set" the value of
+the float and its coordinates with the [get] and [set] objects. These
+objects need a pointer to the data structure \, which is given by the
+outlet of [append]., f 47;
 #X obj 43 305 get \$0-DS n;
 #X obj 43 371 set \$0-DS n;
 #X text 12 338 "n";
@@ -37,12 +38,12 @@ of [append]., f 47;
 #X obj 58 219 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X text 77 217 <= send pointer again;
-#X text 467 249 The [trigger] object also deals with pointers and we
+#X text 467 284 The [trigger] object also deals with pointers and we
 use it to send the pointer to the [set] and [get] objects. Check how
 [get \$0-DS n] gets the value from "n" \, and how you can set the value
 of 'n' with [set \$0-DS n]. The same can be done for the coordinates
 values., f 47;
-#X text 465 353 If you click on the data structure and edit the value
+#X text 465 388 If you click on the data structure and edit the value
 of the float \, or also drag it around \, you can resend the pointer
 to get the new values by clicking on the bang connected to the [pointer]
 object., f 47;
@@ -55,9 +56,10 @@ object., f 47;
 #X restore 303 256 pd \$0-display;
 #X obj 43 76 trigger2 bang pd-\$0-display bang, f 36;
 #X obj 43 277 trigger pointer pointer;
-#X text 468 186 Note that the [pointer] object can also be used as
+#X text 468 221 Note that the [pointer] object can also be used as
 a storage object \, so it can store and resend a pointer it received
 earlier., f 47;
+#X obj 547 59 declare -path else;
 #X connect 0 0 18 3;
 #X connect 1 0 10 0;
 #X connect 3 0 14 0;

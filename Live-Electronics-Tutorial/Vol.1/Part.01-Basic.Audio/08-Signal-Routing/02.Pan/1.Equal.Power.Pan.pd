@@ -1,16 +1,14 @@
-#N struct 1070-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
 #N canvas 364 58 893 602 12;
-#X declare -lib else;
+#X declare -path else;
 #X obj 40 305 osc~ 400;
 #X obj 262 306 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 6350 1;
+-1 -1 0 1;
 #X obj 259 332 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 0.5 256;
+-228856 -1 -1 0 256;
 #X text 332 332 Posição (0-1);
 #X floatatom 596 218 5 0 0 0 - - -;
 #X obj 599 196 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 6350 1;
+-1 -1 0 1;
 #X obj 369 396 v pi;
 #X obj 532 200 noise~;
 #X obj 369 370 pi;
@@ -39,14 +37,14 @@ middle point \, we have a -3 dB attenuation for both channels., f
 #X obj 766 454 env~;
 #X obj 812 454 env~;
 #X obj 812 479 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 88.9135 256;
+-228856 -1 -1 0 256;
 #X obj 675 345 noise~;
 #X obj 766 479 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 88.9135 256;
+-228856 -1 -1 0 256;
 #X obj 720 478 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 88.9135 256;
+-228856 -1 -1 0 256;
 #X obj 675 478 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 88.9135 256;
+-228856 -1 -1 0 256;
 #X text 719 495 left;
 #X text 719 509 front;
 #X text 765 508 front;
@@ -61,7 +59,6 @@ middle point \, we have a -3 dB attenuation for both channels., f
 #X obj 259 359 f2s~ 20;
 #X obj 596 241 f2s~ 20;
 #X obj 675 427 pan4~, f 20;
-#X obj 675 24 declare -lib else;
 #X text 515 437 see also:;
 #X obj 525 466 pan8~, f 13;
 #X obj 743 306 slider2d 64 64 -1 1 -1 1 0 210 210 210 0 0 0 1 0 1 32
@@ -79,6 +76,7 @@ as the implementation below to the left \, but the pan parameter is
 from -1 to 1 (instead of 0 to 1). This makes it more suitable for controlling
 it with audio signals. Check also the [pan4~] object \, which is a
 4 speakers panning object and [pan8~] (octaphonic).;
+#X obj 674 24 declare -path else;
 #X connect 0 0 11 0;
 #X connect 1 0 2 0;
 #X connect 2 0 43 0;
@@ -86,12 +84,12 @@ it with audio signals. Check also the [pan4~] object \, which is a
 #X connect 5 0 4 0;
 #X connect 7 0 9 0;
 #X connect 8 0 6 0;
-#X connect 9 0 51 0;
-#X connect 9 1 51 1;
+#X connect 9 0 50 0;
+#X connect 9 1 50 1;
 #X connect 11 0 10 0;
-#X connect 11 0 50 0;
+#X connect 11 0 49 0;
 #X connect 11 1 10 1;
-#X connect 11 1 50 1;
+#X connect 11 1 49 1;
 #X connect 18 0 5 0;
 #X connect 20 0 1 0;
 #X connect 21 0 45 1;
@@ -109,4 +107,4 @@ it with audio signals. Check also the [pan4~] object \, which is a
 #X connect 45 1 24 0;
 #X connect 45 2 25 0;
 #X connect 45 3 26 0;
-#X connect 49 0 42 0;
+#X connect 48 0 42 0;

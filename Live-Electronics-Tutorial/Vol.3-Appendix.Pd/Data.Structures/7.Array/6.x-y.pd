@@ -1,5 +1,5 @@
-#N struct 1003-DS float x float y array 1003-table 1003-element;
-#N struct 1003-element float x float y;
+#N struct 1214-DS float x float y array 1214-table 1214-element;
+#N struct 1214-element float x float y;
 #N canvas 387 93 534 598 12;
 #X obj 412 339 pointer;
 #N canvas 636 221 509 380 template 0;
@@ -18,8 +18,7 @@ as "0" \, so all values in the array are grouped together at initialization.
 #X restore 357 157 pd template;
 #X msg 47 272 0 20 40 60 80 100 120 140 160 180 200 220 240 260 280
 300;
-#X obj 210 473 display;
-#X text 238 474 <= sets size;
+#X text 255 473 <= sets size;
 #X text 77 21 In this example we're able to set the values of both
 'x' and 'y' elements in an array., f 52;
 #X text 76 67 You can now click and drag each point in the array both
@@ -34,9 +33,7 @@ vertically and horizontaly., f 52;
 traverse pd-\$0-display \, bang \; \$0-coords 10 105 \; \$0-size 16
 ;
 #N canvas 1005 301 334 221 \$0-display 1;
-#X scalar 1003-DS 10 105 \; 0 0 \; 0 0 \; 0 0 \; 0 0 \; 0 0 \; 0 0
-\; 0 0 \; 0 0 \; 0 0 \; 0 0 \; 0 0 \; 0 0 \; 0 0 \; 0 0 \; 0 0 \; 0
-0 \; \;;
+#X scalar 1214-DS 10 105 \; 0 0 \; \;;
 #X coords 0 221 1 220 0 0 0;
 #X restore 357 184 pd \$0-display;
 #X obj 412 309 r \$0-pointer;
@@ -52,11 +49,12 @@ special variable names for the horizontal and vertical coordinates
 \, this means you can drag this element both vertically and horizonatly.
 ;
 #X restore 357 131 pd \$0-element;
-#X connect 0 0 9 2;
-#X connect 2 0 11 0;
-#X connect 3 0 10 0;
-#X connect 9 0 10 1;
-#X connect 9 0 11 2;
-#X connect 14 0 0 0;
-#X connect 15 0 9 0;
-#X connect 16 0 3 0;
+#X floatatom 210 473 5 0 0 0 - - -;
+#X connect 0 0 8 2;
+#X connect 2 0 10 0;
+#X connect 8 0 9 1;
+#X connect 8 0 10 2;
+#X connect 13 0 0 0;
+#X connect 14 0 8 0;
+#X connect 15 0 17 0;
+#X connect 17 0 9 0;

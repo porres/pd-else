@@ -6,9 +6,9 @@
 
 
 
-### Version: 1.0-0 beta-32 With Live Electronics Tutorial 
+### Version: 1.0-0 beta-33 With Live Electronics Tutorial 
 
-###   Released: October 19th 2020
+###   Released: November 04th 2020
 
 
 
@@ -111,11 +111,11 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (379 objects):
+## Current Object list (380 objects):
 
-**ASSORTED: [04]**
+**ASSORTED: [03]**
+
 - [table~]
-- [nbang]
 - [meter]
 - [else]
 
@@ -144,9 +144,10 @@ Cross compiling is also possible with something like this
 - [canvas.zoom]
 - [loadbanger] / [lb]
 
-**MESSAGE MANAGEMENT: [21]**
+**MESSAGE MANAGEMENT: [22]**
 
 - [format]
+- [nbang]
 - [unite]
 - [separate]
 - [symbol2any]
@@ -168,10 +169,12 @@ Cross compiling is also possible with something like this
 - [sig2float~] / [s2f~]
 - [float2sig~] / [f2s~]
 
-**LIST/MESSAGE MANAGEMENT: [13]**
+**LIST/MESSAGE MANAGEMENT: [14]**
+
 - [break] 
 - [order]
-- [regroup] 
+- [combine]
+- [group] 
 - [iterate]
 - [scramble]
 - [sort]
