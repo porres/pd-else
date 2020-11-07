@@ -25,9 +25,8 @@ typedef struct _asr{
 static t_class *asr_class;
 
 static void asr_float(t_asr *x, t_floatarg f){
-    if(f != 0 && !x->x_status) { // on
+    if(f != 0 && !x->x_status) // on
         outlet_float(x->x_out2, x->x_status = 1);
-    }
     x->x_f_gate = f;
 }
 
@@ -165,11 +164,14 @@ static void *asr_new(t_symbol *s, int ac, t_atom *av){
                     ac--, av++;
                     x->x_log = 1;
                 }
-                else goto errstate;
+                else
+                    goto errstate;
             }
-            else goto errstate;
+            else
+                goto errstate;
         }
-        else goto errstate;
+        else
+            oto errstate;
     }
     x->x_inlet_attack = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_attack, a);
