@@ -772,7 +772,14 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
     x->x_receive = canvas_realizedollar(x->x_glist, x->x_rcv_raw);
     if(x->x_receive != &s_)
         pd_bind(&x->x_obj.ob_pd, x->x_receive);
-    keyboard_set_properties(x, init_space, init_height, init_8ves, init_low_c, vel, tgl);
+    x->x_space = (init_space < 7) ? 7 : init_space; // key width
+    x->x_height = (init_height < 10) ? 10 : init_height;
+    x->x_octaves = init_8ves < 1 ? 1 : init_8ves > 10 ? 10 : init_8ves;
+    x->x_low_c = init_low_c < 0 ? 0 : init_low_c > 8 ? 8 : init_low_c;
+    x->x_norm = vel < 0 ? 0 : vel > 127 ? 127 : vel;
+    x->x_toggle_mode = (tgl != 0);
+    x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
+    x->x_first_c = ((int)(x->x_low_c * 12)) + 12;
     x->x_tgl_notes = getbytes(sizeof(int) * 256);
     for(int i = 0; i < 256; i++)
         x->x_tgl_notes[i] = 0;
