@@ -66,9 +66,9 @@ static void susloop_stop(t_susloop *x){
 }
 
 static void susloop_float(t_susloop *x, t_floatarg f){
-    if(f != 0 && !x->x_status) // on
+    if(f != 0)
         susloop_bang(x);
-    else if(f == 0 && x->x_status && x->x_loop)
+    else
         x->x_loop = 0;
 }
 
