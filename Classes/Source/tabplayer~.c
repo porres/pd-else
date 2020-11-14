@@ -99,17 +99,23 @@ static void play_range(t_play *x, t_floatarg f1, t_floatarg f2){
     play_ms2samp(x);
 }
 
+static void play_reset(t_play *x){
+    x->x_start = 0;
+    x->x_end = x->x_npts;
+}
+
 static void play_speed(t_play *x, t_floatarg f){
     x->x_rate = f / 100;
-    play_ms2samp(x);
 }
 
 static void play_start(t_play *x, t_floatarg f){
     x->x_stms = f < 0 ? 0 : f;
+    play_ms2samp(x);
 }
 
 static void play_end(t_play *x, t_floatarg f){
     x->x_endms = f < 0 ? 0 : f;
+    play_ms2samp(x);
 }
 
 static void play_bang(t_play *x){
@@ -511,6 +517,7 @@ void tabplayer_tilde_setup(void){
     class_addmethod(play_class, (t_method)play_stop, gensym("stop"), 0);
     class_addmethod(play_class, (t_method)play_pause, gensym("pause"), 0);
     class_addmethod(play_class, (t_method)play_resume, gensym("resume"), 0);
+    class_addmethod(play_class, (t_method)play_reset, gensym("reset"), 0);
     class_addmethod(play_class, (t_method)play_start, gensym("start"), A_FLOAT, 0);
     class_addmethod(play_class, (t_method)play_end, gensym("end"), A_FLOAT, 0);
     class_addmethod(play_class, (t_method)play_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
