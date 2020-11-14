@@ -45,7 +45,7 @@ a zero signal.;
 #X connect 10 0 6 0;
 #X restore 459 275 pd multichannel;
 #X text 181 538 - the playback of a channel, f 61;
-#X obj 225 154 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 225 154 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X msg 296 178 stop;
 #X msg 166 172 loop \$1;
@@ -179,12 +179,8 @@ from start to end. 1st float sets start \, 2nd sets end (in ms) and
 3rd sets speed rate, f 59;
 #X text 101 499 loop <float>;
 #X text 95 351 start <float>;
-#X text 181 351 - sets start point in samples, f 61;
 #X text 107 365 end <float>;
-#X text 181 365 - sets end point in samples, f 61;
 #X text 101 379 range <f \, f>;
-#X text 181 379 - sets start and end point range in samples, f 61
-;
 #X text 95 407 speed <float>;
 #X text 181 407 - sets playing speed in percentage, f 61;
 #X text 91 91 [tabplayer~] plays arrays \, it's more powerful than
@@ -197,7 +193,7 @@ in different speeds. It may also loop.;
 #X text 181 323 - non-zero plays \, <0> stops, f 61;
 #X text 321 156 (same as non-zero);
 #N canvas 685 112 749 513 basic 0;
-#X obj 52 56 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1 1
+#X obj 52 56 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
 #X msg 80 118 stop;
 #X text 116 112 same as 'zero': stops playing and outputs 0 (cannot
@@ -222,7 +218,6 @@ be resumed), f 33;
 #X floatatom 116 222 8 0 0 0 - - -;
 #X floatatom 179 222 8 0 0 0 - - -;
 #X floatatom 244 222 5 0 0 0 - - -;
-#X text 115 197 set start/end (in samples) and speed (%);
 #X msg 416 186 play 250 750;
 #X msg 434 213 play 0 1000 50;
 #X text 529 212 play 1st second at half speed;
@@ -249,6 +244,7 @@ f 50;
 #X obj 67 91 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X text 91 93 Same as 'non zero';
+#X text 115 197 set start/end (in ms) and speed (%);
 #X connect 0 0 10 0;
 #X connect 1 0 10 0;
 #X connect 3 0 10 0;
@@ -260,21 +256,24 @@ f 50;
 #X connect 16 0 10 0;
 #X connect 17 0 10 0;
 #X connect 18 0 16 0;
-#X connect 19 0 32 0;
+#X connect 19 0 31 0;
 #X connect 20 0 17 0;
+#X connect 21 0 12 0;
 #X connect 22 0 12 0;
-#X connect 23 0 12 0;
-#X connect 26 0 12 0;
-#X connect 28 0 12 0;
-#X connect 30 0 12 0;
-#X connect 32 0 10 0;
-#X connect 33 0 12 0;
+#X connect 25 0 12 0;
+#X connect 27 0 12 0;
+#X connect 29 0 12 0;
+#X connect 31 0 10 0;
+#X connect 32 0 12 0;
+#X connect 34 0 10 0;
 #X connect 35 0 10 0;
-#X connect 36 0 10 0;
-#X connect 39 0 10 0;
+#X connect 38 0 10 0;
 #X restore 500 207 pd basic;
 #X text 143 393 reset;
 #X text 181 393 - resets range from 0 to array size, f 61;
+#X text 181 351 - sets start point in ms, f 61;
+#X text 181 365 - sets end point in ms, f 61;
+#X text 181 379 - sets start and end point range in ms, f 61;
 #X connect 12 0 54 0;
 #X connect 13 0 54 0;
 #X connect 14 0 54 0;
@@ -284,4 +283,4 @@ f 50;
 #X connect 54 1 26 0;
 #X connect 56 0 38 0;
 #X connect 57 0 54 0;
-#X connect 71 0 54 0;
+#X connect 68 0 54 0;
