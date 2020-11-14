@@ -1,23 +1,22 @@
-#N canvas 719 110 566 612 10;
-#X obj 8 586 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 808 65 565 668 10;
+#X obj 8 639 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 9 304 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 9 464 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 9 517 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 9 515 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 9 568 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 84 311 cnv 17 3 142 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 82 310 cnv 17 3 203 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 84 472 cnv 17 3 17 empty empty 0-n 5 9 0 16 -228856 -162280
+#X obj 84 525 cnv 17 3 17 empty empty 0-n 5 9 0 16 -228856 -162280
 0;
-#X text 137 327 signal;
-#X text 137 472 signal;
-#X text 119 538 2) float;
-#X text 119 522 1) symbol;
-#N canvas 978 108 454 546 multichannel 0;
+#X text 137 309 signal;
+#X text 137 525 signal;
+#X text 119 591 2) float;
+#X text 119 575 1) symbol;
+#N canvas 978 108 448 523 multichannel 0;
 #X msg 141 297 stop;
-#X msg 131 274 start;
 #X obj 290 357 bng 30 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 30 19 Multi channel playback is possible (up to 64 channels)
@@ -34,38 +33,35 @@ number (starting from zero) and "-" \, such as: "0-" \, "1-" \, "2-"
 #X obj 127 357 else/out~;
 #X text 31 152 You can manually set multi channel arrays in Pd like
 that or use the [sample~] object \, which does this internally.;
-#X text 48 450 If the [sample~] object has fewer channels than the
+#X text 48 444 If the [sample~] object has fewer channels than the
 number of output channels in [tabplayer~] \, the extra channels output
 a zero signal.;
-#X connect 0 0 7 0;
-#X connect 1 0 7 0;
-#X connect 6 0 5 0;
-#X connect 7 0 8 0;
-#X connect 7 1 8 1;
-#X connect 7 2 2 0;
+#X msg 131 274 play;
+#X connect 0 0 6 0;
+#X connect 5 0 4 0;
+#X connect 6 0 7 0;
+#X connect 6 1 7 1;
+#X connect 6 2 1 0;
+#X connect 10 0 6 0;
 #X restore 459 275 pd multichannel;
-#X text 181 472 - the playback of a channel, f 61;
+#X text 181 525 - the playback of a channel, f 61;
 #X obj 225 154 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 266 178 stop;
-#X msg 264 154 start;
+#X msg 296 178 stop;
 #X msg 166 172 loop \$1;
 #X obj 166 150 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 143 310 float;
-#X text 181 344 - sets array name, f 61;
-#X text 101 344 set <symbol>;
-#X text 137 389 <stop>;
-#X text 131 405 <pause>;
-#X text 125 421 <resume>;
-#X text 181 327 - playback position in ms, f 61;
-#X text 181 389 - stops playing and outputs 0 (cannot be resumed),
+#X text 143 323 float;
+#X text 181 499 - sets array name, f 61;
+#X text 101 499 set <symbol>;
+#X text 137 443 <stop>;
+#X text 131 457 <pause>;
+#X text 125 471 <resume>;
+#X text 181 309 - playback position in ms, f 61;
+#X text 181 443 - stops playing and outputs 0 (cannot be resumed),
 f 61;
-#X text 181 310 - non zero plays the array in original speed \, <0>
-stops it, f 61;
-#X text 181 421 - resumes playing after being paused, f 61;
-#X text 125 437 loop <f>;
-#X text 181 437 - non zero enables looping \, <0> disbales it, f 61
+#X text 181 471 - resumes playing after being paused, f 61;
+#X text 181 485 - non zero enables looping \, <0> disbales it, f 61
 ;
 #X obj 372 228 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -99,71 +95,91 @@ ignored.;
 #X connect 12 0 0 0;
 #X connect 13 0 4 0;
 #X restore 447 251 pd signal control;
-#N canvas 498 84 785 393 play 0;
-#X obj 80 56 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
+#N canvas 685 112 755 446 play 0;
+#X obj 52 56 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
-#X msg 112 143 stop;
-#X msg 100 106 start;
-#X text 114 54 'non zero' plays the array in original speed \, <0>
-'stops' it, f 30;
-#X text 148 137 same as 'zero': stops playing and outputs 0 (cannot
+#X msg 80 118 stop;
+#X text 116 112 same as 'zero': stops playing and outputs 0 (cannot
 be resumed), f 33;
-#X text 144 106 by default \, same as 'non zero';
-#X msg 128 182 pause;
-#X msg 143 219 resume;
-#X text 170 182 pauses playing;
-#X text 187 219 resumes after being paused;
+#X text 111 93 by default \, same as 'non zero';
+#X msg 93 144 pause;
+#X msg 104 167 resume;
+#X text 135 144 pauses playing;
+#X text 148 167 resumes after being paused;
 #X text 37 21 Basic control messages:;
-#X msg 463 120 start 1000;
-#X obj 227 301 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 227 321 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 610 291 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 563 355 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 483 156 start 250 750;
-#X msg 499 190 start 1000 0;
-#X msg 520 221 start 0 1000;
-#X obj 80 262 else/tabplayer~ \$0-violin;
-#X obj 80 300 else/out~;
-#X obj 463 253 else/tabplayer~ \$0-violin;
-#X obj 462 291 else/out~;
-#X text 584 189 play 1st second backwards;
-#X text 603 220 play 1st second;
-#X text 572 155 play half second from 250 ms;
-#X text 535 119 play from 1 second;
-#X text 410 39 The 'start' message takes up to 2 floats that specify:
-1) starting point in the array (in ms) \, 2) end point (in ms). If
-no floats are given \, then it playes from the start to the end.,
-f 54;
-#X connect 0 0 17 0;
-#X connect 1 0 17 0;
-#X connect 2 0 17 0;
-#X connect 6 0 17 0;
-#X connect 7 0 17 0;
-#X connect 11 0 19 0;
-#X connect 14 0 19 0;
-#X connect 15 0 19 0;
-#X connect 16 0 19 0;
-#X connect 17 0 18 0;
-#X connect 17 1 12 0;
-#X connect 19 0 20 0;
-#X connect 19 1 13 0;
+#X obj 80 282 else/tabplayer~ \$0-violin;
+#X obj 80 320 else/out~;
+#X obj 416 317 else/tabplayer~ \$0-violin;
+#X obj 416 355 else/out~;
+#X text 498 185 play half second from 250 ms;
+#X msg 67 93 play;
+#X text 84 60 'non zero' plays the array \, zero stops;
+#X msg 116 245 start \$1;
+#X msg 244 245 speed \$1;
+#X floatatom 116 222 8 0 0 0 - - -;
+#X floatatom 179 222 8 0 0 0 - - -;
+#X floatatom 244 222 5 0 0 0 - - -;
+#X text 115 197 set start/end (in samples) and speed (%);
+#X msg 416 186 play 250 750;
+#X msg 434 213 play 0 1000 50;
+#X text 529 212 play 1st second at half speed;
+#X text 398 35 The 'play' message can also take up to 3 floats that
+specify \; 1) starting point in the array (in ms) \; 2) end point (in
+ms) \; 3) speed rate percentage \; If no floats are given \, then it
+plays from the setted start/end points in the given rate. The arguments
+of the play message changes the parameters of start/end and speed,
+f 50;
+#X msg 441 238 play 0 1000 -50;
+#X text 544 233 play 1st second at half speed in reverse, f 21;
+#X msg 447 262 play;
+#X text 479 261 play with previous settings;
+#X msg 404 163 play 500;
+#X text 461 162 play from half second;
+#X msg 179 245 end \$1;
+#X obj 453 285 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 477 286 same as 'play' without arguments;
+#X connect 0 0 11 0;
+#X connect 1 0 11 0;
+#X connect 4 0 11 0;
+#X connect 5 0 11 0;
+#X connect 11 0 12 0;
+#X connect 11 1 9 0;
+#X connect 13 0 14 0;
+#X connect 13 1 10 0;
+#X connect 16 0 11 0;
+#X connect 18 0 11 0;
+#X connect 19 0 11 0;
+#X connect 20 0 18 0;
+#X connect 21 0 34 0;
+#X connect 22 0 19 0;
+#X connect 24 0 13 0;
+#X connect 25 0 13 0;
+#X connect 28 0 13 0;
+#X connect 30 0 13 0;
+#X connect 32 0 13 0;
+#X connect 34 0 11 0;
+#X connect 35 0 13 0;
 #X restore 453 192 pd play control \; messages;
-#X obj 9 557 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 84 493 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+#X obj 9 610 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 84 546 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
 0;
-#X text 149 494 bang;
+#X text 149 547 bang;
 #X text 362 257 finished;
 #X text 365 269 playing;
-#X text 181 360 -;
-#X text 181 405 - pauses at a particular point (can be resumed), f
+#X text 181 407 -;
+#X text 181 457 - pauses at a particular point (can be resumed), f
 61;
-#X text 304 155 (same as non zero);
-#X text 299 178 (same as zero);
-#X text 181 494 - when it stops/finishes playing, f 61;
+#X text 329 178 (same as zero);
+#X text 181 547 - when it stops/finishes playing, f 61;
 #X obj 45 257 send \$0-array_size;
 #X obj 45 233 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 290646 256;
-#X text 182 538 - number of output channels (default 1 \, maximum 64)
+#X text 182 591 - number of output channels (default 1 \, maximum 64)
 , f 61;
 #X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -190,9 +206,8 @@ f 54;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 4 graph;
-#X text 214 565 -loop <float>;
 #X obj 225 238 else/out~;
-#X text 182 521 - table name (optional), f 61;
+#X text 182 574 - table name (optional), f 61;
 #X obj 225 203 else/tabplayer~ \$0-violin;
 #N canvas 847 75 405 507 loop 0;
 #X msg 149 207 loop \$1;
@@ -205,39 +220,59 @@ f 54;
 #X msg 65 149 stop;
 #X obj 149 117 loadbang;
 #X obj 149 246 else/tabplayer~ \$0-violin;
-#X msg 105 149 start;
 #X obj 149 281 else/out~;
 #X obj 106 412 else/out~;
+#X obj 105 358 else/tabplayer~ \$0-violin -loop;
+#X msg 105 149 play;
 #X text 68 34 The loop message takes a float \, where a non-zero value
 enables looping and \, 0 disables it (default is disabled). You can
-set it to loop wth the -loop flag., f 37;
-#X obj 105 358 else/tabplayer~ \$0-violin -loop;
+set it to loop with the -loop flag., f 37;
 #X connect 0 0 6 0;
 #X connect 1 0 0 0;
 #X connect 4 0 6 0;
-#X connect 4 0 11 0;
-#X connect 5 0 7 0;
+#X connect 4 0 9 0;
+#X connect 5 0 10 0;
 #X connect 5 0 1 0;
-#X connect 6 0 8 0;
+#X connect 6 0 7 0;
 #X connect 6 1 2 0;
-#X connect 7 0 6 0;
-#X connect 7 0 11 0;
-#X connect 11 0 9 0;
-#X connect 11 1 3 0;
+#X connect 9 0 8 0;
+#X connect 9 1 3 0;
+#X connect 10 0 6 0;
+#X connect 10 0 9 0;
 #X restore 506 227 pd loop;
-#X text 91 91 [tabplayer~] plays arrays \, it's more powerful than
-tabplay~ as it has multichannel support and can play backwards. It
-may also loop - more functionalities comming soon.;
-#X text 101 360 start <f \, f>;
-#X text 193 360 start playing \, if no float is given \, array is played
-from start to end. 1st float sets start and 2nd sets end (in ms);
 #X obj 45 179 else/sample~ \$0-violin violin.wav, f 12;
-#X connect 12 0 60 0;
-#X connect 13 0 60 0;
-#X connect 14 0 60 0;
-#X connect 15 0 60 0;
-#X connect 16 0 15 0;
-#X connect 43 0 42 0;
-#X connect 60 0 58 0;
-#X connect 60 1 29 0;
-#X connect 65 0 43 0;
+#X msg 286 156 play;
+#X text 214 618 -loop: sets to loop mode;
+#X text 89 407 play <f \, f \, f>;
+#X text 193 407 start playing \, if no float is given \, array is played
+from start to end. 1st float sets start \, 2nd sets end (in ms) and
+3rd sets speed rate, f 59;
+#X text 101 485 loop <float>;
+#X text 95 351 start <float>;
+#X text 181 351 - sets start point in samples, f 61;
+#X text 107 365 end <float>;
+#X text 181 365 - sets end point in samples, f 61;
+#X text 101 379 range <f \, f>;
+#X text 181 379 - sets start and end point range in samples, f 61
+;
+#X text 95 393 speed <float>;
+#X text 181 393 - sets playing speed in percentage, f 61;
+#X text 91 91 [tabplayer~] plays arrays \, it's more powerful than
+tabplay~ as it has multichannel support and can play backwards and
+in different speeds. It may also loop.;
+#X obj 262 155 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 149 337 bang;
+#X text 181 337 - play (same as non-zero), f 61;
+#X text 181 323 - non-zero plays \, <0> stops, f 61;
+#X text 321 156 (same as non-zero);
+#X connect 12 0 55 0;
+#X connect 13 0 55 0;
+#X connect 14 0 55 0;
+#X connect 15 0 14 0;
+#X connect 39 0 38 0;
+#X connect 55 0 53 0;
+#X connect 55 1 26 0;
+#X connect 57 0 39 0;
+#X connect 58 0 55 0;
+#X connect 72 0 55 0;
