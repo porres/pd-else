@@ -46,30 +46,23 @@ static t_int *xgate_perform(t_int *w){
     for(i = 0; i < x->x_outlets; i++)
         x->x_outs[i] = (t_float *)(w[4 + i]); // all outputs
 //    t_float *outputs = x->x_outs[i];
-    while (n--)
-    {
-    float input = *in++;
-        
-    for(i = 0; i < x->x_outlets; i++)
-        {
+    while(n--){
+        float input = *in++;
+        for(i = 0; i < x->x_outlets; i++){
 // fade in/out counter
-        if(x->x_active_channel[i] && x->x_counter[i] < x->x_fade_in_samps)
-            x->x_counter[i]++;
-        else if (!x->x_active_channel[i] && x->x_counter[i] > 0)
-            x->x_counter[i]--;
-        
+            if(x->x_active_channel[i] && x->x_counter[i] < x->x_fade_in_samps)
+                x->x_counter[i]++;
+            else if(!x->x_active_channel[i] && x->x_counter[i] > 0)
+                x->x_counter[i]--;
 // calculate fade value
-        x->x_fade[i] = x->x_counter[i] / x->x_fade_in_samps;
-        if(x->x_fadetype == EPOWER)
-            x->x_fade[i] = sin(x->x_fade[i] * HALF_PI);
-        
+            x->x_fade[i] = x->x_counter[i] / x->x_fade_in_samps;
+            if(x->x_fadetype == EPOWER)
+                x->x_fade[i] = sin(x->x_fade[i] * HALF_PI);
 // set fade to channel
-
-        *x->x_outs[i]++ = input * x->x_fade[i];
+            *x->x_outs[i]++ = input * x->x_fade[i];
         }
-        
     }
-    return (w + 4 + x->x_outlets);
+    return(w + 4 + x->x_outlets);
 }
 
 static void xgate_dsp(t_xgate *x, t_signal **sp) {

@@ -45,15 +45,8 @@ static t_int *xselect_perform(t_int *w){
     while(n--){
         float sum = 0;
         for(i = 0; i < x->x_ninlets; i++){
-            if(x->x_active_channel[i] && x->x_counter[i] < x->x_fade_in_samps){
-                if(x->x_counter[i] == 0){
-                    t_atom at[2];
-                    SETFLOAT(at, i + 1);
-                    SETFLOAT(at+1, 1);
-                    outlet_list(x->x_out_status, gensym("list"), 2, at);
-                }
+            if(x->x_active_channel[i] && x->x_counter[i] < x->x_fade_in_samps)
                 x->x_counter[i]++;
-            }
             else if(!x->x_active_channel[i] && x->x_counter[i] > 0){
                 x->x_counter[i]--;
                 if(x->x_counter[i] == 0){
@@ -91,7 +84,7 @@ static void xselect_time(t_xselect *x, t_floatarg ms){
     int i;
     double last_fade_in_samps = x->x_fade_in_samps;
     ms = ms < 0 ? 0 : ms;
-    x->x_fade_in_samps = x->x_sr_khz * ms + 1;
+    x->x_fade_in_samps = x->x_sr_khz * ms;
     for(i = 0; i < x->x_ninlets; i++)
         if(x->x_counter[i]) // adjust counters
             x->x_counter[i] = x->x_counter[i] / last_fade_in_samps * x->x_fade_in_samps;
