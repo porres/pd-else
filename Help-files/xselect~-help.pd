@@ -1,4 +1,4 @@
-#N canvas 476 74 561 515 10;
+#N canvas 805 225 561 515 10;
 #X obj 4 303 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 375 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -90,7 +90,6 @@ power crossfading.;
 ;
 #X obj 299 315 s \$0-status;
 #X text 373 203 <= open and see how;
-#X obj 307 291 print pff-status;
 #X obj 182 129 s \$0-input;
 #X obj 182 165 r \$0-input;
 #N canvas 285 106 496 331 input-1 0;
@@ -118,7 +117,7 @@ power crossfading.;
 #X obj 279 191 switch~;
 #X obj 233 86 r \$0-input;
 #X msg 233 131 1;
-#X obj 279 166 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
+#X obj 279 166 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 233 110 sel 2;
 #X obj 279 131 route 2;
@@ -136,17 +135,18 @@ power crossfading.;
 to turn a subpatch off. But in order to turn it on you need to use
 the float input. Open the subpatches below to see how this works.,
 f 43;
+#X obj 307 291 print off-status;
 #X connect 1 0 2 0;
-#X connect 2 0 15 0;
-#X connect 4 0 19 0;
+#X connect 2 0 14 0;
+#X connect 4 0 18 0;
 #X connect 6 0 4 0;
 #X connect 10 0 12 0;
-#X connect 10 0 14 0;
-#X connect 16 0 19 0;
-#X connect 17 0 19 0;
-#X connect 18 0 19 1;
-#X connect 19 0 0 0;
-#X connect 19 1 10 0;
+#X connect 10 0 20 0;
+#X connect 15 0 18 0;
+#X connect 16 0 18 0;
+#X connect 17 0 18 1;
+#X connect 18 0 0 0;
+#X connect 18 1 10 0;
 #X restore 472 260 pd status \; switch;
 #X text 189 406 - reports input number and off status;
 #X obj 242 173 osc~ 330;
