@@ -9,27 +9,27 @@
 #define HALF_PI (M_PI * 0.5)
 
 #define SHARED_FLT_MAX  1E+36
-#define PLAY_MINITIME 0.023 //minumum ms for xfade. 1/44.1 rounded up
+#define tabplayer_MINITIME 0.023 //minumum ms for xfade. 1/44.1 rounded up
 // note, loop starts fading in at stms, starts fading out at endms
 
-typedef struct _play{
+typedef struct _tabplayer{
     t_object    x_obj;
     t_buffer   *x_buffer;
     t_glist    *x_glist;
     int         x_hasfeeders; //if there's a signal coming in the main inlet
-    int         x_npts; //array size in samples
-    t_float     x_sr; //pd's sample rate in ms
-    t_float     x_array_sr_khz; //array's sample rate in ms
+    float     x_sr; //pd's sample rate in ms
+    float     x_array_sr_khz; //array's sample rate in ms
     double      x_sr_ratio; //sample rate ratio (array/pd)
-    t_float     x_fadems; // xfade in ms (also known as interptime)
-    t_float     x_stms; //start position in ms
-    t_float     x_endms; //end pos in ms
-    int         x_start; //start position in samp
-    int         x_stxsamp; //end of xfade ramp from start in samp
-    int         x_end; //end pos in samp
-    int         x_endxsamp; //end of xfade ramp from end in ms
-    int         x_rangesamp; //length of loop in samples
-    int         x_fadesamp; //length of fade in samples
+    float     x_fadems; // xfade in ms (also known as interptime)
+    float     x_stms; //start position in ms
+    float     x_endms; //end pos in ms
+    unsigned long long x_npts; //array size in samples
+    unsigned long long x_start; //start position in samp
+    unsigned long long x_stxsamp; //end of xfade ramp from start in samp
+    unsigned long long x_end; //end pos in samp
+    unsigned long long x_endxsamp; //end of xfade ramp from end in ms
+    unsigned long long x_rangesamp; //length of loop in samples
+    unsigned long long x_fadesamp; //length of fade in samples
     double      x_rate; //rate of playback
     double      x_phase; //phase for float playback mode
     int         x_loop; //if loop or not
@@ -42,24 +42,27 @@ typedef struct _play{
     t_outlet    *x_donelet;
 }t_play;
 
-static t_class *play_class;
+static t_class *tabplayer_class;
 
-static void play_ms2samp(t_play *x){ // get index from ms
+static void tabplayer_ms2samp(t_play *x){ // get index from ms
     t_float a_sr = x->x_array_sr_khz; // array's sample rate
     t_float stms = x->x_stms, endms = x->x_endms;
-    int npts = x->x_npts; //length of array in samples
-    int start = (int)(stms * a_sr);
-    int end = x->x_end = endms >= SHARED_FLT_MAX/a_sr ? SHARED_INT_MAX : (int)(endms * a_sr);
+    unsigned long long npts = x->x_npts; //length of array in samples
+    unsigned long long  start = (unsigned long long)(stms * a_sr);
+    unsigned long long end = x->x_end = (endms >= SHARED_FLT_MAX/a_sr ?
+                                         SHARED_INT_MAX :
+                                         (int)(endms * a_sr)
+                                        );
     x->x_start = start = start > npts ? npts : start < 0 ? 0 : start;
     x->x_end = end = end > npts ? npts : end < 0 ? 0 : end;
-    int rangesamp = x->x_rangesamp = abs(start - end);
-    int fadesamp = (int)(x->x_fadems * a_sr);
+    unsigned long long rangesamp = x->x_rangesamp = end - start;
+    unsigned long long fadesamp = (unsigned long long)(x->x_fadems * a_sr);
     //boundschecking
     if(fadesamp > rangesamp / 2)
         fadesamp = rangesamp / 2;
     else if(fadesamp < 0)
         fadesamp = 0;
-    int stxsamp, endxsamp;
+    unsigned long long stxsamp, endxsamp;
     // if (isneg), end pts of loop come before the loop end points in the buffer,
     //if pos, come after
     stxsamp = start;
@@ -73,61 +76,64 @@ static void play_ms2samp(t_play *x){ // get index from ms
     x->x_fadesamp = fadesamp;
 }
 
-static void play_set(t_play *x, t_symbol *s){
+static void tabplayer_set(t_play *x, t_symbol *s){
     buffer_setarray(x->x_buffer, s);
     x->x_npts = x->x_buffer->c_npts;
     x->x_sr_ratio = x->x_array_sr_khz/x->x_sr;
 }
 
-/*static void play_arraysr(t_play *x, t_floatarg f){
+/*static void tabplayer_arraysr(t_play *x, t_floatarg f){
     //sample rate of array in samp/sec
     if(f <= 1)
         f = 1;
     x->x_array_sr_khz = f * 0.001;
     x->x_sr_ratio = x->x_array_sr_khz/x->x_sr;
-    play_ms2samp(x);
+    tabplayer_ms2samp(x);
 }*/
 
-static void play_fade(t_play *x, t_floatarg f){
+static void tabplayer_fade(t_play *x, t_floatarg f){
     x->x_fadems = f < 0 ? 0 : f;
-    play_ms2samp(x);
+    tabplayer_ms2samp(x);
 }
 
-static void play_range(t_play *x, t_floatarg f1, t_floatarg f2){
+static void tabplayer_range(t_play *x, t_floatarg f1, t_floatarg f2){
     x->x_stms = f1 < 0 ? 0 : f1;
     x->x_endms = f2;
-    play_ms2samp(x);
+    tabplayer_ms2samp(x);
 }
 
-static void play_reset(t_play *x){
+static void tabplayer_reset(t_play *x){
     x->x_start = 0;
     x->x_end = x->x_npts;
 }
 
-static void play_speed(t_play *x, t_floatarg f){
+static void tabplayer_speed(t_play *x, t_floatarg f){
     x->x_rate = f / 100;
 }
 
-static void play_start(t_play *x, t_floatarg f){
+static void tabplayer_start(t_play *x, t_floatarg f){
     x->x_stms = f < 0 ? 0 : f;
-    play_ms2samp(x);
+    tabplayer_ms2samp(x);
 }
 
-static void play_end(t_play *x, t_floatarg f){
+static void tabplayer_end(t_play *x, t_floatarg f){
     x->x_endms = f < 0 ? 0 : f;
-    play_ms2samp(x);
+    tabplayer_ms2samp(x);
 }
 
-static void play_bang(t_play *x){
+static void tabplayer_bang(t_play *x){
     x->x_playing = x->x_playnew = 1; // start playing
 }
 
-static void play_play(t_play *x, t_symbol *s, int ac, t_atom *av){
+static void tabplayer_play(t_play *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac){ // args: start (ms) / end (ms), rate
-        t_float stms = x->x_stms;
+/*        t_float stms = x->x_stms;
         t_float endms = x->x_endms;
-        t_float rate = x->x_rate;
+        t_float rate = x->x_rate;*/
+        float stms = 0;
+        float endms = SHARED_FLT_MAX;
+        float rate = 1;
         int argnum = 0;
         while(ac){
             if(av->a_type == A_FLOAT){
@@ -155,35 +161,35 @@ static void play_play(t_play *x, t_symbol *s, int ac, t_atom *av){
         x->x_stms = stms;
         x->x_endms = endms;
         x->x_rate = rate;
-        play_ms2samp(x); // calculate sample equivalents
+        tabplayer_ms2samp(x); // calculate sample equivalents
     }
-    play_bang(x);
+    tabplayer_bang(x);
 }
 
-static void play_stop(t_play *x){
+static void tabplayer_stop(t_play *x){
     if(x->x_playing){
         x->x_playing = x->x_playnew = 0;
         outlet_bang(x->x_donelet);
     };
 }
 
-static void play_float(t_play *x, t_floatarg f){
-    f > 0 ? x->x_playing = x->x_playnew = 1 : play_stop(x);
+static void tabplayer_float(t_play *x, t_floatarg f){
+    f > 0 ? x->x_playing = x->x_playnew = 1 : tabplayer_stop(x);
 }
 
-static void play_pause(t_play *x){
+static void tabplayer_pause(t_play *x){
     x->x_playing = 0;
 }
 
-static void play_resume(t_play *x){
+static void tabplayer_resume(t_play *x){
     x->x_playing = 1;
 }
 
-static void play_loop(t_play *x, t_floatarg f){
+static void tabplayer_loop(t_play *x, t_floatarg f){
     x->x_loop = f > 0 ? 1 : 0;
 }
 
-static double play_interp(t_play *x, int chidx, double phase){
+static double tabplayer_interp(t_play *x, int chidx, double phase){
     int ndx;
     double out;
     t_word **vectable = x->x_buffer->c_vectors;
@@ -223,21 +229,19 @@ static double play_interp(t_play *x, int chidx, double phase){
     return(out);
 }
 
-
-static t_int *play_perform(t_int *w){
+static t_int *tabplayer_perform(t_int *w){
     t_play *x = (t_play *)(w[1]);
     t_buffer *buffer = x->x_buffer;
     int n = (int)(w[2]);
     int ch = x->x_numchans, chidx, i;
     if(buffer->c_playable){
-        float pdksr = x->x_sr;
         if(x->x_hasfeeders){ // signal input present, indexing into array
             t_float *xin = x->x_ivec;
             for(i = 0; i < n; i++){
-                float phase = *xin++ * pdksr; // converts input in ms to samples!
+                float phase = *xin++;
                 for(chidx = 0; chidx < ch; chidx++){
                     t_float *out = *(x->x_ovecs+chidx);
-                    out[i] = play_interp(x, chidx, phase);
+                    out[i] = tabplayer_interp(x, chidx, phase);
                 };
             };
         }
@@ -245,12 +249,12 @@ static t_int *play_perform(t_int *w){
             if(x->x_playing){
                 double output;
                 double gain;
-                int npts = x->x_npts;
-                int start = x->x_start;
-                int end = x->x_end;
+                unsigned long long npts = x->x_npts;
+                unsigned long long start = x->x_start;
+                unsigned long long end = x->x_end;
                 int isneg = x->x_rate < 0;
                 int loop = x->x_loop;
-                int rangesamp = x->x_rangesamp;
+                unsigned long long rangesamp = x->x_rangesamp;
                 int ramping = 0; //if we're ramping
                 if(x->x_playnew){ // if starting to play this block
                     x->x_phase = isneg ? (double)end : (double)start;
@@ -332,11 +336,11 @@ static t_int *play_perform(t_int *w){
                     for(chidx = 0; chidx < ch; chidx++){
                         t_float *out = *(x->x_ovecs+chidx);
                         if(x->x_playing){
-                            output = play_interp(x, chidx, phase);
+                            output = tabplayer_interp(x, chidx, phase);
                             if(ramping){
                                 output *= gain;
                                 if(!rfirst){ // if not the first ramp, need the fading out ramp
-                                    double out2 = play_interp(x, chidx, fadephase);
+                                    double out2 = tabplayer_interp(x, chidx, fadephase);
                                     out2 *= fadegain;
                                     output += out2;
                                 };
@@ -366,7 +370,7 @@ static t_int *play_perform(t_int *w){
 }
 
 /*
-static t_int *play_perform(t_int *w){
+static t_int *tabplayer_perform(t_int *w){
     t_play *x = (t_play *)(w[1]);
     t_buffer *buffer = x->x_buffer;
     int n = (int)(w[2]);
@@ -383,7 +387,7 @@ static t_int *play_perform(t_int *w){
             for(i = 0; i < n; i++){
                 for(chidx = 0; chidx < ch; chidx++){
                     t_float *out = *(x->x_ovecs+chidx);
-                    out[i] = play_interp(x, chidx, (double)x->x_phase);
+                    out[i] = tabplayer_interp(x, chidx, (double)x->x_phase);
                 };
                 x->x_phase += x->x_rate;
                 if(x->x_phase < x->x_start || x->x_phase > x->x_end){
@@ -410,33 +414,33 @@ static t_int *play_perform(t_int *w){
 }
 */
 
-static void play_dsp(t_play *x, t_signal **sp){
+static void tabplayer_dsp(t_play *x, t_signal **sp){
     buffer_checkdsp(x->x_buffer);
-    int npts = x->x_buffer->c_npts;
+    unsigned long long npts = x->x_buffer->c_npts;
     x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
     t_float pdksr= sp[0]->s_sr * 0.001;
-        x->x_sr = pdksr;
-        x->x_sr_ratio = (double)(x->x_array_sr_khz/x->x_sr);
+    x->x_sr = pdksr;
+    x->x_sr_ratio = (double)(x->x_array_sr_khz/x->x_sr);
     if(npts != x->x_npts){
         x->x_npts = npts;
-        play_ms2samp(x); // recalculate sample equivalents
+        tabplayer_ms2samp(x); // recalculate sample equivalents
     };
     int i, n = sp[0]->s_n;
     t_signal **sigp = sp;
     x->x_ivec = (*sigp++)->s_vec;
     for (i = 0; i < x->x_numchans; i++) //input vectors first
         *(x->x_ovecs+i) = (*sigp++)->s_vec;
-    dsp_add(play_perform, 2, x, n);
+    dsp_add(tabplayer_perform, 2, x, n);
 }
 
-static void *play_free(t_play *x){
+static void *tabplayer_free(t_play *x){
     buffer_free(x->x_buffer);
     freebytes(x->x_ovecs, x->x_numchans * sizeof(*x->x_ovecs));
     outlet_free(x->x_donelet);
     return (void *)x;
 }
 
-static void *play_new(t_symbol * s, int ac, t_atom *av){
+static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
     t_symbol *arrname = NULL;
     t_float channels = 1;
     t_float fade = 0;
@@ -475,7 +479,7 @@ static void *play_new(t_symbol * s, int ac, t_atom *av){
     };
     // one auxiliary signal:  position input
     int chn_n = (int)channels > 64 ? 64 : (int)channels;
-    t_play *x = (t_play *)pd_new(play_class);
+    t_play *x = (t_play *)pd_new(tabplayer_class);
     x->x_glist = canvas_getcurrent();
     x->x_hasfeeders = 0;
     x->x_sr = (float)sys_getsr() * 0.001;
@@ -497,7 +501,7 @@ static void *play_new(t_symbol * s, int ac, t_atom *av){
         x->x_stms = 0;
         x->x_endms = SHARED_FLT_MAX;
         x->x_rate = 1;
-        play_ms2samp(x);
+        tabplayer_ms2samp(x);
     }
     return(x);
     errstate:
@@ -506,24 +510,24 @@ static void *play_new(t_symbol * s, int ac, t_atom *av){
 }
 
 void tabplayer_tilde_setup(void){
-    play_class = class_new(gensym("tabplayer~"), (t_newmethod)play_new, (t_method)play_free,
+    tabplayer_class = class_new(gensym("tabplayer~"), (t_newmethod)tabplayer_new, (t_method)tabplayer_free,
         sizeof(t_play), 0, A_GIMME, 0);
-    class_domainsignalin(play_class, -1);
-    class_addbang(play_class, play_bang);
-    class_addfloat(play_class, play_float);
-    class_addmethod(play_class, (t_method)play_dsp, gensym("dsp"), A_CANT, 0);
-    class_addmethod(play_class, (t_method)play_set, gensym("set"), A_SYMBOL, 0);
-    class_addmethod(play_class, (t_method)play_play, gensym("play"), A_GIMME, 0);
-    class_addmethod(play_class, (t_method)play_stop, gensym("stop"), 0);
-    class_addmethod(play_class, (t_method)play_pause, gensym("pause"), 0);
-    class_addmethod(play_class, (t_method)play_resume, gensym("resume"), 0);
-    class_addmethod(play_class, (t_method)play_reset, gensym("reset"), 0);
-    class_addmethod(play_class, (t_method)play_start, gensym("start"), A_FLOAT, 0);
-    class_addmethod(play_class, (t_method)play_end, gensym("end"), A_FLOAT, 0);
-    class_addmethod(play_class, (t_method)play_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
-    class_addmethod(play_class, (t_method)play_speed, gensym("speed"), A_FLOAT, 0);
-    class_addmethod(play_class, (t_method)play_loop, gensym("loop"), A_FLOAT, 0);
-    class_addmethod(play_class, (t_method)play_fade, gensym("fade"), A_FLOAT, 0);
-/*    class_addmethod(play_class, (t_method)play_mode, gensym("mode"), A_FLOAT, 0);
-    class_addmethod(play_class, (t_method)play_arraysr, gensym("arraysr"), A_FLOAT, 0); */
+    class_domainsignalin(tabplayer_class, -1);
+    class_addbang(tabplayer_class, tabplayer_bang);
+    class_addfloat(tabplayer_class, tabplayer_float);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_dsp, gensym("dsp"), A_CANT, 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_set, gensym("set"), A_SYMBOL, 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_play, gensym("play"), A_GIMME, 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_stop, gensym("stop"), 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_pause, gensym("pause"), 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_resume, gensym("resume"), 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_reset, gensym("reset"), 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_start, gensym("start"), A_FLOAT, 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_end, gensym("end"), A_FLOAT, 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_speed, gensym("speed"), A_FLOAT, 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_loop, gensym("loop"), A_FLOAT, 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_fade, gensym("fade"), A_FLOAT, 0);
+/*    class_addmethod(tabplayer_class, (t_method)tabplayer_mode, gensym("mode"), A_FLOAT, 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_arraysr, gensym("arraysr"), A_FLOAT, 0); */
 }
