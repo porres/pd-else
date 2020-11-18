@@ -1,4 +1,4 @@
-#N canvas 602 103 565 521 10;
+#N canvas 735 94 559 517 10;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -18,7 +18,7 @@
 0;
 #X obj 202 41 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
 0;
-#X obj 3 492 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 489 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 239 189 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -32,15 +32,13 @@
 0;
 #X text 452 245 see also:;
 #X obj 239 249 else/out~;
-#X obj 3 429 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 433 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
 #X obj 3 315 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 393 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 397 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 123 324 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X text 164 325 float/signal - frequency in hz;
+#X text 154 321 float/signal - frequency in hz, f 60;
 #X obj 121 41 cnv 4 4 4 empty empty wavetable 0 28 2 18 -233017 -1
 0;
 #X text 60 89 [bl.wavetable~] is a wavetable oscillator like [else/wavetable~]
@@ -48,11 +46,11 @@
 makes the object quite ineficient CPU wise \, but is an easy way to
 implement a bandlimited oscillator., f 74;
 #X obj 432 267 else/wavetable~;
-#X text 168 440 1) symbol;
+#X text 158 441 1) symbol;
 #X text 60 142 Because this is an abstraction and Pd is still limited
 in the way it handles it \, this object does not have any arguments
 besides the array name., f 74;
-#X text 228 440 - array name (required \, default none), f 43;
+#X text 218 441 - array name (required \, default none), f 43;
 #N canvas 811 254 411 420 table 0;
 #X obj 33 158 cnv 15 298 198 empty empty empty 20 12 0 14 -233017 -66577
 0;
@@ -70,22 +68,26 @@ besides the array name., f 74;
 #X connect 5 0 2 0;
 #X restore 115 241 pd table;
 #X text 27 241 check table =>;
-#X obj 123 405 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 123 408 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 201 406 signal;
-#X text 243 406 - a periodically repeating waveform;
-#X obj 123 348 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 191 409 signal;
+#X text 233 409 - a periodically repeating waveform;
+#X obj 123 355 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 123 368 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 123 375 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 165 349 float/signal - phase sync (ressets internal phase)
+#X text 155 356 float/signal - phase sync (ressets internal phase)
 ;
-#X text 165 369 float/signal - phase offset (modulation input), f
+#X text 155 376 float/signal - phase offset (modulation input), f
 50;
-#X text 174 470 3) float;
-#X text 228 455 - sets frequency in Hz (default 0), f 43;
-#X text 228 470 - sets phase offset (default 0), f 43;
-#X text 174 455 2) float;
+#X text 164 467 3) float;
+#X text 218 455 - sets frequency in Hz (default 0), f 43;
+#X text 218 470 - sets phase offset (default 0), f 43;
+#X text 164 455 2) float;
 #X obj 239 214 else/bl.wavetable~ \$0-table 400;
-#X connect 10 0 41 0;
-#X connect 41 0 16 0;
+#X text 154 336 set <symbol> - sets an entire array to be used as a
+waveform;
+#X obj 123 322 cnv 17 3 28 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X connect 10 0 40 0;
+#X connect 40 0 16 0;
