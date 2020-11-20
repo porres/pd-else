@@ -49,13 +49,17 @@ static void tabplayer_ms2samp(t_play *x){ // get index from ms
     t_float a_sr = x->x_array_sr_khz; // array's sample rate
     t_float stms = x->x_stms, endms = x->x_endms;
     unsigned long long npts = x->x_npts; //length of array in samples
-    unsigned long long  start = (unsigned long long)(stms * a_sr);
+    unsigned long long start = (unsigned long long)(stms * a_sr);
     unsigned long long end = x->x_end = (endms >= SHARED_FLT_MAX/a_sr ?
                                          SHARED_INT_MAX :
-                                         (int)(endms * a_sr)
-                                        );
+                                         (int)(endms * a_sr));
     x->x_start = start = start > npts ? npts : start < 0 ? 0 : start;
     x->x_end = end = end > npts ? npts : end < 0 ? 0 : end;
+    if(x->x_start > x->x_end){
+        unsigned long long temp = x->x_start;
+        x->x_start = x->x_end ;
+        x->x_end = temp;
+    }
     unsigned long long rangesamp = x->x_rangesamp = end - start;
     unsigned long long fadesamp = (unsigned long long)(x->x_fadems * a_sr);
     //boundschecking
