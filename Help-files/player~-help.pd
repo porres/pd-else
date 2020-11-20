@@ -1,4 +1,4 @@
-#N canvas 528 23 559 736 10;
+#N canvas 670 23 559 736 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -112,38 +112,40 @@ message), f 72;
 #X obj 38 249 else/gran.player~;
 #X text 77 692 -range <float \, float>: sets sample range (default
 0 1);
-#N canvas 717 167 661 316 example 0;
-#X msg 93 91 pause;
-#X msg 220 117 speed \$1;
-#X obj 220 96 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 804 166 661 353 example 0;
+#X msg 97 113 pause;
+#X msg 224 139 speed \$1;
+#X obj 224 118 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X msg 286 117 loop \$1;
-#X obj 286 93 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 290 139 loop \$1;
+#X obj 290 115 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X obj 190 118 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 194 140 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 304 238 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 308 260 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 325 236 <= finished;
-#X msg 134 68 open vacuous.wav;
-#X obj 169 118 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X text 329 258 <= finished;
+#X msg 138 90 open vacuous.wav;
+#X obj 173 140 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 78 201 click: opens a new file =>, f 13;
-#X msg 30 68 open stereo.wav;
-#X floatatom 344 117 5 0 0 0 - - -;
-#X floatatom 403 117 5 0 0 0 - - -;
-#X msg 286 164 show;
-#X msg 329 164 hide;
-#X text 107 25 Test the main message methods of [player~].;
-#X obj 160 242 else/out~;
-#X obj 169 210 else/player~ stereo.wav;
-#X msg 148 90 resume;
-#X obj 346 66 else/range.hsl 135 17 0 1 0 255 255 255 96 96 96 empty
+#X text 82 223 click: opens a new file =>, f 13;
+#X msg 34 90 open stereo.wav;
+#X floatatom 348 139 5 0 0 0 - - -;
+#X floatatom 407 139 5 0 0 0 - - -;
+#X msg 290 186 show;
+#X msg 333 186 hide;
+#X text 149 30 Test the main message methods of [player~].;
+#X obj 164 264 else/out~;
+#X obj 173 232 else/player~ stereo.wav;
+#X msg 152 112 resume;
+#X obj 350 88 else/range.hsl 135 17 0 1 0 255 255 255 96 96 96 empty
 empty;
-#X text 378 116 min;
-#X text 439 116 max;
-#X obj 286 141 else/pack2 range 0 1;
-#X obj 346 90 unpack f f;
+#X text 382 138 min;
+#X text 443 138 max;
+#X obj 290 163 else/pack2 range 0 1;
+#X obj 350 112 unpack f f;
+#X text 492 87 <= shift+click & drag to select range., f 21;
+#X text 350 69 range slider:;
 #X connect 0 0 18 0;
 #X connect 1 0 18 0;
 #X connect 2 0 1 0;
