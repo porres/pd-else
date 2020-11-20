@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (380 objects):
+## Current Object list (381 objects):
 
 **ASSORTED: [03]**
 
@@ -435,7 +435,8 @@ Cross compiling is also possible with something like this
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [30]**
+**CONTROL: [31]**
+
  - [mouse]
  - [canvas.mouse]
  - [adsr~]
@@ -462,6 +463,7 @@ Cross compiling is also possible with something like this
  - [lfnoise]
  - [stepnoise]
  - [rampnoise]
+ - [phasor]
  - [impulse]
  - [pulse]
  - [randpulse]

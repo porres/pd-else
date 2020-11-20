@@ -241,6 +241,7 @@ perlin~	x
 pgm.in	x
 pgm.out	x
 phaser~	x
+phasor	x
 pi	x
 pic	x
 pick	x
