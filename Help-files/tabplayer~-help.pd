@@ -186,7 +186,7 @@ from start to end. 1st float sets start \, 2nd sets end (in ms) and
 #X text 181 332 - play (same as non-zero), f 61;
 #X text 181 318 - non-zero plays \, <0> stops, f 61;
 #X text 316 151 (same as non-zero);
-#N canvas 685 112 745 477 basic 0;
+#N canvas 685 112 753 548 basic 0;
 #X obj 52 56 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
 #X msg 80 118 stop;
@@ -240,6 +240,8 @@ f 50;
 #X text 91 93 Same as 'non zero';
 #X text 115 197 set start/end (in ms) and speed (%);
 #X text 261 341 also useful when array size changes, f 18;
+#X text 191 483 If 'start' is greater than 'end' \, the values are
+swapped.;
 #X connect 0 0 10 0;
 #X connect 1 0 10 0;
 #X connect 3 0 10 0;

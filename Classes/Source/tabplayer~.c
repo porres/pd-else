@@ -56,11 +56,13 @@ static void tabplayer_ms2samp(t_play *x){ // get index from ms
     x->x_start = start = start > npts ? npts : start < 0 ? 0 : start;
     x->x_end = end = end > npts ? npts : end < 0 ? 0 : end;
     if(x->x_start > x->x_end){
+//        post("x->x_start (%llu) / x->x_end (%llu)", x->x_start, x->x_end);
         unsigned long long temp = x->x_start;
         x->x_start = x->x_end ;
         x->x_end = temp;
+//        post("x->x_start (%llu) / x->x_end (%llu)", x->x_start, x->x_end);
     }
-    unsigned long long rangesamp = x->x_rangesamp = end - start;
+    unsigned long long rangesamp = x->x_rangesamp = x->x_end - x->x_start;
     unsigned long long fadesamp = (unsigned long long)(x->x_fadems * a_sr);
     //boundschecking
     if(fadesamp > rangesamp / 2)
@@ -70,8 +72,8 @@ static void tabplayer_ms2samp(t_play *x){ // get index from ms
     unsigned long long stxsamp, endxsamp;
     // if (isneg), end pts of loop come before the loop end points in the buffer,
     //if pos, come after
-    stxsamp = start;
-    endxsamp = end;
+    stxsamp = x->x_start;
+    endxsamp = x->x_end;
     if(stxsamp < 0)
         stxsamp = 0;
     if(endxsamp < 0)
