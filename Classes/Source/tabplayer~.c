@@ -2,12 +2,13 @@
 
 #include <math.h>
 #include "m_pd.h"
-#include "magic.h"
+#include "magic.h" // needed???????
 #include "buffer.h"
 #include <stdlib.h>
 
 #define HALF_PI (M_PI * 0.5)
 
+#define ONE_SIXTH 0.16666666666666666666667f
 #define SHARED_FLT_MAX  1E+36
 #define tabplayer_MINITIME 0.023 //minumum ms for xfade. 1/44.1 rounded up
 // note, loop starts fading in at stms, starts fading out at endms
@@ -198,8 +199,7 @@ static double tabplayer_interp(t_play *x, int chidx, double phase){
     if(phase < 0 || phase > maxindex)
         phase = 0;  // CHECKED: a value 0, not ndx 0
     ndx = (int)phase;
-    float f,  a,  b,  c,  d, cmb, one_sixth = 0.1666667f;
-    // CHECKME: what kind of interpolation? (CHECKED: multi-point)
+    float f,  a,  b,  c,  d, cmb;
     if(ndx < 1)
         ndx = 1, f = 0;
     else if(ndx > maxindex)
@@ -213,7 +213,8 @@ static double tabplayer_interp(t_play *x, int chidx, double phase){
         c = vp[1].w_float;
         d = vp[2].w_float;
         cmb = c-b;
-        out = b + f*(cmb - one_sixth*(1. - f)*((d - a - 3.0f*cmb)*f + (d + 2.0f*a - 3.0f*b)));
+        // lagrange
+        out = b + f*(cmb - ONE_SIXTH*(1. - f)*((d - a - 3.0f*cmb)*f + (d + 2.0f*a - 3.0f*b)));
         double fade = -1;
         if(phase < (x->x_start + x->x_fadesamp)){
             fade = (phase - x->x_start) / x->x_fadesamp;
@@ -266,9 +267,11 @@ static t_int *tabplayer_perform(t_int *w){
                     double phase = x->x_phase;
                     double fadephase, fadegain;
                     if(isneg){ // play backwards
-                        if(phase > end || phase < 0. || phase < start || phase > npts){
-                            if(loop) // restart
-                                phase = (double)end;
+                        if(phase < start){
+                            if(loop){ // restart
+                                phase = (double)(end - start) - phase;
+                                outlet_bang(x->x_donelet);
+                            }
                             else{ // done playing
                                 if(x->x_playing)
                                     outlet_bang(x->x_donelet);
@@ -298,9 +301,11 @@ static t_int *tabplayer_perform(t_int *w){
                     }
                     else{ // forwards
                         //boundschecking for phase
-                        if(phase >= end || phase < 0.|| phase >= npts){
-                            if(loop) // loop
-                                phase = (double)start;
+                        if(phase > end){
+                            if(loop){ // loop
+                                phase = (double)start + phase - (double)end;
+                                outlet_bang(x->x_donelet);
+                            }
                             else{ //we're done
                                 if(x->x_playing)
                                     outlet_bang(x->x_donelet);
