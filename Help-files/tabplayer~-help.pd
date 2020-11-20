@@ -1,4 +1,4 @@
-#N canvas 660 59 564 677 10;
+#N canvas 811 68 564 677 10;
 #X obj 8 647 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 9 299 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -103,9 +103,8 @@ ignored. You can also notice this makes it kind of like [tabread4~].
 #X text 181 466 - pauses at a particular point (can be resumed), f
 61;
 #X text 324 173 (same as zero);
-#X text 181 555 - when it stops/finishes playing, f 61;
-#X obj 35 222 send \$0-array_size;
-#X obj 35 200 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 35 224 send \$0-array_size;
+#X obj 35 202 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 290646 256;
 #X text 182 599 - number of output channels (default 1 \, maximum 64)
 , f 61;
@@ -137,7 +136,7 @@ ignored. You can also notice this makes it kind of like [tabread4~].
 #X obj 220 233 else/out~;
 #X text 182 582 - table name (optional), f 61;
 #X obj 220 198 else/tabplayer~ \$0-violin;
-#N canvas 847 75 405 507 loop 0;
+#N canvas 1018 51 405 507 loop 0;
 #X msg 149 207 loop \$1;
 #X obj 149 176 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
@@ -168,7 +167,7 @@ set it to loop with the -loop flag., f 37;
 #X connect 10 0 6 0;
 #X connect 10 0 9 0;
 #X restore 503 229 pd loop;
-#X obj 35 154 else/sample~ \$0-violin violin.wav, f 12;
+#X obj 35 156 else/sample~ \$0-violin violin.wav, f 12;
 #X msg 281 151 play;
 #X text 214 626 -loop: sets to loop mode;
 #X text 89 416 play <f \, f \, f>;
@@ -270,18 +269,21 @@ f 50;
 #X text 181 346 - sets start point in ms, f 61;
 #X text 181 360 - sets end point in ms, f 61;
 #X text 181 374 - sets start and end point range in ms, f 61;
-#X obj 51 267 else/player~;
+#X obj 89 263 else/player~;
 #X text 181 304 - playback index position, f 61;
 #X text 80 89 [tabplayer~] plays arrays \, it's more powerful than
 [tabplay~] as it has multichannel support and can play backwards and
 in different speeds. It can also loop., f 61;
-#X connect 12 0 53 0;
-#X connect 13 0 53 0;
-#X connect 14 0 53 0;
+#X text 181 555 - when it stops/finishes playing or when looping,
+f 61;
+#X text 31 263 see also:;
+#X connect 12 0 52 0;
+#X connect 13 0 52 0;
+#X connect 14 0 52 0;
 #X connect 15 0 14 0;
-#X connect 37 0 36 0;
-#X connect 53 0 51 0;
-#X connect 53 1 25 0;
-#X connect 55 0 37 0;
-#X connect 56 0 53 0;
-#X connect 66 0 53 0;
+#X connect 36 0 35 0;
+#X connect 52 0 50 0;
+#X connect 52 1 25 0;
+#X connect 54 0 36 0;
+#X connect 55 0 52 0;
+#X connect 65 0 52 0;
