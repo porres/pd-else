@@ -1,4 +1,4 @@
-#N canvas 478 35 561 637 10;
+#N canvas 622 101 561 637 10;
 #X obj 4 263 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 455 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -22,10 +22,10 @@
 #X obj 107 40 cnv 4 4 4 empty empty ramp 0 28 2 18 -233017 -1 0;
 #X obj 194 134 else/imp~ 1;
 #X obj 194 216 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 43668 256;
+-228856 -1 -1 8912 256;
 #X obj 194 190 else/sig2float~;
 #X obj 197 239 hsl 128 15 0 44100 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 12576 1;
+-228856 -1 -1 2566 1;
 #X obj 163 135 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 150 462 signal;
@@ -41,33 +41,34 @@
 ;
 #X text 114 435 float/signal;
 #X text 192 462 - the ramp signal;
-#N canvas 852 143 427 643 frequency 0;
-#X obj 93 168 /~;
-#X obj 74 265 expr~ sin($v1);
-#X obj 74 226 else/ramp~;
-#X obj 93 196 *~;
-#X obj 108 138 else/sr~;
-#X obj 131 172 else/pi 2;
-#X obj 92 309 else/out~;
-#X text 152 109 Hertz;
-#X text 163 139 sample rate;
-#X text 193 173 max = 2*pi;
+#N canvas 852 143 414 568 frequency 0;
+#X obj 103 178 /~;
+#X obj 84 275 expr~ sin($v1);
+#X obj 84 236 else/ramp~;
+#X obj 103 206 *~;
+#X obj 118 148 else/sr~;
+#X obj 141 182 else/pi 2;
+#X obj 102 319 else/out~;
+#X text 162 119 Hertz;
+#X text 173 149 sample rate;
+#X text 203 183 max = 2*pi;
+#X text 167 236 (Having an oscillator the hard way);
+#X obj 84 396 else/graph~ 500 6;
+#X obj 103 119 sig~ 440;
 #X text 24 22 If one wants [ramp~] to output a signal with frequency
 in hertz (oscillating between min and max values) \, then the increment
 value should be (max - min) * freq / sr (where freq is the frequency
-in hz and sr is the sampling rate).;
-#X text 157 226 (Having an oscillator the hard way);
-#X obj 74 386 else/graph~ 500 6;
-#X obj 93 109 sig~ 440;
+in hz and sr is the sampling rate). Anyway \, this makes it wrk like
+a [phasor~].;
 #X connect 0 0 3 0;
-#X connect 1 0 12 0;
+#X connect 1 0 11 0;
 #X connect 1 0 6 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 1;
 #X connect 4 0 0 1;
 #X connect 5 0 2 3;
 #X connect 5 0 3 1;
-#X connect 13 0 0 0;
+#X connect 12 0 0 0;
 #X restore 468 236 pd frequency;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
@@ -315,40 +316,40 @@ f 68;
 #X obj 348 488 value \$0-size;
 #X msg 246 493 mode 1;
 #X msg 333 458 50000;
-#X text 69 17 [ramp~] is very convenient for driving [tabread4~] to
-read samples at different speeds. With an increment of "1" \, it reads
-at the original speed \, at "2" it reads twice as fast \, "0.5" half
-as fast \, and so on. Note it can also play it backwards at different
-speeds with negative increment values., f 69;
 #X obj 150 558 else/table~ \$0-sample 0 1;
 #X obj 150 523 else/ramp~ 1 10000 50000 0 -off;
 #X text 179 403 on/off loop;
 #X obj 102 227 else/table~ \$0-sample 0 1;
 #X obj 280 182 else/sample~ \$0-sample vacuous.wav;
 #X msg 280 158 show;
+#X text 69 17 [ramp~] is very convenient for driving [tabread4~] or
+[else/table~] as to read samples at different speeds. With an increment
+of "1" \, it reads at the original speed \, at "2" it reads twice as
+fast \, "0.5" half as fast \, and so on. Note it can also play it backwards
+at different speeds with negative increment values., f 69;
 #X connect 0 0 12 3;
 #X connect 0 0 16 0;
-#X connect 4 0 22 0;
+#X connect 4 0 21 0;
 #X connect 7 0 9 0;
 #X connect 8 0 12 1;
 #X connect 9 0 8 0;
 #X connect 10 0 12 0;
-#X connect 12 0 24 0;
+#X connect 12 0 23 0;
 #X connect 13 0 14 0;
 #X connect 14 0 17 0;
 #X connect 14 0 18 0;
 #X connect 14 1 15 0;
 #X connect 14 1 4 0;
 #X connect 14 1 19 0;
-#X connect 15 0 22 0;
-#X connect 17 0 22 3;
-#X connect 18 0 22 0;
-#X connect 19 0 22 3;
-#X connect 21 0 3 0;
-#X connect 22 0 21 0;
-#X connect 24 0 6 0;
-#X connect 25 0 0 0;
-#X connect 26 0 25 0;
+#X connect 15 0 21 0;
+#X connect 17 0 21 3;
+#X connect 18 0 21 0;
+#X connect 19 0 21 3;
+#X connect 20 0 3 0;
+#X connect 21 0 20 0;
+#X connect 23 0 6 0;
+#X connect 24 0 0 0;
+#X connect 25 0 24 0;
 #X restore 450 216 pd read buffers;
 #X text 156 299 float;
 #X text 192 299 - jump to the float's value;
@@ -361,10 +362,10 @@ speeds with negative increment values., f 69;
 #X text 192 360 - (re)starts incrementing;
 #N canvas 277 120 1052 471 examples-1 0;
 #X obj 71 258 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 99.1319 256;
+-228856 -1 -1 61.3878 256;
 #X obj 71 229 else/sig2float~;
 #X obj 71 293 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 9913 1;
+-1 -1 6139 1;
 #X obj 71 170 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 470 202 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -660,7 +661,7 @@ it'll reset back to the reset point and stop after reaching the limits.
 #X restore 462 175 pd examples-1;
 #N canvas 480 163 823 384 examples-2 0;
 #X obj 521 278 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 63.5 256;
+-228856 -1 -1 85.78 256;
 #X obj 521 249 else/sig2float~;
 #X obj 574 147 *~;
 #X obj 614 146 else/pulse~ 1;
@@ -668,7 +669,7 @@ it'll reset back to the reset point and stop after reaching the limits.
 #X text 642 322 127;
 #X text 573 322 63.5;
 #X obj 524 305 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 6350 1;
+-1 -1 8578 1;
 #X obj 574 113 sig~ 0.0025;
 #X text 25 21 The "start" and "stop" messages starts and stops incrementing.
 The "reset" message stops and goes back to the reset point. The "set"

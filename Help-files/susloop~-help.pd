@@ -252,55 +252,46 @@
 #X obj 169 40 cnv 4 4 4 empty empty samplers 0 28 2 18 -233017 -1 0
 ;
 #N canvas 851 146 504 533 read 0;
-#X obj 284 195 soundfiler;
-#X floatatom 284 222 0 0 0 0 - - -;
-#X obj 284 141 symbol \$0-sample;
-#X obj 284 116 loadbang;
-#X text 374 248 sample size;
-#X obj 371 199 table \$0-sample;
-#X obj 287 411 else/out~;
-#X text 233 310 restart;
-#X obj 97 227 tabread4~ \$0-sample;
-#X obj 129 106 hsl 128 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
+#X floatatom 241 258 0 0 0 0 - - -;
+#X text 286 257 sample size;
+#X obj 105 432 else/out~;
+#X obj 87 172 tabread4~ \$0-sample;
+#X obj 119 51 hsl 128 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 126 160 else/float2sig~ 100 1;
-#X obj 126 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 116 77 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 97 132 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X obj 87 77 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X text 45 132 restart;
-#X obj 284 246 value \$0-size;
-#X obj 287 337 else/susloop~ 1 10000 50000;
-#X obj 287 310 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 105 358 else/susloop~ 1 10000 50000;
+#X obj 105 331 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 317 310 stop;
-#X obj 97 191 else/susloop~, f 15;
-#X obj 97 279 else/out~;
-#X msg 56 159 stop;
-#X text 42 19 [ramp~] is very convenient for driving [tabread4~] or
-[else/table~] to read samples at different speeds. With an increment
-of "1" \, it reads at the original speed \, at "2" it reads twice as
-fast \, "0.5" half as fast. Note it can also play it backwards at different
-speeds with negative increment values., f 69;
-#X obj 287 370 else/table~ \$0-sample 0 1;
-#X msg 284 170 read -resize else/vacuous.wav \$1;
-#X connect 0 0 1 0;
-#X connect 1 0 14 0;
-#X connect 2 0 23 0;
-#X connect 3 0 2 0;
-#X connect 8 0 19 0;
-#X connect 9 0 11 0;
-#X connect 10 0 18 1;
-#X connect 11 0 10 0;
-#X connect 12 0 18 0;
-#X connect 15 0 22 0;
-#X connect 16 0 15 0;
-#X connect 17 0 15 0;
-#X connect 18 0 8 0;
-#X connect 20 0 18 0;
-#X connect 22 0 6 0;
-#X connect 23 0 0 0;
-#X restore 450 245 pd read buffers;
+#X msg 135 331 stop;
+#X obj 87 142 else/susloop~, f 15;
+#X obj 87 224 else/out~;
+#X msg 46 104 stop;
+#X obj 105 391 else/table~ \$0-sample 0 1;
+#X text 25 77 (re)start;
+#X text 66 325 startstop:, f 5;
+#X obj 116 105 else/f2s~ 100 1;
+#X obj 241 230 else/sample~ \$0-sample vacuous.wav;
+#X text 244 88 You can use [susloop~] to read samples with or without
+given loop points., f 31;
+#X text 191 142 <= without loop points;
+#X text 278 358 <= with loop points;
+#X text 258 207 load sample into array:;
+#X connect 3 0 11 0;
+#X connect 4 0 5 0;
+#X connect 5 0 16 0;
+#X connect 6 0 10 0;
+#X connect 7 0 13 0;
+#X connect 8 0 7 0;
+#X connect 9 0 7 0;
+#X connect 10 0 3 0;
+#X connect 12 0 10 0;
+#X connect 13 0 2 0;
+#X connect 16 0 10 1;
+#X connect 17 0 0 0;
+#X restore 450 248 pd read buffers;
 #X text 192 531 - loop start (default 0), f 57;
 #X text 192 547 - loop end (default 2ˆ32 - 1), f 57;
 #X text 192 563 - sample size (default 2ˆ32 - 1), f 57;
@@ -312,12 +303,12 @@ speeds with negative increment values., f 69;
 #X obj 138 252 hsl 128 15 0 120000 0 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 135 176 else/susloop~ 1 40000 80000 120000;
-#N canvas 370 72 437 245 signal 0;
+#N canvas 605 176 437 245 signal 0;
 #X obj 196 160 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 50720 256;
+-228856 -1 -1 50248 256;
 #X obj 196 134 else/sig2float~;
 #X obj 199 183 hsl 128 15 0 120000 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 5368 1;
+-228856 -1 -1 5318 1;
 #X obj 196 107 else/susloop~ 1 40000 80000 120000;
 #X obj 196 69 else/pulse~ 0.1;
 #X obj 74 109 else/sig2float~;
@@ -330,7 +321,7 @@ speeds with negative increment values., f 69;
 #X connect 4 0 3 0;
 #X connect 4 0 5 0;
 #X connect 5 0 6 0;
-#X restore 439 218 pd signal trigger;
+#X restore 439 226 pd signal trigger;
 #X text 61 85 [susloop~] generates a control signal designed to read
 buffers and loop at a given section. It responds to a gate input (float
 or signal).;
