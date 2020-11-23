@@ -45,8 +45,6 @@
 #X obj 265 34 inlet;
 #X obj 368 68 r \$1-max;
 #X obj 336 40 r \$1-min;
-#X floatatom 389 111 0 0 0 0 - - -;
-#X floatatom 377 155 0 0 0 0 - - -;
 #X connect 0 0 7 0;
 #X connect 0 0 12 0;
 #X connect 1 0 0 0;
@@ -70,12 +68,10 @@
 #X connect 17 0 13 1;
 #X connect 18 0 7 2;
 #X connect 18 0 13 3;
-#X connect 18 0 20 0;
 #X connect 19 0 13 2;
 #X connect 19 0 7 1;
-#X connect 19 0 21 0;
 #X restore 222 245 pd grain-2;
-#N canvas 206 226 618 522 grain-1 1;
+#N canvas 206 226 618 522 grain-1 0;
 #X obj 213 220 +~;
 #X obj 108 175 *~;
 #X obj 236 395 *~;
