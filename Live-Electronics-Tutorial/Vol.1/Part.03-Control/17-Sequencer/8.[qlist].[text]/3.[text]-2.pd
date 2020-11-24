@@ -1,0 +1,104 @@
+#N canvas 728 37 816 532 12;
+#X declare -path else;
+#X obj 194 445 out~;
+#X obj 430 202 text define -k \$0-seq;
+#A set 0 60 1 50 50 \; 200 59 1 100 50 \; 200 60 1 150 50 \; 0 36 1
+200 50 \; 400 48 1 250 50 \; 0 40 1 200 50 \; 0 43 1 200 50 \; 400
+48 1 250 50 \; 0 31 1 200 50 \; 400 55 1 100 50 \; 0 41 1 200 50 \;
+0 43 1 200 50 \; 200 53 1 100 50 \; 200 52 1 100 50 \; 0 36 1 200 50
+\; 200 55 1 100 50 \; 200 60 1 100 50 \; 0 40 1 200 50 \; 0 43 1 200
+50 \; 200 59 1 100 50 \; 200 60 1 100 50 \; 0 25 1 200 50 \; 200 64
+1 100 50 \; 200 62 1 100 50 \; 0 39 1 200 50 \; 0 43 1 200 50 \; 200
+61 1 100 50 \; 200 62 1 150 50 \; 0 26 1 200 50 \; 400 50 1 250 50
+\; 0 41 1 200 50 \; 0 42 1 200 50 \; 400 50 1 250 50 \; 0 29 1 200
+50 \; 400 50 1 100 50 \; 0 50 1 200 50 \; 0 44 1 200 50 \; 0 48 1 200
+50 \; 200 48 1 100 50 \; 200 47 1 100 50 \; 0 31 1 200 50 \; 0 43 1
+200 50 \; 0 47 1 200 50 \; 200 50 1 100 50 \; 200 55 1 100 50 \; 0
+34 1 200 50 \; 0 42 1 200 50 \; 0 46 1 200 50 \; 200 54 1 100 50 \;
+200 55 1 200 50 \; 0 35 1 200 50 \; 0 42 1 200 50 \; 0 45 1 200 50
+\; 400 57 1 100 50 \; 0 41 1 200 50 \; 0 47 1 200 50 \; 200 59 1 100
+50 \; 200 60 1 100 50 \; 0 24 1 200 50 \; 0 40 1 200 50 \; 0 48 1 200
+50 \; 200 59 1 100 50 \; 200 57 1 100 50 \; 200 55 1 100 50 \; 200
+57 1 100 50 \; 0 28 1 200 50 \; 0 38 1 200 50 \; 0 46 1 200 50 \; 200
+55 1 100 50 \; 200 53 1 100 50 \; 200 52 1 100 50 \; 200 53 1 100 50
+\; 0 29 1 100 50 \; 0 36 1 100 50 \; 0 45 1 100 50 \; 200 52 1 100
+50 \; 200 50 1 100 50 \; 0 29 1 500 50 \; 0 36 1 500 50 \; 0 45 1 500
+50 \; 200 48 1 100 50 \; 200 50 1 100 50 \; 200 48 1 100 50 \; 200
+47 1 100 50 \; 0 29 1 500 50 \; 0 38 1 500 50 \; 0 44 1 500 50 \; 200
+45 1 100 50 \; 200 43 1 100 50 \; 0 31 1 200 50 \; 0 38 1 200 50 \;
+200 48 1 100 50 \; 200 47 1 100 50 \; 0 31 1 500 50 \; 0 40 1 500 50
+\; 0 43 1 500 50 \; 200 50 1 100 50 \; 200 48 1 100 50 \; 200 52 1
+100 50 \; 200 50 1 100 50 \; 0 31 1 500 50 \; 0 41 1 500 50 \; 0 43
+1 500 50 \; 200 53 1 100 50 \; 200 52 1 200 50 \; 0 31 1 500 50 \;
+400 48 1 200 50 \; 0 19 1 200 50 \; 0 29 1 200 50 \; 0 36 1 200 50
+\; 400 48 1 1000 3000 \; 0 12 1 500 3500 \; 0 28 1 500 3500 \; 0 36
+1 500 3500 \; 4500 \;;
+#X obj 366 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 194 71 stop;
+#X msg 250 101 line 0 \, auto;
+#X msg 239 71 tempo \$1 permsec;
+#X msg 205 26 0.5;
+#X msg 282 26 1;
+#X msg 240 26 0.75;
+#X msg 316 26 1.25;
+#X msg 359 26 1.5;
+#X obj 194 130 text sequence \$0-seq -w 1;
+#X obj 604 45 declare -path else;
+#X text 391 26 <= set tempo;
+#X obj 194 193 makenote;
+#X obj 194 377 list append, f 17;
+#X obj 194 251 keyboard 17 80 5 0 0 0 empty empty;
+#X obj 194 222 pack;
+#X obj 194 161 unpack f f f f;
+#X obj 289 191 s \$0-release;
+#X obj 310 347 r \$0-release;
+#X obj 194 346 voices 4 -list;
+#X text 347 102 <= start playng;
+#X obj 56 321 out~;
+#X obj 98 191 t b l;
+#X obj 56 221 count 7;
+#X obj 56 252 list append;
+#X text 421 164 "Fantasia On British Sea Songs" by Sir Henry Wood,
+f 24;
+#X obj 194 410 clone 4 voice2;
+#X obj 56 285 clone 8 voice1;
+#X text 588 202 <= sequence;
+#X text 383 130 "-w 1" specifies that the 1st number is a wait time
+;
+#X text 374 389 Here's an example with direct output from the [text]
+object and a more complex and polyphonic sequence. The list of values
+are treated as \; 1-MIDI Pitch \; 2-Amplitude \; 3-Attack+Sustain Duration
+(ms) \; 4-Release duration (ms), f 47;
+#X text 40 387 The example above bypasses the need of a [poly] or [voices]
+and also [makenote]., f 17;
+#X connect 2 0 4 0;
+#X connect 3 0 11 0;
+#X connect 4 0 11 0;
+#X connect 5 0 11 0;
+#X connect 6 0 5 0;
+#X connect 7 0 5 0;
+#X connect 8 0 5 0;
+#X connect 9 0 5 0;
+#X connect 10 0 5 0;
+#X connect 11 0 18 0;
+#X connect 11 0 24 0;
+#X connect 11 2 2 0;
+#X connect 14 0 17 0;
+#X connect 14 1 17 1;
+#X connect 15 0 28 0;
+#X connect 16 0 21 0;
+#X connect 17 0 16 0;
+#X connect 18 0 14 0;
+#X connect 18 1 14 1;
+#X connect 18 2 14 2;
+#X connect 18 3 19 0;
+#X connect 20 0 15 1;
+#X connect 20 0 21 2;
+#X connect 21 0 15 0;
+#X connect 24 0 25 0;
+#X connect 24 1 26 1;
+#X connect 25 0 26 0;
+#X connect 26 0 29 0;
+#X connect 28 0 0 0;
+#X connect 29 0 23 0;

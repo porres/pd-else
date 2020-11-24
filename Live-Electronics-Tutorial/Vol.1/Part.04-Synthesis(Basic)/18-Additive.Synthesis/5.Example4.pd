@@ -1,8 +1,8 @@
-#N canvas 702 63 498 533 12;
+#N canvas 702 63 490 612 12;
 #X declare -path else;
 #X obj 186 357 mtof;
 #X obj 186 325 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 13
--228856 -1 -1 46 256;
+-228856 -1 -1 60 256;
 #X obj 186 216 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 186 190 loadbang;
@@ -345,6 +345,9 @@ happens also at a random delayed time after the attack.;
 #X obj 186 292 rand.i 36 61;
 #X obj 317 29 declare -path else;
 #X obj 184 430 out~;
+#X text 64 518 As an excercise you can adapt this to use [clone]! For
+each copy to have different parameters \, use a random generator at
+load time (with loadbang)., f 50;
 #X connect 0 0 4 0;
 #X connect 1 0 0 0;
 #X connect 2 0 5 0;

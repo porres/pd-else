@@ -1,18 +1,18 @@
 #N canvas 747 110 829 738 12;
 #X declare -path else;
-#X obj 109 648 ftom;
-#X obj 139 614 nbx 5 14 -1e+37 1e+37 0 0 empty empty Hz 18 -6 0 10
+#X obj 89 655 ftom;
+#X obj 171 614 nbx 5 14 -1e+37 1e+37 0 0 empty empty Hz 18 -6 0 10
 -228856 -1 -1 0 256;
-#X text 159 646 =;
-#X obj 109 689 nbx 5 14 -1e+37 1e+37 0 0 empty empty MIDI 18 -6 0 10
+#X text 139 653 =;
+#X obj 89 697 nbx 5 14 -1e+37 1e+37 0 0 empty empty MIDI 18 -6 0 10
 -228856 -1 -1 0 256;
-#X obj 250 152 nbx 5 14 0 127 0 0 empty empty MIDI 60 7 0 10 -228856
+#X obj 239 151 nbx 5 14 0 127 0 0 empty empty MIDI 60 7 0 10 -228856
 -1 -1 0 256;
-#X obj 250 174 mtof;
-#X obj 250 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty Hz 60 7 0 10 -228856
+#X obj 239 173 mtof;
+#X obj 239 198 nbx 5 14 -1e+37 1e+37 0 0 empty empty Hz 60 7 0 10 -228856
 -1 -1 0 256;
-#X msg 250 99 60;
-#X msg 270 124 69;
+#X msg 239 98 60;
+#X msg 259 123 69;
 #X obj 180 492 + 69;
 #X obj 180 462 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -21,15 +21,15 @@
 #X obj 180 381 / 440;
 #X obj 180 356 nbx 5 14 20 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 20 256;
-#X obj 191 688 nbx 5 14 -1e+37 1e+37 0 0 empty empty MIDI 18 -6 0 10
+#X obj 171 696 nbx 5 14 -1e+37 1e+37 0 0 empty empty MIDI 18 -6 0 10
 -228856 -1 -1 0 256;
-#X obj 557 127 nbx 5 14 -1e+37 1e+37 0 0 empty empty MIDI 60 7 0 10
+#X obj 529 124 nbx 5 14 -1e+37 1e+37 0 0 empty empty MIDI 60 7 0 10
 -228856 -1 -1 0 256;
-#X obj 485 156 mtof;
-#X obj 485 191 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 60 7 0 10
+#X obj 457 160 mtof;
+#X obj 457 208 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 60 7 0 10
 -228856 -1 -1 0 256;
-#X text 530 157 =;
-#X obj 557 190 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 60 7 0 10
+#X text 502 161 =;
+#X obj 529 208 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 60 7 0 10
 -228856 -1 -1 0 256;
 #X obj 562 579 mtof;
 #X obj 562 609 osc~;
@@ -38,15 +38,11 @@
 #X obj 562 645 out~;
 #X obj 562 555 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 18 -6 0
 10 -228856 -1 -1 0 256;
-#X text 278 99 Middle C;
-#X text 298 125 Middle A;
+#X text 267 98 Middle C;
+#X text 287 124 Middle A;
 #X text 237 355 Frequency in Hertz;
 #X text 243 520 MIDI Pitch;
 #X text 227 381 Interval ratio to middle A;
-#X text 471 81 If we invert the formula \, we get the [mtof] expression:
-, f 28;
-#X obj 191 647 expr 12 * log($f1/440)/log(2) + 69;
-#X obj 557 158 expr pow(2 \, ($f1 - 69)/12) * 440;
 #X obj 587 498 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X obj 562 467 / 100;
@@ -77,36 +73,49 @@ So any frequency input becomes an interval ratio to 440Hz., f 53;
 a finer resolution after the decimal point. You can also consider this
 extra resolution as "MIDI-Cents" \, where 0.01 is equal to one cent!
 , f 46;
-#X text 617 189 Hertz;
+#X text 589 207 Hertz;
 #X text 35 22 The MIDI protocol has data with 7 bits \, which gives
 us integer values from 0 to 127 A MIDI pitch value is in that range
 and the number 60 represents middle C. The native object [mtof] ("MIDI
 to Frequency") converts MIDI pitch data to hertz., f 56;
-#X text 42 560 This is the opposite conversion from [mtof] \, and we
-also have a native object for that: [ftom].;
+#X obj 529 155 expr pow(2 \, ($f1 - 69)/12) * 440 \; mtof($f1);
+#X obj 757 209 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 60 7 0 10
+-228856 -1 -1 0 256;
+#X text 459 57 If we invert the formula \, we get the [mtof] expression
+(note [expr] also has a 'mtof' function by the way):, f 43;
+#X text 691 194 built in mtof ==>, f 8;
+#X obj 171 647 expr 12 * log($f1/440)/log(2) + 69 \; ftom(\$1);
+#X text 41 546 This is the opposite conversion from [mtof] \, and we
+also have a native object for that: [ftom]. Note that [expr] also has
+a built in function to convert from hz to m ('ftom').;
+#X obj 413 696 nbx 5 14 -1e+37 1e+37 0 0 empty empty MIDI 18 -6 0 10
+-228856 -1 -1 0 256;
+#X text 285 695 built in ftom ==>;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
-#X connect 1 0 31 0;
+#X connect 1 0 54 0;
 #X connect 4 0 5 0;
 #X connect 5 0 6 0;
 #X connect 7 0 4 0;
 #X connect 8 0 4 0;
 #X connect 9 0 11 0;
 #X connect 10 0 9 0;
-#X connect 12 0 47 0;
+#X connect 12 0 44 0;
 #X connect 13 0 12 0;
 #X connect 15 0 16 0;
-#X connect 15 0 32 0;
+#X connect 15 0 50 0;
 #X connect 16 0 17 0;
 #X connect 20 0 21 0;
 #X connect 21 0 23 0;
 #X connect 24 0 20 0;
-#X connect 31 0 14 0;
-#X connect 32 0 19 0;
-#X connect 33 0 38 1;
-#X connect 34 0 38 0;
-#X connect 35 0 34 0;
-#X connect 37 0 35 0;
-#X connect 38 0 24 0;
-#X connect 47 0 48 0;
-#X connect 48 0 10 0;
+#X connect 30 0 35 1;
+#X connect 31 0 35 0;
+#X connect 32 0 31 0;
+#X connect 34 0 32 0;
+#X connect 35 0 24 0;
+#X connect 44 0 45 0;
+#X connect 45 0 10 0;
+#X connect 50 0 19 0;
+#X connect 50 1 51 0;
+#X connect 54 0 14 0;
+#X connect 54 1 56 0;

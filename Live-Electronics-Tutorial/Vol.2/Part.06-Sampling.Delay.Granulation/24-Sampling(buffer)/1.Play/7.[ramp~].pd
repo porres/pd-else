@@ -1,44 +1,37 @@
-#N canvas 722 322 862 517 12;
+#N canvas 622 139 862 517 12;
 #X declare -path else;
-#X obj 191 321 table \$0-buffer;
-#X obj 61 318 soundfiler, f 12;
-#X msg 142 346 \$1;
-#X obj 72 414 s \$0-hz;
-#X obj 72 388 /;
-#X obj 72 349 swap;
-#X obj 61 454 s \$0-size;
-#X obj 142 392 /;
-#X floatatom 142 423 5 0 0 0 - - -;
-#X obj 142 452 s \$0-ratio;
-#X text 54 221 Let's just use [soundfiler] again for a change:, f
+#X obj 221 306 table \$0-buffer;
+#X obj 91 303 soundfiler, f 12;
+#X msg 172 331 \$1;
+#X obj 102 399 s \$0-hz;
+#X obj 102 373 /;
+#X obj 102 334 swap;
+#X obj 91 439 s \$0-size;
+#X obj 172 377 /;
+#X floatatom 172 408 5 0 0 0 - - -;
+#X obj 172 437 s \$0-ratio;
+#X text 82 208 Let's just use [soundfiler] again for a change:, f
 30;
 #X obj 650 38 declare -path else;
-#X obj 61 274 initmess read -resize sax.wav \$0-buffer, f 22;
-#X obj 174 392 sr~;
-#X text 173 348 <= sound file's sample rate, f 15;
-#X text 204 390 <= Pd's sample rate;
-#X text 185 422 <= compensation ratio;
+#X obj 91 259 initmess read -resize sax.wav \$0-buffer, f 22;
+#X obj 204 377 sr~;
+#X text 203 333 <= sound file's sample rate, f 15;
+#X text 234 375 <= Pd's sample rate;
+#X text 215 407 <= compensation ratio;
 #X obj 540 277 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 484 277 restart;
 #X obj 583 314 f2s~ 100 1;
 #X obj 573 355 ramp~;
 #X obj 573 425 out~;
-#X text 44 137 The [ramp~] object from the ELSE library is a linear
-ramp generator that can be used for different purposes \, but one of
-its main purposes is to be used to drive [tabread4~]., f 48;
 #X obj 682 318 r \$0-size;
 #X obj 583 288 *;
 #X obj 616 289 r \$0-ratio;
 #X obj 586 238 hsl 128 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 583 264 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -2 256;
+-228856 -1 -1 0 256;
 #X obj 573 391 tabread4~ \$0-buffer;
-#X text 44 43 This example shows how to use [ramp~] to drive [tabread4~]
-instead of [phasor~]. Note we have a ratio parameter that is a compensation
-from the ratio between the sound file's sample rate and Pd's., f 48
-;
 #X text 443 77 You can give [ramp~] an increment value and "1" plays
 the file at original speed \, but you can give it other values to play
 in different speeds as in this example. The values are given by a slider
@@ -46,6 +39,14 @@ n the range of -2 to 2 A value of 0.5 would be half the speed and 2
 twice as fast. Negative values read the sound in reverse. Note how
 this value is multiplied by the sample rate compensation here., f
 54;
+#X text 38 44 This example shows how to use [ramp~] to drive [tabread4~]
+(or [tabplayer~]) instead of [phasor~]. Note we have a ratio parameter
+that is a compensation from the ratio between the sound file's sample
+rate and Pd's., f 53;
+#X text 38 120 The [ramp~] object from the ELSE library is a linear
+ramp generator that can be used for different purposes \, but one of
+its main purposes is to be used to drive [tabread4~] and/or [tabplayer~].
+, f 53;
 #X connect 1 0 5 0;
 #X connect 1 0 6 0;
 #X connect 1 1 2 0;
@@ -60,10 +61,10 @@ this value is multiplied by the sample rate compensation here., f
 #X connect 13 0 7 1;
 #X connect 17 0 20 0;
 #X connect 19 0 20 1;
-#X connect 20 0 28 0;
-#X connect 23 0 20 3;
-#X connect 24 0 19 0;
-#X connect 25 0 24 1;
-#X connect 26 0 27 0;
-#X connect 27 0 24 0;
-#X connect 28 0 21 0;
+#X connect 20 0 27 0;
+#X connect 22 0 20 3;
+#X connect 23 0 19 0;
+#X connect 24 0 23 1;
+#X connect 25 0 26 0;
+#X connect 26 0 23 0;
+#X connect 27 0 21 0;

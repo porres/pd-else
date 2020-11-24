@@ -4,7 +4,7 @@
 #X obj 62 196 mtof;
 #X obj 62 233 trigger float bang;
 #X obj 62 164 nbx 3 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 13
--228856 -1 -1 39 256;
+-228856 -1 -1 51 256;
 #X obj 62 58 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 1 1
 ;
 #X obj 62 32 loadbang;
@@ -176,6 +176,9 @@ receives a fundamental frequency \, from which an inharmonic series
 of 8 partials is generated. For each partial \, we have a pair of oscillators
 \, both of which are closely tuned but with random vibratos/pitch deviations.
 , f 56;
+#X text 295 325 As an excercise you can adapt this to use [clone]!
+For each copy to have different parameters \, use a random generator
+at load time (with loadbang)., f 39;
 #X connect 0 0 7 0;
 #X connect 1 0 2 0;
 #X connect 2 0 6 0;

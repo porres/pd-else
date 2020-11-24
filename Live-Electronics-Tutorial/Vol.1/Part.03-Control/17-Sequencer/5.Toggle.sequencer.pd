@@ -1,20 +1,20 @@
 #N canvas 405 110 745 493 12;
 #X declare -path else;
-#X obj 87 38 tgl 30 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
+#X obj 87 38 tgl 30 0 empty empty empty 17 7 0 10 -228856 -1 -1 1 1
 ;
 #X text 218 46 TEMPO;
 #X obj 138 43 nbx 5 18 60 100 0 0 empty empty empty 0 -8 0 15 -228856
 -1 -1 60 256;
 #X obj 26 82 moses 1;
 #X obj 582 389 table tgl_\$0 16;
-#X obj 582 405 table seq_\$0 16;
+#X obj 582 413 table seq_\$0 16;
 #X obj 101 295 mtof;
 #X obj 115 374 *~;
 #X obj 135 272 nbx 5 14 -1e+37 1e+37 0 0 empty transp empty 0 -8 0
 10 -228856 -1 -1 60 256;
 #N canvas 429 47 878 708 drum 0;
 #X obj 54 56 hradio 25 1 0 16 NADA h_radio empty 0 -6 0 15 -116513
--183280 -1 1;
+-183280 -1 15;
 #X obj 61 88 tgl 15 1 \$0-tgl0 NIENTE empty 0 -6 0 10 -104946 -1 -1
 1 1;
 #X obj 87 88 tgl 15 1 \$0-tgl1 NIENTE empty 0 -6 0 10 -204800 -1 -1

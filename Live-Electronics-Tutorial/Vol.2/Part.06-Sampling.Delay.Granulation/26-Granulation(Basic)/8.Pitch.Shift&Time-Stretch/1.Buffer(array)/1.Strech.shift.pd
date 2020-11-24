@@ -1,4 +1,4 @@
-#N canvas 263 104 915 523 12;
+#N canvas 470 93 915 523 12;
 #X declare -path else;
 #X obj 144 343 vline~;
 #X obj 82 320 float;
@@ -72,111 +72,111 @@ Stretch., f 59;
 #X text 475 226 The [block~] object only resizes the block to powers
 of two \, so these are the only possible grain sizes. Open the subpatch
 below to see how it works., f 59;
-#N canvas 472 113 921 744 Pitch-Shit/Time-Stretch 0;
-#X obj 173 697 outlet~;
-#X obj 134 42 inlet;
-#X obj 237 44 inlet;
-#X obj 362 44 inlet;
-#X obj 80 250 bang~;
-#X obj 243 522 phasor~;
-#X obj 173 632 *~;
-#X obj 237 100 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
+#N canvas 752 48 777 864 Pitch-Shit/Time-Stretch 0;
+#X obj 173 812 outlet~;
+#X obj 124 46 inlet;
+#X obj 237 48 inlet;
+#X obj 362 48 inlet;
+#X obj 70 274 bang~;
+#X obj 243 637 phasor~;
+#X obj 173 747 *~;
+#X obj 237 104 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
 -236782 -1 -1 -400 256;
-#X obj 225 607 *~;
-#X obj 173 665 +~;
-#X obj 134 130 / 100;
-#X obj 174 347 +;
-#X msg 385 218 set \$1;
-#X obj 362 163 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
+#X obj 225 722 *~;
+#X obj 173 780 +~;
+#X obj 124 134 / 100;
+#X obj 174 442 +;
+#X msg 385 242 set \$1;
+#X obj 362 167 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
 -257904 -1 -1 4096 256;
-#X obj 134 101 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
+#X obj 124 105 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 15
 -204800 -1 -1 5 256;
-#X text 317 99 cents;
-#X floatatom 237 308 0 0 0 0 - - -;
-#X floatatom 301 323 0 0 0 0 - - -;
-#X obj 362 422 / 2;
-#X floatatom 362 454 8 0 0 0 - - -;
-#X floatatom 237 420 0 0 0 0 - - -;
-#X obj 107 467 +~;
-#X obj 80 294 f;
-#X text 389 422 overlap;
-#X text 117 102 %;
-#X obj 237 385 / 2;
-#X text 265 386 overlap;
-#X obj 116 306 wrap2;
-#X obj 237 232 hot;
-#X obj 107 494 wrap2~;
-#X obj 41 524 wrap2~;
-#X obj 225 633 ffdelay~ 4096 -samps;
-#X obj 237 133 cents2ratio;
-#X obj 41 576 tabread4~ \$0-buffer, f 9;
-#X obj 107 530 tabread4~ \$0-buffer, f 9;
-#X obj 237 261 *;
-#X obj 301 297 samps2ms;
-#X text 370 324 size in ms;
-#X text 376 140 size;
-#X obj 385 246 block~;
-#X obj 243 551 envelope~;
-#X obj 243 492 blocksize~ -hz;
-#X text 261 607 overlap;
-#X obj 165 500 r \$0-size;
-#X obj 134 206 hot;
-#X obj 134 235 *;
-#X obj 116 282 +;
-#X floatatom 237 166 8 0 0 0 - - -;
-#X text 192 166 ratio;
-#X obj 148 282 r \$0-size;
-#X obj 80 355 t f f;
-#X obj 107 393 pack f f f;
-#X text 172 308 new size;
-#X text 137 18 Speed;
-#X text 221 21 transposition;
-#X text 346 20 grain size;
-#X text 170 239 step;
-#X obj 134 260 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 317 103 cents;
+#X floatatom 237 392 0 0 0 0 - - -;
+#X floatatom 287 407 0 0 0 0 - - -;
+#X obj 362 537 / 2;
+#X floatatom 362 569 8 0 0 0 - - -;
+#X floatatom 237 535 0 0 0 0 - - -;
+#X obj 107 581 +~;
+#X obj 70 338 f;
+#X text 389 537 overlap;
+#X text 107 106 %;
+#X obj 237 500 / 2;
+#X text 265 501 overlap;
+#X obj 106 350 wrap2;
+#X obj 237 256 hot;
+#X obj 107 608 wrap2~;
+#X obj 41 638 wrap2~;
+#X obj 225 748 ffdelay~ 4096 -samps;
+#X obj 237 137 cents2ratio;
+#X obj 41 690 tabread4~ \$0-buffer, f 9;
+#X obj 107 645 tabread4~ \$0-buffer, f 9;
+#X obj 237 285 *;
+#X obj 287 381 samps2ms;
+#X text 376 144 size;
+#X obj 385 270 block~;
+#X obj 243 666 envelope~;
+#X obj 243 607 blocksize~ -hz;
+#X text 261 722 overlap;
+#X obj 165 615 r \$0-size;
+#X obj 124 230 hot;
+#X obj 124 259 *;
+#X obj 106 326 +;
+#X floatatom 237 170 8 0 0 0 - - -;
+#X text 192 170 ratio;
+#X obj 156 323 r \$0-size;
+#X obj 70 451 t f f;
+#X obj 107 508 pack f f f;
+#X text 172 391 new size;
+#X text 127 22 Speed;
+#X text 221 25 transposition;
+#X text 346 24 grain size;
+#X text 160 263 step;
+#X obj 124 284 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -204800 -1 -1 204.8 256;
-#X obj 107 423 envgen~;
-#X text 493 237 The step parameter defines the speed from a percentage
+#X obj 107 537 envgen~;
+#X text 485 278 The step parameter defines the speed from a percentage
 of the grain size. This is the step where the next grain starts. The
 transposition in cents is converted to ratio and defines a new grain
-size., f 54;
-#X text 493 306 The [envgen~] object then reads the grain with a start
+size., f 36;
+#X text 485 379 The [envgen~] object then reads the grain with a start
 point (dependent on the step parameter) \, a duration (from the grain
-size in ms) and destination point (from the "new size")., f 54;
-#X text 493 370 We need to read two overlapped grains. The second grain
+size in ms) and destination point (from the "new size")., f 36;
+#X text 485 474 We need to read two overlapped grains. The second grain
 needs to have an adjusted read point according to the new grain size.
 The envelope also needs to be overlapped and a delay object is what
 actually performs the overlap. A [phasor~] drives the envelopes and
 its frequency depends on the block size (given by [blocksize~]).,
-f 54;
-#X floatatom 117 332 5 0 0 0 - - -;
+f 36;
+#X floatatom 156 351 0 0 0 0 - - -;
+#X text 344 408 <= size in ms;
 #X connect 1 0 14 0;
 #X connect 2 0 7 0;
 #X connect 3 0 13 0;
 #X connect 4 0 22 0;
-#X connect 5 0 40 0;
+#X connect 5 0 39 0;
 #X connect 6 0 9 0;
 #X connect 7 0 32 0;
 #X connect 8 0 31 0;
 #X connect 9 0 0 0;
-#X connect 10 0 44 0;
-#X connect 11 0 51 2;
-#X connect 12 0 39 0;
+#X connect 10 0 43 0;
+#X connect 11 0 50 2;
+#X connect 12 0 38 0;
 #X connect 13 0 12 0;
 #X connect 13 0 18 0;
 #X connect 13 0 28 1;
 #X connect 13 0 36 0;
-#X connect 13 0 44 1;
+#X connect 13 0 43 1;
 #X connect 14 0 10 0;
 #X connect 16 0 11 1;
 #X connect 16 0 25 0;
-#X connect 17 0 51 1;
+#X connect 17 0 50 1;
 #X connect 18 0 19 0;
 #X connect 19 0 31 1;
 #X connect 20 0 21 1;
 #X connect 21 0 29 0;
-#X connect 22 0 46 0;
-#X connect 22 0 50 0;
+#X connect 22 0 45 0;
+#X connect 22 0 49 0;
 #X connect 25 0 20 0;
 #X connect 27 0 22 1;
 #X connect 28 0 35 0;
@@ -184,29 +184,29 @@ f 54;
 #X connect 29 0 34 0;
 #X connect 30 0 33 0;
 #X connect 31 0 9 1;
-#X connect 32 0 47 0;
+#X connect 32 0 46 0;
 #X connect 33 0 6 0;
 #X connect 34 0 8 0;
 #X connect 35 0 16 0;
 #X connect 36 0 17 0;
-#X connect 40 0 6 1;
-#X connect 40 0 8 1;
-#X connect 41 0 5 0;
-#X connect 43 0 29 2;
-#X connect 43 0 30 2;
-#X connect 44 0 45 0;
-#X connect 44 1 45 1;
-#X connect 45 0 57 0;
-#X connect 46 0 27 0;
-#X connect 47 0 28 0;
-#X connect 49 0 27 2;
-#X connect 49 0 62 0;
-#X connect 50 0 51 0;
-#X connect 50 1 11 0;
-#X connect 51 0 58 0;
-#X connect 57 0 46 1;
-#X connect 58 0 21 0;
-#X connect 58 0 30 0;
+#X connect 39 0 6 1;
+#X connect 39 0 8 1;
+#X connect 40 0 5 0;
+#X connect 42 0 29 2;
+#X connect 42 0 30 2;
+#X connect 43 0 44 0;
+#X connect 43 1 44 1;
+#X connect 44 0 56 0;
+#X connect 45 0 27 0;
+#X connect 46 0 28 0;
+#X connect 48 0 61 0;
+#X connect 49 0 50 0;
+#X connect 49 1 11 0;
+#X connect 50 0 57 0;
+#X connect 56 0 45 1;
+#X connect 57 0 21 0;
+#X connect 57 0 30 0;
+#X connect 61 0 27 2;
 #X restore 519 363 pd Pitch-Shit/Time-Stretch;
 #X obj 202 271 r \$0-size;
 #X text 273 269 sample size;

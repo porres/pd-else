@@ -8,9 +8,9 @@
 #X obj 292 195 openpanel;
 #X obj 292 173 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 620 189 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 620 199 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 639 241 nbx 7 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
+#X obj 639 241 nbx 4 16 0 1e+37 0 0 empty empty empty 0 -8 0 13 -228856
 -1 -1 0 256;
 #X obj 38 394 cnv 15 438 148 empty empty empty 20 12 0 14 -233017 -66577
 0;
@@ -22,7 +22,7 @@
 #X obj 729 212 random;
 #X obj 729 162 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 585 188 play;
+#X text 585 198 play;
 #X floatatom 729 235 0 0 0 0 - - -;
 #X msg 729 257 \$1 44100;
 #X obj 292 218 list append \$0-sample;
@@ -40,11 +40,11 @@ is with [tabplay~]. A bang plays the whole buffer \, but you can set
 a start point with a float or a start point and a number of samples
 to play from it as a list. Check help file for more details., f 52
 ;
-#X text 551 400 This is already more flexible as it allows you to play
+#X text 544 408 This is already more flexible as it allows you to play
 parts and snippets (or even "grains" in a granular perspective).,
 f 47;
-#X obj 701 506 table;
-#X obj 761 505 array;
+#X obj 694 514 table;
+#X obj 754 513 array;
 #X text 40 22 For more playing flexibility \, we need to store the
 file in a "buffer" (term that indicates allocated memory). For such
 \, we load the file in an array with the native [soundfiler] object
@@ -55,7 +55,7 @@ like number of channels and sample rate). Check help file for more
 details., f 61;
 #X obj 714 21 declare -path else;
 #X obj 55 188 initmess read -resize bubul.wav \$0-sample, f 21;
-#X text 551 458 You can also use the native [table] or [array] objects
+#X text 544 466 You can also use the native [table] or [array] objects
 to create an array - check their help files., f 47;
 #X connect 0 0 20 0;
 #X connect 1 0 2 0;

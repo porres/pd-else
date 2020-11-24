@@ -1,4 +1,4 @@
-#N canvas 255 71 947 570 12;
+#N canvas 413 92 942 556 12;
 #X declare -path else;
 #X obj 251 321 hsl 128 15 0 0.9999 0 0 empty fb empty -2 -6 0 8 -228856
 -1 -1 12638 1;
@@ -15,24 +15,24 @@
 #X text 341 351 cutoff;
 #X obj 152 260 hsl 150 15 0.1 100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
-#X floatatom 610 316 5 0 0 0 - - -;
-#X obj 610 286 expr 1000 / $f1;
-#X text 653 316 ms;
-#X obj 521 315 vline~;
-#X obj 503 342 *~;
+#X floatatom 608 320 5 0 0 0 - - -;
+#X obj 608 293 expr 1000 / $f1;
+#X text 651 320 ms;
+#X obj 521 318 vline~;
+#X obj 503 345 *~;
 #X obj 691 379 hsl 128 15 100 10000 0 0 empty cutoff empty -2 -6 0
 8 -228856 -1 -1 7184 1;
 #X floatatom 688 403 0 0 0 0 - - -;
 #X text 730 378 cutoff;
-#X obj 741 272 hsl 128 15 -3000 3000 0 0 empty t60 empty -2 -6 0 8
+#X obj 733 279 hsl 128 15 -3000 3000 0 0 empty t60 empty -2 -6 0 8
 -228856 -1 -1 10583 1;
-#X floatatom 738 292 0 0 0 0 - - -;
-#X obj 597 262 mtof;
-#X msg 521 286 1 \, 0 0 \$1;
+#X floatatom 730 299 0 0 0 0 - - -;
+#X obj 597 265 mtof;
+#X msg 521 289 1 \, 0 0 \$1;
 #X floatatom 198 316 5 10 100 0 - - -;
 #X obj 201 293 hsl 128 15 1 100 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 503 238 pinknoise~;
+#X obj 503 248 pinknoise~;
 #X obj 133 447 out~;
 #X obj 46 233 tempo 150 100 -on;
 #N canvas 442 60 452 595 Feedback_Lowpass 0;
@@ -50,9 +50,9 @@
 #X text 68 28 Hz;
 #X obj 349 53 inlet;
 #X text 347 32 cutoff;
-#X floatatom 349 292 0 0 0 0 - - -;
+#X floatatom 349 300 0 0 0 0 - - -;
 #X obj 274 412 *~;
-#X obj 275 447 delwrite~ \$0-fb3 1000;
+#X obj 274 447 delwrite~ \$0-fb3 1000;
 #X obj 165 477 outlet~;
 #X obj 66 402 block~ 1;
 #X obj 113 210 pack;
@@ -85,29 +85,31 @@
 #X text 28 30 Now we create the feedback loop with the filter inside
 a subpatch \, with a block of 1! The filter we're using now is [lop~]
 \, which allows us to set a cutoff frequency.;
-#X obj 597 194 tempo 150 100 -on;
+#X obj 597 206 tempo 150 100 -on;
 #X obj 648 455 lowpass~ 0 5;
-#X obj 648 490 out~;
-#X text 502 133 In this example we also change the excitation signal
-to a pink noise generator., f 52;
+#X obj 648 487 out~;
 #X obj 564 388 comb.filt~;
-#X text 779 270 decay;
-#X text 502 54 Here's a variation with [comb.filt~] that goes too far.
+#X text 771 277 decay;
+#X text 483 49 Here's a variation with [comb.filt~] that goes too far.
 By taking the filter out of the feedback loop \, technically we have
 anything but an actual Karplus Strong Algorythm. It's here as a comparison
-and also to show it's not that crazily different., f 53;
+and also to show it's not that crazily different.;
 #X obj 688 428 f2s~ 100;
-#X obj 738 315 f2s~ 100;
+#X obj 730 322 f2s~ 100;
 #X obj 340 433 initmess \; fb 0.995 \; t60 2000 \; cutoff 5700;
-#X obj 597 228 rand.i 25 50;
+#X obj 597 236 rand.i 25 50;
 #X obj 46 259 rand.i 25 50;
-#X obj 716 13 declare -path else;
+#X obj 733 13 declare -path else;
 #X text 28 82 Another variation allows for a Note On/Note Off input
 \, where you can hold the note down longer than its period. This adds
 a "sustain" for the excitation signal (which is a white noise inside
 the subpatch). But a short value can result in an excitation signal
 shorter than the period. An attack/release parameter adds a fade in/out
 to the excitation signal., f 58;
+#X text 483 127 In this example we also change the excitation signal
+to a pink noise generator. The filter is also different \, it's a 2
+pole filter from the ELSE library \, which can also be used inside
+the feedback loop!, f 59;
 #X connect 0 0 1 0;
 #X connect 1 0 29 3;
 #X connect 3 0 5 0;
@@ -122,23 +124,23 @@ to the excitation signal., f 58;
 #X connect 12 0 23 0;
 #X connect 13 0 12 0;
 #X connect 15 0 16 1;
-#X connect 16 0 37 0;
+#X connect 16 0 36 0;
 #X connect 17 0 18 0;
-#X connect 18 0 40 0;
+#X connect 18 0 39 0;
 #X connect 20 0 21 0;
-#X connect 21 0 41 0;
+#X connect 21 0 40 0;
 #X connect 22 0 13 0;
-#X connect 22 0 37 1;
+#X connect 22 0 36 1;
 #X connect 23 0 15 0;
 #X connect 24 0 29 2;
 #X connect 25 0 24 0;
 #X connect 26 0 16 0;
-#X connect 28 0 44 0;
+#X connect 28 0 43 0;
 #X connect 29 0 27 0;
-#X connect 33 0 43 0;
+#X connect 33 0 42 0;
 #X connect 34 0 35 0;
-#X connect 37 0 34 0;
-#X connect 40 0 34 1;
-#X connect 41 0 37 2;
-#X connect 43 0 22 0;
-#X connect 44 0 6 0;
+#X connect 36 0 34 0;
+#X connect 39 0 34 1;
+#X connect 40 0 36 2;
+#X connect 42 0 22 0;
+#X connect 43 0 6 0;

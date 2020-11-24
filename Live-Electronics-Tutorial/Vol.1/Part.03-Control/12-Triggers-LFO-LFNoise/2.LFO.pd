@@ -1,15 +1,15 @@
-#N canvas 336 78 927 424 12;
+#N canvas 514 101 924 507 12;
 #X declare -path else;
 #X obj 78 274 out~;
 #X floatatom 721 109 5 0.1 10 0 - - -;
 #X obj 724 160 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 1368 1;
+-1 -1 4101 1;
 #X obj 721 182 rescale 500 1500;
 #X obj 695 231 bp~ 0 10;
 #X obj 667 160 noise~;
 #X obj 695 268 out~;
 #X obj 721 208 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 607.723 256;
+-228856 -1 -1 822.919 256;
 #X obj 721 134 lfo 0.1;
 #X text 26 345 An audio rate LFO sometimes is not necessary or even
 possible. This is why the ELSE library provides [lfo] \, a control
@@ -38,6 +38,11 @@ the frequency of a filter.;
 #X text 496 347 Both [rescale] and [rescale~] can also map with exponential
 curves and may take any input range as well. Check their help files
 for more details., f 56;
+#X obj 573 440 phasor~ 1;
+#X obj 664 440 phasor 1;
+#X text 179 430 Here's a remark that [phasor~] with a low frequency
+can also be thouhgt of as a "LFO'. And not that ELSE has a control
+[phasor] object., f 53;
 #X connect 1 0 8 0;
 #X connect 2 0 3 0;
 #X connect 3 0 7 0;

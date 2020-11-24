@@ -3,7 +3,7 @@
 #X floatatom 557 194 0 0 0 0 - - -;
 #X floatatom 557 86 0 0 0 0 - - -;
 #X obj 560 63 hsl 200 15 0 7 0 0 empty slider empty -2 -8 0 10 -228856
--1 -1 4600 0;
+-1 -1 0 0;
 #X obj 557 170 tabread4 lagrange;
 #N canvas 316 50 432 348 tabread_larange 0;
 #X obj 71 114 t b f;
@@ -108,12 +108,8 @@
 #X text 51 118 In this example we have 8 points (n = 8) \, where indexes
 are from 0 to 7 \, but the actual indexes are 1 to 5! The first (0)
 and last two (6-7) are used for interpolation and are also called "guard
-points".;
+points"., f 60;
 #X text 580 453 ______________________;
-#X text 51 42 The native objects [tabread4] \, [tabread4~] and [tabosc4~]
-plus the [table~] object from ELSE use a 4-point polynomial method
-("lagrange" to be more specific). When calculating a fractional index
-value \, it considers 2 points after and 2 points earlier.;
 #X text 51 182 The index 0 needs to be a copy of the last actual index
 (5 or "n-3") \, whereas the last two (n-2 & n-1 \, "6" and "7" in this
 case) need to be copies of the first two (respectively \, index "1"
@@ -132,6 +128,11 @@ dot.;
 You can compare the result with the output of [tabread4] to see that
 they match.;
 #X obj 680 20 declare -path else;
+#X text 51 42 The native objects [tabread4] \, [tabread4~] and [tabosc4~]
+plus the [table~] and [tabplayer~] objects from ELSE use a 4-point
+polynomial method ("lagrange" to be more specific). When calculating
+a fractional index value \, it considers 2 points after and 2 points
+earlier., f 60;
 #X connect 1 0 3 0;
 #X connect 1 0 4 0;
 #X connect 2 0 1 0;

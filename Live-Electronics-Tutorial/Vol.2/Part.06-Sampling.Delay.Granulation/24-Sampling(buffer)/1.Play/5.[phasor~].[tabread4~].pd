@@ -1,31 +1,31 @@
-#N canvas 528 55 961 702 12;
+#N canvas 453 114 961 702 12;
 #X declare -path else;
 #X obj 728 345 phasor~;
 #X obj 728 404 tabread4~ \$0-buffer;
 #X obj 648 234 nbx 5 18 -1e+37 1e+37 0 0 empty tempo empty 0 -8 0 13
--228856 -1 -1 47 256;
-#X floatatom 112 435 0 0 0 0 - - -;
-#X floatatom 192 492 0 0 0 0 - - -;
-#X obj 112 517 s \$0-size;
+-228856 -1 -1 100 256;
+#X floatatom 112 452 0 0 0 0 - - -;
+#X floatatom 192 509 0 0 0 0 - - -;
+#X obj 112 534 s \$0-size;
 #X obj 648 260 / 100;
 #X obj 728 234 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 13
--228856 -1 -1 -9000 256;
+-228856 -1 -1 0 256;
 #X obj 728 294 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.00552427 256;
+-228856 -1 -1 1 256;
 #X text 799 234 Cents;
 #X obj 728 263 cents2ratio;
 #X obj 728 439 out~;
-#X text 250 491 <= Reading frequency, f 21;
+#X text 250 508 <= Reading frequency, f 21;
 #X text 574 234 Speed (%);
 #X text 789 293 Ratio;
 #X obj 552 421 initmess \; tempo 100;
 #X obj 728 372 *~;
 #X obj 763 372 r \$0-size;
 #X obj 763 316 r \$0-hz;
-#X obj 192 519 s \$0-hz;
+#X obj 192 536 s \$0-hz;
 #X obj 728 316 *~;
-#X obj 192 463 /;
-#X text 249 405 <= sample rate, f 15;
+#X obj 192 480 /;
+#X text 249 422 <= sample rate, f 15;
 #X text 515 153 We need to multiply the output of [phasor~] by the
 number of samples in the file so we can access the indexes from the
 array., f 57;
@@ -39,36 +39,36 @@ error you can work with files with higher sample rates than Pd is running
 example., f 50;
 #X text 374 636 You can use a good resampling software to upsample
 a sound file as was done here for this example., f 50;
-#X obj 171 373 unpack;
-#X floatatom 210 405 5 0 0 0 - - -;
-#X obj 185 435 swap;
-#X text 51 435 size =>;
-#X text 36 212 In this example we use [phasor~] to read from [tabread4~].
+#X obj 171 390 unpack;
+#X floatatom 210 422 5 0 0 0 - - -;
+#X obj 185 452 swap;
+#X text 51 452 size =>;
+#X text 35 235 In this example we use [phasor~] to read from [tabread4~].
 The [phasor~] object is used to play the sample in a loop \, and we
 need to find the frequency corresponding to the sound file's period.
 We do that by dividing the sample rate of the file (even if it's different
 than Pd's) by the number of samples - both information are given by
 [sample~] (one could use [soundfiler] instead \, in which [sample~]
-is based on)., f 61;
-#X obj 729 26 declare -path else;
-#X obj 171 343 sample~ \$0-buffer sax.wav;
-#X text 36 150 These objects also allow you to play files with a different
-sample rate than Pd is running \, because since you can play the file
-at different speeds \, you can also compensate the difference in speed.
-, f 61;
-#X text 35 24 If you want to play a sound file at different speeds
-\, you need objects that perform interpolation such as the native [tabread4~]
-object or [table~] from ELSE., f 61;
-#X text 36 74 With them you can then set any reading speed (such as
-1.5x) which means the reading point will fall in between samples \,
-hence you need to interpolate to get a value that better corresponds
-to that missing step n between. We'll see the interpolation type of
-[tabread4~] a bit later., f 61;
+is based on)., f 64;
+#X obj 760 45 declare -path else;
+#X obj 171 360 sample~ \$0-buffer sax.wav;
 #X text 515 74 We use a ratio value to set the speed \, this can also
 be calculated from cents or a percentage value. Then \, all you need
 is to multiply the ratio by the frequency in hertz. Note that negative
 percentage/ratio values are possible and that they play the file backwards.
 , f 57;
+#X text 35 187 You can also play files with a different sample rate
+than Pd is running \, because you can compensate the difference by
+setting a difference speed., f 64;
+#X text 35 34 The [tabplayer~] object from ELSE plays a buffer at different
+speeds. In vanilla \, you need to read a buffer with [tabread4~] \,
+which performs interpolation., f 64;
+#X text 35 82 Because when you set a reading speed such as 1.5x (150%
+faster) \, it means that the reading point will fall in between samples
+every other sample \, thus you need to interpolate to get a value that
+better corresponds to that missing step in between. We'll see the interpolation
+type of [tabread4~] a bit later. By the way \, [tabplayer~] offers
+the same interpolation type as [tabread4~]., f 64;
 #X connect 0 0 16 0;
 #X connect 1 0 11 0;
 #X connect 2 0 6 0;

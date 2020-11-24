@@ -1,4 +1,4 @@
-#N canvas 722 322 914 534 12;
+#N canvas 545 77 915 592 12;
 #X declare -path else;
 #X obj 547 44 r \$0-size;
 #X obj 508 110 random;
@@ -31,9 +31,9 @@
 #X obj 158 438 s \$0-ratio;
 #X obj 600 85 b;
 #X text 439 302 <= start \, duration \, target;
-#X obj 736 43 declare -path else;
+#X obj 721 61 declare -path else;
 #X obj 644 270 function 200 100 empty empty 0 1 220 220 220 50 50 50
-0 0 0 0 0 144.881 1 1159.05 1 144.881 0;
+0 0 0 0 0 0.1 1 0.8 1 0.1 0;
 #X obj 644 203 initmess 0 0.1 1 0.8 1 0.1 0;
 #X text 40 148 In this patch we generate random start/end points and
 get a duration period in ms from the difference. This period can be
@@ -54,6 +54,9 @@ an example of doing something more complex than just playing the whole
 file. We also have a second [envgen~] as an envelope to avoid clicks
 at the beggining and end of the file bits - this envelope function
 is given by the [function] GUI., f 49;
+#X text 238 509 Note that [envgen~] could be replaced by vanilla's
+[vline~] object \, which provides similar functionalities as presented
+earlier in this tutorial.;
 #X connect 0 0 1 1;
 #X connect 0 0 2 1;
 #X connect 0 0 27 0;
