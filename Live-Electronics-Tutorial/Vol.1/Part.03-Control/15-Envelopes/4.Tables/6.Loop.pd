@@ -1,16 +1,16 @@
-#N canvas 254 73 853 473 12;
+#N canvas 564 79 863 671 12;
 #X declare -path else;
 #X obj 727 351 vsl 15 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 2649 1;
+-1 -1 0 1;
 #X obj 531 258 osc~ 440;
 #X obj 607 335 *~;
 #X obj 52 289 vsl 15 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 87 1;
+-1 -1 0 1;
 #X obj 310 322 vsl 15 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 87 1;
+-1 -1 0 1;
 #X obj 607 375 out~;
 #X obj 179 305 vsl 15 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 87 1;
+-1 -1 0 1;
 #X obj 52 227 tabosc4~ \$0-hann;
 #X obj 179 243 table~ \$0-hann;
 #X obj 179 197 phasor~;
@@ -39,6 +39,14 @@ the vol. 2 of this tutorial., f 50;
 #X obj 52 262 s2f~;
 #X obj 727 324 s2f~;
 #X obj 660 20 declare -path else;
+#X obj 243 520 function 200 100 empty empty 0 1 220 220 220 50 50 50
+0 0 0 0 0 0.1 1 0.9 0;
+#X obj 243 464 phasor 2;
+#X obj 186 538 vsl 15 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 7381 1;
+#X obj 243 490 / 127;
+#X text 471 552 [phasor] and [function] can also be used as a control
+rate looping envelope., f 40;
 #X connect 1 0 2 0;
 #X connect 2 0 5 0;
 #X connect 7 0 25 0;
@@ -58,3 +66,6 @@ the vol. 2 of this tutorial., f 50;
 #X connect 24 0 6 0;
 #X connect 25 0 3 0;
 #X connect 26 0 0 0;
+#X connect 28 0 30 0;
+#X connect 29 0 31 0;
+#X connect 31 0 28 0;
