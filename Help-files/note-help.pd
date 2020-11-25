@@ -65,78 +65,75 @@
 #X text 214 345 - sets justification (0: left \, 1: center \, 2: right)
 , f 54;
 #X text 116 359 color <f \, f \, f>;
-#X text 87 483 -font <symbol> (default: dejavu sans mono) | -bold <float>
-(default 0) | -italic <float> (default 0) | -size <float> (default
-patch's) | -just <float> (default 0) | -color <f \, f \, f> (default
-0 0 0) | -bgcolor <f \, f \, f> (default 255 255 255) | -bg <float>
-(default 0) | @note <anything>: sets note (default "note") | -underline
-<float> (default 0) | @receive <symbol> (default 'empty'), f 72;
 #X obj 216 154 else/note 131 20 Times empty 3 150 0 0 1 230 235 240
 1 1 Hi \, I'm the [note] object !;
 #X text 118 159 the default [else/note], f 11;
-#N canvas 534 83 886 580 details 0;
-#X obj 159 295 else/note 425 50 arial empty 0 0 0 0 0 100 150 100 0
+#N canvas 534 83 882 593 details 0;
+#X obj 159 295 else/note 425 50 times empty 0 0 0 0 0 100 150 100 0
 0 note;
-#X obj 542 378 else/note 380 50 Dejavu\ Sans\ Mono \$0-note 0 0 0 0
+#X obj 546 390 else/note 380 50 Dejavu\ Sans\ Mono \$0-note 0 0 0 0
 0 255 255 255 0 0 note;
-#X msg 655 187 set hi \, append there;
-#X msg 665 210 set note \, prepend this;
-#X msg 676 233 set note;
-#X obj 626 275 s \$0-note;
-#X msg 533 189 underline \$1;
-#X obj 533 165 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 659 199 set hi \, append there;
+#X msg 669 222 set note \, prepend this;
+#X msg 680 245 set note;
+#X obj 630 287 s \$0-note;
+#X msg 537 201 underline \$1;
+#X obj 537 177 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 226 236 bgcolor 100 150 100;
-#X msg 232 258 bgcolor 190 90 200;
-#X msg 364 265 bg \$1;
-#X obj 364 242 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 236 236 bgcolor 100 150 100;
+#X msg 242 258 bgcolor 190 90 200;
+#X msg 374 265 bg \$1;
+#X obj 374 242 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 42 50 You can edit the properties of [note] with messages.
 , f 15;
 #X text 39 375 After setting a background color you can use the 'bg'
 flag to turn it off or on again., f 62;
-#X obj 542 315 loadbang;
-#X msg 542 340 receive \\\$0-note;
-#X text 39 404 [note] uses "Dejavu Sans Mono" as its default font.
-This is the same default font that Pd uses and includes. But Pd doesn't
-offer yet the italic and bold+italic variants. So you need to manually
-install this font in its fullness if you want to use these variants.
-, f 62;
-#X text 395 32 When in edit mode \, [note] shows its inlet and an outline.
+#X obj 546 327 loadbang;
+#X msg 546 352 receive \\\$0-note;
+#X text 399 44 When in edit mode \, [note] shows its inlet and an outline.
 The [note] object below has a receive symbol \, so you can send messages
 to it via a [send] object. In this case \, the inlet is supressed \,
 so we don't see it. Besides the properties window \, the receive symbol
 can be set with the receive message or the @receive attribute. If you
 set a receive name as "empty" then it it can't receive messages anymore
 and the inlet is show again., f 74;
-#X msg 159 18 size 50;
-#X msg 167 38 size 30;
-#X msg 177 74 font times;
-#X msg 186 94 font arial;
-#X msg 192 114 font arial\ black;
-#X msg 198 133 font helvetica;
-#X msg 205 155 font Dejavu\ Sans\ Mono;
-#X msg 216 186 color 0 0 0;
-#X msg 222 206 color 150 100 50;
+#X msg 159 8 size 50;
+#X msg 167 28 size 30;
+#X msg 181 56 font times;
+#X msg 190 76 font arial;
+#X msg 196 96 font arial\ black;
+#X msg 202 115 font helvetica;
+#X msg 209 137 font Dejavu\ Sans\ Mono;
+#X msg 226 186 color 0 0 0;
+#X msg 232 206 color 150 100 50;
 #X obj 79 145 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X msg 46 225 bold \$1;
 #X obj 46 198 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X msg 79 172 italic \$1;
-#X msg 630 125 color 200 0 0;
-#X msg 642 147 color 0 0 0;
-#X text 39 465 [note] will attempt to open a font name that corresponds
+#X msg 634 137 color 200 0 0;
+#X msg 646 159 color 0 0 0;
+#X text 39 495 [note] will attempt to open a font name that corresponds
 to your given name. If such a font name doesn't exist \, it'll open
 some other font you have on your system instead that it thinks is best
 for what you requested \, and you'll have no idea which one it is.
 Just be sure you have the fonts you want properly installed., f 62
 ;
-#X text 493 469 Note: when in edit mode \, you can click on the object
+#X text 497 481 Note: when in edit mode \, you can click on the object
 to select it and then press <F5> to copy the text from [else/note]
 into a vanilla comment box. So far \, this is the only way to copy
 the text from note into Pd (control+c / control+v doesn't work).,
 f 53;
+#X text 39 404 [note] uses "Dejavu Sans Mono" as its default font.
+This is the same default font that Pd uses and includes. But Pd doesn't
+offer yet the italic and bold+italic variants. So you need to manually
+install this font in its fullness if you want to use these variants.
+Note that as of 0.51-3 \, Pd uses 'Menlo' as its default font for mac
+\, cyclone also does the same for mac then. Menlo has italic and bold+italic.
+, f 62;
+#X msg 217 158 font Menlo;
 #X connect 2 0 5 0;
 #X connect 3 0 5 0;
 #X connect 4 0 5 0;
@@ -148,6 +145,7 @@ f 53;
 #X connect 11 0 10 0;
 #X connect 14 0 15 0;
 #X connect 15 0 1 0;
+#X connect 17 0 0 0;
 #X connect 18 0 0 0;
 #X connect 19 0 0 0;
 #X connect 20 0 0 0;
@@ -156,13 +154,13 @@ f 53;
 #X connect 23 0 0 0;
 #X connect 24 0 0 0;
 #X connect 25 0 0 0;
-#X connect 26 0 0 0;
-#X connect 27 0 30 0;
-#X connect 28 0 0 0;
-#X connect 29 0 28 0;
-#X connect 30 0 0 0;
+#X connect 26 0 29 0;
+#X connect 27 0 0 0;
+#X connect 28 0 27 0;
+#X connect 29 0 0 0;
+#X connect 30 0 5 0;
 #X connect 31 0 5 0;
-#X connect 32 0 5 0;
+#X connect 35 0 0 0;
 #X restore 477 149 pd details;
 #N canvas 800 75 549 514 +details 0;
 #X obj 188 340 else/note 151 20 dejavu\ sans\ mono empty 0 0 0 0 0
@@ -230,3 +228,10 @@ italic \, underline and justification., f 68;
 #X text 351 161 <== right click for properties, f 10;
 #X obj 59 162 else/note 425 10 dejavu\ sans\ mono empty 0 0 0 0 0 255
 255 255 0 0 note;
+#X text 87 483 -font <symbol> (default: 'dejavu sans mono' or 'menlo'
+for mac) | -bold <float> (default 0) | -italic <float> (default 0)
+| -size <float> (default patch's) | -just <float> (default 0) | -color
+<f \, f \, f> (default 0 0 0) | -bgcolor <f \, f \, f> (default 255
+255 255) | -bg <float> (default 0) | @note <anything>: sets note (default
+"note") | -underline <float> (default 0) | @receive <symbol> (default
+'empty'), f 72;
