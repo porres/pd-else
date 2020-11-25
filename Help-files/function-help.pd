@@ -179,35 +179,40 @@ values., f 35;
 #X text 185 303 float;
 #X text 225 304 - values from 0-1 are treated as indexes, f 45;
 #N canvas 686 94 544 569 float/i 0;
-#X obj 217 292 else/function 200 100 empty empty 0 1 220 220 220 50
+#X obj 217 312 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 100 1 100 0.6 350 0.6 250 0;
-#X obj 217 412 else/display;
-#X obj 172 174 else/initmess 0 100 1 100 0.6 350 0.6 250 0;
-#X obj 220 201 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 217 432 else/display;
+#X obj 172 194 else/initmess 0 100 1 100 0.6 350 0.6 250 0;
+#X obj 220 221 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 217 225 0 0 0 0 - - -;
-#X obj 294 256 line;
-#X obj 217 448 else/f2s~ 10;
-#X obj 108 433 *~;
-#X obj 108 400 osc~ 440;
-#X obj 109 476 else/out~;
-#X msg 294 230 0 \, 1 1000;
-#X text 55 62 In this example we convert the function output to signals
+#X floatatom 217 245 0 0 0 0 - - -;
+#X obj 294 276 line;
+#X obj 217 468 else/f2s~ 10;
+#X obj 108 453 *~;
+#X obj 108 420 osc~ 440;
+#X obj 109 496 else/out~;
+#X msg 294 250 0 \, 1 1000;
+#X text 55 82 In this example we convert the function output to signals
 with a ramp and use it to control the amplitude. But you can just use
 it as a control message instead., f 70;
-#X msg 118 248 i \$1;
-#X obj 118 227 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X msg 118 268 i \$1;
+#X obj 118 247 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 55 12 Alternatively \, you can have a float input from 0 to
-1 into [function] and they'll be treatet as indexes and the amplitude
-value will then be output. This is useful if you want to control a
-function with a slider input \, for instance. Another option is to
-use [line] to drive it., f 70;
-#X text 55 101 Additionaly \, you can also use the "i" message \, followed
+#X text 55 121 Additionaly \, you can also use the "i" message \, followed
 by a float. This float value is then tereated as the actual index in
 the table. The number of index is the same as the envelope dursation.
 A linear interpolation is performed with both a float input and using
 'i'., f 70;
+#X obj 370 237 else/phasor 1;
+#X obj 370 283 / 127;
+#X obj 370 261 spigot;
+#X obj 421 262 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 55 21 Alternatively \, you can have a float input from 0 to
+1 into [function] and they'll be treatet as indexes and the amplitude
+value will then be output. This is useful if you want to control a
+function with a slider input \, for instance. Another option is to
+use [line] to drive it or [phasor]., f 70;
 #X connect 0 0 1 0;
 #X connect 1 0 6 0;
 #X connect 2 0 0 0;
@@ -220,6 +225,10 @@ A linear interpolation is performed with both a float input and using
 #X connect 10 0 5 0;
 #X connect 12 0 0 0;
 #X connect 13 0 12 0;
+#X connect 15 0 17 0;
+#X connect 16 0 0 0;
+#X connect 17 0 16 0;
+#X connect 18 0 17 1;
 #X restore 480 209 pd float/i;
 #X text 161 317 i <float>;
 #X text 225 318 - indexes of table (function value is output);

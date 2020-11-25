@@ -1,0 +1,107 @@
+#N canvas 676 126 789 652 12;
+#X declare -path else;
+#X obj 121 556 out~;
+#X obj 363 110 text define -k \$0-seq;
+#A set 0 72 1 50 50 \; 200 71 1 100 50 \; 200 72 1 150 50 \; 0 48 1
+200 50 \; 400 60 1 250 50 \; 0 52 1 200 50 \; 0 55 1 200 50 \; 400
+60 1 250 50 \; 0 43 1 200 50 \; 400 67 1 100 50 \; 0 53 1 200 50 \;
+0 55 1 200 50 \; 200 65 1 100 50 \; 200 64 1 100 50 \; 0 48 1 200 50
+\; 200 67 1 100 50 \; 200 72 1 100 50 \; 0 52 1 200 50 \; 0 55 1 200
+50 \; 200 71 1 100 50 \; 200 72 1 100 50 \; 0 37 1 200 50 \; 200 76
+1 100 50 \; 200 74 1 100 50 \; 0 51 1 200 50 \; 0 55 1 200 50 \; 200
+73 1 100 50 \; 200 74 1 150 50 \; 0 38 1 200 50 \; 400 62 1 250 50
+\; 0 53 1 200 50 \; 0 54 1 200 50 \; 400 62 1 250 50 \; 0 41 1 200
+50 \; 400 62 1 100 50 \; 0 62 1 200 50 \; 0 56 1 200 50 \; 0 60 1 200
+50 \; 200 60 1 100 50 \; 200 59 1 100 50 \; 0 43 1 200 50 \; 0 55 1
+200 50 \; 0 59 1 200 50 \; 200 62 1 100 50 \; 200 67 1 100 50 \; 0
+46 1 200 50 \; 0 54 1 200 50 \; 0 58 1 200 50 \; 200 66 1 100 50 \;
+200 67 1 200 50 \; 0 47 1 200 50 \; 0 54 1 200 50 \; 0 57 1 200 50
+\; 400 69 1 100 50 \; 0 53 1 200 50 \; 0 59 1 200 50 \; 200 71 1 100
+50 \; 200 72 1 100 50 \; 0 36 1 200 50 \; 0 52 1 200 50 \; 0 60 1 200
+50 \; 200 71 1 100 50 \; 200 69 1 100 50 \; 200 67 1 100 50 \; 200
+69 1 100 50 \; 0 40 1 200 50 \; 0 40 1 200 50 \; 0 58 1 200 50 \; 200
+67 1 100 50 \; 200 65 1 100 50 \; 200 64 1 100 50 \; 200 65 1 100 50
+\; 0 41 1 100 50 \; 0 48 1 100 50 \; 0 57 1 100 50 \; 200 64 1 100
+50 \; 200 62 1 100 50 \; 0 41 1 500 50 \; 0 48 1 500 50 \; 0 57 1 500
+50 \; 200 60 1 100 50 \; 200 62 1 100 50 \; 200 60 1 100 50 \; 200
+59 1 100 50 \; 0 41 1 500 50 \; 0 50 1 500 50 \; 0 56 1 500 50 \; 200
+57 1 100 50 \; 200 55 1 100 50 \; 0 43 1 200 50 \; 0 50 1 200 50 \;
+200 60 1 100 50 \; 200 59 1 100 50 \; 0 43 1 500 50 \; 0 52 1 500 50
+\; 0 55 1 500 50 \; 200 62 1 100 50 \; 200 60 1 100 50 \; 200 64 1
+100 50 \; 200 62 1 100 50 \; 0 43 1 500 50 \; 0 53 1 500 50 \; 0 55
+1 500 50 \; 200 65 1 100 50 \; 200 64 1 200 50 \; 0 43 1 500 50 \;
+400 60 1 200 50 \; 0 31 1 200 50 \; 0 41 1 200 50 \; 0 48 1 200 50
+\; 400 60 1 1000 3000 \; 0 24 1 1000 3000 \; 0 40 1 1000 3000 \; 0
+48 1 1000 3000 \; 4500 \;;
+#X obj 288 241 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 116 160 stop;
+#X msg 162 160 line 0 \, auto;
+#X msg 99 50 0.5;
+#X msg 176 50 1;
+#X msg 134 50 0.75;
+#X msg 210 50 1.25;
+#X msg 253 50 1.5;
+#X obj 116 211 text sequence \$0-seq -w 1;
+#X obj 537 56 declare -path else;
+#X text 285 50 <= set tempo;
+#X obj 121 304 makenote;
+#X obj 121 488 list append, f 17;
+#X obj 121 362 keyboard 17 80 5 1 0 0 empty empty;
+#X obj 121 333 pack;
+#X obj 116 242 unpack f f f f;
+#X obj 211 328 s \$0-release;
+#X obj 237 458 r \$0-release;
+#X obj 121 457 voices 4 -list;
+#X obj 121 521 clone 4 voice2;
+#X text 381 164 Here the sequence is exactly the same as the last example.
+And the output list represents: pitch \, amplitude \, Attack+Sustain
+time and release time., f 45;
+#X msg 81 128 tempo \$1 permsec;
+#X obj 176 95 s \$0-tempo;
+#X obj 81 97 r \$0-tempo;
+#X obj 282 269 r \$0-tempo;
+#X obj 282 295 expr 1 / $f1;
+#X obj 174 276 * 1;
+#X obj 211 303 * 1;
+#X text 381 231 We're now using [makenote] and [voices] \, and note
+how the tempo is used to also adjust the values of Attack+Sustain and
+Release times., f 45;
+#X text 523 111 <= sequence;
+#X text 282 500 The Attack+Sustain time is fed to the rightmost inlet
+of [makenote] (the duration) input. We also have a release time that
+is sent to the [voices] object and appended back to the list so it
+is sent to [clone]. The whole list sent to [clone] represents: 1) voice
+number. 2) pitch. 3) Gate (amplitude) and 4) release time. Open [clone]
+to see how the values are treated., f 61;
+#X text 259 161 <= start playing, f 8;
+#X connect 2 0 4 0;
+#X connect 3 0 10 0;
+#X connect 4 0 10 0;
+#X connect 5 0 24 0;
+#X connect 6 0 24 0;
+#X connect 7 0 24 0;
+#X connect 8 0 24 0;
+#X connect 9 0 24 0;
+#X connect 10 0 17 0;
+#X connect 10 2 2 0;
+#X connect 13 0 16 0;
+#X connect 13 1 16 1;
+#X connect 14 0 21 0;
+#X connect 15 0 20 0;
+#X connect 16 0 15 0;
+#X connect 17 0 13 0;
+#X connect 17 1 13 1;
+#X connect 17 2 28 0;
+#X connect 17 3 29 0;
+#X connect 19 0 14 1;
+#X connect 19 0 20 2;
+#X connect 20 0 14 0;
+#X connect 21 0 0 0;
+#X connect 23 0 10 0;
+#X connect 25 0 23 0;
+#X connect 26 0 27 0;
+#X connect 27 0 29 1;
+#X connect 27 0 28 1;
+#X connect 28 0 13 2;
+#X connect 29 0 18 0;

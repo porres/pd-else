@@ -1,9 +1,9 @@
 #N canvas 668 58 491 556 12;
 #X declare -path else;
-#X obj 287 242 spigot;
-#X obj 326 217 tgl 15 0 empty loop empty 17 7 0 10 -228856 -1 -1 1
+#X obj 245 242 spigot;
+#X obj 284 217 tgl 15 0 empty loop empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X text 344 216 loop;
+#X text 302 216 loop;
 #N canvas 575 228 354 342 voice1 0;
 #X obj 152 228 *~;
 #X obj 47 117 mtof;
@@ -67,9 +67,8 @@
 #X obj 189 347 osc~ 0.5;
 #X obj 157 171 bng 15 250 50 0 empty \$0-bang empty 17 7 0 10 -228856
 -1 -1;
-#X obj 287 269 s \$0-bang;
-#X obj 326 193 loadbang;
-#X obj 157 217 midi files/bach.mid;
+#X obj 245 269 s \$0-bang;
+#X obj 284 193 loadbang;
 #X text 69 455 Above \, the [midi] object sends a bang to the right
 outlet when the file sequence is over \, and we can use this for looping
 it. Here we have a two voice polyphonic synth to play this MIDI file.
@@ -82,6 +81,7 @@ need other objects to extract data such as [note.in] \, which retrieves
 only MIDI notes. The [midi] object can also record MIDI information
 from your controller or your patch. Check its help file for more information.
 , f 56;
+#X obj 157 217 midi bach.mid;
 #X connect 0 0 11 0;
 #X connect 1 0 0 1;
 #X connect 3 0 8 0;
@@ -89,13 +89,13 @@ from your controller or your patch. Check its help file for more information.
 #X connect 4 1 7 0;
 #X connect 5 0 4 0;
 #X connect 5 1 4 1;
-#X connect 6 0 13 0;
+#X connect 6 0 17 0;
 #X connect 7 0 8 1;
-#X connect 8 0 16 0;
-#X connect 8 1 16 1;
+#X connect 8 0 15 0;
+#X connect 8 1 15 1;
 #X connect 9 0 8 2;
 #X connect 10 0 6 0;
 #X connect 12 0 1 0;
 #X connect 12 0 10 0;
-#X connect 13 0 5 0;
-#X connect 13 1 0 0;
+#X connect 17 0 5 0;
+#X connect 17 1 0 0;
