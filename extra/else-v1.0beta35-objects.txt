@@ -188,6 +188,7 @@ mtx~	x
 mtx.ctl	x
 mag	x
 mag~	x
+markov	x
 median~	x
 median	x
 merge	x

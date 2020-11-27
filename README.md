@@ -6,9 +6,9 @@
 
 
 
-### Version: 1.0-0 beta-34 With Live Electronics Tutorial 
+### Version: 1.0-0 beta-35 With Live Electronics Tutorial 
 
-###   Released: November 25th 2020
+###   Released: Unreleased
 
 
 
@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (381 objects):
+## Current Object list (382 objects):
 
 **ASSORTED: [03]**
 
@@ -271,14 +271,12 @@ Cross compiling is also possible with something like this
 - [pi]
 - [e]
 
-**MATH: RANDOM: [07]**
+**MATH: RANDOM: [04]**
+
 - [rand.f]
 - [rand.f~]
-- [rand.seq]
 - [rand.i]
 - [rand.i~]
-- [drunkard~]
-- [drunkard]
 
 **LOGIC: [02]**
 - [loop]
@@ -435,7 +433,7 @@ Cross compiling is also possible with something like this
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [31]**
+**CONTROL: [26]**
 
  - [mouse]
  - [canvas.mouse]
@@ -460,14 +458,21 @@ Cross compiling is also possible with something like this
  - [sequencer~]
  - [impseq~]
  - [lfo]
- - [lfnoise]
- - [stepnoise]
- - [rampnoise]
  - [phasor]
  - [impulse]
  - [pulse]
- - [randpulse]
+
+**CONTROL: RANDOM: [09]**
+
+- [rand.seq]
+- [markov]
+- [drunkard~]
+- [drunkard]
+- [randpulse]
  - [randpulse2]
+ - [lfnoise]
+ - [stepnoise]
+ - [rampnoise]
 
  **TRIGGERS: [28]**
 - [above]

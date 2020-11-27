@@ -1,0 +1,94 @@
+#N canvas 692 67 562 600 10;
+#X obj 169 182 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 220 205 clear;
+#X msg 199 183 create;
+#X floatatom 262 256 5 0 0 0 - - -;
+#X text 259 205 clear memory;
+#X obj 3 332 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 486 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 3 528 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 91 340 cnv 17 3 97 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 91 443 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 92 495 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 3 571 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 5 5 cnv 15 301 42 empty empty markov 20 20 2 37 -233017 -1 0
+;
+#X obj 308 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 4 5 graph;
+#X obj 347 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 25 42 cnv 4 4 4 empty empty Create/play 0 28 2 18 -233017 -1
+0;
+#X obj 462 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 482 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 519 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 468 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 506 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 307 5 graph;
+#X obj 180 42 cnv 4 4 4 empty empty chains 0 28 2 18 -233017 -1 0;
+#X obj 117 42 cnv 4 4 4 empty empty markov 0 28 2 18 -233017 -1 0;
+#X obj 91 463 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X obj 199 303 else/display;
+#X msg 230 230 60 \, 60 \, 62 \, 60 \, 65 \, 64;
+#X obj 199 278 else/markov;
+#X text 299 255 set order;
+#X text 372 230 <= 1) feed memory;
+#X text 245 181 <= 2) create markov chain and go to start;
+#X text 100 182 3) Play =>;
+#X text 172 338 bang;
+#X text 209 338 - get value from markov chain and goes to the next
+;
+#X text 160 352 create;
+#X text 166 366 clear;
+#X text 209 366 - clear memory, f 50;
+#X text 209 352 - create markov chain from memory and go to start,
+f 50;
+#X text 166 394 reset;
+#X text 209 394 - go to the start of the chain, f 50;
+#X text 160 408 random;
+#X text 209 408 - go to a random position in the chain, f 50;
+#X text 100 380 learn <anything>;
+#X text 209 380 - feed memory with new information, f 50;
+#X text 148 445 anything;
+#X text 209 445 - feed memory with new information, f 50;
+#X text 118 422 order <float>;
+#X text 209 422 - sets order, f 50;
+#X text 209 465 - sets order, f 50;
+#X text 166 465 float;
+#X text 147 496 anything;
+#X text 210 496 - output from markov chain, f 32;
+#X text 141 535 1) float - sets order (defaul 1);
+#X text 141 551 2) float - non zero sets to savestate mode (default
+0);
+#X text 48 91 [markov] creates Markov chains of any order out of progressions
+of floats \, symbols or lists (which can be used to create polyphonic
+chains). You can change the order and recreate the chain. You can keep
+feeding information after the chain was created and recreate with the
+new information. You can clear to restart from scratch. State saving
+is possible with the 2nd argument \, where the chain is saved with
+the patch., f 75;
+#X connect 0 0 28 0;
+#X connect 1 0 28 0;
+#X connect 2 0 28 0;
+#X connect 3 0 28 2;
+#X connect 27 0 28 1;
+#X connect 28 0 26 0;
