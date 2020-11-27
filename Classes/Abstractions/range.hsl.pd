@@ -536,7 +536,7 @@
 #X obj 130 332 s \$0-range;
 #X obj 345 118 list 0 0;
 #X obj 231 298 s \$0-set-range;
-#X obj 231 272 setmess set;
+#X obj 231 272 insert set;
 #X obj 231 243 pack;
 #X obj 130 76 changed;
 #X obj 233 52 r \$0-set-range;
@@ -585,11 +585,11 @@
 #X obj 119 335 s \$0-slider.r;
 #X msg 120 241 rgb \$1 \$2 \$3;
 #X obj 144 205 s \$0-set-bgcolor;
-#X obj 144 177 setmess set;
+#X obj 144 177 insert set;
 #X obj 458 131 changed;
 #X msg 458 252 rgb \$1 \$2 \$3;
 #X msg 458 302 color \$1 \$1;
-#X obj 478 180 setmess set;
+#X obj 478 180 insert set;
 #X obj 458 340 s \$0-cnv;
 #X obj 478 211 s \$0-set-fgcolor;
 #X obj 228 106 r \$0-set-bgcolor;
@@ -785,7 +785,7 @@
 #X obj 250 56 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 145 278 s \$0-set-range;
-#X obj 145 255 setmess set;
+#X obj 145 255 insert set;
 #X obj 161 233 pack;
 #X connect 0 0 6 0;
 #X connect 3 0 11 1;
@@ -825,8 +825,8 @@
 #X msg 354 203 rgb \$1 \$2 \$3;
 #X msg 354 253 color \$1 \$1;
 #X obj 153 152 s \$0-set-bgcolor;
-#X obj 153 124 setmess set;
-#X obj 374 131 setmess set;
+#X obj 153 124 insert set;
+#X obj 374 131 insert set;
 #X obj 354 291 s \$0-cnv;
 #X obj 374 162 s \$0-set-fgcolor;
 #X obj 128 283 s \$0-slider.r;

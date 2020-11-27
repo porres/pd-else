@@ -301,7 +301,7 @@ $f1;
 #X obj 132 162 s \$0-out;
 #X obj 132 98 array get seq_\$0;
 #X obj 132 67 inlet;
-#X obj 132 129 else/setmess export;
+#X obj 132 129 else/insert export;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 0 0;

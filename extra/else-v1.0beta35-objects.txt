@@ -159,6 +159,7 @@ impulse	x
 impulse~	x
 impulse2~ 	x
 initmess 	x
+insert 	x
 int~ 	x
 iterate 	x
 keyboard	x
@@ -319,7 +320,6 @@ separate	x
 sequencer~	x
 sequencer	x
 setdsp~	x
-setmess	x
 sh~	x
 shaper~	x
 sig2float~	x

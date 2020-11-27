@@ -44,7 +44,7 @@
 #X obj 47 115 expr 2 * re \; -pow(sqrt(re*re + im*im) \, 2) \; g \;
 2 * g \; g, f 30;
 #X obj 95 254 outlet;
-#X obj 95 220 setmess append;
+#X obj 95 220 insert append;
 #X obj 47 55 t b b;
 #X connect 0 0 12 0;
 #X connect 7 0 6 0;

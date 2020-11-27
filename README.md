@@ -144,7 +144,7 @@ Cross compiling is also possible with something like this
 - [canvas.zoom]
 - [loadbanger] / [lb]
 
-**MESSAGE MANAGEMENT: [22]**
+**MESSAGE MANAGEMENT: [21]**
 
 - [format]
 - [nbang]
@@ -156,7 +156,6 @@ Cross compiling is also possible with something like this
 - [hot]
 - [initmess]
 - [message]
-- [setmess]
 - [pack2]
 - [pick]
 - [limit]
@@ -169,13 +168,14 @@ Cross compiling is also possible with something like this
 - [sig2float~] / [s2f~]
 - [float2sig~] / [f2s~]
 
-**LIST/MESSAGE MANAGEMENT: [14]**
+**LIST/MESSAGE MANAGEMENT: [15]**
 
 - [break] 
 - [order]
 - [combine]
 - [group] 
 - [iterate]
+- [insert]
 - [scramble]
 - [sort]
 - [reverse]

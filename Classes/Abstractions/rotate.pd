@@ -8,7 +8,7 @@
 #X obj 68 73 t b a b a, f 10;
 #X obj 68 213 list store;
 #X obj 87 164 list split;
-#X obj 87 187 setmess append;
+#X obj 87 187 insert append;
 #X obj 144 141 mod, f 8;
 #X obj 144 119 * -1;
 #X text 258 165 Part of ELSE \; https://github.com/porres/pd-else;

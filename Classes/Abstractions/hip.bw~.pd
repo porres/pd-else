@@ -45,7 +45,7 @@
 ;
 #X obj 37 125 expr 2 * re \; -pow(sqrt(re*re + im*im) \, 2) \; g \;
 -2 * g \; g, f 30;
-#X obj 85 235 setmess append;
+#X obj 85 235 insert append;
 #X connect 1 0 11 0;
 #X connect 1 1 10 0;
 #X connect 2 0 1 0;

@@ -1,9 +1,9 @@
-#N struct 1332-cell float x float y float cellsize float color;
-#N struct 1339-point float x0 float y0 float xs float ys float fg float
+#N struct 1329-cell float x float y float cellsize float color;
+#N struct 1336-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1363-slot float x float y float slotsize float color float
+#N struct 1354-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1378-point float x0 float y0 float size float fg float in
+#N struct 1362-point float x0 float y0 float size float fg float in
 float grid;
 #N canvas 782 59 594 967 10;
 #X declare -path else;
@@ -18,13 +18,12 @@ float grid;
 #X obj 57 676 properties;
 #X obj 57 755 loadbanger;
 #X obj 170 755 lb;
-#X obj 55 1413 initmess;
+#X obj 55 1437 initmess;
 #X obj 55 826 break;
-#X obj 55 1291 any2symbol;
-#X obj 55 1339 changed;
+#X obj 55 1315 any2symbol;
+#X obj 55 1363 changed;
 #X obj 55 851 order;
-#X obj 55 1365 hot;
-#X obj 55 1462 setmess;
+#X obj 55 1389 hot;
 #X obj 55 1488 pack2;
 #X obj 55 1563 routeall;
 #X obj 55 1588 routetype;
@@ -349,7 +348,7 @@ float grid;
 30 30 190 190 190 160 160 160 0 empty;
 #X restore 66 10428 pd GUI;
 #X text 57 346 Patch/subpatch management:;
-#X text 54 1194 Message management:;
+#X text 54 1218 Message management:;
 #X text 52 1768 File management:;
 #X text 61 10399 GUI:;
 #X text 23 10462 =============================================================================
@@ -392,7 +391,7 @@ float grid;
 , f 77;
 #X text 32 1744 =============================================================================
 , f 77;
-#X text 31 1172 =============================================================================
+#X text 31 1196 =============================================================================
 , f 77;
 #X text 31 322 =============================================================================
 , f 77;
@@ -405,7 +404,7 @@ float grid;
 , f 77;
 #X text 57 10493 Extra:;
 #X obj 55 5897 sample~;
-#X obj 55 1266 separate;
+#X obj 55 1290 separate;
 #X obj 54 4232 conv~;
 #X obj 54 7739 xmod2~;
 #X text 52 4947 Audio Processing (reverberation):;
@@ -430,8 +429,8 @@ float grid;
 #X obj 55 1612 selector;
 #X obj 55 2437 avg;
 #X obj 55 2463 mov.avg;
-#X obj 55 1144 unmerge;
-#X obj 55 1118 merge;
+#X obj 55 1170 unmerge;
+#X obj 55 1144 merge;
 #X obj 54 4257 chorus~;
 #X obj 55 1659 trigger2;
 #X obj 167 1659 t2;
@@ -446,17 +445,17 @@ float grid;
 #X obj 55 3986 rand.f~;
 #X obj 55 4012 rand.i;
 #X obj 55 4038 rand.i~;
-#X obj 55 1437 message;
+#X obj 55 1461 message;
 #X obj 55 1636 stack;
 #A saved;
 #X obj 57 727 receiver;
-#X obj 54 994 reverse;
+#X obj 54 1020 reverse;
 #X text 55 802 Message/List management:;
-#X obj 54 1019 rotate;
+#X obj 54 1045 rotate;
 #X obj 55 970 iterate;
-#X obj 54 1043 sum;
-#X obj 54 1091 stream;
-#X obj 54 1067 slice;
+#X obj 54 1069 sum;
+#X obj 54 1117 stream;
+#X obj 54 1093 slice;
 #X obj 54 8602 lag~;
 #X obj 54 8628 lag2~;
 #X obj 57 202 mouse;
@@ -477,14 +476,14 @@ float grid;
 #X obj 55 9868 timed.gate;
 #X obj 55 9955 trig2bang;
 #X obj 57 450 canvas.active;
-#X obj 55 1389 limit;
+#X obj 55 1413 limit;
 #X obj 57 504 canvas.vis;
 #X obj 57 528 canvas.edit;
 #X obj 57 602 canvas.setname;
 #X obj 57 626 canvas.zoom;
 #X obj 57 476 canvas.bounds;
 #X obj 58 97 else;
-#X obj 55 1220 format;
+#X obj 55 1244 format;
 #X obj 57 701 dollsym;
 #X obj 57 422 fontsize;
 #X obj 55 6096 batch.rec~;
@@ -493,8 +492,8 @@ float grid;
 #X obj 55 6046 pvoc.live~;
 #X obj 55 5970 tabwriter~;
 #X obj 55 6120 batch.write~;
-#X obj 55 1243 unite;
-#X obj 55 1315 symbol2any;
+#X obj 55 1267 unite;
+#X obj 55 1339 symbol2any;
 #X obj 57 650 click;
 #X obj 324 24 declare -path else;
 #X obj 55 2258 voices;
@@ -507,3 +506,4 @@ float grid;
 , f 77;
 #X text 39 8871 Control Random:;
 #X obj 54 9111 markov;
+#X obj 55 995 insert;
