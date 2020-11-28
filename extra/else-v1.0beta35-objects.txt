@@ -106,6 +106,7 @@ else	x
 envelope~	x
 envgen~	x
 eq~	x
+euclid	x
 expand~	x
 f2s~	x
 factor	x

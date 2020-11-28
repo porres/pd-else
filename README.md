@@ -111,12 +111,13 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (382 objects):
+## Current Object list (383 objects):
 
-**ASSORTED: [03]**
+**ASSORTED: [04]**
 
 - [table~]
 - [meter]
+- [euclid]
 - [else]
 
 **FFT: [02]**
