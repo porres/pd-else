@@ -1,8 +1,8 @@
-#N canvas 621 220 689 404 10;
+#N canvas 621 220 687 474 10;
 #X declare -path else;
 #X obj 309 33 inlet;
 #X obj 38 33 inlet;
-#X obj 252 349 outlet;
+#X obj 252 399 outlet;
 #X obj 95 197 list prepend;
 #X obj 131 114 t b a;
 #X obj 95 175 until;
@@ -17,7 +17,7 @@
 #X obj 38 62 route bang clear;
 #X obj 233 129 r \$0-clear;
 #X obj 122 89 s \$0-clear;
-#X obj 38 131 s \$0-clear;
+#X obj 43 317 s \$0-clear;
 #X obj 111 236 r \$0-clear;
 #X obj 195 271 route bang;
 #X obj 259 295 list;
@@ -62,6 +62,7 @@
 #X obj 453 104 declare -path else;
 #X text 401 173 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 403 154 Alexandre Torres Porres (2019);
+#X obj 312 399 outlet;
 #X connect 0 0 22 0;
 #X connect 1 0 14 0;
 #X connect 3 0 10 0;
@@ -78,6 +79,7 @@
 #X connect 10 1 20 1;
 #X connect 10 2 9 0;
 #X connect 11 0 12 0;
+#X connect 12 0 26 0;
 #X connect 12 1 21 0;
 #X connect 13 0 17 0;
 #X connect 13 1 11 0;

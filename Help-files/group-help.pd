@@ -1,16 +1,16 @@
-#N canvas 635 99 568 553 10;
-#X obj 329 203 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 635 99 563 570 10;
+#X obj 327 203 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 188 211 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 186 211 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 357 275 nbx 3 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
+#X obj 355 275 nbx 3 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X text 397 273 group size;
-#X floatatom 164 248 5 0 0 0 - - -;
-#X text 124 214 remainder;
-#X msg 219 201 list g h i j k;
-#X msg 246 223 a b c d e f;
-#X msg 116 248 clear;
+#X text 395 273 group size;
+#X floatatom 162 248 5 0 0 0 - - -;
+#X text 122 214 remainder;
+#X msg 217 201 list g h i j k;
+#X msg 244 223 a b c d e f;
+#X msg 114 248 clear;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -40,13 +40,13 @@
 ;
 #X obj 4 432 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 467 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 484 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
 #X obj 117 441 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 117 358 cnv 17 3 43 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 526 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 543 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 171 371 bang;
 #X obj 117 408 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
@@ -60,16 +60,16 @@
 #X text 201 386 - clears the remainder, f 38;
 #X text 165 409 float;
 #X text 201 441 - the regrouped message;
-#X text 167 476 1) float - group size (default 0);
-#X obj 4 497 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 147 506 -trim: trims selectors (list/symbol) on the output
+#X text 167 493 1) float - group size (default 0);
+#X obj 4 514 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 147 523 -trim: trims selectors (list/symbol) on the output
 ;
-#X obj 356 244 else/loop 13;
+#X obj 354 244 else/loop 13;
 #X text 78 136 A bang message sends the remaining stored elements that
 haven't reached the group size yet. So you can send a bang afterwards
 to force an output. A group size of zero keeps regrouping indefinitely
 until a bang is given., f 67;
-#X obj 329 224 t b b;
+#X obj 327 224 t b b;
 #X obj 152 40 cnv 4 4 4 empty empty into 0 28 2 18 -233017 -1 0;
 #X obj 187 40 cnv 4 4 4 empty empty a 0 28 2 18 -233017 -1 0;
 #X obj 203 40 cnv 4 4 4 empty empty list 0 28 2 18 -233017 -1 0;
@@ -77,8 +77,15 @@ until a bang is given., f 67;
 the input is smaller than the group size \, it needs to reach the group
 size before it's sent out. If the input list is bigger than the group
 size \, the remainder gets grouped in further lists., f 67;
-#X obj 246 298 else/group 2, f 19;
-#X obj 246 323 print group;
+#X obj 244 298 else/group 2, f 19;
+#X obj 244 323 print group;
+#X obj 355 321 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 376 315 no remainder (group is empty), f 16;
+#X obj 117 462 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 171 462 bang;
+#X text 201 462 - when there's no remainder (group is empty);
 #X connect 0 0 43 0;
 #X connect 1 0 48 0;
 #X connect 2 0 48 1;
@@ -90,3 +97,4 @@ size \, the remainder gets grouped in further lists., f 67;
 #X connect 43 0 48 0;
 #X connect 43 1 41 0;
 #X connect 48 0 49 0;
+#X connect 48 1 50 0;
