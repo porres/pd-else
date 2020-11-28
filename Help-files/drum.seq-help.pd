@@ -28,8 +28,7 @@ width float bordercolor;
 ;
 #X obj 7 491 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 546 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
-0;
+#X obj 7 546 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X obj 7 619 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 122 318 cnv 17 3 168 empty empty 0 5 9 0 16 -228856 -162280
@@ -37,8 +36,6 @@ width float bordercolor;
 #X obj 121 498 cnv 17 3 40 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 204 497 list;
-#X text 189 583 3) float - cell size in pixels (default 20), f 47
-;
 #X text 204 330 list;
 #X text 156 458 size <float>;
 #X text 198 386 clear;
@@ -47,15 +44,12 @@ width float bordercolor;
 #X text 192 414 import;
 #X text 150 472 embed <float>;
 #X text 244 414 - import contents as an array, f 41;
-#X text 189 598 4) float - embed flag \, (default 0), f 47;
 #X text 244 472 - non zero save internal contents with the object;
 #X obj 151 39 cnv 4 4 4 empty empty pattern 0 28 2 18 -233017 -1 0
 ;
 #X text 244 330 - sets track \, slot and status (no output), f 42
 ;
 #X text 244 372 - sets slot value and output tracks values;
-#X text 189 553 1) float - number of tracks (default 2), f 47;
-#X text 189 568 2) float - number of slots (default 8), f 47;
 #N canvas 835 71 564 723 drum 0;
 #X obj 360 596 else/pluck~ 50 2500 10000;
 #X obj 409 531 impseq~;
@@ -170,11 +164,16 @@ f 65;
 #X text 144 400 export <float>;
 #X text 244 400 - export tracks \, no float exports all as an array
 ;
-#X connect 40 0 52 0;
-#X connect 41 0 44 0;
-#X connect 42 0 51 0;
-#X connect 44 0 45 0;
-#X connect 51 0 44 0;
-#X connect 52 0 44 0;
-#X connect 56 0 44 0;
-#X connect 57 0 44 0;
+#X text 159 583 -size <float>: sets cell size in pixels (default 20)
+;
+#X text 159 568 -slots <float>: sets number of slots (default 8);
+#X text 159 553 -tracks <float>: sets tracks (default 2), f 47;
+#X text 159 598 -embed: sets emebding mode (default no embedding);
+#X connect 36 0 48 0;
+#X connect 37 0 40 0;
+#X connect 38 0 47 0;
+#X connect 40 0 41 0;
+#X connect 47 0 40 0;
+#X connect 48 0 40 0;
+#X connect 52 0 40 0;
+#X connect 53 0 40 0;
