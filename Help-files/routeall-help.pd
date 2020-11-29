@@ -187,7 +187,7 @@ object matches a symbol to a symbol or a list message! Another difference
 is that [routeall] takes both float and symbol messages at once! Moreover
 \, it can match to other elements in the message than the first.,
 f 74;
-#X obj 108 406 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 108 406 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 179 406 float -;
 #X text 232 406 set element number to match (default 0);

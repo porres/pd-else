@@ -55,6 +55,7 @@ changed.class.sources := Classes/Source/changed.c
 common.div.class.sources := Classes/Source/common.div.c
 coin.class.sources := Classes/Source/coin.c
 dir.class.sources := Classes/Source/dir.c
+spread.class.sources := Classes/Source/spread.c
 dollsym.class.sources := Classes/Source/dollsym.c
 hot.class.sources := Classes/Source/hot.c
 hz2rad.class.sources := Classes/Source/hz2rad.c

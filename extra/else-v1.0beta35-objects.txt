@@ -331,6 +331,7 @@ slider2d	x
 sort	x
 spectrograph~	x
 spread~	x
+spread	x
 square~	x
 sr~	x
 stack	x
