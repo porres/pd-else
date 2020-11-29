@@ -138,10 +138,6 @@ and \, by default \, 7 hits (change it to check it out), f 56;
 #X obj 187 313 else/euclid 16 5 0;
 #X obj 153 283 else/loop;
 #X obj 153 251 f 16;
-#X text 92 22 In this example we use [euclid] to genetrate values for
-[drum.seq]. This way we can check which slots have hist. The example
-allows you to set 2 different channels and change the number of steps
-(but when you do this \, both tracks get erased)., f 57;
 #X obj 157 389 else/insert track 1;
 #X obj 451 300 + 1;
 #X obj 451 254 vradio 18 1 0 2 empty empty empty 0 -8 0 10 -228856
@@ -163,12 +159,16 @@ allows you to set 2 different channels and change the number of steps
 #X obj 353 631 else/decay~ 250;
 #X obj 291 631 noise~;
 #X msg 451 328 track \$1;
-#X text 91 98 Try changing the rotation paraneter to visualize how
+#X text 92 22 In this example we use [euclid] to genetrate values for
+[drum.seq]. This way we can check which slots have hits. The example
+allows you to set 2 different channels. You can also change the number
+of steps (but when you do this \, both tracks get erased)., f 57;
+#X text 91 98 Try changing the rotation parameter to visualize how
 the sequence gets shifted to the right (for positive rotation values)
 or the the left (otherwise).;
 #X connect 0 0 4 0;
 #X connect 1 0 10 0;
-#X connect 2 0 29 0;
+#X connect 2 0 28 0;
 #X connect 3 0 9 0;
 #X connect 4 0 8 0;
 #X connect 4 1 13 0;
@@ -176,26 +176,26 @@ or the the left (otherwise).;
 #X connect 5 0 13 1;
 #X connect 6 0 11 2;
 #X connect 7 0 11 3;
-#X connect 8 0 15 0;
+#X connect 8 0 14 0;
 #X connect 9 0 10 0;
-#X connect 10 0 24 0;
+#X connect 10 0 23 0;
 #X connect 11 2 8 0;
 #X connect 12 0 11 0;
 #X connect 13 0 1 0;
 #X connect 13 0 12 0;
-#X connect 15 0 10 0;
-#X connect 16 0 34 0;
-#X connect 17 0 16 0;
-#X connect 24 0 2 0;
-#X connect 24 1 25 0;
-#X connect 25 0 32 0;
-#X connect 28 0 27 0;
-#X connect 29 0 28 1;
-#X connect 30 0 28 0;
-#X connect 31 0 27 1;
-#X connect 32 0 31 1;
-#X connect 33 0 31 0;
-#X connect 34 0 15 1;
+#X connect 14 0 10 0;
+#X connect 15 0 33 0;
+#X connect 16 0 15 0;
+#X connect 23 0 2 0;
+#X connect 23 1 24 0;
+#X connect 24 0 31 0;
+#X connect 27 0 26 0;
+#X connect 28 0 27 1;
+#X connect 29 0 27 0;
+#X connect 30 0 26 1;
+#X connect 31 0 30 1;
+#X connect 32 0 30 0;
+#X connect 33 0 14 1;
 #X restore 461 282 pd drum.seq;
 #X connect 5 0 6 0;
 #X connect 6 0 7 0;
