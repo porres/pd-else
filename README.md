@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (384 objects):
+## Current Object list (383 objects):
 
 **ASSORTED: [04]**
 
@@ -280,9 +280,9 @@ Cross compiling is also possible with something like this
 - [rand.i]
 - [rand.i~]
 
-**LOGIC: [02]**
+**LOGIC: [01]**
+
 - [loop]
-- [moses~]
 
 **AUDIO PROCESSING: ASSORTED [21]**
 - [downsample~]

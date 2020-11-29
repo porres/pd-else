@@ -207,7 +207,6 @@ mix4~	x
 mono	x
 mono.rev~	x
 morph~	x
-moses~	x
 mouse	x
 mov.avg	x
 mov.avg~	x
