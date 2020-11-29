@@ -50,7 +50,7 @@ width float bordercolor;
 #X text 244 330 - sets track \, slot and status (no output), f 42
 ;
 #X text 244 372 - sets slot value and output tracks values;
-#N canvas 835 71 564 723 drum 0;
+#N canvas 835 71 564 723 drum 1;
 #X obj 360 596 else/pluck~ 50 2500 10000;
 #X obj 409 531 impseq~;
 #X obj 299 649 else/out~;
@@ -91,6 +91,8 @@ work (note that tracks and slots are indexed from 1)., f 53;
 #X text 268 205 <= export track 1;
 #X msg 218 230 export 1;
 #X text 275 230 <= export track 3;
+#X obj 98 340 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
 #X connect 0 0 2 0;
 #X connect 1 0 0 1;
 #X connect 3 0 9 0;
