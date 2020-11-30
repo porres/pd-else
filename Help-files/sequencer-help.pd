@@ -43,7 +43,7 @@
 #X text 200 377 - goes to a position index in the sequence (from 1)
 ;
 #N canvas 844 192 662 484 +examples 0;
-#X obj 358 37 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 358 37 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X floatatom 241 190 5 0 0 0 - - -;
 #X msg 241 67 up;
@@ -62,7 +62,7 @@ read in different directions., f 29;
 #X obj 78 98 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
 #X obj 241 261 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 100 256;
+-228856 -1 -1 0 256;
 #X obj 78 155 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 331 356 *~;
@@ -171,30 +171,28 @@ the same time. This may also add a symbol/list selector., f 42;
 #X connect 3 0 2 0;
 #X connect 4 0 5 0;
 #X restore 483 270 pd combine;
-#N canvas 890 147 472 334 text 0;
-#X obj 61 272 else/display;
+#N canvas 890 147 465 312 text 0;
+#X obj 61 248 else/display;
 #X obj 61 180 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 61 157 else/tempo 60 -on;
-#X obj 193 97 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
--1 0;
-#X obj 61 246 else/sequencer;
-#X obj 193 71 loadbang;
-#X text 51 19 Use [text] to store many sequence presets.;
-#X obj 243 118 text define -k \$0-presets;
+#X obj 61 147 else/tempo 60 -on;
+#X obj 193 117 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
+-1 -1 0;
+#X obj 61 212 else/sequencer;
+#X obj 193 91 loadbang;
+#X text 93 29 Use [text] to store many sequence presets.;
+#X obj 243 138 text define -k \$0-presets;
 #A set 1 2 3 4 5 six 7 eight 9 ten \; 40 50 60 70 \; a b c d e f g
 \; ping pléin póing;
-#X obj 193 164 text get \$0-presets;
+#X obj 193 184 text get \$0-presets;
 #X obj 193 211 else/display;
-#X obj 193 187 else/insert set;
 #X connect 1 0 4 0;
 #X connect 2 0 1 0;
 #X connect 3 0 8 0;
 #X connect 4 0 0 0;
 #X connect 5 0 3 0;
-#X connect 8 0 10 0;
-#X connect 9 0 4 0;
-#X connect 10 0 9 0;
+#X connect 8 0 9 0;
+#X connect 9 0 4 1;
 #X restore 501 250 pd text;
 #X obj 109 415 cnv 17 3 30 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
