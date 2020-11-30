@@ -5,19 +5,19 @@
 #X msg 199 183 create;
 #X floatatom 262 256 5 0 0 0 - - -;
 #X text 259 205 clear memory;
-#X obj 3 332 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 335 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 486 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 489 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 528 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 531 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 91 340 cnv 17 3 97 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 343 cnv 17 3 97 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 91 443 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 91 446 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 92 495 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 92 498 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 571 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 574 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 5 5 cnv 15 301 42 empty empty markov 20 20 2 37 -233017 -1 0
 ;
@@ -45,7 +45,7 @@
 #X restore 307 5 graph;
 #X obj 180 42 cnv 4 4 4 empty empty chains 0 28 2 18 -233017 -1 0;
 #X obj 117 42 cnv 4 4 4 empty empty markov 0 28 2 18 -233017 -1 0;
-#X obj 91 463 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 91 466 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
 #X obj 199 303 else/display;
 #X msg 230 230 60 \, 60 \, 62 \, 60 \, 65 \, 64;
@@ -54,30 +54,30 @@
 #X text 372 230 <= 1) feed memory;
 #X text 245 181 <= 2) create markov chain and go to start;
 #X text 100 182 3) Play =>;
-#X text 172 338 bang;
-#X text 209 338 - get value from markov chain and goes to the next
+#X text 172 341 bang;
+#X text 209 341 - get value from markov chain and goes to the next
 ;
-#X text 160 352 create;
-#X text 166 366 clear;
-#X text 209 366 - clear memory, f 50;
-#X text 209 352 - create markov chain from memory and go to start,
+#X text 160 355 create;
+#X text 166 369 clear;
+#X text 209 369 - clear memory, f 50;
+#X text 209 355 - create markov chain from memory and go to start,
 f 50;
-#X text 166 394 reset;
-#X text 209 394 - go to the start of the chain, f 50;
-#X text 160 408 random;
-#X text 209 408 - go to a random position in the chain, f 50;
-#X text 100 380 learn <anything>;
-#X text 209 380 - feed memory with new information, f 50;
-#X text 148 445 anything;
-#X text 209 445 - feed memory with new information, f 50;
-#X text 118 422 order <float>;
-#X text 209 422 - sets order, f 50;
-#X text 209 465 - sets order, f 50;
-#X text 166 465 float;
-#X text 147 496 anything;
-#X text 210 496 - output from markov chain, f 32;
-#X text 141 535 1) float - sets order (defaul 1);
-#X text 141 551 2) float - non zero sets to savestate mode (default
+#X text 166 397 reset;
+#X text 209 397 - go to the start of the chain, f 50;
+#X text 160 411 random;
+#X text 209 411 - go to a random position in the chain, f 50;
+#X text 100 383 learn <anything>;
+#X text 209 383 - feed memory with new information, f 50;
+#X text 148 448 anything;
+#X text 209 448 - feed memory with new information, f 50;
+#X text 118 425 order <float>;
+#X text 209 425 - sets order, f 50;
+#X text 209 468 - sets order, f 50;
+#X text 166 468 float;
+#X text 147 499 anything;
+#X text 210 499 - output from markov chain, f 32;
+#X text 141 538 1) float - sets order (defaul 1);
+#X text 141 554 2) float - non zero sets to savestate mode (default
 0);
 #X text 48 91 [markov] creates Markov chains of any order out of progressions
 of floats \, symbols or lists (which can be used to create polyphonic
@@ -86,37 +86,38 @@ feeding information after the chain was created and recreate with the
 new information. You can clear to restart from scratch. State saving
 is possible with the 2nd argument \, where the chain is saved with
 the patch., f 75;
-#N canvas 845 102 406 556 midi-file 0;
+#N canvas 845 102 395 581 midi-file 0;
 #X obj 40 159 stripnote;
 #X msg 40 34 open;
 #X text 91 58 <= read/analyze;
 #X msg 194 134 clear;
-#X obj 244 128 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 244 128 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 244 152 tempo 120 50;
 #X obj 58 84 trigger anything bang;
 #X msg 58 58 dump;
-#X obj 145 203 else/markov;
+#X obj 145 223 else/markov;
 #X msg 145 134 create;
 #X obj 40 134 else/note.in;
 #X text 75 33 <= open another;
-#X obj 43 257 else/keyboard 17 80 2 4 0 0 empty empty;
-#X obj 145 228 makenote 127 300, f 22;
-#X obj 99 431 *~;
-#X obj 43 373 mtof;
-#X obj 99 486 out~;
-#X obj 114 373 / 127;
-#X obj 43 399 else/tri~;
-#X obj 114 399 else/adsr~ 50 10 0.7 100;
-#X obj 99 459 else/plate.rev~ 50 0.6 0.25 0.8 0.5;
-#X obj 43 348 unpack f f;
+#X obj 43 277 else/keyboard 17 80 2 4 0 0 empty empty;
+#X obj 145 248 makenote 127 300, f 22;
+#X obj 99 451 *~;
+#X obj 43 393 mtof;
+#X obj 99 506 out~;
+#X obj 114 393 / 127;
+#X obj 43 419 else/tri~;
+#X obj 114 419 else/adsr~ 50 10 0.7 100;
+#X obj 99 479 else/plate.rev~ 50 0.6 0.25 0.8 0.5;
+#X obj 43 368 unpack f f;
 #X obj 40 110 else/midi bday.mid;
 #X text 265 128 <= play;
-#X floatatom 233 202 5 0 0 0 - - -;
-#X text 269 200 order;
-#X text 237 49 Creating a monophonic chain from MIDI input., f 22
+#X floatatom 208 200 5 0 0 0 - - -;
+#X text 244 199 order;
+#X text 228 52 Creating a monophonic chain from MIDI input., f 22
 ;
-#X connect 0 0 8 1;
+#X msg 40 183 learn \$1;
+#X connect 0 0 27 0;
 #X connect 1 0 22 0;
 #X connect 3 0 8 0;
 #X connect 4 0 5 0;
@@ -142,7 +143,8 @@ the patch., f 75;
 #X connect 22 0 10 0;
 #X connect 22 1 9 0;
 #X connect 24 0 8 2;
-#X restore 460 296 pd midi-file;
+#X connect 27 0 8 0;
+#X restore 462 304 pd midi-file;
 #N canvas 807 97 429 499 midi-in 0;
 #X obj 173 103 stripnote;
 #X msg 153 73 clear;
@@ -183,7 +185,7 @@ for chords., f 37;
 #X connect 15 0 16 0;
 #X connect 16 0 17 0;
 #X connect 16 1 17 1;
-#X restore 471 275 pd midi-in;
+#X restore 473 283 pd midi-in;
 #X connect 0 0 28 0;
 #X connect 1 0 28 0;
 #X connect 2 0 28 0;
