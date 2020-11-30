@@ -118,7 +118,7 @@ are accepted and offer a mirrored/reversed curve. Check below.;
 2 2, f 41;
 #X obj 603 103 expr -$f1 \; -$f1 \; $f1 \; $f1;
 #X obj 603 160 pack f f f f;
-#X obj 603 182 else/setmess exp;
+#X obj 603 182 else/insert exp;
 #X obj 606 56 hsl 128 15 2 25 1 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X floatatom 603 80 5 0 0 0 - - -;

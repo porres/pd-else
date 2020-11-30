@@ -108,7 +108,7 @@ f 55;
 #N canvas 890 147 472 334 text 0;
 #X obj 193 107 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -228856
 -1 -1 2;
-#X obj 193 187 else/setmess set;
+#X obj 193 187 else/insert set;
 #X obj 193 81 loadbang;
 #X text 86 35 Use [text] to store many sequence presets.;
 #X obj 61 246 else/sequencer~;

@@ -92,7 +92,7 @@ frequency band channel from an array.;
 #X obj 277 346 changed;
 #X obj 341 100 loop 28 -step 3 -offset 27, f 10;
 #X obj 428 313 initmess \; \$0-hz1 60 \; \$0-hz2 74;
-#X obj 277 378 else/setmess freq;
+#X obj 277 378 else/insert freq;
 #X obj 341 193 else/count;
 #X obj 277 290 else/tempo 100 -ms;
 #X connect 0 0 13 0;
