@@ -57,6 +57,7 @@ ceil	x
 ceil~	x
 cents2ratio~	x
 cents2rato	x
+chance	x
 changed	x
 changed~	x
 changed2~	x
@@ -66,7 +67,6 @@ click	x
 clipnoise~	x
 clock	x
 cmul~	x
-coin	x
 coin~	x
 colors	x
 comb.filt~	x

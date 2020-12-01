@@ -1,9 +1,9 @@
-#N struct 1331-cell float x float y float cellsize float color;
-#N struct 1338-point float x0 float y0 float xs float ys float fg float
+#N struct 1330-cell float x float y float cellsize float color;
+#N struct 1337-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1362-slot float x float y float slotsize float color float
+#N struct 1361-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1377-point float x0 float y0 float size float fg float in
+#N struct 1376-point float x0 float y0 float size float fg float in
 float grid;
 #N canvas 782 59 557 959 10;
 #X declare -path else;
@@ -245,7 +245,6 @@ float grid;
 #X obj 56 8846 pulse;
 #X text 56 9179 Triggers:;
 #X obj 56 9264 bangdiv;
-#X obj 56 9294 coin;
 #X obj 56 9324 coin~;
 #X obj 56 9354 dust~;
 #X obj 56 9384 dust2~;
@@ -508,3 +507,4 @@ float grid;
 #X obj 56 1020 insert;
 #X obj 58 222 euclid;
 #X obj 56 1562 spread;
+#X obj 56 9294 chance;
