@@ -1,4 +1,4 @@
-#N struct 1025-pixel float color;
+#N struct 1030-pixel float color;
 #N canvas 670 60 560 662 10;
 #X obj 248 158 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -203,7 +203,7 @@ color properties inside abstractions., f 66;
 #X text 228 126 GUI;
 #X text 557 122 Data Structures;
 #N canvas 4 23 450 300 \$0-DS 0;
-#X scalar 1025-pixel 0 \;;
+#X scalar 1030-pixel 0 \;;
 #X coords 0 0 1 1 90 250 2 100 100;
 #X restore 560 144 pd \$0-DS;
 #N canvas 488 57 292 236 set-gui 0;
