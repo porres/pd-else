@@ -68,7 +68,6 @@ and [count], f 19;
 #X msg 506 340 -5.14286 -7.88572 -7.2 -2.4 -7.2 1.2 4.8 4.11429 -2.4
 -4.28572 -4.28572 -0.685715 2.22857 6.17143 7.3 7.1;
 #X obj 783 13 declare -path else;
-#X obj 506 317 setmess set;
 #X text 29 18 Let's implement a sequencer using an array to store values
 (check it to the right). The array can be used to control any parameter
 in a patch \, but here we just control the MIDI pitch of an oscillator.
@@ -88,6 +87,7 @@ see it here., f 29;
 read values from a table and use variables from a [value] object. But
 we're rounding to integer values and using a [gilde~] object for portamento.
 ;
+#X obj 506 317 insert set;
 #X connect 0 0 24 1;
 #X connect 1 0 23 0;
 #X connect 4 0 5 0;
@@ -106,15 +106,15 @@ we're rounding to integer values and using a [gilde~] object for portamento.
 #X connect 17 0 22 0;
 #X connect 18 0 46 0;
 #X connect 19 0 27 1;
-#X connect 23 0 49 0;
+#X connect 23 0 55 0;
 #X connect 24 0 4 0;
 #X connect 25 0 14 1;
 #X connect 27 0 17 0;
-#X connect 28 0 54 0;
+#X connect 28 0 53 0;
 #X connect 30 0 24 0;
 #X connect 35 0 37 0;
 #X connect 37 0 36 0;
 #X connect 39 0 30 0;
 #X connect 40 0 26 0;
-#X connect 49 0 47 0;
-#X connect 54 1 27 0;
+#X connect 53 1 27 0;
+#X connect 55 0 47 0;

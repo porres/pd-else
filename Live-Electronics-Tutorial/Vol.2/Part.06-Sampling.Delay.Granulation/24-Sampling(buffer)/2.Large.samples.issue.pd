@@ -1,4 +1,4 @@
-#N canvas 529 128 976 588 12;
+#N canvas 406 219 976 588 12;
 #X declare -path else;
 #X text 30 308 Note \, however \, that [tabread4~] has a second inlet
 to set an onset value and this is a hacky way for extending the precision

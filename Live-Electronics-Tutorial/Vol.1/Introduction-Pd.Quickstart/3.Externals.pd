@@ -1,4 +1,4 @@
-#N canvas 654 135 860 678 12;
+#N canvas 604 100 860 678 12;
 #X declare -path else;
 #X obj 150 149 rev1~;
 #X obj 203 149 rev2~, f 8;
@@ -73,7 +73,7 @@ dowloads this tutorial and vice versa. This is what you should have
 done. You can find installing information on this tutorial's readme.
 Check also ELSE's repository on github. Click on the bang buttons below
 to open them.;
-#X obj 555 632 openfile http://msp.ucsd.edu/Pd_documentation/x4.htm
+#X obj 555 632 else/openfile http://msp.ucsd.edu/Pd_documentation/x4.htm
 -h Pd Documentation chapter 4: externals;
 #X text 429 632 else/openfile =>;
 #X text 418 569 For more information on how Pd handles externals \,

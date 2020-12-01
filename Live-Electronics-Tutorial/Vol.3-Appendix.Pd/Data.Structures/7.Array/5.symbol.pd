@@ -1,6 +1,6 @@
-#N struct 1013-DS float x float y array 1013-table 1013-element;
-#N struct 1013-element symbol sym float y;
-#N canvas 172 54 598 623 12;
+#N struct 1084-DS float x float y array 1084-table 1084-element;
+#N struct 1084-element symbol sym float y;
+#N canvas 611 155 598 623 12;
 #X obj 475 376 pointer;
 #N canvas 317 275 503 265 template 0;
 #X text 74 45 Data Structure named "\$0-DS" holding coordinates floats
@@ -37,8 +37,7 @@ array with the [element] and [set] objects.;
 #X text 82 563 To set a symbol \, the [set] object needs a -symbol
 flag!;
 #N canvas 813 200 725 334 \$0-display 1;
-#X scalar 1013-DS 10 250 \; 1.Array.pd 0 \; 2.[element].pd 0 \; 3.curve.pd
-0 \; 4.[array].pd 0 \; 5.symbol.pd 0 \; 6.x-y.pd 0 \; \;;
+#X scalar 1084-DS 10 250 \; symbol 0 \; \;;
 #X coords 0 334 1 333 0 0 0;
 #X restore 387 160 pd \$0-display;
 #X obj 76 115 initmess \; pd-\$0-display clear \, vis 1 \; \$0-pointer

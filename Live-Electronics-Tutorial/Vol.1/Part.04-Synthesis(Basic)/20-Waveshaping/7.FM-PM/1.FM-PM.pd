@@ -1,4 +1,4 @@
-#N canvas 406 23 933 671 12;
+#N canvas 478 82 933 671 12;
 #X declare -path else;
 #X obj 133 357 +~;
 #X obj 81 319 phasor~;

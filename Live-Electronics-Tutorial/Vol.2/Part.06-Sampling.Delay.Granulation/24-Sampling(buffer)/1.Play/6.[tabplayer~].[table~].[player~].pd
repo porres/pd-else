@@ -1,4 +1,4 @@
-#N canvas 500 42 747 608 12;
+#N canvas 500 42 731 630 12;
 #X declare -path else;
 #X obj 573 210 phasor~;
 #X obj 573 284 out~;
@@ -15,7 +15,7 @@
 #X obj 454 526 out~;
 #X msg 454 465 speed \$1;
 #X obj 454 443 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -20.4994 256;
+-228856 -1 -1 7.48795 256;
 #X obj 105 280 unpack;
 #X obj 554 28 declare -path else;
 #X obj 454 495 player~ violin.wav 1 1;

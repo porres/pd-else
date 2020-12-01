@@ -4,12 +4,10 @@
 1;
 #X obj 423 22 declare -path else;
 #X obj 121 239 setdsp~ 1;
-#X obj 243 322 else/out~;
 #X text 157 174 record =>;
 #X obj 240 254 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 123 696 <= click;
-#X obj 407 655 else/out~;
 #X obj 166 549 standard~ 300;
 #X msg 84 695 show;
 #X msg 49 560 rec;
@@ -41,19 +39,21 @@ to record into by using something like [tabwrite~] or the [tabwriter~]
 object. The [sample~] object also exports and saves the recording \,
 check it below \, where we have a buffer size of 1000 ms. More info
 in the help file of these objects., f 70;
-#X connect 0 0 17 0;
-#X connect 5 0 22 0;
-#X connect 8 0 13 1;
-#X connect 9 0 15 0;
-#X connect 10 0 13 0;
-#X connect 11 0 13 0;
-#X connect 13 0 12 0;
-#X connect 14 0 16 0;
-#X connect 16 0 7 0;
-#X connect 16 1 7 1;
-#X connect 18 0 17 2;
-#X connect 19 0 17 1;
-#X connect 22 0 3 0;
-#X connect 22 1 3 1;
-#X connect 23 0 13 2;
-#X connect 24 0 15 0;
+#X obj 407 655 out~;
+#X obj 243 322 out~;
+#X connect 0 0 15 0;
+#X connect 4 0 20 0;
+#X connect 6 0 11 1;
+#X connect 7 0 13 0;
+#X connect 8 0 11 0;
+#X connect 9 0 11 0;
+#X connect 11 0 10 0;
+#X connect 12 0 14 0;
+#X connect 14 0 25 0;
+#X connect 14 1 25 1;
+#X connect 16 0 15 2;
+#X connect 17 0 15 1;
+#X connect 20 0 26 0;
+#X connect 20 1 26 1;
+#X connect 21 0 11 2;
+#X connect 22 0 13 0;
