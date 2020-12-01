@@ -207,5 +207,7 @@ this.;
 alternates at random intervals according to a "density" parameter \,
 which controls the average frequency.;
 #X obj 199 190 else/display~;
+#X text 45 165 see also:;
+#X obj 41 189 else/randpulse~;
 #X connect 16 0 32 0;
 #X connect 32 0 40 0;
