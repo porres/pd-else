@@ -18,9 +18,8 @@ typedef struct _chance{
 }t_chance;
 
 static void chance_output(t_chance *x, t_floatarg f){
-    for(int n = 0; n < x->x_ac; n++){
-        post("n = %d ", n);
-        post("f = %f / x->x_av[n].a_w.w_float = %f", f, x->x_av[n].a_w.w_float);
+    int n;
+    for(n = 0; n < x->x_ac; n++){
         if(f < x->x_av[n].a_w.w_float){
             x->x_index ? outlet_float(x->x_out_index, n+1) : outlet_bang(x->x_outs[n]);
             return;

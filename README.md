@@ -481,7 +481,7 @@ Cross compiling is also possible with something like this
 - [above~]
 - [bangdiv]
 - [chance]
-- [coin~]
+- [chance~]
 - [dust~]
 - [dust2~]
 - [gatehold~]
