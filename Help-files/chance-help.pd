@@ -1,4 +1,4 @@
-#N canvas 729 188 564 468 10;
+#N canvas 637 118 564 468 10;
 #X obj 4 3 cnv 15 301 42 empty empty chance 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -7,44 +7,44 @@
 #X obj 25 40 cnv 4 4 4 empty empty Weighted 0 28 2 18 -233017 -1 0
 ;
 #X obj 103 39 cnv 4 4 4 empty empty random 0 28 2 18 -233017 -1 0;
-#X obj 5 437 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 438 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 6 299 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 297 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 353 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 351 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 154 309 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 154 307 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X obj 154 263 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 154 258 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 6 254 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 6 248 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X msg 249 166 seed \$1;
-#X obj 249 147 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X msg 216 164 seed \$1;
+#X obj 216 145 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 213 150 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 180 148 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 213 222 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 180 220 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 234 264 bang;
-#X text 278 263 - a bang to be passed or not;
-#X text 234 308 bang;
-#X text 278 308 - random bangs;
-#X obj 274 222 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 234 258 bang;
+#X text 278 257 - a bang to be passed or not;
+#X text 234 306 bang;
+#X text 278 306 - random bangs;
+#X obj 241 220 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 6 393 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 186 279 seed <float>;
-#X text 278 278 - sets seed value;
-#X text 250 223 25%;
-#X obj 336 222 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 6 391 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 186 273 seed <float>;
+#X text 278 272 - sets seed value;
+#X text 217 221 25%;
+#X obj 303 220 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 312 223 25%;
-#X text 187 223 50%;
-#X obj 213 192 else/chance 50 25 25, f 21;
-#X obj 154 331 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 279 221 25%;
+#X text 154 221 50%;
+#X obj 180 190 else/chance 50 25 25, f 21;
+#X obj 154 329 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 228 331 float;
-#N canvas 1006 288 403 394 default 0;
+#X text 228 329 float;
+#N canvas 866 187 403 394 default 0;
 #X obj 118 58 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 118 130 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -74,8 +74,8 @@ of chances., f 47;
 #X connect 10 0 8 0;
 #X connect 10 1 9 0;
 #X restore 475 194 pd default;
-#X text 118 362 1) list -;
-#X text 183 362 list of probabilities (default 50 50). Check [pd default]
+#X text 118 360 1) list -;
+#X text 183 360 list of probabilities (default 50 50). Check [pd default]
 for more info if only one float is given;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -94,9 +94,13 @@ for more info if only one float is given;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 3 graph;
-#X text 164 401 -seed <float>: seed value (default: internal);
-#X text 206 418 -index: sets to index mode;
-#N canvas 991 322 433 259 index 0;
+#X text 164 400 -seed <float>: seed value (default: internal);
+#X text 206 417 -index: sets to index mode;
+#X text 70 87 When [chance] receives a bang \, it outputs to an outlet
+according to its chance (probability weight). The total number is the
+sum of all arguments. It also has an index mode where it outputs the
+outlet index number instead., f 66;
+#N canvas 780 235 433 259 index 0;
 #X obj 129 106 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 129 169 else/display;
@@ -107,12 +111,7 @@ each "2" and "3"., f 49;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X restore 486 216 pd index;
-#X text 278 331 - index number if in index mode;
-#X text 70 87 When [chance] receives a bang \, it outputs to an outlet
-according to its chance (probability weight) defined by the corresponding
-argument. The total number of chances is the sum of all arguments.
-It also has an index mode where it outputs the outlet index number
-instead., f 66;
+#X text 278 329 - index number if in index mode;
 #X connect 10 0 26 0;
 #X connect 11 0 10 0;
 #X connect 12 0 26 0;
