@@ -6,7 +6,7 @@
 #include "buffer.h"
 #include <stdlib.h>
 
-#define HALF_PI (M_PI * 0.5)
+#define HALF_PI (3.14159265358979323846 * 0.5)
 
 #define ONE_SIXTH 0.16666666666666666666667f
 #define SHARED_FLT_MAX  1E+36
