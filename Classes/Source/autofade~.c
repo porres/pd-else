@@ -9,7 +9,7 @@
 
 #define UNITBIT32 1572864.  // 3*2^19; bit 32 has place value 1
 
-#define HALF_PI M_PI * 0.5
+#define HALF_PI 3.14159265358979323846 * 0.5
 
 /* machine-dependent definitions.  These ifdefs really
  should have been by CPU type and not by operating system! */
@@ -47,6 +47,7 @@
 #define HIOFFSET 0    /* word offset to find MSB */
 #define LOWOFFSET 1    /* word offset to find LSB */
 #endif /* __BYTE_ORDER */
+
 #include <sys/types.h>
 #define int32 int32_t
 #endif /* __unix__ or __APPLE__*/
