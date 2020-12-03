@@ -60,7 +60,7 @@ static void keyboard_note_on(t_keyboard* x, int note){
     short key = note % 12, black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
     sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_ON : WHITE_ON);
     int ac = 2;
-    t_atom at[ac];
+    t_atom at[2];
     SETFLOAT(at, note);
     SETFLOAT(at+1, x->x_velocity);
     outlet_list(x->x_out, &s_list, ac, at);

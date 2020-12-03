@@ -23,7 +23,7 @@ static int status_number = 35;
 
 static void else_obj_version(t_else_obj *x){
     int ac = 5;
-    t_atom at[ac];
+    t_atom at[5];
     SETFLOAT(at, else_major);
     SETFLOAT(at+1, else_minor);
     SETFLOAT(at+2, else_bugfix);
