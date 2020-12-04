@@ -1,0 +1,100 @@
+#N canvas 545 77 915 592 12;
+#X declare -path else;
+#X obj 547 44 r \$0-size;
+#X obj 508 110 random;
+#X obj 443 110 random;
+#X obj 443 49 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X msg 158 332 \$1;
+#X obj 88 422 s \$0-hz;
+#X obj 88 370 /;
+#X obj 88 335 swap;
+#X obj 77 475 s \$0-size;
+#X obj 508 199 samps2ms;
+#X obj 433 246 pack float float float;
+#X obj 433 274 display;
+#X obj 433 362 tabread4~ \$0-buffer;
+#X obj 433 333 envgen~;
+#X obj 644 384 envgen~;
+#X msg 658 236 duration \$1 \, bang;
+#X obj 433 390 *~;
+#X obj 433 425 out~;
+#X obj 158 378 /;
+#X floatatom 158 409 5 0 0 0 - - -;
+#X obj 443 79 t b b;
+#X obj 600 156 *;
+#X obj 443 136 expr $f1 \; abs($f1-$f2) / $f3 \; $f2;
+#X obj 600 130 cents2ratio;
+#X obj 600 111 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-262144 -1 -1 0 256;
+#X obj 633 156 r \$0-ratio;
+#X obj 158 438 s \$0-ratio;
+#X obj 600 85 b;
+#X text 439 302 <= start \, duration \, target;
+#X obj 721 61 declare -path else;
+#X obj 644 270 function 200 100 empty empty 0 1 220 220 220 50 50 50
+0 0 0 0 0 0.1 1 0.8 1 0.1 0;
+#X obj 644 203 initmess 0 0.1 1 0.8 1 0.1 0;
+#X text 40 148 In this patch we generate random start/end points and
+get a duration period in ms from the difference. This period can be
+changed by a ratio input from a cents value. Note we also have a ratio
+parameter that is a compensation from the ratio between the sound file's
+sample rate and Pd's, f 49;
+#X obj 190 378 sr~;
+#X text 189 334 <= sound file's sample rate, f 15;
+#X text 220 376 <= Pd's sample rate;
+#X text 201 408 <= compensation ratio;
+#X obj 77 304 unpack f f, f 12;
+#X floatatom 88 397 5 0 0 0 - - -;
+#X floatatom 77 449 0 0 0 0 - - -;
+#X obj 77 273 sample~ \$0-buffer sax.wav;
+#X text 40 28 This example shows how to use [envgen~] to drive [tabread4~]
+instead of [phasor~] \, and how to play random bits of the file as
+an example of doing something more complex than just playing the whole
+file. We also have a second [envgen~] as an envelope to avoid clicks
+at the beggining and end of the file bits - this envelope function
+is given by the [function] GUI., f 49;
+#X text 238 509 Note that [envgen~] could be replaced by vanilla's
+[vline~] object \, which provides similar functionalities as presented
+earlier in this tutorial.;
+#X connect 0 0 1 1;
+#X connect 0 0 2 1;
+#X connect 0 0 27 0;
+#X connect 1 0 22 1;
+#X connect 2 0 22 0;
+#X connect 3 0 20 0;
+#X connect 4 0 7 1;
+#X connect 4 0 18 0;
+#X connect 6 0 38 0;
+#X connect 7 0 6 0;
+#X connect 7 1 6 1;
+#X connect 9 0 10 1;
+#X connect 9 0 15 0;
+#X connect 10 0 11 0;
+#X connect 11 0 13 0;
+#X connect 12 0 16 0;
+#X connect 13 0 12 0;
+#X connect 14 0 16 1;
+#X connect 15 0 30 0;
+#X connect 16 0 17 0;
+#X connect 18 0 19 0;
+#X connect 19 0 26 0;
+#X connect 20 0 2 0;
+#X connect 20 1 1 0;
+#X connect 21 0 22 2;
+#X connect 22 0 10 0;
+#X connect 22 1 9 0;
+#X connect 22 2 10 2;
+#X connect 23 0 21 0;
+#X connect 24 0 23 0;
+#X connect 25 0 21 1;
+#X connect 27 0 24 0;
+#X connect 30 0 14 0;
+#X connect 31 0 30 0;
+#X connect 33 0 18 1;
+#X connect 37 0 7 0;
+#X connect 37 0 39 0;
+#X connect 37 1 4 0;
+#X connect 38 0 5 0;
+#X connect 39 0 8 0;
+#X connect 40 0 37 0;

@@ -1,0 +1,95 @@
+#N canvas 324 68 966 638 12;
+#X declare -path else;
+#X obj 253 506 *~;
+#X text 106 354 pitch;
+#X obj 155 415 mtof;
+#X text 108 366 MIDI;
+#X text 127 441 Hz;
+#X obj 155 466 osc~;
+#X floatatom 155 441 5 0 0 0 - - -;
+#X floatatom 213 360 5 0 0 0 - - -;
+#X floatatom 271 361 5 0 0 0 - - -;
+#X text 306 360 ms;
+#X obj 216 322 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 155 319 bng 30 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 271 473 adsr~ 50 100 0.5 200;
+#X obj 271 416 / 127;
+#X obj 253 545 out~;
+#X obj 271 445 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X msg 155 359 69;
+#X obj 155 388 makenote 127 1000;
+#X text 275 342 duration;
+#X text 250 321 velocity;
+#X obj 584 516 *~;
+#X text 660 377 velocity;
+#X obj 529 406 mtof;
+#X text 501 421 Hz;
+#X obj 529 471 osc~;
+#X floatatom 529 436 5 0 0 0 - - -;
+#X obj 529 378 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 602 380 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 486 377 Pitch;
+#X obj 602 469 adsr~ 50 100 0.5 200;
+#X obj 602 428 / 127;
+#X obj 584 557 out~;
+#X obj 860 229 notein;
+#X obj 529 257 keyboard 17 80 3 3 0;
+#X obj 529 351 unpack;
+#X text 492 140 You could set a MIDI controller now if you have one
+and use [notein] to receive MIDI note information. To set your MIDI
+device \, fo to "Pd => Preferences => MIDI"., f 62;
+#X text 492 192 In case you don't have one \, you can have some fun
+using the [keyboard] object from ELSE \, instead., f 62;
+#X text 492 48 This example uses the MIDI note information to set the
+frequency of an oscillator and trigger [adsr~]. In the context of MIDI
+values in the range of 0 to 127 \, we need [mtof] to convert the pitch
+to hertz and divide the velocity by 127 to trigger the envelope.,
+f 62;
+#X obj 790 16 declare -path else;
+#X text 26 31 MIDI controllers send "Note" messages from key action.
+A "Note On" message is sent when a key is pressed \, and a "Note Off"
+when released. The native object [makenote] emulates MIDI notes \,
+it generates a Note On message when it receives a MIDI pitch in the
+left inlet and schedules a Note Off., f 62;
+#X text 26 109 A Note message needs Pitch and Velocity values. In a
+Note On message \, the velocity is the intensity of the note \, because
+the faster the key action was \, the more intense the note should be.
+A Note Off message \, on the other hand \, sends the same pitch number
+but a velocity of 0 as a cue that the key was released!, f 62;
+#X text 26 201 The raw note MIDI data is in the range from 0 to 127
+\, but Pd's [makenote] doesn't really care and can deal with any kind
+of float input! In this example \, [makenote]'s arguments initially
+set a velocity of 127 and schedules a note off after 1000 ms of the
+note on - but you can change this via its inlets., f 62;
+#X connect 0 0 14 0;
+#X connect 2 0 6 0;
+#X connect 5 0 0 0;
+#X connect 6 0 5 0;
+#X connect 7 0 17 1;
+#X connect 8 0 17 2;
+#X connect 10 0 7 0;
+#X connect 11 0 16 0;
+#X connect 12 0 0 1;
+#X connect 13 0 15 0;
+#X connect 15 0 12 0;
+#X connect 16 0 17 0;
+#X connect 17 0 2 0;
+#X connect 17 1 13 0;
+#X connect 20 0 31 0;
+#X connect 22 0 25 0;
+#X connect 24 0 20 0;
+#X connect 25 0 24 0;
+#X connect 26 0 22 0;
+#X connect 27 0 30 0;
+#X connect 29 0 20 1;
+#X connect 30 0 29 0;
+#X connect 32 0 33 0;
+#X connect 32 1 33 1;
+#X connect 33 0 34 0;
+#X connect 34 0 26 0;
+#X connect 34 1 27 0;

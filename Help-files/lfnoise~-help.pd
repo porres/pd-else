@@ -1,4 +1,4 @@
-#N canvas 542 33 561 631 10;
+#N canvas 691 100 561 631 10;
 #X obj 236 235 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 211 323 else/out~;
@@ -115,24 +115,25 @@ are: [stepnoise~] (without interpolation) and [rampnoise~] (with interpolation.
 #X connect 22 0 5 1;
 #X restore 439 309 pd interpolation;
 #N canvas 726 168 554 446 seed 0;
+#X obj 288 257 else/graph~ 441 0 -1.05 1.05 200 140;
+#X obj 71 257 else/graph~ 441 0 -1.05 1.05 200 140;
+#X obj 71 199 else/lfnoise~ 1 0 319;
+#X obj 288 198 else/lfnoise~ 1 0 319;
+#X msg 212 156 seed \$1;
+#X msg 212 128 319;
+#X text 92 86 By default \, each instance of [lfnoise~] has its own
+seed value.;
+#X msg 260 131 921098;
 #X text 91 23 [lfnoise~] objects that share the same seed will have
 the same random number generation. You can specify a seed value as
-the third argument or via rthe 'seed' message.;
-#X obj 288 243 else/graph~ 441 0 -1.05 1.05 200 140;
-#X obj 71 243 else/graph~ 441 0 -1.05 1.05 200 140;
-#X obj 71 185 else/lfnoise~ 1 0 319;
-#X obj 288 184 else/lfnoise~ 1 0 319;
-#X msg 212 142 seed \$1;
-#X msg 212 114 319;
-#X text 90 73 By default \, each instance of [lfnoise~] has its own
-seed value.;
-#X msg 260 117 921098;
-#X connect 3 0 2 0;
-#X connect 4 0 1 0;
-#X connect 5 0 3 0;
+the third argument or via the 'seed' message. The default is a unique
+value for each instance based on the system time.;
+#X connect 2 0 1 0;
+#X connect 3 0 0 0;
+#X connect 4 0 2 0;
+#X connect 4 0 3 0;
 #X connect 5 0 4 0;
-#X connect 6 0 5 0;
-#X connect 8 0 5 0;
+#X connect 7 0 4 0;
 #X restore 492 333 pd seed;
 #X obj 91 461 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
@@ -161,11 +162,6 @@ generate a new random value.;
 #X text 43 301 see also:;
 #X obj 44 352 else/rampnoise~;
 #X obj 44 328 else/stepnoise~;
-#X text 82 88 [lfnoise~] is a low frequency (band limited) noise with
-or without interpolation. It generates random values (between -1 and
-1) at a rate in hertz (negative frequencies accepted). It also has
-a 'sync' inlet that forces the object to generate a new random value
-when receiving an impulse., f 62;
 #N canvas 806 202 450 300 control 0;
 #X obj 267 157 osc~;
 #X obj 267 194 else/out~;
@@ -184,6 +180,12 @@ objects. Here we control the frequency of an oscillator.;
 #X connect 7 0 0 0;
 #X connect 8 0 4 0;
 #X restore 475 285 pd control;
+#X text 82 88 [lfnoise~] is a low frequency (band limited) noise with
+or without interpolation. It generates random values (between -1 and
+1) at a rate in hertz (negative frequencies accepted). It also has
+a 'sync' inlet that forces the object to generate a new random value
+when receiving an impulse. Use the seed message if you want a reproducible
+output., f 62;
 #X connect 0 0 19 0;
 #X connect 19 0 21 0;
 #X connect 21 0 1 0;

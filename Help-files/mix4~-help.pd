@@ -1,4 +1,4 @@
-#N canvas 385 62 564 714 10;
+#N canvas 618 70 564 714 10;
 #X obj 2 679 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 1 358 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -159,9 +159,9 @@
 #X text 407 209 slider scaling:;
 #X text 442 229 quartic;
 #X obj 315 134 nbx 5 14 -100 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 44 256;
+-1 -1 0 256;
 #X obj 396 140 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 10000 1;
+-1 -1 0 1;
 #X floatatom 393 160 5 0 0 0 - - -;
 #X obj 162 484 else/meter2~;
 #X obj 218 368 else/gain2~;

@@ -1,0 +1,84 @@
+#N canvas 556 149 763 605 12;
+#X declare -path else;
+#X obj 122 309 nbx 8 14 1e-05 1 1 0 empty empty empty 18 -6 0 10 -228856
+-1 -1 0.204732 256;
+#X obj 122 452 nbx 8 14 0 100 0 0 empty empty empty 18 -6 0 10 -228856
+-1 -1 86.2237 256;
+#X obj 125 287 hsl 128 15 1e-05 1 0 0 \$0-linear empty empty -2 -8
+0 10 -228856 -1 -1 2600 1;
+#X floatatom 122 356 0 0 0 0 - - -;
+#X floatatom 122 402 0 0 0 0 - - -;
+#X obj 122 333 / 1e-05;
+#X floatatom 122 501 7 0 0 0 - - -;
+#X obj 122 476 expr pow(10 \, $f1 / 20);
+#X obj 122 526 * 1e-05;
+#X text 54 545 linear;
+#X text 46 560 amplitude;
+#X text 71 401 log =>;
+#X obj 122 427 * 20;
+#X text 95 449 dB;
+#X obj 171 167 cnv 15 215 40 empty empty empty 20 12 0 14 -228856 -66577
+0;
+#X text 244 185 10;
+#X text 181 172 dB = 20 Log (amp / 0.00001);
+#X obj 372 464 rmstodb;
+#X obj 372 489 nbx 8 14 0 100 0 0 empty empty empty 18 -6 0 10 -228856
+-1 -1 86.2237 256;
+#X obj 372 440 nbx 8 14 1e-05 1 1 0 empty \$0-linear empty 18 -6 0
+10 -228856 -1 -1 0.204732 256;
+#X obj 372 512 dbtorms;
+#X text 28 18 Amplitude values are normally expressed in dB. Amplitude
+values between -1 and 1 \, as we have in digital audio \, are linear
+values \, as opposed to values in dB \, which are logarithmic., f
+62;
+#X text 38 223 Now input amplitudes from 1e-05 to 1 return values between
+0 and 100 dB. See this conversion and the opposite conversion being
+done in a patch and with native Pd objects;
+#X text 179 500 <= ratio;
+#X text 181 333 <= reference amplitude;
+#X text 209 308 <= linear amplitude;
+#X text 59 356 ratio =>;
+#X text 321 438 linear;
+#X text 350 486 dB;
+#X text 318 544 linear;
+#X obj 122 379 log 10;
+#X text 28 81 A dB value indicates a proportion/ratio to a reference
+amplitude. Hence \, it is not different than a musical interval! There
+are different types of dB scale \, each with a different reference
+value. Considering the reference as 1e-05 (or 0.00001) \, the conversion
+to dB from a linear amplitude ("amp") is given as:, f 62;
+#X obj 572 42 declare -path else;
+#X obj 122 554 display;
+#X obj 372 543 display;
+#X text 178 379 convert ratio to a log scale;
+#X text 512 107 The [rmstodb] and [dbtorms] objects give the idea that
+"linear" is a synonym of "rms" \, which is not true. The "RMS" can
+actually be expressed either as a linear amplitude or in dB., f 32
+;
+#X floatatom 561 293 0 0 0 0 - - -;
+#X floatatom 561 368 0 0 0 0 - - -;
+#X floatatom 561 437 0 0 0 0 - - -;
+#X obj 561 331 expr dbtorms($f1);
+#X obj 561 403 expr rmstodb($f1);
+#X text 512 217 Note that [expr] also has built in functions for converting
+'dbtorms' and 'rmstodb'., f 31;
+#X text 473 487 <= converting with dedicated objects., f 18;
+#X connect 0 0 5 0;
+#X connect 1 0 7 0;
+#X connect 2 0 0 0;
+#X connect 3 0 30 0;
+#X connect 4 0 12 0;
+#X connect 5 0 3 0;
+#X connect 6 0 8 0;
+#X connect 7 0 6 0;
+#X connect 8 0 33 0;
+#X connect 12 0 1 0;
+#X connect 17 0 18 0;
+#X connect 18 0 20 0;
+#X connect 19 0 17 0;
+#X connect 20 0 34 0;
+#X connect 30 0 4 0;
+#X connect 37 0 40 0;
+#X connect 38 0 41 0;
+#X connect 40 0 38 0;
+#X connect 41 0 39 0;

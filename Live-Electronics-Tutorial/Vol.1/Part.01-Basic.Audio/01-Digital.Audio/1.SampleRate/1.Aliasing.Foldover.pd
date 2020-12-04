@@ -1,0 +1,54 @@
+#N canvas 479 110 942 549 12;
+#X declare -path else;
+#X obj 587 391 * 1000;
+#X obj 587 432 osc~;
+#X text 784 431 KHz;
+#X obj 587 338 nbx 3 19 0 100 0 0 empty empty empty 0 -8 0 14 -228856
+-1 -1 40 256;
+#X obj 587 477 out~;
+#X obj 201 135 display;
+#X obj 201 108 nyquist~;
+#X obj 685 390 fold;
+#X obj 685 419 nbx 6 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
+-228856 -1 -1 40 256;
+#X text 24 20 Nyquist's theorem says the highest frequency we can represent
+(also called "nyquist frequncy") is half the sample rate. Higher frequencies
+generate "Aliasing" or "Foldover". The [nyquist~] object \, from ELSE
+\, reports the Nyquist Frequency.;
+#X text 25 183 Let's imagine an over exagerated example \, where a
+digital sound has an extremely low rate of 20Hz. Well \, a middle A
+(with 440 hz) can never be represented in such a low rate.;
+#X text 34 452 Above we have an illustration where the original frequency
+signal (in red) is higher than the sample rate (which are represented
+by the blue dots). The resulting blue signal is what we end up representing
+and it has a lower frequency than the original.;
+#X text 519 124 Frequency = Nyquist - (Frequency - Nyquist);
+#X text 467 160 This calculus is performed in the [fold] object from
+ELSE. By default \, we're sending a frequency of 40 Khz to [osc~] \,
+but the resulting oscillation has a frequency of 4.1 Khz. Change the
+number values to try it out., f 63;
+#X text 758 418 <= Alias;
+#X text 407 382 <= [pic] object \, from ELSE, f 16;
+#X obj 587 277 initmess 40;
+#X text 492 339 Kilohertz =>;
+#X obj 587 307 trigger float bang;
+#X obj 710 361 nyquist~ -khz;
+#X obj 774 24 declare -path else;
+#X obj 77 251 pic 0 foldover.gif empty empty 0 0;
+#X text 467 59 If the frequency starts passing over the Nyquist \,
+it folds back and starts descending. For example \, in a Nyquist frequency
+of 22.05 Khz \, 23.1 Khz becomes 21 Khz. Mathematically speaking:,
+f 63;
+#X text 677 276 <= initial message of 40;
+#X text 467 226 when the aliased frequency hits and passes 0 Hz \,
+it folds back again and starts raising up again., f 63;
+#X connect 0 0 1 0;
+#X connect 1 0 4 0;
+#X connect 3 0 0 0;
+#X connect 3 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 8 0;
+#X connect 16 0 18 0;
+#X connect 18 0 3 0;
+#X connect 18 1 19 0;
+#X connect 19 0 7 2;

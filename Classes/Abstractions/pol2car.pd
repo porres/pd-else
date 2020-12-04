@@ -1,4 +1,4 @@
-#N canvas 323 201 472 239 10;
+#N canvas 709 239 472 239 10;
 #X text 228 104 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 230 85 Alexandre Torres Porres (2018);
 #X obj 83 95 expr cos($f2) * $f1 \; sin($f2) * $f1;

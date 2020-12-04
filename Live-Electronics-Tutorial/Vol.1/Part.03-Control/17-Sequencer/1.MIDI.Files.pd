@@ -1,0 +1,101 @@
+#N canvas 668 58 491 556 12;
+#X declare -path else;
+#X obj 245 242 spigot;
+#X obj 284 217 tgl 15 0 empty loop empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X text 302 216 loop;
+#N canvas 575 228 354 342 voice1 0;
+#X obj 152 228 *~;
+#X obj 47 117 mtof;
+#X floatatom 47 147 5 0 0 0 - - -;
+#X obj 47 29 inlet;
+#X floatatom 170 93 5 0 0 0 - - -;
+#X floatatom 47 90 5 0 0 0 - - -;
+#X obj 152 260 outlet~;
+#X obj 47 60 unpack float float;
+#X obj 90 146 *~ 0.8;
+#X obj 73 183 bl.vsaw~;
+#X obj 90 120 osc~ 0.25;
+#X obj 170 190 adsr~ 10 40 0.5 10;
+#X obj 170 120 / 127;
+#X connect 0 0 6 0;
+#X connect 1 0 2 0;
+#X connect 2 0 9 0;
+#X connect 3 0 7 0;
+#X connect 4 0 12 0;
+#X connect 5 0 1 0;
+#X connect 7 0 5 0;
+#X connect 7 1 4 0;
+#X connect 8 0 9 1;
+#X connect 9 0 0 0;
+#X connect 10 0 8 0;
+#X connect 11 0 0 1;
+#X connect 12 0 11 0;
+#X restore 74 314 pd voice1;
+#X obj 113 279 voices 2 1;
+#X obj 157 249 note.in;
+#X msg 157 193 start;
+#N canvas 575 228 336 318 voice2 0;
+#X obj 152 228 *~;
+#X obj 47 117 mtof;
+#X floatatom 47 147 5 0 0 0 - - -;
+#X obj 47 29 inlet;
+#X floatatom 170 93 5 0 0 0 - - -;
+#X floatatom 47 90 5 0 0 0 - - -;
+#X obj 152 260 outlet~;
+#X obj 47 60 unpack float float;
+#X obj 90 146 *~ 0.8;
+#X obj 73 173 bl.vsaw~;
+#X obj 170 190 adsr~ 10 40 0.5 10;
+#X obj 170 120 / 127;
+#X obj 90 120 osc~ 0.75;
+#X connect 0 0 6 0;
+#X connect 1 0 2 0;
+#X connect 2 0 9 0;
+#X connect 3 0 7 0;
+#X connect 4 0 11 0;
+#X connect 5 0 1 0;
+#X connect 7 0 5 0;
+#X connect 7 1 4 0;
+#X connect 8 0 9 1;
+#X connect 9 0 0 0;
+#X connect 10 0 0 1;
+#X connect 11 0 10 0;
+#X connect 12 0 8 0;
+#X restore 146 314 pd voice2;
+#X obj 123 347 rotate~;
+#X obj 189 347 osc~ 0.5;
+#X obj 157 171 bng 15 250 50 0 empty \$0-bang empty 17 7 0 10 -228856
+-1 -1;
+#X obj 245 269 s \$0-bang;
+#X obj 284 193 loadbang;
+#X text 69 455 Above \, the [midi] object sends a bang to the right
+outlet when the file sequence is over \, and we can use this for looping
+it. Here we have a two voice polyphonic synth to play this MIDI file.
+Each voice is a variable sawtooth waveform., f 52;
+#X obj 308 23 declare -path else;
+#X obj 107 386 out~;
+#X text 49 58 The [midi] external \, from ELSE \, can read MIDI files
+like in this example \, but it outputs raw MIDI informtaion \, so we
+need other objects to extract data such as [note.in] \, which retrieves
+only MIDI notes. The [midi] object can also record MIDI information
+from your controller or your patch. Check its help file for more information.
+, f 56;
+#X obj 157 217 midi bach.mid;
+#X connect 0 0 11 0;
+#X connect 1 0 0 1;
+#X connect 3 0 8 0;
+#X connect 4 0 3 0;
+#X connect 4 1 7 0;
+#X connect 5 0 4 0;
+#X connect 5 1 4 1;
+#X connect 6 0 17 0;
+#X connect 7 0 8 1;
+#X connect 8 0 15 0;
+#X connect 8 1 15 1;
+#X connect 9 0 8 2;
+#X connect 10 0 6 0;
+#X connect 12 0 1 0;
+#X connect 12 0 10 0;
+#X connect 17 0 5 0;
+#X connect 17 1 0 0;

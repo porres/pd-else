@@ -1,0 +1,56 @@
+#N canvas 825 46 519 630 12;
+#X declare -path else;
+#X msg 257 407 stop;
+#X obj 214 552 out~;
+#X msg 80 252 show;
+#X msg 32 252 hide;
+#X floatatom 80 320 0 0 0 0 - - -;
+#X obj 80 348 s \$0-size;
+#X text 120 252 <= shows and hides internal buffer;
+#X obj 349 14 declare -path else;
+#X obj 80 290 sample~ \$0-sample bubul.wav;
+#X obj 214 516 tabplayer~ \$0-sample;
+#X msg 264 433 pause;
+#X msg 271 460 resume;
+#X text 24 49 The [sample~] object from the ELSE library is a convenient
+abstraction based on [soundfiler] that can load a sample into an internal
+table. It can also be used to create an audio buffer that you can record
+into as we'll show later in this section of the tutorial. One advantage
+of [sample~] is that it can be used to load multi channel files. Check
+its help file for more details., f 66;
+#X msg 236 334 play;
+#X obj 214 334 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 192 334 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X msg 244 359 play 2000 4000 50;
+#X msg 251 380 play 3000 6000 -150;
+#X obj 351 550 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 372 551 done;
+#X msg 276 488 reset \, speed 100;
+#X text 373 358 set start \, end;
+#X text 408 374 and speed;
+#X text 24 141 Below \, [sample~] loads a single channel file (the
+same as last example). Its outlet also outputs the table size in samples
+(the output is actually a list with size \, sample rate and number
+of channels) \, so we have basically the same thing as the last example.
+, f 66;
+#X text 26 447 The [tabplayer~] object from ELSE is also a much more
+powerful alternative to [tabplay~] that offers different reading speeds
+and also has multi-channel support. Check its help file., f 26;
+#X connect 0 0 9 0;
+#X connect 2 0 8 0;
+#X connect 3 0 8 0;
+#X connect 4 0 5 0;
+#X connect 8 0 4 0;
+#X connect 9 0 1 0;
+#X connect 9 1 18 0;
+#X connect 10 0 9 0;
+#X connect 11 0 9 0;
+#X connect 13 0 9 0;
+#X connect 14 0 9 0;
+#X connect 15 0 9 0;
+#X connect 16 0 9 0;
+#X connect 17 0 9 0;
+#X connect 20 0 9 0;

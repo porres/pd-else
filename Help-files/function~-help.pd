@@ -25,7 +25,6 @@
 0;
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 467 70 setdsp~ 1;
 #X obj 2 422 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 -228856 -66577 0;
 #X obj 1 266 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -119,7 +118,7 @@ are accepted and offer a mirrored/reversed curve. Check below.;
 2 2, f 41;
 #X obj 603 103 expr -$f1 \; -$f1 \; $f1 \; $f1;
 #X obj 603 160 pack f f f f;
-#X obj 603 182 else/setmess exp;
+#X obj 603 182 else/insert exp;
 #X obj 606 56 hsl 128 15 2 25 1 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X floatatom 603 80 5 0 0 0 - - -;
@@ -150,6 +149,7 @@ and [else/rescale~]. Check them out as well:;
 #X connect 18 0 12 0;
 #X connect 22 0 4 0;
 #X restore 449 236 pd exponential;
-#X connect 26 0 29 0;
+#X obj 467 70 else/setdsp~;
+#X connect 25 0 28 0;
+#X connect 26 0 25 0;
 #X connect 27 0 26 0;
-#X connect 28 0 27 0;

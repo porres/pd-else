@@ -1,15 +1,15 @@
-#N canvas 678 149 561 497 10;
+#N canvas 678 149 561 513 10;
 #X obj 4 307 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 389 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 424 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 441 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
 #X obj 116 398 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 117 315 cnv 17 3 67 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 467 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 484 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -139,22 +139,21 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 2 graph;
-#X text 168 432 1) float - divide value (default 1);
+#X text 168 449 1) float - divide value (default 1);
 #X text 143 332 div <float>;
 #X text 131 350 start <float>;
-#X text 168 449 2) float - start count value (default 0);
+#X text 168 466 2) float - start count value (default 0);
 #X text 222 350 - sets the start value;
 #X text 222 332 - sets the division value (minimum: 1);
 #X text 156 278 divided count;
 #X msg 293 188 start \$1;
 #X msg 243 184 div \$1;
-#X floatatom 293 167 5 0 0 0 - - -, f 5;
-#X floatatom 243 164 5 0 0 0 - - -, f 5;
+#X floatatom 293 167 5 0 0 0 - - -;
+#X floatatom 243 164 5 0 0 0 - - -;
 #X obj 243 275 else/display;
 #X obj 215 182 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 243 249 else/count;
-#X obj 243 218 else/bangdiv 4 2;
 #X text 61 85 [bangdiv] outputs bangs when receiving bangs \, but doesn't
 discards a number of bangs corresponding to a division value. The first
 bang in the count is output. A starting value lets you start in the
@@ -166,10 +165,19 @@ counts to the first time a bang is output.;
 #X text 222 367 - resets the counter to the start value;
 #X text 185 398 bang;
 #X text 222 398 - divided bangs;
-#X connect 26 0 33 0;
-#X connect 27 0 33 0;
+#X obj 336 249 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 358 250 rest;
+#X obj 243 218 else/bangdiv 4 2;
+#X obj 116 419 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 185 419 bang;
+#X text 222 419 - when we have a rest;
+#X connect 26 0 42 0;
+#X connect 27 0 42 0;
 #X connect 28 0 26 0;
 #X connect 29 0 27 0;
-#X connect 31 0 33 0;
+#X connect 31 0 42 0;
 #X connect 32 0 30 0;
-#X connect 33 0 32 0;
+#X connect 42 0 32 0;
+#X connect 42 1 40 0;

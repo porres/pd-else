@@ -1,4 +1,4 @@
-#N canvas 523 239 565 432 10;
+#N canvas 682 112 565 432 10;
 #X obj 3 284 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 334 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -13,7 +13,7 @@
 #X obj 191 169 hsl 180 15 -100 0 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 188 193 nbx 5 14 -100 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 -100 256;
+-1 -1 0 256;
 #X text 247 193 dBFS;
 #X text 157 294 float;
 #X text 157 343 float;
@@ -40,7 +40,7 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 188 249 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 2 256;
+-228856 -1 -1 0 256;
 #X text 206 294 - dBFS amplitude value;
 #X text 202 337 - converted linear amplitude value;
 #X text 78 85 [db2lin] is a simple abstraction that converts amplitude

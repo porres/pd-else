@@ -56,8 +56,6 @@
 #X obj 197 125 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
 -1 -1 0;
 #X msg 197 193 mode \$1;
-#X obj 197 216 ./range.hsl 135 17 0 127 0 255 255 255 96 96 96 x x
-;
 #X text 216 124 shift (default), f 31;
 #X text 216 140 select (hotkey shift), f 31;
 #X text 216 155 extend (hotkey command/control);
@@ -81,8 +79,10 @@ f 52;
 -send <symbol> | -receive <symbol>, f 66;
 #X text 227 429 - sets send symbol (default empty), f 52;
 #X text 227 444 - sets receive symbol (default empty), f 52;
+#X obj 197 216 else/range.hsl 135 17 0 127 0 255 255 255 96 96 96 x
+x;
 #X connect 34 0 33 0;
 #X connect 34 1 32 0;
 #X connect 35 0 36 0;
-#X connect 36 0 37 0;
-#X connect 37 0 34 0;
+#X connect 36 0 54 0;
+#X connect 54 0 34 0;

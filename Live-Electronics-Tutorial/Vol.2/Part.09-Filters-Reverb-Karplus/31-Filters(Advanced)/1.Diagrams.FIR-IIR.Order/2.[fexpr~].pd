@@ -1,0 +1,67 @@
+#N canvas 253 23 991 605 12;
+#X declare -path else;
+#X obj 121 335 fexpr~ ($x1[0] + $x1[-1] + $x1[-2] + $x1[-3] + $x1[-4]
++ $x1[-5] + $x1[-6] + $x1[-7]) * 0.125, f 46;
+#X obj 75 119 cnv 15 365 40 empty empty empty 5 12 0 14 -233017 -66577
+0;
+#X text 100 122 y[n] = x[n] + x[n-1] + x[n-2] + x[n-3] + x[n-4] + x[n-5]
++ x[n-6] + x[n-7]) * 0.125, f 43;
+#X text 59 300 x[n] ==>;
+#X text 58 391 y[n] ==>;
+#X obj 601 465 fexpr~ $x1[0] + $x2[0] * $y1[-1];
+#X obj 684 274 cnv 15 195 25 empty empty empty 5 12 0 14 -233017 -66577
+0;
+#X text 685 277 y[n] = x[n] + a[n] * y[n-1];
+#X obj 601 431 noise~;
+#X obj 603 110 cnv 15 210 110 empty empty empty 20 12 0 14 -233017
+-66577 0;
+#X text 721 132 |;
+#X text 721 144 |;
+#X text 721 154 |;
+#X text 692 170 |;
+#X text 741 170 |;
+#X text 741 190 |;
+#X text 691 190 |;
+#X text 694 160 _______;
+#X text 694 190 _______;
+#X text 721 157 v;
+#X text 663 178 -(*)-;
+#X text 661 158 |;
+#X text 661 172 |;
+#X text 661 134 |;
+#X text 661 146 |;
+#X text 661 131 ^;
+#X text 760 120 >;
+#X text 692 180 | z^-1 |;
+#X text 674 187 a;
+#X text 609 120 x(n) ---(+)----------- y(n);
+#X obj 822 439 sig~ 0.99;
+#X text 793 437 a =;
+#X obj 121 428 out~;
+#X obj 601 511 out~;
+#X text 70 343 filter:;
+#X text 62 506 The $x1 variable represents the input on the left inlet
+\, and the indexes represent a sample delay. for instance \, $x1[-3]
+represents a delay of three samples.;
+#X text 526 66 Now let's see a diagram with feedback:;
+#X text 530 245 The equation then looks like this:;
+#X text 744 514 check [fexpr~]'s help file for more info, f 21;
+#X obj 748 29 declare -path else;
+#X text 29 40 As [expr~] \, the native [fexpr~] object belongs to the
+[expr] family of objects and may be used to implement filter equations
+(a.k.a. difference equations). Let's then implement an average filter
+of 8 samples. First \, its equation is:, f 63;
+#X obj 121 270 bl.saw~ 300;
+#X text 78 191 Where "n" is a sample index and y[n] is the output.
+See how similar the equation is in [fexpr~] when implementing the same
+formula., f 51;
+#X text 530 321 So we have a one sample feedback \, multiplied by a
+feedback index "a". This diagram is equivalent to a single sample feedback
+delay we've already seen. The $y1[-1] syntax in [fexpr~] represents
+a one sample feedback \, here's how the equation looks inside [fexpr~]
+then.;
+#X connect 0 0 32 0;
+#X connect 5 0 33 0;
+#X connect 8 0 5 0;
+#X connect 30 0 5 1;
+#X connect 41 0 0 0;

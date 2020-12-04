@@ -1,5 +1,5 @@
-#N struct 1469-cell float x float y float cellsize float color;
-#N canvas 489 23 573 655 10;
+#N struct 1267-cell float x float y float cellsize float color;
+#N canvas 656 93 573 655 10;
 #X obj 9 401 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 7 501 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0

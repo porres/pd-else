@@ -1,0 +1,36 @@
+#N canvas 637 48 594 636 12;
+#X declare -path else;
+#X obj 397 340 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 364 484 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 125 453 delwrite~ \$0-del 3000;
+#X obj 397 370 delread~ \$0-del 500;
+#X obj 364 514 delread~ \$0-del 1500;
+#X obj 104 488 out~;
+#X obj 397 406 out~;
+#X obj 364 550 out~;
+#X text 104 124 The native [delwrite~] object creates a "ring buffer"
+\, which is a buffer to continuously record to. You can think of a
+magnetic tape in a loop \, so when you record the whole length of the
+tape you start recording again from the beggining. This was how the
+first delays were designed \, by the way. One head was used to write
+and another to read at different length points (the further back \,
+the bigger the delay)., f 55;
+#X text 104 245 The native [delread~] object \, when named with the
+same delay line \, can access the buffer at different length points
+(set in ms with the second argument or inlet). Multiple [delread~]
+objects can read from the same line defined in [delwrite~]., f 55
+;
+#X obj 380 15 declare -path else;
+#X obj 104 408 play.file~ bubul.wav 1 1;
+#X text 104 55 The "delay" is the basis of many processes and FX as
+we'll see throughout this tutorial \, such as flanger \, chorus \,
+echo/reverberation effects and pitch shifters. And we'll also see how
+they are the basis of filters., f 55;
+#X connect 0 0 3 0;
+#X connect 1 0 4 0;
+#X connect 3 0 6 0;
+#X connect 4 0 7 0;
+#X connect 11 0 2 0;
+#X connect 11 0 5 0;

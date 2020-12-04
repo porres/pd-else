@@ -1,4 +1,4 @@
-#N canvas 466 39 563 552 10;
+#N canvas 726 23 563 552 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -53,9 +53,6 @@ high> \, <2 \, low>, f 66;
 #X text 171 475 -last: sets mode to "last" (default);
 #X text 171 490 -high: sets mode to "high", f 36;
 #X text 177 506 -low: sets mode to "low", f 35;
-#X text 65 88 [mono] takes note messages and handles them to emulate
-monophonic synth behaviour. Its internal memory can remember up to
-the last 10 input voices., f 66;
 #X text 142 447 1) float - non zero sets to legato mode;
 #X msg 193 152 clear;
 #X text 108 313 legato <float> - non zero sets to legato mode \, zero
@@ -92,7 +89,7 @@ release it \, it recalls the next lowest note that is still on., f
 #X obj 309 171 else/display;
 #X obj 309 387 else/plate.rev~ 50 0.9 0.75 0.5 0, f 19;
 #X obj 318 429 else/out~;
-#X obj 309 29 else/keyboard 26 90 1 4 1;
+#X obj 309 29 else/keyboard 26 90 1 4 1 0 empty empty;
 #X obj 424 223 != 0;
 #X obj 424 245 changed;
 #X msg 424 267 0;
@@ -152,7 +149,7 @@ first note on is given., f 51;
 #X obj 206 229 else/display;
 #X obj 191 348 else/plate.rev~ 50 0.9 0.75 0.5 0, f 18;
 #X obj 198 392 else/out~;
-#X obj 155 92 else/keyboard 25 80 1 4 1;
+#X obj 155 92 else/keyboard 25 80 1 4 1 0 empty empty;
 #X connect 0 0 11 0;
 #X connect 1 0 6 0;
 #X connect 2 0 8 0;
@@ -174,12 +171,15 @@ first note on is given., f 51;
 #X obj 38 226 else/voices;
 #X obj 142 138 notein;
 #X obj 142 162 pack;
-#X obj 287 135 else/keyboard 18 52 1 4 1;
-#X connect 33 0 37 0;
-#X connect 37 0 41 0;
-#X connect 37 1 42 0;
-#X connect 38 0 37 0;
-#X connect 45 0 46 0;
-#X connect 45 1 46 1;
-#X connect 46 0 37 0;
-#X connect 47 0 37 0;
+#X obj 287 135 else/keyboard 18 52 1 4 1 0 empty empty;
+#X text 65 85 [mono] takes note messages and handles them to emulate
+monophonic synth behaviour. Its internal memory can remember up to
+the last 10 input voices *and pitches need to be >= 0)., f 66;
+#X connect 32 0 36 0;
+#X connect 36 0 40 0;
+#X connect 36 1 41 0;
+#X connect 37 0 36 0;
+#X connect 44 0 45 0;
+#X connect 44 1 45 1;
+#X connect 45 0 36 0;
+#X connect 46 0 36 0;

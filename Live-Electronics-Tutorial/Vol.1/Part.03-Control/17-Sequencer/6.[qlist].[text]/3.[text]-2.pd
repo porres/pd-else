@@ -1,0 +1,84 @@
+#N canvas 728 37 816 532 12;
+#X declare -path else;
+#X obj 430 202 text define -k \$0-seq;
+#A set 0 60 1 50 50 \; 200 59 1 100 50 \; 200 60 1 150 50 \; 0 36 1
+200 50 \; 400 48 1 250 50 \; 0 40 1 200 50 \; 0 43 1 200 50 \; 400
+48 1 250 50 \; 0 31 1 200 50 \; 400 55 1 100 50 \; 0 41 1 200 50 \;
+0 43 1 200 50 \; 200 53 1 100 50 \; 200 52 1 100 50 \; 0 36 1 200 50
+\; 200 55 1 100 50 \; 200 60 1 100 50 \; 0 40 1 200 50 \; 0 43 1 200
+50 \; 200 59 1 100 50 \; 200 60 1 100 50 \; 0 25 1 200 50 \; 200 64
+1 100 50 \; 200 62 1 100 50 \; 0 39 1 200 50 \; 0 43 1 200 50 \; 200
+61 1 100 50 \; 200 62 1 150 50 \; 0 26 1 200 50 \; 400 50 1 250 50
+\; 0 41 1 200 50 \; 0 42 1 200 50 \; 400 50 1 250 50 \; 0 29 1 200
+50 \; 400 50 1 100 50 \; 0 50 1 200 50 \; 0 44 1 200 50 \; 0 48 1 200
+50 \; 200 48 1 100 50 \; 200 47 1 100 50 \; 0 31 1 200 50 \; 0 43 1
+200 50 \; 0 47 1 200 50 \; 200 50 1 100 50 \; 200 55 1 100 50 \; 0
+34 1 200 50 \; 0 42 1 200 50 \; 0 46 1 200 50 \; 200 54 1 100 50 \;
+200 55 1 200 50 \; 0 35 1 200 50 \; 0 42 1 200 50 \; 0 45 1 200 50
+\; 400 57 1 100 50 \; 0 41 1 200 50 \; 0 47 1 200 50 \; 200 59 1 100
+50 \; 200 60 1 100 50 \; 0 24 1 200 50 \; 0 40 1 200 50 \; 0 48 1 200
+50 \; 200 59 1 100 50 \; 200 57 1 100 50 \; 200 55 1 100 50 \; 200
+57 1 100 50 \; 0 28 1 200 50 \; 0 38 1 200 50 \; 0 46 1 200 50 \; 200
+55 1 100 50 \; 200 53 1 100 50 \; 200 52 1 100 50 \; 200 53 1 100 50
+\; 0 29 1 100 50 \; 0 36 1 100 50 \; 0 45 1 100 50 \; 200 52 1 100
+50 \; 200 50 1 100 50 \; 0 29 1 500 50 \; 0 36 1 500 50 \; 0 45 1 500
+50 \; 200 48 1 100 50 \; 200 50 1 100 50 \; 200 48 1 100 50 \; 200
+47 1 100 50 \; 0 29 1 500 50 \; 0 38 1 500 50 \; 0 44 1 500 50 \; 200
+45 1 100 50 \; 200 43 1 100 50 \; 0 31 1 200 50 \; 0 38 1 200 50 \;
+200 48 1 100 50 \; 200 47 1 100 50 \; 0 31 1 500 50 \; 0 40 1 500 50
+\; 0 43 1 500 50 \; 200 50 1 100 50 \; 200 48 1 100 50 \; 200 52 1
+100 50 \; 200 50 1 100 50 \; 0 31 1 500 50 \; 0 41 1 500 50 \; 0 43
+1 500 50 \; 200 53 1 100 50 \; 200 52 1 200 50 \; 0 31 1 500 50 \;
+400 48 1 200 50 \; 0 19 1 200 50 \; 0 29 1 200 50 \; 0 36 1 200 50
+\; 400 48 1 500 3500 \; 0 12 1 500 3500 \; 0 28 1 500 3500 \; 0 36
+1 500 3500 \; 4500 \;;
+#X obj 366 162 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 194 71 stop;
+#X msg 250 101 line 0 \, auto;
+#X msg 239 71 tempo \$1 permsec;
+#X msg 205 26 0.5;
+#X msg 282 26 1;
+#X msg 240 26 0.75;
+#X msg 316 26 1.25;
+#X msg 359 26 1.5;
+#X obj 194 130 text sequence \$0-seq -w 1;
+#X obj 604 45 declare -path else;
+#X text 391 26 <= set tempo;
+#X text 347 102 <= start playng;
+#X obj 152 299 out~;
+#X obj 194 169 t b l;
+#X obj 152 199 count 7;
+#X obj 152 230 list append;
+#X text 421 164 "Fantasia On British Sea Songs" by Sir Henry Wood,
+f 24;
+#X obj 152 263 clone 8 voice1;
+#X text 588 202 <= sequence;
+#X text 383 130 "-w 1" specifies that the 1st number is a wait time
+;
+#X text 343 253 Here's an example with direct output from the [text]
+object and a more complex and polyphonic sequence. The list of values
+are treated as \; 1-MIDI Pitch \; 2-Amplitude \; 3-Attack+Sustain Duration
+(ms) \; 4-Release duration (ms), f 47;
+#X text 47 401 The example bypasses the need of a [poly] or [voices]
+and also [makenote]. We'll adapt the patch for that in the next example.
+Open [clone] to see how the data is treated., f 48;
+#X text 408 399 The [count] object is used to count from 0 to 7 and
+this number represents the voice number inside [clone] is prepended
+to the output list of [text sequence]., f 48;
+#X connect 1 0 3 0;
+#X connect 2 0 10 0;
+#X connect 3 0 10 0;
+#X connect 4 0 10 0;
+#X connect 5 0 4 0;
+#X connect 6 0 4 0;
+#X connect 7 0 4 0;
+#X connect 8 0 4 0;
+#X connect 9 0 4 0;
+#X connect 10 0 15 0;
+#X connect 10 2 1 0;
+#X connect 15 0 16 0;
+#X connect 15 1 17 1;
+#X connect 16 0 17 0;
+#X connect 17 0 19 0;
+#X connect 19 0 14 0;

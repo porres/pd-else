@@ -43,17 +43,15 @@ static void nbang_proxy_setup(void){
 // non proxy stuff
 static void nbang_bang(t_nbang *x){
     if(x->x_count < x->x_n){
-        outlet_bang(((t_object *)x)->ob_outlet);
         x->x_count++;
+        outlet_bang(((t_object *)x)->ob_outlet);
     }
     else
         outlet_bang(x->x_r_bng);
 }
 
 static void nbang_n(t_nbang *x, t_floatarg f){
-    if(f < 1)
-        f = 1;
-    x->x_n = (int)f;
+    x->x_n = f < 0 ? 0 : (int)f;
 }
 
 static void nbang_count(t_nbang *x, t_floatarg f){
@@ -66,14 +64,30 @@ static void nbang_reset(t_nbang *x){
     x->x_count = 0;
 }
 
-static void *nbang_new(t_floatarg f1, t_floatarg f2){
+static void *nbang_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_nbang *x = (t_nbang *)pd_new(nbang_class);
-    if(f1 < 1)
-        (f1 = 1);
-    x->x_n = (int)f1;
-    if(f2 < 0)
-        (f2 = 0);
-    x->x_count = (int)f2;
+    x->x_n = 1;
+    x->x_count = 0;
+    int argnum = 0;
+    while(argc > 0){
+        if(argv->a_type == A_FLOAT){
+            float argval = atom_getfloatarg(0, argc, argv);
+            switch(argnum){
+                case 0:
+                x->x_n = argval < 0 ? 0 : (int)argval;
+                break;
+                case 1:
+                x->x_count = argval < 0 ? 0 : (int)argval;
+                break;
+                default:
+                    break;
+            };
+        };
+        argc--;
+        argv++;
+        argnum++;
+    };
     nbang_proxy_init(&x->pxy, x);
     inlet_new(&x->x_obj, &x->pxy.l_pd, 0, 0);
     outlet_new((t_object *)x, &s_bang);
@@ -83,7 +97,7 @@ static void *nbang_new(t_floatarg f1, t_floatarg f2){
 
 void nbang_setup(void){
     nbang_class = class_new(gensym("nbang"), (t_newmethod)nbang_new, 0, sizeof(t_nbang),
-                            0, A_DEFFLOAT, A_DEFFLOAT, 0);
+        0, A_GIMME, 0);
     class_addbang(nbang_class, nbang_bang);
     class_addmethod(nbang_class, (t_method)nbang_reset, gensym("reset"), 0);
     class_addmethod(nbang_class, (t_method)nbang_n, gensym("n"), A_DEFFLOAT, 0);

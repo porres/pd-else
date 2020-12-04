@@ -1,4 +1,4 @@
-#N canvas 562 103 559 451 10;
+#N canvas 641 127 560 464 10;
 #X obj 3 3 cnv 15 301 42 empty empty median~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -26,8 +26,8 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -96,7 +96,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -129,59 +129,48 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
-#X obj 3 288 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 313 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 341 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 366 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 378 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 403 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 112 350 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 113 375 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 113 296 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 113 321 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 409 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 434 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 112 318 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 113 343 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 160 350 signal -;
-#X text 144 387 1) float;
-#X text 159 297 signal -;
-#X text 164 318 float -;
-#X text 222 298 the signal to perform the median on;
-#X text 222 319 number of samples to perform the median;
-#X text 221 351 the median of the input signal;
-#X msg 268 147 64;
-#X obj 350 160 cnv 15 198 108 empty empty empty 20 12 0 14 -233017
--66577 0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array \$0-median 64 float 2;
-#X coords 0 1 64 -1 200 110 1;
-#X restore 349 159 graph;
-#X obj 169 186 nbx 5 14 1 64 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 1 256;
-#N canvas 802 353 210 172 graph 0;
-#X obj 33 103 tabwrite~ \$0-median;
-#X obj 33 27 inlet~;
-#X obj 92 69 metro 500;
-#X obj 92 35 loadbang;
-#X connect 1 0 0 0;
-#X connect 2 0 0 0;
-#X connect 3 0 2 0;
-#X restore 100 249 pd graph;
-#X msg 169 147 8;
-#X msg 202 147 16;
-#X msg 233 147 32;
-#X obj 100 158 osc~ 440;
-#X text 203 386 - number of samples to perform the median (default
+#X text 160 374 signal -;
+#X text 124 412 1) float;
+#X text 159 320 signal -;
+#X text 164 342 float -;
+#X text 222 320 the signal to perform the median on;
+#X text 222 342 number of samples to perform the median;
+#X text 221 374 the median of the input signal;
+#X msg 251 163 64;
+#X obj 152 202 nbx 5 14 1 64 0 0 empty empty empty 0 -8 0 10 -228856
+-1 -1 8 256;
+#X msg 152 163 8;
+#X msg 185 163 16;
+#X msg 216 163 32;
+#X text 183 411 - number of samples to perform the median (default
 1);
 #X text 72 91 The [median~] objects retunrs the median of a number
 of samples (minimum number of samples is 1 and maximum is the block
 size).;
-#X obj 100 209 else/median~;
-#X connect 28 0 31 0;
-#X connect 31 0 39 1;
-#X connect 33 0 31 0;
-#X connect 34 0 31 0;
-#X connect 35 0 31 0;
-#X connect 36 0 39 0;
-#X connect 39 0 32 0;
+#X obj 83 225 else/median~;
+#X obj 328 161 else/graph~ 400 7 -1 1 200 140;
+#X obj 328 135 r~ \$0-median;
+#X obj 83 263 s~ \$0-median;
+#X obj 83 184 osc~ 220;
+#X connect 28 0 29 0;
+#X connect 29 0 35 1;
+#X connect 30 0 29 0;
+#X connect 31 0 29 0;
+#X connect 32 0 29 0;
+#X connect 35 0 38 0;
+#X connect 37 0 36 0;
+#X connect 39 0 35 0;

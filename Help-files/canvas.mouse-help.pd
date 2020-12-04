@@ -34,7 +34,7 @@
 #X text 124 399 1) float - depth (default 0);
 #X obj 212 227 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#N canvas 580 572 550 286 depth 1;
+#N canvas 641 268 550 286 depth 0;
 #X obj 233 216 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 284 215 x;
@@ -50,9 +50,9 @@ specify a float as the first argument \, the default level is "0" (which
 is the current patch's directory)., f 66;
 #X obj 233 168 else/canvas.mouse 1;
 #X obj 298 218 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 472 256;
+-228856 -1 -1 480 256;
 #X obj 363 218 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 173 256;
+-228856 -1 -1 169 256;
 #X connect 6 0 0 0;
 #X connect 6 1 7 0;
 #X connect 6 2 8 0;
@@ -69,9 +69,9 @@ is the current patch's directory)., f 66;
 #X text 157 340 float - hozirontal coordinate;
 #X text 157 362 float - vertical coordinate;
 #X obj 328 227 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 173 256;
+-228856 -1 -1 169 256;
 #X obj 270 227 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 472 256;
+-228856 -1 -1 480 256;
 #X obj 212 190 else/canvas.mouse;
 #X text 51 201 see also:;
 #X obj 54 224 else/mouse;

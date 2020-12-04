@@ -1,16 +1,16 @@
-#N canvas 583 184 566 501 10;
+#N canvas 576 166 561 508 10;
 #X obj 23 41 cnv 4 4 4 empty empty Control 0 28 2 18 -233017 -1 0;
-#X obj 3 471 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 480 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 3 315 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 324 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 385 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 394 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 417 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 426 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 81 392 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 81 401 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 81 323 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 81 332 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 3 4 cnv 15 301 42 empty empty lfnoise 20 20 2 37 -233017 -1
 0;
@@ -34,34 +34,34 @@
 0;
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 209 142 hsl 128 15 0.1 1 1 0 empty empty empty -2 -8 0 10 -228856
+#X obj 209 151 hsl 128 15 0.1 1 1 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 206 168 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 206 177 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 233 142 rate in Hz;
+#X text 233 151 rate in Hz;
 #X obj 89 41 cnv 4 4 4 empty empty LFNoise 0 28 2 18 -233017 -1 0;
-#X text 146 393 float;
-#X text 146 325 float;
-#X obj 206 219 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 2454 1;
-#X obj 81 363 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 146 402 float;
+#X text 146 334 float;
+#X obj 206 228 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
+-228856 -1 -1 3359 1;
+#X obj 81 372 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 187 325 - frequency in hertz up to 100 (negative values accepted)
+#X text 187 334 - frequency in hertz up to 100 (negative values accepted)
 ;
-#X text 187 342 -;
-#X text 127 423 1) float;
-#X text 127 437 2) float;
-#X text 127 452 3) float;
+#X text 187 351 -;
+#X text 127 432 1) float;
+#X text 127 446 2) float;
+#X text 127 461 3) float;
 #N canvas 782 234 419 532 rescale 0;
 #X text 46 17 The output range if from 0 to 127 \, which is the whole
 MIDI default range. Use the [rescale] object if you want a different
 range for the output., f 53;
 #X obj 127 109 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 2287 1;
+-228856 -1 -1 1265 1;
 #X obj 127 200 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 36.7731 256;
+-228856 -1 -1 20.3437 256;
 #X obj 127 254 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 344.776 256;
+-228856 -1 -1 280.093 256;
 #X text 187 255 cutoff in hertz;
 #X obj 127 365 biquad~;
 #X obj 127 394 else/plate.rev~ 50 0.9 0.9 0.9 0.7, f 18;
@@ -82,31 +82,32 @@ range for the output., f 53;
 #X connect 9 0 8 0;
 #X connect 10 0 3 0;
 #X connect 11 0 5 0;
-#X restore 471 274 pd rescale;
-#X text 64 91 [lfnoise] is a control rate LFNoise with some common
-waveforms. It doesn't need the DSP on to function \,, f 74;
-#X obj 299 167 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X restore 471 283 pd rescale;
+#X obj 299 176 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 319 165 <= reset to a new random value;
-#X obj 206 190 else/lfnoise 2 0;
-#X text 91 342 interp <float>;
-#X text 187 423 - frequency in hertz (default 0), f 55;
-#X text 187 437 - interrpolation off (0 \, default) or on (1), f 55
+#X text 319 174 <= reset to a new random value;
+#X obj 206 199 else/lfnoise 2 0;
+#X text 91 351 interp <float>;
+#X text 187 432 - frequency in hertz (default 0), f 55;
+#X text 187 446 - interrpolation off (0 \, default) or on (1), f 55
 ;
-#X text 187 452 - seed (default internal), f 55;
-#X msg 121 161 interp \$1;
-#X obj 121 139 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 187 461 - seed (default internal), f 55;
+#X msg 121 170 interp \$1;
+#X obj 121 148 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 151 365 bang;
-#X text 187 365 - reset to a new random value;
-#X text 199 341 non sexro sets to linear interpolation;
-#X text 187 394 - LFNoise's waveform in the range from 0 - 127;
-#X obj 336 253 else/lfo;
-#X obj 336 275 else/lfnoise~;
-#X text 336 227 see also:;
+#X text 151 374 bang;
+#X text 187 374 - reset to a new random value;
+#X text 199 350 non sexro sets to linear interpolation;
+#X text 187 403 - LFNoise's waveform in the range from 0 - 127;
+#X obj 336 262 else/lfo;
+#X obj 336 284 else/lfnoise~;
+#X text 336 236 see also:;
+#X text 64 89 [lfnoise] is a control rate LFNoise with some common
+waveforms. It doesn't need the DSP on to function. Give it a seed value
+if you want a reproducible output., f 66;
 #X connect 17 0 18 0;
-#X connect 18 0 34 0;
-#X connect 32 0 34 1;
-#X connect 34 0 23 0;
-#X connect 39 0 34 0;
-#X connect 40 0 39 0;
+#X connect 18 0 33 0;
+#X connect 31 0 33 1;
+#X connect 33 0 23 0;
+#X connect 38 0 33 0;
+#X connect 39 0 38 0;

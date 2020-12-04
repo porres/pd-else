@@ -1,4 +1,4 @@
-#N canvas 297 50 564 526 10;
+#N canvas 678 49 564 526 10;
 #X obj 250 229 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
 -228856 -1 -1 0 1;
 #X obj 247 317 else/out~;
@@ -28,10 +28,6 @@
 #X obj 39 324 else/lfnoise~;
 #X obj 39 348 else/stepnoise~;
 #X obj 247 284 else/rampnoise~ 400;
-#X text 82 88 [rampnoise~] is a low frequency (band limited) noise
-generator with interpolation \, therefore it ramps from one random
-value to another \, resulting in random ramps. Random values are between
--1 and 1 at a rate in hertz (negative frequencies accepted).;
 #X text 83 163 The [rampnoise~] object produces frequencies limited
 to a band from 0 up to the frequency it is running. It can go up to
 the sample rate \, and when that happens \, it's basically a white
@@ -64,29 +60,31 @@ objects. Here we control the frequency of an oscillator.;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#N canvas 559 236 448 389 seed 0;
-#X text 271 50 <= set seed;
-#X obj 84 176 else/sig2float~;
-#X obj 234 179 else/sig2float~;
-#X obj 84 214 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
+#N canvas 683 203 451 408 seed 0;
+#X text 271 72 <= set seed;
+#X obj 84 196 else/sig2float~;
+#X obj 234 199 else/sig2float~;
+#X obj 84 234 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 0 1;
-#X obj 234 214 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
+#X obj 234 234 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
 -1 -1 0 1;
-#X obj 313 260 setdsp~;
-#X obj 84 142 else/rampnoise~ 1;
-#X obj 234 142 else/rampnoise~ 1;
-#X msg 234 101 seed \$1;
-#X floatatom 234 77 5 0 0 0 - - -;
-#X text 81 18 Sync [rampnoise~] objects with a seed value;
-#X msg 234 53 1023;
+#X obj 84 162 else/rampnoise~ 1;
+#X obj 234 162 else/rampnoise~ 1;
+#X msg 234 121 seed \$1;
+#X floatatom 234 97 5 0 0 0 - - -;
+#X msg 234 73 1023;
+#X text 81 18 Sync [rampnoise~] objects with a seed value. The default
+is a unique value for each instance based on the system time., f 48
+;
+#X obj 313 280 else/setdsp~;
 #X connect 1 0 3 0;
 #X connect 2 0 4 0;
-#X connect 6 0 1 0;
-#X connect 7 0 2 0;
-#X connect 8 0 6 0;
+#X connect 5 0 1 0;
+#X connect 6 0 2 0;
+#X connect 7 0 5 0;
+#X connect 7 0 6 0;
 #X connect 8 0 7 0;
 #X connect 9 0 8 0;
-#X connect 11 0 9 0;
 #X restore 495 324 pd seed;
 #X obj 91 391 cnv 17 3 37 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
@@ -96,6 +94,11 @@ objects. Here we control the frequency of an oscillator.;
 #X text 215 390 - frequency input in hertz;
 #X text 123 411 seed <float>;
 #X text 216 412 - sets seed;
+#X text 83 88 [rampnoise~] is a low frequency (band limited) noise
+generator with interpolation \, therefore it ramps from one random
+value to another \, resulting in random ramps. Random values are between
+-1 and 1 at a rate in hertz (negative frequencies accepted). Use the
+seed message if you want a reproducible output., f 59;
 #X connect 0 0 12 0;
 #X connect 12 0 19 0;
 #X connect 19 0 1 0;

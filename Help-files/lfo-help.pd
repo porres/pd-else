@@ -1,4 +1,4 @@
-#N canvas 669 93 560 625 10;
+#N canvas 623 103 560 625 10;
 #X obj 23 41 cnv 4 4 4 empty empty Control 0 28 2 18 -233017 -1 0;
 #X obj 3 595 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
@@ -34,16 +34,16 @@
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 189 142 hsl 128 15 0.1 1 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 7800 1;
 #X obj 186 168 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 0.411314 256;
 #X text 213 142 rate in Hz;
 #X obj 89 41 cnv 4 4 4 empty empty LFO 0 28 2 18 -233017 -1 0;
 #X msg 247 167 0;
 #X text 139 419 float;
 #X text 139 325 float;
 #X obj 195 219 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 2582 1;
+-228856 -1 -1 2250 1;
 #X text 180 447 - sets frequency in hertz (default 0), f 55;
 #X text 180 461 - sets initial phase from 0 - 1 (default 0), f 55
 ;
@@ -80,7 +80,7 @@
 f 61;
 #N canvas 589 52 433 412 waveforms 0;
 #X obj 199 305 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 3407 1;
+-228856 -1 -1 5331 1;
 #X text 35 109 You can set the waveform with a flag and with a message.
 Note that "square" and "vsaw" take an optional width argument., f
 58;
@@ -88,31 +88,31 @@ Note that "square" and "vsaw" take an optional width argument., f
 #X msg 179 185 tri;
 #X msg 209 185 saw;
 #X msg 221 218 square 0.1;
-#X msg 231 245 vsaw 0.5;
 #X text 34 26 The waveforms of [lfo] are: "sine" (default) as in the
 [else/sine~] object \, "tri" as in the [else/triangular~] object \,
 "saw" as in the [else/sawtooth2~] object \, "square" as in the [else/square~]
 object and "vsaw" as in the [else/vsaw~] object - check the help file
 of these objects for more details.;
-#X obj 199 278 else/lfo 0.1 -tri;
-#X connect 2 0 8 0;
-#X connect 3 0 8 0;
-#X connect 4 0 8 0;
-#X connect 5 0 8 0;
-#X connect 6 0 8 0;
-#X connect 8 0 0 0;
+#X obj 199 278 else/lfo 0.5 -tri;
+#X msg 231 243 vsaw 0.8;
+#X connect 2 0 7 0;
+#X connect 3 0 7 0;
+#X connect 4 0 7 0;
+#X connect 5 0 7 0;
+#X connect 7 0 0 0;
+#X connect 8 0 7 0;
 #X restore 445 257 pd waveforms;
 #N canvas 599 96 464 425 refresh 0;
 #X obj 49 148 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 1140 1;
+-228856 -1 -1 2461 1;
 #X obj 266 246 mtof;
 #X obj 266 224 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 30.411 256;
+-228856 -1 -1 31.3682 256;
 #X obj 160 95 nbx 5 14 5 500 1 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 5 256;
 #X obj 49 122 else/lfo 0.25 0 250;
 #X obj 266 105 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 271 1;
+-228856 -1 -1 901 1;
 #X obj 266 200 else/rescale 30 42;
 #X obj 266 79 else/lfo 5.3 0 270 -tri;
 #X obj 49 243 else/rescale 200 500;
@@ -147,11 +147,11 @@ from the waveforms., f 66;
 MIDI default range. Use the [rescale] object if you want a different
 range for the output., f 53;
 #X obj 119 108 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 3125 1;
+-228856 -1 -1 3389 1;
 #X obj 119 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 50.2421 256;
+-228856 -1 -1 54.489 256;
 #X obj 119 253 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 397.804 256;
+-228856 -1 -1 414.524 256;
 #X text 179 254 cutoff in hertz;
 #X obj 118 355 biquad~;
 #X obj 119 226 else/rescale 200 700;

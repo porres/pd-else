@@ -1,8 +1,8 @@
-#N struct 1009-slot float x float y float slotsize float color float
+#N struct 1006-slot float x float y float slotsize float color float
 width float bordercolor;
-#N struct 1012-slot float x float y float slotsize float color float
+#N struct 1013-slot float x float y float slotsize float color float
 width float bordercolor;
-#N canvas 605 64 565 561 10;
+#N canvas 725 69 567 646 10;
 #X obj 24 39 cnv 4 4 4 empty empty Drum 0 28 2 18 -233017 -1 0;
 #X obj 75 39 cnv 4 4 4 empty empty sequence 0 28 2 18 -233017 -1 0
 ;
@@ -24,118 +24,158 @@ width float bordercolor;
 0;
 #X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 7 280 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 7 310 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 420 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 7 491 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 461 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 546 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 7 619 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 7 531 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 122 318 cnv 17 3 168 empty empty 0 5 9 0 16 -228856 -162280
 0;
-#X obj 122 287 cnv 17 3 127 empty empty 0 5 9 0 16 -228856 -162280
-0;
-#X obj 121 427 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 121 498 cnv 17 3 40 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 204 427 list;
-#X text 189 496 3) float - cell size in pixels (default 20), f 47
-;
-#X text 204 287 list;
-#X text 156 387 size <float>;
-#X text 198 315 clear;
-#X text 244 315 - clears active cells (no output), f 41;
-#X text 192 329 export;
-#X text 198 301 float;
-#X text 192 343 import;
-#X text 150 401 embed <float>;
-#X text 244 329 - export contents as an array, f 41;
-#X text 244 343 - import contents as an array, f 41;
-#X text 189 511 4) float - embed flag \, (default 0), f 47;
-#X text 244 401 - non zero save internal contents with the object;
+#X text 204 497 list;
+#X text 204 330 list;
+#X text 156 458 size <float>;
+#X text 198 386 clear;
+#X text 244 386 - clears active cells (no output), f 41;
+#X text 198 372 float;
+#X text 192 414 import;
+#X text 150 472 embed <float>;
+#X text 244 414 - import contents as an array, f 41;
+#X text 244 472 - non zero save internal contents with the object;
 #X obj 151 39 cnv 4 4 4 empty empty pattern 0 28 2 18 -233017 -1 0
 ;
-#X text 244 287 - sets track \, slot and status (no output), f 42
+#X text 244 330 - sets track \, slot and status (no output), f 42
 ;
-#X text 244 301 - sets slot value and output tracks values;
-#X text 189 466 1) float - number of tracks (default 2), f 47;
-#X text 189 481 2) float - number of slots (default 8), f 47;
-#N canvas 855 124 539 551 drum 0;
-#X obj 255 395 else/pluck~ 50 2500 10000;
-#X obj 304 330 impseq~;
-#X obj 142 131 else/count 7;
-#X obj 194 448 else/out~;
-#X obj 142 49 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 244 372 - sets slot value and output tracks values;
+#N canvas 835 71 564 723 drum 1;
+#X obj 360 596 else/pluck~ 50 2500 10000;
+#X obj 409 531 impseq~;
+#X obj 299 649 else/out~;
+#X obj 190 102 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 94 103 reset;
-#X obj 94 81 sel 0;
-#X obj 195 298 sel 1;
-#X obj 248 298 sel 1;
-#X obj 236 114 loadbang;
-#X msg 86 140 clear;
-#X msg 236 137 import 1 0 0 0 1 0 1 0 0 1 0 1 0 1 0 1 0 0 1 0 1 0 1
+#X obj 300 499 sel 1;
+#X obj 353 499 sel 1;
+#X obj 294 257 loadbang;
+#X msg 229 280 clear;
+#X msg 294 280 import 1 0 0 0 1 0 1 0 0 1 0 1 0 1 0 1 0 0 1 0 1 0 1
 0, f 27;
-#X obj 142 93 else/tempo 120;
-#X obj 142 185 drum.seq 3 8 20 0 0 0 0 0 0 0 0 0 0 0 0;
-#X obj 301 298 print drum.seq;
-#X msg 33 140 export;
-#X obj 142 261 route 0 1 2, f 27;
-#X text 203 38 Here's an example on how to use [drum.seq] for a drum
+#X obj 190 126 else/tempo 120;
+#X obj 190 368 drum.seq 3 8 20 0 0 0 0 0 0 0 0 0 0 0 0;
+#X obj 406 499 print drum.seq;
+#X msg 201 178 export;
+#X obj 300 548 else/play.file~ dholak.aif, f 15;
+#X obj 198 548 else/play.file~ bagal.aif, f 15;
+#X obj 198 498 sel 1;
+#X obj 247 462 route 1 2 3, f 27;
+#X text 101 21 Here's an example on how to use [drum.seq] for a drum
 pattern sequencer patch. You can also see how some of the messages
-work., f 44;
-#X obj 195 347 else/play.file~ dholak.aif, f 15;
-#X obj 93 347 else/play.file~ bagal.aif, f 15;
-#X obj 93 297 sel 1;
-#X connect 0 0 3 0;
-#X connect 1 0 0 1;
-#X connect 2 0 13 0;
-#X connect 4 0 6 0;
-#X connect 4 0 12 0;
-#X connect 5 0 2 0;
-#X connect 6 0 5 0;
-#X connect 7 0 18 0;
-#X connect 8 0 1 0;
-#X connect 9 0 11 0;
-#X connect 10 0 13 0;
-#X connect 11 0 13 0;
-#X connect 12 0 2 0;
-#X connect 13 0 16 0;
-#X connect 15 0 13 0;
-#X connect 16 0 20 0;
-#X connect 16 1 7 0;
-#X connect 16 2 8 0;
-#X connect 16 3 14 0;
-#X connect 18 0 3 0;
-#X connect 19 0 3 0;
-#X connect 20 0 19 0;
-#X restore 487 236 pd drum \; sequencer;
-#X text 144 357 tracks <float>;
-#X text 150 372 slots <float>;
-#X text 244 357 - sets number of tracks (clears data), f 41;
-#X text 244 372 - sets number of slots (clears data), f 41;
-#X text 244 387 - sets cell size in pixels (clears data), f 41;
-#X obj 211 125 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+work (note that tracks and slots are indexed from 1)., f 53;
+#X obj 190 154 else/rand.i 1 8;
+#X obj 88 109 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 166 149 clear;
-#X msg 211 149 0 0 \$1 \, 0 3 \$1 \, 1 1 \$1;
-#X obj 224 174 hradio 20 1 0 4 empty empty empty 0 -8 0 10 -228856
+#X obj 88 133 else/tempo 120;
+#X obj 45 133 sel 0;
+#X text 216 102 <= random values;
+#X msg 45 166 goto 1;
+#X msg 310 338 track 3 0 1 1 0 0 1 1 0;
+#X msg 301 315 track 1 1 0 1 0 1 1 0 1;
+#X obj 190 435 route bang;
+#X obj 190 462 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 115 395 finished =>;
+#X msg 211 205 export 1;
+#X text 248 178 <= export all tracks;
+#X text 268 205 <= export track 1;
+#X msg 218 230 export 1;
+#X text 275 230 <= export track 3;
+#X obj 98 340 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X connect 0 0 2 0;
+#X connect 1 0 0 1;
+#X connect 3 0 9 0;
+#X connect 4 0 13 0;
+#X connect 5 0 1 0;
+#X connect 6 0 8 0;
+#X connect 7 0 10 0;
+#X connect 8 0 10 0;
+#X connect 9 0 18 0;
+#X connect 10 0 26 0;
+#X connect 12 0 10 0;
+#X connect 13 0 2 0;
+#X connect 14 0 2 0;
+#X connect 15 0 14 0;
+#X connect 16 0 15 0;
+#X connect 16 1 4 0;
+#X connect 16 2 5 0;
+#X connect 16 3 11 0;
+#X connect 18 0 10 0;
+#X connect 19 0 20 0;
+#X connect 19 0 21 0;
+#X connect 20 0 10 0;
+#X connect 21 0 23 0;
+#X connect 23 0 10 0;
+#X connect 24 0 10 0;
+#X connect 25 0 10 0;
+#X connect 26 0 27 0;
+#X connect 26 1 16 0;
+#X connect 29 0 10 0;
+#X connect 32 0 10 0;
+#X restore 487 266 pd drum \; sequencer;
+#X text 144 428 tracks <float>;
+#X text 150 443 slots <float>;
+#X text 244 428 - sets number of tracks (clears data), f 41;
+#X text 244 443 - sets number of slots (clears data), f 41;
+#X text 244 458 - sets cell size in pixels (clears data), f 41;
+#X obj 231 125 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X msg 186 149 clear;
+#X obj 244 175 hradio 20 1 0 4 empty empty empty 0 -8 0 10 -228856
 -1 -1 3;
-#X text 298 208 <= track 0;
-#X text 298 228 <= track 1;
-#X text 77 217 click on the slots =>;
-#X obj 211 205 else/drum.seq 2 4 20 0 0 0 0 0 0 0 0 0 0 0 0;
-#X obj 211 254 print track-value;
+#X text 97 247 click on the slots =>;
+#X obj 231 235 else/drum.seq 2 4 20 0 0 0 0 0 0 0 0 0 0 0 0;
+#X obj 231 284 print track-value;
 #X obj 3 2 cnv 15 301 42 empty empty drum.seq 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 2 graph;
-#X text 244 427 - track and slot value, f 44;
 #X text 50 86 [drum.seq] is similar to [mtx.ctl] \, but provides a
 drum grid so you can send a float and query for the track values.,
 f 65;
-#X text 150 442 export <list>;
-#X text 244 442 - array of contexts via the "export" message;
-#X connect 42 0 44 0;
-#X connect 43 0 49 0;
-#X connect 44 0 49 0;
-#X connect 45 0 49 0;
-#X connect 49 0 50 0;
+#X text 150 525 export <list>;
+#X text 244 525 - array of contexts via the "export" message;
+#X obj 244 203 + 1;
+#X msg 231 149 1 1 \$1 \, 1 4 \$1 \, 2 2 \$1;
+#X text 318 238 <= track 1;
+#X text 318 258 <= track 2;
+#X text 244 497 - track and slot value (indexed from 1), f 44;
+#X obj 170 185 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 116 186 goto 4;
+#X text 204 316 bang;
+#X text 244 316 - gets sequence value and moves to the next;
+#X text 156 358 goto <float>;
+#X text 244 358 - sets slot value;
+#X text 156 345 track <list>;
+#X text 244 345 - sets track values (1st value sets track number);
+#X text 204 511 bang;
+#X text 244 511 - when reaching the end of the sequence, f 44;
+#X text 144 400 export <float>;
+#X text 244 400 - export tracks \, no float exports all as an array
+;
+#X text 159 583 -size <float>: sets cell size in pixels (default 20)
+;
+#X text 159 568 -slots <float>: sets number of slots (default 8);
+#X text 159 553 -tracks <float>: sets tracks (default 2), f 47;
+#X text 159 598 -embed: sets emebding mode (default no embedding);
+#X connect 36 0 48 0;
+#X connect 37 0 40 0;
+#X connect 38 0 47 0;
+#X connect 40 0 41 0;
+#X connect 47 0 40 0;
+#X connect 48 0 40 0;
+#X connect 52 0 40 0;
+#X connect 53 0 40 0;

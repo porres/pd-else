@@ -60,7 +60,7 @@ static void keyboard_note_on(t_keyboard* x, int note){
     short key = note % 12, black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
     sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_ON : WHITE_ON);
     int ac = 2;
-    t_atom at[ac];
+    t_atom at[2];
     SETFLOAT(at, note);
     SETFLOAT(at+1, x->x_velocity);
     outlet_list(x->x_out, &s_list, ac, at);
@@ -76,7 +76,7 @@ static void keyboard_note_off(t_keyboard* x, int note){
         sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
     }
     int ac = 2;
-    t_atom at[ac];
+    t_atom at[2];
     SETFLOAT(at, note);
     SETFLOAT(at+1, 0);
     outlet_list(x->x_out, &s_list, ac, at);
@@ -153,7 +153,7 @@ static void keyboard_play_tgl(t_keyboard* x, int note){
      else // white
         sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, on ? WHITE_ON : note == 60 ? MIDDLE_C : WHITE_OFF);
     int ac = 2;
-    t_atom at[ac];
+    t_atom at[2];
     SETFLOAT(at, note);
     SETFLOAT(at+1, on ? x->x_velocity : 0);
     outlet_list(x->x_out, &s_list, ac, at);
@@ -354,7 +354,7 @@ void keyboard_float(t_keyboard *x, t_floatarg f){
         x->x_vel_in = 127;
     int on = x->x_tgl_notes[note] = x->x_vel_in > 0;
     int ac = 2;
-    t_atom at[ac];
+    t_atom at[2];
     SETFLOAT(at, note);
     SETFLOAT(at+1, x->x_vel_in);
     outlet_list(x->x_out, &s_list, ac, at);
@@ -375,7 +375,6 @@ void keyboard_float(t_keyboard *x, t_floatarg f){
 static void keyboard_height(t_keyboard *x, t_floatarg f){
     f =  f < 10 ? 10 : (int)(f);
     if(x->x_height != f){
-        canvas_dirty(x->x_glist, 1);
         x->x_height = f;
         keyboard_erase(x, x->x_glist);
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
@@ -388,7 +387,6 @@ static void keyboard_height(t_keyboard *x, t_floatarg f){
 static void keyboard_width(t_keyboard *x, t_floatarg f){
     f = f < 7 ? 7 : (int)(f);
     if(x->x_space != f){
-        canvas_dirty(x->x_glist, 1);
         x->x_space = f;
         keyboard_erase(x, x->x_glist);
         x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
@@ -400,7 +398,6 @@ static void keyboard_width(t_keyboard *x, t_floatarg f){
 static void keyboard_8ves(t_keyboard *x, t_floatarg f){
     f = f > 10 ? 10 : f < 1 ? 1 : (int)(f);
     if(x->x_octaves != f){
-        canvas_dirty(x->x_glist, 1);
         x->x_octaves = f;
         x->x_width = x->x_space * 7 * x->x_octaves;
         keyboard_erase(x, x->x_glist);
@@ -412,7 +409,6 @@ static void keyboard_8ves(t_keyboard *x, t_floatarg f){
 static void keyboard_low_c(t_keyboard *x, t_floatarg f){
     f = f > 8 ? 8 : f < 0 ? 0 : (int)(f);
     if(x->x_low_c != f){
-        canvas_dirty(x->x_glist, 1);
         x->x_first_c = ((int)((x->x_low_c = f) * 12)) + 12;
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             keyboard_erase(x, x->x_glist), keyboard_draw(x, x->x_glist);
@@ -425,18 +421,14 @@ static void keyboard_oct(t_keyboard *x, t_floatarg f){
 
 static void keyboard_toggle(t_keyboard *x, t_floatarg f){
     int tgl = f != 0;
-    if(tgl != x->x_toggle_mode){
-        canvas_dirty(x->x_glist, 1);
+    if(tgl != x->x_toggle_mode)
         x->x_toggle_mode = tgl;
-    }
 }
 
 static void keyboard_norm(t_keyboard *x, t_floatarg f){
     int norm = f < 0 ? 0 : f > 127 ? 127 : (int)f;
-    if(norm != x->x_norm){
-        canvas_dirty(x->x_glist, 1);
+    if(norm != x->x_norm)
         x->x_norm = norm;
-    }
 }
 
 // SEND
@@ -447,7 +439,6 @@ static void keyboard_send(t_keyboard *x, t_symbol *s){
             x->x_snd_raw = s;
             x->x_send = snd;
             x->x_snd_set = 1;
-            canvas_dirty(x->x_glist, 1);
             if(x->x_edit && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
                 if(x->x_send == &s_)
                     keyboard_draw_io_let(x);
@@ -463,7 +454,6 @@ static void keyboard_receive(t_keyboard *x, t_symbol *s){
     if(s != gensym("")){
         t_symbol *rcv = s == gensym("empty") ? &s_ : canvas_realizedollar(x->x_glist, s);
         if(rcv != x->x_receive){
-            canvas_dirty(x->x_glist, 1);
             if(x->x_receive != &s_)
                 pd_unbind(&x->x_obj.ob_pd, x->x_receive);
             x->x_rcv_set = 1;
@@ -489,7 +479,7 @@ static void keyboard_receive(t_keyboard *x, t_symbol *s){
 static void keyboard_flush(t_keyboard* x){
     t_canvas *cv =  glist_getcanvas(x->x_glist);
     int ac = 2;
-    t_atom at[ac];
+    t_atom at[2];
     for(int note = 0 ; note < 256 ; note++){
         if(x->x_tgl_notes[note] > 0){
             int i = note - x->x_first_c;
@@ -557,6 +547,7 @@ static void keyboard_set_properties(t_keyboard *x, float space, float height, fl
     x->x_toggle_mode = (tgl != 0);
     x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
     x->x_first_c = ((int)(x->x_low_c * 12)) + 12;
+    canvas_dirty(x->x_glist, 1);
 }
 
 // Keyboard Properties
@@ -781,7 +772,14 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
     x->x_receive = canvas_realizedollar(x->x_glist, x->x_rcv_raw);
     if(x->x_receive != &s_)
         pd_bind(&x->x_obj.ob_pd, x->x_receive);
-    keyboard_set_properties(x, init_space, init_height, init_8ves, init_low_c, vel, tgl);
+    x->x_space = (init_space < 7) ? 7 : init_space; // key width
+    x->x_height = (init_height < 10) ? 10 : init_height;
+    x->x_octaves = init_8ves < 1 ? 1 : init_8ves > 10 ? 10 : init_8ves;
+    x->x_low_c = init_low_c < 0 ? 0 : init_low_c > 8 ? 8 : init_low_c;
+    x->x_norm = vel < 0 ? 0 : vel > 127 ? 127 : vel;
+    x->x_toggle_mode = (tgl != 0);
+    x->x_width = ((int)(x->x_space)) * 7 * (int)x->x_octaves;
+    x->x_first_c = ((int)(x->x_low_c * 12)) + 12;
     x->x_tgl_notes = getbytes(sizeof(int) * 256);
     for(int i = 0; i < 256; i++)
         x->x_tgl_notes[i] = 0;

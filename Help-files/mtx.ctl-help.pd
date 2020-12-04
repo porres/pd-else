@@ -1,6 +1,6 @@
-#N struct 1017-cell float x float y float cellsize float color;
-#N struct 1021-cell float x float y float cellsize float color;
-#N canvas 554 93 563 599 10;
+#N struct 1259-cell float x float y float cellsize float color;
+#N struct 1263-cell float x float y float cellsize float color;
+#N canvas 637 99 563 599 10;
 #X msg 278 156 1 0 \$1;
 #X obj 278 132 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;

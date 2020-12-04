@@ -1,4 +1,5 @@
 #N canvas 646 183 550 606 10;
+#X declare -path else;
 #X obj 89 38 inlet;
 #X obj 203 536 outlet;
 #X obj 172 38 inlet;
@@ -21,7 +22,7 @@
 #X obj 203 303 expr $f1 + i_\$0 \; $f1;
 #X obj 89 218 float;
 #N canvas 441 105 462 293 args 0;
-#X obj 120 85 else/args;
+#X obj 120 85 args;
 #X obj 120 158 s \$0-hz;
 #X obj 93 57 t b b;
 #X obj 93 232 s \$0-lb;
@@ -31,7 +32,7 @@
 #X obj 105 202 s \$0-rand;
 #X msg 271 164 seed \$1;
 #X obj 272 192 s \$0-rand;
-#X obj 93 26 else/lb -init;
+#X obj 93 26 lb -init;
 #X connect 0 0 4 0;
 #X connect 2 0 3 0;
 #X connect 2 0 7 0;
@@ -49,12 +50,12 @@
 #X obj 124 303 * 5;
 #X obj 203 252 metro 5;
 #X obj 203 358 sel 1;
-#X obj 203 383 else/rand.f 0 127;
+#X obj 203 383 rand.f 0 127;
 #X obj 203 495 line;
 #X obj 203 470 pack f f;
 #X obj 88 395 expr 1000/$f1;
 #X obj 248 445 *;
-#X obj 248 423 else/hot;
+#X obj 248 423 hot;
 #X obj 322 397 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 322 371 r \$0-interp;
@@ -65,6 +66,7 @@
 #X obj 248 361 r \$0-rand;
 #X text 311 208 Alexandre Torres Porres (2019);
 #X obj 203 337 expr $f1 >= 1 || $f1 <= 0;
+#X obj 356 99 declare -path else;
 #X connect 0 0 4 0;
 #X connect 2 0 27 0;
 #X connect 4 0 10 0;

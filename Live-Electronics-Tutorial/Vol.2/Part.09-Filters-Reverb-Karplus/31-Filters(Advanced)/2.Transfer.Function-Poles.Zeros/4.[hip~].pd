@@ -1,0 +1,83 @@
+#N canvas 429 56 886 601 12;
+#X declare -path else;
+#X obj 503 338 rpole~;
+#X obj 503 365 rzero~ 1;
+#X obj 540 185 hip~;
+#X obj 565 141 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 503 115 noise~;
+#X obj 568 114 hsl 128 15 20 20000 1 0 empty empty empty -2 -8 0 10
+-228856 -1 -1 0 1;
+#X text 146 99 y[n] = x[n] - a[n] * x[n-1];
+#X obj 227 505 clip 0 1;
+#X floatatom 227 411 5 0 0 0 - - -;
+#X floatatom 227 533 5 0 0 0 - - -;
+#X text 201 410 Hz;
+#X obj 674 501 v a;
+#X obj 655 271 send \$0-a;
+#X obj 542 311 receive \$0-a;
+#X obj 674 477 receive \$0-a;
+#X obj 124 241 fexpr~ $x - $x[-1] + a * $y[-1];
+#X text 113 318 y[n] = x[n] - x[n-1] + a * y[n-1];
+#X obj 680 320 cnv 15 150 50 empty empty empty 5 12 0 14 -261234 -66577
+0;
+#X text 727 330 _____________;
+#X text 681 336 H(z) =;
+#X text 732 347 1 - a * z^-1;
+#X text 740 324 1 - z^-1;
+#X obj 174 131 fexpr~ $x - a*$x[-1];
+#X text 29 21 The [hip~] object is a 1 Pole / 1 Zero filter. It can
+then be implemented with the [rpole~] object plus the [rzero~] \, which
+is a one zero filter whose difference equation and [fexpr~] implementation
+is:, f 53;
+#X obj 88 101 rzero~;
+#X text 75 292 Difference equation:;
+#X obj 431 516 out~;
+#X obj 503 406 out~;
+#X obj 227 445 hz2rad;
+#X obj 227 475 expr 1 - $f1;
+#X text 141 533 coefficient;
+#X text 25 367 The pole coefficient is now given as:;
+#X obj 540 231 out~;
+#X obj 655 241 clip 0 1;
+#X obj 655 187 hz2rad;
+#X obj 655 214 expr 1 - $f1;
+#X obj 431 480 fexpr~ $x - $x[-1] + a*$y1[-1];
+#X text 488 65 Compare below the [hip~] object to other equivalent
+implementations., f 34;
+#N canvas 622 45 456 398 H(z) 0;
+#X text 98 109 Y(z) = X(z) - X(z)z^-1 + a * Y(z)z^-1;
+#X text 105 134 X(z) - X(z)z^-1 = Y(z) - a * Y(z)z^-1;
+#X text 106 154 X(z) (1 - z^-1) = Y(z) - a * Y(z)z^-1;
+#X text 106 176 X(z) = Y(z) - a * Y(z)z^-1 / (1 - z^-1);
+#X text 79 205 H(z) = Y(z) * (1 - z^-1) / Y(z) - a * Y(z)z^-1;
+#X text 165 267 _____________;
+#X text 124 270 H(z) =;
+#X text 171 284 1 - a * z^-1;
+#X text 178 261 1 - z^-1;
+#X text 25 43 From: y[n] = x[n] - x[n-1] + a * y[n-1];
+#X text 27 78 We get:;
+#X restore 777 371 pd H(z);
+#X obj 703 16 declare -path else;
+#X text 32 175 The zero coefficient for [hip~] is always 1 \, so we
+just have y[n] = x[n] - x[n-1]. Let's join it to the one pole equation
+y[n] = x[n] + a * y[n-1] and we get:, f 53;
+#X connect 0 0 1 0;
+#X connect 1 0 27 0;
+#X connect 2 0 32 0;
+#X connect 3 0 2 1;
+#X connect 3 0 34 0;
+#X connect 4 0 0 0;
+#X connect 4 0 2 0;
+#X connect 4 0 36 0;
+#X connect 5 0 3 0;
+#X connect 7 0 9 0;
+#X connect 8 0 28 0;
+#X connect 13 0 0 1;
+#X connect 14 0 11 0;
+#X connect 28 0 29 0;
+#X connect 29 0 7 0;
+#X connect 33 0 12 0;
+#X connect 34 0 35 0;
+#X connect 35 0 33 0;
+#X connect 36 0 26 0;

@@ -26,7 +26,6 @@ pic.class.sources := Classes/Source/pic.c
 keyboard.class.sources := Classes/Source/keyboard.c
 function.class.sources := Classes/Source/function.c
 pad.class.sources := Classes/Source/pad.c
-note.class.sources := Classes/Source/note.c
 openfile.class.sources := Classes/Source/openfile.c
 colors.class.sources := Classes/Source/colors.c
 gui.class.sources := Classes/Source/gui.c
@@ -54,8 +53,9 @@ break.class.sources := Classes/Source/break.c
 cents2ratio.class.sources := Classes/Source/cents2ratio.c
 changed.class.sources := Classes/Source/changed.c
 common.div.class.sources := Classes/Source/common.div.c
-coin.class.sources := Classes/Source/coin.c
+chance.class.sources := Classes/Source/chance.c
 dir.class.sources := Classes/Source/dir.c
+spread.class.sources := Classes/Source/spread.c
 dollsym.class.sources := Classes/Source/dollsym.c
 hot.class.sources := Classes/Source/hot.c
 hz2rad.class.sources := Classes/Source/hz2rad.c
@@ -122,7 +122,7 @@ biquads~.class.sources := Classes/Source/biquads~.c
 ceil.class.sources := Classes/Source/ceil.c
 ceil~.class.sources := Classes/Source/ceil~.c
 cents2ratio~.class.sources := Classes/Source/cents2ratio~.c
-coin~.class.sources := Classes/Source/coin~.c
+chance~.class.sources := Classes/Source/chance~.c
 changed~.class.sources := Classes/Source/changed~.c
 changed2~.class.sources := Classes/Source/changed2~.c
 crackle~.class.sources := Classes/Source/crackle~.c
@@ -275,6 +275,13 @@ midi := \
     shared/file.c \
     shared/grow.c
     midi.class.sources := Classes/Source/midi.c $(midi)
+    
+# GUI:
+utf := shared/s_utf8.c
+	note.class.sources := Classes/Source/note.c $(utf)
+
+smagic := shared/magic.c
+    oscilloscope~.class.sources := Classes/Source/oscilloscope.c $(smagic)
 
 #########################################################################
 

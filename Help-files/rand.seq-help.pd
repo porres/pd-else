@@ -46,15 +46,10 @@
 0;
 #X obj 502 31 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 3 8 cnv 15 301 42 empty empty rand.seq 20 20 2 37 -233017 -1
-0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 3 8 graph;
 #X text 332 180 'n';
-#X obj 24 45 cnv 4 4 4 empty empty Random 0 28 2 18 -233017 -1 0;
-#X obj 93 45 cnv 4 4 4 empty empty sequences 0 28 2 18 -233017 -1 0
-;
+#X obj 114 45 cnv 4 4 4 empty empty random 0 28 2 18 -233017 -1 0;
+#X obj 183 45 cnv 4 4 4 empty empty sequences 0 28 2 18 -233017 -1
+0;
 #X obj 212 231 else/display 3;
 #X text 319 236 finished;
 #X text 206 409 - random output, f 38;
@@ -91,7 +86,6 @@ generates an unrepeated random sequence.;
 #X obj 285 243 until;
 #X obj 285 197 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 398 311 else/regroup;
 #X floatatom 378 224 5 0 12 0 - - -;
 #X obj 398 338 else/display;
 #X obj 83 134 tabread notes;
@@ -112,29 +106,37 @@ generates an unrepeated random sequence.;
 #X obj 265 66 loadbang;
 #X text 93 26 play random notes with different weigths.;
 #X text 305 196 generate a random series;
+#X obj 398 311 else/group;
 #X connect 0 0 1 1;
-#X connect 0 0 3 0;
-#X connect 1 0 18 0;
+#X connect 0 0 22 0;
+#X connect 1 0 17 0;
 #X connect 2 0 1 0;
-#X connect 3 0 5 0;
-#X connect 4 0 18 1;
-#X connect 6 0 17 0;
-#X connect 7 0 6 0;
-#X connect 10 0 11 0;
-#X connect 11 0 13 0;
-#X connect 11 1 13 1;
-#X connect 13 0 15 0;
-#X connect 14 0 8 0;
-#X connect 16 0 19 0;
-#X connect 17 0 10 0;
-#X connect 18 0 3 0;
-#X connect 18 1 0 0;
-#X connect 19 0 7 0;
-#X connect 19 1 12 0;
-#X connect 20 0 14 0;
+#X connect 3 0 17 1;
+#X connect 5 0 16 0;
+#X connect 6 0 5 0;
+#X connect 9 0 10 0;
+#X connect 10 0 12 0;
+#X connect 10 1 12 1;
+#X connect 12 0 14 0;
+#X connect 13 0 7 0;
+#X connect 15 0 18 0;
+#X connect 16 0 9 0;
+#X connect 17 0 22 0;
+#X connect 17 1 0 0;
+#X connect 18 0 6 0;
+#X connect 18 1 11 0;
+#X connect 19 0 13 0;
+#X connect 22 0 4 0;
 #X restore 465 225 pd example;
-#X connect 13 0 50 0;
-#X connect 14 0 50 1;
-#X connect 17 0 50 0;
-#X connect 50 0 32 0;
-#X connect 50 1 16 0;
+#X obj 34 45 cnv 4 4 4 empty empty Weighted 0 28 2 18 -233017 -1 0
+;
+#X obj 3 8 cnv 15 301 42 empty empty rand.seq 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 8 graph;
+#X connect 13 0 48 0;
+#X connect 14 0 48 1;
+#X connect 17 0 48 0;
+#X connect 48 0 30 0;
+#X connect 48 1 16 0;

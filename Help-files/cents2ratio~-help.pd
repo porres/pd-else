@@ -1,4 +1,4 @@
-#N canvas 430 81 565 414 10;
+#N canvas 674 169 565 414 10;
 #X obj 3 282 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 320 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0

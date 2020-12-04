@@ -1,4 +1,4 @@
-#N canvas 427 88 563 451 12;
+#N canvas 548 138 563 451 12;
 #X obj 2 251 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 2 310 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -66,9 +66,9 @@ not only this patch's., f 62;
 #X obj 226 235 -;
 #X obj 288 238 -;
 #X obj 288 273 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -1 256;
+-228856 -1 -1 154 256;
 #X obj 226 274 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 175 256;
+-228856 -1 -1 968 256;
 #X obj 167 176 else/mouse;
 #X text 73 48 You can use [canvas.bounds] to get patch window's bound
 coordinates and then get mouse coordinates relative to the patch window.

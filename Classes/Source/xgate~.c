@@ -1,4 +1,4 @@
-// porres 2017
+// porres 2017-2020
 
 #include "m_pd.h"
 #include <stdlib.h>
@@ -6,10 +6,8 @@
 
 static t_class *xgate_class;
 
-#define OUTPUTLIMIT 500
-#define LINEAR 0
-#define EPOWER 1
-#define HALF_PI (M_PI * 0.5)
+#define OUTPUTLIMIT 512
+#define HALF_PI (3.14159265358979323846 * 0.5)
 
 typedef struct _xgate {
     t_object    x_obj;
@@ -17,14 +15,13 @@ typedef struct _xgate {
     int         x_lastchannel;
     int         x_outlets;
     double      x_fade_in_samps;
-    int         x_fadetype;
-    int         x_last_fadetype;
     float       x_sr_khz;
     int         x_active_channel[OUTPUTLIMIT];
     int         x_counter[OUTPUTLIMIT];
     double      x_fade[OUTPUTLIMIT];
     float       *x_outs[OUTPUTLIMIT];
-} t_xgate;
+    t_outlet    *x_out_status;
+}t_xgate;
 
 void xgate_float(t_xgate *x, t_floatarg ch){
   ch = (int)ch > x->x_outlets ? x->x_outlets : (int)ch;
@@ -46,30 +43,29 @@ static t_int *xgate_perform(t_int *w){
     for(i = 0; i < x->x_outlets; i++)
         x->x_outs[i] = (t_float *)(w[4 + i]); // all outputs
 //    t_float *outputs = x->x_outs[i];
-    while (n--)
-    {
-    float input = *in++;
-        
-    for(i = 0; i < x->x_outlets; i++)
-        {
+    while(n--){
+        float input = *in++;
+        for(i = 0; i < x->x_outlets; i++){
 // fade in/out counter
-        if(x->x_active_channel[i] && x->x_counter[i] < x->x_fade_in_samps)
-            x->x_counter[i]++;
-        else if (!x->x_active_channel[i] && x->x_counter[i] > 0)
-            x->x_counter[i]--;
-        
+            if(x->x_active_channel[i] && x->x_counter[i] < x->x_fade_in_samps)
+                x->x_counter[i]++;
+            else if(!x->x_active_channel[i] && x->x_counter[i] > 0){
+                x->x_counter[i]--;
+                if(x->x_counter[i] == 0){
+                    t_atom at[2];
+                    SETFLOAT(at, i + 1);
+                    SETFLOAT(at+1, 0);
+                    outlet_list(x->x_out_status, gensym("list"), 2, at);
+                }
+            }
 // calculate fade value
-        x->x_fade[i] = x->x_counter[i] / x->x_fade_in_samps;
-        if(x->x_fadetype == EPOWER)
-            x->x_fade[i] = sin(x->x_fade[i] * HALF_PI);
-        
+            x->x_fade[i] = x->x_counter[i] / x->x_fade_in_samps;
+            x->x_fade[i] = sin(x->x_fade[i] * HALF_PI); // Equal Power
 // set fade to channel
-
-        *x->x_outs[i]++ = input * x->x_fade[i];
+            *x->x_outs[i]++ = input * x->x_fade[i];
         }
-        
     }
-    return (w + 4 + x->x_outlets);
+    return(w + 4 + x->x_outlets);
 }
 
 static void xgate_dsp(t_xgate *x, t_signal **sp) {
@@ -101,7 +97,7 @@ static void *xgate_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     t_xgate *x = (t_xgate *)pd_new(xgate_class);
     x->x_sr_khz = sys_getsr() * 0.001;
-    t_float ch = 1, ms = 0, fade_mode = EPOWER, init_channel = 0;
+    t_float ch = 1, ms = 0, init_channel = 0;
     int i;
     int argnum = 0;
     while(argc){
@@ -124,12 +120,12 @@ static void *xgate_new(t_symbol *s, int argc, t_atom *argv){
         argc--;
         argv++;
     };
-    x->x_fadetype = x->x_last_fadetype = fade_mode;
     x->x_outlets = ch < 1 ? 1 : ch;
     if(x->x_outlets > OUTPUTLIMIT)
         x->x_outlets = OUTPUTLIMIT;
     for(i = 0; i < x->x_outlets; i++)
         outlet_new(&x->x_obj, gensym("signal"));
+    x->x_out_status = outlet_new(&x->x_obj, &s_list);
     ms = ms > 0 ? ms : 0;
     x->x_fade_in_samps = x->x_sr_khz * ms + 1;
     x->x_lastchannel = 0;

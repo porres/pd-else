@@ -54,9 +54,9 @@ to save to, f 65;
 #X obj 90 237 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 492 78 else/setdsp~;
-#X obj 337 176 else/play.file~ 2;
-#X msg 337 153 open test.wav;
-#X obj 325 203 else/out~;
+#X obj 328 173 else/play.file~ 2;
+#X msg 328 150 open test.wav;
+#X obj 316 200 else/out~;
 #X obj 110 41 cnv 4 4 4 empty empty batch 0 28 2 18 -233017 -1 0;
 #X text 53 85 [batch.rec~] is a convenient abstraction based on [writesf~]
 and the 'fast-forward' message to pd that batch records to a sound
@@ -73,8 +73,8 @@ file - that you can load with objects like [sample~] \, [play.file~]
 #X text 152 151 record 1 second;
 #X text 182 405 - number of channels to record (default 1 \, max 64)
 , f 52;
-#X text 487 212 see also:;
-#X obj 456 234 else/batch.rec~;
+#X text 475 212 see also:;
+#X obj 444 234 else/batch.write~;
 #X connect 32 0 34 0;
 #X connect 32 1 34 1;
 #X connect 33 0 32 0;

@@ -1,4 +1,5 @@
-#N canvas 604 80 703 525 10;
+#N canvas 579 138 703 525 10;
+#X declare -path else;
 #X obj 180 350 expr 60000 / ($f1 * 24);
 #X obj 90 85 midirealtimein;
 #X obj 90 113 sel 248;
@@ -16,7 +17,7 @@
 #X obj 348 448 outlet;
 #X obj 90 450 outlet;
 #X text 53 449 bang;
-#X obj 292 141 else/args;
+#X obj 292 141 args;
 #X obj 515 323 expr 60000 / ($f1 * 24);
 #X obj 470 385 metro;
 #X obj 292 168 route bang;
@@ -32,7 +33,8 @@
 #X obj 515 346 t b f;
 #X text 429 122 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 431 103 Alexandre Torres Porres (2017);
-#X obj 292 117 else/lb -init;
+#X obj 292 117 lb -init;
+#X obj 468 70 declare -path else;
 #X connect 0 0 24 0;
 #X connect 1 0 2 0;
 #X connect 2 0 5 0;

@@ -120,14 +120,14 @@ floats and bangs., f 62;
 #X text 744 126 AR (attack \, release);
 #X obj 42 291 else/sig2float~;
 #X obj 42 322 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 4950 1;
+-1 -1 0 1;
 #X obj 42 173 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 127 233 start \, duration \, target;
 #X text 87 197 duration \, target;
 #X obj 296 242 else/sig2float~;
 #X obj 296 275 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 4950 1;
+-1 -1 0 1;
 #X obj 296 163 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 192 338 else/setdsp~;
@@ -152,7 +152,7 @@ can use it to create complex envelope lines as below., f 35;
 (in ms) and target value (this is the opposite order of the [line]
 family of objects in Pd Vanilla)., f 36;
 #X obj 738 346 vsl 20 80 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 3950 1;
+-1 -1 0 1;
 #X obj 738 316 else/sig2float~;
 #X text 761 342 1;
 #X obj 738 289 else/envgen~;
@@ -208,10 +208,10 @@ the same as using the right inlet.;
 #X obj 92 316 else/bl.vsaw~;
 #X obj 193 302 else/envgen~ 10 1 40 0.5 400 0.5 50 0, f 19;
 #X text 24 241 MIDI Pitch =>, f 8;
-#X obj 461 245 else/rescale;
-#X obj 461 273 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 503 245 else/rescale;
+#X obj 503 273 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 446 361 *~;
+#X obj 488 361 *~;
 #X obj 398 274 mtof;
 #X obj 193 180 else/tempo 60 50;
 #X obj 193 144 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
@@ -222,13 +222,10 @@ the same as using the right inlet.;
 #X text 29 30 A non-zero input triggers the envelope as a "gate on"
 message and sets an overall gain (which is 1 by default). A zero value
 is ignored if there's no sustain point., f 57;
-#X obj 398 115 keyboard 17 80 2 4 0 0 empty empty;
-#X obj 398 215 unpack;
-#X obj 398 305 bl.tri~;
 #X text 392 25 When you set a sustain point \, with the sustain message
 or flag \, then [envgen~] holds at the given point until it receives
 a 0 or release message., f 39;
-#X obj 461 308 else/envgen~ 10 1 40 0.5 50 0 -suspoint 2, f 24;
+#X obj 503 308 else/envgen~ 10 1 40 0.5 50 0 -suspoint 2, f 24;
 #X text 30 69 By default \, [envgen~] has no sustain point \, which
 means it also doesn't have a release ramp and generates the whole envelope
 at "one-shot" when triggered., f 57;
@@ -252,42 +249,45 @@ message or flag. A value equal or less than zero means there's no maximum
 sustain time and it will sustain indefinitely until it receives a release.
 ;
 #X obj 178 376 else/plate.rev~ 50 0.75 0.5 0.5 0.5, f 18;
-#X obj 446 390 else/plate.rev~ 50 0.75 0.5 0.5 0.5, f 18;
+#X obj 488 390 else/plate.rev~ 50 0.75 0.5 0.5 0.5, f 18;
 #X obj 78 220 else/rand.i 36 72;
 #X obj 193 219 else/rand.f 0.25 1;
-#X obj 456 441 else/out~;
+#X obj 498 441 else/out~;
 #X obj 186 429 else/out~;
 #X text 392 81 Here's [envgen~] as an ADSR envelope:, f 39;
+#X obj 398 115 else/keyboard 17 80 2 4 0 0 empty empty;
+#X obj 398 305 else/bl.tri~;
+#X obj 398 215 unpack float float;
 #X connect 0 0 2 0;
-#X connect 1 0 32 0;
+#X connect 1 0 29 0;
 #X connect 2 0 3 0;
 #X connect 3 0 1 0;
 #X connect 4 0 1 1;
 #X connect 6 0 7 0;
-#X connect 7 0 20 0;
-#X connect 8 0 33 0;
-#X connect 9 0 18 0;
-#X connect 10 0 34 0;
-#X connect 10 0 35 0;
+#X connect 7 0 17 0;
+#X connect 8 0 30 0;
+#X connect 9 0 37 0;
+#X connect 10 0 31 0;
+#X connect 10 0 32 0;
 #X connect 11 0 10 0;
 #X connect 13 0 4 0;
 #X connect 14 0 3 1;
-#X connect 16 0 17 0;
-#X connect 17 0 9 0;
-#X connect 17 1 6 0;
-#X connect 18 0 8 0;
-#X connect 20 0 8 1;
-#X connect 23 0 26 0;
-#X connect 24 0 23 0;
-#X connect 26 0 27 0;
-#X connect 29 0 23 0;
-#X connect 30 0 29 0;
-#X connect 32 0 37 0;
-#X connect 32 1 37 1;
-#X connect 33 0 36 0;
-#X connect 33 1 36 1;
-#X connect 34 0 0 0;
-#X connect 35 0 13 0;
+#X connect 17 0 8 1;
+#X connect 20 0 23 0;
+#X connect 21 0 20 0;
+#X connect 23 0 24 0;
+#X connect 26 0 20 0;
+#X connect 27 0 26 0;
+#X connect 29 0 34 0;
+#X connect 29 1 34 1;
+#X connect 30 0 33 0;
+#X connect 30 1 33 1;
+#X connect 31 0 0 0;
+#X connect 32 0 13 0;
+#X connect 36 0 38 0;
+#X connect 37 0 8 0;
+#X connect 38 0 9 0;
+#X connect 38 1 6 0;
 #X restore 451 176 pd gate-sustain;
 #N canvas 267 107 1028 416 legato-retrigger 0;
 #X obj 73 222 *~;
@@ -515,7 +515,6 @@ for more details on how it works., f 65;
 #X text 74 83 [envgen~] is an envelope generator \, but It can also
 be considered an all purpose line segment generator.;
 #N canvas 513 87 482 594 exponential 0;
-#X obj 366 223 setdsp~ 1;
 #X obj 43 362 cnv 15 398 138 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -2799,15 +2798,16 @@ below.;
 #X obj 323 124 else/rescale~;
 #X text 45 82 The exponential factor is the same as used in [else/rescale]
 and [else/rescale~]. Check them out as well:;
-#X connect 4 0 3 0;
-#X connect 4 0 14 0;
-#X connect 4 1 14 0;
-#X connect 9 0 4 0;
-#X connect 10 0 4 0;
-#X connect 11 0 4 0;
-#X connect 12 0 4 0;
-#X connect 13 0 4 0;
-#X connect 14 0 3 0;
+#X obj 366 223 else/setdsp~;
+#X connect 3 0 2 0;
+#X connect 3 0 13 0;
+#X connect 3 1 13 0;
+#X connect 8 0 3 0;
+#X connect 9 0 3 0;
+#X connect 10 0 3 0;
+#X connect 11 0 3 0;
+#X connect 12 0 3 0;
+#X connect 13 0 2 0;
 #X restore 457 138 pd exponential;
 #X obj 269 168 else/s2f~;
 #X obj 356 192 sel 0;

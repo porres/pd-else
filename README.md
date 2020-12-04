@@ -6,24 +6,14 @@
 
 
 
-### Version: 1.0-0 beta-32 With Live Electronics Tutorial 
+### Version: 1.0-0 beta-35 With Live Electronics Tutorial 
 
-###   Unreleased
+###   Released: Released december 2nd 2020
 
 
 
 
 	Copyright © 2017-2020 Alexandre Torres Porres
-
-  
-
-
-
-
-
-
-
-
 
 
 
@@ -66,7 +56,7 @@
 
 ### Installing ELSE:
 
-​	ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path. Nonetheless, it can also be loaded as a library via "Preferences => Startup" or with [declare -lib else], and this is the oficial way of loading 'else' - even though that all this does is just print the library information on Pd's terminal window. 
+​	ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path or use [declare -path else]. ELSE comes with a binary that you can use load via "Preferences => Startup" or with [declare -lib else], but all that this does is print information of whaty version of ELSE you got wehn you open Pd.  You can also just load the 'else' external for that same purpose, check its help file. 
 
 ​	It's important to stress this release needs Pd Vanilla 0.51-1 or above (Pd Extended/Purr Data aren't supported). 
 
@@ -121,12 +111,13 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (378 objects):
+## Current Object list (383 objects):
 
 **ASSORTED: [04]**
+
 - [table~]
-- [nbang]
 - [meter]
+- [euclid]
 - [else]
 
 **FFT: [02]**
@@ -139,11 +130,11 @@ Cross compiling is also possible with something like this
 - [dollsym]
 - [receiver]
 - [blocksize~]
-- [click]
 - [properties]
 - [fontsize]
 - [canvas.active]
 - [canvas.bounds]
+- [click]
 - [canvas.gop]
 - [canvas.pos]
 - [canvas.edit]
@@ -154,9 +145,10 @@ Cross compiling is also possible with something like this
 - [canvas.zoom]
 - [loadbanger] / [lb]
 
-**MESSAGE MANAGEMENT: [21]**
+**MESSAGE MANAGEMENT: [22]**
 
 - [format]
+- [nbang]
 - [unite]
 - [separate]
 - [symbol2any]
@@ -165,10 +157,10 @@ Cross compiling is also possible with something like this
 - [hot]
 - [initmess]
 - [message]
-- [setmess]
 - [pack2]
 - [pick]
 - [limit]
+- [spread]
 - [router]
 - [routeall]
 - [routetype]
@@ -178,11 +170,14 @@ Cross compiling is also possible with something like this
 - [sig2float~] / [s2f~]
 - [float2sig~] / [f2s~]
 
-**LIST/MESSAGE MANAGEMENT: [13]**
+**LIST/MESSAGE MANAGEMENT: [15]**
+
 - [break] 
 - [order]
-- [regroup] 
+- [combine]
+- [group] 
 - [iterate]
+- [insert]
 - [scramble]
 - [sort]
 - [reverse]
@@ -278,18 +273,16 @@ Cross compiling is also possible with something like this
 - [pi]
 - [e]
 
-**MATH: RANDOM: [07]**
+**MATH: RANDOM: [04]**
+
 - [rand.f]
 - [rand.f~]
-- [rand.seq]
 - [rand.i]
 - [rand.i~]
-- [drunkard~]
-- [drunkard]
 
-**LOGIC: [02]**
+**LOGIC: [01]**
+
 - [loop]
-- [moses~]
 
 **AUDIO PROCESSING: ASSORTED [21]**
 - [downsample~]
@@ -442,7 +435,8 @@ Cross compiling is also possible with something like this
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [30]**
+**CONTROL: [26]**
+
  - [mouse]
  - [canvas.mouse]
  - [adsr~]
@@ -466,20 +460,28 @@ Cross compiling is also possible with something like this
  - [sequencer~]
  - [impseq~]
  - [lfo]
+ - [phasor]
+ - [impulse]
+ - [pulse]
+
+**CONTROL: RANDOM: [09]**
+
+- [rand.seq]
+- [markov]
+- [drunkard~]
+- [drunkard]
+- [randpulse]
+ - [randpulse2]
  - [lfnoise]
  - [stepnoise]
  - [rampnoise]
- - [impulse]
- - [pulse]
- - [randpulse]
- - [randpulse2]
 
  **TRIGGERS: [28]**
 - [above]
 - [above~]
 - [bangdiv]
-- [coin]
-- [coin~]
+- [chance]
+- [chance~]
 - [dust~]
 - [dust2~]
 - [gatehold~]
@@ -520,7 +522,7 @@ Cross compiling is also possible with something like this
 - [vu~]
 - [zerocross~]
 
-**GUI: [32]**
+**GUI: [33]**
 
 - [gui]
 - [pad]
@@ -554,6 +556,7 @@ Cross compiling is also possible with something like this
 - [mix4~]
 - [setdsp~]
 - [openfile]
+- [oscilloscope~]
 
 **EXTRA: [02]**
 - [output~]

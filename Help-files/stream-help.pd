@@ -1,4 +1,4 @@
-#N canvas 567 46 566 411 10;
+#N canvas 701 140 566 411 10;
 #X obj 204 125 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 315 149 nbx 3 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
@@ -56,7 +56,7 @@
 #X text 167 364 1) float - N group size (default 1);
 #X text 201 298 - N group size;
 #X obj 240 128 nbx 3 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 2 256;
+-1 -1 0 256;
 #X text 152 128 resends;
 #X text 68 87 [stream] mode makes a list with the last N received items.
 The N is set as an argument or in the right inlet. A negative N inverts

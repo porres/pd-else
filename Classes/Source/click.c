@@ -1,3 +1,10 @@
+
+// based on iemguts/properties
+
+#ifdef CAMOMILE
+#undef PD
+#endif
+
 #include "m_pd.h"
 #include "g_canvas.h"
 
@@ -105,38 +112,39 @@ static void addObjectToCanvas(const t_pd *parent, const t_pd *obj){
 }
 
 ///////////////////////
-// start of else_click_class
+// start of click_class
 ///////////////////////
 
-static t_class *else_click_class;
+static t_class *click_class;
 
-typedef struct _else_click{
+typedef struct _click{
   t_object  x_obj;
-  t_outlet *x_else_click_bangout;
-}t_else_click;
+  t_outlet *x_click_bangout;
+}t_click;
 
-static void else_click_free(t_else_click *x){
+static void click_free(t_click *x){
   removeObjectFromCanvases((t_pd*)x);
 }
 
-static void else_click_bang(t_else_click *x){
-    outlet_bang(x->x_else_click_bangout);
+static void click_bang(t_click *x){
+    outlet_bang(x->x_click_bangout);
 }
 
-static void else_click_else_click(t_gobj *z, t_canvas *x){
+static void click_click(t_gobj *z, t_canvas *x){
     x = NULL;
     t_cnv_objlist *objs = objectsInCanvas((t_pd*)z);
     if(objs == NULL)
       canvas_vis((t_glist*)z, 1);
     while(objs){
         t_canvas* cv = (t_canvas*)objs->obj;
-        else_click_bang((t_else_click*)cv);
+        click_bang((t_click*)cv);
         objs = objs->next;
     }
 }
 
-static void *else_click_new(t_floatarg f){
-    t_else_click *x = (t_else_click *)pd_new(else_click_class);
+static void *click_new(t_floatarg f){
+    t_click *x = (t_click *)pd_new(click_class);
+    #ifdef PD
     t_int subpatch_mode = f != 0;;
     t_glist *glist = (t_glist *)canvas_getcurrent();
     t_canvas *canvas = (t_canvas*)glist_getcanvas(glist);
@@ -145,13 +153,14 @@ static void *else_click_new(t_floatarg f){
         while(!canvas->gl_env)
             canvas = canvas->gl_owner;
     }
-    class_addmethod(class, (t_method)else_click_else_click, gensym("click"), 0);
-    x->x_else_click_bangout = outlet_new((t_object *)x, &s_bang);
+    class_addmethod(class, (t_method)click_click, gensym("click"), 0);
     addObjectToCanvas((t_pd*)canvas, (t_pd*)x);
+    #endif
+    x->x_click_bangout = outlet_new((t_object *)x, &s_bang);
     return(x);
 }
 
 void click_setup(void){
-    else_click_class = class_new(gensym("click"), (t_newmethod)else_click_new,
-        (t_method)else_click_free, sizeof(t_else_click), CLASS_NOINLET, A_DEFFLOAT, 0);
+    click_class = class_new(gensym("click"), (t_newmethod)click_new,
+        (t_method)click_free, sizeof(t_click), CLASS_NOINLET, A_DEFFLOAT, 0);
 }

@@ -68,7 +68,7 @@ to polar coordinates (amplitude / phase).;
 #X obj 491 84 else/setdsp~;
 #X text 159 342 signal;
 #X text 159 365 signal;
-#N canvas 501 227 534 482 spectral 0;
+#N canvas 714 162 534 482 spectral 0;
 #X obj 98 244 cnv 15 300 100 empty empty polar: 6 10 0 14 -233017 -66577
 0;
 #X obj 229 152 rfft~;

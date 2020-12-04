@@ -1,4 +1,4 @@
-#N canvas 241 117 563 574 12;
+#N canvas 671 166 563 574 12;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -47,7 +47,7 @@
 #X obj 195 166 nbx 4 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
 -228856 -1 -1 0 256;
 #X text 168 164 Hz;
-#X obj 195 222 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 195 222 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 135 368 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
@@ -91,7 +91,7 @@ f 55;
 #X obj 498 175 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 513 283 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 160 256;
+-228856 -1 -1 180 256;
 #X text 37 279 You can change the rate with the -rate flag or the "rate"
 message. This affects the period resolution, f 55;
 #X connect 1 0 0 0;

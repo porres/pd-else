@@ -1,26 +1,26 @@
-#N struct 1950-point float x0 float y0 float size float fg float in
+#N struct 1127-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1972-point float x0 float y0 float size float fg float in
+#N struct 1149-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1990-point float x0 float y0 float size float fg float in
+#N struct 1167-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2010-point float x0 float y0 float size float fg float in
+#N struct 1187-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2028-point float x0 float y0 float size float fg float in
+#N struct 1205-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2048-point float x0 float y0 float size float fg float in
+#N struct 1225-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2068-point float x0 float y0 float size float fg float in
+#N struct 1245-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2116-point float x0 float y0 float size float fg float in
+#N struct 1291-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2138-point float x0 float y0 float size float fg float in
+#N struct 1310-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2160-point float x0 float y0 float size float fg float in
+#N struct 1336-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2178-point float x0 float y0 float size float fg float in
+#N struct 1354-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 2196-point float x0 float y0 float size float fg float in
+#N struct 1372-point float x0 float y0 float size float fg float in
 float grid;
 #N canvas 741 27 559 578 10;
 #X obj 2 4 cnv 15 301 42 empty empty circle 20 20 2 37 -233017 -1 0
@@ -244,7 +244,7 @@ the patch., f 46;
 #X connect 2 0 3 0;
 #X connect 3 0 0 0;
 #X restore 128 205 pd init;
-#N canvas 533 288 614 254 flags 0;
+#N canvas 689 272 614 254 flags 0;
 #X text 94 33 -size <float>: sets x/y size (default: 127), f 71;
 #X text 94 93 -line <float>: non zero sets line visibility (default:
 1), f 71;
@@ -275,7 +275,6 @@ in RGB (default 255 255 255), f 76;
 #X text 144 444 init <float>;
 #X text 232 444 - non zero sets to init mode, f 52;
 #N canvas 809 145 426 641 example 0;
-#X obj 56 126 setdsp~ 1;
 #N canvas 371 23 399 387 set 0;
 #X obj 105 290 pack;
 #X msg 105 245 1 \$1;
@@ -296,8 +295,8 @@ in RGB (default 255 255 255), f 76;
 #X obj 105 267 else/pol2car;
 #X obj 105 320 outlet;
 #X obj 265 237 v twopi;
-#X obj 265 211 pi 2;
 #X obj 221 286 else/initmess 0 0;
+#X obj 265 211 else/pi 2;
 #X connect 0 0 16 0;
 #X connect 1 0 15 0;
 #X connect 2 0 1 0;
@@ -307,8 +306,8 @@ in RGB (default 255 255 255), f 76;
 #X connect 6 0 5 0;
 #X connect 15 0 0 0;
 #X connect 15 1 0 1;
-#X connect 18 0 17 0;
-#X connect 19 0 16 0;
+#X connect 18 0 16 0;
+#X connect 19 0 17 0;
 #X coords 0 -1 1 1 132 42 2 100 100;
 #X restore 137 63 pd set;
 #X text 278 75 <= set speaker;
@@ -339,36 +338,36 @@ in RGB (default 255 255 255), f 76;
 #X text 147 227 6;
 #X text 243 228 4;
 #X text 195 250 5;
-#X connect 1 0 19 0;
+#X obj 56 123 else/setdsp~;
+#X connect 0 0 18 0;
+#X connect 2 0 15 0;
 #X connect 3 0 16 0;
-#X connect 4 0 17 0;
-#X connect 7 0 14 3;
-#X connect 8 0 7 0;
+#X connect 6 0 13 3;
+#X connect 7 0 6 0;
+#X connect 9 0 13 0;
 #X connect 10 0 14 0;
-#X connect 11 0 15 0;
-#X connect 11 1 15 1;
-#X connect 11 2 15 2;
-#X connect 11 3 15 3;
-#X connect 11 4 15 4;
-#X connect 11 5 15 5;
-#X connect 11 6 15 6;
-#X connect 11 7 15 7;
-#X connect 12 0 3 0;
-#X connect 12 1 4 0;
-#X connect 14 0 11 0;
-#X connect 14 1 11 1;
-#X connect 14 2 11 2;
-#X connect 14 3 11 3;
-#X connect 14 4 11 4;
-#X connect 14 5 11 5;
-#X connect 14 6 11 6;
-#X connect 14 7 11 7;
-#X connect 16 0 14 1;
-#X connect 17 0 14 2;
-#X connect 19 0 12 0;
+#X connect 10 1 14 1;
+#X connect 10 2 14 2;
+#X connect 10 3 14 3;
+#X connect 10 4 14 4;
+#X connect 10 5 14 5;
+#X connect 10 6 14 6;
+#X connect 10 7 14 7;
+#X connect 11 0 2 0;
+#X connect 11 1 3 0;
+#X connect 13 0 10 0;
+#X connect 13 1 10 1;
+#X connect 13 2 10 2;
+#X connect 13 3 10 3;
+#X connect 13 4 10 4;
+#X connect 13 5 10 5;
+#X connect 13 6 10 6;
+#X connect 13 7 10 7;
+#X connect 15 0 13 1;
+#X connect 16 0 13 2;
+#X connect 18 0 11 0;
 #X restore 128 224 pd example;
 #N canvas 757 48 563 405 send/receive 0;
-#X obj 65 309 display;
 #X msg 354 74 receive \\\$0-circle-rcv \, send \\\$0-circle-snd, f
 25;
 #X text 74 53 You can also set send/receive names with the 'send'/'receive'
@@ -376,7 +375,6 @@ messages or '-send'/'-receive' flags., f 31;
 #X msg 372 123 receive \\\$0-rcv \, send \\\$0-snd, f 16;
 #X obj 169 243 send \$0-circle-rcv;
 #X obj 169 269 receive \$0-circle-snd;
-#X obj 169 302 display;
 #X obj 65 250 send \$0-rcv;
 #X obj 65 276 receive \$0-snd;
 #X msg 386 181 receive empty \, send empty, f 16;
@@ -388,13 +386,15 @@ messages or '-send'/'-receive' flags., f 31;
 0 0 0 1 0 0 63.5 63.5 empty empty 0;
 #X text 76 110 Make sure to escape "\$0" properly with backlashes (as
 in: "\\\$0")., f 24;
-#X connect 1 0 13 0;
-#X connect 3 0 13 0;
-#X connect 5 0 6 0;
-#X connect 8 0 0 0;
-#X connect 9 0 13 0;
-#X connect 11 0 4 0;
-#X connect 12 0 7 0;
+#X obj 169 301 else/display;
+#X obj 65 309 else/display;
+#X connect 0 0 11 0;
+#X connect 2 0 11 0;
+#X connect 4 0 13 0;
+#X connect 6 0 14 0;
+#X connect 7 0 11 0;
+#X connect 9 0 3 0;
+#X connect 10 0 5 0;
 #X restore 26 224 pd send/receive;
 #X text 272 169 press shift for fine tuning, f 11;
 #X obj 359 224 else/display;
@@ -437,7 +437,7 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #X text 232 402 - sets background color outside circle in RGB, f 52
 ;
 #X obj 359 90 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255 0
-0 0 1 0 0 63.5 63.5 empty empty 1;
+0 0 1 0 0 10.3348 30.7766 empty empty 1;
 #N canvas 700 46 382 360 clip 0;
 #X obj 117 149 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
 0 0 0 1 0 0 63.5 63.5 empty empty 0;

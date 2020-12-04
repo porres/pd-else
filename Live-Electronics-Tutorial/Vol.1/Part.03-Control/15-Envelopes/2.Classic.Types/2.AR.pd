@@ -1,0 +1,69 @@
+#N canvas 433 115 869 401 12;
+#X declare -path else;
+#X obj 37 270 vsl 16 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 90 243 *~;
+#X obj 36 181 osc~ 440;
+#X obj 90 283 out~;
+#X obj 654 176 impseq~;
+#X obj 577 280 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X text 600 373 0;
+#X text 600 274 1;
+#X obj 636 260 *~;
+#X obj 654 146 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 636 303 out~;
+#X obj 654 214 decay2~ 100 2000;
+#X msg 722 176 0.5;
+#X text 21 96 Here we have an attack stage of 50 ms and a release stage
+of 450 ms - the total duration of the envelope is 500 ms.;
+#X obj 108 165 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 108 192 envgen~ 50 1 450 0;
+#X text 57 361 0;
+#X text 57 262 1;
+#X obj 577 252 s2f~;
+#X obj 37 236 s2f~;
+#X obj 682 23 declare -path else;
+#X text 489 62 The [decay2~] object from ELSE is a variant of [decay~]
+that has an attack stage \, which is the first argument. But the total
+duration still depends on the decay time., f 47;
+#X obj 304 274 vsl 16 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 359 243 *~;
+#X obj 305 181 osc~ 440;
+#X obj 359 283 out~;
+#X obj 377 165 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 324 365 0;
+#X text 324 266 1;
+#X obj 304 240 s2f~;
+#X text 409 164 exponential;
+#X obj 377 192 envgen~ 50 1 450 0 -exp 4 4, f 18;
+#X text 21 18 An "AR" envelope has an "attack" and a "release" stage.
+The attack is the first stage that starts at 0 and goes to the peak
+amplitude. Right after the attack is finished we have the release stage
+going back to 0 - let's see this first implemented with [envgen~] \,
+both linearly and exponentially.;
+#X obj 575 194 osc~ 440;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 4 0 11 0;
+#X connect 8 0 10 0;
+#X connect 9 0 4 0;
+#X connect 11 0 8 1;
+#X connect 11 0 18 0;
+#X connect 12 0 11 0;
+#X connect 14 0 15 0;
+#X connect 15 0 1 1;
+#X connect 15 0 19 0;
+#X connect 18 0 5 0;
+#X connect 19 0 0 0;
+#X connect 23 0 25 0;
+#X connect 24 0 23 0;
+#X connect 26 0 31 0;
+#X connect 29 0 22 0;
+#X connect 31 0 23 1;
+#X connect 31 0 29 0;
+#X connect 33 0 8 0;

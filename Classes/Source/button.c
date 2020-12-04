@@ -146,7 +146,6 @@ static void button_size(t_button *x, t_floatarg f){
     int s = f < 12 ? 12 : (int)f;
     if(s != x->x_w || s != x->x_h){
         x->x_w = s; x->x_h = s;
-        canvas_dirty(x->x_glist, 1);
         button_erase(x, x->x_glist);
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
             button_draw(x, x->x_glist);
@@ -159,7 +158,6 @@ static void button_dim(t_button *x, t_floatarg f1, t_floatarg f2){
     int w = f1 < 12 ? 12 : (int)f1, h = f2 < 12 ? 12 : (int)f2;
     if(w != x->x_w || h != x->x_h){
         x->x_w = w; x->x_h = h;
-        canvas_dirty(x->x_glist, 1);
         button_erase(x, x->x_glist);
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
             button_draw(x, x->x_glist);
@@ -172,7 +170,6 @@ static void button_width(t_button *x, t_floatarg f){
     int w = f < 12 ? 12 : (int)f;
     if(w != x->x_w){
         x->x_w = w;
-        canvas_dirty(x->x_glist, 1);
         button_erase(x, x->x_glist);
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             button_draw(x, x->x_glist);
@@ -183,7 +180,6 @@ static void button_height(t_button *x, t_floatarg f){
     int h = f < 12 ? 12 : (int)f;
     if(h != x->x_h){
         x->x_h = h;
-        canvas_dirty(x->x_glist, 1);
         button_erase(x, x->x_glist);
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
             button_draw(x, x->x_glist);
@@ -198,7 +194,6 @@ static void button_fgcolor(t_button *x, t_floatarg red, t_floatarg green, t_floa
     int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
     if(x->x_fgcolor[0] != r || x->x_fgcolor[1] != g || x->x_fgcolor[2] != b){
         x->x_fgcolor[0] = r; x->x_fgcolor[1] = g; x->x_fgcolor[2] = b;
-        canvas_dirty(x->x_glist, 1);
         if(x->x_state && (glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)))
             sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n", glist_getcanvas(x->x_glist), x, r, g, b);
     }
@@ -210,7 +205,6 @@ static void button_bgcolor(t_button *x, t_floatarg red, t_floatarg green, t_floa
     int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
     if(x->x_bgcolor[0] != r || x->x_bgcolor[1] != g || x->x_bgcolor[2] != b){
         x->x_bgcolor[0] = r; x->x_bgcolor[1] = g; x->x_bgcolor[2] = b;
-        canvas_dirty(x->x_glist, 1);
         if(!x->x_state && glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n", glist_getcanvas(x->x_glist), x, r, g, b);
     }

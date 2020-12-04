@@ -48,14 +48,12 @@
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 792 220 453 261 channel 0;
-#X obj 149 203 display;
 #X msg 224 141 1;
 #X msg 257 141 5;
 #X text 287 141 <= channel;
 #X msg 206 115 0;
 #X text 234 115 <= omni;
 #X obj 149 141 midiin;
-#X obj 224 203 display;
 #X text 19 15 An argument sets the channel number. If so \, only MIDI
 messages that correspond to that channel are sent. If no channel is
 given \, it loads "0" as the default and the object operates in omni
@@ -63,12 +61,14 @@ mode \, where the objects outputs values from all channels and the
 channel number is output in the right outlet. You can also change the
 channel with the right inlet (0 sets to omni)., f 67;
 #X obj 149 179 else/touch.in;
-#X connect 1 0 9 1;
-#X connect 2 0 9 1;
-#X connect 4 0 9 1;
-#X connect 6 0 9 0;
-#X connect 9 0 0 0;
-#X connect 9 1 7 0;
+#X obj 224 203 else/display;
+#X obj 149 203 else/display;
+#X connect 0 0 7 1;
+#X connect 1 0 7 1;
+#X connect 3 0 7 1;
+#X connect 5 0 7 0;
+#X connect 7 0 9 0;
+#X connect 7 1 8 0;
 #X restore 473 196 pd channel;
 #X text 224 387 sets channel number (default 0 - OMNI);
 #X text 239 294 -;

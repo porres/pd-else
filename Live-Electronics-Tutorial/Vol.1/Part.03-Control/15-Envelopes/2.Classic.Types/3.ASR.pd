@@ -1,0 +1,141 @@
+#N canvas 317 40 1093 656 12;
+#X declare -path else;
+#X obj 247 242 vsl 16 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 131 221 *~;
+#X obj 131 165 osc~ 440;
+#X obj 131 270 out~;
+#X text 320 148 ASR;
+#X obj 496 193 *~;
+#X obj 612 196 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X text 635 286 0;
+#X text 635 192 1;
+#X obj 557 101 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 468 149 osc~ 440;
+#X obj 601 104 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 669 104 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 602 86 attack;
+#X text 671 86 release;
+#X text 525 103 gate;
+#X obj 576 540 *~;
+#X obj 518 503 osc~ 440;
+#X obj 812 260 *~;
+#X obj 812 210 osc~ 440;
+#X obj 893 174 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 812 302 out~;
+#X obj 929 289 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X text 952 379 0;
+#X text 952 285 1;
+#X text 853 176 gate;
+#X obj 496 237 out~;
+#X obj 576 579 out~;
+#X obj 215 559 vsl 16 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 110 518 *~;
+#X obj 109 450 osc~ 440;
+#X obj 110 553 out~;
+#X obj 178 428 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 204 426 gate;
+#X obj 820 502 *~;
+#X obj 819 451 osc~ 440;
+#X obj 891 421 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 820 549 out~;
+#X obj 938 527 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X text 961 617 0;
+#X text 961 523 1;
+#X text 915 421 gate;
+#X text 23 21 An "ASR" ("Attack / Sustain / Release") envelope has
+a sustain stage in the middle. So after the attack we have the amplitude
+being sustained before the release stage., f 56;
+#X text 446 34 The [asr~] external from ELSE is dedicated to generating
+this type of envelope and expects a gate. Check its help file for more
+details., f 45;
+#X obj 209 175 envgen~ 50 1 450 1 500 0;
+#X obj 209 148 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 938 499 s2f~;
+#X obj 215 533 s2f~;
+#X obj 247 216 s2f~;
+#X obj 929 261 s2f~;
+#X obj 612 168 s2f~;
+#X obj 920 31 declare -path else;
+#X text 25 342 You can trigger [envgen~] with a gate \, which is the
+same as pressing/releasing a note on your MIDI controller. You just
+need to define a sustain point and the sustain stage depends on how
+long the gate is on. The example below is exponential., f 57;
+#X obj 178 471 envgen~ 150 1 750 0 -suspoint 1 -exp 4 -4, f 21;
+#X obj 557 132 asr~ 500 250, f 13;
+#X text 470 323 You could trigger this envelope with an impulse or
+a bang by scheduling a release with the [timed.gate~] object from ELSE.
+, f 43;
+#X obj 594 482 timed.gate~ 700;
+#X obj 893 213 glide2~ 500 250;
+#X msg 955 174 exp \$1;
+#X msg 922 144 1;
+#X msg 955 144 4;
+#X obj 594 454 impseq~;
+#X obj 562 456 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 594 434 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 594 512 asr~ 400 300 -log;
+#X obj 891 460 lag2~ 500 250;
+#X text 470 374 this object has a log mode that performs a low pass
+filtering as in the [lag~] object., f 43;
+#X text 793 74 The [glide2~] and [lag2~] objects can also behave as
+a kind of ASR envelope generator triggered by a gate., f 38;
+#X text 22 72 Below we use [envgen~] and give it a sustain stage by
+generating a line with a repeated destination of "1". The attack is
+then 50 ms \, the sustain stage takes 450 ms and the release is 500
+ms long., f 53;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 5 0 26 0;
+#X connect 9 0 54 0;
+#X connect 10 0 5 0;
+#X connect 11 0 54 1;
+#X connect 12 0 54 2;
+#X connect 16 0 27 0;
+#X connect 17 0 16 0;
+#X connect 18 0 21 0;
+#X connect 19 0 18 0;
+#X connect 20 0 57 0;
+#X connect 29 0 31 0;
+#X connect 30 0 29 0;
+#X connect 32 0 53 0;
+#X connect 34 0 37 0;
+#X connect 35 0 34 0;
+#X connect 36 0 65 0;
+#X connect 44 0 1 1;
+#X connect 44 0 48 0;
+#X connect 45 0 44 0;
+#X connect 46 0 38 0;
+#X connect 47 0 28 0;
+#X connect 48 0 0 0;
+#X connect 49 0 22 0;
+#X connect 50 0 6 0;
+#X connect 53 0 29 1;
+#X connect 53 0 47 0;
+#X connect 54 0 5 1;
+#X connect 54 0 50 0;
+#X connect 56 0 64 0;
+#X connect 57 0 18 1;
+#X connect 57 0 49 0;
+#X connect 58 0 57 0;
+#X connect 59 0 58 0;
+#X connect 60 0 58 0;
+#X connect 61 0 56 0;
+#X connect 62 0 56 0;
+#X connect 63 0 61 0;
+#X connect 64 0 16 1;
+#X connect 65 0 34 1;
+#X connect 65 0 46 0;

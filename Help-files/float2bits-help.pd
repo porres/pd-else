@@ -1,4 +1,4 @@
-#N canvas 422 23 562 495 10;
+#N canvas 636 114 562 495 10;
 #X obj 5 289 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 5 388 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -63,7 +63,7 @@ is the type of float used in Pure Data.;
 #X obj 50 57 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 50 116 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -99.2777 256;
+-228856 -1 -1 65.46 256;
 #X text 16 264 sign;
 #X text 58 300 exponent;
 #X text 124 266 mantissa;

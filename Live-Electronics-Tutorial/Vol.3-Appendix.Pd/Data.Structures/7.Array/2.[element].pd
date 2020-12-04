@@ -1,0 +1,64 @@
+#N struct 1064-DS float x float y array 1064-table 1064-element;
+#N struct 1064-element float y;
+#N canvas 264 158 719 421 12;
+#X obj 567 124 pointer;
+#N canvas 364 371 509 380 template 0;
+#X text 83 190 The drawing instruction now add more arguments. Besides
+the name we have the color number \, a line width \, a coordinates
+pair and a spacing value (20) between the floats in the array., f
+47;
+#X obj 169 282 plot \$0-table 900 2 0 0 20;
+#X obj 53 128 struct \$0-DS float x float y array \$0-table \$0-element
+;
+#X text 61 46 Data Structure named "\$0-DS" holding coordinates floats
+"x/y" and an array named "\$0-table" using the struct named "\$0-element"
+defined in the other subpatch., f 53;
+#X restore 120 154 pd template;
+#X text 497 333 <= pointer to element;
+#X obj 485 276 nbx 3 16 0 15 0 0 empty \$0-index empty 0 -8 0 12 -228856
+-1 -1 5 256;
+#X obj 376 276 nbx 4 16 -100 100 0 0 empty empty empty 0 -8 0 12 -228856
+-1 -1 0 256;
+#X text 492 252 index;
+#X text 380 252 value;
+#X obj 458 154 append \$0-DS x y;
+#X obj 307 196 setsize \$0-DS \$0-table;
+#X obj 485 309 element \$0-DS \$0-table;
+#X obj 44 278 initmess \; pd-\$0-display clear \, vis 1 \; \$0-pointer
+traverse pd-\$0-display \, bang \; \$0-coords 10 105 \; \$0-size 16
+\; \$0-index 5;
+#X obj 307 129 r \$0-size;
+#X obj 458 113 r \$0-coords;
+#X obj 567 94 r \$0-pointer;
+#N canvas 1026 253 334 221 \$0-display 1;
+#X scalar 1064-DS 10 105 \; 0 \; \;;
+#X coords 0 221 1 220 0 0 0;
+#X restore 120 177 pd \$0-display;
+#N canvas 489 118 484 283 \$0-element 0;
+#X obj 133 219 filledpolygon 0 0 1 -2 -2 2 -2 2 2 -2 2;
+#X text 65 171 We can also use drawing instructions for each element
+in an array. Here we draw a black dot on it:, f 45;
+#X obj 159 125 struct \$0-element float y;
+#X text 32 28 The element is defined as a struct of name "\$0-element"
+containing only a float named "y". Since this is also the special variable
+name for the vertical coordinate \, this means you can drag this element
+vertically \, as in Pd's arrays.;
+#X restore 120 131 pd \$0-element;
+#X text 59 23 The [element] object returns a pointer to an element
+in an array \, so you can use it to get or set its value (with [set]/[get]).
+On this patch we use [set] to set array values. But first \, check
+the [pd \$0-element] and [pd template] subpatches for new information.
+, f 83;
+#X obj 376 358 set \$0-element y;
+#X obj 307 156 nbx 4 16 -100 100 0 0 empty empty empty 0 -8 0 12 -228856
+-1 -1 0 256;
+#X connect 0 0 7 2;
+#X connect 3 0 9 0;
+#X connect 4 0 17 0;
+#X connect 7 0 8 1;
+#X connect 7 0 9 1;
+#X connect 9 0 17 1;
+#X connect 11 0 18 0;
+#X connect 12 0 7 0;
+#X connect 13 0 0 0;
+#X connect 18 0 8 0;

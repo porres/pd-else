@@ -416,9 +416,9 @@ static void *voices_new(t_symbol *s, int argc, t_atom *argv){
     x->x_clock = clock_new(x, (t_method)voices_tick);
     x->x_vel = x->x_count = 0;
     floatinlet_new(&x->x_obj, &x->x_vel);
-    if(x->x_list_mode){
+    floatinlet_new(&x->x_obj, &x->x_release);
+    if(x->x_list_mode)
         outlet_new(&x->x_obj, &s_list);
-    }
     else{
         t_outlet **outs;
         if(!(outs = (t_outlet **)getbytes(x->x_n * sizeof(*outs))))

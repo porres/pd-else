@@ -1,0 +1,120 @@
+#N canvas 366 50 971 591 12;
+#X declare -path else;
+#X obj 762 223 +~;
+#X obj 714 188 phasor~;
+#X obj 762 252 cos~;
+#X obj 780 188 phasor~;
+#X obj 534 201 +~;
+#X obj 642 439 phasor~;
+#X obj 642 382 osc~;
+#X obj 642 404 *~;
+#X obj 579 407 nbx 4 14 -1e+37 1e+37 0 1 empty portadora empty 0 -8
+0 10 -228856 -1 -1 200 256;
+#X obj 642 360 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
+0 10 -228856 -1 -1 1 256;
+#X obj 692 388 nbx 4 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 -228856
+-1 -1 10 256;
+#X obj 534 264 out~;
+#X obj 762 280 out~;
+#X obj 579 509 out~;
+#X obj 780 141 osc~;
+#X obj 780 163 *~;
+#X obj 714 157 nbx 4 14 -1e+37 1e+37 0 1 empty portadora empty 0 -8
+0 10 -228856 -1 -1 200 256;
+#X obj 780 119 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
+0 10 -228856 -1 -1 1 256;
+#X obj 827 142 nbx 4 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 -228856
+-1 -1 10 256;
+#X obj 579 465 cosine~;
+#X obj 552 150 osc~;
+#X obj 552 172 *~;
+#X obj 486 166 nbx 4 14 -1e+37 1e+37 0 1 empty portadora empty 0 -8
+0 10 -228856 -1 -1 200 256;
+#X obj 552 128 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
+0 10 -228856 -1 -1 1 256;
+#X obj 591 155 nbx 4 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 -228856
+-1 -1 10 256;
+#X obj 116 371 phasor~;
+#X obj 216 294 nbx 5 14 -1e+37 1e+37 0 1 phff2ssvlk3 \$0-hz2 empty
+0 -8 0 10 -191407 -1 -1 -121 256;
+#X obj 156 294 nbx 5 14 -1e+37 1e+37 0 1 phsfsdfg1 \$0-hz1 empty 0
+-8 0 10 -228856 -1 -1 440 256;
+#X obj 198 371 +~;
+#X obj 198 401 osc~;
+#X text 160 392 =;
+#X text 248 393 =;
+#X obj 300 415 cos~;
+#X obj 253 349 phasor~;
+#X obj 300 384 +~;
+#X obj 318 348 phasor~;
+#X obj 183 130 phasor~ 440;
+#X obj 70 400 cosine~;
+#X obj 123 159 cosine~ 0;
+#X obj 300 464 out~;
+#X obj 198 464 out~;
+#X obj 69 464 out~;
+#X text 23 202 So it's like [cosine~] has a second frequency input
+from the phase that gets added to the frequency. Below we can then
+see three equivalent ways to sum frequencies and phase., f 59;
+#X obj 534 229 cosine~;
+#X text 485 145 Carrier;
+#X text 602 127 Mod;
+#X text 640 154 Index;
+#X text 704 135 Carrier;
+#X text 828 117 Mod;
+#X text 874 142 Index;
+#X text 694 360 Mod;
+#X text 739 387 Index;
+#X text 571 385 Carrier;
+#X obj 591 175 f2s~ 10;
+#X obj 827 162 f2s~ 10;
+#X obj 692 408 f2s~ 10;
+#X obj 774 13 declare -path else;
+#X text 23 49 The [cosine~]'s right inlet is a phase input \, so we
+can connect a [phasor~] into it. The frequency of the [phasor~] will
+then be summed to the [cosine~]'s - which is 0 hz below \, so in practice
+it's only being driven by [phasor~] at 440 hz., f 59;
+#X text 495 58 Let's now revise and see different frequency modulation
+structures that are equivalent and take into account phase signals.
+, f 55;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 12 0;
+#X connect 3 0 0 1;
+#X connect 4 0 43 0;
+#X connect 5 0 19 2;
+#X connect 6 0 7 0;
+#X connect 7 0 5 0;
+#X connect 8 0 19 0;
+#X connect 9 0 6 0;
+#X connect 10 0 55 0;
+#X connect 14 0 15 0;
+#X connect 15 0 3 0;
+#X connect 16 0 1 0;
+#X connect 17 0 14 0;
+#X connect 18 0 54 0;
+#X connect 19 0 13 0;
+#X connect 20 0 21 0;
+#X connect 21 0 4 1;
+#X connect 22 0 4 0;
+#X connect 23 0 20 0;
+#X connect 24 0 53 0;
+#X connect 25 0 37 2;
+#X connect 26 0 25 0;
+#X connect 26 0 28 1;
+#X connect 26 0 35 0;
+#X connect 27 0 28 0;
+#X connect 27 0 33 0;
+#X connect 27 0 37 0;
+#X connect 28 0 29 0;
+#X connect 29 0 40 0;
+#X connect 32 0 39 0;
+#X connect 33 0 34 0;
+#X connect 34 0 32 0;
+#X connect 35 0 34 1;
+#X connect 36 0 38 2;
+#X connect 37 0 41 0;
+#X connect 43 0 11 0;
+#X connect 53 0 21 1;
+#X connect 54 0 15 1;
+#X connect 55 0 7 1;

@@ -21,7 +21,7 @@ static void sequencer_bang(t_sequencer *x){
     x->x_bang = 1;
 }
 
-void sequencer_float(t_sequencer *x, t_floatarg f){
+void sequencer_goto(t_sequencer *x, t_floatarg f){
     int l = x->x_length;
     x->x_index = (int)(f < 1 ? 1 : f > l ? l : f) - 1;
 }
@@ -92,7 +92,7 @@ void sequencer_tilde_setup(void){
             0, sizeof(t_sequencer), 0, A_GIMME, 0);
     class_addmethod(sequencer_class, nullfn, gensym("signal"), 0);
     class_addmethod(sequencer_class,(t_method)sequencer_dsp,gensym("dsp"), A_CANT, 0);
-    class_addmethod(sequencer_class,(t_method)sequencer_set, gensym("set"),A_GIMME,0);
+    class_addmethod(sequencer_class,(t_method)sequencer_set, gensym("set"), A_GIMME, 0);
+    class_addmethod(sequencer_class,(t_method)sequencer_goto, gensym("goto"), A_FLOAT, 0);
     class_addbang(sequencer_class, (t_method)sequencer_bang);
-    class_addfloat(sequencer_class, (t_method)sequencer_float);
 }

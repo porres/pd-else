@@ -1,11 +1,12 @@
-#N canvas 987 151 428 272 10;
+#N canvas 747 284 428 260 10;
+#X declare -path else;
 #X obj 36 33 inlet;
 #X obj 37 211 outlet;
 #X obj 92 34 inlet;
 #N canvas 744 363 409 277 args 0;
 #X obj 106 37 inlet;
-#X obj 119 120 else/args;
-#X obj 119 144 else/break -;
+#X obj 119 120 args;
+#X obj 119 144 break -;
 #N canvas 396 220 274 254 default 0;
 #X obj 91 52 inlet;
 #X msg 107 101 2;
@@ -190,7 +191,7 @@
 #X restore 105 200 pd set-args;
 #X obj 119 171 route float list;
 #X obj 106 63 trigger list bang, f 27;
-#X obj 119 95 else/loadbanger -init 2;
+#X obj 119 95 loadbanger -init 2;
 #X connect 0 0 7 0;
 #X connect 1 0 2 0;
 #X connect 2 0 6 0;
@@ -202,7 +203,7 @@
 #X connect 8 0 1 0;
 #X connect 8 1 3 0;
 #X restore 92 69 pd args;
-#X obj 112 155 else/wrap2;
+#X obj 112 155 wrap2;
 #X obj 140 128 r \$0-min;
 #X obj 189 155 r \$0-max;
 #X obj 112 106 r \$0-wrap;
@@ -370,6 +371,7 @@
 #X obj 114 211 outlet;
 #X text 203 84 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 205 67 Alexandre Torres Porres (2018);
+#X obj 276 152 declare -path else;
 #X connect 0 0 9 0;
 #X connect 2 0 3 0;
 #X connect 4 0 10 1;

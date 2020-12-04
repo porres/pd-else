@@ -1,13 +1,14 @@
-#N canvas 357 56 677 545 10;
+#N canvas 602 55 677 545 10;
+#X declare -path else;
 #X obj 132 473 outlet~;
 #X msg 342 330 set \$1 4;
 #X obj 342 356 block~;
 #X obj 132 304 rifft~;
-#X obj 65 130 rfft~;
+#X obj 79 130 rfft~;
 #X obj 160 129 rfft~;
-#X obj 160 83 else/hann~;
-#X obj 65 84 else/hann~;
-#X obj 132 348 else/hann~;
+#X obj 160 83 hann~;
+#X obj 79 84 hann~;
+#X obj 132 348 hann~;
 #N canvas 393 27 498 545 phase-accum 0;
 #X obj 192 458 outlet~;
 #X obj 312 461 outlet~;
@@ -53,8 +54,8 @@
 #X obj 74 74 expr~ if($v1 == 0 && $v2 == 0 \, 1 \, $v1) \; $v2;
 #X obj 74 153 /~;
 #X obj 305 153 /~;
-#X obj 89 125 else/mag~;
-#X obj 323 126 else/mag~;
+#X obj 89 125 mag~;
+#X obj 323 126 mag~;
 #X connect 2 0 4 1;
 #X connect 3 0 4 0;
 #X connect 4 0 5 0;
@@ -109,8 +110,8 @@
 #X connect 20 0 21 0;
 #X connect 21 0 1 0;
 #X restore 84 220 pd phase-accum;
-#X text 362 110 Part of ELSE \; https://github.com/porres/pd-else;
-#X text 364 176 This is an abstraction used on the [pvoc.player~] object
+#X text 403 153 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 405 200 This is an abstraction used on the [pvoc.player~] object
 , f 28;
 #X obj 215 253 tabsend~ \$0-im;
 #X obj 215 278 tabsend~ \$0-re;
@@ -125,19 +126,19 @@
 #X obj 454 396 s \$0-im;
 #X obj 342 269 r \$1-window_size;
 #X msg 445 355 resize \$1;
-#X text 364 91 Alexandre Torres Porres (2018);
+#X text 405 134 Alexandre Torres Porres (2018);
 #N canvas 329 28 494 457 read-tables 0;
 #X obj 64 140 -~;
-#X obj 346 253 else/wrap2~;
-#X obj 151 275 else/wrap2~;
-#X obj 64 70 else/envgen~;
+#X obj 346 253 wrap2~;
+#X obj 151 275 wrap2~;
+#X obj 64 70 envgen~;
 #X obj 64 41 r \$1-to-envgen~;
 #X obj 164 71 r \$1-new-hop;
 #X obj 64 354 tabread4~ \$1-\$2;
 #X obj 259 312 tabread4~ \$1-\$2;
 #X obj 259 123 r \$1-loop;
-#X obj 64 305 else/xselect~ 2;
-#X obj 259 282 else/xselect~ 2;
+#X obj 64 305 xselect~ 2;
+#X obj 259 282 xselect~ 2;
 #X obj 259 146 + 1;
 #X obj 259 399 outlet~;
 #X obj 64 401 outlet~;
@@ -163,7 +164,8 @@
 #X connect 14 0 2 2;
 #X connect 15 0 1 1;
 #X connect 15 0 2 1;
-#X restore 80 45 pd read-tables;
+#X restore 79 45 pd read-tables;
+#X obj 429 93 declare -path else;
 #X connect 1 0 2 0;
 #X connect 3 0 8 0;
 #X connect 4 0 9 2;

@@ -1,4 +1,5 @@
 #N canvas 282 475 969 408 10;
+#X declare -path else;
 #X obj 175 70 inlet~ fwd;
 #N canvas 931 564 561 522 guts 0;
 #X obj 103 38 inlet;
@@ -6,27 +7,27 @@
 #X msg 211 325 fast-forward \$1;
 #X obj 211 349 send pd;
 #X obj 138 315 delay;
-#X obj 285 85 else/canvas.setname \$0-patch 1;
+#X obj 285 85 canvas.setname \$0-patch 1;
 #X obj 138 254 max 10;
 #N canvas 1191 348 652 496 dynamic-patching 0;
-#X obj 208 194 else/loop;
+#X obj 208 194 loop;
 #X obj 208 217 t f f, f 6;
 #X obj 208 243 * 15;
 #N canvas 895 293 733 366 load_args 0;
 #X obj 151 22 inlet;
-#X obj 151 75 else/args;
-#X obj 151 129 else/break -;
+#X obj 151 75 args;
+#X obj 151 129 break -;
 #X obj 358 157 v ch_\$0;
 #X msg 358 130 1;
 #X obj 230 270 v ch_\$0;
 #X obj 230 247 clip 1 64;
 #X obj 114 264 route float;
 #X obj 151 103 trigger anything bang;
-#X obj 99 209 else/unmerge 2;
+#X obj 99 209 unmerge 2;
 #X obj 151 158 route bang symbol float list;
 #X obj 427 210 s \$0-array;
 #X obj 192 295 s \$0-array;
-#X obj 426 140 else/dollsym 1;
+#X obj 426 140 dollsym 1;
 #X obj 425 97 symbol sample_\\\$0;
 #X connect 0 0 1 0;
 #X connect 1 0 8 0;
@@ -56,9 +57,9 @@
 #X obj 276 271 + 7;
 #X msg 219 325 obj \$1 70 inlet~ \, connect \$3 0 6 \$2, f 19;
 #X obj 247 272 + 2;
-#X msg 354 329 obj 175 175 else/tabwriter~ -ch \$1 \, connect 0 0 6
-1 \, connect 2 0 6 0, f 35;
-#X obj 95 23 else/lb -init 3;
+#X msg 354 329 obj 175 175 tabwriter~ -ch \$1 \, connect 0 0 6 1 \,
+connect 2 0 6 0, f 35;
+#X obj 95 23 lb -init 3;
 #X obj 128 110 r \$0-array;
 #X obj 95 146 symbol;
 #X obj 95 176 s \$0-filename;
@@ -95,7 +96,7 @@
 #N canvas 490 446 360 316 array_size 0;
 #X obj 99 204 array size;
 #X obj 193 116 expr ch_\$0 > 1;
-#X obj 130 158 else/router;
+#X obj 130 158 router;
 #X obj 193 137 + 1;
 #X obj 130 132 t s f;
 #X msg 193 180 symbol 0-\$1;
@@ -119,6 +120,7 @@
 #X connect 10 0 6 1;
 #X restore 157 217 pd array_size;
 #X obj 173 111 symbol;
+#X obj 354 155 declare -path else;
 #X connect 0 0 14 0;
 #X connect 1 0 4 0;
 #X connect 1 1 2 0;

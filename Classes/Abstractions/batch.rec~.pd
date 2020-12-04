@@ -1,4 +1,5 @@
 #N canvas 951 73 969 408 10;
+#X declare -path else;
 #X obj 175 70 inlet~ fwd;
 #N canvas 637 72 689 446 guts 0;
 #X obj 122 38 inlet;
@@ -6,22 +7,22 @@
 #X msg 230 235 fast-forward \$1;
 #X obj 230 269 send pd;
 #X obj 157 235 delay;
-#X obj 299 85 else/canvas.setname \$0-patch 1;
+#X obj 417 95 canvas.setname \$0-patch 1;
 #X obj 157 174 max 10;
 #N canvas 432 92 762 549 dynamic-patching 0;
-#X obj 200 180 else/loop;
+#X obj 200 180 loop;
 #X obj 200 203 t f f, f 6;
 #X obj 200 229 * 15;
 #N canvas 1054 234 810 520 load_args 0;
 #X obj 187 58 inlet;
 #X obj 423 214 s \$0-filename;
-#X obj 469 156 else/dir 1;
+#X obj 469 156 dir 1;
 #X msg 526 208 set \$1;
 #X obj 526 184 makefilename %s/%%s;
 #X obj 423 129 t s b;
 #X obj 526 235 s \$0-set-path;
-#X obj 187 162 else/args;
-#X obj 187 216 else/break -;
+#X obj 187 162 args;
+#X obj 187 216 break -;
 #X obj 361 212 v ch_\$0;
 #X msg 361 185 1;
 #X obj 266 357 v ch_\$0;
@@ -30,7 +31,7 @@
 #X msg 423 95 symbol file.wav;
 #X msg 469 130 dir;
 #X obj 150 351 route float;
-#X obj 108 286 else/unmerge 3;
+#X obj 108 286 unmerge 3;
 #X obj 162 330 s \$0-time;
 #X obj 342 280 max 5;
 #X msg 283 272 50;
@@ -75,7 +76,7 @@
 #X obj 200 258 + 250;
 #X obj 211 286 pack f f f;
 #X obj 239 258 + 1;
-#X obj 191 52 else/lb -init 2;
+#X obj 191 52 lb -init 2;
 #X msg 346 317 obj 175 175 writesf~ \$1 \, connect 0 0 6 0 \, connect
 2 0 6 0, f 41;
 #X obj 268 257 + 7;
@@ -98,7 +99,7 @@
 #X connect 13 0 6 0;
 #X connect 14 0 10 2;
 #X connect 15 0 6 0;
-#X restore 365 113 pd dynamic-patching;
+#X restore 455 125 pd dynamic-patching;
 #X obj 157 143 f;
 #X obj 355 354 s \$0-rec;
 #X obj 205 144 r \$0-time;
@@ -108,7 +109,7 @@
 #X msg 355 230 open -rate \$2 \$1 \, start;
 #X obj 355 202 pack s f;
 #X obj 355 176 symbol;
-#X obj 436 179 else/sr~;
+#X obj 436 179 sr~;
 #N canvas 317 52 476 342 set 0;
 #X obj 270 183 makefilename;
 #X obj 289 157 r \$0-set-path;
@@ -116,7 +117,7 @@
 #X obj 224 146 symbol;
 #X obj 117 115 route bang;
 #X obj 156 177 savepanel;
-#X obj 205 110 else/click;
+#X obj 205 110 click;
 #X obj 117 68 inlet;
 #X obj 156 273 outlet;
 #X connect 0 0 8 0;
@@ -129,6 +130,7 @@
 #X connect 6 0 5 0;
 #X connect 7 0 4 0;
 #X restore 388 152 pd set;
+#X obj 462 65 declare -path else;
 #X connect 0 0 13 0;
 #X connect 1 0 4 0;
 #X connect 1 1 2 0;

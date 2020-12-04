@@ -1,4 +1,4 @@
-#N canvas 986 413 467 404 10;
+#N canvas 689 239 467 404 10;
 #X obj 14 106 hsl 66 20 0 1 0 0 \$0-slider \$0-set-slider volume 19
 7 1 13 -228856 -1 -1 0 1;
 #X obj 83 94 tgl 16 0 \$0-dsp-toggle \$0-dsp-toggle-set off 3 6 1 9
@@ -192,7 +192,7 @@
 #X obj 105 141 line~;
 #X msg 105 116 \$1 50;
 #X msg 159 142 1;
-#X obj 159 118 else/lb -init;
+#X obj 159 118 lb -init;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 3 0 6 0;
@@ -274,7 +274,7 @@
 #X obj 285 207 s \$0-set-slider;
 #X obj 284 65 tgl 15 0 empty \$0-mute-bng empty 17 7 0 10 -262144 -1
 -1 0 1;
-#X obj 205 9 else/lb -init;
+#X obj 205 9 lb -init;
 #X connect 0 0 1 0;
 #X connect 0 0 1 1;
 #X connect 1 0 2 0;
@@ -386,7 +386,7 @@
 #X msg 135 117 0;
 #X obj 108 85 delay 5;
 #X obj 59 149 outlet;
-#X obj 168 45 else/lb -init;
+#X obj 168 45 lb -init;
 #X connect 0 0 1 0;
 #X connect 1 0 6 0;
 #X connect 3 0 2 0;

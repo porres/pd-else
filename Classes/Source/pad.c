@@ -55,8 +55,8 @@ static void pad_draw(t_pad *x, t_glist *glist){
 }
 
 static void pad_update(t_pad *x){
-    pad_erase(x, x->x_glist);
     if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
+        pad_erase(x, x->x_glist);
         pad_draw(x, x->x_glist);
         canvas_fixlinesfor(glist_getcanvas(x->x_glist), (t_text*)x);
     }
@@ -155,7 +155,6 @@ static void pad_dim(t_pad *x, t_floatarg f1, t_floatarg f2){
     int w = f1 < 12 ? 12 : (int)f1, h = f2 < 12 ? 12 : (int)f2;
     if(w != x->x_w || h != x->x_h){
         x->x_w = w; x->x_h = h;
-        canvas_dirty(x->x_glist, 1);
         pad_update(x);
     }
 }
@@ -164,7 +163,6 @@ static void pad_width(t_pad *x, t_floatarg f){
     int w = f < 12 ? 12 : (int)f;
     if(w != x->x_w){
         x->x_w = w;
-        canvas_dirty(x->x_glist, 1);
         pad_update(x);
     }
 }
@@ -173,7 +171,6 @@ static void pad_height(t_pad *x, t_floatarg f){
     int h = f < 12 ? 12 : (int)f;
     if(h != x->x_h){
         x->x_h = h;
-        canvas_dirty(x->x_glist, 1);
         pad_update(x);
     }
 }
@@ -184,7 +181,6 @@ static void pad_color(t_pad *x, t_floatarg red, t_floatarg green, t_floatarg blu
     int b = blue < 0 ? 0 : blue > 255 ? 255 : (int)blue;
     if((x->x_color[0] != r || x->x_color[1] != g || x->x_color[2] != b)){
         x->x_color[0] = r; x->x_color[1] = g; x->x_color[2] = b;
-        canvas_dirty(x->x_glist, 1);
         if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist))
             sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%2.2x%2.2x%2.2x\n",
             glist_getcanvas(x->x_glist), x, r, g, b);

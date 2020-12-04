@@ -1,23 +1,10 @@
 #N canvas 615 57 564 583 10;
 #X obj 4 2 cnv 15 301 42 empty empty coin~ 20 20 2 37 -233017 -1 0
 ;
-#X obj 308 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
-0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 4 2 graph;
-#N canvas 382 141 749 319 (subpatch) 0;
-#X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 307 2 pd;
-#X obj 347 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
-0;
 #X obj 25 39 cnv 4 4 4 empty empty Statistical 0 28 2 18 -233017 -1
-0;
-#X obj 460 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 480 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 466 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
 #X obj 110 38 cnv 4 4 4 empty empty impulses 0 28 2 18 -233017 -1 0
 ;
@@ -112,11 +99,28 @@ a simple markov chain., f 29;
 #X connect 17 0 8 0;
 #X restore 473 285 pd example;
 #X obj 222 258 else/out~;
-#X connect 17 0 31 0;
-#X connect 18 0 17 0;
-#X connect 21 0 31 1;
-#X connect 23 0 21 0;
-#X connect 25 0 31 0;
-#X connect 31 0 47 0;
-#X connect 31 1 47 1;
-#X connect 33 0 31 0;
+#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 2 pd;
+#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X connect 11 0 25 0;
+#X connect 12 0 11 0;
+#X connect 15 0 25 1;
+#X connect 17 0 15 0;
+#X connect 19 0 25 0;
+#X connect 25 0 41 0;
+#X connect 25 1 41 1;
+#X connect 27 0 25 0;

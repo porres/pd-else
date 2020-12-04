@@ -60,8 +60,8 @@ and the 'fast-forward' message to pd that batch records to arrays (from
 an object like [sample~])., f 65;
 #X text 182 404 - number of channels to record (default 1 \, max 64)
 , f 52;
-#X text 475 221 see also:;
-#X obj 444 243 else/batch.rec~;
+#X text 479 226 see also:;
+#X obj 448 245 else/batch.rec~;
 #X obj 293 215 else/out~;
 #X obj 304 190 else/tabplayer~ \$0-batch 2;
 #X msg 304 167 start;

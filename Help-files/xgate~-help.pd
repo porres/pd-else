@@ -1,4 +1,4 @@
-#N canvas 645 109 561 583 10;
+#N canvas 689 71 564 599 10;
 #X obj 2 3 cnv 15 301 42 empty empty xgate~ 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -25,8 +25,8 @@
 #X obj 101 40 cnv 4 4 4 empty empty input 0 28 2 18 -233017 -1 0;
 #X obj 187 127 noise~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
+-262144 1 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -95,7 +95,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -133,9 +133,9 @@
 ;
 #X obj 4 464 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 496 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 517 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 4 551 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 572 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 97 473 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
@@ -145,30 +145,118 @@
 #X text 158 422 float;
 #X text 116 440 time <float>;
 #X text 194 440 - crossfade time in ms;
-#X text 141 517 2) float - crossfade time in ms (default 0 - no crossfade)
+#X text 141 538 2) float - crossfade time in ms (default 0 - no crossfade)
 ;
-#X text 141 532 3) float - initially selected channel (default 0: none)
+#X text 141 553 3) float - initially selected channel (default 0: none)
 , f 58;
 #X obj 240 117 hradio 15 1 0 5 empty empty empty 0 -8 0 10 -228856
--1 -1 4;
+-1 -1 0;
 #X floatatom 240 140 5 0 0 0 - - -;
 #X text 280 139 select output (0 = none);
 #X text 194 422 - selected outlet (0 is none);
 #X text 194 404 - input signal to route;
 #X text 152 475 signal;
 #X text 194 475 - routed output;
-#X text 141 502 1) float - number of outlets/channels (default 1 \,
+#X text 141 523 1) float - number of outlets/channels (default 1 \,
 max 500);
-#X obj 195 188 else/meter4~;
-#X text 79 240 [else/meter4~] =>;
-#X obj 186 336 else/out4~;
+#X obj 175 188 else/meter4~;
+#X text 59 240 [else/meter4~] =>;
+#X obj 175 336 else/out4~;
 #X text 61 86 [xgate~] routes between multiple outputs with equal power
 crossfading.;
+#X obj 304 198 print off-status;
+#X obj 97 494 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+0;
+#X text 164 495 list;
+#X text 194 495 - reports output number and off status;
+#N canvas 865 191 626 453 status 0;
+#X obj 182 44 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -228856 -1
+-1 0;
+#X floatatom 182 99 3 0 2 0 - - -;
+#X text 202 43 0: none;
+#X msg 97 131 time \$1;
+#X text 76 104 ms;
+#X obj 97 105 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.181406 256;
+#X text 36 127 crossfade duration, f 9;
+#X text 305 333 you can use status to feed [switch~] objects, f 18
+;
+#X obj 299 280 s \$0-status;
+#X text 299 320 <= open and see how;
+#X text 289 125 You can use the off status report from the right outlet
+to turn a subpatch off. But in order to turn it on you need to use
+the float input. Open the subpatches below to see how this works.,
+f 43;
+#N canvas 448 193 496 331 out-2 0;
+#X obj 308 129 r \$0-status;
+#X obj 308 210 switch~;
+#X msg 262 150 1;
+#X obj 308 185 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 120 84 inlet~;
+#X obj 262 129 sel 2;
+#X obj 308 150 route 2;
+#X obj 262 105 r \$0-output;
+#X obj 120 196 outlet~;
+#X connect 0 0 6 0;
+#X connect 2 0 3 0;
+#X connect 3 0 1 0;
+#X connect 4 0 8 0;
+#X connect 5 0 2 0;
+#X connect 6 0 3 0;
+#X connect 7 0 5 0;
+#X restore 240 319 pd out-2;
+#N canvas 448 193 496 331 out-1 0;
+#X obj 308 129 r \$0-status;
+#X obj 308 150 route 1;
+#X obj 308 210 switch~;
+#X obj 262 129 sel 1;
+#X msg 262 150 1;
+#X obj 308 185 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 120 84 inlet~;
+#X obj 262 105 r \$0-output;
+#X obj 120 196 outlet~;
+#X connect 0 0 1 0;
+#X connect 1 0 5 0;
+#X connect 3 0 4 0;
+#X connect 4 0 5 0;
+#X connect 5 0 2 0;
+#X connect 6 0 8 0;
+#X connect 7 0 3 0;
+#X restore 182 319 pd out-1;
+#X obj 182 129 s \$0-output;
+#X obj 182 165 r \$0-output;
+#X obj 307 256 print off-status;
+#X obj 207 199 sig~ 1;
+#X obj 97 71 samps2ms;
+#X msg 98 42 8;
+#X obj 182 361 else/display~ 4;
+#X obj 182 231 else/xgate~ 2 1000, f 20;
+#X obj 240 361 else/display~ 4;
+#X text 202 59 1: output 1;
+#X text 202 74 2: output 2;
+#X connect 0 0 1 0;
+#X connect 1 0 13 0;
+#X connect 3 0 20 0;
+#X connect 5 0 3 0;
+#X connect 11 0 21 0;
+#X connect 12 0 19 0;
+#X connect 14 0 20 0;
+#X connect 16 0 20 0;
+#X connect 17 0 5 0;
+#X connect 18 0 17 0;
+#X connect 20 0 12 0;
+#X connect 20 1 11 0;
+#X connect 20 2 8 0;
+#X connect 20 2 15 0;
+#X restore 479 343 pd status \; switch;
 #X connect 13 0 15 0;
 #X connect 15 0 36 0;
 #X connect 15 1 36 1;
 #X connect 15 2 36 2;
 #X connect 15 3 36 3;
+#X connect 15 4 40 0;
 #X connect 28 0 29 0;
 #X connect 29 0 15 0;
 #X connect 36 0 38 0;
