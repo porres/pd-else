@@ -4,6 +4,7 @@
 
 #include <m_pd.h>
 #include <g_canvas.h>
+#include <stdlib.h>
 #include <math.h>
 
 static t_class *function_class, *edit_proxy_class;
@@ -400,7 +401,7 @@ static void function_save(t_gobj *z, t_binbuf *b){
 ///////////////////// METHODS /////////////////////////////////////////////////////////////
 static void function_bang(t_function *x){
     int ac = x->x_n_states * 2 + 1;
-    t_atom at[ac];
+    t_atom* at = (t_atom*)malloc(ac * sizeof(t_atom));
     SETFLOAT(at, x->x_min_point = x->x_max_point = x->x_points[x->x_state = 0]); // get 1st
     for(int i = 1; i < ac; i++){ // get the rest
         float dur = x->x_dur[x->x_state+1] - x->x_dur[x->x_state];
@@ -416,6 +417,7 @@ static void function_bang(t_function *x){
     outlet_list(x->x_obj.ob_outlet, &s_list, ac, at);
     if(x->x_send != &s_ && x->x_send->s_thing)
         pd_list(x->x_send->s_thing, &s_list, ac, at);
+    free(at);
 }
 
 static void function_duration(t_function* x, t_floatarg dur){
