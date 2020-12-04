@@ -18,14 +18,21 @@
 #define HIOFFSET 0    /* word offset to find MSB */
 #define LOWOFFSET 1    /* word offset to find LSB */
 #define int32 long  /* a data type that has 32 bits */
-#endif /* IRIX */
+#endif // IRIX
 
 #ifdef MSW
 /* little-endian; most significant byte is at highest address */
 #define HIOFFSET 1
 #define LOWOFFSET 0
 #define int32 long
-#endif /* MSW */
+#endif // MSW
+
+#ifdef _MSC_VER
+/* little-endian; most significant byte is at highest address */
+#define HIOFFSET 1
+#define LOWOFFSET 0
+#define int32 long
+#endif // MSW
 
 #if defined(__FreeBSD__) || defined(__APPLE__)
 #include <machine/endian.h>
