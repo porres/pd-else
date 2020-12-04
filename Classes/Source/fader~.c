@@ -23,6 +23,13 @@
 #define int32 long
 #endif /* MSW */
 
+#ifdef _MSC_VER
+/* little-endian; most significant byte is at highest address */
+#define HIOFFSET 1
+#define LOWOFFSET 0
+#define int32 long
+#endif // _MSC_VER
+
 #if defined(__FreeBSD__) || defined(__APPLE__)
 #include <machine/endian.h>
 #endif

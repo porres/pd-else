@@ -32,7 +32,7 @@
 #define HIOFFSET 1
 #define LOWOFFSET 0
 #define int32 long
-#endif // MSW
+#endif // _MSC_VER
 
 #if defined(__FreeBSD__) || defined(__APPLE__)
 #include <machine/endian.h>
