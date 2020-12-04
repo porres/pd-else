@@ -88,7 +88,7 @@ void * median_new(t_floatarg f) {
     t_median *x = (t_median *) pd_new(median_class);
     x->x_samples = (f < 1) ? 1 : f;
     x->x_block_size = 1;
-    x->x_temp = malloc(x->x_block_size*sizeof(t_float));
+    x->x_temp = (t_float *)malloc(x->x_block_size * sizeof(t_float));
     x->x_outlet = outlet_new(&x->x_obj, &s_signal); // outlet
     floatinlet_new(&x->x_obj, &x->x_samples);
     return(void *)x;
