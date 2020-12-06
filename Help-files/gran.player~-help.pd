@@ -1,4 +1,4 @@
-#N canvas 710 65 564 720 10;
+#N canvas 710 65 562 742 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -23,40 +23,36 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 210 188 else/out~;
-#X obj 210 128 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 206 193 else/out~;
+#X obj 209 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X obj 292 129 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -67 256;
-#X obj 375 129 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 4 694 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 715 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 6 254 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 487 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 508 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 538 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 559 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 96 494 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 96 515 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
 #X obj 97 262 cnv 17 3 180 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 118 274 open <symbol> -;
-#X obj 6 615 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 192 542 (optional) channels (default 1 if no file is given
+#X obj 6 636 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 192 563 (optional) channels (default 1 if no file is given
 \, or sound file's if given \, max 64), f 44;
-#X text 115 567 2) symbol;
-#X text 180 567 - the name of the file to open (default none), f 46
+#X text 115 588 2) symbol;
+#X text 180 588 - the name of the file to open (default none), f 46
 ;
-#X text 115 582 3) float;
-#X text 115 545 1) float;
-#X text 179 543 -;
+#X text 115 603 3) float;
+#X text 115 566 1) float;
+#X text 179 564 -;
 #X text 173 259 bang - (re)start playing the buffer from the beggining
 , f 60;
-#X text 127 620 -speed <float>: sets playing speed (default 100),
+#X text 127 641 -speed <float>: sets playing speed (default 100),
 f 58;
-#X text 152 495 signal - the buffer signal of the corresponding channel
+#X text 152 516 signal - the buffer signal of the corresponding channel
 ;
 #X text 221 273 opens a file with the symbol name (no symbol opens
 dialog box) and starts playing, f 52;
@@ -76,33 +72,29 @@ message), f 68;
 ;
 #X obj 96 466 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 167 444 float - sets playing speed, f 61;
 #X text 167 466 float - sets transposition in cents, f 61;
-#X text 121 634 -transp <float>: sets transposition in cents (default
+#X text 121 655 -transp <float>: sets transposition in cents (default
 0), f 59;
 #X obj 202 40 cnv 4 4 4 empty empty player 0 28 2 18 -233017 -1 0;
 #X obj 132 40 cnv 4 4 4 empty empty granular 0 28 2 18 -233017 -1 0
 ;
-#X text 294 111 speed (%);
-#X text 374 110 transposition;
-#X text 444 128 cents;
 #X text 84 156 see also:;
 #X obj 67 222 else/player~;
-#X obj 96 515 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+#X obj 96 536 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
 0;
-#X text 164 516 bang - a bang when finishing playing the buffer;
-#X text 181 662 -loop: turns loop mode on (default off), f 49;
-#X text 115 598 4) float;
-#X text 180 599 - loop <1: on \, 0: off> (default 0), f 46;
-#X text 180 582 - autostart <1: on \, 0: off> (default 0), f 46;
+#X text 164 537 bang - a bang when finishing playing the buffer;
+#X text 181 683 -loop: turns loop mode on (default off), f 49;
+#X text 115 619 4) float;
+#X text 180 620 - loop <1: on \, 0: off> (default 0), f 46;
+#X text 180 603 - autostart <1: on \, 0: off> (default 0), f 46;
 #X text 39 85 [gran.player~] is like [player~] but provides independent
 time stretching and pitch shifting via granulation., f 76;
 #X text 125 342 size <float> - sets gain size in ms, f 68;
 #X obj 37 201 else/pvoc.player~;
-#X text 133 648 -size <float>: sets grain size in ms (default 75),
+#X text 133 669 -size <float>: sets grain size in ms (default 75),
 f 57;
 #X obj 24 180 else/stretch.shift~;
-#X text 85 676 -range <float \, float>: sets sample range (default:
+#X text 85 697 -range <float \, float>: sets sample range (default:
 0 1), f 65;
 #X text 125 356 loop <float> - loop on <1> or off <0>, f 68;
 #X text 125 370 range <f \, f> - sets sample's playing range (from
@@ -149,67 +141,86 @@ ignored.;
 #X connect 15 1 14 1;
 #X connect 15 2 3 0;
 #X restore 445 222 pd multi-channel;
-#N canvas 855 148 540 328 example 0;
+#N canvas 855 148 552 384 example 0;
 #X msg 99 101 pause;
 #X msg 154 100 continue;
-#X obj 257 187 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 23 256;
 #X msg 232 127 loop \$1;
-#X obj 232 103 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 232 103 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 196 128 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 340 238 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 340 248 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 361 236 <= finished;
+#X text 361 246 <= finished;
 #X msg 140 78 open vacuous.wav;
 #X obj 175 128 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 84 201 click: opens a new file =>, f 13;
+#X text 84 211 click: opens a new file =>, f 13;
 #X msg 36 78 open stereo.wav;
 #X floatatom 290 113 5 0 0 0 - - -;
 #X obj 293 89 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 4700 1;
+-1 -1 0 1;
 #X floatatom 349 131 5 0 0 0 - - -;
 #X obj 352 110 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 6600 1;
+-1 -1 0 1;
 #X text 333 89 minimum;
 #X text 393 110 maximum;
-#X obj 340 187 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -557 256;
-#X text 223 186 speed;
-#X text 389 185 transposition;
 #X text 113 35 Test the main message methods of [gran.player~].;
-#X obj 173 243 else/out~;
+#X obj 173 253 else/out~;
 #X obj 232 151 else/pack2 range 0 1;
-#X obj 175 210 else/gran.player~ stereo.wav;
-#X connect 0 0 24 0;
-#X connect 1 0 24 0;
-#X connect 2 0 24 1;
-#X connect 3 0 24 0;
-#X connect 4 0 3 0;
-#X connect 5 0 24 0;
-#X connect 8 0 24 0;
-#X connect 9 0 24 0;
-#X connect 11 0 24 0;
-#X connect 12 0 23 1;
-#X connect 13 0 12 0;
-#X connect 14 0 23 2;
-#X connect 15 0 14 0;
-#X connect 18 0 24 2;
-#X connect 23 0 24 0;
-#X connect 24 0 22 0;
-#X connect 24 1 22 1;
-#X connect 24 2 6 0;
+#X obj 175 220 else/gran.player~ stereo.wav;
+#X obj 285 197 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 340 197 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 286 181 speed;
+#X text 389 195 transposition;
+#X obj 230 197 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 231 181 size;
+#X connect 0 0 20 0;
+#X connect 1 0 20 0;
+#X connect 2 0 20 0;
+#X connect 3 0 2 0;
+#X connect 4 0 20 0;
+#X connect 7 0 20 0;
+#X connect 8 0 20 0;
+#X connect 10 0 20 0;
+#X connect 11 0 19 1;
+#X connect 12 0 11 0;
+#X connect 13 0 19 2;
+#X connect 14 0 13 0;
+#X connect 19 0 20 0;
+#X connect 20 0 18 0;
+#X connect 20 1 18 1;
+#X connect 20 2 5 0;
+#X connect 21 0 20 2;
+#X connect 22 0 20 3;
+#X connect 25 0 20 1;
 #X restore 480 200 pd example;
-#X obj 375 196 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 374 200 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 372 219 done;
-#X obj 210 153 else/gran.player~ stereo.wav -speed 50 -transp -400
+#X text 371 223 done;
+#X obj 209 157 else/gran.player~ stereo.wav -speed 50 -transp -400
 , f 28;
-#X connect 12 0 70 0;
-#X connect 13 0 70 1;
-#X connect 14 0 70 2;
-#X connect 70 0 11 0;
-#X connect 70 1 11 1;
-#X connect 70 2 68 0;
+#X obj 319 133 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 402 133 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 321 115 speed (%);
+#X text 401 114 transposition;
+#X text 471 132 cents;
+#X obj 264 134 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 251 115 size (ms);
+#X obj 96 487 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+;
+#X text 167 487 float - sets transposition in cents, f 61;
+#X text 167 444 float - grain size in ms, f 61;
+#X connect 12 0 64 0;
+#X connect 64 0 11 0;
+#X connect 64 1 11 1;
+#X connect 64 2 62 0;
+#X connect 65 0 64 2;
+#X connect 66 0 64 3;
+#X connect 70 0 64 1;
