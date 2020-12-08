@@ -1,0 +1,60 @@
+#N canvas 695 140 560 391 10;
+#X obj 196 147 nbx 3 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
+-228856 -1 -1 0 256;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Convert 0 28 2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 90 40 cnv 4 4 4 empty empty MIDI 0 28 2 18 -233017 -1 0;
+#X obj 140 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
+#X obj 162 40 cnv 4 4 4 empty empty Frequency 0 28 2 18 -233017 -1
+0;
+#X obj 3 3 cnv 15 301 42 empty empty midi2freq 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 3 graph;
+#X text 77 94 [midi2freq] converts MIDI to frequency like [mtof] \,
+but it allows you so set a different frequency reference value for
+A4 so you can explore different tunnings., f 66;
+#X floatatom 301 148 5 0 0 0 - - -;
+#X obj 4 237 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 297 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 332 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 167 306 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 167 246 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 364 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X text 195 307 float;
+#X obj 167 268 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 195 247 float;
+#X text 231 247 - MIDI value to convert;
+#X text 195 270 float;
+#X obj 196 202 else/display;
+#X text 231 307 - value in Hertz;
+#X text 145 341 1) float - set A4 value (default 440);
+#X obj 196 175 else/midi2freq 432;
+#X text 231 270 - set a new value for A4;
+#X connect 0 0 31 0;
+#X connect 16 0 31 1;
+#X connect 31 0 28 0;

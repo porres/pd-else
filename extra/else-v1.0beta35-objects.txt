@@ -11,6 +11,7 @@ args	x
 asr~	x
 autofade~	x
 autofade2~	x
+autotune	x
 avg	x
 balance~	x
 bandpass~	x
@@ -106,9 +107,11 @@ else	x
 envelope~	x
 envgen~	x
 eq~	x
+eqdiv	x
 euclid	x
 expand~	x
 f2s~	x
+frac2ratio	x
 factor	x
 fader~	x
 fbdelay~	x
@@ -202,6 +205,7 @@ meter2~	x
 meter4~	x
 meter8~	x
 midi	x
+midi2freq	x
 mix2~	x
 mix4~	x
 mono	x
@@ -296,6 +300,7 @@ resonant~	x
 resonant2~	x
 resonbank~	x
 resonbank2~	x
+retune	x
 reverse	x
 rint~	x
 rint	x

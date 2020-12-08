@@ -1,0 +1,75 @@
+#N canvas 710 115 561 460 10;
+#X obj 4 277 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 351 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 385 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 141 360 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 431 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 3 3 cnv 15 301 42 empty empty eqdiv 20 20 2 37 -233017 -1 0
+;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 40 cnv 4 4 4 empty empty Equal 0 28 2 18 -233017 -1 0;
+#X obj 74 40 cnv 4 4 4 empty empty divisions 0 28 2 18 -233017 -1 0
+;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 139 286 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 188 360 list;
+#X obj 150 40 cnv 4 4 4 empty empty of 0 28 2 18 -233017 -1 0;
+#X obj 179 40 cnv 4 4 4 empty empty intervals 0 28 2 18 -233017 -1
+0;
+#X msg 210 141 2 12;
+#X obj 210 246 print scale;
+#X text 61 86 Use [eqdiv] to generate a scale as a list of ratios that
+equally divide a given interval \, the output is in cents. intervals
+defined as fractions to ratio intervals., f 57;
+#X msg 233 190 2 24;
+#X msg 222 167 3 13;
+#X text 246 141 equal temperament;
+#X text 256 168 bohlen-pierce;
+#X text 269 189 quarter tones;
+#X text 221 360 - scale in cents;
+#X text 192 393 1) float - interval ratio;
+#X text 192 409 2) float - number of equal divisions;
+#X text 182 286 float;
+#X text 221 285 - interval ratio;
+#X text 182 328 float;
+#X text 221 327 - number of equal divisions;
+#X obj 139 326 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 188 303 bang;
+#X text 221 302 - generate scale;
+#X obj 179 174 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 210 218 else/eqdiv 2 7;
+#X text 425 175 see also:;
+#X obj 426 200 else/autotune;
+#X obj 426 222 else/retune;
+#X obj 426 242 else/frac2ratio;
+#X connect 21 0 40 0;
+#X connect 24 0 40 0;
+#X connect 25 0 40 0;
+#X connect 39 0 40 0;
+#X connect 40 0 22 0;
