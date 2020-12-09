@@ -11,7 +11,7 @@ typedef struct _loop{
     float       x_counter_start;
     float       x_target;
     float       x_offset;
-    float       x_count;
+    double      x_count;
     float       x_step;
     t_int       x_iter;
     t_int       x_upwards;
@@ -25,12 +25,15 @@ static void loop_do_loop(t_loop *x){ // The Actual Loop
     x->x_status = RUNNING;
     if(x->x_upwards){
         if(x->x_iter){
-            while(x->x_count <= (float)x->x_target * x->x_step){
+//            post("(float)x->x_target * x->x_step = %f", (float)x->x_target * x->x_step);
+            while(x->x_count <= ((double)x->x_target * (double)x->x_step)){
+//                post("x->x_count = %f", x->x_count);
                 if(x->x_b)
                     outlet_bang(((t_object *)x)->ob_outlet);
                 else
                     outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
-                x->x_count += x->x_step;
+                x->x_count += (double)x->x_step;
+//                post("x->x_count += x->x_step = %f", x->x_count);
                 if(x->x_status == PAUSED)
                     return;
             }
@@ -53,7 +56,7 @@ static void loop_do_loop(t_loop *x){ // The Actual Loop
                 outlet_bang(((t_object *)x)->ob_outlet);
             else
                 outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
-            x->x_count -= x->x_step;
+            x->x_count -= (double)x->x_step;
             if(x->x_status == PAUSED)
                 return;
         }
