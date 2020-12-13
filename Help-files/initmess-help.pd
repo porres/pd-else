@@ -73,9 +73,9 @@ patch. As an object \, it can also deal with "\$0" and arguments and
 expand them., f 71;
 #X text 226 268 bang;
 #X text 256 268 - resends message;
+#X obj 238 189 else/initmess a b c;
 #X text 208 329 the message \, where commas and semicolons behave as
 usual in message boxes \, dollarsigns behave as usual inside objects
-too, f 52;
-#X obj 238 189 else/initmess a b c;
-#X connect 24 0 32 0;
-#X connect 32 0 22 0;
+too (default none), f 52;
+#X connect 24 0 31 0;
+#X connect 31 0 22 0;
