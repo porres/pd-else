@@ -61,6 +61,7 @@ hot.class.sources := Classes/Source/hot.c
 hz2rad.class.sources := Classes/Source/hz2rad.c
 initmess.class.sources := Classes/Source/initmess.c
 lb.class.sources := Classes/Aliases/lb.c
+limit.class.sources := Classes/Source/limit.c
 loadbanger.class.sources := Classes/Source/loadbanger.c
 nbang.class.sources := Classes/Source/nbang.c
 merge.class.sources := Classes/Source/merge.c
