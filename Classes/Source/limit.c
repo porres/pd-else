@@ -1,5 +1,5 @@
 
-//#include <string.h>
+#include <string.h>
 #include "m_pd.h"
 #include <stdlib.h>
 
@@ -16,6 +16,7 @@ typedef struct _limit{
     int          x_natoms;  // used size
     t_atom      *x_message;
     int          x_entered;
+    int          x_ignore;
     t_clock     *x_clock;
 }t_limit;
 
@@ -49,7 +50,7 @@ static void limit_dooutput(t_limit *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void limit_tick(t_limit *x){
-    if(x->x_selector)
+    if(x->x_selector && !x->x_ignore)
         limit_dooutput(x, x->x_selector, x->x_natoms, x->x_message);
     else
         x->x_open = 1;
@@ -99,10 +100,11 @@ static void limit_free(t_limit *x){
         clock_free(x->x_clock);
 }
 
-static void *limit_new(t_floatarg f){
+static void *limit_new(t_floatarg f1, t_floatarg f2){
     t_limit *x = (t_limit *)pd_new(limit_class);
     x->x_open = 1;
-    x->x_delta = f;
+    x->x_delta = f1;
+    x->x_ignore = f2 != 0;
     x->x_selector = 0;
     x->x_float = 0;
     x->x_symbol = 0;
@@ -118,7 +120,7 @@ static void *limit_new(t_floatarg f){
 
 void limit_setup(void){
     limit_class = class_new(gensym("limit"), (t_newmethod)limit_new,
-        (t_method)limit_free, sizeof(t_limit), 0, A_DEFFLOAT, 0);
+        (t_method)limit_free, sizeof(t_limit), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addbang(limit_class, limit_bang);
     class_addfloat(limit_class, limit_float);
     class_addsymbol(limit_class, limit_symbol);

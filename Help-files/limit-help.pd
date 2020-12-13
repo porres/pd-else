@@ -1,4 +1,4 @@
-#N canvas 767 109 560 507 10;
+#N canvas 693 114 562 520 10;
 #X obj 3 3 cnv 15 301 42 empty empty limit 20 20 2 37 -233017 -1 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -39,7 +39,7 @@
 ;
 #X obj 128 156 tgl 20 0 empty empty empty 17 7 0 10 -216373 -1 -1 0
 1;
-#X obj 2 478 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 492 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 173 383 -;
 #X text 133 383 float;
@@ -72,6 +72,41 @@ has elapsed since the previous input/output. Otherwise \, it waits
 until that time passes and then sends the last received message since
 the previous output (ignoring the others).;
 #X obj 204 288 else/limit 1000, f 27;
+#N canvas 794 278 516 361 ignore 0;
+#X obj 92 106 tgl 20 0 empty empty empty 17 7 0 10 -216373 -1 -1 0
+1;
+#X obj 92 164 random 100;
+#X obj 92 140 metro 50;
+#X obj 92 190 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X floatatom 327 213 5 0 0 0 - - -;
+#X text 324 193 change time limit;
+#X text 365 213 milliseconds;
+#X obj 168 267 else/display;
+#X msg 234 213 1 2 3;
+#X msg 187 167 x;
+#X msg 222 167 a b c;
+#X msg 227 192 symbol dog;
+#X msg 168 145 list one 2 3;
+#X obj 168 238 else/limit 1000 1, f 27;
+#X text 102 45 The second argument sets to ignore mode. In this case
+\, messages received before the time limite are ignored and not sent
+after the period is done., f 54;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 2 0 1 0;
+#X connect 3 0 13 0;
+#X connect 4 0 13 1;
+#X connect 8 0 13 0;
+#X connect 9 0 13 0;
+#X connect 10 0 13 0;
+#X connect 11 0 13 0;
+#X connect 12 0 13 0;
+#X connect 13 0 7 0;
+#X restore 468 312 pd ignore;
+#X text 173 468 -;
+#X text 115 468 2) float;
+#X text 187 468 non zero sets to ignore mode (default 0);
 #X connect 20 0 31 0;
 #X connect 30 0 32 0;
 #X connect 31 0 30 0;
