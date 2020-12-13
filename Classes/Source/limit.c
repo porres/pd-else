@@ -1,3 +1,4 @@
+// porres
 
 #include <string.h>
 #include "m_pd.h"
@@ -7,41 +8,50 @@
 
 typedef struct _limit{
     t_object     x_obj;
-    int          x_open;
     t_float      x_delta;
     t_symbol    *x_selector;
     t_float      x_float;
     t_symbol    *x_symbol;
+    t_atom      *x_message;
+    int          x_open;
     int          x_size;    // allocated size
     int          x_natoms;  // used size
-    t_atom      *x_message;
     int          x_entered;
     int          x_ignore;
+    t_outlet    *x_out2;
     t_clock     *x_clock;
 }t_limit;
 
 static t_class *limit_class;
 
+static void limit_right_output(t_limit *x, t_symbol *s, int ac, t_atom *av){
+    if(s == &s_bang)
+        outlet_bang(x->x_out2);
+    else if(s == &s_float)
+        outlet_float(x->x_out2, x->x_float);
+    else if(s == &s_symbol)
+        outlet_symbol(x->x_out2, x->x_symbol);
+    else if(s == &s_list)
+        outlet_list(x->x_out2, &s_list, ac, av);
+    else if(s)
+        outlet_anything(x->x_out2, s, ac, av);
+}
+
 static void limit_dooutput(t_limit *x, t_symbol *s, int ac, t_atom *av){
-    x->x_open = 0;     /* so there will be no reentrant calls of dooutput */
-    x->x_entered = 1;  /* this prevents a message from being overridden */
+    x->x_open = 0;     // so there's no reentrant calls of dooutput
+    x->x_entered = 1;  // prevents message from being overridden
     clock_unset(x->x_clock);
     if(s == &s_bang)
         outlet_bang(((t_object *)x)->ob_outlet);
     else if(s == &s_float)
         outlet_float(((t_object *)x)->ob_outlet, x->x_float);
-    else if(s == &s_symbol && x->x_symbol){
-	/* if x_symbol is null, then symbol &s_ is passed
-	   by outlet_anything() -> typedmess() */
+    else if(s == &s_symbol)
         outlet_symbol(((t_object *)x)->ob_outlet, x->x_symbol);
-        x->x_symbol = 0;
-    }
     else if(s == &s_list)
         outlet_list(((t_object *)x)->ob_outlet, &s_list, ac, av);
     else if(s)
         outlet_anything(((t_object *)x)->ob_outlet, s, ac, av);
-    x->x_selector = 0;
-    x->x_natoms = 0;
+    x->x_selector = 0; // ???
     if(x->x_delta > 0)
         clock_delay(x->x_clock, x->x_delta);
     else
@@ -68,6 +78,8 @@ static void limit_anything(t_limit *x, t_symbol *s, int ac, t_atom *av){
         x->x_natoms = ac;
         if(ac)
             memcpy(x->x_message, av, ac * sizeof(*x->x_message));
+        if(x->x_ignore)
+            limit_right_output(x, s, ac, av);
     }
 }
 
@@ -104,16 +116,15 @@ static void *limit_new(t_floatarg f1, t_floatarg f2){
     t_limit *x = (t_limit *)pd_new(limit_class);
     x->x_open = 1;
     x->x_delta = f1;
-    x->x_ignore = f2 != 0;
+    x->x_ignore = (int)(f2 != 0.);
     x->x_selector = 0;
-    x->x_float = 0;
-    x->x_symbol = 0;
-    x->x_size = INISIZE;
-    x->x_natoms = 0;
     x->x_entered = 0;
-    x->x_message = (t_atom *)getbytes(x->x_size*sizeof(t_atom));
+    x->x_size = INISIZE;
+    x->x_message = (t_atom *)getbytes(x->x_size * sizeof(t_atom));
     floatinlet_new(&x->x_obj, &x->x_delta);
     outlet_new((t_object *)x, &s_anything);
+    if(x->x_ignore)
+        x->x_out2  = outlet_new(&x->x_obj, &s_anything);
     x->x_clock = clock_new(x, (t_method)limit_tick);
     return(x);
 }
