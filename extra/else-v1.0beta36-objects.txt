@@ -12,6 +12,7 @@ asr~	x
 autofade~	x
 autofade2~	x
 autotune	x
+autotune2	x
 avg	x
 balance~	x
 bandpass~	x

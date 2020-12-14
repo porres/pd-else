@@ -6,9 +6,9 @@
 
 
 
-### Version: 1.0-0 beta-35 With Live Electronics Tutorial 
+### Version: 1.0-0 beta-36 With Live Electronics Tutorial 
 
-###   Released: Released december 2nd 2020
+###   Released: Released december 16th 2020
 
 
 
@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (388 objects):
+## Current Object list (389 objects):
 
 **ASSORTED: [04]**
 
@@ -124,9 +124,10 @@ Cross compiling is also possible with something like this
 - [hann~]
 - [bin.shift~]
 
-**TUNING: [05]**
+**TUNING: [06]**
 
 - [autotune]
+- [autotune2]
 - [retune]
 - [eqdiv]
 - [frac2ratio]
