@@ -104,9 +104,12 @@ static void tabplayer_fade(t_play *x, t_floatarg f){
 }
 
 static void tabplayer_range(t_play *x, t_floatarg f1, t_floatarg f2){
-    x->x_stms = f1 < 0 ? 0 : f1;
-    x->x_endms = f2;
-    tabplayer_ms2samp(x);
+    if(f1 < 0)
+        f1 = 0;
+    if(f2 > 1)
+        f2 = 2;
+    x->x_start = f1 * x->x_npts;
+    x->x_end = f2 * x->x_npts;
 }
 
 static void tabplayer_reset(t_play *x){
