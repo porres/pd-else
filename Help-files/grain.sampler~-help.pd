@@ -1,0 +1,168 @@
+#N canvas 706 110 563 630 10;
+#X obj 182 127 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 182 153 metro 500;
+#X obj 182 176 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 216 234 else/out~;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 3 graph;
+#X obj 22 40 cnv 4 4 4 empty empty Granular 0 28 2 18 -233017 -1 0
+;
+#X obj 3 3 cnv 15 301 42 empty empty grain.sampler~ 20 20 2 37 -233017
+-1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X obj 4 603 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 6 298 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 462 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 513 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 87 469 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 89 305 cnv 17 3 152 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 6 561 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 125 537 2) symbol;
+#X text 125 520 1) float;
+#X obj 87 490 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 157 303 bang - plays an event of pitch clouds, f 64;
+#X text 109 332 set <symbol> -;
+#X text 199 331 sets table name with waveform, f 57;
+#X text 109 444 scale <list> - scale to autotune to in cents (default
+equal temperament), f 72;
+#X text 127 345 event <f> - sets event duration in ms (default 500)
+, f 69;
+#X text 121 402 pan <f \, f> - sets left and right pan boundaries (default
+-1 to 1), f 70;
+#X text 115 359 size <f \, f> - sets min and max grain sizes in ms
+(default 50 to 450), f 71;
+#X text 109 430 autotune <f> - non-zero autotunes to a given scale
+(default 0), f 72;
+#X text 187 470 signal - left channel output;
+#X text 187 490 signal - right channel output;
+#X text 189 518 - number of grains in cloud (default 16), f 44;
+#X obj 218 179 nbx 3 14 1 32 0 0 empty empty empty 0 -8 0 12 -228856
+-1 -1 1 256;
+#X obj 94 40 cnv 4 4 4 empty empty sampler 0 28 2 18 -233017 -1 0;
+#X text 151 317 float - number of grains in cloud (minimum 1 \, maximum
+256), f 65;
+#X text 121 416 amp <f \, f> - min and max amplitude values (default
+0.1 to 1), f 70;
+#N canvas 936 209 421 390 example 0;
+#N canvas 1024 281 408 394 tuning 0;
+#X obj 64 339 outlet;
+#X obj 94 236 else/eqdiv;
+#X msg 63 80 autotune \$1;
+#X obj 63 54 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
+;
+#X msg 94 112 3 13;
+#X msg 112 153 2 12;
+#X msg 103 132 2 13;
+#X msg 120 174 2 24;
+#X msg 126 195 2 7;
+#X obj 94 264 else/insert scale;
+#X text 174 156 You can try other arbitrary scales in the same format
+, f 18;
+#X text 154 137 <= some equal divisions;
+#X text 180 64 The autotune message retunes the reading speed to match
+a given scale \, see [else/autotunes] for reference., f 32;
+#X connect 1 0 9 0;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 1 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 0;
+#X connect 9 0 0 0;
+#X restore 76 47 pd tuning;
+#N canvas 888 335 656 325 presets 0;
+#X obj 41 250 outlet;
+#X obj 24 41 loadbang;
+#X msg 24 65 256 \, event 2000 \, speed -200 200 \, pan -1 1 \, amp
+0.05 1 \, size 30 60 \, pos 0 1, f 74;
+#X msg 41 90 128 \, event 1000 \, speed -100 100 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 40 60 \, pos 0 1, f 77;
+#X msg 56 115 10 \, event 1000 \, speed -50 50 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 150 250 \, pos 0.25 0.5, f 81;
+#X msg 67 139 10 \, event 500 \, speed 100 200 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 20 50 \, pos 0.5 1, f 77;
+#X msg 76 163 10 \, event 1000 \, speed 25 50 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 250 800 \, pos 0.5 1, f 77;
+#X msg 85 187 3 \, event 1000 \, speed 100 200 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 1000 8000 \, pos 0 1, f 78;
+#X msg 91 212 3 \, event 1000 \, speed -50 -100 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 2000 4000 \, pos 0 1, f 79;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X restore 108 82 pd presets;
+#X obj 123 125 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 123 174 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 170 125 route event;
+#X obj 123 151 metro;
+#X floatatom 170 147 5 0 0 0 - - -;
+#X obj 141 268 else/out~;
+#X text 217 69 Here's some presets for you to have fun with, f 23
+;
+#X obj 107 210 else/grain.sampler~ \$0-sample;
+#X connect 0 0 9 0;
+#X connect 1 0 4 0;
+#X connect 1 0 9 0;
+#X connect 2 0 5 0;
+#X connect 3 0 9 0;
+#X connect 4 0 6 0;
+#X connect 5 0 3 0;
+#X connect 6 0 5 1;
+#X connect 9 0 7 0;
+#X connect 9 1 7 1;
+#X restore 459 265 pd example;
+#X text 68 86 [grain.sampler~] is a sample based granulator that generates
+clouds of grains., f 51;
+#X obj 182 205 else/grain.sampler~ 32 \$0-sample;
+#X text 109 373 speed <f \, f> - sets min and max speed in % (default
+-200 to 200), f 72;
+#X text 121 387 pos <f \, f> - sets min and max position (default 0
+to 1), f 70;
+#X text 189 537 - sets table name with sample (default none);
+#X text 117 569 -event <f> | -size <f \, f> | -speed <f \, f> | -pan
+<f \, f> | -amps <f \, f> | -pos <f \, f> | -autotune <f> | -scale
+<list>;
+#X obj 315 157 else/sample~ \$0-sample violin.wav;
+#X obj 23 260 else/grain.synth~;
+#X text 24 210 see also:;
+#X obj 23 235 else/grain.live~;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 42 0;
+#X connect 36 0 42 0;
+#X connect 42 0 3 0;
+#X connect 42 1 3 1;

@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (389 objects):
+## Current Object list (392 objects):
 
 **ASSORTED: [04]**
 
@@ -359,12 +359,14 @@ Cross compiling is also possible with something like this
 - [resonant2~]
 - [svfilter~]
 
-**SAMPLING/PLAYING/GRANULATION: [11]**
+**SAMPLING/PLAYING/GRANULATION: [13]**
 
 - [player~]
 - [gran.player~]
 - [pvoc.player~]
 - [pvoc.live~]
+- [grain.sampler~]
+- [grain.live~]
 - [batch.rec~]
 - [batch.write~]
 - [rec.file~]
@@ -373,10 +375,16 @@ Cross compiling is also possible with something like this
 - [tabwriter~]
 - [sample~]
 
-**PHYSICAL MODELLING: [01]**
+**SYNTHESIS: GRANULAR SYNTHESIS: [01]**
+
+- [gain.synth~]
+
+**SYNTHESIS: PHYSICAL MODELLING: [01]**
+
 - [pluck~]
 
-**OSCILLATORS (DETERMINISTIC GENERATORS): [24]**
+**SYNTHESIS: OSCILLATORS (DETERMINISTIC GENERATORS): [24]**
+
 - [cosine~]
 - [impulse~] / [imp~]
 - [impulse2~] / [imp2~]
@@ -402,7 +410,7 @@ Cross compiling is also possible with something like this
 - [bl.vsaw~]
 - [bl.wavetable~]
 
-**CHAOTIC/NOISE GENERATORS: [25]**
+**SYNTHESIS: CHAOTIC/NOISE GENERATORS: [25]**
 
 - [brown~] 
 - [clipnoise~] 

@@ -1,0 +1,171 @@
+#N canvas 587 75 562 623 10;
+#X obj 300 114 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 300 137 metro 500;
+#X obj 300 159 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 243 217 else/out~;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 3 graph;
+#X obj 69 40 cnv 4 4 4 empty empty granulator 0 28 2 18 -233017 -1
+0;
+#X obj 4 595 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 6 278 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 463 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 514 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 84 470 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 85 286 cnv 17 3 28 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 6 543 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 125 521 1) float;
+#X obj 84 491 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 102 347 set <symbol> -;
+#X text 192 346 sets table name with waveform, f 58;
+#X text 102 445 scale <list> - scale to autotune to in cents (default
+equal temperament), f 73;
+#X text 120 332 event <f> - sets event duration in ms (default 500)
+, f 70;
+#X text 114 388 pan <f \, f> - sets left and right pan boundaries (default
+-1 to 1), f 71;
+#X text 102 431 autotune <f> - non-zero autotunes to a given scale
+(default 0), f 73;
+#X text 183 471 signal - left channel output;
+#X text 183 491 signal - right channel output;
+#X text 189 520 - number of grains in cloud (default 16), f 46;
+#X obj 22 40 cnv 4 4 4 empty empty Live 0 28 2 18 -233017 -1 0;
+#X text 144 318 float - number of grains in cloud (minimum 1 \, maximum
+256), f 66;
+#X obj 388 166 nbx 3 14 1 32 0 0 empty empty empty 0 -8 0 12 -228856
+-1 -1 1 256;
+#X obj 199 130 play.file~ bubul.wav 1 1, f 13;
+#N canvas 1013 198 320 404 example 0;
+#N canvas 552 271 389 390 tuning 0;
+#X obj 64 339 outlet;
+#X obj 94 236 else/eqdiv;
+#X msg 63 80 autotune \$1;
+#X obj 63 54 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
+;
+#X msg 94 112 3 13;
+#X msg 112 153 2 12;
+#X msg 103 132 2 13;
+#X msg 120 174 2 24;
+#X msg 126 195 2 7;
+#X obj 94 264 else/insert scale;
+#X text 174 156 You can try other arbitrary scales in the same format
+, f 18;
+#X text 154 137 <= some equal divisions;
+#X text 170 66 The autotune message retunes the transposition values
+\, see [else/autotune2] for reference., f 28;
+#X connect 1 0 9 0;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 1 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 0;
+#X connect 9 0 0 0;
+#X restore 188 220 pd tuning;
+#X obj 103 188 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 103 237 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 130 152 route event, f 5;
+#X obj 103 214 metro;
+#X floatatom 130 191 5 0 0 0 - - -;
+#X text 80 40 Here's some presets for you to have fun with, f 23;
+#N canvas 1001 236 697 329 presets 0;
+#X obj 80 255 outlet;
+#X obj 51 41 loadbang;
+#X msg 51 65 256 \, event 2000 \, transp -2000 2000 \, pan -1 1 \,
+amp 0.05 1 \, size 30 60 \, pos 0 1, f 78;
+#X msg 67 88 128 \, event 1000 \, transp -500 500 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 40 60 \, pos 0 1, f 81;
+#X msg 112 182 3 \, event 1000 \, transp -400 400 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 1000 8000 \, pos 0 1, f 85;
+#X msg 118 206 3 \, event 1000 \, transp -1200 1200 \, pan -0.8 0.8
+\, amp 0.1 1 \, size 2000 4000 \, pos 0 1, f 84;
+#X msg 80 111 32 \, event 1000 \, transp 0 1200 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 50 600 \, pos 0 0.25, f 80;
+#X msg 93 135 10 \, event 500 \, transp 600 900 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 20 50 \, pos 0.25 0.5, f 81;
+#X msg 104 158 10 \, event 1000 \, transp -200 -400 \, pan -0.8 0.8
+\, amp 0.1 1 \, size 250 800 \, pos 0.75 1, f 84;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X restore 174 121 pd presets;
+#X obj 81 87 play.file~ bubul.wav 1 1;
+#X obj 83 313 else/out~;
+#X obj 81 266 else/grain.live~;
+#X connect 0 0 10 1;
+#X connect 1 0 4 0;
+#X connect 2 0 10 0;
+#X connect 3 0 5 0;
+#X connect 4 0 2 0;
+#X connect 5 0 4 1;
+#X connect 7 0 3 0;
+#X connect 7 0 10 1;
+#X connect 8 0 10 0;
+#X connect 10 0 9 0;
+#X connect 10 1 9 1;
+#X restore 464 249 pd example;
+#X obj 3 3 cnv 15 301 42 empty empty grain.live~ 20 20 2 37 -233017
+-1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X text 79 87 [grain.live~] is a live input granulator that generates
+clouds of grains.;
+#X obj 85 318 cnv 17 3 126 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 150 298 bang - plays an event of pitch clouds, f 65;
+#X text 138 284 signal - signal input to be granulated, f 67;
+#X text 96 374 transp <f \, f> - sets min/max transpositin in cents
+(default -1200 to 1200), f 74;
+#X text 108 360 size <f \, f> - sets min/max grain sizes in ms (default
+50 to 450), f 72;
+#X text 114 417 amp <f \, f> - min/max amplitude values (default 0.1
+to 1), f 71;
+#X text 114 402 pos <f \, f> - sets min and max position (default 0
+to 1), f 71;
+#X text 117 551 -event <f> | -size <f \, f> | -picth <f \, f> | -pan
+<f \, f> | -amps <f \, f> | -autotune <f> | -scale <list> | -base <f>
+| -length <f>: delay length in ms (defaul 5000);
+#X obj 199 187 else/grain.live~ 32 -length 1000;
+#X obj 23 215 else/grain.sampler~;
+#X obj 23 240 else/grain.synth~;
+#X text 24 190 see also:;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 47 0;
+#X connect 33 0 47 1;
+#X connect 34 0 47 0;
+#X connect 47 0 3 0;
+#X connect 47 1 3 1;

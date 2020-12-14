@@ -142,6 +142,9 @@ gbman~	x
 giga.rev~	x
 glide~	x
 glide2~	x
+grain.live~	x
+grain.sampler~	x
+grain.synth~	x
 gran.player~	x
 graph~	x
 gray~	x
