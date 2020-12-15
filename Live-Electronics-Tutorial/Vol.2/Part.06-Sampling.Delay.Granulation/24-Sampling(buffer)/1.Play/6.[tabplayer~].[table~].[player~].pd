@@ -12,16 +12,15 @@
 #X text 643 144 Ratio;
 #X obj 573 78 rampnoise~ 0.25;
 #X obj 573 109 *~ 3;
-#X obj 454 526 out~;
-#X msg 454 465 speed \$1;
-#X obj 454 443 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 7.48795 256;
+#X obj 492 537 out~;
+#X msg 492 476 speed \$1;
+#X obj 492 454 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 138.018 256;
 #X obj 105 280 unpack;
 #X obj 554 28 declare -path else;
-#X obj 454 495 player~ violin.wav 1 1;
-#X obj 454 412 rescale -300 300;
-#X obj 454 380 rampnoise 0.1;
-#X text 535 439 percentage;
+#X obj 492 423 rescale -300 300;
+#X obj 492 391 rampnoise 0.1;
+#X text 569 450 percentage;
 #X obj 106 395 s \$0-size;
 #X obj 387 272 out~;
 #X obj 387 196 *~;
@@ -35,7 +34,7 @@
 #X obj 387 162 phasor~;
 #X obj 387 103 display~ 8;
 #X text 456 105 Ratio;
-#X text 61 437 But even much more convenient is the [player~] object
+#X text 65 446 But even much more convenient is the [player~] object
 from ELSE. This is an abstraction that relies on [tabplayer~] and already
 loads a file internally. It's like a conjunction of [sample~] and [tabplayer].
 Like [sample~] \, it has multi channel support and can query the number
@@ -50,6 +49,7 @@ library \, which is kind of the same as [tabread4~]. At least it has
 the same interpolation type. One advantage that makes it simpler is
 that we don't need to bother multiplying the output of [phasor~] \,
 as the index input can be mapped from 0 to 1!, f 44;
+#X obj 492 507 player~ violin.wav 1 1;
 #X connect 0 0 7 0;
 #X connect 2 0 4 1;
 #X connect 4 0 0 0;
@@ -60,21 +60,21 @@ as the index input can be mapped from 0 to 1!, f 44;
 #X connect 8 0 4 0;
 #X connect 10 0 11 0;
 #X connect 11 0 8 0;
-#X connect 13 0 17 0;
+#X connect 13 0 36 0;
 #X connect 14 0 13 0;
 #X connect 15 0 6 0;
-#X connect 15 0 21 0;
+#X connect 15 0 20 0;
 #X connect 15 1 6 1;
-#X connect 17 0 12 0;
-#X connect 18 0 14 0;
-#X connect 19 0 18 0;
-#X connect 23 0 26 0;
-#X connect 24 0 23 1;
-#X connect 25 0 15 0;
-#X connect 26 0 22 0;
-#X connect 27 0 28 1;
-#X connect 28 0 31 0;
-#X connect 29 0 30 0;
-#X connect 30 0 32 0;
-#X connect 31 0 23 0;
-#X connect 32 0 28 0;
+#X connect 17 0 14 0;
+#X connect 18 0 17 0;
+#X connect 22 0 25 0;
+#X connect 23 0 22 1;
+#X connect 24 0 15 0;
+#X connect 25 0 21 0;
+#X connect 26 0 27 1;
+#X connect 27 0 30 0;
+#X connect 28 0 29 0;
+#X connect 29 0 31 0;
+#X connect 30 0 22 0;
+#X connect 31 0 27 0;
+#X connect 36 0 12 0;

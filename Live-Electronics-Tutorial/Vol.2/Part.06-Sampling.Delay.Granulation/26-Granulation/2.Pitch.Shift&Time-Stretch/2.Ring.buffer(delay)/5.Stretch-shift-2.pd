@@ -1,4 +1,4 @@
-#N canvas 512 69 586 517 12;
+#N canvas 699 72 586 517 12;
 #X declare -path else;
 #X text 341 302 cents;
 #X obj 323 324 nbx 5 16 -1e+37 1e+37 0 0 empty \$0-cents empty 0 -8
@@ -151,13 +151,13 @@ to half the new grain size instead of subtracting because this means
 #X restore 230 357 pd pitch-shift/time-stretch;
 #X obj 61 291 initmess \; \$0-speed 50 \; \$0-cents -400 \; \$0-block
 2048;
-#X obj 360 21 declare -path else;
+#X obj 350 26 declare -path else;
 #X obj 61 198 play.file~ bubul.wav 1 1;
 #X text 87 68 This example now adapts for live input (or delay lines)
 an earlier pitch shit / time stretch patch in which the grain size
 depends on the block size. As the earlier one \, this is the basis
 of a Phase Vocoder example presented later. Open the subpatch for details.
-, f 52;
+, f 55;
 #X connect 1 0 13 1;
 #X connect 2 0 13 0;
 #X connect 3 0 13 2;

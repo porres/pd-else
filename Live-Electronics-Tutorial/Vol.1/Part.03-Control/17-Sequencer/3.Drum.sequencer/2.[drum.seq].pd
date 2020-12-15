@@ -1,24 +1,19 @@
-#N struct 1082-slot float x float y float slotsize float color float
+#N struct 1016-slot float x float y float slotsize float color float
 width float bordercolor;
 #N canvas 466 110 634 469 12;
 #X declare -path else;
-#X obj 104 41 tgl 30 0 empty metro empty 17 7 0 10 -228856 -1 -1 0
+#X obj 104 41 tgl 30 0 empty metro empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X text 169 24 TEMPO;
 #X obj 155 47 nbx 5 18 100 1000 0 0 empty empty empty 0 -8 0 15 -228856
 -1 -1 100 256;
 #X obj 42 83 moses 1;
 #X text 34 47 Play/Stop;
-#X obj 104 141 count 15;
 #X obj 104 98 tempo 60 -div 4;
-#X msg 42 109 set 0;
 #X obj 464 32 declare -path else;
 #X obj 56 336 play.file~ 1 dholak.aif, f 12;
 #X obj 152 337 play.file~ 1 bagal.aif, f 12;
 #X obj 104 194 drum.seq 2 16 20 0 0 0 0 0 0 0 0 0 0 0 0;
-#X obj 104 255 route 0 1;
-#X obj 207 142 initmess import 1 0 1 0 1 1 1 0 1 0 0 1 0 1 0 1 1 0
-0 1 0 1 0 0 1 0 1 0 1 0 0 0, f 40;
 #X obj 104 289 sel 1;
 #X obj 152 289 sel 1;
 #X text 430 193 <= track 0;
@@ -35,18 +30,23 @@ route the value of each track. We then use select to trigger the sample.
 Check its help file for more info., f 46;
 #X text 497 150 <= preset;
 #X obj 65 389 out~;
+#X obj 104 141 count 1 16;
+#X msg 42 109 set 1;
+#X obj 104 255 route 1 2;
+#X obj 207 142 initmess import 1 0 1 0 1 1 1 0 1 0 0 1 0 1 0 1 1 0
+0 1 0 1 0 0 1 0 1 0 1 0 0 0, f 40;
 #X connect 0 0 3 0;
-#X connect 0 0 6 0;
-#X connect 2 0 6 1;
-#X connect 3 0 7 0;
-#X connect 5 0 11 0;
-#X connect 6 0 5 0;
-#X connect 7 0 5 0;
-#X connect 9 0 24 0;
-#X connect 10 0 24 1;
-#X connect 11 0 12 0;
-#X connect 12 0 14 0;
-#X connect 12 1 15 0;
-#X connect 13 0 11 0;
-#X connect 14 0 9 0;
-#X connect 15 0 10 0;
+#X connect 0 0 5 0;
+#X connect 2 0 5 1;
+#X connect 3 0 22 0;
+#X connect 5 0 21 0;
+#X connect 7 0 20 0;
+#X connect 8 0 20 1;
+#X connect 9 0 23 0;
+#X connect 10 0 7 0;
+#X connect 11 0 8 0;
+#X connect 21 0 9 0;
+#X connect 22 0 21 0;
+#X connect 23 0 10 0;
+#X connect 23 1 11 0;
+#X connect 24 0 9 0;

@@ -1,0 +1,70 @@
+#N canvas 719 236 837 641 12;
+#X obj 362 358 envelope~;
+#X obj 362 326 envgen~;
+#X obj 474 312 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
+#X obj 474 339 switch~;
+#X obj 204 469 *~;
+#X obj 352 140 random 1000;
+#X obj 304 139 pipe;
+#X obj 304 228 limit;
+#X obj 320 32 inlet;
+#X obj 204 506 pan2~, f 10;
+#X obj 204 560 outlet~;
+#X obj 271 560 outlet~;
+#X obj 304 259 t b f b, f 17;
+#X obj 304 165 b;
+#X msg 362 299 0 \$1 1;
+#X obj 320 83 limit 1000 1;
+#X obj 453 388 rand.f 0.1 1;
+#X obj 270 350 rand.f -1 1;
+#X obj 304 197 rand.f 50 500;
+#X obj 320 112 t b b;
+#X obj 362 390 *~ 0;
+#X obj 46 342 rand.f -200 200;
+#X msg 46 366 speed \$1;
+#X obj 163 341 rand.f 0 1;
+#X msg 163 367 range \$1 1 \, bang, f 11;
+#X text 340 492 This patch is used inside [clone] in one of the examples.
+;
+#X obj 163 416 tabplayer~ \$2 -loop, f 11;
+#X text 475 196 The [tabplayer~] object reads from the buffer \, whose
+name is passed via an argument to the instances in [clone]. Note the
+[tabplayer~] object is also set to loop \, in the case one of the grain
+starts too close to the boundaries., f 46;
+#X text 475 80 The main difference from the last example is that now
+we use [tabplayer~] to play the samples. Instead of a pitch parameter
+\, we now have a random speed parameter (where negative values plays
+the grain backwards). We also have a random start position to start
+playing from., f 46;
+#X connect 0 0 20 0;
+#X connect 1 0 0 0;
+#X connect 1 1 2 0;
+#X connect 2 0 3 0;
+#X connect 4 0 9 0;
+#X connect 5 0 6 1;
+#X connect 6 0 13 0;
+#X connect 7 0 12 0;
+#X connect 8 0 15 0;
+#X connect 9 0 10 0;
+#X connect 9 1 11 0;
+#X connect 12 0 17 0;
+#X connect 12 0 23 0;
+#X connect 12 0 21 0;
+#X connect 12 1 7 1;
+#X connect 12 1 14 0;
+#X connect 12 2 16 0;
+#X connect 13 0 18 0;
+#X connect 14 0 1 0;
+#X connect 15 0 19 0;
+#X connect 16 0 20 1;
+#X connect 17 0 9 1;
+#X connect 18 0 7 0;
+#X connect 19 0 6 0;
+#X connect 19 1 5 0;
+#X connect 20 0 4 1;
+#X connect 21 0 22 0;
+#X connect 22 0 26 0;
+#X connect 23 0 24 0;
+#X connect 24 0 26 0;
+#X connect 26 0 4 0;

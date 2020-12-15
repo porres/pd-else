@@ -1,4 +1,4 @@
-#N canvas 647 152 764 445 12;
+#N canvas 677 158 766 597 12;
 #X declare -path else;
 #X text 562 299 Cents;
 #X obj 609 269 ratio2cents;
@@ -45,6 +45,13 @@ minor seventh (7/4) and others. Note that if you invert the ratio \,
 you get the same interval but with a negative value in cents. For example
 \, 2/3 is a fifth below. Note also how in such cases the ratio is below
 1!;
+#X obj 116 542 else/display;
+#X msg 116 482 1 9/8 5/4 11/8 3/2 13/8 14/8 15/8 2;
+#X obj 116 512 fract2ratio;
+#X text 458 491 The [fract2ratio] object from ELSE takes a list of
+elements in fraction notation and converts to a list with cents intervals.
+, f 36;
+#X obj 116 453 loadbang;
 #X connect 1 0 9 0;
 #X connect 2 0 10 0;
 #X connect 3 0 4 1;
@@ -54,3 +61,6 @@ you get the same interval but with a negative value in cents. For example
 #X connect 8 0 1 0;
 #X connect 9 0 2 0;
 #X connect 11 0 8 0;
+#X connect 23 0 24 0;
+#X connect 24 0 22 0;
+#X connect 26 0 23 0;
