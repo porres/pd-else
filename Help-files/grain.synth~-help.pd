@@ -1,4 +1,4 @@
-#N canvas 692 30 559 631 10;
+#N canvas 376 37 562 650 10;
 #X obj 192 127 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 192 153 metro 500;
@@ -29,35 +29,35 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 4 603 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 621 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 6 298 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 462 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 480 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 513 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 531 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 87 469 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 87 487 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 89 305 cnv 17 3 152 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 89 305 cnv 17 3 170 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 6 561 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 125 537 2) symbol;
-#X text 125 520 1) float;
-#X obj 87 490 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 6 579 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 125 555 2) symbol;
+#X text 125 538 1) float;
+#X obj 87 508 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 157 303 bang - plays an dur of pitch clouds, f 64;
-#X text 109 429 scale <list> - scale to autotune to in cents (default
+#X text 109 444 scale <list> - scale to autotune to in cents (default
 equal temperament), f 72;
-#X text 133 443 base <f> - sets scale's base MIDI pitch (default 60)
+#X text 133 458 base <f> - sets scale's base MIDI pitch (default 60)
 , f 68;
-#X text 121 387 pan <f \, f> - sets left and right pan boundaries (default
+#X text 121 402 pan <f \, f> - sets left and right pan boundaries (default
 -1 to 1), f 70;
-#X text 109 415 autotune <f> - non-zero autotunes to a given scale
+#X text 109 430 autotune <f> - non-zero autotunes to a given scale
 (default 0), f 72;
-#X text 187 470 signal - left channel output;
-#X text 187 490 signal - right channel output;
-#X text 190 537 - sets table name with waveform (default none);
+#X text 187 488 signal - left channel output;
+#X text 187 508 signal - right channel output;
+#X text 190 555 - sets table name with waveform (default none);
 #X obj 309 136 cnv 15 138 55 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -625,7 +625,7 @@ equal temperament), f 72;
 -1 -1 1 256;
 #X obj 94 40 cnv 4 4 4 empty empty synthesis 0 28 2 18 -233017 -1 0
 ;
-#N canvas 895 274 406 354 example 0;
+#N canvas 933 114 458 504 example 0;
 #N canvas 552 271 592 396 tuning 0;
 #X obj 64 339 outlet;
 #X obj 94 236 else/eqdiv;
@@ -653,8 +653,8 @@ a base value., f 50;
 #X connect 7 0 1 0;
 #X connect 8 0 1 0;
 #X connect 9 0 0 0;
-#X restore 76 49 pd tuning;
-#N canvas 913 314 602 432 presets 0;
+#X restore 93 166 pd tuning;
+#N canvas 521 189 602 432 presets 0;
 #X obj 99 351 outlet;
 #X msg 141 265 3 \, dur 1000 \, pitch 43 90 \, pan -0.8 0.8 \, amp
 0.1 1 \, size 1000 8000, f 65;
@@ -681,40 +681,57 @@ parameters. The pan range is from -1 (left) to 1 (right)., f 37;
 #X connect 6 0 4 0;
 #X connect 7 0 0 0;
 #X connect 8 0 0 0;
-#X restore 107 92 pd presets;
-#X obj 123 125 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X restore 124 196 pd presets;
+#X obj 140 247 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 123 174 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 140 296 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 170 125 route dur;
-#X obj 123 151 metro;
-#X floatatom 170 147 5 0 0 0 - - -;
-#X obj 130 251 else/out~;
-#X text 217 69 Here's some presets for you to have fun with, f 23
+#X obj 187 247 route dur;
+#X obj 140 273 metro;
+#X floatatom 187 269 5 0 0 0 - - -;
+#X obj 161 407 else/out~;
+#X text 225 191 Here's some presets for you to have fun with, f 23
 ;
-#X obj 107 209 else/grain.synth~ \$0-wave;
-#X connect 0 0 9 0;
+#X msg 234 302 sync \$1;
+#X obj 234 275 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 258 275 synchronous mode;
+#X text 192 196 <==;
+#X obj 236 335 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 278 331 density (number of grains), f 15;
+#X text 54 33 Try some of the presets and also try dfferent parameters
+from the settings here \, where we can change to synchronous mode and
+also the density (number of grains).;
+#X obj 124 371 else/grain.synth~ \$0-wave -sync;
+#X text 159 166 <= about tuning;
+#X text 54 74 By default \, we have an asynchronous mode \, and that
+means that the interval between grains are random. On the other hand
+\, synchronous mode spaces the grains equally within a cloud event.
+This is more noticeable if you have less density. You can set the object
+to sync mode at creation with the -sync flag., f 58;
+#X connect 0 0 16 0;
 #X connect 1 0 4 0;
-#X connect 1 0 9 0;
+#X connect 1 0 16 0;
 #X connect 2 0 5 0;
-#X connect 3 0 9 0;
+#X connect 3 0 16 0;
 #X connect 4 0 6 0;
 #X connect 5 0 3 0;
 #X connect 6 0 5 1;
-#X connect 9 0 7 0;
-#X connect 9 1 7 1;
+#X connect 9 0 16 0;
+#X connect 10 0 9 0;
+#X connect 13 0 16 0;
+#X connect 16 0 7 0;
+#X connect 16 1 7 1;
 #X restore 458 222 pd example;
 #X obj 27 247 s \$0-wave;
 #X msg 27 188 sinesum 4096 1 0.5 0.4 0.3 0.2 0.1 \, normalize, f 22
 ;
 #X obj 27 167 loadbang;
 #X msg 36 224 sinesum 4096 1;
-#X text 189 518 - (optional) number of grains in cloud (default 16)
+#X text 189 536 - (optional) number of grains in cloud (default 16)
 ;
 #X text 129 224 <= sine;
-#X text 117 569 -dur <f> | -size <f \, f> | -pitch <f \, f> | -pan
-<f \, f> | -amps <f \, f> | -autotune <f> | -scale <list> | -base <f>
-;
 #X text 96 86 [grain.synth~] is a waveform based granular synthesizer
 that generates clouds of pitched grains., f 55;
 #X obj 193 205 else/grain.synth~ 32 \$0-wave;
@@ -723,22 +740,27 @@ that generates clouds of pitched grains., f 55;
 #X obj 430 273 else/grain.live~;
 #X text 151 317 float - number of grains in event cloud (minimum 1
 \, maximum 256), f 65;
-#X text 127 345 dur <f> - sets cloud event duration in ms (default
+#X text 127 360 dur <f> - sets cloud event duration in ms (default
 500), f 69;
-#X text 115 359 size <f \, f> - sets min/max grain sizes in ms (default
+#X text 115 374 size <f \, f> - sets min/max grain sizes in ms (default
 50 to 450), f 71;
-#X text 109 373 pitch <f \, f> - sets min/max pitch values in MIDI
+#X text 109 388 pitch <f \, f> - sets min/max pitch values in MIDI
 (default 30 to 90), f 72;
-#X text 121 401 amp <f \, f> - min/max amplitude values (default 0.1
+#X text 121 416 amp <f \, f> - min/max amplitude values (default 0.1
 to 1), f 70;
-#X text 109 331 set <symbol> - sets table name with waveform, f 72
+#X text 109 332 set <symbol> - sets table name with waveform, f 72
 ;
+#X text 133 346 sync <f> - non zero sets to synchronous mode (default
+0), f 68;
+#X text 99 587 -dur <f> | -size <f \, f> | -pitch <f \, f> | -pan <f
+\, f> | -sync | -amps <f \, f> | -autotune <f> | -scale <list> | -base
+<f>, f 63;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
-#X connect 2 0 46 0;
-#X connect 35 0 46 0;
+#X connect 2 0 45 0;
+#X connect 35 0 45 0;
 #X connect 39 0 38 0;
 #X connect 40 0 39 0;
 #X connect 41 0 38 0;
-#X connect 46 0 3 0;
-#X connect 46 1 3 1;
+#X connect 45 0 3 0;
+#X connect 45 1 3 1;
