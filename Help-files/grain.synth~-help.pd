@@ -46,21 +46,13 @@
 #X text 125 520 1) float;
 #X obj 87 490 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 157 303 bang - plays an event of pitch clouds, f 64;
-#X text 109 332 set <symbol> -;
-#X text 199 331 sets table name with waveform, f 57;
+#X text 157 303 bang - plays an dur of pitch clouds, f 64;
 #X text 109 429 scale <list> - scale to autotune to in cents (default
 equal temperament), f 72;
 #X text 133 443 base <f> - sets scale's base MIDI pitch (default 60)
 , f 68;
-#X text 127 345 event <f> - sets event duration in ms (default 500)
-, f 69;
 #X text 121 387 pan <f \, f> - sets left and right pan boundaries (default
 -1 to 1), f 70;
-#X text 115 359 size <f \, f> - sets min and max grain sizes in ms
-(default 50 to 450), f 71;
-#X text 109 373 pitch <f \, f> - sets min and max pitch values in MIDI
-(default 30 to 90), f 72;
 #X text 109 415 autotune <f> - non-zero autotunes to a given scale
 (default 0), f 72;
 #X text 187 470 signal - left channel output;
@@ -633,10 +625,6 @@ equal temperament), f 72;
 -1 -1 1 256;
 #X obj 94 40 cnv 4 4 4 empty empty synthesis 0 28 2 18 -233017 -1 0
 ;
-#X text 151 317 float - number of grains in cloud (minimum 1 \, maximum
-256), f 65;
-#X text 121 401 amp <f \, f> - min and max amplitude values (default
-0.1 to 1), f 70;
 #N canvas 895 274 406 354 example 0;
 #N canvas 552 271 592 396 tuning 0;
 #X obj 64 339 outlet;
@@ -666,23 +654,25 @@ a base value., f 50;
 #X connect 8 0 1 0;
 #X connect 9 0 0 0;
 #X restore 76 49 pd tuning;
-#N canvas 1008 321 564 338 presets 0;
-#X obj 75 280 outlet;
-#X msg 117 194 3 \, event 1000 \, pitch 43 90 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 1000 8000, f 68;
-#X msg 122 223 3 \, event 1000 \, pitch 55 79 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 2000 4000, f 70;
-#X msg 96 139 10 \, event 500 \, pitch 86 90 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 20 50, f 65;
-#X msg 58 52 256 \, event 2000 \, picth 30 110 \, pan -1 1 \, amp 0.05
-1 \, size 30 60, f 64;
-#X msg 75 81 128 \, event 1000 \, pitch 43 62 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 40 60, f 66;
-#X obj 58 28 loadbang;
-#X msg 104 164 10 \, event 1000 \, pitch 55 59 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 250 800, f 67;
-#X msg 90 110 32 \, event 1000 \, pitch 67 71 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 50 250, f 67;
+#N canvas 913 314 602 432 presets 0;
+#X obj 99 351 outlet;
+#X msg 141 265 3 \, dur 1000 \, pitch 43 90 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 1000 8000, f 65;
+#X msg 146 294 3 \, dur 1000 \, pitch 55 79 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 2000 4000, f 65;
+#X msg 120 210 10 \, dur 500 \, pitch 86 90 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 20 50, f 61;
+#X msg 82 123 256 \, dur 2000 \, picth 30 110 \, pan -1 1 \, amp 0.05
+1 \, size 30 60, f 61;
+#X msg 99 152 128 \, dur 1000 \, pitch 43 62 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 40 60, f 63;
+#X obj 82 99 loadbang;
+#X msg 128 235 10 \, dur 1000 \, pitch 55 59 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 250 800, f 64;
+#X msg 114 181 32 \, dur 1000 \, pitch 67 71 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 50 250, f 63;
+#X text 183 46 Here we have different messages with all the setable
+parameters. The pan range is from -1 (left) to 1 (right)., f 37;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
@@ -696,7 +686,7 @@ a base value., f 50;
 1;
 #X obj 123 174 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 170 125 route event;
+#X obj 170 125 route dur;
 #X obj 123 151 metro;
 #X floatatom 170 147 5 0 0 0 - - -;
 #X obj 130 251 else/out~;
@@ -722,7 +712,7 @@ a base value., f 50;
 #X text 189 518 - (optional) number of grains in cloud (default 16)
 ;
 #X text 129 224 <= sine;
-#X text 117 569 -event <f> | -size <f \, f> | -pitch <f \, f> | -pan
+#X text 117 569 -dur <f> | -size <f \, f> | -pitch <f \, f> | -pan
 <f \, f> | -amps <f \, f> | -autotune <f> | -scale <list> | -base <f>
 ;
 #X text 96 86 [grain.synth~] is a waveform based granular synthesizer
@@ -731,12 +721,24 @@ that generates clouds of pitched grains., f 55;
 #X obj 411 253 else/grain.sampler~;
 #X text 348 253 see also:;
 #X obj 430 273 else/grain.live~;
+#X text 151 317 float - number of grains in event cloud (minimum 1
+\, maximum 256), f 65;
+#X text 127 345 dur <f> - sets cloud event duration in ms (default
+500), f 69;
+#X text 115 359 size <f \, f> - sets min/max grain sizes in ms (default
+50 to 450), f 71;
+#X text 109 373 pitch <f \, f> - sets min/max pitch values in MIDI
+(default 30 to 90), f 72;
+#X text 121 401 amp <f \, f> - min/max amplitude values (default 0.1
+to 1), f 70;
+#X text 109 331 set <symbol> - sets table name with waveform, f 72
+;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
-#X connect 2 0 53 0;
-#X connect 40 0 53 0;
-#X connect 46 0 45 0;
-#X connect 47 0 46 0;
-#X connect 48 0 45 0;
-#X connect 53 0 3 0;
-#X connect 53 1 3 1;
+#X connect 2 0 46 0;
+#X connect 35 0 46 0;
+#X connect 39 0 38 0;
+#X connect 40 0 39 0;
+#X connect 41 0 38 0;
+#X connect 46 0 3 0;
+#X connect 46 1 3 1;

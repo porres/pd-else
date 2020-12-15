@@ -1,4 +1,4 @@
-#N canvas 706 110 563 630 10;
+#N canvas 724 70 563 627 10;
 #X obj 182 127 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 182 153 metro 500;
@@ -37,27 +37,20 @@
 ;
 #X obj 5 513 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 87 469 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 469 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 89 305 cnv 17 3 152 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 93 305 cnv 17 3 152 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 6 561 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 125 537 2) symbol;
 #X text 125 520 1) float;
-#X obj 87 490 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 91 490 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 157 303 bang - plays an event of pitch clouds, f 64;
-#X text 109 332 set <symbol> -;
-#X text 199 331 sets table name with waveform, f 57;
-#X text 109 444 scale <list> - scale to autotune to in cents (default
+#X text 105 444 scale <list> - scale to autotune to in cents (default
 equal temperament), f 72;
-#X text 127 345 event <f> - sets event duration in ms (default 500)
-, f 69;
-#X text 121 402 pan <f \, f> - sets left and right pan boundaries (default
+#X text 117 402 pan <f \, f> - sets left and right pan boundaries (default
 -1 to 1), f 70;
-#X text 115 359 size <f \, f> - sets min and max grain sizes in ms
-(default 50 to 450), f 71;
-#X text 109 430 autotune <f> - non-zero autotunes to a given scale
+#X text 105 430 autotune <f> - non-zero autotunes to a given scale
 (default 0), f 72;
 #X text 187 470 signal - left channel output;
 #X text 187 490 signal - right channel output;
@@ -65,11 +58,7 @@ equal temperament), f 72;
 #X obj 218 179 nbx 3 14 1 32 0 0 empty empty empty 0 -8 0 12 -228856
 -1 -1 1 256;
 #X obj 94 40 cnv 4 4 4 empty empty sampler 0 28 2 18 -233017 -1 0;
-#X text 151 317 float - number of grains in cloud (minimum 1 \, maximum
-256), f 65;
-#X text 121 416 amp <f \, f> - min and max amplitude values (default
-0.1 to 1), f 70;
-#N canvas 936 209 421 390 example 0;
+#N canvas 794 218 421 390 example 0;
 #N canvas 1024 281 408 394 tuning 0;
 #X obj 64 339 outlet;
 #X obj 94 236 else/eqdiv;
@@ -97,23 +86,27 @@ a given scale \, see [else/autotunes] for reference., f 32;
 #X connect 8 0 1 0;
 #X connect 9 0 0 0;
 #X restore 76 47 pd tuning;
-#N canvas 888 335 656 325 presets 0;
-#X obj 41 250 outlet;
-#X obj 24 41 loadbang;
-#X msg 24 65 256 \, event 2000 \, speed -200 200 \, pan -1 1 \, amp
-0.05 1 \, size 30 60 \, pos 0 1, f 74;
-#X msg 41 90 128 \, event 1000 \, speed -100 100 \, pan -0.8 0.8 \,
-amp 0.1 1 \, size 40 60 \, pos 0 1, f 77;
-#X msg 56 115 10 \, event 1000 \, speed -50 50 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 150 250 \, pos 0.25 0.5, f 81;
-#X msg 67 139 10 \, event 500 \, speed 100 200 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 20 50 \, pos 0.5 1, f 77;
-#X msg 76 163 10 \, event 1000 \, speed 25 50 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 250 800 \, pos 0.5 1, f 77;
-#X msg 85 187 3 \, event 1000 \, speed 100 200 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 1000 8000 \, pos 0 1, f 78;
-#X msg 91 212 3 \, event 1000 \, speed -50 -100 \, pan -0.8 0.8 \,
-amp 0.1 1 \, size 2000 4000 \, pos 0 1, f 79;
+#N canvas 846 117 655 392 presets 0;
+#X obj 86 335 outlet;
+#X obj 69 126 loadbang;
+#X msg 69 150 256 \, dur 2000 \, speed -200 200 \, pan -1 1 \, amp
+0.05 1 \, size 30 60 \, pos 0 1, f 72;
+#X msg 86 175 128 \, dur 1000 \, speed -100 100 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 40 60 \, pos 0 1, f 75;
+#X msg 101 200 10 \, dur 1000 \, speed -50 50 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 150 250 \, pos 0.25 0.5, f 79;
+#X msg 112 224 10 \, dur 500 \, speed 100 200 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 20 50 \, pos 0.5 1, f 74;
+#X msg 121 248 10 \, dur 1000 \, speed 25 50 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 250 800 \, pos 0.5 1, f 75;
+#X msg 130 272 3 \, dur 1000 \, speed 100 200 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 1000 8000 \, pos 0 1, f 76;
+#X msg 136 297 3 \, dur 1000 \, speed -50 -100 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 2000 4000 \, pos 0 1, f 77;
+#X text 106 42 Here we have different messages with all the setable
+parameters. The pan range is from -1 (left) to 1 (right) and the position
+in the sample is set proprtionally (0 is the beggining of the sample
+and 1 is the end)., f 65;
 #X connect 1 0 2 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
@@ -127,7 +120,7 @@ amp 0.1 1 \, size 2000 4000 \, pos 0 1, f 79;
 1;
 #X obj 123 174 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 170 125 route event;
+#X obj 170 125 route dur;
 #X obj 123 151 metro;
 #X floatatom 170 147 5 0 0 0 - - -;
 #X obj 141 268 else/out~;
@@ -148,21 +141,32 @@ amp 0.1 1 \, size 2000 4000 \, pos 0 1, f 79;
 #X text 68 86 [grain.sampler~] is a sample based granulator that generates
 clouds of grains., f 51;
 #X obj 182 205 else/grain.sampler~ 32 \$0-sample;
-#X text 109 373 speed <f \, f> - sets min and max speed in % (default
--200 to 200), f 72;
-#X text 121 387 pos <f \, f> - sets min and max position (default 0
-to 1), f 70;
 #X text 189 537 - sets table name with sample (default none);
-#X text 117 569 -event <f> | -size <f \, f> | -speed <f \, f> | -pan
+#X text 117 569 -dur <f> | -size <f \, f> | -speed <f \, f> | -pan
 <f \, f> | -amps <f \, f> | -pos <f \, f> | -autotune <f> | -scale
 <list>;
 #X obj 315 157 else/sample~ \$0-sample violin.wav;
 #X obj 23 260 else/grain.synth~;
 #X text 24 210 see also:;
 #X obj 23 235 else/grain.live~;
+#X text 135 331 dur <f> - sets cloud event duration in ms (default
+500), f 67;
+#X text 153 303 bang - plays an event of pitch clouds, f 64;
+#X text 147 317 float - number of grains in cloud event (minimum 1
+\, maximum 256), f 65;
+#X text 105 345 set <symbol> - sets table name with loaded sample,
+f 72;
+#X text 111 359 size <f \, f> - sets min/max grain sizes in ms (default
+50 to 450), f 71;
+#X text 105 373 speed <f \, f> - sets min/max reading speed in % (default
+-200 to 200), f 72;
+#X text 117 387 pos <f \, f> - sets min/max grain position (default
+0 to 1), f 70;
+#X text 117 416 amp <f \, f> - min/max amplitude values (default 0.1
+to 1), f 70;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
-#X connect 2 0 42 0;
-#X connect 36 0 42 0;
-#X connect 42 0 3 0;
-#X connect 42 1 3 1;
+#X connect 2 0 35 0;
+#X connect 31 0 35 0;
+#X connect 35 0 3 0;
+#X connect 35 1 3 1;

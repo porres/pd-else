@@ -38,7 +38,7 @@
 #X obj 232 257 symbol;
 #X obj 350 314 insert all amp;
 #X obj 458 314 insert all size;
-#X obj 575 314 insert all event;
+#X obj 575 314 insert all dur;
 #X obj 703 313 insert all pitch;
 #X obj 829 314 insert all pan;
 #X msg 253 328 all set \$1;
@@ -47,7 +47,7 @@
 #X obj 1212 314 insert all base, f 16;
 #X obj 939 314 insert all autotune;
 #X obj 174 273 s \$0-n;
-#X obj 198 153 route float symbol list -amp -size -event -pitch -pan
+#X obj 198 153 route float symbol list -amp -size -dur -pitch -pan
 -autotune -scale -base, f 76;
 #X obj 199 87 lb -init;
 #X obj 206 375 message;

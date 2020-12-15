@@ -20,10 +20,10 @@
 #X obj 266 209 sel 0;
 #X obj 266 132 loadbang;
 #X obj 200 198 t b b b;
-#X obj 372 123 r \$0-event;
+#X obj 372 123 r \$0-dur;
 #N canvas 771 180 645 532 route 0;
 #X obj 155 465 s \$0-sizes;
-#X obj 197 428 s \$0-event;
+#X obj 197 428 s \$0-dur;
 #X obj 114 49 inlet;
 #X obj 114 508 outlet;
 #X obj 197 401 max 50;
@@ -35,7 +35,7 @@
 #X obj 364 235 symbol;
 #X obj 405 204 s \$0-autotune;
 #X obj 447 175 s \$0-scale;
-#X obj 113 100 route bang size event pitch pan amp set autotune scale
+#X obj 113 100 route bang size dur pitch pan amp set autotune scale
 base;
 #X obj 481 150 s \$0-base;
 #X msg 482 125 base \$1;

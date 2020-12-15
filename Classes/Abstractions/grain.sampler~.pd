@@ -38,7 +38,7 @@
 #X obj 163 257 symbol;
 #X obj 281 314 insert all amp;
 #X obj 389 314 insert all size;
-#X obj 506 314 insert all event;
+#X obj 506 314 insert all dur;
 #X obj 760 314 insert all pan;
 #X msg 184 328 all set \$1;
 #X obj 184 220 unpack f s;
@@ -52,7 +52,7 @@
 #X obj 47 274 del 0;
 #X obj 129 124 args -;
 #X obj 634 313 insert all speed;
-#X obj 129 153 route float symbol list -amp -size -event -speed -pan
+#X obj 129 153 route float symbol list -amp -size -dur -speed -pan
 -autotune -scale -base -pos, f 128;
 #X obj 1280 314 insert all pos, f 16;
 #X connect 0 0 7 0;
