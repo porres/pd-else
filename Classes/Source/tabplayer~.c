@@ -2,7 +2,7 @@
 
 #include <math.h>
 #include "m_pd.h"
-#include "magic.h" // needed???????
+#include "magic.h" // needed for toggle start
 #include "buffer.h"
 #include <stdlib.h>
 
@@ -33,6 +33,7 @@ typedef struct _tabplayer{
     unsigned long long x_fadesamp; //length of fade in samples
     double      x_rate; //rate of playback
     double      x_phase; //phase for float playback mode
+    int         x_pos; // phase/play position
     int         x_loop; //if loop or not
     int         x_playing; //if playing
     int         x_playnew; //if started playing this particular block
@@ -87,7 +88,7 @@ static void tabplayer_set(t_play *x, t_symbol *s){
     buffer_setarray(x->x_buffer, s);
     x->x_npts = x->x_buffer->c_npts;
     x->x_start = 0;
-    x->x_end = x->x_npts;
+    x->x_end = x->x_rangesamp = x->x_npts;
     x->x_sr_ratio = x->x_array_sr_khz/x->x_sr;
 }
 
@@ -110,13 +111,16 @@ static void tabplayer_range(t_play *x, t_floatarg f1, t_floatarg f2){
         f1 = 0;
     if(f2 > 1)
         f2 = 2;
-    x->x_start = f1 * x->x_npts;
-    x->x_end = f2 * x->x_npts;
+//    x->x_start = f1 * x->x_npts;
+//    x->x_end = f2 * x->x_npts;
+    x->x_stms = f1 * x->x_npts/x->x_sr;
+    x->x_endms = f2 * x->x_npts/x->x_sr;
+    tabplayer_ms2samp(x); // stupid?
 }
 
 static void tabplayer_reset(t_play *x){
     x->x_start = 0;
-    x->x_end = x->x_npts;
+    x->x_end = x->x_rangesamp = x->x_npts;
 }
 
 static void tabplayer_speed(t_play *x, t_floatarg f){
@@ -131,6 +135,12 @@ static void tabplayer_start(t_play *x, t_floatarg f){
 static void tabplayer_end(t_play *x, t_floatarg f){
     x->x_endms = f < 0 ? 0 : f;
     tabplayer_ms2samp(x);
+}
+
+static void tabplayer_pos(t_play *x, t_floatarg f){
+    double pos = f < 0 ? 0 : f > 1 ? 1 : (double)f;
+    x->x_phase = pos * x->x_rangesamp + x->x_start;
+    x->x_pos = !x->x_playing;
 }
 
 static void tabplayer_bang(t_play *x){
@@ -269,7 +279,10 @@ static t_int *tabplayer_perform(t_int *w){
                 unsigned long long rangesamp = x->x_rangesamp;
                 int ramping = 0; //if we're ramping
                 if(x->x_playnew){ // if starting to play this block
-                    x->x_phase = isneg ? (double)end : (double)start;
+                    if(!x->x_pos)
+                        x->x_phase = isneg ? (double)end : (double)start;
+                    else
+                        x->x_pos = 0;
                     if(loop) // 1st ramp can't have the end of the loop fading out
                         x->x_rfirst = 1;
                     x->x_playnew = 0;
@@ -385,51 +398,6 @@ static t_int *tabplayer_perform(t_int *w){
     return(w+3);
 }
 
-/*
-static t_int *tabplayer_perform(t_int *w){
-    t_play *x = (t_play *)(w[1]);
-    t_buffer *buffer = x->x_buffer;
-    int n = (int)(w[2]);
-    int ch = x->x_numchans, chidx, i;
-    if(buffer->c_playable){
-        if(x->x_playing){
-            int start = x->x_start;
-            int end = x->x_end;
-            int isneg = x->x_rate < 0;
-            if(x->x_playnew){ // if starting to play on this block
-                x->x_phase = isneg ? (double)end : (double)start;
-                x->x_playnew = 0;
-            };
-            for(i = 0; i < n; i++){
-                for(chidx = 0; chidx < ch; chidx++){
-                    t_float *out = *(x->x_ovecs+chidx);
-                    out[i] = tabplayer_interp(x, chidx, (double)x->x_phase);
-                };
-                x->x_phase += x->x_rate;
-                if(x->x_phase < x->x_start || x->x_phase > x->x_end){
-                    if(x->x_loop)
-                        x->x_phase = isneg ? (double)end : (double)start;
-                    else
-                        x->x_playing = 0;
-                }
-            };
-        }
-        else //not playing, just output zeros
-            goto nullstate;
-    }
-    else{
-        nullstate:
-        for(i = 0; i < n; i++){
-            for(chidx = 0; chidx < ch; chidx++){
-                t_float *out = *(x->x_ovecs+chidx);
-                out[i] = 0;
-            };
-        }
-    };
-    return(w+3);
-}
-*/
-
 static void tabplayer_dsp(t_play *x, t_signal **sp){
     buffer_checkdsp(x->x_buffer);
     unsigned long long npts = x->x_buffer->c_npts;
@@ -542,6 +510,7 @@ void tabplayer_tilde_setup(void){
     class_addmethod(tabplayer_class, (t_method)tabplayer_speed, gensym("speed"), A_FLOAT, 0);
     class_addmethod(tabplayer_class, (t_method)tabplayer_loop, gensym("loop"), A_FLOAT, 0);
     class_addmethod(tabplayer_class, (t_method)tabplayer_fade, gensym("fade"), A_FLOAT, 0);
+    class_addmethod(tabplayer_class, (t_method)tabplayer_pos, gensym("pos"), A_FLOAT, 0);
 /*    class_addmethod(tabplayer_class, (t_method)tabplayer_mode, gensym("mode"), A_FLOAT, 0);
     class_addmethod(tabplayer_class, (t_method)tabplayer_arraysr, gensym("arraysr"), A_FLOAT, 0); */
 }
