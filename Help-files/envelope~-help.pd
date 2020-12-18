@@ -1,15 +1,15 @@
-#N canvas 484 48 561 483 10;
-#X obj 4 337 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 669 148 560 525 10;
+#X obj 4 367 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 372 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 413 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 407 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 448 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 106 381 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 106 422 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 107 346 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 107 376 cnv 17 3 32 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 457 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 498 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -37,40 +37,27 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 178 177 else/graph~ 441 9;
-#X text 141 347 float/signal;
-#X text 221 347 - phase input;
-#X text 176 381 signal;
-#X text 221 381 - envelope waveform;
-#X text 161 416 1) symbol - (optional) waveform: sin (default) \, hann
-or tri;
+#X obj 178 207 else/graph~ 441 9;
+#X text 141 377 float/signal;
+#X text 221 377 - phase input;
+#X text 176 422 signal;
+#X text 221 422 - envelope waveform;
 #X text 62 89 [envelope~] provides 3 different waveforms to be used
 as envelopes.;
-#X text 167 436 2) float - phase offset (default 0);
+#X text 167 477 2) float - phase offset (default 0);
 #X obj 178 121 phasor~ 250;
-#N canvas 598 262 741 350 waveforms 0;
-#X obj 44 158 else/graph~ 441 9;
-#X obj 44 103 phasor~ 250;
-#X obj 264 156 else/graph~ 441 9;
-#X obj 264 101 phasor~ 250;
-#X obj 480 155 else/graph~ 441 9;
-#X obj 480 100 phasor~ 250;
-#X text 48 74 sine (default);
-#X text 262 72 triangular;
-#X text 489 74 hann;
-#X text 61 33 Waveforms;
-#X obj 44 130 else/envelope~ sin;
-#X obj 264 129 else/envelope~ tri;
-#X obj 480 128 else/envelope~ hann;
-#X obj 625 28 else/setdsp~;
-#X connect 1 0 10 0;
-#X connect 3 0 11 0;
-#X connect 5 0 12 0;
-#X connect 10 0 0 0;
-#X connect 11 0 2 0;
-#X connect 12 0 4 0;
-#X restore 468 297 pd waveforms;
-#X obj 178 149 else/envelope~ hann;
 #X obj 485 98 else/setdsp~;
-#X connect 26 0 28 0;
-#X connect 28 0 18 0;
+#X text 165 392 anything;
+#X text 161 457 1) symbol - (optional) envelope: sin (default) \, hann
+or tri;
+#X text 221 392 - set envelope type: <sin> \, <hann> or <tri>;
+#X msg 198 149 sin;
+#X obj 178 179 else/envelope~ hann;
+#X msg 228 149 hann;
+#X msg 268 149 tri;
+#X text 299 148 <= change envelope type;
+#X connect 25 0 31 0;
+#X connect 30 0 31 0;
+#X connect 31 0 18 0;
+#X connect 32 0 31 0;
+#X connect 33 0 31 0;
