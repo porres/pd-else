@@ -1,4 +1,4 @@
-#N canvas 811 68 565 689 10;
+#N canvas 718 55 565 689 10;
 #X obj 8 661 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 9 299 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -283,7 +283,7 @@ f 61;
 #X text 131 388 pos <f>;
 #X text 181 388 - sets position proportionally within range (from 0
 to 1), f 61;
-#N canvas 901 156 535 507 pos 0;
+#N canvas 895 215 535 507 pos 0;
 #X obj 339 393 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 192 354 else/tabplayer~ \$0-violin;
@@ -304,14 +304,15 @@ to 1), f 61;
 #X msg 295 299 range 0.25 0.5;
 #X msg 120 178 pos \$1;
 #X obj 123 136 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 6900 1;
+-1 -1 4700 1;
 #X floatatom 120 156 0 0 0 0 - - -;
-#X text 91 40 The pos message \, from 0 to 1 \, represents a point
-within the set range to start playing from. But if you retrigger the
+#X text 91 33 The pos message \, from 0 to 1 \, sets a point within
+the set range and starts playing from it. But if you retrigger the
 object to play again with a bang \, it doesn't restart from that point
-anymore \, but the previously set point. When already playing \, if
-you send a 'pos' message \, it jumps to that point and keeps playing
-from it.;
+anymore \, but the previously set point (which is the start point if
+speed is positive or end if the speed is negative). When already playing
+\, if you send a 'pos' message \, it jumps to that point and keeps
+playing from it.;
 #X connect 1 0 2 0;
 #X connect 1 1 0 0;
 #X connect 3 0 1 0;

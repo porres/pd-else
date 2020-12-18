@@ -138,12 +138,14 @@ static void tabplayer_end(t_play *x, t_floatarg f){
 }
 
 static void tabplayer_pos(t_play *x, t_floatarg f){
+    x->x_pos = 1;
     double pos = f < 0 ? 0 : f > 1 ? 1 : (double)f;
     x->x_phase = pos * x->x_rangesamp + x->x_start;
-    x->x_pos = 1;
+    x->x_playing = x->x_playnew = 1; // start playing
 }
 
 static void tabplayer_bang(t_play *x){
+    x->x_pos = 0;
     x->x_playing = x->x_playnew = 1; // start playing
 }
 
@@ -196,7 +198,7 @@ static void tabplayer_stop(t_play *x){
 }
 
 static void tabplayer_float(t_play *x, t_floatarg f){
-    f > 0 ? x->x_playing = x->x_playnew = 1 : tabplayer_stop(x);
+    f > 0 ? tabplayer_bang(x) : tabplayer_stop(x);
 }
 
 static void tabplayer_pause(t_play *x){
