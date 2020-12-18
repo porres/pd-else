@@ -1,10 +1,9 @@
 #N canvas 671 335 462 211 10;
 #X declare -path else;
 #X obj 111 161 outlet~;
-#X text 197 112 Part of ELSE \; https://github.com/porres/pd-else;
-#X text 199 93 Alexandre Torres Porres (2018);
-#X obj 224 57 declare -path else;
-#X obj 111 109 table~;
+#X text 217 112 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 219 93 Alexandre Torres Porres (2018);
+#X obj 244 57 declare -path else;
 #N canvas 706 295 214 199 phase 0;
 #X obj 110 36 inlet~;
 #N canvas 597 147 286 313 phased 0;
@@ -53,7 +52,7 @@
 #X obj 108 195 route sin hann tri, f 19;
 #X msg 122 152 \$1;
 #X obj 122 128 routetype symbol float list, f 30;
-#N canvas 0 23 450 300 tables 0;
+#N canvas 1144 346 450 300 tables 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-hann 4099 float 1;
 #A 0 5.96046e-07 0 5.96046e-07 2.35438e-06 5.30481e-06 9.41753e-06
@@ -1644,13 +1643,11 @@
 #X coords 0 1 4098 0 100 50 1 0 0;
 #X restore 51 103 graph;
 #X restore 301 281 pd tables;
-#X obj 208 329 display;
 #X obj 122 81 loadbanger -init 2, f 37;
 #X msg 341 139 0;
 #X connect 0 0 12 0;
 #X connect 2 0 1 0;
 #X connect 3 0 4 0;
-#X connect 3 0 14 0;
 #X connect 4 0 7 0;
 #X connect 5 0 4 0;
 #X connect 6 0 4 0;
@@ -1664,12 +1661,13 @@
 #X connect 12 0 11 0;
 #X connect 12 1 2 0;
 #X connect 12 2 9 0;
-#X connect 15 0 0 0;
-#X connect 15 1 16 0;
-#X connect 16 0 2 0;
+#X connect 14 0 0 0;
+#X connect 14 1 15 0;
+#X connect 15 0 2 0;
 #X restore 111 71 pd set;
-#X connect 4 0 0 0;
+#X obj 111 109 table~ \$0-sin;
+#X connect 4 0 7 0;
 #X connect 5 0 4 0;
-#X connect 6 0 5 0;
-#X connect 6 1 7 0;
-#X connect 7 0 4 0;
+#X connect 5 1 6 0;
+#X connect 6 0 7 0;
+#X connect 7 0 0 0;
