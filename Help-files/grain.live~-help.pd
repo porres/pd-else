@@ -1,4 +1,4 @@
-#N canvas 721 54 561 625 10;
+#N canvas 634 61 564 657 10;
 #X obj 300 114 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 300 137 metro 500;
@@ -24,34 +24,34 @@
 #X restore 305 3 graph;
 #X obj 69 40 cnv 4 4 4 empty empty granulator 0 28 2 18 -233017 -1
 0;
-#X obj 4 599 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 629 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 6 278 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 467 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 497 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 518 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 548 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 84 474 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 89 504 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 85 286 cnv 17 3 28 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 90 286 cnv 17 3 28 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 6 547 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 125 525 1) float;
-#X obj 84 495 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 6 577 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 125 555 1) float;
+#X obj 89 525 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 104 445 scale <list> - scale to autotune to in cents (default
-equal temperament), f 73;
-#X text 104 431 autotune <f> - non-zero autotunes to a given scale
-(default 0), f 73;
-#X text 185 475 signal - left channel output;
-#X text 185 495 signal - right channel output;
-#X text 189 524 - number of grains in cloud (default 16), f 46;
+#X text 103 475 scale <list> - scale to autotune to in cents (default
+equal temperament), f 74;
+#X text 103 461 autotune <f> - non-zero autotunes to a given scale
+(default 0), f 74;
+#X text 185 505 signal - left channel output;
+#X text 185 525 signal - right channel output;
+#X text 189 554 - number of grains in cloud (default 16), f 46;
 #X obj 22 40 cnv 4 4 4 empty empty Live 0 28 2 18 -233017 -1 0;
 #X obj 388 166 nbx 3 14 1 32 0 0 empty empty empty 0 -8 0 12 -228856
 -1 -1 1 256;
 #X obj 199 130 play.file~ bubul.wav 1 1, f 13;
-#N canvas 1093 157 453 512 example 0;
+#N canvas 960 211 725 513 example 0;
 #N canvas 992 351 389 390 tuning 0;
 #X obj 64 339 outlet;
 #X obj 94 236 else/eqdiv;
@@ -79,7 +79,7 @@ equal temperament), f 73;
 #X connect 8 0 1 0;
 #X connect 9 0 0 0;
 #X restore 178 243 pd tuning;
-#X obj 71 288 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 71 288 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 71 337 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -87,9 +87,7 @@ equal temperament), f 73;
 #X floatatom 98 291 5 0 0 0 - - -;
 #X text 260 206 Here's some presets for you to have fun with, f 23
 ;
-#N canvas 934 255 684 398 presets 0;
-#X obj 89 340 outlet;
-#X obj 60 126 loadbang;
+#N canvas 886 447 701 437 presets 0;
 #X text 144 32 Here we have different messages with all the setable
 parameters. The pan range is from -1 (left) to 1 (right) and the position
 in the delay line is set proprtionally (0 is the beggining of the delay
@@ -97,31 +95,37 @@ line and 1 is the end of the delay line). Note that the length end
 of the delay line can only be set at creation time with the '-length
 <float>' flag. By default \, the length is 5000 ms as in this example.
 Therefore "0" means no delay and "1" means 5000 ms delay., f 70;
-#X msg 60 150 256 \, dur 2000 \, transp -2000 2000 \, pan -1 1 \, amp
-0.05 1 \, size 30 60 \, pos 0 1, f 75;
-#X msg 76 173 128 \, dur 1000 \, transp -500 500 \, pan -0.8 0.8 \,
-amp 0.1 1 \, size 40 60 \, pos 0 1, f 76;
-#X msg 89 196 32 \, dur 1000 \, transp 0 1200 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 50 600 \, pos 0 0.25, f 77;
-#X msg 102 220 10 \, dur 500 \, transp 600 900 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 20 50 \, pos 0.25 0.5, f 78;
-#X msg 113 243 10 \, dur 1000 \, transp -200 -400 \, pan -0.8 0.8 \,
-amp 0.1 1 \, size 250 800 \, pos 0.75 1, f 81;
-#X msg 121 267 3 \, dur 1000 \, transp -400 400 \, pan -0.8 0.8 \,
-amp 0.1 1 \, size 1000 8000 \, pos 0 1, f 78;
-#X msg 127 291 3 \, dur 1000 \, transp -1200 1200 \, pan -0.8 0.8 \,
-amp 0.1 1 \, size 2000 4000 \, pos 0 1, f 80;
-#X connect 1 0 3 0;
-#X connect 3 0 0 0;
-#X connect 4 0 0 0;
-#X connect 5 0 0 0;
-#X connect 6 0 0 0;
-#X connect 7 0 0 0;
-#X connect 8 0 0 0;
-#X connect 9 0 0 0;
+#X text 144 116 The 'rev' message sets the probability in percentage
+that the grain will be played backwards \, so \, for 0 \, we have all
+grains played forward. For 50 \, we have a 50/50 chance \, and for
+100 \, all grains are reversed., f 70;
+#X obj 80 382 outlet;
+#X obj 63 173 loadbang;
+#X msg 63 197 256 \, dur 2000 \, transp -1200 1200 \, pan -1 1 \, amp
+0.05 1 \, size 30 60 \, pos 0 1 \, rev 50, f 83;
+#X msg 80 222 128 \, dur 1000 \, transp -600 600 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 40 60 \, pos 0 1 \, rev 100, f 85;
+#X msg 106 271 10 \, dur 500 \, transp 0 1200 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 20 50 \, pos 0.5 1 \, rev 50, f 84;
+#X msg 130 344 3 \, dur 1000 \, transp -1200 0 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 2000 4000 \, pos 0 1 \, rev 100, f 86;
+#X msg 124 319 3 \, dur 1000 \, transp 0 1200 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 1000 3000 \, pos 0 1 \, rev 50, f 84;
+#X msg 95 247 10 \, dur 1000 \, transp -2400 -1200 \, pan -0.8 0.8
+\, amp 0.1 1 \, size 150 250 \, pos 0.25 0.5 \, rev 50, f 94;
+#X msg 115 295 10 \, dur 1000 \, transp -2400 -1200 \, pan -0.8 0.8
+\, amp 0.1 1 \, size 150 400 \, pos 0.5 1 \, rev 0, f 89;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 6 0 2 0;
+#X connect 7 0 2 0;
+#X connect 8 0 2 0;
+#X connect 9 0 2 0;
+#X connect 10 0 2 0;
 #X restore 164 211 pd presets;
 #X obj 49 177 play.file~ bubul.wav 1 1;
-#X obj 68 423 else/out~;
+#X obj 68 433 else/out~;
 #X obj 98 269 route dur;
 #X text 48 22 Try some of the presets and also try dfferent parameters
 from the settings here \, where we can change to synchronous mode and
@@ -134,27 +138,48 @@ to sync mode at creation with the -sync flag., f 58;
 #X text 230 211 <==;
 #X text 242 242 <= about tuning;
 #X msg 192 301 sync \$1;
-#X obj 192 274 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 192 274 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 216 274 synchronous mode;
 #X obj 210 337 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 16 256;
+-228856 -1 -1 0 256;
 #X text 252 333 density (number of grains), f 15;
-#X obj 49 386 else/grain.live~ -sync;
-#X connect 0 0 19 1;
+#X obj 466 215 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 0.05 1 0.95 0;
+#X obj 466 435 s \$0-set-env;
+#X obj 466 331 else/display;
+#X obj 466 403 else/insert env;
+#X msg 486 375 sin;
+#X obj 466 180 else/initmess 0 0.05 1 0.95 0;
+#X text 429 41 By default \, the envelope is a sine shape \, like the
+default in the [envelope~] object. You can set other envelope function
+types by sending a list of values in the same syntax as taken by [function~]
+(which is used internally. this syntax is also given by the [function]
+object., f 46;
+#X text 429 114 To chage back to the default \, send a "env sin" message
+to the object., f 46;
+#X obj 221 394 r \$0-set-env;
+#X obj 49 396 else/grain.live~ -sync;
+#X connect 0 0 28 1;
 #X connect 1 0 3 0;
-#X connect 2 0 19 0;
+#X connect 2 0 28 0;
 #X connect 3 0 2 0;
 #X connect 4 0 3 1;
 #X connect 6 0 9 0;
-#X connect 6 0 19 1;
-#X connect 7 0 19 0;
+#X connect 6 0 28 1;
+#X connect 7 0 28 0;
 #X connect 9 0 4 0;
-#X connect 14 0 19 1;
+#X connect 14 0 28 1;
 #X connect 15 0 14 0;
-#X connect 17 0 19 1;
-#X connect 19 0 8 0;
-#X connect 19 1 8 1;
+#X connect 17 0 28 1;
+#X connect 19 0 21 0;
+#X connect 21 0 22 0;
+#X connect 22 0 20 0;
+#X connect 23 0 22 0;
+#X connect 24 0 19 0;
+#X connect 27 0 28 1;
+#X connect 28 0 8 0;
+#X connect 28 1 8 1;
 #X restore 464 249 pd example;
 #X obj 3 3 cnv 15 301 42 empty empty grain.live~ 20 20 2 37 -233017
 -1 0;
@@ -163,33 +188,38 @@ to sync mode at creation with the -sync flag., f 58;
 #X restore 2 3 graph;
 #X text 79 87 [grain.live~] is a live input granulator that generates
 clouds of grains.;
-#X obj 85 318 cnv 17 3 142 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 90 318 cnv 17 3 173 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 140 284 signal - signal input to be granulated, f 67;
-#X text 98 374 transp <f \, f> - sets min/max transpositin in cents
-(default -1200 to 1200), f 74;
-#X text 110 360 size <f \, f> - sets min/max grain sizes in ms (default
-50 to 450), f 72;
+#X text 139 284 signal - signal input to be granulated, f 68;
+#X text 97 374 transp <f \, f> - sets min/max transpositin in cents
+(default -1200 to 1200), f 75;
+#X text 109 360 size <f \, f> - sets min/max grain sizes in ms (default
+50 to 450), f 73;
 #X obj 199 187 else/grain.live~ 32 -length 1000;
 #X obj 23 215 else/grain.sampler~;
 #X obj 23 240 else/grain.synth~;
 #X text 24 190 see also:;
-#X text 116 417 amp <f \, f> - sets min/max amplitude values (default
-0.1 to 1), f 71;
-#X text 116 388 pan <f \, f> - sets left/right pan boundaries (default
--1 to 1), f 71;
-#X text 116 402 pos <f \, f> - sets min/max position in delay line
-(default 0 to 1), f 71;
-#X text 146 318 float - sets number of grains in the cloud event (min
-1 \, max 256), f 66;
-#X text 152 298 bang - plays an event of cloud grains, f 65;
-#X text 134 332 dur <f> - sets cloud event duration in ms (default
-500), f 68;
-#X text 117 555 -dur <f> | -size <f \, f> | -picth <f \, f> | -pan
-<f \, f> | -amps <f \, f> | -autotune <f> | -scale <list> | -base <f>
-| -length <f>: delay length in ms (defaul 5000) | -sync;
-#X text 128 346 sync <f> - non zero sets to synchronous mode (default
-0), f 69;
+#X text 115 417 amp <f \, f> - sets min/max amplitude values (default
+0.1 to 1), f 72;
+#X text 115 388 pan <f \, f> - sets left/right pan boundaries (default
+-1 to 1), f 72;
+#X text 115 402 pos <f \, f> - sets min/max position in delay line
+(default 0 to 1), f 72;
+#X text 145 318 float - sets number of grains in the cloud event (min
+1 \, max 256), f 67;
+#X text 151 298 bang - plays an event of cloud grains, f 66;
+#X text 133 332 dur <f> - sets cloud event duration in ms (default
+500), f 69;
+#X text 127 346 sync <f> - non zero sets to synchronous mode (default
+0), f 70;
+#X text 109 433 rev <float> - sets probability in % of grain being
+reversed (default 0), f 73;
+#X text 121 447 env <any> - envelope \, "sin" (default) or list that
+defines the function, f 71;
+#X text 74 583 -dur <f> | -size <f \, f> | -picth <f \, f> | -pan <f
+\, f> | -amps <f \, f> | -autotune <f> | -scale <list> | -base <f>
+| -rev <float> | -env <any> | -length <f>: delay length in ms (defaul
+5000) | -sync, f 73;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 2 0 38 0;
