@@ -1,15 +1,15 @@
-#N canvas 655 79 562 397 10;
-#X obj 4 271 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 655 79 558 426 10;
+#X obj 4 262 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 305 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 320 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 340 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 355 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 108 314 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 108 329 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 109 280 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 109 269 cnv 17 3 44 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 373 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 400 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -37,13 +37,12 @@
 #X restore 3 3 graph;
 #X obj 135 40 cnv 4 4 4 empty empty symbols 0 28 2 18 -233017 -1 0
 ;
-#X msg 220 154 symbol \\\$0-x;
-#X symbolatom 220 179 10 0 0 0 - - -;
+#X msg 271 154 symbol \\\$0-x;
+#X symbolatom 271 179 10 0 0 0 - - -;
 #X obj 220 231 else/display;
-#X text 141 280 symbol;
-#X text 141 314 symbol;
-#X text 183 314 - the expanded symbol;
-#X text 169 349 1) float - depth (default 0);
+#X text 141 271 symbol;
+#X text 141 329 symbol;
+#X text 183 329 - the expanded symbol;
 #N canvas 947 69 396 460 depth 0;
 #X obj 112 294 else/display;
 #X text 57 42 The depth level is convenient for abstractions \, so
@@ -64,14 +63,25 @@ has no arguments., f 48;
 #X connect 5 0 2 0;
 #X connect 6 0 0 0;
 #X connect 6 1 3 0;
-#X restore 484 236 pd depth;
-#X obj 220 203 else/dollsym;
-#X text 183 280 - a symbol to be expanded if it contains dollar args
+#X restore 484 234 pd depth;
+#X text 183 271 - a symbol to be expanded if it contains dollar args
 ;
 #X text 65 88 [dollsym] gets and expands the value of dollar symbols
 ("\$0-x" \, "\$1-y" \, and so on). It can also get and expand according
 to the the values of a parent patch with the 'depth' argument. Symbols
 without dollar arguments are passed through unchanged., f 63;
+#X msg 220 171 \\\$0-y;
+#X text 129 286 anything;
+#X text 183 286 - a one element symbol is also expanded;
+#X obj 190 171 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 220 203 else/dollsym \$0-z;
+#X text 159 364 1) float - (optional) depth (default 0);
+#X text 153 380 2) symbol - symbol to be expanded, f 40;
+#X text 153 300 bang;
+#X text 183 300 - output expanded dollar symbol;
 #X connect 19 0 20 0;
-#X connect 20 0 27 0;
-#X connect 27 0 21 0;
+#X connect 20 0 32 0;
+#X connect 28 0 32 0;
+#X connect 31 0 32 0;
+#X connect 32 0 21 0;
