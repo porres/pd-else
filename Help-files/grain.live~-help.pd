@@ -79,7 +79,7 @@ equal temperament), f 74;
 #X connect 8 0 1 0;
 #X connect 9 0 0 0;
 #X restore 178 243 pd tuning;
-#X obj 71 288 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 71 288 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 71 337 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -142,10 +142,10 @@ to sync mode at creation with the -sync flag., f 58;
 1;
 #X text 216 274 synchronous mode;
 #X obj 210 337 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 72 256;
 #X text 252 333 density (number of grains), f 15;
 #X obj 466 215 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 0.05 1 0.95 0;
+50 50 0 0 0 0 0 0.865 1 0.135 0;
 #X obj 466 435 s \$0-set-env;
 #X obj 466 331 else/display;
 #X obj 466 403 else/insert env;
