@@ -446,6 +446,7 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
                 goto errstate;
         }
     };
+    x->x_sr_ratio = x->x_array_sr_khz/x->x_sr_khz;
     x->x_isneg = x->x_rate < 0;
     // one auxiliary signal:  position input
     int chn_n = (int)channels > 64 ? 64 : (int)channels;
