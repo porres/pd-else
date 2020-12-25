@@ -109,10 +109,9 @@ static void tabplayer_speed(t_play *x, t_floatarg f){
 }
 
 /*static void tabplayer_arraysr(t_play *x, t_floatarg f){
-    //sample rate of array in samp/sec
-    if(f <= 1)
-        f = 1;
     x->x_array_sr_khz = f * 0.001;
+    if(x->x_array_sr_khz < 8)
+        x->x_array_sr_khz = 8;
     x->x_sr_ratio = x->x_array_sr_khz/x->x_sr_khz;
     tabplayer_ms2samp(x);
 }*/
@@ -122,7 +121,6 @@ static void tabplayer_set(t_play *x, t_symbol *s){
     x->x_npts = x->x_buffer->c_npts;
     x->x_start = 0;
     x->x_end = x->x_rangesamp = x->x_npts;
-    x->x_sr_ratio = x->x_array_sr_khz/x->x_sr_khz;
 }
 
 static void tabplayer_pos(t_play *x, t_floatarg f){
@@ -361,7 +359,7 @@ static void tabplayer_dsp(t_play *x, t_signal **sp){
     buffer_checkdsp(x->x_buffer);
     unsigned long long npts = x->x_buffer->c_npts;
     x->x_hasfeeders = magic_inlet_connection((t_object *)x, x->x_glist, 0, &s_signal);
-    t_float pdksr= sp[0]->s_sr * 0.001;
+    t_float pdksr = sp[0]->s_sr * 0.001;
     x->x_sr_khz = pdksr;
     x->x_sr_ratio = (double)(x->x_array_sr_khz/x->x_sr_khz);
     if(npts != x->x_npts){
@@ -388,17 +386,34 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
     t_float channels = 1;
     t_float fade = 0;
     x->x_xfade = 0;
-    int loop = 0;
+    x->x_sr_khz = (float)sys_getsr() * 0.001;
+    x->x_array_sr_khz = x->x_sr_khz; // pd's sample rate for now
+    x->x_loop = 0;
+    x->x_rate = 1;
     int nameset = 0;
     while(ac){
         if(av->a_type == A_SYMBOL){ // if name not passed so far, count arg as array name
             s = atom_getsymbolarg(0, ac, av);
             if(s == gensym("-loop")){
-                loop = 1;
+                x->x_loop = 1;
+                ac--, av++;
+            }
+            else if(s == gensym("-xfade")){
+                x->x_xfade = 1;
                 ac--, av++;
             }
             else if(s == gensym("-fade") && ac >= 2){
                 fade = atom_getfloatarg(1, ac, av);
+                ac-=2, av+=2;
+            }
+/*            else if(s == gensym("-sr") && ac >= 2){
+                x->x_array_sr_khz = atom_getfloatarg(1, ac, av) * 0.001;
+                if(x->x_array_sr_khz < 8)
+                    x->x_array_sr_khz = 8;
+                ac-=2, av+=2;
+            }*/
+            else if(s == gensym("-speed") && ac >= 2){
+                x->x_rate = atom_getfloatarg(1, ac, av) * 0.01;
                 ac-=2, av+=2;
             }
             else if(!nameset){
@@ -418,12 +433,11 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
                 goto errstate;
         }
     };
+    x->x_isneg = x->x_rate < 0;
     // one auxiliary signal:  position input
     int chn_n = (int)channels > 64 ? 64 : (int)channels;
     x->x_glist = canvas_getcurrent();
     x->x_hasfeeders = 0;
-    x->x_sr_khz = (float)sys_getsr() * 0.001;
-    x->x_array_sr_khz = x->x_sr_khz; // set sample rate of array as pd's sample rate for now
     x->x_buffer = buffer_init((t_class *)x, arrname, chn_n, 0);
     if(x->x_buffer){
         int ch = x->x_buffer->c_numchans;
@@ -435,10 +449,7 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
         x->x_donelet = outlet_new(&x->x_obj, &s_bang);
         x->x_playing = 0;
         x->x_playnew = 0;
-        x->x_isneg = 0;
-        x->x_rate = 1;
         tabplayer_reset(x);
-        x->x_loop = loop;
         tabplayer_fade(x, fade);
     }
     return(x);
@@ -468,5 +479,5 @@ void tabplayer_tilde_setup(void){
     class_addmethod(tabplayer_class, (t_method)tabplayer_loop, gensym("loop"), A_FLOAT, 0);
     class_addmethod(tabplayer_class, (t_method)tabplayer_fade, gensym("fade"), A_FLOAT, 0);
     class_addmethod(tabplayer_class, (t_method)tabplayer_xfade, gensym("xfade"), A_FLOAT, 0);
-//    class_addmethod(tabplayer_class, (t_method)tabplayer_arraysr, gensym("arraysr"), A_FLOAT, 0);
+//    class_addmethod(tabplayer_class, (t_method)tabplayer_arraysr, gensym("sr"), A_FLOAT, 0);
 }

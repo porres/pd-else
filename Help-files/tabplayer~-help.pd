@@ -1,4 +1,4 @@
-#N canvas 676 58 563 701 10;
+#N canvas 713 87 563 701 10;
 #X obj 8 674 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 9 287 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -60,8 +60,6 @@ a zero signal.;
 #X text 181 468 - stops playing and outputs 0 (cannot be resumed),
 f 61;
 #X text 181 496 - resumes playing after being paused, f 61;
-#X text 181 510 - non zero enables looping \, <0> disbales it, f 61
-;
 #X obj 367 220 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #N canvas 921 149 375 404 signal 0;
@@ -169,7 +167,6 @@ set it to loop with the -loop flag., f 37;
 #X restore 503 204 pd loop;
 #X obj 35 153 else/sample~ \$0-violin violin.wav, f 12;
 #X msg 281 148 play;
-#X text 224 642 -loop: sets to loop mode, f 38;
 #X text 89 432 play <f \, f \, f>;
 #X text 193 432 start playing \, if no float is given \, array is played
 from start to end. 1st float sets start \, 2nd sets end (in ms) and
@@ -179,7 +176,6 @@ from start to end. 1st float sets start \, 2nd sets end (in ms) and
 #X text 107 362 end <float>;
 #X text 101 376 range <f \, f>;
 #X text 95 418 speed <float>;
-#X text 181 418 - sets playing speed in percentage, f 61;
 #X obj 257 147 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 149 320 bang;
@@ -329,50 +325,56 @@ playing from it.;
 #X connect 18 0 16 0;
 #X restore 509 184 pd pos;
 #X text 101 524 fade <float>;
-#X text 181 524 - sets fade time in ms, f 61;
-#X text 176 656 -fade <float>: set fade time in ms (default 0);
 #X text 95 538 xfade <float>;
-#X text 181 538 - sets to crossfade mode (if looping), f 61;
 #N canvas 979 219 394 398 fade/xfade 0;
-#X obj 312 305 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 317 316 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 69 307 else/out~;
-#X msg 95 157 range 0.25 0.5;
-#X obj 69 128 loadbang;
-#X obj 69 156 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 74 318 else/out~;
+#X msg 100 168 range 0.25 0.5;
+#X obj 74 139 loadbang;
+#X obj 74 167 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X msg 110 226 fade \$1;
-#X floatatom 110 202 5 0 500 0 - - -;
-#X msg 171 234 xfade \$1;
-#X obj 171 212 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 115 237 fade \$1;
+#X floatatom 115 213 5 0 500 0 - - -;
+#X msg 176 245 xfade \$1;
+#X obj 176 223 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 190 211 crossfade mode;
+#X text 195 222 crossfade mode;
 #X text 34 18 You can set a fade in and fade out time in ms with the
 'fade' message or '-fade' flag. This fades in from the start point
 and fades out to reach the end point., f 54;
-#X text 34 57 When you are looping \, you can set to crossfade mode.
-This way \, when it fades out \, it starts fading before the the loop
-restarts. The crossfade is a sine/cosine equal power function., f
-54;
-#X obj 69 269 else/tabplayer~ \$0-violin -loop -fade 500;
-#X connect 2 0 12 0;
+#X obj 74 280 else/tabplayer~ \$0-violin -loop -fade 500;
+#X text 34 57 When you are looping \, you can set to crossfade mode
+with the 'xfade' message or '-xfade' flag. This way \, when it fades
+out \, it starts fading before the the loop restarts. The crossfade
+is a sine/cosine equal power function., f 54;
+#X connect 2 0 11 0;
 #X connect 3 0 2 0;
 #X connect 3 0 4 0;
-#X connect 4 0 12 0;
-#X connect 5 0 12 0;
+#X connect 4 0 11 0;
+#X connect 5 0 11 0;
 #X connect 6 0 5 0;
-#X connect 7 0 12 0;
+#X connect 7 0 11 0;
 #X connect 8 0 7 0;
-#X connect 12 0 1 0;
-#X connect 12 1 0 0;
+#X connect 11 0 1 0;
+#X connect 11 1 0 0;
 #X restore 467 223 pd fade/xfade;
-#X connect 12 0 52 0;
-#X connect 13 0 52 0;
-#X connect 14 0 52 0;
+#X text 181 524 - sets fade time in ms (default 0), f 61;
+#X text 181 418 - sets playing speed in percentage (default 100),
+f 61;
+#X text 97 643 -fade <float> | -speed <float> | -loop: sets to loop
+mode | -xfade: sets to crossfade mode;
+#X text 181 538 - sets to crossfade mode when looping (default no crossfade)
+, f 61;
+#X text 181 510 - non zero enables looping \, <0> disbales it (default
+0), f 61;
+#X connect 12 0 51 0;
+#X connect 13 0 51 0;
+#X connect 14 0 51 0;
 #X connect 15 0 14 0;
-#X connect 36 0 35 0;
-#X connect 52 0 50 0;
-#X connect 52 1 25 0;
-#X connect 54 0 36 0;
-#X connect 55 0 52 0;
-#X connect 65 0 52 0;
+#X connect 35 0 34 0;
+#X connect 51 0 49 0;
+#X connect 51 1 24 0;
+#X connect 53 0 35 0;
+#X connect 54 0 51 0;
+#X connect 62 0 51 0;
