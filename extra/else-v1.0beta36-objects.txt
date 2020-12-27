@@ -296,6 +296,7 @@ range~	x
 range.hsl	x
 ratio2cents	x
 ratio2cents~	x
+rdelay~	x
 rec.file~	x
 receiver	x
 rescale	x
