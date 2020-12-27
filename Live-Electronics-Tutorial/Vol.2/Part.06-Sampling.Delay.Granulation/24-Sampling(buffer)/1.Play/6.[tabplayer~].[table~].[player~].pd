@@ -1,55 +1,68 @@
-#N canvas 500 42 731 630 12;
+#N canvas 692 56 870 628 12;
 #X declare -path else;
-#X obj 573 210 phasor~;
-#X obj 573 284 out~;
-#X obj 604 178 r \$0-hz;
-#X obj 119 362 s \$0-hz;
-#X obj 573 178 *~;
-#X obj 119 336 /;
-#X obj 119 311 swap;
-#X obj 573 244 table~ \$0-buffer;
-#X obj 573 142 display~ 8;
-#X text 643 144 Ratio;
-#X obj 573 78 rampnoise~ 0.25;
-#X obj 573 109 *~ 3;
-#X obj 492 537 out~;
-#X msg 492 476 speed \$1;
-#X obj 492 454 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 138.018 256;
-#X obj 105 280 unpack;
-#X obj 554 28 declare -path else;
-#X obj 492 423 rescale -300 300;
-#X obj 492 391 rampnoise 0.1;
-#X text 569 450 percentage;
-#X obj 106 395 s \$0-size;
-#X obj 387 272 out~;
-#X obj 387 196 *~;
-#X obj 418 196 r \$0-size;
-#X obj 105 254 sample~ \$0-buffer violin.wav;
-#X obj 387 232 tabplayer~ \$0-buffer;
-#X obj 418 134 r \$0-hz;
-#X obj 387 134 *~;
-#X obj 387 44 rampnoise~ 0.25;
-#X obj 387 75 *~ 3;
-#X obj 387 162 phasor~;
-#X obj 387 103 display~ 8;
-#X text 456 105 Ratio;
-#X text 65 446 But even much more convenient is the [player~] object
-from ELSE. This is an abstraction that relies on [tabplayer~] and already
-loads a file internally. It's like a conjunction of [sample~] and [tabplayer].
-Like [sample~] \, it has multi channel support and can query the number
-of channels from a sound file given as an argument. Check its help
-file for more details and features., f 53;
-#X text 37 32 In this example we start by showing how [tabplayer~]
-also behaves like [tabread4~] if its fed with a signal value. But the
-difference now is that we have a random ramp generator to change the
-frequency ratio., f 44;
-#X text 37 123 Alternatively \, we can also use [table~] from the ELSE
+#X obj 325 474 phasor~;
+#X obj 325 548 out~;
+#X obj 356 442 r \$0-hz;
+#X obj 255 261 s \$0-hz;
+#X obj 325 442 *~;
+#X obj 255 235 /;
+#X obj 255 210 swap;
+#X obj 325 508 table~ \$0-buffer;
+#X obj 325 406 display~ 8;
+#X text 395 408 Ratio;
+#X obj 325 342 rampnoise~ 0.25;
+#X obj 325 373 *~ 3;
+#X obj 602 280 out~;
+#X msg 602 224 speed \$1;
+#X obj 602 202 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 204.119 256;
+#X obj 241 179 unpack;
+#X obj 268 25 declare -path else;
+#X obj 602 175 rescale -300 300;
+#X obj 602 145 rampnoise 0.1;
+#X obj 242 294 s \$0-size;
+#X obj 73 386 out~;
+#X obj 73 317 *~;
+#X obj 104 317 r \$0-size;
+#X obj 73 353 tabplayer~ \$0-buffer;
+#X obj 104 255 r \$0-hz;
+#X obj 73 255 *~;
+#X obj 73 165 rampnoise~ 0.25;
+#X obj 73 196 *~ 3;
+#X obj 73 283 phasor~;
+#X obj 73 224 display~ 8;
+#X text 142 226 Ratio;
+#X text 23 464 Alternatively \, we can also use [table~] from the ELSE
 library \, which is kind of the same as [tabread4~]. At least it has
 the same interpolation type. One advantage that makes it simpler is
 that we don't need to bother multiplying the output of [phasor~] \,
-as the index input can be mapped from 0 to 1!, f 44;
-#X obj 492 507 player~ violin.wav 1 1;
+as the index input can be mapped from 0 to 1!, f 40;
+#X text 471 14 But even much more convenient is the [player~] object
+from ELSE. This is an abstraction that relies on [tabplayer~] and already
+loads a file internally. It's like a conjunction of [sample~] and [tabplayer~].
+Like [sample~] \, it has multi channel support and can query the number
+of channels from a sound file given as an argument. Check its help
+file for more details and features., f 49;
+#X text 29 64 In this example we start by showing how [tabplayer~]
+also behaves like [tabread4~] if it's fed with a signal value. But
+the difference in this example is that we have a random ramp generator
+to change the frequency ratio., f 55;
+#X obj 602 252 player~ sax.wav 1 1;
+#X obj 306 211 s \$0-sr;
+#X obj 646 441 r \$0-sr;
+#X floatatom 646 467 0 0 0 0 - - -;
+#X msg 646 493 sr \$1;
+#X obj 601 524 tabplayer~ \$0-buffer;
+#X text 670 200 <= percentage;
+#X obj 601 554 out~;
+#X obj 601 479 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 241 153 sample~ \$0-buffer sax.wav;
+#X text 482 353 Notice that [player~] automatically corrects the reading
+speed to match the sample rate of the loaded file. Since it's based
+on [tabplayer~] \, it can also do that with the 'sr' message \, see
+it below and check the help file of both objects for more info., f
+48;
 #X connect 0 0 7 0;
 #X connect 2 0 4 1;
 #X connect 4 0 0 0;
@@ -60,21 +73,27 @@ as the index input can be mapped from 0 to 1!, f 44;
 #X connect 8 0 4 0;
 #X connect 10 0 11 0;
 #X connect 11 0 8 0;
-#X connect 13 0 36 0;
+#X connect 13 0 34 0;
 #X connect 14 0 13 0;
 #X connect 15 0 6 0;
-#X connect 15 0 20 0;
+#X connect 15 0 19 0;
 #X connect 15 1 6 1;
+#X connect 15 1 35 0;
 #X connect 17 0 14 0;
 #X connect 18 0 17 0;
-#X connect 22 0 25 0;
-#X connect 23 0 22 1;
-#X connect 24 0 15 0;
-#X connect 25 0 21 0;
-#X connect 26 0 27 1;
-#X connect 27 0 30 0;
-#X connect 28 0 29 0;
-#X connect 29 0 31 0;
-#X connect 30 0 22 0;
-#X connect 31 0 27 0;
-#X connect 36 0 12 0;
+#X connect 21 0 23 0;
+#X connect 22 0 21 1;
+#X connect 23 0 20 0;
+#X connect 24 0 25 1;
+#X connect 25 0 28 0;
+#X connect 26 0 27 0;
+#X connect 27 0 29 0;
+#X connect 28 0 21 0;
+#X connect 29 0 25 0;
+#X connect 34 0 12 0;
+#X connect 36 0 37 0;
+#X connect 37 0 38 0;
+#X connect 38 0 39 0;
+#X connect 39 0 41 0;
+#X connect 42 0 39 0;
+#X connect 43 0 15 0;

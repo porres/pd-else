@@ -84,7 +84,7 @@
 #X array t11 1024 float 0;
 #X coords 0 1 1023 -1 150 100 1;
 #X restore 788 201 graph;
-#N canvas 446 360 708 303 plot 0;
+#N canvas 761 496 708 303 plot 0;
 #X obj 52 33 r \$0-shape;
 #X obj 61 163 trigger bang float;
 #X obj 440 192 pi;
@@ -92,29 +92,29 @@
 #X obj 52 111 delay 5;
 #X obj 354 195 initmess \; amp-set 0 \; hz 200;
 #X obj 52 189 loop 1024;
-#X obj 255 37 loop 1024;
-#X obj 207 121 f \$0;
+#X obj 207 115 f \$0;
 #X msg 207 142 \; shape_\$1 normalize 1;
-#X obj 255 62 expr shape_\$0[$f1] = t0[$f1] * c0 + t1[$f1] * c1 + t2[$f1]
+#X obj 253 70 expr shape_\$0[$f1] = t0[$f1] * c0 + t1[$f1] * c1 + t2[$f1]
 * c2 + t3[$f1] * c3 + t4[$f1] * c4 + t5[$f1] * c5 + t6[$f1] * c6 +
 t7[$f1] * c7 + t8[$f1] * c8 + t9[$f1] * c9 + t10[$f1] * c10 + t11[$f1]
-* c11, f 59;
+* c11;
 #X obj 52 214 expr output_\$0[$f1] = shape_\$0[(sin($f1 * 2*pi / 1023)
 * $f2) * 512 + 512], f 39;
 #X obj 61 140 r \$0-amp;
-#X obj 52 64 t b b f;
-#X connect 0 0 13 0;
+#X obj 52 64 t b b b, f 16;
+#X obj 253 45 loop 1024;
+#X connect 0 0 12 0;
 #X connect 1 0 6 0;
-#X connect 1 1 11 1;
+#X connect 1 1 10 1;
 #X connect 2 0 3 0;
 #X connect 4 0 6 0;
-#X connect 6 0 11 0;
-#X connect 7 0 10 0;
-#X connect 8 0 9 0;
-#X connect 12 0 1 0;
-#X connect 13 0 4 0;
-#X connect 13 1 8 0;
-#X connect 13 2 7 0;
+#X connect 6 0 10 0;
+#X connect 7 0 8 0;
+#X connect 11 0 1 0;
+#X connect 12 0 4 0;
+#X connect 12 1 7 0;
+#X connect 12 2 13 0;
+#X connect 13 0 9 0;
 #X restore 299 433 pd plot;
 #N canvas 45 80 1015 521 (subpatch) 0;
 #X obj 240 303 v c0;
@@ -168,18 +168,18 @@ t7[$f1] * c7 + t8[$f1] * c8 + t9[$f1] * c9 + t10[$f1] * c10 + t11[$f1]
 #X obj 101 101 cnv 15 838 50 empty empty empty 20 12 0 14 -204148 -66577
 0;
 #X obj 121 125 nbx 4 18 -100 100 0 0 T0(x) empty empty 0 -8 0 14 -261561
--1 -1 0 256;
+-1 -1 -0.8 256;
 #X text 142 105 t0;
 #X obj 187 125 nbx 4 18 -100 100 0 0 T1(x) empty empty 0 -8 0 14 -261561
--1 -1 0 256;
+-1 -1 1 256;
 #X obj 255 125 nbx 4 18 -100 100 0 0 T2(x) empty empty 0 -8 0 14 -261561
--1 -1 0 256;
+-1 -1 1 256;
 #X obj 321 125 nbx 4 18 -100 100 0 0 T3(x) empty empty 0 -8 0 14 -261561
--1 -1 0 256;
+-1 -1 1.35 256;
 #X obj 387 125 nbx 4 18 -100 100 0 0 T4(x) empty empty 0 -8 0 14 -261561
--1 -1 0 256;
+-1 -1 1.26 256;
 #X obj 453 125 nbx 4 18 -100 100 0 0 T5(x) empty empty 0 -8 0 14 -261561
--1 -1 0 256;
+-1 -1 0.03 256;
 #X text 208 105 t1;
 #X text 276 105 t2;
 #X text 342 105 t3;
@@ -188,7 +188,7 @@ t7[$f1] * c7 + t8[$f1] * c8 + t9[$f1] * c9 + t10[$f1] * c10 + t11[$f1]
 #X obj 521 125 nbx 4 18 -100 100 0 0 T6(x) empty empty 0 -8 0 14 -261561
 -1 -1 0 256;
 #X obj 587 125 nbx 4 18 -100 100 0 0 T7(x) empty empty 0 -8 0 14 -261561
--1 -1 0 256;
+-1 -1 0.19 256;
 #X obj 655 125 nbx 4 18 -100 100 0 0 T8(x) empty empty 0 -8 0 14 -261561
 -1 -1 0 256;
 #X obj 721 125 nbx 4 18 -100 100 0 0 T9(x) empty empty 0 -8 0 14 -261561
@@ -440,7 +440,7 @@ f 33;
 #X connect 91 0 9 0;
 #X restore 605 413 pd polinomials;
 #X obj 837 416 hsl 100 20 0 1 0 0 \$0-amp empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 9900 1;
 #X text 856 418 Amplitude;
 #X obj 824 588 declare -path else;
 #X text 37 319 Chebyshev polinomials as transfer functions generate

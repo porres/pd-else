@@ -44,7 +44,7 @@ and trigger the envelope. Click on the bangs below., f 55;
 just the first half the sine function (this is also used in [fader~]).
 Open the [pd tables] subpatch so see how to create these functions.
 , f 55;
-#N canvas 372 23 893 355 tables 1;
+#N canvas 372 23 893 355 tables 0;
 #X obj 199 34 inlet;
 #X obj 99 227 osc~;
 #X msg 124 200 0.5;

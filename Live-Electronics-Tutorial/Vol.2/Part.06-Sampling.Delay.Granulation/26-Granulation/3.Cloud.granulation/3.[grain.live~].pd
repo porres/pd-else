@@ -1,24 +1,23 @@
-#N canvas 744 123 547 606 12;
+#N canvas 839 112 567 625 12;
 #X declare -path else;
-#X obj 183 390 out~;
+#X obj 192 421 out~;
 #X obj 340 21 declare -path else;
-#X text 99 495 This example is the basis of the [grain.live~] object
+#X text 99 525 This example is the basis of the [grain.live~] object
 from ELSE \, check its help file., f 31;
-#X obj 328 510 grain.live~;
-#X obj 335 276 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 328 540 grain.live~;
+#X obj 241 281 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 335 305 all bang;
-#X obj 335 246 metro 1000;
-#X obj 335 215 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X msg 241 310 all bang;
+#X obj 241 251 metro 1000;
+#X obj 241 220 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 135 335 clone grain.live 50 \$0-buffer;
 #N canvas 842 62 450 300 delwrite~ 0;
 #X obj 93 59 inlet~;
 #X obj 93 115 delwrite~ \$0-buffer 5000;
 #X obj 93 175 outlet~;
 #X connect 0 0 1 0;
-#X restore 135 301 pd delwrite~;
-#X obj 135 257 play.file~ bubul.wav 1 1;
+#X restore 122 303 pd delwrite~;
+#X obj 122 239 play.file~ bubul.wav 1 1, f 13;
 #X text 41 61 And now we adapt the last example to play grains from
 a delay line (a ring buffer). We now have a transposition parameter
 that affects the pitch \, which is the same principle from the pitch
@@ -27,11 +26,19 @@ to see how it works., f 65;
 #X text 41 143 The delay line is written here on the parent window
 in a subpatch that is connected to the [clone] object. This is done
 in order to enforce the order of execution., f 65;
+#X obj 187 367 clone grain.live 16 \$0-buffer, f 16;
+#X obj 347 295 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X msg 347 327 all \$1;
+#X text 331 273 synchronous;
+#X text 366 294 on/off;
 #X connect 4 0 5 0;
-#X connect 5 0 8 1;
+#X connect 5 0 12 1;
 #X connect 6 0 4 0;
 #X connect 7 0 6 0;
-#X connect 8 0 0 0;
-#X connect 8 1 0 1;
+#X connect 8 0 12 0;
 #X connect 9 0 8 0;
-#X connect 10 0 9 0;
+#X connect 12 0 0 0;
+#X connect 12 1 0 1;
+#X connect 13 0 14 0;
+#X connect 14 0 12 2;

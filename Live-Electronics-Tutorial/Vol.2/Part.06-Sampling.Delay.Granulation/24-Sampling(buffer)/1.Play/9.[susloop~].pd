@@ -1,7 +1,7 @@
-#N canvas 820 23 440 559 12;
+#N canvas 946 133 440 559 12;
 #X declare -path else;
 #X floatatom 100 224 0 0 0 0 - - -;
-#X text 145 223 sample size;
+#X text 153 225 sample size;
 #X obj 119 303 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X msg 151 304 stop;

@@ -1,4 +1,4 @@
-#N canvas 453 114 961 702 12;
+#N canvas 483 82 962 718 12;
 #X declare -path else;
 #X obj 728 345 phasor~;
 #X obj 728 404 tabread4~ \$0-buffer;
@@ -29,15 +29,15 @@
 #X text 515 153 We need to multiply the output of [phasor~] by the
 number of samples in the file so we can access the indexes from the
 array., f 57;
-#X obj 355 537 cnv 15 385 140 empty empty empty 20 12 0 14 -233017
+#X obj 355 551 cnv 15 385 140 empty empty empty 20 12 0 14 -233017
 -66577 0;
-#X text 373 541 Interpolation error:;
+#X text 373 555 Interpolation error:;
 #X obj 552 378 sr~ 44100;
-#X text 374 561 Interpolation can add noise artifacts. To reduce this
+#X text 374 575 Interpolation can add noise artifacts. To reduce this
 error you can work with files with higher sample rates than Pd is running
 \, such as 88.2 KHz sound file when running at 44.1 Khz as in this
 example., f 50;
-#X text 374 636 You can use a good resampling software to upsample
+#X text 374 650 You can use a good resampling software to upsample
 a sound file as was done here for this example., f 50;
 #X obj 171 390 unpack;
 #X floatatom 210 422 5 0 0 0 - - -;
