@@ -18,58 +18,59 @@
 #X obj 339 376 *~ 0;
 #X obj 139 402 delread4~ \$2;
 #X obj 93 34 inlet~;
-#N canvas 796 301 826 507 transp 0;
+#N canvas 864 297 711 572 transp 0;
 #X obj 101 65 inlet;
-#X obj 101 98 cents2ratio;
-#X obj 251 294 *;
-#X obj 251 328 t f b;
-#X obj 269 166 /;
-#X msg 130 218 1 \$1;
-#X msg 269 142 1000 \$1;
-#X obj 130 242 -;
-#X obj 251 410 *~ 0;
-#X obj 276 383 r \$0-ms;
-#X obj 251 449 outlet~;
-#X obj 251 352 phasor~;
-#X msg 297 328 0;
-#X obj 269 65 inlet;
-#X text 277 43 ms;
+#X obj 101 158 cents2ratio;
+#X obj 211 354 *;
+#X obj 211 388 t f b;
+#X obj 229 316 /;
+#X msg 130 275 1 \$1;
+#X msg 229 292 1000 \$1;
+#X obj 130 302 -;
+#X obj 275 459 *~ 0;
+#X obj 275 498 outlet~;
+#X obj 211 412 phasor~;
+#X msg 257 388 0;
+#X obj 300 55 inlet;
+#X text 308 33 ms;
 #X text 100 43 cents;
-#X obj 101 128 t f b;
-#X obj 130 185 * 1;
-#X msg 148 157 -1;
-#X msg 208 156 1;
-#X obj 148 130 chance 50;
-#X text 366 126 The transposition parameter is in cents \, so we need
+#X obj 101 188 t f b;
+#X obj 130 245 * 1;
+#X msg 148 217 -1;
+#X msg 208 216 1;
+#X text 337 197 The transposition parameter is in cents \, so we need
 to convert to ratio. We do the same as before and make it negative
 50% of the time4s so it plays backwards., f 42;
-#X text 366 192 To alter the reading speed according to the transposition
+#X text 337 263 To alter the reading speed according to the transposition
 parameter \, we use the same structure from the pitch shifting example
 implemented with granulation. So we take the grain size in ms and use
 it to calculate the hertz input for [phasor~] \, whose output is rescaled
 to the grain size in ms like in the pitch shiffting example., f 42
 ;
-#X connect 0 0 1 0;
-#X connect 1 0 16 0;
+#X obj 101 120 rand.f -1200 1200;
+#X obj 148 190 chance 50;
+#X connect 0 0 21 0;
+#X connect 1 0 15 0;
 #X connect 2 0 3 0;
-#X connect 3 0 11 0;
-#X connect 3 1 12 0;
+#X connect 3 0 10 0;
+#X connect 3 1 11 0;
 #X connect 4 0 2 1;
 #X connect 5 0 7 0;
 #X connect 6 0 4 0;
 #X connect 7 0 2 0;
-#X connect 8 0 10 0;
-#X connect 9 0 8 1;
-#X connect 11 0 8 0;
-#X connect 12 0 11 1;
-#X connect 13 0 6 0;
-#X connect 16 0 17 0;
-#X connect 16 1 20 0;
-#X connect 17 0 5 0;
-#X connect 18 0 17 1;
-#X connect 19 0 17 1;
-#X connect 20 0 18 0;
-#X connect 20 1 19 0;
+#X connect 8 0 9 0;
+#X connect 10 0 8 0;
+#X connect 11 0 10 1;
+#X connect 12 0 6 0;
+#X connect 12 0 8 1;
+#X connect 15 0 16 0;
+#X connect 15 1 22 0;
+#X connect 16 0 5 0;
+#X connect 17 0 16 1;
+#X connect 18 0 16 1;
+#X connect 21 0 1 0;
+#X connect 22 0 17 0;
+#X connect 22 1 18 0;
 #X restore 104 332 pd transp;
 #N canvas 546 388 755 331 pos 0;
 #X obj 114 167 +~ 0;
@@ -94,7 +95,6 @@ random position is close to the delay limit (5000) and exceeds it.
 #X restore 139 369 pd pos;
 #X text 340 461 This patch is used inside [clone] in one of the examples.
 , f 20;
-#X obj 68 288 rand.f -1200 1200;
 #X text 46 173 The only differences are in [pd transp] and [pd pos]
 subpatches \, check it out., f 27;
 #X text 45 129 Now we have to read the ring buffer from [delread4~].
@@ -134,8 +134,8 @@ subpatches \, check it out., f 27;
 #X connect 16 0 2 1;
 #X connect 16 1 7 0;
 #X restore 280 121 pd mode;
-#X obj 281 163 rand.f 10 50;
 #X obj 326 34 inlet;
+#X obj 281 162 rand.f 20 60;
 #X connect 0 0 15 0;
 #X connect 1 0 0 0;
 #X connect 1 1 2 0;
@@ -146,21 +146,20 @@ subpatches \, check it out., f 27;
 #X connect 7 0 8 0;
 #X connect 7 1 9 0;
 #X connect 10 0 14 0;
-#X connect 10 0 21 0;
 #X connect 10 0 19 1;
+#X connect 10 0 18 0;
 #X connect 10 1 5 1;
 #X connect 10 1 11 0;
 #X connect 10 1 18 1;
 #X connect 10 2 13 0;
 #X connect 11 0 1 0;
-#X connect 12 0 24 0;
+#X connect 12 0 23 0;
 #X connect 13 0 15 1;
 #X connect 14 0 7 1;
 #X connect 15 0 4 1;
 #X connect 16 0 4 0;
 #X connect 18 0 19 0;
 #X connect 19 0 16 0;
-#X connect 21 0 18 0;
-#X connect 24 0 25 0;
+#X connect 23 0 25 0;
+#X connect 24 0 23 1;
 #X connect 25 0 5 0;
-#X connect 26 0 24 1;
