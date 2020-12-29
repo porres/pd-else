@@ -156,10 +156,6 @@ can be changed by arguments.;
 #X text 152 311 float/signal;
 #X text 178 347 signal - the rescaled signal;
 #X text 108 382 1) list -;
-#X text 173 382 up to 3 arguments set: minimum output \, maximum output
-\, exponential factor. 4 arguments set minimum output \, maximum input
-\, minimum output \, maximum output and 5 fifth argument sets the exponential
-factor - default (0 \, 127 \, 0 \, 1 \, 1);
 #N canvas 293 396 948 550 arguments 0;
 #X obj 42 117 hsl 180 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
@@ -679,5 +675,9 @@ it's like the curve shape has been mirrored in reverse.;
 #X connect 21 0 14 0;
 #X connect 24 0 19 0;
 #X restore 399 190 pd negative-exponential;
+#X text 173 382 up to 3 arguments set: minimum output \, maximum output
+\, exponential factor. 4 arguments set minimum input \, maximum input
+\, minimum output \, maximum output and 5 fifth argument sets the exponential
+factor - default (0 \, 127 \, 0 \, 1 \, 1);
 #X connect 21 0 24 0;
 #X connect 25 0 21 0;

@@ -60,10 +60,6 @@
 #X text 130 374 exp <float>;
 #X obj 222 273 else/display;
 #X text 111 486 1) list -;
-#X text 179 486 up to 3 arguments set: minimum output \, maximum output
-\, exponential factor. 4 arguments set minimum output \, maximum input
-\, minimum output \, maximum output and 5 fifth argument sets the exponential
-factor - default (0 \, 127 \, 0 \, 1 \, 1);
 #X obj 222 245 else/rescale -1 1;
 #X text 217 337 - outputs the last rescaled float value;
 #X text 217 355 - sets next float value to be rescaled via bang;
@@ -318,8 +314,12 @@ it's like the curve shape has been mirrored in reverse.;
 #X connect 20 0 19 0;
 #X connect 21 0 18 0;
 #X restore 400 243 pd negative-exponential;
+#X text 179 486 up to 3 arguments set: minimum output \, maximum output
+\, exponential factor. 4 arguments set minimum input \, maximum input
+\, minimum output \, maximum output and 5 fifth argument sets the exponential
+factor - default (0 \, 127 \, 0 \, 1 \, 1);
 #X connect 5 0 11 0;
-#X connect 6 0 35 0;
-#X connect 11 0 35 0;
-#X connect 27 0 35 0;
-#X connect 35 0 32 0;
+#X connect 6 0 34 0;
+#X connect 11 0 34 0;
+#X connect 27 0 34 0;
+#X connect 34 0 32 0;
