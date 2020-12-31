@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (392 objects):
+## Current Object list (393 objects):
 
 **ASSORTED: [04]**
 
@@ -293,12 +293,14 @@ Cross compiling is also possible with something like this
 
 - [loop]
 
-**AUDIO PROCESSING: ASSORTED [21]**
+**AUDIO PROCESSING: ASSORTED [22]**
+
 - [downsample~]
 - [conv~]
 - [chorus~]
 - [fbdelay~]
 - [ffdelay~]
+- [rdelay~]
 - [shaper~]
 - [crusher~]
 - [drive~]
@@ -377,7 +379,7 @@ Cross compiling is also possible with something like this
 
 **SYNTHESIS: GRANULAR SYNTHESIS: [01]**
 
-- [gain.synth~]
+- [grain.synth~]
 
 **SYNTHESIS: PHYSICAL MODELLING: [01]**
 
