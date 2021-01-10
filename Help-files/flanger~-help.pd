@@ -1,4 +1,4 @@
-#N canvas 701 149 562 552 12;
+#N canvas 701 149 559 539 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -17,62 +17,62 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 3 292 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 282 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 385 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 3 375 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 3 421 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 411 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 122 394 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 152 384 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 123 300 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 153 290 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 522 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 510 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 123 321 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 153 311 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 123 341 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 153 331 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 156 394 signal -;
-#X text 144 426 1) float;
+#X text 186 384 signal -;
+#X text 174 416 1) float;
 #X obj 3 3 cnv 15 301 42 empty empty flanger~ 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 194 229 else/out~;
-#X text 144 445 2) float;
-#X obj 263 147 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 194 217 else/out~;
+#X text 174 435 2) float;
+#X obj 253 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 332 148 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 312 153 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 401 148 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 371 153 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 60 87 [flanger~] is a simple flanger FX object.;
-#X text 156 301 signal -;
-#X text 219 301 flanger input;
-#X text 163 322 float -;
-#X text 163 342 float -;
-#X obj 123 361 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X text 186 291 signal -;
+#X text 249 291 flanger input;
+#X text 193 312 float -;
+#X text 193 332 float -;
+#X obj 153 351 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 163 362 float -;
-#X text 220 322 rate in Hz;
-#X text 220 342 depth (ms);
-#X text 217 394 flanger output;
-#X text 207 426 - rate in hertz (default 0);
-#X text 207 445 - depth in ms (default 0);
-#X text 144 465 3) float;
-#X obj 3 486 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 194 191 else/flanger~ 0.1 20 -0.6 -tri;
-#X obj 125 130 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 193 352 float -;
+#X text 250 312 rate in Hz;
+#X text 250 332 depth (ms);
+#X text 247 384 flanger output;
+#X text 237 416 - rate in hertz (default 0);
+#X text 237 435 - depth in ms (default 0);
+#X text 174 455 3) float;
+#X obj 3 476 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 194 186 else/flanger~ 0.1 20 -0.6 -tri;
+#X obj 125 125 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 268 127 rate;
-#X text 334 127 depth;
-#X text 96 495 -tri - sets waveform to triangular (default sine);
-#X text 404 127 coefficient;
-#X text 220 362 coefficient for feedforward/feedback lines;
-#X text 207 465 - coefficient (default 0);
-#X obj 125 157 else/bl.saw~ 150;
+#X text 258 132 rate;
+#X text 314 132 depth;
+#X text 126 485 -tri - sets waveform to triangular (default sine);
+#X text 374 132 coefficient;
+#X text 250 352 coefficient for feedforward/feedback lines;
+#X text 237 455 - coefficient (default 0);
+#X obj 125 152 else/bl.saw~ 150;
 #X connect 23 0 40 1;
 #X connect 24 0 40 2;
 #X connect 25 0 40 3;
