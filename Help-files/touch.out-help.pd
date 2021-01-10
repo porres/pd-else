@@ -51,7 +51,6 @@
 -228856 -1 -1 0 256;
 #X obj 310 146 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 216 127 pitch;
 #X text 307 127 ch;
 #X text 237 281 -;
 #X text 197 281 float;
@@ -61,18 +60,18 @@
 #X text 252 281 Rightmost intlet: MIDI channel;
 #X text 188 390 sets the object to output polyphonic aftertouch;
 #X text 134 391 -poly: -;
-#N canvas 829 313 465 288 poly 0;
+#N canvas 829 313 465 288 poly 1;
 #X text 100 223 Polyphonic aftertouch is very rare in today's controllers
 \, but it used to be a real thing., f 45;
 #X text 25 14 With the -poly flag \, the polyphonic aftertouch message
 is formated \, where you have separate aftertouch values for each pitch
 \, so there's an extra inlet., f 67;
 #X obj 269 87 nbx 3 14 1 16 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 1 256;
+-1 -1 7 256;
 #X obj 210 87 nbx 3 14 0 127 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
+-1 -1 18 256;
 #X obj 152 87 nbx 3 14 0 127 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
+-1 -1 34 256;
 #X obj 263 174 else/display;
 #X obj 207 174 else/display;
 #X obj 152 174 else/display;
@@ -90,6 +89,7 @@ is formated \, where you have separate aftertouch values for each pitch
 #X obj 217 180 else/touch.out 4;
 #X text 69 85 [touch.out] formats and sends raw MIDI aftertouch messages.
 An argument sets channel number (the default is 1)., f 66;
-#X connect 29 0 42 0;
-#X connect 30 0 42 1;
-#X connect 42 0 28 0;
+#X text 216 127 pressure;
+#X connect 29 0 41 0;
+#X connect 30 0 41 1;
+#X connect 41 0 28 0;

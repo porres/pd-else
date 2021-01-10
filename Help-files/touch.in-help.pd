@@ -86,12 +86,12 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X text 284 135 Aftertouch message (raw MIDI data);
 #X text 152 221 Aftertouch;
 #N canvas 846 321 455 328 poly 0;
-#X text 197 238 Pitch;
+#X text 252 201 Pitch;
 #X obj 220 198 else/display;
 #X obj 165 232 else/display;
 #X text 301 173 MIDI channel;
 #X obj 276 170 else/display;
-#X text 255 202 Aftertouch;
+#X text 195 236 Aftertouch;
 #X text 21 12 With the -poly flag \, the polyphonic aftertouch is retrieved
 \, where you get a separate aftertouch values for each pitch \, so
 we have an extra outlet., f 67;
