@@ -89,7 +89,8 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X obj 31 214 else/pgm.out;
 #X obj 219 190 else/pgm.in;
 #X text 69 85 [pgm.in] extracts MIDI Program information from raw MIDI
-input (such as from [midiin])., f 61;
+input (such as from [midiin]). Unlike vanilla's [pgmin] and [pgmout]
+\, the prgram change values are from 0 to 127!, f 68;
 #X connect 34 0 46 0;
 #X connect 39 0 46 0;
 #X connect 41 0 46 0;
