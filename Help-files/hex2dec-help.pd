@@ -1,6 +1,6 @@
-#N canvas 583 177 562 424 10;
-#X obj 208 214 else/display;
-#X obj 180 146 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#N canvas 639 74 563 414 10;
+#X obj 214 207 else/display;
+#X obj 186 144 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -30,38 +30,41 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 4 253 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 244 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 328 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 319 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 363 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 354 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 112 337 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 97 328 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 113 262 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 98 253 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 396 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 387 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 113 302 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 98 293 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 153 281 bang;
-#X text 183 281 - convert and output \, or output the last converted
+#X text 170 272 bang;
+#X text 200 272 - convert and output \, or output the last converted
 value;
-#X text 85 93 [hex2dec] is a simple abstraction that converts hexadecimal
-values to decimal ones.;
-#X text 140 263 symbol;
-#X text 183 263 - hexadecimal value convert (outputs the result);
-#X text 183 303 - hexa decimal value to convert when receiving a bang
+#X text 164 328 float;
+#X text 200 328 - the converted decimal value;
+#X text 152 363 1) symbol - hexadecimal value to convert (default 0)
 ;
-#X text 141 303 symbol;
-#X text 147 337 float;
-#X text 183 337 - the converted decimal value;
-#X text 135 372 1) symbol - hexadecimal value to convert (default 0)
+#X symbolatom 214 144 10 0 0 0 - - -;
+#X symbolatom 313 144 10 0 0 0 - - -;
+#X text 122 254 float/symbol;
+#X text 200 254 - hexadecimal value to convert (outputs the result)
 ;
-#X symbolatom 208 146 10 0 0 0 - - -;
-#X symbolatom 295 145 10 0 0 0 - - -;
-#X obj 208 179 else/hex2dec ff;
-#X connect 1 0 35 0;
-#X connect 33 0 35 0;
-#X connect 34 0 35 1;
-#X connect 35 0 0 0;
+#X text 200 294 - hexadecimal value to convert when receiving a bang
+;
+#X text 122 294 float/symbol;
+#X obj 214 177 else/hex2dec 0xFF;
+#X text 55 86 [hex2dec] is an abstraction that converts hexadecimal
+values to decimal ones. It takes floats and symbol (whose format allows
+lower and upper case letters and also includes "0x" or "0X" prefixes.
+, f 71;
+#X connect 1 0 34 0;
+#X connect 28 0 34 0;
+#X connect 29 0 34 1;
+#X connect 34 0 0 0;
