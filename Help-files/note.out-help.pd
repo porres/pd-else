@@ -1,4 +1,4 @@
-#N canvas 530 213 563 496 10;
+#N canvas 682 68 563 496 10;
 #X obj 23 40 cnv 4 4 4 empty empty Midi 0 28 2 18 -233017 -1 0;
 #X obj 66 40 cnv 4 4 4 empty empty pitch 0 28 2 18 -233017 -1 0;
 #X obj 3 3 cnv 15 301 42 empty empty note.out 20 20 2 37 -233017 -1
@@ -75,24 +75,46 @@ An argument sets channel number (the default is 1)., f 66;
 #X text 189 434 sets the object to output release velocity and note
 on/off flag, f 46;
 #X text 142 434 -rel: -;
-#N canvas 855 146 429 340 release 0;
+#N canvas 728 175 813 464 release 0;
 #X msg 103 77 144 \, 68 \, 120;
-#X text 185 77 Note On (raw MIDI data);
-#X text 207 101 Note Off (raw MIDI data);
-#X obj 132 161 else/display;
-#X obj 97 161 else/display;
-#X msg 131 101 128 \, 68 \, 88;
-#X obj 202 160 else/display;
-#X obj 167 160 else/display;
-#X text 90 272 Release velocity is very rare in today's controllers
-\, but it used to be a real thing., f 44;
+#X text 192 85 Note On (raw MIDI data);
+#X text 207 131 Note Off (raw MIDI data);
+#X obj 138 221 else/display;
+#X obj 103 191 else/display;
+#X msg 131 131 128 \, 68 \, 88;
+#X obj 208 280 else/display;
+#X obj 173 250 else/display;
+#X text 73 399 Release velocity is very rare in today's controllers
+\, but it used to be a real thing., f 54;
 #X text 29 18 With the -rel flag \, you can set a release velocity
 value and there's an extra inlet for the note on/off flag. The default
 behaviour is that a velocuty value of "0" represents a note off.,
 f 61;
-#X obj 97 236 print;
-#X obj 103 132 else/note.in -rel;
-#X obj 97 204 else/note.out -rel;
+#X obj 103 356 print;
+#X obj 103 162 else/note.in -rel;
+#X obj 103 324 else/note.out -rel;
+#X msg 116 98 144 \, 68 \, 0;
+#X text 48 194 pitch =>;
+#X text 54 224 velocity ==>;
+#X text 226 282 <== channel;
+#X text 188 253 <== flag (1 is note on \, 0 is note off);
+#X msg 543 133 144 \, 68 \, 120;
+#X text 632 141 Note On (raw MIDI data);
+#X text 647 187 Note Off (raw MIDI data);
+#X obj 577 277 else/display;
+#X obj 543 247 else/display;
+#X msg 571 187 128 \, 68 \, 88;
+#X obj 613 306 else/display;
+#X obj 540 382 print;
+#X msg 556 154 144 \, 68 \, 0;
+#X text 488 250 pitch =>;
+#X text 493 280 velocity ==>;
+#X obj 540 350 else/note.out;
+#X obj 543 218 else/note.in;
+#X text 628 309 <== channel;
+#X text 448 50 Note that when we don't have the -rel flag \, raw input
+data that represents note off messages are converted to noteon messages
+with a velocity of 0 in [note.in]!, f 42;
 #X connect 0 0 11 0;
 #X connect 3 0 12 1;
 #X connect 4 0 12 0;
@@ -104,6 +126,17 @@ f 61;
 #X connect 11 2 7 0;
 #X connect 11 3 6 0;
 #X connect 12 0 10 0;
+#X connect 13 0 11 0;
+#X connect 18 0 30 0;
+#X connect 21 0 29 1;
+#X connect 22 0 29 0;
+#X connect 23 0 30 0;
+#X connect 24 0 29 2;
+#X connect 26 0 30 0;
+#X connect 29 0 25 0;
+#X connect 30 0 22 0;
+#X connect 30 1 21 0;
+#X connect 30 2 24 0;
 #X restore 473 208 pd release;
 #X obj 32 203 else/note.in;
 #X obj 218 180 else/note.out 4;
