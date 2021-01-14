@@ -1,4 +1,4 @@
-#N canvas 678 149 561 513 10;
+#N canvas 674 135 561 513 10;
 #X obj 4 307 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 389 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -30,110 +30,6 @@
 0;
 #X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
-#X obj 215 68 route dsp;
-#X obj 215 37 receive pd;
-#N canvas 977 77 379 291 set_color 0;
-#X obj 47 30 inlet;
-#X obj 147 200 s \$0-cnv;
-#X obj 47 83 select 0 1;
-#X obj 47 220 s \$0-tgl-r;
-#N canvas 0 22 712 637 off 0;
-#X obj 490 220 * -1;
-#X obj 424 300 +;
-#X obj 409 325 +;
-#X obj 347 219 * -65536;
-#X obj 424 220 * -256;
-#X obj 409 356 - 1;
-#X obj 390 189 unpack f f f;
-#X obj 225 295 +;
-#X obj 210 320 +;
-#X obj 148 214 * -65536;
-#X obj 225 215 * -256;
-#X obj 291 215 * -1;
-#X obj 210 351 - 1;
-#X obj 191 184 unpack f f f;
-#X obj 379 423 pack;
-#X msg 395 152 124 124 124;
-#X msg 203 154 220 220 220;
-#X obj 238 121 t b b;
-#X obj 238 81 inlet;
-#X obj 378 485 outlet;
-#X connect 0 0 1 1;
-#X connect 1 0 2 1;
-#X connect 2 0 5 0;
-#X connect 3 0 2 0;
-#X connect 4 0 1 0;
-#X connect 5 0 14 1;
-#X connect 6 0 3 0;
-#X connect 6 1 4 0;
-#X connect 6 2 0 0;
-#X connect 7 0 8 1;
-#X connect 8 0 12 0;
-#X connect 9 0 8 0;
-#X connect 10 0 7 0;
-#X connect 11 0 7 1;
-#X connect 12 0 14 0;
-#X connect 13 0 9 0;
-#X connect 13 1 10 0;
-#X connect 13 2 11 0;
-#X connect 14 0 19 0;
-#X connect 15 0 6 0;
-#X connect 16 0 13 0;
-#X connect 17 0 16 0;
-#X connect 17 1 15 0;
-#X connect 18 0 17 0;
-#X restore 47 113 pd off;
-#X msg 47 180 color \$1 \$2 0;
-#X msg 147 131 -4.86997e+06 -1.34937e+07;
-#X msg 147 171 color \$1 0 \$2;
-#X connect 0 0 2 0;
-#X connect 2 0 4 0;
-#X connect 2 1 6 0;
-#X connect 4 0 5 0;
-#X connect 4 0 7 0;
-#X connect 5 0 3 0;
-#X connect 6 0 7 0;
-#X connect 6 0 5 0;
-#X connect 7 0 1 0;
-#X restore 215 165 pd set_color;
-#X obj 135 122 r \$0-tgl-s;
-#N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
-0;
-#X coords 0 -1 1 1 42 27 1 100 100;
-#X restore 51 144 pd;
-#X obj 226 139 s \$0-tgl-r;
-#X msg 226 115 set \$1;
-#X msg 135 177 \; pd dsp \$1;
-#N canvas 256 32 278 194 load_check 0;
-#X obj 136 53 sig~ 1;
-#X obj 74 24 loadbang;
-#X obj 136 86 snapshot~;
-#X obj 91 52 del 5;
-#X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
-#X obj 74 126 switch~;
-#X connect 0 0 2 0;
-#X connect 1 0 3 0;
-#X connect 1 0 5 0;
-#X connect 2 0 4 0;
-#X connect 3 0 2 0;
-#X connect 3 0 5 0;
-#X connect 5 0 6 0;
-#X restore 51 72 pd load_check;
-#X connect 1 0 3 0;
-#X connect 1 0 7 0;
-#X connect 2 0 1 0;
-#X connect 4 0 8 0;
-#X connect 4 0 3 0;
-#X connect 7 0 6 0;
-#X connect 9 0 0 0;
-#X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 505 60 pd;
 #X obj 3 2 cnv 15 301 42 empty empty bangdiv 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -146,19 +42,19 @@
 #X text 222 350 - sets the start value;
 #X text 222 332 - sets the division value (minimum: 1);
 #X text 156 278 divided count;
-#X msg 293 188 start \$1;
-#X msg 243 184 div \$1;
-#X floatatom 293 167 5 0 0 0 - - -;
-#X floatatom 243 164 5 0 0 0 - - -;
+#X msg 326 178 start \$1;
+#X msg 271 178 div \$1;
+#X floatatom 326 156 5 0 0 0 - - -;
+#X floatatom 271 156 5 0 0 0 - - -;
 #X obj 243 275 else/display;
-#X obj 215 182 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 243 159 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 243 249 else/count;
 #X text 61 85 [bangdiv] outputs bangs when receiving bangs \, but doesn't
 discards a number of bangs corresponding to a division value. The first
 bang in the count is output. A starting value lets you start in the
 middle of a count. If the start value is negative \, it adds that many
-counts to the first time a bang is output.;
+counts to the first time a bang is output., f 69;
 #X text 185 315 bang;
 #X text 222 315 - bang to be divided;
 #X text 179 368 reset;
@@ -168,16 +64,19 @@ counts to the first time a bang is output.;
 #X obj 336 249 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 358 250 rest;
-#X obj 243 218 else/bangdiv 4 2;
 #X obj 116 419 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 185 419 bang;
 #X text 222 419 - when we have a rest;
-#X connect 26 0 42 0;
-#X connect 27 0 42 0;
+#X msg 194 170 reset;
+#X obj 242 219 else/bangdiv 4;
+#X connect 25 0 45 0;
+#X connect 26 0 45 0;
+#X connect 27 0 25 0;
 #X connect 28 0 26 0;
-#X connect 29 0 27 0;
-#X connect 31 0 42 0;
-#X connect 32 0 30 0;
-#X connect 42 0 32 0;
-#X connect 42 1 40 0;
+#X connect 30 0 45 0;
+#X connect 31 0 29 0;
+#X connect 44 0 31 0;
+#X connect 44 0 45 0;
+#X connect 45 0 31 0;
+#X connect 45 1 39 0;
