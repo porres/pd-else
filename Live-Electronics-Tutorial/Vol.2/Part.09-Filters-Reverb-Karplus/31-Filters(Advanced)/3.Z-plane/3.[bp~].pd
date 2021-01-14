@@ -1,4 +1,4 @@
-#N canvas 350 53 973 728 12;
+#N canvas 463 50 973 728 12;
 #X declare -path else;
 #N canvas 122 91 603 581 Z-Plane-biquad 0;
 #X obj 101 101 cnv 15 450 450 empty empty empty 20 12 1 14 -191407
@@ -455,9 +455,9 @@ if (p_pair_\$0 == 1 \, sin($f2 * pi_\$0) * -$f1 \, 0);
 #X floatatom 302 184 0 0 0 0 - - -;
 #X floatatom 231 184 0 0 0 0 - - -;
 #X floatatom 160 184 0 0 0 0 - - -;
-#X floatatom 225 607 0 0 0 0 - - -;
-#X floatatom 202 581 0 0 0 0 - - -;
-#X floatatom 170 553 0 0 0 0 - - -;
+#X floatatom 247 562 0 0 0 0 - - -;
+#X floatatom 215 561 0 0 0 0 - - -;
+#X floatatom 175 531 0 0 0 0 - - -;
 #X floatatom 144 531 0 0 0 0 - - -;
 #X obj 302 215 v g;
 #X msg 127 471 \$3;
@@ -559,9 +559,9 @@ equation and a subpatch that generates the coefficients from a frequency
 and Q input \, the coefficients are loaded inside [fexpr~] for comparison:
 ;
 #X text 87 473 gain;
-#N canvas 148 23 862 659 Poles 0;
-#X obj 578 580 outlet;
-#X obj 525 580 outlet;
+#N canvas 772 85 862 659 Poles 0;
+#X obj 578 577 outlet;
+#X obj 525 577 outlet;
 #X text 135 104 X =;
 #X text 171 94 -b;
 #X text 188 89 +;
@@ -602,20 +602,20 @@ and Q input \, the coefficients are loaded inside [fexpr~] for comparison:
 #X obj 607 260 < 0;
 #X floatatom 637 408 5 0 0 0 - - -;
 #X floatatom 591 407 5 0 0 0 - - -;
-#X floatatom 578 557 0 0 0 0 - - -;
-#X floatatom 525 534 0 0 0 0 - - -;
-#X obj 702 580 outlet;
-#X obj 649 580 outlet;
-#X floatatom 702 557 0 0 0 0 - - -;
-#X floatatom 649 534 0 0 0 0 - - -;
+#X floatatom 578 536 0 0 0 0 - - -;
+#X floatatom 525 536 0 0 0 0 - - -;
+#X obj 702 577 outlet;
+#X obj 649 577 outlet;
+#X floatatom 702 536 0 0 0 0 - - -;
+#X floatatom 649 536 0 0 0 0 - - -;
 #X obj 637 429 v im;
 #X obj 591 429 v re;
 #X obj 525 459 expr (b + re) / 2 \; im / 2 \; (b - re) / 2 \; -im /
 2, f 27;
 #X text 504 535 re;
-#X text 544 556 im;
-#X text 632 532 re;
-#X text 673 557 im;
+#X text 557 535 im;
+#X text 632 535 re;
+#X text 680 535 im;
 #X text 240 342 2;
 #X text 191 490 +;
 #X text 191 498 -;
@@ -648,8 +648,8 @@ That means: a Complex Pole! So we need to check if it's positive or
 negative. If positive \, this is the real part and the imaginary part
 is 0 \, but if negative \, it's the imaginary part and the real part
 is 0 - we then have both parts as:;
-#X text 544 600 pole 1;
-#X text 669 599 pole 2;
+#X text 544 597 pole 1;
+#X text 669 596 pole 2;
 #X connect 9 0 29 0;
 #X connect 10 0 25 0;
 #X connect 10 1 26 0;
@@ -677,7 +677,7 @@ is 0 - we then have both parts as:;
 #X connect 49 1 41 0;
 #X connect 49 2 46 0;
 #X connect 49 3 45 0;
-#X restore 302 521 pd Poles;
+#X restore 194 495 pd Poles;
 #X text 267 127 Q;
 #X text 490 51 Even though the coefficients' values are real \, we're
 dealing with complex poles. More precisely a conjugate pair \, where
@@ -689,7 +689,7 @@ of the poles. The gain parameter compensates this boost in order that
 the maximum amplitude value is 0 dB. The angle represents the resonant
 frequency.;
 #X obj 767 13 declare -path else;
-#X obj 302 495 r \$0-coefficients;
+#X obj 194 469 r \$0-coefficients;
 #X text 26 404 And see how we can also implement this filter with two
 [cpole~] objects (complex pole filters) below.;
 #X connect 1 0 2 0;
