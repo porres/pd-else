@@ -210,6 +210,7 @@ meter4~	x
 meter8~	x
 midi	x
 midi2freq	x
+midi2pitch	x
 mix2~	x
 mix4~	x
 mono	x
@@ -258,6 +259,7 @@ pick	x
 ping.pong~	x
 pimp~	x
 pinknoise~	x
+pitch2midi	x
 pitch.shift~	x
 plate.rev~	x
 play.file~	x

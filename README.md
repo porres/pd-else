@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (393 objects):
+## Current Object list (395 objects):
 
 **ASSORTED: [04]**
 
@@ -124,7 +124,7 @@ Cross compiling is also possible with something like this
 - [hann~]
 - [bin.shift~]
 
-**TUNING: [06]**
+**TUNING/NOTES: [08]**
 
 - [autotune]
 - [autotune2]
@@ -132,6 +132,8 @@ Cross compiling is also possible with something like this
 - [eqdiv]
 - [frac2ratio]
 - [midi2freq]
+- [pitch2note]
+- [note2pitch]
 
 **PATCH/SUBPATCH MANAGEMENT: [18]**
 
