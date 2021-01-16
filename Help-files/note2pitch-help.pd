@@ -1,15 +1,15 @@
-#N canvas 808 68 561 386 10;
-#X obj 4 264 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 906 129 561 438 10;
+#X obj 4 314 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 300 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 350 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 331 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 381 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 106 308 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 131 358 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 107 273 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 132 323 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 360 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 410 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -35,27 +35,37 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X text 189 308 float;
-#X obj 216 227 else/display;
-#X msg 216 156 C#4;
-#X msg 187 156 E#5;
-#X symbolatom 262 160 10 0 0 0 - - -;
+#X text 179 358 float;
+#X obj 166 277 else/display;
+#X msg 166 157 C#4;
+#X msg 127 157 E#5;
+#X symbolatom 203 157 10 0 0 0 - - -;
 #X obj 127 40 cnv 4 4 4 empty empty name 0 28 2 18 -233017 -1 0;
 #X obj 176 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
 #X obj 200 40 cnv 4 4 4 empty empty MIDI 0 28 2 18 -233017 -1 0;
 #X obj 250 40 cnv 4 4 4 empty empty pitch 0 28 2 18 -233017 -1 0;
+#X text 217 323 - note name to convert to MIDI pitch;
+#X text 217 358 - MIDI pitch value;
+#X text 217 389 (none);
+#X obj 166 249 else/note2pitch;
+#X text 436 253 see also:;
+#X obj 429 275 else/pitch2note;
+#X msg 213 191 C 5;
+#X text 269 156 <= one element message or symbol message;
+#X text 311 191 <= two elements messages or lists;
+#X msg 248 191 list Ab 4;
+#X text 161 323 anything;
+#X floatatom 249 220 5 0 0 0 - - -;
+#X text 286 220 <= floats are passed through;
 #X text 62 89 [note2pitch] converts a note name (such as Eb3) to MIDI
 pitch values. All enharmonic names are included (even unusual ones
 like Cb). All names need to end with an octave number \, in a way that
-C4 represents middle C (MIDI pitch = 60)., f 69;
-#X text 128 273 anything/symbol;
-#X text 227 273 - note name to convert to MIDI pitch;
-#X text 227 308 - MIDI pitch value;
-#X text 227 339 (none);
-#X obj 216 199 else/note2pitch;
-#X text 436 203 see also:;
-#X obj 429 225 else/pitch2note;
-#X connect 20 0 32 0;
-#X connect 21 0 32 0;
-#X connect 22 0 32 0;
-#X connect 32 0 19 0;
+C4 represents middle C (MIDI pitch = 60). Range is from C0 to B8.,
+f 69;
+#X connect 20 0 30 0;
+#X connect 21 0 30 0;
+#X connect 22 0 30 0;
+#X connect 30 0 19 0;
+#X connect 33 0 30 0;
+#X connect 36 0 30 0;
+#X connect 38 0 30 0;
