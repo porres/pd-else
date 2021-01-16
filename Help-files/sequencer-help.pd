@@ -1,4 +1,4 @@
-#N canvas 693 57 560 585 10;
+#N canvas 746 58 560 585 10;
 #X obj 4 338 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 450 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -33,7 +33,7 @@
 #X obj 67 40 cnv 4 4 4 empty empty sequencer 0 28 2 18 -233017 -1 0
 ;
 #X text 130 394 set <list>;
-#X obj 158 283 else/display;
+#X obj 158 286 else/display;
 #X text 160 461 float;
 #X obj 3 3 cnv 15 301 42 empty empty sequencer 20 20 2 37 -233017 -1
 0;
@@ -117,13 +117,13 @@ note tied., f 16;
 #X connect 30 0 13 0;
 #X connect 30 1 31 0;
 #X connect 31 0 23 0;
-#X restore 471 290 pd +examples;
-#X obj 158 313 print sequence;
+#X restore 471 283 pd +examples;
+#X obj 158 314 print sequence;
 #X text 200 346 - gets element(s) from sequence;
 #X text 200 461 - element(s) from a sequence;
 #X text 141 534 1) list - list of elements sets the sequence (default
 0);
-#N canvas 1000 89 449 462 chords 0;
+#N canvas 804 142 874 480 chords 1;
 #X obj 113 198 else/keyboard 17 80 2 4 0 0 empty empty;
 #X obj 113 303 else/voices 4 1 -list;
 #X obj 113 332 clone 4 voice 4;
@@ -135,6 +135,18 @@ note tied., f 16;
 #X obj 113 135 else/sequencer 60-63-67 70 72 75 - 65-68-71;
 #X obj 113 104 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
+#X obj 443 205 else/keyboard 17 80 2 4 0 0 empty empty;
+#X obj 443 310 else/voices 4 1 -list;
+#X obj 443 339 clone 4 voice 4;
+#X obj 443 376 else/out~;
+#X obj 443 174 makenote 127 700;
+#X obj 443 47 else/tempo 50 20 -on;
+#X obj 443 71 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 443 139 else/note2pitch;
+#X obj 443 102 else/sequencer C4-Eb4-G4 Bb4 C5 Eb5 - F4-Ab4-B4;
+#X text 597 41 You can use pitch names and convert to MIDI pitch with
+[note2pitch]., f 28;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
@@ -144,48 +156,65 @@ note tied., f 16;
 #X connect 5 0 8 0;
 #X connect 7 0 4 0;
 #X connect 8 0 7 0;
-#X restore 489 310 pd chords;
+#X connect 9 0 10 0;
+#X connect 10 0 11 0;
+#X connect 11 0 12 0;
+#X connect 11 1 12 1;
+#X connect 13 0 9 0;
+#X connect 13 1 9 1;
+#X connect 14 0 15 0;
+#X connect 15 0 17 0;
+#X connect 16 0 13 0;
+#X connect 17 0 16 0;
+#X restore 489 303 pd chords;
 #X text 118 378 goto <float>;
 #X text 160 363 float;
 #X text 200 362 - sets index (from 1) and outputs it;
-#X obj 101 206 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 101 211 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 101 259 route bang;
-#X obj 101 285 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 101 262 route bang;
+#X obj 101 288 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 200 393 - sets a new sequence \, only 'set' sets an empty sequence
 ;
 #N canvas 947 183 444 280 combine 0;
 #X obj 63 127 else/display;
-#X obj 63 99 else/sequencer 1-2-3 4 5 six 7-eight-9 ten - bang;
 #X obj 63 73 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 63 50 else/tempo 60 -on;
-#X obj 64 166 else/combine;
-#X obj 64 191 else/display 10;
-#X text 152 165 <== you can use [combine] to join elements sent at
+#X obj 63 166 else/combine;
+#X text 151 165 <== you can use [combine] to join elements sent at
 the same time. This may also add a symbol/list selector., f 42;
-#X connect 0 0 4 0;
-#X connect 1 0 0 0;
+#X obj 63 99 else/sequencer 71-72-73 4 5 six C#4-E4-G#4 ten - bang
+;
+#X obj 63 215 else/display 17;
+#X connect 0 0 3 0;
+#X connect 1 0 5 0;
 #X connect 2 0 1 0;
-#X connect 3 0 2 0;
-#X connect 4 0 5 0;
-#X restore 483 270 pd combine;
-#N canvas 890 147 465 312 text 0;
-#X obj 61 248 else/display;
-#X obj 61 180 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X connect 3 0 6 0;
+#X connect 5 0 0 0;
+#X restore 483 263 pd combine;
+#N canvas 890 147 501 367 text 0;
+#X obj 60 197 else/display;
+#X obj 60 129 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 61 147 else/tempo 60 -on;
-#X obj 193 117 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
--1 -1 0;
-#X obj 61 212 else/sequencer;
-#X obj 193 91 loadbang;
-#X text 93 29 Use [text] to store many sequence presets.;
-#X obj 243 138 text define -k \$0-presets;
-#A set 1 2 3 4 5 six 7 eight 9 ten \; 40 50 60 70 \; a b c d e f g
-\; ping pléin póing;
-#X obj 193 184 text get \$0-presets;
-#X obj 193 211 else/display;
+#X obj 60 96 else/tempo 60 -on;
+#X obj 197 121 vradio 15 1 0 2 empty empty empty 0 -8 0 10 -228856
+-1 -1 1;
+#X obj 60 161 else/sequencer;
+#X obj 197 95 loadbang;
+#X text 102 38 Use [text] to store many sequence presets.;
+#X obj 252 123 text define -k \$0-presets;
+#A set 60 61 62 63 64 65 66 67 68 69 70 71 72 \; C4 D4 E4 F4 G4 A4
+B4 C5;
+#X obj 197 158 text get \$0-presets;
+#X obj 197 185 else/display;
+#X obj 60 232 route float;
+#X obj 123 257 else/note2pitch;
+#X obj 123 283 else/display;
+#X text 229 253 convert to MIDI pitch if you have a sequence with note
+names., f 33;
+#X connect 0 0 10 0;
 #X connect 1 0 4 0;
 #X connect 2 0 1 0;
 #X connect 3 0 8 0;
@@ -193,49 +222,52 @@ the same time. This may also add a symbol/list selector., f 42;
 #X connect 5 0 3 0;
 #X connect 8 0 9 0;
 #X connect 9 0 4 1;
-#X restore 501 250 pd text;
+#X connect 10 1 11 0;
+#X connect 11 0 12 0;
+#X restore 501 243 pd text;
 #X obj 109 415 cnv 17 3 30 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 166 415 list;
 #X text 200 415 - sets a new sequence;
 #X text 166 431 bang;
 #X text 200 431 - sets an empty sequence;
-#X obj 410 265 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 410 270 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 109 501 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
 #X text 166 503 bang;
 #X text 200 503 - when reaching end of sequence;
-#X obj 255 265 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 255 270 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 336 266 finished =>;
-#X text 206 266 rest =>;
-#X text 259 207 <== set new sequence ==>;
+#X text 336 271 finished =>;
+#X text 206 271 rest =>;
+#X text 259 212 <== set new sequence ==>;
 #X obj 109 480 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 166 482 bang;
 #X text 200 482 - when there is a rest;
-#X obj 101 233 else/sequencer 1-2-3 4 - 5 bang six 7-eight-9 - 10 .
+#X msg 137 212 set 1 . 3 - 4-5 six;
+#X msg 410 212 7 8 9 10;
+#X obj 101 186 else/tempo 60;
+#X obj 101 162 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 101 238 else/sequencer 1-2-3 4 - 5 bang C#4 7-eight-9 - 10 .
 ;
-#X msg 137 207 set 1 . 3 - 4-5 six;
-#X msg 410 207 7 8 9 10;
 #X text 51 86 When receiving a bang \, [sequencer] sends an element
 (float or symbol) from a given sequence. Elements joined by "-" are
 sent separate at the same time (you can build chords like this). A
 single "-" is treated as a rest. A "." (dot) is ignored and this can
 be thought as a tied note. Symbol elements are sent without a symbol
-selector \, and a "bang" comes out as a proper "bang"., f 76;
-#X obj 101 181 else/tempo 60;
-#X obj 101 157 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+selector (and can be note names or anything else) \, and a "bang" comes
+out as a proper "bang"., f 76;
 #X connect 18 0 24 0;
-#X connect 32 0 54 0;
+#X connect 32 0 58 0;
 #X connect 33 0 34 0;
 #X connect 33 1 18 0;
-#X connect 54 0 33 0;
-#X connect 54 1 47 0;
-#X connect 54 2 43 0;
-#X connect 55 0 54 0;
-#X connect 56 0 54 1;
-#X connect 58 0 32 0;
-#X connect 59 0 58 0;
+#X connect 54 0 58 0;
+#X connect 55 0 58 1;
+#X connect 56 0 32 0;
+#X connect 57 0 56 0;
+#X connect 58 0 33 0;
+#X connect 58 1 47 0;
+#X connect 58 2 43 0;
