@@ -1,15 +1,15 @@
-#N canvas 808 68 561 377 10;
+#N canvas 754 66 560 435 10;
 #X obj 4 253 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 289 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 348 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 320 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 379 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 106 297 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 136 356 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 107 262 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 137 262 cnv 17 3 56 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 349 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 408 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -35,25 +35,77 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 211 215 else/display;
+#X obj 231 215 else/display;
 #X obj 247 40 cnv 4 4 4 empty empty name 0 28 2 18 -233017 -1 0;
 #X obj 186 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
 #X obj 90 40 cnv 4 4 4 empty empty MIDI 0 28 2 18 -233017 -1 0;
 #X obj 140 40 cnv 4 4 4 empty empty pitch 0 28 2 18 -233017 -1 0;
-#X text 128 262 anything/symbol;
-#X text 227 328 (none);
-#X text 437 195 see also:;
+#X text 265 387 (none);
+#X text 56 189 see also:;
 #X text 62 89 [pitch2note] converts a MIDI pitch value note names (such
 as Eb3). The names end with an octave number \, in a way that middle
 C (MIDI pitch = 60) represents C4 represents. For now \, we have a
 mode for accidents that will give you a sharp note if the number is
 rising or flat otherwise., f 69;
-#X obj 211 187 else/pitch2note;
-#X obj 211 157 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 86 256;
-#X obj 430 217 else/note2pitch;
-#X text 182 297 symbol;
-#X text 227 262 - MIDI pitch value;
-#X text 227 297 - note name;
-#X connect 27 0 18 0;
-#X connect 28 0 27 0;
+#X obj 231 157 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
+-1 -1 65 256;
+#X obj 49 211 else/note2pitch;
+#X text 202 356 symbol;
+#X text 247 262 - MIDI pitch value, f 35;
+#X text 247 356 - note name;
+#X text 208 262 float;
+#X text 247 325 - MIDI pitch value;
+#X obj 137 325 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 160 325 anything/list;
+#N canvas 1047 189 642 341 other-scales 0;
+#X obj 106 282 else/display;
+#X msg 193 224 C Db D D# E E# Gb G G# A Bb Cb;
+#X obj 106 254 else/pitch2note;
+#X msg 215 251 C C# D Eb E F F# G G# A Bb B;
+#X text 212 203 set arbitrary symbols;
+#X obj 106 89 else/keyboard 17 80 4 3 0 0 empty empty;
+#X obj 106 221 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
+-1 -1 0 256;
+#X obj 106 191 stripnote;
+#X text 158 50 You can set your own arbitrary scale in the right inlet
+;
+#X obj 193 181 loadbang;
+#X connect 1 0 2 1;
+#X connect 2 0 0 0;
+#X connect 3 0 2 1;
+#X connect 5 0 7 0;
+#X connect 6 0 2 0;
+#X connect 7 0 6 0;
+#X connect 9 0 1 0;
+#X restore 435 217 pd other-scales;
+#X obj 231 187 else/pitch2note;
+#N canvas 993 163 583 403 modes 0;
+#X obj 61 331 else/display;
+#X obj 61 193 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
+-1 -1 55 256;
+#X obj 61 303 else/pitch2note;
+#X msg 86 221 chromatic;
+#X msg 109 246 sharp;
+#X msg 116 270 flat;
+#X text 151 221 sharp if rising \, flat otherwise;
+#X text 151 246 All sharp;
+#X text 154 269 All flat;
+#X obj 61 163 stripnote;
+#X obj 61 54 else/keyboard 17 80 4 3 0 0 empty empty;
+#X text 204 174 Try different modes;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 2 0;
+#X connect 4 0 2 0;
+#X connect 5 0 2 0;
+#X connect 9 0 1 0;
+#X connect 10 0 9 0;
+#X restore 435 194 pd modes;
+#X text 187 277 chromatic - sets to chromatic mode (defaulkt);
+#X text 211 291 sharp - sets to sharp mode (all accidents are sharp)
+;
+#X text 217 305 flat - sets to sharp mode (all accidents are flat)
+;
+#X connect 26 0 36 0;
+#X connect 36 0 18 0;

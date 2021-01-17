@@ -75,7 +75,6 @@ note.out.class.sources := Classes/Source/note.out.c
 factor.class.sources := Classes/Source/factor.c
 float2bits.class.sources := Classes/Source/float2bits.c
 panic.class.sources := Classes/Source/panic.c
-pitch2note.class.sources := Classes/Source/pitch2note.c
 pgm.in.class.sources := Classes/Source/pgm.in.c
 pgm.out.class.sources := Classes/Source/pgm.out.c
 bend.in.class.sources := Classes/Source/bend.in.c
