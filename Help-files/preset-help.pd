@@ -1,4 +1,4 @@
-#N canvas 698 57 561 504 10;
+#N canvas 742 37 560 564 10;
 #X floatatom 306 179 0 0 0 0 - - -;
 #X floatatom 392 179 0 0 0 0 - - -;
 #X obj 127 144 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
@@ -31,19 +31,18 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 5 graph;
-#X obj 6 477 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 537 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 9 229 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 9 417 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 9 450 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 9 446 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 9 506 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 81 235 cnv 17 3 176 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 92 236 cnv 17 3 208 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 161 455 1) list - one or more receive names (default none)
+#X text 161 515 1) list - one or more receive names (default none)
 ;
-#X text 239 423 (none);
 #N canvas 1046 184 570 540 more 0;
 #X text 35 56 [preset] stores presets (up to 64 so far) for a main
 patch. Its arguments need to match corresponding [receive objects].
@@ -73,27 +72,27 @@ it all works., f 78;
 #X connect 8 0 9 1;
 #X connect 9 0 5 0;
 #X restore 494 205 pd more;
-#X text 121 262 load <float> -;
-#X text 109 234 preset <float> -;
-#X text 212 234 set preset number to load or save, f 53;
+#X text 126 263 load <float> -;
+#X text 114 235 preset <float> -;
+#X text 217 235 set preset number to load or save, f 53;
 #X floatatom 127 168 3 0 7 0 - - -;
-#X text 121 287 save <float> -;
-#X text 169 340 open -;
-#X text 163 354 close -;
-#X text 212 354 close preset window, f 53;
-#X text 133 368 set <list> -;
-#X text 115 383 read <symbol> -;
-#X text 109 397 write <symbol> -;
-#X text 212 382 read presets from file \, no symbol opens dialog window
+#X text 126 288 save <float> -;
+#X text 174 341 open -;
+#X text 168 355 close -;
+#X text 217 355 close preset window, f 53;
+#X text 138 369 set <list> -;
+#X text 120 384 read <symbol> -;
+#X text 114 398 write <symbol> -;
+#X text 217 383 read presets from file \, no symbol opens dialog window
 ;
-#X text 115 326 clear <float> -;
-#X text 212 326 clear preset number \, no float clears all presets
+#X text 120 327 clear <float> -;
+#X text 217 327 clear preset number \, no float clears all presets
 , f 53;
-#X text 163 248 float -;
-#X text 212 248 sets and loads preset mumber, f 53;
+#X text 168 249 float -;
+#X text 217 249 sets and loads preset mumber, f 53;
 #X obj 162 169 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 169 312 bang -;
+#X text 174 313 bang -;
 #X text 180 169 save;
 #X text 91 143 load;
 #X obj 127 195 else/preset \$0-A \$0-B;
@@ -112,19 +111,32 @@ it all works., f 78;
 data connected to [receive] objects that match the arguments and also
 send back to them. Change the number values below \, save the preset
 \, save the patch and reopen it to recall the presets., f 82;
-#X text 212 262 load preset number. If no float is given \, the current
+#X text 217 263 load preset number. If no float is given \, the current
 preset counts, f 53;
-#X text 212 287 save preset number. If no float is given \, the current
+#X text 217 288 save preset number. If no float is given \, the current
 preset counts, f 53;
-#X text 212 396 write presets to file \, no symbol opens dialog window
+#X text 217 397 write presets to file \, no symbol opens dialog window
 , f 53;
-#X text 212 312 save preset (same as 'save' without float), f 53;
-#X text 212 340 open the preset window so you can see/edit values,
+#X text 217 313 save preset (same as 'save' without float), f 53;
+#X text 217 341 open the preset window so you can see/edit values,
 f 53;
-#X text 212 368 one or more receive names to get/send presets, f 53
+#X text 217 369 one or more receive names to get/send presets, f 53
 ;
-#X connect 2 0 29 0;
+#X text 120 412 import <list> -;
+#X text 217 411 import presets from a list, f 53;
+#X obj 92 458 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 92 481 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 174 459 list -;
+#X text 162 427 export -;
+#X text 217 426 export presets as a list, f 53;
+#X text 217 459 presets as a list when receiving "export" message,
+f 53;
+#X text 174 481 bang -;
+#X text 217 481 when the preset is empty, f 53;
+#X connect 2 0 28 0;
 #X connect 3 0 0 0;
 #X connect 4 0 1 0;
-#X connect 29 0 46 0;
-#X connect 42 0 46 0;
+#X connect 28 0 45 0;
+#X connect 41 0 45 0;
