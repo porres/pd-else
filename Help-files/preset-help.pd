@@ -1,0 +1,102 @@
+#N canvas 728 40 564 494 10;
+#X floatatom 345 178 0 0 0 0 - - -;
+#X floatatom 431 178 0 0 0 0 - - -;
+#X obj 176 143 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
+-1 -1 6;
+#X msg 176 185 preset \$1 \, load;
+#X msg 133 170 save;
+#X obj 345 150 r \$0-A;
+#X obj 431 150 r \$0-B;
+#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 24 42 cnv 4 4 4 empty empty Preset 0 28 2 18 -233017 -1 0;
+#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 306 5 graph;
+#X obj 76 42 cnv 4 4 4 empty empty management 0 28 2 18 -233017 -1
+0;
+#X obj 177 42 cnv 4 4 4 empty empty system 0 28 2 18 -233017 -1 0;
+#X obj 4 5 cnv 15 301 42 empty empty preset 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 5 graph;
+#X obj 6 466 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 9 239 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 9 398 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 9 431 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 83 248 cnv 17 3 142 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 161 441 1) list - one or more receive names (default none)
+;
+#X text 217 407 (none);
+#N canvas 1046 184 620 358 more 0;
+#X text 35 91 [preset] stores presets (up to 64 so far) for a main
+patch. Its arguments need to match corresponding [receive objects].
+It can then retrieve data connected to them \, save them and send back
+to them. After saving the preset \, you need to save the patch as well
+in order for changes to take place. Change the number values below
+\, save the preset \, reopen and try recalling the presets to see how
+it all works., f 78;
+#X restore 495 213 pd more;
+#X text 122 264 load <float> -;
+#X text 110 249 preset <float> -;
+#X text 213 249 set preset number to load or save;
+#X floatatom 176 164 5 0 7 0 - - -;
+#X text 122 289 save <float> -;
+#X text 213 289 save preset number. If no float is given \, the preset
+number is the one previously set via "preset" message, f 53;
+#X text 213 264 load preset number. If no float is given \, the preset
+number is the one previously set via "preset" message, f 53;
+#X text 170 315 open -;
+#X text 213 315 open the preset window so you can see values, f 53
+;
+#X text 164 330 close -;
+#X text 213 330 close preset window, f 53;
+#X text 134 345 set <list> -;
+#X text 213 345 onde or more receive names get/send presets, f 53
+;
+#X text 116 360 read <symbol> -;
+#X text 110 374 write <symbol> -;
+#X text 213 359 read presets from file \, no symbol opens dialog window
+;
+#X text 213 374 wite presets to file \, no symbol opens dialog window
+, f 53;
+#X text 37 87 [preset] manages presets for your patch. It retrieves
+data connected to [receive] objects that match the arguments and also
+send back to them. Change the number values below \, save the preset
+\, save the patch and reopen it to recal the presets., f 81;
+#X obj 175 210 else/preset \$0-A \$0-B;
+#A saved -46 || 80 || \; 142 || 303 || \; -empty- \; -empty- \; -empty-
+\; -empty- \; -131 || -228 || \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \;;
+#X connect 2 0 31 0;
+#X connect 3 0 46 0;
+#X connect 4 0 46 0;
+#X connect 5 0 0 0;
+#X connect 6 0 1 0;
+#X connect 31 0 3 0;

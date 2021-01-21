@@ -48,21 +48,18 @@ C (MIDI pitch = 60) represents C4 represents. For now \, we have a
 mode for accidents that will give you a sharp note if the number is
 rising or flat otherwise., f 69;
 #X obj 231 157 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 65 256;
+-1 -1 0 256;
 #X obj 49 211 else/note2pitch;
 #X text 202 356 symbol;
 #X text 247 262 - MIDI pitch value, f 35;
 #X text 247 356 - note name;
 #X text 208 262 float;
-#X text 247 325 - MIDI pitch value;
 #X obj 137 325 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 160 325 anything/list;
-#N canvas 1047 189 642 341 other-scales 0;
-#X obj 106 282 else/display;
-#X msg 193 224 C Db D D# E E# Gb G G# A Bb Cb;
-#X obj 106 254 else/pitch2note;
-#X msg 215 251 C C# D Eb E F F# G G# A Bb B;
+#N canvas 901 91 954 650 other-scales 1;
+#X obj 106 312 else/display;
+#X obj 106 284 else/pitch2note;
 #X text 212 203 set arbitrary symbols;
 #X obj 106 89 else/keyboard 17 80 4 3 0 0 empty empty;
 #X obj 106 221 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
@@ -71,19 +68,70 @@ rising or flat otherwise., f 69;
 #X text 158 50 You can set your own arbitrary scale in the right inlet
 ;
 #X obj 193 181 loadbang;
-#X connect 1 0 2 1;
-#X connect 2 0 0 0;
-#X connect 3 0 2 1;
-#X connect 5 0 7 0;
-#X connect 6 0 2 0;
-#X connect 7 0 6 0;
-#X connect 9 0 1 0;
+#X msg 193 224 C Dâ™­ D Dâ™¯ E Eâ™¯ Gâ™­ G Gâ™¯ A Bâ™­ Cb;
+#X msg 215 251 C Câ™¯ D Eâ™­ E F Fâ™¯ G Gâ™¯ A Bâ™­ B;
+#X msg 222 282 C Câ™¯ D Dâ™¯ E F Fâ™¯ Fí ´í´ª Gâ™¯ A Aâ™¯ B;
+#X text 416 283 why not use double sharps as in "Fí ´í´ª"?;
+#X obj 647 106 list fromsymbol;
+#X obj 647 127 display;
+#X msg 226 311 C Dâ™­ D Eâ™­ E F Gâ™­ G Aâ™­ Bí ´í´« Bb B;
+#X text 416 310 or a double flat as in Bí ´í´«?;
+#X msg 647 85 symbol Cí ´í´«;
+#X obj 689 192 list fromsymbol;
+#X obj 689 213 display;
+#X msg 689 171 symbol Cí ´í´ª;
+#X obj 690 246 list tosymbol;
+#X obj 698 274 display;
+#X obj 247 457 list tosymbol;
+#X obj 247 486 display;
+#X obj 247 424 list prepend 237 160 180 237 180;
+#X msg 247 384 158;
+#X msg 286 389 161;
+#X msg 323 397 162;
+#X msg 247 521 label \$1;
+#X obj 247 549 s \$0-cnv;
+#X obj 365 473 cnv 15 400 120 empty \$0-cnv í ´í´¢ 60 50 0 110 -228856
+-1 0;
+#X obj 418 491 cnv 1 300 1 empty empty empty 20 40 0 90 -1 -66577 0
+;
+#X obj 489 500 cnv 5 5 5 empty empty â™¯ -5 10 0 65 -228856 -1 0;
+#X obj 418 509 cnv 1 300 1 empty empty empty 20 40 0 90 -1 -66577 0
+;
+#X obj 418 527 cnv 1 300 1 empty empty empty 20 40 0 90 -1 -66577 0
+;
+#X obj 418 545 cnv 1 300 1 empty empty empty 20 40 0 90 -1 -66577 0
+;
+#X obj 418 563 cnv 1 300 1 empty empty empty 20 40 0 90 -1 -66577 0
+;
+#X obj 473 365 cnv 15 300 15 empty empty â€¢ 20 40 0 90 -1 -1 0;
+#X connect 1 0 0 0;
+#X connect 3 0 5 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X connect 7 0 8 0;
+#X connect 8 0 1 1;
+#X connect 9 0 1 1;
+#X connect 10 0 1 1;
+#X connect 12 0 13 0;
+#X connect 14 0 1 1;
+#X connect 16 0 12 0;
+#X connect 17 0 18 0;
+#X connect 18 0 20 0;
+#X connect 19 0 17 0;
+#X connect 20 0 21 0;
+#X connect 22 0 23 0;
+#X connect 23 0 28 0;
+#X connect 24 0 22 0;
+#X connect 25 0 24 0;
+#X connect 26 0 24 0;
+#X connect 27 0 24 0;
+#X connect 28 0 29 0;
 #X restore 435 217 pd other-scales;
 #X obj 231 187 else/pitch2note;
-#N canvas 993 163 583 403 modes 0;
+#N canvas 786 23 583 403 modes 0;
 #X obj 61 331 else/display;
 #X obj 61 193 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 55 256;
+-1 -1 0 256;
 #X obj 61 303 else/pitch2note;
 #X msg 86 221 chromatic;
 #X msg 109 246 sharp;
@@ -107,5 +155,6 @@ rising or flat otherwise., f 69;
 ;
 #X text 217 305 flat - sets to sharp mode (all accidents are flat)
 ;
-#X connect 26 0 36 0;
-#X connect 36 0 18 0;
+#X text 247 325 - sets arbtrary scale;
+#X connect 26 0 35 0;
+#X connect 35 0 18 0;

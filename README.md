@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (395 objects):
+## Current Object list (397 objects):
 
 **ASSORTED: [04]**
 
@@ -135,7 +135,7 @@ Cross compiling is also possible with something like this
 - [pitch2note]
 - [note2pitch]
 
-**PATCH/SUBPATCH MANAGEMENT: [18]**
+**PATCH/SUBPATCH MANAGEMENT: [20]**
 
 - [args]
 - [dollsym]
@@ -146,6 +146,8 @@ Cross compiling is also possible with something like this
 - [canvas.active]
 - [canvas.bounds]
 - [click]
+- [take]
+- [preset]
 - [canvas.gop]
 - [canvas.pos]
 - [canvas.edit]
