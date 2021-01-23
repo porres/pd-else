@@ -1,0 +1,94 @@
+#N canvas 743 69 562 510 10;
+#X obj 4 270 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 343 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 373 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 130 276 cnv 17 3 42 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 130 351 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 3 435 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 41 cnv 4 4 4 empty empty Interpolate 0 28 2 18 -233017 -1
+0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 110 41 cnv 4 4 4 empty empty between 0 28 2 18 -233017 -1 0
+;
+#X obj 179 41 cnv 4 4 4 empty empty values 0 28 2 18 -233017 -1 0;
+#X obj 3 4 cnv 15 301 42 empty empty interpolate 20 20 2 37 -233017
+-1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 4 graph;
+#N canvas 717 245 492 338 example 0;
+#X msg 310 121 60 63 67;
+#X obj 310 183 makenote 64 500;
+#X obj 350 215 noteout;
+#X text 300 92 a chord from list;
+#X obj 310 149 else/iterate;
+#X obj 75 136 array get ex_\$0;
+#X obj 75 113 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 75 161 else/iterate;
+#X obj 75 188 print;
+#X obj 66 62 array define -k ex_\$0 16;
+#A 0 -0.74668 0.293338 0.340005 0.0133328 -0.346673 -0.120003 0.600009
+0.666677 0.553342 0.253337 -0.0800021 -0.180004 0.320005 0.533342 0.553342
+0.860014;
+#X connect 0 0 4 0;
+#X connect 1 0 2 0;
+#X connect 1 1 2 1;
+#X connect 4 0 1 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 8 0;
+#X restore 457 208 pd example;
+#X floatatom 280 172 5 0 0 0 - - -;
+#X obj 130 322 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 404 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 172 147 hsl 90 14 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X floatatom 169 224 0 0 0 0 - - -;
+#X text 240 172 Target;
+#X text 61 88 [interpolate] allows you to use a slider to interpolate
+between values. Whenever you change the target \, you can interpolate
+to it by moving the slider to the opposite end., f 72;
+#X text 163 290 set <list>;
+#X text 157 304 exp <float>;
+#X text 199 322 list;
+#X text 193 276 float;
+#X text 236 276 - interpolation value between 0 and 1, f 43;
+#X text 236 290 - set last value, f 43;
+#X text 236 304 - sets exponential factor, f 43;
+#X text 236 322 - sets target values, f 43;
+#X text 199 351 list;
+#X text 236 351 - interpolated values;
+#X text 188 383 1) list - sets start value (default zeros);
+#X text 158 412 -exp <float>: sets exponential factor (default 1);
+#X floatatom 169 172 4 0 1 0 - - -;
+#X obj 169 197 else/interpolate 50;
+#X obj 280 147 else/initmess 100;
+#X connect 20 0 40 1;
+#X connect 23 0 39 0;
+#X connect 39 0 40 0;
+#X connect 40 0 24 0;
+#X connect 41 0 20 0;
