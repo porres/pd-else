@@ -1,15 +1,15 @@
-#N canvas 743 69 562 464 10;
-#X obj 4 270 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 743 69 563 449 10;
+#X obj 4 257 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 343 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 330 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 373 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 360 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 130 276 cnv 17 3 42 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 148 263 cnv 17 3 42 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 130 351 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 148 338 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 435 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 422 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -38,33 +38,41 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 4 graph;
-#N canvas 717 245 492 338 example 0;
-#X msg 310 121 60 63 67;
-#X obj 310 183 makenote 64 500;
-#X obj 350 215 noteout;
-#X text 300 92 a chord from list;
-#X obj 310 149 else/iterate;
-#X obj 75 136 array get ex_\$0;
-#X obj 75 113 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 75 161 else/iterate;
-#X obj 75 188 print;
-#X obj 66 62 array define -k ex_\$0 16;
-#A 0 -0.74668 0.293338 0.340005 0.0133328 -0.346673 -0.120003 0.600009
-0.666677 0.553342 0.253337 -0.0800021 -0.180004 0.320005 0.533342 0.553342
-0.860014;
-#X connect 0 0 4 0;
-#X connect 1 0 2 0;
-#X connect 1 1 2 1;
-#X connect 4 0 1 0;
-#X connect 5 0 7 0;
-#X connect 6 0 5 0;
-#X connect 7 0 8 0;
+#N canvas 678 218 748 238 example 0;
+#X obj 309 40 hsl 128 14 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 6200 1;
+#X floatatom 306 65 4 0 1 0 - - -;
+#X msg 367 123 exp \$1;
+#X floatatom 367 101 5 0.1 10 0 - - -;
+#X obj 351 183 array set \$0-buf;
+#X obj 351 150 else/interpolate 0.1 0.2 0.3 0.4;
+#X msg 559 107 -0.1 0.2 -0.3 0.4;
+#X msg 540 78 0.1 0.2 0.3 0.4;
+#X obj 513 53 else/initmess -1 -0.7 -0.4 -0.1;
+#X msg 351 72 set 1 0.8 0.6 0.2;
+#X obj 47 96 cnv 15 198 98 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-buf 4 float 3;
+#A 0 0.437008 0.492913 0.13937 0.302362;
+#X coords 0 1 4 -1 200 100 1 0 0;
+#X restore 46 95 graph;
+#X text 46 39 Test all messages \, and note that the object also works
+with lists., f 34;
+#X connect 0 0 1 0;
+#X connect 1 0 5 0;
+#X connect 2 0 5 0;
+#X connect 3 0 2 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 1;
+#X connect 7 0 5 1;
+#X connect 8 0 5 1;
+#X connect 9 0 5 0;
 #X restore 457 208 pd example;
 #X floatatom 280 172 5 0 0 0 - - -;
-#X obj 130 322 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 148 309 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 404 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 4 391 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X obj 172 147 hsl 90 14 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X floatatom 169 224 0 0 0 0 - - -;
@@ -72,23 +80,23 @@
 #X text 61 88 [interpolate] allows you to use a slider to interpolate
 between values. Whenever you change the target \, you can interpolate
 to it by moving the slider to the opposite end., f 72;
-#X text 163 290 set <list>;
-#X text 157 304 exp <float>;
-#X text 199 322 list;
-#X text 193 276 float;
-#X text 236 276 - interpolation value between 0 and 1, f 43;
-#X text 236 290 - set last value, f 43;
-#X text 236 304 - sets exponential factor, f 43;
-#X text 236 322 - sets target values, f 43;
-#X text 199 351 list;
-#X text 236 351 - interpolated values;
-#X text 188 383 1) list - sets start value (default zeros);
-#X text 158 412 -exp <float>: sets exponential factor (default 1);
+#X text 183 277 set <list>;
+#X text 177 291 exp <float>;
+#X text 219 309 list;
+#X text 213 263 float;
+#X text 256 263 - interpolation value between 0 and 1, f 43;
+#X text 256 277 - set last value, f 43;
+#X text 256 291 - sets exponential factor, f 43;
+#X text 256 309 - sets target values, f 43;
+#X text 219 338 list;
+#X text 256 338 - interpolated values;
+#X text 188 370 1) list - sets start value (default zeros);
+#X text 158 399 -exp <float>: sets exponential factor (default 1);
 #X floatatom 169 172 4 0 1 0 - - -;
-#X obj 169 197 else/interpolate 50;
 #X obj 280 147 else/initmess 100;
-#X connect 20 0 40 1;
+#X obj 169 197 else/interpolate 50;
+#X connect 20 0 41 1;
 #X connect 23 0 39 0;
-#X connect 39 0 40 0;
-#X connect 40 0 24 0;
-#X connect 41 0 20 0;
+#X connect 39 0 41 0;
+#X connect 40 0 20 0;
+#X connect 41 0 24 0;
