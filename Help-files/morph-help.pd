@@ -40,16 +40,16 @@
 #X obj 276 174 nbx 4 14 0 1000 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
 #X obj 144 40 cnv 4 4 4 empty empty lists 0 28 2 18 -233017 -1 0;
-#X text 171 296 float - morph time in ms, f 50;
-#X text 177 261 list - list with one or more elements to morph to;
-#X text 177 322 list - morphed list, f 49;
-#X text 141 275 set <list> - set start list values, f 55;
+#X text 181 296 float - morph time in ms, f 50;
+#X text 187 261 list - list with one or more elements to morph to;
+#X text 187 322 list - morphed list, f 49;
+#X text 151 275 set <list> - set start list values, f 55;
 #X obj 147 220 array set \$0-array;
 #X msg 71 139 set -1 0 1;
 #X msg 147 139 0.1 0.45 0.9;
 #X msg 164 164 -0.1 -0.45 -0.9;
-#X text 170 363 2) list - start list values (default 0);
-#X text 164 348 1) float - morph time in ms (default 0), f 40;
+#X text 190 363 2) list - start list values (default 0);
+#X text 184 348 1) float - morph time in ms (default 0), f 40;
 #X text 59 85 [morph] is similar to vanilla's [line] but besides floats
 \, it also works for lists so you can transition (or morph) between
 them., f 66;
