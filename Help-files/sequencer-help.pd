@@ -1,18 +1,18 @@
-#N canvas 746 58 560 585 10;
-#X obj 4 338 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 654 41 559 544 10;
+#X obj 4 286 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 450 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 398 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 525 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 488 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 109 459 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 103 405 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 557 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 517 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 25 40 cnv 4 4 4 empty empty data 0 28 2 18 -233017 -1 0;
-#X obj 109 346 cnv 17 3 63 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 103 294 cnv 17 3 63 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 166 346 bang;
+#X text 160 294 bang;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -32,17 +32,16 @@
 0;
 #X obj 67 40 cnv 4 4 4 empty empty sequencer 0 28 2 18 -233017 -1 0
 ;
-#X text 130 394 set <list>;
-#X obj 158 286 else/display;
-#X text 160 461 float;
+#X text 124 342 set <list>;
+#X text 154 407 float;
 #X obj 3 3 cnv 15 301 42 empty empty sequencer 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 200 377 - goes to a position index in the sequence (from 1)
+#X text 194 325 - goes to a position index in the sequence (from 1)
 ;
-#N canvas 844 192 662 484 +examples 0;
+#N canvas 844 192 662 484 +examples 1;
 #X obj 358 37 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X floatatom 241 190 5 0 0 0 - - -;
@@ -117,13 +116,12 @@ note tied., f 16;
 #X connect 30 0 13 0;
 #X connect 30 1 31 0;
 #X connect 31 0 23 0;
-#X restore 471 283 pd +examples;
-#X obj 158 314 print sequence;
-#X text 200 346 - gets element(s) from sequence;
-#X text 200 461 - element(s) from a sequence;
-#X text 141 534 1) list - list of elements sets the sequence (default
+#X restore 471 238 pd +examples;
+#X text 194 294 - gets element(s) from sequence;
+#X text 194 407 - element(s) from a sequence;
+#X text 131 496 1) list - list of elements sets the sequence (default
 0);
-#N canvas 804 142 874 480 chords 1;
+#N canvas 806 254 874 480 chords 1;
 #X obj 113 198 else/keyboard 17 80 2 4 0 0 empty empty;
 #X obj 113 303 else/voices 4 1 -list;
 #X obj 113 332 clone 4 voice 4;
@@ -166,16 +164,11 @@ note tied., f 16;
 #X connect 15 0 17 0;
 #X connect 16 0 13 0;
 #X connect 17 0 16 0;
-#X restore 489 303 pd chords;
-#X text 118 378 goto <float>;
-#X text 160 363 float;
-#X text 200 362 - sets index (from 1) and outputs it;
-#X obj 101 211 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 101 262 route bang;
-#X obj 101 288 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X text 200 393 - sets a new sequence \, only 'set' sets an empty sequence
+#X restore 489 258 pd chords;
+#X text 112 326 goto <float>;
+#X text 154 311 float;
+#X text 194 310 - sets index (from 1) and outputs it;
+#X text 194 341 - sets a new sequence \, only 'set' sets an empty sequence
 ;
 #N canvas 947 183 444 280 combine 0;
 #X obj 63 127 else/display;
@@ -193,8 +186,8 @@ the same time. This may also add a symbol/list selector., f 42;
 #X connect 2 0 1 0;
 #X connect 3 0 6 0;
 #X connect 5 0 0 0;
-#X restore 483 263 pd combine;
-#N canvas 890 147 501 367 text 0;
+#X restore 483 218 pd combine;
+#N canvas 965 73 501 367 text 0;
 #X obj 60 197 else/display;
 #X obj 60 129 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -224,50 +217,96 @@ names., f 33;
 #X connect 9 0 4 1;
 #X connect 10 1 11 0;
 #X connect 11 0 12 0;
-#X restore 501 243 pd text;
-#X obj 109 415 cnv 17 3 30 empty empty 1 5 9 0 16 -228856 -162280 0
+#X restore 501 198 pd text;
+#X obj 103 363 cnv 17 3 30 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 166 415 list;
-#X text 200 415 - sets a new sequence;
-#X text 166 431 bang;
-#X text 200 431 - sets an empty sequence;
-#X obj 410 270 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 160 363 list;
+#X text 194 363 - sets a new sequence;
+#X text 160 379 bang;
+#X text 194 379 - sets an empty sequence;
+#X obj 103 465 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+;
+#X text 160 467 bang;
+#X text 194 467 - when reaching end of sequence;
+#X obj 103 425 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 160 427 bang;
+#X text 194 427 - when there is a rest;
+#N canvas 783 238 778 357 example 0;
+#X obj 253 231 else/display;
+#X obj 253 258 print sequence;
+#X obj 196 157 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 109 501 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
-;
-#X text 166 503 bang;
-#X text 200 503 - when reaching end of sequence;
-#X obj 255 270 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 196 208 route bang;
+#X obj 196 234 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 336 271 finished =>;
-#X text 206 271 rest =>;
-#X text 259 212 <== set new sequence ==>;
-#X obj 109 480 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X text 166 482 bang;
-#X text 200 482 - when there is a rest;
-#X msg 137 212 set 1 . 3 - 4-5 six;
-#X msg 410 212 7 8 9 10;
-#X obj 101 186 else/tempo 60;
-#X obj 101 162 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 529 210 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 307 210 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 456 211 finished =>;
+#X text 370 158 <== set new sequence ==>;
+#X obj 196 132 else/tempo 60;
+#X obj 196 108 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 101 238 else/sequencer 1-2-3 4 - 5 bang C#4 7-eight-9 - 10 .
+#X text 275 211 rest;
+#X obj 418 210 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 368 210 barline;
+#X msg 232 158 set 1 . 3 - | 4-5 six;
+#X msg 529 158 7 8 | 9 10;
+#X obj 196 185 else/sequencer 1-2-3 4 - 5 bang | C#4 7-eight-9 - 10
+. |;
+#X floatatom 103 141 5 0 0 0 - - -;
+#X text 210 34 How to ignore barline? start from beginning and increase
+if "|" or ".", f 37;
+#X text 283 303 note;
+#X connect 0 0 1 0;
+#X connect 2 0 16 0;
+#X connect 3 0 4 0;
+#X connect 3 1 0 0;
+#X connect 9 0 2 0;
+#X connect 10 0 9 0;
+#X connect 14 0 16 0;
+#X connect 15 0 16 1;
+#X connect 16 0 3 0;
+#X connect 16 1 6 0;
+#X connect 16 2 12 0;
+#X connect 16 3 5 0;
+#X connect 17 0 16 0;
+#X restore 483 178 pd example;
+#X obj 111 230 else/display;
+#X obj 366 230 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 196 230 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 164 232 rest;
+#X obj 281 230 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 231 232 barline;
+#X text 340 232 end;
+#X obj 111 206 else/sequencer | 1 2 - bang | C#4 . a-b-c |;
+#X obj 111 259 print sequencer;
+#X obj 111 179 else/tempo 60;
+#X obj 111 155 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 82 178 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 160 447 bang;
+#X text 194 447 - when there is a barline;
+#X obj 103 445 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X text 51 86 When receiving a bang \, [sequencer] sends an element
-(float or symbol) from a given sequence. Elements joined by "-" are
-sent separate at the same time (you can build chords like this). A
-single "-" is treated as a rest. A "." (dot) is ignored and this can
-be thought as a tied note. Symbol elements are sent without a symbol
-selector (and can be note names or anything else) \, and a "bang" comes
-out as a proper "bang"., f 76;
-#X connect 18 0 24 0;
-#X connect 32 0 58 0;
-#X connect 33 0 34 0;
-#X connect 33 1 18 0;
-#X connect 54 0 58 0;
-#X connect 55 0 58 1;
-#X connect 56 0 32 0;
-#X connect 57 0 56 0;
-#X connect 58 0 33 0;
-#X connect 58 1 47 0;
-#X connect 58 2 43 0;
+#X text 33 84 [sequencer] sends an element from a given sequence when
+banged. Elements joined by "-" are sent at the same time but separately
+(allowing chords). A single "-" is treated as a rest. A "." is ignored
+and can be thought as "tie". A "|" represents a barline. Symbol elements
+are sent without a symbol selector (and can be note names or anything
+else) \, and a "bang" comes out as a proper "bang"., f 82;
+#X connect 45 0 53 0;
+#X connect 52 0 45 0;
+#X connect 52 1 47 0;
+#X connect 52 2 49 0;
+#X connect 52 3 46 0;
+#X connect 54 0 52 0;
+#X connect 55 0 54 0;
+#X connect 56 0 52 0;
