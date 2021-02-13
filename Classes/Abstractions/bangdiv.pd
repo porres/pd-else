@@ -37,6 +37,7 @@
 #X obj 124 274 t f f;
 #X obj 162 92 moses 0;
 #X obj 218 111 %;
+#X obj 143 29 inlet;
 #X connect 0 0 1 0;
 #X connect 1 0 12 0;
 #X connect 1 1 28 0;
@@ -76,3 +77,4 @@
 #X connect 35 0 25 0;
 #X connect 35 1 36 0;
 #X connect 36 0 25 0;
+#X connect 37 0 22 0;
