@@ -1,4 +1,4 @@
-#N canvas 654 41 559 544 10;
+#N canvas 865 101 559 544 10;
 #X obj 4 286 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 398 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -41,7 +41,7 @@
 #X restore 2 3 graph;
 #X text 194 325 - goes to a position index in the sequence (from 1)
 ;
-#N canvas 844 192 662 484 +examples 1;
+#N canvas 844 192 662 484 +examples 0;
 #X obj 358 37 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X floatatom 241 190 5 0 0 0 - - -;
@@ -121,7 +121,7 @@ note tied., f 16;
 #X text 194 407 - element(s) from a sequence;
 #X text 131 496 1) list - list of elements sets the sequence (default
 0);
-#N canvas 806 254 874 480 chords 1;
+#N canvas 806 254 874 480 chords 0;
 #X obj 113 198 else/keyboard 17 80 2 4 0 0 empty empty;
 #X obj 113 303 else/voices 4 1 -list;
 #X obj 113 332 clone 4 voice 4;
