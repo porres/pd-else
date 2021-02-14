@@ -1,4 +1,4 @@
-#N canvas 618 160 567 420 10;
+#N canvas 838 122 563 420 10;
 #X obj 3 285 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 3 323 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -25,9 +25,9 @@
 #X restore 305 3 pd;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Ratio/Cents 0 28 2 18 -233017 -1
-0;
-#X obj 113 40 cnv 4 4 4 empty empty conversion 0 28 2 18 -233017 -1
+#X obj 23 40 cnv 4 4 4 empty empty Rational/Cents 0 28 2 18 -233017
+-1 0;
+#X obj 139 40 cnv 4 4 4 empty empty conversion 0 28 2 18 -233017 -1
 0;
 #X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
@@ -143,11 +143,7 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X text 195 60 (for signals);
-#X text 89 89 Use [ratio2cents~] to convert a signal representing a
-ratio interval to an interval in cents. The conversion formula is \;
-cents = log2(ratio) * 1200;
-#X text 232 296 - ratio value;
+#X text 221 60 (for signals);
 #X text 232 333 - converted cents value;
 #X text 184 245 Cents;
 #X obj 225 242 else/display~;
@@ -157,6 +153,13 @@ cents = log2(ratio) * 1200;
 #X text 182 184 Ratio;
 #X obj 225 214 else/ratio2cents~;
 #X text 181 296 signal;
-#X connect 27 0 28 0;
-#X connect 28 0 30 0;
-#X connect 30 0 26 0;
+#X text 89 89 Use [ratio2cents~] to convert a signal representing a
+rational interval to an interval in cents. The conversion formula is
+\; cents = log2(ratio) * 1200;
+#X text 232 296 - rational value;
+#X text 29 189 see also:;
+#X obj 27 236 else/ratio2cents;
+#X obj 28 212 else/cents2ratio~;
+#X connect 25 0 26 0;
+#X connect 26 0 28 0;
+#X connect 28 0 24 0;
