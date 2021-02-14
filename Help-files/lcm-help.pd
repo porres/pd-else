@@ -1,14 +1,75 @@
-#N canvas 1164 176 367 369 12;
-#X msg 147 119 3 4;
-#X floatatom 147 214 5 0 0 0 - - -;
-#X floatatom 179 147 5 0 0 0 - - -;
-#X floatatom 100 130 5 0 0 0 - - -;
-#X obj 147 175 lcm 4;
-#X obj 100 73 loadbang;
-#X msg 100 97 6;
-#X connect 0 0 4 0;
-#X connect 2 0 4 1;
-#X connect 3 0 4 0;
-#X connect 4 0 1 0;
-#X connect 5 0 6 0;
-#X connect 6 0 3 0;
+#N canvas 593 133 562 424 10;
+#X obj 6 257 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 331 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 6 366 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 102 340 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 6 398 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 308 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 307 5 pd;
+#X obj 347 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 25 42 cnv 4 4 4 empty empty least 0 28 2 18 -233017 -1 0;
+#X obj 460 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 480 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 517 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 466 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 504 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 68 42 cnv 4 4 4 empty empty common 0 28 2 18 -233017 -1 0;
+#X obj 5 5 cnv 15 301 42 empty empty lcm 20 20 2 37 -233017 -1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 4 5 graph;
+#X obj 102 266 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X floatatom 279 166 5 0 0 0 - - -;
+#X floatatom 222 164 5 0 0 0 - - -;
+#X obj 222 194 else/lcm 4;
+#X obj 140 42 cnv 4 4 4 empty empty multiple 0 28 2 18 -233017 -1 0
+;
+#X obj 222 138 else/initmess 6;
+#X text 162 376 1) float - right inlet balue;
+#X text 174 340 float;
+#X text 179 266 float;
+#X obj 102 305 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 179 305 float;
+#X text 216 266 - set number 1 and output value;
+#X text 216 305 - set number 2;
+#X obj 222 219 else/display;
+#N canvas 1031 171 487 260 list 0;
+#X obj 180 170 else/lcm;
+#X msg 180 111 2 3;
+#X text 40 26 For 2 floats \, it spreads the values to the inlets.
+That is \, it updates the righe inlet input/argument. For more elements
+\, a different route is taken and the right inlet or argument is not
+updated \, but you get the lcm of the whole list anyway., f 62;
+#X floatatom 141 111 5 0 0 0 - - -;
+#X msg 202 140 3 5 7;
+#X obj 180 199 else/display;
+#X connect 0 0 5 0;
+#X connect 1 0 0 0;
+#X connect 3 0 0 0;
+#X connect 4 0 0 0;
+#X restore 479 220 pd list;
+#X text 77 91 [lcm] gives you the least common multiple ("lcm" for
+short) of two or more numbers.;
+#X text 185 283 list;
+#X text 216 283 - sets a list of numbers and output value;
+#X text 216 340 - lcm of two or more floats;
+#X connect 18 0 20 1;
+#X connect 19 0 20 0;
+#X connect 20 0 30 0;
+#X connect 22 0 19 0;

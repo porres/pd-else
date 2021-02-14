@@ -73,7 +73,6 @@ cmul~	x
 colors	x
 comb.filt~	x
 comb.rev~	x
-common.div	x
 compress~	x
 conv~	x
 cosine~	x
@@ -139,6 +138,7 @@ gain2~	x
 gate2imp~	x
 gatehold~	x
 gbman~	x
+gcd	x
 giga.rev~	x
 glide~	x
 glide2~	x
@@ -177,6 +177,7 @@ lastvalue	x
 lastvalue~	x
 latoocarfian~	x
 lb	x
+lcm	x
 lfnoise	x
 lfnoise~	x
 lfo	x
