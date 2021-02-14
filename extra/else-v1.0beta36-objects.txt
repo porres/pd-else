@@ -210,7 +210,6 @@ meter4~	x
 meter8~	x
 midi	x
 midi2freq	x
-midi2pitch	x
 mix2~	x
 mix4~	x
 mono	x
@@ -226,6 +225,7 @@ nbang	x
 noisegate~	x
 norm~	x
 note	x
+note2pitch	x
 note.in	x
 note.out	x
 nyquist~	x
@@ -259,7 +259,7 @@ pick	x
 ping.pong~	x
 pimp~	x
 pinknoise~	x
-pitch2midi	x
+pitch2note	x
 pitch.shift~	x
 plate.rev~	x
 play.file~	x
