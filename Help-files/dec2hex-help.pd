@@ -1,12 +1,11 @@
-#N canvas 663 92 562 424 10;
-#X obj 208 214 else/display;
-#X obj 295 146 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 663 92 559 451 10;
+#X obj 231 241 else/display;
+#X obj 346 177 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 180 146 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 203 176 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 208 146 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 241 176 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 208 179 else/dec2hex 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -34,33 +33,41 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 4 253 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 278 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 328 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 353 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 363 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 388 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 112 337 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 112 362 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 113 262 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 113 287 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 396 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 421 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 183 337 - the converted hexadecimal value;
-#X text 141 337 symbol;
-#X text 149 372 1) float - decimal value to convert (default 0);
-#X obj 113 302 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 203 362 - the converted hexadecimal value;
+#X text 161 362 symbol;
+#X obj 113 327 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 153 281 bang;
-#X text 147 263 float;
-#X text 183 263 - decimal value convert (outputs the result);
-#X text 183 281 - convert and output \, or output the last converted
-value;
-#X text 146 303 float;
-#X text 183 303 - decimal value to convert when receiving a bang;
-#X text 85 93 [dec2hex] is a simple abstraction that converts decimal
-values to hexadecimal ones.;
-#X connect 1 0 4 1;
-#X connect 2 0 4 0;
-#X connect 3 0 4 0;
-#X connect 4 0 0 0;
+#X text 173 306 bang;
+#X obj 231 209 else/dec2hex 10 16;
+#X msg 336 152 100 200;
+#X msg 231 145 248 256;
+#X text 137 288 float/list;
+#X text 137 328 float/list;
+#X text 203 288 - decimal value(s) to convert (outputs the result)
+;
+#X text 203 306 - convert and output;
+#X text 203 328 - decimal value(s) to convert (at bangs);
+#X text 62 92 [dec2hex] converts decimal values to hexadecimal ones.
+The output is preceded by "0x" and the letters in the hexadecimal values
+are upper case. You can also convert lists. Only floats are converted
+\, symbols are ignored., f 67;
+#X text 118 397 1) float/list - decimal value(s) to convert (default
+0);
+#X connect 1 0 28 1;
+#X connect 2 0 28 0;
+#X connect 3 0 28 0;
+#X connect 28 0 0 0;
+#X connect 29 0 28 1;
+#X connect 30 0 28 0;
