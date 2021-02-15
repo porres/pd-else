@@ -1,8 +1,5 @@
-#N canvas 664 51 562 577 10;
-#X floatatom 293 227 5 0 0 0 - - -;
-#X msg 172 217 rev \$1;
-#X obj 172 197 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
-1;
+#N canvas 664 51 564 503 10;
+#X floatatom 277 205 5 0 0 0 - - -;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -27,55 +24,52 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X obj 4 346 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 326 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 429 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 387 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 489 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 447 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 125 355 cnv 17 3 40 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 125 335 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 125 440 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 125 398 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 162 497 1) float;
-#X text 224 356 -;
-#X text 220 497 -;
-#X text 224 403 -;
-#X obj 125 464 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 162 455 1) float;
+#X text 224 336 -;
+#X text 220 455 -;
+#X text 224 361 -;
+#X obj 125 422 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 125 402 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 125 360 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 3 550 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 477 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 186 356 list;
-#X text 179 403 float;
-#X text 185 441 list;
-#X text 185 466 list;
-#X obj 224 252 else/slice 2;
-#X msg 224 191 1 2 3 4 5 6 7;
-#X obj 293 279 else/display;
-#X obj 293 309 else/display;
-#X text 238 356 incomming list to be split, f 37;
-#X text 238 403 split point, f 37;
-#X text 222 441 - the left part of the splitted list, f 40;
-#X text 222 466 - the right part of the splitted list, f 40;
-#X text 235 497 split point (default 0), f 38;
-#X text 279 227 n;
-#X text 77 143 In the reverse mode if you slice at 'n' \, the right
-outlet spits the last 'n' elements and the left outlet sends the first
-elements., f 63;
-#X text 77 91 [slice] splits lists \, the 'n' split point is set with
-the first argument or with a float input into the right inlet. If you
-slice at 'n' \, the left outlet spits the first 'n' elements and the
-right outlet sends the remaining elements., f 63;
-#X obj 4 519 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 189 527 -rev: sets to reverse mode;
-#X text 224 376 -;
-#X text 144 376 rev <float>;
-#X text 238 376 non-zero sets to reverse mode, f 37;
-#X connect 0 0 31 1;
-#X connect 1 0 31 0;
-#X connect 2 0 1 0;
-#X connect 31 0 34 0;
-#X connect 31 1 33 0;
-#X connect 32 0 31 0;
+#X text 186 336 list;
+#X text 179 361 float;
+#X text 185 399 list;
+#X text 185 424 list;
+#X obj 208 230 else/slice 2;
+#X obj 277 257 else/display;
+#X obj 277 287 else/display;
+#X text 238 361 split point, f 37;
+#X text 222 399 - the left part of the splitted list, f 40;
+#X text 222 424 - the right part of the splitted list, f 40;
+#X text 235 455 split point (default 0), f 38;
+#X text 313 203 n;
+#X msg 208 204 1 2 3 4 5;
+#X msg 277 178 -2;
+#X msg 312 178 1;
+#X text 56 91 [slice] splits lists. The 'n' split point is set via
+argument or right inlet. If you slice at 'n' \, the left outlet spits
+the first 'n' elements and the right outlet sends the remaining elements.
+If you slice at '-n' \, the right outlet spits the last 'n' elements
+and the left outlet sends the first elements. If the number of elements
+is less than the split point \, the whole list is output to the left
+if 'n' is positive \, and to the right if negative., f 72;
+#X text 238 336 incomming list to split, f 37;
+#X connect 0 0 29 1;
+#X connect 29 0 31 0;
+#X connect 29 1 30 0;
+#X connect 37 0 29 0;
+#X connect 38 0 0 0;
+#X connect 39 0 0 0;
