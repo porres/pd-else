@@ -1,4 +1,4 @@
-#N canvas 687 195 704 824 10;
+#N canvas 473 168 704 824 10;
 #X declare -path else;
 #X obj 54 315 args;
 #X obj 54 338 route bang;
@@ -52,7 +52,7 @@
 #X obj 458 759 outlet;
 #X obj 512 759 outlet;
 #X obj 352 510 trigger bang bang, f 21;
-#X obj 333 470 sel . |;
+#X obj 333 470 sel _ |;
 #X connect 0 0 1 0;
 #X connect 1 0 5 0;
 #X connect 1 1 3 0;
