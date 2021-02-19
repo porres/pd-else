@@ -1,27 +1,27 @@
-#N canvas 1073 78 561 448 10;
-#X obj 2 270 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 736 86 560 435 10;
+#X obj 2 266 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 325 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 2 321 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 363 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 359 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 130 280 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 130 276 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X obj 130 302 cnv 17 3 17 empty empty r 5 9 0 16 -228856 -162280 0
+#X obj 130 298 cnv 17 3 17 empty empty r 5 9 0 16 -228856 -162280 0
 ;
-#X obj 130 336 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 130 332 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 2 407 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 405 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 211 304 -;
-#X text 172 304 float;
-#X text 211 280 -;
-#X text 157 371 -;
-#X text 99 371 1) float;
-#X text 157 388 -;
-#X text 99 388 2) float;
-#X text 154 280 anything;
-#X text 154 336 anything;
+#X text 211 300 -;
+#X text 172 300 float;
+#X text 211 276 -;
+#X text 157 367 -;
+#X text 99 367 1) float;
+#X text 157 384 -;
+#X text 99 384 2) float;
+#X text 154 276 anything;
+#X text 154 332 anything;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -52,33 +52,39 @@
 #X text 61 90 [selector] outputs data from the selected inlet according
 to the float into the rightmost inlet.;
 #X obj 219 40 cnv 4 4 4 empty empty inlet 0 28 2 18 -233017 -1 0;
-#X obj 179 224 else/display;
-#X text 211 336 - message from the selected inlet;
-#X text 171 388 inlet initially selected (default 0 - all closed);
-#X text 226 280 any message to be selected, f 28;
-#X text 226 304 sets which inlet is selected;
-#X text 171 371 set the 'n' number of channels (from 2 to 512 \, default
+#X obj 177 232 else/display;
+#X text 211 332 - message from the selected inlet;
+#X text 226 276 any message to be selected, f 28;
+#X text 226 300 sets which inlet is selected;
+#X text 171 367 set the 'n' number of channels (from 2 to 512 \, default
 2);
-#X floatatom 330 191 3 0 3 0 - - -;
-#X obj 330 124 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
--1 -1 0;
-#X text 348 124 0;
-#X text 348 139 1;
-#X text 348 154 2;
-#X text 348 169 3;
-#X obj 179 166 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 220 166 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 261 167 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 188 147 1;
-#X text 228 147 2;
-#X text 270 147 3;
-#X obj 179 194 else/selector 3 1, f 21;
-#X connect 38 0 50 3;
-#X connect 39 0 38 0;
-#X connect 44 0 50 0;
-#X connect 45 0 50 1;
-#X connect 46 0 50 2;
-#X connect 50 0 32 0;
+#X obj 328 145 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -228856
+-1 -1 2;
+#X text 346 145 0;
+#X text 346 160 1;
+#X text 346 175 2;
+#X obj 177 174 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 43 256;
+#X obj 218 174 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 27 256;
+#X obj 259 175 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 57 256;
+#X obj 177 202 else/selector 3 1, f 21;
+#X text 186 155 0;
+#X text 226 155 1;
+#X text 268 155 2;
+#X msg 328 122 -1;
+#X msg 364 122 3;
+#X text 171 384 inlet initially selected (default 0);
+#X text 394 122 none;
+#X obj 328 204 nbx 2 15 -1e+37 1e+37 0 0 xfkvds asfmnv empty 0 -8 0
+12 -228856 -1 -1 0 256;
+#X text 363 204 intlet #;
+#X connect 37 0 52 0;
+#X connect 41 0 44 0;
+#X connect 42 0 44 1;
+#X connect 43 0 44 2;
+#X connect 44 0 32 0;
+#X connect 48 0 37 0;
+#X connect 49 0 37 0;
+#X connect 52 0 44 3;
