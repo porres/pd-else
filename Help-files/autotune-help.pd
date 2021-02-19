@@ -1,4 +1,4 @@
-#N canvas 704 54 561 635 10;
+#N canvas 669 27 561 635 10;
 #X obj 3 3 cnv 15 301 42 empty empty Autotune 20 20 2 37 -233017 -1
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -75,7 +75,7 @@ pitches to the closest step in the scale., f 67;
 #X obj 422 365 else/frac2dec;
 #X floatatom 81 287 5 0 0 0 - - -;
 #X msg 226 264 bypass \$1;
-#X obj 226 242 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+#X obj 226 242 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
 1;
 #X text 156 431 bypass <float>;
 #X text 249 430 - non zero sets to bypass mode;

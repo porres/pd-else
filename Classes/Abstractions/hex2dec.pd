@@ -1,4 +1,4 @@
-#N canvas 1150 49 476 522 10;
+#N canvas 774 84 476 522 10;
 #X declare -path else;
 #X msg 191 314 0;
 #X obj 191 343 v i_\$0;
@@ -7,7 +7,7 @@
 #X obj 170 36 inlet;
 #X obj 84 445 outlet;
 #X text 233 248 Part of ELSE \; https://github.com/porres/pd-else;
-#N canvas 334 79 550 646 sum 0;
+#N canvas 830 114 550 646 sum 0;
 #X obj 124 81 list fromsymbol;
 #X obj 124 467 list split 1;
 #X obj 158 490 list;
@@ -16,21 +16,20 @@
 #X obj 302 406 list;
 #X obj 188 345 sel 0 1;
 #X obj 207 410 list, f 5;
-#X obj 187 125 list length;
-#X obj 187 153 >= 2;
+#X obj 187 175 list length;
+#X obj 187 203 >= 2;
 #X obj 124 45 inlet;
 #X obj 124 177 t l l;
 #X obj 124 205 router;
-#X obj 187 179 + 1;
 #X obj 188 309 expr $f1 == 48 && ($f2 == 88 || $f2 == 120);
 #X obj 124 525 expr i_\$0 = i_\$0 + 1 \; sum_\$0 = sum_\$0 + if($f1
 <= 57 \, $f1 -48 \, if($f1 > 57 && $f1 < 88 \, $f1 - 55 \, $f1 -87))
 * pow(16 \, i_\$0), f 52;
 #X connect 0 0 11 0;
-#X connect 1 0 15 0;
+#X connect 1 0 14 0;
 #X connect 1 1 2 0;
 #X connect 2 0 1 0;
-#X connect 3 0 14 0;
+#X connect 3 0 13 0;
 #X connect 3 1 7 1;
 #X connect 4 0 3 0;
 #X connect 4 1 5 1;
@@ -39,14 +38,13 @@
 #X connect 6 1 7 0;
 #X connect 7 0 1 0;
 #X connect 8 0 9 0;
-#X connect 9 0 13 0;
+#X connect 9 0 12 1;
 #X connect 10 0 0 0;
 #X connect 11 0 12 0;
 #X connect 11 1 8 0;
 #X connect 12 0 1 0;
 #X connect 12 1 4 0;
-#X connect 13 0 12 1;
-#X connect 14 0 6 0;
+#X connect 13 0 6 0;
 #X restore 146 313 pd sum;
 #X obj 268 297 declare -path else;
 #X obj 62 72 route bang;
