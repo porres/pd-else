@@ -45,9 +45,8 @@
 #X obj 135 306 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 308 190 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+-228856 -1 -1 8 256;
 #X msg 196 140 1 2 3 4 5 6 7;
-#X msg 232 163 a b c d e f g;
 #X text 189 307 float -;
 #X text 244 308 the rotation number;
 #X text 172 378 1) float - the rotation number;
@@ -56,7 +55,8 @@ the offset. If it's positive \, the list is shifted to the right. If
 negative \, to the left.;
 #X obj 233 241 else/display;
 #X obj 233 212 else/rotate 3;
-#X connect 24 0 32 1;
-#X connect 25 0 32 0;
-#X connect 26 0 32 0;
+#X msg 232 163 a b c d e f g;
+#X connect 24 0 31 1;
+#X connect 25 0 31 0;
+#X connect 31 0 30 0;
 #X connect 32 0 31 0;
