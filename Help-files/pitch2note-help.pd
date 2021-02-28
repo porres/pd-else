@@ -1,4 +1,4 @@
-#N canvas 753 91 560 455 10;
+#N canvas 808 91 560 455 10;
 #X obj 4 253 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 348 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -40,11 +40,6 @@
 #X obj 90 40 cnv 4 4 4 empty empty MIDI 0 28 2 18 -233017 -1 0;
 #X obj 140 40 cnv 4 4 4 empty empty pitch 0 28 2 18 -233017 -1 0;
 #X text 56 189 see also:;
-#X text 62 89 [pitch2note] converts a MIDI pitch value note names (such
-as Eb3). The names end with an octave number \, in a way that middle
-C (MIDI pitch = 60) represents C4 represents. For now \, we have a
-mode for accidents that will give you a sharp note if the number is
-rising or flat otherwise., f 69;
 #X obj 231 157 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
 -1 -1 0 256;
 #X obj 49 211 else/note2pitch;
@@ -76,10 +71,6 @@ rising or flat otherwise., f 69;
 #X connect 9 0 1 0;
 #X restore 434 182 pd other-scales;
 #X obj 231 187 else/pitch2note;
-#X text 211 291 sharp - sets to sharp mode (all accidents are sharp)
-;
-#X text 217 305 flat - sets to sharp mode (all accidents are flat)
-;
 #X text 187 277 chromatic - sets to chromatic mode (default);
 #X text 247 325 - user defined scales;
 #N canvas 993 163 582 443 unicode 0;
@@ -111,30 +102,31 @@ and flats are represented by the unicode characters "♯" and "♭"
 #N canvas 993 163 583 403 accidentals 0;
 #X obj 61 331 else/display;
 #X obj 61 193 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 0 256;
-#X obj 61 303 else/pitch2note;
+-1 -1 65 256;
 #X msg 86 221 chromatic;
 #X msg 109 246 sharp;
 #X msg 116 270 flat;
-#X text 151 221 sharp if rising \, flat otherwise;
-#X text 151 246 All sharp;
-#X text 154 269 All flat;
 #X obj 61 163 stripnote;
 #X obj 61 54 else/keyboard 17 80 4 3 0 0 empty empty;
-#X text 204 174 Try different modes;
-#X connect 1 0 2 0;
-#X connect 2 0 0 0;
-#X connect 3 0 2 0;
-#X connect 4 0 2 0;
-#X connect 5 0 2 0;
-#X connect 9 0 1 0;
-#X connect 10 0 9 0;
+#X text 151 246 All sharp (even B# and E#);
+#X text 154 269 All flat (even Cb and Fb);
+#X text 203 174 Try the different preset modes;
+#X text 151 221 when accidental \, sharp if rising \, flat otherwise
+(default);
+#X obj 61 303 else/pitch2note;
+#X connect 1 0 11 0;
+#X connect 2 0 11 0;
+#X connect 3 0 11 0;
+#X connect 4 0 11 0;
+#X connect 5 0 1 0;
+#X connect 6 0 5 0;
+#X connect 11 0 0 0;
 #X restore 434 161 pd accidentals;
 #X text 172 356 symbol/list;
 #N canvas 993 163 582 443 list 0;
 #X obj 61 368 else/display;
 #X obj 61 230 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 70 256;
+-1 -1 0 256;
 #X msg 86 258 chromatic;
 #X msg 109 283 sharp;
 #X msg 116 307 flat;
@@ -155,5 +147,10 @@ both flags of course (in any order).;
 #X connect 9 0 8 0;
 #X connect 10 0 0 0;
 #X restore 434 223 pd list;
-#X connect 25 0 33 0;
-#X connect 33 0 18 0;
+#X text 62 89 [pitch2note] converts a MIDI pitch value note names (such
+as Eb3). The names end with an octave number \, in a way that middle
+C (MIDI pitch = 60) represents C4 represents., f 66;
+#X text 211 291 sharp - sets to sharp mode;
+#X text 217 305 flat - sets to flat mode;
+#X connect 24 0 32 0;
+#X connect 32 0 18 0;
