@@ -1,4 +1,4 @@
-#N canvas 564 76 563 660 10;
+#N canvas 721 35 560 642 10;
 #X obj 2 4 cnv 15 301 42 empty empty fbdelay~ 20 20 2 37 -233017 -1
 0;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -78,7 +78,7 @@ the expression: a = exp(log(0.001) * D/t60).;
 #X connect 28 0 32 0;
 #X connect 32 0 36 0;
 #X connect 36 0 27 0;
-#X restore 437 279 pd Details and \; Filter Equation;
+#X restore 441 279 pd Details and \; Filter Equation;
 #X obj 102 41 cnv 4 4 4 empty empty delay 0 28 2 18 -233017 -1 0;
 #N canvas 611 210 498 284 gain 0;
 #X obj 234 122 else/impseq~;
@@ -100,26 +100,26 @@ f 72;
 #X connect 3 0 2 0;
 #X connect 4 0 3 0;
 #X connect 5 0 4 0;
-#X restore 456 255 pd gain mode;
+#X restore 460 257 pd gain mode;
 #X text 60 87 Use [fbdelay~] for delay effects \, reverberation and
 comb filtering. By default \, you can set a delay time and a reverberation/decay
 time in ms ("t60") \, which is the time the impulse takes to fall 60dB
 in energy (but you can change this parameter to a gain coefficient).
 , f 67;
-#X obj 2 630 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 614 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 2 451 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 2 452 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 482 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 484 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 98 404 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 106 405 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 98 427 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 106 428 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X obj 98 459 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 106 460 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 138 406 float/signal - delay time (im ms), f 54;
-#X text 138 429 float/signal - decay time (in ms), f 54;
+#X text 148 407 float/signal - delay time (im ms), f 54;
+#X text 148 430 float/signal - decay time (in ms), f 54;
 #X obj 131 154 noise~;
 #X obj 178 186 *~;
 #X obj 178 258 else/out~;
@@ -131,33 +131,32 @@ in energy (but you can change this parameter to a gain coefficient).
 #X obj 193 154 else/pulse~ 1;
 #X obj 2 319 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X text 216 343 - changes the maximum delay size (in ms), f 41;
-#X text 137 343 size <float>;
-#X text 180 360 clear - clears the delay buffer, f 47;
-#X text 174 327 signal - signal input to the delay line, f 48;
-#X text 216 378 - non-0 sets to gain mode, f 41;
-#X text 137 378 gain <float>;
-#X obj 100 329 cnv 17 3 66 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 226 341 - changes the maximum delay size (in ms), f 41;
+#X text 147 341 size <float>;
+#X text 190 371 clear - clears the delay buffer, f 47;
+#X text 184 326 signal - signal input to the delay line, f 48;
+#X text 226 386 - non-0 sets to gain mode, f 41;
+#X text 147 386 gain <float>;
+#X obj 108 327 cnv 17 3 72 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 163 503 2) float - feedback amount (default 0), f 58;
-#X text 162 520 3) float -;
-#X text 163 488 1) float - delay time (default 1 sample), f 58;
-#X text 174 460 signal - the filtered/delayed signal;
-#X text 364 200 Feedback (Decay time in ms);
-#X obj 2 550 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 220 558 -;
-#X text 133 558 -size <float>;
-#X text 234 557 sets delay size (default 1000 ms or first argument's
-value if given), f 46;
+#X text 96 505 2) float - feedback amount (default 0), f 58;
+#X text 95 522 3) float -;
+#X text 96 490 1) float - delay time (default 1 sample), f 58;
+#X text 174 461 signal - the filtered/delayed signal;
+#X obj 2 544 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 184 552 -;
+#X text 97 552 -size <float>;
+#X text 198 551 sets delay size (default 1000 ms or first argument's
+value if given), f 49;
 #X text 23 236 see also:;
 #X obj 26 258 else/ffdelay~;
-#X text 220 588 -;
-#X text 175 587 -samps;
-#X text 234 587 sets delay time unit to "samples" (default is ms);
-#X text 220 608 -;
-#X text 180 607 -gain;
-#X text 234 607 sets feedback mode to gain;
-#N canvas 285 146 860 335 size 0;
+#X text 184 578 -;
+#X text 139 577 -samps;
+#X text 198 577 sets delay time unit to "samples" (default is ms);
+#X text 184 594 -;
+#X text 144 593 -gain;
+#X text 198 593 sets feedback mode to gain;
+#N canvas 744 145 860 335 size 0;
 #X text 441 47 Alternatively \, with the -samps flag \, you can set
 it to operate in time units specified by the number of samples. In
 the same way \, this affects both delay time and delay size., f 64
@@ -210,14 +209,46 @@ argument \, you can use the -size flag/message., f 64;
 #X connect 15 0 19 1;
 #X connect 16 0 20 1;
 #X connect 17 0 5 0;
-#X restore 486 233 pd size;
+#X restore 490 213 pd size;
 #X obj 178 224 else/fbdelay~ 100 2000;
-#X text 229 520 feedback mode: <0> ("t60") or <non-0> (gain mode) \,
-default 0, f 50;
+#X text 162 522 feedback mode: <0> ("t60") or <non-0> (gain mode) \,
+default 0;
 #X obj 26 282 else/comb.filt~;
+#X text 135 356 freeze <float>;
+#X text 226 356 - non zero freezes \, zero unfreezes, f 41;
+#X text 364 199 <= Feedback (Decay time in ms), f 11;
+#N canvas 1007 135 430 451 freeze 0;
+#X text 57 28 You can freeze the delay line with the 'freeze' message
+\, where zero freezes \, zero unfreezes. When frozen \, it stops writting
+into it. Note that unlike [ffdelay~] \, the input still goes through.
+, f 52;
+#X obj 116 348 else/out~;
+#X obj 116 314 else/fbdelay~ 100 2000;
+#X msg 176 272 freeze \$1;
+#X obj 176 247 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 160 206 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 160 178 loadbang;
+#X obj 115 208 *~;
+#X obj 115 114 noise~;
+#X obj 115 172 *~;
+#X obj 130 140 else/pulse~ 1;
+#X text 185 208 <= mute/unmute input;
+#X text 202 247 <= freeze/unfreeze;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X connect 4 0 3 0;
+#X connect 5 0 7 1;
+#X connect 6 0 5 0;
+#X connect 7 0 2 0;
+#X connect 8 0 9 0;
+#X connect 9 0 7 0;
+#X connect 10 0 9 1;
+#X restore 478 235 pd freeze;
 #X connect 24 0 25 0;
-#X connect 25 0 57 0;
-#X connect 27 0 57 2;
-#X connect 28 0 57 1;
+#X connect 25 0 56 0;
+#X connect 27 0 56 2;
+#X connect 28 0 56 1;
 #X connect 30 0 25 1;
-#X connect 57 0 26 0;
+#X connect 56 0 26 0;

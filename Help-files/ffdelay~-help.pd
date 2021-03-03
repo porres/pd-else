@@ -1,4 +1,4 @@
-#N canvas 685 44 560 524 10;
+#N canvas 666 70 560 524 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -176,7 +176,7 @@ argument \, you can use the -size flag/message, f 64;
 #X obj 129 167 osc~;
 #X obj 129 134 else/rescale~ 300 500;
 #X msg 185 192 freeze \$1;
-#X obj 185 165 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 185 165 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 129 103 else/stepnoise~ 5;
 #X obj 185 224 else/ffdelay~ 0 -size 1000;
