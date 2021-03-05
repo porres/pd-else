@@ -133,6 +133,7 @@ crossover~.class.sources := Classes/Source/crossover~.c
 cusp~.class.sources := Classes/Source/cusp~.c
 decay~.class.sources := Classes/Source/decay~.c
 decay2~.class.sources := Classes/Source/decay2~.c
+del~.class.sources := Classes/Source/del~.c
 downsample~.class.sources := Classes/Source/downsample~.c
 drive~.class.sources := Classes/Source/drive~.c
 dust~.class.sources := Classes/Source/dust~.c

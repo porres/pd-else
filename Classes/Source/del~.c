@@ -329,6 +329,7 @@ void del_tilde_setup(void){
     del_in_class = class_new(gensym("del~ in"), 0,
         (t_method)del_in_free, sizeof(t_del_in), 0, 0);
     class_addcreator((t_newmethod)del_new, gensym("del~"), A_GIMME, 0);
+    class_addcreator((t_newmethod)del_new, gensym("else/del~"), A_GIMME, 0);
     CLASS_MAINSIGNALIN(del_in_class, t_del_in, x_f);
 //    class_addbang(del_in_class, del_in_outsym);
     class_addmethod(del_in_class, (t_method)del_in_dsp, gensym("dsp"), A_CANT, 0);

@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (401 objects):
+## Current Object list (402 objects):
 
 **ASSORTED: [04]**
 
@@ -301,11 +301,12 @@ Cross compiling is also possible with something like this
 
 - [loop]
 
-**AUDIO PROCESSING: ASSORTED [22]**
+**AUDIO PROCESSING: ASSORTED [23]**
 
 - [downsample~]
 - [conv~]
 - [chorus~]
+- [del~]
 - [fbdelay~]
 - [ffdelay~]
 - [rdelay~]
