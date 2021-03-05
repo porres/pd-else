@@ -148,8 +148,8 @@ in energy (but you can change this parameter to a gain coefficient).
 #X text 97 552 -size <float>;
 #X text 198 551 sets delay size (default 1000 ms or first argument's
 value if given), f 49;
-#X text 23 236 see also:;
-#X obj 26 258 else/ffdelay~;
+#X text 23 216 see also:;
+#X obj 26 238 else/ffdelay~;
 #X text 184 578 -;
 #X text 139 577 -samps;
 #X text 198 577 sets delay time unit to "samples" (default is ms);
@@ -213,7 +213,7 @@ argument \, you can use the -size flag/message., f 64;
 #X obj 178 224 else/fbdelay~ 100 2000;
 #X text 162 522 feedback mode: <0> ("t60") or <non-0> (gain mode) \,
 default 0;
-#X obj 26 282 else/comb.filt~;
+#X obj 26 262 else/comb.filt~;
 #X text 135 356 freeze <float>;
 #X text 226 356 - non zero freezes \, zero unfreezes, f 41;
 #X text 364 199 <= Feedback (Decay time in ms), f 11;
@@ -225,7 +225,7 @@ into it. Note that unlike [ffdelay~] \, the input still goes through.
 #X obj 116 348 else/out~;
 #X obj 116 314 else/fbdelay~ 100 2000;
 #X msg 176 272 freeze \$1;
-#X obj 176 247 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 176 247 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 160 206 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
@@ -246,6 +246,7 @@ into it. Note that unlike [ffdelay~] \, the input still goes through.
 #X connect 9 0 7 0;
 #X connect 10 0 9 1;
 #X restore 478 235 pd freeze;
+#X obj 26 285 else/del~ \$0;
 #X connect 24 0 25 0;
 #X connect 25 0 56 0;
 #X connect 27 0 56 2;

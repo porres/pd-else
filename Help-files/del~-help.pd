@@ -1,4 +1,4 @@
-#N canvas 689 190 559 448 10;
+#N canvas 689 189 560 469 10;
 #X obj 2 4 cnv 15 301 42 empty empty del~ 20 20 2 37 -233017 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -23,14 +23,14 @@
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 325 137 hsl 128 15 0 1000 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 600 1;
-#X obj 322 228 else/out~;
-#X obj 80 183 else/out~;
-#X floatatom 322 158 6 0 0 0 - - -;
-#X obj 322 181 else/f2s~ 200;
-#X obj 61 248 else/del~ in \$0-x 1000;
-#X obj 322 205 else/del~ out \$0-x;
-#X obj 61 153 else/player~ bubul.wav 1 1;
+-1 -1 0 1;
+#X obj 322 254 else/out~;
+#X obj 80 179 else/out~;
+#X floatatom 322 164 6 0 0 0 - - -;
+#X obj 322 193 else/f2s~ 200;
+#X obj 61 244 else/del~ in \$0-x 1000;
+#X obj 322 221 else/del~ out \$0-x;
+#X obj 61 149 else/player~ bubul.wav 1 1;
 #N canvas 332 102 560 621 del~ 0;
 #X obj 4 388 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -63,7 +63,7 @@
 #X msg 213 240 freeze \$1;
 #X obj 114 279 else/del~ -samps \$0-y 44100;
 #X text 198 471 (none);
-#X obj 2 3 cnv 15 301 42 empty \$0-cnv del~\ in 20 20 2 37 -233017
+#X obj 2 3 cnv 15 301 42 empty \$0-cnv del~\\\ in 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -112,13 +112,13 @@ amount a [del~ out] object can have., f 44;
 #X connect 20 0 19 0;
 #X connect 21 0 22 0;
 #X connect 22 0 23 0;
-#X restore 293 372 pd del~ in;
-#X text 364 158 delay time (ms by default);
-#X text 202 243 write to delay line, f 11;
-#X text 442 200 read from delay line, f 10;
-#X text 96 342 For more information on messages and inlet/outlet for
+#X restore 293 392 pd del~ in;
+#X text 364 164 delay time (ms by default);
+#X text 203 238 write to delay line, f 11;
+#X text 442 216 read from delay line, f 10;
+#X text 96 362 For more information on messages and inlet/outlet for
 both "in" and "out" \, see:, f 50;
-#N canvas 1006 137 561 510 del~ 0;
+#N canvas 1006 137 561 508 del~ 0;
 #X obj 4 308 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 344 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -132,7 +132,7 @@ both "in" and "out" \, see:, f 50;
 #X text 128 428 2) float;
 #X obj 4 452 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 209 318 - signal input into the delay line, f 37;
-#X obj 2 3 cnv 15 301 42 empty \$0-cnv2 del~\ out 20 20 2 37 -233017
+#X obj 2 3 cnv 15 301 42 empty \$0-cnv2 del~\\\ out 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -157,7 +157,7 @@ both "in" and "out" \, see:, f 50;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 116 40 cnv 4 4 4 empty empty output 0 28 2 18 -233017 -1 0;
-#X text 302 201 The -samps flag sets time value to samples instead
+#X text 283 208 The -samps flag sets time value to samples instead
 of ms (default), f 34;
 #X text 94 390 (besides the first optional argument that defines "in"
 or "out", f 64;
@@ -165,14 +165,13 @@ or "out", f 64;
 #X text 182 412 - sets delay line name, f 43;
 #X text 128 458 -samps;
 #X text 170 459 - sets time value to samples (default is ms);
-#X text 73 88 Read from a delay line with interpolation., f 43;
-#X obj 135 207 else/del~ out -samps \$0-y;
-#X obj 135 238 else/out~;
-#X obj 138 125 hsl 128 15 0 1000 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 116 214 else/del~ out -samps \$0-y;
+#X obj 116 245 else/out~;
+#X obj 119 132 hsl 128 15 0 1000 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X floatatom 135 146 6 0 0 0 - - -;
-#X obj 135 169 else/f2s~ 200;
-#X text 177 146 delay time (in samples in this case);
+#X floatatom 116 153 6 0 0 0 - - -;
+#X obj 116 176 else/f2s~ 200;
+#X text 158 153 delay time (in samples in this case);
 #X text 130 318 float/signal;
 #X obj 104 355 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
@@ -180,22 +179,72 @@ or "out", f 64;
 #X text 209 356 - output of a delay line, f 37;
 #X text 182 427 - delay amount in ms or samples (default 1 sample)
 ;
-#X connect 28 0 29 0;
+#N canvas 1166 261 476 432 order 0;
+#N canvas 718 352 470 239 in 0;
+#X obj 92 175 outlet~;
+#X obj 125 42 inlet~;
+#X obj 125 125 del~ -samps \$0-order 64;
+#X text 146 174 dummy outlet to force order of execution;
+#X connect 1 0 2 0;
+#X restore 171 229 pd in;
+#X obj 131 306 -~;
+#N canvas 707 219 468 219 out 0;
+#X obj 129 147 outlet~;
+#X obj 54 34 inlet~;
+#X obj 129 69 inlet~;
+#X obj 129 110 del~ out -samps \$0-order;
+#X text 105 33 dummy intlet to force order of execution;
+#X connect 2 0 3 0;
+#X connect 3 0 0 0;
+#X restore 171 265 pd out;
+#X obj 132 161 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 171 302 else/display~;
+#X obj 131 346 else/display~;
+#X obj 132 188 else/ramp~;
+#X floatatom 219 230 5 0 64 0 - - -;
+#X text 257 228 delay in samples;
+#X text 165 351 matches delay in samples;
+#X obj 132 135 else/tempo 10000 -ms -on;
+#X text 19 31 We can force the order of execution with subpatches as
+this example shows. If we don't do this \, it's hard to guarantee we
+can read from the delay line without having a minimum delay of a block
+size. This is the same issue with [delwrite~]/[delread~] objects and
+other objetcs like [send~]/[receive~]., f 69;
+#X connect 0 0 2 0;
+#X connect 1 0 5 0;
+#X connect 2 0 1 1;
+#X connect 2 0 4 0;
+#X connect 3 0 6 0;
+#X connect 6 0 0 0;
+#X connect 6 0 1 0;
+#X connect 7 0 2 1;
+#X connect 10 0 3 0;
+#X restore 441 277 pd order;
+#X text 261 258 Note that the same "order of execution" issue also
+applies to [del~]:, f 39;
+#X text 77 86 Read from a delay line. It uses a cubic (4 point) interpolation
+\, but between 0 and 1 \, it uses a regular linear interpolation.,
+f 64;
+#X connect 27 0 28 0;
+#X connect 29 0 30 0;
 #X connect 30 0 31 0;
-#X connect 31 0 32 0;
-#X connect 32 0 28 0;
-#X restore 372 372 pd del~ out;
-#X obj 3 422 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X connect 31 0 27 0;
+#X restore 372 392 pd del~ out;
+#X obj 3 442 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 50 85 [del~] sets and writes to a delay line is created as
 [del~ in] (default) and reads from it (with interpolation) if created
 as [del~ out]. It's quite similar to [delread~]/[delread4~] \, but
 with more features., f 72;
-#X obj 7 296 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 316 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X text 109 311 1) symbol;
-#X text 170 311 - "in" (default) or "out" to define functionality;
-#X text 266 397 Open both to see how they interact;
+#X text 109 331 1) symbol;
+#X text 170 331 - "in" (default) or "out" to define functionality;
+#X text 266 417 Open both to see how they interact;
+#X text 19 290 see also:;
+#X obj 85 291 else/ffdelay~;
+#X obj 176 290 else/fbdelay~;
 #X connect 12 0 15 0;
 #X connect 15 0 16 0;
 #X connect 16 0 18 0;
