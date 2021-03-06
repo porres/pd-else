@@ -1,4 +1,4 @@
-#N canvas 872 143 411 399 10;
+#N canvas 872 143 387 393 10;
 #X declare -path else;
 #X text 30 183 Check declare's help file for more information.;
 #X obj 18 11 cnv 15 350 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -18,20 +18,20 @@
 0;
 #X obj 301 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 144 326 openfile http://www.github.com/porres/pd-else -h
-;
-#X obj 163 260 openfile README.pdf -h;
-#X obj 144 359 openfile https://github.com/porres/pd-issues
--h;
 #X text 32 359 Bug/Issue report:;
 #X text 31 260 Check ELSE's readme:;
 #X text 33 326 ELSE's repository;
 #X text 31 293 All objetcs in the ELSE library:;
 #X text 147 72 ELSE's meta =>;
-#X obj 235 293 openfile All_objects.pd -h;
 #X obj 243 72 else-meta;
 #X obj 215 219 else;
 #X text 31 117 You can install the ELSE library by adding it to"Preferences
 => Path". Or you can also use [declare] as follows:, f 51;
-#X obj 202 152 declare -path else;
 #X text 31 217 Also \, check the else binary:;
+#X obj 163 260 else/openfile README.pdf -h;
+#X obj 235 293 else/openfile All_objects.pd -h;
+#X obj 144 326 else/openfile http://www.github.com/porres/pd-else -h
+;
+#X obj 144 359 else/openfile https://github.com/porres/pd-issues -h
+;
+#X obj 202 152 declare -path else;
