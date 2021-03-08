@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (402 objects):
+## Current Object list (404 objects):
 
 **ASSORTED: [04]**
 
@@ -124,13 +124,14 @@ Cross compiling is also possible with something like this
 - [hann~]
 - [bin.shift~]
 
-**TUNING/NOTES: [08]**
+**TUNING/NOTES: [09]**
 
 - [autotune]
 - [autotune2]
 - [retune]
 - [eqdiv]
-- [frac2ratio]
+- [frac2dec]
+- [dec2frac]
 - [midi2freq]
 - [pitch2note]
 - [note2pitch]
@@ -147,7 +148,7 @@ Cross compiling is also possible with something like this
 - [canvas.bounds]
 - [click]
 - [take]
-- [preset]
+- [presets]
 - [canvas.gop]
 - [canvas.pos]
 - [canvas.edit]
@@ -256,6 +257,7 @@ Cross compiling is also possible with something like this
 - [wrap2~]
 
 **MATH: CONVERSION: [27]**
+
 - [hex2dec]
 - [bpm]
 - [dec2hex]
@@ -550,7 +552,7 @@ Cross compiling is also possible with something like this
 - [vu~]
 - [zerocross~]
 
-**GUI: [33]**
+**GUI: [34]**
 
 - [gui]
 - [pad]
@@ -562,6 +564,7 @@ Cross compiling is also possible with something like this
 - [function]
 - [circle]
 - [slider2d]
+- [mslider]
 - [display]
 - [display~]
 - [out1~]
