@@ -4,12 +4,12 @@
 #X obj 179 153 array define \$0-sum;
 #X obj 127 187 array set \$0-sum;
 #X obj 108 99 t b l l;
-#X obj 108 49 inlet;
+#X obj 108 29 inlet;
 #X obj 108 268 outlet;
 #X msg 179 125 resize \$1;
-#X text 344 164 Part of ELSE \; https://github.com/porres/pd-else;
-#X text 346 145 Alexandre Torres Porres (2019);
-#X obj 108 73 message;
+#X text 330 155 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 332 136 Alexandre Torres Porres (2019);
+#X obj 108 63 else/message;
 #X connect 0 0 6 0;
 #X connect 1 0 7 0;
 #X connect 4 0 0 0;

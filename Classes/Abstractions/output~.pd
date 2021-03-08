@@ -192,7 +192,7 @@
 #X obj 105 141 line~;
 #X msg 105 116 \$1 50;
 #X msg 159 142 1;
-#X obj 159 118 lb -init;
+#X obj 159 119 else/lb -init;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X connect 3 0 6 0;
@@ -212,15 +212,15 @@
 #X connect 5 0 0 0;
 #X restore 289 135 pd gain;
 #N canvas 495 50 450 300 mute 0;
-#X obj 121 167 line~;
-#X obj 121 196 *~;
-#X obj 121 221 *~;
-#X obj 121 114 expr 1 - $f1;
-#X msg 121 140 \$1 50;
-#X msg 206 140 1;
-#X obj 121 245 outlet~;
-#X obj 284 88 select 0 1;
-#X msg 284 37 0;
+#X obj 113 183 line~;
+#X obj 113 212 *~;
+#X obj 113 237 *~;
+#X obj 113 130 expr 1 - $f1;
+#X msg 113 156 \$1 50;
+#X msg 198 156 1;
+#X obj 113 261 outlet~;
+#X obj 276 104 select 0 1;
+#X msg 276 53 0;
 #N canvas 186 185 358 434 off 0;
 #X obj 154 221 +;
 #X obj 139 246 +;
@@ -245,7 +245,7 @@
 #X connect 7 0 9 0;
 #X connect 9 0 6 0;
 #X connect 10 0 8 0;
-#X restore 284 127 pd off;
+#X restore 276 143 pd off;
 #N canvas 398 340 311 325 on 0;
 #X obj 112 157 +;
 #X obj 97 182 +;
@@ -270,11 +270,11 @@
 #X connect 7 0 9 0;
 #X connect 9 0 6 0;
 #X connect 10 0 8 0;
-#X restore 344 127 pd on;
-#X obj 285 207 s \$0-set-slider;
-#X obj 284 65 tgl 15 0 empty \$0-mute-bng empty 17 7 0 10 -262144 -1
+#X restore 336 143 pd on;
+#X obj 277 223 s \$0-set-slider;
+#X obj 276 81 tgl 15 0 empty \$0-mute-bng empty 17 7 0 10 -262144 -1
 -1 0 1;
-#X obj 205 9 lb -init;
+#X obj 197 25 else/lb -init;
 #X connect 0 0 1 0;
 #X connect 0 0 1 1;
 #X connect 1 0 2 0;
@@ -386,7 +386,7 @@
 #X msg 135 117 0;
 #X obj 108 85 delay 5;
 #X obj 59 149 outlet;
-#X obj 168 45 lb -init;
+#X obj 168 44 else/lb -init;
 #X connect 0 0 1 0;
 #X connect 1 0 6 0;
 #X connect 3 0 2 0;
