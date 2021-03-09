@@ -185,15 +185,15 @@ static void tabwriter_free(t_tabwriter *x){
     pd_unbind(&x->x_obj.ob_pd, gensym("pd-dsp-stopped"));
 }
 
-static void tabwriter_start(t_tabwriter *x, t_float start){
-    x->x_startindex = start < 0 ? 0 : (unsigned long long)start;
+static void tabwriter_start(t_tabwriter *x, t_float f){
+    x->x_startindex = f < 0 ? 0 : (unsigned long long)(f * x->x_ksr);
 }
 
 static void tabwriter_end(t_tabwriter *x, t_float end){
     if(end < 0)
         x->x_whole_array = 1;
     else{
-        x->x_endindex = (unsigned long long)end;
+        x->x_endindex = (unsigned long long)(end * x->x_ksr);
         x->x_whole_array = 0;
     }
 }
@@ -289,11 +289,8 @@ static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
     }
     x->x_numchans = chn_n;
     x->x_ivecs = getbytes(x->x_numchans * sizeof(*x->x_ivecs)); // allocate in vectors
-    x->x_startindex = start < 0 ? 0 : start;
-    if(end > 0){
-        x->x_whole_array = 0;
-        x->x_endindex = end;
-    }
+    tabwriter_start(x, start);
+    tabwriter_end(x, end);
     x->x_continue_flag = (continue_flag != 0);
     x->x_loop_flag = (loop_flag != 0);
     x->x_clock = clock_new(x, (t_method)tabwriter_tick);
