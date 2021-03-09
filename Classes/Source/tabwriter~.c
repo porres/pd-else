@@ -17,7 +17,6 @@ typedef struct _tabwriter{
     t_int               x_continue_flag;
     t_int               x_loop_flag;
     t_int               x_phase;       // write head
-    t_float             x_sync; // output sync value
     t_clock            *x_clock;
     double              x_clocklasttick;
     t_int               x_isrunning;
@@ -25,11 +24,12 @@ typedef struct _tabwriter{
     int                 x_whole_array;
     unsigned long long  x_startindex;
     unsigned long long  x_endindex;
+    unsigned long long  x_index;
     t_float             x_ksr;
     t_int               x_numchans;
     t_outlet           *x_outlet_bang;
     t_float           **x_ivecs; // input vectors
-//    t_float            *x_ovec; // signal output
+    t_float            *x_ovec; // signal output
 //    t_outlet           *x_sig_outlet;
 }t_tabwriter;
 
@@ -85,7 +85,7 @@ static void tabwriter_stop(t_tabwriter *x){
     if(x->x_buffer != NULL){
         if(!x->x_continue_flag)
             x->x_phase = 0.;
-        x->x_isrunning = x->x_sync = 0;
+        x->x_isrunning = 0;
         buffer_redraw(x->x_buffer);
     }
 }
@@ -99,7 +99,7 @@ static t_int *tabwriter_perform(t_int *w){
     t_buffer *c = x->x_buffer;
     t_int nch = c->c_numchans;
     t_float *gatein = x->x_gate_vec;
-//    t_float *out = x->x_ovec;
+    t_float *out = x->x_ovec;
     t_int i, j, bang = 0;
     unsigned long long phase, range;
     buffer_validate(c, 0);
@@ -114,6 +114,7 @@ static t_int *tabwriter_perform(t_int *w){
         last_gate = gate;
         unsigned long long start = x->x_startindex;
         unsigned long long end;
+        unsigned long long index = x->x_index;
         unsigned long long arraysmp = (unsigned long long)c->c_npts;
         if(x->x_whole_array)
             end = arraysmp;
@@ -127,7 +128,6 @@ static t_int *tabwriter_perform(t_int *w){
             if(x->x_newrun == 1 && x->x_continue_flag == 0){ // continue shouldn't reset phase
                 x->x_newrun = 0;
                 x->x_phase = start;
-                x->x_sync = 0.;
             };
             phase = x->x_phase;
             if(phase >= end){ // boundscheck (might've changed when paused)
@@ -136,7 +136,6 @@ static t_int *tabwriter_perform(t_int *w){
                     phase = start;
                 else{ // stop
                     x->x_isrunning = 0;
-                    x->x_sync = 1; // maybe redundant???
                     buffer_redraw(x->x_buffer);
                 };
             };
@@ -149,12 +148,13 @@ static t_int *tabwriter_perform(t_int *w){
                     if(vp)
                         vp[phase].w_float = insig[i];
                 };
-                x->x_sync = (t_float)(phase - start)/(t_float)range;
+                index = phase;
                 phase++;
                 x->x_phase = phase;
              };
         };
-//        out[i] = x->x_sync;
+        out[i] = index;
+        x->x_index = index;
     };
     if(bang)
         outlet_bang(x->x_outlet_bang);
@@ -171,7 +171,7 @@ static void tabwriter_dsp(t_tabwriter *x, t_signal **sp){
     x->x_gate_vec = (*sigp++)->s_vec; // first sig is the gate input
     for(i = 0; i < x->x_numchans; i++) // input vectors for each channel
         *(x->x_ivecs+i) = (*sigp++)->s_vec;
-//    x->x_ovec = (*sigp++)->s_vec; // output
+    x->x_ovec = (*sigp++)->s_vec; // output
     dsp_add(tabwriter_perform, 2, x, nblock);
 }
 
@@ -203,7 +203,7 @@ static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
     dummy = NULL;
     t_tabwriter *x = (t_tabwriter *)pd_new(tabwriter_class);
     x->x_ksr = (float)sys_getsr() * 0.001;
-    x->x_last_gate = x->x_newrun = x->x_isrunning = x->x_sync = x->x_phase = 0;
+    x->x_last_gate = x->x_newrun = x->x_isrunning = x->x_phase = 0;
     t_float numchan = 1;
     t_float continue_flag = 0;
     t_float loop_flag = 0;
@@ -298,8 +298,9 @@ static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     for(t_int i = 1; i < x->x_numchans; i++)
         inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
+//    x->x_sig_outlet = outlet_new(&x->x_obj, gensym("signal"));
+    outlet_new(&x->x_obj, gensym("signal"));
     x->x_outlet_bang = outlet_new(&x->x_obj, 0);
-//        x->x_sig_outlet = outlet_new(&x->x_obj, gensym("signal"));
     pd_bind(&x->x_obj.ob_pd, gensym("pd-dsp-stopped"));
     return(x);
 errstate:
