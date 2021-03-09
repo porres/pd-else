@@ -62,25 +62,29 @@ f 61;
 #X text 181 496 - resumes playing after being paused, f 61;
 #X obj 367 220 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#N canvas 921 149 375 404 signal 0;
-#X obj 96 226 phasor~;
-#X floatatom 169 249 0 0 0 0 - - -;
-#X obj 96 285 else/tabplayer~ \$0-violin;
-#X obj 96 320 else/out~;
-#X obj 96 194 else/display~ 6;
-#X obj 96 143 osc~ 0.1;
-#X obj 96 253 *~ 0;
-#X obj 169 224 receive \$0-array_size;
-#X obj 96 169 *~ 0.2;
-#X text 36 21 A signal input can be used as the index position in samples
+#N canvas 921 149 388 430 signal 0;
+#X obj 86 251 phasor~;
+#X floatatom 159 274 0 0 0 0 - - -;
+#X obj 86 310 else/tabplayer~ \$0-violin;
+#X obj 86 345 else/out~;
+#X obj 86 219 else/display~ 6;
+#X obj 86 168 osc~ 0.1;
+#X obj 86 278 *~ 0;
+#X obj 159 249 receive \$0-array_size;
+#X obj 86 194 *~ 0.2;
+#X text 37 11 A signal input can be used as the index position in samples
 to read into the array. You can use any signal such as from a [line~]
 object or a LFO. A signal offers the ability to read the array at a
-varying speed as the example below., f 50;
-#X text 36 85 When a signal is connected \, control play messages are
+varying speed as the example below., f 54;
+#X text 37 75 When a signal is connected \, control play messages are
 ignored. You can also notice this makes it kind of like [tabread4~].
-, f 50;
-#X obj 241 312 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+, f 54;
+#X obj 233 338 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
+#X text 254 337 <= doesn't work;
+#X text 37 115 Note that the bang output on the right outlet doesn't
+work. You need to analyse the signal input in order to have triggers
+if needed., f 54;
 #X connect 0 0 6 0;
 #X connect 1 0 6 1;
 #X connect 2 0 3 0;
