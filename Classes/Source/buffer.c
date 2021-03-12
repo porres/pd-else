@@ -57,33 +57,36 @@ static t_array *array_client_getbuf(t_array_client *x, t_glist **glist){
         return(0);
 }
 
-static void array_client_senditup(t_array_client *x){
-    t_glist *glist = 0;
-    t_array *a = array_client_getbuf(x, &glist);
-    if(glist)
-       array_redraw(a, glist);
-}
-
 // ------  buffer class -----
 static t_class *buffer_class;
+static t_class *buffer_proxy_class;
 
-#define x_outlet x_tc.tc_obj.ob_outlet
+typedef struct _buffer_proxy{
+    t_pd              p_pd;
+    struct _buffer  *p_owner;
+}t_buffer_proxy;
 
 typedef struct _buffer{
     t_array_client  x_tc;
+    t_buffer_proxy x_proxy;
 }t_buffer;
+
+static void buffer_proxy_init(t_buffer_proxy * p, t_buffer *x){
+    p->p_pd = buffer_proxy_class;
+    p->p_owner = x;
+}
 
 static void *buffer_new(t_symbol *s){
     t_buffer *x = (t_buffer *)pd_new(buffer_class);
     x->x_tc.tc_sym = (s && s != &s_) ? s : 0;
-    symbolinlet_new(&x->x_tc.tc_obj, &x->x_tc.tc_sym);
+    buffer_proxy_init(&x->x_proxy, x);
+    inlet_new(&x->x_tc.tc_obj, &x->x_proxy.p_pd, 0, 0);
     outlet_new(&x->x_tc.tc_obj, &s_float);
     return(x);
 }
 
 // ----------------  methods -------------------
-static int buffer_getrange(t_buffer *x, char **firstitemp, int *nitemp,
-int *stridep, int *arrayonsetp){
+static int buffer_getrange(t_buffer *x, char **firstitemp, int *nitemp, int *stridep, int *arrayonsetp){
     t_glist *glist;
     t_array *a = array_client_getbuf(&x->x_tc, &glist);
     int stride, fieldonset, arrayonset, nitem, type;
@@ -120,8 +123,12 @@ static void buffer_bang(t_buffer *x){
     ATOMS_ALLOCA(outv, nitem);
     for(i = 0, itemp = firstitem; i < nitem; i++, itemp += stride)
         SETFLOAT(&outv[i],  *(t_float *)itemp);
-    outlet_list(x->x_outlet, 0, nitem, outv);
+    outlet_list(x->x_tc.tc_obj.ob_outlet, 0, nitem, outv);
     ATOMS_FREEA(outv, nitem);
+}
+
+static void buffer_name(t_buffer *x, t_symbol *s){
+    x->x_tc.tc_sym = s;
 }
 
 static void buffer_resize(t_buffer *x, t_floatarg f){
@@ -156,12 +163,20 @@ static void buffer_set(t_buffer *x, t_symbol *s, int argc, t_atom *argv){
         nitem = argc;
     for(i = 0, itemp = firstitem; i < nitem; i++, itemp += stride)
         *(t_float *)itemp = atom_getfloatarg(i, argc, argv);
-    array_client_senditup(&x->x_tc);
+    t_glist *glist = 0;
+    t_array *a = array_client_getbuf(&x->x_tc, &glist);
+    if(glist)
+        array_redraw(a, glist);
+}
+
+static void buffer_proxy_list(t_buffer_proxy *p, t_symbol *s, int ac, t_atom *av){
+    t_buffer *x = p->p_owner;
+    buffer_set(x, s, ac, av);
 }
 
 static void buffer_list(t_buffer *x, t_symbol *s, int argc, t_atom *argv){
     buffer_set(x, s, argc, argv);
-    outlet_list(x->x_outlet, 0, argc, argv);
+    outlet_list(x->x_tc.tc_obj.ob_outlet, 0, argc, argv);
 }
 
 // SETUP
@@ -171,5 +186,9 @@ void buffer_setup(void){
     class_addbang(buffer_class, buffer_bang);
     class_addlist(buffer_class, buffer_list);
     class_addmethod(buffer_class, (t_method)buffer_set, gensym("set"), A_GIMME, 0);
+    class_addmethod(buffer_class, (t_method)buffer_name, gensym("rename"), A_DEFSYMBOL, 0);
     
+    buffer_proxy_class = (t_class *)class_new(gensym("buffer proxy"),
+        0, 0, sizeof(t_buffer_proxy), 0, 0);
+    class_addlist(buffer_proxy_class, buffer_proxy_list);
 }

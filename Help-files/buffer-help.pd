@@ -1,4 +1,4 @@
-#N canvas 687 82 562 426 10;
+#N canvas 687 82 562 452 10;
 #X obj 2 3 cnv 15 301 42 empty empty buffer 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -25,48 +25,52 @@
 0;
 #X obj 6 258 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 335 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 360 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 367 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 395 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 398 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 426 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 136 265 cnv 17 3 44 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 136 265 cnv 17 3 65 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 136 343 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 136 371 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 134 40 cnv 4 4 4 empty empty buffer 0 28 2 18 -233017 -1 0;
 #X obj 228 164 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 228 219 else/display;
-#X obj 436 169 cnv 15 98 68 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 50 169 cnv 15 98 68 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array \$0-buffer 2 float 3;
-#A 0 -0.8 0.4;
-#X coords 0 1 2 -1 100 70 1 0 0;
-#X restore 435 168 graph;
-#X msg 272 165 -1 -0.5 0.5 1;
-#X msg 189 141 set -0.8 0.4;
-#X text 205 265 list;
-#X text 169 280 set <list>;
-#X text 245 265 - resize \, set array and output list;
-#X text 245 280 - resize and set array;
-#X text 205 295 bang;
-#X text 245 295 - output array;
-#X obj 136 313 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X array \$0-buffer 5 float 3;
+#A 0 0.9 0.4 0 -0.4 -0.9;
+#X coords 0 1 5 -1 100 70 1 0 0;
+#X restore 49 168 graph;
+#X msg 259 167 set -0.8 0.4;
+#X text 225 265 list;
+#X text 189 280 set <list>;
+#X text 265 265 - resize \, set array and output list;
+#X text 265 280 - resize and set array;
+#X text 225 295 bang;
+#X text 265 295 - output array;
+#X obj 136 338 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 193 313 symbol;
-#X text 245 313 - sets array name;
-#X text 205 343 list;
-#X text 245 343 - array values;
-#X text 186 376 1) symbol - array name;
+#X text 265 313 - sets array name;
+#X text 225 371 list;
+#X text 265 371 - array values;
+#X text 206 404 1) symbol - array name;
 #X text 33 89 [buffer] does not much and nothing that [array] can't
 \, but it's a convenient object for getting and setting array values
 \, kinda like a storage object such as [else/message]. You can get/set
 arrays from actual arrays \, [table] or [array] objects., f 76;
 #X obj 228 194 else/buffer \$0-buffer;
-#X connect 19 0 38 0;
-#X connect 23 0 38 0;
-#X connect 24 0 38 0;
-#X connect 38 0 20 0;
+#X text 159 313 rename <symbol>;
+#X text 225 337 list;
+#X text 265 337 - resize and set array;
+#X msg 351 166 0.9 0.4 0 -0.4 -0.9;
+#X msg 200 140 -0.9 -0.5 0.5 0.9;
+#X connect 19 0 36 0;
+#X connect 23 0 36 0;
+#X connect 36 0 20 0;
+#X connect 40 0 36 1;
+#X connect 41 0 36 0;
