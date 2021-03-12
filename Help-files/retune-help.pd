@@ -67,11 +67,11 @@
 #X floatatom 33 234 5 0 0 0 - - -;
 #X obj 93 297 else/retune -base 57 0 171.429 342.857 514.286 685.714
 857.143 1028.57 1200, f 38;
-#X obj 428 365 else/frac2ratio;
 #X text 54 86 [retune] receives a scale as a list of steps in cents
 and a base MIDI pitch value (defaul 60). It then remaps the incoming
 MIDI ptches (as integers) and retunes the pitches above or below the
 base value according to the scale., f 65;
+#X obj 440 365 else/frac2dec;
 #X connect 0 0 3 0;
 #X connect 1 0 46 0;
 #X connect 2 0 41 0;

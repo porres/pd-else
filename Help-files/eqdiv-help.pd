@@ -67,7 +67,7 @@ defined as fractions to ratio intervals., f 57;
 #X text 425 175 see also:;
 #X obj 426 200 else/autotune;
 #X obj 426 222 else/retune;
-#X obj 426 242 else/frac2ratio;
+#X obj 426 242 else/frac2dec;
 #X connect 21 0 40 0;
 #X connect 24 0 40 0;
 #X connect 25 0 40 0;

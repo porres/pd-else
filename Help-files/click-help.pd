@@ -54,7 +54,7 @@ or a subpatch and click on the parent. This is useful for making non
 graphical abstractions respond to a click in the same way compiled
 objects can., f 73;
 #X text 118 396 1) float -;
-#N canvas 583 173 780 341 modes 1;
+#N canvas 583 173 780 341 modes 0;
 #X text 65 78 The default mode is "abstraction" mode. In this mode
 \, the parent patch of an abstraction that contains [click] needs to
 be clicked \, in order for it to respond to.;
