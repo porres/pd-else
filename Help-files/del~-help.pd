@@ -62,7 +62,6 @@
 1;
 #X msg 213 240 freeze \$1;
 #X obj 114 279 else/del~ -samps \$0-y 44100;
-#X text 198 471 (none);
 #X obj 2 3 cnv 15 301 42 empty \$0-cnv del~\\\ in 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -105,6 +104,10 @@ or "out", f 64;
 #X text 170 571 - sets time value to samples (default is ms);
 #X text 243 311 The second argument also defines the maximum delay
 amount a [del~ out] object can have., f 44;
+#X obj 104 472 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 166 473 signal;
+#X text 209 473 - dummy outlet to force order of execution;
 #X connect 16 0 15 0;
 #X connect 16 0 23 0;
 #X connect 17 0 23 0;
@@ -179,47 +182,45 @@ or "out", f 64;
 #X text 209 356 - output of a delay line, f 37;
 #X text 182 427 - delay amount in ms or samples (default 1 sample)
 ;
-#N canvas 1166 261 476 432 order 0;
-#N canvas 718 352 470 239 in 0;
-#X obj 92 175 outlet~;
-#X obj 125 42 inlet~;
-#X obj 125 125 del~ -samps \$0-order 64;
-#X text 146 174 dummy outlet to force order of execution;
-#X connect 1 0 2 0;
-#X restore 171 229 pd in;
-#X obj 131 306 -~;
+#N canvas 1200 230 492 462 order 0;
+#X obj 102 362 -~;
+#X obj 103 167 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 102 402 else/display~;
+#X obj 103 194 else/ramp~;
+#X text 136 407 matches delay in samples;
+#X obj 103 141 else/tempo 10000 -ms -on;
+#X text 151 257 <= dummy outlet forces order of execution;
 #N canvas 707 219 468 219 out 0;
 #X obj 129 147 outlet~;
-#X obj 54 34 inlet~;
+#X obj 94 28 inlet~;
 #X obj 129 69 inlet~;
+#X text 145 27 dummy intlet to force order of execution;
 #X obj 129 110 del~ out -samps \$0-order;
-#X text 105 33 dummy intlet to force order of execution;
-#X connect 2 0 3 0;
-#X connect 3 0 0 0;
-#X restore 171 265 pd out;
-#X obj 132 161 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 171 302 else/display~;
-#X obj 131 346 else/display~;
-#X obj 132 188 else/ramp~;
-#X floatatom 219 230 5 0 64 0 - - -;
-#X text 257 228 delay in samples;
-#X text 165 351 matches delay in samples;
-#X obj 132 135 else/tempo 10000 -ms -on;
-#X text 19 31 We can force the order of execution with subpatches as
-this example shows. If we don't do this \, it's hard to guarantee we
-can read from the delay line without having a minimum delay of a block
-size. This is the same issue with [delwrite~]/[delread~] objects and
-other objetcs like [send~]/[receive~]., f 69;
-#X connect 0 0 2 0;
-#X connect 1 0 5 0;
-#X connect 2 0 1 1;
 #X connect 2 0 4 0;
-#X connect 3 0 6 0;
-#X connect 6 0 0 0;
-#X connect 6 0 1 0;
-#X connect 7 0 2 1;
-#X connect 10 0 3 0;
+#X connect 4 0 0 0;
+#X restore 142 321 pd out;
+#X obj 142 358 else/display~;
+#X floatatom 175 294 5 0 64 0 - - -;
+#X text 213 292 delay in samples;
+#X text 188 321 <= open;
+#X obj 142 235 del~ in -samps \$0-order 64;
+#X text 48 16 We can force the order of execution as this example shows.
+If we don't do this \, it's hard to guarantee we can read from the
+delay line without having a minimum delay of a block size. This is
+the same issue with [delwrite~] and [delread~] objects and other objetcs
+like [send~]/[receive~]. But the [del~] object provides another structure
+\, because [del~ in] has a dummy outlet to force the order of execution.
+This way you only need a subpatch to include [del~ out] objects.;
+#X connect 0 0 2 0;
+#X connect 1 0 3 0;
+#X connect 3 0 0 0;
+#X connect 3 0 12 0;
+#X connect 5 0 1 0;
+#X connect 7 0 8 0;
+#X connect 7 0 0 1;
+#X connect 9 0 7 1;
+#X connect 12 0 7 0;
 #X restore 441 277 pd order;
 #X text 261 258 Note that the same "order of execution" issue also
 applies to [del~]:, f 39;

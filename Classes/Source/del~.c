@@ -93,9 +93,9 @@ static void del_in_checkvecsize(t_del_in *x, int vecsize, t_float sr){
 
 static t_int *del_in_perform(t_int *w){
     t_sample *in = (t_sample *)(w[1]);
-    t_delwritectl *c = (t_delwritectl *)(w[2]);
-    int n = (int)(w[3]);
-    t_del_in *x = (t_del_in *)(w[4]);
+    t_delwritectl *c = (t_delwritectl *)(w[3]);
+    int n = (int)(w[4]);
+    t_del_in *x = (t_del_in *)(w[5]);
     int phase = c->c_phase;                     // phase
     int nsamps = c->c_n;                        // number of samples
     t_sample *vp = c->c_vec;                    // vector
@@ -104,10 +104,10 @@ static t_int *del_in_perform(t_int *w){
     phase += n;                                 // phase += block size
     while(n--){
         if(x->x_freeze)
-            bp++;
+            bp++; // just advance buffer point
         else{
             t_sample f = *in++;
-            *bp++ = PD_BIGORSMALL(f) ? 0.f : f; // write input into buffer point
+            *bp++ = PD_BIGORSMALL(f) ? 0.f : f; // advance and write input into buffer point
         }
         if(bp == ep){
             vp[0] = ep[-4]; // copy guard points
@@ -119,11 +119,11 @@ static t_int *del_in_perform(t_int *w){
         }
     }
     c->c_phase = phase; // update phase
-    return(w+5);
+    return(w+6);
 }
 
 static void del_in_dsp(t_del_in *x, t_signal **sp){
-    dsp_add(del_in_perform, 4, sp[0]->s_vec, &x->x_cspace, (t_int)sp[0]->s_n, x);
+    dsp_add(del_in_perform, 5, sp[0]->s_vec, sp[1]->s_vec, &x->x_cspace, (t_int)sp[0]->s_n, x);
     x->x_sortno = ugen_getsortno();
     del_in_checkvecsize(x, sp[0]->s_n, sp[0]->s_sr);
     del_in_update(x);
@@ -146,7 +146,7 @@ static void *del_in_new(t_symbol *s, int ac, t_atom *av){
     x->x_sym = gensym(buf);
 //    x->x_sym = &s_;
     if(!ac){
-        post("[del~] please define a delay line name");
+        post("[del~ in] please define a delay line name");
     }
     else if(av->a_type == A_SYMBOL){
 //        post("del_in_new av->a_type == A_SYMBOL");
@@ -176,6 +176,7 @@ static void *del_in_new(t_symbol *s, int ac, t_atom *av){
     x->x_sr = 0;
     x->x_f = 0;
     x->x_freeze = 0;
+    outlet_new(&x->x_obj, &s_signal);
     return(x);
 }
 
@@ -198,7 +199,7 @@ typedef struct _del_out{
 }*/
 
 float interpolate(t_del_out *x, t_sample *bp, t_sample frac){
-    t_sample b = bp[-1], c = bp[-2];
+    t_sample b = bp[-1], c = bp[-2]; // current (b) and next (c)
     if(x->x_lin)
         return(b + (c-b)*frac);
     else{
@@ -219,7 +220,7 @@ static t_int *del_out_perform(t_int *w){
     t_sample nm1 = n-1;                  // nm1 = block size - 1
     t_sample *vp = ctl->c_vec;          // vector (buffer memory of delay lne)
     t_sample *bp;
-    t_sample *wp = vp + ctl->c_phase;   // wp (write point?) = vp + phase
+    t_sample *wp = vp + ctl->c_phase;   // wp (write point) = vp + phase
     t_sample zerodel = x->x_zerodel;
     if(limit < 0){      // blocksize is larger than out buffer size
         while(n--)
@@ -336,9 +337,11 @@ void del_tilde_setup(void){
     class_addmethod(del_in_class, (t_method)del_in_clear, gensym("clear"), 0);
     class_addmethod(del_in_class, (t_method)del_in_freeze, gensym("freeze"), A_DEFFLOAT, 0);
     class_addmethod(del_in_class, (t_method)del_in_size, gensym("size"), A_DEFFLOAT, 0);
+    class_sethelpsymbol(del_in_class, gensym("del~"));
 
     del_out_class = class_new(gensym("del~ out"), (t_newmethod)del_out_new, 0, sizeof(t_del_out), 0, A_GIMME, 0);
     CLASS_MAINSIGNALIN(del_out_class, t_del_out, x_f);
     class_addmethod(del_out_class, (t_method)del_out_dsp, gensym("dsp"), A_CANT, 0);
+    class_sethelpsymbol(del_out_class, gensym("del~"));
 //    class_addsymbol(del_out_class, del_out_set);
 }
