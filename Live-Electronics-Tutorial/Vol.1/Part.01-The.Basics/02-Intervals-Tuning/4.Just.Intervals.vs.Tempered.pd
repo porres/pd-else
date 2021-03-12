@@ -45,13 +45,13 @@ minor seventh (7/4) and others. Note that if you invert the ratio \,
 you get the same interval but with a negative value in cents. For example
 \, 2/3 is a fifth below. Note also how in such cases the ratio is below
 1!;
-#X obj 116 542 else/display;
-#X msg 116 482 1 9/8 5/4 11/8 3/2 13/8 14/8 15/8 2;
-#X obj 116 512 fract2ratio;
-#X text 458 491 The [fract2ratio] object from ELSE takes a list of
-elements in fraction notation and converts to a list with cents intervals.
-, f 36;
-#X obj 116 453 loadbang;
+#X obj 76 542 else/display;
+#X msg 76 482 1 9/8 5/4 11/8 3/2 13/8 14/8 15/8 2;
+#X obj 76 453 loadbang;
+#X obj 76 512 frac2ratio;
+#X text 458 491 The [frac2ratio] object from ELSE takes a list of elements
+in fraction notation and converts to a list with cents intervals.,
+f 36;
 #X connect 1 0 9 0;
 #X connect 2 0 10 0;
 #X connect 3 0 4 1;
@@ -61,6 +61,6 @@ elements in fraction notation and converts to a list with cents intervals.
 #X connect 8 0 1 0;
 #X connect 9 0 2 0;
 #X connect 11 0 8 0;
-#X connect 23 0 24 0;
-#X connect 24 0 22 0;
-#X connect 26 0 23 0;
+#X connect 23 0 25 0;
+#X connect 24 0 23 0;
+#X connect 25 0 22 0;

@@ -1,4 +1,5 @@
-#N canvas 991 216 583 596 12;
+#N canvas 871 173 583 596 12;
+#X declare -path else;
 #X obj 339 344 envelope~;
 #X obj 339 312 envgen~;
 #X obj 451 298 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
@@ -38,9 +39,6 @@
 #X obj 130 245 * 1;
 #X msg 148 217 -1;
 #X msg 208 216 1;
-#X text 337 197 The transposition parameter is in cents \, so we need
-to convert to ratio. We do the same as before and make it negative
-50% of the time4s so it plays backwards., f 42;
 #X text 337 263 To alter the reading speed according to the transposition
 parameter \, we use the same structure from the pitch shifting example
 implemented with granulation. So we take the grain size in ms and use
@@ -49,7 +47,10 @@ to the grain size in ms like in the pitch shiffting example., f 42
 ;
 #X obj 101 120 rand.f -1200 1200;
 #X obj 148 190 chance 50;
-#X connect 0 0 21 0;
+#X text 337 196 The transposition parameter is in cents \, so we need
+to convert to ratio. We do the same as before and make it negative
+50% of the times so it plays backwards., f 42;
+#X connect 0 0 20 0;
 #X connect 1 0 15 0;
 #X connect 2 0 3 0;
 #X connect 3 0 10 0;
@@ -64,13 +65,13 @@ to the grain size in ms like in the pitch shiffting example., f 42
 #X connect 12 0 6 0;
 #X connect 12 0 8 1;
 #X connect 15 0 16 0;
-#X connect 15 1 22 0;
+#X connect 15 1 21 0;
 #X connect 16 0 5 0;
 #X connect 17 0 16 1;
 #X connect 18 0 16 1;
-#X connect 21 0 1 0;
-#X connect 22 0 17 0;
-#X connect 22 1 18 0;
+#X connect 20 0 1 0;
+#X connect 21 0 17 0;
+#X connect 21 1 18 0;
 #X restore 104 332 pd transp;
 #N canvas 546 388 755 331 pos 0;
 #X obj 114 167 +~ 0;
@@ -104,13 +105,11 @@ subpatches \, check it out., f 27;
 #X obj 304 362 outlet;
 #X obj 212 277 random 1000;
 #X obj 180 248 t b b;
-#X obj 180 196 router 2 1;
 #X obj 247 71 inlet;
 #X obj 304 277 delay;
 #X floatatom 437 243 5 0 0 0 - - -;
 #X obj 286 166 loadbang;
 #X obj 180 277 del;
-#X obj 247 142 + 1;
 #X obj 247 100 vradio 17 1 0 2 empty empty empty 0 -8 0 10 -228856
 -1 -1 1;
 #X text 353 276 <= synchronous;
@@ -118,24 +117,25 @@ subpatches \, check it out., f 27;
 #X text 271 99 asynchronous;
 #X text 69 263 asynchronous =>;
 #X obj 286 195 expr (\$1 != 0) * 1000 \; \$1 * (1000./16);
-#X connect 0 0 4 0;
-#X connect 2 0 9 1;
-#X connect 3 0 9 0;
+#X obj 180 196 router;
+#X connect 0 0 15 0;
+#X connect 2 0 8 1;
+#X connect 3 0 8 0;
 #X connect 3 1 2 0;
-#X connect 4 0 3 0;
-#X connect 4 1 6 0;
-#X connect 5 0 11 0;
-#X connect 6 0 1 0;
-#X connect 7 0 6 1;
-#X connect 8 0 16 0;
-#X connect 9 0 1 0;
-#X connect 10 0 4 1;
-#X connect 11 0 10 0;
-#X connect 16 0 2 1;
-#X connect 16 1 7 0;
+#X connect 4 0 9 0;
+#X connect 5 0 1 0;
+#X connect 6 0 5 1;
+#X connect 7 0 14 0;
+#X connect 8 0 1 0;
+#X connect 9 0 15 1;
+#X connect 14 0 2 1;
+#X connect 14 1 6 0;
+#X connect 15 0 3 0;
+#X connect 15 1 5 0;
 #X restore 280 121 pd mode;
 #X obj 326 34 inlet;
-#X obj 281 162 rand.f 20 60;
+#X obj 281 162 rand.f 10 50;
+#X obj 405 109 declare -path else;
 #X connect 0 0 15 0;
 #X connect 1 0 0 0;
 #X connect 1 1 2 0;

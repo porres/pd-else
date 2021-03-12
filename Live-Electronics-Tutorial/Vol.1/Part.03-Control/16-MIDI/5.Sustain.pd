@@ -1,6 +1,6 @@
-#N canvas 317 54 940 442 12;
+#N canvas 556 165 854 437 12;
 #X declare -path else;
-#X text 734 183 sustain;
+#X text 656 194 sustain;
 #N canvas 588 58 350 354 voice1 0;
 #X obj 170 230 *~;
 #X obj 51 120 mtof;
@@ -28,23 +28,23 @@
 #X connect 10 0 11 1;
 #X connect 11 0 0 0;
 #X connect 12 0 10 0;
-#X restore 602 246 pd voice1;
-#X obj 711 180 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
+#X restore 551 282 pd voice1;
+#X obj 633 191 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
 127;
-#X obj 173 235 s \$0-note;
-#X obj 282 233 s \$0-vel;
-#X obj 623 156 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-note empty 0 -8
-0 10 -228856 -1 -1 60 256;
-#X text 590 154 Note;
-#X obj 667 156 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-vel empty 0 -8 0
+#X obj 161 256 s \$0-note;
+#X obj 270 254 s \$0-vel;
+#X obj 562 162 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-note empty 0 -8
+0 10 -228856 -1 -1 54 256;
+#X text 529 160 Note;
+#X obj 606 162 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-vel empty 0 -8 0
 10 -228856 -1 -1 0 256;
-#X text 708 157 Velocity;
-#X obj 623 126 notein;
-#X floatatom 173 212 5 0 0 0 - - -;
-#X floatatom 282 211 5 0 0 0 - - -;
-#X obj 641 184 suspedal;
-#X obj 641 213 voices 2 1;
-#X obj 656 316 out~;
+#X text 647 163 Velocity;
+#X obj 587 132 notein;
+#X floatatom 161 230 5 0 0 0 - - -;
+#X floatatom 270 229 5 0 0 0 - - -;
+#X obj 580 220 suspedal;
+#X obj 590 249 voices 2 1;
+#X obj 605 352 out~;
 #N canvas 588 58 350 354 voice2 0;
 #X obj 170 230 *~;
 #X obj 51 120 mtof;
@@ -72,19 +72,19 @@
 #X connect 10 0 11 1;
 #X connect 11 0 0 0;
 #X connect 12 0 10 0;
-#X restore 674 246 pd voice2;
-#X obj 173 186 makenote 127 250;
-#X obj 656 277 +~;
-#X obj 173 110 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X restore 623 282 pd voice2;
+#X obj 161 202 makenote 127 250;
+#X obj 605 313 +~;
+#X obj 161 120 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X obj 173 88 loadbang;
-#X obj 173 134 tempo 60 100;
-#X text 32 27 When pressed \, a sustain pedal doesn't let note off
+#X obj 161 92 loadbang;
+#X obj 161 146 tempo 60 100;
+#X text 47 28 When pressed \, a sustain pedal doesn't let note off
 messages through \, and sends them only when released. The ELSE library
-provides the [suspedal] for this purpose.;
-#X text 46 272 Before checking out [suspedal] \, you can see one possible
+provides the [suspedal] for this purpose., f 52;
+#X text 65 296 Before checking out [suspedal] \, you can see one possible
 way to implement a sustain pedal with native Pd objects \, by relying
-on the [bag] object. See the subpatch below:;
+on the [bag] object. See the subpatch below:, f 45;
 #N canvas 806 244 335 366 sustain 0;
 #N canvas 534 277 555 397 sustain 0;
 #X obj 299 49 inlet;
@@ -130,7 +130,7 @@ off messages when the sustain toggle is off., f 33;
 #X connect 15 0 8 0;
 #X restore 133 161 pd sustain;
 #X obj 100 78 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-note empty 0 -8 0
-10 -228856 -1 -1 60 256;
+10 -228856 -1 -1 54 256;
 #X text 117 94 Note;
 #X obj 161 78 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-vel empty 0 -8 0
 10 -228856 -1 -1 0 256;
@@ -209,13 +209,13 @@ off messages when the sustain toggle is off., f 33;
 #X connect 9 0 12 1;
 #X connect 10 0 8 0;
 #X connect 10 1 9 0;
-#X restore 335 330 pd sustain;
-#X text 499 63 The [suspedal] object has more functionalities than
+#X restore 290 379 pd sustain;
+#X text 438 69 The [suspedal] object has more functionalities than
 the shown vanilla implementation of a sustain pedal. For more details
 \, check its help file., f 53;
-#X text 266 145 random picthes;
-#X obj 173 159 rand.i 48 72;
-#X obj 729 28 declare -path else;
+#X text 254 157 random picthes;
+#X obj 161 173 rand.i 48 72;
+#X obj 653 38 declare -path else;
 #X connect 1 0 17 0;
 #X connect 2 0 12 2;
 #X connect 5 0 12 0;

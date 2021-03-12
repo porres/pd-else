@@ -18,7 +18,6 @@
 #X text 266 248 Aftertouch;
 #X obj 136 332 sysexin;
 #X obj 94 307 midirealtimein;
-#X text 191 332 sysex;
 #X text 264 197 Pitch Bend;
 #X text 662 287 Program;
 #X text 661 257 Pitch Bend;
@@ -33,16 +32,11 @@
 #X obj 585 229 ctl.out;
 #X obj 584 200 note.out;
 #X obj 586 348 sysrt.in;
-#X text 265 148 Note;
 #X text 264 171 Control;
 #X text 266 272 Poliphonic Aftertouch;
 #X text 66 384 There are also MIDI objects that deal with raw MIDI
 data:, f 20;
-#X text 204 307 MIDI system and MIDI real-time input;
 #X text 278 383 all types but system/real time & sysex, f 14;
-#X text 482 61 The ELSE library also has MIDI objects \, but they receive
-and send raw MIDI data. This means they need [midiin] and [midiout]
-objects.;
 #X text 663 320 Aftertouch (channel & polyphonic);
 #X text 662 348 system & real-time, f 20;
 #X text 661 228 Control;
@@ -64,3 +58,9 @@ are many other MIDI messages we could use to control a patch. Conversely
 with MIDI out objects., f 57;
 #X text 27 105 Here are Pd native objects for MIDI \, separated into
 MIDI message types., f 57;
+#X text 482 61 The ELSE library also has MIDI objects \, but they receive
+and send raw MIDI data. This means they can be connected to [midiin]
+and [midiout] objects.;
+#X text 191 332 sysex messages;
+#X text 205 307 MIDI System & MIDI Real-time;
+#X text 265 148 Note (on/off);
