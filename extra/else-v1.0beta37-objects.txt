@@ -172,7 +172,6 @@ impulse2~ 	x
 initmess 	x
 insert 	x
 int~ 	x
-interpolate 	x
 iterate 	x
 keyboard	x
 lag~	x
@@ -219,7 +218,6 @@ mix2~	x
 mix4~	x
 mono	x
 mono.rev~	x
-morph	x
 morph~	x
 mouse	x
 mov.avg	x
@@ -227,7 +225,6 @@ mov.avg~	x
 mov.rms~	x
 ms2samps~	x
 ms2samps	x
-mslider	x
 nbang	x
 noisegate~	x
 norm~	x
@@ -275,7 +272,6 @@ pluck~	x
 pmosc~	x
 pol2car	x
 pol2car~	x
-presets	x
 properties	x
 pulse	x
 pulse~	x
@@ -373,7 +369,6 @@ t2	x
 table~	x
 tabplayer~	x
 tabwriter~	x
-take	x
 tremolo~	x
 trig.delay~	x
 trig.delay2~	x

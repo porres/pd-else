@@ -8,7 +8,7 @@
 
 ### Version: 1.0-0 beta-37 With Live Electronics Tutorial 
 
-###   Released: Unreleased
+###   Released: March 13th, 2021
 
 
 
@@ -30,7 +30,7 @@
 
 ###   About ELSE
 
-​	This version of ELSE needs **Pd 0.51-1* or above, download Pure Data from: http://msp.ucsd.edu/software.html 
+​	This version of ELSE needs **Pd 0.51-3* or above, download Pure Data from: http://msp.ucsd.edu/software.html 
 
 ​	ELSE is a big library for Pure Data that provides a cohesive system for computer music, it also serves as a basis for an Live Electronics Tutorial by the same author: Alexandre Torres Porres. This tutorial is also found as part of the download of the ELSE library. Note that you can also download Camomile with support for ELSE externals, see https://github.com/emviveros/Camomile-ELSE/releases/tag/beta36
 
@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (404 objects):
+## Current Object list (399objects):
 
 **ASSORTED: [04]**
 
@@ -136,7 +136,7 @@ Cross compiling is also possible with something like this
 - [pitch2note]
 - [note2pitch]
 
-**PATCH/SUBPATCH MANAGEMENT: [20]**
+**PATCH/SUBPATCH MANAGEMENT: [18]**
 
 - [args]
 - [dollsym]
@@ -147,8 +147,6 @@ Cross compiling is also possible with something like this
 - [canvas.active]
 - [canvas.bounds]
 - [click]
-- [take]
-- [presets]
 - [canvas.gop]
 - [canvas.pos]
 - [canvas.edit]
@@ -159,7 +157,7 @@ Cross compiling is also possible with something like this
 - [canvas.zoom]
 - [loadbanger] / [lb]
 
-**MESSAGE MANAGEMENT: [25]**
+**MESSAGE MANAGEMENT: [23]**
 
 - [format]
 - [nbang]
@@ -168,8 +166,6 @@ Cross compiling is also possible with something like this
 - [symbol2any]
 - [any2symbol]
 - [buffer]
-- [morph]
-- [interpolate]
 - [changed]
 - [hot]
 - [initmess]
@@ -552,7 +548,7 @@ Cross compiling is also possible with something like this
 - [vu~]
 - [zerocross~]
 
-**GUI: [34]**
+**GUI: [33]**
 
 - [gui]
 - [pad]
@@ -564,7 +560,6 @@ Cross compiling is also possible with something like this
 - [function]
 - [circle]
 - [slider2d]
-- [mslider]
 - [display]
 - [display~]
 - [out1~]

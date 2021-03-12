@@ -98,7 +98,6 @@ separate.class.sources := Classes/Source/separate.c
 symbol2any.class.sources := Classes/Source/symbol2any.c
 slice.class.sources := Classes/Source/slice.c
 sort.class.sources := Classes/Source/sort.c
-take.class.sources := Classes/Source/take.c
 touch.in.class.sources := Classes/Source/touch.in.c
 touch.out.class.sources := Classes/Source/touch.out.c
 trigger2.class.sources := Classes/Source/trigger2.c
