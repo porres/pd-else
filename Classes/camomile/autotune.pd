@@ -1,4 +1,4 @@
-#N canvas 725 236 626 520 12;
+#N canvas 825 153 626 520 12;
 #X declare -path else;
 #X obj 345 302 array define \$0-scale;
 #X f 22;
@@ -61,25 +61,29 @@
 #X connect 17 0 7 0;
 #X restore 237 336 pd find-index;
 #X obj 344 45 inlet;
-#N canvas 999 363 615 421 init 0;
-#X obj 201 369 outlet;
-#X msg 395 194 0 100 200 300 400 500 600 700 800 900 1000 1100 1200
+#N canvas 999 363 678 503 init 0;
+#X obj 194 448 outlet;
+#X msg 388 273 0 100 200 300 400 500 600 700 800 900 1000 1100 1200
 , f 26;
-#X obj 202 217 list split 1;
-#X obj 201 275 route bang;
-#X obj 107 41 lb -init 2, f 28;
-#X obj 96 273 s \$0-base;
-#X obj 107 76 args -;
-#X obj 107 112 route bang list -base;
+#X obj 195 296 list split 1;
+#X obj 194 354 route bang;
+#X obj 100 70 lb -init 2, f 28;
+#X obj 89 352 s \$0-base;
+#X obj 100 181 route bang list -base;
+#X obj 100 155 break -;
+#X obj 100 127 pdcontrol;
+#X msg 100 98 args;
 #X connect 1 0 0 0;
 #X connect 2 0 5 0;
 #X connect 2 1 3 0;
 #X connect 3 1 0 0;
-#X connect 4 0 6 0;
+#X connect 4 0 9 0;
 #X connect 4 1 1 0;
-#X connect 6 0 7 0;
-#X connect 7 1 0 0;
-#X connect 7 2 2 0;
+#X connect 6 1 0 0;
+#X connect 6 2 2 0;
+#X connect 7 0 6 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 0;
 #X restore 355 91 pd init;
 #X obj 77 458 outlet;
 #X obj 449 80 declare -path else;
