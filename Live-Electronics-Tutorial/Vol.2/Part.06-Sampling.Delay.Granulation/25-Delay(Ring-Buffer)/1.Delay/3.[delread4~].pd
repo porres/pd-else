@@ -32,10 +32,10 @@ reading speed of the tape \, hence \, pitch changes!;
 there \, only the reading speed of the tape is acting \, so the original
 speed is restored. Fool around with the slider below and see how that
 happens.;
-#X text 81 686 Up to Pd 0.50-2 \, [delread~] e [delread4~] cannot read
-up to the maximum delay line \, but they go up to a block of audio
-less. A workaround is to specify a buffer size a block longer than
-you actually need.;
+#X text 81 685 Up to Pd 0.50-4 \, [delread~] and [delread4~] cannot
+read up to the maximum delay line if they have different block sizes.
+A workaround is to specify a buffer size a block longer than you actually
+need.;
 #X connect 0 0 1 0;
 #X connect 1 0 5 0;
 #X connect 5 0 6 0;

@@ -1,11 +1,11 @@
-#N canvas 575 28 545 443 12;
+#N canvas 729 59 545 443 12;
 #X declare -path else;
 #X text 279 189 cents;
 #X obj 325 189 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-cents empty 0 -8
 0 10 -228856 -1 -1 100 256;
 #X obj 328 169 hsl 128 15 -2400 2400 0 0 empty empty empty -2 -8 0
 10 -228856 -1 -1 0 1;
-#N canvas 212 144 1098 606 Pitch-Shift_PVoc 0;
+#N canvas 403 131 1098 606 Pitch-Shift_PVoc 0;
 #X obj 383 555 outlet~;
 #X obj 74 456 table \$0-re 1024;
 #X obj 74 475 table \$0-im 1024;
@@ -14,9 +14,9 @@
 #X obj 264 266 +~;
 #X obj 308 185 pack float float float;
 #X obj 352 12 inlet;
-#X text 342 161 *;
-#X text 406 161 *;
-#X text 472 160 *;
+#X text 348 161 *;
+#X text 409 161 *;
+#X text 474 160 *;
 #X text 536 225 *;
 #X obj 319 160 / 4;
 #X obj 448 160 / 4;

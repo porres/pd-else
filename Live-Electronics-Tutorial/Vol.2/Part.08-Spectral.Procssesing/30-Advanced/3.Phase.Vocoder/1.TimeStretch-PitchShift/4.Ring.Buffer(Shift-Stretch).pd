@@ -1,42 +1,61 @@
-#N canvas 575 211 502 592 12;
+#N canvas 839 56 507 549 12;
 #X declare -path else;
-#N canvas 586 112 760 704 pvoc 0;
-#X obj 305 320 +~;
-#X obj 305 233 pack float float float;
-#X obj 488 27 inlet;
-#X obj 440 650 outlet~;
-#X msg 305 262 \$1 \, \$2 \$3;
-#X obj 488 143 v ratio_\$0;
-#X obj 305 290 vline~;
-#X floatatom 488 69 0 0 0 0 - - -;
-#X obj 60 112 bang~;
-#X obj 104 139 +;
-#X obj 60 151 f;
-#X floatatom 123 72 5 0 0 0 - - -;
-#X text 169 71 speed (%);
-#X obj 123 24 inlet;
-#X text 449 69 cents;
-#X obj 389 268 expr~ (window_ms_\$0 * ratio_\$0) / overlap_\$0;
-#X obj 389 291 expr~ $v1 / overlap_\$0;
-#X obj 456 182 r \$0-window_ms;
-#X obj 60 187 expr $f1 / overlap_\$0 \; ($f1 + ((1 - ratio_\$0) * window_ms_\$0))
+#X text 339 253 cents;
+#X obj 279 254 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-cents empty 0 -8
+0 10 -228856 -1 -1 -100 256;
+#X obj 282 228 hsl 128 15 -2400 2400 0 0 empty empty empty -2 -8 0
+10 -228856 -1 -1 0 1;
+#X obj 217 254 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8
+0 10 -228856 -1 -1 90 256;
+#X text 217 230 speed;
+#X obj 156 338 out~;
+#X text 292 292 <= click;
+#X text 44 56 Again we adapt a previously presented patch in the granulation
+series. Now is time to check out the Pitch Shifter and Time Stretch
+on a ring buffer with the phase accumulation. Nothing should be new
+\, just the same kind of adaptation., f 62;
+#X obj 292 492 pvoc.live~ 6000;
+#X obj 334 21 declare -path else;
+#X obj 154 153 play.file~ bubul.wav 1 1;
+#X text 99 443 The [pvoc.live~] \, from the ELSE library \, is based
+on this patch. Check its help file., f 43;
+#N canvas 586 112 795 699 pvoc-live 0;
+#X obj 352 338 +~;
+#X obj 352 251 pack float float float;
+#X obj 535 45 inlet;
+#X obj 487 668 outlet~;
+#X msg 352 280 \$1 \, \$2 \$3;
+#X obj 535 161 v ratio_\$0;
+#X obj 352 308 vline~;
+#X floatatom 535 87 0 0 0 0 - - -;
+#X obj 66 130 bang~;
+#X obj 110 157 +;
+#X obj 66 169 f;
+#X floatatom 129 90 5 0 0 0 - - -;
+#X text 175 89 speed (%);
+#X obj 129 42 inlet;
+#X text 496 87 cents;
+#X obj 436 286 expr~ (window_ms_\$0 * ratio_\$0) / overlap_\$0;
+#X obj 436 309 expr~ $v1 / overlap_\$0;
+#X obj 503 200 r \$0-window_ms;
+#X obj 66 205 expr $f1 / overlap_\$0 \; ($f1 + ((1 - ratio_\$0) * window_ms_\$0))
 / overlap_\$0;
-#X obj 456 208 expr $f1 / overlap_\$0;
-#X obj 155 141 r \$0-buff_ms;
-#X obj 123 103 expr ((1 - $f1/100) * window_ms_\$0) / overlap_\$0;
-#X obj 509 323 r \$0-buff_ms;
-#X obj 104 163 wrap2;
-#X obj 305 348 wrap2~;
-#X obj 470 359 wrap2~;
-#X obj 488 111 cents2ratio;
-#X obj 440 558 rifft~;
-#X obj 440 617 expr~ $v1 * 2 / (window_\$0 * 3);
-#X obj 399 485 rfft~;
-#X obj 471 485 rfft~;
-#X obj 399 460 hann~;
-#X obj 471 461 hann~;
-#X obj 440 586 hann~;
-#X text 514 518 Same old...;
+#X obj 503 226 expr $f1 / overlap_\$0;
+#X obj 161 159 r \$0-buff_ms;
+#X obj 129 121 expr ((1 - $f1/100) * window_ms_\$0) / overlap_\$0;
+#X obj 556 341 r \$0-buff_ms;
+#X obj 110 181 wrap2;
+#X obj 352 366 wrap2~;
+#X obj 517 377 wrap2~;
+#X obj 535 129 cents2ratio;
+#X obj 487 576 rifft~;
+#X obj 487 635 expr~ $v1 * 2 / (window_\$0 * 3);
+#X obj 446 503 rfft~;
+#X obj 518 503 rfft~;
+#X obj 446 478 hann~;
+#X obj 518 479 hann~;
+#X obj 487 604 hann~;
+#X text 561 536 Same old...;
 #N canvas 377 157 654 496 Phase.Accum 0;
 #X obj 205 427 outlet~;
 #X obj 426 424 outlet~;
@@ -113,11 +132,9 @@
 #X connect 12 0 7 1;
 #X connect 13 0 2 0;
 #X connect 13 1 2 1;
-#X restore 408 520 pd Phase.Accum;
-#X obj 321 388 delread4~ \$0-buffer;
-#X obj 470 386 delread4~ \$0-buffer;
-#X text 358 458 back;
-#X text 516 461 front;
+#X restore 455 538 pd Phase.Accum;
+#X text 405 476 back;
+#X text 563 479 front;
 #N canvas 69 24 596 431 init 0;
 #X obj 154 214 v window_ms_\$0;
 #X obj 112 107 r \$0-window;
@@ -131,26 +148,29 @@
 #X obj 333 118 initmess bang \; \$0-window 2048 \; \$0-cents -100 \;
 \$0-speed 90;
 #X obj 286 277 loadbang;
-#X msg 286 300 60000;
 #X obj 286 326 s \$0-buff_ms;
 #X text 326 298 <= buffer size;
 #X obj 112 133 t b f f;
 #X obj 134 270 s \$0-block;
-#X connect 1 0 14 0;
-#X connect 4 0 15 0;
+#X msg 286 300 10000;
+#X connect 1 0 13 0;
+#X connect 4 0 14 0;
 #X connect 7 0 6 0;
 #X connect 8 0 0 0;
 #X connect 8 0 5 0;
 #X connect 9 0 7 0;
-#X connect 10 0 11 0;
-#X connect 11 0 12 0;
-#X connect 14 0 3 0;
-#X connect 14 1 4 0;
-#X connect 14 1 8 0;
-#X connect 14 2 2 0;
-#X restore 155 306 pd init;
-#X obj 154 355 r \$0-block;
-#X obj 154 380 block~;
+#X connect 10 0 15 0;
+#X connect 13 0 3 0;
+#X connect 13 1 4 0;
+#X connect 13 1 8 0;
+#X connect 13 2 2 0;
+#X connect 15 0 11 0;
+#X restore 202 324 pd init;
+#X obj 201 373 r \$0-block;
+#X obj 201 398 block~;
+#X obj 352 406 del~ out \$0-buffer;
+#X obj 517 404 del~ out \$0-buffer;
+#X obj 48 45 inlet~;
 #X connect 0 0 24 0;
 #X connect 1 0 4 0;
 #X connect 2 0 7 0;
@@ -175,8 +195,8 @@
 #X connect 22 0 24 2;
 #X connect 22 0 25 2;
 #X connect 23 0 10 1;
-#X connect 24 0 36 0;
-#X connect 25 0 37 0;
+#X connect 24 0 41 0;
+#X connect 25 0 42 0;
 #X connect 26 0 5 0;
 #X connect 27 0 33 0;
 #X connect 28 0 3 0;
@@ -189,32 +209,15 @@
 #X connect 33 0 28 0;
 #X connect 35 0 27 0;
 #X connect 35 1 27 1;
-#X connect 36 0 31 0;
-#X connect 37 0 32 0;
-#X connect 41 0 42 0;
-#X restore 195 324 pd pvoc;
-#X text 301 280 cents;
-#X obj 241 280 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-cents empty 0 -8
-0 10 -228856 -1 -1 -100 256;
-#X obj 244 260 hsl 128 15 -2400 2400 0 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 0 1;
-#X obj 167 274 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8
-0 10 -228856 -1 -1 90 256;
-#X text 170 253 speed;
-#X obj 195 371 out~;
-#X text 256 327 <= click;
-#X obj 213 191 delwrite~ \$0-buffer 60000;
-#X text 60 65 Again we adapt a previously presented patch in the granulation
-series. Now is time to check out the Pitch Shifter and Time Stretch
-on a ring buffer with the phase accumulation. Nothing should be new
-\, just the same kind of adaptation., f 57;
-#X obj 247 530 pvoc.live~ 6000;
-#X obj 317 18 declare -path else;
-#X obj 213 161 play.file~ bubul.wav 1 1;
-#X text 99 468 The [pvoc.live~] \, from the ELSE library \, is based
-on this patch. Check its help file., f 43;
-#X connect 0 0 6 0;
-#X connect 2 0 0 1;
-#X connect 3 0 2 0;
-#X connect 4 0 0 0;
-#X connect 12 0 8 0;
+#X connect 39 0 40 0;
+#X connect 41 0 31 0;
+#X connect 42 0 32 0;
+#X restore 156 291 pd pvoc-live;
+#X f 18;
+#X obj 154 181 del~ in \$0-buffer 10000;
+#X connect 1 0 12 2;
+#X connect 2 0 1 0;
+#X connect 3 0 12 1;
+#X connect 10 0 13 0;
+#X connect 12 0 5 0;
+#X connect 13 0 12 0;
