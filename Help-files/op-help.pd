@@ -1,4 +1,4 @@
-#N canvas 668 110 562 437 10;
+#N canvas 852 76 562 437 10;
 #X obj 4 257 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 329 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -40,7 +40,7 @@
 #X obj 103 304 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 165 132 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 7 256;
+-228856 -1 -1 0 256;
 #X text 153 390 - inlet value (default 0) - ignored for bitnot;
 #X text 93 371 1) symbol -;
 #X text 157 284 <symbol> -;
@@ -51,8 +51,6 @@
 #X text 175 306 float - secondary operator value (ignored for bitnot)
 ;
 #X text 146 339 float/list - operator result;
-#X text 36 201 see also:;
-#X obj 38 220 else/op~;
 #X text 51 85 [op] provides many operators and is most useful for lists
 \, as there are objects in Pd Vanilla for all these operations., f
 61;
@@ -108,7 +106,7 @@
 #X connect 32 0 16 0;
 #X connect 33 0 17 0;
 #X connect 34 0 18 0;
-#X restore 460 187 pd comparative;
+#X restore 460 171 pd comparative;
 #N canvas 1183 195 288 353 arithmetic 0;
 #X obj 49 145 else/display;
 #X obj 161 145 else/display;
@@ -135,7 +133,7 @@
 #X connect 9 0 1 0;
 #X connect 10 0 2 0;
 #X connect 11 0 3 0;
-#X restore 460 168 pd arithmetic;
+#X restore 460 152 pd arithmetic;
 #N canvas 1008 242 434 391 bitwise 0;
 #X obj 49 145 else/display;
 #X obj 151 145 else/display;
@@ -183,7 +181,7 @@
 #X connect 28 0 4 0;
 #X connect 30 0 5 0;
 #X connect 30 0 5 0;
-#X restore 460 206 pd bitwise;
+#X restore 460 190 pd bitwise;
 #N canvas 1030 94 359 577 set 0;
 #X obj 32 532 outlet;
 #X msg 57 13 +;
@@ -258,12 +256,43 @@
 #X connect 9 0 2 0;
 #X connect 10 0 1 0;
 #X connect 16 0 3 0;
-#X restore 460 225 pd others;
+#X restore 460 209 pd others;
 #X text 223 285 operator see [pd set] for all options;
 #X text 165 371 operator: see [pd set] for all options (default +)
 , f 61;
+#N canvas 1086 209 472 364 hint 0;
+#X obj 206 193 else/iterate;
+#X obj 206 224 abs;
+#X obj 180 264 else/group;
+#X obj 180 295 else/display;
+#X msg 179 125 -1 -2 -3 4 5 6;
+#X obj 179 156 t b l;
+#X text 34 32 For any other operations on lists that are not present
+in [op] and other objects from the ELSE library \, just do something
+like this \, where you can use any object and even conversion formulas
+\, use [expr] for more complex operations with mre than two variables
+\, etc., f 64;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 3 0;
+#X connect 4 0 5 0;
+#X connect 5 0 2 0;
+#X connect 5 1 0 0;
+#X restore 460 229 pd hint;
+#N canvas 1120 265 414 254 see 0;
+#X text 86 35 see also:;
+#X obj 88 54 else/op~;
+#X obj 233 68 else/trunc;
+#X obj 233 88 else/floor;
+#X obj 233 108 else/ceil;
+#X obj 233 150 else/wrap2;
+#X text 192 39 other operations on lists;
+#X obj 233 128 else/rint;
+#X obj 233 171 else/hex2dec;
+#X obj 233 192 else/dec2hex;
+#X restore 24 227 pd see also;
 #X connect 20 0 24 0;
 #X connect 24 0 26 0;
 #X connect 25 0 24 0;
-#X connect 36 0 24 0;
-#X connect 37 0 24 1;
+#X connect 34 0 24 0;
+#X connect 35 0 24 1;

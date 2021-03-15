@@ -6,9 +6,9 @@
 
 
 
-### Version: 1.0-0 beta-37 With Live Electronics Tutorial 
+### Version: 1.0-0 beta-38 With Live Electronics Tutorial 
 
-###   Released: March 13th, 2021
+###   Unreleased: 
 
 
 
@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (399objects):
+## Current Object list (401 objects):
 
 **ASSORTED: [04]**
 
@@ -224,7 +224,8 @@ Cross compiling is also possible with something like this
 - [voices]
 - [suspedal]
 
-**MATH: FUNCTIONS: [26]**
+**MATH: FUNCTIONS: [29]**
+
 - [add~]
 - [add]
 - [median]
@@ -238,7 +239,8 @@ Cross compiling is also possible with something like this
 - [factor]
 - [floor]
 - [floor~]
-- [int~]
+- [trunc]
+- [trunc~]
 - [rint~]
 - [rint]
 - [quantizer~]
@@ -251,8 +253,10 @@ Cross compiling is also possible with something like this
 - [sin~]
 - [wrap2]
 - [wrap2~]
+- [op~]
+- [op]
 
-**MATH: CONVERSION: [27]**
+**MATH: CONVERSION: [26]**
 
 - [hex2dec]
 - [bpm]
@@ -280,7 +284,6 @@ Cross compiling is also possible with something like this
 - [pol2car~]
 - [rescale]
 - [rescale~]
-- [op~]
 
 **MATH: CONSTANT VALUES: [04]**
 - [sr~]

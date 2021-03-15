@@ -171,7 +171,6 @@ impulse~	x
 impulse2~ 	x
 initmess 	x
 insert 	x
-int~ 	x
 iterate 	x
 keyboard	x
 lag~	x
@@ -233,6 +232,7 @@ note2pitch	x
 note.in	x
 note.out	x
 nyquist~	x
+op	x
 op~	x
 openfile	x
 order	x
@@ -384,6 +384,8 @@ trig2bang	x
 trig2bang~	x
 trigger2	x
 trighold~	x
+trunc 	x
+trunc~ 	x
 unite	x
 unmerge	x
 vibrato~	x
