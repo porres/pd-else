@@ -13,15 +13,17 @@ typedef struct _trunc{
 }t_trunc;
 
 static void trunc_float(t_trunc *x, t_float f){
-    outlet_float(x->x_obj.ob_outlet, trun(f));
+    outlet_float(x->x_obj.ob_outlet, trunc(f));
 }
 
 static void trunc_list(t_trunc *x, t_symbol *s, int argc, t_atom *argv){
-    int old_bytes = x->x_bytes, i;
+    int old_bytes = x->x_bytes;
     x->x_bytes = argc*sizeof(t_atom);
     x->x_at = (t_atom *)t_resizebytes(x->x_at, old_bytes, x->x_bytes);
-	for(i = 0; i < argc; i++) // get output list
-		SETFLOAT(x->x_at+i, trunc(atom_getfloatarg(i, argc, argv));
+    for(int i = 0; i < argc; i++){ // get output list
+        t_float f = atom_getfloatarg(i, argc, argv);
+		SETFLOAT(x->x_at+i, trunc(f));
+    }
 	outlet_list(x->x_obj.ob_outlet, &s_list, argc, x->x_at);
 }
                  
