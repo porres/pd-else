@@ -1,4 +1,4 @@
-#N canvas 663 168 567 404 10;
+#N canvas 663 168 566 396 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -19,7 +19,8 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1;
 #X restore 305 3 graph;
-#X obj 3 2 cnv 15 301 42 empty empty int~ 20 20 2 37 -233017 -1 0;
+#X obj 3 2 cnv 15 301 42 empty empty trunc~ 20 20 2 37 -233017 -1 0
+;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 3 graph;
@@ -38,20 +39,18 @@
 #X text 222 345 (none);
 #X obj 157 311 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 139 187 int;
-#X obj 139 225 else/display;
 #X obj 116 40 cnv 4 4 4 empty empty integer 0 28 2 18 -233017 -1 0
 ;
 #X text 195 312 signal - truncated integer signal;
-#X text 74 86 [int~] truncates a signal towards zero \, that means
-only the integer value is considered.;
-#X obj 192 196 else/int~;
 #X obj 195 142 hsl 180 16 -10 10 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 2700 1;
 #X obj 192 168 else/display~ 8;
 #X text 196 275 signal - signal input;
-#X connect 21 0 22 0;
+#X obj 192 196 else/trunc~;
+#X text 29 202 see also;
+#X obj 28 225 else/trunc;
+#X text 74 86 [trunc~] truncates a signal towards zero \, that means
+only the integer value is considered.;
+#X connect 23 0 24 0;
+#X connect 24 0 26 0;
 #X connect 26 0 18 0;
-#X connect 27 0 28 0;
-#X connect 27 0 21 0;
-#X connect 28 0 26 0;

@@ -1,0 +1,261 @@
+#N canvas 633 66 563 449 10;
+#X obj 4 257 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 330 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 360 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 148 263 cnv 17 3 42 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 148 338 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 3 422 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 41 cnv 4 4 4 empty empty Interpolate 0 28 2 18 -233017 -1
+0;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 110 41 cnv 4 4 4 empty empty between 0 28 2 18 -233017 -1 0
+;
+#X obj 179 41 cnv 4 4 4 empty empty values 0 28 2 18 -233017 -1 0;
+#X obj 3 4 cnv 15 301 42 empty empty interpolate 20 20 2 37 -233017
+-1 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 3 4 graph;
+#N canvas 443 165 1178 525 example 1;
+#X obj 937 332 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -262144
+-1 -1 1;
+#X obj 896 125 hsl 128 14 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 12700 1;
+#X floatatom 893 150 4 0 1 0 - - -;
+#X msg 954 208 exp \$1;
+#X floatatom 954 186 5 0.1 10 0 - - -;
+#X obj 1071 211 r \$0-x;
+#X msg 938 157 start 50;
+#X floatatom 938 263 5 0 0 0 - - -;
+#X obj 952 378 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 938 437 preset \$0-x;
+#A saved 1 || \; 20 || \; 194 || \; 288 || \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
+#X obj 938 235 else/interpolate;
+#X obj 1071 245 f;
+#X obj 960 406 s \$0-save;
+#X obj 823 223 r \$0-save;
+#X obj 823 250 f;
+#X msg 823 271 target \$1;
+#X obj 1071 273 display;
+#N canvas 471 215 971 487 stupid 0;
+#X obj 47 96 cnv 15 198 98 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-buf 10 float 3;
+#A 0 0.88 -0.199999 -0.759998 -0.879998 -0.759998 -0.559999 -0.239999
+0.160001 0.7 0.94;
+#X coords 0 1 10 -1 200 100 1 0 0;
+#X restore 46 95 graph;
+#X text 46 39 Test all messages \, and note that the object also works
+with lists., f 34;
+#X obj 398 46 hsl 128 14 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X floatatom 395 71 4 0 1 0 - - -;
+#X obj 451 245 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 475 245 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -262144
+-1 -1 0;
+#X obj 395 114 else/interpolate;
+#X obj 385 285 f;
+#X msg 350 316 target \$1;
+#X obj 350 342 display;
+#X obj 475 284 preset \$0-y;
+#A saved 0.36 -0.199999 -0.759998 -0.879998 -0.759998 -0.559999 -0.239999
+0.160001 0.7 0.94 || \; -0.82 -0.38 0.199999 0.679999 0.979998 0.92
+0.859998 0.379999 -0.200001 -0.62 || \; -0.88 -0.72 -0.58 -0.4 -0.220001
+0.179999 0.339999 0.499999 0.679999 0.899998 || \; 0.88 0.7 0.48 0.270001
+-0.079999 -0.299999 -0.429999 -0.579999 -0.759998 -0.919998 || \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \;;
+#X obj 543 95 r \$0-y;
+#X obj 395 186 buffer \$0-buf;
+#X obj 45 259 cnv 15 198 98 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-next 10 float 3;
+#A 0 0.36 -0.199999 -0.759998 -0.879998 -0.759998 -0.559999 -0.239999
+0.160001 0.7 0.94;
+#X coords 0 1 10 -1 200 100 1 0 0;
+#X restore 44 258 graph;
+#X obj 543 125 buffer \$0-next;
+#X obj 408 148 insert set;
+#X connect 3 0 4 0;
+#X connect 4 0 7 0;
+#X connect 5 0 8 0;
+#X connect 5 0 11 0;
+#X connect 6 0 11 0;
+#X connect 7 0 13 0;
+#X connect 7 0 17 0;
+#X connect 8 0 9 0;
+#X connect 9 0 10 0;
+#X connect 12 0 16 0;
+#X connect 16 0 7 1;
+#X connect 17 0 16 0;
+#X restore 930 76 pd stupid;
+#X obj 48 96 cnv 15 198 98 empty empty empty 20 12 0 14 -233017 -66577
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-buffer 10 float 3;
+#A 0 0.96 0.96 -0.5 -0.54 -0.68 -0.04 -0.04 -0.04 0.78 0.78;
+#X coords 0 1 10 -1 200 100 1 0 0;
+#X restore 47 95 graph;
+#X text 46 39 Test all messages \, and note that the object also works
+with lists., f 34;
+#X obj 164 274 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -262144
+-1 -1 2;
+#X obj 189 375 s \$0-s;
+#X obj 165 399 preset \$0-b;
+#A saved 0.859998 0.599999 0.299999 0.119999 -0.140001 -0.26 -0.38
+-0.52 -0.68 -0.8 || \; -0.92 -0.72 -0.62 -0.440001 -0.240001 -0.0600009
+0.139999 0.319999 0.599998 0.799998 || \; 0.96 0.96 -0.5 -0.54 -0.68
+-0.04 -0.04 -0.04 0.78 0.78 || \; -0.0200002 0.0199997 0.0199997 -0.0400002
+-0.0800002 -0.1 -0.1 -0.1 -0.0800002 -0.12 || \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+;
+#X obj 418 246 hsl 128 14 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 12700 1;
+#X floatatom 415 271 4 0 1 0 - - -;
+#X obj 415 314 else/interpolate;
+#X obj 563 295 r \$0-b;
+#N canvas 492 58 450 300 doesn't-work 0;
+#X obj 164 66 hsl 128 14 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X floatatom 161 91 4 0 1 0 - - -;
+#X obj 161 134 else/interpolate;
+#X obj 309 145 buffer \$0-buffer;
+#X obj 161 160 else/insert set;
+#X obj 50 174 list;
+#X obj 50 151 r \$0-s;
+#X obj 50 195 else/insert target;
+#X obj 309 115 r \$0-d;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 4 0;
+#X connect 2 0 5 1;
+#X connect 3 0 2 1;
+#X connect 4 0 3 0;
+#X connect 5 0 7 0;
+#X connect 6 0 5 0;
+#X connect 7 0 2 0;
+#X connect 8 0 3 0;
+#X restore 785 70 pd doesn't-work;
+#X obj 415 373 buffer \$0-buffer;
+#X obj 179 320 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 180 344 t b b;
+#X obj 330 285 r \$0-s;
+#X obj 301 322 message;
+#X obj 563 325 message;
+#X obj 301 348 insert target, f 7;
+#X connect 0 0 9 0;
+#X connect 1 0 2 0;
+#X connect 2 0 10 0;
+#X connect 3 0 10 0;
+#X connect 4 0 3 0;
+#X connect 5 0 11 0;
+#X connect 6 0 10 0;
+#X connect 7 0 14 1;
+#X connect 7 0 11 1;
+#X connect 8 0 12 0;
+#X connect 8 0 9 0;
+#X connect 10 0 7 0;
+#X connect 11 0 10 1;
+#X connect 11 0 16 0;
+#X connect 13 0 14 0;
+#X connect 14 0 15 0;
+#X connect 15 0 10 0;
+#X connect 21 0 23 0;
+#X connect 24 0 25 0;
+#X connect 25 0 26 0;
+#X connect 26 0 29 0;
+#X connect 27 0 34 0;
+#X connect 29 0 33 1;
+#X connect 29 0 34 1;
+#X connect 30 0 31 0;
+#X connect 31 0 23 0;
+#X connect 31 1 22 0;
+#X connect 32 0 29 0;
+#X connect 32 0 33 0;
+#X connect 33 0 35 0;
+#X connect 34 0 26 1;
+#X connect 35 0 26 0;
+#X restore 457 208 pd example;
+#X floatatom 280 172 5 0 0 0 - - -;
+#X obj 148 309 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 391 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 172 147 hsl 90 14 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X floatatom 169 224 0 0 0 0 - - -;
+#X text 240 172 Target;
+#X text 61 88 [interpolate] allows you to use a slider to interpolate
+between values. Whenever you change the target \, you can interpolate
+to it by moving the slider to the opposite end., f 72;
+#X text 183 277 set <list>;
+#X text 177 291 exp <float>;
+#X text 219 309 list;
+#X text 213 263 float;
+#X text 256 263 - interpolation value between 0 and 1, f 43;
+#X text 256 277 - set last value, f 43;
+#X text 256 291 - sets exponential factor, f 43;
+#X text 256 309 - sets target values, f 43;
+#X text 219 338 list;
+#X text 256 338 - interpolated values;
+#X text 188 370 1) list - sets start value (default zeros);
+#X text 158 399 -exp <float>: sets exponential factor (default 1);
+#X floatatom 169 172 4 0 1 0 - - -;
+#X obj 280 147 else/initmess 100;
+#X obj 169 197 else/interpolate 50;
+#X connect 20 0 41 1;
+#X connect 23 0 39 0;
+#X connect 39 0 41 0;
+#X connect 40 0 20 0;
+#X connect 41 0 24 0;

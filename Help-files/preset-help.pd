@@ -1,0 +1,328 @@
+#N struct 1042-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
+#N canvas 521 47 563 554 10;
+#X floatatom 326 177 0 0 0 0 - - -;
+#X floatatom 393 177 0 0 0 0 - - -;
+#X obj 147 142 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
+-1 -1 2;
+#X obj 326 149 r \$0-A;
+#X obj 393 149 r \$0-B;
+#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 24 42 cnv 4 4 4 empty empty Preset 0 28 2 18 -233017 -1 0;
+#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 306 5 graph;
+#X obj 76 42 cnv 4 4 4 empty empty management 0 28 2 18 -233017 -1
+0;
+#X obj 177 42 cnv 4 4 4 empty empty system 0 28 2 18 -233017 -1 0;
+#X obj 4 5 cnv 15 301 42 empty empty preset 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 3 5 graph;
+#X obj 6 528 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 9 229 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 9 453 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 9 501 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 94 235 cnv 17 3 215 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 149 508 1) list - one or more receive names (default none)
+;
+#X text 119 272 load <float> -;
+#X floatatom 147 166 3 0 7 0 - - -;
+#X text 119 297 save <float> -;
+#X text 167 350 open -;
+#X text 161 364 close -;
+#X text 210 364 close preset window, f 55;
+#X text 113 393 read <symbol> -;
+#X text 107 407 write <symbol> -;
+#X text 210 392 read presets from file \, no symbol opens dialog window
+, f 55;
+#X text 113 336 clear <float> -;
+#X text 210 336 clear preset number \, no float clears all presets
+, f 55;
+#X text 161 233 float -;
+#X text 210 233 sets and loads preset mumber, f 55;
+#X obj 182 167 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 167 322 bang -;
+#X text 200 167 save;
+#X text 111 141 load;
+#X obj 147 193 else/preset \$0-A \$0-B;
+#A saved -62 || 43 || \; 66 || -131 || \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \;;
+#X text 210 406 write presets to file \, no symbol opens dialog window
+, f 55;
+#X text 210 322 save preset (same as 'save' without float), f 55;
+#X text 210 350 open the preset window so you can see/edit values,
+f 55;
+#X text 113 421 import <list> -;
+#X text 210 420 import presets from a list, f 55;
+#X obj 93 460 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 93 480 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X text 167 461 list -;
+#X text 210 461 presets as a list when receiving "export" message,
+f 53;
+#X text 167 480 bang -;
+#X text 210 480 when the preset is empty, f 53;
+#X text 210 272 load preset number. If no float is given \, the last
+set preset is loaded, f 55;
+#X text 210 297 save preset number. If no float is given \, the last
+set preset is saved, f 55;
+#X text 125 378 args <list> -;
+#X text 210 378 replaces receive names arguments, f 55;
+#X text 131 247 set <list> -;
+#X text 210 247 a float sets preset number to load or save \, following
+elements set the preset value, f 55;
+#X text 107 435 export <float> -;
+#X text 210 434 exports a preset number \, no float exports all as
+a list;
+#N canvas 802 59 597 561 examples 0;
+#X obj 150 411 else/slider2d 127 127 0 127 0 127 1 36.1417 52.2047
+42.1654 218.858 0 0 0 0 0 21 97 empty empty;
+#X obj 36 457 else/message;
+#X obj 63 278 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 1000 0;
+#X obj 63 224 r \$0-function;
+#X obj 174 136 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
+-1 -1 3;
+#X floatatom 174 166 3 0 7 0 - - -;
+#X obj 209 165 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 228 165 save;
+#X text 138 135 load;
+#X obj 479 305 float;
+#X obj 479 247 r \$0-float;
+#X obj 36 421 r \$0-message;
+#X text 343 259 Getting values from objects:, f 14;
+#X obj 327 402 cnv 15 200 120 empty empty empty 20 12 0 14 -233017
+-66577 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-buffer 10 float 2;
+#X coords 0 1 10 -1 202 122 1 0 0;
+#X restore 326 401 graph;
+#X obj 174 192 else/preset \$0-function \$0-message \$0-float \$0-array
+;
+#A saved 0 150 1 115 0.29 115 1 125 0.13 195 0.9 70 0.26 105 0.99 125
+0 || 91 91 || 31 || -0.836066 0.901639 -0.426229 0.409836 -0.786885
+0.0819672 0.655738 -0.426247 0.245902 -0.737705 || \; 0 165 1 150 0.53
+480 0.53 205 0 || 58 21 || -58 || -0.868875 -0.704939 -0.524608 -0.377065
+-0.245916 -0.0655858 0.0655635 0.262287 0.524586 0.737704 || \; 0 165
+1 310 0 240 0.56 285 0 || 59 109 || 1.5 || 0.803301 0.721333 0.557396
+0.360672 0.147555 -0.0491694 -0.278681 -0.475405 -0.672129 -0.836065
+|| \; 1 1000 0 || 21 97 || -0.4 || -0.803279 -0.557377 -0.819672 -0.47541
+-0.786885 0.803279 0.278689 0.770492 0.344262 0.754098 || \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \;;
+#X obj 321 313 r \$0-array;
+#X obj 321 341 else/buffer \$0-buffer;
+#X obj 506 277 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
+-228856 -1 -1 0 256;
+#X text 32 20 The matching [receive] objects can be connected to anything
+that takes a bang and outputs values \, so you can connect to things
+like GUIs (like number boxes \, sliders \, else/function) and storage
+objects (like [float] \, [symbol] \, [else/message] and [else/buffer].
+Note that it doesn't work with abstractions., f 83;
+#X text 32 69 [else/function] fine since it's a compiled object \,
+but [slider2d] isn't (like some other GUI abstraction made by you).
+The trick here is to use [message] instead. Note you can do a similar
+thing for non graphical abstractions or any subpatch., f 83;
+#X obj 479 336 else/display;
+#X obj 83 250 else/initmess 0 1000 0;
+#X connect 0 0 1 1;
+#X connect 1 0 0 0;
+#X connect 3 0 2 0;
+#X connect 4 0 5 0;
+#X connect 5 0 15 0;
+#X connect 6 0 15 0;
+#X connect 9 0 21 0;
+#X connect 10 0 9 0;
+#X connect 11 0 1 0;
+#X connect 16 0 17 0;
+#X connect 18 0 9 1;
+#X connect 22 0 2 0;
+#X restore 476 158 pd examples;
+#N canvas 963 89 488 442 details 0;
+#X obj 146 135 hradio 15 1 0 8 empty \$0-radio Load\ preset 0 -8 0
+10 -174763 -1 -1 0;
+#N canvas 356 221 568 423 shift 0;
+#X msg 137 214 save;
+#X msg 218 214 load;
+#X obj 106 264 else/insert;
+#X obj 218 293 s \$0-radio;
+#X obj 175 95 keyname;
+#X obj 214 117 select Shift_L;
+#X msg 214 139 1;
+#X msg 295 138 0;
+#X obj 199 166 &&;
+#X obj 199 188 sel 1 0;
+#X obj 106 35 inlet;
+#X obj 106 344 outlet;
+#X msg 218 242 color #aaaaaa #000000 #000000 \, label Load\ preset
+;
+#X msg 227 270 color #ff5050 #000000 #000000 \, label Save\ preset
+;
+#X connect 0 0 2 1;
+#X connect 0 0 13 0;
+#X connect 1 0 2 1;
+#X connect 1 0 12 0;
+#X connect 2 0 11 0;
+#X connect 4 0 8 0;
+#X connect 4 1 5 0;
+#X connect 5 0 6 0;
+#X connect 5 1 7 0;
+#X connect 6 0 8 1;
+#X connect 7 0 8 1;
+#X connect 8 0 9 0;
+#X connect 9 0 0 0;
+#X connect 9 1 1 0;
+#X connect 10 0 2 0;
+#X connect 12 0 3 0;
+#X connect 13 0 3 0;
+#X restore 146 163 pd shift;
+#X obj 117 286 else/preset \$0-1 \$0-2;
+#A saved -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+;
+#X text 29 19 Here's a helper patch to turn your horizontal radio in
+both a preset selector and preset saver. if you press "shift" before
+you click \, it saves the preset \, and selects it otherwise., f 52
+;
+#X obj 146 192 else/display;
+#X connect 0 0 1 0;
+#X connect 1 0 4 0;
+#X restore 482 178 pd details;
+#N canvas 727 138 536 569 morph 0;
+#N canvas 1074 181 604 566 array 0;
+#X obj 116 148 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
+-1 -1 1;
+#X floatatom 116 177 3 0 7 0 - - -;
+#X obj 148 180 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 166 179 save;
+#X text 81 146 load;
+#X obj 163 229 else/insert set;
+#X obj 149 270 else/preset \$0-n;
+#A saved -0.704919 -0.459022 -0.278697 -0.0819783 0.180313 0.360638
+0.491783 0.655715 0.754074 0.901613 || \; 0.868852 0.786886 0.573775
+0.377056 0.131159 -0.114739 -0.42621 -0.622928 -0.770467 -0.803253
+|| \; 0.868852 0.786886 -0.737696 -0.786875 -0.803268 -0.803268 -0.754089
+0.868836 0.88523 0.918016 || \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
+#X obj 326 199 r \$0-n;
+#X obj 326 228 else/buffer \$0-m;
+#X obj 163 383 cnv 15 200 120 empty empty empty 20 12 0 14 -233017
+-66577 0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X array \$0-m 10 float 2;
+#X coords 0 1 10 -1 202 122 1 0 0;
+#X restore 162 382 graph;
+#X obj 326 262 else/morph 1000;
+#X obj 326 298 array set \$0-m;
+#X obj 163 208 array get \$0-m;
+#X text 97 64 Here's;
+#X connect 0 0 1 0;
+#X connect 1 0 6 0;
+#X connect 2 0 6 0;
+#X connect 2 0 13 0;
+#X connect 5 0 11 0;
+#X connect 7 0 8 0;
+#X connect 8 0 11 0;
+#X connect 11 0 12 0;
+#X connect 13 0 5 0;
+#X restore 268 301 pd array;
+#N canvas 882 41 604 566 list 0;
+#X obj 116 148 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
+-1 -1 1;
+#X floatatom 116 177 3 0 7 0 - - -;
+#X obj 148 180 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 166 179 save;
+#X text 81 146 load;
+#X obj 326 265 else/morph 1000;
+#X text 97 64 Here's;
+#X obj 326 228 list;
+#X obj 149 269 else/preset \$0-list;
+#A saved -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+;
+#X obj 326 175 r \$0-list;
+#X obj 326 306 else/display;
+#X connect 0 0 1 0;
+#X connect 1 0 8 0;
+#X connect 2 0 8 0;
+#X connect 5 0 10 0;
+#X connect 7 0 5 0;
+#X connect 9 0 7 0;
+#X restore 277 225 pd list;
+#X restore 494 199 pd morph;
+#X text 33 87 [preset] manages presets for your patch. It retrieves
+data connected to [receive] objects that match the arguments and also
+sends data back to them. Change the number values below \, save the
+preset and patch \, close it and reopen it to recall the presets.,
+f 84;
+#X connect 2 0 25 0;
+#X connect 3 0 0 0;
+#X connect 4 0 1 0;
+#X connect 25 0 41 0;
+#X connect 37 0 41 0;
