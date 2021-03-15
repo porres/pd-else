@@ -165,6 +165,7 @@ hz2rad~.class.sources := Classes/Source/hz2rad~.c
 ikeda~.class.sources := Classes/Source/ikeda~.c
 impseq~.class.sources := Classes/Source/impseq~.c
 trunc~.class.sources := Classes/Source/trunc~.c
+trunc.class.sources := Classes/Source/trunc.c
 lastvalue~.class.sources := Classes/Source/lastvalue~.c
 latoocarfian~.class.sources := Classes/Source/latoocarfian~.c
 lorenz~.class.sources := Classes/Source/lorenz~.c
