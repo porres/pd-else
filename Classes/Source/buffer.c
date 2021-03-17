@@ -154,7 +154,7 @@ static void buffer_resize(t_buffer *x, t_floatarg f){
 
 static void buffer_set(t_buffer *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(ac <= 2)
+    if(ac <= 1)
         return;
     char *itemp, *firstitem;
     int stride, nitem, arrayonset, i;
