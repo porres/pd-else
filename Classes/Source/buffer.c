@@ -48,7 +48,7 @@ static t_array *array_client_getbuf(t_array_client *x, t_glist **glist){
             return(garray_getarray(y));
         }
         else{
-            pd_error(x, "array: couldn't find named array '%s'", x->tc_sym->s_name);
+            pd_error(x, "[buffer]: couldn't find named array '%s'", x->tc_sym->s_name);
             *glist = 0;
             return(0);
         }
@@ -152,7 +152,33 @@ static void buffer_resize(t_buffer *x, t_floatarg f){
     }
 }
 
-static void buffer_set(t_buffer *x, t_symbol *s, int argc, t_atom *argv){
+static void buffer_set(t_buffer *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac <= 2)
+        return;
+    char *itemp, *firstitem;
+    int stride, nitem, arrayonset, i;
+    if(!buffer_getrange(x, &firstitem, &nitem, &stride, &arrayonset))
+        return;
+    int n = atom_getfloatarg(0, ac, av);
+    if(n < 0 || n >= nitem){
+        post("[buffer]: index out of range");
+        return;
+    }
+    for(i = 0, itemp = firstitem; i < n; i++)
+        itemp += stride;
+    for(i = 1; i < ac; i++, itemp += stride, n++){
+        if(n >= nitem)
+            break;
+        *(t_float *)itemp = atom_getfloatarg(i, ac, av);
+    }
+    t_glist *glist = 0;
+    t_array *a = array_client_getbuf(&x->x_tc, &glist);
+    if(glist_isvisible(glist))
+        array_redraw(a, glist);
+}
+
+static void buffer_setarray(t_buffer *x, t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     buffer_resize(x, argc);
     char *itemp, *firstitem;
@@ -169,26 +195,22 @@ static void buffer_set(t_buffer *x, t_symbol *s, int argc, t_atom *argv){
         array_redraw(a, glist);
 }
 
+static void buffer_list(t_buffer *x, t_symbol *s, int ac, t_atom *av){
+    buffer_setarray(x, s, ac, av);
+    outlet_list(x->x_tc.tc_obj.ob_outlet, 0, ac, av);
+}
+
 static void buffer_proxy_list(t_buffer_proxy *p, t_symbol *s, int ac, t_atom *av){
     t_buffer *x = p->p_owner;
-    buffer_set(x, s, ac, av);
+    buffer_setarray(x, s, ac, av);
 }
 
-static void buffer_list(t_buffer *x, t_symbol *s, int argc, t_atom *argv){
-    buffer_set(x, s, argc, argv);
-    outlet_list(x->x_tc.tc_obj.ob_outlet, 0, argc, argv);
-}
-
-// SETUP
 void buffer_setup(void){
-    buffer_class = class_new(gensym("buffer"), (t_newmethod)buffer_new,
-        0, sizeof(t_buffer), 0, A_DEFSYMBOL, 0);
+    buffer_class = class_new(gensym("buffer"), (t_newmethod)buffer_new, 0, sizeof(t_buffer), 0, A_DEFSYMBOL, 0);
     class_addbang(buffer_class, buffer_bang);
     class_addlist(buffer_class, buffer_list);
     class_addmethod(buffer_class, (t_method)buffer_set, gensym("set"), A_GIMME, 0);
-    class_addmethod(buffer_class, (t_method)buffer_name, gensym("rename"), A_DEFSYMBOL, 0);
-    
-    buffer_proxy_class = (t_class *)class_new(gensym("buffer proxy"),
-        0, 0, sizeof(t_buffer_proxy), 0, 0);
+    class_addmethod(buffer_class, (t_method)buffer_name, gensym("name"), A_DEFSYMBOL, 0);
+    buffer_proxy_class = (t_class *)class_new(gensym("buffer proxy"), 0, 0, sizeof(t_buffer_proxy), 0, 0);
     class_addlist(buffer_proxy_class, buffer_proxy_list);
 }
