@@ -12,12 +12,12 @@ typedef struct _gcd{
     t_outlet   *x_outlet;
 }t_gcd;
 
-float calculate(float f1, float f2){
+float gcd_calculate(float f1, float f2){
     long a = (long)f1, b = (long)f2;
     if(a  == 0 || b == 0)
         return(1);
     if(a % b != 0)
-        return(calculate(b, a % b));
+        return(gcd_calculate(b, a % b));
     else
         return(fabs((float)b));
 }
@@ -27,7 +27,7 @@ static void gcd_bang(t_gcd *x){
 }
 
 static void gcd_float(t_gcd *x, t_floatarg f){
-    x->x_output = calculate(f, x->x_right);
+    x->x_output = gcd_calculate(f, x->x_right);
     gcd_bang(x);
 }
 
@@ -37,7 +37,7 @@ static void gcd_list(t_gcd *x, t_symbol *s, int ac, t_atom *av){
     a = atom_getfloat(av);
     for(int i = 1; i < ac; i++){
         b = atom_getfloat(av+i);
-        a = calculate(a, b);
+        a = gcd_calculate(a, b);
     }
     x->x_output = a;
     gcd_bang(x);
