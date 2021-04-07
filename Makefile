@@ -93,6 +93,7 @@ router.class.sources := Classes/Source/router.c
 routeall.class.sources := Classes/Source/routeall.c
 routetype.class.sources := Classes/Source/routetype.c
 receiver.class.sources := Classes/Source/receiver.c
+retrieve.class.sources := Classes/Source/retrieve.c
 selector.class.sources := Classes/Source/selector.c
 separate.class.sources := Classes/Source/separate.c
 symbol2any.class.sources := Classes/Source/symbol2any.c

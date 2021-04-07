@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (401 objects):
+## Current Object list (405 objects):
 
 **ASSORTED: [04]**
 
@@ -136,11 +136,12 @@ Cross compiling is also possible with something like this
 - [pitch2note]
 - [note2pitch]
 
-**PATCH/SUBPATCH MANAGEMENT: [18]**
+**PATCH/SUBPATCH MANAGEMENT: [19]**
 
 - [args]
 - [dollsym]
 - [receiver]
+- [retrieve]
 - [blocksize~]
 - [properties]
 - [fontsize]
@@ -157,7 +158,7 @@ Cross compiling is also possible with something like this
 - [canvas.zoom]
 - [loadbanger] / [lb]
 
-**MESSAGE MANAGEMENT: [23]**
+**MESSAGE MANAGEMENT: [25]**
 
 - [format]
 - [nbang]
@@ -179,6 +180,8 @@ Cross compiling is also possible with something like this
 - [routetype]
 - [selector]
 - [stack] 
+- [morph]
+- [interpolate]  
 - [trigger2] / [t2]
 - [sig2float~] / [s2f~]
 - [float2sig~] / [f2s~]
@@ -551,7 +554,7 @@ Cross compiling is also possible with something like this
 - [vu~]
 - [zerocross~]
 
-**GUI: [33]**
+**GUI: [34]**
 
 - [gui]
 - [pad]
@@ -575,6 +578,7 @@ Cross compiling is also possible with something like this
 - [keyboard]
 - [graph~]
 - [range.hsl]
+- [multi.vsl]
 - [spectrograph~]
 - [meter~]
 - [meter2~]

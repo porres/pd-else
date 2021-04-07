@@ -171,6 +171,7 @@ impulse~	x
 impulse2~ 	x
 initmess 	x
 insert 	x
+interpolate 	x
 iterate 	x
 keyboard	x
 lag~	x
@@ -217,6 +218,7 @@ mix2~	x
 mix4~	x
 mono	x
 mono.rev~	x
+morph	x
 morph~	x
 mouse	x
 mov.avg	x
@@ -224,6 +226,7 @@ mov.avg~	x
 mov.rms~	x
 ms2samps~	x
 ms2samps	x
+multi.vsl	x
 nbang	x
 noisegate~	x
 norm~	x
@@ -311,6 +314,7 @@ resonant~	x
 resonant2~	x
 resonbank~	x
 resonbank2~	x
+retrieve	x
 retune	x
 reverse	x
 rint~	x

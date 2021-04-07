@@ -1,0 +1,117 @@
+#N struct 1008-point float x0 float y0 float xs float ys float fg float
+in float gridx float gridy;
+#N canvas 747 79 560 379 10;
+#X obj 4 354 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 5 244 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 294 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 325 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 154 301 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X text 192 333 1) symbol;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 4 pd;
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 25 41 cnv 4 4 4 empty empty Retrieve 0 28 2 18 -233017 -1 0
+;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 135 41 cnv 4 4 4 empty empty from 0 28 2 18 -233017 -1 0;
+#X obj 3 4 cnv 15 301 42 empty empty retrieve 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 4 graph;
+#X obj 155 253 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 94 41 cnv 4 4 4 empty empty data 0 28 2 18 -233017 -1 0;
+#X obj 147 146 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X floatatom 311 188 5 0 0 0 - - -;
+#X obj 147 201 else/display;
+#X text 174 267 set <symbol> - sets a receive name, f 52;
+#X text 254 333 - receive name (default none), f 37;
+#X text 200 302 anything;
+#X text 222 252 bang - take the data, f 44;
+#N canvas 945 156 725 324 more 0;
+#X obj 66 105 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 66 200 else/display;
+#X msg 78 132 set a;
+#X obj 227 276 symbol hi;
+#X obj 66 172 else/retrieve;
+#X text 89 105 <= retrieve data;
+#X obj 432 147 else/message;
+#X obj 543 108 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
+0 0 0 0 60 90 empty empty;
+#X obj 543 250 else/display;
+#X obj 378 177 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 378 232 else/display;
+#X obj 432 109 r \$0-sl2d;
+#X obj 378 204 else/retrieve \$0-sl2d;
+#X text 408 26 But note that it can only retrieve from compiled objects
+\, it doesn't work with abstractions. The trick in such cases is to
+use something like [message] to store the data., f 40;
+#X obj 62 251 else/receiver a b;
+#X obj 227 251 r c;
+#X msg 124 139 set c;
+#X obj 65 277 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 5400 1;
+#X obj 209 106 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 209 201 else/display;
+#X msg 228 137 set b;
+#X obj 209 173 else/retrieve;
+#X text 232 106 <= retrieve data;
+#X msg 271 142 set c;
+#X text 30 24 You can use the set message to set or change the receive
+name. You can connect the corresponding [receive] object to GUIs or
+any object that receives a bang and outputs data. Note that it also
+works with [receiver] \, which can have up to two receive names.,
+f 56;
+#X connect 0 0 4 0;
+#X connect 2 0 4 0;
+#X connect 4 0 1 0;
+#X connect 6 0 7 0;
+#X connect 7 0 6 1;
+#X connect 7 0 8 0;
+#X connect 9 0 12 0;
+#X connect 11 0 6 0;
+#X connect 12 0 10 0;
+#X connect 14 0 17 0;
+#X connect 15 0 3 0;
+#X connect 16 0 4 0;
+#X connect 18 0 21 0;
+#X connect 20 0 21 0;
+#X connect 21 0 19 0;
+#X connect 23 0 21 0;
+#X restore 495 206 pd more;
+#X obj 311 164 r \$0-x;
+#X text 254 302 - the retrieved data;
+#X obj 178 41 cnv 4 4 4 empty empty [receive] 0 28 2 18 -233017 -1
+0;
+#X obj 147 173 else/retrieve \$0-x;
+#X text 73 89 [retrieve] retrieves values from things that are connected
+to a [receive] with the same name as the argument. It also works with
+[else/receiver]., f 66;
+#X text 170 146 <= retrieve data;
+#X text 350 189 <= change and then hit bang to retrieve., f 14;
+#X connect 20 0 31 0;
+#X connect 28 0 21 0;
+#X connect 31 0 22 0;
