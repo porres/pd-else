@@ -1,81 +1,80 @@
-#N canvas 666 82 559 478 10;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 722 103 560 425 10;
+#X obj 306 7 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 14 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Bang 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 43 cnv 4 4 4 empty empty Bang 0 28 2 18 -233017 -1 0;
+#X obj 458 14 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 14 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 14 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 29 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 29 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1;
-#X restore 305 3 graph;
-#X obj 75 40 cnv 4 4 4 empty empty gate 0 28 2 18 -233017 -1 0;
-#X obj 2 243 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X restore 305 6 graph;
+#X obj 70 43 cnv 4 4 4 empty empty gate 0 28 2 18 -233017 -1 0;
+#X obj 2 240 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 345 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 2 318 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 2 400 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 370 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 99 252 cnv 17 3 54 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 248 cnv 17 3 32 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 99 352 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 325 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 2 469 cnv 1 550 1 empty empty empty 0 0 0 4 -262144 -262144
+#X obj 2 414 cnv 1 550 1 empty empty empty 0 0 0 4 -262144 -262144
 0;
-#X obj 2 448 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 397 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 138 252 bang;
-#X text 138 353 bang;
-#X text 173 409 -;
-#X text 114 409 1) float;
-#X obj 99 374 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 154 249 bang;
+#X text 154 326 bang;
+#X text 221 378 -;
+#X text 162 378 1) float;
+#X obj 91 347 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 138 375 bang;
-#X text 173 353 - output bang if a bang was sent before to the right
-inlet;
-#X text 173 252 - a bang to be gated, f 59;
-#X text 132 284 reset;
-#X obj 98 315 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 154 348 bang;
+#X text 189 249 - a bang to be gated, f 41;
+#X text 148 264 reset;
+#X obj 91 285 cnv 17 3 30 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 173 375 - output a bang otherwise;
-#X obj 232 208 bng 22 250 50 0 empty empty empty 0 -6 0 8 -216373 -1
+#X text 189 348 - output a bang otherwise;
+#X obj 236 208 bng 22 250 50 0 empty empty empty 0 -6 0 8 -216373 -1
 -1;
-#X obj 301 207 bng 22 250 50 0 empty empty empty 0 -6 0 8 -216373 -1
+#X obj 305 207 bng 22 250 50 0 empty empty empty 0 -6 0 8 -216373 -1
 -1;
-#X obj 232 150 bng 22 250 50 0 empty empty empty 0 -6 0 8 -216373 -1
+#X obj 236 148 bng 22 250 50 0 empty empty empty 0 -6 0 8 -216373 -1
 -1;
-#X obj 3 2 cnv 15 301 42 empty empty nbang 20 20 2 37 -233017 -1 0
+#X obj 3 5 cnv 15 301 42 empty empty nbang 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 3 3 graph;
-#X obj 301 151 bng 22 250 50 0 empty empty empty 0 -6 0 8 -216373 -1
+#X restore 3 6 graph;
+#X obj 305 148 bng 22 250 50 0 empty empty empty 0 -6 0 8 -216373 -1
 -1;
-#X msg 184 153 reset;
-#X text 74 84 [nbang] allows 'n' number of bangs to be gated through
+#X msg 189 154 reset;
+#X text 74 87 [nbang] allows 'n' number of bangs to be gated through
 the left outlet. The bang goes to the right outlet otherwise \, when
 the gate is closed. A bang in the right inlet or the "reset" message
 resets the counter and reopens the gate.;
-#X text 173 426 -;
-#X text 114 426 1) float;
-#X text 187 409 number of 'n' bangs (default 1), f 58;
-#X text 187 426 initial counter value (default 0), f 58;
-#X text 138 314 bang;
-#X text 173 314 - resets counter and reopens gate, f 59;
-#X text 173 284 - resets counter and reopens gate, f 59;
-#X text 108 268 n <float>;
-#X text 173 268 - sets 'n' number of bangs, f 59;
-#X obj 232 184 else/nbang 4;
-#X connect 30 0 45 0;
-#X connect 33 0 45 1;
-#X connect 34 0 45 0;
-#X connect 45 0 28 0;
-#X connect 45 1 29 0;
+#X text 235 378 number of 'n' bangs (default 1), f 34;
+#X text 154 284 bang;
+#X text 189 298 - resets and sets 'n' number of bangs, f 41;
+#X obj 236 184 else/nbang 4;
+#X text 148 298 float;
+#X text 189 264 - resets and reopens gate, f 41;
+#X text 189 284 - resets and reopens gate, f 41;
+#X text 189 326 - output bang if gate is opened;
+#X obj 341 153 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X connect 29 0 38 0;
+#X connect 32 0 38 1;
+#X connect 33 0 38 0;
+#X connect 38 0 27 0;
+#X connect 38 1 28 0;
+#X connect 43 0 38 1;

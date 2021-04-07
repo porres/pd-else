@@ -1,3 +1,5 @@
+// porres
+
 #include "m_pd.h"
 
 typedef struct _nbang_proxy{
@@ -34,10 +36,17 @@ static void nbang_proxy_bang(t_nbang_proxy *p){
     x->x_count = 0;
 }
 
+static void nbang_proxy_float(t_nbang_proxy *p, t_floatarg f){
+    t_nbang *x = p->p_owner;
+    x->x_count = 0;
+    x->x_n = f < 0 ? 0 : (int)f;
+}
+
 static void nbang_proxy_setup(void){
     nbang_proxy_class = (t_class *)class_new(gensym("nbang_proxy"), (t_newmethod)nbang_proxy_new,
         0, sizeof(t_nbang_proxy), 0, 0);
     class_addbang(nbang_proxy_class, (t_method)nbang_proxy_bang);
+    class_addfloat(nbang_proxy_class, (t_method)nbang_proxy_float);
 }
 
 // non proxy stuff
@@ -50,16 +59,6 @@ static void nbang_bang(t_nbang *x){
         outlet_bang(x->x_r_bng);
 }
 
-static void nbang_n(t_nbang *x, t_floatarg f){
-    x->x_n = f < 0 ? 0 : (int)f;
-}
-
-static void nbang_count(t_nbang *x, t_floatarg f){
-    if(f < 1)
-        f = 1;
-    x->x_n = (int)f;
-}
-
 static void nbang_reset(t_nbang *x){
     x->x_count = 0;
 }
@@ -70,24 +69,9 @@ static void *nbang_new(t_symbol *s, int argc, t_atom *argv){
     x->x_n = 1;
     x->x_count = 0;
     int argnum = 0;
-    while(argc > 0){
-        if(argv->a_type == A_FLOAT){
-            float argval = atom_getfloatarg(0, argc, argv);
-            switch(argnum){
-                case 0:
-                x->x_n = argval < 0 ? 0 : (int)argval;
-                break;
-                case 1:
-                x->x_count = argval < 0 ? 0 : (int)argval;
-                break;
-                default:
-                    break;
-            };
-        };
-        argc--;
-        argv++;
-        argnum++;
-    };
+    if(argc && argv->a_type == A_FLOAT)
+        t_float argval = atom_getfloatarg(0, argc, argv);
+        x->x_n = argval < 0 ? 0 : (int)argval;
     nbang_proxy_init(&x->pxy, x);
     inlet_new(&x->x_obj, &x->pxy.l_pd, 0, 0);
     outlet_new((t_object *)x, &s_bang);
@@ -100,7 +84,5 @@ void nbang_setup(void){
         0, A_GIMME, 0);
     class_addbang(nbang_class, nbang_bang);
     class_addmethod(nbang_class, (t_method)nbang_reset, gensym("reset"), 0);
-    class_addmethod(nbang_class, (t_method)nbang_n, gensym("n"), A_DEFFLOAT, 0);
-    class_addmethod(nbang_class, (t_method)nbang_count, gensym("count"), A_DEFFLOAT, 0);
     nbang_proxy_setup();
 }
