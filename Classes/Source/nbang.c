@@ -69,9 +69,10 @@ static void *nbang_new(t_symbol *s, int argc, t_atom *argv){
     x->x_n = 1;
     x->x_count = 0;
     int argnum = 0;
-    if(argc && argv->a_type == A_FLOAT)
+    if(argc && argv->a_type == A_FLOAT){
         t_float argval = atom_getfloatarg(0, argc, argv);
         x->x_n = argval < 0 ? 0 : (int)argval;
+    }
     nbang_proxy_init(&x->pxy, x);
     inlet_new(&x->x_obj, &x->pxy.l_pd, 0, 0);
     outlet_new((t_object *)x, &s_bang);
