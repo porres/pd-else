@@ -77,7 +77,7 @@ number defined in the first float., f 67;
 #X obj 106 287 else/display;
 #X msg 118 112 range 0 127;
 #X msg 106 89 range -1 1;
-#X obj 106 147 else/else/multi.vsl 200 127 -1 1 8 empty empty empty 255
+#X obj 106 147 else/multi.vsl 200 127 -1 1 8 empty empty empty 255
 255 255 220 220 220 0 0 0 0 0 holder holder holder 0 0 0.338583 0 0
 0 0 0;
 #X text 44 22 By default \, the sliders' output range is from 0 to
@@ -99,13 +99,13 @@ clicking and draging or the set message or whatever., f 48;
 -228856 -1 -1 127 256;
 #X obj 513 328 else/display;
 #X obj 516 91 hsl 100 15 100 300 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 4900 1;
+-1 -1 4950 1;
 #X obj 513 121 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 200 256;
 #X obj 284 58 else/initmess 127;
 #X msg 284 150 height \$1;
 #X msg 513 150 width \$1;
-#X obj 60 183 else/else/multi.vsl 200 127 0 127 8 empty empty empty 255
+#X obj 60 183 else/multi.vsl 200 127 0 127 8 empty empty empty 255
 255 255 220 220 220 0 0 0 0 0 holder holder holder 0 0 0 0 0 35 0 0
 ;
 #X msg 40 106 dim 200 127;
@@ -117,10 +117,10 @@ message., f 30;
 #X text 137 126 width 150 height 150, f 10;
 #X text 284 26 set height only;
 #X text 516 31 set width only;
-#X obj 284 182 else/else/multi.vsl 200 127 0 127 8 empty empty empty 255
+#X obj 284 182 else/multi.vsl 200 127 0 127 8 empty empty empty 255
 255 255 220 220 220 0 0 0 0 0 holder holder holder 0 47.625 0 38 0
 0 0 0;
-#X obj 513 182 else/else/multi.vsl 200 127 0 127 8 empty empty empty 255
+#X obj 513 182 else/multi.vsl 200 127 0 127 8 empty empty empty 255
 255 255 220 220 220 0 0 0 0 0 holder holder holder 0 0 0 49 0 12 1
 37;
 #X connect 2 0 3 0;
@@ -151,8 +151,8 @@ message., f 30;
 #X obj 285 163 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
 -262144 -1 10957 0;
 #X obj 91 122 else/initmess 255;
-#X obj 180 406 else/else/multi.vsl 200 127 0 127 8 empty empty empty 255
-255 255 220 220 220 0 0 0 0 0 holder holder holder 64 64 86 64 64 64
+#X obj 180 406 else/multi.vsl 200 127 0 127 8 empty empty empty 255
+255 255 220 220 220 0 0 0 0 0 holder holder holder 64 64 64 64 64 64
 64 64;
 #X obj 304 356 else/initmess setall 64;
 #X obj 250 122 else/initmess 220;
@@ -198,9 +198,9 @@ the 'bgcolor' \, 'fgcolor' and 'linecolor' messages or '-bgcolor' \,
 #X msg 120 206 jump \$1;
 #X obj 120 182 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
-#X obj 120 233 else/else/multi.vsl 200 127 0 127 8 empty empty empty 255
-255 255 220 220 220 0 0 0 1 0 holder holder holder 78 0 34 80 0 9 93
-37;
+#X obj 120 233 else/multi.vsl 200 127 0 127 8 empty empty empty 255
+255 255 220 220 220 0 0 0 1 0 holder holder holder 0 0 0 0 0 0 0 0
+;
 #X text 65 28 You can set to "jump on click" mode with the '-jump'
 flag or 'jump' message. Non zero sets to jump on click mode and zero
 (default) is "steady on clik" mode. These are the same as in Vanilla's
@@ -217,7 +217,7 @@ the rang. Note that prssing shift for fine tuning doesn't work for
 #X connect 6 0 2 0;
 #X restore 132 166 pd jump;
 #N canvas 653 181 442 377 init 0;
-#X obj 108 159 else/else/multi.vsl 200 127 0 127 8 empty empty empty 255
+#X obj 108 159 else/multi.vsl 200 127 0 127 8 empty empty empty 255
 255 255 220 220 220 0 0 0 0 1 holder holder holder 18 41 52 63 81 90
 104 119;
 #X text 81 46 With the 'init' message or '-init' flag \, the GUI operates
@@ -276,12 +276,12 @@ f 72;
 #X obj 475 289 rev3~ 100 90 3000 20;
 #X obj 452 323 else/out~;
 #X obj 475 245 clone else/multi.vsl.clone.ex 4;
-#X obj 475 76 else/else/multi.vsl 120 150 200 2000 4 empty empty empty
-63 51 84 111 64 97 217 217 192 1 1 holder holder holder 632 1064 1364
-1604;
-#X obj 60 52 else/else/multi.vsl 120 150 200 2000 4 empty empty empty
-63 51 84 111 64 97 217 217 192 1 1 holder holder holder 800 992 524
-1436 0 0 0 0;
+#X obj 475 76 else/multi.vsl 120 150 200 2000 4 empty empty empty 63
+51 84 111 64 97 217 217 192 1 1 holder holder holder 632 1064 1364
+1604 0 0 0 0;
+#X obj 60 52 else/multi.vsl 120 150 200 2000 4 empty empty empty 63
+51 84 111 64 97 217 217 192 1 1 holder holder holder 800 992 524 1436
+0 0 0 0;
 #X text 233 87 You can use [route] to route values from the multi slider.
 You can also use [clone] and feed the output directly to it., f 31
 ;
@@ -322,7 +322,7 @@ messages or '-send'/'-receive' flags., f 31;
 in: "\\\$0")., f 24;
 #X obj 175 292 else/display;
 #X obj 71 299 else/display;
-#X obj 360 224 else/else/multi.vsl;
+#X obj 360 224 else/multi.vsl;
 #X msg 175 205 set 7 127;
 #X msg 71 212 0 64 127;
 #X connect 0 0 12 0;
@@ -333,7 +333,7 @@ in: "\\\$0")., f 24;
 #X connect 13 0 3 0;
 #X connect 14 0 5 0;
 #X restore 33 206 pd send/receive;
-#X obj 334 66 else/else/multi.vsl;
+#X obj 334 66 else/multi.vsl;
 #X text 259 115 press shift for fine tuning and alt/option for locking
 on a slider, f 11;
 #X obj 334 202 else/display 7;
@@ -374,7 +374,7 @@ on a slider, f 11;
 #X text 211 475 - sets receive name, f 52;
 #X text 223 89 click and drag =>;
 #N canvas 935 82 581 589 basic 0;
-#X obj 236 231 else/else/multi.vsl 200 127 0 127 9 empty empty empty 255
+#X obj 236 231 else/multi.vsl 200 127 0 127 9 empty empty empty 255
 255 255 220 220 220 0 0 0 0 0 holder holder holder 30 99 34 114 45
 58 97 99;
 #X msg 221 112 n 5;
@@ -424,7 +424,7 @@ affecting the locked one, f 21;
 #X text 211 419 - sets number of sliders and values (and dumps them)
 ;
 #N canvas 875 108 475 561 name 0;
-#X obj 123 185 else/else/multi.vsl;
+#X obj 123 185 else/multi.vsl;
 #X obj 74 345 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
 -1;
 #X obj 74 404 else/display;
