@@ -17,7 +17,7 @@ typedef struct _changed{
     int             x_c;
     int             x_change;
     t_symbol       *x_sym;
-    t_outlet       *x_bang_out;
+    t_outlet       *x_unchanged_out;
 }t_changed;
 
 static void changed_proxy_init(t_changed_proxy * p, t_changed *x){
@@ -67,7 +67,7 @@ static void changed_anything(t_changed *x, t_symbol *s, int ac, t_atom *av){
         x->x_change = 0;
     }
     else
-        outlet_bang(x->x_bang_out);
+        outlet_anything(x->x_unchanged_out, s, ac, av);
 }
 
 static void *changed_new(t_symbol *s, int ac, t_atom *av){
@@ -100,8 +100,8 @@ static void *changed_new(t_symbol *s, int ac, t_atom *av){
     changed_proxy_init(&x->x_proxy, x);
     inlet_new(&x->x_obj, &x->x_proxy.p_pd, 0, 0);
     outlet_new(&x->x_obj, &s_anything);
-    x->x_bang_out = outlet_new(&x->x_obj, &s_bang);
-    return (x);
+    x->x_unchanged_out = outlet_new(&x->x_obj, &s_bang);
+    return(x);
 }
 
 void changed_setup(void){
@@ -110,6 +110,6 @@ void changed_setup(void){
     class_addbang(changed_class, changed_bang);
     class_addanything(changed_class, changed_anything);
     changed_proxy_class = (t_class *)class_new(gensym("changed proxy"),
-                            0, 0, sizeof(t_changed_proxy), 0, 0);
+        0, 0, sizeof(t_changed_proxy), 0, 0);
     class_addanything(changed_proxy_class, changed_proxy_anything);
 }
