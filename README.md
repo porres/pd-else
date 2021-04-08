@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (405 objects):
+## Current Object list (406 objects):
 
 **ASSORTED: [04]**
 
@@ -294,12 +294,7 @@ Cross compiling is also possible with something like this
 - [pi]
 - [e]
 
-**MATH: RANDOM: [04]**
-
-- [rand.f]
-- [rand.f~]
-- [rand.i]
-- [rand.i~]
+- 
 
 **LOGIC: [01]**
 
@@ -496,7 +491,13 @@ Cross compiling is also possible with something like this
  - [impulse]
  - [pulse]
 
-**CONTROL: RANDOM: [09]**
+**CONTROL: RANDOM: [14]**
+
+- [rand.f]
+- [rand.f~]
+- [rand.i]
+- [rand.i~]
+- [rand.list]
 
 - [rand.seq]
 - [markov]

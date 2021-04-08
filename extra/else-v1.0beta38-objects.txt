@@ -295,6 +295,7 @@ rand.f	x
 rand.f~	x
 rand.i	x
 rand.i~	x
+rand.list	x
 rand.seq	x
 randpulse	x
 randpulse~	x
