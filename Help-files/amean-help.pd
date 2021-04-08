@@ -1,0 +1,77 @@
+#N canvas 764 77 564 496 12;
+#X obj 190 154 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X floatatom 226 154 3 0 0 0 - - -;
+#X floatatom 262 154 3 0 0 0 - - -;
+#X floatatom 299 154 3 1 5 0 - - -;
+#X obj 5 256 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 369 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 5 402 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 5 466 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 308 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 307 2 pd;
+#X obj 347 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 23 39 cnv 4 4 4 empty empty Generate 0 28 2 18 -233017 -1 0
+;
+#X obj 460 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 480 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 517 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 466 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 504 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 5 3 cnv 15 301 42 empty empty amean 20 20 2 37 -233017 -1 0
+;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 4 3 graph;
+#X obj 97 39 cnv 4 4 4 empty empty list 0 28 2 18 -233017 -1 0;
+#X obj 114 377 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 115 264 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 114 303 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 127 39 cnv 4 4 4 empty empty with 0 28 2 18 -233017 -1 0;
+#X obj 167 39 cnv 4 4 4 empty empty arithmetic 0 28 2 18 -233017 -1
+0;
+#X obj 247 39 cnv 4 4 4 empty empty means 0 28 2 18 -233017 -1 0;
+#X obj 190 216 else/display;
+#X text 147 379 list - list with geometric means;
+#X text 212 132 start;
+#X text 260 132 end;
+#X text 300 132 steps;
+#X text 156 264 bang - generate list, f 44;
+#X text 150 302 float - sets start, f 35;
+#X text 150 324 float - sets end, f 35;
+#X text 150 345 float - sets steps, f 35;
+#X text 150 442 3) float - sets steps (default 2);
+#X text 150 425 2) float - sets end (default 2);
+#X text 150 408 1) float - sets start (default 1);
+#X obj 114 325 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+;
+#X obj 114 346 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+;
+#X obj 190 183 else/amean 1 2 5;
+#X text 52 84 [amean] creates a list of arithmetic means. It takes
+a start point \, an end point and the number of steps from start to
+end., f 62;
+#X msg 142 126 10 200 4;
+#X text 156 282 list - set start/end/steps and generate list;
+#X connect 0 0 40 0;
+#X connect 1 0 40 1;
+#X connect 2 0 40 2;
+#X connect 3 0 40 3;
+#X connect 40 0 26 0;
+#X connect 42 0 40 0;

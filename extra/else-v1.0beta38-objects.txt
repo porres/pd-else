@@ -6,6 +6,7 @@ adsr~	x
 allpass.2nd~	x
 allpass.filt~	x
 allpass.rev~	x
+amean	x
 any2symbol	x
 args	x
 asr~	x
@@ -145,6 +146,7 @@ gcd	x
 giga.rev~	x
 glide~	x
 glide2~	x
+gmean	x
 grain.live~	x
 grain.sampler~	x
 grain.synth~	x

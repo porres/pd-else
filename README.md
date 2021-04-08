@@ -111,7 +111,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (406 objects):
+## Current Object list (408 objects):
 
 **ASSORTED: [04]**
 
@@ -186,7 +186,7 @@ Cross compiling is also possible with something like this
 - [sig2float~] / [s2f~]
 - [float2sig~] / [f2s~]
 
-**LIST/MESSAGE MANAGEMENT: [15]**
+**LIST/MESSAGE MANAGEMENT: [17]**
 
 - [break] 
 - [order]
@@ -203,6 +203,8 @@ Cross compiling is also possible with something like this
 - [slice] 
 - [merge]
 - [unmerge]
+- [amean]
+- [gmean]
 
 **FILE MANAGEMENT: [01]**
 - [dir]
