@@ -57,68 +57,27 @@ of channels., f 47;
 #X text 60 90 [vocoder~] is classic cross synthesis channel vocoder
 abstraction., f 67;
 #X obj 179 238 else/out~;
-#N canvas 692 227 432 485 example 0;
+#N canvas 692 227 817 619 example 1;
 #X text 41 27 In this example you can control the frequency of each
 frequency band channel from an array.;
-#X obj 257 354 nbx 3 16 50 1000 0 0 empty empty empty 0 -8 0 12 -228856
+#X obj 301 431 nbx 3 16 50 1000 0 0 empty empty empty 0 -8 0 12 -228856
 -1 -1 50 256;
-#X obj 146 297 else/bl.saw~;
-#X obj 146 271 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-hz2 empty 0 -8 0
+#X obj 190 374 else/bl.saw~;
+#X obj 190 348 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-hz2 empty 0 -8 0
 10 -228856 -1 -1 74 256;
-#X obj 201 324 else/play.file~ voice.wav 1 1;
-#X obj 146 409 else/out~;
-#X obj 146 380 else/vocoder~ 28 75;
-#N canvas 490 23 564 470 bands 0;
-#X obj 277 318 array get \$0-bands;
-#X obj 277 413 outlet;
-#X msg 406 149 reset;
-#X obj 341 249 s \$0-bands;
-#X obj 239 44 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X obj 341 220 pack float float;
-#X obj 55 63 cnv 15 198 138 empty empty empty 20 12 0 14 -233017 -66577
-0;
-#N canvas 0 22 450 278 (subpatch) 0;
-#X array \$0-bands 28 float 3;
-#A 0 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87
-90 93 96 99 102 105 108;
-#X coords 0 120 28 20 200 140 1 0 0;
-#X restore 54 62 graph;
-#X obj 239 13 loadbang;
-#X text 200 43 reset;
-#X obj 341 149 t b f, f 8;
-#X obj 277 75 trigger bang bang bang;
-#X msg 277 266 start;
-#X obj 277 346 changed;
-#X obj 341 100 loop 28 -step 3 -offset 27, f 10;
-#X obj 428 313 initmess \; \$0-hz1 60 \; \$0-hz2 74;
-#X obj 277 378 else/insert freq;
-#X obj 341 193 else/count;
-#X obj 277 290 else/tempo 100 -ms;
-#X connect 0 0 13 0;
-#X connect 2 0 17 0;
-#X connect 4 0 11 0;
-#X connect 5 0 3 0;
-#X connect 8 0 4 0;
-#X connect 10 0 17 0;
-#X connect 10 1 5 1;
-#X connect 11 0 12 0;
-#X connect 11 1 14 0;
-#X connect 11 2 2 0;
-#X connect 12 0 18 0;
-#X connect 13 0 16 0;
-#X connect 14 0 10 0;
-#X connect 16 0 1 0;
-#X connect 17 0 5 0;
-#X connect 18 0 0 0;
-#X coords 0 -1 1 1 210 167 2 50 40;
-#X restore 65 90 pd bands;
+#X obj 245 401 else/play.file~ voice.wav 1 1;
+#X obj 190 486 else/out~;
+#X obj 190 457 else/vocoder~ 28 75;
+#X obj 94 144 multi.vsl 400 150 20 110 28 empty empty empty 255 255
+255 220 220 220 0 0 0 1 1 holder holder holder 24 27 30 33 36 39 42
+45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 99 102 105;
+#X obj 94 307 else/insert freq;
 #X connect 1 0 6 2;
 #X connect 2 0 6 0;
 #X connect 3 0 2 0;
 #X connect 4 0 6 1;
 #X connect 6 0 5 0;
-#X connect 7 0 6 0;
+#X connect 7 0 8 0;
 #X restore 470 267 pd example;
 #X obj 179 209 else/vocoder~ 16 75;
 #X obj 179 139 else/bl.saw~ 60;

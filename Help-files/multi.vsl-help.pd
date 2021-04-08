@@ -1,4 +1,4 @@
-#N canvas 704 48 562 635 10;
+#N canvas 746 65 561 664 10;
 #X obj 2 2 cnv 15 301 42 empty empty multi.vsl 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -24,55 +24,25 @@
 0;
 #X obj 6 233 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 537 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 6 550 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 6 576 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 6 609 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 605 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 638 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 76 241 cnv 17 3 290 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 76 241 cnv 17 3 303 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 76 545 cnv 17 3 27 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 76 558 cnv 17 3 42 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 177 543 list;
-#X text 176 265 list;
-#X text 80 363 range <float \, float>;
+#X text 177 556 list;
+#X text 176 279 list;
+#X text 80 377 range <float \, float>;
 #X text 176 237 bang;
-#X text 211 335 - sets x (horizontal) size, f 52;
-#X text 211 349 - sets y (vertical) size, f 52;
-#X text 98 489 bgcolor <f \, f \, f>;
-#X text 211 489 - sets background color in RGB, f 52;
-#X text 98 503 fgcolor <f \, f \, f>;
-#X text 211 503 - sets frontground color in RGB, f 52;
-#N canvas 836 101 479 556 set-values 0;
-#X obj 116 508 else/display;
-#X obj 116 345 else/multi.vsl;
-#X msg 147 239 set 3 10 20 30 40;
-#X msg 126 194 setall 90;
-#X msg 100 146 50 120 50;
-#X msg 138 216 set 0 10;
-#X msg 116 171 120 110 100 90 60 50 40 30;
-#X text 29 23 If you send it a list of values \, it uptades and outputs
-the sliders counting from the first one. If the list is shorter than
-the number of sliders \, just the first sliders are updated. If it
-is longer \, the extra ones are ignored., f 67;
-#X text 195 216 set slider 0 to "10";
-#X text 260 233 set slider 3 \, 4 \, 5 \, 6 to "10" \, "20" \, "30"
-and "40", f 25;
-#X text 29 76 The "setall" message sets a float to all the sliders.
-The "set" message will set one or more sliders counting from the slider
-number defined in the first float., f 67;
-#X floatatom 163 280 5 0 0 0 - - -;
-#X msg 163 303 set 1 \$1 \, get 1;
-#X text 202 279 set and output slider;
-#X connect 1 0 0 0;
-#X connect 2 0 1 0;
-#X connect 3 0 1 0;
-#X connect 4 0 1 0;
-#X connect 5 0 1 0;
-#X connect 6 0 1 0;
-#X connect 11 0 12 0;
-#X connect 12 0 1 0;
-#X restore 130 125 pd set-values;
+#X text 211 349 - sets x (horizontal) size, f 52;
+#X text 211 363 - sets y (vertical) size, f 52;
+#X text 98 503 bgcolor <f \, f \, f>;
+#X text 211 503 - sets background color in RGB, f 52;
+#X text 98 517 fgcolor <f \, f \, f>;
+#X text 211 517 - sets frontground color in RGB, f 52;
 #N canvas 850 96 434 450 range 0;
 #X obj 106 287 else/display;
 #X msg 118 112 range 0 127;
@@ -89,7 +59,7 @@ clicking and draging or the set message or whatever., f 48;
 #X connect 1 0 3 0;
 #X connect 2 0 3 0;
 #X connect 3 0 0 0;
-#X restore 74 145 pd range;
+#X restore 61 145 pd range;
 #N canvas 674 188 847 400 resize 0;
 #X obj 60 348 else/display;
 #X obj 284 328 else/display;
@@ -136,7 +106,7 @@ message., f 30;
 #X connect 13 0 5 0;
 #X connect 19 0 1 0;
 #X connect 20 0 4 0;
-#X restore 131 145 pd resize;
+#X restore 118 145 pd resize;
 #N canvas 880 74 572 574 colors 0;
 #X obj 91 164 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
 -262144 -1 12700 0;
@@ -152,8 +122,8 @@ message., f 30;
 -262144 -1 10957 0;
 #X obj 91 122 else/initmess 255;
 #X obj 180 406 else/multi.vsl 200 127 0 127 8 empty empty empty 255
-255 255 220 220 220 0 0 0 0 0 holder holder holder 64 64 64 64 64 64
-64 64;
+255 255 220 220 220 0 0 0 0 0 0 holder holder 64 64 64 64 64 64 64
+64;
 #X obj 304 356 else/initmess setall 64;
 #X obj 250 122 else/initmess 220;
 #X obj 343 155 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
@@ -192,15 +162,14 @@ the 'bgcolor' \, 'fgcolor' and 'linecolor' messages or '-bgcolor' \,
 #X connect 16 0 10 0;
 #X connect 16 0 12 0;
 #X connect 16 0 11 0;
-#X restore 68 165 pd colors;
+#X restore 55 165 pd colors;
 #N canvas 846 280 490 428 jump 0;
 #X obj 120 376 else/display;
 #X msg 120 206 jump \$1;
 #X obj 120 182 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 120 233 else/multi.vsl 200 127 0 127 8 empty empty empty 255
-255 255 220 220 220 0 0 0 1 0 holder holder holder 0 0 0 0 0 0 0 0
-;
+255 255 220 220 220 0 0 0 1 0 0 holder holder 0 0 0 0 0 0 0 0;
 #X text 65 28 You can set to "jump on click" mode with the '-jump'
 flag or 'jump' message. Non zero sets to jump on click mode and zero
 (default) is "steady on clik" mode. These are the same as in Vanilla's
@@ -215,7 +184,7 @@ the rang. Note that prssing shift for fine tuning doesn't work for
 #X connect 2 0 1 0;
 #X connect 3 0 0 0;
 #X connect 6 0 2 0;
-#X restore 132 166 pd jump;
+#X restore 119 166 pd jump;
 #N canvas 653 181 442 377 init 0;
 #X obj 108 159 else/multi.vsl 200 127 0 127 8 empty empty empty 255
 255 255 220 220 220 0 0 0 0 1 holder holder holder 18 41 52 63 81 90
@@ -230,37 +199,39 @@ them when you load it., f 45;
 #X connect 0 0 4 0;
 #X connect 2 0 0 0;
 #X connect 3 0 2 0;
-#X restore 80 186 pd init;
-#N canvas 963 400 587 242 flags 0;
-#X obj 17 22 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 17 217 cnv 3 550 3 empty empty empty 8 12 0 13 -228856 -1 0
+#X restore 67 186 pd init;
+#N canvas 883 354 587 237 flags 0;
+#X obj 16 14 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 16 215 cnv 3 550 3 empty empty empty 8 12 0 13 -228856 -1 0
 ;
-#X text 94 45 -n <float>: sets number of sliders size (default: 8)
+#X text 93 37 -n <float>: sets number of sliders size (default: 8)
 , f 72;
-#X text 94 59 -range <float \, float>: sets slidrs' range (default:
+#X text 93 51 -range <float \, float>: sets slidrs' range (default:
 0 \, 127), f 72;
-#X text 94 73 -name <symbol>: sets arrays name (default: internal)
+#X text 93 65 -name <symbol>: sets arrays name (default: internal)
 , f 72;
-#X text 94 87 -jump <float>: non zero sets jump on click mode (default:
+#X text 93 79 -jump <float>: non zero sets jump on click mode (default:
 0), f 72;
-#X text 94 31 -dim <float \, float>: sets x/y dimensions (default:
+#X text 93 23 -dim <float \, float>: sets x/y dimensions (default:
 200 127), f 72;
-#X text 94 101 -init <float>: non zero sets to init mode (default:
-0), f 72;
-#X text 94 115 -send <symbol>: sets send symbol (default: empty),
-f 72;
-#X text 94 129 -receive <symbol>: sets receive symbol (default: empty)
+#X text 93 93 -init <float>: non zero sets to init mode (default: 0)
 , f 72;
-#X text 94 143 -bgcolor <f \, f \, f>: sets background color in RGB
+#X text 93 107 -send <symbol>: sets send symbol (default: empty),
+f 72;
+#X text 93 121 -receive <symbol>: sets receive symbol (default: empty)
+, f 72;
+#X text 93 135 -bgcolor <f \, f \, f>: sets background color in RGB
 (default: 255 255 255), f 72;
-#X text 94 157 -fgcolor <f \, f \, f>: sets frontground color in RGB
+#X text 93 149 -fgcolor <f \, f \, f>: sets frontground color in RGB
 (default: 220 220 220), f 72;
-#X text 94 171 -linecolor <f \, f \, f>: sets line color in RGB (default:
+#X text 93 163 -linecolor <f \, f \, f>: sets line color in RGB (default:
 0 0 0), f 72;
-#X text 94 186 -set <list>: sets slider's values (default: 0 0 0 0
+#X text 93 191 -set <list>: sets slider's values (default: 0 0 0 0
 0 0 0 0), f 72;
-#X restore 180 586 pd flags;
-#X text 239 586 <= click to open;
+#X text 93 177 -mode <float>: non zro sets to 'list mode' (default
+0), f 72;
+#X restore 200 615 pd flags;
+#X text 259 615 <= click to open;
 #N canvas 852 88 696 492 example 0;
 #X obj 60 225 route 0 1 2 3, f 47;
 #X floatatom 60 253 5 0 0 0 - - -;
@@ -304,7 +275,7 @@ You can also use [clone] and feed the output directly to it., f 31
 #X connect 13 0 11 0;
 #X connect 14 0 13 0;
 #X connect 15 0 0 0;
-#X restore 132 206 pd example;
+#X restore 119 206 pd example;
 #N canvas 911 146 629 407 send/receive 0;
 #X msg 360 64 receive \\\$0-slider3d-rcv \, send \\\$0-slider3d-snd
 , f 25;
@@ -332,96 +303,104 @@ in: "\\\$0")., f 24;
 #X connect 7 0 12 0;
 #X connect 13 0 3 0;
 #X connect 14 0 5 0;
-#X restore 33 206 pd send/receive;
-#X obj 334 66 else/multi.vsl;
-#X text 259 115 press shift for fine tuning and alt/option for locking
+#X restore 20 206 pd send/receive;
+#X obj 320 65 else/multi.vsl 200 127 0 127 8 empty empty empty 255
+255 255 220 220 220 0 0 0 0 0 0 holder holder 0 16 0 0 0 0 0 0;
+#X text 245 114 press shift for fine tuning and alt/option for locking
 on a slider, f 11;
-#X obj 334 202 else/display 7;
-#X text 392 206 <= slider number / value;
-#X text 211 237 - outputs all slider's values, f 52;
-#X text 212 542 - slider number / slider value, f 46;
-#X text 176 251 dump;
-#X text 211 251 - same as bang, f 52;
-#X text 211 265 - sets and dumps sliders values from the first (0)
-, f 52;
-#X text 92 321 dim <float \, float>;
-#X text 211 321 - sets dimensions (horizontal \, vertical), f 52;
-#X text 122 335 width <float>;
-#X text 116 349 height <float>;
-#X text 211 363 - sets sliders output range, f 52;
-#X text 86 517 linecolor <f \, f \, f>;
-#X text 211 517 - sets value line color in RGB, f 52;
-#X text 211 307 - gets sliders values from the first float, f 52;
-#X text 140 279 set <list>;
-#X text 140 307 get <list>;
-#X text 116 293 setall <float>;
-#X text 146 377 n <float>;
-#X text 211 377 - sets number of sliders, f 52;
-#X text 110 391 rename <symbol>;
-#X text 211 391 - sets internal array name, f 52;
-#X text 128 405 jump <float>;
-#X text 211 405 - non zerto sets to jump on click mode, f 52;
-#X text 122 419 import <list>;
-#X text 164 433 export;
-#X text 211 433 - exports sliders values as a list, f 52;
-#X text 128 447 init <float>;
-#X text 211 447 - non zerto sets to jump on click mode, f 52;
-#X text 123 557 export <list>;
-#X text 212 557 - list of values when receiving export message;
-#X text 122 461 send <symbol>;
-#X text 104 475 receive <symbol>;
-#X text 211 461 - sets send name, f 52;
-#X text 211 475 - sets receive name, f 52;
-#X text 223 89 click and drag =>;
-#N canvas 935 82 581 589 basic 0;
-#X obj 236 231 else/multi.vsl 200 127 0 127 9 empty empty empty 255
-255 255 220 220 220 0 0 0 0 0 holder holder holder 30 99 34 114 45
-58 97 99;
-#X msg 221 112 n 5;
-#X msg 192 112 n 9;
-#X text 249 111 set number of sliders;
-#X obj 236 142 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 320 201 else/display 7;
+#X text 378 205 <= slider number / value;
+#X text 211 279 - sets and dumps sliders values from the first (0)
+, f 56;
+#X text 92 335 dim <float \, float>;
+#X text 211 335 - sets dimensions (horizontal \, vertical), f 52;
+#X text 122 349 width <float>;
+#X text 116 363 height <float>;
+#X text 211 377 - sets sliders output range, f 52;
+#X text 86 531 linecolor <f \, f \, f>;
+#X text 211 531 - sets value line color in RGB, f 52;
+#X text 211 321 - gets sliders values from the first float, f 52;
+#X text 140 293 set <list>;
+#X text 140 321 get <list>;
+#X text 116 307 setall <float>;
+#X text 146 391 n <float>;
+#X text 211 391 - sets number of sliders, f 52;
+#X text 110 405 rename <symbol>;
+#X text 211 405 - sets internal array name, f 52;
+#X text 128 419 jump <float>;
+#X text 211 419 - non zerto sets to jump on click mode, f 52;
+#X text 122 433 import <list>;
+#X text 164 447 export;
+#X text 211 447 - exports sliders values as a list, f 52;
+#X text 128 461 init <float>;
+#X text 211 461 - non zerto sets to jump on click mode, f 52;
+#X text 123 582 export <list>;
+#X text 212 582 - list of values when receiving export message, f
+53;
+#X text 122 475 send <symbol>;
+#X text 104 489 receive <symbol>;
+#X text 211 475 - sets send name, f 52;
+#X text 211 489 - sets receive name, f 52;
+#N canvas 892 64 670 661 basic 0;
+#X obj 225 328 else/multi.vsl 200 127 0 127 9 empty empty empty 255
+255 255 220 220 220 0 0 0 0 0 0 holder holder 0 0 0 0 0 0 0 0;
+#X msg 210 90 n 5;
+#X msg 181 90 n 9;
+#X text 238 89 set number of sliders;
+#X obj 225 120 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 260 142 dump;
-#X text 295 142 dump all values;
-#X obj 236 378 else/display;
-#X obj 236 460 route export;
-#X obj 236 529 else/display;
-#X obj 305 487 else/display;
-#X msg 149 84 export;
-#X msg 38 44 import 10 20 30 40 50 60 70;
-#X text 216 34 The import message sets the number of sliders according
-to the number of numbers \, the it sets and outputs the sliders' values.
-, f 44;
-#X text 194 84 exports sliders' values as a list;
-#X msg 268 171 get 1;
-#X msg 279 195 get 4 0 2;
-#X text 310 171 get value of slider 1;
-#X text 345 190 get sliders 4 \, 0 and 2, f 11;
-#X text 70 238 Press shift for fine tuning just like in vanilla's sliders.
+#X msg 249 149 dump;
+#X obj 225 547 route export;
+#X obj 225 616 else/display;
+#X msg 138 62 export;
+#X msg 74 29 import 10 20 30 40 50 60 70;
+#X msg 257 178 get 1;
+#X msg 268 202 get 4 0 2;
+#X text 299 178 get value of slider 1;
+#X text 334 197 get sliders 4 \, 0 and 2, f 11;
+#X text 67 329 Press shift for fine tuning just like in vanilla's sliders.
 , f 21;
-#X text 70 282 If you press "alt" or "option" (for mac) \, it locks
+#X text 67 373 If you press "alt" or "option" (for mac) \, it locks
 on a given slider \, so if you scroll to a different slider \, it keeps
 affecting the locked one, f 21;
-#X obj 252 420 print multi.vsl;
-#X connect 0 0 7 0;
+#X obj 241 517 print multi.vsl;
+#X obj 282 239 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X text 339 262 output as a whole list;
+#X text 307 239 <= list output mode;
+#X obj 225 475 else/display;
+#X obj 294 574 else/display;
+#X msg 282 262 mode \$1;
+#X text 286 287 The default mode is slider number / value;
+#X text 183 62 exports sliders' values as a list preceeded by 'export'
+;
+#X text 284 149 dump all values sequentially as slider number / value
+;
+#X text 252 18 The import message sets the number of sliders according
+to the number of numbers. It sets and outputs the sliders' values.
+, f 44;
+#X text 286 302 this affects bang and import messages;
+#X text 248 119 output all values (depends on 'mode');
+#X connect 0 0 20 0;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
 #X connect 4 0 0 0;
 #X connect 5 0 0 0;
-#X connect 7 0 8 0;
-#X connect 7 0 21 0;
-#X connect 8 0 9 0;
-#X connect 8 1 10 0;
+#X connect 6 0 7 0;
+#X connect 6 1 21 0;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
 #X connect 11 0 0 0;
-#X connect 12 0 0 0;
-#X connect 15 0 0 0;
-#X connect 16 0 0 0;
-#X restore 74 125 pd basic;
+#X connect 17 0 22 0;
+#X connect 20 0 6 0;
+#X connect 20 0 16 0;
+#X connect 22 0 0 0;
+#X restore 61 125 pd basic;
 #X obj 132 39 cnv 4 4 4 empty empty slider 0 28 2 18 -233017 -1 0;
 #X obj 71 39 cnv 4 4 4 empty empty vertical 0 28 2 18 -233017 -1 0
 ;
-#X text 211 419 - sets number of sliders and values (and dumps them)
+#X text 211 433 - sets number of sliders and values (and dumps them)
 ;
 #N canvas 875 108 475 561 name 0;
 #X obj 123 185 else/multi.vsl;
@@ -456,10 +435,70 @@ using it., f 59;
 #X connect 10 0 9 0;
 #X connect 11 0 13 0;
 #X connect 13 0 12 0;
-#X restore 132 186 pd name;
-#X text 211 293 - sets all sliders' values, f 52;
-#X text 211 279 - sets values from the index deefined in the first
+#X restore 119 186 pd name;
+#X text 211 307 - sets all sliders' values, f 52;
+#X text 211 293 - sets values from the index deefined in the first
 float;
 #X text 47 84 [multi.vsler] is a multi slider GUI abstraction., f
 24;
-#X connect 37 0 39 0;
+#X text 212 555 -, f 1;
+#X text 224 555 slider number / slider value in the default mode or
+all values as a list in the "list mode", f 51;
+#X text 176 265 dump;
+#X text 128 251 mode <float>;
+#X text 211 237 - outputs all slider's values (depends on mode), f
+56;
+#X text 211 251 - non zero sets to "list mode" - see [pd basic], f
+56;
+#X text 211 265 - outputs values sequentially as slider number / value
+, f 56;
+#X text 240 82 click and drag ======>, f 12;
+#N canvas 1004 93 471 632 set-get-values 0;
+#X obj 100 553 else/display;
+#X obj 100 413 else/multi.vsl 200 127 0 127 8 empty empty empty 255
+255 255 220 220 220 0 0 0 0 0 1 holder holder 0 105 0 0 0 0 0 0;
+#X msg 131 239 set 3 10 20 30 40;
+#X msg 110 194 setall 90;
+#X msg 84 146 50 120 50;
+#X msg 122 216 set 0 10;
+#X msg 100 171 120 110 100 90 60 50 40 30;
+#X text 179 216 set slider 0 to "10";
+#X text 244 233 set slider 3 \, 4 \, 5 \, 6 to "10" \, "20" \, "30"
+and "40", f 25;
+#X text 34 69 The "setall" message sets a float to all the sliders.
+The "set" message will set one or more sliders counting from the slider
+number defined in the first float., f 67;
+#X floatatom 184 292 5 0 0 0 - - -;
+#X msg 184 315 set 1 \$1 \, get 1;
+#X text 223 291 set and output slider;
+#X msg 189 372 mode \$1;
+#X obj 189 349 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X text 35 19 If you send it a list of values \, it updates and outputs
+the sliders counting from the first one. If the list is shorter than
+the number of sliders \, just the first sliders are updated. If it
+is longer \, the extra ones are ignored., f 67;
+#X msg 183 264 get 3 5;
+#X obj 100 587 print set-get-multi.vsl;
+#X msg 141 264 get 1;
+#X text 239 265 get one or more slider values;
+#X text 212 350 <= sets to list mode;
+#X text 244 372 affects output of list input \, but not "get", f 22
+;
+#X text 34 109 The "get" gets the value of one or more sliders., f
+67;
+#X connect 0 0 17 0;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 1 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 0;
+#X connect 6 0 1 0;
+#X connect 10 0 11 0;
+#X connect 11 0 1 0;
+#X connect 13 0 1 0;
+#X connect 14 0 13 0;
+#X connect 16 0 1 0;
+#X connect 18 0 1 0;
+#X restore 117 125 pd set-get-values;
+#X connect 36 0 38 0;
