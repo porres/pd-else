@@ -57,27 +57,53 @@ of channels., f 47;
 #X text 60 90 [vocoder~] is classic cross synthesis channel vocoder
 abstraction., f 67;
 #X obj 179 238 else/out~;
-#N canvas 692 227 817 619 example 1;
-#X text 41 27 In this example you can control the frequency of each
-frequency band channel from an array.;
-#X obj 301 431 nbx 3 16 50 1000 0 0 empty empty empty 0 -8 0 12 -228856
+#N canvas 815 65 524 669 example 0;
+#X obj 156 533 nbx 3 16 50 1000 0 0 empty empty empty 0 -8 0 12 -228856
 -1 -1 50 256;
-#X obj 190 374 else/bl.saw~;
-#X obj 190 348 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-hz2 empty 0 -8 0
-10 -228856 -1 -1 74 256;
-#X obj 245 401 else/play.file~ voice.wav 1 1;
-#X obj 190 486 else/out~;
-#X obj 190 457 else/vocoder~ 28 75;
-#X obj 94 144 multi.vsl 400 150 20 110 28 empty empty empty 255 255
-255 220 220 220 0 0 0 1 1 holder holder holder 24 27 30 33 36 39 42
-45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 93 96 99 102 105;
-#X obj 94 307 else/insert freq;
-#X connect 1 0 6 2;
-#X connect 2 0 6 0;
-#X connect 3 0 2 0;
-#X connect 4 0 6 1;
-#X connect 6 0 5 0;
-#X connect 7 0 8 0;
+#X obj 65 452 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-hz2 empty 0 -8 0
+10 -228856 -1 -1 60 256;
+#X obj 100 503 else/play.file~ voice.wav 1 1;
+#X obj 45 588 else/out~;
+#X obj 45 559 else/vocoder~ 28 75;
+#X obj 44 199 multi.vsl 450 150 20 110 28 empty empty empty 255 255
+255 220 220 220 0 0 0 1 0 1 holder holder 30 32 34 36 38 40 42 44 46
+48 50 52 54 56 58 60 62 64 66 68 70 72 74 76 78 80 82 84;
+#X obj 44 362 else/insert freq;
+#X obj 65 476 else/bl.saw~;
+#X obj 65 429 else/initmess 60;
+#X obj 80 395 print vocoder-input;
+#X msg 88 104 offset \$1;
+#X msg 157 124 step \$1;
+#X obj 44 107 t b b;
+#X obj 44 52 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 44 174 else/group;
+#X floatatom 88 85 5 0 0 0 - - -;
+#X floatatom 157 105 5 0 0 0 - - -;
+#X text 123 82 base pitch;
+#X text 192 104 interval;
+#X obj 44 27 loadbang;
+#X obj 71 149 else/loop 28 -offset 24 -step 3;
+#X text 65 52 <= generate list;
+#X connect 0 0 4 2;
+#X connect 1 0 7 0;
+#X connect 2 0 4 1;
+#X connect 4 0 3 0;
+#X connect 5 0 6 0;
+#X connect 6 0 4 0;
+#X connect 6 0 9 0;
+#X connect 7 0 4 0;
+#X connect 8 0 1 0;
+#X connect 10 0 20 0;
+#X connect 11 0 20 0;
+#X connect 12 0 14 0;
+#X connect 12 1 20 0;
+#X connect 13 0 12 0;
+#X connect 14 0 5 0;
+#X connect 15 0 10 0;
+#X connect 16 0 11 0;
+#X connect 19 0 13 0;
+#X connect 20 0 14 0;
 #X restore 470 267 pd example;
 #X obj 179 209 else/vocoder~ 16 75;
 #X obj 179 139 else/bl.saw~ 60;
