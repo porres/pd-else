@@ -1,6 +1,7 @@
     // porres 2017
 
 #include "m_pd.h"
+#include "math.h"
 
 #define OFF      0
 #define RUNNING  1
@@ -23,40 +24,30 @@ static t_class *loop_class;
 
 static void loop_do_loop(t_loop *x){ // The Actual Loop
     x->x_status = RUNNING;
-    if(x->x_upwards){
-        if(x->x_iter){
-//            post("(float)x->x_target * x->x_step = %f", (float)x->x_target * x->x_step);
-            while(x->x_count <= ((double)x->x_target * (double)x->x_step)){
-//                post("x->x_count = %f", x->x_count);
-                if(x->x_b)
-                    outlet_bang(((t_object *)x)->ob_outlet);
-                else
-                    outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
-                x->x_count += (double)x->x_step;
-//                post("x->x_count += x->x_step = %f", x->x_count);
-                if(x->x_status == PAUSED)
-                    return;
-            }
-        }
-        else{
-            while(x->x_count <= x->x_target){
-                if(x->x_b)
-                    outlet_bang(((t_object *)x)->ob_outlet);
-                else
-                    outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
-                x->x_count += x->x_step;
-                if(x->x_status == PAUSED)
-                    return;
-            }
-        }
-    }
-    else{
-        while(x->x_count >= x->x_target){
+    if(x->x_iter){
+        while(x->x_count <= ((double)x->x_target * (double)x->x_step)){
             if(x->x_b)
                 outlet_bang(((t_object *)x)->ob_outlet);
             else
                 outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
-            x->x_count -= (double)x->x_step;
+            x->x_count += (double)x->x_step;
+            if(x->x_status == PAUSED)
+                return;
+        }
+    }
+    else{
+        t_float range = fabs((x->x_target - x->x_count) / x->x_step);
+        int n = (int)range + 1;
+        while(n--){
+            if(x->x_b)
+                outlet_bang(((t_object *)x)->ob_outlet);
+            else{
+                outlet_float(((t_object *)x)->ob_outlet, x->x_count + x->x_offset);
+                if(x->x_upwards)
+                    x->x_count += (double)x->x_step;
+                else
+                    x->x_count -= (double)x->x_step;
+            }
             if(x->x_status == PAUSED)
                 return;
         }
@@ -65,15 +56,17 @@ static void loop_do_loop(t_loop *x){ // The Actual Loop
 }
 
 static void loop_bang(t_loop *x){
+//    post("loop_bang");
     if(x->x_status != RUNNING){
         x->x_count = x->x_counter_start; // reset
+//        post("before loop_do_loop");
         loop_do_loop(x);
     }
 }
 
 static void loop_set(t_loop *x, t_float f){
     if(f < 1){
-        pd_error(x, "loop: number of iterations need to be >= 1");
+        pd_error(x, "[loop]: number of iterations need to be >= 1");
         return;
     }
     x->x_counter_start = 0;
@@ -93,6 +86,7 @@ static void loop_float(t_loop *x, t_float f){
 }
 
 static void loop_list(t_loop *x, t_symbol *s, int ac, t_atom *av){
+//    post("loop_list");
     s = NULL;
     x->x_counter_start = atom_getfloat(av);
     x->x_target = atom_getfloat(av+1);
@@ -225,4 +219,5 @@ void loop_setup(void){
     class_addmethod(loop_class, (t_method)loop_offset, gensym("offset"), A_DEFFLOAT, 0);
     class_addmethod(loop_class, (t_method)loop_step, gensym("step"), A_DEFFLOAT, 0);
     class_addmethod(loop_class, (t_method)loop_set, gensym("set"), A_DEFFLOAT, 0);
+//    post("hi");
 }

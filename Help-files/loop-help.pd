@@ -80,8 +80,6 @@ was met., f 32;
 #X text 197 341 - stops the loop, f 56;
 #X text 197 355 - countinues the loop after being paused, f 56;
 #X text 166 285 list;
-#X text 197 285 - two floats set range (start / end) and starts the
-loop;
 #X msg 282 158 0 9;
 #X obj 4 488 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 136 493 -offset <float>;
@@ -173,7 +171,7 @@ a third optional element in a list., f 68;
 -1;
 #X obj 88 290 print counter;
 #X obj 88 261 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 4 256;
+-228856 -1 -1 0 256;
 #X obj 279 124 bng 17 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
 -1;
 #X obj 279 292 print counter;
@@ -189,7 +187,7 @@ a third optional element in a list., f 68;
 #X msg 308 123 -10 -5;
 #X obj 88 225 else/loop 10 -offset -5;
 #X obj 279 261 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 20 256;
+-228856 -1 -1 0 256;
 #X text 32 65 You can also set the number of iterations with the 'set'
 message \, the right inlet and with the argument if you give it just
 one argument., f 65;
@@ -197,9 +195,6 @@ one argument., f 65;
 #X obj 364 177 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X msg 364 198 step \$1;
-#X text 461 32 If you give it two arguments (or more) \, then you have
-a start and end value. The counter step is "1" by default but can be
-changed with the 3rd argument or the 'step' message., f 65;
 #X obj 528 354 nbx 5 14 1 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 1 256;
 #X obj 447 351 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -227,6 +222,9 @@ of iterations and the counter step. Note also that start \, end and
 step values can be floats \, not only integers - unlike the number
 of interations \, which can only be an integer., f 65;
 #X obj 703 202 else/loop 0.5 1.5 0.1;
+#X text 461 32 If you give it two arguments \, you have a start and
+end value. The counter step is "1" by default but can be changed with
+the 3rd argument or the 'step' message., f 65;
 #X connect 0 0 12 0;
 #X connect 2 0 1 0;
 #X connect 3 0 15 0;
@@ -242,22 +240,23 @@ of interations \, which can only be an integer., f 65;
 #X connect 15 0 13 0;
 #X connect 16 0 17 0;
 #X connect 17 0 15 0;
-#X connect 19 0 21 1;
+#X connect 18 0 20 1;
+#X connect 19 0 20 0;
 #X connect 20 0 21 0;
-#X connect 21 0 22 0;
-#X connect 24 0 28 0;
-#X connect 26 0 28 0;
-#X connect 27 0 26 0;
-#X connect 28 0 25 0;
-#X connect 30 0 33 0;
-#X connect 33 0 31 0;
+#X connect 23 0 27 0;
+#X connect 25 0 27 0;
+#X connect 26 0 25 0;
+#X connect 27 0 24 0;
+#X connect 29 0 32 0;
+#X connect 32 0 30 0;
 #X restore 502 180 pd args;
-#X connect 20 0 43 0;
-#X connect 25 0 44 0;
-#X connect 34 0 44 0;
-#X connect 37 0 44 0;
-#X connect 40 0 43 0;
-#X connect 43 0 22 0;
-#X connect 44 0 64 0;
-#X connect 54 0 43 1;
-#X connect 68 0 44 0;
+#X text 197 285 - sets range start/end/step and starts the loop;
+#X connect 20 0 42 0;
+#X connect 25 0 43 0;
+#X connect 33 0 43 0;
+#X connect 36 0 43 0;
+#X connect 39 0 42 0;
+#X connect 42 0 22 0;
+#X connect 43 0 63 0;
+#X connect 53 0 42 1;
+#X connect 67 0 43 0;
