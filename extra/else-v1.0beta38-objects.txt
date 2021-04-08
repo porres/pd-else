@@ -227,7 +227,7 @@ mov.rms~	x
 ms2samps~	x
 ms2samps	x
 multi.vsl	x
-nbang	x
+nmess	x
 noisegate~	x
 norm~	x
 note	x

@@ -161,7 +161,7 @@ Cross compiling is also possible with something like this
 **MESSAGE MANAGEMENT: [25]**
 
 - [format]
-- [nbang]
+- [nmess]
 - [unite]
 - [separate]
 - [symbol2any]
