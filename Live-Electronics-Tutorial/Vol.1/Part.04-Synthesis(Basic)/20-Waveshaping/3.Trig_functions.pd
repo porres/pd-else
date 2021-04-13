@@ -1,11 +1,11 @@
 #N canvas 259 61 1043 722 12;
 #X declare -path else;
-#X obj 118 159 *~;
-#X obj 193 122 hsl 128 15 0 10 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 140 173 *~;
+#X obj 215 136 hsl 128 15 0 10 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 190 144 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 212 158 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 118 123 osc~ 400;
+#X obj 140 137 osc~ 400;
 #X obj 93 474 *~;
 #X obj 168 391 hsl 128 15 0 4 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
@@ -28,18 +28,16 @@
 -228856 -1 -1 0 256;
 #X obj 510 497 osc~ 200;
 #X obj 510 567 expr~ asin($v1);
-#X obj 118 211 expr~ tanh($v1);
+#X obj 140 214 expr~ tanh($v1);
 #X obj 248 454 catch~ \$0-out;
 #X obj 93 537 throw~ \$0-out;
-#X obj 118 245 throw~ \$0-out;
+#X obj 140 248 throw~ \$0-out;
 #X obj 510 663 throw~ \$0-out;
 #X obj 518 358 throw~ \$0-out;
 #X obj 248 487 graph~ 446 11 -1 1;
 #X obj 248 641 out~;
-#X obj 190 169 f2s~ 50;
-#X obj 301 215 drive~;
-#X text 289 192 see also;
-#X text 57 205 Transfer Function, f 8;
+#X obj 212 183 f2s~ 50;
+#X text 79 208 Transfer Function, f 8;
 #X text 24 283 Here we have the sine function with the [sin~] object
 \, which returns the sine values for angle values from 0 to 1 \, but
 it also wraps outside this range \, repeating the function. Note that
@@ -388,11 +386,6 @@ of tunrnind sine waves into triangular waves., f 39;
 #X coords 0 1.1 440 -1.1 200 140 1 0 0;
 #X restore 798 201 graph;
 #X obj 589 22 declare -path else;
-#X text 24 14 Insted of a table \, we now use trigonometric functions
-as transfer functions. The "tanh" has already been used as a "soft
-clipping" distortion and it's used in the [drive~] object. it returns
-valores from -1 a 1 from an input signal that goes from -7.6 to 7.6
-- outside this range we have a plain "hard clipping"., f 53;
 #X text 442 58 Using [cos~] instead of [sin~] gives us a different
 resulting sonority \, plus a difference in behaviour \, as the output
 is 1 for an amplitude of zero! In practical terms \, it generates DC
@@ -400,32 +393,38 @@ Offset and we need to filter it out with a highpass (since the DC component
 is a frequency of 0Hz)., f 45;
 #X text 37 588 Note that to the right we have all transfer functions
 used in this example for display as tables., f 22;
+#X text 24 14 Insted of a table \, we now use trigonometric functions
+as transfer functions. The "tanh" has already been used as a "soft
+clipping" distortion and it's used in one of the modes of the [drive~]
+object as we'll see in the next example. It returns valores from -1
+a 1 from an input signal that goes from -7.6 to 7.6 - outside this
+range we have a plain "hard clipping"., f 53;
 #X connect 0 0 20 0;
 #X connect 1 0 2 0;
 #X connect 2 0 28 0;
 #X connect 3 0 0 0;
 #X connect 4 0 7 0;
 #X connect 5 0 6 0;
-#X connect 6 0 37 0;
+#X connect 6 0 35 0;
 #X connect 7 0 22 0;
 #X connect 8 0 9 0;
 #X connect 9 0 12 0;
 #X connect 10 0 11 0;
-#X connect 11 0 38 0;
+#X connect 11 0 36 0;
 #X connect 12 0 13 0;
 #X connect 13 0 25 0;
 #X connect 14 0 4 0;
 #X connect 15 0 19 0;
 #X connect 16 0 17 0;
-#X connect 17 0 39 0;
+#X connect 17 0 37 0;
 #X connect 18 0 15 0;
-#X connect 19 0 42 0;
+#X connect 19 0 40 0;
 #X connect 20 0 23 0;
 #X connect 21 0 26 0;
 #X connect 26 0 27 0;
 #X connect 28 0 0 1;
-#X connect 37 0 4 1;
-#X connect 38 0 9 1;
-#X connect 39 0 15 1;
-#X connect 41 0 42 1;
-#X connect 42 0 24 0;
+#X connect 35 0 4 1;
+#X connect 36 0 9 1;
+#X connect 37 0 15 1;
+#X connect 39 0 40 1;
+#X connect 40 0 24 0;
