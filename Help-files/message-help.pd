@@ -1,4 +1,4 @@
-#N canvas 627 139 561 433 10;
+#N canvas 744 131 561 433 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -81,8 +81,8 @@ you can, f 50;
 #X text 226 258 bang;
 #X obj 35 41 cnv 4 4 4 empty empty Store 0 28 2 18 -233017 -1 0;
 #X obj 235 189 else/message a b c;
-#X text 42 187 see also:;
-#X obj 39 209 else/initmess;
+#X text 31 172 see also:;
+#X obj 28 194 else/initmess;
 #X text 256 258 - outputs the message;
 #X text 202 274 anything;
 #X text 256 274 - sets and outputs the message;
@@ -101,6 +101,7 @@ boxes do. See [pd syntax] for more details., f 69;
 #X symbolatom 182 163 7 0 0 0 - - -;
 #X floatatom 340 143 5 0 0 0 - - -;
 #X text 256 296 - sets the message (bang message also allowed);
+#X obj 28 215 else/store;
 #X connect 23 0 28 0;
 #X connect 28 0 21 0;
 #X connect 36 0 28 1;

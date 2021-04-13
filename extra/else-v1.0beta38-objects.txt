@@ -365,6 +365,7 @@ stepnoise~	x
 stereo.rev~	x
 stream	x
 stretch.shift~	x
+store	x
 sum	x
 susloop~	x
 suspedal	x
