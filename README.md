@@ -8,7 +8,7 @@
 
 ### Version: 1.0-0 beta-38 With Live Electronics Tutorial 
 
-###   Unreleased: 
+###   Released April 13th 2021: 
 
 
 

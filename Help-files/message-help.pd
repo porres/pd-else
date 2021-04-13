@@ -38,7 +38,7 @@
 #X text 202 329 anything;
 #X obj 4 380 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
 #X text 256 329 - the message;
-#X text 161 388 clicking on the outputs the message;
+#X text 176 388 clicking on the outputs the message;
 #X obj 235 217 else/display;
 #X text 182 190 click =>;
 #X obj 235 164 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -90,7 +90,6 @@ you can, f 50;
 ;
 #X text 202 296 anything;
 #X msg 350 165 1 2 3;
-#X text 257 359 message output (defaul bang);
 #X text 71 87 The [message] object stores and outputs any kind of message
 in Pd. As an object \, \$1/\$2 loads arguments when used in an abstraction
 \, so the syntax is not the same as a message box. Nonetheless \, it
@@ -102,10 +101,11 @@ boxes do. See [pd syntax] for more details., f 69;
 #X floatatom 340 143 5 0 0 0 - - -;
 #X text 256 296 - sets the message (bang message also allowed);
 #X obj 28 215 else/store;
+#X text 257 359 message output (default "bang");
 #X connect 23 0 28 0;
 #X connect 28 0 21 0;
 #X connect 36 0 28 1;
-#X connect 39 0 28 1;
+#X connect 38 0 28 1;
+#X connect 39 0 28 0;
 #X connect 40 0 28 0;
-#X connect 41 0 28 0;
-#X connect 42 0 28 1;
+#X connect 41 0 28 1;
