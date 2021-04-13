@@ -277,6 +277,7 @@ pluck~	x
 pmosc~	x
 pol2car	x
 pol2car~	x
+power~	x
 properties	x
 pulse	x
 pulse~	x

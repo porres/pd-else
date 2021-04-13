@@ -41,30 +41,29 @@
 ;
 #X obj 97 405 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 212 371 - phase (in radians) of the signal in the polar form
-;
-#X text 211 349 - amplitude of the signal in the polar form;
-#X obj 229 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 2 256;
+#X obj 247 171 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0.103693 256;
 #X text 128 349 float/signal;
 #X text 128 349 float/signal;
 #X text 128 372 float/signal;
 #X obj 492 73 else/setdsp~;
-#X obj 166 196 else/power~;
-#X text 289 174 exponent;
-#X text 218 436 1) exponential factor;
 #X text 210 404 - the signal raised to the given power;
-#X obj 166 163 osc~ 440;
-#X obj 166 227 else/oscilloscope~ 200 100 2 3 128 -1 1 150 0 0 0 30
+#X obj 160 224 else/oscilloscope~ 200 100 2 3 128 -1 1 150 0 0 0 30
 30 30 190 190 190 160 160 160 0 empty;
-#X obj 232 154 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12600 1;
+#X obj 250 151 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 100 1;
+#X obj 160 160 osc~ 440;
+#X obj 160 193 else/power~ 0.1;
+#X text 211 349 - signal input;
+#X text 212 371 - exponential factor;
 #X text 46 89 [power~] extends the usual definition of exponentiation
-and returns -pow(-a \, b) when you have exponentiation a negative signal
-input. This allows not only the output of negative values but also
-the exponentiation of negative values by noninteger exponents., f
-67;
-#X connect 23 0 28 1;
-#X connect 28 0 33 0;
-#X connect 32 0 28 0;
-#X connect 34 0 23 0;
+and returns -pow(-a \, b) when you have exponentiation of a negative
+signal input. This allows not only the output of negative values but
+also the exponentiation of negative values by noninteger exponents.
+, f 68;
+#X text 307 171 exponential factor;
+#X text 156 436 1) float - exponential factor (default 1);
+#X connect 21 0 30 1;
+#X connect 28 0 21 0;
+#X connect 29 0 30 0;
+#X connect 30 0 27 0;
