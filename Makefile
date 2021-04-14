@@ -184,6 +184,7 @@ median~.class.sources := Classes/Source/median~.c
 tempo~.class.sources := Classes/Source/tempo~.c
 nyquist~.class.sources := Classes/Source/nyquist~.c
 op~.class.sources := Classes/Source/op~.c
+power~.class.sources := Classes/Source/power~.c
 pan2~.class.sources := Classes/Source/pan2~.c
 pan4~.class.sources := Classes/Source/pan4~.c
 peak~.class.sources := Classes/Source/peak~.c

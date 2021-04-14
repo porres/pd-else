@@ -230,7 +230,7 @@ Cross compiling is also possible with something like this
 - [voices]
 - [suspedal]
 
-**MATH: FUNCTIONS: [30]**
+**MATH: FUNCTIONS: [29]**
 
 - [add~]
 - [add]
@@ -261,7 +261,6 @@ Cross compiling is also possible with something like this
 - [wrap2~]
 - [op~]
 - [op]
-- [power~]
 
 **MATH: CONVERSION: [26]**
 
@@ -304,7 +303,7 @@ Cross compiling is also possible with something like this
 
 - [loop]
 
-**AUDIO PROCESSING: ASSORTED [23]**
+**AUDIO PROCESSING: ASSORTED [24]**
 
 - [downsample~]
 - [conv~]
@@ -316,6 +315,7 @@ Cross compiling is also possible with something like this
 - [shaper~]
 - [crusher~]
 - [drive~]
+- [power~]
 - [flanger~]
 - [freq.shift~]
 - [pitch.shift~]
