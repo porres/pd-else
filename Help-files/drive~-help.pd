@@ -182,6 +182,8 @@ input values outside the -1 to 1 range are clipped.;
 #X text 70 85 [drive~] simulates an analog "soft clipping" distortion
 by applying non-linear transfer functions.;
 #X obj 268 175 else/float2sig~ 50;
+#X text 44 230 see also:;
+#X obj 41 254 else/power~;
 #X connect 21 0 25 0;
 #X connect 25 0 20 0;
 #X connect 26 0 39 0;
