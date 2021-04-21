@@ -54,6 +54,9 @@ void print_else_obj(t_else_obj *x){
     post("that depends on this library. Find the 'live-electronics-folder' folder");
     post("inside the 'else' folder. Please check its README on how to install it!");
     post("-------------------------------------------------------------------------------");
+    post("- ALSO NOTE: Loading this binary did not install the ELSE library, you still");
+    post("need to add it to the \"preferences=>path\" or use [declare -path else]");
+    post("-------------------------------------------------------------------------------");
     post("  ~~~~~~~~~~|| ELSE - EL Locus Solus' Externals for Pure Data ||~~~~~~~~~~");
     post("-------------------------------------------------------------------------------");
     post("");

@@ -1,6 +1,6 @@
 #N struct 1008-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N canvas 747 79 560 379 10;
+#N canvas 809 157 560 379 10;
 #X obj 4 354 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 5 244 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -40,10 +40,10 @@ in float gridx float gridy;
 #X obj 155 253 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 94 41 cnv 4 4 4 empty empty data 0 28 2 18 -233017 -1 0;
-#X obj 147 146 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 144 152 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X floatatom 311 188 5 0 0 0 - - -;
-#X obj 147 201 else/display;
+#X obj 144 207 else/display;
 #X text 174 267 set <symbol> - sets a receive name, f 52;
 #X text 254 333 - receive name (default none), f 37;
 #X text 200 302 anything;
@@ -54,16 +54,14 @@ in float gridx float gridy;
 #X obj 66 200 else/display;
 #X msg 78 132 set a;
 #X obj 227 276 symbol hi;
-#X obj 66 172 else/retrieve;
 #X text 89 105 <= retrieve data;
-#X obj 432 147 else/message;
 #X obj 543 108 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 0 60 90 empty empty;
+0 0 0 0 44 47 empty empty;
 #X obj 543 250 else/display;
 #X obj 378 177 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 378 232 else/display;
-#X obj 432 109 r \$0-sl2d;
+#X obj 422 109 r \$0-sl2d;
 #X obj 378 204 else/retrieve \$0-sl2d;
 #X text 408 26 But note that it can only retrieve from compiled objects
 \, it doesn't work with abstractions. The trick in such cases is to
@@ -72,12 +70,11 @@ use something like [message] to store the data., f 40;
 #X obj 227 251 r c;
 #X msg 124 139 set c;
 #X obj 65 277 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 5400 1;
+-1 -1 5200 1;
 #X obj 209 106 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 209 201 else/display;
 #X msg 228 137 set b;
-#X obj 209 173 else/retrieve;
 #X text 232 106 <= retrieve data;
 #X msg 271 142 set c;
 #X text 30 24 You can use the set message to set or change the receive
@@ -85,33 +82,37 @@ name. You can connect the corresponding [receive] object to GUIs or
 any object that receives a bang and outputs data. Note that it also
 works with [receiver] \, which can have up to two receive names.,
 f 56;
-#X connect 0 0 4 0;
-#X connect 2 0 4 0;
-#X connect 4 0 1 0;
-#X connect 6 0 7 0;
-#X connect 7 0 6 1;
-#X connect 7 0 8 0;
-#X connect 9 0 12 0;
-#X connect 11 0 6 0;
-#X connect 12 0 10 0;
-#X connect 14 0 17 0;
-#X connect 15 0 3 0;
-#X connect 16 0 4 0;
-#X connect 18 0 21 0;
-#X connect 20 0 21 0;
-#X connect 21 0 19 0;
-#X connect 23 0 21 0;
+#X obj 66 172 else/retrieve a;
+#X obj 209 173 else/retrieve b;
+#X obj 422 147 else/message 0 0;
+#X connect 0 0 22 0;
+#X connect 2 0 22 0;
+#X connect 5 0 6 0;
+#X connect 5 0 24 1;
+#X connect 7 0 10 0;
+#X connect 9 0 24 0;
+#X connect 10 0 8 0;
+#X connect 12 0 15 0;
+#X connect 13 0 3 0;
+#X connect 14 0 22 0;
+#X connect 16 0 23 0;
+#X connect 18 0 23 0;
+#X connect 20 0 23 0;
+#X connect 22 0 1 0;
+#X connect 23 0 17 0;
+#X connect 24 0 5 0;
 #X restore 495 206 pd more;
 #X obj 311 164 r \$0-x;
 #X text 254 302 - the retrieved data;
 #X obj 178 41 cnv 4 4 4 empty empty [receive] 0 28 2 18 -233017 -1
 0;
-#X obj 147 173 else/retrieve \$0-x;
-#X text 73 89 [retrieve] retrieves values from things that are connected
-to a [receive] with the same name as the argument. It also works with
-[else/receiver]., f 66;
-#X text 170 146 <= retrieve data;
+#X obj 144 179 else/retrieve \$0-x;
+#X text 167 152 <= retrieve data;
 #X text 350 189 <= change and then hit bang to retrieve., f 14;
+#X text 57 87 [retrieve] retrieves values from things that are connected
+to a [receive] with the same name as the argument. It also works with
+[else/receiver]. In a sense \, it extends the function of [receive]
+to work as a send \, which can be convenient., f 73;
 #X connect 20 0 31 0;
 #X connect 28 0 21 0;
 #X connect 31 0 22 0;

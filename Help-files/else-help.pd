@@ -1,6 +1,6 @@
-#N canvas 711 28 565 609 10;
+#N canvas 711 28 562 601 10;
 #X declare -path else;
-#X msg 275 292 about;
+#X msg 315 292 about;
 #X obj 3 574 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 61 153 Check declare's help file for more information.;
@@ -44,29 +44,30 @@
 #X text 163 516 list;
 #X text 207 517 - version (major \, minor \, bugfix \, status \, status
 number);
-#X msg 293 316 version;
-#X obj 275 366 else/display;
-#X text 69 359 Check "All About ELSE":;
-#X obj 275 425 else/display;
-#X text 63 91 The ELSE library is a set of separate binaries and abstractions
-but you can load it via "Preferences => Path" or \, alternatively \,
-you can use [declare] as follows:, f 71;
+#X msg 333 316 version;
+#X obj 315 366 else/display;
+#X text 109 359 Check "All About ELSE":;
+#X obj 315 425 else/display;
 #X obj 281 125 declare -path else;
-#X obj 275 340 else;
-#X obj 275 398 format ELSE %d.%d-%d_%s-%d;
-#X obj 85 387 All_about_else;
+#X obj 315 340 else;
+#X obj 315 398 format ELSE %d.%d-%d_%s-%d;
+#X obj 129 387 All_about_else;
 #X text 63 182 The else binary does nothing but give some basic information
 about the ELSE library in Pd's window at creation time (but only once
 if multiple else objects are loaded). It accepts the "about" message
 that prints basic information (version \, release date \, etc) on the
 terminal on demand and also accepts the 'version' message that sends
 the version information as a list., f 71;
-#X text 63 256 you can also load the binary via startup just so it
-prints the library info when you start Pd., f 71;
 #X text 207 466 - prints library information on the terminal;
 #X text 207 483 - outputs version information as a list;
-#X connect 0 0 32 0;
-#X connect 26 0 32 0;
-#X connect 27 0 33 0;
-#X connect 32 0 27 0;
-#X connect 33 0 29 0;
+#X text 63 91 The ELSE library is a set of separate binaries and abstractions.
+You can load it via "Preferences => Path" or \, alternatively \, you
+can use [declare] as follows:, f 71;
+#X text 63 256 you can also load the binary via startup just so it
+prints the library info when you start Pd. This is useful if you want
+to know what version of ELSE you have when you start Pd., f 71;
+#X connect 0 0 31 0;
+#X connect 26 0 31 0;
+#X connect 27 0 32 0;
+#X connect 31 0 27 0;
+#X connect 32 0 29 0;
