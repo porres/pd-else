@@ -1,11 +1,11 @@
-#N struct 1004-cell float x float y float cellsize float color;
-#N struct 1005-point float x0 float y0 float xs float ys float fg float
+#N struct 4730-cell float x float y float cellsize float color;
+#N struct 4731-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1024-point float x0 float y0 float size float fg float in
+#N struct 4750-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1055-slot float x float y float slotsize float color float
+#N struct 4781-slot float x float y float slotsize float color float
 width float bordercolor;
-#N canvas 870 54 534 851 10;
+#N canvas 746 22 534 756 10;
 #X text 56 65 Assorted:;
 #X text 56 271 FFT:;
 #X text 54 2334 MIDI:;
@@ -539,3 +539,8 @@ width float bordercolor;
 #X obj 55 1623 else/gmean;
 #X obj 54 1906 else/store;
 #X obj 54 4802 else/power~;
+#X obj 356 76 else/initmess 0;
+#X obj 356 97 switch~;
+#X obj 347 73 cnv 15 120 70 empty empty empty 20 12 0 14 -262144 -66577
+0;
+#X connect 434 0 435 0;
