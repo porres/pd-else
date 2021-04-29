@@ -41,11 +41,8 @@
 #X obj 140 40 cnv 4 4 4 empty empty pitch 0 28 2 18 -233017 -1 0;
 #X text 56 189 see also:;
 #X obj 231 157 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 71 256;
+-1 -1 104 256;
 #X obj 49 211 else/note2pitch;
-#X text 247 262 - MIDI pitch value, f 35;
-#X text 247 356 - note name;
-#X text 208 262 float;
 #X obj 137 325 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 160 325 anything/list;
@@ -55,7 +52,7 @@
 #X text 204 192 set arbitrary symbols;
 #X obj 98 78 else/keyboard 17 80 4 3 0 0 empty empty;
 #X obj 98 210 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 71 256;
+-1 -1 0 256;
 #X obj 98 180 stripnote;
 #X text 150 41 You can set your own arbitrary scale in the right inlet
 ;
@@ -72,7 +69,6 @@
 #X connect 9 0 1 1;
 #X connect 10 0 1 1;
 #X restore 434 182 pd other-scales;
-#X obj 231 187 else/pitch2note;
 #X text 187 277 chromatic - sets to chromatic mode (default);
 #X text 247 325 - user defined scales;
 #N canvas 993 163 582 443 unicode 0;
@@ -125,8 +121,8 @@ and flats are represented by the unicode characters "♯" and "♭"
 #X connect 11 0 0 0;
 #X restore 434 161 pd accidentals;
 #X text 172 356 symbol/list;
-#N canvas 993 163 582 443 list 0;
-#X obj 61 368 else/display;
+#N canvas 993 163 580 481 list 0;
+#X obj 61 418 else/display;
 #X obj 61 230 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
 -1 -1 0 256;
 #X msg 86 258 chromatic;
@@ -137,10 +133,13 @@ and flats are represented by the unicode characters "♯" and "♭"
 #X text 154 306 All flat;
 #X obj 61 200 stripnote;
 #X obj 61 91 else/keyboard 17 80 4 3 0 0 empty empty;
-#X obj 61 340 else/pitch2note -list -unicode;
+#X obj 61 390 else/pitch2note -list -unicode;
 #X text 99 31 The "-list" flag sets to list output mode \, where the
 output is a list with the note symbol and octave number. You can combine
 both flags of course (in any order).;
+#X text 179 350 A list input also outputs note and ocatves separately
+;
+#X msg 119 351 60 66 74;
 #X connect 1 0 10 0;
 #X connect 2 0 10 0;
 #X connect 3 0 10 0;
@@ -148,11 +147,18 @@ both flags of course (in any order).;
 #X connect 8 0 1 0;
 #X connect 9 0 8 0;
 #X connect 10 0 0 0;
+#X connect 13 0 10 0;
 #X restore 434 223 pd list;
 #X text 62 89 [pitch2note] converts a MIDI pitch value note names (such
 as Eb3). The names end with an octave number \, in a way that middle
 C (MIDI pitch = 60) represents C4 represents., f 66;
 #X text 211 291 sharp - sets to sharp mode;
 #X text 217 305 flat - sets to flat mode;
-#X connect 24 0 32 0;
-#X connect 32 0 18 0;
+#X obj 231 187 else/pitch2note;
+#X text 179 262 float/list;
+#X text 247 262 - MIDI pitch value(s), f 35;
+#X text 247 356 - note name(s);
+#X msg 165 157 60 66 74;
+#X connect 24 0 40 0;
+#X connect 40 0 18 0;
+#X connect 44 0 40 0;
