@@ -307,7 +307,7 @@
 #X connect 35 0 0 3;
 #X connect 37 0 1 0;
 #X restore 118 132 pd float;
-#N canvas 621 308 319 241 init 0;
+#N canvas 621 308 319 241 init 1;
 #X obj 96 61 text define -k \$0-notes;
 #A set C Db D Eb E F Gb G Ab A Bb B \; C C# D D# E F F# G G# A A# B
 ;

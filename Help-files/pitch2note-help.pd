@@ -1,4 +1,4 @@
-#N canvas 808 91 560 455 10;
+#N canvas 713 74 560 455 10;
 #X obj 4 253 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 348 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -41,33 +41,35 @@
 #X obj 140 40 cnv 4 4 4 empty empty pitch 0 28 2 18 -233017 -1 0;
 #X text 56 189 see also:;
 #X obj 231 157 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 104 256;
+-1 -1 0 256;
 #X obj 49 211 else/note2pitch;
 #X obj 137 325 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 160 325 anything/list;
-#N canvas 845 164 662 387 other-scales 0;
+#N canvas 786 93 662 387 other-scales 0;
 #X obj 98 326 else/display;
-#X obj 98 293 else/pitch2note;
 #X text 204 192 set arbitrary symbols;
 #X obj 98 78 else/keyboard 17 80 4 3 0 0 empty empty;
 #X obj 98 210 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 0 256;
+-1 -1 61 256;
 #X obj 98 180 stripnote;
 #X text 150 41 You can set your own arbitrary scale in the right inlet
 ;
 #X obj 185 170 loadbang;
 #X msg 185 213 C C# D Eb E F F# G G# A Bb B;
-#X msg 200 238 C Db D D# E E# Gb G G# A Bb Cb;
-#X msg 207 263 B# C# D Eb Fb E# Gb G Ab A A# B;
-#X connect 1 0 0 0;
-#X connect 3 0 5 0;
-#X connect 4 0 1 0;
-#X connect 5 0 4 0;
-#X connect 7 0 8 0;
-#X connect 8 0 1 1;
-#X connect 9 0 1 1;
-#X connect 10 0 1 1;
+#X obj 98 293 else/pitch2note;
+#X msg 200 238 C C# D D# E E# F# Fx G# A A# B;
+#X text 414 231 anything is possible \, you can even use "x" and "bb"
+for double sharp/flats, f 21;
+#X msg 207 263 C Db D Eb Fb F Gb G Ab Bbb Bb B;
+#X connect 2 0 4 0;
+#X connect 3 0 8 0;
+#X connect 4 0 3 0;
+#X connect 6 0 7 0;
+#X connect 7 0 8 1;
+#X connect 8 0 0 0;
+#X connect 9 0 8 1;
+#X connect 11 0 8 1;
 #X restore 434 182 pd other-scales;
 #X text 187 277 chromatic - sets to chromatic mode (default);
 #X text 247 325 - user defined scales;
