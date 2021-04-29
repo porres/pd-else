@@ -52,11 +52,11 @@
 #X obj 57 92 route list float, f 21;
 #N canvas 456 97 621 655 list 0;
 #X obj 212 369 text get \$0-notes 1, f 10;
-#X obj 175 107 clip 0 127;
+#X obj 175 122 clip 0 127;
 #X obj 212 298 swap 1;
 #X obj 218 247 sel 0;
 #X obj 245 270 > 0;
-#X obj 175 139 expr last_\$0 = $f1 \; $f1 % 12 \; $f1 / 12 - 1 \; $f1
+#X obj 175 146 expr last_\$0 = $f1 \; $f1 % 12 \; $f1 / 12 - 1 \; $f1
 - last_\$0;
 #X obj 286 201 spigot 1;
 #X msg 331 107 1;
@@ -129,8 +129,9 @@
 #X obj 123 583 outlet;
 #X obj 123 21 inlet;
 #X obj 123 93 t b l;
-#X obj 175 82 else/iterate;
+#X obj 175 77 else/iterate;
 #X obj 123 555 else/group;
+#X obj 175 99 else/rint;
 #X connect 0 0 31 0;
 #X connect 1 0 5 0;
 #X connect 2 0 0 0;
@@ -179,8 +180,9 @@
 #X connect 37 0 38 0;
 #X connect 38 0 40 0;
 #X connect 38 1 39 0;
-#X connect 39 0 1 0;
+#X connect 39 0 41 0;
 #X connect 40 0 36 0;
+#X connect 41 0 1 0;
 #X restore 57 132 pd list;
 #N canvas 456 97 489 587 float 0;
 #X obj 102 369 text get \$0-notes 1, f 10;
@@ -259,7 +261,8 @@
 #X obj 181 430 - 1;
 #X obj 156 342 r \$0-set-table;
 #X obj 227 548 outlet;
-#X obj 66 21 inlet;
+#X obj 65 21 inlet;
+#X obj 65 61 else/rint;
 #X connect 0 0 31 0;
 #X connect 1 0 5 0;
 #X connect 2 0 0 0;
@@ -305,9 +308,10 @@
 #X connect 33 0 34 0;
 #X connect 34 0 28 1;
 #X connect 35 0 0 3;
-#X connect 37 0 1 0;
+#X connect 37 0 38 0;
+#X connect 38 0 1 0;
 #X restore 118 132 pd float;
-#N canvas 621 308 319 241 init 1;
+#N canvas 621 308 319 241 init 0;
 #X obj 96 61 text define -k \$0-notes;
 #A set C Db D Eb E F Gb G Ab A Bb B \; C C# D D# E F F# G G# A A# B
 ;

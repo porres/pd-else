@@ -1,4 +1,4 @@
-#N canvas 808 105 563 433 10;
+#N canvas 659 105 563 433 10;
 #X obj 4 314 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 350 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -110,7 +110,12 @@ You can the easily available characters from regular keybords: "#"
 #X connect 23 0 13 0;
 #X restore 473 263 pd unicode;
 #X text 68 200 unicode:;
-#N canvas 877 207 459 319 double 0;
+#X text 60 86 [note2pitch] converts a note name (such as C4) to MIDI
+pitch values. All enharmonic names are included (even unusual ones
+like Cb and double sharps/flats). It takes symbols \, lists or anythings
+that end with an octave number \, in a way that C4 represents middle
+C (MIDI pitch = 60). Range is from C0 to B8., f 71;
+#N canvas 877 207 459 319 double-accidentals 0;
 #X text 49 75 So \, in this object's notation \, you can use "x" for
 double sharps and "bb" for double flats., f 63;
 #X obj 160 240 else/display;
@@ -119,7 +124,7 @@ double sharps and "bb" for double flats., f 63;
 #X msg 196 126 D 5;
 #X msg 211 165 C 5;
 #X msg 248 165 Dbb 5;
-#X text 49 24 Unfortunately Pd's defaqult font doesn't have the appropriate
+#X text 49 24 Unfortunately Pd's default font doesn't have the appropriate
 symbols for double sharps and double flats. And while we're at it \,
 neither microtones. Anyway \, double sharps/flats are to be rarely
 used \, mostly by music theory geeks like me :), f 63;
@@ -128,12 +133,7 @@ used \, mostly by music theory geeks like me :), f 63;
 #X connect 4 0 2 0;
 #X connect 5 0 2 0;
 #X connect 6 0 2 0;
-#X restore 419 283 pd double accidents;
-#X text 60 86 [note2pitch] converts a note name (such as C4) to MIDI
-pitch values. All enharmonic names are included (even unusual ones
-like Cb and double sharps/flats). It takes symbols \, lists or anythings
-that end with an octave number \, in a way that C4 represents middle
-C (MIDI pitch = 60). Range is from C0 to B8., f 71;
+#X restore 407 283 pd double-accidentals;
 #X connect 20 0 41 0;
 #X connect 21 0 41 0;
 #X connect 22 0 41 0;
