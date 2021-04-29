@@ -1,4 +1,4 @@
-#N canvas 780 65 661 780 10;
+#N canvas 450 48 661 780 10;
 #X obj 246 230 list fromsymbol;
 #X obj 274 456 list tosymbol;
 #X obj 274 481 f;
@@ -8,12 +8,12 @@
 #X obj 246 307 list split;
 #X obj 303 283 - 1;
 #X obj 437 513 text define -k \$0-notes;
-#A set B# 0 \; B♯ 0 \; C 0 \; Dbb 0 \; C# 1 \; C♯ 1 \; Db 1 \;
+#A set Cb -1 \; C♭ -1 \; C 0 \; Dbb 0 \; C# 1 \; C♯ 1 \; Db 1 \;
 D♭ 1 \; Cx 2 \; D 2 \; Ebb 2 \; D# 3 \; D♯ 3 \; Eb 3 \; E♭ 3
 \; Dx 4 \; E 4 \; Fb 4 \; F♭ 4 \; E# 5 \; E♯ 5 \; F 5 \; Gbb 5
 \; F# 6 \; F♯ 6 \; Gb 6 \; G♭ 6 \; Fx 5 \; G 7 \; G# 8 \; G♯
 8 \; Ab 8 \; A♭ 8 \; Gx 9 \; A 9 \; Bbb 9 \; A# 10 \; A♯ 10 \;
-Bb 10 \; B♭ 10 \; Ax 11 \; B 11 \; Cb 11 \; C♭ 11 \;;
+Bb 10 \; B♭ 10 \; Ax 11 \; B 11 \; B# 12 \; B♯ 12 \;;
 #X obj 178 516 text search \$0-notes, f 11;
 #X obj 178 550 text get \$0-notes 1, f 10;
 #X obj 274 515 + 1;

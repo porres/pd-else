@@ -41,7 +41,7 @@
 #X obj 140 40 cnv 4 4 4 empty empty pitch 0 28 2 18 -233017 -1 0;
 #X text 56 189 see also:;
 #X obj 231 157 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 0 256;
+-1 -1 71 256;
 #X obj 49 211 else/note2pitch;
 #X text 247 262 - MIDI pitch value, f 35;
 #X text 247 356 - note name;
@@ -49,26 +49,28 @@
 #X obj 137 325 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 160 325 anything/list;
-#N canvas 1047 189 642 341 other-scales 0;
-#X obj 106 282 else/display;
-#X msg 193 224 C Db D D# E E# Gb G G# A Bb Cb;
-#X obj 106 254 else/pitch2note;
-#X msg 215 251 C C# D Eb E F F# G G# A Bb B;
-#X text 212 203 set arbitrary symbols;
-#X obj 106 89 else/keyboard 17 80 4 3 0 0 empty empty;
-#X obj 106 221 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 0 256;
-#X obj 106 191 stripnote;
-#X text 158 50 You can set your own arbitrary scale in the right inlet
+#N canvas 845 164 662 387 other-scales 0;
+#X obj 98 326 else/display;
+#X obj 98 293 else/pitch2note;
+#X text 204 192 set arbitrary symbols;
+#X obj 98 78 else/keyboard 17 80 4 3 0 0 empty empty;
+#X obj 98 210 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
+-1 -1 71 256;
+#X obj 98 180 stripnote;
+#X text 150 41 You can set your own arbitrary scale in the right inlet
 ;
-#X obj 193 181 loadbang;
-#X connect 1 0 2 1;
-#X connect 2 0 0 0;
-#X connect 3 0 2 1;
-#X connect 5 0 7 0;
-#X connect 6 0 2 0;
-#X connect 7 0 6 0;
-#X connect 9 0 1 0;
+#X obj 185 170 loadbang;
+#X msg 185 213 C C# D Eb E F F# G G# A Bb B;
+#X msg 200 238 C Db D D# E E# Gb G G# A Bb Cb;
+#X msg 207 263 B# C# D Eb Fb E# Gb G Ab A A# B;
+#X connect 1 0 0 0;
+#X connect 3 0 5 0;
+#X connect 4 0 1 0;
+#X connect 5 0 4 0;
+#X connect 7 0 8 0;
+#X connect 8 0 1 1;
+#X connect 9 0 1 1;
+#X connect 10 0 1 1;
 #X restore 434 182 pd other-scales;
 #X obj 231 187 else/pitch2note;
 #X text 187 277 chromatic - sets to chromatic mode (default);
@@ -102,7 +104,7 @@ and flats are represented by the unicode characters "♯" and "♭"
 #N canvas 993 163 583 403 accidentals 0;
 #X obj 61 331 else/display;
 #X obj 61 193 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 65 256;
+-1 -1 0 256;
 #X msg 86 221 chromatic;
 #X msg 109 246 sharp;
 #X msg 116 270 flat;
