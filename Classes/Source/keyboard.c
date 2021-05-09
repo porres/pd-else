@@ -480,11 +480,11 @@ static void keyboard_flush(t_keyboard* x){
     t_canvas *cv =  glist_getcanvas(x->x_glist);
     int ac = 2;
     t_atom at[2];
-    for(int note = 0 ; note < 256 ; note++){
+    for(int note = 0; note < 256; note++){
         if(x->x_tgl_notes[note] > 0){
             int i = note - x->x_first_c;
             if(i >= 0 && x->x_glist->gl_havewindow){
-                short key = i % 12, c4 = (i == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
+                short key = i % 12, c4 = (note == 60), black = (key == 1 || key == 3 || key == 6 || key == 8 || key == 10);
                 sys_vgui(".x%lx.c itemconfigure %xrrk%d -fill %s\n", cv, x, i, black ? BLACK_OFF : c4 ? MIDDLE_C : WHITE_OFF);
             }
             SETFLOAT(at, note);
