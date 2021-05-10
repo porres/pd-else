@@ -336,6 +336,7 @@ samps2ms~	x
 samps2ms	x
 saw~	x
 saw2~	x
+scales	x
 scramble	x
 schmitt	x
 schmitt~	x
