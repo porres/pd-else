@@ -38,7 +38,6 @@
 data:, f 20;
 #X text 278 383 all types but system/real time & sysex, f 14;
 #X text 663 320 Aftertouch (channel & polyphonic);
-#X text 662 348 system & real-time, f 20;
 #X text 661 228 Control;
 #X text 662 200 Notes;
 #X text 482 112 They offer advantages/conveneiences like allowing to
@@ -64,3 +63,4 @@ and [midiout] objects.;
 #X text 191 332 sysex messages;
 #X text 205 307 MIDI System & MIDI Real-time;
 #X text 265 148 Note (on/off);
+#X text 662 348 system real-time, f 20;

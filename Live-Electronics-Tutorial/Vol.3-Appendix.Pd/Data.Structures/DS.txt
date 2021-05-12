@@ -1,0 +1,6 @@
+data;
+template 1003-DS-1;
+float number;
+;
+;
+1003-DS-1 666;

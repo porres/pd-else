@@ -56,26 +56,26 @@ object., f 61;
 #X connect 4 0 0 0;
 #X connect 9 0 2 0;
 #X restore 167 446 pd code;
-#X text 31 61 A data structure is a data organization \, management
+#X text 31 69 A data structure is a data organization \, management
 and storage format that enables access and modification of the data.
 Pd also offers the ability to attach shapes and colors to the data
-in order to visualize it and/or edit it graphically., f 61;
-#N canvas 392 56 506 366 template-1 0;
+in order to visualize it and/or edit it graphically., f 62;
+#N canvas 392 56 506 366 template-1 1;
 #X obj 115 320 drawnumber number;
 #X text 248 320 - drawing instruction;
 #X text 40 29 The [struct] object declares and defines a data structure
 \, which is also called in Pd as a "template". You can only use one
 [struct] object per window. The first argument is the structure's name
 and then we have variables declared as the following arguments.;
-#X text 268 167 - template;
-#X text 41 213 Now that we have our data structure declared and defined
-\, we can have drawing instructions for graphical display. These are
-part of the Data Structure and must be in the same window as the [struct]
-object. Here we use the [drawnumber] to draw the float of name "number".
-;
+#X text 286 168 - template;
 #X obj 85 169 struct \$0-DS-1 float number;
 #X text 40 114 Below we define a data structure template named "\$0-DS-1"
 \, which only holds a float data type called "number".;
+#X text 41 213 Now that we have our data structure declared and defined
+\, we can have drawing instructions for graphical display. These are
+part of the Data Structure and must be in the same window as the [struct]
+object. Here we use the [drawnumber] to draw the float named "number".
+;
 #X restore 125 421 pd template-1;
 #X text 502 342 All of the contents of a display subpatch can also
 be saved as a text file \, and also restored from a file., f 50;
@@ -138,16 +138,8 @@ the list \, see below., f 50;
 , f 50;
 #X text 720 116 - template;
 #X text 719 144 - graphics;
-#X text 31 203 In Pd we have four data types for data structures \,
-which are: float \, symbol \, text and array. Different data types
-can be grouped in a "Struct" \, declared in Pd with the [struct] object.
-, f 61;
-#X text 31 138 Thus \, a Data Structure is a graphical object to be
-used in different ways \, such as a simple visual representation of
-data or as a graphical score that controls a patch. It can also be
-used to design graphical interface objects (GUI)., f 61;
-#X text 31 19 This appendix presents a tutorial on how to deal with
-Data Structures in Pd.;
+#X text 31 27 This appendix presents a tutorial on how to deal with
+Data Structures in Pd., f 62;
 #X text 31 272 It's advisable to use dedicated subpatches when dealing
 with Data Structures in Pd. Most importantly \, one is necessary to
 display the graphical objects and another is needed as a data structure
@@ -155,11 +147,19 @@ template (containing a data structure declaration with [struct] along
 with drawing instructions). We can also have yet another subpatch to
 organize some of the code that deals with the data structures \, but
 it's not essential that this code is treated appart. See the example
-below., f 61;
+below., f 62;
 #X text 502 183 When in edit mode \, you can select a graphical data
 structure object and do the usual cut \, copy \, paste and duplicate
 operations. You can also drag and move them around (but note that in
 order to be moved \, the object needs to have "x/y" coordinates declared
 in the [struct])., f 50;
+#X text 31 146 Thus \, in Pd \, a Data Structure is a graphical object
+to be used in different ways \, such as a simple visual representation
+of data or as a graphical score that controls a patch. It can also
+be used to design graphical interface objects (GUI)., f 62;
+#X text 31 211 In Pd we have four data types for data structures \,
+which are: float \, symbol \, text and array. Different data types
+can be grouped in a "struct" \, declared in Pd via the [struct] object.
+, f 62;
 #X connect 8 0 12 0;
 #X connect 9 0 12 0;
