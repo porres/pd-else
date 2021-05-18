@@ -266,6 +266,7 @@ pi	x
 pic	x
 pick	x
 ping.pong~	x
+pimp	x
 pimp~	x
 pinknoise~	x
 pipe2	x
