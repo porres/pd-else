@@ -1,30 +1,30 @@
-#N struct 1006-point float x0 float y0 float xs float ys float fg float
+#N struct 1214-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1019-point float x0 float y0 float xs float ys float fg float
+#N struct 1232-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1028-point float x0 float y0 float xs float ys float fg float
+#N struct 1246-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1043-point float x0 float y0 float xs float ys float fg float
+#N struct 1266-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1052-point float x0 float y0 float xs float ys float fg float
+#N struct 1280-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1061-point float x0 float y0 float xs float ys float fg float
+#N struct 1294-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1070-point float x0 float y0 float xs float ys float fg float
+#N struct 1308-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1081-point float x0 float y0 float xs float ys float fg float
+#N struct 1324-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1092-point float x0 float y0 float xs float ys float fg float
+#N struct 1340-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1103-point float x0 float y0 float xs float ys float fg float
+#N struct 1356-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1113-point float x0 float y0 float xs float ys float fg float
+#N struct 1371-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1126-point float x0 float y0 float xs float ys float fg float
+#N struct 1389-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1137-point float x0 float y0 float xs float ys float fg float
+#N struct 1405-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N canvas 706 159 561 564 10;
+#N canvas 632 100 561 564 10;
 #X obj 2 3 cnv 15 301 42 empty empty slider2d 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -186,7 +186,7 @@ according to the new range., f 64;
 #X connect 18 0 4 0;
 #X connect 19 0 8 0;
 #X restore 128 164 pd resize;
-#N canvas 459 67 469 540 colors 0;
+#N canvas 842 23 471 540 colors 0;
 #X obj 249 164 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
 -262144 -1 12700 0;
 #X obj 298 164 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4033
@@ -205,25 +205,25 @@ messages and '-bgcolor'/'-fgcolor' flags., f 40;
 #X obj 215 345 else/initmess set 64 64;
 #X obj 298 132 else/initmess 255;
 #X obj 115 131 else/initmess 0;
-#X obj 180 372 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 0 64 64 empty empty;
 #X obj 21 316 else/pack2 fgcolor 0 0 0;
 #X obj 180 316 else/pack2 bgcolor 255 255 255;
-#X connect 0 0 13 1;
-#X connect 1 0 13 2;
-#X connect 2 0 13 3;
-#X connect 3 0 12 1;
-#X connect 4 0 12 2;
-#X connect 5 0 12 3;
-#X connect 8 0 11 0;
+#X obj 180 372 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
+0 0 0 0 64 64 empty empty;
+#X connect 0 0 12 1;
+#X connect 1 0 12 2;
+#X connect 2 0 12 3;
+#X connect 3 0 11 1;
+#X connect 4 0 11 2;
+#X connect 5 0 11 3;
+#X connect 8 0 13 0;
 #X connect 9 0 0 0;
 #X connect 9 0 2 0;
 #X connect 9 0 1 0;
 #X connect 10 0 3 0;
 #X connect 10 0 4 0;
 #X connect 10 0 5 0;
-#X connect 12 0 11 0;
-#X connect 13 0 11 0;
+#X connect 11 0 13 0;
+#X connect 12 0 13 0;
 #X restore 62 164 pd colors;
 #N canvas 560 241 331 438 line-grid 0;
 #X obj 79 366 else/display;
@@ -311,8 +311,8 @@ the patch., f 46;
 #X text 42 87 An example with [lowpass~], f 16;
 #X obj 64 198 noise~;
 #X obj 64 262 else/lowpass~ 150 0.5, f 39;
-#X obj 179 61 else/slider2d 250 80 150 1500 5 20 1 162 184 255 112
-0 28 0 0 0 750 8 empty empty;
+#X obj 179 61 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
+0 0 0 750 8 empty empty;
 #X connect 1 0 9 1;
 #X connect 2 0 9 2;
 #X connect 3 0 5 0;
