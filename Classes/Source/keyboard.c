@@ -372,6 +372,24 @@ void keyboard_float(t_keyboard *x, t_floatarg f){
     }
 }
 
+static void keyboard_on(t_keyboard *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    while(ac > 0){
+        x->x_vel_in = 127;
+        keyboard_float(x, atom_getfloatarg(0, ac, av++));
+        ac--;
+    }
+}
+
+static void keyboard_off(t_keyboard *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    while(ac > 0){
+        x->x_vel_in = 0;
+        keyboard_float(x, atom_getfloatarg(0, ac, av++));
+        ac--;
+    }
+}
+
 static void keyboard_height(t_keyboard *x, t_floatarg f){
     f =  f < 10 ? 10 : (int)(f);
     if(x->x_height != f){
@@ -645,7 +663,7 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
     x->x_edit = cv->gl_edit;
     x->x_zoom = x->x_glist->gl_zoom;
     x->x_last_note = -1;
-    x->x_norm = x->x_velocity = 0;
+    x->x_velocity = 0;
     x->x_send = x->x_snd_raw = x->x_receive = x->x_rcv_raw = &s_;
     int tgl = 0;
     int vel = 0;
@@ -806,6 +824,8 @@ void keyboard_setup(void){
     class_addmethod(keyboard_class, (t_method)keyboard_flush, gensym("flush"), 0);
     class_addmethod(keyboard_class, (t_method)keyboard_send, gensym("send"), A_DEFSYMBOL, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_receive, gensym("receive"), A_DEFSYMBOL, 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_on, gensym("on"), A_GIMME, 0);
+    class_addmethod(keyboard_class, (t_method)keyboard_off, gensym("off"), A_GIMME, 0);
     class_addmethod(keyboard_class, (t_method)keyboard_zoom, gensym("zoom"), A_CANT, 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
