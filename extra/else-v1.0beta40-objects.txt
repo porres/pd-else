@@ -59,8 +59,9 @@ car2pol	x
 car2pol~	x
 ceil	x
 ceil~	x
+cents2frac	x
 cents2ratio~	x
-cents2rato	x
+cents2ratio	x
 chance	x
 chance~	x
 changed	x
@@ -115,6 +116,7 @@ eqdiv	x
 euclid	x
 expand~	x
 f2s~	x
+frac2cents	x
 frac2dec	x
 factor	x
 fader~	x
