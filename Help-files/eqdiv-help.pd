@@ -1,13 +1,13 @@
-#N canvas 710 115 561 460 10;
+#N canvas 624 103 560 493 10;
 #X obj 4 277 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 351 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 385 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 420 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
 #X obj 141 360 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 431 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 466 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 3 cnv 15 301 42 empty empty eqdiv 20 20 2 37 -233017 -1 0
 ;
@@ -40,18 +40,16 @@
 #X obj 150 40 cnv 4 4 4 empty empty of 0 28 2 18 -233017 -1 0;
 #X obj 179 40 cnv 4 4 4 empty empty intervals 0 28 2 18 -233017 -1
 0;
-#X msg 210 141 2 12;
-#X obj 210 246 print scale;
-#X text 61 86 Use [eqdiv] to generate a scale as a list of ratios that
+#X msg 270 137 2 12;
+#X text 49 85 Use [eqdiv] to generate a scale as a list of ratios that
 equally divide a given interval \, the output is in cents. intervals
-defined as fractions to ratio intervals., f 57;
-#X msg 233 190 2 24;
-#X msg 222 167 3 13;
-#X text 246 141 equal temperament;
-#X text 256 168 bohlen-pierce;
-#X text 269 189 quarter tones;
-#X text 221 360 - scale in cents;
-#X text 192 409 2) float - number of equal divisions;
+defined as fractions to ratio intervals., f 72;
+#X msg 293 186 2 24;
+#X msg 282 163 3 13;
+#X text 306 137 equal temperament;
+#X text 316 164 bohlen-pierce;
+#X text 329 185 quarter tones;
+#X text 192 444 2) float - number of equal divisions;
 #X text 182 286 float;
 #X text 221 285 - interval ratio;
 #X text 182 328 float;
@@ -60,16 +58,30 @@ defined as fractions to ratio intervals., f 57;
 ;
 #X text 188 303 bang;
 #X text 221 302 - generate scale;
-#X obj 179 174 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 239 170 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 210 218 else/eqdiv 2 7;
-#X text 425 175 see also:;
-#X obj 426 200 else/autotune;
-#X obj 426 222 else/retune;
-#X obj 426 242 else/frac2dec;
-#X text 192 393 1) float - interval ratio (default: 2);
-#X connect 21 0 39 0;
-#X connect 24 0 39 0;
-#X connect 25 0 39 0;
-#X connect 38 0 39 0;
-#X connect 39 0 22 0;
+#X text 460 179 see also:;
+#X obj 461 202 else/autotune;
+#X obj 461 224 else/retune;
+#X obj 461 244 else/frac2dec;
+#X text 192 428 1) float - interval ratio (default: 2);
+#X obj 270 214 else/eqdiv 2 7;
+#X obj 41 170 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 41 231 print scale-ratio;
+#X obj 270 242 print scale-cents;
+#X floatatom 164 170 5 0 0 0 - - -;
+#X text 55 146 with -ratio flag;
+#X obj 41 203 else/eqdiv -ratio 2 7;
+#X obj 4 385 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 136 395 -ratio: sets scale output to ratio instead of cents
+;
+#X text 221 360 - scale in cents or ratio;
+#X connect 21 0 42 0;
+#X connect 23 0 42 0;
+#X connect 24 0 42 0;
+#X connect 36 0 42 0;
+#X connect 42 0 45 0;
+#X connect 43 0 48 0;
+#X connect 46 0 48 1;
+#X connect 48 0 44 0;
