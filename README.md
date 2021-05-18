@@ -113,7 +113,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (411 objects):
+## Current Object list (412 objects):
 
 **ASSORTED: [05]**
 
@@ -161,7 +161,7 @@ Cross compiling is also possible with something like this
 - [canvas.zoom]
 - [loadbanger] / [lb]
 
-**MESSAGE MANAGEMENT: [26]**
+**MESSAGE MANAGEMENT: [27]**
 
 - [format]
 - [nmess]
@@ -189,6 +189,7 @@ Cross compiling is also possible with something like this
 - [trigger2] / [t2]
 - [sig2float~] / [s2f~]
 - [float2sig~] / [f2s~]
+- [pipe2]
 
 **LIST/MESSAGE MANAGEMENT: [17]**
 
