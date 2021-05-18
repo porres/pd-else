@@ -1,4 +1,4 @@
-#N canvas 750 39 561 485 10;
+#N canvas 682 34 561 479 10;
 #X obj 4 455 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 5 283 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -7,17 +7,17 @@
 ;
 #X obj 5 376 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 120 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 110 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X floatatom 186 187 5 0 0 0 - - -;
 #X floatatom 284 191 5 0 0 0 - - -;
 #X msg 239 136 list x y z;
 #X symbolatom 139 163 10 0 0 0 - - -;
 #X msg 207 135 a;
-#X obj 120 292 cnv 17 3 36 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 110 292 cnv 17 3 36 empty empty n 5 9 0 16 -228856 -162280 0
 ;
-#X text 142 293 anything;
-#X text 142 384 1) float;
+#X text 132 293 anything;
+#X text 132 384 1) float;
 #X msg 263 168 symbol hi;
 #X obj 308 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -45,31 +45,31 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 4 2 graph;
 #X obj 186 247 else/display;
-#X text 142 402 2) float;
-#X text 201 402 - non-zero makes all inlets hot (defaul 0);
-#X text 200 348 - a message composed of the merged messages;
-#X text 203 293 - any message type to merged into another, f 42;
-#X text 201 384 - 'n' number of inlets (default 2 \, min 2 / max 255)
+#X text 132 402 2) float;
+#X text 190 348 - a message composed of the merged messages;
+#X text 193 293 - any message type to merged into another, f 42;
+#X text 191 384 - 'n' number of inlets (default 2 \, min 2 / max 255)
 ;
-#X text 166 313 bang;
+#X text 156 313 bang;
 #X obj 107 163 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 203 313 - outputs last composed message, f 42;
+#X text 193 313 - outputs last composed message, f 42;
 #X msg 348 190 2 3 4;
-#X text 165 348 list;
+#X text 155 348 list;
 #X msg 333 163 cis boom bah;
-#X text 84 90 [merge] takes any type of messages in any inlet and combines
+#X text 83 87 [merge] takes any type of messages in any inlet and combines
 them into a list., f 47;
 #X obj 186 219 else/merge 4 1 -trim, f 25;
 #X obj 5 427 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 169 434 -trim: trims list selector;
-#X connect 5 0 39 0;
-#X connect 6 0 39 2;
-#X connect 7 0 39 1;
-#X connect 8 0 39 0;
-#X connect 9 0 39 1;
-#X connect 13 0 39 2;
-#X connect 33 0 39 0;
-#X connect 35 0 39 3;
-#X connect 37 0 39 3;
-#X connect 39 0 26 0;
+#X text 209 434 -trim: trims list selector;
+#X text 191 402 - non-zero makes all inlets hot (default 0);
+#X connect 5 0 38 0;
+#X connect 6 0 38 2;
+#X connect 7 0 38 1;
+#X connect 8 0 38 0;
+#X connect 9 0 38 1;
+#X connect 13 0 38 2;
+#X connect 32 0 38 0;
+#X connect 34 0 38 3;
+#X connect 36 0 38 3;
+#X connect 38 0 26 0;
