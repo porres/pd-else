@@ -113,7 +113,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (415 objects):
+## Current Object list (419 objects):
 
 **ASSORTED: [05]**
 
@@ -474,7 +474,7 @@ Cross compiling is also possible with something like this
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [27]**
+**CONTROL: [31]**
 
  - [mouse]
  - [canvas.mouse]
@@ -488,6 +488,10 @@ Cross compiling is also possible with something like this
  - [envgen~]
  - [fader~]
  - [function~]
+ - [slew]
+ - [slew2]
+ - [slew~]
+ - [slew2~]
  - [lag~]
  - [lag2~]
  - [glide~]
