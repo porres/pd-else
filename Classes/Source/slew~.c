@@ -65,7 +65,7 @@ static void *slew_new(t_symbol *s, t_floatarg f){
 
 void slew_tilde_setup(void){
     slew_class = class_new(gensym("slew~"), (t_newmethod)slew_new,
-        (t_method)slew_free, sizeof(t_slew), 0, A_DEFFLOAT, A_DEFFLOAT, 0);
+        (t_method)slew_free, sizeof(t_slew), 0, A_DEFFLOAT, 0);
     CLASS_MAINSIGNALIN(slew_class, t_slew, x_in);
     class_addmethod(slew_class, (t_method)slew_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(slew_class, (t_method)slew_set, gensym("set"), A_DEFFLOAT, 0);

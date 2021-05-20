@@ -29,13 +29,12 @@
 #X text 19 246 see also:;
 #X obj 25 311 else/glide~;
 #X obj 503 94 else/setdsp~ 1;
-#X obj 193 280 slew~ 2e-05;
 #X obj 126 183 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 126 207 else/rand.f~ 0 1;
 #X obj 126 231 else/display~ 5;
 #X obj 196 337 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 6496 1;
+-1 -1 0 1;
 #X text 45 93 [slew~] takes an amplitude limit per second and an incoming
 value to be 'slew limited'. It then generates a line torwards the incoming
 value. The difference between [slew~] and [glide~] is that [slew~]
@@ -47,15 +46,15 @@ line generation and a negative value turns the limiter off., f 71
 #X obj 25 332 else/lag~;
 #X msg 203 255 set 0;
 #X msg 192 231 set 1;
-#X msg 256 174 1;
-#X floatatom 256 250 5 0 0 0 - - -;
-#X msg 265 202 0;
-#X msg 273 224 -1;
-#X msg 228 174 0.1;
-#X text 298 224 <= no limit;
-#X text 305 185 per second), f 22;
-#X text 287 173 <= speed limit (amplitude;
-#X text 292 202 <= 0 speed (stopped);
+#X msg 262 174 1;
+#X floatatom 262 250 5 0 0 0 - - -;
+#X msg 271 202 0;
+#X msg 279 224 -1;
+#X msg 234 174 0.1;
+#X text 304 224 <= no limit;
+#X text 311 185 per second), f 22;
+#X text 293 173 <= speed limit (amplitude;
+#X text 298 202 <= 0 speed (stopped);
 #X obj 4 361 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 433 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -93,15 +92,16 @@ line generation and a negative value turns the limiter off., f 71
 #X connect 7 0 8 0;
 #X connect 8 0 0 0;
 #X restore 475 328 pd example;
-#X connect 13 0 21 0;
-#X connect 17 0 13 0;
+#X obj 193 280 else/slew~ 1;
+#X connect 13 0 20 0;
+#X connect 17 0 18 0;
 #X connect 18 0 19 0;
-#X connect 19 0 20 0;
-#X connect 20 0 17 0;
-#X connect 26 0 17 0;
-#X connect 27 0 17 0;
-#X connect 28 0 29 0;
-#X connect 29 0 17 1;
-#X connect 30 0 29 0;
-#X connect 31 0 29 0;
-#X connect 32 0 29 0;
+#X connect 19 0 52 0;
+#X connect 25 0 52 0;
+#X connect 26 0 52 0;
+#X connect 27 0 28 0;
+#X connect 28 0 52 1;
+#X connect 29 0 28 0;
+#X connect 30 0 28 0;
+#X connect 31 0 28 0;
+#X connect 52 0 13 0;
