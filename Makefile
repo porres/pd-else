@@ -215,6 +215,7 @@ lag~.class.sources := Classes/Source/lag~.c
 lag2~.class.sources := Classes/Source/lag2~.c
 sin~.class.sources := Classes/Source/sin~.c
 sig2float~.class.sources := Classes/Source/sig2float~.c
+slew~.class.sources := Classes/Source/slew~.c
 s2f~.class.sources := Classes/Aliases/s2f~.c
 sequencer~.class.sources := Classes/Source/sequencer~.c
 sr~.class.sources := Classes/Source/sr~.c
