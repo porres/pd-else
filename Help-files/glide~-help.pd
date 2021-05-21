@@ -70,8 +70,8 @@
 0;
 #X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 457 211 else/glide2~;
-#X text 450 189 see also:;
+#X obj 29 257 else/glide2~;
+#X text 22 235 see also:;
 #X text 155 357 float/signal;
 #X text 61 90 [glide~] generates a glide/portamento from its signal
 input changes. The glide time in ms.;
@@ -175,7 +175,8 @@ input changes. The glide time in ms.;
 linear);
 #X text 161 391 exp <float>;
 #X text 240 391 - sets exponential factor;
-#X obj 457 235 else/lag~;
+#X obj 29 281 else/lag~;
+#X obj 29 304 else/slew~;
 #X connect 12 0 11 0;
 #X connect 13 0 12 0;
 #X connect 15 0 14 0;

@@ -45,8 +45,8 @@
 #X obj 129 437 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
 #X text 155 437 float/signal;
-#X text 443 223 see also:;
-#X obj 444 269 else/glide2~;
+#X text 25 257 see also:;
+#X obj 26 303 else/glide2~;
 #X obj 23 40 cnv 4 4 4 empty empty non-linear 0 28 2 18 -233017 -1
 0;
 #X obj 107 40 cnv 4 4 4 empty empty lag 0 28 2 18 -233017 -1 0;
@@ -78,12 +78,13 @@ to converge to within 0.01% of the target value. Note that the rising
 ramp is different than the descending ramp \, unlike [glide2~]., f
 73;
 #X obj 242 188 else/lag2~ 1000 500;
-#X obj 445 247 else/lag~;
+#X obj 27 281 else/lag~;
 #X text 185 499 1) float - lag uptime in ms (default 0);
 #X text 185 514 1) float - lag downtime in ms (default 0);
 #X text 239 414 - lag uptime in ms;
 #X text 239 436 - lag downtime in ms;
 #X text 240 469 - lagged signal;
+#X obj 26 325 else/slew2~;
 #X connect 10 0 9 0;
 #X connect 11 0 10 0;
 #X connect 15 0 39 0;

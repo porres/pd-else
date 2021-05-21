@@ -66,8 +66,8 @@
 #X text 155 372 float/signal;
 #X obj 304 219 else/s2f~;
 #X text 240 390 - resets the filter;
-#X text 443 213 see also:;
-#X obj 444 259 else/glide~;
+#X text 31 257 see also:;
+#X obj 32 303 else/glide~;
 #N canvas 553 279 542 313 rpole~ 0;
 #X obj 145 225 rpole~;
 #X floatatom 151 110 5 0 1000 0 - - -;
@@ -90,7 +90,7 @@ to be used in [rpole~]., f 50;
 #X connect 9 0 4 0;
 #X restore 469 307 pd rpole~;
 #X obj 242 192 else/lag~ 1000;
-#X obj 445 237 else/lag2~;
+#X obj 33 281 else/lag2~;
 #X text 185 481 1) float - lag time in ms (default 0);
 #X text 52 87 [lag~] is a one pole filter that creates an exponential
 glide/portamento for its signal input changes. The lag time in ms is
@@ -100,6 +100,7 @@ ramp \, unlike [glide~]. the same kind of filter is used in other objects
 from the ELSE library (decay~/asr~/adsr~)., f 73;
 #X text 239 414 - lag time in ms;
 #X text 240 451 - lagged signal;
+#X obj 32 323 else/slew~;
 #X connect 12 0 11 0;
 #X connect 13 0 12 0;
 #X connect 19 0 37 0;

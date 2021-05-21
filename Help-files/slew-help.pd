@@ -65,7 +65,7 @@
 #X msg 281 177 0;
 #X msg 289 199 -1;
 #X obj 200 275 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 4868 1;
 #X floatatom 117 199 0 0 0 0 - - -;
 #X obj 117 174 else/rand.f 0 1;
 #X obj 117 150 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -94,7 +94,7 @@
 #X msg 296 275 0;
 #X msg 304 297 -1;
 #X obj 155 373 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 8820 1;
 #X floatatom 152 309 7 0 0 0 - - -;
 #X obj 152 280 else/rand.f 0 1;
 #X obj 152 256 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
