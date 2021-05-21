@@ -1,4 +1,4 @@
-#N canvas 695 70 561 578 10;
+#N canvas 714 43 561 578 10;
 #X obj 4 324 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 428 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -69,6 +69,7 @@
 -1 -1;
 #X text 187 332 float;
 #X text 187 383 float;
+#X obj 27 286 else/slew~;
 #X text 187 438 float;
 #X obj 4 520 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 145 364 rate <float>;
@@ -93,10 +94,6 @@ that it takes one second to move to a difference of 1 in amplitue.
 The actual step between subsequent changes depend on this speed and
 the refresh rate \, which is the rate that the values are given.,
 f 61;
-#X text 42 92 By default \, the refresh rate is 5 ms \, so we have
-200 values in a second. If the speed is then "1" \, this means that
-the step value is 1/200 (0.005). So a shift between 0 and 1 takes 200
-steps od 0.005 and takes a second to reach 1!, f 61;
 #X msg 47 313 rate \$1;
 #X msg 47 213 1;
 #X msg 57 236 100;
@@ -112,25 +109,29 @@ or the rate message. If you change the rate \, the step limit changes
 #X msg 355 270 -1;
 #X msg 306 220 0.1;
 #X msg 338 220 0.5;
-#X connect 0 0 17 1;
+#X text 42 92 By default \, the refresh rate is 5 ms \, so we have
+200 values in a second. If the speed is then "1" \, this means that
+the step value is 1/200 (0.005). So a shift between 0 and 1 takes 200
+steps of 0.005 and a second to reach 1!, f 61;
+#X connect 0 0 16 1;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
-#X connect 4 0 17 0;
+#X connect 4 0 16 0;
 #X connect 5 0 4 0;
 #X connect 6 0 5 0;
 #X connect 7 0 0 0;
-#X connect 10 0 17 0;
-#X connect 11 0 14 0;
-#X connect 12 0 14 0;
-#X connect 13 0 14 0;
-#X connect 14 0 10 0;
-#X connect 16 0 0 0;
-#X connect 17 0 3 0;
-#X connect 18 0 17 2;
-#X connect 19 0 18 0;
-#X connect 20 0 18 0;
-#X connect 21 0 18 0;
-#X connect 22 0 18 0;
+#X connect 9 0 16 0;
+#X connect 10 0 13 0;
+#X connect 11 0 13 0;
+#X connect 12 0 13 0;
+#X connect 13 0 9 0;
+#X connect 15 0 0 0;
+#X connect 16 0 3 0;
+#X connect 17 0 16 2;
+#X connect 18 0 17 0;
+#X connect 19 0 17 0;
+#X connect 20 0 17 0;
+#X connect 21 0 17 0;
 #X restore 495 267 pd rate;
 #X msg 181 243 set 0;
 #X msg 170 223 set 1;
@@ -171,20 +172,19 @@ torwards the incoming value. The difference between [slew] and [line]
 is that [slew] has a fixed speed \, not a fixed period. A limit of
 zero stops the line generation and a negative value turns the limiter
 off., f 77;
-#X obj 27 286 else/slew2~;
-#X connect 23 0 57 0;
+#X connect 23 0 58 0;
 #X connect 24 0 23 0;
 #X connect 25 0 24 0;
-#X connect 36 0 57 0;
-#X connect 37 0 57 0;
-#X connect 41 0 57 2;
-#X connect 42 0 41 0;
-#X connect 43 0 41 0;
-#X connect 44 0 41 0;
-#X connect 49 0 57 1;
-#X connect 50 0 49 0;
-#X connect 51 0 49 0;
-#X connect 52 0 49 0;
-#X connect 53 0 49 0;
-#X connect 54 0 41 0;
-#X connect 57 0 22 0;
+#X connect 37 0 58 0;
+#X connect 38 0 58 0;
+#X connect 42 0 58 2;
+#X connect 43 0 42 0;
+#X connect 44 0 42 0;
+#X connect 45 0 42 0;
+#X connect 50 0 58 1;
+#X connect 51 0 50 0;
+#X connect 52 0 50 0;
+#X connect 53 0 50 0;
+#X connect 54 0 50 0;
+#X connect 55 0 42 0;
+#X connect 58 0 22 0;

@@ -1,9 +1,9 @@
-#N canvas 654 53 563 524 10;
-#X obj 6 497 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 654 53 563 535 10;
+#X obj 6 507 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 23 40 cnv 4 4 4 empty empty Slew 0 28 2 18 -233017 -1 0;
 #X obj 67 40 cnv 4 4 4 empty empty limiter 0 28 2 18 -233017 -1 0;
-#X obj 1 3 cnv 15 301 42 empty empty slew~ 20 20 2 37 -233017 -1 0
+#X obj 1 3 cnv 15 301 42 empty empty slew2~ 20 20 2 37 -233017 -1 0
 ;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -27,7 +27,6 @@
 0;
 #X obj 193 309 else/s2f~;
 #X text 19 246 see also:;
-#X obj 25 311 else/glide~;
 #X obj 503 94 else/setdsp~ 1;
 #X obj 126 183 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -35,26 +34,8 @@
 #X obj 126 231 else/display~ 5;
 #X obj 196 337 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X text 45 93 [slew~] takes an amplitude limit per second and an incoming
-value to be 'slew limited'. It then generates a line torwards the incoming
-value. The difference between [slew~] and [glide~] is that [slew~]
-has a fixed speed \, not a fixed period. A limit of zero stops the
-line generation and a negative value turns the limiter off., f 71
-;
-#X obj 24 290 else/slew2~;
-#X obj 23 269 else/slew;
-#X obj 25 332 else/lag~;
 #X msg 203 255 set 0;
 #X msg 192 231 set 1;
-#X msg 262 174 1;
-#X floatatom 262 250 5 0 0 0 - - -;
-#X msg 271 202 0;
-#X msg 279 224 -1;
-#X msg 234 174 0.1;
-#X text 304 224 <= no limit;
-#X text 311 185 per second), f 22;
-#X text 293 173 <= speed limit (amplitude;
-#X text 298 202 <= 0 speed (stopped);
 #X obj 4 361 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 433 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -70,13 +51,41 @@ line generation and a negative value turns the limiter off., f 71
 #X text 141 385 set <float>;
 #X text 220 443 - slew limited values;
 #X text 220 369 - values to be slew limited, f 46;
-#X text 165 473 1) float - slew limit speed (default 0);
 #X text 220 410 - speed limit (negative values = no limit), f 46;
 #X text 220 385 - sets new start point and goes back to target;
 #X text 135 369 float/signal;
 #X text 171 443 signal;
 #X text 135 410 float/signal;
-#X obj 193 280 else/slew~ 1;
+#X obj 193 280 else/slew2~ 1 1, f 20;
+#X msg 310 179 1;
+#X floatatom 310 255 5 0 0 0 - - -;
+#X msg 319 207 0;
+#X msg 327 229 -1;
+#X msg 282 179 0.1;
+#X text 352 229 <= no limit;
+#X text 359 190 per second), f 22;
+#X text 341 178 <= speed limit (amplitude;
+#X text 346 207 <= 0 speed (stopped);
+#X msg 251 180 1;
+#X floatatom 251 256 5 0 0 0 - - -;
+#X msg 260 208 0;
+#X msg 268 230 -1;
+#X msg 223 180 0.1;
+#X obj 23 269 else/slew~;
+#X obj 24 290 else/slew2;
+#X obj 25 311 else/glide2~;
+#X obj 25 332 else/lag2~;
+#X text 32 87 [slew2~] is like [slew~] but has independent values for
+upwards & downwards ramps. It takes an amplitude limit per second and
+generates a line torwards the incoming value. The difference between
+[slew~] and [glide~] is that [slew~] has a fixed speed \, not a fixed
+period. A limit of zero stops the line generation and a negative value
+turns the limiter off (but again \, up and down limits are independent).
+, f 75;
+#X text 235 161 down;
+#X text 302 161 up;
+#X text 165 473 1) float - slew limit speed downwards (default 0);
+#X text 165 488 1) float - slew limit speed upwards (default 0);
 #N canvas 843 76 503 490 example 0;
 #X text 73 16 When new values come in \, the object limits the change
 to a maximum step until it reaches the new value. A speed of "1" means
@@ -98,29 +107,34 @@ f 61;
 #X obj 326 199 else/stepnoise~ 1;
 #X obj 326 242 else/rescale~ 200 800;
 #X obj 326 318 else/display~ 5;
-#X obj 59 169 else/randpulse~ 2;
-#X obj 59 204 else/slew~ 10;
-#X obj 326 283 else/slew~ 800;
+#X obj 326 283 else/slew2~ 800 4000;
+#X obj 59 204 else/slew2~ 10 5;
+#X obj 59 170 else/randpulse~ 2;
 #X connect 3 0 4 0;
 #X connect 4 0 5 0;
 #X connect 6 0 7 0;
 #X connect 8 0 9 0;
-#X connect 9 0 13 0;
+#X connect 9 0 11 0;
 #X connect 10 0 6 0;
-#X connect 11 0 12 0;
+#X connect 11 0 10 0;
 #X connect 12 0 2 0;
 #X connect 12 0 3 0;
-#X connect 13 0 10 0;
-#X restore 473 333 pd example;
-#X connect 13 0 20 0;
+#X connect 13 0 12 0;
+#X restore 464 325 pd example;
+#X connect 13 0 19 0;
+#X connect 16 0 17 0;
 #X connect 17 0 18 0;
-#X connect 18 0 19 0;
-#X connect 19 0 51 0;
-#X connect 25 0 51 0;
-#X connect 26 0 51 0;
-#X connect 27 0 28 0;
-#X connect 28 0 51 1;
-#X connect 29 0 28 0;
-#X connect 30 0 28 0;
-#X connect 31 0 28 0;
-#X connect 51 0 13 0;
+#X connect 18 0 36 0;
+#X connect 20 0 36 0;
+#X connect 21 0 36 0;
+#X connect 36 0 13 0;
+#X connect 37 0 38 0;
+#X connect 38 0 36 2;
+#X connect 39 0 38 0;
+#X connect 40 0 38 0;
+#X connect 41 0 38 0;
+#X connect 46 0 47 0;
+#X connect 47 0 36 1;
+#X connect 48 0 47 0;
+#X connect 49 0 47 0;
+#X connect 50 0 47 0;

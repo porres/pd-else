@@ -1,4 +1,4 @@
-#N canvas 674 55 562 520 10;
+#N canvas 634 80 562 520 10;
 #X obj 4 302 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 385 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -106,10 +106,6 @@ that it takes one second to move to a difference of 1 in amplitue.
 The actual step between subsequent changes depend on this speed and
 the refresh rate \, which is the rate that the values are given.,
 f 61;
-#X text 42 92 By default \, the refresh rate is 5 ms \, so we have
-200 values in a second. If the speed is then "1" \, this means that
-the step value is 1/200 (0.005). So a shift between 0 and 1 takes 200
-steps od 0.005 and takes a second to reach 1!, f 61;
 #X msg 86 311 rate \$1;
 #X msg 86 211 1;
 #X msg 96 234 100;
@@ -120,20 +116,24 @@ or the rate message. If you change the rate \, the step limit changes
 \, but the speed remains the same., f 61;
 #X obj 152 345 else/slew 0.5 -rate 250;
 #X msg 287 247 0.5;
-#X connect 0 0 16 1;
+#X text 42 92 By default \, the refresh rate is 5 ms \, so we have
+200 values in a second. If the speed is then "1" \, this means that
+the step value is 1/200 (0.005). So a shift between 0 and 1 takes 200
+steps of 0.005 and a second to reach 1!, f 61;
+#X connect 0 0 15 1;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
-#X connect 4 0 16 0;
+#X connect 4 0 15 0;
 #X connect 5 0 4 0;
 #X connect 6 0 5 0;
 #X connect 7 0 0 0;
-#X connect 10 0 16 0;
-#X connect 11 0 14 0;
-#X connect 12 0 14 0;
-#X connect 13 0 14 0;
-#X connect 14 0 10 0;
-#X connect 16 0 3 0;
-#X connect 17 0 0 0;
+#X connect 9 0 15 0;
+#X connect 10 0 13 0;
+#X connect 11 0 13 0;
+#X connect 12 0 13 0;
+#X connect 13 0 9 0;
+#X connect 15 0 3 0;
+#X connect 16 0 0 0;
 #X restore 495 245 pd rate;
 #X msg 208 223 set 0;
 #X msg 197 199 set 1;
