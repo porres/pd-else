@@ -95,6 +95,10 @@ static void messbox_draw(t_messbox *x, t_glist *glist){
     sys_vgui("frame %s\n", x->frame_id);
     sys_vgui("text %s -font {{%s} %d %s}  -highlightthickness 0 -bg \"%s\" -fg \"%s\"\n", x->text_id,
         FONT_NAME, x->x_font_size, x->x_font_weight->s_name, x->x_bgcolor, x->x_fgcolor);
+    /* catch ctl-v events from being propagated */
+    sys_vgui("bindtags %s {Text %s . all}\n", x->text_id, x->text_id);
+    sys_vgui("::pd_bindings::bind_capslock %s $::modifier-Key v \
+        {break}\n", x->text_id);
     sys_vgui("pack %s -side left -fill both -expand 1\n", x->text_id);
     sys_vgui("pack %s -side bottom -fill both -expand 1\n", x->frame_id);
 //    bind_button_events;
@@ -113,6 +117,14 @@ static void messbox_draw(t_messbox *x, t_glist *glist){
     sys_vgui("bind %s <Shift-Button> {pdtk_canvas_mouse %s \
         [expr %%X - [winfo rootx %s]] [expr %%Y - [winfo rooty %s]] %%b 1}\n",
         x->text_id, x->x_cv_id, x->x_cv_id, x->x_cv_id);
+/* binding for editmode cursor change not working?
+    sys_vgui("bind .x%lx <<EditMode>> {\n\
+    set curs [expr \
+    {$::editmode_button ? $cursor_editmode_nothing : \"xterm\"}]\n\
+    %s configure -cursor $curs\n\
+    %s configure -cursor $curs\n\
+    update idletasks\n\
+    }\n", glist_getcanvas(x->x_glist), x->text_id, x->frame_id); */
 // mouse motion
     sys_vgui("bind %s <Motion> {pdtk_canvas_motion %s \
         [expr %%X - [winfo rootx %s]] [expr %%Y - [winfo rooty %s]] 0}\n",
@@ -156,8 +168,8 @@ static void messbox_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 
 static void messbox_select(t_gobj *z, t_glist *glist, int state){
     t_messbox *x = (t_messbox *)z;
-    if((state) && (!x->x_selected)){
-        if(!x->x_selected){
+    if(state){
+        if(!x->x_selected) {
             sys_vgui("%s configure -fg blue -state disabled -cursor $cursor_editmode_nothing\n", x->text_id);
             x->x_selected = 1;
         }
@@ -339,6 +351,8 @@ static void messbox_key(void *z, t_floatarg f){
     if(f == 0){
         t_messbox *x = z;
         sys_vgui("%s configure -state disabled\n", x->text_id);
+        /* give focus back to canvas */
+        sys_vgui("focus .x%lx.c\n", glist_getcanvas(x->x_glist));
         x->x_active = 0;
     }
 }
@@ -350,6 +364,7 @@ static int messbox_click(t_gobj *z, t_glist *glist, int xpix, int ypix, int shif
         t_messbox *x = (t_messbox *)z;
         x->x_active = 1;
         sys_vgui("%s configure -state normal\n", x->text_id);
+        sys_vgui("focus %s\n", x->text_id);
         glist_grab(glist, (t_gobj *)x, 0, messbox_key, 0, 0);
         if(shift)
             messbox_bang(x);
