@@ -1,4 +1,4 @@
-#N canvas 679 62 562 592 10;
+#N canvas 572 51 562 541 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -24,17 +24,16 @@
 #X restore 3 4 graph;
 #X obj 4 305 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 450 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 431 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 483 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 125 460 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 464 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 118 440 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 122 315 cnv 17 3 130 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 119 312 cnv 17 3 114 empty empty 0 5 9 0 16 -228856 -162280
 0;
-#X obj 4 565 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 516 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 195 460 anything;
-#X obj 4 537 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
+#X text 195 441 anything;
 #X obj 180 274 else/display;
 #N canvas 1147 125 428 454 syntax 0;
 #X text 38 19 Like a regular message box \, a comma will split the
@@ -57,47 +56,47 @@ box into a send object. Try typing something like =>;
 #X connect 7 0 6 0;
 #X connect 8 0 2 0;
 #X restore 475 277 pd syntax;
-#X text 218 313 bang;
+#X text 218 311 bang;
 #X obj 35 41 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
-#X text 39 244 see also:;
-#X text 248 313 - outputs the message, f 42;
+#X text 15 251 see also:;
+#X text 248 311 - outputs the message, f 42;
 #X obj 150 41 cnv 4 4 4 empty empty box 0 28 2 18 -233017 -1 0;
 #X obj 180 201 else/messbox 200 60 235 235 235 0 0 0 0 12;
 #X text 71 87 The [messbox] object is an object you can type in messages
 while in run mode \, like atom boxes. Any message type is possible.
 It deals with comma and semicolons in the same way as regular message
 boxes. See [pd syntax] for more details., f 69;
-#X obj 41 266 else/message;
+#X obj 17 273 else/message;
 #X obj 180 150 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X msg 215 172 set this is a message;
 #X text 352 172 <= set message;
 #X text 68 150 output message =>;
-#X text 68 212 click and type =>;
-#X text 388 218 <= shift+click to output;
-#X text 248 327 - sets the message, f 42;
-#X text 158 327 set <anything>;
-#X text 140 341 append <anything>;
-#X text 248 341 - appends to the message, f 42;
-#X text 146 386 fontsize <float>;
-#X text 248 386 - sets font size, f 42;
-#X text 170 400 bold <float>;
-#X text 248 400 - non zero sets to bold, f 42;
-#X text 248 414 - RGB background color, f 42;
-#X text 140 414 bgcolor <f \, f \, f>;
-#X text 140 429 fgcolor <f \, f \, f>;
-#X text 248 429 - RGB foreground (text) color, f 42;
-#X text 161 544 "shift + clicking" on the outputs the message;
-#X text 128 369 size <float \, float>;
-#X text 248 370 - sets dimension size (width and height), f 42;
-#X text 63 492 -fontsize <float> (default: patch's) | -size <float
+#X text 69 212 click and type =>;
+#X text 248 325 - sets the message, f 42;
+#X text 158 325 set <anything>;
+#X text 140 339 append <anything>;
+#X text 248 339 - appends to the message, f 42;
+#X text 146 368 fontsize <float>;
+#X text 248 369 - sets font size, f 42;
+#X text 170 382 bold <float>;
+#X text 248 383 - non zero sets to bold, f 42;
+#X text 248 397 - RGB background color, f 42;
+#X text 140 396 bgcolor <f \, f \, f>;
+#X text 140 411 fgcolor <f \, f \, f>;
+#X text 248 411 - RGB foreground (text) color, f 42;
+#X text 128 354 size <float \, float>;
+#X text 248 355 - sets dimension size (width and height), f 42;
+#X text 63 473 -fontsize <float> (default: patch's) | -size <float
 \, float> (default: patch's fontsize * 15 \, patch's fontsize * 5)
 | fgcolor <f \, f \, f> (default 0 0 0) | -bgcolor <f \, f \, f> (default
-235 235 235) | -bold (default "normal") |, f 80;
-#X text 249 460 - messages;
+235 235 235) | -bold (default "normal") |, f 77;
+#X text 249 441 - messages;
 #X msg 211 149 set;
 #X text 237 149 clear;
-#X connect 26 0 19 0;
-#X connect 29 0 26 0;
-#X connect 30 0 26 0;
-#X connect 52 0 26 0;
+#X text 406 219 hit enter to output, f 11;
+#X text 388 218 <=;
+#X connect 25 0 18 0;
+#X connect 28 0 25 0;
+#X connect 29 0 25 0;
+#X connect 49 0 25 0;
