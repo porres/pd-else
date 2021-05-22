@@ -359,6 +359,7 @@ static void messbox_key(void *z, t_floatarg f){
         /* give focus back to canvas */
         sys_vgui("focus .x%lx.c\n", glist_getcanvas(x->x_glist));
         x->x_active = 0;
+        sys_vgui("%s itemconfigure %x_outline -width 1\n", x->x_cv_id, x);
     }
 }
 
@@ -368,6 +369,7 @@ static int messbox_click(t_gobj *z, t_glist *glist, int xpix, int ypix, int shif
 //        post("do it");
         t_messbox *x = (t_messbox *)z;
         x->x_active = 1;
+        sys_vgui("%s itemconfigure %x_outline -width 2\n", x->x_cv_id, x);
         sys_vgui("%s configure -state normal\n", x->text_id);
         sys_vgui("focus %s\n", x->text_id);
         glist_grab(glist, (t_gobj *)x, 0, messbox_key, 0, 0);
