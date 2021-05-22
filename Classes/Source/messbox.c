@@ -92,6 +92,7 @@ static void messbox_draw(t_messbox *x, t_glist *glist){
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
     sys_vgui("namespace eval messbox%lx {}\n", x);
     sys_vgui("destroy %s\n", x->frame_id);  // Seems we gotta delete it if it exists
+    sys_vgui("destroy %s\n", x->handle_id);
     sys_vgui("frame %s\n", x->frame_id);
     sys_vgui("text %s -font {{%s} %d %s}  -highlightthickness 0 -bg \"%s\" -fg \"%s\"\n", x->text_id,
         FONT_NAME, x->x_font_size, x->x_font_weight->s_name, x->x_bgcolor, x->x_fgcolor);
@@ -174,10 +175,8 @@ static void messbox_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 static void messbox_select(t_gobj *z, t_glist *glist, int state){
     t_messbox *x = (t_messbox *)z;
     if(state){
-        if(!x->x_selected) {
-            sys_vgui("%s configure -fg blue -state disabled -cursor $cursor_editmode_nothing\n", x->text_id);
-            x->x_selected = 1;
-        }
+        sys_vgui("%s configure -fg blue -state disabled -cursor $cursor_editmode_nothing\n", x->text_id);
+        x->x_selected = 1;
         int x1, y1, x2, y2;
         messbox_getrect(z, glist, &x1, &y1, &x2, &y2);
         sys_vgui("canvas %s -width %d -height %d -bg #ddd -bd 0 \
