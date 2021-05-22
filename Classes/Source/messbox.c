@@ -96,9 +96,14 @@ static void messbox_draw(t_messbox *x, t_glist *glist){
     sys_vgui("text %s -font {{%s} %d %s}  -highlightthickness 0 -bg \"%s\" -fg \"%s\"\n", x->text_id,
         FONT_NAME, x->x_font_size, x->x_font_weight->s_name, x->x_bgcolor, x->x_fgcolor);
     /* catch ctl-v events from being propagated */
-    sys_vgui("bindtags %s {Text %s . all}\n", x->text_id, x->text_id);
+    sys_vgui("bindtags %s {pre%s Text %s . all}\n", x->text_id, x->text_id,
+        x->text_id);
     sys_vgui("::pd_bindings::bind_capslock %s $::modifier-Key v \
         {break}\n", x->text_id);
+    sys_vgui("bind pre%s <KeyPress-Return> {pdsend {%s bang}\n\
+        break}\n", x->text_id, x->x_bind_sym->s_name);
+    sys_vgui("bind pre%s <Shift-KeyPress-Return> {\n\
+    }\n", x->text_id);
     sys_vgui("pack %s -side left -fill both -expand 1\n", x->text_id);
     sys_vgui("pack %s -side bottom -fill both -expand 1\n", x->frame_id);
 //    bind_button_events;
@@ -354,6 +359,7 @@ static void messbox_key(void *z, t_floatarg f){
         /* give focus back to canvas */
         sys_vgui("focus .x%lx.c\n", glist_getcanvas(x->x_glist));
         x->x_active = 0;
+        sys_vgui("%s itemconfigure %x_outline -width 1\n", x->x_cv_id, x);
     }
 }
 
@@ -363,6 +369,7 @@ static int messbox_click(t_gobj *z, t_glist *glist, int xpix, int ypix, int shif
 //        post("do it");
         t_messbox *x = (t_messbox *)z;
         x->x_active = 1;
+        sys_vgui("%s itemconfigure %x_outline -width 2\n", x->x_cv_id, x);
         sys_vgui("%s configure -state normal\n", x->text_id);
         sys_vgui("focus %s\n", x->text_id);
         glist_grab(glist, (t_gobj *)x, 0, messbox_key, 0, 0);
