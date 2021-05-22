@@ -105,7 +105,7 @@ static void messbox_draw(t_messbox *x, t_glist *glist){
     /* I feel like there's an easier way to do the regular "return" binding.. */
     sys_vgui("bind pre%s <Shift-KeyPress-Return> {\n\
         %s insert insert \"\\n\"\n\
-        {break}}\n", x->text_id, x->text_id);
+        break}\n", x->text_id, x->text_id);
     sys_vgui("pack %s -side left -fill both -expand 1\n", x->text_id);
     sys_vgui("pack %s -side bottom -fill both -expand 1\n", x->frame_id);
 //    bind_button_events;
