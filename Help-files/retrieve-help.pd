@@ -1,17 +1,17 @@
-#N struct 1034-point float x0 float y0 float xs float ys float fg float
+#N struct 1014-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N canvas 570 110 560 379 10;
-#X obj 4 354 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 585 80 560 369 10;
+#X obj 4 344 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 5 244 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 5 238 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 294 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 283 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 325 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 315 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 154 301 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 154 291 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 192 333 1) symbol;
+#X text 170 323 1) symbol;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -37,17 +37,17 @@ in float gridx float gridy;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 155 253 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 155 247 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 94 41 cnv 4 4 4 empty empty data 0 28 2 18 -233017 -1 0;
 #X obj 104 152 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X floatatom 271 188 5 0 0 0 - - -;
 #X obj 104 207 else/display;
-#X text 174 267 set <symbol> - sets a receive name, f 52;
-#X text 254 333 - receive name (default none), f 37;
-#X text 200 302 anything;
-#X text 222 252 bang - take the data, f 44;
+#X text 174 261 set <symbol> - sets a receive name, f 46;
+#X text 232 323 - receive name (default none), f 36;
+#X text 200 292 anything;
+#X text 222 246 bang - take the data, f 38;
 #N canvas 1041 110 409 386 more 0;
 #X obj 66 105 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -59,7 +59,7 @@ in float gridx float gridy;
 #X obj 227 251 r c;
 #X msg 124 139 set c;
 #X obj 65 277 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 0 1;
+-1 -1 4000 1;
 #X obj 209 106 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 209 201 else/display;
@@ -86,21 +86,15 @@ objects \, it doesn't work with abstractions or subpatches., f 43
 #X connect 13 0 16 0;
 #X connect 15 0 1 0;
 #X connect 16 0 10 0;
-#X restore 493 177 pd more;
+#X restore 493 154 pd more;
 #X obj 271 164 r \$0-x;
-#X text 254 302 - the retrieved data;
-#X obj 178 41 cnv 4 4 4 empty empty [receive] 0 28 2 18 -233017 -1
-0;
+#X text 254 292 - the retrieved data;
 #X obj 104 179 else/retrieve \$0-x;
 #X text 127 152 <= retrieve data;
 #X text 310 189 <= change and then hit bang to retrieve., f 14;
-#X text 57 87 [retrieve] retrieves values from things that are connected
-to a [receive] with the same name as the argument. It also works with
-[else/receiver]. In a sense \, it extends the function of [receive]
-to work as a send \, which can be convenient., f 73;
-#N canvas 531 121 885 319 built-in 0;
-#X obj 252 262 nbx 4 14 -1e+37 1e+37 0 0 empty number-2 empty 0 -8
-0 10 -228856 -1 -1 0 256;
+#N canvas 481 180 885 319 built-in 0;
+#X obj 252 262 nbx 4 14 -1e+37 1e+37 0 1 empty number-2 empty 0 -8
+0 10 -228856 -1 -1 43 256;
 #X obj 56 101 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X text 301 262 "number-2";
@@ -125,8 +119,8 @@ a work around in the ELSE library. Inside the [slider2d] abstraction
 below \, we have a [receiver] and a [default] object that can do the
 trick for us., f 62;
 #X obj 506 193 else/display;
-#X obj 506 166 else/retrieve slider2d;
-#X obj 506 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+#X obj 506 162 else/retrieve slider2d;
+#X obj 506 132 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 667 92 receive name "slider2d";
 #X obj 676 116 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
@@ -138,7 +132,53 @@ trick for us., f 62;
 #X connect 10 0 3 0;
 #X connect 15 0 14 0;
 #X connect 16 0 15 0;
-#X restore 458 199 pd built-in \; receive names;
-#X connect 20 0 31 0;
+#X restore 458 175 pd built-in \; receive names;
+#X obj 178 41 cnv 4 4 4 empty empty "receives" 0 28 2 18 -233017 -1
+0;
+#X text 57 87 [retrieve] retrieves values from things that are connected
+to a "receive" symbol that matches the argument. It works with [rceive]
+\, [else/receiver] and built-in receives in GUIs. In a sense \, it
+uses "receive" names as a "send" as well., f 73;
+#N canvas 836 168 376 380 presets 0;
+#X obj 202 339 hsl 128 15 0 127 0 0 empty slider-2 empty -2 -8 0 10
+-262144 -1 -1 7200 1;
+#X obj 83 298 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 72 256;
+#X obj 83 244 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 68 322 f;
+#X obj 56 293 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 68 348 s slider-2;
+#X text 208 308 built in receive name "slider-2", f 16;
+#X text 24 16 [retrieve] can be useful to retrieve and store data that
+can then be recalled as a preset. It is actually the heart of the [presets]
+object in the ELSE library., f 53;
+#X obj 83 269 else/retrieve slider-2;
+#X obj 74 143 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 48 256;
+#X obj 197 155 r slider-1;
+#X obj 200 186 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
+-1 -1 4800 1;
+#X obj 74 86 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 59 167 f;
+#X obj 47 138 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
+-1;
+#X obj 59 193 s slider-1;
+#X obj 74 114 else/retrieve slider-1;
+#X connect 1 0 3 1;
+#X connect 2 0 8 0;
+#X connect 3 0 5 0;
+#X connect 4 0 3 0;
+#X connect 8 0 1 0;
+#X connect 9 0 13 1;
+#X connect 10 0 11 0;
+#X connect 12 0 16 0;
+#X connect 13 0 15 0;
+#X connect 14 0 13 0;
+#X connect 16 0 9 0;
+#X restore 476 207 pd presets;
+#X connect 20 0 30 0;
 #X connect 28 0 21 0;
-#X connect 31 0 22 0;
+#X connect 30 0 22 0;
