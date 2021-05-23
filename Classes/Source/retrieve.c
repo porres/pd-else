@@ -63,14 +63,14 @@ static int retrieve_prep(t_retrieve *x, t_object *ob){
 	if(x->x_receiver && (x->x_receiver->te_g.g_pd->c_name != gensym("receive")
     && x->x_receiver->te_g.g_pd->c_name != gensym("receiver")))
 		ncons = 1;
-	else {
+	else{
         if(!(x->x_toretrieved = ocp = outlet_connections(op)))
             return(0);
         for(ncons = 0; ocp ; ++ncons)
             ocp = outlet_nextconnection(ocp, &dummy, &inno);
 	}
-	if (!x->x_retrieved){
-		if (!((x->x_retrieved = getbytes(ncons * sizeof(*x->x_retrieved))) &&
+	if(!x->x_retrieved){
+		if(!((x->x_retrieved = getbytes(ncons * sizeof(*x->x_retrieved))) &&
 			 (x->x_nretrieveout = getbytes(ncons * sizeof(*x->x_nretrieveout))) &&
 			(x->x_retrievecons = getbytes(ncons * x->x_noutlets * sizeof(*x->x_retrievecons)))))
 		{
@@ -80,7 +80,7 @@ static int retrieve_prep(t_retrieve *x, t_object *ob){
 		x->x_maxobs = ncons;
 	}
 	else if(ncons > x->x_maxobs){
-		if (!((x->x_retrieved = resizebytes(x->x_retrieved,
+		if(!((x->x_retrieved = resizebytes(x->x_retrieved,
 			x->x_maxobs * sizeof(*x->x_retrieved),
 			ncons * sizeof(*x->x_retrieved))) &&
 			
@@ -109,7 +109,7 @@ static void retrieve_start(t_retrieve *x){
         t_pd *proxy = x->x_target->s_thing;
         t_object *ob;
         if(proxy && bindlist_class){
-            if (*proxy == bindlist_class){
+            if(*proxy == bindlist_class){
                 x->x_bindelem = ((t_bindlist *)proxy)->b_list;
                 while (x->x_bindelem){
                     if((ob = pd_checkobject(x->x_bindelem->e_who)))
@@ -127,7 +127,7 @@ static void retrieve_start(t_retrieve *x){
 }
 
 static int retrieve_next(t_retrieve *x){
-	if (!(x->x_retrieved && x->x_retrievecons && x->x_nretrieveout))
+	if(!(x->x_retrieved && x->x_retrievecons && x->x_nretrieveout))
 		return(0);
 	t_object **retrievedp = x->x_retrieved;
 	t_outconnect **retrieveconsp = x->x_retrievecons;
@@ -149,7 +149,7 @@ nextremote:
 		x->x_nonreceive = 1;
 		return(1);
 	}
-    else if (x->x_toretrieved) {
+    else if(x->x_toretrieved) {
 		while(x->x_toretrieved){
 			//post("entering retrieve_next while loop");
 			x->x_toretrieved = outlet_nextconnection(x->x_toretrieved, &gr, &inno);
@@ -163,7 +163,7 @@ nextremote:
 				else{
 					*retrievedp++ = gr;
 					int goutno = obj_noutlets(gr);
-					if (goutno > x->x_noutlets) goutno = x->x_noutlets;
+					if(goutno > x->x_noutlets) goutno = x->x_noutlets;
 					// post ("retrieve_next goutno: %d", goutno);
 					*nretrieveoutp++ = goutno;
 					for(int i = 0; i < x->x_noutlets; i++){
@@ -250,17 +250,12 @@ void retrieve_setup(void){
     retrieve_class = class_new(s, (t_newmethod)retrieve_new, (t_method)retrieve_free,
         sizeof(t_retrieve), 0, A_DEFSYMBOL, 0);
     class_addbang(retrieve_class, retrieve_bang);
-    //    class_addfloat(retrieve_class, retrieve_float);
-    //    class_addsymbol(retrieve_class, retrieve_symbol);
-    //    class_addpointer(retrieve_class, retrieve_pointer);
-    //    class_addlist(retrieve_class, retrieve_list);
-    //    class_addanything(retrieve_class, retrieve_anything);
     class_addmethod(retrieve_class, (t_method)retrieve_set, gensym("set"), A_SYMBOL, 0);
     if(!bindlist_class){
         t_class *c = retrieve_class;
         pd_bind(&retrieve_class, s);
         pd_bind(&c, s);
-        if (!s->s_thing || !(bindlist_class = *s->s_thing)
+        if(!s->s_thing || !(bindlist_class = *s->s_thing)
 	    || bindlist_class->c_name != gensym("bindlist"))
             error("retrieve: failure to initialize remote retrievebing feature");
 	pd_unbind(&c, s);
