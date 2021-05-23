@@ -1,4 +1,4 @@
-#N struct 1060-point float x0 float y0 float xs float ys float fg float
+#N struct 1034-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 570 110 560 379 10;
 #X obj 4 354 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
@@ -98,9 +98,9 @@ objects \, it doesn't work with abstractions or subpatches., f 43
 to a [receive] with the same name as the argument. It also works with
 [else/receiver]. In a sense \, it extends the function of [receive]
 to work as a send \, which can be convenient., f 73;
-#N canvas 440 188 885 319 built-in 1;
+#N canvas 531 121 885 319 built-in 0;
 #X obj 252 262 nbx 4 14 -1e+37 1e+37 0 0 empty number-2 empty 0 -8
-0 10 -228856 -1 -1 -61 256;
+0 10 -228856 -1 -1 0 256;
 #X obj 56 101 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X text 301 262 "number-2";
@@ -124,20 +124,20 @@ is a compiled object that can have a built-in receive name as an example.
 a work around in the ELSE library. Inside the [slider2d] abstraction
 below \, we have a [receiver] and a [default] object that can do the
 trick for us., f 62;
-#X obj 676 116 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 0 79 43 empty slider2d;
 #X obj 506 193 else/display;
 #X obj 506 166 else/retrieve slider2d;
 #X obj 506 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
 -1 -1;
 #X text 667 92 receive name "slider2d";
+#X obj 676 116 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
+0 0 0 1 76 75 empty slider2d;
 #X connect 1 0 10 0;
 #X connect 6 0 10 0;
 #X connect 7 0 10 0;
 #X connect 9 0 10 0;
 #X connect 10 0 3 0;
+#X connect 15 0 14 0;
 #X connect 16 0 15 0;
-#X connect 17 0 16 0;
 #X restore 458 199 pd built-in \; receive names;
 #X connect 20 0 31 0;
 #X connect 28 0 21 0;
