@@ -1,6 +1,6 @@
-#N struct 1008-point float x0 float y0 float xs float ys float fg float
+#N struct 1060-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N canvas 809 157 560 379 10;
+#N canvas 570 110 560 379 10;
 #X obj 4 354 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 5 244 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -40,37 +40,26 @@ in float gridx float gridy;
 #X obj 155 253 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 94 41 cnv 4 4 4 empty empty data 0 28 2 18 -233017 -1 0;
-#X obj 144 152 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 104 152 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X floatatom 311 188 5 0 0 0 - - -;
-#X obj 144 207 else/display;
+#X floatatom 271 188 5 0 0 0 - - -;
+#X obj 104 207 else/display;
 #X text 174 267 set <symbol> - sets a receive name, f 52;
 #X text 254 333 - receive name (default none), f 37;
 #X text 200 302 anything;
 #X text 222 252 bang - take the data, f 44;
-#N canvas 945 156 725 324 more 0;
+#N canvas 1041 110 409 386 more 0;
 #X obj 66 105 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X obj 66 200 else/display;
 #X msg 78 132 set a;
 #X obj 227 276 symbol hi;
 #X text 89 105 <= retrieve data;
-#X obj 543 108 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 0 44 47 empty empty;
-#X obj 543 250 else/display;
-#X obj 378 177 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 378 232 else/display;
-#X obj 422 109 r \$0-sl2d;
-#X obj 378 204 else/retrieve \$0-sl2d;
-#X text 408 26 But note that it can only retrieve from compiled objects
-\, it doesn't work with abstractions. The trick in such cases is to
-use something like [message] to store the data., f 40;
 #X obj 62 251 else/receiver a b;
 #X obj 227 251 r c;
 #X msg 124 139 set c;
 #X obj 65 277 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -262144
--1 -1 5200 1;
+-1 -1 0 1;
 #X obj 209 106 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 209 201 else/display;
@@ -84,35 +73,72 @@ works with [receiver] \, which can have up to two receive names.,
 f 56;
 #X obj 66 172 else/retrieve a;
 #X obj 209 173 else/retrieve b;
-#X obj 422 147 else/message 0 0;
-#X connect 0 0 22 0;
-#X connect 2 0 22 0;
-#X connect 5 0 6 0;
-#X connect 5 0 24 1;
-#X connect 7 0 10 0;
-#X connect 9 0 24 0;
-#X connect 10 0 8 0;
-#X connect 12 0 15 0;
-#X connect 13 0 3 0;
-#X connect 14 0 22 0;
-#X connect 16 0 23 0;
-#X connect 18 0 23 0;
-#X connect 20 0 23 0;
-#X connect 22 0 1 0;
-#X connect 23 0 17 0;
-#X connect 24 0 5 0;
-#X restore 495 206 pd more;
-#X obj 311 164 r \$0-x;
+#X text 51 324 But also note that it can only retrieve from compiled
+objects \, it doesn't work with abstractions or subpatches., f 43
+;
+#X connect 0 0 15 0;
+#X connect 2 0 15 0;
+#X connect 5 0 8 0;
+#X connect 6 0 3 0;
+#X connect 7 0 15 0;
+#X connect 9 0 16 0;
+#X connect 11 0 16 0;
+#X connect 13 0 16 0;
+#X connect 15 0 1 0;
+#X connect 16 0 10 0;
+#X restore 493 177 pd more;
+#X obj 271 164 r \$0-x;
 #X text 254 302 - the retrieved data;
 #X obj 178 41 cnv 4 4 4 empty empty [receive] 0 28 2 18 -233017 -1
 0;
-#X obj 144 179 else/retrieve \$0-x;
-#X text 167 152 <= retrieve data;
-#X text 350 189 <= change and then hit bang to retrieve., f 14;
+#X obj 104 179 else/retrieve \$0-x;
+#X text 127 152 <= retrieve data;
+#X text 310 189 <= change and then hit bang to retrieve., f 14;
 #X text 57 87 [retrieve] retrieves values from things that are connected
 to a [receive] with the same name as the argument. It also works with
 [else/receiver]. In a sense \, it extends the function of [receive]
 to work as a send \, which can be convenient., f 73;
+#N canvas 440 188 885 319 built-in 1;
+#X obj 252 262 nbx 4 14 -1e+37 1e+37 0 0 empty number-2 empty 0 -8
+0 10 -228856 -1 -1 -61 256;
+#X obj 56 101 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 301 262 "number-2";
+#X obj 56 247 else/display;
+#X floatatom 252 240 5 0 0 0 - number-1 -;
+#X text 289 239 "number-1";
+#X msg 67 132 set number-1;
+#X msg 78 156 set number-2;
+#X obj 214 120 else/function 200 100 empty function 0 1 220 220 220
+50 50 50 1 0 0 0 0 500 0.97 500 0;
+#X msg 85 184 set function;
+#X obj 56 220 else/retrieve function;
+#X text 23 17 [retrieve] can also retrieve from any GUI object that
+has a built-in receive name \, such as atom boxes \, iemguis (bang
+\, toggle \, etc) and even externals that have a built in receive name).
+Below we have the external [function] from the ELSE library \, which
+is a compiled object that can have a built-in receive name as an example.
+, f 68;
+#X text 212 102 receive name "function";
+#X text 479 20 [retrieve] doesn't work with abstractions but we have
+a work around in the ELSE library. Inside the [slider2d] abstraction
+below \, we have a [receiver] and a [default] object that can do the
+trick for us., f 62;
+#X obj 676 116 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
+0 0 0 0 79 43 empty slider2d;
+#X obj 506 193 else/display;
+#X obj 506 166 else/retrieve slider2d;
+#X obj 506 139 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X text 667 92 receive name "slider2d";
+#X connect 1 0 10 0;
+#X connect 6 0 10 0;
+#X connect 7 0 10 0;
+#X connect 9 0 10 0;
+#X connect 10 0 3 0;
+#X connect 16 0 15 0;
+#X connect 17 0 16 0;
+#X restore 458 199 pd built-in \; receive names;
 #X connect 20 0 31 0;
 #X connect 28 0 21 0;
 #X connect 31 0 22 0;

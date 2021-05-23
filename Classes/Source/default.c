@@ -4,31 +4,31 @@
 #include "g_canvas.h"
 #include <string.h>
 
-static t_class *store_class;
-static t_class *store_proxy_class;
+static t_class *default_class;
+static t_class *default_proxy_class;
 
-typedef struct _store_proxy{
+typedef struct _default_proxy{
     t_pd              p_pd;
-    struct _store  *p_owner;
-}t_store_proxy;
+    struct _default  *p_owner;
+}t_default_proxy;
 
-typedef struct _store{
+typedef struct _default{
     t_object        x_obj;
-    t_store_proxy x_proxy;
+    t_default_proxy x_proxy;
     t_int           x_ac;
     t_atom         *x_atom;
     t_atom         *x_av;
     t_symbol       *x_s;
     t_symbol       *x_sel;
-}t_store;
+}t_default;
 
-static void store_proxy_init(t_store_proxy * p, t_store *x){
-    p->p_pd = store_proxy_class;
+static void default_proxy_init(t_default_proxy * p, t_default *x){
+    p->p_pd = default_proxy_class;
     p->p_owner = x;
 }
 
-static void store_proxy_anything(t_store_proxy *p, t_symbol *s, int ac, t_atom *av){
-    t_store *x = p->p_owner;
+static void default_proxy_anything(t_default_proxy *p, t_symbol *s, int ac, t_atom *av){
+    t_default *x = p->p_owner;
     x->x_sel = s;
     if(!ac){
         x->x_ac = 0;
@@ -42,24 +42,24 @@ static void store_proxy_anything(t_store_proxy *p, t_symbol *s, int ac, t_atom *
     }
 }
 
-static void store_output(t_store *x){
+static void default_output(t_default *x){
     if(x->x_sel != NULL)
         outlet_anything(x->x_obj.ob_outlet, x->x_sel, x->x_ac, x->x_atom);
     else
         outlet_bang(x->x_obj.ob_outlet);
 }
 
-static void store_any(t_store *x, t_symbol *s, int ac, t_atom *av){
+static void default_any(t_default *x, t_symbol *s, int ac, t_atom *av){
     outlet_anything(x->x_obj.ob_outlet, s, ac, av);
 }
 
-static void store_free(t_store *x){
+static void default_free(t_default *x){
     if(x->x_av)
         freebytes(x->x_av, x->x_ac * sizeof(t_atom));
 }
 
-static void *store_new(t_symbol *s, int ac, t_atom *av){
-    t_store *x = (t_store *)pd_new(store_class);
+static void *default_new(t_symbol *s, int ac, t_atom *av){
+    t_default *x = (t_default *)pd_new(default_class);
     x->x_sel = s; // get rid of warning
     if(!ac){
         x->x_ac = 0;
@@ -79,18 +79,18 @@ static void *store_new(t_symbol *s, int ac, t_atom *av){
         for(i = 0; i < ac; i++)
             x->x_av[i] = x->x_atom[i] = av[i];
     }
-    store_proxy_init(&x->x_proxy, x);
+    default_proxy_init(&x->x_proxy, x);
     inlet_new(&x->x_obj, &x->x_proxy.p_pd, 0, 0);
     outlet_new(&x->x_obj, &s_anything);
     return(x);
 }
 
-void store_setup(void){
-    store_class = class_new(gensym("store"), (t_newmethod)store_new,
-        (t_method)store_free, sizeof(t_store), 0, A_GIMME, 0);
-    class_addbang(store_class, (t_method)store_output);
-    class_addanything(store_class, (t_method)store_any);
-    store_proxy_class = (t_class *)class_new(gensym("store proxy"),
-        0, 0, sizeof(t_store_proxy), 0, 0);
-    class_addanything(store_proxy_class, store_proxy_anything);
+void default_setup(void){
+    default_class = class_new(gensym("default"), (t_newmethod)default_new,
+        (t_method)default_free, sizeof(t_default), 0, A_GIMME, 0);
+    class_addbang(default_class, (t_method)default_output);
+    class_addanything(default_class, (t_method)default_any);
+    default_proxy_class = (t_class *)class_new(gensym("default proxy"),
+        0, 0, sizeof(t_default_proxy), 0, 0);
+    class_addanything(default_proxy_class, default_proxy_anything);
 }
