@@ -34,13 +34,13 @@ typedef struct _bindlist{
 typedef struct _retrieve{
     t_object        x_obj;
     t_symbol       *x_rcv_name;     // the receive name to retrieve from
-//    t_outlet       *x_rightout;     // right outlet (if there's no receive name)
+//    t_outlet       *x_rightout;   // right outlet (if there's no receive name)
     t_object	   *x_receiver;     // object containing the receiver
     int				x_maxcons;	    // maximum number of connections from receiver
-    t_object      **x_retrievebed;  // array of retrievebed objects
-    t_outconnect  **x_retrievecons; // array of retrievebed connections
+    t_object      **x_retrieved;    // array of retrieved objects
+    t_outconnect  **x_retrievecons; // array of retrieved connections
 // traversal helpers:
-    t_outconnect   *x_toretrievebedcon; // a connection to retrievebed object
+    t_outconnect   *x_to_retr_con;  // a connection to retrieved object
     t_bindelem     *x_bindelem;
     int             x_nonreceive;   // flag to signal whether processed non-[receive] object
 }t_retrieve;
@@ -66,18 +66,18 @@ static int retrieve_prep(t_retrieve *x, t_object *obj){
     && x->x_receiver->te_g.g_pd->c_name != gensym("receiver")))
 		ncons = 1;
 	else{ // not a [receive] object, retrieve connections
-        if(!(x->x_toretrievebedcon = ocp = outlet_connections(op)))
+        if(!(x->x_to_retr_con = ocp = outlet_connections(op)))
             return(0);
-        for(ncons = 0; ocp ; ++ncons)
+        for(ncons = 0; ocp; ++ncons)
             ocp = outlet_nextconnection(ocp, &dummy, &inno);
 	}
 	/* initialize three buffers.
-	   x_retrievebed stores pointers to the objects we're going to retrieve.
+	   x_retrieved stores pointers to the objects we're going to retrieve.
 	   x_retrievecons stores pointers to the t_outconnect connection lists for each
-	      retrievebed outlet. The max we would need to store is number of retrievebed
+	      retrieved outlet. The max we would need to store is number of retrieved
 	      objects times the number of [retrieve]'s outlets.*/
-	if(!x->x_retrievebed){
-		if(!((x->x_retrievebed = getbytes(ncons * sizeof(*x->x_retrievebed))) &&
+	if(!x->x_retrieved){
+		if(!((x->x_retrieved = getbytes(ncons * sizeof(*x->x_retrieved))) &&
 			(x->x_retrievecons = getbytes(ncons * sizeof(*x->x_retrievecons)))))
 		{
 			pd_error(x, "retrieve: error allocating memory");
@@ -87,9 +87,9 @@ static int retrieve_prep(t_retrieve *x, t_object *obj){
 	}
 	// get more memory if we need to because of the number of connecctions
 	else if(ncons > x->x_maxcons){
-		if(!((x->x_retrievebed = resizebytes(x->x_retrievebed,
-			x->x_maxcons * sizeof(*x->x_retrievebed),
-			ncons * sizeof(*x->x_retrievebed))) &&
+		if(!((x->x_retrieved = resizebytes(x->x_retrieved,
+			x->x_maxcons * sizeof(*x->x_retrieved),
+			ncons * sizeof(*x->x_retrieved))) &&
 			
 			(x->x_retrievecons = resizebytes(x->x_retrievecons,
 			x->x_maxcons * sizeof(*x->x_retrievecons),
@@ -105,7 +105,7 @@ static int retrieve_prep(t_retrieve *x, t_object *obj){
 
 // run prep routines and find bindlist for the send/receive symbol
 static void retrieve_start(t_retrieve *x){
-    x->x_toretrievebedcon = 0;
+    x->x_to_retr_con = 0;
     x->x_bindelem = 0;
     x->x_receiver = 0;
     x->x_nonreceive = 0;
@@ -143,12 +143,12 @@ static void retrieve_start(t_retrieve *x){
    connection list. */
 static int retrieve_next(t_retrieve *x){
     // check if buffers are available and bail if they aren't
-	if(!(x->x_retrievebed && x->x_retrievecons))
+	if(!(x->x_retrieved && x->x_retrievecons))
 		return(0);
 	// pointers to traverse the buffers
-	t_object **retrievebedp = x->x_retrievebed;
+	t_object **retrievedp = x->x_retrieved;
 	t_outconnect **retrieveconsp = x->x_retrievecons;
-	t_object *gr; // the retrievebed object below the [receive].
+	t_object *gr; // the retrieved object below the [receive].
 	int inno;
 	t_outlet *op; // dummy outlet pointer required for obj_starttraverseoutlet
 	t_outlet *goutp; // the outlet pointer; we need to get its connections
@@ -157,10 +157,10 @@ nextremote:
     if(x->x_receiver && !(x->x_nonreceive) &&
     (x->x_receiver->te_g.g_pd->c_name != gensym("receive") &&
     x->x_receiver->te_g.g_pd->c_name != gensym("receiver"))){
-		*retrievebedp = x->x_receiver; // store the receiver itself in the object buffer
+		*retrievedp = x->x_receiver; // store the receiver itself in the object buffer
 		*retrieveconsp = obj_starttraverseoutlet(x->x_receiver, &goutp, 0);
 		/* now, we overwrite the outlet's connection list with the connection list
-		   from our [retrieve]'s 0th outlet. This essentially connects the retrievebed receiver
+		   from our [retrieve]'s 0th outlet. This essentially connects the retrieved receiver
 		   to whatever [retrieve] is connected to */
 		goutp->o_connections = obj_starttraverseoutlet((t_object *)x, &op, 0);
 		/* this is a flag to let us know we've done the work for this object; otherwise
@@ -171,14 +171,14 @@ nextremote:
 		return(1);
 	}
 	// otherwise, it's a [receive] or [retrieve]'s right outlet
-    else if(x->x_toretrievebedcon){
+    else if(x->x_to_retr_con){
     	// traverse the connections one by one
-		while(x->x_toretrievebedcon){
+		while(x->x_to_retr_con){
 			/* get the next connection and the object it's connected to. This
 			   will break the loop once there aren't any new connections stored,
 			   and also it will signal the else if directly above to jump down
 			   the next time retrieve_next is called */
-			x->x_toretrievebedcon = outlet_nextconnection(x->x_toretrievebedcon, &gr, &inno);
+			x->x_to_retr_con = outlet_nextconnection(x->x_to_retr_con, &gr, &inno);
 			if(gr){ // if it's an object?
 				// if not connected to 0th inlet, don't store the object or its connections
 				if(inno){
@@ -189,19 +189,19 @@ nextremote:
 				}
 				else{
 					// store the object
-					*retrievebedp++ = gr;
+					*retrievedp++ = gr;
 					/* store the number of outlets (pd has to traverse the outlet list
 					   in order to do this, which is costly for a lot of outlets).*/
 					/* now we get the connection lists for the outlet */
                     *retrieveconsp++ = obj_starttraverseoutlet(gr, &goutp, 0);
                     /* now replace its connection list with the connection list from our
-                    [retrieve]'s ith outlet. This essentially connects the retrievebed object's
+                    [retrieve]'s ith outlet. This essentially connects the retrieved object's
                     ith outlet to whatever [retrieve]'s ith outlet  is connected to */
                     goutp->o_connections = obj_starttraverseoutlet((t_object *)x, &op, 0);
 				}
 			}
 		}
-		return(retrievebedp-x->x_retrievebed); // return number of objects stored
+		return(retrievedp-x->x_retrieved); // return number of objects stored
     }
     // once we've processed and done all of one [receive]'s objects, it's on to
     // the next receiver in the bindlist. Run prep again and then goto the top.
@@ -211,7 +211,7 @@ nextremote:
             if((obj = pd_checkobject(x->x_bindelem->e_who))){
                 x->x_nonreceive = 0;
                 retrieve_prep(x, obj);
-                retrievebedp = x->x_retrievebed;
+                retrievedp = x->x_retrieved;
                 retrieveconsp = x->x_retrievecons;
                 goto
                     nextremote;
@@ -221,16 +221,16 @@ nextremote:
     return(0);
 }
 
-// restore's all retrievebed objects' connection lists to their outlets
+// restore's all retrieved objects' connection lists to their outlets
 static void retrieve_restore(t_retrieve *x, int nobs){
-	t_object **retrievebedp = x->x_retrievebed;
+	t_object **retrievedp = x->x_retrieved;
 	t_outconnect **retrieveconsp = x->x_retrievecons;
 	t_object *gr;
 	t_outlet *goutp;
 	// retrieve_next returns the number of objects it's stored, so we can pass it to
 	// retrieve_restore in order to tell it how many objects to restore from the buffers
 	while(nobs--){
-		gr = *retrievebedp++; // get the object
+		gr = *retrievedp++; // get the object
         // restore the connection lists to outlet
         obj_starttraverseoutlet(gr, &goutp, 0);
         goutp->o_connections = *retrieveconsp++;
@@ -242,8 +242,8 @@ static void retrieve_bang(t_retrieve *x){
     retrieve_start(x);
     while((nobs = retrieve_next(x))){
         /* we're retrieving from a receiver, then we've already rewired all of the connections
-           from the retrievebed objects to [retrieve]. Then we call that receiver's float method,
-           and the output from the retrievebed objects comes through [retrieve] instead. */
+           from the retrieved objects to [retrieve]. Then we call that receiver's bang method,
+           and the output from the retrieved objects comes through [retrieve] instead. */
         if(x->x_receiver)
             pd_bang(&x->x_receiver->ob_pd);
 //        else outlet_bang(x->x_rightout);
@@ -253,13 +253,17 @@ static void retrieve_bang(t_retrieve *x){
 
 // set receive name
 static void retrieve_set(t_retrieve *x, t_symbol *s){
-    if(x->x_rcv_name && s && s != &s_)
+//    post("hi");
+    if(s && s != &s_){
+//        post("s && s != &s_");
         x->x_rcv_name = s;
+//        post("x_rcv_name = %s", x->x_rcv_name->s_name);
+    }
 }
 
 static void retrieve_free(t_retrieve *x){
-    if(x->x_retrievebed)
-        freebytes(x->x_retrievebed, x->x_maxcons * sizeof(*x->x_retrievebed));
+    if(x->x_retrieved)
+        freebytes(x->x_retrieved, x->x_maxcons * sizeof(*x->x_retrieved));
     if(x->x_retrievecons)
     	freebytes(x->x_retrievecons, x->x_maxcons * sizeof(*x->x_retrievecons));
 }
