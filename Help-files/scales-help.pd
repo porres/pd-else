@@ -1,4 +1,4 @@
-#N canvas 573 77 560 551 10;
+#N canvas 554 66 560 551 10;
 #X obj 199 276 display;
 #X obj 199 219 else/scales 5;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -65,24 +65,28 @@
 #X text 256 335 degree start point and tonic;
 #X text 213 364 bang -;
 #X text 256 364 generate scale;
-#X text 177 350 scale <list>;
 #X text 256 350 sets sccale;
 #X text 209 414 list;
 #X text 243 414 - scale as note names;
-#N canvas 470 188 343 225 scales 0;
-#X text 191 84 major (default);
-#X text 211 112 minor;
-#X text 224 138 harmonic minor;
-#X msg 101 138 scale 2 1 2 2 1 3 1;
-#X msg 67 84 scale 2 2 1 2 2 2 1;
-#X msg 86 113 scale 2 1 2 2 2 2 1;
-#X obj 67 186 outlet;
-#X text 51 17 Scales are set as a list of semitones that define each
+#N canvas 471 159 437 342 scales 0;
+#X text 202 94 major (default);
+#X text 306 179 harmonic minor;
+#X msg 78 94 scale 2 2 1 2 2 2 1;
+#X msg 97 123 scale 2 1 2 2 2 2 1;
+#X obj 78 281 outlet;
+#X text 62 27 Scales are set as a list of semitones that define each
 step of the scale., f 41;
-#X text 54 64 (tone tone semitone tone tone semitone);
-#X connect 3 0 6 0;
-#X connect 4 0 6 0;
-#X connect 5 0 6 0;
+#X text 65 74 (tone tone semitone tone tone semitone);
+#X obj 111 207 else/cents2scale;
+#X text 222 122 melodic minor;
+#X obj 111 230 else/insert scale;
+#X text 115 157 for input in cents \, use [cents2scale];
+#X msg 111 179 0 200 300 500 700 800 1100 1200;
+#X connect 2 0 4 0;
+#X connect 3 0 4 0;
+#X connect 7 0 9 0;
+#X connect 9 0 4 0;
+#X connect 11 0 7 0;
 #X restore 110 172 pd scales;
 #X obj 4 460 cnv 3 550 3 empty empty args 8 12 0 13 -228856 -1 0;
 #X text 206 467 float - sets octave number to start from (default 4)
@@ -90,6 +94,7 @@ step of the scale., f 41;
 #X text 243 437 - scale as MIDI pitches;
 #X text 55 85 [scales] generates scales with note names and MIDI pitches.
 ;
+#X text 165 350 scale <list> -;
 #X connect 1 0 0 0;
 #X connect 1 1 20 0;
 #X connect 24 0 1 0;
@@ -98,4 +103,4 @@ step of the scale., f 41;
 #X connect 34 0 1 0;
 #X connect 35 0 1 0;
 #X connect 37 0 1 0;
-#X connect 48 0 1 0;
+#X connect 47 0 1 0;

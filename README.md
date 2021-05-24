@@ -8,7 +8,7 @@
 
 ### Version: 1.0-0 beta-40 With Live Electronics Tutorial 
 
-###   Unreleased:  
+###   Released:  May 26th, 2021.
 
 
 
@@ -105,7 +105,7 @@ Cross compiling is also possible with something like this
 
 ​	Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I first started coding and collaborating with the objects: [median~] and [keyboard]. 
 
-​	I'd also like to thank my cyclone buddy Matt Barber, for developing the "magic" code I'm using here and also collaborating with the [float2bits], [brown~],  [gray~], [perlin~] and [pinknoise~] objects.
+​	I'd also like to thank my cyclone buddies Derek Kwan and Matt Barber, cause I started learning how to code externals with them as part of the cyclone team. Other developers of cyclone need to be praised, like Czaja, the original author, as I did steal quite a bit from cyclone into ELSE. I'd like to give a special thanks for Matt Barber for developing the "magic" in cyclone that I'm using here and also collaborating to ELSE with the objects: [float2bits], [brown~],  [gray~], [perlin~] and [pinknoise~] .
 
 ​	For last, I need to thank my buddy Esteban Viveros for helping with the compilation of ELSE for Camomile.
 
@@ -113,30 +113,29 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (419 objects):
+## Current Object list (421 objects):
 
-**ASSORTED: [05]**
+**ASSORTED: [03]**
 
 - [table~]
 - [meter]
-- [euclid]
-- [scales]
 - [else]
 
 **FFT: [02]**
 - [hann~]
 - [bin.shift~]
 
-**TUNING/NOTES: [11]**
+**TUNING/NOTES: [14]**
 
+- [scales]
 - [autotune]
 - [autotune2]
 - [retune]
 - [eqdiv]
-
+- [cents2scale]
+- [scale2cents]
 - [frac2cents]
 - [cents2frac]
-
 - [frac2dec]
 - [dec2frac]
 - [midi2freq]
@@ -474,7 +473,7 @@ Cross compiling is also possible with something like this
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [31]**
+**CONTROL: [32]**
 
  - [mouse]
  - [canvas.mouse]
@@ -499,6 +498,7 @@ Cross compiling is also possible with something like this
  - [ramp~]
  - [susloop~]
  - [drum.seq]
+- [euclid]
  - [sequencer]
  - [sequencer~]
  - [impseq~]

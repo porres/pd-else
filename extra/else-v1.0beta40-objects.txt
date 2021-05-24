@@ -62,6 +62,7 @@ ceil~	x
 cents2frac	x
 cents2ratio~	x
 cents2ratio	x
+cents2scale	x
 chance	x
 chance~	x
 changed	x
@@ -340,6 +341,7 @@ samps2ms~	x
 samps2ms	x
 saw~	x
 saw2~	x
+scale2cents	x
 scales	x
 scramble	x
 schmitt	x
