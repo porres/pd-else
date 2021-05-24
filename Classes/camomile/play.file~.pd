@@ -1,4 +1,4 @@
-#N canvas 746 110 853 361 10;
+#N canvas 718 208 853 361 10;
 #X declare -path else;
 #X obj 76 28 inlet;
 #N canvas 657 379 677 337 guts 0;
@@ -143,7 +143,7 @@
 #X connect 37 0 18 1;
 #X connect 38 0 18 1;
 #X restore 363 327 pd search-root;
-#N canvas 551 376 545 664 search-parent 0;
+#N canvas 551 364 545 664 search-parent 0;
 #X obj 112 73 separate /;
 #X msg 385 176 set %s/;
 #X obj 395 232 symbol;
@@ -229,7 +229,6 @@
 #X connect 22 0 26 0;
 #X connect 22 1 23 0;
 #X connect 23 0 20 0;
-#X connect 23 0 16 0;
 #X connect 23 1 32 0;
 #X connect 24 0 22 0;
 #X connect 24 1 0 0;
@@ -330,7 +329,6 @@
 #X connect 22 0 1 0;
 #X connect 22 1 23 0;
 #X connect 23 0 20 0;
-#X connect 23 0 18 0;
 #X connect 23 1 33 0;
 #X connect 24 0 22 0;
 #X connect 24 1 2 0;
@@ -916,7 +914,7 @@
 #X text 375 241 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 377 222 Alexandre Torres Porres (2018-2020);
 #X obj 372 116 canvas.setname \$0-sampler 1;
-#X obj 402 85 declare -path else;
+#X obj 372 77 declare -path else;
 #X connect 0 0 3 0;
 #X connect 1 0 8 0;
 #X connect 2 0 4 0;
@@ -933,7 +931,7 @@
 #X connect 10 5 6 0;
 #X connect 10 6 9 1;
 #X restore 76 59 pd guts;
-#N canvas 805 245 897 372 \$0-readsf 0;
+#N canvas 783 245 897 372 \$0-readsf 0;
 #X obj 20 21 r \$0-readsf~;
 #X obj 384 56 r \$0-spigot;
 #X obj 351 78 spigot;
