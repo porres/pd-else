@@ -253,12 +253,8 @@ static void retrieve_bang(t_retrieve *x){
 
 // set receive name
 static void retrieve_set(t_retrieve *x, t_symbol *s){
-//    post("hi");
-    if(s && s != &s_){
-//        post("s && s != &s_");
+    if(s && s != &s_)
         x->x_rcv_name = s;
-//        post("x_rcv_name = %s", x->x_rcv_name->s_name);
-    }
 }
 
 static void retrieve_free(t_retrieve *x){
