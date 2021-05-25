@@ -7,8 +7,8 @@ typedef struct _slew2{
     t_float   x_last;
     t_float   x_in;
     t_float   x_sr_rec;
-    t_inlet  *x_lolet;
-    t_inlet  *x_hilet;
+    t_inlet  *x_downlet;
+    t_inlet  *x_uplet;
 }t_slew2;
 
 static t_class *slew2_class;
@@ -23,16 +23,16 @@ static t_int *slew2_perform(t_int *w){
     t_float last = x->x_last;
     while(n--){
     	float f = *in1++;
-        float lo = *in2++ * -x->x_sr_rec;
-        float hi = *in3++ * x->x_sr_rec;
+        float up = *in2++ * x->x_sr_rec;
+        float down = *in3++ * -x->x_sr_rec;
         float delta = f - last;
         if(delta > 0){ // up
-            if(hi >= 0 && delta > hi)
-                f = last + hi;
+            if(up >= 0 && delta > up)
+                f = last + up;
         }
         else{ // down
-            if(lo <= 0 && delta < lo)
-                f = last + lo;
+            if(down <= 0 && delta < down)
+                f = last + down;
         }
         *out++ = last = f;
     }
@@ -51,20 +51,20 @@ static void slew2_set(t_slew2 *x, t_floatarg f){
 }
 
 static void *slew2_free(t_slew2 *x){
-    inlet_free(x->x_lolet);
-    inlet_free(x->x_hilet);
+    inlet_free(x->x_downlet);
+    inlet_free(x->x_uplet);
     return(void *)x;
 }
 
 static void *slew2_new(t_symbol *s, t_floatarg f1, t_floatarg f2){
     s = NULL;
     t_slew2 *x = (t_slew2 *)pd_new(slew2_class);
-    t_float cliplo = f1;
-    t_float cliphi = f2;
-    x->x_lolet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_lolet, cliplo);
-    x->x_hilet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_hilet, cliphi);
+    t_float up = f1;
+    t_float down = f2;
+    x->x_uplet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+    pd_float((t_pd *)x->x_uplet, up);
+    x->x_downlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+    pd_float((t_pd *)x->x_downlet, down);
     outlet_new((t_object *)x, &s_signal);
     x->x_last = 0;
     return(x);

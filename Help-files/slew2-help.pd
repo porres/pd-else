@@ -1,11 +1,11 @@
-#N canvas 714 43 561 578 10;
+#N canvas 714 43 561 565 10;
 #X obj 4 324 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 428 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 461 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 6 552 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 538 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 119 437 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
@@ -62,15 +62,15 @@
 #X obj 130 39 cnv 4 4 4 empty empty limiter 0 28 2 18 -233017 -1 0
 ;
 #X obj 173 292 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 118 225 0 0 0 0 - - -;
+-1 -1 4868 1;
+#X floatatom 118 225 6 0 0 0 - - -;
 #X obj 118 202 else/rand.f 0 1;
 #X obj 118 178 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 187 332 float;
 #X text 187 383 float;
 #X text 187 438 float;
-#X obj 4 520 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 4 506 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X text 145 364 rate <float>;
 #X text 230 364 - refresh rate in ms, f 46;
 #X text 151 348 set <float>;
@@ -135,7 +135,7 @@ steps of 0.005 and a second to reach 1!, f 61;
 #X msg 181 243 set 0;
 #X msg 170 223 set 1;
 #X text 230 348 - sets new start point and goes back to target;
-#X text 114 529 -rate <float>: sets refresh rate in ms (default 5 \,
+#X text 114 515 -rate <float>: sets refresh rate in ms (default 5 \,
 minimum 1), f 61;
 #X obj 28 264 else/slew;
 #X floatatom 323 246 5 0 0 0 - - -;
@@ -152,18 +152,10 @@ minimum 1), f 61;
 #X msg 214 173 0.1;
 #X msg 246 173 0.5;
 #X msg 323 174 0.5;
-#X text 227 152 down;
-#X text 312 153 up;
 #X obj 170 265 else/slew2 1 1, f 26;
 #X obj 119 404 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
 #X text 187 405 float;
-#X text 230 383 - down speed limit (negative values = no limit);
-#X text 230 405 - up speed limit (negative values = no limit), f 46
-;
-#X text 165 498 3) float - initial start value (default 0);
-#X text 165 468 1) float - down slew limit speed (default 0);
-#X text 165 483 2) float - up slew limit speed (default 0);
 #X text 46 86 [slew2] is a slew limiter like [slew] \, but has a different
 speed for up and down changes. It takes an amplitude limit per second
 and an incoming value to be 'slew limited'. It then generates a line
@@ -172,19 +164,25 @@ is that [slew] has a fixed speed \, not a fixed period. A limit of
 zero stops the line generation and a negative value turns the limiter
 off., f 77;
 #X obj 27 286 else/slew2~;
-#X connect 23 0 57 0;
+#X text 227 152 up;
+#X text 312 153 down;
+#X text 230 383 - up speed limit (negative values = no limit);
+#X text 230 405 - down speed limit (negative values = no limit);
+#X text 165 468 1) float - up slew limit speed (default 0);
+#X text 165 483 2) float - down slew limit speed (default 0);
+#X connect 23 0 55 0;
 #X connect 24 0 23 0;
 #X connect 25 0 24 0;
-#X connect 36 0 57 0;
-#X connect 37 0 57 0;
-#X connect 41 0 57 2;
+#X connect 36 0 55 0;
+#X connect 37 0 55 0;
+#X connect 41 0 55 2;
 #X connect 42 0 41 0;
 #X connect 43 0 41 0;
 #X connect 44 0 41 0;
-#X connect 49 0 57 1;
+#X connect 49 0 55 1;
 #X connect 50 0 49 0;
 #X connect 51 0 49 0;
 #X connect 52 0 49 0;
 #X connect 53 0 49 0;
 #X connect 54 0 41 0;
-#X connect 57 0 22 0;
+#X connect 55 0 22 0;
