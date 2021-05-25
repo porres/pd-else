@@ -103,8 +103,7 @@ static void messbox_draw(t_messbox *x, t_glist *glist){
         {break}\n", x->text_id);
     sys_vgui("bind pre%s <KeyPress-Return> {pdsend {%s bang}\n\
         break}\n", x->text_id, x->x_bind_sym->s_name);
-    sys_vgui("bind pre%s <Shift-KeyPress-Return> {\n\
-    }\n", x->text_id);
+    sys_vgui("bind pre%s <Shift-KeyPress-Return> {#}\n", x->text_id);
     sys_vgui("pack %s -side left -fill both -expand 1\n", x->text_id);
     sys_vgui("pack %s -side bottom -fill both -expand 1\n", x->frame_id);
 //    bind_button_events;
@@ -172,10 +171,13 @@ static void messbox_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     }
 }
 
+static void messbox_key(void *z, t_floatarg f);
+
 static void messbox_select(t_gobj *z, t_glist *glist, int state){
     t_messbox *x = (t_messbox *)z;
     if(state){
         sys_vgui("%s configure -fg blue -state disabled -cursor $cursor_editmode_nothing\n", x->text_id);
+        sys_vgui("%s itemconfigure %x_outline -outline blue\n", x->x_cv_id, (unsigned long)x);
         x->x_selected = 1;
         int x1, y1, x2, y2;
         messbox_getrect(z, glist, &x1, &y1, &x2, &y2);
@@ -195,7 +197,9 @@ static void messbox_select(t_gobj *z, t_glist *glist, int state){
     }
     else{
         sys_vgui("%s configure -fg %s -state normal -cursor xterm\n", x->text_id, x->x_fgcolor);
+        sys_vgui("%s itemconfigure %x_outline -outline black\n", x->x_cv_id, (unsigned long)x);
         sys_vgui("destroy %s\n", x->handle_id);
+        messbox_key(z, 0);
         x->x_selected = 0;
     }
 }
