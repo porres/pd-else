@@ -367,7 +367,7 @@ static void messbox_key(void *z, t_floatarg f){
 }
 
 static int messbox_click(t_gobj *z, t_glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
-    xpix = ypix = alt = dbl = 0;
+    xpix = ypix = alt = dbl = shift = 0;
     if(doit){
 //        post("do it");
         t_messbox *x = (t_messbox *)z;
@@ -376,8 +376,6 @@ static int messbox_click(t_gobj *z, t_glist *glist, int xpix, int ypix, int shif
         sys_vgui("%s configure -state normal\n", x->text_id);
         sys_vgui("focus %s\n", x->text_id);
         glist_grab(glist, (t_gobj *)x, 0, messbox_key, 0, 0);
-        if(shift)
-            messbox_bang(x);
     }
     return(1);
 }
