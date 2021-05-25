@@ -1,0 +1,47 @@
+#N canvas 672 95 540 453 12;
+#X declare -path else;
+#X obj 79 298 vsl 16 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 129 271 *~;
+#X obj 129 312 out~;
+#X msg 147 177 1;
+#X msg 182 177 0.5;
+#X obj 272 294 vsl 16 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 0 1;
+#X obj 322 267 *~;
+#X obj 322 307 out~;
+#X msg 340 167 1;
+#X msg 376 168 0.5;
+#X obj 147 236 vline~;
+#X text 100 387 0;
+#X text 100 294 1;
+#X text 292 382 0;
+#X text 292 289 1;
+#X obj 79 269 s2f~;
+#X obj 272 265 s2f~;
+#X obj 315 30 declare -path else;
+#X msg 340 204 \$1 2000 0;
+#X obj 340 232 envgen~ -exp 4;
+#X obj 76 212 brown~;
+#X obj 269 209 brown~;
+#X msg 147 208 \$1 \, 0 300;
+#X text 54 78 We can use the [vline~] and [envgen~] objects to generate
+a decay only envelope. While [vline~] can only be linear \, [envgen~]
+has an exponential setting \, but a different one than [decay~].,
+f 58;
+#X connect 1 0 2 0;
+#X connect 3 0 22 0;
+#X connect 4 0 22 0;
+#X connect 6 0 7 0;
+#X connect 8 0 18 0;
+#X connect 9 0 18 0;
+#X connect 10 0 1 1;
+#X connect 10 0 15 0;
+#X connect 15 0 0 0;
+#X connect 16 0 5 0;
+#X connect 18 0 19 0;
+#X connect 19 0 6 1;
+#X connect 19 0 16 0;
+#X connect 20 0 1 0;
+#X connect 21 0 6 0;
+#X connect 22 0 10 0;

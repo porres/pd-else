@@ -1,0 +1,55 @@
+#N canvas 329 52 1021 442 12;
+#X declare -path else;
+#X obj 333 18 declare -path else;
+#X msg 646 87 clear;
+#X obj 522 64 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 522 88 tempo 120 50;
+#X msg 627 58 create;
+#X text 543 64 <= play;
+#X obj 646 168 markov;
+#X text 48 55 A Markov chain is a stochastic model describing a sequence
+of possible events in which the probability of each event depends only
+on the state attained in the previous event., f 60;
+#X obj 702 125 stripnote;
+#X obj 702 31 keyboard 17 80 2 4 0 0 empty empty;
+#X text 48 108 You can use this model to generate random sequences
+of notes where the probability of the next note depends on the current
+state. For instance \, middle C (MIDI Pitch 60) has 50% change to go
+to G (67) 25% chance to go to E (64) and 25% chance to go to F (65).
+Then for each of these other values you can also set probabilities
+for the next step and so on. The ELSE library has [markov] which can
+learn from an input sequence what the probabilities are.;
+#X obj 722 290 *~;
+#X obj 646 229 mtof;
+#X obj 722 345 out~;
+#X obj 722 318 plate.rev~ 50 0.6 0.25 0.8 0.5;
+#X obj 741 246 adsr~ 50 10 0.7 100;
+#X obj 646 203 makenote 1 200;
+#X obj 646 255 tri~;
+#X text 54 239 In this example you can use [keyboard] from ELSE to
+feed pitches to [markov]. If you play 60 and then 67 it learns that
+67 comes after 60 as a possibility. The number this transition occurs
+is computed as a probability. Hence \, if 60 was followed by 67 7 times
+and followed by 65 3 times \, then 67 has the probability to come after
+60 70% of the times \, while there's a 30% probability of transitioning
+to 65!;
+#X text 52 349 Play some note transitions and then use "create" to
+generate the chain or "clear" to forget and erase the memory to start
+over. Once you have a chain \, bangs into [markov] start playing the
+chain.;
+#X text 702 167 <= check help file for more;
+#X connect 1 0 6 0;
+#X connect 2 0 3 0;
+#X connect 3 0 6 0;
+#X connect 4 0 6 0;
+#X connect 6 0 16 0;
+#X connect 8 0 6 1;
+#X connect 9 0 8 0;
+#X connect 11 0 14 0;
+#X connect 12 0 17 0;
+#X connect 14 0 13 0;
+#X connect 15 0 11 1;
+#X connect 16 0 12 0;
+#X connect 16 1 15 0;
+#X connect 17 0 11 0;

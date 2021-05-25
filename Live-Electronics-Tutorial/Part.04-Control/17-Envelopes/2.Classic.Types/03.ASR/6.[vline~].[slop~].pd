@@ -1,0 +1,32 @@
+#N canvas 610 164 533 597 12;
+#X declare -path else;
+#X obj 307 17 declare -path else;
+#X obj 166 313 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 148 466 *~;
+#X obj 89 379 osc~ 440;
+#X obj 148 505 out~;
+#X obj 166 340 vline~;
+#X text 190 312 <= gate;
+#X obj 166 419 slop~, f 12;
+#X obj 214 371 r \$0-release;
+#X obj 247 395 r \$0-attack;
+#X obj 137 164 initmess 500 1000;
+#X obj 137 233 s \$0-attack;
+#X obj 239 233 s \$0-release;
+#X obj 137 191 expr 1000./$f1 \; 1000./$f2;
+#X text 45 56 For those looking for a pure vanilla exponential envelope
+triggered by a gate \, there's the possibility to use [slop~]. For
+something like an "ASR" envelope triggered by a gate \, it's pretty
+simple \, just set it according to the attack/release period., f 58
+;
+#X connect 1 0 5 0;
+#X connect 2 0 4 0;
+#X connect 3 0 2 0;
+#X connect 5 0 7 0;
+#X connect 7 0 2 1;
+#X connect 8 0 7 3;
+#X connect 9 0 7 5;
+#X connect 10 0 13 0;
+#X connect 13 0 11 0;
+#X connect 13 1 12 0;
