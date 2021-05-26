@@ -229,6 +229,31 @@ static void messbox_proxy_output(t_messbox_proxy* x, t_symbol *s, int ac,
 }
 */
 
+static void messbox_list(t_messbox* x, t_symbol *s, int ac,
+    t_atom *av){
+    s = NULL;
+    char buf[MAXPDSTRING];
+    sprintf(buf, "\\$0 %s", x->x_dollzero->s_name);
+    char symbuf[32]; // should be enough?
+    int i;
+    size_t length = MAXPDSTRING - 1, tmplength;
+    length -= strlen(buf);
+    for(i = 0; i < ac; i++) {
+        sprintf(symbuf, " \\$%i ", i+1);
+        tmplength = strlen(symbuf);
+        length -= tmplength;
+        if (length <= 0) break;
+        strncat(buf, symbuf, tmplength);
+        atom_string(av + i, symbuf, 32);
+        tmplength = strlen(symbuf);
+        length -= tmplength;
+        if (length <= 0) break;
+        strncat(buf, symbuf, tmplength);
+    }
+    sys_vgui("pdsend \"%s [string map {%s} [%s get 0.0 end]]\"\n",
+        x->x_proxy->x_bind_sym->s_name, buf, x->text_id);
+}
+
 static void messbox_proxy_anything(t_messbox_proxy* x, t_symbol *s, int ac,
     t_atom *av){
     outlet_anything(x->p_master->x_obj.ob_outlet, s, ac, av);
@@ -541,6 +566,7 @@ void messbox_setup(void){
 				 sizeof(t_messbox_proxy),
 				 CLASS_PD | CLASS_NOINLET, 0);
     class_addbang(messbox_class, (t_method)messbox_bang);
+    class_addlist(messbox_class, (t_method)messbox_list);
     class_addanything(messbox_proxy_class, (t_method)messbox_proxy_anything);
     class_addmethod(messbox_class, (t_method)messbox_size, gensym("size"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_fontsize, gensym("fontsize"), A_GIMME, 0);
