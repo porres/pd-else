@@ -15,12 +15,19 @@
 #define MIN_HEIGHT      30
 #define BORDER          5
 
+typedef struct _messbox_proxy
+{
+    t_object  p_ob;
+    struct _messbox   *p_master;
+    t_symbol   *x_bind_sym;
+} t_messbox_proxy;
+
 typedef struct _messbox{
     t_object        x_obj;
     t_canvas       *x_canvas;
     t_glist        *x_glist;
-    t_symbol       *x_bind_sym;
-    int             x_open;
+    t_symbol   *x_bind_sym;
+    t_messbox_proxy  *x_proxy;
     int             x_flag;
     int             x_height;
     int             x_width;
@@ -40,10 +47,10 @@ typedef struct _messbox{
     char           *handle_id;
     char           *window_tag;
     char           *all_tag;
-    t_clock        *x_clock;
 }t_messbox;
 
 static t_class *messbox_class;
+static t_class *messbox_proxy_class;
 static t_widgetbehavior messbox_widgetbehavior;
 
 static void set_tk_widget_ids(t_messbox *x, t_canvas *canvas){
@@ -87,7 +94,6 @@ static void erase_box(t_messbox *x){
 }
 
 static void messbox_draw(t_messbox *x, t_glist *glist){
-    set_tk_widget_ids(x, glist_getcanvas(glist));
     // I guess this is for fine-tuning of the rect size based on width and height
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
     sys_vgui("namespace eval messbox%lx {}\n", x);
@@ -140,8 +146,7 @@ static void messbox_draw(t_messbox *x, t_glist *glist){
     draw_box(x);
 }
 
-static void messbox_erase(t_messbox* x,t_glist* glist){
-    set_tk_widget_ids(x, glist_getcanvas(glist));
+static void messbox_erase(t_messbox* x){
     sys_vgui("%s delete %x_outline\n", x->x_cv_id, x);
     sys_vgui("%s delete %x_inlet\n", x->x_cv_id, x);
     sys_vgui("%s delete %x_outlet\n", x->x_cv_id, x);
@@ -163,7 +168,6 @@ static void messbox_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     x->x_obj.te_xpix += dx;
     x->x_obj.te_ypix += dy;
     if(glist_isvisible(glist)){
-        set_tk_widget_ids(x, glist_getcanvas(glist));
         sys_vgui("%s move %s %d %d\n", x->x_cv_id, x->all_tag, dx, dy);
         sys_vgui("%s move %x_outline %d %d\n", x->x_cv_id, x, dx, dy);
         sys_vgui("%s move RSZ %d %d\n", x->x_cv_id, dx, dy);
@@ -210,43 +214,53 @@ static void messbox_delete(t_gobj *z, t_glist *glist){
 
 static void messbox_vis(t_gobj *z, t_glist *gl, int vis){
     t_messbox *x = (t_messbox*)z;
-    vis ? messbox_draw(x, gl) : messbox_erase(x, gl);
+    vis ? messbox_draw(x, gl) : messbox_erase(x);
 }
 
 /////////// METHODS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-static void messbox_output(t_messbox* x, t_symbol *s, int ac, t_atom *av){
+/*
+static void messbox_proxy_output(t_messbox_proxy* x, t_symbol *s, int ac,
+    t_atom *av){
     if(!ac)
         return;
     else if(av->a_type == A_FLOAT)
-        outlet_list(x->x_obj.ob_outlet, s, ac, av);
+        outlet_list(x->p_master->x_obj.ob_outlet, s, ac, av);
     else
-        outlet_anything(x->x_obj.ob_outlet, atom_getsymbol(av), ac-1, av+1);
+        outlet_anything(x->p_master->x_obj.ob_outlet, atom_getsymbol(av),
+            ac-1, av+1);
 }
+*/
 
-static void messbox_anything(t_messbox* x, t_symbol *s, int ac, t_atom *av){
-    if(x->x_open)
-        outlet_anything(x->x_obj.ob_outlet, s, ac, av);
-}
-
-static void messbox_tick(t_messbox *x){
-    x->x_open = 0;
+static void messbox_proxy_anything(t_messbox_proxy* x, t_symbol *s, int ac,
+    t_atom *av){
+    outlet_anything(x->p_master->x_obj.ob_outlet, s, ac, av);
 }
 
 static void messbox_bang(t_messbox* x){
-    if(x->x_open)
-        outlet_bang(x->x_obj.ob_outlet);
-    else{
-        x->x_open = 1;
-        sys_vgui("pdsend \"%s output [%s get 0.0 end]\"\n", x->x_bind_sym->s_name, x->text_id);
-        clock_delay(x->x_clock, 5);
-    }
+    sys_vgui("pdsend \"%s [%s get 0.0 end]\"\n",
+        x->x_proxy->x_bind_sym->s_name, x->text_id);
 }
 
 static void messbox_append(t_messbox* x,  t_symbol *s, int ac, t_atom *av){
-    if(x->x_open)
-        outlet_anything(x->x_obj.ob_outlet, s, ac, av);
-    else{
-        sys_vgui("%s configure -state normal\n", x->text_id);
+    sys_vgui("%s configure -state normal\n", x->text_id);
+    for(int i = 0; i < ac; i++){
+        t_symbol *sym = atom_getsymbolarg(i, ac, av);
+        if(sym == &s_)
+            sys_vgui("lappend ::%s::list %g\n", x->tcl_namespace, atom_getfloatarg(i, ac , av));
+        else
+            sys_vgui("lappend ::%s::list %s\n", x->tcl_namespace, sym->s_name);
+    }
+    sys_vgui("append ::%s::list \" \"\n", x->tcl_namespace);
+    sys_vgui("%s insert end $::%s::list ; unset ::%s::list\n", x->text_id, x->tcl_namespace, x->tcl_namespace);
+    sys_vgui("%s yview end-2char\n", x->text_id);
+    if(!x->x_active)
+        sys_vgui("%s configure -state disabled\n", x->text_id);
+}
+
+static void messbox_set(t_messbox *x, t_symbol *s, int ac, t_atom *av){
+    sys_vgui("%s configure -state normal\n", x->text_id);
+    sys_vgui("%s delete 0.0 end \n", x->text_id);
+    if(ac){
         for(int i = 0; i < ac; i++){
             t_symbol *sym = atom_getsymbolarg(i, ac, av);
             if(sym == &s_)
@@ -257,38 +271,13 @@ static void messbox_append(t_messbox* x,  t_symbol *s, int ac, t_atom *av){
         sys_vgui("append ::%s::list \" \"\n", x->tcl_namespace);
         sys_vgui("%s insert end $::%s::list ; unset ::%s::list\n", x->text_id, x->tcl_namespace, x->tcl_namespace);
         sys_vgui("%s yview end-2char\n", x->text_id);
-        if(!x->x_active)
-            sys_vgui("%s configure -state disabled\n", x->text_id);
     }
-}
-
-static void messbox_set(t_messbox *x, t_symbol *s, int ac, t_atom *av){
-    if(x->x_open)
-        outlet_anything(x->x_obj.ob_outlet, s, ac, av);
-    else{
-        sys_vgui("%s configure -state normal\n", x->text_id);
-        sys_vgui("%s delete 0.0 end \n", x->text_id);
-        if(ac){
-            for(int i = 0; i < ac; i++){
-                t_symbol *sym = atom_getsymbolarg(i, ac, av);
-                if(sym == &s_)
-                    sys_vgui("lappend ::%s::list %g\n", x->tcl_namespace, atom_getfloatarg(i, ac , av));
-                else
-                    sys_vgui("lappend ::%s::list %s\n", x->tcl_namespace, sym->s_name);
-            }
-            sys_vgui("append ::%s::list \" \"\n", x->tcl_namespace);
-            sys_vgui("%s insert end $::%s::list ; unset ::%s::list\n", x->text_id, x->tcl_namespace, x->tcl_namespace);
-            sys_vgui("%s yview end-2char\n", x->text_id);
-        }
-        if(!x->x_active)
-            sys_vgui("%s configure -state disabled\n", x->text_id);
-    }
+    if(!x->x_active)
+        sys_vgui("%s configure -state disabled\n", x->text_id);
 }
 
 void messbox_bgcolor(t_messbox *x, t_symbol *s, int ac, t_atom *av){
-    if(x->x_open)
-        outlet_anything(x->x_obj.ob_outlet, s, ac, av);
-    else if(av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT && av[2].a_type == A_FLOAT){
+    if(av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT && av[2].a_type == A_FLOAT){
         float r = atom_getfloatarg(0, ac, av);
         float g = atom_getfloatarg(1, ac, av);
         float b = atom_getfloatarg(2, ac, av);
@@ -302,9 +291,7 @@ void messbox_bgcolor(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void messbox_fgcolor(t_messbox *x, t_symbol *s, int ac, t_atom *av){
-    if(x->x_open)
-        outlet_anything(x->x_obj.ob_outlet, s, ac, av);
-    else if(av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT && av[2].a_type == A_FLOAT){
+    if(av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT && av[2].a_type == A_FLOAT){
         float r = atom_getfloatarg(0, ac, av);
         float g = atom_getfloatarg(1, ac, av);
         float b = atom_getfloatarg(2, ac, av);
@@ -317,9 +304,7 @@ void messbox_fgcolor(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void messbox_bold(t_messbox *x, t_symbol *s, int ac, t_atom *av){
-    if(x->x_open)
-        outlet_anything(x->x_obj.ob_outlet, s, ac, av);
-    else if(av[0].a_type == A_FLOAT){
+    if(av[0].a_type == A_FLOAT){
         float bold = atom_getfloatarg(0, ac, av);
         x->x_font_weight = (int)(bold != 0) ? gensym("bold") : gensym("normal");
         sys_vgui("%s configure -font {{%s} %d %s}\n", x->text_id, FONT_NAME,
@@ -328,9 +313,7 @@ static void messbox_bold(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void messbox_fontsize(t_messbox *x, t_symbol *s, int ac, t_atom *av){
-    if(x->x_open)
-        outlet_anything(x->x_obj.ob_outlet, s, ac, av);
-    else if(av[0].a_type == A_FLOAT){
+    if(av[0].a_type == A_FLOAT){
         float font_size = atom_getfloatarg(0, ac, av);
         x->x_font_size = font_size < 8 ? 8 : (int)font_size;
         sys_vgui("%s configure -font {{%s} %d %s}\n",
@@ -339,9 +322,7 @@ static void messbox_fontsize(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void messbox_size(t_messbox *x, t_symbol *s, int ac, t_atom *av){
-    if(x->x_open)
-        outlet_anything(x->x_obj.ob_outlet, s, ac, av);
-    else if(av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT){
+    if(av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT){
         float w = atom_getfloatarg(0, ac, av), h = atom_getfloatarg(1, ac, av);
         x->x_width = w < MIN_WIDTH ? MIN_WIDTH : (int)w;
         x->x_height = h < MIN_HEIGHT ? MIN_HEIGHT : (int)h;
@@ -381,12 +362,14 @@ static int messbox_click(t_gobj *z, t_glist *glist, int xpix, int ypix, int shif
 }
 
 // callback functions
-static void messbox_resize_callback(t_messbox *x, t_floatarg f){ // ????
-    x->x_resizing = (int)f;
+static void messbox_proxy_resize_callback(t_messbox_proxy *x, t_floatarg f){ // ????
+    x->p_master->x_resizing = (int)f;
 }
 
-static void messbox_motion_callback(t_messbox *x, t_floatarg f1, t_floatarg f2){
+static void messbox_proxy_motion_callback(t_messbox_proxy *y,
+    t_floatarg f1, t_floatarg f2){
 //    post("messbox_motion_callback");
+    t_messbox *x = y->p_master;
     if(x->x_resizing){
         int dx = (int)f1, dy = (int)f2;
         int w = x->x_width, h = x->x_height;
@@ -423,23 +406,30 @@ static void messbox_save(t_gobj *z, t_binbuf *b){
 
 static void messbox_free(t_messbox *x){
     pd_unbind(&x->x_obj.ob_pd, x->x_bind_sym);
-    if(x->x_clock)
-            clock_free(x->x_clock);
+    pd_unbind(&x->x_proxy->p_ob.ob_pd, x->x_proxy->x_bind_sym);
+    pd_free((t_pd *)x->x_proxy);
 }
 
 static void *messbox_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_messbox *x = (t_messbox *)pd_new(messbox_class);
-    x->x_glist = canvas_getcurrent();
     char buf[MAXPDSTRING];
+    x->x_glist = canvas_getcurrent();
+    if (!(x->x_proxy = (t_messbox_proxy *)pd_new(messbox_proxy_class)))
+        return (0);
+    x->x_proxy->p_master = x;
+    set_tk_widget_ids(x, glist_getcanvas(x->x_glist));
     sprintf(buf, "messbox%lx", (long unsigned int)x);
     x->tcl_namespace = getbytes(strlen(buf)+1);
     strcpy(x->tcl_namespace, buf);
     sprintf(buf,"#%s", x->tcl_namespace);
     x->x_bind_sym = gensym(buf);
-    pd_bind(&x->x_obj.ob_pd, x->x_bind_sym);
+    pd_bind(&x->x_obj.ob_pd, x->x_bind_sym);   
+    sprintf(buf, "#%s_proxy", x->tcl_namespace); 
+    x->x_proxy->x_bind_sym = gensym(buf);
+    pd_bind(&x->x_proxy->p_ob.ob_pd, x->x_proxy->x_bind_sym);
     x->x_font_size = glist_getfont(x->x_glist);
-    x->x_selected = x->x_resizing = x->x_active = x->x_open = x->x_flag = 0;
+    x->x_selected = x->x_resizing = x->x_active = x->x_flag = 0;
     int w = x->x_font_size * 15, h = x->x_font_size * 5;
     int weigth = 0;
     x->x_bg[0] = x->x_bg[1] = x->x_bg[2] = 235;
@@ -526,7 +516,6 @@ static void *messbox_new(t_symbol *s, int ac, t_atom *av){
     sprintf(x->x_bgcolor, "#%2.2x%2.2x%2.2x", x->x_bg[0], x->x_bg[1], x->x_bg[2]);
     sprintf(x->x_fgcolor, "#%2.2x%2.2x%2.2x", x->x_fg[0], x->x_fg[1], x->x_fg[2]);
     x->x_font_weight = weigth ? gensym("bold") : gensym("normal");
-    x->x_clock = clock_new(x, (t_method)messbox_tick);
     outlet_new(&x->x_obj, &s_float);
     return(x);
     errstate:
@@ -537,19 +526,22 @@ static void *messbox_new(t_symbol *s, int ac, t_atom *av){
 void messbox_setup(void){
     messbox_class = class_new(gensym("messbox"), (t_newmethod)messbox_new,
         (t_method)messbox_free, sizeof(t_messbox), 0, A_GIMME, 0);
+    messbox_proxy_class = class_new(0, 0, 0,
+				 sizeof(t_messbox_proxy),
+				 CLASS_PD | CLASS_NOINLET, 0);
     class_addbang(messbox_class, (t_method)messbox_bang);
-    class_addanything(messbox_class, (t_method)messbox_anything);
+    class_addanything(messbox_proxy_class, (t_method)messbox_proxy_anything);
     class_addmethod(messbox_class, (t_method)messbox_size, gensym("size"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_fontsize, gensym("fontsize"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_bold, gensym("bold"), A_GIMME, 0);
-    class_addmethod(messbox_class, (t_method)messbox_output, gensym("output"), A_GIMME, 0);
+
     class_addmethod(messbox_class, (t_method)messbox_set, gensym("set"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_append, gensym("append"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_bgcolor, gensym("bgcolor"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_fgcolor, gensym("fgcolor"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(messbox_class, (t_method)messbox_resize_callback, gensym("_resize"), A_FLOAT, 0);
-    class_addmethod(messbox_class, (t_method)messbox_motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(messbox_proxy_class, (t_method)messbox_proxy_resize_callback, gensym("_resize"), A_FLOAT, 0);
+    class_addmethod(messbox_proxy_class, (t_method)messbox_proxy_motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);
     class_setwidget(messbox_class, &messbox_widgetbehavior);
     class_setsavefn(messbox_class, messbox_save);
     messbox_widgetbehavior.w_getrectfn  = messbox_getrect;
