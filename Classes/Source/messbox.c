@@ -28,6 +28,7 @@ typedef struct _messbox{
     t_glist        *x_glist;
     t_symbol   *x_bind_sym;
     t_messbox_proxy  *x_proxy;
+    t_symbol        *x_dollzero;
     int             x_flag;
     int             x_height;
     int             x_width;
@@ -228,48 +229,113 @@ static void messbox_proxy_output(t_messbox_proxy* x, t_symbol *s, int ac,
 }
 */
 
+static void messbox_list(t_messbox* x, t_symbol *s, int ac,
+    t_atom *av){
+    s = NULL;
+    char buf[MAXPDSTRING];
+    sprintf(buf, "\\$0 %s", x->x_dollzero->s_name);
+    char symbuf[32]; // should be enough?
+    int i;
+    size_t length = MAXPDSTRING - 1, tmplength;
+    length -= strlen(buf);
+    for(i = 0; i < ac; i++) {
+        sprintf(symbuf, " \\$%i ", i+1);
+        tmplength = strlen(symbuf);
+        length -= tmplength;
+        if (length <= 0) break;
+        strncat(buf, symbuf, tmplength);
+        atom_string(av + i, symbuf, 32);
+        tmplength = strlen(symbuf);
+        length -= tmplength;
+        if (length <= 0) break;
+        strncat(buf, symbuf, tmplength);
+    }
+    sys_vgui("pdsend \"%s [string map {%s} [%s get 0.0 end]]\"\n",
+        x->x_proxy->x_bind_sym->s_name, buf, x->text_id);
+}
+
 static void messbox_proxy_anything(t_messbox_proxy* x, t_symbol *s, int ac,
     t_atom *av){
     outlet_anything(x->p_master->x_obj.ob_outlet, s, ac, av);
 }
 
 static void messbox_bang(t_messbox* x){
-    sys_vgui("pdsend \"%s [%s get 0.0 end]\"\n",
-        x->x_proxy->x_bind_sym->s_name, x->text_id);
+    sys_vgui("pdsend \"%s [string map {\\$0 %s} [%s get 0.0 end]]\"\n",
+        x->x_proxy->x_bind_sym->s_name, x->x_dollzero->s_name, x->text_id);
 }
 
 static void messbox_append(t_messbox* x,  t_symbol *s, int ac, t_atom *av){
     s = NULL;
+    char buf[40];
+    size_t length;
     sys_vgui("%s configure -state normal\n", x->text_id);
-    for(int i = 0; i < ac; i++){
-        t_symbol *sym = atom_getsymbolarg(i, ac, av);
-        if(sym == &s_) {
-            sys_vgui("%s insert end \"%g \"\n", x->text_id, atom_getfloatarg(i, ac , av));
-        } else if (sym->s_name[0] == ';' || sym->s_name[0] == '\\' ||
-                sym->s_name[0] == '[') {
-            sys_vgui("%s insert end \"\\%s \"\n", x->text_id, sym->s_name);
-        } else
-            sys_vgui("%s insert end \"%s \"\n", x->text_id, sym->s_name);
+    if(ac){
+        int i;
+        size_t pos;
+        for(i = 0; i < ac; i++){
+            t_symbol *sym = atom_getsymbolarg(i, ac, av);
+            if(sym == &s_) {
+                sys_vgui("%s insert end \"%g \"\n", x->text_id, atom_getfloatarg(i, ac , av));
+            } else{
+                int j = 0;
+                length = 39;
+                for(pos = 0; pos < strlen(sym->s_name); pos++) {
+                    char c = sym->s_name[pos];
+                    if(c == '\\' || c == '[' || c == '$' || c == ';') {
+                        length--;
+                        if(length <= 0) break;
+                        buf[j++] = '\\';
+                    }
+                    length--;
+                    if(length <= 0) break;
+                    buf[j++] = c;
+                }
+                buf[j] = '\0';
+            }
+            if (sym->s_name[pos-1] == ';') {
+                sys_vgui("%s insert end %s\\n\n", x->text_id, buf);
+            } else
+                sys_vgui("%s insert end \"%s \"\n", x->text_id, buf);
+        }
+        sys_vgui("%s yview end-2char\n", x->text_id);
     }
-    sys_vgui("%s yview end-2char\n", x->text_id);
     if(!x->x_active)
         sys_vgui("%s configure -state disabled\n", x->text_id);
 }
 
 static void messbox_set(t_messbox *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
+    char buf[40];
+    size_t length;
     sys_vgui("%s configure -state normal\n", x->text_id);
     sys_vgui("%s delete 0.0 end \n", x->text_id);
     if(ac){
-        for(int i = 0; i < ac; i++){
+        int i;
+        size_t pos;
+        for(i = 0; i < ac; i++){
             t_symbol *sym = atom_getsymbolarg(i, ac, av);
             if(sym == &s_) {
                 sys_vgui("%s insert end \"%g \"\n", x->text_id, atom_getfloatarg(i, ac , av));
-            } else if (sym->s_name[0] == ';' || sym->s_name[0] == '\\' ||
-                sym->s_name[0] == '[') {
-                sys_vgui("%s insert end \"\\%s \"\n", x->text_id, sym->s_name);
-            } else
-                sys_vgui("%s insert end \"%s \"\n", x->text_id, sym->s_name);
+            } else{
+                int j = 0;
+                length = 39;
+                for(pos = 0; pos < strlen(sym->s_name); pos++) {
+                    char c = sym->s_name[pos];
+                    if(c == '\\' || c == '[' || c == '$' || c == ';') {
+                        length--;
+                        if(length <= 0) break;
+                        buf[j++] = '\\';
+                    }
+                    length--;
+                    if(length <= 0) break;
+                    buf[j++] = c;
+                }
+                buf[j] = '\0';
+                if (sym->s_name[pos-1] == ';') {
+                    sys_vgui("%s insert end %s\\n\n", x->text_id, buf);
+                } else
+                    sys_vgui("%s insert end \"%s \"\n", x->text_id, buf);
+            }
         }
         sys_vgui("%s yview end-2char\n", x->text_id);
     }
@@ -420,6 +486,7 @@ static void *messbox_new(t_symbol *s, int ac, t_atom *av){
     t_messbox *x = (t_messbox *)pd_new(messbox_class);
     char buf[MAXPDSTRING];
     x->x_glist = canvas_getcurrent();
+    x->x_dollzero = binbuf_realizedollsym(gensym("$0"), 0, 0, 0);
     if (!(x->x_proxy = (t_messbox_proxy *)pd_new(messbox_proxy_class)))
         return (0);
     x->x_proxy->p_master = x;
@@ -535,6 +602,7 @@ void messbox_setup(void){
 				 sizeof(t_messbox_proxy),
 				 CLASS_PD | CLASS_NOINLET, 0);
     class_addbang(messbox_class, (t_method)messbox_bang);
+    class_addlist(messbox_class, (t_method)messbox_list);
     class_addanything(messbox_proxy_class, (t_method)messbox_proxy_anything);
     class_addmethod(messbox_class, (t_method)messbox_size, gensym("size"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_fontsize, gensym("fontsize"), A_GIMME, 0);
