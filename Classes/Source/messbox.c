@@ -39,7 +39,6 @@ typedef struct _messbox{
     unsigned int    x_bg[3];    // bg RGB color
     int             x_font_size;
     t_symbol       *x_font_weight;
-    int             x_selected;
     char           *tcl_namespace;
     char           *x_cv_id;
     char           *frame_id;
@@ -182,7 +181,6 @@ static void messbox_select(t_gobj *z, t_glist *glist, int state){
     if(state){
         sys_vgui("%s configure -fg blue -state disabled -cursor $cursor_editmode_nothing\n", x->text_id);
         sys_vgui("%s itemconfigure %x_outline -outline blue\n", x->x_cv_id, (unsigned long)x);
-        x->x_selected = 1;
         int x1, y1, x2, y2;
         messbox_getrect(z, glist, &x1, &y1, &x2, &y2);
         sys_vgui("canvas %s -width %d -height %d -bg #ddd -bd 0 \
@@ -204,7 +202,6 @@ static void messbox_select(t_gobj *z, t_glist *glist, int state){
         sys_vgui("%s itemconfigure %x_outline -outline black\n", x->x_cv_id, (unsigned long)x);
         sys_vgui("destroy %s\n", x->handle_id);
         messbox_key(z, 0);
-        x->x_selected = 0;
     }
 }
 
@@ -246,13 +243,14 @@ static void messbox_append(t_messbox* x,  t_symbol *s, int ac, t_atom *av){
     sys_vgui("%s configure -state normal\n", x->text_id);
     for(int i = 0; i < ac; i++){
         t_symbol *sym = atom_getsymbolarg(i, ac, av);
-        if(sym == &s_)
-            sys_vgui("lappend ::%s::list %g\n", x->tcl_namespace, atom_getfloatarg(i, ac , av));
-        else
-            sys_vgui("lappend ::%s::list %s\n", x->tcl_namespace, sym->s_name);
+        if(sym == &s_) {
+            sys_vgui("%s insert end \"%g \"\n", x->text_id, atom_getfloatarg(i, ac , av));
+        } else if (sym->s_name[0] == ';' || sym->s_name[0] == '\\' ||
+                sym->s_name[0] == '[') {
+            sys_vgui("%s insert end \"\\%s \"\n", x->text_id, sym->s_name);
+        } else
+            sys_vgui("%s insert end \"%s \"\n", x->text_id, sym->s_name);
     }
-    sys_vgui("append ::%s::list \" \"\n", x->tcl_namespace);
-    sys_vgui("%s insert end $::%s::list ; unset ::%s::list\n", x->text_id, x->tcl_namespace, x->tcl_namespace);
     sys_vgui("%s yview end-2char\n", x->text_id);
     if(!x->x_active)
         sys_vgui("%s configure -state disabled\n", x->text_id);
@@ -265,13 +263,14 @@ static void messbox_set(t_messbox *x, t_symbol *s, int ac, t_atom *av){
     if(ac){
         for(int i = 0; i < ac; i++){
             t_symbol *sym = atom_getsymbolarg(i, ac, av);
-            if(sym == &s_)
-                sys_vgui("lappend ::%s::list %g\n", x->tcl_namespace, atom_getfloatarg(i, ac , av));
-            else
-                sys_vgui("lappend ::%s::list %s\n", x->tcl_namespace, sym->s_name);
+            if(sym == &s_) {
+                sys_vgui("%s insert end \"%g \"\n", x->text_id, atom_getfloatarg(i, ac , av));
+            } else if (sym->s_name[0] == ';' || sym->s_name[0] == '\\' ||
+                sym->s_name[0] == '[') {
+                sys_vgui("%s insert end \"\\%s \"\n", x->text_id, sym->s_name);
+            } else
+                sys_vgui("%s insert end \"%s \"\n", x->text_id, sym->s_name);
         }
-        sys_vgui("append ::%s::list \" \"\n", x->tcl_namespace);
-        sys_vgui("%s insert end $::%s::list ; unset ::%s::list\n", x->text_id, x->tcl_namespace, x->tcl_namespace);
         sys_vgui("%s yview end-2char\n", x->text_id);
     }
     if(!x->x_active)
@@ -435,7 +434,7 @@ static void *messbox_new(t_symbol *s, int ac, t_atom *av){
     x->x_proxy->x_bind_sym = gensym(buf);
     pd_bind(&x->x_proxy->p_ob.ob_pd, x->x_proxy->x_bind_sym);
     x->x_font_size = glist_getfont(x->x_glist);
-    x->x_selected = x->x_resizing = x->x_active = x->x_flag = 0;
+    x->x_resizing = x->x_active = x->x_flag = 0;
     int w = x->x_font_size * 15, h = x->x_font_size * 5;
     int weigth = 0;
     x->x_bg[0] = x->x_bg[1] = x->x_bg[2] = 235;
