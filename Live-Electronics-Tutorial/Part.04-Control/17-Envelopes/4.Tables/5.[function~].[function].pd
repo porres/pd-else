@@ -1,4 +1,4 @@
-#N canvas 286 112 1010 533 12;
+#N canvas 432 210 1010 533 12;
 #X declare -path else;
 #X obj 47 258 osc~ 440;
 #X obj 125 384 *~;
@@ -11,14 +11,14 @@
 #X obj 143 198 f 500;
 #X text 178 146 ms;
 #X msg 143 229 0 \$1 1;
-#X msg 291 183 0 0.5 1 0.5 0;
-#X text 393 183 triangular;
-#X text 430 154 trapezoid;
-#X msg 274 154 0 0.25 1 0.5 1 0.25 0;
+#X msg 293 183 0 0.5 1 0.5 0;
+#X text 395 183 triangular;
+#X text 432 154 trapezoid;
+#X msg 276 154 0 0.25 1 0.5 1 0.25 0;
 #X obj 143 342 function~;
 #X obj 277 214 function 200 100 empty empty 0 1 220 220 220 50 50 50
 0 0 0 0 0 0.25 1 0.5 1 0.25 0;
-#X obj 274 128 loadbang;
+#X obj 276 128 loadbang;
 #X obj 778 103 declare -path else;
 #X obj 566 299 osc~ 440;
 #X obj 647 405 *~;
@@ -39,14 +39,14 @@
 #X obj 593 201 line;
 #X msg 593 165 0 \, \$1 1;
 #X obj 665 363 f2s~ 10;
-#X text 39 24 You can also consider the [function] GUI as a table generator
-that you can trigger as an envelope in the same way as the previous
-examples. Here we use [function~] to load the table from the [function]
-GUI and the [envgen~] object is used again to generate the ramp with
-the indexes (from 0 to 1)., f 64;
 #X text 532 22 Another option is to have a float input from a [line]
 object. In this way \, you can use [function] as a control rate envelope
 and we can convert it to a signal with [f2s~].;
+#X text 39 24 We've seen before how you can consider the [function]
+GUI as a table generator. You can trigger it as an envelope in the
+same way as the previous examples. Here we use [function~] to load
+the table from the [function] GUI and the [envgen~] object is used
+again to generate the ramp with the indexes (from 0 to 1)., f 64;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 3 0 13 0;
