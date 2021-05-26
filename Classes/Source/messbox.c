@@ -28,6 +28,7 @@ typedef struct _messbox{
     t_glist        *x_glist;
     t_symbol   *x_bind_sym;
     t_messbox_proxy  *x_proxy;
+    t_symbol        *x_dollzero;
     int             x_flag;
     int             x_height;
     int             x_width;
@@ -234,8 +235,8 @@ static void messbox_proxy_anything(t_messbox_proxy* x, t_symbol *s, int ac,
 }
 
 static void messbox_bang(t_messbox* x){
-    sys_vgui("pdsend \"%s [%s get 0.0 end]\"\n",
-        x->x_proxy->x_bind_sym->s_name, x->text_id);
+    sys_vgui("pdsend \"%s [string map {\\$0 %s} [%s get 0.0 end]]\"\n",
+        x->x_proxy->x_bind_sym->s_name, x->x_dollzero->s_name, x->text_id);
 }
 
 static void messbox_append(t_messbox* x,  t_symbol *s, int ac, t_atom *av){
@@ -245,9 +246,11 @@ static void messbox_append(t_messbox* x,  t_symbol *s, int ac, t_atom *av){
         t_symbol *sym = atom_getsymbolarg(i, ac, av);
         if(sym == &s_) {
             sys_vgui("%s insert end \"%g \"\n", x->text_id, atom_getfloatarg(i, ac , av));
-        } else if (sym->s_name[0] == ';' || sym->s_name[0] == '\\' ||
-                sym->s_name[0] == '[') {
-            sys_vgui("%s insert end \"\\%s \"\n", x->text_id, sym->s_name);
+        } else if (sym->s_name[0] == '\\' || sym->s_name[0] == '['
+            || sym->s_name[0] == '$') {
+                sys_vgui("%s insert end \"\\%s \"\n", x->text_id, sym->s_name);
+        } else if (sym->s_name[0] == ';') {
+            sys_vgui("%s insert end \\;\\n\n", x->text_id);
         } else
             sys_vgui("%s insert end \"%s \"\n", x->text_id, sym->s_name);
     }
@@ -265,9 +268,11 @@ static void messbox_set(t_messbox *x, t_symbol *s, int ac, t_atom *av){
             t_symbol *sym = atom_getsymbolarg(i, ac, av);
             if(sym == &s_) {
                 sys_vgui("%s insert end \"%g \"\n", x->text_id, atom_getfloatarg(i, ac , av));
-            } else if (sym->s_name[0] == ';' || sym->s_name[0] == '\\' ||
-                sym->s_name[0] == '[') {
+            } else if (sym->s_name[0] == '\\' || sym->s_name[0] == '['
+            || sym->s_name[0] == '$') {
                 sys_vgui("%s insert end \"\\%s \"\n", x->text_id, sym->s_name);
+            } else if (sym->s_name[0] == ';') {
+                sys_vgui("%s insert end \\;\\n\n", x->text_id);
             } else
                 sys_vgui("%s insert end \"%s \"\n", x->text_id, sym->s_name);
         }
@@ -420,6 +425,7 @@ static void *messbox_new(t_symbol *s, int ac, t_atom *av){
     t_messbox *x = (t_messbox *)pd_new(messbox_class);
     char buf[MAXPDSTRING];
     x->x_glist = canvas_getcurrent();
+    x->x_dollzero = binbuf_realizedollsym(gensym("$0"), 0, 0, 0);
     if (!(x->x_proxy = (t_messbox_proxy *)pd_new(messbox_proxy_class)))
         return (0);
     x->x_proxy->p_master = x;
