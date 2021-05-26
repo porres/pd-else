@@ -242,6 +242,7 @@ static void messbox_bang(t_messbox* x){
 }
 
 static void messbox_append(t_messbox* x,  t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     sys_vgui("%s configure -state normal\n", x->text_id);
     for(int i = 0; i < ac; i++){
         t_symbol *sym = atom_getsymbolarg(i, ac, av);
@@ -258,6 +259,7 @@ static void messbox_append(t_messbox* x,  t_symbol *s, int ac, t_atom *av){
 }
 
 static void messbox_set(t_messbox *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     sys_vgui("%s configure -state normal\n", x->text_id);
     sys_vgui("%s delete 0.0 end \n", x->text_id);
     if(ac){
@@ -277,6 +279,7 @@ static void messbox_set(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void messbox_bgcolor(t_messbox *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     if(av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT && av[2].a_type == A_FLOAT){
         float r = atom_getfloatarg(0, ac, av);
         float g = atom_getfloatarg(1, ac, av);
@@ -291,6 +294,7 @@ void messbox_bgcolor(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void messbox_fgcolor(t_messbox *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     if(av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT && av[2].a_type == A_FLOAT){
         float r = atom_getfloatarg(0, ac, av);
         float g = atom_getfloatarg(1, ac, av);
@@ -304,6 +308,7 @@ void messbox_fgcolor(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void messbox_bold(t_messbox *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     if(av[0].a_type == A_FLOAT){
         float bold = atom_getfloatarg(0, ac, av);
         x->x_font_weight = (int)(bold != 0) ? gensym("bold") : gensym("normal");
@@ -313,6 +318,7 @@ static void messbox_bold(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void messbox_fontsize(t_messbox *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     if(av[0].a_type == A_FLOAT){
         float font_size = atom_getfloatarg(0, ac, av);
         x->x_font_size = font_size < 8 ? 8 : (int)font_size;
@@ -322,6 +328,7 @@ static void messbox_fontsize(t_messbox *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void messbox_size(t_messbox *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     if(av[0].a_type == A_FLOAT && av[1].a_type == A_FLOAT){
         float w = atom_getfloatarg(0, ac, av), h = atom_getfloatarg(1, ac, av);
         x->x_width = w < MIN_WIDTH ? MIN_WIDTH : (int)w;
