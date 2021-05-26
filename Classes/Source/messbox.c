@@ -34,6 +34,7 @@ typedef struct _messbox{
     int             x_width;
     int             x_resizing;
     int             x_active;
+    int             x_selected;
     char            x_fgcolor[8];
     unsigned int    x_fg[3];    // fg RGB color
     char            x_bgcolor[8];
@@ -79,8 +80,9 @@ static void set_tk_widget_ids(t_messbox *x, t_canvas *canvas){
 
 static void draw_box(t_messbox *x){
     int xpos = text_xpix(&x->x_obj, x->x_glist), ypos = text_ypix(&x->x_obj, x->x_glist);
-    sys_vgui("%s create rectangle %d %d %d %d -outline black -fill \"%s\" -width 1 -tags %x_outline\n",
-        x->x_cv_id, xpos, ypos, xpos+x->x_width, ypos+x->x_height, x->x_bgcolor, x);
+    sys_vgui("%s create rectangle %d %d %d %d -outline %s -fill \"%s\" -width 1 -tags %x_outline\n",
+        x->x_cv_id, xpos, ypos, xpos+x->x_width, ypos+x->x_height, 
+        x->x_selected ? "blue" : "black", x->x_bgcolor, x);
     sys_vgui("%s create rectangle %d %d %d %d -fill black -tags {%x_inlet %s}\n",
         x->x_cv_id, xpos, ypos, xpos+IOWIDTH, ypos+IHEIGHT, x, x->all_tag);
     sys_vgui("%s create rectangle %d %d %d %d -fill black -tags {%x_outlet %s}\n",
@@ -182,6 +184,7 @@ static void messbox_select(t_gobj *z, t_glist *glist, int state){
     if(state){
         sys_vgui("%s configure -fg blue -state disabled -cursor $cursor_editmode_nothing\n", x->text_id);
         sys_vgui("%s itemconfigure %x_outline -outline blue\n", x->x_cv_id, (unsigned long)x);
+        x->x_selected = 1;
         int x1, y1, x2, y2;
         messbox_getrect(z, glist, &x1, &y1, &x2, &y2);
         sys_vgui("canvas %s -width %d -height %d -bg #ddd -bd 0 \
@@ -200,6 +203,7 @@ static void messbox_select(t_gobj *z, t_glist *glist, int state){
     }
     else{
         sys_vgui("%s configure -fg %s -state normal -cursor xterm\n", x->text_id, x->x_fgcolor);
+        x->x_selected = 0;
         sys_vgui("%s itemconfigure %x_outline -outline black\n", x->x_cv_id, (unsigned long)x);
         sys_vgui("destroy %s\n", x->handle_id);
         messbox_key(z, 0);
@@ -502,7 +506,7 @@ static void *messbox_new(t_symbol *s, int ac, t_atom *av){
     x->x_proxy->x_bind_sym = gensym(buf);
     pd_bind(&x->x_proxy->p_ob.ob_pd, x->x_proxy->x_bind_sym);
     x->x_font_size = glist_getfont(x->x_glist);
-    x->x_resizing = x->x_active = x->x_flag = 0;
+    x->x_selected = x->x_resizing = x->x_active = x->x_flag = 0;
     int w = x->x_font_size * 15, h = x->x_font_size * 5;
     int weigth = 0;
     x->x_bg[0] = x->x_bg[1] = x->x_bg[2] = 235;
