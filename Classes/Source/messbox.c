@@ -331,11 +331,11 @@ static void messbox_set(t_messbox *x, t_symbol *s, int ac, t_atom *av){
                     buf[j++] = c;
                 }
                 buf[j] = '\0';
+                if (sym->s_name[pos-1] == ';') {
+                    sys_vgui("%s insert end %s\\n\n", x->text_id, buf);
+                } else
+                    sys_vgui("%s insert end \"%s \"\n", x->text_id, buf);
             }
-            if (sym->s_name[pos-1] == ';') {
-                sys_vgui("%s insert end %s\\n\n", x->text_id, buf);
-            } else
-                sys_vgui("%s insert end \"%s \"\n", x->text_id, buf);
         }
         sys_vgui("%s yview end-2char\n", x->text_id);
     }
