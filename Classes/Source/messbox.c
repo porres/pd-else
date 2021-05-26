@@ -266,40 +266,76 @@ static void messbox_bang(t_messbox* x){
 
 static void messbox_append(t_messbox* x,  t_symbol *s, int ac, t_atom *av){
     s = NULL;
+    char buf[40];
+    size_t length;
     sys_vgui("%s configure -state normal\n", x->text_id);
-    for(int i = 0; i < ac; i++){
-        t_symbol *sym = atom_getsymbolarg(i, ac, av);
-        if(sym == &s_) {
-            sys_vgui("%s insert end \"%g \"\n", x->text_id, atom_getfloatarg(i, ac , av));
-        } else if (sym->s_name[0] == '\\' || sym->s_name[0] == '['
-            || sym->s_name[0] == '$') {
-                sys_vgui("%s insert end \"\\%s \"\n", x->text_id, sym->s_name);
-        } else if (sym->s_name[0] == ';') {
-            sys_vgui("%s insert end \\;\\n\n", x->text_id);
-        } else
-            sys_vgui("%s insert end \"%s \"\n", x->text_id, sym->s_name);
+    if(ac){
+        int i;
+        size_t pos;
+        for(i = 0; i < ac; i++){
+            t_symbol *sym = atom_getsymbolarg(i, ac, av);
+            if(sym == &s_) {
+                sys_vgui("%s insert end \"%g \"\n", x->text_id, atom_getfloatarg(i, ac , av));
+            } else{
+                int j = 0;
+                length = 39;
+                for(pos = 0; pos < strlen(sym->s_name); pos++) {
+                    char c = sym->s_name[pos];
+                    if(c == '\\' || c == '[' || c == '$' || c == ';') {
+                        length--;
+                        if(length <= 0) break;
+                        buf[j++] = '\\';
+                    }
+                    length--;
+                    if(length <= 0) break;
+                    buf[j++] = c;
+                }
+                buf[j] = '\0';
+            }
+            if (sym->s_name[pos-1] == ';') {
+                sys_vgui("%s insert end %s\\n\n", x->text_id, buf);
+            } else
+                sys_vgui("%s insert end \"%s \"\n", x->text_id, buf);
+        }
+        sys_vgui("%s yview end-2char\n", x->text_id);
     }
-    sys_vgui("%s yview end-2char\n", x->text_id);
     if(!x->x_active)
         sys_vgui("%s configure -state disabled\n", x->text_id);
 }
 
 static void messbox_set(t_messbox *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
+    char buf[40];
+    size_t length;
     sys_vgui("%s configure -state normal\n", x->text_id);
     sys_vgui("%s delete 0.0 end \n", x->text_id);
     if(ac){
-        for(int i = 0; i < ac; i++){
+        int i;
+        size_t pos;
+        for(i = 0; i < ac; i++){
             t_symbol *sym = atom_getsymbolarg(i, ac, av);
             if(sym == &s_) {
                 sys_vgui("%s insert end \"%g \"\n", x->text_id, atom_getfloatarg(i, ac , av));
-            } else if (sym->s_name[0] == '\\' || sym->s_name[0] == '['
-            || sym->s_name[0] == '$') {
-                sys_vgui("%s insert end \"\\%s \"\n", x->text_id, sym->s_name);
-            } else if (sym->s_name[0] == ';') {
-                sys_vgui("%s insert end \\;\\n\n", x->text_id);
+            } else{
+                int j = 0;
+                length = 39;
+                for(pos = 0; pos < strlen(sym->s_name); pos++) {
+                    char c = sym->s_name[pos];
+                    if(c == '\\' || c == '[' || c == '$' || c == ';') {
+                        length--;
+                        if(length <= 0) break;
+                        buf[j++] = '\\';
+                    }
+                    length--;
+                    if(length <= 0) break;
+                    buf[j++] = c;
+                }
+                buf[j] = '\0';
+            }
+            if (sym->s_name[pos-1] == ';') {
+                sys_vgui("%s insert end %s\\n\n", x->text_id, buf);
             } else
-                sys_vgui("%s insert end \"%s \"\n", x->text_id, sym->s_name);
+                sys_vgui("%s insert end \"%s \"\n", x->text_id, buf);
         }
         sys_vgui("%s yview end-2char\n", x->text_id);
     }
