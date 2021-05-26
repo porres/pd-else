@@ -35,7 +35,7 @@
 0;
 #X text 195 441 anything;
 #X obj 180 274 else/display;
-#N canvas 1006 144 428 454 syntax 0;
+#N canvas 1006 144 428 454 syntax 1;
 #X text 38 19 Like a regular message box \, a comma will split the
 message in different ones inside the same box.;
 #X obj 106 186 print Message;
@@ -46,20 +46,19 @@ message in different ones inside the same box.;
 -1 -1;
 #X obj 106 109 else/messbox 200 60 235 235 235 0 0 0 0 12;
 #X obj 120 318 else/messbox 200 60 235 235 235 0 0 0 0 12;
-#X text 338 242 \; f 8;
-#X text 42 229 It can also deal with semicolons \, which turn the message
-box into a send object. Try typing something like =>;
 #X obj 78 72 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
 #X msg 106 75 set 1\\\, 2\\\, 3 \, bang;
-#X msg 158 288 set 1\\\; f 8 \, bang;
+#X msg 158 288 set \\\; f 8 \, bang;
+#X text 42 229 It can also deal with semicolons \, which turn the message
+box into a send object., f 40;
 #X connect 3 0 4 0;
 #X connect 5 0 7 0;
 #X connect 6 0 1 0;
 #X connect 7 0 2 0;
-#X connect 10 0 6 0;
-#X connect 11 0 6 0;
-#X connect 12 0 7 0;
+#X connect 8 0 6 0;
+#X connect 9 0 6 0;
+#X connect 10 0 7 0;
 #X restore 475 277 pd syntax;
 #X text 218 311 bang;
 #X obj 35 41 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
