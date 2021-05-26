@@ -362,14 +362,13 @@ static int messbox_click(t_gobj *z, t_glist *glist, int xpix, int ypix, int shif
 }
 
 // callback functions
-static void messbox_proxy_resize_callback(t_messbox_proxy *x, t_floatarg f){ // ????
-    x->p_master->x_resizing = (int)f;
+static void messbox_resize_callback(t_messbox *x, t_floatarg f){ // ????
+    x->x_resizing = (int)f;
 }
 
-static void messbox_proxy_motion_callback(t_messbox_proxy *y,
+static void messbox_motion_callback(t_messbox *x,
     t_floatarg f1, t_floatarg f2){
 //    post("messbox_motion_callback");
-    t_messbox *x = y->p_master;
     if(x->x_resizing){
         int dx = (int)f1, dy = (int)f2;
         int w = x->x_width, h = x->x_height;
@@ -540,8 +539,8 @@ void messbox_setup(void){
     class_addmethod(messbox_class, (t_method)messbox_bgcolor, gensym("bgcolor"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_fgcolor, gensym("fgcolor"), A_GIMME, 0);
     class_addmethod(messbox_class, (t_method)messbox_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(messbox_proxy_class, (t_method)messbox_proxy_resize_callback, gensym("_resize"), A_FLOAT, 0);
-    class_addmethod(messbox_proxy_class, (t_method)messbox_proxy_motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(messbox_class, (t_method)messbox_resize_callback, gensym("_resize"), A_FLOAT, 0);
+    class_addmethod(messbox_class, (t_method)messbox_motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);
     class_setwidget(messbox_class, &messbox_widgetbehavior);
     class_setsavefn(messbox_class, messbox_save);
     messbox_widgetbehavior.w_getrectfn  = messbox_getrect;
