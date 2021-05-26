@@ -170,7 +170,7 @@ static void messbox_displace(t_gobj *z, t_glist *glist, int dx, int dy){
     if(glist_isvisible(glist)){
         sys_vgui("%s move %s %d %d\n", x->x_cv_id, x->all_tag, dx, dy);
         sys_vgui("%s move %x_outline %d %d\n", x->x_cv_id, x, dx, dy);
-        sys_vgui("%s move RSZ %d %d\n", x->x_cv_id, dx, dy);
+        sys_vgui("%s move %lxRSZ %d %d\n", x->x_cv_id, (t_int)x, dx, dy);
         canvas_fixlinesfor(glist, (t_text*)x);
     }
 }
@@ -189,8 +189,8 @@ static void messbox_select(t_gobj *z, t_glist *glist, int state){
             x->handle_id, HANDLE_SIZE, HANDLE_SIZE);
         int handle_x1 = x2 - HANDLE_SIZE;
         int handle_y1 = y2 - HANDLE_SIZE;
-        sys_vgui("%s create window %d %d -anchor nw -width %d -height %d -window %s -tags RSZ\n",
-            x->x_cv_id, handle_x1-2, handle_y1-2, HANDLE_SIZE, HANDLE_SIZE, x->handle_id);
+        sys_vgui("%s create window %d %d -anchor nw -width %d -height %d -window %s -tags %lxRSZ\n",
+            x->x_cv_id, handle_x1-2, handle_y1-2, HANDLE_SIZE, HANDLE_SIZE, x->handle_id, (t_int)x);
         sys_vgui("bind %s <Button> {pdsend {%s _resize 1}}\n",
             x->handle_id, x->x_bind_sym->s_name);
         sys_vgui("bind %s <ButtonRelease> {pdsend {%s _resize 0}}\n",
@@ -460,7 +460,7 @@ static void messbox_motion_callback(t_messbox *x,
                 x->x_height+=dy;
             sys_vgui("%s itemconfigure %s -width %d -height %d\n",
                 x->x_cv_id, x->window_tag, x->x_width-BORDER*2, x->x_height-BORDER*2);
-            sys_vgui("%s move RSZ %d %d\n", x->x_cv_id, dx, dy);
+            sys_vgui("%s move %lxRSZ %d %d\n", x->x_cv_id, (t_int)x, dx, dy);
             erase_box(x), draw_box(x);
             canvas_fixlinesfor(x->x_glist, (t_text *)x);
         }
