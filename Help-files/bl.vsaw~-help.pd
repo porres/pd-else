@@ -58,7 +58,6 @@ in the way it handles it \, this object does not have any arguments.
 #X text 164 325 float/signal - frequency in hz;
 #X text 164 368 float/signal - phase sync (ressets internal phase)
 ;
-#X text 165 346 float/signal - pulse width (from -1 to 1);
 #X obj 229 214 else/bl.vsaw~;
 #X obj 121 41 cnv 4 4 4 empty empty sawtooth-triangle 0 28 2 18 -233017
 -1 0;
@@ -73,5 +72,6 @@ implement a bandlimited oscillator., f 74;
 #X text 233 487 - initial phase offset (default 0);
 #X text 233 455 - frequency in hertz (default 0), f 34;
 #X text 233 471 - initial width (default 0), f 34;
-#X connect 10 0 33 0;
-#X connect 33 0 17 0;
+#X text 165 346 float/signal - pulse width (from 0 to 1);
+#X connect 10 0 32 0;
+#X connect 32 0 17 0;
