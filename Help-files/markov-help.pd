@@ -91,7 +91,7 @@ the patch., f 75;
 #X msg 49 129 open;
 #X text 100 153 <= read/analyze;
 #X msg 203 229 clear;
-#X obj 253 223 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 253 223 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 67 179 trigger anything bang;
 #X msg 67 153 dump;
@@ -115,14 +115,14 @@ the patch., f 75;
 #X text 269 295 order;
 #X msg 49 278 learn \$1;
 #X obj 253 250 else/tempo 120 50;
+#X obj 244 184 else/initmess 1;
 #X text 32 14 This example creates a monophonic chain from MIDI input.
 Here you can also try to increase the order. An order of "2" means
 that the next note depends on the preceding two values. This makes
 it a lot less random \, so the more you increase the order \, the more
 it looks like the original input. After changing the order you need
-to recreate the chain. For this happy brthday example \, an order of
-5 outputs the original tune., f 54;
-#X obj 244 184 else/initmess 1;
+to recreate the chain. For this happy birthday example \, an order
+of 5 outputs the original tune., f 54;
 #X connect 0 0 25 0;
 #X connect 1 0 21 0;
 #X connect 3 0 7 0;
@@ -150,7 +150,7 @@ to recreate the chain. For this happy brthday example \, an order of
 #X connect 23 0 7 2;
 #X connect 25 0 7 0;
 #X connect 26 0 7 0;
-#X connect 28 0 23 0;
+#X connect 27 0 23 0;
 #X restore 462 304 pd midi-file;
 #N canvas 807 97 429 499 midi-in 0;
 #X obj 173 103 stripnote;

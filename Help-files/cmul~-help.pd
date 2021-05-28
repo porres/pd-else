@@ -1,4 +1,4 @@
-#N canvas 709 156 567 455 10;
+#N canvas 709 156 562 422 10;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -24,34 +24,35 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 7 420 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 7 394 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 7 207 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 7 194 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 318 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 7 302 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 7 386 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 360 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 151 329 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 151 313 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 150 215 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 150 202 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 223 154 else/cmul~;
-#X text 241 400 (none);
-#X text 183 217 signal - real part of complex number 1;
-#X obj 150 239 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 244 154 else/cmul~;
+#X text 248 370 (none);
+#X text 183 204 signal - real part of complex number 1;
+#X obj 150 226 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 150 265 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 150 252 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X obj 150 289 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 150 276 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X text 183 241 signal - imaginary part of complex number 1;
-#X text 183 267 signal - real part of complex number 2;
-#X text 183 291 signal - imaginary part of complex number 2;
-#X text 183 330 signal - real part;
-#X obj 151 350 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 183 228 signal - imaginary part of complex number 1;
+#X text 183 254 signal - real part of complex number 2;
+#X text 183 278 signal - imaginary part of complex number 2;
+#X obj 151 334 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 183 351 signal - imaginary part;
-#X text 99 96 This is an extra object that performs complex multiplication
-\, it is used in the [conv~] abstraction for a bit more efficiency
-, f 63;
+#X text 99 96 [cmul~] performs complex multiplication of two complex
+numbers. It's an extra object in the ELSE library used in the [conv~]
+abstraction for a bit more efficiency., f 63;
+#X text 183 314 signal - real part of the multplication result;
+#X text 183 335 signal - imaginary part of the multplication result
+;

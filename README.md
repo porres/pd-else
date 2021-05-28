@@ -6,9 +6,9 @@
 
 
 
-### Version: 1.0-0 beta-40 With Live Electronics Tutorial 
+### Version: 1.0-0 beta-41 With Live Electronics Tutorial 
 
-###   Released:  May 26th, 2021.
+###   Unreleased.
 
 
 
@@ -34,7 +34,7 @@
 
 ​	ELSE is a big library for Pure Data that provides a cohesive system for computer music, it also serves as a basis for an Live Electronics Tutorial by the same author, yours truly, Alexandre Torres Porres. This tutorial is also found as part of the download of the ELSE library. This library's repository resides at <https://github.com/porres/pd-else/>.
 
-​	Note that you can also download Camomile with support for ELSE externals, see https://github.com/emviveros/Camomile-ELSE/releases/tag/beta40
+​	Note that you can also download Camomile with support for ELSE externals, see https://github.com/emviveros/Camomile-ELSE/releases/tag/beta41
 
 ​	This project is still in a beta phase, where  changes may occur and backwards compatibility is not guaranteed until a final release is available. 
 
@@ -113,11 +113,10 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (421 objects):
+## Current Object list (423 objects):
 
-**ASSORTED: [03]**
+**ASSORTED: [02]**
 
-- [table~]
 - [meter]
 - [else]
 
@@ -380,8 +379,9 @@ Cross compiling is also possible with something like this
 - [resonant2~]
 - [svfilter~]
 
-**SAMPLING/PLAYING/GRANULATION: [13]**
+**BUFFER/SAMPLING/PLAYING/GRANULATION: [14]**
 
+- [table~]
 - [player~]
 - [gran.player~]
 - [pvoc.player~]
@@ -473,7 +473,7 @@ Cross compiling is also possible with something like this
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [32]**
+**CONTROL: [34]**
 
  - [mouse]
  - [canvas.mouse]
@@ -493,6 +493,8 @@ Cross compiling is also possible with something like this
  - [slew2~]
  - [lag~]
  - [lag2~]
+ - [glide]
+ - [glide2]
  - [glide~]
  - [glide2~]
  - [ramp~]

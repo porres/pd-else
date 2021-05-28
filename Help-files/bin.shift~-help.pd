@@ -1,4 +1,4 @@
-#N canvas 671 89 561 468 10;
+#N canvas 577 89 561 468 10;
 #X obj 1 439 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 2 281 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -39,7 +39,7 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
 #X obj 487 65 else/setdsp~;
-#X obj 255 216 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 252 215 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 226 364 - the bin shifted signal;
 #X text 226 397 - sets shift number (default 0);
@@ -50,18 +50,18 @@
 \, where you can shift samples (or frequency bins). It is similar to
 Pd Vanilla's [lrshift~] object \, which acts in any block size and
 shifts samples to the left or right., f 64;
-#X obj 255 164 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 74 197 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X obj 252 163 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 5 256;
+#X obj 71 196 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X obj 74 247 print~ input;
-#X obj 255 245 print~ output;
+#X obj 71 246 print~ input;
+#X obj 252 244 print~ output;
 #X obj 121 330 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 304 163 <= positive shifts to the right;
-#X text 322 178 negative shifts to the left, f 28;
-#X obj 130 210 else/bin.shift~ 4;
-#X obj 130 165 else/ramp~ 1 1 65;
+#X text 301 162 <= positive shifts to the right;
+#X text 319 177 negative shifts to the left, f 28;
+#X obj 127 209 else/bin.shift~ 4;
+#X obj 127 154 else/ramp~ 1 1 65;
 #X text 146 304 wrap <float>;
 #X text 226 304 - non zero sets to wrap mode;
 #X text 170 415 2) float;
@@ -96,6 +96,7 @@ or the wrap message., f 50;
 #X connect 22 0 32 0;
 #X connect 29 0 22 0;
 #X connect 29 0 36 1;
+#X connect 29 0 30 0;
 #X connect 30 0 31 0;
 #X connect 36 0 32 0;
 #X connect 37 0 31 0;
