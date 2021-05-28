@@ -51,6 +51,8 @@ integer value.;
 #X obj 204 222 else/display~ 8;
 #X obj 204 193 else/rint~;
 #X text 168 271 signal - signal input;
+#X text 41 189 see also:;
+#X obj 37 214 else/rint;
 #X connect 25 0 26 0;
 #X connect 26 0 28 0;
 #X connect 28 0 27 0;

@@ -1,14 +1,8 @@
-#N struct 1013-point float x0 float y0 float xs float ys float fg float
+#N struct 1008-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 445 57 1056 742 12;
 #X declare -path else;
 #X obj 855 15 declare -path else;
-#X text 40 15 Open Sound Control (OSC) is a protocol whose messages
-run via UDP/IP and Ethernet. As an alternative to MIDI \, OSC has a
-higher resolution. Let's remember how MIDI works with 7 bits resolution.
-OSC works with floats and you can specify any parameter name to customize
-it to your needs as you wish \, unlike MIDI that has fixed messages
-such as 'note on/off'/'control change' etc., f 72;
 #X obj 352 493 oscparse;
 #X obj 352 525 display;
 #X obj 352 681 display;
@@ -18,9 +12,9 @@ such as 'note on/off'/'control change' etc., f 72;
 #X obj 352 466 netreceive -u -b 12001;
 #X obj 236 470 oscformat hz;
 #X obj 223 378 hsl 128 20 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 2100 1;
+-1 -1 0 1;
 #X obj 48 347 slider2d 100 100 0 127 0 127 1 200 200 200 0 0 0 0 0
-0 60 35 empty empty;
+0 46 68 empty empty;
 #X obj 48 461 display;
 #X obj 403 612 display;
 #X obj 352 554 list trim;
@@ -41,9 +35,6 @@ send OSC data (see the help file for more info)., f 72;
 messages so they can be sent via the network. The arguments are the
 adresses that will be used for routing and retrieving the sent message.
 , f 72;
-#X text 76 634 another [route] object further routes amplitude and
-"2d", f 30;
-#X text 255 648 ===================>;
 #X text 113 581 let's route 'hz' and 'slider' ==>;
 #X obj 724 480 netreceive -u -b;
 #X obj 648 218 initmess connect 238.200.200.200 3005;
@@ -67,36 +58,45 @@ as MAX) and also wherever in another computer via UDP/IP.;
 we also have a flag to specify the data type being sent ('ff' means
 it's two floats) \, this may be necessary in some cases to properly
 retrieve the data.;
+#X obj 649 421 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 649 390 netsend -u -b;
+#X text 40 15 Open Sound Control (OSC) is a protocol whose messages
+run via UDP/IP and Ethernet. As an alternative to MIDI \, OSC has a
+higher resolution. Let's remember how MIDI works with a 7 bits resolution.
+OSC works with floats and you can specify any parameter name to customize
+it to your needs as you wish \, unlike MIDI that has fixed messages
+such as 'note on/off' \, 'control change' etc., f 72;
+#X text 82 634 another [route] object further routes "amplitude" and
+"2d", f 30;
+#X text 273 648 ================>;
 #X text 598 621 These vanilla objects are pretty basic and can help
 in more simple tasks. It doesn't handle timestamps and bundles \, for
 instance. If you need a more proper implementation of the OSC protocol
 you can try the available objets in the 'mrpeach' library (like [packOSC]
-and [routeOSC]., f 61;
-#X obj 649 421 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
-1;
-#X obj 649 390 netsend -u -b;
-#X connect 2 0 3 0;
-#X connect 3 0 14 0;
-#X connect 5 0 9 0;
-#X connect 7 0 6 0;
-#X connect 8 0 2 0;
-#X connect 9 0 6 0;
-#X connect 10 0 16 0;
-#X connect 11 0 12 0;
-#X connect 12 0 15 0;
-#X connect 13 0 19 0;
-#X connect 14 0 17 0;
-#X connect 15 0 6 0;
-#X connect 16 0 6 0;
-#X connect 17 0 4 0;
-#X connect 17 1 13 0;
-#X connect 19 0 20 0;
-#X connect 19 1 18 0;
-#X connect 27 0 32 0;
-#X connect 28 0 40 0;
-#X connect 30 0 40 0;
-#X connect 31 0 30 0;
-#X connect 32 0 33 0;
-#X connect 33 0 34 0;
-#X connect 35 0 27 0;
-#X connect 40 0 39 0;
+and [routeOSC])., f 61;
+#X connect 1 0 2 0;
+#X connect 2 0 13 0;
+#X connect 4 0 8 0;
+#X connect 6 0 5 0;
+#X connect 7 0 1 0;
+#X connect 8 0 5 0;
+#X connect 9 0 15 0;
+#X connect 10 0 11 0;
+#X connect 11 0 14 0;
+#X connect 12 0 18 0;
+#X connect 13 0 16 0;
+#X connect 14 0 5 0;
+#X connect 15 0 5 0;
+#X connect 16 0 3 0;
+#X connect 16 1 12 0;
+#X connect 18 0 19 0;
+#X connect 18 1 17 0;
+#X connect 24 0 29 0;
+#X connect 25 0 36 0;
+#X connect 27 0 36 0;
+#X connect 28 0 27 0;
+#X connect 29 0 30 0;
+#X connect 30 0 31 0;
+#X connect 32 0 24 0;
+#X connect 36 0 35 0;
