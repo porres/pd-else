@@ -1,52 +1,53 @@
-#N canvas 375 41 914 436 12;
+#N canvas 414 95 954 414 12;
 #X declare -path else;
-#X obj 600 198 +~;
-#X obj 542 97 nbx 4 14 -1e+37 1e+37 0 1 empty portadora empty 0 -8
+#X obj 631 206 +~;
+#X obj 573 95 nbx 4 14 -1e+37 1e+37 0 1 empty portadora empty 0 -8
 0 10 -228856 -1 -1 400 256;
-#X obj 618 114 osc~;
-#X obj 618 136 *~;
-#X obj 618 91 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
+#X obj 649 122 osc~;
+#X obj 649 148 *~;
+#X obj 649 89 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
 0 10 -228856 -1 -1 1 256;
-#X obj 671 115 nbx 4 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 -228856
+#X obj 702 123 nbx 4 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 -228856
 -1 -1 100 256;
-#X obj 542 123 sig~;
-#X obj 600 263 osc~;
-#X obj 600 303 out~;
-#X text 535 59 Carrier Frequency, f 9;
-#X text 614 56 Modulator Frequency, f 9;
-#X text 721 97 Modulating Index, f 10;
-#X text 625 168 <= modulating signal;
-#X text 511 160 carrier signal =>, f 9;
-#X text 611 227 <= Frequency Modulated (FM) signal;
-#X text 504 262 oscillator =>;
-#X obj 671 137 f2s~ 10;
-#X obj 750 41 declare -path else;
-#X text 27 26 Generally speaking \, modulating a signal means applying
-any change to it. But in the context of computer music and synthesis
-\, we're talking about a modulating signal that controls a parameter
-\, such as the amplitude as we've seen. Let's check now the basic structure
-of Frequency Modulation with an oscillator as the modulating signal.
-;
-#X text 27 122 The signal to be modulated is called the "Carrier" -
+#X obj 573 131 sig~;
+#X obj 631 271 osc~;
+#X obj 631 311 out~;
+#X text 566 57 Carrier Frequency, f 9;
+#X text 645 54 Modulator Frequency, f 9;
+#X text 656 176 <= modulating signal;
+#X text 542 168 carrier signal =>, f 9;
+#X text 535 270 oscillator =>;
+#X obj 702 149 f2s~ 10;
+#X obj 771 32 declare -path else;
+#X text 30 142 The signal to be modulated is called the "Carrier" -
 in the case of frequency modulation \, this can also be called "Carrier
 Frequency". Conversely \, we also have a Modulator frequency \, which
 is the frequency of the modulating oscillator. The frequency deviation
 is controlled by the oscillator's amplitude and is also usually called
 "modulation index". The modulation procedure is simple \, just add
 the carrier signal to the modulating signal - see the example to the
-right., f 59;
-#X text 27 260 By default \, we have a 400 Hz carrier signal \, a low
+right., f 67;
+#X text 30 271 By default \, we have a 400 Hz carrier signal \, a low
 frequency of 1 as the modulating frequency and an index of 100 - this
 means the modulating signal oscillates between -100 and 100 at every
 second \, and the resulting frequency modulating signal varies from
 300 to 500 hz. Note that a low frequency modulator generates vibrato
-like effects \, but try higher frequencies.;
+like effects \, but try higher frequencies., f 67;
+#X text 30 47 Generally speaking \, modulating a signal means applying
+any changes to it. But in the context of computer music and synthesis
+\, we're talking about a modulating signal that controls a parameter
+\, like the amplitude as we've seen. Let's check now the basic structure
+of Frequency Modulation with an oscillator as the modulating signal.
+, f 67;
+#X text 642 235 <= Frequency Modulated signal;
+#X text 702 100 Frequency deviation;
+#X text 753 120 (Modulation Index);
 #X connect 0 0 7 0;
 #X connect 1 0 6 0;
 #X connect 2 0 3 0;
 #X connect 3 0 0 1;
 #X connect 4 0 2 0;
-#X connect 5 0 16 0;
+#X connect 5 0 14 0;
 #X connect 6 0 0 0;
 #X connect 7 0 8 0;
-#X connect 16 0 3 1;
+#X connect 14 0 3 1;

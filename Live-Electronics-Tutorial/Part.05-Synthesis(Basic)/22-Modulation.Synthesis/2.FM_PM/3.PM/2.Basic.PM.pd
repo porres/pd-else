@@ -576,7 +576,7 @@
 #X connect 5 0 11 0;
 #X connect 6 0 5 0;
 #X connect 10 0 11 0;
-#X restore 518 284 pd FFT;
+#X restore 503 284 pd FFT;
 #X obj 585 176 nbx 4 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 -228856
 -1 -1 0.1 256;
 #X obj 502 229 pmosc~ 200 1 1;

@@ -72,7 +72,7 @@ So any frequency input becomes an interval ratio to 440Hz., f 53;
 #X text 459 62 If we invert the formula \, we get the [mtof] expression
 (note [expr] also has a 'mtof' function by the way):, f 43;
 #X text 691 199 built in mtof ==>, f 8;
-#X obj 171 650 expr 12 * log($f1/440)/log(2) + 69 \; ftom(\$1);
+#X obj 171 650 expr 12 * log($f1/440)/log(2) + 69 \; ftom(\$f1);
 #X text 37 554 This is the opposite conversion from [mtof] \, and we
 also have a native object for that: [ftom]. Note that [expr] also has
 a built in function to convert from hz to m ('ftom')., f 56;

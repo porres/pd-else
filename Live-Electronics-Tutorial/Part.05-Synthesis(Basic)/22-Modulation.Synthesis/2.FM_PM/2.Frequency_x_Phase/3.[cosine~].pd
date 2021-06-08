@@ -70,13 +70,14 @@ see three equivalent ways to sum frequencies and phase., f 59;
 #X obj 827 162 f2s~ 10;
 #X obj 692 408 f2s~ 10;
 #X obj 774 13 declare -path else;
-#X text 23 49 The [cosine~]'s right inlet is a phase input \, so we
-can connect a [phasor~] into it. The frequency of the [phasor~] will
-then be summed to the [cosine~]'s - which is 0 hz below \, so in practice
-it's only being driven by [phasor~] at 440 hz., f 59;
 #X text 495 58 Let's now revise and see different frequency modulation
 structures that are equivalent and take into account phase signals.
 , f 55;
+#X text 23 29 The [cosine~]'s right inlet (like other oscillators in
+ELSE) is a phase input \, so we can connect a [phasor~] into it. The
+frequency of the [phasor~] will then be summed to the [cosine~]'s -
+which is 0 hz below \, so in practice it's only being driven by [phasor~]
+at 440 hz.;
 #X connect 0 0 2 0;
 #X connect 1 0 0 0;
 #X connect 2 0 12 0;
