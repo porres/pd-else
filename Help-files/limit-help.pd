@@ -72,28 +72,31 @@ has elapsed since the previous input/output. Otherwise \, it waits
 until that time passes and then sends the last received message since
 the previous output (ignoring the others).;
 #X obj 204 288 else/limit 1000, f 27;
-#N canvas 794 278 516 361 ignore 0;
-#X obj 92 113 tgl 20 0 empty empty empty 17 7 0 10 -216373 -1 -1 0
+#N canvas 794 278 505 358 ignore 0;
+#X obj 77 126 tgl 20 0 empty empty empty 17 7 0 10 -216373 -1 -1 0
 1;
-#X obj 92 171 random 100;
-#X obj 92 147 metro 50;
-#X obj 92 197 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 77 184 random 100;
+#X obj 77 160 metro 50;
+#X obj 77 210 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X floatatom 327 220 5 0 0 0 - - -;
-#X text 324 200 change time limit;
-#X text 365 220 milliseconds;
-#X obj 168 274 else/display;
-#X msg 234 220 1 2 3;
-#X msg 187 174 x;
-#X msg 222 174 a b c;
-#X msg 227 199 symbol dog;
-#X msg 168 152 list one 2 3;
-#X obj 168 245 else/limit 1000 1, f 27;
-#X obj 327 272 else/display;
-#X text 90 27 The second argument sets to ignore mode. In this case
-\, messages received before the time limite are ignored and not sent
+#X floatatom 312 233 5 0 0 0 - - -;
+#X text 309 213 change time limit;
+#X text 350 233 milliseconds;
+#X obj 153 287 else/display;
+#X msg 219 233 1 2 3;
+#X msg 172 187 x;
+#X msg 207 187 a b c;
+#X msg 212 212 symbol dog;
+#X msg 153 165 list one 2 3;
+#X obj 153 258 else/limit 1000 1, f 27;
+#X obj 312 285 else/display;
+#X text 65 19 The second argument sets to ignore mode. In this case
+\, messages received before the time limit are ignored and not sent
 after the period is done. The ignored messages are then sent to the
-right outlet., f 54;
+right outlet. Also \, when it receives a message before the time limit
+\, the clock restarts and only passes a message to the left outlet
+when the time interval between two event is greater than the limit.
+, f 63;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;

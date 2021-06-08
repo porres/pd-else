@@ -1,24 +1,12 @@
-#N canvas 532 138 635 357 12;
-#X obj 55 65 r \$0-A;
-#X obj 111 64 r \$0-B;
-#X obj 165 64 r \$0-C;
+#N canvas 582 285 655 326 10;
+#X obj 55 72 r \$0-A;
+#X obj 111 71 r \$0-B;
+#X obj 165 71 r \$0-C;
 #X obj 87 282 outlet~;
-#X obj 322 175 savestate;
-#X msg 382 205 export;
-#X obj 382 235 else/presets \$0-A \$0-B \$0-C;
-#A saved 333 || 376 || 0.7 || \; 49 || 81 || 1 || \; 127 || 167 ||
-2 || \; 170 || 298 || 0.4 || \; -empty- \; -empty- \; -empty- \; -empty-
-\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
--empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
-\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
--empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
-\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
--empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
-\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
--empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
-\; -empty- \; -empty- \; -empty- \; -empty- \;;
-#X obj 223 121 hradio 17 1 0 4 empty \$0-radio Load\ preset -3 -10
-0 12 -174763 -1 -1 0;
+#X obj 322 190 savestate;
+#X msg 382 220 export;
+#X obj 223 121 hradio 17 1 0 4 empty \$0-radio Load\ preset 2 -10 0
+10 -174763 -1 -1 3;
 #N canvas 356 221 694 431 shift 0;
 #X msg 137 214 save;
 #X msg 218 214 load;
@@ -55,30 +43,44 @@
 #X connect 13 0 3 0;
 #X restore 223 175 pd shift;
 #X obj 55 123 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 333 256;
+-228856 -1 -1 0 256;
 #X obj 111 123 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 376 256;
+-228856 -1 -1 0 256;
 #X obj 165 123 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 0.7 256;
+-228856 -1 -1 0 256;
 #X obj 87 197 else/pmosc~;
-#X text 168 103 Index;
-#X text 121 102 Mod;
-#X text 52 102 Carrier;
-#X text 318 55 Just connect [savestate] and [presets] as below. It'll
-export the contents as a list and then load them. Since this uses [savestate]
+#X text 170 107 Index;
+#X text 123 107 Mod;
+#X text 55 107 Carrier;
+#X obj 382 250 else/presets \\\$0-A \\\$0-B \\\$0-C;
+#A saved -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+;
+#X text 339 69 Just connect [savestate] and [presets] as below. It'll
+export the contents as a list and load them. Since this uses [savestate]
 \, the presets are saved when the parent patch gets saved and are also
 stored with the parent patch., f 41;
-#X connect 0 0 9 0;
-#X connect 1 0 10 0;
-#X connect 2 0 11 0;
-#X connect 4 0 6 0;
+#X text 156 12 This is an abstraction used as an example for the [presets]
+object documentation., f 41;
+#X connect 0 0 8 0;
+#X connect 1 0 9 0;
+#X connect 2 0 10 0;
+#X connect 4 0 15 0;
 #X connect 4 1 5 0;
-#X connect 5 0 6 0;
-#X connect 6 0 4 0;
-#X connect 7 0 8 0;
-#X connect 8 0 6 0;
-#X connect 9 0 12 0;
-#X connect 10 0 12 1;
-#X connect 11 0 12 2;
-#X connect 12 0 3 0;
+#X connect 5 0 15 0;
+#X connect 6 0 7 0;
+#X connect 7 0 15 0;
+#X connect 8 0 11 0;
+#X connect 9 0 11 1;
+#X connect 10 0 11 2;
+#X connect 11 0 3 0;
+#X connect 15 0 4 0;
 #X coords 0 -1 1 1 250 44 2 50 100;
