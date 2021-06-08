@@ -8,7 +8,7 @@
 
 ### Version: 1.0-0 beta-41 With Live Electronics Tutorial 
 
-###   Unreleased.
+###   Released June 9th 2021.
 
 
 
@@ -113,7 +113,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (423 objects):
+## Current Object list (424 objects):
 
 **ASSORTED: [02]**
 
@@ -141,9 +141,10 @@ Cross compiling is also possible with something like this
 - [pitch2note]
 - [note2pitch]
 
-**PATCH/SUBPATCH MANAGEMENT: [19]**
+**PATCH/SUBPATCH MANAGEMENT: [20]**
 
 - [args]
+- [presets]
 - [dollsym]
 - [receiver]
 - [retrieve]
@@ -613,4 +614,4 @@ Cross compiling is also possible with something like this
 
 **EXTRA: [02]**
 - [output~]
-- [cmul~]
+- [cmul~]P

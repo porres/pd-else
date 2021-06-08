@@ -147,7 +147,9 @@ gatehold~	x
 gbman~	x
 gcd	x
 giga.rev~	x
+glide	x
 glide~	x
+glide2	x
 glide2~	x
 gmean	x
 grain.live~	x
@@ -283,6 +285,7 @@ pmosc~	x
 pol2car	x
 pol2car~	x
 power~	x
+presets	x
 properties	x
 pulse	x
 pulse~	x
