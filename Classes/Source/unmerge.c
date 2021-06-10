@@ -12,14 +12,10 @@ typedef struct _unmerge{
 static t_class *unmerge_class;
 
 static void unmerge_list(t_unmerge *x, t_symbol *s, int ac, t_atom *av){
-    post("list");
     int size = x->x_size < 1 ? 1 : x->x_size;
     int nouts = x->x_nouts;
-    post("nouts = %d", nouts);
     int length = size * nouts;
-    post("length = %d", length);
     int extra = (ac - length);
-    post("extra = %d", extra);
     if(extra > 0){ // extra outlet
         if(extra == 1 && av->a_type == A_FLOAT)
             outlet_float(x->x_outlets[nouts], (av+length)->a_w.w_float);
