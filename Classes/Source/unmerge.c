@@ -12,10 +12,14 @@ typedef struct _unmerge{
 static t_class *unmerge_class;
 
 static void unmerge_list(t_unmerge *x, t_symbol *s, int ac, t_atom *av){
+    post("list");
     int size = x->x_size < 1 ? 1 : x->x_size;
     int nouts = x->x_nouts;
+    post("nouts = %d", nouts);
     int length = size * nouts;
+    post("length = %d", length);
     int extra = (ac - length);
+    post("extra = %d", extra);
     if(extra > 0){ // extra outlet
         if(extra == 1 && av->a_type == A_FLOAT)
             outlet_float(x->x_outlets[nouts], (av+length)->a_w.w_float);
@@ -35,15 +39,19 @@ static void unmerge_list(t_unmerge *x, t_symbol *s, int ac, t_atom *av){
         int j = (i * size);
         int n = ac - j;
         if(n > 0){
-            if(n == 1 && av->a_type == A_FLOAT)
-                outlet_float(x->x_outlets[i], (av+j)->a_w.w_float);
-            else if(av->a_type == A_FLOAT)
-                outlet_list(x->x_outlets[i],  &s_list, n, av+j);
-            else if(!x->x_trim)
-                outlet_anything(x->x_outlets[i],  &s_list, n, av+j);
-            else{
-                s = atom_getsymbolarg(0, n, av+j);
-                outlet_anything(x->x_outlets[i], s, n-1, av+j+1);
+            if((av+j)->a_type == A_FLOAT){
+                if(n == 1)
+                    outlet_float(x->x_outlets[i], (av+j)->a_w.w_float);
+                else
+                    outlet_list(x->x_outlets[i],  &s_list, n, av+j);
+            }
+            else if((av+j)->a_type == A_SYMBOL){
+                if(!x->x_trim)
+                    outlet_anything(x->x_outlets[i],  &s_list, n, av+j);
+                else{
+                    s = atom_getsymbolarg(0, n, av+j);
+                    outlet_anything(x->x_outlets[i], s, n-1, av+j+1);
+                }
             }
         }
         else

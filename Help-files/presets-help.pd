@@ -8,17 +8,17 @@ in float gridx float gridy;
 in float gridx float gridy;
 #N struct 2561-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N canvas 562 51 563 722 10;
+#N canvas 579 51 565 736 10;
 #X floatatom 379 200 0 0 0 0 - - -;
 #X obj 137 147 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
--1 -1 6;
+-1 -1 0;
 #X obj 321 173 r \$0-A;
 #X obj 379 172 r \$0-B;
 #X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 24 42 cnv 4 4 4 empty empty Preset 0 28 2 18 -233017 -1 0;
+#X obj 24 42 cnv 4 4 4 empty empty Presets 0 28 2 18 -233017 -1 0;
 #X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
 #X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
@@ -32,13 +32,13 @@ in float gridx float gridy;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 306 5 graph;
-#X obj 76 42 cnv 4 4 4 empty empty manager 0 28 2 18 -233017 -1 0;
+#X obj 83 42 cnv 4 4 4 empty empty manager 0 28 2 18 -233017 -1 0;
 #X obj 4 5 cnv 15 301 42 empty empty presets 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 5 graph;
-#X obj 6 693 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 709 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 9 230 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -125,7 +125,7 @@ window, f 58;
 #X obj 529 73 else/slider2d 127 127 0 127 0 127 1 225 225 225 0 0 0
 0 0 0 88 92 empty \\\$0-sl2;
 #X obj 417 75 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 800 1;
+-1 -1 0 1;
 #X obj 417 37 r \$0-sl1;
 #X obj 513 247 r \$0-buf;
 #X obj 513 276 else/buffer \$0-morph;
@@ -348,7 +348,7 @@ can have its own separate set of presets. Open an abstraction below
 to see how this is done with [presets] and [savestate]., f 63;
 #X connect 2 0 0 0;
 #X connect 3 0 1 0;
-#X restore 472 243 pd abstrations;
+#X restore 467 241 pd abstrations;
 #X obj 98 129 hradio 15 1 0 8 empty \$0-radio Load\ preset 0 -8 0 10
 -174763 -1 -1 6;
 #N canvas 356 221 568 423 shift 0;
@@ -414,7 +414,7 @@ abstractions., f 34;
 #X restore 480 203 pd advanced;
 #N canvas 697 113 686 616 basic 0;
 #X obj 39 141 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
--1 3;
+-1 0;
 #X floatatom 39 170 3 0 7 0 - - -;
 #X obj 129 279 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -445,7 +445,7 @@ set, f 30;
 #X text 201 428 open presets' data window (you can also edit);
 #X text 213 451 close window;
 #X obj 523 206 vsl 50 350 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 2500 1;
+-1 -1 34100 1;
 #X text 228 473 clear preset 0;
 #X text 224 496 clear all presets;
 #X obj 523 159 else/receiver \$0-basic, f 13;
@@ -456,7 +456,7 @@ set, f 30;
 #X text 303 404 export to a text file;
 #X msg 163 405 write preset-basic.txt;
 #X obj 69 556 else/presets \\\$0-basic;
-#A saved \\\$0-basic 127 || \; \\\$0-basic 80.2776 || \; \\\$0-basic
+#A saved \\\$0-basic 124.089 || \; \\\$0-basic 80.2776 || \; \\\$0-basic
 43.3037 || \; \\\$0-basic 9.09742 || \;;
 #X text 44 23 The [presets] object is an abstraction based on [text]
 \, [savestate] and uses [else/retrieve] to communicate with [receive]
@@ -485,12 +485,12 @@ objects., f 96;
 #X connect 34 0 35 0;
 #X restore 447 140 pd basic;
 #X obj 9 605 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 124 612 -n <float>: sets number of presets (default: 64);
-#X text 100 627 -file <symbol>: set a file to import from (default:
+#X text 127 612 -n <float>: sets number of presets (default: 64);
+#X text 103 627 -file <symbol>: set a file to import from (default:
 none);
-#X text 106 657 -morph <f \, f>: sets morph time and grain (default:
+#X text 109 657 -morph <f \, f>: sets morph time and grain (default:
 0 \, 20);
-#X text 142 672 -interp: sets to interpolation mode (default: no interpolation)
+#X text 145 672 -interp: sets to interpolation mode (default: no interpolation)
 , f 63;
 #X text 127 326 n <float> -;
 #X text 201 326 sets number of presets, f 58;
@@ -539,8 +539,7 @@ file with the 'read' message., f 80;
 #X obj 651 117 else/initmess args \\\$0-n2;
 #X msg 685 151 read preset2.txt;
 #X obj 685 243 else/presets -file preset2.txt;
-#A saved \\\$0-n2 -90 || \; \\\$0-n2 86 || \; \\\$0-n2 280 || \; \\\$0-n2
-444 || \;;
+#A saved;
 #X text 532 14 If no send adress argument is given \, [presets] can
 still load text files with send names to send the data to matching
 receive objects. But it won't be able to save them unless you give
@@ -565,7 +564,7 @@ groups., f 69;
 #X restore 505 140 pd args;
 #N canvas 555 81 567 586 basic_example 0;
 #X obj 62 282 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 920 1 80 0;
+50 50 0 0 0 0 0 1000 0;
 #X obj 62 228 r \$0-function;
 #X obj 120 100 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
 -1 -1 1;
@@ -662,7 +661,7 @@ just giving ideas in case you want it and need it \; ), f 43;
 four || \\\$0-B 4 || \; \\\$0-A symbol five || \\\$0-B 5 || \; \\\$0-A
 symbol six || \\\$0-B 6 || \; \\\$0-A symbol seven || \\\$0-B 7 ||
 \; \\\$0-A symbol eight || \\\$0-B 8 || \;;
-#X text 76 642 -morphtime <float>: sets morph time (default: 0);
+#X text 79 642 -morphtime <float>: sets morph time (default: 0);
 #X text 37 82 [presets] manages presets for patches and abstractions
 and has interpolation and morphing features. It works by communicating
 to receive symbols. Change the number and symbol below \, save a preset
@@ -697,9 +696,9 @@ Well \, at least for GUI abstraction objects from the ELSE library
 \, you can communicate to them with their built-in receive name thanks
 to the [else/default] object \,, f 69;
 #X obj 160 342 hsl 128 15 0 127 0 0 empty \$0-sl-rcv empty -2 -8 0
-10 -228856 -1 -1 1200 1;
+10 -228856 -1 -1 0 1;
 #X obj 170 302 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-nbx-rcv empty 0
--8 0 10 -228856 -1 -1 -80 256;
+-8 0 10 -228856 -1 -1 0 256;
 #X floatatom 225 302 5 0 0 0 - #0-atom-rcv -;
 #X obj 136 385 else/function 200 100 empty \$0-function-rcv 0 1 220
 220 220 50 50 50 0 0 0 0 0 1000 1;
@@ -731,6 +730,8 @@ names that match the [presets] object., f 34;
 #X text 275 58 ~THIS OBJECT IS STILL EXPERIMENTAL~;
 #X text 139 368 exp <f> -;
 #X text 201 368 sets interpolation exponential factor, f 58;
+#X text 115 687 -exp <float>: sets to interpolation exponential factor
+(default: 1), f 68;
 #X connect 1 0 23 0;
 #X connect 2 0 46 0;
 #X connect 3 0 0 0;
