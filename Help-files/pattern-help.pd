@@ -1,0 +1,158 @@
+#N canvas 590 77 559 611 10;
+#X obj 147 158 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 147 261 out~;
+#X obj 354 240 print info;
+#X obj 117 232 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X msg 178 176 tempo \$1;
+#X floatatom 178 154 5 0 0 0 - - -;
+#X obj 147 232 else/impseq~;
+#X obj 25 40 cnv 4 4 4 empty empty Rhythmic 0 28 2 18 -233017 -1 0
+;
+#X obj 106 40 cnv 4 4 4 empty empty pattern 0 28 2 18 -233017 -1 0
+;
+#X obj 3 3 cnv 15 301 42 empty empty pattern 20 20 2 37 -233017 -1
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 304 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+0;
+#X obj 166 40 cnv 4 4 4 empty empty sequencer 0 28 2 18 -233017 -1
+0;
+#X obj 4 326 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 459 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+;
+#X obj 4 517 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+0;
+#X obj 112 468 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 3 584 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 112 334 cnv 17 3 95 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 112 491 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 112 434 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 551 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 74 157 start/stop;
+#X text 27 261 see also:;
+#X obj 25 282 else/sequencer;
+#X text 300 167 set ===> pattern, f 8;
+#X text 186 333 float;
+#X text 225 333 - non-zero starts \, zero stops the sequencer, f 44
+;
+#X text 138 347 tempo <float>;
+#X text 225 347 - sets tempo in (bpm), f 44;
+#X text 192 433 list;
+#X text 225 433 - sets new sequence, f 44;
+#X text 193 468 bang;
+#X text 227 468 - at every new note;
+#X text 169 491 anything;
+#X text 227 491 - several sequence informations;
+#X text 173 529 1) list - sets sequence (default \, empty);
+#N canvas 795 135 549 565 details 0;
+#X obj 171 340 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 166 362 stop;
+#X obj 206 409 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 232 405 start of pattern, f 8;
+#X text 282 370 Bar number and total number of tempos, f 20;
+#X obj 171 309 route stop start bar dur;
+#X text 346 339 duration (also negative);
+#X obj 80 386 out~;
+#X obj 80 346 else/impseq~;
+#X msg 149 225 1/4 1/4 1/4 1/8 1/24 1/24 1/24 | 1/6 1/12 1/12 1/6 1/6
+1/15 4/15, f 32;
+#X msg 148 184 1/4 1/4 1/4 1/8 1/24 1/24 1/24 | 1/4 -1/4 1/8 1/8 1/4
+1/8 1/8 1/4, f 32;
+#X text 326 304 route information from the right outlet, f 22;
+#X text 110 470 The right outlet gives the following information \;
+'stop' - when the sequence stops \; 'start' - when it (re)starts \;
+'bar <float \, float>' - bar number and total number of tempos \; 'dur
+<float>' - duration of notes (negative when it's a rest), f 62;
+#X obj 98 186 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 276 339 else/display 8;
+#X obj 241 373 else/display 4;
+#X text 98 18 The note durations are specified as fractions of a whole
+note. Hence: 1/4 = fourth note / 1/8 = eight note and so on. Tuplets
+are defined as \, for instance \, 1/6 (a fourth note triplet). Note
+that 1/15 is a nested tuplet (a quintuplet inside a triplet)., f 63
+;
+#X msg 162 268 10/56 5/56 5/56 10/56 5/56 3/40 3/40 3/40 3/40 3/40
+;
+#X text 98 73 If you want to have 7 eight notes in the space of 5 \,
+then you have 5 eight notes (5/8) divided by 7 \, which is the same
+as 5/(8*7) \, so you have 5/56 for each of these notes. 5 in the space
+of 3 is 3/(8*5) = 3/40., f 63;
+#X obj 81 148 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X text 108 150 <= start/restart;
+#X text 354 182 <== set and start or restart the sequence, f 20;
+#X msg 42 149 stop;
+#X obj 80 308 else/pattern;
+#X connect 5 0 0 0;
+#X connect 5 1 2 0;
+#X connect 5 2 15 0;
+#X connect 5 3 14 0;
+#X connect 8 0 7 0;
+#X connect 9 0 23 1;
+#X connect 10 0 23 0;
+#X connect 13 0 23 0;
+#X connect 17 0 23 1;
+#X connect 19 0 23 0;
+#X connect 22 0 23 0;
+#X connect 23 0 8 0;
+#X connect 23 1 5 0;
+#X restore 462 290 pd details;
+#X text 139 560 -tempo <float> - sets new tempo value (default 120)
+;
+#X msg 354 152 1/4 -1/4 | 1/4 1/8 1/8;
+#X msg 364 176 1/6 1/6 1/6 | 1/4 1/4;
+#X text 192 389 bang;
+#X text 214 154 <= bpm;
+#X text 52 89 [pattern] is a rhythmic pattern sequencer. The note durations
+are specified as fractions of a whole note \, negative values are rests!
+A '|' separates into different bars. When you set a new pattern via
+the right inlet \, it only starts when the previous one ends., f 75
+;
+#X text 192 403 list;
+#X text 225 389 - (re)start sequencer, f 44;
+#X text 192 375 stop;
+#X text 225 375 - stops the sequencer, f 44;
+#X text 186 361 start;
+#X text 225 361 - starts the sequencer, f 44;
+#X text 225 403 - sets new sequence and (re)starts sequencer;
+#X obj 147 205 else/pattern 1/4 -1/4 | 1/4 1/8 1/8;
+#X text 186 417 clear;
+#X text 225 417 - clears sequence, f 44;
+#X connect 0 0 58 0;
+#X connect 4 0 58 0;
+#X connect 5 0 4 0;
+#X connect 6 0 1 0;
+#X connect 46 0 58 1;
+#X connect 47 0 58 1;
+#X connect 58 0 3 0;
+#X connect 58 0 6 0;
+#X connect 58 1 2 0;
+#X coords 0 0 1 1 85 60 0;

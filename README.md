@@ -113,7 +113,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (424 objects):
+## Current Object list (425 objects):
 
 **ASSORTED: [02]**
 
@@ -502,6 +502,7 @@ Cross compiling is also possible with something like this
  - [susloop~]
  - [drum.seq]
 - [euclid]
+ - [pattern]
  - [sequencer]
  - [sequencer~]
  - [impseq~]

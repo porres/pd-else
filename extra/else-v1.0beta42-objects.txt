@@ -261,6 +261,7 @@ pan4~	x
 pan8~	x
 panic	x
 parabolic~	x
+pattern	x
 peak~	x
 perlin~	x
 pgm.in	x
