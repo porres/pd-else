@@ -1,19 +1,19 @@
-#N canvas 434 105 972 607 12;
-#X obj 168 211 print;
-#X msg 168 132 Hello World;
-#X text 177 172 <== conection cord;
-#X text 254 131 <== message box;
-#X text 97 121 inlet ==>;
-#X text 90 143 outlet ==>;
-#X text 99 198 inlet ==>;
-#X msg 47 388 one;
-#X obj 47 460 print;
-#X text 371 419 three-messages;
-#X text 341 387 one-message;
-#X msg 63 418 1 2 3;
-#X msg 297 388 a b c;
-#X msg 312 418 a \, b \, c;
-#X obj 297 460 print;
+#N canvas 434 105 961 606 12;
+#X obj 168 235 print;
+#X msg 168 156 Hello World;
+#X text 177 196 <== conection cord;
+#X text 254 155 <== message box;
+#X text 97 145 inlet ==>;
+#X text 90 167 outlet ==>;
+#X text 99 222 inlet ==>;
+#X msg 66 398 one;
+#X obj 66 470 print;
+#X text 371 429 three-messages;
+#X text 341 397 one-message;
+#X msg 82 428 1 2 3;
+#X msg 297 398 a b c;
+#X msg 312 428 a \, b \, c;
+#X obj 297 470 print;
 #X obj 644 93 float;
 #X floatatom 644 150 5 0 0 0 - - -;
 #X symbolatom 644 178 7 0 0 0 - - -;
@@ -36,20 +36,17 @@
 help file of every object you see in this tutorial that you do not
 know! If you right click on an empty space in your patch and ask for
 help \, Pd gives you a list of all its built-in objects!;
-#X text 210 210 <== object box*;
-#X text 132 245 * The [print] object displays messages in the terminal
+#X text 210 234 <== object box*;
+#X text 132 269 * The [print] object displays messages in the terminal
 window, f 31;
-#X text 55 299 A message may contain one or more elements \, which
+#X text 47 319 A message may contain one or more elements \, which
 are called “atoms” and can be either a number or a symbol. A comma
-allows you to have more than one message in a message box., f 49;
+allows you to have more than one message in a message box.;
 #X text 642 209 just a textual display;
 #X text 39 18 Welcome to this tutorial on Live Electronics with Pd
 and the ELSE library. Let's jump right into it!, f 59;
-#X text 40 54 We program in Pd by conecting "boxes" from "outlets"
-to "inlets". Click on the box that says "Hello_World!" and see the
-result at Pd's terminal window (Window => Pd).;
-#X text 76 387 one element/atom;
-#X text 109 418 three elements/atoms;
+#X text 95 397 one element/atom;
+#X text 128 428 three elements/atoms;
 #X text 518 37 These are the basic types of boxes \, you can insert
 them from the Put Menu or their shortcuts:;
 #X text 517 458 Atom boxes are interactive \, you can click and drag
@@ -58,11 +55,16 @@ it \, type a number and then enter. The same click/enter functionality
 is present in the symbol box. try it above. Both of these also have
 properties windows \, right click and select it to check it out \,
 as well as their help file., f 57;
-#X text 43 501 Numbers in Pd are floating point (have decimal points
+#X text 43 511 Numbers in Pd are floating point (have decimal points
 \, such "1.2") with 32 bit resolution (more on this type/resolution
 later). Pd only represents 6 significant digits \, otherwise it uses
 an exponential format such as "1e+6". Anything that is not considered
 a number atom is treated as a symbol atom.;
+#X text 39 53 We program in Pd by conecting "boxes" from "outlets"
+to "inlets". Click on the box that says "Hello_World!" and see the
+result at Pd's terminal window (a.k.a. 'Pd Window'). To access the
+temial go to "Window" menu and then choose "Pd Window" or use the shortcut
+(command/control + R).;
 #X connect 1 0 0 0;
 #X connect 7 0 8 0;
 #X connect 11 0 8 0;

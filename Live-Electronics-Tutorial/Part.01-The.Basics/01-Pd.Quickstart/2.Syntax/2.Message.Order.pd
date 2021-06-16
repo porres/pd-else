@@ -1,4 +1,4 @@
-#N canvas 589 53 1054 873 12;
+#N canvas 423 58 1054 873 12;
 #X msg 363 259 1;
 #X obj 212 231 trigger bang bang bang;
 #X msg 287 260 2;

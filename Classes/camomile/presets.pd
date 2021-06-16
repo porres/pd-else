@@ -1,4 +1,4 @@
-#N canvas 714 51 794 862 12;
+#N canvas 355 23 794 862 12;
 #X declare -path else;
 #X obj 300 573 text set \$0-preset;
 #X obj 182 663 text get \$0-preset;
@@ -573,7 +573,7 @@ presets.send.clone \$1 \, connect 0 0 1 0;
 #X restore 567 601 pd \$0-clone;
 #X obj 165 119 route load save set args morph interp exp, f 42;
 #X obj 177 271 t b a;
-#X obj 533 215 declare -path else;
+#X obj 548 652 declare -path else;
 #X connect 1 0 6 0;
 #X connect 1 1 5 0;
 #X connect 2 0 25 0;

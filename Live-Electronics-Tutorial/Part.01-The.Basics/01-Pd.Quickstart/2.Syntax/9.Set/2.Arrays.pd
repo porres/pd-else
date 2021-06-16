@@ -4,7 +4,7 @@
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array array5 20 float 0;
 #X coords 0 1 19 -1 200 140 1 0 0;
-#X restore 203 220 graph;
+#X restore 189 221 graph;
 #X msg 286 145 5 \$1;
 #X msg 44 137 \; array5 10 0.4 -0.5 0.6 -0.7;
 #N canvas 0 22 450 300 (subpatch) 0;
@@ -16,14 +16,12 @@
 #X msg 690 231 \; array6 sinesum 512 -0.5;
 #X msg 957 281 normalize;
 #X msg 968 304 normalize 0.5;
-#X obj 62 318 send array8;
 #X obj 61 253 send array5;
 #X msg 453 231 \; array6 cosinesum 512 0 1;
 #X msg 452 271 \; array6 cosinesum 512 0.5 -0.5;
 #X msg 452 310 \; array6 cosinesum 512 0 0.5 0.5;
 #X msg 918 220 print;
 #X msg 61 221 rename array7;
-#X msg 62 286 rename array7;
 #X text 33 440 The "sinesum" and "cosinesum" messages draw waveforms
 by summing up harmonic sine or cosine functions. The first float is
 the table size (it always resizes it) \, then we have a list of amplitudes
@@ -62,11 +60,13 @@ from 2.control.examples, f 76;
 "write") \, and values of an array are set by sending it a list of
 floats \, where the first one specifies the index and the others set
 the values from that index on., f 55;
+#X msg 62 285 rename array5;
+#X obj 62 318 send array7;
 #X connect 0 0 2 0;
-#X connect 2 0 24 0;
-#X connect 8 0 23 0;
-#X connect 9 0 23 0;
-#X connect 15 0 23 0;
-#X connect 16 0 11 0;
-#X connect 17 0 10 0;
-#X connect 22 0 23 0;
+#X connect 2 0 22 0;
+#X connect 8 0 21 0;
+#X connect 9 0 21 0;
+#X connect 14 0 21 0;
+#X connect 15 0 10 0;
+#X connect 20 0 21 0;
+#X connect 30 0 31 0;
