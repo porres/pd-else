@@ -1,6 +1,6 @@
-#N canvas 695 140 560 391 10;
-#X obj 196 147 nbx 3 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 0 256;
+#N canvas 603 132 560 400 10;
+#X obj 216 156 nbx 3 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
+-228856 -1 -1 9 256;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -28,33 +28,37 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X text 77 94 [midi2freq] converts MIDI to frequency like [mtof] \,
-but it allows you so set a different frequency reference value for
-A4 so you can explore different tunnings., f 66;
-#X floatatom 301 148 5 0 0 0 - - -;
-#X obj 4 237 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X floatatom 321 157 5 0 0 0 - - -;
+#X obj 4 246 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 297 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 306 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 332 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 341 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 167 306 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 167 315 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 167 246 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 167 255 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 364 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 373 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 195 307 float;
-#X obj 167 268 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 167 277 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 195 247 float;
-#X text 231 247 - MIDI value to convert;
-#X text 195 270 float;
-#X obj 196 202 else/display;
-#X text 231 307 - value in Hertz;
-#X text 145 341 1) float - set A4 value (default 440);
-#X obj 196 175 else/midi2freq 432;
-#X text 231 270 - set a new value for A4;
-#X connect 0 0 31 0;
-#X connect 16 0 31 1;
-#X connect 31 0 28 0;
+#X text 195 279 float;
+#X obj 216 211 else/display;
+#X text 145 350 1) float - set A4 value (default 440);
+#X obj 216 184 else/midi2freq 432;
+#X text 231 279 - set a new value for A4;
+#X text 201 256 list;
+#X text 201 316 list;
+#X text 231 256 - MIDI value(s) to convert;
+#X text 231 316 - value(s) in Hertz;
+#X msg 150 156 69 69.5;
+#X text 44 86 [midi2freq] converts MIDI to frequency like [mtof] \,
+but it also converts lists and allows you so set a different frequency
+reference value for A4 so you can explore different tunnings. Note
+that 'MIDI cents' are possible \, where 69.5 is 50 cents (or a quarter
+tone) higher than 69 (hence 1 cent = 0.01)., f 78;
+#X connect 0 0 26 0;
+#X connect 15 0 26 1;
+#X connect 26 0 24 0;
+#X connect 32 0 26 0;
