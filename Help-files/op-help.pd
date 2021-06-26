@@ -1,4 +1,4 @@
-#N canvas 852 76 562 437 10;
+#N canvas 665 82 562 437 10;
 #X obj 4 257 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 329 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -182,30 +182,31 @@
 #X connect 30 0 5 0;
 #X connect 30 0 5 0;
 #X restore 460 190 pd bitwise;
-#N canvas 1030 94 359 577 set 0;
-#X obj 32 532 outlet;
-#X msg 57 13 +;
-#X msg 63 32 -;
-#X msg 69 51 *;
-#X msg 75 70 /;
-#X msg 81 89 >;
-#X msg 87 108 <;
-#X msg 93 128 >=;
-#X msg 100 147 <=;
-#X msg 107 167 ==;
-#X msg 114 187 !=;
-#X msg 120 207 &&;
-#X msg 129 227 ||;
-#X msg 135 247 |;
-#X msg 143 267 &;
-#X msg 148 287 >>;
-#X msg 155 307 <<;
-#X msg 178 365 pow;
-#X msg 184 385 max;
-#X msg 192 405 min;
-#X msg 197 425 log;
-#X msg 170 346 ~;
-#X msg 161 327 ^;
+#N canvas 1030 94 310 606 set 0;
+#X obj 58 542 outlet;
+#X msg 83 23 +;
+#X msg 89 42 -;
+#X msg 95 61 *;
+#X msg 101 80 /;
+#X msg 107 99 >;
+#X msg 113 118 <;
+#X msg 119 138 >=;
+#X msg 126 157 <=;
+#X msg 133 177 ==;
+#X msg 140 197 !=;
+#X msg 146 217 &&;
+#X msg 155 237 ||;
+#X msg 161 257 |;
+#X msg 169 277 &;
+#X msg 174 297 >>;
+#X msg 181 317 <<;
+#X msg 204 375 pow;
+#X msg 210 395 max;
+#X msg 218 415 min;
+#X msg 223 435 log;
+#X msg 196 356 ~;
+#X msg 187 337 ^;
+#X msg 227 458 %;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
@@ -228,9 +229,10 @@
 #X connect 20 0 0 0;
 #X connect 21 0 0 0;
 #X connect 22 0 0 0;
+#X connect 23 0 0 0;
 #X restore 269 140 pd set;
 #X floatatom 277 170 5 0 0 0 - - -;
-#N canvas 1086 209 350 350 others 0;
+#N canvas 745 164 586 342 others 0;
 #X obj 68 147 else/display;
 #X obj 69 279 else/display;
 #X obj 191 281 else/display;
@@ -242,12 +244,19 @@
 #X obj 68 114 else/op min 5;
 #X obj 191 248 else/op log 5;
 #X obj 69 246 else/op pow 2;
-#X text 109 16 OTHER OPERATORS;
+#X text 214 19 OTHER OPERATORS;
 #X text 65 58 minimum;
 #X text 190 62 maximum;
 #X text 71 190 power;
 #X text 201 196 log, f 4;
 #X obj 195 114 else/op max 5;
+#X obj 385 257 else/display;
+#X obj 385 224 else/op % 1.1;
+#X msg 385 199 1 2 8;
+#X text 386 173 modulo;
+#X text 325 75 The '%' (modulo) operator calls the 'fmod' function
+also found in the expr family of objects. Note that it doesn't correspond
+neither to [%] or [mod] objects from Vanilla., f 31;
 #X connect 4 0 8 0;
 #X connect 5 0 10 0;
 #X connect 6 0 9 0;
@@ -256,6 +265,8 @@
 #X connect 9 0 2 0;
 #X connect 10 0 1 0;
 #X connect 16 0 3 0;
+#X connect 18 0 17 0;
+#X connect 19 0 18 0;
 #X restore 460 209 pd others;
 #X text 223 285 operator see [pd set] for all options;
 #X text 165 371 operator: see [pd set] for all options (default +)
