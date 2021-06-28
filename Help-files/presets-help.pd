@@ -1,12 +1,12 @@
 #N struct 1004-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1141-point float x0 float y0 float xs float ys float fg float
+#N struct 1017-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1280-point float x0 float y0 float xs float ys float fg float
+#N struct 1098-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1419-point float x0 float y0 float xs float ys float fg float
+#N struct 1146-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 2561-point float x0 float y0 float xs float ys float fg float
+#N struct 1469-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 579 51 565 736 10;
 #X floatatom 379 200 0 0 0 0 - - -;
@@ -109,13 +109,13 @@ window, f 58;
 58;
 #N canvas 601 200 659 296 advanced 0;
 #N canvas 806 34 743 681 morph 0;
-#X obj 85 47 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
+#X obj 83 41 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
 -1 0;
-#X floatatom 85 76 3 0 7 0 - - -;
-#X obj 118 79 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+#X floatatom 83 70 3 0 7 0 - - -;
+#X obj 116 73 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
-#X text 136 78 save;
-#X text 50 45 load;
+#X text 134 72 save;
+#X text 48 39 load;
 #X obj 486 325 cnv 15 200 120 empty empty empty 20 12 0 14 -233017
 -66577 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -123,39 +123,18 @@ window, f 58;
 #X coords 0 1 10 -1 202 122 1 0 0;
 #X restore 485 324 graph;
 #X obj 529 73 else/slider2d 127 127 0 127 0 127 1 225 225 225 0 0 0
-0 0 0 88 92 empty \\\$0-sl2;
+0 0 0 19 25 empty \\\$0-sl2;
 #X obj 417 75 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+-1 -1 8000 1;
 #X obj 417 37 r \$0-sl1;
 #X obj 513 247 r \$0-buf;
 #X obj 513 276 else/buffer \$0-morph;
-#X msg 187 162 read p3.txt;
 #X msg 529 37 receive \\\$0-sl2;
-#X msg 49 141 open;
-#X obj 118 195 else/presets -morph 1000 10 \\\$0-sl1 \\\$0-sl2 \\\$0-buf
-, f 29;
-#A saved \\\$0-sl1 8 || \\\$0-sl2 88 92 || \\\$0-buf -0.52459 -0.114763
-0.442605 0.67211 0.704896 0.557358 0.213101 -0.131156 -0.40984 -0.639345
-|| \; \\\$0-sl1 43 || \\\$0-sl2 44 49 || \\\$0-buf 0.213118 0.0163996
--0.295071 -0.590148 -0.737687 -0.885226 -0.901619 -0.704901 -0.34425
--0.0327799 || \; \\\$0-sl1 9 || \\\$0-sl2 103 22 || \\\$0-buf 0.409842
-0.180337 0.0327988 -0.327851 -0.213099 0.131158 0.393449 0.65574 0.754099
-0.491808 || \; \\\$0-sl1 84 || \\\$0-sl2 32 103 || \\\$0-buf -0.786884
--0.770491 -0.737704 -0.721311 -0.688525 -0.688525 -0.688525 -0.737704
--0.786884 -0.770491 || \; -empty- \; -empty- \; -empty- \; -empty-
-\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
--empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
-\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
--empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
-\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
--empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
-\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
--empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
-\; -empty- \; -empty- \; -empty- \; -empty- \;;
-#X obj 182 85 else/pack2 1000 10;
-#X msg 182 118 morph \$1 \$2;
-#X floatatom 182 61 5 0 0 0 - - -;
-#X floatatom 287 63 5 0 0 0 - - -;
+#X msg 47 135 open;
+#X obj 180 79 else/pack2 1000 10;
+#X msg 180 112 morph \$1 \$2;
+#X floatatom 180 55 5 0 0 0 - - -;
+#X floatatom 285 57 5 0 0 0 - - -;
 #X text 49 278 You can set a morph time and a time grain between updates.
 This smoothens the transition between preset values and work for floats
 or lists of floats (no symbols \, of course).;
@@ -165,12 +144,8 @@ morph time (default 0) and grain time (default 20). When the time is
 this. Alternatively \, you can use the -morphtime to just set the morph
 time., f 60;
 #X obj 461 522 else/slider2d 127 127 0 127 0 127 1 225 225 225 0 0
-0 0 0 0 96 17 empty empty;
+0 0 0 0 113 109 empty empty;
 #X obj 330 537 else/message;
-#X text 49 389 If you just want morph one or another preset parameter
-(that is \, not all of them) \, you can use the [morph] object connetected
-to it. This may also allow you to set different morph times to different
-parameters.;
 #X obj 330 511 r \$0-morph;
 #X obj 156 581 else/presets \\\$0-morph;
 #A saved \\\$0-morph 81 84 || \; \\\$0-morph 17 37 || \; \\\$0-morph
@@ -184,33 +159,64 @@ parameters.;
 \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
 -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
 \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
-#X obj 123 519 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
--1 -1 3;
-#X floatatom 123 548 3 0 7 0 - - -;
-#X obj 156 551 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 123 521 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
+-1 -1 2;
+#X floatatom 123 550 3 0 7 0 - - -;
+#X obj 156 550 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 174 550 save;
-#X text 88 517 load;
+#X text 174 549 save;
+#X text 88 519 load;
 #X obj 330 575 else/morph 1500;
+#X msg 187 154 exp 2;
+#X text 49 386 You can also set an exponential factor for the interpolation
+with the -exp flag or 'exp' message.;
+#X msg 229 154 exp 1;
+#X msg 276 154 exp 0.5;
+#X text 49 418 If you just want morph one or another preset parameter
+(that is \, not all of them) \, or use different time/exponential factors
+\, you can use the [morph] object connetected to it. This may also
+allow you to set different morph times to different parameters.;
+#X obj 116 199 else/presets -morph 1000 10 \\\$0-sl1 \\\$0-sl2 \\\$0-buf
+, f 29;
+#A saved \\\$0-sl1 80 || \\\$0-sl2 19 25 || \\\$0-buf 0.72131 0.524592
+0.262301 -0.0491692 -0.278674 -0.655717 -0.72129 -0.540965 -0.114742
+0.426233 || \; \\\$0-sl1 13 || \\\$0-sl2 100 105 || \\\$0-buf -0.573777
+-0.065588 0.377028 0.557353 0.475387 -0.491803 -0.819672 -0.622956
+-0.0819812 0.754071 || \; \\\$0-sl1 49 || \\\$0-sl2 47 66 || \\\$0-buf
+0.655741 0.147552 -0.278671 -0.639321 -0.934398 -0.803253 -0.540962
+-0.147525 0.245911 0.672134 || \; \\\$0-sl1 116 || \\\$0-sl2 105 19
+|| \\\$0-buf -0.344267 -0.114763 -1.03712e-05 0.0983487 0.180315 0.295067
+0.540965 0.688503 0.770469 0.868828 || \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
+-empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
+\; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
 #X connect 0 0 1 0;
-#X connect 1 0 15 0;
-#X connect 2 0 15 0;
+#X connect 1 0 35 0;
+#X connect 2 0 35 0;
 #X connect 9 0 8 0;
 #X connect 10 0 11 0;
-#X connect 12 0 15 0;
-#X connect 13 0 7 0;
+#X connect 12 0 7 0;
+#X connect 13 0 35 0;
 #X connect 14 0 15 0;
-#X connect 16 0 17 0;
-#X connect 17 0 15 0;
-#X connect 18 0 16 0;
-#X connect 19 0 16 1;
-#X connect 22 0 23 1;
-#X connect 23 0 32 0;
+#X connect 15 0 35 0;
+#X connect 16 0 14 0;
+#X connect 17 0 14 1;
+#X connect 20 0 21 1;
+#X connect 21 0 29 0;
+#X connect 22 0 21 0;
+#X connect 24 0 25 0;
 #X connect 25 0 23 0;
-#X connect 27 0 28 0;
-#X connect 28 0 26 0;
-#X connect 29 0 26 0;
-#X connect 32 0 22 0;
+#X connect 26 0 23 0;
+#X connect 29 0 20 0;
+#X connect 30 0 35 0;
+#X connect 32 0 35 0;
+#X connect 33 0 35 0;
 #X restore 462 98 pd morph;
 #N canvas 573 144 919 409 interpolate 0;
 #X obj 66 159 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
@@ -222,13 +228,13 @@ parameters.;
 #X text 31 157 load;
 #X obj 269 142 else/slider2d 127 127 0 127 0 127 1 225 225 225 0 0
 0 0 0 0 13.0157 108.472 empty \\\$0-interpolate;
-#X obj 218 296 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 218 316 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X msg 49 272 open;
-#X obj 174 171 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 164 171 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X msg 174 199 interp \$1;
-#X obj 98 322 else/presets -interp \\\$0-interpolate, f 20;
+#X msg 164 199 interp \$1;
+#X obj 98 342 else/presets -interp \\\$0-interpolate, f 20;
 #A saved \\\$0-interpolate 78.0157 63.4724 || \; \\\$0-interpolate
 111 101.472 || \; \\\$0-interpolate 115.016 8.4724 || \; \\\$0-interpolate
 13.0157 108.472 || \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
@@ -246,8 +252,8 @@ or the -interp flag. In this mode \, when you change the preset \,
 you can interpolate to it by moving the slider to the opposite end.
 This works for floats and list of floats (not symbols \, of course).
 , f 62;
-#X msg 184 227 exp 2;
-#X msg 190 251 exp 1;
+#X msg 174 227 exp 2;
+#X msg 180 251 exp 1;
 #X text 27 91 You can also set an exponential factor for the interpolation
 with the -exp flag or 'exp' message., f 62;
 #X text 444 35 If you just want interpolate one or another preset parameter
@@ -284,6 +290,7 @@ help file out., f 73;
 \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
 ;
 #X obj 586 235 r \$0-interp2;
+#X msg 187 276 exp 0.5;
 #X connect 0 0 1 0;
 #X connect 1 0 10 0;
 #X connect 2 0 10 0;
@@ -302,6 +309,7 @@ help file out., f 73;
 #X connect 24 0 26 0;
 #X connect 25 0 16 1;
 #X connect 27 0 16 0;
+#X connect 28 0 10 0;
 #X restore 446 134 pd interpolate;
 #N canvas 777 104 472 524 abstrations 0;
 #X obj 109 292 else/out~;
@@ -445,7 +453,7 @@ set, f 30;
 #X text 201 428 open presets' data window (you can also edit);
 #X text 213 451 close window;
 #X obj 523 206 vsl 50 350 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 34100 1;
+-1 -1 0 1;
 #X text 228 473 clear preset 0;
 #X text 224 496 clear all presets;
 #X obj 523 159 else/receiver \$0-basic, f 13;
@@ -485,13 +493,14 @@ objects., f 96;
 #X connect 34 0 35 0;
 #X restore 447 140 pd basic;
 #X obj 9 605 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 127 612 -n <float>: sets number of presets (default: 64);
-#X text 103 627 -file <symbol>: set a file to import from (default:
-none);
-#X text 109 657 -morph <f \, f>: sets morph time and grain (default:
-0 \, 20);
-#X text 145 672 -interp: sets to interpolation mode (default: no interpolation)
-, f 63;
+#X text 98 612 -n <float>: sets number of presets (default: 64), f
+72;
+#X text 74 627 -file <symbol>: set a file to import from (default:
+none), f 76;
+#X text 80 657 -morph <f \, f>: sets morph time and grain (default:
+0 \, 20), f 75;
+#X text 116 672 -interp: sets to interpolation mode (default: no interpolation)
+, f 69;
 #X text 127 326 n <float> -;
 #X text 201 326 sets number of presets, f 58;
 #N canvas 524 190 977 386 args 0;
@@ -539,7 +548,8 @@ file with the 'read' message., f 80;
 #X obj 651 117 else/initmess args \\\$0-n2;
 #X msg 685 151 read preset2.txt;
 #X obj 685 243 else/presets -file preset2.txt;
-#A saved;
+#A saved \\\$0-n2 -90 || \; \\\$0-n2 86 || \; \\\$0-n2 280 || \; \\\$0-n2
+444 || \;;
 #X text 532 14 If no send adress argument is given \, [presets] can
 still load text files with send names to send the data to matching
 receive objects. But it won't be able to save them unless you give
@@ -661,7 +671,8 @@ just giving ideas in case you want it and need it \; ), f 43;
 four || \\\$0-B 4 || \; \\\$0-A symbol five || \\\$0-B 5 || \; \\\$0-A
 symbol six || \\\$0-B 6 || \; \\\$0-A symbol seven || \\\$0-B 7 ||
 \; \\\$0-A symbol eight || \\\$0-B 8 || \;;
-#X text 79 642 -morphtime <float>: sets morph time (default: 0);
+#X text 50 642 -morphtime <float>: sets morph time (default: 0), f
+80;
 #X text 37 82 [presets] manages presets for patches and abstractions
 and has interpolation and morphing features. It works by communicating
 to receive symbols. Change the number and symbol below \, save a preset
@@ -729,9 +740,10 @@ names that match the [presets] object., f 34;
 #X restore 455 182 pd built-in-rcv;
 #X text 275 58 ~THIS OBJECT IS STILL EXPERIMENTAL~;
 #X text 139 368 exp <f> -;
-#X text 201 368 sets interpolation exponential factor, f 58;
-#X text 115 687 -exp <float>: sets to interpolation exponential factor
-(default: 1), f 68;
+#X text 86 687 -exp <float>: sets exponential factor for morph/interpolation
+(default: 1), f 74;
+#X text 201 368 sets exponential factor for interpolation/morphing
+, f 58;
 #X connect 1 0 23 0;
 #X connect 2 0 46 0;
 #X connect 3 0 0 0;

@@ -203,11 +203,20 @@ using [expr~] (which also contains all these operators)., f 67;
 #X text 113 281 <symbol> -;
 #X text 179 282 operator: > \, < \, >= \, <= \, == \, != \, && \, ||
 \, & \, | \, ~ \, ^ \, >> and <<, f 61;
-#X text 40 200 see also:;
-#X obj 46 221 else/op;
 #X msg 514 160 %;
 #X text 167 368 operator: > \, < \, >= \, <= \, == \, != \, && \, ||
 \, & \, | \, ~ \, ^ \, >> \, << or %, f 63;
+#N canvas 995 261 394 210 see 0;
+#X text 86 35 see also:;
+#X obj 88 54 else/op;
+#X text 192 39 other operations on signals;
+#X obj 233 88 else/trunc~;
+#X obj 233 108 else/floor~;
+#X obj 233 128 else/ceil~;
+#X obj 233 148 else/rint~;
+#X obj 233 68 else/wrap2~;
+#X obj 233 170 else/quantizer~;
+#X restore 36 222 pd see also;
 #X connect 21 0 25 0;
 #X connect 22 0 21 0;
 #X connect 25 0 23 0;
@@ -225,4 +234,4 @@ using [expr~] (which also contains all these operators)., f 67;
 #X connect 38 0 25 0;
 #X connect 39 0 25 0;
 #X connect 40 0 25 0;
-#X connect 50 0 25 0;
+#X connect 48 0 25 0;

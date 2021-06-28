@@ -271,7 +271,7 @@ neither to [%] or [mod] objects from Vanilla., f 31;
 #X text 223 285 operator see [pd set] for all options;
 #X text 165 371 operator: see [pd set] for all options (default +)
 , f 61;
-#N canvas 1086 209 472 364 hint 0;
+#N canvas 881 258 472 364 hint 0;
 #X obj 206 193 else/iterate;
 #X obj 206 224 abs;
 #X obj 180 264 else/group;
@@ -280,9 +280,9 @@ neither to [%] or [mod] objects from Vanilla., f 31;
 #X obj 179 156 t b l;
 #X text 34 32 For any other operations on lists that are not present
 in [op] and other objects from the ELSE library \, just do something
-like this \, where you can use any object and even conversion formulas
-\, use [expr] for more complex operations with mre than two variables
-\, etc., f 64;
+like this below \, where you can use any object. You can also use [expr]
+for more complex operations and even conversion formulas (with more
+than two variables \, etc.), f 64;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
@@ -290,17 +290,18 @@ like this \, where you can use any object and even conversion formulas
 #X connect 5 0 2 0;
 #X connect 5 1 0 0;
 #X restore 460 229 pd hint;
-#N canvas 1120 265 414 254 see 0;
+#N canvas 995 261 414 254 see 0;
 #X text 86 35 see also:;
 #X obj 88 54 else/op~;
-#X obj 233 68 else/trunc;
-#X obj 233 88 else/floor;
-#X obj 233 108 else/ceil;
-#X obj 233 150 else/wrap2;
+#X obj 233 88 else/trunc;
+#X obj 233 108 else/floor;
+#X obj 233 128 else/ceil;
+#X obj 233 68 else/wrap2;
 #X text 192 39 other operations on lists;
-#X obj 233 128 else/rint;
-#X obj 233 171 else/hex2dec;
-#X obj 233 192 else/dec2hex;
+#X obj 233 148 else/rint;
+#X obj 233 189 else/hex2dec;
+#X obj 233 210 else/dec2hex;
+#X obj 233 168 else/quantizer;
 #X restore 24 227 pd see also;
 #X connect 20 0 24 0;
 #X connect 24 0 26 0;
