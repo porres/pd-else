@@ -2,6 +2,7 @@
 
 #include "m_pd.h"
 #include "g_canvas.h"
+#include <string.h>
 
 typedef struct _loadbanger{
     t_object    x_ob;

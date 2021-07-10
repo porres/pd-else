@@ -1,6 +1,7 @@
 // Porres 2017
 
 #include "m_pd.h"
+#include <math.h>
 
 static t_class *trig_delay_class;
 
