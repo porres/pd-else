@@ -38,33 +38,36 @@
 #X obj 111 300 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X obj 190 181 else/range~, f 21;
-#X obj 190 211 else/display~;
-#X obj 313 211 else/display~;
-#X text 194 394 none;
+#X text 265 394 none;
 #X obj 111 360 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 187 336 signal;
-#X text 195 278 reset;
 #X text 153 258 float/signal;
 #X text 237 257 - input signal to analyze;
-#X text 237 277 - resets object;
 #X text 152 301 float/signal;
 #X text 237 337 - minimum range;
 #X text 237 360 - maximum range;
 #X text 187 361 signal;
-#X msg 133 148 reset;
-#X text 71 88 [range~] analyxes a signal's range values.;
 #X obj 190 147 else/stepnoise~ 5;
 #X obj 489 66 else/setdsp~;
 #X obj 313 148 else/impseq~;
-#X obj 313 125 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 313 125 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 237 301 - impulse resets at signal rate;
 #X text 163 215 min;
 #X text 287 215 max;
-#X connect 19 0 20 0;
-#X connect 19 1 21 0;
-#X connect 33 0 19 0;
-#X connect 35 0 19 0;
-#X connect 37 0 19 1;
-#X connect 38 0 37 0;
+#X obj 159 146 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X text 119 145 reset;
+#X text 201 278 bang;
+#X text 237 277 - resets minimum and maximum values;
+#X text 71 88 [range~] analyzes and outputs the signal's range (minimum
+and maximum) values.;
+#X obj 313 211 else/display~ 10;
+#X obj 190 211 else/display~ 10;
+#X connect 19 0 42 0;
+#X connect 19 1 41 0;
+#X connect 29 0 19 0;
+#X connect 31 0 19 1;
+#X connect 32 0 31 0;
+#X connect 36 0 19 0;

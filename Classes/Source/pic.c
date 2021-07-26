@@ -305,7 +305,7 @@ void pic_open(t_pic* x, t_symbol *filename){
                     x->x_def_img = 0;
                 if(glist_isvisible(x->x_glist) && gobj_shouldvis((t_gobj *)x, x->x_glist)){
                     pic_erase(x, x->x_glist);
-                    sys_vgui("if { [info exists %lx_picname] == 0 } { image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n} \n",
+                    sys_vgui("if {[info exists %lx_picname] == 0} {image create photo %lx_picname -file \"%s\"\n set %lx_picname 1\n}\n",
                         x->x_fullname, x->x_fullname, file_name_open, x->x_fullname);
                     pic_draw(x, x->x_glist, 0);
                 }
