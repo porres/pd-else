@@ -75,7 +75,7 @@ static t_int *glide_perform(t_int *w){
                 x->x_delta = (in - last_out);
                 x->x_nleft = x->x_n - 1;
                 float inc = glide_get_step(x) * x->x_delta;
-                *out++ = last_out = (last_in + inc);
+                *out++ = last_out = (last_out + inc);
                 last_in = in;
             }
             else{
