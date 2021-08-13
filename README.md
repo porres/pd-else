@@ -113,7 +113,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (425 objects):
+## Current Object list (428 objects):
 
 **ASSORTED: [02]**
 
@@ -124,7 +124,7 @@ Cross compiling is also possible with something like this
 - [hann~]
 - [bin.shift~]
 
-**TUNING/NOTES: [14]**
+**TUNING/NOTES: [15]**
 
 - [scales]
 - [autotune]
@@ -138,6 +138,7 @@ Cross compiling is also possible with something like this
 - [frac2dec]
 - [dec2frac]
 - [midi2freq]
+- [freq2midi]
 - [pitch2note]
 - [note2pitch]
 
@@ -269,7 +270,7 @@ Cross compiling is also possible with something like this
 - [op~]
 - [op]
 
-**MATH: CONVERSION: [26]**
+**MATH: CONVERSION: [28]**
 
 - [hex2dec]
 - [bpm]
@@ -287,6 +288,8 @@ Cross compiling is also possible with something like this
 - [hz2rad~]
 - [lin2db]
 - [lin2db~]
+- [deg2rad]
+- [rad2deg]
 - [rad2hz]
 - [rad2hz~]
 - [ratio2cents]

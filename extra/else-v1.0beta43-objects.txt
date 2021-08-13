@@ -93,6 +93,7 @@ dec2frac	x
 dec2hex	x
 decay~	x
 decay2~	x
+deg2rad	x
 del~	x
 detect~	x
 dir	x
@@ -298,6 +299,7 @@ pvoc.player~	x
 quad~	x
 quantizer	x
 quantizer~	x
+rad2deg	x
 rad2hz	x
 rad2hz~	x
 ramp~	x
