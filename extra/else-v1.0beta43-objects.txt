@@ -169,7 +169,6 @@ highshelf~	x
 hip.bw~	x
 hot	x
 hz2rad	x
-hz2rad~	x
 ikeda~	x
 imp~	x
 imp2~	x
@@ -301,7 +300,6 @@ quantizer	x
 quantizer~	x
 rad2deg	x
 rad2hz	x
-rad2hz~	x
 ramp~	x
 rampnoise	x
 rampnoise~	x
