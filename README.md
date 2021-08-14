@@ -113,7 +113,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (426 objects):
+## Current Object list (429 objects):
 
 **ASSORTED: [02]**
 
@@ -270,7 +270,7 @@ Cross compiling is also possible with something like this
 - [op~]
 - [op]
 
-**MATH: CONVERSION: [26]**
+**MATH: CONVERSION: [28]**
 
 - [hex2dec]
 - [bpm]
@@ -289,6 +289,8 @@ Cross compiling is also possible with something like this
 - [lin2db~]
 - [deg2rad]
 - [rad2deg]
+- [pz2coeff]
+- [coeff2pz]
 - [rad2hz]
 - [ratio2cents]
 - [ratio2cents~]
@@ -577,13 +579,14 @@ Cross compiling is also possible with something like this
 - [vu~]
 - [zerocross~]
 
-**GUI: [34]**
+**GUI: [35]**
 
 - [gui]
 - [pad]
 - [messbox]
 - [mtx.ctl]
 - [biplot]
+- [zbiplot]
 - [pic]
 - [colors]
 - [function]

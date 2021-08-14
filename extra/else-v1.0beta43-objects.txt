@@ -74,6 +74,7 @@ click	x
 clipnoise~	x
 clock	x
 cmul~	x
+coeff2pz	x
 colors	x
 comb.filt~	x
 comb.rev~	x
@@ -295,6 +296,7 @@ pulsediv~	x
 pvoc.freeze~	x
 pvoc.live~	x
 pvoc.player~	x
+pz2coeff	x
 quad~	x
 quantizer	x
 quantizer~	x
@@ -428,5 +430,6 @@ xmod~	x
 xmod2~	x
 xselect~	x
 xselect2~	x
+zbiplot	x
 zerocross~	x
 
