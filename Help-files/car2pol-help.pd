@@ -1,8 +1,8 @@
-#N struct 1009-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
-#N struct 1018-point float x0 float y0 float xs float ys float fg float
-in float gridx float gridy;
-#N canvas 676 159 561 491 10;
+#N struct 1176-point float x0 float y0 float size float fg float in
+float grid;
+#N struct 1194-point float x0 float y0 float size float fg float in
+float grid;
+#N canvas 673 73 561 491 10;
 #X obj 1 287 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 1 365 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -76,33 +76,43 @@ to polar coordinates (amplitude / phase).;
 #X obj 166 41 cnv 4 4 4 empty empty conversion 0 28 2 18 -233017 -1
 0;
 #X obj 190 217 else/car2pol, f 16;
-#N canvas 920 123 342 462 example 0;
-#X obj 101 164 else/display;
-#X obj 101 204 else/car2pol;
-#X obj 170 242 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 -2.47562 256;
-#X obj 101 243 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.395655 256;
-#X obj 101 273 else/pol2car;
-#X obj 101 310 pack;
+#X obj 19 250 else/mag;
+#N canvas 920 123 538 605 example 0;
+#X obj 101 197 else/display;
+#X obj 101 237 else/car2pol;
+#X obj 170 275 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 101 276 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 101 306 else/pol2car;
+#X obj 101 343 pack;
 #X text 63 12 cartesian x polar converstion;
-#X text 203 97 <= click/drag;
-#X obj 101 342 else/slider2d 90 90 0 127 0 127 1 255 255 255 0 0 0
-0 0 0 -0.311111 -0.244444 empty empty;
-#X obj 101 55 else/slider2d 90 90 0 127 0 127 1 255 255 255 0 0 0 0
-0 0 31 34 empty empty;
+#X text 238 112 <= click/drag;
+#X obj 101 58 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255 0
+0 0 1 0 0 47.4338 84.0558 empty empty 1;
+#X obj 101 375 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
+0 0 0 1 0 0 -0.253011 0.323714 empty empty 1;
+#X text 57 276 amp =>;
+#X obj 200 330 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X text 231 274 <= phase (in radians);
+#X text 281 329 <= phase (in degrees);
+#X obj 200 305 else/rad2deg;
 #X connect 0 0 1 0;
 #X connect 1 0 3 0;
 #X connect 1 1 2 0;
 #X connect 2 0 4 1;
+#X connect 2 0 14 0;
 #X connect 3 0 4 0;
 #X connect 4 0 5 0;
 #X connect 4 1 5 1;
-#X connect 5 0 8 0;
-#X connect 9 0 0 0;
+#X connect 5 0 9 0;
+#X connect 8 0 0 0;
+#X connect 14 0 11 0;
 #X restore 461 248 pd example;
-#X text 462 187 see also:;
-#X obj 463 207 else/mag;
+#X text 19 184 see also:;
+#X obj 19 206 else/car2pol~;
+#X obj 19 229 else/pol2car;
 #X connect 19 0 43 0;
 #X connect 20 0 27 0;
 #X connect 27 0 43 0;

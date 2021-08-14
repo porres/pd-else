@@ -80,9 +80,10 @@ with the 1st argument., f 63;
 #X text 69 140 This object is useful for spectral processing that doesn't
 require the phase values., f 63;
 #X text 209 355 - magnitude, f 32;
-#X obj 33 242 else/car2pol~;
-#X text 35 220 see also:;
+#X obj 33 245 else/car2pol~;
+#X text 30 198 see also:;
 #X obj 263 213 else/mag~ norm;
+#X obj 33 223 else/mag;
 #X connect 10 0 39 0;
 #X connect 11 0 39 1;
 #X connect 39 0 27 0;

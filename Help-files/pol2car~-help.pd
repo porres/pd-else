@@ -1,4 +1,4 @@
-#N canvas 593 165 567 443 10;
+#N canvas 591 126 567 443 10;
 #X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -99,6 +99,9 @@ idea:, f 57;
 #X connect 15 0 2 0;
 #X connect 15 1 2 1;
 #X restore 468 218 pd spectral \; processing;
+#X text 25 180 see also:;
+#X obj 25 200 else/car2pol~;
+#X obj 25 222 else/pol2car;
 #X connect 30 0 32 0;
 #X connect 30 1 31 0;
 #X connect 37 0 30 0;

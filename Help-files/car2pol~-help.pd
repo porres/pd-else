@@ -1,4 +1,4 @@
-#N canvas 688 23 562 457 10;
+#N canvas 833 160 562 457 10;
 #X obj 1 268 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 1 330 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -98,8 +98,10 @@ idea:, f 57;
 #X connect 15 0 2 0;
 #X connect 15 1 2 1;
 #X restore 458 218 pd spectral \; processing;
-#X text 44 210 see also:;
-#X obj 45 230 else/mag~;
+#X text 21 164 see also:;
+#X obj 25 209 else/mag~;
+#X obj 25 230 else/pol2car~;
+#X obj 25 187 else/car2pol;
 #X connect 13 0 33 0;
 #X connect 14 0 33 1;
 #X connect 33 0 35 0;

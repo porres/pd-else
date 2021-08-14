@@ -1,4 +1,4 @@
-#N canvas 670 178 561 437 10;
+#N canvas 815 112 561 432 10;
 #X obj 1 333 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 1 365 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
@@ -13,7 +13,7 @@
 -228856 -1 -1 0 256;
 #X obj 318 168 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 4 5 cnv 15 301 42 empty empty mag~ 20 20 2 37 -233017 -1 0;
+#X obj 4 5 cnv 15 301 42 empty empty mag 20 20 2 37 -233017 -1 0;
 #X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -60,13 +60,13 @@
 #X connect 8 0 7 0;
 #X restore 465 223 pd power;
 #X text 189 345 - magnitude, f 32;
-#X text 49 181 see also:;
+#X text 35 179 see also:;
 #X text 69 91 [mag] gets the spectrum magnitudes (amplitudes) from
 cartesian coordinates (real / imaginary). This is much like the amplitude
 output of [car2pol] \, but you can also get the power magnitudes instead
 with the 1st argument., f 63;
 #X obj 243 191 else/mag, f 13;
-#X obj 37 204 else/car2pol;
+#X obj 37 224 else/car2pol;
 #X obj 243 191 else/mag, f 13;
 #X obj 1 254 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
@@ -85,6 +85,7 @@ with the 1st argument., f 63;
 #X obj 243 224 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 176 217 Magnitude (ampltude), f 10;
+#X obj 37 201 else/mag~;
 #X connect 6 0 26 0;
 #X connect 6 0 28 0;
 #X connect 7 0 26 1;
