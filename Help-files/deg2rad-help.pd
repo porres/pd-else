@@ -44,19 +44,15 @@
 #X text 165 314 float;
 #X obj 170 187 else/deg2rad 180;
 #X obj 170 161 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 0 256;
+-228856 -1 -1 22 256;
 #X obj 170 214 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 0 256;
-#X text 63 88 [deg2rad] converts degrees (0 to 360) to radians (0 to
-2*pi). If the -neg flag is given \, besides 0 to 360 you can also convert
-negative values from 0 to -360 (0 to -2*pi). Values outside the input
-range are wrapped., f 69;
+-228856 -1 -1 0.383972 256;
 #X obj 313 161 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 340 161 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 0 256;
+-228856 -1 -1 -14 256;
 #X obj 340 214 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 0 256;
+-228856 -1 -1 6.03884 256;
 #X text 171 281 bang;
 #X text 201 281 - convert the last value;
 #X text 165 265 float;
@@ -65,14 +61,18 @@ range are wrapped., f 69;
 #X text 201 314 - the converted value in radians;
 #X obj 4 370 cnv 3 550 3 empty empty -flags 8 12 0 13 -228856 -1 0
 ;
-#X obj 340 187 else/deg2rad -neg;
-#X text 117 379 -neg: also allows negative output (default positive
-only);
-#X text 24 178 see also:;
-#X obj 24 200 else/rad2deg;
+#X text 24 189 see also:;
+#X obj 24 211 else/rad2deg;
+#X text 63 88 [deg2rad] converts degrees (0 to 360) to radians (0 to
+2*pi). You can also convert negative values from 0 to -360 (0 to -2*pi)
+\, unless you give it the -pos \, so values are wrapped to positive.
+Values outside the input range are wrapped., f 69;
+#X obj 340 187 else/deg2rad -pos;
+#X text 117 379 -pos: wrap to positive only (default: allow also negative)
+;
 #X connect 6 0 22 0;
 #X connect 22 0 24 0;
 #X connect 23 0 22 0;
-#X connect 26 0 36 0;
-#X connect 27 0 36 0;
-#X connect 36 0 28 0;
+#X connect 25 0 38 0;
+#X connect 26 0 38 0;
+#X connect 38 0 27 0;

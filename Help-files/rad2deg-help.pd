@@ -1,4 +1,4 @@
-#N canvas 567 46 563 432 10;
+#N canvas 513 44 562 427 10;
 #X obj 4 255 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 305 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -11,7 +11,7 @@
 ;
 #X obj 4 401 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 123 161 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 123 175 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -42,37 +42,44 @@
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X text 165 314 float;
-#X obj 150 161 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 0 256;
-#X obj 293 161 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 150 175 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
+-228856 -1 -1 12.5664 256;
+#X obj 313 173 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 320 161 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 -2.92 256;
-#X obj 320 214 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 -167.304 256;
+#X obj 340 173 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
+-228856 -1 -1 -0.49474 256;
+#X obj 340 226 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
+-228856 -1 -1 331.653 256;
 #X text 171 281 bang;
 #X text 201 281 - convert the last value;
 #X text 165 265 float;
 #X obj 4 370 cnv 3 550 3 empty empty -flags 8 12 0 13 -228856 -1 0
 ;
-#X text 117 379 -neg: also allows negative output (default positive
-only);
-#X text 63 88 [rad2deg] converts radians (0 to 2*pi) to radians (0
-to 360). If the -neg flag is given \, besides 0 to 2*pi you can also
-convert negative values from 0 to -2*pi (0 to -360). Values outside
-the input range are wrapped., f 69;
 #X text 157 349 1) float - initial radians value (default 0);
 #X text 201 314 - the converted value in degrees;
 #X text 201 265 - input radian value to convert to degree;
-#X obj 150 187 else/rad2deg 3.14159;
-#X obj 320 187 else/rad2deg -neg;
-#X obj 150 214 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 0 256;
-#X text 24 178 see also:;
-#X obj 24 200 else/deg2rad;
-#X connect 6 0 35 0;
-#X connect 22 0 35 0;
+#X obj 150 226 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
+-228856 -1 -1 0.00163925 256;
+#X text 24 196 see also:;
+#X obj 24 218 else/deg2rad;
+#X obj 340 199 else/rad2deg -pos;
+#X text 63 88 [rad2deg] converts radians (0 to 2*pi) to radians (0
+to 360). Besides 0 to 2*pi you can also convert negative values from
+0 to -2*pi (0 to -360) - and input values are wrapped if the exceed
+this input range. If you give it the '-pos' flag \, which wraps to
+positive values only., f 69;
+#X text 117 379 -pos: wrap only to positive values (default negative
+also);
+#X obj 153 151 hsl 128 15 -12.5664 12.5664 0 0 empty empty empty -2
+-8 0 10 -228856 -1 -1 12700 1;
+#X obj 150 199 else/rad2deg 3.14159;
+#X obj 343 151 hsl 128 15 -12.5664 12.5664 0 0 empty empty empty -2
+-8 0 10 -228856 -1 -1 6100 1;
+#X connect 6 0 40 0;
+#X connect 22 0 40 0;
 #X connect 23 0 36 0;
 #X connect 24 0 36 0;
-#X connect 35 0 37 0;
 #X connect 36 0 25 0;
+#X connect 39 0 22 0;
+#X connect 40 0 33 0;
+#X connect 41 0 24 0;
