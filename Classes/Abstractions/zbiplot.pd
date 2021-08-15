@@ -115,13 +115,13 @@
 0;
 #X obj 50 275 cnv 1 450 2 empty empty empty 20 12 0 14 -258113 -66577
 0;
-#X obj 127 127 cnv 15 15 15 empty \$0-pole1 X 196 94 0 14 -191407 -66577
-0;
-#X obj 127 127 cnv 15 15 15 empty \$0-zero1 O 118 89 0 14 -191407 -66577
-0;
-#X obj 127 127 cnv 15 15 15 empty \$0-pole2 X 196 205 0 14 -191407
+#X obj 127 127 cnv 15 15 15 empty \$0-pole1 X 145 150 0 14 -191407
 -66577 0;
-#X obj 127 127 cnv 15 15 15 empty \$0-zero2 O 118 210 0 14 -191407
+#X obj 127 127 cnv 15 15 15 empty \$0-zero1 O 145 150 0 14 -191407
+-66577 0;
+#X obj 127 127 cnv 15 15 15 empty \$0-pole2 X 145 150 0 14 -191407
+-66577 0;
+#X obj 127 127 cnv 15 15 15 empty \$0-zero2 O 145 150 0 14 -191407
 -66577 0;
 #X obj 576 72 inlet;
 #X obj 671 72 inlet;

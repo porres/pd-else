@@ -5,9 +5,9 @@
 ;
 #X obj 4 453 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 116 427 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 110 427 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 116 289 cnv 17 3 75 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 110 289 cnv 17 3 75 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 4 486 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
@@ -60,12 +60,11 @@ to biquad coefficients., f 67;
 #X text 126 318 poles <list>;
 #X text 126 333 zeros <list>;
 #X text 204 318 - set coordinates of 2 poles;
-#X text 132 348 gain <list>;
 #X text 204 348 - set overall gain of the filter response;
-#X obj 116 371 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 110 371 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 171 372 list;
-#X obj 116 393 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 110 393 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
 #X text 204 333 - set coordinates of 2 zeros;
 #X text 201 372 - set coordinates of 2 zeros;
@@ -79,9 +78,10 @@ inlets., f 20;
 #X obj 176 214 else/pz2coeff;
 #X text 32 212 see also:;
 #X obj 32 236 else/coeff2pz;
-#X connect 6 0 51 0;
-#X connect 24 0 51 0;
-#X connect 27 0 51 2;
-#X connect 48 0 51 1;
-#X connect 49 0 51 0;
-#X connect 51 0 22 0;
+#X text 126 348 gain <float>;
+#X connect 6 0 50 0;
+#X connect 24 0 50 0;
+#X connect 27 0 50 2;
+#X connect 47 0 50 1;
+#X connect 48 0 50 0;
+#X connect 50 0 22 0;
