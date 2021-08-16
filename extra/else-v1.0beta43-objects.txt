@@ -275,6 +275,7 @@ pick	x
 ping.pong~	x
 pimp	x
 pimp~	x
+pimpmul~	x
 pinknoise~	x
 pipe2	x
 pitch2note	x
