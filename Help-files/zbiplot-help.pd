@@ -7,7 +7,7 @@
 0;
 #X obj 5 303 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 89 171 cnv 17 3 40 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 92 171 cnv 17 3 40 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 149 40 cnv 4 4 4 empty empty plot 0 28 2 18 -233017 -1 0;
 #X obj 85 40 cnv 4 4 4 empty empty Biquad 0 28 2 18 -233017 -1 0;
@@ -19,11 +19,11 @@
 #X text 197 171 - list of coefficients as taken by [biquad~];
 #N canvas 680 83 565 632 example 0;
 #X obj 127 35 nbx 5 14 0.01 1 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0.23291 256;
+-1 -1 0.01 256;
 #X obj 201 36 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 11 256;
+-1 -1 0 256;
 #X obj 54 36 nbx 5 14 20 20000 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 9145.05 256;
+-1 -1 20 256;
 #X text 65 19 Freq;
 #X text 133 18 Q;
 #X obj 27 36 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
@@ -31,13 +31,12 @@
 #X text 209 16 gain;
 #X obj 54 70 else/bicoeff eq 500 10 24;
 #X obj 54 131 else/zbiplot;
-#X obj 54 96 else/insert coeffs;
 #X obj 399 31 nbx 5 14 0.01 1 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 1 256;
+-1 -1 0.01 256;
 #X obj 491 32 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 16 256;
+-1 -1 0 256;
 #X obj 308 32 nbx 5 14 20 20000 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 9916.14 256;
+-1 -1 20 256;
 #X text 319 15 Freq;
 #X obj 281 32 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -45,19 +44,20 @@
 #X obj 308 87 else/coeff2pz;
 #X obj 308 65 else/bicoeff lowshelf 500 10 24;
 #X text 405 14 Slope;
+#X obj 54 96 else/insert coeff;
 #X connect 0 0 7 1;
 #X connect 1 0 7 2;
 #X connect 2 0 7 0;
 #X connect 5 0 7 0;
-#X connect 7 0 9 0;
-#X connect 9 0 8 0;
-#X connect 10 0 17 1;
-#X connect 11 0 17 2;
-#X connect 12 0 17 0;
-#X connect 14 0 17 0;
-#X connect 16 0 8 0;
-#X connect 16 1 8 1;
-#X connect 17 0 16 0;
+#X connect 7 0 18 0;
+#X connect 9 0 16 1;
+#X connect 10 0 16 2;
+#X connect 11 0 16 0;
+#X connect 13 0 16 0;
+#X connect 15 0 8 0;
+#X connect 15 1 8 1;
+#X connect 16 0 15 0;
+#X connect 18 0 8 0;
 #X restore 165 131 pd example;
 #X text 236 132 <= click to open and check;
 #X text 231 282 (none);
@@ -81,11 +81,11 @@
 #X obj 18 40 cnv 4 4 4 empty empty Z-plane 0 28 2 18 -233017 -1 0;
 #X text 76 87 [zbiplot] plots the biquad coefficients as poles and
 zeros on the Z-Plane., f 52;
-#X obj 89 216 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 92 216 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 165 216 list;
 #X text 165 191 list;
 #X text 197 191 - list of poles coordinates;
 #X text 197 216 - list of zeros coordinates;
 #X text 231 251 (none);
-#X text 111 171 coeffs <list>;
+#X text 117 171 coeff <list>;
