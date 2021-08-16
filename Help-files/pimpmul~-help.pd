@@ -13,7 +13,7 @@
 ;
 #X text 192 326 signal;
 #X text 192 387 signal;
-#X obj 271 246 else/out~;
+#X obj 291 246 else/out~;
 #X obj 23 40 cnv 4 4 4 empty empty [pimp~] 0 28 2 18 -233017 -1 0;
 #X obj 91 40 cnv 4 4 4 empty empty multiplier 0 28 2 18 -233017 -1
 0;
@@ -47,17 +47,17 @@
 from ELSE is both a [phasor~] and an [imp~] oscillator. Use [pimpul~]
 to keep [phasor~] or [pimp~] objects in sync with different frequency
 ratios., f 72;
-#X obj 289 189 else/pimp~ 1;
-#X obj 166 218 else/pimpmul~ 0.75;
-#X obj 271 165 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 309 189 else/pimp~ 1;
+#X obj 186 218 else/pimpmul~ 0.75;
+#X obj 291 165 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 274 143 hsl 128 14 0.1 5 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 294 143 hsl 128 14 0.1 5 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 166 245 else/s2f~;
-#X obj 123 159 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
-#X text 152 164 <= phase;
-#X text 322 164 <= frequency multiplier;
+#X obj 186 245 else/s2f~;
+#X obj 143 154 vsl 15 128 0 1 0 0 empty empty empty 0 -9 0 10 -228856
+-1 -1 3508 1;
+#X text 172 164 <= phase;
+#X text 342 164 <= frequency multiplier;
 #X text 241 326 - phase signal to multiply;
 #X obj 122 413 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
@@ -66,7 +66,7 @@ ratios., f 72;
 #X text 241 387 - mulitplied phase signal;
 #N canvas 615 27 660 365 example 0;
 #X obj 381 241 hsl 200 16 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 14027 1;
 #X obj 355 241 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X msg 201 57 0;
@@ -81,7 +81,7 @@ ratios., f 72;
 #X obj 63 160 else/resonant~ 250 1000, f 14;
 #X obj 135 88 else/pimp~ 1;
 #X obj 382 261 hsl 200 16 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 8153 1;
 #X obj 356 260 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 235 82 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 14
@@ -117,6 +117,9 @@ when changing the frequency or the multiplier., f 30;
 #X connect 18 0 17 0;
 #X restore 468 268 pd example;
 #X text 168 449 1) float - initial multiplier (default 0);
+#X text 19 261 see also:;
+#X obj 19 280 else/pimp~;
+#X floatatom 143 291 5 0 0 0 - - -;
 #X connect 25 0 26 0;
 #X connect 25 1 8 1;
 #X connect 26 0 29 0;
@@ -124,3 +127,4 @@ when changing the frequency or the multiplier., f 30;
 #X connect 27 0 26 1;
 #X connect 28 0 27 0;
 #X connect 29 0 30 0;
+#X connect 30 0 42 0;
