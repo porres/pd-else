@@ -146,6 +146,7 @@ gain~	x
 gain2~	x
 gate2imp~	x
 gatehold~	x
+gaussian~	x
 gbman~	x
 gcd	x
 giga.rev~	x

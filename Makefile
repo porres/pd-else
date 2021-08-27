@@ -245,6 +245,7 @@ magic := shared/magic.c
     sine~.class.sources := Classes/Source/sine~.c $(magic)
     cosine~.class.sources := Classes/Source/cosine~.c $(magic)
     fbsine~.class.sources := Classes/Source/fbsine~.c $(magic)
+    gaussian~.class.sources := Classes/Source/gaussian~.c $(magic)
     imp~.class.sources := Classes/Aliases/imp~.c $(magic)
     impulse~.class.sources := Classes/Source/impulse~.c $(magic)
     imp2~.class.sources := Classes/Aliases/imp2~.c $(magic)

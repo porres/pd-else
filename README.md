@@ -113,7 +113,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (430 objects):
+## Current Object list (431 objects):
 
 **ASSORTED: [02]**
 
@@ -408,7 +408,7 @@ Cross compiling is also possible with something like this
 
 - [pluck~]
 
-**SYNTHESIS: OSCILLATORS (DETERMINISTIC GENERATORS): [24]**
+**SYNTHESIS: OSCILLATORS (DETERMINISTIC GENERATORS): [25]**
 
 - [cosine~]
 - [impulse~] / [imp~]
@@ -422,6 +422,7 @@ Cross compiling is also possible with something like this
 - [sine~]
 - [square~]
 - [tri~]
+- [gaussian~]
 - [vsaw~]
 - [pmosc~]
 - [wavetable~] / [wt~]
