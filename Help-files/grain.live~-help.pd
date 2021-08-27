@@ -1,4 +1,4 @@
-#N canvas 679 64 564 657 10;
+#N canvas 674 55 564 657 10;
 #X obj 300 114 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 300 137 metro 500;
@@ -51,7 +51,7 @@ equal temperament), f 74;
 #X obj 388 166 nbx 3 14 1 32 0 0 empty empty empty 0 -8 0 12 -228856
 -1 -1 1 256;
 #X obj 199 130 play.file~ bubul.wav 1 1, f 13;
-#N canvas 924 177 725 513 example 0;
+#N canvas 805 175 765 513 example 0;
 #N canvas 992 351 389 390 tuning 0;
 #X obj 64 339 outlet;
 #X obj 94 236 else/eqdiv;
@@ -79,7 +79,7 @@ equal temperament), f 74;
 #X connect 8 0 1 0;
 #X connect 9 0 0 0;
 #X restore 178 243 pd tuning;
-#X obj 71 288 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 71 288 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 71 337 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
 -1;
@@ -143,43 +143,51 @@ to sync mode at creation with the -sync flag., f 58;
 #X obj 210 337 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X text 252 333 density (number of grains), f 15;
-#X obj 466 215 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 0.895 1 0.105 0;
-#X obj 466 435 s \$0-set-env;
-#X obj 466 331 else/display;
-#X obj 466 403 else/insert env;
-#X msg 486 375 sin;
-#X obj 466 180 else/initmess 0 0.05 1 0.95 0;
-#X text 429 41 By default \, the envelope is a sine shape \, like the
-default in the [envelope~] object. You can set other envelope function
-types by sending a list of values in the same syntax as taken by [function~]
-(which is used internally. this syntax is also given by the [function]
-object., f 46;
-#X text 429 114 To chage back to the default \, send a "env sin" message
-to the object., f 46;
 #X obj 221 394 r \$0-set-env;
 #X obj 49 396 else/grain.live~ -sync;
 #X obj 49 176 play.file~ violin.wav 1 1;
-#X connect 0 0 27 1;
+#X obj 509 212 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 0.05 1 0.95 0;
+#X obj 509 328 else/display;
+#X obj 509 400 else/insert env;
+#X msg 451 367 sin;
+#X obj 509 177 else/initmess 0 0.05 1 0.95 0;
+#X msg 483 367 tri;
+#X msg 518 367 hann;
+#X text 430 39 By default \, the envelope is a sine shape \, like the
+default in the [envelope~] object. You can set other envelope function
+types \, namely 'tri' \, 'hann' and 'gauss' (also like in the [envelope~]
+object). The gaussian envelope takes a float argument that sets the
+width., f 48;
+#X text 430 110 You can also give it a list of values in the same syntax
+as taken by [function~] (which is used internally). This syntax is
+also given by the [function] GUI object., f 48;
+#X text 441 219 [function];
+#X msg 555 367 gauss 0.3;
+#X obj 509 432 s \$0-set-env;
+#X connect 0 0 19 1;
 #X connect 1 0 3 0;
-#X connect 2 0 27 0;
+#X connect 2 0 19 0;
 #X connect 3 0 2 0;
 #X connect 4 0 3 1;
 #X connect 6 0 8 0;
-#X connect 6 0 27 1;
+#X connect 6 0 19 1;
 #X connect 8 0 4 0;
-#X connect 13 0 27 1;
+#X connect 13 0 19 1;
 #X connect 14 0 13 0;
-#X connect 16 0 27 1;
-#X connect 18 0 20 0;
-#X connect 20 0 21 0;
-#X connect 21 0 19 0;
-#X connect 22 0 21 0;
-#X connect 23 0 18 0;
-#X connect 26 0 27 1;
-#X connect 27 0 7 0;
-#X connect 27 1 7 1;
-#X connect 28 0 27 0;
+#X connect 16 0 19 1;
+#X connect 18 0 19 1;
+#X connect 19 0 7 0;
+#X connect 19 1 7 1;
+#X connect 20 0 19 0;
+#X connect 21 0 22 0;
+#X connect 22 0 23 0;
+#X connect 23 0 32 0;
+#X connect 24 0 23 0;
+#X connect 25 0 21 0;
+#X connect 26 0 23 0;
+#X connect 27 0 23 0;
+#X connect 31 0 23 0;
 #X restore 464 249 pd example;
 #X obj 3 3 cnv 15 301 42 empty empty grain.live~ 20 20 2 37 -233017
 -1 0;
@@ -214,12 +222,12 @@ clouds of grains.;
 0), f 70;
 #X text 109 433 rev <float> - sets probability in % of grain being
 reversed (default 0), f 73;
-#X text 121 447 env <any> - envelope \, "sin" (default) or list that
-defines the function, f 71;
 #X text 74 583 -dur <f> | -size <f \, f> | -picth <f \, f> | -pan <f
 \, f> | -amps <f \, f> | -autotune <f> | -scale <list> | -base <f>
 | -rev <float> | -env <any> | -length <f>: delay length in ms (defaul
 5000) | -sync, f 73;
+#X text 121 447 env <any> - envelope type (sin \, hann \, tri \, gauss)
+or function list, f 71;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 2 0 38 0;
