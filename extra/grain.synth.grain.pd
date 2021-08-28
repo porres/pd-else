@@ -1,4 +1,4 @@
-#N canvas 818 88 549 742 12;
+#N canvas 533 74 549 742 12;
 #X obj 403 366 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
 1;
 #X obj 403 393 switch~;
@@ -200,8 +200,8 @@ base float sync env, f 76;
 #X obj 137 186 expr (1 - $f1) / 2;
 #X text 184 157 sigma;
 #X obj 137 88 r \$0-sigma;
-#X obj 242 92 else/initmess 0;
 #X obj 137 127 else/rescale 0 1 0.5 70 4;
+#X obj 242 92 else/initmess 0.25;
 #X connect 1 0 6 0;
 #X connect 3 0 4 0;
 #X connect 4 0 0 0;
@@ -211,9 +211,9 @@ base float sync env, f 76;
 #X connect 7 0 9 0;
 #X connect 8 0 5 0;
 #X connect 9 0 8 1;
-#X connect 11 0 13 0;
-#X connect 12 0 13 0;
-#X connect 13 0 7 0;
+#X connect 11 0 12 0;
+#X connect 12 0 7 0;
+#X connect 13 0 12 0;
 #X restore 146 147 pd gauss;
 #X msg 470 188 2;
 #X msg 510 188 3;
