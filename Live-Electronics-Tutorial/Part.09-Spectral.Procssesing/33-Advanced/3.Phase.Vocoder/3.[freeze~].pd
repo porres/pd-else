@@ -1,7 +1,7 @@
 #N canvas 530 23 509 667 12;
 #X declare -path else;
 #X obj 68 234 sigmund~ -npts 2048 -hop 512 -npeak 50 tracks;
-#X obj 211 366 tgl 25 1 empty freee empty 17 7 0 10 -228856 -1 -1 1
+#X obj 211 366 tgl 25 0 empty freee empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X obj 211 310 bng 50 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;

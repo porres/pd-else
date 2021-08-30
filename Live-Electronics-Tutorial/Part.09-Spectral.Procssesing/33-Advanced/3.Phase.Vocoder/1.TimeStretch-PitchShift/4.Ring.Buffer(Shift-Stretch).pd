@@ -2,9 +2,9 @@
 #X declare -path else;
 #X text 339 253 cents;
 #X obj 279 254 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-cents empty 0 -8
-0 10 -228856 -1 -1 -100 256;
+0 10 -228856 -1 -1 850.394 256;
 #X obj 282 228 hsl 128 15 -2400 2400 0 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 0 1;
+10 -228856 -1 -1 8600 1;
 #X obj 217 254 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8
 0 10 -228856 -1 -1 90 256;
 #X text 217 230 speed;
@@ -16,7 +16,7 @@ on a ring buffer with the phase accumulation. Nothing should be new
 \, just the same kind of adaptation., f 62;
 #X obj 292 492 pvoc.live~ 6000;
 #X obj 334 21 declare -path else;
-#X obj 154 153 play.file~ bubul.wav 1 1;
+#X obj 155 153 play.file~ bubul.wav 1 1;
 #X text 99 443 The [pvoc.live~] \, from the ELSE library \, is based
 on this patch. Check its help file., f 43;
 #N canvas 586 112 795 699 pvoc-live 0;
@@ -214,7 +214,7 @@ on this patch. Check its help file., f 43;
 #X connect 42 0 32 0;
 #X restore 156 291 pd pvoc-live;
 #X f 18;
-#X obj 154 181 del~ in \$0-buffer 10000;
+#X obj 155 181 del~ in \$0-buffer 10000;
 #X connect 1 0 12 2;
 #X connect 2 0 1 0;
 #X connect 3 0 12 1;

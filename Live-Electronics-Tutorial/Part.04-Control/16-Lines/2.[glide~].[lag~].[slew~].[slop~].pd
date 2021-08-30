@@ -1,7 +1,7 @@
-#N canvas 412 82 855 757 12;
+#N canvas 474 24 855 757 12;
 #X declare -path else;
 #X obj 312 275 setdsp~ 1;
-#X obj 587 24 declare -path else;
+#X obj 636 26 declare -path else;
 #X floatatom 120 279 6 0 0 0 - - -;
 #X obj 120 245 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -11,7 +11,7 @@
 #X text 49 279 target =>;
 #X obj 120 345 glide~ 1000;
 #X obj 123 396 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+-1 -1 7230 1;
 #X obj 120 370 s2f~;
 #X msg 179 309 exp \$1;
 #X floatatom 179 285 5 -5 5 0 - - -;
@@ -33,18 +33,18 @@
 #X text 242 627 time;
 #X text 221 520 see also;
 #X obj 290 520 lag2~;
-#X floatatom 502 222 6 0 0 0 - - -;
-#X obj 502 192 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X floatatom 517 228 6 0 0 0 - - -;
+#X obj 517 198 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 471 141 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 486 147 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X obj 471 165 rand.f 0 1;
-#X text 431 222 target =>;
-#X obj 505 329 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 486 171 rand.f 0 1;
+#X text 446 228 target =>;
+#X obj 520 335 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 502 303 s2f~;
-#X floatatom 562 235 5 0 0 0 - - -;
-#X text 581 160 see also;
+#X obj 517 309 s2f~;
+#X floatatom 577 241 5 0 0 0 - - -;
+#X text 596 166 see also;
 #X text 27 118 Let's start with [glide~]. It takes a ramp time (like
 the 'line' family). It generates linear ramps \, but also exponential
 ones (unlike the 'line' family)., f 47;
@@ -52,14 +52,11 @@ ones (unlike the 'line' family)., f 47;
 filter that generates non-linear ramps \, which are different depending
 if it's an ascending or descending ramp., f 47;
 #X obj 142 659 lag~ 1000;
-#X text 405 62 The [slew~] object is a slew limiter. Instead of a ramp
-time \, it takes a 'speed' parameter. per se generates linear ramps
-\, but also exponential ones (unlike the 'line' family)., f 46;
-#X obj 502 272 slew~ 1, f 9;
-#X text 603 230 amplitude per second, f 10;
-#X obj 650 160 slew2~;
+#X obj 517 278 slew~ 1, f 9;
+#X text 618 236 amplitude per second, f 10;
+#X obj 665 166 slew2~;
 #X obj 410 696 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 9930 1;
+-1 -1 0 1;
 #X obj 407 670 s2f~;
 #X text 27 8 We've seen these objects before as a way to perform fade
 in/out. But here they are exposed as a more general way of generating
@@ -68,9 +65,9 @@ and it generates a line torwards it. But these can also take a signal
 as the target., f 47;
 #X obj 120 307 sig~;
 #X obj 142 627 sig~;
-#X obj 502 247 sig~;
+#X obj 517 253 sig~;
 #X floatatom 710 463 6 0 0 0 - - -;
-#X obj 710 429 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+#X obj 710 429 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X obj 679 378 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
@@ -78,7 +75,7 @@ as the target., f 47;
 #X obj 710 489 s~ target;
 #X obj 407 591 r~ target;
 #X obj 604 693 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 9926 1;
+-1 -1 0 1;
 #X obj 601 667 s2f~;
 #X obj 601 598 r~ target;
 #X floatatom 488 540 5 10 125 0 - - -;
@@ -92,10 +89,14 @@ as the target., f 47;
 #X obj 601 636 slop~, f 14;
 #X obj 506 574 sr~;
 #X obj 488 511 initmess 1;
-#X text 421 396 We've also seen how the [slop~] object relates to [slew~]
+#X text 425 406 We've also seen how the [slop~] object relates to [slew~]
 and [lag~] objects. Go back to the fade section in Part 2 for a review.
 , f 31;
-#X connect 2 0 46 0;
+#X text 404 61 The [slew~] object is a slew limiter. Instead of a ramp
+time \, it takes a 'speed' parameter. It can generate both linear and
+exponential ramps (unlike the 'line' family \, which is only capable
+of linear ramps).;
+#X connect 2 0 45 0;
 #X connect 3 0 2 0;
 #X connect 4 0 5 0;
 #X connect 5 0 2 0;
@@ -104,39 +105,39 @@ and [lag~] objects. Go back to the fade section in Part 2 for a review.
 #X connect 10 0 7 0;
 #X connect 11 0 10 0;
 #X connect 12 0 7 1;
-#X connect 16 0 47 0;
+#X connect 16 0 46 0;
 #X connect 17 0 16 0;
 #X connect 18 0 19 0;
 #X connect 19 0 16 0;
 #X connect 22 0 21 0;
 #X connect 23 0 38 1;
-#X connect 27 0 48 0;
+#X connect 27 0 47 0;
 #X connect 28 0 27 0;
 #X connect 29 0 30 0;
 #X connect 30 0 27 0;
 #X connect 33 0 32 0;
-#X connect 34 0 40 1;
+#X connect 34 0 39 1;
 #X connect 38 0 22 0;
-#X connect 40 0 33 0;
-#X connect 44 0 43 0;
-#X connect 46 0 7 0;
-#X connect 47 0 38 0;
-#X connect 48 0 40 0;
-#X connect 49 0 53 0;
-#X connect 50 0 49 0;
-#X connect 51 0 52 0;
-#X connect 52 0 49 0;
-#X connect 54 0 65 0;
-#X connect 56 0 55 0;
-#X connect 57 0 66 0;
-#X connect 58 0 59 0;
-#X connect 59 0 65 2;
-#X connect 59 0 65 4;
-#X connect 61 0 66 5;
-#X connect 61 0 66 3;
-#X connect 63 0 61 0;
-#X connect 64 0 63 0;
-#X connect 65 0 44 0;
-#X connect 66 0 56 0;
-#X connect 67 0 59 1;
-#X connect 68 0 58 0;
+#X connect 39 0 33 0;
+#X connect 43 0 42 0;
+#X connect 45 0 7 0;
+#X connect 46 0 38 0;
+#X connect 47 0 39 0;
+#X connect 48 0 52 0;
+#X connect 49 0 48 0;
+#X connect 50 0 51 0;
+#X connect 51 0 48 0;
+#X connect 53 0 64 0;
+#X connect 55 0 54 0;
+#X connect 56 0 65 0;
+#X connect 57 0 58 0;
+#X connect 58 0 64 2;
+#X connect 58 0 64 4;
+#X connect 60 0 65 5;
+#X connect 60 0 65 3;
+#X connect 62 0 60 0;
+#X connect 63 0 62 0;
+#X connect 64 0 43 0;
+#X connect 65 0 55 0;
+#X connect 66 0 58 1;
+#X connect 67 0 57 0;

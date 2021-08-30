@@ -1,0 +1,21 @@
+#N canvas 704 118 498 555 12;
+#X declare -path else;
+#X obj 116 221 nbx 5 14 -1e+37 1e+37 0 0 empty hz empty 0 -8 0 10 -228856
+-1 -1 0 256;
+#X obj 181 300 out~;
+#X obj 160 365 graph~ 441 30;
+#X obj 281 44 declare -path else;
+#X obj 159 268 gaussian~ 150;
+#X obj 191 209 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 188 229 f2s~ 10;
+#X text 55 82 The [gaussian~] oscillator from ELSE has a gaussian waveform
+\, which has a "bell curve" shape. The width of the bell is controlled
+via the 2nd inlet. The higher this value \, the narrower the bell is
+and the closer it is to an impulse! Check its help file for more info.
+, f 52;
+#X connect 0 0 4 0;
+#X connect 4 0 1 0;
+#X connect 4 0 2 0;
+#X connect 5 0 6 0;
+#X connect 6 0 4 1;

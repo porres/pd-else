@@ -1,0 +1,84 @@
+#N canvas 439 57 1001 499 12;
+#X declare -path else;
+#X obj 172 219 status~;
+#X obj 325 232 toggleff~;
+#X obj 172 181 pulse~ 1;
+#X obj 86 248 trig2bang~;
+#X obj 86 278 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
+-1;
+#X obj 172 246 trig2bang~;
+#X obj 172 276 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 218 277 trig2bang~;
+#X obj 218 307 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 325 189 impulse~ 1;
+#X obj 409 232 timed.gate~ 500;
+#X text 325 167 impulse to pulse:;
+#X text 106 157 pulse to impulse:;
+#X obj 86 218 gate2imp~;
+#X obj 746 130 impulse 1;
+#X obj 840 130 pulse 1;
+#X obj 746 164 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 840 164 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
+1;
+#X obj 606 164 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 606 130 tempo 60 100 -on;
+#X text 599 24 The ELSE library also provides control version objects
+for impulse and pulse generators. In the case of [impulse] and [tempo]
+\, the outputs are bangs., f 38;
+#X obj 362 28 declare -path else;
+#X obj 825 224 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 825 250 timed.gate~ 500;
+#X text 586 231 The [timed.gate~] object sends a timed gate spcecified
+by its argument (500 ms in the right example)., f 31;
+#X obj 729 344 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 729 370 timed.gate 500;
+#X text 578 351 There are also the control version [timed.gate] and
+[trig2bang], f 18;
+#X obj 867 370 trig2bang;
+#X obj 867 344 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 0 256;
+#X obj 867 404 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 729 400 display;
+#X obj 825 283 display~;
+#X obj 325 261 display~;
+#X obj 409 260 display~;
+#X text 85 74 Other objects from the ELSE library convert pulses into
+impulses and vice versa. The [trig2bang~] object converts impulses
+to a bang. See below.;
+#X obj 114 364 impseq~;
+#X obj 114 333 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 114 400 out~;
+#X text 247 367 the [impseq~] object is actually an impulse sequencer
+with many features as we'll see later \, but it can be used to convert
+a bang to an impulse., f 33;
+#X connect 0 0 5 0;
+#X connect 0 1 7 0;
+#X connect 1 0 33 0;
+#X connect 2 0 0 0;
+#X connect 2 0 13 0;
+#X connect 3 0 4 0;
+#X connect 5 0 6 0;
+#X connect 7 0 8 0;
+#X connect 9 0 1 0;
+#X connect 9 0 10 0;
+#X connect 10 0 34 0;
+#X connect 13 0 3 0;
+#X connect 14 0 16 0;
+#X connect 15 0 17 0;
+#X connect 19 0 18 0;
+#X connect 22 0 23 0;
+#X connect 23 0 32 0;
+#X connect 25 0 26 0;
+#X connect 26 0 31 0;
+#X connect 28 0 30 0;
+#X connect 29 0 28 0;
+#X connect 36 0 38 0;
+#X connect 37 0 36 0;

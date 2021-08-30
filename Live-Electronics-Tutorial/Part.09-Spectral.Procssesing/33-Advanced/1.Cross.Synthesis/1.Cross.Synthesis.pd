@@ -1,4 +1,4 @@
-#N canvas 637 55 730 479 12;
+#N canvas 503 60 730 479 12;
 #X declare -path else;
 #X obj 464 176 hradio 15 1 0 10 empty \$0-window empty 0 -8 0 10 -228856
 -1 -1 4;
@@ -17,7 +17,7 @@
 #X obj 103 69 s~ \$0-Phase;
 #X obj 429 118 s~ \$0-Amp;
 #X text 501 119 (or "filter");
-#N canvas 350 100 694 514 xsynth 0;
+#N canvas 800 317 694 514 xsynth 0;
 #X obj 110 301 rifft~;
 #X obj 110 438 outlet~;
 #X obj 65 54 inlet~;

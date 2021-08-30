@@ -1,4 +1,4 @@
-#N canvas 285 25 952 604 12;
+#N canvas 469 36 952 604 12;
 #X declare -path else;
 #X obj 264 350 nbx 5 14 0 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 1 256;
@@ -182,11 +182,11 @@ A level parameter is multiplied by this average., f 45;
 #X text 726 543 signal;
 #X text 545 546 noise floor;
 #X obj 90 46 declare -path else;
-#X obj 137 231 play.file~ 1 kantele.wav -loop;
 #X text 324 349 threshold;
 #X text 476 320 The last example also uses an average value for the
 threshold \, but now it's a median instead of an average. This seems
 to work better for extracting tonal peaks., f 55;
+#X obj 137 231 play.file~ 1 kantele.wav 1 1;
 #X connect 0 0 10 1;
 #X connect 2 0 14 1;
 #X connect 5 0 19 0;
@@ -202,4 +202,4 @@ to work better for extracting tonal peaks., f 55;
 #X connect 25 0 17 0;
 #X connect 26 0 2 0;
 #X connect 27 0 0 0;
-#X connect 31 0 21 0;
+#X connect 33 0 21 0;

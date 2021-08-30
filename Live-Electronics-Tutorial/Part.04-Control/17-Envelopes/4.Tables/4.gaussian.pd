@@ -1,0 +1,66 @@
+#N canvas 425 90 816 544 12;
+#X declare -path else;
+#X obj 628 290 *~;
+#X obj 570 237 osc~ 440;
+#X obj 678 146 nbx 5 17 0 2000 0 0 empty empty empty 0 -8 0 12 -228856
+-1 -1 0 256;
+#X obj 638 143 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X obj 628 331 out~;
+#X obj 646 181 f 500;
+#X text 681 124 ms;
+#X obj 646 237 envgen~;
+#X msg 646 210 0 \$1 1;
+#X obj 625 62 declare -path else;
+#X text 299 210 1;
+#X text 298 325 0;
+#X obj 314 218 cnv 15 198 118 empty empty empty 20 12 0 14 -228856
+-66577 0;
+#N canvas 0 22 450 300 (subpatch) 0;
+#X array \$0-gauss 8192 float 0;
+#X coords 0 1 8191 0 200 120 1 0 0;
+#X restore 313 217 graph;
+#X obj 81 370 rescale 0 8191 -1 1;
+#X obj 81 306 loop;
+#X msg 81 277 8191;
+#X obj 81 335 t f f, f 21;
+#X obj 81 440 exp;
+#X floatatom 81 221 5 0 0 0 - - -;
+#X obj 81 248 t b f, f 7;
+#X obj 84 191 hsl 128 15 0.02 1 1 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X obj 127 298 v sigma;
+#X obj 81 402 expr -pow($f1 \, 2)/(2 * pow(sigma \, 2));
+#X obj 81 474 tabwrite \$0-gauss, f 21;
+#X obj 646 264 table~ \$0-gauss;
+#X text 56 44 Gaussian functions are often used in statistics and probabilities
+but can be also used in computer music for an envelope shape \, as
+in this example. The Gaussian function has a "bell curve" shape and
+is here simplified to take only the 'sigma' parameter that controls
+the width of the bell (aka 'standard deviation' or 'gaussian RMS width').
+, f 69;
+#X text 56 125 Below we generate the gaussian table. The input is fixed
+from -1 to 1 and we just set the 'sigma' value \, which needs to be
+below 0.25 so we can use this function as an envelope., f 69;
+#X text 386 420 Another aproach is to have a fixed sigma value and
+we just change the input range to something other than -1 to 1 \, this
+also works to change the bell width., f 53;
+#X connect 0 0 4 0;
+#X connect 1 0 0 0;
+#X connect 2 0 5 1;
+#X connect 3 0 5 0;
+#X connect 5 0 8 0;
+#X connect 7 0 25 0;
+#X connect 8 0 7 0;
+#X connect 14 0 23 0;
+#X connect 15 0 17 0;
+#X connect 16 0 15 0;
+#X connect 17 0 14 0;
+#X connect 17 1 24 1;
+#X connect 18 0 24 0;
+#X connect 19 0 20 0;
+#X connect 20 0 16 0;
+#X connect 20 1 22 0;
+#X connect 21 0 19 0;
+#X connect 23 0 18 0;
+#X connect 25 0 0 1;

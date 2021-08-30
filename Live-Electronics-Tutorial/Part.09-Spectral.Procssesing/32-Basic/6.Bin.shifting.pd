@@ -1,17 +1,17 @@
-#N canvas 419 90 838 461 12;
+#N canvas 419 90 792 448 12;
 #X declare -path else;
-#X obj 598 236 r~ \$0-sample;
-#X obj 91 235 s~ \$0-sample;
-#X obj 598 306 out~;
-#X text 60 23 This example shifts the frequency bins of a FFT analysis.
+#X obj 558 273 r~ \$0-sample;
+#X obj 152 213 s~ \$0-sample;
+#X obj 558 343 out~;
+#X text 46 23 This example shifts the frequency bins of a FFT analysis.
 The result is that the frequency points are shifted \, but this does
 not implement a pitch shifter \, just shifts the harmonics of the FFT
 up or down. The effect actually sounds quite inharmonic as the original
-harmonic content is lost.;
-#X text 530 270 click =>;
-#X obj 288 293 nbx 5 14 -64 64 0 0 empty empty empty 0 -8 0 10 -228856
+harmonic content is lost., f 60;
+#X text 490 307 click =>;
+#X obj 267 279 nbx 5 14 -64 64 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
-#X obj 178 291 r~ \$0-sample;
+#X obj 157 277 r~ \$0-sample;
 #N canvas 537 23 481 488 shift 0;
 #X obj 108 37 inlet~;
 #X obj 108 132 rfft~;
@@ -43,13 +43,13 @@ harmonic content is lost.;
 #X connect 10 0 12 0;
 #X connect 13 0 11 0;
 #X connect 13 0 12 0;
-#X restore 235 326 pd shift;
-#X obj 235 364 out~;
-#X text 167 328 click =>;
-#X text 54 121 The ELSE library offers the [bin.shift~] object that
+#X restore 214 312 pd shift;
+#X obj 214 350 out~;
+#X text 146 314 click =>;
+#X text 46 107 The ELSE library offers the [bin.shift~] object that
 can be used to shift spectral bins. check the abstraction below and
 its help file.;
-#X text 534 154 Alternatively \, you can also use the native [lrshift~]
+#X text 494 191 Alternatively \, you can also use the native [lrshift~]
 object \, which behaves similarly., f 32;
 #N canvas 537 23 678 457 lrshift 0;
 #X obj 77 37 inlet~;
@@ -79,9 +79,9 @@ zeroed out values \, whereas in [bin.shift~] you can also wrap them.
 #X connect 7 0 4 1;
 #X connect 8 0 1 0;
 #X connect 9 0 5 0;
-#X restore 598 268 pd lrshift;
-#X obj 567 59 declare -path else;
-#X obj 91 200 play.file~ bubul.wav 1 1;
+#X restore 558 305 pd lrshift;
+#X obj 548 96 declare -path else;
+#X obj 152 178 play.file~ bubul.wav 1 1;
 #X connect 0 0 12 0;
 #X connect 5 0 7 1;
 #X connect 6 0 7 0;

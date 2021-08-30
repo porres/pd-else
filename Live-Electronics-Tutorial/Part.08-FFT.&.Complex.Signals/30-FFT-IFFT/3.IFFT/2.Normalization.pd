@@ -325,38 +325,36 @@
 #X connect 22 1 9 0;
 #X connect 24 0 2 0;
 #X restore 416 350 pd Lanczos;
-#N canvas 199 89 447 594 Gaussian 0;
-#X text 71 29 1;
-#X text 70 144 0;
-#X obj 86 313 samplerate~;
-#X obj 86 362 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#N canvas 687 136 496 629 Gaussian 0;
+#X text 119 38 1;
+#X text 118 153 0;
+#X obj 154 318 samplerate~;
+#X obj 154 367 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 21.5332 256;
-#X obj 78 278 trigger bang bang bang;
-#X obj 78 257 bng 15 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
+#X obj 79 289 trigger bang bang bang;
+#X obj 79 268 bng 15 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
 -1;
-#X obj 86 37 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 134 46 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-gauss 2048 float 0;
 #X coords 0 1 2047 0 200 120 1;
-#X restore 85 36 graph;
-#X obj 78 231 loadbang;
-#X obj 86 337 / 2048;
-#X obj 86 391 phasor~;
-#X msg 148 359 0;
-#X obj 86 474 expr~ exp(pow ($v1 \, 2) * -0.5);
-#X obj 86 415 -~ 0.5;
-#X obj 64 523 tabwrite~ \$0-gauss;
-#X obj 219 228 hsl 128 15 1 20 0 0 empty empty empty -2 -8 0 10 -228856
+#X restore 133 45 graph;
+#X obj 79 242 loadbang;
+#X obj 154 342 / 2048;
+#X obj 154 396 phasor~;
+#X msg 245 318 0;
+#X obj 258 494 expr~ exp(pow ($v1 \, 2) * -0.5);
+#X obj 154 420 -~ 0.5;
+#X obj 79 559 tabwrite~ \$0-gauss;
+#X obj 163 228 hsl 128 15 1 20 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X obj 216 254 trigger bang float;
-#X text 124 444 -x/2 a x/2;
-#X text 356 227 X;
-#X text 144 414 -1/2 a 1/2;
-#X obj 86 446 *~ 6;
-#X floatatom 321 281 5 0 0 0 - - -;
-#X text 206 186 the X parameter defines the steepness of the curve
+#X obj 160 254 trigger bang float;
+#X text 300 227 X;
+#X obj 258 466 *~ 6;
+#X text 150 186 the X parameter defines the steepness of the curve
 , f 26;
+#X floatatom 283 435 5 0 0 0 - - -;
 #X connect 2 0 9 0;
 #X connect 3 0 10 0;
 #X connect 4 0 14 0;
@@ -368,12 +366,12 @@
 #X connect 10 0 13 0;
 #X connect 11 0 10 1;
 #X connect 12 0 14 0;
-#X connect 13 0 20 0;
+#X connect 13 0 18 0;
 #X connect 15 0 16 0;
 #X connect 16 0 4 0;
-#X connect 16 1 20 1;
-#X connect 16 1 21 0;
-#X connect 20 0 12 0;
+#X connect 16 1 20 0;
+#X connect 18 0 12 0;
+#X connect 20 0 18 1;
 #X restore 413 372 pd Gaussian;
 #X obj 346 204 out~;
 #X text 57 260 OTHER WINDOW TYPES:;

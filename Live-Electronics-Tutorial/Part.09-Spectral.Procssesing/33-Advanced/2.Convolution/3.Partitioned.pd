@@ -43,12 +43,6 @@ it.;
 #X obj 64 307 sample~ \$0-IR voice.wav, f 24;
 #X text 159 497 =======================================================================================================
 , f 103;
-#X text 387 558 (also available via 'deken');
-#X text 200 518 You can find other externals for Pd that perform partitioned
-convolution \, one example is [convolve~] by william brent \, see ==>
-, f 66;
-#X obj 659 532 openfile http://williambrent.conflations.com/pagez/research.html
--h Brent's externals;
 #X text 71 397 This is to reinforce the idea of using convolution as
 a general sound processor. It's been noted that convolution is widely
 used as a reverberator \, but you can also think of it as a filter.
@@ -56,6 +50,9 @@ We'll get back to convolution when we discuss in depth filters and
 reverbs \, but for now let's have fun with it in a more creative way.
 , f 57;
 #X obj 774 264 play.file~ bubul.wav 1 1;
+#X text 301 524 You can find other externals for Pd that perform partitioned
+convolution \, one example is [convolve~] by william brent. Get it
+via 'help' => 'find externals';
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 7 0 15 0;
@@ -68,4 +65,4 @@ reverbs \, but for now let's have fun with it in a more creative way.
 #X connect 14 0 15 0;
 #X connect 15 0 22 0;
 #X connect 22 0 4 0;
-#X connect 29 0 15 1;
+#X connect 26 0 15 1;

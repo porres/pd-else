@@ -1,22 +1,22 @@
-#N canvas 579 23 654 740 12;
+#N canvas 706 23 557 674 12;
 #X declare -path else;
-#X obj 142 384 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8
+#X obj 101 382 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8
 0 10 -228856 -1 -1 100 256;
-#X obj 217 384 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-transpo empty 0
+#X obj 176 382 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-transpo empty 0
 -8 0 10 -228856 -1 -1 0 256;
-#X obj 503 381 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 460 379 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 102 384 tgl 18 0 empty \$0-play empty 17 7 0 10 -228856 -1 -1
+#X obj 61 382 tgl 18 0 empty \$0-play empty 17 7 0 10 -228856 -1 -1
 1 1;
-#X text 95 365 Play;
-#X text 222 364 Cents;
-#X obj 308 306 nbx 5 14 256 1e+37 0 0 \$0-window_size \$0-window_size-set
+#X text 54 363 Play;
+#X text 181 362 Cents;
+#X obj 267 304 nbx 5 14 256 1e+37 0 0 \$0-window_size \$0-window_size-set
 empty 0 -8 0 10 -228856 -1 -1 2048 256;
-#X obj 308 258 hradio 15 1 0 7 \$0-window_size-radio \$0-window_size-radio-set
+#X obj 267 256 hradio 15 1 0 7 \$0-window_size-radio \$0-window_size-radio-set
 empty 0 -8 0 10 -228856 -1 -1 3;
-#X obj 308 281 expr pow(2 \, $f1 + 8);
-#X obj 102 470 out~;
-#X text 139 364 Speed (%);
+#X obj 267 279 expr pow(2 \, $f1 + 8);
+#X obj 61 468 out~;
+#X text 98 362 Speed (%);
 #N canvas 633 199 517 527 Cartesian 0;
 #X obj 99 467 outlet~;
 #X obj 255 357 r \$0-window_size;
@@ -294,9 +294,9 @@ as the amplitudes are equal to one., f 31;
 #X connect 23 0 10 0;
 #X connect 23 1 4 1;
 #X connect 23 1 9 0;
-#X restore 102 418 pd Cartesian;
-#X text 368 306 window size;
-#X obj 170 267 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X restore 61 416 pd Cartesian;
+#X text 327 304 window size;
+#X obj 129 265 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #N canvas 460 148 731 302 sampler 0;
 #X obj 38 177 soundfiler;
@@ -315,17 +315,17 @@ as the amplitudes are equal to one., f 31;
 #X connect 3 0 0 0;
 #X connect 4 0 1 0;
 #X connect 7 0 2 0;
-#X restore 170 292 pd sampler;
-#X obj 366 382 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8
+#X restore 129 290 pd sampler;
+#X obj 325 380 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8
 0 10 -228856 -1 -1 100 256;
-#X obj 441 382 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-transpo empty 0
+#X obj 398 380 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-transpo empty 0
 -8 0 10 -228856 -1 -1 0 256;
-#X obj 315 382 tgl 18 0 empty \$0-play empty 17 7 0 10 -228856 -1 -1
+#X obj 274 380 tgl 18 0 empty \$0-play empty 17 7 0 10 -228856 -1 -1
 1 1;
-#X text 308 363 Play;
-#X text 446 362 Cents;
-#X obj 315 496 out~;
-#X text 363 362 Speed (%);
+#X text 267 361 Play;
+#X text 403 360 Cents;
+#X obj 274 494 out~;
+#X text 322 360 Speed (%);
 #N canvas 288 207 524 569 Cartesian(pd 0;
 #X obj 185 519 outlet~;
 #X obj 341 409 r \$0-window_size;
@@ -571,23 +571,23 @@ the front window. This order is necessary to apply the phase lock stage.
 #X connect 24 0 4 0;
 #X connect 24 1 22 0;
 #X connect 24 1 4 1;
-#X restore 315 416 pd Cartesian(pd phase.lock);
-#X text 523 372 phase lock, f 5;
-#X text 331 446 This example is equivalent to the Pd example I07.phase.vocoder
+#X restore 274 414 pd Cartesian(pd phase.lock);
+#X text 480 370 phase lock, f 5;
+#X text 290 444 This example is equivalent to the Pd example I07.phase.vocoder
 , f 32;
-#X obj 365 652 pvoc.player~;
-#X text 110 607 The [pvoc.player~] \, from the ELSE library \, is based
+#X obj 329 626 pvoc.player~;
+#X text 71 589 The [pvoc.player~] \, from the ELSE library \, is based
 on this patch. Check its help file.;
-#X obj 415 30 declare -path else;
-#X text 102 71 Here we have a more mathematically complicated version
+#X obj 374 28 declare -path else;
+#X text 61 69 Here we have a more mathematically complicated version
 of the last example as it avoids the phase computation. This is needed
 for implementing Miller Puckette's "phase-locked" algorithm. It's also
 a bit more accurate and efficient. This patch also allows changing
 the window size., f 63;
-#X text 102 153 The "Phase-Lock" makes it more stable \, specially
-for very slow speeds \, or even when freezing (with a speed of 0).
-Check first the [pd Cartesian] example and then the variation with
-the phase locking ([pd Cartesian(pd phase.lock)])., f 63;
+#X text 61 151 The "Phase-Lock" makes it more stable \, specially for
+very slow speeds \, or even when freezing (with a speed of 0). Check
+first the [pd Cartesian] example and then the variation with the phase
+locking ([pd Cartesian(pd phase.lock)])., f 63;
 #X connect 0 0 11 1;
 #X connect 1 0 11 2;
 #X connect 2 0 22 3;
