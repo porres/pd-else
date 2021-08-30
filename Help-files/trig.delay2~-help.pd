@@ -53,15 +53,15 @@
 #X text 160 404 1) float - delay time in ms (default 0);
 #X text 455 254 see also:;
 #X obj 185 180 else/impseq~;
-#X text 68 88 After receiving a trigger (negative to positive transition)
-\, [trig.delay2~] sends an impulse delayed by a given time in ms. After
-receiving a trigger to delay \, following triggers received before
-its delayed output are ignored., f 64;
 #X obj 228 211 else/trig.delay2~ 500;
 #X obj 438 276 else/trig.delay~;
 #X obj 185 242 else/out~;
-#X connect 5 0 33 1;
+#X text 68 88 After receiving a trigger (non-positive to positive transition)
+\, [trig.delay2~] sends an impulse delayed by a given time in ms. After
+receiving a trigger to delay \, following triggers received before
+its delayed output are ignored., f 64;
+#X connect 5 0 32 1;
 #X connect 25 0 31 0;
-#X connect 31 0 33 0;
-#X connect 31 0 35 0;
-#X connect 33 0 35 1;
+#X connect 31 0 32 0;
+#X connect 31 0 34 0;
+#X connect 32 0 34 1;
