@@ -22,10 +22,9 @@ typedef struct _gaussian
     t_float *x_signalscalar; // right inlet's float field
     int x_hasfeeders; // right inlet connection flag
     t_float  x_phase_sync_float; // float from magic
-} t_gaussian;
+}t_gaussian;
 
-static t_int *gaussian_perform_magic(t_int *w)
-{
+static t_int *gaussian_perform_magic(t_int *w){
     t_gaussian *x = (t_gaussian *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
@@ -35,9 +34,9 @@ static t_int *gaussian_perform_magic(t_int *w)
     t_float *out = (t_float *)(w[7]);
 // Magic Start
     t_float *scalar = x->x_signalscalar;
-    if (!magic_isnan(*x->x_signalscalar)){
+    if(!magic_isnan(*x->x_signalscalar)){
         t_float input_phase = fmod(*scalar, 1);
-        if (input_phase < 0)
+        if(input_phase < 0)
             input_phase += 1;
         x->x_phase = input_phase;
         magic_setnan(x->x_signalscalar);
@@ -49,7 +48,8 @@ static t_int *gaussian_perform_magic(t_int *w)
     while (nblock--){
         double hz = *in1++;
         double width = *in2++;
-        width = width > 1. ? 1. : width < 0. ? 0. : width; // clipped
+        if(width < 0)
+            width = 0;
         double phase_offset = *in4++;
         double phase_step = hz / sr; // phase_step
         phase_step = phase_step > 0.5 ? 0.5 : phase_step < -0.5 ? -0.5 : phase_step; // clipped to nyq
@@ -57,9 +57,9 @@ static t_int *gaussian_perform_magic(t_int *w)
         if (phase_dev >= 1 || phase_dev <= -1)
             phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
         phase = phase + phase_dev;
-        if (phase <= 0)
+        if(phase <= 0)
             phase = phase + 1.; // wrap deviated phase
-        if (phase >= 1)
+        if(phase >= 1)
             phase = phase - 1.; // wrap deviated phase
         width = pow(width, 4) * 294 + 6;
         t_float in = (phase - 0.5) * width;
@@ -69,7 +69,7 @@ static t_int *gaussian_perform_magic(t_int *w)
     }
     x->x_phase = phase;
     x->x_last_phase_offset = last_phase_offset;
-    return (w + 8);
+    return(w+8);
 }
 
 static t_int *gaussian_perform(t_int *w)
@@ -87,7 +87,8 @@ static t_int *gaussian_perform(t_int *w)
     while (nblock--){
         double hz = *in1++;
         double width = *in2++;
-        width = width > 1. ? 1. : width < 0. ? 0. : width; // clipped
+        if(width < 0)
+            width = 0;
         double trig = *in3++;
         double phase_offset = *in4++;
         double phase_step = hz / sr; // phase_step
