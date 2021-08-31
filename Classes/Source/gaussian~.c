@@ -6,8 +6,7 @@
 
 static t_class *gaussian_class;
 
-typedef struct _gaussian
-{
+typedef struct _gaussian{
     t_object x_obj;
     double  x_phase;
     double  x_last_phase_offset;
@@ -54,16 +53,16 @@ static t_int *gaussian_perform_magic(t_int *w){
         double phase_step = hz / sr; // phase_step
         phase_step = phase_step > 0.5 ? 0.5 : phase_step < -0.5 ? -0.5 : phase_step; // clipped to nyq
         double phase_dev = phase_offset - last_phase_offset;
-        if (phase_dev >= 1 || phase_dev <= -1)
+        if(phase_dev >= 1 || phase_dev <= -1)
             phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
         phase = phase + phase_dev;
         if(phase <= 0)
             phase = phase + 1.; // wrap deviated phase
         if(phase >= 1)
             phase = phase - 1.; // wrap deviated phase
-        width = pow(width, 4) * 294 + 6;
+        width = pow(width, 4) * 296 + 4;
         t_float in = (phase - 0.5) * width;
-        *out++ = exp(pow(in, 2) * -0.5);
+        *out++ = exp(-in*in);
         phase = phase + phase_step; // next phase
         last_phase_offset = phase_offset; // last phase offset
     }
