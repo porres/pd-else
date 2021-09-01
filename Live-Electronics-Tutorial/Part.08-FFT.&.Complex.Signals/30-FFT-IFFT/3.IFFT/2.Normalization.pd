@@ -1,4 +1,4 @@
-#N canvas 490 70 565 438 12;
+#N canvas 619 77 565 438 12;
 #X declare -path else;
 #X floatatom 346 105 5 0 0 0 - - -;
 #X obj 88 179 nbx 5 14 64 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
@@ -10,7 +10,7 @@
 #X text 85 182 0;
 #X obj 124 406 osc~;
 #X obj 124 328 samplerate~;
-#X msg 191 375 0.5;
+#X msg 190 375 0.5;
 #X obj 124 377 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 21.5332 256;
 #X obj 116 293 trigger bang bang bang;
@@ -157,39 +157,36 @@
 #X connect 56 0 16 0;
 #X connect 58 0 11 0;
 #X restore 163 372 pd Welch;
-#N canvas 121 23 587 380 Barlett 0;
-#X text 58 51 1;
-#X text 57 166 0;
-#X obj 73 60 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
+#N canvas 444 241 589 301 Barlett 0;
+#X text 60 82 1;
+#X text 59 197 0;
+#X obj 75 91 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-barlett 2048 float 0;
 #X coords 0 1 2047 0 200 120 1 0 0;
-#X restore 72 59 graph;
-#X obj 357 280 tabwrite~ \$0-barlett;
-#X obj 368 137 samplerate~;
-#X obj 368 186 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X restore 74 90 graph;
+#X obj 368 236 tabwrite~ \$0-barlett;
+#X obj 389 93 samplerate~;
+#X obj 389 142 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 21.5332 256;
-#X obj 368 161 / 2048;
-#X obj 349 109 t b b b;
-#X obj 349 83 loadbang;
-#X obj 368 241 rescale~;
-#X obj 312 88 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
-#X obj 368 212 tri~;
-#X msg 429 185 0.75;
-#X text 119 231 Basically a triangular function.;
+#X obj 389 117 / 2048;
+#X obj 366 65 t b b b;
+#X obj 366 39 loadbang;
+#X obj 389 197 rescale~;
+#X obj 389 168 tri~;
+#X msg 450 141 0.75;
+#X text 76 29 Simply a triangular function.;
 #X connect 5 0 7 0;
-#X connect 6 0 12 0;
+#X connect 6 0 11 0;
 #X connect 7 0 6 0;
 #X connect 8 0 4 0;
 #X connect 8 1 5 0;
-#X connect 8 2 13 0;
+#X connect 8 2 12 0;
 #X connect 9 0 8 0;
 #X connect 10 0 4 0;
-#X connect 11 0 8 0;
-#X connect 12 0 10 0;
-#X connect 13 0 12 1;
+#X connect 11 0 10 0;
+#X connect 12 0 11 1;
 #X restore 243 372 pd Barlett;
 #N canvas 455 28 352 514 Connes 0;
 #X text 49 31 1;
@@ -230,14 +227,14 @@
 #X connect 17 0 11 0;
 #X connect 18 0 4 0;
 #X restore 243 350 pd Connes;
-#N canvas 102 33 566 407 Blackman 0;
+#N canvas 596 122 641 409 Blackman 0;
 #X text 44 50 1;
 #X text 43 165 0;
 #X obj 370 103 samplerate~;
 #X obj 370 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 21.5332 256;
-#X obj 306 68 trigger bang bang bang;
-#X obj 306 47 bng 15 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
+#X obj 295 68 trigger bang bang bang;
+#X obj 295 47 bng 15 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
 -1;
 #X obj 59 59 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
 0;
@@ -245,17 +242,17 @@
 #X array \$0-blackman 2048 float 0;
 #X coords 0 1 2047 0 200 120 1;
 #X restore 58 58 graph;
-#X obj 306 21 loadbang;
-#X obj 352 352 tabwrite~ \$0-blackman;
-#X obj 370 181 phasor~;
-#X msg 454 133 0;
-#X obj 370 216 cos~;
-#X obj 370 240 *~ 0.5;
-#X obj 484 239 *~ 2;
-#X obj 484 263 cos~;
-#X obj 484 286 *~ 0.08;
-#X obj 429 307 +~;
-#X obj 370 263 expr~ 0.42 - $v1;
+#X obj 295 21 loadbang;
+#X obj 416 332 tabwrite~ \$0-blackman;
+#X obj 416 181 phasor~;
+#X msg 461 103 0;
+#X obj 416 216 cos~;
+#X obj 416 240 *~ 0.5;
+#X obj 540 239 *~ 2;
+#X obj 540 263 cos~;
+#X obj 540 289 *~ 0.08;
+#X obj 416 290 +~;
+#X obj 416 263 expr~ 0.42 - $v1;
 #X obj 370 127 / 2048;
 #X text 29 285 (0.42 - (cos(x) * 0.5)) + (cos(2x) * 0.08);
 #X text 66 252 Formula:;
@@ -278,12 +275,12 @@
 #X connect 18 0 17 0;
 #X connect 19 0 3 0;
 #X restore 325 372 pd Blackman;
-#N canvas 216 23 611 558 Lanczos 0;
+#N canvas 599 77 611 558 Lanczos 0;
 #X text 43 36 1;
 #X text 42 151 0;
 #X obj 67 356 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 21.5332 256;
-#X obj 56 251 bng 15 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
+#X obj 45 251 bng 15 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
 -1;
 #X obj 58 44 cnv 15 198 118 empty empty empty 20 12 0 14 -228856 -66577
 0;
@@ -291,38 +288,41 @@
 #X array \$0-lanczos 2048 float 0;
 #X coords 0 1 2047 0 200 120 1;
 #X restore 57 43 graph;
-#X obj 56 225 loadbang;
+#X obj 45 225 loadbang;
 #X obj 67 385 phasor~;
-#X obj 56 516 tabwrite~ \$0-lanczos;
-#X msg 134 351 0;
-#X obj 67 416 expr~ ($v1 - 0.5) * 2;
-#X text 202 415 -1 a 1;
+#X obj 45 516 tabwrite~ \$0-lanczos;
+#X msg 157 301 0;
+#X obj 67 412 expr~ ($v1 - 0.5) * 2;
 #X text 99 485 sin(x)/(x);
 #X obj 67 437 expr~ $v1 * pi;
-#X obj 316 386 v pi;
+#X obj 196 301 v pi;
 #X obj 67 484 /~;
-#X text 161 436 -pi a pi;
 #X obj 67 462 expr~ sin($v1);
 #X text 201 225 A normalized sync function;
 #X text 290 262 formule: sin(x)/(x);
 #X text 283 283 where x is from -pi to pi;
-#X obj 316 363 pi;
-#X obj 56 272 t b b;
-#X obj 169 294 block~ 2048;
-#X obj 67 323 blocksize~ -hz;
+#X obj 196 274 pi;
+#X text 222 411 -1 to 1;
+#X text 173 436 -pi to pi;
+#X obj 45 272 t b b b;
+#X obj 68 303 samplerate~;
+#X obj 68 330 / 2048;
 #X connect 2 0 7 0;
 #X connect 3 0 22 0;
 #X connect 6 0 3 0;
 #X connect 7 0 10 0;
 #X connect 9 0 7 1;
-#X connect 10 0 13 0;
-#X connect 13 0 15 1;
-#X connect 13 0 17 0;
-#X connect 15 0 8 0;
-#X connect 17 0 15 0;
-#X connect 21 0 14 0;
+#X connect 10 0 12 0;
+#X connect 12 0 14 1;
+#X connect 12 0 15 0;
+#X connect 14 0 8 0;
+#X connect 15 0 14 0;
+#X connect 19 0 13 0;
 #X connect 22 0 8 0;
-#X connect 22 1 9 0;
+#X connect 22 1 23 0;
+#X connect 22 2 19 0;
+#X connect 22 2 9 0;
+#X connect 23 0 24 0;
 #X connect 24 0 2 0;
 #X restore 416 350 pd Lanczos;
 #N canvas 687 136 496 629 Gaussian 0;
@@ -344,34 +344,34 @@
 #X obj 154 342 / 2048;
 #X obj 154 396 phasor~;
 #X msg 245 318 0;
-#X obj 258 494 expr~ exp(pow ($v1 \, 2) * -0.5);
 #X obj 154 420 -~ 0.5;
 #X obj 79 559 tabwrite~ \$0-gauss;
-#X obj 163 228 hsl 128 15 1 20 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 163 228 hsl 128 15 4 20 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X obj 160 254 trigger bang float;
 #X text 300 227 X;
-#X obj 258 466 *~ 6;
 #X text 150 186 the X parameter defines the steepness of the curve
 , f 26;
 #X floatatom 283 435 5 0 0 0 - - -;
+#X obj 258 494 expr~ exp(-$v1*$v1);
+#X obj 258 466 *~ 4;
 #X connect 2 0 9 0;
 #X connect 3 0 10 0;
-#X connect 4 0 14 0;
+#X connect 4 0 13 0;
 #X connect 4 1 2 0;
 #X connect 4 2 11 0;
 #X connect 5 0 4 0;
 #X connect 8 0 5 0;
 #X connect 9 0 3 0;
-#X connect 10 0 13 0;
+#X connect 10 0 12 0;
 #X connect 11 0 10 1;
-#X connect 12 0 14 0;
-#X connect 13 0 18 0;
-#X connect 15 0 16 0;
-#X connect 16 0 4 0;
-#X connect 16 1 20 0;
-#X connect 18 0 12 0;
-#X connect 20 0 18 1;
+#X connect 12 0 20 0;
+#X connect 14 0 15 0;
+#X connect 15 0 4 0;
+#X connect 15 1 18 0;
+#X connect 18 0 20 1;
+#X connect 19 0 13 0;
+#X connect 20 0 19 0;
 #X restore 413 372 pd Gaussian;
 #X obj 346 204 out~;
 #X text 57 260 OTHER WINDOW TYPES:;
