@@ -22,7 +22,7 @@
 #define SEQ_ISRUNNING(x)  ((x)->x_prevtime > (double).0001)
 #define SEQ_ISPAUSED(x)  ((x)->x_prevtime <= (double).0001)
 
-enum { SEQ_IDLEMODE, SEQ_RECMODE, SEQ_PLAYMODE, SEQ_SLAVEMODE };
+enum{SEQ_IDLEMODE, SEQ_RECMODE, SEQ_PLAYMODE, SEQ_SLAVEMODE};
 
 typedef struct _seqevent{
     double         e_delta;
@@ -39,6 +39,7 @@ typedef struct _seq{
     t_canvas      *x_canvas;
     t_symbol      *x_defname;
     t_hammerfile  *x_filehandle;
+    int            x_loop;
     int            x_mode;
     int            x_playhead;
     double         x_nextscoretime;
@@ -117,16 +118,14 @@ static void seq_panic(t_seq *x){
     panic_clear(x);
 }
 
-
-
 static void seq_doclear(t_seq *x, int dofree){
     if(dofree){
-        if (x->x_sequence != x->x_seqini){
+        if(x->x_sequence != x->x_seqini){
             freebytes(x->x_sequence, x->x_seqsize * sizeof(*x->x_sequence));
             x->x_sequence = x->x_seqini;
             x->x_seqsize = SEQ_INISEQSIZE;
         }
-        if (x->x_tempomap != x->x_tempomapini){
+        if(x->x_tempomap != x->x_tempomapini){
             freebytes(x->x_tempomap, x->x_tempomapsize * sizeof(*x->x_tempomap));
             x->x_tempomap = x->x_tempomapini;
             x->x_tempomapsize = SEQ_INITEMPOMAPSIZE;
@@ -137,35 +136,35 @@ static void seq_doclear(t_seq *x, int dofree){
 }
 
 static int seq_dogrowing(t_seq *x, int nevents, int ntempi){
-    if (nevents > x->x_seqsize){
+    if(nevents > x->x_seqsize){
         int nrequested = nevents;
         x->x_sequence =
         grow_nodata(&nrequested, &x->x_seqsize, x->x_sequence,
             SEQ_INISEQSIZE, x->x_seqini, sizeof(*x->x_sequence));
-        if (nrequested < nevents){
+        if(nrequested < nevents){
             x->x_nevents = 0;
             x->x_ntempi = 0;
-            return (0);
+            return(0);
         }
     }
-    if (ntempi > x->x_tempomapsize){
+    if(ntempi > x->x_tempomapsize){
         int nrequested = ntempi;
         x->x_tempomap =
         grow_nodata(&nrequested, &x->x_tempomapsize, x->x_tempomap,
                     SEQ_INITEMPOMAPSIZE, x->x_tempomapini,
                     sizeof(*x->x_tempomap));
-        if (nrequested < ntempi){
+        if(nrequested < ntempi){
             x->x_ntempi = 0;
-            return (0);
+            return(0);
         }
     }
     x->x_nevents = nevents;
     x->x_ntempi = ntempi;
-    return (1);
+    return(1);
 }
 
 static void seq_complete(t_seq *x){
-    if (x->x_evelength < x->x_expectedlength){ // no warning if no data after status byte requiring data
+    if(x->x_evelength < x->x_expectedlength){ // no warning if no data after status byte requiring data
         if(x->x_evelength > 1)
             post("[midi]: truncated midi message");
     }
@@ -176,13 +175,13 @@ static void seq_complete(t_seq *x){
         if(x->x_evelength < 4)
             ep->e_bytes[x->x_evelength] = SEQ_EOM;
         x->x_nevents++;
-        if (x->x_nevents >= x->x_seqsize){
+        if(x->x_nevents >= x->x_seqsize){
             int nexisting = x->x_seqsize;
             /* store-ahead scheme, LATER consider using x_currevent */
             int nrequested = x->x_nevents + 1;
             x->x_sequence = grow_withdata(&nrequested, &nexisting, &x->x_seqsize,
                             x->x_sequence, SEQ_INISEQSIZE, x->x_seqini, sizeof(*x->x_sequence));
-            if (nrequested <= x->x_nevents)
+            if(nrequested <= x->x_nevents)
                 x->x_nevents = 0;
         }
     }
@@ -192,13 +191,13 @@ static void seq_complete(t_seq *x){
 static void seq_checkstatus(t_seq *x, unsigned char c){
     if(x->x_status && x->x_evelength > 1)  /* LATER rethink */
         seq_complete(x);
-    if (c < 192)
+    if(c < 192)
         x->x_expectedlength = 3;
-    else if (c < 224)
+    else if(c < 224)
         x->x_expectedlength = 2;
-    else if (c < 240)
+    else if(c < 240)
         x->x_expectedlength = 3;
-    else if (c < 248) /* FIXME */
+    else if(c < 248) /* FIXME */
         x->x_expectedlength = -1;
     else{
         x->x_sequence[x->x_nevents].e_bytes[0] = c;
@@ -212,21 +211,21 @@ static void seq_checkstatus(t_seq *x, unsigned char c){
 
 static void seq_addbyte(t_seq *x, unsigned char c, int docomplete){
     x->x_sequence[x->x_nevents].e_bytes[x->x_evelength++] = c;
-    if (x->x_evelength == x->x_expectedlength){
+    if(x->x_evelength == x->x_expectedlength){
         seq_complete(x);
-        if (x->x_status){
+        if(x->x_status){
             x->x_sequence[x->x_nevents].e_bytes[0] = x->x_status;
             x->x_evelength = 1;
         }
     }
-    else if (x->x_evelength == 4){
-        if (x->x_status != 240)
+    else if(x->x_evelength == 4){
+        if(x->x_status != 240)
             pd_error(x, "bug [midi]: seq_addbyte");
         /* CHECKED sysex is broken into 4-byte packets marked with
          the actual delta time of last byte received in a packet */
         seq_complete(x);
     }
-    else if (docomplete)
+    else if(docomplete)
         seq_complete(x);
 }
 
@@ -236,11 +235,11 @@ static void seq_endofsysex(t_seq *x){
 }
 
 static void seq_stoprecording(t_seq *x){
-    if (x->x_status == 240){
+    if(x->x_status == 240){
         post("[midi]: incomplete sysex");  /* CHECKED */
         seq_endofsysex(x);  /* CHECKED 247 added implicitly */
     }
-    else if (x->x_status)
+    else if(x->x_status)
         seq_complete(x);
     /* CHECKED running status used in recording, but not across recordings */
     x->x_status = 0;
@@ -276,19 +275,19 @@ static void seq_startplayback(t_seq *x, int modechanged){
     x->x_playhead = 0;
     x->x_nextscoretime = 0.;
     /* CHECKED bang not sent if sequence is empty */
-    if (x->x_nevents){
-        if (modechanged){
+    if(x->x_nevents){
+        if(modechanged){
             x->x_nextscoretime = x->x_sequence->e_delta;
             /* playback data never sent within the scheduler event of
              a start message (even for the first delta <= 0), LATER rethink */
             x->x_clockdelay = x->x_sequence->e_delta * x->x_newtimescale;
         }
         else{  /* CHECKED timescale change */
-            if (SEQ_ISRUNNING(x))
+            if(SEQ_ISRUNNING(x))
                 x->x_clockdelay -= clock_gettimesince(x->x_prevtime);
             x->x_clockdelay *= x->x_newtimescale / x->x_timescale;
         }
-        if (x->x_clockdelay < 0.)
+        if(x->x_clockdelay < 0.)
             x->x_clockdelay = 0.;
         x->x_timescale = x->x_newtimescale;
         clock_delay(x->x_clock, x->x_clockdelay);
@@ -350,78 +349,27 @@ static void seq_settimescale(t_seq *x, t_floatarg f){
     x->x_newtimescale = f < 1e-20 ? 1e-20 : f > 1e20 ? 1e20 : f;
 }
 
-static void seq_clocktick(t_seq *x){
-    t_float output;
-    if (x->x_mode == SEQ_PLAYMODE || x->x_mode == SEQ_SLAVEMODE){
-        t_seqevent *ep = &x->x_sequence[x->x_playhead++];
-        unsigned char *bp = ep->e_bytes;
-    nextevent:
-        output = (t_float)*bp++;
-        outlet_float(((t_object *)x)->ob_outlet, output);
-        panic_input(x, output);
-        if (*bp != SEQ_EOM){
-            output = (t_float)*bp++;
-            outlet_float(((t_object *)x)->ob_outlet, output);
-            panic_input(x, output);
-            if (*bp != SEQ_EOM){
-                output = (t_float)*bp++;
-                outlet_float(((t_object *)x)->ob_outlet, output);
-                panic_input(x, output);
-                if (*bp != SEQ_EOM){
-                    output = (t_float)*bp++;
-                    outlet_float(((t_object *)x)->ob_outlet, output);
-                    panic_input(x, output);
-                }
-            }
-        }
-        if (x->x_mode != SEQ_PLAYMODE && x->x_mode != SEQ_SLAVEMODE)
-            return;  /* protecting against outlet -> 'stop' etc. */
-        if (x->x_playhead < x->x_nevents){
-            ep++;
-            x->x_nextscoretime += ep->e_delta;
-            if (ep->e_delta < SEQ_TICKEPSILON){
-                /* continue output in the same scheduler event, LATER rethink */
-                x->x_playhead++;
-                bp = ep->e_bytes;
-                goto nextevent;
-            }
-            else{
-                x->x_clockdelay = ep->e_delta * x->x_timescale;
-                if (x->x_clockdelay < 0.)
-                    x->x_clockdelay = 0.;
-                clock_delay(x->x_clock, x->x_clockdelay);
-                x->x_prevtime = clock_getlogicaltime();
-            }
-        }
-        else{
-            seq_setmode(x, SEQ_IDLEMODE);
-            /* CHECKED bang sent immediately _after_ last byte */
-            outlet_bang(x->x_bangout);  /* LATER think about reentrancy */
-        }
-    }
-}
-
 /* timeout handler ('tick' is late) */
 static void seq_slaveclocktick(t_seq *x){
-    if (x->x_mode == SEQ_SLAVEMODE)
+    if(x->x_mode == SEQ_SLAVEMODE)
         clock_unset(x->x_clock);
 }
 
 static void seq_bang(t_seq *x){
     if(x->x_mode == SEQ_SLAVEMODE){
-        if (x->x_slaveprevtime > 0){
+        if(x->x_slaveprevtime > 0){
             double elapsed = clock_gettimesince(x->x_slaveprevtime);
-            if (elapsed < SEQ_MINTICKDELAY)
+            if(elapsed < SEQ_MINTICKDELAY)
                 return;
             clock_delay(x->x_slaveclock, elapsed);
             seq_settimescale(x, (float)(elapsed * (SEQ_TICKSPERSEC / 1000.)));
-            if (SEQ_ISRUNNING(x)){
+            if(SEQ_ISRUNNING(x)){
                 x->x_clockdelay -= clock_gettimesince(x->x_prevtime);
                 x->x_clockdelay *= x->x_newtimescale / x->x_timescale;
             }
             else x->x_clockdelay =
                 x->x_sequence[x->x_playhead].e_delta * x->x_newtimescale;
-            if (x->x_clockdelay < 0.)
+            if(x->x_clockdelay < 0.)
                 x->x_clockdelay = 0.;
             clock_delay(x->x_clock, x->x_clockdelay);
             x->x_prevtime = clock_getlogicaltime();
@@ -438,24 +386,33 @@ static void seq_bang(t_seq *x){
 }
 
 static void seq_pause(t_seq *x){
-    if (x->x_mode == SEQ_PLAYMODE && SEQ_ISRUNNING(x)){
+    if(x->x_mode == SEQ_PLAYMODE && SEQ_ISRUNNING(x)){
         x->x_clockdelay -= clock_gettimesince(x->x_prevtime);
-        if (x->x_clockdelay < 0.)
+        if(x->x_clockdelay < 0.)
             x->x_clockdelay = 0.;
         clock_unset(x->x_clock);
         x->x_prevtime = 0.;
     }
 }
 
+static void seq_start(t_seq *x, t_floatarg f){
+    if(f < -SEQ_STARTEPSILON) // FIXME
+        seq_setmode(x, SEQ_SLAVEMODE); // ticks
+    else{
+        seq_settimescale(x, (f > SEQ_STARTEPSILON ? (100. / f) : 1.));
+        seq_setmode(x, SEQ_PLAYMODE);  /* CHECKED 'start' stops recording */
+    }
+}
+
 static void seq_float(t_seq *x, t_float f){
-    if (x->x_mode == SEQ_RECMODE){
+    if(x->x_mode == SEQ_RECMODE){
         /* CHECKED noninteger and out of range silently truncated */
         unsigned char c = (unsigned char)f;
-        if (c < 128 && x->x_status)
+        if(c < 128 && x->x_status)
             seq_addbyte(x, c, 0);
-        else if (c != 254){  /* CHECKED active sensing ignored */
-            if (x->x_status == 240){
-                if (c == 247)
+        else if(c != 254){  /* CHECKED active sensing ignored */
+            if(x->x_status == 240){
+                if(c == 247)
                     seq_endofsysex(x);
                 else{
                     /* CHECKED rt bytes alike */
@@ -464,7 +421,7 @@ static void seq_float(t_seq *x, t_float f){
                     seq_checkstatus(x, c);
                 }
             }
-            else if (c != 247)
+            else if(c != 247)
                 seq_checkstatus(x, c);
         }
     }
@@ -483,13 +440,8 @@ static void seq_record(t_seq *x){ // stops playback, resets recording
     seq_setmode(x, SEQ_RECMODE);
 }
 
-static void seq_start(t_seq *x, t_floatarg f){
-    if(f < -SEQ_STARTEPSILON) // FIXME
-        seq_setmode(x, SEQ_SLAVEMODE); // ticks
-    else{
-        seq_settimescale(x, (f > SEQ_STARTEPSILON ? (100. / f) : 1.));
-        seq_setmode(x, SEQ_PLAYMODE);  /* CHECKED 'start' stops recording */
-    }
+static void seq_loop(t_seq *x, t_floatarg f){
+    x->x_loop = (f != 0);
 }
 
 static void seq_dump(t_seq *x){
@@ -503,8 +455,8 @@ static void seq_stop(t_seq *x){
 }
 
 static void seq_continue(t_seq *x){
-    if (x->x_mode == SEQ_PLAYMODE && SEQ_ISPAUSED(x)){
-        if (x->x_clockdelay < 0.)
+    if(x->x_mode == SEQ_PLAYMODE && SEQ_ISPAUSED(x)){
+        if(x->x_clockdelay < 0.)
             x->x_clockdelay = 0.;
         clock_delay(x->x_clock, x->x_clockdelay);
         x->x_prevtime = clock_getlogicaltime();
@@ -512,27 +464,27 @@ static void seq_continue(t_seq *x){
 }
 
 static void seq_goto(t_seq *x, t_floatarg f1, t_floatarg f2){
-    if (x->x_nevents){
+    if(x->x_nevents){
         t_seqevent *ev;
         int ndx, nevents = x->x_nevents;
         double ms = (double)f1 * 1000. + f2, sum;
-        if (ms <= SEQ_TICKEPSILON)
+        if(ms <= SEQ_TICKEPSILON)
             ms = 0.;
-        if (x->x_mode != SEQ_PLAYMODE){
+        if(x->x_mode != SEQ_PLAYMODE){
             seq_settimescale(x, x->x_timescale);
             seq_setmode(x, SEQ_PLAYMODE);
             /* clock_delay() has been called in setmode, LATER avoid */
             clock_unset(x->x_clock);
             x->x_prevtime = 0.;
         }
-        for (ndx = 0, ev = x->x_sequence, sum = SEQ_TICKEPSILON; ndx < nevents; ndx++, ev++){
-            if ((sum += ev->e_delta) >= ms){
+        for(ndx = 0, ev = x->x_sequence, sum = SEQ_TICKEPSILON; ndx < nevents; ndx++, ev++){
+            if((sum += ev->e_delta) >= ms){
                 x->x_playhead = ndx;
                 x->x_nextscoretime = sum;
                 x->x_clockdelay = sum - SEQ_TICKEPSILON - ms;
-                if (x->x_clockdelay < 0.)
+                if(x->x_clockdelay < 0.)
                     x->x_clockdelay = 0.;
-                if (SEQ_ISRUNNING(x)){
+                if(SEQ_ISRUNNING(x)){
                     clock_delay(x->x_clock, x->x_clockdelay);
                     x->x_prevtime = clock_getlogicaltime();
                 }
@@ -542,12 +494,67 @@ static void seq_goto(t_seq *x, t_floatarg f1, t_floatarg f2){
     }
 }
 
+static void seq_clocktick(t_seq *x){
+    t_float output;
+    if(x->x_mode == SEQ_PLAYMODE || x->x_mode == SEQ_SLAVEMODE){
+        t_seqevent *ep = &x->x_sequence[x->x_playhead++];
+        unsigned char *bp = ep->e_bytes;
+    nextevent:
+        output = (t_float)*bp++;
+        outlet_float(((t_object *)x)->ob_outlet, output);
+        panic_input(x, output);
+        if(*bp != SEQ_EOM){
+            output = (t_float)*bp++;
+            outlet_float(((t_object *)x)->ob_outlet, output);
+            panic_input(x, output);
+            if(*bp != SEQ_EOM){
+                output = (t_float)*bp++;
+                outlet_float(((t_object *)x)->ob_outlet, output);
+                panic_input(x, output);
+                if(*bp != SEQ_EOM){
+                    output = (t_float)*bp++;
+                    outlet_float(((t_object *)x)->ob_outlet, output);
+                    panic_input(x, output);
+                }
+            }
+        }
+        if(x->x_mode != SEQ_PLAYMODE && x->x_mode != SEQ_SLAVEMODE)
+            return;  /* protecting against outlet -> 'stop' etc. */
+        post("x->x_playhead = %d", x->x_playhead);
+        if(x->x_playhead < x->x_nevents){
+            ep++;
+            x->x_nextscoretime += ep->e_delta;
+            if(ep->e_delta < SEQ_TICKEPSILON){
+                /* continue output in the same scheduler event, LATER rethink */
+                x->x_playhead++;
+                bp = ep->e_bytes;
+                goto nextevent;
+            }
+            else{
+                x->x_clockdelay = ep->e_delta * x->x_timescale;
+                if(x->x_clockdelay < 0.)
+                    x->x_clockdelay = 0.;
+                clock_delay(x->x_clock, x->x_clockdelay);
+                x->x_prevtime = clock_getlogicaltime();
+            }
+        }
+        else{
+            /* CHECKED bang sent immediately _after_ last byte */
+            seq_setmode(x, SEQ_IDLEMODE);
+            outlet_bang(x->x_bangout);  /* LATER think about reentrancy */
+            if(x->x_loop){
+                seq_float(x, 1);
+            }
+        }
+    }
+}
+
 static void seq_scoretime(t_seq *x, t_symbol *s){
-    if (s && s->s_thing && x->x_mode == SEQ_PLAYMODE){  /* LATER other modes */
+    if(s && s->s_thing && x->x_mode == SEQ_PLAYMODE){  /* LATER other modes */
         t_atom aout[2];
         double ms, clockdelay = x->x_clockdelay;
         t_float f1, f2;
-        if (SEQ_ISRUNNING(x))
+        if(SEQ_ISRUNNING(x))
             clockdelay -= clock_gettimesince(x->x_prevtime);
         ms = x->x_nextscoretime - clockdelay / x->x_timescale;
         /* Send ms as a pair of floats (f1, f2) = (coarse in sec, fine in msec).
@@ -558,7 +565,7 @@ static void seq_scoretime(t_seq *x, t_symbol *s){
          gives 14.5 hours of non-distorted floats, etc.) */
         f1 = ms * .001;
         f2 = ms - (double)f1 * 1000.;
-        if (f2 < .001 && f2 > -.001)
+        if(f2 < .001 && f2 > -.001)
             f2 = 0.;
         SETFLOAT(&aout[0], f1);
         SETFLOAT(&aout[1], f2);
@@ -567,12 +574,12 @@ static void seq_scoretime(t_seq *x, t_symbol *s){
 }
 
 static void seq_tempo(t_seq *x, t_floatarg f){ // not available in Max
-    if (f > SEQ_TEMPOEPSILON){
+    if(f > SEQ_TEMPOEPSILON){
         seq_settimescale(x, 1. / f);
-        if (x->x_mode == SEQ_PLAYMODE)
+        if(x->x_mode == SEQ_PLAYMODE)
             seq_startplayback(x, 0);
     }
-    // FIXME else pause, LATER reverse playback if (f < -SEQ_TEMPOEPSILON)
+    // FIXME else pause, LATER reverse playback if(f < -SEQ_TEMPOEPSILON)
 }
 
 static int seq_eventcomparehook(const void *e1, const void *e2){
@@ -580,46 +587,45 @@ static int seq_eventcomparehook(const void *e1, const void *e2){
 }
 
 static int seq_tempocomparehook(const void *t1, const void *t2){
-    return (((t_seqtempo *)t1)->t_scoretime >
-	    ((t_seqtempo *)t2)->t_scoretime ? 1 : -1);
+    return(((t_seqtempo *)t1)->t_scoretime > ((t_seqtempo *)t2)->t_scoretime ? 1 : -1);
 }
 
 static int seq_mrhook(t_mifiread *mr, void *hookdata, int evtype){
     t_seq *x = (t_seq *)hookdata;
     double scoretime = mifiread_getscoretime(mr);
-    if (evtype >= 0xf0){
+    if(evtype >= 0xf0){
     }
-    else if (evtype >= 0x80){
-        if (x->x_eventreadhead < x->x_nevents){
+    else if(evtype >= 0x80){
+        if(x->x_eventreadhead < x->x_nevents){
             t_seqevent *sev = &x->x_sequence[x->x_eventreadhead++];
             int status = mifiread_getstatus(mr);
             sev->e_delta = scoretime;
             sev->e_bytes[0] = status | mifiread_getchannel(mr);
             sev->e_bytes[1] = mifiread_getdata1(mr);
-            if (MIFI_ONEDATABYTE(status))
+            if(MIFI_ONEDATABYTE(status))
                 sev->e_bytes[2] = SEQ_EOM;
             else{
                 sev->e_bytes[2] = mifiread_getdata2(mr);
                 sev->e_bytes[3] = SEQ_EOM;
             }
         }
-        else if (x->x_eventreadhead == x->x_nevents){
+        else if(x->x_eventreadhead == x->x_nevents){
             pd_error(x, "bug [midi]: seq_mrhook 1");
             x->x_eventreadhead++;
         }
     }
-    else if (evtype == MIFIMETA_TEMPO){
-        if (x->x_temporeadhead < x->x_ntempi){
+    else if(evtype == MIFIMETA_TEMPO){
+        if(x->x_temporeadhead < x->x_ntempi){
             t_seqtempo *stm = &x->x_tempomap[x->x_temporeadhead++];
             stm->t_scoretime = scoretime;
             stm->t_sr = mifiread_gettempo(mr);
         }
-        else if (x->x_temporeadhead == x->x_ntempi){
+        else if(x->x_temporeadhead == x->x_ntempi){
             pd_error(x, "bug [midi]: seq_mrhook 2");
             x->x_temporeadhead++;
         }
     }
-    return (1);
+    return(1);
 }
 
 /* apply tempo and fold */
@@ -629,11 +635,11 @@ static void seq_foldtime(t_seq *x, double deftempo){
     double coef = 1000. / deftempo;
     int ex, tx = 0;
     double prevscoretime = 0.;
-    while (tx < x->x_ntempi && stm->t_scoretime < SEQ_TICKEPSILON)
-	tx++, coef = 1000. / stm++->t_sr;
-    for (ex = 0, sev = x->x_sequence; ex < x->x_nevents; ex++, sev++){
+    while(tx < x->x_ntempi && stm->t_scoretime < SEQ_TICKEPSILON)
+        tx++, coef = 1000. / stm++->t_sr;
+    for(ex = 0, sev = x->x_sequence; ex < x->x_nevents; ex++, sev++){
         double clockdelta = 0.;
-        while (tx < x->x_ntempi && stm->t_scoretime <= sev->e_delta){
+        while(tx < x->x_ntempi && stm->t_scoretime <= sev->e_delta){
             clockdelta += (stm->t_scoretime - prevscoretime) * coef;
             prevscoretime = stm->t_scoretime;
             tx++;
@@ -645,41 +651,40 @@ static void seq_foldtime(t_seq *x, double deftempo){
     }
 }
 
-static int seq_mfread(t_seq *x, char *path){
+static int seq_mfread(t_seq *x, char *path){ // MIDI File read
     int result = 0;
     t_mifiread *mr = mifiread_new((t_pd *)x);
-    if (!mifiread_open(mr, path, "", 0))
+    if(!mifiread_open(mr, path, "", 0)) // open
+
+//        post("seq_mfread result = %d", result);
         goto mfreadfailed;
-    if (!seq_dogrowing(x, mifiread_getnevents(mr), mifiread_getntempi(mr)))
+    if(!seq_dogrowing(x, mifiread_getnevents(mr), mifiread_getntempi(mr)))
         goto mfreadfailed;
     x->x_eventreadhead = 0;
     x->x_temporeadhead = 0;
-    if (mifiread_doit(mr, seq_mrhook, x) != MIFIREAD_EOF)
+    if(mifiread_doit(mr, seq_mrhook, x) != MIFIREAD_EOF)
         goto mfreadfailed;
-    if (x->x_eventreadhead < x->x_nevents){
+    if(x->x_eventreadhead < x->x_nevents){
         pd_error(x, "bug [midi]: seq_mfread 1");
-        post("declared %d events, got %d",
-             x->x_nevents, x->x_eventreadhead);
+        post("declared %d events, got %d", x->x_nevents, x->x_eventreadhead);
         x->x_nevents = x->x_eventreadhead;
     }
-    if (x->x_nevents)
-	qsort(x->x_sequence, x->x_nevents, sizeof(*x->x_sequence),
-	      seq_eventcomparehook);
-    if (x->x_temporeadhead < x->x_ntempi)
-    {
-    pd_error(x, "bug [midi]: seq_mfread 2");
-    post("declared %d tempi, got %d",
-		     x->x_ntempi, x->x_temporeadhead);
-	x->x_ntempi = x->x_temporeadhead;
+    if(x->x_nevents)
+        qsort(x->x_sequence, x->x_nevents, sizeof(*x->x_sequence), seq_eventcomparehook);
+    if(x->x_temporeadhead < x->x_ntempi){
+        pd_error(x, "bug [midi]: seq_mfread 2");
+        post("declared %d tempi, got %d",
+        x->x_ntempi, x->x_temporeadhead);
+        x->x_ntempi = x->x_temporeadhead;
     }
-    if (x->x_ntempi)
-	qsort(x->x_tempomap, x->x_ntempi, sizeof(*x->x_tempomap),
-	      seq_tempocomparehook);
+    if(x->x_ntempi)
+        qsort(x->x_tempomap, x->x_ntempi, sizeof(*x->x_tempomap), seq_tempocomparehook);
     seq_foldtime(x, mifiread_getdeftempo(mr));
     result = 1;
 mfreadfailed:
     mifiread_free(mr);
-    return (result);
+    post("seq_mfread result = %d", result);
+    return(result);
 }
 
 static int seq_mfwrite(t_seq *x, char *path)
@@ -688,17 +693,17 @@ static int seq_mfwrite(t_seq *x, char *path)
     t_seqevent *sev = x->x_sequence;
     int nevents = x->x_nevents;
     t_mifiwrite *mw = mifiwrite_new((t_pd *)x);
-    if (!mifiwrite_open(mw, path, "", 1, 1))
+    if(!mifiwrite_open(mw, path, "", 1, 1))
 	goto mfwritefailed;
-    if (!mifiwrite_opentrack(mw, "seq-track", 1))
+    if(!mifiwrite_opentrack(mw, "seq-track", 1))
 	goto mfwritefailed;
-    while (nevents--)
+    while(nevents--)
     {
 	unsigned char *bp = sev->e_bytes;
 	unsigned status = *bp & 0xf0;
-	if (status > 127 && status < 240)
+	if(status > 127 && status < 240)
 	{
-	    if (!mifiwrite_channelevent(mw, sev->e_delta, status, *bp & 0x0f,
+	    if(!mifiwrite_channelevent(mw, sev->e_delta, status, *bp & 0x0f,
 					bp[1], bp[2]))  /* SEQ_EOM ignored */
 	    {
 		pd_error(x, "[midi] cannot write channel event %d", status);
@@ -708,15 +713,15 @@ static int seq_mfwrite(t_seq *x, char *path)
 	/* FIXME system, sysex (first, and continuation) */
 	sev++;
     }
-    if (!mifiwrite_closetrack(mw, 0., 1))
+    if(!mifiwrite_closetrack(mw, 0., 1))
 	goto mfwritefailed;
     mifiwrite_close(mw);
     result = 1;
 mfwritefailed:
-    if (!result)
+    if(!result)
         post("while saving sequence into midi file \"%s\"", path);
     mifiwrite_free(mw);
-    return (result);
+    return(result);
 }
 
 /* CHECKED text file input: absolute timestamps, semi-terminated, verified */
@@ -724,21 +729,21 @@ mfwritefailed:
 static int seq_fromatoms(t_seq *x, int ac, t_atom *av, int abstime){
     int i, nevents = 0;
     t_atom *ap;
-    for (i = 0, ap = av; i < ac; i++, ap++)
-        if (ap->a_type == A_SEMI)  /* FIXME parsing */
+    for(i = 0, ap = av; i < ac; i++, ap++)
+        if(ap->a_type == A_SEMI)  /* FIXME parsing */
             nevents++;
-    if (nevents){
+    if(nevents){
         t_seqevent *ep;
         float prevtime = 0;
-        if (!seq_dogrowing(x, nevents, 0))
-        return (0);
+        if(!seq_dogrowing(x, nevents, 0))
+        return(0);
         i = -1;
         nevents = 0;
         ep = x->x_sequence;
-        while (ac--){
-            if (av->a_type == A_FLOAT){
-                if (i < 0){
-                    if (abstime){
+        while(ac--){
+            if(av->a_type == A_FLOAT){
+                if(i < 0){
+                    if(abstime){
                         ep->e_delta = av->a_w.w_float - prevtime;
                         prevtime = av->a_w.w_float;
                     }
@@ -746,11 +751,11 @@ static int seq_fromatoms(t_seq *x, int ac, t_atom *av, int abstime){
                         ep->e_delta = av->a_w.w_float;
                     i = 0;
                 }
-                else if (i < 4) // CHECKME else
+                else if(i < 4) // CHECKME else
                     ep->e_bytes[i++] = av->a_w.w_float;
             }
-            else if (av->a_type == A_SEMI && i > 0){
-                if (i < 4)
+            else if(av->a_type == A_SEMI && i > 0){
+                if(i < 4)
                     ep->e_bytes[i] = SEQ_EOM;
                 nevents++;
                 ep++;
@@ -761,7 +766,7 @@ static int seq_fromatoms(t_seq *x, int ac, t_atom *av, int abstime){
         }
         x->x_nevents = nevents;
     }
-    return (nevents);
+    return(nevents);
 }
 
 static void seq_tobinbuf(t_seq *x, t_binbuf *bb){
@@ -769,7 +774,7 @@ static void seq_tobinbuf(t_seq *x, t_binbuf *bb){
     t_seqevent *ep = x->x_sequence;
     t_atom at[5];
     float timestamp = 0;
-    while (nevents--){
+    while(nevents--){
         unsigned char *bp = ep->e_bytes;
         int i;
         t_atom *ap = at;
@@ -777,28 +782,27 @@ static void seq_tobinbuf(t_seq *x, t_binbuf *bb){
         SETFLOAT(ap, timestamp);  /* CHECKED same for sysex continuation */
         ap++;
         SETFLOAT(ap, *bp);
-        for (i = 0, ap++, bp++; i < 3 && *bp != SEQ_EOM; i++, ap++, bp++)
-        SETFLOAT(ap, *bp);
+        for(i = 0, ap++, bp++; i < 3 && *bp != SEQ_EOM; i++, ap++, bp++)
+            SETFLOAT(ap, *bp);
         binbuf_add(bb, i + 2, at);
         binbuf_addsemi(bb);
         ep++;
     }
 }
 
-static void seq_textread(t_seq *x, char *path){
+static void seq_textread(t_seq *x, char *path){ // read text file
     t_binbuf *bb;
     bb = binbuf_new();
-    if (binbuf_read(bb, path, "", 0))
-	/* CHECKED no complaint, open dialog presented */
-        hammerpanel_open(x->x_filehandle, 0);  /* LATER rethink */
+    if(binbuf_read(bb, path, "", 0)) // CHECKED no complaint, open dialog presented
+        hammerpanel_open(x->x_filehandle, 0);  // LATER rethink
     else{
-        int nlines = /* CHECKED absolute timestamps */
+        int nlines = // absolute timestamps
         seq_fromatoms(x, binbuf_getnatom(bb), binbuf_getvec(bb), 1);
-        if (nlines < 0)
-        /* CHECKED "bad MIDI file (truncated)" alert, even if a text file */
+        if(nlines < 0)
+        // CHECKED "bad MIDI file (truncated)" alert, even if a text file
         pd_error(x, "[midi]: bad text file (truncated)");
-        else if (nlines == 0){
-        } /* CHECKED no complaint, sequence erased, LATER rethink */
+        else if(nlines == 0){
+        } // CHECKED no complaint, sequence erased, LATER rethink
     }
     binbuf_free(bb);
 }
@@ -808,38 +812,34 @@ static void seq_textwrite(t_seq *x, char *path){
     bb = binbuf_new();
     seq_tobinbuf(x, bb);
     /* CHECKED empty sequence stored as an empty file */
-    if (binbuf_write(bb, path, "", 0))
+    if(binbuf_write(bb, path, "", 0))
 	/* CHECKME complaint and FIXME */
         pd_error(x, "[midi]: error writing text file");
     binbuf_free(bb);
 }
 
-static void seq_doread(t_seq *x, t_symbol *fn, int creation){
+static void seq_doread(t_seq *x, t_symbol *fn, int creation){ // load MIDI file
     char buf[MAXPDSTRING];
     /* FIXME use open_via_path() */
-    if (x->x_canvas)
+    if(x->x_canvas)
         canvas_makefilename(x->x_canvas, fn->s_name, buf, MAXPDSTRING);
     else{
     	strncpy(buf, fn->s_name, MAXPDSTRING);
     	buf[MAXPDSTRING-1] = 0;
     }
-    if (creation){
-	/* loading during object creation -- CHECKED no warning if a file
-	   specified with an arg does not exist, LATER rethink */
+    if(creation){ // at object creation, no warning if arg file doesn't exist
         FILE *fp;
-        if (!(fp = sys_fopen(buf, "r")))
+        if(!(fp = sys_fopen(buf, "r")))
         return;
         fclose(fp);
     }
-    /* CHECKED all cases: arg or not, message and creation */
-//    post("[midi]: reading %s", fn->s_name);
     if(!seq_mfread(x, buf))
-        seq_textread(x, buf);
+        seq_textread(x, buf); // ???
 }
 
 static void seq_dowrite(t_seq *x, t_symbol *fn){
     char buf[MAXPDSTRING], *dotp;
-    if (x->x_canvas)
+    if(x->x_canvas)
         canvas_makefilename(x->x_canvas, fn->s_name, buf, MAXPDSTRING);
     else{
     	strncpy(buf, fn->s_name, MAXPDSTRING);
@@ -847,7 +847,7 @@ static void seq_dowrite(t_seq *x, t_symbol *fn){
     }
     post("[midi]: writing %s", fn->s_name);  /* CHECKED arg or not */
     /* save as text for any extension other then ".mid" */
-    if ((dotp = strrchr(fn->s_name, '.')) && strcmp(dotp + 1, "mid"))
+    if((dotp = strrchr(fn->s_name, '.')) && strcmp(dotp + 1, "mid"))
         seq_textwrite(x, buf);
     else  /* save as mf for ".mid" (FIXME ignore case?) or no extension at all,
 	     LATER rethink */
@@ -867,7 +867,7 @@ static void seq_writehook(t_pd *z, t_symbol *fn, int ac, t_atom *av){
 }
 
 static void seq_read(t_seq *x, t_symbol *s){
-    if (s && s != &s_)
+    if(s && s != &s_)
         seq_doread(x, s, 0);
     else  /* CHECKED no default file name */
 	/* start in a dir last read from, if any, otherwise in a canvas dir */
@@ -875,7 +875,7 @@ static void seq_read(t_seq *x, t_symbol *s){
 }
 
 static void seq_write(t_seq *x, t_symbol *s){
-    if (s && s != &s_)
+    if(s && s != &s_)
         seq_dowrite(x, s);
     else  // CHECKED creation arg is a default file name
         hammerpanel_save(x->x_filehandle,
@@ -888,33 +888,33 @@ static void seq_editorhook(t_pd *z, t_symbol *s, int ac, t_atom *av){
 }
 
 static void seq_click(t_seq *x){
-        hammerpanel_open(x->x_filehandle, 0);
+    hammerpanel_open(x->x_filehandle, 0);
 }
 
 static void seq_free(t_seq *x){
-    if (x->x_clock)
+    if(x->x_clock)
         clock_free(x->x_clock);
-    if (x->x_slaveclock)
+    if(x->x_slaveclock)
         clock_free(x->x_slaveclock);
-    if (x->x_filehandle)
+    if(x->x_filehandle)
         hammerfile_free(x->x_filehandle);
-    if (x->x_sequence != x->x_seqini)
+    if(x->x_sequence != x->x_seqini)
         freebytes(x->x_sequence, x->x_seqsize * sizeof(*x->x_sequence));
-    if (x->x_tempomap != x->x_tempomapini)
+    if(x->x_tempomap != x->x_tempomapini)
         freebytes(x->x_tempomap, x->x_tempomapsize * sizeof(*x->x_tempomap));
 }
 
 static void *seq_new(t_symbol *s){
     t_seq *x = (t_seq *)pd_new(seq_class);
     x->x_canvas = canvas_getcurrent();
-    x->x_filehandle = hammerfile_new((t_pd *)x, 0, seq_readhook, seq_writehook,
-				     seq_editorhook);
+    x->x_filehandle = hammerfile_new((t_pd *)x, 0, seq_readhook, seq_writehook, seq_editorhook);
     x->x_timescale = 1.;
     x->x_newtimescale = 1.;
     x->x_prevtime = 0.;
     x->x_slaveprevtime = 0.;
     x->x_seqsize = SEQ_INISEQSIZE;
     x->x_nevents = 0;
+    x->x_loop = 0;
     x->x_sequence = x->x_seqini;
     x->x_tempomapsize = SEQ_INITEMPOMAPSIZE;
     x->x_ntempi = 0;
@@ -933,7 +933,7 @@ static void *seq_new(t_symbol *s){
     x->x_note_status = 0;
     x->x_pitch = PANIC_VOID;
     panic_clear(x);
-    return (x);
+    return(x);
 }
 
 void midi_setup(void){
@@ -943,6 +943,7 @@ void midi_setup(void){
     class_addfloat(seq_class, seq_float);
     class_addmethod(seq_class, (t_method)seq_record, gensym("record"), 0);
     class_addmethod(seq_class, (t_method)seq_start, gensym("start"), A_DEFFLOAT, 0);
+    class_addmethod(seq_class, (t_method)seq_loop, gensym("loop"), A_DEFFLOAT, 0);
     class_addmethod(seq_class, (t_method)seq_stop, gensym("stop"), 0);
     class_addmethod(seq_class, (t_method)seq_dump, gensym("dump"), 0);
     class_addmethod(seq_class, (t_method)seq_read, gensym("open"), A_DEFSYM, 0);

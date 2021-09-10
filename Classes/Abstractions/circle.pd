@@ -1,4 +1,4 @@
-#N canvas 768 307 715 473 10;
+#N canvas 755 258 715 473 10;
 #N canvas 646 292 628 339 \$0-point 0;
 #X obj 343 105 r \$0-grid;
 #X obj 178 89 filledcurve -x 0 fg 8 x0 y0 x0 y0 x0 y0, f 20;
@@ -1030,7 +1030,6 @@ bgcolor1 bgcolor fgcolor grid jump init send receive clip, f 118;
 #X restore 649 138 pd s/r;
 #X obj 561 326 outlet;
 #X obj 561 292 r \$0-setpad;
-#X obj 180 299 else/canvas.setname $-cnv 2;
 #X connect 0 0 10 0;
 #X connect 3 0 10 0;
 #X connect 10 0 1 0;
