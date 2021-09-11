@@ -1,4 +1,4 @@
-#N canvas 623 66 561 530 10;
+#N canvas 623 66 561 557 10;
 #X obj 4 214 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
 #X obj 4 425 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
@@ -11,7 +11,7 @@
 -1 -1;
 #X obj 99 453 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 502 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 532 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 164 248 bang;
 #X text 158 222 float;
@@ -80,7 +80,7 @@ tempo) and negative values expects external clock, f 53;
 #N canvas 700 109 727 443 read/write 0;
 #X obj 77 89 tgl 22 0 empty empty empty 17 7 0 10 -216373 -66577 -1
 0 1;
-#X obj 206 200 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 242 200 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 103 91 play/stop;
 #X msg 383 330 record;
@@ -162,7 +162,6 @@ the dialog box., f 56;
 #X connect 7 0 1 0;
 #X connect 8 0 1 1;
 #X restore 166 282 pd voice;
-#X obj 77 175 else/midi midi-seq.mid;
 #X obj 352 291 else/note.out;
 #X obj 77 207 else/note.in;
 #X obj 106 321 else/plate.rev~ 50 0.6 0.25 0.8 0.8, f 18;
@@ -172,7 +171,8 @@ the dialog box., f 56;
 #X obj 97 123 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 119 122 loop mode;
-#X connect 0 0 17 0;
+#X obj 77 175 else/midi -loop midi-seq.mid;
+#X connect 0 0 25 0;
 #X connect 3 0 10 0;
 #X connect 7 0 14 0;
 #X connect 7 1 15 0;
@@ -180,20 +180,20 @@ the dialog box., f 56;
 #X connect 11 0 10 0;
 #X connect 12 0 13 0;
 #X connect 12 1 13 1;
-#X connect 13 0 22 0;
-#X connect 14 0 20 0;
-#X connect 15 0 20 0;
-#X connect 16 0 20 0;
-#X connect 17 0 19 0;
-#X connect 17 1 1 0;
-#X connect 18 0 10 0;
-#X connect 19 0 7 0;
-#X connect 19 1 7 1;
-#X connect 20 0 21 0;
-#X connect 20 1 21 1;
-#X connect 22 0 18 0;
-#X connect 23 0 17 0;
-#X connect 24 0 23 0;
+#X connect 13 0 21 0;
+#X connect 14 0 19 0;
+#X connect 15 0 19 0;
+#X connect 16 0 19 0;
+#X connect 17 0 10 0;
+#X connect 18 0 7 0;
+#X connect 18 1 7 1;
+#X connect 19 0 20 0;
+#X connect 19 1 20 1;
+#X connect 21 0 17 0;
+#X connect 22 0 25 0;
+#X connect 23 0 22 0;
+#X connect 25 0 18 0;
+#X connect 25 1 1 0;
 #X restore 465 157 pd read/write;
 #N canvas 736 69 755 607 more 0;
 #N canvas 791 23 364 324 synth 0;
@@ -450,6 +450,8 @@ raw MIDI data stream to be recorded, f 53;
 #X text 117 335 loop <float> -;
 #X text 210 335 non zero sets to loop mode, f 53;
 #X obj 185 152 else/midi midi-seq.mid;
+#X obj 4 503 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 158 511 -loop: sets to loop mode (default no loop), f 53;
 #X connect 49 0 60 0;
 #X connect 60 0 53 0;
 #X connect 60 1 4 0;

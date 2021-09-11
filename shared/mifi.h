@@ -86,8 +86,7 @@ t_pd *mifiread_getowner(t_mifiread *mr);
 
 t_mifiread *mifiread_new(t_pd *owner);
 void mifiread_setuserticks(t_mifiread *mr, double wholeticks);
-int mifiread_open(t_mifiread *mr, const char *filename,
-		  const char *dirname, int complain);
+int mifiread_open(t_mifiread *mr, const char *filename, const char *dirname);
 int mifiread_doit(t_mifiread *mr, t_mifireadhook hook, void *hookdata);
 void mifiread_close(t_mifiread *mr);
 void mifiread_free(t_mifiread *mr);
