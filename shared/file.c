@@ -2,15 +2,15 @@
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.  */
 
-/* The three uses of the 'hammerfile' proxy class are:
+/* The three uses of the 'file' proxy class are:
    1. providing `embedding' facility -- storing master object's state
    in a .pd file,
    2. encapsulating openpanel/savepanel management,
    3. extending the gui of Pd with a simple text editor window.
 
    A master class which needs embedding feature (like coll), passes
-   a nonzero flag to the hammerfile setup routine, and a nonzero embedfn
-   function pointer to the hammerfile constructor.  If a master needs
+   a nonzero flag to the file setup routine, and a nonzero embedfn
+   function pointer to the file constructor.  If a master needs
    access to the panels (like collcommon), then it passes nonzero readfn
    and/or writefn callback pointers to the constructor.  A master which has
    an associated text editor, AND wants to update object's state after
@@ -67,7 +67,7 @@ static int ospath_doabsolute(char *path, char *cwd, char *result){
     }
     else if(*path == '/'){
 #ifdef _WIN32
-        /* path is absolute, drive is implicit, LATER UNC? */
+        // path is absolute, drive is implicit, LATER UNC?
         if(*cwd && cwd[1] == ':'){
             if(result){
                 *result = *cwd;
@@ -80,7 +80,7 @@ static int ospath_doabsolute(char *path, char *cwd, char *result){
         else
             goto badpath;
 #else
-        /* path is absolute */
+        // path is absolute
         if(result)
             strcpy(result, path);
         else
@@ -91,7 +91,7 @@ static int ospath_doabsolute(char *path, char *cwd, char *result){
 #ifdef _WIN32
         if(path[1] == ':'){
             if(path[2] == '/'){
-                /* path is absolute */
+                // path is absolute
                 if(result)
                     strcpy(result, path);
                 else
@@ -107,7 +107,7 @@ static int ospath_doabsolute(char *path, char *cwd, char *result){
                 else
                     return(strlen(cwd) + strlen(path) - 1);
             }
-            /* we do not maintain per-drive cwd, LATER rethink */
+            // we do not maintain per-drive cwd, LATER rethink
             else
                 goto badpath;
         }
@@ -123,7 +123,7 @@ static int ospath_doabsolute(char *path, char *cwd, char *result){
                 return(strlen(cwd) + 1 + strlen(path));
         }
 #else
-        /* path is relative */
+        // path is relative
         if(result){
             int ndx = strlen(cwd);
             strcpy(result, cwd);
@@ -135,11 +135,11 @@ static int ospath_doabsolute(char *path, char *cwd, char *result){
 #endif
     }
     if(result && *result && *result != '.'){
-        /* clean-up */
+        // clean-up
         char *inptr, *outptr = result;
         int ndx = strlen(result);
         if(result[ndx - 1] == '.'){
-            result[ndx] = '/';  /* guarding slash */
+            result[ndx] = '/';  // guarding slash
             result[ndx + 1] = 0;
         }
         for(inptr = result + 1; *inptr; inptr++){
@@ -183,8 +183,7 @@ badpath:
  superfluous slashes and dots), but not longer.  Both args should be unbashed
  (system-independent), cwd should be absolute.  Returns 0 in case of any
  error (LATER revisit). */
-int ospath_length(char *path, char *cwd){
-    /* one extra byte used internally (guarding slash) */
+int ospath_length(char *path, char *cwd){ // one extra byte used internally (guarding slash)
     return(ospath_doabsolute(path, cwd, 0) + 1);
 }
 
@@ -201,9 +200,8 @@ FILE *fileread_open(char *filename, t_canvas *cv, int textmode){
     int fd;
     char path[MAXPDSTRING+2], *nameptr;
     t_symbol *dirsym = (cv ? canvas_getdir(cv) : 0);
-    /* path arg is returned unbashed (system-independent) */
-    if((fd = open_via_path((dirsym ? dirsym->s_name : ""),
-    filename, "", path, &nameptr, MAXPDSTRING, 1)) < 0)
+    // path arg is returned unbashed (system-independent)
+    if((fd = open_via_path((dirsym ? dirsym->s_name : ""), filename, "", path, &nameptr, MAXPDSTRING, 1)) < 0)
         return(0);
     /* Closing/reopening dance.  This is unnecessary under linux, and we
      could have tried to convert fd to fp, but under windows open_via_path()
@@ -213,7 +211,7 @@ FILE *fileread_open(char *filename, t_canvas *cv, int textmode){
     if(path != nameptr){
         char *slashpos = path + strlen(path);
         *slashpos++ = '/';
-        /* try not to be dependent on current open_via_path() implementation */
+        // try not to be dependent on current open_via_path() implementation
         if(nameptr != slashpos)
             strcpy(slashpos, nameptr);
     }
@@ -223,7 +221,7 @@ FILE *fileread_open(char *filename, t_canvas *cv, int textmode){
 FILE *filewrite_open(char *filename, t_canvas *cv, int textmode){
     char path[MAXPDSTRING+2];
     if(cv)
-    /* path arg is returned unbashed (system-independent) */
+    // path arg is returned unbashed (system-independent)
         canvas_makefilename(cv, filename, path, MAXPDSTRING);
     else{
         strncpy(path, filename, MAXPDSTRING);
@@ -315,10 +313,10 @@ int osdir_isdir(t_osdir *dp){
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// HAMMERFILE
+// FILE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct _hammerfile{
+struct _file{
     t_pd                 f_pd;
     t_pd                *f_master;
     t_canvas            *f_canvas;
@@ -326,32 +324,32 @@ struct _hammerfile{
     t_symbol            *f_currentdir;
     t_symbol            *f_inidir;
     t_symbol            *f_inifile;
-    t_hammerfilefn       f_panelfn;
-    t_hammerfilefn       f_editorfn;
-    t_hammerembedfn      f_embedfn;
+    t_filefn       f_panelfn;
+    t_filefn       f_editorfn;
+    t_embedfn      f_embedfn;
     t_binbuf            *f_binbuf;
     t_clock             *f_panelclock;
     t_clock             *f_editorclock;
-    struct _hammerfile  *f_savepanel;
-    struct _hammerfile  *f_next;
+    struct _file  *f_savepanel;
+    struct _file  *f_next;
 };
 
-static t_class *hammerfile_class = 0;
-static t_hammerfile *hammerfile_proxies;
+static t_class *file_class = 0;
+static t_file *file_proxies;
 static t_symbol *ps__C;
 
-static t_hammerfile *hammerfile_getproxy(t_pd *master){
-    t_hammerfile *f;
-    for(f = hammerfile_proxies; f; f = f->f_next)
+static t_file *file_getproxy(t_pd *master){
+    t_file *f;
+    for(f = file_proxies; f; f = f->f_next)
         if(f->f_master == master)
             return(f);
     return(0);
 }
 
-static void hammereditor_guidefs(void){ // if older than 0.43, create an 0.43-style pdsend
+static void editor_guidefs(void){ // if older than 0.43, create an 0.43-style pdsend
     sys_gui("if {[llength [info procs ::pdsend]] == 0} {");
     sys_gui("proc ::pdsend {args} {::pd \"[join $args { }] ;\"}}\n");
-    sys_gui("proc hammereditor_open {name geometry title sendable} {\n");
+    sys_gui("proc editor_open {name geometry title sendable} {\n");
     sys_gui(" if {[winfo exists $name]} {\n");
     sys_gui("  $name.text delete 1.0 end\n");
     sys_gui(" } else {\n");
@@ -360,8 +358,8 @@ static void hammereditor_guidefs(void){ // if older than 0.43, create an 0.43-st
     sys_gui("  wm geometry $name $geometry\n");
     sys_gui("  if {$sendable} {\n");
     sys_gui("   wm protocol $name WM_DELETE_WINDOW \\\n");
-    sys_gui("    [concat hammereditor_close $name 1]\n");
-    sys_gui("   bind $name <<Modified>> \"hammereditor_dodirty $name\"\n");
+    sys_gui("    [concat editor_close $name 1]\n");
+    sys_gui("   bind $name <<Modified>> \"editor_dodirty $name\"\n");
     sys_gui("  }\n");
     sys_gui("  text $name.text -relief raised -bd 2 \\\n");
     sys_gui("   -font -*-courier-medium--normal--12-* \\\n");
@@ -372,7 +370,7 @@ static void hammereditor_guidefs(void){ // if older than 0.43, create an 0.43-st
     sys_gui(" }\n");
     sys_gui("}\n");
 
-    sys_gui("proc hammereditor_dodirty {name} {\n");
+    sys_gui("proc editor_dodirty {name} {\n");
     sys_gui(" if {[catch {$name.text edit modified} dirty]} {set dirty 1}\n");
     sys_gui(" set title [wm title $name]\n");
     sys_gui(" set dt [string equal -length 1 $title \"*\"]\n");
@@ -383,24 +381,24 @@ static void hammereditor_guidefs(void){ // if older than 0.43, create an 0.43-st
     sys_gui(" }\n");
     sys_gui("}\n");
 
-    sys_gui("proc hammereditor_setdirty {name flag} {\n");
+    sys_gui("proc editor_setdirty {name flag} {\n");
     sys_gui(" if {[winfo exists $name]} {\n");
     sys_gui("  catch {$name.text edit modified $flag}\n");
     sys_gui(" }\n");
     sys_gui("}\n");
 
-    sys_gui("proc hammereditor_doclose {name} {\n");
+    sys_gui("proc editor_doclose {name} {\n");
     sys_gui(" destroy $name\n");
     sys_gui("}\n");
 
-    sys_gui("proc hammereditor_append {name contents} {\n");
+    sys_gui("proc editor_append {name contents} {\n");
     sys_gui(" if {[winfo exists $name]} {\n");
     sys_gui("  $name.text insert end $contents\n");
     sys_gui(" }\n");
     sys_gui("}\n");
 
     /* FIXME make it more reliable */
-    sys_gui("proc hammereditor_send {name} {\n");
+    sys_gui("proc editor_send {name} {\n");
     sys_gui(" if {[winfo exists $name]} {\n");
     sys_gui("  pdsend \"miXed$name clear\"\n");
     sys_gui("  for {set i 1} \\\n");
@@ -418,7 +416,7 @@ static void hammereditor_guidefs(void){ // if older than 0.43, create an 0.43-st
     sys_gui(" }\n");
     sys_gui("}\n");
 
-    sys_gui("proc hammereditor_close {name ask} {\n");
+    sys_gui("proc editor_close {name ask} {\n");
     sys_gui(" if {[winfo exists $name]} {\n");
     sys_gui("  if {[catch {$name.text edit modified} dirty]} {set dirty 1}\n");
     sys_gui("  if {$ask && $dirty} {\n");
@@ -429,15 +427,15 @@ static void hammereditor_guidefs(void){ // if older than 0.43, create an 0.43-st
     sys_gui("   set answer [tk_messageBox \\-type yesnocancel \\\n");
     sys_gui("    \\-icon question \\\n");
     sys_gui("    \\-message [concat Save changes to \\\"$title\\\"?]]\n");
-    sys_gui("   if {$answer == \"yes\"} {hammereditor_send $name}\n");
-    sys_gui("   if {$answer != \"cancel\"} {hammereditor_doclose $name}\n");
-    sys_gui("  } else {hammereditor_doclose $name}\n");
+    sys_gui("   if {$answer == \"yes\"} {editor_send $name}\n");
+    sys_gui("   if {$answer != \"cancel\"} {editor_doclose $name}\n");
+    sys_gui("  } else {editor_doclose $name}\n");
     sys_gui(" }\n");
     sys_gui("}\n");
 }
 
 /* null owner defaults to class name, pass "" to supress */
-void hammereditor_open(t_hammerfile *f, char *title, char *owner){
+void editor_open(t_file *f, char *title, char *owner){
     if(!owner)
         owner = (char*)(class_getname(*f->f_master));
     if(!*owner)
@@ -447,50 +445,50 @@ void hammereditor_open(t_hammerfile *f, char *title, char *owner){
         owner = 0;
     }
     if(owner)
-        sys_vgui("hammereditor_open .%lx %dx%d {%s: %s} %d\n", (unsigned long)f,
+        sys_vgui("editor_open .%lx %dx%d {%s: %s} %d\n", (unsigned long)f,
         600, 340, owner, title, (f->f_editorfn != 0));
     else
-        sys_vgui("hammereditor_open .%lx %dx%d {%s} %d\n", (unsigned long)f,
+        sys_vgui("editor_open .%lx %dx%d {%s} %d\n", (unsigned long)f,
         600, 340, (title ? title : "Untitled"), (f->f_editorfn != 0));
 }
 
-static void hammereditor_tick(t_hammerfile *f){
-    sys_vgui("hammereditor_close .%lx 1\n", (unsigned long)f);
+static void editor_tick(t_file *f){
+    sys_vgui("editor_close .%lx 1\n", (unsigned long)f);
 }
 
-void hammereditor_close(t_hammerfile *f, int ask){
+void editor_close(t_file *f, int ask){
     if(ask && f->f_editorfn)
 	/* hack: deferring modal dialog creation in order to allow for
 	   a message box redraw to happen -- LATER investigate */
         clock_delay(f->f_editorclock, 0);
     else
-        sys_vgui("hammereditor_close .%lx 0\n", (unsigned long)f);
+        sys_vgui("editor_close .%lx 0\n", (unsigned long)f);
 }
 
-void hammereditor_append(t_hammerfile *f, char *contents){
+void editor_append(t_file *f, char *contents){
     if(contents){
         char *ptr;
         for(ptr = contents; *ptr; ptr++){
             if(*ptr == '{' || *ptr == '}'){
                 char c = *ptr;
                 *ptr = 0;
-                sys_vgui("hammereditor_append .%lx {%s}\n", (unsigned long)f, contents);
-                sys_vgui("hammereditor_append .%lx \"%c\"\n", (unsigned long)f, c);
+                sys_vgui("editor_append .%lx {%s}\n", (unsigned long)f, contents);
+                sys_vgui("editor_append .%lx \"%c\"\n", (unsigned long)f, c);
                 *ptr = c;
                 contents = ptr + 1;
             }
         }
         if(*contents)
-            sys_vgui("hammereditor_append .%lx {%s}\n", (unsigned long)f, contents);
+            sys_vgui("editor_append .%lx {%s}\n", (unsigned long)f, contents);
     }
 }
 
-void hammereditor_setdirty(t_hammerfile *f, int flag){
+void editor_setdirty(t_file *f, int flag){
     if(f->f_editorfn)
-        sys_vgui("hammereditor_setdirty .%lx %d\n", (unsigned long)f, flag);
+        sys_vgui("editor_setdirty .%lx %d\n", (unsigned long)f, flag);
 }
 
-static void hammereditor_clear(t_hammerfile *f){
+static void editor_clear(t_file *f){
     if(f->f_editorfn){
 	if(f->f_binbuf)
 	    binbuf_clear(f->f_binbuf);
@@ -499,7 +497,7 @@ static void hammereditor_clear(t_hammerfile *f){
     }
 }
 
-static void hammereditor_addline(t_hammerfile *f, t_symbol *s, int ac, t_atom *av){
+static void editor_addline(t_file *f, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(f->f_editorfn){
         int i;
@@ -516,15 +514,15 @@ static void hammereditor_addline(t_hammerfile *f, t_symbol *s, int ac, t_atom *a
     }
 }
 
-static void hammereditor_end(t_hammerfile *f){
+static void editor_end(t_file *f){
     if(f->f_editorfn){
         (*f->f_editorfn)(f->f_master, 0, binbuf_getnatom(f->f_binbuf), binbuf_getvec(f->f_binbuf));
         binbuf_clear(f->f_binbuf);
     }
 }
 
-static void hammerpanel_guidefs(void){
-    sys_gui("proc hammerpanel_open {target inidir} {\n");
+static void panel_guidefs(void){
+    sys_gui("proc panel_open {target inidir} {\n");
     sys_gui(" global pd_opendir\n");
     sys_gui(" if {$inidir == \"\"} {\n");
     sys_gui("  set $inidir $pd_opendir\n");
@@ -543,7 +541,7 @@ static void hammerpanel_guidefs(void){
     sys_gui(" }\n");
     sys_gui("}\n");
 
-    sys_gui("proc hammerpanel_save {target inidir inifile} {\n");
+    sys_gui("proc panel_save {target inidir inifile} {\n");
     sys_gui(" if {$inifile != \"\"} {\n");
     sys_gui("  set filename [tk_getSaveFile \\\n");
     sys_gui("   -initialdir $inidir -initialfile $inifile]\n");
@@ -562,36 +560,36 @@ static void hammerpanel_guidefs(void){
 
 /* There are two modes of -initialdir persistence:
    1. Using last reply from gui (if any, default is canvas directory):
-   pass null to hammerpanel_open/save() (for explicit cd, optionally call
-   hammerpanel_setopen/savedir() first).
+   pass null to panel_open/save() (for explicit cd, optionally call
+   panel_setopen/savedir() first).
    2. Starting always in the same directory (eg. canvasdir):
-   feed hammerpanel_open/save().
+   feed panel_open/save().
    Usually, first mode fits opening better, the second -- saving. */
 
 /* This is obsolete, but has to stay, because older versions of miXed libraries
-   might overwrite new hammerpanel_guidefs().  FIXME we need version control. */
-static void hammerpanel_symbol(t_hammerfile *f, t_symbol *s){
+   might overwrite new panel_guidefs().  FIXME we need version control. */
+static void panel_symbol(t_file *f, t_symbol *s){
     if(s && s != &s_ && f->f_panelfn)
         (*f->f_panelfn)(f->f_master, s, 0, 0);
 }
 
-static void hammerpanel_path(t_hammerfile *f, t_symbol *s1, t_symbol *s2){
+static void panel_path(t_file *f, t_symbol *s1, t_symbol *s2){
     if(s2 && s2 != &s_)
         f->f_currentdir = s2;
     if(s1 && s1 != &s_ && f->f_panelfn)
         (*f->f_panelfn)(f->f_master, s1, 0, 0);
 }
 
-static void hammerpanel_tick(t_hammerfile *f){
+static void panel_tick(t_file *f){
     if(f->f_savepanel)
-        sys_vgui("hammerpanel_open %s {%s}\n", f->f_bindname->s_name, f->f_inidir->s_name);
+        sys_vgui("panel_open %s {%s}\n", f->f_bindname->s_name, f->f_inidir->s_name);
     else
-        sys_vgui("hammerpanel_save %s {%s} {%s}\n", f->f_bindname->s_name, f->f_inidir->s_name, f->f_inifile->s_name);
+        sys_vgui("panel_save %s {%s} {%s}\n", f->f_bindname->s_name, f->f_inidir->s_name, f->f_inifile->s_name);
 }
 
 /* these are hacks: deferring modal dialog creation in order to allow for
    a message box redraw to happen -- LATER investigate */
-void hammerpanel_open(t_hammerfile *f, t_symbol *inidir){
+void panel_open(t_file *f, t_symbol *inidir){
     if(inidir)
         f->f_inidir = inidir;
     else
@@ -599,7 +597,7 @@ void hammerpanel_open(t_hammerfile *f, t_symbol *inidir){
     clock_delay(f->f_panelclock, 0);
 }
 
-void hammerpanel_setopendir(t_hammerfile *f, t_symbol *dir){
+void panel_setopendir(t_file *f, t_symbol *dir){
     if(f->f_currentdir && f->f_currentdir != &s_){
         if(dir && dir != &s_){
             int length;
@@ -615,14 +613,14 @@ void hammerpanel_setopendir(t_hammerfile *f, t_symbol *dir){
             f->f_currentdir = canvas_getdir(f->f_canvas);
     }
     else
-        bug("hammerpanel_setopendir");
+        bug("panel_setopendir");
 }
 
-t_symbol *hammerpanel_getopendir(t_hammerfile *f){
+t_symbol *panel_getopendir(t_file *f){
     return(f->f_currentdir);
 }
 
-void hammerpanel_save(t_hammerfile *f, t_symbol *inidir, t_symbol *inifile){
+void panel_save(t_file *f, t_symbol *inidir, t_symbol *inifile){
     if((f = f->f_savepanel)){
         if(inidir)
             f->f_inidir = inidir;
@@ -633,16 +631,16 @@ void hammerpanel_save(t_hammerfile *f, t_symbol *inidir, t_symbol *inifile){
     }
 }
 
-void hammerpanel_setsavedir(t_hammerfile *f, t_symbol *dir){
+void panel_setsavedir(t_file *f, t_symbol *dir){
     if((f = f->f_savepanel))
-        hammerpanel_setopendir(f, dir);
+        panel_setopendir(f, dir);
 }
 
-t_symbol *hammerpanel_getsavedir(t_hammerfile *f){
+t_symbol *panel_getsavedir(t_file *f){
     return(f->f_savepanel ? f->f_savepanel->f_currentdir : 0);
 }
 
-/* Currently embeddable hammer classes do not use the 'saveto' method.
+/* Currently embeddable  classes do not use the 'saveto' method.
    In order to use it, any embeddable class would have to add a creation
    method to pd_canvasmaker -- then saving could be done with a 'proper'
    sequence:  #N <master> <args>; #X <whatever>; ...; #X restore <x> <y>;
@@ -652,21 +650,21 @@ t_symbol *hammerpanel_getsavedir(t_hammerfile *f){
    on its own, we have to distinguish loading from a .pd file, and other
    cases (editing). */
 
-static void hammerembed_gc(t_pd *x, t_symbol *s, int expected){
+static void embed_gc(t_pd *x, t_symbol *s, int expected){
     t_pd *garbage;
     int count = 0;
     while((garbage = pd_findbyclass(s, *x)))
         pd_unbind(garbage, s), count++;
     if(count != expected)
-        bug("hammerembed_gc (%d garbage bindings)", count);
+        bug("embed_gc (%d garbage bindings)", count);
 }
 
-static void hammerembed_restore(t_pd *master){
-    hammerembed_gc(master, ps__C, 1);
+static void embed_restore(t_pd *master){
+    embed_gc(master, ps__C, 1);
 }
 
-void hammerembed_save(t_gobj *master, t_binbuf *bb){
-    t_hammerfile *f = hammerfile_getproxy((t_pd *)master);
+void embed_save(t_gobj *master, t_binbuf *bb){
+    t_file *f = file_getproxy((t_pd *)master);
     t_text *t = (t_text *)master;
     binbuf_addv(bb, "ssii", &s__X, gensym("obj"), (int)t->te_xpix, (int)t->te_ypix);
     binbuf_addbinbuf(bb, t->te_binbuf);
@@ -676,16 +674,16 @@ void hammerembed_save(t_gobj *master, t_binbuf *bb){
     binbuf_addv(bb, "ss;", ps__C, gensym("restore"));
 }
 
-int hammerfile_ismapped(t_hammerfile *f){
+int file_ismapped(t_file *f){
     return(f->f_canvas->gl_mapped);
 }
 
-int hammerfile_isloading(t_hammerfile *f){
+int file_isloading(t_file *f){
     return(f->f_canvas->gl_loading);
 }
 
 /* LATER find a better way */
-int hammerfile_ispasting(t_hammerfile *f){
+int file_ispasting(t_file *f){
     int result = 0;
     t_canvas *cv = f->f_canvas;
     if(!cv->gl_loading){
@@ -702,12 +700,12 @@ int hammerfile_ispasting(t_hammerfile *f){
     return(result);
 }
 
-void hammerfile_free(t_hammerfile *f){
-    t_hammerfile *prev, *next;
-    hammereditor_close(f, 0);
+void file_free(t_file *f){
+    t_file *prev, *next;
+    editor_close(f, 0);
     if(f->f_embedfn)
         /* just in case of missing 'restore' */
-        hammerembed_gc(f->f_master, ps__C, 0);
+        embed_gc(f->f_master, ps__C, 0);
     if(f->f_savepanel){
         pd_unbind((t_pd *)f->f_savepanel, f->f_savepanel->f_bindname);
         pd_free((t_pd *)f->f_savepanel);
@@ -718,44 +716,44 @@ void hammerfile_free(t_hammerfile *f){
         clock_free(f->f_panelclock);
     if(f->f_editorclock)
         clock_free(f->f_editorclock);
-    for(prev = 0, next = hammerfile_proxies; next; prev = next, next = next->f_next)
+    for(prev = 0, next = file_proxies; next; prev = next, next = next->f_next)
         if(next == f)
             break;
     if(prev)
         prev->f_next = f->f_next;
-    else if(f == hammerfile_proxies)
-        hammerfile_proxies = f->f_next;
+    else if(f == file_proxies)
+        file_proxies = f->f_next;
     pd_free((t_pd *)f);
 }
 
-t_hammerfile *hammerfile_new(t_pd *master, t_hammerembedfn embedfn,
-t_hammerfilefn readfn, t_hammerfilefn writefn, t_hammerfilefn updatefn){
-    t_hammerfile *result = (t_hammerfile *)pd_new(hammerfile_class);
+t_file *file_new(t_pd *master, t_embedfn embedfn,
+t_filefn readfn, t_filefn writefn, t_filefn updatefn){
+    t_file *result = (t_file *)pd_new(file_class);
     result->f_master = master;
-    result->f_next = hammerfile_proxies;
-    hammerfile_proxies = result;
+    result->f_next = file_proxies;
+    file_proxies = result;
     if(!(result->f_canvas = canvas_getcurrent())){
-        bug("hammerfile_new: out of context");
+        bug("file_new: out of context");
         return(result);
     }
     /* 1. embedding */
     if((result->f_embedfn = embedfn)){
         /* just in case of missing 'restore' */
-        hammerembed_gc(master, ps__C, 0);
-        if(hammerfile_isloading(result) || hammerfile_ispasting(result))
+        embed_gc(master, ps__C, 0);
+        if(file_isloading(result) || file_ispasting(result))
             pd_bind(master, ps__C);
     }
     /* 2. the panels */
     if(readfn || writefn){
-        t_hammerfile *f;
+        t_file *f;
         char buf[64];
         sprintf(buf, "miXed.%lx", (unsigned long)result);
         result->f_bindname = gensym(buf);
         pd_bind((t_pd *)result, result->f_bindname);
         result->f_currentdir = result->f_inidir = canvas_getdir(result->f_canvas);
         result->f_panelfn = readfn;
-        result->f_panelclock = clock_new(result, (t_method)hammerpanel_tick);
-        f = (t_hammerfile *)pd_new(hammerfile_class);
+        result->f_panelclock = clock_new(result, (t_method)panel_tick);
+        f = (t_file *)pd_new(file_class);
         f->f_master = master;
         f->f_canvas = result->f_canvas;
         sprintf(buf, "miXed.%lx", (unsigned long)f);
@@ -763,14 +761,14 @@ t_hammerfilefn readfn, t_hammerfilefn writefn, t_hammerfilefn updatefn){
         pd_bind((t_pd *)f, f->f_bindname);
         f->f_currentdir = f->f_inidir = result->f_currentdir;
         f->f_panelfn = writefn;
-        f->f_panelclock = clock_new(f, (t_method)hammerpanel_tick);
+        f->f_panelclock = clock_new(f, (t_method)panel_tick);
         result->f_savepanel = f;
     }
     else
         result->f_savepanel = 0;
     /* 3. editor */
     if((result->f_editorfn = updatefn)){
-        result->f_editorclock = clock_new(result, (t_method)hammereditor_tick);
+        result->f_editorclock = clock_new(result, (t_method)editor_tick);
         if(!result->f_bindname){
             char buf[64];
             sprintf(buf, "miXed.%lx", (unsigned long)result);
@@ -781,23 +779,23 @@ t_hammerfilefn readfn, t_hammerfilefn writefn, t_hammerfilefn updatefn){
     return(result);
 }
 
-void hammerfile_setup(t_class *c, int embeddable){
+void file_setup(t_class *c, int embeddable){
     if(embeddable){
-        class_setsavefn(c, hammerembed_save);
-        class_addmethod(c, (t_method)hammerembed_restore, gensym("restore"), 0);
+        class_setsavefn(c, embed_save);
+        class_addmethod(c, (t_method)embed_restore, gensym("restore"), 0);
     }
-    if(!hammerfile_class){
+    if(!file_class){
         ps__C = gensym("#C");
-        hammerfile_class = class_new(gensym("_hammerfile"), 0, 0, sizeof(t_hammerfile),
+        file_class = class_new(gensym("_file"), 0, 0, sizeof(t_file),
             CLASS_PD | CLASS_NOINLET, 0);
-        class_addsymbol(hammerfile_class, hammerpanel_symbol);
-        class_addmethod(hammerfile_class, (t_method)hammerpanel_path, gensym("path"), A_SYMBOL, A_DEFSYM, 0);
-        class_addmethod(hammerfile_class, (t_method)hammereditor_clear, gensym("clear"), 0);
-        class_addmethod(hammerfile_class, (t_method)hammereditor_addline, gensym("addline"), A_GIMME, 0);
-        class_addmethod(hammerfile_class, (t_method)hammereditor_end, gensym("end"), 0);
+        class_addsymbol(file_class, panel_symbol);
+        class_addmethod(file_class, (t_method)panel_path, gensym("path"), A_SYMBOL, A_DEFSYM, 0);
+        class_addmethod(file_class, (t_method)editor_clear, gensym("clear"), 0);
+        class_addmethod(file_class, (t_method)editor_addline, gensym("addline"), A_GIMME, 0);
+        class_addmethod(file_class, (t_method)editor_end, gensym("end"), 0);
         /* LATER find a way of ensuring that these are not defined yet... */
-        hammereditor_guidefs();
-        hammerpanel_guidefs();
+        editor_guidefs();
+        panel_guidefs();
     }
 }
 

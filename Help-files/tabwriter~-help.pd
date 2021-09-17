@@ -1,4 +1,4 @@
-#N canvas 713 61 558 633 10;
+#N canvas 633 60 558 633 10;
 #X obj 1 603 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X obj 3 298 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
@@ -19,7 +19,6 @@
 #X text 30 132 1;
 #X text 23 245 -1;
 #X text 126 537 1) symbol;
-#X text 191 537 - array name (required), f 57;
 #X obj 427 213 noise~;
 #N canvas 766 207 697 420 multichannel 0;
 #X obj 134 256 tgl 20 0 empty empty empty 0 -6 0 8 -228856 -1 -1 0
@@ -205,14 +204,15 @@ The continue \, loop \, start and end can be indicated also as flags.
 0 to 1), f 61;
 #X text 55 273 see also:;
 #X obj 121 273 else/tabplayer~;
-#X connect 8 0 67 0;
+#X text 191 537 - array name (optional), f 57;
+#X connect 8 0 66 0;
 #X connect 9 0 8 0;
-#X connect 14 0 67 1;
-#X connect 20 0 57 0;
-#X connect 48 0 67 0;
-#X connect 49 0 67 0;
-#X connect 50 0 64 0;
-#X connect 57 0 67 0;
-#X connect 64 0 67 0;
-#X connect 67 0 75 0;
-#X connect 67 1 66 0;
+#X connect 13 0 66 1;
+#X connect 19 0 56 0;
+#X connect 47 0 66 0;
+#X connect 48 0 66 0;
+#X connect 49 0 63 0;
+#X connect 56 0 66 0;
+#X connect 63 0 66 0;
+#X connect 66 0 74 0;
+#X connect 66 1 65 0;

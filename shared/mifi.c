@@ -1088,9 +1088,8 @@ static void mifiwrite_reset(t_mifiwrite *mw){
 }
 
 void mifiwrite_sethardticks(t_mifiwrite *mw, int beatticks){
-    mw->mw_ticks.wt_beatticks =
-        (beatticks > 0 && beatticks < MIFI_MAXBEATTICKS ?
-         beatticks : MIFIHARD_DEFBEATTICKS);
+    mw->mw_ticks.wt_beatticks = (beatticks > 0 && beatticks < MIFI_MAXBEATTICKS ?
+        beatticks : MIFIHARD_DEFBEATTICKS);
     mifiwrite_updateticks(mw);
 }
 

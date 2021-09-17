@@ -34,7 +34,7 @@ typedef struct _midi{
     t_object       x_ob;
     t_canvas      *x_canvas;
     t_symbol      *x_defname;
-    t_hammerfile  *x_filehandle;
+    t_file        *x_filehandle;
     int            x_loop;
     int            x_mode;
     int            x_playhead;
@@ -50,13 +50,13 @@ typedef struct _midi{
     int            x_eventreadhead;
     int            x_midisize;      // as allocated
     int            x_nevents;       // as used
-    t_midievent    *x_midiuence;
-    t_midievent     x_midiini[MIDI_INISEQSIZE];
+    t_midievent   *x_midiuence;
+    t_midievent    x_midiini[MIDI_INISEQSIZE];
     int            x_temporeadhead;
     int            x_tempomapsize;  // as allocated
     int            x_ntempi;        // as used
-    t_miditempo    *x_tempomap;
-    t_miditempo     x_tempomapini[MIDI_INITEMPOMAPSIZE];
+    t_miditempo   *x_tempomap;
+    t_miditempo    x_tempomapini[MIDI_INITEMPOMAPSIZE];
     t_clock       *x_clock;
     t_clock       *x_slaveclock;
     t_outlet      *x_bangout;
@@ -581,7 +581,7 @@ static void midi_goto(t_midi *x, t_floatarg f1, t_floatarg f2){
     }
 }
 
-static void midi_scoretime(t_midi *x, t_symbol *s){
+/*static void midi_scoretime(t_midi *x, t_symbol *s){
     if(s && s->s_thing && x->x_mode == MIDI_PLAYMODE){  // LATER other modes
         t_atom aout[2];
         double ms, clockdelay = x->x_clockdelay;
@@ -609,7 +609,7 @@ static void midi_tempo(t_midi *x, t_floatarg f){ // not available in Max
             midi_startplayback(x, 0);
     }
     // FIXME else pause, LATER reverse playback if(f < -MIDI_TEMPOEPSILON)
-}
+}*/
 
 static int midi_eventcomparehook(const void *e1, const void *e2){
     return(((t_midievent *)e1)->e_delta > ((t_midievent *)e2)->e_delta ? 1 : -1);
@@ -816,7 +816,7 @@ static void midi_textread(t_midi *x, char *path){ // read text file
     t_binbuf *bb;
     bb = binbuf_new();
     if(binbuf_read(bb, path, "", 0)) // CHECKED no complaint, open dialog presented
-        hammerpanel_open(x->x_filehandle, 0);  // LATER rethink
+        panel_open(x->x_filehandle, 0);  // LATER rethink
     else{
         int nlines = // absolute timestamps
         midi_fromatoms(x, binbuf_getnatom(bb), binbuf_getvec(bb), 1);
@@ -894,14 +894,14 @@ static void midi_read(t_midi *x, t_symbol *s){
         midi_doread(x, s);
     else  // CHECKED no default file name
 	// start in a dir last read from, if any, otherwise in a canvas dir
-        hammerpanel_open(x->x_filehandle, 0);
+        panel_open(x->x_filehandle, 0);
 }
 
 static void midi_write(t_midi *x, t_symbol *s){
     if(s && s != &s_)
         midi_dowrite(x, s);
     else  // CHECKED creation arg is a default file name
-        hammerpanel_save(x->x_filehandle,
+        panel_save(x->x_filehandle,
     canvas_getdir(x->x_canvas), x->x_defname); // always start in canvas dir
 }
 
@@ -911,7 +911,7 @@ static void midi_editorhook(t_pd *z, t_symbol *s, int ac, t_atom *av){
 }
 
 static void midi_click(t_midi *x){
-    hammerpanel_open(x->x_filehandle, 0);
+    panel_open(x->x_filehandle, 0);
 }
 
 static void midi_free(t_midi *x){
@@ -920,7 +920,7 @@ static void midi_free(t_midi *x){
     if(x->x_slaveclock)
         clock_free(x->x_slaveclock);
     if(x->x_filehandle)
-        hammerfile_free(x->x_filehandle);
+        file_free(x->x_filehandle);
     if(x->x_midiuence != x->x_midiini)
         freebytes(x->x_midiuence, x->x_midisize * sizeof(*x->x_midiuence));
     if(x->x_tempomap != x->x_tempomapini)
@@ -930,7 +930,7 @@ static void midi_free(t_midi *x){
 static void *midi_new(t_symbol * s, int ac, t_atom *av){
     t_midi *x = (t_midi *)pd_new(midi_class);
     x->x_canvas = canvas_getcurrent();
-    x->x_filehandle = hammerfile_new((t_pd *)x, 0, midi_readhook, midi_writehook, midi_editorhook);
+    x->x_filehandle = file_new((t_pd *)x, 0, midi_readhook, midi_writehook, midi_editorhook);
     x->x_timescale = 1.;
     x->x_newtimescale = 1.;
     x->x_prevtime = 0.;
@@ -983,9 +983,9 @@ void midi_setup(void){
     class_addmethod(midi_class, (t_method)midi_pause, gensym("pause"), 0);
     class_addmethod(midi_class, (t_method)midi_continue, gensym("continue"), 0);
     class_addmethod(midi_class, (t_method)midi_click, gensym("click"), 0);
+    file_setup(midi_class, 0);
 // extra stuff & "not ready yet"
     class_addmethod(midi_class, (t_method)midi_goto, gensym("goto"), A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(midi_class, (t_method)midi_scoretime, gensym("scoretime"), A_SYMBOL, 0);
-    class_addmethod(midi_class, (t_method)midi_tempo, gensym("tempo"), A_FLOAT, 0);
-    hammerfile_setup(midi_class, 0);
+//    class_addmethod(midi_class, (t_method)midi_scoretime, gensym("scoretime"), A_SYMBOL, 0);
+//    class_addmethod(midi_class, (t_method)midi_tempo, gensym("tempo"), A_FLOAT, 0);*/
 }
