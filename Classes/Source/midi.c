@@ -394,7 +394,7 @@ static void midi_slaveclocktick(t_midi *x){
 
 static void midi_bang(t_midi *x){
     if(x->x_mode == MIDI_SLAVEMODE){
-        if(x->x_slaveprevtime > 0){
+        if(x->x_slaveprevtime >= 0){
             double elapsed = clock_gettimesince(x->x_slaveprevtime);
             if(elapsed < MIDI_MINTICKDELAY)
                 return;
