@@ -460,57 +460,6 @@ static void midi_settimescale(t_midi *x, float newtimescale){
         x->x_newtimescale = newtimescale;
 }
 
-static void midi_clocktick(t_midi *x){
-    t_float output;
-    if(x->x_mode == MIDI_PLAYMODE || x->x_mode == MIDI_SLAVEMODE){
-        t_midievent *ep = &x->x_sequence[x->x_playhead++];
-        unsigned char *bp = ep->e_bytes;
-    nextevent:
-        output = (t_float)*bp++;
-        outlet_float(((t_object *)x)->ob_outlet, output);
-        panic_input(x, output);
-        if(*bp != MIDI_EOM){
-            output = (t_float)*bp++;
-            outlet_float(((t_object *)x)->ob_outlet, output);
-            panic_input(x, output);
-            if(*bp != MIDI_EOM){
-                output = (t_float)*bp++;
-                outlet_float(((t_object *)x)->ob_outlet, output);
-                panic_input(x, output);
-                if(*bp != MIDI_EOM){
-                    output = (t_float)*bp++;
-                    outlet_float(((t_object *)x)->ob_outlet, output);
-                    panic_input(x, output);
-                }
-            }
-        }
-        if(x->x_mode != MIDI_PLAYMODE && x->x_mode != MIDI_SLAVEMODE)
-            return;  // protecting against outlet -> 'stop' etc.
-        if(x->x_playhead < x->x_nevents){
-            ep++;
-            x->x_nextscoretime += ep->e_delta;
-            if(ep->e_delta < MIDI_TICKEPSILON){ // continue output in the same scheduler event, LATER rethink
-                x->x_playhead++;
-                bp = ep->e_bytes;
-                goto nextevent;
-            }
-            else{
-                x->x_clockdelay = ep->e_delta * x->x_timescale;
-                if(x->x_clockdelay < 0.)
-                    x->x_clockdelay = 0.;
-                clock_delay(x->x_clock, x->x_clockdelay);
-                x->x_prevtime = clock_getlogicaltime();
-            }
-        }
-        else{ // CHECKED bang sent immediately _after_ last byte
-            midi_setmode(x, MIDI_IDLEMODE);
-            outlet_bang(x->x_bangout);  // LATER think about reentrancy
-/*            if(x->x_loop)
-                midi_float(x, 1);*/
-        }
-    }
-}
-
 /* timeout handler ('tick' is late) */
 static void midi_slaveclocktick(t_midi *x){
     if(x->x_mode == MIDI_SLAVEMODE) clock_unset(x->x_clock);
@@ -544,31 +493,6 @@ static void midi_tick(t_midi *x){
             x->x_slaveprevtime = clock_getlogicaltime();
             x->x_timescale = 1.;   // redundant
         }
-    }
-}
-
-static void midi_float(t_midi *x, t_float f){
-    if(x->x_mode == MIDI_RECMODE){
-        unsigned char c = (unsigned char)f; // CHECKED noninteger and out of range silently truncated
-        if(c < 128){
-            if(x->x_status)
-                midi_addbyte(x, c, 0);
-        }
-        else if(c != 254){  // CHECKED active sensing ignored
-            if(x->x_status == 240){
-                if(c == 247)
-                    midi_endofsysex(x);
-                else{
-                    /* CHECKED rt bytes alike */
-                    post("midi: unterminated sysex");  /* CHECKED */
-                    midi_endofsysex(x);  /* CHECKED 247 added implicitly */
-                    midi_checkstatus(x, c);
-                }
-            }
-            else if(c != 247)
-                midi_checkstatus(x, c);
-        }
-//        midi_update(x);
     }
 }
 
@@ -629,6 +553,89 @@ static void midi_continue(t_midi *x){
             x->x_clockdelay = 0.;
         clock_delay(x->x_clock, x->x_clockdelay);
         x->x_prevtime = clock_getlogicaltime();
+    }
+}
+
+static void midi_clocktick(t_midi *x){
+    t_float output;
+    if(x->x_mode == MIDI_PLAYMODE || x->x_mode == MIDI_SLAVEMODE){
+        t_midievent *ep = &x->x_sequence[x->x_playhead++];
+        unsigned char *bp = ep->e_bytes;
+    nextevent:
+        output = (t_float)*bp++;
+        outlet_float(((t_object *)x)->ob_outlet, output);
+        panic_input(x, output);
+        if(*bp != MIDI_EOM){
+            output = (t_float)*bp++;
+            outlet_float(((t_object *)x)->ob_outlet, output);
+            panic_input(x, output);
+            if(*bp != MIDI_EOM){
+                output = (t_float)*bp++;
+                outlet_float(((t_object *)x)->ob_outlet, output);
+                panic_input(x, output);
+                if(*bp != MIDI_EOM){
+                    output = (t_float)*bp++;
+                    outlet_float(((t_object *)x)->ob_outlet, output);
+                    panic_input(x, output);
+                }
+            }
+        }
+        if(x->x_mode != MIDI_PLAYMODE && x->x_mode != MIDI_SLAVEMODE)
+            return;  // protecting against outlet -> 'stop' etc.
+        if(x->x_playhead < x->x_nevents){
+            ep++;
+            x->x_nextscoretime += ep->e_delta;
+            if(ep->e_delta < MIDI_TICKEPSILON){ // continue output in the same scheduler event, LATER rethink
+                x->x_playhead++;
+                bp = ep->e_bytes;
+                goto nextevent;
+            }
+            else{
+                x->x_clockdelay = ep->e_delta * x->x_timescale;
+                if(x->x_clockdelay < 0.)
+                    x->x_clockdelay = 0.;
+                clock_delay(x->x_clock, x->x_clockdelay);
+                x->x_prevtime = clock_getlogicaltime();
+            }
+        }
+        else{ // CHECKED bang sent immediately _after_ last byte
+            midi_setmode(x, MIDI_IDLEMODE);
+            outlet_bang(x->x_bangout);  // LATER think about reentrancy
+/*            if(x->x_loop)
+                midi_float(x, 1);*/
+        }
+    }
+}
+
+static void midi_float(t_midi *x, t_float f){
+    if(x->x_mode == MIDI_RECMODE){
+        // CHECKED noninteger and out of range silently truncated
+        unsigned char c = (unsigned char)f;
+        if(c < 128 && x->x_status)
+            midi_addbyte(x, c, 0);
+        else if(c != 254){  // CHECKED active sensing ignored
+            if(x->x_status == 240){
+                if(c == 247)
+                    midi_endofsysex(x);
+                else{
+                    // CHECKED rt bytes alike
+                    post("[midi]: unterminated sysex");  // CHECKED
+                    midi_endofsysex(x);  // CHECKED 247 added implicitly
+                    midi_checkstatus(x, c);
+                }
+            }
+            else if(c != 247)
+                midi_checkstatus(x, c);
+        }
+//        midi_update(x);
+    }
+    else if(f != 0){
+        midi_settimescale(x, 1);
+        midi_setmode(x, MIDI_PLAYMODE);
+    }
+    else{ // stop
+        midi_pause(x);
+        midi_panic(x);
     }
 }
 

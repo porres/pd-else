@@ -1,13 +1,13 @@
-#N canvas 618 34 561 737 10;
+#N canvas 618 34 561 749 10;
 #X obj 5 336 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 562 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 5 577 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 5 624 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 6 710 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 639 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 725 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 116 343 cnv 17 3 194 empty empty 0 5 9 0 16 -228856 -162280
-0;
+#X obj 96 343 cnv 17 3 208 empty empty 0 5 9 0 16 -228856 -162280 0
+;
 #X obj 110 41 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
 #X obj 26 41 cnv 4 4 4 empty empty Keyboard 0 28 2 18 -233017 -1 0
 ;
@@ -18,17 +18,17 @@
 #X restore 3 4 graph;
 #X obj 312 127 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 206 341 float;
-#X text 206 541 float;
-#X text 256 341 - MIDI Note value, f 42;
-#X text 256 355 - MIDI Note and Velocity values, f 42;
-#X text 170 355 list <f \, f>;
-#X obj 116 542 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 196 341 float;
+#X text 196 555 float;
+#X text 246 341 - MIDI Note value, f 47;
+#X text 246 355 - MIDI Note and Velocity values, f 47;
+#X text 160 355 list <f \, f>;
+#X obj 96 556 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 115 570 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 95 585 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 259 570 - MIDI Note and Velocity values;
-#X text 170 570 list <f \, f>;
+#X text 249 585 - MIDI Note and Velocity values;
+#X text 160 585 list <f \, f>;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
@@ -49,20 +49,20 @@
 #X text 67 87 [keyboard] is a GUI that receives MIDI notes and also
 generates them from mouse clicking. Right click it for properties!
 , f 64;
-#X text 256 397 - set key width, f 46;
-#X text 158 397 width <float>;
-#X text 152 411 height <float>;
-#X text 170 425 oct <float>;
-#X text 256 425 - transpose octaves up or down, f 42;
-#X text 164 439 8ves <float>;
-#X text 256 439 - set number of octaves, f 42;
-#X text 164 453 lowc <float>;
-#N canvas 751 116 570 612 example 0;
+#X text 246 411 - set key width, f 47;
+#X text 148 411 width <float>;
+#X text 142 425 height <float>;
+#X text 160 439 oct <float>;
+#X text 246 439 - transpose octaves up or down, f 47;
+#X text 154 453 8ves <float>;
+#X text 246 453 - set number of octaves, f 47;
+#X text 154 467 lowc <float>;
+#N canvas 871 138 553 608 example 0;
 #X obj 67 98 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
 #X obj 67 178 makenote 100 1500;
 #X obj 67 128 metro 800;
-#X obj 279 331 catch~ \$0-voice;
+#X obj 279 351 catch~ \$0-voice;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
@@ -98,7 +98,7 @@ generates them from mouse clicking. Right click it for properties!
 #X connect 11 1 2 0;
 #X connect 12 0 7 0;
 #X connect 14 0 8 0;
-#X restore 67 451 pd voice;
+#X restore 67 471 pd voice;
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
@@ -134,7 +134,7 @@ generates them from mouse clicking. Right click it for properties!
 #X connect 11 1 2 0;
 #X connect 12 0 7 0;
 #X connect 14 0 8 0;
-#X restore 88 427 pd voice;
+#X restore 88 447 pd voice;
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
@@ -170,7 +170,7 @@ generates them from mouse clicking. Right click it for properties!
 #X connect 11 1 2 0;
 #X connect 12 0 7 0;
 #X connect 14 0 8 0;
-#X restore 110 401 pd voice;
+#X restore 110 421 pd voice;
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
@@ -206,22 +206,28 @@ generates them from mouse clicking. Right click it for properties!
 #X connect 11 1 2 0;
 #X connect 12 0 7 0;
 #X connect 14 0 8 0;
-#X restore 132 377 pd voice;
-#X obj 385 470 clone;
-#X text 309 469 see also:;
+#X restore 132 397 pd voice;
+#X obj 385 490 clone;
+#X text 309 489 see also:;
 #X text 185 90 Try clicking and dragging \, it also works and slides
 through chromatically!, f 52;
-#X obj 286 396 else/out~;
-#X obj 67 217 else/keyboard 19 80 3 2 0 0 empty empty;
+#X obj 286 416 else/out~;
+#X obj 67 237 else/keyboard 19 80 3 2 0 0 empty empty;
 #X obj 67 153 else/rand.i 36 72;
-#X obj 67 343 else/voices 4 1;
-#X obj 67 308 else/display 7;
-#X obj 279 357 else/plate.rev~ 50 0.6 0.25 0.8 0.8, f 18;
+#X obj 67 363 else/voices 4 1;
+#X obj 67 328 else/display 7;
+#X obj 279 377 else/plate.rev~ 50 0.6 0.25 0.8 0.8, f 18;
 #X text 64 28 In this example [keyboard] displays randomly generated
 notes and driving 4 voices. Also see that each voice subpatch has [adsr~]'s
 status outlet to control the DSP status for that subpatch - open and
 check it. You should also try pd's [clone] object for managing polyphonic
 synths., f 72;
+#X msg 308 157 set 48 127;
+#X msg 308 180 set 48 0;
+#X text 385 162 set message does not output values, f 18;
+#X text 96 536 hint: you can also create a list of note on + velocity
+and send to the left inlet. In the same way as other pd object \, this
+distributes to both inlets.;
 #X connect 0 0 2 0;
 #X connect 1 0 12 0;
 #X connect 1 1 12 1;
@@ -236,11 +242,13 @@ synths., f 72;
 #X connect 15 0 14 0;
 #X connect 16 0 11 0;
 #X connect 16 1 11 1;
+#X connect 18 0 12 0;
+#X connect 19 0 12 0;
 #X restore 480 225 pd example;
 #X text 200 144 octave up;
 #X text 222 172 octave down;
-#X text 256 541 - velocity of MIDI note value, f 42;
-#X text 152 481 toggle <float>;
+#X text 246 555 - velocity of MIDI note value, f 47;
+#X text 142 495 toggle <float>;
 #X obj 160 216 else/keyboard 18 70 2 3 0 0 empty empty;
 #N canvas 795 23 485 468 toggle 0;
 #X obj 48 175 else/keyboard 19 80 3 3 1 0 empty empty;
@@ -284,7 +292,7 @@ it On or Off. Dragging doesn't work., f 43;
 #X restore 48 409 pd voice;
 #X obj 48 301 else/voices 4 1;
 #X msg 48 94 toggle \$1;
-#X obj 48 66 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1 1
+#X obj 48 66 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1 1
 ;
 #X obj 48 34 loadbang;
 #X msg 81 135 flush;
@@ -417,13 +425,13 @@ messages from the inlets., f 43;
 #X connect 15 0 14 0;
 #X connect 15 1 14 1;
 #X restore 486 245 pd toggle;
-#X text 206 495 flush;
-#X text 256 411 - set keyboard height, f 42;
-#X text 256 453 - set number of lowest C (e.g. 4 = C4), f 42;
-#X text 256 481 - sets toggle mode on <1> of off <0>, f 42;
-#X text 256 495 - flushes hanging Note On keys, f 42;
-#X text 164 467 norm <float>;
-#X text 256 467 - set velocity normalization, f 42;
+#X text 196 509 flush;
+#X text 246 425 - set keyboard height, f 47;
+#X text 246 467 - set number of lowest C (e.g. 4 = C4), f 47;
+#X text 246 495 - sets toggle mode on <1> of off <0>, f 47;
+#X text 246 509 - flushes hanging Note On keys, f 47;
+#X text 154 481 norm <float>;
+#X text 246 481 - set velocity normalization, f 47;
 #X obj 160 302 else/display 7;
 #X text 227 306 MIDI Note / Velocity;
 #X obj 312 147 metro 1000;
@@ -806,56 +814,55 @@ mode. This is an indicative that the object has a send or receive symbol.
 #X connect 6 0 7 0;
 #X connect 9 0 5 0;
 #X restore 449 305 pd send/receive;
-#X text 158 509 send <symbol>;
-#X text 256 509 - sets send symbol, f 42;
-#X text 140 523 receive <symbol>;
-#X text 256 523 - sets receive symbol, f 42;
-#X text 75 632 -width <float>: width in pixels (default 17) | -height
+#X text 148 523 send <symbol>;
+#X text 246 523 - sets send symbol, f 47;
+#X text 130 537 receive <symbol>;
+#X text 246 537 - sets receive symbol, f 47;
+#X text 75 647 -width <float>: width in pixels (default 17) | -height
 <float>: height in pixels (default 80) | -oct <float>: number of octaves
 (default 4) | -lowc <float>: number of lowest C (default 3 - that is
 "C3") | -tgl sets to toggle mode (default non toggle) | -norm <float>:
 velocity normalization value (default 0) | -send <symbol>: sets send
 symbol (default 'empty') | -receive <symbol>: sets receive symbol (default
 'empty') |, f 77;
-#X obj 4 597 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 612 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X text 259 604 (none);
-#N canvas 846 100 573 577 more 0;
+#X text 239 619 (none);
+#N canvas 846 100 564 553 more 0;
 #X text 108 358 For instance \, below \, we have \$0 used in the send
 symbol. Using something like "\$1" is also possible and useful if you're
 using the object in an abstraction \, then you can load a value passed
 as an argument into a parameter., f 59;
 #X obj 411 437 r \$0-snd;
 #X obj 411 462 else/display;
-#X text 83 234 Note that when you set a receive or send symbol \, the
-corresponding inlets/outlet does not get drawn when you're in edit
-mode. This is an indicative that the object has a send or receive symbol.
-, f 67;
 #X obj 130 429 else/keyboard 17 80 2 3 0 0 \$0-snd empty;
 #X text 84 284 Also note that all the parameters that you can set by
 inserting a symbol into a field in the properties window can also load
 dollar sign arguments (\$0 \, \$1 \, \$2 \, and so on). Namely \, these
 parameters are: key width \, height \, normalization \, and send/receive
 symbols., f 67;
-#X text 132 525 The bluish "C" note indicates it is C4 (Midi note "60")
-;
 #X obj 55 88 else/keyboard 17 80 4 3 0 0 empty empty;
 #X text 64 22 This is the default [keyboard] object. Please get into
 and out of edit mode so you can see how the [keyboard] object creates
 two inlets and an outlet when you're in edit mode. The bluish "C" note
 indicates it is C4 (Midi note "60")., f 75;
 #X obj 55 178 else/display;
+#X text 83 234 Note that when you set a receive or send symbol \, the
+corresponding inlets/outlet do not get drawn when you're in edit mode.
+This is an indicative that the object has a send or receive symbol.
+, f 67;
 #X connect 1 0 2 0;
-#X connect 7 0 9 0;
+#X connect 5 0 7 0;
 #X restore 499 174 pd more details;
 #X f 7;
 #X obj 312 168 else/rand.i 48 72;
 #X text 31 274 see also:;
 #X obj 27 298 else/pitch2note;
-#X text 182 369 on <list>;
-#X text 256 369 - list MIDI Notes to be on with velocity of 127;
-#X text 176 383 off <list>;
-#X text 256 383 - list MIDI Notes to be off with velocity of 0;
+#X text 172 369 on <list>;
+#X text 246 369 - list MIDI Notes to be on with velocity of 127;
+#X text 166 383 off <list>;
+#X text 246 383 - list MIDI Notes to be off with velocity of 0, f
+47;
 #N canvas 846 100 462 340 on/off 0;
 #X obj 64 191 else/keyboard 17 80 3 3 0 0 empty empty;
 #X msg 64 100 on 55 65 70 74 77;
@@ -868,6 +875,8 @@ note of messages for its list of pitches.;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
 #X restore 487 205 pd on/off;
+#X text 118 397 set <float \, float>;
+#X text 246 397 - set note (pitch/velocity) without output, f 47;
 #X connect 9 0 52 0;
 #X connect 41 0 50 0;
 #X connect 52 0 67 0;
