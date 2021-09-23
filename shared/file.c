@@ -18,6 +18,7 @@
 
    LATER extract the embedding stuff. */
 
+
 #ifdef _WIN32
 #include <io.h>
 #else
@@ -35,6 +36,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // OS
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 static int ospath_doabsolute(char *path, char *cwd, char *result){
     if(*path == 0){
@@ -67,7 +69,7 @@ static int ospath_doabsolute(char *path, char *cwd, char *result){
     }
     else if(*path == '/'){
 #ifdef _WIN32
-        // path is absolute, drive is implicit, LATER UNC?
+        /* path is absolute, drive is implicit, LATER UNC? */
         if(*cwd && cwd[1] == ':'){
             if(result){
                 *result = *cwd;
@@ -80,7 +82,7 @@ static int ospath_doabsolute(char *path, char *cwd, char *result){
         else
             goto badpath;
 #else
-        // path is absolute
+        /* path is absolute */
         if(result)
             strcpy(result, path);
         else
@@ -91,13 +93,14 @@ static int ospath_doabsolute(char *path, char *cwd, char *result){
 #ifdef _WIN32
         if(path[1] == ':'){
             if(path[2] == '/'){
-                // path is absolute
+                /* path is absolute */
                 if(result)
                     strcpy(result, path);
                 else
                     return(strlen(path));
             }
-            else if(*cwd == *path){ // path is relative, drive is explicitly current
+            else if(*cwd == *path){
+                /* path is relative, drive is explicitly current */
                 if(result){
                     int ndx = strlen(cwd);
                     strcpy(result, cwd);
@@ -107,12 +110,13 @@ static int ospath_doabsolute(char *path, char *cwd, char *result){
                 else
                     return(strlen(cwd) + strlen(path) - 1);
             }
-            // we do not maintain per-drive cwd, LATER rethink
+            /* we do not maintain per-drive cwd, LATER rethink */
             else
                 goto badpath;
         }
         /* LATER devices? */
-        else{ // path is relative
+        else{
+            /* path is relative */
             if(result){
                 int ndx = strlen(cwd);
                 strcpy(result, cwd);
@@ -123,7 +127,7 @@ static int ospath_doabsolute(char *path, char *cwd, char *result){
                 return(strlen(cwd) + 1 + strlen(path));
         }
 #else
-        // path is relative
+        /* path is relative */
         if(result){
             int ndx = strlen(cwd);
             strcpy(result, cwd);
@@ -135,11 +139,11 @@ static int ospath_doabsolute(char *path, char *cwd, char *result){
 #endif
     }
     if(result && *result && *result != '.'){
-        // clean-up
+        /* clean-up */
         char *inptr, *outptr = result;
         int ndx = strlen(result);
         if(result[ndx - 1] == '.'){
-            result[ndx] = '/';  // guarding slash
+            result[ndx] = '/';  /* guarding slash */
             result[ndx + 1] = 0;
         }
         for(inptr = result + 1; *inptr; inptr++){
@@ -183,7 +187,8 @@ badpath:
  superfluous slashes and dots), but not longer.  Both args should be unbashed
  (system-independent), cwd should be absolute.  Returns 0 in case of any
  error (LATER revisit). */
-int ospath_length(char *path, char *cwd){ // one extra byte used internally (guarding slash)
+int ospath_length(char *path, char *cwd){
+    /* one extra byte used internally (guarding slash) */
     return(ospath_doabsolute(path, cwd, 0) + 1);
 }
 
@@ -197,11 +202,11 @@ char *ospath_absolute(char *path, char *cwd, char *result){
 }
 
 FILE *fileread_open(char *filename, t_canvas *cv, int textmode){
-    int fd;
     char path[MAXPDSTRING+2], *nameptr;
     t_symbol *dirsym = (cv ? canvas_getdir(cv) : 0);
-    // path arg is returned unbashed (system-independent)
-    if((fd = open_via_path((dirsym ? dirsym->s_name : ""), filename, "", path, &nameptr, MAXPDSTRING, 1)) < 0)
+    /* path arg is returned unbashed (system-independent) */
+    int fd = open_via_path((dirsym ? dirsym->s_name : ""), filename, "", path, &nameptr, MAXPDSTRING, 1);
+    if(fd < 0)
         return(0);
     /* Closing/reopening dance.  This is unnecessary under linux, and we
      could have tried to convert fd to fp, but under windows open_via_path()
@@ -211,7 +216,7 @@ FILE *fileread_open(char *filename, t_canvas *cv, int textmode){
     if(path != nameptr){
         char *slashpos = path + strlen(path);
         *slashpos++ = '/';
-        // try not to be dependent on current open_via_path() implementation
+        /* try not to be dependent on current open_via_path() implementation */
         if(nameptr != slashpos)
             strcpy(slashpos, nameptr);
     }
@@ -221,7 +226,7 @@ FILE *fileread_open(char *filename, t_canvas *cv, int textmode){
 FILE *filewrite_open(char *filename, t_canvas *cv, int textmode){
     char path[MAXPDSTRING+2];
     if(cv)
-    // path arg is returned unbashed (system-independent)
+    /* path arg is returned unbashed (system-independent) */
         canvas_makefilename(cv, filename, path, MAXPDSTRING);
     else{
         strncpy(path, filename, MAXPDSTRING);
@@ -256,7 +261,8 @@ t_osdir *osdir_open(char *dirname){
         return(dp);
 #ifndef _WIN32
     }
-    else return(0);
+    else
+        return(0);
 #endif
 }
 
@@ -287,8 +293,10 @@ char *osdir_next(t_osdir *dp){
 #ifndef _WIN32
     if(dp){
         while((dp->dir_entry = readdir(dp->dir_handle))){
-            if(!dp->dir_flags || (dp->dir_entry->d_type == DT_REG && (dp->dir_flags & OSDIR_FILEMODE)) ||
-            (dp->dir_entry->d_type == DT_DIR && (dp->dir_flags & OSDIR_DIRMODE)))
+            if(!dp->dir_flags || (dp->dir_entry->d_type == DT_REG
+            && (dp->dir_flags & OSDIR_FILEMODE))
+            || (dp->dir_entry->d_type == DT_DIR
+            && (dp->dir_flags & OSDIR_DIRMODE)))
                 return(dp->dir_entry->d_name);
         }
     }
@@ -346,9 +354,7 @@ static t_file *file_getproxy(t_pd *master){
     return(0);
 }
 
-static void editor_guidefs(void){ // if older than 0.43, create an 0.43-style pdsend
-    sys_gui("if {[llength [info procs ::pdsend]] == 0} {");
-    sys_gui("proc ::pdsend {args} {::pd \"[join $args { }] ;\"}}\n");
+static void editor_guidefs(void){
     sys_gui("proc editor_open {name geometry title sendable} {\n");
     sys_gui(" if {[winfo exists $name]} {\n");
     sys_gui("  $name.text delete 1.0 end\n");
@@ -437,7 +443,7 @@ static void editor_guidefs(void){ // if older than 0.43, create an 0.43-style pd
 /* null owner defaults to class name, pass "" to supress */
 void editor_open(t_file *f, char *title, char *owner){
     if(!owner)
-        owner = (char*)(class_getname(*f->f_master));
+        owner = (char *)(class_getname(*f->f_master));
     if(!*owner)
         owner = 0;
     if(!title){
@@ -445,11 +451,12 @@ void editor_open(t_file *f, char *title, char *owner){
         owner = 0;
     }
     if(owner)
-        sys_vgui("editor_open .%lx %dx%d {%s: %s} %d\n", (unsigned long)f,
-        600, 340, owner, title, (f->f_editorfn != 0));
+        sys_vgui("editor_open .%lx %dx%d {%s: %s} %d\n",
+        (unsigned long)f, 600, 340, owner, title, (f->f_editorfn != 0));
     else
-        sys_vgui("editor_open .%lx %dx%d {%s} %d\n", (unsigned long)f,
-        600, 340, (title ? title : "Untitled"), (f->f_editorfn != 0));
+        sys_vgui("editor_open .%lx %dx%d {%s} %d\n",
+        (unsigned long)f, 600, 340, (title ? title : "Untitled"),
+        (f->f_editorfn != 0));
 }
 
 static void editor_tick(t_file *f){
@@ -490,10 +497,10 @@ void editor_setdirty(t_file *f, int flag){
 
 static void editor_clear(t_file *f){
     if(f->f_editorfn){
-	if(f->f_binbuf)
-	    binbuf_clear(f->f_binbuf);
-	else
-	    f->f_binbuf = binbuf_new();
+        if(f->f_binbuf)
+            binbuf_clear(f->f_binbuf);
+        else
+            f->f_binbuf = binbuf_new();
     }
 }
 
@@ -503,7 +510,8 @@ static void editor_addline(t_file *f, t_symbol *s, int ac, t_atom *av){
         int i;
         t_atom *ap;
         for(i = 0, ap = av; i < ac; i++, ap++){
-            if(ap->a_type == A_SYMBOL){ // LATER rethink semi/comma mapping
+            if(ap->a_type == A_SYMBOL){
+                /* LATER rethink semi/comma mapping */
                 if(!strcmp(ap->a_w.w_symbol->s_name, "_semi_"))
                     SETSEMI(ap);
                 else if(!strcmp(ap->a_w.w_symbol->s_name, "_comma_"))
@@ -517,7 +525,7 @@ static void editor_addline(t_file *f, t_symbol *s, int ac, t_atom *av){
 static void editor_end(t_file *f){
     if(f->f_editorfn){
         (*f->f_editorfn)(f->f_master, 0, binbuf_getnatom(f->f_binbuf), binbuf_getvec(f->f_binbuf));
-        binbuf_clear(f->f_binbuf);
+	binbuf_clear(f->f_binbuf);
     }
 }
 
@@ -533,9 +541,7 @@ static void panel_guidefs(void){
     sys_gui("  set directory [string range $filename 0 \\\n");
     sys_gui("   [expr [string last / $filename ] - 1]]\n");
     sys_gui("  if {$directory == \"\"} {set directory \"/\"}\n");
-
     sys_gui("  puts stderr [concat $directory]\n");
-
     sys_gui("  pdsend \"$target path \\\n");
     sys_gui("   [enquote_path $filename] [enquote_path $directory] \"\n");
     sys_gui(" }\n");
@@ -584,7 +590,8 @@ static void panel_tick(t_file *f){
     if(f->f_savepanel)
         sys_vgui("panel_open %s {%s}\n", f->f_bindname->s_name, f->f_inidir->s_name);
     else
-        sys_vgui("panel_save %s {%s} {%s}\n", f->f_bindname->s_name, f->f_inidir->s_name, f->f_inifile->s_name);
+        sys_vgui("panel_save %s {%s} {%s}\n", f->f_bindname->s_name,
+        f->f_inidir->s_name, f->f_inifile->s_name);
 }
 
 /* these are hacks: deferring modal dialog creation in order to allow for
@@ -600,10 +607,10 @@ void panel_open(t_file *f, t_symbol *inidir){
 void panel_setopendir(t_file *f, t_symbol *dir){
     if(f->f_currentdir && f->f_currentdir != &s_){
         if(dir && dir != &s_){
-            int length;
-            if((length = ospath_length((char*)(dir->s_name), (char*)(f->f_currentdir->s_name)))){
+            int length = ospath_length((char *)(dir->s_name), (char *)(f->f_currentdir->s_name));
+            if(length){
                 char *path = getbytes(length + 1);
-                if(ospath_absolute((char*)(dir->s_name), (char*)(f->f_currentdir->s_name), path))
+                if(ospath_absolute((char *)(dir->s_name), (char *)(f->f_currentdir->s_name), path))
                 /* LATER stat (think how to report a failure) */
                     f->f_currentdir = gensym(path);
                 freebytes(path, length + 1);
@@ -624,7 +631,8 @@ void panel_save(t_file *f, t_symbol *inidir, t_symbol *inifile){
     if((f = f->f_savepanel)){
         if(inidir)
             f->f_inidir = inidir;
-        else /* LATER ask if we can rely on s_ pointing to "" */
+        else
+            /* LATER ask if we can rely on s_ pointing to "" */
             f->f_inidir = (f->f_currentdir ? f->f_currentdir : &s_);
         f->f_inifile = (inifile ? inifile : &s_);
         clock_delay(f->f_panelclock, 0);
@@ -656,7 +664,7 @@ static void embed_gc(t_pd *x, t_symbol *s, int expected){
     while((garbage = pd_findbyclass(s, *x)))
         pd_unbind(garbage, s), count++;
     if(count != expected)
-        bug("embed_gc (%d garbage bindings)", count);
+	bug("embed_gc (%d garbage bindings)", count);
 }
 
 static void embed_restore(t_pd *master){
@@ -690,8 +698,7 @@ int file_ispasting(t_file *f){
         t_pd *z = s__X.s_thing;
         if(z == (t_pd *)cv){
             pd_popsym(z);
-            if(s__X.s_thing == (t_pd *)cv)
-                result = 1;
+            if(s__X.s_thing == (t_pd *)cv) result = 1;
             pd_pushsym(z);
         }
         else if(z)
@@ -786,10 +793,9 @@ void file_setup(t_class *c, int embeddable){
     }
     if(!file_class){
         ps__C = gensym("#C");
-        file_class = class_new(gensym("_file"), 0, 0, sizeof(t_file),
-            CLASS_PD | CLASS_NOINLET, 0);
+        file_class = class_new(gensym("_file"), 0, 0,sizeof(t_file), CLASS_PD | CLASS_NOINLET, 0);
         class_addsymbol(file_class, panel_symbol);
-        class_addmethod(file_class, (t_method)panel_path, gensym("path"), A_SYMBOL, A_DEFSYM, 0);
+        class_addmethod(file_class, (t_method)panel_path,gensym("path"), A_SYMBOL, A_DEFSYM, 0);
         class_addmethod(file_class, (t_method)editor_clear, gensym("clear"), 0);
         class_addmethod(file_class, (t_method)editor_addline, gensym("addline"), A_GIMME, 0);
         class_addmethod(file_class, (t_method)editor_end, gensym("end"), 0);
@@ -798,4 +804,3 @@ void file_setup(t_class *c, int embeddable){
         panel_guidefs();
     }
 }
-

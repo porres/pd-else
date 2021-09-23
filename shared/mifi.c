@@ -70,6 +70,15 @@ typedef unsigned char uchar;
 #endif
 #endif
 
+/*
+#ifdef KRZYSZCZ
+# include "loud.h"
+# define MIFI_DEBUG
+#else
+# define loudbug_bug(msg)  fprintf(stderr, "BUG: %s\n", msg), bug(msg)
+#endif 
+*/
+
 // #define MIFI_VERBOSE
 
 #define MIFI_SHORTESTEVENT        2  /* singlebyte delta and one databyte */
@@ -95,14 +104,15 @@ typedef struct _mifievent{
     uint32  e_delay;
     uchar   e_status;
     uchar   e_channel;
-    uchar   e_meta;  // meta-event type
+    uchar   e_meta;  /* meta-event type */
     uint32  e_length;
     size_t  e_datasize;
     uchar  *e_data;
     uchar   e_dataini[MIFIEVENT_INISIZE];
 }t_mifievent;
 
-typedef struct _mifiheader{ // midi file header
+/* midi file header */
+typedef struct _mifiheader{
     char    h_type[4];
     uint32  h_length;
     uint16  h_format;
@@ -110,7 +120,8 @@ typedef struct _mifiheader{ // midi file header
     uint16  h_division;
 }t_mifiheader;
 
-typedef struct _mifitrackheader{ // midi file track header
+/* midi file track header */
+typedef struct _mifitrackheader{
     char    th_type[4];
     uint32  th_length;
 }t_mifitrackheader;
@@ -159,7 +170,7 @@ typedef struct _mifiwritetx{
     double  wt_tickscoef;   /* hardticks per usertick */
     uint16  wt_beatticks;   /* hardticks per beat or per frame (set by user) */
     double  wt_mscoef;      /* hardticks per ms */
-}t_mifiwritetx;
+} t_mifiwritetx;
 
 struct _mifiwrite{
     t_pd          *mw_owner;
@@ -200,7 +211,7 @@ static void mifi_error(t_pd *x, char *fmt, ...){
         pd_error(x, "%s", buf);
     }
     else
-        post("[midi] error: %s", buf);
+        post("mifi error: %s", buf);
     va_end(ap);
 }
 
@@ -212,7 +223,7 @@ static void mifi_warning(t_pd *x, char *fmt, ...){
     if(x)
         post("%s's warning: %s", class_getname(*x), buf);
     else
-        post("[midi] warning: %s", buf);
+        post("mifi warning: %s", buf);
     va_end(ap);
 }
 
@@ -247,13 +258,13 @@ static int mifievent_initialize(t_mifievent *ep, size_t nalloc){
 static int mifievent_setlength(t_mifievent *ep, size_t length){
     if(length > ep->e_datasize){
         size_t newsize = ep->e_datasize;
-        while (newsize < length)
+        while(newsize < length)
             newsize *= 2;
         if((ep->e_data = resizebytes(ep->e_data, ep->e_datasize, newsize)))
             ep->e_datasize = newsize;
         else{
             ep->e_length = 0;
-            // rather hopeless...
+            /* rather hopeless... */
             newsize = MIFIEVENT_NALLOC;
             if((ep->e_data = getbytes(newsize)))
                 ep->e_datasize = newsize;
@@ -276,7 +287,7 @@ static int mifievent_settext(t_mifievent *ep, unsigned type, char *text){
     if(mifievent_setlength(ep, strlen(text) + 1)){
         ep->e_status = MIFIEVENT_META;
         ep->e_meta = (uchar)type;
-        strcpy((char*)(ep->e_data), text);
+        strcpy((char *)(ep->e_data), text);
         return(1);
     }
     else{
@@ -289,7 +300,7 @@ static int mifievent_settext(t_mifievent *ep, unsigned type, char *text){
 static void mifi_printsysex(int length, uchar *buf)
 {
     loudbug_startpost("sysex:");
-    while (length--)
+    while(length--)
 	loudbug_startpost(" %d", (int)*buf++);
     loudbug_endpost();
 }
@@ -298,32 +309,31 @@ static void mifievent_printsysex(t_mifievent *ep)
 {
     mifi_printsysex(ep->e_length, ep->e_data);
 }
-#endif
+#endif */
 
-static void mifievent_printmeta(t_mifievent *ep)
-{
-#if 0
-    static int isprintable[MIFIMETA_MAXPRINTABLE+1] =
-    {
+static void mifievent_printmeta(t_mifievent *ep){
+#define MIFI_SHOULD_PRINT 0
+#if MIFI_SHOULD_PRINT
+    static int isprintable[MIFIMETA_MAXPRINTABLE+1] = {
 #ifdef MIFI_DEBUG
 	0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 #elif defined MIFI_VERBOSE
 	0, 0, 1, 1, 1, 1, 1, 1
 #endif
     };
-    static char *printformat[MIFIMETA_MAXPRINTABLE+1] =
+#endif
+/*    static char *printformat[MIFIMETA_MAXPRINTABLE+1] =
     {
 	"", "text: %s", "copyright: %s", "track name: %s",
 	"instrument name: %s", "lyric: %s", "marker: %s", "cue point: %s"
-    };
-    if(ep->e_meta <= MIFIMETA_MAXPRINTABLE)
-    {
-
-	if(isprintable[ep->e_meta] && printformat[ep->e_meta])
-	    post(printformat[ep->e_meta], ep->e_data);
-    }
+    };*/
+    if(ep->e_meta <= MIFIMETA_MAXPRINTABLE){
+#if MIFI_SHOULD_PRINT
+        if(isprintable[ep->e_meta] && printformat[ep->e_meta])
+            post(printformat[ep->e_meta], ep->e_data);
 #endif
- #ifdef MIFI_DEBUG
+    }
+/* #ifdef MIFI_DEBUG
     else if(ep->e_meta == MIFIMETA_TEMPO)
     {
 	int tempo = mifi_swap4(*(uint32 *)ep->e_data);
@@ -334,15 +344,18 @@ static void mifievent_printmeta(t_mifievent *ep)
 	loudbug_post("meter %d/%d after %d",
 		     ep->e_data[0], (1 << ep->e_data[1]), ep->e_delay);
     }
-#endif
-}*/
+#endif */
+#undef MIFI_SHOULD_PRINT
+}
 
-static void mifiread_earlyeof(t_mifiread *mr){
+static void mifiread_earlyeof(t_mifiread *mr)
+{
     mr->mr_bytesleft = 0;
     mr->mr_eof = 1;
 }
 
-// Get next byte from track data. On error: return 0 (which is a valid) and set mr->mr_eof.
+/* Get next byte from track data.  On error: return 0 (which is a valid
+   result) and set mr->mr_eof. */
 static uchar mifiread_getbyte(t_mifiread *mr){
     if(mr->mr_bytesleft){
         int c;
@@ -391,7 +404,7 @@ static uint32 mifiread_getvarlen(t_mifiread *mr){
     uint32 count = mr->mr_bytesleft;
     if(count > 4)
         count = 4;
-    while (count--){
+    while(count--){
         n = (n << 7) + ((c = mifiread_getbyte(mr)) & 0x7f);
         if((c & 0x80) == 0)
             break;
@@ -414,7 +427,7 @@ static size_t mifiwrite_putvarlen(t_mifiwrite *mw, uint32 n){
 static void mifiread_updateticks(t_mifiread *mr){
     if(mr->mr_nframes){
         mr->mr_ticks.rt_userbar = mr->mr_ticks.rt_wholeticks;
-        // LATER ntsc
+        /* LATER ntsc */
         mr->mr_ticks.rt_tickscoef = mr->mr_ticks.rt_deftempo /
             (mr->mr_nframes * mr->mr_ticks.rt_beatticks);
         mr->mr_ticks.rt_hardbar = mr->mr_ticks.rt_userbar /
@@ -422,11 +435,16 @@ static void mifiread_updateticks(t_mifiread *mr){
         mr->mr_ticks.rt_tempo = mr->mr_ticks.rt_deftempo;
     }
     else{
-        mr->mr_ticks.rt_userbar = (mr->mr_ticks.rt_wholeticks * mr->mr_meternum) / mr->mr_meterden;
-        mr->mr_ticks.rt_hardbar = (mr->mr_ticks.rt_beatticks * 4. * mr->mr_meternum) / mr->mr_meterden;
-        mr->mr_ticks.rt_tickscoef = mr->mr_ticks.rt_wholeticks / (mr->mr_ticks.rt_beatticks * 4.);
+        mr->mr_ticks.rt_userbar =
+            (mr->mr_ticks.rt_wholeticks * mr->mr_meternum) / mr->mr_meterden;
+        mr->mr_ticks.rt_hardbar =
+            (mr->mr_ticks.rt_beatticks * 4. * mr->mr_meternum) /
+            mr->mr_meterden;
+        mr->mr_ticks.rt_tickscoef =
+            mr->mr_ticks.rt_wholeticks / (mr->mr_ticks.rt_beatticks * 4.);
         mr->mr_ticks.rt_tempo =
-            ((double)MIFIHARD_DEFTEMPO * mr->mr_ticks.rt_deftempo) / ((double)mr->mr_tempo);
+            ((double)MIFIHARD_DEFTEMPO * mr->mr_ticks.rt_deftempo) /
+            ((double)mr->mr_tempo);
         if(mr->mr_ticks.rt_tempo < MIFI_TICKEPSILON){
             post("bug: mifiread_updateticks");
             mr->mr_ticks.rt_tempo = mr->mr_ticks.rt_deftempo;
@@ -463,8 +481,10 @@ static void mifiread_reset(t_mifiread *mr){
 /* Calling this is optional.  The obligatory part is supplied elsewhere:
    in the constructor (owner), and in the doit() call (hook function). */
 void mifiread_setuserticks(t_mifiread *mr, double wholeticks){
-    mr->mr_ticks.rt_wholeticks = (wholeticks > MIFI_TICKEPSILON ? wholeticks : MIFIUSER_DEFWHOLETICKS);
-    mr->mr_ticks.rt_deftempo = mr->mr_ticks.rt_wholeticks * (MIFIUSER_DEFTEMPO / MIFIUSER_DEFWHOLETICKS);
+    mr->mr_ticks.rt_wholeticks = (wholeticks > MIFI_TICKEPSILON ?
+        wholeticks : MIFIUSER_DEFWHOLETICKS);
+    mr->mr_ticks.rt_deftempo = mr->mr_ticks.rt_wholeticks *
+        (MIFIUSER_DEFTEMPO / MIFIUSER_DEFWHOLETICKS);
     mifiread_updateticks(mr);
 }
 
@@ -472,9 +492,9 @@ void mifiread_setuserticks(t_mifiread *mr, double wholeticks){
 static int mifiread_startfile(t_mifiread *mr, const char *filename,
 const char *dirname, int complain){
     char errmess[MAXPDSTRING], path[MAXPDSTRING], *fnameptr;
-    int fd;
+    int fd = open_via_path(dirname, filename, "", path, &fnameptr, MAXPDSTRING, 1);
     mr->mr_fp = 0;
-    if((fd = open_via_path(dirname, filename, "", path, &fnameptr, MAXPDSTRING, 1)) < 0){
+    if(fd < 0){
         strcpy(errmess, "cannot open");
         goto rstartfailed;
     }
@@ -482,7 +502,7 @@ const char *dirname, int complain){
     if(path != fnameptr){
         char *slashpos = path + strlen(path);
         *slashpos++ = '/';
-        // try not to be dependent on current open_via_path() implementation */
+        /* try not to be dependent on current open_via_path() implementation */
         if(fnameptr != slashpos)
             strcpy(slashpos, fnameptr);
     }
@@ -497,8 +517,7 @@ const char *dirname, int complain){
     return(1);
 rstartfailed:
     if(complain)
-        mifi_error(mr->mr_owner, "%s file \"%s\" (errno %d: %s)",
-            errmess, filename, errno, strerror(errno));
+        mifi_error(mr->mr_owner, "%s file \"%s\" (errno %d: %s)", errmess, filename, errno, strerror(errno));
     if(mr->mr_fp){
         fclose(mr->mr_fp);
         mr->mr_fp = 0;
@@ -529,7 +548,7 @@ static int mifiread_starttrack(t_mifiread *mr){
             notyet = 0;
         if(notyet && (skip = th.th_length) && fseek(mr->mr_fp, skip, SEEK_CUR) < 0)
             goto nomoretracks;
-    }while(notyet);
+    } while(notyet);
     mr->mr_scoretime = 0;
     mr->mr_newtrack = 1;
     mr->mr_status = mr->mr_channel = 0;
@@ -541,17 +560,14 @@ nomoretracks:
     return(0);
 }
 
-static int mifiread_nextevent(t_mifiread *mr){ // next event
-//    post("[midi]read_nextevent");
+static int mifiread_nextevent(t_mifiread *mr){
     t_mifievent *ep = &mr->mr_event;
     uchar status;
     uint32 length;
     mr->mr_newtrack = 0;
 nextattempt:
-    if(mr->mr_bytesleft < MIFI_SHORTESTEVENT && !mifiread_starttrack(mr)){
-//        post("return(%d) - MIFIREAD_EOF", MIFIREAD_EOF);
+    if(mr->mr_bytesleft < MIFI_SHORTESTEVENT && !mifiread_starttrack(mr))
         return(MIFIREAD_EOF);
-    }
     mr->mr_scoretime += (mr->mr_event.e_delay = mifiread_getvarlen(mr));
     if((status = mifiread_getbyte(mr)) < 0x80){
         if(MIFI_ISCHANNEL(mr->mr_status)){
@@ -588,82 +604,67 @@ nextattempt:
     else if(status == MIFISYSEX_FIRST || status == MIFISYSEX_NEXT){
         length = mifiread_getvarlen(mr);
         if(length > MIFIEVENT_MAXSYSEX){  /* FIXME optional read */
-            if(mifiread_skipbytes(mr, length) < 0){
-//                post("return(%d) - MIFIREAD_FATAL", MIFIREAD_FATAL);
+            if(mifiread_skipbytes(mr, length) < 0)
                 return(MIFIREAD_FATAL);
-            }
         }
         else{
             uchar *tempbuf = getbytes(length);
-            if(mifiread_getbytes(mr, tempbuf, length) != length){
-//                post("return(%d) - MIFIREAD_FATAL", MIFIREAD_FATAL);
+            if(mifiread_getbytes(mr, tempbuf, length) != length)
                 return(MIFIREAD_FATAL);
-            }
-//#ifdef MIFI_DEBUG
-//	    mifi_printsysex(length, tempbuf);
-//#endif
+#ifdef MIFI_DEBUG
+            mifi_printsysex(length, tempbuf);
+#endif
             freebytes(tempbuf, length);
         }
         goto nextattempt;
     }
 
-    // meta-event
+    /* meta-event */
     else if(status == MIFIEVENT_META){
         ep->e_meta = mifiread_getbyte(mr);
         length = mifiread_getvarlen(mr);
-//        post("ep->e_meta = %d", ep->e_meta);
-        if(ep->e_meta > 127){ // try to skip corrupted meta-event (quietly)
-/* #ifdef MIFI_VERBOSE
-	    if(mr->mr_pass == 1)
-		mifi_warning(mr->mr_owner, "bad meta: %d > 127", ep->e_meta);
-#endif*/
-            if(mifiread_skipbytes(mr, length) < 0){
-//                post("return(%d) - MIFIREAD_FATAL", MIFIREAD_FATAL);
+        if(ep->e_meta > 127){
+	    /* try to skip corrupted meta-event (quietly) */
+#ifdef MIFI_VERBOSE
+            if(mr->mr_pass == 1)
+                mifi_warning(mr->mr_owner, "bad meta: %d > 127", ep->e_meta);
+#endif
+            if(mifiread_skipbytes(mr, length) < 0)
                 return(MIFIREAD_FATAL);
-            }
             goto nextattempt;
         }
-        switch(ep->e_meta){
+        switch (ep->e_meta){
             case MIFIMETA_EOT:
-//                post("End of track");
-                if(length){ // corrupted eot: ignore and skip to the real end of track
-//                    post("corrupted???");
-/*#ifdef MIFI_VERBOSE
-		if(mr->mr_pass == 1)
-		    mifi_warning(mr->mr_owner,
-				 "corrupted eot, length %d", length);
-#endif*/
+                if(length){ /* corrupted eot: ignore and skip to the real end of track */
+#ifdef MIFI_VERBOSE
+                    if(mr->mr_pass == 1)
+                        mifi_warning(mr->mr_owner, "corrupted eot, length %d", length);
+#endif
                     goto endoftrack;
                 }
-            break;
+                break;
             case MIFIMETA_TEMPO:
                 if(length != 3){
                     if(mr->mr_pass == 1)
-                        mifi_warning(mr->mr_owner,
-                            "corrupted tempo event in midi file... skip to end of track");
+                        mifi_warning(mr->mr_owner,"corrupted tempo event in midi file... skip to end of track");
                     goto endoftrack;
                 }
-                if(mifiread_getbytes(mr, ep->e_data + 1, 3) != 3){
-//                    post("return(%d) - MIFIREAD_FATAL", MIFIREAD_FATAL);
+                if(mifiread_getbytes(mr, ep->e_data + 1, 3) != 3)
                     return(MIFIREAD_FATAL);
-                }
                 ep->e_data[0] = 0;
                 mr->mr_tempo = mifi_swap4(*(uint32 *)ep->e_data);
                 if(!mr->mr_tempo)
                     mr->mr_tempo = MIFIHARD_DEFTEMPO;
                 mifiread_updateticks(mr);
-            break;
+                break;
             case MIFIMETA_TIMESIG:
                 if(length != 4){
                     if(mr->mr_pass == 1)
-                        mifi_warning(mr->mr_owner,
-                            "corrupted time signature event in midi file... skip to end of track");
+                        mifi_warning(mr->mr_owner, "corrupted time signature event in midi file... skip to end of track");
                     goto endoftrack;
                 }
-                if(mifiread_getbytes(mr, ep->e_data, 4) != 4){
-//                    post("return(%d) - MIFIREAD_FATAL", MIFIREAD_FATAL);
+                if(mifiread_getbytes(mr, ep->e_data, 4) != 4)
                     return(MIFIREAD_FATAL);
-                }
                 mr->mr_meternum = ep->e_data[0];
                 mr->mr_meterden = (1 << ep->e_data[1]);
                 if(!mr->mr_meternum || !mr->mr_meterden)
@@ -673,19 +674,15 @@ nextattempt:
 	    if(mr->mr_pass == 1)
 		loudbug_post("barspan (hard) %g", mr->mr_ticks.rt_hardbar);
 #endif */
-            break;
-            default:
+                break;
+                default:
                 if(length + 1 > MIFIEVENT_NALLOC){
-                    if(mifiread_skipbytes(mr, length) < 0){
-//                        post("return(%d) - MIFIREAD_FATAL", MIFIREAD_FATAL);
+                    if(mifiread_skipbytes(mr, length) < 0)
                         return(MIFIREAD_FATAL);
-                    }
                     goto nextattempt;
                 }
-                if(mifiread_getbytes(mr, ep->e_data, length) != length){
-//                    post("return(%d) - MIFIREAD_FATAL", MIFIREAD_FATAL);
+                if(mifiread_getbytes(mr, ep->e_data, length) != length)
                     return(MIFIREAD_FATAL);
-                }
                 ep->e_length = length;
                 if(ep->e_meta && ep->e_meta <= MIFIMETA_MAXPRINTABLE)
                     ep->e_data[length] = '\0';  /* text meta-event nultermination */
@@ -693,23 +690,15 @@ nextattempt:
     }
     else{
         if(mr->mr_pass == 1)
-            mifi_warning(mr->mr_owner,
-                "unknown event type in midi file... skip to end of track");
+            mifi_warning(mr->mr_owner, "unknown event type in midi file... skip to end of track");
         goto endoftrack;
     }
-//    post("ep->e_status = status) == MIFIEVENT_META ? ep->e_meta : status = %d",
-//         (ep->e_status = status) == MIFIEVENT_META ? ep->e_meta : status);
     return((ep->e_status = status) == MIFIEVENT_META ? ep->e_meta : status);
 endoftrack:
-//    post("endoftrack");
-    if(mifiread_skipbytes(mr, mr->mr_bytesleft) < 0){
-//        post("return(%d) - MIFIREAD_FATAL", MIFIREAD_FATAL);
+    if(mifiread_skipbytes(mr, mr->mr_bytesleft) < 0)
         return(MIFIREAD_FATAL);
-    }
-    else{
-//        post("return(%d) - MIFIREAD_FATAL", MIFIREAD_SKIP);
+    else
         return(MIFIREAD_SKIP);
-    }
 }
 
 static int mifiread_restart(t_mifiread *mr, int complain){
@@ -721,36 +710,32 @@ static int mifiread_restart(t_mifiread *mr, int complain){
     mr->mr_pass = 0;
     if(fseek(mr->mr_fp, 0, SEEK_SET)){
         if(complain)
-            mifi_error(mr->mr_owner,
-		       "file error (errno %d: %s)", errno, strerror(errno));
+            mifi_error(mr->mr_owner, "file error (errno %d: %s)", errno, strerror(errno));
         return(0);
     }
     else
         return(1);
 }
 
-static int mifiread_doopen(t_mifiread *mr, const char *filename,
-const char *dirname, int complain){
+static int mifiread_doopen(t_mifiread *mr, const char *filename, const char *dirname, int complain){
     long skip;
     mifiread_reset(mr);
     if(!mifiread_startfile(mr, filename, dirname, complain))
-	return(0);
+        return(0);
     if(strncmp(mr->mr_header.h_type, "MThd", 4))
-	goto badheader;
+        goto badheader;
     mr->mr_header.h_length = mifi_swap4(mr->mr_header.h_length);
     if(mr->mr_header.h_length < MIFIHARD_HEADERDATASIZE)
-	goto badheader;
+        goto badheader;
     if((skip = mr->mr_header.h_length - MIFIHARD_HEADERDATASIZE)){
-        mifi_warning(mr->mr_owner,
-		     "%ld extra bytes of midi file header... skipped", skip);
+        mifi_warning(mr->mr_owner, "%ld extra bytes of midi file header... skipped", skip);
         if(fseek(mr->mr_fp, skip, SEEK_CUR) < 0)
             goto badstart;
     }
     mr->mr_format = mifi_swap2(mr->mr_header.h_format);
     mr->mr_hdtracks = mifi_swap2(mr->mr_header.h_ntracks);
     if(mr->mr_hdtracks > 1000)  /* a sanity check */
-	mifi_warning(mr->mr_owner, "%d tracks declared in midi file \"%s\"",
-        mr->mr_hdtracks, filename);
+        mifi_warning(mr->mr_owner, "%d tracks declared in midi file \"%s\"", mr->mr_hdtracks, filename);
     mr->mr_tracknames = getbytes(mr->mr_hdtracks * sizeof(*mr->mr_tracknames));
     mr->mr_ticks.rt_beatticks = mifi_swap2(mr->mr_header.h_division);
     if(mr->mr_ticks.rt_beatticks & 0x8000){
@@ -787,19 +772,16 @@ badstart:
    LATER consider optional reading of nonchannel events. */
 /* FIXME complaining */
 static int mifiread_analyse(t_mifiread *mr, int complain){
-//    post("------------ start mifiread_analyse ------------");
     t_mifievent *ep = &mr->mr_event;
     int i, evtype, isnewtrack = 0;
     char tnamebuf[MAXPDSTRING];
     t_symbol **tnamep = 0;
-
     mr->mr_pass = 1;
     *tnamebuf = '\0';
     mr->mr_ntracks = 0;
     mr->mr_nevents = 0;
     mr->mr_ntempi = 0;
     while((evtype = mifiread_nextevent(mr)) >= MIFIREAD_SKIP){
-//        post("while!!!");
         if(evtype == MIFIREAD_SKIP)
             continue;
         if(mr->mr_newtrack){
@@ -808,7 +790,7 @@ static int mifiread_analyse(t_mifiread *mr, int complain){
 #endif */
             isnewtrack = 1;
             *tnamebuf = '\0';
-            tnamep = 0;  // set to nonzero for nonempty tracks only
+            tnamep = 0;  /* set to nonzero for nonempty tracks only */
         }
         if(MIFI_ISCHANNEL(evtype) || (evtype == MIFIMETA_EOT)){
             if(isnewtrack){
@@ -817,47 +799,47 @@ static int mifiread_analyse(t_mifiread *mr, int complain){
                 mr->mr_ntracks++;
                 if(mr->mr_ntracks > mr->mr_hdtracks){
                     if(complain)
-                        mifi_error(mr->mr_owner,
-                    "midi file has more tracks than header-declared %d", mr->mr_hdtracks);
-                    // FIXME grow?
+                        mifi_error(mr->mr_owner, "midi file has more tracks than header-declared %d", mr->mr_hdtracks);
+                    /* FIXME grow? */
                     goto anafail;
                 }
                 if(*tnamebuf){
                     *tnamep = gensym(tnamebuf);
 /* #ifdef MIFI_DEBUG
-		    loudbug_post("nonempty track name %s", (*tnamep)->s_name);
+                    loudbug_post("nonempty track name %s", (*tnamep)->s_name);
 #endif */
                 }
                 else
                     *tnamep = &s_;
             }
             mr->mr_nevents++;
-//            post("======> mr->mr_nevents = %d", mr->mr_nevents);
         }
-	// FIXME sysex
+        /* FIXME sysex */
         else if(evtype < 0x80){
-//	    mifievent_printmeta(ep);
+            mifievent_printmeta(ep);
             if(evtype == MIFIMETA_TEMPO)
                 mr->mr_ntempi++;
             else if(evtype == MIFIMETA_TRACKNAME){
-                char *p1 = (char*)(ep->e_data);
+                char *p1 = (char *)(ep->e_data);
                 if(*p1 && !*tnamebuf){ /* take the first one */
-                    while(*p1 == ' ') p1++;
-                        if(*p1){
-                            char *p2 = (char*)(ep->e_data + ep->e_length - 1);
-                            while(p2 > p1 && *p2 == ' ') *p2-- = '\0';
-                                p2 = p1;
-                            do if(*p2 == ' ' || *p2 == ',' || *p2 == ';')
-                                *p2 = '-';
-                            while(*++p2);
-                                if(tnamep){
-                                    if(*tnamep == &s_)
-				/* trackname after channel-event */
-                                    *tnamep = gensym(p1);
-                                    else
-                                        strcpy(tnamebuf, p1);
-                                }
+                    while(*p1 == ' ')
+                        p1++;
+                    if(*p1){
+                        char *p2 = (char *)(ep->e_data + ep->e_length - 1);
+                        while(p2 > p1 && *p2 == ' ')
+                            *p2-- = '\0';
+                        p2 = p1;
+                        do if(*p2 == ' ' || *p2 == ',' || *p2 == ';')
+                            *p2 = '-';
+                        while(*++p2);
+                        if(tnamep){
+                            if(*tnamep == &s_)
+                            /* trackname after channel-event */
+                                *tnamep = gensym(p1);
+                            else
+                                strcpy(tnamebuf, p1);
                         }
+                    }
                 }
             }
         }
@@ -870,7 +852,7 @@ static int mifiread_analyse(t_mifiread *mr, int complain){
             }
         }
 #ifdef MIFI_VERBOSE
-	post("got %d midi tracks (out of %d)", mr->mr_ntracks, mr->mr_hdtracks);
+        post("got %d midi tracks (out of %d)", mr->mr_ntracks, mr->mr_hdtracks);
 #endif
         return(MIFIREAD_EOF);
     }
@@ -880,9 +862,8 @@ anafail:
     return(MIFIREAD_FATAL);
 }
 
-// to be called in the second pass of reading
+/* to be called in the second pass of reading */
 int mifiread_doit(t_mifiread *mr, t_mifireadhook hook, void *hookdata){
-//    post(" ---------------- mifiread_doit ---------------- ");
     int evtype, ntracks = 0, isnewtrack = 0;
     mr->mr_pass = 2;
     mr->mr_trackndx = 0;
@@ -949,7 +930,6 @@ double mifiread_getdeftempo(t_mifiread *mr){
 }
 
 /* mifiread_get... calls to be used in a mifireadhook */
-
 int mifiread_getbarindex(t_mifiread *mr){
     return(mr->mr_scoretime / (int)mr->mr_ticks.rt_hardbar);
 }
@@ -997,9 +977,9 @@ unsigned mifiread_getdata1(t_mifiread *mr){
 
 unsigned mifiread_getdata2(t_mifiread *mr){
     if(mr->mr_pass != 2)
-        post("bug: mifiread_getdata2; (mr->mr_pass != 2)");
+        post("bug: mifiread_getdata2");
     if(mr->mr_event.e_length < 2)
-        post("bug: mifiread_getdata2; (mr->mr_event.e_length < 2)");
+        post("bug: mifiread_getdata2");
     return(mr->mr_event.e_data[1]);
 }
 
@@ -1013,10 +993,10 @@ t_pd *mifiread_getowner(t_mifiread *mr){
     return(mr->mr_owner);
 }
 
-int mifiread_open(t_mifiread *mr, const char *filename, const char *dirname){
-//    post("[midi]read_open");
-    return(mifiread_doopen(mr, filename, dirname, 0) &&
-        (mifiread_analyse(mr, 0) == MIFIREAD_EOF) && mifiread_restart(mr, 0));
+int mifiread_open(t_mifiread *mr, const char *filename, const char *dirname, int complain){
+    return(mifiread_doopen(mr, filename, dirname, complain) &&
+	    (mifiread_analyse(mr, complain) == MIFIREAD_EOF) &&
+	    mifiread_restart(mr, complain));
 }
 
 void mifiread_close(t_mifiread *mr){
@@ -1047,17 +1027,16 @@ t_mifiread *mifiread_new(t_pd *owner){
 }
 
 static void mifiwrite_updateticks(t_mifiwrite *mw){
-    if(mw->mw_nframes){ // LATER ntsc
-        mw->mw_ticks.wt_tickscoef =
-            (mw->mw_nframes * mw->mw_ticks.wt_beatticks) / mw->mw_ticks.wt_deftempo;
+    if(mw->mw_nframes){
+        /* LATER ntsc */
+        mw->mw_ticks.wt_tickscoef = (mw->mw_nframes * mw->mw_ticks.wt_beatticks) /
+            mw->mw_ticks.wt_deftempo;
         mw->mw_ticks.wt_tempo = mw->mw_ticks.wt_deftempo;
         mw->mw_ticks.wt_mscoef = .001 * (mw->mw_nframes * mw->mw_ticks.wt_beatticks);
     }
     else{
-        mw->mw_ticks.wt_tickscoef =
-            (mw->mw_ticks.wt_beatticks * 4.) / mw->mw_ticks.wt_wholeticks;
-        mw->mw_ticks.wt_tempo =
-            ((double)MIFIHARD_DEFTEMPO * mw->mw_ticks.wt_deftempo) /
+        mw->mw_ticks.wt_tickscoef = (mw->mw_ticks.wt_beatticks * 4.) / mw->mw_ticks.wt_wholeticks;
+        mw->mw_ticks.wt_tempo = ((double)MIFIHARD_DEFTEMPO * mw->mw_ticks.wt_deftempo) /
             ((double)mw->mw_tempo);
         if(mw->mw_ticks.wt_tempo < MIFI_TICKEPSILON){
             post("bug: mifiwrite_updateticks");
@@ -1088,22 +1067,18 @@ static void mifiwrite_reset(t_mifiwrite *mw){
 }
 
 void mifiwrite_sethardticks(t_mifiwrite *mw, int beatticks){
-    mw->mw_ticks.wt_beatticks = (beatticks > 0 && beatticks < MIFI_MAXBEATTICKS ?
-        beatticks : MIFIHARD_DEFBEATTICKS);
+    mw->mw_ticks.wt_beatticks = (beatticks > 0 && beatticks < MIFI_MAXBEATTICKS ? beatticks : MIFIHARD_DEFBEATTICKS);
     mifiwrite_updateticks(mw);
 }
 
 void mifiwrite_setuserticks(t_mifiwrite *mw, double wholeticks){
-    mw->mw_ticks.wt_wholeticks = (wholeticks > MIFI_TICKEPSILON ?
-        wholeticks : MIFIUSER_DEFWHOLETICKS);
-    mw->mw_ticks.wt_deftempo = mw->mw_ticks.wt_wholeticks *
-        (MIFIUSER_DEFTEMPO / MIFIUSER_DEFWHOLETICKS);
+    mw->mw_ticks.wt_wholeticks = (wholeticks > MIFI_TICKEPSILON ? wholeticks : MIFIUSER_DEFWHOLETICKS);
+    mw->mw_ticks.wt_deftempo = mw->mw_ticks.wt_wholeticks * (MIFIUSER_DEFTEMPO / MIFIUSER_DEFWHOLETICKS);
     mifiwrite_updateticks(mw);
 }
 
 void mifiwrite_setusertempo(t_mifiwrite *mw, double tickspersec){
-    mw->mw_tempo = (tickspersec > MIFI_TICKEPSILON ?
-        ((double)MIFIHARD_DEFTEMPO * mw->mw_ticks.wt_deftempo) / tickspersec : MIFIHARD_DEFTEMPO);
+    mw->mw_tempo = (tickspersec > MIFI_TICKEPSILON ? ((double)MIFIHARD_DEFTEMPO * mw->mw_ticks.wt_deftempo) / tickspersec : MIFIHARD_DEFTEMPO);
     mifiwrite_updateticks(mw);
 }
 
@@ -1153,7 +1128,8 @@ static int mifiwrite_putnextevent(t_mifiwrite *mw, t_mifievent *ep){
 }
 
 /* open a midi file for saving, write the header */
-int mifiwrite_open(t_mifiwrite *mw, const char *filename, const char *dirname, int ntracks, int complain){
+int mifiwrite_open(t_mifiwrite *mw, const char *filename, const char *dirname,
+int ntracks, int complain){
     char errmess[MAXPDSTRING], fnamebuf[MAXPDSTRING];
     if(ntracks < 1 || ntracks > MIFI_MAXTRACKS){
         post("bug: mifiwrite_open 1");
@@ -1169,7 +1145,7 @@ int mifiwrite_open(t_mifiwrite *mw, const char *filename, const char *dirname, i
             goto wopenfailed;
         }
 #ifdef MIFI_VERBOSE
-	post("writing single-track midi file \"%s\"", filename);
+        post("writing single-track midi file \"%s\"", filename);
 #endif
     }
 #ifdef MIFI_VERBOSE
@@ -1181,8 +1157,7 @@ int mifiwrite_open(t_mifiwrite *mw, const char *filename, const char *dirname, i
     mw->mw_header.h_format = mifi_swap2(mw->mw_format);
     mw->mw_header.h_ntracks = mifi_swap2(mw->mw_ntracks);
     if(mw->mw_nframes)
-        mw->mw_header.h_division =
-            ((mw->mw_nframes << 8) | mw->mw_ticks.wt_beatticks) | 0x8000;
+        mw->mw_header.h_division = ((mw->mw_nframes << 8) | mw->mw_ticks.wt_beatticks) | 0x8000;
     else
         mw->mw_header.h_division = mw->mw_ticks.wt_beatticks & 0x7fff;
     mw->mw_header.h_division = mifi_swap2(mw->mw_header.h_division);
@@ -1201,8 +1176,7 @@ int mifiwrite_open(t_mifiwrite *mw, const char *filename, const char *dirname, i
     return(1);
 wopenfailed:
     if(complain)
-        mifi_error(mw->mw_owner, "%s file \"%s\" (errno %d: %s)",
-		   errmess, filename, errno, strerror(errno));
+        mifi_error(mw->mw_owner, "%s file \"%s\" (errno %d: %s)", errmess, filename, errno, strerror(errno));
     if(mw->mw_fp){
         fclose(mw->mw_fp);
         mw->mw_fp = 0;
@@ -1228,7 +1202,7 @@ static int mifiwrite_adjusttrack(t_mifiwrite *mw, uint32 eotdelay, int complain)
     loudbug_post("adjusting track size to %d", mw->mw_trackbytes);
 #endif */
     /* LATER add sanity check (compare to saved filepos) */
-    if(skip > 4 && (fseek(mw->mw_fp, -skip, SEEK_CUR) < 0 ||
+    if((skip > 4) && (fseek(mw->mw_fp, -skip, SEEK_CUR) < 0 ||
 	fwrite(&length, 1, 4, mw->mw_fp) != 4 || fseek(mw->mw_fp, 0, SEEK_END) < 0)){
         if(complain)
             mifi_error(mw->mw_owner, "unable to adjust length field to %d in a midi file\
@@ -1261,9 +1235,8 @@ int mifiwrite_opentrack(t_mifiwrite *mw, char *trackname, int complain){
     if(trackname){
         if(!mifiwrite_textevent(mw, 0., MIFIMETA_TRACKNAME, trackname)){
             if(complain)
-                mifi_error(mw->mw_owner,
-                    "unable to write midi file track name \"%s\" (errno %d: %s)",
-                    trackname, errno, strerror(errno));
+                mifi_error(mw->mw_owner, "unable to write midi file track name \"%s\" (errno %d: %s)",
+                trackname, errno, strerror(errno));
             return(0);
         }
     }

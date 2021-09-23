@@ -10,7 +10,7 @@ EXTERN_STRUCT _mifiread;
 EXTERN_STRUCT _mifiwrite;
 #define t_mifiwrite  struct _mifiwrite
 
-typedef int(*t_mifireadhook)(t_mifiread *mf, void *hookdata, int evtype);
+typedef int (*t_mifireadhook)(t_mifiread *mf, void *hookdata, int evtype);
 
 #define MIFI_MAXTRACKS     0x7fff
 #define MIFI_MAXBEATTICKS  0x7fff
@@ -21,15 +21,15 @@ typedef int(*t_mifireadhook)(t_mifiread *mf, void *hookdata, int evtype);
 #define MIFIREAD_EOF    -2  /* regular eof */
 #define MIFIREAD_SKIP   -1  /* error and successful skip to the next track */
 
-#define MIFIMETA_SEQNUM        0
-#define MIFIMETA_TEXT          1
-#define MIFIMETA_COPYRIGHT     2
-#define MIFIMETA_TRACKNAME     3
-#define MIFIMETA_INSTRUMENT    4
-#define MIFIMETA_LYRIC         5
-#define MIFIMETA_MARKER        6
-#define MIFIMETA_CUE           7
-#define MIFIMETA_MAXPRINTABLE  15  /* 1..15 are various text meta-events */
+#define MIFIMETA_SEQNUM           0
+#define MIFIMETA_TEXT             1
+#define MIFIMETA_COPYRIGHT        2
+#define MIFIMETA_TRACKNAME        3
+#define MIFIMETA_INSTRUMENT       4
+#define MIFIMETA_LYRIC            5
+#define MIFIMETA_MARKER           6
+#define MIFIMETA_CUE              7
+#define MIFIMETA_MAXPRINTABLE    15  /* 1..15 are various text meta-events */
 #define MIFIMETA_CHANNEL       0x20  /* channel prefix (obsolete) */
 #define MIFIMETA_PORT          0x21  /* port prefix (obsolete) */
 #define MIFIMETA_EOT           0x2f  /* end of track */
@@ -86,7 +86,8 @@ t_pd *mifiread_getowner(t_mifiread *mr);
 
 t_mifiread *mifiread_new(t_pd *owner);
 void mifiread_setuserticks(t_mifiread *mr, double wholeticks);
-int mifiread_open(t_mifiread *mr, const char *filename, const char *dirname);
+int mifiread_open(t_mifiread *mr, const char *filename,
+		  const char *dirname, int complain);
 int mifiread_doit(t_mifiread *mr, t_mifireadhook hook, void *hookdata);
 void mifiread_close(t_mifiread *mr);
 void mifiread_free(t_mifiread *mr);

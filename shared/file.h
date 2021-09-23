@@ -1,3 +1,4 @@
+
 /* Copyright (c) 2004-2005 krzYszcz and others.
  * For information on usage and redistribution, and for a DISCLAIMER OF ALL
  * WARRANTIES, see the file, "LICENSE.txt," in this distribution.  */
@@ -50,8 +51,8 @@ int file_ismapped(t_file *f);
 int file_isloading(t_file *f);
 int file_ispasting(t_file *f);
 void file_free(t_file *f);
-t_file *file_new(t_pd *master, t_embedfn embedfn, t_filefn readfn,
-    t_filefn writefn, t_filefn updatefn);
+t_file *file_new(t_pd *master, t_embedfn embedfn, t_filefn readfn, t_filefn writefn,
+    t_filefn updatefn);
 void file_setup(t_class *c, int embeddable);
 
 #endif
