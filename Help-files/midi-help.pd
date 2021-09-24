@@ -1,31 +1,31 @@
-#N canvas 561 47 562 577 10;
+#N canvas 560 47 561 622 10;
 #X obj 4 220 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 445 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 459 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 494 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 508 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 87 452 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 87 466 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X obj 314 190 bng 16 250 50 0 empty empty empty 0 -6 0 10 -228856
 -1 -1;
-#X obj 87 473 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 87 487 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 552 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 596 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
 #X text 156 254 bang;
 #X text 150 228 float;
-#X obj 87 226 cnv 17 3 212 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 87 226 cnv 17 3 227 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 203 474 sent at the end of a sequence (useful for looping)
+#X text 203 488 sent at the end of a sequence (useful for looping)
 , f 53;
-#X text 151 453 float -;
-#X text 157 474 bang -;
-#X text 127 502 1) symbol -;
+#X text 151 467 float -;
+#X text 157 488 bang -;
+#X text 127 516 1) symbol -;
 #X text 335 191 <= when finished;
 #X text 145 268 record -;
 #X text 157 312 stop -;
-#X text 202 425 saves to a MIDI file (no symbol opens a dialog box)
+#X text 202 438 saves to a MIDI file (no symbol opens a dialog box)
 , f 53;
 #X text 151 326 pause -;
 #X text 202 312 stops recording/playing and goes back to start, f
@@ -57,17 +57,17 @@
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 306 2 graph;
 #X obj 162 39 cnv 4 4 4 empty empty files 0 28 2 18 -233017 -1 0;
-#X text 103 410 open <symbol> -;
-#X text 103 425 save <symbol> -;
+#X text 103 424 open <symbol> -;
+#X text 103 438 save <symbol> -;
 #X text 51 161 click to open file =>;
 #X text 190 254 - external clock tick, f 55;
-#X text 202 411 opens a MIDI file (no symbol opens a dialog box),
+#X text 202 425 opens a MIDI file (no symbol opens a dialog box),
 f 53;
 #X text 202 268 starts recording raw MIDI input, f 53;
-#X text 203 453 raw MIDI data stream from a MIDI file, f 53;
+#X text 203 467 raw MIDI data stream from a MIDI file, f 53;
 #X text 151 396 panic -;
 #X text 202 396 flushes hanging notes, f 53;
-#X obj 185 130 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X obj 185 130 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
 1;
 #X text 208 131 Play/stop;
 #N canvas 823 134 613 537 more 0;
@@ -153,7 +153,7 @@ f 53;
 #X restore 128 402 pd synth;
 #X obj 127 287 else/clock 120;
 #X obj 127 264 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 160 256;
+-228856 -1 -1 0 256;
 #X text 169 263 BPM;
 #X msg 414 31 pause;
 #X msg 430 54 continue;
@@ -301,13 +301,13 @@ from where it was paused!, f 44;
 #X text 109 368 loop <float> -;
 #X text 202 368 non zero sets to loop mode, f 53;
 #X obj 185 161 else/midi midi-seq.mid;
-#X obj 4 523 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 164 531 -loop: sets to loop mode (default no loop), f 53;
-#N canvas 461 102 530 465 read 0;
+#X obj 4 537 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 164 545 -loop: sets to loop mode (default no loop), f 53;
+#N canvas 744 161 530 465 read 0;
 #X obj 289 177 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 124 58 tgl 22 0 empty empty empty 17 7 0 10 -216373 -66577 -1
-0 1;
+1 1;
 #X text 150 60 play/stop;
 #X obj 76 180 notein;
 #X obj 125 217 pack;
@@ -402,6 +402,7 @@ from where it was paused!, f 44;
 #X obj 124 180 else/note.in;
 #X text 315 178 end of sequence;
 #X msg 61 71 speed \$1;
+#X text 265 58 Some basic messages for reading a file, f 20;
 #X connect 1 0 10 0;
 #X connect 3 0 4 0;
 #X connect 3 1 4 1;
@@ -419,17 +420,17 @@ from where it was paused!, f 44;
 #X connect 14 1 4 1;
 #X connect 16 0 10 0;
 #X restore 499 131 pd read;
-#N canvas 600 100 466 592 write 0;
+#N canvas 600 100 466 615 write 0;
 #X text 54 26 You can directly record from raw MIDI data with [midiin]
 using the 'record' message (note you don't need the stop message when
 switching from recording and playing). Then use 'save <symbol>' to
 save to a specific file \, or just 'save' to save to a MIDI file with
 the dialog box., f 63;
 #X msg 198 316 record;
-#X obj 181 402 else/midi;
-#X msg 218 379 save;
+#X obj 181 432 else/midi;
+#X msg 229 402 save;
 #X obj 181 294 else/note.out;
-#X obj 60 519 else/out~;
+#X obj 60 549 else/out~;
 #X obj 78 196 else/keyboard 17 80 3 3 0 0 empty empty;
 #N canvas 421 163 551 357 synth 0;
 #X obj 104 121 else/voices 3 1;
@@ -508,20 +509,21 @@ the dialog box., f 63;
 #X connect 4 0 6 0;
 #X connect 4 1 7 0;
 #X connect 5 0 0 0;
-#X restore 78 485 pd synth;
+#X restore 78 515 pd synth;
 #X obj 131 298 midiin;
-#X obj 181 426 else/note.in;
-#X obj 181 450 pack;
+#X obj 181 456 else/note.in;
+#X obj 181 480 pack;
 #X obj 78 150 notein;
 #X obj 78 171 pack;
-#X obj 181 472 else/insert set;
-#X obj 181 493 s \$0-set;
+#X obj 181 502 else/insert set;
+#X obj 181 523 s \$0-set;
 #X obj 128 171 r \$0-set;
 #X text 54 88 You can record from specialized MIDI objects such as
 [notein] \, [makenote] or [keyboard] - just use the [note.out] object
 to convert the messages to raw MIDI., f 63;
 #X msg 206 336 stop;
 #X msg 213 356 play;
+#X msg 223 380 clear;
 #X connect 1 0 2 0;
 #X connect 2 0 9 0;
 #X connect 3 0 2 0;
@@ -542,6 +544,7 @@ to convert the messages to raw MIDI., f 63;
 #X connect 15 0 6 0;
 #X connect 17 0 2 0;
 #X connect 18 0 2 0;
+#X connect 19 0 2 0;
 #X restore 493 152 pd write;
 #X text 157 283 play -;
 #X text 103 354 speed <float> -;
@@ -553,9 +556,9 @@ to convert the messages to raw MIDI., f 63;
 #X text 202 283 start playing sequence, f 53;
 #X text 202 340 continues recording/playing after being paused, f
 53;
-#N canvas 729 135 547 428 text 0;
-#X msg 104 161 save;
-#X obj 86 319 else/out~;
+#N canvas 729 135 547 409 text 0;
+#X msg 96 145 save;
+#X obj 78 303 else/out~;
 #N canvas 421 163 551 357 synth 0;
 #X obj 104 121 else/voices 3 1;
 #N canvas 667 245 329 286 voice 0;
@@ -633,16 +636,16 @@ to convert the messages to raw MIDI., f 63;
 #X connect 4 0 6 0;
 #X connect 4 1 7 0;
 #X connect 5 0 0 0;
-#X restore 104 285 pd synth;
-#X obj 104 223 else/note.in;
-#X obj 104 247 pack;
-#X obj 74 161 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X restore 96 269 pd synth;
+#X obj 96 207 else/note.in;
+#X obj 96 231 pack;
+#X obj 66 145 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X obj 323 94 text define \$0-midi;
-#X obj 323 67 else/initmess read midi-seq.txt;
-#X obj 104 199 else/midi midi-seq.mid;
-#X msg 329 150 line 0 \, auto;
-#X obj 311 326 else/out~;
+#X obj 315 78 text define \$0-midi;
+#X obj 315 51 else/initmess read midi-seq.txt;
+#X obj 96 183 else/midi midi-seq.mid;
+#X msg 321 134 line 0 \, auto;
+#X obj 303 310 else/out~;
 #N canvas 421 163 551 357 synth 0;
 #X obj 104 121 else/voices 3 1;
 #N canvas 667 245 329 286 voice 0;
@@ -720,13 +723,13 @@ to convert the messages to raw MIDI., f 63;
 #X connect 4 0 6 0;
 #X connect 4 1 7 0;
 #X connect 5 0 0 0;
-#X restore 329 292 pd synth;
-#X obj 329 264 pack;
-#X obj 329 215 else/iterate;
-#X obj 329 240 else/note.in;
-#X obj 329 180 text sequence \$0-midi -w 1;
-#X text 414 149 <= play;
-#X text 58 54 You can import and export to text files \, just use the
+#X restore 321 276 pd synth;
+#X obj 321 248 pack;
+#X obj 321 199 else/iterate;
+#X obj 321 224 else/note.in;
+#X obj 321 164 text sequence \$0-midi -w 1;
+#X text 406 133 <= play;
+#X text 50 38 You can import and export to text files \, just use the
 .txt extension to open and save. The format of the file is compatible
 to the [text sequence] object. Check the example to the right., f
 38;
@@ -753,7 +756,12 @@ to the [text sequence] object. Check the example to the right., f
 , f 53;
 #X text 85 86 [midi] plays/records raw MIDI streams and can save/read
 MIDI files or import/export to txt files., f 55;
-#X text 205 502 a MIDI or text file to be loaded, f 49;
+#X text 205 516 a MIDI or text file to be loaded, f 49;
+#X obj 4 567 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
+#X text 140 575 clicking on the object opens dialog box to open a file
+;
+#X text 151 410 clear -;
+#X text 202 410 clears sequence from the object, f 53;
 #X connect 44 0 52 0;
 #X connect 52 0 47 0;
 #X connect 52 1 4 0;
