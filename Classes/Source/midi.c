@@ -444,12 +444,11 @@ static void midi_start(t_midi *x){
 }
 
 static void midi_stop(t_midi *x){
-    if(x->x_mode == MIDI_PLAYMODE){
+    if(x->x_mode != MIDI_IDLEMODE){
+        if(x->x_mode == MIDI_PLAYMODE || x->x_mode == MIDI_SLAVEMODE)
+            midi_panic(x);
         midi_setmode(x, MIDI_IDLEMODE);
-        midi_panic(x);
     }
-    else if(x->x_mode == MIDI_RECMODE)
-        midi_setmode(x, MIDI_IDLEMODE);
 }
 
 // All delta times are set permanently (they are stored in a file)
