@@ -1,23 +1,5 @@
-/* Copyright (c) 2002-2005 krzYszcz and others.
- * For information on usage and redistribution, and for a DISCLAIMER OF ALL
- * WARRANTIES, see the file, "LICENSE.txt," in this distribution.  */
 
-/* The three uses of the 'file' proxy class are:
-   1. providing `embedding' facility -- storing master object's state
-   in a .pd file,
-   2. encapsulating openpanel/savepanel management,
-   3. extending the gui of Pd with a simple text editor window.
-
-   A master class which needs embedding feature (like coll), passes
-   a nonzero flag to the file setup routine, and a nonzero embedfn
-   function pointer to the file constructor.  If a master needs
-   access to the panels (like collcommon), then it passes nonzero readfn
-   and/or writefn callback pointers to the constructor.  A master which has
-   an associated text editor, AND wants to update object's state after
-   edits, passes a nonzero updatefn callback in a call to the constructor.
-
-   LATER extract the embedding stuff. */
-
+// The 'file' proxy encapsulates openpanel/savepanel management (stolen from cyclone)
 
 #ifdef _WIN32
 #include <io.h>
@@ -187,8 +169,7 @@ badpath:
  superfluous slashes and dots), but not longer.  Both args should be unbashed
  (system-independent), cwd should be absolute.  Returns 0 in case of any
  error (LATER revisit). */
-int ospath_length(char *path, char *cwd){
-    /* one extra byte used internally (guarding slash) */
+int ospath_length(char *path, char *cwd){ // one extra byte used internally (guarding slash)
     return(ospath_doabsolute(path, cwd, 0) + 1);
 }
 
@@ -332,202 +313,16 @@ struct _file{
     t_symbol            *f_currentdir;
     t_symbol            *f_inidir;
     t_symbol            *f_inifile;
-    t_filefn       f_panelfn;
-    t_filefn       f_editorfn;
-    t_embedfn      f_embedfn;
+    t_filefn             f_panelfn;
     t_binbuf            *f_binbuf;
     t_clock             *f_panelclock;
-    t_clock             *f_editorclock;
-    struct _file  *f_savepanel;
-    struct _file  *f_next;
+    struct _file        *f_savepanel;
+    struct _file        *f_next;
 };
 
 static t_class *file_class = 0;
 static t_file *file_proxies;
 static t_symbol *ps__C;
-
-static t_file *file_getproxy(t_pd *master){
-    t_file *f;
-    for(f = file_proxies; f; f = f->f_next)
-        if(f->f_master == master)
-            return(f);
-    return(0);
-}
-
-static void editor_guidefs(void){
-    sys_gui("proc editor_open {name geometry title sendable} {\n");
-    sys_gui(" if {[winfo exists $name]} {\n");
-    sys_gui("  $name.text delete 1.0 end\n");
-    sys_gui(" } else {\n");
-    sys_gui("  toplevel $name\n");
-    sys_gui("  wm title $name $title\n");
-    sys_gui("  wm geometry $name $geometry\n");
-    sys_gui("  if {$sendable} {\n");
-    sys_gui("   wm protocol $name WM_DELETE_WINDOW \\\n");
-    sys_gui("    [concat editor_close $name 1]\n");
-    sys_gui("   bind $name <<Modified>> \"editor_dodirty $name\"\n");
-    sys_gui("  }\n");
-    sys_gui("  text $name.text -relief raised -bd 2 \\\n");
-    sys_gui("   -font -*-courier-medium--normal--12-* \\\n");
-    sys_gui("   -yscrollcommand \"$name.scroll set\" -background lightgrey\n");
-    sys_gui("  scrollbar $name.scroll -command \"$name.text yview\"\n");
-    sys_gui("  pack $name.scroll -side right -fill y\n");
-    sys_gui("  pack $name.text -side left -fill both -expand 1\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
-
-    sys_gui("proc editor_dodirty {name} {\n");
-    sys_gui(" if {[catch {$name.text edit modified} dirty]} {set dirty 1}\n");
-    sys_gui(" set title [wm title $name]\n");
-    sys_gui(" set dt [string equal -length 1 $title \"*\"]\n");
-    sys_gui(" if {$dirty} {\n");
-    sys_gui("  if {$dt == 0} {wm title $name *$title}\n");
-    sys_gui(" } else {\n");
-    sys_gui("  if {$dt} {wm title $name [string range $title 1 end]}\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
-
-    sys_gui("proc editor_setdirty {name flag} {\n");
-    sys_gui(" if {[winfo exists $name]} {\n");
-    sys_gui("  catch {$name.text edit modified $flag}\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
-
-    sys_gui("proc editor_doclose {name} {\n");
-    sys_gui(" destroy $name\n");
-    sys_gui("}\n");
-
-    sys_gui("proc editor_append {name contents} {\n");
-    sys_gui(" if {[winfo exists $name]} {\n");
-    sys_gui("  $name.text insert end $contents\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
-
-    /* FIXME make it more reliable */
-    sys_gui("proc editor_send {name} {\n");
-    sys_gui(" if {[winfo exists $name]} {\n");
-    sys_gui("  pdsend \"miXed$name clear\"\n");
-    sys_gui("  for {set i 1} \\\n");
-    sys_gui("   {[$name.text compare $i.end < end]} \\\n");
-    sys_gui("  	{incr i 1} {\n");
-    sys_gui("   set lin [$name.text get $i.0 $i.end]\n");
-    sys_gui("   if {$lin != \"\"} {\n");
-    /* LATER rethink semi/comma mapping */
-    sys_gui("    regsub -all \\; $lin \"  _semi_ \" tmplin\n");
-    sys_gui("    regsub -all \\, $tmplin \"  _comma_ \" lin\n");
-    sys_gui("    pdsend \"miXed$name addline $lin\"\n");
-    sys_gui("   }\n");
-    sys_gui("  }\n");
-    sys_gui("  pdsend \"miXed$name end\"\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
-
-    sys_gui("proc editor_close {name ask} {\n");
-    sys_gui(" if {[winfo exists $name]} {\n");
-    sys_gui("  if {[catch {$name.text edit modified} dirty]} {set dirty 1}\n");
-    sys_gui("  if {$ask && $dirty} {\n");
-    sys_gui("   set title [wm title $name]\n");
-    sys_gui("   if {[string equal -length 1 $title \"*\"]} {\n");
-    sys_gui("    set title [string range $title 1 end]\n");
-    sys_gui("   }\n");
-    sys_gui("   set answer [tk_messageBox \\-type yesnocancel \\\n");
-    sys_gui("    \\-icon question \\\n");
-    sys_gui("    \\-message [concat Save changes to \\\"$title\\\"?]]\n");
-    sys_gui("   if {$answer == \"yes\"} {editor_send $name}\n");
-    sys_gui("   if {$answer != \"cancel\"} {editor_doclose $name}\n");
-    sys_gui("  } else {editor_doclose $name}\n");
-    sys_gui(" }\n");
-    sys_gui("}\n");
-}
-
-/* null owner defaults to class name, pass "" to supress */
-void editor_open(t_file *f, char *title, char *owner){
-    if(!owner)
-        owner = (char *)(class_getname(*f->f_master));
-    if(!*owner)
-        owner = 0;
-    if(!title){
-        title = owner;
-        owner = 0;
-    }
-    if(owner)
-        sys_vgui("editor_open .%lx %dx%d {%s: %s} %d\n",
-        (unsigned long)f, 600, 340, owner, title, (f->f_editorfn != 0));
-    else
-        sys_vgui("editor_open .%lx %dx%d {%s} %d\n",
-        (unsigned long)f, 600, 340, (title ? title : "Untitled"),
-        (f->f_editorfn != 0));
-}
-
-static void editor_tick(t_file *f){
-    sys_vgui("editor_close .%lx 1\n", (unsigned long)f);
-}
-
-void editor_close(t_file *f, int ask){
-    if(ask && f->f_editorfn)
-	/* hack: deferring modal dialog creation in order to allow for
-	   a message box redraw to happen -- LATER investigate */
-        clock_delay(f->f_editorclock, 0);
-    else
-        sys_vgui("editor_close .%lx 0\n", (unsigned long)f);
-}
-
-void editor_append(t_file *f, char *contents){
-    if(contents){
-        char *ptr;
-        for(ptr = contents; *ptr; ptr++){
-            if(*ptr == '{' || *ptr == '}'){
-                char c = *ptr;
-                *ptr = 0;
-                sys_vgui("editor_append .%lx {%s}\n", (unsigned long)f, contents);
-                sys_vgui("editor_append .%lx \"%c\"\n", (unsigned long)f, c);
-                *ptr = c;
-                contents = ptr + 1;
-            }
-        }
-        if(*contents)
-            sys_vgui("editor_append .%lx {%s}\n", (unsigned long)f, contents);
-    }
-}
-
-void editor_setdirty(t_file *f, int flag){
-    if(f->f_editorfn)
-        sys_vgui("editor_setdirty .%lx %d\n", (unsigned long)f, flag);
-}
-
-static void editor_clear(t_file *f){
-    if(f->f_editorfn){
-        if(f->f_binbuf)
-            binbuf_clear(f->f_binbuf);
-        else
-            f->f_binbuf = binbuf_new();
-    }
-}
-
-static void editor_addline(t_file *f, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    if(f->f_editorfn){
-        int i;
-        t_atom *ap;
-        for(i = 0, ap = av; i < ac; i++, ap++){
-            if(ap->a_type == A_SYMBOL){
-                /* LATER rethink semi/comma mapping */
-                if(!strcmp(ap->a_w.w_symbol->s_name, "_semi_"))
-                    SETSEMI(ap);
-                else if(!strcmp(ap->a_w.w_symbol->s_name, "_comma_"))
-                    SETCOMMA(ap);
-            }
-        }
-        binbuf_add(f->f_binbuf, ac, av);
-    }
-}
-
-static void editor_end(t_file *f){
-    if(f->f_editorfn){
-        (*f->f_editorfn)(f->f_master, 0, binbuf_getnatom(f->f_binbuf), binbuf_getvec(f->f_binbuf));
-	binbuf_clear(f->f_binbuf);
-    }
-}
 
 static void panel_guidefs(void){
     sys_gui("proc panel_open {target inidir} {\n");
@@ -648,40 +443,6 @@ t_symbol *panel_getsavedir(t_file *f){
     return(f->f_savepanel ? f->f_savepanel->f_currentdir : 0);
 }
 
-/* Currently embeddable  classes do not use the 'saveto' method.
-   In order to use it, any embeddable class would have to add a creation
-   method to pd_canvasmaker -- then saving could be done with a 'proper'
-   sequence:  #N <master> <args>; #X <whatever>; ...; #X restore <x> <y>;
-   However, this works only for -lib externals.  So, we choose a sequence:
-   #X obj <x> <y> <master> <args>; #C <whatever>; ...; #C restore;
-   Since the first message in this sequence is a valid creation message
-   on its own, we have to distinguish loading from a .pd file, and other
-   cases (editing). */
-
-static void embed_gc(t_pd *x, t_symbol *s, int expected){
-    t_pd *garbage;
-    int count = 0;
-    while((garbage = pd_findbyclass(s, *x)))
-        pd_unbind(garbage, s), count++;
-    if(count != expected)
-	bug("embed_gc (%d garbage bindings)", count);
-}
-
-static void embed_restore(t_pd *master){
-    embed_gc(master, ps__C, 1);
-}
-
-void embed_save(t_gobj *master, t_binbuf *bb){
-    t_file *f = file_getproxy((t_pd *)master);
-    t_text *t = (t_text *)master;
-    binbuf_addv(bb, "ssii", &s__X, gensym("obj"), (int)t->te_xpix, (int)t->te_ypix);
-    binbuf_addbinbuf(bb, t->te_binbuf);
-    binbuf_addsemi(bb);
-    if(f && f->f_embedfn)
-        (*f->f_embedfn)(f->f_master, bb, ps__C);
-    binbuf_addv(bb, "ss;", ps__C, gensym("restore"));
-}
-
 int file_ismapped(t_file *f){
     return(f->f_canvas->gl_mapped);
 }
@@ -709,10 +470,6 @@ int file_ispasting(t_file *f){
 
 void file_free(t_file *f){
     t_file *prev, *next;
-    editor_close(f, 0);
-    if(f->f_embedfn)
-        /* just in case of missing 'restore' */
-        embed_gc(f->f_master, ps__C, 0);
     if(f->f_savepanel){
         pd_unbind((t_pd *)f->f_savepanel, f->f_savepanel->f_bindname);
         pd_free((t_pd *)f->f_savepanel);
@@ -721,8 +478,6 @@ void file_free(t_file *f){
         pd_unbind((t_pd *)f, f->f_bindname);
     if(f->f_panelclock)
         clock_free(f->f_panelclock);
-    if(f->f_editorclock)
-        clock_free(f->f_editorclock);
     for(prev = 0, next = file_proxies; next; prev = next, next = next->f_next)
         if(next == f)
             break;
@@ -733,8 +488,7 @@ void file_free(t_file *f){
     pd_free((t_pd *)f);
 }
 
-t_file *file_new(t_pd *master, t_embedfn embedfn,
-t_filefn readfn, t_filefn writefn, t_filefn updatefn){
+t_file *file_new(t_pd *master, t_filefn readfn, t_filefn writefn){
     t_file *result = (t_file *)pd_new(file_class);
     result->f_master = master;
     result->f_next = file_proxies;
@@ -743,14 +497,7 @@ t_filefn readfn, t_filefn writefn, t_filefn updatefn){
         bug("file_new: out of context");
         return(result);
     }
-    /* 1. embedding */
-    if((result->f_embedfn = embedfn)){
-        /* just in case of missing 'restore' */
-        embed_gc(master, ps__C, 0);
-        if(file_isloading(result) || file_ispasting(result))
-            pd_bind(master, ps__C);
-    }
-    /* 2. the panels */
+    // the panels
     if(readfn || writefn){
         t_file *f;
         char buf[64];
@@ -773,34 +520,15 @@ t_filefn readfn, t_filefn writefn, t_filefn updatefn){
     }
     else
         result->f_savepanel = 0;
-    /* 3. editor */
-    if((result->f_editorfn = updatefn)){
-        result->f_editorclock = clock_new(result, (t_method)editor_tick);
-        if(!result->f_bindname){
-            char buf[64];
-            sprintf(buf, "miXed.%lx", (unsigned long)result);
-            result->f_bindname = gensym(buf);
-            pd_bind((t_pd *)result, result->f_bindname);
-        }
-    }
     return(result);
 }
 
-void file_setup(t_class *c, int embeddable){
-    if(embeddable){
-        class_setsavefn(c, embed_save);
-        class_addmethod(c, (t_method)embed_restore, gensym("restore"), 0);
-    }
+void file_setup(void){
     if(!file_class){
         ps__C = gensym("#C");
         file_class = class_new(gensym("_file"), 0, 0,sizeof(t_file), CLASS_PD | CLASS_NOINLET, 0);
         class_addsymbol(file_class, panel_symbol);
         class_addmethod(file_class, (t_method)panel_path,gensym("path"), A_SYMBOL, A_DEFSYM, 0);
-        class_addmethod(file_class, (t_method)editor_clear, gensym("clear"), 0);
-        class_addmethod(file_class, (t_method)editor_addline, gensym("addline"), A_GIMME, 0);
-        class_addmethod(file_class, (t_method)editor_end, gensym("end"), 0);
-        /* LATER find a way of ensuring that these are not defined yet... */
-        editor_guidefs();
         panel_guidefs();
     }
 }

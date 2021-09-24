@@ -35,12 +35,7 @@ EXTERN_STRUCT _file;
 #define t_file  struct _file
 
 typedef void (*t_filefn)(t_pd *, t_symbol *, int, t_atom *);
-typedef void (*t_embedfn)(t_pd *, t_binbuf *, t_symbol *);
 
-void editor_open(t_file *f, char *title, char *owner);
-void editor_close(t_file *f, int ask);
-void editor_append(t_file *f, char *contents);
-void editor_setdirty(t_file *f, int flag);
 void panel_open(t_file *f, t_symbol *inidir);
 void panel_setopendir(t_file *f, t_symbol *dir);
 t_symbol *panel_getopendir(t_file *f);
@@ -51,8 +46,7 @@ int file_ismapped(t_file *f);
 int file_isloading(t_file *f);
 int file_ispasting(t_file *f);
 void file_free(t_file *f);
-t_file *file_new(t_pd *master, t_embedfn embedfn, t_filefn readfn, t_filefn writefn,
-    t_filefn updatefn);
-void file_setup(t_class *c, int embeddable);
+t_file *file_new(t_pd *master, t_filefn readfn, t_filefn writefn);
+void file_setup(void);
 
 #endif

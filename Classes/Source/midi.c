@@ -40,7 +40,8 @@ typedef struct _midi{
     t_object       x_ob;
     t_canvas      *x_canvas;
     t_symbol      *x_defname;
-    t_file  *x_filehandle;
+    t_file        *x_filehandle;
+    int            x_loop;
     int            x_mode;
     int            x_playhead;
     t_float        x_delay;
@@ -379,7 +380,7 @@ static void midi_startplayback(t_midi *x, int modechanged){
     x->x_playhead = 0;
     x->x_nextscoretime = 0.;
     
-    /* CHECKED bang not sent if sequence is empty */
+    // CHECKED bang not sent if sequence is empty
     if(x->x_nevents){
         if(modechanged){
             x->x_nextscoretime = x->x_sequence->e_delta;
@@ -387,7 +388,7 @@ static void midi_startplayback(t_midi *x, int modechanged){
            a start message (even for the first delta <= 0), LATER rethink */
             x->x_clockdelay = x->x_sequence->e_delta * x->x_newtimescale;
         }
-        else {  /* CHECKED timescale change */
+        else{  // CHECKED timescale change
             if(MIDI_ISRUNNING(x))
                 x->x_clockdelay -= clock_gettimesince(x->x_prevtime);
             x->x_clockdelay *= x->x_newtimescale / x->x_timescale;
@@ -502,19 +503,19 @@ static void midi_record(t_midi *x){ // CHECKED 'record' stops playback, resets r
     midi_setmode(x, MIDI_RECMODE);
 }
 
-/*static void midi_append(t_midi *x){
-    // CHECKED 'append' stops playback
-    // CHECKED if in MIDI_RECMODE, 'append' resets the timer
-    midi_setmode(x, MIDI_RECMODE);
-}*/
-
-static void midi_start(t_midi *x, t_floatarg f){
-    if(f < -MIDI_STARTEPSILON) // FIXME
-        midi_setmode(x, MIDI_SLAVEMODE); // ticks
-    else{
-        midi_settimescale(x, (f > MIDI_STARTEPSILON ? 1024. / f : 1.));
-        midi_setmode(x, MIDI_PLAYMODE);  // CHECKED 'start' stops recording
+static void midi_play(t_midi *x, t_symbol * s, int ac, t_atom *av){
+    s = NULL;
+    if(ac){
+        t_float tempo = atom_getfloatarg(0, ac, av);
+        if(tempo < -MIDI_STARTEPSILON) // FIXME
+            midi_setmode(x, MIDI_SLAVEMODE); // ticks
+        else{
+            midi_settimescale(x, (tempo > MIDI_STARTEPSILON ? (100. / tempo) : 1.));
+            midi_setmode(x, MIDI_PLAYMODE);  // CHECKED 'start' stops recording
+        }
     }
+    else
+        midi_setmode(x, MIDI_PLAYMODE);
 }
 
 static void midi_stop(t_midi *x){
@@ -554,6 +555,58 @@ static void midi_continue(t_midi *x){
         clock_delay(x->x_clock, x->x_clockdelay);
         x->x_prevtime = clock_getlogicaltime();
     }
+    else if(x->x_mode == MIDI_RECMODE && MIDI_ISPAUSED(x))
+        midi_setmode(x, MIDI_RECMODE); // append
+}
+
+static void midi_float(t_midi *x, t_float f){
+    if(x->x_mode == MIDI_RECMODE){
+        // CHECKED noninteger and out of range silently truncated
+        unsigned char c = (unsigned char)f;
+        if(c < 128 && x->x_status)
+            midi_addbyte(x, c, 0);
+        else if(c != 254){  // CHECKED active sensing ignored
+            if(x->x_status == 240){
+                if(c == 247)
+                    midi_endofsysex(x);
+                else{
+                    // CHECKED rt bytes alike
+                    post("[midi]: unterminated sysex");  // CHECKED
+                    midi_endofsysex(x);  // CHECKED 247 added implicitly
+                    midi_checkstatus(x, c);
+                }
+            }
+            else if(c != 247)
+                midi_checkstatus(x, c);
+        }
+//        midi_update(x);
+    }
+    else if(f != 0){
+//        midi_settimescale(x, 1);
+        midi_setmode(x, MIDI_PLAYMODE);
+    }
+    else
+        midi_stop(x);
+}
+
+static void midi_loop(t_midi *x, t_floatarg f){
+    x->x_loop = (f != 0);
+}
+
+static void midi_dump(t_midi *x){
+//    midi_settimescale(x, 1e20);
+//    midi_play(x, NULL, 0, NULL);
+    t_midievent *ep = x->x_sequence;
+    int nevents = x->x_nevents;
+    while(nevents--){  // LATER rethink sysex continuation
+        unsigned char *bp = ep->e_bytes;
+        outlet_float(((t_object *)x)->ob_outlet, (float)*bp);
+        int i;
+        for(i = 0, bp++; i < 3 && *bp != MIDI_EOM; i++, bp++)
+            outlet_float(((t_object *)x)->ob_outlet, (float)*bp);
+        ep++;
+    }
+    outlet_bang(x->x_bangout);
 }
 
 static void midi_clocktick(t_midi *x){
@@ -601,41 +654,9 @@ static void midi_clocktick(t_midi *x){
         else{ // CHECKED bang sent immediately _after_ last byte
             midi_setmode(x, MIDI_IDLEMODE);
             outlet_bang(x->x_bangout);  // LATER think about reentrancy
-/*            if(x->x_loop)
-                midi_float(x, 1);*/
+            if(x->x_loop)
+                midi_float(x, 1);
         }
-    }
-}
-
-static void midi_float(t_midi *x, t_float f){
-    if(x->x_mode == MIDI_RECMODE){
-        // CHECKED noninteger and out of range silently truncated
-        unsigned char c = (unsigned char)f;
-        if(c < 128 && x->x_status)
-            midi_addbyte(x, c, 0);
-        else if(c != 254){  // CHECKED active sensing ignored
-            if(x->x_status == 240){
-                if(c == 247)
-                    midi_endofsysex(x);
-                else{
-                    // CHECKED rt bytes alike
-                    post("[midi]: unterminated sysex");  // CHECKED
-                    midi_endofsysex(x);  // CHECKED 247 added implicitly
-                    midi_checkstatus(x, c);
-                }
-            }
-            else if(c != 247)
-                midi_checkstatus(x, c);
-        }
-//        midi_update(x);
-    }
-    else if(f != 0){
-        midi_settimescale(x, 1);
-        midi_setmode(x, MIDI_PLAYMODE);
-    }
-    else{ // stop
-        midi_pause(x);
-        midi_panic(x);
     }
 }
 
@@ -660,11 +681,11 @@ static void midi_float(t_midi *x, t_float f){
     sys_gui(" }\n");
 }*/
 
-static void midi_goto(t_midi *x, t_floatarg f1, t_floatarg f2){ // takes sec / ms
+static void midi_goto(t_midi *x, t_floatarg f){ // takes time in seconds
      if(x->x_nevents){
          t_midievent *ev;
          int ndx, nevents = x->x_nevents;
-         double ms = (double)f1 * 1000. + f2, sum;
+         double ms = (double)f * 1000., sum;
          if(ms <= MIDI_TICKEPSILON)
              ms = 0.;
          if(x->x_mode != MIDI_PLAYMODE){
@@ -691,11 +712,20 @@ static void midi_goto(t_midi *x, t_floatarg f1, t_floatarg f2){ // takes sec / m
      }
  }
  
- static void midi_tempo(t_midi *x, t_floatarg f){
+ static void midi_speed(t_midi *x, t_floatarg f){
      if(f > MIDI_TEMPOEPSILON){
-         midi_settimescale(x, 1. / f);
-         if(x->x_mode == MIDI_PLAYMODE)
-             midi_startplayback(x, 0);
+         midi_settimescale(x, 100./f);
+         if(MIDI_ISRUNNING(x)){
+             clock_unset(x->x_clock);
+             x->x_nextscoretime = 0.;
+             x->x_clockdelay -= clock_gettimesince(x->x_prevtime);
+             x->x_clockdelay *= x->x_newtimescale / x->x_timescale;
+             if(x->x_clockdelay < 0.)
+                 x->x_clockdelay = 0.;
+             x->x_timescale = x->x_newtimescale;
+             clock_delay(x->x_clock, x->x_clockdelay);
+             x->x_prevtime = clock_getlogicaltime();
+         }
      }
      // FIXME else pause, LATER reverse playback if(f < -MIDI_TEMPOEPSILON)
  }
@@ -813,6 +843,10 @@ static int midi_mfread(t_midi *x, char *path){
 mfreadfailed:
     mifiread_free(mr);
     return(result);
+}
+
+static void midi_click(t_midi *x){
+    panel_open(x->x_filehandle, 0);
 }
 
 static int midi_mfwrite(t_midi *x, char *path){
@@ -1007,11 +1041,6 @@ static void midi_write(t_midi *x, t_symbol *s){
         panel_save(x->x_filehandle, canvas_getdir(x->x_canvas), x->x_defname); /* always start in canvas dir */
 }
 
-static void midi_editorhook(t_pd *z, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    midi_fromatoms((t_midi *)z, ac, av);
-}
-
 static void midi_free(t_midi *x){
     if(x->x_clock)
         clock_free(x->x_clock);
@@ -1025,31 +1054,39 @@ static void midi_free(t_midi *x){
         freebytes(x->x_tempomap, x->x_tempomapsize * sizeof(*x->x_tempomap));
 }
 
-static void *midi_new(t_symbol *s){
+static void *midi_new(t_symbol * s, int ac, t_atom *av){
     t_midi *x = (t_midi *)pd_new(midi_class);
     x->x_canvas = canvas_getcurrent();
-    x->x_filehandle = file_new((t_pd *)x, 0, midi_readhook, midi_writehook, midi_editorhook);
+    x->x_filehandle = file_new((t_pd *)x, midi_readhook, midi_writehook);
     x->x_timescale = 1.;
     x->x_newtimescale = 1.;
     x->x_prevtime = 0.;
     x->x_slaveprevtime = 0.;
     x->x_midisize = MIDI_INISEQSIZE;
     x->x_nevents = 0;
-    x->x_delay = x->x_event_delay = 0;
+    x->x_loop = 0;
     x->x_sequence = x->x_midiini;
     x->x_tempomapsize = MIDI_INITEMPOMAPSIZE;
     x->x_ntempi = 0;
     x->x_tempomap = x->x_tempomapini;
-    outlet_new((t_object *)x, &s_anything);
-    x->x_bangout = outlet_new((t_object *)x, &s_bang);
-    if(s && s != &s_){
-        x->x_defname = s;
-        midi_doread(x, s);
-    }
-    else
-        x->x_defname = &s_;
+    x->x_defname = &s_;
+    while(ac){
+        if(av->a_type == A_SYMBOL){
+            s = atom_getsymbolarg(0, ac, av);
+            if(s == gensym("-loop")){
+                x->x_loop = 1;
+                ac--, av++;
+            }
+            else{
+                midi_doread(x, x->x_defname = s);
+                ac--, av++;
+            }
+        }
+    };
     x->x_clock = clock_new(x, (t_method)midi_clocktick);
     x->x_slaveclock = clock_new(x, (t_method)midi_slaveclocktick);
+    outlet_new((t_object *)x, &s_anything);
+    x->x_bangout = outlet_new((t_object *)x, &s_bang);
 // panic
     x->x_note_status = 0;
     x->x_pitch = PANIC_VOID;
@@ -1059,21 +1096,22 @@ static void *midi_new(t_symbol *s){
 
 void midi_setup(void){
     midi_class = class_new(gensym("midi"), (t_newmethod)midi_new,
-        (t_method)midi_free, sizeof(t_midi), 0, A_DEFSYM, 0);
+        (t_method)midi_free, sizeof(t_midi), 0, A_GIMME, 0);
     class_addbang(midi_class, midi_tick);
     class_addfloat(midi_class, midi_float);
     class_addmethod(midi_class, (t_method)midi_clear, gensym("clear"), 0);
     class_addmethod(midi_class, (t_method)midi_record, gensym("record"), 0);
-//    class_addmethod(midi_class, (t_method)midi_append, gensym("append"), 0);
-    class_addmethod(midi_class, (t_method)midi_start, gensym("play"), A_DEFFLOAT, 0);
+    class_addmethod(midi_class, (t_method)midi_play, gensym("play"), A_DEFFLOAT, 0);
+    class_addmethod(midi_class, (t_method)midi_loop, gensym("loop"), A_DEFFLOAT, 0);
     class_addmethod(midi_class, (t_method)midi_stop, gensym("stop"), 0);
     class_addmethod(midi_class, (t_method)midi_read, gensym("open"), A_DEFSYM, 0);
     class_addmethod(midi_class, (t_method)midi_write, gensym("save"), A_DEFSYM, 0);
     class_addmethod(midi_class, (t_method)midi_panic, gensym("panic"), 0);
+    class_addmethod(midi_class, (t_method)midi_dump, gensym("dump"), 0);
     class_addmethod(midi_class, (t_method)midi_pause, gensym("pause"), 0);
     class_addmethod(midi_class, (t_method)midi_continue, gensym("continue"), 0);
-    class_addmethod(midi_class, (t_method)midi_read, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(midi_class, (t_method)midi_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(midi_class, (t_method)midi_goto, gensym("goto"), A_DEFFLOAT, A_DEFFLOAT, 0);
-    class_addmethod(midi_class, (t_method)midi_tempo, gensym("tempo"), A_FLOAT, 0);;
-    file_setup(midi_class, 0);
+    class_addmethod(midi_class, (t_method)midi_speed, gensym("speed"), A_FLOAT, 0);;
+    file_setup();
 }
