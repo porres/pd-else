@@ -1,40 +1,37 @@
-#N canvas 552 65 561 584 10;
-#X obj 4 214 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#N canvas 561 47 562 577 10;
+#X obj 4 220 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 451 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 4 445 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 500 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 494 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 99 458 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 87 452 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 314 181 bng 16 250 50 0 empty empty empty 0 -6 0 10 -228856
+#X obj 314 190 bng 16 250 50 0 empty empty empty 0 -6 0 10 -228856
 -1 -1;
-#X obj 99 479 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 87 473 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 4 558 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 552 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 164 248 bang;
-#X text 158 222 float;
-#X obj 99 221 cnv 17 3 225 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 156 254 bang;
+#X text 150 228 float;
+#X obj 87 226 cnv 17 3 212 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 210 481 sent at the end of a sequence (useful for looping)
+#X text 203 474 sent at the end of a sequence (useful for looping)
 , f 53;
-#X text 160 459 float -;
-#X text 166 480 bang -;
-#X text 138 508 1) symbol -;
-#X text 335 182 <= when finished;
-#X text 111 309 start <float> -;
-#X text 153 294 record -;
-#X text 165 376 stop -;
-#X text 210 279 saves to a MIDI file (no symbol opens a dialog box)
+#X text 151 453 float -;
+#X text 157 474 bang -;
+#X text 127 502 1) symbol -;
+#X text 335 191 <= when finished;
+#X text 145 268 record -;
+#X text 157 312 stop -;
+#X text 202 425 saves to a MIDI file (no symbol opens a dialog box)
 , f 53;
-#X text 210 508 a MIDI file to be loaded, f 53;
-#X text 159 390 pause -;
-#X text 210 376 stops recording/playing and goes back to start, f
+#X text 151 326 pause -;
+#X text 202 312 stops recording/playing and goes back to start, f
 53;
-#X text 210 390 pauses recording/playing, f 53;
-#X text 141 404 continue -;
-#X text 210 404 continues after a pause message was given, f 53;
+#X text 202 326 pauses recording/playing, f 53;
+#X text 133 340 continue -;
 #X obj 4 2 cnv 15 301 42 empty empty midi 20 20 2 37 -233017 -1 0;
 #X obj 307 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
@@ -60,24 +57,20 @@
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 306 2 graph;
 #X obj 162 39 cnv 4 4 4 empty empty files 0 28 2 18 -233017 -1 0;
-#X text 111 263 open <symbol> -;
-#X text 111 279 save <symbol> -;
-#X text 51 152 click to open file =>;
-#X text 198 248 - external clock tick, f 55;
-#X text 210 264 opens a MIDI file (no symbol opens a dialog box),
+#X text 103 410 open <symbol> -;
+#X text 103 425 save <symbol> -;
+#X text 51 161 click to open file =>;
+#X text 190 254 - external clock tick, f 55;
+#X text 202 411 opens a MIDI file (no symbol opens a dialog box),
 f 53;
-#X text 210 294 starts recording raw MIDI input, f 53;
-#X text 210 459 raw MIDI data stream from a MIDI file, f 53;
-#X text 88 85 [midi] plays/records raw MIDI streams and can save/read
-MIDI files., f 55;
-#X text 210 309 start sequence at a tempo ratio - default '1' (normal
-tempo) and negative values expects external clock, f 53;
-#X text 159 432 panic -;
-#X text 210 432 flushes hanging notes, f 53;
-#X obj 185 121 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+#X text 202 268 starts recording raw MIDI input, f 53;
+#X text 203 453 raw MIDI data stream from a MIDI file, f 53;
+#X text 151 396 panic -;
+#X text 202 396 flushes hanging notes, f 53;
+#X obj 185 130 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
-#X text 208 122 Play/stop;
-#N canvas 736 69 755 607 more 0;
+#X text 208 131 Play/stop;
+#N canvas 823 134 613 537 more 0;
 #N canvas 791 23 364 324 synth 0;
 #X obj 109 63 inlet;
 #X text 85 21 3 voice polyphonic synthesizer;
@@ -157,38 +150,14 @@ tempo) and negative values expects external clock, f 53;
 #X connect 8 1 2 1;
 #X connect 9 0 6 0;
 #X connect 9 1 7 0;
-#X restore 183 494 pd synth;
-#X obj 206 379 else/clock 120;
-#X text 142 284 play with clock;
-#X msg 134 354 start \$1;
-#X msg 116 285 -1;
-#X msg 134 306 50;
-#X msg 146 328 200;
-#X text 160 305 play twice slower;
-#X text 172 327 play twice faster;
-#X text 29 53 The 'start' message starts reading the loaded sequence
-and also allows you to control the playback speed. A float after the
-'start' message sets the speed percentage. The normal speed is set
-as 'start 100' \, so 'start 50' is half the tempo (reads two times
-slower) \, 'start 200' is twice the tempo (two times faster) and so
-on. If you send it just "start" \, it plays at the original speed (
-same as 'start 100').;
-#X text 29 135 The 'start' message only sets the speed once (at the
-start of the sequence) - and every time we send the start message \,
-it starts playing from the start!;
-#X text 29 173 When you send it "start -1" or any negative value \,
-it expects a clock input \, such as from [clock] \, so you can use
-it to vary the playback tempo. This also allows you to synchronize
-with an external clock source device. A clock message is 24 clock ticks
-per quarter note., f 60;
-#X obj 206 356 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 248 355 BPM;
-#X obj 636 124 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X msg 555 44 pause;
-#X msg 571 67 continue;
-#X obj 507 215 else/out~;
+#X restore 128 402 pd synth;
+#X obj 127 287 else/clock 120;
+#X obj 127 264 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+-228856 -1 -1 160 256;
+#X text 169 263 BPM;
+#X msg 414 31 pause;
+#X msg 430 54 continue;
+#X obj 366 199 else/out~;
 #N canvas 791 23 278 218 synth 0;
 #X obj 80 59 inlet;
 #N canvas 667 245 370 323 synth 0;
@@ -269,94 +238,87 @@ per quarter note., f 60;
 #X connect 5 2 7 0;
 #X connect 6 0 2 0;
 #X connect 7 0 2 0;
-#X restore 507 178 pd synth;
-#X msg 507 43 start;
-#X msg 468 43 stop;
-#X obj 510 416 else/sysrt.in;
-#X msg 525 479 start -1;
-#X msg 671 479 stop;
-#X msg 596 479 continue;
-#X obj 510 371 midirealtimein;
-#X text 505 307 Using MIDI real time messages to control [midi], f
+#X restore 366 165 pd synth;
+#X msg 327 30 stop;
+#X obj 358 345 else/sysrt.in;
+#X msg 519 408 stop;
+#X msg 444 408 continue;
+#X obj 358 300 midirealtimein;
+#X text 469 310 Using MIDI real time messages to control [midi], f
 16;
-#X text 29 14 A stop message also flushes hanging note on messages.
-On the other hand \, a "pause" message does not flush anything. The
-continue message keeps playing from where it stopped!;
-#X obj 183 440 else/midi midi-seq.mid;
-#X obj 507 98 else/midi midi-seq.mid;
-#X obj 510 524 else/midi midi-seq.mid;
-#X obj 507 144 else/note.in;
-#X obj 164 526 else/out~;
-#X msg 232 408 dump;
-#X obj 197 470 print MIDI;
-#X text 29 235 Finally \, the dump message outputs all the data stream
-very very fast., f 60;
-#X text 659 127 loop;
-#X connect 0 0 32 0;
-#X connect 0 1 32 1;
-#X connect 1 0 28 0;
-#X connect 3 0 28 0;
-#X connect 4 0 3 0;
-#X connect 5 0 3 0;
-#X connect 6 0 3 0;
-#X connect 12 0 1 0;
-#X connect 14 0 19 0;
-#X connect 15 0 29 0;
-#X connect 16 0 29 0;
-#X connect 18 0 17 0;
-#X connect 19 0 29 0;
-#X connect 20 0 29 0;
-#X connect 21 0 30 0;
-#X connect 21 1 22 0;
-#X connect 21 2 24 0;
-#X connect 21 3 23 0;
-#X connect 22 0 30 0;
-#X connect 23 0 30 0;
-#X connect 24 0 30 0;
-#X connect 25 0 21 0;
-#X connect 28 0 0 0;
-#X connect 28 0 34 0;
-#X connect 29 0 31 0;
-#X connect 29 1 14 0;
-#X connect 31 0 18 0;
-#X connect 31 1 18 1;
-#X connect 33 0 28 0;
-#X restore 500 179 pd more;
-#X obj 185 181 print midi;
-#X text 198 222 -;
-#X text 210 222 start <1> \, stop <0> (when not in record mode) or
-raw MIDI data stream to be recorded, f 53;
-#X text 165 362 dump -;
-#X text 210 362 outputs the MIDI data stream very very fast., f 53
-;
-#X text 117 348 loop <float> -;
-#X text 210 348 non zero sets to loop mode, f 53;
-#X obj 185 152 else/midi midi-seq.mid;
-#X obj 4 529 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 158 537 -loop: sets to loop mode (default no loop), f 53;
-#X text 117 418 goto <float> -;
-#X text 210 418 goes to a given point in seconds in the sequence,
-f 53;
-#X text 111 334 tempo <float> -;
-#X text 210 334 sets a new tempo speed, f 53;
-#N canvas 600 100 609 537 read 0;
-#X obj 289 208 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 366 85 else/midi midi-seq.mid;
+#X obj 358 453 else/midi midi-seq.mid;
+#X obj 366 131 else/note.in;
+#X obj 109 434 else/out~;
+#X msg 153 316 dump;
+#X msg 366 30 play;
+#X msg 373 408 start;
+#X msg 81 289 start;
+#X msg 44 289 stop;
+#X text 39 194 Finally \, the dump message outputs all the data at
+once., f 44;
+#X text 39 122 The "start" message sets to 'slave' mode and expects
+an external clock input \, such as from [clock]. This allows you to
+synchronize with an external clock source device. The standard is 24
+clock ticks per quarter note., f 44;
+#X text 39 58 A stop message also flushes hanging note on messages
+\, but a "pause" message doesn't. The continue message keeps playing
+from where it was paused!, f 44;
+#X obj 140 376 print midi;
+#X obj 128 347 else/midi -loop midi-seq.mid;
+#X obj 293 378 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 282 132 also when not playing;
+#X connect 0 0 17 0;
+#X connect 0 1 17 1;
+#X connect 1 0 27 0;
+#X connect 2 0 1 0;
+#X connect 4 0 14 0;
+#X connect 5 0 14 0;
+#X connect 7 0 6 0;
+#X connect 8 0 14 0;
+#X connect 9 0 15 0;
+#X connect 9 1 20 0;
+#X connect 9 2 11 0;
+#X connect 9 3 10 0;
+#X connect 10 0 15 0;
+#X connect 11 0 15 0;
+#X connect 12 0 9 0;
+#X connect 14 0 16 0;
+#X connect 16 0 7 0;
+#X connect 16 1 7 1;
+#X connect 18 0 27 0;
+#X connect 19 0 14 0;
+#X connect 20 0 15 0;
+#X connect 21 0 27 0;
+#X connect 22 0 27 0;
+#X connect 27 0 0 0;
+#X connect 27 0 26 0;
+#X connect 27 1 28 0;
+#X restore 499 193 pd more;
+#X obj 185 190 print midi;
+#X text 190 228 -;
+#X text 157 382 dump -;
+#X text 109 368 loop <float> -;
+#X text 202 368 non zero sets to loop mode, f 53;
+#X obj 185 161 else/midi midi-seq.mid;
+#X obj 4 523 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 164 531 -loop: sets to loop mode (default no loop), f 53;
+#N canvas 461 102 530 465 read 0;
+#X obj 289 177 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
 #X obj 124 58 tgl 22 0 empty empty empty 17 7 0 10 -216373 -66577 -1
 0 1;
 #X text 150 60 play/stop;
-#X obj 76 228 notein;
-#X obj 125 265 pack;
-#X obj 108 443 else/out~;
-#X obj 125 289 else/keyboard 17 80 3 3 0 0 empty empty;
+#X obj 76 180 notein;
+#X obj 125 217 pack;
+#X obj 108 379 else/out~;
+#X obj 125 241 else/keyboard 17 80 3 3 0 0 empty empty;
 #X msg 144 114 loop \$1;
 #X obj 144 92 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 166 91 loop mode;
-#X obj 124 177 else/midi -loop midi-seq.mid;
-#X msg 61 72 tempo \$1;
-#X obj 64 32 hsl 128 15 0.5 2 0 0 empty empty empty -2 -8 0 10 -228856
+#X obj 124 146 else/midi -loop midi-seq.mid;
+#X obj 64 32 hsl 128 15 1 200 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
 #X floatatom 61 52 5 0 0 0 - - -;
 #N canvas 421 163 486 341 synth 0;
@@ -436,40 +398,39 @@ f 53;
 #X connect 4 0 6 0;
 #X connect 4 1 7 0;
 #X connect 5 0 0 0;
-#X restore 125 399 pd synth;
-#X obj 124 228 else/note.in;
-#X msg 224 132 goto 2.5;
-#X text 315 209 end of sequence;
-#X connect 2 0 11 0;
-#X connect 4 0 5 0;
-#X connect 4 1 5 1;
-#X connect 5 0 7 0;
-#X connect 7 0 15 0;
-#X connect 8 0 11 0;
-#X connect 9 0 8 0;
-#X connect 11 0 16 0;
-#X connect 11 1 0 0;
-#X connect 12 0 11 0;
-#X connect 13 0 14 0;
-#X connect 14 0 12 0;
-#X connect 15 0 6 0;
-#X connect 15 1 6 1;
-#X connect 16 0 5 0;
-#X connect 16 1 5 1;
-#X connect 17 0 11 0;
-#X restore 497 137 pd read;
-#N canvas 600 100 527 622 write 0;
-#X text 79 30 You can directly record from raw MIDI data with [midiin]
+#X restore 125 341 pd synth;
+#X obj 124 180 else/note.in;
+#X text 315 178 end of sequence;
+#X msg 61 71 speed \$1;
+#X connect 1 0 10 0;
+#X connect 3 0 4 0;
+#X connect 3 1 4 1;
+#X connect 4 0 6 0;
+#X connect 6 0 13 0;
+#X connect 7 0 10 0;
+#X connect 8 0 7 0;
+#X connect 10 0 14 0;
+#X connect 10 1 0 0;
+#X connect 11 0 12 0;
+#X connect 12 0 16 0;
+#X connect 13 0 5 0;
+#X connect 13 1 5 1;
+#X connect 14 0 4 0;
+#X connect 14 1 4 1;
+#X connect 16 0 10 0;
+#X restore 499 131 pd read;
+#N canvas 600 100 466 592 write 0;
+#X text 54 26 You can directly record from raw MIDI data with [midiin]
 using the 'record' message (note you don't need the stop message when
 switching from recording and playing). Then use 'save <symbol>' to
 save to a specific file \, or just 'save' to save to a MIDI file with
-the dialog box., f 56;
-#X msg 219 362 record;
-#X obj 181 427 else/midi;
-#X msg 229 385 save;
-#X obj 180 315 else/note.out;
-#X obj 61 510 else/out~;
-#X obj 78 207 else/keyboard 17 80 3 3 0 0 empty empty;
+the dialog box., f 63;
+#X msg 198 316 record;
+#X obj 181 402 else/midi;
+#X msg 218 379 save;
+#X obj 181 294 else/note.out;
+#X obj 60 519 else/out~;
+#X obj 78 196 else/keyboard 17 80 3 3 0 0 empty empty;
 #N canvas 421 163 551 357 synth 0;
 #X obj 104 121 else/voices 3 1;
 #N canvas 667 245 329 286 voice 0;
@@ -547,18 +508,22 @@ the dialog box., f 56;
 #X connect 4 0 6 0;
 #X connect 4 1 7 0;
 #X connect 5 0 0 0;
-#X restore 78 466 pd synth;
-#X obj 202 338 midiin;
-#X text 80 96 You can record from specialized MIDI objects such as
-[notein] or [makenote] using the [note.out] object to convert the messages
-to raw MIDI., f 56;
-#X obj 181 463 else/note.in;
-#X obj 181 491 pack;
-#X obj 78 161 notein;
-#X obj 78 182 pack;
+#X restore 78 485 pd synth;
+#X obj 131 298 midiin;
+#X obj 181 426 else/note.in;
+#X obj 181 450 pack;
+#X obj 78 150 notein;
+#X obj 78 171 pack;
+#X obj 181 472 else/insert set;
+#X obj 181 493 s \$0-set;
+#X obj 128 171 r \$0-set;
+#X text 54 88 You can record from specialized MIDI objects such as
+[notein] \, [makenote] or [keyboard] - just use the [note.out] object
+to convert the messages to raw MIDI., f 63;
+#X msg 206 336 stop;
+#X msg 213 356 play;
 #X connect 1 0 2 0;
-#X connect 2 0 10 0;
-#X connect 2 1 10 1;
+#X connect 2 0 9 0;
 #X connect 3 0 2 0;
 #X connect 4 0 2 0;
 #X connect 6 0 4 0;
@@ -566,13 +531,229 @@ to raw MIDI., f 56;
 #X connect 7 0 5 0;
 #X connect 7 1 5 1;
 #X connect 8 0 2 0;
-#X connect 10 0 11 0;
-#X connect 10 1 11 1;
-#X connect 11 0 6 0;
-#X connect 12 0 13 0;
-#X connect 12 1 13 1;
-#X connect 13 0 6 0;
-#X restore 493 158 pd write;
-#X connect 49 0 59 0;
-#X connect 59 0 52 0;
-#X connect 59 1 4 0;
+#X connect 9 0 10 0;
+#X connect 9 1 10 1;
+#X connect 10 0 13 0;
+#X connect 10 0 7 0;
+#X connect 11 0 12 0;
+#X connect 11 1 12 1;
+#X connect 12 0 6 0;
+#X connect 13 0 14 0;
+#X connect 15 0 6 0;
+#X connect 17 0 2 0;
+#X connect 18 0 2 0;
+#X restore 493 152 pd write;
+#X text 157 283 play -;
+#X text 103 354 speed <float> -;
+#X text 202 354 sets a reading speed in perccentage of original, f
+53;
+#X text 202 382 outputs the MIDI data stream at once, f 53;
+#X text 202 228 raw MIDI data to record. when not recording: play <1>
+\, stop <0>, f 54;
+#X text 202 283 start playing sequence, f 53;
+#X text 202 340 continues recording/playing after being paused, f
+53;
+#N canvas 729 135 547 428 text 0;
+#X msg 104 161 save;
+#X obj 86 319 else/out~;
+#N canvas 421 163 551 357 synth 0;
+#X obj 104 121 else/voices 3 1;
+#N canvas 667 245 329 286 voice 0;
+#X obj 184 92 / 127;
+#X obj 169 168 *~;
+#X obj 79 95 mtof;
+#X obj 79 24 inlet;
+#X obj 169 237 outlet~;
+#X obj 79 63 unpack float float;
+#X obj 169 200 /~ 3;
+#X obj 79 129 else/bl.saw~;
+#X obj 184 127 else/glide~ 50;
+#X connect 0 0 8 0;
+#X connect 1 0 6 0;
+#X connect 2 0 7 0;
+#X connect 3 0 5 0;
+#X connect 5 0 2 0;
+#X connect 5 1 0 0;
+#X connect 6 0 4 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 1;
+#X restore 74 163 pd voice;
+#N canvas 667 245 329 286 voice 0;
+#X obj 184 92 / 127;
+#X obj 169 168 *~;
+#X obj 79 95 mtof;
+#X obj 79 24 inlet;
+#X obj 169 237 outlet~;
+#X obj 79 63 unpack float float;
+#X obj 169 200 /~ 3;
+#X obj 79 129 else/bl.saw~;
+#X obj 184 127 else/glide~ 50;
+#X connect 0 0 8 0;
+#X connect 1 0 6 0;
+#X connect 2 0 7 0;
+#X connect 3 0 5 0;
+#X connect 5 0 2 0;
+#X connect 5 1 0 0;
+#X connect 6 0 4 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 1;
+#X restore 133 163 pd voice;
+#N canvas 667 245 329 286 voice 0;
+#X obj 184 92 / 127;
+#X obj 169 168 *~;
+#X obj 79 95 mtof;
+#X obj 79 24 inlet;
+#X obj 169 237 outlet~;
+#X obj 79 63 unpack float float;
+#X obj 169 200 /~ 3;
+#X obj 79 129 else/bl.saw~;
+#X obj 184 127 else/glide~ 50;
+#X connect 0 0 8 0;
+#X connect 1 0 6 0;
+#X connect 2 0 7 0;
+#X connect 3 0 5 0;
+#X connect 5 0 2 0;
+#X connect 5 1 0 0;
+#X connect 6 0 4 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 1;
+#X restore 193 163 pd voice;
+#X obj 133 202 else/plate.rev~ 50 0.6 0.25 0.8 0.8, f 18;
+#X obj 104 58 inlet;
+#X obj 133 264 outlet~;
+#X obj 238 266 outlet~;
+#X text 289 150 synthesizer;
+#X text 257 136 <= 3 voice polyphonic;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 0 2 3 0;
+#X connect 1 0 4 0;
+#X connect 2 0 4 0;
+#X connect 3 0 4 0;
+#X connect 4 0 6 0;
+#X connect 4 1 7 0;
+#X connect 5 0 0 0;
+#X restore 104 285 pd synth;
+#X obj 104 223 else/note.in;
+#X obj 104 247 pack;
+#X obj 74 161 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
+#X obj 323 94 text define \$0-midi;
+#X obj 323 67 else/initmess read midi-seq.txt;
+#X obj 104 199 else/midi midi-seq.mid;
+#X msg 329 150 line 0 \, auto;
+#X obj 311 326 else/out~;
+#N canvas 421 163 551 357 synth 0;
+#X obj 104 121 else/voices 3 1;
+#N canvas 667 245 329 286 voice 0;
+#X obj 184 92 / 127;
+#X obj 169 168 *~;
+#X obj 79 95 mtof;
+#X obj 79 24 inlet;
+#X obj 169 237 outlet~;
+#X obj 79 63 unpack float float;
+#X obj 169 200 /~ 3;
+#X obj 79 129 else/bl.saw~;
+#X obj 184 127 else/glide~ 50;
+#X connect 0 0 8 0;
+#X connect 1 0 6 0;
+#X connect 2 0 7 0;
+#X connect 3 0 5 0;
+#X connect 5 0 2 0;
+#X connect 5 1 0 0;
+#X connect 6 0 4 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 1;
+#X restore 74 163 pd voice;
+#N canvas 667 245 329 286 voice 0;
+#X obj 184 92 / 127;
+#X obj 169 168 *~;
+#X obj 79 95 mtof;
+#X obj 79 24 inlet;
+#X obj 169 237 outlet~;
+#X obj 79 63 unpack float float;
+#X obj 169 200 /~ 3;
+#X obj 79 129 else/bl.saw~;
+#X obj 184 127 else/glide~ 50;
+#X connect 0 0 8 0;
+#X connect 1 0 6 0;
+#X connect 2 0 7 0;
+#X connect 3 0 5 0;
+#X connect 5 0 2 0;
+#X connect 5 1 0 0;
+#X connect 6 0 4 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 1;
+#X restore 133 163 pd voice;
+#N canvas 667 245 329 286 voice 0;
+#X obj 184 92 / 127;
+#X obj 169 168 *~;
+#X obj 79 95 mtof;
+#X obj 79 24 inlet;
+#X obj 169 237 outlet~;
+#X obj 79 63 unpack float float;
+#X obj 169 200 /~ 3;
+#X obj 79 129 else/bl.saw~;
+#X obj 184 127 else/glide~ 50;
+#X connect 0 0 8 0;
+#X connect 1 0 6 0;
+#X connect 2 0 7 0;
+#X connect 3 0 5 0;
+#X connect 5 0 2 0;
+#X connect 5 1 0 0;
+#X connect 6 0 4 0;
+#X connect 7 0 1 0;
+#X connect 8 0 1 1;
+#X restore 193 163 pd voice;
+#X obj 133 202 else/plate.rev~ 50 0.6 0.25 0.8 0.8, f 18;
+#X obj 104 58 inlet;
+#X obj 133 264 outlet~;
+#X obj 238 266 outlet~;
+#X text 289 150 synthesizer;
+#X text 257 136 <= 3 voice polyphonic;
+#X connect 0 0 1 0;
+#X connect 0 1 2 0;
+#X connect 0 2 3 0;
+#X connect 1 0 4 0;
+#X connect 2 0 4 0;
+#X connect 3 0 4 0;
+#X connect 4 0 6 0;
+#X connect 4 1 7 0;
+#X connect 5 0 0 0;
+#X restore 329 292 pd synth;
+#X obj 329 264 pack;
+#X obj 329 215 else/iterate;
+#X obj 329 240 else/note.in;
+#X obj 329 180 text sequence \$0-midi -w 1;
+#X text 414 149 <= play;
+#X text 58 54 You can import and export to text files \, just use the
+.txt extension to open and save. The format of the file is compatible
+to the [text sequence] object. Check the example to the right., f
+38;
+#X connect 0 0 8 0;
+#X connect 2 0 1 0;
+#X connect 2 1 1 1;
+#X connect 3 0 4 0;
+#X connect 3 1 4 1;
+#X connect 4 0 2 0;
+#X connect 5 0 8 0;
+#X connect 7 0 6 0;
+#X connect 8 0 3 0;
+#X connect 9 0 15 0;
+#X connect 11 0 10 0;
+#X connect 11 1 10 1;
+#X connect 12 0 11 0;
+#X connect 13 0 14 0;
+#X connect 14 0 12 0;
+#X connect 14 1 12 1;
+#X connect 15 0 13 0;
+#X restore 499 172 pd text;
+#X text 151 297 start -;
+#X text 202 297 sets to slave mode and expects clock ticks (bangs)
+, f 53;
+#X text 85 86 [midi] plays/records raw MIDI streams and can save/read
+MIDI files or import/export to txt files., f 55;
+#X text 205 502 a MIDI or text file to be loaded, f 49;
+#X connect 44 0 52 0;
+#X connect 52 0 47 0;
+#X connect 52 1 4 0;
