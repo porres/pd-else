@@ -2,110 +2,110 @@
 in float gridx float gridy;
 #N struct 1017-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1098-point float x0 float y0 float xs float ys float fg float
+#N struct 1084-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1146-point float x0 float y0 float xs float ys float fg float
+#N struct 1125-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1469-point float x0 float y0 float xs float ys float fg float
+#N struct 1385-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N canvas 579 51 565 736 10;
-#X floatatom 379 200 0 0 0 0 - - -;
-#X obj 137 147 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
+#N canvas 607 48 560 730 10;
+#X floatatom 378 198 0 0 0 0 - - -;
+#X obj 136 145 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
 -1 -1 0;
-#X obj 321 173 r \$0-A;
-#X obj 379 172 r \$0-B;
-#X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 311 171 r \$0-A;
+#X obj 378 170 r \$0-B;
+#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
-#X obj 346 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 24 42 cnv 4 4 4 empty empty Presets 0 28 2 18 -233017 -1 0;
-#X obj 459 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 42 cnv 4 4 4 empty empty Presets 0 28 2 18 -233017 -1 0;
+#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 479 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 516 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 465 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 503 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
-#X restore 306 5 graph;
-#X obj 83 42 cnv 4 4 4 empty empty manager 0 28 2 18 -233017 -1 0;
-#X obj 4 5 cnv 15 301 42 empty empty presets 20 20 2 37 -233017 -1
+#X restore 305 5 graph;
+#X obj 82 42 cnv 4 4 4 empty empty manager 0 28 2 18 -233017 -1 0;
+#X obj 3 5 cnv 15 301 42 empty empty presets 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
-#X restore 3 5 graph;
-#X obj 6 709 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X restore 2 5 graph;
+#X obj 5 704 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X obj 9 230 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 8 223 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 9 527 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 8 510 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 9 575 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 8 558 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 87 237 cnv 17 3 259 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 86 230 cnv 17 3 256 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 140 582 1) list - one or more receive names (default none)
+#X text 139 565 1) list - one or more receive names (default none)
 ;
-#X text 109 262 load <float> -;
-#X floatatom 137 171 3 0 7 0 - - -;
-#X text 109 287 save <float> -;
-#X text 157 396 open -;
-#X text 151 410 close -;
-#X text 201 410 close preset window, f 58;
-#X text 103 439 read <symbol> -;
-#X text 97 453 write <symbol> -;
-#X text 103 382 clear <float> -;
-#X text 151 234 float -;
-#X obj 172 172 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X text 108 255 load <float> -;
+#X floatatom 136 169 3 0 7 0 - - -;
+#X text 108 280 save <float> -;
+#X text 156 389 open -;
+#X text 150 403 close -;
+#X text 200 403 close preset window, f 58;
+#X text 102 432 read <symbol> -;
+#X text 96 446 write <symbol> -;
+#X text 102 375 clear <float> -;
+#X text 150 227 float -;
+#X obj 171 170 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 157 312 bang -;
-#X text 190 172 save;
-#X text 201 452 write presets to file \, no symbol opens dialog window
+#X text 156 305 bang -;
+#X text 189 170 save;
+#X text 200 445 write presets to file \, no symbol opens dialog window
 , f 58;
-#X text 201 396 open the preset window so you can see/edit values,
+#X text 200 389 open the preset window so you can see/edit values,
 f 58;
-#X text 201 466 import presets from a list, f 58;
-#X obj 86 534 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 200 459 import presets from a list, f 58;
+#X obj 85 517 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X obj 86 554 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 85 537 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 157 535 list -;
-#X text 201 535 presets as a list when receiving "export" message,
+#X text 156 518 list -;
+#X text 200 518 presets as a list when receiving "export" message,
 f 53;
-#X text 157 554 bang -;
-#X text 200 554 when the preset is empty, f 53;
-#X text 115 424 args <list> -;
-#X text 201 424 replaces receive names arguments, f 58;
-#X symbolatom 321 201 6 0 0 0 - - -;
-#X text 201 262 load from a preset number. If no float is given \,
+#X text 156 537 bang -;
+#X text 199 537 when the preset is empty, f 53;
+#X text 114 417 args <list> -;
+#X text 200 417 replaces receive names arguments, f 58;
+#X symbolatom 311 199 7 0 0 0 - - -;
+#X text 200 255 load from a preset number. If no float is given \,
 the last set preset number is loaded, f 58;
-#X text 201 287 save to a preset number. If no float is given \, the
+#X text 200 280 save to a preset number. If no float is given \, the
 last set preset is saved, f 58;
-#X text 201 312 save preset (same as 'save' without a float), f 58
+#X text 200 305 save preset (same as 'save' without a float), f 58
 ;
-#X text 201 382 clear data from preset number \, no float clears all
+#X text 200 375 clear data from preset number \, no float clears all
 presets;
-#X text 201 438 import presets from a file \, no symbol opens dialog
+#X text 200 431 import presets from a file \, no symbol opens dialog
 window, f 58;
-#X text 157 467 list -;
-#X text 145 481 export -;
-#X text 201 480 export presets as a list, f 58;
-#X text 115 248 set <float> -;
-#X text 201 234 sets a preset number and loads it, f 58;
-#X text 201 248 sets a preset number, f 58;
-#X text 109 340 morph <f \, f> -;
-#X text 201 340 sets morph time and grain for morphing between presets
+#X text 156 460 list -;
+#X text 144 474 export -;
+#X text 200 473 export presets as a list, f 58;
+#X text 114 241 set <float> -;
+#X text 200 227 sets a preset number and loads it, f 58;
+#X text 200 241 sets a preset number, f 58;
+#X text 108 333 morph <f \, f> -;
+#X text 200 333 sets morph time and grain for morphing between presets
 , f 58;
-#X text 121 354 interp <f> -;
-#X text 201 354 sets to interpolation mode, f 58;
-#X obj 85 501 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 120 347 interp <f> -;
+#X text 200 347 sets to interpolation mode, f 58;
+#X obj 84 490 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X text 151 501 float -;
-#X text 201 501 interpolation value (when in interpoltion mode), f
+#X text 150 490 float -;
+#X text 200 490 interpolation value (when in interpoltion mode), f
 58;
 #N canvas 601 200 659 296 advanced 0;
 #N canvas 806 34 743 681 morph 0;
@@ -125,7 +125,7 @@ window, f 58;
 #X obj 529 73 else/slider2d 127 127 0 127 0 127 1 225 225 225 0 0 0
 0 0 0 19 25 empty \\\$0-sl2;
 #X obj 417 75 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 8000 1;
+-1 -1 0 1;
 #X obj 417 37 r \$0-sl1;
 #X obj 513 247 r \$0-buf;
 #X obj 513 276 else/buffer \$0-morph;
@@ -419,7 +419,7 @@ abstractions., f 34;
 #X connect 10 0 13 0;
 #X connect 11 0 12 0;
 #X connect 14 0 9 0;
-#X restore 480 203 pd advanced;
+#X restore 479 201 pd advanced;
 #N canvas 697 113 686 616 basic 0;
 #X obj 39 141 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
 -1 0;
@@ -474,6 +474,7 @@ The way it works is that it gets data from what's conneted to [receive]
 or [receiver] objects that match its arguments and stores it as a preset.
 When loading the preset \, it then sends the data back to the [receive]/[receiver]
 objects., f 96;
+#X text 208 555 <= click (same as open message);
 #X connect 0 0 1 0;
 #X connect 1 0 35 0;
 #X connect 2 0 35 0;
@@ -491,23 +492,23 @@ objects., f 96;
 #X connect 29 0 26 0;
 #X connect 31 0 35 0;
 #X connect 34 0 35 0;
-#X restore 447 140 pd basic;
-#X obj 9 605 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 98 612 -n <float>: sets number of presets (default: 64), f
+#X restore 446 138 pd basic;
+#X obj 8 585 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X text 97 590 -n <float>: sets number of presets (default: 64), f
 72;
-#X text 74 627 -file <symbol>: set a file to import from (default:
+#X text 73 604 -file <symbol>: set a file to import from (default:
 none), f 76;
-#X text 80 657 -morph <f \, f>: sets morph time and grain (default:
+#X text 79 632 -morph <f \, f>: sets morph time and grain (default:
 0 \, 20), f 75;
-#X text 116 672 -interp: sets to interpolation mode (default: no interpolation)
+#X text 115 646 -interp: sets to interpolation mode (default: no interpolation)
 , f 69;
-#X text 127 326 n <float> -;
-#X text 201 326 sets number of presets, f 58;
+#X text 126 319 n <float> -;
+#X text 200 319 sets number of presets, f 58;
 #N canvas 524 190 977 386 args 0;
 #X obj 161 252 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
 -1 -1 3;
 #X floatatom 161 290 3 0 7 0 - - -;
-#X msg 192 292 open;
+#X msg 192 290 open;
 #X text 234 242 Preset numbers outside the range from 0 to n-1 are
 clipped to this range., f 26;
 #X text 30 110 You can change the number of presets with the 'n' message
@@ -571,7 +572,7 @@ groups., f 69;
 #X connect 19 0 5 0;
 #X connect 21 0 23 0;
 #X connect 22 0 23 0;
-#X restore 505 140 pd args;
+#X restore 504 138 pd args;
 #N canvas 555 81 567 586 basic_example 0;
 #X obj 62 282 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 1000 0;
@@ -660,24 +661,18 @@ just giving ideas in case you want it and need it \; ), f 43;
 #X connect 21 0 24 0;
 #X connect 22 0 20 0;
 #X connect 26 0 25 0;
-#X restore 451 161 pd basic_example;
-#X text 260 146 <= load preset;
-#X msg 15 170 read preset1.txt;
-#X text 12 153 import from file;
-#X msg 235 172 open;
-#X obj 137 198 else/presets \\\$0-A \\\$0-B;
+#X restore 450 159 pd basic_example;
+#X text 259 144 <= load preset;
+#X msg 22 158 read preset1.txt;
+#X text 19 141 import from file;
+#X obj 136 196 else/presets \\\$0-A \\\$0-B;
 #A saved \\\$0-A symbol one || \\\$0-B 1 || \; \\\$0-A symbol two ||
 \\\$0-B 2 || \; \\\$0-A symbol three || \\\$0-B 3 || \; \\\$0-A symbol
 four || \\\$0-B 4 || \; \\\$0-A symbol five || \\\$0-B 5 || \; \\\$0-A
 symbol six || \\\$0-B 6 || \; \\\$0-A symbol seven || \\\$0-B 7 ||
 \; \\\$0-A symbol eight || \\\$0-B 8 || \;;
-#X text 50 642 -morphtime <float>: sets morph time (default: 0), f
+#X text 49 618 -morphtime <float>: sets morph time (default: 0), f
 80;
-#X text 37 82 [presets] manages presets for patches and abstractions
-and has interpolation and morphing features. It works by communicating
-to receive symbols. Change the number and symbol below \, save a preset
-and the patch \, reopen to recall the presets. Use the "read" message
-to restore to this example's default., f 82;
 #N canvas 412 200 792 518 built-in-rcv 0;
 #X obj 143 171 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
 -1 -1 1;
@@ -712,7 +707,7 @@ to the [else/default] object \,, f 69;
 -8 0 10 -228856 -1 -1 0 256;
 #X floatatom 225 302 5 0 0 0 - #0-atom-rcv -;
 #X obj 136 385 else/function 200 100 empty \$0-function-rcv 0 1 220
-220 220 50 50 50 0 0 0 0 0 1000 1;
+220 220 50 50 50 0 0 0 0 0 1000 0;
 #X msg 177 199 read preset4.txt;
 #X obj 143 224 else/presets \\\$0-slider2d \\\$0-multi.vsl \\\$0-sl-rcv
 \\\$0-nbx-rcv \\\$0-atom-rcv \\\$0-function-rcv, f 26;
@@ -737,17 +732,25 @@ names that match the [presets] object., f 34;
 #X connect 8 0 10 0;
 #X connect 11 0 9 0;
 #X connect 18 0 19 0;
-#X restore 455 182 pd built-in-rcv;
-#X text 275 58 ~THIS OBJECT IS STILL EXPERIMENTAL~;
-#X text 139 368 exp <f> -;
-#X text 86 687 -exp <float>: sets exponential factor for morph/interpolation
+#X restore 454 180 pd built-in-rcv;
+#X text 274 58 ~THIS OBJECT IS STILL EXPERIMENTAL~;
+#X text 138 361 exp <f> -;
+#X text 85 660 -exp <float>: sets exponential factor for morph/interpolation
 (default: 1), f 74;
-#X text 201 368 sets exponential factor for interpolation/morphing
+#X text 200 361 sets exponential factor for interpolation/morphing
 , f 58;
+#X text 37 81 [presets] manages presets for patches and abstractions
+and has interpolation and morphing features. Change the number and
+symbol below \, save a preset and the patch \, reopen to recall the
+presets. Use the "read" message to restore to this example's default.
+, f 76;
+#X text 35 195 click to open => data window;
+#X obj 8 679 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
+#X text 110 684 clicking on the object opens data/edit window (same
+as 'open'), f 63;
 #X connect 1 0 23 0;
 #X connect 2 0 46 0;
 #X connect 3 0 0 0;
-#X connect 23 0 80 0;
-#X connect 32 0 80 0;
-#X connect 77 0 80 0;
-#X connect 79 0 80 0;
+#X connect 23 0 79 0;
+#X connect 32 0 79 0;
+#X connect 77 0 79 0;
