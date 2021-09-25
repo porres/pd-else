@@ -1,6 +1,4 @@
-/* Copyright (c) 2003-2005 krzYszcz and others.
- * For information on usage and redistribution, and for a DISCLAIMER OF ALL
- * WARRANTIES, see the file, "LICENSE.txt," in this distribution.  */
+// based on cyclone/mtr
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -36,7 +34,6 @@ typedef struct _rec_track{
     double         tr_prevtime;
     t_clock       *tr_clock;
     t_outlet      *tr_trackout;
-//    t_outlet      *tr_mainout;
     t_file  *tr_filehandle;
 }t_rec_track;
 
@@ -84,7 +81,6 @@ static void rec_track_donext(t_rec_track *tp){
                 t_atom at[2];
                 SETFLOAT(&at[0], tp->tr_id);
                 SETFLOAT(&at[1], delta);
-//		            outlet_list(tp->tr_mainout, 0, 2, at);
             }
             return;
         }
@@ -118,7 +114,6 @@ endoftrack:
             t_atom at[2];
             SETFLOAT(&at[0], tp->tr_id);
             SETFLOAT(&at[1], -1.);  // CHECKED eot marker
-//	           outlet_list(tp->tr_mainout, 0, 2, at);
         }
         tp->tr_ixnext = -1;  // CHECKED no loop-over
     }
@@ -240,27 +235,12 @@ static void rec_track_stop(t_rec_track *tp){
     rec_track_setmode(tp, rec_STEPMODE);
 }
 
-/*static void rec_track_next(t_rec_track *tp)
-{
-    if(tp->tr_mode == rec_STEPMODE)
-	rec_track_donext(tp);
-}*/
-
-/*static void rec_track_rewind(t_rec_track *tp)
-{
-    if(tp->tr_mode == rec_STEPMODE)
-    {
-	tp->tr_atdelta = 0;
-	tp->tr_ixnext = 0;
-    }
-}*/
-
-/* CHECKED step and play mode */
+// CHECKED step and play mode
 static void rec_track_mute(t_rec_track *tp){
     tp->tr_muted = 1;
 }
 
-/* CHECKED step and play mode */
+// CHECKED step and play mode
 static void rec_track_unmute(t_rec_track *tp){
     tp->tr_muted = 0;
 }
@@ -268,30 +248,6 @@ static void rec_track_unmute(t_rec_track *tp){
 static void rec_track_clear(t_rec_track *tp){
     binbuf_clear(tp->tr_binbuf);
 }
-
-static t_atom *rec_track_getdelay(t_rec_track *tp){
-    int natoms = binbuf_getnatom(tp->tr_binbuf);
-    if(natoms){
-        t_atom *ap = binbuf_getvec(tp->tr_binbuf);
-        while(natoms--){
-            if(ap->a_type == A_FLOAT)
-                return(ap);
-                ap++;
-        }
-        post("[rec]: bug in rec_track_getdelay");
-    }
-    return(0);
-}
-
-static void rec_track_delay(t_rec_track *tp, t_floatarg f){
-    t_atom *ap = rec_track_getdelay(tp);
-    if(ap)
-	ap->a_w.w_float = f;
-}
-
-/*static void rec_track_first(t_rec_track *tp, t_floatarg f){
-    rec_track_delay(tp, f);  // CHECKED
-}*/
 
 static void rec_doread(t_rec *x, t_rec_track *target, t_symbol *fname);
 static void rec_dowrite(t_rec *x, t_rec_track *source, t_symbol *fname);
@@ -310,33 +266,19 @@ static void rec_track_writehook(t_pd *z, t_symbol *fname, int ac, t_atom *av){
     rec_dowrite(tp->tr_owner, tp, fname);
 }
 
-static void rec_track_read(t_rec_track *tp, t_symbol *s){
-    if(s && s != &s_)
-        rec_doread(tp->tr_owner, tp, s);
-    else  /* CHECKED no default */
-        panel_open(tp->tr_filehandle, 0);
-}
-
-static void rec_track_write(t_rec_track *tp, t_symbol *s){
-    if(s && s != &s_)
-        rec_dowrite(tp->tr_owner, tp, s);
-    else  /* CHECKED no default */
-        panel_save(tp->tr_filehandle, canvas_getdir(tp->tr_owner->x_glist), 0);
-}
-
-static void rec_track_tempo(t_rec_track *tp, t_floatarg f){
+static void rec_track_speed(t_rec_track *tp, t_floatarg f){
     float newtempo;
     if(f < 1e-20)
-	f = 1e-20;
+        f = 1e-20;
     else if(f > 1e20)
         f = 1e20;
-    newtempo = 1. / f;
+    newtempo = 100. / f;
     if(tp->tr_prevtime > 0.){
-    	tp->tr_clockdelay -= clock_gettimesince(tp->tr_prevtime);
+        tp->tr_clockdelay -= clock_gettimesince(tp->tr_prevtime);
         tp->tr_clockdelay *= newtempo / tp->tr_tempo;
         if(tp->tr_clockdelay < 0.)
             tp->tr_clockdelay = 0.;
-    	clock_delay(tp->tr_clock, tp->tr_clockdelay);
+        clock_delay(tp->tr_clock, tp->tr_clockdelay);
         tp->tr_prevtime = clock_getlogicaltime();
     }
     tp->tr_tempo = newtempo;
@@ -372,6 +314,13 @@ static void rec_calltracks(t_rec *x, t_rec_trackfn fn, t_symbol *s, int ac, t_at
         fn(*tpp++);
 }
 
+static void rec_speed(t_rec *x, t_floatarg f){
+    int ntracks = x->x_ntracks;
+    t_rec_track **tpp = x->x_tracks;
+    while(ntracks--)
+        rec_track_speed(*tpp++, f);
+}
+
 static void rec_record(t_rec *x, t_symbol *s, int ac, t_atom *av){
     rec_calltracks(x, rec_track_record, s, ac, av);
 }
@@ -384,15 +333,6 @@ static void rec_stop(t_rec *x, t_symbol *s, int ac, t_atom *av){
     rec_calltracks(x, rec_track_stop, s, ac, av);
 }
 
-/*static void rec_next(t_rec *x, t_symbol *s, int ac, t_atom *av){
-    rec_calltracks(x, rec_track_next, s, ac, av);
-}*/
-
-/*static void rec_rewind(t_rec *x, t_symbol *s, int ac, t_atom *av)
-{
-    rec_calltracks(x, rec_track_rewind, s, ac, av);
-}*/
-
 static void rec_mute(t_rec *x, t_symbol *s, int ac, t_atom *av){
     rec_calltracks(x, rec_track_mute, s, ac, av);
 }
@@ -404,47 +344,6 @@ static void rec_unmute(t_rec *x, t_symbol *s, int ac, t_atom *av){
 static void rec_clear(t_rec *x, t_symbol *s, int ac, t_atom *av){
     rec_calltracks(x, rec_track_clear, s, ac, av);
 }
-
-static void rec_delay(t_rec *x, t_floatarg f){
-    int ntracks = x->x_ntracks;
-    t_rec_track **tpp = x->x_tracks;
-    while(ntracks--)
-        rec_track_delay(*tpp++, f);
-}
-
-/*static void rec_first(t_rec *x, t_floatarg f)
-{
-    int ntracks = x->x_ntracks;
-    t_rec_track **tpp = x->x_tracks;
-    float delta = SHARED_FLT_MAX;
-    if(f < 0.)
-	f = 0.;
-    while(ntracks--)
-    {
-	t_atom *ap = rec_track_getdelay(*tpp);
-	if(ap)
-	{
-	    if(delta > ap->a_w.w_float)
-		delta = ap->a_w.w_float;
-	    (*tpp)->tr_listed = 1;
-	}
-	else (*tpp)->tr_listed = 0;
-	tpp++;
-    }
-    ntracks = x->x_ntracks;
-    tpp = x->x_tracks;
-    delta -= f;
-    while(ntracks--)
-    {
-	if((*tpp)->tr_listed)
-	{
-	    t_atom *ap = rec_track_getdelay(*tpp);
-	    if(ap)
-		ap->a_w.w_float -= delta;
-	}
-	tpp++;
-    }
-}*/
 
 static void rec_doread(t_rec *x, t_rec_track *target, t_symbol *fname){
     char path[MAXPDSTRING];
@@ -687,7 +586,6 @@ static void *rec_new(t_floatarg f){
                 t_rec_track *tp = *tracks;
                 inlet_new((t_object *)x, (t_pd *)tp, 0, 0);
                 tp->tr_trackout = outlet_new((t_object *)x, &s_);
-//                tp->tr_mainout = mainout;
                 tp->tr_owner = x;
                 tp->tr_id = id;
                 tp->tr_listed = 0;
@@ -707,39 +605,23 @@ static void *rec_new(t_floatarg f){
 }
 
 void rec_setup(void){
-    rec_track_class = class_new(gensym("_rec_track"), 0, 0,
-        sizeof(t_rec_track), CLASS_PD | CLASS_NOINLET, 0);
+    rec_track_class = class_new(gensym("_rec_track"), 0, 0, sizeof(t_rec_track),
+        CLASS_PD | CLASS_NOINLET, 0);
     class_addbang(rec_track_class, rec_track_bang);
     class_addfloat(rec_track_class, rec_track_float);
     class_addsymbol(rec_track_class, rec_track_symbol);
     class_addanything(rec_track_class, rec_track_anything);
     class_addlist(rec_track_class, rec_track_list);
-    class_addmethod(rec_track_class, (t_method)rec_track_record, gensym("record"), 0);
-    class_addmethod(rec_track_class, (t_method)rec_track_play, gensym("play"), 0);
-    class_addmethod(rec_track_class, (t_method)rec_track_stop, gensym("stop"), 0);
-//    class_addmethod(rec_track_class, (t_method)rec_track_next, gensym("next"), 0);
-//    class_addmethod(rec_track_class, (t_method)rec_track_rewind, gensym("rewind"), 0);
-    class_addmethod(rec_track_class, (t_method)rec_track_mute, gensym("mute"), 0);
-    class_addmethod(rec_track_class, (t_method)rec_track_unmute, gensym("unmute"), 0);
-    class_addmethod(rec_track_class, (t_method)rec_track_clear, gensym("clear"), 0);
-    class_addmethod(rec_track_class, (t_method)rec_track_delay, gensym("delay"), A_FLOAT, 0);
-//    class_addmethod(rec_track_class, (t_method)rec_track_first, gensym("first"), A_FLOAT, 0);
-    class_addmethod(rec_track_class, (t_method)rec_track_read, gensym("read"), A_DEFSYM, 0);
-    class_addmethod(rec_track_class, (t_method)rec_track_write, gensym("write"), A_DEFSYM, 0);
-    class_addmethod(rec_track_class, (t_method)rec_track_tempo, gensym("tempo"), A_FLOAT, 0);
     rec_class = class_new(gensym("rec"), (t_newmethod)rec_new, (t_method)rec_free,
         sizeof(t_rec), 0, A_DEFFLOAT, 0);
     class_addmethod(rec_class, (t_method)rec_record, gensym("record"), A_GIMME, 0);
     class_addmethod(rec_class, (t_method)rec_play, gensym("play"), A_GIMME, 0);
     class_addmethod(rec_class, (t_method)rec_stop, gensym("stop"), A_GIMME, 0);
-//    class_addmethod(rec_class, (t_method)rec_next, gensym("next"), A_GIMME, 0);
-//    class_addmethod(rec_class, (t_method)rec_rewind, gensym("rewind"), A_GIMME, 0);
     class_addmethod(rec_class, (t_method)rec_mute, gensym("mute"), A_GIMME, 0);
     class_addmethod(rec_class, (t_method)rec_unmute, gensym("unmute"), A_GIMME, 0);
     class_addmethod(rec_class, (t_method)rec_clear, gensym("clear"), A_GIMME, 0);
-    class_addmethod(rec_class, (t_method)rec_delay, gensym("delay"), A_FLOAT, 0);
-//    class_addmethod(rec_class, (t_method)rec_first, gensym("first"), A_FLOAT, 0);
     class_addmethod(rec_class, (t_method)rec_read, gensym("read"), A_DEFSYM, 0);
     class_addmethod(rec_class, (t_method)rec_write, gensym("write"), A_DEFSYM, 0);
+    class_addmethod(rec_class, (t_method)rec_speed, gensym("speed"), A_DEFFLOAT, 0);
     file_setup();
 }
