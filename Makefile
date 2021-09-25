@@ -283,6 +283,9 @@ midi := \
     shared/file.c
     midi.class.sources := Classes/Source/midi.c $(midi)
     
+file := shared/file.c
+    rec.class.sources := Classes/Source/rec.c $(file)
+    
 # GUI:
 utf := shared/s_utf8.c
 	note.class.sources := Classes/Source/note.c $(utf)
