@@ -1,6 +1,6 @@
-#N canvas 479 100 767 488 12;
+#N canvas 479 100 766 551 12;
 #X declare -path else;
-#X obj 384 224 text define -k \$0-seq;
+#X obj 384 294 text define -k \$0-seq;
 #A set 0 72 1 50 50 \; 200 71 1 100 50 \; 200 72 1 150 50 \; 0 48 1
 200 50 \; 400 60 1 250 50 \; 0 52 1 200 50 \; 0 55 1 200 50 \; 400
 60 1 250 50 \; 0 43 1 200 50 \; 400 67 1 100 50 \; 0 53 1 200 50 \;
@@ -32,46 +32,48 @@
 400 60 1 200 50 \; 0 31 1 200 50 \; 0 41 1 200 50 \; 0 48 1 200 50
 \; 400 60 1 1000 3000 \; 0 24 1 1000 3000 \; 0 40 1 1000 3000 \; 0
 48 1 1000 3000 \; 4500 \;;
-#X obj 284 171 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
+#X obj 284 241 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X msg 147 70 stop;
-#X msg 203 100 line 0 \, auto;
-#X msg 192 70 tempo \$1 permsec;
-#X msg 158 25 0.5;
-#X msg 235 25 1;
-#X msg 193 25 0.75;
-#X msg 269 25 1.25;
-#X msg 312 25 1.5;
-#X obj 545 52 declare -path else;
-#X text 344 25 <= set tempo;
-#X text 300 101 <= start playng;
-#X obj 105 298 out~;
-#X obj 147 168 t b l;
-#X obj 105 198 count 7;
-#X obj 105 229 list append;
-#X text 375 186 "Fantasia On British Sea Songs" by Sir Henry Wood,
+#X msg 147 140 stop;
+#X msg 203 170 line 0 \, auto;
+#X msg 192 140 tempo \$1 permsec;
+#X msg 158 95 0.5;
+#X msg 235 95 1;
+#X msg 193 95 0.75;
+#X msg 269 95 1.25;
+#X msg 312 95 1.5;
+#X obj 545 122 declare -path else;
+#X text 344 95 <= set tempo;
+#X text 300 171 <= start playng;
+#X obj 105 368 out~;
+#X obj 147 238 t b l;
+#X obj 105 268 count 7;
+#X obj 105 299 list append;
+#X text 375 256 "Fantasia On British Sea Songs" by Sir Henry Wood,
 f 24;
-#X obj 105 262 clone 8 voice1;
-#X text 542 224 <= sequence;
-#X text 295 130 "-w 1" specifies that the 1st number is a wait time
+#X obj 105 332 clone 8 voice1;
+#X text 542 294 <= sequence;
+#X text 295 200 "-w 1" specifies that the 1st number is a wait time
 ;
-#X text 316 263 Here's an example with direct output from the [text]
-object and a more complex and polyphonic sequence. The list of values
-are treated as \; 1-MIDI Pitch \; 2-Amplitude \; 3-Attack+Sustain Duration
-(ms) \; 4-Release duration (ms), f 47;
-#X text 28 400 The example bypasses the need of a [poly] or [voices]
-and also [makenote]. We'll adapt the patch for that in the next example.
-Open [clone] to see how the data is treated., f 48;
-#X obj 147 128 text sequence \$0-seq -w 1 -t 0.5 permsec, f 20;
-#X text 295 147 "-t 0.5 permsec" initializes the tempo like the 'tempo'
+#X text 295 217 "-t 0.5 permsec" initializes the tempo like the 'tempo'
 message, f 63;
-#X text 389 398 The [count] object is used to count (from 0 to 7).
+#X text 389 468 The [count] object is used to count (from 0 to 7).
 This number represents the voice number inside [clone] and is prepended
 to the output list of [text sequence]., f 50;
+#X text 329 334 In the [text define] object above \, the list of values
+are treated as \; 1-MIDI Pitch \; 2-Amplitude \; 3-Attack+Sustain Duration
+(ms) \; 4-Release duration (ms), f 41;
+#X text 133 22 Here's an example with direct output from the [text]
+object and a more complex and polyphonic sequence. Start playing and
+check [text define] to see the sequence., f 63;
+#X text 28 470 The example bypasses the need of a [makenote] and [poly]
+or [voices] objects. We'll adapt the patch for that in the next example.
+Open [clone] to see how the data is treated., f 48;
+#X obj 147 198 text sequence \$0-seq -w 1 -t 0.5 permsec, f 20;
 #X connect 1 0 3 0;
-#X connect 2 0 23 0;
-#X connect 3 0 23 0;
-#X connect 4 0 23 0;
+#X connect 2 0 26 0;
+#X connect 3 0 26 0;
+#X connect 4 0 26 0;
 #X connect 5 0 4 0;
 #X connect 6 0 4 0;
 #X connect 7 0 4 0;
@@ -82,5 +84,5 @@ to the output list of [text sequence]., f 50;
 #X connect 15 0 16 0;
 #X connect 16 0 18 0;
 #X connect 18 0 13 0;
-#X connect 23 0 14 0;
-#X connect 23 2 1 0;
+#X connect 26 0 14 0;
+#X connect 26 2 1 0;

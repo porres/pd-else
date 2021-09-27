@@ -1,6 +1,6 @@
 #N canvas 489 467 471 277 12;
-#X obj 144 218 outlet~;
-#X obj 144 184 *~;
+#X obj 174 218 outlet~;
+#X obj 174 184 *~;
 #X obj 90 93 mtof;
 #X obj 90 22 inlet;
 #X obj 238 153 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
@@ -10,7 +10,7 @@
 #X obj 192 91 unpack;
 #X obj 192 125 asr~ 15;
 #X obj 90 127 bl.square~;
-#X text 261 89 <= gate & release time;
+#X text 243 92 <= gate & release time;
 #X text 26 73 pitch =>;
 #X connect 1 0 0 0;
 #X connect 2 0 9 0;

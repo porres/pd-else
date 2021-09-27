@@ -1,4 +1,4 @@
-#N canvas 551 70 789 652 12;
+#N canvas 428 23 789 652 12;
 #X declare -path else;
 #X obj 121 556 out~;
 #X obj 363 110 text define -k \$0-seq;
@@ -54,9 +54,6 @@
 #X obj 237 458 r \$0-release;
 #X obj 121 457 voices 4 -list;
 #X obj 121 521 clone 4 voice2;
-#X text 413 155 Here the sequence is exactly the same as the last example.
-And the output list represents: pitch \, amplitude \, Attack+Sustain
-time and release time., f 45;
 #X msg 81 128 tempo \$1 permsec;
 #X obj 176 95 s \$0-tempo;
 #X obj 81 97 r \$0-tempo;
@@ -64,28 +61,32 @@ time and release time., f 45;
 #X obj 282 295 expr 1 / $f1;
 #X obj 174 276 * 1;
 #X obj 211 303 * 1;
-#X text 413 222 We're now using [makenote] and [voices] \, and note
-how the tempo is used to also adjust the values of Attack+Sustain and
-Release times., f 45;
 #X text 523 111 <= sequence;
-#X text 282 500 The Attack+Sustain time is fed to the rightmost inlet
-of [makenote] (the duration) input. We also have a release time that
-is sent to the [voices] object and appended back to the list so it
-is sent to [clone]. The whole list sent to [clone] represents: 1) voice
-number. 2) pitch. 3) Gate (amplitude) and 4) release time. Open [clone]
-to see how the values are treated., f 61;
 #X text 259 161 <= start playing, f 8;
 #X text 413 271 This is good because now the sequence adapts to any
 tempo \, whereas before it'd hold the notes for the same amount independently
 of the tempo., f 45;
+#X text 413 155 Here the sequence is exactly the same as from the last
+example. The output list represents: Pitch \, Amplitude \, Attack+Sustain
+time and Release time., f 45;
+#X text 413 222 We're now using [makenote] and [voices]. Note how the
+tempo is used to also adjust the values of Attack+Sustain and Release
+times., f 45;
+#X text 282 500 The Attack+Sustain time is fed to the rightmost inlet
+of [makenote] (the duration input). We also have a release time that
+is sent to the [voices] object and appended back to the list so it
+is sent to [clone]. The whole list sent to [clone] represents: 1) voice
+number. 2) pitch. 3) Gate (amplitude). 4) release time. Open [clone]
+to see how the values are treated., f 61;
+#X msg 36 213 auto;
 #X connect 2 0 4 0;
 #X connect 3 0 10 0;
 #X connect 4 0 10 0;
-#X connect 5 0 24 0;
-#X connect 6 0 24 0;
-#X connect 7 0 24 0;
-#X connect 8 0 24 0;
-#X connect 9 0 24 0;
+#X connect 5 0 23 0;
+#X connect 6 0 23 0;
+#X connect 7 0 23 0;
+#X connect 8 0 23 0;
+#X connect 9 0 23 0;
 #X connect 10 0 17 0;
 #X connect 10 2 2 0;
 #X connect 13 0 16 0;
@@ -95,16 +96,17 @@ of the tempo., f 45;
 #X connect 16 0 15 0;
 #X connect 17 0 13 0;
 #X connect 17 1 13 1;
-#X connect 17 2 28 0;
-#X connect 17 3 29 0;
+#X connect 17 2 27 0;
+#X connect 17 3 28 0;
 #X connect 19 0 14 1;
 #X connect 19 0 20 2;
 #X connect 20 0 14 0;
 #X connect 21 0 0 0;
-#X connect 23 0 10 0;
-#X connect 25 0 23 0;
-#X connect 26 0 27 0;
-#X connect 27 0 29 1;
-#X connect 27 0 28 1;
-#X connect 28 0 13 2;
-#X connect 29 0 18 0;
+#X connect 22 0 10 0;
+#X connect 24 0 22 0;
+#X connect 25 0 26 0;
+#X connect 26 0 28 1;
+#X connect 26 0 27 1;
+#X connect 27 0 13 2;
+#X connect 28 0 18 0;
+#X connect 35 0 10 0;
