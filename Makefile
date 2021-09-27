@@ -280,10 +280,10 @@ rand := shared/random.c
 
 midi := \
     shared/mifi.c \
-    shared/file.c
+    shared/elsefile.c
     midi.class.sources := Classes/Source/midi.c $(midi)
     
-file := shared/file.c
+file := shared/elsefile.c
     rec.class.sources := Classes/Source/rec.c $(file)
     
 # GUI:

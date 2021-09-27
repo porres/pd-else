@@ -13,7 +13,7 @@
 #include <string.h>
 #include "m_pd.h"
 #include "g_canvas.h"
-#include "file.h"
+#include "elsefile.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // OS
@@ -275,7 +275,7 @@ char *osdir_next(t_osdir *dp){
     if(dp){
         while((dp->dir_entry = readdir(dp->dir_handle))){
             if(!dp->dir_flags || (dp->dir_entry->d_type == DT_REG
-            && (dp->dir_flags & OSDIR_FILEMODE))
+            && (dp->dir_flags & OSDIR_elsefileMODE))
             || (dp->dir_entry->d_type == DT_DIR
             && (dp->dir_flags & OSDIR_DIRMODE)))
                 return(dp->dir_entry->d_name);
@@ -305,7 +305,7 @@ int osdir_isdir(t_osdir *dp){
 // FILE
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-struct _file{
+struct _elsefile{
     t_pd                 f_pd;
     t_pd                *f_master;
     t_canvas            *f_canvas;
@@ -313,15 +313,15 @@ struct _file{
     t_symbol            *f_currentdir;
     t_symbol            *f_inidir;
     t_symbol            *f_inifile;
-    t_filefn             f_panelfn;
+    t_elsefilefn             f_panelfn;
     t_binbuf            *f_binbuf;
     t_clock             *f_panelclock;
-    struct _file        *f_savepanel;
-    struct _file        *f_next;
+    struct _elsefile        *f_savepanel;
+    struct _elsefile        *f_next;
 };
 
-static t_class *file_class = 0;
-static t_file *file_proxies;
+static t_class *elsefile_class = 0;
+static t_elsefile *elsefile_proxies;
 static t_symbol *ps__C;
 
 static void panel_guidefs(void){
@@ -369,19 +369,19 @@ static void panel_guidefs(void){
 
 /* This is obsolete, but has to stay, because older versions of miXed libraries
    might overwrite new panel_guidefs().  FIXME we need version control. */
-static void panel_symbol(t_file *f, t_symbol *s){
+static void panel_symbol(t_elsefile *f, t_symbol *s){
     if(s && s != &s_ && f->f_panelfn)
         (*f->f_panelfn)(f->f_master, s, 0, 0);
 }
 
-static void panel_path(t_file *f, t_symbol *s1, t_symbol *s2){
+static void panel_path(t_elsefile *f, t_symbol *s1, t_symbol *s2){
     if(s2 && s2 != &s_)
         f->f_currentdir = s2;
     if(s1 && s1 != &s_ && f->f_panelfn)
         (*f->f_panelfn)(f->f_master, s1, 0, 0);
 }
 
-static void panel_tick(t_file *f){
+static void panel_tick(t_elsefile *f){
     if(f->f_savepanel)
         sys_vgui("panel_open %s {%s}\n", f->f_bindname->s_name, f->f_inidir->s_name);
     else
@@ -391,7 +391,7 @@ static void panel_tick(t_file *f){
 
 /* these are hacks: deferring modal dialog creation in order to allow for
    a message box redraw to happen -- LATER investigate */
-void panel_open(t_file *f, t_symbol *inidir){
+void panel_open(t_elsefile *f, t_symbol *inidir){
     if(inidir)
         f->f_inidir = inidir;
     else
@@ -399,7 +399,7 @@ void panel_open(t_file *f, t_symbol *inidir){
     clock_delay(f->f_panelclock, 0);
 }
 
-void panel_setopendir(t_file *f, t_symbol *dir){
+void panel_setopendir(t_elsefile *f, t_symbol *dir){
     if(f->f_currentdir && f->f_currentdir != &s_){
         if(dir && dir != &s_){
             int length = ospath_length((char *)(dir->s_name), (char *)(f->f_currentdir->s_name));
@@ -418,11 +418,11 @@ void panel_setopendir(t_file *f, t_symbol *dir){
         bug("panel_setopendir");
 }
 
-t_symbol *panel_getopendir(t_file *f){
+t_symbol *panel_getopendir(t_elsefile *f){
     return(f->f_currentdir);
 }
 
-void panel_save(t_file *f, t_symbol *inidir, t_symbol *inifile){
+void panel_save(t_elsefile *f, t_symbol *inidir, t_symbol *inifile){
     if((f = f->f_savepanel)){
         if(inidir)
             f->f_inidir = inidir;
@@ -434,25 +434,25 @@ void panel_save(t_file *f, t_symbol *inidir, t_symbol *inifile){
     }
 }
 
-void panel_setsavedir(t_file *f, t_symbol *dir){
+void panel_setsavedir(t_elsefile *f, t_symbol *dir){
     if((f = f->f_savepanel))
         panel_setopendir(f, dir);
 }
 
-t_symbol *panel_getsavedir(t_file *f){
+t_symbol *panel_getsavedir(t_elsefile *f){
     return(f->f_savepanel ? f->f_savepanel->f_currentdir : 0);
 }
 
-int file_ismapped(t_file *f){
+int elsefile_ismapped(t_elsefile *f){
     return(f->f_canvas->gl_mapped);
 }
 
-int file_isloading(t_file *f){
+int elsefile_isloading(t_elsefile *f){
     return(f->f_canvas->gl_loading);
 }
 
 /* LATER find a better way */
-int file_ispasting(t_file *f){
+int elsefile_ispasting(t_elsefile *f){
     int result = 0;
     t_canvas *cv = f->f_canvas;
     if(!cv->gl_loading){
@@ -468,8 +468,8 @@ int file_ispasting(t_file *f){
     return(result);
 }
 
-void file_free(t_file *f){
-    t_file *prev, *next;
+void elsefile_free(t_elsefile *f){
+    t_elsefile *prev, *next;
     if(f->f_savepanel){
         pd_unbind((t_pd *)f->f_savepanel, f->f_savepanel->f_bindname);
         pd_free((t_pd *)f->f_savepanel);
@@ -478,28 +478,28 @@ void file_free(t_file *f){
         pd_unbind((t_pd *)f, f->f_bindname);
     if(f->f_panelclock)
         clock_free(f->f_panelclock);
-    for(prev = 0, next = file_proxies; next; prev = next, next = next->f_next)
+    for(prev = 0, next = elsefile_proxies; next; prev = next, next = next->f_next)
         if(next == f)
             break;
     if(prev)
         prev->f_next = f->f_next;
-    else if(f == file_proxies)
-        file_proxies = f->f_next;
+    else if(f == elsefile_proxies)
+        elsefile_proxies = f->f_next;
     pd_free((t_pd *)f);
 }
 
-t_file *file_new(t_pd *master, t_filefn readfn, t_filefn writefn){
-    t_file *result = (t_file *)pd_new(file_class);
+t_elsefile *elsefile_new(t_pd *master, t_elsefilefn readfn, t_elsefilefn writefn){
+    t_elsefile *result = (t_elsefile *)pd_new(elsefile_class);
     result->f_master = master;
-    result->f_next = file_proxies;
-    file_proxies = result;
+    result->f_next = elsefile_proxies;
+    elsefile_proxies = result;
     if(!(result->f_canvas = canvas_getcurrent())){
-        bug("file_new: out of context");
+        bug("elsefile_new: out of context");
         return(result);
     }
     // the panels
     if(readfn || writefn){
-        t_file *f;
+        t_elsefile *f;
         char buf[64];
         sprintf(buf, "miXed.%lx", (unsigned long)result);
         result->f_bindname = gensym(buf);
@@ -507,7 +507,7 @@ t_file *file_new(t_pd *master, t_filefn readfn, t_filefn writefn){
         result->f_currentdir = result->f_inidir = canvas_getdir(result->f_canvas);
         result->f_panelfn = readfn;
         result->f_panelclock = clock_new(result, (t_method)panel_tick);
-        f = (t_file *)pd_new(file_class);
+        f = (t_elsefile *)pd_new(elsefile_class);
         f->f_master = master;
         f->f_canvas = result->f_canvas;
         sprintf(buf, "miXed.%lx", (unsigned long)f);
@@ -523,12 +523,12 @@ t_file *file_new(t_pd *master, t_filefn readfn, t_filefn writefn){
     return(result);
 }
 
-void file_setup(void){
-    if(!file_class){
+void elsefile_setup(void){
+    if(!elsefile_class){
         ps__C = gensym("#C");
-        file_class = class_new(gensym("_file"), 0, 0,sizeof(t_file), CLASS_PD | CLASS_NOINLET, 0);
-        class_addsymbol(file_class, panel_symbol);
-        class_addmethod(file_class, (t_method)panel_path,gensym("path"), A_SYMBOL, A_DEFSYM, 0);
+        elsefile_class = class_new(gensym("_elsefile"), 0, 0,sizeof(t_elsefile), CLASS_PD | CLASS_NOINLET, 0);
+        class_addsymbol(elsefile_class, panel_symbol);
+        class_addmethod(elsefile_class, (t_method)panel_path,gensym("path"), A_SYMBOL, A_DEFSYM, 0);
         panel_guidefs();
     }
 }

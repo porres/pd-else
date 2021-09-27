@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "m_pd.h"
-#include "file.h"
+#include "elsefile.h"
 
 #ifdef FLT_MAX
 #define SHARED_FLT_MAX  FLT_MAX
@@ -12,11 +12,11 @@
 #define SHARED_FLT_MAX  1E+36
 #endif
 
-#define rec_C74MAXTRACKS    64
-#define rec_FILEBUFSIZE     4096
+#define REC_MAXTRACKS    64
+#define REC_FILEBUFSIZE     4096
 #define rec_FILEMAXCOLUMNS  78
 
-enum{rec_STEPMODE, rec_RECMODE, rec_PLAYMODE};
+enum{REC_STEPMODE, REC_RECMODE, REC_PLAYMODE};
 
 typedef struct _rec_track{
     t_pd           tr_pd;
@@ -34,7 +34,7 @@ typedef struct _rec_track{
     double         tr_prevtime;
     t_clock       *tr_clock;
     t_outlet      *tr_trackout;
-    t_file  *tr_filehandle;
+    t_elsefile  *tr_elsefilehandle;
 }t_rec_track;
 
 typedef void (*t_rec_trackfn)(t_rec_track *tp);
@@ -44,7 +44,7 @@ typedef struct _rec{
     t_glist       *x_glist;
     int            x_ntracks;  
     t_rec_track     **x_tracks;
-    t_file  *x_filehandle;
+    t_elsefile  *x_elsefilehandle;
 }t_rec;
 
 static t_class *rec_track_class;
@@ -71,7 +71,7 @@ static void rec_track_donext(t_rec_track *tp){
                 delta = 0.;
             tp->tr_atdelta = atmess;
             tp->tr_ixnext = ixmess + 1;
-            if(tp->tr_mode == rec_PLAYMODE){
+            if(tp->tr_mode == REC_PLAYMODE){
                 clock_delay(tp->tr_clock, tp->tr_clockdelay = delta * tp->tr_tempo);
                 tp->tr_prevtime = clock_getlogicaltime();
             }
@@ -107,7 +107,7 @@ static void rec_track_donext(t_rec_track *tp){
         }
     }
 endoftrack:
-    if(tp->tr_mode == rec_PLAYMODE)
+    if(tp->tr_mode == REC_PLAYMODE)
         tp->tr_ixnext = 0;   // CHECKED ready to go in step mode after play
     else{
         if(tp->tr_ixnext > 0){
@@ -119,29 +119,29 @@ endoftrack:
     }
     tp->tr_atdelta = 0;
     tp->tr_prevtime = 0.;
-    tp->tr_mode = rec_STEPMODE;
+    tp->tr_mode = REC_STEPMODE;
 }
 
 static void rec_track_tick(t_rec_track *tp){
-    if(tp->tr_mode == rec_PLAYMODE){
+    if(tp->tr_mode == REC_PLAYMODE){
         tp->tr_prevtime = 0.;
         rec_track_donext(tp);
     }
 }
 
 static void rec_track_setmode(t_rec_track *tp, int newmode){
-    if(tp->tr_mode == rec_PLAYMODE){
+    if(tp->tr_mode == REC_PLAYMODE){
         clock_unset(tp->tr_clock);
         tp->tr_ixnext = 0;
     }
     switch(tp->tr_mode = newmode){
-        case rec_STEPMODE:
+        case REC_STEPMODE:
             break;
-        case rec_RECMODE:
+        case REC_RECMODE:
             binbuf_clear(tp->tr_binbuf);
             tp->tr_prevtime = clock_getlogicaltime();
             break;
-        case rec_PLAYMODE:
+        case REC_PLAYMODE:
             tp->tr_atdelta = 0;
             tp->tr_ixnext = 0;
             tp->tr_prevtime = 0.;
@@ -167,7 +167,7 @@ static void rec_track_doadd(t_rec_track *tp, int ac, t_atom *av){
 }
 
 static void rec_track_float(t_rec_track *tp, t_float f){
-    if(tp->tr_mode == rec_RECMODE){
+    if(tp->tr_mode == REC_RECMODE){
         t_atom at;
         SETFLOAT(&at, f);
         rec_track_doadd(tp, 1, &at);
@@ -175,7 +175,7 @@ static void rec_track_float(t_rec_track *tp, t_float f){
 }
 
 static void rec_track_symbol(t_rec_track *tp, t_symbol *s){
-    if(tp->tr_mode == rec_RECMODE){
+    if(tp->tr_mode == REC_RECMODE){
         t_atom at[2];
         SETSYMBOL(&at[0], gensym("symbol"));
         SETSYMBOL(&at[1], s);
@@ -184,7 +184,7 @@ static void rec_track_symbol(t_rec_track *tp, t_symbol *s){
 }
 
 static void rec_track_list(t_rec_track *tp, t_symbol *s, int ac, t_atom *av){
-    if(tp->tr_mode == rec_RECMODE){
+    if(tp->tr_mode == REC_RECMODE){
         if(av->a_type == A_FLOAT)
             rec_track_doadd(tp, ac, av);
         else{
@@ -202,7 +202,7 @@ static void rec_track_list(t_rec_track *tp, t_symbol *s, int ac, t_atom *av){
 }
 
 static void rec_track_anything(t_rec_track *tp, t_symbol *s, int ac, t_atom *av){
-    if(tp->tr_mode == rec_RECMODE){
+    if(tp->tr_mode == REC_RECMODE){
         t_atom at[ac+1];
         SETSYMBOL(&at[0], s);
         for(int i = 0; i < ac; i++){
@@ -216,7 +216,7 @@ static void rec_track_anything(t_rec_track *tp, t_symbol *s, int ac, t_atom *av)
 }
 
 static void rec_track_bang(t_rec_track *tp){
-    if(tp->tr_mode == rec_RECMODE){
+    if(tp->tr_mode == REC_RECMODE){
         t_atom at[1];
         SETSYMBOL(&at[0], gensym("bang"));
         rec_track_doadd(tp, 1, at);
@@ -224,15 +224,15 @@ static void rec_track_bang(t_rec_track *tp){
 }
 
 static void rec_track_record(t_rec_track *tp){
-    rec_track_setmode(tp, rec_RECMODE);
+    rec_track_setmode(tp, REC_RECMODE);
 }
 
 static void rec_track_play(t_rec_track *tp){
-    rec_track_setmode(tp, rec_PLAYMODE);
+    rec_track_setmode(tp, REC_PLAYMODE);
 }
 
 static void rec_track_stop(t_rec_track *tp){
-    rec_track_setmode(tp, rec_STEPMODE);
+    rec_track_setmode(tp, REC_STEPMODE);
 }
 
 // CHECKED step and play mode
@@ -358,9 +358,9 @@ static void rec_doread(t_rec *x, t_rec_track *target, t_symbol *fname){
     /* CHECKED no global message */
     if((fp = sys_fopen(path, "r"))){
         t_rec_track *tp = 0;
-        char linebuf[rec_FILEBUFSIZE];
+        char linebuf[REC_FILEBUFSIZE];
         t_binbuf *bb = binbuf_new();
-        while(fgets(linebuf, rec_FILEBUFSIZE, fp)){
+        while(fgets(linebuf, REC_FILEBUFSIZE, fp)){
             char *line = linebuf;
             int linelen;
             while(*line && (*line == ' ' || *line == '\t')) line++;
@@ -412,7 +412,7 @@ static void rec_doread(t_rec *x, t_rec_track *target, t_symbol *fname){
     else{
 	/* CHECKED no complaint, open dialog not presented... */
 	/* LATER rethink */
-        panel_open(target ? target->tr_filehandle : x->x_filehandle, 0);
+        panel_open(target ? target->tr_elsefilehandle : x->x_elsefilehandle, 0);
     }
 }
 
@@ -420,7 +420,7 @@ static int rec_writetrack(t_rec *x, t_rec_track *tp, FILE *fp){
     x = NULL;
     int natoms = binbuf_getnatom(tp->tr_binbuf);
     if(natoms) { /* CHECKED empty tracks not stored */
-        char sbuf[rec_FILEBUFSIZE], *bp = sbuf, *ep = sbuf + rec_FILEBUFSIZE;
+        char sbuf[REC_FILEBUFSIZE], *bp = sbuf, *ep = sbuf + REC_FILEBUFSIZE;
         int ncolumn = 0;
         t_atom *ap = binbuf_getvec(tp->tr_binbuf);
         fprintf(fp, "track %d;\n", tp->tr_id);
@@ -471,7 +471,7 @@ static int rec_writetrack(t_rec *x, t_rec_track *tp, FILE *fp){
     return(0);
 }
 
-/* CHECKED empty sequence stored as an empty file */
+/* CHECKED empty sequence stored as an empty elsefile */
 static void rec_dowrite(t_rec *x, t_rec_track *source, t_symbol *fname){
     int failed = 0;
     char path[MAXPDSTRING];
@@ -502,7 +502,7 @@ static void rec_dowrite(t_rec *x, t_rec_track *source, t_symbol *fname){
         failed = 1;
     }
     if(failed)
-        pd_error(x, "[rec]: writing text file \"%s\" failed", path);
+        pd_error(x, "[rec]: writing text elsefile \"%s\" failed", path);
 }
 
 static void rec_readhook(t_pd *z, t_symbol *fname, int ac, t_atom *av){
@@ -521,14 +521,14 @@ static void rec_read(t_rec *x, t_symbol *s){
     if(s && s != &s_)
         rec_doread(x, 0, s);
     else  /* CHECKED no default */
-        panel_open(x->x_filehandle, 0);
+        panel_open(x->x_elsefilehandle, 0);
 }
 
 static void rec_write(t_rec *x, t_symbol *s){
     if(s && s != &s_)
         rec_dowrite(x, 0, s);
     else  /* CHECKED no default */
-        panel_save(x->x_filehandle, canvas_getdir(x->x_glist), 0);
+        panel_save(x->x_elsefilehandle, canvas_getdir(x->x_glist), 0);
 }
 
 static void rec_free(t_rec *x){
@@ -577,9 +577,9 @@ static void *rec_new(t_floatarg f){
             int id;
 //            t_outlet *mainout = outlet_new((t_object *)x, &s_list);
             x->x_glist = canvas_getcurrent();
-            x->x_filehandle = file_new((t_pd *)x, rec_readhook, rec_writehook);
-            if(ntracks > rec_C74MAXTRACKS)
-                ntracks = rec_C74MAXTRACKS;
+            x->x_elsefilehandle = elsefile_new((t_pd *)x, rec_readhook, rec_writehook);
+            if(ntracks > REC_MAXTRACKS)
+                ntracks = REC_MAXTRACKS;
             x->x_ntracks = ntracks;
             x->x_tracks = tracks;
             for(id = 1; id <= ntracks; id++, tracks++){  /* CHECKED 1-based */
@@ -589,8 +589,8 @@ static void *rec_new(t_floatarg f){
                 tp->tr_owner = x;
                 tp->tr_id = id;
                 tp->tr_listed = 0;
-                tp->tr_filehandle = file_new((t_pd *)tp, rec_track_readhook, rec_track_writehook); // LATER rethink
-                tp->tr_mode = rec_STEPMODE;
+                tp->tr_elsefilehandle = elsefile_new((t_pd *)tp, rec_track_readhook, rec_track_writehook); // LATER rethink
+                tp->tr_mode = REC_STEPMODE;
                 tp->tr_muted = 0;
                 tp->tr_restarted = 0;
                 tp->tr_atdelta = 0;
@@ -623,5 +623,5 @@ void rec_setup(void){
     class_addmethod(rec_class, (t_method)rec_read, gensym("read"), A_DEFSYM, 0);
     class_addmethod(rec_class, (t_method)rec_write, gensym("write"), A_DEFSYM, 0);
     class_addmethod(rec_class, (t_method)rec_speed, gensym("speed"), A_DEFFLOAT, 0);
-    file_setup();
+    elsefile_setup();
 }

@@ -9,7 +9,7 @@
 EXTERN_STRUCT _osdir;
 #define t_osdir  struct _osdir
 
-#define OSDIR_FILEMODE  1
+#define OSDIR_elsefileMODE  1
 #define OSDIR_DIRMODE   2
 
 int ospath_length(char *path, char *cwd);
@@ -28,25 +28,25 @@ int osdir_isdir(t_osdir *dp);
 
 #endif
 
-#ifndef __FILE_H__
-#define __FILE_H__
+#ifndef __ELSEFILE_H__
+#define __ELSEFILE_H__
 
-EXTERN_STRUCT _file;
-#define t_file  struct _file
+EXTERN_STRUCT _elsefile;
+#define t_elsefile  struct _elsefile
 
-typedef void (*t_filefn)(t_pd *, t_symbol *, int, t_atom *);
+typedef void (*t_elsefilefn)(t_pd *, t_symbol *, int, t_atom *);
 
-void panel_open(t_file *f, t_symbol *inidir);
-void panel_setopendir(t_file *f, t_symbol *dir);
-t_symbol *panel_getopendir(t_file *f);
-void panel_save(t_file *f, t_symbol *inidir, t_symbol *inifile);
-void panel_setsavedir(t_file *f, t_symbol *dir);
-t_symbol *panel_getsavedir(t_file *f);
-int file_ismapped(t_file *f);
-int file_isloading(t_file *f);
-int file_ispasting(t_file *f);
-void file_free(t_file *f);
-t_file *file_new(t_pd *master, t_filefn readfn, t_filefn writefn);
-void file_setup(void);
+void panel_open(t_elsefile *f, t_symbol *inidir);
+void panel_setopendir(t_elsefile *f, t_symbol *dir);
+t_symbol *panel_getopendir(t_elsefile *f);
+void panel_save(t_elsefile *f, t_symbol *inidir, t_symbol *inifile);
+void panel_setsavedir(t_elsefile *f, t_symbol *dir);
+t_symbol *panel_getsavedir(t_elsefile *f);
+int elsefile_ismapped(t_elsefile *f);
+int elsefile_isloading(t_elsefile *f);
+int elsefile_ispasting(t_elsefile *f);
+void elsefile_free(t_elsefile *f);
+t_elsefile *elsefile_new(t_pd *master, t_elsefilefn readfn, t_elsefilefn writefn);
+void elsefile_setup(void);
 
 #endif

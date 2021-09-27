@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "m_pd.h"
-#include "file.h"
+#include "elsefile.h"
 #include "mifi.h"
 
 #define PANIC_VOID                  0xFF
@@ -35,7 +35,7 @@ typedef struct _midi{
     t_object       x_ob;
     t_canvas      *x_canvas;
     t_symbol      *x_defname;
-    t_file        *x_filehandle;
+    t_elsefile        *x_elsefilehandle;
     int            x_loop;
     int            x_mode;
     int            x_playhead;
@@ -451,7 +451,7 @@ static void midi_stop(t_midi *x){
     }
 }
 
-// All delta times are set permanently (they are stored in a file)
+// All delta times are set permanently (they are stored in a elsefile)
 /*static void midi_hook(t_midi *x, t_floatarg f){
     int nevents;
     if((nevents = x->x_nevents)){
@@ -728,7 +728,7 @@ mfreadfailed:
 }
 
 static void midi_click(t_midi *x){
-    panel_open(x->x_filehandle, 0);
+    panel_open(x->x_elsefilehandle, 0);
 }
 
 static int midi_mfwrite(t_midi *x, char *path){
@@ -758,13 +758,13 @@ static int midi_mfwrite(t_midi *x, char *path){
     result = 1;
 mfwritefailed:
     if(!result)
-        post("while saving sequence into midi file \"%s\"", path);
+        post("while saving sequence into midi elsefile \"%s\"", path);
     mifiwrite_free(mw);
     return(result);
 }
 
-/* CHECKED text file input: absolute timestamps, semi-terminated, verified */
-/* FIXME prevent loading .pd files... */
+/* CHECKED text elsefile input: absolute timestamps, semi-terminated, verified */
+/* FIXME prevent loading .pd elsefiles... */
 static int midi_fromatoms(t_midi *x, int ac, t_atom *av){
     int i, nevents = 0;
     t_atom *ap;
@@ -807,12 +807,12 @@ static void midi_textread(t_midi *x, char *path){
     t_binbuf *bb;
     bb = binbuf_new();
     if(binbuf_read(bb, path, "", 0)) // CHECKED no complaint, open dialog presented
-        panel_open(x->x_filehandle, 0);  // LATER rethink
+        panel_open(x->x_elsefilehandle, 0);  // LATER rethink
     else{
         int nlines = /* CHECKED absolute timestamps */
             midi_fromatoms(x, binbuf_getnatom(bb), binbuf_getvec(bb));
-        if(nlines < 0) // "bad MIDI file (truncated)" alert, even if a text file
-            pd_error(x, "[midi]: bad text file (truncated)");
+        if(nlines < 0) // "bad MIDI elsefile (truncated)" alert, even if a text elsefile
+            pd_error(x, "[midi]: bad text elsefile (truncated)");
         else if(nlines == 0){ // no complaint, sequence erased, LATER rethink
         }
     }
@@ -842,9 +842,9 @@ static void midi_textwrite(t_midi *x, char *path){
     t_binbuf *bb;
     bb = binbuf_new();
     midi_tobinbuf(x, bb);
-    // empty sequence stored as an empty file
+    // empty sequence stored as an empty elsefile
     if(binbuf_write(bb, path, "", 0)) // CHECKME complaint and FIXME
-        pd_error(x, "[midi]: error writing text file");
+        pd_error(x, "[midi]: error writing text elsefile");
     binbuf_free(bb);
 }
 
@@ -858,7 +858,7 @@ static void midi_doread(t_midi *x, t_symbol *fn){
     }
     FILE *fp = sys_fopen(buf, "r");
     if(!(fp)){
-        post("[midi] file '%s' not found", buf);
+        post("[midi] elsefile '%s' not found", buf);
         fclose(fp);
         return;
     }
@@ -906,14 +906,14 @@ static void midi_read(t_midi *x, t_symbol *s){
     if(s && s != &s_)
         midi_doread(x, s);
     else
-        panel_open(x->x_filehandle, 0);
+        panel_open(x->x_elsefilehandle, 0);
 }
 
 static void midi_write(t_midi *x, t_symbol *s){
     if(s && s != &s_)
         midi_dowrite(x, s);
-    else  // creation arg is a default file name
-        panel_save(x->x_filehandle, canvas_getdir(x->x_canvas), x->x_defname); // always start in canvas dir
+    else  // creation arg is a default elsefile name
+        panel_save(x->x_elsefilehandle, canvas_getdir(x->x_canvas), x->x_defname); // always start in canvas dir
 }
 
 static void midi_free(t_midi *x){
@@ -921,8 +921,8 @@ static void midi_free(t_midi *x){
         clock_free(x->x_clock);
     if(x->x_slaveclock)
         clock_free(x->x_slaveclock);
-    if(x->x_filehandle)
-        file_free(x->x_filehandle);
+    if(x->x_elsefilehandle)
+        elsefile_free(x->x_elsefilehandle);
     if(x->x_sequence != x->x_midiini)
         freebytes(x->x_sequence, x->x_midisize * sizeof(*x->x_sequence));
     if(x->x_tempomap != x->x_tempomapini)
@@ -932,7 +932,7 @@ static void midi_free(t_midi *x){
 static void *midi_new(t_symbol * s, int ac, t_atom *av){
     t_midi *x = (t_midi *)pd_new(midi_class);
     x->x_canvas = canvas_getcurrent();
-    x->x_filehandle = file_new((t_pd *)x, midi_readhook, midi_writehook);
+    x->x_elsefilehandle = elsefile_new((t_pd *)x, midi_readhook, midi_writehook);
     x->x_timescale = 1.;
     x->x_newtimescale = 1.;
     x->x_prevtime = 0.;
@@ -989,5 +989,5 @@ void midi_setup(void){
     class_addmethod(midi_class, (t_method)midi_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
 //    class_addmethod(midi_class, (t_method)midi_goto, gensym("goto"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(midi_class, (t_method)midi_speed, gensym("speed"), A_FLOAT, 0);;
-    file_setup();
+    elsefile_setup();
 }
