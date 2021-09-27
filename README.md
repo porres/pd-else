@@ -8,7 +8,7 @@
 
 ### Version: 1.0-0 beta-43 With Live Electronics Tutorial 
 
-###   Released august 30th 2021.
+###   Ureleased
 
 
 
@@ -113,7 +113,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (432 objects):
+## Current Object list (433 objects):
 
 **ASSORTED: [02]**
 
@@ -165,7 +165,7 @@ Cross compiling is also possible with something like this
 - [canvas.zoom]
 - [loadbanger] / [lb]
 
-**MESSAGE MANAGEMENT: [27]**
+**MESSAGE MANAGEMENT: [28]**
 
 - [format]
 - [nmess]
@@ -188,6 +188,7 @@ Cross compiling is also possible with something like this
 - [routetype]
 - [selector]
 - [stack] 
+- [store] 
 - [morph]
 - [interpolate]  
 - [trigger2] / [t2]
