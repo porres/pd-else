@@ -154,10 +154,11 @@ incomming messages sequentially., f 73;
 ;
 #X text 110 476 float - non-zero sets to store elements with the patch
 (default 0), f 66;
-#X floatatom 112 170 5 0 0 0 - - -;
-#X text 19 194 see also:;
-#X obj 19 234 else/sequencer;
-#X obj 19 213 else/stack;
+#X floatatom 121 169 4 0 0 0 - - -;
+#X text 19 174 see also:;
+#X obj 19 235 else/sequencer;
+#X obj 19 193 else/stack;
+#X obj 19 214 else/rec;
 #X connect 23 0 47 0;
 #X connect 25 0 47 0;
 #X connect 26 0 47 1;
