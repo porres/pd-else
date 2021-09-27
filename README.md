@@ -6,9 +6,9 @@
 
 
 
-### Version: 1.0-0 beta-43 With Live Electronics Tutorial 
+### Version: 1.0-0 beta-44 With Live Electronics Tutorial 
 
-###   Ureleased
+###   Released september 27th 2021
 
 
 
@@ -34,7 +34,7 @@
 
 ​	ELSE is a big library for Pure Data that provides a cohesive system for computer music, it also serves as a basis for an Live Electronics Tutorial by the same author, yours truly, Alexandre Torres Porres. This tutorial is also found as part of the download of the ELSE library. This library's repository resides at <https://github.com/porres/pd-else/>.
 
-​	Note that you can also download Camomile with support for ELSE externals, see https://github.com/emviveros/Camomile-ELSE/releases/tag/beta43
+​	Note that you can also download Camomile with support for ELSE externals, see https://github.com/emviveros/Camomile-ELSE/releases/tag/beta44
 
 ​	This project is still in a beta phase, where  changes may occur and backwards compatibility is not guaranteed until a final release is available. 
 
