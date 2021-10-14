@@ -75,7 +75,7 @@ equal temperament), f 74;
 , f 18;
 #X text 154 137 <= some equal divisions;
 #X text 180 64 The autotune message retunes the reading speed to match
-a given scale \, see [else/autotunes] for reference., f 32;
+a given scale \, see [else/autotune] for reference., f 32;
 #X connect 1 0 9 0;
 #X connect 2 0 0 0;
 #X connect 3 0 2 0;
