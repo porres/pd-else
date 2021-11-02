@@ -69,13 +69,13 @@ static void get_settings(t_settings *setts){
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-static void sr_set(t_sr *x, t_floatarg f){
+/*static void sr_set(t_sr *x, t_floatarg f){
     int rate = (int)f;
     if(rate > 0){
         x->x_settings.rate = rate;
         sr_apply(x);
     }
-}
+}*/
 
 static void sr_bang(t_sr *x){
     float sr = sys_getsr();
@@ -136,7 +136,7 @@ static void sr_free(t_sr *x){
 
 static void *sr_new(t_symbol *s, int ac, t_atom *av){
     t_sr *x = (t_sr *)pd_new(sr_class);
-    get_settings(&x->x_settings);
+//    get_settings(&x->x_settings);
     x->x_khz = x->x_period = 0;
     if(ac <= 2){
         while(ac){
@@ -153,7 +153,7 @@ static void *sr_new(t_symbol *s, int ac, t_atom *av){
                 ac--, av++;
             }
             else{
-                sr_set(x, atom_getfloatarg(0, ac, av));
+//                sr_set(x, atom_getfloatarg(0, ac, av));
                 ac--, av++;
             }
         }
@@ -177,6 +177,6 @@ void sr_tilde_setup(void){
     class_addmethod(sr_class, (t_method)sr_khz, gensym("khz"), 0);
     class_addmethod(sr_class, (t_method)sr_ms, gensym("ms"), 0);
     class_addmethod(sr_class, (t_method)sr_sec, gensym("sec"), 0);
-    class_addmethod(sr_class, (t_method)sr_set, gensym("set"), A_DEFFLOAT, 0);
+//    class_addmethod(sr_class, (t_method)sr_set, gensym("set"), A_DEFFLOAT, 0);
     class_addbang(sr_class, (t_method)sr_bang);
 }
