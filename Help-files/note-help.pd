@@ -1,40 +1,44 @@
 #N canvas 712 98 565 591 10;
-#X obj 2 419 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 2 444 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 419 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 2 444 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X text 158 424 (none);
-#X obj 4 562 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 562 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 304 3 pd;
-#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 22 40 cnv 4 4 4 empty empty Text 0 28 2 18 -233017 -1 0;
-#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 22 40 cnv 4 4 4 empty empty Text 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 2 3 cnv 15 301 42 empty empty note 20 20 2 37 -233017 -1 0;
+#X obj 2 3 cnv 15 301 42 empty empty note 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X obj 63 40 cnv 4 4 4 empty empty note 0 28 2 18 -233017 -1 0;
-#X text 100 159 <=;
-#X obj 2 474 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 158 453 (none);
-#X obj 3 226 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 63 40 cnv 4 4 4 empty empty note 0 28 2 18 #e0e0e0 #000000 0
 ;
-#X obj 74 233 cnv 17 3 180 empty empty 0 5 9 0 16 -228856 -162280 0
+#X text 100 159 <=;
+#X obj 2 474 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X text 158 453 (none);
+#X obj 3 226 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 74 233 cnv 17 3 180 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 122 233 set <anything>;
 #X text 214 289 - sets font size, f 54;
@@ -78,13 +82,13 @@
 #X msg 680 245 set note;
 #X obj 630 287 s \$0-note;
 #X msg 537 201 underline \$1;
-#X obj 537 177 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 537 177 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X msg 256 255 bgcolor 100 150 100;
 #X msg 262 277 bgcolor 190 90 200;
 #X msg 394 284 bg \$1;
-#X obj 394 261 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 394 261 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 62 69 You can edit the properties of [note] with messages.
 , f 15;
 #X text 59 394 After setting a background color you can use the 'bg'
@@ -107,11 +111,11 @@ and the inlet is show again., f 74;
 #X msg 229 156 font Dejavu\ Sans\ Mono;
 #X msg 246 205 color 0 0 0;
 #X msg 252 225 color 150 100 50;
-#X obj 99 164 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 99 164 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X msg 66 244 bold \$1;
-#X obj 66 217 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 66 217 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X msg 99 191 italic \$1;
 #X msg 634 137 color 200 0 0;
 #X msg 646 159 color 0 0 0;
@@ -162,9 +166,9 @@ So just be sure you have the fonts you want properly installed., f
 #N canvas 800 75 549 514 +details 0;
 #X obj 188 340 else/note 151 20 dejavu\ sans\ mono empty 0 0 0 0 0
 200 200 200 1 1 note can be justified in different ways;
-#X obj 188 223 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -228856
--1 -1 1;
-#X floatatom 188 280 3 0 0 0 - - -;
+#X obj 188 223 vradio 15 1 0 3 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
+#X floatatom 188 280 3 0 0 0 - - - 0;
 #X text 206 222 left;
 #X text 206 237 center;
 #X text 206 253 right;

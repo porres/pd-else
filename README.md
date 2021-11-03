@@ -30,7 +30,7 @@
 
 
 
-This version of ELSE needs **Pd 0.51-3* or above.
+This version of ELSE needs **Pd 0.52-0* or above.
 
 ELSE is a big library of externals that extends the performance Pure Data (Pd) - Miller S. Puckette's realtime computer music environment (download Pd from: http://msp.ucsd.edu/software.html).
 
@@ -60,7 +60,7 @@ ELSE provides a cohesive system for computer music, it also serves as a basis fo
 
 ​	ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path or use [declare -path else]. ELSE comes with a binary that you can use load via "Preferences => Startup" or with [declare -lib else], but all that this does is print information of what version of ELSE you have when you open Pd.  You can also just load the 'else' external for that same purpose, check its help file. 
 
-​	It's important to stress this release needs Pd Vanilla 0.51-3 or above (Pd Extended/Purr Data aren't supported). 
+​	It's important to stress this release needs Pd Vanilla 0.52-0 or above (Pd Extended/Purr Data aren't supported). 
 
 
 
@@ -86,7 +86,7 @@ It will still take a little while for ELSE to stabilize into a final version. Fo
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
 
-<pre>make pdincludepath=~/pd-0.51-1/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.51-1/bin/)</pre>
+<pre>make pdincludepath=~/pd-0.52-0/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.52-0 /bin/)</pre>
 
 * Installing with pdlibbuilder
 
