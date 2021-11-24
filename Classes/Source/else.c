@@ -50,8 +50,7 @@ void print_else_obj(t_else_obj *x){
         else_major, else_minor, else_bugfix, STATUS, status_number,
         min_major, min_minor, min_bugfix, major, minor, bugfix);
     else
-        pd_error(x, "- ELSE %d.%d-%d %s-%d needs at least Pd %d.%d-%d (you have %d.%d-%d, please upgrade \
-                 by going to \"Help Menu\" => \"Check for Updates\" and get the latest Vanilla",
+        pd_error(x, "- ELSE %d.%d-%d %s-%d needs at least Pd %d.%d-%d (you have %d.%d-%d, please upgrade",
                  else_major, else_minor, else_bugfix, STATUS, status_number,
                  min_major, min_minor, min_bugfix, major, minor, bugfix);
     post("-------------------------------------------------------------------------------");
