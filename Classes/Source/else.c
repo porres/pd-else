@@ -43,16 +43,17 @@ void print_else_obj(t_else_obj *x){
     post("- Author: Alexandre Torres Porres");
     post("- Repository: https://github.com/porres/pd-else");
     post("- License: Do What The Fuck You Want To Public License, unless otherwise noted");
-    if(major > min_major
-       || major == min_major && minor > min_minor
-       || major == min_major && minor == min_minor && bugfix >= min_bugfix)
+    if((major > min_major)
+       || (major == min_major && minor > min_minor)
+       || (major == min_major && minor == min_minor && bugfix >= min_bugfix))
         post("- ELSE %d.%d-%d %s-%d needs at least Pd %d.%d-%d (you have %d.%d-%d, you're good!)",
         else_major, else_minor, else_bugfix, STATUS, status_number,
         min_major, min_minor, min_bugfix, major, minor, bugfix);
     else
-        pd_error(x, "- ELSE %d.%d-%d %s-%d needs at least Pd %d.%d-%d (you have %d.%d-%d, please upgrade!)",
-        else_major, else_minor, else_bugfix, STATUS, status_number,
-        min_major, min_minor, min_bugfix, major, minor, bugfix);
+        pd_error(x, "- ELSE %d.%d-%d %s-%d needs at least Pd %d.%d-%d (you have %d.%d-%d, please upgrade \
+                 by going to \"Help Menu\" => \"Check for Updates\" and get the latest Vanilla",
+                 else_major, else_minor, else_bugfix, STATUS, status_number,
+                 min_major, min_minor, min_bugfix, major, minor, bugfix);
     post("-------------------------------------------------------------------------------");
     post("- NOTE: This library also includes a tutorial by Alexandre Torres Porres");
     post("that depends on this library. Find the 'live-electronics-folder' folder");

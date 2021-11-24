@@ -152,11 +152,13 @@ static void *sr_new(t_symbol *s, int ac, t_atom *av){
                 else goto errstate;
                 ac--, av++;
             }
+            else
+                goto errstate;
+/*
             else{
-                else goto errstate;
 //                sr_set(x, atom_getfloatarg(0, ac, av));
                 ac--, av++;
-            }
+            }*/
         }
     }
     else goto errstate;
