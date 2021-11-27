@@ -67,12 +67,10 @@
 #X text 218 288 - trims to a sample range, f 53;
 #X text 218 358 - sets file's sample rate (default: patch's), f 53
 ;
-#N canvas 447 114 834 477 load/save 0;
+#N canvas 809 104 834 477 load/save 0;
 #X msg 563 243 clear;
 #X text 590 217 open/close buffer window;
 #X text 607 242 clears all channels;
-#X text 564 101 read a file specified by a symbol (.wav or .aif/.aiff)
-, f 27;
 #X text 502 143 without symbol: opens dialog box;
 #X text 532 177 reloads the last opened file;
 #X text 588 314 without symbol: opens dialog box, f 17;
@@ -85,37 +83,39 @@
 #X text 38 190 The "save" message saves the contents of [sample~] into
 an audio file. If no symbol is given \, a standard file dialog is opened
 for naming the file., f 59;
-#X text 38 229 You can specify a file extension with the "wav" and
-"aif" messages \, but you can also specify a file extension in the
-given symbol (such as "test.wav"). If you don't specify an extension
-\, [sample~] saves in the same extension of the most recently opened
-audio file or the last given extension message ("wav" of "aif"). By
-default \, [sample~] saves in .wav format., f 59;
 #X text 38 316 The "depth" message sets the bit depth for writting
 files \, it accepts floats:, f 59;
 #X text 161 335 16 - 16-bit integer (default) \; 24 - 24-bit integer
 \; 32 - 32-bit float \;;
 #X text 643 288 writes to a file;
-#X text 39 125 You can specify a sound file to load as the second argument
-or via the "load" message ([sample~] can load 'wav' and 'aif/aiff'
-sound files). Without a given symbol \, "load" opens a dialog box.
-The "reload" message reloads the last opened file.;
 #X msg 456 107 load stereo.wav;
 #X obj 445 361 else/sample~ buffer_\$0 -ch 2;
 #X obj 445 394 else/display;
 #X msg 419 68 load stereo.wav 44100 88200;
 #X msg 446 33 load stereo.wav 44100;
-#X connect 0 0 20 0;
-#X connect 7 0 20 0;
-#X connect 8 0 20 0;
-#X connect 9 0 20 0;
-#X connect 10 0 20 0;
-#X connect 11 0 20 0;
-#X connect 12 0 20 0;
-#X connect 19 0 20 0;
-#X connect 20 0 21 0;
-#X connect 22 0 20 0;
-#X connect 23 0 20 0;
+#X text 564 101 read a file specified by a symbol (.wav \, .aif/.aiff
+or .caf), f 33;
+#X text 38 229 You can specify a file extension with the "wav" \, "aif"
+and "caf" messages \, but you can also specify a file extension in
+the given symbol (such as "test.wav"). If you don't specify an extension
+\, [sample~] saves in the same extension of the most recently opened
+audio file or the last given extension message ("wav" of "aif"). By
+default \, [sample~] saves in .wav format.;
+#X text 39 125 You can specify a sound file to load as the second argument
+or via the "load" message ([sample~] can load 'wav' \, 'caf' and 'aif/aiff'
+sound files). Without a given symbol \, "load" opens a dialog box.
+The "reload" message reloads the last opened file.;
+#X connect 0 0 17 0;
+#X connect 6 0 17 0;
+#X connect 7 0 17 0;
+#X connect 8 0 17 0;
+#X connect 9 0 17 0;
+#X connect 10 0 17 0;
+#X connect 11 0 17 0;
+#X connect 16 0 17 0;
+#X connect 17 0 18 0;
+#X connect 19 0 17 0;
+#X connect 20 0 17 0;
 #X restore 466 147 pd load/save;
 #X text 218 401 - sets maximum buffer size in samples, f 53;
 #X text 218 415 - sets maximum buffer size in ms, f 53;
