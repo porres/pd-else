@@ -27,7 +27,7 @@ that is also somewhat compatible to [text sequence] \, where the first
 float in a line represent a wait time. The thing is that tracks are
 separated subsequentially., f 52;
 #X obj 714 270 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 1600 1;
+-1 -1 0 1;
 #X floatatom 630 333 5 0 0 0 - - -;
 #X obj 630 299 store, f 12;
 #A saved;
@@ -41,9 +41,10 @@ separated subsequentially., f 52;
 -1 -1;
 #X obj 633 364 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;
-#X text 518 107 The [store] object stores messages sequentially. You
-can use it as a sequencer and a recorder because it takes bangs to
-output messages sequentially. Check its help file., f 52;
+#X text 518 107 The [store] object stores messages sequentially and
+is an abstraction based on [text]. You can use it as a sequencer and
+a recorder because it takes bangs to output messages sequentially.
+Check its help file., f 52;
 #X connect 1 0 16 0;
 #X connect 2 0 16 0;
 #X connect 6 0 16 3;

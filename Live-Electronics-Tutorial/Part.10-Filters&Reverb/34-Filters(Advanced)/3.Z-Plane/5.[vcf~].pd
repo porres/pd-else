@@ -1,10 +1,10 @@
 #N canvas 331 23 988 790 12;
 #X declare -path else;
 #N canvas 122 91 603 581 Z-Plane-biquad 0;
-#X obj 101 101 cnv 15 450 450 empty empty empty 20 12 1 14 -191407
--66577 0;
+#X obj 101 101 cnv 15 450 450 empty empty empty 20 12 1 14 #b8b8b8
+#404040 0;
 #X obj 176 176 bng 300 1000 1000 0 \$0-bng \$0-bng-set empty 17 7 0
-10 -191407 -245500 -1;
+10 #b8b8b8 #ececec #000000;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X coords 0 1 100 -1 75 75 1;
 #X restore 101 101 graph;
@@ -113,20 +113,20 @@
 #N canvas 0 22 450 300 (subpatch) 0;
 #X coords 0 1 100 -1 75 75 1;
 #X restore 476 476 graph;
-#X obj 325 101 cnv 1 2 450 empty empty empty 20 12 0 14 -258113 -66577
+#X obj 325 101 cnv 1 2 450 empty empty empty 20 12 0 14 #fc0400 #404040
 0;
-#X obj 100 325 cnv 1 450 2 empty empty empty 20 12 0 14 -258113 -66577
+#X obj 100 325 cnv 1 450 2 empty empty empty 20 12 0 14 #fc0400 #404040
 0;
-#X obj 177 177 cnv 15 15 15 empty \$0-pole1 X 295 150 0 14 -191407
--66577 0;
-#X obj 177 177 cnv 15 15 15 empty \$0-zero1 empty 145 150 0 14 -191407
--66577 0;
-#X obj 177 177 cnv 15 15 15 empty \$0-pole2 empty 294 150 0 14 -191407
--66577 0;
-#X obj 177 177 cnv 15 15 15 empty \$0-zero2 empty 145 150 0 14 -191407
--66577 0;
-#X floatatom 291 27 0 0 0 0 - #0-im -;
-#X floatatom 238 27 0 0 0 0 - #0-re -;
+#X obj 177 177 cnv 15 15 15 empty \$0-pole1 X 198 76 0 14 #b8b8b8 #404040
+0;
+#X obj 177 177 cnv 15 15 15 empty \$0-zero1 empty 145 150 0 14 #b8b8b8
+#404040 0;
+#X obj 177 177 cnv 15 15 15 empty \$0-pole2 empty 294 150 0 14 #b8b8b8
+#404040 0;
+#X obj 177 177 cnv 15 15 15 empty \$0-zero2 empty 145 150 0 14 #b8b8b8
+#404040 0;
+#X floatatom 291 27 0 0 0 0 - #0-im - 0;
+#X floatatom 238 27 0 0 0 0 - #0-re - 0;
 #N canvas 136 76 1299 625 GUI 0;
 #X obj 117 211 s \$0-P1-im;
 #X obj 6 211 s \$0-P1-re;
@@ -150,8 +150,8 @@ if (p_pair_\$0 == 1 \, sin($f2 * pi_\$0) * -$f1 \, 0);
 #X obj 6 104 r \$0-p1-sl;
 #X obj 234 101 s \$0-p1-sl-set;
 #X obj 1073 156 s \$0-bng-set;
-#X obj 1073 106 tgl 15 0 empty empty empty 17 7 0 10 -1 -262144 -1
-1 1;
+#X obj 1073 106 tgl 15 0 empty empty empty 17 7 0 10 #000000 #fcfcfc
+#000000 0 1;
 #X obj 1073 130 metro 1000;
 #X obj 1073 81 loadbang;
 #X obj 486 67 r \$0-z1-sl;
@@ -186,13 +186,13 @@ if (p_pair_\$0 == 1 \, sin($f2 * pi_\$0) * -$f1 \, 0);
 #X obj 418 488 s \$0-pair_z-set;
 #X obj 259 428 spigot;
 #X msg 350 374 0;
-#X obj 354 405 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 354 405 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 284 458 f;
 #X obj 385 430 t f b f;
 #X obj 286 533 s \$0-z2-sl-set;
 #X msg 305 502 set \$1;
-#X floatatom 492 324 5 0 0 0 - - -;
+#X floatatom 492 324 5 0 0 0 - - - 0;
 #X obj 795 459 s \$0-p1-sl-set;
 #X msg 828 429 label amp;
 #X msg 815 403 label amp_1;
@@ -342,11 +342,11 @@ if (p_pair_\$0 == 1 \, sin($f2 * pi_\$0) * -$f1 \, 0);
 #X restore 487 306 pd Z-Plane-biquad;
 #X obj 674 162 *~;
 #X obj 637 129 noise~;
-#X obj 178 463 nbx 5 14 1 100 1 1 \$0-Q empty empty 0 -8 0 10 -228856
--1 -1 2.37137 256;
-#X floatatom 402 431 0 0 0 0 - #0-gain -;
-#X floatatom 331 431 0 0 0 0 - #0-im -;
-#X floatatom 261 431 0 0 0 0 - #0-re -;
+#X obj 178 463 nbx 5 14 1 100 1 1 \$0-Q empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 2.37137 256;
+#X floatatom 402 431 0 0 0 0 - #0-gain - 0;
+#X floatatom 331 431 0 0 0 0 - #0-im - 0;
+#X floatatom 261 431 0 0 0 0 - #0-re - 0;
 #X obj 402 462 v g;
 #X obj 331 459 v ai;
 #X obj 261 459 v ar;
@@ -356,25 +356,25 @@ if (p_pair_\$0 == 1 \, sin($f2 * pi_\$0) * -$f1 \, 0);
 #X text 334 494 im;
 #X text 92 57 y1[n] = x1[n] + ar * y1[n-1] - ai * y2[n-1] \; y2[n]
 = x2[n] + ai * y1[n-1] + ar * y2[n-1];
-#X floatatom 692 129 5 0 0 0 - #0-gain -;
+#X floatatom 692 129 5 0 0 0 - #0-gain - 0;
 #X obj 674 208 cpole~, f 9;
-#X floatatom 734 181 5 0 0 0 - #0-im -;
-#X floatatom 714 158 5 0 0 0 - #0-re -;
+#X floatatom 734 181 5 0 0 0 - #0-im - 0;
+#X floatatom 714 158 5 0 0 0 - #0-re - 0;
 #X obj 519 74 fexpr~ g * $x1 + ar * $y1[-1] - ai * $y2[-1] \; ai *
 $y1[-1] + ar * $y2[-1];
 #X obj 519 46 noise~;
 #X obj 76 460 nbx 5 14 -1e+37 1e+37 0 0 \$0-freq-send \$0-freq empty
-0 -8 0 10 -228856 -1 -1 0 256;
+0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X text 51 457 Hz;
 #X obj 168 522 noise~;
-#X obj 287 522 nbx 5 14 1 100 1 0 empty \$0-Q empty 0 -8 0 10 -228856
--1 -1 2.37137 256;
+#X obj 287 522 nbx 5 14 1 100 1 0 empty \$0-Q empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X obj 223 523 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-freq-send empty
-0 -8 0 10 -228856 -1 -1 0 256;
+0 -8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 190 552 vcf~ 500 1;
 #X text 753 157 re;
 #X text 775 181 im;
-#X obj 85 189 cnv 15 315 120 empty empty empty 20 12 0 14 -216246 -66577
+#X obj 85 189 cnv 15 315 120 empty empty empty 20 12 0 14 #d0c8d4 #404040
 0;
 #X text 212 199 1 - ar*z^-1;
 #X text 179 216 1 - 2*ar*z^-1 + |a|^2*z^-2;
@@ -449,16 +449,16 @@ the transfer function of both parts below., f 54;
 Check the Z Plane plot to the right. Again \, the angle represents
 the frequency and the radius the resonance.;
 #X obj 79 437 hsl 128 15 100 10000 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
+#dcdcdc #000000 #000000 0 1;
 #X text 163 461 Q;
 #X obj 804 27 declare -path else;
-#X text 45 327 The coefficients are caclulated in the suboatch below
+#X text 46 716 Note that [vcf~] is not a pair of conjugate complex
+poles and thus it can't be implemented with [biquad~]!;
+#X text 45 327 The coefficients are caclulated in the subpatch below
 from frequency and Q values. This is used in [fexpr~] but the difference
 equation is simplified because we don't have an imaginaty input. See
 [pd coefficients] to see how we get the complex pole's coordinates.
 , f 53;
-#X text 46 716 Note that [vcf~] is not a pair of conjugate complex
-poles and thus it can't be implemented with [biquad~]!;
 #X connect 1 0 16 0;
 #X connect 2 0 1 0;
 #X connect 3 0 40 1;

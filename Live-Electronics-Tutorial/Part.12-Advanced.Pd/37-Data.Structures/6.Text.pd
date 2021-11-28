@@ -1,5 +1,6 @@
-#N struct 1004-DS float x float y text z;
-#N canvas 592 23 473 607 12;
+#N struct 1003-DS float x float y text z;
+#N canvas 592 23 472 647 12;
+#X declare -path else;
 #N canvas 440 205 535 532 template 0;
 #X obj 299 433 drawnumber x 165 10 900 x=;
 #X obj 298 466 drawnumber y 165 25 900 y=;
@@ -17,36 +18,37 @@ drawn one more time., f 31;
 #X text 39 155 We now use the [drawtext] object \, which again is actually
 just another alias for [drawnumber]/[drawsymbol] \, at least so far.
 ;
-#X restore 116 86 pd template;
-#X obj 341 504 pointer;
-#X text 31 16 This example shows how to add and set a "text" data type
+#X restore 118 128 pd template;
+#X obj 343 546 pointer;
+#X text 33 58 This example shows how to add and set a "text" data type
 in Data Structures. See [pd template] for the declaration and drawing
 instructions., f 57;
-#X obj 145 483 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -228856
--1 -1 1;
-#X floatatom 145 535 2 0 0 0 - - -;
-#X msg 102 422 1 2 3 4 a b c d e;
-#X msg 116 449 list a b c d e f g h i j;
-#X text 164 480 <= set line;
-#X msg 82 396 symbol text;
-#X floatatom 34 396 5 0 0 0 - - -;
-#X obj 102 563 text set -s \$0-DS z;
-#X obj 232 536 append \$0-DS x y;
-#X obj 75 128 initmess \; pd-\$0-display clear \, vis 1 \; \$0-pointer
-traverse pd-\$0-display \, bang \; \$0-coords 25 25;
-#X obj 341 474 r \$0-pointer;
-#X obj 232 506 r \$0-coords;
+#X obj 147 525 vradio 15 1 0 3 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
+#X floatatom 147 577 2 0 0 0 - - - 0;
+#X msg 104 464 1 2 3 4 a b c d e;
+#X msg 118 491 list a b c d e f g h i j;
+#X text 166 522 <= set line;
+#X msg 84 438 symbol text;
+#X floatatom 36 438 5 0 0 0 - - - 0;
+#X obj 104 605 text set -s \$0-DS z;
+#X obj 234 578 append \$0-DS x y;
+#X obj 343 516 r \$0-pointer;
+#X obj 234 548 r \$0-coords;
 #N canvas 1124 146 329 194 \$0-display 1;
-#X scalar 1004-DS 25 25 \; \;;
-#X restore 209 86 pd \$0-display;
-#X text 33 215 A text can have many lines with lists of one or more
+#X scalar 1003-DS 25 25 \; \;;
+#X restore 211 128 pd \$0-display;
+#X text 35 257 A text can have many lines with lists of one or more
 elements (symbols or floats). We can set a text with the [text] object
 \, which performs all sorts of operations in a text (which doesn't
 have to be a Data Structure \, by the way - check its help file).,
 f 56;
-#X text 34 306 When dealing with Data Structures \, the [text] object
+#X text 36 348 When dealing with Data Structures \, the [text] object
 needs the "-s" flag followed by a struct name and the variable name.
 You can define which line to set with the second inlet., f 56;
+#X obj 285 16 declare -path else;
+#X obj 77 170 initmess \; pd-\$0-display clear \, vis 1 \; \$0-pointer
+traverse pd-\$0-display \, bang \; \$0-coords 25 25;
 #X connect 1 0 11 2;
 #X connect 3 0 4 0;
 #X connect 4 0 10 1;
@@ -55,5 +57,5 @@ You can define which line to set with the second inlet., f 56;
 #X connect 8 0 10 0;
 #X connect 9 0 10 0;
 #X connect 11 0 10 3;
-#X connect 13 0 1 0;
-#X connect 14 0 11 0;
+#X connect 12 0 1 0;
+#X connect 13 0 11 0;

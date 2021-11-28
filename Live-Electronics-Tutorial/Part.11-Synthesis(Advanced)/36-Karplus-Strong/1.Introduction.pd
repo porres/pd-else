@@ -3,11 +3,11 @@
 #X obj 295 139 tabwrite~ \$0-noise;
 #X obj 126 431 tabread4~ \$0-noise;
 #X obj 126 358 phasor~ 1;
-#X floatatom 203 390 4 0 0 0 - - -;
+#X floatatom 203 390 7 0 0 0 - - - 0;
 #X obj 126 392 *~;
 #X obj 203 358 expr sr / $f1;
 #X obj 295 111 noise~;
-#X obj 29 169 cnv 15 398 98 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 29 169 cnv 15 398 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-noise 44100 float 0;
@@ -18,7 +18,7 @@
 #X obj 500 366 tabplay~ \$0-noise, f 8;
 #X obj 486 299 expr sr / $f1 \; 1000 / $f1;
 #X text 525 271 Freq;
-#X floatatom 581 343 5 0 0 0 - - -;
+#X floatatom 581 343 5 0 0 0 - - - 0;
 #X text 560 342 ms;
 #X obj 731 354 noise~;
 #X obj 751 396 *~;
@@ -27,13 +27,13 @@
 #X text 806 302 ms;
 #X msg 826 249 110;
 #X obj 203 313 nbx 5 16 -1e+37 1e+37 0 0 empty freq empty 0 -8 0 11
--228856 -1 -1 60 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 126 473 out~;
 #X obj 544 455 out~;
 #X obj 751 460 out~;
 #X obj 263 111 lb;
 #X text 132 311 Frequency;
-#X text 240 390 Period in samples;
+#X text 263 390 Period in samples;
 #X obj 616 272 sr~;
 #X obj 288 433 initmess \; freq 60;
 #X text 20 14 The Karplus Strong technique repeats a noise periodically
@@ -42,7 +42,7 @@ it \, let's populate an array with noise and read from it with [phasor~]
 at a certain frequency (which also defines a period to read from the
 buffer).;
 #X obj 486 219 tempo 60 100 -on;
-#X floatatom 486 271 5 0 0 0 - - -;
+#X floatatom 486 271 5 0 0 0 - - - 0;
 #X text 482 59 Now [tabplay~] plays a grain whose period in samples
 depends on a frequency and sends it to a feedback delay line with the
 same period as the delay time. This grain gets then looped and a feedback

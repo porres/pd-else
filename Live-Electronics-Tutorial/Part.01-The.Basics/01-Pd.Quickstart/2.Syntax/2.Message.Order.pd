@@ -11,18 +11,18 @@
 #X msg 97 227 bang;
 #X msg 212 192 bang;
 #X obj 115 511 swap;
-#X floatatom 146 482 3 0 0 0 - - -;
-#X floatatom 115 482 3 0 0 0 - - -;
+#X floatatom 146 482 3 0 0 0 - - - 0;
+#X floatatom 115 482 3 0 0 0 - - - 0;
 #X obj 115 587 /;
-#X floatatom 146 547 3 0 0 0 - - -;
-#X floatatom 115 546 3 0 0 0 - - -;
-#X floatatom 283 485 5 0 0 0 - - -;
-#X floatatom 221 485 5 0 0 0 - - -;
-#X floatatom 344 590 5 0 0 0 - - -;
-#X floatatom 221 591 5 0 0 0 - - -;
+#X floatatom 146 547 3 0 0 0 - - - 0;
+#X floatatom 115 546 3 0 0 0 - - - 0;
+#X floatatom 283 485 5 0 0 0 - - - 0;
+#X floatatom 221 485 5 0 0 0 - - - 0;
+#X floatatom 344 590 5 0 0 0 - - - 0;
+#X floatatom 221 591 5 0 0 0 - - - 0;
 #X obj 221 560 float;
 #X obj 221 517 trigger bang float;
-#X floatatom 115 620 0 0 0 0 - - -;
+#X floatatom 115 620 0 0 0 0 - - - 0;
 #X text 203 620 The [swap] object implemented with [trigger] & [float]
 , f 29;
 #X text 21 498 swapping the output order:, f 13;
@@ -42,7 +42,7 @@
 #X obj 776 426 print Sequence;
 #X obj 776 271 trigger float float float;
 #X msg 472 533 1 \, 2 \, 3 \, 4 \, five \, six \, 7, f 12;
-#X obj 471 597 print Several_Messages;
+#X obj 472 597 print Several_Messages;
 #X text 56 193 Undefined order;
 #X text 510 24 The flow of data in Pd is executed in depth first fashion.
 This means that whenever there is a new branch of data \, Pd will reach
@@ -57,16 +57,16 @@ the next output of the [trigger] object and so on., f 69;
 right order \, as common sense would predict., f 32;
 #X obj 723 600 +;
 #X msg 723 564 1 3;
-#X floatatom 723 634 5 0 0 0 - - -;
+#X floatatom 723 634 5 0 0 0 - - - 0;
 #X msg 765 564 10 20;
 #X text 550 186 <= click (depth first);
-#X text 677 469 A list sent to an object may also spread the elements
+#X text 684 485 A list sent to an object may also spread the elements
 into different inlets. This happens when the left inlet doesn't take
 lists. The right to left order is respected \, of course., f 45;
 #X obj 860 601 pack f f f f;
 #X msg 860 565 1 3 5;
 #X obj 860 633 print;
-#X floatatom 941 567 5 0 0 0 - - -;
+#X floatatom 941 567 5 0 0 0 - - - 0;
 #X text 32 20 Pd's Hot/Cold structure demands an order where things
 need to first reach the rightmost inlets (the "cold" ones) and then
 the leftmost (the "hot" one). Hence \, most objects output data via
@@ -85,8 +85,8 @@ first \, and the value sent to the right (cold) is sent out later to
 the left outlet.;
 #X obj 690 781 delay 5;
 #X obj 601 746 trigger bang bang bang, f 26;
-#X obj 601 717 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 601 717 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X obj 780 817 print one;
 #X obj 690 817 print two;
 #X obj 601 817 print three;
@@ -96,7 +96,8 @@ the left outlet.;
 object like [delay]. The delay object receives a bang and delays it
 for a given amount in miliseconds (ms). Hence \, the output of [delay]
 gets delayed for 5 ms and you can check that it is output later in
-the terminal window.;
+the terminal window. Note this is also true if the [delay] time is
+0!;
 #X connect 0 0 4 0;
 #X connect 1 0 3 0;
 #X connect 1 1 2 0;

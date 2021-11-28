@@ -1,34 +1,34 @@
 #N canvas 373 46 908 589 12;
 #X declare -path else;
-#X obj 267 243 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 267 243 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 112 198 s~ \$0-sample;
 #X obj 170 428 *~;
 #X obj 109 365 r~ \$0-sample;
-#X obj 194 253 nbx 5 14 0.01 20 1 1 empty \$0-LFO empty 0 -8 0 10 -228856
--1 -1 1 256;
+#X obj 193 253 nbx 4 14 0.01 20 1 1 empty \$0-LFO empty 0 -8 0 10 #dcdcdc
+#000000 #000000 1 256;
 #X text 313 242 Depth;
-#X text 158 252 LFO;
+#X text 157 252 LFO;
 #X obj 193 278 osc~;
 #X obj 170 475 out~;
 #X obj 559 200 r~ \$0-sample;
 #X obj 559 359 out~;
 #X obj 559 316 tremolo~ 5 0.75;
 #X obj 610 237 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 661 291 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 664 268 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X text 669 236 Hz;
+#dcdcdc #000000 #000000 0 256;
+#X obj 664 268 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X text 669 234 Hz;
 #X text 706 267 Depth;
 #X obj 224 368 rescale~ 0 1;
 #X obj 264 288 expr 1 - $f1;
-#X floatatom 264 314 5 0 0 0 - - -;
-#X obj 291 454 vsl 20 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 4827 1;
+#X floatatom 264 314 5 0 0 0 - - - 0;
+#X obj 291 454 vsl 20 100 0 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 264 266 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 316 546 0;
 #X text 315 447 1;
 #X text 425 461 In the example on left \, you could also try another

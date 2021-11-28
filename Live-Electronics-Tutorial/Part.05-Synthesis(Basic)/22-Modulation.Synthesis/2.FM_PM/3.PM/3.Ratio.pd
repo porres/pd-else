@@ -1,15 +1,15 @@
 #N canvas 547 60 696 464 12;
 #X declare -path else;
-#X obj 255 148 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 255 148 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 237 318 *~;
 #X obj 112 279 pmosc~;
 #X obj 112 181 nbx 4 14 -1e+37 1e+37 0 1 empty \$0-carrier empty 0
--8 0 10 -228856 -1 -1 100 256;
+-8 0 10 #dcdcdc #000000 #000000 100 256;
 #X obj 166 194 cents2ratio;
-#X floatatom 166 218 6 0 0 0 - - -;
+#X floatatom 166 218 8 0 0 0 - - - 0;
 #X obj 166 171 nbx 4 14 -1e+37 1e+37 0 1 empty \$0-cents empty 0 -8
-0 10 -228856 -1 -1 705 256;
+0 10 #dcdcdc #000000 #000000 705 256;
 #X obj 395 341 initmess \; \$0-carrier 100 \; \$0-cents 705;
 #X text 67 26 Here's a simple example of a PM patch where we use the
 same ratio structure as in the FM patch given before. One addition

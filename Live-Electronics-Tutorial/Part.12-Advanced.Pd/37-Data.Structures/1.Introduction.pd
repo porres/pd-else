@@ -1,5 +1,5 @@
 #N struct 1003-DS-1 float number;
-#N canvas 204 23 898 531 12;
+#N canvas 582 42 898 531 12;
 #N canvas 244 356 450 323 graphic 0;
 #X scalar 1003-DS-1 666 \;;
 #X restore 148 471 pd graphic;
@@ -60,7 +60,7 @@ object., f 61;
 and storage format that enables access and modification of the data.
 Pd also offers the ability to attach shapes and colors to the data
 in order to visualize it and/or edit it graphically., f 62;
-#N canvas 392 56 506 366 template-1 1;
+#N canvas 392 56 506 366 template-1 0;
 #X obj 115 320 drawnumber number;
 #X text 248 320 - drawing instruction;
 #X text 40 29 The [struct] object declares and defines a data structure
@@ -97,9 +97,9 @@ the data is given for visualization and editing., f 50;
 #X msg 608 266 traverse pd-display \, bang;
 #X obj 471 180 trigger list bang bang;
 #X obj 471 245 unpack f f f;
-#X floatatom 471 300 3 0 0 0 - - -;
-#X floatatom 514 300 3 0 0 0 - - -;
-#X floatatom 557 300 3 0 0 0 - - -;
+#X floatatom 471 300 3 0 0 0 - - - 0;
+#X floatatom 514 300 3 0 0 0 - - - 0;
+#X floatatom 557 300 3 0 0 0 - - - 0;
 #X text 523 276 x;
 #X text 565 276 y;
 #X text 35 226 Note that the "float x" and "float y" declarations can

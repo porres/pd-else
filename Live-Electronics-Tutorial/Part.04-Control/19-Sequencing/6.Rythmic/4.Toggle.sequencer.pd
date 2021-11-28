@@ -1,6 +1,6 @@
 #N canvas 405 110 745 493 12;
 #X declare -path else;
-#X obj 87 38 tgl 30 0 empty empty empty 17 7 0 10 -228856 -1 -1 1 1
+#X obj 87 38 tgl 30 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
 ;
 #X text 218 46 TEMPO;
 #X obj 138 43 nbx 5 18 60 100 0 0 empty empty empty 0 -8 0 15 -228856
@@ -270,11 +270,12 @@
 #X obj 73 345 bl.saw~;
 #X text 529 397 arrays:;
 #X obj 87 82 tempo 60 -div 4;
-#X text 266 97 Now we join the structure from previous examples to
-implement a note sequencer that is controlled by toggles. This way
-you can generate melodic rythms. The notes sequence is now controlled
-by sliders. Open the subpatch below for more info., f 61;
 #X obj 555 43 declare -path else;
+#X text 266 85 Now we join the structure from the array sequencer with
+the drrum sequencer example to implement a note sequencer that is controlled
+by toggles. This way you can generate melodic rythms. The notes sequence
+is now controlled by sliders. Open the subpatch below for more info.
+, f 61;
 #X connect 0 0 3 0;
 #X connect 0 0 25 0;
 #X connect 2 0 25 1;

@@ -6,8 +6,8 @@
 #X obj 139 278 pack;
 #X obj 180 399 osc~ 440;
 #X obj 241 526 out~;
-#X obj 139 39 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 139 39 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X msg 369 304 250;
 #X msg 332 304 100;
 #X text 290 303 decay;
@@ -19,7 +19,7 @@
 #X obj 259 446 slop~ 1e+09, f 18;
 #X obj 382 388 loadbang;
 #X obj 382 417 expr 1000./150.;
-#X text 45 264 gate/sustain values =====>, f 13;
+#X text 41 264 gate/sustain values =====>, f 13;
 #X text 390 94 Here's how to implement an ADSR exponential envelope
 with vanilla. We use again the [slop~] object for that. We need to
 calculate the sustain point from the gate input value and also take
@@ -30,8 +30,8 @@ below., f 43;
 #X msg 139 304 \$1 \, \$2 0 150;
 #X msg 259 304 0;
 #X obj 174 492 s2f~;
-#X obj 174 522 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 174 522 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 171 249 * 0.75;
 #X obj 456 239 adsr~ 150 100 0.75 250 -log;
 #X obj 139 97 != 0;

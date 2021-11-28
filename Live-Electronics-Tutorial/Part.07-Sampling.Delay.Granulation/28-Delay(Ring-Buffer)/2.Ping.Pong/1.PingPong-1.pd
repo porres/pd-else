@@ -1,27 +1,21 @@
-#N canvas 516 23 563 689 12;
+#N canvas 749 50 563 689 12;
 #X declare -path else;
-#X obj 104 290 +~;
-#X obj 146 289 +~;
-#X obj 164 259 *~;
+#X obj 104 270 +~;
+#X obj 164 289 *~;
 #X obj 358 174 hsl 128 15 -0.99 0.99 0 0 empty \$0-fb empty -2 -8 0
-10 -228856 -1 -1 11481 1;
-#X floatatom 355 196 5 0 0 0 - - -;
-#X floatatom 310 164 5 0 0 0 - - -;
+10 #dcdcdc #000000 #000000 0 1;
+#X floatatom 355 196 5 0 0 0 - - - 0;
+#X floatatom 310 164 5 0 0 0 - - - 0;
 #X obj 310 198 / 2;
-#X floatatom 310 260 5 0 0 0 - - -;
+#X floatatom 310 270 5 0 0 0 - - - 0;
 #X obj 313 140 hsl 128 15 50 500 0 0 empty \$0-tempo empty -2 -8 0
-10 -228856 -1 -1 5644 1;
-#X obj 104 201 *~;
-#X obj 48 37 bng 30 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+10 #dcdcdc #000000 #000000 0 1;
+#X obj 104 211 *~;
+#X obj 48 37 bng 30 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X obj 48 144 mtof;
 #X text 393 173 Feedback;
 #X obj 48 171 bl.saw~;
-#X obj 122 157 timed.gate~ 50;
-#X obj 164 221 delread4~ \$0-ping;
-#X obj 310 341 delread4~ \$0-pong;
-#X obj 146 319 delwrite~ \$0-pong 1000;
-#X obj 115 342 delwrite~ \$0-ping 1000;
 #X obj 403 264 initmess \; \$0-tempo 250 \; \$0-fb 0.8;
 #X obj 48 115 trigger f b;
 #X obj 164 197 f2s~ 50;
@@ -31,12 +25,12 @@
 #X text 177 55 A Ping-pong delay is an effect that alternates the delay
 echoes by alternating the left and right outputs. This pretty much
 sounds like watching a ping pong match indeed., f 46;
-#X obj 278 467 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 278 467 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 347 494 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 426 494 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 350 469 time;
 #X text 424 473 feedback;
 #X obj 278 498 impseq~;
@@ -47,35 +41,36 @@ from ELSE., f 24;
 #X obj 373 16 declare -path else;
 #X obj 312 594 out~;
 #X obj 104 401 out~;
-#X connect 0 0 18 0;
-#X connect 0 0 37 0;
-#X connect 1 0 17 0;
-#X connect 2 0 0 1;
-#X connect 2 0 1 1;
-#X connect 3 0 4 0;
-#X connect 4 0 22 0;
+#X obj 122 157 decay2~ 50 1500;
+#X obj 127 324 delwrite~ \$0-ping-pong 1000, f 17;
+#X obj 310 341 delread4~ \$0-ping-pong;
+#X obj 164 221 delread4~ \$0-ping-pong, f 12;
+#X connect 0 0 31 0;
+#X connect 0 0 33 0;
+#X connect 1 0 0 1;
+#X connect 2 0 3 0;
+#X connect 3 0 16 0;
+#X connect 4 0 5 0;
+#X connect 4 0 15 0;
 #X connect 5 0 6 0;
-#X connect 5 0 21 0;
-#X connect 6 0 7 0;
-#X connect 7 0 24 0;
-#X connect 8 0 5 0;
-#X connect 9 0 0 0;
-#X connect 9 0 1 0;
-#X connect 10 0 34 0;
-#X connect 11 0 13 0;
-#X connect 13 0 9 0;
-#X connect 14 0 9 1;
-#X connect 15 0 2 0;
-#X connect 16 0 37 1;
-#X connect 20 0 11 0;
-#X connect 20 1 14 0;
-#X connect 21 0 15 0;
-#X connect 22 0 2 1;
-#X connect 24 0 16 0;
-#X connect 26 0 31 0;
-#X connect 27 0 32 1;
-#X connect 28 0 32 2;
-#X connect 31 0 32 0;
-#X connect 32 0 36 0;
-#X connect 32 1 36 1;
-#X connect 34 0 20 0;
+#X connect 6 0 18 0;
+#X connect 7 0 4 0;
+#X connect 8 0 0 0;
+#X connect 9 0 28 0;
+#X connect 10 0 12 0;
+#X connect 12 0 8 0;
+#X connect 14 0 10 0;
+#X connect 14 1 32 0;
+#X connect 15 0 35 0;
+#X connect 16 0 1 1;
+#X connect 18 0 34 0;
+#X connect 20 0 25 0;
+#X connect 21 0 26 1;
+#X connect 22 0 26 2;
+#X connect 25 0 26 0;
+#X connect 26 0 30 0;
+#X connect 26 1 30 1;
+#X connect 28 0 14 0;
+#X connect 32 0 8 1;
+#X connect 34 0 31 1;
+#X connect 35 0 1 0;

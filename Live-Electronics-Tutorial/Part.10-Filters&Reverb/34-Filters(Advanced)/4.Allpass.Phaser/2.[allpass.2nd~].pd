@@ -1,25 +1,25 @@
 #N canvas 359 64 958 441 12;
 #X declare -path else;
 #X obj 726 58 hsl 128 15 0.001 100 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
+#dcdcdc #000000 #000000 0 1;
 #X obj 565 48 noise~;
-#X obj 723 82 nbx 5 14 0.001 100 0 0 \$0-Q empty empty 0 -8 0 10 -228856
--1 -1 0.001 256;
-#X obj 644 59 nbx 5 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
--1 -1 20 256;
+#X obj 723 82 nbx 5 14 0.001 100 0 0 \$0-Q empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X obj 644 59 nbx 5 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X text 747 56 resonance (Q);
 #X obj 565 118 +~;
 #X obj 583 87 allpass.2nd~ 750 1;
 #N canvas 263 226 1048 355 (subpatch) 0;
-#X obj 491 257 cnv 15 15 15 empty empty Kilohertz 18 9 1 16 -262144
--1 0;
-#X obj 160 205 cnv 15 798 27 empty empty empty 20 12 0 14 -257983 -66577
+#X obj 491 257 cnv 15 15 15 empty empty Kilohertz 18 9 1 16 #fcfcfc
+#000000 0;
+#X obj 160 205 cnv 15 798 27 empty empty empty 20 12 0 14 #f8f8f8 #404040
 0;
-#X obj 160 149 cnv 15 798 27 empty empty empty 20 12 0 14 -257983 -66577
+#X obj 160 149 cnv 15 798 27 empty empty empty 20 12 0 14 #f8f8f8 #404040
 0;
-#X obj 160 177 cnv 15 798 27 empty empty empty 20 12 0 14 -241340 -66577
+#X obj 160 177 cnv 15 798 27 empty empty empty 20 12 0 14 #e8e8ec #404040
 0;
-#X obj 160 121 cnv 15 798 27 empty empty empty 20 12 0 14 -241340 -66577
+#X obj 160 121 cnv 15 798 27 empty empty empty 20 12 0 14 #e8e8ec #404040
 0;
 #N canvas 391 118 975 563 (subpatch) 0;
 #X array \$0-phase 400 float 0;
@@ -59,12 +59,13 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 78 111 1 0 0;
 #X restore 873 121 graph;
-#X obj 105 167 cnv 15 15 15 empty empty Phase 0 0 1 17 -262144 -1 0
-;
+#X obj 105 167 cnv 15 15 15 empty empty Phase 0 0 1 17 #fcfcfc #000000
+0;
 #X text 961 223 -pi;
 #X text 963 167 0;
 #X text 964 118 pi;
-#X obj 112 187 cnv 15 15 15 empty empty rad 0 0 1 17 -262144 -1 0;
+#X obj 112 187 cnv 15 15 15 empty empty rad 0 0 1 17 #fcfcfc #000000
+0;
 #X coords 0 -1 1 1 895 178 2 100 100;
 #X restore 41 220 pd;
 #N canvas 888 277 425 398 plot 0;
@@ -183,7 +184,7 @@
 #X msg 90 99 1;
 #X msg 52 124 750;
 #X obj 90 59 trigger bang bang bang;
-#X obj 266 49 sr~;
+#X obj 266 49 samplerate~;
 #X connect 0 0 19 0;
 #X connect 3 0 9 0;
 #X connect 4 0 1 0;
@@ -200,7 +201,7 @@
 #X connect 19 2 14 0;
 #X connect 19 2 20 0;
 #X connect 20 0 2 0;
-#X restore 194 150 pd init \; tables;
+#X restore 214 150 pd init \; tables;
 #X obj 124 209 trigger float float;
 #N canvas 770 137 611 447 H(z) 0;
 #X obj 106 40 inlet;
@@ -244,8 +245,8 @@
 #X connect 1 0 4 1;
 #X connect 2 0 4 0;
 #X connect 4 0 3 0;
-#X restore 63 109 pd coeff;
-#X obj 163 302 tabwrite \$0-phase;
+#X restore 64 109 pd coeff;
+#X obj 138 277 tabwrite \$0-phase;
 #X obj 64 178 loop 400;
 #X connect 1 0 2 0;
 #X connect 1 1 5 1;

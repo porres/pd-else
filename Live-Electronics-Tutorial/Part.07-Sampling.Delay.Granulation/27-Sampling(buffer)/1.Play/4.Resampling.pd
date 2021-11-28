@@ -8,13 +8,8 @@
 #X connect 3 0 1 0;
 #X restore 286 285 pd upsample-88.2Khz;
 #X obj 286 326 out~;
-#X obj 344 238 sr~ 44100;
 #X obj 85 271 readsf~;
 #X obj 85 313 out~;
-#X text 60 147 Here we have Pd set to run at 44.1 Khz via the [sr~]
-object \, but we're playing a file with a sample rate of 88.2 Khz.
-Hence it has twice as much samples and the playing speed drops in half
-and an octave lower.;
 #X obj 361 16 declare -path else;
 #X obj 85 238 initmess open sax.wav \, 1;
 #X text 59 64 For sound files to be played correctly with [tabplay~]
@@ -28,7 +23,11 @@ upsampling \, which makes it possible to play at the right speed (it'd
 also be possible to play a 96 Khz file when running Pd at 48 khz with
 2x upsampling \, or even a 192 Khz file with 4x oversampling).;
 #X text 429 284 <= click;
+#X text 60 147 Here we assume you have Pd set to run at 44.1 Khz \,
+but we're playing a file with a sample rate of 88.2 Khz. Hence it has
+twice as much samples and the playing speed drops in half and an octave
+lower.;
 #X connect 0 0 1 0;
-#X connect 3 0 4 0;
-#X connect 3 1 7 0;
-#X connect 7 0 3 0;
+#X connect 2 0 3 0;
+#X connect 2 1 5 0;
+#X connect 5 0 2 0;

@@ -1,6 +1,6 @@
 #N canvas 463 94 828 448 12;
 #X declare -path else;
-#X obj 89 242 cnv 15 298 138 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 89 242 cnv 15 298 138 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
 #N canvas 0 22 478 328 (subpatch) 0;
 #X array \$0-Spectrum 128 float 0;
@@ -13,10 +13,10 @@
 #X text 294 380 1KHz;
 #X text 339 381 1.25KHz;
 #X text 593 67 Vibrato;
-#X obj 474 176 nbx 4 14 -1e+37 1e+37 0 1 empty portadora empty 0 -8
-0 10 -228856 -1 -1 500 256;
-#X obj 533 176 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
-0 10 -228856 -1 -1 100 256;
+#X obj 474 176 nbx 4 14 -1e+37 1e+37 0 1 empty carrier empty 0 -8 0
+10 #dcdcdc #000000 #000000 200 256;
+#X obj 533 176 nbx 4 14 -1e+37 1e+37 0 1 empty mod empty 0 -8 0 10
+#dcdcdc #000000 #000000 1 256;
 #N canvas 610 140 531 263 FFT 0;
 #X obj 65 77 *~;
 #X obj 65 25 inlet~;
@@ -24,8 +24,8 @@
 #X obj 80 52 tabreceive~ \$0-hann;
 #X obj 144 149 loadbang;
 #X obj 74 194 metro 250;
-#X obj 74 173 tgl 15 0 empty empty empty 0 -6 0 8 -262144 -1 -1 1 1
-;
+#X obj 74 173 tgl 15 0 empty empty empty 0 -6 0 8 #fcfcfc #000000 #000000
+0 1;
 #X obj 301 48 block~ 4096;
 #X msg 145 184 \; pd dsp 1;
 #N canvas 0 22 450 300 (subpatch) 0;
@@ -577,8 +577,8 @@
 #X connect 6 0 5 0;
 #X connect 10 0 11 0;
 #X restore 503 284 pd FFT;
-#X obj 585 176 nbx 4 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 -228856
--1 -1 0.1 256;
+#X obj 585 176 nbx 4 14 0 1e+37 0 1 empty index empty 0 -8 0 10 #dcdcdc
+#000000 #000000 1 256;
 #X obj 502 229 pmosc~ 200 1 1;
 #X obj 571 280 graph~ 1000 15;
 #X text 37 37 In Phase Modulation \, we have the same parameters as
@@ -594,7 +594,7 @@ in FM it's quite higher., f 55;
 #X msg 679 169 \; carrier 500 \; mod 100 \; index 0.1;
 #X text 684 66 Inharmonic;
 #X text 679 152 Harmonic;
-#X obj 623 13 declare -path else;
+#X obj 659 17 declare -path else;
 #X obj 459 313 out~;
 #X text 37 109 The index is the deviation amplitude \, in the context
 of phase \, the 0 to 1 range is a full cycloe (360 degrees). So \,
@@ -602,6 +602,7 @@ for example \, an index of 0.25 promotes a deviation of half a cycle
 (from 0.25 to -0.25). As in FM \, a higher index generates more partials
 \, spaced in bands that correspond to the modulator's frequency.,
 f 55;
+#X obj 575 44 loadbang;
 #X connect 9 0 13 0;
 #X connect 10 0 13 1;
 #X connect 12 0 19 0;
@@ -609,3 +610,4 @@ f 55;
 #X connect 13 0 14 0;
 #X connect 13 0 26 0;
 #X connect 19 0 13 2;
+#X connect 28 0 20 0;

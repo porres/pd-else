@@ -1,17 +1,17 @@
 #N canvas 430 54 958 433 12;
 #X declare -path else;
 #X obj 634 219 +~;
-#X obj 576 108 nbx 4 14 -1e+37 1e+37 0 1 empty portadora empty 0 -8
-0 10 -228856 -1 -1 400 256;
+#X obj 576 108 nbx 4 14 -1e+37 1e+37 0 1 empty \$0-carrier empty 0
+-8 0 10 #dcdcdc #000000 #000000 400 256;
 #X obj 652 135 osc~;
 #X obj 652 161 *~;
-#X obj 652 102 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
-0 10 -228856 -1 -1 1 256;
-#X obj 705 136 nbx 4 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 -228856
--1 -1 100 256;
+#X obj 652 102 nbx 4 14 -1e+37 1e+37 0 1 empty \$0-mod empty 0 -8 0
+10 #dcdcdc #000000 #000000 1 256;
+#X obj 705 136 nbx 4 14 0 1e+37 0 1 empty \$0-index empty 0 -8 0 10
+#dcdcdc #000000 #000000 100 256;
 #X obj 576 144 sig~;
 #X obj 634 284 osc~;
-#X obj 634 324 out~;
+#X obj 634 334 out~;
 #X text 569 70 Carrier Frequency, f 9;
 #X text 648 67 Modulator Frequency, f 9;
 #X text 659 189 <= modulating signal;
@@ -46,6 +46,8 @@ later how the index is actually the ratio between deviation and modulating
 frequency \, and how that relates to how the modulation index behaves
 in Phase Modulation. Just note that until then \, modulation index
 here actually means 'frequency deviation'., f 67;
+#X obj 811 323 initmess \; \$0-carrier 400 \; \$0-mod 1 \; \$0-index
+100;
 #X connect 0 0 7 0;
 #X connect 1 0 6 0;
 #X connect 2 0 3 0;

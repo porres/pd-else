@@ -1,4 +1,4 @@
-#N canvas 514 42 967 672 12;
+#N canvas 441 155 967 672 12;
 #X declare -path else;
 #X obj 576 202 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 100 256;
@@ -44,15 +44,6 @@
 #X text 226 316 <= select sequence, f 9;
 #X obj 130 399 route float;
 #X floatatom 130 290 3 0 0 0 - - -;
-#X text 32 55 Now we kinda get back to the 2nd example (Array-Sequencer)
-\, but we now use a [text] object to store the values instead of an
-array. Below we have it storing an usual sequence from previous examples
-as its first list. And the thing about [text] is that it can store
-several lists and it doesn't need to be only floats \, but symbols
-as well., f 62;
-#X text 32 145 We have a second sequence with "." symbols that are
-filtered out in [route] float. In practice \, these are used as rests!
-, f 62;
 #X text 312 223 click to open:;
 #X text 246 369 <= get sequence values.;
 #X text 521 28 The [sequencer] object from ELSE is an abstraction based
@@ -64,6 +55,15 @@ its help file for more information!, f 58;
 and [sequencer~]. The [sequencer~] object is simpler and can only take
 floats. It is triggered by impulses \, which is given by [tempo~].
 Check thei help file of both for more information., f 31;
+#X text 32 55 Now we're using a [text] object to store the values instead
+of an array. Not we can also use [text] as a sequencer as we'll see
+in the next examples. Below we have it storing an usual sequence from
+previous examples as its first list. And the thing about [text] is
+that it can store several lists and it doesn't need to be only floats
+\, but symbols as well., f 62;
+#X text 32 145 We have a second sequence with "." symbols that are
+filtered out in [route float]. In practice \, these are used as rests!
+, f 62;
 #X connect 0 0 3 0;
 #X connect 0 0 6 0;
 #X connect 1 0 5 0;
@@ -77,7 +77,7 @@ Check thei help file of both for more information., f 31;
 #X connect 9 0 7 1;
 #X connect 10 0 1 0;
 #X connect 11 0 9 0;
-#X connect 11 0 43 0;
+#X connect 11 0 41 0;
 #X connect 12 0 8 0;
 #X connect 15 0 5 0;
 #X connect 18 0 37 0;
@@ -98,4 +98,4 @@ Check thei help file of both for more information., f 31;
 #X connect 34 1 29 0;
 #X connect 36 0 25 0;
 #X connect 37 0 22 0;
-#X connect 43 0 12 0;
+#X connect 41 0 12 0;

@@ -5,25 +5,25 @@
 #X obj 213 399 +~;
 #X obj 213 433 mtof~;
 #X obj 163 244 nbx 5 14 24 90 0 0 empty \$0-carrier empty 0 -8 0 10
--228856 -1 -1 60 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 163 271 f2s~ 10;
 #X obj 231 330 sine~;
 #X obj 231 363 *~;
 #X obj 287 330 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-index empty 0 -8
-0 10 -228856 -1 -1 28 256;
+0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 287 355 f2s~ 10;
 #X obj 231 302 mtof~;
 #X text 158 221 Carrier;
 #X text 286 308 Index;
-#X obj 231 244 nbx 5 14 24 90 0 0 empty \$0-mod empty 0 -8 0 10 -228856
--1 -1 34 256;
+#X obj 231 244 nbx 5 14 24 90 0 0 empty \$0-mod empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X obj 231 271 f2s~ 10;
 #X text 234 221 Mod.;
 #X text 63 58 It's also possible to work with exponential MIDI pitch
 values rather than a linear frequency input. Note that the difference
 here is that the frequency deviation (that is \, the modulation index)
 is now in semitones \, not hertz!;
-#X obj 293 413 initmess \; \$0-carrier 60 \; \$0-mod 34 \; \$0-index
+#X obj 365 423 initmess \; \$0-carrier 60 \; \$0-mod 34 \; \$0-index
 28;
 #X text 287 242 (deviation in MIDI values);
 #X obj 356 18 declare -path else;

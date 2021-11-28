@@ -3,19 +3,19 @@
 #X obj 728 345 phasor~;
 #X obj 728 404 tabread4~ \$0-buffer;
 #X obj 648 234 nbx 5 18 -1e+37 1e+37 0 0 empty tempo empty 0 -8 0 13
--228856 -1 -1 100 256;
-#X floatatom 112 452 0 0 0 0 - - -;
-#X floatatom 192 509 0 0 0 0 - - -;
+#dcdcdc #000000 #000000 0 256;
+#X floatatom 112 452 0 0 0 0 - - - 0;
+#X floatatom 192 509 0 0 0 0 - - - 0;
 #X obj 112 534 s \$0-size;
 #X obj 648 260 / 100;
 #X obj 728 234 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 13
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 728 294 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 799 234 Cents;
 #X obj 728 263 cents2ratio;
 #X obj 728 439 out~;
-#X text 250 508 <= Reading frequency, f 21;
+#X text 250 508 <= Reading frequency;
 #X text 574 234 Speed (%);
 #X text 789 293 Ratio;
 #X obj 552 421 initmess \; tempo 100;
@@ -29,10 +29,9 @@
 #X text 515 153 We need to multiply the output of [phasor~] by the
 number of samples in the file so we can access the indexes from the
 array., f 57;
-#X obj 355 551 cnv 15 385 140 empty empty empty 20 12 0 14 -233017
--66577 0;
+#X obj 355 551 cnv 15 385 140 empty empty empty 20 12 0 14 #e0e0e0
+#404040 0;
 #X text 373 555 Interpolation error:;
-#X obj 552 378 sr~ 44100;
 #X text 374 575 Interpolation can add noise artifacts. To reduce this
 error you can work with files with higher sample rates than Pd is running
 \, such as 88.2 KHz sound file when running at 44.1 Khz as in this
@@ -40,7 +39,7 @@ example., f 50;
 #X text 374 650 You can use a good resampling software to upsample
 a sound file as was done here for this example., f 50;
 #X obj 171 390 unpack;
-#X floatatom 210 422 5 0 0 0 - - -;
+#X floatatom 210 422 5 0 0 0 - - - 0;
 #X obj 185 452 swap;
 #X text 51 452 size =>;
 #X text 35 235 In this example we use [phasor~] to read from [tabread4~].
@@ -83,10 +82,10 @@ the same interpolation type as [tabread4~]., f 64;
 #X connect 18 0 20 1;
 #X connect 20 0 0 0;
 #X connect 21 0 4 0;
-#X connect 29 0 31 0;
-#X connect 29 0 3 0;
-#X connect 29 1 30 0;
-#X connect 30 0 31 1;
-#X connect 31 0 21 0;
-#X connect 31 1 21 1;
-#X connect 35 0 29 0;
+#X connect 28 0 30 0;
+#X connect 28 0 3 0;
+#X connect 28 1 29 0;
+#X connect 29 0 30 1;
+#X connect 30 0 21 0;
+#X connect 30 1 21 1;
+#X connect 34 0 28 0;

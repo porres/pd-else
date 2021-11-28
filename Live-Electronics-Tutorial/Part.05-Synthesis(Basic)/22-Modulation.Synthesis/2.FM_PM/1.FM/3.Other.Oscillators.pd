@@ -1,4 +1,4 @@
-#N canvas 618 90 552 562 12;
+#N canvas 827 51 552 562 12;
 #X declare -path else;
 #N canvas 179 95 483 427 oscillator 0;
 #X obj 175 343 outlet~;
@@ -7,8 +7,8 @@
 #X obj 263 270 square~;
 #X obj 323 270 saw~;
 #X obj 221 270 tri~;
-#X obj 107 106 vradio 17 1 0 4 ehnjyr etaeg5 empty 0 -8 0 10 -228856
--1 -1 1;
+#X obj 107 106 vradio 17 1 0 4 ehnjyr etaeg5 empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
 #X obj 107 196 + 1;
 #X obj 175 307 xselect~ 4 100 1;
 #X text 128 108 Sine;
@@ -34,15 +34,15 @@
 #X restore 208 199 pd oscillator;
 #X obj 208 307 *~;
 #X obj 352 229 nbx 4 20 -1e+37 1e+37 0 0 empty \$0-index empty 0 -8
-0 16 -228856 -1 -1 90 256;
+0 16 #dcdcdc #000000 #000000 0 256;
 #X obj 107 290 +~;
 #X obj 107 234 nbx 5 20 -1e+37 1e+37 0 0 empty \$0-carrier empty 82
-9 0 15 -228856 -1 -1 200 256;
+9 0 15 #dcdcdc #000000 #000000 0 256;
 #X obj 107 461 out~;
 #N canvas 465 145 445 426 oscillator 0;
 #X obj 106 347 outlet~;
-#X obj 106 105 vradio 17 1 0 4 rgewgg5 sdsrvg2 empty 0 -8 0 10 -228856
--1 -1 3;
+#X obj 106 105 vradio 17 1 0 4 rgewgg5 sdsrvg2 empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
 #X obj 106 195 + 1;
 #X obj 106 311 xselect~ 4 100 1;
 #X text 127 107 Sine;
@@ -71,7 +71,7 @@
 #X text 293 168 Mod;
 #X text 110 213 Carrier;
 #X obj 208 166 nbx 5 20 -1e+37 1e+37 0 0 empty \$0-mod empty 82 9 0
-15 -228856 -1 -1 50.5 256;
+15 #dcdcdc #000000 #000000 0 256;
 #X obj 352 270 f2s~ 10;
 #X obj 360 23 declare -path else;
 #X text 66 62 In this patch we can test different combinations of oscillators.

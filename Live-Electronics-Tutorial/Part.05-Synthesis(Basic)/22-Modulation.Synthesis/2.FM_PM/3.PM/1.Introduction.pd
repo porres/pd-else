@@ -1,80 +1,62 @@
 #N canvas 204 58 1209 546 12;
 #X declare -path else;
-#X obj 172 231 +~;
-#X obj 114 123 nbx 4 14 -1e+37 1e+37 0 1 empty portadora empty 0 -8
-0 10 -228856 -1 -1 400 256;
-#X obj 190 147 osc~;
-#X obj 190 169 *~;
-#X obj 190 123 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
-0 10 -228856 -1 -1 1 256;
-#X obj 240 149 nbx 4 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 -228856
--1 -1 10 256;
-#X obj 114 148 sig~;
-#X obj 172 285 osc~;
-#X obj 521 145 nbx 4 14 -1e+37 1e+37 0 1 empty portadora empty 0 -8
-0 10 -228856 -1 -1 400 256;
-#X obj 521 170 sig~;
-#X obj 521 198 phasor~;
-#X obj 586 262 +~;
-#X obj 586 319 cos~;
+#X obj 172 251 +~;
+#X obj 114 143 nbx 4 14 -1e+37 1e+37 0 1 empty \$0-carrier empty 0
+-8 0 10 #dcdcdc #000000 #000000 400 256;
+#X obj 190 167 osc~;
+#X obj 190 189 *~;
+#X obj 190 143 nbx 4 14 -1e+37 1e+37 0 1 empty \$0-mod empty 0 -8 0
+10 #dcdcdc #000000 #000000 1 256;
+#X obj 240 169 nbx 4 14 0 1e+37 0 1 empty \$0-index empty 0 -8 0 10
+#dcdcdc #000000 #000000 10 256;
+#X obj 114 168 sig~;
+#X obj 172 305 osc~;
+#X obj 521 185 sig~;
+#X obj 521 213 phasor~;
+#X obj 586 277 +~;
+#X obj 586 334 cos~;
 #X text 410 315 ||;
-#X text 420 318 ======================>;
-#X text 410 305 ||;
-#X text 410 295 ||;
-#X text 410 285 ||;
-#X text 410 275 ||;
-#X text 410 265 ||;
-#X text 410 255 ||;
-#X text 410 245 ||;
-#X text 410 235 ||;
-#X text 410 225 ||;
-#X text 410 215 ||;
-#X text 410 205 ||;
-#X text 421 199 ============>;
-#X obj 172 326 out~;
-#X obj 586 360 out~;
-#X obj 604 170 osc~;
-#X obj 604 192 *~;
-#X obj 604 144 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
-0 10 -228856 -1 -1 1 256;
-#X obj 649 172 nbx 4 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 -228856
--1 -1 10 256;
-#X obj 900 141 nbx 4 14 -1e+37 1e+37 0 1 empty portadora empty 0 -8
-0 10 -228856 -1 -1 400 256;
+#X text 420 333 ======================>;
+#X text 410 320 ||;
+#X text 410 310 ||;
+#X text 410 300 ||;
+#X text 410 290 ||;
+#X text 410 280 ||;
+#X text 410 270 ||;
+#X text 410 260 ||;
+#X text 410 250 ||;
+#X text 410 240 ||;
+#X text 410 230 ||;
+#X text 410 220 ||;
+#X text 421 214 ============>;
+#X obj 172 346 out~;
+#X obj 586 375 out~;
+#X obj 604 185 osc~;
+#X obj 604 207 *~;
 #X obj 919 271 out~;
 #X obj 965 166 osc~;
 #X obj 965 193 *~;
-#X obj 965 141 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
-0 10 -228856 -1 -1 1 256;
-#X obj 1018 161 nbx 4 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 -228856
--1 -1 10 256;
 #X obj 919 235 cosine~;
-#X text 59 120 Carrier;
-#X text 240 123 Mod;
-#X text 287 146 Index;
-#X text 27 200 carrier signal =>;
-#X text 198 207 <= modulating signal;
-#X text 182 257 <= FM signal;
-#X text 77 286 oscillator =>;
-#X text 320 260 oscillator =>;
-#X text 463 144 Carrier;
-#X text 653 144 Mod;
-#X text 698 172 Index;
-#X text 439 236 carrier signal =>;
-#X text 609 232 <= modulating signal;
-#X text 594 287 <= PM signal;
+#X text 59 140 Carrier;
+#X text 196 124 Mod;
+#X text 287 166 Index;
+#X text 27 220 carrier signal =>;
+#X text 198 227 <= modulating signal;
+#X text 182 277 <= FM signal;
+#X text 77 306 oscillator =>;
+#X text 320 275 oscillator =>;
+#X text 463 159 Carrier;
+#X text 611 138 Mod;
+#X text 698 187 Index;
+#X text 439 251 carrier signal =>;
+#X text 609 247 <= modulating signal;
+#X text 594 302 <= PM signal;
 #X text 840 141 Carrier;
-#X text 1015 140 Mod;
+#X text 971 124 Mod;
 #X text 1067 159 Index;
 #X text 976 214 <= modulating signal;
 #X obj 936 449 out~;
 #X obj 936 415 pmosc~;
-#X obj 882 374 nbx 4 14 -1e+37 1e+37 0 1 empty portadora empty 0 -8
-0 10 -228856 -1 -1 400 256;
-#X obj 949 374 nbx 4 14 -1e+37 1e+37 0 1 empty moduladora empty 0 -8
-0 10 -228856 -1 -1 1 256;
-#X obj 1008 354 nbx 4 14 0 1e+37 0 1 empty indice empty 0 -8 0 10 -228856
--1 -1 10 256;
 #X obj 1008 380 float2sig~ 10;
 #X text 1056 352 Index;
 #X text 950 353 Mod;
@@ -91,44 +73,66 @@ an oscillator as modulating signal going straight into the phase input
 \, and not like we did before \, where that signal went through a [phasor~].
 You can also visualize that the [osc~] object has been split into a
 [phasor~] and [cos~]., f 51;
-#X obj 240 175 f2s~ 10;
-#X obj 649 198 f2s~ 10;
+#X obj 240 195 f2s~ 10;
+#X obj 649 213 f2s~ 10;
 #X obj 1018 187 f2s~ 10;
-#X obj 1027 21 declare -path else;
+#X obj 1027 20 declare -path else;
 #X text 40 412 The reason to stress so much the relationship between
 Frequency and Phase modulation is because it is common to see something
 labeled as a Frequency Modulation when it is actually Phase Modulation.
 One example is the famous DX7 synth. So we'll dig quite deep into this
 and see how you can achieve the same result with both implementations
 , f 70;
+#N canvas 1373 443 215 143 init 0;
+#X obj 37 28 initmess \; \$0-carrier 400 \; \$0-mod 1 \; \$0-index
+10;
+#X restore 950 20 pd init;
+#X obj 521 160 nbx 4 14 -1e+37 1e+37 0 1 empty \$0-carrier empty 0
+-8 0 10 #dcdcdc #000000 #000000 400 256;
+#X obj 900 141 nbx 4 14 -1e+37 1e+37 0 1 empty \$0-carrier empty 0
+-8 0 10 #dcdcdc #000000 #000000 400 256;
+#X obj 882 374 nbx 4 14 -1e+37 1e+37 0 1 empty \$0-carrier empty 0
+-8 0 10 #dcdcdc #000000 #000000 400 256;
+#X obj 604 159 nbx 4 14 -1e+37 1e+37 0 1 empty \$0-mod empty 0 -8 0
+10 #dcdcdc #000000 #000000 1 256;
+#X obj 965 141 nbx 4 14 -1e+37 1e+37 0 1 empty \$0-mod empty 0 -8 0
+10 #dcdcdc #000000 #000000 1 256;
+#X obj 949 374 nbx 4 14 -1e+37 1e+37 0 1 empty \$0-mod empty 0 -8 0
+10 #dcdcdc #000000 #000000 1 256;
+#X obj 649 187 nbx 4 14 0 1e+37 0 1 empty \$0-index empty 0 -8 0 10
+#dcdcdc #000000 #000000 10 256;
+#X obj 1018 161 nbx 4 14 0 1e+37 0 1 empty \$0-index empty 0 -8 0 10
+#dcdcdc #000000 #000000 10 256;
+#X obj 1008 354 nbx 4 14 0 1e+37 0 1 empty \$0-index empty 0 -8 0 10
+#dcdcdc #000000 #000000 10 256;
 #X connect 0 0 7 0;
 #X connect 1 0 6 0;
 #X connect 2 0 3 0;
 #X connect 3 0 0 1;
 #X connect 4 0 2 0;
-#X connect 5 0 70 0;
+#X connect 5 0 61 0;
 #X connect 6 0 0 0;
-#X connect 7 0 27 0;
+#X connect 7 0 26 0;
 #X connect 8 0 9 0;
 #X connect 9 0 10 0;
 #X connect 10 0 11 0;
-#X connect 11 0 12 0;
-#X connect 12 0 28 0;
-#X connect 29 0 30 0;
-#X connect 30 0 11 1;
-#X connect 31 0 29 0;
-#X connect 32 0 71 0;
-#X connect 33 0 39 0;
-#X connect 35 0 36 0;
-#X connect 36 0 39 2;
-#X connect 37 0 35 0;
-#X connect 38 0 72 0;
-#X connect 39 0 34 0;
-#X connect 59 0 58 0;
-#X connect 60 0 59 0;
-#X connect 61 0 59 1;
-#X connect 62 0 63 0;
-#X connect 63 0 59 2;
-#X connect 70 0 3 1;
-#X connect 71 0 30 1;
-#X connect 72 0 36 1;
+#X connect 11 0 27 0;
+#X connect 28 0 29 0;
+#X connect 29 0 10 1;
+#X connect 31 0 32 0;
+#X connect 32 0 33 2;
+#X connect 33 0 30 0;
+#X connect 53 0 52 0;
+#X connect 54 0 53 2;
+#X connect 61 0 3 1;
+#X connect 62 0 29 1;
+#X connect 63 0 32 1;
+#X connect 67 0 8 0;
+#X connect 68 0 33 0;
+#X connect 69 0 53 0;
+#X connect 70 0 28 0;
+#X connect 71 0 31 0;
+#X connect 72 0 53 1;
+#X connect 73 0 62 0;
+#X connect 74 0 63 0;
+#X connect 75 0 54 0;
