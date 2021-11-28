@@ -221,6 +221,7 @@ meter~	x
 meter2~	x
 meter4~	x
 meter8~	x
+metronome	x
 midi	x
 midi2freq	x
 mix2~	x

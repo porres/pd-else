@@ -115,7 +115,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (433 objects):
+## Current Object list (434 objects):
 
 **ASSORTED: [02]**
 
@@ -538,7 +538,7 @@ Cross compiling is also possible with something like this
  - [stepnoise]
  - [rampnoise]
 
- **TRIGGERS: [29]**
+ **TRIGGERS: [30]**
 - [above]
 - [above~]
 - [bangdiv]
@@ -550,6 +550,7 @@ Cross compiling is also possible with something like this
 - [gate2imp~]
 - [pimp~]
 - [pimpmul~]
+- [metronome]
 - [tempo]
 - [tempo~]
 - [pulsecount~]

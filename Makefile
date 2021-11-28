@@ -69,6 +69,7 @@ fontsize.class.sources := Classes/Source/fontsize.c
 format.class.sources := Classes/Source/format.c
 message.class.sources := Classes/Source/message.c
 messbox.class.sources := Classes/Source/messbox.c
+metronome.class.sources := Classes/Source/metronome.c
 mouse.class.sources := Classes/Source/mouse.c
 note.in.class.sources := Classes/Source/note.in.c
 note.out.class.sources := Classes/Source/note.out.c
