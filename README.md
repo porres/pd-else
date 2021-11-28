@@ -6,12 +6,12 @@
 
 ### Version: 1.0-0 beta-45 With Live Electronics Tutorial 
 
-###   Unreleased
+###   Released novrmber 28th 2021
 
 
 
 
-	Copyright © 2017-2020 Alexandre Torres Porres
+	Copyright © 2017-2021 Alexandre Torres Porres
 
 
 
