@@ -4,9 +4,9 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 beta-45 With Live Electronics Tutorial 
+### Version: 1.0-0 beta-46 With Live Electronics Tutorial 
 
-###   Released novrmber 28th 2021
+###   Unreleased
 
 
 
