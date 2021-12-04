@@ -115,7 +115,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (434 objects):
+## Current Object list (433 objects):
 
 **ASSORTED: [02]**
 
@@ -241,7 +241,7 @@ Cross compiling is also possible with something like this
 - [voices]
 - [suspedal]
 
-**MATH: FUNCTIONS: [29]**
+**MATH: FUNCTIONS: [30]**
 
 - [add~]
 - [add]
@@ -272,6 +272,7 @@ Cross compiling is also possible with something like this
 - [wrap2~]
 - [op~]
 - [op]
+- [cmul~]
 
 **MATH: CONVERSION: [28]**
 
@@ -623,7 +624,3 @@ Cross compiling is also possible with something like this
 - [setdsp~]
 - [openfile]
 - [oscilloscope~]
-
-**EXTRA: [02]**
-- [output~]
-- [cmul~]P
