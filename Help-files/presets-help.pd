@@ -1,57 +1,59 @@
-#N struct 1004-point float x0 float y0 float xs float ys float fg float
+#N struct 1143-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1017-point float x0 float y0 float xs float ys float fg float
+#N struct 1156-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1084-point float x0 float y0 float xs float ys float fg float
+#N struct 1223-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1125-point float x0 float y0 float xs float ys float fg float
+#N struct 1264-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1385-point float x0 float y0 float xs float ys float fg float
+#N struct 1524-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 607 48 560 730 10;
-#X floatatom 378 198 0 0 0 0 - - -;
-#X obj 136 145 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
--1 -1 0;
+#X floatatom 378 198 0 0 0 0 - - - 0;
+#X obj 136 145 hradio 15 1 0 8 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
 #X obj 311 171 r \$0-A;
 #X obj 378 170 r \$0-B;
-#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 42 cnv 4 4 4 empty empty Presets 0 28 2 18 -233017 -1 0;
-#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 42 cnv 4 4 4 empty empty Presets 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 5 graph;
-#X obj 82 42 cnv 4 4 4 empty empty manager 0 28 2 18 -233017 -1 0;
-#X obj 3 5 cnv 15 301 42 empty empty presets 20 20 2 37 -233017 -1
+#X obj 82 42 cnv 4 4 4 empty empty manager 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 5 cnv 15 301 42 empty empty presets 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 5 graph;
-#X obj 5 704 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 704 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 8 223 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 8 510 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 8 558 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 8 223 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 86 230 cnv 17 3 256 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 8 510 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 8 558 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 86 230 cnv 17 3 256 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 139 565 1) list - one or more receive names (default none)
 ;
 #X text 108 255 load <float> -;
-#X floatatom 136 169 3 0 7 0 - - -;
+#X floatatom 136 169 3 0 7 0 - - - 0;
 #X text 108 280 save <float> -;
 #X text 156 389 open -;
 #X text 150 403 close -;
@@ -60,8 +62,8 @@ in float gridx float gridy;
 #X text 96 446 write <symbol> -;
 #X text 102 375 clear <float> -;
 #X text 150 227 float -;
-#X obj 171 170 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 171 170 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 156 305 bang -;
 #X text 189 170 save;
 #X text 200 445 write presets to file \, no symbol opens dialog window
@@ -69,9 +71,9 @@ in float gridx float gridy;
 #X text 200 389 open the preset window so you can see/edit values,
 f 58;
 #X text 200 459 import presets from a list, f 58;
-#X obj 85 517 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 85 517 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 85 537 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 85 537 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 156 518 list -;
 #X text 200 518 presets as a list when receiving "export" message,
@@ -80,7 +82,7 @@ f 53;
 #X text 199 537 when the preset is empty, f 53;
 #X text 114 417 args <list> -;
 #X text 200 417 replaces receive names arguments, f 58;
-#X symbolatom 311 199 7 0 0 0 - - -;
+#X symbolatom 311 199 7 0 0 0 - - - 0;
 #X text 200 255 load from a preset number. If no float is given \,
 the last set preset number is loaded, f 58;
 #X text 200 280 save to a preset number. If no float is given \, the
@@ -102,30 +104,30 @@ window, f 58;
 , f 58;
 #X text 120 347 interp <f> -;
 #X text 200 347 sets to interpolation mode, f 58;
-#X obj 84 490 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 84 490 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 150 490 float -;
 #X text 200 490 interpolation value (when in interpoltion mode), f
 58;
 #N canvas 601 200 659 296 advanced 0;
 #N canvas 806 34 743 681 morph 0;
-#X obj 83 41 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
--1 0;
-#X floatatom 83 70 3 0 7 0 - - -;
-#X obj 116 73 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 83 41 hradio 15 1 0 4 empty empty empty 0 -8 0 10 #dcdcdc #000000
+#000000 0;
+#X floatatom 83 70 3 0 7 0 - - - 0;
+#X obj 116 73 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X text 134 72 save;
 #X text 48 39 load;
-#X obj 486 325 cnv 15 200 120 empty empty empty 20 12 0 14 -233017
--66577 0;
+#X obj 486 325 cnv 15 200 120 empty empty empty 20 12 0 14 #e0e0e0
+#404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-morph 10 float 2;
 #X coords 0 1 10 -1 202 122 1 0 0;
 #X restore 485 324 graph;
 #X obj 529 73 else/slider2d 127 127 0 127 0 127 1 225 225 225 0 0 0
 0 0 0 19 25 empty \\\$0-sl2;
-#X obj 417 75 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 417 75 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 417 37 r \$0-sl1;
 #X obj 513 247 r \$0-buf;
 #X obj 513 276 else/buffer \$0-morph;
@@ -133,8 +135,8 @@ window, f 58;
 #X msg 47 135 open;
 #X obj 180 79 else/pack2 1000 10;
 #X msg 180 112 morph \$1 \$2;
-#X floatatom 180 55 5 0 0 0 - - -;
-#X floatatom 285 57 5 0 0 0 - - -;
+#X floatatom 180 55 5 0 0 0 - - - 0;
+#X floatatom 285 57 5 0 0 0 - - - 0;
 #X text 49 278 You can set a morph time and a time grain between updates.
 This smoothens the transition between preset values and work for floats
 or lists of floats (no symbols \, of course).;
@@ -159,11 +161,11 @@ time., f 60;
 \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
 -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty-
 \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;;
-#X obj 123 521 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
--1 -1 2;
-#X floatatom 123 550 3 0 7 0 - - -;
-#X obj 156 550 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 123 521 hradio 15 1 0 4 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
+#X floatatom 123 550 3 0 7 0 - - - 0;
+#X obj 156 550 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 174 549 save;
 #X text 88 519 load;
 #X obj 330 575 else/morph 1500;
@@ -219,20 +221,20 @@ allow you to set different morph times to different parameters.;
 #X connect 33 0 35 0;
 #X restore 462 98 pd morph;
 #N canvas 573 144 919 409 interpolate 0;
-#X obj 66 159 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
--1 3;
-#X floatatom 66 188 3 0 7 0 - - -;
-#X obj 99 191 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 66 159 hradio 15 1 0 4 empty empty empty 0 -8 0 10 #dcdcdc #000000
+#000000 0;
+#X floatatom 66 188 3 0 7 0 - - - 0;
+#X obj 99 191 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X text 117 190 save;
 #X text 31 157 load;
 #X obj 269 142 else/slider2d 127 127 0 127 0 127 1 225 225 225 0 0
 0 0 0 0 13.0157 108.472 empty \\\$0-interpolate;
-#X obj 218 316 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 218 316 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X msg 49 272 open;
-#X obj 164 171 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 164 171 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X msg 164 199 interp \$1;
 #X obj 98 342 else/presets -interp \\\$0-interpolate, f 20;
 #A saved \\\$0-interpolate 78.0157 63.4724 || \; \\\$0-interpolate
@@ -263,16 +265,16 @@ exponential factors for each parameter. The interpolation in the [presets]
 object is performed with [interpolate] itself \, so you can check its
 help file out., f 73;
 #X obj 586 285 else/message;
-#X obj 649 122 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
--1 -1 3;
-#X floatatom 649 151 3 0 7 0 - - -;
-#X obj 682 154 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 649 122 hradio 15 1 0 4 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
+#X floatatom 649 151 3 0 7 0 - - - 0;
+#X obj 682 154 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 700 153 save;
 #X text 614 120 load;
 #X obj 463 283 else/interpolate;
-#X obj 466 208 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 466 208 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X msg 762 157 open;
 #X obj 701 251 else/slider2d 127 127 0 127 0 127 1 225 225 225 0 0
 0 0 0 0 20.4252 103.63 empty empty;
@@ -358,7 +360,7 @@ to see how this is done with [presets] and [savestate]., f 63;
 #X connect 3 0 1 0;
 #X restore 467 241 pd abstrations;
 #X obj 98 129 hradio 15 1 0 8 empty \$0-radio Load\ preset 0 -8 0 10
--174763 -1 -1 6;
+#aaaaaa #000000 #000000 0;
 #N canvas 356 221 568 423 shift 0;
 #X msg 137 214 save;
 #X msg 218 214 load;
@@ -410,8 +412,8 @@ abstractions., f 34;
 \\\$0-1 405 || \\\$0-2 108 || \; \\\$0-1 569 || \\\$0-2 -29 || \;;
 #X obj 279 202 r \$0-2;
 #X obj 279 135 r \$0-1;
-#X floatatom 279 160 5 0 0 0 - - -;
-#X floatatom 279 227 5 0 0 0 - - -;
+#X floatatom 279 160 5 0 0 0 - - - 0;
+#X floatatom 279 227 5 0 0 0 - - - 0;
 #X msg 53 199 open;
 #X connect 3 0 4 0;
 #X connect 4 0 5 0;
@@ -421,11 +423,11 @@ abstractions., f 34;
 #X connect 14 0 9 0;
 #X restore 479 201 pd advanced;
 #N canvas 697 113 686 616 basic 0;
-#X obj 39 141 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
--1 0;
-#X floatatom 39 170 3 0 7 0 - - -;
-#X obj 129 279 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 39 141 hradio 15 1 0 4 empty empty empty 0 -8 0 10 #dcdcdc #000000
+#000000 0;
+#X floatatom 39 170 3 0 7 0 - - - 0;
+#X obj 129 279 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X msg 75 170 set 3;
 #X msg 90 196 load;
 #X msg 105 223 load 2;
@@ -452,8 +454,8 @@ set, f 30;
 #X msg 183 496 clear;
 #X text 201 428 open presets' data window (you can also edit);
 #X text 213 451 close window;
-#X obj 523 206 vsl 50 350 0 127 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 523 206 vsl 50 350 0 127 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 228 473 clear preset 0;
 #X text 224 496 clear all presets;
 #X obj 523 159 else/receiver \$0-basic, f 13;
@@ -493,7 +495,8 @@ objects., f 96;
 #X connect 31 0 35 0;
 #X connect 34 0 35 0;
 #X restore 446 138 pd basic;
-#X obj 8 585 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 8 585 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 97 590 -n <float>: sets number of presets (default: 64), f
 72;
 #X text 73 604 -file <symbol>: set a file to import from (default:
@@ -505,9 +508,9 @@ none), f 76;
 #X text 126 319 n <float> -;
 #X text 200 319 sets number of presets, f 58;
 #N canvas 524 190 977 386 args 0;
-#X obj 161 252 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
--1 -1 3;
-#X floatatom 161 290 3 0 7 0 - - -;
+#X obj 161 252 hradio 15 1 0 4 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
+#X floatatom 161 290 3 0 7 0 - - - 0;
 #X msg 192 290 open;
 #X text 234 242 Preset numbers outside the range from 0 to n-1 are
 clipped to this range., f 26;
@@ -516,7 +519,7 @@ or '-n' flag (the minimum value is 2). The flag initializes the object
 and give you "-empty-" slots. The 'n' resizes and adds empty slots
 if the new size is larger than the current number of presets \, or
 deletes the information of the extra slots if smaller., f 80;
-#X floatatom 359 326 5 0 0 0 - - -;
+#X floatatom 359 326 5 0 0 0 - - - 0;
 #X text 591 299 The other flags relate to interpolation and morphing.
 We'll see more about that in the next examples., f 54;
 #X msg 124 290 n 8;
@@ -534,11 +537,11 @@ of [presets] to tell you the slot is empty., f 80;
 presets will be the same as it is stored in that file. You can load
 a file at initialization with the '-file' flag. You can also load a
 file with the 'read' message., f 80;
-#X obj 705 181 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
--1 -1 3;
-#X floatatom 705 209 3 0 7 0 - - -;
+#X obj 705 181 hradio 15 1 0 4 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
+#X floatatom 705 209 3 0 7 0 - - - 0;
 #X msg 747 210 open;
-#X floatatom 855 208 5 0 0 0 - - -;
+#X floatatom 855 208 5 0 0 0 - - - 0;
 #X msg 619 118 n 8;
 #X msg 584 118 n 4;
 #X obj 855 182 r \$0-n2;
@@ -577,18 +580,18 @@ groups., f 69;
 #X obj 62 282 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 1000 0;
 #X obj 62 228 r \$0-function;
-#X obj 120 100 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
--1 -1 1;
-#X floatatom 120 125 3 0 7 0 - - -;
-#X obj 92 125 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 120 100 hradio 15 1 0 4 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
+#X floatatom 120 125 3 0 7 0 - - - 0;
+#X obj 92 125 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X text 60 124 save;
 #X text 182 99 load;
 #X obj 427 168 float;
 #X obj 427 110 r \$0-float;
 #X text 323 164 Getting values from objects:, f 14;
-#X obj 298 281 cnv 15 200 100 empty empty empty 20 12 0 14 -233017
--66577 0;
+#X obj 298 281 cnv 15 200 100 empty empty empty 20 12 0 14 #e0e0e0
+#404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-buffer 10 float 2;
 #X coords 0 1 10 -1 202 102 1 0 0;
@@ -596,7 +599,7 @@ groups., f 69;
 #X obj 325 211 r \$0-array;
 #X obj 325 236 else/buffer \$0-buffer;
 #X obj 454 140 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 427 199 else/display;
 #X obj 82 254 else/initmess 0 1000 0;
 #X text 49 404 Note that you could get the array values from vanilla's
@@ -611,8 +614,8 @@ f 76;
 #X msg 162 149 open;
 #X obj 317 502 else/message;
 #N canvas 307 129 450 300 subpatch 0;
-#X floatatom 148 130 5 0 0 0 - - -;
-#X floatatom 108 129 5 0 0 0 - - -;
+#X floatatom 148 130 5 0 0 0 - - - 0;
+#X floatatom 108 129 5 0 0 0 - - - 0;
 #X obj 108 30 inlet;
 #X obj 108 71 unpack;
 #X obj 108 173 else/pack2;
@@ -665,7 +668,7 @@ just giving ideas in case you want it and need it \; ), f 43;
 #X text 259 144 <= load preset;
 #X msg 22 158 read preset1.txt;
 #X text 19 141 import from file;
-#X obj 136 196 else/presets \\\$0-A \\\$0-B;
+#X obj 137 201 else/presets \\\$0-A \\\$0-B;
 #A saved \\\$0-A symbol one || \\\$0-B 1 || \; \\\$0-A symbol two ||
 \\\$0-B 2 || \; \\\$0-A symbol three || \\\$0-B 3 || \; \\\$0-A symbol
 four || \\\$0-B 4 || \; \\\$0-A symbol five || \\\$0-B 5 || \; \\\$0-A
@@ -674,11 +677,11 @@ symbol six || \\\$0-B 6 || \; \\\$0-A symbol seven || \\\$0-B 7 ||
 #X text 49 618 -morphtime <float>: sets morph time (default: 0), f
 80;
 #N canvas 412 200 792 518 built-in-rcv 0;
-#X obj 143 171 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
--1 -1 1;
-#X floatatom 143 198 3 0 7 0 - - -;
-#X obj 114 197 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 143 171 hradio 15 1 0 4 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
+#X floatatom 143 198 3 0 7 0 - - - 0;
+#X obj 114 197 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 82 197 save;
 #X text 205 170 load;
 #X text 284 199 import from file, f 17;
@@ -702,10 +705,10 @@ Well \, at least for GUI abstraction objects from the ELSE library
 \, you can communicate to them with their built-in receive name thanks
 to the [else/default] object \,, f 69;
 #X obj 160 342 hsl 128 15 0 127 0 0 empty \$0-sl-rcv empty -2 -8 0
-10 -228856 -1 -1 0 1;
+10 #dcdcdc #000000 #000000 0 1;
 #X obj 170 302 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-nbx-rcv empty 0
--8 0 10 -228856 -1 -1 0 256;
-#X floatatom 225 302 5 0 0 0 - #0-atom-rcv -;
+-8 0 10 #dcdcdc #000000 #000000 0 256;
+#X floatatom 225 302 5 0 0 0 - \$0-atom-rcv - 0;
 #X obj 136 385 else/function 200 100 empty \$0-function-rcv 0 1 220
 220 220 50 50 50 0 0 0 0 0 1000 0;
 #X msg 177 199 read preset4.txt;
@@ -744,8 +747,9 @@ and has interpolation and morphing features. Change the number and
 symbol below \, save a preset and the patch \, reopen to recall the
 presets. Use the "read" message to restore to this example's default.
 , f 76;
-#X text 35 195 click to open => data window;
-#X obj 8 679 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
+#X text 35 195 click to open => data window, f 16;
+#X obj 8 679 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
+0;
 #X text 110 684 clicking on the object opens data/edit window (same
 as 'open'), f 63;
 #X connect 1 0 23 0;
