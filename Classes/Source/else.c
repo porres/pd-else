@@ -19,7 +19,7 @@ static int else_minor = 0;
 static int else_bugfix = 0;
 
 #define STATUS "beta"
-static int status_number = 46;
+static int status_number = 45;
 
 static void else_obj_version(t_else_obj *x){
     int ac = 5;
