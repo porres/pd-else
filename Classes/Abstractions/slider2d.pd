@@ -1296,7 +1296,7 @@ ysize_\$0, f 31;
 #X connect 26 0 14 0;
 #X connect 26 1 14 1;
 #X restore 39 280 pd steady;
-#N canvas 435 25 633 612 jump 1;
+#N canvas 435 25 633 612 jump 0;
 #X obj 53 521 outlet;
 #X obj 53 361 list;
 #X obj 53 327 sel 1;
