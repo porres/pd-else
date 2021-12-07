@@ -613,8 +613,8 @@ float in float grid, f 73;
 ;
 #X obj 81 158 t b b;
 #X obj 148 173 t b b;
-#X obj 231 145 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 231 145 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X msg 175 236 clear \, donecanvasdialog 1 -1 0 0 0 0 0 0 0 0 0;
 #N canvas 685 422 553 357 init 0;
 #X obj 125 52 inlet;
@@ -663,8 +663,8 @@ float in float grid, f 73;
 #X obj 43 310 outlet;
 #X text 300 53 Part of ELSE \; https://github.com/porres/pd-else,
 f 36;
-#X obj 54 47 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 54 47 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X text 4 46 re-init;
 #N canvas 568 247 861 411 route 0;
 #X obj 61 33 inlet;
@@ -1053,8 +1053,8 @@ bgcolor1 bgcolor fgcolor grid jump init send receive clip, f 118;
 #X connect 10 17 11 0;
 #X connect 15 0 14 0;
 #X restore 190 70 pd route;
-#X obj 93 47 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 93 47 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X text 300 36 Alexandre Torres Porres (2018-2019), f 36;
 #N canvas 879 317 732 407 patch 0;
 #X obj 105 271 outlet;
@@ -1370,7 +1370,7 @@ size_\$0 \; $f2 \; $f3, f 31;
 #X text 114 47 <= clear;
 #X obj 190 100 else/pad 127 127 255 255 255;
 #X obj 190 100 bng 127 1000 1000 0 \$0-bg_bng-send \$0-bg_bng empty
-17 7 0 10 -262144 -262144 -1;
+17 7 0 10 #ffffff #ffffff #000000;
 #N canvas 375 63 604 469 \$0-point-cnv 0;
 #X restore 190 100 pd \$0-point-cnv;
 #X connect 1 0 8 0;
