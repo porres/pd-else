@@ -223,6 +223,7 @@ meter4~	x
 meter8~	x
 metronome	x
 midi	x
+midi.learn	x
 midi2freq	x
 mix2~	x
 mix4~	x

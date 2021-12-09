@@ -115,7 +115,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (433 objects):
+## Current Object list (434 objects):
 
 **ASSORTED: [02]**
 
@@ -221,8 +221,10 @@ Cross compiling is also possible with something like this
 **FILE MANAGEMENT: [01]**
 - [dir]
 
-**MIDI: [18]**
+**MIDI: [19]**
+
 - [midi]
+- [midi.learn]
 - [sysrt.in]
 - [sysrt.out]
 - [ctl.in]
