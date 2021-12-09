@@ -1,15 +1,15 @@
-#N canvas 804 120 563 500 10;
-#X obj 4 284 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+#N canvas 802 47 562 507 10;
+#X obj 4 291 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 353 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 4 360 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 413 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 420 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 87 360 cnv 17 3 25 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 87 367 cnv 17 3 25 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 4 471 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 4 478 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 87 290 cnv 17 3 58 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 87 297 cnv 17 3 58 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 4 2 cnv 15 301 42 empty empty midi.learn 20 20 2 37 #e0e0e0
 #000000 0;
@@ -37,41 +37,42 @@
 #X restore 306 2 graph;
 #X obj 72 39 cnv 4 4 4 empty empty learn 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 4 442 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
+#X obj 4 449 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
 0;
-#X text 99 214 click to learn =>;
-#X obj 212 153 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#X text 99 224 click to learn =>;
+#X obj 212 163 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X text 235 154 <= click to learn;
-#X text 205 421 none, f 5;
-#X text 141 361 list -;
-#X text 151 318 query;
-#X listbox 212 242 10 0 0 0 - - - 12;
-#X msg 164 154 query;
-#X obj 299 239 else/display;
-#X msg 229 185 forget;
-#X obj 212 214 else/midi.learn;
+#X text 235 164 <= click to learn;
+#X text 205 428 none, f 5;
+#X text 141 368 list -;
+#X text 151 325 query;
+#X msg 164 164 query;
+#X obj 299 253 else/display;
+#X msg 229 195 forget;
+#X obj 212 224 else/midi.learn;
 #A saved;
-#X text 187 333 - forget input, f 50;
-#X obj 87 389 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 187 340 - forget input, f 50;
+#X obj 87 396 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 145 333 forget;
-#X text 116 390 anything -;
-#X text 187 390 learned controller, f 55;
-#X text 63 84 [midi.learn] is an abstraction based on [savestate] that
-learns and saves any MIDI input data. Connect a MIDI controller \,
-send information and send bang to learn. The information gets stored
-in the owning patch. Note and polytouch are sent as lists (respectively
-note/velocity and touch/note)., f 73;
-#X text 187 318 - print send stored input on right outlet, f 50;
-#X text 199 292 learn MIDI input \, print and send stored input on
+#X text 145 340 forget;
+#X text 116 397 anything -;
+#X text 187 397 learned controller, f 55;
+#X text 187 325 - print send stored input on right outlet, f 50;
+#X text 199 299 learn MIDI input \, print and send stored input on
 right outlet, f 53;
-#X text 157 292 bang -;
-#X text 187 361 MIDI input from learned controller (note and polytouch
+#X text 157 299 bang -;
+#X text 187 368 MIDI input from learned controller (note and polytouch
 are sent as lists), f 55;
-#X text 150 450 clicking on the object learns (same as bang);
-#X connect 20 0 29 0;
-#X connect 26 0 29 0;
-#X connect 28 0 29 0;
-#X connect 29 0 25 0;
-#X connect 29 1 27 0;
+#X text 150 457 clicking on the object learns (same as bang);
+#X obj 212 253 else/display 7;
+#X text 63 84 [midi.learn] is an abstraction based on [savestate] that
+learns and saves any MIDI input control. Connect a MIDI controller
+\, send information and hit bang or click to learn. The information
+gets stored in the owning patch. Note and polytouch are sent as lists
+(respectively note/velocity and touch/note) \, whereas program messages
+send bangs., f 73;
+#X connect 20 0 28 0;
+#X connect 25 0 28 0;
+#X connect 27 0 28 0;
+#X connect 28 0 39 0;
+#X connect 28 1 26 0;
