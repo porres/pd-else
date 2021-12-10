@@ -1,15 +1,15 @@
-#N canvas 804 120 563 535 10;
+#N canvas 751 31 562 556 10;
 #X obj 4 322 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 391 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 4 409 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 451 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 469 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 87 398 cnv 17 3 25 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 87 416 cnv 17 3 25 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 4 509 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 4 527 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 87 328 cnv 17 3 58 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 87 328 cnv 17 3 75 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 4 2 cnv 15 301 42 empty empty midi.learn 20 20 2 37 #e0e0e0
 #000000 0;
@@ -37,26 +37,22 @@
 #X restore 306 2 graph;
 #X obj 72 39 cnv 4 4 4 empty empty learn 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 4 480 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
+#X obj 4 498 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
 0;
 #X text 140 251 click to learn =>, f 8;
 #X obj 200 188 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
 #X text 224 188 <= click to learn, f 18;
-#X text 205 459 none, f 5;
-#X text 141 399 list -;
+#X text 141 417 list -;
 #X text 151 356 query;
-#X listbox 200 286 10 0 0 0 - - - 12;
 #X msg 220 237 query;
-#X obj 287 283 else/display;
+#X obj 287 287 else/display;
 #X msg 212 214 forget;
-#X obj 200 261 else/midi.learn;
-#A saved;
 #X text 187 371 - forget input, f 50;
-#X obj 87 427 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 87 445 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 145 371 forget;
-#X text 116 428 anything -;
+#X text 116 446 anything -;
 #X text 62 84 [midi.learn] is an abstraction based on [savestate] that
 learns and saves any MIDI input data. Connect a MIDI controller \,
 send information and send bang to learn. The information gets stored
@@ -64,17 +60,50 @@ in the owning patch. Note and polytouch are sent as lists (respectively
 note/velocity and touch/note)., f 74;
 #X text 187 356 - print send stored input on right outlet, f 50;
 #X text 199 330 learn MIDI input \, print and send stored input on
-right outlet, f 53;
+right outlet, f 48;
 #X text 157 330 bang -;
-#X text 187 399 MIDI input from learned controller (note and polytouch
+#X text 187 417 MIDI input from learned controller (note and polytouch
 are sent as lists), f 55;
-#X text 150 488 clicking on the object learns (same as bang);
-#X text 187 428 leartn controller, f 55;
-#X text 62 136 The Learned controllers are followedd by numbers that
+#X text 150 506 clicking on the object learns (same as bang);
+#N canvas 788 203 548 367 send-name 0;
+#X text 56 238 click to learn =>, f 8;
+#X obj 116 125 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X text 140 125 <= click to learn, f 18;
+#X msg 158 215 query;
+#X obj 251 289 else/display;
+#X msg 150 192 forget;
+#X listbox 404 236 9 0 0 0 - - - 16;
+#X listbox 404 277 9 0 0 0 - \$0-name - 16;
+#X obj 404 212 r \$0-name;
+#X obj 116 248 else/midi.learn \$0-name;
+#A saved ctlin 20 6;
+#X msg 135 158 set \\\$0-name-2;
+#X listbox 404 154 9 0 0 0 - - - 16;
+#X obj 404 130 r \$0-name-2;
+#X text 131 45 An optional argumemt sets a send name. You can also
+set or change it with the 'set' message., f 47;
+#X text 233 158 set send name;
+#X connect 1 0 9 0;
+#X connect 3 0 9 0;
+#X connect 5 0 9 0;
+#X connect 8 0 6 0;
+#X connect 9 1 4 0;
+#X connect 10 0 9 0;
+#X connect 12 0 11 0;
+#X restore 448 285 pd send-name;
+#X obj 200 261 else/midi.learn;
+#A saved;
+#X text 195 477 1) symbol - send name (default none);
+#X text 109 386 set <symbol> - set send name, f 63;
+#X text 187 446 learned controller, f 55;
+#X obj 200 287 else/display 7;
+#X text 62 136 The Learned controllers are followed by numbers that
 specify <number and channel> for ctlin and pgmin or just channel for
-the rest (notein \, bendin \, touchin and polytouchin)., f 74;
-#X connect 20 0 29 0;
-#X connect 26 0 29 0;
-#X connect 28 0 29 0;
-#X connect 29 0 25 0;
-#X connect 29 1 27 0;
+the notein and bendin (touchin and polytouchin not supported)., f
+74;
+#X connect 20 0 38 0;
+#X connect 24 0 38 0;
+#X connect 26 0 38 0;
+#X connect 38 0 42 0;
+#X connect 38 1 25 0;
