@@ -1,54 +1,54 @@
 #N canvas 912 33 561 571 10;
-#X obj 4 259 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 378 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 4 512 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 76 387 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 4 259 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 77 266 cnv 17 3 85 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 4 378 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
 ;
-#X obj 4 544 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 4 512 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
 0;
-#X obj 194 174 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
+#X obj 76 387 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 77 266 cnv 17 3 85 empty empty 0 5 9 0 16 -228856 -162280 0
+;
+#X obj 4 544 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+0;
+#X obj 194 174 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
 #X text 166 265 bang;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
 #X obj 23 40 cnv 4 4 4 empty empty High\\\ level\\\ metronome 0 28
-2 18 #e0e0e0 #000000 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
+2 18 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 333 178 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
-#X obj 3 3 cnv 15 301 42 empty empty metrnome 20 20 2 37 #e0e0e0 #000000
+-228856 -1 -1 0 256;
+#X obj 3 3 cnv 15 301 42 empty empty metronome 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 180 142 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
-#000000 0 1;
+#X obj 180 142 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
+1;
 #X text 200 143 start/continue \, pause;
 #X text 375 178 tempo;
-#X obj 180 230 bng 18 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X floatatom 210 230 3 0 0 0 - - - 0;
-#X floatatom 302 230 4 0 0 0 - - - 0;
-#X floatatom 333 230 4 0 0 0 - - - 0;
+#X obj 180 230 bng 18 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 210 230 3 0 0 0 - - -;
+#X floatatom 302 230 4 0 0 0 - - -;
+#X floatatom 333 230 4 0 0 0 - - -;
 #X text 213 176 (re)start;
 #X text 160 293 float;
 #X text 196 293 - non-zero starts or continues \, zero stops, f 47
@@ -74,30 +74,30 @@
 #X text 160 468 float;
 #X text 160 488 float;
 #X text 172 521 1) float - tempo (default 0);
-#X obj 76 356 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 356 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 76 407 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 407 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 76 427 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 427 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
 ;
-#X obj 76 447 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 447 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
-#X obj 76 467 cnv 17 3 17 empty empty 4 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 467 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
 ;
-#X obj 76 487 cnv 17 3 17 empty empty 5 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 487 cnv 17 3 17 empty empty 5 5 9 0 16 -228856 -162280 0
 ;
 #X msg 90 174 rewind;
 #N canvas 1035 188 548 363 time-sig 0;
 #X msg 176 244 timesig 7/8;
 #X msg 151 196 timesig 6/8;
 #X msg 140 171 timesig 15/8 3;
-#X obj 140 305 bng 18 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X floatatom 170 308 2 0 0 0 - - - 0;
-#X floatatom 201 308 2 0 0 0 - - - 0;
-#X floatatom 231 308 2 0 0 0 - - - 0;
-#X floatatom 262 308 4 0 0 0 - - - 0;
-#X floatatom 293 308 4 0 0 0 - - - 0;
+#X obj 140 305 bng 18 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X floatatom 170 308 2 0 0 0 - - -;
+#X floatatom 201 308 2 0 0 0 - - -;
+#X floatatom 231 308 2 0 0 0 - - -;
+#X floatatom 262 308 4 0 0 0 - - -;
+#X floatatom 293 308 4 0 0 0 - - -;
 #X msg 161 218 timesig 12/8;
 #X msg 115 149 timesig 15/8 5;
 #X text 209 149 15/8 grouped in 5 groups (3 sub-beats each);
@@ -131,15 +131,15 @@ is \, respectively \, 2 \, 3 and 4 \, see examples below., f 65;
 #X restore 467 197 pd time-sig;
 #X text 196 468 - beat phase output (0-1), f 47;
 #X text 196 488 - beat frame output (0-960), f 47;
-#X floatatom 241 230 3 0 0 0 - - - 0;
-#X floatatom 271 230 3 0 0 0 - - - 0;
+#X floatatom 241 230 3 0 0 0 - - -;
+#X floatatom 271 230 3 0 0 0 - - -;
 #N canvas 834 122 488 587 example 0;
-#X obj 77 30 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
-0 1;
-#X obj 110 249 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
-#X floatatom 299 164 4 0 0 0 - - - 12;
-#X floatatom 299 221 4 0 0 0 - - - 12;
+#X obj 77 30 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
+;
+#X obj 110 249 bng 22 250 50 0 empty empty empty 17 7 0 10 -228856
+-1 -1;
+#X floatatom 299 164 4 0 0 0 - - -;
+#X floatatom 299 221 4 0 0 0 - - -;
 #X text 76 248 beat bang, f 4;
 #X obj 212 507 else/out~;
 #X obj 212 389 impseq~;
@@ -147,9 +147,9 @@ is \, respectively \, 2 \, 3 and 4 \, see examples below., f 65;
 #X obj 310 389 impseq~;
 #X obj 110 423 else/resonant~ 1700 100, f 14;
 #X obj 185 331 sel 1;
-#X obj 264 251 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X floatatom 261 278 7 0 0 0 - - - 12;
+#X obj 264 251 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 -228856
+-1 -1 0 1;
+#X floatatom 261 278 7 0 0 0 - - -;
 #X obj 223 331 sel 1;
 #X text 227 274 sub div, f 3;
 #X msg 152 106 timesig 7/8;

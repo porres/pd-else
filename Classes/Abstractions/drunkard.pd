@@ -25,7 +25,7 @@
 #X connect 4 2 0 0;
 #X connect 4 3 5 0;
 #X connect 6 0 3 0;
-#X restore 242 97 pd default;
+#X restore 207 91 pd default;
 #X obj 107 160 route float list -seed -p;
 #X msg 180 209 seed \$1;
 #X msg 239 209 p \$1;
@@ -45,7 +45,7 @@
 #X obj 239 253 outlet;
 #X obj 107 120 else/break -;
 #X obj 107 90 else/args;
-#X obj 108 60 else/loadbanger -init 2;
+#X obj 108 60 else/loadbanger 2;
 #X connect 1 0 4 0;
 #X connect 1 1 4 0;
 #X connect 1 2 2 0;

@@ -15,7 +15,7 @@
 #X obj 241 128 f \$1;
 #X obj 210 160 max 0;
 #X obj 146 208 >;
-#X obj 241 104 else/loadbanger -init;
+#X obj 241 104 else/loadbanger;
 #X connect 0 0 1 0;
 #X connect 1 0 0 1;
 #X connect 1 0 15 0;

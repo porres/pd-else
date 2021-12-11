@@ -30,18 +30,18 @@
 #X obj 105 202 s \$0-rand;
 #X msg 271 164 seed \$1;
 #X obj 272 192 s \$0-rand;
-#X obj 93 26 else/lb -init;
 #X obj 120 85 else/args;
+#X obj 93 26 else/lb;
 #X connect 1 0 2 0;
 #X connect 1 0 6 0;
-#X connect 1 1 10 0;
+#X connect 1 1 9 0;
 #X connect 3 0 0 0;
 #X connect 3 1 4 0;
 #X connect 3 2 7 0;
 #X connect 4 0 5 0;
 #X connect 7 0 8 0;
-#X connect 9 0 1 0;
-#X connect 10 0 3 0;
+#X connect 9 0 3 0;
+#X connect 10 0 1 0;
 #X restore 280 148 pd args;
 #X obj 105 178 r \$0-hz;
 #X obj 203 197 r \$0-lb;
@@ -53,8 +53,8 @@
 #X obj 203 470 pack f f;
 #X obj 88 395 expr 1000/$f1;
 #X obj 248 445 *;
-#X obj 322 397 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 322 397 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 322 371 r \$0-interp;
 #X obj 216 91 v phase_\$0;
 #X obj 172 63 t b b;

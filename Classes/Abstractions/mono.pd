@@ -159,9 +159,9 @@
 #X obj 15 106 route -last -high -low float;
 #X obj 138 133 != 0;
 #X obj 138 165 v legato_\$0;
-#X obj 15 36 else/lb -init;
 #X obj 15 60 else/args;
 #X obj 15 83 else/break -;
+#X obj 15 36 else/lb;
 #X connect 0 0 3 0;
 #X connect 1 0 3 0;
 #X connect 2 0 3 0;
@@ -171,8 +171,8 @@
 #X connect 7 3 8 0;
 #X connect 8 0 9 0;
 #X connect 10 0 11 0;
-#X connect 11 0 12 0;
-#X connect 12 0 7 0;
+#X connect 11 0 7 0;
+#X connect 12 0 10 0;
 #X restore 31 85 pd init \; tables;
 #N canvas 142 160 263 389 legato 0;
 #X obj 61 33 inlet;
@@ -186,10 +186,10 @@
 #X obj 117 226 < 2;
 #X obj 61 124 v legato_\$0;
 #X obj 80 63 r \$0-velocity;
-#X floatatom 65 290 5 0 0 0 - - -;
-#X floatatom 191 149 5 0 0 0 - - -;
-#X obj 209 210 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X floatatom 65 290 5 0 0 0 - - - 0;
+#X floatatom 191 149 5 0 0 0 - - - 0;
+#X obj 209 210 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X connect 0 0 4 0;
 #X connect 2 0 1 0;
 #X connect 2 0 11 0;

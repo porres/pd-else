@@ -2,7 +2,6 @@
 #X obj 62 83 t b a, f 7;
 #X obj 62 321 b;
 #X obj 116 366 else/stack;
-#A saved;
 #X msg 165 165 dump;
 #X msg 210 215 clear;
 #X msg 71 221 clear;

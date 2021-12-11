@@ -13,8 +13,8 @@
 #X obj 245 316 outlet;
 #X obj 310 275 s dir_\$0;
 #X obj 245 285 abs;
-#X obj 57 84 else/loadbanger -init 2;
 #X obj 57 119 else/args;
+#X obj 57 84 else/loadbanger 2;
 #X connect 0 0 5 0;
 #X connect 1 1 5 0;
 #X connect 2 0 7 0;
@@ -24,9 +24,9 @@
 #X connect 5 0 8 0;
 #X connect 5 1 2 0;
 #X connect 8 0 6 0;
-#X connect 9 0 10 0;
-#X connect 9 1 0 0;
-#X connect 10 0 4 0;
+#X connect 9 0 4 0;
+#X connect 10 0 9 0;
+#X connect 10 1 0 0;
 #X restore 128 116 pd set;
 #X obj 71 149 list split;
 #X obj 191 148 r dir_\$0;

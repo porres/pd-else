@@ -9,8 +9,8 @@
 #X obj 174 378 s \$0-thresh;
 #X obj 279 285 s \$0-gain;
 #X obj 67 161 route thresh ratio attack release gain, f 12;
-#X obj 175 90 else/lb -init 2;
 #X obj 174 122 else/args;
+#X obj 175 90 else/lb 2;
 #X connect 0 0 8 0;
 #X connect 4 0 6 0;
 #X connect 4 1 1 0;
@@ -23,9 +23,9 @@
 #X connect 8 2 2 0;
 #X connect 8 3 3 0;
 #X connect 8 4 7 0;
-#X connect 9 0 10 0;
-#X connect 9 1 5 0;
-#X connect 10 0 4 0;
+#X connect 9 0 4 0;
+#X connect 10 0 9 0;
+#X connect 10 1 5 0;
 #X restore 290 56 pd set;
 #X text 242 165 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 244 146 Alexandre Torres Porres (2019);

@@ -216,7 +216,7 @@
 #X obj 75 111 route -spread -mode;
 #X obj 163 178 s \$0-spread;
 #X msg 205 111 0;
-#X obj 76 50 else/loadbanger -init 2;
+#X obj 76 50 else/loadbanger 2;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;
 #X connect 2 1 0 0;

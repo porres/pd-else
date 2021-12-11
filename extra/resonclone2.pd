@@ -20,7 +20,7 @@
 #X obj 158 114 else/float2sig~;
 #X obj 177 62 else/float2sig~;
 #X obj 307 201 else/float2sig~;
-#X obj 379 232 else/lb -init;
+#X obj 379 232 else/lb;
 #X connect 1 0 16 0;
 #X connect 2 0 15 0;
 #X connect 3 0 17 0;

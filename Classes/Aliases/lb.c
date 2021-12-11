@@ -1,15 +1,11 @@
 // Porres 2017
 
-// alias of loadbanger
-
 #include "m_pd.h"
 #include "g_canvas.h"
-#include <string.h>
 
 typedef struct _lb{
     t_object    x_ob;
     int         x_nouts;
-    int         x_banged;
     int         x_init;
     t_outlet  **x_outs;
     t_outlet   *x_outbuf[1];
@@ -18,25 +14,24 @@ typedef struct _lb{
 static t_class *lb_class;
 
 static void lb_loadbang(t_lb *x, t_float f){
-    if((int)f == LB_INIT && x->x_init){ // == LB_INIT (1) and "-init"
-        int i = x->x_nouts;
-        while (i--){
-            outlet_bang(x->x_outs[i]);
+    if(x->x_init){
+        if((int)f == LB_INIT){ // == LB_INIT (1) and "-init"
+            int i = x->x_nouts;
+            while(i--)
+                outlet_bang(x->x_outs[i]);
         }
-    x->x_banged = 1;
     }
-    if((int)f == LB_LOAD && !x->x_banged){ // == LB_LOAD (0) and hasn't banged yet (next)
+    else if((int)f == LB_LOAD){ // == LB_LOAD (0) and hasn't banged yet (next)
         int j = x->x_nouts;
-        while (j--){
+        while (j--)
             outlet_bang(x->x_outs[j]);
-        }
-    x->x_banged = 1;
     }
 }
 
 static void lb_click(t_lb *x, t_floatarg xpos, t_floatarg ypos,
                            t_floatarg shift, t_floatarg ctrl, t_floatarg alt)
 {
+    xpos = ypos = shift = ctrl = alt = 0;
     int i = x->x_nouts;
     while (i--)
         outlet_bang(x->x_outs[i]);
@@ -48,7 +43,7 @@ static void lb_bang(t_lb *x){
         outlet_bang(x->x_outs[i]);
 }
 
-static void lb_anything(t_lb *x, t_symbol *s, int ac, t_atom *av){
+static void lb_anything(t_lb *x){
     int i = x->x_nouts;
     while (i--)
         outlet_bang(x->x_outs[i]);
@@ -60,14 +55,13 @@ static void lb_free(t_lb *x){
 }
 
 static void *lb_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_lb *x = (t_lb *)pd_new(lb_class);
     int i, nouts = 1;
-    x->x_banged = 0;
     t_outlet **outs;
     x->x_init = 0;
     t_float float_flag = 0;
 /////////////////////////////////////////////////////////////////////////////////////
-    int argnum = 0;
     if(argc <= 2){
         while(argc > 0){
             if(argv->a_type == A_FLOAT && !float_flag){
@@ -79,7 +73,7 @@ static void *lb_new(t_symbol *s, int argc, t_atom *argv){
             else
                 if (argv -> a_type == A_SYMBOL){
                     t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-                    if(strcmp(curarg->s_name, "-init")==0){
+                    if(curarg == gensym("-init")){
                         x->x_init = 1;
                         argc--;
                         argv++;
@@ -121,6 +115,5 @@ void lb_setup(void){
     class_addanything(lb_class, lb_anything);
     class_addmethod(lb_class, (t_method)lb_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     class_addmethod(lb_class, (t_method)lb_click, gensym("click"),
-                    A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
-    class_sethelpsymbol(lb_class, gensym("loadbanger"));
+                                    A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
 }

@@ -10,14 +10,14 @@
 #X obj 169 140 != 0;
 #X msg 123 139 1;
 #X obj 169 168 outlet;
-#X obj 124 67 else/lb -init;
 #X obj 124 90 else/args;
+#X obj 124 67 else/lb;
 #X connect 0 0 2 0;
 #X connect 0 1 1 0;
 #X connect 1 0 3 0;
 #X connect 2 0 3 0;
-#X connect 4 0 5 0;
-#X connect 5 0 0 0;
+#X connect 4 0 0 0;
+#X connect 5 0 4 0;
 #X restore 127 81 pd init;
 #X text 191 154 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 193 134 Alexandre Torres Porres (2019);

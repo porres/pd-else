@@ -10,11 +10,11 @@
 #X obj 191 206 t b f;
 #X obj 248 371 * 1;
 #X obj 191 268 exp;
-#X obj 145 128 else/lb -init;
 #X obj 145 151 else/args;
 #X obj 121 266 else/lb;
 #X obj 283 280 else/click;
-#X connect 0 0 13 0;
+#X obj 145 128 else/lb;
+#X connect 0 0 12 0;
 #X connect 1 0 10 0;
 #X connect 2 0 9 0;
 #X connect 4 0 9 1;
@@ -24,7 +24,7 @@
 #X connect 8 1 9 1;
 #X connect 9 0 3 0;
 #X connect 10 0 2 1;
-#X connect 11 0 12 0;
-#X connect 12 0 7 0;
+#X connect 11 0 7 0;
+#X connect 12 0 2 0;
 #X connect 13 0 2 0;
-#X connect 14 0 2 0;
+#X connect 14 0 11 0;

@@ -643,7 +643,7 @@ float in float grid, f 73;
 #X obj 81 253 t b b;
 #X obj 231 178 else/message \; \$0-this-patch donecanvasdialog 1 -1
 0 0 0 0 0 0 0 0 0, f 31;
-#X obj 81 87 else/lb -init;
+#X obj 81 87 else/lb;
 #X connect 0 0 14 0;
 #X connect 1 0 12 0;
 #X connect 2 0 8 0;

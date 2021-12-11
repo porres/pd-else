@@ -1,6 +1,6 @@
 #N canvas 649 81 666 329 12;
-#X obj 68 141 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
+#X obj 68 141 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 167 36 inlet;
 #X obj 334 43 inlet;
 #N canvas 188 66 521 403 inc 0;
@@ -70,26 +70,26 @@
 #X msg 114 257 1;
 #X obj 114 227 sel 1;
 #X obj 114 189 expr phase_\$0 == 0 && dir_\$0 == 1, f 18;
-#X obj 62 59 else/lb -init 3, f 23;
 #X obj 257 127 else/args;
 #X obj 257 157 else/break -;
+#X obj 62 59 else/lb 3, f 23;
 #X connect 2 0 1 0;
 #X connect 4 0 3 0;
 #X connect 5 0 9 0;
 #X connect 5 1 9 0;
 #X connect 5 2 8 0;
 #X connect 6 0 13 0;
-#X connect 6 1 15 0;
+#X connect 6 1 14 0;
 #X connect 9 0 7 0;
 #X connect 9 1 4 0;
 #X connect 11 0 10 0;
 #X connect 12 0 11 0;
 #X connect 13 0 12 0;
-#X connect 14 0 0 0;
-#X connect 14 1 6 0;
-#X connect 14 2 2 0;
-#X connect 15 0 16 0;
-#X connect 16 0 5 0;
+#X connect 14 0 15 0;
+#X connect 15 0 5 0;
+#X connect 16 0 0 0;
+#X connect 16 1 6 0;
+#X connect 16 2 2 0;
 #X restore 68 86 pd init;
 #X obj 167 71 route float rate;
 #N canvas 1214 496 400 314 rate 0;

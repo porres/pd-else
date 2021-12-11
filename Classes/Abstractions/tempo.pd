@@ -1,6 +1,6 @@
 #N canvas 597 190 528 467 10;
-#X obj 35 214 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 35 214 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 67 342 metro;
 #X obj 35 33 inlet;
 #X text 42 9 gate;
@@ -37,12 +37,12 @@
 #X msg 199 226 2;
 #X obj 134 93 else/args;
 #X obj 134 117 else/break -;
-#X obj 91 50 else/lb -init 3;
 #X obj 168 250 s \$0-unit;
 #X obj 134 142 route -on -ms -hz float list -div -mode;
 #X obj 377 171 != 0;
 #X obj 377 196 s \$0-mode;
-#X connect 1 0 17 0;
+#X obj 91 50 else/lb 3;
+#X connect 1 0 16 0;
 #X connect 2 0 3 0;
 #X connect 3 0 0 0;
 #X connect 4 0 2 1;
@@ -52,20 +52,20 @@
 #X connect 10 0 11 0;
 #X connect 12 0 7 0;
 #X connect 12 1 6 0;
-#X connect 13 0 17 0;
+#X connect 13 0 16 0;
 #X connect 14 0 15 0;
-#X connect 15 0 18 0;
-#X connect 16 0 2 0;
-#X connect 16 1 14 0;
-#X connect 16 2 9 0;
-#X connect 18 0 4 0;
-#X connect 18 1 1 0;
-#X connect 18 2 13 0;
-#X connect 18 3 12 0;
-#X connect 18 4 12 0;
-#X connect 18 5 10 0;
-#X connect 18 6 19 0;
-#X connect 19 0 20 0;
+#X connect 15 0 17 0;
+#X connect 17 0 4 0;
+#X connect 17 1 1 0;
+#X connect 17 2 13 0;
+#X connect 17 3 12 0;
+#X connect 17 4 12 0;
+#X connect 17 5 10 0;
+#X connect 17 6 18 0;
+#X connect 18 0 19 0;
+#X connect 20 0 2 0;
+#X connect 20 1 14 0;
+#X connect 20 2 9 0;
 #X restore 78 182 pd args;
 #N canvas 112 349 507 478 time 0;
 #X obj 69 35 inlet;

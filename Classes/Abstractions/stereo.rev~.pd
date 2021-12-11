@@ -6,18 +6,18 @@
 #N canvas 707 109 531 439 decay 0;
 #X obj 188 30 inlet;
 #X obj 267 236 /;
-#X floatatom 267 160 7 0 0 0 - - -;
+#X floatatom 267 160 7 0 0 0 - - - 0;
 #X obj 267 319 * 0.25;
-#X floatatom 188 124 5 0 1000 0 - - -;
+#X floatatom 188 124 5 0 1000 0 - - - 0;
 #N canvas 677 38 260 419 average 0;
 #X obj 154 76 +;
-#X floatatom 61 86 5 0 0 0 - - -;
+#X floatatom 61 86 5 0 0 0 - - - 0;
 #X obj 166 281 f;
 #X msg 61 276 0;
-#X obj 112 121 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 112 121 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X obj 146 145 + 1;
-#X floatatom 112 172 5 0 0 0 - - -;
+#X floatatom 112 172 5 0 0 0 - - - 0;
 #X obj 166 357 outlet;
 #X obj 82 226 t b b b;
 #X msg 82 118 0;
@@ -48,13 +48,13 @@
 #X restore 267 96 pd average;
 #X obj 267 30 inlet;
 #X obj 267 348 else/f2s~ 10;
-#X floatatom 267 293 5 0 0 0 - - -;
+#X floatatom 267 293 5 0 0 0 - - - 0;
 #X obj 188 152 max 0;
 #X obj 267 262 expr if($f1 == 0 \, 0 \, pow(0.001 \, $f1));
 #X obj 267 130 / 1000;
 #N canvas 698 243 656 624 set-delay-lengths 0;
 #X obj 218 32 inlet;
-#X floatatom 218 109 5 0 2 0 - - -;
+#X floatatom 218 109 5 0 2 0 - - - 0;
 #X obj 218 136 expr pow(2 \, $f1) \; pow(3 \, $f1) \; pow(5 \, $f1)
 \; pow(6 \, $f1) \; pow(11 \, $f1) \; pow(13 \, $f1) \; pow(17 \, $f1)
 \; pow(19 \, $f1) \; pow(23 \, $f1) \; pow(29 \, $f1) \; pow(31 \,
@@ -151,8 +151,8 @@ of the matrix, f 33;
 #X obj 71 121 unpack float float float float;
 #X msg 248 144 wet \$1;
 #X msg 158 93 1 0.5 0 0.5;
-#X obj 71 50 else/lb -init 2;
 #X obj 71 83 else/args;
+#X obj 71 50 else/lb 2;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
@@ -162,9 +162,9 @@ of the matrix, f 33;
 #X connect 4 3 5 0;
 #X connect 5 0 0 0;
 #X connect 6 0 4 0;
-#X connect 7 0 8 0;
-#X connect 7 1 6 0;
-#X connect 8 0 4 0;
+#X connect 7 0 4 0;
+#X connect 8 0 7 0;
+#X connect 8 1 6 0;
 #X restore 79 82 pd args;
 #X obj 165 171 s \$0-clear;
 #X msg 165 142 clear;

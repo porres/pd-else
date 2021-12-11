@@ -104,7 +104,7 @@
 #X text 112 25 order;
 #X obj 60 158 f \$1;
 #X obj 106 100 f \$2;
-#X obj 122 74 else/lb -init;
+#X obj 122 74 else/lb;
 #X connect 1 0 10 0;
 #X connect 4 0 2 0;
 #X connect 4 1 3 0;

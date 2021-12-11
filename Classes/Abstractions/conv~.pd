@@ -1,6 +1,4 @@
 #N canvas 739 296 396 195 10;
-#X declare -path /Users/porres/Desktop/git/pd-else/Classes/Abstractions/!Ok
-;
 #X obj 54 136 outlet~;
 #N canvas 442 499 436 254 guts 0;
 #N canvas 540 206 304 252 fft 0;
@@ -76,8 +74,8 @@
 #X connect 2 0 1 0;
 #X connect 2 0 3 0;
 #X restore 182 114 pd save;
-#X obj 182 92 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 182 92 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #N canvas 438 172 352 225 set 0;
 #X obj 118 56 inlet;
 #N canvas 617 194 891 770 load-IR 0;
@@ -216,7 +214,7 @@
 #X connect 3 0 1 0;
 #X connect 3 1 2 0;
 #X restore 164 62 pd set;
-#N canvas 683 70 760 851 init 0;
+#N canvas 1036 154 760 851 init 0;
 #X obj 430 394 soundfiler;
 #X msg 430 363 read \$1;
 #X msg 606 332 set \$1 2;
@@ -244,8 +242,6 @@
 #X obj 436 138 send pd-\$0-path;
 #X msg 436 114 clear \, obj 30 20 declare -path \$1;
 #N canvas 360 224 493 100 \$0-path 0;
-#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/Classes/Abstractions/!Ok
-;
 #X restore 538 138 pd \$0-path;
 #X obj 313 426 expr ceil(2*$f2/$f1);
 #X obj 243 210 max 32;
@@ -267,9 +263,9 @@
 0 0 2 0 \, connect 1 0 2 1 \, connect 2 0 3 0 \, connect 2 1 4 0 \;
 \$3-ir-file symbol \$2 \; \$3-load bang;
 #X msg 379 57 dir;
-#X obj 188 62 else/loadbanger 2 -init;
 #X obj 188 92 else/args;
 #X obj 379 81 else/dir 1;
+#X obj 188 62 else/loadbanger 2;
 #X connect 0 0 26 1;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
@@ -317,11 +313,11 @@
 #X connect 36 0 28 0;
 #X connect 37 0 38 1;
 #X connect 38 0 39 0;
-#X connect 40 0 43 0;
-#X connect 41 0 42 0;
-#X connect 41 1 40 0;
-#X connect 42 0 22 0;
-#X connect 43 1 24 0;
+#X connect 40 0 42 0;
+#X connect 41 0 22 0;
+#X connect 42 1 24 0;
+#X connect 43 0 41 0;
+#X connect 43 1 40 0;
 #X restore 217 62 pd init;
 #X connect 0 0 2 0;
 #X connect 0 1 2 1;

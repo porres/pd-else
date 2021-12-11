@@ -39,7 +39,7 @@
 0;
 #X obj 4 477 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
 0;
-#X text 146 250 click to learn =>, f 8;
+#X text 148 249 click to learn =>, f 8;
 #X obj 206 184 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
 #X text 186 404 list -;

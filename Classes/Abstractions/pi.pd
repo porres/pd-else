@@ -16,7 +16,7 @@
 #X obj 207 300 loadbang;
 #X obj 202 275 else/click;
 #X obj 115 118 else/args;
-#X obj 115 95 else/lb -init;
+#X obj 115 95 else/lb;
 #X connect 0 0 13 0;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;

@@ -17,8 +17,8 @@
 #X obj 269 189 - 1;
 #X obj 269 162 clip 0 1;
 #X obj 269 217 s \$0-wet;
-#X obj 51 78 else/lb -init;
 #X obj 51 102 else/args;
+#X obj 51 78 else/lb;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
 #X connect 4 0 3 0;
@@ -28,8 +28,8 @@
 #X connect 6 0 8 0;
 #X connect 7 0 9 0;
 #X connect 8 0 7 0;
-#X connect 10 0 11 0;
-#X connect 11 0 4 0;
+#X connect 10 0 4 0;
+#X connect 11 0 10 0;
 #X restore 119 72 pd set-parameters;
 #X obj 89 114 r \$0-rate;
 #X obj 191 112 r \$0-depth;

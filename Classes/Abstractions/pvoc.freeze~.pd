@@ -10,8 +10,8 @@
 #X obj 77 198 tabwrite~ \$0-back;
 #X obj 82 271 tabreceive~ \$0-back;
 #X obj 292 269 tabreceive~ \$0-front;
-#X obj 237 112 bng 25 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 237 112 bng 25 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 237 60 r \$0-freeze;
 #X obj 239 227 table \$0-back 2048;
 #X obj 239 206 table \$0-front 2048;

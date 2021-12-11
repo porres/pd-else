@@ -1,12 +1,12 @@
 #N canvas 580 168 522 369 10;
 #X obj 89 31 inlet;
 #N canvas 580 168 810 593 \$0-buffers 0;
-#X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 -233017 -66577
+#X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 #e0e0e0 #404040
 0;
-#N canvas 0 22 450 300 ch0_1003 0;
-#X array sample_1003 44100 float 2;
+#N canvas 0 22 450 300 ch0_1403 0;
+#X array sample_1403 44100 float 2;
 #X coords 0 1 44100 -1 450 82 2 0 0;
-#X restore 5 19 pd ch0_1003;
+#X restore 5 19 pd ch0_1403;
 #X coords 0 0 0 0 10 20 0;
 #X restore 247 161 pd \$0-buffers;
 #X obj 89 99 soundfiler;
@@ -957,7 +957,7 @@
 #X text 313 110 <== in case abstraction is corrupted, f 12;
 #X obj 174 174 / 1000;
 #X obj 173 198 s \$0-kh;
-#X obj 76 47 else/loadbanger -init;
+#X obj 76 47 else/loadbanger;
 #X connect 0 0 1 0;
 #X connect 0 0 7 0;
 #X connect 2 0 5 0;

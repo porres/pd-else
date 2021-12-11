@@ -63,9 +63,9 @@
 #X connect 5 0 2 0;
 #X restore 107 208 pd args;
 #X obj 239 253 outlet;
-#X obj 108 60 else/loadbanger -init 2;
 #X obj 107 90 else/args;
 #X obj 107 118 else/break -;
+#X obj 108 60 else/loadbanger 2;
 #X connect 1 0 4 0;
 #X connect 1 1 4 0;
 #X connect 1 2 2 0;
@@ -73,9 +73,9 @@
 #X connect 2 0 5 0;
 #X connect 3 0 5 0;
 #X connect 6 0 7 0;
-#X connect 6 1 0 0;
-#X connect 7 0 8 0;
-#X connect 8 0 1 0;
+#X connect 7 0 1 0;
+#X connect 8 0 6 0;
+#X connect 8 1 0 0;
 #X restore 79 87 pd init;
 #X obj 119 223 v p_\$0;
 #X obj 119 197 clip 0 100;

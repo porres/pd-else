@@ -60,12 +60,12 @@
 #X connect 16 0 5 0;
 #X connect 17 0 1 0;
 #X connect 18 0 1 0;
-#X restore 206 112 pd create-stages;
+#X restore 170 112 pd create-stages;
 #X obj 119 117 f \$2;
 #X obj 103 196 s \$0-size;
 #X obj 103 170 expr 1 + $f1 * 0.5;
 #X obj 103 144 clip 0 1;
-#X obj 119 85 else/lb -init 2;
+#X obj 119 85 else/lb 2;
 #X connect 0 0 5 0;
 #X connect 2 0 5 0;
 #X connect 4 0 3 0;

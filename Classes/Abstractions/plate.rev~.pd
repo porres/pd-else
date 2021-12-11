@@ -353,8 +353,8 @@
 #X obj 98 115 unpack f f f f f;
 #X obj 57 86 t a b;
 #X msg 98 86 50 0.5 0.25 0.75 0.75;
-#X obj 57 40 else/lb -init;
 #X obj 57 63 else/args;
+#X obj 57 40 else/lb;
 #X connect 5 0 0 0;
 #X connect 5 1 4 0;
 #X connect 5 2 1 0;
@@ -363,8 +363,8 @@
 #X connect 6 0 5 0;
 #X connect 6 1 7 0;
 #X connect 7 0 5 0;
-#X connect 8 0 9 0;
-#X connect 9 0 6 0;
+#X connect 8 0 6 0;
+#X connect 9 0 8 0;
 #X restore 194 99 pd args;
 #X text 238 225 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 240 206 Alexandre Torres Porres (2019);
