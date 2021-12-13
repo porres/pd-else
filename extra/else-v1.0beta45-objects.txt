@@ -72,7 +72,6 @@ chorus~	x
 circle	x
 click	x
 clipnoise~	x
-clock	x
 cmul~	x
 coeff2pz	x
 colors	x
@@ -223,6 +222,7 @@ meter4~	x
 meter8~	x
 metronome	x
 midi	x
+midi.clock	x
 midi.learn	x
 midi2freq	x
 mix2~	x

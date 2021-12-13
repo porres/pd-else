@@ -20,7 +20,7 @@
    terms of the Do What The Fuck You Want To Public License, Version 2,
    as published by Sam Hocevar. See License.txt <https://github.com/porres/pd-else/blob/master/License.txt> and <http://www.wtfpl.net/> for more details
 
-   Other licenses may apply for specific objects and this is informed in the source code (example: the [giga.rev~] object). 
+   Other licenses may apply for specific objects and this is informed in the source code (example: the [giga.rev~] object).
 
 
 
@@ -237,7 +237,7 @@ Cross compiling is also possible with something like this
 - [bend.out]
 - [note.in]
 - [note.out]
-- [clock]
+- [midi.clock]
 - [panic]
 - [mono]
 - [voices]

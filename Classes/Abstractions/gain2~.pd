@@ -201,7 +201,6 @@
 #X obj 384 563 s \$0-ramp;
 #X msg 124 588 set \$1;
 #X obj 178 588 s \$0-slider-init;
-#X obj 131 519 del 0;
 #X connect 0 0 17 0;
 #X connect 1 0 27 0;
 #X connect 4 0 3 0;
@@ -236,11 +235,10 @@
 #X connect 36 0 37 0;
 #X connect 37 0 4 0;
 #X connect 37 0 38 0;
-#X connect 38 0 44 0;
+#X connect 38 0 40 0;
 #X connect 40 0 42 0;
 #X connect 40 0 43 0;
 #X connect 42 0 39 0;
-#X connect 44 0 40 0;
 #X restore 70 204 pd route;
 #N canvas 429 237 398 303 set-args 0;
 #X obj 125 77 r \$0-set-mode_arg;

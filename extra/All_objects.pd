@@ -1,9 +1,9 @@
-#N struct 4725-cell float x float y float cellsize float color;
-#N struct 4726-point float x0 float y0 float xs float ys float fg float
+#N struct 4723-cell float x float y float cellsize float color;
+#N struct 4724-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 4745-point float x0 float y0 float size float fg float in
+#N struct 4743-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 4784-slot float x float y float slotsize float color float
+#N struct 4782-slot float x float y float slotsize float color float
 width float bordercolor;
 #N canvas 733 23 541 769 10;
 #X text 53 120 Assorted:;
@@ -175,7 +175,6 @@ width float bordercolor;
 #X obj 51 2797 else/bend.out;
 #X obj 51 2823 else/note.in;
 #X obj 51 2849 else/note.out;
-#X obj 51 2875 else/clock;
 #X obj 51 2901 else/panic;
 #X obj 51 2927 else/mono;
 #X obj 51 2953 else/voices;
@@ -612,4 +611,5 @@ width float bordercolor;
 0;
 #X obj 51 2537 else/midi.learn;
 #A saved;
-#X connect 455 0 454 0;
+#X obj 51 2875 else/midi.clock;
+#X connect 454 0 453 0;
