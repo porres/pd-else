@@ -1,4 +1,5 @@
 #N canvas 844 218 678 312 12;
+#X declare -path else;
 #X obj 63 254 outlet~;
 #X obj 221 249 outlet~;
 #X text 323 175 Part of ELSE \; https://github.com/porres/pd-else;
@@ -123,7 +124,7 @@
 #X obj 80 196 outlet~;
 #N canvas 269 682 450 300 \$0-delwrite~ 0;
 #X obj 50 50 inlet~;
-#X obj 50 100 delwrite~ 4250-buf 5000;
+#X obj 50 100 delwrite~ 5250-buf 5000;
 #X connect 0 0 1 0;
 #X restore 81 133 pd \$0-delwrite~;
 #X connect 0 0 2 0;
@@ -2835,6 +2836,7 @@
 #X restore 456 105 graph;
 #X restore 354 113 pd env-tables;
 #X obj 63 193 clone grain.live.grain 256 \$0-buf \$0, f 23;
+#X obj 333 79 declare -path else;
 #X connect 4 0 11 1;
 #X connect 5 0 11 1;
 #X connect 6 0 9 0;

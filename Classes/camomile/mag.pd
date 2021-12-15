@@ -1,4 +1,5 @@
 #N canvas 815 117 489 435 10;
+#X declare -path else;
 #X obj 66 34 inlet;
 #X obj 107 182 *;
 #X obj 149 183 *;
@@ -9,8 +10,8 @@
 #X obj 107 127 f;
 #X obj 107 91 unpack;
 #X obj 66 62 route bang list float;
-#X text 190 118 Part of ELSE \; https://github.com/porres/pd-else;
-#X text 192 99 Alexandre Torres Porres (2018);
+#X text 219 117 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 221 98 Alexandre Torres Porres (2018);
 #X obj 208 216 symbol \$1;
 #X obj 208 237 sel power;
 #X msg 208 269 1;
@@ -20,6 +21,7 @@
 #X obj 106 312 spigot 1;
 #X obj 223 39 inlet;
 #X obj 208 192 lb;
+#X obj 320 179 declare -path else;
 #X connect 0 0 9 0;
 #X connect 1 0 3 0;
 #X connect 2 0 3 1;

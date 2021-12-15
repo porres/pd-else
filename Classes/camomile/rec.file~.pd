@@ -1,4 +1,5 @@
-#N canvas 451 40 663 522 10;
+#N canvas 557 115 663 522 10;
+#X declare -path else;
 #N canvas 1034 37 353 220 guts 0;
 #N canvas 1007 312 530 470 messages 0;
 #X obj 29 64 inlet;
@@ -27,8 +28,8 @@
 #X obj 29 87 route float fade;
 #X msg 75 303 fade \$1;
 #X obj 188 104 route start stop set rate maxtime;
-#X obj 188 193 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 188 193 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 188 220 change;
 #N canvas 512 313 301 361 maxtime 0;
 #X obj 81 65 v max_time_\$0;
@@ -203,6 +204,7 @@
 #X connect 16 0 5 3;
 #X connect 17 0 3 0;
 #X restore 178 90 pd dynamic-patching;
+#X obj 125 143 declare -path else;
 #X connect 1 0 0 0;
 #X restore 363 118 pd guts;
 #X obj 364 140 namecanvas \$0-sampler;

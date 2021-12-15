@@ -1,4 +1,5 @@
 #N canvas 504 130 792 233 12;
+#X declare -path else;
 #X obj 42 17 inlet;
 #X obj 339 164 v A4_\$0;
 #X obj 74 121 expr pow(2 \, ($f1 - 69)/12) * A4_\$0;
@@ -13,6 +14,7 @@
 #X obj 74 87 iterate;
 #X obj 42 55 t b l;
 #X obj 42 154 group;
+#X obj 522 45 declare -path else;
 #X connect 0 0 12 0;
 #X connect 2 0 13 0;
 #X connect 3 0 1 0;

@@ -1,4 +1,5 @@
 #N canvas 362 69 794 862 12;
+#X declare -path else;
 #X obj 300 573 text set \$0-preset;
 #X obj 182 663 text get \$0-preset;
 #X obj 165 335 route bang float, f 5;
@@ -263,8 +264,8 @@ presets.send.clone \$1 \, connect 0 0 1 0;
 #X restore 112 302 pd typecheck;
 #X obj 258 402 s \$0-clone;
 #X obj 258 360 insert 1 set;
-#X obj 47 128 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 47 128 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 353 249 s \$0-n_args;
 #X obj 353 220 list length;
 #X connect 0 0 1 0;
@@ -567,11 +568,12 @@ presets.send.clone \$1 \, connect 0 0 1 0;
 #X restore 181 421 pd clip;
 #N canvas 1095 597 450 300 \$0-clone 0;
 #X obj 100 100 r \$0-clone;
-#X obj 100 130 clone presets.send.clone 2;
+#X obj 100 130 clone presets.send.clone 16;
 #X connect 0 0 1 0;
 #X restore 567 601 pd \$0-clone;
 #X obj 165 119 route load save set args morph interp exp, f 42;
 #X obj 177 271 t b a;
+#X obj 538 211 declare -path else;
 #X connect 1 0 6 0;
 #X connect 1 1 5 0;
 #X connect 2 0 25 0;

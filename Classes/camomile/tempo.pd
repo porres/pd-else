@@ -1,4 +1,5 @@
 #N canvas 597 190 528 467 10;
+#X declare -path else;
 #X obj 35 214 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
 #X obj 67 342 metro;
@@ -124,6 +125,7 @@
 #X obj 338 223 r \$0-mode;
 #X obj 35 100 route float bang start stop hz ms bpm div mode;
 #X obj 318 199 != 0;
+#X obj 133 70 declare -path else;
 #X connect 0 0 15 0;
 #X connect 1 0 11 0;
 #X connect 1 0 21 0;

@@ -1,4 +1,5 @@
 #N canvas 728 114 525 280 12;
+#X declare -path else;
 #N canvas 670 355 421 483 lcm 0;
 #X obj 140 58 t b l;
 #X obj 190 238 max;
@@ -114,6 +115,7 @@ max_\$0 % n2_\$0 == 0, f 24;
 #X restore 97 140 pd list;
 #X text 232 125 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 234 106 Alexandre Torres Porres (2021);
+#X obj 289 71 declare -path else;
 #X connect 0 0 1 0;
 #X connect 2 0 4 0;
 #X connect 3 0 0 1;

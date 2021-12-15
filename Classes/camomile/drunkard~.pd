@@ -1,4 +1,5 @@
 #N canvas 757 43 616 484 10;
+#X declare -path else;
 #X obj 137 191 r \$0-step;
 #X obj 123 447 outlet~;
 #X obj 205 209 expr~ if($v1 <= p_\$0 \, 1 \, -1), f 21;
@@ -109,6 +110,7 @@
 #X obj 355 38 inlet;
 #X obj 205 183 rand.f~ 0 100;
 #X obj 44 246 rand.f~ 0 1;
+#X obj 408 123 declare -path else;
 #X connect 0 0 4 0;
 #X connect 2 0 3 1;
 #X connect 3 0 6 0;

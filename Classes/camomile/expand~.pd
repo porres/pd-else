@@ -1,4 +1,5 @@
 #N canvas 578 151 499 518 12;
+#X declare -path else;
 #N canvas 667 241 423 456 set 0;
 #X obj 67 35 inlet;
 #X obj 205 357 s \$0-ratio;
@@ -50,6 +51,7 @@
 #X obj 136 253 f2s~ 10;
 #X obj 112 127 f2s~ 10;
 #X obj 94 65 mov.rms~ 512 -db;
+#X obj 269 105 declare -path else;
 #X connect 3 0 17 1;
 #X connect 5 0 11 0;
 #X connect 6 0 17 2;

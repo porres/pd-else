@@ -1,4 +1,5 @@
 #N canvas 627 190 601 337 12;
+#X declare -path else;
 #X obj 64 158 router;
 #X obj 164 158 router;
 #X obj 178 276 outlet;
@@ -209,6 +210,7 @@
 #X restore 178 214 pd synced;
 #X text 312 164 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 314 145 Alexandre Torres Porres (2021);
+#X obj 354 81 declare -path else;
 #X connect 0 0 6 0;
 #X connect 0 1 7 0;
 #X connect 1 0 6 1;

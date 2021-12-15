@@ -1,4 +1,5 @@
 #N canvas 669 65 937 588 10;
+#X declare -path else;
 #X obj 53 102 cnv 15 198 138 empty \$0-bgcnv empty 20 12 0 14 #dfdfdf
 #404040 0;
 #N canvas 576 23 556 264 guts 0;
@@ -467,6 +468,7 @@ float, f 71;
 #X restore 126 70 pd set-args;
 #X obj 230 150 canvas.setname \$0-patch 1;
 #X obj 230 170 canvas.setname \$0-parent 2;
+#X obj 397 113 declare -path else;
 #X connect 1 0 9 0;
 #X connect 3 0 7 0;
 #X connect 4 0 11 0;

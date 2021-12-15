@@ -1,4 +1,5 @@
 #N canvas 635 233 505 289 12;
+#X declare -path else;
 #X obj 50 36 inlet;
 #X obj 49 214 outlet~;
 #X obj 290 209 outlet~;
@@ -2804,6 +2805,7 @@
 #X coords 0 1 8191 0 100 50 1 0 0;
 #X restore 456 105 graph;
 #X restore 369 166 pd env-tables;
+#X obj 250 39 declare -path else;
 #X connect 0 0 5 0;
 #X connect 5 0 7 0;
 #X connect 6 0 7 0;

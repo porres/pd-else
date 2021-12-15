@@ -1,4 +1,5 @@
 #N canvas 696 205 555 265 10;
+#X declare -path else;
 #X obj 41 205 outlet~;
 #N canvas 213 23 302 293 route 0;
 #X msg 142 180 all q \$1;
@@ -80,6 +81,7 @@
 #X obj 41 141 clone \$1 vocoder.band_clone, f 35;
 #X obj 144 95 noisegate~ -60 50, f 15;
 #X obj 41 93 noisegate~ -60 50, f 15;
+#X obj 329 86 declare -path else;
 #X connect 1 0 9 2;
 #X connect 4 0 10 0;
 #X connect 5 0 1 0;

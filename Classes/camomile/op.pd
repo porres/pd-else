@@ -1,4 +1,5 @@
 #N canvas 629 85 734 323 12;
+#X declare -path else;
 #X obj 251 190 group;
 #X obj 282 112 iterate;
 #X obj 60 35 inlet;
@@ -38,7 +39,7 @@
 #X connect 2 0 3 1;
 #X connect 3 0 1 0;
 #X restore 101 240 pd /;
-#N canvas 831 425 283 237 * 1;
+#N canvas 783 387 283 237 * 0;
 #X obj 107 47 inlet;
 #X obj 107 153 outlet;
 #X obj 125 88 r f_\$0;
@@ -357,6 +358,7 @@ log ^ ~ %, f 65;
 #X obj 60 116 s \$0-set;
 #X obj 250 77 t b l;
 #X obj 60 78 routetype anything;
+#X obj 463 84 declare -path else;
 #X connect 0 0 3 0;
 #X connect 1 0 5 0;
 #X connect 2 0 10 0;

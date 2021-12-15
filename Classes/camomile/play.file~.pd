@@ -1,4 +1,5 @@
 #N canvas 746 110 853 361 10;
+#X declare -path else;
 #X obj 76 28 inlet;
 #N canvas 657 379 677 337 guts 0;
 #X msg 262 181 stop;
@@ -804,8 +805,8 @@
 #X obj 87 236 list split 2;
 #X msg 205 184 \$1;
 #X obj 148 161 route bang;
-#X obj 66 61 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 66 61 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 205 230 symbol;
 #X text 239 184 2nd is filename;
 #X obj 205 254 s \$0-set-symbol_arg;
@@ -863,8 +864,8 @@
 #X obj 318 232 + 5;
 #X msg 227 290 \; pd-\$4-readsf obj \$1 200 outlet~ \, connect 4 \$2
 \$5 0 \; \$4-sampler obj \$1 200 outlet~ \, connect 2 \$2 \$3 0;
-#X obj 136 315 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
+#X obj 136 315 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
 #X obj 191 439 + 4;
 #X obj 239 439 + 3;
 #X obj 97 463 pack float float float float float float;
@@ -913,6 +914,7 @@
 #X text 375 241 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 377 222 Alexandre Torres Porres (2018-2020);
 #X obj 372 116 canvas.setname \$0-sampler 1;
+#X obj 329 86 declare -path else;
 #X connect 0 0 3 0;
 #X connect 1 0 8 0;
 #X connect 2 0 4 0;

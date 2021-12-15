@@ -1,4 +1,5 @@
 #N canvas 495 217 913 499 10;
+#X declare -path else;
 #X obj 190 100 pad 200 127 255 255 255;
 #X obj 190 63 r \$0-pad;
 #N canvas 866 145 534 322 init 0;
@@ -7,9 +8,9 @@
 ;
 #X obj 264 61 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X obj 264 95 message \; \$0-this-patch donecanvasdialog 1 -1
-0 0 0 0 0 0 0 0 0 \; pd-\$0-canvases clear \, donecanvasdialog 1 -1
-0 0 0 0 0 0 0 0 0, f 31;
+#X obj 264 95 message \; \$0-this-patch donecanvasdialog 1 -1 0 0 0
+0 0 0 0 0 0 \; pd-\$0-canvases clear \, donecanvasdialog 1 -1 0 0 0
+0 0 0 0 0 0, f 31;
 #X obj 264 32 inlet;
 #N canvas 915 438 310 315 dynamic 0;
 #X obj 116 44 inlet;
@@ -146,8 +147,8 @@
 #X obj 275 349 r \$0-set-array-list;
 #X obj 182 314 r \$0-array-list;
 #X obj 182 335 t b l;
-#X obj 116 265 pack2 200 127 0 127 8 empty empty empty 255 255
-255 220 220 220 0 0 0 0 0 0 holder holder, f 103;
+#X obj 116 265 pack2 200 127 0 127 8 empty empty empty 255 255 255
+220 220 220 0 0 0 0 0 0 holder holder, f 103;
 #X obj 672 233 r \$0-set-mode;
 #X connect 1 0 17 0;
 #X connect 2 0 17 2;
@@ -402,12 +403,12 @@
 #X obj 58 108 unmerge 3 3, f 65;
 #X connect 0 0 15 0;
 #X connect 3 0 7 0;
-#X connect 7 0 8 0;
 #X connect 7 0 13 0;
+#X connect 7 0 8 0;
 #X connect 7 1 14 0;
 #X connect 7 1 9 0;
-#X connect 7 2 10 0;
 #X connect 7 2 11 0;
+#X connect 7 2 10 0;
 #X connect 7 3 2 0;
 #X connect 8 0 4 0;
 #X connect 9 0 5 0;
@@ -545,6 +546,7 @@ symbol \$0-dummy \; \$0-pad color 255 255 255 \; \$0-set-fgcolor 220
 #X connect 14 0 9 0;
 #X restore 43 253 pd -init flag;
 #X obj 43 66 loadbanger 4;
+#X obj 294 188 declare -path else;
 #X connect 2 0 3 0;
 #X connect 4 0 2 0;
 #X connect 5 0 10 0;
@@ -1018,8 +1020,8 @@ symbol \$0-dummy \; \$0-pad color 255 255 255 \; \$0-set-fgcolor 220
 #X obj 104 185 s \$0-set-bg;
 #X obj 262 181 s \$0-set-fg;
 #X obj 463 172 s \$0-set-line;
-#X connect 0 0 4 0;
 #X connect 0 0 9 0;
+#X connect 0 0 4 0;
 #X connect 1 0 5 0;
 #X connect 1 0 7 0;
 #X connect 1 0 10 0;
@@ -1527,8 +1529,8 @@ receive send init mode, f 82;
 #X connect 11 0 12 0;
 #X connect 12 0 14 3;
 #X connect 12 1 14 4;
-#X connect 13 0 2 0;
 #X connect 13 0 16 0;
+#X connect 13 0 2 0;
 #X connect 14 0 13 1;
 #X connect 15 0 10 4;
 #X connect 17 0 8 0;

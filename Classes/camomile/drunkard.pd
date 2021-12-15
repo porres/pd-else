@@ -1,4 +1,5 @@
 #N canvas 713 142 532 615 10;
+#X declare -path else;
 #X obj 107 479 v last_\$0;
 #X obj 181 254 max 0;
 #X obj 93 26 inlet;
@@ -69,6 +70,7 @@
 #X obj 291 300 rand.f 0 100;
 #X obj 93 442 wrap2;
 #X obj 124 283 rand.f;
+#X obj 361 178 declare -path else;
 #X connect 1 0 23 2;
 #X connect 2 0 17 0;
 #X connect 3 0 6 0;

@@ -1,4 +1,5 @@
 #N canvas 456 218 1040 458 10;
+#X declare -path else;
 #N canvas 660 137 340 350 plot 0;
 #N canvas 902 365 351 322 init 0;
 #X obj 154 274 s \$0-dbrange;
@@ -345,6 +346,7 @@
 0;
 #X text 173 45 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 175 26 Alexandre Torres Porres (2017);
+#X obj 476 31 declare -path else;
 #X connect 47 0 0 0;
 #X connect 47 0 49 0;
 #X coords 0 -1 1 1 900 290 1 100 100;

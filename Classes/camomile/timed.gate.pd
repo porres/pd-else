@@ -1,4 +1,5 @@
 #N canvas 602 115 829 690 12;
+#X declare -path else;
 #X obj 156 272 f 1;
 #X msg 291 512 0;
 #X obj 291 469 delay 0;
@@ -17,6 +18,7 @@
 #X obj 97 91 route bang float retrigger ms;
 #X obj 357 140 args;
 #X obj 357 111 lb;
+#X obj 533 183 declare -path else;
 #X connect 0 0 8 0;
 #X connect 1 0 7 0;
 #X connect 2 0 1 0;

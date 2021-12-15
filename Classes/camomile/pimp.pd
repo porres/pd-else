@@ -1,4 +1,5 @@
 #N canvas 627 207 666 329 12;
+#X declare -path else;
 #X obj 68 141 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
 #X obj 167 36 inlet;
@@ -142,6 +143,7 @@
 #X connect 12 0 11 0;
 #X restore 68 206 pd phasor;
 #X obj 128 247 outlet;
+#X obj 470 87 declare -path else;
 #X connect 0 0 9 0;
 #X connect 1 0 11 0;
 #X connect 2 0 4 0;
