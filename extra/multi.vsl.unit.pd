@@ -18,6 +18,7 @@
 #X obj 295 159 f \$3;
 #X obj 70 336 expr $f2 - $f1;
 #X obj 295 183 + 99;
+#X obj 70 64 else/loadbanger 3 -init, f 38;
 #N canvas 748 23 466 579 fgcolor 0;
 #X obj 221 205 makefilename %02x;
 #X obj 141 232 makefilename %02x;
@@ -71,18 +72,17 @@
 #X connect 10 0 9 0;
 #X restore 350 137 pd linecolor;
 #X text 314 315 width;
-#X obj 28 110 vsl 15 128 0 125 0 0 empty empty empty 0 -9 0 10 #fcfcfc
-#000000 #000000 0 1;
+#X obj 28 110 vsl 15 128 0 125 0 0 empty empty empty 0 -9 0 10 -262144
+-1 -1 0 1;
 #X obj 355 446 s \$0-bg_underline;
-#X obj 354 199 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 274 130 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
+#X obj 354 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
+#X obj 274 130 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144
+-1 -1;
 #X msg 460 408 pos 101 \$1;
 #X obj 460 378 - 1;
-#X floatatom 24 268 5 0 0 0 - - - 0;
+#X floatatom 24 268 5 0 0 0 - - -;
 #X text 362 471 tá cagado isso;
-#X obj 70 64 else/loadbanger 3, f 38;
 #X connect 0 0 14 0;
 #X connect 0 0 9 0;
 #X connect 1 0 0 0;
@@ -97,30 +97,30 @@
 #X connect 9 0 10 0;
 #X connect 10 0 3 0;
 #X connect 11 0 5 0;
-#X connect 11 0 20 0;
+#X connect 11 0 21 0;
 #X connect 13 0 15 0;
 #X connect 14 0 4 0;
 #X connect 15 0 14 1;
-#X connect 15 0 24 0;
-#X connect 19 0 25 0;
-#X connect 21 0 7 0;
-#X connect 22 0 13 0;
-#X connect 23 0 20 0;
-#X connect 24 0 23 0;
-#X connect 25 0 14 0;
-#X connect 25 0 9 0;
-#X connect 27 0 6 0;
-#X connect 27 1 2 0;
-#X connect 27 1 7 0;
-#X connect 27 2 12 0;
-#X connect 27 2 13 0;
-#X connect 27 2 16 0;
-#X connect 27 2 17 0;
+#X connect 15 0 25 0;
+#X connect 16 0 6 0;
+#X connect 16 1 2 0;
+#X connect 16 1 7 0;
+#X connect 16 2 12 0;
+#X connect 16 2 13 0;
+#X connect 16 2 17 0;
+#X connect 16 2 18 0;
+#X connect 20 0 26 0;
+#X connect 22 0 7 0;
+#X connect 23 0 13 0;
+#X connect 24 0 21 0;
+#X connect 25 0 24 0;
+#X connect 26 0 14 0;
+#X connect 26 0 9 0;
 #X restore 128 24 pd guts;
-#X obj 101 98 cnv 1 1 1 empty \$0-bg_underline empty 20 12 0 14 #dcdcdc
-#000000 0;
-#X obj 101 99 cnv 1 1 1 empty \$0-sl empty 20 12 0 14 #6c4060 #000000
+#X obj 101 225 cnv 1 27 1 empty \$0-bg_underline empty 20 12 0 14 -228856
+-1 0;
+#X obj 101 143 cnv 1 27 82 empty \$0-sl empty 20 12 0 14 -111641 -1
 0;
-#X obj 101 99 cnv 1 1 1 empty \$0-value empty 20 12 0 14 #d8d8c0 #000000
-0;
-#X coords 0 127 8 0 200 140 2 100 100;
+#X obj 101 143 cnv 1 27 1 empty \$0-value empty 20 12 0 14 -224689
+-1 0;
+#X coords 0 127 8 0 29 127 2 100 100;
