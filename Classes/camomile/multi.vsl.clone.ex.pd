@@ -1,0 +1,10 @@
+#N canvas 1051 86 448 416 10;
+#X floatatom 117 112 5 0 0 0 - - -;
+#X obj 117 138 else/sine~;
+#X obj 117 81 inlet;
+#X obj 117 179 outlet~;
+#X text 220 129 used in the help file of [multi.vsl], f 20;
+#X connect 0 0 1 0;
+#X connect 1 0 3 0;
+#X connect 2 0 0 0;
+#X coords 0 416 1 415 200 140 0;

@@ -1,5 +1,4 @@
 #N canvas 453 104 625 540 12;
-#X declare -path else;
 #X obj 238 275 -;
 #X obj 35 28 inlet;
 #X obj 291 28 inlet;
@@ -63,12 +62,12 @@
 #X obj 315 365 max 1;
 #N canvas 969 187 435 453 init 0;
 #X obj 91 156 route -rate;
-#X obj 91 36 loadbanger 2;
+#X obj 91 36 else/loadbanger 2;
 #X obj 224 221 s \$0-rate;
 #X msg 207 101 5;
 #X obj 91 92 pdcontrol;
 #X msg 91 64 args;
-#X obj 91 123 break -;
+#X obj 91 123 else/break -;
 #X obj 165 260 unpack;
 #X obj 204 361 s \$0-line;
 #X msg 204 332 set \$1;
@@ -124,7 +123,6 @@
 #X obj 164 105 unpack, f 10;
 #X obj 164 131 t f b;
 #X msg 217 183 1;
-#X obj 427 301 declare -path else;
 #X connect 0 0 7 0;
 #X connect 1 0 23 0;
 #X connect 2 0 7 1;

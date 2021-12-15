@@ -1,7 +1,6 @@
 #N canvas 497 27 643 437 10;
-#X declare -path /Users/porres/Desktop/git/pd-Classes/Abstractions
+#X declare -path /Users/porres/Desktop/git/pd-else/Classes/Abstractions
 ;
-#X declare -path else;
 #X obj 44 59 inlet;
 #X obj 126 59 inlet;
 #X obj 178 59 inlet;
@@ -53,7 +52,7 @@
 #X obj 70 287 pack symbol float;
 #X obj 169 212 expr 20 + 110 * $f1;
 #X msg 70 314 obj \$2 50 table \$1;
-#X obj 43 111 loop;
+#X obj 43 111 else/loop;
 #X connect 0 0 14 0;
 #X connect 1 0 2 0;
 #X connect 2 0 1 1;
@@ -85,7 +84,7 @@
 #X obj 48 160 send pd-\$0-path;
 #X msg 48 136 clear \, obj 30 20 declare -path \$1;
 #N canvas 169 23 493 100 \$0-path 0;
-#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-Classes/Abstractions
+#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/Classes/Abstractions
 ;
 #X restore 150 160 pd \$0-path;
 #X obj 48 109 pdcontrol;
@@ -130,7 +129,7 @@
 #X obj 121 394 v autostart_\$0;
 #X obj 154 339 v loop_\$0;
 #X obj 154 287 != 0;
-#X obj 205 206 routetype anything;
+#X obj 205 206 else/routetype anything;
 #X connect 0 0 11 0;
 #X connect 3 0 12 0;
 #X connect 3 1 15 0;
@@ -188,8 +187,8 @@
 #X obj 99 226 route bang -loop -speed -transp -size -range;
 #X obj 316 258 s \$0-set-range;
 #X msg 344 175 0 1;
-#X obj 99 117 args;
-#X obj 99 150 break -;
+#X obj 99 117 else/args;
+#X obj 99 150 else/break -;
 #X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 2 0 22 0;
@@ -328,8 +327,8 @@
 #X obj 443 210 + 9;
 #X obj 144 188 + 8;
 #X msg 80 238 obj \$3 285 outlet \, connect 8 1 \$2 0;
-#X msg 352 267 obj \$4 260 gran~ \$5 ch\$1 \, obj \$4 285 outlet~ \,
-connect \$2 0 \$3 0, f 51;
+#X msg 352 267 obj \$4 260 else/gran~ \$5 ch\$1 \, obj \$4 285 outlet~
+\, connect \$2 0 \$3 0, f 51;
 #X connect 1 0 15 0;
 #X connect 1 0 16 0;
 #X connect 2 0 3 0;
@@ -355,7 +354,7 @@ connect \$2 0 \$3 0, f 51;
 #X connect 18 0 8 0;
 #X connect 19 0 0 0;
 #X restore 152 104 pd create-grains;
-#X obj 82 40 loadbanger -init 3;
+#X obj 82 40 else/loadbanger -init 3;
 #X connect 3 0 1 0;
 #X connect 3 1 2 0;
 #X connect 3 2 0 0;
@@ -439,8 +438,8 @@ connect \$2 0 \$3 0, f 51;
 #X obj 29 77 route bang start float, f 24;
 #X obj 467 213 -;
 #X obj 533 168 r \$0-grain-size;
-#X obj 533 189 ms2samps;
-#X obj 467 185 hot;
+#X obj 533 189 else/ms2samps;
+#X obj 467 185 else/hot;
 #X connect 0 0 16 0;
 #X connect 1 0 3 1;
 #X connect 2 0 20 0;
@@ -472,7 +471,7 @@ range;
 #X obj 235 430 s \$0-start;
 #X msg 649 307 mode 1;
 #X obj 743 265 s \$0-grain-size;
-#X obj 83 121 click;
+#X obj 83 121 else/click;
 #X connect 0 0 7 0;
 #X connect 1 0 2 0;
 #X connect 1 1 0 0;
@@ -517,7 +516,6 @@ range;
 #X obj 155 80 inlet;
 #X msg 155 112 size \$1;
 #X text 157 55 size;
-#X obj 433 160 declare -path else;
 #X connect 0 0 9 0;
 #X connect 1 0 7 0;
 #X connect 2 0 6 0;
