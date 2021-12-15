@@ -53,7 +53,6 @@ canvas.name	x
 canvas.pos	x
 canvas.setname	x
 canvas.vis	x
-canvas.wname	x
 canvas.zoom	x
 car2pol	x
 car2pol~	x
@@ -72,6 +71,7 @@ chorus~	x
 circle	x
 click	x
 clipnoise~	x
+clock	x
 cmul~	x
 coeff2pz	x
 colors	x

@@ -46,7 +46,6 @@ canvas.mouse.class.sources := Classes/Source/canvas.mouse.c
 canvas.pos.class.sources := Classes/Source/canvas.pos.c
 canvas.setname.class.sources := Classes/Source/canvas.setname.c
 canvas.name.class.sources := Classes/Source/canvas.name.c
-canvas.wname.class.sources := Classes/Source/canvas.wname.c
 canvas.vis.class.sources := Classes/Source/canvas.vis.c
 canvas.zoom.class.sources := Classes/Source/canvas.zoom.c
 properties.class.sources := Classes/Source/properties.c

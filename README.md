@@ -144,7 +144,7 @@ Cross compiling is also possible with something like this
 - [pitch2note]
 - [note2pitch]
 
-**PATCH/SUBPATCH MANAGEMENT: [20]**
+**PATCH/SUBPATCH MANAGEMENT: [19]**
 
 - [args]
 - [presets]
@@ -162,7 +162,6 @@ Cross compiling is also possible with something like this
 - [canvas.edit]
 - [canvas.vis]
 - [canvas.setname]
-- [canvas.wname]
 - [canvas.name]
 - [canvas.zoom]
 - [loadbanger] / [lb]
@@ -541,7 +540,7 @@ Cross compiling is also possible with something like this
  - [stepnoise]
  - [rampnoise]
 
- **TRIGGERS: [30]**
+ **TRIGGERS: [31]**
 - [above]
 - [above~]
 - [bangdiv]
@@ -554,6 +553,7 @@ Cross compiling is also possible with something like this
 - [pimp~]
 - [pimpmul~]
 - [metronome]
+- [clock]
 - [tempo]
 - [tempo~]
 - [pulsecount~]
