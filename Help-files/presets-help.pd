@@ -1,12 +1,12 @@
-#N struct 1143-point float x0 float y0 float xs float ys float fg float
+#N struct 3123-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1156-point float x0 float y0 float xs float ys float fg float
+#N struct 3136-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1223-point float x0 float y0 float xs float ys float fg float
+#N struct 3203-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1264-point float x0 float y0 float xs float ys float fg float
+#N struct 3244-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1524-point float x0 float y0 float xs float ys float fg float
+#N struct 3504-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
 #N canvas 607 48 560 730 10;
 #X floatatom 378 198 0 0 0 0 - - - 0;
@@ -668,7 +668,7 @@ just giving ideas in case you want it and need it \; ), f 43;
 #X text 259 144 <= load preset;
 #X msg 22 158 read preset1.txt;
 #X text 19 141 import from file;
-#X obj 137 201 else/presets \\\$0-A \\\$0-B;
+#X obj 136 196 else/presets \\\$0-A \\\$0-B;
 #A saved \\\$0-A symbol one || \\\$0-B 1 || \; \\\$0-A symbol two ||
 \\\$0-B 2 || \; \\\$0-A symbol three || \\\$0-B 3 || \; \\\$0-A symbol
 four || \\\$0-B 4 || \; \\\$0-A symbol five || \\\$0-B 5 || \; \\\$0-A
@@ -747,7 +747,7 @@ and has interpolation and morphing features. Change the number and
 symbol below \, save a preset and the patch \, reopen to recall the
 presets. Use the "read" message to restore to this example's default.
 , f 76;
-#X text 35 195 click to open => data window, f 16;
+#X text 34 196 click to open => data window, f 16;
 #X obj 8 679 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
 0;
 #X text 110 684 clicking on the object opens data/edit window (same
