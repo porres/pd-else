@@ -14,11 +14,11 @@
 #X msg 279 250 1;
 #X obj 279 203 f \$1;
 #X obj 192 226 /~ \$1;
-#X obj 207 148 else/float2sig~;
-#X obj 79 98 else/float2sig~;
-#X obj 92 59 else/float2sig~;
-#X obj 56 133 else/resonant~;
-#X obj 279 179 else/lb;
+#X obj 207 148 float2sig~;
+#X obj 79 98 float2sig~;
+#X obj 92 59 float2sig~;
+#X obj 56 133 resonant~;
+#X obj 279 179 lb;
 #X connect 1 0 15 0;
 #X connect 2 0 17 0;
 #X connect 3 0 16 0;

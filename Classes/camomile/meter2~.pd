@@ -66,8 +66,8 @@
 #X connect 10 2 4 0;
 #X connect 10 3 4 1;
 #X restore 98 112 pd meter;
-#X obj 187 74 else/vu~;
-#X obj 332 76 else/vu~;
+#X obj 187 74 vu~;
+#X obj 332 76 vu~;
 #X connect 3 0 15 0;
 #X connect 3 0 20 0;
 #X connect 4 0 14 0;

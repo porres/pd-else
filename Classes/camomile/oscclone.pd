@@ -15,11 +15,11 @@
 #X obj 116 166 *~;
 #X obj 213 284 /~ \$1;
 #X obj 300 257 f \$1;
-#X obj 228 202 else/float2sig~;
-#X obj 157 125 else/float2sig~;
-#X obj 199 93 else/float2sig~;
-#X obj 142 200 else/sine~;
-#X obj 300 233 else/lb;
+#X obj 228 202 float2sig~;
+#X obj 157 125 float2sig~;
+#X obj 199 93 float2sig~;
+#X obj 142 200 sine~;
+#X obj 300 233 lb;
 #X connect 1 0 15 0;
 #X connect 2 0 13 0;
 #X connect 3 0 15 1;

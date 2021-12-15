@@ -5,7 +5,7 @@
 #X text 230 173 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 232 154 Alexandre Torres Porres (2021);
 #X obj 128 211 / 180;
-#X obj 128 181 else/pi;
+#X obj 128 181 pi;
 #X obj 81 107 f;
 #N canvas 721 198 381 437 init 0;
 #X obj 148 193 route bang;
@@ -13,7 +13,7 @@
 #X obj 147 329 outlet;
 #X obj 79 329 outlet;
 #X obj 92 38 loadbang;
-#X obj 93 132 else/break -;
+#X obj 93 132 break -;
 #X obj 92 83 pdcontrol;
 #X msg 92 61 args;
 #X msg 148 291 1;
@@ -31,10 +31,10 @@
 #X connect 9 1 0 0;
 #X restore 120 104 pd init;
 #N canvas 719 407 450 300 gate 0;
-#X obj 304 135 else/wrap2 0 360;
-#X obj 88 84 else/router;
-#X obj 161 135 else/wrap2 0 360;
-#X obj 88 176 else/wrap2 -360 0;
+#X obj 304 135 wrap2 0 360;
+#X obj 88 84 router;
+#X obj 161 135 wrap2 0 360;
+#X obj 88 176 wrap2 -360 0;
 #X obj 88 135 moses;
 #X obj 162 52 inlet;
 #X obj 88 51 inlet;

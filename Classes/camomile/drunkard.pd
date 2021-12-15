@@ -43,9 +43,9 @@
 #X connect 5 0 2 0;
 #X restore 107 208 pd args;
 #X obj 239 253 outlet;
-#X obj 107 120 else/break -;
-#X obj 107 90 else/args;
-#X obj 108 60 else/loadbanger 2;
+#X obj 107 120 break -;
+#X obj 107 90 args;
+#X obj 108 60 loadbanger 2;
 #X connect 1 0 4 0;
 #X connect 1 1 4 0;
 #X connect 1 2 2 0;
@@ -66,9 +66,9 @@
 #X obj 250 142 v last_\$0;
 #X text 263 433 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 265 414 Alexandre Torres Porres (2018);
-#X obj 291 300 else/rand.f 0 100;
-#X obj 93 442 else/wrap2;
-#X obj 124 283 else/rand.f;
+#X obj 291 300 rand.f 0 100;
+#X obj 93 442 wrap2;
+#X obj 124 283 rand.f;
 #X connect 1 0 23 2;
 #X connect 2 0 17 0;
 #X connect 3 0 6 0;

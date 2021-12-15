@@ -16,8 +16,8 @@
 #X obj 131 94 *~;
 #X obj 146 69 delread~ \$0-fb;
 #X obj 219 156 block~ 1;
-#X obj 131 122 else/trighold~;
-#X obj 74 188 else/wrap2~;
+#X obj 131 122 trighold~;
+#X obj 74 188 wrap2~;
 #X connect 0 0 3 0;
 #X connect 1 0 11 1;
 #X connect 2 0 11 2;
@@ -63,9 +63,9 @@
 #X connect 5 0 2 0;
 #X restore 107 208 pd args;
 #X obj 239 253 outlet;
-#X obj 107 90 else/args;
-#X obj 107 118 else/break -;
-#X obj 108 60 else/loadbanger 2;
+#X obj 107 90 args;
+#X obj 107 118 break -;
+#X obj 108 60 loadbanger 2;
 #X connect 1 0 4 0;
 #X connect 1 1 4 0;
 #X connect 1 2 2 0;
@@ -107,8 +107,8 @@
 #X obj 205 38 inlet~ fwd;
 #X obj 308 38 inlet;
 #X obj 355 38 inlet;
-#X obj 205 183 else/rand.f~ 0 100;
-#X obj 44 246 else/rand.f~ 0 1;
+#X obj 205 183 rand.f~ 0 100;
+#X obj 44 246 rand.f~ 0 1;
 #X connect 0 0 4 0;
 #X connect 2 0 3 1;
 #X connect 3 0 6 0;

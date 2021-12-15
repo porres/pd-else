@@ -17,7 +17,7 @@
 #X obj 92 253 change;
 #X msg 124 203 set \$1;
 #X msg 208 203 set \$1;
-#X obj 188 80 else/lb;
+#X obj 188 80 lb;
 #X connect 0 0 1 0;
 #X connect 1 0 10 0;
 #X connect 1 1 4 0;

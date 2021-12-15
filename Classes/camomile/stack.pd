@@ -18,7 +18,7 @@
 #X obj 126 263 t b a;
 #X obj 67 299 text size \$0-stack;
 #X obj 68 326 s n_\$0;
-#X obj 80 101 else/trigger2 0 0;
+#X obj 80 101 trigger2 0 0;
 #X connect 0 0 13 0;
 #X connect 1 0 0 1;
 #X connect 1 0 2 1;
@@ -58,7 +58,7 @@
 #X obj 67 328 text size \$0-stack;
 #X obj 67 369 s n_\$0;
 #X obj 192 138 sel 2;
-#X obj 90 164 else/trigger2 0 0;
+#X obj 90 164 trigger2 0 0;
 #X connect 0 0 14 0;
 #X connect 1 0 0 1;
 #X connect 1 0 2 1;
@@ -114,9 +114,9 @@
 #X obj 78 97 list trim;
 #X msg 213 98 fifo;
 #X text 163 98 default;
-#X obj 78 75 else/args -;
+#X obj 78 75 args -;
 #X obj 60 143 route fifo lifo;
-#X obj 78 53 else/loadbanger 2, f 23;
+#X obj 78 53 loadbanger 2, f 23;
 #X connect 1 0 8 0;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
@@ -134,7 +134,7 @@
 #X obj 260 125 text size \$0-stack;
 #X obj 166 209 r n_\$0;
 #X obj 260 146 s n_\$0;
-#X obj 215 49 else/click;
+#X obj 215 49 click;
 #X obj 58 75 route dump bang clear open close n;
 #X connect 0 0 14 0;
 #X connect 1 0 3 0;
@@ -174,7 +174,7 @@
 #X obj 264 227 list prepend list;
 #X obj 264 260 outlet;
 #X obj 101 30 inlet;
-#X obj 101 93 else/pick 1;
+#X obj 101 93 pick 1;
 #X connect 0 0 1 0;
 #X connect 1 0 7 0;
 #X connect 2 0 9 0;
@@ -192,7 +192,7 @@
 #X obj 175 269 text size \$0-stack;
 #X obj 175 225 t b a b;
 #X obj 175 290 s n_\$0;
-#X obj 69 121 else/routetype anything float list symbol bang;
+#X obj 69 121 routetype anything float list symbol bang;
 #X msg 287 183 symbol bang;
 #X connect 0 0 9 0;
 #X connect 1 0 2 1;

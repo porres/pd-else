@@ -1,5 +1,5 @@
 #N canvas 573 235 643 437 10;
-#X declare -path /Users/porres/Desktop/git/pd-else/Classes/Abstractions
+#X declare -path /Users/porres/Desktop/git/pd-Classes/Abstractions
 ;
 #X obj 44 59 inlet;
 #X obj 95 59 inlet;
@@ -64,7 +64,7 @@
 #X obj 182 40 inlet;
 #X obj 238 497 outlet;
 #X text 195 498 start;
-#X obj 84 156 else/click;
+#X obj 84 156 click;
 #X connect 0 0 8 0;
 #X connect 1 0 2 0;
 #X connect 1 1 0 0;
@@ -170,7 +170,7 @@
 #X obj 175 30 inlet;
 #X obj 130 255 outlet;
 #X obj 96 112 v speed_\$0;
-#X obj 130 189 else/hot;
+#X obj 130 189 hot;
 #X connect 0 0 8 0;
 #X connect 1 0 0 0;
 #X connect 1 0 7 0;
@@ -194,8 +194,8 @@
 #X obj 157 166 r \$0-loop;
 #X obj 161 237 s \$0-finished;
 #X obj 116 124 expr $f1 <= $f2 || $f1 >= $f3, f 15;
-#X obj 116 210 else/router;
-#X obj 33 124 else/wrap2;
+#X obj 116 210 router;
+#X obj 33 124 wrap2;
 #X connect 0 0 10 0;
 #X connect 0 0 12 0;
 #X connect 1 0 0 0;
@@ -212,9 +212,9 @@
 #X connect 11 1 9 0;
 #X connect 12 0 2 0;
 #X restore 131 290 pd +;
-#X obj 212 301 else/samps2ms;
-#X obj 332 169 else/cents2ratio;
-#X obj 332 221 else/hot;
+#X obj 212 301 samps2ms;
+#X obj 332 169 cents2ratio;
+#X obj 332 221 hot;
 #X connect 0 0 17 0;
 #X connect 1 0 7 0;
 #X connect 2 0 9 0;
@@ -288,7 +288,7 @@
 #X obj 70 287 pack symbol float;
 #X obj 169 212 expr 20 + 110 * $f1;
 #X msg 70 314 obj \$2 50 table \$1;
-#X obj 43 111 else/loop;
+#X obj 43 111 loop;
 #X connect 0 0 14 0;
 #X connect 1 0 2 0;
 #X connect 2 0 1 1;
@@ -316,7 +316,7 @@
 #X obj 48 160 send pd-\$0-path;
 #X msg 48 136 clear \, obj 30 20 declare -path \$1;
 #N canvas 169 23 493 100 \$0-path 0;
-#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/Classes/Abstractions
+#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-Classes/Abstractions
 ;
 #X restore 150 160 pd \$0-path;
 #X obj 48 109 pdcontrol;
@@ -356,7 +356,7 @@
 #X obj 121 316 != 0;
 #X obj 121 344 v autostart_\$0;
 #X obj 154 289 v loop_\$0;
-#X obj 205 206 else/routetype anything;
+#X obj 205 206 routetype anything;
 #X connect 0 0 11 0;
 #X connect 3 0 12 0;
 #X connect 3 1 14 0;
@@ -407,8 +407,8 @@
 #X obj 336 273 s \$0-set-range;
 #X msg 349 181 0 1;
 #X obj 99 226 route bang -loop -speed -transp -range;
-#X obj 99 149 else/break -;
-#X obj 99 117 else/args;
+#X obj 99 149 break -;
+#X obj 99 117 args;
 #X connect 0 0 7 0;
 #X connect 1 0 2 0;
 #X connect 2 0 23 0;
@@ -478,8 +478,8 @@
 #X msg 84 224 obj \$4 260 r \$5-finished \, obj \$4 285 outlet \, connect
 \$2 0 \$3 0, f 44;
 #X obj 102 94 trigger float float float;
-#X obj 375 137 else/loop;
-#X msg 375 268 obj \$4 260 else/pvoc~ \$5 ch\$1 \, obj \$4 285 outlet~
+#X obj 375 137 loop;
+#X msg 375 268 obj \$4 260 pvoc~ \$5 ch\$1 \, obj \$4 285 outlet~
 \, connect \$2 0 \$3 0, f 51;
 #X connect 1 0 6 1;
 #X connect 2 0 6 2;
@@ -542,7 +542,7 @@
 #X connect 12 0 11 0;
 #X connect 13 0 14 0;
 #X restore 82 133 pd initialize;
-#X obj 82 41 else/loadbanger -init 3, f 24;
+#X obj 82 41 loadbanger -init 3, f 24;
 #X connect 3 0 2 0;
 #X connect 3 1 1 0;
 #X connect 3 2 0 0;

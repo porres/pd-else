@@ -15,12 +15,12 @@
 , f 27;
 #X obj 292 283 /~ \$1;
 #X obj 379 256 f \$1;
-#X obj 122 189 else/resonant2~;
-#X obj 146 153 else/float2sig~;
-#X obj 158 114 else/float2sig~;
-#X obj 177 62 else/float2sig~;
-#X obj 307 201 else/float2sig~;
-#X obj 379 232 else/lb;
+#X obj 122 189 resonant2~;
+#X obj 146 153 float2sig~;
+#X obj 158 114 float2sig~;
+#X obj 177 62 float2sig~;
+#X obj 307 201 float2sig~;
+#X obj 379 232 lb;
 #X connect 1 0 16 0;
 #X connect 2 0 15 0;
 #X connect 3 0 17 0;

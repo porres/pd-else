@@ -13,11 +13,11 @@
 #X obj 194 203 f \$1;
 #X text 311 189 This is an abstraction used on the [oscbank2~] object
 , f 27;
-#X obj 132 148 else/float2sig~;
-#X obj 51 91 else/float2sig~;
-#X obj 93 58 else/float2sig~;
-#X obj 51 134 else/sine~;
-#X obj 194 179 else/lb;
+#X obj 132 148 float2sig~;
+#X obj 51 91 float2sig~;
+#X obj 93 58 float2sig~;
+#X obj 51 134 sine~;
+#X obj 194 179 lb;
 #X connect 1 0 13 0;
 #X connect 2 0 10 0;
 #X connect 3 0 13 1;

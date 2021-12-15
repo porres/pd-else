@@ -328,7 +328,7 @@
 #X msg 153 62 4;
 #X obj 37 56 args -;
 #X obj 37 85 route float -scale, f 11;
-#X obj 37 30 else/loadbanger 2;
+#X obj 37 30 loadbanger 2;
 #X connect 0 0 1 0;
 #X connect 7 0 6 0;
 #X connect 8 0 9 0;

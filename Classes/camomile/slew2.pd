@@ -17,12 +17,12 @@
 #X obj 315 375 max 1;
 #N canvas 969 187 435 453 init 0;
 #X obj 91 156 route -rate;
-#X obj 91 36 else/loadbanger 2;
+#X obj 91 36 loadbanger 2;
 #X obj 237 206 s \$0-rate;
 #X msg 207 101 5;
 #X obj 91 92 pdcontrol;
 #X msg 91 64 args;
-#X obj 91 123 else/break -;
+#X obj 91 123 break -;
 #X obj 165 260 unpack f f f;
 #X obj 253 352 s \$0-line;
 #X msg 253 323 set \$1;

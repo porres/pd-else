@@ -9,12 +9,12 @@
 #X obj 192 354 r \$0-rate;
 #X obj 192 378 max 1;
 #N canvas 969 187 450 315 init 0;
-#X obj 48 23 else/loadbanger 2, f 24;
+#X obj 48 23 loadbanger 2, f 24;
 #X obj 247 229 s \$0-rate;
 #X msg 247 143 5;
 #X obj 48 79 pdcontrol;
 #X msg 48 51 args;
-#X obj 48 110 else/break -;
+#X obj 48 110 break -;
 #X obj 213 263 s \$0-time;
 #X msg 213 143 0;
 #X obj 284 197 v exp_\$0;
@@ -38,7 +38,7 @@
 #X restore 320 94 pd init;
 #X obj 165 125 unpack;
 #X msg 111 418 exp \$1;
-#X obj 166 453 else/rescale 0 0 0 0;
+#X obj 166 453 rescale 0 0 0 0;
 #X obj 165 286 pack, f 5;
 #X obj 181 485 v last_\$0;
 #X obj 246 262 expr copysign(exp_\$0 \, ($f1 - last_\$0));
