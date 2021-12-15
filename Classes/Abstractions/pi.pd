@@ -13,10 +13,9 @@
 #X obj 160 380 *;
 #X obj 133 205 t b f;
 #X obj 118 325 f;
-#X obj 207 300 loadbang;
 #X obj 202 275 else/click;
 #X obj 115 118 else/args;
-#X obj 115 95 else/lb;
+#X obj 103 95 else/lb 2;
 #X connect 0 0 13 0;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
@@ -31,6 +30,6 @@
 #X connect 12 1 11 1;
 #X connect 13 0 11 0;
 #X connect 14 0 13 0;
-#X connect 15 0 13 0;
-#X connect 16 0 9 0;
-#X connect 17 0 16 0;
+#X connect 15 0 9 0;
+#X connect 16 0 13 0;
+#X connect 16 1 15 0;
