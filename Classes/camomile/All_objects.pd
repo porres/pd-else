@@ -6,6 +6,7 @@ float grid;
 #N struct 4781-slot float x float y float slotsize float color float
 width float bordercolor;
 #N canvas 733 23 541 769 10;
+#X declare -path else;
 #X text 53 106 Assorted:;
 #X text 53 205 FFT:;
 #X text 51 2473 MIDI:;
@@ -531,13 +532,13 @@ width float bordercolor;
 #X obj 145 59 mtx.ctl;
 #X obj 399 25 pad 127 127 255 255 255;
 #X obj 320 89 pic 0 empty empty empty 0 0;
-#X obj 710 37 function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 1000 0;
-#X obj 74 500 slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
-0 0 0 0 0 empty empty;
+#X obj 710 37 function 200 100 empty empty 0 1 220 220 220 50 50 50
+0 0 0 0 0 1000 0;
+#X obj 74 500 slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0 0 0
+0 0 0 empty empty;
 #X obj 40 169 biplot;
-#X obj 265 498 circle 127 -1 1 -1 1 1 255 255 255 255 255 255
-0 0 0 1 0 0 63.5 63.5 empty empty 1;
+#X obj 265 498 circle 127 -1 1 -1 1 1 255 255 255 255 255 255 0 0 0
+1 0 0 63.5 63.5 empty empty 1;
 #X obj 447 509 keyboard 17 80 4 3 0 0 empty empty;
 #X obj 682 622 range.hsl;
 #X obj 61 687 mix2~;
@@ -552,8 +553,8 @@ width float bordercolor;
 #X obj 623 959 setdsp~;
 #X obj 762 959 messbox 150 50 235 235 235 0 0 0 0 10;
 #X obj 854 1054 button 20 20 255 255 255 128 128 159;
-#X obj 832 1109 note 720 20 helvetica empty 0 0 0 0 0 255 255
-255 0 0 note;
+#X obj 832 1109 note 720 20 helvetica empty 0 0 0 0 0 255 255 255 0
+0 note;
 #X obj 907 1162 display;
 #X obj 908 1194 display~;
 #X obj 732 1112 gain2~;
@@ -562,47 +563,16 @@ width float bordercolor;
 #X obj 292 1093 out4~;
 #X obj 175 1091 out~;
 #X obj 65 1091 out1~;
-#X obj 672 1332 oscilloscope~ 200 100 256 3 128 -1 1 0 0 0 0 30
-30 30 190 190 190 160 160 160 0 empty;
+#X obj 672 1332 oscilloscope~ 200 100 256 3 128 -1 1 0 0 0 0 30 30
+30 190 190 190 160 160 160 0 empty;
 #X obj 680 1455 multi.vsl;
 #X text 590 1484 multi.vsl =>;
 #X obj 61 1200 zbiplot;
 #X text 71 1173 [zbiplot];
 #X restore 62 11636 pd GUI;
-#X obj 389 40 switch~;
-#X obj 389 24 r \$0-s;
+#X obj 391 52 switch~;
 #X obj 45 11 cnv 30 279 30 empty empty ALL\\\ OBJECTS\\\ IN\\\ THE\\\ ELSE\\\ LIBRARY:
 12 15 0 14 #e0e0e0 #404040 0;
-#X obj 381 19 cnv 40 60 40 empty empty empty 20 12 0 14 #e0e0e0 #404040
-0;
-#N canvas 475 145 581 295 (subpatch) 0;
-#X obj 101 101 cnv 15 92 58 empty empty empty 20 12 0 14 #f9f9f9 #404040
-0;
-#X obj 33 62 meter;
-#X obj 105 108 tgl 20 0 \$0-s \$0-s empty 17 7 0 10 #dfdfdf #000000
-#000000 0 1;
-#X msg 104 171 \; pd dsp \$1;
-#X obj 105 138 nbx 3 16 -1e+37 1e+37 0 0 \$0-x \$0-x empty 0 -8 0 14
-#fcfcfc #000000 #000000 0 256;
-#X obj 158 137 note 425 14 Menlo empty 0 255 50 85 1 255 50 85
-0 0 CPU;
-#X obj 132 110 note 425 12 Menlo empty 1 40 35 60 0 255 50 85
-0 0 <- Test;
-#X obj 273 101 else;
-#X msg 272 54 version;
-#X obj 276 26 loadbang;
-#X obj 251 135 format symbol %d.%d-%d\ %s-%d;
-#X msg 253 163 label \$1;
-#X obj 253 203 s \$0-version;
-#X connect 1 0 4 0;
-#X connect 2 0 3 0;
-#X connect 7 0 10 0;
-#X connect 8 0 7 0;
-#X connect 9 0 8 0;
-#X connect 10 0 11 0;
-#X connect 11 0 12 0;
-#X coords 0 -1 1 1 94 60 2 100 100;
-#X restore 361 12 pd;
 #X obj 53 255 bin.shift~;
 #X obj 166 50 cnv 15 120 28 empty \$0-version 1.0-0\ beta-45 8 14 0
 14 #e0e0e0 #404040 0;
@@ -612,4 +582,4 @@ width float bordercolor;
 #A saved;
 #X obj 51 2841 midi.clock;
 #X obj 51 10669 clock;
-#X connect 453 0 452 0;
+#X obj 363 20 declare -path else;
