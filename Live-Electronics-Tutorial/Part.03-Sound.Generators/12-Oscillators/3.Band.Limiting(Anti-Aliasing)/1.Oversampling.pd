@@ -4,8 +4,8 @@
 #X obj 56 28 inlet~;
 #X obj 56 66 rfft~;
 #X obj 145 123 metro 100;
-#X obj 145 100 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
+#X obj 145 100 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 262 113 block~ 4096;
 #X obj 145 72 loadbang;
 #X obj 56 125 /~ 1024;
@@ -25,7 +25,7 @@
 #X connect 10 0 6 0;
 #X restore 336 106 pd plot;
 #X obj 173 25 nbx 5 20 -1e+37 1e+37 0 0 empty \$0-Hz empty 0 -8 0 15
--228856 -1 -1 2000 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 173 128 out~;
 #X obj 316 135 out~;
 #X obj 173 68 saw~;
@@ -33,10 +33,10 @@
 #X text 29 512 0 Hz;
 #X text 1043 510 Nyquist;
 #X text 569 512 0 Hz;
-#X obj 32 388 cnv 15 510 118 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 32 388 cnv 15 510 118 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
-#X obj 572 388 cnv 15 510 118 empty empty empty 20 12 0 14 -228856
--66577 0;
+#X obj 572 388 cnv 15 510 118 empty empty empty 20 12 0 14 #dcdcdc
+#404040 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-fft-non-limited 2048 float 0;
 #X coords 0 100 2047 40 512 120 1 0 0;
@@ -49,8 +49,8 @@
 #X obj 102 53 inlet~;
 #X obj 102 88 rfft~;
 #X obj 163 176 metro 100;
-#X obj 163 153 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
+#X obj 163 153 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 308 145 block~ 4096;
 #X obj 163 125 loadbang;
 #X obj 102 187 /~ 1024;
@@ -74,7 +74,7 @@
 #X obj 65 200 graph~;
 #N canvas 756 56 532 501 bl.saw~ 0;
 #X obj 45 437 outlet~;
-#X obj 85 76 cnv 15 280 40 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 85 76 cnv 15 280 40 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #X obj 241 86 block~ 64 1 16;
 #X obj 45 24 inlet~ lin;
@@ -84,13 +84,13 @@
 #X text 109 86 16x Oversampling;
 #X text 125 208 <= Anti-Aliasing Filter (Lowpass) *;
 #X text 130 229 (cuttof frequency = 3/4 * Nyquist);
-#X text 69 267 * This object implements a 10th order lowpass butterworth
-filter \, which will be presented in depth only in the vol. 2 of this
-tutorial.;
 #X text 69 315 What we need to know now is that the order of a filter
 determines the amplitude decay over the cutoff frequency and each order
 is responsible for 6dB loss per octave (hence \, a 10th order filter
 has a 60dB decay per octave \, which is quite steep)., f 59;
+#X text 69 267 * This object implements a 10th order lowpass butterworth
+filter \, which will be presented in depth only later in this tutorial
+\, in an advanced section on filters.;
 #X connect 3 0 5 0;
 #X connect 4 0 0 0;
 #X connect 5 0 4 0;

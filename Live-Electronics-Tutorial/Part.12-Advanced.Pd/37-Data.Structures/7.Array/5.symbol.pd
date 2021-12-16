@@ -1,43 +1,33 @@
-#N struct 1084-DS float x float y array 1084-table 1084-element;
-#N struct 1084-element symbol sym float y;
-#N canvas 611 155 598 623 12;
+#N struct 1004-DS float x float y array 1004-table 1004-element;
+#N struct 1004-element symbol sym float y;
+#N canvas 502 127 598 623 12;
 #X obj 475 376 pointer;
 #N canvas 317 275 503 265 template 0;
-#X text 74 45 Data Structure named "\$0-DS" holding coordinates floats
-"x/y" and an array named "\$0-table" using the element struct named
-"\$0-s" defined in the other subpatch., f 53;
 #X text 91 183 Drawing instructions;
 #X obj 243 184 plot \$0-table 900 2 0 0 120;
 #X obj 59 127 struct \$0-DS float x float y array \$0-table \$0-element
 ;
+#X text 73 46 Data Structure named "\$0-DS" holding coordinates floats
+"x/y" and an array named "\$0-table" using the element struct named
+"\$0-element" defined in the other subpatch., f 48;
 #X restore 387 134 pd template;
 #X obj 366 406 append \$0-DS x y;
-#X text 98 23 This example shows how to create an array composed only
-of symbols. In this case \, the [array] object can't be used instead
-of [element] and [set]. But we can still use [array] instead of [setsize]/[getsize].
-, f 53;
 #X msg 36 361 n \, dump;
 #X obj 36 457 t s b;
 #X obj 246 418 + 1;
 #X obj 215 418 f;
 #X obj 234 521 array size -s \$0-DS \$0-table;
 #X text 261 496 <= sets size;
-#X floatatom 234 495 3 0 0 0 - - -;
+#X floatatom 234 495 3 0 0 0 - - - 0;
 #X obj 36 393 dir, f 5;
 #X obj 215 447 element \$0-DS \$0-table;
 #X msg 233 393 0;
 #X text 96 360 <= click;
-#X text 86 205 When loading the array \, we have only one element \,
-not initialized. With the [dir] object from else \, we get the file
-names contained in this folder and insert them into the array. The
-'n' message sends the number of files in the folder to the right outlet
-\, which we use to set the array's size. Then \, the dump message sends
-a series of symbols with the file names that we use to populate the
-array with the [element] and [set] objects.;
 #X text 82 563 To set a symbol \, the [set] object needs a -symbol
 flag!;
-#N canvas 813 200 725 334 \$0-display 1;
-#X scalar 1084-DS 10 250 \; symbol 0 \; \;;
+#N canvas 1176 204 725 334 \$0-display 1;
+#X scalar 1004-DS 10 250 \; 1.Array.pd 0 \; 2.[element].pd 0 \; 3.curve.pd
+0 \; 4.[array].pd 0 \; 5.symbol.pd 0 \; 6.x-y.pd 0 \; \;;
 #X coords 0 334 1 333 0 0 0;
 #X restore 387 160 pd \$0-display;
 #X obj 76 115 initmess \; pd-\$0-display clear \, vis 1 \; \$0-pointer
@@ -58,21 +48,32 @@ coordinate. This allows the element to be dragged horizontally., f
 #X restore 387 108 pd \$0-element;
 #X obj 36 521 set -symbol \$0-element sym;
 #X obj 57 421 t f b;
+#X text 98 23 This example shows how to create an array composed of
+symbols. In this case \, the [array] object can't be used instead of
+[element] and [set]. But we can still use [array] instead of [setsize]/[getsize].
+, f 55;
+#X text 86 205 When loading the array \, we have only one element \,
+not initialized. With the [dir] object from ELSE \, we get the file
+names contained in this folder and insert them into the array. The
+'n' message sends the number of files in the folder to the right outlet
+\, which we use to set the array's size. Then \, the dump message sends
+a series of symbols with the file names that we use to populate the
+array with the [element] and [set] objects.;
 #X connect 0 0 2 2;
-#X connect 2 0 8 1;
-#X connect 2 0 12 1;
-#X connect 4 0 11 0;
-#X connect 5 0 22 0;
-#X connect 5 1 7 0;
-#X connect 6 0 7 1;
-#X connect 7 0 6 0;
-#X connect 7 0 12 0;
-#X connect 10 0 8 0;
-#X connect 11 0 5 0;
-#X connect 11 2 23 0;
-#X connect 12 0 22 1;
-#X connect 13 0 7 1;
-#X connect 19 0 0 0;
-#X connect 20 0 2 0;
-#X connect 23 0 10 0;
-#X connect 23 1 13 0;
+#X connect 2 0 7 1;
+#X connect 2 0 11 1;
+#X connect 3 0 10 0;
+#X connect 4 0 20 0;
+#X connect 4 1 6 0;
+#X connect 5 0 6 1;
+#X connect 6 0 5 0;
+#X connect 6 0 11 0;
+#X connect 9 0 7 0;
+#X connect 10 0 4 0;
+#X connect 10 2 21 0;
+#X connect 11 0 20 1;
+#X connect 12 0 6 1;
+#X connect 17 0 0 0;
+#X connect 18 0 2 0;
+#X connect 21 0 9 0;
+#X connect 21 1 12 0;

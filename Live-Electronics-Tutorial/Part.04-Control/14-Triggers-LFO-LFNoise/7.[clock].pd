@@ -1,0 +1,79 @@
+#N canvas 503 63 703 663 12;
+#X declare -path else;
+#X obj 466 33 declare -path else;
+#X obj 158 320 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
+#X floatatom 232 327 5 0 0 0 - - - 0;
+#X obj 201 553 out~;
+#X obj 125 320 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X obj 158 411 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X obj 288 411 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X obj 407 411 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X obj 158 440 else/impseq~;
+#X obj 288 440 else/impseq~;
+#X obj 407 440 else/impseq~;
+#X obj 376 327 else/display 4;
+#X msg 376 252 1/3;
+#X msg 365 230 4/3;
+#X msg 390 301 0.75;
+#X msg 384 277 1.5;
+#X obj 488 327 else/display 4;
+#X msg 477 230 3/2;
+#X msg 488 252 0.333333;
+#X msg 502 301 3/4;
+#X msg 496 277 2/3;
+#X obj 288 365 else/clock -s \$0-clock 2, f 13;
+#X obj 407 365 clock -s \$0-clock 3/2, f 12;
+#X obj 158 516 else/drive~ 5;
+#X obj 407 487 else/resonant~ 2350 200, f 14;
+#X obj 158 470 else/resonant~ 450 300, f 14;
+#X obj 288 487 else/resonant~ 1050 200, f 14;
+#X obj 158 365 else/clock \$0-clock 60, f 11;
+#X obj 288 320 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
+#X text 43 80 A [clock] object sends bangs at a regular tempo and controls
+other synced [clock] objects with a relative tempo. This is similar
+to the last example with [pimpmul~] \, because when you change the
+relative tempo \, you can't keep them in sync anymore., f 87;
+#X obj 327 320 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X text 43 136 This would be a control equivalent \, but now we have
+a single object \, that can be either a "master" or a "slave". We've
+seen this term when studying "hard sync" and it's worth noting that
+despite old literature uses these terms there's an understanding we
+should stop using them. One option is to use "main" and "synced" instead.
+See the help file of the object., f 87;
+#X connect 1 0 27 0;
+#X connect 2 0 27 1;
+#X connect 4 0 27 0;
+#X connect 5 0 8 0;
+#X connect 6 0 9 0;
+#X connect 7 0 10 0;
+#X connect 8 0 25 0;
+#X connect 9 0 26 0;
+#X connect 10 0 24 0;
+#X connect 11 0 21 1;
+#X connect 12 0 11 0;
+#X connect 13 0 11 0;
+#X connect 14 0 11 0;
+#X connect 15 0 11 0;
+#X connect 16 0 22 1;
+#X connect 17 0 16 0;
+#X connect 18 0 16 0;
+#X connect 19 0 16 0;
+#X connect 20 0 16 0;
+#X connect 21 0 6 0;
+#X connect 22 0 7 0;
+#X connect 23 0 3 0;
+#X connect 24 0 3 1;
+#X connect 25 0 23 0;
+#X connect 26 0 3 1;
+#X connect 27 0 5 0;
+#X connect 28 0 21 0;
+#X connect 28 0 22 0;
+#X connect 30 0 21 0;
+#X connect 30 0 22 0;

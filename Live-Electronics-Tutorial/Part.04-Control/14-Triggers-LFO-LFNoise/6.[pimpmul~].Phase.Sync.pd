@@ -1,7 +1,7 @@
 #N canvas 503 63 784 534 12;
 #X declare -path else;
 #X obj 146 22 declare -path else;
-#X floatatom 188 208 5 0 0 0 - - -;
+#X floatatom 188 208 5 0 0 0 - - - 0;
 #X obj 76 196 sig~ 1;
 #X msg 188 170 1;
 #X obj 76 331 out~;
@@ -10,21 +10,18 @@
 #X obj 163 233 *~ 1;
 #X obj 76 264 sine~;
 #X obj 163 265 sine~;
-#X text 36 71 Here's a problem. If you have 2 LFOs and multiply the
-frequency of one by a factor \, it's just impossible to keep it in
-sync when you change this factor. Try it below., f 37;
 #X obj 424 194 pimp~ 1;
 #X obj 490 231 pimpmul~ 1;
 #X msg 220 170 1.5;
 #X msg 253 170 2;
 #X msg 155 170 0.5;
-#X floatatom 557 200 5 0 0 0 - - -;
+#X floatatom 557 200 5 0 0 0 - - - 0;
 #X msg 557 148 1;
 #X msg 589 148 1.5;
 #X msg 622 148 2;
 #X msg 524 148 0.5;
-#X obj 560 179 hsl 128 15 0.5 2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12700 1;
+#X obj 560 179 hsl 128 15 0.5 2 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 578 312 *~;
 #X obj 452 338 out~;
 #X obj 452 301 *~;
@@ -41,13 +38,17 @@ an impulse at period transitions. Check its help file.;
 #X obj 572 449 phasor~;
 #X obj 572 473 sin~;
 #X obj 647 449 phasor~;
-#X text 93 428 Note that you can use [phasor~] in conjunction to [table~]
+#X text 94 431 Note that you can use [phasor~] in conjunction to [table~]
 and other objects to generate many wabveforms and also envelopes or
 even play samples as we'll see in the next sections. So don't think
 that this is only useful if you need impulses or phase ramps!, f 64
 ;
 #X obj 647 472 table~;
 #X text 577 419 for instace:;
+#X text 36 63 Here's a problem. If you have 2 LFOs in sync and multiply
+the frequency of one by a factor \, it's just impossible to keep it
+in sync. If you go back it will also not work. Try it below., f 37
+;
 #X connect 1 0 7 1;
 #X connect 2 0 7 0;
 #X connect 2 0 8 0;
@@ -57,23 +58,23 @@ that this is only useful if you need impulses or phase ramps!, f 64
 #X connect 7 0 9 0;
 #X connect 8 0 5 0;
 #X connect 9 0 6 0;
-#X connect 11 0 12 0;
+#X connect 10 0 11 0;
+#X connect 10 1 26 0;
 #X connect 11 1 27 0;
-#X connect 12 1 28 0;
+#X connect 12 0 1 0;
 #X connect 13 0 1 0;
 #X connect 14 0 1 0;
-#X connect 15 0 1 0;
-#X connect 16 0 12 1;
-#X connect 17 0 21 0;
-#X connect 18 0 21 0;
-#X connect 19 0 21 0;
-#X connect 20 0 21 0;
-#X connect 21 0 16 0;
-#X connect 22 0 23 1;
-#X connect 24 0 23 0;
-#X connect 25 0 22 0;
-#X connect 26 0 24 0;
-#X connect 27 0 24 1;
-#X connect 28 0 22 1;
-#X connect 30 0 31 0;
-#X connect 32 0 34 0;
+#X connect 15 0 11 1;
+#X connect 16 0 20 0;
+#X connect 17 0 20 0;
+#X connect 18 0 20 0;
+#X connect 19 0 20 0;
+#X connect 20 0 15 0;
+#X connect 21 0 22 1;
+#X connect 23 0 22 0;
+#X connect 24 0 21 0;
+#X connect 25 0 23 0;
+#X connect 26 0 23 1;
+#X connect 27 0 21 1;
+#X connect 29 0 30 0;
+#X connect 31 0 33 0;

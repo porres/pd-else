@@ -1,12 +1,9 @@
-#N struct 1214-DS float x float y array 1214-table 1214-element;
-#N struct 1214-element float x float y;
+#N struct 1005-DS float x float y array 1005-table 1005-element;
+#N struct 1005-element float x float y;
 #N canvas 387 93 534 598 12;
 #X obj 412 339 pointer;
-#N canvas 636 221 509 380 template 0;
+#N canvas 645 212 509 380 template 0;
 #X obj 245 304 plot \$0-table 900 2;
-#X text 61 46 Data Structure named "\$0-DS" holding coordinates floats
-"x/y" and an array named "\$0-table" using the element struct named
-"\$0-f" defined in the other subpatch., f 53;
 #X obj 53 131 struct \$0-DS float x float y array \$0-table \$0-element
 ;
 #X text 72 178 The drawing instruction now does not specify a spacing
@@ -15,6 +12,9 @@ ignored because we also have a "x" variable in the element's struct.
 Hence \, it takes 'x' from the data itself. The 'x' values are initialized
 as "0" \, so all values in the array are grouped together at initialization.
 , f 47;
+#X text 61 46 Data Structure named "\$0-DS" holding coordinates floats
+"x/y" and an array named "\$0-table" using the element struct named
+"\$0-element" defined in the other subpatch., f 53;
 #X restore 357 157 pd template;
 #X msg 47 272 0 20 40 60 80 100 120 140 160 180 200 220 240 260 280
 300;
@@ -33,7 +33,9 @@ vertically and horizontaly., f 52;
 traverse pd-\$0-display \, bang \; \$0-coords 10 105 \; \$0-size 16
 ;
 #N canvas 1005 301 334 221 \$0-display 1;
-#X scalar 1214-DS 10 105 \; 0 0 \; \;;
+#X scalar 1005-DS 10 105 \; 0 0 \; 20 0 \; 60 56 \; 60 0 \; 80 0 \;
+100 0 \; 120 0 \; 140 0 \; 160 0 \; 180 0 \; 200 0 \; 220 0 \; 240
+0 \; 260 0 \; 280 0 \; 300 0 \; \;;
 #X coords 0 221 1 220 0 0 0;
 #X restore 357 184 pd \$0-display;
 #X obj 412 309 r \$0-pointer;
@@ -49,7 +51,7 @@ special variable names for the horizontal and vertical coordinates
 \, this means you can drag this element both vertically and horizonatly.
 ;
 #X restore 357 131 pd \$0-element;
-#X floatatom 210 473 5 0 0 0 - - -;
+#X floatatom 210 473 5 0 0 0 - - - 0;
 #X connect 0 0 8 2;
 #X connect 2 0 10 0;
 #X connect 8 0 9 1;

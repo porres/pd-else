@@ -1,42 +1,35 @@
-#N struct 1010-DS float x float y array 1010-table 1010-element;
-#N struct 1010-element float y;
+#N struct 1003-DS float x float y array 1003-table 1003-element;
+#N struct 1003-element float y;
 #N canvas 361 46 520 606 12;
 #X obj 421 387 pointer;
 #N canvas 689 169 474 279 template 0;
-#X text 64 38 Data Structure named "\$0-DS" holding coordinates floats
-"x/y" and an array named "table" using the element struct named "\$0-f"
-defined in the other subpatch., f 53;
 #X text 71 175 The drawing instructions for the array., f 47;
 #X obj 190 204 plot \$0-table 900 2 0 0 20;
 #X obj 60 118 struct \$0-DS float x float y array \$0-table \$0-element
 ;
+#X text 64 38 Data Structure named "\$0-DS" holding coordinates floats
+"x/y" and an array named "table" using the element struct named "\$0-element"
+defined in the other subpatch., f 53;
 #X restore 356 259 pd template;
-#X obj 190 378 nbx 3 16 0 15 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 0 256;
-#X obj 97 378 nbx 4 16 -100 100 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 0 256;
+#X obj 190 378 nbx 3 16 0 15 0 0 empty empty empty 0 -8 0 12 #dcdcdc
+#000000 #000000 0 256;
+#X obj 97 378 nbx 4 16 -100 100 0 0 empty empty empty 0 -8 0 12 #dcdcdc
+#000000 #000000 0 256;
 #X text 188 354 index;
 #X text 98 355 value;
-#X floatatom 119 550 5 0 0 0 - - -;
-#X obj 79 481 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X floatatom 119 550 5 0 0 0 - - - 0;
+#X obj 79 481 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X text 38 472 get size, f 4;
 #X text 328 520 <= get/set size;
-#X text 58 405 set:;
+#X text 57 375 set:;
 #X text 160 482 <= sets size;
-#X text 77 14 You can also use the [array] object to set \, get and
-do all sorts of operations in a Data Structure array (as well with
-other regular arrays in Pd)., f 50;
-#X text 77 80 Here we use it instead of [setsize]/[getsize]. In the
-case of arrays composed only of floats \, it eliminates the need of
-the [element] and [set] objects as well., f 50;
 #X obj 312 418 append \$0-DS x y;
 #X obj 119 519 array size -s \$0-DS \$0-table;
 #X obj 97 408 array set -s \$0-DS \$0-table;
-#X text 77 154 Check in [pd element] that we also added a drawing instruction
-for the float element as well.;
 #N canvas 965 238 334 221 \$0-display 1;
-#X scalar 1010-DS 10 105 \; 0 \; \;;
+#X scalar 1003-DS 10 105 \; 41 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \;
+0 \; 0 \; -31 \; 0 \; 0 \; 0 \; 0 \; 0 \; \;;
 #X coords 0 221 1 220 0 0 0;
 #X restore 356 285 pd \$0-display;
 #X obj 421 356 r \$0-pointer;
@@ -56,15 +49,24 @@ containing only a float named "y". Since this is also the special variable
 name for the vertical coordinate \, this means you can drag this element
 vertically \, as in Pd's arrays., f 61;
 #X restore 356 233 pd \$0-element;
-#X floatatom 119 481 5 0 0 0 - - -;
-#X connect 0 0 14 2;
-#X connect 2 0 16 1;
-#X connect 3 0 16 0;
-#X connect 7 0 15 0;
-#X connect 14 0 15 1;
-#X connect 14 0 16 2;
-#X connect 15 0 6 0;
-#X connect 19 0 0 0;
-#X connect 20 0 14 0;
-#X connect 21 0 24 0;
-#X connect 24 0 15 0;
+#X floatatom 119 481 5 0 0 0 - - - 0;
+#X text 77 14 Besides [setsize] and [getsize] \, you can use the [array]
+object to set/get the size and \, additionaly \, do all sorts of operations
+in a Data Structure array (as well with other regular arrays in Pd).
+, f 57;
+#X text 77 80 In the case of arrays composed only of floats \, [array]
+also eliminates the need of the [element] and [set] objects., f 57
+;
+#X text 90 141 Check in [pd \$0-element] that we also added now a drawing
+instruction for the float element itself., f 49;
+#X connect 0 0 12 2;
+#X connect 2 0 14 1;
+#X connect 3 0 14 0;
+#X connect 7 0 13 0;
+#X connect 12 0 13 1;
+#X connect 12 0 14 2;
+#X connect 13 0 6 0;
+#X connect 16 0 0 0;
+#X connect 17 0 12 0;
+#X connect 18 0 21 0;
+#X connect 21 0 13 0;

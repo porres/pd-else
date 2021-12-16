@@ -1,4 +1,4 @@
-#N canvas 354 23 948 501 12;
+#N canvas 354 23 940 570 12;
 #X declare -path else;
 #X obj 115 221 pgmin;
 #X obj 109 197 bendin;
@@ -64,3 +64,8 @@ and [midiout] objects.;
 #X text 205 307 MIDI System & MIDI Real-time;
 #X text 265 148 Note (on/off);
 #X text 662 348 system real-time, f 20;
+#X text 292 511 see also:;
+#X obj 370 511 midi.learn;
+#A saved;
+#X text 456 507 An object from ELSE that makes it easier to set a MIDI
+controller., f 33;

@@ -1,4 +1,4 @@
-#N canvas 561 23 594 763 12;
+#N canvas 561 23 585 724 12;
 #X obj 318 147 struct;
 #X obj 158 211 drawcurve;
 #X obj 246 211 filledcurve;
@@ -15,7 +15,6 @@
 #X obj 368 576 getsize;
 #X obj 368 606 setsize;
 #X obj 368 392 append;
-#X obj 369 709 scalar;
 #X obj 369 665 text;
 #X obj 368 638 array;
 #X text 60 147 Declare a data structure template:;
@@ -40,7 +39,6 @@ Data Structures):, f 33;
 #X text 213 607 Change an array size:;
 #X text 186 637 Access/Manipulate arrays:;
 #X text 192 666 Access/Manipulate texts:;
-#X text 205 709 Experimental/upcoming:;
 #X text 33 15 Here are all the objects that deal with Data Structures
 in Pd Vanilla \, all of which have been presented already \, except
 the [scalar] object \, which is experimental and doesn't really do

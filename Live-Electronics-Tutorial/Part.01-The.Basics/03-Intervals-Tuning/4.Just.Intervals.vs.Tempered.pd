@@ -1,13 +1,13 @@
-#N canvas 677 158 766 597 12;
+#N canvas 538 61 766 597 12;
 #X declare -path else;
 #X text 562 299 Cents;
 #X obj 609 269 ratio2cents;
 #X obj 609 328 cents2ratio;
-#X obj 627 168 nbx 3 14 -1e+37 1e+37 0 0 empty y empty 0 -8 0 10 -228856
--1 -1 2 256;
+#X obj 627 168 nbx 3 14 -1e+37 1e+37 0 0 empty y empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X obj 609 189 hot;
-#X obj 609 143 nbx 3 14 -1e+37 1e+37 0 0 empty x empty 0 -8 0 10 -228856
--1 -1 3 256;
+#X obj 609 143 nbx 3 14 -1e+37 1e+37 0 0 empty x empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X text 649 142 X;
 #X text 667 167 Y;
 #X obj 609 239 display;
@@ -48,10 +48,10 @@ you get the same interval but with a negative value in cents. For example
 #X obj 76 542 else/display;
 #X msg 76 482 1 9/8 5/4 11/8 3/2 13/8 14/8 15/8 2;
 #X obj 76 453 loadbang;
-#X obj 76 512 frac2ratio;
 #X text 458 491 The [frac2ratio] object from ELSE takes a list of elements
 in fraction notation and converts to a list with cents intervals.,
 f 36;
+#X obj 76 512 frac2dec;
 #X connect 1 0 9 0;
 #X connect 2 0 10 0;
 #X connect 3 0 4 1;
@@ -61,6 +61,6 @@ f 36;
 #X connect 8 0 1 0;
 #X connect 9 0 2 0;
 #X connect 11 0 8 0;
-#X connect 23 0 25 0;
+#X connect 23 0 26 0;
 #X connect 24 0 23 0;
-#X connect 25 0 22 0;
+#X connect 26 0 22 0;

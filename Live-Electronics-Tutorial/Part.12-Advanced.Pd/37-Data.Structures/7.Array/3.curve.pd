@@ -1,16 +1,16 @@
-#N struct 1021-DS float x float y array 1021-table 1021-element;
-#N struct 1021-element float y;
+#N struct 1003-DS float x float y array 1003-table 1003-element;
+#N struct 1003-element float y;
 #N canvas 430 110 534 429 12;
 #X obj 378 297 pointer;
 #N canvas 420 281 476 299 template 0;
-#X text 59 30 Data Structure named "\$0-DS" holding coordinates floats
-"x/y" and an array named "\$0-table" using the element struct named
-"\$0-f" defined in the other subpatch., f 49;
 #X obj 126 229 plot curve \$0-table 900 2 0 0 20;
 #X obj 49 115 struct \$0-DS float x float y array \$0-table \$0-element
 ;
 #X text 116 176 The drawing instruction now does specify that it draws
 a 'curve'., f 33;
+#X text 59 30 Data Structure named "\$0-DS" holding coordinates floats
+"x/y" and an array named "\$0-table" using the element struct named
+"\$0-element" defined in the other subpatch., f 49;
 #X restore 360 183 pd template;
 #X text 119 324 <= sets size;
 #X obj 269 327 append \$0-DS x y;
@@ -19,7 +19,8 @@ a 'curve'., f 33;
 traverse pd-\$0-display \, bang \; \$0-coords 10 105 \; \$0-size 16
 ;
 #N canvas 1005 255 334 221 \$0-display 1;
-#X scalar 1021-DS 10 105 \; 0 \; \;;
+#X scalar 1003-DS 10 105 \; 0 \; 0 \; -37 \; -30 \; 0 \; 12 \; 10 \;
+-21 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; \;;
 #X coords 0 221 1 220 0 0 0;
 #X restore 360 210 pd \$0-display;
 #X obj 378 267 r \$0-pointer;
@@ -35,17 +36,17 @@ special variable names for the horizontal and vertical coordinates
 \, this means you can drag this element both vertically and horizonatly.
 ;
 #X restore 360 157 pd \$0-element;
+#X floatatom 76 324 5 0 0 0 - - - 0;
 #X text 66 23 If the [plot] object has a 'curve' argument \, it plots
-the array with a belzier curve. We can see then how the actual value
+the array with a bezier curve. We can see then how the actual value
 position \, represented by the black dot \, may easily not fall inside
 the curve. Since Data Structure arrays do not offer "jump on click"
 \, it might be really hard to find the actual position of the array
-value so you can click on the dor and edit it. Open subpatches below
+value so you can click on the dot and drag it. Open subpatches below
 for more details.;
-#X floatatom 76 324 5 0 0 0 - - -;
 #X connect 0 0 3 2;
 #X connect 3 0 4 1;
 #X connect 7 0 0 0;
 #X connect 8 0 3 0;
-#X connect 9 0 12 0;
-#X connect 12 0 4 0;
+#X connect 9 0 11 0;
+#X connect 11 0 4 0;

@@ -1,4 +1,4 @@
-#N canvas 789 133 554 612 12;
+#N canvas 789 133 648 648 12;
 #X declare -path else;
 #X obj 347 20 declare -path else;
 #X obj 73 46 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
@@ -38,9 +38,10 @@
 #X text 327 295 phase (0-1);
 #X obj 316 378 bang;
 #X obj 206 378 bang;
-#X text 259 61 This is a high level metronome \, check its help file.
+#X text 269 64 This is a high level metronome \, check its help file.
 It is here because you can use the bar count to fire a sequence with
-select. Or select a specific beat in a bar (hint \, hint)., f 37;
+select. Or select a specific beat in a bar \, kind of like a timeline
+in a DAW (hint \, hint)., f 47;
 #X connect 1 0 29 0;
 #X connect 3 0 29 1;
 #X connect 7 0 26 0;

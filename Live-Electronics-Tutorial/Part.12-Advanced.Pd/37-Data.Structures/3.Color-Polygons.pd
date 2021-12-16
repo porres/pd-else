@@ -1,9 +1,9 @@
-#N struct 1066-DS float color;
-#N struct 1066-fill float color;
-#N canvas 555 89 480 586 12;
+#N struct 1003-DS float color;
+#N struct 1003-fill float color;
+#N canvas 497 74 909 361 12;
 #X declare -path else;
-#X obj 164 243 pointer;
-#N canvas 203 319 985 322 template-1 0;
+#X obj 157 283 pointer;
+#N canvas 233 225 985 322 template-1 0;
 #X obj 611 198 drawpolygon color 20 0 25 95 25;
 #X obj 145 270 drawnumber color 100 20 color color=;
 #X text 523 22 And now we include a shape in the data structure object.
@@ -20,72 +20,79 @@ a single graphic object.;
 #X text 96 45 Data Structure named "\$0-DS" holding a float called
 "color"., f 35;
 #X obj 120 107 struct \$0-DS float color;
-#X text 48 153 The [drawnumber] now has more arguments \, besides the
+#X text 48 153 The [drawnumber] now has more arguments. Besides the
 float name to draw \, we have three number values. The two first ones
 are the "x/y" coordinates (100/20). The third value defines the color
-of the number and is defined by the variable name "color". The last
-argument is a label for the number display.;
-#X restore 163 122 pd template-1;
-#N canvas 547 174 421 518 template-2 0;
+of the number and is defined by the variable (or 'field') named "color".
+The last argument is a label for the number display., f 58;
+#X restore 156 126 pd template-1;
+#N canvas 853 155 438 542 template-2 0;
 #X obj 67 171 drawnumber color 105 50 color color=;
 #X text 53 142 Draw instructions for the "color" float.;
-#X obj 50 460 filledpolygon color 0 5 0 105 100 105 50 60;
-#X obj 63 286 drawpolygon color 5 0 5 100 5 50 55 0 5;
-#X text 54 339 The [filledpolygon] needs an extra first argument to
-set the internal color \, and it doesn't need to close the shape with
-four coordinate points to draw a triangle - three points is already
-enough to draw the shape., f 40;
-#X obj 58 98 struct \$0-fill float color;
-#X text 58 38 Data Structure named "\$0-fill" holding a float called
+#X obj 62 474 filledpolygon color 0 5 0 105 100 105 50 60;
+#X obj 66 317 drawpolygon color 5 0 5 100 5 50 55 0 5;
+#X obj 101 85 struct \$0-fill float color;
+#X text 93 38 Data Structure named "\$0-fill" holding a float called
 "color"., f 31;
-#X text 61 224 Here we have a polygon with four coordinate pair points
-\, which form a triangle, f 29;
-#X restore 130 394 pd template-2;
-#X text 35 26 Now let's have more fun with drawing instructions and
+#X text 45 219 Here we have a polygon with four coordinate pair points
+\, which form a triangle. The first argument takes the name of the
+'color' varable (or 'field') \, which is also drawn by [drawnumber].
+, f 44;
+#X text 55 369 The [filledpolygon] needs an extra first argument to
+set the internal color and also uses here the 'color' field name for
+that. It doesn't need to close the shape with four coordinate points
+to draw a triangle - three points is already enough to draw the shape.
+, f 44;
+#X restore 565 138 pd template-2;
+#X obj 34 321 append \$0-DS color;
+#N canvas 619 501 301 150 \$0-display-1 1;
+#X scalar 1003-DS 500 \;;
+#X restore 271 126 pd \$0-display-1;
+#N canvas 1026 469 284 191 \$0-display-2 1;
+#X scalar 1003-fill 465 \;;
+#X restore 670 138 pd \$0-display-2;
+#X msg 287 167 clear \, vis 1;
+#X obj 34 256 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X obj 287 194 s pd-\$0-display-1;
+#X obj 611 273 pointer;
+#X msg 753 167 clear \, vis 1;
+#X obj 474 261 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X obj 753 194 s pd-\$0-display-2;
+#X obj 474 302 append \$0-fill color;
+#X obj 34 126 loadbang;
+#X obj 725 25 declare -path else;
+#X obj 157 240 message traverse pd-\$0-display-1 \, bang, f 33;
+#X msg 34 215 500;
+#X msg 474 223 450;
+#X text 27 26 Now let's have more fun with drawing instructions and
 insert a simple line shape with [drawpolygon]. See the [pd template-1]
-subpatch. In the [pd display-1] subpatch \, click and drag the number
-to see the colors change., f 55;
-#X text 30 310 Next \, we draw a bit less simple shapes and also use
-the [filledpolygon] object. See the [pd template-1] subpatch for more
+subpatch. Data is displayed on the [pd \$0-display-1] subpatch \, click
+and drag the number in it to see the colors change., f 54;
+#X obj 34 180 trigger bang bang bang;
+#X obj 474 185 trigger bang bang bang, f 36;
+#X obj 474 138 loadbang;
+#X obj 611 231 message traverse pd-\$0-display-2 \, bang, f 33;
+#X text 466 59 Next \, we draw a bit less simple shapes and also use
+the [filledpolygon] object. See the [pd template-2] subpatch for more
 details. You can also click and drag the number to change colors.,
-f 51;
-#X obj 41 271 append \$0-DS color;
-#N canvas 1089 103 358 171 \$0-display-1 1;
-#X scalar 1066-DS 500 \;;
-#X restore 278 122 pd \$0-display-1;
-#N canvas 1091 335 383 313 \$0-display-2 1;
-#X scalar 1066-fill 450 \;;
-#X restore 235 394 pd \$0-display-2;
-#X msg 290 190 clear \, vis 1;
-#X msg 164 196 traverse \$1 \, bang, f 12;
-#X obj 41 206 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 500 256;
-#X obj 290 217 s pd-\$0-display-1;
-#X obj 41 160 trigger2 500 pd-\$0-display-1 bang, f 36;
-#X obj 176 510 pointer;
-#X msg 288 462 clear \, vis 1;
-#X msg 176 463 traverse \$1 \, bang, f 12;
-#X obj 39 478 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 450 256;
-#X obj 39 432 trigger2 450 pd-\$0-display-2 bang, f 36;
-#X obj 288 489 s pd-\$0-display-2;
-#X obj 39 543 append \$0-fill color;
-#X obj 41 128 loadbang;
-#X obj 39 400 loadbang;
-#X obj 289 269 declare -path else;
-#X connect 0 0 5 1;
-#X connect 8 0 11 0;
-#X connect 9 0 0 0;
-#X connect 10 0 5 0;
-#X connect 12 0 10 0;
-#X connect 12 1 9 0;
-#X connect 12 2 8 0;
-#X connect 13 0 19 1;
-#X connect 14 0 18 0;
-#X connect 15 0 13 0;
-#X connect 16 0 19 0;
-#X connect 17 0 16 0;
-#X connect 17 1 15 0;
-#X connect 17 2 14 0;
-#X connect 20 0 12 0;
-#X connect 21 0 17 0;
+f 56;
+#X connect 0 0 3 1;
+#X connect 6 0 8 0;
+#X connect 7 0 3 0;
+#X connect 9 0 13 1;
+#X connect 10 0 12 0;
+#X connect 11 0 13 0;
+#X connect 14 0 20 0;
+#X connect 16 0 0 0;
+#X connect 17 0 7 0;
+#X connect 18 0 11 0;
+#X connect 20 0 17 0;
+#X connect 20 1 16 0;
+#X connect 20 2 6 0;
+#X connect 21 0 18 0;
+#X connect 21 1 23 0;
+#X connect 21 2 10 0;
+#X connect 22 0 21 0;
+#X connect 23 0 9 0;
