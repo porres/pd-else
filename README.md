@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 beta-45 With Live Electronics Tutorial 
 
-###   Unreleased
+###   Released december 16th 2021
 
 
 
@@ -117,12 +117,12 @@ Cross compiling is also possible with something like this
 
 ## Current Object list (434 objects):
 
-**ASSORTED: [02]**
+**ASSORTED: [01]**
 
-- [meter]
 - [else]
 
 **FFT: [02]**
+
 - [hann~]
 - [bin.shift~]
 
@@ -144,9 +144,10 @@ Cross compiling is also possible with something like this
 - [pitch2note]
 - [note2pitch]
 
-**PATCH/SUBPATCH MANAGEMENT: [19]**
+**PATCH/SUBPATCH MANAGEMENT: [20]**
 
 - [args]
+- [meter]
 - [presets]
 - [dollsym]
 - [receiver]

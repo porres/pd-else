@@ -7,7 +7,7 @@ float grid;
 width float bordercolor;
 #N canvas 733 23 541 769 10;
 #X text 53 106 Assorted:;
-#X text 53 205 FFT:;
+#X text 53 175 FFT:;
 #X text 51 2473 MIDI:;
 #X text 51 2992 Math functions:;
 #X text 51 3810 Math (conversion):;
@@ -20,7 +20,7 @@ width float bordercolor;
 #X text 46 8641 Signal Routing:;
 #X text 52 9031 Control:;
 #X text 51 10335 Triggers:;
-#X text 53 690 Patch/subpatch management:;
+#X text 53 660 Patch/subpatch management:;
 #X text 50 1723 Message management:;
 #X text 48 2397 File management:;
 #X text 57 11607 GUI:;
@@ -64,9 +64,9 @@ width float bordercolor;
 , f 77;
 #X text 27 1705 =============================================================================
 , f 77;
-#X text 27 281 =============================================================================
+#X text 27 251 =============================================================================
 , f 77;
-#X text 27 185 =============================================================================
+#X text 27 155 =============================================================================
 , f 77;
 #X text 26 83 =============================================================================
 , f 77;
@@ -82,28 +82,28 @@ width float bordercolor;
 #X text 21 9887 =============================================================================
 , f 77;
 #X text 35 9912 Control Random:;
-#X text 27 669 =============================================================================
+#X text 27 639 =============================================================================
 , f 77;
 #X text 19 6930 =============================================================================
 , f 77;
 #X text 49 6954 Granular synthesys:;
-#X text 52 302 Tuning/scale tools:;
+#X text 52 272 Tuning/scale tools:;
 #X obj 54 133 else/else;
 #X obj 52 6584 else/table~;
-#X obj 53 158 else/meter;
+#X obj 52 709 else/meter;
 #X obj 50 9077 else/mouse;
 #X obj 49 9649 else/euclid;
-#X obj 53 229 else/hann~;
-#X obj 56 356 else/autotune;
-#X obj 56 379 else/autotune2;
-#X obj 56 401 else/retune;
-#X obj 56 422 else/eqdiv;
-#X obj 56 530 else/frac2dec;
-#X obj 56 554 else/frac2dec;
-#X obj 56 599 else/midi2freq;
-#X obj 56 622 else/note2pitch;
-#X obj 56 645 else/pitch2note;
-#X obj 53 714 else/args;
+#X obj 53 199 else/hann~;
+#X obj 56 326 else/autotune;
+#X obj 56 349 else/autotune2;
+#X obj 56 371 else/retune;
+#X obj 56 392 else/eqdiv;
+#X obj 56 500 else/frac2dec;
+#X obj 56 524 else/frac2dec;
+#X obj 56 569 else/midi2freq;
+#X obj 56 592 else/note2pitch;
+#X obj 56 615 else/pitch2note;
+#X obj 53 684 else/args;
 #X obj 53 761 else/blocksize~;
 #X obj 53 787 else/fontsize;
 #X obj 53 835 else/canvas.active;
@@ -454,19 +454,19 @@ width float bordercolor;
 #X obj 51 1661 else/amean;
 #X obj 52 1682 else/gmean;
 #X obj 51 5040 else/power~;
-#X obj 56 332 else/scales;
+#X obj 56 302 else/scales;
 #X obj 51 2266 else/pipe2;
 #X obj 51 9795 else/pimp;
 #X obj 51 9771 else/phasor;
-#X obj 56 486 else/cents2frac;
-#X obj 56 508 else/frac2cents;
+#X obj 56 456 else/cents2frac;
+#X obj 56 478 else/frac2cents;
 #X obj 51 9478 else/slew;
 #X obj 51 9501 else/slew2;
 #X obj 51 9528 else/slew~;
 #X obj 51 9551 else/slew2~;
 #X obj 51 1994 else/default;
-#X obj 56 443 else/scale2cents;
-#X obj 56 463 else/cents2scale;
+#X obj 56 413 else/scale2cents;
+#X obj 56 433 else/cents2scale;
 #X obj 51 1752 else/nmess;
 #X obj 50 9054 else/canvas.mouse;
 #X text 45 6545 Buffer/Sampling/Playing/Granulation:;
@@ -485,7 +485,7 @@ width float bordercolor;
 \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
 ;
 #X obj 49 9675 else/pattern;
-#X obj 56 576 else/freq2midi;
+#X obj 56 546 else/freq2midi;
 #X obj 51 4261 else/deg2rad;
 #X obj 51 4284 else/rad2deg;
 #X obj 51 4012 else/pz2coeff;
@@ -603,7 +603,7 @@ width float bordercolor;
 #X connect 11 0 12 0;
 #X coords 0 -1 1 1 94 60 2 100 100;
 #X restore 361 12 pd;
-#X obj 53 255 else/bin.shift~;
+#X obj 53 225 else/bin.shift~;
 #X obj 166 50 cnv 15 120 28 empty \$0-version 1.0-0\ beta-45 8 14 0
 14 #e0e0e0 #404040 0;
 #X obj 90 50 cnv 15 80 28 empty empty Version: 8 14 0 14 #e0e0e0 #404040
