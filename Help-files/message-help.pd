@@ -64,10 +64,10 @@ message in different ones inside the same box.;
 #000000;
 #X msg 125 346 \\\; \\\$0-f 8;
 #X obj 247 375 r \$0-f;
-#X text 86 303 You can use '' to escape comm \, semicolons and dollar
-signs., f 31;
 #X text 64 163 It can also deal with semicolons \, which turn the message
 box into a send object., f 40;
+#X text 86 303 You can use backslashes to escape commas \, semicolons
+and dollar signs., f 37;
 #X connect 1 0 4 0;
 #X connect 3 0 7 0;
 #X connect 4 0 2 0;
