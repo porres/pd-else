@@ -61,18 +61,18 @@ with this.;
 #X obj 140 175 else/display;
 #X obj 140 121 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X obj 140 147 else/canvas.wname;
 #X obj 140 217 else/receiver;
 #X obj 140 94 loadbang;
 #X obj 140 248 print canvas-messages;
 #X text 76 32 The '-w' flag gives the 'window' name instead and drops
 the '.c' at the end of the name. We use this here to receive messages
 sent to the window., f 51;
-#X connect 0 0 3 0;
-#X connect 1 0 2 0;
-#X connect 2 0 0 0;
-#X connect 3 0 5 0;
-#X connect 4 0 1 0;
+#X obj 140 147 else/canvas.name -w;
+#X connect 0 0 2 0;
+#X connect 1 0 6 0;
+#X connect 2 0 4 0;
+#X connect 3 0 1 0;
+#X connect 6 0 0 0;
 #X restore 489 171 pd -w;
 #X text 166 328 '-env' - sets depth to "environment" mode;
 #N canvas 796 177 502 408 depth/-env 0;
