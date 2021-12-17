@@ -1,11 +1,11 @@
-#N struct 4722-cell float x float y float cellsize float color;
-#N struct 4723-point float x0 float y0 float xs float ys float fg float
+#N struct 4825-cell float x float y float cellsize float color;
+#N struct 4826-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 4742-point float x0 float y0 float size float fg float in
+#N struct 4845-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 4781-slot float x float y float slotsize float color float
+#N struct 4884-slot float x float y float slotsize float color float
 width float bordercolor;
-#N canvas 733 23 541 769 10;
+#N canvas 733 23 532 670 10;
 #X text 53 106 Assorted:;
 #X text 53 175 FFT:;
 #X text 51 2473 MIDI:;
@@ -23,10 +23,10 @@ width float bordercolor;
 #X text 53 660 Patch/subpatch management:;
 #X text 50 1723 Message management:;
 #X text 48 2397 File management:;
-#X text 57 11607 GUI:;
-#X text 19 11670 =============================================================================
+#X text 57 11631 GUI:;
+#X text 19 11694 =============================================================================
 , f 77;
-#X text 19 11581 =============================================================================
+#X text 19 11605 =============================================================================
 , f 77;
 #X text 19 11214 =============================================================================
 , f 77;
@@ -434,12 +434,12 @@ width float bordercolor;
 #X obj 56 11342 else/lastvalue;
 #X obj 56 11367 else/median~;
 #X obj 56 11392 else/range;
-#X obj 56 11419 else/range~;
-#X obj 56 11444 else/peak~;
-#X obj 56 11469 else/rms~;
-#X obj 56 11495 else/mov.rms~;
-#X obj 56 11521 else/vu~;
-#X obj 56 11547 else/zerocross~;
+#X obj 56 11443 else/range~;
+#X obj 56 11468 else/peak~;
+#X obj 56 11493 else/rms~;
+#X obj 56 11519 else/mov.rms~;
+#X obj 56 11545 else/vu~;
+#X obj 56 11571 else/zerocross~;
 #X obj 53 811 else/retrieve;
 #X obj 51 3371 else/trunc~;
 #X obj 50 1543 else/morph;
@@ -568,7 +568,7 @@ width float bordercolor;
 #X text 590 1484 multi.vsl =>;
 #X obj 61 1200 else/zbiplot;
 #X text 71 1173 [else/zbiplot];
-#X restore 62 11636 pd GUI;
+#X restore 62 11660 pd GUI;
 #X obj 389 40 switch~;
 #X obj 389 24 r \$0-s;
 #X obj 45 11 cnv 30 279 30 empty empty ALL\\\ OBJECTS\\\ IN\\\ THE\\\ ELSE\\\ LIBRARY:
@@ -612,4 +612,5 @@ width float bordercolor;
 #A saved;
 #X obj 51 2841 else/midi.clock;
 #X obj 51 10669 else/clock;
+#X obj 56 11417 else/tap;
 #X connect 453 0 452 0;
