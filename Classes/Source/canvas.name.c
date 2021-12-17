@@ -34,8 +34,8 @@ static void *canvas_name_new(t_symbol *s, int ac, t_atom *av){
     }
     if(env){
         canvas = canvas_getrootfor(canvas_getcurrent());
-        while(depth-- && canvas->gl_env)
-        canvas = canvas_getrootfor(canvas->gl_owner);
+        while(depth-- && canvas->gl_owner)
+            canvas = canvas_getrootfor(canvas->gl_owner);
     }
     else{
         canvas = canvas_getcurrent();
