@@ -215,6 +215,10 @@ static void metronome_start(t_metronome *x){
     x->x_barcount = x->x_tempocount = x->x_tickcount = 0;
 //    if(!x->x_running){
 //        x->x_running = 1;
+    if(x->x_s_name->s_thing){
+            t_atom at[0];
+            typedmess(x->x_s_name->s_thing, gensym("resync"), 0, at);
+        }
         metronome_float(x, 1);
 //    }
 }
