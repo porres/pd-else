@@ -356,7 +356,7 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
     x->x_n_tempo = 4;
     x->x_tempo_fig = 4;
     x->x_n_subdiv = 1;
-    t_float tempo = 0;
+    t_float tempo = 120;
     if(ac >= 2 && av->a_type == A_SYMBOL){
         t_symbol *sym = atom_getsymbolarg(0, ac, av);
         if(sym == gensym("-name")){
