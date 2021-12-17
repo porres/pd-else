@@ -1,13 +1,13 @@
-#N canvas 789 133 648 648 12;
+#N canvas 565 110 660 613 12;
 #X declare -path else;
 #X obj 347 20 declare -path else;
-#X obj 73 46 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
+#X obj 73 43 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
 0 1;
 #X obj 106 265 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X floatatom 313 180 4 0 0 0 - - - 12;
 #X floatatom 313 237 4 0 0 0 - - - 12;
-#X text 72 264 beat bang, f 4;
+#X text 70 261 beat bang, f 4;
 #X obj 206 523 else/out~;
 #X obj 206 405 impseq~;
 #X obj 94 405 impseq~;
@@ -19,9 +19,9 @@
 #X floatatom 271 294 7 0 0 0 - - - 12;
 #X obj 230 337 sel 1, f 3;
 #X text 234 290 sub div, f 3;
-#X msg 148 122 timesig 7/8;
-#X msg 133 95 timesig 6/8;
-#X msg 106 47 timesig 15/8 3;
+#X msg 144 121 timesig 7/8;
+#X msg 132 95 timesig 6/8;
+#X msg 106 44 timesig 15/8 3;
 #X obj 188 265 else/display 3;
 #X obj 147 265 else/display 3;
 #X obj 230 265 else/display 3;
@@ -30,10 +30,10 @@
 #X text 314 157 tempo;
 #X obj 316 439 else/resonant~ 1000 100, f 14;
 #X obj 206 439 else/resonant~ 600 100, f 14;
-#X msg 163 148 timesig 4/4;
-#X msg 175 173 timesig 3/4;
+#X msg 154 146 timesig 4/4;
+#X msg 169 170 timesig 3/4;
 #X obj 106 211 else/metronome 90, f 30;
-#X msg 117 69 timesig 15/8 5;
+#X msg 119 69 timesig 15/8 5;
 #X text 349 240 frames (0-960);
 #X text 327 295 phase (0-1);
 #X obj 316 378 bang;
@@ -42,6 +42,15 @@
 It is here because you can use the bar count to fire a sequence with
 select. Or select a specific beat in a bar \, kind of like a timeline
 in a DAW (hint \, hint)., f 47;
+#X obj 487 333 clock -s 1.5;
+#X obj 469 431 else/out~;
+#X obj 469 396 *~;
+#X obj 487 304 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
+#X obj 429 363 brown~;
+#X obj 487 363 decay~ 300;
+#X text 436 505 The [clock] object can also sync to [metronome] objects.
+Check its help file., f 24;
 #X connect 1 0 29 0;
 #X connect 3 0 29 1;
 #X connect 7 0 26 0;
@@ -70,3 +79,8 @@ in a DAW (hint \, hint)., f 47;
 #X connect 30 0 29 0;
 #X connect 33 0 9 0;
 #X connect 34 0 7 0;
+#X connect 36 0 41 0;
+#X connect 38 0 37 0;
+#X connect 39 0 36 0;
+#X connect 40 0 38 0;
+#X connect 41 0 38 1;

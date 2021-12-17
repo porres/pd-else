@@ -40,11 +40,11 @@ See the help file of the object., f 87;
 #X obj 103 364 clock 60;
 #X obj 213 364 clock -s 2;
 #X obj 302 364 clock -s 3/2;
-#X obj 508 489 tap;
-#X obj 508 452 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#X obj 526 393 tap;
+#X obj 526 356 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X floatatom 508 525 7 0 0 0 - - - 0;
-#X text 444 387 See also the [tap] object that can set a tempo from
+#X floatatom 526 429 7 0 0 0 - - - 0;
+#X text 462 291 See also the [tap] object that can set a tempo from
 "tapping" on a bang., f 25;
 #X obj 103 421 impseq~;
 #X obj 213 421 impseq~;
@@ -53,6 +53,8 @@ See the help file of the object., f 87;
 #X obj 213 458 resonant~ 1050 200, f 9;
 #X obj 103 497 drive~ 5;
 #X obj 103 451 resonant~ 450 300, f 9;
+#X text 442 493 This object also syncs with [metronome] objects as
+we'll see later in the section on sequencers., f 25;
 #X connect 1 0 22 0;
 #X connect 2 0 22 1;
 #X connect 4 0 22 0;
