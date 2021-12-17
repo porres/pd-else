@@ -208,13 +208,13 @@ static void metronome_stop(t_metronome *x){
     metronome_rewind(x);
 }
 
-static void metronome_pause(t_metronome *x){
+/*static void metronome_pause(t_metronome *x){
     metronome_float(x, 0);
 }
 
 static void metronome_play(t_metronome *x){
     metronome_float(x, 1);
-}
+}*/
 
 static void metronome_timesig(t_metronome *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
@@ -271,6 +271,8 @@ static void metronome_timesig(t_metronome *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void metronome_tempo(t_metronome *x, t_floatarg tempo){
+    if(tempo < 0) // avoid negative tempo for now
+        tempo = 0;
     if(tempo != 0){
         if(x->x_freeze){
             x->x_freeze = 0;
@@ -311,11 +313,12 @@ static void metronome_free(t_metronome *x){
     clock_free(x->x_clock);
 }
 
-static void *metronome_new(t_floatarg tempo){
+static void *metronome_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_metronome *x = (t_metronome *)pd_new(metronome_class);
     x->x_clock = clock_new(x, (t_method)metronome_tick);
     x->x_sig = NULL;
-    x->x_dir = tempo >= 0;
+    x->x_dir = 1;
     x->x_ticks = DEFNTICKS;
     x->x_tickcount = 0;
     x->x_tempo_div = 1;
@@ -325,7 +328,46 @@ static void *metronome_new(t_floatarg tempo){
     x->x_n_tempo = 4;
     x->x_tempo_fig = 4;
     x->x_n_subdiv = 1;
+    t_float tempo = 0;
+    if(ac > 0){
+        if(av->a_type == A_FLOAT){
+            tempo = atom_getfloatarg(0, ac, av);
+            ac--, av++;
+        }
+        else
+            goto next;
+    next:
+        if(ac > 0){
+            if(ac == 1){
+                t_atom at[1];
+                if(av->a_type == A_SYMBOL){
+                    SETSYMBOL(at, atom_getsymbolarg(0, ac, av));
+                    ac--, av++;
+                    metronome_timesig(x, gensym("timesig"), 1, at);
+                }
+                else
+                    goto errstate;
+            }
+            else{
+                t_atom at[2];
+                if(av->a_type == A_SYMBOL){
+                    SETSYMBOL(at, atom_getsymbolarg(0, ac, av));
+                    ac--, av++;
+                    if(av->a_type == A_FLOAT){
+                        SETFLOAT(at+1, atom_getfloatarg(0, ac, av));
+                        ac--, av++;
+                    }
+                    else
+                        goto errstate;
+                    metronome_timesig(x, gensym("timesig"), 2, at);
+                }
+                else
+                    goto errstate;
+            }
+        }
+    }
     metronome_tempo(x, tempo);
+    metronome_stop(x);
     outlet_new(&x->x_obj, gensym("bang"));
     x->x_barout = outlet_new((t_object *)x, gensym("float"));
     x->x_tempoout = outlet_new((t_object *)x, gensym("float"));
@@ -334,14 +376,17 @@ static void *metronome_new(t_floatarg tempo){
     x->x_tickout = outlet_new((t_object *)x, gensym("float"));
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("tempo"));
     return(x);
+    errstate:
+        pd_error(x, "[metronome]: improper args");
+        return(NULL);
 }
 
 void metronome_setup(void){
-    metronome_class = class_new(gensym("metronome"), (t_newmethod)metronome_new, (t_method)metronome_free, sizeof(t_metronome), 0, A_DEFFLOAT, 0);
+    metronome_class = class_new(gensym("metronome"), (t_newmethod)metronome_new, (t_method)metronome_free, sizeof(t_metronome), 0, A_GIMME, 0);
     class_addfloat(metronome_class, (t_method)metronome_float);
     class_addbang(metronome_class, (t_method)metronome_start);
     class_addmethod(metronome_class, (t_method)metronome_timesig, gensym("timesig"), A_GIMME, 0);
-//    class_addmethod(metronome_class, (t_method)metronome_tempo, gensym("tempo"), A_FLOAT, 0);
+    class_addmethod(metronome_class, (t_method)metronome_tempo, gensym("tempo"), A_FLOAT, 0);
 //    class_addmethod(metronome_class, (t_method)metronome_pause, gensym("pause"), 0);
 //    class_addmethod(metronome_class, (t_method)metronome_play, gensym("play"), 0);
     class_addmethod(metronome_class, (t_method)metronome_stop, gensym("stop"), 0);

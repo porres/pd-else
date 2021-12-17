@@ -1,54 +1,54 @@
-#N canvas 912 33 561 571 10;
-#X obj 4 259 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 378 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 512 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 603 23 562 621 10;
+#X obj 4 259 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 76 387 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 77 266 cnv 17 3 85 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 4 544 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 392 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 194 174 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 4 526 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 76 401 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 77 266 cnv 17 3 98 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 4 592 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 194 174 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 166 265 bang;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
 #X obj 23 40 cnv 4 4 4 empty empty High\\\ level\\\ metronome 0 28
-2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+2 18 #e0e0e0 #000000 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X obj 333 178 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 3 3 cnv 15 301 42 empty empty metronome 20 20 2 37 -233017 -1
+#dcdcdc #000000 #000000 0 256;
+#X obj 3 3 cnv 15 301 42 empty empty metrnome 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 180 142 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 180 142 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
 #X text 200 143 start/continue \, pause;
 #X text 375 178 tempo;
-#X obj 180 230 bng 18 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X floatatom 210 230 3 0 0 0 - - -;
-#X floatatom 302 230 4 0 0 0 - - -;
-#X floatatom 333 230 4 0 0 0 - - -;
+#X obj 180 230 bng 18 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X floatatom 210 230 3 0 0 0 - - - 0;
+#X floatatom 302 230 4 0 0 0 - - - 0;
+#X floatatom 333 230 4 0 0 0 - - - 0;
 #X text 213 176 (re)start;
 #X text 160 293 float;
 #X text 196 293 - non-zero starts or continues \, zero stops, f 47
@@ -61,43 +61,41 @@
 #X text 94 335 timesig <sym \, f>;
 #X text 196 335 - set time signature symbol and group value, f 47
 ;
-#X text 160 356 float;
-#X text 196 356 - tempo value in BPM;
-#X text 166 386 bang;
-#X text 196 386 - bang at every beat, f 47;
-#X text 160 407 float;
-#X text 196 407 - bar count, f 47;
-#X text 196 429 - beat count, f 47;
-#X text 196 448 - sub-beat count, f 47;
-#X text 160 429 float;
-#X text 160 448 float;
-#X text 160 468 float;
-#X text 160 488 float;
-#X text 172 521 1) float - tempo (default 0);
-#X obj 76 356 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X text 160 370 float;
+#X text 166 400 bang;
+#X text 196 400 - bang at every beat, f 47;
+#X text 160 421 float;
+#X text 196 421 - bar count, f 47;
+#X text 196 443 - beat count, f 47;
+#X text 196 462 - sub-beat count, f 47;
+#X text 160 443 float;
+#X text 160 462 float;
+#X text 160 482 float;
+#X text 160 502 float;
+#X obj 76 370 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 407 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 76 421 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 427 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 76 441 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 447 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 76 461 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 467 cnv 17 3 17 empty empty 4 5 9 0 16 -228856 -162280 0
+#X obj 76 481 cnv 17 3 17 empty empty 4 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 487 cnv 17 3 17 empty empty 5 5 9 0 16 -228856 -162280 0
+#X obj 76 501 cnv 17 3 17 empty empty 5 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X msg 90 174 rewind;
 #N canvas 1035 188 548 363 time-sig 0;
 #X msg 176 244 timesig 7/8;
 #X msg 151 196 timesig 6/8;
 #X msg 140 171 timesig 15/8 3;
-#X obj 140 305 bng 18 250 50 0 empty empty empty 17 7 0 10 -262144
--1 -1;
-#X floatatom 170 308 2 0 0 0 - - -;
-#X floatatom 201 308 2 0 0 0 - - -;
-#X floatatom 231 308 2 0 0 0 - - -;
-#X floatatom 262 308 4 0 0 0 - - -;
-#X floatatom 293 308 4 0 0 0 - - -;
+#X obj 140 305 bng 18 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X floatatom 170 308 2 0 0 0 - - - 0;
+#X floatatom 201 308 2 0 0 0 - - - 0;
+#X floatatom 231 308 2 0 0 0 - - - 0;
+#X floatatom 262 308 4 0 0 0 - - - 0;
+#X floatatom 293 308 4 0 0 0 - - - 0;
 #X msg 161 218 timesig 12/8;
 #X msg 115 149 timesig 15/8 5;
 #X text 209 149 15/8 grouped in 5 groups (3 sub-beats each);
@@ -129,17 +127,17 @@ is \, respectively \, 2 \, 3 and 4 \, see examples below., f 65;
 #X connect 19 4 7 0;
 #X connect 19 5 8 0;
 #X restore 467 197 pd time-sig;
-#X text 196 468 - beat phase output (0-1), f 47;
-#X text 196 488 - beat frame output (0-960), f 47;
-#X floatatom 241 230 3 0 0 0 - - -;
-#X floatatom 271 230 3 0 0 0 - - -;
+#X text 196 482 - beat phase output (0-1), f 47;
+#X text 196 502 - beat frame output (0-960), f 47;
+#X floatatom 241 230 3 0 0 0 - - - 0;
+#X floatatom 271 230 3 0 0 0 - - - 0;
 #N canvas 834 122 488 587 example 0;
-#X obj 77 30 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
-;
-#X obj 110 249 bng 22 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X floatatom 299 164 4 0 0 0 - - -;
-#X floatatom 299 221 4 0 0 0 - - -;
+#X obj 77 30 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
+0 1;
+#X obj 110 249 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X floatatom 299 164 4 0 0 0 - - - 12;
+#X floatatom 299 221 4 0 0 0 - - - 12;
 #X text 76 248 beat bang, f 4;
 #X obj 212 507 else/out~;
 #X obj 212 389 impseq~;
@@ -147,9 +145,9 @@ is \, respectively \, 2 \, 3 and 4 \, see examples below., f 65;
 #X obj 310 389 impseq~;
 #X obj 110 423 else/resonant~ 1700 100, f 14;
 #X obj 185 331 sel 1;
-#X obj 264 251 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 261 278 7 0 0 0 - - -;
+#X obj 264 251 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 261 278 7 0 0 0 - - - 12;
 #X obj 223 331 sel 1;
 #X text 227 274 sub div, f 3;
 #X msg 152 106 timesig 7/8;
@@ -165,41 +163,41 @@ is \, respectively \, 2 \, 3 and 4 \, see examples below., f 65;
 #X obj 212 423 else/resonant~ 600 100, f 14;
 #X msg 167 132 timesig 4/4;
 #X msg 179 157 timesig 3/4;
-#X obj 110 195 else/metronome 90, f 32;
 #X msg 121 53 timesig 15/8 5;
 #X text 335 224 frames (0-960);
 #X text 317 279 phase (0-1);
 #X text 270 62 An example on how to set a [metronome], f 21;
 #X obj 310 362 bang;
 #X obj 212 362 bang;
-#X connect 0 0 28 0;
-#X connect 2 0 28 1;
+#X obj 110 195 else/metronome 90, f 32;
+#X connect 0 0 34 0;
+#X connect 2 0 34 1;
 #X connect 6 0 25 0;
 #X connect 7 0 9 0;
 #X connect 8 0 24 0;
 #X connect 9 0 5 0;
 #X connect 10 0 7 0;
-#X connect 10 1 34 0;
+#X connect 10 1 33 0;
 #X connect 11 0 12 0;
-#X connect 13 1 33 0;
-#X connect 15 0 28 0;
-#X connect 16 0 28 0;
-#X connect 17 0 28 0;
+#X connect 13 1 32 0;
+#X connect 15 0 34 0;
+#X connect 16 0 34 0;
+#X connect 17 0 34 0;
 #X connect 18 0 10 0;
 #X connect 20 0 13 0;
 #X connect 24 0 5 0;
 #X connect 25 0 5 0;
-#X connect 26 0 28 0;
-#X connect 27 0 28 0;
-#X connect 28 0 1 0;
-#X connect 28 1 19 0;
-#X connect 28 2 18 0;
-#X connect 28 3 20 0;
-#X connect 28 4 11 0;
-#X connect 28 5 3 0;
-#X connect 29 0 28 0;
-#X connect 33 0 8 0;
-#X connect 34 0 6 0;
+#X connect 26 0 34 0;
+#X connect 27 0 34 0;
+#X connect 28 0 34 0;
+#X connect 32 0 8 0;
+#X connect 33 0 6 0;
+#X connect 34 0 1 0;
+#X connect 34 1 19 0;
+#X connect 34 2 18 0;
+#X connect 34 3 20 0;
+#X connect 34 4 11 0;
+#X connect 34 5 3 0;
 #X restore 474 220 pd example;
 #X obj 180 204 else/metronome 60, f 26;
 #X text 71 88 [metronome] is a high level metronome that understands
@@ -209,14 +207,20 @@ count \, phase and frame output.;
 #X text 196 265 - start or restart metronome, f 47;
 #X text 196 279 - same as bang (start or restart metronome), f 47
 ;
-#X connect 6 0 63 0;
-#X connect 17 0 63 1;
-#X connect 20 0 63 0;
-#X connect 32 0 63 0;
-#X connect 56 0 63 0;
-#X connect 63 0 23 0;
-#X connect 63 1 24 0;
-#X connect 63 2 60 0;
-#X connect 63 3 61 0;
-#X connect 63 4 25 0;
-#X connect 63 5 26 0;
+#X text 112 349 tempo <float>;
+#X text 196 349 - set tempo value in BPM, f 47;
+#X text 196 370 - set tempo value in BPM;
+#X text 152 535 1) float - (optional) tempo in BPM (default 0);
+#X text 146 551 2) symbol - time signature (default 4/4), f 47;
+#X text 152 567 3) float - group value (default 1);
+#X connect 6 0 61 0;
+#X connect 17 0 61 1;
+#X connect 20 0 61 0;
+#X connect 32 0 61 0;
+#X connect 54 0 61 0;
+#X connect 61 0 23 0;
+#X connect 61 1 24 0;
+#X connect 61 2 58 0;
+#X connect 61 3 59 0;
+#X connect 61 4 25 0;
+#X connect 61 5 26 0;
