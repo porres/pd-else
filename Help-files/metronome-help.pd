@@ -35,7 +35,7 @@
 0;
 #X obj 333 178 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X obj 3 3 cnv 15 301 42 empty empty metrnome 20 20 2 37 #e0e0e0 #000000
+#X obj 3 3 cnv 15 301 42 empty empty metronome 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
