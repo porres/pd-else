@@ -1,4 +1,4 @@
-#N canvas 603 23 562 624 10;
+#N canvas 603 23 562 625 10;
 #X obj 4 259 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 380 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -79,7 +79,7 @@
 ;
 #X obj 76 489 cnv 17 3 17 empty empty 5 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#N canvas 1035 188 548 363 time-sig 0;
+#N canvas 812 94 583 414 time-sig 0;
 #X msg 176 244 timesig 7/8;
 #X msg 151 196 timesig 6/8;
 #X msg 140 171 timesig 15/8 3;
@@ -107,6 +107,8 @@ number of sub-beats)., f 65;
 #X text 77 61 Group makes sense for compound time signatures. By default
 \, the group number is 1 \, but for 6/8 \, 9/8 and 12/8 the default
 is \, respectively \, 2 \, 3 and 4 \, see examples below., f 65;
+#X text 112 350 Nte how the tempo depends on the grouping of sub beats.
+So 3/4 does not have the same tempo duration as 6/8!, f 56;
 #X connect 0 0 19 0;
 #X connect 1 0 19 0;
 #X connect 2 0 19 0;
@@ -125,7 +127,7 @@ is \, respectively \, 2 \, 3 and 4 \, see examples below., f 65;
 #X text 196 490 - beat frame output (0-960), f 47;
 #X floatatom 241 230 3 0 0 0 - - - 0;
 #X floatatom 271 230 3 0 0 0 - - - 0;
-#N canvas 834 122 488 587 example 0;
+#N canvas 786 128 488 587 example 0;
 #X obj 77 30 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
 0 1;
 #X obj 110 249 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
@@ -160,17 +162,18 @@ is \, respectively \, 2 \, 3 and 4 \, see examples below., f 65;
 #X msg 121 53 timesig 15/8 5;
 #X text 335 224 frames (0-960);
 #X text 317 279 phase (0-1);
-#X text 270 62 An example on how to set a [metronome], f 21;
+#X text 280 31 An example on how to set a [metronome], f 21;
 #X obj 310 362 bang;
 #X obj 212 362 bang;
-#X obj 110 195 else/metronome 90, f 32;
-#X msg 299 117 0;
-#X obj 311 141 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X msg 299 88 0;
+#X obj 321 140 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X text 329 116 pause;
-#X text 329 142 unpause;
-#X connect 0 0 34 0;
-#X connect 2 0 34 1;
+#X text 329 87 pause;
+#X text 341 139 unpause;
+#X obj 110 195 else/metronome, f 32;
+#X obj 311 116 else/initmess 90;
+#X connect 0 0 38 0;
+#X connect 2 0 38 1;
 #X connect 6 0 25 0;
 #X connect 7 0 9 0;
 #X connect 8 0 24 0;
@@ -179,26 +182,27 @@ is \, respectively \, 2 \, 3 and 4 \, see examples below., f 65;
 #X connect 10 1 33 0;
 #X connect 11 0 12 0;
 #X connect 13 1 32 0;
-#X connect 15 0 34 0;
-#X connect 16 0 34 0;
-#X connect 17 0 34 0;
+#X connect 15 0 38 0;
+#X connect 16 0 38 0;
+#X connect 17 0 38 0;
 #X connect 18 0 10 0;
 #X connect 20 0 13 0;
 #X connect 24 0 5 0;
 #X connect 25 0 5 0;
-#X connect 26 0 34 0;
-#X connect 27 0 34 0;
-#X connect 28 0 34 0;
+#X connect 26 0 38 0;
+#X connect 27 0 38 0;
+#X connect 28 0 38 0;
 #X connect 32 0 8 0;
 #X connect 33 0 6 0;
-#X connect 34 0 1 0;
-#X connect 34 1 19 0;
-#X connect 34 2 18 0;
-#X connect 34 3 20 0;
-#X connect 34 4 11 0;
-#X connect 34 5 3 0;
-#X connect 35 0 34 1;
-#X connect 36 0 2 0;
+#X connect 34 0 38 1;
+#X connect 35 0 2 0;
+#X connect 38 0 1 0;
+#X connect 38 1 19 0;
+#X connect 38 2 18 0;
+#X connect 38 3 20 0;
+#X connect 38 4 11 0;
+#X connect 38 5 3 0;
+#X connect 39 0 2 0;
 #X restore 473 200 pd example;
 #X obj 180 204 else/metronome 60, f 26;
 #X text 160 279 start;
@@ -217,7 +221,7 @@ is \, respectively \, 2 \, 3 and 4 \, see examples below., f 65;
 time signatures and outputs lots of data like bar \, beat and sub-beat
 count \, phase and frame output. It can also sync to [clock] objects.
 , f 71;
-#N canvas 270 258 856 592 clock 1;
+#N canvas 592 118 856 592 clock 0;
 #X obj 77 30 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
 0 1;
 #X obj 110 249 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
@@ -239,22 +243,16 @@ count \, phase and frame output. It can also sync to [clock] objects.
 #X obj 223 249 else/display 3;
 #X text 191 279 beat;
 #X text 148 279 bar;
-#X text 300 141 tempo;
 #X msg 167 132 timesig 4/4;
 #X msg 179 157 timesig 3/4;
 #X msg 121 53 timesig 15/8 5;
 #X text 335 224 frames (0-960);
 #X text 317 279 phase (0-1);
-#X text 270 62 An example on how to set a [metronome], f 21;
 #X obj 110 195 else/metronome 90, f 32;
 #X obj 213 365 else/clock -s 2;
-#X obj 213 341 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
 #X obj 110 423 else/resonant~ 700 100, f 14;
 #X obj 213 421 impseq~;
 #X obj 213 448 else/resonant~ 1300 100, f 14;
-#X obj 213 392 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
 #X obj 483 39 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X obj 516 258 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
@@ -282,82 +280,91 @@ count \, phase and frame output. It can also sync to [clock] objects.
 #X msg 527 62 timesig 15/8 5;
 #X text 741 233 frames (0-960);
 #X text 723 288 phase (0-1);
-#X text 676 71 An example on how to set a [metronome], f 21;
-#X obj 619 350 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X obj 619 340 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
 #X obj 516 432 else/resonant~ 700 100, f 14;
 #X obj 619 430 impseq~;
 #X obj 619 457 else/resonant~ 1300 100, f 14;
-#X obj 619 401 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X obj 619 401 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
 #X obj 516 204 else/metronome -name \$0-clock 90;
 #X obj 619 374 else/clock \$0-clock -s 2;
 #X msg 300 334 1.5;
 #X msg 269 334 2;
 #X msg 332 334 0.5;
-#X msg 280 122 0;
-#X obj 318 184 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X text 270 62 Example of [clock] objects in sync., f 19;
+#X text 672 58 A [metronome] can also have a clock name with the '-name'
+flag., f 22;
+#X obj 213 335 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
+#X obj 213 392 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X obj 330 407 bng 80 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X obj 402 356 metro;
-#X connect 0 0 25 0;
+#X msg 760 344 1.5;
+#X msg 729 344 2;
+#X msg 792 344 0.5;
+#X text 548 341 turn on =>;
+#X text 143 337 turn on =>;
+#X text 441 34 turn on =>, f 5;
+#X text 35 26 turn on =>, f 5;
+#X connect 0 0 23 0;
 #X connect 1 0 6 0;
-#X connect 2 0 25 1;
-#X connect 6 0 28 0;
+#X connect 2 0 23 1;
+#X connect 6 0 25 0;
 #X connect 7 0 8 0;
-#X connect 10 0 25 0;
-#X connect 11 0 25 0;
-#X connect 12 0 25 0;
-#X connect 19 0 25 0;
-#X connect 20 0 25 0;
-#X connect 21 0 25 0;
-#X connect 25 0 1 0;
-#X connect 25 1 14 0;
-#X connect 25 2 13 0;
-#X connect 25 3 15 0;
-#X connect 25 4 7 0;
-#X connect 25 5 3 0;
-#X connect 26 0 31 0;
-#X connect 26 0 69 0;
-#X connect 27 0 26 0;
-#X connect 28 0 5 0;
-#X connect 29 0 30 0;
-#X connect 30 0 5 1;
-#X connect 31 0 29 0;
-#X connect 32 0 62 0;
-#X connect 33 0 38 0;
-#X connect 34 0 62 1;
-#X connect 38 0 58 0;
-#X connect 39 0 40 0;
-#X connect 42 0 62 0;
-#X connect 43 0 62 0;
-#X connect 44 0 62 0;
-#X connect 51 0 62 0;
-#X connect 52 0 62 0;
-#X connect 53 0 62 0;
-#X connect 57 0 63 0;
-#X connect 58 0 37 0;
-#X connect 59 0 60 0;
-#X connect 60 0 37 1;
-#X connect 61 0 59 0;
-#X connect 62 0 33 0;
-#X connect 62 1 46 0;
-#X connect 62 2 45 0;
-#X connect 62 3 47 0;
-#X connect 62 4 39 0;
-#X connect 62 5 35 0;
-#X connect 63 0 61 0;
-#X connect 64 0 26 1;
-#X connect 65 0 26 1;
-#X connect 66 0 26 1;
-#X connect 67 0 25 1;
-#X connect 68 0 2 0;
+#X connect 10 0 23 0;
+#X connect 11 0 23 0;
+#X connect 12 0 23 0;
+#X connect 18 0 23 0;
+#X connect 19 0 23 0;
+#X connect 20 0 23 0;
+#X connect 23 0 1 0;
+#X connect 23 1 14 0;
+#X connect 23 2 13 0;
+#X connect 23 3 15 0;
+#X connect 23 4 7 0;
+#X connect 23 5 3 0;
+#X connect 24 0 65 0;
+#X connect 25 0 5 0;
+#X connect 26 0 27 0;
+#X connect 27 0 5 1;
+#X connect 28 0 57 0;
+#X connect 29 0 34 0;
+#X connect 30 0 57 1;
+#X connect 34 0 53 0;
+#X connect 35 0 36 0;
+#X connect 38 0 57 0;
+#X connect 39 0 57 0;
+#X connect 40 0 57 0;
+#X connect 47 0 57 0;
+#X connect 48 0 57 0;
+#X connect 49 0 57 0;
+#X connect 52 0 58 0;
+#X connect 53 0 33 0;
+#X connect 54 0 55 0;
+#X connect 55 0 33 1;
+#X connect 56 0 54 0;
+#X connect 57 0 29 0;
+#X connect 57 1 42 0;
+#X connect 57 2 41 0;
+#X connect 57 3 43 0;
+#X connect 57 4 35 0;
+#X connect 57 5 31 0;
+#X connect 58 0 56 0;
+#X connect 59 0 24 1;
+#X connect 60 0 24 1;
+#X connect 61 0 24 1;
+#X connect 64 0 24 0;
+#X connect 65 0 26 0;
+#X connect 66 0 58 1;
+#X connect 67 0 58 1;
+#X connect 68 0 58 1;
 #X restore 485 222 pd clock;
 #X text 152 547 1) float - (optional) tempo in BPM (default 120),
 f 49;
 #X text 196 308 - stop and rewind, f 47;
 #X text 196 293 - non-zero (re)starts \, zero stops, f 47;
+#X text 42 201 see also:;
+#X obj 42 220 else/clock;
 #X connect 6 0 56 0;
 #X connect 17 0 56 1;
 #X connect 20 0 56 0;
