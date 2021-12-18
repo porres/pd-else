@@ -1,14 +1,14 @@
-#N struct 4722-cell float x float y float cellsize float color;
-#N struct 4723-point float x0 float y0 float xs float ys float fg float
+#N struct 4821-cell float x float y float cellsize float color;
+#N struct 4822-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 4742-point float x0 float y0 float size float fg float in
+#N struct 4841-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 4781-slot float x float y float slotsize float color float
+#N struct 4880-slot float x float y float slotsize float color float
 width float bordercolor;
-#N canvas 733 23 541 769 10;
+#N canvas 733 23 532 670 10;
 #X declare -path else;
 #X text 53 106 Assorted:;
-#X text 53 205 FFT:;
+#X text 53 175 FFT:;
 #X text 51 2473 MIDI:;
 #X text 51 2992 Math functions:;
 #X text 51 3810 Math (conversion):;
@@ -21,13 +21,13 @@ width float bordercolor;
 #X text 46 8641 Signal Routing:;
 #X text 52 9031 Control:;
 #X text 51 10335 Triggers:;
-#X text 53 690 Patch/subpatch management:;
+#X text 53 660 Patch/subpatch management:;
 #X text 50 1723 Message management:;
 #X text 48 2397 File management:;
-#X text 57 11607 GUI:;
-#X text 19 11670 =============================================================================
+#X text 57 11631 GUI:;
+#X text 19 11694 =============================================================================
 , f 77;
-#X text 19 11581 =============================================================================
+#X text 19 11605 =============================================================================
 , f 77;
 #X text 19 11214 =============================================================================
 , f 77;
@@ -65,9 +65,9 @@ width float bordercolor;
 , f 77;
 #X text 27 1705 =============================================================================
 , f 77;
-#X text 27 281 =============================================================================
+#X text 27 251 =============================================================================
 , f 77;
-#X text 27 185 =============================================================================
+#X text 27 155 =============================================================================
 , f 77;
 #X text 26 83 =============================================================================
 , f 77;
@@ -83,28 +83,28 @@ width float bordercolor;
 #X text 21 9887 =============================================================================
 , f 77;
 #X text 35 9912 Control Random:;
-#X text 27 669 =============================================================================
+#X text 27 639 =============================================================================
 , f 77;
 #X text 19 6930 =============================================================================
 , f 77;
 #X text 49 6954 Granular synthesys:;
-#X text 52 302 Tuning/scale tools:;
+#X text 52 272 Tuning/scale tools:;
 #X obj 54 133 else;
 #X obj 52 6584 table~;
-#X obj 53 158 meter;
+#X obj 52 709 meter;
 #X obj 50 9077 mouse;
 #X obj 49 9649 euclid;
-#X obj 53 229 hann~;
-#X obj 56 356 autotune;
-#X obj 56 379 autotune2;
-#X obj 56 401 retune;
-#X obj 56 422 eqdiv;
-#X obj 56 530 frac2dec;
-#X obj 56 554 frac2dec;
-#X obj 56 599 midi2freq;
-#X obj 56 622 note2pitch;
-#X obj 56 645 pitch2note;
-#X obj 53 714 args;
+#X obj 53 199 hann~;
+#X obj 56 326 autotune;
+#X obj 56 349 autotune2;
+#X obj 56 371 retune;
+#X obj 56 392 eqdiv;
+#X obj 56 500 frac2dec;
+#X obj 56 524 frac2dec;
+#X obj 56 569 midi2freq;
+#X obj 56 592 note2pitch;
+#X obj 56 615 pitch2note;
+#X obj 53 684 args;
 #X obj 53 761 blocksize~;
 #X obj 53 787 fontsize;
 #X obj 53 835 canvas.active;
@@ -435,12 +435,12 @@ width float bordercolor;
 #X obj 56 11342 lastvalue;
 #X obj 56 11367 median~;
 #X obj 56 11392 range;
-#X obj 56 11419 range~;
-#X obj 56 11444 peak~;
-#X obj 56 11469 rms~;
-#X obj 56 11495 mov.rms~;
-#X obj 56 11521 vu~;
-#X obj 56 11547 zerocross~;
+#X obj 56 11443 range~;
+#X obj 56 11468 peak~;
+#X obj 56 11493 rms~;
+#X obj 56 11519 mov.rms~;
+#X obj 56 11545 vu~;
+#X obj 56 11571 zerocross~;
 #X obj 53 811 retrieve;
 #X obj 51 3371 trunc~;
 #X obj 50 1543 morph;
@@ -455,19 +455,19 @@ width float bordercolor;
 #X obj 51 1661 amean;
 #X obj 52 1682 gmean;
 #X obj 51 5040 power~;
-#X obj 56 332 scales;
+#X obj 56 302 scales;
 #X obj 51 2266 pipe2;
 #X obj 51 9795 pimp;
 #X obj 51 9771 phasor;
-#X obj 56 486 cents2frac;
-#X obj 56 508 frac2cents;
+#X obj 56 456 cents2frac;
+#X obj 56 478 frac2cents;
 #X obj 51 9478 slew;
 #X obj 51 9501 slew2;
 #X obj 51 9528 slew~;
 #X obj 51 9551 slew2~;
 #X obj 51 1994 default;
-#X obj 56 443 scale2cents;
-#X obj 56 463 cents2scale;
+#X obj 56 413 scale2cents;
+#X obj 56 433 cents2scale;
 #X obj 51 1752 nmess;
 #X obj 50 9054 canvas.mouse;
 #X text 45 6545 Buffer/Sampling/Playing/Granulation:;
@@ -486,7 +486,7 @@ width float bordercolor;
 \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \; -empty- \;
 ;
 #X obj 49 9675 pattern;
-#X obj 56 576 freq2midi;
+#X obj 56 546 freq2midi;
 #X obj 51 4261 deg2rad;
 #X obj 51 4284 rad2deg;
 #X obj 51 4012 pz2coeff;
@@ -569,11 +569,42 @@ width float bordercolor;
 #X text 590 1484 multi.vsl =>;
 #X obj 61 1200 zbiplot;
 #X text 71 1173 [zbiplot];
-#X restore 62 11636 pd GUI;
-#X obj 391 52 switch~;
+#X restore 62 11660 pd GUI;
+#X obj 389 40 switch~;
+#X obj 389 24 r \$0-s;
 #X obj 45 11 cnv 30 279 30 empty empty ALL\\\ OBJECTS\\\ IN\\\ THE\\\ ELSE\\\ LIBRARY:
 12 15 0 14 #e0e0e0 #404040 0;
-#X obj 53 255 bin.shift~;
+#X obj 381 19 cnv 40 60 40 empty empty empty 20 12 0 14 #e0e0e0 #404040
+0;
+#N canvas 475 145 581 295 (subpatch) 0;
+#X obj 101 101 cnv 15 92 58 empty empty empty 20 12 0 14 #f9f9f9 #404040
+0;
+#X obj 33 62 meter;
+#X obj 105 108 tgl 20 0 \$0-s \$0-s empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
+#X msg 104 171 \; pd dsp \$1;
+#X obj 105 138 nbx 3 16 -1e+37 1e+37 0 0 \$0-x \$0-x empty 0 -8 0 14
+#fcfcfc #000000 #000000 0 256;
+#X obj 158 137 note 425 14 Menlo empty 0 255 50 85 1 255 50 85 0 0
+CPU;
+#X obj 132 110 note 425 12 Menlo empty 1 40 35 60 0 255 50 85 0 0 <-
+Test;
+#X obj 273 101 else;
+#X msg 272 54 version;
+#X obj 276 26 loadbang;
+#X obj 251 135 format symbol %d.%d-%d\ %s-%d;
+#X msg 253 163 label \$1;
+#X obj 253 203 s \$0-version;
+#X connect 1 0 4 0;
+#X connect 2 0 3 0;
+#X connect 7 0 10 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 0;
+#X connect 10 0 11 0;
+#X connect 11 0 12 0;
+#X coords 0 -1 1 1 94 60 2 100 100;
+#X restore 361 12 pd;
+#X obj 53 225 bin.shift~;
 #X obj 166 50 cnv 15 120 28 empty \$0-version 1.0-0\ beta-45 8 14 0
 14 #e0e0e0 #404040 0;
 #X obj 90 50 cnv 15 80 28 empty empty Version: 8 14 0 14 #e0e0e0 #404040
@@ -582,4 +613,6 @@ width float bordercolor;
 #A saved;
 #X obj 51 2841 midi.clock;
 #X obj 51 10669 clock;
-#X obj 363 20 declare -path else;
+#X obj 56 11417 tap;
+#X obj 349 116 declare -path else;
+#X connect 453 0 452 0;

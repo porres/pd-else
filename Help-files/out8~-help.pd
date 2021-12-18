@@ -1,17 +1,17 @@
 #N canvas 518 105 562 477 10;
 #X obj 1 449 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
-14 -228856 -66577 0;
+14 #dcdcdc #404040 0;
 #X obj 1 244 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
--228856 -1 0;
+#dcdcdc #000000 0;
 #X obj 1 377 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
-13 -228856 -1 0;
+13 #dcdcdc #000000 0;
 #X obj 1 408 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
-0 13 -228856 -1 0;
-#X obj 70 252 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0-7 5 9 0 16 -228856
--162280 0;
+0 13 #dcdcdc #000000 0;
+#X obj 70 252 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0-7 5 9 0 16 #dcdcdc
+#9c9c9c 0;
 #X text 128 252 signal;
-#X obj 70 275 cnv 17 3 98 empty \$0-pddp.cnv.let.2 0 5 9 0 16 -228856
--162280 0;
+#X obj 70 275 cnv 17 3 98 empty \$0-pddp.cnv.let.2 0 5 9 0 16 #dcdcdc
+#9c9c9c 0;
 #X obj 216 149 osc~ 440;
 #X text 178 431 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear), f 60;
@@ -26,9 +26,9 @@ the default is 20 ms and the minimum is 5 ms. This also affects the
 slider value input in the right outlet.;
 #X obj 90 319 else/out8~;
 #X obj 390 310 else/out8~;
-#X obj 186 161 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 183 181 5 0 0 0 - - -;
+#X obj 186 161 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 183 181 5 0 0 0 - - - 0;
 #X text 198 161 set slider (0-1);
 #X msg 261 247 on;
 #X msg 261 274 off;
@@ -38,20 +38,20 @@ slider value input in the right outlet.;
 #X text 268 209 mute button;
 #X msg 534 242 mode \$1;
 #X obj 534 165 vradio 15 1 0 3 \$0-dummy \$0-dummy-set empty 0 -8 0
-10 -228856 -1 -1 1;
+10 #dcdcdc #000000 #000000 0;
 #X text 518 180 dB;
 #X text 494 194 linear;
-#X floatatom 534 218 5 0 0 0 - - -;
+#X floatatom 534 218 5 0 0 0 - - - 0;
 #X text 457 144 slider scaling:;
 #X text 488 164 quartic;
 #X msg 670 294 ramp \$1;
 #X obj 670 268 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X msg 602 248 gain \$1;
 #X obj 602 222 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 605 199 hsl 128 15 0.1 2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 605 199 hsl 128 15 0.1 2 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 623 198 maximum gain;
 #X text 18 22 [out8~] allows you to switch the DSP engine on or off
 \, dac~ output on or off and mute/unmute without any clicks!;
@@ -105,9 +105,9 @@ DSP state and loads the GUI accordingly.;
 #X text 92 308 mode <float>;
 #X text 178 308 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear), f 60;
-#X obj 2 4 cnv 15 301 42 empty empty out8~ 20 20 2 37 -233017 -1 0
-;
-#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 2 4 cnv 15 301 42 empty empty out8~ 20 20 2 37 #e0e0e0 #000000
+0;
+#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -116,20 +116,21 @@ DSP state and loads the GUI accordingly.;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 304 4 pd;
 #X text 178 275 - sets slider (range is clipped to 0-1), f 60;
-#X obj 344 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 344 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 22 41 cnv 4 4 4 empty empty Octaphonic 0 28 2 18 -233017 -1
+#X obj 22 41 cnv 4 4 4 empty empty Octaphonic 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 112 41 cnv 4 4 4 empty empty Output 0 28 2 18 -233017 -1 0;
-#X obj 457 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 112 41 cnv 4 4 4 empty empty Output 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 477 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 457 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 514 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 477 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 463 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 514 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 463 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X text 110 218 click & drag ===>;
 #X text 125 198 DSP toggle ==>;
@@ -143,7 +144,7 @@ DSP state and loads the GUI accordingly.;
 #X text 178 415 - max gain (needs to be > 0 \, default 1), f 60;
 #X text 178 341 - sets max gain (values <= 0 are ignored), f 60;
 #N canvas 594 243 684 429 scaling 0;
-#X obj 32 57 cnv 15 198 198 empty empty empty 20 12 0 14 -253888 -66577
+#X obj 32 57 cnv 15 198 198 empty empty empty 20 12 0 14 #f4f8fc #404040
 0;
 #N canvas 0 22 452 302 (subpatch) 0;
 #X array dB 441 float 1;
@@ -361,11 +362,11 @@ same as the output. We have then two non linear modes:;
 #X obj 463 301 osc~ 440;
 #X msg 550 314 gain \$1;
 #X obj 441 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 550 291 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 550 177 vsl 15 80 0.1 2 0 0 empty empty empty 0 -9 0 10 -233017
--1 -1 0 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 550 177 vsl 15 80 0.1 2 0 0 empty empty empty 0 -9 0 10 #e0e0e0
+#000000 #000000 0 1;
 #X text 556 272 max gain;
 #X text 417 196 dB;
 #X text 70 265 entry (slider) value;
@@ -396,7 +397,7 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X connect 27 0 26 0;
 #X connect 33 0 26 0;
 #X restore 466 178 pd scaling \; modes & gain;
-#N canvas 477 417 534 169 see 1;
+#N canvas 477 417 534 169 see 0;
 #X text 83 34 See also:;
 #X obj 342 78 else/out4~;
 #X obj 105 78 else/out1~;
