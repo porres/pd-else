@@ -1,4 +1,4 @@
-#N canvas 778 41 563 534 10;
+#N canvas 638 40 563 534 10;
 #X obj 4 322 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 396 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -54,25 +54,26 @@
 #X text 161 426 anything -;
 #X text 232 346 - print send stored input on right outlet, f 47;
 #X text 202 330 bang -;
-#N canvas 895 194 548 367 send-name 0;
+#N canvas 928 188 548 367 send-name 0;
 #X text 56 238 click to learn =>, f 8;
-#X obj 116 125 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#X obj 116 105 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X text 140 125 <= click to learn, f 18;
-#X msg 158 215 query;
+#X text 140 105 <= click to learn, f 18;
+#X msg 169 215 query;
 #X obj 251 289 else/display;
-#X msg 150 192 forget;
+#X msg 161 192 forget;
 #X listbox 404 236 9 0 0 0 - - - 16;
 #X listbox 404 277 9 0 0 0 - \$0-name - 16;
 #X obj 404 212 r \$0-name;
 #X obj 116 248 else/midi.learn \$0-name;
 #A saved;
-#X msg 135 158 set \\\$0-name-2;
+#X msg 135 138 set \\\$0-name-2;
 #X listbox 404 154 9 0 0 0 - - - 16;
 #X obj 404 130 r \$0-name-2;
 #X text 131 45 An optional argumemt sets a send name. You can also
 set or change it with the 'set' message., f 47;
-#X text 233 158 set send name;
+#X text 232 146 set send name;
+#X msg 146 161 set \\\$0-name;
 #X connect 1 0 9 0;
 #X connect 3 0 9 0;
 #X connect 5 0 9 0;
@@ -80,6 +81,7 @@ set or change it with the 'set' message., f 47;
 #X connect 9 1 4 0;
 #X connect 10 0 9 0;
 #X connect 12 0 11 0;
+#X connect 15 0 9 0;
 #X restore 457 289 pd send-name;
 #X obj 206 260 else/midi.learn;
 #A saved;
