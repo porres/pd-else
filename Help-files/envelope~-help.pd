@@ -1,38 +1,38 @@
 #N canvas 582 60 561 558 10;
-#X obj 4 310 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 405 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 440 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 310 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 85 414 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 86 318 cnv 17 3 58 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 4 526 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 405 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 4 440 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 85 414 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 86 318 cnv 17 3 58 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 4 526 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Envelope 0 28 2 18 -233017 -1 0
-;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 40 cnv 4 4 4 empty empty Envelope 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 102 40 cnv 4 4 4 empty empty waveforms 0 28 2 18 -233017 -1
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 3 3 cnv 15 301 42 empty empty envelope~ 20 20 2 37 -233017 -1
+#X obj 102 40 cnv 4 4 4 empty empty waveforms 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 3 cnv 15 301 42 empty empty envelope~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -48,17 +48,15 @@
 #X text 94 278 0;
 #X text 94 197 1;
 #X obj 110 168 else/envelope~;
-#X obj 4 492 cnv 3 550 3 empty empty flag 8 12 0 13 -228856 -1 0;
-#X obj 85 382 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 4 492 cnv 3 550 3 empty empty flag 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 85 382 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 152 382 float;
 #X text 190 382 - phase offset, f 58;
 #X text 136 502 -phase <float>: phase offset (default 0);
 #X text 106 335 phase <float> - phase offset (from 0 to 1);
 #X text 190 352 -;
-#X text 202 353 set envelope type and arguments: <sin> \, <hann> \,
-<tri> \, <vsaw \, float> \, <gauss float> and <trapezoid float float>
-;
 #X text 118 449 1) anything -;
 #X text 205 448 envelope symbol and optional arguments: sin (default)
 \, hann \, tri \, vsaw <float> \, gauss <float> and trapezoid <float
@@ -91,16 +89,16 @@ generated via a phase input., f 54;
 #X text 423 223 1;
 #X obj 439 194 else/envelope~ vsaw 0.1;
 #X msg 458 164 vsaw \$1;
-#X obj 461 122 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 458 144 5 0 0 0 - - -;
+#X obj 461 122 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 458 144 5 0 0 0 - - - 0;
 #X obj 80 569 else/graph~ 441 9 0 1 250 90;
 #X obj 80 436 phasor~ 250;
 #X text 64 648 0;
 #X text 64 567 1;
-#X obj 102 466 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 99 488 5 0 0 0 - - -;
+#X obj 102 466 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 99 488 5 0 0 0 - - - 0;
 #X msg 99 508 gauss \$1;
 #X obj 80 538 else/envelope~ gauss 0.333;
 #X text 431 27 The vsaw option has a default value of 0.5 \, this parameter
@@ -109,14 +107,14 @@ controls the phase point with the maximum value., f 44;
 #X obj 446 437 phasor~ 250;
 #X text 430 639 0;
 #X text 430 558 1;
-#X obj 529 442 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 526 464 5 0 0 0 - - -;
+#X obj 529 442 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 526 464 5 0 0 0 - - - 0;
 #X obj 446 529 else/envelope~ trap 0.25 0.75;
 #X obj 471 488 else/pack2 trap f f;
-#X obj 605 465 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 602 487 5 0 0 0 - - -;
+#X obj 605 465 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 602 487 5 0 0 0 - - - 0;
 #X text 426 366 The trap option has a default value of 0.1 and 0.9
 \, these parameters control \, respectively \, the phase points where
 the upwards ramp ends and the downwards curve starts., f 47;
@@ -161,10 +159,10 @@ but can be higher in the case of low frequencies.;
 #X msg 233 110 0.5;
 #X text 286 84 You can set a phase offset with a flag \, a message
 to the main inlet or a float via the right inlet., f 34;
-#X obj 80 19 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 80 19 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X msg 77 65 phase \$1;
-#X floatatom 77 42 5 0 0 0 - - -;
+#X floatatom 77 42 5 0 0 0 - - - 0;
 #X connect 1 0 2 0;
 #X connect 1 0 4 0;
 #X connect 2 0 0 0;
@@ -175,5 +173,7 @@ to the main inlet or a float via the right inlet., f 34;
 #X connect 9 0 4 0;
 #X connect 10 0 9 0;
 #X restore 479 267 pd phase;
+#X text 202 353 set envelope type and arguments: <sin> \, <hann> \,
+<tri> \, <vsaw \, float> \, <gauss float> and <trap float float>;
 #X connect 23 0 28 0;
 #X connect 28 0 18 0;

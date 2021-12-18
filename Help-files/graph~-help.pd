@@ -1,4 +1,4 @@
-#N canvas 871 115 559 677 10;
+#N canvas 547 74 559 677 10;
 #X obj 1 650 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 #dcdcdc #404040 0;
 #X obj 1 379 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -149,12 +149,11 @@ for visualizing audio signals.;
 #X text 166 401 size <float>;
 #X text 250 417 - number of buffers to skip, f 36;
 #X text 166 417 skip <float>;
-#X text 201 559 - buffer skip (default 0), f 51;
 #X obj 359 126 nbx 5 14 64 44100 0 1 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 335 256;
+#000000 #000000 471 256;
 #X msg 359 147 size \$1;
 #X obj 375 173 nbx 5 14 0 100 0 1 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
+#000000 #000000 17 256;
 #X msg 375 194 skip \$1;
 #X text 116 545 -size <float>;
 #X text 116 559 -skip <float>;
@@ -169,7 +168,6 @@ for visualizing audio signals.;
 #X text 201 616 - set lower and upper graph range (default -1 1),
 f 51;
 #X obj 359 346 s \$0-set;
-#X obj 51 132 r \$0-set;
 #X obj 115 316 else/out~;
 #X obj 85 519 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 #dcdcdc
 #9c9c9c 0;
@@ -189,20 +187,22 @@ f 51;
 #X text 201 601 - set signal width (default 1);
 #X msg 387 218 bgcolor 80 80 80;
 #X msg 395 239 fgcolor 250 180 180;
-#X obj 115 131 else/cusp~ 4000;
 #X msg 403 260 width 3;
 #X msg 409 281 dim 180 100;
 #X msg 413 306 range -2 2;
-#X obj 115 163 else/graph~;
-#X connect 27 0 28 0;
-#X connect 28 0 41 0;
-#X connect 29 0 30 0;
-#X connect 30 0 41 0;
-#X connect 42 0 65 0;
-#X connect 59 0 41 0;
-#X connect 60 0 41 0;
-#X connect 61 0 65 0;
-#X connect 62 0 41 0;
-#X connect 63 0 41 0;
+#X obj 51 132 r \$0-set;
+#X obj 115 131 cusp~ 400;
+#X obj 115 161 else/graph~ 471 17 -1 1 200 140 #dfdfdf 0 1;
+#X text 201 559 - buffer skip (default 10), f 51;
+#X connect 26 0 27 0;
+#X connect 27 0 40 0;
+#X connect 28 0 29 0;
+#X connect 29 0 40 0;
+#X connect 57 0 40 0;
+#X connect 58 0 40 0;
+#X connect 59 0 40 0;
+#X connect 60 0 40 0;
+#X connect 61 0 40 0;
+#X connect 62 0 64 0;
+#X connect 63 0 64 0;
 #X connect 64 0 41 0;
-#X connect 65 0 43 0;
