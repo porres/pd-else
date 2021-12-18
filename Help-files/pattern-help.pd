@@ -152,36 +152,37 @@ the right inlet \, it only starts when the previous one ends., f 75
 #X obj 86 382 out~;
 #X obj 86 71 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
 0 1;
-#X floatatom 86 179 5 0 0 0 - - - 0;
+#X floatatom 86 175 5 0 0 0 - - - 0;
 #X obj 86 289 osc~;
 #X obj 86 238 else/note2pitch;
 #X obj 86 263 mtof;
-#X obj 86 201 else/sequencer C4 C#4 B4 BB4 G#4 A4 F4 | C4 Eb4 D4 Eb4
-G4 D4 C#4, f 40;
 #X obj 86 311 *~;
 #X obj 130 287 b;
 #X obj 130 307 else/decay2~ 10 500;
 #X obj 86 334 else/drive~ 10;
 #X obj 86 357 else/plate.rev~ 10 0.9 0.1 0.9 0.5;
-#X text 141 58 You can set tempo as a flag \, and the '-i' flag outputs
-the index of the positive note durations \, which you can use to query
-for a sequence in the [sequencer] objecrt \, for instance., f 50;
 #X obj 86 138 else/pattern -tempo 90 -i 1/4 1/4 1/4 1/8 1/24 1/24 1/24
 | 1/4 -1/4 1/8 1/8 1/4 1/8 1/8 1/4;
-#X connect 1 0 13 0;
-#X connect 2 0 6 0;
-#X connect 3 0 7 0;
+#X obj 86 201 else/sequencer C4 C#4 B4 BB4 G#4 A4 F4 | C4 - Eb4 D4
+Eb4 G4 D4 C#4, f 40;
+#X text 141 58 You can set tempo as a flag \, and the '-i' flag outputs
+the index of the note durations (positive and negative) \, which you
+can use to query for a sequence in the [sequencer] object \, for instance.
+, f 50;
+#X connect 1 0 11 0;
+#X connect 2 0 12 0;
+#X connect 3 0 6 0;
 #X connect 4 0 5 0;
 #X connect 5 0 3 0;
-#X connect 5 0 8 0;
-#X connect 6 0 4 0;
-#X connect 7 0 10 0;
-#X connect 8 0 9 0;
-#X connect 9 0 7 1;
-#X connect 10 0 11 0;
-#X connect 11 0 0 0;
-#X connect 11 1 0 1;
-#X connect 13 0 2 0;
+#X connect 5 0 7 0;
+#X connect 6 0 9 0;
+#X connect 7 0 8 0;
+#X connect 8 0 6 1;
+#X connect 9 0 10 0;
+#X connect 10 0 0 0;
+#X connect 10 1 0 1;
+#X connect 11 0 2 0;
+#X connect 12 0 4 0;
 #X restore 474 292 pd flags;
 #X connect 0 0 55 0;
 #X connect 4 0 55 0;
