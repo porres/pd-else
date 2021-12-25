@@ -42,7 +42,6 @@
 #X restore 3 3 graph;
 #X obj 180 142 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X text 200 143 start/continue \, pause;
 #X text 375 178 tempo;
 #X obj 180 230 bng 18 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
@@ -365,13 +364,14 @@ f 49;
 #X text 196 293 - non-zero (re)starts \, zero stops, f 47;
 #X text 42 201 see also:;
 #X obj 42 220 else/clock;
-#X connect 6 0 56 0;
-#X connect 17 0 56 1;
-#X connect 20 0 56 0;
-#X connect 29 0 56 0;
-#X connect 56 0 23 0;
-#X connect 56 1 24 0;
-#X connect 56 2 53 0;
-#X connect 56 3 54 0;
-#X connect 56 4 25 0;
-#X connect 56 5 26 0;
+#X text 200 143 start/stop;
+#X connect 6 0 55 0;
+#X connect 17 0 55 1;
+#X connect 20 0 55 0;
+#X connect 28 0 55 0;
+#X connect 55 0 22 0;
+#X connect 55 1 23 0;
+#X connect 55 2 52 0;
+#X connect 55 3 53 0;
+#X connect 55 4 24 0;
+#X connect 55 5 25 0;
