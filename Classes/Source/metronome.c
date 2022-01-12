@@ -1,4 +1,4 @@
-// porres 2021
+ // porres 2021-2022
 
 #include "m_pd.h"
 #include <stdlib.h>
@@ -33,49 +33,14 @@ typedef struct _metronome{
     t_outlet   *x_tempoout;
     t_outlet   *x_subdivout;
     t_outlet   *x_phaseout;
+    t_outlet   *x_tempodivout;
+    t_outlet   *x_bpmout;
     t_outlet   *x_tickout;
 }t_metronome;
 
 static t_class *metronome_class;
 
 static void metronome_stop(t_metronome *x);
-    
-static void metronome_div(t_metronome *x, t_atom *av){
-    t_float f1, f2;
-    if(av->a_type == A_SYMBOL){
-        pd_error(x, "[metronome]: wrong time signature symbol");
-        return;
-    }
-    else
-        f1 = atom_getfloat(av++);
-    if(av->a_type == A_SYMBOL){
-        pd_error(x, "[metronome]: wrong time signature symbol");
-        return;
-    }
-    else
-        f2 = atom_getfloat(av);
-    if(f1 <= 0 || f2 <= 0){
-        pd_error(x, "[metronome]: wrong time signature symbol");
-        return;
-    }
-    t_float div = f1 / f2;
-//    post("metronome f1(%g) / f2(%g) ==> div = %g", f1, f2, div);
-    if(!x->x_group){
-//        post("no group, so subdiv = 1 and group = f1");
-        x->x_group = x->x_n_tempo = (int)f1;
-        x->x_n_subdiv = 1;
-    }
-    else{
-        x->x_n_subdiv = (int)(f1/((t_float)x->x_group));
-        x->x_n_tempo = x->x_group;
-//        post("subdiv = [%d]",x->x_subdiv);
-    }
-//    post("div * 4 = %g", div);
-    x->x_tempo_div = (float)(div * 4/(t_float)x->x_group);
-//    post(" =====> tempo-divider = %g", x->x_tempo_div);
-    if(!x->x_freeze)
-        clock_setunit(x->x_clock, x->x_tempo * x->x_tempo_div / x->x_ticks, 0);
-}
 
 static void string2atom(t_atom *ap, char* ch, int clen){
     char *buf = getbytes(sizeof(char)*(clen+1));
@@ -89,6 +54,75 @@ static void string2atom(t_atom *ap, char* ch, int clen){
         SETSYMBOL(ap, gensym(buf));
     freebytes(buf, sizeof(char)*(clen+1));
 }
+    
+static void metronome_div(t_metronome *x, t_atom *av){
+    t_float f1, f2;
+    if(av->a_type == A_SYMBOL){
+        pd_error(x, "[metronome]: wrong time signature symbol");
+        return;
+    }
+    else
+        f1 = (int)atom_getfloat(av++);
+    if(av->a_type == A_SYMBOL){
+        char *s = (char *)atom_getsymbol(av)->s_name;
+        int len = strlen(s);
+        t_atom *d_av = getbytes(2*sizeof(t_atom));
+        if(s[0] == '(' && s[len-1] == ')' && strstr(s, "/")){ // in parenthesis alright and a fraction
+            s[len-1] = '\0'; // removing the last ')'
+            s++;
+            char *d = strstr(s, "/");
+            string2atom(d_av, s, d-s);
+            s = d+1;
+            string2atom(d_av+1, s, strlen(s));
+            if(d_av->a_type == A_FLOAT && (d_av+1)->a_type == A_FLOAT){
+                f2 = atom_getfloat(d_av) / atom_getfloat(d_av+1);
+//                post("f2 = %f", f2);
+            }
+            else{
+                pd_error(x, "[metronome]: wrong time signature symbol");
+                return;
+            }
+        }
+        else{
+            pd_error(x, "[metronome]: wrong time signature symbol");
+            return;
+        }
+    }
+    else
+        f2 = atom_getfloat(av);
+    if(f1 <= 0 || f2 <= 0){
+        pd_error(x, "[metronome]: wrong time signature symbol");
+        return;
+    }
+    t_float div = f1 / f2;
+//    post("(t_float div = f1 / f2) %f/%f = %f", f1, f2, div);
+//    post("metronome f1(%g) / f2(%g) ==> div = %g", f1, f2, div);
+    if(!x->x_group){
+//        post("no group, so subdiv = 1 and group = f1");
+        if(f1 == 6)
+            x->x_group = 2;
+        else if(f1 == 9)
+            x->x_group = 3;
+        else if(f1 == 12)
+            x->x_group = 4;
+        else
+            x->x_group = (int)f1;
+    }
+//    post("f1 = %f", f1);
+//    post("x_group = %d", x->x_group);
+    x->x_n_subdiv = (int)(f1/((t_float)x->x_group));
+//    post("x_n_subdiv = %d", x->x_n_subdiv);
+    x->x_n_tempo = x->x_group;
+//    post("x->x_n_tempo (group) = %d", (int)x->x_n_tempo);
+//    post("div = %g", div);
+//    post("div * 4 = %g", div * 4);
+    x->x_tempo_div = (float)(div * 4/(t_float)x->x_group);
+//    post("x->x_tempo_div = (float)(div * 4/(t_float)x->x_group) ==> %g", x->x_tempo_div);
+    outlet_float(x->x_bpmout, x->x_bpm / x->x_tempo_div);
+    outlet_float(x->x_tempodivout, x->x_tempo_div);
+    if(!x->x_freeze)
+        clock_setunit(x->x_clock, x->x_tempo * x->x_tempo_div / x->x_ticks, 0);
+}
 
 static void metronome_symbol(t_metronome *x, t_symbol *s){
     char *ch = (char*)s->s_name;
@@ -99,14 +133,12 @@ static void metronome_symbol(t_metronome *x, t_symbol *s){
             goto error;
         string2atom(av+0, ch, d-ch);
         ch = d+1;
-        if(strstr(ch, "/"))
-            goto error;
         string2atom(av+1, ch, strlen(ch));
         metronome_div(x, av);
     }
     else{
     error:
-        pd_error(x, "[metronome]: wrong time signature symbol ");
+        pd_error(x, "[metronome]: wrong time signature symbol");
     }
 }
 
@@ -190,6 +222,8 @@ static void metronome_float(t_metronome *x, t_float f){
     if(x->x_s_name->s_thing)
         pd_float(x->x_s_name->s_thing, f);
     if(f){
+        outlet_float(x->x_bpmout, x->x_bpm / x->x_tempo_div);
+        outlet_float(x->x_tempodivout, x->x_tempo_div);
         x->x_pause = 0;
         x->x_running = 1;
         if(!x->x_freeze)
@@ -238,45 +272,28 @@ static void metronome_play(t_metronome *x){
 
 static void metronome_timesig(t_metronome *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
+    t_int compound = 0;
     if(ac > 0){
+        x->x_group = 0;
         if(ac >= 2){
             if((av+1)->a_type == A_SYMBOL){
-                pd_error(x, "[metronome]: invalid group number");
-                x->x_group = 0;
+                if(atom_getsymbol(av+1) == gensym("+")){
+                    compound = 1;
+//                    post("COMPOUND!!!");
+                }
+                else
+                   pd_error(x, "[metronome]: timesig: invalid syntax");
             }
             else{
                 t_int arg = (t_int)(atom_getfloat(av+1));
-                if(arg > 0){
+                if(arg > 0)
                     x->x_group = arg;
-//                    post("group = %d", x->x_group);
-                }
-                else{
+                else
                     pd_error(x, "[metronome]: invalid group number [%d]", (int)arg);
-                    x->x_group = 0;
-                }
             }
-        }
-        else{
-//            post("no group");
-            x->x_group = 0;
         }
         if(av->a_type == A_SYMBOL){
             x->x_sig = atom_getsymbol(av);
-            if(!x->x_group){
-//                post("check composites");
-                if(x->x_sig == gensym("6/8")){
-//                    post("found 6/8 - group = 2");
-                     x->x_group = 2;
-                }
-                else if(x->x_sig == gensym("9/8")){
-//                    post("found 9/8 - group = 3");
-                     x->x_group = 3;
-                }
-                else if(x->x_sig == gensym("12/8")){
-//                    post("found 12/8 - group = 4");
-                     x->x_group = 4;
-                }
-            }
             if(x->x_tickcount == 0 && x->x_tempocount == 0)
                 metronome_symbol(x, x->x_sig);
             else
@@ -294,6 +311,10 @@ static void metronome_tempo(t_metronome *x, t_floatarg tempo){
     if(tempo < 0) // avoid negative tempo for now
         tempo = 0;
     x->x_bpm = tempo;
+//    post("x->x_bpm = %f", x->x_bpm);
+//    post("x->x_tempo_div = %f", x->x_tempo_div);
+    outlet_float(x->x_bpmout, x->x_bpm / x->x_tempo_div);
+//    post("outlet");
     if(tempo != 0){
         if(x->x_freeze){
             x->x_freeze = 0;
@@ -361,6 +382,15 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
     x->x_tempo_fig = 4;
     x->x_n_subdiv = 1;
     t_float tempo = 120;
+    outlet_new(&x->x_obj, gensym("bang"));
+    x->x_barout = outlet_new((t_object *)x, gensym("float"));
+    x->x_tempoout = outlet_new((t_object *)x, gensym("float"));
+    x->x_subdivout = outlet_new((t_object *)x, gensym("float"));
+    x->x_phaseout = outlet_new((t_object *)x, gensym("float"));
+    x->x_tickout = outlet_new((t_object *)x, gensym("float"));
+    x->x_tempodivout = outlet_new((t_object *)x, gensym("float"));
+    x->x_bpmout = outlet_new((t_object *)x, gensym("float"));
+    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("tempo"));
     if(ac >= 2 && av->a_type == A_SYMBOL){
         t_symbol *sym = atom_getsymbolarg(0, ac, av);
         if(sym == gensym("-name")){
@@ -413,13 +443,6 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
     }
     metronome_tempo(x, tempo);
     metronome_stop(x);
-    outlet_new(&x->x_obj, gensym("bang"));
-    x->x_barout = outlet_new((t_object *)x, gensym("float"));
-    x->x_tempoout = outlet_new((t_object *)x, gensym("float"));
-    x->x_subdivout = outlet_new((t_object *)x, gensym("float"));
-    x->x_phaseout = outlet_new((t_object *)x, gensym("float"));
-    x->x_tickout = outlet_new((t_object *)x, gensym("float"));
-    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("tempo"));
     return(x);
     errstate:
         pd_error(x, "[metronome]: improper args");
@@ -433,9 +456,9 @@ void metronome_setup(void){
     class_addbang(metronome_class, (t_method)metronome_start);
     class_addmethod(metronome_class, (t_method)metronome_timesig, gensym("timesig"), A_GIMME, 0);
     class_addmethod(metronome_class, (t_method)metronome_tempo, gensym("tempo"), A_FLOAT, 0);
+    class_addmethod(metronome_class, (t_method)metronome_stop, gensym("stop"), 0);
+    class_addmethod(metronome_class, (t_method)metronome_start, gensym("start"), 0);
 //    class_addmethod(metronome_class, (t_method)metronome_pause, gensym("pause"), 0);
 //    class_addmethod(metronome_class, (t_method)metronome_play, gensym("play"), 0);
-    class_addmethod(metronome_class, (t_method)metronome_stop, gensym("stop"), 0);
 //    class_addmethod(metronome_class, (t_method)metronome_rewind, gensym("rewind"), 0);
-    class_addmethod(metronome_class, (t_method)metronome_start, gensym("start"), 0);
 }

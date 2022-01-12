@@ -4,14 +4,14 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 beta-45 With Live Electronics Tutorial 
+### Version: 1.0-0 beta-46 With Live Electronics Tutorial 
 
-###   Released december 18th 2021
-
-
+###   Unreleased 
 
 
-	Copyright © 2017-2021 Alexandre Torres Porres
+
+
+	Copyright © 2017-2022 Alexandre Torres Porres
 
 
 
@@ -30,7 +30,7 @@
 
 
 
-This version of ELSE needs **Pd 0.52-0* or above.
+This version of ELSE needs **Pd 0.52-1* or above.
 
 ELSE is a big library of externals that extends the performance Pure Data (Pd) - Miller S. Puckette's realtime computer music environment (download Pd from: http://msp.ucsd.edu/software.html).
 
