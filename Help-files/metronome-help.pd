@@ -78,7 +78,7 @@
 ;
 #X obj 76 435 cnv 17 3 17 empty empty 5 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#N canvas 734 26 534 539 time-sig 0;
+#N canvas 734 26 533 573 time-sig 0;
 #X msg 135 218 timesig 7/8;
 #X msg 110 170 timesig 6/8;
 #X msg 99 145 timesig 15/8 3;
@@ -207,12 +207,14 @@ integers as well so all crazy things can happen to define a tempo duration.
 #X connect 24 7 13 0;
 #X connect 25 0 24 0;
 #X connect 30 0 24 0;
-#X restore 267 500 pd other-denominators;
+#X restore 268 500 pd other-denominators;
 #X text 41 429 You can have other values as the denominator other than
 the usual multiples of "2" (4/4 \, 6/6 \, 15/16 \, etc). These can
 be intergers or floats (which can also be defined as fractions). This
 allows you to set tuplets as the tempo \, see examples and details
 in the subpatch below., f 77;
+#X text 42 531 Any time signature you can set as a messgae can also
+be set as an argument., f 77;
 #X connect 0 0 17 0;
 #X connect 1 0 17 0;
 #X connect 2 0 17 0;
@@ -233,65 +235,67 @@ in the subpatch below., f 77;
 #X text 196 436 - beat frame output (0-960), f 47;
 #X floatatom 220 197 3 0 0 0 - - - 0;
 #X floatatom 251 197 3 0 0 0 - - - 0;
-#N canvas 580 71 717 567 example 0;
-#X obj 297 63 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#N canvas 587 59 687 537 example 0;
+#X obj 295 39 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X obj 297 234 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 295 210 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X floatatom 552 98 4 0 0 0 - - - 12;
-#X floatatom 470 206 4 0 0 0 - - - 12;
-#X text 263 233 beat bang, f 4;
-#X obj 381 492 else/out~;
-#X obj 381 374 impseq~;
-#X obj 288 374 impseq~;
-#X obj 474 374 impseq~;
-#X obj 288 408 else/resonant~ 1700 100, f 14;
-#X obj 366 306 sel 1, f 3;
-#X obj 438 236 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#X floatatom 538 74 4 0 0 0 - - - 12;
+#X floatatom 468 182 4 0 0 0 - - - 12;
+#X text 261 209 beat bang, f 4;
+#X obj 379 468 else/out~;
+#X obj 379 350 impseq~;
+#X obj 286 350 impseq~;
+#X obj 472 350 impseq~;
+#X obj 286 384 else/resonant~ 1700 100, f 14;
+#X obj 364 282 sel 1, f 3;
+#X obj 436 212 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
-#X floatatom 435 263 7 0 0 0 - - - 12;
-#X obj 401 306 sel 1, f 3;
-#X text 405 259 sub div, f 3;
-#X obj 366 234 else/display 3;
-#X obj 331 234 else/display 3;
-#X obj 401 234 else/display 3;
-#X text 369 263 beat;
-#X text 332 262 bar;
-#X text 588 98 tempo;
-#X obj 474 408 else/resonant~ 1000 100, f 14;
-#X obj 381 408 else/resonant~ 600 100, f 14;
-#X text 506 209 frames (0-960);
-#X text 491 264 phase (0-1);
-#X msg 540 23 0;
-#X obj 562 75 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X floatatom 433 239 7 0 0 0 - - - 12;
+#X obj 399 282 sel 1, f 3;
+#X text 403 235 sub div, f 3;
+#X obj 364 210 else/display 3;
+#X obj 329 210 else/display 3;
+#X obj 399 210 else/display 3;
+#X text 367 239 beat;
+#X text 330 238 bar;
+#X text 574 74 tempo;
+#X obj 472 384 else/resonant~ 1000 100, f 14;
+#X obj 379 384 else/resonant~ 600 100, f 14;
+#X text 504 185 frames (0-960);
+#X text 489 240 phase (0-1);
+#X msg 498 52 0;
+#X obj 548 51 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
-#X text 570 22 pause;
-#X text 582 74 unpause;
-#X obj 297 130 else/metronome, f 41;
-#X obj 552 51 else/initmess 90;
-#X floatatom 505 181 7 0 0 0 - - - 12;
-#X floatatom 540 154 7 0 0 0 - - - 12;
-#X obj 381 347 b, f 1;
-#X obj 474 347 b, f 1;
-#X text 561 184 beat length;
-#X text 596 157 beat tempo;
-#X msg 106 204 timesig 7/8;
-#X msg 97 182 timesig 6/8;
-#X msg 80 140 timesig 15/8 3;
-#X msg 112 224 timesig 4/4;
-#X msg 117 246 timesig 3/4;
-#X msg 89 161 timesig 15/8 5;
-#X obj 80 279 s \$0-metro;
-#X msg 101 375 timesig 4/(32/9);
-#X msg 81 333 timesig 4/6;
-#X msg 90 354 timesig 2/(8/3);
-#X msg 110 396 timesig 3/5;
-#X msg 118 417 timesig 6/10;
-#X msg 124 437 timesig 3/4.75;
-#X obj 82 474 s \$0-metro;
-#X obj 315 101 r \$0-metro;
-#X text 46 74 Here's an example on how to set a [metronome]. Try the
+#X text 457 53 pause;
+#X text 568 50 unpause;
+#X obj 295 106 else/metronome, f 41;
+#X obj 538 27 else/initmess 90;
+#X floatatom 503 157 7 0 0 0 - - - 12;
+#X floatatom 538 130 7 0 0 0 - - - 12;
+#X obj 379 323 b, f 1;
+#X obj 472 323 b, f 1;
+#X text 559 160 beat length;
+#X text 594 133 beat tempo;
+#X msg 106 166 timesig 7/8;
+#X msg 97 144 timesig 6/8;
+#X msg 80 102 timesig 15/8 3;
+#X msg 112 186 timesig 4/4;
+#X msg 117 208 timesig 3/4;
+#X msg 89 123 timesig 15/8 5;
+#X obj 80 241 s \$0-metro;
+#X msg 101 337 timesig 4/(32/9);
+#X msg 81 295 timesig 4/6;
+#X msg 90 316 timesig 2/(8/3);
+#X msg 110 358 timesig 3/5;
+#X msg 118 379 timesig 6/10;
+#X msg 124 399 timesig 3/4.75;
+#X obj 82 436 s \$0-metro;
+#X obj 313 77 r \$0-metro;
+#X text 45 45 Here's an example on how to set a [metronome]. Try the
 different time signatures below., f 32;
+#X text 42 468 Any time signature you can set as a messgae can also
+be set as an argument., f 39;
 #X connect 0 0 29 0;
 #X connect 2 0 29 1;
 #X connect 6 0 22 0;
