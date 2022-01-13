@@ -1,15 +1,15 @@
-#N canvas 550 23 560 591 10;
+#N canvas 558 28 560 603 10;
 #X obj 4 221 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 335 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 4 348 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 515 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 528 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 76 340 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 353 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 77 227 cnv 17 3 85 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 77 227 cnv 17 3 98 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 4 565 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 4 578 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 174 146 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
@@ -52,443 +52,294 @@
 #X text 160 254 float;
 #X msg 125 148 stop;
 #X text 166 269 stop;
-#X text 94 283 timesig <sym \, f>;
-#X text 196 283 - set time signature symbol and group value, f 47
+#X text 94 297 timesig <sym \, f>;
+#X text 196 297 - set time signature symbol and group value, f 47
 ;
-#X text 160 315 float;
-#X text 166 339 bang;
-#X text 196 339 - bang at every beat, f 47;
-#X text 160 359 float;
-#X text 196 359 - bar count, f 47;
-#X text 196 380 - beat count, f 47;
-#X text 196 398 - sub-beat count, f 47;
-#X text 160 380 float;
-#X text 160 398 float;
-#X text 160 417 float;
-#X text 160 436 float;
-#X obj 76 315 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 160 328 float;
+#X text 166 352 bang;
+#X text 196 352 - bang at every beat, f 47;
+#X text 160 372 float;
+#X text 196 372 - bar count, f 47;
+#X text 196 393 - beat count, f 47;
+#X text 196 411 - sub-beat count, f 47;
+#X text 160 393 float;
+#X text 160 411 float;
+#X text 160 430 float;
+#X text 160 449 float;
+#X obj 76 328 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 359 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 372 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 378 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 391 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 397 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 410 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 416 cnv 17 3 17 empty empty 4 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 429 cnv 17 3 17 empty empty 4 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 435 cnv 17 3 17 empty empty 5 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 448 cnv 17 3 17 empty empty 5 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#N canvas 734 26 533 573 time-sig 0;
-#X msg 135 218 timesig 7/8;
-#X msg 110 170 timesig 6/8;
-#X msg 99 145 timesig 15/8 3;
-#X obj 99 297 bng 18 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X floatatom 129 300 2 0 0 0 - - - 0;
-#X floatatom 159 300 2 0 0 0 - - - 0;
-#X floatatom 190 300 2 0 0 0 - - - 0;
-#X floatatom 220 300 4 0 0 0 - - - 0;
-#X floatatom 251 300 4 0 0 0 - - - 0;
-#X msg 120 192 timesig 12/8;
-#X msg 74 123 timesig 15/8 5;
-#X text 168 123 15/8 grouped in 5 groups (3 sub-beats each);
-#X text 192 145 15/8 grouped in 3 groups (5 sub-beats each);
-#X text 185 170 automatically grouped in 2 (3 sub-beats each);
-#X text 200 190 automatically grouped in 4 (3 sub-beats each);
-#X text 211 215 automatically grouped in 7 (1 sub-beats each);
-#X text 29 79 The default time signature is 4/4.;
-#X obj 99 275 else/metronome 60, f 36;
-#X floatatom 281 300 4 0 0 0 - - - 0;
-#X floatatom 312 300 4 0 0 0 - - - 0;
-#X text 27 37 Group makes sense for compound time signatures. By default
+#N canvas 636 23 509 655 time-sig 0;
+#X msg 129 218 timesig 7/8;
+#X msg 104 170 timesig 6/8;
+#X msg 93 145 timesig 15/8 3;
+#X msg 114 192 timesig 12/8;
+#X msg 68 123 timesig 15/8 5;
+#X text 162 123 15/8 grouped in 5 groups (3 sub-beats each);
+#X text 186 145 15/8 grouped in 3 groups (5 sub-beats each);
+#X text 179 170 automatically grouped in 2 (3 sub-beats each);
+#X text 194 190 automatically grouped in 4 (3 sub-beats each);
+#X text 205 215 automatically grouped in 7 (1 sub-beats each);
+#X text 19 78 The default time signature is 4/4.;
+#X text 17 36 Group makes sense for compound time signatures. By default
 \, the group number is 1 \, but for the numerator 6 \, 9 and 12 (as
 in 6/8 \, 9/8 and 12/8) the default group number is \, respectively
 \, 2 \, 3 and 4 \, see examples below., f 78;
-#X text 27 8 Time signatures are specified by symbols in the usual
+#X text 17 7 Time signatures are specified by symbols in the usual
 notation way \, optionally you can set a group number (which also defines
 the number of sub-beats)., f 78;
-#X msg 142 242 timesig 3/4;
-#X obj 38 169 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X msg 136 242 timesig 3/4;
+#X obj 32 169 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X text 41 340 Note how the tempo depends on the grouping of sub beats.
+#X text 14 555 Note how the tempo depends on the grouping of sub beats.
 So 3/4 does not have the same tempo duration as 6/8! This is clear
 in the two rightmost outlets. For instance \, 6/8 grouped in 2 considers
 that a beat is three eight notes. In relation to a 60 bpm for a quarter
 note as a base beat lenght we have a beat that is "1.5" and an actual
 bpm of "40"., f 77;
-#X text 41 401 Similarly \, 7/8 considers an eigth note as the tempo
+#X text 14 616 Similarly \, 7/8 considers an eigth note as the tempo
 \, so you have "0.5" and "120" instead., f 77;
-#N canvas 273 106 964 442 other-denominators 0;
-#X msg 579 63 timesig 2/2.666666666;
-#X msg 603 115 timesig 4/3.55555555555;
-#X msg 608 135 timesig 4/(32/9);
-#X text 36 20 The denominator of a time signature defines the tempo
-value as a fraction of a whole note (whose value is "1"). The base
-tempo value \, by default \, is a quarter note \, defined as "1/4".
-Hence \, a "4/4" time signature defines 4 beats of quarter notes. Besides
-multiples of '2' as the denumerator \, which is common in music notation
-\, you can also use other values. For instance '2/3' means two beats
-of a tempo that is equal to 1/3 of a whole note. This would then be
-the same as a triplet of a half note. Consequently \, '4/6' is four
-beats of a quarter note triplet. On the other hand 3/5 is three beats
-of a quarter note quintuplet., f 79;
-#X text 36 128 If you want a '3:2' triplet as the tempo value (where
-you have 3 quarter notes in the space of two) you have to calculate
-how many of them fits in a whole note. The base value is still a quarter
-note (even though it is a triplet) so we can just multiply 3:2 by 4!
-That gives us "12/2" \, which is "6" and means you can fit 6 of them
-in a whole note. Therefore \, the denominator is "6"! We've seen this
-already \, but the point is that this also doesn't need to be an integer
-value. Let's see another case were we don't have an integer., f 79
-;
-#X text 36 213 Let's think of a '2:3' tuplet for quarter notes \, which
-is the same as a dotted quarter note. We multiply by 4 and get "8/3"
-\, which is "2.66667"! So yeah \, 2/2.66667 is a possible value that
-defines 2 tempos of a '2:3' quarter note tuplet. This gives us the
-same bar length of 3/4 and 6/8 but it's a "simple" binary time signature.
-, f 79;
-#X obj 578 383 bng 18 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
-#000000 #000000;
-#X floatatom 608 385 3 0 0 0 - - - 0;
-#X floatatom 638 385 2 0 0 0 - - - 0;
-#X floatatom 669 385 2 0 0 0 - - - 0;
-#X floatatom 699 385 4 0 0 0 - - - 0;
-#X floatatom 730 385 4 0 0 0 - - - 0;
-#X floatatom 760 407 10 0 0 0 - - - 0;
-#X floatatom 791 385 10 0 0 0 - - - 0;
-#X msg 559 26 timesig 4/6;
-#X text 637 25 four beats of a quarter note triplet;
-#X msg 586 81 timesig 2/(8/3);
-#X text 723 67 two beats of '2:3' tuplet for quarter notes, f 25;
-#X text 752 113 four beats of '8:9' for quarter notes, f 19;
-#X msg 621 174 timesig 3/5;
-#X text 702 168 three beats of '4:5' (quintuplets) for quarter notes
-, f 34;
-#X msg 628 213 timesig 6/10;
-#X text 713 207 six beats of '4:5' (quintuplets) for eight notes (grouped
-in 2), f 34;
-#X obj 662 316 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
-#000000 0 1;
-#X obj 578 351 else/metronome 60, f 36;
-#X msg 639 252 timesig 3/4.75;
-#X text 740 246 three beats of "whatever" (I don't know \, just going
-crazy), f 30;
-#X text 36 275 Let's get a bit crazier now and use an 8:9 tuplet for
-eight notes (where we have eight eigth notes in the space of nine eight
-notes) and consider two of them (hence \, a quarter note) as the beat
-lenght. The ratio is actually "4:4.5" but let's use the "8:9" and multiply
-it by 4 (as the base measure is a fourth note). So 8:9 x 4 is "32:9"
-\, which gives us "3.555556". Therefore \, 4/3.555556 means 4 beats
-that fit into 9 eight notes., f 79;
-#X text 36 351 The time signature \, for now \, only accepts integers
-for the numerator (number of beats) \, but it accepts floats as the
-denumerator and it also allows you to use fractions in parenthesis.
-Hence \, you can define "2/2.66667" or 2/(8/3) and "4/3.555556" or
-4/(32/9) \, both formats work! Number in fractions don't need to be
-integers as well so all crazy things can happen to define a tempo duration.
-, f 79;
-#X text 783 288 going even crazier, f 19;
-#X msg 644 289 timesig 4/(30.7/5.65);
-#X connect 0 0 24 0;
-#X connect 1 0 24 0;
-#X connect 2 0 24 0;
-#X connect 14 0 24 0;
-#X connect 16 0 24 0;
-#X connect 19 0 24 0;
-#X connect 21 0 24 0;
-#X connect 23 0 24 0;
-#X connect 24 0 6 0;
-#X connect 24 1 7 0;
-#X connect 24 2 8 0;
-#X connect 24 3 9 0;
-#X connect 24 4 10 0;
-#X connect 24 5 11 0;
-#X connect 24 6 12 0;
-#X connect 24 7 13 0;
-#X connect 25 0 24 0;
-#X connect 30 0 24 0;
-#X restore 268 500 pd other-denominators;
-#X text 41 429 You can have other values as the denominator other than
-the usual multiples of "2" (4/4 \, 6/6 \, 15/16 \, etc). These can
-be intergers or floats (which can also be defined as fractions). This
-allows you to set tuplets as the tempo \, see examples and details
-in the subpatch below., f 77;
-#X text 42 531 Any time signature you can set as a messgae can also
-be set as an argument., f 77;
-#X connect 0 0 17 0;
-#X connect 1 0 17 0;
-#X connect 2 0 17 0;
-#X connect 9 0 17 0;
-#X connect 10 0 17 0;
-#X connect 17 0 3 0;
-#X connect 17 1 4 0;
-#X connect 17 2 5 0;
-#X connect 17 3 6 0;
-#X connect 17 4 7 0;
-#X connect 17 5 8 0;
-#X connect 17 6 18 0;
-#X connect 17 7 19 0;
-#X connect 22 0 17 0;
-#X connect 23 0 17 0;
-#X restore 470 151 pd time-sig;
-#X text 196 417 - beat phase output (0-1), f 47;
-#X text 196 436 - beat frame output (0-960), f 47;
+#X text 212 242 automatically grouped in 3 (1 sub-beats each);
+#X obj 93 390 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
+#X floatatom 266 362 4 0 0 0 - - - 12;
+#X text 59 389 beat bang, f 4;
+#X obj 122 481 else/out~;
+#X obj 234 392 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 231 419 7 0 0 0 - - - 12;
+#X text 201 362 sub div, f 3;
+#X obj 162 390 else/display 3;
+#X obj 127 390 else/display 3;
+#X obj 197 390 else/display 3;
+#X text 166 365 beat;
+#X text 131 365 bar;
+#X text 302 365 frames (0-960);
+#X text 287 420 phase (0-1);
+#X obj 93 286 else/metronome, f 41;
+#X floatatom 301 337 7 0 0 0 - - - 12;
+#X floatatom 336 310 7 0 0 0 - - - 12;
+#X text 357 340 beat length;
+#X text 392 313 beat tempo;
+#N canvas 126 109 461 307 metronome~ 0;
+#X obj 166 34 inlet;
+#X obj 253 34 inlet;
+#X obj 193 250 outlet~;
+#X obj 100 164 else/resonant~ 1700 100, f 14;
+#X obj 166 72 sel 1;
+#X obj 253 69 sel 1, f 6;
+#X obj 286 164 else/resonant~ 1000 100, f 14;
+#X obj 193 164 else/resonant~ 600 100, f 14;
+#X obj 286 130 else/impseq~;
+#X obj 193 130 else/impseq~;
+#X obj 100 130 else/impseq~;
+#X obj 193 103 bang;
+#X obj 286 103 bang;
+#X connect 0 0 4 0;
+#X connect 1 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 10 0;
+#X connect 4 1 11 0;
+#X connect 5 1 12 0;
+#X connect 6 0 2 0;
+#X connect 7 0 2 0;
+#X connect 8 0 6 0;
+#X connect 9 0 7 0;
+#X connect 10 0 3 0;
+#X connect 11 0 9 0;
+#X connect 12 0 8 0;
+#X restore 122 449 pd metronome~;
+#X connect 0 0 32 0;
+#X connect 1 0 32 0;
+#X connect 2 0 32 0;
+#X connect 3 0 32 0;
+#X connect 4 0 32 0;
+#X connect 13 0 32 0;
+#X connect 14 0 32 0;
+#X connect 22 0 23 0;
+#X connect 25 0 37 0;
+#X connect 27 0 37 1;
+#X connect 32 0 18 0;
+#X connect 32 1 26 0;
+#X connect 32 2 25 0;
+#X connect 32 3 27 0;
+#X connect 32 4 22 0;
+#X connect 32 5 19 0;
+#X connect 32 6 33 0;
+#X connect 32 7 34 0;
+#X connect 37 0 21 0;
+#X restore 479 131 pd time-sig;
+#X text 196 430 - beat phase output (0-1), f 47;
+#X text 196 449 - beat frame output (0-960), f 47;
 #X floatatom 220 197 3 0 0 0 - - - 0;
 #X floatatom 251 197 3 0 0 0 - - - 0;
-#N canvas 587 59 687 537 example 0;
-#X obj 295 39 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000 0 1;
-#X obj 295 210 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
-#X floatatom 538 74 4 0 0 0 - - - 12;
-#X floatatom 468 182 4 0 0 0 - - - 12;
-#X text 261 209 beat bang, f 4;
-#X obj 379 468 else/out~;
-#X obj 379 350 impseq~;
-#X obj 286 350 impseq~;
-#X obj 472 350 impseq~;
-#X obj 286 384 else/resonant~ 1700 100, f 14;
-#X obj 364 282 sel 1, f 3;
-#X obj 436 212 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X floatatom 433 239 7 0 0 0 - - - 12;
-#X obj 399 282 sel 1, f 3;
-#X text 403 235 sub div, f 3;
-#X obj 364 210 else/display 3;
-#X obj 329 210 else/display 3;
-#X obj 399 210 else/display 3;
-#X text 367 239 beat;
-#X text 330 238 bar;
-#X text 574 74 tempo;
-#X obj 472 384 else/resonant~ 1000 100, f 14;
-#X obj 379 384 else/resonant~ 600 100, f 14;
-#X text 504 185 frames (0-960);
-#X text 489 240 phase (0-1);
-#X msg 498 52 0;
-#X obj 548 51 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000;
-#X text 457 53 pause;
-#X text 568 50 unpause;
-#X obj 295 106 else/metronome, f 41;
-#X obj 538 27 else/initmess 90;
-#X floatatom 503 157 7 0 0 0 - - - 12;
-#X floatatom 538 130 7 0 0 0 - - - 12;
-#X obj 379 323 b, f 1;
-#X obj 472 323 b, f 1;
-#X text 559 160 beat length;
-#X text 594 133 beat tempo;
-#X msg 106 166 timesig 7/8;
-#X msg 97 144 timesig 6/8;
-#X msg 80 102 timesig 15/8 3;
-#X msg 112 186 timesig 4/4;
-#X msg 117 208 timesig 3/4;
-#X msg 89 123 timesig 15/8 5;
-#X obj 80 241 s \$0-metro;
-#X msg 101 337 timesig 4/(32/9);
-#X msg 81 295 timesig 4/6;
-#X msg 90 316 timesig 2/(8/3);
-#X msg 110 358 timesig 3/5;
-#X msg 118 379 timesig 6/10;
-#X msg 124 399 timesig 3/4.75;
-#X obj 82 436 s \$0-metro;
-#X obj 313 77 r \$0-metro;
-#X text 45 45 Here's an example on how to set a [metronome]. Try the
-different time signatures below., f 32;
-#X text 42 468 Any time signature you can set as a messgae can also
-be set as an argument., f 39;
-#X connect 0 0 29 0;
-#X connect 2 0 29 1;
-#X connect 6 0 22 0;
-#X connect 7 0 9 0;
-#X connect 8 0 21 0;
-#X connect 9 0 5 0;
-#X connect 10 0 7 0;
-#X connect 10 1 33 0;
-#X connect 11 0 12 0;
-#X connect 13 1 34 0;
-#X connect 15 0 10 0;
-#X connect 17 0 13 0;
-#X connect 21 0 5 0;
-#X connect 22 0 5 0;
-#X connect 25 0 29 1;
-#X connect 26 0 2 0;
-#X connect 29 0 1 0;
-#X connect 29 1 16 0;
-#X connect 29 2 15 0;
-#X connect 29 3 17 0;
-#X connect 29 4 11 0;
-#X connect 29 5 3 0;
-#X connect 29 6 31 0;
-#X connect 29 7 32 0;
-#X connect 30 0 2 0;
-#X connect 33 0 6 0;
-#X connect 34 0 8 0;
-#X connect 37 0 43 0;
-#X connect 38 0 43 0;
-#X connect 39 0 43 0;
-#X connect 40 0 43 0;
-#X connect 41 0 43 0;
-#X connect 42 0 43 0;
-#X connect 44 0 50 0;
-#X connect 45 0 50 0;
-#X connect 46 0 50 0;
-#X connect 47 0 50 0;
-#X connect 48 0 50 0;
-#X connect 49 0 50 0;
-#X connect 51 0 29 0;
-#X restore 476 171 pd example;
 #X obj 160 173 else/metronome 60, f 36;
 #X text 160 240 start;
 #X text 196 226 - start or restart metronome, f 47;
 #X text 196 240 - same as bang (start or restart metronome), f 47
 ;
-#X text 112 297 tempo <float>;
-#X text 196 297 - set tempo value in BPM, f 47;
-#X text 196 315 - set tempo value in BPM, f 47;
-#X text 152 534 2) symbol - time signature (default 4/4), f 49;
-#X text 152 548 3) float - group value (default 1), f 49;
-#X obj 4 492 cnv 3 550 3 empty empty flag 8 12 0 13 #dcdcdc #000000
+#X text 112 311 tempo <float>;
+#X text 196 311 - set tempo value in BPM, f 47;
+#X text 196 328 - set tempo value in BPM, f 47;
+#X text 152 547 2) symbol - time signature (default 4/4), f 49;
+#X text 152 561 3) float - group value (default 1), f 49;
+#X obj 4 505 cnv 3 550 3 empty empty flag 8 12 0 13 #dcdcdc #000000
 0;
-#X text 175 497 -name <symbol> - set a clock name;
-#N canvas 510 118 856 592 clock 0;
+#N canvas 434 104 907 587 clock 0;
 #X obj 77 30 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
 0 1;
-#X obj 110 249 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
-#X floatatom 299 164 4 0 0 0 - - - 12;
-#X floatatom 299 221 4 0 0 0 - - - 12;
-#X text 76 248 beat bang, f 4;
-#X obj 126 493 else/out~;
-#X obj 110 389 impseq~;
-#X obj 264 251 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X floatatom 261 278 7 0 0 0 - - - 12;
-#X text 227 274 sub div, f 3;
+#X obj 93 513 else/out~;
 #X msg 152 106 timesig 7/8;
 #X msg 137 79 timesig 6/8;
 #X msg 110 31 timesig 15/8 3;
-#X obj 185 249 else/display 3;
-#X obj 147 249 else/display 3;
-#X obj 223 249 else/display 3;
-#X text 191 279 beat;
-#X text 148 279 bar;
 #X msg 167 132 timesig 4/4;
 #X msg 179 157 timesig 3/4;
 #X msg 121 53 timesig 15/8 5;
-#X text 335 224 frames (0-960);
-#X text 317 279 phase (0-1);
-#X obj 110 195 else/metronome 90, f 32;
-#X obj 213 365 else/clock -s 2;
-#X obj 110 423 else/resonant~ 700 100, f 14;
-#X obj 213 421 impseq~;
-#X obj 213 448 else/resonant~ 1300 100, f 14;
-#X obj 483 39 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X obj 180 385 else/clock -s 2;
+#X obj 77 443 else/resonant~ 700 100, f 14;
+#X obj 180 468 else/resonant~ 1300 100, f 14;
+#X obj 474 39 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X obj 516 258 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
-#X floatatom 705 173 4 0 0 0 - - - 12;
-#X floatatom 705 230 4 0 0 0 - - - 12;
-#X text 482 257 beat bang, f 4;
-#X obj 532 502 else/out~;
-#X obj 516 398 impseq~;
-#X obj 670 260 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X floatatom 667 287 7 0 0 0 - - - 12;
-#X text 633 283 sub div, f 3;
-#X msg 558 115 timesig 7/8;
-#X msg 543 88 timesig 6/8;
-#X msg 516 40 timesig 15/8 3;
-#X obj 591 258 else/display 3;
-#X obj 553 258 else/display 3;
-#X obj 629 258 else/display 3;
-#X text 597 288 beat;
-#X text 554 288 bar;
-#X text 706 150 tempo;
-#X msg 573 141 timesig 4/4;
-#X msg 585 166 timesig 3/4;
-#X msg 527 62 timesig 15/8 5;
-#X text 741 233 frames (0-960);
-#X text 723 288 phase (0-1);
-#X obj 619 340 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X obj 523 502 else/out~;
+#X msg 545 113 timesig 7/8;
+#X msg 534 88 timesig 6/8;
+#X msg 507 40 timesig 15/8 3;
+#X msg 556 134 timesig 4/4;
+#X msg 566 156 timesig 3/4;
+#X msg 518 62 timesig 15/8 5;
+#X obj 610 340 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X obj 516 432 else/resonant~ 700 100, f 14;
-#X obj 619 430 impseq~;
-#X obj 619 457 else/resonant~ 1300 100, f 14;
-#X obj 619 401 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#X obj 507 432 else/resonant~ 700 100, f 14;
+#X obj 610 457 else/resonant~ 1300 100, f 14;
+#X obj 610 401 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X obj 516 204 else/metronome -name \$0-clock 90;
-#X obj 619 374 else/clock \$0-clock -s 2;
-#X msg 300 334 1.5;
-#X msg 269 334 2;
-#X msg 332 334 0.5;
-#X text 270 62 Example of [clock] objects in sync., f 19;
+#X obj 610 374 else/clock \$0-clock -s 2;
+#X msg 267 354 1.5;
+#X msg 236 354 2;
+#X msg 299 354 0.5;
+#X text 260 62 Example of [clock] objects in sync., f 19;
 #X text 672 58 A [metronome] can also have a clock name with the '-name'
 flag., f 22;
-#X obj 213 335 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X obj 180 355 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X obj 213 392 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#X obj 180 412 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X msg 760 344 1.5;
-#X msg 729 344 2;
-#X msg 792 344 0.5;
-#X text 548 341 turn on =>;
-#X text 143 337 turn on =>;
-#X text 441 34 turn on =>, f 5;
+#X msg 751 344 1.5;
+#X msg 720 344 2;
+#X msg 783 344 0.5;
+#X text 539 341 turn on =>;
+#X text 110 357 turn on =>;
+#X text 432 34 turn on =>, f 5;
 #X text 35 26 turn on =>, f 5;
-#X connect 0 0 23 0;
-#X connect 1 0 6 0;
-#X connect 2 0 23 1;
-#X connect 6 0 25 0;
-#X connect 7 0 8 0;
-#X connect 10 0 23 0;
-#X connect 11 0 23 0;
-#X connect 12 0 23 0;
-#X connect 18 0 23 0;
+#X obj 77 297 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
+#X floatatom 250 273 4 0 0 0 - - - 12;
+#X text 43 296 beat bang, f 4;
+#X obj 218 299 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X text 185 269 sub div, f 3;
+#X obj 146 297 else/display 3;
+#X obj 111 297 else/display 3;
+#X obj 181 297 else/display 3;
+#X text 150 272 beat;
+#X text 115 272 bar;
+#X text 286 276 frames (0-960);
+#X obj 77 200 else/metronome, f 41;
+#X floatatom 285 249 7 0 0 0 - - - 12;
+#X floatatom 320 223 7 0 0 0 - - - 12;
+#X text 341 252 beat length;
+#X text 376 226 beat tempo;
+#X obj 77 409 else/impseq~;
+#X obj 507 398 else/impseq~;
+#X obj 180 441 else/impseq~;
+#X obj 610 430 else/impseq~;
+#X floatatom 320 167 4 0 0 0 - - - 12;
+#X text 321 144 tempo;
+#X obj 507 287 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X floatatom 680 263 4 0 0 0 - - - 12;
+#X text 473 286 beat bang, f 4;
+#X obj 648 289 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X text 615 259 sub div, f 3;
+#X obj 576 287 else/display 3;
+#X obj 541 287 else/display 3;
+#X obj 611 287 else/display 3;
+#X text 580 262 beat;
+#X text 545 262 bar;
+#X text 716 266 frames (0-960);
+#X obj 507 190 else/metronome, f 41;
+#X floatatom 715 239 7 0 0 0 - - - 12;
+#X floatatom 750 213 7 0 0 0 - - - 12;
+#X text 771 242 beat length;
+#X text 806 216 beat tempo;
+#X floatatom 750 157 4 0 0 0 - - - 12;
+#X text 751 134 tempo;
+#X connect 0 0 49 0;
+#X connect 2 0 49 0;
+#X connect 3 0 49 0;
+#X connect 4 0 49 0;
+#X connect 5 0 49 0;
+#X connect 6 0 49 0;
+#X connect 7 0 49 0;
+#X connect 8 0 30 0;
+#X connect 9 0 1 0;
+#X connect 10 0 1 1;
+#X connect 11 0 71 0;
+#X connect 13 0 71 0;
+#X connect 14 0 71 0;
+#X connect 15 0 71 0;
+#X connect 16 0 71 0;
+#X connect 17 0 71 0;
+#X connect 18 0 71 0;
 #X connect 19 0 23 0;
-#X connect 20 0 23 0;
-#X connect 23 0 1 0;
-#X connect 23 1 14 0;
-#X connect 23 2 13 0;
-#X connect 23 3 15 0;
-#X connect 23 4 7 0;
-#X connect 23 5 3 0;
-#X connect 24 0 65 0;
-#X connect 25 0 5 0;
-#X connect 26 0 27 0;
-#X connect 27 0 5 1;
-#X connect 28 0 57 0;
-#X connect 29 0 34 0;
-#X connect 30 0 57 1;
-#X connect 34 0 53 0;
-#X connect 35 0 36 0;
-#X connect 38 0 57 0;
-#X connect 39 0 57 0;
-#X connect 40 0 57 0;
-#X connect 47 0 57 0;
-#X connect 48 0 57 0;
-#X connect 49 0 57 0;
-#X connect 52 0 58 0;
-#X connect 53 0 33 0;
-#X connect 54 0 55 0;
-#X connect 55 0 33 1;
-#X connect 56 0 54 0;
-#X connect 57 0 29 0;
-#X connect 57 1 42 0;
-#X connect 57 2 41 0;
-#X connect 57 3 43 0;
-#X connect 57 4 35 0;
-#X connect 57 5 31 0;
-#X connect 58 0 56 0;
-#X connect 59 0 24 1;
-#X connect 60 0 24 1;
-#X connect 61 0 24 1;
-#X connect 64 0 24 0;
-#X connect 65 0 26 0;
-#X connect 66 0 58 1;
-#X connect 67 0 58 1;
-#X connect 68 0 58 1;
-#X restore 488 190 pd clock;
-#X text 152 520 1) float - (optional) tempo in BPM (default 120),
+#X connect 20 0 12 0;
+#X connect 21 0 12 1;
+#X connect 22 0 57 0;
+#X connect 23 0 22 0;
+#X connect 24 0 8 1;
+#X connect 25 0 8 1;
+#X connect 26 0 8 1;
+#X connect 29 0 8 0;
+#X connect 30 0 56 0;
+#X connect 31 0 23 1;
+#X connect 32 0 23 1;
+#X connect 33 0 23 1;
+#X connect 38 0 54 0;
+#X connect 49 0 38 0;
+#X connect 49 1 44 0;
+#X connect 49 2 43 0;
+#X connect 49 3 45 0;
+#X connect 49 4 41 0;
+#X connect 49 5 39 0;
+#X connect 49 6 50 0;
+#X connect 49 7 51 0;
+#X connect 54 0 9 0;
+#X connect 55 0 20 0;
+#X connect 56 0 10 0;
+#X connect 57 0 21 0;
+#X connect 58 0 49 1;
+#X connect 60 0 55 0;
+#X connect 71 0 60 0;
+#X connect 71 1 66 0;
+#X connect 71 2 65 0;
+#X connect 71 3 67 0;
+#X connect 71 4 63 0;
+#X connect 71 5 61 0;
+#X connect 71 6 72 0;
+#X connect 71 7 73 0;
+#X connect 76 0 71 1;
+#X restore 497 187 pd clock;
+#X text 152 533 1) float - (optional) tempo in BPM (default 120),
 f 49;
 #X text 196 269 - stop and rewind, f 47;
 #X text 196 254 - non-zero (re)starts \, zero stops, f 47;
@@ -497,26 +348,287 @@ f 49;
 #X text 180 123 start/stop;
 #X floatatom 342 197 4 0 0 0 - - - 0;
 #X floatatom 373 197 4 0 0 0 - - - 0;
-#X text 160 455 float;
-#X text 160 474 float;
-#X obj 76 454 cnv 17 3 17 empty empty 6 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 160 468 float;
+#X text 160 487 float;
+#X obj 76 467 cnv 17 3 17 empty empty 6 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 473 cnv 17 3 17 empty empty 7 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 486 cnv 17 3 17 empty empty 7 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 196 455 - beat value, f 47;
-#X text 196 474 - beat tempo value, f 47;
+#X text 196 468 - beat value, f 47;
+#X text 196 487 - beat tempo value, f 47;
 #X text 53 83 [metronome] understands complex time signatures and outputs
 lots of data like bar \, beat and sub-beat count \, phase and frame
 output. It also syncs to [clock] objects., f 78;
-#X connect 6 0 55 0;
-#X connect 17 0 55 1;
-#X connect 20 0 55 0;
-#X connect 28 0 55 0;
-#X connect 55 0 22 0;
-#X connect 55 1 23 0;
-#X connect 55 2 52 0;
-#X connect 55 3 53 0;
-#X connect 55 4 24 0;
-#X connect 55 5 25 0;
-#X connect 55 6 73 0;
-#X connect 55 7 74 0;
+#X text 112 283 beat <symbol>;
+#X text 196 283 - set beat length symbol, f 47;
+#X text 105 510 -name <symbol> - set a clock name (default \, internal
+relative to patch), f 71;
+#N canvas 470 71 839 611 more_time-sig 0;
+#X msg 445 65 timesig 2/2.666666666;
+#X msg 469 117 timesig 4/3.55555555555;
+#X msg 474 137 timesig 4/(32/9);
+#X text 29 90 The denominator of a time signature defines the tempo
+value as a fraction of a whole note (whose value is "1"). The base
+tempo value \, by default \, is a quarter note \, defined as "1/4".
+Hence \, a "4/4" time signature defines 4 beats of quarter notes. Besides
+multiples of '2' as the denumerator \, which is common in music notation
+\, you can also use other values. For instance '2/3' means two beats
+of a tempo that is equal to 1/3 of a whole note. This would then be
+the same as a triplet of a half note. Consequently \, '4/6' is four
+beats of a quarter note triplet. On the other hand 3/5 is three beats
+of a quarter note quintuplet., f 59;
+#X text 29 220 If you want a '3:2' triplet as the tempo value (where
+you have 3 quarter notes in the space of two) you have to calculate
+how many of them fits in a whole note. The base value is still a quarter
+note (even though it is a triplet) so we can just multiply 3:2 by 4!
+That gives us "12/2" \, which is "6" and means you can fit 6 of them
+in a whole note. Therefore \, the denominator is "6"! We've seen this
+already \, but the point is that this also doesn't need to be an integer
+value. Let's see another case were we don't have an integer.;
+#X text 29 335 Let's think of a '2:3' tuplet for quarter notes \, which
+is the same as a dotted quarter note. We multiply by 4 and get "8/3"
+\, which is "2.66667"! So yeah \, 2/2.66667 is a possible value that
+defines 2 tempos of a '2:3' quarter note tuplet. This gives us the
+same bar length of 3/4 and 6/8 but it's a "simple" binary time signature.
+;
+#X msg 425 33 timesig 4/6;
+#X text 503 32 four beats of a quarter note triplet;
+#X msg 452 83 timesig 2/(8/3);
+#X text 589 69 two beats of '2:3' tuplet for quarter notes, f 25;
+#X text 618 115 four beats of '8:9' for quarter notes, f 19;
+#X msg 487 172 timesig 3/5;
+#X text 568 166 three beats of '4:5' (quintuplets) for quarter notes
+, f 34;
+#X msg 494 211 timesig 6/10;
+#X text 579 205 six beats of '4:5' (quintuplets) for eight notes (grouped
+in 2), f 34;
+#X obj 528 314 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
+#X msg 505 250 timesig 3/4.75;
+#X text 606 244 three beats of "whatever" (I don't know \, just going
+crazy), f 30;
+#X text 29 407 Let's get a bit crazier now and use an 8:9 tuplet for
+eight notes (where we have eight eigth notes in the space of nine eight
+notes) and consider two of them (hence \, a quarter note) as the beat
+lenght. The ratio is actually "4:4.5" but let's use the "8:9" and multiply
+it by 4 (as the base measure is a fourth note). So 8:9 x 4 is "32:9"
+\, which gives us "3.555556". Therefore \, 4/3.555556 means 4 beats
+that fit into 9 eight notes., f 59;
+#X text 29 502 The time signature \, for now \, only accepts integers
+for the numerator (number of beats) \, but it accepts floats as the
+denumerator and it also allows you to use fractions in parenthesis.
+Hence \, you can define "2/2.66667" or 2/(8/3) and "4/3.555556" or
+4/(32/9) \, both formats work! Number in fractions don't need to be
+integers as well so all crazy things can happen to define a tempo duration.
+, f 59;
+#X text 649 286 going even crazier, f 19;
+#X msg 510 287 timesig 4/(30.7/5.65);
+#X text 29 17 You can have other values as the denominator other than
+the usual multiples of "2" (4/4 \, 6/6 \, 15/16 \, etc). These can
+be intergers or floats (which can also be defined as fractions). This
+allows you to set tuplets as the tempo \, see below. Any time signature
+you can set as a messgae can also be set as an argument., f 59;
+#X obj 445 455 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X floatatom 618 427 4 0 0 0 - - - 12;
+#X text 411 454 beat bang, f 4;
+#X obj 474 535 else/out~;
+#X obj 586 457 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 583 484 7 0 0 0 - - - 12;
+#X text 553 427 sub div, f 3;
+#X obj 514 455 else/display 3;
+#X obj 479 455 else/display 3;
+#X obj 549 455 else/display 3;
+#X text 518 430 beat;
+#X text 483 430 bar;
+#X text 654 430 frames (0-960);
+#X text 639 485 phase (0-1);
+#X obj 445 351 else/metronome, f 41;
+#X floatatom 653 402 7 0 0 0 - - - 12;
+#X floatatom 688 375 7 0 0 0 - - - 12;
+#X text 709 405 beat length;
+#X text 744 378 beat tempo;
+#N canvas 126 109 461 307 metronome~ 0;
+#X obj 166 34 inlet;
+#X obj 253 34 inlet;
+#X obj 193 250 outlet~;
+#X obj 100 164 else/resonant~ 1700 100, f 14;
+#X obj 166 72 sel 1;
+#X obj 253 69 sel 1, f 6;
+#X obj 286 164 else/resonant~ 1000 100, f 14;
+#X obj 193 164 else/resonant~ 600 100, f 14;
+#X obj 286 130 else/impseq~;
+#X obj 193 130 else/impseq~;
+#X obj 100 130 else/impseq~;
+#X obj 193 103 bang;
+#X obj 286 103 bang;
+#X connect 0 0 4 0;
+#X connect 1 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 10 0;
+#X connect 4 1 11 0;
+#X connect 5 1 12 0;
+#X connect 6 0 2 0;
+#X connect 7 0 2 0;
+#X connect 8 0 6 0;
+#X connect 9 0 7 0;
+#X connect 10 0 3 0;
+#X connect 11 0 9 0;
+#X connect 12 0 8 0;
+#X restore 474 503 pd metronome~;
+#X connect 0 0 37 0;
+#X connect 1 0 37 0;
+#X connect 2 0 37 0;
+#X connect 6 0 37 0;
+#X connect 8 0 37 0;
+#X connect 11 0 37 0;
+#X connect 13 0 37 0;
+#X connect 15 0 37 0;
+#X connect 16 0 37 0;
+#X connect 21 0 37 0;
+#X connect 27 0 28 0;
+#X connect 30 0 42 0;
+#X connect 32 0 42 1;
+#X connect 37 0 23 0;
+#X connect 37 1 31 0;
+#X connect 37 2 30 0;
+#X connect 37 3 32 0;
+#X connect 37 4 27 0;
+#X connect 37 5 24 0;
+#X connect 37 6 38 0;
+#X connect 37 7 39 0;
+#X connect 42 0 26 0;
+#X restore 449 150 pd more_time-sig;
+#N canvas 448 96 846 546 beat-length 0;
+#X obj 415 33 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
+#X obj 414 358 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X floatatom 587 330 4 0 0 0 - - - 12;
+#X text 380 357 beat bang, f 4;
+#X obj 443 449 else/out~;
+#X obj 555 360 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 552 387 7 0 0 0 - - - 12;
+#X text 522 330 sub div, f 3;
+#X obj 483 358 else/display 3;
+#X obj 448 358 else/display 3;
+#X obj 518 358 else/display 3;
+#X text 487 333 beat;
+#X text 452 333 bar;
+#X text 623 333 frames (0-960);
+#X text 608 388 phase (0-1);
+#X floatatom 622 305 7 0 0 0 - - - 12;
+#X floatatom 657 278 7 0 0 0 - - - 12;
+#N canvas 126 109 461 307 metronome~ 0;
+#X obj 166 34 inlet;
+#X obj 253 34 inlet;
+#X obj 193 250 outlet~;
+#X obj 100 164 else/resonant~ 1700 100, f 14;
+#X obj 166 72 sel 1;
+#X obj 253 69 sel 1, f 6;
+#X obj 286 164 else/resonant~ 1000 100, f 14;
+#X obj 193 164 else/resonant~ 600 100, f 14;
+#X obj 286 130 else/impseq~;
+#X obj 193 130 else/impseq~;
+#X obj 100 130 else/impseq~;
+#X obj 193 103 bang;
+#X obj 286 103 bang;
+#X connect 0 0 4 0;
+#X connect 1 0 5 0;
+#X connect 3 0 2 0;
+#X connect 4 0 10 0;
+#X connect 4 1 11 0;
+#X connect 5 1 12 0;
+#X connect 6 0 2 0;
+#X connect 7 0 2 0;
+#X connect 8 0 6 0;
+#X connect 9 0 7 0;
+#X connect 10 0 3 0;
+#X connect 11 0 9 0;
+#X connect 12 0 8 0;
+#X restore 443 417 pd metronome~;
+#X msg 462 132 beat 1/4 \, timesig 3/4;
+#X msg 472 153 beat 1/4 \, timesig 6/8;
+#X msg 477 174 beat 3/8 \, timesig 6/8;
+#X obj 414 254 else/metronome, f 41;
+#X obj 657 226 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X obj 657 197 else/initmess 90;
+#X msg 443 87 beat 1/2 \, timesig 4/4;
+#X msg 452 110 beat 1/8 \, timesig 4/4;
+#X msg 491 216 beat 1/6 \, timesig 2/4;
+#X msg 433 67 beat 1/4 \, timesig 4/4;
+#X text 573 66 default values;
+#X msg 484 195 beat 1/8 \, timesig 6/8;
+#X text 678 308 actual beat length;
+#X text 713 281 actual beat tempo;
+#X text 46 48 By default \, the beat length is 1/4 (wich means a quarter
+note). So when you set a tempo value \, that BPM considers a fourth
+note. You can set the beat legnth with the 'beat' message and you can
+set it before a time signature change. If you set the beat length to
+"1/2" \, the BPM value is for a half note. If you still have a 4/4
+time signature \, this means that each beat (which is a quarter note
+here) will have a beat twice as fast than the given tempo and the actual
+lenght is half! You can see this in the two rightmost outlets., f
+51;
+#X text 46 174 In the same way \, a beat of "1/8" means the BPM is
+for an eight note \, so a 4/4 beat will be have an actual beat that
+is twice as slow and an actual beat lenght that is equal to 2!, f
+51;
+#X text 46 225 If you set a "6/8" time signature \, it will give you
+two groups of beats subdivided by 3 \, that means you get two beats
+whose lenght is 3/8 (the same as a dotted quarter note). With the default
+beat length of 1/4 \, the tempo is for a quarter note \, not a dotted
+quarter note \, so each beat will actually have a lenght of 1.5! If
+you want the given tempo to reflect a beat duration of 3/8 \, just
+send the "beat 3/8" message. Now the two rightmost outlets will make
+sure that the beat corresponds to the given tempo. Each eigh note is
+now one third of the beat., f 51;
+#X text 46 365 You can also set a 6/8 time signature and say the tempo
+corresponds to an eight note \, which makes the whole beat three times
+as slow., f 51;
+#X text 46 405 Note you can also set other beat lenghts that correspond
+to tuplets. A beat lenght of "1/6" considers a quarter note triplet
+as the beat lenght. For a "2/4" signature \, the actual beat lenght
+of 1.5 \, because a quarter note fits 1.5 quarter note triplets (or
+3 eight note triplets) inside. Note that this has the same beat lenght
+and number of tempos than a 6/8 time signature with a beat lenght of
+1/4!, f 57;
+#X connect 0 0 21 0;
+#X connect 5 0 6 0;
+#X connect 8 0 17 0;
+#X connect 10 0 17 1;
+#X connect 17 0 4 0;
+#X connect 18 0 21 0;
+#X connect 19 0 21 0;
+#X connect 20 0 21 0;
+#X connect 21 0 1 0;
+#X connect 21 1 9 0;
+#X connect 21 2 8 0;
+#X connect 21 3 10 0;
+#X connect 21 4 5 0;
+#X connect 21 5 2 0;
+#X connect 21 6 15 0;
+#X connect 21 7 16 0;
+#X connect 22 0 21 1;
+#X connect 23 0 22 0;
+#X connect 24 0 21 0;
+#X connect 25 0 21 0;
+#X connect 26 0 21 0;
+#X connect 27 0 21 0;
+#X connect 29 0 21 0;
+#X restore 461 168 pd beat-length;
+#X connect 6 0 54 0;
+#X connect 17 0 54 1;
+#X connect 20 0 54 0;
+#X connect 28 0 54 0;
+#X connect 54 0 22 0;
+#X connect 54 1 23 0;
+#X connect 54 2 52 0;
+#X connect 54 3 53 0;
+#X connect 54 4 24 0;
+#X connect 54 5 25 0;
+#X connect 54 6 71 0;
+#X connect 54 7 72 0;
