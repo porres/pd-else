@@ -221,6 +221,7 @@ meter2~	x
 meter4~	x
 meter8~	x
 metronome	x
+metronome~	x
 midi	x
 midi.clock	x
 midi.learn	x
