@@ -12,10 +12,9 @@ typedef struct _metronome{
     t_clock    *x_clock;
     t_symbol   *x_sig;
     t_symbol   *x_s_name;
-    t_int       x_pause;
     t_int       x_running;
-    t_int       x_freeze;
     t_int       x_dir;
+    t_int       x_complex;
     t_int       x_sigchange;
     t_int       x_group;
     t_int       x_ticks;
@@ -23,6 +22,7 @@ typedef struct _metronome{
     t_int       x_subdiv;
     t_int       x_n_subdiv;
     t_int       x_barcount;
+    t_int       x_sub_barcount;
     t_int       x_tempocount;
     t_float     x_bpm;
     t_float     x_tempo;
@@ -48,7 +48,7 @@ static void output_actual_list(t_metronome *x){
 static void output_count_list(t_metronome *x){
     t_atom at[4];
     SETFLOAT(at, x->x_barcount);
-    SETFLOAT(at+1, 1); // sub-bar
+    SETFLOAT(at+1, x->x_sub_barcount); // sub-bar
     SETFLOAT(at+2, x->x_tempocount);
     SETFLOAT(at+3, x->x_subdiv);
     outlet_list(x->x_count_out, &s_list, 4, at);
@@ -119,7 +119,7 @@ static void metronome_div(t_metronome *x, t_atom *av){
     x->x_n_tempo = x->x_group;
     x->x_tempo_div = (float)(div * x->x_beat_length/(t_float)x->x_group);
     output_actual_list(x);
-    if(!x->x_freeze)
+    if(x->x_running)
         clock_setunit(x->x_clock, x->x_tempo * x->x_tempo_div / x->x_ticks, 0);
 }
 
@@ -166,15 +166,12 @@ static void metronome_beat(t_metronome *x, t_symbol *s){
 
 static void metronome_tick(t_metronome *x){
     outlet_float(x->x_phaseout, (float)x->x_tickcount / (float)x->x_ticks);
-    if(x->x_barcount < 0){
+    if(x->x_barcount < 1){
         metronome_stop(x);
         return;
     }
     if(x->x_tickcount == 0){
-        x->x_subdiv = 1;
-/*        t_int tempoout = x->x_tempocount + 1;
-        post("x->x_sigchange (%d) tempoout (%d)", x->x_sigchange, tempoout);
-        post("x->x_tempocount (%d)", x->x_tempocount);*/
+        x->x_subdiv = x->x_sub_barcount = 1;
         if(x->x_dir)
             x->x_tempocount++;
         else
@@ -223,61 +220,34 @@ static void metronome_tick(t_metronome *x){
     clock_delay(x->x_clock, 1);
 }
 
-static void metronome_rewind(t_metronome *x){
-    x->x_barcount = x->x_tempocount = x->x_tickcount = 0;
-}
-
 static void metronome_float(t_metronome *x, t_float f){
-    f = f != 0;
+    f = (f != 0);
     if(x->x_s_name->s_thing)
         pd_float(x->x_s_name->s_thing, f);
     if(f){
-        output_actual_list(x);
-        x->x_pause = 0;
+        x->x_barcount = x->x_sub_barcount = x->x_tempocount = x->x_subdiv = x->x_tickcount = 0;
+        output_count_list(x);
+        x->x_barcount++;
         x->x_running = 1;
-        if(!x->x_freeze)
-            metronome_tick(x);
+        metronome_tick(x);
     }
     else{
-//        x->x_pause = 1;
         x->x_running = 0;
         clock_unset(x->x_clock);
-        metronome_rewind(x);
     }
 }
 
-/*static void metronome_stop(t_metronome *x){
-    metronome_float(x, 0);
-    x->x_pause = 0;
-    x->x_running = 0;
-    x->x_barcount = x->x_tempocount = x->x_tickcount = 0;
-}*/
-
 static void metronome_start(t_metronome *x){
-//    post("--------start--------");
-    x->x_barcount = x->x_tempocount = x->x_tickcount = 0;
-//    if(!x->x_running){
-//        x->x_running = 1;
     if(x->x_s_name->s_thing){
-            t_atom at[0];
-            typedmess(x->x_s_name->s_thing, gensym("resync"), 0, at);
-        }
-        metronome_float(x, 1);
-//    }
+        t_atom at[0];
+        typedmess(x->x_s_name->s_thing, gensym("resync"), 0, at);
+    }
+    metronome_float(x, 1);
 }
 
 static void metronome_stop(t_metronome *x){
     metronome_float(x, 0);
-    metronome_rewind(x);
 }
-
-/*static void metronome_pause(t_metronome *x){
-    metronome_float(x, 0);
-}
-
-static void metronome_play(t_metronome *x){
-    metronome_float(x, 1);
-}*/
 
 static void metronome_timesig(t_metronome *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
@@ -288,7 +258,7 @@ static void metronome_timesig(t_metronome *x, t_symbol *s, int ac, t_atom *av){
             if((av+1)->a_type == A_SYMBOL){
                 if(atom_getsymbol(av+1) == gensym("+")){
                     compound = 1;
-//                    post("COMPOUND!!!");
+                    post("COMPLEX!!!");
                 }
                 else
                    pd_error(x, "[metronome]: timesig: invalid syntax");
@@ -313,20 +283,14 @@ static void metronome_timesig(t_metronome *x, t_symbol *s, int ac, t_atom *av){
     }
     else
         pd_error(x, "[metronome]: wrong time signature symbol");
-//    post("x->x_n_tempo = %d / x->x_n_subdiv = %d ", x->x_n_tempo, x->x_n_subdiv);
 }
 
 static void metronome_tempo(t_metronome *x, t_floatarg tempo){
+//    post("tempo = %f", tempo);
     if(tempo < 0) // avoid negative tempo for now
         tempo = 0;
-    x->x_bpm = tempo;
-    output_actual_list(x);
     if(tempo != 0){
-        if(x->x_freeze){
-            x->x_freeze = 0;
-            if(!x->x_pause)
-                metronome_float(x, 1);
-        }
+        x->x_bpm = tempo;
         tempo = 60000./tempo;
         int dir = (tempo > 0);
         if(tempo < 0)
@@ -349,19 +313,26 @@ static void metronome_tempo(t_metronome *x, t_floatarg tempo){
                 }
             }
         }
+        if(!x->x_running){
+            x->x_running = 1;
+            metronome_tick(x);
+        }
         clock_setunit(x->x_clock, x->x_tempo * x->x_tempo_div / x->x_ticks, 0);
+        if(x->x_s_name->s_thing){
+            t_atom at[2];
+            SETFLOAT(at, x->x_bpm);
+            SETSYMBOL(at+1, gensym("permin"));
+            typedmess(x->x_s_name->s_thing, gensym("tempo"), 2, at);
+        }
     }
     else{
         clock_unset(x->x_clock);
-        x->x_freeze = 1;
+        x->x_running = 0;
     }
-    if(x->x_s_name->s_thing){
-//        x->x_bpm *= x->x_tempo_div;
-        t_atom at[2];
-        SETFLOAT(at, x->x_bpm);
-        SETSYMBOL(at+1, gensym("permin"));
-        typedmess(x->x_s_name->s_thing, gensym("tempo"), 2, at);
-    }
+}
+
+static void metronome_continue(t_metronome *x){
+    metronome_tempo(x, x->x_bpm);
 }
 
 static void metronome_free(t_metronome *x){
@@ -383,7 +354,7 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
     x->x_tempo_div = 1;
     x->x_beat_length = 4;
     x->x_group = 0;
-    x->x_running = 0;
+    x->x_complex = 0;
     x->x_sigchange = 0;
     x->x_n_tempo = 4;
     x->x_n_subdiv = 1;
@@ -473,7 +444,5 @@ void metronome_setup(void){
     class_addmethod(metronome_class, (t_method)metronome_start, gensym("start"), 0);
     class_addmethod(metronome_class, (t_method)metronome_tempo, gensym("tempo"), A_FLOAT, 0);
     class_addmethod(metronome_class, (t_method)metronome_beat, gensym("beat"), A_SYMBOL, 0);
-//    class_addmethod(metronome_class, (t_method)metronome_pause, gensym("pause"), 0);
-//    class_addmethod(metronome_class, (t_method)metronome_play, gensym("play"), 0);
-//    class_addmethod(metronome_class, (t_method)metronome_rewind, gensym("rewind"), 0);
+    class_addmethod(metronome_class, (t_method)metronome_continue, gensym("continue"), 0);
 }
