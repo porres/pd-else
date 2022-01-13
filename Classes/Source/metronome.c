@@ -46,12 +46,12 @@ static void output_actual_list(t_metronome *x){
 }
 
 static void output_count_list(t_metronome *x){
-    t_atom at[3];
+    t_atom at[4];
     SETFLOAT(at, x->x_barcount);
-    SETFLOAT(at+1, x->x_tempocount);
-    SETFLOAT(at+2, x->x_subdiv);
-//    SETFLOAT(at+3, 4);
-    outlet_list(x->x_count_out, &s_list, 3, at);
+    SETFLOAT(at+1, 1); // sub-bar
+    SETFLOAT(at+2, x->x_tempocount);
+    SETFLOAT(at+3, x->x_subdiv);
+    outlet_list(x->x_count_out, &s_list, 4, at);
 }
 
 static void string2atom(t_atom *ap, char* ch, int clen){
