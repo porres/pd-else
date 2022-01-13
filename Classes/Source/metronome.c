@@ -411,13 +411,25 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
     x->x_tempodivout = outlet_new((t_object *)x, gensym("float"));
     x->x_bpmout = outlet_new((t_object *)x, gensym("float"));
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("tempo"));
-    if(ac >= 2 && av->a_type == A_SYMBOL){
+    while(ac >= 2 &&
+    ((atom_getsymbolarg(0, ac, av) == gensym("-name")) ||
+    (atom_getsymbolarg(0, ac, av) == gensym("-beat")))){
         t_symbol *sym = atom_getsymbolarg(0, ac, av);
         if(sym == gensym("-name")){
             ac--, av++;
             if(av->a_type == A_SYMBOL){
                 sym = atom_getsymbolarg(0, ac, av);
                 x->x_s_name = canvas_realizedollar(canvas, sym);
+                ac--, av++;
+            }
+            else
+                goto errstate;
+        }
+        else if(sym == gensym("-beat")){
+            ac--, av++;
+            if(av->a_type == A_SYMBOL){
+                sym = atom_getsymbolarg(0, ac, av);
+                metronome_beat(x, sym);
                 ac--, av++;
             }
             else
