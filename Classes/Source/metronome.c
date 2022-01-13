@@ -1,4 +1,4 @@
- // porres 2021-2022
+// porres 2021-2022
 
 #include "m_pd.h"
 #include <stdlib.h>
@@ -29,18 +29,30 @@ typedef struct _metronome{
     t_float     x_n_tempo;
     t_float     x_tempo_div;
     t_float     x_beat_length;
-    t_outlet   *x_barout;
-    t_outlet   *x_tempoout;
-    t_outlet   *x_subdivout;
+    t_outlet   *x_count_out;
     t_outlet   *x_phaseout;
-    t_outlet   *x_tempodivout;
-    t_outlet   *x_bpmout;
-    t_outlet   *x_tickout;
+    t_outlet   *x_actual_out;
 }t_metronome;
 
 static t_class *metronome_class;
 
 static void metronome_stop(t_metronome *x);
+
+static void output_actual_list(t_metronome *x){
+    t_atom at[2];
+    SETFLOAT(at, x->x_tempo_div);
+    SETFLOAT(at+1, x->x_bpm / x->x_tempo_div);
+    outlet_list(x->x_actual_out, &s_list, 2, at);
+}
+
+static void output_count_list(t_metronome *x){
+    t_atom at[3];
+    SETFLOAT(at, x->x_barcount);
+    SETFLOAT(at+1, x->x_tempocount);
+    SETFLOAT(at+2, x->x_subdiv);
+//    SETFLOAT(at+3, 4);
+    outlet_list(x->x_count_out, &s_list, 3, at);
+}
 
 static void string2atom(t_atom *ap, char* ch, int clen){
     char *buf = getbytes(sizeof(char)*(clen+1));
@@ -74,10 +86,8 @@ static void metronome_div(t_metronome *x, t_atom *av){
             string2atom(d_av, s, d-s);
             s = d+1;
             string2atom(d_av+1, s, strlen(s));
-            if(d_av->a_type == A_FLOAT && (d_av+1)->a_type == A_FLOAT){
+            if(d_av->a_type == A_FLOAT && (d_av+1)->a_type == A_FLOAT)
                 f2 = atom_getfloat(d_av) / atom_getfloat(d_av+1);
-//                post("f2 = %f", f2);
-            }
             else{
                 pd_error(x, "[metronome]: wrong time signature symbol");
                 return;
@@ -95,10 +105,7 @@ static void metronome_div(t_metronome *x, t_atom *av){
         return;
     }
     t_float div = f1 / f2;
-//    post("(t_float div = f1 / f2) %f/%f = %f", f1, f2, div);
-//    post("metronome f1(%g) / f2(%g) ==> div = %g", f1, f2, div);
     if(!x->x_group){
-//        post("no group, so subdiv = 1 and group = f1");
         if(f1 == 6)
             x->x_group = 2;
         else if(f1 == 9)
@@ -108,18 +115,10 @@ static void metronome_div(t_metronome *x, t_atom *av){
         else
             x->x_group = (int)f1;
     }
-//    post("f1 = %f", f1);
-//    post("x_group = %d", x->x_group);
     x->x_n_subdiv = (int)(f1/((t_float)x->x_group));
-//    post("x_n_subdiv = %d", x->x_n_subdiv);
     x->x_n_tempo = x->x_group;
-//    post("x->x_n_tempo (group) = %d", (int)x->x_n_tempo);
-//    post("div = %g", div);
-//    post("div * 4 = %g", div * 4);
     x->x_tempo_div = (float)(div * x->x_beat_length/(t_float)x->x_group);
-//    post("x->x_tempo_div (%g)", x->x_tempo_div);
-    outlet_float(x->x_bpmout, x->x_bpm / x->x_tempo_div);
-    outlet_float(x->x_tempodivout, x->x_tempo_div);
+    output_actual_list(x);
     if(!x->x_freeze)
         clock_setunit(x->x_clock, x->x_tempo * x->x_tempo_div / x->x_ticks, 0);
 }
@@ -166,44 +165,29 @@ static void metronome_beat(t_metronome *x, t_symbol *s){
 }
 
 static void metronome_tick(t_metronome *x){
-    outlet_float(x->x_tickout, x->x_tickcount);
     outlet_float(x->x_phaseout, (float)x->x_tickcount / (float)x->x_ticks);
     if(x->x_barcount < 0){
         metronome_stop(x);
         return;
     }
     if(x->x_tickcount == 0){
-//        post("========> x->x_tickcount == 0");
-
-        outlet_float(x->x_subdivout, x->x_subdiv = 1);
-        
-        t_int tempoout = x->x_tempocount + 1;
-        t_int barout = x->x_barcount + 1;
-        if(x->x_dir){
-//            post("x_dir x->x_tempocount (%d)", x->x_tempocount);
+        x->x_subdiv = 1;
+/*        t_int tempoout = x->x_tempocount + 1;
+        post("x->x_sigchange (%d) tempoout (%d)", x->x_sigchange, tempoout);
+        post("x->x_tempocount (%d)", x->x_tempocount);*/
+        if(x->x_dir)
             x->x_tempocount++;
-//            post("x->x_tempocount++ (%d)", x->x_tempocount);
-        }
         else
             x->x_tempocount--;
-        if(x->x_tempocount == x->x_n_tempo){
+        if(x->x_tempocount > x->x_n_tempo){
             x->x_barcount++;
-            x->x_tempocount = 0;
+            x->x_tempocount = 1;
         }
         else if(x->x_tempocount < 0){
             x->x_tempocount = (x->x_n_tempo - 1);
             x->x_barcount--;
         }
-        outlet_float(x->x_tempoout, tempoout);
-//        post("~~~~~~~~~~ BEFORE BAR OUT ~~~~~~~~~~");
-//        post("barout (%d)", barout);
-        if(x->x_dir && tempoout == 1)
-            outlet_float(x->x_barout, barout);
-        else if(!x->x_dir && tempoout == x->x_n_tempo)
-            outlet_float(x->x_barout, barout);
-//        post("~~~~~~~~~~ AFTER BAR OUT ~~~~~~~~~~");
-        if(x->x_sigchange && tempoout == 1){
-//            post("==x->x_sigchange");
+        if(x->x_sigchange && x->x_tempocount == 1){
             metronome_symbol(x, x->x_sig);
             x->x_sigchange = 0;
         }
@@ -216,12 +200,15 @@ static void metronome_tick(t_metronome *x){
             typedmess(x->x_s_name->s_thing, gensym("tempo"), 2, at);
             pd_bang(x->x_s_name->s_thing);
         }
+        output_count_list(x);
         outlet_bang(x->x_obj.ob_outlet);
     }
     else{
         t_int div = (int)(x->x_tickcount / (x->x_ticks / x->x_n_subdiv)) + 1;
-        if(div != x->x_subdiv)
-            outlet_float(x->x_subdivout, x->x_subdiv = div);
+        if(div != x->x_subdiv){
+            x->x_subdiv = div;
+            output_count_list(x);
+        }
     }
     if(x->x_dir){
         x->x_tickcount++;
@@ -245,8 +232,7 @@ static void metronome_float(t_metronome *x, t_float f){
     if(x->x_s_name->s_thing)
         pd_float(x->x_s_name->s_thing, f);
     if(f){
-        outlet_float(x->x_bpmout, x->x_bpm / x->x_tempo_div);
-        outlet_float(x->x_tempodivout, x->x_tempo_div);
+        output_actual_list(x);
         x->x_pause = 0;
         x->x_running = 1;
         if(!x->x_freeze)
@@ -334,7 +320,7 @@ static void metronome_tempo(t_metronome *x, t_floatarg tempo){
     if(tempo < 0) // avoid negative tempo for now
         tempo = 0;
     x->x_bpm = tempo;
-    outlet_float(x->x_bpmout, x->x_bpm / x->x_tempo_div);
+    output_actual_list(x);
     if(tempo != 0){
         if(x->x_freeze){
             x->x_freeze = 0;
@@ -403,13 +389,9 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
     x->x_n_subdiv = 1;
     t_float tempo = 120;
     outlet_new(&x->x_obj, gensym("bang"));
-    x->x_barout = outlet_new((t_object *)x, gensym("float"));
-    x->x_tempoout = outlet_new((t_object *)x, gensym("float"));
-    x->x_subdivout = outlet_new((t_object *)x, gensym("float"));
+    x->x_count_out = outlet_new((t_object *)x, gensym("list"));
     x->x_phaseout = outlet_new((t_object *)x, gensym("float"));
-    x->x_tickout = outlet_new((t_object *)x, gensym("float"));
-    x->x_tempodivout = outlet_new((t_object *)x, gensym("float"));
-    x->x_bpmout = outlet_new((t_object *)x, gensym("float"));
+    x->x_actual_out = outlet_new((t_object *)x, gensym("list"));
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("tempo"));
     while(ac >= 2 &&
     ((atom_getsymbolarg(0, ac, av) == gensym("-name")) ||

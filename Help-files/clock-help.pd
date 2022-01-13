@@ -1,4 +1,4 @@
-#N canvas 623 62 560 651 10;
+#N canvas 623 45 560 651 10;
 #X obj 3 406 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 3 495 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -215,8 +215,6 @@ tempo (as in a clock multiplier) and can be synced to a [metronome].
 #X obj 261 264 else/clock -s \$0-metro 1.5, f 13;
 #X msg 147 118 timesig 3/4;
 #X msg 161 143 timesig 6/8;
-#X floatatom 236 194 5 0 0 0 - - - 0;
-#X floatatom 194 193 5 0 0 0 - - - 0;
 #X text 49 25 A [clock] object can also be synced to a [metronome]
 object \, which also gets a local name relative to the patch's main
 window or a clock name via the '-name' flag \, check it's help file.
@@ -232,14 +230,11 @@ The tempo in a [metronome] depends on the time signature. Note how
 #X connect 8 0 9 0;
 #X connect 9 0 5 1;
 #X connect 10 0 1 0;
-#X connect 10 2 15 0;
-#X connect 10 3 14 0;
 #X connect 11 0 6 0;
 #X connect 12 0 10 0;
 #X connect 13 0 10 0;
 #X restore 464 376 pd metronome;
 #X text 112 439 beat <float> - sets beat lenght, f 56;
-#X obj 28 302 metro;
 #X connect 21 0 50 0;
 #X connect 23 0 51 0;
 #X connect 26 0 50 1;
