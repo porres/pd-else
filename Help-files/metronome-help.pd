@@ -180,16 +180,13 @@ flag., f 22;
 #X connect 47 0 42 0;
 #X connect 49 0 47 0;
 #X connect 50 0 49 1;
-#X restore 497 238 pd clock;
+#X restore 493 210 pd clock;
 #X text 152 560 1) float - (optional) tempo in BPM (default 120),
 f 49;
 #X text 196 302 - non-zero (re)starts \, zero stops, f 47;
 #X text 22 192 see also:;
 #X obj 22 211 else/clock;
 #X text 183 163 start/stop;
-#X text 70 85 [metronome] understands complex time signatures and outputs
-lots of data like bar \, beat and sub-beat count \, phase and frame
-output. It also syncs to [clock] objects., f 66;
 #X text 112 347 beat <symbol>;
 #X text 196 347 - set beat length symbol, f 47;
 #N canvas 448 96 846 546 beat-length 0;
@@ -272,7 +269,7 @@ and the actual lenght is half! You can see this in the rightmost outlet.
 #X connect 27 2 20 0;
 #X connect 27 3 24 0;
 #X connect 29 0 19 0;
-#X restore 461 217 pd beat-length;
+#X restore 457 186 pd beat-length;
 #X text 95 533 -beat <symbol> - set a beat length (default: 1/4),
 f 71;
 #X text 95 519 -name <symbol> - set a clock name (default: internal
@@ -282,7 +279,7 @@ relative to patch), f 71;
 #X text 166 447 list;
 #X text 166 489 list;
 #X text 196 489 - actual beat length and tempo values, f 47;
-#N canvas 880 166 269 159 time-sig 0;
+#N canvas 880 166 257 158 time-sig 0;
 #N canvas 470 71 839 611 other_denominators 0;
 #X msg 445 65 timesig 2/2.666666666;
 #X msg 469 117 timesig 4/3.55555555555;
@@ -379,8 +376,8 @@ you can set as a messgae can also be set as an argument., f 59;
 #X connect 33 2 26 0;
 #X connect 33 3 30 0;
 #X connect 34 0 25 0;
-#X restore 76 106 pd other_denominators;
-#X text 59 48 Check subpatches below;
+#X restore 64 93 pd other_denominators;
+#X text 57 33 Check subpatches below;
 #N canvas 636 23 506 623 simple_&_compound 0;
 #X msg 129 208 timesig 7/8;
 #X msg 104 160 timesig 6/8;
@@ -441,8 +438,8 @@ bpm of "40"., f 77;
 #X connect 27 2 20 0;
 #X connect 27 3 24 0;
 #X connect 29 0 19 0;
-#X restore 76 80 pd simple_&_compound;
-#X restore 479 195 pd time-sig;
+#X restore 64 67 pd simple_&_compound;
+#X restore 475 164 pd time-sig;
 #X text 196 447 - bar \, sub-bar \, beat and sub-beat count, f 47
 ;
 #X text 196 317 - stops the metronome (same as '0'), f 47;
@@ -451,13 +448,217 @@ bpm of "40"., f 77;
 #X msg 211 190 continue;
 #X msg 108 137 start;
 #X obj 23 232 else/metronome~;
+#N canvas 858 177 417 216 events 0;
+#N canvas 397 97 558 476 example-1 0;
+#X obj 166 156 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
+#X text 98 159 turn on =>;
+#X obj 166 220 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X text 132 219 beat bang, f 4;
+#X obj 247 231 unpack f f f f, f 7;
+#X symbolatom 132 298 10 0 0 0 - - - 0;
+#X obj 132 357 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 159 357 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 187 357 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 215 357 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 132 326 sel 1:3 2:3 4:1 4:3;
+#X obj 132 273 else/format symbol %s:%s;
+#X msg 215 381 0;
+#X obj 215 405 s \$0-metro;
+#X obj 166 127 r \$0-metro;
+#X obj 166 193 else/metronome, f 41;
+#X obj 308 225 else/metronome~;
+#X obj 308 260 else/out~;
+#X text 75 32 The count list gives us 4 items that we can use to trigger
+an event. For most cases \, just the 1st and 3rd element (bar and tempo)
+are enough. Here we get them and format them into a symbol and use
+[select] to detect it so we can trigger something in the patch. Note
+we're using one event to turn the [metronome] off.;
+#X connect 0 0 15 0;
+#X connect 4 0 11 0;
+#X connect 4 2 11 1;
+#X connect 5 0 10 0;
+#X connect 9 0 12 0;
+#X connect 10 0 6 0;
+#X connect 10 1 7 0;
+#X connect 10 2 8 0;
+#X connect 10 3 9 0;
+#X connect 11 0 5 0;
+#X connect 12 0 13 0;
+#X connect 14 0 0 0;
+#X connect 15 0 2 0;
+#X connect 15 1 4 0;
+#X connect 15 1 16 0;
+#X connect 16 0 17 0;
+#X restore 91 88 pd example-1;
+#X text 71 33 Here are some examples on how you can use the count list
+output to sequence events., f 48;
+#N canvas 436 68 590 433 example-2 0;
+#X listbox 212 138 13 0 0 0 - - - 0;
+#X obj 242 269 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 273 269 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 303 269 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 347 269 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 212 269 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X msg 212 302 4/4;
+#X msg 242 302 15/8 3;
+#X msg 303 321 6/8;
+#X msg 347 321 7/8;
+#X obj 303 353 else/insert timesig;
+#X msg 433 353 stop;
+#X obj 110 80 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000;
+#X obj 87 204 else/metronome~;
+#X obj 87 239 else/out~;
+#X obj 149 112 else/metronome, f 32;
+#X obj 149 78 else/display;
+#X obj 212 226 sel 1 2 3 4 5 6, f 31;
+#X obj 212 197 change;
+#X obj 433 388 s \$0-metronome;
+#X obj 149 47 r \$0-metronome;
+#X text 313 27 In this example we're just using the bar number (1st
+item on the list) to set different time signatures depending on the
+bar count., f 27;
+#X text 71 82 start;
+#X obj 212 169 t f;
+#X text 292 175 We convert to float with [trigger] and use [change]
+to filter repeatitions., f 38;
+#X connect 0 0 13 0;
+#X connect 0 0 23 0;
+#X connect 1 0 7 0;
+#X connect 2 0 9 0;
+#X connect 3 0 8 0;
+#X connect 4 0 9 0;
+#X connect 5 0 6 0;
+#X connect 6 0 10 0;
+#X connect 7 0 10 0;
+#X connect 8 0 10 0;
+#X connect 9 0 10 0;
+#X connect 10 0 19 0;
+#X connect 11 0 19 0;
+#X connect 12 0 15 0;
+#X connect 13 0 14 0;
+#X connect 15 1 0 0;
+#X connect 16 0 15 0;
+#X connect 17 0 5 0;
+#X connect 17 1 1 0;
+#X connect 17 2 2 0;
+#X connect 17 3 3 0;
+#X connect 17 4 4 0;
+#X connect 17 5 11 0;
+#X connect 18 0 17 0;
+#X connect 20 0 16 0;
+#X connect 23 0 18 0;
+#X restore 92 120 pd example-2;
+#N canvas 436 68 698 549 example-3 0;
+#X listbox 149 254 9 0 0 0 - - - 0;
+#X obj 51 347 else/metronome~;
+#X obj 51 382 else/out~;
+#X obj 245 320 == 3, f 5;
+#X obj 212 347 spigot;
+#X obj 212 442 sel 1;
+#X obj 212 474 else/impseq~;
+#X obj 149 282 unpack f f f;
+#X obj 212 504 else/resonant~ 2000 1000;
+#X obj 86 169 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
+#X listbox 439 234 9 0 0 0 - - - 0;
+#X obj 330 316 else/metronome~;
+#X obj 330 351 else/out~;
+#X obj 350 208 else/metronome, f 45;
+#X obj 512 367 spigot;
+#X obj 512 442 sel 1;
+#X obj 512 469 else/impseq~;
+#X obj 512 498 else/resonant~ 2000 1000;
+#X obj 350 169 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
+#X msg 439 260 symbol \$1:\$3;
+#X msg 439 327 1;
+#X msg 478 327 0;
+#X obj 439 303 sel 1:4;
+#X obj 86 208 else/metronome, f 32;
+#X obj 512 393 ==;
+#X obj 564 402 else/frac2dec;
+#X msg 564 376 1/3;
+#X obj 564 352 loadbang;
+#X obj 212 380 >= 0.333333;
+#X obj 212 407 change;
+#X text 30 10 In these examples we're using the phase output information
+to trigger something. To the left we open a spigot for every 3rd tempo
+and get a bang when the phase is equal or greater then 0.333333 (about
+one third of the beat). To the right \, we just do it for the fourth
+tempo of the 1st bar and trigger when the phase precisely reaches 1/3
+of the tempo. Note that the phase output has 960 frames \, so you can
+multiply the output by 960 and match to an exact integer frame or use
+the 0-1 range., f 101;
+#X text 30 71 Considering 960 is a quarter note \, this allows you
+to precisely match down to 256th notes (15 frames or 0.015625) \, triplets
+down to a 512th triplet (5 frames) and quintuplets down to 1024th (3
+frames). It can't precisely handle othe tuplets (like 7 \, 9 \, 11
+\, etc) but you can use the [>=] object for aproximations and can be
+useful for ratios like one third of the phase output (0.33333) as it
+won't really match. On the other hand \, converting fractions as the
+example to right is possible to match precisely., f 101;
+#X obj 439 282 else/changed;
+#X connect 0 0 1 0;
+#X connect 0 0 7 0;
+#X connect 1 0 2 0;
+#X connect 3 0 4 1;
+#X connect 4 0 28 0;
+#X connect 5 0 6 0;
+#X connect 6 0 8 0;
+#X connect 7 2 3 0;
+#X connect 8 0 2 1;
+#X connect 9 0 23 0;
+#X connect 10 0 11 0;
+#X connect 10 0 19 0;
+#X connect 11 0 12 0;
+#X connect 13 1 10 0;
+#X connect 13 2 14 0;
+#X connect 14 0 24 0;
+#X connect 15 0 16 0;
+#X connect 16 0 17 0;
+#X connect 17 0 12 1;
+#X connect 18 0 13 0;
+#X connect 19 0 32 0;
+#X connect 20 0 14 1;
+#X connect 21 0 14 1;
+#X connect 22 0 20 0;
+#X connect 22 1 21 0;
+#X connect 23 1 0 0;
+#X connect 23 2 4 0;
+#X connect 24 0 15 0;
+#X connect 25 0 24 1;
+#X connect 26 0 25 0;
+#X connect 27 0 26 0;
+#X connect 28 0 29 0;
+#X connect 29 0 5 0;
+#X connect 32 0 22 0;
+#X restore 92 150 pd example-3;
+#X text 177 88 basic;
+#X text 179 120 changing time signatures;
+#X text 180 150 handling phase;
+#X restore 487 232 pd events;
+#X text 64 85 [metronome] understands complex time signatures and outputs
+timeline data (bar \, sub-bar \, beat and sub-beat count) and phase
+output. It also syncs to [clock] objects., f 73;
 #X connect 6 0 39 0;
 #X connect 17 0 39 1;
 #X connect 20 0 39 0;
 #X connect 25 0 39 0;
 #X connect 39 0 22 0;
-#X connect 39 1 62 0;
+#X connect 39 1 61 0;
 #X connect 39 2 38 0;
-#X connect 39 3 61 0;
+#X connect 39 3 60 0;
+#X connect 70 0 39 0;
 #X connect 71 0 39 0;
-#X connect 72 0 39 0;

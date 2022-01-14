@@ -165,26 +165,28 @@ static void metronome_beat(t_metronome *x, t_symbol *s){
 }
 
 static void metronome_tick(t_metronome *x){
-    outlet_float(x->x_phaseout, (float)x->x_tickcount / (float)x->x_ticks);
-    if(x->x_barcount < 1){
+/*    if(x->x_barcount < 1){
         metronome_stop(x);
         return;
-    }
+    }*/
+    outlet_float(x->x_phaseout, (float)x->x_tickcount / (float)x->x_ticks);
     if(x->x_tickcount == 0){
         x->x_subdiv = x->x_sub_barcount = 1;
-        if(x->x_dir)
+//        if(x->x_dir)
             x->x_tempocount++;
-        else
-            x->x_tempocount--;
+//        else
+//            x->x_tempocount--;
         if(x->x_tempocount > x->x_n_tempo){
             x->x_barcount++;
             x->x_tempocount = 1;
         }
-        else if(x->x_tempocount < 0){
+/*        else if(x->x_tempocount < 0){
             x->x_tempocount = (x->x_n_tempo - 1);
             x->x_barcount--;
-        }
-        if(x->x_sigchange && x->x_tempocount == 1){
+        }*/
+        output_count_list(x);
+        outlet_bang(x->x_obj.ob_outlet);
+        if(x->x_sigchange && x->x_tempocount == 1){ // change time signature
             metronome_symbol(x, x->x_sig);
             x->x_sigchange = 0;
         }
@@ -197,8 +199,6 @@ static void metronome_tick(t_metronome *x){
             typedmess(x->x_s_name->s_thing, gensym("tempo"), 2, at);
             pd_bang(x->x_s_name->s_thing);
         }
-        output_count_list(x);
-        outlet_bang(x->x_obj.ob_outlet);
     }
     else{
         t_int div = (int)(x->x_tickcount / (x->x_ticks / x->x_n_subdiv)) + 1;
@@ -207,17 +207,18 @@ static void metronome_tick(t_metronome *x){
             output_count_list(x);
         }
     }
-    if(x->x_dir){
+//    if(x->x_dir){
         x->x_tickcount++;
         if(x->x_tickcount == x->x_ticks)
             x->x_tickcount = 0;
-    }
-    else{
+//    }
+/*    else{
         x->x_tickcount--;
         if(x->x_tickcount < 0)
             x->x_tickcount = x->x_ticks - 1;
-    }
-    clock_delay(x->x_clock, 1);
+    }*/
+    if(x->x_running)
+        clock_delay(x->x_clock, 1);
 }
 
 static void metronome_float(t_metronome *x, t_float f){
@@ -273,8 +274,10 @@ static void metronome_timesig(t_metronome *x, t_symbol *s, int ac, t_atom *av){
         }
         if(av->a_type == A_SYMBOL){
             x->x_sig = atom_getsymbol(av);
-            if(x->x_tickcount == 0 && x->x_tempocount == 0)
+            if(x->x_tickcount == 0 && x->x_tempocount == 1){
                 metronome_symbol(x, x->x_sig);
+                x->x_sigchange = 0;
+            }
             else
                 x->x_sigchange = 1;
         }
@@ -286,7 +289,6 @@ static void metronome_timesig(t_metronome *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void metronome_tempo(t_metronome *x, t_floatarg tempo){
-//    post("tempo = %f", tempo);
     if(tempo < 0) // avoid negative tempo for now
         tempo = 0;
     if(tempo != 0){
