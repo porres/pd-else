@@ -5,15 +5,20 @@
 #include <string.h>
 #include "g_canvas.h"
 
-#define DEFNTICKS 960
+#define DEFNTICKS   960
+#define MAX_N       10
+#define MAX_SIZE    40
 
 typedef struct _metronome{
     t_object    x_obj;
     t_clock    *x_clock;
     t_symbol   *x_sig;
     t_symbol   *x_s_name;
+    char        x_sig_array[MAX_N][MAX_SIZE];
+    t_int       x_n_sigs; // complex if > 1
     t_int       x_running;
-    t_int       x_dir;
+    t_int       x_first_time;
+//    t_int       x_dir;
     t_int       x_complex;
     t_int       x_sigchange;
     t_int       x_group;
@@ -37,6 +42,15 @@ typedef struct _metronome{
 static t_class *metronome_class;
 
 static void metronome_stop(t_metronome *x);
+
+/*static void post_array(t_metronome *x){
+    if(x->x_n_sigs > 1){
+        for(int i = 0; i < x->x_n_sigs; i++)
+            post("%s", x->x_sig_array[i]);
+    }
+    else
+        post("not complex");
+}*/
 
 static void output_actual_list(t_metronome *x){
     t_atom at[2];
@@ -115,6 +129,7 @@ static void metronome_div(t_metronome *x, t_atom *av){
         else
             x->x_group = (int)f1;
     }
+//    x->x_complex = x->x_n_sigs > 1;
     x->x_n_subdiv = (int)(f1/((t_float)x->x_group));
     x->x_n_tempo = x->x_group;
     x->x_tempo_div = (float)(div * x->x_beat_length/(t_float)x->x_group);
@@ -171,14 +186,39 @@ static void metronome_tick(t_metronome *x){
     }*/
     outlet_float(x->x_phaseout, (float)x->x_tickcount / (float)x->x_ticks);
     if(x->x_tickcount == 0){
-        x->x_subdiv = x->x_sub_barcount = 1;
+//        post("x->x_tickcount == 0");
+        x->x_subdiv = 1;
 //        if(x->x_dir)
             x->x_tempocount++;
 //        else
 //            x->x_tempocount--;
-        if(x->x_tempocount > x->x_n_tempo){
-            x->x_barcount++;
-            x->x_tempocount = 1;
+        if(x->x_n_sigs == 1){ // not complex
+//        post("it's not complex");
+            x->x_sub_barcount = 1;
+            if(x->x_tempocount > x->x_n_tempo){
+                x->x_barcount++;
+                x->x_tempocount = 1;
+            }
+        }
+        else{ // complex
+//          post("it's complex");
+            if(x->x_tempocount > x->x_n_tempo){
+                if(x->x_first_time)
+                    x->x_first_time = 0;
+                else
+                    x->x_sub_barcount++;
+                if(x->x_sub_barcount > x->x_n_sigs){
+                    x->x_sub_barcount = 1;
+                    x->x_barcount++;
+                }
+                char buf[MAX_SIZE];
+                sprintf(buf,"%s", x->x_sig_array[x->x_sub_barcount-1]);
+//                post("complex sub-bar (%d) => %s", x->x_sub_barcount, buf);
+                x->x_sig = gensym(buf);
+                x->x_sigchange = 1;
+                x->x_tempocount = 1;
+                x->x_group = 0;
+            }
         }
 /*        else if(x->x_tempocount < 0){
             x->x_tempocount = (x->x_n_tempo - 1);
@@ -186,10 +226,20 @@ static void metronome_tick(t_metronome *x){
         }*/
         output_count_list(x);
         outlet_bang(x->x_obj.ob_outlet);
-        if(x->x_sigchange && x->x_tempocount == 1){ // change time signature
-            metronome_symbol(x, x->x_sig);
-            x->x_sigchange = 0;
-        }
+//        if(!x->x_complex){
+//        post("sigchange (%d) sub_bar (%d) tempocount (%d)", x->x_sigchange, x->x_sub_barcount, x->x_tempocount);
+            if(x->x_sigchange && x->x_sub_barcount && x->x_tempocount == 1){ // change time signature
+//            post("change time signature");
+                metronome_symbol(x, x->x_sig);
+                x->x_sigchange = 0;
+            }
+/*        }
+        else{
+            if(x->x_sigchange && x->x_sub_barcount == 1 && x->x_tempocount == 1){ // change time signature
+                metronome_symbol(x, x->x_sig);
+                x->x_sigchange = 0;
+            }
+        }*/
         if(x->x_s_name->s_thing){
             t_atom at[2];
             SETFLOAT(at, x->x_tempo_div);
@@ -229,6 +279,7 @@ static void metronome_float(t_metronome *x, t_float f){
         x->x_barcount = x->x_sub_barcount = x->x_tempocount = x->x_subdiv = x->x_tickcount = 0;
         output_count_list(x);
         x->x_barcount++;
+        x->x_sub_barcount++;
         x->x_running = 1;
         metronome_tick(x);
     }
@@ -252,52 +303,103 @@ static void metronome_stop(t_metronome *x){
 
 static void metronome_timesig(t_metronome *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    t_int compound = 0;
+    x->x_n_sigs = 1;
     if(ac > 0){
         x->x_group = 0;
-        if(ac >= 2){
-            if((av+1)->a_type == A_SYMBOL){
-                if(atom_getsymbol(av+1) == gensym("+")){
-                    compound = 1;
-                    post("COMPLEX!!!");
+        if(ac >= 3){
+            int i = 0;
+            if(av->a_type == A_FLOAT){
+                pd_error(x, "[metronome]: timesig: invalid syntax");
+                return;
+            }
+            else{
+                strcpy(x->x_sig_array[i], (atom_getsymbol(av))->s_name);
+                av++;
+                ac--;
+            }
+            while(ac){
+                i++;
+                if(atom_getsymbol(av) == gensym("+")){
+                    av++;
+                    ac--;
                 }
-                else
-                   pd_error(x, "[metronome]: timesig: invalid syntax");
+                else{
+                    pd_error(x, "[metronome]: wrong time signature syntax");
+                    return;
+                }
+                if(av->a_type == A_FLOAT){
+                    pd_error(x, "[metronome]: wrong time signature syntax");
+                    return;
+                }
+                else{
+                    strcpy(x->x_sig_array[i], (atom_getsymbol(av))->s_name);
+                    av++;
+                    ac--;
+                }
+            }
+            x->x_n_sigs = i + 1;
+            x->x_first_time = 1;
+            x->x_sub_barcount = 1;
+//            post("FIRST TIME!!!! =======> %d", x->x_first_time);
+// something like this should happen
+            if(x->x_tickcount == 0 && x->x_tempocount == 1){
+                char buf[MAX_SIZE];
+                sprintf(buf,"%s", x->x_sig_array[x->x_sub_barcount-1]);
+                metronome_symbol(x, x->x_sig = gensym(buf));
+                x->x_sigchange = 0;
+            }
+            else
+                x->x_sigchange = 1;
+            
+        }
+        else if(ac == 2){
+            if((av+1)->a_type == A_SYMBOL){
+                pd_error(x, "[metronome]: wrong time signature syntax");
+                return;
             }
             else{
                 t_int arg = (t_int)(atom_getfloat(av+1));
                 if(arg > 0)
                     x->x_group = arg;
-                else
+                else{
                     pd_error(x, "[metronome]: invalid group number [%d]", (int)arg);
+                    return;
+                }
+            }
+            goto firstarg;
+        }
+        else if(ac == 1){
+        firstarg:
+            if(av->a_type == A_SYMBOL){
+                x->x_sig = atom_getsymbol(av);
+                if(x->x_tickcount == 0 && x->x_tempocount == 1){
+                    metronome_symbol(x, x->x_sig);
+                    x->x_sigchange = 0;
+                }
+                else
+                    x->x_sigchange = 1;
+            }
+            else{
+                pd_error(x, "[metronome]: wrong time signature syntax");
+                return;
             }
         }
-        if(av->a_type == A_SYMBOL){
-            x->x_sig = atom_getsymbol(av);
-            if(x->x_tickcount == 0 && x->x_tempocount == 1){
-                metronome_symbol(x, x->x_sig);
-                x->x_sigchange = 0;
-            }
-            else
-                x->x_sigchange = 1;
-        }
-        else
-            pd_error(x, "[metronome]: wrong time signature symbol");
     }
     else
-        pd_error(x, "[metronome]: wrong time signature symbol");
+        pd_error(x, "[metronome]: wrong time signature syntax");
 }
 
 static void metronome_tempo(t_metronome *x, t_floatarg tempo){
     if(tempo < 0) // avoid negative tempo for now
         tempo = 0;
     if(tempo != 0){
+        int stopped = !x->x_bpm;
         x->x_bpm = tempo;
         tempo = 60000./tempo;
-        int dir = (tempo > 0);
         if(tempo < 0)
             tempo *= -1;
         x->x_tempo = tempo;
+/*      int dir = (tempo > 0);
         if(dir != x->x_dir){
             x->x_dir = dir;
             if(x->x_dir){
@@ -314,12 +416,12 @@ static void metronome_tempo(t_metronome *x, t_floatarg tempo){
                     x->x_barcount--;
                 }
             }
-        }
-        if(!x->x_running){
+        }*/
+        clock_setunit(x->x_clock, x->x_tempo * x->x_tempo_div / x->x_ticks, 0);
+        if(stopped){
             x->x_running = 1;
             metronome_tick(x);
         }
-        clock_setunit(x->x_clock, x->x_tempo * x->x_tempo_div / x->x_ticks, 0);
         if(x->x_s_name->s_thing){
             t_atom at[2];
             SETFLOAT(at, x->x_bpm);
@@ -330,6 +432,7 @@ static void metronome_tempo(t_metronome *x, t_floatarg tempo){
     else{
         clock_unset(x->x_clock);
         x->x_running = 0;
+        x->x_bpm = 0;
     }
 }
 
@@ -350,7 +453,7 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
     snprintf(buf, MAXPDSTRING, "$0-clock-.x%lx.c", (long unsigned int)canvas);
     x->x_s_name = canvas_realizedollar(canvas, gensym(buf));
     x->x_sig = gensym("4/4");
-    x->x_dir = 1;
+//    x->x_dir = 1;
     x->x_ticks = DEFNTICKS;
     x->x_tickcount = 0;
     x->x_tempo_div = 1;
@@ -360,6 +463,7 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
     x->x_sigchange = 0;
     x->x_n_tempo = 4;
     x->x_n_subdiv = 1;
+    x->x_n_sigs = 1;
     t_float tempo = 120;
     outlet_new(&x->x_obj, gensym("bang"));
     x->x_count_out = outlet_new((t_object *)x, gensym("list"));
