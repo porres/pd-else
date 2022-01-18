@@ -377,52 +377,56 @@ crazy things can happen to define a tempo duration., f 61;
 #X connect 34 2 23 0;
 #X connect 34 3 27 0;
 #X restore 64 97 pd irrational;
-#N canvas 636 23 506 623 basic 0;
-#X msg 129 208 timesig 7/8;
-#X msg 104 160 timesig 6/8;
-#X msg 93 135 timesig 15/8 3;
-#X msg 114 182 timesig 12/8;
-#X msg 68 113 timesig 15/8 5;
-#X text 162 113 15/8 grouped in 5 groups (3 sub-beats each);
-#X text 186 135 15/8 grouped in 3 groups (5 sub-beats each);
-#X text 179 160 automatically grouped in 2 (3 sub-beats each);
-#X text 194 180 automatically grouped in 4 (3 sub-beats each);
-#X text 205 205 automatically grouped in 7 (1 sub-beats each);
-#X text 19 78 The default time signature is 4/4.;
-#X text 17 36 Group makes sense for compound time signatures. By default
+#N canvas 436 23 500 600 basic 0;
+#X msg 121 196 timesig 7/8;
+#X msg 96 148 timesig 6/8;
+#X msg 85 123 timesig 15/8 3;
+#X msg 106 170 timesig 12/8;
+#X msg 60 101 timesig 15/8 5;
+#X text 154 101 15/8 grouped in 5 groups (3 sub-beats each);
+#X text 178 123 15/8 grouped in 3 groups (5 sub-beats each);
+#X text 171 148 automatically grouped in 2 (3 sub-beats each);
+#X text 186 168 automatically grouped in 4 (3 sub-beats each);
+#X text 197 193 automatically grouped in 7 (1 sub-beats each);
+#X text 17 70 The default time signature is 4/4., f 78;
+#X text 17 33 Group makes sense for compound time signatures. By default
 \, the group number is 1 \, but for the numerator 6 \, 9 and 12 (as
 in 6/8 \, 9/8 and 12/8) the default group number is \, respectively
 \, 2 \, 3 and 4 \, see examples below., f 78;
 #X text 17 7 Time signatures are specified by symbols in the usual
 notation way \, optionally you can set a group number (which also defines
 the number of sub-beats)., f 78;
-#X msg 136 232 timesig 3/4;
-#X obj 32 159 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X msg 128 220 timesig 3/4;
+#X obj 24 147 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X text 14 576 Similarly \, 7/8 considers an eigth note as the tempo
+#X text 14 561 Similarly \, 7/8 considers an eigth note as the tempo
 \, so you have "0.5" and "120" instead., f 77;
-#X text 212 232 automatically grouped in 3 (1 sub-beats each);
-#X obj 93 390 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X text 204 220 automatically grouped in 3 (1 sub-beats each);
+#X obj 85 383 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
-#X text 59 389 beat bang, f 4;
-#X obj 174 447 else/out~;
-#X obj 258 363 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#X text 51 382 beat bang, f 4;
+#X obj 166 438 else/out~;
+#X obj 250 356 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
-#X floatatom 255 390 9 0 0 0 - - - 12;
-#X text 327 391 phase (0-1);
-#X listbox 174 391 10 0 0 0 - - - 12;
-#X listbox 336 331 9 0 0 0 - - - 12;
-#X text 346 298 actual beat length and tempo, f 18;
-#X text 14 515 Note how the tempo depends on the grouping of sub beats.
+#X floatatom 247 383 9 0 0 0 - - - 12;
+#X text 319 384 phase (0-1);
+#X listbox 166 384 10 0 0 0 - - - 12;
+#X listbox 328 325 9 0 0 0 - - - 12;
+#X text 399 313 actual beat length and tempo, f 11;
+#X text 14 501 Note how the tempo depends on the grouping of sub beats.
 So 3/4 does not have the same tempo duration as 6/8! This is clear
 in rightmost outlet. For instance \, 6/8 grouped in 2 considers that
 a beat is three eight notes. In relation to a 60 bpm for a quarter
 note as a base beat lenght we have a beat that is "1.5" and an actual
 bpm of "40"., f 77;
-#X text 180 333 bar \; sub-bar \; beat \; sub-beat;
-#X obj 174 421 else/metronome~;
-#X text 275 420 <= metronome clicks;
-#X obj 93 276 else/metronome 60 15/8 5, f 41;
+#X text 172 326 bar \; sub-bar \; beat \; sub-beat;
+#X obj 166 414 else/metronome~;
+#X text 267 413 <= metronome clicks;
+#X obj 85 304 else/metronome 60 15/8 5, f 41;
+#X msg 136 248 timesig 6/4;
+#X text 213 248 automatically grouped in 2;
+#X msg 146 272 timesig 6/4 6;
+#X text 235 272 grouped in 6 (so we have 6 tempos);
 #X connect 0 0 30 0;
 #X connect 1 0 30 0;
 #X connect 2 0 30 0;
@@ -437,6 +441,8 @@ bpm of "40"., f 77;
 #X connect 30 1 23 0;
 #X connect 30 2 20 0;
 #X connect 30 3 24 0;
+#X connect 31 0 30 0;
+#X connect 33 0 30 0;
 #X restore 64 67 pd basic;
 #X text 153 97 or "non power of two";
 #N canvas 470 70 606 541 complex 0;
