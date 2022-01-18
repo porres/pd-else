@@ -82,6 +82,7 @@ static void string2atom(t_atom *ap, char* ch, int clen){
 }
     
 static void metronome_div(t_metronome *x, t_atom *av){
+//    post("div");
     t_float f1, f2;
     if(av->a_type == A_SYMBOL){
         pd_error(x, "[metronome]: wrong time signature symbol");
@@ -129,7 +130,6 @@ static void metronome_div(t_metronome *x, t_atom *av){
         else
             x->x_group = (int)f1;
     }
-//    x->x_complex = x->x_n_sigs > 1;
     x->x_n_subdiv = (int)(f1/((t_float)x->x_group));
     x->x_n_tempo = x->x_group;
     x->x_tempo_div = (float)(div * x->x_beat_length/(t_float)x->x_group);
@@ -201,7 +201,7 @@ static void metronome_tick(t_metronome *x){
             }
         }
         else{ // complex
-//          post("it's complex");
+//          post("it's complex MOTHERFUCKER");
             if(x->x_tempocount > x->x_n_tempo){
                 if(x->x_first_time)
                     x->x_first_time = 0;
@@ -230,6 +230,7 @@ static void metronome_tick(t_metronome *x){
 //        post("sigchange (%d) sub_bar (%d) tempocount (%d)", x->x_sigchange, x->x_sub_barcount, x->x_tempocount);
             if(x->x_sigchange && x->x_sub_barcount && x->x_tempocount == 1){ // change time signature
 //            post("change time signature");
+                x->x_first_time = 0;
                 metronome_symbol(x, x->x_sig);
                 x->x_sigchange = 0;
             }
@@ -276,6 +277,7 @@ static void metronome_float(t_metronome *x, t_float f){
     if(x->x_s_name->s_thing)
         pd_float(x->x_s_name->s_thing, f);
     if(f){
+//        post("(re)start");
         x->x_barcount = x->x_sub_barcount = x->x_tempocount = x->x_subdiv = x->x_tickcount = 0;
         output_count_list(x);
         x->x_barcount++;
@@ -307,6 +309,7 @@ static void metronome_timesig(t_metronome *x, t_symbol *s, int ac, t_atom *av){
     if(ac > 0){
         x->x_group = 0;
         if(ac >= 3){
+//            post("TIMESIG: Complex");
             int i = 0;
             if(av->a_type == A_FLOAT){
                 pd_error(x, "[metronome]: timesig: invalid syntax");
@@ -341,16 +344,18 @@ static void metronome_timesig(t_metronome *x, t_symbol *s, int ac, t_atom *av){
             x->x_first_time = 1;
             x->x_sub_barcount = 1;
 //            post("FIRST TIME!!!! =======> %d", x->x_first_time);
+            char buf[MAX_SIZE];
+            sprintf(buf,"%s", x->x_sig_array[x->x_sub_barcount-1]);
+            x->x_sig = gensym(buf);
 // something like this should happen
             if(x->x_tickcount == 0 && x->x_tempocount == 1){
-                char buf[MAX_SIZE];
-                sprintf(buf,"%s", x->x_sig_array[x->x_sub_barcount-1]);
-                metronome_symbol(x, x->x_sig = gensym(buf));
+//                post("x->x_tickcount == 0 && x->x_tempocount == 1");
+                metronome_symbol(x, x->x_sig);
                 x->x_sigchange = 0;
+                x->x_first_time = 0;
             }
             else
                 x->x_sigchange = 1;
-            
         }
         else if(ac == 2){
             if((av+1)->a_type == A_SYMBOL){
@@ -500,9 +505,6 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
             tempo = atom_getfloatarg(0, ac, av);
             ac--, av++;
         }
-        else
-            goto next;
-    next:
         if(ac > 0){
             if(ac == 1){
                 t_atom at[1];
@@ -515,7 +517,7 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
                     goto errstate;
             }
             else{
-                t_atom at[2];
+/*                t_atom at[2];
                 if(av->a_type == A_SYMBOL){
                     SETSYMBOL(at, atom_getsymbolarg(0, ac, av));
                     ac--, av++;
@@ -528,7 +530,8 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
                     metronome_timesig(x, gensym("timesig"), 2, at);
                 }
                 else
-                    goto errstate;
+                    goto errstate;*/
+                metronome_timesig(x, gensym("timesig"), ac, av);
             }
         }
     }
