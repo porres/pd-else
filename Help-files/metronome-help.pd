@@ -134,9 +134,9 @@ flag., f 22;
 #X obj 418 244 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X text 384 243 beat bang, f 4;
-#X obj 418 207 else/metronome, f 28;
-#X floatatom 583 174 4 0 0 0 - - - 12;
-#X text 584 151 tempo;
+#X floatatom 589 174 4 0 0 0 - - - 12;
+#X text 590 151 tempo;
+#X obj 418 207 else/metronome -name \$0-clock;
 #X connect 0 0 40 0;
 #X connect 2 0 40 0;
 #X connect 3 0 40 0;
@@ -147,13 +147,13 @@ flag., f 22;
 #X connect 8 0 30 0;
 #X connect 9 0 1 0;
 #X connect 10 0 1 1;
-#X connect 11 0 49 0;
-#X connect 13 0 49 0;
-#X connect 14 0 49 0;
-#X connect 15 0 49 0;
-#X connect 16 0 49 0;
-#X connect 17 0 49 0;
-#X connect 18 0 49 0;
+#X connect 11 0 51 0;
+#X connect 13 0 51 0;
+#X connect 14 0 51 0;
+#X connect 15 0 51 0;
+#X connect 16 0 51 0;
+#X connect 17 0 51 0;
+#X connect 18 0 51 0;
 #X connect 19 0 23 0;
 #X connect 20 0 12 0;
 #X connect 21 0 12 1;
@@ -175,8 +175,8 @@ flag., f 22;
 #X connect 44 0 21 0;
 #X connect 45 0 40 1;
 #X connect 47 0 42 0;
-#X connect 49 0 47 0;
-#X connect 50 0 49 1;
+#X connect 49 0 51 1;
+#X connect 51 0 47 0;
 #X restore 493 210 pd clock;
 #X text 152 566 1) float - (optional) tempo in BPM (default 120),
 f 49;
@@ -224,7 +224,6 @@ of 1.5 \, because a quarter note fits 1.5 quarter note triplets (or
 3 eight note triplets) inside. Note that this has the same beat lenght
 and number of tempos than a 6/8 time signature with a beat lenght of
 1/4!, f 65;
-#X msg 640 138 beat 3/8 \, timesig 6/8;
 #X obj 415 377 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X text 443 375 beat bang, f 4;
@@ -248,24 +247,24 @@ quarter note here) will have a beat twice as fast than the given tempo
 and the actual lenght is half! You can see this in the rightmost outlet.
 , f 51;
 #X obj 496 408 else/metronome~;
-#X connect 0 0 27 0;
-#X connect 1 0 27 0;
-#X connect 2 0 27 0;
-#X connect 3 0 27 0;
-#X connect 4 0 27 1;
+#X connect 0 0 26 0;
+#X connect 1 0 26 0;
+#X connect 2 0 26 0;
+#X connect 3 0 26 0;
+#X connect 4 0 26 1;
 #X connect 5 0 4 0;
-#X connect 6 0 27 0;
-#X connect 7 0 27 0;
-#X connect 8 0 27 0;
-#X connect 9 0 27 0;
-#X connect 11 0 27 0;
-#X connect 20 0 21 0;
-#X connect 23 0 29 0;
-#X connect 27 0 17 0;
-#X connect 27 1 23 0;
-#X connect 27 2 20 0;
-#X connect 27 3 24 0;
-#X connect 29 0 19 0;
+#X connect 6 0 26 0;
+#X connect 7 0 26 0;
+#X connect 8 0 26 0;
+#X connect 9 0 26 0;
+#X connect 11 0 26 0;
+#X connect 19 0 20 0;
+#X connect 22 0 28 0;
+#X connect 26 0 16 0;
+#X connect 26 1 22 0;
+#X connect 26 2 19 0;
+#X connect 26 3 23 0;
+#X connect 28 0 18 0;
 #X restore 457 190 pd beat-length;
 #X text 95 539 -beat <symbol> - set a beat length (default: 1/4),
 f 71;
@@ -422,27 +421,27 @@ bpm of "40"., f 77;
 #X text 172 326 bar \; sub-bar \; beat \; sub-beat;
 #X obj 166 414 else/metronome~;
 #X text 267 413 <= metronome clicks;
-#X obj 85 304 else/metronome 60 15/8 5, f 41;
 #X msg 136 248 timesig 6/4;
 #X text 213 248 automatically grouped in 2;
 #X msg 146 272 timesig 6/4 6;
 #X text 235 272 grouped in 6 (so we have 6 tempos);
-#X connect 0 0 30 0;
-#X connect 1 0 30 0;
-#X connect 2 0 30 0;
-#X connect 3 0 30 0;
-#X connect 4 0 30 0;
-#X connect 13 0 30 0;
-#X connect 14 0 30 0;
+#X obj 85 304 else/metronome 90 15/8 5, f 41;
+#X connect 0 0 34 0;
+#X connect 1 0 34 0;
+#X connect 2 0 34 0;
+#X connect 3 0 34 0;
+#X connect 4 0 34 0;
+#X connect 13 0 34 0;
+#X connect 14 0 34 0;
 #X connect 20 0 21 0;
 #X connect 23 0 28 0;
 #X connect 28 0 19 0;
-#X connect 30 0 17 0;
-#X connect 30 1 23 0;
-#X connect 30 2 20 0;
-#X connect 30 3 24 0;
-#X connect 31 0 30 0;
-#X connect 33 0 30 0;
+#X connect 30 0 34 0;
+#X connect 32 0 34 0;
+#X connect 34 0 17 0;
+#X connect 34 1 23 0;
+#X connect 34 2 20 0;
+#X connect 34 3 24 0;
 #X restore 64 67 pd basic;
 #X text 153 97 or "non power of two";
 #N canvas 470 70 606 541 complex 0;
@@ -568,80 +567,78 @@ output to sequence events., f 48;
 #000000;
 #X obj 61 233 else/metronome~;
 #X obj 61 265 else/out~;
-#X obj 186 226 change;
+#X obj 186 221 change;
 #X obj 407 417 s \$0-metronome;
 #X obj 123 76 r \$0-metronome;
 #X text 65 26 In this example we're just using the bar number (1st
 item on the list) to set different time signatures depending on the
 bar count., f 66;
 #X text 45 111 start;
-#X obj 186 198 t f;
-#X text 237 207 We convert to float with [trigger] and use [change]
+#X text 235 217 We convert to float with [trigger] and use [change]
 to filter repeatitions., f 38;
-#X msg 321 350 7/8 + 3/6;
 #X obj 186 255 sel 1 2 3 4 6 8, f 31;
-#X obj 123 141 else/metronome 90, f 32;
 #X obj 123 168 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
 #X obj 123 107 else/display;
+#X msg 321 350 7/8 + 4/6;
+#X obj 123 141 else/metronome 110, f 32;
+#X obj 186 195 trigger float;
 #X connect 0 0 12 0;
-#X connect 0 0 19 0;
+#X connect 0 0 25 0;
 #X connect 1 0 7 0;
-#X connect 2 0 21 0;
+#X connect 2 0 23 0;
 #X connect 3 0 8 0;
-#X connect 4 0 21 0;
+#X connect 4 0 23 0;
 #X connect 5 0 6 0;
 #X connect 6 0 9 0;
 #X connect 7 0 9 0;
 #X connect 8 0 9 0;
 #X connect 9 0 15 0;
 #X connect 10 0 15 0;
-#X connect 11 0 23 0;
+#X connect 11 0 24 0;
 #X connect 12 0 13 0;
-#X connect 14 0 22 0;
-#X connect 16 0 25 0;
-#X connect 19 0 14 0;
-#X connect 21 0 9 0;
-#X connect 22 0 5 0;
-#X connect 22 1 1 0;
-#X connect 22 2 2 0;
-#X connect 22 3 3 0;
-#X connect 22 4 4 0;
-#X connect 22 5 10 0;
-#X connect 23 0 24 0;
-#X connect 23 1 0 0;
-#X connect 25 0 23 0;
+#X connect 14 0 20 0;
+#X connect 16 0 22 0;
+#X connect 20 0 5 0;
+#X connect 20 1 1 0;
+#X connect 20 2 2 0;
+#X connect 20 3 3 0;
+#X connect 20 4 4 0;
+#X connect 20 5 10 0;
+#X connect 22 0 24 0;
+#X connect 23 0 9 0;
+#X connect 24 0 21 0;
+#X connect 24 1 0 0;
+#X connect 25 0 14 0;
 #X restore 92 120 pd example-2;
 #N canvas 436 68 698 549 example-3 0;
-#X listbox 149 254 9 0 0 0 - - - 0;
-#X obj 51 347 else/metronome~;
-#X obj 51 382 else/out~;
-#X obj 245 320 == 3, f 5;
-#X obj 212 347 spigot;
-#X obj 212 442 sel 1;
-#X obj 212 474 else/impseq~;
-#X obj 149 282 unpack f f f;
-#X obj 212 504 else/resonant~ 2000 1000;
-#X obj 86 169 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X listbox 130 258 9 0 0 0 - - - 0;
+#X obj 32 351 else/metronome~;
+#X obj 32 386 else/out~;
+#X obj 226 324 == 3, f 5;
+#X obj 193 351 spigot;
+#X obj 193 416 else/impseq~;
+#X obj 130 286 unpack f f f;
+#X obj 193 446 else/resonant~ 2000 1000;
+#X obj 67 173 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X listbox 439 234 9 0 0 0 - - - 0;
-#X obj 330 316 else/metronome~;
-#X obj 330 351 else/out~;
-#X obj 350 208 else/metronome, f 45;
-#X obj 512 367 spigot;
-#X obj 512 442 sel 1;
-#X obj 512 469 else/impseq~;
-#X obj 512 498 else/resonant~ 2000 1000;
-#X obj 350 169 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X listbox 439 238 9 0 0 0 - - - 0;
+#X obj 383 365 else/metronome~;
+#X obj 383 400 else/out~;
+#X obj 350 212 else/metronome, f 45;
+#X obj 512 371 spigot;
+#X obj 512 446 sel 1;
+#X obj 512 473 else/impseq~;
+#X obj 512 502 else/resonant~ 2000 1000;
+#X obj 350 173 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X msg 439 260 symbol \$1:\$3;
-#X msg 439 327 1;
-#X msg 478 327 0;
-#X obj 439 303 sel 1:4;
-#X obj 86 208 else/metronome, f 32;
-#X obj 512 393 ==;
-#X obj 564 402 else/frac2dec;
-#X obj 212 407 change;
+#X msg 439 264 symbol \$1:\$3;
+#X msg 439 331 1;
+#X msg 478 331 0;
+#X obj 439 307 sel 1:4;
+#X obj 67 212 else/metronome, f 32;
+#X obj 512 397 ==;
+#X obj 564 406 else/frac2dec;
 #X text 30 10 In these examples we're using the phase output information
 to trigger something. To the left we open a spigot for every 3rd tempo
 and get a bang when the phase is equal or greater then 0.333333 (about
@@ -650,8 +647,9 @@ tempo of the 1st bar and trigger when the phase precisely reaches 1/3
 of the tempo. Note that the phase output has 960 frames \, so you can
 multiply the output by 960 and match to an exact integer frame or use
 the 0-1 range., f 101;
-#X obj 439 282 else/changed;
-#X obj 212 380 > 0.333333;
+#X obj 439 286 else/changed;
+#X obj 564 379 else/initmess 1/3;
+#X obj 193 385 else/above 0.333333;
 #X text 30 71 Considering 960 is a quarter note \, this allows you
 to precisely match down to 256th notes (15 frames or 0.015625) \, triplets
 down to a 512th triplet (5 frames) and quintuplets down to 1024th (3
@@ -659,41 +657,41 @@ frames). It can't precisely handle othe tuplets (like 7 \, 9 \, 11
 \, etc) but you can use the [>] object for aproximations. Using [>]
 can also be useful for ratios like one third of the phase output (0.33333)
 as it won't really match. On the other hand \, converting fractions
-as the example to right is possible to match precisely., f 101;
-#X obj 564 375 else/initmess 1/3;
+as the example to right is possible to match precisely. In the example
+below \, instead of using [>] \, we use [above] from ELSE \, which
+is a simple asbtraction based on [>] \, [change] and [select]., f
+101;
 #X connect 0 0 1 0;
-#X connect 0 0 7 0;
+#X connect 0 0 6 0;
 #X connect 1 0 2 0;
 #X connect 3 0 4 1;
-#X connect 4 0 29 0;
-#X connect 5 0 6 0;
-#X connect 6 0 8 0;
-#X connect 7 2 3 0;
-#X connect 8 0 2 1;
-#X connect 9 0 23 0;
+#X connect 4 0 28 0;
+#X connect 5 0 7 0;
+#X connect 6 2 3 0;
+#X connect 7 0 2 1;
+#X connect 8 0 22 0;
+#X connect 9 0 10 0;
+#X connect 9 0 18 0;
 #X connect 10 0 11 0;
-#X connect 10 0 19 0;
-#X connect 11 0 12 0;
-#X connect 13 1 10 0;
-#X connect 13 2 14 0;
-#X connect 14 0 24 0;
+#X connect 12 1 9 0;
+#X connect 12 2 13 0;
+#X connect 13 0 23 0;
+#X connect 14 0 15 0;
 #X connect 15 0 16 0;
-#X connect 16 0 17 0;
-#X connect 17 0 12 1;
-#X connect 18 0 13 0;
-#X connect 19 0 28 0;
-#X connect 20 0 14 1;
-#X connect 21 0 14 1;
-#X connect 22 0 20 0;
-#X connect 22 1 21 0;
-#X connect 23 1 0 0;
-#X connect 23 2 4 0;
-#X connect 24 0 15 0;
-#X connect 25 0 24 1;
-#X connect 26 0 5 0;
-#X connect 28 0 22 0;
-#X connect 29 0 26 0;
-#X connect 31 0 25 0;
+#X connect 16 0 11 1;
+#X connect 17 0 12 0;
+#X connect 18 0 26 0;
+#X connect 19 0 13 1;
+#X connect 20 0 13 1;
+#X connect 21 0 19 0;
+#X connect 21 1 20 0;
+#X connect 22 1 0 0;
+#X connect 22 2 4 0;
+#X connect 23 0 14 0;
+#X connect 24 0 23 1;
+#X connect 26 0 21 0;
+#X connect 27 0 24 0;
+#X connect 28 0 5 0;
 #X restore 92 150 pd example-3;
 #X text 177 88 basic;
 #X text 179 120 changing time signatures;

@@ -23,7 +23,7 @@ typedef struct _metronome{
     t_int       x_complex;
     t_int       x_sigchange;
     t_int       x_group;
-    t_int       x_ticks;
+    t_int       x_n_ticks;
     t_int       x_tickcount;
     t_int       x_subdiv;
     t_int       x_n_subdiv;
@@ -126,7 +126,7 @@ static void metronome_div(t_metronome *x, t_atom *av){
     x->x_tempo_div = (float)(div * x->x_beat_length/(t_float)x->x_group);
     if(x->x_running || !x->x_pause){
         output_actual_list(x);
-        clock_setunit(x->x_clock, x->x_tempo * x->x_tempo_div / x->x_ticks, 0);
+        clock_setunit(x->x_clock, x->x_tempo * x->x_tempo_div / x->x_n_ticks, 0);
     }
 }
 
@@ -176,7 +176,7 @@ static void metronome_tick(t_metronome *x){
         metronome_stop(x);
         return;
     }*/
-    outlet_float(x->x_phaseout, (float)x->x_tickcount / (float)x->x_ticks);
+    outlet_float(x->x_phaseout, (float)x->x_tickcount / (float)x->x_n_ticks);
     if(x->x_tickcount == 0){
         x->x_subdiv = 1;
 //        if(x->x_dir)
@@ -230,7 +230,7 @@ static void metronome_tick(t_metronome *x){
         }
     }
     else{
-        t_int div = (int)(x->x_tickcount / (x->x_ticks / x->x_n_subdiv)) + 1;
+        t_int div = (int)(x->x_tickcount / (x->x_n_ticks / x->x_n_subdiv)) + 1;
         if(div != x->x_subdiv){
             x->x_subdiv = div;
             output_count_list(x);
@@ -238,15 +238,15 @@ static void metronome_tick(t_metronome *x){
     }
 //    if(x->x_dir){
         x->x_tickcount++;
-        if(x->x_tickcount == x->x_ticks)
+        if(x->x_tickcount == x->x_n_ticks)
             x->x_tickcount = 0;
 //    }
 /*    else{
         x->x_tickcount--;
         if(x->x_tickcount < 0)
-            x->x_tickcount = x->x_ticks - 1;
+            x->x_tickcount = x->x_n_ticks - 1;
     }*/
-    if(x->x_running || !x->x_pause)
+    if(x->x_running && !x->x_pause)
         clock_delay(x->x_clock, 1);
 }
 
@@ -364,7 +364,7 @@ static void metronome_tempo(t_metronome *x, t_floatarg tempo){
                 }
             }
         }*/
-        clock_setunit(x->x_clock, x->x_tempo * x->x_tempo_div / x->x_ticks, 0);
+        clock_setunit(x->x_clock, x->x_tempo * x->x_tempo_div / x->x_n_ticks, 0);
         if(x->x_running && !x->x_pause){
             metronome_tick(x);
             output_actual_list(x);
@@ -397,6 +397,7 @@ static void metronome_float(t_metronome *x, t_float f){
     else{
         x->x_running = 0;
         x->x_barcount = x->x_sub_barcount = x->x_tempocount = x->x_subdiv = x->x_tickcount = 0;
+        outlet_float(x->x_phaseout, 0);
         output_count_list(x);
         clock_unset(x->x_clock);
     }
@@ -428,6 +429,29 @@ static void metronome_free(t_metronome *x){
     clock_free(x->x_clock);
 }
 
+/*static void metronome_set(t_metronome *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac){
+    x->x_barcount = atom_getfloatarg(0, ac, av);
+        ac--, av++;
+    }
+    if(ac){
+    x->x_sub_barcount = atom_getfloatarg(0, ac, av);
+        ac--, av++;
+    }
+    if(ac){
+    x->x_tempocount = atom_getfloatarg(0, ac, av) - 1;
+        ac--, av++;
+    }
+//    if(ac){
+//        t_float f = atom_getfloatarg(0, ac, av);
+//        x->x_tickcount = (int)((f > 1 ? 1 : f < 0 ? 0 : f) * x->x_n_ticks);
+//        ac--, av++;
+//    }
+}*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
 static void *metronome_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_metronome *x = (t_metronome *)pd_new(metronome_class);
@@ -438,7 +462,7 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
     x->x_s_name = canvas_realizedollar(canvas, gensym(buf));
     x->x_sig = gensym("4/4");
 //    x->x_dir = 1;
-    x->x_ticks = DEFNTICKS;
+    x->x_n_ticks = DEFNTICKS;
     x->x_tickcount = 0;
     x->x_tempo_div = 1;
     x->x_beat_length = 4;
@@ -520,4 +544,5 @@ void metronome_setup(void){
     class_addmethod(metronome_class, (t_method)metronome_stop, gensym("stop"), 0);
     class_addmethod(metronome_class, (t_method)metronome_pause, gensym("pause"), 0);
     class_addmethod(metronome_class, (t_method)metronome_continue, gensym("continue"), 0);
+//    class_addmethod(metronome_class, (t_method)metronome_set, gensym("set"), A_GIMME, 0);
 }
