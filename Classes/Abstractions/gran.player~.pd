@@ -1,6 +1,5 @@
 #N canvas 497 27 643 437 10;
-#X declare -path /Users/porres/Desktop/git/pd-else/Classes/Abstractions
-;
+#X declare -path /Users/porres/Documents/Pd/externals/else;
 #X obj 44 59 inlet;
 #X obj 126 59 inlet;
 #X obj 178 59 inlet;
@@ -45,7 +44,8 @@
 #X obj 43 145 trigger float float;
 #X obj 70 342 s pd-\$0-buffers;
 #N canvas 621 356 434 343 \$0-buffers 0;
-#X obj 20 50 table 1003-ch1;
+#X obj 20 50 table 1228-ch1;
+#X obj 130 50 table 1228-ch2;
 #X restore 194 98 pd \$0-buffers;
 #X obj 43 209 makefilename \$0-ch%d, f 12;
 #X obj 43 251 t s s;
@@ -84,7 +84,7 @@
 #X obj 48 160 send pd-\$0-path;
 #X msg 48 136 clear \, obj 30 20 declare -path \$1;
 #N canvas 169 23 493 100 \$0-path 0;
-#X obj 30 20 declare -path /Users/porres/Desktop/git/pd-else/Classes/Abstractions
+#X obj 30 20 declare -path /Users/porres/Documents/Pd/externals/else
 ;
 #X restore 150 160 pd \$0-path;
 #X obj 48 109 pdcontrol;
@@ -239,7 +239,7 @@
 #X connect 40 0 39 0;
 #X connect 41 0 42 0;
 #X connect 42 0 38 0;
-#X restore 223 71 pd load-args;
+#X restore 218 71 pd load-args;
 #N canvas 1045 67 649 743 initialize 0;
 #X obj 194 445 s \$0-file;
 #X obj 181 333 r \$0-symbol_arg;
@@ -353,11 +353,12 @@
 #X connect 17 0 12 1;
 #X connect 18 0 8 0;
 #X connect 19 0 0 0;
-#X restore 152 104 pd create-grains;
-#X obj 82 40 else/loadbanger -init 3;
-#X connect 3 0 1 0;
-#X connect 3 1 2 0;
-#X connect 3 2 0 0;
+#X restore 82 72 pd create-grains;
+#X obj 82 40 else/loadbanger -init 2;
+#X obj 82 107 loadbang;
+#X connect 3 0 2 0;
+#X connect 3 1 0 0;
+#X connect 4 0 1 0;
 #X restore 249 159 pd dynamic-patching;
 #X obj 319 115 s \$0-transp;
 #X obj 233 115 s \$0-speed;
