@@ -354,6 +354,7 @@ saw~	x
 saw2~	x
 scale2cents	x
 scales	x
+score	x
 scramble	x
 schmitt	x
 schmitt~	x
