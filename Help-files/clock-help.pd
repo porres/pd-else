@@ -1,4 +1,4 @@
-#N canvas 623 45 560 651 10;
+#N canvas 619 23 560 651 10;
 #X obj 3 406 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 3 495 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -90,7 +90,7 @@ patch);
 #000000 #000000;
 #X obj 143 340 else/clock 60;
 #X obj 324 340 else/clock -s 2;
-#N canvas 791 155 522 502 example 0;
+#N canvas 791 93 522 502 example 0;
 #X obj 104 240 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
 #X floatatom 153 235 5 0 0 0 - - - 0;
@@ -196,26 +196,26 @@ by the main clock \, so it only works when the main clock is on. A
 synced clock also has a relative tempo in relation to the main clock
 tempo (as in a clock multiplier) and can be synced to a [metronome].
 , f 81;
-#N canvas 848 155 484 434 metronome 0;
-#X obj 109 117 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#N canvas 847 155 455 434 metronome 0;
+#X obj 91 113 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X obj 109 204 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#X obj 91 200 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000;
+#X obj 91 230 else/impseq~;
+#X obj 91 292 else/drive~ 5;
+#X obj 91 256 else/resonant~ 450 300, f 14;
+#X obj 91 325 else/out~;
+#X obj 243 297 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X obj 109 234 else/impseq~;
-#X obj 109 296 else/drive~ 5;
-#X obj 109 260 else/resonant~ 450 300, f 14;
-#X obj 109 329 else/out~;
-#X obj 261 301 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
-#000000 #000000;
-#X obj 261 225 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X obj 243 221 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X obj 261 327 else/impseq~;
-#X obj 261 356 else/resonant~ 1050 200, f 14;
-#X obj 109 171 else/metronome -name \$0-metro 90 6/8;
-#X obj 261 264 else/clock -s \$0-metro 1.5, f 13;
-#X msg 147 118 timesig 3/4;
-#X msg 161 143 timesig 6/8;
-#X text 49 25 A [clock] object can also be synced to a [metronome]
+#X obj 243 323 else/impseq~;
+#X obj 243 352 else/resonant~ 1050 200, f 14;
+#X obj 91 167 else/metronome -name \$0-metro 90 6/8;
+#X obj 243 260 else/clock -s \$0-metro 1.5, f 13;
+#X msg 129 114 timesig 3/4;
+#X msg 143 139 timesig 6/8;
+#X text 31 21 A [clock] object can also be synced to a [metronome]
 object \, which also gets a local name relative to the patch's main
 window or a clock name via the '-name' flag \, check it's help file.
 The tempo in a [metronome] depends on the time signature. Note how

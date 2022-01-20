@@ -1,0 +1,174 @@
+#N canvas 612 25 562 527 10;
+#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
+0;
+#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
+0;
+#X obj 23 42 cnv 4 4 4 empty empty Score\\\ sequencer 0 28 2 18 #e0e0e0
+#000000 0;
+#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 252 42 1 0 0;
+#X restore 305 5 graph;
+#X obj 3 5 cnv 15 301 42 empty empty score 20 20 2 37 #e0e0e0 #000000
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 5 graph;
+#X obj 5 497 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 8 242 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 8 354 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 8 442 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 86 248 cnv 17 3 102 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X text 102 320 read <symbol> -;
+#X text 96 334 write <symbol> -;
+#X text 150 276 float -;
+#X obj 85 361 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 85 381 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 8 472 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
+0;
+#X text 110 477 clicking on the object opens data/edit window (same
+as 'open'), f 63;
+#X text 150 248 start -;
+#X text 156 262 stop -;
+#X text 200 248 starts the sequence;
+#X text 200 262 stops the sequence, f 58;
+#X text 200 276 non-zero starts and zero stops sequence, f 58;
+#X text 200 319 import score from a file \, no symbol opens dialog
+window, f 58;
+#X text 200 334 write score to file \, no symbol opens dialog window
+, f 58;
+#X obj 85 401 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 85 421 cnv 17 3 17 empty empty 4 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X text 156 421 bang -;
+#X obj 301 214 bng 17 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 160 127 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
+#X floatatom 254 215 6 0 0 0 - - - 0;
+#X floatatom 207 215 4 0 0 0 - - - 0;
+#X obj 160 215 print;
+#X text 132 362 anything -;
+#X text 200 362 score data (bar number \, tempo and other things by
+the user;
+#X text 132 381 anything -;
+#X text 199 381 event data, f 53;
+#X text 150 402 float -;
+#X text 200 402 event duration in ms, f 53;
+#X text 199 421 when sequence is over, f 53;
+#X text 125 449 1) symbol - score file to load (default none);
+#X text 156 290 open -;
+#X text 150 305 close -;
+#X text 200 305 closes edit window, f 58;
+#X text 200 290 opens edit window, f 58;
+#X text 185 128 play/stop;
+#X text 52 86 [score] is an abstraction based on [text sequencer] and
+has the same rhythmic notation syntax as [pattern]., f 73;
+#X text 28 164 see also:;
+#X obj 30 187 else/pattern;
+#X obj 31 208 else/sequencer;
+#X text 314 188 <= click to open;
+#N canvas 250 108 1053 471 details 0;
+#X obj 647 326 *~;
+#X obj 647 254 mtof;
+#X msg 481 26 start;
+#X msg 501 52 stop;
+#X obj 770 89 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000;
+#X obj 647 290 osc~;
+#X obj 770 112 print done;
+#X obj 544 256 print data;
+#X obj 481 227 route tempo;
+#X floatatom 481 256 7 0 0 0 - - - 0;
+#X obj 454 25 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
+#X obj 737 144 moses;
+#X floatatom 647 174 5 0 0 0 - - - 0;
+#X obj 764 228 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 66.6667 1 66.6667 0.5 400 0.5 133.333 0;
+#X msg 764 169 duration \$1 \, bang;
+#X obj 695 342 else/envgen~ -legato, f 12;
+#X obj 695 256 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 776 198 else/initmess 0 50 1 50 0.5 300 0.5 100 0;
+#X text 62 70 [score] an internal syntax to set 'tempo' \, so a 'tempo
+60' message will set the bpm to 60! You can also set 'tempo 90 1000'
+and it will go from whatever bpm setting you have to '90' in 1000ms
+(accelerating or deaccelerating the reading).;
+#X text 62 121 [score] has a sintax for bars \, which is "|" - the
+same as [else/sequence] and [else/pattern]. This will set the bar number
+which is output at the left outlet \, allong with 'tempo' messages
+and whatever else that you specify in the score that is not a 'note'
+event., f 60;
+#X text 62 181 Note events are specified with the 'note' symbol at
+the start \, followed by the duration in fractional format \, which
+represent fractions of a whole note and negative values are rests so
+nothing should follow it. Whatever follows the fraction is the 'event
+data' and is sent out the second outlet so it is used in the patch
+for controlling anything. The duration in ms is output in the third
+outlet (also negative values)., f 60;
+#X text 62 275 A "-" at the start of a line sends the remaining as
+'event data' in the second outlet. This is useful for things like chords
+and polyphonic events., f 60;
+#X text 62 314 A bang is sent at the rightmost outlet when the sequence
+is over., f 60;
+#X text 62 343 In this example \, the event data is just a float \,
+which is treated as pitch in MIDI., f 60;
+#X obj 647 395 else/out~;
+#X floatatom 712 183 6 0 0 0 - - - 0;
+#X text 711 199 rests;
+#X obj 481 84 else/score score-2.txt, f 45;
+#X connect 0 0 24 0;
+#X connect 1 0 5 0;
+#X connect 2 0 27 0;
+#X connect 3 0 27 0;
+#X connect 4 0 6 0;
+#X connect 5 0 0 0;
+#X connect 8 0 9 0;
+#X connect 8 1 7 0;
+#X connect 10 0 27 0;
+#X connect 11 0 25 0;
+#X connect 11 1 14 0;
+#X connect 12 0 1 0;
+#X connect 12 0 16 0;
+#X connect 13 0 15 1;
+#X connect 14 0 13 0;
+#X connect 15 0 0 1;
+#X connect 16 0 15 0;
+#X connect 17 0 13 0;
+#X connect 27 0 8 0;
+#X connect 27 1 12 0;
+#X connect 27 2 11 0;
+#X connect 27 3 4 0;
+#X restore 480 207 pd details;
+#X msg 169 154 start;
+#X msg 213 158 stop;
+#X msg 251 161 open;
+#X msg 289 165 close;
+#X obj 160 190 else/score score-1.txt, f 24;
+#X connect 34 0 61 0;
+#X connect 57 0 61 0;
+#X connect 58 0 61 0;
+#X connect 59 0 61 0;
+#X connect 60 0 61 0;
+#X connect 61 0 37 0;
+#X connect 61 1 36 0;
+#X connect 61 2 35 0;
+#X connect 61 3 33 0;
