@@ -1,4 +1,4 @@
-#N canvas 612 25 562 527 10;
+#N canvas 653 33 562 527 10;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
@@ -40,7 +40,7 @@
 ;
 #X obj 85 381 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 8 472 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
+#X obj 8 470 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
 0;
 #X text 110 477 clicking on the object opens data/edit window (same
 as 'open'), f 63;
@@ -58,13 +58,13 @@ window, f 58;
 #X obj 85 421 cnv 17 3 17 empty empty 4 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 156 421 bang -;
-#X obj 301 214 bng 17 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X obj 311 214 bng 17 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X obj 160 127 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X obj 170 127 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X floatatom 254 215 6 0 0 0 - - - 0;
-#X floatatom 207 215 4 0 0 0 - - - 0;
-#X obj 160 215 print;
+#X floatatom 264 215 6 0 0 0 - - - 0;
+#X floatatom 217 215 4 0 0 0 - - - 0;
+#X obj 170 215 print;
 #X text 132 362 anything -;
 #X text 200 362 score data (bar number \, tempo and other things by
 the user;
@@ -78,97 +78,217 @@ the user;
 #X text 150 305 close -;
 #X text 200 305 closes edit window, f 58;
 #X text 200 290 opens edit window, f 58;
-#X text 185 128 play/stop;
-#X text 52 86 [score] is an abstraction based on [text sequencer] and
-has the same rhythmic notation syntax as [pattern]., f 73;
+#X text 195 128 play/stop;
 #X text 28 164 see also:;
 #X obj 30 187 else/pattern;
 #X obj 31 208 else/sequencer;
-#X text 314 188 <= click to open;
-#N canvas 250 108 1053 471 details 0;
-#X obj 647 326 *~;
-#X obj 647 254 mtof;
-#X msg 481 26 start;
-#X msg 501 52 stop;
-#X obj 770 89 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X text 324 188 <= click to open;
+#N canvas 434 90 829 475 details 0;
+#X obj 415 332 *~;
+#X obj 415 260 mtof;
+#X msg 297 42 stop;
+#X obj 526 95 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000;
-#X obj 647 290 osc~;
-#X obj 770 112 print done;
-#X obj 544 256 print data;
-#X obj 481 227 route tempo;
-#X floatatom 481 256 7 0 0 0 - - - 0;
-#X obj 454 25 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X obj 415 296 osc~;
+#X obj 526 118 print done;
+#X obj 322 152 print data;
+#X obj 259 15 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X obj 737 144 moses;
-#X floatatom 647 174 5 0 0 0 - - - 0;
-#X obj 764 228 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 66.6667 1 66.6667 0.5 400 0.5 133.333 0;
-#X msg 764 169 duration \$1 \, bang;
-#X obj 695 342 else/envgen~ -legato, f 12;
-#X obj 695 256 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X obj 505 150 moses;
+#X floatatom 415 160 5 0 0 0 - - - 0;
+#X obj 532 234 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 50 1 50 0.5 300 0.5 100 0;
+#X msg 532 175 duration \$1 \, bang;
+#X obj 463 348 else/envgen~ -legato, f 12;
+#X obj 463 262 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X obj 776 198 else/initmess 0 50 1 50 0.5 300 0.5 100 0;
-#X text 62 70 [score] an internal syntax to set 'tempo' \, so a 'tempo
-60' message will set the bpm to 60! You can also set 'tempo 90 1000'
-and it will go from whatever bpm setting you have to '90' in 1000ms
-(accelerating or deaccelerating the reading).;
-#X text 62 121 [score] has a sintax for bars \, which is "|" - the
+#X obj 544 204 else/initmess 0 50 1 50 0.5 300 0.5 100 0;
+#X text 27 188 [score] has a sintax for bars \, which is "|" - the
 same as [else/sequence] and [else/pattern]. This will set the bar number
 which is output at the left outlet \, allong with 'tempo' messages
 and whatever else that you specify in the score that is not a 'note'
-event., f 60;
-#X text 62 181 Note events are specified with the 'note' symbol at
+event., f 59;
+#X text 27 252 Note events are specified with the 'note' symbol at
 the start \, followed by the duration in fractional format \, which
 represent fractions of a whole note and negative values are rests so
 nothing should follow it. Whatever follows the fraction is the 'event
 data' and is sent out the second outlet so it is used in the patch
 for controlling anything. The duration in ms is output in the third
-outlet (also negative values)., f 60;
-#X text 62 275 A "-" at the start of a line sends the remaining as
+outlet (also negative values).;
+#X text 27 347 A "-" at the start of a line sends the remaining as
 'event data' in the second outlet. This is useful for things like chords
-and polyphonic events., f 60;
-#X text 62 314 A bang is sent at the rightmost outlet when the sequence
-is over., f 60;
-#X text 62 343 In this example \, the event data is just a float \,
-which is treated as pitch in MIDI., f 60;
-#X obj 647 395 else/out~;
-#X floatatom 712 183 6 0 0 0 - - - 0;
-#X text 711 199 rests;
-#X obj 481 84 else/score score-2.txt, f 45;
-#X connect 0 0 24 0;
-#X connect 1 0 5 0;
-#X connect 2 0 27 0;
-#X connect 3 0 27 0;
-#X connect 4 0 6 0;
-#X connect 5 0 0 0;
-#X connect 8 0 9 0;
-#X connect 8 1 7 0;
-#X connect 10 0 27 0;
-#X connect 11 0 25 0;
-#X connect 11 1 14 0;
-#X connect 12 0 1 0;
-#X connect 12 0 16 0;
-#X connect 13 0 15 1;
-#X connect 14 0 13 0;
-#X connect 15 0 0 1;
-#X connect 16 0 15 0;
-#X connect 17 0 13 0;
-#X connect 27 0 8 0;
-#X connect 27 1 12 0;
-#X connect 27 2 11 0;
-#X connect 27 3 4 0;
+and polyphonic events., f 59;
+#X text 27 387 A bang is sent at the rightmost outlet when the sequence
+is over.;
+#X text 27 416 In this example \, the event data is just a float \,
+which is treated as pitch in MIDI., f 59;
+#X obj 415 401 else/out~;
+#X floatatom 480 189 6 0 0 0 - - - 0;
+#X text 479 205 rests;
+#X floatatom 259 150 5 0 0 0 - - - 12;
+#X text 157 16 start / stop =>;
+#X text 29 102 [score] has a 'tempo' syntax where 'tempo 60' sets the
+bpm to 60! You can also set 'tempo 90 3' and it will go from whatever
+bpm setting you have to '90' in three beats (accelerating or deaccelerating).
+, f 34;
+#X text 416 142 PITCH;
+#X floatatom 551 150 10 0 0 0 - - - 0;
+#X text 619 150 duration;
+#X msg 356 41 goto bar 3 \, start;
+#X msg 487 43 goto bar 3;
+#X msg 286 16 start;
+#X msg 205 45 rewind;
+#X obj 646 55 metronome;
+#X obj 646 76 metronome~;
+#X obj 646 97 out~;
+#X msg 558 88 0;
+#X obj 259 123 route tempo;
+#X obj 646 10 routeall timesig;
+#X obj 646 31 t b a;
+#X obj 259 70 else/score score-2.txt, f 45;
+#X connect 0 0 20 0;
+#X connect 1 0 4 0;
+#X connect 2 0 40 0;
+#X connect 3 0 5 0;
+#X connect 3 0 36 0;
+#X connect 4 0 0 0;
+#X connect 7 0 40 0;
+#X connect 8 0 21 0;
+#X connect 8 1 11 0;
+#X connect 8 1 27 0;
+#X connect 9 0 1 0;
+#X connect 9 0 13 0;
+#X connect 10 0 12 1;
+#X connect 11 0 10 0;
+#X connect 12 0 0 1;
+#X connect 13 0 12 0;
+#X connect 14 0 10 0;
+#X connect 29 0 40 0;
+#X connect 30 0 40 0;
+#X connect 31 0 40 0;
+#X connect 32 0 40 0;
+#X connect 33 1 34 0;
+#X connect 34 0 35 0;
+#X connect 36 0 33 0;
+#X connect 37 0 23 0;
+#X connect 37 0 33 1;
+#X connect 37 1 6 0;
+#X connect 37 1 38 0;
+#X connect 38 0 39 0;
+#X connect 39 0 33 0;
+#X connect 39 1 33 0;
+#X connect 40 0 37 0;
+#X connect 40 1 9 0;
+#X connect 40 2 8 0;
+#X connect 40 3 3 0;
 #X restore 480 207 pd details;
-#X msg 169 154 start;
-#X msg 213 158 stop;
-#X msg 251 161 open;
-#X msg 289 165 close;
-#X obj 160 190 else/score score-1.txt, f 24;
-#X connect 34 0 61 0;
-#X connect 57 0 61 0;
-#X connect 58 0 61 0;
-#X connect 59 0 61 0;
-#X connect 60 0 61 0;
-#X connect 61 0 37 0;
-#X connect 61 1 36 0;
-#X connect 61 2 35 0;
-#X connect 61 3 33 0;
+#X msg 179 154 start;
+#X msg 223 158 stop;
+#X msg 261 161 open;
+#X msg 299 165 close;
+#X obj 170 190 else/score score-1.txt, f 24;
+#X text 52 86 [score] is an abstraction based on [text sequencer] and
+has the same rhythmic notation syntax as [pattern]. See [pd details]
+for more., f 73;
+#N canvas 517 95 829 475 details 0;
+#X obj 415 332 *~;
+#X obj 415 260 mtof;
+#X msg 294 38 stop;
+#X obj 526 95 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000;
+#X obj 415 296 osc~;
+#X obj 526 118 print done;
+#X obj 322 152 print data;
+#X obj 228 14 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
+#X obj 505 150 moses;
+#X floatatom 415 160 5 0 0 0 - - - 0;
+#X obj 532 234 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 50 1 50 0.5 300 0.5 100 0;
+#X msg 532 175 duration \$1 \, bang;
+#X obj 463 348 else/envgen~ -legato, f 12;
+#X obj 463 262 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X obj 544 204 else/initmess 0 50 1 50 0.5 300 0.5 100 0;
+#X text 27 188 [score] has a sintax for bars \, which is "|" - the
+same as [else/sequence] and [else/pattern]. This will set the bar number
+which is output at the left outlet \, allong with 'tempo' messages
+and whatever else that you specify in the score that is not a 'note'
+event., f 59;
+#X text 27 252 Note events are specified with the 'note' symbol at
+the start \, followed by the duration in fractional format \, which
+represent fractions of a whole note and negative values are rests so
+nothing should follow it. Whatever follows the fraction is the 'event
+data' and is sent out the second outlet so it is used in the patch
+for controlling anything. The duration in ms is output in the third
+outlet (also negative values).;
+#X text 27 347 A "-" at the start of a line sends the remaining as
+'event data' in the second outlet. This is useful for things like chords
+and polyphonic events., f 59;
+#X text 27 387 A bang is sent at the rightmost outlet when the sequence
+is over.;
+#X text 27 416 In this example \, the event data is just a float \,
+which is treated as pitch in MIDI., f 59;
+#X obj 415 401 else/out~;
+#X floatatom 480 189 6 0 0 0 - - - 0;
+#X text 479 205 rests;
+#X floatatom 259 150 5 0 0 0 - - - 12;
+#X text 129 15 start / stop =>;
+#X text 29 102 [score] has a 'tempo' syntax where 'tempo 60' sets the
+bpm to 60! You can also set 'tempo 90 3' and it will go from whatever
+bpm setting you have to '90' in three beats (accelerating or deaccelerating).
+, f 34;
+#X text 416 142 PITCH;
+#X floatatom 551 150 10 0 0 0 - - - 0;
+#X text 619 150 duration;
+#X msg 487 43 goto bar 3;
+#X msg 282 14 start;
+#X obj 259 123 route tempo;
+#X msg 187 44 pause;
+#X msg 125 54 continue;
+#X obj 258 14 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000;
+#X msg 349 41 goto bar 3 \, play;
+#X obj 641 79 text;
+#X obj 259 70 else/score score-2.txt, f 45;
+#X connect 0 0 20 0;
+#X connect 1 0 4 0;
+#X connect 2 0 37 0;
+#X connect 3 0 5 0;
+#X connect 4 0 0 0;
+#X connect 7 0 37 0;
+#X connect 8 0 21 0;
+#X connect 8 1 11 0;
+#X connect 8 1 27 0;
+#X connect 9 0 1 0;
+#X connect 9 0 13 0;
+#X connect 10 0 12 1;
+#X connect 11 0 10 0;
+#X connect 12 0 0 1;
+#X connect 13 0 12 0;
+#X connect 14 0 10 0;
+#X connect 29 0 37 0;
+#X connect 30 0 37 0;
+#X connect 31 0 23 0;
+#X connect 31 1 6 0;
+#X connect 32 0 37 0;
+#X connect 33 0 37 0;
+#X connect 34 0 37 0;
+#X connect 35 0 37 0;
+#X connect 37 0 31 0;
+#X connect 37 1 9 0;
+#X connect 37 2 8 0;
+#X connect 37 3 3 0;
+#X restore 480 183 pd details;
+#X obj 146 155 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#000000 #000000;
+#X connect 34 0 60 0;
+#X connect 56 0 60 0;
+#X connect 57 0 60 0;
+#X connect 58 0 60 0;
+#X connect 59 0 60 0;
+#X connect 60 0 37 0;
+#X connect 60 1 36 0;
+#X connect 60 2 35 0;
+#X connect 60 3 33 0;
+#X connect 63 0 60 0;
