@@ -14,7 +14,6 @@ note 1/12 68;
 note 1/12 67;
 note 1/4 65;
 |;
-bar 3;
 note 1/6 77;
 note 1/6 76;
 note 1/6 75;

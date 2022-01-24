@@ -115,7 +115,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (437 objects):
+## Current Object list (438 objects):
 
 **ASSORTED: [01]**
 
@@ -484,7 +484,7 @@ Cross compiling is also possible with something like this
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: [36]**
+**CONTROL: [37]**
 
  - [mouse]
  - [canvas.mouse]
@@ -511,8 +511,9 @@ Cross compiling is also possible with something like this
  - [ramp~]
  - [susloop~]
  - [drum.seq]
-- [euclid]
-- [score]
+ - [euclid]
+ - [score]
+ - [speed]
  - [pattern]
  - [sequencer]
  - [sequencer~]
@@ -531,7 +532,6 @@ Cross compiling is also possible with something like this
 - [rand.i]
 - [rand.i~]
 - [rand.list]
-
 - [rand.seq]
 - [markov]
 - [drunkard~]
