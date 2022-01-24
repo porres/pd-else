@@ -101,7 +101,7 @@ for more., f 68;
 #000000 0 1;
 #X obj 448 144 moses;
 #X obj 475 231 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 10 1 100 0.2 100 0.2 300 0;
+50 50 0 0 0 0 0 13.0719 1 130.719 0.2 130.719 0.2 392.157 0;
 #X msg 475 174 duration \$1 \, bang;
 #X obj 377 292 else/envgen~ -legato, f 12;
 #X obj 377 245 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
@@ -113,7 +113,7 @@ which is treated as pitch in MIDI., f 39;
 #X obj 362 377 else/out~;
 #X floatatom 405 206 8 0 0 0 - - - 0;
 #X text 409 223 rests;
-#X text 391 113 duration;
+#X text 391 114 duration;
 #X msg 333 29 start;
 #X obj 306 29 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000;
@@ -198,7 +198,7 @@ values are also output so they can be filtered out and specify rests.
 #000000 #000000;
 #X obj 428 146 moses;
 #X obj 455 233 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 8.7146 1 87.146 0.2 87.146 0.2 261.438 0;
+50 50 0 0 0 0 0 10 1 100 0.2 100 0.2 300 0;
 #X msg 455 176 duration \$1 \, bang;
 #X obj 357 294 else/envgen~ -legato, f 12;
 #X obj 357 247 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
@@ -257,7 +257,7 @@ a 'click track'., f 49;
 #N canvas 323 125 649 414 voice 0;
 #X obj 155 302 *~;
 #X obj 278 182 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 19.6078 1 196.078 0.2 196.078 0.2 588.235 0;
+50 50 0 0 0 0 0 10 1 100 0.2 100 0.2 300 0;
 #X msg 278 125 duration \$1 \, bang;
 #X obj 170 253 else/envgen~ -legato, f 12;
 #X obj 170 206 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
@@ -294,7 +294,7 @@ a 'click track'., f 49;
 #N canvas 323 125 649 414 voice 0;
 #X obj 155 302 *~;
 #X obj 278 182 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 19.6078 1 196.078 0.2 196.078 0.2 588.235 0;
+50 50 0 0 0 0 0 10 1 100 0.2 100 0.2 300 0;
 #X msg 278 125 duration \$1 \, bang;
 #X obj 170 253 else/envgen~ -legato, f 12;
 #X obj 170 206 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
@@ -327,7 +327,7 @@ a 'click track'., f 49;
 #N canvas 323 125 649 414 voice 0;
 #X obj 155 302 *~;
 #X obj 278 182 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 19.6078 1 196.078 0.2 196.078 0.2 588.235 0;
+50 50 0 0 0 0 0 10 1 100 0.2 100 0.2 300 0;
 #X msg 278 125 duration \$1 \, bang;
 #X obj 170 253 else/envgen~ -legato, f 12;
 #X obj 170 206 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
