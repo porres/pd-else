@@ -1,4 +1,4 @@
-#N canvas 796 42 446 430 10;
+#N canvas 796 42 446 456 10;
 #X obj 87 290 else/resonant~ 1700 100, f 14;
 #X obj 287 290 else/resonant~ 1000 100, f 14;
 #X obj 189 290 else/resonant~ 600 100, f 14;
@@ -13,7 +13,6 @@
 #X obj 287 226 else/impseq~;
 #X obj 189 226 else/impseq~;
 #X obj 87 226 else/impseq~;
-#X obj 189 374 outlet~;
 #N canvas 564 95 296 316 init 0;
 #X obj 71 119 pdcontrol;
 #X msg 71 83 args;
@@ -35,9 +34,11 @@
 #X obj 229 259 r \$0-mid;
 #X obj 327 259 r \$0-hi;
 #X obj 148 62 inlet;
-#X connect 0 0 14 0;
-#X connect 1 0 14 0;
-#X connect 2 0 14 0;
+#X obj 189 373 else/drive~ 10;
+#X obj 189 404 outlet~;
+#X connect 0 0 19 0;
+#X connect 1 0 19 0;
+#X connect 2 0 19 0;
 #X connect 3 0 11 0;
 #X connect 4 0 12 0;
 #X connect 5 0 9 0;
@@ -51,7 +52,8 @@
 #X connect 11 0 1 0;
 #X connect 12 0 2 0;
 #X connect 13 0 0 0;
-#X connect 16 0 0 1;
-#X connect 17 0 2 1;
-#X connect 18 0 1 1;
-#X connect 19 0 8 0;
+#X connect 15 0 0 1;
+#X connect 16 0 2 1;
+#X connect 17 0 1 1;
+#X connect 18 0 8 0;
+#X connect 19 0 20 0;
