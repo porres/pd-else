@@ -1,0 +1,22 @@
+#N canvas 350 296 361 311 10;
+#X obj 182 212 *~;
+#X obj 105 145 mtof;
+#X obj 105 169 else/bl.tri~;
+#X obj 105 36 inlet;
+#X obj 182 254 outlet~;
+#X obj 105 97 unpack;
+#X obj 132 63 display;
+#X obj 248 221 switch~;
+#X obj 248 195 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 197 165 else/asr~ 10 100;
+#X connect 0 0 4 0;
+#X connect 1 0 2 0;
+#X connect 2 0 0 0;
+#X connect 3 0 5 0;
+#X connect 3 0 6 0;
+#X connect 5 0 1 0;
+#X connect 5 1 9 0;
+#X connect 8 0 7 0;
+#X connect 9 0 0 1;
+#X connect 9 1 8 0;

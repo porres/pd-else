@@ -1,0 +1,13 @@
+|;
+tempo 60;
+note 1/4 70;
+note 1/12 69;
+note 1/12 68;
+note 1/12 67;
+note 1/4 65;
+|;
+note 1/4 70;
+note 1/12 69;
+note 1/12 68;
+note 1/12 67;
+note 1/4 65;
