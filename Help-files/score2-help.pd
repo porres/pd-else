@@ -1,10 +1,10 @@
-#N canvas 624 32 563 540 10;
+#N canvas 624 32 564 540 10;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 42 cnv 4 4 4 empty empty Score\ sequencer\ variant 0 28 2
-18 #e0e0e0 #000000 0;
+#X obj 23 42 cnv 4 4 4 empty empty Score\\\ sequencer\\\ variant 0
+28 2 18 #e0e0e0 #000000 0;
 #X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
@@ -33,9 +33,9 @@
 0;
 #X obj 86 239 cnv 17 3 123 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 102 335 read <symbol> -;
-#X text 96 349 write <symbol> -;
-#X text 150 265 float -;
+#X text 98 335 read <symbol> -;
+#X text 92 349 write <symbol> -;
+#X text 146 265 float -;
 #X obj 85 376 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 85 396 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
@@ -44,37 +44,35 @@
 0;
 #X text 110 493 clicking on the object opens data/edit window (same
 as 'open'), f 63;
-#X text 150 237 start -;
-#X text 156 251 stop -;
-#X text 200 237 starts the sequence, f 58;
-#X text 200 251 stops the sequence, f 58;
-#X text 200 265 non-zero starts and zero stops sequence, f 58;
-#X text 200 335 import score from a file \, no symbol opens dialog
+#X text 146 237 start -;
+#X text 152 251 stop -;
+#X text 196 237 starts the sequence, f 58;
+#X text 196 251 stops the sequence, f 58;
+#X text 196 265 non-zero starts and zero stops sequence, f 58;
+#X text 196 335 import score from a file \, no symbol opens dialog
 window, f 58;
-#X text 200 349 write score to file \, no symbol opens dialog window
+#X text 196 349 write score to file \, no symbol opens dialog window
 , f 58;
 #X obj 85 416 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 85 436 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 156 436 bang -;
+#X text 152 436 bang -;
 #X obj 331 204 bng 17 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
 #X obj 190 118 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X text 132 416 anything -;
-#X text 200 416 score data (bar number \, tempo and other things by
-the user;
-#X text 132 377 anything -;
-#X text 200 377 event data, f 58;
-#X text 150 396 float -;
-#X text 200 396 event duration in ms, f 58;
-#X text 200 436 when sequence is over, f 58;
+#X text 128 416 anything -;
+#X text 128 377 anything -;
+#X text 196 377 event data, f 58;
+#X text 146 396 float -;
+#X text 196 396 event duration in ms, f 58;
+#X text 196 436 when sequence is over, f 58;
 #X text 125 465 1) symbol - score file to load (default none);
-#X text 156 307 open -;
-#X text 150 321 close -;
-#X text 200 321 closes edit window, f 58;
-#X text 200 307 opens edit window, f 58;
+#X text 152 307 open -;
+#X text 146 321 close -;
+#X text 196 321 closes edit window, f 58;
+#X text 196 307 opens edit window, f 58;
 #X text 215 119 play/stop;
 #X text 28 134 see also:;
 #X obj 30 157 else/pattern;
@@ -84,7 +82,18 @@ the user;
 #X msg 243 148 stop;
 #X msg 281 151 open;
 #X msg 319 155 close;
-#N canvas 484 72 712 463 details 0;
+#X obj 166 145 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X text 146 279 pause -;
+#X text 128 293 continue -;
+#X text 196 279 pauses playing, f 58;
+#X text 196 293 continues playing, f 58;
+#X obj 284 205 print;
+#X floatatom 237 205 6 0 0 0 - - - 0;
+#X floatatom 190 205 4 0 0 0 - - - 0;
+#X text 52 86 [score2] is a variant of [score] that has the same rhythmic
+notation syntax as [pattern]., f 75;
+#X obj 31 199 else/score;
 #N canvas 453 76 749 449 metronome 0;
 #X obj 357 55 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
@@ -114,7 +123,6 @@ the user;
 #X obj 357 247 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
 #X obj 342 379 else/out~;
-#X obj 357 91 else/score score-2.txt, f 36;
 #X obj 428 134 else/display;
 #X obj 357 171 else/display;
 #X obj 310 267 osc~;
@@ -126,8 +134,9 @@ the 'timesig' message and can also get tempo information to give us
 a 'click track'., f 45;
 #X obj 569 139 s \$0-done;
 #X text 387 57 <= start / stop;
+#X obj 357 91 else/score2 score-1.txt, f 36;
 #X connect 0 0 7 0;
-#X connect 0 0 23 0;
+#X connect 0 0 31 0;
 #X connect 1 0 9 0;
 #X connect 1 1 4 0;
 #X connect 1 1 12 0;
@@ -144,26 +153,27 @@ a 'click track'., f 45;
 #X connect 11 0 14 0;
 #X connect 12 0 10 0;
 #X connect 15 0 22 0;
-#X connect 16 0 30 0;
+#X connect 16 0 29 0;
 #X connect 17 1 19 0;
 #X connect 18 0 20 1;
 #X connect 19 0 18 0;
 #X connect 20 0 15 1;
 #X connect 21 0 20 0;
-#X connect 23 0 25 0;
-#X connect 23 1 24 0;
-#X connect 23 2 1 0;
-#X connect 24 0 17 0;
-#X connect 25 0 21 0;
-#X connect 25 0 27 0;
-#X connect 26 0 15 0;
-#X connect 27 0 26 0;
-#X connect 28 0 18 0;
-#X restore 601 52 pd metronome;
-#N canvas 760 94 475 355 chords 0;
-#X obj 264 111 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#X connect 23 0 17 0;
+#X connect 24 0 21 0;
+#X connect 24 0 26 0;
+#X connect 25 0 15 0;
+#X connect 26 0 25 0;
+#X connect 27 0 18 0;
+#X connect 31 0 24 0;
+#X connect 31 1 23 0;
+#X connect 31 2 1 0;
+#X connect 31 3 16 0;
+#X restore 473 181 pd metronome;
+#N canvas 760 94 510 408 chords 0;
+#X obj 377 164 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X obj 85 277 else/out~;
+#X obj 153 320 else/out~;
 #N canvas 323 125 649 414 voice 0;
 #X obj 155 302 *~;
 #X obj 278 182 else/function 200 100 empty empty 0 1 220 220 220 50
@@ -172,8 +182,7 @@ a 'click track'., f 45;
 #X obj 170 253 else/envgen~ -legato, f 12;
 #X obj 170 206 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X obj 123 226 osc~;
-#X obj 123 190 mtof;
+#X obj 63 190 mtof;
 #X obj 290 153 else/initmess 0 10 1 100 0.2 100 0.2 300 0;
 #X obj 170 70 inlet;
 #X obj 239 319 switch~;
@@ -182,179 +191,115 @@ a 'click track'., f 45;
 #X obj 155 373 outlet~;
 #X obj 278 100 r \$0-dur;
 #X obj 155 336 *~ 0.1;
-#X connect 0 0 13 0;
+#X obj 63 226 else/bl.tri~;
+#X connect 0 0 12 0;
 #X connect 1 0 3 1;
 #X connect 2 0 1 0;
 #X connect 3 0 0 1;
-#X connect 3 1 10 0;
+#X connect 3 1 9 0;
 #X connect 4 0 3 0;
-#X connect 5 0 0 0;
-#X connect 6 0 5 0;
-#X connect 7 0 1 0;
-#X connect 8 0 6 0;
-#X connect 8 0 4 0;
-#X connect 10 0 9 0;
-#X connect 12 0 2 0;
-#X connect 13 0 11 0;
-#X restore 51 174 pd voice;
-#X obj 148 153 s \$0-dur;
-#X msg 51 33 start;
-#X msg 66 57 stop;
-#X obj 51 150 unpack f f f;
-#N canvas 323 125 649 414 voice 0;
-#X obj 155 302 *~;
-#X obj 278 182 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 10 1 100 0.2 100 0.2 300 0;
-#X msg 278 125 duration \$1 \, bang;
-#X obj 170 253 else/envgen~ -legato, f 12;
-#X obj 170 206 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
-#000000 #000000;
-#X obj 123 226 osc~;
-#X obj 123 190 mtof;
-#X obj 290 153 else/initmess 0 10 1 100 0.2 100 0.2 300 0;
-#X obj 170 70 inlet;
-#X obj 239 319 switch~;
-#X obj 239 294 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
-#X obj 155 373 outlet~;
-#X obj 278 100 r \$0-dur;
-#X obj 155 336 *~ 0.1;
-#X connect 0 0 13 0;
-#X connect 1 0 3 1;
-#X connect 2 0 1 0;
-#X connect 3 0 0 1;
-#X connect 3 1 10 0;
-#X connect 4 0 3 0;
-#X connect 5 0 0 0;
-#X connect 6 0 5 0;
-#X connect 7 0 1 0;
-#X connect 8 0 6 0;
-#X connect 8 0 4 0;
-#X connect 10 0 9 0;
-#X connect 12 0 2 0;
-#X connect 13 0 11 0;
-#X restore 85 204 pd voice;
-#N canvas 323 125 649 414 voice 0;
-#X obj 155 302 *~;
-#X obj 278 182 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 10 1 100 0.2 100 0.2 300 0;
-#X msg 278 125 duration \$1 \, bang;
-#X obj 170 253 else/envgen~ -legato, f 12;
-#X obj 170 206 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
-#000000 #000000;
-#X obj 123 226 osc~;
-#X obj 123 190 mtof;
-#X obj 290 153 else/initmess 0 10 1 100 0.2 100 0.2 300 0;
-#X obj 170 70 inlet;
-#X obj 239 319 switch~;
-#X obj 239 294 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
-#X obj 155 373 outlet~;
-#X obj 278 100 r \$0-dur;
-#X obj 155 336 *~ 0.1;
-#X connect 0 0 13 0;
-#X connect 1 0 3 1;
-#X connect 2 0 1 0;
-#X connect 3 0 0 1;
-#X connect 3 1 10 0;
-#X connect 4 0 3 0;
-#X connect 5 0 0 0;
-#X connect 6 0 5 0;
-#X connect 7 0 1 0;
-#X connect 8 0 6 0;
-#X connect 8 0 4 0;
-#X connect 10 0 9 0;
-#X connect 12 0 2 0;
-#X connect 13 0 11 0;
-#X restore 120 234 pd voice;
-#X obj 51 125 else/combine;
-#X floatatom 148 124 6 0 0 0 - - - 0;
-#X obj 51 85 else/score score-3.txt, f 36;
-#X text 131 35 Chord polyphony is possible if you split messages with
-commas. Open the score to see how it works., f 49;
-#X text 199 185 In this patch we're combining the floats with [combine]
-and split the list with [unpack]. This is because we don't really need
-[makenote] \, [poly] or [else/voices] as the duration is given in the
-score., f 41;
-#X connect 2 0 1 0;
-#X connect 4 0 11 0;
-#X connect 5 0 11 0;
-#X connect 6 0 2 0;
-#X connect 6 1 7 0;
-#X connect 6 2 8 0;
-#X connect 7 0 1 0;
-#X connect 8 0 1 0;
-#X connect 9 0 6 0;
-#X connect 10 0 3 0;
-#X connect 11 0 9 0;
-#X connect 11 1 10 0;
-#X restore 619 74 pd chords;
-#N canvas 760 94 459 334 poly 0;
-#X obj 264 111 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
-#000000 #000000;
-#X obj 51 240 else/out~;
-#N canvas 323 125 234 239 voice 0;
-#X obj 58 127 osc~;
-#X obj 58 99 mtof;
-#X obj 104 127 decay~ 200;
-#X obj 89 155 *~;
-#X obj 104 99 b;
-#X obj 104 61 inlet;
-#X obj 89 189 outlet~;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
-#X connect 2 0 3 1;
-#X connect 3 0 6 0;
-#X connect 4 0 2 0;
-#X connect 5 0 1 0;
-#X connect 5 0 4 0;
-#X restore 51 194 pd voice;
-#X msg 51 33 start;
-#X msg 66 57 stop;
-#X obj 51 151 else/combine 0.1;
-#N canvas 323 125 234 239 voice 0;
-#X obj 58 127 osc~;
-#X obj 58 99 mtof;
-#X obj 104 127 decay~ 200;
-#X obj 89 155 *~;
-#X obj 104 99 b;
-#X obj 104 61 inlet;
-#X obj 89 189 outlet~;
-#X connect 0 0 3 0;
-#X connect 1 0 0 0;
-#X connect 2 0 3 1;
-#X connect 3 0 6 0;
-#X connect 4 0 2 0;
-#X connect 5 0 1 0;
-#X connect 5 0 4 0;
-#X restore 108 194 pd voice;
-#X obj 51 170 unpack f f;
-#X obj 264 149 spigot;
-#X obj 297 121 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
-#X obj 169 51 initmess mode 1;
-#X obj 51 85 else/score score-4.txt, f 36;
-#X obj 327 79 delay;
-#X obj 282 188 print data;
-#X obj 193 188 route tempo;
-#X obj 193 217 print tempo!!!!!!!!!!;
-#X connect 0 0 8 0;
-#X connect 2 0 1 0;
-#X connect 3 0 11 0;
-#X connect 4 0 11 0;
-#X connect 5 0 7 0;
+#X connect 5 0 13 0;
 #X connect 6 0 1 0;
-#X connect 7 0 2 0;
-#X connect 7 1 6 0;
-#X connect 8 0 3 0;
-#X connect 9 0 8 1;
-#X connect 10 0 11 0;
-#X connect 11 0 5 0;
-#X connect 11 2 14 0;
-#X connect 14 0 15 0;
-#X connect 14 1 13 0;
-#X restore 629 96 pd poly;
-#N canvas 376 29 716 510 shythmic 0;
+#X connect 7 0 5 0;
+#X connect 7 0 4 0;
+#X connect 9 0 8 0;
+#X connect 11 0 2 0;
+#X connect 12 0 10 0;
+#X connect 13 0 0 0;
+#X restore 119 222 pd voice;
+#X obj 235 206 s \$0-dur;
+#X msg 164 84 start;
+#X msg 179 110 stop;
+#X obj 119 193 unpack f f f;
+#X obj 164 138 else/score2 score2-2.txt, f 36;
+#N canvas 323 125 649 414 voice 0;
+#X obj 155 302 *~;
+#X obj 278 182 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 10 1 100 0.2 100 0.2 300 0;
+#X msg 278 125 duration \$1 \, bang;
+#X obj 170 253 else/envgen~ -legato, f 12;
+#X obj 170 206 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X obj 63 190 mtof;
+#X obj 290 153 else/initmess 0 10 1 100 0.2 100 0.2 300 0;
+#X obj 170 70 inlet;
+#X obj 239 319 switch~;
+#X obj 239 294 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 155 373 outlet~;
+#X obj 278 100 r \$0-dur;
+#X obj 155 336 *~ 0.1;
+#X obj 63 226 else/bl.tri~;
+#X connect 0 0 12 0;
+#X connect 1 0 3 1;
+#X connect 2 0 1 0;
+#X connect 3 0 0 1;
+#X connect 3 1 9 0;
+#X connect 4 0 3 0;
+#X connect 5 0 13 0;
+#X connect 6 0 1 0;
+#X connect 7 0 5 0;
+#X connect 7 0 4 0;
+#X connect 9 0 8 0;
+#X connect 11 0 2 0;
+#X connect 12 0 10 0;
+#X connect 13 0 0 0;
+#X restore 153 252 pd voice;
+#N canvas 323 125 649 414 voice 0;
+#X obj 155 302 *~;
+#X obj 278 182 else/function 200 100 empty empty 0 1 220 220 220 50
+50 50 0 0 0 0 0 10 1 100 0.2 100 0.2 300 0;
+#X msg 278 125 duration \$1 \, bang;
+#X obj 170 253 else/envgen~ -legato, f 12;
+#X obj 170 206 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X obj 63 190 mtof;
+#X obj 290 153 else/initmess 0 10 1 100 0.2 100 0.2 300 0;
+#X obj 170 70 inlet;
+#X obj 239 319 switch~;
+#X obj 239 294 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
+#X obj 155 373 outlet~;
+#X obj 278 100 r \$0-dur;
+#X obj 155 336 *~ 0.1;
+#X obj 63 226 else/bl.tri~;
+#X connect 0 0 12 0;
+#X connect 1 0 3 1;
+#X connect 2 0 1 0;
+#X connect 3 0 0 1;
+#X connect 3 1 9 0;
+#X connect 4 0 3 0;
+#X connect 5 0 13 0;
+#X connect 6 0 1 0;
+#X connect 7 0 5 0;
+#X connect 7 0 4 0;
+#X connect 9 0 8 0;
+#X connect 11 0 2 0;
+#X connect 12 0 10 0;
+#X connect 13 0 0 0;
+#X restore 188 281 pd voice;
+#X obj 119 168 else/combine;
+#X text 27 13 Chord polyphony is possible if you split messages with
+commas. Open the score to see how it works. In this patch we're combining
+the floats with [combine] and split the list with [unpack]. This is
+because we don't really need [makenote] \, [poly] or [else/voices]
+as the duration is given in the score., f 75;
+#X obj 235 168 else/display;
+#X connect 2 0 1 0;
+#X connect 4 0 7 0;
+#X connect 5 0 7 0;
+#X connect 6 0 2 0;
+#X connect 6 1 8 0;
+#X connect 6 2 9 0;
+#X connect 7 0 10 0;
+#X connect 7 1 12 0;
+#X connect 7 3 0 0;
+#X connect 8 0 1 0;
+#X connect 9 0 1 0;
+#X connect 10 0 6 0;
+#X connect 12 0 3 0;
+#X restore 491 203 pd chords;
+#N canvas 376 29 705 477 basic 0;
 #X obj 311 341 *~;
 #X msg 362 59 stop;
 #X obj 539 114 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
@@ -381,7 +326,6 @@ which is treated as pitch in MIDI., f 39;
 #X obj 326 29 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000;
 #X obj 468 138 print data;
-#X obj 326 89 else/score score-2.txt, f 36;
 #X text 19 12 [score] has a 'tempo' syntax where 'tempo 60' sets the
 bpm to 60! The 'tempo' messages are output in the left 'data' outlet.
 You can also set 'tempo 90 3' as in this example and it will go from
@@ -408,49 +352,40 @@ values are also output so they can be filtered out and specify rests.
 #X obj 279 265 osc~;
 #X obj 279 229 mtof;
 #X obj 436 202 else/initmess 0 10 1 100 0.2 100 0.2 300 0;
+#X obj 326 89 else/score2 score2-1.txt, f 36;
 #X connect 0 0 12 0;
-#X connect 1 0 19 0;
+#X connect 1 0 29 0;
 #X connect 2 0 3 0;
-#X connect 4 0 19 0;
+#X connect 4 0 29 0;
 #X connect 5 0 13 0;
 #X connect 5 1 7 0;
 #X connect 6 0 8 1;
 #X connect 7 0 6 0;
 #X connect 8 0 0 1;
 #X connect 9 0 8 0;
-#X connect 16 0 19 0;
-#X connect 17 0 19 0;
-#X connect 19 0 25 0;
-#X connect 19 1 24 0;
-#X connect 19 2 18 0;
-#X connect 24 0 5 0;
-#X connect 25 0 9 0;
-#X connect 25 0 28 0;
-#X connect 27 0 0 0;
-#X connect 28 0 27 0;
-#X connect 29 0 6 0;
-#X restore 169 75 pd shythmic;
-#X restore 479 203 pd details;
-#X obj 166 145 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
-#000000 #000000;
-#X text 150 279 pause -;
-#X text 132 293 continue -;
-#X text 200 279 pauses playing, f 58;
-#X text 200 293 continues playing, f 58;
-#X obj 284 205 print;
-#X floatatom 237 205 6 0 0 0 - - - 0;
-#X floatatom 190 205 4 0 0 0 - - - 0;
-#X text 52 86 [score2] is a variant of [score] that has the same rhythmic
-notation syntax as [pattern]., f 75;
-#X obj 31 199 else/score;
-#X obj 190 180 else/score2 score-1.txt, f 24;
-#X connect 34 0 67 0;
-#X connect 52 0 67 0;
-#X connect 53 0 67 0;
-#X connect 54 0 67 0;
-#X connect 55 0 67 0;
-#X connect 57 0 67 0;
-#X connect 67 0 64 0;
-#X connect 67 1 63 0;
-#X connect 67 2 62 0;
-#X connect 67 3 33 0;
+#X connect 16 0 29 0;
+#X connect 17 0 29 0;
+#X connect 23 0 5 0;
+#X connect 24 0 9 0;
+#X connect 24 0 27 0;
+#X connect 26 0 0 0;
+#X connect 27 0 26 0;
+#X connect 28 0 6 0;
+#X connect 29 0 24 0;
+#X connect 29 1 23 0;
+#X connect 29 2 18 0;
+#X connect 29 3 2 0;
+#X restore 497 160 pd basic;
+#X text 196 416 score data (bar number \, tempo and other things by
+the user);
+#X obj 190 180 else/score2 score2-1.txt;
+#X connect 34 0 69 0;
+#X connect 51 0 69 0;
+#X connect 52 0 69 0;
+#X connect 53 0 69 0;
+#X connect 54 0 69 0;
+#X connect 55 0 69 0;
+#X connect 69 0 62 0;
+#X connect 69 1 61 0;
+#X connect 69 2 60 0;
+#X connect 69 3 33 0;
