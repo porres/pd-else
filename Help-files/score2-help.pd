@@ -299,7 +299,7 @@ as the duration is given in the score., f 75;
 #X connect 10 0 6 0;
 #X connect 12 0 3 0;
 #X restore 491 203 pd chords;
-#N canvas 376 29 707 454 basic 1;
+#N canvas 376 29 707 454 basic 0;
 #X obj 311 341 *~;
 #X msg 362 59 stop;
 #X obj 539 114 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
