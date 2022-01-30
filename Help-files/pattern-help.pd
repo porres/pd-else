@@ -1,4 +1,4 @@
-#N canvas 747 77 560 625 10;
+#N canvas 712 23 560 625 10;
 #X obj 147 158 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X obj 147 261 out~;
@@ -55,8 +55,8 @@
 #X obj 4 551 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 74 157 start/stop;
-#X text 27 261 see also:;
-#X obj 25 282 else/sequencer;
+#X text 17 251 see also:;
+#X obj 15 272 else/sequencer;
 #X text 300 167 set ===> pattern, f 8;
 #X text 186 333 float;
 #X text 225 333 - non-zero starts \, zero stops the sequencer, f 44
@@ -68,7 +68,7 @@
 #X text 169 491 anything;
 #X text 227 491 - several sequence informations;
 #X text 173 529 1) list - sets sequence (default \, empty);
-#N canvas 954 44 549 565 details 1;
+#N canvas 817 44 549 565 details 0;
 #X obj 197 339 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X text 192 361 stop;
@@ -153,28 +153,31 @@ are specified as fractions of a whole note \, negative values are rests!
 A '|' separates into different bars. When you set a new pattern via
 the right inlet \, it only starts when the previous one ends., f 75
 ;
-#N canvas 795 135 524 493 flags 0;
-#X obj 86 382 out~;
-#X obj 86 71 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
+#N canvas 795 135 463 447 flags 0;
+#X obj 52 347 out~;
+#X obj 52 36 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
 0 1;
-#X floatatom 86 175 5 0 0 0 - - - 0;
-#X obj 86 289 osc~;
-#X obj 86 238 else/note2pitch;
-#X obj 86 263 mtof;
-#X obj 86 311 *~;
-#X obj 130 287 b;
-#X obj 130 307 else/decay2~ 10 500;
-#X obj 86 334 else/drive~ 10;
-#X obj 86 357 else/plate.rev~ 10 0.9 0.1 0.9 0.5;
-#X obj 86 138 else/pattern -tempo 90 -i 1/4 1/4 1/4 1/8 1/24 1/24 1/24
-| 1/4 -1/4 1/8 1/8 1/4 1/8 1/8 1/4;
-#X obj 86 201 else/sequencer C4 C#4 B4 BB4 G#4 A4 F4 | C4 - Eb4 D4
-Eb4 G4 D4 C#4, f 40;
-#X text 141 58 You can set tempo as a flag \, and the '-i' flag outputs
+#X floatatom 52 140 5 0 0 0 - - - 0;
+#X obj 52 254 osc~;
+#X obj 52 203 else/note2pitch;
+#X obj 52 228 mtof;
+#X obj 52 276 *~;
+#X obj 96 252 b;
+#X obj 96 272 else/decay2~ 10 500;
+#X obj 52 299 else/drive~ 10;
+#X obj 52 322 else/plate.rev~ 10 0.9 0.1 0.9 0.5;
+#X text 98 24 You can set tempo as a flag \, and the '-i' flag outputs
 the index of the note durations (positive and negative) \, which you
 can use to query for a sequence in the [sequencer] object \, for instance.
 , f 50;
-#X connect 1 0 11 0;
+#X obj 52 166 else/sequencer C4 C#4 B4 - G#4 A4 F4 | C4 - Eb4 D4 Eb4
+G4 D4 C#4, f 38;
+#X obj 52 103 else/pattern -tempo 90 -i 1/4 1/4 1/4 -1/8 1/24 1/24
+1/24 | 1/4 -1/4 1/8 1/8 1/4 1/8 1/8 1/4;
+#X text 276 246 see also [score2] \, which is able to combine both
+objects into one., f 24;
+#X obj 336 305 score2;
+#X connect 1 0 13 0;
 #X connect 2 0 12 0;
 #X connect 3 0 6 0;
 #X connect 4 0 5 0;
@@ -186,9 +189,10 @@ can use to query for a sequence in the [sequencer] object \, for instance.
 #X connect 9 0 10 0;
 #X connect 10 0 0 0;
 #X connect 10 1 0 1;
-#X connect 11 0 2 0;
 #X connect 12 0 4 0;
+#X connect 13 0 2 0;
 #X restore 474 292 pd flags;
+#X obj 15 296 else/score2;
 #X connect 0 0 55 0;
 #X connect 4 0 55 0;
 #X connect 5 0 4 0;

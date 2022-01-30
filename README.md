@@ -167,7 +167,7 @@ Cross compiling is also possible with something like this
 - [canvas.zoom]
 - [loadbanger] / [lb]
 
-**MESSAGE MANAGEMENT: [28]**
+**GENETAL MESSAGE MANAGEMENT: [28]**
 
 - [format]
 - [nmess]
@@ -313,7 +313,6 @@ Cross compiling is also possible with something like this
 - [pi]
 - [e]
 
-- 
 
 **LOGIC: [01]**
 
@@ -470,7 +469,14 @@ Cross compiling is also possible with something like this
 - [xmod~]
 - [xmod2~]
 
-**SIGNAL ROUTING: [12]**
+**CONTROL: MOUSE INTERACTION [2]:
+- [mouse]
+- [canvas.mouse]
+
+**CONTROL: FADER/PANNING/ROUTING: [15]**
+- [fader~]
+- [autofade~]
+- [autofade2~]
 - [balance~]
 - [pan2~]
 - [pan4~]
@@ -484,8 +490,7 @@ Cross compiling is also possible with something like this
 - [xselect2~]
 - [mtx~]
 
-**SEQUENCER: [9]**
-- [drum.seq]
+**CONTROL: SEQUENCERS: [8]**
 - [euclid]
 - [score]
 - [score2]
@@ -495,19 +500,19 @@ Cross compiling is also possible with something like this
 - [impseq~]
 - [rec]
 
-**CONTROL: [29]**
 
- - [mouse]
- - [canvas.mouse]
- - [adsr~]
- - [asr~]
- - [autofade~]
- - [autofade2~]
- - [decay~]
- - [decay2~]
- - [envelope~]
- - [envgen~]
- - [fader~]
+**CONTROL: ENVELOPES [6]**
+- [adsr~]
+- [asr~]
+- [decay~]
+- [decay2~]
+- [envelope~]
+- [envgen~]
+
+
+**CONTROL: RAMP, LINE GENERATORS / LINE SMOOTHENING [13]**
+- [ramp~] 
+- [susloop~]
  - [function~]
  - [slew]
  - [slew2]
@@ -519,17 +524,9 @@ Cross compiling is also possible with something like this
  - [glide2]
  - [glide~]
  - [glide2~]
- - [ramp~]
- - [susloop~]
- - [speed]
- - [lfo]
- - [phasor]
- - [pimp]
- - [impulse]
- - [pulse]
+
 
 **CONTROL: RANDOM: [14]**
-
 - [rand.f]
 - [rand.f~]
 - [rand.i]
@@ -544,8 +541,15 @@ Cross compiling is also possible with something like this
  - [lfnoise]
  - [stepnoise]
  - [rampnoise]
+ 
+ **CONTROL: CONTROL RATE LFOs [5]**
+ - [lfo]
+ - [phasor]
+ - [pimp]
+ - [impulse]
+ - [pulse]
 
- **TRIGGERS: [32]**
+**CONTROL: TRIGGERS: [33]**
 - [above]
 - [above~]
 - [bangdiv]
@@ -560,6 +564,7 @@ Cross compiling is also possible with something like this
 - [metronome]
 - [metronome~]
 - [clock]
+- [speed]
 - [tempo]
 - [tempo~]
 - [pulsecount~]
@@ -596,8 +601,8 @@ Cross compiling is also possible with something like this
 - [vu~]
 - [zerocross~]
 
-**GUI: [35]**
-
+**GUI: [36]**
+- [drum.seq]
 - [gui]
 - [pad]
 - [messbox]

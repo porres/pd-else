@@ -1,4 +1,4 @@
-#N canvas 624 32 564 540 10;
+#N canvas 673 36 564 540 10;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
@@ -113,7 +113,7 @@ notation syntax as [pattern]., f 75;
 #X obj 209 246 print tempo;
 #X obj 122 355 else/out~;
 #X obj 342 343 *~;
-#X obj 569 116 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#X obj 570 116 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
 #X obj 428 166 moses;
 #X obj 455 253 else/function 200 100 empty empty 0 1 220 220 220 50
@@ -132,7 +132,7 @@ notation syntax as [pattern]., f 75;
 now sending information to a [metronome] object \, which understands
 the 'timesig' message and can also get tempo information to give us
 a 'click track'., f 45;
-#X obj 569 139 s \$0-done;
+#X obj 570 139 s \$0-done;
 #X text 387 57 <= start / stop;
 #X obj 357 91 else/score2 score-1.txt, f 36;
 #X connect 0 0 7 0;
@@ -299,7 +299,7 @@ as the duration is given in the score., f 75;
 #X connect 10 0 6 0;
 #X connect 12 0 3 0;
 #X restore 491 203 pd chords;
-#N canvas 376 29 705 477 basic 0;
+#N canvas 376 29 707 454 basic 0;
 #X obj 311 341 *~;
 #X msg 362 59 stop;
 #X obj 539 114 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
@@ -309,14 +309,14 @@ as the duration is given in the score., f 75;
 #000000 0 1;
 #X obj 397 144 moses;
 #X obj 424 231 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 10 1 100 0.2 100 0.2 300 0;
+50 50 0 0 0 0 0 13.0719 1 130.719 0.2 130.719 0.2 392.157 0;
 #X msg 424 174 duration \$1 \, bang;
 #X obj 326 292 else/envgen~ -legato, f 12;
 #X obj 326 245 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X text 19 422 A bang is sent at the rightmost outlet when the sequence
+#X text 19 408 A bang is sent at the rightmost outlet when the sequence
 is over., f 39;
-#X text 19 385 In this example \, the event data is just a float \,
+#X text 19 368 In this example \, the event data is just a float \,
 which is treated as pitch in MIDI., f 39;
 #X obj 311 377 else/out~;
 #X floatatom 354 206 8 0 0 0 - - - 0;
@@ -326,26 +326,6 @@ which is treated as pitch in MIDI., f 39;
 #X obj 326 29 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000;
 #X obj 468 138 print data;
-#X text 19 12 [score] has a 'tempo' syntax where 'tempo 60' sets the
-bpm to 60! The 'tempo' messages are output in the left 'data' outlet.
-You can also set 'tempo 90 3' as in this example and it will go from
-whatever bpm setting you have to '90' in three beats (accelerating
-or deaccelerating). When changing the tempo speed \, tempo values for
-each beat are also output., f 39;
-#X text 19 127 Use "|" as a syntax for bas - the same as [else/sequence]
-and [else/pattern]. This sets a bar number which is output at the left
-outlet allong with 'tempo' messages and whatever else that you specify
-in the score that is not a 'note' event (such as 'timesig 3/4' in this
-example)., f 39;
-#X text 19 222 Note events are specified with the 'note' symbol at
-the start \, followed by the duration in fractional format \, which
-represent fractions of a whole note (negative values are rests so nothing
-should follow it). Whatever follows the fraction is the 'event data'
-and is sent out the second outlet so it is used in the patch for controlling
-anything., f 39;
-#X text 19 337 The duration in ms is output in the third outlet. Negative
-values are also output so they can be filtered out and specify rests.
-, f 39;
 #X obj 397 112 else/display;
 #X obj 326 162 else/display;
 #X text 283 165 Pitch;
@@ -353,28 +333,47 @@ values are also output so they can be filtered out and specify rests.
 #X obj 279 229 mtof;
 #X obj 436 202 else/initmess 0 10 1 100 0.2 100 0.2 300 0;
 #X obj 326 89 else/score2 score2-1.txt, f 36;
+#X text 19 12 [score] has a 'tempo' syntax where 'tempo 60' sets the
+bpm to 60! The 'tempo' messages are output in the third 'data' outlet.
+You can also set 'tempo 90 3' as in this example and it will go from
+whatever bpm setting you have to '90' in three beats (accelerating
+or deaccelerating). When changing the tempo speed \, tempo values for
+each beat are also output., f 39;
+#X text 19 127 Use "|" as a syntax for bars - the same as [else/sequence]
+and [else/pattern]. This sets a bar number which is output at the third
+outlet allong with 'tempo' messages and whatever else that you specify
+in the score that is not an 'event' (such as 'timesig 3/4' in this
+example)., f 39;
+#X text 19 222 Note events are specified with lists that start with
+a float or a fraction (which represent fractions of a whole note).
+Negative values are rests so nothing should follow it. Whatever follows
+the fraction is the 'event data' and is sent out at the left outlet.
+, f 39;
+#X text 19 317 The duration in ms is output in the second outlet. Negative
+values are also output so they can be filtered out and specify rests.
+, f 39;
 #X connect 0 0 12 0;
-#X connect 1 0 29 0;
+#X connect 1 0 25 0;
 #X connect 2 0 3 0;
-#X connect 4 0 29 0;
+#X connect 4 0 25 0;
 #X connect 5 0 13 0;
 #X connect 5 1 7 0;
 #X connect 6 0 8 1;
 #X connect 7 0 6 0;
 #X connect 8 0 0 1;
 #X connect 9 0 8 0;
-#X connect 16 0 29 0;
-#X connect 17 0 29 0;
-#X connect 23 0 5 0;
-#X connect 24 0 9 0;
-#X connect 24 0 27 0;
-#X connect 26 0 0 0;
-#X connect 27 0 26 0;
-#X connect 28 0 6 0;
-#X connect 29 0 24 0;
-#X connect 29 1 23 0;
-#X connect 29 2 18 0;
-#X connect 29 3 2 0;
+#X connect 16 0 25 0;
+#X connect 17 0 25 0;
+#X connect 19 0 5 0;
+#X connect 20 0 9 0;
+#X connect 20 0 23 0;
+#X connect 22 0 0 0;
+#X connect 23 0 22 0;
+#X connect 24 0 6 0;
+#X connect 25 0 20 0;
+#X connect 25 1 19 0;
+#X connect 25 2 18 0;
+#X connect 25 3 2 0;
 #X restore 497 160 pd basic;
 #X text 196 416 score data (bar number \, tempo and other things by
 the user);
