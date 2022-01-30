@@ -299,7 +299,7 @@ as the duration is given in the score., f 75;
 #X connect 10 0 6 0;
 #X connect 12 0 3 0;
 #X restore 491 203 pd chords;
-#N canvas 376 29 707 454 basic 0;
+#N canvas 376 29 707 454 basic 1;
 #X obj 311 341 *~;
 #X msg 362 59 stop;
 #X obj 539 114 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
@@ -309,7 +309,7 @@ as the duration is given in the score., f 75;
 #000000 0 1;
 #X obj 397 144 moses;
 #X obj 424 231 else/function 200 100 empty empty 0 1 220 220 220 50
-50 50 0 0 0 0 0 13.0719 1 130.719 0.2 130.719 0.2 392.157 0;
+50 50 0 0 0 0 0 10 1 100 0.2 100 0.2 300 0;
 #X msg 424 174 duration \$1 \, bang;
 #X obj 326 292 else/envgen~ -legato, f 12;
 #X obj 326 245 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf

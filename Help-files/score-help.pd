@@ -56,7 +56,7 @@ window, f 58;
 #X obj 85 425 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 156 425 bang -;
-#X obj 321 209 bng 17 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X obj 321 211 bng 17 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
 #X obj 180 123 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
@@ -87,12 +87,12 @@ the user;
 #X text 132 302 continue -;
 #X text 200 288 pauses playing, f 58;
 #X text 200 302 continues playing, f 58;
-#X obj 250 210 print;
+#X obj 250 211 print;
 #X text 52 84 [score] is an abstraction based on [text] with its own
 syntax. A variation of the object ([score2]) has the same rhythmic
 notation syntax as [pattern]., f 76;
 #X obj 31 203 else/score2;
-#X obj 180 211 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X obj 180 211 bng 18 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
 #N canvas 374 23 930 320 basic-1 0;
 #X obj 698 80 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
@@ -168,7 +168,7 @@ from the score via the 'data' outlet., f 68;
 #X connect 23 0 24 0;
 #X connect 23 0 1 0;
 #X connect 24 0 8 0;
-#X restore 477 163 pd basic-1;
+#X restore 477 170 pd basic-1;
 #N canvas 491 37 667 622 basic-2 0;
 #X obj 281 177 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
@@ -253,7 +253,7 @@ tempo. We're actually playing 90% of the note duration because of [*
 #X connect 33 1 14 0;
 #X connect 33 1 32 0;
 #X connect 33 2 8 0;
-#X restore 477 184 pd basic-2;
+#X restore 477 191 pd basic-2;
 #N canvas 760 94 518 528 polyphony 0;
 #X obj 306 259 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
@@ -353,7 +353,7 @@ and split the list with [unpack]. This is because we don't really need
 #X connect 10 0 1 0;
 #X connect 14 0 8 0;
 #X connect 14 2 0 0;
-#X restore 466 206 pd polyphony;
+#X restore 466 213 pd polyphony;
 #X connect 33 0 53 0;
 #X connect 49 0 53 0;
 #X connect 50 0 53 0;
