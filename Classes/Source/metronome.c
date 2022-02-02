@@ -21,6 +21,7 @@ typedef struct _metronome{
     t_int       x_pause;
 //    t_int       x_dir;
     t_int       x_complex;
+    t_int       x_subflag;
     t_int       x_sigchange;
     t_int       x_group;
     t_int       x_n_ticks;
@@ -231,6 +232,8 @@ static void metronome_tick(t_metronome *x){
         if(div != x->x_subdiv){
             x->x_subdiv = div;
             output_count_list(x);
+            if(x->x_subflag)
+                outlet_bang(x->x_obj.ob_outlet);
         }
     }
 //    if(x->x_dir){
@@ -430,6 +433,10 @@ static void metronome_continue(t_metronome *x){
     metronome_tempo(x, x->x_bpm);
 }
 
+static void metronome_sub(t_metronome *x, t_floatarg f){
+    x->x_subflag = (f != 0);
+}
+
 static void metronome_free(t_metronome *x){
     clock_free(x->x_clock);
 }
@@ -475,6 +482,7 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
     x->x_pause = 0;
     x->x_complex = 0;
     x->x_sigchange = 0;
+    x->x_subflag = 0;
     x->x_n_tempo = 4;
     x->x_n_subdiv = 1;
     x->x_n_sigs = 1;
@@ -486,6 +494,7 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("tempo"));
     while(ac >= 2 &&
     ((atom_getsymbolarg(0, ac, av) == gensym("-name")) ||
+    (atom_getsymbolarg(0, ac, av) == gensym("-sub")) ||
     (atom_getsymbolarg(0, ac, av) == gensym("-beat")))){
         t_symbol *sym = atom_getsymbolarg(0, ac, av);
         if(sym == gensym("-name")){
@@ -507,6 +516,10 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
             }
             else
                 goto errstate;
+        }
+        else if(sym == gensym("-sub")){
+            ac--, av++;
+            x->x_subflag = 1;
         }
     }
     if(ac > 0){
@@ -549,5 +562,6 @@ void metronome_setup(void){
     class_addmethod(metronome_class, (t_method)metronome_stop, gensym("stop"), 0);
     class_addmethod(metronome_class, (t_method)metronome_pause, gensym("pause"), 0);
     class_addmethod(metronome_class, (t_method)metronome_continue, gensym("continue"), 0);
+    class_addmethod(metronome_class, (t_method)metronome_sub, gensym("sub"), 0);
 //    class_addmethod(metronome_class, (t_method)metronome_set, gensym("set"), A_GIMME, 0);
 }
