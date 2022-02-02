@@ -172,10 +172,6 @@ static void metronome_beat(t_metronome *x, t_symbol *s){
 }
 
 static void metronome_tick(t_metronome *x){
-/*    if(x->x_barcount < 1){
-        metronome_stop(x);
-        return;
-    }*/
     outlet_float(x->x_phaseout, (float)x->x_tickcount / (float)x->x_n_ticks);
     if(x->x_tickcount == 0){
         x->x_subdiv = 1;
@@ -214,6 +210,7 @@ static void metronome_tick(t_metronome *x){
         }*/
         output_count_list(x);
         outlet_bang(x->x_obj.ob_outlet);
+//        if(x->x_sigchange && x->x_tempocount == 1){ // change time signature
         if(x->x_sigchange && x->x_sub_barcount && x->x_tempocount == 1){ // change time signature
             x->x_first_time = 0;
             metronome_symbol(x, x->x_sig);
@@ -390,6 +387,14 @@ static void metronome_float(t_metronome *x, t_float f){
         x->x_sub_barcount++;
         x->x_running = 1;
         x->x_pause = 0;
+        
+        if(x->x_n_sigs > 1){
+            char buf[MAX_SIZE];
+            sprintf(buf,"%s", x->x_sig_array[0]);
+            x->x_group = 0;
+            metronome_symbol(x, x->x_sig = gensym(buf));
+        }
+        
         metronome_tick(x);
         output_actual_list(x);
         output_count_list(x);
