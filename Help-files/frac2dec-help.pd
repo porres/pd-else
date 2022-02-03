@@ -48,15 +48,15 @@
 #X obj 175 260 else/display;
 #X obj 175 232 else/frac2dec;
 #X msg 175 148 1 9/8.25 5/4 11/8 3/2 13/8 14/8 15/8 2;
-#X msg 206 174 5/(4/3);
-#X msg 114 173 (8/3)/2;
+#X msg 189 174 5/(4/3);
 #X text 61 86 Use [frac2dec] to convert a sygle element or list of
 intervals defined as fraction symbols to decimal floating point numbers.
 Numbers don't need to be integers and you can also have a second fraction
 between parenthesis as the denominator or numerator., f 74;
-#X msg 217 200 5.3/(4.7/1.3) 1.7/8.9 (8.9/3.12)/2.24;
+#X msg 200 200 -5.3/(4.7/1.3) 1.7/8.9 (-8.9/3.12)/2.24;
+#X msg 114 173 (8/3)/2;
 #X connect 27 0 26 0;
 #X connect 28 0 27 0;
 #X connect 29 0 27 0;
-#X connect 30 0 27 0;
+#X connect 31 0 27 0;
 #X connect 32 0 27 0;
