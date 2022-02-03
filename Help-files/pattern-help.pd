@@ -1,13 +1,12 @@
-#N canvas 712 23 560 625 10;
-#X obj 147 158 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#N canvas 599 36 564 631 10;
+#X obj 160 158 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X obj 147 261 out~;
-#X obj 354 240 print info;
-#X obj 117 232 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 367 240 print info;
+#X obj 130 232 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X msg 178 176 tempo \$1;
-#X floatatom 178 154 5 0 0 0 - - - 0;
-#X obj 147 232 else/impseq~;
+#X msg 191 176 tempo \$1;
+#X floatatom 191 154 5 0 0 0 - - - 0;
+#X obj 160 232 else/impseq~;
 #X obj 25 40 cnv 4 4 4 empty empty Rhythmic 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 106 40 cnv 4 4 4 empty empty pattern 0 28 2 18 #e0e0e0 #000000
@@ -54,10 +53,10 @@
 ;
 #X obj 4 551 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 74 157 start/stop;
-#X text 17 251 see also:;
-#X obj 15 272 else/sequencer;
-#X text 300 167 set ===> pattern, f 8;
+#X text 87 157 start/stop;
+#X text 17 237 see also:;
+#X obj 15 258 else/sequencer;
+#X text 313 167 set ===> pattern, f 8;
 #X text 186 333 float;
 #X text 225 333 - non-zero starts \, zero stops the sequencer, f 44
 ;
@@ -68,73 +67,12 @@
 #X text 169 491 anything;
 #X text 227 491 - several sequence informations;
 #X text 173 529 1) list - sets sequence (default \, empty);
-#N canvas 817 44 549 565 details 0;
-#X obj 197 339 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
-#X text 192 361 stop;
-#X obj 232 408 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
-#X text 258 404 start of pattern, f 8;
-#X obj 197 308 route stop start bar dur;
-#X text 372 338 duration (also negative);
-#X obj 106 385 out~;
-#X obj 106 333 else/impseq~;
-#X msg 175 224 1/4 1/4 1/4 1/8 1/24 1/24 1/24 | 1/6 1/12 1/12 1/6 1/6
-1/15 4/15, f 32;
-#X text 352 303 route information from the right outlet, f 22;
-#X text 136 469 The right outlet gives the following information \;
-'stop' - when the sequence stops \; 'start' - when it (re)starts \;
-'bar <float \, float>' - bar number and total number of tempos \; 'dur
-<float>' - duration of notes (negative when it's a rest), f 62;
-#X obj 124 185 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000 0 1;
-#X obj 302 338 else/display 8;
-#X text 124 17 The note durations are specified as fractions of a whole
-note. Hence: 1/4 = fourth note / 1/8 = eight note and so on. Tuplets
-are defined as \, for instance \, 1/6 (a fourth note triplet). Note
-that 1/15 is a nested tuplet (a quintuplet inside a triplet)., f 63
-;
-#X msg 188 267 10/56 5/56 5/56 10/56 5/56 3/40 3/40 3/40 3/40 3/40
-;
-#X text 124 72 If you want to have 7 eight notes in the space of 5
-\, then you have 5 eight notes (5/8) divided by 7 \, which is the same
-as 5/(8*7) \, so you have 5/56 for each of these notes. 5 in the space
-of 3 is 3/(8*5) = 3/40., f 63;
-#X obj 107 147 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
-#X text 134 149 <= start/restart;
-#X text 380 181 <== set and start or restart the sequence, f 20;
-#X msg 68 148 stop;
-#X obj 266 374 else/display;
-#X obj 106 307 else/pattern;
-#X msg 174 183 1/4 1/4 1/4 1/4 1/24 1/24 1/24 | -1/4 1/8 1/8 1/4 1/8
-1/4, f 32;
-#X msg 11 404 beat 1/(32/9);
-#X msg 13 276 beatmul 1.125;
-#X msg 20 374 beat 1/4;
-#X connect 4 0 0 0;
-#X connect 4 1 2 0;
-#X connect 4 2 20 0;
-#X connect 4 3 12 0;
-#X connect 7 0 6 0;
-#X connect 8 0 21 1;
-#X connect 11 0 21 0;
-#X connect 14 0 21 1;
-#X connect 16 0 21 0;
-#X connect 19 0 21 0;
-#X connect 21 0 7 0;
-#X connect 21 1 4 0;
-#X connect 22 0 21 0;
-#X connect 23 0 21 0;
-#X connect 24 0 21 0;
-#X connect 25 0 21 0;
-#X restore 462 270 pd details;
 #X text 139 560 -tempo <float> - sets new tempo value (default 120)
 ;
-#X msg 354 152 1/4 -1/4 | 1/4 1/8 1/8;
-#X msg 364 176 1/6 1/6 1/6 | 1/4 1/4;
+#X msg 367 152 1/4 -1/4 | 1/4 1/8 1/8;
+#X msg 377 176 1/6 1/6 1/6 | 1/4 1/4;
 #X text 192 389 bang;
-#X text 214 154 <= bpm;
+#X text 227 154 <= bpm;
 #X text 192 403 list;
 #X text 225 389 - (re)start sequencer, f 44;
 #X text 192 375 stop;
@@ -142,41 +80,36 @@ of 3 is 3/(8*5) = 3/40., f 63;
 #X text 186 361 start;
 #X text 225 361 - starts the sequencer, f 44;
 #X text 225 403 - sets new sequence and (re)starts sequencer;
-#X obj 147 205 else/pattern 1/4 -1/4 | 1/4 1/8 1/8;
+#X obj 160 205 else/pattern 1/4 -1/4 | 1/4 1/8 1/8;
 #X text 186 417 clear;
 #X text 225 417 - clears sequence, f 44;
 #X text 211 576 -i - sets to output index (default bang);
 #X text 158 468 float/bang;
 #X text 227 468 - bang or index float at every new note;
-#X text 48 86 [pattern] is a rhythmic pattern sequencer. The note durations
-are specified as fractions of a whole note \, negative values are rests!
-A '|' separates into different bars. When you set a new pattern via
-the right inlet \, it only starts when the previous one ends., f 75
-;
-#N canvas 795 135 463 447 flags 0;
-#X obj 52 347 out~;
-#X obj 52 36 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
+#N canvas 680 129 557 455 flags 0;
+#X obj 61 356 out~;
+#X obj 61 45 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
 0 1;
-#X floatatom 52 140 5 0 0 0 - - - 0;
-#X obj 52 254 osc~;
-#X obj 52 203 else/note2pitch;
-#X obj 52 228 mtof;
-#X obj 52 276 *~;
-#X obj 96 252 b;
-#X obj 96 272 else/decay2~ 10 500;
-#X obj 52 299 else/drive~ 10;
-#X obj 52 322 else/plate.rev~ 10 0.9 0.1 0.9 0.5;
-#X text 98 24 You can set tempo as a flag \, and the '-i' flag outputs
+#X floatatom 61 149 5 0 0 0 - - - 0;
+#X obj 61 263 osc~;
+#X obj 61 212 else/note2pitch;
+#X obj 61 237 mtof;
+#X obj 61 285 *~;
+#X obj 105 261 b;
+#X obj 105 281 else/decay2~ 10 500;
+#X obj 61 308 else/drive~ 10;
+#X obj 61 331 else/plate.rev~ 10 0.9 0.1 0.9 0.5;
+#X text 116 32 You can set tempo as a flag \, and the '-i' flag outputs
 the index of the note durations (positive and negative) \, which you
 can use to query for a sequence in the [sequencer] object \, for instance.
 , f 50;
-#X obj 52 166 else/sequencer C4 C#4 B4 - G#4 A4 F4 | C4 - Eb4 D4 Eb4
-G4 D4 C#4, f 38;
-#X obj 52 103 else/pattern -tempo 90 -i 1/4 1/4 1/4 -1/8 1/24 1/24
+#X obj 61 175 else/sequencer C4 C#4 B4 - G#4 A4 F4 | C4 - Eb4 D4 Eb4
+G4 D4 C#4, f 40;
+#X obj 61 112 else/pattern -tempo 90 -i 1/4 1/4 1/4 -1/8 1/24 1/24
 1/24 | 1/4 -1/4 1/8 1/8 1/4 1/8 1/8 1/4;
-#X text 276 246 see also [score2] \, which is able to combine both
-objects into one., f 24;
-#X obj 336 305 score2;
+#X text 271 241 Please also check [score2] where you can set durations
+and pitches (or whatever you want) in a single object., f 40;
+#X obj 367 297 else/score2;
 #X connect 1 0 13 0;
 #X connect 2 0 12 0;
 #X connect 3 0 6 0;
@@ -191,15 +124,162 @@ objects into one., f 24;
 #X connect 10 1 0 1;
 #X connect 12 0 4 0;
 #X connect 13 0 2 0;
-#X restore 474 292 pd flags;
-#X obj 15 296 else/score2;
-#X connect 0 0 55 0;
-#X connect 4 0 55 0;
-#X connect 5 0 4 0;
-#X connect 6 0 1 0;
-#X connect 44 0 55 1;
-#X connect 45 0 55 1;
-#X connect 55 0 3 0;
-#X connect 55 0 6 0;
-#X connect 55 1 2 0;
+#X restore 490 299 pd flags;
+#N canvas 710 50 549 520 basic 0;
+#X obj 179 306 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X text 174 328 stop;
+#X obj 214 375 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X text 240 371 start of pattern, f 8;
+#X obj 179 275 route stop start bar dur;
+#X text 354 305 duration (also negative);
+#X obj 88 307 else/impseq~;
+#X text 334 270 route information from the right outlet, f 22;
+#X text 118 436 The right outlet gives the following information \;
+'stop' - when the sequence stops \; 'start' - when it (re)starts \;
+'bar <float \, float>' - bar number and total number of tempos \; 'dur
+<float>' - duration of notes (negative when it's a rest), f 62;
+#X obj 106 151 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
+#X obj 284 305 else/display 8;
+#X obj 89 114 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
+#X text 116 116 <= start/restart;
+#X text 355 149 <== set and start or restart the sequence, f 20;
+#X msg 50 115 stop;
+#X obj 88 274 else/pattern;
+#X msg 141 149 1/4 1/4 1/4 1/8 1/24 1/24 1/24 | 1/4 -1/4 1/8 1/8 1/4
+1/8 1/8 1/4 |, f 34;
+#X msg 167 231 1/4 1/4 1/4 1/8 1/24 1/24 1/24 | 1/6 1/12 1/12 1/6 1/6
+1/12 1/4 |, f 32;
+#X text 56 23 The note durations are specified either as fractions
+of a whole note or the resulting float value itself. Hence: 1/4 (or
+0.25) is a fourth note and 1/8 (0.125) is an eight note and so on.
+Tuplets are defined as \, for instance \, 1/6 (a fourth note triplet).
+Hence \, 1/12 is an eight note triplet. More about tuplets and stuff
+in the next subpatch on the parent., f 69;
+#X obj 88 352 else/out~;
+#X msg 157 186 1/4 1/4 1/4 1/8 1/24 1/24 1/24 | 1/4 -1/4 1/8 1/8 1/4
+1/8 1/8 1/4 | 1/6 1/6 1/12 1/12 1/6 1/12 1/12 |, f 34;
+#X obj 249 341 else/display 10;
+#X text 334 336 Note that tempos don't need to add to integer values
+so you can use tuplets arbitrarily., f 30;
+#X connect 4 0 0 0;
+#X connect 4 1 2 0;
+#X connect 4 2 21 0;
+#X connect 4 3 10 0;
+#X connect 6 0 19 0;
+#X connect 9 0 15 0;
+#X connect 11 0 15 0;
+#X connect 14 0 15 0;
+#X connect 15 0 6 0;
+#X connect 15 1 4 0;
+#X connect 16 0 15 0;
+#X connect 17 0 15 1;
+#X connect 20 0 15 1;
+#X restore 490 257 pd basic;
+#N canvas 380 54 951 439 more-tuplets 0;
+#X obj 575 296 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X text 570 318 stop;
+#X obj 610 365 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X text 636 361 start of pattern, f 8;
+#X obj 575 265 route stop start bar dur;
+#X obj 484 299 else/impseq~;
+#X text 730 260 route information from the right outlet, f 22;
+#X obj 502 132 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
+#X obj 680 295 else/display 8;
+#X msg 578 234 10/56 5/56 5/56 10/56 5/56 3/40 3/40 3/40 3/40 3/40
+;
+#X obj 485 94 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
+#X text 512 96 <= start/restart;
+#X msg 446 95 stop;
+#X obj 645 331 else/display;
+#X obj 484 264 else/pattern;
+#X text 12 390 Any crazy thing goes \, you can have '1.23/(7.78/2.33)'
+or whatever. It'll work even if you don't have a clue on what the result
+is., f 66;
+#X text 627 54 see also:;
+#X obj 695 54 else/metronome;
+#X obj 805 54 else/score;
+#X text 460 25 You can also see and read more about note durations
+in the help files of [metronome] and [score]., f 72;
+#X text 750 296 duration;
+#X obj 484 342 else/out~;
+#X text 12 297 Nested tuplets are also possible \, where 1/15 is a
+quintuplet inside a triplet (so we multiply '3' by '5' and get '15').
+What if you want to have 7 eight notes in the space of 5? Then you
+have 5 eight notes (5/8) divided by 7 \, which is the same as 5/(8*7)
+\, so you have 5/56 for each of these notes. 5 in the space of 3 is
+(3/8)/5 \, which is the same as 3/(8*5) = 3/40. You can also have a
+fraction with the nominator in parenthesis so (5/8)/7 is allowed \,
+as well as (3/8)/5., f 66;
+#X msg 565 178 (5/4)/7 (5/8)/7 (5/8)/7 (5/4)/7 (5/8)/7 (3/8)/5 (3/8)/5
+(3/8)/5 (3/8)/5 (3/8)/5, f 39;
+#X text 810 177 7 in the space of 5;
+#X text 810 191 5 in the space of 3;
+#X text 597 215 same as above as simple fractions:;
+#X msg 553 131 1/(32/9) 1/(32/9) 1/(16/3) 1/4, f 31;
+#X text 12 7 Besides multiples of '2' as the denumerator you can also
+use other values. For instance '2/3' means two beats of '1/3' of a
+whole note. This would then be the same as a triplet of a half note.
+On the other hand '3/5' is 3 beats of a 4th note quintuplet., f 64
+;
+#X text 12 67 If you wish you can use the actual float values \, where
+'0.375' is one beat and a half (the same as a dotted 4th note). One
+way to define this as a fraction is '3/8' (which represents three 8th
+notes). You can use non integers as part of fractions such as '1/2.66667'
+\, which is also equal to 0.375! You can also have a fraction in the
+denominator in parenthesis \, such as '1/(8/3)' \, which is also equal
+to '0.375' (sometimes the usage of fraction is better to avoid periodic
+sequences and aproximations)., f 64;
+#X text 750 131 mix of 8:9 and 2:3 tuplets;
+#X text 12 224 Now let's use an 8:9 tuplet for 8th notes (where we
+have eight 8th notes in the space of nine 8th notes). So we multiply
+"8:9" by 8 (cause we want eighth note tuplets) and get 1/(64/9) or
+'1/7.11111'. If you want quarter note tuplets then it's 2/(64/9) (or
+8:9 x 4) \, which is also the same as 1/(32/9) or '1/3.55556'., f
+64;
+#X text 12 160 The example above is the same as a '2:3' tuplet for
+4th notes \, which is \, again \, the same as a dotted 4th note. To
+get the fraction value \, we multiply the '2:3' ratio by 4 (because
+we want a 4th note tuplet) and get "8/3"! So 1/(8/3) is what you want.
+A 16th note tuplet would be 1(16/3) or '1/5.33333'!, f 64;
+#X msg 564 152 1/3.55556 1/3.55556 1/5.33333 1/4;
+#X text 772 152 same as above;
+#X connect 4 0 0 0;
+#X connect 4 1 2 0;
+#X connect 4 2 13 0;
+#X connect 4 3 8 0;
+#X connect 5 0 21 0;
+#X connect 7 0 14 0;
+#X connect 9 0 14 1;
+#X connect 10 0 14 0;
+#X connect 12 0 14 0;
+#X connect 14 0 5 0;
+#X connect 14 1 4 0;
+#X connect 23 0 14 1;
+#X connect 27 0 14 1;
+#X restore 448 278 pd more-tuplets;
+#X text 48 86 [pattern] is a rhythmic pattern sequencer. The note durations
+are specified as floats or fractions (where '1' is a whole note) \,
+negative values are rests! A '|' separates into different bars. When
+you set a new pattern via the right inlet \, it only starts when the
+previous one ends., f 78;
+#X obj 160 261 else/out~;
+#X obj 15 278 else/metronome;
+#X obj 15 298 else/score2;
+#X connect 0 0 53 0;
+#X connect 3 0 53 0;
+#X connect 4 0 3 0;
+#X connect 5 0 63 0;
+#X connect 42 0 53 1;
+#X connect 43 0 53 1;
+#X connect 53 0 2 0;
+#X connect 53 0 5 0;
+#X connect 53 1 1 0;
 #X coords 0 0 1 1 85 60 0;
