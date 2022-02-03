@@ -1,17 +1,17 @@
-#N canvas 638 108 562 363 10;
-#X obj 4 234 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 266 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 303 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 638 108 566 429 10;
+#X obj 4 296 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 89 275 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 328 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 365 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 89 337 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 4 336 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 398 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 3 3 cnv 15 301 42 empty empty frac2dec 20 20 2 37 -233017 -1
+#X obj 3 3 cnv 15 301 42 empty empty frac2dec 20 20 2 37 #e0e0e0 #000000
 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -19,36 +19,42 @@
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Fraction/Decimal 0 28 2 18 -233017
--1 0;
-#X obj 155 40 cnv 4 4 4 empty empty conversion 0 28 2 18 -233017 -1
+#X obj 23 40 cnv 4 4 4 empty empty Fraction/Decimal 0 28 2 18 #e0e0e0
+#000000 0;
+#X obj 155 40 cnv 4 4 4 empty empty conversion 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 87 243 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 87 305 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 195 198 else/display;
-#X msg 195 138 1 9/8 5/4 11/8 3/2 13/8 14/8 15/8 2;
-#X text 235 312 none;
-#X text 156 275 list;
-#X text 189 275 - converted ratio value(s);
-#X text 156 244 list;
-#X text 189 244 - fractional value(s);
+#X text 235 374 none;
+#X text 156 337 list;
+#X text 189 337 - converted ratio value(s);
+#X text 156 306 list;
+#X text 189 306 - fractional value(s);
 #X text 29 154 see also:;
-#X text 61 86 Use [frac2dec] to convert a list of intervals defined
-as fraction symbols to decimal floating point numbers.;
-#X obj 195 168 else/frac2dec;
 #X obj 25 176 else/dec2frac;
 #X obj 25 201 else/frac2cents;
-#X connect 19 0 27 0;
-#X connect 27 0 18 0;
+#X obj 165 260 else/display;
+#X obj 165 222 else/frac2dec;
+#X text 61 86 Use [frac2dec] to convert a sygle element or list of
+intervals defined as fraction symbols to decimal floating point numbers.
+Numbers don't need to be integers and you can also nest a second fraction
+as the denominator between parenthesis., f 74;
+#X msg 165 138 1 9/8.25 5/4 11/8 3/2 13/8 14/8 15/8 2;
+#X msg 196 164 5/(4/3);
+#X msg 207 190 5.3/(4.7/1.3) 1.7/8.9;
+#X connect 27 0 26 0;
+#X connect 29 0 27 0;
+#X connect 30 0 27 0;
+#X connect 31 0 27 0;
