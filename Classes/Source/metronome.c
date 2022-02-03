@@ -11,6 +11,7 @@
 
 typedef struct _metronome{
     t_object    x_obj;
+    //    t_int       x_dir;
     t_clock    *x_clock;
     t_symbol   *x_sig;
     t_symbol   *x_s_name;
@@ -19,7 +20,6 @@ typedef struct _metronome{
     t_int       x_running;
     t_int       x_first_time;
     t_int       x_pause;
-//    t_int       x_dir;
     t_int       x_complex;
     t_int       x_subflag;
     t_int       x_sigchange;
@@ -46,10 +46,12 @@ static t_class *metronome_class;
 static void metronome_stop(t_metronome *x);
 
 static void output_actual_list(t_metronome *x){
-    t_atom at[2];
+    t_atom at[3];
     SETFLOAT(at, x->x_tempo_div);
-    SETFLOAT(at+1, x->x_bpm / x->x_tempo_div);
-    outlet_list(x->x_actual_out, &s_list, 2, at);
+    t_float bpm = x->x_bpm / x->x_tempo_div;
+    SETFLOAT(at+1, bpm);
+    SETFLOAT(at+2, 60000*x->x_n_tempo/bpm);
+    outlet_list(x->x_actual_out, &s_list, 3, at);
 }
 
 static void output_count_list(t_metronome *x){
@@ -562,6 +564,6 @@ void metronome_setup(void){
     class_addmethod(metronome_class, (t_method)metronome_stop, gensym("stop"), 0);
     class_addmethod(metronome_class, (t_method)metronome_pause, gensym("pause"), 0);
     class_addmethod(metronome_class, (t_method)metronome_continue, gensym("continue"), 0);
-    class_addmethod(metronome_class, (t_method)metronome_sub, gensym("sub"), 0);
+    class_addmethod(metronome_class, (t_method)metronome_sub, gensym("sub"), A_FLOAT, 0);
 //    class_addmethod(metronome_class, (t_method)metronome_set, gensym("set"), A_GIMME, 0);
 }
