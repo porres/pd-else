@@ -277,101 +277,131 @@ relative to patch), f 71;
 #X text 196 511 - actual beat length and tempo values, f 47;
 #N canvas 880 166 371 184 time-sig 0;
 #X text 66 28 Check subpatches below;
-#N canvas 470 71 841 596 irrational 0;
-#X msg 445 48 timesig 2/2.666666666;
-#X msg 469 100 timesig 4/3.55555555555;
-#X msg 474 120 timesig 4/(32/9);
-#X text 29 202 If you want a '3:2' triplet as the tempo value (where
+#N canvas 289 65 1046 578 irrational 0;
+#X msg 604 42 timesig 2/2.666666666;
+#X msg 621 88 timesig 4/3.55555555555;
+#X msg 626 108 timesig 4/(32/9);
+#X text 19 166 If you want a '3:2' triplet as the tempo value (where
 you have 3 quarter notes in the space of two) you have to calculate
 how many of them fits in a whole note. The base value is still a quarter
 note (even though it is a triplet) so we can just multiply 3:2 by 4!
 That gives us "12/2" \, which is "6" and means you can fit 6 of them
 in a whole note. Therefore \, the denominator is "6"! We've seen this
 already \, but the point is that this also doesn't need to be an integer
-value. Let's see another case were we don't have an integer., f 61
+value. Let's see another case were we don't have an integer., f 86
 ;
-#X text 29 314 Let's think of a '2:3' tuplet for quarter notes \, which
+#X text 19 248 Let's think of a '2:3' tuplet for quarter notes \, which
 is the same as a dotted quarter note. We multiply by 4 and get "8/3"
 \, which is "2.66667"! So yeah \, 2/2.66667 is a possible value that
 defines 2 tempos of a '2:3' quarter note tuplet. This gives us the
 same bar length of 3/4 and 6/8 but it's a "simple" binary time signature.
-, f 61;
-#X msg 425 16 timesig 4/6;
-#X text 503 15 four beats of a quarter note triplet;
-#X msg 452 68 timesig 2/(8/3);
-#X text 589 52 two beats of '2:3' tuplet for quarter notes, f 25;
-#X text 618 98 four beats of '8:9' for quarter notes, f 19;
-#X msg 487 155 timesig 3/5;
-#X text 568 149 three beats of '4:5' (quintuplets) for quarter notes
+, f 86;
+#X msg 595 16 timesig 4/6;
+#X text 673 15 four beats of a quarter note triplet;
+#X msg 611 62 timesig 2/(8/3);
+#X text 748 46 two beats of '2:3' tuplet for quarter notes, f 25;
+#X text 770 86 four beats of '8:9' for quarter notes, f 19;
+#X msg 637 134 timesig 3/5;
+#X text 714 129 three beats of '4:5' (quintuplets) for quarter notes
 , f 34;
-#X msg 494 194 timesig 6/10;
-#X text 579 188 six beats of '4:5' (quintuplets) for eight notes (grouped
+#X msg 646 165 timesig 6/10;
+#X text 731 159 six beats of '4:5' (quintuplets) for eight notes (grouped
 in 2), f 34;
-#X obj 528 297 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X obj 561 93 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X msg 505 233 timesig 3/4.75;
-#X text 606 227 three beats of "whatever" (I don't know \, just going
+#X msg 728 359 timesig 3/4.75;
+#X text 829 353 three beats of "whatever" (I don't know \, just going
 crazy), f 30;
-#X text 649 269 going even crazier, f 19;
-#X msg 510 270 timesig 4/(30.7/5.65);
-#X obj 425 460 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X text 875 384 going even crazier, f 19;
+#X msg 736 385 timesig 4/(30.7/5.65);
+#X obj 595 500 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 424 488 beat bang, f 4;
-#X obj 506 517 else/out~;
-#X obj 590 433 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#X text 594 528 beat bang, f 4;
+#X obj 642 512 else/out~;
+#X obj 760 503 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
-#X floatatom 587 460 9 0 0 0 - - - 12;
-#X text 659 461 phase (0-1);
-#X listbox 506 461 9 0 0 0 - - - 12;
-#X listbox 668 401 18 0 0 0 - - - 12;
-#X text 678 368 actual beat length and tempo, f 18;
-#X obj 506 491 else/metronome~;
-#X text 512 403 bar \; sub-bar \; beat \; sub-beat;
-#X obj 425 346 else/metronome 60 2/(8/3), f 41;
-#X text 29 25 You can have other values as the denominator other than
+#X floatatom 757 530 9 0 0 0 - - - 12;
+#X text 829 531 phase (0-1);
+#X listbox 642 456 9 0 0 0 - - - 12;
+#X listbox 838 471 18 0 0 0 - - - 12;
+#X text 848 438 actual beat length and tempo, f 18;
+#X obj 642 486 else/metronome~;
+#X obj 595 416 else/metronome 60 2/(8/3), f 41;
+#X text 19 32 You can have other values as the denominator other than
 the usual multiples of "2" (4/4 \, 6/6 \, 15/16 \, etc). These can
 be integers or floats (which can also be defined as fractions) and
 are also known as 'irrational' time signatures (or 'non power of two').
 This allows you to set tuplets as the tempo. Note that any time signature
-you can set as a messgae can also be set as an argument., f 61;
-#X text 29 107 The denominator of a time signature defines the tempo
+you can set as a messgae can also be set as an argument., f 86;
+#X text 19 93 The denominator of a time signature defines the tempo
 value as a fraction of a whole note (whose value is "1"). A quarter
 note is "1/4" \, so a "4/4" time signature defines 4 beats of quarter
 notes. Now \, '2/3' means two beats of a tempo that is equal to 1/3
 of a whole note. This would then be the same as a triplet of a half
 note. Consequently \, '4/6' is four beats of a quarter note triplet.
 On the other hand 3/5 is three beats of a quarter note quintuplet.
-, f 61;
-#X text 29 389 Let's get a bit crazier now and use an 8:9 tuplet for
+, f 86;
+#X text 19 298 Let's get a bit crazier now and use an 8:9 tuplet for
 8th notes (where we have eight 8th notes in the space of nine 8th notes)
 and consider two of them (hence \, a quarter note) as the beat lenght.
 The ratio is actually "4:4.5" but let's use the "8:9" and multiply
 it by 4 (as the base measure is a fourth note). So 8:9 x 4 is "32:9"
 \, which is "3.555556". Therefore \, 4/3.555556 means 4 beats that
-fit into 9 eight notes., f 61;
-#X text 29 484 The time signature only accepts integers for the numerator
+fit into 9 eight notes., f 86;
+#X text 19 475 The time signature only accepts integers for the numerator
 (number of beats) \, but it accepts floats as the denumerator as well
 as fractions in parenthesis. Hence \, you can define "2/2.66667" or
 2/(8/3). Likewise: "4/3.555556" or 4/(32/9). Both formats work! Number
 in fractions don't need to be integers as well so all crazy things
-can happen to define a tempo duration., f 61;
-#X connect 0 0 30 0;
-#X connect 1 0 30 0;
-#X connect 2 0 30 0;
-#X connect 5 0 30 0;
-#X connect 7 0 30 0;
-#X connect 10 0 30 0;
-#X connect 12 0 30 0;
-#X connect 14 0 30 0;
-#X connect 15 0 30 0;
-#X connect 18 0 30 0;
+can happen to define a tempo duration., f 86;
+#X msg 660 189 timesig 4/15;
+#X msg 672 213 timesig 4/(15/2);
+#X text 19 360 You can also think of nested tuplets \, where 1/15 is
+a quintuplet inside a triplet (so we multiply '3' by '5' and get '15').
+So 4/15 is four beats of this nested tuplet (that fits 15 8th notes
+in the space of 8). We can do the same math and have '15:8' times 8
+(since 8th note is our measure). This is the same as '15' \, so there
+you go. And what if you want a quarter note? Then you have 15:8 * 4
+\, which is 60/8 or 15/2 \, so you can specify it as 4/(15/2) or just
+4/7.5!, f 86;
+#X text 743 189 4 beats of 15:8;
+#X text 779 212 4 beats of 15:8 for quarter notes;
+#X msg 681 233 timesig 4/7.5;
+#X text 771 233 same as above;
+#X msg 690 263 timesig 7/(56/5);
+#X msg 700 286 timesig 5/8;
+#X text 19 434 What if you want 7 eight notes in the space of 5 as
+the measure? Then you have a 7:5 ratio \, multiply it by 8 and you
+have '56/5'. For 5 in the space of 3 you haave 5:3 \, time 8 it is
+'40/3'., f 86;
+#X msg 708 310 timesig 5/(40/3);
+#X text 795 262 7 beats of 7:5 eighth notes;
+#X text 813 309 5 beats of 5:3 eighth notes;
+#X msg 718 332 timesig 3/8;
+#X connect 0 0 29 0;
+#X connect 1 0 29 0;
+#X connect 2 0 29 0;
+#X connect 5 0 29 0;
+#X connect 7 0 29 0;
+#X connect 10 0 29 0;
+#X connect 12 0 29 0;
+#X connect 14 0 29 0;
+#X connect 15 0 29 0;
+#X connect 18 0 29 0;
 #X connect 22 0 23 0;
 #X connect 25 0 28 0;
 #X connect 28 0 21 0;
-#X connect 30 0 19 0;
-#X connect 30 1 25 0;
-#X connect 30 2 22 0;
-#X connect 30 3 26 0;
+#X connect 29 0 19 0;
+#X connect 29 1 25 0;
+#X connect 29 2 22 0;
+#X connect 29 3 26 0;
+#X connect 34 0 29 0;
+#X connect 35 0 29 0;
+#X connect 39 0 29 0;
+#X connect 41 0 29 0;
+#X connect 42 0 29 0;
+#X connect 44 0 29 0;
+#X connect 47 0 29 0;
 #X restore 64 97 pd irrational;
 #N canvas 436 23 500 600 basic 0;
 #X msg 121 196 timesig 7/8;
