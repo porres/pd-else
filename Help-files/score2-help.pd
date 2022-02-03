@@ -1,4 +1,4 @@
-#N canvas 673 36 564 540 10;
+#N canvas 460 23 564 540 10;
 #X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
@@ -299,7 +299,7 @@ as the duration is given in the score., f 75;
 #X connect 10 0 6 0;
 #X connect 12 0 3 0;
 #X restore 491 203 pd chords;
-#N canvas 376 29 707 454 basic 0;
+#N canvas 569 69 707 454 basic 0;
 #X obj 311 341 *~;
 #X msg 362 59 stop;
 #X obj 539 114 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
@@ -352,42 +352,54 @@ the fraction is the 'event data' and is sent out at the left outlet.
 #X text 19 317 The duration in ms is output in the second outlet. Negative
 values are also output so they can be filtered out and specify rests.
 , f 39;
-#N canvas 117 83 902 290 float/fractions 0;
-#X text 55 78 Besides multiples of '2' as the denumerator \, which
-is common in music notation \, you can also use other values. For instance
-'2/3' means two beats of '1/3' of a whole note. This would then be
-the same as a triplet of a half note. On the other hand '3/5' is three
-beats of a quarter note quintuplet. If you wish you can use the actual
-floar values., f 66;
-#X text 55 151 You can also values that are not integers \, either
+#N canvas 361 191 890 338 float/fractions 0;
+#X text 35 141 You can also values that are not integers \, either
 on its own ar as part of fractions. So '0.375' is one beat and a half
 (the same as a dotted quarter note). One way to define this as a fraction
 is '3/8' (which represents three eight notes). But you can also specify
 this as '1/2.66667' \, which is also equals to 0.375 in the end \,
 mathematically., f 66;
-#X text 55 225 You can also have a fraction in the denominator under
-parenthesis \, such as '1/(8/3)' \, which is also equals to '0.375'.
-Sometimes the usage of fraction is better to avoid periodic sequences
-and aprocimations., f 66;
-#X text 479 102 Any crazy thing goes \, you can have '1.23/(7.78/2.33)'
+#X text 462 191 Any crazy thing goes \, you can have '1.23/(7.78/2.33)'
 or whatever. It'll work even if you don't have a clue on what the result
 is., f 66;
-#X text 479 133 You can also see and read more about note durations
+#X text 462 222 You can also see and read more about note durations
 in the help files of [metronome] and [pattern]., f 66;
-#X text 528 210 see also:;
-#X obj 596 210 else/metronome;
-#X obj 706 210 else/pattern;
-#X text 55 26 When the first element of a list is either a float or
+#X text 512 280 see also:;
+#X obj 580 280 else/metronome;
+#X obj 690 280 else/pattern;
+#X text 35 16 When the first element of a list is either a float or
 a fraction it represents the duration of a note. The values are in
 relation to a whole note \, so "1" or "1/1" is a whole note and "1/4"
 or "0.25" is a quarter note \, '1/8' is an eight note and so on.,
 f 66;
-#X text 479 28 Note that 1/15 is a nested tuplet (a quintuplet inside
+#X text 462 83 Note that 1/15 is a nested tuplet (a quintuplet inside
 a triplet) \, which is also possible. for other arbitrary tuplets \,
 you need to work on your math. If you want to have 7 eight notes in
 the space of 5 \, then you have 5 eight notes (5/8) divided by 7 \,
 which is the same as 5/(8*7) \, so you have 5/56 for each of these
-notes. 5 in the space of 3 is 3/(8*5) = 3/40., f 66;
+notes. 5 in the space of 3 is (3/8)/5 \, which is the same as 3/(8*5)
+= 3/40., f 66;
+#X text 462 156 You can also have a fraction with the nominator in
+parenthesis so (5/8)/7 is allowed \, as well as (3/8)/5., f 66;
+#X text 35 68 Besides multiples of '2' as the denumerator \, which
+is common in music notation \, you can also use other values. For instance
+'2/3' means two beats of '1/3' of a whole note. This would then be
+the same as a triplet of a half note. On the other hand '3/5' is three
+beats of a quarter note quintuplet. If you wish you can use the actual
+float values., f 66;
+#X text 35 215 You can also have a fraction in the denominator in parenthesis
+\, such as '1/(8/3)' \, which is also equals to '0.375'. Sometimes
+the usage of fraction is better to avoid periodic sequences and aproximations.
+, f 66;
+#X text 35 267 The example above is a '2:3' tuplet for quarter notes
+\, which is the same as a dotted quarter note. To get the value \,
+we multiply the 2:3 ratio by 4 (because we want a quarter note tuplet)
+and get "8/3"! So 1/(8/3) is what you want., f 66;
+#X text 462 19 Let's get a bit crazier now and use an 8:9 tuplet for
+eight notes (where we have eight eigth notes in the space of nine eight
+notes) . So we multiply "8:9" by 8 (cause we want eight note tuplets)
+and get 1/(64/9). If you want quarter note tuplets it's 2/(64/9) or
+8:9 x 4 \, which is 1/(32/9)., f 66;
 #X restore 553 402 pd float/fractions;
 #X text 465 356 For more details on how fractions determine the note
 duration \, see the subpatch below:, f 33;
