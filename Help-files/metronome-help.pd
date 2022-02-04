@@ -1,19 +1,19 @@
-#N canvas 611 36 564 658 10;
-#X obj 4 267 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+#N canvas 650 23 560 661 10;
+#X obj 4 270 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 439 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 4 442 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 586 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 589 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 76 447 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 450 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 77 274 cnv 17 3 141 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 77 277 cnv 17 3 141 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 4 629 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 4 632 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 163 136 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 163 139 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 161 274 bang;
+#X text 161 277 bang;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -33,47 +33,47 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 376 190 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 376 193 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 3 3 cnv 15 301 42 empty empty metronome 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 174 162 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X obj 174 165 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X text 368 173 tempo;
-#X obj 163 237 bng 17 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X text 368 176 tempo;
+#X obj 163 240 bng 17 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X text 182 135 (re)start;
-#X text 155 302 float;
-#X msg 82 136 stop;
-#X text 161 316 stop;
-#X text 89 372 timesig <sym \, f>;
-#X text 191 372 - set time signature symbol and group value, f 47
+#X text 182 138 (re)start;
+#X text 155 305 float;
+#X msg 82 139 stop;
+#X text 161 319 stop;
+#X text 89 375 timesig <sym \, f>;
+#X text 191 375 - set time signature symbol and group value, f 47
 ;
-#X text 155 418 float;
-#X text 161 448 bang;
-#X text 191 448 - bang at every beat, f 47;
-#X text 155 491 float;
-#X obj 76 418 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 155 421 float;
+#X text 161 451 bang;
+#X text 191 451 - bang at every beat, f 47;
+#X text 155 494 float;
+#X obj 76 421 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 468 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 471 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 489 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 492 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 510 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 513 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 191 491 - beat phase output (0-1), f 47;
-#X floatatom 305 238 10 0 0 0 - - - 0;
-#X text 155 288 start;
-#X text 191 274 - start or restart metronome, f 47;
-#X text 191 288 - same as bang (start or restart metronome), f 47
+#X text 191 494 - beat phase output (0-1), f 47;
+#X floatatom 305 241 10 0 0 0 - - - 0;
+#X text 155 291 start;
+#X text 191 277 - start or restart metronome, f 47;
+#X text 191 291 - same as bang (start or restart metronome), f 47
 ;
-#X text 107 400 tempo <float>;
-#X text 191 400 - set tempo value in BPM, f 47;
-#X text 191 418 - set tempo value in BPM, f 47;
-#X obj 4 533 cnv 3 550 3 empty empty flag 8 12 0 13 #dcdcdc #000000
+#X text 107 403 tempo <float>;
+#X text 191 403 - set tempo value in BPM, f 47;
+#X text 191 421 - set tempo value in BPM, f 47;
+#X obj 4 536 cnv 3 550 3 empty empty flag 8 12 0 13 #dcdcdc #000000
 0;
 #N canvas 529 104 789 534 clock 0;
 #X obj 81 48 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
@@ -177,19 +177,18 @@ flag., f 22;
 #X connect 47 0 42 0;
 #X connect 49 0 51 1;
 #X connect 51 0 47 0;
-#X restore 493 215 pd clock;
-#X text 147 594 1) float - (optional) tempo in BPM (default 120),
+#X restore 497 218 pd clock;
+#X text 147 597 1) float - (optional) tempo in BPM (default 120),
 f 49;
-#X text 191 302 - non-zero (re)starts \, zero stops, f 47;
-#X text 18 179 see also:;
-#X obj 18 198 else/clock;
-#X text 194 163 start/stop;
-#X text 107 358 beat <symbol>;
-#X text 191 358 - set beat length symbol, f 47;
-#N canvas 448 96 830 515 beat-length 0;
+#X text 191 305 - non-zero (re)starts \, zero stops, f 47;
+#X text 18 182 see also:;
+#X obj 18 201 else/clock;
+#X text 194 166 start/stop;
+#X text 107 361 beat <symbol>;
+#X text 191 361 - set beat length symbol, f 47;
+#N canvas 355 54 901 517 beat-length 0;
 #X obj 398 18 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X msg 462 84 beat 1/4 \, timesig 3/4;
 #X msg 472 112 beat 1/4 \, timesig 6/8;
 #X msg 488 161 beat 3/8 \, timesig 6/8;
 #X obj 658 242 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -199,29 +198,9 @@ f 49;
 #X msg 452 62 beat 1/8 \, timesig 4/4;
 #X msg 433 19 beat 1/4 \, timesig 4/4;
 #X text 573 18 default values;
-#X text 46 171 In the same way \, a beat of "1/8" means the BPM is
-for an eight note \, so a 4/4 beat will be have an actual beat that
-is twice as slow and an actual beat lenght that is equal to 2!, f
-51;
-#X text 46 222 If you set a "6/8" time signature \, it will give you
-two groups of beats subdivided by 3 \, that means you get two beats
-whose lenght is 3/8 (the same as a dotted quarter note). With the default
-beat length of 1/4 \, the tempo is for a quarter note \, not a dotted
-quarter note \, so each beat will actually have a lenght of 1.5! If
-you want the given tempo to reflect a beat duration of 3/8 \, just
-send the "beat 3/8" message. Now the two rightmost outlets will make
-sure that the beat corresponds to the given tempo. Each eigh note is
-now one third of the beat., f 51;
-#X text 46 362 You can also set a 6/8 time signature and say the tempo
+#X text 46 375 You can also set a 6/8 time signature and say the tempo
 corresponds to an eight note \, which makes the whole beat three times
 as slow., f 51;
-#X text 46 418 Note you can also set other beat lenghts that correspond
-to tuplets. A beat lenght of "1/6" considers a quarter note triplet
-as the beat lenght. For a "2/4" signature \, the actual beat lenght
-of 1.5 \, because a quarter note fits 1.5 quarter note triplets (or
-3 eight note triplets) inside. Note that this has the same beat lenght
-and number of tempos than a 6/8 time signature with a beat lenght of
-1/4!, f 65;
 #X obj 415 377 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X text 443 375 beat bang, f 4;
@@ -232,18 +211,7 @@ and number of tempos than a 6/8 time signature with a beat lenght of
 #X text 649 378 phase (0-1);
 #X listbox 496 378 9 0 0 0 - - - 12;
 #X listbox 658 318 22 0 0 0 - - - 12;
-#X text 502 330 bar \; beat \; sub-beat;
-#X text 46 43 By default \, the beat length is 1/4 (wich means a quarter
-note). So when you set a tempo value \, that BPM considers a fourth
-note. You can set the beat legnth with the 'beat' message or '-beat'
-flag. You can set it before a time signature change. If you set the
-beat length to "1/2" \, the BPM value is for a half note. If you still
-have a 4/4 time signature \, this means that each beat (which is a
-quarter note here) will have a beat twice as fast than the given tempo
-and the actual lenght is half! You can see this in the rightmost outlet.
-, f 51;
 #X obj 496 408 else/metronome~;
-#X msg 506 210 beat 1/8 \, timesig 6/8;
 #X msg 479 130 beat 1/6 \, timesig 2/4;
 #X msg 494 179 beat 1/4 \, timesig 2/4;
 #X obj 415 263 else/metronome 90, f 41;
@@ -253,34 +221,71 @@ f 26;
 f 26;
 #X text 678 272 actual beat length \, actual tempo and duration.,
 f 20;
-#X connect 0 0 28 0;
-#X connect 1 0 28 0;
-#X connect 2 0 28 0;
-#X connect 3 0 28 0;
-#X connect 4 0 28 1;
-#X connect 5 0 4 0;
-#X connect 6 0 28 0;
-#X connect 7 0 28 0;
-#X connect 8 0 28 0;
-#X connect 17 0 18 0;
-#X connect 20 0 24 0;
-#X connect 24 0 16 0;
-#X connect 25 0 28 0;
-#X connect 26 0 28 0;
-#X connect 27 0 28 0;
-#X connect 28 0 14 0;
-#X connect 28 1 20 0;
-#X connect 28 2 17 0;
-#X connect 28 3 21 0;
-#X restore 457 175 pd beat-length;
-#X text 90 552 -beat <symbol> - set a beat length (default: 1/4),
+#X text 502 320 bar \; sub-bar \; beat \; sub-beat;
+#X msg 462 84 beat 0.25 \, timesig 3/4;
+#X msg 500 210 beat 0.125 \, timesig 6/8;
+#X text 610 84 (0.25 is '1/4');
+#X text 513 232 (0.125 is '1/8');
+#X text 46 16 A beat length can be specified as a fraction (such as
+'1/4' \, the default value) or a float (where 0.25 is the same as 1/4).
+A beat length of 1/4 means the beat is a quarter note. So the tempo
+value in BPM considers a fourth note. You can set the beat legnth with
+the 'beat' message or '-beat' flag. You can set it before a time signature
+change., f 51;
+#X text 46 102 A beat length to "1/2" sets the BPM value for a half
+note. If you have a 4/4 time signature \, this means that each beat
+(which is a quarter note here) will have a beat twice as fast than
+the given tempo (that is an actual BPM which is the double) and the
+actual beat lenght is half! Both actual beat lenght and actual BPM
+is given by the rightmost output \, along with the bar duration in
+ms., f 51;
+#X text 46 195 In the same way \, a beat length of "1/8" is an 8th
+note \, so a 4/4 time signature has an actual BPM that is twice as
+slow and an actual beat lenght that is equal to 2!, f 51;
+#X text 46 246 If you set a "6/8" time signature \, it will give you
+two groups of beats subdivided by 3 \, that means you get two beats
+whose lenght is 3/8 (the same as a dotted quarter note). With the default
+beat length of 1/4 (a quarter note instead of a dotted quarter note)
+you have an actual beat lenght of 1.5! If you want the given tempo
+to reflect a beat duration of 3/8 \, just send the "beat 3/8" message.
+Now the two rightmost outlets will make sure that the beat length is
+"1" and the BPM corresponds to the given one. Each 8th note is now
+one third of the beat., f 51;
+#X text 46 418 Note you can also set other beat lenghts that correspond
+to tuplets. A beat lenght of "1/6" considers a quarter note triplet
+as the beat lenght. For a "2/4" signature \, the actual beat lenght
+is 1.5 \, because a quarter note fits 1.5 quarter note triplets (or
+3 8th note triplets) inside. Note that this has the same beat lenght
+and number of tempos than a 6/8 time signature with a beat lenght of
+1/4!, f 65;
+#X connect 0 0 21 0;
+#X connect 1 0 21 0;
+#X connect 2 0 21 0;
+#X connect 3 0 21 1;
+#X connect 4 0 3 0;
+#X connect 5 0 21 0;
+#X connect 6 0 21 0;
+#X connect 7 0 21 0;
+#X connect 13 0 14 0;
+#X connect 16 0 18 0;
+#X connect 18 0 12 0;
+#X connect 19 0 21 0;
+#X connect 20 0 21 0;
+#X connect 21 0 10 0;
+#X connect 21 1 16 0;
+#X connect 21 2 13 0;
+#X connect 21 3 17 0;
+#X connect 26 0 21 0;
+#X connect 27 0 21 0;
+#X restore 461 156 pd beat-length;
+#X text 90 555 -beat <symbol> - set a beat length (default: 1/4),
 f 71;
-#X text 90 538 -name <symbol> - set a clock name (default: internal
+#X text 90 541 -name <symbol> - set a clock name (default: internal
 relative to patch), f 71;
-#X listbox 376 238 15 0 0 0 - - - 0;
-#X listbox 234 238 9 0 0 0 - - - 0;
-#X text 161 469 list;
-#X text 161 511 list;
+#X listbox 376 241 15 0 0 0 - - - 0;
+#X listbox 234 241 9 0 0 0 - - - 0;
+#X text 161 472 list;
+#X text 161 514 list;
 #N canvas 880 166 371 184 time-sig 0;
 #X text 66 28 Check subpatches below;
 #N canvas 289 65 1046 578 irrational 0;
@@ -523,13 +528,13 @@ change., f 81;
 #X restore 64 127 pd complex;
 #X text 122 67 simplel & compound;
 #X text 138 127 complex (alternate or aggreagate);
-#X restore 475 155 pd time-sig;
-#X text 191 469 - bar \, sub-bar \, beat and sub-beat count, f 47
+#X restore 479 136 pd time-sig;
+#X text 191 472 - bar \, sub-bar \, beat and sub-beat count, f 47
 ;
-#X text 191 316 - stops the metronome (same as '0'), f 47;
-#X text 137 344 continue;
-#X msg 119 136 start;
-#X obj 19 219 else/metronome~;
+#X text 191 319 - stops the metronome (same as '0'), f 47;
+#X text 137 347 continue;
+#X msg 119 139 start;
+#X obj 19 222 else/metronome~;
 #N canvas 858 177 417 216 events 0;
 #N canvas 397 97 460 454 example-1 0;
 #X obj 144 156 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
@@ -730,18 +735,18 @@ is a simple asbtraction based on [>] \, [change] and [select]., f
 #X text 177 88 basic;
 #X text 179 120 changing time signatures;
 #X text 180 150 handling phase;
-#X restore 487 235 pd events;
+#X restore 491 238 pd events;
 #X text 64 85 [metronome] understands complex time signatures and outputs
 timeline data (bar \, sub-bar \, beat and sub-beat count) and phase
-output. It also syncs to [clock] objects., f 74;
-#X text 153 608 2) list - allowed time signature syntax (default 4/4)
+output. It also syncs to [clock] objects., f 70;
+#X text 153 611 2) list - allowed time signature syntax (default 4/4)
 ;
-#X obj 163 215 else/metronome 60 3/4, f 36;
-#X msg 227 190 continue;
-#X msg 181 187 pause;
-#X text 155 330 pause;
-#X text 191 330 - pauses the metronome, f 47;
-#X text 191 344 - continues if paused, f 47;
+#X obj 163 218 else/metronome 60 3/4, f 36;
+#X msg 227 193 continue;
+#X msg 181 190 pause;
+#X text 155 333 pause;
+#X text 191 333 - pauses the metronome, f 47;
+#X text 191 347 - continues if paused, f 47;
 #N canvas 803 86 522 484 -sub 0;
 #X obj 82 87 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000 #000000
 0 1;
@@ -783,13 +788,77 @@ sets to the default mode (only bang at tempo number changes)., f 64
 #X connect 15 1 9 0;
 #X connect 15 2 6 0;
 #X connect 16 0 14 0;
-#X restore 499 195 pd -sub;
-#X text 150 566 -sub - sets to subdivision (subtempo) mode, f 61;
-#X text 119 386 sub <float>;
-#X text 191 386 - non zero sets to subdivision (subtempo) mode;
-#X obj 19 240 else/score;
-#X text 191 511 - actual beat length \, actual tempo and bar duration
+#X restore 503 198 pd -sub;
+#X text 150 569 -sub - sets to subdivision (subtempo) mode, f 61;
+#X text 119 389 sub <float>;
+#X text 191 389 - non zero sets to subdivision (subtempo) mode;
+#X obj 19 243 else/score;
+#X text 191 514 - actual beat length \, actual tempo and bar duration
 in ms.;
+#N canvas 494 125 842 460 tempo-&-tuplets 0;
+#X text 38 55 This subpatch is for some last details on how to deal
+with the theory and math on dealing with crazy time signatures and
+different beat lengths. In this case the idea is to compare different
+ways to achieve the same results., f 48;
+#X obj 386 328 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X text 414 326 beat bang, f 4;
+#X obj 467 385 else/out~;
+#X obj 551 301 hsl 150 19 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 548 328 9 0 0 0 - - - 12;
+#X text 620 329 phase (0-1);
+#X listbox 467 329 9 0 0 0 - - - 12;
+#X listbox 629 269 22 0 0 0 - - - 12;
+#X obj 467 359 else/metronome~;
+#X text 649 223 actual beat length \, actual tempo and duration.,
+f 20;
+#X text 473 271 bar \; sub-bar \; beat \; sub-beat;
+#X msg 386 24 tempo 90 \, beat 1/4 \, timesig 2/(8/3) \, bang;
+#X msg 401 46 tempo 90 \, beat 1/6 \, timesig 2/4 \, bang;
+#X msg 411 69 tempo 60 \, beat 1/4 \, timesig 2/4 \, bang;
+#X obj 386 214 else/metronome, f 41;
+#X text 38 118 For a beat length of 1/4 \, a time signature that reflects
+two tempos of a dotted quarter note is 2/(8/3) as it was explained
+before. Another way is to have a plain 2/4 time signature and just
+adjust the beat length to a quarter note triplet (1/6). See the examples
+to the right for a tempo of 90 and how both options give you an actual
+beat length of 1.5 and an actual BPM of 60 and how you can also achieve
+this by having a 2/4 time signature with a beat length of 1/4 and a
+tempo of 60 BPM., f 48;
+#X msg 463 143 tempo 60 \, beat 7/20 \, timesig 7/8 \, bang;
+#X msg 435 94 tempo 60 \, beat 1/4 \, timesig 5/8 \, bang;
+#X msg 445 117 tempo 60 \, beat 1/4 \, timesig 7/(56/5) \, bang;
+#X msg 343 23 stop;
+#X text 38 252 So you can decide what's easier to change \, the tempo
+\, the beat length or the time signature. If you want to change the
+beat length or the tempo instead of the time signatures \, the procedure
+is the same. For this example \, we wanted to change the tempo to a
+dotted quarter note \, which is also a 2:3 tuplet. So instead you can
+multuply for for 2/3. The BPM is 60 instead of 90 and the beat lenght
+is 1/6 (two thirds of 1/4)., f 48;
+#X msg 471 167 tempo 84 \, beat 1/4 \, timesig 7/8 \, bang;
+#X text 38 358 For the next example we have a 5/8 and if we want a
+7:5 tuplet for 8th notes we need a time signature of 7/(56/5) as explained
+before. In order to change the BPM or the beat length just multiply
+both by 7/5 \, which gives us BPM of 84 or a beat length of 7/20!,
+f 48;
+#X connect 4 0 5 0;
+#X connect 7 0 9 0;
+#X connect 9 0 3 0;
+#X connect 12 0 15 0;
+#X connect 13 0 15 0;
+#X connect 14 0 15 0;
+#X connect 15 0 1 0;
+#X connect 15 1 7 0;
+#X connect 15 2 4 0;
+#X connect 15 3 8 0;
+#X connect 17 0 15 0;
+#X connect 18 0 15 0;
+#X connect 19 0 15 0;
+#X connect 20 0 15 0;
+#X connect 22 0 15 0;
+#X restore 437 177 pd tempo-&-tuplets;
 #X connect 6 0 70 0;
 #X connect 17 0 70 1;
 #X connect 20 0 70 0;

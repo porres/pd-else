@@ -151,26 +151,37 @@ static void metronome_symbol(t_metronome *x, t_symbol *s){
     }
 }
 static void metronome_set_beat(t_metronome *x, t_atom *av){
-    t_float f1 = (int)atom_getfloat(av++);
-    t_float f2 = (int)atom_getfloat(av);
+    t_float f1 = atom_getfloat(av++);
+    t_float f2 = atom_getfloat(av);
     x->x_beat_length = f2/f1;
 }
 
-static void metronome_beat(t_metronome *x, t_symbol *s){
-    char *ch = (char*)s->s_name;
-    if(strstr(ch, "/")){
-        t_atom *av = getbytes(2*sizeof(t_atom));
-        char *d = strstr(ch, "/");
-        if(d == ch || !strcmp(d, "/"))
-            goto error;
-        string2atom(av+0, ch, d-ch);
-        ch = d+1;
-        string2atom(av+1, ch, strlen(ch));
-        metronome_set_beat(x, av);
+static void metronome_beat(t_metronome *x, t_symbol *s, int argc, t_atom *argv){
+    argc = 0;
+    if(argv->a_type == A_FLOAT){
+        t_float beat = atom_getfloat(argv);
+        if(beat > 0)
+            x->x_beat_length = (1/beat);
+        else
+            pd_error(x, "[metronome]: beat needs to be > 1");
     }
     else{
-    error:
-        pd_error(x, "[metronome]: wrong beat format");
+        s = atom_getsymbol(argv);
+        char *ch = (char*)s->s_name;
+        if(strstr(ch, "/")){
+            t_atom *av = getbytes(2*sizeof(t_atom));
+            char *d = strstr(ch, "/");
+            if(d == ch || !strcmp(d, "/"))
+                goto error;
+            string2atom(av+0, ch, d-ch);
+            ch = d+1;
+            string2atom(av+1, ch, strlen(ch));
+            metronome_set_beat(x, av);
+        }
+        else{
+        error:
+            pd_error(x, "[metronome]: wrong beat format");
+        }
     }
 }
 
@@ -387,22 +398,19 @@ static void metronome_float(t_metronome *x, t_float f){
     if(x->x_s_name->s_thing)
         pd_float(x->x_s_name->s_thing, f);
     if(f){
-        x->x_barcount = x->x_sub_barcount = x->x_tempocount = x->x_subdiv = x->x_tickcount = 0;
-        x->x_barcount++;
-        x->x_sub_barcount++;
-        x->x_running = 1;
-        x->x_pause = 0;
-        
         if(x->x_n_sigs > 1){
             char buf[MAX_SIZE];
             sprintf(buf,"%s", x->x_sig_array[0]);
             x->x_group = 0;
             metronome_symbol(x, x->x_sig = gensym(buf));
         }
-        
-        metronome_tick(x);
-        output_actual_list(x);
+        x->x_barcount = x->x_sub_barcount = x->x_tempocount = x->x_subdiv = x->x_tickcount = 0;
         output_count_list(x);
+        x->x_barcount++;
+        x->x_sub_barcount++;
+        x->x_running = 1;
+        x->x_pause = 0;
+        metronome_tick(x);
     }
     else{
         x->x_running = 0;
@@ -511,13 +519,7 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
         }
         else if(sym == gensym("-beat")){
             ac--, av++;
-            if(av->a_type == A_SYMBOL){
-                sym = atom_getsymbolarg(0, ac, av);
-                metronome_beat(x, sym);
-                ac--, av++;
-            }
-            else
-                goto errstate;
+            metronome_beat(x, NULL, 1, av);
         }
         else if(sym == gensym("-sub")){
             ac--, av++;
@@ -559,7 +561,7 @@ void metronome_setup(void){
     class_addbang(metronome_class, (t_method)metronome_start);
     class_addmethod(metronome_class, (t_method)metronome_timesig, gensym("timesig"), A_GIMME, 0);
     class_addmethod(metronome_class, (t_method)metronome_tempo, gensym("tempo"), A_FLOAT, 0);
-    class_addmethod(metronome_class, (t_method)metronome_beat, gensym("beat"), A_SYMBOL, 0);
+    class_addmethod(metronome_class, (t_method)metronome_beat, gensym("beat"), A_GIMME, 0);
     class_addmethod(metronome_class, (t_method)metronome_start, gensym("start"), 0);
     class_addmethod(metronome_class, (t_method)metronome_stop, gensym("stop"), 0);
     class_addmethod(metronome_class, (t_method)metronome_pause, gensym("pause"), 0);
