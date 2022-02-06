@@ -107,7 +107,6 @@
 #X msg 271 301 1.5;
 #X msg 240 301 2;
 #X msg 303 301 0.5;
-#X text 259 12 Example of [clock] objects in sync., f 41;
 #X text 583 75 A [metronome] can also have a clock name with the '-name'
 flag., f 22;
 #X obj 184 302 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
@@ -137,46 +136,50 @@ flag., f 22;
 #X floatatom 589 174 4 0 0 0 - - - 12;
 #X text 590 151 tempo;
 #X obj 418 207 else/metronome -name \$0-clock;
-#X connect 0 0 40 0;
-#X connect 2 0 40 0;
-#X connect 3 0 40 0;
-#X connect 4 0 40 0;
-#X connect 5 0 40 0;
-#X connect 6 0 40 0;
-#X connect 7 0 40 0;
-#X connect 8 0 30 0;
+#X text 242 278 divider values;
+#X text 626 278 divider values;
+#X text 81 9 [metronome] syncs to [clock] objects and they can have
+divider values. Check its help file., f 93;
+#X connect 0 0 39 0;
+#X connect 2 0 39 0;
+#X connect 3 0 39 0;
+#X connect 4 0 39 0;
+#X connect 5 0 39 0;
+#X connect 6 0 39 0;
+#X connect 7 0 39 0;
+#X connect 8 0 29 0;
 #X connect 9 0 1 0;
 #X connect 10 0 1 1;
-#X connect 11 0 51 0;
-#X connect 13 0 51 0;
-#X connect 14 0 51 0;
-#X connect 15 0 51 0;
-#X connect 16 0 51 0;
-#X connect 17 0 51 0;
-#X connect 18 0 51 0;
+#X connect 11 0 50 0;
+#X connect 13 0 50 0;
+#X connect 14 0 50 0;
+#X connect 15 0 50 0;
+#X connect 16 0 50 0;
+#X connect 17 0 50 0;
+#X connect 18 0 50 0;
 #X connect 19 0 23 0;
 #X connect 20 0 12 0;
 #X connect 21 0 12 1;
-#X connect 22 0 44 0;
+#X connect 22 0 43 0;
 #X connect 23 0 22 0;
 #X connect 24 0 8 1;
 #X connect 25 0 8 1;
 #X connect 26 0 8 1;
-#X connect 29 0 8 0;
-#X connect 30 0 43 0;
+#X connect 28 0 8 0;
+#X connect 29 0 42 0;
+#X connect 30 0 23 1;
 #X connect 31 0 23 1;
 #X connect 32 0 23 1;
-#X connect 33 0 23 1;
-#X connect 38 0 41 0;
-#X connect 40 0 38 0;
-#X connect 41 0 9 0;
-#X connect 42 0 20 0;
-#X connect 43 0 10 0;
-#X connect 44 0 21 0;
-#X connect 45 0 40 1;
-#X connect 47 0 42 0;
-#X connect 49 0 51 1;
-#X connect 51 0 47 0;
+#X connect 37 0 40 0;
+#X connect 39 0 37 0;
+#X connect 40 0 9 0;
+#X connect 41 0 20 0;
+#X connect 42 0 10 0;
+#X connect 43 0 21 0;
+#X connect 44 0 39 1;
+#X connect 46 0 41 0;
+#X connect 48 0 50 1;
+#X connect 50 0 46 0;
 #X restore 497 218 pd clock;
 #X text 147 597 1) float - (optional) tempo in BPM (default 120),
 f 49;
@@ -381,14 +384,14 @@ you go. And what if you want a quarter note? Then you have 15:8 * 4
 #X text 771 233 same as above;
 #X msg 690 263 timesig 7/(56/5);
 #X msg 700 286 timesig 5/8;
-#X text 19 434 What if you want 7 eight notes in the space of 5 as
-the measure? Then you have a 7:5 ratio \, multiply it by 8 and you
-have '56/5'. For 5 in the space of 3 you haave 5:3 \, time 8 it is
-'40/3'., f 86;
 #X msg 708 310 timesig 5/(40/3);
 #X text 795 262 7 beats of 7:5 eighth notes;
 #X text 813 309 5 beats of 5:3 eighth notes;
 #X msg 718 332 timesig 3/8;
+#X text 19 434 What if you want 7 eight notes in the space of 5 as
+the measure? Then you have a [7:5] ratio \, multiply it by 8 and you
+have '56/5'. For 5 in the space of 3 you have 5:3 \, times 8 it's '40/3'.
+, f 86;
 #X connect 0 0 29 0;
 #X connect 1 0 29 0;
 #X connect 2 0 29 0;
@@ -411,8 +414,8 @@ have '56/5'. For 5 in the space of 3 you haave 5:3 \, time 8 it is
 #X connect 39 0 29 0;
 #X connect 41 0 29 0;
 #X connect 42 0 29 0;
-#X connect 44 0 29 0;
-#X connect 47 0 29 0;
+#X connect 43 0 29 0;
+#X connect 46 0 29 0;
 #X restore 64 97 pd irrational;
 #N canvas 436 23 530 602 basic 0;
 #X msg 121 196 timesig 7/8;
@@ -795,8 +798,8 @@ sets to the default mode (only bang at tempo number changes)., f 64
 #X obj 19 243 else/score;
 #X text 191 514 - actual beat length \, actual tempo and bar duration
 in ms.;
-#N canvas 494 125 842 460 tempo-&-tuplets 0;
-#X text 38 55 This subpatch is for some last details on how to deal
+#N canvas 424 123 842 460 tempo-&-tuplets 0;
+#X text 38 44 This subpatch is for some last details on how to deal
 with the theory and math on dealing with crazy time signatures and
 different beat lengths. In this case the idea is to compare different
 ways to achieve the same results., f 48;
@@ -818,7 +821,7 @@ f 20;
 #X msg 401 46 tempo 90 \, beat 1/6 \, timesig 2/4 \, bang;
 #X msg 411 69 tempo 60 \, beat 1/4 \, timesig 2/4 \, bang;
 #X obj 386 214 else/metronome, f 41;
-#X text 38 118 For a beat length of 1/4 \, a time signature that reflects
+#X text 38 107 For a beat length of 1/4 \, a time signature that reflects
 two tempos of a dotted quarter note is 2/(8/3) as it was explained
 before. Another way is to have a plain 2/4 time signature and just
 adjust the beat length to a quarter note triplet (1/6). See the examples
@@ -830,7 +833,7 @@ tempo of 60 BPM., f 48;
 #X msg 435 94 tempo 60 \, beat 1/4 \, timesig 5/8 \, bang;
 #X msg 445 117 tempo 60 \, beat 1/4 \, timesig 7/(56/5) \, bang;
 #X msg 343 23 stop;
-#X text 38 252 So you can decide what's easier to change \, the tempo
+#X text 38 241 So you can decide what's easier to change \, the tempo
 \, the beat length or the time signature. If you want to change the
 beat length or the tempo instead of the time signatures \, the procedure
 is the same. For this example \, we wanted to change the tempo to a
@@ -838,7 +841,7 @@ dotted quarter note \, which is also a 2:3 tuplet. So instead you can
 multuply for for 2/3. The BPM is 60 instead of 90 and the beat lenght
 is 1/6 (two thirds of 1/4)., f 48;
 #X msg 471 167 tempo 84 \, beat 1/4 \, timesig 7/8 \, bang;
-#X text 38 358 For the next example we have a 5/8 and if we want a
+#X text 38 347 For the next example we have a 5/8 and if we want a
 7:5 tuplet for 8th notes we need a time signature of 7/(56/5) as explained
 before. In order to change the BPM or the beat length just multiply
 both by 7/5 \, which gives us BPM of 84 or a beat length of 7/20!,

@@ -1,15 +1,15 @@
-#N canvas 619 23 560 651 10;
-#X obj 3 406 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+#N canvas 619 23 560 615 10;
+#X obj 3 371 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 495 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 3 460 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 561 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 3 526 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 85 504 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 85 469 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 86 412 cnv 17 3 40 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 86 377 cnv 17 3 40 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 624 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 3 589 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 4 4 cnv 15 301 42 empty empty clock 20 20 2 37 #e0e0e0 #000000
 0;
@@ -37,59 +37,50 @@
 0;
 #X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 143 371 bng 18 50 10 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X obj 143 336 bng 18 50 10 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
-#X text 154 411 float;
-#X text 160 504 bang;
-#X obj 143 302 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X text 154 376 float;
+#X text 160 469 bang;
+#X obj 143 267 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X obj 324 371 bng 18 50 10 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X obj 324 336 bng 18 50 10 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
-#X obj 324 302 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X obj 324 267 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
 #X text 44 85 A [clock] object sends bangs at a regular tempo and controls
 other synced [clock] objects with a relative tempo. This is also known
 as 'master' and 'slave' clocks \, but we can also call them 'main'
 and 'synced' to avoid these terms., f 81;
-#X text 168 373 main clock;
-#X obj 218 315 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 168 338 main clock;
+#X obj 218 280 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dfdfdf #000000 #000000 0 256;
-#X text 190 313 BPM;
-#X obj 411 315 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 190 278 BPM;
+#X obj 411 280 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dfdfdf #000000 #000000 0 256;
-#X text 44 176 You should have only one main clock \, but several clocks
-synced to this main one. By default \, clock gets local names according
-to the patch window \, but you can set a different name and have different
-main clocks., f 81;
-#X text 345 372 synced clock;
-#X text 462 315 multiplier;
-#X text 44 253 Below we have a main clock at 60 BPM and a synced clock
-that multiplies the tempo to a factor of two., f 81;
-#X text 190 411 - non-zero starts the clock \, zero stops it.;
-#X obj 86 457 cnv 17 3 32 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 345 337 synced clock;
+#X text 190 376 - non-zero starts the clock \, zero stops it.;
+#X obj 86 422 cnv 17 3 32 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 154 458 float;
-#X text 190 458 - BPM for main clock or multiplier for synced clock.
-;
-#X obj 111 303 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#X text 154 423 float;
+#X obj 111 268 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X text 160 425 bang;
-#X text 190 425 - resyncs the clock, f 43;
-#X text 190 504 - bang according to clock tempo;
-#X text 113 571 1) symbol;
-#X text 179 571 (optional) clock name (default \, internal local to
+#X text 160 390 bang;
+#X text 190 390 - resyncs the clock, f 43;
+#X text 190 469 - bang according to clock tempo;
+#X text 113 536 1) symbol;
+#X text 179 536 (optional) clock name (default \, internal local to
 patch);
-#X obj 3 529 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 3 494 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 160 538 '-s' - sets to synced clock (default main);
-#X msg 218 288 90;
-#X msg 248 288 60;
-#X msg 411 288 0.5;
-#X msg 441 288 2;
-#X obj 299 302 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#X text 160 503 '-s' - sets to synced clock (default main);
+#X msg 218 253 90;
+#X msg 248 253 60;
+#X msg 411 253 0.5;
+#X msg 441 253 2;
+#X obj 299 267 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X obj 143 340 else/clock 60;
-#X obj 324 340 else/clock -s 2;
+#X obj 143 305 else/clock 60;
+#X obj 324 305 else/clock -s 2;
 #N canvas 791 93 522 502 example 0;
 #X obj 104 240 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
@@ -118,8 +109,6 @@ patch);
 #X msg 405 189 2/3;
 #X obj 238 239 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X obj 209 278 else/clock -s \$0-clock 2, f 13;
-#X obj 328 278 clock -s \$0-clock 3/2, f 12;
 #X obj 90 393 else/drive~ 5;
 #X obj 328 370 else/resonant~ 2350 200, f 14;
 #X obj 90 357 else/resonant~ 450 300, f 14;
@@ -128,15 +117,9 @@ patch);
 conflict with the clocks on the parent patch. Hence \, you can have
 different main clocks named differently that are independent in the
 same patch., f 80;
-#X text 19 58 When you turn a main clock off \, synced clocks also
-turn off. Synced clocks also need to turn on/off. You can change the
-multiplier in synced clocks and they'll always keep in sync with the
-main clock., f 80;
 #X text 19 96 A bang into the main clock restarts the clocks. A bang
 into a synced clock will resync it for the next time the main clock
 bangs., f 80;
-#X text 23 133 A multiplier can also be defined with fractions \, so
-'3/2' is the same as '1.5' and so on..., f 37;
 #X obj 122 430 else/out~;
 #X msg 90 217 beat \$1;
 #X msg 90 192 1.5;
@@ -144,58 +127,53 @@ bangs., f 80;
 #X msg 121 192 1;
 #X obj 90 268 else/clock \$0-clock 90, f 11;
 #X msg 273 142 2;
-#X connect 0 0 35 0;
-#X connect 1 0 35 1;
-#X connect 2 0 35 0;
+#X obj 209 278 else/clock -s \$0-clock 0.5, f 13;
+#X obj 328 278 clock -s \$0-clock 2/3, f 12;
+#X text 19 58 When you turn a main clock off \, synced clocks also
+turn off. Synced clocks also need to turn on/off. You can change the
+divider in synced clocks and they'll always keep in sync with the main
+clock., f 80;
+#X text 23 133 A divider can also be defined with fractions \, so '3/2'
+is the same as '1.5' and so on..., f 37;
+#X connect 0 0 31 0;
+#X connect 1 0 31 1;
+#X connect 2 0 31 0;
 #X connect 3 0 7 0;
 #X connect 4 0 8 0;
 #X connect 5 0 9 0;
-#X connect 6 0 20 0;
-#X connect 6 0 21 0;
-#X connect 7 0 24 0;
-#X connect 8 0 25 0;
-#X connect 9 0 23 0;
-#X connect 10 0 20 1;
+#X connect 6 0 33 0;
+#X connect 6 0 34 0;
+#X connect 7 0 22 0;
+#X connect 8 0 23 0;
+#X connect 9 0 21 0;
+#X connect 10 0 33 1;
 #X connect 11 0 10 0;
 #X connect 12 0 10 0;
 #X connect 13 0 10 0;
-#X connect 14 0 21 1;
+#X connect 14 0 34 1;
 #X connect 15 0 14 0;
 #X connect 16 0 14 0;
 #X connect 17 0 14 0;
 #X connect 18 0 14 0;
-#X connect 19 0 20 0;
-#X connect 19 0 21 0;
-#X connect 20 0 4 0;
-#X connect 21 0 5 0;
-#X connect 22 0 30 0;
-#X connect 23 0 30 1;
-#X connect 24 0 22 0;
-#X connect 25 0 30 1;
-#X connect 31 0 35 0;
-#X connect 32 0 31 0;
-#X connect 33 0 31 0;
-#X connect 34 0 31 0;
-#X connect 35 0 3 0;
-#X connect 36 0 10 0;
-#X restore 476 351 pd example;
-#X text 148 473 symbol;
-#X text 190 473 - multiplier fraction for synced clocks.;
-#X text 77 591 2) float/symbol;
-#X text 179 591 BPM for main clock (default 120) or multiplier (float
-or symbol fraction) for synced clocks (default 1).;
-#X text 44 215 You should have only one main clock \, but several clocks
-synced to this main one. By default \, clock gets local names according
-to the patch window \, but you can set a different name and have clocks
-named differently., f 81;
-#X text 16 341 see also:;
-#X obj 14 362 else/metronome;
-#X text 44 127 By default \, [clock] works as a main clock and you
-can set it to 'synced' with the '-s' flag. A synced clock is controlled
-by the main clock \, so it only works when the main clock is on. A
-synced clock also has a relative tempo in relation to the main clock
-tempo (as in a clock multiplier) and can be synced to a [metronome].
-, f 81;
+#X connect 19 0 33 0;
+#X connect 19 0 34 0;
+#X connect 20 0 26 0;
+#X connect 21 0 26 1;
+#X connect 22 0 20 0;
+#X connect 23 0 26 1;
+#X connect 27 0 31 0;
+#X connect 28 0 27 0;
+#X connect 29 0 27 0;
+#X connect 30 0 27 0;
+#X connect 31 0 3 0;
+#X connect 32 0 10 0;
+#X connect 33 0 4 0;
+#X connect 34 0 5 0;
+#X restore 476 316 pd example;
+#X text 148 438 symbol;
+#X text 77 556 2) float/symbol;
+#X text 16 306 see also:;
+#X obj 14 327 else/metronome;
 #N canvas 847 155 455 434 metronome 0;
 #X obj 91 113 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
@@ -212,7 +190,6 @@ tempo (as in a clock multiplier) and can be synced to a [metronome].
 #X obj 243 323 else/impseq~;
 #X obj 243 352 else/resonant~ 1050 200, f 14;
 #X obj 91 167 else/metronome -name \$0-metro 90 6/8;
-#X obj 243 260 else/clock -s \$0-metro 1.5, f 13;
 #X msg 129 114 timesig 3/4;
 #X msg 143 139 timesig 6/8;
 #X text 31 21 A [clock] object can also be synced to a [metronome]
@@ -220,30 +197,49 @@ object \, which also gets a local name relative to the patch's main
 window or a clock name via the '-name' flag \, check it's help file.
 The tempo in a [metronome] depends on the time signature. Note how
 3/4 and 6/8 have different tempos., f 64;
+#X obj 243 260 else/clock -s \$0-metro 2/3, f 13;
 #X connect 0 0 10 0;
 #X connect 1 0 2 0;
 #X connect 2 0 4 0;
 #X connect 3 0 5 0;
 #X connect 4 0 3 0;
 #X connect 6 0 8 0;
-#X connect 7 0 11 0;
+#X connect 7 0 14 0;
 #X connect 8 0 9 0;
 #X connect 9 0 5 1;
 #X connect 10 0 1 0;
-#X connect 11 0 6 0;
+#X connect 11 0 10 0;
 #X connect 12 0 10 0;
-#X connect 13 0 10 0;
-#X restore 464 376 pd metronome;
-#X text 112 439 beat <float> - sets beat lenght, f 56;
-#X connect 21 0 50 0;
-#X connect 23 0 51 0;
-#X connect 26 0 50 1;
-#X connect 28 0 51 1;
-#X connect 37 0 50 0;
-#X connect 45 0 26 0;
-#X connect 46 0 26 0;
-#X connect 47 0 28 0;
-#X connect 48 0 28 0;
-#X connect 49 0 51 0;
-#X connect 50 0 18 0;
-#X connect 51 0 22 0;
+#X connect 14 0 6 0;
+#X restore 464 341 pd metronome;
+#X text 112 404 beat <float> - sets beat lenght, f 56;
+#X text 462 280 divider;
+#X text 190 423 - BPM for main clock or divider for synced clock.;
+#X text 190 438 - divider fraction for synced clocks.;
+#X text 179 556 BPM for main clock (default 120) or divider (float
+or symbol fraction) for synced clocks (default 1)., f 56;
+#X text 44 127 By default \, [clock] works as a main clock and you
+can set it to 'synced' with the '-s' flag. A synced clock is controlled
+by the main clock \, so it only works when the main clock is on. A
+synced clock also has a relative tempo in relation to the main clock
+tempo (as in a clock divider) and can be synced to a [metronome].,
+f 81;
+#X text 44 180 You should have only one main clock \, but several clocks
+synced to this main one. By default \, clock gets local names according
+to the patch window \, but you can set a different name so you can
+have different clocks named differently., f 81;
+#X text 44 218 Below we have a main clock at 60 BPM and a synced clock
+that divider the tempo to a factor of two (so it plays twice as fast).
+, f 81;
+#X connect 21 0 46 0;
+#X connect 23 0 47 0;
+#X connect 26 0 46 1;
+#X connect 28 0 47 1;
+#X connect 33 0 46 0;
+#X connect 41 0 26 0;
+#X connect 42 0 26 0;
+#X connect 43 0 28 0;
+#X connect 44 0 28 0;
+#X connect 45 0 47 0;
+#X connect 46 0 18 0;
+#X connect 47 0 22 0;

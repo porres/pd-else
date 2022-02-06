@@ -179,78 +179,75 @@ so you can use tuplets arbitrarily., f 30;
 #X connect 17 0 15 1;
 #X connect 20 0 15 1;
 #X restore 490 257 pd basic;
-#N canvas 380 54 951 439 more-tuplets 0;
-#X obj 575 296 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#N canvas 318 97 923 419 more-tuplets 0;
+#X obj 551 294 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 570 318 stop;
-#X obj 610 365 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X text 546 316 stop;
+#X obj 586 363 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 636 361 start of pattern, f 8;
-#X obj 575 265 route stop start bar dur;
-#X obj 484 299 else/impseq~;
-#X text 730 260 route information from the right outlet, f 22;
-#X obj 502 132 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X text 612 359 start of pattern, f 8;
+#X obj 551 263 route stop start bar dur;
+#X obj 460 297 else/impseq~;
+#X text 706 258 route information from the right outlet, f 22;
+#X obj 478 130 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X obj 680 295 else/display 8;
-#X msg 578 234 10/56 5/56 5/56 10/56 5/56 3/40 3/40 3/40 3/40 3/40
+#X obj 656 293 else/display 8;
+#X msg 554 232 10/56 5/56 5/56 10/56 5/56 3/40 3/40 3/40 3/40 3/40
 ;
-#X obj 485 94 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X obj 461 92 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
-#X text 512 96 <= start/restart;
-#X msg 446 95 stop;
-#X obj 645 331 else/display;
-#X obj 484 264 else/pattern;
-#X text 12 390 Any crazy thing goes \, you can have '1.23/(7.78/2.33)'
+#X text 488 94 <= start/restart;
+#X msg 422 93 stop;
+#X obj 621 329 else/display;
+#X obj 460 262 else/pattern;
+#X text 12 368 Any crazy thing goes \, you can have '1.23/(7.78/2.33)'
 or whatever. It'll work even if you don't have a clue on what the result
-is., f 66;
-#X text 627 54 see also:;
-#X obj 695 54 else/metronome;
-#X obj 805 54 else/score;
-#X text 460 25 You can also see and read more about note durations
+is., f 67;
+#X text 603 52 see also:;
+#X obj 671 52 else/metronome;
+#X obj 781 52 else/score;
+#X text 436 23 You can also see and read more about note durations
 in the help files of [metronome] and [score]., f 72;
-#X text 750 296 duration;
-#X obj 484 342 else/out~;
-#X text 12 297 Nested tuplets are also possible \, where 1/15 is a
-quintuplet inside a triplet (so we multiply '3' by '5' and get '15').
-What if you want to have 7 eight notes in the space of 5? Then you
-have 5 eight notes (5/8) divided by 7 \, which is the same as 5/(8*7)
-\, so you have 5/56 for each of these notes. 5 in the space of 3 is
-(3/8)/5 \, which is the same as 3/(8*5) = 3/40. You can also have a
-fraction with the nominator in parenthesis so (5/8)/7 is allowed \,
-as well as (3/8)/5., f 66;
-#X msg 565 178 (5/4)/7 (5/8)/7 (5/8)/7 (5/4)/7 (5/8)/7 (3/8)/5 (3/8)/5
+#X text 726 294 duration;
+#X obj 460 340 else/out~;
+#X msg 541 176 (5/4)/7 (5/8)/7 (5/8)/7 (5/4)/7 (5/8)/7 (3/8)/5 (3/8)/5
 (3/8)/5 (3/8)/5 (3/8)/5, f 39;
-#X text 810 177 7 in the space of 5;
-#X text 810 191 5 in the space of 3;
-#X text 597 215 same as above as simple fractions:;
-#X msg 553 131 1/(32/9) 1/(32/9) 1/(16/3) 1/4, f 31;
-#X text 12 7 Besides multiples of '2' as the denumerator you can also
+#X text 786 175 7 in the space of 5;
+#X text 786 189 5 in the space of 3;
+#X text 573 213 same as above as simple fractions:;
+#X msg 529 129 1/(32/9) 1/(32/9) 1/(16/3) 1/4, f 31;
+#X text 12 15 Besides multiples of '2' as the denumerator you can also
 use other values. For instance '2/3' means two beats of '1/3' of a
 whole note. This would then be the same as a triplet of a half note.
 On the other hand '3/5' is 3 beats of a 4th note quintuplet., f 64
 ;
-#X text 12 67 If you wish you can use the actual float values \, where
+#X text 726 129 mix of 8:9 and 2:3 tuplets;
+#X msg 540 150 1/3.55556 1/3.55556 1/5.33333 1/4;
+#X text 748 150 same as above;
+#X text 12 75 If you wish you can use the actual float values \, where
 '0.375' is one beat and a half (the same as a dotted 4th note). One
 way to define this as a fraction is '3/8' (which represents three 8th
 notes). You can use non integers as part of fractions such as '1/2.66667'
 \, which is also equal to 0.375! You can also have a fraction in the
 denominator in parenthesis \, such as '1/(8/3)' \, which is also equal
-to '0.375' (sometimes the usage of fraction is better to avoid periodic
-sequences and aproximations)., f 64;
-#X text 750 131 mix of 8:9 and 2:3 tuplets;
-#X text 12 224 Now let's use an 8:9 tuplet for 8th notes (where we
-have eight 8th notes in the space of nine 8th notes). So we multiply
-"8:9" by 8 (cause we want eighth note tuplets) and get 1/(64/9) or
-'1/7.11111'. If you want quarter note tuplets then it's 2/(64/9) (or
-8:9 x 4) \, which is also the same as 1/(32/9) or '1/3.55556'., f
-64;
+to '0.375'., f 64;
 #X text 12 160 The example above is the same as a '2:3' tuplet for
 4th notes \, which is \, again \, the same as a dotted 4th note. To
 get the fraction value \, we multiply the '2:3' ratio by 4 (because
-we want a 4th note tuplet) and get "8/3"! So 1/(8/3) is what you want.
-A 16th note tuplet would be 1(16/3) or '1/5.33333'!, f 64;
-#X msg 564 152 1/3.55556 1/3.55556 1/5.33333 1/4;
-#X text 772 152 same as above;
+we want a 4th note tuplet) and get "8/3"! So 1/(8/3) is what you want
+\, which is the same as 3/8. A simpler way is to inverse things and
+just multiply 1/4 by 3/2!, f 64;
+#X text 12 232 Now let's use an 8:9 tuplet for 8th notes (where we
+have eight 8th notes in the space of nine 8th notes). So we multiply
+8 by "9:8" and get 9/64., f 64;
+#X text 12 275 Nested tuplets are also possible \, where 1/15 is a
+quintuplet inside a triplet (so we multiply '3' by '5' and get '15').
+What if you want to have 7 eight notes in the space of 5? Then you
+have 5 eight notes (5/8) divided by 7 \, which is the same as 5/(8*7)
+\, so you have 5/56 for each of these notes. You can also have a fraction
+with the nominator in parenthesis so (5/8). Another way is just do
+the same as the tuplets above and multiply 1/8 by 5/7! 5 in the space
+of 3 is then 1/8 * 3/5 \, which is 3/40., f 67;
 #X connect 4 0 0 0;
 #X connect 4 1 2 0;
 #X connect 4 2 13 0;
@@ -262,8 +259,8 @@ A 16th note tuplet would be 1(16/3) or '1/5.33333'!, f 64;
 #X connect 12 0 14 0;
 #X connect 14 0 5 0;
 #X connect 14 1 4 0;
-#X connect 23 0 14 1;
-#X connect 27 0 14 1;
+#X connect 22 0 14 1;
+#X connect 26 0 14 1;
 #X restore 448 278 pd more-tuplets;
 #X text 48 86 [pattern] is a rhythmic pattern sequencer. The note durations
 are specified as floats or fractions (where '1' is a whole note) \,
