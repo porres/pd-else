@@ -1,50 +1,53 @@
-#N canvas 730 49 562 564 10;
-#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 632 23 562 576 10;
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 306 4 pd;
-#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 24 41 cnv 4 4 4 empty empty Loop 0 28 2 18 -233017 -1 0;
-#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 24 41 cnv 4 4 4 empty empty Loop 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 73 41 cnv 4 4 4 empty empty counter 0 28 2 18 -233017 -1 0;
-#X obj 4 4 cnv 15 301 42 empty empty loop 20 20 2 37 -233017 -1 0;
+#X obj 73 41 cnv 4 4 4 empty empty counter 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 4 4 cnv 15 301 42 empty empty loop 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 4 graph;
-#X obj 5 538 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 549 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 7 249 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 6 390 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 7 422 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 249 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 95 256 cnv 17 3 110 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 6 401 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 7 433 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 92 255 cnv 17 3 120 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 94 398 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 409 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 166 299 bang;
-#X text 114 429 1) float;
-#X obj 88 162 bng 17 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
--1;
-#X text 114 455 2) float;
+#X text 160 309 bang;
+#X text 111 440 1) float;
+#X obj 88 162 bng 17 250 50 0 empty empty empty 0 -6 0 8 #dcdcdc #000000
+#000000;
+#X text 111 466 2) float;
 #X obj 115 224 print counter;
-#X text 160 257 float;
-#N canvas 858 150 405 444 pause/resume 0;
+#X text 154 255 float;
+#N canvas 858 150 405 417 pause/resume 0;
 #X msg 47 257 pause;
-#X obj 133 180 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 133 180 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 30 23 [loop] iterates in a programing loop fashion. So \, once
 it starts \, it goes all the way to the end as fast as possible. In
 order to stop it \, you need to break the loop with some logic as below
@@ -55,7 +58,7 @@ to 105 \, and you can then continue to output the remaining count (from
 106 to 110) with the "resume" message.;
 #X msg 152 218 continue;
 #X obj 133 280 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 133 312 print counter;
 #X text 161 183 <= start from starting value;
 #X text 214 217 <= continue from where it was paused, f 20;
@@ -71,24 +74,25 @@ was met., f 32;
 #X connect 10 0 5 0;
 #X connect 11 0 0 0;
 #X restore 455 200 pd pause/resume;
-#X obj 255 158 bng 17 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
--1;
-#X text 160 341 pause;
-#X text 142 355 continue;
-#X text 172 429 -;
-#X text 197 299 - starts the loop, f 56;
-#X text 197 341 - stops the loop, f 56;
-#X text 197 355 - countinues the loop after being paused, f 56;
-#X text 166 285 list;
+#X obj 255 158 bng 17 250 50 0 empty empty empty 0 -6 0 8 #dcdcdc #000000
+#000000;
+#X text 154 351 pause;
+#X text 136 365 continue;
+#X text 169 440 -;
+#X text 191 309 - starts the loop, f 56;
+#X text 191 351 - stops the loop, f 56;
+#X text 191 365 - countinues the loop after being paused, f 56;
+#X text 160 269 list;
 #X msg 282 158 0 9;
-#X obj 4 488 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 136 493 -offset <float>;
+#X obj 4 499 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X text 133 504 -offset <float>;
 #X msg 314 158 20 15;
 #N canvas 766 265 489 314 array_sweep 0;
 #X text 96 19 [loop] is very useful for sweeping through arrays.;
-#X obj 54 53 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X obj 231 99 cnv 15 198 138 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 54 53 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
+#X obj 231 99 cnv 15 198 138 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array array_\$0 100 float 1;
@@ -113,8 +117,8 @@ was met., f 32;
 #X text 433 94 1;
 #X obj 54 219 else/display;
 #X obj 54 163 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X floatatom 54 110 5 0 0 0 - - -;
+#dcdcdc #000000 #000000 0 256;
+#X floatatom 54 110 5 0 0 0 - - - 0;
 #X obj 54 252 print array_values;
 #X obj 54 83 expr size("array_\$0");
 #X obj 54 191 tabread array_\$0;
@@ -128,101 +132,99 @@ was met., f 32;
 #X restore 461 221 pd array_sweep;
 #X text 221 191 two values set start and end, f 14;
 #X obj 115 165 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 172 455 - sets the end value (optional), f 62;
-#X text 233 492 - sets offset value (default 0), f 37;
+#dcdcdc #000000 #000000 0 256;
+#X text 169 466 - sets the end value (optional), f 62;
+#X text 230 503 - sets offset value (default 0), f 37;
 #X obj 115 194 else/loop 10;
 #X obj 314 194 else/loop 1 10;
-#X text 197 312 - sets the starting value of the counter, f 56;
-#X text 106 313 offset <float>;
-#X text 197 326 - sets the increment value of the counter, f 56;
-#X text 184 429 sets the number of iterations if only one argument
+#X text 191 322 - sets the starting value of the counter, f 56;
+#X text 100 323 offset <float>;
+#X text 191 336 - sets the increment value of the counter, f 56;
+#X text 181 440 sets the number of iterations if only one argument
 is given \, or start value if there are more arguments (default 1)
 ;
-#X text 172 470 - sets a counter step value (default 1), f 62;
-#X text 118 327 step <float>;
-#X text 114 470 3) float;
-#X text 148 507 -step <float>;
-#X text 233 506 - sets counter step value (default 1);
+#X text 169 481 - sets a counter step value (default 1), f 62;
+#X text 112 337 step <float>;
+#X text 111 481 3) float;
+#X text 145 518 -step <float>;
+#X text 230 517 - sets counter step value (default 1);
 #X obj 184 165 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 94 369 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#dcdcdc #000000 #000000 0 256;
+#X obj 91 379 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 160 370 float;
-#X text 201 370 - sets number of iterations, f 32;
-#X text 197 256 - sets number of iterations and starts the loop, f
-56;
+#X text 154 380 float;
+#X text 195 380 - sets number of iterations, f 32;
+#X text 191 254 - sets number of iterations and starts the loop, f
+58;
 #X text 23 188 one value sets number of iterations, f 13;
-#X text 197 271 - sets number of iterations, f 56;
-#X text 124 271 set <float>;
-#X text 166 521 -b <float>;
-#X text 233 520 - sets to bang mode;
+#X text 163 532 -b <float>;
+#X text 230 531 - sets to bang mode;
 #X obj 314 223 print counter;
-#X text 130 402 float/bang;
-#X text 201 402 - counter output or bangs in bang mode;
+#X text 127 413 float/bang;
+#X text 198 413 - counter output or bangs in bang mode;
 #X text 77 87 [loop] is a loop counter \, but it can also loop bangs
 like [until] (using the -b flag). A float sets number of count iteration
 upwards. A list with two elements sets a start and end value (and allows
 counting upwards or downwards). A counter step value can be set with
 a third optional element in a list., f 68;
 #X msg 359 158 -3.3 3.3 0.1;
-#N canvas 553 144 888 474 args 0;
-#X obj 58 178 bng 17 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
--1;
-#X obj 88 290 print counter;
-#X obj 88 261 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 279 124 bng 17 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
--1;
-#X obj 279 292 print counter;
-#X msg 314 148 15 20;
-#X msg 109 196 offset \$1;
-#X obj 109 175 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 88 153 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X msg 364 146 offset \$1;
-#X obj 364 125 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X msg 308 123 -10 -5;
-#X obj 88 225 else/loop 10 -offset -5;
-#X obj 279 261 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 32 65 You can also set the number of iterations with the 'set'
+#N canvas 419 128 865 461 args 0;
+#X obj 49 178 bng 17 250 50 0 empty empty empty 0 -6 0 8 #dcdcdc #000000
+#000000;
+#X obj 79 290 print counter;
+#X obj 79 261 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X obj 270 124 bng 17 250 50 0 empty empty empty 0 -6 0 8 #dcdcdc #000000
+#000000;
+#X obj 270 292 print counter;
+#X msg 305 148 15 20;
+#X msg 100 196 offset \$1;
+#X obj 100 175 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X obj 79 153 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X msg 355 146 offset \$1;
+#X obj 355 125 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X msg 299 123 -10 -5;
+#X obj 79 225 else/loop 10 -offset -5;
+#X obj 270 261 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X text 23 65 You can also set the number of iterations with the 'set'
 message \, the right inlet and with the argument if you give it just
 one argument., f 65;
-#X obj 279 231 else/loop 5 15 5;
-#X obj 364 177 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X msg 364 198 step \$1;
-#X obj 528 354 nbx 5 14 1 1e+37 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 1 256;
-#X obj 447 351 bng 16 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 447 383 else/loop 1 -b;
-#X obj 447 415 print bang;
-#X text 220 381 With the -b flag \, [loop] becomes a bang looper like
+#X obj 270 231 else/loop 5 15 5;
+#X obj 355 177 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X msg 355 198 step \$1;
+#X obj 519 354 nbx 5 14 1 1e+37 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X obj 438 351 bng 16 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 438 383 else/loop 1 -b;
+#X obj 438 415 print bang;
+#X text 211 381 With the -b flag \, [loop] becomes a bang looper like
 [until], f 32;
-#X obj 527 176 bng 17 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
--1;
-#X obj 527 243 print counter;
-#X msg 574 187 step \$1;
-#X obj 574 164 nbx 3 14 0 10 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X obj 527 214 else/loop 11 -step 3.3;
-#X text 32 25 When you give it a float \, the counter starts counting
+#X obj 518 176 bng 17 250 50 0 empty empty empty 0 -6 0 8 #dcdcdc #000000
+#000000;
+#X obj 518 243 print counter;
+#X msg 565 187 step \$1;
+#X obj 565 164 nbx 3 14 0 10 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X obj 518 214 else/loop 11 -step 3.3;
+#X text 23 25 When you give it a float \, the counter starts counting
 from 0 \, but you can set an offset value with the -offset flag or
 the "offset" message., f 65;
-#X obj 703 170 bng 17 250 50 0 empty empty empty 0 -6 0 8 -228856 -1
--1;
-#X obj 703 231 print counter;
-#X text 462 74 Note the difference when we only have the number of
+#X obj 694 170 bng 17 250 50 0 empty empty empty 0 -6 0 8 #dcdcdc #000000
+#000000;
+#X obj 694 231 print counter;
+#X text 453 74 Note the difference when we only have the number of
 iterations and no start/end values. Here we only define the number
 of iterations and the counter step. Note also that start \, end and
 step values can be floats \, not only integers - unlike the number
 of interations \, which can only be an integer., f 65;
-#X obj 703 202 else/loop 0.5 1.5 0.1;
-#X text 461 32 If you give it two arguments \, you have a start and
+#X obj 694 202 else/loop 0.5 1.5 0.1;
+#X text 452 32 If you give it two arguments \, you have a start and
 end value. The counter step is "1" by default but can be changed with
 the 3rd argument or the 'step' message., f 65;
 #X connect 0 0 12 0;
@@ -250,13 +252,18 @@ the 3rd argument or the 'step' message., f 65;
 #X connect 29 0 32 0;
 #X connect 32 0 30 0;
 #X restore 502 180 pd args;
-#X text 197 285 - sets range start/end/step and starts the loop;
+#X text 191 269 - sets range start/end and step (optionally) and run
+loop, f 58;
+#X text 124 283 set <list>;
+#X text 191 283 -, f 1;
+#X text 203 283 a float sets number of iterations \, a list sets start/end
+and step (optionally), f 56;
 #X connect 20 0 42 0;
 #X connect 25 0 43 0;
 #X connect 33 0 43 0;
 #X connect 36 0 43 0;
 #X connect 39 0 42 0;
 #X connect 42 0 22 0;
-#X connect 43 0 63 0;
+#X connect 43 0 61 0;
 #X connect 53 0 42 1;
-#X connect 67 0 43 0;
+#X connect 65 0 43 0;

@@ -10,7 +10,6 @@
 
 
 
-
 	Copyright © 2017-2022 Alexandre Torres Porres
 
 
