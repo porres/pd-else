@@ -18,9 +18,38 @@ typedef struct _highshelf {
     double  x_xnm2;
     double  x_ynm1;
     double  x_ynm2;
+    double  f;
+    double  slope;
+    double  db;
+    double  a0;
+    double  a1;
+    double  a2;
+    double  b0;
+    double  b1;
+    double  b2;
     } t_highshelf;
 
 static t_class *highshelf_class;
+
+static void update_vals(t_highshelf *x, double f, double slope, double db){
+    
+    x->f = f;
+    x->slope = slope;
+    x->db = db;
+
+    double amp = pow(10, db / 40);
+    double omega = f * PI/x->x_nyq;
+    double alphaS = sin(omega) * sqrt((amp*amp + 1) * (1/slope - 1) + 2*amp);
+    double cos_w = cos(omega);
+
+    x->b0 = (amp+1) - (amp-1)*cos_w + alphaS;
+    x->a0 = amp*(amp+1 + (amp-1)*cos_w + alphaS) / x->b0;
+    x->a1 = -2*amp*(amp-1 + (amp+1)*cos_w) / x->b0;
+    x->a2 = amp*(amp+1 + (amp-1)*cos_w - alphaS) / x->b0;
+    x->b1 = -2*(amp-1 - (amp+1)*cos_w) / x->b0;
+    x->b2 = -(amp+1 - (amp-1)*cos_w - alphaS) / x->b0;
+    
+}
 
 static t_int *highshelf_perform(t_int *w)
 {
@@ -39,29 +68,23 @@ static t_int *highshelf_perform(t_int *w)
     while (nblock--)
     {
         double xn = *in1++, f = *in2++, slope = *in3++, db = *in4++;
-        double q, amp, omega, alphaS, cos_w, a0, a1, a2, b0, b1, b2, yn;
+        double yn;
 
         if (f < 0.1)
             f = 0.1;
         if (f > nyq - 0.1)
             f = nyq - 0.1;
         
-        omega = f * PI/nyq; // hz2rad
-        
         if (slope < 0.000001)
             slope = 0.000001;
         if (slope > 1)
             slope = 1;
-        amp = pow(10, db / 40);
-        alphaS = sin(omega) * sqrt((amp*amp + 1) * (1/slope - 1) + 2*amp);
-        cos_w = cos(omega);
-        b0 = (amp+1) - (amp-1)*cos_w + alphaS;
-        a0 = amp*(amp+1 + (amp-1)*cos_w + alphaS) / b0;
-        a1 = -2*amp*(amp-1 + (amp+1)*cos_w) / b0;
-        a2 = amp*(amp+1 + (amp-1)*cos_w - alphaS) / b0;
-        b1 = -2*(amp-1 - (amp+1)*cos_w) / b0;
-        b2 = -(amp+1 - (amp-1)*cos_w - alphaS) / b0;
-        yn = a0 * xn + a1 * xnm1 + a2 * xnm2 + b1 * ynm1 + b2 * ynm2;
+
+        if(f != x->f || slope != x->slope || db != x->db){
+            update_vals(x, f, slope, db);
+        }
+
+        yn = x->a0 * xn + x->a1 * xnm1 + x->a2 * xnm2 + x->b1 * ynm1 + x->b2 * ynm2;
         if(x->x_bypass)
             *out++ = xn;
         else
