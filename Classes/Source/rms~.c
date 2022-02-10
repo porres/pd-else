@@ -53,11 +53,10 @@ static void rms_set(t_sigrms *x, t_floatarg f1, t_floatarg f2)
         hop = size/2;
     if (hop < size / MAXOVERLAP + 1)
         hop = size / MAXOVERLAP + 1;
-    if (hop < x->x_block) hop = x->x_block;
+    if (hop < x->x_block)
+        hop = x->x_block;
     if (!(buf = getbytes(sizeof(t_sample) * (size + INITVSTAKEN))))
-        {
-        error("rms: couldn't allocate buffer");
-        }
+        pd_error(x, "rms: couldn't allocate buffer");
     x->x_buf = buf;
     x->x_phase = 0;
     x->x_npoints = size;
@@ -128,9 +127,8 @@ static void *rms_tilde_new(t_symbol *s, int argc, t_atom *argv)
     if (period < 1) period = npoints/2;
     if (period < npoints / MAXOVERLAP + 1)
         period = npoints / MAXOVERLAP + 1;
-    if (!(buf = getbytes(sizeof(t_sample) * (npoints + INITVSTAKEN))))
-    {
-        error("rms: couldn't allocate buffer");
+    if (!(buf = getbytes(sizeof(t_sample) * (npoints + INITVSTAKEN)))){
+        pd_error(x, "rms: couldn't allocate buffer");
         return (0);
     }
     x->x_buf = buf;
@@ -202,7 +200,7 @@ static void rms_tilde_dsp(t_sigrms *x, t_signal **sp)
             (x->x_npoints + sp[0]->s_n) * sizeof(t_sample));
         if (!xx)
             {
-            error("rms~: out of memory");
+            pd_error(x, "rms~: out of memory");
             return;
             }
         x->x_buf = (t_sample *)xx;

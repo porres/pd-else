@@ -25,11 +25,11 @@ typedef struct _sr{
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-static void audio_settings(int *pnaudioindev, int *paudioindev, int *pchindev, int *pnaudiooutdev,
+/* static void audio_settings(int *pnaudioindev, int *paudioindev, int *pchindev, int *pnaudiooutdev,
     int *paudiooutdev, int *pchoutdev, int *prate, int *padvance, int *pcallback, int *psr){
         sys_get_audio_params(pnaudioindev , paudioindev , pchindev, pnaudiooutdev,
             paudiooutdev, pchoutdev, prate, padvance, pcallback, psr);
-}
+}*/
 
 static void sr_apply(t_sr *x){
     t_atom av [2*MAXAUDIOINDEV + 2*MAXAUDIOOUTDEV + 3];
@@ -50,7 +50,7 @@ static void sr_apply(t_sr *x){
         typedmess(gensym("pd")->s_thing, gensym("audio-dialog"), ac, av);
 }
 
-static void get_settings(t_settings *setts){
+/*static void get_settings(t_settings *setts){
     int i = 0;
     memset(setts, 0, sizeof(t_settings));
     setts->callback = -1;
@@ -69,7 +69,7 @@ static void get_settings(t_settings *setts){
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
-/*static void sr_set(t_sr *x, t_floatarg f){
+static void sr_set(t_sr *x, t_floatarg f){
     int rate = (int)f;
     if(rate > 0){
         x->x_settings.rate = rate;
