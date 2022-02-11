@@ -287,7 +287,7 @@ void retrieve_setup(void){
         pd_bind(&c, s);
         if(!s->s_thing || !(bindlist_class = *s->s_thing)
 	    || bindlist_class->c_name != gensym("bindlist"))
-            post("retrieve: failure to initialize remote retrievebing feature");
+            pd_error(retrieve_class, "retrieve: failure to initialize retrieve name");
 	pd_unbind(&c, s);
 	pd_unbind(&retrieve_class, s);
     }
