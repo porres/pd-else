@@ -1,0 +1,167 @@
+----------------------------------------------------------------------------
+    **************************** CHANGELOG ****************************
+----------------------------------------------------------------------------
+
+ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
+
+----------------------------------------------------------------------------
+
+1.0-0 beta 45
+
+LIBRARY:
+
+Breaking changes:
+- [sr~] removed functionality to set sample rate because it doesn't work any more in Pd 0.52 (will try to figure out how t bring this back).
+- [output~] object removed. I always hated it! Now Vanilla has one with the same name as of Pd 0.52, which also bad, but nothing justifies keeping this here now...
+- [canvas.wname] object removed, this functionality is now incorporated into [canvas.name].
+- [ctl.in] added a new mid inlet for control number.
+- [clock] renamed to [midi.clock] / [clock] is now a new object
+
+Enhancements/fixes:
+- [note]: support for italic variants of DejaVu Sans Mono thanks to Pd 0.52.
+- [sample~]: added support for .caf sound file thanks to Pd 0.52.
+- [display]: improved efficiency in canvas label handling thanks to improvements in GUI labels in Pd 0.52.
+- [else]: fixed minimum Pd version checking.
+- [loadbanger]/[lb]: now reacts to 'loadbang' message sent to subpatch/abstraction.
+- [sequencer]: fixed bug getting the right index.
+- [pattern] added a '-i' flag to output index;
+- [player~]: fixed sample rate compensation on 'open' message.
+- [message] can now expand dollar signs via inlet;
+- [median~] fixed it blowing up Pd;
+- [bin.shift~] fixed "divide by 0" warning;
+- [ctl.out] added arg to set control #;
+- [canvas.name] added -w and -env flag;
+- 4 new objects for a total of 434: [metronome], [clock], [tap] and [midi.learn]. 
+
+TUTORIAL:
+- small fixes/improvements; a mentioning of the new [midi.learn]/[tap] objects; and new examples for [metronome] and [clock]. Total number of examples is now 450.
+
+----------------------------------------------------------------------------
+
+1.0-0 beta 44
+
+LIBRARY:
+
+Breaking changes:
+- stack: removed -store and export functionality in favor of a new [store] object
+- midi: start message now only sets to slave mode. Added a new 'play' message that works a bit like the old start.
+
+Enhancements/fixes:
+- [midi]; added 'loop' method; 'read' message now warns when file is not found, same for file argument; [midi] now correctly finds "end of track"; opening files while reading an old one now restart from the beginning. Import/export to txt files; new clear message; fixed dump message; fix stop message when in 'clock' mode.
+- [nmess] fixed initialization, this fixes many abstractions ([samps2ms], [gran.player~], [pvoc.player~] and probably much more).
+- [keyboard]: new 'set' message and a new (considered better) color scheme.
+- [op] fixed "<<" and ">>" and symbol input to set the operator
+- [gain~]/[gain2~], fixed loading args correctly
+- minor fixes in [group] and [circle]
+- [tabplayer~]: fix arg loading.
+- [function]: fixed initialization.
+- [presets]: fixed asking to save, addd click functionality to open edit window.
+- 2 new objects for a total of 433: [rec] and [store].
+
+TUTORIAL:
+- Revised 19-Sequencing, added an example for [presets], added new examples to reflect new features and objects ([midi] / [rec] / [store]).
+
+----------------------------------------------------------------------------
+
+1.0-0 beta 43
+
+LIBRARY:
+
+Breaking changes:
+- envelope~: phase argument removed, use a flag now
+- range~: reset method replaced by a bang message
+- rad2hz~ and hz2rad~ have been removed... it was just too stupid... others like that might go too...
+
+Enhancements/fixes:
+- [envelope~] added 3 new envelope types: vsaw (variable saw), gauss (gaussian) and trap (trapezoid).
+- [grain.synth~]/[grain.sampler~]/[grain.live~], added more envelope options (hann, tri and gaussian).
+- [midi2freq] can now convert lists.
+- [pattern] fixed crash.
+- [morph] added exponential factor to morph.
+- [presets] added exponential factor to morph too besides interpolation.
+- [op]/[op~] added '%' (fmod) operator
+- [drive~] added a 3rd new mode
+- [glide~]/[glide2~] fixed a bug when updating the target before reaching the last target
+- 8 new objects for a total of 431: [gaussian~], [pimpmul~], [freq2midi], [deg2rad], [rad2deg], [pz2coeff], [coeff2pz] and [zbiplot]
+
+TUTORIAL:
+- added examples for [freq2midi], [gaussian~] oscillator and gaussian envelope.
+- revised 14-Triggers-LFO-LFNoise section, added more examples with more objects, including the new [pimpmul~] object.
+- added an example for [impseq~] in 19-Sequencing.
+- Filters-II section Revised/Rewrritten, fixed some bugs/translations, added a new section about Moving Average Filters, added new examples and now we're using new objects from the ELSE library [pz2coeff], [coeff2pz] and [zbiplot].
+- Total number of examples is now 440!
+
+----------------------------------------------------------------------------
+
+1.0-0 beta 42
+
+LIBRARY:
+
+Breaking changes:
+- [sequencer]: bar outlet now gives bar number instead of 'bang' - (and default now is 'empty', where nothing comes out!)
+
+Enhancements/fixes:
+- [unmerge] fixed output for mixed (float/symbol) input.
+- [break] now can break with symbols more than character that matches the argument.
+- [presets] fixed a bug where it didn't handle messages with a single '|' (as needed for [else/sequencer]).
+- [sequencer]: fixed float input not take into account barlines as elements in the sequence. Fixed dealing with actual symbols that start with "-" (by not considering a symbol separator). Added 'clear' method - plus other fixes.
+- [sample~]: fixed 'load' message.
+- 1 new object for a total of 425: [pattern]. 
+
+TUTORIAL:
+- revised '01-Pd.Quickstart/2.syntax'
+
+----------------------------------------------------------------------------
+
+1.0-0 beta 41
+
+LIBRARY:
+
+Breaking changes:
+- [limit]: ignore mode behaviour changed, now the limit clock gets restarted when new messages come in before the time limit.
+
+Enhancements/fixes:
+- [messbox] expands $0 and takes "$1", fixed regression bug with append message, handle displacement and other improvements.
+- [morph] behaviour is now better thanks to the changes in [limit].
+- [scales] added 3rd outlet for scale output in cents.
+- [slider2d] fixed bug by removing unnecessary cnv.
+- 3 new objects for a total of 424: [glide], [glide2] and [presets]. 
+
+TUTORIAL:
+- incremented an example to include the new [glide/[glide2] object
+- incremented example on [eqdiv] to also include [gmean] and [amean] as means to generate scales
+- added an example on how to do a markov chain in a low level patch (lower than [markov])
+- fixed some minor bugs.
+
+----------------------------------------------------------------------------
+
+1.0-0 beta 40 
+
+LIBRARY:
+
+Breaking changes:
+- [slider2d]: xsyze/ysize messages renamed to 'width'/'height', -xsyze/-ysize flags replaced by -dim
+- [store]: renamed to [default]
+- [autofade~]/[autofade2~]: gate values now set the maximum fade level.
+
+Enhancements/fixes:
+- [slider2d]: bgcolor fixed
+- [slice]: fixed float/symbol input
+- [play.file~]: fixed 'set' message
+- [keyboard]: new 'on'/'off' messages
+- [eqdiv]: addd new 'ratio' flag
+- [stack]: make it also store 'bang' message
+- [retrieve] can now retrieve from built-in receive names in compiled objects.
+- [range.hsl]/[slder2d]/[circle]/[multi.vsl] abstraction now work with [retrieve] with built-in receive names.
+- [range.hsl]: fixed receive/send symbols
+- [messbox]: some usability improvements and bug fixes, mostly now hitting enter outputs the message instead of shift+click
+- [changed]: fixed bug with 'anythings' as input
+- [receiver]: new bang method outputs receive names
+- 10 new objects for a total of 421: [pipe2], [pimp], [slew], [slew~], [slew2], [slew2~], [cents2scale], [scale2cents], [frac2cents] and [cents2frac]. 
+
+
+TUTORIAL:
+- Major reorg, new chapter order, removed separation in volumes. Part 04-Control had chapters 16-Lines, 17-Envelopes and 18-MIDI-OSC revised, new examples added. A new chapter 20-Stochastic was included as such (these examples were first part of the 'sequencer' chapter).
+- New part Part.02-Basic-Processing came to be as a division from Part 1. New chapter just for fade.in/fade.out, new examples for [autofde~]/autofade2~] objects and new examples that reflect the new [slew~]/[slew2~] objects from ELSE beta 40.
+
+----------------------------------------------------------------------------
