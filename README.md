@@ -114,7 +114,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (439 objects):
+## Current Object list (445 objects):
 
 **ASSORTED: [01]**
 
@@ -125,7 +125,7 @@ Cross compiling is also possible with something like this
 - [hann~]
 - [bin.shift~]
 
-**TUNING/NOTES: [15]**
+**TUNING/NOTES: [16]**
 
 - [scales]
 - [autotune]
@@ -142,6 +142,7 @@ Cross compiling is also possible with something like this
 - [freq2midi]
 - [pitch2note]
 - [note2pitch]
+- [note2dur]
 
 **PATCH/SUBPATCH MANAGEMENT: [20]**
 
@@ -152,11 +153,11 @@ Cross compiling is also possible with something like this
 - [receiver]
 - [retrieve]
 - [blocksize~]
+- [click]
 - [properties]
 - [fontsize]
 - [canvas.active]
 - [canvas.bounds]
-- [click]
 - [canvas.gop]
 - [canvas.pos]
 - [canvas.edit]
@@ -179,7 +180,7 @@ Cross compiling is also possible with something like this
 - [hot]
 - [initmess]
 - [message]
-- [store]
+- [default]
 - [pack2]
 - [pick]
 - [limit]
@@ -218,9 +219,10 @@ Cross compiling is also possible with something like this
 - [gmean]
 
 **FILE MANAGEMENT: [01]**
+
 - [dir]
 
-**MIDI: [19]**
+**MIDI: [20]**
 
 - [midi]
 - [midi.learn]
@@ -237,12 +239,13 @@ Cross compiling is also possible with something like this
 - [note.in]
 - [note.out]
 - [midi.clock]
+- [noteinfo]
 - [panic]
 - [mono]
 - [voices]
 - [suspedal]
 
-**MATH: FUNCTIONS: [30]**
+**MATH: FUNCTIONS: [32]**
 
 - [add~]
 - [add]
@@ -252,6 +255,8 @@ Cross compiling is also possible with something like this
 - [count]
 - [gcd]
 - [lcm]
+- [frac+]
+- [frac*]
 - [ceil]
 - [ceil~]
 - [factor]
@@ -307,6 +312,7 @@ Cross compiling is also possible with something like this
 - [rescale~]
 
 **MATH: CONSTANT VALUES: [04]**
+
 - [sr~]
 - [nyquist~]
 - [pi]
@@ -345,6 +351,7 @@ Cross compiling is also possible with something like this
 - [phaser~]
 
 **AUDIO PROCESSING: DYNAMICS [05]**
+
 - [compress~]
 - [duck~]
 - [expand~]
@@ -352,6 +359,7 @@ Cross compiling is also possible with something like this
 - [norm~]
 
 **AUDIO PROCESSING: REVERBERATION: [09]**
+
 - [allpass.rev~]
 - [comb.rev~]
 - [echo.rev~]
@@ -363,6 +371,7 @@ Cross compiling is also possible with something like this
 - [fdn.rev~]
 
 **AUDIO PROCESSING: FILTERS [23]:**
+
 - [allpass.2nd~]
 - [allpass.filt~]
 - [comb.filt~]
@@ -469,10 +478,12 @@ Cross compiling is also possible with something like this
 - [xmod2~]
 
 **CONTROL: MOUSE INTERACTION [2]:
+
 - [mouse]
 - [canvas.mouse]
 
 **CONTROL: FADER/PANNING/ROUTING: [15]**
+
 - [fader~]
 - [autofade~]
 - [autofade2~]
@@ -489,7 +500,8 @@ Cross compiling is also possible with something like this
 - [xselect2~]
 - [mtx~]
 
-**CONTROL: SEQUENCERS: [8]**
+**CONTROL: SEQUENCERS: [9]**
+
 - [euclid]
 - [score]
 - [score2]
@@ -498,9 +510,10 @@ Cross compiling is also possible with something like this
 - [sequencer~]
 - [impseq~]
 - [rec]
-
+- [rec2]
 
 **CONTROL: ENVELOPES [6]**
+
 - [adsr~]
 - [asr~]
 - [decay~]
@@ -508,24 +521,24 @@ Cross compiling is also possible with something like this
 - [envelope~]
 - [envgen~]
 
-
 **CONTROL: RAMP, LINE GENERATORS / LINE SMOOTHENING [13]**
+
 - [ramp~] 
 - [susloop~]
- - [function~]
- - [slew]
- - [slew2]
- - [slew~]
- - [slew2~]
- - [lag~]
- - [lag2~]
- - [glide]
- - [glide2]
- - [glide~]
- - [glide2~]
-
+- [function~]
+- [slew]
+- [slew2]
+- [slew~]
+- [slew2~]
+- [lag~]
+- [lag2~]
+- [glide]
+- [glide2]
+- [glide~]
+- [glide2~]
 
 **CONTROL: RANDOM: [14]**
+
 - [rand.f]
 - [rand.f~]
 - [rand.i]
@@ -536,19 +549,21 @@ Cross compiling is also possible with something like this
 - [drunkard~]
 - [drunkard]
 - [randpulse]
- - [randpulse2]
- - [lfnoise]
- - [stepnoise]
- - [rampnoise]
+- [randpulse2]
+- [lfnoise]
+- [stepnoise]
+- [rampnoise]
  
  **CONTROL: CONTROL RATE LFOs [5]**
+
  - [lfo]
  - [phasor]
  - [pimp]
  - [impulse]
  - [pulse]
 
-**CONTROL: TRIGGERS: [33]**
+**CONTROL: TRIGGERS: [27]**
+
 - [above]
 - [above~]
 - [bangdiv]
@@ -560,12 +575,6 @@ Cross compiling is also possible with something like this
 - [gate2imp~]
 - [pimp~]
 - [pimpmul~]
-- [metronome]
-- [metronome~]
-- [clock]
-- [speed]
-- [tempo]
-- [tempo~]
 - [pulsecount~]
 - [pulsediv~]
 - [sh~]
@@ -582,6 +591,16 @@ Cross compiling is also possible with something like this
 - [trig2bang]
 - [trig2bang~]
 - [trighold~]
+
+**CONTROL: TRIGGERS: CLOCK [7]**
+
+- [clock]
+- [metronome]
+- [metronome~]
+- [polymetro]
+- [speed]
+- [tempo]
+- [tempo~]
 
 **ANALYSIS: [14]**
 
@@ -601,6 +620,7 @@ Cross compiling is also possible with something like this
 - [zerocross~]
 
 **GUI: [36]**
+
 - [drum.seq]
 - [gui]
 - [pad]
