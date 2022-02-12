@@ -1,15 +1,15 @@
 #N canvas 630 33 560 531 10;
-#X obj 3 275 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 436 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 472 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 275 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 79 282 cnv 17 3 126 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 3 436 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 3 472 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 79 282 cnv 17 3 126 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 79 413 cnv 3 3 17 empty empty 1-n 5 9 0 16 -228856 -162280 0
+#X obj 79 413 cnv 3 3 17 empty empty 1-n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 503 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 503 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 135 480 1) float;
 #X msg 147 144 record;
@@ -19,39 +19,40 @@
 #X text 92 144 start =>;
 #X text 270 143 <= stop recording and start playing;
 #X text 135 447 anything;
-#X obj 79 446 cnv 3 3 17 empty empty 0-n 5 9 0 16 -228856 -162280 0
+#X obj 79 446 cnv 3 3 17 empty empty 0-n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 191 415 - any message to be recorded in that inlet/track;
 #X text 192 446 - recorded messages from the corresponding inlet/track
 ;
 #X text 192 479 - number of tracks \, default 1 (max 64);
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 41 cnv 4 4 4 empty empty Multi-track 0 28 2 18 -233017 -1
+#X obj 23 41 cnv 4 4 4 empty empty Multi-track 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 115 41 cnv 4 4 4 empty empty message 0 28 2 18 -233017 -1 0
-;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 115 41 cnv 4 4 4 empty empty message 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 4 graph;
-#X obj 3 4 cnv 15 301 42 empty empty rec 20 20 2 37 -233017 -1 0;
+#X obj 3 4 cnv 15 301 42 empty empty rec 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 186 41 cnv 4 4 4 empty empty recorder 0 28 2 18 -233017 -1 0
-;
+#X obj 186 41 cnv 4 4 4 empty empty recorder 0 28 2 18 #e0e0e0 #000000
+0;
 #X text 59 86 [rec] records any messages in different tracks and plays
 them back. Each track records what comes into its inlet and plays it
 back through the corresponding outlet., f 72;
@@ -59,7 +60,7 @@ back through the corresponding outlet., f 72;
 #X obj 198 245 else/display 5;
 #X obj 259 245 else/display 5;
 #X obj 321 245 else/display 5;
-#X floatatom 212 193 3 0 0 0 - - -;
+#X floatatom 212 193 3 0 0 0 - - - 0;
 #X text 106 383 read <symbol> -;
 #X text 112 368 clear <list> -;
 #X text 118 340 mute <list> -;
@@ -89,11 +90,13 @@ list;
 #X msg 321 174 list a b c;
 #X msg 288 192 x y;
 #X msg 280 171 z, f 2;
-#X obj 239 171 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 239 171 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X msg 248 194 1 2;
 #X text 106 298 speed <float> -;
 #X text 202 298 sets playing speed in percentage, f 57;
+#X text 29 224 see also:;
+#X obj 29 243 else/rec2;
 #X connect 7 0 32 0;
 #X connect 8 0 32 0;
 #X connect 32 0 33 0;
