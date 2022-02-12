@@ -1,0 +1,56 @@
+#N canvas 626 23 563 350 10;
+#X obj 213 156 else/record \$0-x;
+#X obj 4 185 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 254 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 285 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 317 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 179 193 cnv 17 3 30 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 2 2 cnv 15 301 42 empty empty record 20 20 2 37 #e0e0e0 #000000
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 2 graph;
+#X obj 23 39 cnv 4 4 4 empty empty Record\ note\ massages\ into\ text
+0 28 2 18 #e0e0e0 #000000 0;
+#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 2 pd;
+#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
+0;
+#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 38 150 else/rec;
+#X text 34 127 see also:;
+#X obj 213 126 notein;
+#X obj 190 126 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X text 64 87 [record] records to a [text] object that is suitable
+for [text sequence]., f 73;
+#X obj 179 229 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X text 212 264 (none);
+#X text 165 293 1) symbol - text name (necessary);
+#X text 214 193 float;
+#X text 258 193 - MIDI pitch;
+#X text 214 230 float;
+#X text 258 230 - MIDI velocity;
+#X text 220 209 bang;
+#X text 258 209 - reset the recording;
+#X connect 19 0 0 0;
+#X connect 19 1 0 1;
+#X connect 20 0 0 0;
