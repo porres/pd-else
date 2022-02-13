@@ -102,7 +102,6 @@ sort.class.sources := Classes/Source/sort.c
 spread.class.sources := Classes/Source/spread.c
 touch.in.class.sources := Classes/Source/touch.in.c
 touch.out.class.sources := Classes/Source/touch.out.c
-trigger2.class.sources := Classes/Source/trigger2.c
 t2.class.sources := Classes/Aliases/t2.c
 unmerge.class.sources := Classes/Source/unmerge.c
 

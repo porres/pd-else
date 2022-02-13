@@ -416,7 +416,6 @@ touch.out	x
 tri~	x
 trig2bang	x
 trig2bang~	x
-trigger2	x
 trighold~	x
 trunc 	x
 trunc~ 	x

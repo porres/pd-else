@@ -1,6 +1,6 @@
-#N struct 1004-DS float x float y array 1004-table 1004-element;
-#N struct 1004-element symbol sym float y;
-#N canvas 502 127 598 623 12;
+#N struct 1007-DS float x float y array 1007-table 1007-element;
+#N struct 1007-element symbol sym float y;
+#N canvas 556 31 598 623 12;
 #X obj 475 376 pointer;
 #N canvas 317 275 503 265 template 0;
 #X text 91 183 Drawing instructions;
@@ -25,9 +25,8 @@
 #X text 96 360 <= click;
 #X text 82 563 To set a symbol \, the [set] object needs a -symbol
 flag!;
-#N canvas 1176 204 725 334 \$0-display 1;
-#X scalar 1004-DS 10 250 \; 1.Array.pd 0 \; 2.[element].pd 0 \; 3.curve.pd
-0 \; 4.[array].pd 0 \; 5.symbol.pd 0 \; 6.x-y.pd 0 \; \;;
+#N canvas 641 204 725 334 \$0-display 0;
+#X scalar 1007-DS 10 250 \; symbol 0 \; \;;
 #X coords 0 334 1 333 0 0 0;
 #X restore 387 160 pd \$0-display;
 #X obj 76 115 initmess \; pd-\$0-display clear \, vis 1 \; \$0-pointer

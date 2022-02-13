@@ -1,4 +1,4 @@
-#N canvas 561 23 585 724 12;
+#N canvas 561 23 575 704 12;
 #X obj 318 147 struct;
 #X obj 158 211 drawcurve;
 #X obj 246 211 filledcurve;

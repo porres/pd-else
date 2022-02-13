@@ -35,14 +35,13 @@ with the same [set] object., f 62;
 #X text 47 306 set symbol:;
 #X obj 54 437 set -symbol \$0-DS sym;
 #X obj 198 407 append \$0-DS x y;
-#N canvas 1048 133 358 171 \$0-display 1;
+#N canvas 1008 133 358 171 \$0-display 1;
 #X scalar 1003-DS 50 50 banana \;;
 #X restore 433 222 pd \$0-display;
 #X obj 416 292 s pd-\$0-display;
 #X msg 416 266 clear \, vis 1;
 #X obj 371 24 declare -path else;
 #X obj 307 338 message traverse pd-\$0-display \, bang, f 31;
-#X obj 197 284 trigger2 list bang bang;
 #X obj 197 206 initmess 50 50;
 #X listbox 197 242 10 0 0 0 - - - 0;
 #X text 64 106 We use [append] to add in [pd \$0-display] our Data
@@ -50,6 +49,7 @@ Structure object. Note that you cannot set the symbol variable with
 [append] when adding the object \, neither ccan you edit and type it
 directly like a number. We need to use the [set] object for that.,
 f 61;
+#X obj 197 284 trigger list bang bang;
 #X connect 1 0 8 0;
 #X connect 2 0 1 0;
 #X connect 3 0 1 0;
@@ -57,8 +57,8 @@ f 61;
 #X connect 9 0 8 1;
 #X connect 12 0 11 0;
 #X connect 14 0 4 0;
-#X connect 15 0 9 0;
-#X connect 15 1 14 0;
-#X connect 15 2 12 0;
-#X connect 16 0 17 0;
-#X connect 17 0 15 0;
+#X connect 15 0 16 0;
+#X connect 16 0 18 0;
+#X connect 18 0 9 0;
+#X connect 18 1 14 0;
+#X connect 18 2 12 0;

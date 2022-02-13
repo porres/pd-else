@@ -1,6 +1,6 @@
-#N struct 1003-DS float x float y array 1003-table 1003-element;
-#N struct 1003-element float y;
-#N canvas 264 158 719 421 12;
+#N struct 1010-DS float x float y array 1010-table 1010-element;
+#N struct 1010-element float y;
+#N canvas 300 132 719 421 12;
 #X obj 567 124 pointer;
 #N canvas 364 371 509 380 template 0;
 #X obj 152 280 plot \$0-table 900 2 0 0 20;
@@ -31,7 +31,7 @@ traverse pd-\$0-display \, bang \; \$0-coords 10 105 \; \$0-size 16
 #X obj 458 113 r \$0-coords;
 #X obj 567 94 r \$0-pointer;
 #N canvas 1026 253 334 221 \$0-display 1;
-#X scalar 1003-DS 10 105 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \;
+#X scalar 1010-DS 10 105 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \;
 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; \;;
 #X coords 0 221 1 220 0 0 0;
 #X restore 120 177 pd \$0-display;
