@@ -1,22 +1,22 @@
 #N canvas 105 23 961 695 12;
-#X obj 128 504 -;
-#X obj 96 473 t f f;
-#X obj 96 444 * 60000;
+#X obj 128 507 -;
+#X obj 96 476 t f f;
+#X obj 96 447 * 60000;
 #X obj 422 297 trigger bang list;
 #X obj 422 344 v bpm_\$0;
 #X obj 667 394 unpack f f f, f 18;
-#X msg 164 504 0;
-#X obj 621 592 s \$0-init;
-#X obj 164 477 r \$0-init;
+#X msg 164 507 0;
+#X obj 601 592 s \$0-init;
+#X obj 164 480 r \$0-init;
 #X obj 368 657 outlet;
 #X obj 368 182 route float list;
 #X obj 886 559 v Q_\$0;
 #X obj 779 559 v ln_Q_\$0;
-#X obj 672 559 v T_\$0;
+#X obj 682 559 v T_\$0;
 #X obj 790 423 v N_\$0;
 #X obj 728 423 v S2_\$0;
 #X obj 667 423 v S1_\$0;
-#X obj 96 388 expr T_\$0 / ln_Q_\$0 * ln(($f1 * ln_Q_\$0 / (T_\$0 *
+#X obj 96 391 expr T_\$0 / ln_Q_\$0 * ln(($f1 * ln_Q_\$0 / (T_\$0 *
 S1_\$0 ))+1), f 21;
 #X obj 811 394 s N_\$0;
 #X obj 128 237 r N_\$0;
@@ -28,11 +28,11 @@ S1_\$0 ))+1), f 21;
 #X obj 272 342 v S2_\$0;
 #X obj 156 309 trigger bang bang;
 #X msg 75 237 0;
-#X obj 75 544 delay;
-#X obj 75 578 s \$0-next;
+#X obj 75 547 delay;
+#X obj 75 581 s \$0-next;
 #X obj 57 187 r \$0-next;
-#X obj 598 617 s \$0-next;
-#X obj 128 544 else/bpm;
+#X obj 525 592 s \$0-next;
+#X obj 128 547 else/bpm;
 #X obj 272 571 v bpm_\$0;
 #X obj 496 204 list length;
 #X obj 422 220 t l l;
@@ -66,6 +66,8 @@ by Clarence Barlow \, see: http://clarlow.org/wp-content/uploads/2016/10/On-Musi
 (figure 4)., f 76;
 #X text 586 129 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 588 110 Alexandre Torres Porres (2022);
+#X obj 672 657 outlet;
+#X obj 672 627 * 60000;
 #X connect 0 0 28 0;
 #X connect 0 0 32 0;
 #X connect 1 0 0 1;
@@ -120,6 +122,7 @@ by Clarence Barlow \, see: http://clarlow.org/wp-content/uploads/2016/10/On-Musi
 #X connect 47 0 48 0;
 #X connect 48 0 50 0;
 #X connect 49 0 13 0;
+#X connect 49 0 64 0;
 #X connect 49 1 12 0;
 #X connect 49 2 11 0;
 #X connect 50 0 31 0;
@@ -138,3 +141,4 @@ by Clarence Barlow \, see: http://clarlow.org/wp-content/uploads/2016/10/On-Musi
 #X connect 58 1 57 0;
 #X connect 58 2 10 0;
 #X connect 59 0 53 0;
+#X connect 64 0 63 0;
