@@ -114,7 +114,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (444 objects):
+## Current Object list (445 objects):
 
 **ASSORTED: [01]**
 
@@ -167,9 +167,10 @@ Cross compiling is also possible with something like this
 - [canvas.zoom]
 - [loadbanger] / [lb]
 
-**GENETAL MESSAGE MANAGEMENT: [27]**
+**GENERAL MESSAGE MANAGEMENT: [28]**
 
 - [format]
+- [swap2]
 - [nmess]
 - [unite]
 - [separate]

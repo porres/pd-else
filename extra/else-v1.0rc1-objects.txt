@@ -395,6 +395,7 @@ sum	x
 susloop~	x
 suspedal	x
 svfilter~	x
+swap2	x
 symbol2any	x
 sysrt.in	x
 sysrt.out	x
