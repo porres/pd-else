@@ -1,19 +1,19 @@
-#N canvas 483 39 566 463 10;
-#X obj 4 264 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+#N canvas 557 39 562 532 10;
+#X obj 4 274 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 338 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 4 373 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 391 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 462 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 76 346 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 381 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 77 270 cnv 17 3 44 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 77 280 cnv 17 3 44 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 4 434 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 4 505 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 231 154 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 221 157 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 166 284 bang;
+#X text 166 294 bang;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -33,105 +33,166 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 354 187 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 344 196 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 3 3 cnv 15 301 42 empty empty polymetro 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 242 179 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X obj 197 188 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X text 354 170 tempo;
-#X text 160 269 float;
-#X text 160 317 float;
-#X obj 76 317 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 385 197 tempo;
+#X text 160 279 float;
+#X text 160 352 float;
+#X obj 76 352 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 76 367 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 76 402 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 112 299 tempo <float>;
-#X text 196 299 - set tempo value in BPM, f 47;
-#X text 196 317 - set tempo value in BPM, f 47;
-#X text 152 399 1) float - (optional) tempo in BPM (default 120),
-f 49;
-#X text 22 192 see also:;
-#X obj 22 211 else/clock;
-#X text 262 180 start/stop;
-#X obj 23 232 else/metronome~;
-#X floatatom 354 235 5 0 0 0 - - - 0;
-#X floatatom 231 236 5 0 0 0 - - - 0;
-#X obj 231 212 else/polymetro 90 3/2;
-#X text 251 154 sync;
-#X text 196 269 - non-zero starts \, zero stops, f 47;
-#X msg 162 159 2/3;
-#X msg 195 159 3/2;
-#X text 64 85 [polymetro] is a polyrhythmic metronome. Polyrhythms
-are specified with fractions. The left output is a counter for the
-base tempo count while the right outlet is the relative count/tempo
-as specified by the ratio. This is an abstraction based on synced [clock]
-objects., f 73;
-#X text 158 413 2) list - polyrhythmic ratio (default 1/1);
-#X text 160 347 float;
-#X text 160 367 float;
-#X text 196 347 - count for base rhythm, f 47;
-#X text 196 368 - count for relative rhythm, f 47;
-#N canvas 700 78 410 473 example 0;
-#X obj 189 384 else/out~;
-#X msg 153 50 10/13;
-#X obj 153 114 display;
-#X msg 196 50 7/5;
-#X msg 229 50 3/2;
-#X msg 123 50 9/7;
-#X msg 93 50 5/7;
-#X obj 114 114 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X text 112 309 tempo <float>;
+#X text 196 309 - set tempo value in BPM, f 47;
+#X text 196 352 - set tempo value in BPM, f 47;
+#X text 22 202 see also:;
+#X obj 22 221 else/clock;
+#X text 129 187 start/stop;
+#X obj 23 242 else/metronome~;
+#X floatatom 344 244 5 0 0 0 - - - 0;
+#X floatatom 221 245 5 0 0 0 - - - 0;
+#X obj 221 221 else/polymetro 90 3/2;
+#X text 186 156 sync;
+#X text 196 279 - non-zero starts \, zero stops, f 47;
+#X text 160 382 float;
+#X text 160 402 float;
+#X text 196 382 - count for base rhythm, f 47;
+#X text 196 403 - count for relative rhythm, f 47;
+#X text 196 294 - syncs (restarts count) when polymetro is on;
+#X msg 316 157 2/3;
+#X msg 349 157 3/2;
+#X obj 76 329 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X text 142 329 anything;
+#X text 196 329 - divider as a float or fraction (anything/symbol)
+;
+#X text 39 85 [polymetro] is a polyrhythmic metronome. Polyrhythms
+are better specified with fractions \, but you can set it as floats
+\, which is a tempo divider value in the end. The left output is a
+counter for the base tempo count while the right outlet is the relative
+count/tempo as specified by the ratio. This is an abstraction based
+on synced [clock] objects., f 81;
+#X msg 282 157 1.5;
+#X text 379 157 ratio/divider;
+#X text 110 485 2) symbol/float - polyrhythmic ratio (default 1/1)
+or float;
+#X obj 4 429 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X text 134 439 '-b' - sets to bang mode output (instead of floats)
+;
+#X text 152 470 1) float - tempo in BPM (default 120), f 49;
+#N canvas 759 78 551 501 example 0;
+#X obj 189 424 else/out~;
+#X obj 153 184 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X obj 153 284 else/impseq~;
-#X obj 153 259 b;
-#X obj 276 284 else/impseq~;
-#X obj 276 259 b;
-#X obj 276 219 display;
-#X obj 153 219 display;
-#X floatatom 276 149 5 0 0 0 - - - 12;
-#X obj 153 183 else/polymetro 90 3/2;
-#X obj 153 315 else/resonant~ 600 200, f 14;
-#X obj 276 315 else/resonant~ 750 200, f 14;
-#X text 216 222 relative;
-#X msg 259 50 8/13;
-#X symbolatom 212 114 10 0 0 0 - - - 12;
-#X msg 63 50 3/2;
-#X msg 33 50 2/3;
-#X text 75 222 base rhythm;
-#X text 291 114 <= try;
-#X text 68 14 Test different options;
-#X text 320 150 tempo;
-#X connect 1 0 2 0;
-#X connect 2 0 15 0;
+#X obj 153 324 else/impseq~;
+#X obj 153 299 b;
+#X obj 276 324 else/impseq~;
+#X obj 276 299 b;
+#X obj 276 259 display;
+#X obj 153 259 display;
+#X floatatom 276 189 5 0 0 0 - - - 12;
+#X obj 153 223 else/polymetro 90 3/2;
+#X obj 153 355 else/resonant~ 600 200, f 14;
+#X obj 276 355 else/resonant~ 750 200, f 14;
+#X text 216 262 relative;
+#X text 75 262 base rhythm;
+#X text 320 190 tempo;
+#X msg 193 50 10/13;
+#X obj 193 114 display;
+#X msg 236 50 7/5;
+#X msg 163 50 9/7;
+#X msg 133 50 5/7;
+#X msg 269 50 8/13;
+#X msg 103 50 3/2;
+#X msg 73 50 2/3;
+#X text 300 154 <= try;
+#X text 108 14 Test different options;
+#X msg 309 50 19/13;
+#X listbox 214 152 11 0 0 0 - - - 12;
+#X connect 1 0 9 0;
+#X connect 2 0 10 0;
 #X connect 3 0 2 0;
-#X connect 4 0 2 0;
-#X connect 5 0 2 0;
-#X connect 6 0 2 0;
-#X connect 7 0 15 0;
-#X connect 8 0 16 0;
-#X connect 9 0 8 0;
-#X connect 10 0 17 0;
-#X connect 11 0 10 0;
-#X connect 12 0 11 0;
+#X connect 4 0 11 0;
+#X connect 5 0 4 0;
+#X connect 6 0 5 0;
+#X connect 7 0 3 0;
+#X connect 8 0 9 2;
+#X connect 9 0 7 0;
+#X connect 9 1 6 0;
+#X connect 10 0 0 0;
+#X connect 11 0 0 1;
+#X connect 15 0 16 0;
+#X connect 16 0 9 1;
+#X connect 17 0 16 0;
+#X connect 18 0 16 0;
+#X connect 19 0 16 0;
+#X connect 20 0 16 0;
+#X connect 21 0 16 0;
+#X connect 22 0 16 0;
+#X connect 25 0 16 0;
+#X connect 26 0 9 1;
+#X restore 472 216 pd example;
+#N canvas 741 72 414 488 flag 0;
+#X obj 145 384 else/out~;
+#X obj 91 189 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#000000 0 1;
+#X obj 91 290 else/impseq~;
+#X obj 232 290 else/impseq~;
+#X floatatom 232 194 5 0 0 0 - - - 12;
+#X obj 91 321 else/resonant~ 600 200, f 14;
+#X obj 232 321 else/resonant~ 750 200, f 14;
+#X text 276 195 tempo;
+#X msg 161 105 10/13;
+#X obj 161 169 display;
+#X msg 204 105 7/5;
+#X msg 131 105 9/7;
+#X msg 101 105 5/7;
+#X msg 237 105 8/13;
+#X msg 71 105 3/2;
+#X msg 41 105 2/3;
+#X msg 277 105 19/13;
+#X obj 91 228 else/polymetro -b 90 3/2;
+#X obj 242 254 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X obj 101 254 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X text 39 26 If you just need a bang output \, use the '-b' flag.
+The float output is useful so you can feed into a 'select' object and
+trigger different things depending on the float output \, or maybe
+read values from a sequencer., f 54;
+#X connect 1 0 17 0;
+#X connect 2 0 5 0;
+#X connect 3 0 6 0;
+#X connect 4 0 17 2;
+#X connect 5 0 0 0;
+#X connect 6 0 0 1;
+#X connect 8 0 9 0;
+#X connect 9 0 17 1;
+#X connect 10 0 9 0;
+#X connect 11 0 9 0;
+#X connect 12 0 9 0;
 #X connect 13 0 9 0;
-#X connect 14 0 15 1;
-#X connect 15 0 13 0;
-#X connect 15 1 12 0;
-#X connect 16 0 0 0;
-#X connect 17 0 0 1;
-#X connect 19 0 2 0;
-#X connect 20 0 15 0;
-#X connect 21 0 2 0;
-#X connect 22 0 2 0;
-#X restore 472 226 pd example;
-#X text 196 284 - syncs (restarts count) when polymetro is on;
-#X connect 6 0 36 0;
-#X connect 17 0 36 1;
-#X connect 20 0 36 0;
-#X connect 36 0 35 0;
-#X connect 36 1 34 0;
-#X connect 39 0 36 0;
-#X connect 40 0 36 0;
+#X connect 14 0 9 0;
+#X connect 15 0 9 0;
+#X connect 16 0 9 0;
+#X connect 17 0 19 0;
+#X connect 17 0 2 0;
+#X connect 17 1 18 0;
+#X connect 17 1 3 0;
+#X restore 489 240 pd flag;
+#X connect 6 0 35 0;
+#X connect 17 0 35 2;
+#X connect 20 0 35 0;
+#X connect 35 0 34 0;
+#X connect 35 1 33 0;
+#X connect 43 0 35 1;
+#X connect 44 0 35 1;
+#X connect 49 0 35 1;
