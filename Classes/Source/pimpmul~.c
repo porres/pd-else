@@ -8,9 +8,9 @@ typedef struct _pimpmul{
     t_inlet    *x_inlet_rate;
     t_outlet   *x_out1;
     t_outlet   *x_out2;
-    t_float     x_last_in;
-    t_float     x_last_out;
-    t_float     x_last_rate;
+    double      x_last_in;
+    double      x_last_out;
+    double      x_last_rate;
 }t_pimpmul;
 
 static t_class *pimpmul_class;
@@ -22,14 +22,14 @@ static t_int *pimpmul_perform(t_int *w){
     t_float *in2 = (t_float *)(w[4]);
     t_float *out1 = (t_float *)(w[5]);
     t_float *out2 = (t_float *)(w[6]);
-    t_float last_in = x->x_last_in;
-    t_float last_rate = x->x_last_rate;
-    t_float last_out = x->x_last_out;
-    t_float output;
+    double last_in = x->x_last_in;
+    double last_rate = x->x_last_rate;
+    double last_out = x->x_last_out;
+    double output;
     while(n--){
-        t_float input = *in1++;
-        t_float rate = *in2++;
-        t_float delta = input - last_in;
+        double input = (double)*in1++;
+        double rate = (double)*in2++;
+        double delta = (input - last_in);
         if(fabs(delta) >= 0.5){
             if(delta < 0)
                 delta += 1;
