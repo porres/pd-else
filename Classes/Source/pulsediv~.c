@@ -13,7 +13,8 @@ typedef struct _pulsediv{
     t_float   x_lastin;
     t_int     x_mod;
     t_inlet  *x_triglet;
-    t_outlet *x_outlet;
+    t_outlet *x_outlet_0;
+    t_outlet *x_outlet_1;
 }t_pulsediv;
 
 static void pulsediv_div(t_pulsediv *x, t_floatarg f){
@@ -29,7 +30,8 @@ static t_int *pulsediv_perform(t_int *w){
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
-    t_float *out = (t_float *)(w[5]);
+    t_float *out1 = (t_float *)(w[5]);
+    t_float *out2 = (t_float *)(w[6]);
     t_float lastin = x->x_lastin;
     t_float start = x->x_start;
     t_float div = x->x_div;
@@ -43,22 +45,24 @@ static t_int *pulsediv_perform(t_int *w){
         count += (pulse = (in > 0 && lastin <= 0));
         if (count >= 0)
             count = fmod(count, div);
-        *out++ = pulse && count == 0;
+        *out1++ = pulse && count == 0;
+        *out2++ = pulse && count != 0;
         lastin = in;
     }
     x->x_lastin = lastin;
     x->x_count = count;
-    return (w + 6);
+    return (w + 7);
 }
 
 static void pulsediv_dsp(t_pulsediv *x, t_signal **sp){
-    dsp_add(pulsediv_perform, 5, x, sp[0]->s_n,
-            sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
+    dsp_add(pulsediv_perform, 6, x, sp[0]->s_n,
+        sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
 
 static void *pulsediv_free(t_pulsediv *x){
     inlet_free(x->x_triglet);
-    outlet_free(x->x_outlet);
+    outlet_free(x->x_outlet_0);
+    outlet_free(x->x_outlet_1);
     return (void *)x;
 }
 
@@ -68,7 +72,8 @@ static void *pulsediv_new(t_floatarg f1, t_floatarg f2){
     x->x_div = f1 < 1 ? 1 : f1;
     x->x_start = x->x_count = f2 - 1;
     x->x_triglet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    x->x_outlet = outlet_new(&x->x_obj, &s_signal);
+    x->x_outlet_0 = outlet_new(&x->x_obj, &s_signal);
+    x->x_outlet_1 = outlet_new(&x->x_obj, &s_signal);
     return (x);
 }
 
