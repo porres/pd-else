@@ -16,7 +16,7 @@ typedef struct _tempo{
     t_outlet   *x_outlet_dsp_0;
     t_float     x_sr;
     t_float     x_gate;
-    t_float     x_div;
+    t_float     x_mul;
     t_float     x_deviation;
     t_float     x_last_gate;
     t_float     x_last_sync;
@@ -57,7 +57,7 @@ static t_int *tempo_perform(t_int *w){
             t /= 60.;
         else if(x->x_mode == 1)
             t = 1000. / t;
-        double hz = (t * (double)x->x_div);
+        double hz = (t * (double)x->x_mul);
         double phase_step = hz / sr; // phase_step
         if(phase_step > 1)
             phase_step = 1;
@@ -95,8 +95,8 @@ static void tempo_dsp(t_tempo *x, t_signal **sp){
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
-static void tempo_div(t_tempo *x, t_floatarg f){
-    x->x_div = f < 1 ? 1 : f;
+static void tempo_mul(t_tempo *x, t_floatarg f){
+    x->x_mul = f < 1 ? 1 : f;
 }
 
 static void tempo_bpm(t_tempo *x, t_symbol *s, int argc, t_atom *argv){
@@ -145,7 +145,7 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
     t_float init_tempo = 0;
     t_float on = 0;
     t_float mode = 0;
-    t_float div = 1;
+    t_float mul = 1;
     static int init_seed = 74599;
     x->x_val = (init_seed *= 1319);
 /////////////////////////////////////////////////////////////////////////////////////
@@ -184,9 +184,9 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
                 argc--;
                 argv++;
             }
-            else if(!strcmp(curarg->s_name, "-div")){
+            else if(!strcmp(curarg->s_name, "-mul")){
                 if((argv+1)->a_type == A_FLOAT){
-                    div = atom_getfloatarg(1, argc, argv);
+                    mul = atom_getfloatarg(1, argc, argv);
                     argc -= 2;
                     argv += 2;
                 }
@@ -202,9 +202,9 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
         init_tempo = 0;
     if(init_swing < 0)
         init_swing = 0;
-    if(div < 1)
-        div = 1;
-    x->x_div = div;
+    if(mul < 1)
+        mul = 1;
+    x->x_mul = mul;
     x->x_mode = mode;
     x->x_last_sync = 0;
     x->x_last_gate = 0;
@@ -232,6 +232,6 @@ void tempo_tilde_setup(void){
     class_addmethod(tempo_class, (t_method)tempo_ms, gensym("ms"), A_GIMME, 0);
     class_addmethod(tempo_class, (t_method)tempo_hz, gensym("hz"), A_GIMME, 0);
     class_addmethod(tempo_class, (t_method)tempo_bpm, gensym("bpm"), A_GIMME, 0);
-    class_addmethod(tempo_class, (t_method)tempo_div, gensym("div"), A_DEFFLOAT, 0);
+    class_addmethod(tempo_class, (t_method)tempo_mul, gensym("mul"), A_DEFFLOAT, 0);
     class_addbang(tempo_class, tempo_bang);
 }
