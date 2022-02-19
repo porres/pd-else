@@ -1,4 +1,4 @@
-// stolen from scope~
+// stolen from (and based on) scope~
 
 #include <stdlib.h>
 #include <string.h>
@@ -398,6 +398,25 @@ static void scope_period(t_scope *x, t_floatarg f){
     }
 }
 
+static void scope_list(t_scope *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    int f1 = (int)atom_getfloatarg(0, ac, av);
+    int f2 = (int)atom_getfloatarg(1, ac, av);
+
+    int period = f1 < 2 ? 2 : f1 > 8192 ? 8192 : f1;
+    if(x->x_period != period){
+        x->x_period = period;
+        x->x_phase = x->x_bufphase = x->x_precount = 0;
+    }
+    
+    int size = f2 < SCOPE_MINBUFSIZE ? SCOPE_MINBUFSIZE : f2 > SCOPE_MAXBUFSIZE ? SCOPE_MAXBUFSIZE : f2;
+    if(x->x_bufsize != size){
+        x->x_bufsize = size;
+        pd_float((t_pd *)x->x_rightinlet, x->x_bufsize);
+        x->x_phase = x->x_bufphase = x->x_precount = 0;
+    }
+}
+
 static void scope_range(t_scope *x, t_floatarg f1, t_floatarg f2){
     float min = f1, max = f2;
     if(min == max)
@@ -588,11 +607,12 @@ static t_int *scope_perform(t_int *w){
         return(w+6);
     }
     int bufphase = x->x_bufphase;
-    int bufsize = (int)*x->x_signalscalar;
+    int bufsize = x->x_bufsize;
+/*    int bufsize = (int)*x->x_signalscalar;
     if(bufsize != x->x_bufsize){
         scope_bufsize(x, bufsize);
         bufsize = x->x_bufsize;
-    }
+    }*/
     if(bufphase < bufsize){
         if(x->x_precount >= nblock)
             x->x_precount -= nblock;
@@ -1213,6 +1233,7 @@ void oscope_tilde_setup(void){
     class_addmethod(scope_class, nullfn, gensym("signal"), 0);
     class_addmethod(scope_class, (t_method) scope_dsp, gensym("dsp"), A_CANT, 0);
     class_addfloat(scope_class, (t_method)scope_period);
+    class_addlist(scope_class, (t_method)scope_list);
     class_addmethod(scope_class, (t_method)scope_period, gensym("nsamples"), A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_bufsize, gensym("nlines"), A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_dim, gensym("dim"), A_FLOAT, A_FLOAT, 0);
