@@ -17,6 +17,7 @@ typedef struct _tempo{
     t_float     x_sr;
     t_float     x_gate;
     t_float     x_mul;
+    t_float     x_current_mul;
     t_float     x_deviation;
     t_float     x_last_gate;
     t_float     x_last_sync;
@@ -57,7 +58,7 @@ static t_int *tempo_perform(t_int *w){
             t /= 60.;
         else if(x->x_mode == 1)
             t = 1000. / t;
-        double hz = (t * (double)x->x_mul);
+        double hz = (t * (double)x->x_current_mul);
         double phase_step = hz / sr; // phase_step
         if(phase_step > 1)
             phase_step = 1;
@@ -69,7 +70,8 @@ static t_int *tempo_perform(t_int *w){
             *out++ = phase >= 1.;
             if(phase >= 1.){
                 phase = phase - 1; // wrapped phase
-// update deviation
+// update deviation/mul
+                x->x_current_mul = x->x_mul;
                 t_float random = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(1.0 / 0x40000000);
                 val = val * 435898247 + 382842987;
                 x->x_deviation = exp(log(ratio) * random);
@@ -96,7 +98,7 @@ static void tempo_dsp(t_tempo *x, t_signal **sp){
 }
 
 static void tempo_mul(t_tempo *x, t_floatarg f){
-    x->x_mul = f < 1 ? 1 : f;
+    x->x_mul = f <= 0 ? 0.0000000000000001 : f;
 }
 
 static void tempo_bpm(t_tempo *x, t_symbol *s, int argc, t_atom *argv){
