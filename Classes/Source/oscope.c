@@ -1075,12 +1075,12 @@ static void *scope_new(t_symbol *s, int ac, t_atom *av){
         }
         else if(av->a_type == A_SYMBOL){
             t_symbol *sym = atom_getsymbolarg(0, ac, av);
-            if(sym == gensym("-calccount") && ac >= 2){
+            if(sym == gensym("-nsamples") && ac >= 2){
                 x->x_flag = 1;
                 period = atom_getfloatarg(1, ac, av);
                 ac-=2, av+=2;
             }
-            else if(sym == gensym("-bufsize") && ac >= 2){
+            else if(sym == gensym("-nlines") && ac >= 2){
                 x->x_flag = 1;
                 bufsize = atom_getfloatarg(1, ac, av);
                 ac-=2, av+=2;
