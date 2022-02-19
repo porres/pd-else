@@ -303,10 +303,6 @@ are shown., f 73;
 #X restore 2 3 graph;
 #X obj 124 40 cnv 4 4 4 empty empty display 0 28 2 18 #e0e0e0 #000000
 0;
-#X text 98 595 -fgcolor <f f f> | -bgcolor <f f f> | -gridcolor <f
-f f> | -range <f f> | -trigger <f> | -triglevel <f> | -bufsize <f>
-| -calccount <f> | -delay <f> | -drawstyle <f> | -dim <f f> | -receive
-<sym>, f 74;
 #X text 194 412 - sets front/signal RGB color (values 0-255), f 58
 ;
 #X text 194 427 - sets background RGB color (values 0-255), f 58;
@@ -412,8 +408,12 @@ waveform. The trigger mode determines when a new waveform trace begins
 #X text 270 162 Number of lines in buffer;
 #X text 223 74 [oscope~] displays a signal in the style of an oscilloscope.
 , f 35;
+#X text 98 595 -fgcolor <f f f> | -bgcolor <f f f> | -gridcolor <f
+f f> | -range <f f> | -trigger <f> | -triglevel <f> | -nsamples <f>
+| -nlines <f> | -delay <f> | -drawstyle <f> | -dim <f f> | -receive
+<sym>, f 74;
 #X connect 22 0 23 0;
 #X connect 23 0 41 0;
-#X connect 36 0 71 0;
-#X connect 37 0 71 1;
-#X connect 41 0 71 0;
+#X connect 36 0 70 0;
+#X connect 37 0 70 1;
+#X connect 41 0 70 0;
