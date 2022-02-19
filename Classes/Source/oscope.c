@@ -574,9 +574,9 @@ static void handle__motion_callback(t_handle *sh, t_floatarg f1, t_floatarg f2){
 static t_int *scope_perform(t_int *w){
     t_scope *x = (t_scope *)(w[1]);
     if(!x->x_xymode || x->x_frozen) // do nothing
-        return(w+5);
+        return(w+6);
     if(!gobj_shouldvis((t_gobj *)x, x->x_glist) || !glist_isvisible(x->x_glist))
-        return(w+5);
+        return(w+6);
     int nblock = (int)(w[2]);
     int bufphase = x->x_bufphase;
     int bufsize = (int)*x->x_signalscalar;
@@ -658,7 +658,7 @@ static t_int *scope_perform(t_int *w){
                     if(nblock <= 0){
                         x->x_bufphase = bufphase;
                         x->x_phase = phase;
-                        return(w+5);
+                        return(w+6);
                     }
                 }
                 if(x->x_xymode == 1)
@@ -734,7 +734,7 @@ static t_int *scope_perform(t_int *w){
             x->x_phase = phase;
         }
     }
-    return(w+5);
+    return(w+6);
 }
 
 static void scope_dsp(t_scope *x, t_signal **sp){
@@ -755,7 +755,7 @@ static void scope_dsp(t_scope *x, t_signal **sp){
         }
         x->x_precount = 0;
     }
-    dsp_add(scope_perform, 4, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
+    dsp_add(scope_perform, 5, x, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
 }
 
 static void scope_tick(t_scope *x){
@@ -1165,6 +1165,7 @@ static void *scope_new(t_symbol *s, int ac, t_atom *av){
     else
     	x->x_rcv_raw = gensym("empty");
     x->x_rightinlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+    outlet_new((t_object *)x, &s_signal);
     x->x_width = (int)width * x->x_zoom, x->x_height = (int)height * x->x_zoom;
     x->x_period = period < 2 ? 2 : period > 8192 ? 8192 : (int)period;
     x->x_bufsize = bufsize < SCOPE_MINBUFSIZE ? SCOPE_MINBUFSIZE : bufsize > SCOPE_MAXBUFSIZE ? SCOPE_MAXBUFSIZE : (int)bufsize;
