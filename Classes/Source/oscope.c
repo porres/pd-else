@@ -573,11 +573,14 @@ static void handle__motion_callback(t_handle *sh, t_floatarg f1, t_floatarg f2){
 //------------------------------------------------------------
 static t_int *scope_perform(t_int *w){
     t_scope *x = (t_scope *)(w[1]);
+    int nblock = (int)(w[2]);
+    t_float *in1 = (t_float *)(w[3]);
+    t_float *in2 = (t_float *)(w[4]);
+    t_float *out = (t_float *)(w[5]);
     if(!x->x_xymode || x->x_frozen) // do nothing
         return(w+6);
     if(!gobj_shouldvis((t_gobj *)x, x->x_glist) || !glist_isvisible(x->x_glist))
         return(w+6);
-    int nblock = (int)(w[2]);
     int bufphase = x->x_bufphase;
     int bufsize = (int)*x->x_signalscalar;
     if(bufsize != x->x_bufsize){
@@ -588,8 +591,6 @@ static t_int *scope_perform(t_int *w){
         if(x->x_precount >= nblock)
             x->x_precount -= nblock;
         else{
-            t_float *in1 = (t_float *)(w[3]);
-            t_float *in2 = (t_float *)(w[4]);
             t_float *in;
             int phase = x->x_phase;
             int period = x->x_period;
