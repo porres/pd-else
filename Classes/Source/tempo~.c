@@ -148,12 +148,14 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
     t_float on = 0;
     t_float mode = 0;
     t_float mul = 1;
+    int flag_no_more = 0;
     static int init_seed = 74599;
     x->x_val = (init_seed *= 1319);
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
     while(argc > 0){
         if(argv->a_type == A_FLOAT){
+            flag_no_more = 1;
             t_float argval = atom_getfloatarg(0, argc, argv);
             switch(argnum){
                 case 0:
@@ -170,6 +172,8 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
             argv++;
         }
         else if(argv->a_type == A_SYMBOL){
+            if(flag_no_more)
+                goto errstate;
             t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
             if(!strcmp(curarg->s_name, "-on")){
                 on = 1;
@@ -220,20 +224,20 @@ static void *tempo_new(t_symbol *s, int argc, t_atom *argv){
         pd_float((t_pd *)x->x_inlet_swing, init_swing);
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     x->x_outlet_dsp_0 = outlet_new(&x->x_obj, &s_signal);
-    return (x);
+    return(x);
 errstate:
-    pd_error(x, "tempo~: improper args");
-    return NULL;
+    pd_error(x, "[tempo~]: improper args");
+    return(NULL);
 }
 
 void tempo_tilde_setup(void){
     tempo_class = class_new(gensym("tempo~"),(t_newmethod)tempo_new, (t_method)tempo_free,
-            sizeof(t_tempo), CLASS_DEFAULT, A_GIMME, 0);
+        sizeof(t_tempo), CLASS_DEFAULT, A_GIMME, 0);
     CLASS_MAINSIGNALIN(tempo_class, t_tempo, x_gate);
+    class_addbang(tempo_class, tempo_bang);
     class_addmethod(tempo_class, (t_method)tempo_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(tempo_class, (t_method)tempo_ms, gensym("ms"), A_GIMME, 0);
     class_addmethod(tempo_class, (t_method)tempo_hz, gensym("hz"), A_GIMME, 0);
     class_addmethod(tempo_class, (t_method)tempo_bpm, gensym("bpm"), A_GIMME, 0);
     class_addmethod(tempo_class, (t_method)tempo_mul, gensym("mul"), A_DEFFLOAT, 0);
-    class_addbang(tempo_class, tempo_bang);
 }
