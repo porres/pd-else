@@ -577,10 +577,16 @@ static t_int *scope_perform(t_int *w){
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
     t_float *out = (t_float *)(w[5]);
-    if(!x->x_xymode || x->x_frozen) // do nothing
+    if(!x->x_xymode || x->x_frozen){ // do nothing
+//        for(int n = 0; n < nblock; n++)
+//            out[n] = in1[n];
         return(w+6);
-    if(!gobj_shouldvis((t_gobj *)x, x->x_glist) || !glist_isvisible(x->x_glist))
+    }
+    if(!gobj_shouldvis((t_gobj *)x, x->x_glist) || !glist_isvisible(x->x_glist)){
+//        for(int n = 0; n < nblock; n++)
+//            out[n] = in1[n];
         return(w+6);
+    }
     int bufphase = x->x_bufphase;
     int bufsize = (int)*x->x_signalscalar;
     if(bufsize != x->x_bufsize){
