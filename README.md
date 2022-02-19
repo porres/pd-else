@@ -656,4 +656,4 @@ Cross compiling is also possible with something like this
 - [mix4~]
 - [setdsp~]
 - [openfile]
-- [oscilloscope~]
+- [oscope~]

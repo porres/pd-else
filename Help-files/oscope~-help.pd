@@ -43,7 +43,7 @@ or 2 (down);
 #X msg 589 39 220;
 #X msg 719 39 660;
 #X msg 751 39 1760;
-#X text 57 110 When in X-Y mode \, [oscilloscope~] plots points whose
+#X text 57 110 When in X-Y mode \, [oscope~] plots points whose
 horizontal axis (X) corresponds to the signal's values coming into
 the left inlet and whose vertical axis (Y) corresponds to the signal's
 values coming into the right inlet. If the two signals are identical
@@ -61,10 +61,10 @@ period is used. So it requires small values for a better representation
 #X obj 650 88 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
 #X msg 557 39 1;
-#X obj 492 174 else/oscilloscope~ 200 200 5 3 200 -1 1 50 0 0 0 30
+#X obj 492 174 else/oscope~ 200 200 5 3 200 -1 1 50 0 0 0 30
 30 30 190 190 190 160 160 160 0 empty;
 #X text 57 73 If signals are connected to both the left and right inlets
-\, [oscilloscope~] operates in X-Y mode.;
+\, [oscope~] operates in X-Y mode.;
 #X text 59 317 Change the phase of the oscillator to check how it affects
 the plot \, then try different frequencies.;
 #X text 753 88 change phase;
@@ -93,7 +93,7 @@ the plot \, then try different frequencies.;
 #X text 65 113 frequency;
 #N canvas 809 79 758 543 appearance_colors 0;
 #X obj 395 306 osc~ 24;
-#X obj 326 341 else/oscilloscope~ 250 133 10 3 185 -1 1 0 0 0 -0.333333
+#X obj 326 341 else/oscope~ 250 133 10 3 185 -1 1 0 0 0 -0.333333
 30 30 30 190 190 190 160 160 160 0 empty;
 #X text 472 79 RGB colors (values from 0-255) for fgcolor (front/signal)
 \, bgcolor (background) & grid (gridcolor)., f 35;
@@ -167,13 +167,13 @@ the plot \, then try different frequencies.;
 #X obj 355 207 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X msg 186 217 range -1.2 1.2;
-#X text 35 57 The "drawstyle 1" message or attribute changes [oscilloscope~]
+#X text 35 57 The "drawstyle 1" message or attribute changes [oscope~]
 to analternate drawing style \, that affects some kinds of signals
 \, such as this bandlimited square wave (try it with the range -1.2
 1.2).;
 #X text 38 21 You can set the vertical (signal amplitude) range and
 the onset delay (time between displays) with messages.;
-#X obj 582 257 else/oscilloscope~ 100 50 256 3 128 -1 1 0 0 0 0 30
+#X obj 582 257 else/oscope~ 100 50 256 3 128 -1 1 0 0 0 0 30
 30 30 190 190 190 160 160 160 0 empty;
 #X obj 554 106 tgl 25 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
@@ -196,12 +196,12 @@ the onset delay (time between displays) with messages.;
 #X connect 5 0 0 0;
 #X connect 6 0 5 0;
 #X restore 81 231 pd square;
-#X obj 163 297 else/oscilloscope~ 219 108 10 3 185 -1.2 1.2 0 0 0 -0.333333
+#X obj 163 297 else/oscope~ 219 108 10 3 185 -1.2 1.2 0 0 0 -0.333333
 30 30 30 190 190 190 160 160 160 0 empty;
 #X msg 507 204 dim 100 50;
 #X msg 582 204 dim 50 100;
 #X text 471 49 There's also a "dim" message/flag for setting the size
-of your [oscilloscope~]., f 41;
+of your [oscope~]., f 41;
 #X connect 0 0 19 0;
 #X connect 2 0 19 0;
 #X connect 5 0 19 0;
@@ -220,18 +220,18 @@ of your [oscilloscope~]., f 41;
 #N canvas 877 183 459 413 mouse 0;
 #X text 93 342 And as noted \, if you right click on it (in edit mode
 or not) you can access its properties., f 50;
-#X text 44 36 When you click on [oscilloscope~] with your mouse \,
+#X text 44 36 When you click on [oscope~] with your mouse \,
 the display freezes for as long as you hold the mouse button down.
 ;
 #X text 86 295 When in edit mode \, you can resize the object by clicking
 and dragging on its bottom right corner., f 51;
 #X obj 135 96 else/rampnoise~ 40;
-#X obj 135 133 else/oscilloscope~ 184 115 256 3 128 -1 1 0 0 0 0 0
+#X obj 135 133 else/oscope~ 184 115 256 3 128 -1 1 0 0 0 0 0
 0 0 190 190 190 100 100 100 0 empty;
 #X connect 3 0 4 0;
 #X restore 357 240 pd mouse;
-#X text 223 74 [oscilloscope~] displays a signal in the style of an
-oscilloscope., f 35;
+#X text 223 74 [oscope~] displays a signal in the style of an
+oscope., f 35;
 #X obj 237 202 else/note 425 12 helvetica empty 0 200 0 0 0 255 255
 255 0 0 <= Right click for properties!;
 #X text 114 395 range <f \, f>;
@@ -244,9 +244,9 @@ oscilloscope., f 35;
 -228856 -1 -1 0 256;
 #X obj 499 69 else/setdsp~;
 #N canvas 954 174 335 328 Y_Mode 0;
-#X obj 93 144 else/oscilloscope~ 130 130 11 3 128 -1 1 0 0 0 0 30 30
+#X obj 93 144 else/oscope~ 130 130 11 3 128 -1 1 0 0 0 0 30 30
 30 190 190 190 160 160 160 0 empty;
-#X text 53 33 If a signal is only fed to the second inlet \, [oscilloscope~]
+#X text 53 33 If a signal is only fed to the second inlet \, [oscope~]
 displays in "Y Mode" only., f 31;
 #X obj 216 102 osc~ 60;
 #X connect 2 0 0 1;
@@ -260,18 +260,18 @@ displays in "Y Mode" only., f 31;
 #X text 108 498 delay <float>;
 #X text 194 512 - receive symbol (default empty), f 58;
 #N canvas 1073 204 501 352 receive 0;
-#X obj 67 175 else/oscilloscope~ 130 130 2 3 128 -1 1 100 0 0 0 30
+#X obj 67 175 else/oscope~ 130 130 2 3 128 -1 1 100 0 0 0 30
 30 30 190 190 190 160 160 160 0 \$0-rcv;
 #X obj 311 272 s \$0-rcv;
 #X obj 67 130 noise~;
 #X msg 311 205 2 128;
 #X msg 331 233 64 12;
-#X text 236 112 You can send any kind of message that oscilloscope~
+#X text 236 112 You can send any kind of message that oscope~
 accepts. Note that if you send it a list of two floats. Then the values
 are spread via both inlets and set samples per line and lines per buffer
 \, respectively., f 36;
-#X text 30 25 When in edit mode \, [oscilloscope~] shows its inlets.
-The [oscilloscope~] object below has a receive symbol \, so you can
+#X text 30 25 When in edit mode \, [oscope~] shows its inlets.
+The [oscope~] object below has a receive symbol \, so you can
 send messages to it via a [send] object (but not audio). In this case
 \, the inlets are supressed \, so we don't see it. The receive symbol
 can be set with the receive message or the -receive flag. If you set
@@ -288,7 +288,7 @@ the inlets are shown., f 73;
 #X restore 304 3 pd;
 #X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
 0;
-#X obj 22 40 cnv 4 4 4 empty empty Oscilloscope 0 28 2 18 -233017 -1
+#X obj 22 40 cnv 4 4 4 empty empty oscope 0 28 2 18 -233017 -1
 0;
 #X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
 0;
@@ -300,7 +300,7 @@ the inlets are shown., f 73;
 0;
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 2 3 cnv 15 301 42 empty empty oscilloscope~ 20 20 2 37 -233017
+#X obj 2 3 cnv 15 301 42 empty empty oscope~ 20 20 2 37 -233017
 -1 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -322,7 +322,7 @@ f f> | -range <f f> | -trigger <f> | -triglevel <f> | -bufsize <f>
 #X text 194 335 - sets "nsamples": samples per line (2-8192 \, default
 256), f 58;
 #X text 194 365 - sets width/height (default 200 100), f 58;
-#X obj 43 191 else/oscilloscope~ 184 115 256 3 128 -1 1 0 0 0 0 32
+#X obj 43 191 else/oscope~ 184 115 256 3 128 -1 1 0 0 0 0 32
 32 32 187 187 187 159 159 159 0 empty;
 #N canvas 693 173 824 342 buffer_period 0;
 #X floatatom 507 119 5 0 0 0 - - -;
@@ -335,7 +335,7 @@ f f> | -range <f f> | -trigger <f> | -triglevel <f> | -bufsize <f>
 #X text 442 115 samples per line, f 8;
 #X text 564 66 10 samples per line \, 256 lines;
 #X text 554 38 256 samples per line \, 10 lines;
-#X obj 507 180 else/oscilloscope~ 178 126 10 3 256 -1 1 0 0 0 -0.333333
+#X obj 507 180 else/oscope~ 178 126 10 3 256 -1 1 0 0 0 -0.333333
 30 30 30 190 190 190 160 160 160 0 empty;
 #X text 33 42 "nlines" sets the number of lines in the display (possible
 values from 8 to 256 - default is 128). The number of samples represented
@@ -344,7 +344,7 @@ default is 256). For each line \, the maximum and minimum values within
 the period in samples are used to generate the line. So the smallest
 line is 2 samples/points long., f 62;
 #X text 34 136 Therefore \, the total number of samples (or period)
-displayed in the oscilloscope is equal to: nsamples * nlines. This
+displayed in the oscope is equal to: nsamples * nlines. This
 total number of samples also affects the time between displays. If
 the number of samples is small \, the refresh rate speed is high \,
 so you may want to use the "delay" message to increase the speed between
@@ -392,7 +392,7 @@ above \, the waveform must increase or decrease past this value to
 trigger a new display. If you are displaying a periodic waveform \,
 some changes to the trigger level will shift the waveform to the left
 or right., f 57;
-#X obj 479 196 else/oscilloscope~ 266 131 2 3 256 -1 1 50 0 1 -0.008
+#X obj 479 196 else/oscope~ 266 131 2 3 256 -1 1 50 0 1 -0.008
 30 30 30 190 190 190 160 160 160 0 empty;
 #X msg 706 151 delay \$1;
 #X floatatom 706 123 5 0 0 0 - - -;

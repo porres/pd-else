@@ -524,7 +524,7 @@ width float bordercolor;
 #X text 265 475 [circle];
 #X text 757 938 [messbox];
 #X text 335 41 [pad] =>;
-#X text 562 1378 oscilloscope~ =>;
+#X text 562 1378 oscope~ =>;
 #X obj 37 69 else/gui;
 #X obj 571 89 else/colors;
 #X obj 570 123 else/openfile;
@@ -562,7 +562,7 @@ width float bordercolor;
 #X obj 292 1093 else/out4~;
 #X obj 175 1091 else/out~;
 #X obj 65 1091 else/out1~;
-#X obj 672 1332 else/oscilloscope~ 200 100 256 3 128 -1 1 0 0 0 0 30
+#X obj 672 1332 else/oscope~ 200 100 256 3 128 -1 1 0 0 0 0 30
 30 30 190 190 190 160 160 160 0 empty;
 #X obj 680 1455 else/multi.vsl;
 #X text 590 1484 multi.vsl =>;
