@@ -1,45 +1,47 @@
-#N canvas 723 38 561 609 10;
-#X obj 2 3 cnv 15 301 42 empty empty voices 20 20 2 37 -233017 -1 0
-;
+#N canvas 466 23 561 609 10;
+#X obj 2 3 cnv 15 301 42 empty empty voices 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1;
 #X restore 305 3 graph;
-#X obj 22 39 cnv 4 4 4 empty empty Polyphonic 0 28 2 18 -233017 -1
+#X obj 22 39 cnv 4 4 4 empty empty Polyphonic 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 110 39 cnv 4 4 4 empty empty voice 0 28 2 18 -233017 -1 0;
-#X obj 155 39 cnv 4 4 4 empty empty allocator 0 28 2 18 -233017 -1
+#X obj 110 39 cnv 4 4 4 empty empty voice 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 4 581 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 155 39 cnv 4 4 4 empty empty allocator 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 6 287 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 581 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 6 287 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 450 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 482 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 102 458 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 4 450 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 482 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 103 295 cnv 17 3 110 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c
 0;
-#X obj 102 458 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
-;
-#X obj 103 295 cnv 17 3 110 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 4 524 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 524 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 103 409 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 103 409 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 185 293 list - MIDI note messages (note and velocity pair)
 , f 56;
@@ -71,8 +73,8 @@ of "list" mode), f 66;
 #X obj 151 256 else/voices 2, f 20;
 #X text 150 311 voice 1;
 #X text 211 311 voice 2;
-#X obj 69 187 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
+#X obj 69 187 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 127;
 #X msg 69 212 steal \$1;
 #X text 39 19 In regular mode \, [voices] allocates the given number
 of voices and extra voices are sent to its rightmost outlet. After
@@ -114,8 +116,8 @@ allocation. The modes are:, f 77;
 #X obj 185 353 else/display;
 #X obj 241 353 else/display;
 #X obj 130 124 else/keyboard 17 80 1 4 0 0 empty empty;
-#X obj 265 183 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 2
-2;
+#X obj 265 183 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 2;
 #X text 290 182 sustain;
 #X obj 130 247 pack float float;
 #X obj 130 217 else/suspedal -retrig 3;
@@ -144,8 +146,8 @@ with [keyboard] by pressing the same note., f 63;
 #X text 32 149 See examples in the subpatches below:;
 #N canvas 616 116 479 392 retrig_1 0;
 #X obj 147 98 else/keyboard 17 80 1 4 0 0 empty empty;
-#X obj 282 157 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 2
-2;
+#X obj 282 157 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 2;
 #X text 307 156 sustain;
 #X obj 147 315 else/display;
 #X obj 214 315 else/display;
@@ -175,8 +177,8 @@ will be sent to free this allocated voice., f 70;
 #X restore 229 225 pd retrig_1;
 #N canvas 755 189 509 397 retrig_2 0;
 #X obj 174 99 else/keyboard 17 80 1 4 0 0 empty empty;
-#X obj 309 158 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 2
-2;
+#X obj 309 158 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 2;
 #X text 334 157 sustain;
 #X obj 174 316 else/display;
 #X obj 247 316 else/display;
@@ -214,13 +216,13 @@ switched off \, note off messages for all note ons are given., f 70
 #X obj 269 273 else/display;
 #X obj 329 273 else/display;
 #X obj 92 246 else/voices 4 -rel 1000, f 40;
-#X obj 258 160 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1000;
+#X obj 258 160 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1000;
 #X obj 258 188 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X msg 258 210 rel \$1;
 #X obj 329 206 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 41 23 You can set a release time to prevent a note off from
 freeing a voice allocation (and keep it allocated for that period of
 time after a note off is sent)., f 65;
@@ -242,21 +244,21 @@ release time in ms with the '-rel' flag \, 'rel' message or right inlet.
 #N canvas 590 63 627 508 list 0;
 #X obj 142 319 else/display;
 #X msg 99 202 60 \$1;
-#X obj 99 170 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
+#X obj 99 170 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 127;
 #X obj 142 244 else/display;
-#X obj 142 170 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X obj 186 170 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
-#X obj 232 170 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-127;
+#X obj 142 170 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 127;
+#X obj 186 170 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 127;
+#X obj 232 170 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 127;
 #X msg 142 202 61 \$1;
 #X msg 186 202 62 \$1;
 #X msg 232 202 63 \$1;
 #X obj 353 316 else/display;
-#X obj 488 216 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 488 216 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 353 144 else/keyboard 17 80 1 3 0 0 empty empty;
 #X obj 353 245 else/suspedal -retrig 3;
 #X text 344 341 voices;
@@ -266,7 +268,7 @@ release time in ms with the '-rel' flag \, 'rel' message or right inlet.
 #X obj 353 289 else/voices 4 1 -retrig 2 -list 1;
 #X msg 51 250 offset \$1;
 #X obj 51 227 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 62 72 The -list flag takes an optional float argument that
 sets the voice index offset \, which is 0 by default. You can also
 set a different index offset with the "offset" message (this is only
@@ -301,8 +303,8 @@ patch., f 43;
 #X connect 6 0 4 0;
 #X connect 7 0 4 0;
 #X restore 40 49 pd random chords;
-#X obj 40 19 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 40 19 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X text 211 215 According to the voice index (the first element in
 the list sent by [voices]) \, the MIDI note messages are routed to
 different instances of "voice.pd"., f 43;
@@ -362,7 +364,7 @@ only), f 66;
 #X text 46 223 see also:;
 #X obj 47 246 else/mono;
 #X obj 200 136 else/keyboard 22 60 1 4 1 0 empty empty;
-#X obj 103 430 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 103 430 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 179 430 float - release time in ms, f 57;
 #X text 43 84 [voices] is used to implement polyphonic synths. It's

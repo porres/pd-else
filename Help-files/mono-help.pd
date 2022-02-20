@@ -1,46 +1,49 @@
-#N canvas 726 23 563 552 10;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 539 23 563 552 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Monophonic 0 28 2 18 -233017 -1
+#X obj 23 40 cnv 4 4 4 empty empty Monophonic 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 121 40 cnv 4 4 4 empty empty voice 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 121 40 cnv 4 4 4 empty empty voice 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 3 graph;
-#X obj 3 3 cnv 15 301 42 empty empty mono 20 20 2 37 -233017 -1 0;
+#X obj 3 3 cnv 15 301 42 empty empty mono 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 166 40 cnv 4 4 4 empty empty manager 0 28 2 18 -233017 -1 0
-;
-#X obj 5 525 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 166 40 cnv 4 4 4 empty empty manager 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 7 256 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 387 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 440 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 525 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 97 395 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 7 256 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 5 387 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 5 440 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 97 395 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 98 264 cnv 17 3 95 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 98 264 cnv 17 3 95 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 5 468 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 98 364 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 5 468 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 98 364 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 97 416 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 97 416 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 168 264 list - MIDI note messages (note and velocity pair)
 , f 58;
@@ -63,10 +66,10 @@ memory, f 63;
 #X obj 238 200 else/mono -high;
 #X msg 238 152 flush;
 #N canvas 590 39 602 540 example 0;
-#X obj 247 26 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -228856 -1
--1 1;
+#X obj 247 26 vradio 15 1 0 3 empty empty empty 0 -8 0 10 #dcdcdc #000000
+#000000 0;
 #X msg 247 102 mode \$1;
-#X floatatom 247 78 3 0 0 0 - - -;
+#X floatatom 247 78 3 0 0 0 - - - 0;
 #X text 213 26 last;
 #X text 213 41 high;
 #X text 219 56 low;
@@ -94,7 +97,7 @@ release it \, it recalls the next lowest note that is still on., f
 #X obj 424 245 changed;
 #X msg 424 267 0;
 #X msg 463 267 100;
-#X floatatom 424 295 5 0 0 0 - - -;
+#X floatatom 424 295 5 0 0 0 - - - 0;
 #X obj 309 253 else/glide~;
 #X text 34 142 You can set the mode via a flag or via the mode message.
 The default priotiy mode is "last" So whenever you play a new note
@@ -136,8 +139,8 @@ GUI from the ELSE library that generates MIDI notes., f 21;
 #X obj 191 321 *~;
 #X obj 155 259 mtof;
 #X obj 206 258 / 127;
-#X obj 73 116 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 73 116 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X msg 73 138 legato \$1;
 #X text 62 21 By default \, new notes resend/retrigger the velocity
 value. But in legato mode \, a new velocity value is only sent if a

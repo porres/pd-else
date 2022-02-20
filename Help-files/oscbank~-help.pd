@@ -1,18 +1,18 @@
-#N canvas 527 67 563 598 10;
-#X obj 4 306 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 395 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 428 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 527 23 563 598 10;
+#X obj 4 306 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 568 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 395 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 114 404 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 428 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 568 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 114 404 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 184 404 signal;
-#X obj 3 4 cnv 15 301 42 empty empty oscbank~ 20 20 2 37 -233017 -1
+#X obj 3 4 cnv 15 301 42 empty empty oscbank~ 20 20 2 37 #e0e0e0 #000000
 0;
-#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -20,20 +20,21 @@
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 306 4 pd;
-#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 24 41 cnv 4 4 4 empty empty Bank 0 28 2 18 -233017 -1 0;
-#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
-#X obj 96 41 cnv 4 4 4 empty empty oscillators 0 28 2 18 -233017 -1
-0;
-#X obj 114 316 cnv 17 3 73 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 24 41 cnv 4 4 4 empty empty Bank 0 28 2 18 #e0e0e0 #000000 0
 ;
-#X obj 69 41 cnv 4 4 4 empty empty of 0 28 2 18 -233017 -1 0;
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 96 41 cnv 4 4 4 empty empty oscillators 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 114 316 cnv 17 3 73 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 69 41 cnv 4 4 4 empty empty of 0 28 2 18 #e0e0e0 #000000 0;
 #X text 168 454 2) float - ramp time in ms (default 10), f 53;
 #X text 160 343 amp <list>;
 #X text 154 374 ramp <list>;
@@ -47,7 +48,7 @@ for each oscillator in the bank.;
 #X text 242 101 click on the messages below to alter between them,
 f 27;
 #X obj 82 132 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X msg 168 138 ratio 1 2.5 3 3.7 4.2 5.1 5.9 6 \, phase 0 0.5 0.25
 0 0.1 0.9 0.75 0.1 \, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 38;
 #X msg 182 185 ratio 0.5 1.4 2.9 3.1 3.3 4.9 5.8 6.9 \, phase 0.5 0
@@ -66,7 +67,8 @@ f 27;
 #X text 168 436 1) float - number of oscillators (default 1), f 53
 ;
 #X text 372 269 see also:;
-#X obj 4 478 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 4 478 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 148 328 ratio <list>;
 #X text 238 343 - list of amplitudes for all oscillators;
 #X text 238 328 - list of ratios for all oscillators;
@@ -75,7 +77,7 @@ f 27;
 #X obj 151 239 else/out~;
 #X msg 224 151 ratio 0.51 1 1.9 2.3 \, amp 0.9 0.5 0.5 0.6, f 21;
 #X obj 151 157 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 432 269 else/oscbank2~ 1;
 #X text 148 313 float/signal;
 #X text 73 501 -ratio <list>: sets list of ratios for all oscillators

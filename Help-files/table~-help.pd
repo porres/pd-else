@@ -1,49 +1,51 @@
-#N canvas 556 37 563 430 10;
-#X obj 4 404 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 412 34 563 430 10;
+#X obj 4 404 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 5 244 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 319 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 350 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 244 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 119 326 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 5 319 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 5 350 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 119 326 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 190 327 signal;
 #X text 172 354 1) symbol;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 25 41 cnv 4 4 4 empty empty Table 0 28 2 18 -233017 -1 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 25 41 cnv 4 4 4 empty empty Table 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 78 41 cnv 4 4 4 empty empty reader 0 28 2 18 -233017 -1 0;
-#X obj 3 4 cnv 15 301 42 empty empty table~ 20 20 2 37 -233017 -1 0
-;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 78 41 cnv 4 4 4 empty empty reader 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 4 cnv 15 301 42 empty empty table~ 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
 #X text 178 385 3) float;
 #X text 178 370 2) float;
-#X obj 120 253 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 120 253 cnv 17 3 60 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 234 354 - array name (optional \, default none), f 43;
 #X obj 212 160 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #N canvas 198 207 361 306 table 0;
-#X obj 27 74 cnv 15 298 198 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 27 74 cnv 15 298 198 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-table 515 float 0;
@@ -57,8 +59,8 @@ waveform, f 62;
 #X text 56 192 check table =>, f 8;
 #X text 83 89 [table~] reads an array with 4 point interpolation. It
 accepts indexes from 0 to 1 by default.;
-#X obj 215 137 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 215 137 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 212 186 else/table~ \$0-table;
 #X text 156 252 float/signal - sets index/phase, f 62;
 #X text 234 327 - table values;
@@ -67,7 +69,7 @@ accepts indexes from 0 to 1 by default.;
 #X obj 126 195 else/graph~ 441 11;
 #X obj 126 93 else/table~;
 #X obj 126 34 nbx 6 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 126 63 phasor~ 100;
 #X obj 32 42 else/initmess set \$0-table, f 13;
 #X text 231 39 If you connect a [phasor~] into [table~] \, it becames
@@ -86,17 +88,17 @@ name sets an array to be read., f 47;
 #X text 150 298 index <float> - non-0 sets to index mode, f 62;
 #N canvas 714 218 430 358 index 0;
 #X obj 158 178 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 161 155 hsl 128 15 0 514 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 161 155 hsl 128 15 0 514 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 29 36 By default \, [table~] is in normalized mode \, where
 indexes are normalized from 0 to 1 \, but you can change that with
 the third argument or the "index" message. When in index mode \, you
 need to give [table~] the actual index number.;
 #X obj 158 271 tabread4~ \$0-table;
 #X msg 88 176 guard \$1;
-#X obj 88 157 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 88 157 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 178 205 else/table~ \$0-table 0 1;
 #X text 29 89 When in index mode \, if you set it to guard mode \,
 it will behave exactly like [tabread4~] \, as it won't be able to read
@@ -114,13 +116,13 @@ the first or last point of the table.;
 #X obj 490 72 else/setdsp~;
 #N canvas 553 158 414 429 guard-points 0;
 #X obj 115 198 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 118 175 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 118 175 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 115 234 else/table~ \$0-table 0;
 #X msg 49 195 guard \$1;
-#X obj 49 175 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 49 175 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 261 234 tabosc4~ \$0-table;
 #X text 28 11 By default \, [table~] is in guard point mode \, where
 it considers there are 3 extra points needed for the 4 point interpolation

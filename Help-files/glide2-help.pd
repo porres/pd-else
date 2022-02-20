@@ -1,24 +1,25 @@
-#N canvas 614 134 564 559 10;
-#X obj 4 282 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 407 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 440 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 624 24 564 559 10;
+#X obj 4 282 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 6 530 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 407 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 129 416 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 440 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 6 530 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 129 416 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 129 291 cnv 17 3 64 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 291 cnv 17 3 64 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 191 416 signal;
-#X obj 23 41 cnv 4 4 4 empty empty Control 0 28 2 18 -233017 -1 0;
-#X obj 88 41 cnv 4 4 4 empty empty glide/portamento 0 28 2 18 -233017
--1 0;
-#X obj 129 362 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 23 41 cnv 4 4 4 empty empty Control 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 88 41 cnv 4 4 4 empty empty glide/portamento 0 28 2 18 #e0e0e0
+#000000 0;
+#X obj 129 362 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 2 4 cnv 15 301 42 empty empty glide2 20 20 2 37 -233017 -1 0
-;
+#X obj 2 4 cnv 15 301 42 empty empty glide2 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
@@ -26,25 +27,26 @@
 #X text 240 416 - glided signal;
 #X text 197 309 reset;
 #X text 240 309 - resets glide to input value;
-#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 304 4 pd;
-#X obj 344 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 344 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 457 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 457 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 477 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 514 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 463 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X text 38 176 see also:;
-#X obj 6 485 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 485 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 110 492 -exp <float>: sets exponential factor (default '1'
 \, linear), f 60;
 #X text 161 325 exp <float>;
@@ -56,18 +58,18 @@
 #X text 240 339 - refresh rate in ms;
 #X text 104 509 -rate <float>: sets refresh rate in ms (default 5 \,
 minimum 1), f 61;
-#X obj 229 252 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12668 1;
+#X obj 229 252 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 226 137 else/pulse 0.25;
 #X obj 226 161 else/display 2;
-#X floatatom 287 201 5 0 0 0 - - -;
+#X floatatom 287 201 5 0 0 0 - - - 0;
 #N canvas 868 80 383 211 exp 0;
 #X msg 127 34 4;
 #X msg 157 34 -4;
-#X floatatom 157 63 5 0 0 0 - - -;
+#X floatatom 157 63 5 0 0 0 - - - 0;
 #X msg 157 86 exp \$1;
-#X obj 57 163 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12668 1;
+#X obj 57 163 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 54 76 else/pulse 0.25;
 #X obj 54 98 else/display 2;
 #X msg 188 34 0.5;
@@ -93,11 +95,11 @@ it out as well., f 13;
 #X text 212 52 <= values rescaled to 200-800 range;
 #X obj 78 30 else/stepnoise 1;
 #X obj 78 53 else/rescale 200 800;
-#X floatatom 78 223 8 0 0 0 - - -;
+#X floatatom 78 223 8 0 0 0 - - - 0;
 #X text 204 192 <= values are limited \, generating a portamento,
 f 24;
 #X msg 158 141 rate \$1;
-#X floatatom 158 106 5 0 0 0 - - -;
+#X floatatom 158 106 5 0 0 0 - - - 0;
 #X text 195 104 <= increasing refresh rate generates steps, f 22;
 #X obj 78 100 else/display;
 #X obj 78 194 else/glide2 750 250;
@@ -111,18 +113,18 @@ f 24;
 #X connect 12 0 6 0;
 #X restore 468 245 pd example;
 #N canvas 849 83 439 273 rate 0;
-#X obj 152 203 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12700 1;
+#X obj 152 203 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X msg 83 141 rate \$1;
 #X msg 83 41 1;
 #X msg 93 64 100;
 #X msg 102 88 250;
-#X floatatom 83 119 7 0 0 0 - - -;
+#X floatatom 83 119 7 0 0 0 - - - 0;
 #X text 151 52 By default \, the refresh rate is 5 ms \, but you can
 change it with the -rate flag or the rate message. If you change the.
 , f 35;
-#X obj 149 118 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
-1;
+#X obj 149 118 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 149 175 else/glide2 1500 1000 -rate 250;
 #X connect 1 0 8 0;
 #X connect 2 0 5 0;
@@ -136,9 +138,9 @@ change it with the -rate flag or the rate message. If you change the.
 changes. The glide time in ms.;
 #X obj 226 226 else/glide2 2000 1000;
 #X text 278 168 glide time up, f 7;
-#X floatatom 349 201 5 0 0 0 - - -;
+#X floatatom 349 201 5 0 0 0 - - - 0;
 #X text 342 168 glide time down, f 9;
-#X obj 129 385 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 129 385 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 197 385 float;
 #X text 239 361 - glide up time in ms;

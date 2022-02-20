@@ -1,51 +1,53 @@
-#N canvas 652 66 562 600 10;
-#X obj 169 182 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#N canvas 502 23 562 600 10;
+#X obj 169 182 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X msg 220 205 clear;
 #X msg 199 183 create;
-#X floatatom 262 256 5 0 0 0 - - -;
+#X floatatom 262 256 5 0 0 0 - - - 0;
 #X text 259 205 clear memory;
-#X obj 3 335 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 489 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 531 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 335 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 91 343 cnv 17 3 97 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 91 446 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X obj 92 498 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 3 574 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 489 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 5 5 cnv 15 301 42 empty empty markov 20 20 2 37 -233017 -1 0
+#X obj 3 531 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 91 343 cnv 17 3 97 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 308 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 91 446 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 92 498 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 3 574 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 5 5 cnv 15 301 42 empty empty markov 20 20 2 37 #e0e0e0 #000000
+0;
+#X obj 308 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 4 5 graph;
-#X obj 347 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 347 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 25 42 cnv 4 4 4 empty empty Create/play 0 28 2 18 -233017 -1
+#X obj 25 42 cnv 4 4 4 empty empty Create/play 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 462 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 462 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 482 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 482 13 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 519 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 519 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 468 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 468 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 506 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 506 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 307 5 graph;
-#X obj 180 42 cnv 4 4 4 empty empty chains 0 28 2 18 -233017 -1 0;
-#X obj 117 42 cnv 4 4 4 empty empty markov 0 28 2 18 -233017 -1 0;
-#X obj 91 466 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 180 42 cnv 4 4 4 empty empty chains 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 117 42 cnv 4 4 4 empty empty markov 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 91 466 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 199 303 else/display;
 #X msg 230 230 60 \, 60 \, 62 \, 60 \, 65 \, 64;
@@ -91,8 +93,8 @@ the patch., f 75;
 #X msg 49 129 open;
 #X text 100 153 <= read/analyze;
 #X msg 203 229 clear;
-#X obj 253 223 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 253 223 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 67 179 trigger anything bang;
 #X msg 67 153 dump;
 #X obj 154 318 else/markov;
@@ -111,7 +113,7 @@ the patch., f 75;
 #X obj 52 463 unpack f f;
 #X obj 49 205 else/midi bday.mid;
 #X text 274 223 <= play;
-#X floatatom 244 295 3 1 5 0 - - -;
+#X floatatom 244 295 3 1 5 0 - - - 0;
 #X text 269 295 order;
 #X msg 49 278 learn \$1;
 #X obj 253 250 else/tempo 120 50;
@@ -155,14 +157,14 @@ of 5 outputs the original tune., f 54;
 #N canvas 807 97 429 499 midi-in 0;
 #X obj 173 103 stripnote;
 #X msg 153 73 clear;
-#X obj 26 25 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
-;
+#X obj 26 25 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
+0 1;
 #X obj 142 177 else/markov;
 #X msg 143 49 create;
 #X obj 40 231 else/keyboard 17 80 2 4 0 0 empty empty;
 #X obj 142 202 makenote 127 300, f 22;
 #X text 47 25 <= play;
-#X floatatom 205 155 5 0 0 0 - - -;
+#X floatatom 205 155 5 0 0 0 - - - 0;
 #X text 241 153 order;
 #X obj 209 76 notein;
 #X obj 173 130 else/combine 50;

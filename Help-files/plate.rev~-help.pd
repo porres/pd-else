@@ -1,39 +1,40 @@
-#N canvas 679 84 559 590 10;
-#X obj 3 280 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 418 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 473 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 563 23 559 590 10;
+#X obj 3 280 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 126 427 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 3 418 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 3 473 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 126 427 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 126 288 cnv 17 3 123 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 126 288 cnv 17 3 123 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c
 0;
-#X obj 3 563 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 563 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 21 40 cnv 4 4 4 empty empty Plate 0 28 2 18 -233017 -1 0;
+#X obj 21 40 cnv 4 4 4 empty empty Plate 0 28 2 18 #e0e0e0 #000000
+0;
 #X text 197 290 signal;
 #X text 256 290 - input signal;
 #X text 197 427 signal;
 #X text 252 427 - left channel output;
-#X obj 126 448 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 126 448 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 197 447 signal;
 #X text 252 447 - right channel output;
@@ -43,12 +44,12 @@
 #X obj 698 45 adc~ 1;
 #X obj 114 198 *~;
 #X obj 114 227 throw~ \$0-input;
-#X obj 323 204 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 323 204 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 323 232 else/impseq~;
 #X obj 323 267 throw~ \$0-input;
-#X obj 129 127 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 129 127 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 129 169 else/decay2~ 50 1000;
 #N canvas 780 129 376 168 tone 0;
 #X obj 52 23 inlet;
@@ -69,8 +70,8 @@
 #X obj 191 438 *~;
 #X obj 191 467 throw~ \$0-input;
 #X obj 206 389 else/decay~ 200;
-#X obj 206 299 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 206 299 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 62 398 else/lowpass~ 0 5;
 #X text 344 205 impulse;
 #X text 379 53 sample;
@@ -83,30 +84,30 @@
 \; \$0-damping 0.25 \; \$0-fbgain 0.75 \; \$0-drywet 0.5;
 #X connect 0 0 1 0;
 #X restore 771 480 pd init;
-#X obj 771 459 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 771 459 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 791 460 reload args;
-#X obj 403 78 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 403 78 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 428 80 play/stop;
 #X obj 403 114 else/play.file~ violin.wav -loop;
 #X obj 364 413 else/plate.rev~;
 #X obj 364 413 else/plate.rev~;
 #X obj 453 207 hsl 128 15 0 1000 0 0 empty \$0-predelayms empty -2
--8 0 10 -228856 -1 -1 1270 1;
-#X floatatom 450 231 5 0 0 0 - - -;
+-8 0 10 #dcdcdc #000000 #000000 0 1;
+#X floatatom 450 231 5 0 0 0 - - - 0;
 #X obj 513 234 hsl 128 15 0 1 0 0 empty \$0-cutoff empty -2 -8 0 10
--228856 -1 -1 6350 1;
-#X floatatom 510 260 5 0 0 0 - - -;
+#dcdcdc #000000 #000000 0 1;
+#X floatatom 510 260 5 0 0 0 - - - 0;
 #X obj 587 260 hsl 128 15 0 1 0 0 empty \$0-damping empty -2 -8 0 10
--228856 -1 -1 3175 1;
-#X floatatom 584 285 5 0 0 0 - - -;
+#dcdcdc #000000 #000000 0 1;
+#X floatatom 584 285 5 0 0 0 - - - 0;
 #X obj 652 292 hsl 128 15 0 1 0 0 empty \$0-fbgain empty -2 -8 0 10
--228856 -1 -1 9525 1;
-#X floatatom 649 315 5 0 0 0 - - -;
+#dcdcdc #000000 #000000 0 1;
+#X floatatom 649 315 5 0 0 0 - - - 0;
 #X obj 730 321 hsl 128 15 0 1 0 0 empty \$0-drywet empty -2 -8 0 10
--228856 -1 -1 6350 1;
-#X floatatom 727 348 5 0 0 0 - - -;
+#dcdcdc #000000 #000000 0 1;
+#X floatatom 727 348 5 0 0 0 - - - 0;
 #X text 696 320 dry;
 #X text 864 322 wet;
 #X text 696 320 dry;
@@ -167,12 +168,13 @@
 #X connect 58 0 19 1;
 #X connect 60 0 32 0;
 #X restore 457 242 pd example;
-#X obj 3 3 cnv 15 301 42 empty empty plate.rev~ 20 20 2 37 -233017
--1 0;
+#X obj 3 3 cnv 15 301 42 empty empty plate.rev~ 20 20 2 37 #e0e0e0
+#000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X obj 68 40 cnv 4 4 4 empty empty reverb 0 28 2 18 -233017 -1 0;
+#X obj 68 40 cnv 4 4 4 empty empty reverb 0 28 2 18 #e0e0e0 #000000
+0;
 #X obj 189 145 else/play.file~ vacuous.wav 1 1;
 #X text 167 312 pre <float>;
 #X text 149 329 cutoff <float>;

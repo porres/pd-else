@@ -1,7 +1,7 @@
-#N canvas 689 71 564 599 10;
-#X obj 2 3 cnv 15 301 42 empty empty xgate~ 20 20 2 37 -233017 -1 0
-;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 492 23 564 599 10;
+#X obj 2 3 cnv 15 301 42 empty empty xgate~ 20 20 2 37 #e0e0e0 #000000
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -9,24 +9,27 @@
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Route 0 28 2 18 -233017 -1 0;
-#X obj 151 40 cnv 4 4 4 empty empty with 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 40 cnv 4 4 4 empty empty Route 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 151 40 cnv 4 4 4 empty empty with 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 76 40 cnv 4 4 4 empty empty an 0 28 2 18 -233017 -1 0;
-#X obj 195 40 cnv 4 4 4 empty empty crossfade 0 28 2 18 -233017 -1
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 101 40 cnv 4 4 4 empty empty input 0 28 2 18 -233017 -1 0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 76 40 cnv 4 4 4 empty empty an 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 195 40 cnv 4 4 4 empty empty crossfade 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 101 40 cnv 4 4 4 empty empty input 0 28 2 18 #e0e0e0 #000000
+0;
 #X obj 187 127 noise~;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
+#fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -95,7 +98,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -108,8 +111,8 @@
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -129,18 +132,18 @@
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
 #X obj 187 164 else/xgate~ 4 1000 3;
-#X obj 4 396 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 464 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 517 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 396 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 572 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 464 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 97 473 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 4 517 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 572 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 97 473 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 152 404 signal;
-#X obj 97 404 cnv 17 3 53 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 97 404 cnv 17 3 53 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 158 422 float;
 #X text 116 440 time <float>;
@@ -149,9 +152,9 @@
 ;
 #X text 141 553 3) float - initially selected channel (default 0: none)
 , f 58;
-#X obj 240 117 hradio 15 1 0 5 empty empty empty 0 -8 0 10 -228856
--1 -1 0;
-#X floatatom 240 140 5 0 0 0 - - -;
+#X obj 240 117 hradio 15 1 0 5 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
+#X floatatom 240 140 5 0 0 0 - - - 0;
 #X text 280 139 select output (0 = none);
 #X text 194 422 - selected outlet (0 is none);
 #X text 194 404 - input signal to route;
@@ -165,19 +168,19 @@ max 500);
 #X text 61 86 [xgate~] routes between multiple outputs with equal power
 crossfading.;
 #X obj 304 198 print off-status;
-#X obj 97 494 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+#X obj 97 494 cnv 17 3 17 empty empty n+1 5 9 0 16 #dcdcdc #9c9c9c
 0;
 #X text 164 495 list;
 #X text 194 495 - reports output number and off status;
 #N canvas 865 191 626 453 status 0;
-#X obj 182 44 vradio 15 1 0 3 empty empty empty 0 -8 0 10 -228856 -1
--1 0;
-#X floatatom 182 99 3 0 2 0 - - -;
+#X obj 182 44 vradio 15 1 0 3 empty empty empty 0 -8 0 10 #dcdcdc #000000
+#000000 0;
+#X floatatom 182 99 3 0 2 0 - - - 0;
 #X text 202 43 0: none;
 #X msg 97 131 time \$1;
 #X text 76 104 ms;
 #X obj 97 105 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.181406 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 36 127 crossfade duration, f 9;
 #X text 305 333 you can use status to feed [switch~] objects, f 18
 ;
@@ -191,8 +194,8 @@ f 43;
 #X obj 308 129 r \$0-status;
 #X obj 308 210 switch~;
 #X msg 262 150 1;
-#X obj 308 185 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 308 185 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 120 84 inlet~;
 #X obj 262 129 sel 2;
 #X obj 308 150 route 2;
@@ -212,8 +215,8 @@ f 43;
 #X obj 308 210 switch~;
 #X obj 262 129 sel 1;
 #X msg 262 150 1;
-#X obj 308 185 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 308 185 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 120 84 inlet~;
 #X obj 262 105 r \$0-output;
 #X obj 120 196 outlet~;

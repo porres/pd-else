@@ -1,46 +1,46 @@
-#N canvas 576 51 558 662 10;
-#X obj 4 638 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 576 31 558 662 10;
+#X obj 4 638 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 6 264 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 6 502 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 6 548 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 264 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 85 271 cnv 17 3 207 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 6 502 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 6 548 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 85 271 cnv 17 3 207 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 85 508 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 85 508 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 167 508 signal;
 #X text 179 297 list;
-#X obj 85 528 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 85 528 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 173 393 pause;
 #X text 167 407 resume;
 #X text 218 393 - pauses the output, f 53;
 #X text 218 508 - envelope signal, f 25;
-#X obj 23 40 cnv 4 4 4 empty empty Envelope 0 28 2 18 -233017 -1 0
-;
-#X obj 101 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
+#X obj 23 40 cnv 4 4 4 empty empty Envelope 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 2 2 cnv 15 301 42 empty empty envgen~ 20 20 2 37 -233017 -1
+#X obj 101 40 cnv 4 4 4 empty empty generator 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 2 2 cnv 15 301 42 empty empty envgen~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
@@ -52,21 +52,21 @@
 #X text 219 528 - status: 1 <on> \, 0 <off>;
 #N canvas 525 23 476 517 status 0;
 #X obj 360 293 switch~;
-#X obj 360 225 tgl 50 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 360 225 tgl 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 71 253 *~;
 #X obj 49 191 osc~ 440;
 #X obj 201 241 else/sig2float~;
-#X obj 201 277 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 201 277 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 289 289 else/setdsp~;
 #X obj 71 298 else/out~;
 #X text 51 29 [envgen~] has a right outlet that sends a status value
 (1 when the envelope starts and 0 when it ends). This can be useful
 for different things \, but particularly to turn on and off the DSP
 processing of a subpatch or abstraction with [switch~]., f 62;
-#X obj 129 149 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 129 149 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 129 188 else/envgen~ 50 1 150 0.6 500 0.6 250 0;
 #X obj 345 469 clone;
 #X text 323 444 see also:;
@@ -89,7 +89,8 @@ floats and bangs., f 62;
 #X text 230 298 sets and runs envelope. Lists are pairs of duration
 & target. If odd \, 1st float is the starting point, f 51;
 #X text 218 337 - sets overall gain, f 53;
-#X obj 6 583 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 583 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 101 449 retrigger <float>;
 #X text 218 449 - retrigger time in ms, f 53;
 #X text 119 463 legato <float>;
@@ -103,10 +104,10 @@ floats and bangs., f 62;
 #N canvas 382 99 897 458 basic 0;
 #X msg 507 107 pause;
 #X msg 550 107 resume;
-#X obj 601 104 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 649 236 vsl 20 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 601 104 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 649 236 vsl 20 80 0 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X msg 649 126 0 1000 1 500 0;
 #X obj 649 206 else/sig2float~;
 #X text 673 307 0;
@@ -119,17 +120,17 @@ floats and bangs., f 62;
 #X text 634 82 ADSR (attack \, decay \, sustain \, release);
 #X text 744 126 AR (attack \, release);
 #X obj 42 291 else/sig2float~;
-#X obj 42 322 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
-#X obj 42 173 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 42 322 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 42 173 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 127 233 start \, duration \, target;
 #X text 87 197 duration \, target;
 #X obj 296 242 else/sig2float~;
-#X obj 296 275 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
-#X obj 296 163 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 296 275 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 296 163 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 192 338 else/setdsp~;
 #X text 68 416 0;
 #X text 67 317 1;
@@ -151,8 +152,8 @@ can use it to create complex envelope lines as below., f 35;
 #X text 25 24 The line segments in [envgen~] are set in pairs of duration
 (in ms) and target value (this is the opposite order of the [line]
 family of objects in Pd Vanilla)., f 36;
-#X obj 738 346 vsl 20 80 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 738 346 vsl 20 80 -1 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 738 316 else/sig2float~;
 #X text 761 342 1;
 #X obj 738 289 else/envgen~;
@@ -193,10 +194,10 @@ the same as using the right inlet.;
 #X obj 151 172 *~;
 #X obj 151 203 else/out~;
 #X obj 136 141 osc~ 440;
-#X obj 209 116 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 269 193 vsl 18 58 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 209 116 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 269 193 vsl 18 58 0 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 289 243 0;
 #X text 290 187 1;
 #X text 95 435 maxsustain <float>;
@@ -210,12 +211,12 @@ the same as using the right inlet.;
 #X text 24 241 MIDI Pitch =>, f 8;
 #X obj 503 245 else/rescale;
 #X obj 503 273 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 488 361 *~;
 #X obj 398 274 mtof;
 #X obj 193 180 else/tempo 60 50;
-#X obj 193 144 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 193 144 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 213 145 <= generate random notes, f 12;
 #X obj 193 251 else/display 6;
 #X obj 117 284 osc~ 0.5;
@@ -232,18 +233,18 @@ at "one-shot" when triggered., f 57;
 #X text 251 253 <= gain (gate on);
 #X obj 761 233 else/envgen~ 10 1 40 0.5 50 0 -suspoint 2 -maxsustain
 1000, f 30;
-#X obj 761 190 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 761 190 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 677 53 When you have a sustain point \, you can define a maximum
 sustain time in \, so there's a release if no release is given until
 that time., f 56;
 #X obj 761 280 else/sig2float~;
-#X obj 761 314 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 761 314 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 888 341 else/setdsp~;
 #X msg 812 201 maxsustain \$1;
 #X obj 812 180 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 677 98 You can set a maximum sustain time with the "maxsustain"
 message or flag. A value equal or less than zero means there's no maximum
 sustain time and it will sustain indefinitely until it receives a release.
@@ -293,39 +294,39 @@ sustain time and it will sustain indefinitely until it receives a release.
 #X obj 73 222 *~;
 #X obj 51 170 osc~ 440;
 #X obj 192 209 else/sig2float~;
-#X obj 192 242 vsl 18 100 0 0.5 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
-#X obj 131 117 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 192 242 vsl 18 100 0 0.5 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 131 117 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 73 272 else/out~;
 #X text 158 120 <= click multiple times, f 24;
 #X obj 131 158 else/envgen~ 100 1 300 0.25 1000 0.25 500 0, f 18;
 #X obj 399 246 *~;
 #X obj 377 194 osc~ 440;
 #X obj 517 242 else/sig2float~;
-#X obj 517 275 vsl 18 100 0 0.5 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
-#X obj 457 141 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 517 275 vsl 18 100 0 0.5 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 457 141 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 399 296 else/out~;
 #X text 484 144 <= click multiple times;
 #X obj 457 182 else/envgen~ 0 100 1 300 0.25 1000 0.25 500 0, f 20
 ;
 #X msg 380 142 legato \$1;
-#X obj 380 121 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 380 121 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 722 266 *~;
 #X obj 700 214 osc~ 440;
 #X obj 841 253 else/sig2float~;
-#X obj 841 286 vsl 18 100 0 0.5 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
-#X obj 780 161 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 841 286 vsl 18 100 0 0.5 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 780 161 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 722 316 else/out~;
 #X text 807 164 <= click multiple times;
 #X msg 693 165 retrigger \$1;
 #X obj 693 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 780 202 else/envgen~ 0 100 1 300 0.25 1000 0.25 500 0 -retrigger
 10, f 29;
 #X text 45 54 An even number of elements makes [envgen~] operate in
@@ -374,7 +375,6 @@ usually enough for this non legato effect., f 50;
 #X obj 378 202 else/bl.saw~;
 #X obj 44 201 else/bl.tri~;
 #X obj 169 204 else/envgen~ 10 1 40 0.7 400 0.7 50 0, f 19;
-#X obj 169 94 else/tempo~ 60 100 -on;
 #X text 40 21 The [envgen~] object can also be triggered by audio.
 For a one shot envelope (without sustain points) \, you can use impulses
 to trigger it., f 52;
@@ -387,24 +387,25 @@ and can also retrigger the envelope., f 47;
 #X obj 378 145 else/rand.i~ 36 72;
 #X obj 162 331 else/out~;
 #X obj 496 328 else/out~;
-#X connect 0 0 12 0;
-#X connect 1 0 13 0;
+#X obj 169 94 else/tempo~ -on 60 100;
+#X connect 0 0 11 0;
+#X connect 1 0 12 0;
 #X connect 2 0 1 1;
 #X connect 3 0 7 0;
 #X connect 4 0 6 0;
 #X connect 5 0 2 0;
-#X connect 5 0 15 0;
+#X connect 5 0 14 0;
 #X connect 6 0 1 0;
 #X connect 7 0 0 0;
 #X connect 8 0 0 1;
-#X connect 9 0 8 0;
-#X connect 9 0 14 0;
+#X connect 11 0 15 0;
+#X connect 11 1 15 1;
 #X connect 12 0 16 0;
 #X connect 12 1 16 1;
-#X connect 13 0 17 0;
-#X connect 13 1 17 1;
-#X connect 14 0 3 0;
-#X connect 15 0 4 0;
+#X connect 13 0 3 0;
+#X connect 14 0 4 0;
+#X connect 17 0 8 0;
+#X connect 17 0 13 0;
 #X restore 487 196 pd signal;
 #X text 218 270 - gate: on/attack (non-0) or off/release (0), f 53
 ;
@@ -415,7 +416,7 @@ and can also retrigger the envelope., f 47;
 #X obj 140 352 else/envgen~;
 #X obj 113 395 print~;
 #X obj 113 203 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 113 229 t b f;
 #X msg 80 168 0;
 #X msg 113 168 1;
@@ -426,7 +427,7 @@ and can also retrigger the envelope., f 47;
 of samples and is rounded to the nearest integer sample duration. For
 instance \, durations >= 1.5 and < 2.5 is rounded to 2 samples., f
 57;
-#X floatatom 140 290 0 0 0 0 - - -;
+#X floatatom 140 290 0 0 0 0 - - - 0;
 #X text 25 166 samples;
 #X text 124 290 ms;
 #X text 55 69 A minimum line size is of 2 samples \, meaning that its
@@ -438,14 +439,14 @@ with 0 duration next to each other get ignored (and values less than
 #X obj 314 352 else/envgen~;
 #X obj 287 395 print~;
 #X obj 287 203 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 287 229 t b f;
 #X msg 254 168 0;
 #X msg 287 168 1;
 #X msg 324 168 2;
 #X msg 357 168 3;
 #X obj 314 260 else/samps2ms;
-#X floatatom 314 290 0 0 0 0 - - -;
+#X floatatom 314 290 0 0 0 0 - - - 0;
 #X text 298 290 ms;
 #X msg 314 321 0 \$1 1 \$1 0;
 #X msg 140 321 0 \$1 1;
@@ -473,8 +474,8 @@ with 0 duration next to each other get ignored (and values less than
 #X connect 27 0 1 0;
 #X restore 475 119 pd duration;
 #N canvas 726 168 533 463 function 0;
-#X obj 144 245 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 144 245 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 431 173 1;
 #X obj 129 334 *~;
 #X obj 129 371 else/out~;
@@ -499,7 +500,7 @@ for more details on how it works., f 65;
 #X connect 8 0 2 1;
 #X connect 10 0 6 0;
 #X restore 475 236 pd function;
-#X obj 85 482 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 85 482 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 218 482 - sets the envelope and doesn't run it, f 53;
 #X text 178 483 list;
@@ -515,7 +516,7 @@ for more details on how it works., f 65;
 #X text 74 83 [envgen~] is an envelope generator \, but It can also
 be considered an all purpose line segment generator.;
 #N canvas 513 87 482 594 exponential 0;
-#X obj 43 362 cnv 15 398 138 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 43 362 cnv 15 398 138 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-env 13230 float 3;
@@ -773,7 +774,7 @@ be considered an all purpose line segment generator.;
 0.758132 0.758341 0.758549 0.758757 0.758965 0.759173 0.759381 0.759589
 0.759796 0.760004 0.760211 0.760418 0.760625 0.760832 0.761039 0.761245
 0.761452 0.761658 0.761864 0.76207 0.762276 0.762482 0.762688 0.762893
-0.763099 ;
+0.763099;
 #A 2000 0.763304 0.763509 0.763714 0.763919 0.764124 0.764328 0.764533
 0.764737 0.764941 0.765145 0.765349 0.765553 0.765757 0.76596 0.766164
 0.766367 0.76657 0.766773 0.766976 0.767179 0.767381 0.767584 0.767786
@@ -2165,7 +2166,7 @@ be considered an all purpose line segment generator.;
 #X text 113 524 The following subpatch shows how to create "S" like
 curves:, f 35;
 #N canvas 692 218 467 485 "S"-curves 0;
-#X obj 24 317 cnv 15 398 138 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 24 317 cnv 15 398 138 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 1 52 450 300 (subpatch) 0;
 #X array \$0-S-curve 4410 float 1;
@@ -2811,11 +2812,11 @@ and [else/rescale~]. Check them out as well:;
 #X restore 457 138 pd exponential;
 #X obj 269 168 else/s2f~;
 #X obj 356 192 sel 0;
-#X obj 356 219 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 356 219 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 376 218 done;
-#X obj 356 167 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 356 167 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 228 553 a float sets an initial output value \, a list floats
 sets the envelope (default 0 0), f 44;
 #X text 219 553 -;

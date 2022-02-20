@@ -1,38 +1,40 @@
-#N canvas 769 23 561 727 10;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 650 23 561 723 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 3 graph;
-#X obj 22 40 cnv 4 4 4 empty empty Multi-channel 0 28 2 18 -233017
--1 0;
-#X obj 131 40 cnv 4 4 4 empty empty player 0 28 2 18 -233017 -1 0;
-#X obj 4 697 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 22 40 cnv 4 4 4 empty empty Multi-channel 0 28 2 18 #e0e0e0
+#000000 0;
+#X obj 131 40 cnv 4 4 4 empty empty player 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 6 267 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 6 540 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 587 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 697 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 97 546 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 6 267 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 6 540 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 5 587 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 97 546 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 81 274 cnv 17 3 261 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 81 274 cnv 17 3 261 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 96 301 open <symbol> -;
-#X obj 6 663 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 663 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 192 591 (optional) channels (default 1 if no file is given
 \, or sound file's if given \, max 64), f 44;
 #X text 115 616 2) symbol;
@@ -46,12 +48,12 @@
 #X text 179 592 -;
 #X text 152 547 signal - the buffer signal of the corresponding channel
 ;
-#X obj 3 3 cnv 15 301 42 empty empty player~ 20 20 2 37 -233017 -1
+#X obj 3 3 cnv 15 301 42 empty empty player~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 97 566 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+#X obj 97 566 cnv 17 3 17 empty empty n+1 5 9 0 16 #dcdcdc #9c9c9c
 0;
 #X text 164 567 bang - a bang when finishing playing the buffer;
 #X text 150 328 show -;
@@ -62,10 +64,10 @@
 #X obj 169 332 else/meter2~;
 #X obj 346 323 else/out~;
 #X msg 120 215 open violin.wav;
-#X obj 299 294 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 529 302 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 299 294 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 529 302 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X msg 134 240 open stereo.wav;
 #X text 122 30 If you give an optional float argumewnt as the first
 argument \, it specifies the number of channels. If no float argument
@@ -81,8 +83,8 @@ are silent. Conversely \, a file with more channels than specified
 (like a stereo file in a mono buffer player) has its remaining channels
 ignored.;
 #X msg 35 190 start;
-#X obj 346 238 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 346 238 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 56 268 else/player~ stereo.wav -loop -speed -100;
 #X msg 56 214 stop;
 #X obj 346 277 else/player~ 1 stereo.wav -loop;
@@ -110,22 +112,22 @@ message), f 72;
 #X msg 122 179 pause;
 #X msg 279 151 speed \$1;
 #X obj 279 130 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X msg 291 199 loop \$1;
-#X obj 291 175 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 246 202 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 378 410 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 291 175 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
+#X obj 246 202 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 378 410 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 399 408 <= finished;
 #X msg 169 151 open vacuous.wav;
-#X obj 225 202 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
-1;
+#X obj 225 202 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 170 373 click: opens a new file =>, f 13;
 #X msg 66 151 open stereo.wav;
-#X floatatom 360 201 5 0 0 0 - - -;
-#X floatatom 419 201 5 0 0 0 - - -;
+#X floatatom 360 201 5 0 0 0 - - - 0;
+#X floatatom 419 201 5 0 0 0 - - - 0;
 #X msg 96 280 show;
 #X msg 132 280 hide;
 #X obj 261 411 else/out~;
@@ -139,10 +141,10 @@ empty;
 #X text 502 149 <= shift+click & drag to select range., f 14;
 #X text 360 131 range slider:;
 #X msg 376 272 xfade \$1;
-#X obj 376 249 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 376 249 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X msg 442 276 fade \$1;
-#X floatatom 442 254 5 0 10000 0 - - -;
+#X floatatom 442 254 5 0 10000 0 - - - 0;
 #X text 121 35 Test the main message methods of [player~]. For more
 details you can als check the documentation of:;
 #X obj 368 55 else/tabplayer~;
@@ -186,16 +188,16 @@ rate of 88200 Hz., f 73;
 #X restore 482 220 pd example;
 #X msg 180 154 speed \$1;
 #X obj 180 133 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 257 155 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 257 155 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 235 207 else/out~;
 #X text 341 154 <= start at 500 ms;
-#X obj 382 218 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 382 218 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X msg 284 154 play 500;
-#X obj 247 133 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 247 133 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 34 169 else/tabplayer~;
 #X text 142 272 float;
 #X text 148 286 bang;

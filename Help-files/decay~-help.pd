@@ -1,27 +1,28 @@
-#N canvas 667 103 560 575 10;
-#X obj 4 369 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 478 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 511 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 606 31 560 575 10;
+#X obj 4 369 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 540 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 478 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 129 487 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 511 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 540 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 129 487 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 129 377 cnv 17 3 65 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 377 cnv 17 3 65 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 191 411 signal;
 #X text 191 487 signal;
-#X obj 2 3 cnv 15 301 42 empty empty decay~ 20 20 2 37 -233017 -1 0
-;
+#X obj 2 3 cnv 15 301 42 empty empty decay~ 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 23 40 cnv 4 4 4 empty empty Exponential 0 28 2 18 -233017 -1
+#X obj 23 40 cnv 4 4 4 empty empty Exponential 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 117 40 cnv 4 4 4 empty empty decay 0 28 2 18 -233017 -1 0;
-#X obj 129 451 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 117 40 cnv 4 4 4 empty empty decay 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 129 451 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 155 451 float/signal;
 #X text 197 429 clear;
@@ -29,8 +30,8 @@
 #X obj 177 256 *~;
 #X obj 151 185 else/brown~;
 #X text 240 429 - clears filter's memory;
-#X obj 297 253 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 297 253 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 297 225 else/sig2float~;
 #X text 320 247 1;
 #X text 239 450 - decay time in ms;
@@ -39,19 +40,19 @@
 #N canvas 544 265 662 364 control 0;
 #X obj 102 249 else/out~;
 #X obj 102 205 *~;
-#X obj 222 202 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 222 202 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 222 174 else/sig2float~;
 #X text 245 295 0;
 #X text 245 196 1;
-#X obj 160 113 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 160 113 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 160 143 else/decay~ 4000;
 #X obj 83 143 else/gray~;
 #X obj 366 271 else/out~;
 #X obj 366 227 *~;
-#X obj 486 224 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 486 224 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 486 196 else/sig2float~;
 #X text 512 218 1;
 #X obj 424 165 else/decay~ 4000;
@@ -59,8 +60,8 @@
 #X msg 424 124 1;
 #X msg 458 124 0.5;
 #X msg 497 124 0.1;
-#X obj 396 123 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 396 123 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 143 36 [decay~] can also be used with control rate messages
 \, such as bangs and float input. A bang will trigger the object with
 the last received float input (which is 1 by default).;
@@ -84,22 +85,22 @@ the last received float input (which is 1 by default).;
 #X connect 19 0 14 0;
 #X connect 23 0 14 0;
 #X restore 472 325 pd control;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X text 197 378 float;
 #X text 240 411 - impulse trigger;
@@ -111,7 +112,7 @@ the last received float input (which is 1 by default).;
 #X text 319 346 -1;
 #X text 203 394 bang;
 #N canvas 452 188 493 356 shape 0;
-#X obj 47 148 cnv 15 398 138 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 47 148 cnv 15 398 138 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 1 52 450 300 (subpatch) 0;
 #X array \$0-decay 441 float 1;
@@ -175,13 +176,13 @@ the last received float input (which is 1 by default).;
 0.00143371 0.00141143 0.0013895 0.0013679 0.00134664 0.00132571 0.00130511
 0.00128482 0.00126485 0.0012452 0.00122584 0.00120679 0.00118804 0.00116957
 0.0011514 0.0011335 0.00111588 0.00109854 0.00108147 0.00106466 0.00104811
-0.00103182 0.00101579;
+0.00103182 0.00101579 ;
 #X coords 0 1 440 0 400 140 1 0 0;
 #X restore 46 147 graph;
 #X text 34 141 1;
 #X text 34 273 0;
-#X obj 67 30 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 67 30 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X obj 69 99 tabwrite~ \$0-decay;
 #X text 213 72 Here's the shape of the envelope, f 17;
 #X obj 80 66 else/decay~ 10;

@@ -1,41 +1,44 @@
-#N canvas 734 23 561 680 10;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 534 23 561 680 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Load 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
-0;
-#X obj 68 40 cnv 4 4 4 empty empty pictures 0 28 2 18 -233017 -1 0
+#X obj 23 40 cnv 4 4 4 empty empty Load 0 28 2 18 #e0e0e0 #000000 0
 ;
-#X obj 3 3 cnv 15 301 42 empty empty pic 20 20 2 37 -233017 -1 0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 68 40 cnv 4 4 4 empty empty pictures 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 3 cnv 15 301 42 empty empty pic 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 4 366 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 4 366 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 478 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 559 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 98 373 cnv 17 3 99 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 4 478 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 559 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 98 373 cnv 17 3 99 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 4 654 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 654 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 127 371 open <symbol>;
 #X text 213 371 - open an image file named by the symbol, f 50;
 #X obj 229 335 else/display;
-#X obj 98 485 cnv 17 3 42 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 98 485 cnv 17 3 42 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 181 484 bang;
 #X text 213 484 - a bang is output if you click on the image;
@@ -62,8 +65,8 @@ removes the send/receive symbols., f 67;
 ;
 #X obj 320 223 s \$0-pic-rcv;
 #X msg 320 194 latch \$1;
-#X obj 320 170 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 320 170 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X msg 90 150 send empty \, receive empty;
 #X text 57 462 Note that inside the properties window you don't need
 to escape the special characters of "$" and also spaces \, both of
@@ -101,8 +104,8 @@ allowed \, such as braces \, backslashes \, commas and semicolons.
 #X obj 113 486 else/display;
 #X text 245 398 <= open;
 #N canvas 457 127 400 491 (subpatch) 0;
-#X obj 104 232 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 104 232 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 124 270 sel 0 1;
 #X obj 151 363 s \$0-set;
 #X obj 104 39 r \$0-set;
@@ -198,8 +201,8 @@ parameters are: name and send/receive symbols., f 59;
 #X f 7;
 #N canvas 835 231 468 365 outline 0;
 #X msg 181 155 outline \$1;
-#X obj 181 118 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 181 118 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 181 188 else/pic 0 else/tklogo.gif empty empty 0 0;
 #X text 66 33 You can always have an outline of the picture (and not
 only while in edit mode) if you set the outline mode with the 'outline'
@@ -209,7 +212,7 @@ a non zero value sets to outline mode.;
 #X connect 1 0 0 0;
 #X restore 469 229 pd outline;
 #X obj 229 197 else/pic 0 else/pdlogo.gif empty empty 0 0;
-#X obj 4 532 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 532 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X text 259 539 (none);
 #X text 124 607 -outline: sets to outline mode (default no outline)
@@ -233,8 +236,8 @@ a non zero value sets to outline mode.;
 image. A possible workaround is to use [canvas.zoom] and load an image
 twice as big when the patch window gets zoomed in., f 52;
 #X obj 33 195 else/pic 0 else/pdlogo.gif empty empty 0 0;
-#X obj 33 102 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 33 102 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 33 124 select 0 1, f 44;
 #X obj 33 334 else/display;
 #X msg 33 152 open else/pdlogo.gif;
@@ -255,8 +258,8 @@ twice as big when the patch window gets zoomed in., f 52;
 #X msg 215 133 open else/tklogo.gif;
 #X msg 238 159 open else/pdlogo.gif;
 #X obj 215 197 else/pic 0 else/pdlogo.gif empty empty 1 0;
-#X obj 151 131 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 151 131 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X msg 151 158 size \$1;
 #X obj 215 341 else/display;
 #X text 82 40 You can set [pic] to report the image size after it loads
@@ -275,8 +278,8 @@ picture and it sends a bang (default) or 1 when clicking and 0 when
 releasing (when in latch mode)., f 68;
 #X text 146 209 click the image =====>, f 12;
 #X msg 168 168 latch \$1;
-#X obj 168 143 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 168 143 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X text 213 400 - non-zero sets to latch mode, f 50;
 #X text 175 499 float;
 #X text 213 499 - 1/0 when in latch mode;

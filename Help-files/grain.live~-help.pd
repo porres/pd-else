@@ -1,44 +1,45 @@
-#N canvas 674 55 564 657 10;
-#X obj 300 114 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#N canvas 584 23 564 657 10;
+#X obj 300 114 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 300 137 metro 500;
-#X obj 300 159 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 300 159 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 243 217 else/out~;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 3 graph;
-#X obj 69 40 cnv 4 4 4 empty empty granulator 0 28 2 18 -233017 -1
+#X obj 69 40 cnv 4 4 4 empty empty granulator 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 4 629 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 629 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 6 278 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 6 497 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 548 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 278 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 89 504 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 6 497 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 5 548 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 89 504 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 90 286 cnv 17 3 28 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 90 286 cnv 17 3 28 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 6 577 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 577 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 125 555 1) float;
-#X obj 89 525 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 89 525 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 103 475 scale <list> - scale to autotune to in cents (default
 equal temperament), f 74;
@@ -47,17 +48,18 @@ equal temperament), f 74;
 #X text 185 505 signal - left channel output;
 #X text 185 525 signal - right channel output;
 #X text 189 554 - number of grains in cloud (default 16), f 46;
-#X obj 22 40 cnv 4 4 4 empty empty Live 0 28 2 18 -233017 -1 0;
-#X obj 388 166 nbx 3 14 1 32 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 1 256;
+#X obj 22 40 cnv 4 4 4 empty empty Live 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 388 166 nbx 3 14 1 32 0 0 empty empty empty 0 -8 0 12 #dcdcdc
+#000000 #000000 0 256;
 #X obj 199 130 play.file~ bubul.wav 1 1, f 13;
 #N canvas 805 175 765 513 example 0;
 #N canvas 992 351 389 390 tuning 0;
 #X obj 64 339 outlet;
 #X obj 94 236 else/eqdiv;
 #X msg 63 80 autotune \$1;
-#X obj 63 54 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
-;
+#X obj 63 54 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
+0 1;
 #X msg 94 112 3 13;
 #X msg 112 153 2 12;
 #X msg 103 132 2 13;
@@ -79,12 +81,12 @@ equal temperament), f 74;
 #X connect 8 0 1 0;
 #X connect 9 0 0 0;
 #X restore 178 243 pd tuning;
-#X obj 71 288 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 71 337 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 71 288 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
+#X obj 71 337 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X obj 71 314 metro;
-#X floatatom 98 291 5 0 0 0 - - -;
+#X floatatom 98 291 5 0 0 0 - - - 0;
 #X text 260 206 Here's some presets for you to have fun with, f 23
 ;
 #N canvas 886 447 701 437 presets 0;
@@ -137,11 +139,11 @@ to sync mode at creation with the -sync flag., f 58;
 #X text 230 211 <==;
 #X text 242 242 <= about tuning;
 #X msg 192 301 sync \$1;
-#X obj 192 274 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 192 274 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 216 274 synchronous mode;
 #X obj 210 337 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 252 333 density (number of grains), f 15;
 #X obj 221 394 r \$0-set-env;
 #X obj 49 396 else/grain.live~ -sync;
@@ -189,14 +191,14 @@ also given by the [function] GUI object., f 48;
 #X connect 27 0 23 0;
 #X connect 31 0 23 0;
 #X restore 464 249 pd example;
-#X obj 3 3 cnv 15 301 42 empty empty grain.live~ 20 20 2 37 -233017
--1 0;
+#X obj 3 3 cnv 15 301 42 empty empty grain.live~ 20 20 2 37 #e0e0e0
+#000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X text 79 87 [grain.live~] is a live input granulator that generates
 clouds of grains.;
-#X obj 90 318 cnv 17 3 173 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 90 318 cnv 17 3 173 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 139 284 signal - signal input to be granulated, f 68;
 #X text 97 374 transp <f \, f> - sets min/max transpositin in cents

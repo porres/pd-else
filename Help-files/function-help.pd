@@ -1,15 +1,15 @@
-#N canvas 677 62 566 679 10;
-#X obj 4 299 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 531 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 560 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 581 23 566 679 10;
+#X obj 4 299 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 654 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 531 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 99 307 cnv 17 3 220 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 560 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 654 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 99 307 cnv 17 3 220 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 99 539 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 99 539 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 191 332 list;
 #X text 225 332 - sets and outputs breakpoints function, f 45;
@@ -24,7 +24,8 @@
 #X text 137 444 width <float>;
 #X text 225 430 - sets heigth, f 45;
 #X text 225 444 - sets width, f 45;
-#X obj 4 587 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 4 587 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 137 486 send <symbol>;
 #X text 225 486 - sets send symbol, f 45;
 #X text 119 500 receive <symbol>;
@@ -34,42 +35,43 @@
 #X text 225 458 - sets RGB color of foreground, f 45;
 #X text 113 472 bgcolor <f \, f \, f>;
 #X text 225 472 - sets RGB color of background, f 45;
-#X obj 24 39 cnv 4 4 4 empty empty Function 0 28 2 18 -233017 -1 0
+#X obj 24 39 cnv 4 4 4 empty empty Function 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 102 39 cnv 4 4 4 empty empty GUI 0 28 2 18 #e0e0e0 #000000 0
 ;
-#X obj 102 39 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
-#X obj 3 2 cnv 15 301 42 empty empty function 20 20 2 37 -233017 -1
+#X obj 3 2 cnv 15 301 42 empty empty function 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 2 graph;
-#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 2 graph;
 #X obj 212 125 else/initmess 0 500 1 500 0;
 #X obj 183 267 else/display;
-#X obj 184 124 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 184 124 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #N canvas 769 53 527 508 function~ 0;
 #X text 404 158 1;
 #X obj 152 360 else/out~;
 #X obj 195 287 else/function~;
 #X text 403 254 -1;
 #X obj 74 204 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 200 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 74 175 else/initmess 200;
 #X obj 74 237 phasor~;
 #X text 69 24 Here's an example on how to use [function] with [function~].
@@ -91,15 +93,15 @@ below!;
 #X connect 11 0 2 0;
 #X restore 468 189 pd function~;
 #N canvas 600 144 519 378 envgen~ 0;
-#X obj 156 188 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 156 188 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 434 120 1;
 #X obj 156 241 else/envgen~;
 #X obj 47 232 *~;
 #X obj 47 280 else/out~;
 #X text 433 216 0;
 #X obj 47 163 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--262144 -1 -1 200 256;
+#fcfcfc #000000 #000000 0 256;
 #X obj 225 93 else/initmess 0 50 1 50 0.6 300 0.6 200 0;
 #X obj 47 196 else/bl.tri~;
 #X obj 47 134 else/initmess 200;
@@ -183,9 +185,9 @@ values., f 35;
 50 50 0 0 0 0 0 100 1 100 0.6 350 0.6 250 0;
 #X obj 217 432 else/display;
 #X obj 172 194 else/initmess 0 100 1 100 0.6 350 0.6 250 0;
-#X obj 220 221 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 217 245 0 0 0 0 - - -;
+#X obj 220 221 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 217 245 0 0 0 0 - - - 0;
 #X obj 294 276 line;
 #X obj 217 468 else/f2s~ 10;
 #X obj 108 453 *~;
@@ -197,7 +199,7 @@ with a ramp and use it to control the amplitude. But you can just use
 it as a control message instead., f 70;
 #X msg 118 268 i \$1;
 #X obj 118 247 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 55 121 Additionaly \, you can also use the "i" message \, followed
 by a float. This float value is then tereated as the actual index in
 the table. The number of index is the same as the envelope dursation.
@@ -206,8 +208,8 @@ A linear interpolation is performed with both a float input and using
 #X obj 370 237 else/phasor 1;
 #X obj 370 283 / 127;
 #X obj 370 261 spigot;
-#X obj 421 262 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 421 262 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 55 21 Alternatively \, you can have a float input from 0 to
 1 into [function] and they'll be treatet as indexes and the amplitude
 value will then be output. This is useful if you want to control a
@@ -236,10 +238,10 @@ use [line] to drive it or [phasor]., f 70;
 #X obj 345 269 else/display;
 #X obj 99 196 else/function 200 100 \$0-function-out \$0-function-in
 0 1 220 220 220 50 50 50 1 0 0 0 0.53 400 1 255 0 345 0.58;
-#X obj 343 169 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 68 146 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 343 169 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 68 146 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X obj 99 322 else/display;
 #X msg 116 160 send empty \, receive empty;
 #X obj 99 126 else/initmess send \\\$0-function-out \, receive \\\$0-function-in
@@ -270,8 +272,8 @@ it lists., f 59;
 50 50 0 0 0 0 0 100 1 100 0.6 350 0.6 250 0;
 #X obj 88 327 else/display;
 #X obj 88 126 else/initmess 0 100 1 100 0.6 350 0.6 250 0;
-#X obj 62 127 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 62 127 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X text 43 27 An odd list of at least 3 floats sets the envelope function.
 The syntax is the same as the [function~] object (point1 \, period
 \, point2 \, period \, point3 \, etc.) - an output is then generated
@@ -283,15 +285,15 @@ output of the stored line fucntion.;
 50 50 0 0 0 0 0 100 1 100 0.6 350 0.6 250 0;
 #X obj 534 317 else/display;
 #X obj 534 90 else/initmess 0 100 1 100 0.6 350 0.6 250 0, f 22;
-#X obj 508 94 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 508 94 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X text 636 133 set message only sets (doesn't output), f 21;
 #X msg 553 135 0 0.5;
 #X text 466 27 A list of 2 floats sets the point number specified by
 the first number (countiing from 0) with the value specified by the
 second number of the list., f 55;
-#X obj 609 137 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 609 137 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X msg 609 166 set 0 \$1;
 #X text 45 374 You can also generate an output via the interface. You
 can click on a point and drag it around. A point is removed if you

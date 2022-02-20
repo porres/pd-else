@@ -1,18 +1,18 @@
-#N canvas 618 70 564 714 10;
+#N canvas 545 32 564 714 10;
 #X obj 2 679 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
-14 -228856 -66577 0;
+14 #dcdcdc #404040 0;
 #X obj 1 358 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
--228856 -1 0;
+#dcdcdc #000000 0;
 #X obj 1 600 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
-13 -228856 -1 0;
+13 #dcdcdc #000000 0;
 #X obj 1 651 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
-0 13 -228856 -1 0;
-#X obj 79 366 cnv 17 3 164 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
--162280 0;
+0 13 #dcdcdc #000000 0;
+#X obj 79 366 cnv 17 3 164 empty \$0-pddp.cnv.let.0 0 5 9 0 16 #dcdcdc
+#9c9c9c 0;
 #X text 145 366 signal;
-#X obj 2 3 cnv 15 301 42 empty empty mix4~ 20 20 2 37 -233017 -1 0
-;
-#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 2 3 cnv 15 301 42 empty empty mix4~ 20 20 2 37 #e0e0e0 #000000
+0;
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -20,24 +20,25 @@
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 304 3 pd;
-#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 22 40 cnv 4 4 4 empty empty 4-channel 0 28 2 18 -233017 -1 0
-;
-#X obj 102 40 cnv 4 4 4 empty empty mixer 0 28 2 18 -233017 -1 0;
-#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 22 40 cnv 4 4 4 empty empty 4-channel 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 102 40 cnv 4 4 4 empty empty mixer 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
+#fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -106,7 +107,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -119,8 +120,8 @@
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -141,10 +142,10 @@
 #X restore 505 71 pd;
 #X text 181 658 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear);
-#X obj 78 607 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
--162280 0;
-#X obj 78 630 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
--162280 0;
+#X obj 78 607 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 #dcdcdc
+#9c9c9c 0;
+#X obj 78 630 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 #dcdcdc
+#9c9c9c 0;
 #X text 145 608 signal;
 #X text 109 512 mode <float>;
 #X text 195 512 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
@@ -152,17 +153,17 @@
 #N canvas 715 46 548 676 examples 0;
 #X msg 424 307 mode \$1;
 #X obj 424 230 vradio 15 1 0 3 \$0-dummy \$0-dummy-set empty 0 -8 0
-10 -228856 -1 -1 0;
+10 #dcdcdc #000000 #000000 0;
 #X text 443 245 dB;
 #X text 443 259 linear;
-#X floatatom 424 283 5 0 0 0 - - -;
+#X floatatom 424 283 5 0 0 0 - - - 0;
 #X text 407 209 slider scaling:;
 #X text 442 229 quartic;
-#X obj 315 134 nbx 5 14 -100 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X obj 396 140 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 393 160 5 0 0 0 - - -;
+#X obj 315 134 nbx 5 14 -100 100 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X obj 396 140 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 393 160 5 0 0 0 - - - 0;
 #X obj 162 484 else/meter2~;
 #X obj 218 368 else/gain2~;
 #X text 259 407 <= [else/gain2~];
@@ -205,7 +206,7 @@ values., f 60;
 #X connect 27 0 20 3;
 #X restore 474 288 pd examples;
 #N canvas 754 160 434 484 scaling 0;
-#X obj 91 57 cnv 15 198 198 empty empty empty 20 12 0 14 -253888 -66577
+#X obj 91 57 cnv 15 198 198 empty empty empty 20 12 0 14 #f4f8fc #404040
 0;
 #N canvas 0 22 452 302 (subpatch) 0;
 #X array dB 441 float 1;
@@ -438,8 +439,8 @@ becomes 0.125)., f 57;
 #X text 195 366 - incoming signal for channel 1;
 #X text 145 537 signal;
 #X text 195 537 - incoming signal for channel 2;
-#X obj 78 536 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
--162280 0;
+#X obj 78 536 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 #dcdcdc
+#9c9c9c 0;
 #X text 195 381 - sets slider of channel 1 (range is from 0 to 1),
 f 54;
 #X text 195 397 - sets slider of channel 2 (range is from 0 to 1),
@@ -470,12 +471,12 @@ f 54;
 ;
 #X text 195 496 - sets number of channel 4 (range is from -100 to 100)
 ;
-#X obj 78 557 cnv 17 3 17 empty \$0-pddp.cnv.let.0 2 5 9 0 16 -228856
--162280 0;
+#X obj 78 557 cnv 17 3 17 empty \$0-pddp.cnv.let.0 2 5 9 0 16 #dcdcdc
+#9c9c9c 0;
 #X text 145 557 signal;
 #X text 145 579 signal;
-#X obj 78 577 cnv 17 3 17 empty \$0-pddp.cnv.let.0 3 5 9 0 16 -228856
--162280 0;
+#X obj 78 577 cnv 17 3 17 empty \$0-pddp.cnv.let.0 3 5 9 0 16 #dcdcdc
+#9c9c9c 0;
 #X text 195 557 - incoming signal for channel 3;
 #X text 195 579 - incoming signal for channel 4;
 #X obj 260 332 dac~;

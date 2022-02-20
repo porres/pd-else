@@ -1,42 +1,46 @@
 #N canvas 711 28 562 601 10;
 #X declare -path else;
 #X msg 315 292 about;
-#X obj 3 574 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 574 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 61 153 Check declare's help file for more information.;
-#X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 306 3 pd;
-#X obj 346 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 346 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 459 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 459 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 479 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 479 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 516 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 516 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 465 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 465 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 503 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 503 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 31 40 cnv 4 4 4 empty empty The 0 28 2 18 -233017 -1 0;
-#X obj 68 40 cnv 4 4 4 empty empty ELSE 0 28 2 18 -233017 -1 0;
-#X obj 126 40 cnv 4 4 4 empty empty binary 0 28 2 18 -233017 -1 0;
-#X obj 4 4 cnv 15 301 42 empty empty else 20 20 0 33 -233017 -1 0;
+#X obj 31 40 cnv 4 4 4 empty empty The 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 68 40 cnv 4 4 4 empty empty ELSE 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 126 40 cnv 4 4 4 empty empty binary 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 4 4 cnv 15 301 42 empty empty else 20 20 0 33 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 4 459 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 507 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 542 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 459 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 123 467 cnv 17 3 32 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 507 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 542 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 123 467 cnv 17 3 32 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 123 516 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 123 516 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 242 551 (none);
 #X text 157 466 about;

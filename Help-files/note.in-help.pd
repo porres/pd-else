@@ -1,20 +1,22 @@
-#N canvas 624 102 564 569 10;
-#X obj 23 40 cnv 4 4 4 empty empty Midi 0 28 2 18 -233017 -1 0;
-#X obj 65 40 cnv 4 4 4 empty empty pitch 0 28 2 18 -233017 -1 0;
-#X obj 3 3 cnv 15 301 42 empty empty note.in 20 20 2 37 -233017 -1
+#N canvas 576 38 564 569 10;
+#X obj 23 40 cnv 4 4 4 empty empty Midi 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 65 40 cnv 4 4 4 empty empty pitch 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 3 cnv 15 301 42 empty empty note.in 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 2 299 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 2 356 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 2 464 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 299 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 154 310 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 2 356 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 2 464 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 154 310 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 2 542 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 542 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 209 474 -;
 #X text 151 474 1) float;
@@ -22,29 +24,30 @@
 #X text 238 312 - raw MIDI data stream;
 #X text 239 438 -;
 #X text 199 438 float;
-#X obj 110 40 cnv 4 4 4 empty empty input 0 28 2 18 -233017 -1 0;
-#X obj 154 366 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 110 40 cnv 4 4 4 empty empty input 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 154 366 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 238 366 -;
 #X text 198 366 float;
-#X obj 154 435 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 154 435 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 792 220 456 336 channel 0;
 #X msg 226 137 1;
@@ -75,9 +78,10 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X text 238 335 -;
 #X text 198 335 float;
 #X text 253 335 MIDI channel, f 31;
-#X obj 154 332 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 154 332 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 2 499 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 2 499 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X msg 205 135 144 \, 68 \, 120;
 #X obj 149 145 midiin;
 #X text 287 135 Note On (raw MIDI data);
@@ -87,12 +91,12 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X text 253 365 MIDI pitch, f 31;
 #X text 238 391 -;
 #X text 198 391 float;
-#X obj 154 388 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 154 388 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 253 391 MIDI velocity, f 31;
 #X text 238 415 -;
 #X text 198 415 float;
-#X obj 154 412 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 154 412 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 253 415 Note on/off flag (if -rel flag is given);
 #X text 254 438 Rightmost outlet is MIDI channel;

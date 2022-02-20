@@ -1,18 +1,18 @@
-#N canvas 662 128 567 602 10;
-#X obj 4 308 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 478 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 510 23 567 602 10;
+#X obj 4 308 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 93 450 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 478 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 93 450 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 94 316 cnv 17 3 92 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 94 316 cnv 17 3 92 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 116 154 hsl 180 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 222 181 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 116 154 hsl 180 15 0 127 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 222 181 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 172 337 bang;
 #X text 178 355 set;
 #X text 136 318 float/list;
@@ -25,10 +25,10 @@
 #X connect 3 0 1 0;
 #X restore 490 284 pd lists;
 #X obj 113 182 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 2 3 cnv 15 301 42 empty empty rescale 20 20 2 37 -233017 -1
+#dcdcdc #000000 #000000 0 256;
+#X obj 2 3 cnv 15 301 42 empty empty rescale 20 20 2 37 #e0e0e0 #000000
 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -36,25 +36,28 @@
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Rescale 0 28 2 18 -233017 -1 0;
-#X obj 88 40 cnv 4 4 4 empty empty MIDI 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 40 cnv 4 4 4 empty empty Rescale 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 88 40 cnv 4 4 4 empty empty MIDI 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X text 136 450 float/list;
 #X text 217 318 - original value(s);
 #X text 217 450 - rescaled value(s);
 #X msg 238 210 set 63.5;
-#X obj 138 40 cnv 4 4 4 empty empty values 0 28 2 18 -233017 -1 0;
+#X obj 138 40 cnv 4 4 4 empty empty values 0 28 2 18 #e0e0e0 #000000
+0;
 #X text 217 374 - sets exponential value;
 #X text 241 181 converts setted value or sends last output;
 #X text 130 374 exp <float>;
@@ -68,34 +71,34 @@
 You can also set an exponential factor (1 by default - linear). All
 these parameters can be changed by arguments., f 73;
 #N canvas 286 93 922 563 arguments 0;
-#X obj 50 131 hsl 180 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 50 131 hsl 180 15 0 127 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 47 159 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 150 181 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 206 182 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 95 208 else/rescale -10 10;
 #X obj 95 241 else/display;
 #X text 148 162 min-out;
 #X text 205 162 max-out;
-#X obj 309 108 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 309 108 hsl 180 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 306 136 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 306 253 else/display;
 #X obj 306 220 else/rescale 0 1 -10 10, f 36;
 #X obj 465 193 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 519 194 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 463 174 min-out;
 #X text 518 174 max-out;
 #X obj 359 193 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 412 193 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 357 174 min-in;
 #X text 411 174 max-in;
 #X text 44 31 If you give [rescale] up to 3 arguments \, it'll only
@@ -104,33 +107,33 @@ rightmost inlets. But if you give 4 or more arguments \, [rescale]
 is initialized with more inlets so you can set all range parameters.
 , f 74;
 #X obj 51 371 hsl 180 15 -127 127 0 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
+#dcdcdc #000000 #000000 0 1;
 #X obj 48 399 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 159 416 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 233 417 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 157 397 min-out;
 #X text 232 397 max-out;
 #X obj 86 443 else/rescale -10 10 -clip;
 #X obj 86 477 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X msg 312 407 clip \$1;
-#X obj 312 382 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 383 384 hsl 180 15 -2 2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 312 382 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
+#X obj 383 384 hsl 180 15 -2 2 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 380 412 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 380 495 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 380 457 else/rescale -1 1 -10 10;
-#X floatatom 639 173 0 1 1.2 0 - - -;
-#X obj 642 149 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 6350 1;
-#X obj 635 396 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
--66577 0;
+#X floatatom 639 173 0 1 1.2 0 - - - 0;
+#X obj 642 149 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 635 396 cnv 15 198 138 empty empty empty 20 12 0 14 #e0e0e0
+#404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-exponential 128 float 0;
 #X coords 0 1 127 0 200 140 1;
@@ -188,21 +191,21 @@ the power of the given exponential \, try it below (with values from
 #X connect 48 0 36 0;
 #X connect 51 0 43 0;
 #X restore 466 223 pd arguments;
-#X obj 93 418 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 93 418 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 166 418 float;
 #X text 217 418 - range parameters \, see [pd arguments];
 #N canvas 695 23 435 247 inverted 0;
-#X obj 138 65 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 138 65 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 135 106 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 135 163 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 249 105 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 249 162 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 266 180 Inverted;
 #X obj 249 128 else/rescale 1 0;
 #X obj 135 129 else/rescale 0 1;
@@ -217,17 +220,18 @@ output values;
 #X restore 472 264 pd inverted;
 #X text 295 206 sets value to be scaled (accepts only floats), f 24
 ;
-#X obj 6 572 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 572 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 6 539 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 539 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 198 549 -clip: sets clipping on (default off);
 #X text 222 390 - <1> turns clipping on \, <0> off;
 #X text 124 392 clip <float>;
 #N canvas 579 93 575 556 negative-exponential 0;
-#X floatatom 312 122 0 1 1.2 0 - - -;
-#X obj 315 98 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 69 365 cnv 15 198 138 empty empty empty 20 12 0 14 -233017 -66577
+#X floatatom 312 122 0 1 1.2 0 - - - 0;
+#X obj 315 98 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 69 365 cnv 15 198 138 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-positive 128 float 0;
@@ -259,8 +263,8 @@ output values;
 #X obj 110 173 trigger bang float, f 23;
 #X obj 110 273 else/rescale;
 #X msg 245 237 exp \$1;
-#X obj 329 365 cnv 15 198 138 empty empty empty 20 12 0 14 -233017
--66577 0;
+#X obj 329 365 cnv 15 198 138 empty empty empty 20 12 0 14 #e0e0e0
+#404040 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-negative 128 float 0;
 #X coords 0 1 127 0 200 140 1 0 0;

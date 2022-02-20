@@ -1,24 +1,25 @@
-#N canvas 645 130 565 576 10;
-#X obj 4 330 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 468 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 501 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 590 23 565 576 10;
+#X obj 4 330 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 547 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 468 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 129 477 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 501 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 547 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 129 477 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 191 477 signal;
-#X obj 2 2 cnv 15 301 42 empty empty decay2~ 20 20 2 37 -233017 -1
+#X obj 2 2 cnv 15 301 42 empty empty decay2~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 2 graph;
-#X obj 23 39 cnv 4 4 4 empty empty Exponential 0 28 2 18 -233017 -1
+#X obj 23 39 cnv 4 4 4 empty empty Exponential 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 117 39 cnv 4 4 4 empty empty decay 0 28 2 18 -233017 -1 0;
-#X obj 129 421 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 117 39 cnv 4 4 4 empty empty decay 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 129 421 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 155 421 float/signal;
 #X obj 175 263 else/out~;
@@ -28,7 +29,7 @@
 #X obj 146 161 osc~ 440;
 #X text 185 507 1) float - attack in ms (default 100);
 #X text 239 420 - attack time in ms;
-#X obj 129 443 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 129 443 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 155 443 float/signal;
 #X text 239 442 - decay time in ms;
@@ -66,27 +67,27 @@ just an alternative to minimize the harsh attack of [decay~])., f
 #X connect 4 0 2 0;
 #X connect 5 0 0 1;
 #X restore 495 246 pd more;
-#X obj 295 216 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 0 1;
-#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 295 216 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 2 pd;
-#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X obj 233 157 else/decay2~ 100 1000;
-#X obj 129 341 cnv 17 3 65 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 129 341 cnv 17 3 65 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 191 375 signal;
 #X text 197 393 clear;
@@ -100,18 +101,18 @@ parameter. It is based on SuperCollider's "Decay2" UGEN.;
 #N canvas 608 162 627 364 control 0;
 #X obj 88 234 else/out~;
 #X obj 88 190 *~;
-#X obj 208 187 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 208 187 vsl 18 100 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 208 159 else/sig2float~;
 #X text 231 280 0;
 #X text 231 181 1;
-#X obj 146 98 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 146 98 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X obj 69 128 else/gray~;
 #X obj 352 256 else/out~;
 #X obj 352 212 *~;
-#X obj 472 209 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 472 209 vsl 18 100 -1 1 0 0 ewtwet wefwert empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 472 181 else/sig2float~;
 #X text 497 252 0;
 #X text 497 203 1;
@@ -119,8 +120,8 @@ parameter. It is based on SuperCollider's "Decay2" UGEN.;
 #X msg 410 109 1;
 #X msg 444 109 0.5;
 #X msg 484 109 0.1;
-#X obj 381 107 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 381 107 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 146 128 else/decay2~ 1000 4000;
 #X obj 410 150 else/decay2~ 1000 4000;
 #X msg 521 109 -1;
@@ -150,7 +151,7 @@ the last received float input (which is 1 by default).;
 #X text 321 260 0;
 #X text 315 309 -1;
 #N canvas 528 241 494 384 shape 0;
-#X obj 43 213 cnv 15 398 138 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 43 213 cnv 15 398 138 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 1 52 450 300 (subpatch) 0;
 #X array \$0-decay 441 float 1;
@@ -218,8 +219,8 @@ the last received float input (which is 1 by default).;
 #X restore 42 212 graph;
 #X text 30 206 1;
 #X text 30 338 0;
-#X obj 111 30 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 111 30 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X obj 124 116 else/decay2~ 1 10;
 #X obj 113 149 tabwrite~ \$0-decay;
 #X obj 124 78 else/impseq~ 1;

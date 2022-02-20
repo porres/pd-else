@@ -1,24 +1,25 @@
-#N struct 1091-point float x0 float y0 float size float fg float in
+#N struct 1011-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1109-point float x0 float y0 float size float fg float in
+#N struct 1030-point float x0 float y0 float size float fg float in
 float grid;
-#N canvas 589 87 561 480 10;
-#X obj 2 276 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 2 354 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 2 418 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 452 23 561 480 10;
+#X obj 2 276 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 101 285 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 2 354 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 2 418 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 101 285 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 101 329 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 101 329 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 101 388 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 101 388 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 101 365 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 101 365 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 2 473 cnv 3 550 3 empty empty empty 0 0 0 4 -262144 -1 0;
-#X obj 2 453 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 473 cnv 3 550 3 empty empty empty 0 0 0 4 #fcfcfc #000000
+0;
+#X obj 2 453 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 199 428 (none);
 #X text 135 303 float;
@@ -28,15 +29,15 @@ float grid;
 #X text 126 142 Amplitude;
 #X text 331 143 Phase;
 #X obj 191 239 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 284 238 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 156 237 Real;
 #X text 369 238 Imaginary;
 #X obj 191 142 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 271 142 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 141 286 bang;
 #X text 189 286 - converts the last received coordinates pair;
 #X obj 218 182 t bang float;
@@ -47,30 +48,31 @@ float grid;
 #X obj 191 206 else/pol2car;
 #X text 83 89 [pol2car] converts polar coordinates (amplitude / phase)
 to cartesian coordinates (real / imaginary)., f 58;
-#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 24 41 cnv 4 4 4 empty empty Polar 0 28 2 18 -233017 -1 0;
-#X obj 71 41 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
-#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 24 41 cnv 4 4 4 empty empty Polar 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 71 41 cnv 4 4 4 empty empty to 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 306 4 graph;
-#X obj 93 41 cnv 4 4 4 empty empty cartesian 0 28 2 18 -233017 -1 0
-;
-#X obj 166 41 cnv 4 4 4 empty empty conversion 0 28 2 18 -233017 -1
+#X obj 93 41 cnv 4 4 4 empty empty cartesian 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 4 4 cnv 15 301 42 empty empty pol2car 20 20 2 37 -233017 -1
+#X obj 166 41 cnv 4 4 4 empty empty conversion 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 4 4 cnv 15 301 42 empty empty pol2car 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -79,20 +81,20 @@ to cartesian coordinates (real / imaginary)., f 58;
 #X obj 101 197 else/display;
 #X obj 101 237 else/car2pol;
 #X obj 170 275 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 2.23421 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 101 276 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.410859 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 101 306 else/pol2car;
 #X obj 101 343 pack;
 #X text 63 12 cartesian x polar converstion;
 #X text 238 112 <= click/drag;
 #X obj 101 58 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255 0
-0 0 1 0 0 47.4338 84.0558 empty empty 1;
+0 0 1 0 0 63.5 63.5 empty empty 1;
 #X obj 101 375 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
-0 0 0 1 0 0 -0.253011 0.323714 empty empty 1;
+0 0 0 1 0 0 63.5 63.5 empty empty 1;
 #X text 57 276 amp =>;
 #X obj 200 330 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 128.011 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 231 274 <= phase (in radians);
 #X text 281 329 <= phase (in degrees);
 #X obj 200 305 else/rad2deg;

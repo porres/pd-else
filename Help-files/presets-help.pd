@@ -1,14 +1,14 @@
-#N struct 3123-point float x0 float y0 float xs float ys float fg float
+#N struct 1004-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 3136-point float x0 float y0 float xs float ys float fg float
+#N struct 1017-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 3203-point float x0 float y0 float xs float ys float fg float
+#N struct 1280-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 3244-point float x0 float y0 float xs float ys float fg float
+#N struct 1419-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 3504-point float x0 float y0 float xs float ys float fg float
+#N struct 2561-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N canvas 607 48 560 730 10;
+#N canvas 566 23 560 723 10;
 #X floatatom 378 198 0 0 0 0 - - - 0;
 #X obj 136 145 hradio 15 1 0 8 empty empty empty 0 -8 0 10 #dcdcdc
 #000000 #000000 0;
@@ -125,7 +125,7 @@ window, f 58;
 #X coords 0 1 10 -1 202 122 1 0 0;
 #X restore 485 324 graph;
 #X obj 529 73 else/slider2d 127 127 0 127 0 127 1 225 225 225 0 0 0
-0 0 0 19 25 empty \\\$0-sl2;
+0 0 0 0 0 empty \\\$0-sl2;
 #X obj 417 75 vsl 15 128 0 127 0 0 empty empty empty 0 -9 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X obj 417 37 r \$0-sl1;
@@ -146,7 +146,7 @@ morph time (default 0) and grain time (default 20). When the time is
 this. Alternatively \, you can use the -morphtime to just set the morph
 time., f 60;
 #X obj 461 522 else/slider2d 127 127 0 127 0 127 1 225 225 225 0 0
-0 0 0 0 113 109 empty empty;
+0 0 0 0 0 0 empty empty;
 #X obj 330 537 else/message;
 #X obj 330 511 r \$0-morph;
 #X obj 156 581 else/presets \\\$0-morph;
@@ -229,7 +229,7 @@ allow you to set different morph times to different parameters.;
 #X text 117 190 save;
 #X text 31 157 load;
 #X obj 269 142 else/slider2d 127 127 0 127 0 127 1 225 225 225 0 0
-0 0 0 0 13.0157 108.472 empty \\\$0-interpolate;
+0 0 0 0 0 0 empty \\\$0-interpolate;
 #X obj 218 316 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X msg 49 272 open;
@@ -277,7 +277,7 @@ help file out., f 73;
 #000000 #000000 0 1;
 #X msg 762 157 open;
 #X obj 701 251 else/slider2d 127 127 0 127 0 127 1 225 225 225 0 0
-0 0 0 0 20.4252 103.63 empty empty;
+0 0 0 0 0 0 empty empty;
 #X obj 682 184 else/presets \\\$0-interp2;
 #A saved \\\$0-interp2 26 49 || \; \\\$0-interp2 99 96 || \; \\\$0-interp2
 102 20 || \; \\\$0-interp2 20.4252 103.63 || \; -empty- \; -empty-
@@ -552,8 +552,7 @@ file with the 'read' message., f 80;
 #X obj 651 117 else/initmess args \\\$0-n2;
 #X msg 685 151 read preset2.txt;
 #X obj 685 243 else/presets -file preset2.txt;
-#A saved \\\$0-n2 -90 || \; \\\$0-n2 86 || \; \\\$0-n2 280 || \; \\\$0-n2
-444 || \;;
+#A saved;
 #X text 532 14 If no send adress argument is given \, [presets] can
 still load text files with send names to send the data to matching
 receive objects. But it won't be able to save them unless you give
@@ -688,7 +687,7 @@ symbol six || \\\$0-B 6 || \; \\\$0-A symbol seven || \\\$0-B 7 ||
 #X msg 518 302 receive \\\$0-multi.vsl;
 #X msg 521 82 receive \\\$0-slider2d;
 #X obj 521 111 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0
-0 0 0 0 94 103 empty \\\$0-slider2d;
+0 0 0 0 0 0 empty \\\$0-slider2d;
 #X obj 518 474 else/display;
 #X obj 521 254 else/display;
 #X obj 518 331 else/multi.vsl 200 127 0 127 8 empty empty \\\$0-multi.vsl

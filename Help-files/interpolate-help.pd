@@ -1,50 +1,52 @@
-#N canvas 672 64 563 475 10;
-#X obj 4 270 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 355 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 385 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 568 23 563 475 10;
+#X obj 4 270 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 128 276 cnv 17 3 55 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 128 363 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 3 446 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 355 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 4 385 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 128 276 cnv 17 3 55 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 128 363 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 3 446 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 41 cnv 4 4 4 empty empty Interpolate 0 28 2 18 -233017 -1
+#X obj 23 41 cnv 4 4 4 empty empty Interpolate 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 110 41 cnv 4 4 4 empty empty between 0 28 2 18 -233017 -1 0
-;
-#X obj 179 41 cnv 4 4 4 empty empty values 0 28 2 18 -233017 -1 0;
-#X obj 3 4 cnv 15 301 42 empty empty interpolate 20 20 2 37 -233017
--1 0;
+#X obj 110 41 cnv 4 4 4 empty empty between 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 179 41 cnv 4 4 4 empty empty values 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 4 cnv 15 301 42 empty empty interpolate 20 20 2 37 #e0e0e0
+#000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 4 graph;
-#X floatatom 244 196 5 0 0 0 - - -;
-#X obj 128 334 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X floatatom 244 196 5 0 0 0 - - - 0;
+#X obj 128 334 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 4 416 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 136 163 hsl 90 14 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 133 245 0 0 0 0 - - -;
+#X obj 4 416 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 136 163 hsl 90 14 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 133 245 0 0 0 0 - - - 0;
 #X text 204 196 Target;
 #X text 199 335 list;
 #X text 193 275 float;
@@ -53,7 +55,7 @@
 #X text 199 363 list;
 #X text 236 363 - interpolated values;
 #X text 158 424 -exp <float>: sets exponential factor (default 1);
-#X floatatom 133 196 4 0 1 0 - - -;
+#X floatatom 133 196 4 0 1 0 - - - 0;
 #X obj 244 140 loadbang;
 #X msg 244 164 100;
 #X msg 280 164 5;
@@ -71,10 +73,10 @@ direction., f 26;
 #X msg 462 162 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1;
 #X msg 423 134 -0.1 -0.2 -0.3 -0.4 -0.5 -0.6 -0.7 -0.8 -0.9 -1;
 #X msg 483 191 0.5 -0.5 1 -1 0.5 -0.5 0.7 -0.8 0.9 -1;
-#X obj 392 103 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 124 173 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 7500 1;
+#X obj 392 103 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 124 173 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 121 272 display;
 #X obj 390 231 else/interpolate;
 #X obj 121 226 else/interpolate;
@@ -93,7 +95,7 @@ the slider., f 79;
 #X msg 281 237 127 30 90;
 #X text 562 57 Here we use the lists to set a multi slider and an array.
 , f 23;
-#X obj 398 307 cnv 15 298 98 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 398 307 cnv 15 298 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-array 10 float 2;

@@ -1,53 +1,54 @@
-#N canvas 739 43 560 557 10;
-#X obj 4 285 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 425 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 458 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 511 34 560 557 10;
+#X obj 4 285 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 521 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 425 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 109 434 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 458 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 521 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 109 434 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 109 293 cnv 17 3 54 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 109 293 cnv 17 3 54 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 181 293 signal;
 #X text 181 434 signal;
 #X obj 230 222 else/out~;
-#X obj 2 3 cnv 15 301 42 empty empty lowshelf~ 20 20 2 37 -233017 -1
+#X obj 2 3 cnv 15 301 42 empty empty lowshelf~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 23 40 cnv 4 4 4 empty empty Lowshelf 0 28 2 18 -233017 -1 0
-;
-#X obj 104 40 cnv 4 4 4 empty empty filter 0 28 2 18 -233017 -1 0;
+#X obj 23 40 cnv 4 4 4 empty empty Lowshelf 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 104 40 cnv 4 4 4 empty empty filter 0 28 2 18 #e0e0e0 #000000
+0;
 #X obj 242 158 noise~;
 #X text 230 434 - filtered signal;
 #X text 230 293 - signal to be filtered;
-#X obj 109 353 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 109 353 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 109 376 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 109 376 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 145 353 float/signal;
 #X text 145 376 float/signal;
 #X text 187 311 clear;
 #X msg 163 155 bypass \$1;
-#X obj 163 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 163 132 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 133 329 bypass <float>;
 #X text 230 329 - 1 (bypasses input signal) or 0 (doesn't bypass);
 #N canvas 385 158 938 622 filter 0;
 #X obj 660 117 hsl 128 15 0.1 1 0 0 empty \$0-Q-set empty -2 -8 0 10
--228856 -1 -1 0 1;
+#dcdcdc #000000 #000000 0 1;
 #X obj 609 68 hsl 128 15 20 20000 1 0 empty \$0-Hz-set empty -2 -8
-0 10 -228856 -1 -1 0 1;
+0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 555 114 noise~;
 #X obj 555 206 else/out~;
-#X obj 657 141 nbx 5 14 1e-06 1 0 0 \$0-Q empty empty 0 -8 0 10 -228856
--1 -1 1e-06 256;
-#X obj 606 92 nbx 4 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
--1 -1 20 256;
+#X obj 657 141 nbx 5 14 1e-06 1 0 0 \$0-Q empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X obj 606 92 nbx 4 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X text 32 239 [1] found in http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
 , f 65;
 #X text 508 18 Change the parameters and check the filter response
@@ -55,9 +56,9 @@ below. The graph considers a sample rate of 44.1Khz.;
 #X text 617 68 shelving frequency;
 #X text 697 116 slope;
 #X obj 744 147 hsl 128 15 -24 24 0 0 empty \$0-G-set empty -2 -8 0
-10 -228856 -1 -1 0 1;
-#X obj 741 173 nbx 4 14 -24 24 0 0 \$0-G empty empty 0 -8 0 10 -228856
--1 -1 0 256;
+10 #dcdcdc #000000 #000000 0 1;
+#X obj 741 173 nbx 4 14 -24 24 0 0 \$0-G empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X text 774 147 gain (dB);
 #X text 54 21 The equation is from the "Cookbook formulae for audio
 EQ biquad filter coefficients" by Robert Bristow-Johnsonc [1] \, and
@@ -98,7 +99,7 @@ f * PI/nyquist \; G = pow(10 \, db/40) \; alphaS = sin(w) * sqrt((G*G
 #X msg 230 127 clear;
 #X text 230 311 - clears filter's memory if you blow it up;
 #X text 61 86 [highshelf~] is a 2nd order highshelf filter.;
-#X obj 109 399 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 109 399 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 145 399 float/signal;
 #X text 230 399 - gain in dB;
@@ -109,19 +110,19 @@ f * PI/nyquist \; G = pow(10 \, db/40) \; alphaS = sin(w) * sqrt((G*G
 #X text 138 464 1) float - shelving frequency in Hertz (default 0)
 , f 53;
 #X obj 230 191 else/lowshelf~ 1500 0.5 -8;
-#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 457 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;

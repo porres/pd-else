@@ -1,15 +1,15 @@
-#N canvas 779 149 565 570 10;
-#X obj 7 546 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 533 23 565 570 10;
+#X obj 7 546 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 7 259 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 7 399 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 7 432 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 259 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 90 408 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 7 399 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 7 432 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 90 408 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 89 377 cnv 17 3 17 empty empty 1-n 5 9 0 16 -228856 -162280
+#X obj 89 377 cnv 17 3 17 empty empty 1-n 5 9 0 16 #dcdcdc #9c9c9c
 0;
 #X text 170 295 float - non-0 (re)starts playing \, zero stops, f
 62;
@@ -17,11 +17,12 @@
 #X text 128 311 set <symbol> -;
 #X text 116 440 1) symbol;
 #X text 116 457 2) float;
-#X obj 90 265 cnv 17 3 104 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 90 265 cnv 17 3 104 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 170 265 start - starts recording the sample, f 62;
 #X text 163 377 signal - signal inputs to record for each channel;
-#X obj 7 513 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
+#X obj 7 513 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
+0;
 #X text 108 523 clicking on the object opens dialog box to set a file
 to save to, f 65;
 #X text 128 325 rate <float> - sets sample rate of the file (default
@@ -30,42 +31,46 @@ Pd's samplerate), f 69;
 #X text 128 340 fade <float> - sets fade time (minimum 1), f 69;
 #X text 110 355 maxtime <float> - sets maximum recording time in ms
 , f 72;
-#X obj 7 478 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 7 478 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 182 440 - (optional) file name to save to (default file.wav)
 ;
 #X text 182 457 - number of channels to record (default 1), f 52;
 #X text 218 310 sets file name (no symbol opens dialog box), f 54
 ;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 41 cnv 4 4 4 empty empty Record 0 28 2 18 -233017 -1 0;
-#X obj 82 41 cnv 4 4 4 empty empty sound 0 28 2 18 -233017 -1 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 41 cnv 4 4 4 empty empty Record 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 82 41 cnv 4 4 4 empty empty sound 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 4 graph;
-#X obj 3 4 cnv 15 301 42 empty empty rec.file~ 20 20 2 37 -233017 -1
+#X obj 3 4 cnv 15 301 42 empty empty rec.file~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 133 41 cnv 4 4 4 empty empty file 0 28 2 18 -233017 -1 0;
-#X obj 77 226 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 133 41 cnv 4 4 4 empty empty file 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 77 226 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X obj 492 78 else/setdsp~;
-#X obj 77 168 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 77 168 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 337 171 else/play.file~ 2;
 #X msg 337 148 open test.wav;
 #N canvas 1134 161 440 618 flags 0;
@@ -86,8 +91,8 @@ extra 10 ms to finish recording the file. The outlet only outputs a
 bang after this fade out. You can change and set the fade to 0 ms (no
 fading) with the -fade flag or fade message., f 60;
 #X obj 134 339 else/brown~;
-#X obj 56 435 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 56 435 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X msg 56 347 start;
 #X obj 183 491 else/play.file~ 2;
 #X msg 183 465 open test.wav;

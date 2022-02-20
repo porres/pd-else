@@ -1,4 +1,4 @@
-#N canvas 630 33 560 531 10;
+#N canvas 458 23 560 531 10;
 #X obj 3 275 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 3 436 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -96,7 +96,7 @@ list;
 #X text 106 298 speed <float> -;
 #X text 202 298 sets playing speed in percentage, f 57;
 #X text 29 224 see also:;
-#X obj 29 243 else/rec2;
+#X obj 29 243 else/rec2 x;
 #X connect 7 0 32 0;
 #X connect 8 0 32 0;
 #X connect 32 0 33 0;

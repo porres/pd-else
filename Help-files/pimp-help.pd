@@ -1,39 +1,41 @@
-#N canvas 649 137 561 515 10;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 527 26 561 515 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Control 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 40 cnv 4 4 4 empty empty Control 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 85 40 cnv 4 4 4 empty empty phasor+imp 0 28 2 18 -233017 -1
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 3 3 cnv 15 301 42 empty empty pimp 20 20 2 37 -233017 -1 0;
+#X obj 85 40 cnv 4 4 4 empty empty phasor+imp 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 3 cnv 15 301 42 empty empty pimp 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 3 251 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 341 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 397 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 251 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 107 350 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 3 488 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 341 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 107 313 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 3 397 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 107 350 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 3 488 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 107 313 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 242 314 phase sync (ressets internal phase);
 #X text 164 407 1) float;
@@ -42,7 +44,7 @@
 #X text 164 426 2) float;
 #X text 171 314 float -;
 #X obj 194 139 nbx 4 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 167 137 Hz;
 #X msg 257 138 0;
 #X text 295 137 <= resets phase.;
@@ -52,18 +54,18 @@
 #X obj 196 72 else/sr~ -ms;
 #X msg 432 104 rate \$1;
 #X obj 432 78 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 435 52 hsl 128 15 0.1 200 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 435 52 hsl 128 15 0.1 200 1 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 432 212 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 48.2559 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 28 221 You can change the rate with the -rate flag or the "rate"
 message. This affects the period resolution, f 50;
-#X obj 435 173 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 4826 1;
+#X obj 435 173 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 432 136 else/pimp 0.5 -rate 20, f 25;
-#X obj 579 173 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 579 173 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 28 22 [pimp~] runs at the sample rate which has a period in
 ms given by the [sr~] object., f 50;
 #X text 29 150 By default \, [pimp] runs at a rate whose period is
@@ -78,25 +80,26 @@ f 50;
 #X connect 8 0 7 0;
 #X connect 8 1 9 0;
 #X restore 482 220 pd rate;
-#X obj 3 452 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 3 452 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 104 462 -rate <float>;
 #X text 209 462 - rate period in ms (default 1 \, min 0.1);
-#X obj 109 266 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 109 266 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 241 267 frequency in hz;
 #X text 171 266 float -;
 #X text 122 286 rate <float> -;
 #X text 241 287 rate period in ms;
-#X obj 197 217 hsl 128 18 0 127 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 1889 1;
+#X obj 197 217 hsl 128 18 0 127 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 171 350 float -;
 #X text 239 350 "phase" value from 0 to 127;
 #X obj 194 169 else/pimp 1;
-#X obj 257 195 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 257 195 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 58 89 This is like the [pimp~] but operates in a control rate
 (with a maximum resolution of 1 ms)., f 63;
-#X obj 107 371 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 107 371 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 177 371 bang -;
 #X text 239 371 output a bang at period transitions;

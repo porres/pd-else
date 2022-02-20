@@ -1,7 +1,7 @@
-#N canvas 650 114 560 542 10;
-#X obj 3 3 cnv 15 301 42 empty empty limit 20 20 2 37 -233017 -1 0
-;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 560 66 560 542 10;
+#X obj 3 3 cnv 15 301 42 empty empty limit 20 20 2 37 #e0e0e0 #000000
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -9,37 +9,41 @@
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Limit 0 28 2 18 -233017 -1 0;
-#X obj 73 40 cnv 4 4 4 empty empty message 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 40 cnv 4 4 4 empty empty Limit 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 73 40 cnv 4 4 4 empty empty message 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 144 40 cnv 4 4 4 empty empty with 0 28 2 18 -233017 -1 0;
-#X obj 192 40 cnv 4 4 4 empty empty time 0 28 2 18 -233017 -1 0;
-#X obj 2 352 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 144 40 cnv 4 4 4 empty empty with 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 192 40 cnv 4 4 4 empty empty time 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 2 352 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 2 408 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 2 464 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 91 361 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 2 408 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 91 419 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 2 464 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
-0;
-#X obj 91 361 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 383 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 91 419 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 91 383 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X obj 128 156 tgl 20 0 empty empty empty 17 7 0 10 -216373 -1 -1 0
-1;
-#X obj 2 512 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 128 156 tgl 20 0 empty empty empty 17 7 0 10 #d0d0d0 #000000
+#000000 0 1;
+#X obj 2 512 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 173 383 -;
 #X text 133 383 float;
@@ -52,8 +56,8 @@
 #X obj 128 214 random 100;
 #X obj 128 190 metro 50;
 #X obj 128 240 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X floatatom 363 263 5 0 0 0 - - -;
+#dcdcdc #000000 #000000 0 256;
+#X floatatom 363 263 5 0 0 0 - - - 0;
 #X text 360 243 change time limit;
 #X text 188 361 any message input message to be speed limited;
 #X text 188 383 changes the time limit (in ms), f 32;
@@ -73,13 +77,13 @@ until that time passes and then sends the last received message since
 the previous output (ignoring the others).;
 #X obj 204 288 else/limit 1000, f 27;
 #N canvas 794 278 505 358 ignore 0;
-#X obj 77 126 tgl 20 0 empty empty empty 17 7 0 10 -216373 -1 -1 0
-1;
+#X obj 77 126 tgl 20 0 empty empty empty 17 7 0 10 #d0d0d0 #000000
+#000000 0 1;
 #X obj 77 184 random 100;
 #X obj 77 160 metro 50;
 #X obj 77 210 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X floatatom 312 233 5 0 0 0 - - -;
+#dcdcdc #000000 #000000 0 256;
+#X floatatom 312 233 5 0 0 0 - - - 0;
 #X text 309 213 change time limit;
 #X text 350 233 milliseconds;
 #X obj 153 287 else/display;
@@ -113,7 +117,7 @@ when the time interval between two event is greater than the limit.
 #X text 173 488 -;
 #X text 115 488 2) float;
 #X text 187 488 non zero sets to ignore mode (default 0);
-#X obj 91 442 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 91 442 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 173 442 -;
 #X text 115 442 anything;

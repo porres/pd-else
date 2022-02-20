@@ -1,19 +1,19 @@
-#N canvas 462 125 559 454 10;
-#X obj 4 258 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 313 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 366 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 462 54 559 454 10;
+#X obj 4 258 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 125 322 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 3 313 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 3 366 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 125 322 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 416 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 416 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 131 203 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -228856 -128992
--262144 0 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
+#fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -82,7 +82,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -228856 -128992
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -95,8 +95,8 @@
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -115,7 +115,7 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X obj 125 265 cnv 17 3 40 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 125 265 cnv 17 3 40 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 131 138 noise~;
 #X text 208 266 signal;
@@ -148,8 +148,8 @@ the window size. This is all also true for [env~] \, by the way.;
 #X obj 677 252 block~ 64;
 #N canvas 242 23 357 282 out_rate 0;
 #X obj 121 63 b;
-#X obj 121 91 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 121 91 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 121 113 sel 0 1;
 #X obj 121 141 timer;
 #X obj 121 171 *;
@@ -166,7 +166,7 @@ the window size. This is all also true for [env~] \, by the way.;
 #X connect 7 0 4 1;
 #X restore 516 251 pd out_rate;
 #X obj 516 280 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 575 280 hop size;
 #X text 651 164 change block size;
 #X obj 471 161 noise~;
@@ -184,8 +184,8 @@ size.;
 \, both of which inherited it from the [env~] object in Pd Vanilla.
 ;
 #X obj 516 201 else/vu~ 4096;
-#X floatatom 526 228 9 0 0 0 - - -;
-#X floatatom 591 227 9 0 0 0 - - -;
+#X floatatom 526 228 9 0 0 0 - - - 0;
+#X floatatom 591 227 9 0 0 0 - - - 0;
 #X connect 3 0 5 0;
 #X connect 4 0 5 0;
 #X connect 6 0 7 0;
@@ -197,43 +197,47 @@ size.;
 #X connect 16 0 17 0;
 #X connect 16 1 18 0;
 #X restore 476 224 pd analysis;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 104 40 cnv 4 4 4 empty empty detector 0 28 2 18 -233017 -1 0
+#X obj 104 40 cnv 4 4 4 empty empty detector 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 171 40 cnv 4 4 4 empty empty for 0 28 2 18 #e0e0e0 #000000 0
 ;
-#X obj 171 40 cnv 4 4 4 empty empty for 0 28 2 18 -233017 -1 0;
-#X obj 20 40 cnv 4 4 4 empty empty Amplitude 0 28 2 18 -233017 -1 0
-;
-#X obj 3 3 cnv 15 301 42 empty empty vu~ 20 20 2 37 -233017 -1 0;
+#X obj 20 40 cnv 4 4 4 empty empty Amplitude 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 3 cnv 15 301 42 empty empty vu~ 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X obj 202 40 cnv 4 4 4 empty empty [vu] 0 28 2 18 -233017 -1 0;
+#X obj 202 40 cnv 4 4 4 empty empty [vu] 0 28 2 18 #e0e0e0 #000000
+0;
 #X text 61 88 [vu~] combines [else/rms~] and [else/peak~] to provide
 dBFs output to Pd Vanilla's [vu] GUI.;
 #X obj 230 202 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 125 343 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#dcdcdc #000000 #000000 0 256;
+#X obj 125 343 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 214 343 float;
 #X text 258 322 - RMS amplitude value in dBFs;
 #X text 258 343 - peak amplitude value in dBFS;
-#X obj 346 156 vu 20 80 empty empty -1 -8 0 10 -1 -1 0 0;
+#X obj 346 156 vu 20 80 empty empty -1 -8 0 10 #000000 #000000 0 0
+;
 #X text 104 202 RMS;
 #X text 198 201 Peak;
 #X obj 131 225 s \$0-rms;

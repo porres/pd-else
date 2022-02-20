@@ -1,45 +1,47 @@
-#N canvas 732 78 568 518 10;
+#N canvas 484 23 568 518 10;
 #X obj 185 236 else/out~;
-#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 42 cnv 4 4 4 empty empty Phaser 0 28 2 18 -233017 -1 0;
-#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 42 cnv 4 4 4 empty empty Phaser 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 5 graph;
-#X obj 3 5 cnv 15 301 42 empty empty phaser~ 20 20 2 37 -233017 -1
+#X obj 3 5 cnv 15 301 42 empty empty phaser~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 5 graph;
-#X obj 7 302 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 7 393 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 7 428 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 302 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 129 403 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 7 393 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 7 428 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 129 403 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 130 310 cnv 17 3 47 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 130 310 cnv 17 3 47 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 126 437 1) float;
 #X text 190 436 -;
-#X obj 130 366 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 130 366 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 5 491 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 491 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 80 42 cnv 4 4 4 empty empty effect 0 28 2 18 -233017 -1 0;
+#X obj 80 42 cnv 4 4 4 empty empty effect 0 28 2 18 #e0e0e0 #000000
+0;
 #X obj 185 165 else/play.file~ guitar.wav 1 1, f 15;
 #X obj 314 179 else/rescale~ 100 1000;
 #X text 190 403 signal - phaser output;

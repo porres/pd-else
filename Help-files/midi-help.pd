@@ -1,21 +1,21 @@
-#N canvas 560 47 561 622 10;
-#X obj 4 220 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 459 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 508 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 533 47 561 622 10;
+#X obj 4 220 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 87 466 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 459 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 508 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 87 466 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 314 190 bng 16 250 50 0 empty empty empty 0 -6 0 10 -228856
--1 -1;
-#X obj 87 487 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 314 190 bng 16 250 50 0 empty empty empty 0 -6 0 10 #dcdcdc
+#000000 #000000;
+#X obj 87 487 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 4 596 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 596 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 156 254 bang;
 #X text 150 228 float;
-#X obj 87 226 cnv 17 3 227 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 87 226 cnv 17 3 227 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 203 488 sent at the end of a sequence (useful for looping)
 , f 53;
@@ -32,31 +32,34 @@
 53;
 #X text 202 326 pauses recording/playing, f 53;
 #X text 133 340 continue -;
-#X obj 4 2 cnv 15 301 42 empty empty midi 20 20 2 37 -233017 -1 0;
-#X obj 307 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 4 2 cnv 15 301 42 empty empty midi 20 20 2 37 #e0e0e0 #000000
+0;
+#X obj 307 3 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 2 graph;
-#X obj 346 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 346 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 24 39 cnv 4 4 4 empty empty Read/write 0 28 2 18 -233017 -1
+#X obj 24 39 cnv 4 4 4 empty empty Read/write 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 112 39 cnv 4 4 4 empty empty MIDI 0 28 2 18 -233017 -1 0;
-#X obj 459 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 112 39 cnv 4 4 4 empty empty MIDI 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 479 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 459 10 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 516 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 479 10 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 465 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 516 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 503 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 465 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 503 25 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 306 2 graph;
-#X obj 162 39 cnv 4 4 4 empty empty files 0 28 2 18 -233017 -1 0;
+#X obj 162 39 cnv 4 4 4 empty empty files 0 28 2 18 #e0e0e0 #000000
+0;
 #X text 103 424 open <symbol> -;
 #X text 103 438 save <symbol> -;
 #X text 51 161 click to open file =>;
@@ -67,8 +70,8 @@ f 53;
 #X text 203 467 raw MIDI data stream from a MIDI file, f 53;
 #X text 151 396 panic -;
 #X text 202 396 flushes hanging notes, f 53;
-#X obj 185 130 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 185 130 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 208 131 Play/stop;
 #N canvas 819 113 613 537 more 0;
 #X msg 414 31 pause;
@@ -258,15 +261,15 @@ from where it was paused!, f 44;
 #X restore 128 402 pd synth;
 #X obj 127 287 else/clock 120;
 #X obj 127 264 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 169 263 BPM;
 #X obj 109 434 else/out~;
 #X msg 153 316 dump;
 #X msg 81 289 start;
 #X msg 44 289 stop;
 #X obj 140 376 print midi;
-#X obj 293 378 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 293 378 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 128 347 else/midi -loop midi-seq.mid;
 #X connect 0 0 10 0;
 #X connect 1 0 10 0;
@@ -301,26 +304,27 @@ from where it was paused!, f 44;
 #X text 109 368 loop <float> -;
 #X text 202 368 non zero sets to loop mode, f 53;
 #X obj 185 161 else/midi midi-seq.mid;
-#X obj 4 537 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 4 537 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 164 545 -loop: sets to loop mode (default no loop), f 53;
 #N canvas 744 161 530 465 read 0;
-#X obj 289 177 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 124 58 tgl 22 0 empty empty empty 17 7 0 10 -216373 -66577 -1
-0 1;
+#X obj 289 177 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 124 58 tgl 22 0 empty empty empty 17 7 0 10 #d0d0d0 #404040
+#000000 0 1;
 #X text 150 60 play/stop;
 #X obj 76 180 notein;
 #X obj 125 217 pack;
 #X obj 108 379 else/out~;
 #X obj 125 241 else/keyboard 17 80 3 3 0 0 empty empty;
 #X msg 144 114 loop \$1;
-#X obj 144 92 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 144 92 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 166 91 loop mode;
 #X obj 124 146 else/midi -loop midi-seq.mid;
-#X obj 64 32 hsl 128 15 1 200 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 61 52 5 0 0 0 - - -;
+#X obj 64 32 hsl 128 15 1 200 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 61 52 5 0 0 0 - - - 0;
 #N canvas 421 163 486 341 synth 0;
 #X obj 104 121 else/voices 3 1;
 #N canvas 667 245 329 286 voice 0;
@@ -639,8 +643,8 @@ to convert the messages to raw MIDI., f 63;
 #X restore 96 269 pd synth;
 #X obj 96 207 else/note.in;
 #X obj 96 231 pack;
-#X obj 66 145 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 66 145 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 315 78 text define \$0-midi;
 #X obj 315 51 else/initmess read midi-seq.txt;
 #X obj 96 183 else/midi midi-seq.mid;
@@ -736,8 +740,8 @@ to the [text sequence] object. Check the example to the right., f
 #X connect 5 0 0 0;
 #X restore 321 306 pd synth;
 #X obj 321 226 else/panic;
-#X obj 474 188 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 474 188 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X connect 0 0 8 0;
 #X connect 2 0 1 0;
 #X connect 2 1 1 1;
@@ -768,7 +772,8 @@ to the [text sequence] object. Check the example to the right., f
 #X text 85 86 [midi] plays/records raw MIDI streams and can save/read
 MIDI files or import/export to txt files., f 55;
 #X text 205 516 a MIDI or text file to be loaded, f 49;
-#X obj 4 567 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
+#X obj 4 567 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
+0;
 #X text 140 575 clicking on the object opens dialog box to open a file
 ;
 #X text 151 410 clear -;

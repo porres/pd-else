@@ -1,58 +1,61 @@
-#N canvas 623 103 560 625 10;
-#X obj 23 41 cnv 4 4 4 empty empty Control 0 28 2 18 -233017 -1 0;
-#X obj 3 595 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 484 23 560 625 10;
+#X obj 23 41 cnv 4 4 4 empty empty Control 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 3 315 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 411 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 441 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 595 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 92 418 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 3 315 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 3 411 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 3 441 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 92 418 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 92 323 cnv 17 3 35 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 92 323 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 4 cnv 15 301 42 empty empty lfo 20 20 2 37 -233017 -1 0;
+#X obj 3 4 cnv 15 301 42 empty empty lfo 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 4 graph;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 304 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 189 142 hsl 128 15 0.1 1 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 7800 1;
+#X obj 189 142 hsl 128 15 0.1 1 1 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 186 168 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.411314 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 213 142 rate in Hz;
-#X obj 89 41 cnv 4 4 4 empty empty LFO 0 28 2 18 -233017 -1 0;
+#X obj 89 41 cnv 4 4 4 empty empty LFO 0 28 2 18 #e0e0e0 #000000 0
+;
 #X msg 247 167 0;
 #X text 139 419 float;
 #X text 139 325 float;
 #X obj 195 219 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 2250 1;
+#dcdcdc #000000 #000000 0 1;
 #X text 180 447 - sets frequency in hertz (default 0), f 55;
 #X text 180 461 - sets initial phase from 0 - 1 (default 0), f 55
 ;
 #X text 180 420 - LFO's waveform in the range from 0 - 127;
 #X text 180 476 - sets refresh rate in ms (default 5), f 55;
-#X obj 92 363 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 92 363 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 139 365 float;
-#X obj 92 384 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 92 384 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 139 386 float;
 #X text 180 365 - phase reset from 0 - 1;
@@ -65,7 +68,8 @@
 #X text 120 447 1) float;
 #X text 120 461 2) float;
 #X text 120 476 3) float;
-#X obj 3 497 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 3 497 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 118 505 -sine;
 #X text 161 505 - sets waveform to sine (default), f 61;
 #X text 124 521 -tri;
@@ -80,7 +84,7 @@
 f 61;
 #N canvas 589 52 433 412 waveforms 0;
 #X obj 199 305 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 5331 1;
+#dcdcdc #000000 #000000 0 1;
 #X text 35 109 You can set the waveform with a flag and with a message.
 Note that "square" and "vsaw" take an optional width argument., f
 58;
@@ -104,15 +108,15 @@ of these objects for more details.;
 #X restore 445 257 pd waveforms;
 #N canvas 599 96 464 425 refresh 0;
 #X obj 49 148 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 2461 1;
+#dcdcdc #000000 #000000 0 1;
 #X obj 266 246 mtof;
 #X obj 266 224 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 31.3682 256;
-#X obj 160 95 nbx 5 14 5 500 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 5 256;
+#dcdcdc #000000 #000000 0 256;
+#X obj 160 95 nbx 5 14 5 500 1 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X obj 49 122 else/lfo 0.25 0 250;
 #X obj 266 105 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 901 1;
+#dcdcdc #000000 #000000 0 1;
 #X obj 266 200 else/rescale 30 42;
 #X obj 266 79 else/lfo 5.3 0 270 -tri;
 #X obj 49 243 else/rescale 200 500;
@@ -147,11 +151,11 @@ from the waveforms., f 66;
 MIDI default range. Use the [rescale] object if you want a different
 range for the output., f 53;
 #X obj 119 108 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
--228856 -1 -1 3389 1;
+#dcdcdc #000000 #000000 0 1;
 #X obj 119 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 54.489 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 119 253 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 414.524 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 179 254 cutoff in hertz;
 #X obj 118 355 biquad~;
 #X obj 119 226 else/rescale 200 700;

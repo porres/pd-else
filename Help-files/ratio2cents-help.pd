@@ -1,18 +1,18 @@
-#N canvas 709 48 559 500 10;
-#X obj 4 337 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 402 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 439 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 573 23 559 500 10;
+#X obj 4 337 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 83 411 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 4 472 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 402 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 184 151 hsl 180 15 0.5 2 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 224 206 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 4 439 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 83 411 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 4 472 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 184 151 hsl 180 15 0.5 2 1 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 224 206 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 300 232 sets next value to be converted via bang, f 21;
 #X text 156 363 bang;
 #X text 162 379 set;
@@ -26,12 +26,12 @@
 #X connect 3 0 1 0;
 #X restore 478 298 pd lists;
 #X obj 181 179 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 224 303 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 3 3 cnv 15 301 42 empty empty ratio2cents 20 20 2 37 -233017
--1 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#dcdcdc #000000 #000000 0 256;
+#X obj 3 3 cnv 15 301 42 empty empty ratio2cents 20 20 2 37 #e0e0e0
+#000000 0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -39,21 +39,21 @@
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Rational/Cents 0 28 2 18 -233017
--1 0;
-#X obj 138 40 cnv 4 4 4 empty empty conversion 0 28 2 18 -233017 -1
+#X obj 23 40 cnv 4 4 4 empty empty Rational/Cents 0 28 2 18 #e0e0e0
+#000000 0;
+#X obj 138 40 cnv 4 4 4 empty empty conversion 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X text 139 178 ratio;
 #X text 184 302 cents;
@@ -64,7 +64,7 @@
 float);
 #X text 189 379 - sets next value to be converted via bang (only float)
 ;
-#X obj 87 346 cnv 17 3 50 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 87 346 cnv 17 3 50 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 224 271 else/ratio2cents 1.5;
 #X text 248 201 converts setted value or sends last output, f 21;

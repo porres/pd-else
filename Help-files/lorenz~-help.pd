@@ -1,33 +1,35 @@
-#N canvas 625 92 560 552 10;
-#X obj 23 40 cnv 4 4 4 empty empty Lorenz 0 28 2 18 -233017 -1 0;
-#X obj 87 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 -233017 -1 0;
-#X obj 3 525 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 550 23 560 552 10;
+#X obj 23 40 cnv 4 4 4 empty empty Lorenz 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 3 264 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 342 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 372 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 87 40 cnv 4 4 4 empty empty chaotic 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 82 349 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 3 525 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 3 264 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 3 342 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 3 372 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 82 349 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 80 272 cnv 17 3 63 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 80 272 cnv 17 3 63 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 166 350 signal;
 #X text 133 379 1) float;
 #X text 130 274 float/signal;
-#X obj 2 3 cnv 15 301 42 empty empty lorenz~ 20 20 2 37 -233017 -1
+#X obj 2 3 cnv 15 301 42 empty empty lorenz~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X text 213 274 - frequency in hertz (negative values accepted), f
 49;
-#X obj 148 40 cnv 4 4 4 empty empty generator 0 28 2 18 -233017 -1
+#X obj 148 40 cnv 4 4 4 empty empty generator 0 28 2 18 #e0e0e0 #000000
 0;
 #X text 133 393 2) float;
 #X text 133 407 3) float;
-#X obj 7 496 cnv 3 550 3 empty empty more_info 8 12 0 13 -228856 -1
+#X obj 7 496 cnv 3 550 3 empty empty more_info 8 12 0 13 #dcdcdc #000000
 0;
 #X text 193 379 - sets frequency in hertz (default: nyquist), f 55
 ;
@@ -46,50 +48,50 @@
 #X text 193 478 - sets initial value of z[n-1] (default 0), f 55;
 #X text 213 351 - lorenz chaotic signal;
 #X text 161 504 Object based on SuperCollider's "LorenzL" UGEN;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 304 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X obj 211 132 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
+#dcdcdc #000000 #000000 0 1;
 #X obj 208 154 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 135 154 rate in Hz;
 #X obj 208 202 else/out~;
 #N canvas 805 41 482 473 parameters 0;
 #X obj 66 113 hsl 128 15 441 44100 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
+#dcdcdc #000000 #000000 0 1;
 #X obj 63 137 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 93 112 rate in Hz;
 #X obj 87 395 else/out~;
-#X floatatom 87 180 5 0 0 0 - - -;
-#X floatatom 169 181 5 0 0 0 - - -;
+#X floatatom 87 180 5 0 0 0 - - - 0;
+#X floatatom 169 181 5 0 0 0 - - - 0;
 #X text 85 161 x[n-1];
 #X text 167 161 y[n-1];
-#X floatatom 252 179 5 0 0 0 - - -;
+#X floatatom 252 179 5 0 0 0 - - - 0;
 #X text 250 161 z[n-1];
 #X text 110 228 list sets initial values of x \, y and z, f 24;
 #X text 245 317 sets coefficients 's' \, 'r' \, 'b' & 'h', f 21;
 #X text 61 60 You can also set previous values of x \, y and z with
 a list.;
-#X floatatom 165 276 5 0 0 0 - - -;
-#X floatatom 224 276 5 0 0 0 - - -;
-#X floatatom 283 276 5 0 0 0 - - -;
-#X floatatom 343 276 5 0 0 0 - - -;
+#X floatatom 165 276 5 0 0 0 - - - 0;
+#X floatatom 224 276 5 0 0 0 - - - 0;
+#X floatatom 283 276 5 0 0 0 - - - 0;
+#X floatatom 343 276 5 0 0 0 - - - 0;
 #X text 201 275 s;
 #X text 260 275 r;
 #X text 321 275 b;

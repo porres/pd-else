@@ -1,50 +1,53 @@
-#N canvas 699 104 562 523 10;
-#X obj 1 493 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 654 23 562 523 10;
+#X obj 1 493 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 2 283 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 2 378 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 2 412 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 2 283 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 93 387 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 2 378 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 2 412 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 93 387 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 155 291 signal;
-#X obj 94 292 cnv 17 3 47 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 94 292 cnv 17 3 47 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 199 291 - the signal to be averaged;
 #X text 155 387 signal;
 #X text 143 420 1) float;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Moving 0 28 2 18 -233017 -1 0;
-#X obj 89 40 cnv 4 4 4 empty empty RMS 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 40 cnv 4 4 4 empty empty Moving 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 89 40 cnv 4 4 4 empty empty RMS 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 3 graph;
-#X obj 3 3 cnv 15 301 42 empty empty mov.rms~ 20 20 2 37 -233017 -1
+#X obj 3 3 cnv 15 301 42 empty empty mov.rms~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 3 graph;
-#X obj 2 443 cnv 3 550 3 empty empty flag 8 12 0 13 -228856 -1 0;
+#X obj 2 443 cnv 3 550 3 empty empty flag 8 12 0 13 #dcdcdc #000000
+0;
 #X text 161 307 clear;
 #X text 199 451 -;
 #X text 199 345 -;
 #X text 119 323 size <float>;
-#X obj 93 344 cnv 17 3 31 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 93 344 cnv 17 3 31 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 119 345 float/signal;
 #X text 113 451 -size <float>;
@@ -56,8 +59,8 @@
 #X text 199 387 - the RMS over the time window;
 #X text 213 450 sets buffer size (default 1024 samples), f 40;
 #X obj 212 256 print~;
-#X obj 179 226 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 179 226 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 199 420 - sets number of samples in the window (default 1)
 ;
 #X text 199 471 -;
@@ -71,9 +74,9 @@
 #X obj 245 281 else/graph~;
 #X obj 35 282 else/graph~;
 #X obj 386 215 nbx 5 17 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 389 170 hsl 150 15 1 2048 1 0 adsfadsg ahhah empty -2 -8 0 10
--228856 -1 -1 0 1;
+#dcdcdc #000000 #000000 0 1;
 #X text 394 169 'n' samples to average;
 #X obj 386 193 int;
 #X text 37 22 The first argument specifies 'n' number of samples to

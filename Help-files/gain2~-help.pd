@@ -1,30 +1,32 @@
-#N canvas 834 95 563 643 10;
+#N canvas 620 23 563 643 10;
 #X obj 2 327 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
--228856 -1 0;
+#dcdcdc #000000 0;
 #X obj 2 465 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
-13 -228856 -1 0;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+13 #dcdcdc #000000 0;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 41 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
-#X obj 74 41 cnv 4 4 4 empty empty gain 0 28 2 18 -233017 -1 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 41 cnv 4 4 4 empty empty Stereo 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 74 41 cnv 4 4 4 empty empty gain 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
+#fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -93,7 +95,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -106,8 +108,8 @@
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -128,12 +130,12 @@
 #X restore 506 72 pd;
 #X obj 264 299 dac~;
 #X obj 295 278 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 276 145 osc~ 440;
-#X obj 83 472 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
--162280 0;
-#X obj 83 518 cnv 17 3 17 empty \$0-pddp.cnv.let.0 2 5 9 0 16 -228856
--162280 0;
+#X obj 83 472 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 #dcdcdc
+#9c9c9c 0;
+#X obj 83 518 cnv 17 3 17 empty \$0-pddp.cnv.let.0 2 5 9 0 16 #dcdcdc
+#9c9c9c 0;
 #X text 143 473 signal;
 #X text 149 519 float;
 #X text 193 519 - slider value \, from 0-1 (independent of maximum
@@ -141,28 +143,28 @@ gain);
 #N canvas 835 185 915 382 examples 0;
 #X msg 468 118 mode \$1;
 #X obj 468 41 vradio 15 1 0 3 \$0-dummy \$0-dummy-set empty 0 -8 0
-10 -228856 -1 -1 0;
+10 #dcdcdc #000000 #000000 0;
 #X text 487 56 dB;
 #X text 487 70 linear;
-#X floatatom 468 94 5 0 0 0 - - -;
+#X floatatom 468 94 5 0 0 0 - - - 0;
 #X text 451 20 slider scaling:;
 #X text 486 40 quartic;
 #X msg 596 247 ramp \$1;
 #X obj 596 221 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X msg 594 189 gain \$1;
 #X obj 594 163 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 597 140 hsl 128 15 0.1 2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 597 140 hsl 128 15 0.1 2 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 615 139 maximum gain;
-#X obj 536 100 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 533 120 5 0 0 0 - - -;
+#X obj 536 100 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 533 120 5 0 0 0 - - - 0;
 #X text 548 100 set slider (0-1);
 #X obj 359 333 dac~;
 #X obj 390 315 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 390 168 noise~;
 #X obj 758 61 adc~;
 #X text 628 19 Use it in conjunction with [else/meter2~];
@@ -203,7 +205,7 @@ achieved., f 40;
 #X connect 26 0 24 0;
 #X restore 468 221 pd examples;
 #N canvas 619 192 678 490 scaling 0;
-#X obj 32 57 cnv 15 198 198 empty empty empty 20 12 0 14 -253888 -66577
+#X obj 32 57 cnv 15 198 198 empty empty empty 20 12 0 14 #f4f8fc #404040
 0;
 #N canvas 0 22 452 302 (subpatch) 0;
 #X array dB 441 float 1;
@@ -421,11 +423,11 @@ same as the output. We have then two non linear modes:;
 #X obj 523 301 osc~ 440;
 #X msg 450 314 gain \$1;
 #X obj 361 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 450 291 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 450 177 vsl 15 80 0.1 2 0 0 empty empty empty 0 -9 0 10 -233017
--1 -1 0 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 450 177 vsl 15 80 0.1 2 0 0 empty empty empty 0 -9 0 10 #e0e0e0
+#000000 #000000 0 1;
 #X text 456 272 max gain;
 #X text 417 196 dB;
 #X text 70 265 entry (slider) value;
@@ -455,24 +457,25 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X restore 462 247 pd scaling \; modes & gain;
 #X text 153 206 [else/gain2~] ==>;
 #X obj 276 171 else/gain2~ 1 0 20 0 0;
-#X obj 83 441 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
--162280 0;
+#X obj 83 441 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 #dcdcdc
+#9c9c9c 0;
 #X text 137 441 signal;
 #X text 187 441 - right channel signal whose gain will be adjusted
 ;
 #X text 193 473 - the adjusted gain signal of the left channel;
 #X text 143 495 signal;
 #X text 193 495 - the adjusted gain signal of the right channel;
-#X obj 83 495 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 -228856
--162280 0;
-#X obj 3 4 cnv 15 301 42 empty empty gain2~ 20 20 2 37 -233017 -1 0
-;
+#X obj 83 495 cnv 17 3 17 empty \$0-pddp.cnv.let.0 1 5 9 0 16 #dcdcdc
+#9c9c9c 0;
+#X obj 3 4 cnv 15 301 42 empty empty gain2~ 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
 #X obj 5 618 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
-14 -228856 -66577 0;
-#X obj 5 545 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+14 #dcdcdc #404040 0;
+#X obj 5 545 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 79 552 -max <float>: sets max gain (needs to be > 0 \, default
 1), f 75;
 #X text 73 567 -mode <float>: sets scaling mode: 0 (quartic \, default)
@@ -501,13 +504,13 @@ saved., f 25;
 #X connect 3 1 5 1;
 #X connect 4 0 3 1;
 #X restore 491 283 pd init;
-#X obj 247 145 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 247 145 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 170 144 mute/unmute;
 #X text 103 421 init <float>;
 #X text 189 421 - non zero sets to init mode, f 58;
-#X obj 84 334 cnv 17 3 100 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
--162280 0;
+#X obj 84 334 cnv 17 3 100 empty \$0-pddp.cnv.let.0 0 5 9 0 16 #dcdcdc
+#9c9c9c 0;
 #X text 139 334 signal;
 #X text 103 392 gain <float>;
 #X text 103 407 ramp <float>;

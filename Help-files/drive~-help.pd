@@ -1,38 +1,38 @@
 #N canvas 569 55 561 480 10;
-#X obj 3 290 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 359 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 393 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 290 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 143 368 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 144 298 cnv 17 3 30 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 3 452 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 359 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 3 393 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 143 368 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 144 298 cnv 17 3 30 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 3 452 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 103 40 cnv 4 4 4 empty empty distortion 0 28 2 18 -233017 -1
+#X obj 103 40 cnv 4 4 4 empty empty distortion 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 -74965 -212593
--262144 1 1;
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
+#fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
 #N canvas 977 77 379 291 set_color 0;
@@ -101,7 +101,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 -74965 -212593
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -114,8 +114,8 @@
 #X obj 136 86 snapshot~;
 #X obj 91 52 del 5;
 #X obj 136 151 outlet;
-#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 74 103 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 74 126 switch~;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
@@ -136,22 +136,22 @@
 #X restore 505 71 pd;
 #X text 221 368 signal;
 #X text 220 298 signal;
-#X obj 144 336 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 144 336 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 184 337 float/signal;
 #X obj 205 227 else/out~;
 #X obj 205 141 osc~ 440;
-#X obj 3 4 cnv 15 301 42 empty empty drive~ 20 20 2 37 -233017 -1 0
-;
+#X obj 3 4 cnv 15 301 42 empty empty drive~ 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X text 272 298 - signal input;
 #X obj 205 197 else/drive~;
 #X obj 268 154 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 271 132 hsl 128 15 0 5 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 271 132 hsl 128 15 0 5 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 274 368 - the distorted signal;
 #X text 272 337 - drive factor;
 #N canvas 936 65 521 476 modes 0;
@@ -180,7 +180,8 @@ input values below the threshold are passed through while others are
 soft clipped. When set to 1 \, any input above 1 or below -1 is hard
 clipped., f 69;
 #X restore 488 233 pd modes;
-#X obj 3 425 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 3 425 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 184 315 mode <float>;
 #X text 118 402 1) float - initial drive value (default 1 \, minimum
 0);
@@ -194,44 +195,44 @@ by applying non-linear transfer functions.;
 #X text 272 315 - sets modes <0 \, 1 or 2>;
 #N canvas 379 169 970 363 examples 0;
 #X obj 159 120 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 10 256;
-#X obj 84 176 else/oscilloscope~ 200 100 2 3 128 -1 1 150 0 0 0 30
-30 30 190 190 190 160 160 160 0 empty;
-#X obj 162 100 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 12700 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 162 100 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 84 112 osc~ 440;
 #X obj 84 145 else/drive~ 1;
 #X obj 487 110 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 2.91452 256;
-#X obj 364 174 else/oscilloscope~ 200 100 2 3 128 -1 1 150 0 0 0 30
-30 30 190 190 190 160 160 160 0 empty;
-#X obj 490 90 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 9300 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 490 90 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 364 102 osc~ 440;
 #X obj 364 135 else/drive~ 1 -mode 1;
 #X obj 793 117 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.520638 256;
-#X obj 670 181 else/oscilloscope~ 200 100 2 3 128 -1 1 150 0 0 0 30
-30 30 190 190 190 160 160 160 0 empty;
-#X obj 796 94 hsl 128 15 0.1 1 1 0 empty empty empty -2 -8 0 10 -228856
--1 -1 9100 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 796 94 hsl 128 15 0.1 1 1 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 670 99 osc~ 440;
 #X obj 670 141 else/drive~ 1 -mode 2;
-#X connect 0 0 4 1;
-#X connect 2 0 0 0;
-#X connect 3 0 4 0;
-#X connect 4 0 1 0;
-#X connect 5 0 9 1;
-#X connect 7 0 5 0;
-#X connect 8 0 9 0;
-#X connect 9 0 6 0;
-#X connect 10 0 14 1;
-#X connect 12 0 10 0;
-#X connect 13 0 14 0;
-#X connect 14 0 11 0;
+#X obj 84 176 else/oscope~ 200 100 2 3 128 -1 1 150 0 0 0 30 30 30
+190 190 190 160 160 160 0 empty;
+#X obj 364 174 else/oscope~ 200 100 2 3 128 -1 1 150 0 0 0 30 30 30
+190 190 190 160 160 160 0 empty;
+#X obj 670 181 else/oscope~ 200 100 2 3 128 -1 1 150 0 0 0 30 30 30
+190 190 190 160 160 160 0 empty;
+#X connect 0 0 3 1;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 3 0 12 0;
+#X connect 4 0 7 1;
+#X connect 5 0 4 0;
+#X connect 6 0 7 0;
+#X connect 7 0 13 0;
+#X connect 8 0 11 1;
+#X connect 9 0 8 0;
+#X connect 10 0 11 0;
+#X connect 11 0 14 0;
 #X restore 470 255 pd examples;
-#X obj 30 40 cnv 4 4 4 empty empty Soft-clip 0 28 2 18 -233017 -1 0
-;
+#X obj 30 40 cnv 4 4 4 empty empty Soft-clip 0 28 2 18 #e0e0e0 #000000
+0;
 #X connect 21 0 25 0;
 #X connect 25 0 20 0;
 #X connect 26 0 35 0;

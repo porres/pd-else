@@ -1,60 +1,61 @@
-#N canvas 655 48 561 585 10;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 416 24 561 585 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Stack 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 40 cnv 4 4 4 empty empty Stack 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 71 40 cnv 4 4 4 empty empty messages 0 28 2 18 -233017 -1 0
-;
-#X obj 3 3 cnv 15 301 42 empty empty stack 20 20 2 37 -233017 -1 0
-;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 71 40 cnv 4 4 4 empty empty messages 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 3 cnv 15 301 42 empty empty stack 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 4 278 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 494 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 278 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 130 450 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 130 287 cnv 17 3 125 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 559 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 494 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 130 450 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 130 287 cnv 17 3 125 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c
+0;
+#X obj 4 559 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 201 285 bang;
-#X obj 130 419 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 130 419 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 177 419 anything;
 #X text 177 450 anything;
 #X text 195 314 clear;
 #X msg 205 175 clear;
 #X obj 195 248 else/display;
-#X obj 195 149 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 195 149 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X msg 305 196 1 2 \, 3 4 \, 5 6;
 #X text 231 450 - the stored message;
-#X obj 130 471 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 130 471 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 149 149 output;
 #X text 231 419 - input messages to be stacked, f 38;
 #X text 231 285 - outputs and removes a message, f 38;
 #X text 231 313 - clears the stack, f 38;
-#X floatatom 282 144 5 0 0 0 - - -;
+#X floatatom 282 144 5 0 0 0 - - - 0;
 #X text 320 143 store messages;
 #X msg 294 170 a \, b c \, list x y \, symbol hi;
 #X text 201 300 dump;
@@ -73,10 +74,10 @@
 #X text 231 401 - closes [text] window;
 #N canvas 986 183 503 298 open 0;
 #X obj 171 217 else/display;
-#X obj 171 143 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 171 143 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X msg 272 166 1 2 \, 3 4 \, 5 6;
-#X floatatom 238 114 5 0 0 0 - - -;
+#X floatatom 238 114 5 0 0 0 - - - 0;
 #X text 279 113 store messages;
 #X msg 258 139 a \, b c \, list x y \, symbol hi;
 #X msg 85 144 open;
@@ -109,19 +110,20 @@ and removes them one by one when receiving bangs. An argument defines
 the output order \, which can be 'fifo' (first in first out) or 'lifo'
 (last in first out) - This needs to be set before storing data., f
 76;
-#X obj 4 528 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
+#X obj 4 528 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
+0;
 #X text 163 536 clicking on the object opens stack's window;
 #N canvas 1048 151 320 314 dump 0;
 #X obj 80 148 else/display;
-#X floatatom 137 90 5 0 0 0 - - -;
+#X floatatom 137 90 5 0 0 0 - - - 0;
 #X text 178 89 store messages;
 #X msg 80 88 dump;
 #X obj 80 121 else/stack;
 #X obj 138 147 display;
 #X obj 150 176 print N;
 #X obj 80 260 print data;
-#X obj 138 222 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 138 222 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 138 198 sel 0;
 #X text 163 223 <= bang if empty;
 #X text 56 32 A dump message outputs all stored messages and clears
@@ -135,10 +137,13 @@ the memory., f 33;
 #X connect 5 0 9 0;
 #X connect 9 0 8 0;
 #X restore 498 239 pd dump;
-#X obj 146 40 cnv 4 4 4 empty empty and 0 28 2 18 -233017 -1 0;
-#X obj 181 40 cnv 4 4 4 empty empty output 0 28 2 18 -233017 -1 0;
-#X obj 237 40 cnv 4 4 4 empty empty via 0 28 2 18 -233017 -1 0;
-#X obj 269 40 cnv 4 4 4 empty empty fifo/lifo 0 28 2 18 -233017 -1
+#X obj 146 40 cnv 4 4 4 empty empty and 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 181 40 cnv 4 4 4 empty empty output 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 237 40 cnv 4 4 4 empty empty via 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 269 40 cnv 4 4 4 empty empty fifo/lifo 0 28 2 18 #e0e0e0 #000000
 0;
 #X connect 23 0 58 0;
 #X connect 25 0 58 0;

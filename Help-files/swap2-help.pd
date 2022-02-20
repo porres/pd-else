@@ -1,6 +1,6 @@
-#N canvas 704 97 562 436 10;
-#X obj 23 42 cnv 4 4 4 empty empty Swap\ two\ messages 0 28 2 18 #e0e0e0
-#000000 0;
+#N canvas 457 33 562 436 10;
+#X obj 23 42 cnv 4 4 4 empty empty Swap\\\ two\\\ messages 0 28 2 18
+#e0e0e0 #000000 0;
 #X obj 3 5 cnv 15 301 42 empty empty swap2 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;

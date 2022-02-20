@@ -1,47 +1,50 @@
-#N canvas 691 90 564 554 10;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 561 24 564 554 10;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 41 cnv 4 4 4 empty empty Route 0 28 2 18 -233017 -1 0;
-#X obj 138 41 cnv 4 4 4 empty empty message 0 28 2 18 -233017 -1 0
-;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 41 cnv 4 4 4 empty empty Route 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 138 41 cnv 4 4 4 empty empty message 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 4 graph;
-#X obj 3 4 cnv 15 301 42 empty empty routeall 20 20 2 37 -233017 -1
+#X obj 3 4 cnv 15 301 42 empty empty routeall 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 7 526 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 7 526 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 7 376 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 7 426 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 7 490 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 376 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 108 435 cnv 17 3 24 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 7 426 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 7 490 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 108 435 cnv 17 3 24 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 108 384 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 108 384 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 108 465 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+#X obj 108 465 cnv 17 3 17 empty empty n+1 5 9 0 16 #dcdcdc #9c9c9c
 0;
 #X msg 218 258 1 2 3;
-#X obj 75 41 cnv 4 4 4 empty empty all 0 28 2 18 -233017 -1 0;
+#X obj 75 41 cnv 4 4 4 empty empty all 0 28 2 18 #e0e0e0 #000000 0
+;
 #X obj 282 340 else/display;
-#X obj 105 41 cnv 4 4 4 empty empty the 0 28 2 18 -233017 -1 0;
+#X obj 105 41 cnv 4 4 4 empty empty the 0 28 2 18 #e0e0e0 #000000 0
+;
 #X text 146 499 1) anything -;
 #X obj 206 317 else/routeall a 1, f 26;
 #X obj 206 341 else/display;
@@ -49,7 +52,7 @@
 #X msg 127 245 symbol a;
 #X msg 175 268 a;
 #X msg 264 258 1;
-#X floatatom 271 284 5 0 0 0 - - -;
+#X floatatom 271 284 5 0 0 0 - - - 0;
 #X msg 206 226 list a b;
 #X msg 321 286 unmatched;
 #X text 163 465 anything -;
@@ -70,8 +73,8 @@ to the rightmost outlet., f 74;
 #X text 30 112 If you give the [routeall] object a selector as an argument
 \, it will be able to match and route accordingly.;
 #X obj 101 178 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X symbolatom 118 202 10 0 0 0 - - -;
+#dcdcdc #000000 #000000 0 256;
+#X symbolatom 118 202 10 0 0 0 - - - 0;
 #X obj 212 252 else/display;
 #X obj 101 253 else/display;
 #X obj 101 229 else/routeall float;
@@ -187,7 +190,7 @@ object matches a symbol to a symbol or a list message! Another difference
 is that [routeall] takes both float and symbol messages at once! Moreover
 \, it can match to other elements in the message than the first.,
 f 74;
-#X obj 108 406 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 108 406 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 179 406 float -;
 #X text 232 406 set element number to match (default 0);

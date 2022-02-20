@@ -1,38 +1,41 @@
-#N canvas 772 71 565 597 10;
-#X obj 5 568 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 487 30 565 597 10;
+#X obj 5 568 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 5 226 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 433 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 466 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 226 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 79 443 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 5 433 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 5 466 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 79 443 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 149 475 1) symbol;
 #X text 218 490 - audio file to load (optional), f 44;
 #X text 149 490 2) symbol;
-#X obj 5 512 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 5 512 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 41 cnv 4 4 4 empty empty Audio 0 28 2 18 -233017 -1 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 41 cnv 4 4 4 empty empty Audio 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 77 41 cnv 4 4 4 empty empty buffer 0 28 2 18 -233017 -1 0;
-#X obj 3 4 cnv 15 301 42 empty empty sample~ 20 20 2 37 -233017 -1
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 77 41 cnv 4 4 4 empty empty buffer 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 4 cnv 15 301 42 empty empty sample~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -151,7 +154,7 @@ give it the correct table name according to a specific channel.;
 #X connect 10 0 3 0;
 #X restore 479 127 pd details;
 #X text 111 172 click =>;
-#X obj 81 233 cnv 17 3 197 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 81 233 cnv 17 3 197 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 119 445 list <f \, f \, f>;
 #X text 218 445 - sample's size \, sample rate and channels, f 53
@@ -162,11 +165,11 @@ save multichannel files., f 62;
 #X text 218 475 - buffer name (default sample_\$0), f 44;
 #X text 146 550 -ch <float> - sets number of channels (default 1);
 #N canvas 754 82 467 586 rec/play 0;
-#X obj 121 335 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 121 335 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 74 200 else/setdsp~;
-#X obj 113 423 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 113 423 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 114 495 else/out~;
 #X msg 211 237 show;
 #X obj 191 319 else/cusp~ 250;

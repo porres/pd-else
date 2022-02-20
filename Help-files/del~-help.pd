@@ -1,49 +1,53 @@
-#N canvas 689 189 560 469 10;
-#X obj 2 4 cnv 15 301 42 empty empty del~ 20 20 2 37 -233017 -1 0;
+#N canvas 577 34 560 469 10;
+#X obj 2 4 cnv 15 301 42 empty empty del~ 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 23 41 cnv 4 4 4 empty empty Delay 0 28 2 18 -233017 -1 0;
-#X obj 77 41 cnv 4 4 4 empty empty line 0 28 2 18 -233017 -1 0;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 23 41 cnv 4 4 4 empty empty Delay 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 77 41 cnv 4 4 4 empty empty line 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 325 137 hsl 128 15 0 1000 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 325 137 hsl 128 15 0 1000 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 322 254 else/out~;
 #X obj 80 179 else/out~;
-#X floatatom 322 164 6 0 0 0 - - -;
+#X floatatom 322 164 6 0 0 0 - - - 0;
 #X obj 322 193 else/f2s~ 200;
 #X obj 61 244 else/del~ in \$0-x 1000;
 #X obj 322 221 else/del~ out \$0-x;
 #X obj 61 149 else/player~ bubul.wav 1 1;
-#N canvas 332 102 560 621 del~ 0;
-#X obj 4 388 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 464 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 495 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 466 23 560 621 del~ 0;
+#X obj 4 388 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 594 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 464 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 106 395 cnv 17 3 60 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 3 495 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 3 594 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 106 395 cnv 17 3 60 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 128 540 2) float;
-#X obj 4 564 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 4 564 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 172 409 clear;
 #X text 209 409 - clears delay line, f 37;
 #X text 118 439 freeze <float>;
@@ -57,36 +61,39 @@
 #X msg 138 164 clear;
 #X text 178 163 clears delay line;
 #X msg 147 217 size \$1;
-#X floatatom 147 193 5 0 0 0 - - -;
-#X obj 213 216 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X floatatom 147 193 5 0 0 0 - - - 0;
+#X obj 213 216 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X msg 213 240 freeze \$1;
 #X obj 114 279 else/del~ -samps \$0-y 44100;
-#X obj 2 3 cnv 15 301 42 empty \$0-cnv del~\\\ in 20 20 2 37 -233017
--1 0;
+#X obj 2 3 cnv 15 301 42 empty \$0-cnv del~\\\ in 20 20 2 37 #e0e0e0
+#000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 23 40 cnv 4 4 4 empty empty Delay 0 28 2 18 -233017 -1 0;
-#X obj 77 40 cnv 4 4 4 empty empty line 0 28 2 18 -233017 -1 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 23 40 cnv 4 4 4 empty empty Delay 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 77 40 cnv 4 4 4 empty empty line 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 116 40 cnv 4 4 4 empty empty input 0 28 2 18 -233017 -1 0;
+#X obj 116 40 cnv 4 4 4 empty empty input 0 28 2 18 #e0e0e0 #000000
+0;
 #X text 288 274 The -samps flag sets time value to samples instead
 of ms (default), f 34;
 #X text 73 88 Define a delay line and write to it. if neither "in"
@@ -104,7 +111,7 @@ or "out", f 64;
 #X text 170 571 - sets time value to samples (default is ms);
 #X text 243 311 The second argument also defines the maximum delay
 amount a [del~ out] object can have., f 44;
-#X obj 104 472 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 104 472 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 166 473 signal;
 #X text 209 473 - dummy outlet to force order of execution;
@@ -121,45 +128,49 @@ amount a [del~ out] object can have., f 44;
 #X text 442 216 read from delay line, f 10;
 #X text 96 362 For more information on messages and inlet/outlet for
 both "in" and "out" \, see:, f 50;
-#N canvas 1006 137 561 508 del~ 0;
-#X obj 4 308 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 344 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 385 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 686 27 561 508 del~ 0;
+#X obj 4 308 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 482 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 344 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 104 317 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 3 385 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 3 482 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 104 317 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 128 428 2) float;
-#X obj 4 452 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 4 452 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 209 318 - signal input into the delay line, f 37;
-#X obj 2 3 cnv 15 301 42 empty \$0-cnv2 del~\\\ out 20 20 2 37 -233017
--1 0;
+#X obj 2 3 cnv 15 301 42 empty \$0-cnv2 del~\\\ out 20 20 2 37 #e0e0e0
+#000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 23 40 cnv 4 4 4 empty empty Delay 0 28 2 18 -233017 -1 0;
-#X obj 77 40 cnv 4 4 4 empty empty line 0 28 2 18 -233017 -1 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 23 40 cnv 4 4 4 empty empty Delay 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 77 40 cnv 4 4 4 empty empty line 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 116 40 cnv 4 4 4 empty empty output 0 28 2 18 -233017 -1 0;
+#X obj 116 40 cnv 4 4 4 empty empty output 0 28 2 18 #e0e0e0 #000000
+0;
 #X text 283 208 The -samps flag sets time value to samples instead
 of ms (default), f 34;
 #X text 94 390 (besides the first optional argument that defines "in"
@@ -170,13 +181,13 @@ or "out", f 64;
 #X text 170 459 - sets time value to samples (default is ms);
 #X obj 116 214 else/del~ out -samps \$0-y;
 #X obj 116 245 else/out~;
-#X obj 119 132 hsl 128 15 0 1000 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 116 153 6 0 0 0 - - -;
+#X obj 119 132 hsl 128 15 0 1000 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 116 153 6 0 0 0 - - - 0;
 #X obj 116 176 else/f2s~ 200;
 #X text 158 153 delay time (in samples in this case);
 #X text 130 318 float/signal;
-#X obj 104 355 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 104 355 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 166 356 signal;
 #X text 209 356 - output of a delay line, f 37;
@@ -184,8 +195,8 @@ or "out", f 64;
 ;
 #N canvas 1200 230 492 462 order 0;
 #X obj 102 362 -~;
-#X obj 103 167 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 103 167 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 102 402 else/display~;
 #X obj 103 194 else/ramp~;
 #X text 136 407 matches delay in samples;
@@ -201,7 +212,7 @@ or "out", f 64;
 #X connect 4 0 0 0;
 #X restore 142 321 pd out;
 #X obj 142 358 else/display~;
-#X floatatom 175 294 5 0 64 0 - - -;
+#X floatatom 175 294 5 0 64 0 - - - 0;
 #X text 213 292 delay in samples;
 #X text 188 321 <= open;
 #X obj 142 235 del~ in -samps \$0-order 64;
@@ -232,13 +243,13 @@ f 64;
 #X connect 30 0 31 0;
 #X connect 31 0 27 0;
 #X restore 372 392 pd del~ out;
-#X obj 3 442 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 442 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 50 85 [del~] sets and writes to a delay line is created as
 [del~ in] (default) and reads from it (with interpolation) if created
 as [del~ out]. It's quite similar to [delread~]/[delread4~] \, but
 with more features., f 72;
-#X obj 7 316 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 316 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X text 109 331 1) symbol;
 #X text 170 331 - "in" (default) or "out" to define functionality;

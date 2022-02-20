@@ -1,47 +1,49 @@
-#N canvas 618 34 561 749 10;
-#X obj 5 336 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 577 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 639 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 6 725 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 572 23 573 723 10;
+#X obj 5 336 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 96 343 cnv 17 3 208 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 5 577 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 5 639 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 6 725 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 96 343 cnv 17 3 208 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 110 41 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
-#X obj 26 41 cnv 4 4 4 empty empty Keyboard 0 28 2 18 -233017 -1 0
+#X obj 110 41 cnv 4 4 4 empty empty GUI 0 28 2 18 #e0e0e0 #000000 0
 ;
-#X obj 3 4 cnv 15 301 42 empty empty keyboard 20 20 2 37 -233017 -1
+#X obj 26 41 cnv 4 4 4 empty empty Keyboard 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 4 cnv 15 301 42 empty empty keyboard 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X obj 312 127 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 312 127 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 196 341 float;
 #X text 196 555 float;
 #X text 246 341 - MIDI Note value, f 47;
 #X text 246 355 - MIDI Note and Velocity values, f 47;
 #X text 160 355 list <f \, f>;
-#X obj 96 556 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 96 556 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 95 585 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 95 585 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 249 585 - MIDI Note and Velocity values;
 #X text 160 585 list <f \, f>;
-#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1;
@@ -58,22 +60,22 @@ generates them from mouse clicking. Right click it for properties!
 #X text 246 453 - set number of octaves, f 47;
 #X text 154 467 lowc <float>;
 #N canvas 871 138 553 608 example 0;
-#X obj 67 98 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
-;
+#X obj 67 98 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
+0 1;
 #X obj 67 178 makenote 100 1500;
 #X obj 67 128 metro 800;
 #X obj 279 351 catch~ \$0-voice;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -102,14 +104,14 @@ generates them from mouse clicking. Right click it for properties!
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -138,14 +140,14 @@ generates them from mouse clicking. Right click it for properties!
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -174,14 +176,14 @@ generates them from mouse clicking. Right click it for properties!
 #N canvas 1014 119 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -257,14 +259,14 @@ it On or Off. Dragging doesn't work., f 43;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -292,22 +294,22 @@ it On or Off. Dragging doesn't work., f 43;
 #X restore 48 409 pd voice;
 #X obj 48 301 else/voices 4 1;
 #X msg 48 94 toggle \$1;
-#X obj 48 66 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1 1
-;
+#X obj 48 66 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
+0 1;
 #X obj 48 34 loadbang;
 #X msg 81 135 flush;
 #X obj 273 304 catch~ \$0-tgl;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -336,14 +338,14 @@ it On or Off. Dragging doesn't work., f 43;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -372,14 +374,14 @@ it On or Off. Dragging doesn't work., f 43;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -443,14 +445,14 @@ messages from the inlets., f 43;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -481,14 +483,14 @@ messages from the inlets., f 43;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -517,14 +519,14 @@ messages from the inlets., f 43;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -553,14 +555,14 @@ messages from the inlets., f 43;
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -612,14 +614,14 @@ flush message also flushes hanging notes from shift clicking., f 49
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -649,14 +651,14 @@ flush message also flushes hanging notes from shift clicking., f 49
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -685,14 +687,14 @@ flush message also flushes hanging notes from shift clicking., f 49
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -721,14 +723,14 @@ flush message also flushes hanging notes from shift clicking., f 49
 #N canvas 870 145 477 340 voice 0;
 #X obj 125 33 inlet;
 #X obj 213 99 / 127;
-#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 398 171 tgl 40 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 125 186 *~;
 #X obj 128 247 *~;
 #X obj 398 223 switch~;
 #X obj 125 95 mtof;
-#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 -228856 -1
--1 0 1;
+#X obj 262 208 vsl 20 100 0 1 0 0 xxx xx empty 0 -9 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 38 185 else/sine~;
 #X obj 125 136 else/sine~;
 #X obj 125 65 unpack float float;
@@ -755,7 +757,7 @@ flush message also flushes hanging notes from shift clicking., f 49
 #X connect 13 0 8 0;
 #X restore 112 334 pd voice;
 #X msg 47 104 norm \$1;
-#X floatatom 47 68 5 0 127 0 - - -;
+#X floatatom 47 68 5 0 127 0 - - - 0;
 #X obj 47 261 else/display 7;
 #X text 127 22 Note that the velocity depends on where you click on
 the vertical axis. The lower you click \, the higher the velocity is.
@@ -825,7 +827,7 @@ mode. This is an indicative that the object has a send or receive symbol.
 velocity normalization value (default 0) | -send <symbol>: sets send
 symbol (default 'empty') | -receive <symbol>: sets receive symbol (default
 'empty') |, f 77;
-#X obj 4 612 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 612 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X text 239 619 (none);
 #N canvas 846 100 564 553 more 0;

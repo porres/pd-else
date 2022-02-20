@@ -1,46 +1,46 @@
 #N canvas 565 39 559 577 10;
-#X obj 3 555 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 555 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 5 314 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 422 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 453 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 5 314 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 83 323 cnv 17 3 95 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 5 422 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 5 453 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 83 323 cnv 17 3 95 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 138 322 signal;
-#X obj 83 431 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 83 431 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 138 431 signal;
 #X text 102 339 set <symbol>;
 #X text 187 338 - sets the array/table to be used for lookup;
 #X text 187 321 - signal to be used as index;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 25 41 cnv 4 4 4 empty empty Waveshaper 0 28 2 18 -233017 -1
+#X obj 25 41 cnv 4 4 4 empty empty Waveshaper 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 3 4 cnv 15 301 42 empty empty shaper~ 20 20 2 37 -233017 -1
+#X obj 3 4 cnv 15 301 42 empty empty shaper~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
-#X obj 96 205 cnv 15 118 78 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 96 205 cnv 15 118 78 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-clip 512 float 1;
@@ -77,7 +77,7 @@
 #X obj 282 187 else/player~ violin.wav 1 1;
 #X obj 282 253 else/out~;
 #N canvas 446 119 729 465 waveshaping 0;
-#X obj 65 198 cnv 15 248 148 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 65 198 cnv 15 248 148 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-t_func 4099 float 0;
@@ -85,9 +85,9 @@
 #X restore 64 197 graph;
 #X obj 407 97 *~;
 #X obj 486 43 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0.1 256;
-#X obj 489 22 hsl 128 15 0.1 1 0 1 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 489 22 hsl 128 15 0.1 1 0 1 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 520 22 Amplitude;
 #X obj 408 303 else/graph~ 512 14;
 #X obj 430 233 else/out~;
@@ -101,8 +101,8 @@ function \, but on a sine wave as a synthesis technique., f 56;
 0.2 0.9 \, normalize, f 27;
 #X obj 407 206 else/shaper~ -filter 0;
 #X msg 474 181 filter \$1;
-#X obj 474 159 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 474 159 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 496 159 removes DC offset;
 #X text 21 97 This particular transfer function generates a DC Offset
 \, but [shaper~] filters out the DC component (0Hz) with an internal
@@ -153,7 +153,8 @@ off <0>;
 #X text 199 458 a symbol sets array/table name to be used for lookup
 \, but a list of floats sets harmonic weigths for internal transfer
 function (default 1)., f 55;
-#X obj 5 499 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 5 499 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 143 505 -dc: sets DC offset for internal transfer function
 (default 0), f 62;
 #X text 83 521 -norm <float>:;
@@ -180,8 +181,8 @@ just a linear function. Hence \, it represents the fundamental., f
 #X text 171 236 fundamental and 1st harmonic;
 #X msg 155 269 0.5 1;
 #X msg 212 284 norm \$1;
-#X obj 212 264 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 212 264 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 22 129 The list of coefficients can be given as an argumnent
 or as a list input. The object \, by default \, normalizes the transfer
 fucntion to output values between -1 and 1 \, but you can change that
@@ -189,14 +190,14 @@ with the "norm" message or flag., f 70;
 #X obj 672 248 osc~ 200;
 #X obj 600 389 else/graph~ 441 8;
 #X msg 599 174 norm \$1;
-#X obj 599 154 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 599 154 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X msg 634 196 0.5;
 #X msg 523 162 dc \$1;
-#X obj 526 123 hsl 100 15 0 0.5 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 526 123 hsl 100 15 0 0.5 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 523 143 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X msg 663 219 0.5 0.5;
 #X obj 142 352 else/out~;
 #X obj 615 321 else/out~;

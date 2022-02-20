@@ -1,4 +1,4 @@
-#N canvas 632 23 562 576 10;
+#N canvas 521 23 562 576 10;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -255,7 +255,7 @@ the 3rd argument or the 'step' message., f 65;
 #X text 191 269 - sets range start/end and step (optionally) and run
 loop, f 58;
 #X text 124 283 set <list>;
-#X text 191 283 -, f 1;
+#X text 191 283 -;
 #X text 203 283 a float sets number of iterations \, a list sets start/end
 and step (optionally), f 56;
 #X connect 20 0 42 0;

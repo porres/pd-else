@@ -1,47 +1,50 @@
-#N canvas 603 132 560 400 10;
+#N canvas 544 71 560 400 10;
 #X obj 216 156 nbx 3 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 9 256;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#dcdcdc #000000 #000000 0 256;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 40 cnv 4 4 4 empty empty Convert 0 28 2 18 -233017 -1 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 40 cnv 4 4 4 empty empty Convert 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 90 40 cnv 4 4 4 empty empty MIDI 0 28 2 18 -233017 -1 0;
-#X obj 140 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
-#X obj 162 40 cnv 4 4 4 empty empty Frequency 0 28 2 18 -233017 -1
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 3 3 cnv 15 301 42 empty empty midi2freq 20 20 2 37 -233017 -1
+#X obj 90 40 cnv 4 4 4 empty empty MIDI 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 140 40 cnv 4 4 4 empty empty to 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 162 40 cnv 4 4 4 empty empty Frequency 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 3 cnv 15 301 42 empty empty midi2freq 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X floatatom 321 157 5 0 0 0 - - -;
-#X obj 4 246 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 306 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 341 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X floatatom 321 157 5 0 0 0 - - - 0;
+#X obj 4 246 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 167 315 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 167 255 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 4 373 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 306 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 167 277 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 4 341 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 167 315 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 167 255 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 4 373 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 167 277 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 195 279 float;
 #X obj 216 211 else/display;

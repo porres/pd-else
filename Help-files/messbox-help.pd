@@ -1,37 +1,39 @@
-#N canvas 581 88 563 585 10;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 551 29 563 585 10;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 78 41 cnv 4 4 4 empty empty message 0 28 2 18 -233017 -1 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 78 41 cnv 4 4 4 empty empty message 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 3 4 cnv 15 301 42 empty empty messbox 20 20 2 37 -233017 -1
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 3 4 cnv 15 301 42 empty empty messbox 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X obj 4 333 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 473 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 506 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 98 482 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 100 340 cnv 17 3 130 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 4 333 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 5 558 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 473 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 506 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 98 482 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 100 340 cnv 17 3 130 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c
+0;
+#X obj 5 558 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 175 483 anything;
 #X obj 180 302 else/display;
@@ -41,12 +43,12 @@ message in different ones inside the same box., f 50;
 #X obj 119 188 print Message;
 #X obj 84 405 print Message;
 #X obj 311 357 else/display;
-#X obj 84 294 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 84 294 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X obj 119 111 else/messbox 200 60 235 235 235 0 0 0 0 12;
 #X obj 84 325 else/messbox 200 60 235 235 235 0 0 0 0 12;
-#X obj 91 74 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 91 74 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X msg 119 77 set 1\\\, 2\\\, 3 \, bang;
 #X obj 311 331 r \$0-f;
 #X msg 122 295 set \\\; \\\$0-f 8 \, bang;
@@ -58,8 +60,8 @@ expanded!, f 48;
 of list messages \, floats or symbols., f 28;
 #X msg 406 121 set \\\$1-x \, 10;
 #X obj 406 352 else/display;
-#X floatatom 455 237 5 0 0 0 - - -;
-#X symbolatom 446 209 10 0 0 0 - - -;
+#X floatatom 455 237 5 0 0 0 - - - 0;
+#X symbolatom 446 209 10 0 0 0 - - - 0;
 #X msg 419 157 list a 2;
 #X msg 437 181 0 4;
 #X connect 4 0 6 0;
@@ -77,14 +79,16 @@ of list messages \, floats or symbols., f 28;
 #X connect 19 0 11 0;
 #X restore 475 305 pd syntax;
 #X text 199 338 bang;
-#X obj 35 41 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
+#X obj 35 41 cnv 4 4 4 empty empty GUI 0 28 2 18 #e0e0e0 #000000 0
+;
 #X text 15 279 see also:;
 #X text 229 338 - outputs the message, f 42;
-#X obj 150 41 cnv 4 4 4 empty empty box 0 28 2 18 -233017 -1 0;
+#X obj 150 41 cnv 4 4 4 empty empty box 0 28 2 18 #e0e0e0 #000000 0
+;
 #X obj 180 229 else/messbox 200 60 235 235 235 0 0 0 0 12;
 #X obj 17 301 else/message;
-#X obj 180 160 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 180 160 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X msg 215 182 set this is a message;
 #X text 352 182 <= set message;
 #X text 68 160 output message =>;

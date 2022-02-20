@@ -1,47 +1,50 @@
-#N canvas 624 30 563 556 10;
-#X obj 112 236 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 511 23 563 556 10;
+#X obj 112 236 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 306 3 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 39 cnv 4 4 4 empty empty Route 0 28 2 18 -233017 -1 0;
-#X obj 75 39 cnv 4 4 4 empty empty message 0 28 2 18 -233017 -1 0;
-#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 39 cnv 4 4 4 empty empty Route 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 75 39 cnv 4 4 4 empty empty message 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 458 10 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 478 10 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 515 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 464 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 2 graph;
-#X obj 3 2 cnv 15 301 42 empty empty routetype 20 20 2 37 -233017 -1
+#X obj 3 2 cnv 15 301 42 empty empty routetype 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 2 graph;
-#X obj 7 531 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 7 531 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 7 379 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 7 413 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 7 481 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 379 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 93 422 cnv 17 3 17 empty empty n 5 9 0 16 -228856 -162280 0
+#X obj 7 413 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 7 481 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 93 422 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 93 387 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 93 387 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 94 214 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 145 39 cnv 4 4 4 empty empty types 0 28 2 18 -233017 -1 0;
+#dcdcdc #000000 #000000 0 256;
+#X obj 145 39 cnv 4 4 4 empty empty types 0 28 2 18 #e0e0e0 #000000
+0;
 #X text 103 490 1) anything -;
-#X obj 94 447 cnv 17 3 17 empty empty n+1 5 9 0 16 -228856 -162280
+#X obj 94 447 cnv 17 3 17 empty empty n+1 5 9 0 16 #dcdcdc #9c9c9c
 0;
 #X text 137 423 anything -;
 #X text 206 423 any message that corresponds to a type defined by the
@@ -63,19 +66,19 @@ an outlet corresponding to each given argument that sends out the message
 type according to the argumentm(bang" \, "float" \, "list" \, "symbol"
 or "any").;
 #N canvas 616 370 771 334 unmatch 0;
-#X obj 119 100 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 119 100 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 101 78 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 101 205 else/display;
 #X obj 160 204 else/display;
 #X msg 164 154 symbol x;
 #X msg 145 101 1 2;
 #X msg 157 134 any other;
-#X obj 526 160 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 526 160 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 508 138 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 508 265 else/display;
 #X msg 446 161 symbol x;
 #X msg 557 160 1 2;

@@ -1,55 +1,55 @@
-#N struct 1257-point float x0 float y0 float size float fg float in
+#N struct 1086-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1305-point float x0 float y0 float size float fg float in
+#N struct 1135-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1349-point float x0 float y0 float size float fg float in
+#N struct 1180-point float x0 float y0 float size float fg float in
 float grid;
-#N canvas 669 53 563 659 10;
-#X obj 3 434 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 527 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 559 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 642 23 563 659 10;
+#X obj 3 434 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 122 535 cnv 17 3 17 empty empty 0-7 5 9 0 16 -228856 -162280
+#X obj 3 527 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 123 441 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 3 559 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 122 535 cnv 17 3 17 empty empty 0-7 5 9 0 16 #dcdcdc #9c9c9c
+0;
+#X obj 123 441 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 632 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 632 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 112 40 cnv 4 4 4 empty empty panning 0 28 2 18 -233017 -1 0
-;
-#X obj 21 40 cnv 4 4 4 empty empty Octaphonic 0 28 2 18 -233017 -1
+#X obj 112 40 cnv 4 4 4 empty empty panning 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 21 40 cnv 4 4 4 empty empty Octaphonic 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X text 189 535 signal;
 #X text 188 441 signal;
-#X obj 123 462 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 123 462 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 152 463 float/signal;
-#X obj 3 4 cnv 15 301 42 empty empty pan8~ 20 20 2 37 -233017 -1 0
-;
+#X obj 3 4 cnv 15 301 42 empty empty pan8~ 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X text 240 441 - signal input;
-#X obj 123 483 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 123 483 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 152 484 float/signal;
 #X text 69 88 [pan8~] is an 8-channel equal power (sin/cos) panner.
@@ -57,17 +57,17 @@ It has two modes of operation and a spread parameter.;
 #N canvas 868 162 428 676 mode-0 0;
 #X obj 53 130 else/setdsp~;
 #X text 39 28 Mode 0 has this speakers settings:;
-#X floatatom 137 312 8 0 0 0 - - -;
-#X floatatom 194 312 8 0 0 0 - - -;
+#X floatatom 137 312 8 0 0 0 - - - 0;
+#X floatatom 194 312 8 0 0 0 - - - 0;
 #X text 142 295 x;
 #X text 198 295 y;
-#X floatatom 251 312 8 -1 1 0 - - -;
+#X floatatom 251 312 8 -1 1 0 - - - 0;
 #N canvas 638 23 399 387 set 0;
 #X obj 105 290 pack;
 #X msg 105 245 1 \$1;
 #X obj 105 220 expr ($f1/8) * twopi;
-#X obj 105 118 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
--1 -1 6;
+#X obj 105 118 hradio 15 1 0 8 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
 #X obj 105 153 * -1;
 #X text 107 102 1;
 #X text 122 102 2;
@@ -97,8 +97,8 @@ It has two modes of operation and a spread parameter.;
 #X connect 19 0 15 0;
 #X coords 0 -1 1 1 132 42 2 100 100;
 #X restore 136 81 pd set;
-#X obj 254 284 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 254 284 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 293 283 spread;
 #X obj 80 258 noise~;
 #X text 279 99 <= set speaker;
@@ -152,8 +152,8 @@ It has two modes of operation and a spread parameter.;
 #X obj 105 290 pack;
 #X msg 105 245 1 \$1;
 #X obj 105 220 expr ($f1/8) * twopi;
-#X obj 105 118 hradio 15 1 0 8 empty empty empty 0 -8 0 10 -228856
--1 -1 4;
+#X obj 105 118 hradio 15 1 0 8 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
 #X obj 105 153 * -1;
 #X obj 105 199 mod 8;
 #X obj 105 176 + 2;
@@ -184,13 +184,13 @@ It has two modes of operation and a spread parameter.;
 #X coords 0 -1 1 1 132 42 2 100 100;
 #X restore 122 86 pd set;
 #X text 263 98 <= set speaker;
-#X floatatom 122 327 8 0 0 0 - - -;
-#X floatatom 179 327 8 0 0 0 - - -;
+#X floatatom 122 327 8 0 0 0 - - - 0;
+#X floatatom 179 327 8 0 0 0 - - - 0;
 #X text 127 310 x;
 #X text 183 310 y;
-#X floatatom 236 327 8 -1 1 0 - - -;
-#X obj 239 299 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X floatatom 236 327 8 -1 1 0 - - - 0;
+#X obj 239 299 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 278 298 spread;
 #X obj 65 273 noise~;
 #X obj 65 426 else/meter8~;
@@ -241,10 +241,11 @@ It has two modes of operation and a spread parameter.;
 #X connect 19 0 11 0;
 #X restore 478 402 pd mode-1;
 #X text 242 535 - channel outputs;
-#X obj 123 504 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 123 504 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 194 505 float;
-#X obj 3 590 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 3 590 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 186 567 (none);
 #X text 149 597 -spread: sets spread parameter (default 0);
 #X text 160 610 -mode: sets mode <0> or <1> (default 0);
@@ -252,21 +253,21 @@ It has two modes of operation and a spread parameter.;
 #X text 240 484 - Y vertical value: from -1 (Back) to 1 (Front);
 #X text 240 505 - spread parameter (from -1 to 1);
 #X obj 498 63 else/setdsp~;
-#X floatatom 189 314 5 0 0 0 - - -;
-#X floatatom 246 313 5 0 0 0 - - -;
+#X floatatom 189 314 5 0 0 0 - - - 0;
+#X floatatom 246 313 5 0 0 0 - - - 0;
 #X obj 80 374 env~;
 #X obj 119 374 env~;
 #X obj 158 374 env~;
 #X obj 197 374 env~;
 #X obj 197 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 132 224 noise~;
 #X obj 158 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 119 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 80 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 172 312 X;
 #X text 281 314 Y;
 #X obj 236 374 env~;
@@ -274,13 +275,13 @@ It has two modes of operation and a spread parameter.;
 #X obj 314 374 env~;
 #X obj 353 374 env~;
 #X obj 353 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 314 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 275 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 236 398 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 189 292 unpack;
 #X text 87 413 1;
 #X text 128 413 2;
@@ -290,9 +291,9 @@ It has two modes of operation and a spread parameter.;
 #X text 285 413 6;
 #X text 324 413 7;
 #X text 366 413 8;
-#X floatatom 303 316 8 -1 1 0 - - -;
-#X obj 306 295 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X floatatom 303 316 8 -1 1 0 - - - 0;
+#X obj 306 295 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 345 294 spread;
 #X text 342 232 The spread parameter controls how much the sound spreads
 to the adjacent speakers., f 21;

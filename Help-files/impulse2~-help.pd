@@ -1,45 +1,45 @@
-#N canvas 604 185 559 514 10;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 625 66 559 514 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 25 40 cnv 4 4 4 empty empty Two-sided 0 28 2 18 -233017 -1 0
+#X obj 25 40 cnv 4 4 4 empty empty Two-sided 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 113 40 cnv 4 4 4 empty empty impulse 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 380 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 3 416 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 122 389 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
-0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
-0;
-#X obj 113 40 cnv 4 4 4 empty empty impulse 0 28 2 18 -233017 -1 0
-;
-#X obj 3 380 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 416 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
-0;
-#X obj 122 389 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 3 487 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 487 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 200 389 signal -;
 #X obj 125 157 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 185 156 <= hz;
 #N canvas 601 243 421 313 pulse 0;
 #X obj 161 226 else/out~;
-#X obj 195 102 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 195 102 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 192 127 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 127 124 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 32 21 A pulse width of 0 has the smallest size (the first sample
 is equal to 1 \, the second is equal to -1 and the rest is 0) \, while
 a pulse widht of 1 has the largest (the first sample is 1 \, the last
@@ -52,7 +52,7 @@ sample is -1 and the others are 0).;
 #X connect 5 0 0 0;
 #X connect 6 0 5 1;
 #X restore 456 209 pd pulse width;
-#X obj 3 3 cnv 15 301 42 empty empty impulse2~ 20 20 2 37 -233017 -1
+#X obj 3 3 cnv 15 301 42 empty empty impulse2~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -63,7 +63,7 @@ sample is -1 and the others are 0).;
 #X text 243 465 - initial phase offset (default 0);
 #X text 243 447 - initial width (default 0.5);
 #X text 243 428 - frequency in hertz (default 0);
-#X obj 183 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 -233017 -1
+#X obj 183 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 125 219 else/out~;
 #X text 261 389 two sided impulse signal;
@@ -79,8 +79,8 @@ LFOs and control with MIDI. A sync with audio is usefull for the "hard
 sync" technique \, where an oscillator is synced according to the frequency
 of a master frequency., f 44;
 #X obj 553 232 else/out~;
-#X obj 607 133 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 110 256;
+#X obj 607 133 nbx 5 14 110 200 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X text 706 160 Master oscillator;
 #X text 661 193 Slave oscillator;
 #X obj 607 159 else/imp~ 110;
@@ -134,9 +134,9 @@ phase is synced to the given value. The phase values are from 0 to
 #X obj 126 255 else/out~;
 #X obj 126 219 +~;
 #X text 369 118 1;
-#X obj 237 118 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 234 142 4 0 0 0 - - -;
+#X obj 237 118 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 234 142 4 0 0 0 - - - 0;
 #X text 217 118 0;
 #X obj 234 166 else/float2sig~ 10;
 #X text 420 41 The phase values are wrapped into the 0-1 range \, since
@@ -162,15 +162,15 @@ Another feature is phase modulation., f 53;
 #X obj 288 215 else/out~;
 #X text 305 155 (alias);
 #X obj 288 174 else/imp2~ 1;
-#X obj 3 284 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
+#X obj 3 284 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 123 292 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 123 292 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 122 314 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 122 314 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 122 334 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 122 334 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
-;
-#X obj 122 355 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
+#X obj 122 355 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 164 356 float/signal - phase offset (modulation input);
 #X text 165 314 float/signal - pulse width (from 0 to 1);

@@ -1,40 +1,43 @@
-#N canvas 792 120 562 367 10;
-#X obj 2 236 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 2 269 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 2 304 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 599 97 562 367 10;
+#X obj 2 236 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 166 279 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 2 269 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 2 304 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 166 279 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 2 337 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 2 337 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 198 280 float -;
-#X obj 5 4 cnv 15 301 42 empty empty fontsize 20 20 2 37 -233017 -1
+#X obj 5 4 cnv 15 301 42 empty empty fontsize 20 20 2 37 #e0e0e0 #000000
 0;
-#X obj 308 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 308 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 4 4 graph;
-#X obj 347 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 347 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 25 41 cnv 4 4 4 empty empty Report 0 28 2 18 -233017 -1 0;
-#X obj 83 41 cnv 4 4 4 empty empty font 0 28 2 18 -233017 -1 0;
-#X obj 460 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 25 41 cnv 4 4 4 empty empty Report 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 480 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 83 41 cnv 4 4 4 empty empty font 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 460 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 517 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 480 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 466 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 517 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 504 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 466 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 504 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 307 4 graph;
-#X obj 121 41 cnv 4 4 4 empty empty size 0 28 2 18 -233017 -1 0;
+#X obj 121 41 cnv 4 4 4 empty empty size 0 28 2 18 #e0e0e0 #000000
+0;
 #X text 476 175 example:;
 #N canvas 935 108 480 385 depth 0;
 #X obj 141 180 else/display;
@@ -59,9 +62,9 @@ The font size is the same., f 62;
 #X text 161 203 font size;
 #X obj 226 168 else/fontsize;
 #X text 141 313 1) float - depth \, default 0 (current);
-#X obj 226 145 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 166 244 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 226 145 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 166 244 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 204 244 bang -;
 #X text 253 244 report font size;

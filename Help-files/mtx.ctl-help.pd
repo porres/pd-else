@@ -1,45 +1,48 @@
-#N struct 1259-cell float x float y float cellsize float color;
-#N struct 1263-cell float x float y float cellsize float color;
-#N canvas 637 99 563 599 10;
+#N struct 1006-cell float x float y float cellsize float color;
+#N struct 1010-cell float x float y float cellsize float color;
+#N canvas 553 23 563 599 10;
 #X msg 278 156 1 0 \$1;
-#X obj 278 132 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 2 2 cnv 15 301 42 empty empty mtx.ctl 20 20 2 37 -233017 -1
+#X obj 278 132 tgl 16 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
+#X obj 2 2 cnv 15 301 42 empty empty mtx.ctl 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 2 graph;
-#X obj 23 39 cnv 4 4 4 empty empty Matrix 0 28 2 18 -233017 -1 0;
-#X obj 79 39 cnv 4 4 4 empty empty control 0 28 2 18 -233017 -1 0;
-#X obj 138 39 cnv 4 4 4 empty empty GUI 0 28 2 18 -233017 -1 0;
-#X obj 305 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 23 39 cnv 4 4 4 empty empty Matrix 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 79 39 cnv 4 4 4 empty empty control 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 138 39 cnv 4 4 4 empty empty GUI 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 305 3 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 304 2 pd;
-#X obj 344 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 344 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 457 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 457 10 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 477 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 477 10 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 514 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 514 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 463 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 463 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 501 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 501 25 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 6 303 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 6 473 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 6 503 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 303 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 6 573 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 6 473 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 108 310 cnv 17 3 159 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 6 503 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 108 480 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 6 573 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 108 310 cnv 17 3 159 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c
+0;
+#X obj 108 480 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 191 480 list;
 #X text 230 480 - column \, row and status;
@@ -93,8 +96,8 @@ cells in the grid can be either on or off. The output is a list with
 #X msg 223 157 clear;
 #X text 184 354 clear;
 #X msg 358 145 set 2 1 \$1;
-#X obj 358 122 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 358 122 tgl 16 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 154 324 set <list>;
 #X text 230 310 - sets column \, row \, status and outputs it, f 49
 ;

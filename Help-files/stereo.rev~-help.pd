@@ -1,37 +1,37 @@
-#N canvas 712 122 560 557 10;
-#X obj 3 270 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 406 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 459 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 424 23 560 557 10;
+#X obj 3 270 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 126 414 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 126 278 cnv 17 3 95 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 3 531 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 3 406 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 3 459 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 126 414 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 126 278 cnv 17 3 95 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 3 531 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 3 pd;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X text 197 280 signal;
 #X text 197 414 signal;
 #X text 252 414 - left channel output;
-#X obj 126 435 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 126 435 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 197 434 signal;
 #X text 252 434 - right channel output;
@@ -41,12 +41,12 @@
 #X obj 671 35 adc~ 1;
 #X obj 70 164 *~;
 #X obj 70 193 throw~ \$0-input;
-#X obj 266 143 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 266 143 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 266 171 else/impseq~;
 #X obj 266 206 throw~ \$0-input;
-#X obj 85 93 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 85 93 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X obj 85 135 else/decay2~ 50 1000;
 #N canvas 780 129 455 228 tone 0;
 #X obj 71 94 mtof;
@@ -69,8 +69,8 @@
 #X obj 165 378 *~;
 #X obj 165 407 throw~ \$0-input;
 #X obj 180 329 else/decay~ 200;
-#X obj 180 239 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 180 239 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 36 338 else/lowpass~ 0 5;
 #X text 287 144 impulse;
 #X text 350 26 sample;
@@ -87,21 +87,21 @@
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X restore 515 147 pd init;
-#X obj 515 126 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 515 126 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 535 127 reload args;
-#X obj 374 51 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 374 51 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 399 53 play/stop;
 #X obj 462 190 hsl 128 15 0.1 100 1 0 empty \$0-decay empty -2 -8 0
-10 -228856 -1 -1 6253 1;
-#X floatatom 459 214 5 0 0 0 - - -;
+10 #dcdcdc #000000 #000000 0 1;
+#X floatatom 459 214 5 0 0 0 - - - 0;
 #X obj 530 218 hsl 128 15 0 1 0 0 empty \$0-damping empty -2 -8 0 10
--228856 -1 -1 3175 1;
-#X floatatom 527 243 5 0 0 0 - - -;
-#X obj 595 250 hsl 128 15 0 1 0 0 empty \$0-size empty -2 -8 0 10 -228856
--1 -1 6032 1;
-#X floatatom 592 273 5 0 0 0 - - -;
+#dcdcdc #000000 #000000 0 1;
+#X floatatom 527 243 5 0 0 0 - - - 0;
+#X obj 595 250 hsl 128 15 0 1 0 0 empty \$0-size empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 592 273 5 0 0 0 - - - 0;
 #X text 563 217 damping;
 #X msg 527 265 damp \$1;
 #X text 632 250 room-size;
@@ -110,9 +110,9 @@
 #X msg 459 238 decay \$1;
 #X text 503 189 decay;
 #X obj 319 343 else/stereo.rev~;
-#X obj 661 285 hsl 128 15 0 1 0 0 empty \$0-wet empty -2 -8 0 10 -228856
--1 -1 9525 1;
-#X floatatom 658 308 5 0 0 0 - - -;
+#X obj 661 285 hsl 128 15 0 1 0 0 empty \$0-wet empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 658 308 5 0 0 0 - - - 0;
 #X msg 658 334 wet \$1;
 #X text 711 285 wet;
 #X obj 412 311 *~ -1;
@@ -161,12 +161,13 @@
 #X connect 51 0 20 1;
 #X connect 53 0 44 0;
 #X restore 466 244 pd example;
-#X obj 3 3 cnv 15 301 42 empty empty stereo.rev~ 20 20 2 37 -233017
--1 0;
+#X obj 3 3 cnv 15 301 42 empty empty stereo.rev~ 20 20 2 37 #e0e0e0
+#000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X obj 30 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 -233017 -1 0;
+#X obj 30 40 cnv 4 4 4 empty empty Stereo 0 28 2 18 #e0e0e0 #000000
+0;
 #X text 161 314 damp <float>;
 #X text 161 330 size <float>;
 #X text 203 359 clear;
@@ -176,7 +177,8 @@
 #X text 256 314 - high frequency damping in hertz;
 #X text 256 330 - room size (0-1), f 33;
 #X text 129 481 2) float - room size (0-1) - (default 0.5), f 57;
-#X obj 85 40 cnv 4 4 4 empty empty reverb 0 28 2 18 -233017 -1 0;
+#X obj 85 40 cnv 4 4 4 empty empty reverb 0 28 2 18 #e0e0e0 #000000
+0;
 #X obj 214 138 else/play.file~ stereo.wav 1 1, f 31;
 #X text 129 496 3) float - high frequnecy damping - (default 0), f
 57;
@@ -188,7 +190,7 @@
 #X obj 62 221 else/mono.rev~;
 #X text 53 88 [mono.rev~] is a stereo input/output reverb asbtraction
 \, a variant of [mono.rev~] with two independent reverb channels.;
-#X obj 126 382 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 126 382 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 197 384 signal;
 #X text 256 280 - left input signal;

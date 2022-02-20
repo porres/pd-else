@@ -1,49 +1,52 @@
-#N canvas 596 40 561 667 10;
-#X obj 305 3 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 605 32 561 667 10;
+#X obj 305 3 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 304 2 pd;
-#X obj 344 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 344 10 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 22 39 cnv 4 4 4 empty empty Giga 0 28 2 18 -233017 -1 0;
-#X obj 67 39 cnv 4 4 4 empty empty reverb 0 28 2 18 -233017 -1 0;
-#X obj 457 10 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 22 39 cnv 4 4 4 empty empty Giga 0 28 2 18 #e0e0e0 #000000 0
+;
+#X obj 67 39 cnv 4 4 4 empty empty reverb 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 477 10 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 457 10 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 514 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 477 10 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 463 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 514 10 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 501 25 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 463 25 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 2 2 cnv 15 301 42 empty empty giga.rev~ 20 20 2 37 -233017 -1
+#X obj 501 25 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 2 2 cnv 15 301 42 empty empty giga.rev~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 2 graph;
 #X obj 2 233 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
--228856 -1 0;
-#X obj 122 241 cnv 17 3 168 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
--162280 0;
-#X obj 7 414 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 121 420 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 121 440 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X obj 5 641 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#dcdcdc #000000 0;
+#X obj 122 241 cnv 17 3 168 empty \$0-pddp.cnv.let.0 0 5 9 0 16 #dcdcdc
+#9c9c9c 0;
+#X obj 7 414 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 6 463 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 121 420 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 121 440 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 5 641 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 7 492 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 6 463 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 7 492 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 166 267 damp <float> - high frequency damping (0-1), f 50
 ;
 #N canvas 756 177 562 453 example 0;
 #X msg 70 172 print;
-#X obj 338 47 vradio 15 1 0 10 empty empty empty 0 -8 0 10 -228856
--1 -1 0;
+#X obj 338 47 vradio 15 1 0 10 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
 #N canvas 728 150 712 728 presets 0;
 #X obj 73 21 inlet;
 #X obj 88 576 s \$0-set;
@@ -125,29 +128,29 @@ early 0.795 \, late 0.04, f 66;
 #X text 358 182 - canyon;
 #X obj 139 208 else/player~ bubul.wav 1 1;
 #N canvas 492 167 892 519 controls 0;
-#X floatatom 27 73 0 1 300 0 - - -;
+#X floatatom 27 73 0 1 300 0 - - - 0;
 #X msg 39 289 dry \$1;
 #X msg 116 306 early \$1;
 #X msg 372 427 clear;
-#X floatatom 332 87 0 0 1 0 - - -;
-#X floatatom 101 112 0 0 100 0 - - -;
-#X floatatom 262 47 0 0 1 0 - - -;
+#X floatatom 332 87 0 0 1 0 - - - 0;
+#X floatatom 101 112 0 0 100 0 - - - 0;
+#X floatatom 262 47 0 0 1 0 - - - 0;
 #X msg 260 376 wet \$1;
 #X msg 262 71 damp \$1;
 #X msg 101 138 decay \$1;
 #X msg 27 100 size \$1;
-#X obj 193 289 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 119 260 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 190 311 0 0 1 0 - - -;
-#X floatatom 116 283 0 0 1 0 - - -;
-#X obj 42 234 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 39 262 0 0 1 0 - - -;
-#X obj 263 325 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 260 351 0 -90 0 0 - - -;
+#X obj 193 289 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 119 260 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 190 311 0 0 1 0 - - - 0;
+#X floatatom 116 283 0 0 1 0 - - - 0;
+#X obj 42 234 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 39 262 0 0 1 0 - - - 0;
+#X obj 263 325 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 260 351 0 -90 0 0 - - - 0;
 #X msg 190 337 late \$1;
 #X msg 332 113 bw \$1;
 #X text 496 129 - damp: Controls the high frequency damping and affects
@@ -179,21 +182,21 @@ meters \, but if initialize the object with a room size bigger than
 that (with the -size flag) \, it becomes the maximum limit. You can
 specify an even larger maximum size with the -maxsize flag.;
 #X obj 352 482 outlet;
-#X obj 265 24 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 335 63 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 265 24 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 335 63 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 190 414 s \$0-set;
 #X obj 332 149 s \$0-set;
-#X obj 104 84 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 104 84 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 101 166 s \$0-set;
-#X obj 30 48 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 30 48 hsl 128 15 0 100 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 335 266 s \$0-set;
-#X obj 338 190 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 335 213 0 0 1 0 - - -;
+#X obj 338 190 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 335 213 0 0 1 0 - - - 0;
 #X msg 335 240 spread \$1;
 #X text 496 102 - decay: Controls the approximate time decay duration
 of the reverb. In general \, it affects the late reflections;

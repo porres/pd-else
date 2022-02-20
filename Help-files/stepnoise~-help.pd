@@ -1,27 +1,29 @@
-#N canvas 708 145 562 536 10;
+#N canvas 432 23 562 536 10;
 #X obj 250 230 hsl 128 15 20 44100 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
+#dcdcdc #000000 #000000 0 1;
 #X obj 247 318 else/out~;
-#X obj 23 41 cnv 4 4 4 empty empty Step 0 28 2 18 -233017 -1 0;
-#X obj 65 41 cnv 4 4 4 empty empty noise 0 28 2 18 -233017 -1 0;
-#X obj 2 508 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
-0;
-#X obj 3 442 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
+#X obj 23 41 cnv 4 4 4 empty empty Step 0 28 2 18 #e0e0e0 #000000 0
 ;
-#X obj 3 479 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 65 41 cnv 4 4 4 empty empty noise 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 91 452 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 2 508 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 3 442 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 3 479 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 91 452 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 159 453 signal;
 #X text 148 488 1) float;
 #X obj 247 259 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 263 229 frequency in Hz;
 #X text 216 488 - frequency in hertz (default 0);
-#X obj 91 399 cnv 17 3 37 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 91 399 cnv 17 3 37 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 389 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
+#X obj 3 389 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
 #X obj 247 285 else/stepnoise~ 400;
 #X text 216 454 - bandlimited step noise;
 #X text 83 164 The [stepnoise~] object produces frequencies limited
@@ -44,25 +46,25 @@ objects. Here we control the frequency of an oscillator.;
 #X connect 2 0 0 0;
 #X connect 4 0 2 0;
 #X restore 467 343 pd control;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 2 4 cnv 15 301 42 empty empty stepnoise~ 20 20 2 37 -233017
--1 0;
+#X obj 2 4 cnv 15 301 42 empty empty stepnoise~ 20 20 2 37 #e0e0e0
+#000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 4 graph;
@@ -70,12 +72,12 @@ objects. Here we control the frequency of an oscillator.;
 #X text 305 100 <= set seed;
 #X obj 118 226 else/sig2float~;
 #X obj 268 229 else/sig2float~;
-#X obj 118 264 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
-#X obj 268 264 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 118 264 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 268 264 vsl 15 128 -1 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X msg 268 151 seed \$1;
-#X floatatom 268 127 5 0 0 0 - - -;
+#X floatatom 268 127 5 0 0 0 - - - 0;
 #X msg 268 103 1023;
 #X obj 118 192 else/stepnoise~ 1;
 #X obj 268 192 else/stepnoise~ 1;
