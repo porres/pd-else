@@ -139,7 +139,7 @@ static void *asr_new(t_symbol *s, int ac, t_atom *av){
     int symarg = 0;
     int argnum = 0;
     while(ac > 0){
-        if(av->a_type == A_FLOAT && !symarg){
+        if(av->a_type == A_FLOAT){
             float argval = atom_getfloatarg(0, ac, av);
             switch(argnum){
                 case 0:
@@ -155,17 +155,12 @@ static void *asr_new(t_symbol *s, int ac, t_atom *av){
             ac--;
             av++;
         }
-        else if(av->a_type == A_SYMBOL){
-            if(!symarg)
-                symarg = 1;
+        else if(av->a_type == A_SYMBOL && !symarg && !argnum){
+            symarg = 1;
             cursym = atom_getsymbolarg(0, ac, av);
             if(cursym == gensym("-log")){
-                if(ac == 1){
-                    ac--, av++;
-                    x->x_log = 1;
-                }
-                else
-                    goto errstate;
+                ac--, av++;
+                x->x_log = 1;
             }
             else
                 goto errstate;
@@ -182,15 +177,14 @@ static void *asr_new(t_symbol *s, int ac, t_atom *av){
     return(x);
 errstate:
     pd_error(x, "[asr~]: improper args");
-    return NULL;
+    return(NULL);
 }
 
 void asr_tilde_setup(void){
     asr_class = class_new(gensym("asr~"), (t_newmethod)asr_new, 0,
-				 sizeof(t_asr), 0, A_GIMME, 0);
+        sizeof(t_asr), 0, A_GIMME, 0);
     class_addmethod(asr_class, nullfn, gensym("signal"), 0);
     class_addmethod(asr_class, (t_method) asr_dsp, gensym("dsp"), A_CANT, 0);
     class_addfloat(asr_class, (t_method)asr_float);
     class_addmethod(asr_class, (t_method)asr_log, gensym("log"), A_DEFFLOAT, 0);
-    
 }

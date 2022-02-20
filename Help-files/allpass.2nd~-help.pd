@@ -1,64 +1,66 @@
-#N canvas 510 164 563 567 10;
-#X obj 4 277 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 427 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 460 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#N canvas 541 23 563 559 10;
+#X obj 4 277 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 540 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 427 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 109 436 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 4 484 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 531 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 109 436 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 109 285 cnv 17 3 88 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 109 285 cnv 17 3 88 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 181 285 signal;
 #X text 181 436 signal;
 #X obj 197 216 else/out~;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 0 0;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 41 cnv 4 4 4 empty empty Allpass 0 28 2 18 -233017 -1 0;
-#X obj 85 41 cnv 4 4 4 empty empty filter 0 28 2 18 -233017 -1 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 41 cnv 4 4 4 empty empty Allpass 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 85 41 cnv 4 4 4 empty empty filter 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X obj 207 154 noise~;
-#X obj 273 139 nbx 5 14 100 10000 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 100 256;
-#X obj 350 163 nbx 5 14 0.1 100 1 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0.1 256;
+#X obj 273 139 nbx 5 14 100 10000 1 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X obj 350 163 nbx 5 14 0.1 100 1 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X text 230 436 - filtered signal;
 #X text 230 285 - signal to be filtered;
-#X obj 109 380 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 109 380 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 109 403 cnv 17 3 17 empty empty 2 5 9 0 16 -228856 -162280 0
+#X obj 109 403 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 145 380 float/signal;
 #X text 145 403 float/signal;
 #X text 187 303 clear;
 #X msg 130 149 bypass \$1;
-#X obj 130 126 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 130 126 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 133 321 bypass <float>;
 #X text 230 321 - 1 (bypasses input signal) or 0 (doesn't bypass);
 #N canvas 395 72 926 617 filter 0;
 #X obj 730 109 hsl 128 15 0.001 100 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
+#dcdcdc #000000 #000000 0 1;
 #X obj 662 83 hsl 128 15 20 20000 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
+#dcdcdc #000000 #000000 0 1;
 #X obj 592 119 noise~;
 #X obj 592 194 else/out~;
-#X obj 727 133 nbx 5 14 0.001 100 0 0 \$0-Q empty empty 0 -8 0 10 -228856
--1 -1 0.001 256;
-#X obj 659 110 nbx 5 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 -228856
--1 -1 20 256;
+#X obj 727 133 nbx 5 14 0.001 100 0 0 \$0-Q empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X obj 659 110 nbx 5 14 20 20000 0 0 \$0-Hz empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X text 112 275 [1] found in http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
 , f 65;
 #X text 679 83 center frequency;
@@ -100,16 +102,17 @@ b2 * y[n-2];
 #X connect 17 0 3 0;
 #X restore 429 238 pd filter formula \; and response;
 #X text 229 379 - central frequency in Hertz;
-#X text 118 466 1) float - central frequency in Hertz (default 0);
+#X text 118 490 1) float - central frequency in Hertz (default 0);
 #X msg 197 121 clear;
 #X text 230 303 - clears filter's memory if you blow it up;
 #X text 205 338 bw;
 #X text 230 338 - sets resonance parameter to bandwidth in octaves
 ;
 #X text 211 355 q;
-#X obj 3 511 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 135 517 -bw;
-#X text 165 517 - sets resonance parameter to bandwidth in octaves
+#X obj 3 461 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X text 135 467 -bw;
+#X text 165 467 - sets resonance parameter to bandwidth in octaves
 , f 53;
 #N canvas 956 114 407 322 resonance 0;
 #X text 27 17 By default \, the resonance parameter is the filter 'q'
@@ -123,19 +126,19 @@ the message methods.;
 #X msg 135 128 bw;
 #X text 175 156 resonance as 'q';
 #X text 163 128 resonance as bandwidth in octaves;
-#X obj 81 185 else/allpass.2nd~ 500 0.5 -bw;
+#X obj 81 185 else/allpass.2nd~ -bw 500 0.5;
 #X connect 3 0 8 0;
 #X connect 4 0 8 0;
 #X connect 5 0 8 0;
 #X connect 8 0 2 0;
 #X restore 464 217 pd resonance;
-#X text 118 484 2) float - resonance (default 1) \, either in 'Q' (default)
+#X text 118 508 2) float - resonance (default 1) \, either in 'Q' (default)
 or 'bw', f 65;
 #X text 230 355 - sets resonance parameter to Q (default);
 #X text 230 403 - filter resonance (Q or bandwidth);
 #X text 264 119 resonant/center frequency;
-#X obj 2 4 cnv 15 301 42 empty empty allpass.2nd~ 20 20 2 37 -233017
--1 0;
+#X obj 2 4 cnv 15 301 42 empty empty allpass.2nd~ 20 20 2 37 #e0e0e0
+#000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 4 graph;
@@ -146,11 +149,11 @@ or 'bw', f 65;
 #X obj 66 229 +~;
 #X obj 66 157 noise~;
 #X obj 133 151 hsl 128 15 100 2000 1 0 empty \$0-Freq_set empty -2
--8 0 10 -228856 -1 -1 6823 1;
+-8 0 10 #dcdcdc #000000 #000000 0 1;
 #X obj 234 173 hsl 128 15 0.1 5 1 0 empty \$0-Q_set empty -2 -8 0 10
--228856 -1 -1 7475 1;
+#dcdcdc #000000 #000000 0 1;
 #N canvas 614 353 726 323 phase_response 0;
-#X obj 101 101 cnv 15 298 98 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 101 101 cnv 15 298 98 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-phase_response 400 float 1;
@@ -185,7 +188,7 @@ or 'bw', f 65;
 -0.54307 -0.529232 -0.515821 -0.502835 -0.490253 -0.478065 -0.466256
 -0.454823 -0.443742 -0.433012 -0.42261 -0.412533 -0.402764 -0.393295
 -0.384112 -0.375207 -0.366569 -0.358185 -0.35005 -0.342153 -0.334484
--0.327037 -0.319799 -0.312768 -0.305932 -0.299285 -0.292821 -0.286533
+-0.327037 -0.319799 -0.312767 -0.305932 -0.299285 -0.292821 -0.286533
 -0.280414 -0.274457 -0.268658 -0.263011 -0.25751 -0.25215 -0.246928
 -0.241837 -0.236873 -0.232032 -0.227309 -0.222703 -0.218206 -0.213817
 -0.209533 -0.205349 -0.201263 -0.197271 -0.193371 -0.189561 -0.185835
@@ -454,9 +457,9 @@ or 'bw', f 65;
 the original \, which cancels frequencies by phase opposition., f
 69;
 #X obj 231 196 nbx 4 14 -1e+37 1e+37 0 0 \$0-Q empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 130 175 nbx 4 14 -1e+37 1e+37 0 0 \$0-Freq empty empty 0 -8
-0 10 -228856 -1 -1 500 256;
+0 10 #dcdcdc #000000 #000000 0 256;
 #X text 112 345 frequency (hz):;
 #X obj 81 197 else/allpass.2nd~;
 #X obj 66 269 else/out~;
