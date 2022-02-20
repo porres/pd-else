@@ -19,13 +19,13 @@
 #X obj 95 418 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 131 419 float/signal;
-#X obj 114 300 else/out~;
-#X obj 114 263 *~;
-#X obj 225 268 vsl 18 80 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 #dcdcdc
+#X obj 147 300 else/out~;
+#X obj 147 263 *~;
+#X obj 267 268 vsl 18 80 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 #dcdcdc
 #000000 #000000 0 1;
-#X obj 225 241 else/sig2float~;
-#X text 248 341 0;
-#X text 248 264 1;
+#X obj 267 241 else/sig2float~;
+#X text 290 341 0;
+#X text 290 264 1;
 #X obj 3 4 cnv 15 301 42 empty empty adsr~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -38,7 +38,7 @@
 #X text 131 440 float/signal;
 #X text 226 515 - envelope signal;
 #X text 111 596 1) float - attack time in ms (default 0), f 61;
-#X obj 172 161 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X obj 162 161 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X obj 299 41 cnv 4 4 4 empty empty envelope 0 28 2 18 #e0e0e0 #000000
 0;
@@ -59,13 +59,13 @@
 0;
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 94 218 osc~ 440;
+#X obj 90 210 osc~ 440;
 #X text 227 369 - gate values, f 43;
-#X obj 226 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 216 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X obj 281 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 271 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 227 162 attack;
+#X text 217 162 attack;
 #N canvas 486 183 815 477 example 0;
 #X obj 605 171 else/display~ 7;
 #X obj 459 174 else/display~ 7;
@@ -185,15 +185,15 @@ object for managing polyphonic synths.;
 #X connect 32 0 20 0;
 #X connect 33 0 1 0;
 #X restore 484 304 pd example;
-#X obj 336 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 326 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X obj 391 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 381 180 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 393 162 release;
-#X text 283 162 decay;
-#X text 337 162 sustain;
-#X text 298 304 see also:;
-#X obj 307 323 else/asr~;
+#X text 383 162 release;
+#X text 273 162 decay;
+#X text 327 162 sustain;
+#X text 31 295 see also:;
+#X obj 31 314 else/asr~;
 #X obj 95 461 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 131 462 float/signal;
@@ -207,7 +207,7 @@ object for managing polyphonic synths.;
 #X text 226 461 - sustain amplitude (ratio to gate value), f 43;
 #X text 111 627 3) float - sustain amplitude ratio to gate value (default
 0), f 61;
-#X text 139 163 gate;
+#X text 129 163 gate;
 #N canvas 786 244 383 359 triggered 0;
 #X obj 151 271 else/out~;
 #X obj 166 71 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
@@ -230,9 +230,9 @@ gate so you can trigger the envelope with an impulse., f 54;
 #X connect 7 0 9 0;
 #X connect 9 0 5 0;
 #X restore 466 271 pd triggered \; by impulses;
-#X obj 391 233 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X obj 381 233 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X obj 391 260 else/display;
+#X obj 381 260 else/display;
 #X obj 95 536 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 174 536 float;
@@ -270,7 +270,7 @@ you can't use it to turn it on., f 62;
 #X connect 9 0 7 0;
 #X restore 490 209 pd status;
 #X text 226 536 - envelope status (on: 1 / off: 0);
-#X obj 172 208 else/adsr~ 1000 500 0.5 1000, f 37;
+#X obj 162 208 else/adsr~ 1000 500 0.5 1000, f 37;
 #X text 179 383 bang;
 #X text 227 383 - trigger/retrigger, f 43;
 #N canvas 413 187 665 392 retrigger 0;
@@ -330,7 +330,7 @@ envelope restart the attack ramp. Try it below or on the right.;
 #X connect 22 0 11 0;
 #X connect 24 0 12 0;
 #X restore 472 249 pd retrigger;
-#X obj 172 186 sig~;
+#X obj 162 186 sig~;
 #N canvas 768 211 409 373 fader~ 0;
 #X obj 140 259 *~;
 #X obj 140 294 else/out~;
@@ -398,10 +398,10 @@ is set with the -log flag or "log" message., f 65;
 #X text 137 397 log <float>;
 #X text 227 397 - non zero sets to "log" mode \, "linear" otherwise
 ;
-#X obj 391 294 sel 0;
-#X obj 391 322 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 381 294 sel 0;
+#X obj 381 322 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 408 322 done;
+#X text 398 322 done;
 #X connect 12 0 11 0;
 #X connect 14 0 13 0;
 #X connect 25 0 70 0;

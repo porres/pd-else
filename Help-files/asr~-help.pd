@@ -19,13 +19,13 @@
 #X obj 108 389 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 142 389 float/signal;
-#X obj 138 285 else/out~;
-#X obj 138 246 *~;
-#X obj 258 243 vsl 18 90 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 #dcdcdc
+#X obj 181 285 else/out~;
+#X obj 181 246 *~;
+#X obj 304 246 vsl 18 90 0 1 0 0 ewtwet wefwert empty 0 -9 0 10 #dcdcdc
 #000000 #000000 0 1;
-#X obj 258 215 else/sig2float~;
-#X text 281 324 0;
-#X text 281 239 1;
+#X obj 304 218 else/sig2float~;
+#X text 327 327 0;
+#X text 327 242 1;
 #X obj 3 3 cnv 15 301 42 empty empty asr~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -61,7 +61,7 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 110 202 osc~ 440;
+#X obj 122 190 osc~ 440;
 #X text 239 354 - gate values;
 #X obj 263 159 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
@@ -186,10 +186,10 @@ object for managing polyphonic synths.;
 #X connect 32 0 22 0;
 #X connect 33 0 19 0;
 #X connect 34 0 1 0;
-#X restore 475 289 pd example;
+#X restore 480 291 pd example;
 #X obj 196 185 else/asr~ 1000 500, f 23;
-#X text 348 260 see also:;
-#X obj 345 283 else/adsr~;
+#X text 26 277 see also:;
+#X obj 25 298 else/adsr~;
 #X text 156 155 gate;
 #N canvas 610 131 414 421 triggered 0;
 #X obj 195 204 else/display~ 7;
@@ -212,7 +212,7 @@ gate so you can trigger the envelope.;
 #X connect 6 0 3 1;
 #X connect 8 0 9 0;
 #X connect 9 0 0 0;
-#X restore 457 258 pd triggered \; by impulses;
+#X restore 462 260 pd triggered \; by impulses;
 #X obj 109 462 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 190 462 float;
@@ -251,7 +251,7 @@ of a subpatch or abstraction with [switch~].;
 #X connect 13 0 5 0;
 #X connect 13 1 1 0;
 #X connect 14 0 13 0;
-#X restore 481 218 pd status;
+#X restore 486 220 pd status;
 #N canvas 768 211 409 373 fader~ 0;
 #X obj 140 259 *~;
 #X obj 140 294 else/out~;
@@ -273,7 +273,7 @@ linear envelopes from [asr~]'s output.;
 #X connect 6 0 4 0;
 #X connect 7 0 4 0;
 #X connect 8 0 4 0;
-#X restore 481 308 pd fader~;
+#X restore 486 310 pd fader~;
 #X obj 5 490 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 68 86 [asr~] is an attack/sustain/release gated envelope. At
@@ -313,7 +313,7 @@ mode is set with the -log flag or "log" message., f 65;
 #X connect 6 0 11 0;
 #X connect 9 0 11 0;
 #X connect 11 0 10 0;
-#X restore 498 238 pd log;
+#X restore 503 240 pd log;
 #X text 149 369 log <float>;
 #X text 239 369 - non zero sets to "log" mode \, "linear" otherwise
 ;
