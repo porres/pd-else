@@ -41,7 +41,7 @@
 0;
 #X obj 4 432 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 484 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 515 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 117 441 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -61,10 +61,10 @@
 #X text 201 386 - clears the remainder, f 38;
 #X text 165 409 float;
 #X text 201 441 - the regrouped message;
-#X text 167 493 1) float - group size (default 0);
-#X obj 4 514 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X text 167 524 1) float - group size (default 0);
+#X obj 4 485 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 147 523 -trim: trims selectors (list/symbol) on the output
+#X text 147 494 -trim: trims selectors (list/symbol) on the output
 ;
 #X obj 354 244 else/loop 13;
 #X text 78 136 A bang message sends the remaining stored elements that

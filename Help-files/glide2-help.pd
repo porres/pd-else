@@ -1,11 +1,11 @@
-#N canvas 624 24 564 559 10;
+#N canvas 624 24 564 544 10;
 #X obj 4 282 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 407 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 440 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 489 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 6 530 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 6 516 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 129 416 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -45,9 +45,9 @@
 #X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X text 38 176 see also:;
-#X obj 6 485 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 6 444 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 110 492 -exp <float>: sets exponential factor (default '1'
+#X text 110 451 -exp <float>: sets exponential factor (default '1'
 \, linear), f 60;
 #X text 161 325 exp <float>;
 #X text 240 325 - sets exponential factor;
@@ -56,7 +56,7 @@
 #X text 197 362 float;
 #X text 155 339 rate <float>;
 #X text 240 339 - refresh rate in ms;
-#X text 104 509 -rate <float>: sets refresh rate in ms (default 5 \,
+#X text 104 468 -rate <float>: sets refresh rate in ms (default 5 \,
 minimum 1), f 61;
 #X obj 229 252 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
@@ -145,11 +145,11 @@ changes. The glide time in ms.;
 #X text 197 385 float;
 #X text 239 361 - glide up time in ms;
 #X text 239 384 - glide down time in ms;
-#X text 185 446 1) float - glide up time in ms (default 0);
-#X text 185 461 2) float - glide down time in ms (default 0);
 #X obj 45 198 else/glide;
 #X obj 45 242 else/glide2~;
 #X obj 45 220 else/slew2;
+#X text 135 496 1) list - glide up and down time in ms (default 0 0)
+;
 #X connect 30 0 43 0;
 #X connect 36 0 37 0;
 #X connect 37 0 43 0;

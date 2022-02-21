@@ -1,13 +1,13 @@
-#N canvas 450 29 564 457 10;
+#N canvas 450 29 564 450 10;
 #X obj 6 290 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 6 326 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 6 361 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 6 389 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 102 335 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 6 426 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 6 423 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 308 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
@@ -50,8 +50,8 @@
 #X obj 127 257 print lb-2;
 #X obj 220 256 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 132 371 1) float - number of outputs (default 1);
-#X obj 6 396 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X text 132 399 1) float - number of outputs (default 1);
+#X obj 6 361 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 337 183 else/lb;
 #X obj 337 230 metro 500;
@@ -63,7 +63,7 @@
 #X text 52 209 click on it =====>, f 9;
 #X text 196 299 - any message triggers bangs;
 #X text 400 182 (abbreviation);
-#N canvas 886 173 500 412 abstractions 0;
+#N canvas 866 173 500 412 abstractions 0;
 #X text 63 111 This makes it possible to create abstractions with variable
 inlets/outlets via dynamic patching \, which simply does not work if
 you're using [loadbang] instead.;
@@ -85,8 +85,8 @@ by default).;
 #X obj 323 252 else/player~ 3;
 #X obj 84 252 else/rec.file~;
 #X restore 436 250 pd abstractions \; dynamic patching;
-#X text 157 405 -init: sets loadbang to "init mode";
-#N canvas 583 214 828 291 -init 0;
+#X text 157 370 -init: sets loadbang to "init mode";
+#N canvas 538 214 828 291 -init 0;
 #X text 19 18 Pure Data can send two different kind of bangs when loading
 the patch. The [loadbang] object in Pd Vanilla sends a bang when the
 patch has been loaded. Let's name this type of bang as "load"., f

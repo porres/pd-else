@@ -1,4 +1,4 @@
-#N canvas 639 77 559 539 10;
+#N canvas 582 39 559 539 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -22,27 +22,27 @@
 0;
 #X obj 3 375 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 411 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 3 443 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 152 384 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 153 290 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 510 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 3 507 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 153 311 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 153 331 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 186 384 signal -;
-#X text 174 416 1) float;
+#X text 174 448 1) float;
 #X obj 3 3 cnv 15 301 42 empty empty flanger~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X obj 194 217 else/out~;
-#X text 174 435 2) float;
+#X text 174 467 2) float;
 #X obj 253 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 312 153 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -60,20 +60,20 @@
 #X text 250 312 rate in Hz;
 #X text 250 332 depth (ms);
 #X text 247 384 flanger output;
-#X text 237 416 - rate in hertz (default 0);
-#X text 237 435 - depth in ms (default 0);
-#X text 174 455 3) float;
-#X obj 3 476 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X text 237 448 - rate in hertz (default 0);
+#X text 237 467 - depth in ms (default 0);
+#X text 174 487 3) float;
+#X obj 3 408 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 194 186 else/flanger~ 0.1 20 -0.6 -tri;
 #X obj 125 125 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X text 258 132 rate;
 #X text 314 132 depth;
-#X text 126 485 -tri - sets waveform to triangular (default sine);
+#X text 126 417 -tri - sets waveform to triangular (default sine);
 #X text 374 132 coefficient;
 #X text 250 352 coefficient for feedforward/feedback lines;
-#X text 237 455 - coefficient (default 0);
+#X text 237 487 - coefficient (default 0);
 #X obj 125 152 else/bl.saw~ 150;
 #X connect 23 0 40 1;
 #X connect 24 0 40 2;

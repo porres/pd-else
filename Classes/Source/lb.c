@@ -113,4 +113,5 @@ void loadbanger_setup(void){
     class_addmethod(loadbanger_class, (t_method)loadbanger_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     class_addmethod(loadbanger_class, (t_method)loadbanger_click, gensym("click"),
         A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
+    class_sethelpsymbol(f2s_class, gensym("loadbanger"));
 }

@@ -3,7 +3,6 @@
 #include "m_pd.h"
 #include <math.h>
 #include <stdlib.h>
-#include <string.h>
 
 #define FBD_STACK   48000       // stack buf size, 1 sec at 48k
 #define FBD_MAXD    4294967294  // max delay = 2**32 - 2
@@ -157,40 +156,31 @@ static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
     x->x_gain = 0;
     x->x_ms = 1;
 /////////////////////////////////////////////////////////////////////////////////
-    int symarg = 0;
     int argnum = 0;
     while(argc > 0){
-        if(argv->a_type == A_SYMBOL){
-            if(!symarg)
-                symarg = 1;
+        if(argv->a_type == A_SYMBOL && !argnum){
             cursym = atom_getsymbolarg(0, argc, argv);
-            if(!strcmp(cursym->s_name, "-size")){
+            if(cursym == gensym("-size")){
                 if(argc >= 2 && (argv+1)->a_type == A_FLOAT){
                     t_float curfloat = atom_getfloatarg(1, argc, argv);
                     delsize = curfloat < 0 ? 0 : curfloat;
-                    argc -= 2;
-                    argv += 2;
-                    argnum++;
+                    argc-=2, argv+=2;
                 }
                 else
                     goto errstate;
             }
-            else if(!strcmp(cursym->s_name, "-samps")){
+            else if(cursym == gensym("-samps")){
                 x->x_ms = 0;
-                argc--;
-                argv++;
-                argnum++;
+                argc--, argv++;
             }
-            else if(!strcmp(cursym->s_name, "-gain")){
+            else if(cursym == gensym("-gain")){
                 x->x_gain = 1;
-                argc--;
-                argv++;
-                argnum++;
+                argc--, argv++;
             }
             else
                 goto errstate;
         }
-        else if(argv->a_type == A_FLOAT && !symarg){
+        else if(argv->a_type == A_FLOAT){
             t_float argval = atom_getfloatarg(0, argc, argv);
             switch(argnum){
                 case 0:
@@ -209,8 +199,7 @@ static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
                 default:
                     break;
             };
-            argc--;
-            argv++;
+            argc--, argv++;
             argnum++;
         }
         else
@@ -226,10 +215,10 @@ static void *fbdelay_new(t_symbol *s, int argc, t_atom * argv){
     x->x_alet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_alet, fb);
     x->x_outlet = outlet_new((t_object *)x, &s_signal);
-    return (x);
+    return(x);
 errstate:
     pd_error(x, "[fbdelay~]: improper args");
-    return NULL;
+    return(NULL);
 }
 
 static void * fbdelay_free(t_fbdelay *x){

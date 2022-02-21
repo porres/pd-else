@@ -7,7 +7,7 @@
 0;
 #X obj 3 411 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 441 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 3 536 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 92 418 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -47,11 +47,11 @@
 #X text 139 325 float;
 #X obj 195 219 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
 #dcdcdc #000000 #000000 0 1;
-#X text 180 447 - sets frequency in hertz (default 0), f 55;
-#X text 180 461 - sets initial phase from 0 - 1 (default 0), f 55
+#X text 180 542 - sets frequency in hertz (default 0), f 55;
+#X text 180 556 - sets initial phase from 0 - 1 (default 0), f 55
 ;
 #X text 180 420 - LFO's waveform in the range from 0 - 127;
-#X text 180 476 - sets refresh rate in ms (default 5), f 55;
+#X text 180 571 - sets refresh rate in ms (default 5), f 55;
 #X obj 92 363 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 139 365 float;
@@ -65,22 +65,22 @@
 #X text 121 342 anything;
 #X text 180 342 -;
 #X text 275 165 <= phase reset;
-#X text 120 447 1) float;
-#X text 120 461 2) float;
-#X text 120 476 3) float;
-#X obj 3 497 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X text 120 542 1) float;
+#X text 120 556 2) float;
+#X text 120 571 3) float;
+#X obj 3 444 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 118 505 -sine;
-#X text 161 505 - sets waveform to sine (default), f 61;
-#X text 124 521 -tri;
-#X text 161 521 - sets waveform to triangular, f 61;
-#X text 124 537 -saw;
-#X text 161 537 - sets waveform to sawtooth, f 61;
-#X text 70 568 -vsaw <float>;
-#X text 58 553 -square <float>;
-#X text 161 568 - sets waveform to variable sawtooth and width (from
+#X text 118 452 -sine;
+#X text 161 452 - sets waveform to sine (default), f 61;
+#X text 124 468 -tri;
+#X text 161 468 - sets waveform to triangular, f 61;
+#X text 124 484 -saw;
+#X text 161 484 - sets waveform to sawtooth, f 61;
+#X text 70 515 -vsaw <float>;
+#X text 58 500 -square <float>;
+#X text 161 515 - sets waveform to variable sawtooth and width (from
 -1 to 1), f 61;
-#X text 161 553 - sets waveform to square and width (from 0 to 1),
+#X text 161 500 - sets waveform to square and width (from 0 to 1),
 f 61;
 #N canvas 589 52 433 412 waveforms 0;
 #X obj 199 305 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
@@ -97,14 +97,14 @@ Note that "square" and "vsaw" take an optional width argument., f
 "saw" as in the [else/sawtooth2~] object \, "square" as in the [else/square~]
 object and "vsaw" as in the [else/vsaw~] object - check the help file
 of these objects for more details.;
-#X obj 199 278 else/lfo 0.5 -tri;
 #X msg 231 243 vsaw 0.8;
-#X connect 2 0 7 0;
-#X connect 3 0 7 0;
-#X connect 4 0 7 0;
-#X connect 5 0 7 0;
-#X connect 7 0 0 0;
-#X connect 8 0 7 0;
+#X obj 199 278 else/lfo -tri 0.5;
+#X connect 2 0 8 0;
+#X connect 3 0 8 0;
+#X connect 4 0 8 0;
+#X connect 5 0 8 0;
+#X connect 7 0 8 0;
+#X connect 8 0 0 0;
 #X restore 445 257 pd waveforms;
 #N canvas 599 96 464 425 refresh 0;
 #X obj 49 148 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10

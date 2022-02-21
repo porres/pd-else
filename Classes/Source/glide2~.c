@@ -131,17 +131,16 @@ static void glide2_dsp(t_glide2 *x, t_signal **sp){
 
 static void *glide2_new(t_symbol *s, int ac, t_atom *av){
     t_glide2 *x = (t_glide2 *)pd_new(glide2_class);
-    t_symbol *cursym = s;
+    s = NULL;
     float ms_up = 0;
     float ms_down = 0;
     x->x_sr_khz = sys_getsr() * 0.001;
     x->x_last_in = 0.;
     x->x_reset = x->x_nleft_up = 0;
     x->x_exp = 1.;
-    int symarg = 0;
     int argnum = 0;
     while(ac > 0){
-        if(av->a_type == A_FLOAT && !symarg){
+        if(av->a_type == A_FLOAT){
             float argval = atom_getfloatarg(0, ac, av);
             switch(argnum){
                 case 0:
@@ -154,24 +153,23 @@ static void *glide2_new(t_symbol *s, int ac, t_atom *av){
                     break;
             };
             argnum++;
-            ac--;
-            av++;
+            ac--, av++;
         }
-        else if(av->a_type == A_SYMBOL){
-            if(!symarg)
-                symarg = 1;
-            cursym = atom_getsymbolarg(0, ac, av);
-            if(cursym == gensym("-exp")){
-                if(ac == 2){
+        else if(av->a_type == A_SYMBOL && !argnum){
+            if(atom_getsymbolarg(0, ac, av) == gensym("-exp")){
+                if(ac >= 2){
                     ac--, av++;
                     x->x_exp = atom_getfloatarg(0, ac, av);
                     ac--, av++;
                 }
-                else goto errstate;
+                else
+                    goto errstate;
             }
-            else goto errstate;
+            else
+                goto errstate;
         }
-        else goto errstate;
+        else
+            goto errstate;
     }
     x->x_inlet_ms_up = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_ms_up, ms_up);
@@ -186,11 +184,9 @@ errstate:
 
 void glide2_tilde_setup(void){
     glide2_class = class_new(gensym("glide2~"), (t_newmethod)glide2_new, 0,
-                             sizeof(t_glide2), 0, A_GIMME, 0);
+        sizeof(t_glide2), 0, A_GIMME, 0);
     CLASS_MAINSIGNALIN(glide2_class, t_glide2, x_in);
     class_addmethod(glide2_class, (t_method) glide2_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(glide2_class, (t_method)glide2_reset, gensym("reset"), 0);
     class_addmethod(glide2_class, (t_method)glide2_exp, gensym("exp"), A_FLOAT, 0);
 }
-
-

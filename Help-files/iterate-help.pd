@@ -3,7 +3,7 @@
 0;
 #X obj 4 346 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 387 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 417 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 90 281 cnv 17 3 38 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -52,12 +52,12 @@
 #X restore 3 4 graph;
 #X text 70 93 [iterate] splits a message to individual elements (floats/symbols)
 and outputs them sequentially., f 70;
-#N canvas 717 245 492 338 example 0;
-#X msg 310 121 60 63 67;
-#X obj 310 183 makenote 64 500;
-#X obj 350 215 noteout;
-#X text 300 92 a chord from list;
-#X obj 310 149 else/iterate;
+#N canvas 717 245 489 263 example 0;
+#X msg 310 100 60 63 67;
+#X obj 310 162 makenote 64 500;
+#X obj 350 194 noteout;
+#X text 300 71 a chord from list;
+#X obj 310 128 else/iterate;
 #X obj 75 136 array get ex_\$0;
 #X obj 75 113 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000;
@@ -67,6 +67,7 @@ and outputs them sequentially., f 70;
 #A 0 -0.74668 0.293338 0.340005 0.0133328 -0.346673 -0.120003 0.600009
 0.666677 0.553342 0.253337 -0.0800021 -0.180004 0.320005 0.533342 0.553342
 0.860014;
+#X text 98 113 iterate an array;
 #X connect 0 0 4 0;
 #X connect 1 0 2 0;
 #X connect 1 1 2 1;
@@ -84,12 +85,12 @@ and outputs them sequentially., f 70;
 #X text 153 325 float;
 #X text 196 325 - sets direction >= 0 is left to right \, < 0 is reverse
 ;
-#X text 100 397 1) float - direction \, >= 0 is left to right (default)
+#X text 100 427 1) float - direction \, >= 0 is left to right (default)
 \, < 0 is reverse, f 69;
 #X obj 231 215 else/iterate;
-#X obj 4 418 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 4 388 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 147 427 -trim: trims symbol selector on the output;
+#X text 147 397 -trim: trims symbol selector on the output;
 #X connect 12 0 38 0;
 #X connect 30 0 38 0;
 #X connect 31 0 38 1;

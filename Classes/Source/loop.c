@@ -170,39 +170,27 @@ static void *loop_new(t_symbol *s, int argc, t_atom *argv){
                     break;
             };
             argnum++;
-            argc--;
-            argv++;
+            argc--, argv++;
         }
-        else if(argv->a_type == A_SYMBOL){
+        else if(argv->a_type == A_SYMBOL && !argnum){
             t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
             if(curarg == gensym("-offset")){
                 offset = atom_getfloatarg(0, argc, argv+1);
-            argnum += 2;
-            argc -= 2;
-            argv+= 2;
-            if(argv->a_type == A_FLOAT)
-                goto errstate;
+                argc-=2, argv+=2;
             }
             else if(curarg == gensym("-step")){
                 step = atom_getfloatarg(0, argc, argv+1);
-                argnum += 2;
-                argc -= 2;
-                argv+= 2;
-                if(argv->a_type == A_FLOAT)
-                    goto errstate;
+                argc-=2, argv+=2;
             }
             else if(curarg == gensym("-b")){
                 x->x_b = 1;
-                argnum++;
-                argc--;
-                argv++;
-                if(argv->a_type == A_FLOAT)
-                    goto errstate;
+                argc--, argv++;
             }
-            else{
+            else
                 goto errstate;
-            };
         }
+        else
+            goto errstate;
     };
     ///////////////////////////////////////////////////////////////////////////////////
     x->x_offset = (int)offset;

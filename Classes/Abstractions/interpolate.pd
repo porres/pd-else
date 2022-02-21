@@ -1,4 +1,4 @@
-#N canvas 758 235 538 504 12;
+#N canvas 535 61 538 504 12;
 #X obj 62 294 t b b f;
 #X obj 85 365 expr s_\$0[$f1] + (t_\$0[$f1]-s_\$0[$f1]) * $f2, f 27
 ;
@@ -15,7 +15,7 @@
 #X obj 214 109 route float list;
 #X obj 145 296 r \$0-size;
 #X obj 62 73 route float exp start target;
-#N canvas 1259 340 439 365 init 0;
+#N canvas 789 176 439 365 init 0;
 #X obj 75 214 list split 1;
 #X obj 73 93 pdcontrol;
 #X msg 73 60 args;

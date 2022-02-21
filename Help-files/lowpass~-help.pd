@@ -1,9 +1,9 @@
-#N canvas 444 23 561 579 10;
+#N canvas 500 23 561 579 10;
 #X obj 4 280 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 430 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 463 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 493 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 543 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
@@ -96,7 +96,7 @@ b2 * y[n-2];
 #X connect 16 0 17 0;
 #X restore 429 239 pd filter formula \; and response;
 #X text 229 382 - central frequency in Hertz;
-#X text 118 469 1) float - central frequency in Hertz (default 0);
+#X text 118 499 1) float - central frequency in Hertz (default 0);
 #X msg 175 122 clear;
 #X text 230 306 - clears filter's memory if you blow it up;
 #X text 363 163 resonance (Q by default);
@@ -104,10 +104,10 @@ b2 * y[n-2];
 #X text 230 341 - sets resonance parameter to bandwidth in octaves
 ;
 #X text 211 358 q;
-#X obj 3 514 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 3 465 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 135 520 -bw;
-#X text 165 520 - sets resonance parameter to bandwidth in octaves
+#X text 135 471 -bw;
+#X text 165 471 - sets resonance parameter to bandwidth in octaves
 , f 53;
 #N canvas 868 136 407 322 resonance 0;
 #X text 27 17 By default \, the resonance parameter is the filter 'q'
@@ -121,13 +121,13 @@ the message methods.;
 #X msg 135 128 bw;
 #X text 175 156 resonance as 'q';
 #X text 163 128 resonance as bandwidth in octaves;
-#X obj 81 184 else/lowpass~ 500 0.5 -bw;
+#X obj 81 184 else/lowpass~ -bw 500 0.1;
 #X connect 3 0 8 0;
 #X connect 4 0 8 0;
 #X connect 5 0 8 0;
 #X connect 8 0 2 0;
 #X restore 464 214 pd resonance;
-#X text 118 487 2) float - resonance (default 1) \, either in 'Q' (default)
+#X text 118 517 2) float - resonance (default 1) \, either in 'Q' (default)
 or 'bw', f 65;
 #X text 230 358 - sets resonance parameter to Q (default);
 #X text 230 406 - filter resonance (Q or bandwidth);

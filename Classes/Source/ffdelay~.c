@@ -130,7 +130,7 @@ static t_int *ffdelay_perform(t_int *w){
     	}
     }
     x->x_whead = wp;
-    return(w + 6);
+    return(w+6);
 }
 
 static void ffdelay_dsp(t_ffdelay *x, t_signal **sp){
@@ -139,8 +139,7 @@ static void ffdelay_dsp(t_ffdelay *x, t_signal **sp){
 }
 
 static void *ffdelay_new(t_symbol *s, int argc, t_atom * argv){
-    t_symbol *dummy = s;
-    dummy = NULL;
+    s = NULL;
     t_ffdelay *x;
     x = (t_ffdelay *)pd_new(ffdelay_class);
     x->x_sr_khz = sys_getsr() * 0.001;
@@ -149,34 +148,26 @@ static void *ffdelay_new(t_symbol *s, int argc, t_atom * argv){
     x->x_freeze = 0;
     x->x_ms = 1;
 /////////////////////////////////////////////////////////////////////////////////
-    int symarg = 0;
     int argnum = 0;
     while(argc > 0){
-        if(argv->a_type == A_FLOAT && !symarg){
+        if(argv->a_type == A_FLOAT){
             delsize = del_time = atom_getfloatarg(0, argc, argv);
-            argc--;
-            argv++;
+            argc--, argv++;
             argnum++;
         }
-        else if(argv->a_type == A_SYMBOL){
-            if(!symarg)
-                symarg = 1;
+        else if(argv->a_type == A_SYMBOL && !argnum){
             t_symbol * cursym = atom_getsymbolarg(0, argc, argv);
-            if(!strcmp(cursym->s_name, "-size")){
+            if(cursym == gensym("-size")){
                 if(argc >= 2 && (argv+1)->a_type == A_FLOAT){
                     delsize = atom_getfloatarg(1, argc, argv);
-                    argc -= 2;
-                    argv += 2;
-                    argnum++;
+                    argc-=2, argv+=2;
                 }
                 else
                     goto errstate;
             }
-            else if(!strcmp(cursym->s_name, "-samps")){
+            else if(cursym == gensym("-samps")){
                 x->x_ms = 0;
-                argc--;
-                argv++;
-                argnum++;
+                argc--, argv++;
             }
             else
                 goto errstate;
@@ -204,16 +195,17 @@ static void *ffdelay_new(t_symbol *s, int argc, t_atom * argv){
     return(x);
 errstate:
     pd_error(x, "[ffdelay~]: improper args");
-    return NULL;
+    return(NULL);
 }
 
 static void ffdelay_free(t_ffdelay *x){
-    if (x->x_buf != x->x_bufini) freebytes(x->x_buf, x->x_maxsofar * sizeof(*x->x_buf));
+    if(x->x_buf != x->x_bufini)
+        freebytes(x->x_buf, x->x_maxsofar * sizeof(*x->x_buf));
 }
 
 void ffdelay_tilde_setup(void){
     ffdelay_class = class_new(gensym("ffdelay~"), (t_newmethod)ffdelay_new, (t_method)ffdelay_free,
-			    sizeof(t_ffdelay), 0, A_GIMME, 0);
+        sizeof(t_ffdelay), 0, A_GIMME, 0);
     class_addmethod(ffdelay_class, nullfn, gensym("signal"), 0);
     class_addmethod(ffdelay_class, (t_method)ffdelay_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(ffdelay_class, (t_method)ffdelay_clear, gensym("clear"), 0);
