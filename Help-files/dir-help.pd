@@ -1,4 +1,4 @@
-#N canvas 570 23 562 723 10;
+#N canvas 570 23 561 710 10;
 #X obj 23 40 cnv 4 4 4 empty empty Acess 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 77 40 cnv 4 4 4 empty empty file 0 28 2 18 #e0e0e0 #000000 0
@@ -25,47 +25,47 @@
 0;
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 4 375 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+#X obj 4 355 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 524 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 4 504 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 611 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 616 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 701 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 4 681 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 154 244 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 154 224 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X obj 128 271 else/dir;
-#X text 151 529 symbol -;
+#X obj 128 251 else/dir;
+#X text 151 509 symbol -;
 #X obj 118 39 cnv 4 4 4 empty empty directory 0 28 2 18 #e0e0e0 #000000
 0;
-#X msg 114 157 dump;
-#X msg 128 178 dir;
-#X text 109 380 open <symbol> -;
-#X text 169 423 dir -;
-#X text 213 423 outputs the current directory in the right outlet,
+#X msg 114 137 dump;
+#X msg 128 158 dir;
+#X text 109 360 open <symbol> -;
+#X text 169 403 dir -;
+#X text 213 403 outputs the current directory in the right outlet,
 f 54;
-#X text 163 437 dump -;
-#X obj 82 382 cnv 17 3 138 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 163 417 dump -;
+#X obj 82 362 cnv 17 3 138 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 82 530 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 82 510 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 163 465 bang -;
-#X obj 82 550 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 163 445 bang -;
+#X obj 82 530 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 213 529 the files from the directory, f 54;
-#X text 157 409 reset -;
-#X text 213 409 resets to patch's directory, f 54;
-#X obj 143 320 else/display 50;
-#X msg 80 115 open ..;
-#X msg 98 136 reset;
-#X text 181 451 n -;
-#X text 115 479 seek <float> -;
-#X text 163 493 next -;
-#X text 213 479 seeks and output the file corresponding to that number
+#X text 213 509 the files from the directory, f 54;
+#X text 157 389 reset -;
+#X text 213 389 resets to patch's directory, f 54;
+#X obj 143 300 else/display 50;
+#X msg 80 95 open ..;
+#X msg 98 116 reset;
+#X text 181 431 n -;
+#X text 115 459 seek <float> -;
+#X text 163 473 next -;
+#X text 213 459 seeks and output the file corresponding to that number
 ;
-#X text 213 493 increments seek value and outputs file, f 54;
-#X text 131 114 <= opens parent directory;
+#X text 213 473 increments seek value and outputs file, f 54;
+#X text 131 94 <= opens parent directory;
 #N canvas 622 108 585 715 open 0;
 #X text 66 72 For example \, "open samples" looks for a subdirectory
 named 'samples' relative to the current directory. More than one level
@@ -118,25 +118,25 @@ need to use the 'reopen' message to reload the direcory's contents.
 #X connect 10 3 19 0;
 #X connect 11 0 10 0;
 #X connect 15 0 1 0;
-#X restore 486 248 pd open;
-#X text 139 617 1) float -;
-#X text 133 654 1) symbol -;
-#X text 213 617 (optional) relative directory level \, 0 is current
+#X restore 486 228 pd open;
+#X text 139 622 1) float -;
+#X text 133 659 1) symbol -;
+#X text 213 622 (optional) relative directory level \, 0 is current
 patch's directory \, 1 is parent's patch's \, 2 parent's parent's and
 so on (default 0), f 54;
-#X text 213 654 directory to open (default: relative directory level)
+#X text 213 659 directory to open (default: relative directory level)
 , f 54;
-#X obj 82 590 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 82 570 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 157 591 float -;
-#X text 213 591 "1" if opened a new directory \, "0" if it couldn't
+#X text 157 571 float -;
+#X text 213 571 "1" if opened a new directory \, "0" if it couldn't
 open;
-#X text 115 507 ext <symbol> -;
-#X text 213 507 sets extension, f 54;
-#X obj 4 674 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X text 115 487 ext <symbol> -;
+#X text 213 487 sets extension, f 54;
+#X obj 4 591 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 115 681 -ext <symbol>:;
-#X text 213 681 - sets file extension type, f 54;
+#X text 115 598 -ext <symbol>:;
+#X text 213 598 - sets file extension type, f 54;
 #N canvas 560 27 618 558 arguments 0;
 #X obj 111 198 else/display;
 #X msg 92 146 dir;
@@ -174,9 +174,9 @@ open] subpatch)., f 75;
 #X connect 5 1 0 0;
 #X connect 10 0 13 0;
 #X connect 13 1 7 0;
-#X restore 457 227 pd arguments;
-#X text 213 380 opens a directory and loads contents, f 54;
-#X text 213 394 reloads contents of the last opened directory, f 54
+#X restore 457 207 pd arguments;
+#X text 213 360 opens a directory and loads contents, f 54;
+#X text 213 374 reloads contents of the last opened directory, f 54
 ;
 #N canvas 862 120 333 332 extension-flag 0;
 #X obj 95 210 print;
@@ -191,35 +191,34 @@ accesses all files., f 41;
 contents. Therefore \, the contents get updated if they've changed
 and you don't need a 'reopen' message for that., f 42;
 #X msg 54 130 dump;
-#X obj 95 181 else/dir 1 -ext .wav;
+#X obj 95 181 else/dir -ext .wav;
 #X connect 1 0 8 0;
 #X connect 2 0 8 0;
 #X connect 4 0 8 0;
 #X connect 7 0 8 0;
 #X connect 8 0 0 0;
-#X restore 426 269 pd extension-flag;
-#X text 87 86 [dir] accesses files from a given directory.;
-#X obj 158 293 else/display 4;
-#X obj 82 570 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
+#X restore 426 249 pd extension-flag;
+#X obj 158 273 else/display 4;
+#X obj 82 550 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 157 571 float -;
-#X text 151 550 symbol -;
-#X text 213 550 the current directory, f 54;
-#X text 213 571 'n' number of found files, f 54;
-#X text 227 272 <= open flag;
-#X obj 128 349 print Files;
-#X text 147 156 <= dump all files from the directory (left outlet)
+#X text 157 551 float -;
+#X text 151 530 symbol -;
+#X text 213 530 the current directory, f 54;
+#X text 213 551 'n' number of found files, f 54;
+#X text 227 252 <= open flag;
+#X obj 128 329 print Files;
+#X text 147 136 <= dump all files from the directory (left outlet)
 ;
-#X text 198 296 <= 'n' number of files.;
-#X msg 138 199 n, f 2;
-#X msg 148 221 n \, dir \, dump;
-#X obj 202 269 else/display 2;
-#X text 174 244 <= same as "n \, dir \, dump";
-#X text 233 220 <= same as "bang";
-#X text 58 323 'directory' =>;
-#X text 155 177 <= sends directory path (second outlet);
-#X text 138 135 <= resets to patch's directory;
-#X text 156 198 <= sends number of files (third outlet);
+#X text 198 276 <= 'n' number of files.;
+#X msg 138 179 n, f 2;
+#X msg 148 201 n \, dir \, dump;
+#X obj 202 249 else/display 2;
+#X text 174 224 <= same as "n \, dir \, dump";
+#X text 233 200 <= same as "bang";
+#X text 54 303 'directory' =>;
+#X text 155 157 <= sends directory path (second outlet);
+#X text 138 115 <= resets to patch's directory;
+#X text 156 178 <= sends number of files (third outlet);
 #N canvas 539 96 581 530 seek 0;
 #X msg 394 222 seek \$1;
 #X obj 394 194 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -278,21 +277,22 @@ number of files. The seek number is indexed from '1' and clipped to
 #X connect 17 2 2 0;
 #X connect 18 0 15 0;
 #X connect 19 0 13 0;
-#X restore 485 290 pd seek;
-#X text 151 394 reopen -;
-#X text 213 437 dump files from directory in the (second outlet),
+#X restore 485 270 pd seek;
+#X text 151 374 reopen -;
+#X text 213 417 dump files from directory in the (second outlet),
 f 54;
-#X text 213 451 output number of found files in the (third outlet)
+#X text 213 431 output number of found files in the (third outlet)
 , f 54;
-#X text 213 465 outputs 'n' \, 'directory' and dumps files, f 54;
+#X text 213 445 outputs 'n' \, 'directory' and dumps files, f 54;
+#X text 257 62 [dir] accesses files from directories.;
 #X connect 16 0 17 0;
-#X connect 17 0 67 0;
+#X connect 17 0 66 0;
 #X connect 17 1 33 0;
-#X connect 17 2 60 0;
-#X connect 17 3 72 0;
+#X connect 17 2 59 0;
+#X connect 17 3 71 0;
 #X connect 20 0 17 0;
 #X connect 21 0 17 0;
 #X connect 34 0 17 0;
 #X connect 35 0 17 0;
+#X connect 69 0 17 0;
 #X connect 70 0 17 0;
-#X connect 71 0 17 0;
