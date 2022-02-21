@@ -1,9 +1,9 @@
-#N canvas 647 23 560 630 10;
+#N canvas 647 23 560 620 10;
 #X obj 4 288 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 461 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 494 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 525 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 592 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
@@ -33,7 +33,7 @@
 #000000 0 1;
 #X text 126 332 bypass <float>;
 #X text 223 332 - 1 (bypasses input signal) or 0 (doesn't bypass);
-#N canvas 385 158 944 587 filter 0;
+#N canvas 354 108 944 587 filter 0;
 #X obj 675 111 hsl 128 15 0.1 10 0 0 empty \$0-Q-set empty -2 -8 0
 10 #dcdcdc #000000 #000000 0 1;
 #X obj 642 62 hsl 128 15 20 20000 1 0 empty \$0-Hz-set empty -2 -8
@@ -96,7 +96,7 @@ b0 \;;
 ;
 #X text 138 435 float/signal;
 #X text 223 435 - gain in dB;
-#X text 131 535 3) float - gain in dB (default 0), f 53;
+#X text 131 566 3) float - gain in dB (default 0), f 53;
 #X text 198 351 bw;
 #X text 223 351 - sets resonance parameter to bandwidth in octaves
 ;
@@ -104,14 +104,14 @@ b0 \;;
 #X text 223 368 - sets resonance parameter to Q (default);
 #X text 223 412 - filter resonance (Q or bandwidth);
 #X text 222 388 - central frequency in Hertz;
-#X text 131 500 1) float - central frequency in Hertz (default 0),
+#X text 131 531 1) float - central frequency in Hertz (default 0),
 f 53;
-#X text 131 518 2) float - resonance (default 1) \, either in 'Q' (default)
+#X text 131 549 2) float - resonance (default 1) \, either in 'Q' (default)
 or 'bw', f 65;
-#X obj 3 562 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 3 497 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 122 568 -bw;
-#X text 152 568 - sets resonance parameter to bandwidth in octaves
+#X text 122 503 -bw;
+#X text 152 503 - sets resonance parameter to bandwidth in octaves
 , f 53;
 #N canvas 905 73 407 322 resonance 0;
 #X text 27 17 By default \, the resonance parameter is the filter 'q'
@@ -125,7 +125,7 @@ the message methods.;
 #X msg 135 128 bw;
 #X text 175 156 resonance as 'q';
 #X text 163 128 resonance as bandwidth in octaves;
-#X obj 81 184 else/eq~ 1000 5 12 -bw;
+#X obj 81 184 else/eq~ -bw 1000 5 12;
 #X connect 3 0 8 0;
 #X connect 4 0 8 0;
 #X connect 5 0 8 0;

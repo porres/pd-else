@@ -355,56 +355,36 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     x->x_suspoint = x->x_legato = 0;
     x->x_lines = x->x_n_lineini;
     x->x_curseg = 0;
-    t_atom at[2];
-    int i;
-    for(i = 0; i < MAX_SEGS; i++) // set exponential list to linear
+    for(int i = 0; i < MAX_SEGS; i++) // set exponential list to linear
         SETFLOAT(x->x_at_exp+i, 1);
+    t_atom at[2];
     SETFLOAT(at, 0);
     SETFLOAT(at+1, 0);
     x->x_av = getbytes(2*sizeof(*(x->x_av)));
     copy_atoms(at, x->x_av, x->x_ac = 2);
-    int symarg = 0, n = 0;
+    int arg = 0, n = 0;
     while(ac > 0){
-        if((av+n)->a_type == A_FLOAT && !symarg)
+        if((av+n)->a_type == A_FLOAT){
+            arg = 1;
             n++, ac--;
-        else if((av+n)->a_type == A_SYMBOL){
-            if(!symarg){
-                symarg = 1;
-                if(n == 1 && av->a_type == A_FLOAT)
-                    x->x_value = atom_getfloatarg(0, ac, av);
-                else if(n > 1){
-                    x->x_ac = n;
-                    x->x_av = getbytes(n * sizeof(*(x->x_av)));
-                    copy_atoms(av, x->x_av, x->x_ac);
-                }
-                av += n;
-                n = 0;
-            }
+        }
+        else if(av->a_type == A_SYMBOL && !arg){
             cursym = atom_getsymbolarg(0, ac, av);
             if(cursym == gensym("-init")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     x->x_value = atom_getfloatarg(1, ac, av);
                     ac-=2, av+=2;
                 }
-                else goto errstate;
-            }
-            else if(cursym == gensym("-exp")){
-                if(ac >= 2){
-                    ac--, av++;
-                    i = 0;
-                    while(ac || av->a_type == A_FLOAT){
-                        SETFLOAT(x->x_at_exp+i, av->a_w.w_float);
-                        ac--, av++, i++;
-                    }
-                }
-                else goto errstate;
+                else
+                    goto errstate;
             }
             else if(cursym == gensym("-retrigger")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     x->x_retrigger = atom_getfloatarg(1, ac, av);
                     ac-=2, av+=2;
                 }
-                else goto errstate;
+                else
+                    goto errstate;
             }
             else if(cursym == gensym("-suspoint")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
@@ -412,28 +392,30 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
                     x->x_suspoint = suspoint < 0 ? 0 : suspoint;
                     ac-=2, av+=2;
                 }
-                else goto errstate;
+                else
+                    goto errstate;
             }
             else if(cursym == gensym("-maxsustain")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     x->x_maxsustain = (int)atom_getfloatarg(1, ac, av);
                     ac-=2, av+=2;
                 }
-                else goto errstate;
+                else
+                    goto errstate;
             }
             else if(cursym == gensym("-legato"))
                 x->x_legato = 1, ac--, av++;
-            else goto errstate;
+            else
+                goto errstate;
         }
-        else goto errstate;
+        else
+            goto errstate;
     }
-    if(!symarg && n > 0){
-        if(n == 1)
-            x->x_value = atom_getfloatarg(0, n, av);
-        else{
-            x->x_av = getbytes(n*sizeof(*(x->x_av)));
-            copy_atoms(av, x->x_av, x->x_ac = n);
-        }
+    if(n == 1)
+        x->x_value = atom_getfloatarg(0, n, av);
+    else{
+        x->x_av = getbytes(n*sizeof(*(x->x_av)));
+        copy_atoms(av, x->x_av, x->x_ac = n);
     }
     x->x_last_target = x->x_value;
     envgen_proxy_init(&x->x_proxy, x);
@@ -450,7 +432,7 @@ errstate:
 
 void envgen_tilde_setup(void){
     envgen_class = class_new(gensym("envgen~"), (t_newmethod)envgen_new,
-            (t_method)envgen_free, sizeof(t_envgen), CLASS_DEFAULT, A_GIMME, 0);
+        (t_method)envgen_free, sizeof(t_envgen), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(envgen_class, nullfn, gensym("signal"), 0);
     class_addmethod(envgen_class, (t_method)envgen_dsp, gensym("dsp"), A_CANT, 0);
     class_addfloat(envgen_class, envgen_float);
