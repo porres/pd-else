@@ -231,31 +231,35 @@ static void *dir_new(t_symbol *s, int ac, t_atom* av){
     sortdata_init(&x->x_inbuf);
     x->x_seek = 0;
     t_symbol *dirname = x->x_ext = &s_;
-    int symarg = 0, flag = 0, depth = 0;
+    int arg = 0, symarg = 0, depth = 0;
     while(ac > 0){
-        if(av->a_type == A_FLOAT && !symarg && !flag){
+        if(av->a_type == A_FLOAT && !symarg){
             depth = (int)atom_getfloatarg(0, ac, av);
+            arg = 1;
             ac--, av++;
         }
         else if(av->a_type == A_SYMBOL){
-            if(!symarg) symarg = 1;
             t_symbol *cursym = atom_getsymbolarg(0, ac, av);
-            if(!strcmp(cursym->s_name, "-ext") && !flag){
-                flag = 1;
-                if(ac == 2 && (av+1)->a_type == A_SYMBOL){
+            if(cursym == gensym("-ext")){
+                if(arg)
+                    goto errstate;
+                if(ac >= 2 && (av+1)->a_type == A_SYMBOL){
                     x->x_ext = atom_getsymbolarg(1, ac, av);
                     ac-=2, av+=2;
                 }
-                else goto errstate;
+                else
+                    goto errstate;
             }
-            else if(!flag){
-                if(!symarg) symarg = 1;
+            else{
+                arg = 1;
+                if(!symarg)
+                    symarg = 1;
                 dirname = cursym;
                 ac--, av++;
             }
-            else goto errstate;
         }
-        else goto errstate;
+        else
+            goto errstate;
     }
     t_canvas *canvas = canvas_getrootfor(canvas_getcurrent());
     if(depth < 0)
@@ -277,7 +281,7 @@ errstate:
 
 void dir_setup(void){
     dir_class = class_new(gensym("dir"), (t_newmethod)dir_new, (t_method)dir_free,
-            sizeof(t_dir), 0, A_GIMME, 0);
+        sizeof(t_dir), 0, A_GIMME, 0);
     class_addbang(dir_class, dir_bang);
     class_addmethod(dir_class, (t_method)dir_n, gensym("n"), 0);
     class_addmethod(dir_class, (t_method)dir_dir, gensym("dir"), 0);

@@ -27,7 +27,6 @@ typedef struct _del_in{
     unsigned int    x_maxsofar; // largest maxsize so far
     t_float         x_sr;
     t_float         x_f;
-//    t_outlet       *x_symout;
 }t_del_in;
 
 #define XTRASAMPS 4 // extra number of samples (for guard points)
@@ -51,11 +50,6 @@ static void del_in_update(t_del_in *x){ // added by Mathieu Bouchard
         x->x_cspace.c_phase = XTRASAMPS;
     }
 }
-
-/*static void del_in_outsym(t_del_in *x){
-    if(x->x_sym)
-        outlet_symbol(x->x_symout, x->x_sym);
-}*/
 
 static void del_in_freeze(t_del_in *x, t_floatarg f){
     x->x_freeze = (int)(f != 0);
@@ -127,7 +121,6 @@ static void del_in_dsp(t_del_in *x, t_signal **sp){
     x->x_sortno = ugen_getsortno();
     del_in_checkvecsize(x, sp[0]->s_n, sp[0]->s_sr);
     del_in_update(x);
-//    del_in_outsym(x);
 }
 
 static void del_in_free(t_del_in *x){
@@ -136,7 +129,6 @@ static void del_in_free(t_del_in *x){
 }
 
 static void *del_in_new(t_symbol *s, int ac, t_atom *av){
-//    post("del_in_new MOTHERFUCKER");
     s = NULL;
     t_del_in *x = (t_del_in *)pd_new(del_in_class);
     x->x_deltime = 0;
@@ -144,29 +136,35 @@ static void *del_in_new(t_symbol *s, int ac, t_atom *av){
     char buf[MAXPDSTRING];
     sprintf(buf, "#%lx", (long)x);
     x->x_sym = gensym(buf);
-//    x->x_sym = &s_;
-    if(!ac){
-        post("[del~ in] please define a delay line name");
-    }
-    else if(av->a_type == A_SYMBOL){
-//        post("del_in_new av->a_type == A_SYMBOL");
-        t_symbol *cursym = atom_getsymbolarg(0, ac, av);
-//        post("cursym = %s", cursym->s_name);
-        if(cursym == gensym("-samps")){
-//            post("[del~ in] samps");
-            x->x_ms = 0;
-            ac--;
-            av++;
+    if(!ac)
+        pd_error(x, "[del~ in]: please define a delay line name");
+    else{
+        if(av->a_type == A_FLOAT)
+            goto errstate;
+        else if(av->a_type == A_SYMBOL){
+            if(atom_getsymbolarg(0, ac, av) == gensym("-samps")){
+                x->x_ms = 0;
+                ac--, av++;
+            }
+            if(!ac)
+                goto errstate;
+            else if(av->a_type == A_SYMBOL){
+                x->x_sym = atom_getsymbolarg(0, ac, av);
+                ac--, av++;
+                if(ac){
+                    if((av)->a_type == A_FLOAT){
+                        x->x_deltime = (av)->a_w.w_float;
+                        ac--, av++;
+                    }
+                    else
+                        goto errstate;
+                    if(ac)
+                        goto errstate;
+                }
+            }
         }
-        if(ac && av->a_type == A_SYMBOL){
-             x->x_sym = atom_getsymbolarg(0, ac, av);
-             ac--, av++;
-//             post("x->x_sym = %s", x->x_sym->s_name);
-         }
-        if(ac && (av)->a_type == A_FLOAT){
-            x->x_deltime = (av)->a_w.w_float;
-//            post("x_deltime = %d", (int)x->x_deltime);
-        }
+        else
+            goto errstate;
     }
     pd_bind(&x->x_obj.ob_pd, x->x_sym);
     x->x_cspace.c_n = 0;
@@ -178,6 +176,9 @@ static void *del_in_new(t_symbol *s, int ac, t_atom *av){
     x->x_freeze = 0;
     outlet_new(&x->x_obj, &s_signal);
     return(x);
+    errstate:
+        pd_error(x, "[del~ in]: improper args");
+        return(NULL);
 }
 
 // ----------------------------- del~ out -----------------------------
@@ -192,11 +193,6 @@ typedef struct _del_out{
     int             x_lin;      // linear interpolation
     t_float         x_f;
 }t_del_out;
-
-/*static void del_out_set(t_del_out *x, t_symbol *s){
-    if(s != &s_)
-        x->x_sym = s;
-}*/
 
 float interpolate(t_del_out *x, t_sample *bp, t_sample frac){
     t_sample b = bp[-1], c = bp[-2]; // current (b) and next (c)
@@ -266,7 +262,7 @@ static void del_out_dsp(t_del_out *x, t_signal **sp){
             pd_error(x, "%s: read blocksize larger than write buffer", x->x_sym->s_name);
     }
     else if(*x->x_sym->s_name)
-        pd_error(x, "del~: %s: no such delay line",x->x_sym->s_name);
+        pd_error(x, "[del~ out]: %s: no such delay line", x->x_sym->s_name);
 }
 
 static void *del_out_new(t_symbol *s, int ac, t_atom *av){
@@ -277,44 +273,35 @@ static void *del_out_new(t_symbol *s, int ac, t_atom *av){
     x->x_sr = 0;
     x->x_lin = 0;
     x->x_zerodel = 0;
-//    post("del_out_new / ac = %d", ac);
     if(ac && av->a_type == A_SYMBOL){
-//        post("ac && av->a_type == A_SYMBOL");
         t_symbol * cursym = atom_getsymbolarg(0, ac, av);
-//        post("cursym = %s", cursym->s_name);
-        if(cursym == gensym("-samps")){
+        if(cursym == gensym("-samps")) && !arg{
             x->x_ms = 0;
-//            post("-samps bingo del out / ms = %d", x->x_ms);
             ac--, av++;
         }
         if(ac && av->a_type == A_SYMBOL){
             x->x_sym = atom_getsymbolarg(0, ac, av);
             ac--, av++;
-//            post("x->x_sym = %s", x->x_sym->s_name);
         }
         else
-            post("[del~ out] please define a delay line name");
+            pd_error(x, "[del~ out] please define a delay line name");
         if(ac && av->a_type == A_FLOAT){
             x->x_f = atom_getfloatarg(0, ac, av);
             ac--, av++;
-//            post("x->x_sym = %s", x->x_sym->s_name);
         }
     }
     outlet_new(&x->x_obj, &s_signal);
-    if(ac){
-    }
     return(x);
+    errstate:
+        pd_error(x, "[del~ out]: improper args");
+        return(NULL);
 }
 
 // ----------------------- global setup ----------------
 static void *del_new(t_symbol *s, int ac, t_atom *av){
-//    post("del~_new");
-    if(!ac){
-        post("[del~] please define a delay line name");
+    if(!ac)
         pd_this->pd_newest = del_in_new(s, ac, av);
-    }
     else{
-//        post("del~_new");
         t_symbol *s2 = av[0].a_w.w_symbol;
         if(s2 == gensym("in"))
             pd_this->pd_newest = del_in_new(s, ac-1, av+1);
@@ -332,16 +319,13 @@ void del_tilde_setup(void){
     class_addcreator((t_newmethod)del_new, gensym("del~"), A_GIMME, 0);
     class_addcreator((t_newmethod)del_new, gensym("else/del~"), A_GIMME, 0);
     CLASS_MAINSIGNALIN(del_in_class, t_del_in, x_f);
-//    class_addbang(del_in_class, del_in_outsym);
     class_addmethod(del_in_class, (t_method)del_in_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(del_in_class, (t_method)del_in_clear, gensym("clear"), 0);
     class_addmethod(del_in_class, (t_method)del_in_freeze, gensym("freeze"), A_DEFFLOAT, 0);
     class_addmethod(del_in_class, (t_method)del_in_size, gensym("size"), A_DEFFLOAT, 0);
     class_sethelpsymbol(del_in_class, gensym("del~"));
-
     del_out_class = class_new(gensym("del~ out"), (t_newmethod)del_out_new, 0, sizeof(t_del_out), 0, A_GIMME, 0);
     CLASS_MAINSIGNALIN(del_out_class, t_del_out, x_f);
     class_addmethod(del_out_class, (t_method)del_out_dsp, gensym("dsp"), A_CANT, 0);
     class_sethelpsymbol(del_out_class, gensym("del~"));
-//    class_addsymbol(del_out_class, del_out_set);
 }
