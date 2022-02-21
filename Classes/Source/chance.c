@@ -64,6 +64,7 @@ static void *chance_new(t_symbol *s, int argc, t_atom *argv){
     x->x_range = 0;
     x->x_index = 0;
     x->x_coin = 0;
+    int seedarg = 0;
     t_outlet **outs;
     if(!argc){
         x->x_bytes = x->x_ac*sizeof(t_atom);
@@ -91,7 +92,7 @@ static void *chance_new(t_symbol *s, int argc, t_atom *argv){
         }
         else if(argv->a_type == A_SYMBOL){
             pd_error(x, "[chance]: takes only floats as arguments");
-            return (NULL);
+            return(NULL);
         }
     }
     else{
@@ -104,29 +105,41 @@ static void *chance_new(t_symbol *s, int argc, t_atom *argv){
             if(argv->a_type == A_FLOAT){
                 t_float argval = atom_getfloatarg(0, argc, argv);
                 SETFLOAT(x->x_av+n, x->x_range += argval);
+                n++, argv++, argc--;
             }
-            else if(argv->a_type == A_SYMBOL){
+            else if(argv->a_type == A_SYMBOL && !n){
                 if(atom_getsymbolarg(0, argc, argv) == gensym("-index")){
                     x->x_index = 1;
-                    x->x_ac--;
-                    n--;
+                    x->x_ac--, argc--, argv++;
                 }
+                else if(atom_getsymbolarg(0, argc, argv) == gensym("-seed")){
+                    seedarg = atom_getfloatarg(1, argc, argv);
+                    x->x_ac-=2, argc-=2, argv+=2;
+                }
+                else
+                    goto errstate;
             }
-            n++;
-            argv++;
-            argc--;
+            else
+                goto errstate;
         }
         if(!x->x_index){
             for(int i = 0; i < x->x_ac; i++)
                 x->x_outs[i] = outlet_new(&x->x_obj, &s_bang);
         }
     }
-    x->x_val = init_seed *= 1319; // load seed value
+    init_seed *= 1319;
+    if(seedarg)
+        x->x_val = seedarg *= 1319;
+    else
+        x->x_val = init_seed; // load seed value
     if(x->x_coin)
         floatinlet_new(&x->x_obj, &x->x_chance);
     if(x->x_index)
         x->x_out_index = outlet_new(&x->x_obj, &s_float);
     return(x);
+errstate:
+    pd_error(x, "[chance]: improper args");
+    return(NULL);
 }
 
 void chance_setup(void){

@@ -1,7 +1,6 @@
 // porres 2018
 
 #include "m_pd.h"
-#include <string.h>
 
 typedef struct _bendin{
     t_object       x_ob;
@@ -75,16 +74,18 @@ static void *bendin_new(t_symbol *s, t_int ac, t_atom *av){
     t_symbol *curarg = s; // get rid of warning
     t_int channel = 0;
     x->x_raw = x->x_status = x->x_ready = 0;
+    int floatarg = 0;
     if(ac){
         while(ac > 0){
             if(av->a_type == A_FLOAT){
+                floatarg = 1;
                 channel = (t_int)atom_getfloatarg(0, ac, av);
                 ac--;
                 av++;
             }
-            else if(av->a_type == A_SYMBOL){
+            else if(av->a_type == A_SYMBOL && !floatarg){
                 curarg = atom_getsymbolarg(0, ac, av);
-                if(!strcmp(curarg->s_name, "-raw")){
+                if(curarg == gensym("-raw")){
                     x->x_raw = 1;
                     ac--;
                     av++;
@@ -104,12 +105,12 @@ static void *bendin_new(t_symbol *s, t_int ac, t_atom *av){
     x->x_chanout = outlet_new((t_object *)x, &s_float);
     return(x);
     errstate:
-        pd_error(x, "[bendin]: improper args");
-        return NULL;
+        pd_error(x, "[bend.in]: improper args");
+        return(NULL);
 }
 
 void setup_bend0x2ein(void){
     bendin_class = class_new(gensym("bend.in"), (t_newmethod)bendin_new,
-                            0, sizeof(t_bendin), 0, A_GIMME, 0);
+        0, sizeof(t_bendin), 0, A_GIMME, 0);
     class_addfloat(bendin_class, bendin_float);
 }

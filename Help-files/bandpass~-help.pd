@@ -1,11 +1,11 @@
-#N canvas 600 30 560 586 10;
+#N canvas 600 30 566 578 10;
 #X obj 4 285 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 435 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 468 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 498 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 550 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 4 546 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 109 444 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -96,7 +96,7 @@ below. The graph considers a sample rate of 44.1Khz.;
 #X connect 17 0 18 0;
 #X restore 429 244 pd filter formula \; and response;
 #X text 229 387 - central frequency in Hertz;
-#X text 118 474 1) float - central frequency in Hertz (default 0);
+#X text 118 504 1) float - central frequency in Hertz (default 0);
 #X msg 175 127 clear;
 #X text 230 311 - clears filter's memory if you blow it up;
 #X text 363 168 resonance (Q by default);
@@ -104,10 +104,10 @@ below. The graph considers a sample rate of 44.1Khz.;
 #X text 230 346 - sets resonance parameter to bandwidth in octaves
 ;
 #X text 211 363 q;
-#X obj 3 519 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 3 469 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 135 527 -bw;
-#X text 165 527 - sets resonance parameter to bandwidth in octaves
+#X text 135 477 -bw;
+#X text 165 477 - sets resonance parameter to bandwidth in octaves
 , f 53;
 #N canvas 783 164 407 322 resonance 0;
 #X text 27 17 By default \, the resonance parameter is the filter 'q'
@@ -127,7 +127,7 @@ the message methods.;
 #X connect 5 0 8 0;
 #X connect 8 0 2 0;
 #X restore 464 219 pd resonance;
-#X text 118 492 2) float - resonance (default 1) \, either in 'Q' (default)
+#X text 118 522 2) float - resonance (default 1) \, either in 'Q' (default)
 or 'bw', f 65;
 #X text 230 363 - sets resonance parameter to Q (default);
 #X obj 175 191 else/bandpass~ 100 0.1;

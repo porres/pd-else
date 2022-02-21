@@ -1,7 +1,6 @@
 // porres 2018
 
 #include "m_pd.h"
-#include <string.h>
 
 typedef struct _bendout{
     t_object  x_ob;
@@ -33,6 +32,7 @@ static void *bendout_new(t_symbol *s, t_int ac, t_atom *av){
     floatinlet_new((t_object *)x, &x->x_channel);
     outlet_new((t_object *)x, &s_float);
     t_float channel = 1;
+    int floatarg = 0;
     if(ac){
         while(ac > 0){
             if(av->a_type == A_FLOAT){
@@ -40,9 +40,9 @@ static void *bendout_new(t_symbol *s, t_int ac, t_atom *av){
                 ac--;
                 av++;
             }
-            else if(av->a_type == A_SYMBOL){
+            else if(av->a_type == A_SYMBOL && !floatarg){
                 curarg = atom_getsymbolarg(0, ac, av);
-                if(!strcmp(curarg->s_name, "-raw")){
+                if(curarg == gensym("-raw")){
                     x->x_raw = 1;
                     ac--;
                     av++;
@@ -57,8 +57,8 @@ static void *bendout_new(t_symbol *s, t_int ac, t_atom *av){
     x->x_channel = (channel > 0 ? channel : 1);
     return(x);
     errstate:
-        pd_error(x, "[bendout]: improper args");
-        return NULL;
+        pd_error(x, "[bend.out]: improper args");
+        return(NULL);
 }
 
 void setup_bend0x2eout(void){
