@@ -58,35 +58,40 @@ static void drive_dsp(t_drive *x, t_signal **sp){
 }
 
 void *drive_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_drive *x = (t_drive *)pd_new(drive_class);
     t_float drive = 1;
     x->x_mode = 0;
+    int arg = 0;
     while(ac > 0){
         if(av->a_type == A_FLOAT){
             drive = atom_getfloatarg(0, ac, av);
-            ac--;
-            av++;
+            ac--, av++;
+            arg = 1;
         }
-        else if(av->a_type == A_SYMBOL){
-            t_symbol *curarg = s; // get rid of warning
-            curarg = atom_getsymbolarg(0, ac, av);
-            if(!strcmp(curarg->s_name, "-mode")){
-                x->x_mode = atom_getfloatarg(1, ac, av) != 0;
-                ac--;
-                av++;
+        else if(av->a_type == A_SYMBOL && !arg && ac >= 2){
+            if(atom_getsymbolarg(0, ac, av) == gensym("-mode")){
+                ac--, av++;
+                if(av->a_type == A_FLOAT){
+                    t_float f = atom_getfloatarg(0, ac, av);
+                    x->x_mode = f < 0 ? 0 : f > 2 ? 2 : (int)f;
+                    ac--, av++;
+                }
+                else
+                    goto errstate;
             }
             else
                 goto errstate;
-        ac--;
-        av++;
         }
+        else
+            goto errstate;
     }
     x->x_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet, drive);
     outlet_new(&x->x_obj, &s_signal);
     return(x);
 errstate:
-    pd_error(x, "drive~: improper args");
+    pd_error(x, "[drive~]: improper args");
     return NULL;
 }
 
