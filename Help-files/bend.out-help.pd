@@ -1,4 +1,4 @@
-#N canvas 627 68 565 439 10;
+#N canvas 534 65 565 439 10;
 #X obj 23 40 cnv 4 4 4 empty empty Midi 0 28 2 18 #e0e0e0 #000000 0
 ;
 #X obj 66 40 cnv 4 4 4 empty empty pitch 0 28 2 18 #e0e0e0 #000000

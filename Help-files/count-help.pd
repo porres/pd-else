@@ -1,21 +1,21 @@
-#N canvas 673 99 559 551 10;
-#X obj 3 522 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#N canvas 507 55 559 551 10;
+#X obj 3 522 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 3 211 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 385 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 3 439 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 3 211 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 100 362 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
-;
-#X obj 101 393 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 100 220 cnv 17 3 137 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 3 385 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 5 cnv 15 301 42 empty empty count 20 20 2 37 -233017 -1 0
+#X obj 3 439 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 100 362 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 101 393 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 100 220 cnv 17 3 137 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c
+0;
+#X obj 3 5 cnv 15 301 42 empty empty count 20 20 2 37 #e0e0e0 #000000
+0;
+#X obj 306 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
@@ -23,22 +23,23 @@
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 5 pd;
-#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 13 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 42 cnv 4 4 4 empty empty A 0 28 2 18 -233017 -1 0;
-#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 23 42 cnv 4 4 4 empty empty A 0 28 2 18 #e0e0e0 #000000 0;
+#X obj 458 13 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 13 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 13 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 28 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 44 42 cnv 4 4 4 empty empty counter 0 28 2 18 -233017 -1 0;
-#X obj 228 125 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 44 42 cnv 4 4 4 empty empty counter 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 228 125 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 228 178 else/display;
 #X text 167 364 list;
 #X text 157 394 float;
@@ -52,8 +53,8 @@
 float sets a new reset point as well, f 53;
 #X text 123 245 set <float>;
 #X text 208 244 - sets new count value, f 55;
-#X obj 309 181 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 309 181 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 123 284 max <float>;
 #X text 208 283 - sets maximum value, f 55;
 #X text 123 298 min <float>;
@@ -63,18 +64,19 @@ float sets a new reset point as well, f 53;
 #X text 165 327 down;
 #X text 208 327 - sets count direction downwards, f 55;
 #X text 123 342 alt <float>;
-#X obj 101 415 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 101 415 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 163 416 bang;
-#X obj 3 477 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
+#X obj 3 477 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
 #X text 166 483 -alt - sets to alternating mode;
 #X text 208 341 - non-0 sets to alternating mode (between up/down)
 , f 55;
 #N canvas 441 61 792 417 arguments 0;
-#X obj 246 287 bng 19 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 251 100 bng 19 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 246 287 bng 19 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 251 100 bng 19 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 251 164 else/display;
 #X obj 174 164 else/display;
 #X obj 246 360 else/display;
@@ -95,15 +97,15 @@ maximum value. The first of two arguments also sets the reset/starting
 point.;
 #X text 418 23 A third argument sets a different reset/starting point.
 ;
-#X obj 635 61 bng 19 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 635 61 bng 19 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X obj 635 134 else/display;
 #X obj 505 135 else/display;
 #X msg 505 61 reset;
 #X obj 521 372 else/display;
 #X msg 521 309 reset;
-#X obj 494 308 bng 19 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 494 308 bng 19 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X msg 632 289 4;
 #X msg 665 295 10 15;
 #X msg 674 318 15 10;
@@ -148,16 +150,16 @@ has been reinitialized with such arguments., f 53;
 #X restore 459 137 pd arguments;
 #N canvas 836 163 453 240 direction 0;
 #X obj 169 196 nbx 2 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 169 89 bng 19 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X obj 280 195 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 169 89 bng 19 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
+#X obj 280 195 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X msg 181 125 up;
 #X msg 214 126 down;
 #X msg 120 127 alt \$1;
-#X obj 120 105 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 120 105 tgl 16 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 28 19 You can change the direction \, upwards or downward \,
 with the "up" and "down" message.The alternanting mode \, set with
 the "-alt" flag or message \, alternates between these two directions
@@ -173,11 +175,11 @@ after reaching a limit (minimum or maximum value), f 64;
 #X restore 459 158 pd direction;
 #N canvas 732 167 504 363 messages 0;
 #X obj 176 319 nbx 2 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 176 161 bng 19 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 281 318 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 176 161 bng 19 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 281 318 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 97 47 float;
 #X text 134 47 - set new count value and output it, f 55;
 #X text 49 76 reset <float>;
@@ -190,21 +192,21 @@ float sets a new reset point as well, f 53;
 #X text 134 101 - sets maximum value, f 55;
 #X text 61 116 min <float>;
 #X text 134 115 - sets minimum value, f 55;
-#X obj 134 196 nbx 3 16 0 10 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X obj 83 182 nbx 3 16 0 10 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
+#X obj 134 196 nbx 3 16 0 10 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X obj 83 182 nbx 3 16 0 10 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X msg 83 207 set \$1;
 #X msg 195 216 reset \$1;
-#X obj 195 194 nbx 3 16 0 10 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
+#X obj 195 194 nbx 3 16 0 10 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X msg 211 239 reset;
 #X msg 276 244 min \$1;
 #X msg 328 250 max \$1;
-#X obj 276 222 nbx 3 16 0 10 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X obj 328 226 nbx 3 16 0 10 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
+#X obj 276 222 nbx 3 16 0 10 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X obj 328 226 nbx 3 16 0 10 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X text 38 14 The remaining messages:;
 #X obj 176 288 else/count 1 20 10;
 #X connect 1 0 25 0;

@@ -1,43 +1,44 @@
-#N struct 1030-pixel float color;
-#N canvas 670 60 560 662 10;
-#X obj 248 158 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N struct 2016-pixel float color;
+#N canvas 572 24 560 662 10;
+#X obj 248 158 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 305 4 pd;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 41 cnv 4 4 4 empty empty Pick/Convert 0 28 2 18 -233017 -1
+#X obj 23 41 cnv 4 4 4 empty empty Pick/Convert 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 131 41 cnv 4 4 4 empty empty colors 0 28 2 18 -233017 -1 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 131 41 cnv 4 4 4 empty empty colors 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 3 4 cnv 15 301 42 empty empty colors 20 20 2 37 -233017 -1 0
-;
+#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 3 4 cnv 15 301 42 empty empty colors 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 4 graph;
-#X obj 4 306 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 483 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 518 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 306 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 105 492 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 106 312 cnv 17 3 166 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 4 483 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 634 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 518 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 105 492 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 106 312 cnv 17 3 166 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c
+0;
+#X obj 4 634 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 198 312 bang;
 #X text 154 232 click opens color picker =>, f 15;
@@ -48,16 +49,16 @@
 #X text 95 193 open color picker;
 #N canvas 994 43 707 769 convert 0;
 #X obj 380 191 else/pack2 rgb 0 0 0;
-#X obj 419 26 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
--262144 -1 0 0;
-#X obj 458 26 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4033
--262144 -1 0 0;
-#X obj 497 26 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
--262144 -1 0 0;
+#X obj 419 26 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 #fc0000
+#fcfcfc #000000 0 0;
+#X obj 458 26 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 #00fc00
+#fcfcfc #000000 0 0;
+#X obj 497 26 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 #0400fc
+#fcfcfc #000000 0 0;
 #X obj 419 168 int;
 #X obj 458 168 int;
 #X obj 497 168 int;
-#X symbolatom 380 287 8 0 0 0 - - -;
+#X symbolatom 380 287 8 0 0 0 - - - 0;
 #X obj 116 258 else/colors;
 #X msg 136 167 to rgb \, hex #ab1f4c;
 #X msg 116 141 to hex \, rgb 127 127 127;
@@ -72,32 +73,32 @@ to "ds" (Pd's Data Structures format)., f 38;
 #X obj 380 365 else/display;
 #X obj 57 608 else/pack2 cmyk 0 0 0 0;
 #X obj 104 458 vsl 15 128 0 100 0 0 empty \$0-cyan empty 0 -9 0 10
--4096 -1 -1 0 1;
+#00fcfc #000000 #000000 0 1;
 #X obj 128 458 vsl 15 128 0 100 0 0 empty \$0-yellow empty 0 -9 0 10
--262081 -1 -1 0 1;
-#X obj 154 458 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 -258112
--1 -1 0 1;
-#X obj 183 458 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 -1
--262144 -1 0 1;
+#fcfc00 #000000 #000000 0 1;
+#X obj 154 458 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 #fc00fc
+#000000 #000000 0 1;
+#X obj 183 458 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 #000000
+#fcfcfc #000000 0 1;
 #X obj 57 670 else/display;
-#X obj 451 455 vsl 15 128 0 360 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
+#X obj 451 455 vsl 15 128 0 360 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
 #X obj 390 642 else/pack2 hsl 0 0 0;
 #X obj 544 642 else/pack2 hsv 0 0 0;
-#X floatatom 451 594 8 0 0 0 - - -;
-#X obj 511 455 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X floatatom 511 594 8 0 0 0 - - -;
-#X obj 581 455 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 -262144
--1 -1 0 1;
-#X floatatom 581 594 8 0 0 0 - - -;
+#X floatatom 451 594 8 0 0 0 - - - 0;
+#X obj 511 455 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X floatatom 511 594 8 0 0 0 - - - 0;
+#X obj 581 455 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X floatatom 581 594 8 0 0 0 - - - 0;
 #X obj 390 673 else/colors;
 #X obj 390 702 else/display;
 #X obj 544 673 else/colors;
 #X obj 544 702 else/display;
 #X text 483 420 HSL & HSV;
-#X obj 245 462 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 245 462 vsl 15 128 0 100 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 245 669 else/display;
 #X msg 245 608 gray \$1;
 #X text 283 516 <= gray scale;
@@ -160,8 +161,10 @@ to "ds" (Pd's Data Structures format)., f 38;
 #X text 156 463 to <symbol>;
 #X text 174 492 anything;
 #X text 232 526 none;
-#X obj 4 547 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X obj 4 606 cnv 3 550 3 empty empty click 8 12 0 13 -228856 -1 0;
+#X obj 4 547 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 606 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
+0;
 #X text 151 614 clicking on the object opens color picker;
 #X obj 248 244 else/colors;
 #X text 228 464 -;
@@ -190,20 +193,20 @@ next time you open the color picker. This object is useful for setting
 color properties inside abstractions., f 66;
 #N canvas 810 160 720 512 iemgui/DS 0;
 #X obj 64 286 else/pack2 rgb 0 0 0;
-#X obj 103 148 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
--262144 -1 0 0;
-#X obj 142 148 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4033
--262144 -1 0 0;
-#X obj 181 148 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
--262144 -1 0 0;
-#X obj 227 144 cnv 15 90 250 empty empty empty 20 12 0 14 -1 -66577
+#X obj 103 148 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 #fc0000
+#fcfcfc #000000 0 0;
+#X obj 142 148 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 #00fc00
+#fcfcfc #000000 0 0;
+#X obj 181 148 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 #0400fc
+#fcfcfc #000000 0 0;
+#X obj 227 144 cnv 15 90 250 empty empty empty 20 12 0 14 #000000 #404040
 0;
-#X obj 229 146 cnv 15 86 246 empty \$0-set-cnv empty 20 12 0 14 -1
--66577 0;
+#X obj 229 146 cnv 15 86 246 empty \$0-set-cnv empty 20 12 0 14 #000000
+#404040 0;
 #X text 228 126 GUI;
 #X text 557 122 Data Structures;
 #N canvas 4 23 450 300 \$0-DS 0;
-#X scalar 1030-pixel 0 \;;
+#X scalar 2016-pixel 0 \;;
 #X coords 0 0 1 1 90 250 2 100 100;
 #X restore 560 144 pd \$0-DS;
 #N canvas 488 57 292 236 set-gui 0;
@@ -233,12 +236,12 @@ color properties inside abstractions., f 66;
 #X connect 5 0 3 0;
 #X restore 391 375 pd set-ds;
 #X obj 391 286 else/pack2 rgb 0 0 0;
-#X obj 430 148 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -258049
--262144 -1 0 0;
-#X obj 469 148 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4033
--262144 -1 0 0;
-#X obj 508 148 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 -4160
--262144 -1 0 0;
+#X obj 430 148 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 #fc0000
+#fcfcfc #000000 0 0;
+#X obj 469 148 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 #00fc00
+#fcfcfc #000000 0 0;
+#X obj 508 148 vsl 15 128 0 255 0 0 nope nada empty 0 -9 0 10 #0400fc
+#fcfcfc #000000 0 0;
 #X obj 391 313 else/colors -ds;
 #X obj 391 342 else/display;
 #X obj 44 345 else/display;

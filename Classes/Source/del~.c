@@ -275,7 +275,7 @@ static void *del_out_new(t_symbol *s, int ac, t_atom *av){
     x->x_zerodel = 0;
     if(ac && av->a_type == A_SYMBOL){
         t_symbol * cursym = atom_getsymbolarg(0, ac, av);
-        if(cursym == gensym("-samps")) && !arg{
+        if(cursym == gensym("-samps")){
             x->x_ms = 0;
             ac--, av++;
         }
