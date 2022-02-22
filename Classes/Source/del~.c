@@ -2,6 +2,7 @@
 
 #include "m_pd.h"
 #include <string.h>
+#include "g_canvas.h"
 extern int ugen_getsortno(void);
 
 // ----------------------------- del~ in -----------------------------
@@ -36,13 +37,10 @@ static void del_in_update(t_del_in *x){ // added by Mathieu Bouchard
     int nsamps = x->x_deltime;
     if(x->x_ms)
         nsamps *= (x->x_sr * (t_float)(0.001f));
-//    post("nsamps = %d", nsamps);
     if(nsamps < 1)
         nsamps = 1;
     nsamps += ((-nsamps) & (SAMPBLK - 1));
-//    post("nsamps += ((- nsamps) & (SAMPBLK - 1)) = %d", nsamps);
     nsamps += x->x_vecsize;
-//    post("nsamps final ====> %d", nsamps);
     if(x->x_cspace.c_n != nsamps){
         x->x_cspace.c_vec = (t_sample *)resizebytes(x->x_cspace.c_vec,
             (x->x_cspace.c_n + XTRASAMPS) * sizeof(t_sample), (nsamps + XTRASAMPS) * sizeof(t_sample));
@@ -131,24 +129,27 @@ static void del_in_free(t_del_in *x){
 static void *del_in_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_del_in *x = (t_del_in *)pd_new(del_in_class);
-    x->x_deltime = 0;
+    x->x_deltime = 1000;
     x->x_ms = 1;
+    int argn = 0;
+    t_canvas *canvas = canvas_getrootfor(canvas_getcurrent());
     char buf[MAXPDSTRING];
-    sprintf(buf, "#%lx", (long)x);
-    x->x_sym = gensym(buf);
-    if(!ac)
-        pd_error(x, "[del~ in]: please define a delay line name");
-    else{
-        if(av->a_type == A_FLOAT)
-            goto errstate;
+    snprintf(buf, MAXPDSTRING, "$0-delay-.x%lx.c", (long unsigned int)canvas);
+    x->x_sym = canvas_realizedollar(canvas, gensym(buf));
+    if(ac){
+        if(av->a_type == A_FLOAT){
+            x->x_deltime = (av)->a_w.w_float;
+            ac--, av++;
+            if(ac)
+                goto
+                    errstate;
+        }
         else if(av->a_type == A_SYMBOL){
             if(atom_getsymbolarg(0, ac, av) == gensym("-samps")){
                 x->x_ms = 0;
                 ac--, av++;
             }
-            if(!ac)
-                goto errstate;
-            else if(av->a_type == A_SYMBOL){
+            if(av->a_type == A_SYMBOL){
                 x->x_sym = atom_getsymbolarg(0, ac, av);
                 ac--, av++;
                 if(ac){
@@ -162,9 +163,17 @@ static void *del_in_new(t_symbol *s, int ac, t_atom *av){
                         goto errstate;
                 }
             }
+            else if((av)->a_type == A_FLOAT){
+                x->x_deltime = (av)->a_w.w_float;
+                ac--, av++;
+                argn = 1;
+            }
+            else
+                goto errstate;
         }
         else
             goto errstate;
+        
     }
     pd_bind(&x->x_obj.ob_pd, x->x_sym);
     x->x_cspace.c_n = 0;
@@ -266,29 +275,55 @@ static void del_out_dsp(t_del_out *x, t_signal **sp){
 }
 
 static void *del_out_new(t_symbol *s, int ac, t_atom *av){
-    t_del_out *x = (t_del_out *)pd_new(del_out_class);
     s = NULL;
-    x->x_sym = &s_;
+    t_del_out *x = (t_del_out *)pd_new(del_out_class);
+    t_canvas *canvas = canvas_getrootfor(canvas_getcurrent());
+    char buf[MAXPDSTRING];
+    snprintf(buf, MAXPDSTRING, "$0-delay-.x%lx.c", (long unsigned int)canvas);
+    x->x_sym = canvas_realizedollar(canvas, gensym(buf));
     x->x_ms = 1;
     x->x_sr = 0;
     x->x_lin = 0;
     x->x_zerodel = 0;
-    if(ac && av->a_type == A_SYMBOL){
-        t_symbol * cursym = atom_getsymbolarg(0, ac, av);
-        if(cursym == gensym("-samps")){
-            x->x_ms = 0;
+    int argn = 0;
+    if(ac){
+        if(av->a_type == A_FLOAT){
+            x->x_f = (av)->a_w.w_float;
             ac--, av++;
+            if(ac)
+                goto
+                    errstate;
         }
-        if(ac && av->a_type == A_SYMBOL){
-            x->x_sym = atom_getsymbolarg(0, ac, av);
-            ac--, av++;
+        else if(av->a_type == A_SYMBOL){
+            if(atom_getsymbolarg(0, ac, av) == gensym("-samps")){
+                x->x_ms = 0;
+                ac--, av++;
+            }
+            if(av->a_type == A_SYMBOL){
+                x->x_sym = atom_getsymbolarg(0, ac, av);
+                ac--, av++;
+                if(ac){
+                    if((av)->a_type == A_FLOAT){
+                        x->x_f = (av)->a_w.w_float;
+                        ac--, av++;
+                    }
+                    else
+                        goto errstate;
+                    if(ac)
+                        goto errstate;
+                }
+            }
+            else if((av)->a_type == A_FLOAT){
+                x->x_f = (av)->a_w.w_float;
+                ac--, av++;
+                argn = 1;
+            }
+            else
+                goto errstate;
         }
         else
-            pd_error(x, "[del~ out] please define a delay line name");
-        if(ac && av->a_type == A_FLOAT){
-            x->x_f = atom_getfloatarg(0, ac, av);
-            ac--, av++;
-        }
+            goto errstate;
+        
     }
     outlet_new(&x->x_obj, &s_signal);
     return(x);
