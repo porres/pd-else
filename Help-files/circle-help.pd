@@ -1,28 +1,28 @@
-#N struct 1629-point float x0 float y0 float size float fg float in
+#N struct 1204-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1652-point float x0 float y0 float size float fg float in
+#N struct 1227-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1671-point float x0 float y0 float size float fg float in
+#N struct 1246-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1692-point float x0 float y0 float size float fg float in
+#N struct 1267-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1711-point float x0 float y0 float size float fg float in
+#N struct 1286-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1732-point float x0 float y0 float size float fg float in
+#N struct 1307-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1753-point float x0 float y0 float size float fg float in
+#N struct 1328-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1801-point float x0 float y0 float size float fg float in
+#N struct 1376-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1821-point float x0 float y0 float size float fg float in
+#N struct 1396-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1848-point float x0 float y0 float size float fg float in
+#N struct 1423-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1867-point float x0 float y0 float size float fg float in
+#N struct 1442-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1886-point float x0 float y0 float size float fg float in
+#N struct 1461-point float x0 float y0 float size float fg float in
 float grid;
-#N canvas 550 39 559 578 10;
+#N canvas 503 39 559 578 10;
 #X obj 2 4 cnv 15 301 42 empty empty circle 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -242,7 +242,7 @@ in 'init mode' \, where it outputs the last saved value when you load
 the patch., f 46;
 #X msg 140 91 0.5 0.5;
 #X obj 140 124 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255
-0 0 0 1 0 1 95.25 95.25 empty empty 1;
+0 0 0 1 0 1 127 127 empty empty 1;
 #X connect 2 0 3 0;
 #X connect 3 0 0 0;
 #X restore 128 205 pd init;

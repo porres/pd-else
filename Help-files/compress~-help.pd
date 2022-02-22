@@ -1,39 +1,39 @@
-#N canvas 629 48 567 590 10;
-#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#N canvas 470 37 567 590 10;
+#X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 459 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 479 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 516 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 465 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 306 4 graph;
-#X obj 23 41 cnv 4 4 4 empty empty Compressor 0 28 2 18 -233017 -1
+#X obj 23 41 cnv 4 4 4 empty empty Compressor 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 4 4 cnv 15 301 42 empty empty compress~ 20 20 2 37 -233017 -1
+#X obj 4 4 cnv 15 301 42 empty empty compress~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 4 graph;
-#X obj 5 561 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 5 561 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 7 290 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 7 405 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 6 457 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 7 290 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 115 413 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 7 405 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 6 457 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 115 413 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 115 297 cnv 17 3 102 empty empty 0 5 9 0 16 -228856 -162280
+#X obj 115 297 cnv 17 3 102 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c
 0;
 #X text 155 494 3) float;
 #X text 155 464 1) float;
@@ -57,11 +57,11 @@ It attenuates an input signal above a given threshold., f 57;
 #X text 153 369 gain <float> - output gain adjustment in dB, f 58
 ;
 #X obj 234 137 else/play.file~ 1 kantele.wav 1 1;
-#X obj 115 434 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 115 434 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 195 435 float - reduction in dB, f 45;
-#X obj 417 195 vsl 18 80 -100 0 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 417 195 vsl 18 80 -100 0 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 122 207 else/out~;
 #X text 155 540 6) float;
 #X text 153 384 size <float> - rms average size in samples (from 1

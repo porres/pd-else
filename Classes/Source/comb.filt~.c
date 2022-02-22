@@ -170,13 +170,12 @@ static void comb_dsp(t_comb *x, t_signal **sp){
 }
 
 static void *comb_new(t_symbol *s, int argc, t_atom * argv){
+    s = NULL;
     t_comb *x = (t_comb *)pd_new(comb_class);
-    t_symbol *cursym = s;
     //defaults
     t_float init_hz = 0;
     t_float coeff = COMB_DEFFF;
     x->x_sr = sys_getsr();
-    
     x->x_alloc = 0;
     x->x_gain = 0;
     x->x_sz = COMB_STACK;
@@ -188,8 +187,7 @@ static void *comb_new(t_symbol *s, int argc, t_atom * argv){
     int argnum = 0;
     while(argc > 0){
         if(argv->a_type == A_SYMBOL && !argnum){
-            cursym = atom_getsymbolarg(0, argc, argv);
-            if(cursym == gensym("-gain")){
+            if(atom_getsymbolarg(0, argc, argv) == gensym("-gain")){
                 x->x_gain = 1;
                 argc--, argv++;
             }
@@ -218,7 +216,6 @@ static void *comb_new(t_symbol *s, int argc, t_atom * argv){
             goto errstate;
     };
     /////////////////////////////////////////////////////////////////////////////////
-    post("x->x_gain (%d)", x->x_gain);
     x->x_maxdel = COMB_DELAY;
     //ship off to the helper method to deal with allocation if necessary
     comb_sz(x);
