@@ -31,6 +31,7 @@ static void standard_k(t_standard *x, t_float f)
 
 static void standard_list(t_standard *x, t_symbol *s, int argc, t_atom * argv)
 {
+    s= NULL;
     if (argc > 2)
         {
         pd_error(x, "standard~: list size needs to be = 2");
@@ -69,10 +70,8 @@ static t_int *standard_perform(t_int *w)
 {
     t_standard *x = (t_standard *)(w[1]);
     int nblock = (t_int)(w[2]);
-    int *vp = (int *)(w[3]);
     t_float *in = (t_float *)(w[4]);
     t_sample *out = (t_sample *)(w[5]);
-    int val = *vp; // MUST FALL
     double yn = x->x_yn;
     double xn = x->x_xn;
     double k = x->x_k;
@@ -130,6 +129,7 @@ static void *standard_free(t_standard *x)
 
 static void *standard_new(t_symbol *s, int ac, t_atom *av)
 {
+    s= NULL;
     t_standard *x = (t_standard *)pd_new(standard_class);
     x->x_sr = sys_getsr();
     t_float hz = x->x_sr * 0.5, k = 1, xn = 0.5, yn = 0; // default parameters

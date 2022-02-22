@@ -37,7 +37,6 @@ static t_int *logistic_perform(t_int *w)
         p = p + 3;
         double phase_step = hz / sr; // phase_step
         phase_step = phase_step > 1 ? 1. : phase_step < -1 ? -1 : phase_step; // clipped phase_step
-        t_float output;
         if (hz >= 0)
             {
             trig = phase >= 1.;
@@ -74,6 +73,7 @@ static void *logistic_free(t_logistic *x)
 
 static void *logistic_new(t_symbol *s, int ac, t_atom *av)
 {
+    s = NULL;
     t_logistic *x = (t_logistic *)pd_new(logistic_class);
     x->x_sr = sys_getsr();
     t_float hz = 0, p = 0.5; // default parameters

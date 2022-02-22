@@ -10,7 +10,6 @@ typedef struct _trunc_tilde{
 }t_trunc_tilde;
 
 static t_int *trunc_tilde_perform(t_int *w){
-    t_trunc_tilde *x = (t_trunc_tilde *)(w[1]);
     t_int n = (trunc)(w[2]);
     t_float *in = (t_float *)(w[3]);
     t_float *out = (t_float *)(w[4]);

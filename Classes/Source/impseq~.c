@@ -54,6 +54,7 @@ void impseq_float(t_impseq *x, t_floatarg f){
 }
 
 static void impseq_list(t_impseq *x, t_symbol *s, int argc, t_atom * argv){
+    s = NULL;
     int i;
     x->impseqs[0].pat = (float *) malloc(MAXLEN * sizeof(float));
     x->impseqs[0].length = argc;
@@ -68,6 +69,7 @@ static void impseq_list(t_impseq *x, t_symbol *s, int argc, t_atom * argv){
 }
 
 static void impseq_set(t_impseq *x, t_symbol *s, int argc, t_atom * argv){
+    s = NULL;
     x->phase = 0;
     if(!argc){
         x->impseqs[0].pat = (float *) malloc(MAXLEN * sizeof(float));
@@ -167,7 +169,8 @@ void impseq_playonce(t_impseq *x, t_floatarg pnum){
 }
 
 // initiate impseq recall sequence
-void impseq_sequence(t_impseq *x, t_symbol *msg, short argc, t_atom *argv){
+void impseq_sequence(t_impseq *x, t_symbol *s, short argc, t_atom *argv){
+    s = NULL;
     int i;
 	if(argc > MAXSEQ){
 		error("%d exceeds possible length for a sequence",argc);
@@ -193,7 +196,8 @@ void impseq_sequence(t_impseq *x, t_symbol *msg, short argc, t_atom *argv){
 	// ideally would check that each sequence number is a valid stored location
 }
 
-void impseq_addimpseq(t_impseq *x, t_symbol *msg, short argc, t_atom *argv){
+void impseq_addimpseq(t_impseq *x, t_symbol *s, short argc, t_atom *argv){
+    s = NULL;
     int location;
     int i;
     if(argc < 2){
@@ -231,9 +235,6 @@ t_int *impseq_perform(t_int *w){
     int nblock = (int) w[4];
     t_float lastin = x->x_lastin;
     int phase = x->phase;
-    short gate = x->gate;
-    short indexmode = x->indexmode;
-    short noloop = x->noloop;
     int current_impseq = x->current_impseq;
     t_impseqpat *impseqs = x->impseqs;
     t_sequence sequence = x->sequence;
@@ -287,8 +288,9 @@ void impseq_free(t_impseq *x){
     free(x->in_vec);
 }
 
-void *impseq_new(t_symbol *msg, short argc, t_atom *argv)
+void *impseq_new(t_symbol *s, short argc, t_atom *argv)
 {
+    s = NULL;
     int i;
     t_impseq *x = (t_impseq *)pd_new(impseq_class);
     outlet_new(&x->x_obj, gensym("signal"));

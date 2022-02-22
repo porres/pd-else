@@ -31,7 +31,7 @@ typedef struct _sr{
             paudiooutdev, pchoutdev, prate, padvance, pcallback, psr);
 }*/
 
-static void sr_apply(t_sr *x){
+/*static void sr_apply(t_sr *x){
     t_atom av [2*MAXAUDIOINDEV + 2*MAXAUDIOOUTDEV + 3];
     int ac = 2*MAXAUDIOINDEV + 2*MAXAUDIOOUTDEV + 3;
     int i = 0;
@@ -48,7 +48,7 @@ static void sr_apply(t_sr *x){
     SETFLOAT(av+2 * MAXAUDIOINDEV + 2*MAXAUDIOOUTDEV + 2, (float)(x->x_settings.callback));
     if(gensym("pd")->s_thing)
         typedmess(gensym("pd")->s_thing, gensym("audio-dialog"), ac, av);
-}
+}*/
 
 /*static void get_settings(t_settings *setts){
     int i = 0;

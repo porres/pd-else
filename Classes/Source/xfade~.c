@@ -28,7 +28,6 @@ static t_int *xfade_tilde_perform(t_int *w)
   t_sample* out;
   t_sample* mix = (t_sample *) (w[3]);
   t_sample mix_f;
-  t_sample inv_mix_f;
   for (j =0; j < n; j++)
   {
 	  mix_f = *mix++; // Mix value [-1: left (A) input, 1: right (B) input]
@@ -72,6 +71,7 @@ static void xfade_tilde_free( t_xfade_tilde *x)
 
 static void *xfade_tilde_new(t_symbol *s, int ac, t_atom *av)
 {
+    s = NULL;
   t_xfade_tilde *x = (t_xfade_tilde *)pd_new(xfade_tilde_class);
 
     t_float f1 = 1, f2 = 0;
@@ -88,7 +88,7 @@ static void *xfade_tilde_new(t_symbol *s, int ac, t_atom *av)
     if (x->channels > 64) x->channels = 64;
 
   t_float init_mix = f2;
-  init_mix < -1 ? -1 : init_mix >= 1 ? 1 : init_mix; // clipping mix input
+  init_mix = init_mix < -1 ? -1 : init_mix >= 1 ? 1 : init_mix; // clipping mix input
 
   x->n_in =  x->channels * 2;
   x->in = (t_sample **)getbytes(x->n_in * sizeof(t_sample *));

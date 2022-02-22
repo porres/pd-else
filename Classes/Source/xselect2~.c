@@ -69,6 +69,7 @@ static void xselect2_dsp(t_xselect2 *x, t_signal **sp)
 
 static void *xselect2_new(t_symbol *s, int argc, t_atom *argv)
 {
+    s = NULL;
     t_xselect2 *x = (t_xselect2 *)pd_new(xselect2_class);
     t_float n_inlets = 2; //inlets not counting xselect2 input
     x->x_indexed = 1;

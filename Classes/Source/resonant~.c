@@ -112,6 +112,7 @@ static void resonant_q(t_resonant *x)
 
 static void *resonant_new(t_symbol *s, int argc, t_atom *argv)
 {
+    s = NULL;
     t_resonant *x = (t_resonant *)pd_new(resonant_class);
     float freq = 0;
     float reson = 0;

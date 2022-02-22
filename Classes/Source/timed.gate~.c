@@ -49,7 +49,6 @@ static t_int *timed_gate_perform(t_int *w){
         t_float ms = *ms_in++;
         t_int samps = (int)roundf(ms * sr_khz);
         t_float gate = ((sum += 1) <= samps);
-        t_float gate_value;
         if (x->x_retrigger){
             if(trig != 0 && lastin == 0){
                 sum = 0;

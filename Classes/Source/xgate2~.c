@@ -73,6 +73,7 @@ static void xgate2_dsp(t_xgate2 *x, t_signal **sp){
 }
 
 static void *xgate2_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_xgate2 *x = (t_xgate2 *)pd_new(xgate2_class);
     t_float n_outlets = 2; //inlets not counting xgate2 input
     x->x_indexed = 1;

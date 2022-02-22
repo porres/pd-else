@@ -39,8 +39,6 @@ static void peak_linear(t_sigpeak *x)
 
 static void peak_set(t_sigpeak *x, t_floatarg f1, t_floatarg f2)
 {
-    t_sample *buf;
-    int i;
     int size = f1;
     if (size < 1) size = 1024;
     else if (size < x->x_block) size = x->x_block;
@@ -62,6 +60,7 @@ static void peak_set(t_sigpeak *x, t_floatarg f1, t_floatarg f2)
 
 static void *peak_tilde_new(t_symbol *s, int argc, t_atom *argv)
 {
+    s = NULL;
     t_sigpeak *x;
     int npoints = 0;
     int period = 0;
@@ -129,7 +128,6 @@ static t_int *peak_tilde_perform(t_int *w)
     t_sigpeak *x = (t_sigpeak *)(w[1]);
     t_sample *in = (t_sample *)(w[2]); // input
     int n = (int)(w[3]); // block
-    int count;
     t_float p = x->x_value; // 'p' for 'peak'
     in += n;{
         t_sample *f = in;

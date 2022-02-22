@@ -20,6 +20,7 @@ typedef struct _gbman
 
 static void gbman_list(t_gbman *x, t_symbol *s, int argc, t_atom * argv)
 {
+    s = NULL;
     if (argc > 2)
         {
         pd_error(x, "gbman~: list size needs to be = 2");
@@ -58,10 +59,10 @@ static t_int *gbman_perform(t_int *w)
 {
     t_gbman *x = (t_gbman *)(w[1]);
     int nblock = (t_int)(w[2]);
-    int *vp = (int *)(w[3]);
+//    int *vp = (int *)(w[3]);
     t_float *in = (t_float *)(w[4]);
     t_sample *out = (t_sample *)(w[5]);
-    int val = *vp;
+//    int val = *vp;
     t_float y_nm1 = x->x_y_nm1;
     t_float y_nm2 = x->x_y_nm2;
     double phase = x->x_phase;
@@ -114,6 +115,7 @@ static void *gbman_free(t_gbman *x)
 
 static void *gbman_new(t_symbol *s, int ac, t_atom *av)
 {
+    s = NULL;
     t_gbman *x = (t_gbman *)pd_new(gbman_class);
     x->x_sr = sys_getsr();
     t_float hz = x->x_sr * 0.5, y1 = 1.2, y2 = 2.1; // default parameters

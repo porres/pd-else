@@ -65,7 +65,7 @@ static void mtx_retarget(t_mtx *x, int cellndx){
 }
 
 /* called only in nonbinary mode;  LATER deal with changing nblock/ksr */
-static void mtx_retarget_connect(t_mtx *x, int cellndx){
+/*static void mtx_retarget_connect(t_mtx *x, int cellndx){
     float target = (x->x_cells[cellndx] ? x->x_gains[cellndx] = x->x_defgain : 0.);
     if(x->x_fades[cellndx] < mtx_MINfade){
         x->x_coefs[cellndx] = target;
@@ -73,18 +73,20 @@ static void mtx_retarget_connect(t_mtx *x, int cellndx){
     }
     else{
         x->x_remains[cellndx] =
-        x->x_fades[cellndx] * x->x_ksr + 0.5;  /* LATER rethink */
+        x->x_fades[cellndx] * x->x_ksr + 0.5;  // LATER rethink
         x->x_incrs[cellndx] =
         (target - x->x_coefs[cellndx]) / (float)x->x_remains[cellndx];
         x->x_bigincrs[cellndx] = x->x_nblock * x->x_incrs[cellndx];
     }
-}
+}*/
 
 static void mtx_float(t_mtx *x, t_float f){
+    f = 0;
     pd_error(x, "mtx~: no method for float");
 }
 
 static void mtx_list(t_mtx *x, t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     int inlet_idx, outlet_idx, cell_idx, onoff;
     float gain, fade;
     //init vals
@@ -268,9 +270,8 @@ static void mtx_cellout(t_mtx *x, int indx, int ondx,
     outlet_list(x->x_dumpout, &s_list, 3, atout);
 }
 
-static void mtx_cellprint(t_mtx *x, int indx, int ondx,
-                 int onoff, float gain)
-{
+static void mtx_cellprint(t_mtx *x, int indx, int ondx, int onoff, float gain){
+    x = NULL;
     post("%d %d %g", indx, ondx, (onoff ? gain : 0.));
 }
 
@@ -299,10 +300,6 @@ static void mtx_report(t_mtx *x, float *gains, float defgain,
 
 static void mtx_dump(t_mtx *x){
     mtx_report(x, x->x_coefs, 1., mtx_cellout);
-}
-
-static void mtx_dumptarget(t_mtx *x){
-    mtx_report(x, x->x_gains, 1., mtx_cellout);
 }
 
 static void mtx_print(t_mtx *x){
@@ -339,6 +336,7 @@ static void *mtx_free(t_mtx *x){
 }
 
 static void *mtx_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_mtx *x = (t_mtx *)pd_new(mtx_class);
     t_float fadeval = mtx_DEFfade;
     x->x_numinlets = (int)mtx_MININLETS;

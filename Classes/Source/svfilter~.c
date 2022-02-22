@@ -88,6 +88,7 @@ static void svfilter_dsp(t_svfilter *x, t_signal **sp){
 }
 
 static void *svfilter_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_svfilter *x = (t_svfilter *)pd_new(svfilter_class);
     t_float freq = SVFILTER_DEFFREQ, qcoef = SVFILTER_DEFQ;
     if(ac && av->a_type == A_FLOAT){

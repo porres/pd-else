@@ -31,6 +31,7 @@ static void lorenz_clear(t_lorenz *x){
 }
 
 static void lorenz_coeffs(t_lorenz *x, t_symbol *s, int argc, t_atom * argv){
+    s = NULL;
     if(argc){
         if(argc > 4){
             pd_error(x, "lorenz~: 'coeffs' needs a maximum of 4 floats as arguments");
@@ -67,6 +68,7 @@ static void lorenz_coeffs(t_lorenz *x, t_symbol *s, int argc, t_atom * argv){
 }
 
 static void lorenz_list(t_lorenz *x, t_symbol *s, int argc, t_atom * argv){
+    s = NULL;
     if(argc){
         if(argc > 3){
             pd_error(x, "lorenz~: list size needs to be <= 3");
@@ -195,6 +197,7 @@ static void *lorenz_free(t_lorenz *x){
 }
 
 static void *lorenz_new(t_symbol *sel, int ac, t_atom *av){
+    sel = NULL;
     t_lorenz *x = (t_lorenz *)pd_new(lorenz_class);
     x->x_sr = sys_getsr();
     t_float hz = x->x_sr * 0.5;

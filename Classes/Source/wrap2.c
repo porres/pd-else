@@ -55,6 +55,7 @@ static void wrap2_float(t_wrap2 *x, t_floatarg f)
 
 static void wrap2_list(t_wrap2 *x, t_symbol *s, int argc, t_atom *argv)
 {
+    s = NULL;
   int old_bytes = x->x_bytes, i = 0;
   x->x_bytes = argc*sizeof(t_atom);
   x->output_list = (t_atom *)t_resizebytes(x->output_list,old_bytes,x->x_bytes);
@@ -75,6 +76,7 @@ static void wrap2_bang(t_wrap2 *x)
 
 static void *wrap2_new(t_symbol *s, int argc, t_atom *argv)
 {
+    s = NULL;
   t_wrap2 *x = (t_wrap2 *) pd_new(wrap2_class);
 ///////////////////////////
     x->x_min = 0.;

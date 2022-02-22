@@ -39,7 +39,7 @@ static t_int *lowshelf_perform(t_int *w)
     while (nblock--)
     {
         double xn = *in1++, f = *in2++, slope = *in3++, db = *in4++;
-        double q, amp, omega, alphaS, cos_w, a0, a1, a2, b0, b1, b2, yn;
+        double amp, omega, alphaS, cos_w, a0, a1, a2, b0, b1, b2, yn;
 
         if (f < 0.1)
             f = 0.1;
@@ -95,14 +95,9 @@ static void lowshelf_bypass(t_lowshelf *x, t_floatarg f)
     x->x_bypass = (int)(f != 0);
 }
 
-static void *lowshelf_tilde_new(t_symbol *s, int argc, t_atom *argv)
-{
-    t_lowshelf *x = (t_lowshelf *)pd_new(lowshelf_class);
-    return (x);
-}
-
 static void *lowshelf_new(t_symbol *s, int argc, t_atom *argv)
 {
+    s = NULL;
     t_lowshelf *x = (t_lowshelf *)pd_new(lowshelf_class);
     float freq = 0;
     float slope = 0;

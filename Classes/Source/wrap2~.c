@@ -13,7 +13,6 @@ typedef struct _wrap2{
 }t_wrap2;
 
 static t_int *wrap2_perform(t_int *w){
-    t_wrap2 *x = (t_wrap2 *)(w[1]);
     int n = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);

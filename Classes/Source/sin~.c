@@ -30,6 +30,7 @@ static t_int *sin_perform(t_int *w){
 }
 
 static void sin_dsp(t_sin *x, t_signal **sp){
+    x = NULL;
     dsp_add(sin_perform, 3, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
 }
 

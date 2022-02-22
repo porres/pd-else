@@ -21,6 +21,7 @@ typedef struct _quad
 
 static void quad_list(t_quad *x, t_symbol *s, int argc, t_atom * argv)
 {
+    s = NULL;
     int argnum = 0; // current argument
     while(argc)
     {
@@ -72,7 +73,6 @@ static t_int *quad_perform(t_int *w)
         double phase_step = hz / sr; // phase_step
         phase_step = phase_step > 1 ? 1. : phase_step < -1 ? -1 : phase_step; // clipped phase_step
         int trig;
-        t_float output;
         if (hz >= 0)
             {
             trig = phase >= 1.;
@@ -110,6 +110,7 @@ static void *quad_free(t_quad *x)
 
 static void *quad_new(t_symbol *s, int ac, t_atom *av)
 {
+    s = NULL;
     t_quad *x = (t_quad *)pd_new(quad_class);
     x->x_sr = sys_getsr();
     t_float hz = x->x_sr * 0.5, a = 1, b = -1, c = -0.75, yn = 0; // default parameters

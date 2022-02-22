@@ -101,6 +101,7 @@ static void *randpulse_free(t_randpulse *x)
 
 static void *randpulse_new(t_symbol *s, int ac, t_atom *av)
 {
+    s = NULL;
     t_randpulse *x = (t_randpulse *)pd_new(randpulse_class);
     static int init_seed = 234599;
     init_seed *= 1319;
@@ -118,7 +119,7 @@ static void *randpulse_new(t_symbol *s, int ac, t_atom *av)
     t_float init_freq = f1;
     t_float init_width = f2;
     
-    init_width < 0 ? 0 : init_width >= 1 ? 0 : init_width; // clipping width input
+    init_width = init_width < 0 ? 0 : init_width >= 1 ? 0 : init_width; // clipping width input
    
     if (init_freq > 0)
         x->x_phase = 1.;

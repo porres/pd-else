@@ -75,6 +75,7 @@ static void fold_float(t_fold *x, t_floatarg f)
 
 static void fold_list(t_fold *x, t_symbol *s, int argc, t_atom *argv)
 {
+    s = NULL;
   int old_bytes = x->x_bytes, i = 0;
   x->x_bytes = argc*sizeof(t_atom);
   x->output_list = (t_atom *)t_resizebytes(x->output_list,old_bytes,x->x_bytes);
@@ -95,6 +96,7 @@ static void fold_bang(t_fold *x)
 
 static void *fold_new(t_symbol *s, int argc, t_atom *argv)
 {
+    s = NULL;
   t_fold *x = (t_fold *) pd_new(fold_class);
 ///////////////////////////
     x->x_min = 0.;

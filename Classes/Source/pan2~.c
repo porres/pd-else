@@ -15,7 +15,6 @@ typedef struct _pan2
 
 static t_int *pan2_perform(t_int *w)
 {
-    t_pan2 *x = (t_pan2 *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // in
     t_float *in2 = (t_float *)(w[4]); // pan

@@ -30,6 +30,7 @@ static void henon_coeffs(t_henon *x, t_floatarg f1, t_floatarg f2)
 
 static void henon_list(t_henon *x, t_symbol *s, int argc, t_atom * argv)
 {
+    s = NULL;
     if (argc != 2)
         {
         pd_error(x, "henon~: list size needs to be = 2");
@@ -131,6 +132,7 @@ static void *henon_free(t_henon *x)
 
 static void *henon_new(t_symbol *s, int ac, t_atom *av)
 {
+    s = NULL;
     t_henon *x = (t_henon *)pd_new(henon_class);
     x->x_sr = sys_getsr();
     t_float hz = x->x_sr * 0.5, a = 1.4, b = 0.3, y_nm1 = 0, y_nm2 = 0; // default parameters

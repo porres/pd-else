@@ -113,6 +113,7 @@ static void *lfnoise_free(t_lfnoise *x)
 
 static void *lfnoise_new(t_symbol *s, int ac, t_atom *av)
 {
+    s = NULL;
     t_lfnoise *x = (t_lfnoise *)pd_new(lfnoise_class);
 // default seed
     static int init_seed = 234599;

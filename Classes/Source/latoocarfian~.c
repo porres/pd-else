@@ -25,6 +25,7 @@ typedef struct _latoocarfian
 
 static void latoocarfian_coeffs(t_latoocarfian *x, t_symbol *s, int argc, t_atom * argv)
 {
+    s = NULL;
     if (argc != 4)
         {
         pd_error(x, "latoocarfian~: 'coeffs' needs a list of 4 floats as arguments");
@@ -66,6 +67,7 @@ static void latoocarfian_coeffs(t_latoocarfian *x, t_symbol *s, int argc, t_atom
 
 static void latoocarfian_list(t_latoocarfian *x, t_symbol *s, int argc, t_atom * argv)
 {
+    s = NULL;
     if (argc > 2)
         {
         pd_error(x, "latoocarfian~: list size needs to be = 2");
@@ -106,7 +108,6 @@ static t_int *latoocarfian_perform(t_int *w)
     t_float *in = (t_float *)(w[3]);
     t_sample *out = (t_sample *)(w[4]);
     double yn = x->x_yn;
-    double xn = x->x_xn;
     double a = x->x_a;
     double b = x->x_b;
     double c = x->x_c;
@@ -163,6 +164,7 @@ static void *latoocarfian_free(t_latoocarfian *x)
 
 static void *latoocarfian_new(t_symbol *s, int ac, t_atom *av)
 {
+    s = NULL;
     t_latoocarfian *x = (t_latoocarfian *)pd_new(latoocarfian_class);
     x->x_sr = sys_getsr();
 // default parameters

@@ -15,7 +15,6 @@ static t_int * floor_perform(t_int *w);
 static void floor_dsp(t_floor *x, t_signal **sp);
 
 static t_int * floor_perform(t_int *w){
-    t_floor *x = (t_floor *)(w[1]);
     int n = (int)(w[2]);
     t_float *in = (t_float *)(w[3]);
     t_float *out = (t_float *)(w[4]);

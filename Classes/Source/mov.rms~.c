@@ -112,6 +112,7 @@ static void mrms_free(t_mrms *x){
 }
 
 static void *mrms_new(t_symbol *s, int argc, t_atom * argv){
+    s = NULL;
     t_mrms *x = (t_mrms *)pd_new(mrms_class);
 // default buf / size / n
     x->x_buf = x->x_stack;

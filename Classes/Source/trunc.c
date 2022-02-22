@@ -17,6 +17,7 @@ static void trunc_float(t_trunc *x, t_float f){
 }
 
 static void trunc_list(t_trunc *x, t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     int old_bytes = x->x_bytes;
     x->x_bytes = argc*sizeof(t_atom);
     x->x_at = (t_atom *)t_resizebytes(x->x_at, old_bytes, x->x_bytes);

@@ -41,6 +41,7 @@ static void *schmitt_free(t_schmitt *x){
 }
 
 static void *schmitt_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_schmitt *x = (t_schmitt *) pd_new(schmitt_class);
     t_float thlo = 0, thhi = 0;
     int argnum = 0;

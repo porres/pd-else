@@ -27,6 +27,7 @@ static void fbsine2_clear(t_fbsine2 *x){
 }
 
 static void fbsine2_coeffs(t_fbsine2 *x, t_symbol *s, int argc, t_atom * argv){
+    s = NULL;
     if(argc){
         if(argc > 4){
             pd_error(x, "fbsine2~: 'coeffs' needs a maximum of 4 floats as arguments");
@@ -63,6 +64,7 @@ static void fbsine2_coeffs(t_fbsine2 *x, t_symbol *s, int argc, t_atom * argv){
 }
 
 static void fbsine2_list(t_fbsine2 *x, t_symbol *s, int argc, t_atom * argv){
+    s = NULL;
     if(argc){
         if(argc > 2){
             pd_error(x, "fbsine2~: list size needs to be <= 2");
@@ -143,7 +145,8 @@ static void *fbsine2_free(t_fbsine2 *x){
     return (void *)x;
 }
 
-static void *fbsine2_new(t_symbol *sel, int ac, t_atom *av){
+static void *fbsine2_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_fbsine2 *x = (t_fbsine2 *)pd_new(fbsine2_class);
     x->x_sr = sys_getsr();
     t_float hz = x->x_sr * 0.5;

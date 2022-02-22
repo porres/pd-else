@@ -10,7 +10,6 @@ typedef struct _rint{
 }t_rint;
 
 static t_int * rint_perform(t_int *w){
-    t_rint *x = (t_rint *)(w[1]);
     int n = (int)(w[2]);
     t_float *in = (t_float *)(w[3]);
     t_float *out = (t_float *)(w[4]);

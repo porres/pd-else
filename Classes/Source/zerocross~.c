@@ -58,8 +58,7 @@ static void *zerocross_free(t_zerocross *x)
     return (void *)x;
 }
 
-static void *zerocross_new(t_floatarg f)
-{
+static void *zerocross_new(void){
     t_zerocross *x = (t_zerocross *)pd_new(zerocross_class);
     x->x_lastout = 0;
     x->x_init = 1;
@@ -73,7 +72,7 @@ void zerocross_tilde_setup(void)
 {
     zerocross_class = class_new(gensym("zerocross~"),
         (t_newmethod)zerocross_new, (t_method)zerocross_free,
-        sizeof(t_zerocross), CLASS_DEFAULT, A_DEFFLOAT, 0);
+        sizeof(t_zerocross), CLASS_DEFAULT, 0);
     class_addmethod(zerocross_class, nullfn, gensym("signal"), 0);
     class_addmethod(zerocross_class, (t_method)zerocross_dsp, gensym("dsp"), A_CANT, 0);
     

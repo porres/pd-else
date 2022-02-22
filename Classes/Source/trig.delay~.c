@@ -67,7 +67,7 @@ static void * trig_delay_free(t_trig_delay *x){
 
 void setup_trig0x2edelay_tilde(void){
     trig_delay_class = class_new(gensym("trig.delay~"), (t_newmethod)trig_delay_new,
-        0, sizeof(t_trig_delay), CLASS_DEFAULT, A_DEFFLOAT, 0);
+     (t_method)(trig_delay_free), sizeof(t_trig_delay), CLASS_DEFAULT, A_DEFFLOAT, 0);
     class_addmethod(trig_delay_class, nullfn, gensym("signal"), 0);
     class_addmethod(trig_delay_class, (t_method) trig_delay_dsp, gensym("dsp"), A_CANT, 0);
 }

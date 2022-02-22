@@ -15,7 +15,6 @@ typedef struct _fold_tilde {
 
 static t_int *fold_tilde_perform(t_int *w)
 {
-	t_fold_tilde *x = (t_fold_tilde *)(w[1]);
 	t_float *in1 = (t_float *)(w[2]);
 	t_float *in2 = (t_float *)(w[3]);
 	t_float *in3 = (t_float *)(w[4]);
@@ -83,6 +82,7 @@ static void fold_tilde_dsp(t_fold_tilde *x, t_signal **sp)
 }
 
 static void *fold_tilde_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_fold_tilde *x = (t_fold_tilde *)pd_new(fold_tilde_class);
 ///////////////////////////
     x->x_min = -1.;

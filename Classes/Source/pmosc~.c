@@ -65,6 +65,7 @@ static void *pmosc_free(t_pmosc *x)
 
 static void *pmosc_new(t_symbol *s, int ac, t_atom *av)
 {
+    s = NULL;
     t_pmosc *x = (t_pmosc *)pd_new(pmosc_class);
     t_float f1 = 0, f2 = 0, f3 = 0, f4 = 0;
     if (ac && av->a_type == A_FLOAT){
@@ -87,7 +88,7 @@ static void *pmosc_new(t_symbol *s, int ac, t_atom *av)
     t_float init_mod = f2;
     t_float init_index = f3;
     t_float init_phase = f4;
-    init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
+    init_phase = init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
     x->x_inlet_mod = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_mod, init_mod);
     x->x_inlet_index = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
