@@ -502,48 +502,55 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
     x->x_phaseout = outlet_new((t_object *)x, gensym("float"));
     x->x_actual_out = outlet_new((t_object *)x, gensym("list"));
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("tempo"));
-    while(ac >= 2 &&
-    ((atom_getsymbolarg(0, ac, av) == gensym("-name")) ||
-    (atom_getsymbolarg(0, ac, av) == gensym("-sub")) ||
-    (atom_getsymbolarg(0, ac, av) == gensym("-beat")))){
-        t_symbol *sym = atom_getsymbolarg(0, ac, av);
-        if(sym == gensym("-name")){
-            ac--, av++;
-            if(av->a_type == A_SYMBOL){
-                sym = atom_getsymbolarg(0, ac, av);
-                x->x_s_name = canvas_realizedollar(canvas, sym);
+    int argn = 0;
+    while(ac){
+        if(av->a_type == A_SYMBOL){
+            t_symbol *sym = atom_getsymbolarg(0, ac, av);
+            if(sym == gensym("-name")){
+                if(argn)
+                    goto errstate;
                 ac--, av++;
-            }
-            else
-                goto errstate;
-        }
-        else if(sym == gensym("-beat")){
-            ac--, av++;
-            metronome_beat(x, NULL, 1, av);
-        }
-        else if(sym == gensym("-sub")){
-            ac--, av++;
-            x->x_subflag = 1;
-        }
-    }
-    if(ac > 0){
-        if(av->a_type == A_FLOAT){
-            tempo = atom_getfloatarg(0, ac, av);
-            ac--, av++;
-        }
-        if(ac > 0){
-            if(ac == 1){
-                t_atom at[1];
                 if(av->a_type == A_SYMBOL){
-                    SETSYMBOL(at, atom_getsymbolarg(0, ac, av));
+                    sym = atom_getsymbolarg(0, ac, av);
+                    x->x_s_name = canvas_realizedollar(canvas, sym);
                     ac--, av++;
-                    metronome_timesig(x, gensym("timesig"), 1, at);
                 }
                 else
                     goto errstate;
             }
-            else
-                metronome_timesig(x, gensym("timesig"), ac, av);
+            else if(sym == gensym("-beat")){
+                if(argn)
+                    goto errstate;
+                ac--, av++;
+                metronome_beat(x, NULL, 1, av);
+            }
+            else if(sym == gensym("-sub")){
+                if(argn)
+                    goto errstate;
+                ac--, av++;
+                x->x_subflag = 1;
+            }
+            else{
+                if(ac == 1){
+                    t_atom at[1];
+                    if(av->a_type == A_SYMBOL){
+                        SETSYMBOL(at, atom_getsymbolarg(0, ac, av));
+                        ac--, av++;
+                        metronome_timesig(x, gensym("timesig"), 1, at);
+                    }
+                    else
+                        goto errstate;
+                }
+                else{
+                    metronome_timesig(x, gensym("timesig"), ac, av);
+                    ac = 0;
+                }
+            }
+        }
+        else if(av->a_type == A_FLOAT){
+            argn = 1;
+            tempo = atom_getfloatarg(0, ac, av);
+            ac--, av++;
         }
     }
     metronome_tempo(x, tempo);

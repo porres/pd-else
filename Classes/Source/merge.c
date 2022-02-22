@@ -1,7 +1,6 @@
 
 #include "m_pd.h"
 #include <stdlib.h>
-#include <string.h>
 
 static t_class *merge_class;
 static t_class* merge_inlet_class;
@@ -73,7 +72,7 @@ static void merge_inlet_bang(t_merge_inlet *x){
 static void merge_inlet_anything(t_merge_inlet *x, t_symbol* s, int ac, t_atom* av){
     // we want to treat "bob tom" and "list bob tom" as the same
     // default way is to treat first symbol as selector, we don't want this!
-    if(strcmp(s->s_name, "list") != 0){
+    if(s == gensym("list")){
         t_atom * tofeed = (t_atom *)getbytes((ac+1)*sizeof(t_atom));
         SETSYMBOL(tofeed, s);
         atoms_copy(ac, av, tofeed+1);
@@ -130,21 +129,19 @@ static void *merge_new(t_symbol *s, int ac, t_atom* av){
                     default:
                         break;
                 };
-                ac--;
-                av++;
+                ac--, av++;
                 argnum++;
             }
-            else if(av->a_type == A_SYMBOL){
-                t_symbol *curarg = atom_getsymbolarg(0, ac, av);
-                if(curarg == gensym("-trim")){
+            else if(av->a_type == A_SYMBOL && !argnum){
+                if(atom_getsymbolarg(0, ac, av) == gensym("-trim")){
                     x->x_trim = 1;
-                    ac--;
-                    av++;
-                    argnum++;
+                    ac--, av++;
                 }
                 else
                     goto errstate;
             }
+            else
+                goto errstate;
         };
     }
 /////////////////////////////////////////////////////////////////////////////////////
@@ -172,10 +169,10 @@ static void *merge_new(t_symbol *s, int ac, t_atom* av){
     };
     outlet_new(&x->x_obj, &s_list);
     free(triggervals);
-    return (x);
-    errstate:
-        pd_error(x, "[merge]: improper args");
-        return NULL;
+    return(x);
+errstate:
+    pd_error(x, "[merge]: improper args");
+    return(NULL);
 }
 
 extern void merge_setup(void){
@@ -190,6 +187,6 @@ extern void merge_setup(void){
     }
     merge_inlet_class = c;
     c = class_new(gensym("merge"), (t_newmethod)merge_new, (t_method)merge_free,
-                  sizeof(t_merge), CLASS_NOINLET, A_GIMME, 0);
+        sizeof(t_merge), CLASS_NOINLET, A_GIMME, 0);
     merge_class = c;
 }
