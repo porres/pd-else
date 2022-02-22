@@ -1,9 +1,9 @@
-#N canvas 510 23 567 602 10;
+#N canvas 510 23 563 600 10;
 #X obj 4 308 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 441 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 478 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 503 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 93 450 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -62,7 +62,7 @@
 #X text 241 181 converts setted value or sends last output;
 #X text 130 374 exp <float>;
 #X obj 222 273 else/display;
-#X text 111 486 1) list -;
+#X text 111 511 1) list -;
 #X obj 222 245 else/rescale -1 1;
 #X text 217 337 - outputs the last rescaled float value;
 #X text 217 355 - sets next float value to be rescaled via bang;
@@ -106,7 +106,7 @@ have 3 inlets and you can set the minimum and maximum output via the
 rightmost inlets. But if you give 4 or more arguments \, [rescale]
 is initialized with more inlets so you can set all range parameters.
 , f 74;
-#X obj 51 371 hsl 180 15 -127 127 0 0 empty empty empty -2 -8 0 10
+#X obj 51 371 hsl 180 15 -127 256 0 0 empty empty empty -2 -8 0 10
 #dcdcdc #000000 #000000 0 1;
 #X obj 48 399 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
@@ -116,7 +116,6 @@ is initialized with more inlets so you can set all range parameters.
 #dcdcdc #000000 #000000 0 256;
 #X text 157 397 min-out;
 #X text 232 397 max-out;
-#X obj 86 443 else/rescale -10 10 -clip;
 #X obj 86 477 nbx 6 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X msg 312 407 clip \$1;
@@ -157,6 +156,7 @@ the exponential factor. For positive values \, it's like raising to
 the power of the given exponential \, try it below (with values from
 0.1 to 10)., f 56;
 #X obj 639 229 else/loop 128;
+#X obj 86 443 else/rescale -clip -10 10;
 #X connect 0 0 1 0;
 #X connect 1 0 4 0;
 #X connect 2 0 4 1;
@@ -170,26 +170,26 @@ the power of the given exponential \, try it below (with values from
 #X connect 16 0 11 1;
 #X connect 17 0 11 2;
 #X connect 21 0 22 0;
-#X connect 22 0 27 0;
-#X connect 23 0 27 1;
-#X connect 24 0 27 2;
-#X connect 27 0 28 0;
-#X connect 29 0 34 0;
-#X connect 30 0 29 0;
-#X connect 31 0 32 0;
-#X connect 32 0 34 0;
-#X connect 34 0 33 0;
-#X connect 35 0 44 0;
-#X connect 36 0 35 0;
-#X connect 43 0 45 0;
-#X connect 43 1 42 1;
-#X connect 44 0 51 0;
-#X connect 44 1 46 0;
-#X connect 45 0 42 0;
-#X connect 46 0 45 0;
-#X connect 47 0 48 0;
-#X connect 48 0 36 0;
-#X connect 51 0 43 0;
+#X connect 22 0 51 0;
+#X connect 23 0 51 1;
+#X connect 24 0 51 2;
+#X connect 28 0 33 0;
+#X connect 29 0 28 0;
+#X connect 30 0 31 0;
+#X connect 31 0 33 0;
+#X connect 33 0 32 0;
+#X connect 34 0 43 0;
+#X connect 35 0 34 0;
+#X connect 42 0 44 0;
+#X connect 42 1 41 1;
+#X connect 43 0 50 0;
+#X connect 43 1 45 0;
+#X connect 44 0 41 0;
+#X connect 45 0 44 0;
+#X connect 46 0 47 0;
+#X connect 47 0 35 0;
+#X connect 50 0 42 0;
+#X connect 51 0 27 0;
 #X restore 466 223 pd arguments;
 #X obj 93 418 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -220,15 +220,15 @@ output values;
 #X restore 472 264 pd inverted;
 #X text 295 206 sets value to be scaled (accepts only floats), f 24
 ;
-#X obj 6 572 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 6 566 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 6 539 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 6 474 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 198 549 -clip: sets clipping on (default off);
+#X text 168 482 -clip: sets clipping on (default off);
 #X text 222 390 - <1> turns clipping on \, <0> off;
 #X text 124 392 clip <float>;
 #N canvas 579 93 575 556 negative-exponential 0;
-#X floatatom 312 122 0 1 1.2 0 - - - 0;
+#X floatatom 312 122 10 1 1.2 0 - - - 0;
 #X obj 315 98 hsl 128 15 0.1 10 1 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X obj 69 365 cnv 15 198 138 empty empty empty 20 12 0 14 #e0e0e0 #404040
@@ -318,7 +318,7 @@ it's like the curve shape has been mirrored in reverse.;
 #X connect 20 0 19 0;
 #X connect 21 0 18 0;
 #X restore 400 243 pd negative-exponential;
-#X text 179 486 up to 3 arguments set: minimum output \, maximum output
+#X text 179 511 up to 3 arguments set: minimum output \, maximum output
 \, exponential factor. 4 arguments set minimum input \, maximum input
 \, minimum output \, maximum output and 5 fifth argument sets the exponential
 factor - default (0 \, 127 \, 0 \, 1 \, 1);

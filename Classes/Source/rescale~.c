@@ -2,7 +2,6 @@
 
 #include "m_pd.h"
 #include <math.h>
-#include <string.h>
 
 typedef struct _rescale{
     t_object  x_obj;
@@ -130,8 +129,8 @@ static void *rescale_free(t_rescale *x){
 }
 
 static void *rescale_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_rescale *x = (t_rescale *)pd_new(rescale_class);
-    t_symbol *sym = s; // get rid of warning
     t_float min_in, max_in, min_out, max_out;
     min_in = -1;
     max_in = 1;
@@ -142,15 +141,18 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
     x->x_clip = 0;
     t_int numargs = 0;
     if(ac > 0){
-        for(int i = 0; i < ac; i++){
-            if((av+i)->a_type == A_FLOAT)
-                numargs++;
+        if(av->a_type == A_SYMBOL){
+            if(atom_getsymbolarg(0, ac, av) == gensym("-clip")){
+                x->x_clip = 1;
+                ac--, av++;
+            }
+            else
+                goto errstate;
         }
         t_int argnum = 0;
-        t_int flag = 0;
         if(numargs <= 3){
             while(ac){
-                if(av->a_type == A_FLOAT && !flag){
+                if(av->a_type == A_FLOAT){
                     t_float argval = atom_getfloatarg(0, ac, av);
                     switch(argnum){
                         case 0:
@@ -166,24 +168,15 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
                             break;
                     };
                 }
-                else if(av->a_type == A_SYMBOL){
-                    flag = 1;
-                    sym = atom_getsymbolarg(0, ac, av);
-                    if(!strcmp(sym->s_name, "-clip"))
-                        x->x_clip = 1;
-                    else
-                        goto errstate;
-                }
                 else
                     goto errstate;
                 argnum++;
-                ac--;
-                av++;
+                ac--, av++;
             }
         }
-        else{ // numargs = 4 || 5
+        else if(numargs <= 5){ // numargs = 4 || 5
             while(ac){
-                if(av->a_type == A_FLOAT && !flag){
+                if(av->a_type == A_FLOAT){
                     t_float argval = atom_getfloatarg(0, ac, av);
                     switch(argnum){
                         case 0:
@@ -205,21 +198,14 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
                             break;
                     };
                 }
-                else if(av->a_type == A_SYMBOL){
-                    flag = 1;
-                    sym = atom_getsymbolarg(0, ac, av);
-                    if(!strcmp(sym->s_name, "-clip"))
-                        x->x_clip = 1;
-                    else
-                        goto errstate;
-                }
                 else
                     goto errstate;
                 argnum++;
-                ac--;
-                av++;
+                ac--, av++;
             }
         }
+        else
+            goto errstate;
     }
     if(numargs <= 3){
         x->x_inlet_1 = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -239,10 +225,10 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
             pd_float((t_pd *)x->x_inlet_4, max_out);
     }
     outlet_new((t_object *)x, &s_signal);
-    return (x);
-    errstate:
-        post("[rescale~]: improper args");
-        return NULL;
+    return(x);
+errstate:
+    post("[rescale~]: improper args");
+    return(NULL);
 }
 
 void rescale_tilde_setup(void){

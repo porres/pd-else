@@ -2,7 +2,6 @@
 
 #include "m_pd.h"
 #include "math.h"
-#include <string.h>
 
 #define MAX_LIMIT 0x7fffffff
 
@@ -157,7 +156,7 @@ static t_int *ramp_perform(t_int *w){
     }
     x->x_phase = phase;
     x->x_lastin = lastin; // last input
-    return (w + 8);
+    return(w+8);
 }
 
 static void ramp_dsp(t_ramp *x, t_signal **sp){
@@ -172,7 +171,7 @@ static void *ramp_free(t_ramp *x){
     inlet_free(x->x_inlet_min);
     inlet_free(x->x_inlet_max);
     outlet_free(x->x_outlet);
-    return (void *)x;
+    return(void *)x;
 }
 
 static void *ramp_new(t_symbol *s, int argc, t_atom *argv){
@@ -186,71 +185,50 @@ static void *ramp_new(t_symbol *s, int argc, t_atom *argv){
     x->x_inc = 1.;
     x->x_continue = 1.;
     float mode = 0.;
-    if(argc){
-        int numargs = 0;
-        while(argc > 0 ){
-            if(argv -> a_type == A_FLOAT){
-                switch(numargs){
-                    case 0: x->x_inc = atom_getfloatarg(0, argc, argv);
-                        numargs++;
-                        argc--;
-                        argv++;
-                        break;
-                    case 1: x->x_min = x->x_reset = atom_getfloatarg(0, argc, argv);
-                        numargs++;
-                        argc--;
-                        argv++;
-                        break;
-                    case 2: x->x_max = atom_getfloatarg(0, argc, argv);
-                        numargs++;
-                        argc--;
-                        argv++;
-                        break;
-                    case 3: x->x_reset = atom_getfloatarg(0, argc, argv);
-                        numargs++;
-                        argc--;
-                        argv++;
-                        break;
-                    default:
-                        argc--;
-                        argv++;
-                        break;
-                };
+    int numargs = 0;
+    while(argc > 0 ){
+        if(argv->a_type == A_FLOAT){
+            switch(numargs){
+                case 0: x->x_inc = atom_getfloatarg(0, argc, argv);
+                    argc--, argv++;
+                    break;
+                case 1: x->x_min = x->x_reset = atom_getfloatarg(0, argc, argv);
+                    argc--, argv++;
+                    break;
+                case 2: x->x_max = atom_getfloatarg(0, argc, argv);
+                    argc--, argv++;
+                    break;
+                case 3: x->x_reset = atom_getfloatarg(0, argc, argv);
+                    argc--, argv++;
+                    break;
+                default:
+                    argc--, argv++;
+                    break;
+            };
+            numargs++;
+        }
+        else if(argv->a_type == A_SYMBOL && !numargs){
+            curarg = atom_getsymbolarg(0, argc, argv);
+            if(atom_getsymbolarg(0, argc, argv) == gensym("-off")){
+                x->x_continue = 0;
+                argc--, argv++;
             }
-            else if (argv -> a_type == A_SYMBOL){
-                curarg = atom_getsymbolarg(0, argc, argv);
-                int isoff = strcmp(curarg->s_name, "-off") == 0;
-                int ismode = strcmp(curarg->s_name, "-mode") == 0;
-                if(ismode && argc >= 2){
-                    t_symbol *arg1 = atom_getsymbolarg(1, argc, argv);
-                    if(arg1 == &s_){
-                        mode = atom_getfloatarg(1, argc, argv);
-                        argc -= 2;
-                        argv += 2;
-                    }
-                    else{
-                        goto errstate;
-                    };
+            else if(atom_getsymbolarg(0, argc, argv) == gensym("-mode")){
+                if(argc >= 2){
+                    mode = (int)atom_getfloatarg(1, argc, argv);
+                    argc-=2, argv+=2;
                 }
-                else if(isoff){
-                    x->x_continue = 0;
-                    argc --;
-                    argv ++;
-                    }
                 else
                     goto errstate;
             }
             else
                 goto errstate;
-        };
-    }
+        }
+        else
+            goto errstate;
+    };
 ///////////////////////////
-    mode = (int)mode;
-    if (mode <= 0 )
-        mode = 0;
-    if (mode >= 2)
-        mode = 2;
-    x->x_mode = mode;
+    x->x_mode = mode <= 0 ? 0 : mode >= 2 ? 2 : mode;
     x->x_phase = (double)x->x_reset ;
     x->x_inlet_inc = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_inc, x->x_inc);
@@ -261,17 +239,15 @@ static void *ramp_new(t_symbol *s, int argc, t_atom *argv){
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     x->x_bangout = outlet_new((t_object *)x, &s_bang);
     x->x_clock = clock_new(x, (t_method)ramp_tick);
-    return (x);
+    return(x);
     errstate:
-        pd_error(x, "ramp~: improper args");
-        return NULL;
+        pd_error(x, "[ramp~]: improper args");
+        return(NULL);
 }
 
-void ramp_tilde_setup(void)
-{
-    ramp_class = class_new(gensym("ramp~"),
-        (t_newmethod)ramp_new, (t_method)ramp_free,
-        sizeof(t_ramp), CLASS_DEFAULT, A_GIMME, 0);
+void ramp_tilde_setup(void){
+    ramp_class = class_new(gensym("ramp~"), (t_newmethod)ramp_new,
+        (t_method)ramp_free, sizeof(t_ramp), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(ramp_class, nullfn, gensym("signal"), 0);
     class_addmethod(ramp_class, (t_method)ramp_dsp, gensym("dsp"), A_CANT, 0);
     class_addbang(ramp_class, (t_method)ramp_bang);
