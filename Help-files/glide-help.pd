@@ -130,19 +130,19 @@ it out as well., f 13;
 #X msg 107 101 100;
 #X msg 116 125 250;
 #X floatatom 97 156 7 0 0 0 - - - 0;
-#X obj 163 212 else/glide 1500 -rate 250;
 #X text 42 33 By default \, the refresh rate is 5 ms \, but you can
 change it with the -rate flag or the rate message. If you change the.
 , f 61;
-#X connect 1 0 9 0;
+#X obj 163 212 else/glide -rate 250 1500;
+#X connect 1 0 10 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;
-#X connect 4 0 9 0;
+#X connect 4 0 10 0;
 #X connect 5 0 8 0;
 #X connect 6 0 8 0;
 #X connect 7 0 8 0;
 #X connect 8 0 4 0;
-#X connect 9 0 0 0;
+#X connect 10 0 0 0;
 #X restore 486 195 pd rate;
 #X text 61 90 [glide] generates a glide/portamento from its float input
 changes. The glide time in ms.;

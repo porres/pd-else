@@ -9,7 +9,7 @@ typedef struct _lb{
     int         x_init;
     t_outlet  **x_outs;
     t_outlet   *x_outbuf[1];
-} t_lb;
+}t_lb;
 
 static t_class *lb_class;
 
@@ -23,34 +23,33 @@ static void lb_loadbang(t_lb *x, t_float f){
     }
     else if((int)f == LB_LOAD){ // == LB_LOAD (0) and hasn't banged yet (next)
         int j = x->x_nouts;
-        while (j--)
+        while(j--)
             outlet_bang(x->x_outs[j]);
     }
 }
 
-static void lb_click(t_lb *x, t_floatarg xpos, t_floatarg ypos,
-                           t_floatarg shift, t_floatarg ctrl, t_floatarg alt)
-{
+static void lb_click(t_lb *x, t_floatarg xpos,
+t_floatarg ypos, t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
     xpos = ypos = shift = ctrl = alt = 0;
     int i = x->x_nouts;
-    while (i--)
+    while(i--)
         outlet_bang(x->x_outs[i]);
 }
 
 static void lb_bang(t_lb *x){
     int i = x->x_nouts;
-    while (i--)
+    while(i--)
         outlet_bang(x->x_outs[i]);
 }
 
 static void lb_anything(t_lb *x){
     int i = x->x_nouts;
-    while (i--)
+    while(i--)
         outlet_bang(x->x_outs[i]);
 }
 
 static void lb_free(t_lb *x){
-    if (x->x_outs != x->x_outbuf)
+    if(x->x_outs != x->x_outbuf)
         freebytes(x->x_outs, x->x_nouts * sizeof(*x->x_outs));
 }
 
@@ -66,17 +65,15 @@ static void *lb_new(t_symbol *s, int argc, t_atom *argv){
         while(argc > 0){
             if(argv->a_type == A_FLOAT && !float_flag){
                 nouts = atom_getfloatarg(0, argc, argv);
-                argc--;
-                argv++;
+                argc--, argv++;
                 float_flag = 1;
             }
             else
-                if (argv -> a_type == A_SYMBOL){
+                if(argv->a_type == A_SYMBOL && !float_flag){
                     t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
                     if(curarg == gensym("-init")){
                         x->x_init = 1;
-                        argc--;
-                        argv++;
+                        argc--, argv++;
                     }
                     else
                         goto errstate;
@@ -88,24 +85,24 @@ static void *lb_new(t_symbol *s, int argc, t_atom *argv){
     else
         goto errstate;
 /////////////////////////////////////////////////////////////////////////////////////
-    if (nouts < 1)
+    if(nouts < 1)
         nouts = 1;
-    if (nouts > 64)
+    if(nouts > 64)
         nouts = 64;
-    if (nouts > 1){
-        if (!(outs = (t_outlet **)getbytes(nouts * sizeof(*outs))))
+    if(nouts > 1){
+        if(!(outs = (t_outlet **)getbytes(nouts * sizeof(*outs))))
             return (0);
-        }
+    }
     else
         outs = 0;
     x->x_nouts = nouts;
     x->x_outs = (outs ? outs : x->x_outbuf);
-    for (i = 0; i < nouts; i++)
+    for(i = 0; i < nouts; i++)
         x->x_outs[i] = outlet_new((t_object *)x, &s_bang);
-    return (x);
+    return(x);
 errstate:
-    pd_error(x, "lb: improper args");
-    return NULL;
+    pd_error(x, "[lb]: improper args");
+    return(NULL);
 }
 
 void lb_setup(void){
@@ -115,5 +112,6 @@ void lb_setup(void){
     class_addanything(lb_class, lb_anything);
     class_addmethod(lb_class, (t_method)lb_loadbang, gensym("loadbang"), A_DEFFLOAT, 0);
     class_addmethod(lb_class, (t_method)lb_click, gensym("click"),
-                                    A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
+        A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT,0);
+    class_sethelpsymbol(lb_class, gensym("loadbanger"));
 }

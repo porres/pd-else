@@ -14,9 +14,9 @@
 0;
 #X obj 6 431 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 154 337 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 124 337 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 154 258 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 124 258 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 6 248 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
@@ -27,25 +27,25 @@
 #000000 #000000;
 #X obj 180 220 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 234 258 bang;
-#X text 278 257 - a bang to be passed or not;
-#X text 234 336 bang;
-#X text 278 336 - random bangs;
+#X text 204 258 bang;
+#X text 248 257 - a bang to be passed or not;
+#X text 204 336 bang;
+#X text 248 336 - random bangs;
 #X obj 238 220 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X obj 6 384 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 186 273 seed <float>;
-#X text 278 272 - sets seed value;
+#X text 156 273 seed <float>;
+#X text 248 272 - sets seed value;
 #X text 214 221 25%;
 #X obj 297 220 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X text 273 221 25%;
 #X text 154 221 50%;
 #X obj 180 190 else/chance 50 25 25;
-#X obj 154 359 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 124 359 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 228 359 float;
+#X text 198 359 float;
 #N canvas 566 79 737 546 default 0;
 #X obj 111 76 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
@@ -152,8 +152,8 @@ for more info if only one float is given;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 3 graph;
-#X text 164 393 -seed <float>: seed value (default: internal);
-#X text 206 410 -index: sets to index mode;
+#X text 134 393 -seed <float>: seed value (default: internal);
+#X text 176 410 -index: sets to index mode;
 #X text 70 87 When [chance] receives a bang \, it outputs to an outlet
 according to its chance (probability weight). The total number is the
 sum of all arguments. It also has an index mode where it outputs the
@@ -169,11 +169,11 @@ each "2" and "3"., f 49;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
 #X restore 486 216 pd index;
-#X text 278 359 - index number if in index mode;
-#X obj 154 298 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 248 359 - index number if in index mode;
+#X obj 124 298 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 228 298 float;
-#X text 278 298 - sets chance number if only one argument;
+#X text 198 298 float;
+#X text 248 298 - sets chance number if only one argument;
 #X connect 10 0 26 0;
 #X connect 11 0 10 0;
 #X connect 12 0 26 0;

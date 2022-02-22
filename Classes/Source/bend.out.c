@@ -36,16 +36,15 @@ static void *bendout_new(t_symbol *s, t_int ac, t_atom *av){
     if(ac){
         while(ac > 0){
             if(av->a_type == A_FLOAT){
+                floatarg = 1;
                 channel = (t_int)atom_getfloatarg(0, ac, av);
-                ac--;
-                av++;
+                ac--, av++;
             }
             else if(av->a_type == A_SYMBOL && !floatarg){
                 curarg = atom_getsymbolarg(0, ac, av);
                 if(curarg == gensym("-raw")){
                     x->x_raw = 1;
-                    ac--;
-                    av++;
+                    ac--, av++;
                 }
                 else
                     goto errstate;
@@ -56,9 +55,9 @@ static void *bendout_new(t_symbol *s, t_int ac, t_atom *av){
     }
     x->x_channel = (channel > 0 ? channel : 1);
     return(x);
-    errstate:
-        pd_error(x, "[bend.out]: improper args");
-        return(NULL);
+errstate:
+    pd_error(x, "[bend.out]: improper args");
+    return(NULL);
 }
 
 void setup_bend0x2eout(void){

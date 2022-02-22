@@ -101,7 +101,7 @@ static void *loadbanger_new(t_symbol *s, int argc, t_atom *argv){
         x->x_outs[i] = outlet_new((t_object *)x, &s_bang);
     return(x);
 errstate:
-    pd_error(x, "[loadbanger]/[lb]: improper args");
+    pd_error(x, "[loadbanger]: improper args");
     return(NULL);
 }
 

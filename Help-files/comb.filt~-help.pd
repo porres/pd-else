@@ -146,7 +146,7 @@ in energy. You can change this parameter to a gain coefficient value
 with the third argument \, where a non zero value sets to "gain mode"
 or the -gain flag. You can also change that with the "gain" message.
 , f 72;
-#X obj 234 159 else/comb.filt~ -gain 440 0.99 1;
+#X obj 234 159 else/comb.filt~ 440 0.99 1;
 #X connect 0 0 6 0;
 #X connect 1 0 0 0;
 #X connect 3 0 6 0;

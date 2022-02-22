@@ -1,4 +1,4 @@
-#N canvas 721 35 560 642 10;
+#N canvas 587 35 560 642 10;
 #X obj 2 4 cnv 15 301 42 empty empty fbdelay~ 20 20 2 37 #e0e0e0 #000000
 0;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
