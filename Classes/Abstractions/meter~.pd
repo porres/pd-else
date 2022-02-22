@@ -1,16 +1,20 @@
-#N canvas 762 81 558 470 10;
-#X obj 51 201 cnv 15 50 134 empty empty empty 20 12 0 14 -233017 -66577
+#N canvas 512 42 558 470 10;
+#X obj 51 201 cnv 15 50 134 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
-#X obj 54 207 vu 15 120 \$0-m empty -1 -8 0 10 -1 -1 1 0;
+#X obj 54 207 vu 15 120 \$0-m empty -1 -8 0 10 #000000 #000000 1 0
+;
 #X obj 135 53 inlet~;
 #X obj 190 299 pack;
 #X text 297 215 Alexandre Torres Porres (2016);
 #X text 295 234 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 297 195 [meter~]: Mono Vu meter;
 #X obj 135 386 outlet~;
-#X obj 51 334 cnv 1 6 1 empty empty empty 20 12 0 14 -1 -66577 0;
-#X obj 51 201 cnv 1 6 1 empty empty empty 20 12 0 14 -1 -66577 0;
-#X obj 95 334 cnv 1 6 1 empty empty empty 20 12 0 14 -1 -66577 0;
+#X obj 51 334 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040
+0;
+#X obj 51 201 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040
+0;
+#X obj 95 334 cnv 1 6 1 empty empty empty 20 12 0 14 #000000 #404040
+0;
 #X obj 190 386 outlet;
 #N canvas 628 525 496 411 meter 0;
 #X obj 121 63 inlet;

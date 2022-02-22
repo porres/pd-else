@@ -1,4 +1,4 @@
-#N canvas 629 111 546 323 10;
+#N canvas 459 92 546 323 10;
 #X obj 107 281 outlet~;
 #X obj 142 21 inlet;
 #X obj 107 179 *~;

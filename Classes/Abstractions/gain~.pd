@@ -1,4 +1,4 @@
-#N canvas 786 161 486 301 10;
+#N canvas 495 94 486 301 10;
 #N canvas 457 395 385 241 set_GUI 0;
 #X obj 74 23 inlet;
 #N canvas 581 229 344 388 value 0;

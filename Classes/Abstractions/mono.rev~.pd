@@ -1,4 +1,4 @@
-#N canvas 720 157 474 309 10;
+#N canvas 573 95 474 309 10;
 #N canvas 426 108 879 607 delwrite 0;
 #X obj 353 33 inlet~;
 #X text 398 32 dummy;

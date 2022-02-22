@@ -1,4 +1,4 @@
-#N canvas 832 89 575 607 12;
+#N canvas 791 89 575 607 12;
 #X obj 135 298 - 60;
 #X obj 64 45 inlet;
 #X obj 130 45 inlet;
@@ -34,25 +34,29 @@
 #X connect 6 0 7 0;
 #X connect 6 0 8 0;
 #X restore 130 118 pd load-list;
-#N canvas 919 410 573 379 init 0;
-#X obj 208 321 outlet;
-#X msg 303 221 0 100 200 300 400 500 600 700 800 900 1000 1100 1200
+#N canvas 496 133 576 426 init 0;
+#X obj 208 361 outlet;
+#X msg 303 261 0 100 200 300 400 500 600 700 800 900 1000 1100 1200
 , f 26;
-#X obj 107 112 route bang list -base;
-#X obj 203 143 list split 1;
-#X obj 208 227 route bang;
-#X obj 103 225 s \$0-base;
-#X obj 107 76 else/args -;
+#X obj 107 152 route bang list -base;
+#X obj 203 183 list split 1;
+#X obj 208 267 route bang;
+#X obj 103 265 s \$0-base;
 #X obj 107 41 else/lb 2, f 28;
+#X obj 110 118 else/break -;
+#X obj 110 94 pdcontrol;
+#X msg 108 69 args;
 #X connect 1 0 0 0;
 #X connect 2 1 0 0;
 #X connect 2 2 3 0;
 #X connect 3 0 5 0;
 #X connect 3 1 4 0;
 #X connect 4 1 0 0;
-#X connect 6 0 2 0;
-#X connect 7 0 6 0;
-#X connect 7 1 1 0;
+#X connect 6 0 9 0;
+#X connect 6 1 1 0;
+#X connect 7 0 2 0;
+#X connect 8 0 7 0;
+#X connect 9 0 8 0;
 #X restore 152 85 pd init;
 #X obj 248 549 outlet;
 #X obj 294 480 r \$0-base;

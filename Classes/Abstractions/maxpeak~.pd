@@ -1,4 +1,4 @@
-#N canvas 635 289 619 353 12;
+#N canvas 487 115 619 353 12;
 #X obj 96 84 abs~;
 #X obj 96 161 fexpr~ if($x > $y \, $x \, $y);
 #X obj 96 42 inlet~;

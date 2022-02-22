@@ -1,4 +1,4 @@
-#N canvas 689 99 620 250 10;
+#N canvas 471 44 620 250 10;
 #X obj 31 12 inlet;
 #X obj 245 50 list length;
 #X obj 258 72 v size_\$0;

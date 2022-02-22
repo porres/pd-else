@@ -1,4 +1,4 @@
-#N canvas 350 296 361 311 10;
+#N canvas 423 166 361 311 10;
 #X obj 182 212 *~;
 #X obj 105 145 mtof;
 #X obj 105 169 else/bl.tri~;

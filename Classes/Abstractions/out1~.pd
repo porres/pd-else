@@ -39,7 +39,7 @@
 9 0 14 #dcdcdc #000000 #000000 0 1;
 #N canvas 565 338 514 332 DSP 0;
 #X obj 100 100 tgl 16 0 \$0-dsp-toggle \$0-dsp-toggle-set empty 19
-8 0 12 #dcdcdc #7c7c7c #fcfcfc 0 1;
+8 0 12 #4a4f51 #cde5c3 #fcfcfc 0 1;
 #X obj 117 101 cnv 5 24 14 empty \$0-cnv_dsp dsp 2 6 0 12 #dcdcdc #585854
 0;
 #X coords 0 -1 1 1 42 16 2 100 100;
@@ -219,7 +219,7 @@
 #X restore 142 100 pd mute;
 #X coords 0 -1 1 1 94 36 2 100 100;
 #X restore 260 105 pd GUI;
-#N canvas 977 100 407 422 Gui_control 0;
+#N canvas 959 100 407 422 Gui_control 0;
 #X msg 242 154 0;
 #X msg 29 303 \; pd dsp 1;
 #X obj 56 97 value slider_\$0;
@@ -582,20 +582,24 @@
 #X obj 213 202 s \$0-mode;
 #X msg 60 157 set \$1;
 #X obj 60 134 route -ch bang;
-#X msg 166 131 1 0;
+#X msg 171 131 1 0;
 #X obj 171 166 unpack;
 #X obj 62 271 outlet;
-#X obj 60 109 else/args -;
-#X obj 60 83 else/loadbanger 2;
+#X obj 72 33 else/loadbanger 2;
+#X obj 72 78 pdcontrol;
+#X msg 72 56 args;
+#X obj 60 109 else/break -;
 #X connect 2 0 6 0;
 #X connect 3 0 2 0;
 #X connect 3 2 5 0;
 #X connect 4 0 5 0;
 #X connect 5 0 0 0;
 #X connect 5 1 1 0;
-#X connect 7 0 3 0;
-#X connect 8 0 7 0;
-#X connect 8 1 4 0;
+#X connect 7 0 9 0;
+#X connect 7 1 4 0;
+#X connect 8 0 10 0;
+#X connect 9 0 8 0;
+#X connect 10 0 3 0;
 #X restore 79 258 pd init;
 #X obj 53 36 inlet~ fwd;
 #X connect 0 0 9 0;

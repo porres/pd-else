@@ -1,4 +1,4 @@
-#N canvas 400 317 414 296 12;
+#N canvas 430 251 414 296 12;
 #X obj 267 129 else/dollsym 2;
 #X obj 77 34 inlet;
 #N canvas 679 546 525 390 morph 0;
@@ -141,7 +141,7 @@
 #X obj 167 356 r \$0-i-mode;
 #X obj 315 155 r \$0-i-mode;
 #X obj 262 127 t f;
-#X floatatom 312 399 5 0 0 0 - - -;
+#X floatatom 312 399 5 0 0 0 - - - 0;
 #X connect 0 0 8 0;
 #X connect 4 0 9 0;
 #X connect 4 1 2 0;

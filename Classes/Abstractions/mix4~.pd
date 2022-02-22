@@ -1,4 +1,4 @@
-#N canvas 447 182 967 384 10;
+#N canvas 332 139 967 384 10;
 #X obj 500 297 outlet~;
 #N canvas 341 432 316 326 gain~ 0;
 #N canvas 251 205 450 331 quartic 0;

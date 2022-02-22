@@ -1,4 +1,4 @@
-#N canvas 612 110 498 222 10;
+#N canvas 510 85 498 222 10;
 #X obj 81 23 inlet;
 #X obj 167 175 outlet;
 #X text 246 107 Part of ELSE \; https://github.com/porres/pd-else;

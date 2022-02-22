@@ -1,4 +1,4 @@
-#N canvas 830 85 450 300 10;
+#N canvas 624 56 450 300 10;
 #X obj 100 162 cputime;
 #X obj 100 134 t b b;
 #X obj 100 109 metro 500;

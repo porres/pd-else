@@ -1,4 +1,4 @@
-#N canvas 654 244 524 446 12;
+#N canvas 406 139 524 446 12;
 #N canvas 753 33 585 655 set 0;
 #X obj 82 34 inlet;
 #X obj 336 472 s \$0-attack;

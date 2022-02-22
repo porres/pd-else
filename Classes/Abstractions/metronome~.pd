@@ -1,4 +1,4 @@
-#N canvas 655 50 566 541 10;
+#N canvas 505 30 566 541 10;
 #X obj 296 207 change;
 #X obj 225 205 change;
 #X obj 205 154 list split 2;

@@ -1,4 +1,4 @@
-#N canvas 456 218 1040 458 10;
+#N canvas 204 62 1040 458 10;
 #N canvas 660 137 340 350 plot 0;
 #N canvas 902 365 351 322 init 0;
 #X obj 154 274 s \$0-dbrange;

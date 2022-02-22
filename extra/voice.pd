@@ -1,15 +1,15 @@
-#N canvas 771 24 613 477 12;
+#N canvas 441 60 613 477 12;
 #X obj 102 202 mtof;
 #X obj 148 299 *~;
 #X obj 102 86 inlet;
 #X text 79 54 note \, velocity;
 #X obj 166 204 / 127;
 #X obj 166 173 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 102 172 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 359 273 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 359 273 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 359 302 switch~;
 #X obj 148 410 outlet~;
 #X obj 390 408 outlet~;

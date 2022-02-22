@@ -1,4 +1,4 @@
-#N canvas 696 164 534 530 12;
+#N canvas 457 94 534 530 12;
 #X obj 143 316 timer;
 #X obj 143 374 sel 1;
 #X obj 143 176 t b b b a, f 14;
