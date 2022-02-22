@@ -16,7 +16,7 @@ typedef struct _openfile{
     t_symbol  *x_dirsym;
     t_symbol  *x_ulink;
     int        x_linktype;
-} t_openfile;
+}t_openfile;
 
 static t_class *openfile_class;
 static t_class *openfilebox_class;
@@ -92,20 +92,18 @@ static void openfile_vis(t_gobj *z, t_glist *glist, int vis){
         rtext_erase(y);
 }
 
-static void openfile_click(t_openfile *x, t_floatarg xpos, t_floatarg ypos,
-                       t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
-    sys_vgui("openfile_open {%s} {%s}\n",               \
-             x->x_ulink->s_name, x->x_dirsym->s_name);
+static void openfile_click(t_openfile *x, t_floatarg xpos, t_floatarg ypos, t_floatarg shift, t_floatarg ctrl, t_floatarg alt){
+    alt = ctrl = shift = ypos = xpos = 0;
+    sys_vgui("openfile_open {%s} {%s}\n", x->x_ulink->s_name, x->x_dirsym->s_name);
 }
 
-static int openfile_wbclick(t_gobj *z, t_glist *glist, int xpix, int ypix,
-                        int shift, int alt, int dbl, int doit)
-{
+static int openfile_wbclick(t_gobj *z, t_glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
+    dbl = 0;
+    glist = NULL;
     t_openfile *x = (t_openfile *)z;
     if(doit){
-        openfile_click(x, (t_floatarg)xpix, (t_floatarg)ypix,
-                   (t_floatarg)shift, 0, (t_floatarg)alt);
-        return (1);
+        openfile_click(x, (t_floatarg)xpix, (t_floatarg)ypix, (t_floatarg)shift, 0, (t_floatarg)alt);
+        return(1);
     }
     else
         return (0);
@@ -143,7 +141,7 @@ static int openfile_isoption(char *name){
 static t_symbol *openfile_nextsymbol(int ac, t_atom *av, int opt, int *skipp){
     int ndx;
     for(ndx = 0; ndx < ac; ndx++, av++){
-        if(av->a_type == A_SYMBOL && (!opt || openfile_isoption(av->a_w.w_symbol->s_name))){
+        if(av->a_type == A_SYMBOL && (!opt || openfile_isoption((char*)av->a_w.w_symbol->s_name))){
             *skipp = ++ndx;
             return (av->a_w.w_symbol);
         }
@@ -166,7 +164,7 @@ static int openfile_dohyperlink(char *dst, int maxsize, int ac, t_atom *av){
         }
         else sep = 1;
         if(av->a_type == A_SYMBOL)
-            src = av->a_w.w_symbol->s_name;
+            src = (char*)av->a_w.w_symbol->s_name;
         else if (av->a_type == A_FLOAT){
             src = buf;
             sprintf(src, "%g", av->a_w.w_float);
@@ -206,6 +204,7 @@ static void openfile_free(t_openfile *x){
 }
 
 static void *openfile_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_openfile xgen, *x;
     int skip;
     xgen.x_isboxed = 1;

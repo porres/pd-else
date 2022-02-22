@@ -125,7 +125,7 @@ the message methods.;
 #X msg 135 128 bw;
 #X text 175 156 resonance as 'q';
 #X text 163 128 resonance as bandwidth in octaves;
-#X obj 81 184 else/eq~ -bw 1000 5 12;
+#X obj 81 184 else/eq~ -bw 2000 0.1 30;
 #X connect 3 0 8 0;
 #X connect 4 0 8 0;
 #X connect 5 0 8 0;

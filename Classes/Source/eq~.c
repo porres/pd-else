@@ -21,12 +21,11 @@ typedef struct _eq {
     double  x_xnm2;
     double  x_ynm1;
     double  x_ynm2;
-    } t_eq;
+}t_eq;
 
 static t_class *eq_class;
 
-static t_int *eq_perform(t_int *w)
-{
+static t_int *eq_perform(t_int *w){
     t_eq *x = (t_eq *)(w[1]);
     int nblock = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
