@@ -1,6 +1,5 @@
 #include "m_pd.h"
 #include <stdlib.h>
-#include <string.h>
 #include <math.h>
 
 #define MAVG_MAXBUF         192000000   // max buffer size - undocumented
@@ -113,36 +112,32 @@ static void *mavg_new(t_symbol *s, int argc, t_atom * argv){
     x->x_alloc = 0.;
     x->x_abs = 0.;
 /////////////////////////////////////////////////////////////////////////////////
-    int symarg = 0;
+    int argn = 0;
     while(argc > 0){
         if(argv->a_type == A_SYMBOL){
-            if(!symarg)
-                symarg = 1;
             t_symbol * cursym = atom_getsymbolarg(0, argc, argv);
-            if(!strcmp(cursym->s_name, "-size")){
+            if(cursym == gensym("-size") && !argn){
                 if(argc >= 2 && (argv+1)->a_type == A_FLOAT){
                     t_float curfloat = atom_getfloatarg(1, argc, argv);
                     x->x_size = (int)curfloat;
-                    argc -= 2;
-                    argv += 2;
+                    argc-=2, argv+=2;
                 }
                 else
                     goto errstate;
             }
-            else if(!strcmp(cursym->s_name, "-abs")){
+            else if(cursym == gensym("-abs") && !argn){
                 x->x_abs = 1;
-                argc--;
-                argv++;
+                argc--, argv++;
             }
             else
                 goto errstate;
         }
-        else if(argv->a_type == A_FLOAT && !symarg){
+        else if(argv->a_type == A_FLOAT){
+            argn = 1;
             n_arg = (int)atom_getfloatarg(0, argc, argv);
             n_arg = (n_arg < 1 ? 1 : n_arg);
             x->x_size = (unsigned int)n_arg;
-            argc--;
-            argv++;
+            argc--, argv++;
         }
         else
             goto errstate;

@@ -5,7 +5,7 @@
 0;
 #X obj 2 378 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 2 412 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 2 462 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 93 387 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -14,7 +14,7 @@
 ;
 #X text 199 291 - the signal to be averaged;
 #X text 155 387 signal;
-#X text 143 420 1) float;
+#X text 143 470 1) float;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
@@ -41,31 +41,31 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 3 graph;
-#X obj 2 443 cnv 3 550 3 empty empty flag 8 12 0 13 #dcdcdc #000000
+#X obj 2 413 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 161 307 clear;
-#X text 199 451 -;
+#X text 199 421 -;
 #X text 199 345 -;
 #X text 119 323 size <float>;
 #X obj 93 344 cnv 17 3 31 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 119 345 float/signal;
-#X text 113 451 -size <float>;
+#X text 113 421 -size <float>;
 #X text 212 345 'n' number of last samples to apply the average to
 (if different than the last \, the filter is cleared), f 51;
 #X obj 212 142 noise~;
 #X text 199 323 - sets new maximum size and clears buffer's memory
 ;
 #X text 199 387 - the RMS over the time window;
-#X text 213 450 sets buffer size (default 1024 samples), f 40;
+#X text 213 420 sets buffer size (default 1024 samples), f 40;
 #X obj 212 256 print~;
 #X obj 179 226 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 199 420 - sets number of samples in the window (default 1)
+#X text 199 470 - sets number of samples in the window (default 1)
 ;
-#X text 199 471 -;
-#X text 173 471 -db;
-#X text 213 470 sets output to dBFS, f 40;
+#X text 199 441 -;
+#X text 173 441 -db;
+#X text 213 440 sets output to dBFS, f 40;
 #X text 199 307 - clears buffer's memory;
 #X msg 281 135 linear;
 #X msg 298 159 db;
@@ -103,13 +103,13 @@ can also set the maximum value with the -size flag or message., f
 #X text 46 211 see also:;
 #X obj 487 64 else/setdsp~;
 #X obj 212 221 else/display~;
-#X obj 212 187 else/mov.rms~ 4096 -db;
 #X text 61 88 [mov.rms~] gives you a running/moving RMS (Root Mean
 Square) over a time window of samples. At each sample \, the RMS of
 the last 'n' sample is given.;
-#X connect 31 0 49 0;
+#X obj 212 187 else/mov.rms~ -db 4096;
+#X connect 31 0 50 0;
 #X connect 36 0 35 0;
-#X connect 42 0 49 0;
-#X connect 43 0 49 0;
+#X connect 42 0 50 0;
+#X connect 43 0 50 0;
 #X connect 48 0 35 0;
-#X connect 49 0 48 0;
+#X connect 50 0 48 0;

@@ -945,14 +945,16 @@ static void *midi_new(t_symbol * s, int ac, t_atom *av){
     x->x_ntempi = 0;
     x->x_tempomap = x->x_tempomapini;
     x->x_defname = &s_;
+    argn = 0;
     while(ac){
         if(av->a_type == A_SYMBOL){
             s = atom_getsymbolarg(0, ac, av);
-            if(s == gensym("-loop")){
+            if(s == gensym("-loop") && !argn){
                 x->x_loop = 1;
                 ac--, av++;
             }
             else{
+                argn = 1;
                 midi_doread(x, x->x_defname = s);
                 ac--, av++;
             }

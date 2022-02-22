@@ -33,13 +33,13 @@
 0;
 #X obj 5 387 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 5 440 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 5 494 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 97 395 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 98 264 cnv 17 3 95 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 5 468 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 5 438 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 98 364 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -53,10 +53,10 @@
 high> \, <2 \, low>, f 66;
 #X text 160 395 float - note values, f 59;
 #X text 160 417 float - velocity values, f 59;
-#X text 171 475 -last: sets mode to "last" (default);
-#X text 171 490 -high: sets mode to "high", f 36;
-#X text 177 506 -low: sets mode to "low", f 35;
-#X text 142 447 1) float - non zero sets to legato mode;
+#X text 171 445 -last: sets mode to "last" (default);
+#X text 171 460 -high: sets mode to "high", f 36;
+#X text 177 476 -low: sets mode to "low", f 35;
+#X text 142 501 1) float - non zero sets to legato mode;
 #X msg 193 152 clear;
 #X text 108 313 legato <float> - non zero sets to legato mode \, zero
 restores default, f 68;

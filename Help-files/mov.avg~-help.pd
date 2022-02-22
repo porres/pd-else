@@ -1,11 +1,11 @@
-#N canvas 545 23 565 534 10;
-#X obj 2 506 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#N canvas 497 23 565 534 10;
+#X obj 2 503 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 3 285 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 3 380 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 414 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 3 471 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 94 389 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -14,7 +14,7 @@
 ;
 #X text 200 293 - the signal to be averaged;
 #X text 156 389 signal;
-#X text 144 422 1) float;
+#X text 144 479 1) float;
 #X text 200 389 - the moving average over the last 'n' samples;
 #X obj 307 6 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
@@ -78,11 +78,11 @@ can also set the maximum value with the -size flag or message., f
 #X connect 9 0 6 0;
 #X connect 13 0 1 0;
 #X restore 441 230 pd more_details;
-#X obj 3 445 cnv 3 550 3 empty empty flag 8 12 0 13 #dcdcdc #000000
+#X obj 3 415 cnv 3 550 3 empty empty flag 8 12 0 13 #dcdcdc #000000
 0;
 #X text 162 309 clear;
 #X text 200 309 - clears filter's memory;
-#X text 200 453 -;
+#X text 200 423 -;
 #X text 200 347 -;
 #X text 120 325 size <float>;
 #X text 200 325 - sets new maximum size and clears filter's memory
@@ -109,9 +109,9 @@ which is a kind of lowpass filter. Listen to it below.;
 #X connect 5 0 2 0;
 #X restore 471 252 pd lowpass;
 #X obj 167 254 print~ Moving-Average;
-#X text 200 422 - sets initial 'n' samples (default 1);
-#X text 114 453 -size <float>;
-#X text 214 452 sets buffer size and maximum 'n' samples (default 100
+#X text 200 479 - sets initial 'n' samples (default 1);
+#X text 114 423 -size <float>;
+#X text 214 422 sets buffer size and maximum 'n' samples (default 100
 or argument's value if given), f 53;
 #X obj 167 129 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
@@ -123,9 +123,9 @@ or argument's value if given), f 53;
 over the last 'n' given samples. This is also a type of lowpass filter.
 ;
 #X text 325 192 Average of the last two samples <========, f 11;
-#X text 200 483 -;
-#X text 167 483 -abs;
-#X text 214 484 sets to absolute average mode, f 53;
+#X text 200 449 -;
+#X text 167 449 -abs;
+#X text 214 450 sets to absolute average mode, f 53;
 #N canvas 785 167 406 368 abs 0;
 #X obj 38 121 noise~;
 #X obj 85 195 else/graph~;

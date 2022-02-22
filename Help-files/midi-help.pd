@@ -3,7 +3,7 @@
 0;
 #X obj 4 459 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 508 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 538 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 87 466 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -21,7 +21,7 @@
 , f 53;
 #X text 151 467 float -;
 #X text 157 488 bang -;
-#X text 127 516 1) symbol -;
+#X text 127 546 1) symbol -;
 #X text 335 191 <= when finished;
 #X text 145 268 record -;
 #X text 157 312 stop -;
@@ -304,9 +304,9 @@ from where it was paused!, f 44;
 #X text 109 368 loop <float> -;
 #X text 202 368 non zero sets to loop mode, f 53;
 #X obj 185 161 else/midi midi-seq.mid;
-#X obj 4 537 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 4 507 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 164 545 -loop: sets to loop mode (default no loop), f 53;
+#X text 164 515 -loop: sets to loop mode (default no loop), f 53;
 #N canvas 744 161 530 465 read 0;
 #X obj 289 177 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
@@ -771,7 +771,7 @@ to the [text sequence] object. Check the example to the right., f
 , f 53;
 #X text 85 86 [midi] plays/records raw MIDI streams and can save/read
 MIDI files or import/export to txt files., f 55;
-#X text 205 516 a MIDI or text file to be loaded, f 49;
+#X text 205 546 a MIDI or text file to be loaded, f 49;
 #X obj 4 567 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
 0;
 #X text 140 575 clicking on the object opens dialog box to open a file
