@@ -30,7 +30,6 @@ static t_int *pimp_perform_magic(t_int *w){
     t_pimp *x = (t_pimp *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
-    t_float *in2 = (t_float *)(w[4]); // sync
     t_float *in3 = (t_float *)(w[5]); // phase
     t_float *out1 = (t_float *)(w[6]);
     t_float *out2 = (t_float *)(w[7]);
@@ -167,11 +166,13 @@ static void *pimp_new(t_floatarg f1, t_floatarg f2){
     t_pimp *x = (t_pimp *)pd_new(pimp_class);
     t_float init_freq = f1;
     t_float init_phase = f2;
-    init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
+    init_phase = init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
     if (init_freq >= 0)
         x->x_posfreq = 1;
     if (init_phase == 0 && x->x_posfreq)
         x->x_phase = 1.;
+    else
+        x->x_phase = init_phase;
     x->x_last_phase_offset = 0;
     x->x_freq = init_freq;
     x->x_sr = sys_getsr(); // sample rate

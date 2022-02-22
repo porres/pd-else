@@ -228,7 +228,7 @@ void *buffer_init(t_class *owner, t_symbol *bufname, int numchans, int singlemod
     c->c_single = singlemode;
     c->c_owner = owner;
     c->c_npts = 0;
-    c->c_vectors = vectors;
+    c->c_vectors = (t_word**)vectors;
     c->c_channames = channames;
     c->c_disabled = 0;
     c->c_playable = 0;

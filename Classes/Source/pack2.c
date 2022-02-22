@@ -34,7 +34,9 @@ static void pack2_bang(t_pack2 *x){
 }
 
 static void pack2_copy(t_pack2 *x, int ndest, t_atom* dest, int nsrc, t_atom* src, int srcidx){
-    int i, isint;
+    x = NULL;
+    srcidx = 0; // avoid warning
+    int i;
     for(i = 0; i < ndest && i < nsrc; ++i){
         if(src[i].a_type == A_FLOAT){
             if(dest[i].a_type == A_FLOAT)
@@ -85,6 +87,7 @@ static void pack2_inlet_symbol(t_pack2_inlet *x, t_symbol* s){
 }
 
 static void pack2_inlet_list(t_pack2_inlet *x, t_symbol* s, int argc, t_atom* argv){
+    s = NULL;
     pack2_copy(x->x_owner, x->x_max, x->x_atoms, argc, argv, x->x_idx);
     pack2_bang(x->x_owner);
 }
@@ -101,11 +104,13 @@ static void pack2_inlet_anything(t_pack2_inlet *x, t_symbol* s, int argc, t_atom
 }
 
 static void pack2_inlet_set(t_pack2_inlet *x, t_symbol* s, int argc, t_atom* argv){
+    s = NULL;
     pack2_copy(x->x_owner, x->x_max, x->x_atoms, argc, argv, x->x_idx);
 }
 
 
 static void *pack2_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     int i;
     t_pack2 *x = (t_pack2 *)pd_new(pack2_class);
     t_atom defarg[2];

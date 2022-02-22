@@ -1,3 +1,5 @@
+// porres 
+
 #include "m_pd.h"
 
 static t_class *cmul_class;
@@ -8,7 +10,6 @@ typedef struct _cmul{
 }t_cmul;
 
 static t_int *cmul_perform(t_int *w){
-    t_cmul *x = (t_cmul *)(w[1]);
     int n = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
@@ -24,7 +25,7 @@ static t_int *cmul_perform(t_int *w){
         *out1++ = re1 * re2 - im1 * im2; // re
         *out2++ = im1 * re2 + re1 * im2; // im
     };
-    return(w + 9);
+    return(w+9);
 }
 
 static void cmul_dsp(t_cmul *x, t_signal **sp){
@@ -39,7 +40,7 @@ static void *cmul_new(void){
     inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     outlet_new((t_object *)x, &s_signal);
     outlet_new((t_object *)x, &s_signal);
-    return (x);
+    return(x);
 }
 
 void cmul_tilde_setup(void){

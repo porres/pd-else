@@ -190,51 +190,6 @@ static void comb_dsp(t_comb *x, t_signal **sp)
             sp[3]->s_vec, sp[4]->s_vec, sp[5]->s_vec);
 }
 
-static void comb_list(t_comb *x, t_symbol *s, int argc, t_atom * argv){
-    
-    
-    int argnum = 0; //current argument
-    while(argc){
-        if(argv -> a_type == A_FLOAT){
-            t_float curf = atom_getfloatarg(0, argc, argv);
-            switch(argnum){
-                case 0:
-                    //maxdel
-                    x->x_maxdel = curf > 0 ? curf : COMB_DELAY;
-                    comb_sz(x);
-                    break;
-                case 1:
-                    //initdel
-                    if(curf < COMB_MINMS){
-                        curf = COMB_MINMS;
-                    }
-                    else if(curf > x->x_maxdel){
-                        curf = x->x_maxdel;
-                    };
-                    pd_float((t_pd *)x->x_dellet, curf);
-                    break;
-                case 2:
-                    //gain
-                    pd_float((t_pd *)x->x_alet, curf);
-                    break;
-                case 3:
-                    //ffcoeff
-                    pd_float((t_pd *)x->x_blet, curf);
-                    break;
-                case 4:
-                    //fbcoeff
-                    pd_float((t_pd *)x->x_clet, curf);
-                    break;
-                default:
-                    break;
-            };
-            argnum++;
-        };
-        argc--;
-        argv++;
-    };
-}
-
 static void comb_size(t_comb *x, t_floatarg f1){
     if(f1 < 0)
         f1 = 0;
@@ -243,6 +198,7 @@ static void comb_size(t_comb *x, t_floatarg f1){
 }
 
 static void *comb_new(t_symbol *s, int argc, t_atom * argv){
+    s = NULL;
     t_comb *x = (t_comb *)pd_new(comb_class);
     //defaults
     t_float maxdel = COMB_DELAY;

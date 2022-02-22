@@ -27,7 +27,6 @@ static t_int *saw2_perform(t_int *w){
     t_saw2 *x = (t_saw2 *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
-    t_float *in2 = (t_float *)(w[4]); // sync
     t_float *in3 = (t_float *)(w[5]); // phase
     t_float *out = (t_float *)(w[6]);
 // Magic Start
@@ -131,6 +130,7 @@ static void *saw2_free(t_saw2 *x){
 }
 
 static void *saw2_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_saw2 *x = (t_saw2 *)pd_new(saw2_class);
     t_float f1 = 0, f2 = 0;
     if (ac && av->a_type == A_FLOAT){
@@ -143,9 +143,11 @@ static void *saw2_new(t_symbol *s, int ac, t_atom *av){
     }
     t_float init_freq = f1;
     t_float init_phase = f2;
-    init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
+    init_phase = init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
     if (init_phase == 0 && init_freq > 0)
         x->x_phase = 1.;
+    else
+        x->x_phase = init_phase;
     x->x_last_phase_offset = 0;
     x->x_freq = init_freq;
     x->x_inlet_sync = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);

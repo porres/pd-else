@@ -47,20 +47,6 @@
 #dcdcdc #000000 #000000 0 256;
 #X text 278 140 <= hz;
 #N canvas 403 51 838 490 sync 0;
-#X msg 33 134 0;
-#X obj 58 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X obj 58 211 else/sig2float~;
-#X obj 58 181 else/sine~ 0.25;
-#X msg 67 134 0.25;
-#X msg 144 133 0.75;
-#X msg 187 133 1;
-#X msg 109 133 0.5;
-#X obj 267 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X obj 267 217 else/sig2float~;
-#X obj 267 193 else/sine~ 0.25;
-#X text 221 132 <= reset =>;
 #X text 38 15 The second inlet resets the phase ands behaves in the
 same way for control data as objects like [osc~] and [phasor~] in Pd.
 A number input resets the oscillator and restarts the cycle with an
@@ -89,6 +75,19 @@ an impulse signal for syncing. The impulse values need to be > 0 and
 1 represents the "phase 0" of the cycle \, where the impulse occurs.
 Send it impulses above and check the result. Use a multiplier to reset
 to another phase value.;
+#X msg 33 134 0;
+#X obj 58 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 58 211 else/sig2float~;
+#X obj 58 181 else/sine~ 0.25;
+#X msg 64 134 0.25;
+#X msg 134 133 0.75;
+#X msg 177 133 1;
+#X msg 101 133 0.5;
+#X obj 267 249 vsl 15 100 -1 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 267 217 else/sig2float~;
+#X text 221 132 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
 #fcfcfc 0 1;
@@ -198,23 +197,24 @@ to another phase value.;
 #X msg 310 132 1;
 #X msg 382 132 0.5;
 #X obj 310 164 else/impseq~;
-#X connect 0 0 3 1;
-#X connect 2 0 1 0;
-#X connect 3 0 2 0;
-#X connect 4 0 3 1;
-#X connect 5 0 3 1;
-#X connect 6 0 3 1;
-#X connect 7 0 3 1;
-#X connect 9 0 8 0;
-#X connect 10 0 9 0;
-#X connect 15 0 19 0;
-#X connect 18 0 14 0;
-#X connect 19 0 18 1;
-#X connect 24 0 28 0;
-#X connect 25 0 28 0;
-#X connect 26 0 28 0;
-#X connect 27 0 28 0;
-#X connect 28 0 10 1;
+#X obj 267 193 else/sine~ 0.25;
+#X connect 3 0 7 0;
+#X connect 6 0 2 0;
+#X connect 7 0 6 1;
+#X connect 11 0 14 1;
+#X connect 13 0 12 0;
+#X connect 14 0 13 0;
+#X connect 15 0 14 1;
+#X connect 16 0 14 1;
+#X connect 17 0 14 1;
+#X connect 18 0 14 1;
+#X connect 20 0 19 0;
+#X connect 23 0 27 0;
+#X connect 24 0 27 0;
+#X connect 25 0 27 0;
+#X connect 26 0 27 0;
+#X connect 27 0 28 1;
+#X connect 28 0 20 0;
 #X restore 494 200 pd sync;
 #N canvas 430 175 810 335 phase 0;
 #X obj 512 193 else/out~;
@@ -225,8 +225,8 @@ to another phase value.;
 offset"). This is also settable with the third inlet. This allows you
 to control two oscillators with the same frequency falling in and out
 of phase. Another feature is phase modulation., f 53;
-#X obj 120 245 else/out~;
-#X obj 120 209 +~;
+#X obj 123 245 else/out~;
+#X obj 123 209 +~;
 #X obj 69 144 else/sine~ 220 0.5;
 #X obj 138 182 else/sine~ 220;
 #X text 354 108 1;

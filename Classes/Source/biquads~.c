@@ -34,6 +34,7 @@ void biquads_bypass(t_biquads *x, t_floatarg f){
 }
 
 static void biquads_list(t_biquads *x, t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
 	int numfilt = (int)(argc/COEFFS); // nearest multiple - anything over is ignored
 	if(numfilt > STAGES)
 		numfilt = STAGES;
@@ -116,8 +117,8 @@ void *biquads_new(void){
 }
 
 void biquads_tilde_setup(void){
-    biquads_class = class_new(gensym("biquads~"), (t_newmethod) biquads_new,
-            CLASS_DEFAULT, sizeof (t_biquads), CLASS_DEFAULT, 0);
+    biquads_class = class_new(gensym("biquads~"), (t_newmethod)biquads_new,
+            (t_method)biquads_free, sizeof(t_biquads), CLASS_DEFAULT, 0);
     class_addmethod(biquads_class, nullfn, gensym("signal"), 0);
     class_addmethod(biquads_class, (t_method) biquads_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(biquads_class, (t_method) biquads_clear, gensym("clear"), 0);

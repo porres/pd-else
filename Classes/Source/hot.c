@@ -161,8 +161,8 @@ static void hot_proxy_dolist(t_hot_proxy *x, int ac, t_atom *av, int doit){
         hot_distribute(x->p_master, x->p_id, 0, ac, av, doit);
 }
 
-static void hot_proxy_list(t_hot_proxy *x,
-			     t_symbol *s, int ac, t_atom *av){
+static void hot_proxy_list(t_hot_proxy *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     hot_proxy_dolist(x, ac, av, 1);
 }
 
@@ -189,6 +189,7 @@ static void hot_proxy_anything(t_hot_proxy *x, t_symbol *s, int ac, t_atom *av){
 }
 
 static void hot_proxy_set(t_hot_proxy *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     if (ac){
         if (av->a_type == A_FLOAT){
             if (ac > 1)
@@ -226,6 +227,7 @@ static void hot_pointer(t_hot *x, t_gpointer *gp){
 }
 
 static void hot_list(t_hot *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     hot_proxy_dolist((t_hot_proxy *)x->x_proxies[0], ac, av, 1);
 }
 

@@ -60,6 +60,7 @@ static void gray_dsp(t_gray *x, t_signal **sp){
 }
 
 static void *gray_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_gray *x = (t_gray *)pd_new(gray_class);
     static int seed = 1;
     if ((ac) && (av->a_type == A_FLOAT))

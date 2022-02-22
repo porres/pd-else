@@ -45,6 +45,7 @@ static void quantizer_float(t_quantizer *x, t_float f){
 }
 
 static void quantizer_list(t_quantizer *x, t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     int old_bytes = x->x_bytes, i;
     x->x_bytes = argc*sizeof(t_atom);
     x->x_at = (t_atom *)t_resizebytes(x->x_at, old_bytes, x->x_bytes);
@@ -58,6 +59,7 @@ void quantizer_free(t_quantizer *x){
 }
 
 static void *quantizer_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_quantizer *x = (t_quantizer *)pd_new(quantizer_class);
     x->x_step = 0;
     int numargs = 0;

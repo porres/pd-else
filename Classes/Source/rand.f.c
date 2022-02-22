@@ -24,6 +24,7 @@ static void randf_bang(t_randf *x){
 }
 
 static void *randf_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_randf *x = (t_randf *) pd_new(randf_class);
     static int init_seed = 54569;
 /////////////////////////////////////////////

@@ -82,7 +82,7 @@ static t_int *pinknoise_perform(t_int *w){
     t_pinknoise *x = (t_pinknoise *)(w[1]);
     int n = (t_int)(w[2]);
     t_random_state *rstate = (t_random_state *)(w[3]);
-    float *signals = (uint32_t *)(w[4]);
+    float *signals = (float*)(w[4]);
     t_sample *out = (t_sample *)(w[5]);
     int octaves = x->x_octaves;
     float total = x->x_total;
@@ -112,6 +112,7 @@ static void pinknoise_dsp(t_pinknoise *x, t_signal **sp){
 }
 
 static void *pinknoise_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_pinknoise *x = (t_pinknoise *)pd_new(pinknoise_class);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_float, gensym("oct"));

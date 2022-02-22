@@ -40,7 +40,6 @@ static t_int *fbsine_perform_magic(t_int *w)
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
     t_float *in2 = (t_float *)(w[4]); // fb
-    t_float *in3 = (t_float *)(w[5]); // sync
     t_float *in4 = (t_float *)(w[6]); // phase
     t_float *out = (t_float *)(w[7]);
 // Magic Start
@@ -151,8 +150,8 @@ static void *fbsine_free(t_fbsine *x)
     return (void *)x;
 }
 
-static void *fbsine_new(t_symbol *s, int ac, t_atom *av)
-{
+static void *fbsine_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_fbsine *x = (t_fbsine *)pd_new(fbsine_class);
     t_float f1 = 0, f2 = 0, f3 = 0, f4 = 0;
     if (ac && av->a_type == A_FLOAT){
@@ -175,7 +174,7 @@ static void *fbsine_new(t_symbol *s, int ac, t_atom *av)
     t_float init_fb = f2;
     t_float init_phase = f3;
     x->x_filter = f4 != 0;
-    init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
+    init_phase = init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
     x->x_last_phase_offset = 0;
     x->x_freq = init_freq;
     x->x_inlet_fb = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);

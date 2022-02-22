@@ -238,6 +238,7 @@ static void suspedal_status(t_suspedal *x, t_float f){
 }
 
 static void *suspedal_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
 	t_suspedal *x = (t_suspedal *)pd_new(suspedal_class);
         t_float retrig = 0; 
         t_float status = 0;

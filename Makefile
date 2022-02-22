@@ -37,6 +37,7 @@ ctl.out.class.sources := Classes/Source/ctl.out.c
 suspedal.class.sources := Classes/Source/suspedal.c
 voices.class.sources := Classes/Source/voices.c
 buffer.class.sources := Classes/Source/buffer_obj.c
+bicoeff.class.sources := Classes/Source/bicoeff.c
 click.class.sources := Classes/Source/click.c
 canvas.active.class.sources := Classes/Source/canvas.active.c
 canvas.bounds.class.sources := Classes/Source/canvas.bounds.c
@@ -102,7 +103,6 @@ sort.class.sources := Classes/Source/sort.c
 spread.class.sources := Classes/Source/spread.c
 touch.in.class.sources := Classes/Source/touch.in.c
 touch.out.class.sources := Classes/Source/touch.out.c
-t2.class.sources := Classes/Aliases/t2.c
 unmerge.class.sources := Classes/Source/unmerge.c
 
 # signal:
@@ -120,7 +120,6 @@ balance~.class.sources := Classes/Source/balance~.c
 bandpass~.class.sources := Classes/Source/bandpass~.c
 bandstop~.class.sources := Classes/Source/bandstop~.c
 blocksize~.class.sources := Classes/Source/blocksize~.c
-bicoeff.class.sources := Classes/Source/bicoeff.c
 biquads~.class.sources := Classes/Source/biquads~.c
 ceil.class.sources := Classes/Source/ceil.c
 ceil~.class.sources := Classes/Source/ceil~.c

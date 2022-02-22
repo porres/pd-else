@@ -31,12 +31,14 @@ static void hz2rad_float(t_hz2rad *x, t_floatarg f)
 }
 
 static t_float convert(t_hz2rad *x, t_float f){
+    x = NULL;
     float radps = TWO_PI / sys_getsr();
     return f * radps;
 }
 
 static void hz2rad_list(t_hz2rad *x, t_symbol *s, int argc, t_atom *argv)
 {
+    s = NULL;
   int old_bytes = x->bytes, i = 0;
   x->bytes = argc*sizeof(t_atom);
   x->output_list = (t_atom *)t_resizebytes(x->output_list,old_bytes,x->bytes);

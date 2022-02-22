@@ -39,7 +39,7 @@ typedef struct _pluck{
 }t_pluck;
 
 static void pluck_clear(t_pluck *x){
-    for(int i = 0; i < x->x_sz; i++)
+    for(unsigned int i = 0; i < x->x_sz; i++)
         x->x_ybuf[i] = 0.;
     x->x_wh = 0;
     x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;

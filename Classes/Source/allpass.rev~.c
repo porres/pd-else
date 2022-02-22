@@ -183,6 +183,7 @@ static void allpass_rev_gain(t_allpass_rev *x, t_floatarg f1){
 }
 
 static void *allpass_rev_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_allpass_rev *x = (t_allpass_rev *)pd_new(allpass_rev_class);
     x->x_sr = sys_getsr();
     x->x_alloc = 0;

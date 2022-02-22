@@ -15,7 +15,6 @@ typedef struct _balance
 
 static t_int *balance_perform(t_int *w)
 {
-    t_balance *x = (t_balance *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // in1
     t_float *in2 = (t_float *)(w[4]); // in2

@@ -32,12 +32,14 @@ static void rad2hz_float(t_rad2hz *x, t_floatarg f)
 
 static t_float convert(t_rad2hz *x, t_float f)
 {
+    x = NULL;
     t_float iradps = sys_getsr() / TWO_PI;
     return f * iradps;
 }
 
 static void rad2hz_list(t_rad2hz *x, t_symbol *s, int argc, t_atom *argv)
 {
+    s = NULL;
   int old_bytes = x->bytes, i = 0;
   x->bytes = argc*sizeof(t_atom);
   x->output_list = (t_atom *)t_resizebytes(x->output_list,old_bytes,x->bytes);

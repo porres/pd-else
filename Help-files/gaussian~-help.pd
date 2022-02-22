@@ -77,7 +77,7 @@ higher in the case of low frequencies., f 62;
 #X text 164 273 float/signal - frequency in hz;
 #X text 164 316 float/signal - phase sync (ressets internal phase)
 ;
-#N canvas 704 92 847 522 sync 0;
+#N canvas 519 92 847 522 sync 0;
 #X text 517 49 Syncing the phase with control messages is useful for
 LFOs and control with MIDI. A sync with audio is usefull for the "hard
 sync" technique \, where an oscillator is synced according to the frequency
@@ -109,7 +109,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X obj 250 224 else/sig2float~;
 #X text 223 139 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
@@ -179,7 +179,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;

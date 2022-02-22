@@ -27,7 +27,6 @@ static t_int *saw_perform(t_int *w){
     t_saw *x = (t_saw *)(w[1]);
     int nblock = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]); // freq
-    t_float *in2 = (t_float *)(w[4]); // sync
     t_float *in3 = (t_float *)(w[5]); // phase
     t_float *out = (t_float *)(w[6]);
 // Magic Start
@@ -43,7 +42,6 @@ static t_int *saw_perform(t_int *w){
     double phase = x->x_phase;
     double last_phase_offset = x->x_last_phase_offset;
     double sr = x->x_sr;
-    double output;
     while (nblock--){
         double hz = *in1++;
         double phase_offset = *in3++;
@@ -77,7 +75,6 @@ static t_int *saw_perform_sig(t_int *w)
     double phase = x->x_phase;
     double last_phase_offset = x->x_last_phase_offset;
     double sr = x->x_sr;
-    double output;
     while (nblock--){
         double hz = *in1++;
         t_float trig = *in2++;
@@ -125,6 +122,7 @@ static void *saw_free(t_saw *x){
 }
 
 static void *saw_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_saw *x = (t_saw *)pd_new(saw_class);
     t_float f1 = 0, f2 = 0;
     if (ac && av->a_type == A_FLOAT){
@@ -137,7 +135,7 @@ static void *saw_new(t_symbol *s, int ac, t_atom *av){
     }
     t_float init_freq = f1;
     t_float init_phase = f2;
-    init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
+    init_phase = init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
     if (init_phase == 0 && init_freq > 0)
         x->x_phase = 1.;
     x->x_last_phase_offset = 0;

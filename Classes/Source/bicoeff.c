@@ -17,7 +17,7 @@ static t_class *bicoeff_class;
 
 static void bicoeff_bang(t_bicoeff *x){
     t_atom at[5];
-    double a0, a1, a2, b1, b2;
+    double a0 = 0, a1 = 0, a2 = 0, b1 = 0, b2 = 0;
 // off
     if (x->x_type == 0){
         a0 = 1.;
@@ -220,7 +220,7 @@ static void bicoeff_bang(t_bicoeff *x){
         b2 = -(amp+1 + (amp-1)*cos_w - alphaS) / b0;
     }
 // resonant
-    else if (x->x_type == 9){
+    else if(x->x_type == 9){
         double omega, alphaQ, cos_w, b0;
         double hz = (double)x->x_freq;
         double q = (double)x->x_q_s;
@@ -252,6 +252,7 @@ static void bicoeff_bang(t_bicoeff *x){
 }
 
 static void bicoeff_list(t_bicoeff *x, t_symbol *s, int ac, t_atom * av){
+    s = NULL;
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -276,12 +277,8 @@ static void bicoeff_list(t_bicoeff *x, t_symbol *s, int ac, t_atom * av){
     bicoeff_bang(x);
 }
 
-void bicoeff_off(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
-    x->x_type = 0;
-    bicoeff_bang(x);
-}
-
 void bicoeff_allpass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -308,6 +305,7 @@ void bicoeff_allpass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void bicoeff_bandpass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -334,6 +332,7 @@ void bicoeff_bandpass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void bicoeff_bandstop(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -360,6 +359,7 @@ void bicoeff_bandstop(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void bicoeff_eq(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -386,6 +386,7 @@ void bicoeff_eq(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void bicoeff_highpass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -412,6 +413,7 @@ void bicoeff_highpass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void bicoeff_highshelf(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -438,6 +440,7 @@ void bicoeff_highshelf(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void bicoeff_lowpass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -464,6 +467,7 @@ void bicoeff_lowpass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void bicoeff_lowshelf(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -490,6 +494,7 @@ void bicoeff_lowshelf(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
 }
 
 void bicoeff_resonant(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     int argnum = 0; //current argument
     while(ac){
         if(av -> a_type == A_FLOAT){
@@ -533,6 +538,7 @@ static void bicoeff_gain(t_bicoeff *x, t_floatarg val){
 }
 
 static void *bicoeff_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_bicoeff *x = (t_bicoeff *)pd_new(bicoeff_class);
     float freq = 0;
     float q_or_s = 1;

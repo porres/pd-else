@@ -39,6 +39,7 @@ static void randi_bang(t_randi *x){
 }
 
 static void *randi_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_randi *x = (t_randi *) pd_new(randi_class);
     static unsigned int random_seed = 1489853723;
 //////////////////////////////////////////////////////////
