@@ -1,4 +1,4 @@
-#N canvas 512 23 560 495 12;
+#N canvas 512 23 561 488 12;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -29,19 +29,19 @@
 0;
 #X obj 3 341 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 377 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 3 409 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 107 350 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 468 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 3 462 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 107 313 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 242 314 phase sync (ressets internal phase);
-#X text 164 387 1) float;
-#X text 230 406 - initial phase offset (default 0);
-#X text 230 387 - frequency in hertz (default 0);
-#X text 164 406 2) float;
+#X text 164 419 1) float;
+#X text 230 438 - initial phase offset (default 0);
+#X text 230 419 - frequency in hertz (default 0);
+#X text 164 438 2) float;
 #X text 171 314 float -;
 #X obj 194 149 nbx 4 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
 #dcdcdc #000000 #000000 0 256;
@@ -77,10 +77,10 @@ f 50;
 #X connect 9 0 5 0;
 #X connect 10 0 9 0;
 #X restore 469 217 pd rate;
-#X obj 3 432 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 3 374 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 104 442 -rate <float>;
-#X text 209 442 - rate period in ms (default 1 \, min 0.1);
+#X text 104 384 -rate <float>;
+#X text 209 384 - rate period in ms (default 1 \, min 0.1);
 #X obj 109 266 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 241 267 frequency in hz;

@@ -1,23 +1,23 @@
-#N canvas 489 23 567 500 10;
-#X obj 2 465 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
-14 -228856 -66577 0;
-#X obj 2 231 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
--228856 -1 0;
-#X obj 2 356 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
-13 -228856 -1 0;
-#X obj 2 387 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
-0 13 -228856 -1 0;
-#X obj 81 239 cnv 17 3 112 empty \$0-pddp.cnv.let.0 0 5 9 0 16 -228856
--162280 0;
-#X text 129 239 signal;
-#X text 135 254 float;
-#X obj 222 137 osc~ 440;
-#X text 179 410 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
+#N canvas 489 23 562 489 10;
+#X obj 2 461 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
+14 #dcdcdc #404040 0;
+#X obj 2 230 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
+#dcdcdc #000000 0;
+#X obj 2 355 cnv 3 550 3 empty \$0-pddp.cnv.outlets outlets 8 12 0
+13 #dcdcdc #000000 0;
+#X obj 2 415 cnv 3 550 3 empty \$0-pddp.cnv.argument arguments 8 12
+0 13 #dcdcdc #000000 0;
+#X obj 81 238 cnv 17 3 112 empty \$0-pddp.cnv.let.0 0 5 9 0 16 #dcdcdc
+#9c9c9c 0;
+#X text 129 238 signal;
+#X text 135 253 float;
+#X obj 222 136 osc~ 440;
+#X text 179 438 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear), f 60;
 #N canvas 522 161 803 382 examples 0;
-#X obj 153 180 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X floatatom 150 200 5 0 0 0 - - -;
+#X obj 153 180 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X floatatom 150 200 5 0 0 0 - - - 0;
 #X text 165 180 set slider (0-1);
 #X msg 212 237 on;
 #X msg 212 264 off;
@@ -26,16 +26,16 @@
 #X obj 106 150 osc~ 440;
 #X msg 534 242 mode \$1;
 #X obj 534 165 vradio 15 1 0 3 \$0-dummy \$0-dummy-set empty 0 -8 0
-10 -228856 -1 -1 1;
+10 #dcdcdc #000000 #000000 0;
 #X text 518 180 dB;
 #X text 494 194 linear;
-#X floatatom 534 218 5 0 0 0 - - -;
+#X floatatom 534 218 5 0 0 0 - - - 0;
 #X obj 451 241 osc~ 440;
 #X text 457 144 slider scaling:;
 #X text 488 164 quartic;
 #X msg 671 254 ramp \$1;
 #X obj 671 228 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X msg 197 211 mute;
 #X text 232 211 mute button;
 #X text 406 72 You can also set a ramp time for the slider value \,
@@ -43,9 +43,9 @@ the default is 20 ms and the minimum is 5 ms. This also affects the
 slider value input in the right outlet.;
 #X msg 602 248 gain \$1;
 #X obj 602 222 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 605 199 hsl 128 15 0.1 2 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 605 199 hsl 128 15 0.1 2 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 623 198 maximum gain;
 #X obj 150 299 else/out1~;
 #X obj 534 295 else/out1~;
@@ -75,54 +75,56 @@ time.;
 #X connect 21 0 26 0;
 #X connect 22 0 21 0;
 #X connect 23 0 22 0;
-#X restore 473 126 pd examples;
-#X text 117 270 <on/off>;
-#X text 93 320 gain <float>;
-#X text 93 337 ramp <float>;
-#X text 117 394 1) float;
-#X text 117 410 2) float;
-#X text 129 364 (none);
-#X text 93 287 mode <float>;
-#X text 179 287 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
+#X restore 473 125 pd examples;
+#X text 117 269 <on/off>;
+#X text 93 319 gain <float>;
+#X text 93 336 ramp <float>;
+#X text 117 422 1) float;
+#X text 117 438 2) float;
+#X text 129 363 (none);
+#X text 93 286 mode <float>;
+#X text 179 286 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear), f 60;
-#X obj 3 4 cnv 15 301 42 empty empty out1~ 20 20 2 37 -233017 -1 0
-;
-#X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 3 3 cnv 15 301 42 empty empty out1~ 20 20 2 37 #e0e0e0 #000000
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
-#X restore 3 4 graph;
+#X restore 3 3 graph;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
-#X restore 305 4 pd;
-#X text 179 254 - sets slider (range is clipped to 0-1), f 60;
-#X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X restore 305 3 pd;
+#X text 179 253 - sets slider (range is clipped to 0-1), f 60;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 23 41 cnv 4 4 4 empty empty Mono 0 28 2 18 -233017 -1 0;
-#X obj 75 41 cnv 4 4 4 empty empty Output 0 28 2 18 -233017 -1 0;
-#X obj 458 12 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
-0;
-#X obj 478 12 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
-0;
-#X obj 515 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
-0;
-#X obj 464 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
-0;
-#X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
-0;
-#X text 116 201 click & drag ===>;
-#X text 131 181 DSP toggle ==>;
-#X text 324 182 <= Mute button;
-#X text 179 270 - turns DSP Engine (Compute Audio) On or Off, f 60
+#X obj 23 40 cnv 4 4 4 empty empty Mono 0 28 2 18 #e0e0e0 #000000 0
 ;
-#X text 141 303 mute;
-#X text 179 303 - mute/unmute button, f 60;
-#X text 179 337 - sets ramp time in ms for slider values (default 20)
+#X obj 75 40 cnv 4 4 4 empty empty Output 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X text 116 200 click & drag ===>;
+#X text 131 180 DSP toggle ==>;
+#X text 324 181 <= Mute button;
+#X text 179 269 - turns DSP Engine (Compute Audio) On or Off, f 60
+;
+#X text 141 302 mute;
+#X text 179 302 - mute/unmute button, f 60;
+#X text 179 336 - sets ramp time in ms for slider values (default 20)
 , f 60;
-#X text 179 394 - max gain (needs to be > 0 \, default 1), f 60;
-#X text 179 320 - sets max gain (values <= 0 are ignored), f 60;
+#X text 179 422 - max gain (needs to be > 0 \, default 1), f 60;
+#X text 179 319 - sets max gain (values <= 0 are ignored), f 60;
 #N canvas 737 277 684 429 scaling 0;
-#X obj 32 57 cnv 15 198 198 empty empty empty 20 12 0 14 -253888 -66577
+#X obj 32 57 cnv 15 198 198 empty empty empty 20 12 0 14 #f4f8fc #404040
 0;
 #N canvas 0 22 452 302 (subpatch) 0;
 #X array dB 441 float 1;
@@ -340,11 +342,11 @@ same as the output. We have then two non linear modes:;
 #X obj 463 301 osc~ 440;
 #X msg 528 314 gain \$1;
 #X obj 441 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 528 291 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 528 177 vsl 15 80 0.1 2 0 0 empty empty empty 0 -9 0 10 -233017
--1 -1 0 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 528 177 vsl 15 80 0.1 2 0 0 empty empty empty 0 -9 0 10 #e0e0e0
+#000000 #000000 0 1;
 #X text 534 272 max gain;
 #X text 417 196 dB;
 #X text 70 265 entry (slider) value;
@@ -367,12 +369,12 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #X connect 26 0 24 0;
 #X connect 27 0 26 0;
 #X connect 33 0 26 0;
-#X restore 467 148 pd scaling \; modes & gain;
-#X obj 222 166 else/out1~ 1 0;
-#X obj 2 437 cnv 3 550 3 empty \$0-pddp.cnv.argument flags 8 12 0 13
--228856 -1 0;
-#X text 99 444 -ch <float>;
-#X text 179 444 - sets output channel (default 1), f 60;
+#X restore 467 147 pd scaling \; modes & gain;
+#X obj 222 165 else/out1~ 1 0;
+#X obj 2 387 cnv 3 550 3 empty \$0-pddp.cnv.argument flags 8 12 0 13
+#dcdcdc #000000 0;
+#X text 99 394 -ch <float>;
+#X text 179 394 - sets output channel (default 1), f 60;
 #N canvas 522 161 394 214 -ch 0;
 #X obj 207 86 osc~ 440;
 #X obj 77 86 osc~ 440;
@@ -382,16 +384,16 @@ change it with the -ch flag to route it to other outputs., f 52;
 #X obj 207 118 else/out1~ -ch 2;
 #X connect 0 0 4 0;
 #X connect 1 0 3 0;
-#X restore 502 181 pd -ch;
+#X restore 502 180 pd -ch;
 #N canvas 477 417 534 169 see 0;
 #X obj 342 78 else/out8~;
 #X obj 222 78 else/out4~;
 #X text 83 34 See also:;
 #X obj 105 78 else/out~;
-#X restore 472 203 pd see also;
-#X text 85 88 [out1~] is cariant of [out~] and a convenient mono output
+#X restore 472 202 pd see also;
+#X text 85 87 [out1~] is cariant of [out~] and a convenient mono output
 abstraction. It has controls for mute \, DSP on/off \, ramp time \,
 maximum gain and scaling mode.;
-#X text 179 239 - incoming signal routed to a mono output, f 60;
+#X text 179 238 - incoming signal routed to a mono output, f 60;
 #X connect 7 0 41 0;
-#X coords 0 500 1 499 74 39 0;
+#X coords 0 489 1 488 74 39 0;

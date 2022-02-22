@@ -3,7 +3,7 @@
 0;
 #X obj 5 435 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 5 469 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 5 500 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 5 562 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
@@ -48,8 +48,8 @@
 #X obj 118 347 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 185 444 signal;
-#X text 137 492 2) float - decay time in ms (default 0);
-#X text 137 507 3) float - filter cutoff frequency (default 15000)
+#X text 137 523 2) float - decay time in ms (default 0);
+#X text 137 538 3) float - filter cutoff frequency (default 15000)
 ;
 #X obj 118 368 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -131,13 +131,13 @@ significantly.;
 #X text 232 346 - trigger (determines the amplitude);
 #X obj 229 148 else/dust~ 4;
 #X obj 170 215 else/pluck~ 50 2500 10000, f 30;
-#X obj 5 529 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 5 470 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 118 411 cnv 17 3 17 empty empty 4 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 149 411 float/signal;
 #X text 231 411 - optional noise input (with the -in flag);
-#X text 137 537 -in - creates an extra right outlet for noise input.
+#X text 137 478 -in - creates an extra right outlet for noise input.
 ;
 #N canvas 466 127 637 455 examples 0;
 #X text 188 38 And now for some computer music cliché with random
@@ -181,19 +181,19 @@ generators..., f 32;
 #X restore 403 285 pd examples;
 #N canvas 753 120 447 443 -in 0;
 #X obj 118 291 else/out~;
-#X obj 118 237 else/pluck~ 50 2500 5000 -in;
 #X obj 159 144 else/dust~ 4;
 #X obj 283 206 else/impseq~;
 #X text 51 47 The [pluck~] object uses an internal white noise generator
 as the excitation signal. But if a "-in" flag is given \, [pluck~]
 creates an extra right outlet for the excitation signal. Here we use
 an impulse instead of the white noise.;
-#X connect 1 0 0 0;
-#X connect 2 0 1 1;
-#X connect 2 0 3 0;
-#X connect 3 0 1 4;
+#X obj 118 237 else/pluck~ -in 50 2500 5000;
+#X connect 1 0 2 0;
+#X connect 1 0 4 1;
+#X connect 2 0 4 4;
+#X connect 4 0 0 0;
 #X restore 483 272 pd -in;
-#X text 137 477 1) float - frequency in hertz (default 0);
+#X text 137 508 1) float - frequency in hertz (default 0);
 #X text 49 92 [pluck~] is a Karplus-Strong algorithm with a 2nd order
 lowpass filter in the feedback loop. It takes frequency in hertz \,
 a trigger input \, a decay time in ms and a cutoff frequency for the

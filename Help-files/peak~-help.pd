@@ -1,18 +1,18 @@
-#N canvas 452 63 559 478 10;
+#N canvas 452 63 559 467 10;
 #X obj 4 250 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 3 333 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 366 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 3 393 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 85 342 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 80 342 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 3 440 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 208 221 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
@@ -82,7 +82,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -115,23 +115,23 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X obj 85 257 cnv 17 3 69 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 80 257 cnv 17 3 69 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 208 137 noise~;
-#X text 168 258 signal;
-#X text 174 342 float;
+#X text 163 258 signal;
+#X text 169 342 float;
 #X msg 268 139 linear;
-#X text 218 258 - signal to analyze;
-#X text 156 375 1) float;
-#X text 156 391 2) float;
-#X text 216 375 - analysis window size in samples (default 1024),
+#X text 213 258 - signal to analyze;
+#X text 151 402 1) float;
+#X text 151 418 2) float;
+#X text 211 402 - analysis window size in samples (default 1024),
 f 53;
-#X text 216 391 - hop size in samples (default \, half the window size)
+#X text 211 418 - hop size in samples (default \, half the window size)
 ;
-#X text 168 312 linear;
-#X text 192 294 db;
-#X text 96 276 set <float \, float>;
-#X text 218 276 - sets window and hop size in samples;
+#X text 163 312 linear;
+#X text 187 294 db;
+#X text 91 276 set <float \, float>;
+#X text 213 276 - sets window and hop size in samples;
 #X msg 285 163 db;
 #N canvas 548 290 817 330 analysis 0;
 #X text 15 62 The optional creation arguments are the analysis window
@@ -230,14 +230,14 @@ analytical structure.;
 #X text 61 88 [peak~] is similar to Pd Vanilla's [env~] \, but it reports
 the peak amplitude value in linear (default) or dBFS.;
 #X obj 208 190 else/peak~ -db;
-#X text 219 294 - change peak value to dBFS;
-#X text 218 312 - change peak value to linear (the default is linear)
+#X text 214 294 - change peak value to dBFS;
+#X text 213 312 - change peak value to linear (the default is linear)
 ;
-#X text 218 342 - peak amplitude value;
-#X obj 3 411 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X text 213 342 - peak amplitude value;
+#X obj 3 368 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 186 416 -db;
-#X text 216 416 - sets the output to dBFS, f 53;
+#X text 181 373 -db;
+#X text 211 373 - sets the output to dBFS, f 53;
 #X connect 8 0 37 0;
 #X connect 11 0 37 0;
 #X connect 21 0 37 0;

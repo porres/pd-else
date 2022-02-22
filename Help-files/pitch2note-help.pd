@@ -1,11 +1,11 @@
-#N canvas 551 23 560 455 10;
+#N canvas 489 23 563 458 10;
 #X obj 4 253 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 348 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 4 354 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 379 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 4 385 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 136 356 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 136 362 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 137 262 cnv 17 3 56 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -80,7 +80,7 @@ for double sharp/flats, f 21;
 #X restore 434 182 pd other-scales;
 #X text 187 277 chromatic - sets to chromatic mode (default);
 #X text 247 325 - user defined scales;
-#N canvas 993 163 582 443 unicode 0;
+#N canvas 784 163 582 443 unicode 0;
 #X obj 61 368 else/display;
 #X obj 61 230 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 #dcdcdc
 #000000 #000000 0 256;
@@ -104,8 +104,8 @@ and flats are represented by the unicode characters "♯" and "♭"
 #X connect 9 0 8 0;
 #X connect 10 0 0 0;
 #X restore 434 203 pd unicode;
-#X text 170 387 -unicode: sets to unicode moode;
-#X text 170 404 -list: sets to list output mode;
+#X text 170 393 -unicode: sets to unicode moode;
+#X text 170 410 -list: sets to list output mode;
 #N canvas 993 163 583 403 accidentals 0;
 #X obj 61 331 else/display;
 #X obj 61 193 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 #dcdcdc
@@ -129,8 +129,8 @@ and flats are represented by the unicode characters "♯" and "♭"
 #X connect 6 0 5 0;
 #X connect 11 0 0 0;
 #X restore 434 161 pd accidentals;
-#X text 172 356 symbol/list;
-#N canvas 993 163 580 481 list 0;
+#X text 172 362 symbol/list;
+#N canvas 786 163 580 481 list 0;
 #X obj 61 418 else/display;
 #X obj 61 230 nbx 3 16 0 127 0 0 empty empty empty 0 -8 0 12 #dcdcdc
 #000000 #000000 0 256;
@@ -163,7 +163,7 @@ both flags of course (in any order).;
 #X obj 231 187 else/pitch2note;
 #X text 179 262 float/list;
 #X text 247 262 - MIDI pitch value(s), f 35;
-#X text 247 356 - note name(s);
+#X text 247 362 - note name(s);
 #X msg 165 157 60 66 74;
 #X text 62 89 [pitch2note] converts a MIDI pitch value to note names
 (such as Eb3). The names end with an octave number \, in a way that

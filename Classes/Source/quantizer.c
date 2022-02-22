@@ -2,7 +2,6 @@
 
 #include "m_pd.h"
 #include <math.h>
-#include <string.h>
 
 static t_class *quantizer_class;
 
@@ -11,7 +10,7 @@ typedef struct _quantizer{
 	t_float     x_step;
     t_int       x_bytes;
     t_int       x_mode;
-    t_atom       *x_at;
+    t_atom     *x_at;
 }t_quantizer;
 
 static void quantizer_mode(t_quantizer *x, t_float f){
@@ -69,30 +68,24 @@ static void *quantizer_new(t_symbol *s, int argc, t_atom *argv){
             switch(numargs){
                 case 0:
                     x->x_step = atom_getfloatarg(0, argc, argv);
-                    numargs++;
-                    argc--;
-                    argv++;
+                    argc--, argv++;
                     break;
                 case 1:
                     x->x_mode = (int)atom_getfloatarg(0, argc, argv);
-                    numargs++;
-                    argc--;
-                    argv++;
+                    argc--, argv++;
                     break;
                 default:
-                    numargs++;
-                    argc--;
-                    argv++;
+                    argc--, argv++;
                     break;
             };
+            numargs++;
         }
-        else if(argv -> a_type == A_SYMBOL){
-            t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-            if(!strcmp(curarg->s_name, "-mode") && argc == 2){
+        else if(argv->a_type == A_SYMBOL && !numargs){
+            if(atom_getsymbolarg(0, argc, argv) == gensym("-mode") && argc >= 2){
                 if((argv+1)->a_type == A_FLOAT){
                     x->x_mode = (int)atom_getfloatarg(1, argc, argv);
-                    argc -= 2;
-                    argv += 2;
+                    argc-=2;
+                    argv+=2;
                 }
                 else
                     goto errstate;
@@ -111,15 +104,15 @@ static void *quantizer_new(t_symbol *s, int argc, t_atom *argv){
     outlet_new(&x->x_obj, 0);
     x->x_bytes = sizeof(t_atom);
     x->x_at = (t_atom *)getbytes(x->x_bytes);
-    return (x);
+    return(x);
 errstate:
     pd_error(x, "quantizer: improper args");
-    return NULL;
+    return(NULL);
 }
 
 void quantizer_setup(void){
 	quantizer_class = class_new(gensym("quantizer"), (t_newmethod)quantizer_new,
-            (t_method)quantizer_free, sizeof(t_quantizer), 0, A_GIMME, 0);
+        (t_method)quantizer_free, sizeof(t_quantizer), 0, A_GIMME, 0);
 	class_addfloat(quantizer_class, (t_method)quantizer_float);
 	class_addlist(quantizer_class, (t_method)quantizer_list);	
 	class_addmethod(quantizer_class, (t_method)quantizer_mode,  gensym("mode"), A_FLOAT, 0);

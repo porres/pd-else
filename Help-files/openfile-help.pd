@@ -29,21 +29,21 @@
 0;
 #X obj 4 251 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 286 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 324 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 102 202 cnv 17 3 43 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 4 387 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 168 203 bang;
-#X obj 4 317 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 4 285 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 359 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
 0;
 #X text 213 262 (none);
 #X obj 227 126 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 93 325 -h <anything> -;
+#X text 93 293 -h <anything> -;
 #X text 113 221 open <symbol> -;
 #X text 211 221 opens folder/file/weblink specified by the symbol \,
 if no symbol is given \, the current folder is opened, f 52;
@@ -61,10 +61,11 @@ on Github;
 #X text 74 92 [openfile] can be used to open folders and files in your
 computer and also weblinks.;
 #X text 198 203 - open set file;
-#X text 110 294 1) symbol - folder/file/weblink address (default: current
+#X text 110 332 1) symbol - folder/file/weblink address (default: current
 folder), f 66;
-#X text 191 325 sets to hyperlink (GUI) mode \, optional arguments
-set text to display (which is the argument by default), f 54;
 #X text 162 367 clicking on the object opens file;
 #X obj 122 157 else/openfile -h ./README.pdf Else's README;
+#X text 191 293 sets to hyperlink (GUI) mode \, 1st element is file
+to open and name to display \, further arguments overwrite display.
+;
 #X connect 21 0 27 0;

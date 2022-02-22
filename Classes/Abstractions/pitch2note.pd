@@ -4,7 +4,7 @@
 #X text 204 132 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 206 113 Alexandre Torres Porres (2021);
 #X obj 246 31 inlet;
-#N canvas 1370 219 430 489 set-scale 0;
+#N canvas 936 219 430 489 set-scale 0;
 #X obj 120 104 list;
 #X obj 153 154 list length;
 #X obj 153 176 == 12;

@@ -43,28 +43,28 @@ int \, floor & ceil., f 64;
 0;
 #X obj 2 315 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 2 352 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 2 382 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 106 324 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 158 361 1) float;
+#X text 158 391 1) float;
 #X obj 105 289 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 106 242 cnv 17 3 40 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 2 410 cnv 3 550 3 empty empty flag 8 12 0 13 #dcdcdc #000000
+#X obj 2 350 cnv 3 550 3 empty empty flag 8 12 0 13 #dcdcdc #000000
 0;
-#X text 129 419 -mode <float>;
-#X text 219 419 -;
-#X text 218 361 - step value (default = 0 \, no approximation), f
+#X text 129 359 -mode <float>;
+#X text 219 359 -;
+#X text 218 391 - step value (default = 0 \, no approximation), f
 52;
 #X text 134 267 mode <float>;
 #X text 220 266 - sets approximarion mode <0 \, 1 \, 2 or 3>;
 #X text 220 289 - step value to quantize to;
-#X text 231 419 sets approximation mode <0 \, 1 \, 2 or 3>;
-#X text 218 377 -;
-#X text 158 377 2) float;
-#X text 230 377 approximation mode: 0 (round) \, 1 (int) \, 2 (floor)
+#X text 231 359 sets approximation mode <0 \, 1 \, 2 or 3>;
+#X text 218 407 -;
+#X text 158 407 2) float;
+#X text 230 407 approximation mode: 0 (round) \, 1 (int) \, 2 (floor)
 or 3 (ceil) - default 0, f 50;
 #X text 176 241 float;
 #X text 176 290 float;
@@ -91,7 +91,7 @@ or 3 (ceil) - default 0, f 50;
 #dcdcdc #000000 #000000 0 256;
 #X obj 179 283 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X obj 179 239 else/quantizer 1;
+#X obj 179 239 else/quantizer -mode 2 1;
 #X connect 1 0 11 0;
 #X connect 3 0 13 0;
 #X connect 4 0 5 0;

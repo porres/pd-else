@@ -1,8 +1,8 @@
-#N canvas 627 207 666 329 12;
+#N canvas 571 109 490 305 12;
 #X obj 68 141 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
 #X obj 167 36 inlet;
-#X obj 334 43 inlet;
+#X obj 334 36 inlet;
 #N canvas 188 66 521 403 inc 0;
 #X obj 144 247 v inc_\$0;
 #X obj 112 306 v dir_\$0;
@@ -49,10 +49,10 @@
 #X connect 10 0 9 0;
 #X connect 10 1 11 0;
 #X connect 11 0 5 0;
-#X restore 334 108 pd phase_sync;
+#X restore 334 104 pd phase_sync;
 #X obj 68 247 outlet;
-#X text 305 196 Part of ELSE \; https://github.com/porres/pd-else;
-#X text 307 177 Alexandre Torres Porres (2018);
+#X text 201 182 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 203 163 Alexandre Torres Porres (2018);
 #X obj 100 143 r \$0-ms;
 #X obj 68 172 metro;
 #N canvas 205 93 546 471 init 0;
@@ -64,7 +64,7 @@
 #X obj 257 186 route float list -rate;
 #X obj 141 94 trigger bang bang;
 #X obj 257 326 s \$0-freq;
-#X obj 357 220 s \$0-rate;
+#X obj 357 240 s \$0-rate;
 #X obj 257 275 unpack float float;
 #X obj 114 287 v phase_\$0;
 #X msg 114 257 1;
@@ -73,11 +73,12 @@
 #X obj 257 127 else/args;
 #X obj 257 157 else/break -;
 #X obj 62 59 else/lb 3, f 23;
+#X obj 357 212 list split 1;
 #X connect 2 0 1 0;
 #X connect 4 0 3 0;
 #X connect 5 0 9 0;
 #X connect 5 1 9 0;
-#X connect 5 2 8 0;
+#X connect 5 2 17 0;
 #X connect 6 0 13 0;
 #X connect 6 1 14 0;
 #X connect 9 0 7 0;
@@ -90,9 +91,11 @@
 #X connect 16 0 0 0;
 #X connect 16 1 6 0;
 #X connect 16 2 2 0;
+#X connect 17 0 8 0;
+#X connect 17 1 5 0;
 #X restore 68 86 pd init;
 #X obj 167 71 route float rate;
-#N canvas 1214 496 400 314 rate 0;
+#N canvas 966 432 400 314 rate 0;
 #X obj 135 32 inlet;
 #X obj 167 244 v rate_\$0;
 #X obj 135 106 t b f;
@@ -108,7 +111,7 @@
 #X connect 6 0 3 0;
 #X connect 6 0 7 0;
 #X connect 7 0 1 0;
-#X restore 221 115 pd rate;
+#X restore 221 104 pd rate;
 #N canvas 681 334 659 446 phasor 0;
 #X obj 137 77 expr dir_\$0 == 1 && phase_\$0 >= 1;
 #X obj 163 152 expr dir_\$0 == -1 && phase_\$0 <= 0;

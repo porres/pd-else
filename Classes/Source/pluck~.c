@@ -4,7 +4,6 @@
 #include "random.h"
 #include <math.h>
 #include <stdlib.h>
-#include <string.h>
 
 #define PI 3.14159265358979323846
 #define PLUCK_STACK 48000 // stack buf size, 1 sec at 48k
@@ -201,8 +200,7 @@ static uint32_t random_trand(uint32_t* s1, uint32_t* s2, uint32_t* s3 ){
     return *s1 ^ *s2 ^ *s3;
 }
 
-static float random_frand(uint32_t* s1, uint32_t* s2, uint32_t* s3)
-{
+static float random_frand(uint32_t* s1, uint32_t* s2, uint32_t* s3){
     // return a float from -1.0 to +0.999...
     union { uint32_t i; float f; } u;        // union for floating point conversion of result
     u.i = 0x40000000 | (random_trand(s1, s2, s3) >> 9);
@@ -316,8 +314,8 @@ static void pluck_dsp(t_pluck *x, t_signal **sp){
 }
 
 static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
-    t_pluck *x = (t_pluck *)pd_new(pluck_class);
     s = NULL;
+    t_pluck *x = (t_pluck *)pd_new(pluck_class);
 /////////////////////////////////////////////////////////////////////////////////////
     static int seed = 1;
     random_init(&x->x_rstate, seed++);
@@ -327,9 +325,8 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
     x->x_noise_input = 0;
 /////
     int argnum = 0;
-    int flag = 0;
     while(argc > 0){
-        if(argv->a_type == A_FLOAT && !flag){ //if current argument is a float
+        if(argv->a_type == A_FLOAT){ //if current argument is a float
             t_float argval = atom_getfloatarg(0, argc, argv);
             switch(argnum){
                 case 0:
@@ -345,24 +342,19 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
                     break;
             };
             argnum++;
-            argc--;
-            argv++;
+            argc--, argv++;
         }
-        else if(argv->a_type == A_SYMBOL){
-            flag = 1;
+        else if(argv->a_type == A_SYMBOL && !argnum){
             t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-            if(!strcmp(curarg->s_name, "-in")){
+            if(curarg == gensym("-in")){
                 x->x_noise_input = 1;
-                argc--;
-                argv++;
+                argc--, argv++;
             }
-            else{
+            else
                 goto errstate;
-            };
         }
-        else{
+        else
             goto errstate;
-        }
     };
 /////////////////////////////////////////////////////////////////////////////////////
     x->x_sr = sys_getsr();
@@ -386,10 +378,10 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
     if(x->x_noise_input)
         inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     x->x_outlet = outlet_new((t_object *)x, &s_signal);
-    return (x);
-    errstate:
-        pd_error(x, "[pluck~]: improper args");
-        return NULL;
+    return(x);
+errstate:
+    pd_error(x, "[pluck~]: improper args");
+    return(NULL);
 }
 
 static void * pluck_free(t_pluck *x){
@@ -399,12 +391,12 @@ static void * pluck_free(t_pluck *x){
     inlet_free(x->x_alet);
     inlet_free(x->x_inlet_cutoff);
     outlet_free(x->x_outlet);
-    return (void *)x;
+    return(void *)x;
 }
 
 void pluck_tilde_setup(void){
     pluck_class = class_new(gensym("pluck~"), (t_newmethod)pluck_new,
-                (t_method)pluck_free, sizeof(t_pluck), 0, A_GIMME, 0);
+        (t_method)pluck_free, sizeof(t_pluck), 0, A_GIMME, 0);
     class_addmethod(pluck_class, nullfn, gensym("signal"), 0);
     CLASS_MAINSIGNALIN(pluck_class, t_pluck, x_freq);
     class_addmethod(pluck_class, (t_method)pluck_dsp, gensym("dsp"), A_CANT, 0);

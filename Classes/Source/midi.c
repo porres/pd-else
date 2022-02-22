@@ -945,7 +945,7 @@ static void *midi_new(t_symbol * s, int ac, t_atom *av){
     x->x_ntempi = 0;
     x->x_tempomap = x->x_tempomapini;
     x->x_defname = &s_;
-    argn = 0;
+    int argn = 0;
     while(ac){
         if(av->a_type == A_SYMBOL){
             s = atom_getsymbolarg(0, ac, av);

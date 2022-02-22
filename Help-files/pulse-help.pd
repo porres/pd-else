@@ -1,4 +1,4 @@
-#N canvas 567 23 563 574 12;
+#N canvas 567 23 563 566 12;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -29,11 +29,11 @@
 0;
 #X obj 3 396 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 432 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 3 465 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 135 405 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 545 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 3 539 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 136 302 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -41,9 +41,9 @@
 #X obj 135 344 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 271 368 phase sync (ressets internal phase);
-#X text 164 442 1) float;
-#X text 230 442 - frequency in hertz (default 0);
-#X text 164 462 2) float;
+#X text 164 475 1) float;
+#X text 230 475 - frequency in hertz (default 0);
+#X text 164 495 2) float;
 #X text 201 345 float -;
 #X text 201 302 float -;
 #X obj 195 166 nbx 4 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
@@ -57,9 +57,9 @@
 #X text 271 344 pulse width (from 0 to 1);
 #X text 201 405 float -;
 #X text 269 405 toggle output;
-#X text 230 482 - initial phase offset (default 0);
-#X text 164 482 3) float;
-#X text 230 462 - pulse width (default 0);
+#X text 230 515 - initial phase offset (default 0);
+#X text 164 515 3) float;
+#X text 230 495 - pulse width (default 0);
 #X text 313 154 <= resets phase.;
 #X msg 276 155 0;
 #X obj 195 249 else/display;
@@ -68,10 +68,10 @@ in a control rate (with a default resolution of 1 ms) and the output
 is like a toggle switch.;
 #X text 152 322 rate <float> -;
 #X text 271 323 rate period in ms;
-#X obj 3 507 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 3 430 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 104 517 -rate <float>;
-#X text 209 517 - rate period in ms (default 1 \, min 0.1);
+#X text 104 440 -rate <float>;
+#X text 209 440 - rate period in ms (default 1 \, min 0.1);
 #X obj 195 196 else/pulse 1;
 #N canvas 414 239 721 374 rate 0;
 #X obj 204 159 else/display;
