@@ -2,12 +2,11 @@
 
 #include "m_pd.h"
 #include <math.h>
-#include <string.h>
 
 #define PI 3.14159265358979323846
 #define HALF_LOG2 log(2) * 0.5
 
-typedef struct _eq {
+typedef struct _eq{
     t_object    x_obj;
     t_int       x_n;
     t_inlet    *x_inlet_freq;
@@ -38,31 +37,23 @@ static t_int *eq_perform(t_int *w){
     double ynm1 = x->x_ynm1;
     double ynm2 = x->x_ynm2;
     t_float nyq = x->x_nyq;
-    while (nblock--)
-    {
+    while(nblock--){
         double xn = *in1++, f = *in2++, reson = *in3++, db = *in4++;
         double q, amp, omega, alphaQ, cos_w, a0, a1, a2, b0, b1, b2, yn;
-        int q_bypass;
-
-        if (f < 0.1)
+        if(f < 0.1)
             f = 0.1;
-        if (f > nyq - 0.1)
+        if(f > nyq - 0.1)
             f = nyq - 0.1;
-        
         omega = f * PI/nyq; // hz2rad
-        
-        if (x->x_bw) // reson is bw in octaves
-            {
-            if (reson < 0.000001)
+        if(x->x_bw){
+            if(reson < 0.000001)
                 reson = 0.000001;
             q = 1 / (2 * sinh(HALF_LOG2 * reson * omega/sin(omega)));
-            }
+        }
         else
             q = reson;
-        
-        if (q < 0.000001)
+        if(q < 0.000001)
             q = 0.000001; // prevent blow-up
-        
         amp = pow(10, db / 40);
         alphaQ = sin(omega) / (2*q);
         cos_w = cos(omega);
@@ -72,14 +63,11 @@ static t_int *eq_perform(t_int *w){
         a2 = (1 - alphaQ*amp) / b0;
         b1 = 2*cos_w / b0;
         b2 = (alphaQ/amp - 1) / b0;
-        
         yn = a0 * xn + a1 * xnm1 + a2 * xnm2 + b1 * ynm1 + b2 * ynm2;
-        
         if(x->x_bypass)
             *out++ = xn;
         else
             *out++ = yn;
-        
         xnm2 = xnm1;
         xnm1 = xn;
         ynm2 = ynm1;
@@ -89,44 +77,33 @@ static t_int *eq_perform(t_int *w){
     x->x_xnm2 = xnm2;
     x->x_ynm1 = ynm1;
     x->x_ynm2 = ynm2;
-    return (w + 8);
+    return(w+8);
 }
 
-static void eq_dsp(t_eq *x, t_signal **sp)
-{
+static void eq_dsp(t_eq *x, t_signal **sp){
     x->x_nyq = sp[0]->s_sr / 2;
     dsp_add(eq_perform, 7, x, sp[0]->s_n, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
 
-static void eq_clear(t_eq *x)
-{
+static void eq_clear(t_eq *x){
     x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
 }
 
-static void eq_bypass(t_eq *x, t_floatarg f)
-{
+static void eq_bypass(t_eq *x, t_floatarg f){
     x->x_bypass = (int)(f != 0);
 }
 
-static void *eq_tilde_new(t_symbol *s, int argc, t_atom *argv)
-{
-    t_eq *x = (t_eq *)pd_new(eq_class);
-    return (x);
-}
-
-static void eq_bw(t_eq *x)
-{
+static void eq_bw(t_eq *x){
     x->x_bw = 1;
 }
 
-static void eq_q(t_eq *x)
-{
+static void eq_q(t_eq *x){
     x->x_bw = 0;
 }
 
-static void *eq_new(t_symbol *s, int argc, t_atom *argv)
-{
+static void *eq_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_eq *x = (t_eq *)pd_new(eq_class);
     float freq = 0;
     float reson = 0;
@@ -134,13 +111,10 @@ static void *eq_new(t_symbol *s, int argc, t_atom *argv)
     int bw = 0;
 /////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
-    while(argc > 0)
-    {
-        if(argv -> a_type == A_FLOAT)
-        { //if current argument is a float
+    while(argc > 0){
+        if(argv -> a_type == A_FLOAT){ //if current argument is a float
             t_float argval = atom_getfloatarg(0, argc, argv);
-            switch(argnum)
-            {
+            switch(argnum){
                 case 0:
                     freq = argval;
                     break;
@@ -154,23 +128,18 @@ static void *eq_new(t_symbol *s, int argc, t_atom *argv)
                     break;
             };
             argnum++;
-            argc--;
-            argv++;
+            argc--, argv++;
         }
-        else if (argv -> a_type == A_SYMBOL)
-        {
-            t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-            if(strcmp(curarg->s_name, "-bw")==0)
-            {
+        else if(argv -> a_type == A_SYMBOL && !argnum){
+            if(atom_getsymbolarg(0, argc, argv) == gensym("-bw")){
                 bw = 1;
-                argc -= 1;
-                argv += 1;
+                argc--, argv++;
             }
             else
-            {
                 goto errstate;
-            };
         }
+        else
+            goto errstate;
     };
 /////////////////////////////////////////////////////////////////////////////////////
     x->x_bw = bw;
@@ -181,14 +150,13 @@ static void *eq_new(t_symbol *s, int argc, t_atom *argv)
     x->x_inlet_amp = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_amp, db);
     x->x_out = outlet_new((t_object *)x, &s_signal);
-    return (x);
-    errstate:
-        pd_error(x, "eq~: improper args");
-        return NULL;
+    return(x);
+errstate:
+    pd_error(x, "[eq~]: improper args");
+    return(NULL);
 }
 
-void eq_tilde_setup(void)
-{
+void eq_tilde_setup(void){
     eq_class = class_new(gensym("eq~"), (t_newmethod)eq_new, 0,
         sizeof(t_eq), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(eq_class, (t_method)eq_dsp, gensym("dsp"), A_CANT, 0);
