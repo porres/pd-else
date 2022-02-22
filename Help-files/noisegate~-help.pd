@@ -1,4 +1,4 @@
-#N canvas 568 32 562 577 10;
+#N canvas 568 32 562 568 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -29,9 +29,9 @@
 0;
 #X obj 4 436 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 469 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 500 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 551 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 4 543 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 139 445 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -41,11 +41,11 @@
 #X text 181 445 signal;
 #X obj 139 409 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 520 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 3 471 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 175 475 1) float - threshold in dBFS (default -100);
-#X text 175 493 2) float - attack/release time in ms (default 10);
-#X text 115 528 -size <float>;
+#X text 145 507 1) float - threshold in dBFS (default -100);
+#X text 145 525 2) float - attack/release time in ms (default 10);
+#X text 115 479 -size <float>;
 #X text 187 409 float;
 #X obj 285 249 else/out~;
 #X obj 420 178 nbx 5 14 -100 0 1 0 empty empty empty 0 -8 0 10 #dcdcdc
@@ -60,7 +60,7 @@ over that threshold., f 62;
 #X text 230 384 - signal to be gated;
 #X text 229 408 - threshold in dBFS;
 #X text 230 445 - gated signal;
-#X text 201 528 - sets analysis window size in samples (default 512)
+#X text 201 479 - sets analysis window size in samples (default 512)
 ;
 #X obj 163 315 else/out~;
 #X text 102 332 original;

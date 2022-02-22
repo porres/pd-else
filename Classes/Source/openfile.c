@@ -1,3 +1,4 @@
+//
 
 #include <stdio.h>
 #include <string.h>
@@ -7,7 +8,6 @@
 
 typedef struct _openfile{
     t_object   x_ob;
-    t_glist   *x_glist;
     int        x_isboxed;
     char      *x_vistext;
     int        x_vissize;
@@ -109,8 +109,7 @@ static int openfile_wbclick(t_gobj *z, t_glist *glist, int xpix, int ypix, int s
         return (0);
 }
 
-static t_widgetbehavior openfile_widgetbehavior =
-{
+static t_widgetbehavior openfile_widgetbehavior ={
     openfile_getrect,
     openfile_displace,
     openfile_select,
@@ -127,26 +126,6 @@ static void openfile_bang(t_openfile *x){
 static void openfile_open(t_openfile *x, t_symbol *s){
     x->x_ulink = s;
     openfile_click(x, 0, 0, 0, 0, 0);
-}
-
-static int openfile_isoption(char *name){
-    if(*name == '-'){
-        char c = name[1];
-        return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
-    }
-    else
-        return (0);
-}
-
-static t_symbol *openfile_nextsymbol(int ac, t_atom *av, int opt, int *skipp){
-    int ndx;
-    for(ndx = 0; ndx < ac; ndx++, av++){
-        if(av->a_type == A_SYMBOL && (!opt || openfile_isoption((char*)av->a_w.w_symbol->s_name))){
-            *skipp = ++ndx;
-            return (av->a_w.w_symbol);
-        }
-    }
-    return (0);
 }
 
 static int openfile_dohyperlink(char *dst, int maxsize, int ac, t_atom *av){
@@ -195,7 +174,7 @@ static char *openfile_hyperlink(int *sizep, int ac, t_atom *av){
         sz = strlen(result);
         strcpy(result + sz, "...");
     }
-    return (result);
+    return(result);
 }
 
 static void openfile_free(t_openfile *x){
@@ -206,31 +185,45 @@ static void openfile_free(t_openfile *x){
 static void *openfile_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_openfile xgen, *x;
-    int skip;
     xgen.x_isboxed = 1;
     xgen.x_vistext = 0;
     xgen.x_vissize = 0;
-    if((xgen.x_ulink = openfile_nextsymbol(ac, av, 0, &skip))){
-        t_symbol *opt;
-        ac -= skip;
-        av += skip;
-        while((opt = openfile_nextsymbol(ac, av, 1, &skip))){
-            ac -= skip;
-            av += skip;
-            if(opt == gensym("-h")){
+    int argn = 0;
+    while(ac > 0){
+        if(av->a_type == A_SYMBOL){
+            if(atom_getsymbolarg(0, ac, av) == gensym("-h")){
+                if(argn)
+                    goto errstate;
                 xgen.x_isboxed = 0;
-                t_symbol *nextsym = openfile_nextsymbol(ac, av, 1, &skip);
-                int natoms = (nextsym ? skip - 1 : ac);
-                if(natoms)
-                    xgen.x_vistext = openfile_hyperlink(&xgen.x_vissize, natoms, av);
+                ac--, av++;
+                if(!ac)
+                    goto errstate;
+                if(av->a_type == A_SYMBOL){
+                    xgen.x_ulink = atom_getsymbolarg(0, ac, av);
+                    if(ac == 1)
+                        xgen.x_vistext = openfile_hyperlink(&xgen.x_vissize, ac, av);
+                    ac--, av++;
+                    if(ac){
+                        xgen.x_vistext = openfile_hyperlink(&xgen.x_vissize, ac, av);
+                        ac = 0;
+                    }
+                }
+                else
+                    goto errstate;
+            }
+            else{
+                argn = 1;
+                xgen.x_ulink = atom_getsymbolarg(0, ac, av);
+                ac--, av++;
+                if(ac)
+                    goto errstate;
             }
         }
+        else
+            goto errstate;
     }
-    x = (t_openfile *)
-	pd_new(xgen.x_isboxed ? openfilebox_class : openfile_class);
-    x->x_glist = canvas_getcurrent();
-    x->x_dirsym = canvas_getdir(x->x_glist);  // FIXME - make it "paths"
-
+    x = (t_openfile *)pd_new(xgen.x_isboxed ? openfilebox_class : openfile_class);
+    x->x_dirsym = canvas_getdir(canvas_getcurrent());  // FIXME - make it "paths"
     x->x_isboxed = xgen.x_isboxed;
     x->x_vistext = xgen.x_vistext;
     x->x_vissize = xgen.x_vissize;
@@ -246,7 +239,10 @@ static void *openfile_new(t_symbol *s, int ac, t_atom *av){
         x->x_vistext = getbytes(x->x_vissize);
         strcpy(x->x_vistext, x->x_ulink->s_name);
     }
-    return (x);
+    return(x);
+errstate:
+        pd_error(x, "[openfile]: improper args");
+        return(NULL);
 }
 
 void openfile_setup(void){
@@ -264,7 +260,6 @@ void openfile_setup(void){
     class_addmethod(openfilebox_class, (t_method)openfile_click, gensym("click"),
 		    A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(openfilebox_class, (t_method)openfile_open, gensym("open"), A_DEFSYMBOL, 0);
-    
     sys_vgui("proc openfile_open {filename dir} {\n");
     sys_vgui("    if {[string first \"://\" $filename] > -1} {\n");
     sys_vgui("        menu_openfile $filename\n");

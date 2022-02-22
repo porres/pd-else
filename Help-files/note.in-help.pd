@@ -1,4 +1,4 @@
-#N canvas 576 38 564 569 10;
+#N canvas 576 38 560 544 10;
 #X obj 23 40 cnv 4 4 4 empty empty Midi 0 28 2 18 #e0e0e0 #000000 0
 ;
 #X obj 65 40 cnv 4 4 4 empty empty pitch 0 28 2 18 #e0e0e0 #000000
@@ -8,29 +8,29 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 2 299 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+#X obj 2 292 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 2 356 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 2 349 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 2 464 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 2 482 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 154 310 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 154 303 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 2 542 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 2 514 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X text 209 474 -;
-#X text 151 474 1) float;
-#X text 193 312 float;
-#X text 238 312 - raw MIDI data stream;
-#X text 239 438 -;
-#X text 199 438 float;
+#X text 209 492 -;
+#X text 151 492 1) float;
+#X text 193 305 float;
+#X text 238 305 - raw MIDI data stream;
+#X text 239 426 -;
+#X text 199 426 float;
 #X obj 110 40 cnv 4 4 4 empty empty input 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 154 366 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 154 358 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 238 366 -;
-#X text 198 366 float;
-#X obj 154 435 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 238 359 -;
+#X text 198 359 float;
+#X obj 154 423 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
@@ -73,14 +73,14 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X connect 7 0 10 0;
 #X connect 7 1 9 0;
 #X connect 7 2 8 0;
-#X restore 473 242 pd channel;
-#X text 223 474 sets channel number (default 0 - OMNI);
-#X text 238 335 -;
-#X text 198 335 float;
-#X text 253 335 MIDI channel, f 31;
-#X obj 154 332 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X restore 473 235 pd channel;
+#X text 223 492 sets channel number (default 0 - OMNI);
+#X text 238 328 -;
+#X text 198 328 float;
+#X text 253 328 MIDI channel, f 31;
+#X obj 154 325 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 2 499 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 2 447 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X msg 205 135 144 \, 68 \, 120;
 #X obj 149 145 midiin;
@@ -88,21 +88,21 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X text 309 162 Note Off (raw MIDI data);
 #X text 297 214 MIDI channel;
 #X text 230 266 Pitch;
-#X text 253 365 MIDI pitch, f 31;
-#X text 238 391 -;
-#X text 198 391 float;
-#X obj 154 388 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 253 359 MIDI pitch, f 31;
+#X text 238 382 -;
+#X text 198 382 float;
+#X obj 154 379 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 253 391 MIDI velocity, f 31;
-#X text 238 415 -;
-#X text 198 415 float;
-#X obj 154 412 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 253 382 MIDI velocity, f 31;
+#X text 238 404 -;
+#X text 198 404 float;
+#X obj 154 401 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 253 415 Note on/off flag (if -rel flag is given);
-#X text 254 438 Rightmost outlet is MIDI channel;
-#X text 189 508 sets the object to output release velocity and note
+#X text 253 404 Note on/off flag (if -rel flag is given);
+#X text 254 426 Rightmost outlet is MIDI channel;
+#X text 189 456 sets the object to output release velocity and note
 on/off flag, f 46;
-#X text 142 508 -rel: -;
+#X text 142 456 -rel: -;
 #X obj 274 211 else/display;
 #X obj 239 236 else/display;
 #X msg 233 162 128 \, 68 \, 0;
@@ -113,7 +113,7 @@ on/off flag, f 46;
 input (such as from [midiin])., f 61;
 #X obj 35 252 else/note.out;
 #X obj 205 190 else/note.in;
-#N canvas 728 175 813 464 release 0;
+#N canvas 485 123 813 464 release 0;
 #X msg 103 77 144 \, 68 \, 120;
 #X text 192 85 Note On (raw MIDI data);
 #X text 207 131 Note Off (raw MIDI data);
@@ -175,7 +175,7 @@ with a velocity of 0 in [note.in]!, f 42;
 #X connect 30 0 22 0;
 #X connect 30 1 21 0;
 #X connect 30 2 24 0;
-#X restore 473 266 pd release;
+#X restore 473 259 pd release;
 #X connect 35 0 61 0;
 #X connect 36 0 61 0;
 #X connect 55 0 61 0;

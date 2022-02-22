@@ -1,7 +1,6 @@
 // porres 2018
 
 #include "m_pd.h"
-#include <string.h>
 
 typedef struct _noteout{
     t_object  x_ob;
@@ -46,19 +45,19 @@ static void *noteout_new(t_symbol *s, t_int ac, t_atom *av){
     t_noteout *x = (t_noteout *)pd_new(noteout_class);
     t_symbol *curarg = s; // get rid of warning
     float channel = 1;
+    int argn = 0;
     if(ac){
         while(ac > 0){
             if(av->a_type == A_FLOAT){
+                argn = 1;
                 channel = (t_int)atom_getfloatarg(0, ac, av);
-                ac--;
-                av++;
+                ac--, av++;
             }
-            else if(av->a_type == A_SYMBOL){
+            else if(av->a_type == A_SYMBOL && !argn){
                 curarg = atom_getsymbolarg(0, ac, av);
-                if(!strcmp(curarg->s_name, "-rel")){
+                if(curarg == gensym("-rel")){
                     x->x_rel = 1;
-                    ac--;
-                    av++;
+                    ac--, av++;
                 }
                 else
                     goto errstate;

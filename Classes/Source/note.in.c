@@ -1,7 +1,6 @@
 // porres 2018
 
 #include "m_pd.h"
-#include <string.h>
 
 typedef struct _notein{
     t_object       x_ob;
@@ -81,19 +80,18 @@ static void *notein_new(t_symbol *s, t_int ac, t_atom *av){
     curarg = s; // get rid of warning
     t_int channel = 0;
     x->x_rel = x->x_status = x->x_ready = 0;
+    int argn = 0;
     if(ac){
         while(ac > 0){
             if(av->a_type == A_FLOAT){
+                argn = 1;
                 channel = (t_int)atom_getfloatarg(0, ac, av);
-                ac--;
-                av++;
+                ac--, av++;
             }
             else if(av->a_type == A_SYMBOL){
-                curarg = atom_getsymbolarg(0, ac, av);
-                if(!strcmp(curarg->s_name, "-rel")){
+                if(atom_getsymbolarg(0, ac, av) == gensym("-rel") && !argn){
                     x->x_rel = 1;
-                    ac--;
-                    av++;
+                    ac--, av++;
                 }
                 else
                     goto errstate;
@@ -112,13 +110,13 @@ static void *notein_new(t_symbol *s, t_int ac, t_atom *av){
         x->x_flagout = outlet_new((t_object *)x, &s_float);
     x->x_chanout = outlet_new((t_object *)x, &s_float);
     return(x);
-    errstate:
-        pd_error(x, "[notein]: improper args");
-        return NULL;
+errstate:
+    pd_error(x, "[note.in]: improper args");
+    return(NULL);
 }
 
 void setup_note0x2ein(void){
     notein_class = class_new(gensym("note.in"), (t_newmethod)notein_new,
-                            0, sizeof(t_notein), 0, A_GIMME, 0);
+        0, sizeof(t_notein), 0, A_GIMME, 0);
     class_addfloat(notein_class, notein_float);
 }
