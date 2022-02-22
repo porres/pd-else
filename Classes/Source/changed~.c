@@ -48,11 +48,10 @@ static void changed_dsp(t_changed *x, t_signal **sp)
 static void *changed_free(t_changed *x)
 {
     inlet_free(x->x_tresh_inlet);
-    return (void *)x;
+    return(void *)x;
 }
 
-static void *changed_new(t_floatarg f)
-{
+static void *changed_new(t_floatarg f){
     t_changed *x = (t_changed *)pd_new(changed_class);
     if(f < 0) f = 0;
     x->x_thresh = f;
@@ -63,16 +62,10 @@ static void *changed_new(t_floatarg f)
     return (x);
 }
 
-void changed_tilde_setup(void)
-{
-    changed_class = class_new(gensym("changed~"),
-        (t_newmethod)changed_new,
-        changed_free,
-        sizeof(t_changed),
-        CLASS_DEFAULT,
-        A_DEFFLOAT,
-        0);
-        class_addmethod(changed_class, nullfn, gensym("signal"), 0);
-        class_addmethod(changed_class, (t_method)changed_dsp, gensym("dsp"), A_CANT, 0);
+void changed_tilde_setup(void){
+    changed_class = class_new(gensym("changed~"), (t_newmethod)changed_new,
+        (t_method)changed_free, sizeof(t_changed), CLASS_DEFAULT, A_DEFFLOAT, 0);
+    class_addmethod(changed_class, nullfn, gensym("signal"), 0);
+    class_addmethod(changed_class, (t_method)changed_dsp, gensym("dsp"), A_CANT, 0);
 }
 

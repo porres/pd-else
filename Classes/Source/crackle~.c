@@ -57,6 +57,7 @@ static void *crackle_free(t_crackle *x)
 
 static void *crackle_new(t_symbol *s, int ac, t_atom *av)
 {
+    s = NULL;
     t_crackle *x = (t_crackle *)pd_new(crackle_class);
     t_float p = 0.5; // default chaos parameter
     if (ac && av->a_type == A_FLOAT)

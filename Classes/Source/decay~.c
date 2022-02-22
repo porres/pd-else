@@ -64,6 +64,7 @@ static void decay_clear(t_decay *x){
 }
 
 static void *decay_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_decay *x = (t_decay *)pd_new(decay_class);
     float ms = 1000;
     x->x_f = 1.;

@@ -29,6 +29,7 @@ static  t_float convert(t_float f)
 
 static void ceil_list(t_ceil *x, t_symbol *s, int argc, t_atom *argv)
 {
+    s = NULL;
   int old_bytes = x->bytes, i = 0;
   x->bytes = argc*sizeof(t_atom);
   x->output_list = (t_atom *)t_resizebytes(x->output_list,old_bytes,x->bytes);

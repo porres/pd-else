@@ -16,7 +16,6 @@ static void ceil_dsp(t_ceil *x, t_signal **sp);
 
 static t_int * ceil_perform(t_int *w)
 {
-  t_ceil *x = (t_ceil *)(w[1]);
   int n = (int)(w[2]);
   t_float *in = (t_float *)(w[3]);
   t_float *out = (t_float *)(w[4]);

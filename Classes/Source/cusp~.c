@@ -20,6 +20,7 @@ typedef struct _cusp
 
 
 static void cusp_list(t_cusp *x, t_symbol *s, int argc, t_atom * argv){
+    s = NULL;
     int argnum = 0; // current argument
     while(argc)
     {
@@ -67,7 +68,6 @@ static t_int *cusp_perform(t_int *w)
         double phase_step = hz / sr; // phase_step
         phase_step = phase_step > 1 ? 1. : phase_step < -1 ? -1 : phase_step; // clipped phase_step
         int trig;
-        t_float output;
         if (hz >= 0)
             {
             trig = phase >= 1.;
@@ -105,6 +105,7 @@ static void *cusp_free(t_cusp *x)
 
 static void *cusp_new(t_symbol *s, int ac, t_atom *av)
 {
+    s = NULL;
     t_cusp *x = (t_cusp *)pd_new(cusp_class);
     x->x_sr = sys_getsr();
     t_float hz = x->x_sr * 0.5, a = 1, b = 1.9, yn = 0; // default parameters

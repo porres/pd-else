@@ -11,7 +11,6 @@ typedef struct _cents2ratio {
 }t_cents2ratio;
 
 static t_int * cents2ratio_perform(t_int *w){
-    t_cents2ratio *x = (t_cents2ratio *)(w[1]);
     int n = (int)(w[2]);
     t_float *in = (t_float *)(w[3]);
     t_float *out = (t_float *)(w[4]);
