@@ -21,6 +21,7 @@ typedef struct _lincong
 
 
 static void lincong_list(t_lincong *x, t_symbol *s, int argc, t_atom * argv){
+    s = NULL;
     int argnum = 0; // current argument
     while(argc)
     {
@@ -72,7 +73,6 @@ static t_int *lincong_perform(t_int *w)
         double phase_step = hz / sr; // phase_step
         phase_step = phase_step > 1 ? 1. : phase_step < -1 ? -1 : phase_step; // clipped phase_step
         int trig;
-        t_float output;
         if (hz >= 0)
             {
             trig = phase >= 1.;
@@ -112,6 +112,7 @@ static void *lincong_free(t_lincong *x)
 
 static void *lincong_new(t_symbol *s, int ac, t_atom *av)
 {
+    s = NULL;
     t_lincong *x = (t_lincong *)pd_new(lincong_class);
     x->x_sr = sys_getsr();
     t_float hz = x->x_sr * 0.5, a = 1.1, c = 0.13, m = 1, yn = 0; // default parameters

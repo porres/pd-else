@@ -52,6 +52,7 @@ static void quantizer_dsp(t_quantizer *x, t_signal **sp){
 }
 
 static void *quantizer_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_quantizer *x = (t_quantizer *)pd_new(quantizer_class);
     float f = 0;
     int numargs = 0;

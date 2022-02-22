@@ -30,6 +30,7 @@ static void ikeda_clear(t_ikeda *x)
 
 static void ikeda_list(t_ikeda *x, t_symbol *s, int argc, t_atom * argv)
 {
+    s = NULL;
     if (argc > 2)
         {
         pd_error(x, "ikeda~: list size needs to be = 2");
@@ -66,7 +67,6 @@ static t_int *ikeda_perform(t_int *w)
 {
     t_ikeda *x = (t_ikeda *)(w[1]);
     int nblock = (t_int)(w[2]);
-    int *vp = (int *)(w[3]);
     t_float *in = (t_float *)(w[4]);
     t_sample *output_1 = (t_sample *)(w[5]);
     t_sample *output_2 = (t_sample *)(w[6]);
@@ -115,6 +115,7 @@ static void ikeda_dsp(t_ikeda *x, t_signal **sp)
 
 static void *ikeda_new(t_symbol *s, int ac, t_atom *av)
 {
+    s = NULL;
     t_ikeda *x = (t_ikeda *)pd_new(ikeda_class);
     x->x_sr = sys_getsr();
     t_float hz = x->x_sr * 0.5, init_u = 0.75, y1 = 0, y2 = 0; // default parameters
