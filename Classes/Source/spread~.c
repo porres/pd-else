@@ -12,7 +12,7 @@ typedef struct _spread{
     long        outChans;
     t_float    *inarr;
     t_float   **loc_invecs;
-    t_float    *outs;
+    t_float   **outs;
     double      advFrac;
     double     *pangains1;
     double     *pangains2;
@@ -32,18 +32,14 @@ t_int *spread_perform(t_int *w){
 	int chan,i, j;
     long outIndex;
     long *indexList = x->indexList;
-    
     int n = (int) w[inChans + outChans + 2]; // assign output vector pointers
-    
     for(i = 0; i < outChans; i++)
         outs[i] = (t_float *) w[2 + inChans + i];
-
     for(i = 0; i < inChans; i++){ // copy inputs to local 2D array
         invec = (t_float *) w[2 + i];
         for(j = 0; j < n; j++)
             loc_invecs[i][j] = invec[j];
     }
-   
 	for( j = 0; j < n; j++){
         for(chan = 0; chan < inChans; chan++) // copy local input sample frame
             inarr[chan] = loc_invecs[chan][j];
@@ -67,15 +63,15 @@ t_int *spread_perform(t_int *w){
 
 void spread_dsp(t_spread *x, t_signal **sp){
 	long i;
-    t_int **sigvec;
+    t_int *sigvec;
     int pointer_count = x->inChans + x->outChans + 2;
-    sigvec  = (t_int **) calloc(pointer_count, sizeof(t_int *));
+    sigvec  = (t_int *)calloc(pointer_count, sizeof(t_int *));
 	for(i = 0; i < pointer_count; i++)
-		sigvec[i] = (t_int *) calloc(sizeof(t_int),1);
-	sigvec[0] = (t_int *)x; // first pointer is to the object
-	sigvec[pointer_count - 1] = (t_int *)sp[0]->s_n; // last pointer is to vector size (N)
+		sigvec[i] = (t_int)calloc(sizeof(t_int),1);
+	sigvec[0] = (t_int)x; // first pointer is to the object
+	sigvec[pointer_count - 1] = (t_int)sp[0]->s_n; // last pointer is to vector size (N)
 	for(i = 1; i < pointer_count - 1; i++) // attach inlet and all outlets
-		sigvec[i] = (t_int *)sp[i-1]->s_vec;
+		sigvec[i] = (t_int)sp[i-1]->s_vec;
     dsp_addv(spread_perform, pointer_count, (t_int *)sigvec);
     free(sigvec);
 }
@@ -123,7 +119,7 @@ void *spread_new(t_symbol *s, int ac, t_atom *av){
     x->pangains2 = (double *) malloc(x->inChans * sizeof(double));
     x->indexList = (long *) malloc(x->inChans * sizeof(long));
     x->advFrac = (double)(x->outChans - 1)/(double)(x->inChans - 1);
-    x->outs = (t_float **) malloc(x->outChans * sizeof(t_float *)); // temporary holding for output vectors
+    x->outs = (t_float **)malloc(x->outChans * sizeof(t_float *)); // temporary holding for output vectors
     
     for(i = 1; i < x->inChans - 1; i++){
         fullFrac = i * x->advFrac;
@@ -134,7 +130,7 @@ void *spread_new(t_symbol *s, int ac, t_atom *av){
         x->pangains1[i] = cos(panloc);
         x->pangains2[i] = sin(panloc);
     }
-    return x;
+    return(x);
 }
 
 void spread_tilde_setup(void){

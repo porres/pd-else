@@ -19,6 +19,7 @@ void *match_list(t_match *x, t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     for(int i = 0; i < argc || i < x->x_n_outlets - 1; i++)
         x->matches[i] = (double)atom_getfloatarg(i, argc, argv);
+    return(NULL);
 }
 
 t_int *match_perform(t_int *w){
@@ -86,15 +87,15 @@ t_int *match_perform(t_int *w){
 
 void match_dsp(t_match *x, t_signal **sp){
 	int i;
-    t_int **sigvec;
+    t_int *sigvec;
     int n_sig = x->x_n_outlets + 3; // outs + 3 (ob / in / block size)
-    sigvec  = (t_int **) calloc(n_sig, sizeof(t_int *));
+    sigvec  = (t_int *) calloc(n_sig, sizeof(t_int *));
 	for(i = 0; i < n_sig; i++)
-		sigvec[i] = (t_int *) calloc(sizeof(t_int), 1);
-	sigvec[0] = (t_int *)x; // object
-	sigvec[n_sig - 1] = (t_int *)sp[0]->s_n; // block size (n)
+		sigvec[i] = (t_int)calloc(sizeof(t_int), 1);
+	sigvec[0] = (t_int)x; // object
+	sigvec[n_sig - 1] = (t_int)sp[0]->s_n; // block size (n)
 	for(i = 1; i < n_sig - 1; i++) // I/O
-		sigvec[i] = (t_int *)sp[i-1]->s_vec;
+		sigvec[i] = (t_int)sp[i-1]->s_vec;
     dsp_addv(match_perform, n_sig, (t_int *)sigvec);
     free(sigvec);
 }
