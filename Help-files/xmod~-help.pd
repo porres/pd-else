@@ -1,4 +1,4 @@
-#N canvas 531 23 561 628 10;
+#N canvas 531 23 560 624 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -22,13 +22,13 @@
 0;
 #X obj 3 418 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 473 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 3 505 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 122 427 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 122 295 cnv 17 3 52 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 599 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 3 596 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 165 296 float/signal -;
 #X obj 122 373 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
@@ -37,7 +37,7 @@
 #X obj 122 395 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 200 427 signal -;
-#X text 154 482 1) float;
+#X text 154 514 1) float;
 #X obj 145 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
@@ -149,14 +149,14 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 154 501 2) float;
+#X text 154 533 2) float;
 #X obj 25 40 cnv 4 4 4 empty empty Cross 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 122 352 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 165 353 float/signal -;
-#X text 154 521 3) float;
-#X text 154 541 4) float;
+#X text 154 553 3) float;
+#X text 154 573 4) float;
 #X obj 207 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 266 150 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -173,15 +173,15 @@
 #X text 261 374 frequency of oscillator 2;
 #X text 261 427 output of oscillator 1;
 #X text 261 447 output of oscillator 2;
-#X text 213 482 - frequency of oscillator 1 in hertz (default 0);
-#X text 213 521 - frequency of oscillator 2 in hertz (default 0);
-#X text 213 501 - modulation index 1 (default 0);
-#X text 213 541 - modulation index 2 (default 0);
+#X text 213 514 - frequency of oscillator 1 in hertz (default 0);
+#X text 213 553 - frequency of oscillator 2 in hertz (default 0);
+#X text 213 533 - modulation index 1 (default 0);
+#X text 213 573 - modulation index 2 (default 0);
 #X text 150 131 freq1;
 #X text 208 130 index1;
 #X text 271 130 freq2;
 #X text 328 130 index2;
-#N canvas 817 83 533 627 details 0;
+#N canvas 768 65 533 627 details 0;
 #X obj 141 110 hsl 128 15 1 1000 1 0 empty index1 empty -2 -8 0 10
 #dcdcdc #000000 #000000 0 1;
 #X obj 138 137 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -325,13 +325,13 @@ in with the subpatches below \, compare., f 32;
 #X connect 24 0 27 0;
 #X connect 24 1 27 1;
 #X restore 480 253 pd details;
-#X obj 3 563 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 3 472 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 225 316 pm -;
 #X text 261 317 sets to phase modulation;
 #X text 225 333 fm -;
 #X text 261 334 sets to frequency modulation;
-#X text 101 574 -pm: sets to phase modulation (default is frequency
+#X text 101 483 -pm: sets to phase modulation (default is frequency
 modulation), f 63;
 #X text 60 86 [xmod~] performs cross modulation of two sine oscillators.
 It can perform either frequency (default) or phase modulation., f

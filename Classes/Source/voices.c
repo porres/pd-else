@@ -1,7 +1,6 @@
 // porres 2018-2019
 
 #include "m_pd.h"
-#include <string.h>
 
 static t_class *voices_class;
 
@@ -331,65 +330,49 @@ static void *voices_new(t_symbol *s, int argc, t_atom *argv){
     x->x_steal = 0;
     float release = 0;
 /////////////////////////////////////////////////////////////////////////////////
-    int symarg = 0;
     int argnum = 0;
     while(argc > 0){
-        if(argv->a_type == A_SYMBOL){
-            if(!symarg)
-                symarg = 1;
-            t_symbol * cursym = atom_getsymbolarg(0, argc, argv);
-            if(!strcmp(cursym->s_name, "-retrig")){
+        if(argv->a_type == A_SYMBOL && !argnum){
+            t_symbol *cursym = atom_getsymbolarg(0, argc, argv);
+            if(cursym == gensym("-retrig")){
                 if(argc >= 2 && (argv+1)->a_type == A_FLOAT){
-                    t_float curfloat = atom_getfloatarg(1, argc, argv);
-                    retrig = (int)curfloat;
-                    argc -= 2;
-                    argv += 2;
-                    argnum++;
+                    retrig = (int)atom_getfloatarg(1, argc, argv);
+                    argc-=2, argv+=2;
                 }
                 else
                     goto errstate;
             }
-            else if(!strcmp(cursym->s_name, "-rel")){
+            else if(cursym ==  gensym("-rel")){
                 if(argc >= 2 && (argv+1)->a_type == A_FLOAT){
-                    t_float curfloat = atom_getfloatarg(1, argc, argv);
-                    release = curfloat;
-                    argc -= 2;
-                    argv += 2;
-                    argnum++;
+                    release = atom_getfloatarg(1, argc, argv);
+                    argc-=2, argv+=2;
                 }
                 else
                     goto errstate;
             }
-            else if(!strcmp(cursym->s_name, "-list")){
+            else if(cursym == gensym("-list")){
                 x->x_list_mode = 1;
-                argc--;
-                argv++;
-                argnum++;
+                argc--, argv++;
                 if(argc >= 1 && (argv)->a_type == A_FLOAT){
-                    t_float curfloat = atom_getfloatarg(0, argc, argv);
-                    x->x_offset = (int)curfloat;
-                    argc--;
-                    argv++;
-                    argnum++;
+                    x->x_offset = (int)atom_getfloatarg(0, argc, argv);
+                    argc--, argv++;
                 }
             }
             else
                 goto errstate;
         }
-        else if(argv->a_type == A_FLOAT && !symarg){
-            t_float argval = atom_getfloatarg(0, argc, argv);
+        else if(argv->a_type == A_FLOAT){
             switch(argnum){
                 case 0:
-                    n = (int)argval;
+                    n = (int)atom_getfloatarg(0, argc, argv);
                     break;
                 case 1:
-                    x->x_steal = argval != 0;
+                    x->x_steal = atom_getfloatarg(0, argc, argv) != 0;
                     break;
                 default:
                     break;
             };
-            argc--;
-            argv++;
+            argc--, argv++;
             argnum++;
         }
         else

@@ -163,7 +163,7 @@ will be sent to free this allocated voice., f 70;
 #X text 145 341 voice 1;
 #X text 211 341 voice 2;
 #X text 285 342 extra;
-#X obj 147 285 else/voices 2 -retrig 1;
+#X obj 147 285 else/voices -retrig 1 2;
 #X connect 0 0 9 0;
 #X connect 1 0 9 2;
 #X connect 6 0 14 0;
@@ -190,32 +190,31 @@ will be sent to free this allocated voice., f 70;
 #X text 244 342 voice 2;
 #X text 324 343 extra;
 #X obj 174 192 else/suspedal -retrig 3;
-#X obj 174 286 else/voices 2 1 -retrig 2;
 #X text 20 23 For mode "2" \, we use [suspedal] in retrigger mode 3
 This example also uses "voice stealing". Now \, each repeated note
 alternates bewteen the allocated voices. When the sustain pedal is
 switched off \, note off messages for all note ons are given., f 70
 ;
+#X obj 174 286 else/voices -retrig 2 2 1;
 #X connect 0 0 12 0;
 #X connect 1 0 12 2;
-#X connect 6 0 13 0;
+#X connect 6 0 14 0;
 #X connect 7 0 6 0;
 #X connect 8 0 1 0;
 #X connect 12 0 7 0;
 #X connect 12 1 7 1;
-#X connect 13 0 3 0;
-#X connect 13 1 4 0;
-#X connect 13 2 5 0;
+#X connect 14 0 3 0;
+#X connect 14 1 4 0;
+#X connect 14 2 5 0;
 #X restore 229 256 pd retrig_2;
 #X restore 468 207 pd retrigger;
-#N canvas 893 147 480 352 release 0;
+#N canvas 886 147 480 352 release 0;
 #X obj 92 273 else/display;
 #X obj 151 273 else/display;
 #X obj 92 130 else/keyboard 17 80 1 4 0 0 empty empty;
 #X obj 210 273 else/display;
 #X obj 269 273 else/display;
 #X obj 329 273 else/display;
-#X obj 92 246 else/voices 4 -rel 1000, f 40;
 #X obj 258 160 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1000;
 #X obj 258 188 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -230,16 +229,17 @@ time after a note off is sent)., f 65;
 to finish before using that voice allocation for a new note. Set the
 release time in ms with the '-rel' flag \, 'rel' message or right inlet.
 , f 65;
-#X connect 2 0 6 0;
-#X connect 6 0 0 0;
-#X connect 6 1 1 0;
-#X connect 6 2 3 0;
-#X connect 6 3 4 0;
-#X connect 6 4 5 0;
+#X obj 92 246 else/voices -rel 1000 4, f 40;
+#X connect 2 0 12 0;
+#X connect 6 0 7 0;
 #X connect 7 0 8 0;
-#X connect 8 0 9 0;
-#X connect 9 0 6 0;
-#X connect 10 0 6 2;
+#X connect 8 0 12 0;
+#X connect 9 0 12 2;
+#X connect 12 0 0 0;
+#X connect 12 1 1 0;
+#X connect 12 2 3 0;
+#X connect 12 3 4 0;
+#X connect 12 4 5 0;
 #X restore 480 228 pd release;
 #N canvas 590 63 627 508 list 0;
 #X obj 142 319 else/display;
@@ -264,8 +264,6 @@ release time in ms with the '-rel' flag \, 'rel' message or right inlet.
 #X text 344 341 voices;
 #X obj 548 316 else/display;
 #X text 539 341 extra;
-#X obj 142 291 else/voices 4 -list;
-#X obj 353 289 else/voices 4 1 -retrig 2 -list 1;
 #X msg 51 250 offset \$1;
 #X obj 51 227 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
@@ -308,15 +306,15 @@ patch., f 43;
 #X text 211 215 According to the voice index (the first element in
 the list sent by [voices]) \, the MIDI note messages are routed to
 different instances of "voice.pd"., f 43;
-#X obj 40 182 else/voices 4 1 -list;
 #X obj 40 211 clone 4 voice 4;
 #X obj 41 248 else/out~;
-#X connect 0 0 6 0;
+#X obj 40 182 else/voices -list 4 1;
+#X connect 0 0 8 0;
 #X connect 3 0 0 0;
 #X connect 4 0 3 0;
 #X connect 6 0 7 0;
-#X connect 7 0 8 0;
-#X connect 7 1 8 1;
+#X connect 6 1 7 1;
+#X connect 8 0 6 0;
 #X restore 364 428 pd clone_example;
 #X msg 206 265 voices \$1;
 #X msg 206 239 2;
@@ -330,9 +328,11 @@ and clear its memory., f 72;
 #X text 84 407 This mode is particularly useful for using with [clone]
 to implement polyphonic synths \, check the subpatch ==========================>
 , f 46;
+#X obj 142 291 else/voices -list 4;
+#X obj 353 289 else/voices -retrig 2 -list 1 4 1;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
-#X connect 3 0 17 0;
+#X connect 3 0 27 0;
 #X connect 4 0 7 0;
 #X connect 5 0 8 0;
 #X connect 6 0 9 0;
@@ -341,17 +341,17 @@ to implement polyphonic synths \, check the subpatch ==========================>
 #X connect 9 0 3 0;
 #X connect 11 0 13 2;
 #X connect 12 0 13 0;
-#X connect 13 0 18 0;
-#X connect 13 1 18 1;
-#X connect 17 0 0 0;
-#X connect 17 1 27 0;
-#X connect 18 0 10 0;
-#X connect 18 1 15 0;
-#X connect 19 0 17 0;
-#X connect 20 0 19 0;
-#X connect 23 0 17 0;
-#X connect 24 0 23 0;
-#X connect 25 0 23 0;
+#X connect 13 0 28 0;
+#X connect 13 1 28 1;
+#X connect 17 0 27 0;
+#X connect 18 0 17 0;
+#X connect 21 0 27 0;
+#X connect 22 0 21 0;
+#X connect 23 0 21 0;
+#X connect 27 0 0 0;
+#X connect 27 1 25 0;
+#X connect 28 0 10 0;
+#X connect 28 1 15 0;
 #X restore 497 250 pd list;
 #X text 174 546 -retrig: sets to retrigger mode <0 \, 1 or 2> (default
 0);

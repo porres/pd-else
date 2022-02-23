@@ -1,3 +1,4 @@
+// porres
 
 #include "m_pd.h"
 
@@ -100,21 +101,19 @@ static void *unmerge_new(t_symbol *s, int ac, t_atom* av){
                     default:
                         break;
                 };
-                ac--;
-                av++;
+                ac--, av++;
                 argnum++;
             }
-            else if(av->a_type == A_SYMBOL){
-                t_symbol *curarg = atom_getsymbolarg(0, ac, av);
-                if(curarg == gensym("-trim")){
+            else if(av->a_type == A_SYMBOL && !argnum){
+                if(atom_getsymbolarg(0, ac, av) == gensym("-trim")){
                     x->x_trim = 1;
-                    ac--;
-                    av++;
-                    argnum++;
+                    ac--, av++;
                 }
                 else
                     goto errstate;
             }
+            else
+                goto errstate;
         };
     }
 /////////////////////////////////////////////////////////////////////////////////////
@@ -126,7 +125,7 @@ static void *unmerge_new(t_symbol *s, int ac, t_atom* av){
     return(x);
     errstate:
         pd_error(x, "[unmerge]: improper args");
-        return NULL;
+        return(NULL);
 }
 
 void unmerge_setup(void){
@@ -137,4 +136,3 @@ void unmerge_setup(void){
     class_addanything(unmerge_class, unmerge_anything);
     class_addsymbol(unmerge_class, unmerge_symbol);
 }
-

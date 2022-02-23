@@ -2,7 +2,6 @@
 
 #include "m_pd.h"
 #include "math.h"
-#include "string.h"
 
 #define TWOPI (3.14159265358979323846 * 2)
 
@@ -99,8 +98,7 @@ static void *xmod_free(t_xmod *x){
 
 static void *xmod_new(t_symbol *s, int ac, t_atom *av){
     t_xmod *x = (t_xmod *)pd_new(xmod_class);
-    t_symbol *dummy = s;
-    dummy = NULL;
+    s = NULL;
     t_float init_freq1 = 0;
     t_float init_fb1 = 0;
     t_float init_freq2 = 0;
@@ -108,13 +106,11 @@ static void *xmod_new(t_symbol *s, int ac, t_atom *av){
     t_int pm = 0;
     t_int argnum = 0;
     while(ac > 0){
-        if(av->a_type == A_SYMBOL){
-            t_symbol *curarg = atom_getsymbolarg(0, ac, av);
-            if(!strcmp(curarg->s_name, "-pm")){
+        if(av->a_type == A_SYMBOL && !argnum){
+            if(atom_getsymbolarg(0, ac, av) == gensym("-pm")){
                 if(ac == 1){
                     pm = 1;
-                    ac--;
-                    av++;
+                    ac--, av++;
                 }
                 else
                     goto errstate;
@@ -141,8 +137,7 @@ static void *xmod_new(t_symbol *s, int ac, t_atom *av){
                     break;
             };
             argnum++;
-            ac--;
-            av++;
+            ac--, av++;
         }
         else
             goto errstate;

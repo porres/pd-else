@@ -1,6 +1,4 @@
 #N canvas 487 23 568 567 10;
-#X obj 179 117 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
 #X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -29,7 +27,7 @@
 0;
 #X obj 4 538 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 4 436 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 486 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 105 411 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -46,21 +44,19 @@
 0;
 #X text 127 327 freq <list> -;
 #X text 222 411 vocoder output;
-#X text 143 446 1) float -;
-#X text 222 446 number of channels (obrigatory);
-#X text 143 466 2) float -;
-#X obj 4 488 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X text 143 496 1) float -;
+#X text 222 496 number of channels (obrigatory);
+#X text 143 516 2) float -;
+#X obj 4 438 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 96 496 -freq <list> -;
+#X text 96 446 -freq <list> -;
 #X text 222 327 list of frequency (in MIDI) for each channel;
-#X text 195 494 list of frequency (in MIDI) for each channel default
+#X text 195 444 list of frequency (in MIDI) for each channel default
 is equally dividing the range from 28 and 108 (in MIDI) for the number
 of channels., f 47;
-#X obj 234 164 else/play.file~ voice.wav 1 1;
 #X text 60 90 [vocoder~] is classic cross synthesis channel vocoder
 abstraction., f 67;
-#X obj 179 238 else/out~;
-#N canvas 815 65 524 669 example 0;
+#N canvas 690 23 524 669 example 0;
 #X obj 156 533 nbx 3 16 50 1000 0 0 empty empty empty 0 -8 0 12 #dcdcdc
 #000000 #000000 0 256;
 #X obj 65 452 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-hz2 empty 0 -8 0
@@ -86,8 +82,9 @@ abstraction., f 67;
 #X text 123 82 base pitch;
 #X text 192 104 interval;
 #X obj 44 27 loadbang;
-#X obj 71 149 else/loop 28 -offset 24 -step 3;
 #X text 65 52 <= generate list;
+#X obj 71 149 else/loop -offset 24 -step 3 28;
+#X text 272 152 flag for 'n';
 #X connect 0 0 4 2;
 #X connect 1 0 7 0;
 #X connect 2 0 4 1;
@@ -97,30 +94,34 @@ abstraction., f 67;
 #X connect 6 0 9 0;
 #X connect 7 0 4 0;
 #X connect 8 0 1 0;
-#X connect 10 0 20 0;
-#X connect 11 0 20 0;
+#X connect 10 0 21 0;
+#X connect 11 0 21 0;
 #X connect 12 0 14 0;
-#X connect 12 1 20 0;
+#X connect 12 1 21 0;
 #X connect 13 0 12 0;
 #X connect 14 0 5 0;
 #X connect 15 0 10 0;
 #X connect 16 0 11 0;
 #X connect 19 0 13 0;
-#X connect 20 0 14 0;
+#X connect 21 0 14 0;
 #X restore 470 267 pd example;
-#X obj 179 209 else/vocoder~ 16 75;
-#X obj 179 139 else/bl.saw~ 60;
-#X obj 290 188 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#dcdcdc #000000 #000000 0 256;
 #X obj 104 350 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 157 351 signal -;
 #X text 222 351 control source input;
 #X text 222 376 filter q for all channels;
 #X text 163 376 float -;
-#X text 224 466 filter q for all channels (default 50);
-#X connect 0 0 37 0;
-#X connect 32 0 36 1;
-#X connect 36 0 34 0;
-#X connect 37 0 36 0;
-#X connect 38 0 36 2;
+#X text 224 516 filter q for all channels (default 50);
+#X obj 179 117 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X obj 234 164 else/play.file~ voice.wav 1 1;
+#X obj 179 238 else/out~;
+#X obj 179 209 else/vocoder~ 16 75;
+#X obj 179 139 else/bl.saw~ 60;
+#X obj 290 188 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X connect 39 0 43 0;
+#X connect 40 0 42 1;
+#X connect 42 0 41 0;
+#X connect 43 0 42 0;
+#X connect 44 0 42 2;
