@@ -49,7 +49,7 @@
 #X obj 207 412 else/f2s~ 10;
 #X obj 136 253 else/f2s~ 10;
 #X obj 112 127 else/f2s~ 10;
-#X obj 94 65 else/mov.rms~ 512 -db;
+#X obj 94 65 else/mov.rms~ -db 512;
 #X connect 3 0 17 1;
 #X connect 5 0 11 0;
 #X connect 6 0 17 2;

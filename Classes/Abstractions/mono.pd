@@ -51,10 +51,10 @@
 * on_\$0 \; notes_\$0[voice_\$0] = ($f2 + 1) * on_\$0 \; velocities_\$0[voice_\$0]
 = $f3 \; voice_\$0 = $f1 \; on_\$0 = $f3 > 0;
 #X obj 71 484 - 1;
-#X obj 107 44 else/voices 10 1 -list -retrig 1;
 #X obj 245 213 else/loop 10;
-#X connect 2 0 41 0;
-#X connect 3 0 41 1;
+#X obj 107 44 else/voices -list -retrig 1 10 1;
+#X connect 2 0 42 0;
+#X connect 3 0 42 1;
 #X connect 4 0 23 0;
 #X connect 5 0 6 0;
 #X connect 7 0 19 0;
@@ -94,14 +94,14 @@
 #X connect 35 2 20 2;
 #X connect 36 0 15 0;
 #X connect 37 0 22 0;
-#X connect 37 1 42 0;
+#X connect 37 1 41 0;
 #X connect 37 2 16 0;
 #X connect 37 2 36 0;
 #X connect 38 0 12 0;
 #X connect 39 0 10 0;
 #X connect 40 0 4 0;
-#X connect 41 0 39 0;
-#X connect 42 0 35 0;
+#X connect 41 0 35 0;
+#X connect 42 0 39 0;
 #X restore 112 107 pd monophonic;
 #N canvas 642 267 499 338 route 0;
 #X obj 50 35 inlet;
