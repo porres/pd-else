@@ -1,6 +1,6 @@
 #include "m_pd.h"
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define suspedal_NPCH  128 // number of midi pitches
 #define suspedal_NORD  500 // size of incoming order array on stack
@@ -24,12 +24,11 @@ typedef struct _suspedal{
 }t_suspedal;
 
 static int suspedal_check_noteoff(t_suspedal *x, int pitch){
-    unsigned int i;
-    for(i = 0; i < x->x_nord; i++){ // find pitch in x->x_ord
+    for(unsigned int i = 0; i < x->x_nord; i++){ // find pitch in x->x_ord
         if(pitch == x->x_ord[i])
-            return 1;
+            return(1);
     };
-    return 0;
+    return(0);
 }
 
 static void suspedal_check_arrsz(t_suspedal *x, int sz){
@@ -194,8 +193,7 @@ static void suspedal_clear(t_suspedal *x){
 }
 
 static void suspedal_flush(t_suspedal *x){
-    unsigned int i;
-    for(i = 0; i < x->x_nord; i++){
+    for(unsigned int i = 0; i < x->x_nord; i++){
         int pitch = x->x_ord[i];
         if(x->x_retrig == 3){
             outlet_float(x->x_velout, 0);
@@ -215,7 +213,7 @@ static void * suspedal_free(t_suspedal *x){
     if(x->x_heaped == 1)
         free(x->x_ord);
     outlet_free(x->x_velout);
-    return (void *)x;
+    return(void *)x;
 }
 
 static void suspedal_tonal(t_suspedal *x, t_float f){
@@ -239,59 +237,55 @@ static void suspedal_status(t_suspedal *x, t_float f){
 
 static void *suspedal_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
-	t_suspedal *x = (t_suspedal *)pd_new(suspedal_class);
-        t_float retrig = 0; 
-        t_float status = 0;
-        t_int floatarg = 0;
-        x->x_tonal = 0;
-        while(argc){
-            if(argv->a_type == A_FLOAT && !floatarg){
-                status = atom_getfloatarg(0, argc, argv) != 0;
-                argc--;
-                argv++;
-                floatarg = 1;
-            }
-            else if(argv->a_type == A_SYMBOL){
-                t_symbol * cursym = atom_getsymbolarg(0, argc, argv);
-                if(!strcmp(cursym->s_name, "-retrig")){
-                    if(argc >= 2 && (argv+1)->a_type == A_FLOAT){
-                        t_float curfloat = atom_getfloatarg(1, argc, argv);
-                        retrig = curfloat;
-                        argc -=2;
-                        argv += 2;
-                    }
-                    else
-                        goto errstate;
-                }
-                else if(!strcmp(cursym->s_name, "-tonal")){
-                    x->x_tonal = 1;
-                    argc--;
-                    argv++;
+    t_suspedal *x = (t_suspedal *)pd_new(suspedal_class);
+    t_float retrig = 0;
+    t_float status = 0;
+    t_int floatarg = 0;
+    x->x_tonal = 0;
+    while(argc){
+        if(argv->a_type == A_FLOAT){
+            status = atom_getfloatarg(0, argc, argv) != 0;
+            argc--, argv++;
+            floatarg = 1;
+        }
+        else if(argv->a_type == A_SYMBOL && !floatarg){
+            t_symbol *cursym = atom_getsymbolarg(0, argc, argv);
+            if(cursym == gensym("-retrig")){
+                if(argc >= 2 && (argv+1)->a_type == A_FLOAT){
+                    t_float curfloat = atom_getfloatarg(1, argc, argv);
+                    retrig = curfloat;
+                    argc-=2, argv+=2;
                 }
                 else
                     goto errstate;
             }
+            else if(cursym == gensym("-tonal")){
+                x->x_tonal = 1;
+                argc--, argv++;
+            }
             else
                 goto errstate;
-        };
-        x->x_ord = x->x_ordst;
-        x->x_heaped = x->x_vel = 0;
-        suspedal_clear(x);
-        suspedal_retrig(x, retrig);
-        suspedal_status(x, status);
-        floatinlet_new((t_object *)x, &x->x_vel);
-        inlet_new((t_object *)x, (t_pd *)x, &s_float, gensym("sustain"));
-        outlet_new((t_object *)x, &s_float);
-        x->x_velout = outlet_new((t_object *)x, &s_float);
-	return(x);
-	errstate:
-		pd_error(x, "suspedal: improper args");
-		return NULL;
+        }
+        else
+            goto errstate;
+    };
+    x->x_ord = x->x_ordst;
+    x->x_heaped = x->x_vel = 0;
+    suspedal_clear(x);
+    suspedal_retrig(x, retrig);
+    suspedal_status(x, status);
+    floatinlet_new((t_object *)x, &x->x_vel);
+    inlet_new((t_object *)x, (t_pd *)x, &s_float, gensym("sustain"));
+    outlet_new((t_object *)x, &s_float);
+    x->x_velout = outlet_new((t_object *)x, &s_float);
+    return(x);
+errstate:
+    pd_error(x, "[suspedal]: improper args");
+    return(NULL);
 }
 
 void suspedal_setup(void){
-	suspedal_class = class_new(gensym("suspedal"), (t_newmethod)suspedal_new, (t_method)suspedal_free,
-                sizeof(t_suspedal), 0, A_GIMME, 0);
+	suspedal_class = class_new(gensym("suspedal"), (t_newmethod)suspedal_new, (t_method)suspedal_free, sizeof(t_suspedal), 0, A_GIMME, 0);
     class_addfloat(suspedal_class, (t_method)suspedal_float);
     class_addmethod(suspedal_class, (t_method)suspedal_tonal, gensym("tonal"), A_FLOAT, 0);
 	class_addmethod(suspedal_class, (t_method)suspedal_retrig, gensym("retrig"), A_FLOAT, 0);

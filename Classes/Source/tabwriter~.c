@@ -232,69 +232,65 @@ static void *tabwriter_new(t_symbol *s, int ac, t_atom *av){
     t_float end = -1;
     x->x_whole_array = 1;
     t_int nameset = 0; // flag if name is set
+    t_int argn = 0;
     t_symbol *name = NULL;
     x->x_buffer = NULL;
     while(ac > 0){
         if(av->a_type == A_SYMBOL){
-            t_symbol * curarg = atom_getsymbolarg(0, ac, av);
-            if(curarg == gensym("-continue")){
+            t_symbol *curarg = atom_getsymbolarg(0, ac, av);
+            if(curarg == gensym("-continue") && !argn){
                 if(ac >= 2){
                     continue_flag = atom_getfloatarg(1, ac, av);
-                    ac-=2;
-                    av+=2;
+                    ac-=2, av+=2;
                 }
                 else
                     goto errstate;
             }
-            else if(curarg == gensym("-loop")){
+            else if(curarg == gensym("-loop") && !argn){
                 if(ac >= 2){
                     loop_flag = atom_getfloatarg(1, ac, av);
-                    ac-=2;
-                    av+=2;
+                    ac-=2, av+=2;
                 }
                 else
                     goto errstate;
             }
-            else if(curarg == gensym("-start")){
+            else if(curarg == gensym("-start") && !argn){
                 if(ac >= 2){
                     start = atom_getfloatarg(1, ac, av);
-                    ac-=2;
-                    av+=2;
+                    ac-=2, av+=2;
                 }
                 else
                     goto errstate;
             }
-            else if(curarg == gensym("-end")){
+            else if(curarg == gensym("-end") && !argn){
                 if(ac >= 2){
                     end = atom_getfloatarg(1, ac, av);
-                    ac-=2;
-                    av+=2;
+                    ac-=2, av+=2;
                 }
                 else
                     goto errstate;
             }
-            else if(curarg == gensym("-ch")){
+            else if(curarg == gensym("-ch") && !argn){
                 if(ac >= 2){
                     numchan = atom_getfloatarg(1, ac, av);
-                    ac-=2;
-                    av+=2;
+                    ac-=2, av+=2;
                 }
                 else
                     goto errstate;
             }
             else if(!nameset){ // if name not passed so far, count arg as array name
                 name = atom_getsymbolarg(0, ac, av);
-                ac--;
-                av++;
+                argn = 1;
+                ac--, av++;
                 nameset = 1;
             }
             else
                 goto errstate;
         }
         else if(av->a_type == A_FLOAT){
+            argn = 1;
             numchan = atom_getfloatarg(0, ac, av);
-            ac--;
-            av++;
+            ac--, av++;
         }
         else
             goto errstate;

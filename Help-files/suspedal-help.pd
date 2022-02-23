@@ -1,7 +1,7 @@
 #N canvas 503 29 562 578 10;
 #X obj 2 428 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 2 477 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 2 521 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 89 435 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -36,7 +36,7 @@
 #X text 156 436 float;
 #X text 156 458 float;
 #X text 205 386 the velocity part of a note message;
-#X obj 2 506 cnv 3 550 3 empty empty flag 8 12 0 13 #dcdcdc #000000
+#X obj 2 480 cnv 3 550 3 empty empty flag 8 12 0 13 #dcdcdc #000000
 0;
 #X text 157 302 clear - clears the memory (no note-off messages are
 output);
@@ -69,7 +69,7 @@ output);
 #X coords 0 1 100 -1 302 42 1;
 #X restore 4 3 graph;
 #X text 108 332 tonal <float>;
-#X text 191 527 -tonal - sets sustain to "tonal" mode;
+#X text 191 501 -tonal - sets sustain to "tonal" mode;
 #X text 102 347 retrig <float>;
 #X obj 222 190 else/suspedal;
 #X text 96 362 sustain <float>;
@@ -88,7 +88,7 @@ them out when it's switched off. It has two sustain modes \, 'regular'
 #X text 207 407 pedal switch: on <1> or off <0>;
 #X text 207 436 the pitch value of a note message;
 #X text 207 458 the velocity value of a note message;
-#X text 157 485 float - non zero turns on the pedal (default: 0 - off)
+#X text 157 529 float - non zero turns on the pedal (default: 0 - off)
 ;
 #N canvas 527 198 822 448 example 0;
 #X obj 151 248 ctlin 64 1;
@@ -218,7 +218,7 @@ example uses [voices] but you can also use vanilla's [poly].;
 #X connect 26 0 15 0;
 #X connect 30 0 25 0;
 #X restore 479 188 pd example;
-#N canvas 592 175 492 467 retrigger 0;
+#N canvas 615 107 492 467 retrigger 0;
 #X obj 46 185 vradio 15 1 0 4 empty empty empty 0 -8 0 10 #dcdcdc #000000
 #000000 0;
 #X floatatom 46 252 3 0 0 0 - - - 0;
@@ -278,7 +278,6 @@ note, f 26;
 #X obj 110 362 else/mono;
 #X obj 110 392 else/display;
 #X obj 161 393 else/display;
-#X obj 110 322 else/suspedal -tonal -retrig 1, f 20;
 #X text 166 153 4) play with keyboad (new notes aren't sustained);
 #X text 34 156 1) turn on note;
 #X text 34 189 5) retrigger note;
@@ -293,17 +292,18 @@ ones after you switch it on., f 62;
 to use both hands to play further notes. This is useful for [poly]
 or [voices] \, but also [mono]., f 62;
 #X obj 179 184 else/keyboard 17 80 2 3 0 0 empty empty;
+#X obj 110 322 else/suspedal -tonal -retrig 1, f 20;
 #X connect 0 0 2 0;
-#X connect 1 0 9 2;
+#X connect 1 0 19 2;
 #X connect 2 0 4 0;
-#X connect 4 0 9 0;
+#X connect 4 0 19 0;
 #X connect 6 0 7 0;
 #X connect 6 1 8 0;
-#X connect 9 0 6 0;
-#X connect 9 1 6 1;
-#X connect 19 0 4 0;
+#X connect 18 0 4 0;
+#X connect 19 0 6 0;
+#X connect 19 1 6 1;
 #X restore 491 211 pd tonal;
-#X text 149 511 -retrig <float> - sets retriger mode <0 \, 1 \, 2 or
+#X text 149 485 -retrig <float> - sets retriger mode <0 \, 1 \, 2 or
 3> (default 0), f 63;
 #X connect 5 0 43 2;
 #X connect 18 0 26 0;

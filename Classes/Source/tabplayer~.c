@@ -1,10 +1,10 @@
 // porres 2020
 
-#include <math.h>
 #include "m_pd.h"
 #include "magic.h"
 #include "buffer.h"
 #include <stdlib.h>
+#include <math.h>
 
 #define HALF_PI (3.14159265358979323846 * 0.5)
 
@@ -399,32 +399,33 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
     x->x_loop = 0;
     x->x_rate = 1.f;
     int nameset = 0;
+    int argn = 0;
     while(ac){
         if(av->a_type == A_SYMBOL){ // if name not passed so far, count arg as array name
             s = atom_getsymbolarg(0, ac, av);
-            if(s == gensym("-loop")){
+            if(s == gensym("-loop") && !argn){
                 x->x_loop = 1;
                 ac--, av++;
             }
-            else if(s == gensym("-xfade")){
+            else if(s == gensym("-xfade") && !argn){
                 x->x_xfade = 1;
                 ac--, av++;
             }
-            else if(s == gensym("-fade") && ac >= 2){
+            else if(s == gensym("-fade") && ac >= 2  && !argn){
                 fade = atom_getfloatarg(1, ac, av);
                 ac-=2, av+=2;
             }
-            else if(s == gensym("-sr") && ac >= 2){
+            else if(s == gensym("-sr") && ac >= 2 && !argn){
                 x->x_array_sr_khz = atom_getfloatarg(1, ac, av) * 0.001;
                 if(x->x_array_sr_khz < 8)
                     x->x_array_sr_khz = 8;
                 ac-=2, av+=2;
             }
-            else if(s == gensym("-speed") && ac >= 2){
+            else if(s == gensym("-speed") && ac >= 2 && !argn){
                 x->x_rate = (double)atom_getfloatarg(1, ac, av) * 0.01;
                 ac-=2, av+=2;
             }
-            else if(s == gensym("-range") && ac >= 3){
+            else if(s == gensym("-range") && ac >= 3 && !argn){
                 range_start = atom_getfloatarg(1, ac, av);
                 range_end = atom_getfloatarg(2, ac, av);
                 ac-=3, av+=3;
@@ -433,12 +434,14 @@ static void *tabplayer_new(t_symbol * s, int ac, t_atom *av){
                 arrname = s;
                 ac--, av++;
                 nameset = 1;
+                argn = 1;
             }
             else
                 goto errstate;
         }
         else{ // float
             channels = atom_getfloatarg(0, ac, av);
+            argn = 1;
             ac--, av++;
         }
     };
