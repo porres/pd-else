@@ -12,14 +12,14 @@
 0;
 #X obj 2 315 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 2 378 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 2 411 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 155 269 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 2 444 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X text 210 387 -;
-#X text 152 387 1) float;
+#X text 210 420 -;
+#X text 152 420 1) float;
 #X text 194 271 float;
 #X text 239 271 - raw MIDI data stream;
 #X text 240 352 -;
@@ -72,7 +72,7 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X connect 7 0 9 0;
 #X connect 7 1 8 0;
 #X restore 473 196 pd channel;
-#X text 224 387 sets channel number (default 0 - OMNI);
+#X text 224 420 sets channel number (default 0 - OMNI);
 #X text 239 294 -;
 #X text 199 294 float;
 #X text 254 294 MIDI channel, f 31;
@@ -110,10 +110,10 @@ we have an extra outlet., f 67;
 #X connect 11 2 4 0;
 #X restore 491 219 pd poly;
 #X text 255 352 Rightmost outlet is MIDI channel;
-#X obj 2 414 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 2 377 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 132 423 -poly: -;
-#X text 189 423 sets the object to output polyphonic aftertouch, f
+#X text 132 386 -poly: -;
+#X text 189 386 sets the object to output polyphonic aftertouch, f
 48;
 #X text 254 326 Leftmost outlet(s): MIDI Aftertouch;
 #X text 69 86 [touch.in] extracts MIDI Aftertouch information from

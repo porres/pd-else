@@ -1,7 +1,7 @@
 // porres 2018
 
 #include "m_pd.h"
-#include <string.h>
+//#include <string.h>
 
 typedef struct _touchin{
     t_object       x_ob;
@@ -75,18 +75,19 @@ static void touchin_float(t_touchin *x, t_float f){
 }
 
 static void *touchin_new(t_symbol *s, t_int ac, t_atom *av){
+    s = NULL;
     t_touchin *x = (t_touchin *)pd_new(touchin_class);
-    t_symbol *curarg = s; // get rid of warning
     x->x_atouch = x->x_poly =  x->x_ready = x->x_pressure = 0;
     t_float channel = 0;
+    t_int argn = 0;
     while(ac > 0){
         if(av->a_type == A_FLOAT){
+            argn = 1;
             channel = (t_int)atom_getfloatarg(0, ac, av);
             ac--, av++;
         }
-        else if(av->a_type == A_SYMBOL){
-            curarg = atom_getsymbolarg(0, ac, av);
-            if(!strcmp(curarg->s_name, "-poly")){
+        else if(av->a_type == A_SYMBOL && !argn){
+            if(atom_getsymbolarg(0, ac, av) == gensym("-poly")){
                 x->x_poly = 1;
                 ac--, av++;
             }
@@ -110,7 +111,7 @@ static void *touchin_new(t_symbol *s, t_int ac, t_atom *av){
     return(x);
     errstate:
         pd_error(x, "[touchin]: improper args");
-        return NULL;
+        return(NULL);
 }
 
 void setup_touch0x2ein(void){

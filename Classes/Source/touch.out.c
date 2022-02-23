@@ -1,7 +1,6 @@
 // porres 2018
 
 #include "m_pd.h"
-#include <string.h>
 
 typedef struct _touchout{
     t_object  x_ob;
@@ -32,20 +31,20 @@ static void touchout_float(t_touchout *x, t_float f){
 }
 
 static void *touchout_new(t_symbol *s, t_int ac, t_atom *av){
+    s = NULL;
     t_touchout *x = (t_touchout *)pd_new(touchout_class);
-    t_symbol *curarg = NULL;
-    curarg = s; // get rid of warning
     t_float channel = 1;
     x->x_poly = 0;
+    t_int argn = 0;
     if(ac){
         while(ac > 0){
             if(av->a_type == A_FLOAT){
+                argn = 1;
                 channel = (t_int)atom_getfloatarg(0, ac, av);
                 ac--, av++;
             }
             else if(av->a_type == A_SYMBOL){
-                curarg = atom_getsymbolarg(0, ac, av);
-                if(!strcmp(curarg->s_name, "-poly")){
+                if(atom_getsymbolarg(0, ac, av) == gensym("-poly") && !argn){
                     x->x_poly = 1;
                     ac--, av++;
                 }
