@@ -68,17 +68,15 @@ t_int *chance_perform(t_int *w){
 }
 
 void chance_dsp(t_chance *x, t_signal **sp){
-    int i;
-    t_int*nblock = sp[0]->s_n;
-    t_int **sigvec;
     int n_sig = x->x_n_outlets + 3; // outs + 3 (ob / in / block size)
-    sigvec  = (t_int **) calloc(n_sig, sizeof(t_int *));
+    t_int **sigvec  = (t_int **)calloc(n_sig, sizeof(t_int *));
+    int i;
 	for(i = 0; i < n_sig; i++)
 		sigvec[i] = (t_int *) calloc(sizeof(t_int), 1);
 	sigvec[0] = (t_int *)x; // object
-	sigvec[n_sig - 1] = nblock; // block size (n)
-	for(i = 1; i < n_sig - 1; i++) // I/O
-		sigvec[i] = (t_int *)sp[i-1]->s_vec;
+    for(i = 1; i < n_sig - 1; i++) // I/O
+        sigvec[i] = (t_int *)sp[i-1]->s_vec;
+	sigvec[n_sig - 1] = (t_int)sp[0]->s_n; // block size (n)
     dsp_addv(chance_perform, n_sig, (t_int *)sigvec);
     free(sigvec);
 }
@@ -91,8 +89,8 @@ void chance_free(t_chance *x){
 }
 
 void *chance_new(t_symbol *s, short argc, t_atom *argv){
-    t_chance *x = (t_chance *)pd_new(chance_class);
     s = NULL;
+    t_chance *x = (t_chance *)pd_new(chance_class);
     static int init_seed = 234599;
     init_seed *= 1319;
     t_int seed = init_seed;
