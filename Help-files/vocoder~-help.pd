@@ -74,17 +74,16 @@ abstraction., f 67;
 #X msg 88 104 offset \$1;
 #X msg 157 124 step \$1;
 #X obj 44 107 t b b;
-#X obj 44 52 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X obj 44 52 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000;
 #X obj 44 174 else/group;
-#X floatatom 88 85 5 0 0 0 - - - 0;
-#X floatatom 157 105 5 0 0 0 - - - 0;
-#X text 123 82 base pitch;
-#X text 192 104 interval;
+#X floatatom 88 81 5 0 0 0 - - - 0;
+#X floatatom 157 103 5 0 0 0 - - - 0;
+#X text 123 80 base pitch;
+#X text 192 102 interval;
 #X obj 44 27 loadbang;
-#X text 65 52 <= generate list;
+#X text 65 53 <= generate list;
 #X obj 71 149 else/loop -offset 24 -step 3 28;
-#X text 272 152 flag for 'n';
 #X connect 0 0 4 2;
 #X connect 1 0 7 0;
 #X connect 2 0 4 1;
