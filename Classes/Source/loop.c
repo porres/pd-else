@@ -64,6 +64,14 @@ static void loop_bang(t_loop *x){
     }
 }
 
+static void loop_range(t_loop *x, t_symbol *s, int ac, t_atom *av){
+    if(ac == 2){
+        s = NULL;
+        x->x_counter_start = atom_getfloat(av);
+        x->x_target = atom_getfloat(av+1);
+    }
+}
+
 static void loop_set(t_loop *x, t_symbol *s, int ac, t_atom *av){
     if(!ac)
         return;
@@ -79,6 +87,7 @@ static void loop_set(t_loop *x, t_symbol *s, int ac, t_atom *av){
         return;
     }
     else{
+        post("else");
         s = NULL;
         x->x_counter_start = atom_getfloat(av);
         x->x_target = atom_getfloat(av+1);
@@ -226,5 +235,6 @@ void loop_setup(void){
     class_addmethod(loop_class, (t_method)loop_continue, gensym("continue"), 0);
     class_addmethod(loop_class, (t_method)loop_offset, gensym("offset"), A_DEFFLOAT, 0);
     class_addmethod(loop_class, (t_method)loop_step, gensym("step"), A_DEFFLOAT, 0);
-    class_addmethod(loop_class, (t_method)loop_set, gensym("set"), A_DEFFLOAT, 0);
+    class_addmethod(loop_class, (t_method)loop_set, gensym("set"), A_GIMME, 0);
+    class_addmethod(loop_class, (t_method)loop_range, gensym("range"), A_GIMME, 0);
 }
