@@ -595,7 +595,7 @@ static t_int *scope_perform(t_int *w){
     int nblock = (int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *in2 = (t_float *)(w[4]);
-    t_float *out = (t_float *)(w[5]);
+//    t_float *out = (t_float *)(w[5]);
     if(!x->x_xymode || x->x_frozen){ // do nothing
 //        for(int n = 0; n < nblock; n++)
 //            out[n] = in1[n];
@@ -1264,5 +1264,5 @@ void oscope_tilde_setup(void){
     scope_widgetbehavior.w_deletefn   = scope_delete;
     scope_widgetbehavior.w_visfn      = scope_vis;
     scope_widgetbehavior.w_clickfn    = (t_clickfn)scope_click;
-    #include "oscope_dialog.c"
+    #include "oscope~_dialog.c"
 }

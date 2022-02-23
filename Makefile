@@ -290,7 +290,7 @@ utf := shared/s_utf8.c
 	note.class.sources := Classes/Source/note.c $(utf)
 
 smagic := shared/magic.c
-    oscope~.class.sources := Classes/Source/oscope.c $(smagic)
+    oscope~.class.sources := Classes/Source/oscope~.c $(smagic)
 
 #########################################################################
 
