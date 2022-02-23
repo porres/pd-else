@@ -527,6 +527,24 @@ static void midi_dump(t_midi *x){
     outlet_bang(x->x_bangout);
 }
 
+static void midi_dump_delta(t_midi *x){
+    t_midievent *ep = x->x_sequence;
+    int nevents = x->x_nevents;
+    while(nevents--){  // LATER rethink sysex continuation
+        unsigned char *bp = ep->e_bytes;
+        double dp = ep->e_delta;
+        outlet_float(((t_object *)x)->ob_outlet, (float)dp);
+        outlet_float(((t_object *)x)->ob_outlet, (float)*bp);
+        int i;
+        for(i = 0, bp++; i < 3 && *bp != MIDI_EOM; i++, bp++)
+            outlet_float(((t_object *)x)->ob_outlet, (float)*bp);
+            	if (*bp == MIDI_EOM)
+	    outlet_bang(x->x_bangout);
+        ep++;
+    }
+    outlet_bang(x->x_bangout);
+}
+
 static void midi_clocktick(t_midi *x){
     t_float output;
     if(x->x_mode == MIDI_PLAYMODE || x->x_mode == MIDI_SLAVEMODE){
@@ -945,16 +963,14 @@ static void *midi_new(t_symbol * s, int ac, t_atom *av){
     x->x_ntempi = 0;
     x->x_tempomap = x->x_tempomapini;
     x->x_defname = &s_;
-    int argn = 0;
     while(ac){
         if(av->a_type == A_SYMBOL){
             s = atom_getsymbolarg(0, ac, av);
-            if(s == gensym("-loop") && !argn){
+            if(s == gensym("-loop")){
                 x->x_loop = 1;
                 ac--, av++;
             }
             else{
-                argn = 1;
                 midi_doread(x, x->x_defname = s);
                 ac--, av++;
             }
@@ -986,6 +1002,7 @@ void midi_setup(void){
     class_addmethod(midi_class, (t_method)midi_write, gensym("save"), A_DEFSYM, 0);
     class_addmethod(midi_class, (t_method)midi_panic, gensym("panic"), 0);
     class_addmethod(midi_class, (t_method)midi_dump, gensym("dump"), 0);
+    class_addmethod(midi_class, (t_method)midi_dump_delta, gensym("dump_delta"), 0);
     class_addmethod(midi_class, (t_method)midi_pause, gensym("pause"), 0);
     class_addmethod(midi_class, (t_method)midi_continue, gensym("continue"), 0);
     class_addmethod(midi_class, (t_method)midi_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
