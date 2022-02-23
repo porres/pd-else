@@ -1,13 +1,13 @@
-#N canvas 452 23 559 479 10;
+#N canvas 452 23 559 473 10;
 #X obj 4 258 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 3 341 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 374 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 3 395 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 85 350 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 449 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 3 445 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
@@ -146,26 +146,26 @@
 #X obj 124 40 cnv 4 4 4 empty empty amplitude 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 208 137 noise~;
-#X text 168 266 signal;
-#X text 174 350 float;
+#X text 165 266 signal;
+#X text 171 350 float;
 #X msg 268 139 linear;
-#X text 218 266 - signal to analyze;
-#X text 156 383 1) float;
-#X text 156 399 2) float;
-#X text 216 383 - analysis window size in samples (default 1024),
+#X text 215 266 - signal to analyze;
+#X text 153 404 1) float;
+#X text 153 420 2) float;
+#X text 213 404 - analysis window size in samples (default 1024),
 f 53;
-#X text 216 399 - hop size in samples (default \, half the window size)
+#X text 213 420 - hop size in samples (default \, half the window size)
 ;
-#X text 218 350 - RMS value;
-#X text 168 320 linear;
-#X text 192 302 db;
-#X text 219 302 - change RMS value to dBFS;
+#X text 215 350 - RMS value;
+#X text 165 320 linear;
+#X text 189 302 db;
+#X text 216 302 - change RMS value to dBFS;
 #X text 61 88 [rms~] is similar to Pd Vanilla's [env~] \, but it reports
 the RMS value in linear amplitude (default) or in dBFS.;
-#X text 96 284 set <float \, float>;
-#X text 218 284 - sets window and hop size in samples;
+#X text 93 284 set <float \, float>;
+#X text 215 284 - sets window and hop size in samples;
 #X msg 285 163 db;
-#N canvas 555 208 817 330 analysis 0;
+#N canvas 430 148 817 330 analysis 0;
 #X text 15 21 The [rms~] object is based on [env~] and has the same
 analytical structure. The analysis is "Hanning" (raised cosine) windowed
 \, which makes the RMS output more stable.;
@@ -232,12 +232,12 @@ size.;
 #X connect 17 0 9 0;
 #X connect 17 0 14 0;
 #X restore 476 224 pd analysis;
-#X text 218 320 - change RMS value to linear (the default is linear)
+#X text 215 320 - change RMS value to linear (the default is linear)
 ;
-#X obj 3 422 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 3 373 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 216 426 - sets the output to dBFS, f 53;
-#X text 186 426 -db;
+#X text 213 377 - sets the output to dBFS, f 53;
+#X text 183 377 -db;
 #X text 38 188 see also:;
 #X obj 40 213 else/mov.rms~;
 #X obj 208 190 else/rms~ -db;

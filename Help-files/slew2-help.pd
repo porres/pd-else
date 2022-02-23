@@ -3,7 +3,7 @@
 0;
 #X obj 4 428 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 461 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 498 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 6 538 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
@@ -72,7 +72,7 @@
 #X text 187 332 float;
 #X text 187 383 float;
 #X text 187 438 float;
-#X obj 4 506 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 4 465 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 145 364 rate <float>;
 #X text 230 364 - refresh rate in ms, f 46;
@@ -105,7 +105,6 @@ f 61;
 or the rate message. If you change the rate \, the step limit changes
 \, but the speed remains the same., f 61;
 #X msg 225 224 0.5;
-#X obj 113 347 else/slew2 0.5 0.5 -rate 250, f 38;
 #X floatatom 338 296 5 0 0 0 - - - 0;
 #X msg 347 248 0;
 #X msg 355 270 -1;
@@ -115,30 +114,31 @@ or the rate message. If you change the rate \, the step limit changes
 200 values in a second. If the speed is then "1" \, this means that
 the step value is 1/200 (0.005). So a shift between 0 and 1 takes 200
 steps of 0.005 and a second to reach 1!, f 61;
-#X connect 0 0 16 1;
+#X obj 113 347 else/slew2 0.1 0.5 -rate 100, f 38;
+#X connect 0 0 22 1;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;
-#X connect 4 0 16 0;
+#X connect 4 0 22 0;
 #X connect 5 0 4 0;
 #X connect 6 0 5 0;
 #X connect 7 0 0 0;
-#X connect 9 0 16 0;
+#X connect 9 0 22 0;
 #X connect 10 0 13 0;
 #X connect 11 0 13 0;
 #X connect 12 0 13 0;
 #X connect 13 0 9 0;
 #X connect 15 0 0 0;
-#X connect 16 0 3 0;
-#X connect 17 0 16 2;
-#X connect 18 0 17 0;
-#X connect 19 0 17 0;
-#X connect 20 0 17 0;
-#X connect 21 0 17 0;
+#X connect 16 0 22 2;
+#X connect 17 0 16 0;
+#X connect 18 0 16 0;
+#X connect 19 0 16 0;
+#X connect 20 0 16 0;
+#X connect 22 0 3 0;
 #X restore 495 267 pd rate;
 #X msg 181 243 set 0;
 #X msg 170 223 set 1;
 #X text 230 348 - sets new start point and goes back to target;
-#X text 114 515 -rate <float>: sets refresh rate in ms (default 5 \,
+#X text 114 474 -rate <float>: sets refresh rate in ms (default 5 \,
 minimum 1), f 61;
 #X obj 28 264 else/slew;
 #X floatatom 323 246 5 0 0 0 - - - 0;
@@ -171,8 +171,8 @@ off., f 77;
 #X text 312 153 down;
 #X text 230 383 - up speed limit (negative values = no limit);
 #X text 230 405 - down speed limit (negative values = no limit);
-#X text 165 468 1) float - up slew limit speed (default 0);
-#X text 165 483 2) float - down slew limit speed (default 0);
+#X text 165 505 1) float - up slew limit speed (default 0);
+#X text 165 520 2) float - down slew limit speed (default 0);
 #X connect 23 0 55 0;
 #X connect 24 0 23 0;
 #X connect 25 0 24 0;

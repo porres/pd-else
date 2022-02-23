@@ -1,9 +1,8 @@
 
 #include "m_pd.h"
 #include "buffer.h"
-#include <stdlib.h>
-#include <string.h>
 #include <math.h>
+#include <stdlib.h>
 
 #define MAX_COEF 256
 #define TWO_PI (3.14159265358979323846 * 2)
@@ -167,43 +166,45 @@ static void *shaper_new(t_symbol *s, int ac, t_atom *av){
     x->x_dc_filter = 1;
     x->x_arrayset = 0;
     x->x_a = 1 - (5*TWO_PI/(double)x->x_sr);
+    int argn = 0;
     if(ac){
-        int flag = 0;
         x->x_count = 1;
         x->x_coef[1] = 0;
         while(ac){
-            if(!flag && av->a_type == A_FLOAT){
+            if(av->a_type == A_FLOAT){
+                argn = 1;
                 x->x_coef[x->x_count++] = atom_getfloatarg(0, ac, av);
                 ac--, av++;
             }
-            else if(av->a_type == A_SYMBOL){
+            else if(av->a_type == A_SYMBOL && !argn){
                 t_symbol *curarg = atom_getsymbolarg(0, ac, av);
-                if(!strcmp(curarg->s_name, "-norm")){
+                if(curarg == gensym("-norm")){
                     if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                         t_float curfloat = atom_getfloatarg(1, ac, av);
                         x->x_norm = (int)(curfloat != 0);
-                        flag = 1, ac-=2, av+=2;
+                        ac-=2, av+=2;
                     }
                     else
                         goto errstate;
                 }
-                else if(!strcmp(curarg->s_name, "-dc")){
+                else if(curarg == gensym("-dc")){
                     if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                         x->x_coef[0] = atom_getfloatarg(1, ac, av);
-                        flag = 1, ac-=2, av+=2;
+                        ac-=2, av+=2;
                     }
                     else
                         goto errstate;
                 }
-                else if(!strcmp(curarg->s_name, "-filter")){
+                else if(curarg == gensym("-filter")){
                     if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                         x->x_dc_filter = atom_getfloatarg(1, ac, av) != 0;
-                        flag = 1, ac-=2, av+=2;
+                        ac-=2, av+=2;
                     }
                     else
                         goto errstate;
                 }
-                else if(!x->x_arrayset && !flag){
+                else if(!x->x_arrayset){
+                    argn = 1;
                     name = curarg;
                     x->x_arrayset = 1, ac--, av++;
                 }
@@ -220,7 +221,7 @@ static void *shaper_new(t_symbol *s, int ac, t_atom *av){
     outlet_new(&x->x_obj, gensym("signal"));
     return(x);
     errstate:
-        post("shaper~: improper args");
+        post("[shaper~]: improper args");
         return NULL;
 }
 

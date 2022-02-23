@@ -1,7 +1,6 @@
 // Porres 2016
 
 #include "m_pd.h"
-#include <string.h>
 
 static t_class *sh_class;
 
@@ -13,8 +12,8 @@ typedef struct _sh{
     t_float     x_last_trig;
     t_float     x_trig_bang;
     t_float     x_thresh;
-    t_int         x_mode;
-} t_sh;
+    t_int       x_mode;
+}t_sh;
 
 static void sh_thresh(t_sh *x, t_floatarg f){
     x->x_thresh = f;
@@ -47,20 +46,20 @@ static t_int *sh_perform(t_int *w){
     while (nblock--){
         float input = *in1++;
         float trigger = *in2++;
-        if (x->x_trig_bang){
+        if(x->x_trig_bang){
             output = input;
             x->x_trig_bang = 0;
         }
-        if (!x->x_mode && trigger > x->x_thresh)
+        if(!x->x_mode && trigger > x->x_thresh)
             output = input;
-        if (x->x_mode && trigger > x->x_thresh && last_trig <= x->x_thresh)
+        if(x->x_mode && trigger > x->x_thresh && last_trig <= x->x_thresh)
             output = input;
         *out++ = output;
         last_trig = trigger;
     }
     x->x_lastout = output;
     x->x_last_trig = last_trig;
-    return (w + 6);
+    return(w+6);
 }
 
 static void sh_dsp(t_sh *x, t_signal **sp){
@@ -69,13 +68,12 @@ static void sh_dsp(t_sh *x, t_signal **sp){
 
 static void *sh_free(t_sh *x){
     inlet_free(x->x_trig_inlet);
-    return (void *)x;
+    return(void *)x;
 }
 
 static void *sh_new(t_symbol *s, int argc, t_atom *argv){
+    s = NULL;
     t_sh *x = (t_sh *)pd_new(sh_class);
-    t_symbol *dummy = s;
-    dummy = NULL;
     float init_thresh = 0;
     float init_value = 0;
     int init_mode = 0;
@@ -98,19 +96,18 @@ static void *sh_new(t_symbol *s, int argc, t_atom *argv){
                     break;
             };
             argnum++;
-            argc--;
-            argv++;
+            argc--, argv++;
         }
-        else if(argv->a_type == A_SYMBOL){
-            t_symbol *curarg = atom_getsymbolarg(0, argc, argv);
-            if(!strcmp(curarg->s_name, "-tr")){
+        else if(argv->a_type == A_SYMBOL && !argnum){
+            if(atom_getsymbolarg(0, argc, argv) == gensym("-tr")){
                 init_mode = 1;
-                argc--;
-                argv++;
+                argc--, argv++;
             }
             else
                 goto errstate;
         }
+        else
+            goto errstate;
     };
 /////////////////////////////////////////////////////////////////////////////////////
     x->x_trig_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
