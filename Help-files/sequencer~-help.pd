@@ -1,13 +1,13 @@
-#N canvas 536 52 565 404 10;
+#N canvas 536 52 563 429 10;
 #X obj 4 238 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 309 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 344 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 366 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 106 318 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 376 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 3 398 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 25 40 cnv 4 4 4 empty empty Signal 0 28 2 18 #e0e0e0 #000000
 0;
@@ -41,17 +41,17 @@
 0;
 #X text 124 289 set <list>;
 #X text 148 245 signal;
-#X obj 204 200 else/display~ 3;
-#X text 68 94 When receiving a signal trigger (0 to non-0 transition)
+#X obj 130 202 else/display~ 3;
+#X text 68 89 When receiving a signal trigger (0 to non-0 transition)
 or a bang \, [sequencer~] sends a signal value from a given sequence.
-, f 55;
+, f 66;
 #X text 191 318 - values from a sequence;
-#X text 144 353 1) list - list of floats sets the sequence (default
+#X text 144 375 1) list - list of floats sets the sequence (default
 0);
 #X obj 503 71 else/setdsp~;
-#X text 44 174 see also:;
-#X obj 45 193 else/impseq~;
-#N canvas 946 45 574 713 example 0;
+#X text 17 174 see also:;
+#X obj 18 193 else/impseq~;
+#N canvas 659 33 574 682 example 0;
 #X obj 145 55 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X obj 146 246 else/out~;
@@ -97,10 +97,8 @@ or a bang \, [sequencer~] sends a signal value from a given sequence.
 #X connect 19 0 3 0;
 #X connect 19 0 4 0;
 #X restore 479 208 pd example;
-#X obj 204 169 else/sequencer~ 10 5 0 2 3 7 9 1 4 11 6 8;
 #X text 194 273 - goes to a position index in the sequence (from 1)
 , f 55;
-#X obj 204 139 else/impulse~ 1;
 #X text 194 288 - sets a new sequence;
 #X text 194 245 - signal trigger to generate value from sequence,
 f 55;
@@ -128,5 +126,17 @@ f 55;
 #X connect 9 0 4 0;
 #X restore 497 187 pd text;
 #X text 112 274 goto <float>;
-#X connect 30 0 22 0;
-#X connect 32 0 30 0;
+#X obj 337 185 else/trig2bang~;
+#X obj 337 208 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
+#000000 #000000;
+#X text 361 210 done;
+#X obj 106 341 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X text 148 341 signal;
+#X text 192 341 - impulse when reaching end of sequence;
+#X obj 130 161 else/sequencer~ 10 5 0 2 3 7 9 1 11;
+#X obj 130 130 else/impulse~ 2;
+#X connect 36 0 37 0;
+#X connect 42 0 22 0;
+#X connect 42 1 36 0;
+#X connect 43 0 42 0;
