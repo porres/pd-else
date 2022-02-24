@@ -63,6 +63,7 @@ typedef struct _midi{
     t_clock       *x_clock;
     t_clock       *x_slaveclock;
     t_outlet      *x_bangout;
+    t_outlet      *x_bangout_eom;
 // panic
     unsigned char  x_note_status;
     unsigned char  x_channel;
@@ -539,7 +540,7 @@ static void midi_dump_delta(t_midi *x){
         for(i = 0, bp++; i < 3 && *bp != MIDI_EOM; i++, bp++)
             outlet_float(((t_object *)x)->ob_outlet, (float)*bp);
             	if (*bp == MIDI_EOM)
-	    outlet_bang(x->x_bangout);
+	    outlet_bang(x->x_bangout_eom);
         ep++;
     }
     outlet_bang(x->x_bangout);
@@ -979,6 +980,7 @@ static void *midi_new(t_symbol * s, int ac, t_atom *av){
     x->x_clock = clock_new(x, (t_method)midi_clocktick);
     x->x_slaveclock = clock_new(x, (t_method)midi_slaveclocktick);
     outlet_new((t_object *)x, &s_anything);
+    x->x_bangout_eom = outlet_new((t_object *)x, &s_bang);
     x->x_bangout = outlet_new((t_object *)x, &s_bang);
 // panic
     x->x_note_status = 0;
