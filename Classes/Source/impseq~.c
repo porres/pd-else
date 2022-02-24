@@ -5,18 +5,15 @@
 
 static t_class *impseq_class;
 
-#define MAXLEN      1024
-#define MAXimpseqS  1024
-#define MAXSEQ      1024
+#define MAXLEN 1024
 
 typedef struct _impseq{
-    t_object        x_obj;
-    float           x_f;
-    float           x_lastin;
-    int             x_bang;
-    int             x_index;
-    float          *x_impseq;
-    int             x_length;
+    t_object    x_obj;
+    float      *x_impseq;
+    float       x_lastin;
+    int         x_length;
+    int         x_index;
+    int         x_bang;
 }t_impseq;
 
 static void impseq_bang(t_impseq *x){
@@ -24,49 +21,54 @@ static void impseq_bang(t_impseq *x){
 }
 
 void impseq_float(t_impseq *x, t_floatarg f){
-    x->x_impseq = (float*)malloc(MAXLEN * sizeof(float));
-    x->x_length = 1;
+    if(x->x_length > 1){
+        x->x_impseq = (float*)malloc(MAXLEN * sizeof(float));
+        x->x_length = 1;
+    }
     x->x_impseq[0] = f;
     x->x_bang = 1;
 }
 
-static void impseq_list(t_impseq *x, t_symbol *s, int argc, t_atom * argv){
+static void impseq_list(t_impseq *x, t_symbol *s, int ac, t_atom * av){
     s = NULL;
-    x->x_impseq = (float*)malloc(MAXLEN * sizeof(float));
-    x->x_length = argc;
-    for(int i = 0; i < argc; i++)
-        x->x_impseq[i] = atom_getfloatarg(i, argc, argv);
+    if(x->x_length != ac){
+        x->x_impseq = (float*)malloc(MAXLEN * sizeof(float));
+        x->x_length = ac;
+    }
+    for(int i = 0; i < ac; i++)
+        x->x_impseq[i] = atom_getfloatarg(i, ac, av);
     x->x_index = 0;
     x->x_bang = 1;
 }
 
-static void impseq_set(t_impseq *x, t_symbol *s, int argc, t_atom * argv){
+static void impseq_set(t_impseq *x, t_symbol *s, int ac, t_atom * av){
     s = NULL;
     x->x_index = 0;
-    if(!argc){
+    if(!ac){
         x->x_impseq = (float*)malloc(MAXLEN * sizeof(float));
         x->x_length = 1;
         x->x_impseq[0] = 1;
     }
     else{
-        x->x_impseq = (float *) malloc(MAXLEN * sizeof(float));
-        x->x_length = argc;
-        for(int i = 0; i < argc; i++)
-            x->x_impseq[i] = atom_getfloatarg(i, argc, argv);
+        x->x_impseq = (float *)malloc(MAXLEN * sizeof(float));
+        x->x_length = ac;
+        for(int i = 0; i < ac; i++)
+            x->x_impseq[i] = atom_getfloatarg(i, ac, av);
     }
 }
 
 void impseq_goto(t_impseq *x, t_floatarg f){
-    x->x_index = (int)f - 1;
+    int i = (int)f - 1;
+    x->x_index = i < 0 ? 0 : i;
 }
 
 t_int *impseq_perform(t_int *w){
     t_impseq *x = (t_impseq *) (w[1]);
     float *inlet = (t_float *) (w[2]);
     float *outlet = (t_float *) (w[3]);
-    int nblock = (int) w[4];
+    int n = (int) w[4];
     t_float lastin = x->x_lastin;
-    while(nblock--){
+    while(n--){
         float input = *inlet++;
         float output;
         if((input != 0 && lastin == 0) || x->x_bang){ // trigger
@@ -89,20 +91,19 @@ void impseq_dsp(t_impseq *x, t_signal **sp){
     dsp_add(impseq_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, sp[0]->s_n);
 }
 
-void *impseq_new(t_symbol *s, short argc, t_atom *argv){
+void *impseq_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_impseq *x = (t_impseq *)pd_new(impseq_class);
-    if(argc == 0){
+    if(!ac){
         x->x_impseq = (float *) malloc(MAXLEN * sizeof(float));
         x->x_length = 1;
         x->x_impseq[0] = 1;
     }
-    else{ // post("reading initial impseq from argument list, with %d members",argc);
+    else{
         x->x_impseq = (float*)malloc(MAXLEN * sizeof(float));
-        // post("allocated %d bytes for this pattern", MAXLEN * sizeof(float));
-        x->x_length = argc;
-        for(int i = 0; i < argc; i++)
-            x->x_impseq[i] = atom_getfloatarg(i, argc, argv);
+        x->x_length = ac;
+        for(int i = 0; i < ac; i++)
+            x->x_impseq[i] = atom_getfloatarg(i, ac, av);
     }
     x->x_index = 0;
     outlet_new(&x->x_obj, gensym("signal"));
@@ -110,9 +111,9 @@ void *impseq_new(t_symbol *s, short argc, t_atom *argv){
 }
 
 void impseq_tilde_setup(void){
-    impseq_class = class_new(gensym("impseq~"), (t_newmethod)impseq_new,
-        0 ,sizeof(t_impseq), 0,A_GIMME,0);
-    CLASS_MAINSIGNALIN(impseq_class, t_impseq, x_f);
+    impseq_class = class_new(gensym("impseq~"), (t_newmethod)impseq_new, 0,
+        sizeof(t_impseq), 0, A_GIMME, 0);
+    class_addmethod(impseq_class, nullfn, gensym("signal"), 0);
     class_addbang(impseq_class, (t_method)impseq_bang);
     class_addfloat(impseq_class, (t_method)impseq_float);
     class_addlist(impseq_class, (t_method)impseq_list);
