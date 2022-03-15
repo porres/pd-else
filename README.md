@@ -114,7 +114,7 @@ Cross compiling is also possible with something like this
 
 --------------------------------------------------------------------------
 
-## Current Object list (445 objects):
+## Current Object list (446 objects):
 
 **ASSORTED: [01]**
 
@@ -592,12 +592,13 @@ Cross compiling is also possible with something like this
 - [trig2bang~]
 - [trighold~]
 
-**CONTROL: TRIGGERS: CLOCK [7]**
+**CONTROL: TRIGGERS: CLOCK [8]**
 
 - [clock]
 - [metronome]
 - [metronome~]
 - [polymetro]
+- [polymetro~]
 - [speed]
 - [tempo]
 - [tempo~]
