@@ -1,4 +1,4 @@
-#N canvas 504 27 562 532 10;
+#N canvas 516 27 562 532 10;
 #X obj 4 274 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 373 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -11,7 +11,7 @@
 ;
 #X obj 4 505 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 221 157 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 213 157 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X text 166 294 bang;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
@@ -33,16 +33,16 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 344 196 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 336 196 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 3 3 cnv 15 301 42 empty empty polymetro 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 197 188 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X obj 191 181 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X text 385 197 tempo;
+#X text 377 197 tempo;
 #X text 160 279 float;
 #X text 160 352 float;
 #X obj 76 352 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
@@ -52,42 +52,32 @@
 #X text 112 309 tempo <float>;
 #X text 196 309 - set tempo value in BPM, f 47;
 #X text 196 352 - set tempo value in BPM, f 47;
-#X text 22 202 see also:;
-#X obj 22 221 else/clock;
-#X text 129 187 start/stop;
-#X obj 23 242 else/metronome~;
-#X floatatom 344 244 5 0 0 0 - - - 0;
-#X floatatom 221 245 5 0 0 0 - - - 0;
-#X obj 221 221 else/polymetro 90 3/2;
-#X text 186 156 sync;
+#X text 12 184 see also:;
+#X obj 12 227 else/clock;
+#X text 123 180 start/stop;
+#X obj 13 248 else/metronome~;
+#X floatatom 336 244 5 0 0 0 - - - 0;
+#X floatatom 213 245 5 0 0 0 - - - 0;
+#X obj 213 221 else/polymetro 90 3/2;
+#X text 178 156 sync;
 #X text 196 279 - non-zero starts \, zero stops, f 47;
 #X text 160 382 float;
 #X text 160 402 float;
 #X text 196 382 - count for base rhythm, f 47;
 #X text 196 403 - count for relative rhythm, f 47;
 #X text 196 294 - syncs (restarts count) when polymetro is on;
-#X msg 316 157 2/3;
-#X msg 349 157 3/2;
+#X msg 308 157 2/3;
+#X msg 341 157 3/2;
 #X obj 76 329 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 142 329 anything;
-#X text 196 329 - divider as a float or fraction (anything/symbol)
-;
-#X text 39 85 [polymetro] is a polyrhythmic metronome. Polyrhythms
-are better specified with fractions \, but you can set it as floats
-\, which is a tempo divider value in the end. The left output is a
-counter for the base tempo count while the right outlet is the relative
-count/tempo as specified by the ratio. This is an abstraction based
-on synced [clock] objects., f 81;
-#X msg 282 157 1.5;
-#X text 379 157 ratio/divider;
-#X text 110 485 2) symbol/float - polyrhythmic ratio (default 1/1)
-or float;
+#X msg 274 157 1.5;
+#X text 371 157 ratio/divider;
 #X obj 4 429 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 134 439 '-b' - sets to bang mode output (instead of floats)
 ;
-#X text 152 470 1) float - tempo in BPM (default 120), f 49;
+#X text 142 470 1) float - tempo in BPM (default 120), f 49;
 #N canvas 759 78 551 501 example 0;
 #X obj 189 424 else/out~;
 #X obj 153 184 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
@@ -188,6 +178,17 @@ read values from a sequencer., f 54;
 #X connect 17 1 18 0;
 #X connect 17 1 3 0;
 #X restore 489 240 pd flag;
+#X text 39 85 [polymetro] is a polyrhythmic metronome. Polyrhythms
+are better specified with fractions \, but you can set it as floats
+\, which is a tempo multiplier value in the end. The left output is
+a counter for the base tempo count while the right outlet is the relative
+count/tempo as specified by the multiplier ratio. This is an abstraction
+based on synced [clock] objects., f 81;
+#X text 196 329 - multiplier as a float or fraction (anything/symbol)
+;
+#X text 100 485 2) symbol/float - polyrhythmic multiplier ratio (default
+1/1) or float, f 70;
+#X obj 12 206 else/polymetro~;
 #X connect 6 0 35 0;
 #X connect 17 0 35 2;
 #X connect 20 0 35 0;
@@ -195,4 +196,4 @@ read values from a sequencer., f 54;
 #X connect 35 1 33 0;
 #X connect 43 0 35 1;
 #X connect 44 0 35 1;
-#X connect 49 0 35 1;
+#X connect 47 0 35 1;

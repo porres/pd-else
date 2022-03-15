@@ -30,26 +30,26 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 344 130 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 364 130 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 3 3 cnv 15 301 42 empty empty metronome~ 20 20 2 37 #e0e0e0
 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 3 graph;
-#X obj 130 130 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
+#X obj 151 130 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X text 344 113 tempo;
-#X obj 131 177 bng 17 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
+#X text 364 113 tempo;
+#X obj 151 181 bng 17 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
-#X obj 131 155 else/metronome 60, f 36;
-#X text 30 284 see also:;
-#X text 150 131 start/stop;
-#X listbox 202 178 9 0 0 0 - - - 0;
+#X obj 151 155 else/metronome 60, f 36;
+#X text 24 288 see also:;
+#X text 171 131 start/stop;
+#X listbox 222 181 9 0 0 0 - - - 10;
 #X text 70 85 [metronome~] works in conjunction with [metronome] and
 outputs metronome clicks., f 66;
-#X obj 30 303 else/metronome;
-#X obj 202 280 out~;
+#X obj 24 307 else/metronome;
+#X obj 222 280 out~;
 #X text 166 354 list;
 #X text 196 354 - count output from [metronome], f 47;
 #X text 130 368 set <list>;
@@ -59,10 +59,10 @@ outputs metronome clicks., f 66;
 #X text 196 403 - metronome clicks, f 47;
 #X text 109 477 1) list - low \, mid and high frequencies (default:
 600 \, 1000 \, 1700), f 66;
-#X msg 230 204 set 300 800 1200;
-#X obj 202 253 else/metronome~;
-#X msg 238 229 set 600 1000 1700;
-#N canvas 590 111 736 360 modes 0;
+#X msg 249 206 set 300 800 1200;
+#X obj 222 253 else/metronome~;
+#X msg 258 229 set 600 1000 1700;
+#N canvas 571 113 736 360 modes 0;
 #X obj 267 126 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 54 126 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
@@ -84,7 +84,6 @@ outputs metronome clicks., f 66;
 #X text 423 124 start/stop;
 #X listbox 474 202 11 0 0 0 - - - 0;
 #X obj 474 284 out~;
-#X obj 403 149 else/metronome 90 2/4 + 6/8, f 36;
 #X obj 474 256 else/metronome~ -mode 2;
 #X obj 125 237 else/metronome~ -mode 1;
 #X msg 139 202 mode 0;
@@ -93,34 +92,35 @@ outputs metronome clicks., f 66;
 #000000 #000000 0;
 #X msg 555 221 mode \$1;
 #X floatatom 555 200 4 0 0 0 - - - 0;
-#X text 40 24 There are two extra modes for [metronome~]. You can set
-this via a '-mode' flag or mode message. The default mode (0) has 3
-types of clicks (low \, mid and high). The mid pitch is for tempo subdivisions
-as in a 6/8 time signature. Mode 1 doen't play these subdivision clicks.
-, f 51;
 #X text 371 22 The default mode plays a high pitch for the beggining
 of every 'subbar' in a complex time signature as below. Mode 2 only
 plays a high pitch for the beggining of the first subbar (the actual
 beggining of the time signature). This mode also filters out subtempo
 clicks., f 57;
+#X text 40 24 There are two extra modes for [metronome~]. You can set
+this via a '-mode' flag or mode message. The default mode (0) has 3
+types of clicks (low \, mid and high). The mid pitch is for tempo subdivisions
+as in a 6/8 time signature. Mode 1 doesn't play these subdivision clicks.
+, f 51;
+#X obj 403 149 else/metronome 90 2/4 + 6/8, f 36;
 #X connect 0 0 7 1;
 #X connect 1 0 7 0;
-#X connect 5 0 17 0;
+#X connect 5 0 16 0;
 #X connect 7 0 3 0;
 #X connect 7 1 5 0;
-#X connect 8 0 15 1;
-#X connect 9 0 15 0;
-#X connect 13 0 16 0;
-#X connect 15 0 11 0;
-#X connect 15 1 13 0;
-#X connect 16 0 14 0;
-#X connect 17 0 6 0;
-#X connect 18 0 17 0;
-#X connect 19 0 17 0;
-#X connect 20 0 22 0;
-#X connect 21 0 16 0;
-#X connect 22 0 21 0;
-#X restore 467 302 pd modes;
+#X connect 8 0 24 1;
+#X connect 9 0 24 0;
+#X connect 13 0 15 0;
+#X connect 15 0 14 0;
+#X connect 16 0 6 0;
+#X connect 17 0 16 0;
+#X connect 18 0 16 0;
+#X connect 19 0 21 0;
+#X connect 20 0 15 0;
+#X connect 21 0 20 0;
+#X connect 24 0 11 0;
+#X connect 24 1 13 0;
+#X restore 473 309 pd modes;
 #X obj 4 428 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 154 440 -mode <float>: sets mode (0 \, 1 or 2 \, default 0)
