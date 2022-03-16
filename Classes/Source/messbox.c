@@ -433,7 +433,7 @@ static int messbox_click(t_gobj *z, t_glist *glist, int xpix, int ypix, int shif
         sys_vgui("%s itemconfigure %x_outline -width 2\n", x->x_cv_id, x);
         sys_vgui("%s configure -state normal\n", x->text_id);
         sys_vgui("focus %s\n", x->text_id);
-        glist_grab(glist, (t_gobj *)x, 0, messbox_key, 0, 0);
+        glist_grab(glist, (t_gobj *)x, 0, (t_glistkeyfn)messbox_key, 0, 0);
     }
     return(1);
 }

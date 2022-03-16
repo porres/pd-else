@@ -283,7 +283,7 @@ static void comment_dograb(t_comment *x){
 //    post("do grab");
 // LATER investigate grab feature. Used here to prevent backspace erasing text.
 // Done also when already active, because after clicked we lost our previous grab.
-    glist_grab(x->x_glist, (t_gobj *)x, 0, comment_grabbedkey, 0, 0);
+    glist_grab(x->x_glist, (t_gobj *)x, 0, (t_glistkeyfn)comment_grabbedkey, 0, 0);
 }
 
 static void comment_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
