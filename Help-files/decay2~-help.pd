@@ -27,14 +27,14 @@
 #X obj 295 188 else/sig2float~;
 #X text 321 210 1;
 #X obj 146 161 osc~ 440;
-#X text 185 507 1) float - attack in ms (default 100);
+#X text 185 507 1) float - attack in ms (defaultt 100);
 #X text 239 420 - attack time in ms;
 #X obj 129 443 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 155 443 float/signal;
 #X text 239 442 - decay time in ms;
 #X text 240 477 - decayed signal;
-#X text 185 525 1) float - decay in ms (default 1000);
+#X text 185 525 1) float - decay in ms (defaultt 1000);
 #N canvas 551 48 507 521 more 0;
 #X obj 194 218 *~;
 #X obj 155 137 osc~ 440;
@@ -128,7 +128,7 @@ parameter. It is based on SuperCollider's "Decay2" UGEN.;
 #X text 491 302 -1;
 #X text 125 25 [decay2~] can also be used with control rate messages
 \, such as bangs and float input. A bang will trigger the object with
-the last received float input (which is 1 by default).;
+the last received float input (which is 1 by defaultt).;
 #X connect 1 0 0 0;
 #X connect 3 0 2 0;
 #X connect 6 0 19 0;

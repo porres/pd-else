@@ -50,7 +50,7 @@ f 66;
 #X text 179 363 clear - clears memory without output, f 57;
 #X text 179 377 flush - clears memory and output hanging notes, f
 57;
-#X text 137 564 -list <float>: sets to list mode and index offset (default
+#X text 137 564 -list <float>: sets to list mode and index offset (defaultt
 0), f 61;
 #X text 125 335 offset <float> - sets index offset (in the context
 of "list" mode), f 66;
@@ -60,8 +60,8 @@ of "list" mode), f 66;
 #X text 185 458 list - note messages, f 57;
 #X text 179 307 float - note pitch values, f 57;
 #X text 179 409 float - note velocity values, f 57;
-#X text 161 489 1) float - sets number of voices (default 1);
-#X text 161 504 2) float - non zero sets voice stealing (default 0)
+#X text 161 489 1) float - sets number of voices (defaultt 1);
+#X text 161 504 2) float - non zero sets voice stealing (defaultt 0)
 ;
 #X obj 200 208 else/voices 2, f 20;
 #X text 180 262 voice 1;
@@ -105,7 +105,7 @@ on message and will output that message as an "extra".;
 #X text 191 95 retrigger on the same voice allocation, f 43;
 #X text 107 110 - retrig <2>:;
 #X text 191 110 retrigger on a new voice allocation, f 43;
-#X text 191 69 (default) don't retrigger and send repeated notes ons
+#X text 191 69 (defaultt) don't retrigger and send repeated notes ons
 to "extra" outlet, f 43;
 #X text 23 23 [voices] has 3 different retrigger modes \, which are
 ways of handling repeated note on messages. In this context \, a repeated
@@ -127,7 +127,7 @@ allocation. The modes are:, f 77;
 #X text 177 385 voice 2;
 #X text 239 386 extra;
 #X obj 130 323 else/voices 2, f 19;
-#X text 39 32 The first example below is the default behaviour (retrig
+#X text 39 32 The first example below is the defaultt behaviour (retrig
 0). For that \, we use [suspedal] in retrig mode 3 \, which sends note
 off for all repeated note ons when the sustain is switched off. This
 setting allows you to route repeated notes to a different patch. Test
@@ -268,7 +268,7 @@ release time in ms with the '-rel' flag \, 'rel' message or right inlet.
 #X obj 51 227 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X text 62 72 The -list flag takes an optional float argument that
-sets the voice index offset \, which is 0 by default. You can also
+sets the voice index offset \, which is 0 by defaultt. You can also
 set a different index offset with the "offset" message (this is only
 possible in the context of "list mode")., f 72;
 #N canvas 719 64 505 333 clone_example 0;
@@ -353,11 +353,11 @@ to implement polyphonic synths \, check the subpatch ==========================>
 #X connect 28 0 10 0;
 #X connect 28 1 15 0;
 #X restore 497 250 pd list;
-#X text 174 546 -retrig: sets to retrigger mode <0 \, 1 or 2> (default
+#X text 174 546 -retrig: sets to retrigger mode <0 \, 1 or 2> (defaultt
 0);
 #X obj 138 151 notein;
 #X obj 138 175 pack;
-#X text 143 531 -rel <float>: sets release time in ms (default 0);
+#X text 143 531 -rel <float>: sets release time in ms (defaultt 0);
 #X text 143 321 rel <float> - sets a release time in ms, f 63;
 #X text 125 391 voices <float> - sets number of voices (in list mode
 only), f 66;
@@ -369,7 +369,7 @@ only), f 66;
 #X text 179 430 float - release time in ms, f 57;
 #X text 43 84 [voices] is used to implement polyphonic synths. It's
 like Pd Vanilla's [poly] object \, but with more functionalities. By
-default \, it routes the voices to different outlets \, but it also
+defaultt \, it routes the voices to different outlets \, but it also
 has a list mode similar to [poly]., f 75;
 #X connect 35 0 27 0;
 #X connect 35 1 28 0;

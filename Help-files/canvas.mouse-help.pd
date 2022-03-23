@@ -33,7 +33,7 @@
 0;
 #X obj 7 441 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X text 124 399 1) float - depth (default 0);
+#X text 124 399 1) float - depth (defaultt 0);
 #X obj 212 227 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #N canvas 641 268 550 286 depth 0;
@@ -48,7 +48,7 @@ with the parent window., f 62;
 the parent patch's directory \, or granparent's and so on. This way
 \, "1" gets the directory of the parent's patch \, "2" the grandparent's
 and so on. The depth gets clipped to the maximum level. If you do not
-specify a float as the first argument \, the default level is "0" (which
+specify a float as the first argument \, the defaultt level is "0" (which
 is the current patch's directory)., f 66;
 #X obj 233 168 else/canvas.mouse 1;
 #X obj 298 218 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -77,7 +77,7 @@ is the current patch's directory)., f 66;
 #X obj 212 190 else/canvas.mouse;
 #X text 51 201 see also:;
 #X obj 54 224 else/mouse;
-#X text 124 417 2) float - non zero sets "position mode" (default 0)
+#X text 124 417 2) float - non zero sets "position mode" (defaultt 0)
 ;
 #N canvas 702 91 639 604 position-mode 0;
 #N canvas 351 58 545 514 gop 0;

@@ -40,22 +40,22 @@
 #dcdcdc #000000 #000000 0 256;
 #X text 249 234 frequency in Hz;
 #X obj 233 290 else/lfnoise~ 400;
-#X text 216 531 - frequency in hertz (default 0);
+#X text 216 531 - frequency in hertz (defaultt 0);
 #X text 216 497 - bandlimited noise;
 #X obj 92 398 cnv 17 3 55 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 111 418 interp <float>;
-#X text 215 417 - interpolation 0 (off \, default) or 1 (on);
+#X text 215 417 - interpolation 0 (off \, defaultt) or 1 (on);
 #X obj 3 388 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X text 216 549 - interpolation 0 (off \, default) or 1 (on);
+#X text 216 549 - interpolation 0 (off \, defaultt) or 1 (on);
 #X text 148 549 2) float;
 #X msg 148 260 interp \$1;
 #X obj 148 233 tgl 16 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X text 123 437 seed <float>;
 #X text 215 436 - sets seed value;
-#X text 216 569 - seed (default \, internal);
+#X text 216 569 - seed (defaultt \, internal);
 #X text 148 569 3) float;
 #X text 83 163 The [lfnoise~] object produces frequencies limited to
 a band from 0 up to the frequency it is running. It can go up to the
@@ -123,12 +123,12 @@ are: [stepnoise~] (without interpolation) and [rampnoise~] (with interpolation.
 #X obj 288 198 else/lfnoise~ 1 0 319;
 #X msg 212 156 seed \$1;
 #X msg 212 128 319;
-#X text 92 86 By default \, each instance of [lfnoise~] has its own
+#X text 92 86 By defaultt \, each instance of [lfnoise~] has its own
 seed value.;
 #X msg 260 131 921098;
 #X text 91 23 [lfnoise~] objects that share the same seed will have
 the same random number generation. You can specify a seed value as
-the third argument or via the 'seed' message. The default is a unique
+the third argument or via the 'seed' message. The defaultt is a unique
 value for each instance based on the system time.;
 #X connect 2 0 1 0;
 #X connect 3 0 0 0;

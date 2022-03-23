@@ -49,7 +49,7 @@
 #X text 132 432 2) float;
 #X text 190 348 - a message composed of the merged messages;
 #X text 193 293 - any message type to merged into another, f 42;
-#X text 191 414 - 'n' number of inlets (default 2 \, min 2 / max 255)
+#X text 191 414 - 'n' number of inlets (defaultt 2 \, min 2 / max 255)
 ;
 #X text 156 313 bang;
 #X obj 107 163 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
@@ -63,7 +63,7 @@ them into a list., f 47;
 #X obj 5 377 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 209 384 -trim: trims list selector;
-#X text 191 432 - non-zero makes all inlets hot (default 0);
+#X text 191 432 - non-zero makes all inlets hot (defaultt 0);
 #X obj 186 219 else/merge -trim 4 1, f 25;
 #X connect 5 0 41 0;
 #X connect 6 0 41 2;

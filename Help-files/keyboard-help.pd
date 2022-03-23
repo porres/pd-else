@@ -820,12 +820,12 @@ mode. This is an indicative that the object has a send or receive symbol.
 #X text 246 523 - sets send symbol, f 47;
 #X text 130 537 receive <symbol>;
 #X text 246 537 - sets receive symbol, f 47;
-#X text 75 647 -width <float>: width in pixels (default 17) | -height
-<float>: height in pixels (default 80) | -oct <float>: number of octaves
-(default 4) | -lowc <float>: number of lowest C (default 3 - that is
-"C3") | -tgl sets to toggle mode (default non toggle) | -norm <float>:
-velocity normalization value (default 0) | -send <symbol>: sets send
-symbol (default 'empty') | -receive <symbol>: sets receive symbol (default
+#X text 75 647 -width <float>: width in pixels (defaultt 17) | -height
+<float>: height in pixels (defaultt 80) | -oct <float>: number of octaves
+(defaultt 4) | -lowc <float>: number of lowest C (defaultt 3 - that is
+"C3") | -tgl sets to toggle mode (defaultt non toggle) | -norm <float>:
+velocity normalization value (defaultt 0) | -send <symbol>: sets send
+symbol (defaultt 'empty') | -receive <symbol>: sets receive symbol (defaultt
 'empty') |, f 77;
 #X obj 4 612 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
@@ -844,7 +844,7 @@ dollar sign arguments (\$0 \, \$1 \, \$2 \, and so on). Namely \, these
 parameters are: key width \, height \, normalization \, and send/receive
 symbols., f 67;
 #X obj 55 88 else/keyboard 17 80 4 3 0 0 empty empty;
-#X text 64 22 This is the default [keyboard] object. Please get into
+#X text 64 22 This is the defaultt [keyboard] object. Please get into
 and out of edit mode so you can see how the [keyboard] object creates
 two inlets and an outlet when you're in edit mode. The bluish "C" note
 indicates it is C4 (Midi note "60")., f 75;

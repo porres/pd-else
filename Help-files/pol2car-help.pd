@@ -86,7 +86,7 @@ to cartesian coordinates (real / imaginary)., f 58;
 #dcdcdc #000000 #000000 0 256;
 #X obj 101 306 else/pol2car;
 #X obj 101 343 pack;
-#X text 63 12 cartesian x polar converstion;
+#X text 63 12 cartesian x polar conversion;
 #X text 238 112 <= click/drag;
 #X obj 101 58 else/circle 127 -1 1 -1 1 1 255 255 255 255 255 255 0
 0 0 1 0 0 63.5 63.5 empty empty 1;

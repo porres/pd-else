@@ -173,10 +173,10 @@
 #X text 261 374 frequency of oscillator 2;
 #X text 261 427 output of oscillator 1;
 #X text 261 447 output of oscillator 2;
-#X text 213 514 - frequency of oscillator 1 in hertz (default 0);
-#X text 213 553 - frequency of oscillator 2 in hertz (default 0);
-#X text 213 533 - modulation index 1 (default 0);
-#X text 213 573 - modulation index 2 (default 0);
+#X text 213 514 - frequency of oscillator 1 in hertz (defaultt 0);
+#X text 213 553 - frequency of oscillator 2 in hertz (defaultt 0);
+#X text 213 533 - modulation index 1 (defaultt 0);
+#X text 213 573 - modulation index 2 (defaultt 0);
 #X text 150 131 freq1;
 #X text 208 130 index1;
 #X text 271 130 freq2;
@@ -331,10 +331,10 @@ in with the subpatches below \, compare., f 32;
 #X text 261 317 sets to phase modulation;
 #X text 225 333 fm -;
 #X text 261 334 sets to frequency modulation;
-#X text 101 483 -pm: sets to phase modulation (default is frequency
+#X text 101 483 -pm: sets to phase modulation (defaultt is frequency
 modulation), f 63;
 #X text 60 86 [xmod~] performs cross modulation of two sine oscillators.
-It can perform either frequency (default) or phase modulation., f
+It can perform either frequency (defaultt) or phase modulation., f
 61;
 #X obj 160 182 else/xmod~ 150 400 305 350;
 #X obj 196 218 else/out~;

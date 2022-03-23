@@ -19,7 +19,7 @@
 #X obj 247 259 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X text 263 229 frequency in Hz;
-#X text 216 488 - frequency in hertz (default 0);
+#X text 216 488 - frequency in hertz (defaultt 0);
 #X obj 91 399 cnv 17 3 37 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 3 389 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
@@ -81,7 +81,7 @@ objects. Here we control the frequency of an oscillator.;
 #X msg 268 103 1023;
 #X obj 118 192 else/stepnoise~ 1;
 #X obj 268 192 else/stepnoise~ 1;
-#X text 132 27 Sync [stepnoise~] objects with a seed value. The default
+#X text 132 27 Sync [stepnoise~] objects with a seed value. The defaultt
 is a unique value for each instance based on the system time., f 43
 ;
 #X obj 347 310 else/setdsp~;

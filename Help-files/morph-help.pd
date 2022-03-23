@@ -46,7 +46,7 @@
 #X text 191 296 float - morph time in ms, f 50;
 #X text 197 261 list - list with one or more elements to morph to;
 #X text 197 344 list - morphed list, f 49;
-#X text 194 402 1) float - morph time in ms (default 0), f 40;
+#X text 194 402 1) float - morph time in ms (defaultt 0), f 40;
 #X text 215 161 time (ms);
 #X obj 382 142 cnv 15 148 73 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
@@ -61,7 +61,7 @@
 #X obj 291 180 nbx 4 14 0 1000 0 0 empty empty empty 0 -8 0 10 #dcdcdc
 #000000 #000000 0 256;
 #X text 284 161 grain (ms);
-#X text 194 430 3) list - start list values (default 0);
+#X text 194 430 3) list - start list values (defaultt 0);
 #X obj 129 316 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 191 318 float - grain time in ms, f 50;
@@ -107,10 +107,10 @@ The general use case expect lists of the same size., f 45;
 #X connect 9 0 7 0;
 #X connect 10 0 7 0;
 #X restore 384 229 pd more_details;
-#X text 194 416 2) float - grain time in ms (default 20);
+#X text 194 416 2) float - grain time in ms (defaultt 20);
 #X obj 4 368 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 158 376 -exp <float>: sets exponential factor (default 1);
+#X text 158 376 -exp <float>: sets exponential factor (defaultt 1);
 #X obj 150 204 else/morph 1000 5 -1 0 1;
 #N canvas 786 96 558 369 exp 0;
 #X obj 315 190 cnv 15 148 73 empty empty empty 20 12 0 14 #e0e0e0 #404040

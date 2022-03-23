@@ -96,10 +96,10 @@ below. The graph considers a sample rate of 44.1Khz.;
 #X connect 17 0 18 0;
 #X restore 429 244 pd filter formula \; and response;
 #X text 229 387 - central frequency in Hertz;
-#X text 118 504 1) float - central frequency in Hertz (default 0);
+#X text 118 504 1) float - central frequency in Hertz (defaultt 0);
 #X msg 175 127 clear;
 #X text 230 311 - clears filter's memory if you blow it up;
-#X text 363 168 resonance (Q by default);
+#X text 363 168 resonance (Q by defaultt);
 #X text 205 346 bw;
 #X text 230 346 - sets resonance parameter to bandwidth in octaves
 ;
@@ -110,7 +110,7 @@ below. The graph considers a sample rate of 44.1Khz.;
 #X text 165 477 - sets resonance parameter to bandwidth in octaves
 , f 53;
 #N canvas 783 164 407 322 resonance 0;
-#X text 27 17 By default \, the resonance parameter is the filter 'q'
+#X text 27 17 By defaultt \, the resonance parameter is the filter 'q'
 \, but you can also set it as bandwidth in octaves. This is done with
 the -bw flag.;
 #X text 28 62 Alternatively \, you can switch from 'q' to 'bw' with
@@ -127,9 +127,9 @@ the message methods.;
 #X connect 5 0 8 0;
 #X connect 8 0 2 0;
 #X restore 464 219 pd resonance;
-#X text 118 522 2) float - resonance (default 1) \, either in 'Q' (default)
+#X text 118 522 2) float - resonance (defaultt 1) \, either in 'Q' (defaultt)
 or 'bw', f 65;
-#X text 230 363 - sets resonance parameter to Q (default);
+#X text 230 363 - sets resonance parameter to Q (defaultt);
 #X obj 175 191 else/bandpass~ 100 0.1;
 #X text 230 411 - filter resonance (Q or bandwidth);
 #X text 214 60 (constant gain);

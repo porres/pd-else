@@ -59,9 +59,9 @@
 #X text 150 351 float - sets start, f 35;
 #X text 150 373 float - sets end, f 35;
 #X text 150 394 float - sets steps, f 35;
-#X text 150 491 3) float - sets steps (default 2);
-#X text 150 474 2) float - sets end (default 2);
-#X text 150 457 1) float - sets start (default 1);
+#X text 150 491 3) float - sets steps (defaultt 2);
+#X text 150 474 2) float - sets end (defaultt 2);
+#X text 150 457 1) float - sets start (defaultt 1);
 #X obj 114 374 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 114 395 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0

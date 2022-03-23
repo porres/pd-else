@@ -221,12 +221,12 @@ the same as using the right inlet.;
 #X obj 193 251 else/display 6;
 #X obj 117 284 osc~ 0.5;
 #X text 29 30 A non-zero input triggers the envelope as a "gate on"
-message and sets an overall gain (which is 1 by default). A zero value
+message and sets an overall gain (which is 1 by defaultt). A zero value
 is ignored if there's no sustain point., f 57;
 #X text 392 25 When you set a sustain point \, with the sustain message
 or flag \, then [envgen~] holds at the given point until it receives
 a 0 or release message., f 39;
-#X text 30 69 By default \, [envgen~] has no sustain point \, which
+#X text 30 69 By defaultt \, [envgen~] has no sustain point \, which
 means it also doesn't have a release ramp and generates the whole envelope
 at "one-shot" when triggered., f 57;
 #X text 251 253 <= gain (gate on);
@@ -571,7 +571,7 @@ and [else/rescale~]. Check them out as well:;
 #X obj 366 223 else/setdsp~;
 #X obj 103 126 loadbang;
 #X text 34 17 The 'exp' message sets the exponentiality of the lines.
-By default \, they're "1" \, which means they're linear. For values
+By defaultt \, they're "1" \, which means they're linear. For values
 >= 0 \, it's like raising to the power of the given exponential. Negative
 values are accepted and offer a mirrored/reversed curve. Check below.
 , f 68;
@@ -596,10 +596,10 @@ values are accepted and offer a mirrored/reversed curve. Check below.
 #X text 204 610 -;
 #X text 151 611 1) list;
 #X text 218 610 a float sets an initial output value \, a list of floats
-sets the envelope (default 0 0), f 44;
-#X text 120 554 -init <float> (default 0) | -retrigger <float> (default
-0) | -legato (sets to legato mode on \, default is off) | -maxsustain
-<float> (default 0 - no maxsustain) | -suspoint <float> (default 0)
+sets the envelope (defaultt 0 0), f 44;
+#X text 120 554 -init <float> (defaultt 0) | -retrigger <float> (defaultt
+0) | -legato (sets to legato mode on \, defaultt is off) | -maxsustain
+<float> (defaultt 0 - no maxsustain) | -suspoint <float> (defaultt 0)
 |, f 58;
 #X connect 47 0 48 0;
 #X connect 49 0 47 0;

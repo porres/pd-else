@@ -63,7 +63,7 @@ ratios., f 72;
 ;
 #X text 192 413 signal;
 #X text 240 412 - impulse at period transitoins;
-#X text 241 387 - mulitplied phase signal;
+#X text 241 387 - muliplied phase signal;
 #N canvas 615 27 660 365 example 0;
 #X obj 381 241 hsl 200 16 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
@@ -116,7 +116,7 @@ when changing the frequency or the multiplier., f 30;
 #X connect 17 0 12 0;
 #X connect 18 0 17 0;
 #X restore 468 268 pd example;
-#X text 168 449 1) float - initial multiplier (default 0);
+#X text 168 449 1) float - initial multiplier (defaultt 0);
 #X text 19 261 see also:;
 #X obj 19 280 else/pimp~;
 #X floatatom 143 291 5 0 0 0 - - - 0;

@@ -119,9 +119,9 @@ output the incoming value., f 56;
 #X msg 294 151 xrange -1 1;
 #X msg 320 178 yrange 0 127;
 #X msg 328 198 yrange -1 1;
-#X text 67 29 By default \, the slider output range is from 0 to 127
+#X text 67 29 By defaultt \, the slider output range is from 0 to 127
 \, but you can change it with the -range flag or the range message
-\, which sets the range for both x and y dimenstions. But you can also
+\, which sets the range for both x and y dimensions. But you can also
 set independent range for both x and y with the -xrange \, -yrange
 or xrange \, yrange messages. Note that a bang rescales the last output
 according to the new range., f 64;
@@ -253,11 +253,11 @@ messages and '-bgcolor'/'-fgcolor' flags., f 40;
 #X obj 105 163 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X text 45 21 You can set the 'line' visibility with the line message
-or '-line' flag. Line is visible by default., f 40;
+or '-line' flag. Line is visible by defaultt., f 40;
 #X obj 172 163 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X msg 172 191 grid \$1;
-#X text 45 64 There's also a grid visibility option (invisible by default).
+#X text 45 64 There's also a grid visibility option (invisible by defaultt).
 You can set it with the 'grid' message or '-grid' flag., f 40;
 #X obj 79 136 else/initmess set 64 64;
 #X obj 79 224 else/slider2d 127 127 0 127 0 127 1 255 255 255 0 0 0
@@ -296,26 +296,26 @@ the patch., f 46;
 #X connect 3 0 0 0;
 #X restore 75 205 pd init;
 #N canvas 690 298 586 201 flags 0;
-#X text 100 29 -size <float>: sets x/y size (default: 127), f 70;
-#X text 100 59 -range: sets x/y range <float \, float> (default: 0
+#X text 100 29 -size <float>: sets x/y size (defaultt: 127), f 70;
+#X text 100 59 -range: sets x/y range <float \, float> (defaultt: 0
 \, 127), f 70;
 #X text 100 74 -xrange / -yrange (set x/y range independently), f
 70;
-#X text 100 89 -line <float>: non zero sets line visibility (default:
+#X text 100 89 -line <float>: non zero sets line visibility (defaultt:
 1), f 70;
 #X text 100 118 -bgcolor <f \, f \, f>: sets background color in RGB
-(default 255 255 255), f 70;
+(defaultt 255 255 255), f 70;
 #X text 100 133 -fgcolor <f \, f \, f>: sets frontground color in RGB
-(default 0 0 0), f 70;
-#X text 100 104 -grid <float>: non zero sets grid visibility (default:
+(defaultt 0 0 0), f 70;
+#X text 100 104 -grid <float>: non zero sets grid visibility (defaultt:
 0), f 70;
-#X text 100 148 -init <float>: non zero sets to init mode (default
+#X text 100 148 -init <float>: non zero sets to init mode (defaultt
 0), f 70;
 #X obj 18 15 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 18 180 cnv 3 550 3 empty empty empty 8 12 0 13 #dcdcdc #000000
 0;
-#X text 100 44 -dim <float \, floar: sets x/y sizes independently (default:
+#X text 100 44 -dim <float \, floar: sets x/y sizes independently (defaultt:
 127), f 70;
 #X restore 153 514 pd flags;
 #X text 212 514 <= click to open;

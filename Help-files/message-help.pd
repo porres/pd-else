@@ -102,7 +102,7 @@ boxes do. See [pd syntax] for more details., f 69;
 #X symbolatom 182 163 7 0 0 0 - - - 0;
 #X floatatom 340 143 5 0 0 0 - - - 0;
 #X text 256 296 - sets the message (bang message also allowed);
-#X text 257 359 message output (default "bang");
+#X text 257 359 message output (defaultt "bang");
 #X connect 23 0 28 0;
 #X connect 28 0 21 0;
 #X connect 36 0 28 1;

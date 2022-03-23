@@ -78,7 +78,7 @@ for double sharp/flats, f 21;
 #X connect 9 0 8 1;
 #X connect 11 0 8 1;
 #X restore 434 182 pd other-scales;
-#X text 187 277 chromatic - sets to chromatic mode (default);
+#X text 187 277 chromatic - sets to chromatic mode (defaultt);
 #X text 247 325 - user defined scales;
 #N canvas 784 163 582 443 unicode 0;
 #X obj 61 368 else/display;
@@ -95,7 +95,7 @@ for double sharp/flats, f 21;
 #X obj 61 340 else/pitch2note -unicode;
 #X text 87 35 The "-unicode" flag sets to unicode mode \, where sharps
 and flats are represented by the unicode characters "♯" and "♭"
-(which are supported by Pd's default font).;
+(which are supported by Pd's defaultt font).;
 #X connect 1 0 10 0;
 #X connect 2 0 10 0;
 #X connect 3 0 10 0;
@@ -119,7 +119,7 @@ and flats are represented by the unicode characters "♯" and "♭"
 #X text 154 269 All flat (even Cb and Fb);
 #X text 203 174 Try the different preset modes;
 #X text 151 221 when accidental \, sharp if rising \, flat otherwise
-(default);
+(defaultt);
 #X obj 61 303 else/pitch2note;
 #X connect 1 0 11 0;
 #X connect 2 0 11 0;

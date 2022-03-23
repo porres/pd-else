@@ -77,6 +77,6 @@ expand them., f 71;
 #X obj 238 189 else/initmess a b c;
 #X text 208 329 the message \, where commas and semicolons behave as
 usual in message boxes \, dollarsigns behave as usual inside objects
-too (default none), f 52;
+too (defaultt none), f 52;
 #X connect 24 0 31 0;
 #X connect 31 0 22 0;

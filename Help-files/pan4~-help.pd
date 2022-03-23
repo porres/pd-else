@@ -159,7 +159,7 @@ in float gridx float gridy;
 #X text 152 382 float/signal;
 #X text 240 361 - X pan value: from -1 (Left) to 1 (Right);
 #X text 240 382 - Y pan value: from -1 (Back) to 1 (Front);
-#X text 149 502 1) float - initial X pan value (default 0);
+#X text 149 502 1) float - initial X pan value (defaultt 0);
 #X obj 122 452 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 189 452 signal;
@@ -168,7 +168,7 @@ in float gridx float gridy;
 #X text 189 473 signal;
 #X text 242 452 - Left-Back channel;
 #X text 242 473 - Right-Back channel;
-#X text 149 517 2) float - initial Y pan value (default 0);
+#X text 149 517 2) float - initial Y pan value (defaultt 0);
 #X floatatom 250 207 5 0 0 0 - - - 0;
 #X floatatom 309 206 5 0 0 0 - - - 0;
 #X obj 192 254 env~;

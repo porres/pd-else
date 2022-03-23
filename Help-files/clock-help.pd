@@ -68,11 +68,11 @@ and 'synced' to avoid these terms., f 81;
 #X text 190 422 - resyncs the clock, f 43;
 #X text 190 501 - bang according to clock tempo;
 #X text 113 569 1) symbol;
-#X text 179 569 (optional) clock name (default \, internal local to
+#X text 179 569 (optional) clock name (defaultt \, internal local to
 patch);
 #X obj 3 524 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 160 535 '-s' - sets to synced clock (default main);
+#X text 160 535 '-s' - sets to synced clock (defaultt main);
 #X msg 218 275 90;
 #X msg 248 275 60;
 #X msg 411 275 0.5;
@@ -213,20 +213,20 @@ The tempo in a [metronome] depends on the time signature. Note how
 #X connect 14 0 6 0;
 #X restore 464 360 pd metronome;
 #X text 112 436 beat <float> - sets beat length, f 56;
-#X text 179 589 BPM for main clock (default 120) or divider (float
-or symbol fraction) for synced clocks (default 1)., f 56;
+#X text 179 589 BPM for main clock (defaultt 120) or divider (float
+or symbol fraction) for synced clocks (defaultt 1)., f 56;
 #X text 44 230 Below we have a main clock at 60 BPM and a synced clock
 that divider the tempo to a factor of two (so it plays twice as fast).
 , f 81;
-#X text 44 127 By default \, [clock] works as a main clock and you
+#X text 44 127 By defaultt \, [clock] works as a main clock and you
 can set it to 'synced' with the '-s' flag. A synced clock is controlled
 by the main clock \, so it only works when the main clock is on. A
 synced clock also has a relative tempo in relation to the main clock
 tempo (as in a clock multiplier) and can be synced to a [metronome].
 , f 81;
-#X text 462 302 mutliplier;
+#X text 462 302 multiplier;
 #X text 44 180 You should have only one main clock \, but you can have
-several clocks synced to this main one. By default \, clock gets local
+several clocks synced to this main one. By defaultt \, clock gets local
 names according to the patch window \, but you can set a different
 name so you can have different clocks named differently., f 81;
 #X text 190 455 - BPM for main clock or multiplier for synced clock.

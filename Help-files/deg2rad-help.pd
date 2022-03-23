@@ -58,7 +58,7 @@
 #X text 201 281 - convert the last value;
 #X text 165 265 float;
 #X text 201 265 - input degree value to convert to radians;
-#X text 157 380 1) float - initial degree value (default 0);
+#X text 157 380 1) float - initial degree value (defaultt 0);
 #X text 201 314 - the converted value in radians;
 #X obj 4 339 cnv 3 550 3 empty empty -flags 8 12 0 13 #dcdcdc #000000
 0;
@@ -69,7 +69,7 @@
 \, unless you give it the -pos \, so values are wrapped to positive.
 Values outside the input range are wrapped., f 69;
 #X obj 340 187 else/deg2rad -pos;
-#X text 117 348 -pos: wrap to positive only (default: allow also negative)
+#X text 117 348 -pos: wrap to positive only (defaultt: allow also negative)
 ;
 #X connect 6 0 22 0;
 #X connect 22 0 24 0;

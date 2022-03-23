@@ -48,8 +48,8 @@
 #X text 161 413 2) float;
 #X obj 2 432 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 #dcdcdc #404040 0;
-#X text 223 397 - tremolo frequency (default 0), f 49;
-#X text 223 413 - tremolo depth (default 1), f 49;
+#X text 223 397 - tremolo frequency (defaultt 0), f 49;
+#X text 223 413 - tremolo depth (defaultt 1), f 49;
 #X text 222 287 - input signal to be processed, f 49;
 #X text 222 309 - tremolo frequency, f 49;
 #X text 222 332 - tremolo depth (from 0 to 1), f 49;

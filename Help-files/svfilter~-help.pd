@@ -78,7 +78,7 @@
 #X text 243 329 - signal to be filtered;
 #X text 188 348 clear;
 #X text 243 349 - clears the filter in case of a blow-up;
-#X text 176 517 - sets Q/resonance from 0-1 (default 0.01), f 60;
+#X text 176 517 - sets Q/resonance from 0-1 (defaultt 0.01), f 60;
 #X obj 166 204 + 1;
 #X obj 206 261 else/out~;
 #X obj 206 231 else/xselect~ 4 1000 1;

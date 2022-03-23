@@ -33,8 +33,8 @@
 #X text 95 203 output 0;
 #X text 95 218 output 1;
 #X text 112 232 input:;
-#X text 186 572 - 'n' number of inputs (1 to 512 \, default 1);
-#X text 186 589 - 'n' number of outputs (1 to 512 \, default 1);
+#X text 186 572 - 'n' number of inputs (1 to 512 \, defaultt 1);
+#X text 186 589 - 'n' number of outputs (1 to 512 \, defaultt 1);
 #X text 335 330 1;
 #X obj 151 251 else/display;
 #X text 153 454 clear;
@@ -43,7 +43,7 @@
 #X text 202 422 - sets fade time in ms, f 56;
 #X text 202 474 - signals to route/mix, f 56;
 #X text 128 606 3) float;
-#X text 186 606 - fade time in ms (default 10);
+#X text 186 606 - fade time in ms (defaultt 10);
 #X text 202 438 - outputs state off all cells, f 56;
 #X text 202 407 - floats set: inlet \, outlet and on <non-0> or off
 <0>, f 56;

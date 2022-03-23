@@ -158,7 +158,7 @@
 #X obj 272 86 expr~ tanh($v1 * $v2);
 #X obj 110 86 else/drive~;
 #X text 188 85 the same as:;
-#X text 99 35 By default (mode 0) \, the operation mode applies a tanh
+#X text 99 35 By defaultt (mode 0) \, the operation mode applies a tanh
 function:;
 #X obj 206 206 expr~ if($v1 > 0 \, 1 - pow(1. - $v1 \, $v2) \, pow(1.
 + $v1 \, $v2) - 1.), f 41;
@@ -183,14 +183,14 @@ clipped., f 69;
 #X obj 3 394 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 184 315 mode <float>;
-#X text 118 430 1) float - initial drive value (default 1 \, minimum
+#X text 118 430 1) float - initial drive value (defaultt 1 \, minimum
 0);
 #X text 70 87 [drive~] simulates an analog "soft clipping" distortion
 by applying non-linear transfer functions.;
 #X obj 268 175 else/float2sig~ 50;
 #X text 44 227 see also:;
 #X obj 41 251 else/power~;
-#X text 122 401 -mode <float>: sets distorion (0 - default \, 1 or
+#X text 122 401 -mode <float>: sets distorion (0 - defaultt \, 1 or
 2);
 #X text 272 315 - sets modes <0 \, 1 or 2>;
 #N canvas 676 118 662 445 examples 0;

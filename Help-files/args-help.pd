@@ -116,8 +116,8 @@ arguments \, with the new [pdcontrol] object. Check it out., f 34
 #X connect 15 0 13 0;
 #X connect 16 0 15 0;
 #X restore 466 178 pd example;
-#X text 141 345 1) symbol - (optional) break character (default none)
+#X text 141 345 1) symbol - (optional) break character (defaultt none)
 ;
-#X text 147 361 2) float - depth level (default 0);
+#X text 147 361 2) float - depth level (defaultt 0);
 #X connect 16 0 22 0;
 #X connect 20 0 16 0;

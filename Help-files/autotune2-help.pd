@@ -47,7 +47,7 @@
 #X obj 133 344 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 222 345 list;
-#X text 130 412 1) list - scale in cents (default: equal temperament)
+#X text 130 412 1) list - scale in cents (defaultt: equal temperament)
 ;
 #X obj 172 40 cnv 4 4 4 empty empty scale 0 28 2 18 #e0e0e0 #000000
 0;

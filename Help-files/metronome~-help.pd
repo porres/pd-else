@@ -57,7 +57,7 @@ outputs metronome clicks., f 66;
 47;
 #X text 154 403 signal;
 #X text 196 403 - metronome clicks, f 47;
-#X text 109 477 1) list - low \, mid and high frequencies (default:
+#X text 109 477 1) list - low \, mid and high frequencies (defaultt:
 600 \, 1000 \, 1700), f 66;
 #X msg 249 206 set 300 800 1200;
 #X obj 222 253 else/metronome~;
@@ -92,13 +92,13 @@ outputs metronome clicks., f 66;
 #000000 #000000 0;
 #X msg 555 221 mode \$1;
 #X floatatom 555 200 4 0 0 0 - - - 0;
-#X text 371 22 The default mode plays a high pitch for the beggining
+#X text 371 22 The defaultt mode plays a high pitch for the beginning
 of every 'subbar' in a complex time signature as below. Mode 2 only
-plays a high pitch for the beggining of the first subbar (the actual
-beggining of the time signature). This mode also filters out subtempo
+plays a high pitch for the beginning of the first subbar (the actual
+beginning of the time signature). This mode also filters out subtempo
 clicks., f 57;
 #X text 40 24 There are two extra modes for [metronome~]. You can set
-this via a '-mode' flag or mode message. The default mode (0) has 3
+this via a '-mode' flag or mode message. The defaultt mode (0) has 3
 types of clicks (low \, mid and high). The mid pitch is for tempo subdivisions
 as in a 6/8 time signature. Mode 1 doesn't play these subdivision clicks.
 , f 51;
@@ -123,7 +123,7 @@ as in a 6/8 time signature. Mode 1 doesn't play these subdivision clicks.
 #X restore 473 309 pd modes;
 #X obj 4 428 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 154 440 -mode <float>: sets mode (0 \, 1 or 2 \, default 0)
+#X text 154 440 -mode <float>: sets mode (0 \, 1 or 2 \, defaultt 0)
 , f 50;
 #X connect 15 0 21 1;
 #X connect 18 0 21 0;

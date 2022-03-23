@@ -61,7 +61,7 @@
 #X text 201 386 - clears the remainder, f 38;
 #X text 165 409 float;
 #X text 201 441 - the regrouped message;
-#X text 167 524 1) float - group size (default 0);
+#X text 167 524 1) float - group size (defaultt 0);
 #X obj 4 485 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 147 494 -trim: trims selectors (list/symbol) on the output

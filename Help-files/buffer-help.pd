@@ -74,7 +74,7 @@ index;
 #X text 311 140 <= set array values (no output);
 #X text 465 162 set array (no output), f 11;
 #X text 116 309 name <symbol>;
-#X text 171 394 1) symbol - array name (default none);
+#X text 171 394 1) symbol - array name (defaultt none);
 #X connect 19 0 33 0;
 #X connect 33 0 20 0;
 #X connect 36 0 33 1;

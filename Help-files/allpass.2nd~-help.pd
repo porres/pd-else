@@ -102,7 +102,7 @@ b2 * y[n-2];
 #X connect 17 0 3 0;
 #X restore 429 238 pd filter formula \; and response;
 #X text 229 379 - central frequency in Hertz;
-#X text 118 490 1) float - central frequency in Hertz (default 0);
+#X text 118 490 1) float - central frequency in Hertz (defaultt 0);
 #X msg 197 121 clear;
 #X text 230 303 - clears filter's memory if you blow it up;
 #X text 205 338 bw;
@@ -115,7 +115,7 @@ b2 * y[n-2];
 #X text 165 467 - sets resonance parameter to bandwidth in octaves
 , f 53;
 #N canvas 956 114 407 322 resonance 0;
-#X text 27 17 By default \, the resonance parameter is the filter 'q'
+#X text 27 17 By defaultt \, the resonance parameter is the filter 'q'
 \, but you can also set it as bandwidth in octaves. This is done with
 the -bw flag.;
 #X text 28 62 Alternatively \, you can switch from 'q' to 'bw' with
@@ -132,9 +132,9 @@ the message methods.;
 #X connect 5 0 8 0;
 #X connect 8 0 2 0;
 #X restore 464 217 pd resonance;
-#X text 118 508 2) float - resonance (default 1) \, either in 'Q' (default)
+#X text 118 508 2) float - resonance (defaultt 1) \, either in 'Q' (defaultt)
 or 'bw', f 65;
-#X text 230 355 - sets resonance parameter to Q (default);
+#X text 230 355 - sets resonance parameter to Q (defaultt);
 #X text 230 403 - filter resonance (Q or bandwidth);
 #X text 264 119 resonant/center frequency;
 #X obj 2 4 cnv 15 301 42 empty empty allpass.2nd~ 20 20 2 37 #e0e0e0

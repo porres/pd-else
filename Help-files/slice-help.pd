@@ -56,12 +56,12 @@
 #X text 238 348 split point, f 37;
 #X text 222 378 - the left part of the splitted list, f 40;
 #X text 222 400 - the right part of the splitted list, f 40;
-#X text 235 427 split point (default 0), f 38;
+#X text 235 427 split point (defaultt 0), f 38;
 #X text 318 215 n;
 #X msg 224 190 1 2 3 4 5;
 #X msg 293 190 -2;
 #X msg 328 190 1;
-#X text 238 327 incomming list to split, f 37;
+#X text 238 327 incoming list to split, f 37;
 #X symbolatom 237 216 7 0 0 0 - - - 0;
 #X floatatom 157 169 5 0 0 0 - - - 0;
 #X msg 199 168 list a b c d e f;

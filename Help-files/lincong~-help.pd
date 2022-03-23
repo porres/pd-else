@@ -33,13 +33,13 @@
 #X text 282 207 rate in Hz;
 #X obj 223 257 else/out~;
 #X text 172 347 list;
-#X text 83 149 The output rate of the equation is given in hertz (default:
+#X text 83 149 The output rate of the equation is given in hertz (defaultt:
 nyquist).;
 #X text 147 430 2) float;
 #X text 147 447 3) float;
 #X obj 7 508 cnv 3 550 3 empty empty more_info 8 12 0 13 #dcdcdc #000000
 0;
-#X text 207 413 - sets frequency in hertz (default: nyquist);
+#X text 207 413 - sets frequency in hertz (defaultt: nyquist);
 #X obj 223 232 else/lincong~;
 #X obj 79 40 cnv 4 4 4 empty empty congruential 0 28 2 18 #e0e0e0 #000000
 0;
@@ -49,10 +49,10 @@ equation \; y[n] = (a * y[n-1] + c) % m - the output signal is scaled
 to a range of -1 to 1 automatically.;
 #X text 147 465 4) float;
 #X text 147 484 5) float;
-#X text 207 430 - sets 'a' (default 1.1);
-#X text 207 447 - sets 'c' (default 0.13);
-#X text 207 465 - sets 'm' (default 1);
-#X text 207 484 - sets initial value of y[n-1] (default 0);
+#X text 207 430 - sets 'a' (defaultt 1.1);
+#X text 207 447 - sets 'c' (defaultt 0.13);
+#X text 207 465 - sets 'm' (defaultt 1);
+#X text 207 484 - sets initial value of y[n-1] (defaultt 0);
 #X text 207 381 - linear congruential chaotic signal;
 #X text 207 348 - 4 floats sets 'a' \, 'c' \, 'm' and y[n-1];
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc

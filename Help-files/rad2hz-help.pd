@@ -74,7 +74,7 @@ float);
 ;
 #X text 137 430 1) float;
 #X text 141 223 (or send \; last output);
-#X text 203 431 - initial radians per sample value (default 0);
+#X text 203 431 - initial radians per sample value (defaultt 0);
 #X connect 22 0 24 0;
 #X connect 24 0 32 0;
 #X connect 30 0 32 0;

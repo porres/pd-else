@@ -36,7 +36,7 @@
 #X obj 209 214 else/break -;
 #X obj 209 248 print Break;
 #X msg 208 146 no separators at all;
-#X text 177 288 anything - any message to be broken appart;
+#X text 177 288 anything - any message to be broken apart;
 #X text 177 320 anything - broken lists;
 #X msg 237 180 1 2 3 -size 2048 -amp 1 -phase 0;
 #N canvas 889 247 429 368 symbol 0;

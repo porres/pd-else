@@ -38,7 +38,7 @@
 #X obj 123 40 cnv 4 4 4 empty empty generator 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 219 225 else/out~;
-#X text 207 367 - sets frequency in hertz (default: nyquist);
+#X text 207 367 - sets frequency in hertz (defaultt: nyquist);
 #X obj 2 3 cnv 15 301 42 empty empty perlin~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;

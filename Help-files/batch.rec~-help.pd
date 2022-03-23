@@ -24,7 +24,7 @@ to save to, f 65;
 #X text 163 357 bang - outputs a bang when stops recording;
 #X obj 7 426 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 182 388 - (optional) file name to save to (default file.wav)
+#X text 182 388 - (optional) file name to save to (defaultt file.wav)
 ;
 #X text 221 300 sets file name (no symbol opens dialog box), f 52
 ;
@@ -75,9 +75,9 @@ file - that you can load with objects like [sample~] \, [play.file~]
 #X text 134 270 rec <float> -;
 #X text 221 270 record for given amount in ms. If no float is given
 \, the last set value is used., f 52;
-#X text 162 437 -time <float>: sets time in ms (default 0);
+#X text 162 437 -time <float>: sets time in ms (defaultt 0);
 #X text 152 151 record 1 second;
-#X text 182 405 - number of channels to record (default 1 \, max 64)
+#X text 182 405 - number of channels to record (defaultt 1 \, max 64)
 , f 52;
 #X text 475 212 see also:;
 #X obj 444 234 else/batch.write~;

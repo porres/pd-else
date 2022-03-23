@@ -24,7 +24,7 @@
 #X text 191 415 - any message to be recorded in that inlet/track;
 #X text 192 446 - recorded messages from the corresponding inlet/track
 ;
-#X text 192 479 - number of tracks \, default 1 (max 64);
+#X text 192 479 - number of tracks \, defaultt 1 (max 64);
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #X obj 345 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc

@@ -59,9 +59,9 @@
 #X obj 117 353 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 222 352 - order of the filter, f 43;
-#X text 195 418 - cutoff in hertz (default 0);
+#X text 195 418 - cutoff in hertz (defaultt 0);
 #X text 130 436 1) float;
-#X text 195 435 - order of the filter from 2 to 100 (default 2);
+#X text 195 435 - order of the filter from 2 to 100 (defaultt 2);
 #X text 63 91 [lop.bw~] is a lowpass butterworth filter abstraction
 based on [else/biquads~]. You can specify the cuttoff frequency and
 the order of the filter (from 2nd order to 100th order).;

@@ -48,7 +48,7 @@
 #X msg 47 257 pause;
 #X obj 133 180 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 30 23 [loop] iterates in a programing loop fashion. So \, once
+#X text 30 23 [loop] iterates in a programming loop fashion. So \, once
 it starts \, it goes all the way to the end as fast as possible. In
 order to stop it \, you need to break the loop with some logic as below
 \, where we use [select] to pause [loop] when the counter reaches "105".
@@ -134,19 +134,19 @@ was met., f 32;
 #X obj 115 165 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X text 169 532 - sets the end value (optional), f 62;
-#X text 230 453 - sets offset value (default 0), f 37;
+#X text 230 453 - sets offset value (defaultt 0), f 37;
 #X obj 115 194 else/loop 10;
 #X obj 314 194 else/loop 1 10;
 #X text 100 269 offset <float>;
 #X text 191 336 - sets the increment value of the counter, f 56;
 #X text 181 506 sets the number of iterations if only one argument
-is given \, or start value if there are more arguments (default 1)
+is given \, or start value if there are more arguments (defaultt 1)
 ;
-#X text 169 547 - sets a counter step value (default 1), f 62;
+#X text 169 547 - sets a counter step value (defaultt 1), f 62;
 #X text 112 337 step <float>;
 #X text 111 547 3) float;
 #X text 145 468 -step <float>;
-#X text 230 467 - sets counter step value (default 1);
+#X text 230 467 - sets counter step value (defaultt 1);
 #X obj 184 165 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 81 395 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
@@ -221,7 +221,7 @@ step values can be floats \, not only integers - unlike the number
 of interations \, which can only be an integer., f 65;
 #X obj 694 222 else/loop 0.5 1.5 0.1;
 #X text 452 32 If you give it two arguments \, you have a start and
-end value. The counter step is "1" by default but can be changed with
+end value. The counter step is "1" by defaultt but can be changed with
 the 3rd argument or the 'step' message., f 65;
 #X obj 79 225 else/loop -offset -5 10;
 #X obj 488 234 else/loop -step 3.3 11;

@@ -42,7 +42,7 @@
 #dcdcdc #000000 #000000 0 256;
 #X text 32 21 A pulse width of 0 has the smallest size (the first sample
 is equal to 1 \, the second is equal to -1 and the rest is 0) \, while
-a pulse widht of 1 has the largest (the first sample is 1 \, the last
+a pulse width of 1 has the largest (the first sample is 1 \, the last
 sample is -1 and the others are 0).;
 #X obj 161 183 else/impulse2~ 1;
 #X obj 192 152 else/float2sig~ 10;
@@ -60,9 +60,9 @@ sample is -1 and the others are 0).;
 #X text 184 428 1) float;
 #X text 184 447 2) float;
 #X text 184 465 3) float;
-#X text 243 465 - initial phase offset (default 0);
-#X text 243 447 - initial width (default 0.5);
-#X text 243 428 - frequency in hertz (default 0);
+#X text 243 465 - initial phase offset (defaultt 0);
+#X text 243 447 - initial width (defaultt 0.5);
+#X text 243 428 - frequency in hertz (defaultt 0);
 #X obj 183 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 125 219 else/out~;
@@ -75,7 +75,7 @@ sample is -1 and the others are 0).;
 #X msg 121 133 0.5;
 #X text 224 132 <= reset =>;
 #X text 513 24 Syncing the phase with control messages is useful for
-LFOs and control with MIDI. A sync with audio is usefull for the "hard
+LFOs and control with MIDI. A sync with audio is useful for the "hard
 sync" technique \, where an oscillator is synced according to the frequency
 of a master frequency., f 44;
 #X obj 553 232 else/out~;

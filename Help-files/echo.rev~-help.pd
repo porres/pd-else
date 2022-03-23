@@ -42,7 +42,7 @@
 #X text 191 383 signal;
 #X obj 150 353 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 81 85 [echo.rev~] is an echo/reverb asbtraction. It only contains
+#X text 81 85 [echo.rev~] is an echo/reverb abstraction. It only contains
 feedforward lines and can be used to produce early reflections in a
 reverb algorithm. But it can also be used on its own., f 62;
 #X obj 186 187 else/play.file~ bubul.wav 1 1;
@@ -51,9 +51,9 @@ reverb algorithm. But it can also be used on its own., f 62;
 #X text 250 354 - room size from 0 to 1, f 24;
 #X text 246 383 - echo/reverb output;
 #X text 250 332 - echo/reverb input;
-#X text 150 413 1) float - number of stages from 4 to 20 (default 8)
+#X text 150 413 1) float - number of stages from 4 to 20 (defaultt 8)
 ;
-#X text 150 427 2) float - room size (0-1) - (default 0), f 52;
+#X text 150 427 2) float - room size (0-1) - (defaultt 0), f 52;
 #X obj 294 212 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X obj 309 235 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -61,7 +61,7 @@ reverb algorithm. But it can also be used on its own., f 62;
 #X text 368 234 size;
 #X text 81 124 You can set the number of echo stages with the first
 argument and the room size with the second argument/inlet. A typical
-value is the default. The number of stages are up to 20 \, but you
+value is the defaultt. The number of stages are up to 20 \, but you
 can see how that generates extreme results., f 62;
 #X connect 23 0 24 0;
 #X connect 24 0 11 0;

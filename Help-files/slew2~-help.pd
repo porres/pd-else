@@ -78,7 +78,7 @@
 #X obj 25 332 else/lag2~;
 #X text 32 87 [slew2~] is like [slew~] but has independent values for
 upwards & downwards ramps. It takes an amplitude limit per second and
-generates a line torwards the incoming value. The difference between
+generates a line towards the incoming value. The difference between
 [slew~] and [glide~] is that [slew~] has a fixed speed \, not a fixed
 period. A limit of zero stops the line generation and a negative value
 turns the limiter off (but again \, up and down limits are independent).
@@ -89,7 +89,7 @@ to a maximum step until it reaches the new value. A speed of "1" means
 that it takes one second to move to a difference of 1 in amplitue.
 The actual step between subsequent changes depend on this speed and
 the sample rate., f 61;
-#X text 73 82 If you have a sample rate of 44100 samples per seccond
+#X text 73 82 If you have a sample rate of 44100 samples per second
 \, then a second has 44100 steps. If the speed is then "1" \, this
 means that the step value is 1/44100 (2.26757e-05). So a shift between
 0 and 1 takes 44100 steps of 2.26757e-05 and a second to reach 1!,
@@ -119,8 +119,8 @@ f 61;
 #X connect 12 0 11 0;
 #X restore 464 325 pd example;
 #X text 235 161 up;
-#X text 165 500 1) float - slew limit speed upwards (default 0);
-#X text 165 515 1) float - slew limit speed downwards (default 0);
+#X text 165 500 1) float - slew limit speed upwards (defaultt 0);
+#X text 165 515 1) float - slew limit speed downwards (defaultt 0);
 #X text 302 161 down;
 #X text 220 410 - speed limit upwards (negative values = no limit)
 ;

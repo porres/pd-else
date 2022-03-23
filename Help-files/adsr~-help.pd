@@ -37,7 +37,7 @@
 ;
 #X text 131 440 float/signal;
 #X text 226 515 - envelope signal;
-#X text 111 596 1) float - attack time in ms (default 0), f 61;
+#X text 111 596 1) float - attack time in ms (defaultt 0), f 61;
 #X obj 162 161 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X obj 299 41 cnv 4 4 4 empty empty envelope 0 28 2 18 #e0e0e0 #000000
@@ -201,11 +201,11 @@ object for managing polyphonic synths.;
 ;
 #X text 131 484 float/signal;
 #X text 226 483 - release time in ms, f 43;
-#X text 111 643 4) float - release time in ms (default 0), f 61;
-#X text 111 611 2) float - decay time in ms (default 0), f 61;
+#X text 111 643 4) float - release time in ms (defaultt 0), f 61;
+#X text 111 611 2) float - decay time in ms (defaultt 0), f 61;
 #X text 226 439 - decay time in ms, f 43;
 #X text 226 461 - sustain amplitude (ratio to gate value), f 43;
-#X text 111 627 3) float - sustain amplitude ratio to gate value (default
+#X text 111 627 3) float - sustain amplitude ratio to gate value (defaultt
 0), f 61;
 #X text 129 163 gate;
 #N canvas 786 244 383 359 triggered 0;
@@ -288,7 +288,7 @@ you can't use it to turn it on., f 62;
 #X msg 127 118 1;
 #X text 156 116 <= click multiple times;
 #X text 16 75 A bang considers the last non zero value as the gate
-value \, and the default value is "1"!, f 60;
+value \, and the defaultt value is "1"!, f 60;
 #X obj 551 83 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X obj 416 115 else/suspedal -retrig 1;
@@ -394,7 +394,7 @@ is set with the -log flag or "log" message., f 65;
 #X connect 8 0 11 0;
 #X connect 11 0 9 0;
 #X restore 508 229 pd log;
-#X text 163 572 -log: sets to log mode (default \, linear);
+#X text 163 572 -log: sets to log mode (defaultt \, linear);
 #X text 137 397 log <float>;
 #X text 227 397 - non zero sets to "log" mode \, "linear" otherwise
 ;

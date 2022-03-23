@@ -52,7 +52,7 @@
 #X text 61 86 Use [frac2dec] to convert a sygle element or list of
 intervals defined as fraction symbols to decimal floating point numbers.
 Numbers don't need to be integers and you can also have a second fraction
-between parenthesis as the denominator or numerator., f 74;
+between parenthesis as the denominator or numberator., f 74;
 #X msg 200 200 -5.3/(4.7/1.3) 1.7/8.9 (-8.9/3.12)/2.24;
 #X msg 114 173 (8/3)/2;
 #X connect 27 0 26 0;

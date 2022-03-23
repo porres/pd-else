@@ -57,8 +57,8 @@
 #X text 239 422 - MIDI pitch base;
 #X obj 4 507 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 130 519 -base <float>: base MIDI pitch (default 60);
-#X text 140 551 1) list - scale in cents (default: equal temperament)
+#X text 130 519 -base <float>: base MIDI pitch (defaultt 60);
+#X text 140 551 1) list - scale in cents (defaultt: equal temperament)
 ;
 #X obj 429 189 mtof;
 #X obj 429 215 osc~;
@@ -72,7 +72,7 @@
 #X obj 93 297 else/retune -base 57 0 171.429 342.857 514.286 685.714
 857.143 1028.57 1200, f 38;
 #X text 54 86 [retune] receives a scale as a list of steps in cents
-and a base MIDI pitch value (defaul 60). It then remaps the incoming
+and a base MIDI pitch value (default 60). It then remaps the incoming
 MIDI ptches (as integers) and retunes the pitches above or below the
 base value according to the scale., f 65;
 #X obj 440 365 else/frac2dec;

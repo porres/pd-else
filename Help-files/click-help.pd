@@ -53,18 +53,18 @@
 #X restore 202 253 pd a_subpatch;
 #X obj 115 41 cnv 4 4 4 empty empty clicks 0 28 2 18 #e0e0e0 #000000
 0;
-#X text 53 96 [clik] sends a bang when you put it in an abstraction
+#X text 53 96 [click] sends a bang when you put it in an abstraction
 or a subpatch and click on the parent. This is useful for making non
 graphical abstractions respond to a click in the same way compiled
 objects can., f 73;
 #X text 118 396 1) float -;
 #N canvas 583 173 780 341 modes 0;
-#X text 65 78 The default mode is "abstraction" mode. In this mode
+#X text 65 78 The defaultt mode is "abstraction" mode. In this mode
 \, the parent patch of an abstraction that contains [click] needs to
 be clicked \, in order for it to respond to.;
 #X text 66 126 Note \, however \, that the object can be inside any
 layers of subpatches inside an abstraction \, it doesn't matter.;
-#X text 67 38 A "0" argument (the default) sets the mode to "abstraction"
+#X text 67 38 A "0" argument (the defaultt) sets the mode to "abstraction"
 mode \, whil a non-zero argument sets to "subpatch" mode.;
 #X text 67 174 The "subatch" mode might have a misleading name \, as
 it'll actually respond to a click on the "owner" parent \, that is
@@ -93,7 +93,7 @@ subpatch. Note that you can still open the subpatch with right click
 and then "open"., f 73;
 #X text 290 252 <= click me;
 #X obj 258 216 else/player~;
-#X text 189 396 sets mode \, 0 (default) is "abstraction" mode \, non-zero
+#X text 189 396 sets mode \, 0 (defaultt) is "abstraction" mode \, non-zero
 is "subpatch" mode., f 45;
 #X obj 140 216 else/play.file~;
 #X obj 356 216 else/rec.file~;

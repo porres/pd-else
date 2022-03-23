@@ -109,9 +109,9 @@ output the incoming value., f 56;
 #X msg 294 151 xrange -1 1;
 #X msg 320 178 yrange 0 127;
 #X msg 328 198 yrange -1 1;
-#X text 67 29 By default \, the slider output range is from -1 to 1
+#X text 67 29 By defaultt \, the slider output range is from -1 to 1
 \, but you can change it with the -range flag or the range message
-\, which sets the range for both x and y dimenstions. But you can also
+\, which sets the range for both x and y dimensions. But you can also
 set independent range for both x and y with the -xrange \, -yrange
 or xrange \, yrange messages. Note that a bang rescales the last output
 according to the new range., f 64;
@@ -247,30 +247,30 @@ the patch., f 46;
 #X connect 3 0 0 0;
 #X restore 128 205 pd init;
 #N canvas 689 272 614 254 flags 0;
-#X text 94 33 -size <float>: sets x/y size (default: 127), f 71;
-#X text 94 77 -line <float>: non zero sets line visibility (default:
+#X text 94 33 -size <float>: sets x/y size (defaultt: 127), f 71;
+#X text 94 77 -line <float>: non zero sets line visibility (defaultt:
 1), f 71;
 #X text 94 153 -fgcolor <f \, f \, f>: sets frontground color in RGB
-(default 0 0 0), f 76;
-#X text 94 92 -grid <float>: non zero sets grid visibility (default:
+(defaultt 0 0 0), f 76;
+#X text 94 92 -grid <float>: non zero sets grid visibility (defaultt:
 0), f 71;
-#X text 94 184 -init <float>: non zero sets to init mode (default 0)
+#X text 94 184 -init <float>: non zero sets to init mode (defaultt 0)
 , f 76;
 #X obj 26 21 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 26 208 cnv 3 550 3 empty empty empty 8 12 0 13 #dcdcdc #000000
 0;
-#X text 94 47 -range: sets x/y range <float \, float> (default: -1
+#X text 94 47 -range: sets x/y range <float \, float> (defaultt: -1
 \, 1), f 71;
 #X text 94 62 -xrange / -yrange (set x/y range independently), f 71
 ;
 #X text 94 106 -bgcolor1 <f \, f \, f>: sets in bounds back color in
-RGB (default 255 255 255), f 76;
+RGB (defaultt 255 255 255), f 76;
 #X text 94 121 -bgcolor2 <f \, f \, f>: sets out of bounds color in
-RGB (default 255 255 255), f 76;
+RGB (defaultt 255 255 255), f 76;
 #X text 94 136 -bgcolor <f \, f \, f>: sets both background colors
-in RGB (default 255 255 255), f 76;
-#X text 94 168 -clip <float>: non zero sets to clip mode (default 1)
+in RGB (defaultt 255 255 255), f 76;
+#X text 94 168 -clip <float>: non zero sets to clip mode (defaultt 1)
 , f 76;
 #X restore 173 523 pd flags;
 #X text 232 523 <= click to open;
@@ -411,7 +411,7 @@ in: "\\\$0")., f 24;
 #X obj 109 206 vradio 15 1 0 3 empty empty empty 0 -8 0 10 #dcdcdc
 #000000 #000000 0;
 #X floatatom 109 260 3 0 0 0 - - - 0;
-#X text 46 34 There are 3 modes of display \, by default is "cartesian"
+#X text 46 34 There are 3 modes of display \, by defaultt is "cartesian"
 (mode 1) \, but you can also set it to "polar" (mode 2). Alternatively
 \, you camn switch both modes off and just have a single point (mode
 0). You can set the mode with the 'mode' message or '-mode' flag.,
@@ -419,7 +419,7 @@ f 40;
 #X text 128 205 none;
 #X text 129 220 cartesian;
 #X text 130 236 polar;
-#X text 45 123 There's also a grid visibility option (visible by default).
+#X text 45 123 There's also a grid visibility option (visible by defaultt).
 You can set it with the 'grid' message or '-grid' flag., f 40;
 #X obj 109 345 else/circle 127 -1 1 -1 1 0 255 255 255 255 255 255
 0 0 0 0 0 0 63.5 63.5 empty empty 1;
@@ -447,7 +447,7 @@ You can set it with the 'grid' message or '-grid' flag., f 40;
 #X obj 117 100 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X text 53 33 With the 'clip' message or '-clip' flag \, you can set
-it to clip inside the circle bounds. A value of "1" clips (default)
+it to clip inside the circle bounds. A value of "1" clips (defaultt)
 and "0" does not., f 46;
 #X obj 117 290 else/display;
 #X connect 0 0 4 0;

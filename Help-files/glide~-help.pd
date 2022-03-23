@@ -49,7 +49,7 @@
 #X connect 4 0 7 0;
 #X connect 7 0 0 0;
 #X restore 471 288 pd example;
-#X text 185 510 1) float - glide time in ms (default 0);
+#X text 185 510 1) float - glide time in ms (defaultt 0);
 #X obj 242 141 else/pulse~ 0.5;
 #X obj 242 170 else/glide~ 1000;
 #X text 197 375 reset;
@@ -111,7 +111,7 @@ input changes. The glide time in ms.;
 #X restore 448 310 pd exponential;
 #X obj 6 476 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 90 483 -exp <float>: sets exponential factor (default '1' \,
+#X text 90 483 -exp <float>: sets exponential factor (defaultt '1' \,
 linear);
 #X text 161 391 exp <float>;
 #X text 240 391 - sets exponential factor;

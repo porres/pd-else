@@ -49,8 +49,8 @@
 #X text 216 387 (none);
 #X text 174 334 signal;
 #X text 216 334 - maximum peak value so far \, in dB;
-#X text 216 294 - retsarts the object;
-#X text 216 273 - incomming signal;
+#X text 216 294 - restarts the object;
+#X text 216 273 - incoming signal;
 #X obj 196 200 else/maxpeak~;
 #X obj 271 230 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;

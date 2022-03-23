@@ -81,7 +81,7 @@ time;
 #X connect 10 0 12 0;
 #X connect 12 0 11 0;
 #X restore 464 262 pd example;
-#X text 221 413 initial time in ms (default 0);
+#X text 221 413 initial time in ms (defaultt 0);
 #X obj 198 218 else/combine;
 #X text 44 87 [combine] collects messages (with one or more elements)
 into a single list if they come within a certain given amount of time

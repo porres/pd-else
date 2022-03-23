@@ -63,14 +63,14 @@ in the way it handles it \, this object does not have any arguments.
 ;
 #X text 60 89 [bl.square~] is a square oscillator like [else/square~]
 \, but it is bandlimited with the upsampling/filtering technique. This
-makes the object quite ineficient CPU wise \, but is an easy way to
+makes the object quite inefficient CPU wise \, but is an easy way to
 implement a bandlimited oscillator., f 67;
 #X text 168 454 1) float;
 #X text 168 473 2) float;
 #X text 168 491 3) float;
-#X text 237 454 - frequency in hertz (default 0);
-#X text 237 473 - initial pulse width (default 0.5);
-#X text 237 491 - initial phase offset (default 0);
+#X text 237 454 - frequency in hertz (defaultt 0);
+#X text 237 473 - initial pulse width (defaultt 0.5);
+#X text 237 491 - initial phase offset (defaultt 0);
 #X obj 229 214 else/bl.square~ 400;
 #X connect 11 0 41 0;
 #X connect 41 0 18 0;

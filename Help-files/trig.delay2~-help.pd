@@ -52,7 +52,7 @@
 #X text 351 165 delay time;
 #X text 214 336 - delay time in ms;
 #X text 214 371 - delayed trigger;
-#X text 160 404 1) float - delay time in ms (default 0);
+#X text 160 404 1) float - delay time in ms (defaultt 0);
 #X text 455 254 see also:;
 #X obj 185 180 else/impseq~;
 #X obj 228 211 else/trig.delay2~ 500;

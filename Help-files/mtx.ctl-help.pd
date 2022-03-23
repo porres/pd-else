@@ -46,9 +46,9 @@
 ;
 #X text 191 480 list;
 #X text 230 480 - column \, row and status;
-#X text 175 508 1) float - number of columns (default 3), f 47;
-#X text 175 523 2) float - number of rows (default 3), f 47;
-#X text 175 538 3) float - cell size in pixels (default 20), f 47
+#X text 175 508 1) float - number of columns (defaultt 3), f 47;
+#X text 175 523 2) float - number of rows (defaultt 3), f 47;
+#X text 175 538 3) float - cell size in pixels (defaultt 20), f 47
 ;
 #X text 190 310 list;
 #X text 142 410 rows <float>;
@@ -113,7 +113,7 @@ cells in the grid can be either on or off. The output is a list with
 #X text 136 454 embed <float>;
 #X text 230 382 - export contents as an array, f 49;
 #X text 230 396 - import contents as an array, f 49;
-#X text 175 553 4) float - embed flag \, (default 0), f 47;
+#X text 175 553 4) float - embed flag \, (defaultt 0), f 47;
 #X text 230 454 - non zero save internal contents with the object;
 #X msg 365 170 get 2 1;
 #X text 154 339 get <list>;

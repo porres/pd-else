@@ -48,7 +48,7 @@
 #N canvas 947 69 396 460 depth 0;
 #X obj 112 294 else/display;
 #X text 57 42 The depth level is convenient for abstractions \, so
-you can expand according to parent patches. By default \, the depth
+you can expand according to parent patches. By defaultt \, the depth
 level is 0 \, which means this main patch and its subpatches., f 47
 ;
 #X symbolatom 112 215 10 0 0 0 - - - 0;
@@ -78,7 +78,7 @@ without dollar arguments are passed through unchanged., f 63;
 #X obj 190 171 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X obj 220 203 else/dollsym \$0-z;
-#X text 159 364 1) float - (optional) depth (default 0);
+#X text 159 364 1) float - (optional) depth (defaultt 0);
 #X text 153 380 2) symbol - symbol to be expanded, f 40;
 #X text 153 300 bang;
 #X text 183 300 - output expanded dollar symbol;

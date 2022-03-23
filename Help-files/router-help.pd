@@ -65,7 +65,7 @@
 #X msg 203 157 1 2;
 #X text 363 208 outlet #;
 #X obj 187 210 else/router 3 2, f 18;
-#X text 228 391 - 'n' number of outlets (2 to 512 \, default 2);
+#X text 228 391 - 'n' number of outlets (2 to 512 \, defaultt 2);
 #X msg 326 132 -1;
 #X msg 296 132 3;
 #X text 188 264 0;
@@ -74,7 +74,7 @@
 #X text 67 85 [router] routes a message from the left inlet to an outlet
 number specified by the float into the right inlet (if the number is
 out of range \, the message is not output)., f 65;
-#X text 228 410 - sets initially open outlet (default 0);
+#X text 228 410 - sets initially open outlet (defaultt 0);
 #X connect 27 0 28 0;
 #X connect 28 0 41 1;
 #X connect 35 0 41 0;

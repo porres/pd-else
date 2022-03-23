@@ -41,7 +41,7 @@
 #X restore 306 5 graph;
 #X obj 120 42 cnv 4 4 4 empty empty status 0 28 2 18 #e0e0e0 #000000
 0;
-#X text 140 302 1) float - depth \, default 0 (current window);
+#X text 140 302 1) float - depth \, defaultt 0 (current window);
 #X text 458 162 example:;
 #X obj 216 135 else/canvas.edit;
 #X text 79 91 The [canvas.edit] object outputs edit status - 1 when

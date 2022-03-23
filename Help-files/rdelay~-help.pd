@@ -47,10 +47,10 @@
 #X text 134 331 resize <float>;
 #X obj 192 132 else/play.file~ bubul.wav 1 1;
 #X obj 192 218 else/rdelay~ 500;
-#X text 153 410 1) float - initial length (default 1000 ms), f 50
+#X text 153 410 1) float - initial length (defaultt 1000 ms), f 50
 ;
 #X text 60 89 [rdelay~] is a reverse delay effect. It takes a size
-amount in ms to play backwards from a delay line (default 1000 ms).
+amount in ms to play backwards from a delay line (defaultt 1000 ms).
 ;
 #X connect 23 0 27 0;
 #X connect 24 0 27 0;

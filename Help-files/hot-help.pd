@@ -63,7 +63,7 @@
 #X obj 240 195 else/hot 3, f 20;
 #X text 67 87 [hot] outputs messages when any inlet gets a message
 \, making them all hot. Output is from right to left.;
-#X text 193 372 sets 'n' number of inlets/outlets (default 2 \, max
+#X text 193 372 sets 'n' number of inlets/outlets (defaultt 2 \, max
 128);
 #X symbolatom 357 161 10 0 0 0 - - - 0;
 #X obj 357 220 else/display;

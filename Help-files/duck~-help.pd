@@ -58,11 +58,11 @@ signal;
 #X text 151 356 mix <float> - non zero mixes with control signal,
 f 53;
 #X text 190 450 -mix: mixes with control signal;
-#X text 181 481 - threshold in dB (default -60), f 46;
+#X text 181 481 - threshold in dB (defaultt -60), f 46;
 #X text 116 496 2) float;
-#X text 181 511 - attack time in ms (default 10), f 46;
-#X text 181 496 - attenuation ratio (default 1), f 46;
-#X text 181 526 - release time in ms (default 10), f 46;
+#X text 181 511 - attack time in ms (defaultt 10), f 46;
+#X text 181 496 - attenuation ratio (defaultt 1), f 46;
+#X text 181 526 - release time in ms (defaultt 10), f 46;
 #X obj 161 148 osc~ 440;
 #X obj 161 215 else/out~;
 #X obj 230 148 else/randpulse2~ 10;

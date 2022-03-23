@@ -53,8 +53,8 @@
 #X text 249 416 - MIDI pitch base;
 #X obj 4 512 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 150 524 -base <float>: base MIDI pitch (default 60);
-#X text 130 556 1) list - scale in cents (default: equal temperament)
+#X text 150 524 -base <float>: base MIDI pitch (defaultt 60);
+#X text 130 556 1) list - scale in cents (defaultt: equal temperament)
 ;
 #X obj 172 40 cnv 4 4 4 empty empty scale 0 28 2 18 #e0e0e0 #000000
 0;
@@ -72,7 +72,7 @@
 #X floatatom 61 220 5 0 0 0 - - - 0;
 #X msg 61 240 base \$1;
 #X text 59 90 [autotune] receives a scale as a list of steps in cents
-and a base MIDI pitch value (defaul 60). It then retunes incoming MIDI
+and a base MIDI pitch value (default 60). It then retunes incoming MIDI
 pitches to the closest step in the scale., f 67;
 #X obj 131 291 else/autotune -base 57 0 110 190 320 410 480 590 610
 690 805 895 990 1110 1200, f 40;

@@ -47,11 +47,11 @@
 #X text 139 325 float;
 #X obj 195 219 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
 #dcdcdc #000000 #000000 0 1;
-#X text 180 542 - sets frequency in hertz (default 0), f 55;
-#X text 180 556 - sets initial phase from 0 - 1 (default 0), f 55
+#X text 180 542 - sets frequency in hertz (defaultt 0), f 55;
+#X text 180 556 - sets initial phase from 0 - 1 (defaultt 0), f 55
 ;
 #X text 180 420 - LFO's waveform in the range from 0 - 127;
-#X text 180 571 - sets refresh rate in ms (default 5), f 55;
+#X text 180 571 - sets refresh rate in ms (defaultt 5), f 55;
 #X obj 92 363 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 139 365 float;
@@ -71,7 +71,7 @@
 #X obj 3 444 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 118 452 -sine;
-#X text 161 452 - sets waveform to sine (default), f 61;
+#X text 161 452 - sets waveform to sine (defaultt), f 61;
 #X text 124 468 -tri;
 #X text 161 468 - sets waveform to triangular, f 61;
 #X text 124 484 -saw;
@@ -92,7 +92,7 @@ Note that "square" and "vsaw" take an optional width argument., f
 #X msg 179 185 tri;
 #X msg 209 185 saw;
 #X msg 221 218 square 0.1;
-#X text 34 26 The waveforms of [lfo] are: "sine" (default) as in the
+#X text 34 26 The waveforms of [lfo] are: "sine" (defaultt) as in the
 [else/sine~] object \, "tri" as in the [else/triangular~] object \,
 "saw" as in the [else/sawtooth2~] object \, "square" as in the [else/square~]
 object and "vsaw" as in the [else/vsaw~] object - check the help file
@@ -121,7 +121,7 @@ of these objects for more details.;
 #X obj 266 79 else/lfo 5.3 0 270 -tri;
 #X obj 49 243 else/rescale 200 500;
 #X text 25 18 The refresh rate determines the output rate in ms for
-the waveform output. The minimum and default is 5 ms. This can also
+the waveform output. The minimum and defaultt is 5 ms. This can also
 lead to sample and hold techniques to create gestures and other patterns
 from the waveforms., f 66;
 #X obj 49 271 osc~;
@@ -148,7 +148,7 @@ from the waveforms., f 66;
 #X restore 428 279 pd refresh rate;
 #N canvas 905 217 409 547 rescale 0;
 #X text 38 16 The output range if from 0 to 127 \, which is the whole
-MIDI default range. Use the [rescale] object if you want a different
+MIDI defaultt range. Use the [rescale] object if you want a different
 range for the output., f 53;
 #X obj 119 108 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
 #dcdcdc #000000 #000000 0 1;

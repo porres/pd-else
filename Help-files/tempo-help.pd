@@ -57,7 +57,7 @@
 ;
 #X text 152 415 float -;
 #X text 158 445 bang -;
-#X text 200 554 - swing deviation in % (default 0);
+#X text 200 554 - swing deviation in % (defaultt 0);
 #N canvas 837 109 449 362 swing 0;
 #X text 43 96 The minimum swing value is 0 (no deviation) and there
 is no maximum value.;
@@ -112,14 +112,14 @@ with an incoming bang.;
 bpm or ms. It has a swing parameter and is turned on and off by a toggle.
 , f 61;
 #X text 173 487 -ms;
-#X text 198 486 - sets time measure to ms (default bpm);
+#X text 198 486 - sets time measure to ms (defaultt bpm);
 #X text 213 445 bangs at metronome beat;
-#X text 198 516 - sets tempo subdivision (default 1);
+#X text 198 516 - sets tempo subdivision (defaultt 1);
 #X text 211 311 sets tempo subdivision;
 #X text 308 155 BPM (or another setting);
 #X text 214 393 tempo in ms \, hz or bpm;
 #X text 173 501 -hz;
-#X text 198 500 - sets time measure to hertz (default bpm);
+#X text 198 500 - sets time measure to hertz (defaultt bpm);
 #N canvas 653 191 602 237 ms/hz 0;
 #X obj 108 90 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
@@ -152,7 +152,7 @@ tempo and swing, f 35;
 #X connect 13 0 1 0;
 #X connect 14 0 7 0;
 #X restore 492 166 pd ms/hz;
-#X text 200 539 - bpm/hz/ms (default 0);
+#X text 200 539 - bpm/hz/ms (defaultt 0);
 #X text 128 343 ms <f \, f> -;
 #X text 128 357 hz <f \, f> -;
 #X text 122 371 bpm <f \, f> -;
@@ -178,7 +178,7 @@ tempo and swing, f 35;
 #X obj 117 221 else/display;
 #X obj 117 194 else/count 1 4;
 #X obj 117 331 else/out~;
-#X text 28 23 You can set a tempo (or 'frequency') multipler with the
+#X text 28 23 You can set a tempo (or 'frequency') multiplier with the
 -mul flag or the "mul" message". In practice \, this subdivides the
 tempo into fractions. So if you multiply by four your tempo is actually
 1/4 of the original. You can also use object like [count] and [bangdiv]

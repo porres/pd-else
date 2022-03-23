@@ -43,8 +43,8 @@
 ;
 #X obj 3 471 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 145 507 1) float - threshold in dBFS (default -100);
-#X text 145 525 2) float - attack/release time in ms (default 10);
+#X text 145 507 1) float - threshold in dBFS (defaultt -100);
+#X text 145 525 2) float - attack/release time in ms (defaultt 10);
 #X text 115 479 -size <float>;
 #X text 187 409 float;
 #X obj 285 249 else/out~;
@@ -60,7 +60,7 @@ over that threshold., f 62;
 #X text 230 384 - signal to be gated;
 #X text 229 408 - threshold in dBFS;
 #X text 230 445 - gated signal;
-#X text 201 479 - sets analysis window size in samples (default 512)
+#X text 201 479 - sets analysis window size in samples (defaultt 512)
 ;
 #X obj 163 315 else/out~;
 #X text 102 332 original;

@@ -69,8 +69,8 @@ and spectral morphing., f 76;
 #X text 362 200 B;
 #X text 232 222 A;
 #X text 383 222 B;
-#X text 135 495 1) float - amplitude cross fade (default 1 - "B");
-#X text 135 513 2) float - initial phase cross fade (default -1 - "A")
+#X text 135 495 1) float - amplitude cross fade (defaultt 1 - "B");
+#X text 135 513 2) float - initial phase cross fade (defaultt -1 - "A")
 ;
 #X obj 184 284 else/out~;
 #X connect 0 0 36 2;

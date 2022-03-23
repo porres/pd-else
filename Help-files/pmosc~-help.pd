@@ -158,11 +158,11 @@
 #X text 261 350 modulation index;
 #X text 261 372 phase input of modulator oscillator;
 #X text 261 405 phase modulation output;
-#X text 213 441 - carrier frequency in hertz (default 0);
-#X text 213 460 - modulation frequency in hertz (default 0);
+#X text 213 441 - carrier frequency in hertz (defaultt 0);
+#X text 213 460 - modulation frequency in hertz (defaultt 0);
 #X text 261 329 modulation frequency in hz;
-#X text 213 480 - modulation index (default 0);
-#X text 213 500 - phase input of modulator oscillator (default 0);
+#X text 213 480 - modulation index (defaultt 0);
+#X text 213 500 - phase input of modulator oscillator (defaultt 0);
 #X obj 3 3 cnv 15 301 42 empty empty pmosc~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;

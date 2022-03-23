@@ -152,16 +152,16 @@
 #X text 215 266 - signal to analyze;
 #X text 153 404 1) float;
 #X text 153 420 2) float;
-#X text 213 404 - analysis window size in samples (default 1024),
+#X text 213 404 - analysis window size in samples (defaultt 1024),
 f 53;
-#X text 213 420 - hop size in samples (default \, half the window size)
+#X text 213 420 - hop size in samples (defaultt \, half the window size)
 ;
 #X text 215 350 - RMS value;
 #X text 165 320 linear;
 #X text 189 302 db;
 #X text 216 302 - change RMS value to dBFS;
 #X text 61 88 [rms~] is similar to Pd Vanilla's [env~] \, but it reports
-the RMS value in linear amplitude (default) or in dBFS.;
+the RMS value in linear amplitude (defaultt) or in dBFS.;
 #X text 93 284 set <float \, float>;
 #X text 215 284 - sets window and hop size in samples;
 #X msg 285 163 db;
@@ -188,7 +188,7 @@ the window size. This is all also true for [env~] \, by the way.;
 #X text 651 164 change block size;
 #X text 422 18 The set message changes the analysis parameters and
 takes up to 2 arguments \, which are \, like in the object creation
-\, the window and hop size. The default values are also the same as
+\, the window and hop size. The defaultt values are also the same as
 creating the object \, so if you give it only one value for the window
 size \, half of it will be the hop size. Note that it won't let you
 set the window or hop size to anything smaller than the current block
@@ -232,7 +232,7 @@ size.;
 #X connect 17 0 9 0;
 #X connect 17 0 14 0;
 #X restore 476 224 pd analysis;
-#X text 215 320 - change RMS value to linear (the default is linear)
+#X text 215 320 - change RMS value to linear (the defaultt is linear)
 ;
 #X obj 3 373 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;

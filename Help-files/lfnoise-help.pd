@@ -56,7 +56,7 @@
 #X text 127 461 3) float;
 #N canvas 782 234 419 532 rescale 0;
 #X text 46 17 The output range if from 0 to 127 \, which is the whole
-MIDI default range. Use the [rescale] object if you want a different
+MIDI defaultt range. Use the [rescale] object if you want a different
 range for the output., f 53;
 #X obj 127 109 vsl 22 80 0 127 0 0 dsfsdgs sddfjhgj empty 0 -9 0 10
 #dcdcdc #000000 #000000 0 1;
@@ -90,10 +90,10 @@ range for the output., f 53;
 #X text 319 174 <= reset to a new random value;
 #X obj 206 199 else/lfnoise 2 0;
 #X text 91 351 interp <float>;
-#X text 187 432 - frequency in hertz (default 0), f 55;
-#X text 187 446 - interrpolation off (0 \, default) or on (1), f 55
+#X text 187 432 - frequency in hertz (defaultt 0), f 55;
+#X text 187 446 - interrpolation off (0 \, defaultt) or on (1), f 55
 ;
-#X text 187 461 - seed (default internal), f 55;
+#X text 187 461 - seed (defaultt internal), f 55;
 #X msg 121 170 interp \$1;
 #X obj 121 148 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;

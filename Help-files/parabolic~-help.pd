@@ -45,7 +45,7 @@ initial phase that corresponds to the input number \, so the internal
 phase is synced to the given value. The phase values are from 0 to
 1 and values beyond that are wrapped within this range.;
 #X text 518 25 Syncing the phase with control messages is useful for
-LFOs and control with MIDI. A sync with audio is usefull for the "hard
+LFOs and control with MIDI. A sync with audio is useful for the "hard
 sync" technique \, where an oscillator is synced according to the frequency
 of a master frequency., f 44;
 #X obj 528 255 else/out~;
@@ -229,8 +229,8 @@ f 50;
 #X connect 14 0 5 1;
 #X connect 15 0 0 0;
 #X restore 445 246 pd phase offset;
-#X text 243 420 - initial phase offset (default 0);
-#X text 243 401 - frequency in hertz (default 0);
+#X text 243 420 - initial phase offset (defaultt 0);
+#X text 243 401 - frequency in hertz (defaultt 0);
 #X obj 218 221 else/out~;
 #X text 184 420 2) float;
 #X text 165 313 float/signal -;

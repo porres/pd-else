@@ -119,7 +119,7 @@ for delay time that falls in between sample values., f 61;
 #X connect 59 0 58 0;
 #X connect 62 0 3 0;
 #X restore 438 241 pd Details and \; Filter Equation;
-#X text 131 472 1) float - maximum and initial delay time in ms (default
+#X text 131 472 1) float - maximum and initial delay time in ms (defaultt
 0), f 60;
 #X text 240 312 - changes the maximum delay size (in ms), f 42;
 #X text 147 312 size <float>;
@@ -158,11 +158,11 @@ for delay time that falls in between sample values., f 61;
 #X obj 205 197 else/comb.rev~ 500 1 0.99 0.99;
 #X text 61 89 Use [comb.rev~] as a reverberator \, comb filter and
 delay., f 67;
-#X text 131 487 2) float - a: input gain coefficient (default 0),
+#X text 131 487 2) float - a: input gain coefficient (defaultt 0),
 f 60;
-#X text 131 502 3) float - b: feedforward gain coefficient (default
+#X text 131 502 3) float - b: feedforward gain coefficient (defaultt
 0), f 60;
-#X text 131 517 4) float - c: feedback gain coefficient (default 0)
+#X text 131 517 4) float - c: feedback gain coefficient (defaultt 0)
 , f 60;
 #X connect 40 0 41 0;
 #X connect 41 0 45 1;

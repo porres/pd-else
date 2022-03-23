@@ -159,8 +159,8 @@
 #X text 186 401 -;
 #X text 127 401 anything;
 #X text 128 581 4) float;
-#X text 187 549 - sets cutoff/center frequency (default 0), f 53;
-#X text 187 565 - sets Q/Slope (default 1), f 53;
+#X text 187 549 - sets cutoff/center frequency (defaultt 0), f 53;
+#X text 187 565 - sets Q/Slope (defaultt 1), f 53;
 #X obj 208 223 biquad~;
 #X obj 145 178 noise~;
 #X obj 208 248 else/out~;
@@ -176,7 +176,7 @@
 #X obj 230 198 print coefficients;
 #X text 279 129 Q/Slope;
 #X text 187 474 - sets gain in db, f 57;
-#X text 187 581 - sets gain in db (default 0), f 53;
+#X text 187 581 - sets gain in db (defaultt 0), f 53;
 #X text 91 349 list <f \, f \, f>;
 #N canvas 399 107 917 580 details 0;
 #X floatatom 566 183 5 0 0 0 - - -;
@@ -251,7 +251,7 @@ the filter type and takes 3 more optional arguments.;
 #X connect 34 0 27 0;
 #X restore 477 238 pd details;
 #X text 187 504 - 5 coefficients for the vanilla [biquad~] object;
-#X text 187 533 - (optional) sets type <higpass/etc> \, (default 'off')
+#X text 187 533 - (optional) sets type <higpass/etc> \, (defaultt 'off')
 ;
 #X text 70 86 [bicoeff] generates coefficients for vanilla's [biquad~]
 according to different filter types. All inlets are hot!, f 61;

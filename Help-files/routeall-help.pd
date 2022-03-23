@@ -193,7 +193,7 @@ f 74;
 #X obj 108 406 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 179 406 float -;
-#X text 232 406 set element number to match (default 0);
+#X text 232 406 set element number to match (defaultt 0);
 #X connect 19 0 24 0;
 #X connect 24 0 25 0;
 #X connect 24 1 21 0;

@@ -61,9 +61,9 @@
 ;
 #X obj 1 535 cnv 3 550 3 empty \$0-pddp.cnv.argument flags 8 12 0 13
 #dcdcdc #000000 0;
-#X text 116 543 -time <float>: t60 reverberation time in seconds (default
+#X text 116 543 -time <float>: t60 reverberation time in seconds (defaultt
 4), f 64;
-#X text 98 558 -damping <float>: high frequency damping in % (default
+#X text 98 558 -damping <float>: high frequency damping in % (defaultt
 0), f 67;
 #X text 115 323 time <float>;
 #X text 201 323 - reverberation decay time in seconds (t60), f 55
@@ -102,10 +102,10 @@ sets the size of the matrix and needs to be a multiple of 4! Each float
 sets the delay time for each delay line., f 47;
 #X text 337 206 The set message sets the size of the matrix with the
 first element \, the two extra elements set the minimum and maximum
-delay times. By default they are spaced linearly \, but they can be
+delay times. By defaultt they are spaced linearly \, but they can be
 exponentially spaced with the "exp" message., f 47;
 #X text 116 22 lits sets delay lines;
-#X text 261 45 default;
+#X text 261 45 defaultt;
 #X obj 162 309 else/out~;
 #X connect 1 0 3 0;
 #X connect 2 0 6 0;

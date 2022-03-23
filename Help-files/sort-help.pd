@@ -63,7 +63,7 @@
 #X text 170 335 bang;
 #X text 207 336 outputs the last incoming message sorted, f 51;
 #X text 117 451 1) float - order >= is ascending \, descending otherwise
-(default 0), f 67;
+(defaultt 0), f 67;
 #X text 62 85 [sort] sorts messages in ascending or descending order.
 A bang outputs the last incoming message. If you change the sorting
 order you can use the bang message to change the sorting direction

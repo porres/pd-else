@@ -75,7 +75,7 @@ float);
 #X text 71 88 [hz2rad] converts a frequency in Hertz to "Radians per
 Sample" - which depends on the patch's sample rate (sr). The conversion
 formula is \; rad = hz * 2*pi / sr;
-#X text 196 435 - initial frequency value (default 0);
+#X text 196 435 - initial frequency value (defaultt 0);
 #X connect 6 0 26 0;
 #X connect 10 0 36 0;
 #X connect 26 0 36 0;

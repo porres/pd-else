@@ -249,7 +249,7 @@
 #X text 138 532 2) float;
 #X text 138 548 3) float;
 #X text 138 564 4) float;
-#X text 192 515 - increment value (default 1), f 57;
+#X text 192 515 - increment value (defaultt 1), f 57;
 #X obj 139 40 cnv 4 4 4 empty empty for 0 28 2 18 #e0e0e0 #000000 0
 ;
 #X obj 169 40 cnv 4 4 4 empty empty samplers 0 28 2 18 #e0e0e0 #000000
@@ -295,9 +295,9 @@ given loop points., f 31;
 #X connect 16 0 10 1;
 #X connect 17 0 0 0;
 #X restore 450 248 pd read buffers;
-#X text 192 531 - loop start (default 0), f 57;
-#X text 192 547 - loop end (default 2ˆ32 - 1), f 57;
-#X text 192 563 - sample size (default 2ˆ32 - 1), f 57;
+#X text 192 531 - loop start (defaultt 0), f 57;
+#X text 192 547 - loop end (defaultt 2ˆ32 - 1), f 57;
+#X text 192 563 - sample size (defaultt 2ˆ32 - 1), f 57;
 #X obj 135 147 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X obj 135 229 nbx 7 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10

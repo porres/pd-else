@@ -86,7 +86,7 @@ of extra octaves. A value of zero makes it only one frequency band
 of noise \, which is plain white noise. For each extra octave \, the
 bandwidth is split in half and the new octaves are 3dB lower than the
 next lower octave., f 68;
-#X text 45 77 The maximum number of extra octaves is 31 and the default
+#X text 45 77 The maximum number of extra octaves is 31 and the defaultt
 depends on the sample rate \, and it is so that the lowest octave starts
 at 20hz., f 68;
 #X obj 246 173 nbx 5 14 0 31 0 0 empty empty empty 0 -8 0 10 -228856

@@ -18,7 +18,7 @@
 0;
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
-#X obj 3 4 cnv 15 301 42 empty empty default 20 20 2 37 -233017 -1
+#X obj 3 4 cnv 15 301 42 empty empty defaultt 20 20 2 37 -233017 -1
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -56,10 +56,10 @@
 #X text 216 258 - outputs the stored message;
 #X text 216 274 - outputs the message without storing it;
 #X text 216 329 - the stored message;
-#X text 247 359 intially stored message (default: "bang");
-#X obj 229 192 else/default a b c;
-#X text 59 87 The [default] sets a default message as the argument
-or via the right inlet. A bang outputs the default message \, other
+#X text 247 359 intially stored message (defaultt: "bang");
+#X obj 229 192 else/defaultt a b c;
+#X text 59 87 The [defaultt] sets a defaultt message as the argument
+or via the right inlet. A bang outputs the defaultt message \, other
 messages are sent through without being stored., f 69;
 #X connect 19 0 37 0;
 #X connect 26 0 37 1;

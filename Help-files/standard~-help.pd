@@ -68,7 +68,7 @@ sound is generated with the difference equations \; y[n] = (y[n-1]
 #X msg 116 235 k \$1;
 #X floatatom 116 215 5 0 0 0 - - - 0;
 #X text 164 184 list sets initial values of x and y;
-#X text 34 27 By default \, the initial k \, x[n-1] and y[n-1] values
+#X text 34 27 By defaultt \, the initial k \, x[n-1] and y[n-1] values
 are 1 \, 0.5 and 0 \, respectively \, but can be changed via arguments
 or messages.;
 #X text 99 139 x[n-1];
@@ -82,7 +82,7 @@ or messages.;
 #X connect 9 0 4 0;
 #X connect 10 0 9 0;
 #X restore 446 312 pd parameters;
-#X text 84 162 The output rate of the equation is given in hertz (default:
+#X text 84 162 The output rate of the equation is given in hertz (defaultt:
 nyquist).;
 #X text 137 473 2) float;
 #X text 137 490 3) float;
@@ -91,15 +91,15 @@ nyquist).;
 0;
 #X text 132 371 k <float>;
 #X text 197 372 - sets the value of k;
-#X text 197 473 - sets k (default: 1);
-#X text 197 456 - sets frequency in hertz (default: nyquist);
+#X text 197 473 - sets k (defaultt: 1);
+#X text 197 456 - sets frequency in hertz (defaultt: nyquist);
 #X text 123 539 This object was based on SuperCollider's "StandardN"
 UGEN \; The standard map is an area preserving map of a cylinder discovered
 by the plasma physicist Boris Chirikov.;
 #X text 197 391 - 2 floats set x[n-1] and y[n-1] \, respectively;
 #X text 197 424 - standard map chaotic signal;
-#X text 197 508 - sets initial value of y[n-1] (default: 0);
-#X text 197 490 - sets initial value of x[n-1] (default: 0.5);
+#X text 197 508 - sets initial value of y[n-1] (defaultt: 0);
+#X text 197 490 - sets initial value of x[n-1] (defaultt: 0.5);
 #X connect 0 0 18 0;
 #X connect 18 0 27 0;
 #X connect 27 0 25 0;

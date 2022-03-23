@@ -47,7 +47,7 @@
 #X obj 1 346 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 252 319 raw MIDI stream, f 31;
-#X text 222 385 sets channel number (default 1);
+#X text 222 385 sets channel number (defaultt 1);
 #X text 24 181 see also:;
 #X obj 217 213 midiout;
 #X obj 217 147 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -91,7 +91,7 @@ is formated \, where you have separate aftertouch values for each pitch
 #X obj 31 203 else/touch.in;
 #X obj 217 180 else/touch.out 4;
 #X text 69 85 [touch.out] formats and sends raw MIDI aftertouch messages.
-An argument sets channel number (the default is 1)., f 66;
+An argument sets channel number (the defaultt is 1)., f 66;
 #X text 216 127 pressure;
 #X connect 29 0 41 0;
 #X connect 30 0 41 1;

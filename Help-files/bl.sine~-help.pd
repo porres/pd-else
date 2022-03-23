@@ -57,7 +57,7 @@
 0;
 #X text 60 87 [bl.sine~] is a sinusoidal oscillator like [else/sine~]
 \, but it is bandlimited with the upsampling/filtering technique. This
-makes the object quite ineficient CPU wise \, but is an easy way to
+makes the object quite inefficient CPU wise \, but is an easy way to
 implement a bandlimited oscillator., f 67;
 #X text 60 136 You may wonder why have a sine oscillator that is bandlimited.
 In fact this only makes sense for the hard sync and phase modulation
@@ -68,8 +68,8 @@ in the way it handles it \, this object does not have any arguments.
 #X text 458 275 see also:;
 #X obj 458 302 else/sine~;
 #X text 165 464 1) float;
-#X text 224 483 - initial phase offset (default 0);
-#X text 224 464 - frequency in hertz (default 0);
+#X text 224 483 - initial phase offset (defaultt 0);
+#X text 224 464 - frequency in hertz (defaultt 0);
 #X text 165 483 2) float;
 #X obj 229 247 else/bl.sine~ 400;
 #X connect 24 0 41 0;

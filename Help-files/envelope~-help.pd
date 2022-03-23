@@ -54,14 +54,14 @@
 ;
 #X text 152 382 float;
 #X text 190 382 - phase offset, f 58;
-#X text 136 447 -phase <float>: phase offset (default 0);
+#X text 136 447 -phase <float>: phase offset (defaultt 0);
 #X text 106 335 phase <float> - phase offset (from 0 to 1);
 #X text 190 352 -;
 #X text 118 474 1) anything -;
-#X text 205 473 envelope symbol and optional arguments: sin (default)
+#X text 205 473 envelope symbol and optional arguments: sin (defaultt)
 \, hann \, tri \, vsaw <float> \, gauss <float> and trapezoid <float
 \, float>, f 54;
-#X text 203 169 (default: 'sin': half of a sine wave);
+#X text 203 169 (defaultt: 'sin': half of a sine wave);
 #X text 62 89 [envelope~] provides 6 different envelopes \, which are
 generated via a phase input., f 54;
 #N canvas 779 36 763 682 all 0;
@@ -76,7 +76,7 @@ generated via a phase input., f 54;
 #X text 62 247 1;
 #X text 67 11 You can change the envelope type with messages.;
 #X msg 129 183 trap 0.4 0.7;
-#X text 123 75 (default) - half of a sine wave cycle;
+#X text 123 75 (defaultt) - half of a sine wave cycle;
 #X text 135 98 hann window;
 #X text 138 119 triangular;
 #X text 196 160 gaussian;
@@ -101,7 +101,7 @@ generated via a phase input., f 54;
 #X floatatom 99 488 5 0 0 0 - - - 0;
 #X msg 99 508 gauss \$1;
 #X obj 80 538 else/envelope~ gauss 0.333;
-#X text 431 27 The vsaw option has a default value of 0.5 \, this parameter
+#X text 431 27 The vsaw option has a defaultt value of 0.5 \, this parameter
 controls the phase point with the maximum value., f 44;
 #X obj 446 560 else/graph~ 441 9 0 1 250 90;
 #X obj 446 437 phasor~ 250;
@@ -115,10 +115,10 @@ controls the phase point with the maximum value., f 44;
 #X obj 605 465 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X floatatom 602 487 5 0 0 0 - - - 0;
-#X text 426 366 The trap option has a default value of 0.1 and 0.9
+#X text 426 366 The trap option has a defaultt value of 0.1 and 0.9
 \, these parameters control \, respectively \, the phase points where
 the upwards ramp ends and the downwards curve starts., f 47;
-#X text 26 367 The gauss option has a default value of 0.25 \, this
+#X text 26 367 The gauss option has a defaultt value of 0.25 \, this
 parameter controls the width of the curve. The higher the value \,
 the narrower the shape is. Usable values are usually from 0 to 1 \,
 but can be higher in the case of low frequencies.;

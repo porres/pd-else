@@ -57,7 +57,7 @@
 #X floatatom 183 145 5 0 0 0 - - - 0;
 #X floatatom 228 145 5 0 0 0 - - - 0;
 #X floatatom 193 202 5 0 0 0 - - - 0;
-#X text 31 29 By default \, the initial u is 0.75 \, and both y1[n-1]
+#X text 31 29 By defaultt \, the initial u is 0.75 \, and both y1[n-1]
 and y2[n-1] are set to 0 \, but these can be changed via arguments
 or messages.;
 #X text 166 126 y1[n-1];
@@ -82,12 +82,12 @@ or messages.;
 #X connect 13 1 17 1;
 #X connect 14 0 13 0;
 #X restore 446 332 pd parameters;
-#X text 84 162 The output rate of the equation is given in hertz (default:
+#X text 84 162 The output rate of the equation is given in hertz (defaultt:
 nyquist).;
 #X text 137 525 2) float;
 #X text 137 542 3) float;
 #X text 137 560 4) float;
-#X text 197 508 - sets frequency in hertz (default: nyquist);
+#X text 197 508 - sets frequency in hertz (defaultt: nyquist);
 #X obj 244 273 hip~ 5;
 #X obj 331 274 hip~ 5;
 #X text 84 268 It generates DC Offset;
@@ -96,13 +96,13 @@ nyquist).;
 #X text 105 223 set "u" value;
 #X text 132 391 u <float>;
 #X text 197 392 - sets the value of u;
-#X text 197 542 - sets initial value of y1[n-1] (default: 0);
-#X text 197 560 - sets initial value of y2[n-1] (default: 0);
+#X text 197 542 - sets initial value of y1[n-1] (defaultt: 0);
+#X text 197 560 - sets initial value of y2[n-1] (defaultt: 0);
 #X text 197 410 - 2 floats set y1[n-1] and y2[n-1] \, respectively
 ;
 #X text 156 425 clear;
 #X text 198 426 - clears previous outputs;
-#X text 197 525 - sets initial "u" parameter (default: 0.75);
+#X text 197 525 - sets initial "u" parameter (defaultt: 0.75);
 #X obj 92 477 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 150 478 signal;

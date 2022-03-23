@@ -98,9 +98,9 @@ If the symbol starts with "/" (non windows machines) or "c:" (for instance
 path. Otherwise \, [dir] will look for directories relative to the
 current directory., f 77;
 #X msg 73 295 reset \, dir;
-#X text 145 295 resets to the default directory;
+#X text 145 295 resets to the defaultt directory;
 #X text 66 187 When using the open message \, the rightmost outlet
-sends an open flag ("1" if the directory has been successfully openned
+sends an open flag ("1" if the directory has been successfully opened
 \, and 0 otherwise)., f 77;
 #X text 56 458 Opening a directory also loads its contents so you can
 query for files. If you change the contents of your directory \, you
@@ -123,8 +123,8 @@ need to use the 'reopen' message to reload the direcory's contents.
 #X text 133 659 1) symbol -;
 #X text 213 622 (optional) relative directory level \, 0 is current
 patch's directory \, 1 is parent's patch's \, 2 parent's parent's and
-so on (default 0), f 54;
-#X text 213 659 directory to open (default: relative directory level)
+so on (defaultt 0), f 54;
+#X text 213 659 directory to open (defaultt: relative directory level)
 , f 54;
 #X obj 82 570 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -145,8 +145,8 @@ of subpatches inside an abstraction or a patch to get the patch's directory
 \, it doesn't matter., f 75;
 #X text 86 26 If [dir] is used inside an abstraction \, the first optional
 argument sets the abstraction's depth level and can be used to query
-the parent patch's directory. for instance \, "0" (the default) is
-the current patch level \, but "1" sets the default directory to the
+the parent patch's directory. for instance \, "0" (the defaultt) is
+the current patch level \, but "1" sets the defaultt directory to the
 parent's patch., f 75;
 #X msg 87 388 dir;
 #X obj 92 173 else/dir 1;
@@ -155,7 +155,7 @@ For instance \, in this example we ask for the parent's directory \,
 but this is not an abstraction \, so it loads the patch's directory
 instead., f 75;
 #X obj 108 485 else/display;
-#X text 177 418 <= a reset message resets to the default, f 40;
+#X text 177 418 <= a reset message resets to the defaultt, f 40;
 #X text 195 429 directory set by the first argument, f 37;
 #X msg 106 419 reset \, dir;
 #X text 86 279 The second symbol argument (which can also be the first
@@ -183,7 +183,7 @@ open] subpatch)., f 75;
 #X msg 108 129 ext .aif;
 #X msg 126 154 ext .wav;
 #X text 33 19 You can ask [dir] to access only files of a certain extension.
-This can be set via a flag or the 'ext' message. By default \, [dir]
+This can be set via a flag or the 'ext' message. By defaultt \, [dir]
 accesses all files., f 41;
 #X msg 95 98 ext;
 #X text 120 97 <= sets to all extensions;
@@ -254,7 +254,7 @@ letters are sorted before lower case letters., f 66;
 #X text 235 151 n;
 #X text 72 15 The 'n' message outputs the number of found files in
 the opened directory in the 3rd outlet. The seek message can search
-for a file acording to a number. If the seek number is greater than
+for a file according to a number. If the seek number is greater than
 the number of files \, then the search is wrapped according to the
 number of files. The seek number is indexed from '1' and clipped to
 '1' if < 1!, f 74;

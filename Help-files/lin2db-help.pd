@@ -62,7 +62,7 @@ is "-999".;
 #X text 202 356 - converted dBFS amplitude value;
 #X obj 160 200 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 147 393 1) float - value to be converted (default 0);
+#X text 147 393 1) float - value to be converted (defaultt 0);
 #X text 161 320 bang;
 #X text 206 320 - convert last received value;
 #X obj 188 230 else/lin2db;

@@ -34,7 +34,7 @@
 0;
 #X obj 108 347 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
-#X text 155 464 1) float - initial threshold (default 0), f 49;
+#X text 155 464 1) float - initial threshold (defaultt 0), f 49;
 #X text 134 346 float/signal - input signal, f 37;
 #X text 134 374 float/signal - set threshold, f 37;
 #X obj 4 5 cnv 15 301 42 empty empty above~ 20 20 2 37 -233017 -1 0

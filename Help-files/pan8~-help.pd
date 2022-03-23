@@ -247,8 +247,8 @@ It has two modes of operation and a spread parameter.;
 #X obj 3 590 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 186 567 (none);
-#X text 149 597 -spread: sets spread parameter (default 0);
-#X text 160 610 -mode: sets mode <0> or <1> (default 0);
+#X text 149 597 -spread: sets spread parameter (defaultt 0);
+#X text 160 610 -mode: sets mode <0> or <1> (defaultt 0);
 #X text 240 463 - X horizontal value: from -1 (Left) to 1 (Right);
 #X text 240 484 - Y vertical value: from -1 (Back) to 1 (Front);
 #X text 240 505 - spread parameter (from -1 to 1);

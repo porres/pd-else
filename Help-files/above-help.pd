@@ -34,7 +34,7 @@
 0;
 #X obj 128 314 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 155 431 1) float - initial threshold (default 0), f 49;
+#X text 155 431 1) float - initial threshold (defaultt 0), f 49;
 #X obj 4 5 cnv 15 301 42 empty empty above 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;

@@ -9,7 +9,7 @@
 ;
 #X obj 2 392 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X text 136 367 1) symbol - sets the separator character (default "space")
+#X text 136 367 1) symbol - sets the separator character (defaultt "space")
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
@@ -44,7 +44,7 @@
 #X text 232 332 - list with separated elements from a symbol;
 #X text 70 88 [separate] allows you to separate a symbol into a list
 with different elements by setting the character that separates one
-element from the others. The default separator is a "space"., f 63
+element from the others. The defaultt separator is a "space"., f 63
 ;
 #X text 233 300 - set separator symbol;
 #X obj 241 148 else/initmess symbol 1\ 2\ 3\ 4;
@@ -105,7 +105,7 @@ another backslash., f 43;
 #X msg 410 213 symbol /;
 #X msg 426 258 symbol;
 #X symbolatom 386 292 10 0 0 0 - - - 0;
-#X text 299 39 By default \, [separate] loads a space character as
+#X text 299 39 By defaultt \, [separate] loads a space character as
 a separator. You can change that with the separator message. The separator
 needs to be a symbol \, and can be any kind of symbol (with more than
 one character). The execption is the "empty" symbol \, which loads

@@ -146,13 +146,13 @@
 #000000 #000000 0 1;
 #X obj 210 217 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 23 22 The pulse width parameter controlls how much of the cycle
+#X text 23 22 The pulse width parameter controls how much of the cycle
 is "on" or "off". A pulse width of 0.5 means the first half is "on"
 and the lasr half is "off".;
 #X obj 177 269 else/pulse~ 100 0;
 #X text 30 71 A pulse width of 0 has the smallest "on" pulse size:
 a single sample - thus \, just like an impulse oscillator!;
-#X text 30 107 Conversely \, a pulse widht of 1 has the largest (the
+#X text 30 107 Conversely \, a pulse width of 1 has the largest (the
 entire period except the last sample).;
 #X obj 210 240 else/float2sig~ 10;
 #X text 32 148 The pulse width is set via the second argument or the
@@ -208,7 +208,7 @@ feature is phase modulation.;
 for pulse width \, phase sync and phase modulation.;
 #N canvas 403 51 863 462 sync 0;
 #X text 517 25 Syncing the phase with control messages is useful for
-LFOs and control with MIDI. A sync with audio is usefull for the "hard
+LFOs and control with MIDI. A sync with audio is useful for the "hard
 sync" technique \, where an oscillator is synced according to the frequency
 of a master frequency., f 44;
 #X obj 540 242 else/out~;
@@ -377,9 +377,9 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X connect 27 0 28 0;
 #X connect 28 0 17 2;
 #X restore 492 192 pd sync;
-#X text 248 381 - frequency in hertz (default 0);
-#X text 248 400 - initial pulse width (default 0.5);
-#X text 248 418 - initial phase offset (default 0);
+#X text 248 381 - frequency in hertz (defaultt 0);
+#X text 248 400 - initial pulse width (defaultt 0.5);
+#X text 248 418 - initial phase offset (defaultt 0);
 #X obj 214 172 else/pulse~ 1;
 #X obj 3 240 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;

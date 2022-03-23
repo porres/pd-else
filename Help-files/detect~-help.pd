@@ -160,7 +160,7 @@ events. A trigger happens on a transition from non positive to positive.
 , f 64;
 #X text 179 307 - detected period/frequency;
 #X text 119 341 1) symbol -;
-#X text 191 341 detection type: <samps> (default) \, <bpm> \, <ms>
+#X text 191 341 detection type: <samps> (defaultt) \, <bpm> \, <ms>
 and <hz>;
 #X obj 164 150 else/tempo~ -on 60;
 #X connect 18 0 26 0;

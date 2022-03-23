@@ -38,7 +38,7 @@
 #X obj 196 337 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X text 45 93 [slew~] takes an amplitude limit per second and an incoming
-value to be 'slew limited'. It then generates a line torwards the incoming
+value to be 'slew limited'. It then generates a line towards the incoming
 value. The difference between [slew~] and [glide~] is that [slew~]
 has a fixed speed \, not a fixed period. A limit of zero stops the
 line generation and a negative value turns the limiter off., f 71
@@ -72,7 +72,7 @@ line generation and a negative value turns the limiter off., f 71
 #X text 141 385 set <float>;
 #X text 220 443 - slew limited values;
 #X text 220 369 - values to be slew limited, f 46;
-#X text 165 473 1) float - slew limit speed (default 0);
+#X text 165 473 1) float - slew limit speed (defaultt 0);
 #X text 220 410 - speed limit (negative values = no limit), f 46;
 #X text 220 385 - sets new start point and goes back to target;
 #X text 135 369 float/signal;
@@ -85,7 +85,7 @@ to a maximum step until it reaches the new value. A speed of "1" means
 that it takes one second to move to a difference of 1 in amplitue.
 The actual step between subsequent changes depend on this speed and
 the sample rate., f 61;
-#X text 73 82 If you have a sample rate of 44100 samples per seccond
+#X text 73 82 If you have a sample rate of 44100 samples per second
 \, then a second has 44100 steps. If the speed is then "1" \, this
 means that the step value is 1/44100 (2.26757e-05). So a shift between
 0 and 1 takes 44100 steps of 2.26757e-05 and a second to reach 1!,

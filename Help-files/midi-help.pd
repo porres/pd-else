@@ -306,7 +306,7 @@ from where it was paused!, f 44;
 #X obj 185 161 else/midi midi-seq.mid;
 #X obj 4 507 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 164 515 -loop: sets to loop mode (default no loop), f 53;
+#X text 164 515 -loop: sets to loop mode (defaultt no loop), f 53;
 #N canvas 744 161 530 465 read 0;
 #X obj 289 177 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;

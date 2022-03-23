@@ -31,7 +31,7 @@
 #X text 133 423 3) float;
 #X obj 7 500 cnv 3 550 3 empty empty more_info 8 12 0 13 #dcdcdc #000000
 0;
-#X text 193 395 - sets frequency in hertz (default: nyquist), f 55
+#X text 193 395 - sets frequency in hertz (defaultt: nyquist), f 55
 ;
 #X text 133 437 4) float;
 #X text 133 451 5) float;
@@ -67,12 +67,12 @@
 #X obj 238 40 cnv 4 4 4 empty empty phase 0 28 2 18 #e0e0e0 #000000
 0;
 #X text 161 508 Object based on SuperCollider's "FBSineN" UGEN;
-#X text 193 466 - sets initial value of x[n] (default 0.1), f 55;
-#X text 193 409 - sets 'im' (default 1), f 55;
-#X text 193 423 - sets 'fb' (default 0.1), f 55;
-#X text 193 437 - sets 'a' (default 1.1), f 55;
-#X text 193 451 - sets 'c' (default 0.5), f 55;
-#X text 193 480 - sets initial phase value of y[n] (default 0.1),
+#X text 193 466 - sets initial value of x[n] (defaultt 0.1), f 55;
+#X text 193 409 - sets 'im' (defaultt 1), f 55;
+#X text 193 423 - sets 'fb' (defaultt 0.1), f 55;
+#X text 193 437 - sets 'a' (defaultt 1.1), f 55;
+#X text 193 451 - sets 'c' (defaultt 0.5), f 55;
+#X text 193 480 - sets initial phase value of y[n] (defaultt 0.1),
 f 55;
 #X text 64 86 [fbsine2~] is a non-interpolating sound generator based
 on the difference equations below (for im = 1 \, fb = 0 and a = 1 a
@@ -106,7 +106,7 @@ a list.;
 #X floatatom 278 274 5 0 0 0 - - - 0;
 #X floatatom 338 274 5 0 0 0 - - - 0;
 #X msg 117 331 clear;
-#X text 27 20 By default \, the initial im \, fb \, a and c values
+#X text 27 20 By defaultt \, the initial im \, fb \, a and c values
 are 1 \, 0.1 \, 1.1 and 0.5 respectively \, but can be changed via
 arguments or via the "coeffs" message.;
 #X obj 82 209 else/pack2 f f;

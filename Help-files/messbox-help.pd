@@ -107,10 +107,10 @@ of list messages \, floats or symbols., f 28;
 #X text 229 451 - RGB foreground (text) color, f 42;
 #X text 109 395 size <float \, float>;
 #X text 229 396 - sets dimension size (width and height), f 42;
-#X text 63 515 -fontsize <float> (default: patch's) | -size <float
-\, float> (default: patch's fontsize * 15 \, patch's fontsize * 5)
-| fgcolor <f \, f \, f> (default 0 0 0) | -bgcolor <f \, f \, f> (default
-235 235 235) | -bold (default "normal") |, f 77;
+#X text 63 515 -fontsize <float> (defaultt: patch's) | -size <float
+\, float> (defaultt: patch's fontsize * 15 \, patch's fontsize * 5)
+| fgcolor <f \, f \, f> (defaultt 0 0 0) | -bgcolor <f \, f \, f> (defaultt
+235 235 235) | -bold (defaultt "normal") |, f 77;
 #X text 229 483 - messages;
 #X msg 211 159 set;
 #X text 237 159 clear;

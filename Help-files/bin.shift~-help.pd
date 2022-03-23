@@ -42,7 +42,7 @@
 #X obj 252 215 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X text 226 364 - the bin shifted signal;
-#X text 226 397 - sets shift number (default 0);
+#X text 226 397 - sets shift number (defaultt 0);
 #X text 226 289 - the signal to be shifted;
 #X text 188 329 float;
 #X text 226 329 - sets number of bins to shift;
@@ -65,7 +65,7 @@ shifts samples to the left or right., f 64;
 #X text 146 304 wrap <float>;
 #X text 226 304 - non zero sets to wrap mode;
 #X text 170 415 2) float;
-#X text 226 415 - non zero sets to wrap mode (default 0);
+#X text 226 415 - non zero sets to wrap mode (defaultt 0);
 #N canvas 687 26 428 385 wrap_mode 0;
 #X obj 299 256 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;

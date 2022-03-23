@@ -62,11 +62,11 @@ in the way it handles it \, this object does not have any arguments.
 #X text 267 398 triangular wave signal;
 #X text 60 89 [bl.tri~] is a triangular oscillator like [else/tri~]
 \, but it is bandlimited with the upsampling/filtering technique. This
-makes the object quite ineficient CPU wise \, but is an easy way to
+makes the object quite inefficient CPU wise \, but is an easy way to
 implement a bandlimited oscillator., f 67;
 #X text 184 437 1) float;
-#X text 243 456 - initial phase offset (default 0);
-#X text 243 437 - frequency in hertz (default 0);
+#X text 243 456 - initial phase offset (defaultt 0);
+#X text 243 437 - frequency in hertz (defaultt 0);
 #X text 184 456 2) float;
 #X obj 229 214 else/bl.tri~ 400;
 #X connect 11 0 40 0;

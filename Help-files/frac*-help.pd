@@ -49,8 +49,8 @@
 #X obj 224 166 else/frac*;
 #X msg 281 142 2/3;
 #X msg 178 123 1/4;
-#X text 224 244 - fractional value to multply to right input;
-#X text 224 266 - fractional value to multply to leftt input;
+#X text 224 244 - fractional value to multiply to right input;
+#X text 224 266 - fractional value to multiply to leftt input;
 #X obj 38 196 else/frac+;
 #X text 61 86 Use [frac+] to multiply two fractions.;
 #X connect 0 0 27 0;

@@ -66,7 +66,7 @@ arguments., f 74;
 #X obj 186 138 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 186 167 else/spread 10 20 40, f 26;
-#X text 241 326 floats to compare to (default 0);
+#X text 241 326 floats to compare to (defaultt 0);
 #X connect 37 0 38 0;
 #X connect 38 0 20 0;
 #X connect 38 1 18 0;

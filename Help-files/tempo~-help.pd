@@ -169,7 +169,7 @@ a gate input., f 61;
 ;
 #X text 156 433 signal -;
 #X text 226 433 an impulse syncs the metronome;
-#X text 220 604 - swing deviation in % (default 0);
+#X text 220 604 - swing deviation in % (defaultt 0);
 #N canvas 837 109 445 337 swing 0;
 #X text 37 102 The minimum swing value is 0 (no deviation) and there
 is no maximum value.;
@@ -227,7 +227,7 @@ inlet \, for a sample accurate sync.;
 #X obj 4 627 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X text 185 525 -ms;
-#X text 221 524 - sets time measure to ms (default bpm);
+#X text 221 524 - sets time measure to ms (defaultt bpm);
 #X text 225 474 impulses at metronome beat;
 #X text 225 382 tempo in ms or bpm;
 #N canvas 709 209 657 298 ms/hz 0;
@@ -257,9 +257,9 @@ tempo and swing, f 35;
 #X connect 12 0 5 0;
 #X connect 13 0 8 0;
 #X restore 485 176 pd ms/hz;
-#X text 220 585 - bpm \, hz or ms (default 0);
+#X text 220 585 - bpm \, hz or ms (defaultt 0);
 #X text 185 541 -hz;
-#X text 221 540 - sets time measure to hz (default bpm);
+#X text 221 540 - sets time measure to hz (defaultt bpm);
 #X text 138 332 ms <f \, f> -;
 #X text 138 347 hz <f \, f> -;
 #X text 132 362 bpm <f \, f> -;
@@ -286,7 +286,7 @@ tempo and swing, f 35;
 #X obj 78 227 else/trig2bang~;
 #X obj 180 262 else/pulsecount~ 4;
 #X obj 180 288 else/display~;
-#X text 64 16 You can set a tempo (or 'frequency') multipler with the
+#X text 64 16 You can set a tempo (or 'frequency') multiplier with the
 -mul flag or the "mul" message". In practice \, this subdivides the
 tempo into fractions. So if you multiply by four your tempo is actually
 1/4 of the original. You can also use object like [count] and [bangdiv]
@@ -306,7 +306,7 @@ to manage tempo subdivisions.;
 #X connect 13 0 9 0;
 #X restore 456 196 pd multiplier;
 #X text 131 557 -mul <float>;
-#X text 221 555 - sets multiplier (default 1);
+#X text 221 555 - sets multiplier (defaultt 1);
 #X obj 199 170 else/tempo~ -on 60;
 #X connect 23 0 63 0;
 #X connect 29 0 63 0;

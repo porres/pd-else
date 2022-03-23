@@ -56,7 +56,7 @@ the mouse button., f 69;
 #X text 243 390 - sets vertical size in pixels;
 #X text 243 360 - sets both horizontal and vertical size in pixels
 ;
-#X text 124 482 -dim <float \, float>: x/y dimensions (default 20 \,
+#X text 124 482 -dim <float \, float>: x/y dimensions (defaultt 20 \,
 20);
 #X text 163 499 - size <float> (same as message method), f 55;
 #X msg 315 162 dim 50 100;
@@ -64,9 +64,9 @@ the mouse button., f 69;
 #X text 243 405 - sets background color in RGB;
 #X text 125 420 fgcolor <f \, f \, f>;
 #X text 243 420 - sets fore ground color in RGB;
-#X text 97 514 -bgcolor <f \, f \, f>: background color in RGB (default
+#X text 97 514 -bgcolor <f \, f \, f>: background color in RGB (defaultt
 255 255 255), f 66;
-#X text 97 529 -fgcolor <f \, f \, f>: fore ground color in RGB (default
+#X text 97 529 -fgcolor <f \, f \, f>: fore ground color in RGB (defaultt
 255 255 255), f 66;
 #N canvas 945 119 544 500 colors 0;
 #X obj 250 102 vsl 15 128 0 255 0 0 empty empty empty 0 -9 0 10 #0800fc

@@ -37,7 +37,7 @@
 0;
 #X obj 69 40 cnv 4 4 4 empty empty of 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 137 217 else/out~;
-#X text 142 444 2) float - ramp time in ms (default 10), f 57;
+#X text 142 444 2) float - ramp time in ms (defaultt 10), f 57;
 #X text 117 302 freq <list>;
 #X text 111 332 decay <list>;
 #X text 123 347 amp <list>;
@@ -55,7 +55,7 @@
 f 27;
 #X text 68 23 A ramp time as the second argument sets a transition
 time in ms between parameter changes of resonant frequency \, decay
-time an amplitude. By default \, this is set to 10 ms. You can also
+time an amplitude. By defaultt \, this is set to 10 ms. You can also
 send a list of ramp time for each filter in the bank.;
 #X text 81 416 If you do not set attack times \, [resonbank2~] will
 behave in the same way as [resonbank~] \, but it will be less efficient.
@@ -73,7 +73,7 @@ behave in the same way as [resonbank~] \, but it will be less efficient.
 #X connect 7 0 8 0;
 #X connect 8 0 0 0;
 #X restore 466 192 pd example;
-#X text 142 426 1) float - number of resonant filters (default 1),
+#X text 142 426 1) float - number of resonant filters (defaultt 1),
 f 57;
 #X text 196 394 - the bank filtered signal;
 #X text 60 86 [resonbank2~] is a bank made of [resonant2~] objects.

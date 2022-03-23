@@ -54,7 +54,7 @@
 #X text 211 349 - signal input;
 #X text 212 371 - exponential factor;
 #X text 307 175 exponential factor;
-#X text 156 436 1) float - exponential factor (default 1);
+#X text 156 436 1) float - exponential factor (defaultt 1);
 #X obj 145 42 cnv 4 4 4 empty empty waveshaper 0 28 2 18 #e0e0e0 #000000
 0;
 #X text 46 89 [power~] is a power functiona waveshaper for signals

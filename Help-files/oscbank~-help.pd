@@ -35,14 +35,14 @@
 #X obj 114 316 cnv 17 3 73 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 69 41 cnv 4 4 4 empty empty of 0 28 2 18 #e0e0e0 #000000 0;
-#X text 168 454 2) float - ramp time in ms (default 10), f 53;
+#X text 168 454 2) float - ramp time in ms (defaultt 10), f 53;
 #X text 160 343 amp <list>;
 #X text 154 374 ramp <list>;
 #N canvas 725 201 472 377 example 0;
 #X obj 82 289 else/out~;
 #X text 53 24 A ramp time as the second argument sets a transition
 time in ms between parameter changes of frequency and amplitude. By
-default \, this is set to 10 ms. You can also send a list of ramp time
+defaultt \, this is set to 10 ms. You can also send a list of ramp time
 for each oscillator in the bank.;
 #X obj 168 115 loadbang;
 #X text 242 101 click on the messages below to alter between them,
@@ -64,7 +64,7 @@ f 27;
 #X restore 468 237 pd example;
 #X text 239 404 - the oscillator bank output;
 #X text 148 358 phase <list>;
-#X text 168 436 1) float - number of oscillators (default 1), f 53
+#X text 168 436 1) float - number of oscillators (defaultt 1), f 53
 ;
 #X text 372 269 see also:;
 #X obj 4 478 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
@@ -81,12 +81,12 @@ f 27;
 #X obj 432 269 else/oscbank2~ 1;
 #X text 148 313 float/signal;
 #X text 73 501 -ratio <list>: sets list of ratios for all oscillators
-(default all 1), f 73;
+(defaultt all 1), f 73;
 #X text 73 517 -amp <list>: sets list of amplitudes for all oscillators
-(default all 1), f 73;
+(defaultt all 1), f 73;
 #X text 73 533 -phase <list>: sets list of phases for all oscillators
-(default all 0), f 73;
-#X text 73 548 -ramp <list>: sets ramp time for all oscillators (defaul
+(defaultt all 0), f 73;
+#X text 73 548 -ramp <list>: sets ramp time for all oscillators (default
 all 10), f 73;
 #X text 238 313 - frequency in hz;
 #X text 62 85 [oscbank~] is a bank made of [sine~] objects. You can
@@ -95,7 +95,7 @@ set any number of oscillators and control their parameters. Unlike
 oscillator is specified as a ratio of that frequency., f 68;
 #X obj 151 191 else/oscbank~ 4 -freq 330 -ratio 1 0.7 1.3 2.7 -amp
 0.9 0.5 0.5 0.6, f 34;
-#X text 73 486 -freq <float>: sets frequency in hz (default 0), f
+#X text 73 486 -freq <float>: sets frequency in hz (defaultt 0), f
 73;
 #X connect 33 0 43 0;
 #X connect 34 0 43 0;

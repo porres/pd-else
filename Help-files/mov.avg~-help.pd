@@ -61,10 +61,10 @@ a given number of samples. At each sample \, the average of the last
 #X obj 392 223 int;
 #X text 51 56 The first argument specifies 'n' number of samples to
 average. This also sets the buffer size if no size flag is given. Float
-or signals into the right inlet also sets 'n'. The default and minimum
+or signals into the right inlet also sets 'n'. The defaultt and minimum
 value is "1" \, which makes it the same as the input signal., f 61
 ;
-#X text 51 119 By default \, the buffers size 100 samples long. You
+#X text 51 119 By defaultt \, the buffers size 100 samples long. You
 can also set the maximum value with the -size flag or message., f
 61;
 #X obj 460 37 else/setdsp~;
@@ -109,9 +109,9 @@ which is a kind of lowpass filter. Listen to it below.;
 #X connect 5 0 2 0;
 #X restore 471 252 pd lowpass;
 #X obj 167 254 print~ Moving-Average;
-#X text 200 479 - sets initial 'n' samples (default 1);
+#X text 200 479 - sets initial 'n' samples (defaultt 1);
 #X text 114 423 -size <float>;
-#X text 214 422 sets buffer size and maximum 'n' samples (default 100
+#X text 214 422 sets buffer size and maximum 'n' samples (defaultt 100
 or argument's value if given), f 53;
 #X obj 167 129 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;

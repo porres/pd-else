@@ -153,7 +153,7 @@
 #X text 237 368 - folded values;
 #X obj 163 198 else/fold~, f 29;
 #X text 175 402 floats set fold's range \, 2 floats sets minimum and
-maximum. No arguments loads default values (-1 and 1). 1 float sets
+maximum. No arguments loads defaultt values (-1 and 1). 1 float sets
 maximum value (and lowest value is set to 0). If the maximum value
 is less than the minimum \, the maximum becomes the minimum and vice-versa.
 , f 52;

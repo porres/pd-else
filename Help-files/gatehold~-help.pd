@@ -179,7 +179,7 @@ object.;
 #X obj 246 173 else/display~;
 #X text 224 312 - hold time in ms;
 #X text 224 344 - held gate;
-#X text 139 376 1) float - hold time in ms (default 0 \, no hold);
+#X text 139 376 1) float - hold time in ms (defaultt 0 \, no hold);
 #X obj 246 207 else/gatehold~ 500;
 #X obj 351 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;

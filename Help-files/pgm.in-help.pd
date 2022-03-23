@@ -58,7 +58,7 @@
 #X obj 149 141 midiin;
 #X text 19 15 An argument sets the channel number. If so \, only MIDI
 messages that correspond to that channel are sent. If no channel is
-given \, it loads "0" as the default and the object operates in omni
+given \, it loads "0" as the defaultt and the object operates in omni
 mode \, where the objects outputs values from all channels and the
 channel number is output in the right outlet. You can also change the
 channel with the right inlet (0 sets to omni)., f 67;
@@ -72,7 +72,7 @@ channel with the right inlet (0 sets to omni)., f 67;
 #X connect 7 0 9 0;
 #X connect 7 1 8 0;
 #X restore 473 222 pd channel;
-#X text 223 386 sets channel number (default 0 - OMNI);
+#X text 223 386 sets channel number (defaultt 0 - OMNI);
 #X text 238 293 -;
 #X text 198 293 float;
 #X text 253 293 MIDI channel, f 31;

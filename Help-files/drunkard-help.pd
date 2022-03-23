@@ -1,8 +1,8 @@
 #N canvas 545 23 561 614 10;
 #X text 149 532 1) float;
 #X text 149 550 2) float;
-#X text 205 566 - sets maximum value (default 127);
-#X text 205 550 - sets minimum value (default 0);
+#X text 205 566 - sets maximum value (defaultt 127);
+#X text 205 550 - sets minimum value (defaultt 0);
 #X obj 119 290 cnv 17 3 115 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c
 0;
 #X obj 119 410 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
@@ -71,9 +71,9 @@
 #X obj 6 490 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 89 501 -seed <float> - sets seed | -p <float> - sets probability
-(default 70), f 70;
+(defaultt 70), f 70;
 #X text 225 387 sets probability of a positive step in %, f 50;
-#X text 205 532 - sets step range (default 1);
+#X text 205 532 - sets step range (defaultt 1);
 #X obj 209 222 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X text 132 328 step <float> -;

@@ -66,7 +66,7 @@ the same absolute value as its absolute input., f 60;
 #X text 45 47 [fbdelay~] is just simple feedback delay line \, whose
 diagram and equation is:, f 34;
 #X text 37 306 For [fbdelay~] the minimum delay time is 1 sample!;
-#X text 341 13 By default \, the 'a' coefficient is calculated in [fbdelay~]
+#X text 341 13 By defaultt \, the 'a' coefficient is calculated in [fbdelay~]
 from the decay time parameter (t60) and delay time (D) according to
 the expression: a = exp(log(0.001) * D/t60).;
 #X obj 407 230 else/fbdelay~ 100 1000;
@@ -91,7 +91,7 @@ the expression: a = exp(log(0.001) * D/t60).;
 #X msg 170 124 gain \$1;
 #X obj 170 99 tgl 16 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X text 37 17 By default \, the reverberation/decay time is in "t60"
+#X text 37 17 By defaultt \, the reverberation/decay time is in "t60"
 \, which is the time in ms that the impulse takes to fall 60dB in energy.
 You can change this parameter to a gain coefficient value with the
 third argument \, where a non zero value sets to "gain mode" or with
@@ -104,7 +104,7 @@ f 72;
 #X connect 5 0 4 0;
 #X restore 460 257 pd gain mode;
 #X text 60 87 Use [fbdelay~] for delay effects \, reverberation and
-comb filtering. By default \, you can set a delay time and a reverberation/decay
+comb filtering. By defaultt \, you can set a delay time and a reverberation/decay
 time in ms ("t60") \, which is the time the impulse takes to fall 60dB
 in energy (but you can change this parameter to a gain coefficient).
 , f 67;
@@ -141,21 +141,21 @@ in energy (but you can change this parameter to a gain coefficient).
 #X text 147 386 gain <float>;
 #X obj 108 327 cnv 17 3 72 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 96 575 2) float - feedback amount (default 0), f 58;
+#X text 96 575 2) float - feedback amount (defaultt 0), f 58;
 #X text 95 592 3) float -;
-#X text 96 560 1) float - delay time (default 1 sample), f 58;
+#X text 96 560 1) float - delay time (defaultt 1 sample), f 58;
 #X text 174 461 signal - the filtered/delayed signal;
 #X obj 2 486 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 184 494 -;
 #X text 97 494 -size <float>;
-#X text 198 493 sets delay size (default 1000 ms or first argument's
+#X text 198 493 sets delay size (defaultt 1000 ms or first argument's
 value if given), f 49;
 #X text 23 216 see also:;
 #X obj 26 238 else/ffdelay~;
 #X text 184 520 -;
 #X text 139 519 -samps;
-#X text 198 519 sets delay time unit to "samples" (default is ms);
+#X text 198 519 sets delay time unit to "samples" (defaultt is ms);
 #X text 184 536 -;
 #X text 144 535 -gain;
 #X text 198 535 sets feedback mode to gain;
@@ -177,11 +177,11 @@ the same way \, this affects both delay time and delay size., f 64
 #X obj 281 132 else/impseq~;
 #X obj 281 104 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 441 18 By default \, all time units in [fbdelay~] is in ms.
+#X text 441 18 By defaultt \, all time units in [fbdelay~] is in ms.
 This affects not only the delay time \, but also the delay size.,
 f 64;
 #X obj 122 187 else/fbdelay~ 500 5000;
-#X text 25 21 By default \, the delay size is 1 sample \, but if you
+#X text 25 21 By defaultt \, the delay size is 1 sample \, but if you
 give it an argument \, it sets both the delay time and also the delay
 size., f 64;
 #X text 25 50 If you need a larger delay size than specified by a first
@@ -215,14 +215,14 @@ argument \, you can use the -size flag/message., f 64;
 #X restore 490 213 pd size;
 #X obj 178 224 else/fbdelay~ 100 2000;
 #X text 162 592 feedback mode: <0> ("t60") or <non-0> (gain mode) \,
-default 0;
+defaultt 0;
 #X obj 26 262 else/comb.filt~;
 #X text 135 356 freeze <float>;
 #X text 226 356 - non zero freezes \, zero unfreezes, f 41;
 #X text 364 199 <= Feedback (Decay time in ms), f 11;
 #N canvas 936 135 430 451 freeze 0;
 #X text 57 28 You can freeze the delay line with the 'freeze' message
-\, where zero freezes \, zero unfreezes. When frozen \, it stops writting
+\, where zero freezes \, zero unfreezes. When frozen \, it stops writing
 into it. Note that unlike [ffdelay~] \, the input still goes through.
 , f 52;
 #X obj 116 348 else/out~;

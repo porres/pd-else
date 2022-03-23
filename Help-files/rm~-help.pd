@@ -50,7 +50,7 @@
 #X obj 293 175 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X text 212 327 - modulation frequency, f 45;
-#X text 212 401 - modulation frequency (default 0), f 45;
+#X text 212 401 - modulation frequency (defaultt 0), f 45;
 #X text 88 91 [rm~] is a Ring Modulation abstraction. It takes a modulation
 frequency input as the argument or via the control right inlet. O modulation
 frequency of 0 Hz bypasses the input signal., f 63;

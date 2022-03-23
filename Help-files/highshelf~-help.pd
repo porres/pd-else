@@ -105,9 +105,9 @@ f * PI/nyquist \; G = pow(10 \, db/40) \; alphaS = sin(w) * sqrt((G*G
 #X text 230 399 - gain in dB;
 #X text 230 376 - slope (from 0 to 1);
 #X text 229 352 - shelving frequency in Hertz;
-#X text 138 499 3) float - gain in dB (default 0), f 53;
-#X text 138 482 2) float - slope from 0 to 1 (default 0), f 53;
-#X text 138 464 1) float - shelving frequency in Hertz (default 0)
+#X text 138 499 3) float - gain in dB (defaultt 0), f 53;
+#X text 138 482 2) float - slope from 0 to 1 (defaultt 0), f 53;
+#X text 138 464 1) float - shelving frequency in Hertz (defaultt 0)
 , f 53;
 #X obj 230 191 else/highshelf~ 1500 0.5 -8;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc

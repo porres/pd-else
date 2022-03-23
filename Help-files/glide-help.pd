@@ -26,7 +26,7 @@
 #X text 240 260 - input signal;
 #X text 239 330 - glide time in ms;
 #X text 240 365 - glided signal;
-#X text 185 441 1) float - glide time in ms (default 0);
+#X text 185 441 1) float - glide time in ms (defaultt 0);
 #X text 197 278 reset;
 #X text 240 278 - resets glide to input value;
 #X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
@@ -49,7 +49,7 @@
 #X text 38 148 see also:;
 #X obj 6 391 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 110 398 -exp <float>: sets exponential factor (default '1'
+#X text 110 398 -exp <float>: sets exponential factor (defaultt '1'
 \, linear), f 60;
 #X text 161 294 exp <float>;
 #X text 240 294 - sets exponential factor;
@@ -58,7 +58,7 @@
 #X text 197 331 float;
 #X text 155 308 rate <float>;
 #X text 240 308 - refresh rate in ms;
-#X text 104 415 -rate <float>: sets refresh rate in ms (default 5 \,
+#X text 104 415 -rate <float>: sets refresh rate in ms (defaultt 5 \,
 minimum 1), f 61;
 #X obj 45 170 else/glide2;
 #X obj 45 214 else/glide~;
@@ -130,7 +130,7 @@ it out as well., f 13;
 #X msg 107 101 100;
 #X msg 116 125 250;
 #X floatatom 97 156 7 0 0 0 - - - 0;
-#X text 42 33 By default \, the refresh rate is 5 ms \, but you can
+#X text 42 33 By defaultt \, the refresh rate is 5 ms \, but you can
 change it with the -rate flag or the rate message. If you change the.
 , f 61;
 #X obj 163 212 else/glide -rate 250 1500;

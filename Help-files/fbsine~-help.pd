@@ -39,7 +39,7 @@
 #X obj 165 186 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
@@ -109,7 +109,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -144,7 +144,7 @@
 #X restore 505 71 pd;
 #N canvas 489 142 877 537 sync 0;
 #X text 525 29 Syncing the phase with control messages is useful for
-LFOs and control with MIDI. A sync with audio is usefull for the "hard
+LFOs and control with MIDI. A sync with audio is useful for the "hard
 sync" technique \, where an oscillator is synced according to the frequency
 of a master frequency., f 44;
 #X obj 548 246 else/out~;
@@ -179,7 +179,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X obj 255 229 else/sig2float~;
 #X text 232 144 <= reset =>;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
@@ -249,7 +249,7 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -347,7 +347,7 @@ feature is phase modulation.;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 213 480 - frequency in hertz (default 0);
+#X text 213 480 - frequency in hertz (defaultt 0);
 #X obj 207 249 else/out~;
 #X text 261 444 sine wave signal;
 #X text 154 499 2) float;
@@ -362,7 +362,7 @@ feature is phase modulation.;
 #X obj 122 364 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 165 365 float/signal -;
-#X text 213 519 - initial phase offset (default 0);
+#X text 213 519 - initial phase offset (defaultt 0);
 #X text 154 519 3) float;
 #N canvas 610 170 525 453 feedback 0;
 #X text 61 24 The feedback parameter controls how much of the signal
@@ -370,7 +370,7 @@ output is fed back to the phase input of [fbsine~]. The phase input
 is normalized from 0-1. For a detailed implementation \, please check
 the [pd fbsine] subpacth \, where the same code/algorithm is implemented
 as a pd patch., f 62;
-#X text 63 108 [fbsine~] has no limits for the feeback values \, and
+#X text 63 108 [fbsine~] has no limits for the feedback values \, and
 negative values are also allowed \, but note that this parameter easily
 turns the output into chaotic noise. Common values are usually in the
 -1 to 1 range.;
@@ -421,11 +421,7 @@ turns the output into chaotic noise. Common values are usually in the
 #X connect 10 0 6 0;
 #X restore 467 206 pd feedback;
 #X text 268 366 feedback value;
-#X text 213 499 - initial feedback value (default 0);
-#X text 60 86 [fbsine~] is a sinusoidal oscillator with phase modulation
-feedback. Like [else/sine~] \, it accepts negative frequencies \, has
-inlets fo phase modulation and phase sync. Additionally \, it has a
-feedback value., f 61;
+#X text 213 499 - initial feedback value (defaultt 0);
 #X text 154 539 4) float;
 #X text 151 344 filter <float> -;
 #X text 269 345 turns mean filter on <1> or off <0>;
@@ -496,7 +492,7 @@ filter for comparison.;
 #X connect 15 0 2 0;
 #X restore 449 231 pd mean filter;
 #X obj 238 188 else/float2sig~ 10;
-#X text 213 539 - mean filter: on <1> or off <0> (default 0);
+#X text 213 539 - mean filter: on <1> or off <0> (defaultt 0);
 #X obj 122 387 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 122 409 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
@@ -504,8 +500,12 @@ filter for comparison.;
 #X text 164 410 float/signal - phase offset (modulation input);
 #X text 164 389 float/signal - phase sync (ressets internal phase)
 ;
+#X text 60 86 [fbsine~] is a sinusoidal oscillator with phase modulation
+feedback. Like [else/sine~] \, it accepts negative frequencies \, has
+inlets for phase modulation and phase sync. Additionally \, it has
+a feedback value., f 61;
 #X connect 20 0 30 0;
 #X connect 30 0 27 0;
 #X connect 31 0 34 0;
-#X connect 34 0 47 0;
-#X connect 47 0 30 1;
+#X connect 34 0 46 0;
+#X connect 46 0 30 1;

@@ -41,7 +41,7 @@
 #X text 178 370 2) float;
 #X obj 120 253 cnv 17 3 60 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 234 354 - array name (optional \, default none), f 43;
+#X text 234 354 - array name (optional \, defaultt none), f 43;
 #X obj 212 160 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #N canvas 198 207 361 306 table 0;
@@ -58,7 +58,7 @@
 waveform, f 62;
 #X text 56 192 check table =>, f 8;
 #X text 83 89 [table~] reads an array with 4 point interpolation. It
-accepts indexes from 0 to 1 by default.;
+accepts indexes from 0 to 1 by defaultt.;
 #X obj 215 137 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X obj 212 186 else/table~ \$0-table;
@@ -72,7 +72,7 @@ accepts indexes from 0 to 1 by default.;
 #dcdcdc #000000 #000000 0 256;
 #X obj 126 63 phasor~ 100;
 #X obj 32 42 else/initmess set \$0-table, f 13;
-#X text 231 39 If you connect a [phasor~] into [table~] \, it becames
+#X text 231 39 If you connect a [phasor~] into [table~] \, it becomes
 a wavetable oscillator like [tabosc4~] or [else/wavetable~]. Note that
 besides the first argument \, the "set" message followed by an array
 name sets an array to be read., f 47;
@@ -82,8 +82,8 @@ name sets an array to be read., f 47;
 #X connect 4 0 2 0;
 #X connect 5 0 2 0;
 #X restore 458 173 pd oscillator;
-#X text 234 370 - non-0 sets to guard mode (default 1), f 43;
-#X text 234 385 - non-0 sets to index mode (default 0), f 43;
+#X text 234 370 - non-0 sets to guard mode (defaultt 1), f 43;
+#X text 234 385 - non-0 sets to index mode (defaultt 0), f 43;
 #X text 150 283 guard <float> - non-0 sets to guard mode, f 62;
 #X text 150 298 index <float> - non-0 sets to index mode, f 62;
 #N canvas 714 218 430 358 index 0;
@@ -91,7 +91,7 @@ name sets an array to be read., f 47;
 #dcdcdc #000000 #000000 0 256;
 #X obj 161 155 hsl 128 15 0 514 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
-#X text 29 36 By default \, [table~] is in normalized mode \, where
+#X text 29 36 By defaultt \, [table~] is in normalized mode \, where
 indexes are normalized from 0 to 1 \, but you can change that with
 the third argument or the "index" message. When in index mode \, you
 need to give [table~] the actual index number.;
@@ -124,9 +124,9 @@ the first or last point of the table.;
 #X obj 49 175 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X obj 261 234 tabosc4~ \$0-table;
-#X text 28 11 By default \, [table~] is in guard point mode \, where
+#X text 28 11 By defaultt \, [table~] is in guard point mode \, where
 it considers there are 3 extra points needed for the 4 point interpolation
-(one at the beggining of the table and 2 at the end). In this case
+(one at the beginning of the table and 2 at the end). In this case
 \, it will not read the guard points \, but the indexes between them.
 , f 59;
 #X text 28 73 You can set it no non guard point mode with the second

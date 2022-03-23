@@ -43,14 +43,14 @@
 0;
 #X text 60 89 [bl.wavetable~] is a wavetable oscillator like [else/wavetable~]
 \, but it is bandlimited with the upsampling/filtering technique. This
-makes the object quite ineficient CPU wise \, but is an easy way to
+makes the object quite inefficient CPU wise \, but is an easy way to
 implement a bandlimited oscillator., f 74;
 #X obj 432 267 else/wavetable~;
 #X text 158 441 1) symbol;
 #X text 60 142 Because this is an abstraction and Pd is still limited
 in the way it handles it \, this object does not have any arguments
 besides the array name., f 74;
-#X text 218 441 - array name (required \, default none), f 43;
+#X text 218 441 - array name (required \, defaultt none), f 43;
 #N canvas 811 254 411 420 table 0;
 #X obj 33 158 cnv 15 298 198 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
@@ -81,8 +81,8 @@ besides the array name., f 74;
 #X text 155 376 float/signal - phase offset (modulation input), f
 50;
 #X text 164 467 3) float;
-#X text 218 455 - sets frequency in Hz (default 0), f 43;
-#X text 218 470 - sets phase offset (default 0), f 43;
+#X text 218 455 - sets frequency in Hz (defaultt 0), f 43;
+#X text 218 470 - sets phase offset (defaultt 0), f 43;
 #X text 164 455 2) float;
 #X obj 239 214 else/bl.wavetable~ \$0-table 400;
 #X text 154 336 set <symbol> - sets an entire array to be used as a

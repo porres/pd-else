@@ -316,7 +316,7 @@ banged. Elements joined by "-" are sent at the same time but separately
 and can be thought as "tie". A "|" represents a barline. Symbol elements
 are sent without a symbol selector (and can be note names or anything
 else). A "bang" comes out as a proper "bang"., f 82;
-#X text 131 502 1) list - list of elements sets the sequence (default
+#X text 131 502 1) list - list of elements sets the sequence (defaultt
 empty);
 #X text 157 352 clear;
 #X text 197 352 - clears sequence;

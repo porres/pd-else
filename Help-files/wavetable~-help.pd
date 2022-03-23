@@ -39,8 +39,8 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X text 174 423 3) float;
-#X text 228 408 - sets frequency in Hz (default 0), f 43;
-#X text 228 423 - sets phase offset (default 0), f 43;
+#X text 228 408 - sets frequency in Hz (defaultt 0), f 43;
+#X text 228 423 - sets phase offset (defaultt 0), f 43;
 #X text 174 408 2) float;
 #X text 228 365 - a periodically repeating waveform;
 #X obj 110 275 cnv 17 3 32 empty empty 0 5 9 0 16 -228856 -162280 0
@@ -54,7 +54,7 @@
 #X text 150 333 float/signal - phase offset (modulation input), f
 50;
 #X text 146 275 float/signal - sets frequency in hertz, f 62;
-#X text 228 392 - array name (optional \, default none), f 43;
+#X text 228 392 - array name (optional \, defaultt none), f 43;
 #N canvas 750 137 490 555 set 0;
 #X obj 124 250 nbx 6 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
@@ -239,7 +239,7 @@ ignored). Because phase is cyclical \, the value of 1 represents the
 "phase 0" of the cycle \, where the impulse occurs., f 62;
 #X obj 514 210 else/wavetable~ \$0-sine 200;
 #X text 518 25 Syncing the phase with control messages is useful for
-LFOs and control with MIDI. A sync with audio is usefull for the "hard
+LFOs and control with MIDI. A sync with audio is useful for the "hard
 sync" technique \, where an oscillator (called slave) is synced according
 to the frequency of a master oscillator, f 44;
 #X connect 1 0 4 0;

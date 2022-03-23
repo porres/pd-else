@@ -45,8 +45,8 @@
 #X obj 491 69 else/setdsp~;
 #X text 236 407 - ramp-up time in ms;
 #X text 237 431 - ramp-down time in ms;
-#X text 237 538 - ramp-up time in ms (default 0);
-#X text 237 559 - ramp-down time in ms (default 0);
+#X text 237 538 - ramp-up time in ms (defaultt 0);
+#X text 237 559 - ramp-down time in ms (defaultt 0);
 #X obj 155 266 else/out~;
 #X obj 155 222 *~;
 #X obj 116 149 else/brown~;
@@ -69,7 +69,7 @@ times for both up and down.;
 #X restore 2 4 graph;
 #X obj 6 496 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 90 503 -exp <float>: sets exponential factor (default '1' \,
+#X text 90 503 -exp <float>: sets exponential factor (defaultt '1' \,
 linear);
 #X text 188 368 reset;
 #X text 238 368 - resets glide to input value;

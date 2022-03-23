@@ -148,10 +148,10 @@
 #X restore 2 3 graph;
 #X text 222 281 - trigger signal to be divided;
 #X text 222 374 - divided triggers (impulse);
-#X text 168 432 1) float - divide value (default 1);
+#X text 168 432 1) float - divide value (defaultt 1);
 #X text 143 298 div <float>;
 #X text 131 316 start <float>;
-#X text 168 449 2) float - start count value (default 0);
+#X text 168 449 2) float - start count value (defaultt 0);
 #X text 222 316 - sets the start value;
 #X text 222 298 - sets the division value (minimum: 1);
 #X text 222 338 - an impulse resets the counter to the start value

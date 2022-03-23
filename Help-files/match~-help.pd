@@ -156,7 +156,7 @@
 #000000 #000000;
 #X text 210 324 the signal to be matched;
 #X text 147 429 1) list;
-#X text 206 428 - values to match to (default 0);
+#X text 206 428 - values to match to (defaultt 0);
 #X text 91 269 matches argument =>, f 12;
 #X text 308 281 <= unmatched;
 #X obj 92 395 cnv 17 3 17 empty empty r 5 9 0 16 #dcdcdc #9c9c9c 0

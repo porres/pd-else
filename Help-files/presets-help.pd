@@ -50,7 +50,7 @@ in float gridx float gridy;
 0;
 #X obj 86 230 cnv 17 3 256 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 139 657 1) list - one or more receive names (default none)
+#X text 139 657 1) list - one or more receive names (defaultt none)
 ;
 #X text 106 255 load <float> -;
 #X floatatom 136 169 3 0 7 0 - - - 0;
@@ -141,7 +141,7 @@ window, f 58;
 This smoothens the transition between preset values and work for floats
 or lists of floats (no symbols \, of course).;
 #X text 49 321 The -morph flag and the 'morph' message set both the
-morph time (default 0) and grain time (default 20). When the time is
+morph time (defaultt 0) and grain time (defaultt 20). When the time is
 0 \, there's no morphing \, so you can turn morphing on and off like
 this. Alternatively \, you can use the -morphtime to just set the morph
 time., f 60;
@@ -313,7 +313,7 @@ help file out., f 73;
 #X connect 27 0 16 0;
 #X connect 28 0 10 0;
 #X restore 446 134 pd interpolate;
-#N canvas 777 104 472 524 abstrations 0;
+#N canvas 777 104 472 524 abstractions 0;
 #X obj 109 292 else/out~;
 #X obj 107 429 else/out~;
 #X obj 109 227 presets-abs;
@@ -358,7 +358,7 @@ can have its own separate set of presets. Open an abstraction below
 to see how this is done with [presets] and [savestate]., f 63;
 #X connect 2 0 0 0;
 #X connect 3 0 1 0;
-#X restore 467 241 pd abstrations;
+#X restore 467 241 pd abstractions;
 #X obj 98 129 hradio 15 1 0 8 empty \$0-radio Load\ preset 0 -8 0 10
 #aaaaaa #000000 #000000 0;
 #N canvas 356 221 568 423 shift 0;
@@ -497,13 +497,13 @@ objects., f 96;
 #X restore 446 138 pd basic;
 #X obj 8 557 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 97 562 -n <float>: sets number of presets (default: 64), f
+#X text 97 562 -n <float>: sets number of presets (defaultt: 64), f
 72;
-#X text 73 576 -file <symbol>: set a file to import from (default:
+#X text 73 576 -file <symbol>: set a file to import from (defaultt:
 none), f 76;
-#X text 79 604 -morph <f \, f>: sets morph time and grain (default:
+#X text 79 604 -morph <f \, f>: sets morph time and grain (defaultt:
 0 \, 20), f 75;
-#X text 115 618 -interp: sets to interpolation mode (default: no interpolation)
+#X text 115 618 -interp: sets to interpolation mode (defaultt: no interpolation)
 , f 69;
 #X text 124 319 n <float> -;
 #X text 198 319 sets number of presets, f 58;
@@ -525,11 +525,11 @@ We'll see more about that in the next examples., f 54;
 #X msg 124 290 n 8;
 #X msg 89 290 n 4;
 #X text 30 12 [presets] takes symbols as arguments that need to match
-receive names to get infromation from and send to what's connected
+receive names to get information from and send to what's connected
 to them. You need to escape the locality variable with a backslash
 (as in "\\\$0-n" \, instead of "\$0-n") because these symbols are also
 stored in the preset data as the send address., f 80;
-#X text 30 66 By default \, [presets] has 64 presets slots marked as
+#X text 30 66 By defaultt \, [presets] has 64 presets slots marked as
 "-empty-" \, which means there is no preset stored. By the way \, if
 you try to load an empty preset \, a bang comes out of the right outlet
 of [presets] to tell you the slot is empty., f 80;
@@ -553,11 +553,11 @@ file with the 'read' message., f 80;
 #X msg 685 151 read preset2.txt;
 #X obj 685 243 else/presets -file preset2.txt;
 #A saved;
-#X text 532 14 If no send adress argument is given \, [presets] can
+#X text 532 14 If no send address argument is given \, [presets] can
 still load text files with send names to send the data to matching
 receive objects. But it won't be able to save them unless you give
 it send addresses via the 'args' message. This way you change the parameters
-group dinamically and have different presets with different addresses
+group dynamically and have different presets with different addresses
 so a single [presets] object is able to manage different parameter
 groups., f 69;
 #X connect 0 0 1 0;
@@ -673,7 +673,7 @@ just giving ideas in case you want it and need it \; ), f 43;
 four || \\\$0-B 4 || \; \\\$0-A symbol five || \\\$0-B 5 || \; \\\$0-A
 symbol six || \\\$0-B 6 || \; \\\$0-A symbol seven || \\\$0-B 7 ||
 \; \\\$0-A symbol eight || \\\$0-B 8 || \;;
-#X text 49 590 -morphtime <float>: sets morph time (default: 0), f
+#X text 49 590 -morphtime <float>: sets morph time (defaultt: 0), f
 80;
 #N canvas 412 200 792 518 built-in-rcv 0;
 #X obj 143 171 hradio 15 1 0 4 empty empty empty 0 -8 0 10 #dcdcdc
@@ -702,7 +702,7 @@ a bit trickier. One thng to do would be to use [else/message] as shown
 in the last example \, but we want to use built-in receive names here.
 Well \, at least for GUI abstraction objects from the ELSE library
 \, you can communicate to them with their built-in receive name thanks
-to the [else/default] object \,, f 69;
+to the [else/defaultt] object \,, f 69;
 #X obj 160 342 hsl 128 15 0 127 0 0 empty \$0-sl-rcv empty -2 -8 0
 10 #dcdcdc #000000 #000000 0 1;
 #X obj 170 302 nbx 3 14 -1e+37 1e+37 0 0 empty \$0-nbx-rcv empty 0
@@ -738,13 +738,13 @@ names that match the [presets] object., f 34;
 #X text 274 58 ~THIS OBJECT IS STILL EXPERIMENTAL~;
 #X text 136 361 exp <f> -;
 #X text 85 632 -exp <float>: sets exponential factor for morph/interpolation
-(default: 1), f 74;
+(defaultt: 1), f 74;
 #X text 198 361 sets exponential factor for interpolation/morphing
 , f 58;
 #X text 37 81 [presets] manages presets for patches and abstractions
 and has interpolation and morphing features. Change the number and
 symbol below \, save a preset and the patch \, reopen to recall the
-presets. Use the "read" message to restore to this example's default.
+presets. Use the "read" message to restore to this example's defaultt.
 , f 76;
 #X text 34 196 click to open => data window, f 16;
 #X obj 8 676 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000

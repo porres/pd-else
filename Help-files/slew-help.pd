@@ -86,12 +86,12 @@
 #X text 145 342 rate <float>;
 #X text 230 342 - refresh rate in ms, f 46;
 #X text 151 326 set <float>;
-#X text 165 472 2) float - initial start value (default 0);
+#X text 165 472 2) float - initial start value (defaultt 0);
 #X text 230 395 - slew limited values;
 #X text 303 148 <= speed limit (amplitude;
 #X text 308 177 <= 0 speed (stopped);
 #X text 230 310 - values to be slew limited, f 46;
-#X text 165 457 1) float - slew limit speed (default 0);
+#X text 165 457 1) float - slew limit speed (defaultt 0);
 #X text 230 361 - speed limit (negative values = no limit), f 46;
 #N canvas 849 83 455 434 rate 0;
 #X floatatom 287 323 5 0 0 0 - - - 0;
@@ -119,7 +119,7 @@ f 61;
 or the rate message. If you change the rate \, the step limit changes
 \, but the speed remains the same., f 61;
 #X msg 287 247 0.5;
-#X text 42 92 By default \, the refresh rate is 5 ms \, so we have
+#X text 42 92 By defaultt \, the refresh rate is 5 ms \, so we have
 200 values in a second. If the speed is then "1" \, this means that
 the step value is 1/200 (0.005). So a shift between 0 and 1 takes 200
 steps of 0.005 and a second to reach 1!, f 61;
@@ -142,11 +142,11 @@ steps of 0.005 and a second to reach 1!, f 61;
 #X msg 208 223 set 0;
 #X msg 197 199 set 1;
 #X text 230 326 - sets new start point and goes back to target;
-#X text 114 429 -rate <float>: sets refresh rate in ms (default 5 \,
+#X text 114 429 -rate <float>: sets refresh rate in ms (defaultt 5 \,
 minimum 1), f 61;
 #X obj 197 248 else/slew 1 1;
 #X text 46 86 [slew] takes an amplitude limit per second and an incoming
-value to be 'slew limited'. It then generates a line torwards the incoming
+value to be 'slew limited'. It then generates a line towards the incoming
 value. The difference between [slew] and [line] is that [slew] has
 a fixed speed \, not a fixed period. A limit of zero stops the line
 generation and a negative value turns the limiter off., f 80;

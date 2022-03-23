@@ -59,7 +59,7 @@ from it., f 48;
 #X text 240 260 sets a new list, f 46;
 #X text 191 289 float -;
 #X text 240 289 random element from list, f 46;
-#X text 179 317 1) list - initial list (default 0);
+#X text 179 317 1) list - initial list (defaultt 0);
 #X msg 347 135 1 5 10 30 70 90;
 #X obj 182 163 else/rand.list 13 60 500 700;
 #X msg 214 135 set 11 23 35 47;

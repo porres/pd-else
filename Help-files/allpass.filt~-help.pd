@@ -56,11 +56,11 @@ is an abstraction that stacks many [allpass.2nd~] objects in cascade.
 #X obj 42 248 else/allpass.2nd~;
 #X text 44 227 see also:;
 #X text 250 387 - filter resonance (Q);
-#X text 152 454 1) float - order from 2 to 64 (default 2);
+#X text 152 454 1) float - order from 2 to 64 (defaultt 2);
 #X obj 192 264 else/out~;
 #X obj 192 230 +~;
-#X text 152 485 3) float - q (default 1), f 41;
-#X text 152 469 2) float - frequency in hz (default 10), f 41;
+#X text 152 485 3) float - q (defaultt 1), f 41;
+#X text 152 469 2) float - frequency in hz (defaultt 10), f 41;
 #X obj 207 208 else/allpass.filt~ 4;
 #X text 323 144 resonant/center frequency, f 23;
 #X text 382 180 q - resonance;

@@ -53,13 +53,13 @@
 high> \, <2 \, low>, f 66;
 #X text 160 395 float - note values, f 59;
 #X text 160 417 float - velocity values, f 59;
-#X text 171 445 -last: sets mode to "last" (default);
+#X text 171 445 -last: sets mode to "last" (defaultt);
 #X text 171 460 -high: sets mode to "high", f 36;
 #X text 177 476 -low: sets mode to "low", f 35;
 #X text 142 501 1) float - non zero sets to legato mode;
 #X msg 193 152 clear;
 #X text 108 313 legato <float> - non zero sets to legato mode \, zero
-restores default, f 68;
+restores defaultt, f 68;
 #X text 162 329 flush - sends a note off for the hanging note and clears
 memory, f 63;
 #X text 162 345 clear - clears memory (without output), f 63;
@@ -100,7 +100,7 @@ release it \, it recalls the next lowest note that is still on., f
 #X floatatom 424 295 5 0 0 0 - - - 0;
 #X obj 309 253 else/glide~;
 #X text 34 142 You can set the mode via a flag or via the mode message.
-The default priotiy mode is "last" So whenever you play a new note
+The defaultt priotiy mode is "last" So whenever you play a new note
 when you're still holding other notes \, it goes through - and when
 you release it \, the last note you had played before that is still
 on gets recalled., f 35;
@@ -142,7 +142,7 @@ GUI from the ELSE library that generates MIDI notes., f 21;
 #X obj 73 116 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X msg 73 138 legato \$1;
-#X text 62 21 By default \, new notes resend/retrigger the velocity
+#X text 62 21 By defaultt \, new notes resend/retrigger the velocity
 value. But in legato mode \, a new velocity value is only sent if a
 first note on is given., f 51;
 #X obj 155 289 osc~;

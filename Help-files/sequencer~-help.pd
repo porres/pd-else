@@ -46,7 +46,7 @@
 or a bang \, [sequencer~] sends a signal value from a given sequence.
 , f 66;
 #X text 191 318 - values from a sequence;
-#X text 144 375 1) list - list of floats sets the sequence (default
+#X text 144 375 1) list - list of floats sets the sequence (defaultt
 0);
 #X obj 503 71 else/setdsp~;
 #X text 17 174 see also:;

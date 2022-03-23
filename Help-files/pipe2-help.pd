@@ -58,7 +58,7 @@
 of messages and delays them., f 68;
 #X text 227 299 - message to be delayed;
 #X text 227 385 - the delayed message;
-#X text 228 419 - delay time in ms (default 0);
+#X text 228 419 - delay time in ms (defaultt 0);
 #X msg 309 149 flush;
 #X msg 293 126 clear;
 #X text 227 322 - sets delay time in ms, f 33;

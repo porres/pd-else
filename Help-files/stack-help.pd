@@ -65,7 +65,7 @@
 #X text 231 356 - set order to 'fifo';
 #X text 201 371 lifo;
 #X text 231 371 - set order to 'lifo';
-#X text 145 503 1) symbol - sets order \, <fifo> (default) or <lifo>
+#X text 145 503 1) symbol - sets order \, <fifo> (defaultt) or <lifo>
 ;
 #X text 231 300 - outputs all messages and clears them;
 #X text 201 386 open;
@@ -99,7 +99,7 @@ means you can manually edit the contents of stack!;
 #X obj 282 247 display;
 #X text 195 471 float;
 #X text 219 328 n;
-#X text 231 327 - outputs numer of elements in right outlet;
+#X text 231 327 - outputs number of elements in right outlet;
 #X text 231 471 - number of stacked messages;
 #X text 147 342 store <float>;
 #X text 231 341 - non zero stores data with the patch;

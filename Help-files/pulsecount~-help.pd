@@ -163,7 +163,7 @@
 at transitions from non positive to positive. A trigger in the right
 inlet resets the counter to zero. The argument sets a maximum count
 value (if greater than 0).;
-#X text 171 401 1 float - maximum count value (default 0 - no maximum)
+#X text 171 401 1 float - maximum count value (defaultt 0 - no maximum)
 ;
 #X msg 274 184 max \$1;
 #X obj 274 159 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10

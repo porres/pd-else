@@ -194,7 +194,7 @@ neither to [%] or [mod] objects from Vanilla., f 39;
 #X msg 480 160 <<;
 #X text 90 303 float/signal - secondary operator value (ignored for
 bitnot);
-#X text 155 387 - inlet value (default 0) - ignored for bitnot;
+#X text 155 387 - inlet value (defaultt 0) - ignored for bitnot;
 #X text 95 368 1) symbol -;
 #X text 51 85 [op~] is a signal operator (either comparison or bitwise)
 \, which is defined by the first argument. This is more efficient than

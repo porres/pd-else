@@ -66,7 +66,7 @@ the user;
 #X text 132 386 anything -;
 #X text 200 386 event data, f 58;
 #X text 200 425 when sequence is over, f 58;
-#X text 125 454 1) symbol - score file to load (default none);
+#X text 125 454 1) symbol - score file to load (defaultt none);
 #X text 156 316 open -;
 #X text 150 330 close -;
 #X text 200 330 closes edit window, f 58;
@@ -108,7 +108,7 @@ notation syntax as [pattern]., f 76;
 #X msg 698 164 stop;
 #X text 38 48 The "|" symbol is the syntax for bars - like in [else/sequence]
 and [else/pattern]. This sets a bar number which is output at the 'data'
-outlet allong with 'tempo' messages and whatever else that you specify
+outlet along with 'tempo' messages and whatever else that you specify
 in the score that is not a list starting with a number (which are treated
 as timestamps)., f 68;
 #X obj 533 169 else/play.file~ bagal.aif, f 15;
@@ -117,7 +117,7 @@ sets the bpm to 60! The 'tempo' messages are output in the mid 'data'
 outlet., f 68;
 #X text 38 110 The 'timesig' message is necessary to specify the time
 signature and allow [score] to count the number of beats in a bar.
-It must be specified in the beggining of the score right after the
+It must be specified in the beginning of the score right after the
 bar symbol. Time signature changes are possible and need to be specified
 after any bar symbol. The 'timesig' message has the same format as
 in the [metronome] object., f 68;
@@ -331,9 +331,9 @@ represents pitch values., f 76;
 #X text 26 92 Another way is to simply specify another event with the
 same timestamp and it will also be output right after the previous
 one. One little techicality is that when you're using commas they do
-come out togheter as the same event as a loop. One way to prove this
+come out together as the same event as a loop. One way to prove this
 is with the [combine] object that can combine these values with a combine
-time of "0". Otherwise you need to specify a very short time ammount
+time of "0". Otherwise you need to specify a very short time amount
 "0.001" ms here., f 76;
 #X text 223 324 In this patch we're combining the floats with [combine]
 and split the list with [unpack]. This is because we don't really need

@@ -78,7 +78,7 @@
 #X text 202 284 - sets next value to be wrapped via bang (only float)
 ;
 #X text 175 393 floats set wrap2's range \, 2 floats sets minimum and
-maximum. No arguments loads default values (0 and 1). 1 float sets
+maximum. No arguments loads defaultt values (0 and 1). 1 float sets
 maximum value (and lowest value is set to 0). If the maximum value
 is less than the minimum \, the maximum becomes the minimum and vice-versa.
 ;

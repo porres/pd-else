@@ -88,13 +88,13 @@ rate running in the patch due to [block~]., f 56;
 #X msg 223 201 ms;
 #X msg 256 202 sec;
 #X obj 213 258 else/display;
-#X text 64 153 The default output is the sample rate frequency in hertz.
+#X text 64 153 The defaultt output is the sample rate frequency in hertz.
 ;
 #X obj 213 232 else/nyquist~ -khz;
 #X text 64 90 [nyquist~] reports the nyquist (which is half the sample
 rate) as a frequency or period. It sends it when loading the patch
 \, when receiving a bang or when the sample rate changes. It reports
-it either in hz or khz and the period either in seconds os miliseconds.
+it either in hz or khz and the period either in seconds os milliseconds.
 like [else/sr~] \, it doesn't report up/down sampling rates., f 74
 ;
 #X text 59 229 see also:;

@@ -188,18 +188,18 @@
 #X text 256 360 - room size feedback (0-1), f 31;
 #X text 203 393 clear;
 #X text 256 394 - clears delay buffers, f 31;
-#X text 69 88 [plate.rev~] is a reverb asbtraction based on a patch
+#X text 69 88 [plate.rev~] is a reverb abstraction based on a patch
 by Tom Erbe implementing the plate reverb model by Dattorro. It has
 a mono input and stereo output.;
 #X obj 190 210 else/out~;
-#X text 129 482 1) float - pre delay in ms (0-1000) - default 50,
+#X text 129 482 1) float - pre delay in ms (0-1000) - defaultt 50,
 f 54;
-#X text 129 498 2) float - filter cutoff (0-1) - default 0.5, f 54
+#X text 129 498 2) float - filter cutoff (0-1) - defaultt 0.5, f 54
 ;
-#X text 129 513 3) float - high frequnecy damping (0-1) - default 0.25
+#X text 129 513 3) float - high frequnecy damping (0-1) - defaultt 0.25
 ;
-#X text 129 528 4) float - room size (0-1) - default 0.75, f 54;
-#X text 129 543 5) float - wet ratio (0-1) - default 0.75, f 54;
+#X text 129 528 4) float - room size (0-1) - defaultt 0.75, f 54;
+#X text 129 543 5) float - wet ratio (0-1) - defaultt 0.75, f 54;
 #X obj 189 179 else/plate.rev~;
 #X connect 26 0 46 0;
 #X connect 46 0 40 0;

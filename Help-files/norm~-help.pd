@@ -54,10 +54,10 @@
 #X obj 273 330 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 273 305 else/rint;
-#X text 175 484 1) float - normalize level in dBFS (default 0);
+#X text 175 484 1) float - normalize level in dBFS (defaultt 0);
 #X text 229 387 - normalize level in dBFS;
 #X text 230 424 - normalized signal;
-#X text 201 456 - sets analysis window size in samples (default 1024)
+#X text 201 456 - sets analysis window size in samples (defaultt 1024)
 ;
 #X text 290 127 normalize level;
 #X obj 247 173 else/norm~ -20;

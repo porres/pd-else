@@ -54,7 +54,7 @@
 #X msg 126 201 E♭3;
 #N canvas 821 146 516 489 unicode 0;
 #X text 80 79 More importantly \, these musical symbols are supported
-by Pd's default font \, so you should be able to see them if nothing
+by Pd's defaultt font \, so you should be able to see them if nothing
 is wrong in your system/setup/installation., f 63;
 #X msg 90 145 symbol #;
 #X obj 90 179 list fromsymbol;
@@ -111,7 +111,7 @@ double sharps and "bb" for double flats., f 63;
 #X msg 196 126 D 5;
 #X msg 211 165 C 5;
 #X msg 248 165 Dbb 5;
-#X text 49 24 Unfortunately Pd's default font doesn't have the appropriate
+#X text 49 24 Unfortunately Pd's defaultt font doesn't have the appropriate
 symbols for double sharps and double flats. And while we're at it \,
 neither microtones. Anyway \, double sharps/flats are to be rarely
 used \, mostly by music theory geeks like me :), f 63;

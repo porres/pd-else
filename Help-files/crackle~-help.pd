@@ -48,7 +48,7 @@
 #X text 239 146 'p' parameter;
 #X text 151 299 float/signal - chaotic parameter 'p' (from 0 to 1)
 ;
-#X text 180 378 1) float - 'p' parameter (default 0.5);
+#X text 180 378 1) float - 'p' parameter (defaultt 0.5);
 #X obj 43 40 cnv 4 4 4 empty empty Crackle 0 28 2 18 #e0e0e0 #000000
 0;
 #X text 105 88 [crackle~] generates noise based on a chaotic function

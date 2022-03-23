@@ -35,7 +35,7 @@
 0;
 #X obj 502 25 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X text 115 345 1) float - number of characters (default: 0 - not fixed)
+#X text 115 345 1) float - number of characters (defaultt: 0 - not fixed)
 ;
 #X text 168 282 anything;
 #X text 231 282 - any message to be displayed;
@@ -43,7 +43,7 @@
 ;
 #X text 168 315 anything;
 #X text 231 315 - any input is passed through;
-#X text 115 365 2) float - refresh rate in ms (default 100);
+#X text 115 365 2) float - refresh rate in ms (defaultt 100);
 #X text 61 84 [display] can display a message just like [print]. The
 1st argument specifies a fixed number of characters to display. If
 "0" or no argument is given \, the display automatically resizes according

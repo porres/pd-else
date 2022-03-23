@@ -97,7 +97,7 @@ below. The graph considers a sample rate of 44.1Khz.;
 #X msg 189 172 q;
 #X text 217 173 resonance as 'q';
 #X msg 180 148 t60;
-#X text 27 17 By default \, the resonance parameter is the filter 't60'
+#X text 27 17 By defaultt \, the resonance parameter is the filter 't60'
 \, whic is the time in ms for an excitation signal (such as an impulse)
 decays 60dB. But you can also set the parameter value to be the 'q'
 of the filter with the -q flag.;
@@ -121,14 +121,14 @@ the message methods.;
 #X text 201 326 - signal to be filtered or excite the resonator;
 #X text 238 152 <= excite the resonator;
 #X text 170 379 t60;
-#X text 201 379 - sets resonance parameter in decay time in ms (default)
+#X text 201 379 - sets resonance parameter in decay time in ms (defaultt)
 ;
 #X text 201 396 - sets resonance parameter to Q;
 #X text 201 444 - resonance (T60 decay time in ms or Q);
 #X text 201 477 - resonator/filtered signal;
 #X text 182 508 -q;
-#X text 128 557 2) float - resonance (default 0) \, either in 'T60'
-(default) or 'Q', f 66;
+#X text 128 557 2) float - resonance (defaultt 0) \, either in 'T60'
+(defaultt) or 'Q', f 66;
 #X text 209 508 - sets resonance parameter to 'q';
 #N canvas 835 96 411 574 [bandpass~]_vs_[resonant~] 0;
 #X text 27 12 If you compare the filter response of both [bandpass~]
@@ -169,7 +169,7 @@ it so that it acts as a 'resonator' \, where it will resonate at the
 resonant frequency for a period of time after the input signal has
 ceased.;
 #X text 449 180 Thus \, instead of a 'q' factor \, the resonant parameter
-can be specified by a decay time \, which is the default parameter
+can be specified by a decay time \, which is the defaultt parameter
 for the [resonant~] object.;
 #X text 449 233 The decay time is given in "T60" \, which is the time
 it takes to decay 60 dB. You can convert from decay time to Q and vice
@@ -196,7 +196,7 @@ versa with a formula implemented in the subpatch below.;
 #X text 228 292 Q;
 #X obj 115 108 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 173 107 decay time in miliseconds;
+#X text 173 107 decay time in milliseconds;
 #X obj 115 131 t bang float;
 #X text 64 183 center;
 #X text 53 203 frequency;
@@ -212,7 +212,7 @@ versa with a formula implemented in the subpatch below.;
 #X obj 154 437 * 1000;
 #X obj 154 462 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 212 461 decay time in miliseconds;
+#X text 212 461 decay time in milliseconds;
 #X obj 33 122 loadbang;
 #X msg 33 146 set 1000;
 #X msg 115 84 2000;
@@ -257,7 +257,7 @@ versa with a formula implemented in the subpatch below.;
 time in ms \, or a Q factor. Like [bandpass~] \, it is a 2nd order
 bandpass resonant filter \, but changing the Q increases the gain of
 the filter.;
-#X text 128 539 1) float - central frequency in hertz (default 0);
+#X text 128 539 1) float - central frequency in hertz (defaultt 0);
 #X obj 216 180 else/impseq~;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;

@@ -152,7 +152,7 @@
 #X text 211 338 - last input value;
 #X text 211 302 - signal to detect the last value;
 #X obj 154 217 else/lastvalue~ 3;
-#X text 158 373 1) float - initial last value (default 0);
+#X text 158 373 1) float - initial last value (defaultt 0);
 #X text 319 213 <= current value;
 #X obj 154 250 else/display~;
 #X obj 290 211 else/display~;

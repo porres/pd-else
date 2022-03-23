@@ -39,7 +39,7 @@
 0;
 #X obj 149 42 cnv 4 4 4 empty empty activity 0 28 2 18 #e0e0e0 #000000
 0;
-#X text 150 290 1) float - depth \, default 0 (current window);
+#X text 150 290 1) float - depth \, defaultt 0 (current window);
 #X obj 160 151 else/canvas.active;
 #X text 222 254 window activity (0 inactive / 1 active);
 #N canvas 761 302 389 296 subpatch 0;

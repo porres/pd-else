@@ -14,7 +14,7 @@
 #X text 128 241 signal;
 #X text 128 363 signal;
 #X obj 221 135 osc~ 440;
-#X text 178 442 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
+#X text 178 442 - scaling mode: 0 (quartic \, defaultt) \, 1 (dB) or
 2 (linear), f 60;
 #N canvas 522 161 803 382 examples 0;
 #X obj 169 168 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
@@ -44,7 +44,7 @@
 \, mute \, DSP on and off \, scaling modes \, maximum gain and ramp
 time.;
 #X text 406 72 You can also set a ramp time for the slider value \,
-the default is 20 ms and the minimum is 5 ms. This also affects the
+the defaultt is 20 ms and the minimum is 5 ms. This also affects the
 slider value input in the right outlet.;
 #X msg 602 248 gain \$1;
 #X obj 602 222 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -60,7 +60,7 @@ slider value input in the right outlet.;
 \, dac~ output on or off and mute/unmute without any clicks!;
 #X text 20 65 If the DSP is on when you load [out~] \, it checks the
 DSP state and loads the GUI accordingly.;
-#X text 406 11 [out~] has 3 scaling modes for its slider (the default
+#X text 406 11 [out~] has 3 scaling modes for its slider (the defaultt
 is "quartic"). You can set a linear gain multiplier \, which needs
 to be greater than zero and also represents the maximum linear gain
 achieved.;
@@ -90,7 +90,7 @@ achieved.;
 #X text 116 442 2) float;
 #X text 128 396 (none);
 #X text 92 289 mode <float>;
-#X text 178 289 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
+#X text 178 289 - scaling mode: 0 (quartic \, defaultt) \, 1 (dB) or
 2 (linear), f 60;
 #X obj 2 3 cnv 15 301 42 empty empty out~ 20 20 2 37 -233017 -1 0;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
@@ -127,9 +127,9 @@ achieved.;
 ;
 #X text 140 305 mute;
 #X text 178 305 - mute/unmute button, f 60;
-#X text 178 339 - sets ramp time in ms for slider values (default 20)
+#X text 178 339 - sets ramp time in ms for slider values (defaultt 20)
 , f 60;
-#X text 178 426 - max gain (needs to be > 0 \, default 1), f 60;
+#X text 178 426 - max gain (needs to be > 0 \, defaultt 1), f 60;
 #X text 178 322 - sets max gain (values <= 0 are ignored), f 60;
 #N canvas 737 277 684 429 scaling 0;
 #X obj 32 57 cnv 15 198 198 empty empty empty 20 12 0 14 -253888 -66577
@@ -360,7 +360,7 @@ same as the output. We have then two non linear modes:;
 #X text 70 265 entry (slider) value;
 #X text 290 121 dB: This mode adopts a decibel scale with a range of
 100 dB (using the [dbtorms~] object)., f 55;
-#X text 290 77 Quartic (default): This mode just gets the slider values
+#X text 290 77 Quartic (defaultt): This mode just gets the slider values
 to the power of 4 (so \, for instance \, an input slider value of 0.5
 becomes 0.125)., f 57;
 #X text 33 305 The gain value is a simple multiplier to the output

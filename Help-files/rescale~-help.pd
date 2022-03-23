@@ -145,9 +145,9 @@
 0;
 #X obj 242 178 else/rescale~;
 #X text 103 211 rescaled to 0-1 range;
-#X text 78 85 By default \, [rescale~] rescales input values from -1
-to 1 into another range of values (0-1 by default). You can also set
-an exponential factor (1 by default - linear). All these parameters
+#X text 78 85 By defaultt \, [rescale~] rescales input values from -1
+to 1 into another range of values (0-1 by defaultt). You can also set
+an exponential factor (1 by defaultt - linear). All these parameters
 can be changed by arguments.;
 #X obj 242 206 else/display~;
 #X obj 242 148 osc~ 0.1;
@@ -345,7 +345,7 @@ scaling (no exponential). It's like raising to the power of the given
 exponential \, try it below (with values from 0.1 to 10).;
 #X msg 789 219 exp \$1;
 #X text 95 297 The -clip flag or clip message clips the output into
-the output range. By default \, [rescale~] will not clip the values
+the output range. By defaultt \, [rescale~] will not clip the values
 to the output range but keep scaling outside that boundary with the
 same conversion parameters., f 71;
 #X obj 85 469 else/rescale~ -clip -10 10;
@@ -387,7 +387,7 @@ same conversion parameters., f 71;
 #X text 230 285 <1> turns clipping on \, <0> off;
 #X obj 6 371 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 188 380 -clip: sets clipping on (default off);
+#X text 188 380 -clip: sets clipping on (defaultt off);
 #N canvas 812 293 488 296 inverted 0;
 #X obj 186 83 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
@@ -679,6 +679,6 @@ it's like the curve shape has been mirrored in reverse.;
 #X text 173 409 up to 3 arguments set: minimum output \, maximum output
 \, exponential factor. 4 arguments set minimum input \, maximum input
 \, minimum output \, maximum output and 5 fifth argument sets the exponential
-factor - default (0 \, 127 \, 0 \, 1 \, 1);
+factor - defaultt (0 \, 127 \, 0 \, 1 \, 1);
 #X connect 21 0 24 0;
 #X connect 25 0 21 0;

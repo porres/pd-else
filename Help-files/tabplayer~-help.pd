@@ -109,7 +109,7 @@ if needed., f 54;
 #X obj 26 211 send \$0-array_size;
 #X obj 26 189 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 182 671 - number of output channels (default 1 \, maximum 64)
+#X text 182 671 - number of output channels (defaultt 1 \, maximum 64)
 , f 61;
 #X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
@@ -155,7 +155,7 @@ if needed., f 54;
 #X obj 105 412 else/out~;
 #X msg 105 149 play;
 #X text 68 34 The loop message takes a float \, where a non-zero value
-enables looping and \, 0 disables it (default is disabled). You can
+enables looping and \, 0 disables it (defaultt is disabled). You can
 set it to loop with the -loop flag., f 37;
 #X obj 105 358 else/tabplayer~ -loop \$0-violin;
 #X connect 0 0 6 0;
@@ -220,7 +220,7 @@ be resumed), f 33;
 #X text 403 47 The 'play' message can also take up to 3 floats that
 specify \; 1) starting point in the array (in ms) \; 2) end point (in
 ms) \; 3) speed rate percentage \; If no floats are given \, then it
-plays from the setted start/end points in the given rate. The arguments
+plays from the set start/end points in the given rate. The arguments
 of the play message changes the parameters of start/end and speed,
 f 50;
 #X msg 446 250 play 0 1000 -50;
@@ -365,15 +365,15 @@ is a sine/cosine equal power function., f 54;
 #X connect 12 0 1 0;
 #X connect 12 1 0 0;
 #X restore 467 201 pd fade/xfade;
-#X text 181 522 - sets fade time in ms (default 0), f 61;
-#X text 181 416 - sets playing speed in percentage (default 100),
+#X text 181 522 - sets fade time in ms (defaultt 0), f 61;
+#X text 181 416 - sets playing speed in percentage (defaultt 100),
 f 61;
-#X text 181 536 - sets to crossfade mode when looping (default no crossfade)
+#X text 181 536 - sets to crossfade mode when looping (defaultt no crossfade)
 , f 61;
-#X text 181 508 - non zero enables looping \, <0> disbales it (default
+#X text 181 508 - non zero enables looping \, <0> disables it (defaultt
 0), f 61;
 #X text 113 550 sr <float>;
-#X text 181 550 - sets sample rate of sample (default \, Pd's sample
+#X text 181 550 - sets sample rate of sample (defaultt \, Pd's sample
 rate), f 61;
 #X text 97 625 -fade <float> | -speed <float> | -loop: sets to loop
 mode -xfade: sets to crossfade mode | -sr <float> | -range <f \, f>
@@ -396,7 +396,7 @@ This allows [tabplayer~] to adjust the reading rate to correspond to
 the sound file's sample rate., f 54;
 #X obj 110 162 else/sample~ \$0-sax sax.wav;
 #X text 22 57 In the example below we have a sound file whose sample
-rate is 88200 Hz. If Pd's sample rate is at 44100 (the default one)
+rate is 88200 Hz. If Pd's sample rate is at 44100 (the defaultt one)
 \, then playing this file at Pd's sample rate would read it at half
 speed. The sample rate is given by the [sample~] object and we can
 set it with the 'sr' message (or with the -sr flag also)., f 54;

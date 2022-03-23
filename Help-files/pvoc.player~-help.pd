@@ -40,24 +40,24 @@
 #X text 121 290 open <symbol> -;
 #X obj 6 633 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 192 560 (optional) channels (default 1 if no file is given
+#X text 192 560 (optional) channels (defaultt 1 if no file is given
 \, or sound file's if given \, max 64), f 44;
 #X text 115 586 2) symbol;
-#X text 180 586 - the name of the file to open (default none), f 46
+#X text 180 586 - the name of the file to open (defaultt none), f 46
 ;
 #X text 115 600 3) float;
 #X text 115 563 1) float;
 #X text 179 561 -;
-#X text 173 273 bang - (re)start playing the buffer from the beggining
+#X text 173 273 bang - (re)start playing the buffer from the beginning
 , f 60;
-#X text 138 640 -speed <float>: sets playing speed (default 100);
+#X text 138 640 -speed <float>: sets playing speed (defaultt 100);
 #X text 152 513 signal - the buffer signal of the corresponding channel
 ;
 #X text 221 289 opens a file with the symbol name (no symbol opens
 dialog box) and starts playing, f 52;
 #X text 169 315 start - same as bang, f 61;
 #X text 169 393 pause - pauses playing the buffer, f 61;
-#X text 175 330 stop - stops and goes back to the beggining, f 60
+#X text 175 330 stop - stops and goes back to the beginning, f 60
 ;
 #X text 169 345 float - <1> is the same as "start" \, "0" is the same
 as "stop", f 61;
@@ -73,7 +73,7 @@ message), f 68;
 ;
 #X text 169 456 float - sets playing speed, f 61;
 #X text 169 481 float - sets transposition in cents, f 61;
-#X text 132 656 -transp <float>: sets transposition in cents (default
+#X text 132 656 -transp <float>: sets transposition in cents (defaultt
 0);
 #X obj 251 40 cnv 4 4 4 empty empty player 0 28 2 18 #e0e0e0 #000000
 0;
@@ -87,10 +87,10 @@ time stretching and pitch shifting via a phase vocoder., f 62;
 #X text 164 534 bang - a bang when finishing playing the buffer;
 #X text 126 362 loop <float> -;
 #X text 217 362 loop on <1> or off <0>, f 53;
-#X text 191 673 -loop: turns loop mode on (default off), f 46;
+#X text 191 673 -loop: turns loop mode on (defaultt off), f 46;
 #X text 115 616 4) float;
-#X text 180 617 - loop <1: on \, 0: off> (default 0), f 46;
-#X text 180 600 - autostart <1: on \, 0: off> (default 0);
+#X text 180 617 - loop <1: on \, 0: off> (defaultt 0), f 46;
+#X text 180 600 - autostart <1: on \, 0: off> (defaultt 0);
 #X obj 26 187 else/pvoc.live~ 100;
 #X obj 37 206 else/gran.player~;
 #X obj 67 226 else/player~;
@@ -157,7 +157,7 @@ time stretching and pitch shifting via a phase vocoder., f 62;
 #X connect 19 2 6 0;
 #X connect 21 0 19 2;
 #X restore 483 212 pd example;
-#X text 95 687 -range <float \, float>: sets sample range (default:
+#X text 95 687 -range <float \, float>: sets sample range (defaultt:
 0 1), f 65;
 #X text 127 377 range <f \, f> - sets sample's playing range (from
 0 to 1), f 68;
@@ -172,7 +172,7 @@ time stretching and pitch shifting via a phase vocoder., f 62;
 #X msg 159 235 open stereo.wav;
 #X text 183 25 If you give an optional float argumewnt as the first
 argument \, it specifies the number of channels. If no float argument
-and no sound file are given \, then the default number of channels
+and no sound file are given \, then the defaultt number of channels
 is 1 (mono). But if the first optional argument is not given and a
 file name is given \, then the number of channels is the same as the
 sound file's. The maximum number is 64 channels.;

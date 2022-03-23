@@ -50,7 +50,7 @@
 #X obj 127 257 print lb-2;
 #X obj 220 256 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 132 399 1) float - number of outputs (default 1);
+#X text 132 399 1) float - number of outputs (defaultt 1);
 #X obj 6 361 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 337 183 else/lb;
@@ -67,20 +67,20 @@
 #X text 63 111 This makes it possible to create abstractions with variable
 inlets/outlets via dynamic patching \, which simply does not work if
 you're using [loadbang] instead.;
-#X text 61 34 So \, by default \, [loadbanger] uses the "load" type
+#X text 61 34 So \, by defaultt \, [loadbanger] uses the "load" type
 of bang when loading the patch. As said before \, if you change it
 to "-init" mode \, the bang will be sent first in subpatches and abstractions.
 Not only that \, but the bang is sent also before the connections are
 made in the parent patch.;
 #X text 75 306 Important Note: If you're using [loadbanger] inside
-an abstraction and neeed it to send a control data throughout an outlet
+an abstraction and need it to send a control data throughout an outlet
 to a parent patch \, you cannot use the -init flag. That's because
 \, as stated \, these are triggered before the connections are made
 \, so a value is not sent out.;
 #X text 66 164 In ELSE \, these abstraction uses [loadbanger] with
 the "-init" flag for that purpose \, so it can have a variable number
 of inlets/outlets depending on the first optional float argument (1
-by default).;
+by defaultt).;
 #X obj 192 252 else/play.file~ 2;
 #X obj 323 252 else/player~ 3;
 #X obj 84 252 else/rec.file~;
@@ -91,7 +91,7 @@ by default).;
 the patch. The [loadbang] object in Pd Vanilla sends a bang when the
 patch has been loaded. Let's name this type of bang as "load"., f
 61;
-#X text 19 119 [loadbanger] works with both kinds of bangs. By default
+#X text 19 119 [loadbanger] works with both kinds of bangs. By defaultt
 \, it sends the "load" bang \, but if you can change to "init mode"
 with the "-init" flag., f 61;
 #X text 19 220 If you check pd's terminal window after loading this
@@ -143,7 +143,7 @@ can test that in this subpatch.;
 #X text 71 90 [loadbanger] (or [lb]) sends "bangs" (from right to left)
 when loading the patch and also sends bangs when receiving any message
 or clicked on. The number of outputs is defined by the argument (1
-by default). [lb] can also be useful for dynamic patching (for creating
+by defaultt). [lb] can also be useful for dynamic patching (for creating
 inlets/outlets) in init mode.;
 #X connect 15 0 33 0;
 #X connect 20 0 33 0;

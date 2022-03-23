@@ -54,30 +54,30 @@
 #X obj 212 231 else/display 3;
 #X text 319 236 finished;
 #X text 206 409 - random output, f 38;
-#X text 132 459 1) float - sets size (default 1), f 65;
+#X text 132 459 1) float - sets size (defaultt 1), f 65;
 #X text 206 272 - generates a randm output, f 53;
 #X text 141 358 n <float>;
 #X text 206 358 - clears the memory and sets a new 'n' size, f 53
 ;
 #X text 206 378 - clears the memory and sets a new 'n' size;
 #X text 132 477 2) list;
-#X text 186 477 - sets number of occurances for each element (default
+#X text 186 477 - sets number of occurrences for each element (defaultt
 1);
 #X text 135 300 eq <float>;
-#X text 206 300 - sets an equal number of occurances for all elements
+#X text 206 300 - sets an equal number of occurrences for all elements
 ;
 #X text 129 314 inc <float>;
-#X text 206 314 - increase by 1 the occurance of an element, f 53
+#X text 206 314 - increase by 1 the occurrence of an element, f 53
 ;
 #X text 171 286 list;
-#X text 206 286 - sets number of occurances for each element, f 53
+#X text 206 286 - sets number of occurrences for each element, f 53
 ;
 #X text 135 330 set <f \, f>;
-#X text 206 330 - sets element and occurance, f 53;
+#X text 206 330 - sets element and occurrence, f 53;
 #X obj 212 201 else/rand.seq 5;
 #X text 64 89 [rand.seq] generates a sequence of random integer numbers
 in a range defined by the 'n' size (from 0 to n-1). You can set how
-many times an integer is output \, the default is once \, where it
+many times an integer is output \, the defaultt is once \, where it
 generates an unrepeated random sequence.;
 #X text 206 344 - clears memory and restarts a new series, f 53;
 #X text 206 429 - right after the sequence finishes;
@@ -105,7 +105,7 @@ generates an unrepeated random sequence.;
 #X obj 285 267 else/rand.seq 12;
 #X obj 83 87 else/rand.seq 5 4 1 3 2 1;
 #X obj 265 66 loadbang;
-#X text 93 26 play random notes with different weigths.;
+#X text 93 26 play random notes with different weights.;
 #X text 305 196 generate a random series;
 #X obj 398 311 else/group;
 #X connect 0 0 1 1;

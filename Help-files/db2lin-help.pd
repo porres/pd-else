@@ -57,7 +57,7 @@ see the implementation inside the abstraction.;
 ;
 #X obj 92 40 cnv 4 4 4 empty empty dBFS 0 28 2 18 #e0e0e0 #000000 0
 ;
-#X text 149 380 1) float - value to be converted (default 0);
+#X text 149 380 1) float - value to be converted (defaultt 0);
 #X obj 83 290 cnv 17 3 37 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 162 309 bang;

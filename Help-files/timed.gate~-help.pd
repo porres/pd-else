@@ -14,7 +14,7 @@
 #X obj 96 376 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 228 377 - gate time in ms;
-#X text 176 441 1) float - gate time in ms (default 0 \, no gate);
+#X text 176 441 1) float - gate time in ms (defaultt 0 \, no gate);
 #X text 184 409 signal;
 #X obj 71 40 cnv 4 4 4 empty empty timed 0 28 2 18 #e0e0e0 #000000
 0;
@@ -281,7 +281,7 @@
 #000000 #000000;
 #X msg 251 104 1.5;
 #X text 33 20 A bang will trigger the object to generate a gate. By
-default \, the initial gate value is "1" \, but you can change that
+defaultt \, the initial gate value is "1" \, but you can change that
 with the second argument. A bang will also output the last received
 gate value from a signal or float input., f 53;
 #X obj 65 131 else/timed.gate~ 1000;
@@ -297,7 +297,7 @@ gate value from a signal or float input., f 53;
 #X connect 13 0 8 0;
 #X connect 14 0 3 0;
 #X restore 487 218 pd more \; examples;
-#X text 176 460 2) float - initial gate amplitude (default 1);
+#X text 176 460 2) float - initial gate amplitude (defaultt 1);
 #X text 193 325 bang;
 #X text 227 325 - control trigger with the last/initial gate value
 ;
@@ -308,7 +308,7 @@ gate value from a signal or float input., f 53;
 #X msg 298 164 retrigger \$1;
 #X obj 298 142 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X text 67 24 By default \, a gate needs to finish before another one
+#X text 67 24 By defaultt \, a gate needs to finish before another one
 is triggered \, but you can change to "retrigger" mode \, where a new
 timed gate starts before the last was finished., f 53;
 #N canvas 207 34 366 264 (subpatch) 0;

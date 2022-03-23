@@ -52,11 +52,11 @@
 #X text 175 307 signal - audio signal input, f 51;
 #X text 181 341 float - sets speed, f 50;
 #X text 181 364 float - sets transposition in cents, f 50;
-#X text 187 322 bang - resets to the beggining of the delay line,
+#X text 187 322 bang - resets to the beginning of the delay line,
 f 49;
-#X text 148 450 2) float - sets playing speed (default 100), f 61
+#X text 148 450 2) float - sets playing speed (defaultt 100), f 61
 ;
-#X text 148 466 3) float - sets transposition in cents (default 0)
+#X text 148 466 3) float - sets transposition in cents (defaultt 0)
 , f 61;
 #X obj 174 132 else/play.file~ 1 violin.wav 1 1;
 #X obj 141 154 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
@@ -67,7 +67,7 @@ f 49;
 It provides independent time stretching and pitch shifting via granulation.
 , f 69;
 #X text 86 154 reset =>;
-#X text 148 432 1) float - sets buffer size in ms (default 5000),
+#X text 148 432 1) float - sets buffer size in ms (defaultt 5000),
 f 61;
 #X obj 418 260 else/stretch.shift~;
 #X obj 429 238 else/pvoc.player~;

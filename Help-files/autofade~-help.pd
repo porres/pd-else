@@ -222,7 +222,7 @@ the input., f 33;
 #X connect 5 0 7 0;
 #X connect 6 0 5 0;
 #X restore 44 277 pd plot;
-#X text 455 104 The default curve is "quartic" \, which is the same
+#X text 455 104 The defaultt curve is "quartic" \, which is the same
 as raising the input to the power of 4, f 31;
 #X text 517 175 as in:;
 #X obj 572 176 pow~ 4;
@@ -362,10 +362,10 @@ the fading curves available, f 32;
 #X connect 20 0 7 0;
 #X restore 475 266 pd curves;
 #X text 238 457 (optional) fade types <quartic \, sin \, sqrt \, lin
-\, hann \, lin \, hannsin \, linsin> (default: quartic), f 47;
+\, hann \, lin \, hannsin \, linsin> (defaultt: quartic), f 47;
 #X text 226 457 -;
 #X text 154 458 1) symbol;
-#X text 226 485 - fade time in ms (default 0), f 49;
+#X text 226 485 - fade time in ms (defaultt 0), f 49;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #X obj 344 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
@@ -383,7 +383,7 @@ the fading curves available, f 32;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 304 3 graph;
-#X text 226 500 - number of channels (default 1), f 49;
+#X text 226 500 - number of channels (defaultt 1), f 49;
 #X msg 178 179 fade \$1;
 #X text 241 159 gate;
 #X obj 246 177 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
@@ -409,7 +409,7 @@ the fading curves available, f 32;
 inputs. It responds to a gate control and uses internal lookup tables
 for 7 different fading curves. A gate on happens when the last input
 value was zero and the incoming value isn't. A gate off happens when
-the last value was a non-zero value and the incomming value is 0! The
+the last value was a non-zero value and the incoming value is 0! The
 maximum gain depends on the gate on level., f 80;
 #X connect 14 0 38 0;
 #X connect 16 0 48 1;

@@ -78,7 +78,7 @@ output);
 #X obj 222 238 print pitch;
 #X text 70 87 [suspedal] holds MIDI Note Off messages when on and sends
 them out when it's switched off. It has two sustain modes \, 'regular'
-(default) and 'tonal' - as in the design of modern pianos., f 63;
+(defaultt) and 'tonal' - as in the design of modern pianos., f 63;
 #X text 193 287 - a pair of pitch/velocity velues from note messages
 ;
 #X text 157 317 flush - outputs all held note-off messages;
@@ -88,7 +88,7 @@ them out when it's switched off. It has two sustain modes \, 'regular'
 #X text 207 407 pedal switch: on <1> or off <0>;
 #X text 207 436 the pitch value of a note message;
 #X text 207 458 the velocity value of a note message;
-#X text 157 529 float - non zero turns on the pedal (default: 0 - off)
+#X text 157 529 float - non zero turns on the pedal (defaultt: 0 - off)
 ;
 #N canvas 527 198 822 448 example 0;
 #X obj 151 248 ctlin 64 1;
@@ -180,11 +180,11 @@ instead.;
 #X restore 582 334 pd oscillators;
 #X obj 76 261 else/display;
 #X obj 582 138 else/rand.i 60 80;
-#X text 37 20 You can directly connect the [notein] object to acess
+#X text 37 20 You can directly connect the [notein] object to access
 MIDI note messages from an external controller and access the MIDI
 message from an actual sustain pedal (which is normally controller
 number 64) and feed it to the [suspedal] object.;
-#X text 441 20 The default sustain mode - used in this example - holds
+#X text 441 20 The defaultt sustain mode - used in this example - holds
 any note off messages when it is on. Below \, we use [suspedal] in
 a patch with 2-voice polyphonic synth controlled by random notes. This
 example uses [voices] but you can also use vanilla's [poly].;
@@ -245,25 +245,25 @@ are:, f 62;
 #X text 64 199 1 'retrigger', f 14;
 #X text 107 84 'free first' - sends a note off before retriggering
 a repeated note, f 59;
-#X text 107 112 'free later' - keeps a histroy of all received note
-ons and sends note off messages for all of them when the pedal is switched
-off (unlike mode 1 \, which only sends one not off);
 #X text 336 305 see also:;
 #X obj 357 328 else/voices;
 #X obj 364 356 else/adsr~;
 #X text 332 381 The above objects interact well with [suspedal] and
 its retrigger modes., f 18;
 #X obj 129 384 else/display;
+#X text 107 112 'free later' - keeps a history of all received Note-Ons
+and sends note off messages for all of them when the pedal is switched
+off (unlike mode 1 \, which only sends one not off);
 #X connect 0 0 1 0;
 #X connect 1 0 10 0;
-#X connect 2 0 26 0;
+#X connect 2 0 25 0;
 #X connect 3 0 4 0;
 #X connect 4 0 15 0;
 #X connect 10 0 15 0;
 #X connect 11 0 15 2;
 #X connect 15 0 2 0;
 #X connect 15 1 2 1;
-#X connect 26 0 5 0;
+#X connect 25 0 5 0;
 #X restore 467 234 pd retrigger;
 #N canvas 738 145 513 478 tonal 0;
 #X obj 110 215 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
@@ -278,7 +278,7 @@ note, f 26;
 #X obj 110 362 else/mono;
 #X obj 110 392 else/display;
 #X obj 161 393 else/display;
-#X text 166 153 4) play with keyboad (new notes aren't sustained);
+#X text 166 153 4) play with keyboard (new notes aren't sustained);
 #X text 34 156 1) turn on note;
 #X text 34 189 5) retrigger note;
 #X text 254 299 6);
@@ -304,7 +304,7 @@ or [voices] \, but also [mono]., f 62;
 #X connect 19 1 6 1;
 #X restore 491 211 pd tonal;
 #X text 149 485 -retrig <float> - sets retriger mode <0 \, 1 \, 2 or
-3> (default 0), f 63;
+3> (defaultt 0), f 63;
 #X connect 5 0 43 2;
 #X connect 18 0 26 0;
 #X connect 19 0 47 0;

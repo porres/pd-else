@@ -25,7 +25,7 @@
 #X obj 69 40 cnv 4 4 4 empty empty of 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 165 129 noise~;
 #X obj 165 210 else/out~;
-#X text 135 418 2) float - ramp time in ms (default 10), f 57;
+#X text 135 418 2) float - ramp time in ms (defaultt 10), f 57;
 #X text 111 292 freq <list>;
 #X text 117 322 amp <list>;
 #X text 111 337 ramp <list>;
@@ -40,7 +40,7 @@
 f 27;
 #X text 65 31 A ramp time as the second argument sets a transition
 time in ms between parameter changes of resonant frequency \, decay
-time an amplitude. By default \, this is set to 10 ms. You can also
+time an amplitude. By defaultt \, this is set to 10 ms. You can also
 send a list of ramp time for each filter in the bank.;
 #X msg 183 138 freq 100 250 300 370 420 510 590 650 \, q 2.5 9.5 15.5
 9.5 10.5 8.5 1.5 9.5 \, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 38;
@@ -54,7 +54,7 @@ send a list of ramp time for each filter in the bank.;
 #X connect 6 0 7 0;
 #X connect 7 0 0 0;
 #X restore 469 239 pd example;
-#X text 135 400 1) float - number of resonant filters (default 1),
+#X text 135 400 1) float - number of resonant filters (defaultt 1),
 f 57;
 #X text 189 368 - the bank filtered signal;
 #X text 60 85 [bpbank~] is a bank made of [bandpass~] objects. You

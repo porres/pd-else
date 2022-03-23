@@ -46,7 +46,7 @@
 #X obj 186 194 else/display;
 #X obj 186 140 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 253 361 depth level (default 0), f 25;
+#X text 253 361 depth level (defaultt 0), f 25;
 #X text 236 244 - outputs canvas name;
 #X obj 186 166 else/canvas.name;
 #X obj 43 200 else/gui;

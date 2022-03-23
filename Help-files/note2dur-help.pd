@@ -81,7 +81,7 @@ longer to shorter durations \, with fracions and float values:, f
 #X text 227 303 - in note duration syntax to convert;
 #X text 147 338 float/symbol;
 #X text 227 338 - converted duration to fraction or float;
-#X text 188 369 -f: sets output to float (default fraction);
+#X text 188 369 -f: sets output to float (defaultt fraction);
 #N canvas 491 122 432 355 common-tulpets 0;
 #X listbox 178 305 11 0 0 0 - - - 0;
 #X obj 178 276 else/note2dur;

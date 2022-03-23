@@ -64,14 +64,14 @@ in the way it handles it \, this object does not have any arguments.
 #X text 60 89 [bl.vsaw~] is a variable sawtooth waveform oscillator
 that also becomes a triangular osccilator just like [else/vsaw~] \,
 but it is bandlimited with the upsampling/filtering technique. This
-makes the object quite ineficient CPU wise \, but is an easy way to
+makes the object quite inefficient CPU wise \, but is an easy way to
 implement a bandlimited oscillator., f 74;
 #X text 174 455 1) float;
 #X text 174 471 2) float;
 #X text 174 487 3) float;
-#X text 233 487 - initial phase offset (default 0);
-#X text 233 455 - frequency in hertz (default 0), f 34;
-#X text 233 471 - initial width (default 0), f 34;
+#X text 233 487 - initial phase offset (defaultt 0);
+#X text 233 455 - frequency in hertz (defaultt 0), f 34;
+#X text 233 471 - initial width (defaultt 0), f 34;
 #X text 165 346 float/signal - pulse width (from 0 to 1);
 #X connect 10 0 32 0;
 #X connect 32 0 17 0;

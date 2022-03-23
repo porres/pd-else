@@ -68,7 +68,7 @@
 #X text 125 316 depth <float>;
 #X text 218 316 - sets bit depth (16 \, 24 or 32), f 53;
 #X text 218 288 - trims to a sample range, f 53;
-#X text 218 358 - sets file's sample rate (default: patch's), f 53
+#X text 218 358 - sets file's sample rate (defaultt: patch's), f 53
 ;
 #N canvas 809 104 834 477 load/save 0;
 #X msg 563 243 clear;
@@ -86,9 +86,9 @@
 #X text 38 190 The "save" message saves the contents of [sample~] into
 an audio file. If no symbol is given \, a standard file dialog is opened
 for naming the file., f 59;
-#X text 38 316 The "depth" message sets the bit depth for writting
+#X text 38 316 The "depth" message sets the bit depth for writing
 files \, it accepts floats:, f 59;
-#X text 161 335 16 - 16-bit integer (default) \; 24 - 24-bit integer
+#X text 161 335 16 - 16-bit integer (defaultt) \; 24 - 24-bit integer
 \; 32 - 32-bit float \;;
 #X text 643 288 writes to a file;
 #X msg 456 107 load stereo.wav;
@@ -103,7 +103,7 @@ and "caf" messages \, but you can also specify a file extension in
 the given symbol (such as "test.wav"). If you don't specify an extension
 \, [sample~] saves in the same extension of the most recently opened
 audio file or the last given extension message ("wav" of "aif"). By
-default \, [sample~] saves in .wav format.;
+defaultt \, [sample~] saves in .wav format.;
 #X text 39 125 You can specify a sound file to load as the second argument
 or via the "load" message ([sample~] can load 'wav' \, 'caf' and 'aif/aiff'
 sound files). Without a given symbol \, "load" opens a dialog box.
@@ -162,8 +162,8 @@ give it the correct table name according to a specific channel.;
 #X text 73 84 [sample~] is an abstraction that creates an audio buffer
 which you can use to load a sample or record into. It can load and
 save multichannel files., f 62;
-#X text 218 475 - buffer name (default sample_\$0), f 44;
-#X text 146 550 -ch <float> - sets number of channels (default 1);
+#X text 218 475 - buffer name (defaultt sample_\$0), f 44;
+#X text 146 550 -ch <float> - sets number of channels (defaultt 1);
 #N canvas 754 82 467 586 rec/play 0;
 #X obj 121 335 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
@@ -179,14 +179,14 @@ save multichannel files., f 62;
 #X msg 192 195 ms 2000;
 #X text 251 237 <= click;
 #X text 34 28 You can use [sample~] to define a buffer that you can
-record into. Below we have a stereo buffer. By default \, the buffer
+record into. Below we have a stereo buffer. By defaultt \, the buffer
 size is one second. You can set the size at creation by using flags
 either in samples (with '-size') or in ms (with '-ms'). Note that if
 you are using [sample~] to load files \, this will also set a maximum
 size for the loaded sample. You can change the size with the 'size'
 or 'ms' messages \, which will also set a maximum limit for loading
 samples., f 61;
-#X text 250 195 <= change from default (1 second) to 2 seconds, f
+#X text 250 195 <= change from defaultt (1 second) to 2 seconds, f
 24;
 #X obj 192 267 else/sample~ buf_\$0 -ch 2;
 #X obj 121 375 else/tabwriter~ buf_\$0 2;

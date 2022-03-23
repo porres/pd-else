@@ -62,9 +62,9 @@
 ;
 #X text 142 366 anything;
 #X msg 255 167 1.5;
-#X text 110 484 2) symbol/float - polyrhythmic ratio (default 1/1)
+#X text 110 484 2) symbol/float - polyrhythmic ratio (defaultt 1/1)
 or float;
-#X text 152 469 1) float - tempo in BPM (default 120), f 49;
+#X text 152 469 1) float - tempo in BPM (defaultt 120), f 49;
 #N canvas 759 78 471 493 example 0;
 #X obj 195 404 else/out~;
 #X obj 153 184 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000

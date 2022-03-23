@@ -35,15 +35,15 @@
 #X text 96 301 open <symbol> -;
 #X obj 6 663 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 192 591 (optional) channels (default 1 if no file is given
+#X text 192 591 (optional) channels (defaultt 1 if no file is given
 \, or sound file's if given \, max 64), f 44;
 #X text 115 616 2) symbol;
-#X text 180 616 - the name of the file to open (default none), f 46
+#X text 180 616 - the name of the file to open (defaultt none), f 46
 ;
 #X text 115 630 3) float;
-#X text 180 630 - autostart <1: on \, 0: off> (default 0), f 46;
+#X text 180 630 - autostart <1: on \, 0: off> (defaultt 0), f 46;
 #X text 115 644 4) float;
-#X text 180 644 - loop <1: on \, 0: off> (default 0), f 46;
+#X text 180 644 - loop <1: on \, 0: off> (defaultt 0), f 46;
 #X text 115 594 1) float;
 #X text 179 592 -;
 #X text 152 547 signal - the buffer signal of the corresponding channel
@@ -71,7 +71,7 @@
 #X msg 134 240 open stereo.wav;
 #X text 122 30 If you give an optional float argumewnt as the first
 argument \, it specifies the number of channels. If no float argument
-and no sound file are given \, then the default number of channels
+and no sound file are given \, then the defaultt number of channels
 is 1 (mono). But if the first optional argument is not given and a
 file name is given \, then the number of channels is the same as the
 sound file's. The maximum number is 64 channels.;
@@ -232,14 +232,14 @@ and [tabplayer~]. It's much more versatile than [play.file~]. For instance
 #X text 192 427 if no float is given \, plays whole file. 1st float
 sets start \, 2nd sets end (in ms) and 3rd sets speed rate, f 57;
 #X text 100 494 fade <float>;
-#X text 180 494 - sets fading time in ms (default 0), f 59;
+#X text 180 494 - sets fading time in ms (defaultt 0), f 59;
 #X text 94 508 xfade <float>;
-#X text 180 508 - non zero sets to crossfading mode (default 0), f
+#X text 180 508 - non zero sets to crossfading mode (defaultt 0), f
 59;
-#X text 180 522 - non zero enables looping \, <0> disbales it (default
+#X text 180 522 - non zero enables looping \, <0> disables it (defaultt
 0), f 59;
-#X text 83 668 -speed <float> (default 100) | -range <f \, f> (default
-0 1) | -fade <float> (default 0) | -xfade: xfade mode on | -loop: loop
+#X text 83 668 -speed <float> (defaultt 100) | -range <f \, f> (defaultt
+0 1) | -fade <float> (defaultt 0) | -xfade: xfade mode on | -loop: loop
 mode on, f 74;
 #X text 106 413 pos <float>;
 #X text 180 413 - sets position (from 0 to 1) and starts playing it

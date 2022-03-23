@@ -110,7 +110,7 @@ zero argument., f 39;
 #X restore 492 235 pd store;
 #X obj 286 231 display;
 #X text 209 343 n;
-#X text 221 342 - outputs numer of elements in right outlet;
+#X text 221 342 - outputs number of elements in right outlet;
 #X msg 226 182 n;
 #X obj 4 499 cnv 3 550 3 empty empty click 8 12 0 13 #dcdcdc #000000
 0;
@@ -143,7 +143,7 @@ the information., f 42;
 #X msg 154 168 goto 2;
 #X text 221 391 - messages to be stored in a sequence;
 #X text 55 88 [store] is an abstraction based on [text] that stores
-incomming messages sequentially., f 73;
+incoming messages sequentially., f 73;
 #X text 221 273 - outputs element from sequence and goes forward;
 #X text 221 315 - outputs all stored messages sequentially;
 #X text 221 328 - clears all messages, f 38;
@@ -155,7 +155,7 @@ incomming messages sequentially., f 73;
 #X text 221 443 - bang at end of sequence or 'n' number of messages
 ;
 #X text 110 476 float - non-zero sets to store elements with the patch
-(default 0), f 66;
+(defaultt 0), f 66;
 #X floatatom 121 169 4 0 0 0 - - - 0;
 #X text 19 174 see also:;
 #X obj 19 235 else/sequencer;

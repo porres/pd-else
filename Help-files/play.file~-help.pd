@@ -74,7 +74,7 @@ file in a mono sampler) has its remaining channels ignored.;
 #X msg 120 240 open stereo.wav;
 #X text 122 30 If you give an optional float argumewnt as the first
 argument \, it specifies the number of channels. If no float argument
-and no sound file are given \, then the default number of channels
+and no sound file are given \, then the defaultt number of channels
 is 1 (mono). But if the first optional argument is not given and a
 file name is given \, then the number of channels is the same as the
 sound file's. The maximum number is 64 channels.;
@@ -106,14 +106,14 @@ sound file's. The maximum number is 64 channels.;
 #X text 153 505 signal - the sample signal of the corresponding channel
 ;
 #X text 165 531 bang - a bang when finishing playing the sample;
-#X text 193 561 (optional) channels (default 1 if no file is given
+#X text 193 561 (optional) channels (defaultt 1 if no file is given
 \, or sound file's if given \, max 64), f 44;
 #X text 116 588 2) symbol;
-#X text 182 588 - the name of the file to open (default none);
+#X text 182 588 - the name of the file to open (defaultt none);
 #X text 116 605 3) float;
-#X text 182 605 - autostart <1: on \, 0: off> (default 0), f 45;
+#X text 182 605 - autostart <1: on \, 0: off> (defaultt 0), f 45;
 #X text 116 620 4) float;
-#X text 182 621 - loop <1: on \, 0: off> (default 0), f 45;
+#X text 182 621 - loop <1: on \, 0: off> (defaultt 0), f 45;
 #X text 116 563 1) float;
 #X text 180 562 -;
 #X text 222 429 opens a file with the symbol name (no symbol opens
