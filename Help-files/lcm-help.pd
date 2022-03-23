@@ -59,8 +59,8 @@
 #X msg 132 179 3 5 7;
 #X text 447 210 see also:;
 #X obj 453 238 else/gcd;
-#X text 77 91 [lcm] returns the least common multple of two or more
-numbers. Floats are truncated to integers. Negatve values are accepted
+#X text 77 91 [lcm] returns the least common multiple of two or more
+numbers. Floats are truncated to integers. Negative values are accepted
 \, "0" is treated as "1". It has two inlets for setting two floats
 \, but a list input to the left sets 2 or more floats to get their
 gcd., f 71;

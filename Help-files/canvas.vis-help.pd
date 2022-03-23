@@ -81,12 +81,12 @@ the parent patch visibility., f 35;
 #X obj 137 257 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
 ;
 #X text 173 258 bang -;
-#X text 224 257 query for visibilty;
+#X text 224 257 query for visibility;
 #X text 64 88 The [canvas.vis] object outputs visibility status. It
 sends 1 if the window is visible and 0 when it's not. It can also query
 the parent status with the depth argument (1 goes up to the parent
 patch \, 2 queries the parent's parent and so on). The object can react
-to most visibilty changes and you can also query for it with a bang.
+to most visibility changes and you can also query for it with a bang.
 , f 71;
 #X obj 176 161 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;

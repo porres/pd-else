@@ -67,7 +67,7 @@
 #X text 100 223 Polyphonic aftertouch is very rare in today's controllers
 \, but it used to be a real thing., f 45;
 #X text 25 14 With the -poly flag \, the polyphonic aftertouch message
-is formated \, where you have separate aftertouch values for each pitch
+is formatted \, where you have separate aftertouch values for each pitch
 \, so there's an extra inlet., f 67;
 #X obj 269 87 nbx 3 14 1 16 0 0 empty empty empty 0 -8 0 10 #dcdcdc
 #000000 #000000 0 256;

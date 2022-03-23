@@ -111,7 +111,7 @@ considered a list \, and so does symbol messages.;
 #X text 426 17 [routeall] can also match a symbol or a list message
 to an argument that corresponds to the symbol or first element on a
 list (and pass it through with the symbol or list selector). Thus \,
-below to the left \, both "symbol a" and "a" will be output throught
+below to the left \, both "symbol a" and "a" will be output through
 the leftmost outlet \, as well as "list a b" and "a b" below on the
 right.;
 #X msg 534 330 list;

@@ -48,7 +48,7 @@
 #X text 169 256 list -;
 #X text 222 257 the float list to calculate the median on;
 #X msg 231 135 9 0 3 1 10 20 33;
-#X text 75 88 The [median] objects retunrs the median of a number list.
+#X text 75 88 The [median] objects returns the median of a number list.
 Non float elements are ignored.;
 #X connect 20 0 19 0;
 #X connect 21 0 20 0;

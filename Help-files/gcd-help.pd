@@ -57,7 +57,7 @@
 #X text 231 350 - float input value;
 #X obj 187 230 else/gcd, f 15;
 #X text 84 97 [gcd] returns the greatest common divisor of two or more
-numbers. Floats are truncated to integers. Negatve values are accepted
+numbers. Floats are truncated to integers. Negative values are accepted
 \, "0" is treated as "1". It has two inlets for setting two floats
 \, but a list input to the left sets 2 or more floats to get their
 gcd., f 66;

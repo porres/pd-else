@@ -160,7 +160,7 @@
 #X msg 216 163 32;
 #X text 183 411 - number of samples to perform the median (defaultt
 1);
-#X text 72 91 The [median~] objects retunrs the median of a number
+#X text 72 91 The [median~] objects returns the median of a number
 of samples (minimum number of samples is 1 and maximum is the block
 size).;
 #X obj 83 225 else/median~;
