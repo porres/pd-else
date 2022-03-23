@@ -106,8 +106,8 @@ static t_int *del_in_perform(t_int *w){
             vp[1] = ep[-3];
             vp[2] = ep[-2];
             vp[3] = ep[-1];
-            bp = vp + XTRASAMPS; // go back to the beggining
-            phase -= nsamps;     // go back to the beggining
+            bp = vp + XTRASAMPS; // go back to the beginning
+            phase -= nsamps;     // go back to the beginning
         }
     }
     c->c_phase = phase; // update phase

@@ -1,8 +1,8 @@
-#N canvas 499 114 516 269 10;
+#N canvas 592 110 516 269 10;
 #X obj 79 193 outlet~;
-#N canvas 320 156 574 437 freeze 0;
-#X obj 249 294 tgl 15 1 empty freee empty 17 7 0 10 #dcdcdc #000000
-#000000 0 1;
+#N canvas 434 126 574 437 freeze 0;
+#X obj 249 294 tgl 15 1 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 1 1;
 #X obj 325 20 inlet;
 #X obj 325 83 != 0;
 #X obj 67 358 spigot;

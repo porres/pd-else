@@ -35,8 +35,8 @@ static t_int *rescale_perform2(t_int *w){
     t_float *out = (t_float *)(w[8]);
     while(n--){
         float f = *in1++;
-        float il = *in2++; // Intput LOW
-        float ih = *in3++; // Intput HIGH
+        float il = *in2++; // Input LOW
+        float ih = *in3++; // Input HIGH
         float ol = *in4++; // Output LOW
         float oh = *in5++; // Output HIGH
         float rangein = ih - il;

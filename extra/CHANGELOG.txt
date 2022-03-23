@@ -59,7 +59,7 @@ Enhancements/fixes:
 - minor fixes in [group] and [circle]
 - [tabplayer~]: fix arg loading.
 - [function]: fixed initialization.
-- [presets]: fixed asking to save, addd click functionality to open edit window.
+- [presets]: fixed asking to save, added click functionality to open edit window.
 - 2 new objects for a total of 433: [rec] and [store].
 
 TUTORIAL:
@@ -153,7 +153,7 @@ Enhancements/fixes:
 - [slice]: fixed float/symbol input
 - [play.file~]: fixed 'set' message
 - [keyboard]: new 'on'/'off' messages
-- [eqdiv]: addd new 'ratio' flag
+- [eqdiv]: added new 'ratio' flag
 - [stack]: make it also store 'bang' message
 - [retrieve] can now retrieve from built-in receive names in compiled objects.
 - [range.hsl]/[slder2d]/[circle]/[multi.vsl] abstraction now work with [retrieve] with built-in receive names.
@@ -214,7 +214,7 @@ Breaking changes:
 - [receiver]: now it can't expand dollar symbols anymore (use [dollsym] if you have to).
 - [common.div] renamed to [gcd].
 - [frac2ratio]: renamed to [frac2dec]
-- [dec2hex]: changed format output to preceed "0x" and use upper case letters
+- [dec2hex]: changed format output to precede "0x" and use upper case letters
 - [slice]: 'rev' mode removed, now use negative 'n' points
 - [stack]: Now right inlets outputs number of elements instead of bangs when empty.
 - [drum.seq]: import/export messages' syntax changed.
@@ -411,7 +411,7 @@ Breaking changes:
 - [keyboard] - behaviour changed a bit: now, by default, the velocity value depends on where you click on the vertical axis. You can set a normalized value if you want.
 - [pic] deleted 'bang' method.
 - [makesymbol] renamed to [format] and behaviour also changed: now it outputs anythings instead of symbols, bang method was removed from secondary inlets, variable arguments are mandatory for the object to output values (errors are given otherwise). You can still generate symbols as [makesymbol] used to (see help file for details).
-- [drum.seq] the 'export' message now outputs a list preceeded by "export", which shall avoid issues and make it easier to manage/route.
+- [drum.seq] the 'export' message now outputs a list preceded by "export", which shall avoid issues and make it easier to manage/route.
 
 Improvements/fixes:
 - [dir]: now you can open absolute paths in windows, which was never possible before (yikes).
@@ -453,7 +453,7 @@ Improvements/fixes:
 
 Breaking changes:
 - [pic]: argument order has changed, now you should use flags anyway.
-- [canvas.active] no bang input, removed visibilty outlet (this is now in a separate object)
+- [canvas.active] no bang input, removed visibility outlet (this is now in a separate object)
 
 Improvements/fixes:
 - [blocksize~] / [sr~] / [nyquist]: fixed potential risky issues that could crash Pd.
@@ -610,7 +610,7 @@ Improvements/fixes:
 - [function] now saves its current state with the patch 
 - fixed a couple of bugs in [dir] where the open message crashed Pd.
 - added a symbol arg to [dir] to specify directory to open.
-- added a 3rd outlet to [dir] to inform if the directory was sucessfully opened or not.
+- added a 3rd outlet to [dir] to inform if the directory was successfully opened or not.
 - improved the way [play.file~] loads sound files.
 - 2 new objects for a total of 326: [message] and [lfnoise].
 
@@ -785,7 +785,7 @@ Fixes/improvements:
 - [player~]/[sampler~] can search and open files in the same folder as the parent patch, thanks to the [dir] update
 - clicking on [player~]/[sampler~] opens files, clicking on [e]/pi is the same as "bang"
 - added "retrigger" to [adsr~]
-- [fbdelay~] can now be setted in samples as well
+- [fbdelay~] time can now be set in samples as well
 - 30 new objects (for a total of 211): [count], [mrms~], [schmitt], [schmitt~], [hot], [crusher~], [quantizer], [quantizer~], [int~], [rint], [rint~], [pinknoise~], [ffdelay~], [mavg~], [suspedal], [voices], [mono], [openfile], [colors], [pic], [hex2dec], [dec2hex], [click], [properties], [car2pol], [car2pol~], [mag], [mag~], [pol2car] & [pol2car~].
 
 ----------------------------------------------------------------------------
@@ -840,7 +840,7 @@ Improvements/additions:
 - new adsr~ object (finally a nice one for Pd)
 - [args] is now a compiled object, not a subpatch model
 - new [break] object - this allows to manage arguments in abstractions much more easily.
-- thanks to the [break] object, I addd flag arguments to bank objects (oscbank~/oscbank2~/resonbank~/resonbank2~/bpbank~) and also sampler~
+- thanks to the [break] object, I added flag arguments to bank objects (oscbank~/oscbank2~/resonbank~/resonbank2~/bpbank~) and also sampler~
 - changed the pre delay time parameter of [plateverb~] back to ms (sorry, don't know what  I was thinking).
 
 ----------------------------------------------------------------------------

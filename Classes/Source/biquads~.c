@@ -17,7 +17,7 @@ typedef struct _biquads{
     t_int     x_bypass;
     int 	  x_numfilt; // number of biquad filters
 	double 	  x_coeff[MAX_COEFFS]; // array of coeffs
-/* the coeff array is ane asy/cheap way of doing this
+/* the coeff array is an easy/cheap way of doing this
  without malloc/calloc-ing - maybe worth changing in the future */
 } t_biquads;
 

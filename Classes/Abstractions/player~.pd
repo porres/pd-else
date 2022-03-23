@@ -171,7 +171,7 @@
 #X obj 142 176 list;
 #N canvas 67 279 425 422 1st_is_not_filename 0;
 #X obj 87 31 inlet;
-#X text 222 347 3nd is autostart;
+#X text 222 347 3rd is autostart;
 #X text 229 288 4th is loop;
 #X obj 121 263 unpack;
 #X obj 114 133 list split 1;
@@ -202,7 +202,7 @@
 #N canvas 184 344 358 270 1st_is_filename 0;
 #X obj 64 63 inlet;
 #X text 196 206 2nd is autostart;
-#X text 223 172 3nd is loop;
+#X text 223 172 3rd is loop;
 #X obj 64 108 list split 1;
 #X obj 98 137 unpack;
 #X obj 147 173 s \$0-loop;

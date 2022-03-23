@@ -94,7 +94,7 @@ static double pluck_getlin(double tab[], unsigned int sz, double idx){
 
 static double pluck_read_delay(t_pluck *x, double arr[], t_float in_samps){
     double rh = in_samps < 1 ? 1 : (double)in_samps; // read head size in samples
-    rh = (double)x->x_wh + ((double)x->x_sz-rh); // subract from writehead to find buffer position
+    rh = (double)x->x_wh + ((double)x->x_sz-rh); // subtract from writehead to find buffer position
     while(rh >= x->x_sz) // wrap to delay buffer length
         rh -= (double)x->x_sz;
     return pluck_getlin(arr, x->x_sz, rh); // read from buffer

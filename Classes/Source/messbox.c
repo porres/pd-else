@@ -508,7 +508,7 @@ static void *messbox_new(t_symbol *s, int ac, t_atom *av){
     x->x_font_size = glist_getfont(x->x_glist);
     x->x_selected = x->x_resizing = x->x_active = x->x_flag = 0;
     int w = x->x_font_size * 15, h = x->x_font_size * 5;
-    int weigth = 0;
+    int weight = 0;
     x->x_bg[0] = x->x_bg[1] = x->x_bg[2] = 235;
     x->x_fg[0] = x->x_fg[1] = x->x_fg[2] = 0;
     if(ac){
@@ -521,7 +521,7 @@ static void *messbox_new(t_symbol *s, int ac, t_atom *av){
                x->x_fg[0] = (unsigned int)atom_getfloatarg(5, ac, av);
                x->x_fg[1] = (unsigned int)atom_getfloatarg(6, ac, av);
                x->x_fg[2] = (unsigned int)atom_getfloatarg(7, ac, av);
-               weigth = (int)(atom_getfloatarg(8, ac, av));
+               weight = (int)(atom_getfloatarg(8, ac, av));
                x->x_font_size = (int)(atom_getfloatarg(9, ac, av));
            }
            else{
@@ -552,7 +552,7 @@ static void *messbox_new(t_symbol *s, int ac, t_atom *av){
                         }
                         else goto errstate;                    }
                     else if(sym == gensym("-bold"))
-                        x->x_flag = weigth = 1;
+                        x->x_flag = weight = 1;
                     else if(sym == gensym("-fgcolor")){
                         if((ac-i) >= 4){
                             x->x_flag = 1, i++;
@@ -592,7 +592,7 @@ static void *messbox_new(t_symbol *s, int ac, t_atom *av){
         x->x_font_size = 8;
     sprintf(x->x_bgcolor, "#%2.2x%2.2x%2.2x", x->x_bg[0], x->x_bg[1], x->x_bg[2]);
     sprintf(x->x_fgcolor, "#%2.2x%2.2x%2.2x", x->x_fg[0], x->x_fg[1], x->x_fg[2]);
-    x->x_font_weight = weigth ? gensym("bold") : gensym("normal");
+    x->x_font_weight = weight ? gensym("bold") : gensym("normal");
     outlet_new(&x->x_obj, &s_float);
     return(x);
     errstate:

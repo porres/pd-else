@@ -795,7 +795,7 @@
 #X obj 108 63 r \$0-arg-list;
 #X obj 87 86 list;
 #X obj 154 289 s \$0-spigot;
-#X text 249 349 3nd is autostart;
+#X text 249 349 3rd is autostart;
 #X text 229 288 4th is loop;
 #X obj 121 263 unpack;
 #X obj 121 316 sel 1;
@@ -831,7 +831,7 @@
 #X obj 64 35 inlet;
 #X obj 98 170 sel 1;
 #X text 213 203 2nd is autostart;
-#X text 223 172 3nd is loop;
+#X text 223 172 3rd is loop;
 #X obj 103 78 r \$0-arg-list;
 #X obj 64 78 list;
 #X obj 147 173 s \$0-spigot;
