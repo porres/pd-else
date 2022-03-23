@@ -156,7 +156,7 @@
 #X obj 114 369 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 197 367 float;
-#X text 238 367 - convertion time in ms, f 40;
+#X text 238 367 - conversion time in ms, f 40;
 #X text 237 405 - converted float;
 #X text 62 90 [sig2float~] coverts signals to floats. The conversion
 occurs at a time rate defined by the 1st argument or right inlet.,
@@ -197,7 +197,7 @@ f 62;
 #X text 47 46 A bang will reset and sync the conversion rate. Each
 time you set a new rate interval in the right inlet \, it'll also force
 a sync. If you do not want to sync \, you can use the "set" message
-\, in which case the new conersion rate will only be valid at the next
+\, in which case the new conversion rate will only be valid at the next
 conversion.;
 #X connect 0 0 5 1;
 #X connect 1 0 5 0;

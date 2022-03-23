@@ -125,7 +125,7 @@ right.;
 #X obj 561 433 else/routeall bang float symbol;
 #X text 434 273 In Pd \, there are special cases of list messages where
 they are converted to other message types - [routeall] also considers
-such messsages not as lists.;
+such messages not as lists.;
 #X text 569 325 a list without elements is converted to a bang, f
 23;
 #X obj 561 459 else/display;

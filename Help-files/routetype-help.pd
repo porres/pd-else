@@ -196,7 +196,7 @@ Moreover \, [routetype] can handle pointers., f 63;
 ;
 #X text 35 31 In Pd \, there are special cases of list messages where
 they are converted to other message types - [routeall] also considers
-such messsages not as lists.;
+such messages not as lists.;
 #X text 137 98 a list without elements is converted to a bang, f 23
 ;
 #X obj 151 241 else/display;

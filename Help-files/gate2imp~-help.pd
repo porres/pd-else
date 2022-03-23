@@ -48,7 +48,7 @@
 #X obj 192 240 else/out~;
 #X obj 178 328 else/display~;
 #X text 427 237 see also:;
-#X text 423 292 which does an opposite convertion, f 11;
+#X text 423 292 which does an opposite conversion, f 11;
 #X text 70 87 [gate2imp~] converts gates to impulses. It sends an impulse
 when receiving a gate (0 to non 0 transitions) where the impulse value
 is the same as the gate.;
