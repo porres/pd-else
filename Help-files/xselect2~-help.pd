@@ -69,7 +69,7 @@ f 24;
 #X obj 125 297 else/xselect2~ 3 0, f 35;
 #X text 40 24 You can set the operation mode of [xselect2~] with the
 second argument \, 1 sets to indexed mode (defaultt) and 0 sets to non-indexed
-mode. You can also use the index message to change bewteen modes.;
+mode. You can also use the index message to change between modes.;
 #X text 42 84 In the defaultt mode of [xselect2~] (indexed) \, the integer
 part represents the channel (indexed from 0) and the fractional part
 the crossfading point.;

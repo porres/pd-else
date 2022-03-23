@@ -55,7 +55,7 @@
 \, which sets the range for all sliders., f 56;
 #X text 64 353 Note that when you change the range \, all values are
 updated internally to the new range before you ever change them by
-clicking and draging or the set message or whatever., f 48;
+clicking and dragging or the set message or whatever., f 48;
 #X connect 1 0 3 0;
 #X connect 2 0 3 0;
 #X connect 3 0 0 0;
@@ -381,7 +381,7 @@ affecting the locked one, f 21;
 #X obj 294 574 else/display;
 #X msg 282 262 mode \$1;
 #X text 286 287 The defaultt mode is slider number / value;
-#X text 183 62 exports sliders' values as a list preceeded by 'export'
+#X text 183 62 exports sliders' values as a list preceded by 'export'
 ;
 #X text 284 149 dump all values sequentially as slider number / value
 ;

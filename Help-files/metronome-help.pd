@@ -694,7 +694,7 @@ the 0-1 range., f 101;
 #X text 30 71 Considering 960 is a quarter note \, this allows you
 to precisely match down to 256th notes (15 frames or 0.015625) \, triplets
 down to a 512th triplet (5 frames) and quintuplets down to 1024th (3
-frames). It can't precisely handle othe tuplets (like 7 \, 9 \, 11
+frames). It can't precisely handle other tuplets (like 7 \, 9 \, 11
 \, etc) but you can use the [>] object for approximations. Using [>]
 can also be useful for ratios like one third of the phase output (0.33333)
 as it won't really match. On the other hand \, converting fractions

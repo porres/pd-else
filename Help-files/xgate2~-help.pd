@@ -64,7 +64,7 @@ the crossfading point.;
 #X text 152 182 select channels;
 #X text 49 24 You can set the operation mode of [xgate2~] with the
 second argument \, 1 sets to indexed mode (defaultt) and 0 sets to non-indexed
-mode. You can also use the index message to change bewteen modes.;
+mode. You can also use the index message to change between modes.;
 #X obj 134 288 else/xgate2~ 4 0;
 #X obj 227 257 osc~ 440;
 #X obj 131 326 else/meter4~;

@@ -65,7 +65,7 @@
 #X text 192 433 list;
 #X text 225 433 - sets new sequence, f 44;
 #X text 169 491 anything;
-#X text 227 491 - several sequence informations;
+#X text 227 491 - several sequence information;
 #X text 173 569 1) list - sets sequence (defaultt \, empty);
 #X text 139 524 -tempo <float> - sets new tempo value (defaultt 120)
 ;

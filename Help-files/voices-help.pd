@@ -192,7 +192,7 @@ will be sent to free this allocated voice., f 70;
 #X obj 174 192 else/suspedal -retrig 3;
 #X text 20 23 For mode "2" \, we use [suspedal] in retrigger mode 3
 This example also uses "voice stealing". Now \, each repeated note
-alternates bewteen the allocated voices. When the sustain pedal is
+alternates between the allocated voices. When the sustain pedal is
 switched off \, note off messages for all note ons are given., f 70
 ;
 #X obj 174 286 else/voices -retrig 2 2 1;

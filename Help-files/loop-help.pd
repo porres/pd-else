@@ -48,11 +48,11 @@
 #X msg 47 257 pause;
 #X obj 133 180 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 30 23 [loop] iterates in a programming loop fashion. So \, once
-it starts \, it goes all the way to the end as fast as possible. In
-order to stop it \, you need to break the loop with some logic as below
-\, where we use [select] to pause [loop] when the counter reaches "105".
-;
+#X text 30 23 [loop] iterates in a programming loop fashion. So \,
+once it starts \, it goes all the way to the end as fast as possible.
+In order to stop it \, you need to break the loop with some logic as
+below \, where we use [select] to pause [loop] when the counter reaches
+"105".;
 #X text 31 102 Thus \, before breaking the loop \, it counts from 101
 to 105 \, and you can then continue to output the remaining count (from
 106 to 110) with the "resume" message.;
@@ -214,11 +214,6 @@ the "offset" message., f 65;
 #X obj 694 190 bng 17 250 50 0 empty empty empty 0 -6 0 8 #dcdcdc #000000
 #000000;
 #X obj 694 251 print counter;
-#X text 453 74 Note the difference when we only have the number of
-iterations and no start/end values. Here we only define the number
-of iterations and the counter step. Note also that start \, end and
-step values can be floats \, not only integers - unlike the number
-of interations \, which can only be an integer., f 65;
 #X obj 694 222 else/loop 0.5 1.5 0.1;
 #X text 452 32 If you give it two arguments \, you have a start and
 end value. The counter step is "1" by defaultt but can be changed with
@@ -227,13 +222,18 @@ the 3rd argument or the 'step' message., f 65;
 #X obj 488 234 else/loop -step 3.3 11;
 #X obj 438 383 else/loop -b 10;
 #X msg 583 203 range 5 10;
-#X connect 0 0 31 0;
+#X text 453 74 Note the difference when we only have the number of
+iterations and no start/end values. Here we only define the number
+of iterations and the counter step. Note also that start \, end and
+step values can be floats \, not only integers - unlike the number
+of iterations \, which can only be an integer., f 65;
+#X connect 0 0 30 0;
 #X connect 2 0 1 0;
 #X connect 3 0 14 0;
 #X connect 5 0 14 0;
-#X connect 6 0 31 0;
+#X connect 6 0 30 0;
 #X connect 7 0 6 0;
-#X connect 8 0 31 0;
+#X connect 8 0 30 0;
 #X connect 9 0 14 0;
 #X connect 10 0 9 0;
 #X connect 11 0 14 0;
@@ -241,17 +241,17 @@ the 3rd argument or the 'step' message., f 65;
 #X connect 14 0 12 0;
 #X connect 15 0 16 0;
 #X connect 16 0 14 0;
-#X connect 17 0 33 1;
-#X connect 18 0 33 0;
-#X connect 21 0 32 0;
-#X connect 23 0 32 0;
+#X connect 17 0 32 1;
+#X connect 18 0 32 0;
+#X connect 21 0 31 0;
+#X connect 23 0 31 0;
 #X connect 24 0 23 0;
-#X connect 26 0 29 0;
-#X connect 29 0 27 0;
-#X connect 31 0 2 0;
-#X connect 32 0 22 0;
-#X connect 33 0 19 0;
-#X connect 34 0 32 0;
+#X connect 26 0 28 0;
+#X connect 28 0 27 0;
+#X connect 30 0 2 0;
+#X connect 31 0 22 0;
+#X connect 32 0 19 0;
+#X connect 33 0 31 0;
 #X restore 502 180 pd args;
 #X text 191 283 - sets range start/end and step (optionally) and run
 loop, f 58;

@@ -321,13 +321,6 @@ tempo. We're actually playing 90% of the note duration because of [*
 #X connect 6 0 7 0;
 #X connect 7 0 0 1;
 #X restore 162 409 pd voice;
-#X text 25 13 The last example showed us how we can have polyphony
-since each event can have its own specified duration. But you can alo
-specify polyphonic events that happen at the same time as in 'chords'.
-One way is to split messages with commas. In this way \, you can also
-have a list for each event \, each with a different duration like the
-last example. But in this example we just have a single float that
-represents pitch values., f 76;
 #X text 26 92 Another way is to simply specify another event with the
 same timestamp and it will also be output right after the previous
 one. One little techicality is that when you're using commas they do
@@ -340,9 +333,16 @@ and split the list with [unpack]. This is because we don't really need
 [makenote] \, [poly] or [else/voices] as the duration is set in the
 [decay~] object inside [pd voice]., f 41;
 #X obj 93 230 else/score score-3.txt, f 36;
+#X text 25 13 The last example showed us how we can have polyphony
+since each event can have its own specified duration. But you can also
+specify polyphonic events that happen at the same time as in 'chords'.
+One way is to split messages with commas. In this way \, you can also
+have a list for each event \, each with a different duration like the
+last example. But in this example we just have a single float that
+represents pitch values., f 76;
 #X connect 2 0 1 0;
-#X connect 3 0 14 0;
-#X connect 4 0 14 0;
+#X connect 3 0 13 0;
+#X connect 4 0 13 0;
 #X connect 5 0 2 0;
 #X connect 5 1 9 0;
 #X connect 5 2 10 0;
@@ -351,8 +351,8 @@ and split the list with [unpack]. This is because we don't really need
 #X connect 8 0 5 0;
 #X connect 9 0 1 0;
 #X connect 10 0 1 0;
-#X connect 14 0 8 0;
-#X connect 14 2 0 0;
+#X connect 13 0 8 0;
+#X connect 13 2 0 0;
 #X restore 466 213 pd polyphony;
 #X connect 33 0 53 0;
 #X connect 49 0 53 0;

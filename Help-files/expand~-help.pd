@@ -51,7 +51,7 @@
 #X text 181 363 signal - compressed signal, f 46;
 #X text 146 438 4) float;
 #X obj 184 140 else/play.file~ 1 kantele.wav 1 1;
-#X text 66 94 [expand~] is an abstraction that performes expanding.
+#X text 66 94 [expand~] is an abstraction that performs expanding.
 It attenuates an input signal below a given threshold.;
 #X obj 184 167 else/expand~ -15 5 10 10 0;
 #X connect 32 0 34 0;

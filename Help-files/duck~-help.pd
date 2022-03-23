@@ -45,7 +45,7 @@
 #X obj 161 182 else/duck~, f 12;
 #X text 181 285 signal - input signal, f 48;
 #X text 181 383 signal - control signal, f 48;
-#X text 40 89 [duck~] is an abstraction that performes a duck volume
+#X text 40 89 [duck~] is an abstraction that performs a duck volume
 effect (a.k.a sidechain compression). It attenuates an input signal
 according to the level of a control signal. you can also mix the ducked
 signal with the control input signal., f 79;

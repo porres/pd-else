@@ -56,7 +56,7 @@
 #X text 216 258 - outputs the stored message;
 #X text 216 274 - outputs the message without storing it;
 #X text 216 329 - the stored message;
-#X text 247 359 intially stored message (defaultt: "bang");
+#X text 247 359 initially stored message (defaultt: "bang");
 #X obj 229 192 else/defaultt a b c;
 #X text 59 87 The [defaultt] sets a defaultt message as the argument
 or via the right inlet. A bang outputs the defaultt message \, other
