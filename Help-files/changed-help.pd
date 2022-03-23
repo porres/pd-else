@@ -52,10 +52,6 @@
 #000000 #000000;
 #X text 167 358 bang;
 #X text 207 381 - set a current message inside the object, f 44;
-#X text 62 87 [changed] passes its data input through only when it
-changed from the last receive message or the message that was set via
-arguments or messages. Unline [change] from Pd Vanilla \, it accepts
-any kind of messages.;
 #X msg 213 151 hi there;
 #X msg 231 176 list one 2 3;
 #X text 106 154 outputs =>;
@@ -96,14 +92,18 @@ number and trigger a new value., f 32;
 #X connect 2 0 0 0;
 #X connect 3 0 0 0;
 #X restore 426 288 pd no-repeat \; example;
-#X connect 19 0 38 0;
-#X connect 20 0 38 0;
+#X text 62 87 [changed] passes its data input through only when it
+changed from the last receive message or the message that was set via
+arguments or messages. Unlike [change] from Pd Vanilla \, it accepts
+any kind of messages., f 67;
+#X connect 19 0 37 0;
+#X connect 20 0 37 0;
 #X connect 21 0 20 0;
-#X connect 25 0 38 0;
+#X connect 25 0 37 0;
 #X connect 26 0 25 0;
-#X connect 27 0 38 0;
-#X connect 31 0 38 0;
-#X connect 32 0 38 0;
-#X connect 38 0 35 0;
-#X connect 38 1 48 0;
-#X connect 40 0 38 1;
+#X connect 27 0 37 0;
+#X connect 30 0 37 0;
+#X connect 31 0 37 0;
+#X connect 37 0 34 0;
+#X connect 37 1 47 0;
+#X connect 39 0 37 1;

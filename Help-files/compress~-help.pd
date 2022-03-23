@@ -1,4 +1,4 @@
-#N canvas 470 37 567 590 10;
+#N canvas 684 30 567 590 10;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #X obj 346 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
@@ -46,12 +46,11 @@
 #X text 220 494 - attack time in ms (defaultt 10), f 46;
 #X text 220 479 - attenuation ratio (defaultt 1), f 46;
 #X obj 234 207 else/out~;
-#X text 77 90 [compress~] is an abstraction that performes compression.
-It attenuates an input signal above a given threshold., f 57;
 #X text 220 509 - release time in ms (defaultt 10), f 46;
 #X text 220 464 - threshold in dB (defaultt -10), f 46;
 #X text 189 414 signal - compressed signal, f 46;
-#X text 220 524 - output gain adjustment in dB (defaultt 0), f 46;
+#X text 220 524 - output gain adjustment in dB (defaultt 0), f 46
+;
 #X text 155 509 4) float;
 #X text 155 524 5) float;
 #X text 153 369 gain <float> - output gain adjustment in dB, f 58
@@ -69,7 +68,9 @@ to 512);
 #X text 220 540 - rms average size in samples (defaultt 512), f 46
 ;
 #X obj 234 168 else/compress~ -30 5 5 5 12 256;
-#X connect 36 0 40 0;
-#X connect 36 0 44 0;
-#X connect 44 0 27 0;
-#X connect 44 1 39 0;
+#X text 77 90 [compress~] is an abstraction that performs compression.
+It attenuates an input signal above a given threshold., f 57;
+#X connect 35 0 39 0;
+#X connect 35 0 43 0;
+#X connect 43 0 27 0;
+#X connect 43 1 38 0;

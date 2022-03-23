@@ -1,4 +1,4 @@
-#N canvas 458 23 560 531 10;
+#N canvas 494 23 560 531 10;
 #X obj 3 275 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 3 436 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -66,7 +66,6 @@ back through the corresponding outlet., f 72;
 #X text 118 340 mute <list> -;
 #X text 118 284 play <list> -;
 #X text 106 312 record <list> -;
-#X text 118 326 stop <lits> -;
 #X text 106 354 unmute <list> -;
 #X text 100 397 write <symbol> -;
 #X text 202 368 clears all tracks or tracks from the given list, f
@@ -97,16 +96,17 @@ list;
 #X text 202 298 sets playing speed in percentage, f 57;
 #X text 29 224 see also:;
 #X obj 29 243 else/rec2 x;
+#X text 118 326 stop <list> -;
 #X connect 7 0 32 0;
 #X connect 8 0 32 0;
 #X connect 32 0 33 0;
 #X connect 32 1 34 0;
 #X connect 32 2 35 0;
 #X connect 36 0 32 1;
-#X connect 53 0 32 0;
+#X connect 52 0 32 0;
+#X connect 53 0 32 3;
 #X connect 54 0 32 3;
-#X connect 55 0 32 3;
+#X connect 55 0 32 2;
 #X connect 56 0 32 2;
-#X connect 57 0 32 2;
+#X connect 57 0 32 1;
 #X connect 58 0 32 1;
-#X connect 59 0 32 1;

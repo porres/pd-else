@@ -63,7 +63,7 @@
 #X obj 34 192 else/pgm.in;
 #X text 69 86 [pgm.out] formats and sends raw MIDI program messages.
 An argument sets channel number (the defaultt is 1). Unlike vanilla's
-[pgmin] and [pgmout] \, the prgram change values are from 0 to 127!
+[pgmin] and [pgmout] \, the program change values are from 0 to 127!
 , f 66;
 #X text 349 141 channel;
 #X connect 29 0 36 0;

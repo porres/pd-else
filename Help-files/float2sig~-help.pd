@@ -148,7 +148,7 @@
 #X obj 377 165 nbx 5 14 0 1000 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
 #X text 145 273 float;
-#X text 191 330 - conerted signal;
+#X text 191 330 - converted signal;
 #X text 191 273 - float value to convert to signal;
 #X obj 161 40 cnv 4 4 4 empty empty signal 0 28 2 18 -233017 -1 0;
 #X text 376 143 ramp time;

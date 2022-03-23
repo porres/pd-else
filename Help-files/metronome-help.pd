@@ -181,8 +181,7 @@ divider values. Check its help file., f 93;
 #X connect 52 0 10 0;
 #X connect 53 0 10 1;
 #X restore 497 218 pd clock;
-#X text 147 597 1) float - (optional) tempo in BPM (defaultt 120),
-f 49;
+#X text 147 597 1) float - (optional) tempo in BPM (defaultt 120);
 #X text 191 305 - non-zero (re)starts \, zero stops, f 47;
 #X text 18 182 see also:;
 #X obj 18 201 else/clock;
@@ -230,11 +229,11 @@ f 20;
 #X text 610 84 (0.25 is '1/4');
 #X text 513 232 (0.125 is '1/8');
 #X text 46 16 A beat length can be specified as a fraction (such as
-'1/4' \, the defaultt value) or a float (where 0.25 is the same as 1/4).
-A beat length of 1/4 means the beat is a quarter note. So the tempo
-value in BPM considers a fourth note. You can set the beat length with
-the 'beat' message or '-beat' flag. You can set it before a time signature
-change., f 51;
+'1/4' \, the defaultt value) or a float (where 0.25 is the same as
+1/4). A beat length of 1/4 means the beat is a quarter note. So the
+tempo value in BPM considers a fourth note. You can set the beat length
+with the 'beat' message or '-beat' flag. You can set it before a time
+signature change., f 51;
 #X text 46 102 A beat length to "1/2" sets the BPM value for a half
 note. If you have a 4/4 time signature \, this means that each beat
 (which is a quarter note here) will have a beat twice as fast than
@@ -439,8 +438,6 @@ the number of sub-beats)., f 78;
 #X msg 128 220 timesig 3/4;
 #X obj 24 147 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X text 29 565 Similarly \, 7/8 considers an eigth note as the tempo
-\, so you have "0.5" and "120" instead., f 77;
 #X text 204 220 automatically grouped in 3 (1 sub-beats each);
 #X obj 85 383 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
@@ -468,22 +465,24 @@ bpm of "40"., f 77;
 #X obj 85 304 else/metronome 90 15/8 5, f 41;
 #X text 347 296 actual beat length actual tempo and bar duration (ms)
 , f 27;
-#X connect 0 0 33 0;
-#X connect 1 0 33 0;
-#X connect 2 0 33 0;
-#X connect 3 0 33 0;
-#X connect 4 0 33 0;
-#X connect 13 0 33 0;
-#X connect 14 0 33 0;
-#X connect 20 0 21 0;
-#X connect 23 0 27 0;
-#X connect 27 0 19 0;
-#X connect 29 0 33 0;
-#X connect 31 0 33 0;
-#X connect 33 0 17 0;
-#X connect 33 1 23 0;
-#X connect 33 2 20 0;
-#X connect 33 3 24 0;
+#X text 29 565 Similarly \, 7/8 considers an eighth note as the tempo
+\, so you have "0.5" and "120" instead., f 77;
+#X connect 0 0 32 0;
+#X connect 1 0 32 0;
+#X connect 2 0 32 0;
+#X connect 3 0 32 0;
+#X connect 4 0 32 0;
+#X connect 13 0 32 0;
+#X connect 14 0 32 0;
+#X connect 19 0 20 0;
+#X connect 22 0 26 0;
+#X connect 26 0 18 0;
+#X connect 28 0 32 0;
+#X connect 30 0 32 0;
+#X connect 32 0 16 0;
+#X connect 32 1 22 0;
+#X connect 32 2 19 0;
+#X connect 32 3 23 0;
 #X restore 64 67 pd basic;
 #X text 153 97 or "non power of two";
 #N canvas 470 70 606 541 complex 0;
@@ -776,8 +775,8 @@ output. It also syncs to [clock] objects., f 70;
 #X text 60 19 The -sub flag sets to subdivision (or subtempo) mode
 \, where the bang output also bangs at subtempos. You can also use
 the 'sub' message where non zero sets to subdivision mode and zero
-sets to the defaultt mode (only bang at tempo number changes)., f 64
-;
+sets to the defaultt mode (only bang at tempo number changes)., f
+64;
 #X connect 0 0 15 0;
 #X connect 1 0 15 1;
 #X connect 2 0 1 0;
