@@ -212,7 +212,7 @@ The tempo in a [metronome] depends on the time signature. Note how
 #X connect 12 0 10 0;
 #X connect 14 0 6 0;
 #X restore 464 360 pd metronome;
-#X text 112 436 beat <float> - sets beat lenght, f 56;
+#X text 112 436 beat <float> - sets beat length, f 56;
 #X text 179 589 BPM for main clock (default 120) or divider (float
 or symbol fraction) for synced clocks (default 1)., f 56;
 #X text 44 230 Below we have a main clock at 60 BPM and a synced clock

@@ -7,21 +7,21 @@
 static t_class *pimp_class;
 
 typedef struct _pimp{
-    t_object x_obj;
-    double  x_phase;
-    double  x_last_phase_offset;
-    t_float  x_freq;
-    t_inlet  *x_inlet_phase;
-    t_inlet  *x_inlet_sync;
-    t_outlet *x_outlet_dsp_0;
-    t_outlet *x_outlet_dsp_1;
-    t_float x_sr;
+    t_object    x_obj;
+    double      x_phase;
+    double      x_last_phase_offset;
+    t_float     x_freq;
+    t_inlet    *x_inlet_phase;
+    t_inlet    *x_inlet_sync;
+    t_outlet   *x_outlet_dsp_0;
+    t_outlet   *x_outlet_dsp_1;
+    t_float     x_sr;
 // MAGIC:
-    int x_posfreq; // positive frequency flag
-    t_glist *x_glist; // object list
-    t_float *x_signalscalar; // right inlet's float field
-    int x_hasfeeders; // right inlet connection flag
-    t_float  x_phase_sync_float; // float from magic
+    int         x_posfreq; // positive frequency flag
+    t_glist    *x_glist; // object list
+    t_float    *x_signalscalar; // right inlet's float field
+    int         x_hasfeeders; // right inlet connection flag
+    t_float     x_phase_sync_float; // float from magic
 }t_pimp;
 
 static t_int *pimp_perform_magic(t_int *w){
@@ -60,6 +60,7 @@ static t_int *pimp_perform_magic(t_int *w){
             phase = phase + phase_dev;
             if(phase_dev != 0 && phase <= 0)
                 phase = phase + 1.; // wrap deviated phase
+            post("hz >= 0 | phase = %f", phase);
             *out2++ = phase >= 1.;
             if(phase >= 1.)
                 phase = phase - 1; // wrapped phase
@@ -166,9 +167,10 @@ static void *pimp_new(t_floatarg f1, t_floatarg f2){
     if(init_freq >= 0)
         x->x_posfreq = 1;
 /*    if(init_phase == 0 && x->x_posfreq)
-        x->x_phase = 1.;*/
-    else
+        x->x_phase = 1.;
+    else*/
         x->x_phase = init_phase;
+    post("x->x_phase = %f", x->x_phase);
     x->x_last_phase_offset = 0;
     x->x_freq = init_freq;
     x->x_sr = sys_getsr(); // sample rate

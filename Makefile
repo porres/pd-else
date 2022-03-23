@@ -17,9 +17,6 @@ uname := $(shell uname -s)
 # Lib:
 else.class.sources := Classes/Source/else.c
 
-# EXTRA:
-cmul~.class.sources := Classes/Source/cmul~.c
-
 # GUI:
 button.class.sources := Classes/Source/button.c
 pic.class.sources := Classes/Source/pic.c
@@ -130,6 +127,7 @@ cents2ratio~.class.sources := Classes/Source/cents2ratio~.c
 chance~.class.sources := Classes/Source/chance~.c
 changed~.class.sources := Classes/Source/changed~.c
 changed2~.class.sources := Classes/Source/changed2~.c
+cmul~.class.sources := Classes/Source/cmul~.c
 crackle~.class.sources := Classes/Source/crackle~.c
 crossover~.class.sources := Classes/Source/crossover~.c
 cusp~.class.sources := Classes/Source/cusp~.c

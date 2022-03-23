@@ -239,27 +239,27 @@ change., f 51;
 note. If you have a 4/4 time signature \, this means that each beat
 (which is a quarter note here) will have a beat twice as fast than
 the given tempo (that is an actual BPM which is the double) and the
-actual beat lenght is half! Both actual beat lenght and actual BPM
+actual beat length is half! Both actual beat length and actual BPM
 is given by the rightmost output \, along with the bar duration in
 ms., f 51;
 #X text 46 195 In the same way \, a beat length of "1/8" is an 8th
 note \, so a 4/4 time signature has an actual BPM that is twice as
-slow and an actual beat lenght that is equal to 2!, f 51;
+slow and an actual beat length that is equal to 2!, f 51;
 #X text 46 246 If you set a "6/8" time signature \, it will give you
 two groups of beats subdivided by 3 \, that means you get two beats
-whose lenght is 3/8 (the same as a dotted quarter note). With the default
+whose length is 3/8 (the same as a dotted quarter note). With the default
 beat length of 1/4 (a quarter note instead of a dotted quarter note)
-you have an actual beat lenght of 1.5! If you want the given tempo
+you have an actual beat length of 1.5! If you want the given tempo
 to reflect a beat duration of 3/8 \, just send the "beat 3/8" message.
 Now the two rightmost outlets will make sure that the beat length is
 "1" and the BPM corresponds to the given one. Each 8th note is now
 one third of the beat., f 51;
-#X text 46 418 Note you can also set other beat lenghts that correspond
-to tuplets. A beat lenght of "1/6" considers a quarter note triplet
-as the beat lenght. For a "2/4" signature \, the actual beat lenght
+#X text 46 418 Note you can also set other beat lengths that correspond
+to tuplets. A beat length of "1/6" considers a quarter note triplet
+as the beat length. For a "2/4" signature \, the actual beat length
 is 1.5 \, because a quarter note fits 1.5 quarter note triplets (or
-3 8th note triplets) inside. Note that this has the same beat lenght
-and number of tempos than a 6/8 time signature with a beat lenght of
+3 8th note triplets) inside. Note that this has the same beat length
+and number of tempos than a 6/8 time signature with a beat length of
 1/4!, f 65;
 #X connect 0 0 21 0;
 #X connect 1 0 21 0;
@@ -356,7 +356,7 @@ On the other hand 3/5 is three beats of a quarter note quintuplet.
 , f 86;
 #X text 19 298 Let's get a bit crazier now and use an 8:9 tuplet for
 8th notes (where we have eight 8th notes in the space of nine 8th notes)
-and consider two of them (hence \, a quarter note) as the beat lenght.
+and consider two of them (hence \, a quarter note) as the beat length.
 The ratio is actually "4:4.5" but let's use the "8:9" and multiply
 it by 4 (as the base measure is a fourth note). So 8:9 x 4 is "32:9"
 \, which is "3.555556". Therefore \, 4/3.555556 means 4 beats that
@@ -456,7 +456,7 @@ the number of sub-beats)., f 78;
 So 3/4 does not have the same tempo duration as 6/8! This is clear
 in rightmost outlet. For instance \, 6/8 grouped in 2 considers that
 a beat is three eight notes. In relation to a 60 bpm for a quarter
-note as a base beat lenght we have a beat that is "1.5" and an actual
+note as a base beat length we have a beat that is "1.5" and an actual
 bpm of "40"., f 77;
 #X text 172 326 bar \; sub-bar \; beat \; sub-beat;
 #X obj 166 414 else/metronome~;
@@ -838,7 +838,7 @@ tempo of 60 BPM., f 48;
 beat length or the tempo instead of the time signatures \, the procedure
 is the same. For this example \, we wanted to change the tempo to a
 dotted quarter note \, which is also a 2:3 tuplet. So instead you can
-multuply for for 2/3. The BPM is 60 instead of 90 and the beat lenght
+multuply for for 2/3. The BPM is 60 instead of 90 and the beat length
 is 1/6 (two thirds of 1/4)., f 48;
 #X msg 471 167 tempo 84 \, beat 1/4 \, timesig 7/8 \, bang;
 #X text 38 347 For the next example we have a 5/8 and if we want a

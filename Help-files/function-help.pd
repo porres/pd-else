@@ -266,7 +266,7 @@ mode. This is an indicative that the object has a send or receive symbol.
 #X text 58 84 [function] is a breakpoints function GUI \, mainly used
 with [function~] or [envgen~]. You can click and drag on it or send
 it lists., f 59;
-#N canvas 586 86 873 471 basic 0;
+#N canvas 493 86 873 471 basic 0;
 #X text 88 100 ADSR (attack \, decay \, sustain \, release);
 #X obj 88 207 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 100 1 100 0.6 350 0.6 250 0;
@@ -289,9 +289,6 @@ output of the stored line fucntion.;
 #000000;
 #X text 636 133 set message only sets (doesn't output), f 21;
 #X msg 553 135 0 0.5;
-#X text 466 27 A list of 2 floats sets the point number specified by
-the first number (countiing from 0) with the value specified by the
-second number of the list., f 55;
 #X obj 609 137 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X msg 609 166 set 0 \$1;
@@ -305,6 +302,9 @@ creates an inlet and an outlet when you're in edit mode. Note that
 when you set a receive or send symbol \, the corresponding inlet/outlet
 does not get drawn when you're in edit mode. This is an indicative
 that the object has a send or receive symbol., f 58;
+#X text 466 27 A list of 2 floats sets the point number specified by
+the first number (counting from 0) with the value specified by the
+second number of the list., f 55;
 #X connect 1 0 2 0;
 #X connect 3 0 1 0;
 #X connect 4 0 1 0;
@@ -313,8 +313,8 @@ that the object has a send or receive symbol., f 58;
 #X connect 10 0 8 0;
 #X connect 11 0 8 0;
 #X connect 13 0 8 0;
-#X connect 15 0 16 0;
-#X connect 16 0 8 0;
+#X connect 14 0 15 0;
+#X connect 15 0 8 0;
 #X restore 492 149 pd basic;
 #X connect 41 0 49 0;
 #X connect 43 0 49 0;
