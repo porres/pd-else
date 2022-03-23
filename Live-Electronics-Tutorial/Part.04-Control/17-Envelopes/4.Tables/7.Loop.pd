@@ -31,7 +31,7 @@ is that we can read them in a loop \, sort of like an LFO. For that
 \, instead of using something like [envgen~] to read the table \, we
 have a [phasor~] object., f 56;
 #X text 465 91 For now let's relate this to amplitude modulation and
-also see how we can generate rythmic patterns., f 50;
+also see how we can generate rhythmic patterns., f 50;
 #X obj 310 295 s2f~;
 #X obj 179 278 s2f~;
 #X obj 52 262 s2f~;

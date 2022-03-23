@@ -1,14 +1,14 @@
 #N canvas 668 58 501 583 12;
 #X declare -path else;
-#X obj 177 191 tgl 15 0 empty loop empty 17 7 0 10 -228856 -1 -1 1
-1;
+#X obj 177 191 tgl 15 0 empty loop empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #N canvas 575 228 354 342 voice1 0;
 #X obj 152 228 *~;
 #X obj 47 117 mtof;
-#X floatatom 47 147 5 0 0 0 - - -;
+#X floatatom 47 147 5 0 0 0 - - - 0;
 #X obj 47 29 inlet;
-#X floatatom 170 93 5 0 0 0 - - -;
-#X floatatom 47 90 5 0 0 0 - - -;
+#X floatatom 170 93 5 0 0 0 - - - 0;
+#X floatatom 47 90 5 0 0 0 - - - 0;
 #X obj 152 260 outlet~;
 #X obj 47 60 unpack float float;
 #X obj 90 146 *~ 0.8;
@@ -35,10 +35,10 @@
 #N canvas 575 228 336 318 voice2 0;
 #X obj 152 228 *~;
 #X obj 47 117 mtof;
-#X floatatom 47 147 5 0 0 0 - - -;
+#X floatatom 47 147 5 0 0 0 - - - 0;
 #X obj 47 29 inlet;
-#X floatatom 170 93 5 0 0 0 - - -;
-#X floatatom 47 90 5 0 0 0 - - -;
+#X floatatom 170 93 5 0 0 0 - - - 0;
+#X floatatom 47 90 5 0 0 0 - - - 0;
 #X obj 152 260 outlet~;
 #X obj 47 60 unpack float float;
 #X obj 90 146 *~ 0.8;
@@ -65,8 +65,8 @@
 #X obj 177 165 loadbang;
 #X obj 308 23 declare -path else;
 #X obj 161 386 out~;
-#X obj 307 245 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 307 245 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 329 244 finished;
 #X obj 177 217 midi -loop bach.mid;
 #X text 195 190 start/stop;

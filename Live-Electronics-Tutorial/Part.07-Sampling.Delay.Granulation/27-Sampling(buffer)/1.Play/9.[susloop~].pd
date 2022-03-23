@@ -15,7 +15,7 @@
 #X obj 215 32 declare -path else;
 #X text 54 77 Please slo check out the [susloop~] object \, which is
 useful for playing sound files stored in arrays and can sustain a loop
-whithing a given range in the sample. The looping points are defined
+within a given range in the sample. The looping points are defined
 in samples., f 43;
 #X text 88 496 Please check the help file for more info.;
 #X connect 2 0 7 0;

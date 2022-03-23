@@ -107,7 +107,7 @@ into an inharmonic one. More precisely \, if we shift it upwards \,
 the harmonic ratios are compressed \, and expanded otherwise., f 56
 ;
 #X text 472 157 We can look at this form the perspective of complex
-math. By multplying two complex signals \, we multiply the amplitudes
+math. By multiplying two complex signals \, we multiply the amplitudes
 and sum the phases. Well \, we've seen how summing the phase is the
 same as summing the frequencies \, so the modulation frequency gets
 added., f 56;

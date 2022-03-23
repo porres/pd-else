@@ -20,7 +20,7 @@ distorts one full phsse cycle. The maximum order of this object is
 55;
 #X text 46 194 If we sum the input to the filtered signal \, we can
 hear the phase cancellation at each frequency point there's a phase
-oposition. In this example we have an 8th order filter \, this means
+opposition. In this example we have an 8th order filter \, this means
 it has 4 phase cancellation frequency points. So it's like having 4
 bandstop filters., f 55;
 #X obj 283 19 declare -path else;

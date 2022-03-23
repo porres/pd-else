@@ -9,10 +9,10 @@
 #X obj 731 428 nbx 5 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
 #dcdcdc #000000 #000000 0 256;
 #X text 24 20 Nyquist's theorem says the highest frequency we can represent
-(also called "nyquist frequncy") is half the sample rate. Higher frequencies
+(also called "nyquist frequency") is half the sample rate. Higher frequencies
 generate "Aliasing" or "Foldover". The [nyquist~] object \, from ELSE
 \, reports the Nyquist Frequency.;
-#X text 25 183 Let's imagine an over exagerated example \, where a
+#X text 25 183 Let's imagine an over exaggerated example \, where a
 digital sound has an extremely low rate of 20Hz. Well \, a middle A
 (with 440 hz) can never be represented in such a low rate.;
 #X text 34 452 Above we have an illustration where the original frequency

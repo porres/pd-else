@@ -94,7 +94,7 @@ the left outlet.;
 , f 139;
 #X text 129 737 Note that "depth first" has an exception with a time
 object like [delay]. The delay object receives a bang and delays it
-for a given amount in miliseconds (ms). Hence \, the output of [delay]
+for a given amount in milliseconds (ms). Hence \, the output of [delay]
 gets delayed for 5 ms and you can check that it is output later in
 the terminal window. Note this is also true if the [delay] time is
 0!;

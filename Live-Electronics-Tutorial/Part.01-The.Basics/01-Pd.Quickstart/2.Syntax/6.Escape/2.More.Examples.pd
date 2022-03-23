@@ -49,7 +49,7 @@ how it is not the same thing \, as [receive \\\$0-x] is not actually
 loading the locality variable., f 65;
 #X text 52 24 The backlash character is used in Pd to escape special
 characters that are handled differently in Pd. Such characters are:
-commas \, semicolons \, space dollar signs (as in the locality sintax)
+commas \, semicolons \, space dollar signs (as in the locality syntax)
 and the backlash character itself. See below how to create symbols
 with commas and spaces., f 66;
 #X text 52 239 Here's another example. Below we have a list where commas

@@ -299,7 +299,7 @@
 #X obj 67 484 /~;
 #X obj 67 462 expr~ sin($v1);
 #X text 201 225 A normalized sync function;
-#X text 290 262 formule: sin(x)/(x);
+#X text 290 262 formula: sin(x)/(x);
 #X text 283 283 where x is from -pi to pi;
 #X obj 196 274 pi;
 #X text 222 411 -1 to 1;
@@ -411,7 +411,7 @@ the hann window mupltiplied twice., f 42;
 #X obj 460 226 mov.avg~;
 #X text 378 298 Like before \, we get the normalization factor by multiplying
 the block size to the overlap number \, but now also to this normalization
-factor. Other window types require another factor dependant on the
+factor. Other window types require another factor dependent on the
 average., f 42;
 #X obj 460 191 *~;
 #X connect 0 0 3 0;

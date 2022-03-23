@@ -1,8 +1,8 @@
-#N canvas 366 79 734 598 12;
+#N canvas 494 51 734 598 12;
 #X declare -path else;
 #X obj 120 312 mtof;
 #X obj 120 348 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 110 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 99 346 Hz;
 #X obj 543 456 vcf~ 7;
 #X obj 557 222 vcf~ 15;
@@ -50,23 +50,23 @@ as low frequency noise objects like [stepnoise~] and [rampnoise~].
 #X text 398 376 Q;
 #X text 485 38 More examples:;
 #X text 586 358 Frequency;
-#X text 40 116 Below we have the oscillator setion in a subpatch. We
-use a rich sound tha combines a sqaure and a sawtooth oscillator.,
-f 50;
 #X text 594 139 Frequency;
 #X obj 120 280 rand.i 24 51;
-#X obj 120 211 tgl 30 0 empty empty empty 0 -6 0 8 -228856 -1 -1 1
-1;
+#X obj 120 211 tgl 30 0 empty empty empty 0 -6 0 8 #dcdcdc #000000
+#000000 0 1;
 #X obj 120 184 loadbang;
 #X obj 48 24 declare -path else;
 #X obj 557 253 out~;
+#X text 40 116 Below we have the oscillator section in a subpatch.
+We use a rich sound that combines a square and a sawtooth oscillator.
+, f 50;
 #X connect 0 0 1 0;
 #X connect 1 0 26 0;
 #X connect 3 0 17 0;
-#X connect 4 0 39 0;
-#X connect 4 1 39 1;
+#X connect 4 0 38 0;
+#X connect 4 1 38 1;
 #X connect 5 0 4 0;
-#X connect 6 0 35 0;
+#X connect 6 0 34 0;
 #X connect 8 0 7 0;
 #X connect 9 0 11 0;
 #X connect 10 0 27 0;
@@ -84,6 +84,6 @@ f 50;
 #X connect 24 0 8 0;
 #X connect 26 0 24 0;
 #X connect 27 0 8 2;
-#X connect 35 0 0 0;
-#X connect 36 0 6 0;
-#X connect 37 0 36 0;
+#X connect 34 0 0 0;
+#X connect 35 0 6 0;
+#X connect 36 0 35 0;

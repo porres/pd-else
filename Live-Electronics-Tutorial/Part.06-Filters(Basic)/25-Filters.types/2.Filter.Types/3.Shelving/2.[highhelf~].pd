@@ -193,7 +193,7 @@
 #X obj 211 45 unpack f f f f f;
 #X obj 211 18 inlet;
 #X text 92 20 index;
-#X text 260 18 coeficientes;
+#X text 260 18 coefficientes;
 #X obj 698 68 cnv 15 320 90 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X text 728 97 H(z) = b1 + (b2 * z^-1) + (b3 * z^-2);

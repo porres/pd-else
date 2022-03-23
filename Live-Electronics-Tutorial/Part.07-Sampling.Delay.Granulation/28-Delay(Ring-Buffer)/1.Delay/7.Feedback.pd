@@ -1,4 +1,4 @@
-#N canvas 720 39 825 646 12;
+#N canvas 541 39 825 646 12;
 #X declare -path else;
 #X obj 92 296 *~;
 #X obj 135 261 hsl 128 15 -0.999 0.999 0 0 empty \$0-fb empty -2 -6
@@ -16,10 +16,6 @@
 #X text 138 168 ms;
 #X obj 92 195 f2s~ 300;
 #X obj 132 307 f2s~ 50;
-#X text 297 114 Negative feedback indexes are also possible. The polarity
-of each interation will be flipped \, that's all. This does promote
-a significant change in the sound for very short delay lengths., f
-63;
 #X obj 89 366 delwrite~ \$0-fb 3000;
 #X obj 92 224 delread4~ \$0-fb;
 #X text 106 142 delay time;
@@ -28,7 +24,7 @@ a significant change in the sound for very short delay lengths., f
 #X text 145 260 feedback index;
 #X text 69 48 Audio input;
 #X text 296 51 Now the delay is fed back and summed into the buffer
-input with an attenuation (a feedback index \, or it acumulates/"explodes"
+input with an attenuation (a feedback index \, or it accumulates/"explodes"
 the gain). A 0.9 index makes each iteration/repetition with 90% of
 the amplitude as the last one - check the patch to the left., f 63
 ;
@@ -149,20 +145,24 @@ of the "19-Modulation.Synthesis" chapter., f 78;
 to be fed bacck and control its frequency or phase. To achieve that
 \, we have the native pd objects and the [delread~] object to actually
 achieve just a one sample delay., f 78;
+#X text 297 114 Negative feedback indexes are also possible. The polarity
+of each iteration will be flipped \, that's all. This does promote
+a significant change in the sound for very short delay lengths., f
+63;
 #X connect 0 0 2 1;
 #X connect 1 0 3 0;
 #X connect 2 0 6 0;
-#X connect 2 0 15 0;
+#X connect 2 0 14 0;
 #X connect 3 0 13 0;
 #X connect 4 0 12 0;
 #X connect 5 0 4 0;
 #X connect 7 0 8 0;
 #X connect 8 0 2 0;
 #X connect 9 0 8 1;
-#X connect 12 0 16 0;
+#X connect 12 0 15 0;
 #X connect 13 0 0 1;
-#X connect 16 0 0 0;
-#X connect 27 0 18 0;
-#X connect 27 0 18 1;
-#X connect 30 0 28 0;
-#X connect 30 0 28 1;
+#X connect 15 0 0 0;
+#X connect 26 0 17 0;
+#X connect 26 0 17 1;
+#X connect 29 0 27 0;
+#X connect 29 0 27 1;

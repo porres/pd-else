@@ -63,7 +63,7 @@
 #X obj 320 19 declare -path else;
 #X obj 231 366 out~;
 #X text 62 67 The ELSE library has an object similar to [rev3~]. The
-main difference is that we can set a 'size' paramter and change the
+main difference is that we can set a 'size' parameter and change the
 length of the delay lines of the FDN., f 54;
 #X text 62 125 A typical room size value is around 0.5 \, values closer
 to 0 and 1 may create unusual results. Smaller values promote comb

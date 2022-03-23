@@ -1,7 +1,7 @@
 #N canvas 620 81 945 613 12;
 #X obj 168 235 print;
 #X msg 168 156 Hello World;
-#X text 177 196 <== conection cord;
+#X text 177 196 <== connection cord;
 #X text 254 155 <== message box;
 #X text 97 145 inlet ==>;
 #X text 90 167 outlet ==>;
@@ -48,7 +48,7 @@ them from the Put Menu or their shortcuts:, f 50;
 later). Pd only represents 6 significant digits \, otherwise it uses
 an exponential format such as "1e+6". Anything that is not considered
 a number atom is treated as a symbol atom.;
-#X text 39 53 We program in Pd by conecting "boxes" from "outlets"
+#X text 39 53 We program in Pd by connecting "boxes" from "outlets"
 to "inlets". Click on the box that says "Hello_World!" and see the
 result at Pd's terminal window (a.k.a. 'Pd Window'). To access the
 temial go to "Window" menu and then choose "Pd Window" or use the shortcut

@@ -43,7 +43,7 @@
 #X text 186 274 transfer function;
 #X text 102 308 filter DC Offset;
 #X text 293 115 A general characteristic of waveshaping is that the
-input amplitude affects the overall result. Here we even go beyong
+input amplitude affects the overall result. Here we even go beyond
 the -1 to 1 range and wrap it inside the table range \, which keeps
 affecting the output., f 53;
 #X obj 830 298 f2s~ 10;

@@ -16,7 +16,7 @@
 #X obj 32 199 outlet~;
 #N canvas 68 23 333 262 biquad 0;
 #X obj 37 29 inlet~;
-#N canvas 594 99 531 367 coeficientes 0;
+#N canvas 594 99 531 367 coefficientes 0;
 #X obj 378 248 v sign_\$0;
 #X obj 50 257 pack float float float float float;
 #X obj 50 82 expr $f1 + $f3 \; -sqrt($f1*$f1 + $f2*$f2) * sqrt($f3*$f3
@@ -34,7 +34,7 @@
 #X connect 2 5 1 4;
 #X connect 2 6 0 0;
 #X connect 4 0 2 0;
-#X restore 89 113 pd coeficientes;
+#X restore 89 113 pd coefficientes;
 #X obj 89 160 biquad~;
 #X obj 89 188 outlet~;
 #N canvas 68 23 613 365 polos-zeros 0;
@@ -78,7 +78,7 @@
 #X restore 32 79 pd biquad;
 #N canvas 68 23 333 262 biquad 0;
 #X obj 37 29 inlet~;
-#N canvas 594 99 531 367 coeficientes 0;
+#N canvas 594 99 531 367 coefficientes 0;
 #X obj 378 248 v sign_\$0;
 #X obj 50 257 pack float float float float float;
 #X obj 50 82 expr $f1 + $f3 \; -sqrt($f1*$f1 + $f2*$f2) * sqrt($f3*$f3
@@ -96,7 +96,7 @@
 #X connect 2 5 1 4;
 #X connect 2 6 0 0;
 #X connect 4 0 2 0;
-#X restore 89 113 pd coeficientes;
+#X restore 89 113 pd coefficientes;
 #X obj 89 160 biquad~;
 #X obj 89 188 outlet~;
 #X obj 89 29 inlet;
@@ -140,7 +140,7 @@
 #X restore 32 107 pd biquad;
 #N canvas 53 23 333 262 biquad 0;
 #X obj 37 29 inlet~;
-#N canvas 594 99 531 367 coeficientes 0;
+#N canvas 594 99 531 367 coefficientes 0;
 #X obj 378 248 v sign_\$0;
 #X obj 50 257 pack float float float float float;
 #X obj 50 82 expr $f1 + $f3 \; -sqrt($f1*$f1 + $f2*$f2) * sqrt($f3*$f3
@@ -158,7 +158,7 @@
 #X connect 2 5 1 4;
 #X connect 2 6 0 0;
 #X connect 4 0 2 0;
-#X restore 89 113 pd coeficientes;
+#X restore 89 113 pd coefficientes;
 #X obj 89 160 biquad~;
 #X obj 89 188 outlet~;
 #X obj 89 29 inlet;
@@ -202,7 +202,7 @@
 #X restore 32 139 pd biquad;
 #N canvas 53 23 333 262 biquad 0;
 #X obj 37 29 inlet~;
-#N canvas 594 99 531 367 coeficientes 0;
+#N canvas 594 99 531 367 coefficientes 0;
 #X obj 378 248 v sign_\$0;
 #X obj 50 257 pack float float float float float;
 #X obj 50 82 expr $f1 + $f3 \; -sqrt($f1*$f1 + $f2*$f2) * sqrt($f3*$f3
@@ -220,7 +220,7 @@
 #X connect 2 5 1 4;
 #X connect 2 6 0 0;
 #X connect 4 0 2 0;
-#X restore 89 113 pd coeficientes;
+#X restore 89 113 pd coefficientes;
 #X obj 89 160 biquad~;
 #X obj 89 188 outlet~;
 #X obj 89 29 inlet;

@@ -3,11 +3,11 @@
 #N canvas 308 211 308 379 voice1 0;
 #X obj 126 282 *~;
 #X obj 71 132 mtof;
-#X floatatom 71 162 5 0 0 0 - - -;
+#X floatatom 71 162 5 0 0 0 - - - 0;
 #X obj 71 43 inlet;
 #X obj 71 74 unpack;
-#X floatatom 144 107 5 0 0 0 - - -;
-#X floatatom 71 105 5 0 0 0 - - -;
+#X floatatom 144 107 5 0 0 0 - - - 0;
+#X floatatom 71 105 5 0 0 0 - - - 0;
 #X obj 71 197 bl.saw~;
 #X obj 144 244 adsr~ 10 10 0.5 50;
 #X obj 144 134 / 127;
@@ -31,11 +31,11 @@
 #N canvas 308 211 308 379 voice2 0;
 #X obj 126 282 *~;
 #X obj 71 132 mtof;
-#X floatatom 71 162 5 0 0 0 - - -;
+#X floatatom 71 162 5 0 0 0 - - - 0;
 #X obj 71 43 inlet;
 #X obj 71 74 unpack;
-#X floatatom 144 107 5 0 0 0 - - -;
-#X floatatom 71 105 5 0 0 0 - - -;
+#X floatatom 144 107 5 0 0 0 - - - 0;
+#X floatatom 71 105 5 0 0 0 - - - 0;
 #X obj 71 197 bl.saw~;
 #X obj 144 244 adsr~ 10 10 0.5 50;
 #X obj 144 134 / 127;
@@ -55,11 +55,11 @@
 #N canvas 308 211 308 379 voice3 0;
 #X obj 126 282 *~;
 #X obj 71 132 mtof;
-#X floatatom 71 162 5 0 0 0 - - -;
+#X floatatom 71 162 5 0 0 0 - - - 0;
 #X obj 71 43 inlet;
 #X obj 71 74 unpack;
-#X floatatom 144 107 5 0 0 0 - - -;
-#X floatatom 71 105 5 0 0 0 - - -;
+#X floatatom 144 107 5 0 0 0 - - - 0;
+#X floatatom 71 105 5 0 0 0 - - - 0;
 #X obj 71 197 bl.saw~;
 #X obj 144 244 adsr~ 10 10 0.5 50;
 #X obj 144 134 / 127;
@@ -79,11 +79,11 @@
 #N canvas 308 211 308 379 voice4 0;
 #X obj 126 282 *~;
 #X obj 71 132 mtof;
-#X floatatom 71 162 5 0 0 0 - - -;
+#X floatatom 71 162 5 0 0 0 - - - 0;
 #X obj 71 43 inlet;
 #X obj 71 74 unpack;
-#X floatatom 144 107 5 0 0 0 - - -;
-#X floatatom 71 105 5 0 0 0 - - -;
+#X floatatom 144 107 5 0 0 0 - - - 0;
+#X floatatom 71 105 5 0 0 0 - - - 0;
 #X obj 71 197 bl.saw~;
 #X obj 144 244 adsr~ 10 10 0.5 50;
 #X obj 144 134 / 127;
@@ -100,9 +100,9 @@
 #X connect 8 0 0 1;
 #X connect 9 0 8 0;
 #X restore 226 332 pd voice4;
-#X obj 176 179 keyboard 17 80 2 4 0;
-#X obj 176 118 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 176 179 keyboard 17 80 2 4 0 0 empty empty;
+#X obj 176 118 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 102 120 notein;
 #X obj 102 151 pack;
 #X obj 301 533 poly;
@@ -132,7 +132,6 @@
 #X restore 176 151 pd random_chords;
 #X text 199 118 <= generate random chords if you don't have a controller
 , f 29;
-#X obj 535 377 voices 4 1 -list;
 #X text 683 414 <= click;
 #X text 233 533 see also:;
 #X obj 535 446 plate.rev~ 50 0.6 0.25 0.8 0.8, f 16;
@@ -161,10 +160,11 @@ name to load. We included a third argument \, which is equal to the
 number of instances to make a volume compensation inside the patch.
 , f 56;
 #X obj 535 414 clone 4 voice-abs 4;
-#X text 467 268 Click on the [clone] object to open the abstracion.
+#X text 467 268 Click on the [clone] object to open the abstraction.
 Check its help file \, and also check the help file of [voices]. The
 loaded abstraction (voices-abs.pd) is available in the same folder
 of this series of examples., f 56;
+#X obj 535 377 voices -list 4 1;
 #X connect 1 0 3 0;
 #X connect 2 0 0 0;
 #X connect 2 1 5 0;
@@ -172,13 +172,13 @@ of this series of examples., f 56;
 #X connect 2 3 7 0;
 #X connect 4 0 1 0;
 #X connect 8 0 2 0;
-#X connect 8 0 15 0;
+#X connect 8 0 26 0;
 #X connect 9 0 13 0;
 #X connect 10 0 11 0;
 #X connect 10 1 11 1;
 #X connect 11 0 8 0;
 #X connect 13 0 8 0;
-#X connect 15 0 25 0;
-#X connect 18 0 20 0;
-#X connect 18 1 20 1;
-#X connect 25 0 18 0;
+#X connect 17 0 19 0;
+#X connect 17 1 19 1;
+#X connect 24 0 17 0;
+#X connect 26 0 24 0;

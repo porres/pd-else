@@ -67,7 +67,7 @@ of impulses. By default \, it generates an impulse with an amplitude
 of 1 \, and we can use bangs to generate it., f 73;
 #X text 425 58 The [impulse~] (or [imp~] for short) object from ELSE
 is an impulse oscillator that generated a single sample with a value
-of 1 at the beggining of each period., f 49;
+of 1 at the beginning of each period., f 49;
 #X obj 636 15 declare -path else;
 #X obj 58 289 tabosc4~ impulse;
 #X connect 0 0 9 0;

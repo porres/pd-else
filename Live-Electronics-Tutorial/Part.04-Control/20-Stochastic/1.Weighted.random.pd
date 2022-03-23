@@ -62,7 +62,7 @@ check its help file., f 34;
 #X obj 674 516 *~;
 #X obj 674 547 out~;
 #X obj 721 337 chance -index 5 7 3 1 4 3;
-#X text 530 166 Here we use [chance] to generate a weigthed random
+#X text 530 166 Here we use [chance] to generate a weighted random
 output that we're using as the index of a sequence. The total number
 of chances is the sum of all arguments (24). Frst element has the probability
 of 5/24 to be called \, the second has 7/24 and so on.;

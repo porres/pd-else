@@ -113,7 +113,7 @@ shown (including arrays \, atom boxes and comments)., f 63;
 object or right click on an empty space inside the subpatch. You can
 also hide the name of the objct and its arguments. A way to create
 a one-off subpatch with 'graph on parent' and object name/arguments
-hiddden is by selecting a 'Graph' from the Put Menu., f 61;
+hidden is by selecting a 'Graph' from the Put Menu., f 61;
 #X text 497 120 ----------------------------------------------------------------------------
 , f 76;
 #X text 517 33 To the right we have a 'Graph' from the Put Menu. You

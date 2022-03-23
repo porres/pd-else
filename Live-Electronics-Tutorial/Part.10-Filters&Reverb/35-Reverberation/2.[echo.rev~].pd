@@ -219,10 +219,10 @@ you can try prime numbers as a basis instead as in the 8-stage example.
 have a simple patch with only feedforward lines that emulates echoes
 with short delay times \, which can be used to produce early reflections
 in a reverb algorithm. Below to the left we have a test sound (a sine
-wave sweep) to be compared to the exmaples on the right. We have a
+wave sweep) to be compared to the examples on the right. We have a
 mono input but a stereo output. Open the subpatches for implementation
 details., f 64;
-#X text 511 173 [echo.rev~] is an echo/reverb asbtraction from ELSE
+#X text 511 173 [echo.rev~] is an echo/reverb abstraction from ELSE
 based on this patch. You can set the number of echo stages with the
 first argument and the room size with the second argument/inlet. A
 typical value is the default. It uses a prime sequence and the size

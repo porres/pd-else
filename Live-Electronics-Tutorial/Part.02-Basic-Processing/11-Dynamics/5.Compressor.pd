@@ -5,24 +5,23 @@
 #X obj 133 329 r \$0-attack;
 #X obj 66 223 -~;
 #X obj 100 120 r \$0-thresh;
-#X obj 333 443 nbx 5 14 1 100 0 0 \$0-ratio empty empty 0 -8 0 10 -228856
--1 -1 1 256;
+#X obj 333 443 nbx 5 14 1 100 0 0 \$0-ratio empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X obj 333 424 nbx 5 14 -100 0 0 0 \$0-thresh empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 333 481 nbx 5 14 0 100 0 0 \$0-release empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 333 462 nbx 5 14 0 100 0 0 \$0-attack empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 394 423 Threshold (dB), f 20;
 #X text 394 461 Attack (ms), f 20;
 #X text 394 480 Release (ms), f 20;
 #X text 394 442 Ratio (x:1), f 20;
-#X obj 84 80 mov.rms~ 512 -db;
 #X obj 127 465 *~;
 #X obj 145 411 db2lin;
 #X obj 100 144 f2s~ 10;
-#X obj 333 500 nbx 5 14 0 100 0 0 \$0-gain empty empty 0 -8 0 10 -228856
--1 -1 0 256;
+#X obj 333 500 nbx 5 14 0 100 0 0 \$0-gain empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X text 394 499 Gain adjustnent (dB);
 #X obj 127 502 out~;
 #X obj 145 386 r \$0-gain;
@@ -62,24 +61,25 @@ time the compressor takes to perform the gain adjustment. Conversely
 \, we have a release time for when the gain adjustment goes up again.
 ;
 #X obj 145 436 f2s~ 10 1;
-#X connect 0 0 36 1;
-#X connect 1 0 14 0;
-#X connect 2 0 36 2;
-#X connect 3 0 30 0;
-#X connect 4 0 16 0;
-#X connect 13 0 3 1;
-#X connect 14 0 19 0;
-#X connect 15 0 38 0;
-#X connect 16 0 3 0;
-#X connect 20 0 15 0;
-#X connect 21 0 36 0;
-#X connect 22 0 1 1;
-#X connect 26 0 30 1;
-#X connect 27 0 29 0;
-#X connect 28 0 27 0;
-#X connect 29 0 26 0;
-#X connect 30 0 21 0;
-#X connect 35 0 1 0;
-#X connect 35 0 13 0;
-#X connect 36 0 22 0;
-#X connect 38 0 14 1;
+#X obj 84 80 mov.rms~ -db 512;
+#X connect 0 0 35 1;
+#X connect 1 0 13 0;
+#X connect 2 0 35 2;
+#X connect 3 0 29 0;
+#X connect 4 0 15 0;
+#X connect 13 0 18 0;
+#X connect 14 0 37 0;
+#X connect 15 0 3 0;
+#X connect 19 0 14 0;
+#X connect 20 0 35 0;
+#X connect 21 0 1 1;
+#X connect 25 0 29 1;
+#X connect 26 0 28 0;
+#X connect 27 0 26 0;
+#X connect 28 0 25 0;
+#X connect 29 0 20 0;
+#X connect 34 0 1 0;
+#X connect 34 0 38 0;
+#X connect 35 0 21 0;
+#X connect 37 0 13 1;
+#X connect 38 0 3 1;

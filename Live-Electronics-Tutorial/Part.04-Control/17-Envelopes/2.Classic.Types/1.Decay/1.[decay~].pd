@@ -38,7 +38,7 @@
 -1 -1;
 #X obj 870 313 out~;
 #X obj 807 273 s2f~;
-#X text 293 180 The [lag2~] obect \, with a 0 lenght ramp up and a
+#X text 293 180 The [lag2~] object \, with a 0 length ramp up and a
 decay ramp will also act like a decay only envelope when triggered
 by impulses. In fact \, since it has the same one pole filter in its
 inner workings \, it's basically the same as [decay~]., f 36;

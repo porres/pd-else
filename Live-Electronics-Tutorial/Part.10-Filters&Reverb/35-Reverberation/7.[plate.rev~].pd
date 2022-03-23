@@ -35,10 +35,10 @@ It has an internal filter to control the crossover frequency and high
 frequency dammping as [rev2~] and [rev3~]., f 65;
 #X text 42 179 One important characteristic of this reverb is that
 it uses LFOs to modulate some of the allpass filters as a way to produce
-more dinamic results., f 65;
+more dynamic results., f 65;
 #X obj 274 25 declare -path else;
 #X obj 196 422 out~;
-#X text 42 67 The [plate.rev~] object is a reverb asbtraction available
+#X text 42 67 The [plate.rev~] object is a reverb abstraction available
 in the ELSE library. It is based on a patch by Tom Erbe implementing
 the Dattorro plate stereo reverb model \, and it turns a mono input
 into a stereo output)., f 65;

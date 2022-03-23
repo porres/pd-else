@@ -1,8 +1,8 @@
-#N canvas 520 23 555 731 12;
+#N canvas 520 23 555 723 12;
 #X declare -path else;
 #X obj 100 496 noise~;
-#X obj 174 536 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 174 536 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 289 451 noise~;
 #X obj 289 501 sh~;
 #X obj 289 626 out~;
@@ -21,9 +21,8 @@
 #X obj 309 226 bl.saw~;
 #X obj 309 189 rescale~ 100 400;
 #X obj 309 152 downsample~ 2;
-#X obj 345 452 tempo~ 120 100 -on;
-#X obj 345 510 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 345 510 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 345 483 trig2bang~;
 #X obj 289 584 bl.saw~;
 #X obj 289 547 rescale~ 50 150;
@@ -35,13 +34,14 @@
 hold unit., f 33;
 #X text 65 356 Clearly [sh~] is more maleable \, and it can be triggered
 in many different ways. Use the many impulse and trigger generators
-from ELSE to contol it.;
+from ELSE to control it.;
+#X obj 345 452 tempo~ -on 120 100;
 #X connect 0 0 7 0;
 #X connect 2 0 3 0;
-#X connect 3 0 24 0;
+#X connect 3 0 23 0;
 #X connect 6 2 7 1;
 #X connect 6 2 8 0;
-#X connect 7 0 25 0;
+#X connect 7 0 24 0;
 #X connect 8 0 1 0;
 #X connect 9 0 11 0;
 #X connect 11 0 13 0;
@@ -52,11 +52,11 @@ from ELSE to contol it.;
 #X connect 17 0 16 0;
 #X connect 18 0 17 0;
 #X connect 19 0 18 0;
-#X connect 20 0 3 1;
-#X connect 20 0 22 0;
-#X connect 22 0 21 0;
-#X connect 23 0 4 0;
-#X connect 24 0 23 0;
-#X connect 25 0 26 0;
-#X connect 26 0 5 0;
-#X connect 27 0 6 0;
+#X connect 21 0 20 0;
+#X connect 22 0 4 0;
+#X connect 23 0 22 0;
+#X connect 24 0 25 0;
+#X connect 25 0 5 0;
+#X connect 26 0 6 0;
+#X connect 30 0 3 1;
+#X connect 30 0 21 0;

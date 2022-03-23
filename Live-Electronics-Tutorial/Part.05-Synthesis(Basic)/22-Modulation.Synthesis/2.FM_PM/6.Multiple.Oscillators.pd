@@ -60,7 +60,7 @@
 \, for instance. The more oscillators we have \, the more complex the
 resulting sound is.;
 #X text 508 66 The next example below has 6 oscillators \, where we
-have two chains in paralel \, each containing 3 oscillators in series.
+have two chains in parallel \, each containing 3 oscillators in series.
 Note we're not only using sine wave oscillators., f 43;
 #X obj 156 215 rand.i 35 60;
 #X obj 656 185 rand.i 45 60;

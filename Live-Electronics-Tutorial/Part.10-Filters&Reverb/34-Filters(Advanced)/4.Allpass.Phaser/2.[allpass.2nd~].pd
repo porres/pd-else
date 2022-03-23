@@ -210,7 +210,7 @@
 #X obj 225 264 -;
 #X obj 225 384 outlet;
 #X obj 106 110 list;
-#X text 261 42 coeficientes;
+#X text 261 42 coefficientes;
 #X obj 106 145 expr $f4 + ($f5 * cosW_\$0[$f1]) + ($f6 * cos2W_\$0[$f1])
 \; ($f5 * sinW_\$0[$f1]) + ($f6 * sin2W_\$0[$f1]) \; 1 - ($f2 * cosW_\$0[$f1])
 - ($f3 * cos2W_\$0[$f1]) \; 0 - ($f2 * sinW_\$0[$f1]) - ($f3 * sin2W_\$0[$f1])
@@ -259,7 +259,7 @@
 #X text 47 119 The coefficient in the 1st order allpass filter controls
 the slope of the phase distortion in the same way as the 2nd order
 filter. But here \, we have a control on the central frequency \, which
-is the frequency that passes through the 180 degress point \, which
+is the frequency that passes through the 180 degrees point \, which
 is at the phase opposition., f 66;
 #X text 678 119 If we sum the input to the filtered signal \, we can
 hear the phase cancellation. In practice \, this becomes a bandstop

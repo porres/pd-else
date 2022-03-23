@@ -61,7 +61,7 @@ if it's an ascending or descending ramp., f 47;
 #X text 27 8 We've seen these objects before as a way to perform fade
 in/out. But here they are exposed as a more general way of generating
 lines. And they can do it similarly to [line~] \, where you set a target
-and it generates a line torwards it. But these can also take a signal
+and it generates a line towards it. But these can also take a signal
 as the target., f 47;
 #X obj 120 307 sig~;
 #X obj 142 627 sig~;

@@ -39,7 +39,7 @@ frequency., f 59;
 #X text 218 355 <== square with half the frequency, f 18;
 #X obj 292 26 declare -path else;
 #X text 29 67 In this example \, we have s Soft Sync patch where the
-direction of the oscillator reverses instead of being resetted. This
+direction of the oscillator reverses instead of being reset. This
 is to avoid a harsh clicks that happen when there's a big amplitude
 jump when resetting the oscillator. Hence \, this type of sync does
 not generate discontinuities in the signal and sounds much softer.

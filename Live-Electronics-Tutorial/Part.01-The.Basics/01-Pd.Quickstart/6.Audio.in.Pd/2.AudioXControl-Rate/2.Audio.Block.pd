@@ -60,7 +60,7 @@ illustration., f 48;
 #X text 39 33 This subpatch has a block size of 128 set with [switch~].
 But you need to turn the process on with the toggle in order for the
 audio process to run., f 57;
-#X text 39 87 Additionaly \, [switch~] can be banged to compute only
+#X text 39 87 Additionally \, [switch~] can be banged to compute only
 a single block of audio \, which is useful to perform single block
 operations for your patch (such as precompute a waveform) and turn
 it off right away afterwards to save CPU., f 57;

@@ -40,7 +40,7 @@ and include this value in the MIDI to frequency conversion., f 25
 allows you to set a different value for A4 and also convert lists.
 , f 32;
 #X text 504 82 Now for the other way around. We can also convert from
-frequency to MIDI wth arbitrary reference values for A4 \,, f 49;
+frequency to MIDI with arbitrary reference values for A4 \,, f 49;
 #X obj 523 175 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 60 7 0 10
 -228856 -1 -1 450 256;
 #X obj 523 239 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 60 7 0 10

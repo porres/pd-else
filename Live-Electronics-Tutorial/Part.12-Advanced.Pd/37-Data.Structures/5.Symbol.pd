@@ -1,7 +1,7 @@
-#N struct 1003-DS float x float y symbol sym;
+#N struct 1084-DS float x float y symbol sym;
 #N canvas 385 30 589 567 12;
 #X declare -path else;
-#N canvas 440 205 535 580 template 0;
+#N canvas 440 166 535 580 template 0;
 #X obj 57 348 filledpolygon 999 0 5 5 5 105 5 105 55 5 55;
 #X text 194 231 The instruction is to draw the "sym" variable in the
 20/25 coordinates., f 36;
@@ -36,7 +36,7 @@ with the same [set] object., f 62;
 #X obj 54 437 set -symbol \$0-DS sym;
 #X obj 198 407 append \$0-DS x y;
 #N canvas 1008 133 358 171 \$0-display 1;
-#X scalar 1003-DS 50 50 banana \;;
+#X scalar 1084-DS 49 39 symbol \;;
 #X restore 433 222 pd \$0-display;
 #X obj 416 292 s pd-\$0-display;
 #X msg 416 266 clear \, vis 1;

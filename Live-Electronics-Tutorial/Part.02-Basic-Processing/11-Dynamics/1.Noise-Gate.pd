@@ -1,7 +1,7 @@
 #N canvas 385 123 936 497 12;
 #X declare -path else;
-#X obj 278 148 nbx 4 17 -100 0 0 0 empty empty empty 0 -8 0 13 -228856
--1 -1 -30 256;
+#X obj 278 148 nbx 4 17 -100 0 0 0 empty empty empty 0 -8 0 13 #dcdcdc
+#000000 #000000 0 256;
 #X text 340 150 dB;
 #X obj 165 204 *~;
 #X obj 58 234 meter~;
@@ -10,13 +10,12 @@
 #X obj 165 389 out~;
 #X obj 317 259 setdsp~ 1;
 #X obj 278 122 initmess -30;
-#X obj 183 80 mov.rms~ 512 -db;
 #X obj 183 142 display~;
 #X obj 558 380 vu~;
-#X obj 558 428 nbx 4 17 -100 0 0 0 empty empty empty 0 -8 0 13 -228856
--1 -1 -100 256;
-#X obj 577 404 nbx 4 17 -100 0 0 0 empty empty empty 0 -8 0 13 -228856
--1 -1 -100 256;
+#X obj 558 428 nbx 4 17 -100 0 0 0 empty empty empty 0 -8 0 13 #dcdcdc
+#000000 #000000 0 256;
+#X obj 577 404 nbx 4 17 -100 0 0 0 empty empty empty 0 -8 0 13 #dcdcdc
+#000000 #000000 0 256;
 #X obj 558 351 noisegate~ -30 -size 1024;
 #X text 270 171 threshold/floor;
 #X obj 183 176 glide~ 10;
@@ -40,19 +39,20 @@ values are then used to open and close the gate with the [glide~] object.
 The [glide~] time here is set to 10 ms and can be thought of as the
 attack/release - [glide2~] can be used for different attack and release
 times., f 66;
-#X connect 0 0 25 1;
+#X obj 183 80 mov.rms~ -db 512;
+#X connect 0 0 24 1;
 #X connect 2 0 4 0;
 #X connect 3 0 5 0;
 #X connect 4 0 6 0;
 #X connect 8 0 0 0;
-#X connect 9 0 25 0;
-#X connect 10 0 16 0;
-#X connect 11 0 12 0;
-#X connect 11 1 13 0;
-#X connect 14 0 11 0;
-#X connect 16 0 2 1;
-#X connect 23 0 3 0;
-#X connect 23 0 9 0;
-#X connect 23 0 2 0;
-#X connect 24 0 14 0;
-#X connect 25 0 10 0;
+#X connect 9 0 15 0;
+#X connect 10 0 11 0;
+#X connect 10 1 12 0;
+#X connect 13 0 10 0;
+#X connect 15 0 2 1;
+#X connect 22 0 3 0;
+#X connect 22 0 2 0;
+#X connect 22 0 26 0;
+#X connect 23 0 13 0;
+#X connect 24 0 9 0;
+#X connect 26 0 24 0;

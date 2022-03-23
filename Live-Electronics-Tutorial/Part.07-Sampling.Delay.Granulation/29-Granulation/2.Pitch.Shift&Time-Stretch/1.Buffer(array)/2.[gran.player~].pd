@@ -102,7 +102,7 @@ patch \, check its help file:;
 #X text 268 142 speed;
 #X obj 267 197 display~ 8;
 #X obj 194 197 display~ 8;
-#X text 75 29 The speed frequency is multiplied by the sample lenght
+#X text 75 29 The speed frequency is multiplied by the sample length
 in samples. The transposition frequency is sent to a [pimp~] object
 \, which also controls the envelope. Its output is multiplied by the
 grain size in samples and summed to the speed output. Now both frequencies

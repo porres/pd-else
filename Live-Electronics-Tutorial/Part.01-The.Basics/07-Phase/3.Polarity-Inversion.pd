@@ -166,8 +166,8 @@
 #X text 18 190 Polarity inversion:;
 #X text 242 319 <= polarity inversion, f 23;
 #X text 35 439 Yes \, this is very confusing and needs a lot of attention!
-This is why the term "polarity inversion" is preffered and used in
-this tutorial \, but you'll see many audio gear reffering to a phase
+This is why the term "polarity inversion" is preferred and used in
+this tutorial \, but you'll see many audio gear referring to a phase
 shift of 180 degrees \, when what it is doing is actually just a polarity
 inversion., f 60;
 #X text 35 520 Note that both phase and polarity inversion give the

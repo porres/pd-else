@@ -123,7 +123,7 @@ to oscillate., f 21;
 #X text 493 51 Instant Phase: just "phase" usually refers to instant
 phase in music theory. So it doesn't concern a stage \, but a moment
 in time. It doesn't hurt to explicitly adopt "instant pahse" instead
-of just "phase" \, and indicate a single position withing a given cycle.
+of just "phase" \, and indicate a single position within a given cycle.
 , f 68;
 #X text 546 209 Instant Phase as an "Angle"/"Position", f 19;
 #X text 466 497 On the other hand \, as with amplitude \, besides an
@@ -176,7 +176,7 @@ this original concept is rarely used in music theory and we'll present
 here other more important applications and concepts regarding phase.
 , f 62;
 #X text 493 117 Now \, since an instant phase refers to a single position
-withing a given cycle \, this can also be represented as an angle.
+within a given cycle \, this can also be represented as an angle.
 This may promote a synonymic relationship between phase and angle \,
 but it is important to emphasize that both implicate on and relate
 to a position in the cycle., f 68;

@@ -28,7 +28,7 @@ is now in semitones \, not hertz!;
 #X text 287 242 (deviation in MIDI values);
 #X obj 356 18 declare -path else;
 #X text 63 125 This does change the overall modulating signal. We basically
-have a different and non simmetrical waveform as a result \, which
+have a different and non symmetrical waveform as a result \, which
 promotes a distinct behaviour and output. The main difference in the
 patch is to just use [mtof~] to convert to hertz!;
 #X connect 1 0 0 0;

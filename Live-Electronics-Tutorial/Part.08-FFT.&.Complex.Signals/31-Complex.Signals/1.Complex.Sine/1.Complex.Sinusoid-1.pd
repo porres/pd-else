@@ -56,7 +56,7 @@ complex sine is then composed of two sine waves with this phase difference.
 #X text 426 369 Sine;
 #N canvas 782 158 606 667 animation 0;
 #X text 98 20 Here we have an animation of the projection of the complex
-sine in two dimensions. Note how they are out of phase by 90 degress.
+sine in two dimensions. Note how they are out of phase by 90 degrees.
 , f 59;
 #N canvas 616 23 739 842 animation 0;
 #X obj 101 201 pic 0 ./gif/sc-frame29.gif empty \$0-pic 1 0;

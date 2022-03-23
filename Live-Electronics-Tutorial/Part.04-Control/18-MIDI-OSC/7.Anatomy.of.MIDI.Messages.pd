@@ -166,7 +166,7 @@ a Note Off and this how Pd usually deals with it., f 66;
 velocity \, and it outputs a flag so you know you're dealing with a
 Note On or a Note Off message., f 61;
 #X text 605 278 Even though you can rarely find a MIDI controller that
-outputs release velocity nowadays \, a MIDI file can easilly contain
+outputs release velocity nowadays \, a MIDI file can easily contain
 this data and you can retrieve it in a patch., f 59;
 #N canvas 811 232 735 493 release 0;
 #X obj 89 49 inlet;
@@ -350,7 +350,7 @@ messages., f 35;
 external MIDI-compatible devices \, such as backing up patch data from
 a synthesizer to a computer's hard drive. Pd vanilla has [sysexin]
 to retrieve this sequence of bytes. Sysex messages start with 240 and
-end with 247 \, but can have any other values in bewteen as a list
+end with 247 \, but can have any other values in between as a list
 of any length., f 53;
 #X text 560 415 clock;
 #X text 616 414 start;
@@ -403,9 +403,9 @@ are 2ˆ8 (two to the power of 8). This gives us 256 possible values
 in the 0 to 255 range., f 67;
 #X text 26 91 The main MIDI messages are: Control Change / Program
 Change / Channel Aftertouch / Polyphonic Aftertouch / Pitch Bend /
-Note On & Note Off. The values that correspond to these paramaters
+Note On & Note Off. The values that correspond to these parameters
 (such as pitch and velocity) are within the range between 0 to 127!
-Thus \, they have a 7 bits resolution. The exeption is pitch bend messages
+Thus \, they have a 7 bits resolution. The exception is pitch bend messages
 \, that uses 2 numbers from 0 to 127 to represent its value \, hence
 it has 14-bit resolution (from 0 to 16383)., f 67;
 #X text 26 196 Here we'll see all of these messages in details \, and

@@ -33,14 +33,14 @@ send OSC data (see the help file for more info)., f 72;
 #X text 153 684 routed received messages =>;
 #X text 41 279 Pd Vanilla has the [oscformat] object to format OSC
 messages so they can be sent via the network. The arguments are the
-adresses that will be used for routing and retrieving the sent message.
+addresses that will be used for routing and retrieving the sent message.
 , f 72;
 #X text 113 581 let's route 'hz' and 'slider' ==>;
 #X obj 724 480 netreceive -u -b;
 #X obj 648 218 initmess connect 238.200.200.200 3005;
 #X text 40 108 There are some hardware controllers that send OSC data
 and also mobile apps that you can design the GUI interface for the
-device's touchscreen. There are softwares (synths/DAWs) that can be
+device's touchscreen. There are software (synths/DAWs) that can be
 controlled by OSC messages and real-time environments for sound and
 media like Pure Data \, MAX \, SuperCollider and Processing can send
 and receive OSC Data., f 72;
@@ -73,7 +73,7 @@ such as 'note on/off' \, 'control change' etc., f 72;
 #X text 598 621 These vanilla objects are pretty basic and can help
 in more simple tasks. It doesn't handle timestamps and bundles \, for
 instance. If you need a more proper implementation of the OSC protocol
-you can try the available objets in the 'mrpeach' library (like [packOSC]
+you can try the available objects in the 'mrpeach' library (like [packOSC]
 and [routeOSC])., f 61;
 #X connect 1 0 2 0;
 #X connect 2 0 13 0;

@@ -12,8 +12,8 @@
 #X obj 638 286 out~;
 #X obj 664 212 svfilter~;
 #X obj 638 248 xselect~ 4 100 1;
-#X obj 570 138 vradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856
--1 -1 0;
+#X obj 570 138 vradio 15 1 0 4 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0;
 #X text 513 137 lowpass;
 #X text 506 153 highpass;
 #X text 506 168 bandpass;
@@ -47,9 +47,6 @@ to 2500 hz., f 56;
 #X obj 770 44 declare -path else;
 #X text 533 45 The [svfilter~] offers different kind of filters \,
 test them., f 22;
-#X text 59 321 Next we have other examples with other filter objects
-\, also with LFOs controllng bothe the frequency and resonance of the
-filters. Below we have [bandpass~] and [lowpass~].;
 #X text 584 367 The [bob~] filter is an extra from Pd Vanilla. It's
 also a lowpass resonant filter., f 45;
 #X obj 606 449 bl.saw~ 250;
@@ -57,6 +54,9 @@ also a lowpass resonant filter., f 45;
 #X obj 310 437 bl.saw~ 75;
 #X obj 603 155 bl.saw~ 50;
 #X obj 86 146 bl.saw~ 100;
+#X text 59 321 Next we have other examples with other filter objects
+\, also with LFOs controllng both the frequency and resonance of the
+filters. Below we have [bandpass~] and [lowpass~].;
 #X connect 0 0 8 0;
 #X connect 3 0 7 0;
 #X connect 4 0 19 0;
@@ -87,8 +87,8 @@ also a lowpass resonant filter., f 45;
 #X connect 36 0 20 1;
 #X connect 37 0 10 1;
 #X connect 38 0 37 0;
-#X connect 43 0 20 0;
-#X connect 44 0 31 0;
-#X connect 45 0 27 0;
-#X connect 46 0 10 0;
-#X connect 47 0 0 0;
+#X connect 42 0 20 0;
+#X connect 43 0 31 0;
+#X connect 44 0 27 0;
+#X connect 45 0 10 0;
+#X connect 46 0 0 0;

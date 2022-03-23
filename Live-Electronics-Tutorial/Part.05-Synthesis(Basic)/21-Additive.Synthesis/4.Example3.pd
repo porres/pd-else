@@ -15,7 +15,7 @@
 #X obj 99 29 inlet;
 #X obj 99 67 v fund;
 #X text 29 100 Check the [pd partial] subpatches \, where each contains
-a pair of oscilatores., f 36;
+a pair of oscillatores., f 36;
 #N canvas 829 23 446 337 partial 0;
 #X obj 94 179 osc~;
 #X obj 94 250 throw~ \$0-osc;
@@ -176,7 +176,7 @@ receives a fundamental frequency \, from which an inharmonic series
 of 8 partials is generated. For each partial \, we have a pair of oscillators
 \, both of which are closely tuned but with random vibratos/pitch deviations.
 , f 56;
-#X text 295 325 As an excercise you can adapt this to use [clone]!
+#X text 295 325 As an exercise you can adapt this to use [clone]!
 For each copy to have different parameters \, use a random generator
 at load time (with loadbang)., f 39;
 #X connect 0 0 7 0;

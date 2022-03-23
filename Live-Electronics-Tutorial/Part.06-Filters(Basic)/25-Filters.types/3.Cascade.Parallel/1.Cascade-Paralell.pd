@@ -24,7 +24,7 @@ f 59;
 -228856 -1 -1 0 256;
 #X obj 286 452 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 40 367 A parallel conneection is when the input goes in parallel
+#X text 40 367 A parallel connection is when the input goes in parallel
 into different filters and then summed at the end. Here we have two
 bandpass filters in parallel.;
 #X obj 331 15 declare -path else;

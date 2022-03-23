@@ -81,7 +81,7 @@
 #X connect 24 0 15 0;
 #X restore 133 402 pd Feedback_Lowpass;
 #X text 162 259 durationo/sustain;
-#X text 220 291 atack/release;
+#X text 220 291 attack/release;
 #X text 28 30 Now we create the feedback loop with the filter inside
 a subpatch \, with a block of 1! The filter we're using now is [lop~]
 \, which allows us to set a cutoff frequency.;
@@ -92,7 +92,7 @@ a subpatch \, with a block of 1! The filter we're using now is [lop~]
 #X text 771 277 decay;
 #X text 483 49 Here's a variation with [comb.filt~] that goes too far.
 By taking the filter out of the feedback loop \, technically we have
-anything but an actual Karplus Strong Algorythm. It's here as a comparison
+anything but an actual Karplus Strong Algorithm. It's here as a comparison
 and also to show it's not that crazily different.;
 #X obj 688 428 f2s~ 100;
 #X obj 730 322 f2s~ 100;

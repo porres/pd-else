@@ -136,7 +136,7 @@
 #X obj 88 65 inlet;
 #X obj 504 77 inlet;
 #X text 135 66 index;
-#X text 543 77 coeficientes;
+#X text 543 77 coefficientes;
 #X obj 144 294 -;
 #X obj 463 378 expr $f1 / pi_\$0;
 #X obj 463 468 outlet;
@@ -190,7 +190,7 @@
 #X obj 88 65 inlet;
 #X obj 494 77 inlet;
 #X text 135 66 index;
-#X text 533 77 coeficientes;
+#X text 533 77 coefficientes;
 #X obj 144 294 -;
 #X obj 453 378 expr $f1 / pi_\$0;
 #X obj 453 468 outlet;

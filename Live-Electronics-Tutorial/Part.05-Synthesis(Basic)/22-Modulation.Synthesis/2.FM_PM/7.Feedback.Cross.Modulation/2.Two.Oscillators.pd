@@ -89,7 +89,7 @@
 0.2;
 #X text 182 205 index 1;
 #X text 338 202 index 2;
-#N canvas 346 75 479 364 Phase_Mod_Feedback_2oscilators 0;
+#N canvas 346 75 479 364 Phase_Mod_Feedback_2oscillators 0;
 #X obj 170 53 inlet~;
 #X obj 226 53 inlet~;
 #X obj 35 53 inlet~;
@@ -116,7 +116,7 @@
 #X connect 9 0 5 0;
 #X connect 13 0 7 0;
 #X connect 13 0 14 0;
-#X restore 75 280 pd Phase_Mod_Feedback_2oscilators;
+#X restore 75 280 pd Phase_Mod_Feedback_2oscillators;
 #X text 334 225 (feedback);
 #N canvas 368 23 579 244 plot 0;
 #X obj 66 32 inlet~;

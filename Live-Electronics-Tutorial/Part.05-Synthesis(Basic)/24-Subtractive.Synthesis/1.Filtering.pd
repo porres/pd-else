@@ -33,7 +33,7 @@ and complex sound like a sawtooth oscillator., f 49;
 of its frequency content. We'll see filters in details in the next
 section. Most commonly \, subtractive synthesis uses Lowpass Resonant
 filters \, such as [lowpass~] \, from ELSE. This filter "passes" frequencies
-below the resonant frequency and a resonance paramater boosts the resonant
+below the resonant frequency and a resonance parameter boosts the resonant
 frequency., f 49;
 #X text 496 352 You can check the help files of these filters for more
 details \, before the next section where we have a deeper look into

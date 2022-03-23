@@ -1,18 +1,17 @@
 #N canvas 616 23 514 591 12;
 #X declare -path else;
-#X obj 270 467 hsl 128 15 3 10 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
+#X obj 270 467 hsl 128 15 3 10 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X text 319 490 Q;
 #X text 244 345 dB;
 #X obj 152 520 out~;
 #X obj 152 478 lowpass~ 0 5;
-#X obj 192 307 mov.rms~ 256 -db;
 #X obj 267 489 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X floatatom 243 397 5 0 0 0 - - -;
-#X floatatom 295 397 5 0 0 0 - - -;
-#X floatatom 347 397 5 0 0 0 - - -;
-#X floatatom 399 397 5 0 0 0 - - -;
+#dcdcdc #000000 #000000 0 256;
+#X floatatom 243 397 5 0 0 0 - - - 0;
+#X floatatom 295 397 5 0 0 0 - - - 0;
+#X floatatom 347 397 5 0 0 0 - - - 0;
+#X floatatom 399 397 5 0 0 0 - - - 0;
 #X obj 192 426 rescale~ -40 -5 100 4000 -clip;
 #X obj 344 22 declare -path else;
 #X obj 192 342 display~ 6;
@@ -25,17 +24,18 @@ way) because the wha wha control is automatically set by the input
 amplitude., f 61;
 #X text 34 164 The [mov.rms~] object is used then as an envelope follower.
 We get this amplitude average in dB and rescale to a frequency range
-with [rescale~]. In the example below we rescale the input frmo -40
+with [rescale~]. In the example below we rescale the input from -40
 to -5 dB into the range of 100 to 4000 Hz., f 61;
-#X connect 0 0 6 0;
+#X obj 192 307 mov.rms~ -db 256;
+#X connect 0 0 5 0;
 #X connect 4 0 3 0;
-#X connect 5 0 13 0;
-#X connect 6 0 4 2;
-#X connect 7 0 11 1;
-#X connect 8 0 11 2;
-#X connect 9 0 11 3;
-#X connect 10 0 11 4;
-#X connect 11 0 4 1;
-#X connect 13 0 11 0;
-#X connect 14 0 4 0;
-#X connect 14 0 5 0;
+#X connect 5 0 4 2;
+#X connect 6 0 10 1;
+#X connect 7 0 10 2;
+#X connect 8 0 10 3;
+#X connect 9 0 10 4;
+#X connect 10 0 4 1;
+#X connect 12 0 10 0;
+#X connect 13 0 4 0;
+#X connect 13 0 16 0;
+#X connect 16 0 12 0;

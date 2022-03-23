@@ -69,7 +69,7 @@ by inverting the polarity of all the even partials., f 61;
 0.0322581 -0.03125;
 #X obj 118 173 expr if ($f1 % 2 == 0 \, -1/$f1 \, 1/$f1);
 #X text 429 129 Sawtooth s: partials decrease in an order of "1/p"
-\, where "p" is the patial number - but every even partial has an inverted
+\, where "p" is the partial number - but every even partial has an inverted
 polarity;
 #X obj 261 389 send saw2;
 #X obj 39 88 trigger bang float bang;

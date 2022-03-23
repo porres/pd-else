@@ -1,8 +1,8 @@
 #N canvas 279 50 967 391 12;
 #X declare -path else;
-#X floatatom 763 223 5 -0.99 0.99 0 - a -;
-#X floatatom 687 220 5 0 100 0 - del -;
-#X obj 91 184 cnv 15 320 140 empty empty empty 20 12 0 14 -233017 -66577
+#X floatatom 763 223 5 -0.99 0.99 0 - a - 0;
+#X floatatom 687 220 5 0 100 0 - del - 0;
+#X obj 91 184 cnv 15 320 140 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #X text 270 207 |;
 #X text 270 219 |;
@@ -26,7 +26,6 @@
 #X text 683 192 delay time;
 #X text 125 198 x[n] -------(+)----------- y[n];
 #X text 158 294 y[n] = x[n] + a * y[n-d];
-#X obj 612 256 fbdelay~ 100 0.8 -gain;
 #X obj 557 197 noise~;
 #X obj 590 226 *~;
 #X obj 608 198 pulse~ 1;
@@ -44,9 +43,10 @@ gain and setting the input gain to 1!;
 that [fbdelay~] can also set the feedback parameter as t60 - this is
 actually the default setting \, but here we have a gain coefficient
 instead. Check its help file.;
-#X connect 0 0 25 2;
-#X connect 1 0 25 1;
-#X connect 25 0 21 0;
-#X connect 26 0 27 0;
-#X connect 27 0 25 0;
-#X connect 28 0 27 1;
+#X obj 612 256 fbdelay~ -gain 100 0.8;
+#X connect 0 0 33 2;
+#X connect 1 0 33 1;
+#X connect 25 0 26 0;
+#X connect 26 0 33 0;
+#X connect 27 0 26 1;
+#X connect 33 0 21 0;

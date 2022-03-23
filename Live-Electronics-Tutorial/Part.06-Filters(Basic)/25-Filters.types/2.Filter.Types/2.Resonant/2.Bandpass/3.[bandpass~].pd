@@ -173,7 +173,7 @@
 #X obj 211 45 unpack f f f f f;
 #X obj 211 18 inlet;
 #X text 92 20 index;
-#X text 260 18 coeficientes;
+#X text 260 18 coefficientes;
 #X obj 698 68 cnv 15 320 90 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X text 728 97 H(z) = b1 + (b2 * z^-1) + (b3 * z^-2);
@@ -381,7 +381,7 @@ to control both the resonant frequency and the Q., f 32;
 #X text 328 74 Besides Q \, this filter can also set the resonance
 parameter from a bandwidth value., f 31;
 #X obj 361 26 declare -path else;
-#X text 60 101 Unlike [bp~] and [vcf~] \, it has a quite simmetrical
+#X text 60 101 Unlike [bp~] and [vcf~] \, it has a quite symmetrical
 frequency response over the wide spectrum range., f 32;
 #X connect 2 0 1 0;
 #X connect 3 0 6 0;

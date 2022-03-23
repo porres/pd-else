@@ -26,7 +26,7 @@ issue. But [del~ in] has a dummy signal outlet to help this \, check
 the example in the help file.;
 #X text 34 57 The [del~] object from ELSE basically comprises both
 [delwrite~] and [dlread4~]. This object behaves like [delwrite~] if
-created as [del~ in] \, and as [delred4~] if creted as [del~ out].
+created as [del~ in] \, and as [delred4~] if created as [del~ out].
 It also offers more functionalitites not present in the native delay
 objects (at least yet) \, like being able to resize the delay line
 in [del~ in] and also "freeze" the recording. We can also set the delay

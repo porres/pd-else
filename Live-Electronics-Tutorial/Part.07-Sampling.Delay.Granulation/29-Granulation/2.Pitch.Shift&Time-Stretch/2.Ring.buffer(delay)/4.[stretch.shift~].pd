@@ -56,7 +56,7 @@
 #X text 61 23 In this example we put together the last two for a pitch
 shift / time stretch patch! As in the first example \, we multiply
 a transposition ratio to the grain reading speed \, but to the phase
-\, not frequency. We do this to make this adjusment go through another
+\, not frequency. We do this to make this adjustment go through another
 sample and hold and only change at grain transitions. This is useful
 for not to make this adjustment change the reading speed. The [stretch.shift~]
 object \, from ELSE \, is based on this patch \, check its help file.

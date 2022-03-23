@@ -18,19 +18,19 @@
 #X text 500 137 The oscillator objects from the ELSE library also offers
 both options. For example \, the second inlet also resets the phase
 \, while the third inlet allows phase modulation., f 57;
-#X text 695 216 <= reset oscilator;
+#X text 695 216 <= reset oscillator;
 #X obj 249 255 s2f~;
 #X obj 159 255 s2f~;
 #X obj 635 275 s2f~;
 #X obj 742 33 declare -path else;
 #X text 500 72 The [osc~] object does not allow phase modulation \,
 we did this with [phasor~] in the previous examples. Hence \, the structure
-wirh [phasor~] and [cos~] allows both processes of modulating the phase
-and reseting the oscillator., f 57;
+with [phasor~] and [cos~] allows both processes of modulating the phase
+and resetting the oscillator., f 57;
 #X text 32 23 The native objects [phasor~] and [osc~] have a right
 inlet that accepts control data to reset the phase. This way \, every
-time the inlet receives a number from 0 to 1 \, the waveform is resetted
-to that initial phase. Bear in mind that resseting the waveform to
+time the inlet receives a number from 0 to 1 \, the waveform is reset
+to that initial phase. Bear in mind that resetting the waveform to
 restart the cycle in a specific initial pahse is unrelated to the phase
 adjustments done previously with phase modulation., f 61;
 #X connect 1 0 14 0;

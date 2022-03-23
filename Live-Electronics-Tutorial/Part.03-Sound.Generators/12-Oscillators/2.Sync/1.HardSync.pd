@@ -23,7 +23,7 @@ An audio rate inlet is needed for that!, f 62;
 #X obj 102 357 osc~ 0.25;
 #X obj 198 352 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
-#X text 228 376 <= reset to the beggining of the cycle, f 16;
+#X text 228 376 <= reset to the beginning of the cycle, f 16;
 #X obj 661 141 initmess 120;
 #X obj 661 228 impulse~;
 #X text 723 169 master;
@@ -86,7 +86,7 @@ see band limited versions of them in the next section., f 41;
 #X text 29 98 If the slave's frequency is lower than the master's \,
 then it is forced to restart the cycle before it finishes it. Whereas
 if the slave's frequency is higher \, then it repeats at least a portion
-of the period before resseting - but if its frequency is high enough
+of the period before resetting - but if its frequency is high enough
 \, it can generate multiple periods before resetting \, and this adds
 lots of shaprness to the sound., f 62;
 #X connect 0 0 11 0;

@@ -117,8 +117,8 @@ actually) and get a random value from it., f 88;
 #X text 329 420 get 1st pitch;
 #X text 332 103 When we start \, we get the current pitch and search
 for it in the [text] so we find the line it belongs to. Then we get
-the list lenght and randomly pick one of its elements. Since repeated
-notes are stored more than once \, they have a different weigth. the
+the list length and randomly pick one of its elements. Since repeated
+notes are stored more than once \, they have a different weight. the
 chosen pitch is stored for the next round., f 88;
 #X connect 0 0 19 0;
 #X connect 1 0 44 0;

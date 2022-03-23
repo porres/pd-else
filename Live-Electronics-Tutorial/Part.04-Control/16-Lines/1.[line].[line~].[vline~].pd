@@ -24,7 +24,7 @@
 #X text 74 210 click =>;
 #X text 440 61 The [line~] object is the audio rate counterpart \,
 and thus it generates values at each new sample. One restrain is that
-it always start generating values at the beggining of a block of audio
+it always start generating values at the beginning of a block of audio
 and it also can only finish a ramp at the end of a block of audio -
 so it doesn't have the best time resolution., f 49;
 #X obj 466 188 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
@@ -55,7 +55,7 @@ it below., f 53;
 resolution. It can start and finish a ramp at any point in time. Moreover
 \, it accepts a third scheduling parameter \, which is the time in
 ms before starting the ramp. You can then send it several messages
-and schedule different line segments at once to set compound line segements.
+and schedule different line segments at once to set compound line segments.
 , f 48;
 #X text 501 527 go to zero \, wait 500 ms \, go to 1 in 1000 ms then
 after 500 ms go to zero in 1000 ms and go back to 1 in 500 ms, f 43

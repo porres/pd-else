@@ -160,8 +160,8 @@ the compensation of summing two signal sources. In an ideal room \,
 when you have one signal in two speakers \, you have a gain of 6 dBSPL.
 In such case \, you need to attenuate the signal by 6 dB.;
 #X text 18 168 But anyway \, we've also seen equal power functions
-\, and this is because attenuating 3 dB is more in line with the accoustic
-reality of everyday accoustic rooms. Equal power functions \, such
+\, and this is because attenuating 3 dB is more in line with the acoustic
+reality of everyday acoustic rooms. Equal power functions \, such
 as sine and cosine \, is another type of dB law \, the "3 dB" one.
 ;
 #X text 445 324 It's funny that we have so many rules of thumb \, which

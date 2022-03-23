@@ -26,7 +26,7 @@ algorithms: a series of allpass reverberators (as in below and in [rev1~])
 and parallel comb reverberators going into a series of allpass reverberators
 (as on the right)., f 42;
 #X text 343 507 The examples here are very simple and the delay line
-lenghts are quite arbitrary. But you can see how it works reasonably
+lengths are quite arbitrary. But you can see how it works reasonably
 well with little sophistication., f 41;
 #X text 43 169 Common setups known as "Schroeder/Moorer Reverbs" combines
 allpass and comb reverberators with short delay times to create reverb

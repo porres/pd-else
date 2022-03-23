@@ -41,7 +41,7 @@ in the case of frequency modulation \, this can also be called "Carrier
 Frequency". Conversely \, we also have a Modulator frequency \, which
 is the frequency of the modulating oscillator. The frequency deviation
 is controlled by the oscillator's amplitude and is also usually called
-"modulation index" but this is theoretically innacurate. We'll see
+"modulation index" but this is theoretically inaccurate. We'll see
 later how the index is actually the ratio between deviation and modulating
 frequency \, and how that relates to how the modulation index behaves
 in Phase Modulation. Just note that until then \, modulation index

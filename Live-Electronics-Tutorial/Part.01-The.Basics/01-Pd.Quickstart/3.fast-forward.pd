@@ -39,7 +39,7 @@ we use it to record white noise into a sound file named 'test.wav'
 (check the generated audio in the same folder as this example)., f
 74;
 #X text 205 306 <= set other lengths;
-#X text 69 307 miliseconds:;
+#X text 69 307 milliseconds:;
 #X text 51 376 sends a bang after the time amount, f 12;
 #X text 72 445 stops the => recording, f 12;
 #X text 383 411 tells pd to 'fast-forward' and render a given amount

@@ -26,11 +26,11 @@
 #X obj 633 225 sequencer 60 64 69 71 76;
 #X obj 633 175 + 1;
 #X text 662 201 <= element number;
-#X text 475 27 By setting different weigths you can specify which value
+#X text 475 27 By setting different weights you can specify which value
 has more chances to appear. In the example below \, [rand.seq] generates
-values from 0 to 4 and the occurance is: 0 (4 times) \, 1 (once) \,
+values from 0 to 4 and the occurrence is: 0 (4 times) \, 1 (once) \,
 2 (3 times) \, 3 (2 times) and 4 (once)., f 61;
-#X text 446 240 play random notes with different weigths ====>, f
+#X text 446 240 play random notes with different weights ====>, f
 23;
 #X text 26 79 The [rand.seq] object is similar to [chance] \, but it
 can be used to generate a random sequence of integers that do not repeat.

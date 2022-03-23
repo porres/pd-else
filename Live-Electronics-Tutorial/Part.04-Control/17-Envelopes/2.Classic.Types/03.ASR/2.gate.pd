@@ -1,16 +1,15 @@
 #N canvas 521 48 739 570 12;
 #X declare -path else;
-#X obj 214 359 vsl 16 80 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 214 359 vsl 16 80 0 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 107 321 *~;
 #X obj 106 253 osc~ 440;
 #X obj 107 356 out~;
-#X obj 175 231 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 175 231 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 201 229 gate;
 #X obj 214 333 s2f~;
 #X obj 241 33 declare -path else;
-#X obj 175 274 envgen~ 150 1 750 0 -suspoint 1 -exp 4 -4, f 21;
 #X text 33 80 An "ASR" ("Attack / Sustain / Release") envelope is usually
 controlled by a gate signal \, or on/off switch \, like a toggle.,
 f 49;
@@ -24,13 +23,13 @@ value of 4) and a release of 750 ms (with an exponential value of -4).
 #X obj 553 394 *~;
 #X obj 484 335 osc~ 440;
 #X obj 553 436 out~;
-#X obj 489 83 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 489 83 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 489 114 trigger float float;
 #X obj 489 239 float;
 #X obj 486 402 s2f~;
-#X obj 486 432 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 -228856
--1 -1 0 1;
+#X obj 486 432 vsl 18 100 0 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#000000 #000000 0 1;
 #X obj 489 141 != 0;
 #X obj 489 169 select 1 0;
 #X msg 489 278 \$1 150;
@@ -38,23 +37,26 @@ value of 4) and a release of 750 ms (with an exponential value of -4).
 #X msg 571 264 0 750;
 #X text 439 25 doing something similar with [vline~] involves a logic
 with [select]., f 37;
+#X obj 175 274 envgen~ -suspoint 1 150 1 750 0, f 19;
+#X obj 252 245 initmess exp 4 -4;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
-#X connect 4 0 8 0;
+#X connect 4 0 25 0;
 #X connect 6 0 0 0;
-#X connect 8 0 1 1;
-#X connect 8 0 6 0;
-#X connect 12 0 14 0;
-#X connect 13 0 12 0;
-#X connect 15 0 16 0;
-#X connect 16 0 20 0;
-#X connect 16 1 17 1;
-#X connect 17 0 22 0;
-#X connect 18 0 19 0;
-#X connect 20 0 21 0;
-#X connect 21 0 17 0;
-#X connect 21 1 24 0;
-#X connect 22 0 23 0;
-#X connect 23 0 12 1;
-#X connect 23 0 18 0;
-#X connect 24 0 23 0;
+#X connect 11 0 13 0;
+#X connect 12 0 11 0;
+#X connect 14 0 15 0;
+#X connect 15 0 19 0;
+#X connect 15 1 16 1;
+#X connect 16 0 21 0;
+#X connect 17 0 18 0;
+#X connect 19 0 20 0;
+#X connect 20 0 16 0;
+#X connect 20 1 23 0;
+#X connect 21 0 22 0;
+#X connect 22 0 11 1;
+#X connect 22 0 17 0;
+#X connect 23 0 22 0;
+#X connect 25 0 1 1;
+#X connect 25 0 6 0;
+#X connect 26 0 25 0;

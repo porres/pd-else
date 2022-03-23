@@ -34,7 +34,7 @@
 #X obj 142 121 loop -offset 1;
 #X msg 142 186 append \$1;
 #X text 365 110 Sawtooth: partials decrease in an order of "1/p" \,
-where "p" is the patial number.;
+where "p" is the partial number.;
 #X connect 1 0 10 0;
 #X connect 3 0 6 0;
 #X connect 4 0 5 0;

@@ -39,7 +39,7 @@ the analysis of another audio signal \, called a "control signal".
 , f 52;
 #X text 321 172 The structure is quite similar to the compressor patch.
 This is useful to let the control signal through \, such as a beat
-or rythmic pattern \, while the input gets faded to the background.
+or rhythmic pattern \, while the input gets faded to the background.
 , f 52;
 #X text 341 532 The difference is that this object can also mix both
 signals. Check its help file., f 39;

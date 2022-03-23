@@ -113,7 +113,7 @@ of 0.1 Hz \, a modulation frequency of 50 Hz and a modulation index
 of 1)., f 56;
 #X obj 151 326 *~ 1;
 #X text 73 237 Phase Modulation;
-#X text 483 57 Further interpretations could consier the [phasor~]
+#X text 483 57 Further interpretations could consider the [phasor~]
 signal in the Waveshaping example as a "DC-Offset" modulation., f
 54;
 #X text 480 154 =======================================================

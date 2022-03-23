@@ -44,7 +44,7 @@ below. Now [table~] is initialized to work not in "guard points mode".
 It's also set to "index" mode \, where indexes are not normalized.
 The table was initialized with the sinesum command \, and creates a
 table with 64 points plus 3 guard points \, so we have 67 points and
-indexes from 0 to 66 - move the slider below to acess index values.
+indexes from 0 to 66 - move the slider below to access index values.
 ;
 #X obj 771 14 declare -path else;
 #X text 34 56 The [table~] object from ELSE is much like [tabread4~].

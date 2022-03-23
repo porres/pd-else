@@ -603,7 +603,7 @@ data input., f 63;
 #X text 771 136 Right;
 #X text 76 107 This filter has two outputs. The right output resembles
 the frequency response of [bp~] \, though the left output also has
-similar characteristics \, such as not quite a simmetrical response
+similar characteristics \, such as not quite a symmetrical response
 - this is more evident with lower Q values. The filter also does not
 behave the same for quite high frequencies (over 7 KHz)., f 63;
 #X text 699 18 Resonant Frequency;

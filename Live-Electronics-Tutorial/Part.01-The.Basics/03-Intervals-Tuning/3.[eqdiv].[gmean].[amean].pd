@@ -27,7 +27,7 @@ as the Bohlen-Pierce scale., f 65;
 #X text 371 167 <= click;
 #X obj 348 195 float 3;
 #X text 304 285 value of 3 in cents;
-#X text 45 336 So \, intead of 100 cents \, each step of this scale
+#X text 45 336 So \, instead of 100 cents \, each step of this scale
 increases about 146 cents. The [eqdiv] object returns the value in
 cents of all intervals in the scale \, for the bohlen-pierce we get
 values from 0 cents to 1901.95 cents.;

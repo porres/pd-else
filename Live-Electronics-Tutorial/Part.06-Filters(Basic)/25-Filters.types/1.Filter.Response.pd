@@ -132,7 +132,7 @@
 #X msg 214 246 96;
 #X msg 238 258 72;
 #X msg 105 354 1.9816 -0.992568 0.5 0 -0.5 \; pd dsp 1;
-#X obj 105 395 s \$0-coeficientes;
+#X obj 105 395 s \$0-coefficientes;
 #X connect 0 0 12 0;
 #X connect 2 0 3 0;
 #X connect 4 0 9 0;
@@ -176,7 +176,7 @@
 #X obj 211 45 unpack f f f f f;
 #X obj 211 18 inlet;
 #X text 92 20 index;
-#X text 260 18 coeficientes;
+#X text 260 18 coefficientes;
 #X obj 698 68 cnv 15 320 90 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X text 728 97 H(z) = b1 + (b2 * z^-1) + (b3 * z^-2);
@@ -237,7 +237,7 @@
 #X connect 6 0 7 0;
 #X restore 24 235 pd db-range;
 #X obj 24 265 tabwrite \$0-response;
-#X obj 24 72 r \$0-coeficientes;
+#X obj 24 72 r \$0-coefficientes;
 #X connect 1 0 5 0;
 #X connect 2 0 1 0;
 #X connect 2 1 6 1;
@@ -369,7 +369,7 @@ mean they are being removed.;
 Response \, because every filter also promotes phase deviation as a
 function of frequency., f 53;
 #X text 36 16 Generally speaking \, a filter is any process that alters
-your input sound. In accoustics \, we can think of the reverberation
+your input sound. In acoustics \, we can think of the reverberation
 patterns of a room as a type of filter \, also the body of resonance
 of many musical instruments. Even your mouth is a filter. Virtually
 \, anything is a filter. Notwithstandingly \, in our context \, filters

@@ -1,15 +1,15 @@
-#N canvas 406 219 976 588 12;
+#N canvas 359 70 976 588 12;
 #X declare -path else;
 #X text 30 308 Note \, however \, that [tabread4~] has a second inlet
 to set an onset value and this is a hacky way for extending the precision
 of the input indexes., f 63;
-#X floatatom 217 381 3 0 10 0 - - -;
+#X floatatom 217 381 3 0 10 0 - - - 0;
 #X obj 157 414 tabread4~;
 #X text 250 378 <= sets onset into table., f 13;
 #X obj 758 28 declare -path else;
 #X obj 601 415 tabplayer~;
 #X msg 601 385 speed \$1;
-#X floatatom 601 360 5 0 0 0 - - -;
+#X floatatom 601 360 5 0 0 0 - - - 0;
 #X text 31 22 Pd currently has a limitation for idexing big tables
 because of its 32-bit resolution. You can now compile Pd in 64 bits
 to overcome this issue \, but most won't know how to do that and have

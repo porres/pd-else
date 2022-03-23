@@ -23,7 +23,7 @@ have a cosine wave oscillator. We can implement these oscillators with
 \, which is more CPU efficient that [phasor~] + [cos~]. In contrast
 \, [phasor~] + [cos~] allows phase modulation.;
 #X text 46 510 The ELSE library has Sine and Cosine wave oscillators
-\, both of wich allows phase reset (as with [osc~] and [phasor~] \,
+\, both of which allows phase reset (as with [osc~] and [phasor~] \,
 but they also allow phase modulation on the right inlet.;
 #X obj 284 19 declare -path else;
 #X connect 0 0 3 0;

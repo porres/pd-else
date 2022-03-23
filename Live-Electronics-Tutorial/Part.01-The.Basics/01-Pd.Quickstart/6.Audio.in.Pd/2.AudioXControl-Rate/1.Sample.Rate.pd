@@ -40,7 +40,7 @@ rate., f 65;
 #X obj 730 541 samps2ms;
 #X floatatom 730 567 5 0 0 0 - - - 0;
 #X text 530 76 In digital audio \, we can count time by the number
-of samples. This surely depends on the sample rate. To convert miliseconds
+of samples. This surely depends on the sample rate. To convert milliseconds
 (ms) to number of samples \, we just need to multiply it by the sample
 rate in Kilohertz (Khz). The opposite conversion is to divide by the
 sample rate in Khz. Below \, we use [sr~] \, which can also give you

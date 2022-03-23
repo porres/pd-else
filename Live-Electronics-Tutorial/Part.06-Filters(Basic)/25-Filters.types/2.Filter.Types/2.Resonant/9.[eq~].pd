@@ -177,7 +177,7 @@
 #X obj 211 45 unpack f f f f f;
 #X obj 211 18 inlet;
 #X text 92 20 index;
-#X text 260 18 coeficientes;
+#X text 260 18 coefficientes;
 #X obj 698 68 cnv 15 320 90 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #X text 728 97 H(z) = b1 + (b2 * z^-1) + (b3 * z^-2);
@@ -387,7 +387,7 @@
 #X text 690 108 Gain;
 #X text 37 74 The [eq~] object from ELSE is sort of an "equalizer".
 It can boost or attenuate a given frequency with a gain parameter.
-The resonance/Q parameter sets the bandwidth. When fltering out frequencies
+The resonance/Q parameter sets the bandwidth. When filtering out frequencies
 with high attenuations \, this type of filter also behaves like a bandreject/notch.
 Check its help file for more details., f 54;
 #X obj 733 26 declare -path else;

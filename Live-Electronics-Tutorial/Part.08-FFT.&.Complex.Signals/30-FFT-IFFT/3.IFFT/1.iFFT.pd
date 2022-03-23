@@ -68,7 +68,7 @@ But since the fourier transform decomposes a signal into sine components
 \, you can interpret the inverse transform as an additive synthesis
 \, but this is not a good comparison as we'll see., f 48;
 #X text 437 105 IMPORTANT: Please realize that the amplitude information
-from a FFT analysis doesn't mean the orignal sound has sine components
+from a FFT analysis doesn't mean the original sound has sine components
 that match the harmonic series of that FFT. But this may be the idea
 given with the additive synthesis metaphor and that's what problematic
 about it., f 62;

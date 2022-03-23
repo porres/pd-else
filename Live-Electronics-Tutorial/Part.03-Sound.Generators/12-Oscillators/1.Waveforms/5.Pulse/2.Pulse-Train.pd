@@ -16,7 +16,7 @@
 #X text 655 85 Pulse width;
 #X text 42 45 A pulse train is when we have a chain of consecutive
 impulses. The [pulse~] object from ELSE is a pulse train oscillator
-\, which resembles a sqaure wave \, but it alternates between 1 and
+\, which resembles a square wave \, but it alternates between 1 and
 0 \, and not 1 and -1 as in the square wave., f 61;
 #X text 41 126 Like the impulse \, a pulse train has applications as
 a trigger in electronic music. More precisely as a "gate" \, which

@@ -17,7 +17,7 @@
 #X obj 113 238 rand.f 50 300;
 #X obj 340 17 declare -path else;
 #X text 59 59 The ELSE library has the [pluck~] object \, which implements
-a Karplus Strong Algorythm. By default \, it uses an internal white
+a Karplus Strong Algorithm. By default \, it uses an internal white
 noise generator as an excitation signal and can be triggered by impulses.
 A frequency value determines the delay period and the excitation signal
 gets automatically enveloped to that size. The feedback value is given

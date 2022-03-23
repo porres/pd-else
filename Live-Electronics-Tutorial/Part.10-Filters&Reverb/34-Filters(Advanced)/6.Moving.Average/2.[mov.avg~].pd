@@ -1,15 +1,15 @@
-#N canvas 464 45 903 548 12;
+#N canvas 331 25 903 548 12;
 #X declare -path else;
 #X obj 659 175 impseq~;
-#X obj 33 358 cnv 15 798 148 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 33 358 cnv 15 798 148 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-Amp 2048 float 0;
 #X coords 0 1 2048 0 800 150 1 0 0;
 #X restore 32 357 graph;
-#X obj 659 143 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#N canvas 0 186 687 574 IR 0;
+#X obj 659 143 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#N canvas 363 130 687 574 IR 0;
 #X msg 279 185 stop;
 #X msg 219 187 start;
 #X obj 209 279 v length;
@@ -22,7 +22,6 @@
 #X obj 271 32 inlet~;
 #X obj 158 77 env~ 2048 1024;
 #X obj 158 101 > 0;
-#X obj 271 113 ffdelay~ 1024 -samps;
 #X obj 159 308 log 2;
 #X obj 159 337 expr pow(2 \, $i1 + 1);
 #X text 355 56 Records IR \, find power of two larger than its length
@@ -88,7 +87,7 @@ to resize the table., f 36;
 #X restore 85 460 pd FFT;
 #X text 80 483 Analyze;
 #X obj 224 500 v w_size;
-#X floatatom 191 422 0 0 0 0 - - -;
+#X floatatom 191 422 0 0 0 0 - - - 0;
 #X obj 209 523 s window-size;
 #X msg 230 449 resize \$1;
 #X obj 230 473 s \$0-IR;
@@ -99,38 +98,39 @@ to resize the table., f 36;
 #X msg 316 262 resize 44100 \, const 0, f 14;
 #X obj 138 187 t b b;
 #X obj 474 165 initmess \; \$0-n 2;
+#X obj 271 113 ffdelay~ -samps 1024;
 #X connect 0 0 5 0;
 #X connect 1 0 5 0;
-#X connect 3 0 13 0;
+#X connect 3 0 12 0;
 #X connect 3 1 2 0;
-#X connect 4 0 29 0;
+#X connect 4 0 28 0;
 #X connect 4 1 8 1;
 #X connect 4 1 0 0;
 #X connect 6 0 4 0;
-#X connect 8 0 16 0;
+#X connect 8 0 15 0;
 #X connect 9 0 10 0;
-#X connect 9 0 12 0;
+#X connect 9 0 30 0;
 #X connect 10 0 11 0;
 #X connect 11 0 6 0;
-#X connect 12 0 5 0;
-#X connect 13 0 14 0;
-#X connect 14 0 25 0;
-#X connect 16 0 3 0;
-#X connect 20 0 21 0;
-#X connect 20 0 19 0;
-#X connect 20 0 22 0;
-#X connect 22 0 23 0;
-#X connect 24 0 20 0;
-#X connect 25 0 26 0;
-#X connect 25 1 24 0;
-#X connect 26 0 17 0;
-#X connect 28 0 7 0;
-#X connect 29 0 8 0;
-#X connect 29 1 1 0;
-#X connect 29 1 28 0;
+#X connect 12 0 13 0;
+#X connect 13 0 24 0;
+#X connect 15 0 3 0;
+#X connect 19 0 20 0;
+#X connect 19 0 18 0;
+#X connect 19 0 21 0;
+#X connect 21 0 22 0;
+#X connect 23 0 19 0;
+#X connect 24 0 25 0;
+#X connect 24 1 23 0;
+#X connect 25 0 16 0;
+#X connect 27 0 7 0;
+#X connect 28 0 8 0;
+#X connect 28 1 1 0;
+#X connect 28 1 27 0;
+#X connect 30 0 5 0;
 #X restore 676 241 pd IR;
 #X obj 660 268 out~;
-#X floatatom 775 178 3 2 24 0 - #0-n -;
+#X floatatom 775 178 3 2 24 0 - \$0-n - 0;
 #X obj 735 23 declare -path else;
 #X obj 659 203 mov.avg~ -size 24;
 #X text 682 142 <= Record/Analyze;
@@ -154,7 +154,7 @@ an even number of samples always have a zero at Nyquist. An average
 of five samples has a Zero at 2/5 of Nyquist and another at 4/5. An
 average of six have Zeros at 2/6 (or 1/3) \, 4/6 (or 2/3) and 6/6 (or
 1) times Nyquist., f 76;
-#X text 64 214 Zeros are placed at Nyquist and even divisons of Nyquist
+#X text 64 214 Zeros are placed at Nyquist and even divisions of Nyquist
 for averages of even numbers. For an 'n' odd number average \, Zeros
 are at fractions that go from 2/n \, 4/n \, 6/n and so on until reaching
 n-1/n., f 76;

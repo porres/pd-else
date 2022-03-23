@@ -26,7 +26,7 @@ or into the “Last Graph”. This means you can insert more than one
 array into a single graph window. The graph element is not much useful
 on its own \, and it is actually just a subpatch (we'll see what a
 subpatch is soon)., f 59;
-#X text 497 30 The [table] object creates automaticaly a subpatch \,
+#X text 497 30 The [table] object creates automatically a subpatch \,
 and inside it we find the array as we now know it (a graph and the
 array itself). The first argument is the array name and the second
 its size. No arguments will generate 100 element arrays named as "table0"

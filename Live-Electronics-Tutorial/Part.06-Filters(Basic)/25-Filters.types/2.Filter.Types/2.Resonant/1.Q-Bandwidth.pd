@@ -357,7 +357,7 @@ a frequency band over other frequencies. A bandpass is a type of resonant
 filter that only lets through a frequency band \, as in the graph below.
 , f 53;
 #X text 62 394 Above \, f0 is the central/resonant frequency and the
-frequencies above and below are atenuated simmetrically \, considering
+frequencies above and below are atenuated symmetrically \, considering
 a logarithmic scale (such as MIDI pitch). The "f1" and "f2" points
 are where the attenuation reaches -3 dB., f 47;
 #X connect 28 0 31 0;

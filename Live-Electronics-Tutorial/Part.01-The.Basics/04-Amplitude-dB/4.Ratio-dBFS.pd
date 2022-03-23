@@ -44,7 +44,7 @@ and vice versa.;
 represent a ratio of 100 thousand times.;
 #X text 483 89 We can now understand that this is the same formula
 used to convert to and from dBFS! This adds another interpretative
-dimension to this convertion \, instead of converting to and from linear
+dimension to this conversion \, instead of converting to and from linear
 \, we can also consider it a conversion to and from "ratio".;
 #X text 699 244 Ratio;
 #X text 699 364 Ratio;

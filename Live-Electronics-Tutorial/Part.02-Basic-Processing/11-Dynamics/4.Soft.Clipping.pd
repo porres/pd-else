@@ -21,7 +21,7 @@
 #X text 42 27 It'd be ideal to address this in the waveshaping section
 \, but let's anticipate it briefly for now \, and further discuss it
 later on., f 49;
-#X text 42 82 The "tanh" fucntion performs a "soft clipping" and non
+#X text 42 82 The "tanh" function performs a "soft clipping" and non
 linear distortion. It always distorts the signal a bit \, and can act
 as a compressor \, but also end up quite close to a hard clipping.
 It all depends on the input signal boost., f 49;

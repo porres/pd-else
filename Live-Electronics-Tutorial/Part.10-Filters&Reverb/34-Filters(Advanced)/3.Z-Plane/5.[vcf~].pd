@@ -454,7 +454,7 @@ the frequency and the radius the resonance.;
 #X obj 804 27 declare -path else;
 #X text 46 716 Note that [vcf~] is not a pair of conjugate complex
 poles and thus it can't be implemented with [biquad~]!;
-#X text 45 327 The coefficients are caclulated in the subpatch below
+#X text 45 327 The coefficients are calculated in the subpatch below
 from frequency and Q values. This is used in [fexpr~] but the difference
 equation is simplified because we don't have an imaginaty input. See
 [pd coefficients] to see how we get the complex pole's coordinates.

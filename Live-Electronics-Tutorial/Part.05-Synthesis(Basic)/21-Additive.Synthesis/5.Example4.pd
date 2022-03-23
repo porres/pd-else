@@ -345,7 +345,7 @@ happens also at a random delayed time after the attack.;
 #X obj 186 292 rand.i 36 61;
 #X obj 317 29 declare -path else;
 #X obj 184 430 out~;
-#X text 64 518 As an excercise you can adapt this to use [clone]! For
+#X text 64 518 As an exercise you can adapt this to use [clone]! For
 each copy to have different parameters \, use a random generator at
 load time (with loadbang)., f 50;
 #X connect 0 0 4 0;

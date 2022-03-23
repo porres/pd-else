@@ -63,7 +63,7 @@ is the partial number. Even partials are zeroed.;
 #X restore 59 246 pd square;
 #X obj 576 395 out~;
 #X obj 556 359 square~ 100;
-#X text 436 63 The [square~] object \, from ELSE \, is a perfect sqaure
+#X text 436 63 The [square~] object \, from ELSE \, is a perfect square
 wave oscillator which alternates between 1 and -1 values. Its second
 inlet or argument lets you also change the "pulse" width \, which is
 how much of the period we have a positive value (1)., f 62;
@@ -106,7 +106,7 @@ to one \, and a width of 1 makes only the last sample equal to -1!
 #X obj 672 24 declare -path else;
 #X text 25 63 And yet again \, we can generate square waves with a
 sum of partials. See how it's done in [pd square]. As before \, enter
-the number of harmonics into the number box. Not suprisingly \, a perfect
+the number of harmonics into the number box. Not surprisingly \, a perfect
 square wave needs an infinite sum of psrtials., f 54;
 #X connect 0 0 11 0;
 #X connect 1 0 7 0;

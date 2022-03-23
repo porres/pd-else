@@ -1,4 +1,4 @@
-#N canvas 521 62 966 638 12;
+#N canvas 400 62 966 638 12;
 #X declare -path else;
 #X obj 254 534 *~;
 #X text 107 384 pitch;
@@ -64,18 +64,18 @@ In this example \, [makenote]'s arguments initially set a velocity
 of 127 and schedules a note off after 1000 ms of the note on - but
 you can change this via its inlets., f 62;
 #X floatatom 272 441 5 0 0 0 - - - 0;
-#X text 311 440 <= velociry;
-#X text 493 127 You could set a MIDI controller now if you have one
-and use [notein] to receive MIDI note information. To set your MIDI
-device \, fo to "Pd => Preferences => MIDI". The [notein] object also
-represents Note On messages with velocity values greater than 0 \,
-and 0 velocity represents a Note Off., f 62;
+#X text 311 440 <= velocity;
 #X text 493 204 In case you don't have a MIDI keyboard \, you can have
 some fun using the [keyboard] object from ELSE \, instead. Like the
 others \, it also represents Note Off messages with a velocity value
 of 0 \, and Note On otherwise!, f 62;
 #X obj 530 381 unpack f f;
 #X text 655 409 Velocity;
+#X text 493 127 You could set a MIDI controller now if you have one
+and use [notein] to receive MIDI note information. To set your MIDI
+device \, go to "Pd => Preferences => MIDI". The [notein] object also
+represents Note On messages with velocity values greater than 0 \,
+and 0 velocity represents a Note Off., f 62;
 #X connect 0 0 14 0;
 #X connect 2 0 6 0;
 #X connect 5 0 0 0;
@@ -100,7 +100,7 @@ of 0 \, and Note On otherwise!, f 62;
 #X connect 29 0 28 0;
 #X connect 31 0 32 0;
 #X connect 31 1 32 1;
-#X connect 32 0 42 0;
+#X connect 32 0 41 0;
 #X connect 38 0 13 0;
-#X connect 42 0 25 0;
-#X connect 42 1 26 0;
+#X connect 41 0 25 0;
+#X connect 41 1 26 0;

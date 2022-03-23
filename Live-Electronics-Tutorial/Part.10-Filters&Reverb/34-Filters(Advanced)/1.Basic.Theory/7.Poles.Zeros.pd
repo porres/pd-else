@@ -77,7 +77,7 @@ transfer function \, the Zeroes are the numerators \, and poles the
 denominator. Open [pd get-H(z)] to see how to derive this transfer
 function from the difference equation., f 61;
 #X text 511 118 The [rpole~] object is a one pole filter object provided
-as a native object in Pd. It takes a pole coeficient in the right inlet.
+as a native object in Pd. It takes a pole coefficient in the right inlet.
 This is nothing but the IIR filter example we've already seen in the
 previous examples., f 57;
 #X text 575 411 The Transfer Function:;

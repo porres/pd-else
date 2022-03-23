@@ -35,7 +35,7 @@ options. One is to "hold" \, where we keep the same value for all the
 new sample values. One way to implement this is with [sh~] \, from
 ELSE \, which is a "sample and hold" unit that collects a sample value
 when receiving impulses (given by [impulse~]) and holds such values
-until the next trigger. The frequency at wich it receives impulses
+until the next trigger. The frequency at which it receives impulses
 is the downsampled frequency.;
 #X connect 0 0 11 0;
 #X connect 2 0 7 0;

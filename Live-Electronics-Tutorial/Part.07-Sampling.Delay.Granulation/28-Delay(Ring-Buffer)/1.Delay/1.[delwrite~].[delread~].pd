@@ -20,11 +20,11 @@ they are the basis of filters., f 73;
 \, which is a buffer to continuously record to. Let's take the analog
 example of a magnetic tape delay \, which has the in a closed loop.
 This way \, when you record one cycle of the whole length of the tape
-you start recording again from the beggining. Then \, one head was
+you start recording again from the beginning. Then \, one head was
 used to write and another to read at a different length point (the
 further back \, the bigger the delay)., f 73;
 #X text 41 198 In the digital world it's the same. It records into
-a buffer/array and restarts recording to the beggining of the buffer
+a buffer/array and restarts recording to the beginning of the buffer
 in a loop. The [delwrite~] object is the write head and the [delread~]
 is the read head that can access the buffer at different lengths behind
 (set in ms with the second argument or inlet). Multiple [delread~]

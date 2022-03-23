@@ -13,12 +13,12 @@
 #X obj 173 331 max~;
 #X text 54 64 So \, how is the "soft sync" technique "softer" than
 "hard sync"? There are different ways to soften out. It can be that
-instead of resseting the oscillator \, you just reverse the waveform
+instead of resetting the oscillator \, you just reverse the waveform
 direction. Other options can just deactivate hard syncing in certain
-cases \, such as when the interval relationship betwen master and slave
+cases \, such as when the interval relationship between master and slave
 goes beyond a certain range.;
 #X text 54 175 In this example we prevent the slave frequency to go
-lower than the masters to avoid resseting the period before it has
+lower than the masters to avoid resetting the period before it has
 been completed. We do this with the native [max~] object \, which is
 a maximum function and keeps the slave frequency the same as the master's
 if it is lower., f 58;

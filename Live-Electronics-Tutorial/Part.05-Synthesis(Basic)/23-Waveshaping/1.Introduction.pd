@@ -92,7 +92,7 @@
 #X text 18 92 Here we use Waveshaping for a simple clipping distortion
 for didactical purposes \, as it makes it easy to visualize how it
 works. First we have a linear function that does not alter the input.
-But by moving the slider and seting a maximum amplitude value we can
+But by moving the slider and setting a maximum amplitude value we can
 generate a clipping function.;
 #X text 442 159 transfer function, f 9;
 #X obj 509 164 tabread4~ \$0-shape;

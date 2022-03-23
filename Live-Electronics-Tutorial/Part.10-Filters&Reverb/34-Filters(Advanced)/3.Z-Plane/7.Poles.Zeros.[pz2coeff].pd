@@ -314,7 +314,7 @@ if (p_pair_\$0 == 1 \, sin($f2 * pi_\$0) * -$f1 \, 0);
 (in conjugate pairs if the toggle is on). When paired \, we have angle/amplitude
 controls (independent amplitudes otherwise). There's a radio button
 with presets for some filter types. Note that gain adjustments are
-needed to achieve these filters. Here are some guidelines to achive
+needed to achieve these filters. Here are some guidelines to achieve
 them:, f 117;
 #X text 678 144 For lowpass \, zeros at -1 kill high frequencies and
 the poles act a bit like in [lop~] \, with the difference you can boost

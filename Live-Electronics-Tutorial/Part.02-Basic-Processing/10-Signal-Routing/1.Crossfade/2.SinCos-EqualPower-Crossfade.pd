@@ -158,7 +158,7 @@
 -228856 -1 -1 1 256;
 #X text 26 22 A non linear sine/cosine function is more suited for
 crossfades. This example below is implemented with the [sin~]/[cos~]
-math objetcs. Note we just use the 1st fourth of the cycle (input from
+math objects. Note we just use the 1st fourth of the cycle (input from
 0 to 0.25)., f 49;
 #X text 397 143 Note also that in the central crossing point we have
 a decrease of about -3 dB instead of -6 dB as with linear crossfades.

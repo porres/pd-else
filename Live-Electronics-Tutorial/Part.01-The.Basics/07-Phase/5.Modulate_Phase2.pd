@@ -129,7 +129,7 @@ there's no cancelling when modulating and opposing the phase. But we
 can also invert the polarity and see how it does cancell out., f 54
 ;
 #X text 30 164 Change the sliders below to put the oscillators in and
-out of phase and note that a phase oposition actually doubles the frequency!
+out of phase and note that a phase opposition actually doubles the frequency!
 On the other hand \, if one of the oscillators has the polarity inverted
 and there's a phase opposition \, then we generate a square wave!,
 f 54;

@@ -58,8 +58,8 @@
 #X text 556 407 MIDI 16;
 #X obj 483 498 expr $f1 * (2 * -pi_\$0) / 44100;
 #X obj 106 465 expr $f1 * (2 * -pi_\$0) / 44100;
-#X obj 86 33 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
--1;
+#X obj 86 33 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000;
 #X obj 106 298 expr (($f1 + 1) * (midi_range_\$0 / $f2)) + 16;
 #X connect 0 0 19 0;
 #X connect 1 0 19 1;
@@ -129,7 +129,7 @@
 #X msg 324 179 8750.55;
 #X obj 316 262 expr atan(1) * 4;
 #X obj 317 293 v pi_\$0;
-#X obj 16 409 s \$0-coeficientes;
+#X obj 16 409 s \$0-coefficientes;
 #X obj 47 262 t b b;
 #X msg 16 368 1.9664 -0.9669 0.9669 -1.9664 1 \; pd dsp 1;
 #X msg 305 65 \; freq set 500;
@@ -178,8 +178,8 @@
 #X obj 211 45 unpack f f f f f;
 #X obj 211 18 inlet;
 #X text 92 20 index;
-#X text 260 18 coeficientes;
-#X obj 698 68 cnv 15 320 90 empty empty empty 20 12 0 14 -233017 -66577
+#X text 260 18 coefficientes;
+#X obj 698 68 cnv 15 320 90 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #X text 728 97 H(z) = b1 + (b2 * z^-1) + (b3 * z^-2);
 #X text 768 103 _________________________________;
@@ -249,17 +249,17 @@
 #X connect 5 0 6 0;
 #X connect 7 0 3 0;
 #X restore 114 66 pd freq-response;
-#X obj 101 100 cnv 15 848 400 empty empty empty 18 9 1 16 -262144 -1
+#X obj 101 100 cnv 15 848 400 empty empty empty 18 9 1 16 #fcfcfc #000000
 0;
-#X obj 434 109 cnv 15 15 15 empty empty Kilohertz 18 9 1 16 -262144
--1 0;
-#X obj 108 148 cnv 15 798 85 empty empty empty 20 12 0 14 -257983 -66577
+#X obj 434 109 cnv 15 15 15 empty empty Kilohertz 18 9 1 16 #fcfcfc
+#000000 0;
+#X obj 108 148 cnv 15 798 85 empty empty empty 20 12 0 14 #f8f8f8 #404040
 0;
-#X obj 108 232 cnv 15 798 85 empty empty empty 20 12 0 14 -241340 -66577
+#X obj 108 232 cnv 15 798 85 empty empty empty 20 12 0 14 #e8e8ec #404040
 0;
-#X obj 108 318 cnv 15 798 85 empty empty empty 20 12 0 14 -257983 -66577
+#X obj 108 318 cnv 15 798 85 empty empty empty 20 12 0 14 #f8f8f8 #404040
 0;
-#X obj 108 403 cnv 15 798 85 empty empty empty 20 12 0 14 -241340 -66577
+#X obj 108 403 cnv 15 798 85 empty empty empty 20 12 0 14 #e8e8ec #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 77 170 1;
@@ -335,10 +335,11 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 800 170 1;
 #X restore 107 318 graph;
-#X obj 103 132 cnv 15 810 15 empty empty empty 18 9 1 16 -262144 -1
+#X obj 103 132 cnv 15 810 15 empty empty empty 18 9 1 16 #fcfcfc #000000
 0;
 #X text 911 478 -24;
-#X obj 907 309 cnv 15 15 15 empty empty dB 18 9 1 17 -262144 -1 0;
+#X obj 907 309 cnv 15 15 15 empty empty dB 18 9 1 17 #fcfcfc #000000
+0;
 #X text 911 393 -12;
 #X text 911 223 12;
 #X text 910 140 24;
@@ -359,25 +360,25 @@
 #X text 292 129 0.1;
 #X text 215 129 0.05;
 #X text 115 129 0.02;
-#X obj 114 42 r \$0-coeficients;
+#X obj 114 42 r \$0-coefficients;
 #X connect 57 0 0 0;
 #X coords 0 -1 1 1 850 402 1 100 100;
 #X restore 25 245 pd;
 #X obj 721 133 biquad~;
-#X obj 742 102 r \$0-coeficientes;
+#X obj 742 102 r \$0-coefficientes;
 #N canvas 618 54 275 240 bandpass 0;
-#X obj 42 79 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
-#X obj 121 104 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
+#X obj 42 79 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
+#X obj 121 104 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
 #X obj 118 126 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 39 117 nbx 5 14 -1e+37 1e+37 0 0 empty freq empty 0 -8 0 10
--228856 -1 -1 500 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 39 149 bicoeff bandpass 500 10;
 #X text 50 79 Resonant Frequency;
 #X text 144 104 Q/Resonance;
-#X obj 39 173 s \$0-coeficients;
+#X obj 39 173 s \$0-coefficients;
 #X text 52 42 Like [bandpass~].;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
@@ -386,18 +387,18 @@
 #X connect 4 0 7 0;
 #X restore 490 98 pd bandpass;
 #N canvas 534 61 297 222 resonant 0;
-#X obj 51 61 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
-#X obj 130 88 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
+#X obj 51 61 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
+#X obj 130 88 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
 #X obj 127 110 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 48 99 nbx 5 14 -1e+37 1e+37 0 0 empty freq empty 0 -8 0 10 -228856
--1 -1 500 256;
+#dcdcdc #000000 #000000 0 256;
+#X obj 48 99 nbx 5 14 -1e+37 1e+37 0 0 empty freq empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X obj 48 131 bicoeff resonant 500 10;
 #X text 59 62 Resonant Frequency;
 #X text 156 89 Q/Resonance;
-#X obj 48 155 s \$0-coeficients;
+#X obj 48 155 s \$0-coefficients;
 #X text 66 27 Like [resonant~].;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
@@ -406,18 +407,18 @@
 #X connect 4 0 7 0;
 #X restore 490 121 pd resonant;
 #N canvas 608 40 268 227 lowpass 0;
-#X obj 35 70 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
-#X obj 110 95 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
+#X obj 35 70 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
+#X obj 110 95 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
 #X obj 107 117 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 32 108 nbx 5 14 -1e+37 1e+37 0 0 empty freq empty 0 -8 0 10
--228856 -1 -1 500 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 32 140 bicoeff lowpass 500 10;
 #X text 46 70 Resonant Frequency;
 #X text 133 96 Q/Resonance;
-#X obj 32 164 s \$0-coeficients;
+#X obj 32 164 s \$0-coefficients;
 #X text 45 17 The lowpass option is similar to [lowpass~]., f 22;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
@@ -426,18 +427,18 @@
 #X connect 4 0 7 0;
 #X restore 497 52 pd lowpass;
 #N canvas 578 63 304 201 highpass 0;
-#X obj 50 58 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
-#X obj 129 83 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
+#X obj 50 58 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
+#X obj 129 83 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
 #X obj 126 105 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 47 96 nbx 5 14 -1e+37 1e+37 0 0 empty freq empty 0 -8 0 10 -228856
--1 -1 500 256;
+#dcdcdc #000000 #000000 0 256;
+#X obj 47 96 nbx 5 14 -1e+37 1e+37 0 0 empty freq empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X obj 47 128 bicoeff highpass 500 10;
 #X text 58 58 Resonant Frequency;
 #X text 153 83 Q/Resonance;
-#X obj 47 152 s \$0-coeficients;
+#X obj 47 152 s \$0-coefficients;
 #X text 66 24 Like [highpass~].;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
@@ -446,18 +447,18 @@
 #X connect 4 0 7 0;
 #X restore 490 75 pd highpass;
 #N canvas 590 68 275 240 bandstop 0;
-#X obj 42 79 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
-#X obj 121 104 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
+#X obj 42 79 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
+#X obj 121 104 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
 #X obj 118 126 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 39 117 nbx 5 14 -1e+37 1e+37 0 0 empty freq empty 0 -8 0 10
--228856 -1 -1 500 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 50 79 Resonant Frequency;
 #X text 144 104 Q/Resonance;
 #X obj 39 149 bicoeff bandstop 500 10;
-#X obj 39 173 s \$0-coeficients;
+#X obj 39 173 s \$0-coefficients;
 #X text 57 42 Like [bandstop~].;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
@@ -466,23 +467,23 @@
 #X connect 6 0 7 0;
 #X restore 577 52 pd bandstop;
 #N canvas 591 39 351 244 eq 0;
-#X obj 42 79 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
-#X obj 119 104 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
+#X obj 42 79 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
+#X obj 119 104 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
 #X obj 116 126 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 39 117 nbx 5 14 -1e+37 1e+37 0 0 empty freq empty 0 -8 0 10
--228856 -1 -1 500 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 50 79 Resonant Frequency;
 #X text 142 104 Q/Resonance;
 #X obj 48 149 bicoeff eq 500 10 12;
-#X obj 206 138 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
+#X obj 206 138 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
 #X obj 203 160 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 259 139 Gain;
-#X obj 48 173 s \$0-coeficients;
+#X obj 48 173 s \$0-coefficients;
 #X text 55 38 Like [eq~].;
 #X connect 0 0 3 0;
 #X connect 1 0 2 0;
@@ -493,20 +494,20 @@
 #X connect 8 0 6 2;
 #X restore 577 75 pd eq;
 #N canvas 503 51 408 251 highshelf 0;
-#X obj 51 79 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
-#X obj 144 104 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
+#X obj 51 79 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
+#X obj 144 104 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
 #X obj 141 126 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 48 117 nbx 5 14 -1e+37 1e+37 0 0 empty freq empty 0 -8 0 10
--228856 -1 -1 500 256;
-#X obj 259 130 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
+#dcdcdc #000000 #000000 0 256;
+#X obj 259 130 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
 #X obj 256 152 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 308 131 Gain;
-#X obj 48 173 s \$0-coeficients;
+#X obj 48 173 s \$0-coefficients;
 #X text 173 104 S/Slope;
 #X text 80 79 Frequency;
 #X obj 48 149 bicoeff highshelf 500 10 12;
@@ -520,20 +521,20 @@
 #X connect 10 0 7 0;
 #X restore 577 121 pd highshelf;
 #N canvas 535 70 391 231 lowshelf 0;
-#X obj 51 71 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
-#X obj 140 96 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
+#X obj 51 71 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
+#X obj 140 96 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
 #X obj 137 118 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 48 109 nbx 5 14 -1e+37 1e+37 0 0 empty freq empty 0 -8 0 10
--228856 -1 -1 500 256;
-#X obj 251 130 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
+#dcdcdc #000000 #000000 0 256;
+#X obj 251 130 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
 #X obj 248 152 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 304 131 Gain;
-#X obj 48 165 s \$0-coeficients;
+#X obj 48 165 s \$0-coefficients;
 #X text 169 96 S/Slope;
 #X obj 48 141 bicoeff lowshelf 500 10 12;
 #X text 80 71 Frequency;
@@ -548,17 +549,17 @@
 #X restore 577 98 pd lowshelf;
 #X text 486 21 Open the subpatches below:;
 #N canvas 534 61 297 222 allpass 0;
-#X obj 51 61 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
-#X obj 126 88 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 -228856
--1 -1 0 0;
+#X obj 51 61 hsl 140 17 20 20000 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
+#X obj 126 88 hsl 128 17 0.5 10 1 0 empty empty empty 5 9 0 10 #dcdcdc
+#000000 #000000 0 0;
 #X obj 123 110 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X obj 48 99 nbx 5 14 -1e+37 1e+37 0 0 empty freq empty 0 -8 0 10 -228856
--1 -1 500 256;
+#dcdcdc #000000 #000000 0 256;
+#X obj 48 99 nbx 5 14 -1e+37 1e+37 0 0 empty freq empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X text 59 62 Resonant Frequency;
 #X text 150 88 Q/Resonance;
-#X obj 48 155 s \$0-coeficients;
+#X obj 48 155 s \$0-coefficients;
 #X obj 48 131 bicoeff allpass 500 10;
 #X text 65 24 Like [allpass.2nd~].;
 #X connect 0 0 3 0;
@@ -577,7 +578,7 @@ Bristow-Johnson's "Cookbook formulae for audio EQ biquad filter coefficients".
 All these filter types have already been presented here., f 57;
 #X obj 756 14 declare -path else;
 #X obj 721 167 out~;
-#X text 40 22 The vanilla objec [biquad~] is a general filter that
+#X text 40 22 The vanilla object [biquad~] is a general filter that
 can act as several types depending on its coefficients. The "biquad"
 term is an abbreviation of "biquadratic" \, since the filter is described
 as a biquadratic polinomial., f 57;

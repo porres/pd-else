@@ -57,10 +57,10 @@
 #X text 568 348 ratio;
 #X text 451 170 Let's go back to the theory of musical intervals. Below
 we have a division of the octave in 12 parts \, so an input in semitones
-from 0 to 12 is converted to logarythmic ratios as below (we just adapt
+from 0 to 12 is converted to logarhythmic ratios as below (we just adapt
 this to a wider range that depends on the index values \, see to the
 left).;
-#X text 451 93 The array named "\$0-log_index" loads values of a logarythmic
+#X text 451 93 The array named "\$0-log_index" loads values of a logarhythmic
 scale used as indexes to read the FFT data \, which is stored in a
 table named "\$0-Amp" via the [tabsend~] object. In this way \, [tabreceive~
 \$0-log_index] throws the table indexes and we use them to access the
@@ -83,7 +83,7 @@ FFT with [tabread4~ \$0-Amp].;
 #X obj 73 108 hann~;
 #X text 257 226 This patch is the same as the last example \, but we
 have a new stage \, which is the [pd log_freq] subpatch that converts
-to logarythmic frequency \, open it and check it out., f 36;
+to logarhythmic frequency \, open it and check it out., f 36;
 #X text 156 259 <= click;
 #X connect 0 0 10 0;
 #X connect 0 1 10 1;
@@ -107,8 +107,8 @@ to logarythmic frequency \, open it and check it out., f 36;
 #X obj 603 92 initmess 64.58;
 #X text 71 335 0;
 #X text 47 483 -100;
-#X text 64 88 Besides a logarythmic amplitude display \, we can also
-convert and have a logarythmic frequency representation \, since frequency
+#X text 64 88 Besides a logarhythmic amplitude display \, we can also
+convert and have a logarhythmic frequency representation \, since frequency
 is usually represented that way., f 42;
 #X text 64 153 Note however that FFT is linear and the conversion doesn't
 change that. For being linear \, FFT has less resolution for lower

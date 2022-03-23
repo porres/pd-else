@@ -1,6 +1,6 @@
-#N canvas 459 87 930 554 12;
+#N canvas 436 87 930 554 12;
 #X declare -path else;
-#X obj 53 364 cnv 15 248 148 empty empty empty 20 12 0 14 -228856 -66577
+#X obj 53 364 cnv 15 248 148 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-cos 441 float 0;
@@ -12,9 +12,9 @@
 #X obj 487 316 samphold~;
 #X obj 593 245 samphold~;
 #X obj 445 280 *~;
-#X floatatom 576 58 0 0 1e+06 0 - grain -;
-#X floatatom 485 59 0 0 1e+06 0 - - -;
-#X floatatom 677 56 0 0 50 0 - hz -;
+#X floatatom 576 58 0 0 1e+06 0 - grain - 0;
+#X floatatom 485 59 0 0 1e+06 0 - - - 0;
+#X floatatom 677 56 0 0 50 0 - hz - 0;
 #X text 675 37 Hz;
 #X obj 555 442 +~;
 #X obj 648 414 *~;
@@ -36,8 +36,8 @@
 #X obj 573 350 envelope~;
 #N canvas 315 152 450 300 plot 0;
 #X obj 276 120 metro 300;
-#X obj 276 99 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 1
-1;
+#X obj 276 99 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 276 74 loadbang;
 #X obj 38 82 pimp~ 150;
 #X obj 157 82 pimp~ 150 0.5;
@@ -77,8 +77,8 @@ with both grains to the right., f 50;
 \, as it is basically just an amplitude modulation implementation.
 We avoid this and also the tremolo effect by overlapping two grains.
 , f 50;
-#X obj 784 83 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 784 83 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #N canvas 790 23 285 190 buffer 0;
 #X obj 41 60 openpanel;
 #X obj 41 29 inlet;

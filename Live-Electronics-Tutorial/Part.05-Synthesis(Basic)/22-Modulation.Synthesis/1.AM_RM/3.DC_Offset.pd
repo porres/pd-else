@@ -317,7 +317,7 @@
 #X connect 3 2 4 0;
 #X restore 110 122 pd DC-Offset;
 #X obj 268 190 select AM RM;
-#N canvas 288 205 561 373 Oscilator 0;
+#N canvas 288 205 561 373 Oscillator 0;
 #X obj 134 226 expr~ ($v1 * $v2) + $v3;
 #X obj 213 197 line~;
 #X msg 213 169 \$1 10;
@@ -344,7 +344,7 @@
 #X connect 8 0 7 0;
 #X connect 9 0 2 0;
 #X connect 10 0 4 0;
-#X restore 50 291 pd Oscilator;
+#X restore 50 291 pd Oscillator;
 #N canvas 4 23 450 300 tabwrite~ 0;
 #X obj 50 24 inlet~;
 #X obj 69 148 tabwrite~ \$0-Mod;

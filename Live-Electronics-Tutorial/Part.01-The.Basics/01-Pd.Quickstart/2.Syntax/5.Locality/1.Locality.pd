@@ -55,7 +55,7 @@ name \, using "\$0" as part of an array name is also useful when opening
 the same patch/abstraction multiple times. Another application is in
 variable names inside [value] objects., f 62;
 #X text 502 347 It's also worth checking the [expr] family of objects
-as they can deal wth arrays and also variables set in [value] objects.
+as they can deal with arrays and also variables set in [value] objects.
 But [expr] has restrictions on how to handles "\$0" in symbols. Check
 the help file of this object below for more details.;
 #X text 696 427 <= get the value of x_\$0 variable, f 17;

@@ -47,7 +47,7 @@
 [expr] family of objects and may be used to implement filter equations
 (a.k.a. difference equations). So let's now implement an average filter
 of 8 samples. First \, here's its difference equation:, f 64;
-#X text 77 183 Where "y[n]" is the currrent output \, "x[n]" is the
+#X text 77 183 Where "y[n]" is the current output \, "x[n]" is the
 current input sample \, x[n-1] the last input sample and so on. Now
 let's check how this formula inside the [fexpr~] object and how similar
 it looks., f 51;

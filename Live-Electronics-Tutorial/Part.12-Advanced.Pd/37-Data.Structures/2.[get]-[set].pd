@@ -1,5 +1,5 @@
-#N struct 1004-DS float x float y float n;
-#N canvas 538 76 872 563 12;
+#N struct 1082-DS float x float y float n;
+#N canvas 494 76 872 563 12;
 #X declare -path else;
 #X obj 174 153 pointer;
 #X obj 51 27 loadbang;
@@ -23,10 +23,6 @@
 #X obj 51 53 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
 #X msg 51 129 127 64 64;
-#X text 476 135 In this example we'll "get" and "set" the value of
-the float and its coordinates with the [get] and [set] objects. These
-objects need a pointer to the data structure \, which is given by the
-outlet of [append]., f 47;
 #X obj 51 350 get \$0-DS n;
 #X obj 51 416 set \$0-DS n;
 #X text 20 383 "n";
@@ -45,7 +41,7 @@ object., f 47;
 #X msg 308 51 clear \, vis 1;
 #X obj 308 78 s pd-\$0-display;
 #N canvas 306 221 161 169 \$0-display 1;
-#X scalar 1004-DS 64 64 127 \;;
+#X scalar 1082-DS 64 64 127 \;;
 #X restore 338 206 pd \$0-display;
 #X text 476 232 Note that the [pointer] object can also be used as
 a storage object \, so it can store and resend a pointer it received
@@ -59,29 +55,34 @@ use it to send the pointer to the [set] and [get] objects. Check how
 [get \$0-DS n] gets the value from "n" \, and how you can set the value
 of 'n' with [set \$0-DS n]. The same can be done for the x/y coordinates
 values., f 47;
-#X connect 0 0 18 3;
+#X text 476 135 In this example we'll "get" and "set" the values of
+the Data Structure's template \, which is the float value and its coordinates.
+This is done with the [get] and [set] objects. They need a pointer
+to the data structure \, which is given by the outlet of [append].
+, f 47;
+#X connect 0 0 17 3;
 #X connect 1 0 10 0;
-#X connect 3 0 14 0;
+#X connect 3 0 13 0;
 #X connect 4 0 6 0;
 #X connect 5 0 6 1;
-#X connect 6 0 17 0;
-#X connect 6 1 17 1;
+#X connect 6 0 16 0;
+#X connect 6 1 16 1;
 #X connect 7 0 5 0;
 #X connect 7 0 6 1;
-#X connect 10 0 30 0;
-#X connect 11 0 18 0;
-#X connect 13 0 3 0;
-#X connect 16 0 4 0;
-#X connect 16 1 7 0;
-#X connect 18 0 19 0;
-#X connect 19 0 31 0;
-#X connect 20 0 19 0;
-#X connect 24 0 25 0;
-#X connect 29 0 0 0;
-#X connect 30 0 11 0;
-#X connect 30 1 29 0;
-#X connect 30 2 24 0;
-#X connect 31 0 13 0;
-#X connect 31 1 14 1;
-#X connect 31 1 16 0;
-#X connect 31 2 17 2;
+#X connect 10 0 29 0;
+#X connect 11 0 17 0;
+#X connect 12 0 3 0;
+#X connect 15 0 4 0;
+#X connect 15 1 7 0;
+#X connect 17 0 18 0;
+#X connect 18 0 30 0;
+#X connect 19 0 18 0;
+#X connect 23 0 24 0;
+#X connect 28 0 0 0;
+#X connect 29 0 11 0;
+#X connect 29 1 28 0;
+#X connect 29 2 23 0;
+#X connect 30 0 12 0;
+#X connect 30 1 13 1;
+#X connect 30 1 15 0;
+#X connect 30 2 16 2;

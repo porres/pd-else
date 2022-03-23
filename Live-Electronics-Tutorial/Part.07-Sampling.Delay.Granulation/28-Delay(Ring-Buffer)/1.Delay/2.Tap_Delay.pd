@@ -37,7 +37,7 @@
 #X obj 267 182 envgen~ 20 1 10 1 20 0, f 12;
 #X text 437 94 A "Multi-Tap" delay is just a delay line being "tapped"
 at different points. We can use this to implement simple repetitions
-or more complex rythms. In this example we also explore a stereo effect.
+or more complex rhythms. In this example we also explore a stereo effect.
 , f 52;
 #X obj 682 30 declare -path else;
 #X obj 555 255 out~;

@@ -26,7 +26,7 @@
 of a pedal. You can try with other filters \, but here we use [vcf~]
 and also have a [drive~] unit \, cause it sounded alright like that.
 Besides an LFO rate/frequency and filter Q \, we also have controls
-for the minumum and maximum frequency in the filter sweep., f 57;
+for the minimum and maximum frequency in the filter sweep., f 57;
 #X obj 374 18 declare -path else;
 #X obj 59 250 play.file~ wha-guitar.wav 1 1;
 #X text 68 62 The Wah-wah effect stompbox is quite known around and

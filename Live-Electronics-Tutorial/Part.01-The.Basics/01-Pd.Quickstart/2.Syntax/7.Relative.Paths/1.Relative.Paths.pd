@@ -29,7 +29,7 @@ Pd’s Application).;
 #X text 488 19 As an example we send the "read" message to an array
 \, where Pd looks for a "table.txt" file inside a subfolder named "txt".
 Since the file is included in a folder in case "A)" \, this task is
-performed successfuly. The write message works in the same way., f
+performed successfully. The write message works in the same way., f
 51;
 #X connect 5 0 1 0;
 #X connect 6 0 1 0;

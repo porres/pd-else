@@ -1,8 +1,8 @@
-#N canvas 381 182 1053 590 12;
+#N canvas 313 156 1053 590 12;
 #X declare -path else;
 #X obj 557 160 impseq~;
-#X obj 103 132 cnv 15 320 120 empty empty empty 20 12 0 14 -233017
--66577 0;
+#X obj 103 132 cnv 15 320 120 empty empty empty 20 12 0 14 #e0e0e0
+#404040 0;
 #X text 165 145 |;
 #X text 165 157 |;
 #X text 165 169 |;
@@ -40,16 +40,16 @@
 #X text 127 224 y[n] = x[n] + a * x[n-D] + a * y[n-D];
 #X text 261 192 -(*a)-;
 #X text 188 191 -(*a)-;
-#X obj 506 345 cnv 15 498 148 empty empty empty 20 12 0 14 -228856
--66577 0;
+#X obj 506 345 cnv 15 498 148 empty empty empty 20 12 0 14 #dcdcdc
+#404040 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array \$0-Amp 4096 float 0;
 #X coords 0 14.4994 4096 0 500 150 1;
 #X restore 505 344 graph;
-#X obj 557 128 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 557 128 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 580 127 Record/Analyze;
-#N canvas 635 222 687 574 IR 0;
+#N canvas 635 172 687 574 IR 0;
 #X msg 279 185 stop;
 #X msg 219 187 start;
 #X obj 209 279 v length;
@@ -62,7 +62,6 @@
 #X obj 271 32 inlet~;
 #X obj 158 77 env~ 2048 1024;
 #X obj 158 101 > 0;
-#X obj 271 113 ffdelay~ 1024 -samps;
 #X obj 159 308 log 2;
 #X obj 159 337 expr pow(2 \, $i1 + 1);
 #X text 355 56 Records IR \, find power of two larger than its length
@@ -128,7 +127,7 @@ to resize the table., f 36;
 #X restore 85 460 pd FFT;
 #X text 80 483 Analyze;
 #X obj 224 500 v w_size;
-#X floatatom 191 422 0 0 0 0 - - -;
+#X floatatom 191 422 0 0 0 0 - - - 0;
 #X obj 209 523 s window-size;
 #X msg 230 449 resize \$1;
 #X obj 230 473 s \$0-IR;
@@ -139,50 +138,51 @@ to resize the table., f 36;
 #X obj 383 309 table \$0-IR 44100;
 #X msg 316 262 resize 44100 \, const 0, f 14;
 #X obj 138 187 t b b;
+#X obj 271 113 ffdelay~ -samps 1024;
 #X connect 0 0 5 0;
 #X connect 1 0 5 0;
-#X connect 3 0 13 0;
+#X connect 3 0 12 0;
 #X connect 3 1 2 0;
-#X connect 4 0 30 0;
+#X connect 4 0 29 0;
 #X connect 4 1 0 0;
 #X connect 4 1 8 1;
 #X connect 6 0 4 0;
-#X connect 8 0 16 0;
+#X connect 8 0 15 0;
 #X connect 9 0 10 0;
-#X connect 9 0 12 0;
+#X connect 9 0 30 0;
 #X connect 10 0 11 0;
 #X connect 11 0 6 0;
-#X connect 12 0 5 0;
-#X connect 13 0 14 0;
-#X connect 14 0 25 0;
-#X connect 16 0 3 0;
-#X connect 20 0 21 0;
-#X connect 20 0 19 0;
-#X connect 20 0 22 0;
-#X connect 22 0 23 0;
-#X connect 24 0 20 0;
-#X connect 25 0 26 0;
-#X connect 25 1 24 0;
-#X connect 26 0 17 0;
-#X connect 29 0 7 0;
-#X connect 30 0 8 0;
-#X connect 30 1 29 0;
-#X connect 30 1 1 0;
+#X connect 12 0 13 0;
+#X connect 13 0 24 0;
+#X connect 15 0 3 0;
+#X connect 19 0 20 0;
+#X connect 19 0 18 0;
+#X connect 19 0 21 0;
+#X connect 21 0 22 0;
+#X connect 23 0 19 0;
+#X connect 24 0 25 0;
+#X connect 24 1 23 0;
+#X connect 25 0 16 0;
+#X connect 28 0 7 0;
+#X connect 29 0 8 0;
+#X connect 29 1 28 0;
+#X connect 29 1 1 0;
+#X connect 30 0 5 0;
 #X restore 574 226 pd IR;
 #X obj 558 253 out~;
 #X obj 557 188 comb.filt~ 1000 50;
 #N canvas 673 55 516 558 t60 0;
-#X floatatom 137 165 0 0 0 0 - - -;
-#X floatatom 137 116 7 0 0 0 - feedback -;
-#X floatatom 225 168 0 0 0 0 - Hz -;
+#X floatatom 137 165 0 0 0 0 - - - 0;
+#X floatatom 137 116 7 0 0 0 - feedback - 0;
+#X floatatom 225 168 0 0 0 0 - Hz - 0;
 #X obj 137 188 t b f;
 #X obj 169 211 v dB;
 #X text 256 167 hertz;
 #X text 103 282 T60;
 #X obj 137 282 nbx 8 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 0 256;
-#X floatatom 137 381 0 0 0 0 - - -;
-#X floatatom 330 384 0 0 0 0 - - -;
+#dcdcdc #000000 #000000 0 256;
+#X floatatom 137 381 0 0 0 0 - - - 0;
+#X floatatom 330 384 0 0 0 0 - - - 0;
 #X obj 137 353 db2lin;
 #X obj 137 141 lin2db;
 #X text 343 197 period in ms;
@@ -219,14 +219,13 @@ decay time parameters from the same feedback for different hertz values.
 #X obj 737 273 out~;
 #X obj 737 162 noise~;
 #X obj 823 170 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 909 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 826 146 hsl 128 15 20 2000 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
-#X obj 737 226 comb.filt~ 1000 0.9 -gain;
+#dcdcdc #000000 #000000 0 1;
 #X obj 912 172 hsl 128 15 -0.99 0.99 0 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 0 1;
+10 #dcdcdc #000000 #000000 0 1;
 #X text 30 431 The frequency response of a comb filter has many amplitude
 peaks and valleys displayed harmonically (creating the image of a comb
 \, hence the name). The fundamental frequency depends on the delay
@@ -256,13 +255,14 @@ time \, which is the period of the input frequency in ms (D = 1000
 a different gain coefficient for the input \, the feedforward and the
 feedback line. This simplification in [comb.filt~] aims for convenience
 as a filter., f 61;
+#X obj 737 226 comb.filt~ -gain 1000 0.9;
 #X connect 0 0 45 0;
 #X connect 41 0 0 0;
 #X connect 45 0 43 0;
 #X connect 45 0 44 0;
-#X connect 48 0 52 0;
-#X connect 49 0 52 1;
-#X connect 50 0 52 2;
+#X connect 48 0 60 0;
+#X connect 49 0 60 1;
+#X connect 50 0 60 2;
 #X connect 51 0 49 0;
-#X connect 52 0 47 0;
-#X connect 53 0 50 0;
+#X connect 52 0 50 0;
+#X connect 60 0 47 0;
