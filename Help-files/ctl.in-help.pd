@@ -1,4 +1,4 @@
-#N canvas 463 46 562 509 10;
+#N canvas 494 45 562 509 10;
 #X obj 23 41 cnv 4 4 4 empty empty Midi 0 28 2 18 #e0e0e0 #000000 0
 ;
 #X obj 65 41 cnv 4 4 4 empty empty control 0 28 2 18 #e0e0e0 #000000
@@ -105,7 +105,7 @@ number and channel pass through. A control number of "-1" lets all
 controllers come out., f 67;
 #X msg 207 215 -1;
 #X text 237 215 All;
-#X text 243 236 controll number;
+#X text 243 236 control number;
 #X connect 0 0 2 0;
 #X connect 2 0 5 0;
 #X connect 2 1 4 0;

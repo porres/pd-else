@@ -81,7 +81,7 @@
 #X text 337 70 [fdn.rev~] uses a householder reflection feedback matrix.
 The main parameters are the reverberation decay time (t60) \, which
 is the time it takes to decrease 60dB in seconds. The damping parameter
-controls the decay of higher frequencies \, the higer the damping \,
+controls the decay of higher frequencies \, the higher the damping \,
 the less higher frequencies reverberate., f 47;
 #X obj 205 213 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
@@ -104,7 +104,7 @@ sets the delay time for each delay line., f 47;
 first element \, the two extra elements set the minimum and maximum
 delay times. By defaultt they are spaced linearly \, but they can be
 exponentially spaced with the "exp" message., f 47;
-#X text 116 22 lits sets delay lines;
+#X text 116 22 list sets delay lines;
 #X text 261 45 defaultt;
 #X obj 162 309 else/out~;
 #X connect 1 0 3 0;

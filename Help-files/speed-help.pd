@@ -46,9 +46,9 @@
 #X text 137 333 list -;
 #X text 184 333 two floats set target and amount of beats and three
 floats set start \, target and number of beats;
-#X text 184 318 sets bpm imediately, f 58;
+#X text 184 318 sets bpm immediately, f 58;
 #X text 101 359 set <list> -;
-#X text 184 359 floats/lists preceed by 'set' waits for a bang to trigger
+#X text 184 359 floats/lists precede by 'set' waits for a bang to trigger
 , f 58;
 #X text 137 375 bang -;
 #X text 184 375 triggers the object after a 'set' message, f 58;
@@ -60,7 +60,7 @@ floats set start \, target and number of beats;
 #X obj 224 230 bng 15 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
 #X text 242 230 trigger after 'set' message;
-#X text 78 179 float sets imediately, f 10;
+#X text 78 179 float sets immediately, f 10;
 #N canvas 878 172 381 390 example 0;
 #X msg 128 108 tempo \$1 permin;
 #X obj 52 102 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000

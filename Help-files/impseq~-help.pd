@@ -48,7 +48,7 @@
 #X text 185 319 - sets a single sequence value and outputs it;
 #X text 151 335 list;
 #X text 115 350 set <list>;
-#X text 185 349 - sets one or more impulse values without outputing
+#X text 185 349 - sets one or more impulse values without outputting
 ;
 #X text 139 290 signal;
 #X text 185 290 - trigger to generate impulse from sequence;

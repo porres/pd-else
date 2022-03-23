@@ -56,7 +56,7 @@
 #X obj 181 137 else/imp~ 0.5;
 #X obj 279 136 else/imp~ 0.5 0.5;
 #X text 258 273 - left channel input signal, f 31;
-#X text 258 365 - rigth channel input signal, f 31;
+#X text 258 365 - right channel input signal, f 31;
 #X text 258 302 - high frequency damping (0-1), f 31;
 #N canvas 565 204 687 507 details 0;
 #X obj 335 210 hsl 128 15 0 1 0 1 empty empty empty 20 8 0 10 #dcdcdc

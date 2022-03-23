@@ -108,7 +108,7 @@ below!;
 #X obj 225 126 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 50 1 50 0.6 300 0.6 200 0;
 #X text 66 30 Here's an example on how to use [function] with [envgen~].
-Since [function] is always outputing a list \, you can use the second
+Since [function] is always outputting a list \, you can use the second
 inlet. Check the help file of [envgen~] for more details on how it
 works., f 64;
 #X connect 0 0 2 0;

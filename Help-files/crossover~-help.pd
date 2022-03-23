@@ -20,7 +20,7 @@
 ;
 #X text 206 409 signal;
 #X text 211 331 clear;
-#X text 95 112 It has two outlets for lowpass (left) and highpass (rigth)
+#X text 95 112 It has two outlets for lowpass (left) and highpass (right)
 filters that you can use separately or in combination to form a crossover
 filter.;
 #X obj 195 173 noise~;

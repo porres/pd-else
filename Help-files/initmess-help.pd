@@ -65,7 +65,7 @@ box into a send object;
 #X connect 5 0 6 0;
 #X connect 7 0 2 0;
 #X restore 477 222 pd syntax;
-#X text 71 116 This object also mimicks the behaviour of comma and
+#X text 71 116 This object also mimics the behaviour of comma and
 semicolons inside regular message boxes. See [pd syntax] for more details.
 , f 71;
 #X text 123 329 1) anything -;

@@ -150,7 +150,7 @@
 #X obj 188 188 else/floor~;
 #X text 232 265 - input to floor function;
 #X text 180 265 signal;
-#X text 232 302 - outut of floor function;
+#X text 232 302 - output of floor function;
 #X text 88 92 [floor~] is a floor math function for signals.;
 #X obj 188 215 else/display~;
 #X obj 188 154 else/display~;

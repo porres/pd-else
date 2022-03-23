@@ -90,7 +90,7 @@ of elements in a list \, staring with 3 values \, the syntax is (point1
 \, period \, point2 \, period \, point3 \, etc...). The overall sum
 of periods is normalized to 1!;
 #X text 159 364 - 3 or more floats to set the function (defaultt no
-functon);
+function);
 #X obj 6 393 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 150 401 -exp <list> (defaultt '1' for all segments), f 45;
