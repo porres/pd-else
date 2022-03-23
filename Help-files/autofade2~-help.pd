@@ -36,7 +36,7 @@ hannsin \, linsin>, f 42;
 #X obj 48 274 else/fader~;
 #X text 56 257 see also:;
 #N canvas 695 105 540 389 curves 0;
-#N canvas 135 30 735 535 contant-power(3db) 0;
+#N canvas 135 30 735 535 constant-power(3db) 0;
 #X obj 30 287 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
 #N canvas 0 22 452 302 (subpatch) 0;
@@ -81,7 +81,7 @@ hannsin \, linsin>, f 42;
 #X connect 14 0 11 0;
 #X connect 15 0 9 0;
 #X restore 327 253 pd plot;
-#X text 431 108 There are two "contant power" curves \, which have
+#X text 431 108 There are two "constant power" curves \, which have
 a crossing point at -3dB., f 33;
 #X text 432 164 We have the "sin" (sine) function above and a "sqrt"
 (square root) function below., f 33;
@@ -89,7 +89,7 @@ a crossing point at -3dB., f 33;
 , f 33;
 #X text 435 270 The "sqrt" function is the same as extracting the square
 root of the input., f 33;
-#X restore 298 52 pd contant-power(3db);
+#X restore 298 52 pd constant-power(3db);
 #N canvas 240 70 761 552 compromise(4.5db) 0;
 #X obj 34 50 cnv 15 348 198 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
@@ -187,7 +187,7 @@ function above \, and a mean between the "lin" and "sin" function below.
 #X array \$0-lin_out 441 float 0;
 #X coords 0 1.01 441 0 350 200 1 0 0;
 #X restore 31 288 graph;
-#X text 430 125 There are two "contant voltage" curves \, which have
+#X text 430 125 There are two "constant voltage" curves \, which have
 a crossing point at -6dB., f 33;
 #X text 430 181 We have the "hann" function above and a linear transfer
 function below, f 33;

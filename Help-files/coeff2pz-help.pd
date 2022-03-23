@@ -59,7 +59,7 @@
 #X text 343 162 Overall gain;
 #X text 164 197 Zeros ===>;
 #X text 142 229 Poles =>;
-#X text 204 283 - biquad coefficients to covert;
+#X text 204 283 - biquad coefficients to convert;
 #X text 201 362 - overall gain of the filter response;
 #X text 201 340 - Coordinates of 2 Zeros;
 #X text 201 318 - Coordinates of 2 Poles;

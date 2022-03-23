@@ -156,7 +156,7 @@
 #X text 142 382 2) float - initial output value (defaultt 0);
 #X obj 248 195 else/float2sig~ 1000 4;
 #X obj 248 225 else/display~;
-#X text 61 88 [float2sig~] (or [f2s~] for short) coverts floats to
+#X text 61 88 [float2sig~] (or [f2s~] for short) converts floats to
 signals. The conversion is smoothened by a ramp time in ms.;
 #X obj 111 189 else/f2s~ 100;
 #X obj 111 161 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10

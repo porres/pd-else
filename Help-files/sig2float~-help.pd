@@ -158,7 +158,7 @@
 #X text 197 367 float;
 #X text 238 367 - conversion time in ms, f 40;
 #X text 237 405 - converted float;
-#X text 62 90 [sig2float~] coverts signals to floats. The conversion
+#X text 62 90 [sig2float~] converts signals to floats. The conversion
 occurs at a time rate defined by the 1st argument or right inlet.,
 f 62;
 #X text 131 470 1) float;
