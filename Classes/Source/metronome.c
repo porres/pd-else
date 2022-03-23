@@ -522,6 +522,7 @@ static void *metronome_new(t_symbol *s, int ac, t_atom *av){
                     goto errstate;
                 ac--, av++;
                 metronome_beat(x, NULL, 1, av);
+                ac--, av++;
             }
             else if(sym == gensym("-sub")){
                 if(argn)
