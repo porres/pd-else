@@ -85,42 +85,42 @@ For a mono input \, a 0 parameter is suited to create a stereo image
 from a single channel source., f 45;
 #X obj 93 266 else/player~ stereo.wav 1 -loop;
 #X obj 93 302 else/free.rev~;
-#X text 41 22 The freeverb algorithm is a simple implementation of
-the standard Schroeder/Moorer reverb model. It is composed of eigth
-comb filters in parallel passing through four allpass filters in series.
-The 'decay' message controls the decay time and affects the feedback
-parameter of the comb filters., f 49;
 #X msg 332 262 decay \$1;
 #X text 380 114 The 'wet' message controls the dry (0) and wet (1)
 mix and the clear message clears up the delay lines., f 44;
 #X obj 395 412 s \$0-set;
 #X obj 65 238 r \$0-set;
 #X obj 93 347 else/out~;
+#X text 41 22 The freeverb algorithm is a simple implementation of
+the standard Schroeder/Moorer reverb model. It is composed of eight
+comb filters in parallel passing through four allpass filters in series.
+The 'decay' message controls the decay time and affects the feedback
+parameter of the comb filters., f 49;
 #X connect 0 0 1 0;
-#X connect 1 0 17 0;
+#X connect 1 0 16 0;
 #X connect 2 0 6 0;
 #X connect 3 0 4 0;
 #X connect 4 0 5 0;
-#X connect 5 0 19 0;
-#X connect 6 0 19 0;
+#X connect 5 0 18 0;
+#X connect 6 0 18 0;
 #X connect 7 0 2 0;
 #X connect 8 0 9 0;
 #X connect 9 0 10 0;
-#X connect 10 0 19 0;
-#X connect 11 0 19 0;
+#X connect 10 0 18 0;
+#X connect 11 0 18 0;
 #X connect 14 0 15 0;
 #X connect 14 1 15 1;
-#X connect 15 0 21 0;
-#X connect 15 1 21 1;
-#X connect 17 0 19 0;
-#X connect 20 0 15 0;
+#X connect 15 0 20 0;
+#X connect 15 1 20 1;
+#X connect 16 0 18 0;
+#X connect 19 0 15 0;
 #X restore 464 230 pd details;
 #X text 78 88 [free.rev~] is a stereo reverb abstraction based on the
 widely known 'freeverb' algorithm.;
 #X text 258 331 - wet ratio (0-1), f 31;
 #X text 151 497 4) float - wet ratio (0-1) - defaultt 1;
-#X text 151 466 2) float - high frequency damping (0-1) - defaultt 0
-;
+#X text 151 466 2) float - high frequency damping (0-1) - defaultt
+0;
 #X text 151 481 3) float - stereo width (0-1) - defaultt 0.5;
 #X obj 192 167 else/free.rev~;
 #X text 149 287 decay <float>;

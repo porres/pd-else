@@ -82,7 +82,7 @@ is wrong in your system/setup/installation., f 63;
 #X text 290 300 <= unicode U+266D;
 #X text 80 18 Please note the object also supports special unicode
 characters for "sharp" and "flat" from the Miscellaneous Symbols block.
-You can the easily available characters from regular keybords: "#"
+You can the easily available characters from regular keyboards: "#"
 (number sign \, ASCII value 35) and "b" (lower case b letter) instead
 \, but the object also supports "♯" and "♭"., f 63;
 #X connect 1 0 2 0;

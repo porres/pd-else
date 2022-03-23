@@ -200,7 +200,7 @@ it as a control message instead., f 70;
 #X msg 118 268 i \$1;
 #X obj 118 247 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 55 121 Additionaly \, you can also use the "i" message \, followed
+#X text 55 121 Additionally \, you can also use the "i" message \, followed
 by a float. This float value is then tereated as the actual index in
 the table. The number of index is the same as the envelope dursation.
 A linear interpolation is performed with both a float input and using

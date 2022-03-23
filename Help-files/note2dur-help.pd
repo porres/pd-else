@@ -130,7 +130,7 @@ f 38;
 #N canvas 708 115 566 370 more-tulpets 0;
 #X listbox 92 322 11 0 0 0 - - - 0;
 #X obj 92 293 else/note2dur;
-#X text 40 22 You can explicitely specify what the exact tuplet is
+#X text 40 22 You can explicitly specify what the exact tuplet is
 in the [x:y] format \, where [3:2] is a triplet \, for instance. Since
 you already can use abbreviations for the most common tuplets \, this
 is useful when you wanna go crazier., f 81;

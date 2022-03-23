@@ -77,7 +77,7 @@
 is "none". This means that the first input does not output anything.
 A bang into the right inlet resets the object so the next input also
 does not cause an output., f 51;
-#X text 54 387 An argument sets the inital last value \, which will
+#X text 54 387 An argument sets the initial last value \, which will
 be the first output., f 50;
 #X msg 147 261 reset 10;
 #X msg 142 231 reset;

@@ -54,8 +54,8 @@
 #X obj 293 260 else/display;
 #X obj 293 288 else/display;
 #X text 238 348 split point, f 37;
-#X text 222 378 - the left part of the splitted list, f 40;
-#X text 222 400 - the right part of the splitted list, f 40;
+#X text 222 378 - the left part of the split list, f 40;
+#X text 222 400 - the right part of the split list, f 40;
 #X text 235 427 split point (defaultt 0), f 38;
 #X text 318 215 n;
 #X msg 224 190 1 2 3 4 5;

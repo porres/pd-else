@@ -1,4 +1,4 @@
-#N canvas 485 23 560 551 10;
+#N canvas 536 23 560 551 10;
 #X obj 173 281 display;
 #X obj 173 216 else/scales 5;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
@@ -47,14 +47,12 @@
 #X text 259 384 sets octave number;
 #X floatatom 248 191 5 -1 8 0 - - - 0;
 #X text 284 190 octave (from -1 to 8);
-#X text 201 117 start at C as 1st degree of the scale;
 #X text 56 118 same as 'C 1';
 #X msg 195 165 4 C;
 #X text 224 165 start at 4th degree of C;
 #X obj 203 191 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X msg 173 118 C 1;
-#X text 211 138 start at C as 2st degree of the scale;
 #X msg 183 139 C 2;
 #X text 256 320 note name and its degree (optional \, defaultt 1);
 #X text 117 320 anything <symbol \, f> -;
@@ -101,13 +99,15 @@ and cents)., f 66;
 #X text 135 505 2) list> - sets scale (defaultt: 2 2 1 2 2 2 1 "major")
 ;
 #X text 256 350 sets scale;
+#X text 201 117 start at C as the 1st degree of the scale;
+#X text 211 138 start at C as the 2nd degree of the scale;
 #X connect 1 0 0 0;
 #X connect 1 1 19 0;
-#X connect 1 2 47 0;
+#X connect 1 2 45 0;
 #X connect 22 0 1 0;
 #X connect 25 0 1 1;
-#X connect 29 0 1 0;
+#X connect 28 0 1 0;
+#X connect 30 0 1 0;
 #X connect 31 0 1 0;
 #X connect 32 0 1 0;
-#X connect 34 0 1 0;
-#X connect 43 0 1 0;
+#X connect 41 0 1 0;

@@ -49,7 +49,7 @@
 #X text 214 331 - non zero sets underline, f 54;
 #X text 104 373 bgcolor <f \, f \, f>;
 #X text 146 387 bg <float>;
-#X text 214 387 - background flag (0 supresses background), f 54;
+#X text 214 387 - background flag (0 suppresses background), f 54;
 #X text 214 359 - sets RGB text color (values from 0 to 255), f 54
 ;
 #X text 214 373 - sets RGB background color (values from 0 to 255)
