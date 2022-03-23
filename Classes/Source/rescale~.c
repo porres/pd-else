@@ -142,19 +142,18 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
     t_int numargs = 0;
     if(ac > 0){
         if(av->a_type == A_SYMBOL){
-            if(atom_getsymbolarg(0, ac, av) == gensym("-clip")){
+            if(atom_getsymbolarg(0, ac, av) == gensym("-clip") && !numargs){
                 x->x_clip = 1;
                 ac--, av++;
             }
             else
                 goto errstate;
         }
-        t_int argnum = 0;
-        if(numargs <= 3){
+        if(ac <= 3){
             while(ac){
                 if(av->a_type == A_FLOAT){
                     t_float argval = atom_getfloatarg(0, ac, av);
-                    switch(argnum){
+                    switch(numargs){
                         case 0:
                             min_out = argval;
                             break;
@@ -170,15 +169,15 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
                 }
                 else
                     goto errstate;
-                argnum++;
+                numargs++;
                 ac--, av++;
             }
         }
-        else if(numargs <= 5){ // numargs = 4 || 5
+        else if(ac <= 5){ // numargs = 4 || 5
             while(ac){
                 if(av->a_type == A_FLOAT){
                     t_float argval = atom_getfloatarg(0, ac, av);
-                    switch(argnum){
+                    switch(numargs){
                         case 0:
                             min_in = argval;
                             break;
@@ -200,7 +199,7 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
                 }
                 else
                     goto errstate;
-                argnum++;
+                numargs++;
                 ac--, av++;
             }
         }
