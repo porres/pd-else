@@ -92,7 +92,7 @@ static void *rescale_new(t_symbol *s, int ac, t_atom *av){
     t_int numargs = 0;
     if(ac > 0){
         if(av->a_type == A_SYMBOL){
-            if(atom_getsymbolarg(0, ac, av) == gensym("-clip"))
+            if(atom_getsymbolarg(0, ac, av) == gensym("-clip") && !numargs)
                 x->x_clip = 1;
             else
                 goto errstate;
