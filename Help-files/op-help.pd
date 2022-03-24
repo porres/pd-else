@@ -1,46 +1,47 @@
 #N canvas 665 82 562 437 10;
-#X obj 4 257 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 329 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 4 361 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 4 257 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 410 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 329 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 4 361 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 4 410 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 307 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
 #X coords 0 -1 1 1 252 42 2 100 100;
 #X restore 306 3 pd;
-#X obj 346 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 346 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 22 40 cnv 4 4 4 empty empty Float/list 0 28 2 18 -233017 -1
+#X obj 22 40 cnv 4 4 4 empty empty Float/list 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 459 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 459 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 479 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 479 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 516 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 516 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 465 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 465 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 503 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 503 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 4 4 cnv 15 301 42 empty empty op 20 20 2 37 -233017 -1 0;
+#X obj 4 4 cnv 15 301 42 empty empty op 20 20 2 37 #e0e0e0 #000000
+0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 3 4 graph;
-#X obj 96 40 cnv 4 4 4 empty empty operators 0 28 2 18 -233017 -1 0
+#X obj 96 40 cnv 4 4 4 empty empty operators 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 103 337 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 103 337 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
-;
-#X obj 104 266 cnv 17 3 33 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 104 266 cnv 17 3 33 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 95 389 2) float;
-#X obj 103 304 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 103 304 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 165 132 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 153 390 - inlet value (default 0) - ignored for bitnot;
 #X text 93 371 1) symbol -;
 #X text 157 284 <symbol> -;
@@ -107,7 +108,7 @@
 #X connect 33 0 17 0;
 #X connect 34 0 18 0;
 #X restore 460 171 pd comparative;
-#N canvas 1183 195 288 353 arithmetic 0;
+#N canvas 1078 195 288 353 arithmetic 0;
 #X obj 49 145 else/display;
 #X obj 161 145 else/display;
 #X obj 51 287 else/display;
@@ -134,7 +135,7 @@
 #X connect 10 0 2 0;
 #X connect 11 0 3 0;
 #X restore 460 152 pd arithmetic;
-#N canvas 1008 242 434 391 bitwise 0;
+#N canvas 932 242 434 391 bitwise 0;
 #X obj 49 145 else/display;
 #X obj 151 145 else/display;
 #X obj 37 298 else/display;
@@ -173,16 +174,14 @@
 #X connect 9 0 20 0;
 #X connect 10 0 28 0;
 #X connect 11 0 30 0;
-#X connect 11 0 30 0;
 #X connect 17 0 0 0;
 #X connect 18 0 1 0;
 #X connect 19 0 2 0;
 #X connect 20 0 3 0;
 #X connect 28 0 4 0;
 #X connect 30 0 5 0;
-#X connect 30 0 5 0;
 #X restore 460 190 pd bitwise;
-#N canvas 1030 94 310 606 set 0;
+#N canvas 893 32 310 606 set 0;
 #X obj 58 542 outlet;
 #X msg 83 23 +;
 #X msg 89 42 -;
@@ -231,7 +230,7 @@
 #X connect 22 0 0 0;
 #X connect 23 0 0 0;
 #X restore 269 140 pd set;
-#X floatatom 277 170 5 0 0 0 - - -;
+#X floatatom 277 170 5 0 0 0 - - - 0;
 #N canvas 745 164 586 342 others 0;
 #X obj 68 147 else/display;
 #X obj 69 279 else/display;
@@ -290,7 +289,7 @@ than two variables \, etc.), f 64;
 #X connect 5 0 2 0;
 #X connect 5 1 0 0;
 #X restore 460 229 pd hint;
-#N canvas 995 261 414 254 see 0;
+#N canvas 952 261 414 254 see 0;
 #X text 86 35 see also:;
 #X obj 88 54 else/op~;
 #X obj 233 88 else/trunc;

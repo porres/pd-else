@@ -86,8 +86,8 @@
 #X text 38 190 The "save" message saves the contents of [sample~] into
 an audio file. If no symbol is given \, a standard file dialog is opened
 for naming the file., f 59;
-#X text 38 316 The "depth" message sets the bit depth for writing
-files \, it accepts floats:, f 59;
+#X text 38 316 The "depth" message sets the bit depth for writing files
+\, it accepts floats:, f 59;
 #X text 161 335 16 - 16-bit integer (default) \; 24 - 24-bit integer
 \; 32 - 32-bit float \;;
 #X text 643 288 writes to a file;
@@ -194,7 +194,7 @@ samples., f 61;
 from ELSE to record into arrays with multi-channel support. Moreover
 \, you can use [tabplay~] or better yet \, [tabplayer~] from ELSE (which
 also has multi-channel support)., f 64;
-#X obj 113 458 else/tabplayer~ buf_\$0 2 -loop;
+#X obj 113 458 else/tabplayer~ -loop buf_\$0 2;
 #X connect 0 0 14 0;
 #X connect 2 0 16 0;
 #X connect 4 0 13 0;
