@@ -47,15 +47,15 @@
 #X text 125 587 1) float;
 #X obj 78 557 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 93 509 scale <list> - scale to autotune to in cents (defaultt
+#X text 93 509 scale <list> - scale to autotune to in cents (default
 equal temperament), f 74;
-#X text 105 439 pan <f \, f> - sets left and right pan boundaries (defaultt
+#X text 105 439 pan <f \, f> - sets left and right pan boundaries (default
 -1 to 1), f 72;
-#X text 93 495 autotune <f> - non-zero autotunes to a given scale (defaultt
+#X text 93 495 autotune <f> - non-zero autotunes to a given scale (default
 0), f 74;
 #X text 187 537 signal - left channel output;
 #X text 187 557 signal - right channel output;
-#X text 189 585 - number of grains in cloud (defaultt 16), f 44;
+#X text 189 585 - number of grains in cloud (default 16), f 44;
 #X obj 218 179 nbx 3 14 1 32 0 0 empty empty empty 0 -8 0 12 #dcdcdc
 #000000 #000000 0 256;
 #X obj 94 40 cnv 4 4 4 empty empty sampler 0 28 2 18 #e0e0e0 #000000
@@ -134,7 +134,7 @@ grains played forward. For 50 \, we have a 50/50 chance \, and for
 #X text 71 31 Try some of the presets and also try dfferent parameters
 from the settings here \, where we can change to synchronous mode and
 also the density (number of grains).;
-#X text 71 72 By defaultt \, we have an asynchronous mode \, and that
+#X text 71 72 By default \, we have an asynchronous mode \, and that
 means that the interval between grains are random. On the other hand
 \, synchronous mode spaces the grains equally within a cloud event.
 This is more noticeable if you have less density. You can set the object
@@ -166,8 +166,8 @@ speed., f 49;
 #X obj 550 163 else/initmess 0 0.05 1 0.95 0;
 #X msg 524 353 tri;
 #X msg 559 353 hann;
-#X text 471 25 By defaultt \, the envelope is a sine shape \, like the
-defaultt in the [envelope~] object. You can set other envelope function
+#X text 471 25 By default \, the envelope is a sine shape \, like the
+default in the [envelope~] object. You can set other envelope function
 types \, namely 'tri' \, 'hann' and 'gauss' (also like in the [envelope~]
 object). The gaussian envelope takes a float argument that sets the
 width., f 48;
@@ -207,34 +207,34 @@ also given by the [function] GUI object., f 48;
 #X restore 468 268 pd example;
 #X text 68 86 [grain.sampler~] is a sample based granulator that generates
 clouds of grains., f 61;
-#X text 189 604 - sets table name with sample (defaultt none);
+#X text 189 604 - sets table name with sample (default none);
 #X obj 34 262 else/grain.synth~;
 #X text 35 216 see also:;
 #X obj 34 239 else/grain.live~;
-#X text 123 354 dur <f> - sets cloud event duration in ms (defaultt
+#X text 123 354 dur <f> - sets cloud event duration in ms (default
 500), f 69;
 #X text 141 312 bang - plays an event of pitch clouds, f 66;
 #X text 135 326 float - number of grains in cloud event (minimum 1
 \, maximum 256), f 67;
 #X text 93 368 set <symbol> - sets table name with loaded sample,
 f 74;
-#X text 99 396 size <f \, f> - sets min/max grain sizes in ms (defaultt
+#X text 99 396 size <f \, f> - sets min/max grain sizes in ms (default
 50 to 450), f 73;
-#X text 105 424 pos <f \, f> - sets min/max grain position (defaultt
+#X text 105 424 pos <f \, f> - sets min/max grain position (default
 0 to 1), f 72;
-#X text 105 453 amp <f \, f> - min/max amplitude values (defaultt 0.1
+#X text 105 453 amp <f \, f> - min/max amplitude values (default 0.1
 to 1), f 72;
-#X text 117 340 sync <f> - non zero sets to synchronous mode (defaultt
+#X text 117 340 sync <f> - non zero sets to synchronous mode (default
 0), f 70;
 #X text 87 410 transp <f \, f> - sets min/max transposition in cents
-(defaultt -1200 to 1200), f 75;
+(default -1200 to 1200), f 75;
 #X text 99 467 rev <float> - sets probability in % of grain being reversed
-(defaultt 0), f 73;
+(default 0), f 73;
 #X text 64 636 -dur <f> | -size <f \, f> | -transp <f \, f> | -pan
 <f \, f> | -sync | -env <any> | -amps <f \, f> | -pos <f \, f> | -autotune
 <f> | -scale <list> | -rev <float>, f 77;
 #X text 105 382 sr <float> - sets sample rate for reading the buffer
-(defaultt Pd's), f 72;
+(default Pd's), f 72;
 #X obj 323 130 else/sample~ \$0-sample violin.wav, f 12;
 #X text 111 481 env <any> - envelope type (sin \, hann \, tri \, gauss)
 or function list, f 71;

@@ -48,7 +48,7 @@
 ;
 #X text 195 279 float;
 #X obj 216 211 else/display;
-#X text 145 350 1) float - set A4 value (defaultt 440);
+#X text 145 350 1) float - set A4 value (default 440);
 #X obj 216 184 else/midi2freq 432;
 #X text 231 279 - set a new value for A4;
 #X text 201 256 list;

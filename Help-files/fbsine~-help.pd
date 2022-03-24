@@ -347,7 +347,7 @@ feature is phase modulation.;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 213 480 - frequency in hertz (defaultt 0);
+#X text 213 480 - frequency in hertz (default 0);
 #X obj 207 249 else/out~;
 #X text 261 444 sine wave signal;
 #X text 154 499 2) float;
@@ -362,7 +362,7 @@ feature is phase modulation.;
 #X obj 122 364 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 165 365 float/signal -;
-#X text 213 519 - initial phase offset (defaultt 0);
+#X text 213 519 - initial phase offset (default 0);
 #X text 154 519 3) float;
 #N canvas 610 170 525 453 feedback 0;
 #X text 61 24 The feedback parameter controls how much of the signal
@@ -421,7 +421,7 @@ turns the output into chaotic noise. Common values are usually in the
 #X connect 10 0 6 0;
 #X restore 467 206 pd feedback;
 #X text 268 366 feedback value;
-#X text 213 499 - initial feedback value (defaultt 0);
+#X text 213 499 - initial feedback value (default 0);
 #X text 154 539 4) float;
 #X text 151 344 filter <float> -;
 #X text 269 345 turns mean filter on <1> or off <0>;
@@ -492,7 +492,7 @@ filter for comparison.;
 #X connect 15 0 2 0;
 #X restore 449 231 pd mean filter;
 #X obj 238 188 else/float2sig~ 10;
-#X text 213 539 - mean filter: on <1> or off <0> (defaultt 0);
+#X text 213 539 - mean filter: on <1> or off <0> (default 0);
 #X obj 122 387 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 122 409 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0

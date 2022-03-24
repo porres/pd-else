@@ -42,7 +42,7 @@
 #X text 293 190 density;
 #X text 237 376 - random impulses;
 #X text 237 326 - density (rate) of random impulses;
-#X text 237 414 - density (defaultt 0);
+#X text 237 414 - density (default 0);
 #X text 152 327 float/signal;
 #X text 152 345 seed <float>;
 #X text 236 345 - sets seed value;

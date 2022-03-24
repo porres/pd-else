@@ -181,7 +181,7 @@ divider values. Check its help file., f 93;
 #X connect 52 0 10 0;
 #X connect 53 0 10 1;
 #X restore 497 218 pd clock;
-#X text 147 597 1) float - (optional) tempo in BPM (defaultt 120);
+#X text 147 597 1) float - (optional) tempo in BPM (default 120);
 #X text 191 305 - non-zero (re)starts \, zero stops, f 47;
 #X text 18 182 see also:;
 #X obj 18 201 else/clock;
@@ -199,7 +199,7 @@ divider values. Check its help file., f 93;
 #X msg 443 39 beat 1/2 \, timesig 4/4;
 #X msg 452 62 beat 1/8 \, timesig 4/4;
 #X msg 433 19 beat 1/4 \, timesig 4/4;
-#X text 573 18 defaultt values;
+#X text 573 18 default values;
 #X text 46 375 You can also set a 6/8 time signature and say the tempo
 corresponds to an eight note \, which makes the whole beat three times
 as slow., f 51;
@@ -229,7 +229,7 @@ f 20;
 #X text 610 84 (0.25 is '1/4');
 #X text 513 232 (0.125 is '1/8');
 #X text 46 16 A beat length can be specified as a fraction (such as
-'1/4' \, the defaultt value) or a float (where 0.25 is the same as
+'1/4' \, the default value) or a float (where 0.25 is the same as
 1/4). A beat length of 1/4 means the beat is a quarter note. So the
 tempo value in BPM considers a fourth note. You can set the beat length
 with the 'beat' message or '-beat' flag. You can set it before a time
@@ -246,7 +246,7 @@ note \, so a 4/4 time signature has an actual BPM that is twice as
 slow and an actual beat length that is equal to 2!, f 51;
 #X text 46 246 If you set a "6/8" time signature \, it will give you
 two groups of beats subdivided by 3 \, that means you get two beats
-whose length is 3/8 (the same as a dotted quarter note). With the defaultt
+whose length is 3/8 (the same as a dotted quarter note). With the default
 beat length of 1/4 (a quarter note instead of a dotted quarter note)
 you have an actual beat length of 1.5! If you want the given tempo
 to reflect a beat duration of 3/8 \, just send the "beat 3/8" message.
@@ -280,9 +280,9 @@ and number of tempos than a 6/8 time signature with a beat length of
 #X connect 26 0 21 0;
 #X connect 27 0 21 0;
 #X restore 461 156 pd beat-length;
-#X text 90 555 -beat <symbol> - set a beat length (defaultt: 1/4),
+#X text 90 555 -beat <symbol> - set a beat length (default: 1/4),
 f 71;
-#X text 90 541 -name <symbol> - set a clock name (defaultt: internal
+#X text 90 541 -name <symbol> - set a clock name (default: internal
 relative to patch), f 71;
 #X listbox 376 241 15 0 0 0 - - - 0;
 #X listbox 234 241 9 0 0 0 - - - 0;
@@ -427,10 +427,10 @@ have '56/5'. For 5 in the space of 3 you have 5:3 \, times 8 it's '40/3'.
 #X text 171 148 automatically grouped in 2 (3 sub-beats each);
 #X text 186 168 automatically grouped in 4 (3 sub-beats each);
 #X text 197 193 automatically grouped in 7 (1 sub-beats each);
-#X text 17 70 The defaultt time signature is 4/4., f 78;
-#X text 17 33 Group makes sense for compound time signatures. By defaultt
+#X text 17 70 The default time signature is 4/4., f 78;
+#X text 17 33 Group makes sense for compound time signatures. By default
 \, the group number is 1 \, but for the numberator 6 \, 9 and 12 (as
-in 6/8 \, 9/8 and 12/8) the defaultt group number is \, respectively
+in 6/8 \, 9/8 and 12/8) the default group number is \, respectively
 \, 2 \, 3 and 4 \, see examples below., f 78;
 #X text 17 7 Time signatures are specified by symbols in the usual
 notation way \, optionally you can set a group number (which also defines
@@ -741,7 +741,7 @@ is a simple abstraction based on [>] \, [change] and [select]., f
 #X text 64 85 [metronome] understands complex time signatures and outputs
 timeline data (bar \, sub-bar \, beat and sub-beat count) and phase
 output. It also syncs to [clock] objects., f 70;
-#X text 153 611 2) list - allowed time signature syntax (defaultt 4/4)
+#X text 153 611 2) list - allowed time signature syntax (default 4/4)
 ;
 #X obj 163 218 else/metronome 60 3/4, f 36;
 #X msg 227 193 continue;
@@ -775,7 +775,7 @@ output. It also syncs to [clock] objects., f 70;
 #X text 60 19 The -sub flag sets to subdivision (or subtempo) mode
 \, where the bang output also bangs at subtempos. You can also use
 the 'sub' message where non zero sets to subdivision mode and zero
-sets to the defaultt mode (only bang at tempo number changes)., f
+sets to the default mode (only bang at tempo number changes)., f
 64;
 #X connect 0 0 15 0;
 #X connect 1 0 15 1;

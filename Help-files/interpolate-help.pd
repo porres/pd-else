@@ -54,7 +54,7 @@
 #X text 236 335 - sets target values, f 43;
 #X text 199 363 list;
 #X text 236 363 - interpolated values;
-#X text 158 395 -exp <float>: sets exponential factor (defaultt 1);
+#X text 158 395 -exp <float>: sets exponential factor (default 1);
 #X floatatom 133 196 4 0 1 0 - - - 0;
 #X obj 244 140 loadbang;
 #X msg 244 164 100;
@@ -118,7 +118,7 @@ the slider., f 79;
 #X connect 18 0 7 0;
 #X connect 19 0 7 1;
 #X restore 488 238 pd more;
-#X text 188 426 1) list - sets start value(s) (defaultt: 0);
+#X text 188 426 1) list - sets start value(s) (default: 0);
 #X text 61 88 [interpolate] allows you to use a GUI like a slider (or
 a MIDI controller) to interpolate between values. Whenever you change
 the target \, you can interpolate to it by moving the slider to the

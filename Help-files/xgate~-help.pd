@@ -148,9 +148,9 @@
 #X text 158 422 float;
 #X text 116 440 time <float>;
 #X text 194 440 - crossfade time in ms;
-#X text 141 538 2) float - crossfade time in ms (defaultt 0 - no crossfade)
+#X text 141 538 2) float - crossfade time in ms (default 0 - no crossfade)
 ;
-#X text 141 553 3) float - initially selected channel (defaultt 0: none)
+#X text 141 553 3) float - initially selected channel (default 0: none)
 , f 58;
 #X obj 240 117 hradio 15 1 0 5 empty empty empty 0 -8 0 10 #dcdcdc
 #000000 #000000 0;
@@ -160,7 +160,7 @@
 #X text 194 404 - input signal to route;
 #X text 152 475 signal;
 #X text 194 475 - routed output;
-#X text 141 523 1) float - number of outlets/channels (defaultt 1 \,
+#X text 141 523 1) float - number of outlets/channels (default 1 \,
 max 500);
 #X obj 175 188 else/meter4~;
 #X text 59 240 [else/meter4~] =>;

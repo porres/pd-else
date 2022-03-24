@@ -163,13 +163,13 @@
 #X text 118 496 -db <float>;
 #X text 177 377 log <float>;
 #X text 112 511 -log <float>;
-#X text 191 526 - set horizontal/vertical dimensions (defaultt 300 140)
+#X text 191 526 - set horizontal/vertical dimensions (default 300 140)
 ;
-#X text 191 496 - non zero sets to dB amp scale (defaultt linear),
+#X text 191 496 - non zero sets to dB amp scale (default linear),
 f 51;
-#X text 191 511 - non zero sets to log freq scale (defaultt linear)
+#X text 191 511 - non zero sets to log freq scale (default linear)
 , f 51;
-#X text 191 481 - FFT size (defaultt 1024 \, min 128), f 51;
+#X text 191 481 - FFT size (default 1024 \, min 128), f 51;
 #X text 250 392 - set horizontal/vertical dimensions;
 #X text 255 377 - non zero sets to log freq scale;
 #X text 255 362 - non zero sets to dB amp scale;
@@ -194,7 +194,7 @@ amplitudes from 0hz to Nyquist. It uses a hann table for the abalysis.
 #X msg 114 113 100;
 #X msg 89 66 500;
 #X text 130 87 stops graphing and allows bangs;
-#X text 145 113 defaultt;
+#X text 145 113 default;
 #X text 119 65 graph rate rate in ms;
 #X floatatom 102 142 5 0 1000 0 - - - 0;
 #X obj 72 273 else/spectrograph~ 1024 0 0 300 140 100;
@@ -211,7 +211,7 @@ amplitudes from 0hz to Nyquist. It uses a hann table for the abalysis.
 #X text 171 407 rate <float>;
 #X text 250 407 - sets graph rate in ms;
 #X text 106 540 -rate <float>;
-#X text 191 540 - sets graph rate in ms (defaultt 100), f 51;
+#X text 191 540 - sets graph rate in ms (default 100), f 51;
 #X obj 60 158 else/spectrograph~ 1024 0 0 300 140 100;
 #X connect 20 0 28 0;
 #X connect 21 0 22 0;

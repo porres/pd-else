@@ -82,7 +82,7 @@ float sets a new reset point as well, f 53;
 #X obj 246 360 else/display;
 #X obj 126 361 else/display;
 #X msg 126 287 reset;
-#X text 14 16 By defaultt \, the direction is upwards \, the minimum
+#X text 14 16 By default \, the direction is upwards \, the minimum
 and reset (or starting)) value is 0 and the maximum is 16.777.216 (2^24)
 - the largest integer possible in Pd. A bang outputs the current count
 value \, starting from the reset value (0 in the examples below). Only

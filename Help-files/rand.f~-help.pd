@@ -158,7 +158,7 @@
 #X restore 505 61 pd;
 #X text 110 424 1) list -;
 #X text 175 423 floats set random's range \, 2 floats sets minimum
-and maximum - no arguments loads defaultt values (-1 and 1). 1 float
+and maximum - no arguments loads default values (-1 and 1). 1 float
 sets maximum value (and lowest value is set to 0).;
 #X text 237 280 - trigger signal;
 #X obj 111 334 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0

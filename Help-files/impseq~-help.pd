@@ -55,7 +55,7 @@
 #X text 185 305 - generates impulse from sequence;
 #X text 185 334 - of floats sets sequence values and outputs the first
 ;
-#X text 124 450 1) list - list of floats sets the sequence (defaultt
+#X text 124 450 1) list - list of floats sets the sequence (default
 1);
 #X text 68 94 When receiving a signal trigger (0 to non-0 transition)
 or a bang \, [impseq~] sends an impulse from a given sequence.;

@@ -66,9 +66,9 @@
 #X obj 222 245 else/rescale -1 1;
 #X text 217 337 - outputs the last rescaled float value;
 #X text 217 355 - sets next float value to be rescaled via bang;
-#X text 60 89 By defaultt \, [rescale] rescales MIDI input values from
-0 to 127 (including floats) into another range of values (0-1 by defaultt).
-You can also set an exponential factor (1 by defaultt - linear). All
+#X text 60 89 By default \, [rescale] rescales MIDI input values from
+0 to 127 (including floats) into another range of values (0-1 by default).
+You can also set an exponential factor (1 by default - linear). All
 these parameters can be changed by arguments., f 73;
 #N canvas 286 93 922 563 arguments 0;
 #X obj 50 131 hsl 180 15 0 127 0 0 empty empty empty -2 -8 0 10 #dcdcdc
@@ -148,7 +148,7 @@ is initialized with more inlets so you can set all range parameters.
 #X obj 639 103 loadbang;
 #X msg 639 125 1;
 #X text 63 294 The -clip flag or clip message clips the output into
-the output range. By defaultt \, [rescale] will not clip the values
+the output range. By default \, [rescale] will not clip the values
 to the output range but keep scaling outside that boundary with the
 same conversion parameters., f 71;
 #X text 545 20 The third or fifth argument or the "exp" message specify
@@ -224,7 +224,7 @@ output values;
 0;
 #X obj 6 474 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 168 482 -clip: sets clipping on (defaultt off);
+#X text 168 482 -clip: sets clipping on (default off);
 #X text 222 390 - <1> turns clipping on \, <0> off;
 #X text 124 392 clip <float>;
 #N canvas 579 93 575 556 negative-exponential 0;
@@ -321,7 +321,7 @@ it's like the curve shape has been mirrored in reverse.;
 #X text 179 511 up to 3 arguments set: minimum output \, maximum output
 \, exponential factor. 4 arguments set minimum input \, maximum input
 \, minimum output \, maximum output and 5 fifth argument sets the exponential
-factor - defaultt (0 \, 127 \, 0 \, 1 \, 1);
+factor - default (0 \, 127 \, 0 \, 1 \, 1);
 #X connect 5 0 11 0;
 #X connect 6 0 34 0;
 #X connect 11 0 34 0;

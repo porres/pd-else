@@ -57,9 +57,9 @@
 #X text 216 258 - outputs the stored message;
 #X text 216 274 - outputs the message without storing it;
 #X text 216 329 - the stored message;
-#X text 247 359 initially stored message (defaultt: "bang");
-#X text 59 87 The [defaultt] sets a defaultt message as the argument
-or via the right inlet. A bang outputs the defaultt message \, other
+#X text 247 359 initially stored message (default: "bang");
+#X text 59 87 The [default] sets a default message as the argument
+or via the right inlet. A bang outputs the default message \, other
 messages are sent through without being stored., f 69;
 #X obj 229 192 else/default a b c;
 #X connect 19 0 38 0;

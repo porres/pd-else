@@ -89,11 +89,11 @@ Input values from 0 to 1 reads the function. It needs an odd number
 of elements in a list \, staring with 3 values \, the syntax is (point1
 \, period \, point2 \, period \, point3 \, etc...). The overall sum
 of periods is normalized to 1!;
-#X text 159 364 - 3 or more floats to set the function (defaultt no
+#X text 159 364 - 3 or more floats to set the function (default no
 function);
 #X obj 6 393 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 150 401 -exp <list> (defaultt '1' for all segments), f 45;
+#X text 150 401 -exp <list> (default '1' for all segments), f 45;
 #X text 152 299 exp <list>;
 #X text 228 299 - sets exponential values for each line segment, f
 48;
@@ -111,7 +111,7 @@ function);
 #X text 764 209 parabolic waveform, f 9;
 #X msg 151 180 exp 2 2;
 #X text 44 20 The 'exp' message or flag sets exponential factors for
-each line. By defaultt \, they're "1" (linear). For values >= 0 \, it's
+each line. By default \, they're "1" (linear). For values >= 0 \, it's
 like raising to the power of the given exponential. Negative values
 are accepted and offer a mirrored/reversed curve. Check below.;
 #X msg 142 159 exp -2 -2;

@@ -60,9 +60,9 @@ sample is -1 and the others are 0).;
 #X text 184 428 1) float;
 #X text 184 447 2) float;
 #X text 184 465 3) float;
-#X text 243 465 - initial phase offset (defaultt 0);
-#X text 243 447 - initial width (defaultt 0.5);
-#X text 243 428 - frequency in hertz (defaultt 0);
+#X text 243 465 - initial phase offset (default 0);
+#X text 243 447 - initial width (default 0.5);
+#X text 243 428 - frequency in hertz (default 0);
 #X obj 183 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 125 219 else/out~;

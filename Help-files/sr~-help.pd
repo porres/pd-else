@@ -97,7 +97,7 @@ rate running in the patch due to [block~]., f 56;
 rate frequency or period when loading the patch \, when receiving a
 bang or when it changes. The frequency is reported either in hz or
 khz and the period either in seconds os milliseconds. Unlike [samplerate~]
-\, it doesn't report up/down sampling rates. The defaultt output is
+\, it doesn't report up/down sampling rates. The default output is
 the sample rate frequency in hertz., f 76;
 #X text 159 405 none;
 #X connect 17 0 41 0;

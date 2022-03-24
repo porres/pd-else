@@ -68,8 +68,8 @@ in the way it handles it \, this object does not have any arguments.
 #X text 458 275 see also:;
 #X obj 458 302 else/sine~;
 #X text 165 464 1) float;
-#X text 224 483 - initial phase offset (defaultt 0);
-#X text 224 464 - frequency in hertz (defaultt 0);
+#X text 224 483 - initial phase offset (default 0);
+#X text 224 464 - frequency in hertz (default 0);
 #X text 165 483 2) float;
 #X obj 229 247 else/bl.sine~ 400;
 #X connect 24 0 41 0;

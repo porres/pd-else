@@ -46,7 +46,7 @@
 #X obj 124 359 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 198 359 float;
-#N canvas 566 79 737 546 defaultt 0;
+#N canvas 566 79 737 546 default 0;
 #X obj 111 76 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
 #X obj 111 148 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
@@ -104,10 +104,10 @@ of chances. You also have an inlet to update the argument for the percentage
 value that the output will be from the left outlet., f 47;
 #X text 414 24 When you give it two or more arguments \, then [chance]
 takes a list that updates all arguments. Values are not percentage
-anymore \, so below you have \, by defaultt \, "7 out of 8" on the left
+anymore \, so below you have \, by default \, "7 out of 8" on the left
 outlet and "1 out of 8 on the right outlet., f 40;
 #X text 536 157 <= sets to 50/50;
-#X text 415 287 Below \, by defaultt \, we have 30 \, 40 and 30 out
+#X text 415 287 Below \, by default \, we have 30 \, 40 and 30 out
 of 100 chances (so it's like a percentage). But the message sets to
 10 \, 20 and 50 out of 80 chances., f 44;
 #X connect 0 0 4 0;
@@ -131,9 +131,9 @@ of 100 chances (so it's like a percentage). But the message sets to
 #X connect 30 0 28 0;
 #X connect 30 1 29 0;
 #X connect 31 0 30 0;
-#X restore 475 194 pd defaultt;
+#X restore 475 194 pd default;
 #X text 118 440 1) list -;
-#X text 183 440 list of probabilities (defaultt 50 50). Check [pd defaultt]
+#X text 183 440 list of probabilities (default 50 50). Check [pd default]
 for more info if only one float is given;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
@@ -152,7 +152,7 @@ for more info if only one float is given;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 3 graph;
-#X text 134 393 -seed <float>: seed value (defaultt: internal);
+#X text 134 393 -seed <float>: seed value (default: internal);
 #X text 176 410 -index: sets to index mode;
 #X text 70 87 When [chance] receives a bang \, it outputs to an outlet
 according to its chance (probability weight). The total number is the

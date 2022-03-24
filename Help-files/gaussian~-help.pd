@@ -54,8 +54,8 @@ higher in the case of low frequencies., f 62;
 #X connect 5 0 0 0;
 #X connect 5 0 4 0;
 #X restore 494 193 pd width;
-#X text 243 434 - initial phase offset (defaultt 0);
-#X text 243 402 - frequency in hertz (defaultt 0), f 34;
+#X text 243 434 - initial phase offset (default 0);
+#X text 243 402 - frequency in hertz (default 0), f 34;
 #X obj 218 202 else/out~;
 #X obj 17 40 cnv 4 4 4 empty empty Gaussian 0 28 2 18 #e0e0e0 #000000
 0;
@@ -64,7 +64,7 @@ higher in the case of low frequencies., f 62;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 243 418 - initial width (defaultt 0), f 34;
+#X text 243 418 - initial width (default 0), f 34;
 #X obj 123 272 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 122 294 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0

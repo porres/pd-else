@@ -32,7 +32,7 @@
 0;
 #X obj 7 375 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
 0;
-#X text 236 350 - depth level (defaultt 0);
+#X text 236 350 - depth level (default 0);
 #X text 164 351 2) float;
 #X text 164 330 1) symbol;
 #X obj 104 218 s \$0-cnv;
@@ -46,5 +46,5 @@ on..., f 64;
 #X obj 267 178 else/canvas.setname \$0-cnv;
 #X text 37 192 click =>;
 #X msg 104 192 obj 275 225 f;
-#X text 236 330 - canvas name (defaultt none);
+#X text 236 330 - canvas name (default none);
 #X connect 26 0 20 0;

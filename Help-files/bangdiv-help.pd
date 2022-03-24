@@ -37,10 +37,10 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 2 graph;
-#X text 168 469 1) float - divide value (defaultt 1);
+#X text 168 469 1) float - divide value (default 1);
 #X text 143 332 div <float>;
 #X text 131 350 start <float>;
-#X text 168 486 2) float - start count value (defaultt 0);
+#X text 168 486 2) float - start count value (default 0);
 #X text 222 350 - sets the start value;
 #X text 222 332 - sets the division value (minimum: 1);
 #X text 127 278 divided count;

@@ -41,7 +41,7 @@
 ;
 #X obj 165 132 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X text 153 390 - inlet value (defaultt 0) - ignored for bitnot;
+#X text 153 390 - inlet value (default 0) - ignored for bitnot;
 #X text 93 371 1) symbol -;
 #X text 157 284 <symbol> -;
 #X obj 214 193 else/op * 3;
@@ -269,7 +269,7 @@ neither to [%] or [mod] objects from Vanilla., f 31;
 #X connect 19 0 18 0;
 #X restore 460 209 pd others;
 #X text 223 285 operator see [pd set] for all options;
-#X text 165 371 operator: see [pd set] for all options (defaultt +)
+#X text 165 371 operator: see [pd set] for all options (default +)
 , f 61;
 #N canvas 881 258 472 364 hint 0;
 #X obj 206 193 else/iterate;

@@ -116,7 +116,7 @@ their gain \, but affects the phase response., f 44;
 #X text 378 89 The [apass2~] object performs a simple linear interpolation
 for delay time that falls in between sample values.;
 #X obj 477 176 else/impseq~;
-#X text 377 14 By defaultt \, the 'a' coefficient is calculated in [apass2~]
+#X text 377 14 By default \, the 'a' coefficient is calculated in [apass2~]
 from the decay time parameter (t60) and delay time (D) according to
 the expression: a = exp(log(0.001) * D/t60).;
 #X text 172 238 a = gain coefficient;
@@ -133,16 +133,16 @@ the expression: a = exp(log(0.001) * D/t60).;
 #X restore 438 287 pd Details and \; Filter Equation;
 #X text 156 411 float/signal - delay time (im ms), f 54;
 #X text 156 436 float/signal - decay time (in ms), f 54;
-#X text 111 495 1) float - maximum and initial delay time in ms (defaultt
+#X text 111 495 1) float - maximum and initial delay time in ms (default
 0), f 60;
-#X text 111 512 2) float - decay time in ms (defaultt 0), f 60;
+#X text 111 512 2) float - decay time in ms (default 0), f 60;
 #X text 240 354 - changes the maximum delay size (in ms), f 42;
 #X text 147 354 size <float>;
 #X text 198 371 clear - clears the delay buffer, f 48;
 #X obj 190 162 else/pulse~ 1 0.25;
 #X obj 251 208 sig~ 10;
 #X text 240 388 - non-0 sets to gain mode;
-#X text 111 529 3) float - non-0 sets to gain mode (defaultt 0), f
+#X text 111 529 3) float - non-0 sets to gain mode (default 0), f
 60;
 #N canvas 680 207 505 310 gain 0;
 #X obj 207 141 else/impseq~;
@@ -152,7 +152,7 @@ the expression: a = exp(log(0.001) * D/t60).;
 #X obj 139 118 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X msg 139 141 gain \$1;
-#X text 30 23 By defaultt \, the reverberation/decay time is in "t60"
+#X text 30 23 By default \, the reverberation/decay time is in "t60"
 \, which is the time in ms that the impulse takes to fall 60dB in energy.
 You can change this parameter to a gain coefficient value with the
 third argument \, where a non zero value sets to "gain mode". You can
@@ -167,7 +167,7 @@ also change that with the "gain" message., f 72;
 #X text 146 388 gain <float>;
 #X obj 175 232 else/allpass.rev~ 100 1000;
 #X text 61 89 Use [allpass.rev~] as a reverberator \, allpass filter
-and delay. By defaultt \, you can set a delay time and a reverberation/decay
+and delay. By default \, you can set a delay time and a reverberation/decay
 time in ms ("t60") \, which is the time the impulse takes to fall 60dB
 in energy (but you can change this parameter to a gain coefficient).
 , f 67;

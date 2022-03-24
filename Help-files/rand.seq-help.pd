@@ -54,14 +54,14 @@
 #X obj 212 231 else/display 3;
 #X text 319 236 finished;
 #X text 206 409 - random output, f 38;
-#X text 132 459 1) float - sets size (defaultt 1), f 65;
+#X text 132 459 1) float - sets size (default 1), f 65;
 #X text 206 272 - generates a randm output, f 53;
 #X text 141 358 n <float>;
 #X text 206 358 - clears the memory and sets a new 'n' size, f 53
 ;
 #X text 206 378 - clears the memory and sets a new 'n' size;
 #X text 132 477 2) list;
-#X text 186 477 - sets number of occurrences for each element (defaultt
+#X text 186 477 - sets number of occurrences for each element (default
 1);
 #X text 135 300 eq <float>;
 #X text 206 300 - sets an equal number of occurrences for all elements
@@ -77,7 +77,7 @@
 #X obj 212 201 else/rand.seq 5;
 #X text 64 89 [rand.seq] generates a sequence of random integer numbers
 in a range defined by the 'n' size (from 0 to n-1). You can set how
-many times an integer is output \, the defaultt is once \, where it
+many times an integer is output \, the default is once \, where it
 generates an unrepeated random sequence.;
 #X text 206 344 - clears memory and restarts a new series, f 53;
 #X text 206 429 - right after the sequence finishes;

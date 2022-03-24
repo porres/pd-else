@@ -149,7 +149,7 @@
 #X obj 24 39 cnv 4 4 4 empty empty Random 0 28 2 18 #e0e0e0 #000000
 0;
 #N canvas 622 221 439 268 seed 0;
-#X text 42 66 By defaultt \, each instance of [randpulse~] has its own
+#X text 42 66 By default \, each instance of [randpulse~] has its own
 seed value.;
 #X msg 215 135 seed \$1;
 #X msg 181 109 319;
@@ -170,10 +170,10 @@ the third argument or via the 'seed' message.;
 #X restore 487 195 pd seed;
 #X text 128 267 seed <float>;
 #X text 209 266 - sets seed value;
-#X text 209 353 - seed (defaultt \, internal);
+#X text 209 353 - seed (default \, internal);
 #X text 259 137 <= density;
 #X text 131 233 float/signal - density;
-#X text 209 321 - density (defaultt 0);
+#X text 209 321 - density (default 0);
 #X text 150 354 3) float;
 #X text 150 338 2) float;
 #X obj 199 164 else/randpulse2~ 50;
@@ -181,7 +181,7 @@ the third argument or via the 'seed' message.;
 #X text 164 293 signal;
 #X text 128 249 rand <float>;
 #X text 209 248 - non zero sets to random gate value mode;
-#X text 209 337 - non zero sets to random gate value mode (defaultt
+#X text 209 337 - non zero sets to random gate value mode (default
 0);
 #N canvas 622 221 467 476 rand 0;
 #X obj 130 268 else/graph~ 441 3;
@@ -194,7 +194,7 @@ the third argument or via the 'seed' message.;
 #X obj 129 168 else/randpulse2~ 1500 1;
 #X obj 132 105 hsl 128 15 100 44100 1 0 empty empty empty -2 -8 0 10
 #dcdcdc #000000 #000000 0 1;
-#X text 47 23 By defaultt \, gate values in [randopulse2~] are "1" \,
+#X text 47 23 By default \, gate values in [randopulse2~] are "1" \,
 but you can set it to random mode with the second argument (non zero
 value) \, where it gives you random positive and negative values (in
 the range from -1 to 1). You can also use the "rand" message to change

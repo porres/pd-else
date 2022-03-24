@@ -118,14 +118,14 @@ parameter of the comb filters., f 49;
 #X text 78 88 [free.rev~] is a stereo reverb abstraction based on the
 widely known 'freeverb' algorithm.;
 #X text 258 331 - wet ratio (0-1), f 31;
-#X text 151 497 4) float - wet ratio (0-1) - defaultt 1;
-#X text 151 466 2) float - high frequency damping (0-1) - defaultt
+#X text 151 497 4) float - wet ratio (0-1) - default 1;
+#X text 151 466 2) float - high frequency damping (0-1) - default
 0;
-#X text 151 481 3) float - stereo width (0-1) - defaultt 0.5;
+#X text 151 481 3) float - stereo width (0-1) - default 0.5;
 #X obj 192 167 else/free.rev~;
 #X text 149 287 decay <float>;
 #X text 258 287 - decay or 'liveness' (0-1), f 31;
-#X text 151 450 1) float - decay or 'liveness' (0-1) - defaultt 0.5
+#X text 151 450 1) float - decay or 'liveness' (0-1) - default 0.5
 ;
 #X obj 190 199 else/out~;
 #X connect 32 0 43 0;

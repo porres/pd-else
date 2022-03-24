@@ -66,7 +66,7 @@ defined as fractions to ratio intervals., f 72;
 #X obj 461 202 else/autotune;
 #X obj 461 224 else/retune;
 #X obj 461 244 else/frac2dec;
-#X text 192 428 1) float - interval ratio (defaultt: 2);
+#X text 192 428 1) float - interval ratio (default: 2);
 #X obj 270 214 else/eqdiv 2 7;
 #X obj 41 170 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;

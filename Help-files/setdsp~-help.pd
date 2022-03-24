@@ -50,14 +50,14 @@ set Pd's audio engine (aka 'DSP') state. You can just click on it to
 change it to On/Off via its toggle interface. This object is commonly
 found in the documentation of the ELSE library audio objects \, at
 the top right corner., f 74;
-#X text 57 139 By defaultt \, the [setdsp~] object will check the current
+#X text 57 139 By default \, the [setdsp~] object will check the current
 DSP state and load accordingly (on or off). But you can give it an
 argument to set it on/off., f 74;
 #X text 142 345 float - sets dsp status: non-0 turns it on and 0 turns
 it off, f 63;
 #X text 142 393 float - dsp status: 1 (for on) or 0 (for off);
 #X text 171 428 a non-0 value forces the status to be on \, while a
-0 value forces it to be off. If no argument is given \, the defaultt
+0 value forces it to be off. If no argument is given \, the default
 behaviour is to check the current DSP state and load the GUI interface
 accordingly (on or off), f 61;
 #X obj 232 181 nbx 2 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10

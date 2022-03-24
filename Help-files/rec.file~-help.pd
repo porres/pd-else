@@ -25,7 +25,7 @@
 0;
 #X text 108 523 clicking on the object opens dialog box to set a file
 to save to, f 65;
-#X text 128 325 rate <float> - sets sample rate of the file (defaultt
+#X text 128 325 rate <float> - sets sample rate of the file (default
 Pd's samplerate), f 69;
 #X text 163 409 bang - outputs a bang when stops recording;
 #X text 128 340 fade <float> - sets fade time (minimum 1), f 69;
@@ -33,9 +33,9 @@ Pd's samplerate), f 69;
 , f 72;
 #X obj 7 478 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 182 440 - (optional) file name to save to (defaultt file.wav)
+#X text 182 440 - (optional) file name to save to (default file.wav)
 ;
-#X text 182 457 - number of channels to record (defaultt 1), f 52;
+#X text 182 457 - number of channels to record (default 1), f 52;
 #X text 218 310 sets file name (no symbol opens dialog box), f 54
 ;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
@@ -74,7 +74,7 @@ Pd's samplerate), f 69;
 #X obj 337 171 else/play.file~ 2;
 #X msg 337 148 open test.wav;
 #N canvas 1134 161 440 618 flags 0;
-#X text 38 21 By defaultt \, [rec.file~] performs a fade in and fade
+#X text 38 21 By default \, [rec.file~] performs a fade in and fade
 out of 10 ms. This means that when you stop recording \, it takes an
 extra 10 ms to finish recording the file. The outlet only outputs a
 bang after this fade out. You can change and set the fade to 0 ms (no
@@ -85,7 +85,7 @@ fading) with the -fade flag or fade message., f 60;
 \, you have a 1000 ms maximum recording time and a fade time of 50
 ms \, at 950 ms the fade out starts and the recording finishes at 1000
 ms indeed.;
-#X text 38 178 By defaultt \, [rec.file~] performs a fade in and fade
+#X text 38 178 By default \, [rec.file~] performs a fade in and fade
 out of 10 ms. This means that when you stop recording \, it takes an
 extra 10 ms to finish recording the file. The outlet only outputs a
 bang after this fade out. You can change and set the fade to 0 ms (no
@@ -112,7 +112,7 @@ goes on indefinitely as well.;
 #X connect 10 0 8 1;
 #X connect 10 1 8 2;
 #X restore 493 215 pd flags;
-#X text 124 488 -maxtime <float> (defaultt 0) | -fade <float> (defaultt
+#X text 124 488 -maxtime <float> (default 0) | -fade <float> (default
 10);
 #X text 53 91 [rec.file~] is a convenient abstraction based on [writesf~]
 \, so it records sample files that you can load with other objects

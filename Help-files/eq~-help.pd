@@ -96,17 +96,17 @@ b0 \;;
 ;
 #X text 138 435 float/signal;
 #X text 223 435 - gain in dB;
-#X text 131 566 3) float - gain in dB (defaultt 0), f 53;
+#X text 131 566 3) float - gain in dB (default 0), f 53;
 #X text 198 351 bw;
 #X text 223 351 - sets resonance parameter to bandwidth in octaves
 ;
 #X text 204 368 q;
-#X text 223 368 - sets resonance parameter to Q (defaultt);
+#X text 223 368 - sets resonance parameter to Q (default);
 #X text 223 412 - filter resonance (Q or bandwidth);
 #X text 222 388 - central frequency in Hertz;
-#X text 131 531 1) float - central frequency in Hertz (defaultt 0),
+#X text 131 531 1) float - central frequency in Hertz (default 0),
 f 53;
-#X text 131 549 2) float - resonance (defaultt 1) \, either in 'Q' (defaultt)
+#X text 131 549 2) float - resonance (default 1) \, either in 'Q' (default)
 or 'bw', f 65;
 #X obj 3 497 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
@@ -114,7 +114,7 @@ or 'bw', f 65;
 #X text 152 503 - sets resonance parameter to bandwidth in octaves
 , f 53;
 #N canvas 905 73 407 322 resonance 0;
-#X text 27 17 By defaultt \, the resonance parameter is the filter 'q'
+#X text 27 17 By default \, the resonance parameter is the filter 'q'
 \, but you can also set it as bandwidth in octaves. This is done with
 the -bw flag.;
 #X text 28 62 Alternatively \, you can switch from 'q' to 'bw' with

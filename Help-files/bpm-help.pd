@@ -52,7 +52,7 @@
 #X obj 306 203 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X text 64 91 [bpm] calculates a convertsion to and from bpm (beats
-per minute). By defaultt it converts to and from ms \, but you can also
+per minute). By default it converts to and from ms \, but you can also
 set it to convert to and from samples.;
 #X text 233 249 - input to conversion;
 #X obj 168 173 else/bpm;

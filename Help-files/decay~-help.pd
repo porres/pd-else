@@ -36,7 +36,7 @@
 #X text 320 247 1;
 #X text 239 450 - decay time in ms;
 #X text 240 487 - decayed signal;
-#X text 185 517 1) float - time in ms (defaultt 1000);
+#X text 185 517 1) float - time in ms (default 1000);
 #N canvas 544 265 662 364 control 0;
 #X obj 102 249 else/out~;
 #X obj 102 205 *~;
@@ -64,7 +64,7 @@
 #000000 #000000;
 #X text 143 36 [decay~] can also be used with control rate messages
 \, such as bangs and float input. A bang will trigger the object with
-the last received float input (which is 1 by defaultt).;
+the last received float input (which is 1 by default).;
 #X text 512 266 0;
 #X text 506 317 -1;
 #X msg 537 124 -1;

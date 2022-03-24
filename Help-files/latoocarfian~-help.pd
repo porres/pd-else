@@ -47,7 +47,7 @@
 #X obj 223 250 else/out~;
 #X text 192 358 list;
 #N canvas 894 143 430 452 parameters 0;
-#X text 25 19 By defaultt \, the initial k \, x and y values are 1 \,
+#X text 25 19 By default \, the initial k \, x and y values are 1 \,
 0.5 and 0 \, respectively \, but can be changed via arguments or messages.
 ;
 #X obj 64 68 hsl 128 15 44.1 44100 1 0 empty empty empty -2 -8 0 10
@@ -92,27 +92,27 @@ single value or oscillate in a cycle. According to the reference \,
 #X connect 22 0 10 0;
 #X connect 23 0 12 0;
 #X restore 447 281 pd parameters;
-#X text 83 150 The output rate of the equation is given in hertz (defaultt:
+#X text 83 150 The output rate of the equation is given in hertz (default:
 nyquist).;
 #X text 167 433 2) float;
 #X text 167 449 3) float;
 #X text 167 465 4) float;
 #X obj 7 532 cnv 3 550 3 empty empty more_info 8 12 0 13 #dcdcdc #000000
 0;
-#X text 227 417 - sets frequency in hertz (defaultt: nyquist);
+#X text 227 417 - sets frequency in hertz (default: nyquist);
 #X obj 223 225 else/latoocarfian~;
-#X text 227 433 - sets a (defaultt: 1);
+#X text 227 433 - sets a (default: 1);
 #X text 84 91 [latoocarfian~] is a chaotic generator using the difference
 equations \; x[n] = sin(a * y[n-1]) + d * sin(a * x[n-1]) \; y[n] =
 sin(b * x[n]) + c * sin(b * y[n-1]) \;;
 #X text 227 359 - 2 floats set x[n-1] and y[n-1] \, respectively;
 #X text 227 389 - latoocarfian chaotic signal;
-#X text 227 497 - sets initial value of y[n-1] (defaultt: 0.5);
-#X text 227 513 - sets initial value of x[n-1] (defaultt: 0.5);
+#X text 227 497 - sets initial value of y[n-1] (default: 0.5);
+#X text 227 513 - sets initial value of x[n-1] (default: 0.5);
 #X text 167 481 5) float;
-#X text 227 449 - sets b (defaultt: 3);
-#X text 227 465 - sets c (defaultt: 0.5);
-#X text 227 481 - sets d (defaultt: 0.5);
+#X text 227 449 - sets b (default: 3);
+#X text 227 465 - sets c (default: 0.5);
+#X text 227 481 - sets d (default: 0.5);
 #X text 167 497 6) float;
 #X text 167 513 7) float;
 #X text 227 340 - list sets values of 'a' \, 'b' \, 'c' and 'd';

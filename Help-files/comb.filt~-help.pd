@@ -93,7 +93,7 @@
 for delay time that falls in between sample values. The minimum frequency
 [comb.filt~] takes is 1 Hz and the maximum is the sample rate. For
 a frequency input of 0hz \, the filter is bypassed., f 61;
-#X text 348 27 By defaultt \, the 'a' coefficient is calculated from
+#X text 348 27 By default \, the 'a' coefficient is calculated from
 the decay time parameter (t60) and delay time (D) according to the
 expression: a = exp(log(0.001) * D/t60).;
 #X text 121 216 D = delay time;
@@ -105,7 +105,7 @@ expression: a = exp(log(0.001) * D/t60).;
 #X connect 5 0 52 0;
 #X connect 52 0 3 0;
 #X restore 438 242 pd Details and \; Filter Equation;
-#X text 119 459 1) float - maximum and initial delay time in ms (defaultt
+#X text 119 459 1) float - maximum and initial delay time in ms (default
 0), f 61;
 #X text 184 308 clear - clears the delay buffer, f 48;
 #X obj 5 388 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -140,7 +140,7 @@ expression: a = exp(log(0.001) * D/t60).;
 #X msg 170 127 gain \$1;
 #X obj 170 102 tgl 16 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X text 37 17 By defaultt \, the reverberation/decay time mode is in
+#X text 37 17 By default \, the reverberation/decay time mode is in
 "t60" \, which is the time in ms that the impulse takes to fall 60dB
 in energy. You can change this parameter to a gain coefficient value
 with the third argument \, where a non zero value sets to "gain mode"
@@ -162,7 +162,7 @@ or the -gain flag. You can also change that with the "gain" message.
 #X text 46 217 see also:;
 #X obj 37 239 else/fbdelay~;
 #X text 315 134 frequency;
-#X text 186 491 decay mode: <0> ("t60" \, defaultt) or <non-0> (gain
+#X text 186 491 decay mode: <0> ("t60" \, default) or <non-0> (gain
 mode);
 #X text 61 89 Use [comb.filt~] as a resonator comb filter., f 67;
 #X text 119 476 2) float - decay coefficient, f 61;

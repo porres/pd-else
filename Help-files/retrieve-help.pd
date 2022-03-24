@@ -45,7 +45,7 @@ in float gridx float gridy;
 #X floatatom 271 188 5 0 0 0 - - -;
 #X obj 104 207 else/display;
 #X text 174 261 set <symbol> - sets a receive name, f 46;
-#X text 232 323 - receive name (defaultt none), f 36;
+#X text 232 323 - receive name (default none), f 36;
 #X text 200 292 anything;
 #X text 222 246 bang - take the data, f 38;
 #N canvas 1041 110 409 386 more 0;
@@ -116,7 +116,7 @@ is a compiled object that can have a built-in receive name as an example.
 #X text 212 102 receive name "function";
 #X text 479 20 [retrieve] doesn't work with abstractions but we have
 a work around in the ELSE library. Inside the [slider2d] abstraction
-below \, we have a [receiver] and a [defaultt] object that can do the
+below \, we have a [receiver] and a [default] object that can do the
 trick for us., f 62;
 #X obj 506 193 else/display;
 #X obj 506 162 else/retrieve slider2d;

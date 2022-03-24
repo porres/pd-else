@@ -51,7 +51,7 @@
 #X restore 3 3 graph;
 #X text 322 187 muiltiplier;
 #X text 165 325 float;
-#X text 167 360 1) float - multiplier (defaultt 1);
+#X text 167 360 1) float - multiplier (default 1);
 #X text 62 89 [pi] calculates and outputs the value of pi. It receives
 a multiplier value via the argument or second inlet \, which needs
 to be greater than 0 (otherwise it's considered as 1).;

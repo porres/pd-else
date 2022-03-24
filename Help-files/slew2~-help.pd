@@ -119,8 +119,8 @@ f 61;
 #X connect 12 0 11 0;
 #X restore 464 325 pd example;
 #X text 235 161 up;
-#X text 165 500 1) float - slew limit speed upwards (defaultt 0);
-#X text 165 515 1) float - slew limit speed downwards (defaultt 0);
+#X text 165 500 1) float - slew limit speed upwards (default 0);
+#X text 165 515 1) float - slew limit speed downwards (default 0);
 #X text 302 161 down;
 #X text 220 410 - speed limit upwards (negative values = no limit)
 ;

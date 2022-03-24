@@ -130,7 +130,7 @@ symbol and vice versa., f 75;
 #X symbolatom 218 159 10 0 0 0 - - -;
 #X text 201 333 same as "set" \, but it forces an output, f 56;
 #X text 199 397 the number of elements defines the number of inlets.
-A float or a symbol will define an initial value (defaultt: two floats
+A float or a symbol will define an initial value (default: two floats
 set to '0'), f 51;
 #X obj 218 230 else/display;
 #X connect 26 0 33 1;

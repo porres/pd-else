@@ -51,7 +51,7 @@
 #X obj 2 390 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 253 363 raw MIDI stream, f 31;
-#X text 223 445 sets channel number (defaultt 1);
+#X text 223 445 sets channel number (default 1);
 #X text 25 181 see also:;
 #X obj 218 213 midiout;
 #X obj 218 147 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -64,7 +64,7 @@
 #X text 266 127 vel;
 #X text 302 127 ch;
 #X text 70 85 [pitchout] formats and sends raw MIDI pitch messages.
-An argument sets channel number (the defaultt is 1)., f 66;
+An argument sets channel number (the default is 1)., f 66;
 #X obj 154 300 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 198 302 float;
@@ -91,7 +91,7 @@ on/off flag, f 46;
 #X text 73 399 Release velocity is very rare in today's controllers
 \, but it used to be a real thing., f 54;
 #X text 29 18 With the -rel flag \, you can set a release velocity
-value and there's an extra inlet for the note on/off flag. The defaultt
+value and there's an extra inlet for the note on/off flag. The default
 behaviour is that a velocuty value of "0" represents a note off.,
 f 61;
 #X obj 103 356 print;

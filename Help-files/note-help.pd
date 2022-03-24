@@ -71,7 +71,7 @@
 #X text 116 359 color <f \, f \, f>;
 #X obj 216 154 else/note 131 20 Times empty 3 150 0 0 1 230 235 240
 1 1 Hi \, I'm the [note] object !;
-#X text 118 159 the defaultt [else/note], f 11;
+#X text 118 159 the default [else/note], f 11;
 #N canvas 534 83 882 593 details 0;
 #X obj 179 314 else/note 425 50 times empty 0 0 0 0 0 100 150 100 0
 0 note;
@@ -125,9 +125,9 @@ into a vanilla comment box. So far \, this is the only way to copy
 the text from note into Pd (control+c / control+v doesn't work).,
 f 53;
 #X msg 237 177 font Menlo;
-#X text 59 425 [note] uses "Dejavu Sans Mono" as its defaultt font \,
+#X text 59 425 [note] uses "Dejavu Sans Mono" as its default font \,
 just like Pd. But \, as of version 0.51-3 \, Pd uses 'Menlo' as its
-defaultt font for macOS \, so [note] also defaultts to this font in macOS.
+default font for macOS \, so [note] also defaults to this font in macOS.
 , f 62;
 #X text 59 480 [note] will attempt to open a font name that corresponds
 to your given name. If such a font name doesn't exist \, it'll open
@@ -173,11 +173,11 @@ So just be sure you have the fonts you want properly installed., f
 #X text 206 237 center;
 #X text 206 253 right;
 #X text 79 128 And when you have more than one line \, you can set
-three kinds of justification parametrers: left (0: defaultt) \, center
+three kinds of justification parametrers: left (0: default) \, center
 (1) and right (2). This does not affect notes with just one line.,
 f 66;
 #X msg 188 305 just \$1;
-#X text 79 47 By defaultt \, [note] has a maximum width limit of 425
+#X text 79 47 By default \, [note] has a maximum width limit of 425
 pixels (like Pd's comment). If it exceeds this limit \, the note will
 break into a new line with the last word that did not fit. But when
 in edit mode you can see a bar to the right that allows you to resize
@@ -229,10 +229,10 @@ italic \, underline and justification., f 68;
 #X text 351 161 <== right click for properties, f 10;
 #X obj 59 162 else/note 425 10 dejavu\ sans\ mono empty 0 0 0 0 0 255
 255 255 0 0 note;
-#X text 87 483 -font <symbol> (defaultt: 'dejavu sans mono' or 'menlo'
-for mac) | -bold <float> (defaultt 0) | -italic <float> (defaultt 0)
-| -size <float> (defaultt patch's) | -just <float> (defaultt 0) | -color
-<f \, f \, f> (defaultt 0 0 0) | -bgcolor <f \, f \, f> (defaultt 255
-255 255) | -bg <float> (defaultt 0) | @note <anything>: sets note (defaultt
-"note") | -underline <float> (defaultt 0) | @receive <symbol> (defaultt
+#X text 87 483 -font <symbol> (default: 'dejavu sans mono' or 'menlo'
+for mac) | -bold <float> (default 0) | -italic <float> (default 0)
+| -size <float> (default patch's) | -just <float> (default 0) | -color
+<f \, f \, f> (default 0 0 0) | -bgcolor <f \, f \, f> (default 255
+255 255) | -bg <float> (default 0) | @note <anything>: sets note (default
+"note") | -underline <float> (default 0) | @receive <symbol> (default
 'empty'), f 72;

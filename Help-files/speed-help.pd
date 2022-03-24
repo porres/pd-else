@@ -40,7 +40,7 @@
 #X text 132 407 float -;
 #X obj 190 253 else/speed 60;
 #X text 180 407 bpm change.;
-#X text 137 461 1) float - initial bpm (defaultt 120);
+#X text 137 461 1) float - initial bpm (default 120);
 #X floatatom 149 185 5 0 0 0 - - - 0;
 #X msg 203 184 60 90 4;
 #X text 137 333 list -;

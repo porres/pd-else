@@ -159,7 +159,7 @@
 ;
 #X text 189 364 signal;
 #X text 242 364 - right channel;
-#X text 149 398 1) float - initial pan value (defaultt 0);
+#X text 149 398 1) float - initial pan value (default 0);
 #X obj 276 171 else/float2sig~ 100;
 #X obj 171 213 else/out~;
 #X connect 21 0 22 0;

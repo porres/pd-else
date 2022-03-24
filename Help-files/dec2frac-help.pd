@@ -79,7 +79,7 @@ of numberator and denominator., f 42;
 #X msg 161 226 res 100;
 #X text 22 26 The resolution parameter sets the maximum numberator.
 It then approximates to a simpler ratio/fraction. You can change the
-resolution with an argument (1000 by defaultt) or the 'res' message.
+resolution with an argument (1000 by default) or the 'res' message.
 10 is the minimum allowed value., f 52;
 #X connect 1 0 4 0;
 #X connect 2 0 1 0;
@@ -88,7 +88,7 @@ resolution with an argument (1000 by defaultt) or the 'res' message.
 #X connect 5 0 4 0;
 #X connect 6 0 4 0;
 #X restore 464 180 pd resolution;
-#X text 158 332 1) float - conversion resolution (defaultt 1000 \, min
+#X text 158 332 1) float - conversion resolution (default 1000 \, min
 10);
 #X obj 14 203 else/cents2frac;
 #X connect 19 0 24 0;

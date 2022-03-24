@@ -48,7 +48,7 @@
 #X text 231 132 first bang arms \, the second outputs the tempo, f
 25;
 #X text 154 323 float;
-#X text 160 357 '-ms' - sets output to ms (defaultt bpm);
+#X text 160 357 '-ms' - sets output to ms (default bpm);
 #X text 71 93 The [tap] object detects a tapped tempo by analyzing
 the time distance between two bangs or the time a gate is opened.,
 f 62;

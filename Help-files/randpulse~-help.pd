@@ -171,8 +171,8 @@ second inlet.;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 256 400 - frequency in hertz (defaultt 0);
-#X text 256 419 - initial pulse width (defaultt 0.5);
+#X text 256 400 - frequency in hertz (default 0);
+#X text 256 419 - initial pulse width (default 0.5);
 #X obj 3 259 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 123 267 cnv 17 3 37 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
@@ -196,7 +196,7 @@ frequencies \, has inlets for pulse width and sync.;
 #X text 71 23 [randpulse~] objects that share the same seed will have
 the same random number generation. You can specify a seed value as
 the third argument or via the 'seed' message.;
-#X text 70 73 By defaultt \, each instance of [randpulse~] has its own
+#X text 70 73 By default \, each instance of [randpulse~] has its own
 seed value.;
 #X obj 288 243 else/graph~ 441 0 -1.05 1.05 200 140;
 #X obj 71 243 else/graph~ 441 0 -1.05 1.05 200 140;
@@ -233,7 +233,7 @@ generate a new random value and restart the cycle.;
 #X text 163 287 seed <float>;
 #X text 255 286 - sets seed value;
 #X text 267 364 random pulse signal;
-#X text 254 440 - seed (defaultt \, internal);
+#X text 254 440 - seed (default \, internal);
 #X text 186 440 3) float;
 #X text 32 174 see also:;
 #X obj 32 197 else/randpulse;

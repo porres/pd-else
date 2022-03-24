@@ -52,10 +52,10 @@
 #X text 154 479 2) float;
 #X text 154 496 3) float;
 #X text 154 513 4) float;
-#X text 213 463 - frequency of oscillator 1 in hertz (defaultt 0);
-#X text 213 496 - frequency of oscillator 2 in hertz (defaultt 0);
-#X text 213 479 - modulation index 1 (defaultt 0);
-#X text 213 513 - modulation index 2 (defaultt 0);
+#X text 213 463 - frequency of oscillator 1 in hertz (default 0);
+#X text 213 496 - frequency of oscillator 2 in hertz (default 0);
+#X text 213 479 - modulation index 1 (default 0);
+#X text 213 513 - modulation index 2 (default 0);
 #X obj 77 40 cnv 4 4 4 empty empty modulation 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 25 40 cnv 4 4 4 empty empty Cross 0 28 2 18 #e0e0e0 #000000

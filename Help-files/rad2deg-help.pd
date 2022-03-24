@@ -55,7 +55,7 @@
 #X text 165 265 float;
 #X obj 4 370 cnv 3 550 3 empty empty -flags 8 12 0 13 -228856 -1 0
 ;
-#X text 157 349 1) float - initial radians value (defaultt 0);
+#X text 157 349 1) float - initial radians value (default 0);
 #X text 201 314 - the converted value in degrees;
 #X text 201 265 - input radian value to convert to degree;
 #X obj 150 226 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
@@ -68,7 +68,7 @@ to 360). Besides 0 to 2*pi you can also convert negative values from
 0 to -2*pi (0 to -360) - and input values are wrapped if the exceed
 this input range. If you give it the '-pos' flag \, which wraps to
 positive values only., f 69;
-#X text 117 379 -pos: wrap only to positive values (defaultt negative
+#X text 117 379 -pos: wrap only to positive values (default negative
 also);
 #X obj 153 151 hsl 128 15 -12.5664 12.5664 0 0 empty empty empty -2
 -8 0 10 -228856 -1 -1 12700 1;

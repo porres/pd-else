@@ -163,8 +163,8 @@ occurs at a time rate defined by the 1st argument or right inlet.,
 f 62;
 #X text 131 470 1) float;
 #X text 131 490 2) float;
-#X text 190 470 - self clocking interval in ms (defaultt 0);
-#X text 190 490 - sample offset within the block (defaultt 0);
+#X text 190 470 - self clocking interval in ms (default 0);
+#X text 190 490 - sample offset within the block (default 0);
 #X text 203 331 stop;
 #X text 197 316 start;
 #X text 197 301 float;
@@ -176,7 +176,7 @@ f 62;
 #X text 143 346 offset <float>;
 #X obj 3 433 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 174 442 -off - turns it off (defaultt on);
+#X text 174 442 -off - turns it off (default on);
 #X text 203 271 bang;
 #X text 238 271 - syncs the conversion rate, f 40;
 #X text 161 286 set <float>;

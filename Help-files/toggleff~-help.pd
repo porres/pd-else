@@ -43,7 +43,7 @@ trigger. A trigger happens when the signal changes from non-positive
 to positive.;
 #X text 159 268 signal;
 #X obj 220 188 else/toggleff~;
-#X text 147 336 1) float - initial output <0 or 1> (defaultt 0);
+#X text 147 336 1) float - initial output <0 or 1> (default 0);
 #X text 201 268 - trigger signal;
 #X text 159 303 signal;
 #X text 201 303 - 0 and 1 upon receiving a trigger;

@@ -85,7 +85,7 @@ and [complex-mod~] abstractions available as "extra" in Pd Vanilla.
 #X connect 5 0 1 2;
 #X restore 469 258 pd details;
 #X text 225 388 - frequency shifted signal;
-#X text 225 427 - the frequency shift value in hertz (defaultt 0);
+#X text 225 427 - the frequency shift value in hertz (default 0);
 #X obj 174 187 else/freq.shift~ 200;
 #X text 78 89 [freq.shift~] has two outputs \, the left outlet is the
 frequency shifted signal and the right outlet is the signal shifted

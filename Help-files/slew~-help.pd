@@ -72,7 +72,7 @@ line generation and a negative value turns the limiter off., f 71
 #X text 141 385 set <float>;
 #X text 220 443 - slew limited values;
 #X text 220 369 - values to be slew limited, f 46;
-#X text 165 473 1) float - slew limit speed (defaultt 0);
+#X text 165 473 1) float - slew limit speed (default 0);
 #X text 220 410 - speed limit (negative values = no limit), f 46;
 #X text 220 385 - sets new start point and goes back to target;
 #X text 135 369 float/signal;

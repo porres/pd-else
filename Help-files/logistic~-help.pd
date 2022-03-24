@@ -48,9 +48,9 @@
 ;
 #X text 134 328 float/signal;
 #X text 217 328 - 'p' parameter (from 0 to 1);
-#X text 217 393 - sets frequency in hertz (defaultt 0);
-#X text 217 410 - sets p (defaultt: 0.5);
-#X text 83 120 The output rate of the equation is given in hertz (defaultt:
+#X text 217 393 - sets frequency in hertz (default 0);
+#X text 217 410 - sets p (default: 0.5);
+#X text 83 120 The output rate of the equation is given in hertz (default:
 nyquist). The 'p' parameter controls the chaos;
 #X obj 305 175 hsl 128 15 0.01 1 1 0 empty empty empty -2 -8 0 10 -228856
 -1 -1 0 1;

@@ -53,8 +53,8 @@
 #X text 249 416 - MIDI pitch base;
 #X obj 4 512 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 150 524 -base <float>: base MIDI pitch (defaultt 60);
-#X text 130 556 1) list - scale in cents (defaultt: equal temperament)
+#X text 150 524 -base <float>: base MIDI pitch (default 60);
+#X text 130 556 1) list - scale in cents (default: equal temperament)
 ;
 #X obj 172 40 cnv 4 4 4 empty empty scale 0 28 2 18 #e0e0e0 #000000
 0;

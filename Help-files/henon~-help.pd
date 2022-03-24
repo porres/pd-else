@@ -32,12 +32,12 @@
 0;
 #X text 280 199 rate in Hz;
 #X text 162 371 list;
-#X text 83 141 The output rate of the equation is given in hertz (defaultt:
+#X text 83 141 The output rate of the equation is given in hertz (default:
 nyquist).;
 #X text 137 456 2) float;
 #X obj 7 535 cnv 3 550 3 empty empty more_info 8 12 0 13 #dcdcdc #000000
 0;
-#X text 197 439 - sets frequency in hertz (defaultt: nyquist);
+#X text 197 439 - sets frequency in hertz (default: nyquist);
 #X obj 81 40 cnv 4 4 4 empty empty map 0 28 2 18 #e0e0e0 #000000 0
 ;
 #X text 197 407 - henon map chaotic signal;
@@ -46,13 +46,13 @@ equation was discovered by French astronomer Michel Hénon while studying
 the orbits of stars in globular clusters.;
 #X text 84 91 [henon~] is a chaotic generator using the difference
 equation \; y[n] = 1 - a * y[n-1]^2 + b * y[n-2];
-#X text 197 511 - sets initial value of y[n-2] (defaultt 0);
-#X text 197 493 - sets initial value of y[n-1] (defaultt 0);
-#X text 197 456 - sets a (defaultt 1.4);
+#X text 197 511 - sets initial value of y[n-2] (default 0);
+#X text 197 493 - sets initial value of y[n-1] (default 0);
+#X text 197 456 - sets a (default 1.4);
 #X text 137 474 3) float;
 #X text 137 493 4) float;
 #X text 137 511 5) float;
-#X text 197 474 - sets b (defaultt 0.3);
+#X text 197 474 - sets b (default 0.3);
 #X text 197 371 - 2 floats set y[n-1] and y[n-2] \, respectively;
 #X text 197 353 - floats set 'a' and 'b' \, respectively;
 #X obj 221 228 else/henon~;

@@ -64,7 +64,7 @@
 #X text 401 263 milliseconds;
 #X text 188 419 the last input in the time interval after last output
 , f 54;
-#X text 187 471 initial time limit (defaultt 0 - no limit);
+#X text 187 471 initial time limit (default 0 - no limit);
 #X obj 204 317 else/display;
 #X msg 270 263 1 2 3;
 #X msg 223 217 x;
@@ -116,7 +116,7 @@ when the time interval between two event is greater than the limit.
 #X restore 468 312 pd ignore;
 #X text 173 488 -;
 #X text 115 488 2) float;
-#X text 187 488 non zero sets to ignore mode (defaultt 0);
+#X text 187 488 non zero sets to ignore mode (default 0);
 #X obj 91 442 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 173 442 -;

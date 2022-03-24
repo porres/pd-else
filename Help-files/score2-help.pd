@@ -68,7 +68,7 @@ window, f 58;
 #X text 146 396 float -;
 #X text 196 396 event duration in ms, f 58;
 #X text 196 436 when sequence is over, f 58;
-#X text 125 465 1) symbol - score file to load (defaultt none);
+#X text 125 465 1) symbol - score file to load (default none);
 #X text 152 307 open -;
 #X text 146 321 close -;
 #X text 196 321 closes edit window, f 58;

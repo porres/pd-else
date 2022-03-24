@@ -53,9 +53,9 @@
 #N canvas 485 293 483 336 modes 0;
 #X text 68 129 Note \, however \, that the object can be inside any
 layers of subpatches inside an abstraction \, it doesn't matter.;
-#X text 69 35 A "0" argument (the defaultt) sets the mode to "abstraction"
+#X text 69 35 A "0" argument (the default) sets the mode to "abstraction"
 mode \, whil a non-zero argument sets to "subpatch" mode.;
-#X text 67 75 The defaultt mode is "abstraction" mode. In this mode
+#X text 67 75 The default mode is "abstraction" mode. In this mode
 \, the parent patch of an abstraction that contains [properties] needs
 to be asked for properties \, in order for it to respond to., f 58
 ;
@@ -69,7 +69,7 @@ or a subpatch. But you should really only use this if you want a subpatch
 to respond to a properties query \, as this is the only mode that'll
 make it happen.;
 #X restore 478 224 pd modes;
-#X text 189 340 sets mode \, 0 (defaultt) is "abstraction" mode \, non-zero
+#X text 189 340 sets mode \, 0 (default) is "abstraction" mode \, non-zero
 is "subpatch" mode., f 45;
 #X text 53 96 [properties] sends a bang when you put it in an abstraction
 or a subpatch and ask for properties on the parent patch (by selecting

@@ -62,8 +62,8 @@
 #X text 184 316 float;
 #X text 232 316 - index position to insert;
 #X text 232 349 - output the resulting message;
-#X text 173 382 1) float - (optional) index (defaultt 0);
-#X text 156 396 2) anything - message to insert (defaultt none);
+#X text 173 382 1) float - (optional) index (default 0);
+#X text 156 396 2) anything - message to insert (default none);
 #X floatatom 238 162 3 0 0 0 - - - 0;
 #X text 229 143 index;
 #X msg 127 139 0 1 2 3 4 5;

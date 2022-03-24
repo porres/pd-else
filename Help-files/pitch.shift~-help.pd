@@ -49,10 +49,10 @@
 ;
 #X text 176 405 float - grain size in ms;
 #X text 170 440 signal - output of pitch shifter;
-#X text 193 482 transposition in cents (defaultt 0), f 44;
+#X text 193 482 transposition in cents (default 0), f 44;
 #X text 180 501 -;
 #X text 116 502 2) float;
-#X text 193 502 grain size in ms (defaultt 75 \, minimum 5), f 44;
+#X text 193 502 grain size in ms (default 75 \, minimum 5), f 44;
 #X obj 5 526 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 201 168 else/play.file~ violin.wav 1 1;

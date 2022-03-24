@@ -80,8 +80,8 @@ ramp is different than the descending ramp \, unlike [glide2~]., f
 73;
 #X obj 242 188 else/lag2~ 1000 500;
 #X obj 27 281 else/lag~;
-#X text 185 499 1) float - lag uptime in ms (defaultt 0);
-#X text 185 514 1) float - lag downtime in ms (defaultt 0);
+#X text 185 499 1) float - lag uptime in ms (default 0);
+#X text 185 514 1) float - lag downtime in ms (default 0);
 #X text 239 414 - lag uptime in ms;
 #X text 239 436 - lag downtime in ms;
 #X text 240 469 - lagged signal;

@@ -57,11 +57,11 @@
 #X text 199 323 - sets new maximum size and clears buffer's memory
 ;
 #X text 199 387 - the RMS over the time window;
-#X text 213 420 sets buffer size (defaultt 1024 samples), f 40;
+#X text 213 420 sets buffer size (default 1024 samples), f 40;
 #X obj 212 256 print~;
 #X obj 179 226 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 199 470 - sets number of samples in the window (defaultt 1)
+#X text 199 470 - sets number of samples in the window (default 1)
 ;
 #X text 199 441 -;
 #X text 173 441 -db;
@@ -81,9 +81,9 @@
 #X obj 386 193 int;
 #X text 37 22 The first argument specifies 'n' number of samples to
 take the RMS. This also sets the buffer size if no size flag is given.
-Float or signals into the right inlet also sets 'n'. The defaultt and
+Float or signals into the right inlet also sets 'n'. The default and
 minimum value is "1"., f 61;
-#X text 37 85 By defaultt \, the buffers size 1024 samples long. You
+#X text 37 85 By default \, the buffers size 1024 samples long. You
 can also set the maximum value with the -size flag or message., f
 61;
 #X msg 245 176 size 2048;

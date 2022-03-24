@@ -48,7 +48,7 @@
 ;
 #X text 195 284 float;
 #X obj 205 214 else/display;
-#X text 145 350 1) float - set A4 value (defaultt 440);
+#X text 145 350 1) float - set A4 value (default 440);
 #X text 231 284 - set a new value for A4;
 #X text 201 261 list;
 #X text 201 317 list;

@@ -35,7 +35,7 @@
 #X obj 82 42 cnv 4 4 4 empty empty canvas 0 28 2 18 -233017 -1 0;
 #X obj 150 42 cnv 4 4 4 empty empty position 0 28 2 18 -233017 -1 0
 ;
-#X text 152 323 1) float - depth \, defaultt 0 (current window);
+#X text 152 323 1) float - depth \, default 0 (current window);
 #N canvas 761 302 427 348 subpatch 0;
 #X obj 162 130 else/display;
 #X obj 162 103 else/canvas.pos;

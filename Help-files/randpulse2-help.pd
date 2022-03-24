@@ -46,17 +46,17 @@
 0;
 #X text 128 268 seed <float>;
 #X text 209 267 - sets seed value;
-#X text 209 354 - seed (defaultt \, internal);
+#X text 209 354 - seed (default \, internal);
 #X text 259 138 <= density;
 #X text 131 234 float/signal - density;
-#X text 209 322 - density (defaultt 0);
+#X text 209 322 - density (default 0);
 #X text 150 355 3) float;
 #X text 150 339 2) float;
 #X text 209 293 - random pulse signal;
 #X text 164 294 signal;
 #X text 128 250 rand <float>;
 #X text 209 249 - non zero sets to random gate value mode;
-#X text 209 338 - non zero sets to random gate value mode (defaultt
+#X text 209 338 - non zero sets to random gate value mode (default
 0);
 #N canvas 622 221 439 307 rand 0;
 #X msg 112 158 rand \$1;
@@ -68,7 +68,7 @@
 #000000 #000000 0 1;
 #X obj 172 194 else/randpulse2 1 1;
 #X obj 172 228 else/display;
-#X text 46 22 By defaultt \, gate values in [randopulse2] are "1" \,
+#X text 46 22 By default \, gate values in [randopulse2] are "1" \,
 but you can set it to random mode with the second argument (non zero
 value) \, where it gives you random positive and negative values (in
 the range from -1 to 1). You can also use the "rand" message to change

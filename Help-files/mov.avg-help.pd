@@ -56,7 +56,7 @@
 #X obj 243 175 else/mov.avg 4;
 #X text 51 91 [mov.avg] gives you a running/moving average over the
 last 'n' values., f 62;
-#X text 141 364 1) float - sets initial 'n' values (defaultt 1);
+#X text 141 364 1) float - sets initial 'n' values (default 1);
 #X obj 338 141 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X text 379 138 n;

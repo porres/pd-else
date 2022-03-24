@@ -243,12 +243,12 @@ are from 0 to 1 and values beyond that are wrapped within this range.
 #X connect 27 0 28 0;
 #X connect 28 0 20 2;
 #X restore 493 213 pd sync;
-#X text 256 415 - frequency in hertz (defaultt 0);
-#X text 256 434 - initial pulse width (defaultt 0.5);
+#X text 256 415 - frequency in hertz (default 0);
+#X text 256 434 - initial pulse width (default 0.5);
 #X text 164 346 float/signal - phase offset (modulation input);
 #X text 165 304 float/signal - pulse width (from 0 to 1);
 #X text 164 283 float/signal - frequency in hz;
-#X text 256 452 - initial phase offset (defaultt 0);
+#X text 256 452 - initial phase offset (default 0);
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;

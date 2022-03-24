@@ -115,14 +115,14 @@
 #X text 260 336 - position (from -1 to 1);
 #X obj 303 207 else/float2sig~ 100;
 #X text 66 88 [rotate~] performs equal power rotation for 'n' channels
-(defaultt 2). It takes a position control in which a full cycle is from
+(default 2). It takes a position control in which a full cycle is from
 0 to 1 \, negative values from 0 to -1 are wrapped., f 69;
-#X text 193 404 - number of channels (minimum and defaultt: 2);
+#X text 193 404 - number of channels (minimum and default: 2);
 #X obj 187 209 else/rotate~;
 #X msg 265 147 -0.5;
 #X obj 179 240 else/out~;
 #X text 136 420 2) float;
-#X text 193 420 - rotation position (defaultt: 0);
+#X text 193 420 - rotation position (default: 0);
 #X connect 8 0 32 0;
 #X connect 21 0 35 1;
 #X connect 22 0 35 0;

@@ -253,20 +253,20 @@ and read a bit more about how they affect the reverb unit., f 42;
 #X text 208 394 print - print parameters on Pd Window, f 43;
 #X text 208 380 clear - clears delay lines, f 43;
 #X text 154 309 spread <float> - stereo spreading (0-1), f 52;
-#X text 114 525 -decay <float>: decay time in seconds (defaultt 7),
+#X text 114 525 -decay <float>: decay time in seconds (default 7),
 f 66;
-#X text 114 539 -damp <float>: high frequency damping (defaultt 0.5)
+#X text 114 539 -damp <float>: high frequency damping (default 0.5)
 , f 66;
-#X text 114 553 -spread <float>: stereo spread (defaultt 0.5), f 66
+#X text 114 553 -spread <float>: stereo spread (default 0.5), f 66
 ;
-#X text 114 581 -dry <float>: - dry level (defaultt 0.5), f 66;
+#X text 114 581 -dry <float>: - dry level (default 0.5), f 66;
 #X text 200 469 (none);
 #X text 178 295 bw <float> - input bandwidth (0-1), f 48;
-#X text 114 567 -bw <float> - input bandwidth (defaultt 0.5), f 66
+#X text 114 567 -bw <float> - input bandwidth (default 0.5), f 66
 ;
-#X text 114 595 -early <float>: early reflections level (defaultt 0.25)
+#X text 114 595 -early <float>: early reflections level (default 0.25)
 , f 66;
-#X text 114 609 -late <float>: late reflections level (defaultt 0.25)
+#X text 114 609 -late <float>: late reflections level (default 0.25)
 , f 66;
 #X text 160 324 early <float> - early reflections gain level (0-1)
 , f 51;
@@ -284,10 +284,10 @@ by Juhana Sadeharju., f 64;
 ;
 #X text 166 253 size <float> - room size in square meters, f 50;
 #X text 114 497 -maxsize <float>: maximum room size in square meters
-(defaultt 300), f 66;
-#X text 114 511 -size <float>: room size in square meters (defaultt
+(default 300), f 66;
+#X text 114 511 -size <float>: room size in square meters (default
 50), f 66;
-#X text 114 623 -wet <float>: wet level (defaultt 1), f 66;
+#X text 114 623 -wet <float>: wet level (default 1), f 66;
 #X obj 216 142 else/giga.rev~;
 #X text 172 366 wet <float> - wet gain level (0-1) - master of early/late
 ;

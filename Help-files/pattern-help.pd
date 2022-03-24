@@ -66,8 +66,8 @@
 #X text 225 433 - sets new sequence, f 44;
 #X text 169 491 anything;
 #X text 227 491 - several sequence information;
-#X text 173 569 1) list - sets sequence (defaultt \, empty);
-#X text 139 524 -tempo <float> - sets new tempo value (defaultt 120)
+#X text 173 569 1) list - sets sequence (default \, empty);
+#X text 139 524 -tempo <float> - sets new tempo value (default 120)
 ;
 #X msg 367 152 1/4 -1/4 | 1/4 1/8 1/8;
 #X msg 377 176 1/6 1/6 1/6 | 1/4 1/4;
@@ -83,7 +83,7 @@
 #X obj 160 205 else/pattern 1/4 -1/4 | 1/4 1/8 1/8;
 #X text 186 417 clear;
 #X text 225 417 - clears sequence, f 44;
-#X text 211 540 -i - sets to output index (defaultt bang);
+#X text 211 540 -i - sets to output index (default bang);
 #X text 158 468 float/bang;
 #X text 227 468 - bang or index float at every new note;
 #N canvas 680 129 557 455 flags 0;

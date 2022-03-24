@@ -66,7 +66,7 @@ List and symbol selectors aren't necessary., f 71;
 #X msg 326 160 0xAB 0xCD;
 #X msg 197 156 0xe0 0xb0;
 #X obj 197 211 else/hex2dec 0xf0 0xf8;
-#X text 118 393 1) anything - hexadecimal values to convert (defaultt
+#X text 118 393 1) anything - hexadecimal values to convert (default
 0x0);
 #X connect 1 0 37 0;
 #X connect 24 0 37 0;

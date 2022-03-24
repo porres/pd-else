@@ -63,7 +63,7 @@
 #X text 125 413 float/list;
 #X msg 216 235 set 500;
 #X obj 200 270 else/cents2ratio 700;
-#X text 137 448 1) float - initial cents value (defaultt 0);
+#X text 137 448 1) float - initial cents value (default 0);
 #X text 219 206 convert;
 #X text 272 230 sets next value to be converted, f 17;
 #X text 191 382 - sets next value to be converted via bang (only float)

@@ -142,7 +142,7 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X text 250 401 - buffer size in samples, f 36;
-#X text 201 545 - buffer size in samples (defaultt 441 \, minimum 64)
+#X text 201 545 - buffer size in samples (default 441 \, minimum 64)
 , f 51;
 #X text 61 87 [graph~] is a very simple but convenient abstraction
 for visualizing audio signals.;
@@ -163,9 +163,9 @@ for visualizing audio signals.;
 #X text 130 491 dim <float \, float>;
 #X text 250 476 - set min/max range, f 36;
 #X text 250 491 - set horizontal/vertical dimensions;
-#X text 201 631 - set horizontal/vertical dimensions (defaultt 200 140)
+#X text 201 631 - set horizontal/vertical dimensions (default 200 140)
 ;
-#X text 201 616 - set lower and upper graph range (defaultt -1 1),
+#X text 201 616 - set lower and upper graph range (default -1 1),
 f 51;
 #X obj 359 346 s \$0-set;
 #X obj 115 316 else/out~;
@@ -181,10 +181,10 @@ f 51;
 #X text 250 462 - set signal width, f 36;
 #X text 92 587 fgcolor <f \, f \, f>;
 #X text 92 573 bgcolor <f \, f \, f>;
-#X text 201 573 - background color in RGB (defaultt 223 223 223);
-#X text 201 587 - foreground color in RGB (defaultt 0 0 0);
+#X text 201 573 - background color in RGB (default 223 223 223);
+#X text 201 587 - foreground color in RGB (default 0 0 0);
 #X text 116 601 width <float>;
-#X text 201 601 - set signal width (defaultt 1);
+#X text 201 601 - set signal width (default 1);
 #X msg 387 218 bgcolor 80 80 80;
 #X msg 395 239 fgcolor 250 180 180;
 #X msg 403 260 width 3;
@@ -193,7 +193,7 @@ f 51;
 #X obj 51 132 r \$0-set;
 #X obj 115 131 cusp~ 400;
 #X obj 115 161 else/graph~ 471 17 -1 1 200 140 #dfdfdf 0 1;
-#X text 201 559 - buffer skip (defaultt 10), f 51;
+#X text 201 559 - buffer skip (default 10), f 51;
 #X connect 26 0 27 0;
 #X connect 27 0 40 0;
 #X connect 28 0 29 0;

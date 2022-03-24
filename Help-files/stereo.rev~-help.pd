@@ -176,15 +176,15 @@
 #X text 256 296 - decay time in seconds, f 33;
 #X text 256 314 - high frequency damping in hertz;
 #X text 256 330 - room size (0-1), f 33;
-#X text 129 481 2) float - room size (0-1) - (defaultt 0.5), f 57;
+#X text 129 481 2) float - room size (0-1) - (default 0.5), f 57;
 #X obj 85 40 cnv 4 4 4 empty empty reverb 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 214 138 else/play.file~ stereo.wav 1 1, f 31;
-#X text 129 496 3) float - high frequnecy damping - (defaultt 0), f
+#X text 129 496 3) float - high frequnecy damping - (default 0), f
 57;
 #X text 256 345 - room size (0-1), f 33;
 #X text 167 345 wet <float>;
-#X text 129 466 1) float - decay in seconds (defaultt 1), f 57;
+#X text 129 466 1) float - decay in seconds (default 1), f 57;
 #X obj 214 176 else/stereo.rev~;
 #X text 65 202 see also:;
 #X obj 62 221 else/mono.rev~;
@@ -196,7 +196,7 @@
 #X text 256 280 - left input signal;
 #X text 256 384 - right input signal;
 #X obj 217 207 else/out~;
-#X text 129 511 4) float - wet ratio - (defaultt 0.5), f 57;
+#X text 129 511 4) float - wet ratio - (default 0.5), f 57;
 #X connect 34 0 39 0;
 #X connect 34 1 39 1;
 #X connect 39 0 47 0;

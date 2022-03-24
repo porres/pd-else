@@ -34,7 +34,7 @@
 ;
 #X obj 70 41 cnv 4 4 4 empty empty of 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 190 191 else/out~;
-#X text 128 407 2) float - ramp time in ms (defaultt 10), f 57;
+#X text 128 407 2) float - ramp time in ms (default 10), f 57;
 #X text 104 270 freq <list>;
 #X text 110 287 amp <list>;
 #X text 104 325 ramp <list>;
@@ -45,7 +45,7 @@
 f 27;
 #X text 39 16 A ramp time as the second argument sets a transition
 time in ms between parameter changes of frequency and amplitude. By
-defaultt \, this is set to 10 ms. You can also send a list of ramp time
+default \, this is set to 10 ms. You can also send a list of ramp time
 for each oscillator in the bank.;
 #X msg 89 132 freq 100 250 300 370 420 510 590 650 \, phase 0 0.5 0.25
 0 0.1 0.9 0.75 0.1 \, amp 0.9 0.5 0.9 1 0.8 0.9 0.7 1, f 38;
@@ -67,7 +67,7 @@ for each oscillator in the bank.;
 #X text 98 306 phase <list>;
 #X text 181 306 - list of phases (0-1) for all oscillators in the bank
 ;
-#X text 128 389 1) float - number of oscillators (defaultt 1), f 57
+#X text 128 389 1) float - number of oscillators (default 1), f 57
 ;
 #X text 61 86 [oscbank2~] is a bank made of [sine~] objects. You can
 set any number of oscillators and control their parameters.;

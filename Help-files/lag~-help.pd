@@ -93,7 +93,7 @@ to be used in [rpole~]., f 50;
 #X restore 469 307 pd rpole~;
 #X obj 242 192 else/lag~ 1000;
 #X obj 33 281 else/lag2~;
-#X text 185 481 1) float - lag time in ms (defaultt 0);
+#X text 185 481 1) float - lag time in ms (default 0);
 #X text 52 87 [lag~] is a one pole filter that creates an exponential
 glide/portamento for its signal input changes. The lag time in ms is
 how long it takes for the signal to converge to within 0.01% of the

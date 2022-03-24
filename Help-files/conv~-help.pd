@@ -49,9 +49,9 @@
 It takes a partition size and Impulse Response sound file., f 65;
 #X text 178 291 size <float> - sets partition size;
 #X text 172 308 load <symbol> - loads IR sound file;
-#X text 183 396 - file name to open as impulse response (defaultt none)
+#X text 183 396 - file name to open as impulse response (default none)
 ;
-#X text 194 379 optional: partition size (defaultt 1024 \, minimum 64)
+#X text 194 379 optional: partition size (default 1024 \, minimum 64)
 , f 53;
 #N canvas 702 243 459 313 cpu-heavy 0;
 #X obj 201 177 else/out~;

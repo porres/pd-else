@@ -105,7 +105,7 @@ abstraction., f 67;
 #X text 222 340 control source input;
 #X text 222 365 filter q for all channels;
 #X text 163 365 float -;
-#X text 182 455 filter q for all channels (defaultt 50);
+#X text 182 455 filter q for all channels (default 50);
 #X obj 125 128 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 243 133 else/play.file~ voice.wav 1 1;
@@ -114,7 +114,7 @@ abstraction., f 67;
 #X obj 362 162 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X text 109 475 3) list -;
-#X text 182 475 list of frequency in MIDI for each channel (defaultt:
+#X text 182 475 list of frequency in MIDI for each channel (default:
 equally dividing the range in MIDI from 28 and 108 for the number of
 channels);
 #X obj 125 188 else/vocoder~ 16 75, f 40;

@@ -38,9 +38,9 @@
 0;
 #X obj 79 525 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 93 475 scale <list> - scale to autotune to in cents (defaultt
+#X text 93 475 scale <list> - scale to autotune to in cents (default
 equal temperament), f 74;
-#X text 93 461 autotune <f> - non-zero autotunes to a given scale (defaultt
+#X text 93 461 autotune <f> - non-zero autotunes to a given scale (default
 0), f 74;
 #X text 175 505 signal - left channel output;
 #X text 175 525 signal - right channel output;
@@ -91,7 +91,7 @@ parameters. The pan range is from -1 (left) to 1 (right) and the position
 in the delay line is set proprtionally (0 is the beginning of the delay
 line and 1 is the end of the delay line). Note that the length end
 of the delay line can only be set at creation time with the '-length
-<float>' flag. By defaultt \, the length is 5000 ms as in this example.
+<float>' flag. By default \, the length is 5000 ms as in this example.
 Therefore "0" means no delay and "1" means 5000 ms delay., f 70;
 #X text 144 116 The 'rev' message sets the probability in percentage
 that the grain will be played backwards \, so \, for 0 \, we have all
@@ -127,7 +127,7 @@ amp 0.1 1 \, size 40 60 \, pos 0 1 \, rev 100, f 85;
 #X text 48 22 Try some of the presets and also try dfferent parameters
 from the settings here \, where we can change to synchronous mode and
 also the density (number of grains).;
-#X text 48 63 By defaultt \, we have an asynchronous mode \, and that
+#X text 48 63 By default \, we have an asynchronous mode \, and that
 means that the interval between grains are random. On the other hand
 \, synchronous mode spaces the grains equally within a cloud event.
 This is more noticeable if you have less density. You can set the object
@@ -151,8 +151,8 @@ to sync mode at creation with the -sync flag., f 58;
 #X obj 509 177 else/initmess 0 0.05 1 0.95 0;
 #X msg 483 367 tri;
 #X msg 518 367 hann;
-#X text 430 39 By defaultt \, the envelope is a sine shape \, like the
-defaultt in the [envelope~] object. You can set other envelope function
+#X text 430 39 By default \, the envelope is a sine shape \, like the
+default in the [envelope~] object. You can set other envelope function
 types \, namely 'tri' \, 'hann' and 'gauss' (also like in the [envelope~]
 object). The gaussian envelope takes a float argument that sets the
 width., f 48;
@@ -198,29 +198,29 @@ clouds of grains.;
 ;
 #X text 129 284 signal - signal input to be granulated, f 68;
 #X text 87 374 transp <f \, f> - sets min/max transpositin in cents
-(defaultt -1200 to 1200), f 75;
-#X text 99 360 size <f \, f> - sets min/max grain sizes in ms (defaultt
+(default -1200 to 1200), f 75;
+#X text 99 360 size <f \, f> - sets min/max grain sizes in ms (default
 50 to 450), f 73;
 #X obj 23 215 else/grain.sampler~;
 #X obj 23 240 else/grain.synth~;
 #X text 24 190 see also:;
-#X text 105 417 amp <f \, f> - sets min/max amplitude values (defaultt
+#X text 105 417 amp <f \, f> - sets min/max amplitude values (default
 0.1 to 1), f 72;
-#X text 105 388 pan <f \, f> - sets left/right pan boundaries (defaultt
+#X text 105 388 pan <f \, f> - sets left/right pan boundaries (default
 -1 to 1), f 72;
 #X text 105 402 pos <f \, f> - sets min/max position in delay line
-(defaultt 0 to 1), f 72;
+(default 0 to 1), f 72;
 #X text 141 298 bang - plays an event of cloud grains, f 66;
-#X text 123 332 dur <f> - sets cloud event duration in ms (defaultt
+#X text 123 332 dur <f> - sets cloud event duration in ms (default
 500), f 69;
-#X text 117 346 sync <f> - non zero sets to synchronous mode (defaultt
+#X text 117 346 sync <f> - non zero sets to synchronous mode (default
 0), f 70;
 #X text 99 433 rev <float> - sets probability in % of grain being reversed
-(defaultt 0), f 73;
+(default 0), f 73;
 #X text 111 447 env <any> - envelope type (sin \, hann \, tri \, gauss)
 or function list, f 71;
 #X obj 199 187 else/grain.live~ 32 -length 1000;
-#X text 135 318 float - number of grains in the event (defaultt 16 min
+#X text 135 318 float - number of grains in the event (default 16 min
 1 \, max 256), f 67;
 #X text 68 553 -n <float> (number of grains) | -dur <f> | -size <f
 \, f> | -picth <f \, f> | -autotune <f> | -pan <f \, f> | -amps <f

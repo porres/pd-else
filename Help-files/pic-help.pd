@@ -157,7 +157,7 @@ to behave like a bang with a flash time. See below., f 41;
 #X restore 409 317 pd;
 #X obj 409 459 else/display;
 #X text 541 371 <= open;
-#X text 387 178 The examples to the left are using pic in the defaultt
+#X text 387 178 The examples to the left are using pic in the default
 "bang mode"., f 36;
 #X text 387 213 Below we have the [pic] object into the 'latch' mode
 \, where it sends 1 when clicking into the object and a 0 when you
@@ -168,13 +168,13 @@ images for each state., f 36;
 #X connect 10 0 11 0;
 #X restore 463 307 pd examples;
 #N canvas 616 241 776 349 more 0;
-#X text 67 109 defaultt image =>;
+#X text 67 109 default image =>;
 #X text 23 209 Now please get into and out of edit mode so you can
 see how the [pic] object creates an outline and inlet/outlet when you're
 in edit mode., f 50;
 #X obj 174 99 else/pic 0 empty empty empty 0 0;
 #X text 14 30 When you have an empty filename or an error opening a
-file (via properties window \, flag or message) \, [pic] loads a defaultt
+file (via properties window \, flag or message) \, [pic] loads a default
 image of a question mark:, f 51;
 #X text 23 160 Note that once you have a loaded image \, setting the
 filename to "empty doesn't draw the question mark image back., f 50
@@ -215,16 +215,16 @@ a non zero value sets to outline mode.;
 #X obj 4 532 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X text 259 539 (none);
-#X text 124 607 -outline: sets to outline mode (defaultt no outline)
+#X text 124 607 -outline: sets to outline mode (default no outline)
 , f 57;
 #X text 115 246 right click for properties =====>, f 17;
 #X text 115 415 outline <float>;
 #X text 213 415 - non zero sets to outline mode, f 50;
-#X text 124 565 -open <symbol>: sets file name to open (defaultt 'empty')
+#X text 124 565 -open <symbol>: sets file name to open (default 'empty')
 , f 57;
-#X text 124 579 -send <symbol>: sets send symbol (defaultt 'empty')
+#X text 124 579 -send <symbol>: sets send symbol (default 'empty')
 , f 57;
-#X text 124 593 -receive <symbol>: sets receive symbol (defaultt 'empty')
+#X text 124 593 -receive <symbol>: sets receive symbol (default 'empty')
 , f 57;
 #X text 133 386 set <symbol>;
 #X text 213 386 - same as open \, but pd doesn't ask to save changes
@@ -250,7 +250,7 @@ twice as big when the patch window gets zoomed in., f 52;
 #X connect 6 0 2 0;
 #X connect 7 0 2 0;
 #X restore 487 330 pd zoom;
-#X text 124 621 -size: sets to "report size" mode (defaultt no report)
+#X text 124 621 -size: sets to "report size" mode (default no report)
 , f 57;
 #X text 133 430 size <float>;
 #X text 213 430 - non zero sets to report size mode, f 50;
@@ -274,7 +274,7 @@ list of width and height.;
 #X text 127 400 latch <float>;
 #X text 43 89 [pic] loads image pictures that you can interact with.
 It only works with file types: .gif \, .ppm & .pgm. you click on the
-picture and it sends a bang (defaultt) or 1 when clicking and 0 when
+picture and it sends a bang (default) or 1 when clicking and 0 when
 releasing (when in latch mode)., f 68;
 #X text 146 209 click the image =====>, f 12;
 #X msg 168 168 latch \$1;
@@ -284,7 +284,7 @@ releasing (when in latch mode)., f 68;
 #X text 175 499 float;
 #X text 213 499 - 1/0 when in latch mode;
 #X text 213 514 - pic width/height when in report size mode;
-#X text 124 636 -latch: sets to "latch" mode (defaultt "bang" mode)
+#X text 124 636 -latch: sets to "latch" mode (default "bang" mode)
 , f 57;
 #N canvas 835 231 478 475 open/set 0;
 #X obj 153 414 else/display;

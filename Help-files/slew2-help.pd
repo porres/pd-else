@@ -110,7 +110,7 @@ or the rate message. If you change the rate \, the step limit changes
 #X msg 355 270 -1;
 #X msg 306 220 0.1;
 #X msg 338 220 0.5;
-#X text 42 92 By defaultt \, the refresh rate is 5 ms \, so we have
+#X text 42 92 By default \, the refresh rate is 5 ms \, so we have
 200 values in a second. If the speed is then "1" \, this means that
 the step value is 1/200 (0.005). So a shift between 0 and 1 takes 200
 steps of 0.005 and a second to reach 1!, f 61;
@@ -138,7 +138,7 @@ steps of 0.005 and a second to reach 1!, f 61;
 #X msg 181 243 set 0;
 #X msg 170 223 set 1;
 #X text 230 348 - sets new start point and goes back to target;
-#X text 114 474 -rate <float>: sets refresh rate in ms (defaultt 5 \,
+#X text 114 474 -rate <float>: sets refresh rate in ms (default 5 \,
 minimum 1), f 61;
 #X obj 28 264 else/slew;
 #X floatatom 323 246 5 0 0 0 - - - 0;
@@ -171,8 +171,8 @@ off., f 77;
 #X text 312 153 down;
 #X text 230 383 - up speed limit (negative values = no limit);
 #X text 230 405 - down speed limit (negative values = no limit);
-#X text 165 505 1) float - up slew limit speed (defaultt 0);
-#X text 165 520 2) float - down slew limit speed (defaultt 0);
+#X text 165 505 1) float - up slew limit speed (default 0);
+#X text 165 520 2) float - down slew limit speed (default 0);
 #X connect 23 0 55 0;
 #X connect 24 0 23 0;
 #X connect 25 0 24 0;

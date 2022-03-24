@@ -63,7 +63,7 @@
 The output is preceded by "0x" and the letters in the hexadecimal values
 are upper case. You can also convert lists. Only floats are converted
 \, symbols are ignored., f 67;
-#X text 118 397 1) float/list - decimal value(s) to convert (defaultt
+#X text 118 397 1) float/list - decimal value(s) to convert (default
 0);
 #X connect 1 0 28 1;
 #X connect 2 0 28 0;

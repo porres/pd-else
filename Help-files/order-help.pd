@@ -63,7 +63,7 @@ than the split size \, it is also output.;
 #X text 194 313 - any number of elements to be split and ordered;
 #X text 129 333 n <float>;
 #X text 99 351 offset <float>;
-#X text 140 438 2) float - index offset (defaultt 0);
+#X text 140 438 2) float - index offset (default 0);
 #X text 194 351 - index offset;
 #X msg 233 210 offset 1;
 #X msg 188 210 n 2;
@@ -73,10 +73,10 @@ than the split size \, it is also output.;
 by index;
 #X msg 221 178 1 2 3 4 5 6 7 8 9;
 #X obj 221 244 else/order;
-#X text 140 421 1) float - 'n' number of elements to be ordered (defaultt
+#X text 140 421 1) float - 'n' number of elements to be ordered (default
 1);
 #X text 66 86 [order] splits a list into successive lists of a given
-size (defaultt 1 element) and tags each of them with ordered indexes.
+size (default 1 element) and tags each of them with ordered indexes.
 This is useful for sending values to all instances of an object loaded
 in [clone]!;
 #N canvas 590 258 335 188 example 0;

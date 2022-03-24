@@ -77,7 +77,7 @@
 0;
 #X text 134 439 '-b' - sets to bang mode output (instead of floats)
 ;
-#X text 142 470 1) float - tempo in BPM (defaultt 120), f 49;
+#X text 142 470 1) float - tempo in BPM (default 120), f 49;
 #N canvas 759 78 551 501 example 0;
 #X obj 189 424 else/out~;
 #X obj 153 184 tgl 20 0 empty empty empty 17 7 0 10 #dfdfdf #000000
@@ -186,7 +186,7 @@ count/tempo as specified by the multiplier ratio. This is an abstraction
 based on synced [clock] objects., f 81;
 #X text 196 329 - multiplier as a float or fraction (anything/symbol)
 ;
-#X text 100 485 2) symbol/float - polyrhythmic multiplier ratio (defaultt
+#X text 100 485 2) symbol/float - polyrhythmic multiplier ratio (default
 1/1) or float, f 70;
 #X obj 12 206 else/polymetro~;
 #X connect 6 0 35 0;

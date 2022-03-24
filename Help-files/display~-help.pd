@@ -30,7 +30,7 @@
 0;
 #X obj 502 28 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X text 140 374 1) float - number of characters (defaultt: 0 - not fixed)
+#X text 140 374 1) float - number of characters (default: 0 - not fixed)
 ;
 #X obj 91 344 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -173,6 +173,6 @@ fixed number of characters \, the displayed signal is truncated.;
 #X text 205 344 - the input is passed through;
 #X text 61 198 A second argument sets the refresh rate in ms., f 57
 ;
-#X text 140 394 2) float - refresh rate in ms (defaultt 100);
+#X text 140 394 2) float - refresh rate in ms (default 100);
 #X connect 25 0 17 0;
 #X coords 0 443 1 442 85 22 0;

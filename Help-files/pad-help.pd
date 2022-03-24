@@ -46,7 +46,7 @@
 #X obj 261 190 else/pad 50 75 255 255 255;
 #X msg 181 136 height 40;
 #X text 86 465 -dim <f \, f>: set horizontal and vertical dimensions
-(defaultt 127 \, 127), f 72;
+(default 127 \, 127), f 72;
 #X text 246 365 - set width, f 12;
 #X text 153 436 click <float>;
 #N canvas 900 54 404 563 color 0;

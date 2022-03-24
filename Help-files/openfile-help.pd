@@ -61,7 +61,7 @@ on Github;
 #X text 74 92 [openfile] can be used to open folders and files in your
 computer and also weblinks.;
 #X text 198 203 - open set file;
-#X text 110 332 1) symbol - folder/file/weblink address (defaultt: current
+#X text 110 332 1) symbol - folder/file/weblink address (default: current
 folder), f 66;
 #X text 162 367 clicking on the object opens file;
 #X obj 122 157 else/openfile -h ./README.pdf Else's README;

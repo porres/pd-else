@@ -47,17 +47,17 @@
 #X obj 87 519 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 151 303 bang - plays an dur of pitch clouds, f 64;
-#X text 103 459 scale <list> - scale to autotune to in cents (defaultt
+#X text 103 459 scale <list> - scale to autotune to in cents (default
 equal temperament), f 72;
-#X text 127 473 base <f> - sets scale's base MIDI pitch (defaultt 60)
+#X text 127 473 base <f> - sets scale's base MIDI pitch (default 60)
 , f 68;
-#X text 115 402 pan <f \, f> - sets left and right pan boundaries (defaultt
+#X text 115 402 pan <f \, f> - sets left and right pan boundaries (default
 -1 to 1), f 70;
 #X text 103 445 autotune <f> - non-zero autotunes to a given scale
-(defaultt 0), f 72;
+(default 0), f 72;
 #X text 187 499 signal - left channel output;
 #X text 187 519 signal - right channel output;
-#X text 190 566 - sets table name with waveform (defaultt none);
+#X text 190 566 - sets table name with waveform (default none);
 #X obj 347 132 cnv 15 138 55 empty empty empty 20 12 0 14 -233017 -66577
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -704,7 +704,7 @@ parameters. The pan range is from -1 (left) to 1 (right)., f 37;
 from the settings here \, where we can change to synchronous mode and
 also the density (number of grains).;
 #X text 159 166 <= about tuning;
-#X text 54 74 By defaultt \, we have an asynchronous mode \, and that
+#X text 54 74 By default \, we have an asynchronous mode \, and that
 means that the interval between grains are random. On the other hand
 \, synchronous mode spaces the grains equally within a cloud event.
 This is more noticeable if you have less density. You can set the object
@@ -720,8 +720,8 @@ to sync mode at creation with the -sync flag., f 58;
 #X msg 487 406 tri;
 #X msg 522 406 hann;
 #X obj 124 421 else/grain.synth~ \$0-wave -sync, f 17;
-#X text 449 48 By defaultt \, the envelope is a sine shape \, like the
-defaultt in the [envelope~] object. You can set other envelope function
+#X text 449 48 By default \, the envelope is a sine shape \, like the
+default in the [envelope~] object. You can set other envelope function
 types \, namely 'tri' \, 'hann' and 'gauss' (also like in the [envelope~]
 object). The gaussian envelope takes a float argument that sets the
 width., f 48;
@@ -758,7 +758,7 @@ also given by the [function] GUI object., f 48;
 ;
 #X obj 21 123 loadbang;
 #X msg 32 177 sinesum 4096 1;
-#X text 189 547 - (optional) number of grains in cloud (defaultt 16)
+#X text 189 547 - (optional) number of grains in cloud (default 16)
 ;
 #X text 96 86 [grain.synth~] is a waveform based granular synthesizer
 that generates clouds of pitched grains., f 55;
@@ -768,17 +768,17 @@ that generates clouds of pitched grains., f 55;
 #X obj 76 267 else/grain.live~;
 #X text 145 317 float - number of grains in event cloud (minimum 1
 \, maximum 256), f 65;
-#X text 121 360 dur <f> - sets cloud event duration in ms (defaultt
+#X text 121 360 dur <f> - sets cloud event duration in ms (default
 500), f 69;
-#X text 109 374 size <f \, f> - sets min/max grain sizes in ms (defaultt
+#X text 109 374 size <f \, f> - sets min/max grain sizes in ms (default
 50 to 450), f 71;
 #X text 103 388 pitch <f \, f> - sets min/max pitch values in MIDI
-(defaultt 30 to 90), f 72;
-#X text 115 416 amp <f \, f> - min/max amplitude values (defaultt 0.1
+(default 30 to 90), f 72;
+#X text 115 416 amp <f \, f> - min/max amplitude values (default 0.1
 to 1), f 70;
 #X text 103 332 set <symbol> - sets table name with waveform, f 72
 ;
-#X text 127 346 sync <f> - non zero sets to synchronous mode (defaultt
+#X text 127 346 sync <f> - non zero sets to synchronous mode (default
 0), f 68;
 #X text 99 598 -dur <f> | -size <f \, f> | -pitch <f \, f> | -pan <f
 \, f> | -amps <f \, f> | -autotune <f> | -scale <list> | -base <f>

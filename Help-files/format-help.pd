@@ -330,7 +330,7 @@ You can also use flags "+" and "#" \, plus a precision field. The modifiers
 inlet takes messages with more than one item and sends the remaining
 items to the next inlets)., f 51;
 #X text 215 366 atoms that may contain '%' variables (obrigatory \,
-no defaultt), f 36;
+no default), f 36;
 #X text 145 331 anything;
 #X obj 180 180 else/format symbol %s\ %d.wav;
 #X text 80 88 [format] formats messages similarly to [makefilename]

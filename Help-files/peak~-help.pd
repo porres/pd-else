@@ -124,9 +124,9 @@
 #X text 213 258 - signal to analyze;
 #X text 151 402 1) float;
 #X text 151 418 2) float;
-#X text 211 402 - analysis window size in samples (defaultt 1024),
+#X text 211 402 - analysis window size in samples (default 1024),
 f 53;
-#X text 211 418 - hop size in samples (defaultt \, half the window size)
+#X text 211 418 - hop size in samples (default \, half the window size)
 ;
 #X text 163 312 linear;
 #X text 187 294 db;
@@ -179,7 +179,7 @@ the window size. This is all also true for [env~] \, by the way.;
 #dcdcdc #000000 #000000 0 256;
 #X text 422 18 The set message changes the analysis parameters and
 takes up to 2 arguments \, which are \, like in the object creation
-\, the window and hop size. The defaultt values are also the same as
+\, the window and hop size. The default values are also the same as
 creating the object \, so if you give it only one value for the window
 size \, half of it will be the hop size. Note that it won't let you
 set the window or hop size to anything smaller than the current block
@@ -228,10 +228,10 @@ analytical structure.;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #X text 61 88 [peak~] is similar to Pd Vanilla's [env~] \, but it reports
-the peak amplitude value in linear (defaultt) or dBFS.;
+the peak amplitude value in linear (default) or dBFS.;
 #X obj 208 190 else/peak~ -db;
 #X text 214 294 - change peak value to dBFS;
-#X text 213 312 - change peak value to linear (the defaultt is linear)
+#X text 213 312 - change peak value to linear (the default is linear)
 ;
 #X text 213 342 - peak amplitude value;
 #X obj 3 368 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000

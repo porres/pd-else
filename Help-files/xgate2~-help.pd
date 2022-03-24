@@ -42,9 +42,9 @@
 0;
 #X text 151 373 signal;
 #X text 109 391 index <float>;
-#X text 197 391 - <1> sets to indexed mode \, <0> to non-indexed (defaultt)
+#X text 197 391 - <1> sets to indexed mode \, <0> to non-indexed (default)
 ;
-#X text 110 491 2) float - <1> sets to indexed mode (defaultt) <0> sets
+#X text 110 491 2) float - <1> sets to indexed mode (default) <0> sets
 to non-indexed, f 69;
 #N canvas 876 133 462 559 modes 0;
 #X text 51 131 In non-indexed mode \, the selection input values are
@@ -54,7 +54,7 @@ f 24;
 #X msg 64 226 index \$1;
 #X obj 64 203 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X text 51 84 In the defaultt mode of [xselect2~] (indexed) \, the integer
+#X text 51 84 In the default mode of [xselect2~] (indexed) \, the integer
 part represents the channel (indexed from 0) and the fractional part
 the crossfading point.;
 #X obj 137 182 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
@@ -63,7 +63,7 @@ the crossfading point.;
 #X obj 134 230 else/float2sig~ 10;
 #X text 152 182 select channels;
 #X text 49 24 You can set the operation mode of [xgate2~] with the
-second argument \, 1 sets to indexed mode (defaultt) and 0 sets to non-indexed
+second argument \, 1 sets to indexed mode (default) and 0 sets to non-indexed
 mode. You can also use the index message to change between modes.;
 #X obj 134 288 else/xgate2~ 4 0;
 #X obj 227 257 osc~ 440;
@@ -86,7 +86,7 @@ mode. You can also use the index message to change between modes.;
 #X restore 483 308 pd modes;
 #X obj 101 40 cnv 4 4 4 empty empty input 0 28 2 18 #e0e0e0 #000000
 0;
-#X text 110 475 1) float - number of output channels (defaultt/min 2
+#X text 110 475 1) float - number of output channels (default/min 2
 \, max 500), f 69;
 #X text 197 445 - routed outputs with crossfade;
 #X obj 190 125 hsl 128 15 0 3 0 0 empty empty empty -2 -8 0 10 #dcdcdc

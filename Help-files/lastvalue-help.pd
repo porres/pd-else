@@ -55,7 +55,7 @@
 #X text 110 233 last value =>;
 #X floatatom 289 173 5 0 0 0 - - - 0;
 #X text 327 172 <= set last value;
-#X text 126 399 1) float - initial last value (defaultt none);
+#X text 126 399 1) float - initial last value (default none);
 #X text 158 333 bang;
 #X text 192 318 - sets last value;
 #X text 192 333 - sets last value to none;
@@ -73,7 +73,7 @@
 #X obj 224 250 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X text 245 248 <= set to none;
-#X text 51 21 If there's no argument \, by defaultt \, the last value
+#X text 51 21 If there's no argument \, by default \, the last value
 is "none". This means that the first input does not output anything.
 A bang into the right inlet resets the object so the next input also
 does not cause an output., f 51;

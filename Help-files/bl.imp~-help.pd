@@ -66,8 +66,8 @@ but it is bandlimited with the upsampling/filtering technique. This
 makes the object quite inefficient CPU wise \, but is an easy way to
 implement a bandlimited oscillator., f 67;
 #X text 173 439 1) float;
-#X text 239 458 - initial phase offset (defaultt 0);
-#X text 239 439 - frequency in hertz (defaultt 0);
+#X text 239 458 - initial phase offset (default 0);
+#X text 239 439 - frequency in hertz (default 0);
 #X text 173 458 2) float;
 #X connect 12 0 34 0;
 #X connect 34 0 35 0;

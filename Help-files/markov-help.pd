@@ -79,7 +79,7 @@ f 50;
 #X text 147 499 anything;
 #X text 210 499 - output from markov chain, f 32;
 #X text 141 538 1) float - sets order (default 1);
-#X text 141 554 2) float - non zero sets to savestate mode (defaultt
+#X text 141 554 2) float - non zero sets to savestate mode (default
 0);
 #X text 48 91 [markov] creates Markov chains of any order out of progressions
 of floats \, symbols or lists (which can be used to create polyphonic

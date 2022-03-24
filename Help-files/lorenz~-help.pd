@@ -31,21 +31,21 @@
 #X text 133 407 3) float;
 #X obj 7 496 cnv 3 550 3 empty empty more_info 8 12 0 13 #dcdcdc #000000
 0;
-#X text 193 379 - sets frequency in hertz (defaultt: nyquist), f 55
+#X text 193 379 - sets frequency in hertz (default: nyquist), f 55
 ;
 #X text 133 421 4) float;
 #X text 133 435 5) float;
 #X text 133 450 6) float;
 #X text 133 464 7) float;
 #X text 133 478 8) float;
-#X text 193 393 - sets 's' (defaultt 10), f 55;
-#X text 193 407 - sets 'r' (defaultt 28), f 55;
-#X text 193 421 - sets 'b' (defaultt 2.6667), f 55;
-#X text 193 464 - sets initial value of y[n-1] (defaultt 0), f 55;
-#X text 193 435 - sets 'h' (defaultt 0.05), f 55;
-#X text 193 450 - sets initial value of x[n-1] (defaultt 0.1), f 55
+#X text 193 393 - sets 's' (default 10), f 55;
+#X text 193 407 - sets 'r' (default 28), f 55;
+#X text 193 421 - sets 'b' (default 2.6667), f 55;
+#X text 193 464 - sets initial value of y[n-1] (default 0), f 55;
+#X text 193 435 - sets 'h' (default 0.05), f 55;
+#X text 193 450 - sets initial value of x[n-1] (default 0.1), f 55
 ;
-#X text 193 478 - sets initial value of z[n-1] (defaultt 0), f 55;
+#X text 193 478 - sets initial value of z[n-1] (default 0), f 55;
 #X text 213 351 - lorenz chaotic signal;
 #X text 161 504 Object based on SuperCollider's "LorenzL" UGEN;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
@@ -100,7 +100,7 @@ a list.;
 #X obj 87 201 else/pack2 float float float;
 #X msg 122 333 clear;
 #X obj 106 295 else/pack2 coeffs 10 28 2.667 0.05, f 40;
-#X text 61 15 By defaultt \, the initial s \, r \, b and h values are
+#X text 61 15 By default \, the initial s \, r \, b and h values are
 10 \, 28 \, 2.667 and 0.05 respectively \, but can be changed via arguments
 or via the "coeffs" message.;
 #X connect 0 0 1 0;

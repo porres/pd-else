@@ -175,9 +175,9 @@ a [phasor~].;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
-#X text 192 393 - sets the increment value (defaultt 1);
-#X text 192 414 - sets the minimum value (defaultt 0);
-#X text 192 435 - sets the maximum value (defaultt 2ˆ32 - 1);
+#X text 192 393 - sets the increment value (default 1);
+#X text 192 414 - sets the minimum value (default 0);
+#X text 192 435 - sets the maximum value (default 2ˆ32 - 1);
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
 #fcfcfc 0 1;
@@ -286,9 +286,9 @@ a [phasor~].;
 #X text 139 564 2) float;
 #X text 139 578 3) float;
 #X text 139 592 4) float;
-#X text 193 549 - increment value (defaultt 1), f 43;
-#X text 193 563 - minimum value (defaultt 0), f 43;
-#X text 193 577 - maximum value (defaultt 2ˆ32 - 1), f 43;
+#X text 193 549 - increment value (default 1), f 43;
+#X text 193 563 - minimum value (default 0), f 43;
+#X text 193 577 - maximum value (default 2ˆ32 - 1), f 43;
 #N canvas 650 23 532 668 read 0;
 #X floatatom 280 207 0 0 0 0 - - - 0;
 #X text 370 233 sample size;
@@ -393,7 +393,7 @@ at different speeds with negative increment values., f 69;
 value = 63.5 (also the initial/staring value).;
 #X text 20 170 restart;
 #X text 492 113 start/restart;
-#X text 106 372 Also \, by defaultt \, [ramp~] automatically starts
+#X text 106 372 Also \, by default \, [ramp~] automatically starts
 at loading the patch. You can change that with the -off flag (also
 see the example on the right)., f 49;
 #X msg 869 189 mode \$1;
@@ -418,7 +418,7 @@ see the example on the right)., f 49;
 #X obj 973 249 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X text 257 227 <= bang when finished;
-#X text 106 293 Note that the ramp is in wrap mode by defaultt \, where
+#X text 106 293 Note that the ramp is in wrap mode by default \, where
 it automatically wraps between the min and max values. You can set
 it to clip mode or reset mode with the -mode flag or message as in
 the rightmost example., f 49;
@@ -745,12 +745,12 @@ value;
 #X text 114 331 mode <float>;
 #X text 89 512 -mode <float>;
 #X obj 194 163 else/ramp~;
-#X text 193 591 - start/reset value (defaultt minimum value);
+#X text 193 591 - start/reset value (default minimum value);
 #X obj 91 483 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 162 484 bang;
 #X text 192 484 - a bang when the ramp is finished;
-#X text 174 513 - sets mode: "wrap" <0> (defaultt) \, "clip" <1> or
+#X text 174 513 - sets mode: "wrap" <0> (default) \, "clip" <1> or
 "reset" <2>;
 #X text 192 331 - sets mode to "wrap" <0> \, "clip" <1> or "reset"
 <2>;

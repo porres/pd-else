@@ -70,7 +70,7 @@ float);
 #X text 248 201 converts set value or sends last output, f 21;
 #X text 189 347 - rational value(s);
 #X text 135 448 1) float - initial rational value \, needs to be >=
-0 (defaultt 1), f 64;
+0 (default 1), f 64;
 #X text 32 252 see also:;
 #X obj 30 300 else/ratio2cents~;
 #X obj 31 276 else/cents2ratio;

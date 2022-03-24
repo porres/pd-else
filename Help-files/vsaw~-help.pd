@@ -54,14 +54,14 @@ while between 0 and 1 makes it triangular variants., f 53;
 #X connect 5 0 0 0;
 #X connect 5 0 4 0;
 #X restore 494 193 pd width;
-#X text 243 434 - initial phase offset (defaultt 0);
-#X text 243 402 - frequency in hertz (defaultt 0), f 34;
+#X text 243 434 - initial phase offset (default 0);
+#X text 243 402 - frequency in hertz (default 0), f 34;
 #X obj 218 202 else/out~;
 #N canvas 410 232 920 431 waveform 0;
 #X obj 373 76 cnv 15 198 148 empty empty empty 20 12 0 14 #e8ecf4 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
-#X array \$0-defaultt-triangle 400 float 1;
+#X array \$0-default-triangle 400 float 1;
 #A 0 -1 -0.99 -0.98 -0.97 -0.96 -0.95 -0.94 -0.93 -0.92 -0.91 -0.9
 -0.89 -0.88 -0.87 -0.86 -0.85 -0.84 -0.83 -0.82 -0.81 -0.8 -0.79 -0.78
 -0.77 -0.76 -0.75 -0.74 -0.73 -0.72 -0.71 -0.7 -0.69 -0.68 -0.67 -0.66
@@ -200,7 +200,7 @@ while between 0 and 1 makes it triangular variants., f 53;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 200 75 1 0 0;
 #X restore 89 75 graph;
-#X text 78 40 (defaultt waveform of this oscillator);
+#X text 78 40 (default waveform of this oscillator);
 #X text 235 374 see also:;
 #X text 669 327 see also:;
 #X text 719 21 Width = 1;
@@ -213,12 +213,12 @@ according to the width parameter.;
 #X text 125 23 Width = 0;
 #X text 432 19 Width = 0.5;
 #X text 486 266 For a parameter of "0.5" \, the waveform is similar
-to [triangular~] \, (see "\$0-defaultt-triangle" above in the middle).
+to [triangular~] \, (see "\$0-default-triangle" above in the middle).
 Note that they have a phase difference of 0.25 between each other.
 ;
 #X text 41 301 The start and end of the cycle is always an amplitude
 value of "-1" for all waveforms \, except when the width parameter
-is = 0 \, which is the defaultt and when the waveform is the same of
+is = 0 \, which is the default and when the waveform is the same of
 [saw~] \, (see "\$0-saw1" above on the left)., f 54;
 #X restore 477 172 pd waveform;
 #X obj 98 40 cnv 4 4 4 empty empty sawtooth-triangle 0 28 2 18 #e0e0e0
@@ -229,7 +229,7 @@ is = 0 \, which is the defaultt and when the waveform is the same of
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
 #X obj 218 165 else/vsaw~ 220;
-#X text 243 418 - initial width (defaultt 0), f 34;
+#X text 243 418 - initial width (default 0), f 34;
 #X text 261 368 variable sawtooth-triangle wave signal;
 #X obj 123 272 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;

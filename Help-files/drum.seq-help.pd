@@ -170,11 +170,11 @@ tracks., f 42;
 #X text 131 394 export <float>;
 #X text 231 394 - export tracks \, no float exports all as an array
 ;
-#X text 156 577 -size <float>: sets cell size in pixels (defaultt 20)
+#X text 156 577 -size <float>: sets cell size in pixels (default 20)
 ;
-#X text 156 562 -slots <float>: sets number of slots (defaultt 8);
-#X text 156 547 -tracks <float>: sets tracks (defaultt 2), f 47;
-#X text 156 592 -embed: sets emebding mode (defaultt no embedding);
+#X text 156 562 -slots <float>: sets number of slots (default 8);
+#X text 156 547 -tracks <float>: sets tracks (default 2), f 47;
+#X text 156 592 -embed: sets emebding mode (default no embedding);
 #X text 50 86 [drum.seq] provides a drum grid so you can activate cells
 to represent attacks., f 65;
 #X text 274 118 set cell values via list messages;

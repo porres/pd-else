@@ -57,7 +57,7 @@
 #X obj 221 139 else/randpulse~ 1;
 #X obj 221 164 else/display~;
 #X obj 221 196 else/status~;
-#X text 168 404 1) float - initial status value (defaultt 0);
+#X text 168 404 1) float - initial status value (default 0);
 #X text 61 86 [status~] is a signal version of [status]. It sends an
 impulse in the left outlet for "zero to non-zero" transitions and an
 impulse in the right outlet for "non-zero to zero" transitions., f

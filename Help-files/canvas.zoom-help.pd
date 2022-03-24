@@ -36,7 +36,7 @@
 #X restore 306 5 graph;
 #X obj 130 42 cnv 4 4 4 empty empty status 0 28 2 18 #e0e0e0 #000000
 0;
-#X text 140 331 1) float - depth \, defaultt 0 (current window);
+#X text 140 331 1) float - depth \, default 0 (current window);
 #X text 482 194 example:;
 #N canvas 800 286 473 314 depth 0;
 #X obj 82 126 tgl 18 0 empty empty empty 0 -6 0 8 #d0d0d0 #404040 #000000

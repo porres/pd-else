@@ -80,7 +80,7 @@ that or use the [sample~] object \, which does this internally.;
 #X text 104 438 loop <float>;
 #X obj 3 534 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 186 365 - start point in ms (defaultt 0), f 58;
+#X text 186 365 - start point in ms (default 0), f 58;
 #X text 191 583 -;
 #X text 186 438 -;
 #X text 186 423 -;
@@ -89,7 +89,7 @@ that or use the [sample~] object \, which does this internally.;
 #X array \$0-array 88200 float 0;
 #X coords 0 1 88199 -1 170 120 1 0 0;
 #X restore 45 138 graph;
-#X text 203 583 channels to record \, max 64 \, defaultt 1, f 55;
+#X text 203 583 channels to record \, max 64 \, default 1, f 55;
 #X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -138,7 +138,7 @@ that or use the [sample~] object \, which does this internally.;
 ;
 #X text 186 304 - gate: non-zero starts recording \, 0 stops it, f
 58;
-#X text 186 380 - end point in ms (defaultt array's initial size),
+#X text 186 380 - end point in ms (default array's initial size),
 f 58;
 #X text 198 408 resets start/end from 0 to (current) array's size,
 f 56;

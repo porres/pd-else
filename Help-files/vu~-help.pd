@@ -123,9 +123,9 @@
 #X text 258 266 - signal to analyze;
 #X text 122 375 1) float;
 #X text 122 391 2) float;
-#X text 182 375 - analysis window size in samples (defaultt 1024),
+#X text 182 375 - analysis window size in samples (default 1024),
 f 53;
-#X text 182 391 - hop size in samples (defaultt \, half the window size)
+#X text 182 391 - hop size in samples (default \, half the window size)
 ;
 #X text 136 284 set <float \, float>;
 #X text 258 284 - sets window and hop size in samples;
@@ -173,7 +173,7 @@ the window size. This is all also true for [env~] \, by the way.;
 #X msg 516 130 set 256 32;
 #X text 422 18 The set message changes the analysis parameters and
 takes up to 2 arguments \, which are \, like in the object creation
-\, the window and hop size. The defaultt values are also the same as
+\, the window and hop size. The default values are also the same as
 creating the object \, so if you give it only one value for the window
 size \, half of it will be the hop size. Note that it won't let you
 set the window or hop size to anything smaller than the current block

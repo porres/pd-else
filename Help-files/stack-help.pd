@@ -65,7 +65,7 @@
 #X text 231 356 - set order to 'fifo';
 #X text 201 371 lifo;
 #X text 231 371 - set order to 'lifo';
-#X text 145 503 1) symbol - sets order \, <fifo> (defaultt) or <lifo>
+#X text 145 503 1) symbol - sets order \, <fifo> (default) or <lifo>
 ;
 #X text 231 300 - outputs all messages and clears them;
 #X text 201 386 open;

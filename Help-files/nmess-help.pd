@@ -70,7 +70,7 @@ the left outlet (it goes to the right outlet otherwise). A bang in
 the right inlet resets and reopens the gate., f 57;
 #X text 367 141 <= set 'n' and reset;
 #X text 305 172 <= 'n';
-#X text 235 352 sets 'n' number of messages (defaultt 0);
+#X text 235 352 sets 'n' number of messages (default 0);
 #X connect 21 0 40 0;
 #X connect 24 0 40 1;
 #X connect 28 0 40 1;

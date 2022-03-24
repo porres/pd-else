@@ -37,8 +37,8 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X text 256 379 - frequency in hertz (defaultt 0);
-#X text 256 396 - initial pulse width (defaultt 0.5);
+#X text 256 379 - frequency in hertz (default 0);
+#X text 256 396 - initial pulse width (default 0.5);
 #X obj 3 239 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 123 247 cnv 17 3 37 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
@@ -56,12 +56,12 @@
 #X text 163 267 seed <float>;
 #X text 243 266 - sets seed value;
 #X text 255 344 random pulse signal;
-#X text 254 414 - seed (defaultt \, internal);
+#X text 254 414 - seed (default \, internal);
 #X text 187 414 3) float;
 #X obj 251 168 else/randpulse 1;
 #X obj 251 200 else/display;
 #X text 59 87 [randpulse] is a random pulse oscillator (which alternates
-between a random value and 0 \, or on/off) at control rate with a defaultt
+between a random value and 0 \, or on/off) at control rate with a default
 resolution of 1 ms). It accepts negative frequencies \, has inlets
 for pulse width and sync., f 67;
 #N canvas 414 239 721 374 rate 0;
@@ -84,9 +84,9 @@ message. This affects the period resolution, f 55;
 #X text 36 36 [randpulse] is an actual oscillator with a running phase
 \, which runs at a given rate. A signal oscillator runs at the sample
 rate which has a period in ms given by the [sr~] object., f 55;
-#X text 37 205 By defaultt \, [randpulse] runs at a rate whose period
+#X text 37 205 By default \, [randpulse] runs at a rate whose period
 is 1 ms and the minimum rate is 0.1 ms. The maximum frequency that
-[pulse] can run is half the frequency of the given rate (500 hz defaultt).
+[pulse] can run is half the frequency of the given rate (500 hz default).
 , f 55;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;

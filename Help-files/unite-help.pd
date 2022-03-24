@@ -47,7 +47,7 @@
 #X msg 227 120 list a b c;
 #X symbolatom 236 270 10 0 0 0 - - - 0;
 #X msg 315 171 hi there;
-#X text 158 400 1) symbol - separator (defaultt space);
+#X text 158 400 1) symbol - separator (default space);
 #N canvas 924 177 531 511 separator 0;
 #X msg 122 254 1 2 3 4;
 #X msg 102 229 list a b c;
@@ -70,7 +70,7 @@
 #X msg 311 361 symbol;
 #X text 360 361 <= no separator;
 #X text 57 34 When you join lists into a symbol \, you can set a new
-"separator" character instead of a space (defaultt). The argument sets
+"separator" character instead of a space (default). The argument sets
 a new separator and you can also do it via the second inlet. It accepts
 any symbol (even if with more than one character) - the exception is
 "symbol empty" \, which sets an empty separator (that is no separator).

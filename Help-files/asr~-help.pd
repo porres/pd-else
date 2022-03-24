@@ -38,8 +38,8 @@
 #X text 142 409 float/signal;
 #X text 238 408 - release time in ms;
 #X text 238 439 - envelope signal;
-#X text 144 524 1) float - attack time in ms (defaultt 0);
-#X text 144 544 2) float - release time in ms (defaultt 0);
+#X text 144 524 1) float - attack time in ms (default 0);
+#X text 144 544 2) float - release time in ms (default 0);
 #X obj 196 154 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X obj 249 40 cnv 4 4 4 empty empty envelope 0 28 2 18 #e0e0e0 #000000
@@ -296,7 +296,7 @@ time in ms., f 69;
 #000000 0 1;
 #X obj 161 151 else/timed.gate~ 6;
 #X obj 349 127 else/lag~;
-#X text 47 19 By defaultt \, [asr~] is linear \, but it can operate
+#X text 47 19 By default \, [asr~] is linear \, but it can operate
 in "logarithmic" mode \, which implements a one pole filter (like in
 the [lag~] object). This is a non-liner mode that simulates how analog
 gear work. The attack or release time represent how long it takes for

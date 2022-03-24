@@ -167,7 +167,7 @@ gain);
 #X floatatom 334 165 5 0 0 0 - - - 0;
 #X text 350 145 set slider (0-1);
 #X obj 154 193 else/gain~ 1 0 0 0 0;
-#X text 58 25 [gain~] has 3 scaling modes for its slider (the defaultt
+#X text 58 25 [gain~] has 3 scaling modes for its slider (the default
 is "quartic"). You can set a linear gain multiplier \, which needs
 to be greater than zero and also represents the maximum linear gain
 achieved., f 40;
@@ -183,7 +183,7 @@ achieved., f 40;
 #X msg 334 191 set \$1;
 #X obj 173 163 r \$0-set;
 #X text 322 29 You can also set a ramp time for the slider value to
-act on the signal input \, the defaultt is 20 ms and the minimum is
+act on the signal input \, the default is 20 ms and the minimum is
 5 ms. This also affects the slider value set via the 'set' message.
 , f 40;
 #X connect 0 0 25 0;
@@ -434,7 +434,7 @@ same as the output. We have then two non linear modes:;
 #X text 70 265 entry (slider) value;
 #X text 290 121 dB: This mode adopts a decibel scale with a range of
 100 dB (using the [dbtorms~] object)., f 55;
-#X text 290 77 Quartic (defaultt): This mode just gets the slider values
+#X text 290 77 Quartic (default): This mode just gets the slider values
 to the power of 4 (so \, for instance \, an input slider value of 0.5
 becomes 0.125)., f 57;
 #X obj 463 344 else/gain~;
@@ -458,13 +458,13 @@ isn't loud enough \, if it is too high or even if you're using multiple
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 5 6 graph;
-#X text 81 477 -max <float>: sets max gain (needs to be > 0 \, defaultt
+#X text 81 477 -max <float>: sets max gain (needs to be > 0 \, default
 1);
-#X text 75 492 -mode <float>: sets scaling mode: 0 (quartic \, defaultt)
+#X text 75 492 -mode <float>: sets scaling mode: 0 (quartic \, default)
 \, 1 (dB) or 2 (linear), f 76;
-#X text 75 508 -ramp <float>: sets ramp time (minimum 5 \, defaultt
+#X text 75 508 -ramp <float>: sets ramp time (minimum 5 \, default
 20), f 76;
-#X text 123 523 -init: sets to init mode (defaultt no init), f 68;
+#X text 123 523 -init: sets to init mode (default no init), f 68;
 #X text 103 399 init <float>;
 #X text 189 399 - non zero sets to init mode, f 58;
 #X text 87 90 [gain~] is a convenient mono gain abstraction for adjusting
@@ -493,11 +493,11 @@ saved., f 25;
 #X text 103 370 gain <float>;
 #X text 103 385 ramp <float>;
 #X text 189 340 - sets slider (range is clipped to 0-1), f 58;
-#X text 189 385 - sets ramp time in ms for slider values (defaultt 20)
+#X text 189 385 - sets ramp time in ms for slider values (default 20)
 , f 58;
 #X text 189 370 - sets max gain (values <= 0 are ignored), f 58;
 #X text 103 355 mode <float>;
-#X text 189 355 - scaling mode: 0 (quartic \, defaultt) \, 1 (dB) or
+#X text 189 355 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear);
 #X text 189 312 - incoming signal whose gain will be adjusted, f 58
 ;

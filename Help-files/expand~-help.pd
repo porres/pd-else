@@ -43,11 +43,11 @@
 #X text 133 317 attack <float> - sets attack time in ms, f 56;
 #X text 127 331 release <float> - sets release time in ms, f 57;
 #X text 146 408 2) float;
-#X text 211 423 - attack time in ms (defaultt 10), f 46;
-#X text 211 408 - attenuation ratio (defaultt 1), f 46;
+#X text 211 423 - attack time in ms (default 10), f 46;
+#X text 211 408 - attenuation ratio (default 1), f 46;
 #X obj 184 206 else/out~;
-#X text 211 438 - release time in ms (defaultt 10), f 46;
-#X text 211 393 - threshold in dB (defaultt -10), f 46;
+#X text 211 438 - release time in ms (default 10), f 46;
+#X text 211 393 - threshold in dB (default -10), f 46;
 #X text 181 363 signal - compressed signal, f 46;
 #X text 146 438 4) float;
 #X obj 184 140 else/play.file~ 1 kantele.wav 1 1;

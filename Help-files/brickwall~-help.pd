@@ -106,7 +106,7 @@
 #X obj 58 167 else/brickwall~;
 #X text 104 214 note this is the "global" nyquist \, not the upsampled
 running in this subpatch., f 34;
-#X text 209 184 (defaultt frequency is 0.75 * Nyquist), f 19;
+#X text 209 184 (default frequency is 0.75 * Nyquist), f 19;
 #X obj 58 114 else/saw~;
 #X connect 1 0 8 0;
 #X connect 5 0 0 0;
@@ -131,10 +131,10 @@ like [bl.saw~]:, f 27;
 #X obj 304 183 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 193 207 else/brickwall~ 500;
-#X text 62 124 By defaultt \, its cutoff frequency is 0.75 * Nyquist
+#X text 62 124 By default \, its cutoff frequency is 0.75 * Nyquist
 \, but you can change it with the 1st argument or the second inlet.
 ;
-#X text 185 401 - cutoff in hertz (defaultt 0.75 * Nyquist);
+#X text 185 401 - cutoff in hertz (default 0.75 * Nyquist);
 #X text 63 91 [brickwall~] a 10th order butterworth lowpass filter
 \, which is filter with a steep cutoff slope (60 dB by octave).;
 #X connect 18 0 30 0;

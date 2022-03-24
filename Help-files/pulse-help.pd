@@ -42,7 +42,7 @@
 ;
 #X text 271 368 phase sync (ressets internal phase);
 #X text 164 475 1) float;
-#X text 230 475 - frequency in hertz (defaultt 0);
+#X text 230 475 - frequency in hertz (default 0);
 #X text 164 495 2) float;
 #X text 201 345 float -;
 #X text 201 302 float -;
@@ -57,21 +57,21 @@
 #X text 271 344 pulse width (from 0 to 1);
 #X text 201 405 float -;
 #X text 269 405 toggle output;
-#X text 230 515 - initial phase offset (defaultt 0);
+#X text 230 515 - initial phase offset (default 0);
 #X text 164 515 3) float;
-#X text 230 495 - pulse width (defaultt 0);
+#X text 230 495 - pulse width (default 0);
 #X text 313 154 <= resets phase.;
 #X msg 276 155 0;
 #X obj 195 249 else/display;
 #X text 59 93 This is much like the [pulse~] oscillator but operates
-in a control rate (with a defaultt resolution of 1 ms) and the output
+in a control rate (with a default resolution of 1 ms) and the output
 is like a toggle switch.;
 #X text 152 322 rate <float> -;
 #X text 271 323 rate period in ms;
 #X obj 3 430 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 104 440 -rate <float>;
-#X text 209 440 - rate period in ms (defaultt 1 \, min 0.1);
+#X text 209 440 - rate period in ms (default 1 \, min 0.1);
 #X obj 195 196 else/pulse 1;
 #N canvas 414 239 721 374 rate 0;
 #X obj 204 159 else/display;
@@ -79,9 +79,9 @@ is like a toggle switch.;
 #X text 36 36 [pulse] is an actual oscillator with a running phase
 \, which runs at a given rate. A signal oscillator runs at the sample
 rate which has a period in ms given by the [sr~] object., f 55;
-#X text 37 205 By defaultt \, [pulse] runs at a rate whose period is
+#X text 37 205 By default \, [pulse] runs at a rate whose period is
 1 ms and the minimum rate is 0.1 ms. The maximum frequency that [pulse]
-can run is half the frequency of the given rate (500 hz defaultt).,
+can run is half the frequency of the given rate (500 hz default).,
 f 55;
 #X obj 498 214 else/status;
 #X obj 513 250 timer;

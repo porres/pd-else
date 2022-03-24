@@ -155,7 +155,7 @@ incoming messages sequentially., f 73;
 #X text 221 443 - bang at end of sequence or 'n' number of messages
 ;
 #X text 110 476 float - non-zero sets to store elements with the patch
-(defaultt 0), f 66;
+(default 0), f 66;
 #X floatatom 121 169 4 0 0 0 - - - 0;
 #X text 19 174 see also:;
 #X obj 19 235 else/sequencer;

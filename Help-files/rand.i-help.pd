@@ -42,7 +42,7 @@
 #X text 280 141 low;
 #X text 349 143 high;
 #X text 164 391 floats set random's range \, 2 floats sets minimum
-and maximum - no arguments loads defaultt values (0 and 1). 1 float
+and maximum - no arguments loads default values (0 and 1). 1 float
 sets maximum value (and lowest value is set to 0).;
 #X obj 93 40 cnv 4 4 4 empty empty integer 0 28 2 18 #e0e0e0 #000000
 0;

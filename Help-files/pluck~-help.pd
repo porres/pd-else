@@ -48,8 +48,8 @@
 #X obj 118 347 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 185 444 signal;
-#X text 137 523 2) float - decay time in ms (defaultt 0);
-#X text 137 538 3) float - filter cutoff frequency (defaultt 15000)
+#X text 137 523 2) float - decay time in ms (default 0);
+#X text 137 538 3) float - filter cutoff frequency (default 15000)
 ;
 #X obj 118 368 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -193,7 +193,7 @@ an impulse instead of the white noise.;
 #X connect 2 0 4 4;
 #X connect 4 0 0 0;
 #X restore 483 272 pd -in;
-#X text 137 508 1) float - frequency in hertz (defaultt 0);
+#X text 137 508 1) float - frequency in hertz (default 0);
 #X text 49 92 [pluck~] is a Karplus-Strong algorithm with a 2nd order
 lowpass filter in the feedback loop. It takes frequency in hertz \,
 a trigger input \, a decay time in ms and a cutoff frequency for the

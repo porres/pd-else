@@ -60,7 +60,7 @@ to the float into the rightmost inlet.;
 #X text 211 332 - message from the selected inlet;
 #X text 226 276 any message to be selected, f 28;
 #X text 226 300 sets which inlet is selected;
-#X text 171 367 set the 'n' number of channels (from 2 to 512 \, defaultt
+#X text 171 367 set the 'n' number of channels (from 2 to 512 \, default
 2);
 #X obj 328 145 vradio 15 1 0 3 empty empty empty 0 -8 0 10 #dcdcdc
 #000000 #000000 0;
@@ -79,7 +79,7 @@ to the float into the rightmost inlet.;
 #X text 268 155 2;
 #X msg 328 122 -1;
 #X msg 364 122 3;
-#X text 171 384 inlet initially selected (defaultt 0);
+#X text 171 384 inlet initially selected (default 0);
 #X text 394 122 none;
 #X obj 328 204 nbx 2 15 -1e+37 1e+37 0 0 xfkvds asfmnv empty 0 -8 0
 12 #dcdcdc #000000 #000000 0 256;

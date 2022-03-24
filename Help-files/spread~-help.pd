@@ -80,8 +80,8 @@
 #X text 210 274 signal;
 #X text 262 274 - input channels, f 17;
 #X text 262 309 - output channels;
-#X text 196 339 - 'n' number of inputs (2 to 512 \, defaultt 2);
-#X text 196 356 - 'n' number of outputs (2 to 512 \, defaultt 2);
+#X text 196 339 - 'n' number of inputs (2 to 512 \, default 2);
+#X text 196 356 - 'n' number of outputs (2 to 512 \, default 2);
 #X text 64 90 [spread~] spreads any number of input channels across
 any number of output channels with equal power panning., f 55;
 #X connect 21 0 27 0;

@@ -140,7 +140,7 @@
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X text 181 658 - scaling mode: 0 (quartic \, defaultt) \, 1 (dB) or
+#X text 181 658 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear);
 #X obj 78 607 cnv 17 3 17 empty \$0-pddp.cnv.let.0 0 5 9 0 16 #dcdcdc
 #9c9c9c 0;
@@ -148,7 +148,7 @@
 #9c9c9c 0;
 #X text 145 608 signal;
 #X text 109 512 mode <float>;
-#X text 195 512 - scaling mode: 0 (quartic \, defaultt) \, 1 (dB) or
+#X text 195 512 - scaling mode: 0 (quartic \, default) \, 1 (dB) or
 2 (linear);
 #N canvas 715 46 548 676 examples 0;
 #X msg 424 307 mode \$1;
@@ -173,7 +173,7 @@
 #X text 312 111 set pan (channel 2);
 #X text 398 140 set gain (channel 3);
 #X text 64 402 you can use [gain2~] as a master leveler, f 21;
-#X text 86 40 [mix4~] has 3 scaling modes for its slider (the defaultt
+#X text 86 40 [mix4~] has 3 scaling modes for its slider (the default
 is "quartic"). The rightmost inlet sets scaling mode \, gain and pan
 values., f 60;
 #X obj 68 183 else/mix4~;
@@ -424,7 +424,7 @@ same as the output. We have then two non linear modes:;
 #X text 129 265 entry (slider) value;
 #X text 40 414 dB: This mode adopts a decibel scale with a range of
 100 dB (using the [dbtorms~] object)., f 55;
-#X text 40 370 Quartic (defaultt): This mode just gets the slider values
+#X text 40 370 Quartic (default): This mode just gets the slider values
 to the power of 4 (so \, for instance \, an input slider value of 0.5
 becomes 0.125)., f 57;
 #X restore 468 314 pd scaling \; modes & gain;

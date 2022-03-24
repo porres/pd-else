@@ -46,7 +46,7 @@ found in Pd's Media menu.;
 #X msg 269 129 1;
 #X text 207 129 off;
 #X text 299 128 on;
-#X text 167 310 1) float - status <0> off \, <1> on (defaultt);
+#X text 167 310 1) float - status <0> off \, <1> on (default);
 #X text 231 275 - cpu load value;
 #X text 231 241 - <0> off \, <1> on;
 #X text 194 242 float;

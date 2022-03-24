@@ -66,7 +66,7 @@ the user;
 #X text 132 386 anything -;
 #X text 200 386 event data, f 58;
 #X text 200 425 when sequence is over, f 58;
-#X text 125 454 1) symbol - score file to load (defaultt none);
+#X text 125 454 1) symbol - score file to load (default none);
 #X text 156 316 open -;
 #X text 150 330 close -;
 #X text 200 330 closes edit window, f 58;

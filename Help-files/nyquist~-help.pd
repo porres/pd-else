@@ -88,7 +88,7 @@ rate running in the patch due to [block~]., f 56;
 #X msg 223 201 ms;
 #X msg 256 202 sec;
 #X obj 213 258 else/display;
-#X text 64 153 The defaultt output is the sample rate frequency in hertz.
+#X text 64 153 The default output is the sample rate frequency in hertz.
 ;
 #X obj 213 232 else/nyquist~ -khz;
 #X text 64 90 [nyquist~] reports the nyquist (which is half the sample

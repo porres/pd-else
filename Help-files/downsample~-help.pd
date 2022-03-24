@@ -79,12 +79,12 @@ use negative frequencies.;
 at a frequency rate in hertz. It can operate with or without interpolation.
 ;
 #X text 148 463 1) float;
-#X text 215 463 - interpolation 0 (off \, defaultt) or 1 (on);
+#X text 215 463 - interpolation 0 (off \, default) or 1 (on);
 #X msg 130 179 interp \$1;
 #X obj 130 152 tgl 16 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;
 #X text 112 349 interp <float>;
-#X text 216 348 - interpolation 0 (off \, defaultt) or 1 (on);
+#X text 216 348 - interpolation 0 (off \, default) or 1 (on);
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -103,7 +103,7 @@ at a frequency rate in hertz. It can operate with or without interpolation.
 #X obj 501 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
 0;
 #X obj 205 211 else/downsample~;
-#X text 215 443 - rate in hertz (defaultt is Pd's sample rate);
+#X text 215 443 - rate in hertz (default is Pd's sample rate);
 #X connect 0 0 40 0;
 #X connect 1 0 22 0;
 #X connect 22 0 40 1;

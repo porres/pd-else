@@ -85,7 +85,7 @@ set or change it with the 'set' message., f 47;
 #X restore 457 289 pd send-name;
 #X obj 206 260 else/midi.learn;
 #A saved;
-#X text 195 456 1) symbol - send name (defaultt none);
+#X text 195 456 1) symbol - send name (default none);
 #X text 154 376 set <symbol> - set send name, f 60;
 #X text 232 426 learned controller, f 47;
 #X text 244 330 activate MIDI learn, f 45;

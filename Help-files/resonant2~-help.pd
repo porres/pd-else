@@ -54,8 +54,8 @@
 #X obj 189 40 cnv 4 4 4 empty empty attack/decay 0 28 2 18 -233017
 -1 0;
 #X obj 289 40 cnv 4 4 4 empty empty time 0 28 2 18 -233017 -1 0;
-#X text 166 464 2) float - attack time in ms (defaultt 0), f 55;
-#X text 166 481 3) float - decay time in ms (defaultt 0), f 55;
+#X text 166 464 2) float - attack time in ms (default 0), f 55;
+#X text 166 481 3) float - decay time in ms (default 0), f 55;
 #X obj 111 382 cnv 17 3 17 empty empty 3 5 9 0 16 -228856 -162280 0
 ;
 #X text 135 382 float/signal;
@@ -64,7 +64,7 @@
 #X text 60 87 [resonant2~] is a resonator just like [resonant~] \,
 but you you can specify an attack time besides a decay time.;
 #X obj 195 196 else/resonant2~ 500 500 2000;
-#X text 166 446 1) float - central frequency in hertz (defaultt 0),
+#X text 166 446 1) float - central frequency in hertz (default 0),
 f 55;
 #N canvas 443 164 778 516 details 0;
 #X obj 488 141 else/imp~ 1;

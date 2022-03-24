@@ -60,8 +60,8 @@
 #X text 250 312 rate in Hz;
 #X text 250 332 depth (ms);
 #X text 247 384 flanger output;
-#X text 237 448 - rate in hertz (defaultt 0);
-#X text 237 467 - depth in ms (defaultt 0);
+#X text 237 448 - rate in hertz (default 0);
+#X text 237 467 - depth in ms (default 0);
 #X text 174 487 3) float;
 #X obj 3 408 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
@@ -70,10 +70,10 @@
 #dcdcdc #000000 #000000 0 256;
 #X text 258 132 rate;
 #X text 314 132 depth;
-#X text 126 417 -tri - sets waveform to triangular (defaultt sine);
+#X text 126 417 -tri - sets waveform to triangular (default sine);
 #X text 374 132 coefficient;
 #X text 250 352 coefficient for feedforward/feedback lines;
-#X text 237 487 - coefficient (defaultt 0);
+#X text 237 487 - coefficient (default 0);
 #X obj 125 152 else/bl.saw~ 150;
 #X connect 23 0 40 1;
 #X connect 24 0 40 2;

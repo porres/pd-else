@@ -37,7 +37,7 @@ filter.;
 #X text 138 222 lowpass =>;
 #X text 305 219 <= highpass;
 #X text 348 158 cutoff;
-#X text 198 441 - cutoff frequency (defaultt 1000);
+#X text 198 441 - cutoff frequency (default 1000);
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;

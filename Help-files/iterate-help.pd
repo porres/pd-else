@@ -85,7 +85,7 @@ and outputs them sequentially., f 70;
 #X text 153 325 float;
 #X text 196 325 - sets direction >= 0 is left to right \, < 0 is reverse
 ;
-#X text 100 427 1) float - direction \, >= 0 is left to right (defaultt)
+#X text 100 427 1) float - direction \, >= 0 is left to right (default)
 \, < 0 is reverse, f 69;
 #X obj 231 215 else/iterate;
 #X obj 4 388 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000

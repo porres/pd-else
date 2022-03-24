@@ -42,9 +42,9 @@
 #dcdcdc #000000 #000000 0 256;
 #X text 78 164 crossfade duration, f 9;
 #X text 189 384 - selected inlet/channel;
-#X text 136 451 2) float - crossfade time in ms (defaultt 0 - no crossfade)
+#X text 136 451 2) float - crossfade time in ms (default 0 - no crossfade)
 ;
-#X text 136 467 3) float - initially selected channel (defaultt 0: none)
+#X text 136 467 3) float - initially selected channel (default 0: none)
 ;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
@@ -73,7 +73,7 @@ power crossfading.;
 ;
 #X text 160 406 list;
 #X obj 200 200 else/xselect~ 2 1000 1;
-#X text 136 434 1) float - number of inputs (defaultt 1 \, max 512)
+#X text 136 434 1) float - number of inputs (default 1 \, max 512)
 ;
 #N canvas 603 150 633 378 status 0;
 #X obj 182 261 else/out~;

@@ -45,14 +45,14 @@
 ;
 #X text 137 317 anything;
 #X text 137 338 anything;
-#X text 208 401 number of outlets from 2-512 (defaultt 2) \, there's
+#X text 208 401 number of outlets from 2-512 (default 2) \, there's
 an extra outlet for the extra elements, f 50;
 #X obj 82 278 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 112 279 size <float>;
 #X text 212 255 a message whose elements gets unmerged;
 #X text 196 431 -;
-#X text 208 432 elements number size per outlet (defaultt 1);
+#X text 208 432 elements number size per outlet (default 1);
 #X text 138 431 2) float;
 #X obj 203 203 else/display;
 #X obj 252 203 else/display;
@@ -61,7 +61,7 @@ an extra outlet for the extra elements, f 50;
 #X msg 334 148 2;
 #X obj 203 178 else/unmerge 2 2, f 17;
 #X text 78 91 [unmerge] separates the elements of a message in groups
-of any size (defaultt 1). Each group is sent out a separate outlet \,
+of any size (default 1). Each group is sent out a separate outlet \,
 extra elements are sent to an extra rightmost outlet.;
 #X text 196 317 - the bits of the unmerged message, f 55;
 #X text 196 338 - the extra elements of the message, f 55;
@@ -74,7 +74,7 @@ extra elements are sent to an extra rightmost outlet.;
 #X msg 312 98 2;
 #X obj 127 128 else/unmerge 2 2, f 26;
 #X msg 127 99 a b c d e f g h;
-#X text 113 32 By defaultt \, [unmerge] adds a symbol or list selector.
+#X text 113 32 By default \, [unmerge] adds a symbol or list selector.
 The -trim flag trims it., f 39;
 #X obj 121 301 else/display;
 #X obj 197 301 else/display;

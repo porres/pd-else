@@ -39,8 +39,8 @@
 ;
 #X text 242 314 phase sync (ressets internal phase);
 #X text 164 419 1) float;
-#X text 230 438 - initial phase offset (defaultt 0);
-#X text 230 419 - frequency in hertz (defaultt 0);
+#X text 230 438 - initial phase offset (default 0);
+#X text 230 419 - frequency in hertz (default 0);
 #X text 164 438 2) float;
 #X text 171 314 float -;
 #X obj 194 149 nbx 4 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
@@ -63,9 +63,9 @@
 message. This affects the period resolution, f 50;
 #X text 28 22 [phasor~] runs at the sample rate which has a period
 in ms given by the [sr~] object., f 50;
-#X text 29 150 By defaultt \, [phasor] runs at a rate whose period is
+#X text 29 150 By default \, [phasor] runs at a rate whose period is
 1 ms and the minimum rate is 0.1 ms. The maximum frequency that [phasor]
-can run is half the frequency of the given rate (500 hz defaultt).,
+can run is half the frequency of the given rate (500 hz default).,
 f 50;
 #X obj 435 173 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
@@ -80,7 +80,7 @@ f 50;
 #X obj 3 374 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 104 384 -rate <float>;
-#X text 209 384 - rate period in ms (defaultt 1 \, min 0.1);
+#X text 209 384 - rate period in ms (default 1 \, min 0.1);
 #X obj 109 266 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 241 267 frequency in hz;

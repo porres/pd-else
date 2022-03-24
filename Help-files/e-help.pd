@@ -45,7 +45,7 @@
 #X restore 3 3 graph;
 #X text 314 191 muiltiplier;
 #X text 135 333 float;
-#X text 137 368 1) float - multiplier (defaultt 1);
+#X text 137 368 1) float - multiplier (default 1);
 #N canvas 757 104 410 312 expr 0;
 #X obj 176 112 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 2.71828 256;

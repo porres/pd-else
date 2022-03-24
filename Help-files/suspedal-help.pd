@@ -78,7 +78,7 @@ output);
 #X obj 222 238 print pitch;
 #X text 70 87 [suspedal] holds MIDI Note Off messages when on and sends
 them out when it's switched off. It has two sustain modes \, 'regular'
-(defaultt) and 'tonal' - as in the design of modern pianos., f 63;
+(default) and 'tonal' - as in the design of modern pianos., f 63;
 #X text 193 287 - a pair of pitch/velocity velues from note messages
 ;
 #X text 157 317 flush - outputs all held note-off messages;
@@ -88,7 +88,7 @@ them out when it's switched off. It has two sustain modes \, 'regular'
 #X text 207 407 pedal switch: on <1> or off <0>;
 #X text 207 436 the pitch value of a note message;
 #X text 207 458 the velocity value of a note message;
-#X text 157 529 float - non zero turns on the pedal (defaultt: 0 - off)
+#X text 157 529 float - non zero turns on the pedal (default: 0 - off)
 ;
 #N canvas 527 198 822 448 example 0;
 #X obj 151 248 ctlin 64 1;
@@ -184,7 +184,7 @@ instead.;
 MIDI note messages from an external controller and access the MIDI
 message from an actual sustain pedal (which is normally controller
 number 64) and feed it to the [suspedal] object.;
-#X text 441 20 The defaultt sustain mode - used in this example - holds
+#X text 441 20 The default sustain mode - used in this example - holds
 any note off messages when it is on. Below \, we use [suspedal] in
 a patch with 2-voice polyphonic synth controlled by random notes. This
 example uses [voices] but you can also use vanilla's [poly].;
@@ -304,7 +304,7 @@ or [voices] \, but also [mono]., f 62;
 #X connect 19 1 6 1;
 #X restore 491 211 pd tonal;
 #X text 149 485 -retrig <float> - sets retriger mode <0 \, 1 \, 2 or
-3> (defaultt 0), f 63;
+3> (default 0), f 63;
 #X connect 5 0 43 2;
 #X connect 18 0 26 0;
 #X connect 19 0 47 0;

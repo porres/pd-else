@@ -51,15 +51,15 @@ set the number of stages with the first argument \, which sets the
 order of the internal allpass filter (needs to be a multiple of 2).
 It requires a signal LFO to control the frequency sweep., f 71;
 #X text 189 309 signal - input to phaser, f 47;
-#X text 203 437 number of stages from 2 to 64 (defaultt 2);
+#X text 203 437 number of stages from 2 to 64 (default 2);
 #X obj 314 155 osc~ 0.33;
 #X text 190 452 -;
 #X text 126 453 2) float;
 #X text 190 467 -;
 #X text 126 468 3) float;
 #X obj 185 203 else/phaser~ 6 2 0.7, f 22;
-#X text 203 453 q- resonance (defaultt 1), f 34;
-#X text 203 468 dry/wet ratio from 0-1 (defaultt 1);
+#X text 203 453 q- resonance (default 1), f 34;
+#X text 203 468 dry/wet ratio from 0-1 (default 1);
 #X text 171 325 q <float> - internal allpass resonance;
 #X text 159 343 wet <float> - dry/wet ratio from 0-1, f 52;
 #X connect 22 0 34 0;

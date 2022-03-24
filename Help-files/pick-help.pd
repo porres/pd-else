@@ -57,7 +57,7 @@
 #X obj 240 234 else/display;
 #X text 176 330 anything;
 #X text 233 330 - the element from the input message;
-#X text 159 365 1) float - element number (defaultt 0 \, none);
+#X text 159 365 1) float - element number (default 0 \, none);
 #X text 62 85 [pick] picks an element from an input message according
 to an element number. Negative values count from last to the first
 element. If you ask for an element number out of the range \, nothing

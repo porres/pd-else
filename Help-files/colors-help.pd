@@ -106,7 +106,7 @@ to "ds" (Pd's Data Structures format)., f 38;
 #X msg 164 225 to iemgui \, bang;
 #X obj 116 115 loadbang;
 #X obj 380 260 else/colors;
-#X text 469 249 converts to hexadecimal (defaultt), f 11;
+#X text 469 249 converts to hexadecimal (default), f 11;
 #X text 489 329 converts to RGB, f 8;
 #X text 452 260 <=;
 #X obj 380 335 else/colors -rgb;
@@ -276,13 +276,13 @@ Note that these have less color resolution.;
 #X text 138 375 iemgui <float>;
 #X text 229 375 - iemgui's color format value;
 #X text 229 390 - Data Structures' color value;
-#X text 142 555 -rgb - sets to RGB list output (defaultt hexadecimal)
+#X text 142 555 -rgb - sets to RGB list output (default hexadecimal)
 , f 59;
-#X text 124 570 -iemgui - sets to iemguis output (defaultt hexadecimal)
+#X text 124 570 -iemgui - sets to iemguis output (default hexadecimal)
 , f 62;
-#X text 148 585 -ds - sets to Data Structures output (defaultt hexadecimal)
+#X text 148 585 -ds - sets to Data Structures output (default hexadecimal)
 ;
-#X text 37 276 output (hexadecimal by defaultt) =>;
+#X text 37 276 output (hexadecimal by default) =>;
 #X connect 0 0 38 0;
 #X connect 21 0 38 0;
 #X connect 22 0 38 0;

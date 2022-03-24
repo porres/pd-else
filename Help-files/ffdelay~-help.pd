@@ -83,7 +83,7 @@ can have :, f 63;
 #X text 205 385 signal - the feed forward delayed signal, f 48;
 #X text 185 445 -;
 #X text 140 445 -samps;
-#X text 199 444 sets delay time unit to "samples" (defaultt is ms);
+#X text 199 444 sets delay time unit to "samples" (default is ms);
 #X obj 305 140 hsl 128 15 0 1000 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X obj 302 162 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -113,12 +113,12 @@ f 44;
 #X restore 440 248 pd interpolation;
 #X text 247 301 - changes the delay size, f 41;
 #X text 205 285 signal - signal input into the delay line, f 48;
-#X text 173 477 1) float - initial/maximum delay time (defaultt 0),
+#X text 173 477 1) float - initial/maximum delay time (default 0),
 f 50;
 #X text 199 417 sets delay size \, which defines the delay's maximum
-time (defaultt 1000 ms or argument's value if given);
+time (default 1000 ms or argument's value if given);
 #N canvas 508 174 858 345 details 0;
-#X text 448 19 By defaultt \, all time units in [ffdelay~] is in ms.
+#X text 448 19 By default \, all time units in [ffdelay~] is in ms.
 This affects not only the delay time \, but also the delay size.,
 f 64;
 #X text 448 48 Alternatively \, with the -samps flag \, you can set
@@ -136,7 +136,7 @@ the same way \, this affects both delay time and delay size., f 64
 #X obj 67 109 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
 #X obj 110 194 else/ffdelay~ 500;
-#X text 32 22 By defaultt \, the delay size is 1000 ms \, but if you
+#X text 32 22 By default \, the delay size is 1000 ms \, but if you
 give it an argument \, it sets both the delay time and also the delay
 size., f 64;
 #X obj 261 136 else/impseq~;

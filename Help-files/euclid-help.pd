@@ -75,9 +75,9 @@ width float bordercolor;
 #X text 222 455 - when there's a rest;
 #X text 177 478 float;
 #X text 223 478 - 1 for hit \, 0 for rest;
-#X text 131 507 1) float - number of steps (defaultt 8), f 53;
-#X text 131 525 2) float - number of hits (defaultt 1), f 53;
-#X text 131 542 3) float - rotation value (defaultt 0), f 53;
+#X text 131 507 1) float - number of steps (default 8), f 53;
+#X text 131 525 2) float - number of hits (default 1), f 53;
+#X text 131 542 3) float - rotation value (default 0), f 53;
 #X obj 102 398 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 177 351 float;
@@ -109,7 +109,7 @@ on parameters of: number of steps \, number of hits and rotation value.
 #X text 291 235 <= try different divisions;
 #X text 88 43 The algorithm tries to divide a given number of steps
 as equally spaced as possible. In the example below we have 16 steps
-and \, by defaultt \, 7 hits (change it to check it out), f 56;
+and \, by default \, 7 hits (change it to check it out), f 56;
 #X obj 122 330 noise~;
 #X connect 0 0 7 0;
 #X connect 1 0 8 0;

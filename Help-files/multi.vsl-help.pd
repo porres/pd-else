@@ -50,7 +50,7 @@
 #X obj 106 147 else/multi.vsl 200 127 -1 1 8 empty empty empty 255
 255 255 220 220 220 0 0 0 0 0 holder holder holder 0 0 0.338583 0 0
 0 0 0;
-#X text 44 22 By defaultt \, the sliders' output range is from 0 to
+#X text 44 22 By default \, the sliders' output range is from 0 to
 127 \, but you can change it with the -range flag or the range message
 \, which sets the range for all sliders., f 56;
 #X text 64 353 Note that when you change the range \, all values are
@@ -172,7 +172,7 @@ the 'bgcolor' \, 'fgcolor' and 'linecolor' messages or '-bgcolor' \,
 255 255 220 220 220 0 0 0 1 0 0 holder holder 0 0 0 0 0 0 0 0;
 #X text 65 28 You can set to "jump on click" mode with the '-jump'
 flag or 'jump' message. Non zero sets to jump on click mode and zero
-(defaultt) is "steady on click" mode. These are the same as in Vanilla's
+(default) is "steady on click" mode. These are the same as in Vanilla's
 sliders.;
 #X text 65 80 In jump on click mode \, it behaves kinda like arrays
 in Pd when you clicck and drag around \, but it'll clip according to
@@ -204,31 +204,31 @@ them when you load it., f 45;
 #X obj 16 14 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
 #X obj 16 215 cnv 3 550 3 empty empty empty 8 12 0 13 -228856 -1 0
 ;
-#X text 93 37 -n <float>: sets number of sliders size (defaultt: 8)
+#X text 93 37 -n <float>: sets number of sliders size (default: 8)
 , f 72;
-#X text 93 51 -range <float \, float>: sets slidrs' range (defaultt:
+#X text 93 51 -range <float \, float>: sets slidrs' range (default:
 0 \, 127), f 72;
-#X text 93 65 -name <symbol>: sets arrays name (defaultt: internal)
+#X text 93 65 -name <symbol>: sets arrays name (default: internal)
 , f 72;
-#X text 93 79 -jump <float>: non zero sets jump on click mode (defaultt:
+#X text 93 79 -jump <float>: non zero sets jump on click mode (default:
 0), f 72;
-#X text 93 23 -dim <float \, float>: sets x/y dimensions (defaultt:
+#X text 93 23 -dim <float \, float>: sets x/y dimensions (default:
 200 127), f 72;
-#X text 93 93 -init <float>: non zero sets to init mode (defaultt: 0)
+#X text 93 93 -init <float>: non zero sets to init mode (default: 0)
 , f 72;
-#X text 93 107 -send <symbol>: sets send symbol (defaultt: empty),
+#X text 93 107 -send <symbol>: sets send symbol (default: empty),
 f 72;
-#X text 93 121 -receive <symbol>: sets receive symbol (defaultt: empty)
+#X text 93 121 -receive <symbol>: sets receive symbol (default: empty)
 , f 72;
 #X text 93 135 -bgcolor <f \, f \, f>: sets background color in RGB
-(defaultt: 255 255 255), f 72;
+(default: 255 255 255), f 72;
 #X text 93 149 -fgcolor <f \, f \, f>: sets frontground color in RGB
-(defaultt: 220 220 220), f 72;
-#X text 93 163 -linecolor <f \, f \, f>: sets line color in RGB (defaultt:
+(default: 220 220 220), f 72;
+#X text 93 163 -linecolor <f \, f \, f>: sets line color in RGB (default:
 0 0 0), f 72;
-#X text 93 191 -set <list>: sets slider's values (defaultt: 0 0 0 0
+#X text 93 191 -set <list>: sets slider's values (default: 0 0 0 0
 0 0 0 0), f 72;
-#X text 93 177 -mode <float>: non zro sets to 'list mode' (defaultt
+#X text 93 177 -mode <float>: non zro sets to 'list mode' (default
 0), f 72;
 #X restore 200 615 pd flags;
 #X text 259 615 <= click to open;
@@ -253,7 +253,7 @@ f 72;
 #X obj 60 52 else/multi.vsl 120 150 200 2000 4 empty empty empty 63
 51 84 111 64 97 217 217 192 1 1 holder holder holder 800 992 524 1436
 0 0 0 0;
-#X text 237 78 In the defaultt mode \, you can use [route] to route
+#X text 237 78 In the default mode \, you can use [route] to route
 values from the multi slider. You can also use [clone] and feed the
 output directly to it., f 30;
 #X obj 604 75 else/multi.vsl 120 150 200 2000 4 empty empty empty 63
@@ -380,7 +380,7 @@ affecting the locked one, f 21;
 #X obj 225 475 else/display;
 #X obj 294 574 else/display;
 #X msg 282 262 mode \$1;
-#X text 286 287 The defaultt mode is slider number / value;
+#X text 286 287 The default mode is slider number / value;
 #X text 183 62 exports sliders' values as a list preceded by 'export'
 ;
 #X text 284 149 dump all values sequentially as slider number / value
@@ -451,7 +451,7 @@ float;
 #X text 47 84 [multi.vsler] is a multi slider GUI abstraction., f
 24;
 #X text 212 555 -;
-#X text 224 555 slider number / slider value in the defaultt mode or
+#X text 224 555 slider number / slider value in the default mode or
 all values as a list in the "list mode", f 51;
 #X text 176 265 dump;
 #X text 128 251 mode <float>;

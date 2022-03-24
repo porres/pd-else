@@ -69,10 +69,10 @@
 #X obj 34 198 else/ctl.in;
 #X obj 231 182 else/ctl.out 4;
 #X text 89 87 [ctl.out] formats and sends raw MIDI control messages.
-An argument sets channel number (the defaultt is 1).;
+An argument sets channel number (the default is 1).;
 #X text 143 372 1) list;
-#X text 216 371 1 float sets channel number (defaultt 1). Two floats
-set control# (defaultt 1) and channel, f 51;
+#X text 216 371 1 float sets channel number (default 1). Two floats
+set control# (default 1) and channel, f 51;
 #X connect 24 0 42 0;
 #X connect 25 0 42 1;
 #X connect 28 0 42 2;

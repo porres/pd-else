@@ -53,7 +53,7 @@
 ;
 #X obj 240 182 else/stream 4;
 #X obj 240 207 else/display;
-#X text 167 364 1) float - N group size (defaultt 1);
+#X text 167 364 1) float - N group size (default 1);
 #X text 201 298 - N group size;
 #X obj 240 128 nbx 3 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
 -1 -1 0 256;
