@@ -111,6 +111,11 @@ static void function_init(t_function *x, int ac, t_atom* av){ // ???
     }
 }
 
+static void function_expi(t_function *x, t_floatarg f1, t_floatarg f2){
+    int i = f1 < 0 ? 0 : (int)f1;
+    SETFLOAT(x->x_at_exp+i, f2);
+}
+
 static void function_expl(t_function *x, t_symbol *s, int ac, t_atom *av){
     if(!ac)
         return;
@@ -187,5 +192,6 @@ void function_tilde_setup(void){
     class_addmethod(function_class, (t_method)functionsig_dsp, gensym("dsp"), 0);
     class_addmethod(function_class, (t_method)function_exp, gensym("exp"), A_GIMME, 0);
     class_addmethod(function_class, (t_method)function_expl, gensym("expl"), A_GIMME, 0);
+    class_addmethod(function_class, (t_method)function_expi, gensym("expi"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addlist(function_class, function_list);
 }
