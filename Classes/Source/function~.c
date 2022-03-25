@@ -3,7 +3,7 @@
 #include <m_pd.h>
 #include "math.h"
 
-#define MAX_SIZE  1024
+#define MAX_SIZE  4096
 
 typedef struct _function{
     t_object    x_obj;
@@ -12,8 +12,10 @@ typedef struct _function{
     float      *x_durations;
     float       x_power;
     t_atom      x_at_exp[MAX_SIZE];
+    t_atom      x_at_av[MAX_SIZE];
     int         x_point;
     int         x_last_point;
+    int         x_exp;
 }t_function;
 
 static t_class *function_class;
@@ -72,17 +74,13 @@ static void functionsig_dsp(t_function *x, t_signal **sp){
 }
 
 static void function_init(t_function *x, int ac, t_atom* av){ // ???
-    if(ac < 3){
-        post("[function~] list needs at least 3 floats");
+    if(ac < 3)
         return;
-    }
-    float *dur;
-    float *val;
-    float tdur = 0;
+    float *dur, *val, tdur = 0;
     x->x_durations[0] = 0;
-    x->x_last_point = ac >> 1; // = (int)ac/2
+    x->x_last_point = x->x_exp ? (int)ac/3 : (int)ac/2; 
     if(x->x_last_point > MAX_SIZE){
-        post("[function]: too many lines, maximum is %d", MAX_SIZE);
+        post("[function~]: too many lines, maximum is %d", MAX_SIZE);
         return;
     }
     dur = x->x_durations;
@@ -91,15 +89,29 @@ static void function_init(t_function *x, int ac, t_atom* av){ // ???
     *dur = 0.0;
     ac--;
     dur++;
-    while(ac > 0){
-        *dur++ = (tdur += atom_getfloat(av++));
-        ac--;
-        *++val = ac > 0 ? atom_getfloat(av++): 0;
-        ac--;
+    if(x->x_exp){
+        int i = 0;
+        while(ac > 0){
+            *dur++ = (tdur += atom_getfloat(av++));
+            ac--;
+            SETFLOAT(x->x_at_exp+i, (av++)->a_w.w_float);
+            i++;
+            ac--;
+            *++val = ac > 0 ? atom_getfloat(av++): 0;
+            ac--;
+        }
+    }
+    else{
+        while(ac > 0){
+            *dur++ = (tdur += atom_getfloat(av++));
+            ac--;
+            *++val = ac > 0 ? atom_getfloat(av++): 0;
+            ac--;
+        }
     }
 }
 
-static void function_exp(t_function *x, t_symbol *s, int ac, t_atom *av){
+static void function_expl(t_function *x, t_symbol *s, int ac, t_atom *av){
     if(!ac)
         return;
     s = NULL;
@@ -112,8 +124,18 @@ static void function_norm_dur(t_function* x){ // normalize duration
         x->x_durations[i] /= x->x_durations[x->x_last_point];
 }
 
+static void function_exp(t_function *x, t_symbol *s, int ac, t_atom *av){
+    if(!ac)
+        return;
+    s = NULL;
+    x->x_exp = 1;
+    function_init(x, ac, av);
+    function_norm_dur(x);
+}
+
 static void function_list(t_function *x,t_symbol* s, int ac,t_atom* av){
     s = NULL;
+    x->x_exp = 0;
     function_init(x, ac, av);
     function_norm_dur(x);
 }
@@ -121,48 +143,34 @@ static void function_list(t_function *x,t_symbol* s, int ac,t_atom* av){
 static void *function_new(t_symbol *s,int ac,t_atom* av){
     s = NULL; // avoid warning
     t_function *x = (t_function *)pd_new(function_class);
-    int i;
-    for(i = 0; i < MAX_SIZE; i++) // set exponential list to linear
+    for(int i = 0; i < MAX_SIZE; i++) // set exponential list to linear
         SETFLOAT(x->x_at_exp+i, 1);
     x->x_f = 0;
+    x->x_exp = 0;
     x->x_points = getbytes(MAX_SIZE*sizeof(float));
     x->x_durations = getbytes(MAX_SIZE*sizeof(float));
-    int symarg = 0, n = 0;
-    while(ac > 0){
-        if((av+n)->a_type == A_FLOAT && !symarg)
-            n++, ac--;
-        else if((av+n)->a_type == A_SYMBOL){
-            if(!symarg){ // set envelope
-                symarg = 1;
-                if(n){
-                    if(n < 3)
-                        pd_error(x, "[function~]: needs at least 3 float arguments");
-                    else
-                        function_init(x, n, av);
-                }
-            }
-            if(atom_getsymbolarg(0, ac, av+n) == gensym("-exp")){
+    if(ac){
+        if(av->a_type == A_SYMBOL){
+            if(atom_getsymbolarg(0, ac, av) == gensym("-exp")){
                 ac--, av++;
-                if(ac){
-                    i = 0;
-                    while(ac){
-                        if((av+n)->a_type != A_FLOAT)
-                            goto errstate;
-                        SETFLOAT(x->x_at_exp+i, (av+n)->a_w.w_float);
-                        ac--, av++, i++;
-                    }
+                if(ac < 4)
+                    pd_error(x, "[function~]: -exp needs at least 4 float arguments");
+                else{
+                    x->x_exp = 1;
+                    function_init(x, ac, av);
                 }
-                else goto errstate;
             }
-            else goto errstate;
+            else
+                goto errstate;
         }
-        else goto errstate;
-    }
-    if(!symarg && n > 0){ // set envelope
-        if(n < 3)
-            pd_error(x, "[function~]: needs at least 3 float arguments");
+        else if(av->a_type == A_FLOAT){
+            if(ac < 3)
+                pd_error(x, "[function~]: needs at least 3 float arguments");
+            else
+                function_init(x, ac, av);
+        }
         else
-            function_init(x, n, av);
+            goto errstate;
     }
     function_norm_dur(x);
     outlet_new(&x->x_obj, gensym("signal"));
@@ -178,5 +186,6 @@ void function_tilde_setup(void){
     CLASS_MAINSIGNALIN(function_class, t_function, x_f);
     class_addmethod(function_class, (t_method)functionsig_dsp, gensym("dsp"), 0);
     class_addmethod(function_class, (t_method)function_exp, gensym("exp"), A_GIMME, 0);
+    class_addmethod(function_class, (t_method)function_expl, gensym("expl"), A_GIMME, 0);
     class_addlist(function_class, function_list);
 }
