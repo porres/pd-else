@@ -1,4 +1,4 @@
-#N canvas 541 26 562 493 10;
+#N canvas 596 66 562 493 10;
 #X obj 2 3 cnv 15 301 42 empty empty function~ 20 20 2 37 #e0e0e0 #000000
 0;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
@@ -65,7 +65,7 @@ use them as oscillators with a [phasor~] input., f 73;
 with [function~]. Check its help file for more info, f 18;
 #X obj 156 327 else/function~ 1 100 -1;
 #X obj 156 201 else/function 200 100 empty empty -1 1 220 220 220 50
-50 50 1 0 0 0 -1 0.25 1 0.5 1 0.25 -1;
+50 50 1 0 0 0 -1 1 1;
 #X obj 156 420 else/graph~ 441 8 -1.05 1.05 200 140;
 #X msg 169 138 -1 0.5 1 0.5 -1;
 #X msg 142 92 -1 1 1;
@@ -131,8 +131,8 @@ and [else/rescale~]. Check them out as well:;
 #X msg 246 234 exp -1 0.5 -2 1 0.5 -2 -1;
 #X text 30 15 The 'exp' message or flag also sets an exponential factor
 after the duration value. The 'expl' message sets exponential factors
-for each segment (by default \, they're "1" (linear). The 'expi' message
-sets a single exponential facotr. For values >= 0 \, it's like raising
+for each segment - by default \, they're "1" (linear). The 'expi' message
+sets a single exponential factor. For values >= 0 \, it's like raising
 to the power of the given exponential. Negative values are accepted
 and offer a mirrored/reversed curve. Check below., f 70;
 #X connect 1 0 3 0;
@@ -172,6 +172,8 @@ each segment, f 47;
 #X text 218 335 -;
 #X text 230 335 sets an exponential for a line segment specified by
 the first float indexed from 0, f 48;
+#X text 31 190 see also:;
+#X obj 31 216 else/envgen~;
 #X connect 25 0 28 0;
 #X connect 26 0 25 0;
 #X connect 27 0 26 0;

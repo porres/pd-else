@@ -1,9 +1,9 @@
-// porres 2018-2019
+// porres 2018-2022
 
 #include "m_pd.h"
 #include <math.h>
 
-#define MAX_SEGS  1024 // maximum line segments
+#define MAX_SEGS  4096 // maximum line segments
 
 static t_class *envgen_proxy;
 
@@ -31,6 +31,7 @@ typedef struct _envgen{
     int             x_release;
     int             x_suspoint;
     int             x_n;
+    int             x_exp;
     float           x_power;
     float           x_value;
     float           x_target;
@@ -213,14 +214,6 @@ static void envgen_sus_tick(t_envgen *x){
         envgen_release(x, x->x_ac_rel, x->x_av_rel);
 }
 
-static void envgen_exp(t_envgen *x, t_symbol *s, int ac, t_atom *av){
-    if(!ac)
-        return;
-    s = NULL;
-    for(int i = 0; i < ac; i++)
-        SETFLOAT(x->x_at_exp+i, (av+i)->a_w.w_float);
-}
-
 static void envgen_set(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     if(!ac)
         return;
@@ -234,17 +227,67 @@ static void envgen_set(t_envgen *x, t_symbol *s, int ac, t_atom *av){
     copy_atoms(av, x->x_av, x->x_ac = ac);
 }
 
-static void envgen_list(t_envgen *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    for(int n = 0; n < ac; n++)
-        if((av+n)->a_type != A_FLOAT){
+static void envgen_init(t_envgen *x, int ac, t_atom *av){
+    int i;
+    for(i = 0; i < ac; i++)
+        if((av+i)->a_type != A_FLOAT){
             pd_error(x, "[envgen~]: list needs to only contain floats");
             return;
         }
-    x->x_ac = ac;
-    x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
-    copy_atoms(av, x->x_av, x->x_ac);
-    envgen_attack(x, x->x_ac, x->x_av);
+    if(!x->x_exp){
+        x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
+        copy_atoms(av, x->x_av, x->x_ac = ac);
+        envgen_attack(x, x->x_ac, x->x_av);
+    }
+    else{
+        if((ac % 3) == 2){
+            pd_error(x, "[envgen~]: wrong number of elements for 'exp' message");
+            return;
+        }
+        int exp = (ac % 3) + 1;
+        int nlines = (int)(ac/3);
+        t_atom temp_at[ac-nlines];
+        int j = 0, k = 0;
+        for(i = 0; i < ac; i++){
+            if(i % 3 == exp){
+                SETFLOAT(x->x_at_exp+j, (av+i)->a_w.w_float);
+                j++;
+            }
+            else{
+                SETFLOAT(temp_at+k, (av+i)->a_w.w_float);
+                k++;
+            }
+        }
+        copy_atoms(temp_at, x->x_av, x->x_ac = k);
+        envgen_attack(x, x->x_ac, x->x_av);
+    }
+}
+
+static void envgen_expi(t_envgen *x, t_floatarg f1, t_floatarg f2){
+    int i = f1 < 0 ? 0 : (int)f1;
+    SETFLOAT(x->x_at_exp+i, f2);
+}
+
+static void envgen_expl(t_envgen *x, t_symbol *s, int ac, t_atom *av){
+    if(!ac)
+        return;
+    s = NULL;
+    for(int i = 0; i < ac; i++)
+        SETFLOAT(x->x_at_exp+i, (av+i)->a_w.w_float);
+}
+
+static void envgen_exp(t_envgen *x, t_symbol *s, int ac, t_atom *av){
+    if(ac < 3)
+        return;
+    s = NULL;
+    x->x_exp = 1;
+    envgen_init(x, ac, av);
+}
+
+static void envgen_list(t_envgen *x,t_symbol* s, int ac,t_atom* av){
+    s = NULL;
+    x->x_exp = 0;
+    envgen_init(x, ac, av);
 }
 
 static void envgen_bang(t_envgen *x){
@@ -355,20 +398,19 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     x->x_suspoint = x->x_legato = 0;
     x->x_lines = x->x_n_lineini;
     x->x_curseg = 0;
-    for(int i = 0; i < MAX_SEGS; i++) // set exponential list to linear
+    int i = 0;
+    x->x_exp = 0;
+    for(i = 0; i < MAX_SEGS; i++) // set exponential list to linear
         SETFLOAT(x->x_at_exp+i, 1);
     t_atom at[2];
     SETFLOAT(at, 0);
     SETFLOAT(at+1, 0);
     x->x_av = getbytes(2*sizeof(*(x->x_av)));
     copy_atoms(at, x->x_av, x->x_ac = 2);
-    int arg = 0, n = 0;
     while(ac > 0){
-        if((av+n)->a_type == A_FLOAT){
-            arg = 1;
-            n++, ac--;
-        }
-        else if(av->a_type == A_SYMBOL && !arg){
+        if(av->a_type == A_FLOAT)
+            break;
+        else if(av->a_type == A_SYMBOL){
             cursym = atom_getsymbolarg(0, ac, av);
             if(cursym == gensym("-init")){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
@@ -382,6 +424,36 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
                 if(ac >= 2 && (av+1)->a_type == A_FLOAT){
                     x->x_retrigger = atom_getfloatarg(1, ac, av);
                     ac-=2, av+=2;
+                }
+                else
+                    goto errstate;
+            }
+            else if(cursym == gensym("-exp")){
+                if(ac >= 5 && (av+1)->a_type == A_FLOAT){
+                    ac--, av++;
+                    int z = 0;
+                    while(((av+z)->a_type == A_FLOAT) && ((ac-z)>0))
+                        z++;
+                    if((z % 3) == 2)
+                        goto errstate;
+                    int exp = (z % 3) + 1;
+                    int nlines = (int)(z/3);
+                    t_atom temp_at[z-nlines];
+                    int j = 0, k = 0;
+                    for(i = 0; i < ac; i++){
+                        if(i % 3 == exp){
+                            SETFLOAT(x->x_at_exp+j, (av+i)->a_w.w_float);
+                            j++;
+                        }
+                        else{
+                            SETFLOAT(temp_at+k, (av+i)->a_w.w_float);
+                            k++;
+                        }
+                    }
+                    x->x_exp = 1;
+                    x->x_av = getbytes(k*sizeof(*(x->x_av)));
+                    copy_atoms(temp_at, x->x_av, x->x_ac = k);
+                    ac-=z, av+=z;
                 }
                 else
                     goto errstate;
@@ -408,14 +480,18 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
             else
                 goto errstate;
         }
-        else
-            goto errstate;
     }
-    if(n == 1)
-        x->x_value = atom_getfloatarg(0, n, av);
-    else{
-        x->x_av = getbytes(n*sizeof(*(x->x_av)));
-        copy_atoms(av, x->x_av, x->x_ac = n);
+    if(ac){
+        if(ac == 1)
+            x->x_value = atom_getfloatarg(0, 1, av);
+        else{
+            if(!x->x_exp){
+                x->x_av = getbytes(ac*sizeof(*(x->x_av)));
+                copy_atoms(av, x->x_av, x->x_ac = ac);
+            }
+            else
+                goto errstate;
+        }
     }
     x->x_last_target = x->x_value;
     envgen_proxy_init(&x->x_proxy, x);
@@ -441,6 +517,8 @@ void envgen_tilde_setup(void){
     class_addmethod(envgen_class, (t_method)envgen_setgain, gensym("setgain"), A_FLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_set, gensym("set"), A_GIMME, 0);
     class_addmethod(envgen_class, (t_method)envgen_exp, gensym("exp"), A_GIMME, 0);
+    class_addmethod(envgen_class, (t_method)envgen_expl, gensym("expl"), A_GIMME, 0);
+    class_addmethod(envgen_class, (t_method)envgen_expi, gensym("expi"), A_DEFFLOAT, A_DEFFLOAT, 0);
     class_addmethod(envgen_class, (t_method)envgen_bang, gensym("attack"), 0);
     class_addmethod(envgen_class, (t_method)envgen_rel, gensym("release"), 0);
     class_addmethod(envgen_class, (t_method)envgen_pause, gensym("pause"), 0);
