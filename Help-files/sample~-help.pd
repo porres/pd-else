@@ -1,18 +1,18 @@
-#N canvas 487 30 565 597 10;
+#N canvas 434 23 565 597 10;
 #X obj 5 568 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 5 226 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 5 433 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 5 466 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 5 522 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 79 443 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 149 475 1) symbol;
-#X text 218 490 - audio file to load (optional), f 44;
-#X text 149 490 2) symbol;
-#X obj 5 512 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X text 149 531 1) symbol;
+#X text 218 546 - audio file to load (optional), f 44;
+#X text 149 546 2) symbol;
+#X obj 5 466 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 306 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
@@ -70,69 +70,69 @@
 #X text 218 288 - trims to a sample range, f 53;
 #X text 218 358 - sets file's sample rate (default: patch's), f 53
 ;
-#N canvas 809 104 834 477 load/save 0;
-#X msg 563 243 clear;
-#X text 590 217 open/close buffer window;
-#X text 607 242 clears all channels;
-#X text 502 143 without symbol: opens dialog box;
-#X text 532 177 reloads the last opened file;
-#X text 588 314 without symbol: opens dialog box, f 17;
-#X msg 508 214 show;
-#X msg 549 215 hide;
-#X msg 480 178 reload;
-#X msg 469 143 load;
-#X msg 549 289 save test.wav;
-#X msg 549 320 save;
-#X text 38 190 The "save" message saves the contents of [sample~] into
+#N canvas 527 114 757 447 load/save 0;
+#X msg 529 238 clear;
+#X text 556 212 open/close buffer window;
+#X text 573 237 clears all channels;
+#X text 468 138 without symbol: opens dialog box;
+#X text 498 172 reloads the last opened file;
+#X text 554 309 without symbol: opens dialog box, f 17;
+#X msg 474 209 show;
+#X msg 515 210 hide;
+#X msg 446 173 reload;
+#X msg 435 138 load;
+#X msg 515 284 save test.wav;
+#X msg 515 315 save;
+#X text 13 185 The "save" message saves the contents of [sample~] into
 an audio file. If no symbol is given \, a standard file dialog is opened
 for naming the file., f 59;
-#X text 38 316 The "depth" message sets the bit depth for writing files
+#X text 13 311 The "depth" message sets the bit depth for writing files
 \, it accepts floats:, f 59;
-#X text 161 335 16 - 16-bit integer (default) \; 24 - 24-bit integer
+#X text 136 330 16 - 16-bit integer (default) \; 24 - 24-bit integer
 \; 32 - 32-bit float \;;
-#X text 643 288 writes to a file;
-#X msg 456 107 load stereo.wav;
-#X obj 445 361 else/sample~ buffer_\$0 -ch 2;
-#X obj 445 394 else/display;
-#X msg 419 68 load stereo.wav 44100 88200;
-#X msg 446 33 load stereo.wav 44100;
-#X text 564 101 read a file specified by a symbol (.wav \, .aif/.aiff
+#X text 609 283 writes to a file;
+#X msg 422 102 load stereo.wav;
+#X obj 411 389 else/display;
+#X msg 385 63 load stereo.wav 44100 88200;
+#X msg 412 28 load stereo.wav 44100;
+#X text 530 96 read a file specified by a symbol (.wav \, .aif/.aiff
 or .caf), f 33;
-#X text 38 229 You can specify a file extension with the "wav" \, "aif"
+#X text 13 224 You can specify a file extension with the "wav" \, "aif"
 and "caf" messages \, but you can also specify a file extension in
 the given symbol (such as "test.wav"). If you don't specify an extension
 \, [sample~] saves in the same extension of the most recently opened
 audio file or the last given extension message ("wav" of "aif"). By
 default \, [sample~] saves in .wav format.;
-#X text 39 125 You can specify a sound file to load as the second argument
+#X text 14 120 You can specify a sound file to load as the second argument
 or via the "load" message ([sample~] can load 'wav' \, 'caf' and 'aif/aiff'
 sound files). Without a given symbol \, "load" opens a dialog box.
 The "reload" message reloads the last opened file.;
-#X connect 0 0 17 0;
-#X connect 6 0 17 0;
-#X connect 7 0 17 0;
-#X connect 8 0 17 0;
-#X connect 9 0 17 0;
-#X connect 10 0 17 0;
-#X connect 11 0 17 0;
-#X connect 16 0 17 0;
-#X connect 17 0 18 0;
-#X connect 19 0 17 0;
-#X connect 20 0 17 0;
+#X obj 411 356 else/sample~ -ch 2 buffer_\$0;
+#X connect 0 0 23 0;
+#X connect 6 0 23 0;
+#X connect 7 0 23 0;
+#X connect 8 0 23 0;
+#X connect 9 0 23 0;
+#X connect 10 0 23 0;
+#X connect 11 0 23 0;
+#X connect 16 0 23 0;
+#X connect 18 0 23 0;
+#X connect 19 0 23 0;
+#X connect 23 0 17 0;
 #X restore 466 147 pd load/save;
 #X text 218 401 - sets maximum buffer size in samples, f 53;
 #X text 218 415 - sets maximum buffer size in ms, f 53;
-#X text 135 521 -size <float> - sets maximum buffer size in samples
+#X text 135 475 -size <float> - sets maximum buffer size in samples
 ;
-#X text 146 535 -ms <float> - sets maximum buffer size in ms, f 45
+#X text 146 489 -ms <float> - sets maximum buffer size in ms, f 45
 ;
-#N canvas 1006 207 454 461 details 0;
+#N canvas 802 128 454 461 details 0;
 #X text 150 60 <= check internal array;
 #X text 69 138 Similar to:;
 #X text 267 139 <= click to open;
 #X obj 67 201 soundfiler;
 #X obj 153 139 table vanilla_\$0;
-#X text 31 246 But [sample~] is also able to define multi channel arrays
+#X text 47 246 But [sample~] is also able to define multi channel arrays
 (up to 64). The convention for channel ordering is the buffer name
 preceded by the channel number (from 0) and "-". For instance \, a
 4 channel [sample~] object named "test" has arrays named as: "0-test"
@@ -141,16 +141,17 @@ preceded by the channel number (from 0) and "-". For instance \, a
 loads audio files into tables and can write sound files from given
 tables.;
 #X msg 117 59 show;
-#X text 31 316 On the other hand \, for single or "mono" samples \,
-the name "test" generates an internal array also named: "test".;
-#X text 31 354 You can use pd vanilla's objects (such as [tabreceive~]
+#X text 47 316 On the other hand \, for single or "mono" samples \,
+the name "test" generates an internal array also named: "test"., f
+60;
+#X obj 117 86 else/sample~ else_\$0 violin.wav;
+#X obj 67 168 else/initmess read -resize violin.wav vanilla_\$0;
+#X text 47 354 You can use Pd vanilla's objects (such as [tabreceive~]
 \, [tabplay~] \, [tabread4~] and [array]) to access the internal arrays
 of [sample~]. In the case of a multi channel buffer \, you have to
-give it the correct table name according to a specific channel.;
-#X obj 67 168 else/initmess read -resize else/violin.wav vanilla_\$0
-;
-#X obj 117 86 else/sample~ else_\$0 violin.wav;
-#X connect 7 0 11 0;
+give it the correct table name according to a specific channel., f
+60;
+#X connect 7 0 9 0;
 #X connect 10 0 3 0;
 #X restore 479 127 pd details;
 #X text 111 172 click =>;
@@ -162,8 +163,8 @@ give it the correct table name according to a specific channel.;
 #X text 73 84 [sample~] is an abstraction that creates an audio buffer
 which you can use to load a sample or record into. It can load and
 save multichannel files., f 62;
-#X text 218 475 - buffer name (default sample_\$0), f 44;
-#X text 146 550 -ch <float> - sets number of channels (default 1);
+#X text 218 531 - buffer name (default sample_\$0), f 44;
+#X text 146 504 -ch <float> - sets number of channels (default 1);
 #N canvas 754 82 467 586 rec/play 0;
 #X obj 121 335 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
@@ -174,10 +175,10 @@ save multichannel files., f 62;
 #X msg 211 237 show;
 #X obj 191 319 else/cusp~ 250;
 #X obj 262 347 else/rampnoise~ 490;
-#X text 50 339 record =>;
+#X text 57 337 record =>;
 #X text 145 426 <= play;
 #X msg 192 195 ms 2000;
-#X text 251 237 <= click;
+#X text 247 237 <= click;
 #X text 34 28 You can use [sample~] to define a buffer that you can
 record into. Below we have a stereo buffer. By default \, the buffer
 size is one second. You can set the size at creation by using flags
@@ -185,24 +186,23 @@ either in samples (with '-size') or in ms (with '-ms'). Note that if
 you are using [sample~] to load files \, this will also set a maximum
 size for the loaded sample. You can change the size with the 'size'
 or 'ms' messages \, which will also set a maximum limit for loading
-samples., f 61;
-#X text 250 195 <= change from default (1 second) to 2 seconds, f
-24;
-#X obj 192 267 else/sample~ buf_\$0 -ch 2;
+samples., f 62;
 #X obj 121 375 else/tabwriter~ buf_\$0 2;
-#X text 33 124 You can use [tabwrite~] or \, alternatively \, [else/tabwriter~]
-from ELSE to record into arrays with multi-channel support. Moreover
-\, you can use [tabplay~] or better yet \, [tabplayer~] from ELSE (which
-also has multi-channel support)., f 64;
 #X obj 113 458 else/tabplayer~ -loop buf_\$0 2;
-#X connect 0 0 14 0;
-#X connect 2 0 16 0;
-#X connect 4 0 13 0;
-#X connect 5 0 14 1;
-#X connect 6 0 14 2;
-#X connect 9 0 13 0;
-#X connect 16 0 3 0;
-#X connect 16 1 3 1;
+#X text 33 124 You can use [tabwrite~] or \, alternatively \, [else/tabwriter~]
+to record into arrays with multi-channel support. Moreover \, you can
+use [tabplay~] or \, better yet \, [else/tabplayer~] (which also has
+multi-channel support)., f 62;
+#X obj 192 267 else/sample~ -ch 2 -ms 1500 buf_\$0;
+#X text 250 195 <= change length to 2 seconds, f 16;
+#X connect 0 0 12 0;
+#X connect 2 0 13 0;
+#X connect 4 0 15 0;
+#X connect 5 0 12 1;
+#X connect 6 0 12 2;
+#X connect 9 0 15 0;
+#X connect 13 0 3 0;
+#X connect 13 1 3 1;
 #X restore 472 168 pd rec/play;
 #X text 179 246 info;
 #X text 218 246 - re output size \, sample rate and channels, f 53

@@ -1,4 +1,4 @@
-#N canvas 487 23 559 550 10;
+#N canvas 593 26 559 550 10;
 #X obj 4 286 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 404 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -120,30 +120,30 @@ note tied., f 16;
 #X restore 471 219 pd +examples;
 #X text 197 294 - gets element(s) from sequence;
 #X text 197 413 - element(s) from a sequence;
-#N canvas 492 254 874 480 chords 0;
-#X obj 113 198 else/keyboard 17 80 2 4 0 0 empty empty;
-#X obj 113 332 clone 4 voice 4;
-#X obj 113 369 else/out~;
-#X obj 113 167 makenote 127 700;
-#X obj 113 80 else/tempo 50 20 -on;
-#X text 126 25 Use "-" to join notes into chords in a sequence., f
+#N canvas 573 162 744 459 chords 0;
+#X obj 53 195 else/keyboard 17 80 2 4 0 0 empty empty;
+#X obj 53 329 clone 4 voice 4;
+#X obj 53 366 else/out~;
+#X obj 53 164 makenote 127 700;
+#X obj 53 77 else/tempo 50 20 -on;
+#X text 66 22 Use "-" to join notes into chords in a sequence., f
 26;
-#X obj 113 135 else/sequencer 60-63-67 70 72 75 - 65-68-71;
-#X obj 113 104 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
-#000000 #000000;
-#X obj 443 205 else/keyboard 17 80 2 4 0 0 empty empty;
-#X obj 443 339 clone 4 voice 4;
-#X obj 443 376 else/out~;
-#X obj 443 174 makenote 127 700;
-#X obj 443 47 else/tempo 50 20 -on;
-#X obj 443 71 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X obj 53 132 else/sequencer 60-63-67 70 72 75 - 65-68-71;
+#X obj 53 101 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
-#X obj 443 139 else/note2pitch;
-#X obj 443 102 else/sequencer C4-Eb4-G4 Bb4 C5 Eb5 - F4-Ab4-B4;
-#X text 597 41 You can use pitch names and convert to MIDI pitch with
+#X obj 383 202 else/keyboard 17 80 2 4 0 0 empty empty;
+#X obj 383 336 clone 4 voice 4;
+#X obj 383 373 else/out~;
+#X obj 383 171 makenote 127 700;
+#X obj 383 44 else/tempo 50 20 -on;
+#X obj 383 68 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
+#X obj 383 136 else/note2pitch;
+#X obj 383 99 else/sequencer C4-Eb4-G4 Bb4 C5 Eb5 - F4-Ab4-B4;
+#X text 537 38 You can use pitch names and convert to MIDI pitch with
 [note2pitch]., f 28;
-#X obj 443 310 else/voices -list 4 1;
-#X obj 113 303 else/voices -list 4 1;
+#X obj 383 307 else/voices -list 4 1;
+#X obj 53 300 else/voices -list 4 1;
 #X connect 0 0 18 0;
 #X connect 1 0 2 0;
 #X connect 1 1 2 1;

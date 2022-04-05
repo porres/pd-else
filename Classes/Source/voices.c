@@ -353,10 +353,6 @@ static void *voices_new(t_symbol *s, int argc, t_atom *argv){
             else if(cursym == gensym("-list")){
                 x->x_list_mode = 1;
                 argc--, argv++;
-                if(argc >= 1 && (argv)->a_type == A_FLOAT){
-                    x->x_offset = (int)atom_getfloatarg(0, argc, argv);
-                    argc--, argv++;
-                }
             }
             else
                 goto errstate;

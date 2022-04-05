@@ -1,4 +1,4 @@
-#N canvas 466 23 561 609 10;
+#N canvas 531 23 561 609 10;
 #X obj 2 3 cnv 15 301 42 empty empty voices 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -50,8 +50,6 @@ f 66;
 #X text 179 363 clear - clears memory without output, f 57;
 #X text 179 377 flush - clears memory and output hanging notes, f
 57;
-#X text 137 564 -list <float>: sets to list mode and index offset (default
-0), f 61;
 #X text 125 335 offset <float> - sets index offset (in the context
 of "list" mode), f 66;
 #X obj 200 234 else/display;
@@ -267,10 +265,6 @@ release time in ms with the '-rel' flag \, 'rel' message or right inlet.
 #X msg 51 250 offset \$1;
 #X obj 51 227 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 62 72 The -list flag takes an optional float argument that
-sets the voice index offset \, which is 0 by default. You can also
-set a different index offset with the "offset" message (this is only
-possible in the context of "list mode")., f 72;
 #N canvas 719 64 505 333 clone_example 0;
 #X obj 40 77 else/keyboard 17 80 2 4 0 0 empty empty;
 #X text 211 175 In this subpatch we have [voices] feeding [clone] \,
@@ -319,7 +313,7 @@ different instances of "voice.pd"., f 43;
 #X msg 206 265 voices \$1;
 #X msg 206 239 2;
 #X msg 246 239 4;
-#X text 62 18 You can set [voices] to operate in "list mode" with the
+#X text 87 27 You can set [voices] to operate in "list mode" with the
 -list flag. This mode makes it more like [poly] \, where it outputs
 a list with voice index \, pitch and velocity. You can also change
 the number of voices in this mode \, which causes the object to flush
@@ -330,9 +324,12 @@ to implement polyphonic synths \, check the subpatch ==========================>
 , f 46;
 #X obj 142 291 else/voices -list 4;
 #X obj 353 289 else/voices -retrig 2 -list 1 4 1;
+#X text 87 81 The index offset is 0 by default and you can set a different
+one with the "offset" message (only possible in the context of "list
+mode")., f 72;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
-#X connect 3 0 27 0;
+#X connect 3 0 26 0;
 #X connect 4 0 7 0;
 #X connect 5 0 8 0;
 #X connect 6 0 9 0;
@@ -341,17 +338,17 @@ to implement polyphonic synths \, check the subpatch ==========================>
 #X connect 9 0 3 0;
 #X connect 11 0 13 2;
 #X connect 12 0 13 0;
-#X connect 13 0 28 0;
-#X connect 13 1 28 1;
-#X connect 17 0 27 0;
+#X connect 13 0 27 0;
+#X connect 13 1 27 1;
+#X connect 17 0 26 0;
 #X connect 18 0 17 0;
-#X connect 21 0 27 0;
-#X connect 22 0 21 0;
-#X connect 23 0 21 0;
-#X connect 27 0 0 0;
-#X connect 27 1 25 0;
-#X connect 28 0 10 0;
-#X connect 28 1 15 0;
+#X connect 20 0 26 0;
+#X connect 21 0 20 0;
+#X connect 22 0 20 0;
+#X connect 26 0 0 0;
+#X connect 26 1 24 0;
+#X connect 27 0 10 0;
+#X connect 27 1 15 0;
 #X restore 497 250 pd list;
 #X text 174 546 -retrig: sets to retrigger mode <0 \, 1 or 2> (default
 0);
@@ -371,10 +368,11 @@ only), f 66;
 like Pd Vanilla's [poly] object \, but with more functionalities. By
 default \, it routes the voices to different outlets \, but it also
 has a list mode similar to [poly]., f 75;
-#X connect 35 0 27 0;
-#X connect 35 1 28 0;
-#X connect 35 2 29 0;
-#X connect 44 0 45 0;
-#X connect 44 1 45 1;
-#X connect 45 0 35 0;
-#X connect 51 0 35 0;
+#X text 137 564 -list <float>: sets to list mode, f 61;
+#X connect 34 0 26 0;
+#X connect 34 1 27 0;
+#X connect 34 2 28 0;
+#X connect 43 0 44 0;
+#X connect 43 1 44 1;
+#X connect 44 0 34 0;
+#X connect 50 0 34 0;
