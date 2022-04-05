@@ -1,7 +1,6 @@
 #N canvas 713 95 519 407 10;
 #X obj 53 193 *~;
 #X obj 53 78 hip~ 3;
-#X obj 274 58 block~ 64;
 #N canvas 627 117 636 328 set_GUI 0;
 #X obj 66 225 s \$0-set-slider;
 #X obj 98 18 inlet;
@@ -605,11 +604,11 @@
 #X connect 11 1 3 0;
 #X restore 79 258 pd init;
 #X obj 53 36 inlet~ fwd;
-#X connect 0 0 9 0;
+#X connect 0 0 8 0;
 #X connect 1 0 0 0;
-#X connect 5 0 6 0;
-#X connect 6 0 0 1;
-#X connect 10 0 9 0;
-#X connect 11 0 1 0;
-#X connect 11 1 3 0;
+#X connect 4 0 5 0;
+#X connect 5 0 0 1;
+#X connect 9 0 8 0;
+#X connect 10 0 1 0;
+#X connect 10 1 2 0;
 #X coords 0 0 1 1 94 51 1 260 90;
