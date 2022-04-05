@@ -26,25 +26,25 @@
 0;
 #X obj 6 540 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 5 587 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 5 622 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 97 546 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 81 274 cnv 17 3 261 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 96 301 open <symbol> -;
-#X obj 6 663 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 6 588 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 192 591 (optional) channels (default 1 if no file is given
+#X text 192 626 (optional) channels (default 1 if no file is given
 \, or sound file's if given \, max 64), f 44;
-#X text 115 616 2) symbol;
-#X text 180 616 - the name of the file to open (default none);
-#X text 115 630 3) float;
-#X text 180 630 - autostart <1: on \, 0: off> (default 0), f 46;
-#X text 115 644 4) float;
-#X text 180 644 - loop <1: on \, 0: off> (default 0), f 46;
-#X text 115 594 1) float;
-#X text 179 592 -;
+#X text 115 651 2) symbol;
+#X text 180 651 - the name of the file to open (default none);
+#X text 115 665 3) float;
+#X text 180 665 - autostart <1: on \, 0: off> (default 0), f 46;
+#X text 115 679 4) float;
+#X text 180 679 - loop <1: on \, 0: off> (default 0), f 46;
+#X text 115 629 1) float;
+#X text 179 627 -;
 #X text 152 547 signal - the buffer signal of the corresponding channel
 ;
 #X obj 3 3 cnv 15 301 42 empty empty player~ 20 20 2 37 #e0e0e0 #000000
@@ -59,7 +59,7 @@
 #X text 192 328 shows the buffer subpatch window, f 57;
 #X text 150 342 hide -;
 #X text 192 342 hides the buffer subpatch window, f 57;
-#N canvas 817 189 588 508 multi-channel 0;
+#N canvas 778 189 588 508 multi-channel 0;
 #X obj 169 332 else/meter2~;
 #X obj 346 323 else/out~;
 #X msg 120 215 open violin.wav;
@@ -81,25 +81,25 @@ sound file's. The maximum number is 64 channels.;
 are silent. Conversely \, a file with more channels than specified
 (like a stereo file in a mono buffer player) has its remaining channels
 ignored.;
-#X msg 35 190 start;
 #X obj 346 238 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X obj 56 268 else/player~ stereo.wav -loop -speed -100;
 #X msg 56 214 stop;
-#X obj 346 277 else/player~ 1 stereo.wav -loop;
 #X obj 56 342 else/out~;
-#X connect 2 0 12 0;
-#X connect 5 0 12 0;
-#X connect 10 0 12 0;
-#X connect 11 0 14 0;
-#X connect 12 0 0 0;
-#X connect 12 0 15 0;
-#X connect 12 1 0 1;
-#X connect 12 1 15 1;
-#X connect 12 2 3 0;
+#X obj 56 268 else/player~ -loop -speed -100 stereo.wav;
+#X obj 346 277 else/player~ -loop 1 stereo.wav;
+#X msg 35 190 play;
+#X connect 2 0 13 0;
+#X connect 5 0 13 0;
+#X connect 10 0 14 0;
+#X connect 11 0 13 0;
+#X connect 13 0 0 0;
 #X connect 13 0 12 0;
+#X connect 13 1 0 1;
+#X connect 13 1 12 1;
+#X connect 13 2 3 0;
 #X connect 14 0 1 0;
 #X connect 14 1 4 0;
+#X connect 15 0 13 0;
 #X restore 446 241 pd multi-channel;
 #X text 32 150 see also:;
 #X text 102 314 set <symbol> - sets a file to open (needs a reload
@@ -233,13 +233,13 @@ sets start \, 2nd sets end (in ms) and 3rd sets speed rate, f 57;
 #X text 100 494 fade <float>;
 #X text 180 494 - sets fading time in ms (default 0), f 59;
 #X text 94 508 xfade <float>;
-#X text 180 508 - non zero sets to crossfading mode (default 0),
-f 59;
+#X text 180 508 - non zero sets to crossfading mode (default 0), f
+59;
 #X text 180 522 - non zero enables looping \, <0> disables it (default
 0), f 59;
-#X text 83 668 -speed <float> (default 100) | -range <f \, f> (default
-0 1) | -fade <float> (default 0) | -xfade: xfade mode on | -loop:
-loop mode on, f 74;
+#X text 83 593 -speed <float> (default 100) | -range <f \, f> (default
+0 1) | -fade <float> (default 0) | -xfade: xfade mode on | -loop: loop
+mode on, f 74;
 #X text 106 413 pos <float>;
 #X text 180 413 - sets position (from 0 to 1) and starts playing it
 , f 59;
