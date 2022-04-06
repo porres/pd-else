@@ -1,4 +1,4 @@
-#N canvas 527 26 561 501 10;
+#N canvas 611 23 561 483 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -27,29 +27,29 @@
 #X restore 3 3 graph;
 #X obj 3 251 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 341 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 3 325 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 3 431 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 3 415 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 107 350 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 128 334 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 3 472 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 3 456 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 107 313 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 128 297 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 242 314 phase sync (ressets internal phase);
-#X text 164 437 1) float;
-#X text 230 453 - initial phase offset (default 0);
-#X text 230 437 - frequency in hertz (default 0);
-#X text 164 453 2) float;
-#X text 171 314 float -;
+#X text 243 298 phase sync (ressets internal phase);
+#X text 172 418 1) float;
+#X text 228 434 - initial phase offset (default 0);
+#X text 228 418 - frequency in hertz (default 0);
+#X text 172 434 2) float;
+#X text 192 298 float -;
 #X obj 194 139 nbx 4 15 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 11
 #dcdcdc #000000 #000000 0 256;
 #X text 167 137 Hz;
 #X msg 257 138 0;
 #X text 295 137 <= resets phase.;
 #X msg 274 169 0.5;
-#N canvas 971 247 651 298 rate 0;
+#N canvas 672 229 651 298 rate 0;
 #X obj 196 104 else/display;
 #X obj 196 72 else/sr~ -ms;
 #X msg 432 104 rate \$1;
@@ -57,57 +57,57 @@
 #dcdcdc #000000 #000000 0 256;
 #X obj 435 52 hsl 128 15 0.1 200 1 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
-#X obj 432 212 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
+#X obj 432 212 nbx 8 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
 #dcdcdc #000000 #000000 0 256;
 #X text 28 221 You can change the rate with the -rate flag or the "rate"
 message. This affects the period resolution, f 50;
 #X obj 435 173 hsl 128 15 0 127 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
-#X obj 432 136 else/pimp 0.5 -rate 20, f 25;
 #X obj 579 173 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X text 28 22 [pimp~] runs at the sample rate which has a period in
 ms given by the [sr~] object., f 50;
+#X obj 432 136 else/pimp -rate 200 0.5, f 25;
 #X text 29 150 By default \, [pimp] runs at a rate whose period is
-1 ms and the minimum rate is 0.1 ms. The maximum frequency that [phasor]
-can run is half the frequency of the given rate (500 hz default).,
+5 ms and the minimum rate is 0.1 ms. The maximum frequency that [phasor]
+can run is half the frequency of the given rate (100 hz default).,
 f 50;
 #X connect 1 0 0 0;
-#X connect 2 0 8 0;
+#X connect 2 0 10 0;
 #X connect 3 0 2 0;
 #X connect 4 0 3 0;
 #X connect 7 0 5 0;
-#X connect 8 0 7 0;
-#X connect 8 1 9 0;
+#X connect 10 0 7 0;
+#X connect 10 1 8 0;
 #X restore 482 220 pd rate;
-#X obj 3 396 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 3 380 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 104 406 -rate <float>;
-#X text 209 406 - rate period in ms (default 1 \, min 0.1);
-#X obj 109 266 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 114 390 -rate <float>;
+#X obj 130 258 cnv 17 3 35 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 241 267 frequency in hz;
-#X text 171 266 float -;
-#X text 122 286 rate <float> -;
-#X text 241 287 rate period in ms;
+#X text 242 258 frequency in hz;
+#X text 192 258 float -;
+#X text 150 274 rate <float> -;
+#X text 242 274 rate period in ms;
 #X obj 197 217 hsl 128 18 0 127 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
-#X text 171 350 float -;
-#X text 239 350 "phase" value from 0 to 127;
+#X text 192 334 float -;
+#X text 240 334 "phase" value from 0 to 127;
 #X obj 194 169 else/pimp 1;
 #X obj 257 195 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X text 58 89 This is like the [pimp~] but operates in a control rate
 (with a maximum resolution of 1 ms)., f 63;
-#X obj 107 371 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 128 355 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 177 371 bang -;
-#X text 239 371 output a bang at period transitions;
+#X text 198 355 bang -;
+#X text 240 355 output a bang at period transitions;
 #X text 278 193 <= bang at period transitions;
 #X obj 39 213 else/pimp~;
 #X text 38 189 see also:;
-#X connect 24 0 41 0;
-#X connect 26 0 41 1;
-#X connect 28 0 41 1;
-#X connect 41 0 38 0;
-#X connect 41 1 42 0;
+#X text 199 390 - rate period in ms (default 5 \, min 0.1);
+#X connect 24 0 40 0;
+#X connect 26 0 40 1;
+#X connect 28 0 40 1;
+#X connect 40 0 37 0;
+#X connect 40 1 41 0;
