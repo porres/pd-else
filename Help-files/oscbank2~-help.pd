@@ -1,4 +1,4 @@
-#N canvas 592 61 567 536 10;
+#N canvas 628 23 567 536 10;
 #X obj 5 260 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 5 348 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -38,7 +38,7 @@
 #X text 104 270 freq <list>;
 #X text 110 287 amp <list>;
 #X text 104 325 ramp <list>;
-#N canvas 912 315 503 402 example 0;
+#N canvas 831 69 503 402 example 0;
 #X obj 89 290 else/out~;
 #X obj 89 109 loadbang;
 #X text 163 95 click on the messages below to alter between them,
@@ -85,6 +85,6 @@ set any number of oscillators and control their parameters.;
 f 57;
 #X text 114 436 -freq <list>: sets list of frequencies for all oscillators
 ;
-#X obj 190 141 else/oscbank2~ 4 -freq 360 440 590 720 -amp 0.9 0.5
-0.5 0.6, f 30;
+#X obj 190 141 else/oscbank2~ -freq 360 440 590 720 -amp 0.9 0.5 0.5
+0.6, f 28;
 #X connect 39 0 17 0;
