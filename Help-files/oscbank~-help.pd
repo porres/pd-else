@@ -1,4 +1,4 @@
-#N canvas 588 31 564 638 10;
+#N canvas 444 23 563 640 10;
 #X obj 4 306 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 409 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -58,12 +58,12 @@ f 27;
 #X connect 5 0 7 0;
 #X connect 6 0 7 0;
 #X connect 7 0 0 0;
-#X restore 468 237 pd example;
+#X restore 468 273 pd example;
 #X text 239 418 - the oscillator bank output;
 #X text 148 357 phase <list>;
 #X text 148 560 1) float - number of oscillators (default 1), f 53
 ;
-#X text 372 269 see also:;
+#X text 18 226 see also:;
 #X obj 4 443 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
 #X text 148 327 ratio <list>;
@@ -71,11 +71,10 @@ f 27;
 #X text 238 327 - list of ratios for all oscillators;
 #X text 238 357 - list of phases (0-1) for all oscillators;
 #X text 238 373 - list of ramp time for all oscillators;
-#X obj 151 239 else/out~;
-#X msg 220 151 ratio 0.51 1 1.9 2.3 \, amp 0.9 0.5 0.5 0.6, f 21;
-#X obj 151 157 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 211 239 else/out~;
+#X msg 280 151 ratio 0.51 1 1.9 2.3 \, amp 0.9 0.5 0.5 0.6, f 21;
+#X obj 211 157 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X obj 432 269 else/oscbank2~ 1;
 #X text 148 312 float/signal;
 #X text 73 451 -ratio <list>: sets list of ratios for all oscillators
 (default all 1), f 73;
@@ -98,8 +97,10 @@ oscillator is specified as a ratio of that frequency., f 71;
 (defaul all 10), f 73;
 #X text 130 388 rampall <float>;
 #X text 238 388 - sets ramp time for all oscillators;
-#X obj 151 191 else/oscbank~ 4 -freq 330 -ratio 1 0.7 1.3 2.7 -amp
+#X obj 211 191 else/oscbank~ 4 -freq 330 -ratio 1 0.7 1.3 2.7 -amp
 0.9 0.5 0.5 0.6, f 34;
-#X connect 32 0 48 0;
-#X connect 33 0 48 0;
-#X connect 48 0 31 0;
+#X obj 21 274 else/resonbank~;
+#X obj 19 250 else/oscbank2~;
+#X connect 32 0 47 0;
+#X connect 33 0 47 0;
+#X connect 47 0 31 0;
