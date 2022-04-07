@@ -1,16 +1,16 @@
-#N canvas 508 24 564 563 10;
+#N canvas 392 23 564 582 10;
 #X obj 4 278 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 368 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 4 380 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 491 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 503 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 80 377 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 80 389 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 80 286 cnv 17 3 75 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 80 286 cnv 17 3 90 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 141 286 signal;
-#X text 140 377 signal;
+#X text 140 389 signal;
 #X obj 3 3 cnv 15 301 42 empty empty bpbank~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -25,7 +25,7 @@
 #X obj 69 40 cnv 4 4 4 empty empty of 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 186 148 noise~;
 #X obj 186 216 else/out~;
-#X text 135 517 2) float - ramp time in ms (default 10), f 57;
+#X text 135 529 2) float - ramp time in ms (default 10), f 57;
 #X text 111 301 freq <list>;
 #X text 117 331 amp <list>;
 #X text 111 346 ramp <list>;
@@ -54,17 +54,17 @@ send a list of ramp time for each filter in the bank.;
 #X connect 6 0 5 0;
 #X connect 7 0 5 0;
 #X restore 469 248 pd example;
-#X text 135 499 1) float - number of resonant filters (default 1),
+#X text 135 511 1) float - number of resonant filters (default 1),
 f 57;
-#X text 189 377 - the bank filtered signal;
+#X text 189 389 - the bank filtered signal;
 #X text 129 316 q <list>;
 #X text 188 316 - list of resonance (Q) for all filters in the bank
 ;
-#X obj 5 539 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 5 551 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 5 403 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 5 415 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 104 409 -freq <list>: sets list of frequencies for all filters
+#X text 104 421 -freq <list>: sets list of frequencies for all filters
 , f 57;
 #X obj 305 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
@@ -88,15 +88,17 @@ can set any number of filters with the first argument and control the
 parameters for each copy. If you use flags \, the number of elements
 in the list sets the number of banks (you shouldn't use arguments if
 you use flags)., f 75;
+#X text 104 436 -amp <list>: sets list of amplitudes for all filters
+, f 57;
+#X text 104 452 -q <list>: sets list of phases for all filters, f
+57;
+#X text 104 467 -ramp <list>: sets list of ramp time for all filters
+, f 57;
+#X text 104 483 -rampall <float>: sets ramp time for all filters,
+f 57;
+#X text 93 361 rampall float>;
+#X text 188 361 - sets ramp time for all filters in the bank;
 #X obj 186 177 else/bpbank~ -freq 200 500 900 1700 -q 1.5 5 20 9 -amp
 2 1.5 2 1, f 36;
-#X text 104 424 -amp <list>: sets list of amplitudes for all filters
-, f 57;
-#X text 104 440 -q <list>: sets list of phases for all filters, f
-57;
-#X text 104 455 -ramp <list>: sets list of ramp time for all filters
-, f 57;
-#X text 104 471 -rampall <float>: sets ramp time for all filters,
-f 57;
-#X connect 13 0 40 0;
-#X connect 40 0 14 0;
+#X connect 13 0 46 0;
+#X connect 46 0 14 0;
