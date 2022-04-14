@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-1 (release candidate #1) With Live Electronics Tutorial 
 
-###   Unreleased 
+###   Released april 18th 2022 
 
 
 
@@ -35,9 +35,11 @@ ELSE is a big library of externals that extends the performance Pure Data (Pd) -
 
 ELSE provides a cohesive system for computer music, it also serves as a basis for an Live Electronics Tutorial by the same author, yours truly, Alexandre Torres Porres. This tutorial is also found as part of the download of the ELSE library. This library's repository resides at <https://github.com/porres/pd-else/>.
 
-​	Note that you can also download Camomile with support for ELSE externals, see https://github.com/emviveros/Camomile-ELSE/releases/
+​Note that the downloads of ELSE also contain a "Live Eletronics Tutorial" as part of the package (as mentioned above). Look for the 'Live-Electronics-Tutorial' folder inside it and also check its README on how to install it.
 
-​	This project is still in a beta phase, where  changes may occur and backwards compatibility is not guaranteed until a final release is available. 
+​Note that you can also download Camomile with support for ELSE externals, see https://github.com/emviveros/Camomile-ELSE/releases/
+
+​This project is still in an experimental phase (currently at a 'release candidate' phase), where  changes may occur and backwards compatibility is not guaranteed until a final and more stable release is available. 
 
 
 
@@ -45,11 +47,7 @@ ELSE provides a cohesive system for computer music, it also serves as a basis fo
 
 ### Downloading ELSE:
 
-​	You can get ELSE from https://github.com/porres/pd-else/releases - where all releases are available, but ELSE is also found via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else').  In any case, you should download the folder to a place Pd automatically searches for, and the common place is the ~/documents/pd/externals folder.
-
-​	Note that since version 1.0-0 beta 28,  the downloads of ELSE also contain a "live eletronics tutorial" as part of the package (as mentioned above). Look for the 'live-electronics-tutorial' folder inside it and also check its README on how to install it.
-
-​	Instructions on how to build ELSE are provided below.
+​	You can get ELSE from https://github.com/porres/pd-else/releases - where all releases are available, but ELSE is also found via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else').  In any case, you should download the folder to a place Pd automatically searches for, and the common place is the ~/documents/pd/externals folder. Instructions on how to build ELSE are provided below.
 
 
 
@@ -59,7 +57,7 @@ ELSE provides a cohesive system for computer music, it also serves as a basis fo
 
 ​	ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path or use [declare -path else]. ELSE comes with a binary that you can use load via "Preferences => Startup" or with [declare -lib else], but all that this does is print information of what version of ELSE you have when you open Pd.  You can also just load the 'else' external for that same purpose, check its help file. 
 
-​	It's important to stress this release needs Pd Vanilla 0.52-0 or above (Pd Extended/Purr Data aren't supported). 
+​	It's important to stress this release needs Pd Vanilla 0.52-1 or above ("Pd Extended"/"Purr Data" aren't supported). 
 
 
 
@@ -75,7 +73,7 @@ But the library grew to encompass functionalities found in other Pd objects/libr
 
 The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. So that's it, ELSE is becoming a quite big library and keeps growing and growing. 
 
-It will still take a little while for ELSE to stabilize into a final version. For now, it's at an early "Beta" stage of development, where drastic changes may occur and backwards compatibility is not guaranteed until a final release is available. 
+ELSE has been in active development for over 5 years but it will still take a little while for it to stabilize into a final version. For now, it's at a "Release Candidate" stage of development, where changes may occur and backwards compatibility is not guaranteed until a final release is available. 
 
 
 
