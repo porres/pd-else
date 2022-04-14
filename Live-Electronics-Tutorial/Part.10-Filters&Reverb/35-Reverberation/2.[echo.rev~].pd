@@ -1,9 +1,9 @@
 #N canvas 315 87 947 475 12;
 #X declare -path else;
-#X obj 54 152 bng 30 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
-#X obj 183 132 bng 30 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 54 152 bng 30 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
+#X obj 183 132 bng 30 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 54 239 out~;
 #X obj 183 249 out~;
 #N canvas 797 186 322 276 test 0;
@@ -34,8 +34,8 @@
 #X connect 4 0 2 1;
 #X connect 5 0 0 0;
 #X restore 54 195 pd test;
-#X obj 325 132 bng 30 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 325 132 bng 30 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 325 249 out~;
 #N canvas 797 186 322 276 test 0;
 #X obj 63 116 osc~;
@@ -191,10 +191,10 @@ the delay times. Furtherly \, arbitrary fractions are added in an attempt
 to produce even more complex reflection patterns. Alternatively \,
 you can try prime numbers as a basis instead as in the 8-stage example.
 , f 55;
-#X obj 690 313 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 -228856
--1 -1 0 1;
-#X obj 599 289 bng 30 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 690 313 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 599 289 bng 30 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #N canvas 830 223 313 262 test 0;
 #X obj 60 114 osc~;
 #X obj 93 216 outlet~;
@@ -210,7 +210,7 @@ you can try prime numbers as a basis instead as in the 8-stage example.
 #X connect 5 0 0 0;
 #X restore 599 332 pd test;
 #X obj 687 336 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 746 335 size;
 #X obj 599 364 echo.rev~ 8 1;
 #X obj 745 10 declare -path else;

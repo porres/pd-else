@@ -1,12 +1,12 @@
-#N canvas 730 169 489 447 12;
+#N canvas 561 30 489 447 12;
 #X declare -path else;
 #X obj 90 340 out~;
 #X obj 258 33 declare -path else;
-#X obj 73 220 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 73 220 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X obj 73 187 metro 1000;
-#X obj 73 154 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 73 154 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 319 373 grain.sampler~;
 #X obj 316 195 else/sample~ \$0-sample violin.wav, f 12;
 #X text 261 299 This example is the basis of the [grain.sampler~] object
@@ -16,8 +16,8 @@ sample buffer. We now have a speed parameter that also affects the
 pitch. For more details open the [clone] object to see how it works.
 , f 43;
 #X msg 73 249 all bang;
-#X obj 203 219 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 203 219 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X msg 203 251 all \$1;
 #X text 187 197 synchronous;
 #X text 222 218 on/off;

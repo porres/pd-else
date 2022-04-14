@@ -1,15 +1,15 @@
-#N canvas 412 47 912 545 12;
+#N canvas 405 26 912 545 12;
 #X declare -path else;
-#X obj 407 407 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X floatatom 756 195 6 0 100 0 - hz -;
+#X obj 407 407 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X floatatom 756 195 6 0 100 0 - hz - 0;
 #X obj 646 331 +~;
 #X obj 664 306 samphold~;
 #X obj 664 213 samphold~;
 #X obj 646 265 *~;
 #X obj 646 358 tabread4~ \$0-buffer, f 9;
 #X obj 738 411 *~;
-#X floatatom 274 257 6 0 100 0 - hz -;
+#X floatatom 274 257 6 0 100 0 - hz - 0;
 #X obj 178 361 +~;
 #X obj 157 328 *~;
 #X obj 178 390 tabread4~ \$0-buffer, f 9;
@@ -18,10 +18,10 @@
 #X text 762 176 Hz;
 #X obj 756 218 phasor~;
 #X obj 274 281 phasor~;
-#X floatatom 196 229 6 0 0 0 - - -;
-#X floatatom 118 207 6 0 0 0 - grain -;
-#X floatatom 664 160 6 0 0 0 - grain -;
-#X floatatom 586 204 6 0 0 0 - grain -;
+#X floatatom 196 229 6 0 0 0 - - - 0;
+#X floatatom 118 207 6 0 0 0 - grain - 0;
+#X floatatom 664 160 6 0 0 0 - grain - 0;
+#X floatatom 586 204 6 0 0 0 - grain - 0;
 #X obj 274 390 envelope~;
 #X obj 256 474 out~;
 #X obj 738 445 out~;

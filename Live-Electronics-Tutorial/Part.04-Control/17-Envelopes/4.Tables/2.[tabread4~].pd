@@ -1,4 +1,4 @@
-#N canvas 290 196 1091 359 12;
+#N canvas 275 196 1091 359 12;
 #X declare -path else;
 #X text 22 42 We now use [tabread4~] to read a table. This is more
 flexible as it allows any duration from the same table., f 57;
@@ -19,14 +19,13 @@ is \, so "0.5 and -0.5" gives us a proper hann function from 0 to 1!
 #X obj 792 61 initmess \; \$0-hann cosinesum 1024 0.5 -0.5;
 #X obj 523 198 *~;
 #X obj 465 145 osc~ 440;
-#X obj 593 86 nbx 5 17 0 2000 0 0 empty empty empty 0 -8 0 12 #dcdcdc
+#X obj 601 65 nbx 5 17 0 2000 0 0 empty empty empty 0 -8 0 12 #dcdcdc
 #000000 #000000 0 256;
 #X obj 541 58 bng 25 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
 #X obj 541 173 tabread4~ \$0-hann;
 #X obj 523 239 out~;
-#X obj 541 96 f 500;
-#X text 596 64 ms;
+#X text 604 43 ms;
 #X obj 541 148 envgen~;
 #X msg 541 122 1 \$1 1025;
 #X obj 883 18 declare -path else;
@@ -39,11 +38,12 @@ of the table and not the extra guard points used for interpolation
 (more about this in chapter 27 on sampling) - these would be from 1
 to 1025 \, so we use [vline~] to read the table and we just need an
 input with the duration in ms., f 62;
+#X obj 541 96 float 500;
 #X connect 7 0 12 0;
 #X connect 8 0 7 0;
-#X connect 9 0 13 1;
-#X connect 10 0 13 0;
+#X connect 9 0 20 1;
+#X connect 10 0 20 0;
 #X connect 11 0 7 1;
-#X connect 13 0 16 0;
-#X connect 15 0 11 0;
-#X connect 16 0 15 0;
+#X connect 14 0 11 0;
+#X connect 15 0 14 0;
+#X connect 20 0 15 0;

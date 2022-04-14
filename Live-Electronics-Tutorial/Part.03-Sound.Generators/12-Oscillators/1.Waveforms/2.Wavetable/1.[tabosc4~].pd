@@ -3,48 +3,48 @@
 #X obj 542 312 s harm;
 #X msg 542 287 0;
 #X obj 939 165 nbx 4 18 -1e+37 1e+37 0 0 empty harm empty 0 -8 0 10
--191672 -1 -1 0 256;
+#b8c8dc #000000 #000000 0 256;
 #X obj 877 165 nbx 4 18 -1e+37 1e+37 0 0 empty harm empty 0 -8 0 10
--191672 -1 -1 0 256;
+#b8c8dc #000000 #000000 0 256;
 #X obj 815 165 nbx 4 18 -1e+37 1e+37 0 0 empty harm empty 0 -8 0 10
--191672 -1 -1 0 256;
+#b8c8dc #000000 #000000 0 256;
 #X obj 754 165 nbx 4 18 -1e+37 1e+37 0 0 empty harm empty 0 -8 0 10
--191672 -1 -1 0 256;
+#b8c8dc #000000 #000000 0 256;
 #X obj 692 165 nbx 4 18 -1e+37 1e+37 0 0 empty harm empty 0 -8 0 10
--191672 -1 -1 0 256;
+#b8c8dc #000000 #000000 0 256;
 #X obj 631 165 nbx 4 18 -1e+37 1e+37 0 0 empty harm empty 0 -8 0 10
--191672 -1 -1 0 256;
+#b8c8dc #000000 #000000 0 256;
 #X obj 569 165 nbx 4 18 -1e+37 1e+37 0 0 empty harm empty 0 -8 0 10
--191672 -1 -1 0 256;
-#X obj 653 285 cnv 15 248 138 empty empty empty 20 12 0 14 -228856
--66577 0;
+#b8c8dc #000000 #000000 0 256;
+#X obj 653 285 cnv 15 248 138 empty empty empty 20 12 0 14 #dcdcdc
+#404040 0;
 #N canvas 0 22 474 324 (subpatch) 0;
 #X array \$0-wavetable 515 float 0;
 #X coords 0 1 514 -1 250 140 1 0 0;
 #X restore 652 284 graph;
 #X obj 101 406 nbx 4 18 -1e+37 1e+37 0 1 empty empty empty 0 -8 0 10
--228856 -1 -1 293 256;
+#dcdcdc #000000 #000000 293 256;
 #X text 634 278 1;
 #X text 630 413 -1;
 #N canvas 317 87 1099 432 normalizado 0;
 #X obj 479 204 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 425 204 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 371 204 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 318 204 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 264 204 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 123 176 unpack float float float float float float float float
 ;
 #X obj 211 204 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 157 204 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 104 205 nbx 4 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 1 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 135 148 <== lista normalizada;
 #X obj 123 88 inlet;
 #N canvas 178 61 728 505 normalizar 0;
@@ -103,34 +103,34 @@
 #X obj 33 95 mtof;
 #X obj 144 175 *~;
 #X obj 144 204 outlet~;
-#X obj 162 40 tempo 240 -on;
 #X obj 173 88 sequencer 42 40 40 45 40 49 52 52 45 43 43 47 50 54 55
 55, f 29;
 #X obj 33 125 tabosc4~ \$0-wavetable, f 12;
 #X obj 162 141 envgen~ 50 1 150 1 50 0;
-#X connect 0 0 5 0;
+#X obj 162 40 tempo -on 240;
+#X connect 0 0 4 0;
 #X connect 1 0 2 0;
-#X connect 3 0 4 0;
-#X connect 3 0 6 0;
-#X connect 4 0 0 0;
-#X connect 5 0 1 0;
-#X connect 6 0 1 1;
+#X connect 3 0 0 0;
+#X connect 4 0 1 0;
+#X connect 5 0 1 1;
+#X connect 6 0 3 0;
+#X connect 6 0 5 0;
 #X restore 272 441 pd sequencer;
-#X obj 526 151 cnv 1 1 1 empty empty 1st 0 0 0 14 -262144 -66577 0
+#X obj 526 151 cnv 1 1 1 empty empty 1st 0 0 0 14 #fcfcfc #404040 0
 ;
-#X obj 577 151 cnv 1 1 1 empty empty 2nd 0 0 0 14 -262144 -66577 0
+#X obj 577 151 cnv 1 1 1 empty empty 2nd 0 0 0 14 #fcfcfc #404040 0
 ;
-#X obj 647 151 cnv 1 1 1 empty empty 3rd 0 0 0 14 -262144 -66577 0
+#X obj 647 151 cnv 1 1 1 empty empty 3rd 0 0 0 14 #fcfcfc #404040 0
 ;
-#X obj 700 151 cnv 1 1 1 empty empty 4th 0 0 0 14 -262144 -66577 0
+#X obj 700 151 cnv 1 1 1 empty empty 4th 0 0 0 14 #fcfcfc #404040 0
 ;
-#X obj 763 151 cnv 1 1 1 empty empty 5th 0 0 0 14 -262144 -66577 0
+#X obj 763 151 cnv 1 1 1 empty empty 5th 0 0 0 14 #fcfcfc #404040 0
 ;
-#X obj 824 151 cnv 1 1 1 empty empty 6th 0 0 0 14 -262144 -66577 0
+#X obj 824 151 cnv 1 1 1 empty empty 6th 0 0 0 14 #fcfcfc #404040 0
 ;
-#X obj 888 151 cnv 1 1 1 empty empty 7th 0 0 0 14 -262144 -66577 0
+#X obj 888 151 cnv 1 1 1 empty empty 7th 0 0 0 14 #fcfcfc #404040 0
 ;
-#X obj 949 151 cnv 1 1 1 empty empty 8th 0 0 0 14 -262144 -66577 0
+#X obj 949 151 cnv 1 1 1 empty empty 8th 0 0 0 14 #fcfcfc #404040 0
 ;
 #X text 945 94 |;
 #X text 945 104 |;
@@ -144,7 +144,7 @@
 , f 62;
 #X obj 272 478 out~;
 #X obj 508 165 nbx 4 18 -1e+37 1e+37 0 0 empty harm empty 0 -8 0 10
--191672 -1 -1 1 256;
+#b8c8dc #000000 #000000 0 256;
 #X msg 508 455 normalize;
 #X obj 508 348 list prepend sinesum 512, f 12;
 #X obj 508 390 list trim;

@@ -15,7 +15,7 @@
 #X obj 149 406 out~;
 #X text 369 307 size;
 #X text 218 306 speed;
-#N canvas 475 45 1115 723 pitch-shift/time-stretch 1;
+#N canvas 251 23 1115 723 pitch-shift/time-stretch 0;
 #X obj 266 262 bang~;
 #X obj 338 251 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #c4fcfc #000000 #000000 0 256;

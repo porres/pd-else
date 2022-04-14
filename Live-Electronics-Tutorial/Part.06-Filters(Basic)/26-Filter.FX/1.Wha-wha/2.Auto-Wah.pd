@@ -12,7 +12,6 @@
 #X floatatom 295 397 5 0 0 0 - - - 0;
 #X floatatom 347 397 5 0 0 0 - - - 0;
 #X floatatom 399 397 5 0 0 0 - - - 0;
-#X obj 192 426 rescale~ -40 -5 100 4000 -clip;
 #X obj 344 22 declare -path else;
 #X obj 192 342 display~ 6;
 #X obj 152 262 play.file~ pointy-pick.aif 1 1;
@@ -27,15 +26,16 @@ We get this amplitude average in dB and rescale to a frequency range
 with [rescale~]. In the example below we rescale the input from -40
 to -5 dB into the range of 100 to 4000 Hz., f 61;
 #X obj 192 307 mov.rms~ -db 256;
+#X obj 192 426 rescale~ -clip -40 -5 100 4000;
 #X connect 0 0 5 0;
 #X connect 4 0 3 0;
 #X connect 5 0 4 2;
-#X connect 6 0 10 1;
-#X connect 7 0 10 2;
-#X connect 8 0 10 3;
-#X connect 9 0 10 4;
-#X connect 10 0 4 1;
-#X connect 12 0 10 0;
-#X connect 13 0 4 0;
-#X connect 13 0 16 0;
-#X connect 16 0 12 0;
+#X connect 6 0 16 1;
+#X connect 7 0 16 2;
+#X connect 8 0 16 3;
+#X connect 9 0 16 4;
+#X connect 11 0 16 0;
+#X connect 12 0 4 0;
+#X connect 12 0 15 0;
+#X connect 15 0 11 0;
+#X connect 16 0 4 1;

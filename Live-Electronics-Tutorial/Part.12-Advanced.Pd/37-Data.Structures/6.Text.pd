@@ -1,7 +1,7 @@
 #N struct 1003-DS float x float y text z;
 #N canvas 508 23 472 647 12;
 #X declare -path else;
-#N canvas 440 205 535 532 template 0;
+#N canvas 440 115 535 532 template 0;
 #X obj 299 433 drawnumber x 165 10 900 x=;
 #X obj 298 466 drawnumber y 165 25 900 y=;
 #X text 242 216 The instruction is to draw the "z" text variable in
@@ -36,7 +36,7 @@ instructions., f 57;
 #X obj 343 516 r \$0-pointer;
 #X obj 234 548 r \$0-coords;
 #N canvas 1018 135 329 194 \$0-display 1;
-#X scalar 1003-DS 25 25 \; a b c d e f g h i j \\\; \;;
+#X scalar 1003-DS 25 25 \; text \\\; \;;
 #X restore 211 128 pd \$0-display;
 #X text 35 257 A text can have many lines with lists of one or more
 elements (symbols or floats). We can set a text with the [text] object

@@ -1,4 +1,4 @@
-#N canvas 731 127 565 642 12;
+#N canvas 498 23 565 642 12;
 #X declare -path else;
 #X obj 312 32 declare -path else;
 #X obj 153 267 keyboard 17 80 2 4 0 0 empty empty;
@@ -9,8 +9,8 @@
 #X obj 153 361 unpack f f;
 #X obj 220 464 susloop~;
 #X obj 153 418 / 440;
-#X obj 220 422 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#X obj 220 422 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X msg 272 408 size \$1 \, loop 112128 130067;
 #X obj 272 383 sample~ \$0-sample Nose_flute.wav;
 #X text 61 405 reference frequency =>, f 12;

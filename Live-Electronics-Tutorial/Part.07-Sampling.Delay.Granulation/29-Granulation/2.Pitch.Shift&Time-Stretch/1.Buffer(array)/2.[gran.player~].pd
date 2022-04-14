@@ -29,13 +29,13 @@ frequency \, obtained by the grain size., f 57;
 presets. The [gran.player~] object \, from ELSE \, is based on this
 patch \, check its help file:;
 #X obj 731 291 nbx 5 18 -1e+37 1e+37 0 0 empty speed empty 0 -8 0 13
--228856 -1 -1 100 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 646 508 +~;
 #X obj 638 291 nbx 4 18 -1e+37 1e+37 0 0 empty cents empty 0 -8 0 13
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X text 594 292 Cents;
-#X obj 491 288 nbx 4 18 3 1e+37 0 0 empty grain empty 0 -8 0 13 -191407
--1 -1 25 256;
+#X obj 491 288 nbx 4 18 3 1e+37 0 0 empty grain empty 0 -8 0 13 #b8b8b8
+#000000 #000000 0 256;
 #X obj 661 362 -~;
 #X obj 643 388 *~;
 #X obj 646 544 out~;
@@ -128,7 +128,7 @@ are combined and the sample is accessed.;
 #X connect 18 0 12 0;
 #X restore 573 473 pd grain-1;
 #X obj 491 405 s~ \$0-samps;
-#X floatatom 518 346 5 0 0 0 - - -;
+#X floatatom 518 346 5 0 0 0 - - - 0;
 #X text 384 346 Grain Frequency =>;
 #X obj 731 378 *~;
 #X obj 749 353 r \$0-Hz;

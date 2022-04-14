@@ -18,7 +18,7 @@ defined in the other subpatch., f 53;
 #X text 188 354 index;
 #X text 98 355 value;
 #X floatatom 119 550 5 0 0 0 - - - 0;
-#X obj 79 481 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X obj 79 481 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
 #X text 38 472 get size, f 4;
 #X text 328 520 <= get/set size;
@@ -28,8 +28,8 @@ defined in the other subpatch., f 53;
 #X obj 119 519 array size -s \$0-DS \$0-table;
 #X obj 97 408 array set -s \$0-DS \$0-table;
 #N canvas 965 238 334 221 \$0-display 1;
-#X scalar 1003-DS 10 105 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \;
-0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; 0 \; \;;
+#X scalar 1003-DS 10 105 \; 2 \; 3 \; -6 \; -13 \; -15 \; -13 \; -4
+\; 14 \; 29 \; 32 \; 19 \; 37 \; 45 \; 26 \; 18 \; 36 \; \;;
 #X coords 0 221 1 220 0 0 0;
 #X restore 356 285 pd \$0-display;
 #X obj 421 356 r \$0-pointer;

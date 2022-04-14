@@ -19,11 +19,11 @@
 #X obj 145 178 *~;
 #X obj 95 122 osc~ 440;
 #X obj 145 227 out~;
-#X obj 279 504 vsl 16 80 0 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
+#X obj 279 524 vsl 16 80 0 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
 #000000 #000000 0 1;
-#X obj 161 463 *~;
+#X obj 161 483 *~;
 #X obj 95 419 osc~ 440;
-#X obj 161 512 out~;
+#X obj 161 532 out~;
 #X obj 179 380 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X text 207 381 gate;
@@ -40,7 +40,7 @@ Decay stage after the attack. Here's how it works on [envgen~].;
 #000000;
 #X obj 163 127 envgen~ 50 1 50 0.5 500 0.5 500 0;
 #X obj 260 179 s2f~;
-#X obj 279 478 s2f~;
+#X obj 279 498 s2f~;
 #X obj 728 203 s2f~;
 #X obj 654 22 declare -path else;
 #X obj 630 404 bng 16 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
@@ -49,11 +49,11 @@ Decay stage after the attack. Here's how it works on [envgen~].;
 #X obj 630 457 timed.gate~ 500;
 #X text 480 355 You can also use [timed.gate~] to trigger it with bangs
 or impulses. Like [asr~] \, it also has a "log" mode., f 49;
-#X text 75 335 Now exponential and with a "gate" input:, f 22;
-#X obj 179 415 envgen~ -suspoint 2 50 1 50 0.5 200 0;
-#X msg 266 387 exp -0.25 -0.5 -1 -0.5;
-#X obj 266 362 loadbang;
 #X obj 630 483 adsr~ -log 250 500 0.5 250;
+#X obj 179 415 envgen~ -suspoint 2 -exp 50 -0.25 1 50 -0.5 0.5 200
+-0.5 0, f 19;
+#X text 75 335 Now exponential (with triplets of duration \, exp factor
+and target) and with a "gate" input:, f 43;
 #X connect 0 0 23 0;
 #X connect 4 0 10 0;
 #X connect 5 0 0 0;
@@ -75,9 +75,7 @@ or impulses. Like [asr~] \, it also has a "log" mode., f 49;
 #X connect 30 0 1 0;
 #X connect 32 0 33 0;
 #X connect 33 0 34 0;
-#X connect 34 0 40 0;
+#X connect 34 0 36 0;
+#X connect 36 0 7 1;
 #X connect 37 0 16 1;
 #X connect 37 0 29 0;
-#X connect 38 0 37 0;
-#X connect 39 0 38 0;
-#X connect 40 0 7 1;

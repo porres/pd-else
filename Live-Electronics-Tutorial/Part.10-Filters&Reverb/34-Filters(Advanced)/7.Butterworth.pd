@@ -1,10 +1,10 @@
-#N canvas 398 119 969 615 12;
+#N canvas 268 27 969 615 12;
 #X declare -path else;
 #X obj 599 126 noise~;
 #X obj 701 143 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 2000 256;
-#X obj 704 123 hsl 128 15 20 20000 0 0 empty hz empty -2 -8 0 10 -228856
--1 -1 1259 1;
+#dcdcdc #000000 #000000 0 256;
+#X obj 704 123 hsl 128 15 20 20000 0 0 empty hz empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
 #N canvas 469 56 464 253 butterworth8 0;
 #X obj 92 25 inlet;
 #X obj 32 25 inlet~;
@@ -295,17 +295,17 @@
 We could use [cpole~] instead (see H13.butterworth).;
 #X obj 515 373 noise~;
 #X obj 575 388 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 528 452 out~;
 #X obj 578 364 hsl 128 15 100 22000 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
+#dcdcdc #000000 #000000 0 1;
 #X text 632 387 cuttof;
 #X obj 743 373 noise~;
 #X obj 801 388 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 751 452 out~;
 #X obj 804 364 hsl 128 15 100 22000 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 0 1;
+#dcdcdc #000000 #000000 0 1;
 #X text 858 387 cuttof;
 #X obj 751 415 hip.bw~ 1500 10;
 #X text 510 283 The ELSE library includes butterworth filters \, they
@@ -317,13 +317,13 @@ for more details.;
 #N canvas 299 23 985 489 filter-response 0;
 #X text 45 46 hz;
 #X text 120 45 order;
-#X obj 114 65 nbx 5 14 1 16 0 0 empty \$0-order empty 0 -8 0 10 -228856
--1 -1 12 256;
+#X obj 114 65 nbx 5 14 1 16 0 0 empty \$0-order empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X obj 40 66 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 2293.8 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 40 170 biplot;
 #X obj 43 23 hsl 128 15 20 22000 1 0 empty \$0-freq empty -2 -8 0 10
--228856 -1 -1 8637 1;
+#dcdcdc #000000 #000000 0 1;
 #N canvas 172 344 498 356 lowpass 0;
 #X obj 178 40 inlet;
 #X obj 120 282 outlet;
@@ -427,7 +427,7 @@ for more details.;
 #X text 245 46 hz;
 #X text 320 45 order;
 #X obj 240 66 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 267.045 256;
+#dcdcdc #000000 #000000 0 256;
 #N canvas 172 344 514 321 highpass 0;
 #X obj 162 26 inlet;
 #X obj 121 268 outlet;
@@ -531,9 +531,9 @@ for more details.;
 of the [lop.bw~] and [hip.bw~]. We get the output that goes to [biquads~]
 and use it to plot the frequency response with [biplot]., f 45;
 #X obj 243 23 hsl 128 15 20 22000 1 0 empty \$0-freq empty -2 -8 0
-10 -228856 -1 -1 4737 1;
-#X obj 314 65 nbx 5 14 1 16 0 0 empty \$0-order empty 0 -8 0 10 -228856
--1 -1 8 256;
+10 #dcdcdc #000000 #000000 0 1;
+#X obj 314 65 nbx 5 14 1 16 0 0 empty \$0-order empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X obj 821 50 initmess \; \$0-order 8 \; \$0-freq 500;
 #X connect 2 0 6 1;
 #X connect 3 0 6 0;
@@ -547,7 +547,6 @@ and use it to plot the frequency response with [biplot]., f 45;
 #X obj 528 415 lop.bw~ 500 10;
 #X text 554 546 Check the frequency response in the following subpach
 ====>, f 30;
-#X obj 44 303 pic 0 ../files/butterw.gif empty empty 0 0;
 #X text 37 19 There are different filter topologies and their differences
 are more relevant for high order filters. "Bessel" has a phase response
 as flat as possible. "Chebyshev" has ripples in the frequency response
@@ -562,6 +561,7 @@ in angles that depend on the number of poles like this:;
 ;
 #X obj 83 199 brickwall~;
 #X text 80 173 see:;
+#X obj 44 304 pic 0 ./files/butterw.gif empty empty 0 0;
 #X connect 0 0 3 0;
 #X connect 1 0 3 1;
 #X connect 2 0 1 0;

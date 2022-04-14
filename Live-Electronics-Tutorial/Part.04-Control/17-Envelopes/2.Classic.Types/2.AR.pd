@@ -59,7 +59,7 @@ a variant of [decay~] that has an attack stage \, which is the first
 argument - but the total duration still depends on the decay time.
 , f 68;
 #X obj 578 196 envgen~ 50 1 450 0;
-#X obj 594 169 initmess exp 4 4;
+#X obj 594 169 initmess expl 4 4;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 4 0 11 0;

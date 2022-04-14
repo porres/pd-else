@@ -1,19 +1,19 @@
-#N canvas 491 93 942 368 12;
+#N canvas 334 85 942 368 12;
 #X declare -path else;
 #X obj 700 220 downsample~;
 #X obj 790 80 initmess \; \$0-sr 44100;
 #X obj 553 207 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 44100 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 556 184 hsl 100 15 400 44099 1 0 empty \$0-sr empty -2 -8 0
-10 -228856 -1 -1 9900 1;
+10 #dcdcdc #000000 #000000 0 1;
 #X text 613 207 Hertz;
 #X obj 511 266 out~;
 #X obj 511 230 sh~;
 #X obj 553 231 impulse~;
 #X obj 774 199 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 44100 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 777 176 hsl 100 15 400 44099 1 0 empty \$0-sr empty -2 -8 0
-10 -228856 -1 -1 9900 1;
+10 #dcdcdc #000000 #000000 0 1;
 #X text 832 197 Hertz;
 #X obj 700 256 out~;
 #X obj 494 119 send~ \$0-audio;

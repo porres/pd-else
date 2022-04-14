@@ -12,78 +12,78 @@
 #X connect 4 0 0 0;
 #X restore 286 537 pd init;
 #X obj 240 474 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-speed empty 0 -8
-0 10 -228856 -1 -1 100 256;
+0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 333 472 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-transpo empty 0
--8 0 10 -228856 -1 -1 0 256;
-#X obj 147 473 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+-8 0 10 #dcdcdc #000000 #000000 0 256;
+#X obj 147 473 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 142 454 Play;
 #X text 343 453 Cents;
 #X obj 147 553 out~;
 #X text 233 453 Speed (%);
-#N canvas 249 78 1041 757 Pitch.Shift-Time.Stretch 0;
-#X obj 178 227 +;
-#X obj 267 127 * 2048;
-#X obj 118 50 inlet;
-#X obj 267 50 inlet;
-#X obj 66 51 inlet;
-#X obj 27 164 f;
-#X obj 18 133 bang~;
-#X obj 267 224 / 4;
-#X obj 27 226 t f f;
-#X obj 27 189 spigot;
-#X obj 66 132 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X text 67 30 Play;
-#X obj 267 265 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 512 256;
-#X floatatom 267 167 5 0 0 0 - - -;
-#X obj 132 152 r \$0-size;
-#X text 142 184 loop;
-#X obj 100 183 wrap2;
-#X obj 118 79 / 100;
-#X text 117 30 Speed (%);
-#X obj 118 110 * 512;
-#X text 162 112 hop size;
-#X obj 100 153 +;
-#X obj 267 98 cents2ratio;
-#X text 320 126 window size;
-#X text 276 187 new window size;
-#X text 325 263 new hop size;
-#X text 213 29 transposition (cents), f 13;
-#X obj 88 380 tabread4~ \$0-sample;
-#X obj 238 380 tabread4~ \$0-sample;
-#X obj 88 320 -~;
-#X obj 277 302 r \$0-size;
-#X text 290 342 loop;
-#X obj 88 349 wrap2~;
-#X obj 238 340 wrap2~;
-#X obj 88 283 envgen~;
-#X obj 341 221 block~ 2048 4;
-#X obj 272 693 outlet~;
-#X obj 233 596 rifft~;
-#X obj 272 656 /~ 3072;
-#X obj 278 512 -~;
-#X obj 88 438 rfft~;
-#X obj 238 438 rfft~;
-#X obj 88 413 hann~;
-#X obj 238 413 hann~;
-#X obj 272 628 hann~;
-#X obj 78 465 car2pol~;
-#X obj 225 468 car2pol~;
-#X obj 225 565 pol2car~;
-#X text 144 465 back;
-#X text 294 467 front;
-#X obj 278 537 +~;
-#X text 96 526 Phase Accumulation =====>;
-#X text 500 34 So we have a counter that adds a step parameter \, which
+#N canvas 249 23 1013 716 Pitch.Shift-Time.Stretch 0;
+#X obj 178 208 +;
+#X obj 267 108 * 2048;
+#X obj 118 31 inlet;
+#X obj 267 31 inlet;
+#X obj 66 32 inlet;
+#X obj 27 145 f;
+#X obj 18 114 bang~;
+#X obj 267 205 / 4;
+#X obj 27 207 t f f;
+#X obj 27 170 spigot;
+#X obj 66 113 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
+#X text 67 11 Play;
+#X obj 267 246 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X floatatom 267 148 5 0 0 0 - - - 0;
+#X obj 132 133 r \$0-size;
+#X text 142 165 loop;
+#X obj 100 164 wrap2;
+#X obj 118 60 / 100;
+#X text 117 11 Speed (%);
+#X obj 118 91 * 512;
+#X text 162 93 hop size;
+#X obj 100 134 +;
+#X obj 267 79 cents2ratio;
+#X text 320 107 window size;
+#X text 276 168 new window size;
+#X text 325 244 new hop size;
+#X text 213 10 transposition (cents), f 13;
+#X obj 88 361 tabread4~ \$0-sample;
+#X obj 238 361 tabread4~ \$0-sample;
+#X obj 88 301 -~;
+#X obj 277 283 r \$0-size;
+#X text 290 323 loop;
+#X obj 88 330 wrap2~;
+#X obj 238 321 wrap2~;
+#X obj 88 264 envgen~;
+#X obj 341 202 block~ 2048 4;
+#X obj 272 674 outlet~;
+#X obj 233 577 rifft~;
+#X obj 272 637 /~ 3072;
+#X obj 278 493 -~;
+#X obj 88 419 rfft~;
+#X obj 238 419 rfft~;
+#X obj 88 394 hann~;
+#X obj 238 394 hann~;
+#X obj 272 609 hann~;
+#X obj 78 446 car2pol~;
+#X obj 225 449 car2pol~;
+#X obj 225 546 pol2car~;
+#X text 144 446 back;
+#X text 294 448 front;
+#X obj 278 518 +~;
+#X text 96 507 Phase Accumulation =====>;
+#X text 500 15 So we have a counter that adds a step parameter \, which
 depends on a speed the hop size. This happens at every block because
 of the [bang~] object. The transposition defines a new grain size and
 also a new hop size., f 63;
 #N canvas 197 78 1195 739 Phase-Accum 0;
-#X obj 236 265 cnv 15 198 68 empty empty empty 20 12 0 14 -203904 -66577
+#X obj 236 265 cnv 15 198 68 empty empty empty 20 12 0 14 #c4c4fc #404040
 0;
-#X obj 287 195 cnv 15 198 68 empty empty empty 20 12 0 14 -262130 -66577
+#X obj 287 195 cnv 15 198 68 empty empty empty 20 12 0 14 #fcfcc4 #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array frame2 100 float 1;
@@ -121,7 +121,7 @@ also a new hop size., f 63;
 -0.125323 -0.0627817;
 #X coords 0 1 99 -1 200 70 1;
 #X restore 235 264 graph;
-#X obj 287 97 cnv 15 198 68 empty empty empty 20 12 0 14 -262130 -66577
+#X obj 287 97 cnv 15 198 68 empty empty empty 20 12 0 14 #fcfcc4 #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array frame3 100 float 1;
@@ -141,7 +141,7 @@ also a new hop size., f 63;
 0.982273 0.992103 0.99802;
 #X coords 0 1 99 -1 200 70 1;
 #X restore 286 97 graph;
-#X obj 337 28 cnv 15 198 68 empty empty empty 20 12 0 14 -204786 -66577
+#X obj 337 28 cnv 15 198 68 empty empty empty 20 12 0 14 #c4fcc4 #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array frame4 100 float 1;
@@ -161,9 +161,9 @@ also a new hop size., f 63;
 0.187379 0.125332 0.0627904;
 #X coords 0 1 99 -1 200 70 1;
 #X restore 336 27 graph;
-#X obj 34 638 cnv 15 398 68 empty empty empty 20 12 0 14 -203904 -66577
+#X obj 34 638 cnv 15 398 68 empty empty empty 20 12 0 14 #c4c4fc #404040
 0;
-#X obj 134 568 cnv 15 398 68 empty empty empty 20 12 0 14 -262130 -66577
+#X obj 134 568 cnv 15 398 68 empty empty empty 20 12 0 14 #fcfcc4 #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array new-frame1 200 float 1;
@@ -227,7 +227,7 @@ also a new hop size., f 63;
 0.309013 0.248686 0.187379 0.125332 0.0627905;
 #X coords 0 1 199 -1 400 70 1;
 #X restore 133 567 graph;
-#X obj 84 452 cnv 15 398 68 empty empty empty 20 12 0 14 -261669 -66577
+#X obj 84 452 cnv 15 398 68 empty empty empty 20 12 0 14 #fce090 #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array new-frame3 200 float 1;
@@ -260,7 +260,7 @@ also a new hop size., f 63;
 0.951043 0.968568 0.982273 0.992103 0.99802;
 #X coords 0 1 199 -1 400 70 1;
 #X restore 83 451 graph;
-#X obj 185 382 cnv 15 398 68 empty empty empty 20 12 0 14 -122480 -66577
+#X obj 185 382 cnv 15 398 68 empty empty empty 20 12 0 14 #74e4bc #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array new-frame4 200 float 1;
@@ -293,7 +293,7 @@ also a new hop size., f 63;
 -0.982271 -0.992102 -0.998019;
 #X coords 0 1 199 -1 400 70 1;
 #X restore 184 381 graph;
-#X obj 751 572 cnv 15 398 68 empty empty empty 20 12 0 14 -118069 -66577
+#X obj 751 572 cnv 15 398 68 empty empty empty 20 12 0 14 #70d0d0 #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array accumulated-phase_frame4 200 float 1;
@@ -326,7 +326,7 @@ also a new hop size., f 63;
 -0.248678 -0.18737 -0.125324 -0.0627819;
 #X coords 0 1 199 -1 400 70 1;
 #X restore 750 571 graph;
-#X obj 650 642 cnv 15 398 68 empty empty empty 20 12 0 14 -262130 -66577
+#X obj 650 642 cnv 15 398 68 empty empty empty 20 12 0 14 #fcfcc4 #404040
 0;
 #N canvas 0 22 450 300 (subpatch) 0;
 #X array new-frame2 200 float 1;
@@ -391,17 +391,17 @@ output (the front window of the new-frame2 table \, this is also 180º).
 The initial phase after the phase accumulation is then 360º or 0º.
 Now when we justapose both frames as below we can see there are no
 discontinuities., f 61;
-#X restore 795 269 pd Phase-Accum;
-#X obj 318 513 tabreceive~ \$0-accum;
-#X obj 320 540 table \$0-accum 1024;
-#X obj 314 567 tabsend~ \$0-accum;
-#X obj 27 255 pack float 46.43 float;
-#X text 500 96 The grain controls generated here are sent to an [envgen~]
+#X restore 795 250 pd Phase-Accum;
+#X obj 318 494 tabreceive~ \$0-accum;
+#X obj 320 521 table \$0-accum 1024;
+#X obj 314 548 tabsend~ \$0-accum;
+#X obj 27 236 pack float 46.43 float;
+#X text 500 77 The grain controls generated here are sent to an [envgen~]
 object to read the samples. The step counter is the starting point
 of the sample \, the time duration of the grain is the window size
 in ms (46.43 in a sample rate of 44100 hz)., f 63;
-#X obj 500 311 pic 0 ./gif/accum.gif empty empty 0;
-#X text 500 159 The new hop size is used to access the last ("back")
+#X obj 500 292 pic 0 ./gif/accum.gif empty empty 0 0;
+#X text 500 140 The new hop size is used to access the last ("back")
 window. The phase accumulation consists in: 1) get the phase difference
 between the front and back window \, and: 2) sum that to the last phase
 output. Step 2 is done with a feedback loop via [tabsend~] & [tabreceive~]

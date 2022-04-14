@@ -1,4 +1,4 @@
-#N canvas 436 87 930 554 12;
+#N canvas 373 23 930 554 12;
 #X declare -path else;
 #X obj 53 364 cnv 15 248 148 empty empty empty 20 12 0 14 #dcdcdc #404040
 0;
@@ -12,7 +12,7 @@
 #X obj 487 316 samphold~;
 #X obj 593 245 samphold~;
 #X obj 445 280 *~;
-#X floatatom 576 58 0 0 1e+06 0 - grain - 0;
+#X floatatom 576 58 6 0 1e+06 0 - grain - 0;
 #X floatatom 485 59 0 0 1e+06 0 - - - 0;
 #X floatatom 677 56 0 0 50 0 - hz - 0;
 #X text 675 37 Hz;
@@ -39,20 +39,20 @@
 #X obj 276 99 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X obj 276 74 loadbang;
-#X obj 38 82 pimp~ 150;
-#X obj 157 82 pimp~ 150 0.5;
 #X obj 38 121 envelope~;
 #X obj 157 121 envelope~;
 #X obj 205 208 tabwrite~ \$0-sin;
 #X obj 74 208 tabwrite~ \$0-cos;
-#X connect 0 0 7 0;
-#X connect 0 0 8 0;
+#X obj 38 82 pimp~ 150;
+#X obj 157 82 pimp~ 150 0.5;
+#X connect 0 0 5 0;
+#X connect 0 0 6 0;
 #X connect 1 0 0 0;
 #X connect 2 0 1 0;
-#X connect 3 0 5 0;
-#X connect 4 0 6 0;
-#X connect 5 0 8 0;
-#X connect 6 0 7 0;
+#X connect 3 0 6 0;
+#X connect 4 0 5 0;
+#X connect 7 0 3 0;
+#X connect 8 0 4 0;
 #X restore 250 344 pd plot;
 #X text 38 111 The envelopes need to be out of phase \, for that we
 use the [pimp~] object from ELSE. It combines a [phasor~] and an [imp~]

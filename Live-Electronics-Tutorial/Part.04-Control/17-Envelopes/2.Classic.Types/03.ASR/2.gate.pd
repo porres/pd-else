@@ -38,7 +38,7 @@ value of 4) and a release of 750 ms (with an exponential value of -4).
 #X text 439 25 doing something similar with [vline~] involves a logic
 with [select]., f 37;
 #X obj 175 274 envgen~ -suspoint 1 150 1 750 0, f 19;
-#X obj 252 245 initmess exp 4 -4;
+#X obj 252 245 initmess expl 4 -4;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 4 0 25 0;

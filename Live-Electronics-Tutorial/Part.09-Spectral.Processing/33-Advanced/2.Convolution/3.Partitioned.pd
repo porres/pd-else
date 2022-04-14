@@ -1,7 +1,7 @@
 #N canvas 296 68 1034 594 12;
 #X declare -path else;
-#X obj 305 253 bng 17 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 305 253 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 305 279 tabplay~ \$0-IR;
 #X obj 305 317 out~;
 #X text 329 253 Play IR:;
@@ -14,17 +14,17 @@ instances of each partition inside [clone]. In this way \, an input
 is convoluted to all partitions at the same time \, but they're delayed
 accordingly so they get added at the right time.;
 #X obj 664 241 *~;
-#X obj 682 174 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 682 174 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X text 49 170 The [conv~] object from the ELSE library is an abstraction
 that implements partitioned convolution this way. It needs a partition
 size and an audio file to load as an IR. Below we load a rather bizarre
 IR file: a voice sample \, also used in Pd Vanilla's example.;
-#X floatatom 556 176 5 0 0 0 - - -;
+#X floatatom 556 176 5 0 0 0 - - - 0;
 #X obj 556 204 standard~ 100;
 #X obj 682 203 envgen~ 500 1 150 0;
-#X obj 710 233 tgl 20 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 710 233 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 710 266 + 1;
 #X obj 665 309 xselect~ 2 100 1;
 #X text 524 56 The sound input in the convolution is a chaotic oscillator.

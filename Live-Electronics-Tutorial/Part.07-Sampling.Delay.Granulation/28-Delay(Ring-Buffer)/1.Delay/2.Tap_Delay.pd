@@ -28,17 +28,17 @@
 #X obj 272 490 delread~ \$0-tap-delay 850;
 #X obj 496 484 delread~ \$0-tap-delay 1000;
 #X obj 702 484 delread~ \$0-tap-delay 1200;
-#X obj 170 37 bng 40 250 50 0 empty empty empty 17 7 0 10 -228856 -1
--1;
+#X obj 170 37 bng 40 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
 #X obj 170 122 t f b;
 #X obj 170 155 mtof;
 #X obj 479 436 throw~ \$0-tapR;
 #X obj 698 437 throw~ \$0-tapL;
-#X obj 267 182 envgen~ 20 1 10 1 20 0, f 12;
-#X text 437 94 A "Multi-Tap" delay is just a delay line being "tapped"
+#X obj 267 192 envgen~ 20 1 10 1 20 0;
+#X text 394 87 A "Multi-Tap" delay is just a delay line being "tapped"
 at different points. We can use this to implement simple repetitions
 or more complex rhythms. In this example we also explore a stereo effect.
-, f 52;
+, f 57;
 #X obj 682 30 declare -path else;
 #X obj 555 255 out~;
 #X obj 170 187 bl.saw~;

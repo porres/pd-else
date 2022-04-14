@@ -8,14 +8,14 @@
 #X obj 117 182 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X text 140 182 gate;
-#X obj 416 223 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 416 223 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X text 671 158 1;
 #X obj 305 277 *~;
 #X obj 305 354 out~;
 #X text 670 254 0;
-#X obj 305 208 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
-#fcfcfc #000000 #000000 0 256;
+#X obj 305 208 nbx 5 16 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
+#dfdfdf #000000 #000000 0 256;
 #X obj 416 362 vsl 16 80 0 1 0 0 empty empty empty 0 -9 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X text 675 205 <= envelope;
