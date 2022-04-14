@@ -1,7 +1,7 @@
-#N canvas 521 179 969 408 10;
+#N canvas 397 179 969 408 10;
 #X declare -path else;
 #X obj 175 70 inlet~ fwd;
-#N canvas 872 46 561 522 guts 0;
+#N canvas 805 46 561 522 guts 0;
 #X obj 103 38 inlet;
 #X obj 138 283 trigger float float bang, f 25;
 #X msg 211 325 fast-forward \$1;
@@ -52,8 +52,8 @@
 #X obj 128 110 r \$0-array;
 #X obj 95 249 s \$0-filename;
 #X obj 95 23 lb -init 3;
-#X msg 354 329 obj 175 175 tabwriter~ -ch \$1 \, connect 0 0 6 1 \,
-connect 2 0 6 0, f 35;
+#X msg 354 329 obj 175 175 tabwriter~ -ch \$1 \, connect 0 0 6
+1 \, connect 2 0 6 0, f 35;
 #X obj 208 195 loop;
 #X obj 146 149 symbol;
 #X obj 97 182 sel s;
@@ -117,7 +117,7 @@ connect 2 0 6 0, f 35;
 #X restore 157 217 pd array_size;
 #X obj 173 111 symbol;
 #X obj 308 84 canvas.setname \$0-patch 1;
-#X obj 357 181 declare -path else;
+#X obj 351 152 declare -path else;
 #X connect 0 0 13 0;
 #X connect 1 0 4 0;
 #X connect 1 1 2 0;

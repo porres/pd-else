@@ -1,4 +1,5 @@
 #N canvas 713 95 519 407 10;
+#X declare -path else;
 #X obj 53 193 *~;
 #X obj 53 78 hip~ 3;
 #N canvas 627 117 636 328 set_GUI 0;
@@ -604,6 +605,7 @@
 #X connect 11 1 3 0;
 #X restore 79 258 pd init;
 #X obj 53 36 inlet~ fwd;
+#X obj 255 69 declare -path else;
 #X connect 0 0 8 0;
 #X connect 1 0 0 0;
 #X connect 4 0 5 0;

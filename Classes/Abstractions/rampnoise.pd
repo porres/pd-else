@@ -1,4 +1,5 @@
 #N canvas 717 127 550 606 10;
+#X declare -path else;
 #X obj 89 38 inlet;
 #X obj 203 506 outlet;
 #X obj 124 331 v i_\$0;
@@ -47,6 +48,7 @@
 #X text 311 208 Alexandre Torres Porres (2019);
 #X obj 203 337 expr $f1 >= 1 || $f1 <= 0;
 #X obj 203 383 else/rand.f 0 127;
+#X obj 243 106 declare -path else;
 #X connect 0 0 3 0;
 #X connect 3 0 9 0;
 #X connect 4 0 7 0;

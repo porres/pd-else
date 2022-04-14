@@ -1,4 +1,5 @@
 #N canvas 558 64 536 404 10;
+#X declare -path else;
 #X obj 52 32 inlet;
 #X obj 259 364 outlet;
 #X obj 165 32 inlet;
@@ -439,6 +440,7 @@
 #X text 263 203 Alexandre Torres Porres (2018);
 #X obj 78 307 * 5;
 #X obj 166 246 metro 5;
+#X obj 362 75 declare -path else;
 #X connect 0 0 9 0;
 #X connect 2 0 8 0;
 #X connect 3 1 16 0;

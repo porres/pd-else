@@ -1,4 +1,5 @@
 #N canvas 444 106 581 447 10;
+#X declare -path else;
 #X obj 107 396 outlet~;
 #X obj 107 247 rifft~;
 #X obj 32 103 rfft~;
@@ -186,6 +187,7 @@
 #X obj 202 144 table \$0-re 1024;
 #X obj 213 265 block~ 2048 4;
 #X text 335 103 Alexandre Torres Porres (2018-2022);
+#X obj 373 70 declare -path else;
 #X connect 1 0 15 0;
 #X connect 2 0 4 2;
 #X connect 2 1 4 3;

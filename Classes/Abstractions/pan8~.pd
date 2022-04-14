@@ -1,4 +1,5 @@
 #N canvas 561 303 774 255 10;
+#X declare -path else;
 #X obj 55 210 outlet~;
 #X obj 295 26 inlet~;
 #X obj 383 26 inlet~;
@@ -556,6 +557,7 @@
 #X connect 19 0 9 0;
 #X restore 295 60 pd set-amplitudes;
 #X f 30;
+#X obj 544 63 declare -path else;
 #X connect 1 0 23 0;
 #X connect 2 0 23 1;
 #X connect 10 0 11 0;

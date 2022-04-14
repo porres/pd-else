@@ -1,4 +1,5 @@
 #N canvas 729 81 486 301 10;
+#X declare -path else;
 #X text 226 125 Alexandre Torres Porres (2016);
 #X text 224 144 Part of ELSE \; https://github.com/porres/pd-else;
 #X obj 33 251 outlet~;
@@ -395,6 +396,7 @@
 #X connect 6 5 5 0;
 #X restore 120 73 pd set_GUI;
 #X obj 236 219 r \$0-slider-init;
+#X obj 291 45 declare -path else;
 #X connect 6 0 5 0;
 #X connect 10 0 2 0;
 #X connect 10 1 13 0;

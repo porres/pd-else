@@ -23,7 +23,7 @@
 #X obj 153 174 f2s~ 50;
 #X obj 306 297 f2s~ 50;
 #X obj 429 61 lb;
-#X obj 522 117 declare -path else;
+#X obj 502 141 declare -path else;
 #X connect 0 0 7 0;
 #X connect 0 0 18 0;
 #X connect 1 0 17 0;

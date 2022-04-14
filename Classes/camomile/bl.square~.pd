@@ -27,7 +27,7 @@
 #X f 18;
 #X obj 78 132 brickwall~;
 #X obj 78 102 square~;
-#X obj 271 39 declare -path else;
+#X obj 263 53 declare -path else;
 #X connect 0 0 10 0;
 #X connect 1 0 10 1;
 #X connect 2 0 10 2;

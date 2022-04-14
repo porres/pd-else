@@ -1,4 +1,4 @@
-#N canvas 635 289 619 353 12;
+#N canvas 487 115 619 353 12;
 #X declare -path else;
 #X obj 96 84 abs~;
 #X obj 96 161 fexpr~ if($x > $y \, $x \, $y);
@@ -13,7 +13,7 @@
 #X obj 96 110 lin2db~;
 #X obj 176 254 trig2bang~;
 #X obj 176 227 above~;
-#X obj 360 84 declare -path else;
+#X obj 375 93 declare -path else;
 #X connect 0 0 10 0;
 #X connect 1 0 3 0;
 #X connect 2 0 0 0;

@@ -1,4 +1,4 @@
-#N canvas 572 181 557 307 10;
+#N canvas 379 112 557 307 10;
 #X declare -path else;
 #X obj 48 215 outlet;
 #X text 301 141 Part of ELSE \; https://github.com/porres/pd-else;
@@ -53,7 +53,7 @@ pow($f4 / $f3 \, 2) - (4 * $f5 / $f3);
 #X obj 131 215 outlet;
 #X obj 48 171 pack f f f f;
 #X obj 131 171 pack f f f f;
-#X obj 330 93 declare -path else;
+#X obj 328 82 declare -path else;
 #X connect 3 0 8 0;
 #X connect 5 0 7 0;
 #X connect 5 1 3 0;

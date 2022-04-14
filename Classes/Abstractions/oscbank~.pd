@@ -1,4 +1,5 @@
 #N canvas 569 112 345 345 10;
+#X declare -path else;
 #X obj 75 66 r \$0-freq;
 #X obj 75 93 inlet~ fwd;
 #N canvas 425 187 640 360 route/init 0;
@@ -109,6 +110,7 @@
 #X text 396 61 Alexandre Torres Porres (2017);
 #X obj 144 104 route ratio phase amp ramp rampall;
 #X msg 328 245 all ramp \$1;
+#X obj 455 166 declare -path else;
 #X connect 1 0 13 0;
 #X connect 2 0 9 0;
 #X connect 3 0 10 0;

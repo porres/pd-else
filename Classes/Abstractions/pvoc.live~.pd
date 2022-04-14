@@ -1,4 +1,5 @@
 #N canvas 698 137 474 293 10;
+#X declare -path else;
 #X text 214 32 cents;
 #X text 170 30 speed;
 #X obj 173 54 inlet;
@@ -276,6 +277,7 @@ f 35;
 #X obj 74 83 r \$0-buff_ms;
 #X msg 74 104 size \$1;
 #X obj 61 133 else/del~ in \$0-buffer, f 12;
+#X obj 270 98 declare -path else;
 #X connect 2 0 8 2;
 #X connect 3 0 8 3;
 #X connect 7 0 12 0;

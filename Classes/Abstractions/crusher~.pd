@@ -1,4 +1,5 @@
 #N canvas 665 174 525 387 10;
+#X declare -path else;
 #X obj 236 90 inlet~;
 #X obj 157 90 inlet~;
 #X obj 83 323 outlet~;
@@ -23,6 +24,7 @@
 #X obj 83 224 else/downsample~ 0 \$2;
 #X obj 40 179 else/quantizer~ 0 \$1;
 #X obj 389 133 else/lb;
+#X obj 326 80 declare -path else;
 #X connect 0 0 7 0;
 #X connect 1 0 4 0;
 #X connect 3 0 12 0;

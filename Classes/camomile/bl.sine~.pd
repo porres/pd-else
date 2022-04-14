@@ -1,4 +1,4 @@
-#N canvas 777 294 482 232 10;
+#N canvas 432 137 482 232 10;
 #X declare -path else;
 #X obj 61 52 inlet~;
 #X obj 113 52 inlet~;
@@ -21,7 +21,7 @@
 #X f 18;
 #X obj 85 139 brickwall~;
 #X obj 85 109 sine~;
-#X obj 246 36 declare -path else;
+#X obj 234 53 declare -path else;
 #X connect 0 0 9 0;
 #X connect 1 0 9 1;
 #X connect 2 0 9 2;

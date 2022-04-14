@@ -1,4 +1,5 @@
 #N canvas 351 74 556 468 12;
+#X declare -path else;
 #N canvas 644 59 488 483 check 0;
 #X obj 191 95 list fromsymbol;
 #X obj 191 124 else/slice -2;
@@ -179,6 +180,7 @@
 #X restore 78 350 pd convert;
 #X obj 78 138 t b s b;
 #X obj 141 138 s \$0-init;
+#X obj 316 93 declare -path else;
 #X connect 0 0 10 0;
 #X connect 1 0 2 0;
 #X connect 2 0 11 0;

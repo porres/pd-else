@@ -1,6 +1,7 @@
-#N canvas 521 179 969 408 10;
+#N canvas 397 179 969 408 10;
+#X declare -path else;
 #X obj 175 70 inlet~ fwd;
-#N canvas 872 46 561 522 guts 0;
+#N canvas 805 46 561 522 guts 0;
 #X obj 103 38 inlet;
 #X obj 138 283 trigger float float bang, f 25;
 #X msg 211 325 fast-forward \$1;
@@ -116,6 +117,7 @@
 #X restore 157 217 pd array_size;
 #X obj 173 111 symbol;
 #X obj 308 84 else/canvas.setname \$0-patch 1;
+#X obj 351 152 declare -path else;
 #X connect 0 0 13 0;
 #X connect 1 0 4 0;
 #X connect 1 1 2 0;

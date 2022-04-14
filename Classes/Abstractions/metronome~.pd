@@ -1,4 +1,5 @@
 #N canvas 505 30 566 541 10;
+#X declare -path else;
 #X obj 296 207 change;
 #X obj 225 205 change;
 #X obj 205 154 list split 2;
@@ -64,6 +65,7 @@
 #X obj 437 189 r \$0-mode;
 #X obj 118 62 route list mode;
 #X obj 161 88 s \$0-set-mode;
+#X obj 379 107 declare -path else;
 #X connect 0 0 3 0;
 #X connect 1 0 29 0;
 #X connect 2 1 28 0;

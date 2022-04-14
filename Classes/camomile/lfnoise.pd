@@ -1,4 +1,4 @@
-#N canvas 621 141 550 608 10;
+#N canvas 473 32 550 606 10;
 #X declare -path else;
 #X obj 89 38 inlet;
 #X obj 203 536 outlet;
@@ -66,7 +66,7 @@
 #X obj 203 337 expr $f1 >= 1 || $f1 <= 0;
 #X obj 203 383 rand.f 0 127;
 #X obj 248 423 hot;
-#X obj 329 86 declare -path else;
+#X obj 316 107 declare -path else;
 #X connect 0 0 4 0;
 #X connect 2 0 25 0;
 #X connect 4 0 10 0;

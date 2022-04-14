@@ -1,4 +1,5 @@
 #N canvas 461 114 600 403 12;
+#X declare -path else;
 #X obj 160 285 +~;
 #X obj 86 89 expr 1000 / $f1;
 #N canvas 294 311 502 529 grain-2 0;
@@ -181,6 +182,7 @@
 #X obj 222 89 else/cents2ratio;
 #X obj 74 151 else/ms2samps;
 #X obj 189 133 else/hot 3;
+#X obj 389 86 declare -path else;
 #X connect 0 0 12 0;
 #X connect 1 0 19 0;
 #X connect 2 0 0 1;

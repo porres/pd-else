@@ -1,4 +1,5 @@
 #N canvas 684 138 522 240 10;
+#X declare -path else;
 #X obj 41 205 outlet~;
 #N canvas 581 192 302 293 route 0;
 #X msg 142 180 all q \$1;
@@ -89,6 +90,7 @@
 #X connect 13 0 14 1;
 #X connect 14 0 5 0;
 #X restore 248 61 pd arg;
+#X obj 342 91 declare -path else;
 #X connect 1 0 8 2;
 #X connect 4 0 9 0;
 #X connect 5 0 10 0;

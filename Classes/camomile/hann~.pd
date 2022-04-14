@@ -40,7 +40,7 @@
 #X restore 102 115 pd hann-table;
 #X text 259 124 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 261 105 Alexandre Torres Porres (2018);
-#X obj 179 52 declare -path else;
+#X obj 254 72 declare -path else;
 #X connect 1 0 0 0;
 #X connect 2 0 1 0;
 #X connect 3 0 1 1;

@@ -1,4 +1,5 @@
-#N canvas 330 44 689 570 12;
+#N canvas 330 44 782 569 12;
+#X declare -path else;
 #X obj 80 100 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X msg 141 245 goto 1;
@@ -280,6 +281,7 @@ goto beat beatmul clear bang, f 87;
 #X connect 5 0 1 0;
 #X restore 288 454 pd i;
 #X obj 214 474 sel 1;
+#X obj 547 127 declare -path else;
 #X connect 0 0 10 0;
 #X connect 1 0 4 0;
 #X connect 2 0 27 1;

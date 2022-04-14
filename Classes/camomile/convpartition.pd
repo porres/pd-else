@@ -144,7 +144,7 @@ f 27;
 #X connect 35 0 23 0;
 #X restore 177 40 pd init;
 #X obj 79 101 cmul~;
-#X obj 267 41 declare -path else;
+#X obj 252 54 declare -path else;
 #X connect 0 0 10 0;
 #X connect 2 0 1 0;
 #X connect 2 1 4 0;

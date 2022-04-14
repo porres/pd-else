@@ -40,7 +40,7 @@
 #X obj 191 141 f2s~ 10;
 #X obj 89 168 rescale~ 0;
 #X obj 218 215 f2s~ 10;
-#X obj 354 201 declare -path else;
+#X obj 337 68 declare -path else;
 #X connect 0 0 7 0;
 #X connect 3 0 12 0;
 #X connect 5 0 7 1;

@@ -1,4 +1,5 @@
 #N canvas 318 40 602 342 12;
+#X declare -path else;
 #X obj 82 288 outlet;
 #X obj 82 43 inlet;
 #X obj 114 188 route float list;
@@ -183,6 +184,7 @@
 #X connect 7 0 6 0;
 #X connect 8 0 4 0;
 #X restore 168 216 pd frac2dec;
+#X obj 286 82 declare -path else;
 #X connect 1 0 3 0;
 #X connect 2 0 9 0;
 #X connect 2 1 10 0;

@@ -1,4 +1,5 @@
 #N canvas 688 129 354 334 10;
+#X declare -path else;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
 #fcfcfc 0 1;
 #N canvas 121 482 450 300 (subpatch) 0;
@@ -123,6 +124,7 @@
 #X connect 18 0 17 0;
 #X restore 51 67 pd guts;
 #X msg 59 230 \; pd dsp \$1;
+#X obj 153 76 declare -path else;
 #X connect 2 0 9 0;
 #X connect 8 0 5 0;
 #X connect 8 0 10 0;

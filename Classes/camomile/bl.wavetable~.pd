@@ -21,7 +21,7 @@
 #X obj 62 79 inlet~ fwd;
 #X obj 119 156 brickwall~;
 #X obj 119 126 wavetable~ \$1;
-#X obj 285 69 declare -path else;
+#X obj 276 86 declare -path else;
 #X connect 0 0 9 1;
 #X connect 1 0 9 2;
 #X connect 6 0 7 0;

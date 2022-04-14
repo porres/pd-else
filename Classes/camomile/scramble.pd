@@ -1,4 +1,4 @@
-#N canvas 586 235 795 442 12;
+#N canvas 571 235 795 442 12;
 #X declare -path else;
 #X obj 121 129 list length;
 #X obj 66 160 t l l;
@@ -60,7 +60,7 @@
 #X obj 121 214 rand.seq;
 #X obj 140 253 group;
 #X obj 66 82 routetype anything bang;
-#X obj 530 156 declare -path else;
+#X obj 512 196 declare -path else;
 #X connect 0 0 6 0;
 #X connect 1 0 7 0;
 #X connect 1 1 0 0;

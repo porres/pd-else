@@ -1,8 +1,9 @@
 #N canvas 592 110 516 269 10;
+#X declare -path else;
 #X obj 79 193 outlet~;
 #N canvas 434 126 574 437 freeze 0;
 #X obj 249 294 tgl 15 1 empty empty empty 17 7 0 10 #dcdcdc #000000
-#000000 1 1;
+#000000 0 1;
 #X obj 325 20 inlet;
 #X obj 325 83 != 0;
 #X obj 67 358 spigot;
@@ -45,6 +46,7 @@
 #X obj 47 83 sigmund~ -npts 2048 -hop 512 -npeak 50 tracks;
 #X obj 47 52 inlet~ fwd;
 #X obj 79 154 clone 50 else/freeze.osc.clone~;
+#X obj 342 81 declare -path else;
 #X connect 1 0 7 0;
 #X connect 2 0 1 2;
 #X connect 5 0 1 0;

@@ -1,8 +1,9 @@
-#N canvas 370 268 454 585 10;
+#N canvas 370 161 454 585 10;
+#X declare -path else;
 #X obj 129 201 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #ffffff
 #ffffff #ffffff 0 0;
 #X obj 34 35 inlet;
-#N canvas 683 264 460 647 guts 0;
+#N canvas 683 99 460 647 guts 0;
 #X obj 38 29 inlet;
 #X obj 38 573 outlet;
 #X obj 52 351 s \$0-set.values;
@@ -973,6 +974,7 @@ float float float symbol symbol float, f 51;
 #X obj 209 345 else/canvas.setname \$0-this-patch 1;
 #X obj 209 364 else/canvas.setname \$0-parent 2;
 #X obj 75 285 else/sort;
+#X obj 215 293 declare -path else;
 #X connect 0 0 16 0;
 #X connect 3 0 4 0;
 #X connect 5 0 7 4;

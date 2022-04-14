@@ -1,4 +1,4 @@
-#N canvas 416 115 1166 439 10;
+#N canvas 172 101 1166 439 10;
 #X declare -path else;
 #X obj 51 151 cnv 15 176 144 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
@@ -290,7 +290,7 @@
 #X obj 467 44 vu~;
 #X obj 388 41 vu~;
 #X obj 302 44 vu~;
-#X obj 989 64 declare -path else;
+#X obj 992 77 declare -path else;
 #X connect 3 0 11 0;
 #X connect 3 0 73 0;
 #X connect 4 0 10 0;

@@ -396,7 +396,7 @@
 #X connect 6 5 5 0;
 #X restore 120 73 pd set_GUI;
 #X obj 236 219 r \$0-slider-init;
-#X obj 283 79 declare -path else;
+#X obj 291 45 declare -path else;
 #X connect 6 0 5 0;
 #X connect 10 0 2 0;
 #X connect 10 1 13 0;

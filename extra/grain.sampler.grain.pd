@@ -1,6 +1,7 @@
-#N canvas 596 78 729 715 12;
-#X obj 455 428 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
-1;
+#N canvas 450 31 729 715 12;
+#X declare -path else;
+#X obj 455 428 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 455 455 switch~;
 #X obj 188 595 *~;
 #X obj 169 34 inlet;
@@ -256,7 +257,7 @@ pos float sync rev env sr, f 84;
 #X obj 421 180 == 3;
 #X obj 92 225 else/table~ \$2-gauss;
 #X obj 93 159 *~ 1;
-#X floatatom 137 157 5 1 100 0 - - -;
+#X floatatom 137 157 5 1 100 0 - - - 0;
 #X obj 93 186 +~ 0;
 #X obj 137 186 expr (1 - $f1) / 2;
 #X text 184 157 sigma;
@@ -331,6 +332,7 @@ pos float sync rev env sr, f 84;
 #X connect 13 4 12 0;
 #X connect 15 0 6 0;
 #X restore 350 487 pd env;
+#X obj 389 89 declare -path else;
 #X connect 0 0 1 0;
 #X connect 2 0 23 0;
 #X connect 3 0 9 0;

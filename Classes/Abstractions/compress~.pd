@@ -1,4 +1,5 @@
 #N canvas 406 139 524 446 12;
+#X declare -path else;
 #N canvas 753 33 585 655 set 0;
 #X obj 82 34 inlet;
 #X obj 336 472 s \$0-attack;
@@ -67,6 +68,7 @@
 #X obj 192 164 else/f2s~ 10;
 #X obj 249 345 else/rms~ -db 1024;
 #X obj 168 79 else/mov.rms~ -db 512;
+#X obj 350 128 declare -path else;
 #X connect 3 0 19 1;
 #X connect 5 0 9 0;
 #X connect 6 0 19 2;

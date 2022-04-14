@@ -1,4 +1,5 @@
 #N canvas 430 251 414 296 12;
+#X declare -path else;
 #X obj 267 129 else/dollsym 2;
 #X obj 77 34 inlet;
 #N canvas 679 546 525 390 morph 0;
@@ -162,6 +163,7 @@
 #X restore 77 130 pd router;
 #X f 24;
 #X obj 242 235 send;
+#X obj 264 56 declare -path else;
 #X connect 0 0 6 1;
 #X connect 1 0 4 0;
 #X connect 2 0 6 0;

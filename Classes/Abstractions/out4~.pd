@@ -1,4 +1,5 @@
 #N canvas 713 95 575 304 10;
+#X declare -path else;
 #X obj 23 193 *~;
 #X obj 105 36 inlet~;
 #X obj 105 192 *~;
@@ -596,6 +597,7 @@
 #X obj 209 77 hip~ 3;
 #X text 271 187 Alexandre Torres Porres (2019);
 #X obj 23 36 inlet~ fwd;
+#X obj 355 65 declare -path else;
 #X connect 0 0 10 0;
 #X connect 1 0 4 0;
 #X connect 2 0 10 1;

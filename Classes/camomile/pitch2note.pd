@@ -5,7 +5,7 @@
 #X text 204 132 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 206 113 Alexandre Torres Porres (2021);
 #X obj 246 31 inlet;
-#N canvas 1370 219 430 489 set-scale 0;
+#N canvas 936 219 430 489 set-scale 0;
 #X obj 120 104 list;
 #X obj 153 154 list length;
 #X obj 153 176 == 12;
@@ -320,8 +320,8 @@
 #X obj 134 149 v dif_\$0;
 #X obj 134 169 v oct_\$0;
 #X obj 85 89 text define \$0-user-defined;
-#X obj 101 27 declare -path else;
 #X restore 140 60 pd init;
+#X obj 240 92 declare -path else;
 #X connect 1 0 6 0;
 #X connect 4 0 5 0;
 #X connect 6 0 7 0;

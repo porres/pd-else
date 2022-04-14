@@ -1,4 +1,4 @@
-#N canvas 681 35 969 408 10;
+#N canvas 397 35 969 408 10;
 #X declare -path else;
 #X obj 175 70 inlet~ fwd;
 #N canvas 637 72 689 446 guts 0;
@@ -126,7 +126,7 @@
 #X restore 388 152 pd set;
 #X obj 417 95 canvas.setname \$0-patch 1;
 #X obj 436 179 sr~;
-#X obj 493 187 declare -path else;
+#X obj 424 62 declare -path else;
 #X connect 0 0 12 0;
 #X connect 1 0 4 0;
 #X connect 1 1 2 0;

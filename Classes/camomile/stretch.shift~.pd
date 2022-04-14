@@ -176,7 +176,7 @@
 #X obj 276 91 route bang size;
 #X obj 319 117 s \$0-buf;
 #X obj 45 47 inlet~ fwd, f 6;
-#X obj 450 118 declare -path else;
+#X obj 403 122 declare -path else;
 #X connect 0 0 6 2;
 #X connect 1 0 7 0;
 #X connect 2 0 6 3;

@@ -1,4 +1,5 @@
 #N canvas 592 108 582 312 10;
+#X declare -path else;
 #X obj 75 48 inlet~ fwd;
 #N canvas 394 187 769 359 route/init 0;
 #X obj 287 294 outlet;
@@ -87,6 +88,7 @@
 #X obj 144 104 route freq decay amp ramp rampall attack;
 #X obj 410 156 else/order;
 #X obj 410 188 else/insert 1 attack;
+#X obj 576 164 declare -path else;
 #X connect 1 0 14 0;
 #X connect 2 0 6 0;
 #X connect 3 0 13 0;

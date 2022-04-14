@@ -1,18 +1,13 @@
 #N canvas 580 168 522 369 10;
+#X declare -path else;
 #X obj 89 31 inlet;
 #N canvas 580 168 810 593 \$0-buffers 0;
 #X obj 6 20 cnv 15 448 80 empty empty empty 3 10 2 14 #e0e0e0 #404040
 0;
-#N canvas 0 22 450 300 ch0_1049 0;
-#X array 0-1003-sample 87741 float 2;
-#X coords 0 1 87741 -1 450 82 2 0 0;
-#X restore 5 19 pd ch0_1049;
-#X obj 6 120 cnv 15 448 80 empty empty empty 3 10 2 14 #e0e0e0 #404040
-0;
-#N canvas 0 22 450 300 ch1_1049 0;
-#X array 1-1003-sample 87741 float 2;
-#X coords 0 1 87741 -1 450 82 2 0 0;
-#X restore 5 119 pd ch1_1049;
+#N canvas 0 22 450 300 ch0_6353 0;
+#X array sample_6353 44100 float 2;
+#X coords 0 1 44100 -1 450 82 2 0 0;
+#X restore 5 19 pd ch0_6353;
 #X coords 0 0 0 0 10 20 0;
 #X restore 247 161 pd \$0-buffers;
 #X obj 89 99 soundfiler;
@@ -1037,6 +1032,7 @@
 #X obj 98 164 lb;
 #X obj 108 187 r \$0-info;
 #X obj 89 213 else/message;
+#X obj 260 65 declare -path else;
 #X connect 0 0 3 0;
 #X connect 2 0 5 0;
 #X connect 2 1 4 0;

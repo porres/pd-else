@@ -1,4 +1,4 @@
-#N canvas 540 183 822 289 10;
+#N canvas 393 150 822 289 10;
 #X declare -path else;
 #X obj 171 120 makefilename %g;
 #X obj 288 205 outlet;
@@ -55,10 +55,10 @@
 #X connect 10 1 7 0;
 #X connect 11 0 7 0;
 #X restore 405 120 pd list-any;
-#X text 522 110 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 529 139 Part of ELSE \; https://github.com/porres/pd-else;
 #X obj 54 87 route symbol float bang, f 59;
-#X text 524 91 Alexandre Torres Porres (2018-2020);
-#X obj 543 152 declare -path else;
+#X text 531 120 Alexandre Torres Porres (2018-2020);
+#X obj 526 85 declare -path else;
 #X connect 0 0 1 0;
 #X connect 2 0 6 0;
 #X connect 3 0 1 0;

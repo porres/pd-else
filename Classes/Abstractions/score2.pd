@@ -1,4 +1,5 @@
 #N canvas 719 70 533 308 12;
+#X declare -path else;
 #X obj 66 213 outlet;
 #X obj 44 27 inlet;
 #X obj 303 210 outlet;
@@ -514,6 +515,7 @@
 #X connect 12 0 8 0;
 #X connect 13 0 8 0;
 #X restore 139 90 pd score;
+#X obj 266 136 declare -path else;
 #X connect 1 0 6 0;
 #X connect 6 0 13 0;
 #X connect 6 1 18 0;

@@ -1,4 +1,5 @@
 #N canvas 510 85 498 222 10;
+#X declare -path else;
 #X obj 81 23 inlet;
 #X obj 167 175 outlet;
 #X text 246 107 Part of ELSE \; https://github.com/porres/pd-else;
@@ -77,6 +78,7 @@
 #X connect 8 1 6 0;
 #X restore 167 82 pd set;
 #X obj 80 114 else/router 2, f 15;
+#X obj 274 65 declare -path else;
 #X connect 0 0 6 0;
 #X connect 4 0 7 0;
 #X connect 5 0 1 0;

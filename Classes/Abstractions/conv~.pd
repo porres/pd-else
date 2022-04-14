@@ -1,8 +1,9 @@
 #N canvas 488 166 396 195 10;
 #X declare -path /Users/porres/Desktop/Git/pd-else/Classes/Abstractions
 ;
+#X declare -path else;
 #X obj 54 136 outlet~;
-#N canvas 442 499 436 254 guts 0;
+#N canvas 442 492 436 254 guts 0;
 #N canvas 540 206 304 252 fft 0;
 #X obj 75 107 *~;
 #X obj 75 135 rfft~;
@@ -323,6 +324,7 @@
 #X connect 43 0 41 0;
 #X connect 43 1 40 0;
 #X restore 217 62 pd init;
+#X obj 281 114 declare -path else;
 #X connect 0 0 2 0;
 #X connect 0 1 2 1;
 #X connect 1 0 4 0;

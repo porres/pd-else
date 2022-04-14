@@ -1,4 +1,4 @@
-#N canvas 381 68 722 826 10;
+#N canvas 381 68 722 723 10;
 #X declare -path else;
 #X obj 44 348 route bang;
 #X obj 141 417 list length;
@@ -180,7 +180,7 @@
 #X obj 419 505 trigger symbol bang;
 #X obj 285 355 t b f;
 #X obj 44 302 lb;
-#X obj 503 93 declare -path else;
+#X obj 474 98 declare -path else;
 #X connect 0 1 2 0;
 #X connect 1 0 9 2;
 #X connect 1 0 21 0;

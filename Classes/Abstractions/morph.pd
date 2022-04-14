@@ -1,4 +1,5 @@
 #N canvas 395 23 739 711 12;
+#X declare -path else;
 #X obj 282 304 array set s_\$0;
 #X obj 206 335 array set t_\$0;
 #X obj 131 401 line;
@@ -89,6 +90,7 @@
 #X connect 2 0 1 0;
 #X restore 343 101 pd exp;
 #X obj 220 64 route float list set exp;
+#X obj 516 134 declare -path else;
 #X connect 2 0 36 0;
 #X connect 3 0 9 0;
 #X connect 3 1 8 0;

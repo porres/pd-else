@@ -1,6 +1,6 @@
-#N canvas 852 105 485 347 10;
+#N canvas 414 80 485 347 10;
 #X declare -path else;
-#N canvas 706 234 465 617 \$0-Allpass-stages 0;
+#N canvas 706 129 465 617 \$0-Allpass-stages 0;
 #X obj 60 19 inlet~;
 #X obj 60 864 outlet~;
 #X restore 62 193 pd \$0-Allpass-stages;
@@ -51,7 +51,8 @@
 #X obj 47 72 route bang;
 #X obj 104 50 args;
 #X obj 176 238 loop;
-#X msg 233 358 obj 60 \$1 allpass_unit \$4 \, connect \$2 0 \$3 0;
+#X msg 233 358 obj 60 \$1 allpass_unit \$4 \, connect \$2 0 \$3
+0;
 #X msg 242 388 obj 60 50 allpass_unit \$1 \, connect 0 0 2 0;
 #X obj 104 22 lb 2;
 #X connect 0 0 3 0;
@@ -86,7 +87,7 @@
 #X connect 23 1 16 0;
 #X connect 23 1 17 0;
 #X restore 239 121 pd init;
-#X obj 262 85 declare -path else;
+#X obj 276 86 declare -path else;
 #X connect 0 0 3 0;
 #X connect 1 0 0 0;
 #X connect 2 0 0 0;

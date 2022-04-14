@@ -1,4 +1,5 @@
-#N canvas 434 23 951 423 12;
+#N canvas 415 23 951 423 12;
+#X declare -path else;
 #X obj 583 318 v sign_\$0;
 #X obj 117 332 pack float float float float float, f 56;
 #X obj 73 32 inlet;
@@ -19,6 +20,7 @@
 #X text 613 234 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 615 215 Alexandre Torres Porres (2021);
 #X obj 73 108 t l f;
+#X obj 654 89 declare -path else;
 #X connect 1 0 3 0;
 #X connect 2 0 8 0;
 #X connect 4 0 1 0;

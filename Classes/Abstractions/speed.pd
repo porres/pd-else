@@ -1,4 +1,5 @@
 #N canvas 105 23 961 695 12;
+#X declare -path else;
 #X obj 128 507 -;
 #X obj 96 476 t f f;
 #X obj 96 447 * 60000;
@@ -68,6 +69,7 @@ by Clarence Barlow \, see: http://clarlow.org/wp-content/uploads/2016/10/On-Musi
 #X text 588 110 Alexandre Torres Porres (2022);
 #X obj 672 657 outlet;
 #X obj 672 627 * 60000;
+#X obj 764 188 declare -path else;
 #X connect 0 0 28 0;
 #X connect 0 0 32 0;
 #X connect 1 0 0 1;

@@ -1,6 +1,6 @@
 #N canvas 739 259 598 342 10;
 #X declare -path else;
-#N canvas 404 536 523 256 guts 0;
+#N canvas 404 490 523 256 guts 0;
 #X obj 243 67 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
 #X text 261 66 before saving;
@@ -484,7 +484,7 @@
 #X obj 138 115 block~ 1024;
 #X obj 288 156 canvas.setname \$0-patch 1;
 #X obj 288 175 canvas.setname \$0-parent 2;
-#X obj 370 90 declare -path else;
+#X obj 373 95 declare -path else;
 #X connect 0 0 6 0;
 #X connect 2 0 13 0;
 #X connect 3 0 14 0;

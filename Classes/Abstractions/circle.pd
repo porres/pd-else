@@ -1,4 +1,5 @@
 #N canvas 504 110 715 473 10;
+#X declare -path else;
 #N canvas 646 292 628 339 \$0-point 0;
 #X obj 343 105 r \$0-grid;
 #X obj 178 89 filledcurve -x 0 fg 8 x0 y0 x0 y0 x0 y0, f 20;
@@ -39,7 +40,7 @@ float in float grid, f 73;
 #X connect 14 0 15 0;
 #X restore 43 164 pd \$0-point;
 #X obj 190 20 inlet;
-#N canvas 931 393 515 377 init 0;
+#N canvas 564 272 515 377 init 0;
 #X obj 81 45 inlet;
 #N canvas 201 256 413 308 args 0;
 #X obj 95 33 inlet;
@@ -642,6 +643,7 @@ float in float grid, f 73;
 #X obj 231 178 else/message \; \$0-this-patch donecanvasdialog 1 -1
 0 0 0 0 0 0 0 0 0, f 31;
 #X obj 81 87 else/lb;
+#X obj 295 104 declare -path else;
 #X connect 0 0 14 0;
 #X connect 1 0 12 0;
 #X connect 2 0 8 0;

@@ -1,4 +1,4 @@
-#N canvas 450 48 661 780 10;
+#N canvas 450 48 661 723 10;
 #X declare -path else;
 #X obj 246 230 list fromsymbol;
 #X obj 274 456 list tosymbol;
@@ -56,7 +56,7 @@ Bb 10 \; B♭ 10 \; Ax 11 \; B 11 \; B# 12 \; B♯ 12 \;;
 #X restore 436 164 pd init;
 #X obj 259 647 group;
 #X obj 132 372 unpack s f, f 17;
-#X obj 424 108 declare -path else;
+#X obj 416 108 declare -path else;
 #X connect 0 0 5 0;
 #X connect 1 0 2 0;
 #X connect 2 0 11 0;

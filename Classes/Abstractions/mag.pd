@@ -1,4 +1,5 @@
 #N canvas 529 41 489 435 10;
+#X declare -path else;
 #X obj 66 34 inlet;
 #X obj 107 182 *;
 #X obj 149 183 *;
@@ -20,6 +21,7 @@
 #X obj 106 312 spigot 1;
 #X obj 223 39 inlet;
 #X obj 208 192 else/lb;
+#X obj 306 178 declare -path else;
 #X connect 0 0 9 0;
 #X connect 1 0 3 0;
 #X connect 2 0 3 1;

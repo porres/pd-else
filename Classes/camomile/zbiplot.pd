@@ -501,7 +501,7 @@ if (p_pair_\$0 == 1 \, sin($f2 * pi_\$0) * -$f1 \, 0);
 0;
 #X text 563 248 Part of ELSE \; https://github.com/porres/pd-else;
 #X text 565 229 Alexandre Torres Porres (2021);
-#X obj 620 358 declare -path else;
+#X obj 579 191 declare -path else;
 #X connect 44 0 47 0;
 #X connect 45 0 47 1;
 #X coords 0 -1 1 1 452 452 1 50 50;

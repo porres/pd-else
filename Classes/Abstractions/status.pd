@@ -1,4 +1,5 @@
 #N canvas 493 57 573 330 10;
+#X declare -path else;
 #X obj 177 156 == 0;
 #X obj 249 129 == 0;
 #X msg 249 155 set \$1;
@@ -16,6 +17,7 @@
 #X obj 177 230 select 0 1, f 20;
 #X obj 203 73 else/args;
 #X obj 203 51 else/lb;
+#X obj 391 93 declare -path else;
 #X connect 0 0 12 0;
 #X connect 1 0 2 0;
 #X connect 2 0 3 0;

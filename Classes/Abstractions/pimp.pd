@@ -1,4 +1,5 @@
 #N canvas 547 76 538 342 12;
+#X declare -path else;
 #X obj 68 141 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
 #000000 0 1;
 #X obj 167 36 inlet;
@@ -47,8 +48,8 @@
 #X connect 10 1 6 0;
 #X restore 314 104 pd phase_sync;
 #X obj 68 247 outlet;
-#X text 201 182 Part of ELSE \; https://github.com/porres/pd-else;
-#X text 203 163 Alexandre Torres Porres (2018);
+#X text 225 198 Part of ELSE \; https://github.com/porres/pd-else;
+#X text 227 179 Alexandre Torres Porres (2018);
 #X obj 100 143 r \$0-ms;
 #X obj 68 172 metro;
 #N canvas 601 120 546 471 init 0;
@@ -148,6 +149,7 @@
 #X restore 68 206 pd phasor;
 #X obj 128 247 outlet;
 #X obj 167 71 route float rate;
+#X obj 252 151 declare -path else;
 #X connect 0 0 9 0;
 #X connect 1 0 14 0;
 #X connect 2 0 4 0;

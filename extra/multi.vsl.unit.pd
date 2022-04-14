@@ -1,4 +1,5 @@
 #N canvas 483 115 448 416 10;
+#X declare -path else;
 #X obj 80 52 namecanvas \$0-this-patch;
 #N canvas 669 72 697 546 guts 0;
 #X obj 70 213 route \$1;
@@ -83,6 +84,7 @@
 #X floatatom 24 268 5 0 0 0 - - - 0;
 #X text 362 471 tá cagado isso;
 #X obj 70 64 else/loadbanger -init 3, f 38;
+#X obj 373 70 declare -path else;
 #X connect 0 0 14 0;
 #X connect 0 0 9 0;
 #X connect 1 0 0 0;
@@ -117,10 +119,10 @@
 #X connect 27 2 16 0;
 #X connect 27 2 17 0;
 #X restore 128 24 pd guts;
-#X obj 101 225 cnv 1 27 1 empty \$0-bg_underline empty 20 12 0 14 #dcdcdc
+#X obj 101 98 cnv 1 1 1 empty \$0-bg_underline empty 20 12 0 14 #dcdcdc
 #000000 0;
-#X obj 101 143 cnv 1 27 82 empty \$0-sl empty 20 12 0 14 #6c4060 #000000
+#X obj 101 99 cnv 1 1 1 empty \$0-sl empty 20 12 0 14 #6c4060 #000000
 0;
-#X obj 101 143 cnv 1 27 1 empty \$0-value empty 20 12 0 14 #d8d8c0
-#000000 0;
-#X coords 0 127 8 0 29 127 2 100 100;
+#X obj 101 99 cnv 1 1 1 empty \$0-value empty 20 12 0 14 #d8d8c0 #000000
+0;
+#X coords 0 127 8 0 200 140 2 100 100;
