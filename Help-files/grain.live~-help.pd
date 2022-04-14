@@ -30,18 +30,16 @@
 #000000 #000000 0 256;
 #X obj 199 130 play.file~ bubul.wav 1 1, f 13;
 #N canvas 502 41 762 538 example 0;
-#X obj 100 251 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X obj 119 244 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X obj 100 300 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 119 293 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X obj 100 277 metro;
-#X floatatom 127 254 5 0 0 0 - - - 0;
-#X text 225 200 Here's some presets for you to have fun with, f 23
+#X obj 119 270 metro;
+#X floatatom 146 247 5 0 0 0 - - - 0;
+#X text 207 193 Here's some presets for you to have fun with, f 23
 ;
-#N canvas 444 90 749 487 presets 0;
-#X obj 69 439 outlet;
-#X obj 63 389 route float;
-#X obj 154 439 outlet;
+#N canvas 444 90 749 469 presets 0;
+#X obj 69 409 outlet;
 #X text 144 32 Here we have different messages with all the setable
 parameters. The pan range is from -1 (left) to 1 (right) and the position
 in the delay line is set proprtionally (0 is the beggining of the delay
@@ -54,34 +52,31 @@ that the grain will be played backwards \, so \, for 0 \, we have all
 grains played forward. For 50 \, we have a 50/50 chance \, and for
 100 \, all grains are reversed., f 70;
 #X obj 63 173 loadbang;
-#X msg 63 197 256 \, dur 2000 \, transp -1200 1200 \, pan -1 1 \, amp
-0.05 1 \, size 30 60 \, pos 0 1 \, rev 50, f 83;
-#X msg 80 222 128 \, dur 1000 \, transp -600 600 \, pan -0.8 0.8 \,
-amp 0.1 1 \, size 40 60 \, pos 0 1 \, rev 100, f 85;
-#X msg 106 271 10 \, dur 500 \, transp 0 1200 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 20 50 \, pos 0.5 1 \, rev 50, f 84;
-#X msg 130 344 3 \, dur 1000 \, transp -1200 0 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 2000 4000 \, pos 0 1 \, rev 100, f 86;
-#X msg 124 319 3 \, dur 1000 \, transp 0 1200 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 1000 3000 \, pos 0 1 \, rev 50, f 84;
-#X msg 95 247 10 \, dur 1000 \, transp -2400 -1200 \, pan -0.8 0.8
-\, amp 0.1 1 \, size 150 250 \, pos 0.25 0.5 \, rev 50, f 94;
-#X msg 115 295 10 \, dur 1000 \, transp -2400 -1200 \, pan -0.8 0.8
-\, amp 0.1 1 \, size 150 400 \, pos 0.5 1 \, rev 0, f 89;
-#X connect 1 0 2 0;
-#X connect 1 1 0 0;
-#X connect 5 0 6 0;
-#X connect 6 0 1 0;
-#X connect 7 0 1 0;
-#X connect 8 0 1 0;
-#X connect 9 0 1 0;
-#X connect 10 0 1 0;
-#X connect 11 0 1 0;
-#X connect 12 0 1 0;
-#X restore 89 205 pd presets;
-#X f 17;
-#X obj 81 449 else/out~;
-#X obj 127 232 route dur;
+#X msg 63 197 n 256 \, dur 2000 \, transp -1200 1200 \, pan -1 1 \,
+amp 0.05 1 \, size 30 60 \, pos 0 1 \, rev 50, f 86;
+#X msg 80 222 n 128 \, dur 1000 \, transp -600 600 \, pan -0.8 0.8
+\, amp 0.1 1 \, size 40 60 \, pos 0 1 \, rev 100, f 89;
+#X msg 95 247 n 10 \, dur 1000 \, transp -2400 -1200 \, pan -0.8 0.8
+\, amp 0.1 1 \, size 150 250 \, pos 0.25 0.5 \, rev 50, f 96;
+#X msg 106 271 n 10 \, dur 500 \, transp 0 1200 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 20 50 \, pos 0.5 1 \, rev 50, f 84;
+#X msg 115 295 n 10 \, dur 1000 \, transp -2400 -1200 \, pan -0.8 0.8
+\, amp 0.1 1 \, size 150 400 \, pos 0.5 1 \, rev 0, f 91;
+#X msg 124 319 n 3 \, dur 1000 \, transp 0 1200 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 1000 3000 \, pos 0 1 \, rev 50, f 87;
+#X msg 130 344 n 3 \, dur 1000 \, transp -1200 0 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 2000 4000 \, pos 0 1 \, rev 100, f 90;
+#X connect 3 0 4 0;
+#X connect 4 0 0 0;
+#X connect 5 0 0 0;
+#X connect 6 0 0 0;
+#X connect 7 0 0 0;
+#X connect 8 0 0 0;
+#X connect 9 0 0 0;
+#X connect 10 0 0 0;
+#X restore 108 198 pd presets;
+#X obj 100 442 else/out~;
+#X obj 146 225 route dur;
 #X text 48 22 Try some of the presets and also try dfferent parameters
 from the settings here \, where we can change to synchronous mode and
 also the density (number of grains).;
@@ -90,30 +85,30 @@ means that the interval between grains are random. On the other hand
 \, synchronous mode spaces the grains equally within a cloud event.
 This is more noticeable if you have less density. You can set the object
 to sync mode at creation with the -sync flag., f 58;
-#X obj 190 407 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 190 377 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 232 403 density (number of grains), f 15;
-#X obj 224 346 r \$0-set-env;
-#X obj 78 169 play.file~ violin.wav 1 1;
-#X obj 504 238 else/function 200 100 empty empty 0 1 220 220 220 50
+#X text 232 373 density (number of grains), f 15;
+#X obj 224 335 r \$0-set-env;
+#X obj 97 162 play.file~ violin.wav 1 1;
+#X obj 505 230 else/function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 0.05 1 0.95 0;
-#X obj 504 354 else/display;
-#X obj 504 426 else/insert env;
-#X msg 446 393 sin;
-#X obj 504 203 else/initmess 0 0.05 1 0.95 0;
-#X msg 478 393 tri;
-#X msg 513 393 hann;
-#X text 425 65 By default \, the envelope is a sine shape \, like the
+#X obj 505 346 else/display;
+#X obj 505 418 else/insert env;
+#X msg 447 385 sin;
+#X obj 505 195 else/initmess 0 0.05 1 0.95 0;
+#X msg 479 385 tri;
+#X msg 514 385 hann;
+#X text 426 57 By default \, the envelope is a sine shape \, like the
 default in the [envelope~] object. You can set other envelope function
 types \, namely 'tri' \, 'hann' and 'gauss' (also like in the [envelope~]
 object). The gaussian envelope takes a float argument that sets the
 width., f 48;
-#X text 425 136 You can also give it a list of values in the same syntax
+#X text 426 128 You can also give it a list of values in the same syntax
 as taken by [function~] (which is used internally). This syntax is
 also given by the [function] GUI object., f 48;
-#X text 436 245 [function];
-#X msg 550 393 gauss 0.3;
-#X obj 504 458 s \$0-set-env;
+#X text 437 237 [function];
+#X msg 551 385 gauss 0.3;
+#X obj 505 450 s \$0-set-env;
 #N canvas 992 351 389 390 tuning 0;
 #X obj 64 339 outlet;
 #X obj 94 236 else/eqdiv;
@@ -140,21 +135,20 @@ also given by the [function] GUI object., f 48;
 #X connect 7 0 1 0;
 #X connect 8 0 1 0;
 #X connect 9 0 0 0;
-#X restore 207 256 pd tuning;
-#X text 271 255 <= about tuning;
-#X msg 221 314 sync \$1;
-#X obj 221 287 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X restore 224 302 pd tuning;
+#X text 288 301 <= about tuning;
+#X msg 213 278 sync \$1;
+#X obj 213 251 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X text 245 287 synchronous mode;
-#X text 199 204 <--;
-#X obj 78 409 else/grain.live~ -n 256 -sync, f 16;
+#X text 237 251 synchronous mode;
+#X text 181 197 <--;
+#X obj 97 402 else/grain.live~ -n 256 -sync, f 16;
 #X connect 0 0 2 0;
 #X connect 1 0 32 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 1;
 #X connect 5 0 7 0;
 #X connect 5 0 32 0;
-#X connect 5 1 10 0;
 #X connect 7 0 3 0;
 #X connect 10 0 32 1;
 #X connect 12 0 32 0;

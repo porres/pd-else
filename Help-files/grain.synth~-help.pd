@@ -619,7 +619,7 @@ equal temperament), f 72;
 #X restore 346 131 graph;
 #X obj 94 40 cnv 4 4 4 empty empty synthesis 0 28 2 18 #e0e0e0 #000000
 0;
-#N canvas 565 169 801 548 example 0;
+#N canvas 565 116 801 548 example 0;
 #N canvas 552 271 592 396 tuning 0;
 #X obj 64 339 outlet;
 #X obj 94 236 else/eqdiv;
@@ -691,9 +691,9 @@ parameters. The pan range is from -1 (left) to 1 (right)., f 37;
 #000000 0 1;
 #X text 258 275 synchronous mode;
 #X text 192 196 <==;
-#X obj 223 396 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 265 392 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 265 392 density (number of grains), f 15;
+#X text 307 388 density (number of grains), f 15;
 #X text 54 33 Try some of the presets and also try dfferent parameters
 from the settings here \, where we can change to synchronous mode and
 also the density (number of grains).;
@@ -723,7 +723,7 @@ as taken by [function~] (which is used internally). This syntax is
 also given by the [function] GUI object., f 48;
 #X text 445 258 [function];
 #X msg 559 406 gauss 0.3;
-#X obj 124 421 else/grain.synth~ -t \$0-wave -sync, f 17;
+#X obj 124 421 else/grain.synth~ -n 256 -t \$0-wave -sync, f 24;
 #X connect 0 0 31 0;
 #X connect 1 0 4 0;
 #X connect 1 0 31 0;
