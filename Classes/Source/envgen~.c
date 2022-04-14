@@ -3,7 +3,7 @@
 #include "m_pd.h"
 #include <math.h>
 
-#define MAX_SEGS  4096 // maximum line segments
+#define MAX_SEGS  64 // maximum line segments
 
 static t_class *envgen_proxy;
 
@@ -95,7 +95,7 @@ static void envgen_proxy_list(t_proxy *p, t_symbol *s, int ac, t_atom *av){
             return;
         }
     x->x_ac = ac;
-    x->x_av = getbytes(x->x_ac*sizeof(*(x->x_av)));
+//    x->x_av = getbytes(x->x_ac*sizeof(*(x->x_av)));
     copy_atoms(av, x->x_av, x->x_ac);
 }
 
@@ -223,7 +223,7 @@ static void envgen_set(t_envgen *x, t_symbol *s, int ac, t_atom *av){
             pd_error(x, "[envgen~]: set needs to only contain floats");
             return;
         }
-    x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
+//    x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
     copy_atoms(av, x->x_av, x->x_ac = ac);
 }
 
@@ -235,7 +235,7 @@ static void envgen_init(t_envgen *x, int ac, t_atom *av){
             return;
         }
     if(!x->x_exp){
-        x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
+//        x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
         copy_atoms(av, x->x_av, x->x_ac = ac);
         envgen_attack(x, x->x_ac, x->x_av);
     }
@@ -258,7 +258,9 @@ static void envgen_init(t_envgen *x, int ac, t_atom *av){
                 k++;
             }
         }
-        copy_atoms(temp_at, x->x_av, x->x_ac = k);
+        x->x_ac = k;
+//        x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
+        copy_atoms(temp_at, x->x_av, x->x_ac);
         envgen_attack(x, x->x_ac, x->x_av);
     }
 }
@@ -405,7 +407,8 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
     t_atom at[2];
     SETFLOAT(at, 0);
     SETFLOAT(at+1, 0);
-    x->x_av = getbytes(2*sizeof(*(x->x_av)));
+//    x->x_av = getbytes(2*sizeof(*(x->x_av)));
+    x->x_av = getbytes(MAX_SEGS*sizeof(*(x->x_av)));
     copy_atoms(at, x->x_av, x->x_ac = 2);
     while(ac > 0){
         if(av->a_type == A_FLOAT)
@@ -451,7 +454,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
                         }
                     }
                     x->x_exp = 1;
-                    x->x_av = getbytes(k*sizeof(*(x->x_av)));
+//                    x->x_av = getbytes(k*sizeof(*(x->x_av)));
                     copy_atoms(temp_at, x->x_av, x->x_ac = k);
                     ac-=z, av+=z;
                 }
@@ -486,7 +489,7 @@ static void *envgen_new(t_symbol *s, int ac, t_atom *av){
             x->x_value = atom_getfloatarg(0, 1, av);
         else{
             if(!x->x_exp){
-                x->x_av = getbytes(ac*sizeof(*(x->x_av)));
+//                x->x_av = getbytes(ac*sizeof(*(x->x_av)));
                 copy_atoms(av, x->x_av, x->x_ac = ac);
             }
             else

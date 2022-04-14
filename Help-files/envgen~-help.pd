@@ -1,4 +1,4 @@
-#N canvas 604 23 563 697 10;
+#N canvas 565 23 562 691 10;
 #X obj 4 666 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 6 230 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
@@ -598,6 +598,7 @@ and offer a mirrored/reversed curve. Check below., f 70;
 #X connect 23 0 20 0;
 #X connect 24 0 20 0;
 #X connect 25 0 24 0;
+#X connect 25 0 23 0;
 #X restore 457 108 pd exponential;
 #X obj 306 133 else/s2f~;
 #X obj 393 157 sel 0;

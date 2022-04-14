@@ -1,0 +1,2 @@
+LC_ALL=C find . -type f -name '*.pd' -exec sed -i '' s/else\\///g {} +;
+

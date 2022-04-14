@@ -296,6 +296,7 @@ smagic := shared/magic.c
 
 datafiles = \
 $(wildcard Classes/Abstractions/*.pd) \
+$(wildcard Classes/Abs_components/*.pd) \
 $(wildcard Help-files/*.pd) \
 $(wildcard extra/*.pd) \
 $(wildcard extra/*.aif) \
