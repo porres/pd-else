@@ -475,7 +475,7 @@ Cross compiling is also possible with something like this
 - [xmod~]
 - [xmod2~]
 
-**CONTROL: MOUSE INTERACTION [2]:
+**CONTROL: MOUSE INTERACTION [2]**
 
 - [mouse]
 - [canvas.mouse]
@@ -552,13 +552,13 @@ Cross compiling is also possible with something like this
 - [stepnoise]
 - [rampnoise]
  
- **CONTROL: CONTROL RATE LFOs [5]**
+**CONTROL: CONTROL RATE LFOs [5]**
 
- - [lfo]
- - [phasor]
- - [pimp]
- - [impulse]
- - [pulse]
+- [lfo]
+- [phasor]
+- [pimp]
+- [impulse]
+- [pulse]
 
 **CONTROL: TRIGGERS: [27]**
 
