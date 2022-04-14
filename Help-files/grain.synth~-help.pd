@@ -1,64 +1,60 @@
-#N canvas 581 26 561 659 10;
-#X obj 212 127 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#N canvas 581 26 562 620 10;
+#X obj 212 127 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X obj 212 153 metro 500;
-#X obj 212 176 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 212 176 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 245 238 else/out~;
-#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 -128992 -233080
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
-#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 -128992 -233080
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
 0;
-#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 -128992 -233080
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 -128992 -233080
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 -128992 -233080
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 -128992 -233080
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 -128992 -233080
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 3 graph;
-#X obj 22 40 cnv 4 4 4 empty empty Granular 0 28 2 18 -233017 -1 0
-;
-#X obj 3 3 cnv 15 301 42 empty empty grain.synth~ 20 20 2 37 -233017
--1 0;
+#X obj 22 40 cnv 4 4 4 empty empty Granular 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 3 cnv 15 301 42 empty empty grain.synth~ 20 20 2 37 #e0e0e0
+#000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 4 632 cnv 15 552 21 empty empty empty 20 12 0 14 -233017 -33289
+#X obj 4 590 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 6 298 cnv 3 550 3 empty empty inlets 8 12 0 13 -228856 -1 0
-;
-#X obj 6 491 cnv 3 550 3 empty empty outlets 8 12 0 13 -228856 -1 0
-;
-#X obj 5 542 cnv 3 550 3 empty empty arguments 8 12 0 13 -228856 -1
+#X obj 6 298 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 87 498 cnv 17 3 17 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 6 491 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 88 498 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 89 305 cnv 17 3 181 empty empty 0 5 9 0 16 -228856 -162280 0
+#X obj 90 305 cnv 17 3 181 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 6 590 cnv 3 550 3 empty empty flags 8 12 0 13 -228856 -1 0;
-#X text 125 566 2) symbol;
-#X text 125 549 1) float;
-#X obj 87 519 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
+#X obj 6 540 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 88 519 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 151 303 bang - plays an dur of pitch clouds, f 64;
-#X text 103 459 scale <list> - scale to autotune to in cents (default
+#X text 146 303 bang - plays an dur of pitch clouds, f 64;
+#X text 98 459 scale <list> - scale to autotune to in cents (default
 equal temperament), f 72;
 #X text 127 473 base <f> - sets scale's base MIDI pitch (default 60)
 , f 68;
-#X text 115 402 pan <f \, f> - sets left and right pan boundaries (default
+#X text 110 402 pan <f \, f> - sets left and right pan boundaries (default
 -1 to 1), f 70;
-#X text 103 445 autotune <f> - non-zero autotunes to a given scale
-(default 0), f 72;
+#X text 98 445 autotune <f> - non-zero autotunes to a given scale (default
+0), f 72;
 #X text 187 499 signal - left channel output;
 #X text 187 519 signal - right channel output;
-#X text 190 566 - sets table name with waveform (default none);
-#X obj 347 132 cnv 15 138 55 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 347 132 cnv 15 138 55 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X array \$0-wave 4099 float 1;
@@ -621,17 +617,15 @@ equal temperament), f 72;
 -1.86084e-05 0.00535989;
 #X coords 0 1 4098 -1 140 57 1 0 0;
 #X restore 346 131 graph;
-#X obj 248 179 nbx 3 14 1 32 0 0 empty empty empty 0 -8 0 12 -228856
--1 -1 1 256;
-#X obj 94 40 cnv 4 4 4 empty empty synthesis 0 28 2 18 -233017 -1 0
-;
-#N canvas 761 169 801 548 example 0;
+#X obj 94 40 cnv 4 4 4 empty empty synthesis 0 28 2 18 #e0e0e0 #000000
+0;
+#N canvas 565 169 801 548 example 0;
 #N canvas 552 271 592 396 tuning 0;
 #X obj 64 339 outlet;
 #X obj 94 236 else/eqdiv;
 #X msg 63 80 autotune \$1;
-#X obj 63 54 tgl 15 0 empty empty empty 17 7 0 10 -228856 -1 -1 0 1
-;
+#X obj 63 54 tgl 15 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
+0 1;
 #X msg 94 112 3 13;
 #X msg 112 153 2 12;
 #X msg 103 132 2 13;
@@ -656,50 +650,50 @@ a base value., f 50;
 #X restore 93 166 pd tuning;
 #N canvas 521 189 602 432 presets 0;
 #X obj 99 351 outlet;
-#X msg 141 265 3 \, dur 1000 \, pitch 43 90 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 1000 8000, f 65;
-#X msg 146 294 3 \, dur 1000 \, pitch 55 79 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 2000 4000, f 65;
-#X msg 120 210 10 \, dur 500 \, pitch 86 90 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 20 50, f 61;
-#X msg 82 123 256 \, dur 2000 \, picth 30 110 \, pan -1 1 \, amp 0.05
-1 \, size 30 60, f 61;
-#X msg 99 152 128 \, dur 1000 \, pitch 43 62 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 40 60, f 63;
 #X obj 82 99 loadbang;
-#X msg 128 235 10 \, dur 1000 \, pitch 55 59 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 250 800, f 64;
-#X msg 114 181 32 \, dur 1000 \, pitch 67 71 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 50 250, f 63;
 #X text 183 46 Here we have different messages with all the setable
 parameters. The pan range is from -1 (left) to 1 (right)., f 37;
-#X connect 1 0 0 0;
-#X connect 2 0 0 0;
+#X msg 82 123 n 256 \, dur 2000 \, picth 30 110 \, pan -1 1 \, amp
+0.05 1 \, size 30 60, f 64;
+#X msg 99 151 n 128 \, dur 1000 \, pitch 43 62 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 40 60, f 66;
+#X msg 114 181 m 32 \, dur 1000 \, pitch 67 71 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 50 250, f 66;
+#X msg 120 210 n 10 \, dur 500 \, pitch 86 90 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 20 50, f 64;
+#X msg 128 235 n 10 \, dur 1000 \, pitch 55 59 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 250 800, f 67;
+#X msg 141 265 n 3 \, dur 1000 \, pitch 43 90 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 1000 8000, f 68;
+#X msg 146 294 n 3 \, dur 1000 \, pitch 55 79 \, pan -0.8 0.8 \, amp
+0.1 1 \, size 2000 4000, f 68;
+#X connect 1 0 3 0;
 #X connect 3 0 0 0;
 #X connect 4 0 0 0;
 #X connect 5 0 0 0;
-#X connect 6 0 4 0;
+#X connect 6 0 0 0;
 #X connect 7 0 0 0;
 #X connect 8 0 0 0;
+#X connect 9 0 0 0;
 #X restore 124 196 pd presets;
-#X obj 140 247 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
-#X obj 140 296 bng 18 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 140 247 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
+#X obj 140 296 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 187 247 route dur;
 #X obj 140 273 metro;
-#X floatatom 187 269 5 0 0 0 - - -;
+#X floatatom 187 269 5 0 0 0 - - - 0;
 #X obj 130 466 else/out~;
 #X text 225 191 Here's some presets for you to have fun with, f 23
 ;
 #X msg 234 302 sync \$1;
-#X obj 234 275 tgl 18 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
-1;
+#X obj 234 275 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
 #X text 258 275 synchronous mode;
 #X text 192 196 <==;
-#X obj 236 335 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 278 331 density (number of grains), f 15;
+#X obj 223 396 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X text 265 392 density (number of grains), f 15;
 #X text 54 33 Try some of the presets and also try dfferent parameters
 from the settings here \, where we can change to synchronous mode and
 also the density (number of grains).;
@@ -716,10 +710,9 @@ to sync mode at creation with the -sync flag., f 58;
 #X obj 513 439 else/insert env;
 #X msg 455 406 sin;
 #X obj 513 216 else/initmess 0 0.05 1 0.95 0;
-#X obj 233 371 r \$0-set-env;
+#X obj 238 335 r \$0-set-env;
 #X msg 487 406 tri;
 #X msg 522 406 hann;
-#X obj 124 421 else/grain.synth~ \$0-wave -sync, f 17;
 #X text 449 48 By default \, the envelope is a sine shape \, like the
 default in the [envelope~] object. You can set other envelope function
 types \, namely 'tri' \, 'hann' and 'gauss' (also like in the [envelope~]
@@ -730,68 +723,66 @@ as taken by [function~] (which is used internally). This syntax is
 also given by the [function] GUI object., f 48;
 #X text 445 258 [function];
 #X msg 559 406 gauss 0.3;
-#X connect 0 0 27 0;
+#X obj 124 421 else/grain.synth~ -t \$0-wave -sync, f 17;
+#X connect 0 0 31 0;
 #X connect 1 0 4 0;
-#X connect 1 0 27 0;
+#X connect 1 0 31 0;
 #X connect 2 0 5 0;
-#X connect 3 0 27 0;
+#X connect 3 0 31 0;
 #X connect 4 0 6 0;
 #X connect 5 0 3 0;
 #X connect 6 0 5 1;
-#X connect 9 0 27 0;
+#X connect 9 0 31 0;
 #X connect 10 0 9 0;
-#X connect 13 0 27 0;
+#X connect 13 0 31 1;
 #X connect 18 0 20 0;
 #X connect 20 0 21 0;
 #X connect 21 0 19 0;
 #X connect 22 0 21 0;
 #X connect 23 0 18 0;
-#X connect 24 0 27 0;
+#X connect 24 0 31 0;
 #X connect 25 0 21 0;
 #X connect 26 0 21 0;
-#X connect 27 0 7 0;
-#X connect 27 1 7 1;
-#X connect 31 0 21 0;
+#X connect 30 0 21 0;
+#X connect 31 0 7 0;
+#X connect 31 1 7 1;
 #X restore 473 265 pd example;
 #X obj 21 198 s \$0-wave;
 #X msg 21 144 sinesum 4096 1 0.5 0.4 0.3 0.2 0.1 \, normalize, f 22
 ;
 #X obj 21 123 loadbang;
 #X msg 32 177 sinesum 4096 1;
-#X text 189 547 - (optional) number of grains in cloud (default 16)
-;
 #X text 96 86 [grain.synth~] is a waveform based granular synthesizer
 that generates clouds of pitched grains., f 55;
-#X obj 213 205 else/grain.synth~ 32 \$0-wave;
 #X obj 57 247 else/grain.sampler~;
 #X text 113 227 see also:;
 #X obj 76 267 else/grain.live~;
-#X text 145 317 float - number of grains in event cloud (minimum 1
-\, maximum 256), f 65;
-#X text 121 360 dur <f> - sets cloud event duration in ms (default
+#X text 128 360 dur <f> - sets cloud event duration in ms (default
 500), f 69;
-#X text 109 374 size <f \, f> - sets min/max grain sizes in ms (default
+#X text 104 374 size <f \, f> - sets min/max grain sizes in ms (default
 50 to 450), f 71;
-#X text 103 388 pitch <f \, f> - sets min/max pitch values in MIDI
-(default 30 to 90), f 72;
-#X text 115 416 amp <f \, f> - min/max amplitude values (default 0.1
+#X text 98 388 pitch <f \, f> - sets min/max pitch values in MIDI (default
+30 to 90), f 72;
+#X text 110 416 amp <f \, f> - min/max amplitude values (default 0.1
 to 1), f 70;
-#X text 103 332 set <symbol> - sets table name with waveform, f 72
+#X text 98 332 set <symbol> - sets table name with waveform, f 72
 ;
-#X text 127 346 sync <f> - non zero sets to synchronous mode (default
+#X text 122 346 sync <f> - non zero sets to synchronous mode (default
 0), f 68;
-#X text 99 598 -dur <f> | -size <f \, f> | -pitch <f \, f> | -pan <f
-\, f> | -amps <f \, f> | -autotune <f> | -scale <list> | -base <f>
-| -env <any> | -sync, f 70;
 #X text 128 177 sine;
-#X text 121 430 env <any> - envelope type (sin \, hann \, tri \, gauss)
+#X text 116 430 env <any> - envelope type (sin \, hann \, tri \, gauss)
 or function list, f 69;
+#X text 116 317 n <float> - number of grains in event cloud (default
+16 \, min 1 \, max 256), f 72;
+#X text 99 548 -n <float> | -t <symbol> (table name) | -dur <f> | -size
+<f \, f> | -pitch <f \, f> | -pan <f \, f> | -amps <f \, f> | -autotune
+<f> | -scale <list> | -base <f> | -env <any> | -sync, f 65;
+#X obj 213 205 else/grain.synth~ -n 32 -t \$0-wave;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
-#X connect 2 0 44 0;
-#X connect 35 0 44 0;
-#X connect 39 0 38 0;
-#X connect 40 0 39 0;
-#X connect 41 0 38 0;
-#X connect 44 0 3 0;
-#X connect 44 1 3 1;
+#X connect 2 0 51 0;
+#X connect 34 0 33 0;
+#X connect 35 0 34 0;
+#X connect 36 0 33 0;
+#X connect 51 0 3 0;
+#X connect 51 1 3 1;

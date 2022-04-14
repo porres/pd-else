@@ -1,10 +1,10 @@
-#N canvas 702 25 560 696 10;
-#X obj 182 127 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#N canvas 579 23 561 656 10;
+#X obj 182 113 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X obj 182 153 metro 500;
-#X obj 182 176 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 182 138 metro 500;
+#X obj 182 161 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X obj 224 244 else/out~;
+#X obj 194 223 else/out~;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
@@ -29,34 +29,29 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 4 670 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 4 629 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 6 307 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+#X obj 6 281 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 6 529 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 6 527 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 5 580 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 78 536 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 78 534 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 80 314 cnv 17 3 210 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 80 288 cnv 17 3 210 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 6 628 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+#X obj 6 577 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 125 604 2) symbol;
-#X text 125 587 1) float;
-#X obj 78 557 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 78 555 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 93 509 scale <list> - scale to autotune to in cents (default
+#X text 93 483 scale <list> - scale to autotune to in cents (default
 equal temperament), f 74;
-#X text 105 439 pan <f \, f> - sets left and right pan boundaries (default
+#X text 105 413 pan <f \, f> - sets left and right pan boundaries (default
 -1 to 1), f 72;
-#X text 93 495 autotune <f> - non-zero autotunes to a given scale (default
+#X text 93 469 autotune <f> - non-zero autotunes to a given scale (default
 0), f 74;
-#X text 187 537 signal - left channel output;
-#X text 187 557 signal - right channel output;
-#X text 189 585 - number of grains in cloud (default 16), f 44;
-#X obj 218 179 nbx 3 14 1 32 0 0 empty empty empty 0 -8 0 12 #dcdcdc
+#X text 187 535 signal - left channel output;
+#X text 187 555 signal - right channel output;
+#X obj 293 161 nbx 3 14 1 32 0 0 empty empty empty 0 -8 0 12 #dcdcdc
 #000000 #000000 0 256;
 #X obj 94 40 cnv 4 4 4 empty empty sampler 0 28 2 18 #e0e0e0 #000000
 0;
@@ -91,35 +86,35 @@ a given scale \, see [else/autotune] for reference., f 32;
 #N canvas 563 270 746 404 presets 0;
 #X obj 86 335 outlet;
 #X obj 69 126 loadbang;
-#X msg 69 150 256 \, dur 2000 \, transp -1200 1200 \, pan -1 1 \, amp
-0.05 1 \, size 30 60 \, pos 0 1 \, rev 50, f 83;
-#X msg 86 175 128 \, dur 1000 \, transp -600 600 \, pan -0.8 0.8 \,
-amp 0.1 1 \, size 40 60 \, pos 0 1 \, rev 100, f 85;
-#X msg 112 224 10 \, dur 500 \, transp 0 1200 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 20 50 \, pos 0.5 1 \, rev 50, f 84;
-#X msg 136 297 3 \, dur 1000 \, transp -1200 0 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 2000 4000 \, pos 0 1 \, rev 100, f 86;
-#X msg 130 272 3 \, dur 1000 \, transp 0 1200 \, pan -0.8 0.8 \, amp
-0.1 1 \, size 1000 3000 \, pos 0 1 \, rev 50, f 84;
-#X msg 101 200 10 \, dur 1000 \, transp -2400 -1200 \, pan -0.8 0.8
-\, amp 0.1 1 \, size 150 250 \, pos 0.25 0.5 \, rev 50, f 94;
-#X msg 121 248 10 \, dur 1000 \, transp -2400 -1200 \, pan -0.8 0.8
-\, amp 0.1 1 \, size 150 400 \, pos 0.5 1 \, rev 0, f 89;
 #X text 165 35 Here we have different messages with all the setable
 parameters. The pan range is from -1 (left) to 1 (right) and the position
-in the sample is set proprtionally (0 is the beginning of the sample
+in the sample is set proprtionally (0 is the beggining of the sample
 and 1 is the end). The 'rev' message sets the probability in percentage
 that the grain will be played backwards \, so \, for 0 \, we have all
 grains played forward. For 50 \, we have a 50/50 chance \, and for
 100 \, all grains are reversed., f 65;
-#X connect 1 0 2 0;
-#X connect 2 0 0 0;
+#X msg 69 150 n 256 \, dur 2000 \, transp -1200 1200 \, pan -1 1 \,
+amp 0.05 1 \, size 30 60 \, pos 0 1 \, rev 50, f 85;
+#X msg 86 175 n 128 \, dur 1000 \, transp -600 600 \, pan -0.8 0.8
+\, amp 0.1 1 \, size 40 60 \, pos 0 1 \, rev 100, f 87;
+#X msg 101 200 n 10 \, dur 1000 \, transp -2400 -1200 \, pan -0.8 0.8
+\, amp 0.1 1 \, size 150 250 \, pos 0.25 0.5 \, rev 50, f 95;
+#X msg 112 224 n 10 \, dur 500 \, transp 0 1200 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 20 50 \, pos 0.5 1 \, rev 50, f 84;
+#X msg 121 248 n 10 \, dur 1000 \, transp -2400 -1200 \, pan -0.8 0.8
+\, amp 0.1 1 \, size 150 400 \, pos 0.5 1 \, rev 0, f 91;
+#X msg 130 272 n 3 \, dur 1000 \, transp 0 1200 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 1000 3000 \, pos 0 1 \, rev 50, f 86;
+#X msg 136 297 n 3 \, dur 1000 \, transp -1200 0 \, pan -0.8 0.8 \,
+amp 0.1 1 \, size 2000 4000 \, pos 0 1 \, rev 100, f 88;
+#X connect 1 0 3 0;
 #X connect 3 0 0 0;
 #X connect 4 0 0 0;
 #X connect 5 0 0 0;
 #X connect 6 0 0 0;
 #X connect 7 0 0 0;
 #X connect 8 0 0 0;
+#X connect 9 0 0 0;
 #X restore 111 210 pd presets;
 #X obj 126 253 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
@@ -141,19 +136,18 @@ This is more noticeable if you have less density. You can set the object
 to sync mode at creation with the -sync flag., f 58;
 #X text 183 212 <==;
 #X text 145 176 <= about tuning;
-#X msg 218 314 sync \$1;
-#X obj 218 287 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X msg 163 334 sync \$1;
+#X obj 163 307 tgl 18 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X text 242 287 synchronous mode;
-#X obj 219 355 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X text 187 307 synchronous mode;
+#X obj 222 375 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 261 351 density (number of grains), f 15;
+#X text 264 371 density (number of grains);
 #X msg 304 432 \$2;
 #X floatatom 304 453 5 0 0 0 - - - 0;
 #X msg 304 473 sr \$1;
 #X text 341 452 sample rate;
-#X obj 202 389 r \$0-set;
-#X obj 304 410 else/sample~ \$0-sax sax.wav;
+#X obj 156 393 r \$0-set;
 #X obj 304 495 s \$0-set;
 #X text 439 462 If a sample has a dfferent sample rate than Pd's \,
 you can set it with the 'sr' message so the player adjusts the reading
@@ -177,71 +171,76 @@ also given by the [function] GUI object., f 48;
 #X text 482 205 [function];
 #X obj 550 418 s \$0-set;
 #X msg 596 353 gauss 0.3;
-#X obj 111 428 else/grain.sampler~ \$0-sax -sync, f 19;
-#X connect 0 0 38 0;
+#X obj 111 428 else/grain.sampler~ -t \$0-sax -sync, f 19;
+#X obj 304 410 else/sample~ \$0-sax sax.wav;
+#X connect 0 0 37 0;
 #X connect 1 0 4 0;
-#X connect 1 0 38 0;
+#X connect 1 0 37 0;
 #X connect 2 0 5 0;
-#X connect 3 0 38 0;
+#X connect 3 0 37 0;
 #X connect 4 0 6 0;
 #X connect 5 0 3 0;
 #X connect 6 0 5 1;
-#X connect 13 0 38 0;
+#X connect 13 0 37 0;
 #X connect 14 0 13 0;
-#X connect 16 0 38 0;
+#X connect 16 0 37 1;
 #X connect 18 0 19 0;
 #X connect 19 0 20 0;
-#X connect 20 0 24 0;
-#X connect 22 0 38 0;
-#X connect 23 0 18 0;
+#X connect 20 0 23 0;
+#X connect 22 0 37 0;
+#X connect 25 0 26 0;
 #X connect 26 0 27 0;
-#X connect 27 0 28 0;
-#X connect 28 0 36 0;
-#X connect 29 0 28 0;
-#X connect 30 0 26 0;
-#X connect 31 0 28 0;
-#X connect 32 0 28 0;
-#X connect 37 0 28 0;
-#X connect 38 0 7 0;
-#X connect 38 1 7 1;
-#X restore 468 268 pd example;
-#X text 68 86 [grain.sampler~] is a sample based granulator that generates
-clouds of grains., f 61;
-#X text 189 604 - sets table name with sample (default none);
-#X obj 34 262 else/grain.synth~;
-#X text 35 216 see also:;
-#X obj 34 239 else/grain.live~;
-#X text 123 354 dur <f> - sets cloud event duration in ms (default
+#X connect 27 0 35 0;
+#X connect 28 0 27 0;
+#X connect 29 0 25 0;
+#X connect 30 0 27 0;
+#X connect 31 0 27 0;
+#X connect 36 0 27 0;
+#X connect 37 0 7 0;
+#X connect 37 1 7 1;
+#X connect 38 0 18 0;
+#X restore 468 254 pd example;
+#X text 38 86 [grain.sampler~] is a sample based granulator that generates
+clouds of grains., f 78;
+#X obj 34 248 else/grain.synth~;
+#X text 35 202 see also:;
+#X obj 34 225 else/grain.live~;
+#X text 123 328 dur <f> - sets cloud event duration in ms (default
 500), f 69;
-#X text 141 312 bang - plays an event of pitch clouds, f 66;
-#X text 135 326 float - number of grains in cloud event (minimum 1
-\, maximum 256), f 67;
-#X text 93 368 set <symbol> - sets table name with loaded sample,
+#X text 141 286 bang - plays an event of pitch clouds, f 66;
+#X text 93 342 set <symbol> - sets table name with loaded sample,
 f 74;
-#X text 99 396 size <f \, f> - sets min/max grain sizes in ms (default
+#X text 99 370 size <f \, f> - sets min/max grain sizes in ms (default
 50 to 450), f 73;
-#X text 105 424 pos <f \, f> - sets min/max grain position (default
+#X text 105 398 pos <f \, f> - sets min/max grain position (default
 0 to 1), f 72;
-#X text 105 453 amp <f \, f> - min/max amplitude values (default 0.1
+#X text 105 427 amp <f \, f> - min/max amplitude values (default 0.1
 to 1), f 72;
-#X text 117 340 sync <f> - non zero sets to synchronous mode (default
+#X text 117 314 sync <f> - non zero sets to synchronous mode (default
 0), f 70;
-#X text 87 410 transp <f \, f> - sets min/max transposition in cents
+#X text 87 384 transp <f \, f> - sets min/max transposition in cents
 (default -1200 to 1200), f 75;
-#X text 99 467 rev <float> - sets probability in % of grain being reversed
+#X text 99 441 rev <float> - sets probability in % of grain being reversed
 (default 0), f 73;
-#X text 64 636 -dur <f> | -size <f \, f> | -transp <f \, f> | -pan
-<f \, f> | -sync | -env <any> | -amps <f \, f> | -pos <f \, f> | -autotune
-<f> | -scale <list> | -rev <float>, f 77;
-#X text 105 382 sr <float> - sets sample rate for reading the buffer
+#X text 105 356 sr <float> - sets sample rate for reading the buffer
 (default Pd's), f 72;
-#X obj 323 130 else/sample~ \$0-sample violin.wav, f 12;
-#X text 111 481 env <any> - envelope type (sin \, hann \, tri \, gauss)
+#X obj 313 126 else/sample~ \$0-sample violin.wav;
+#X text 111 455 env <any> - envelope type (sin \, hann \, tri \, gauss)
 or function list, f 71;
-#X obj 182 215 else/grain.sampler~ 32 \$0-sample;
+#X obj 182 187 else/grain.sampler~ -n 32 -t \$0-sample, f 19;
+#X text 117 300 n <float> - number of grains in cloud event (minimum
+1 \, maximum 256), f 70;
+#X text 66 586 -n <f> | -t <symbol> (table name) | -dur <f> | -size
+<f \, f> | -transp <f \, f> | -pan <f \, f> | -sync | -env <any> |
+-amps <f \, f> | -pos <f \, f> | -autotune <f> | -scale <list> | -rev
+<float>, f 79;
+#X obj 78 503 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X text 135 504 float - number of grains in cloud event (minimum 1
+\, maximum 256), f 64;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
-#X connect 2 0 53 0;
-#X connect 31 0 53 0;
-#X connect 53 0 3 0;
-#X connect 53 1 3 1;
+#X connect 2 0 46 0;
+#X connect 27 0 46 1;
+#X connect 46 0 3 0;
+#X connect 46 1 3 1;

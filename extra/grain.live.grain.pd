@@ -1,6 +1,6 @@
-#N canvas 492 23 604 699 12;
-#X obj 447 387 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
-#000000 0 1;
+#N canvas 492 23 604 724 12;
+#X obj 447 387 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 0
+1;
 #X obj 447 414 switch~;
 #X obj 209 569 *~;
 #X obj 153 33 inlet;
@@ -280,7 +280,7 @@ length pos float sync rev env, f 88;
 #X obj 422 125 r \$0-type;
 #X obj 421 180 == 3;
 #X obj 93 159 *~ 1;
-#X floatatom 137 157 5 1 100 0 - - - 0;
+#X floatatom 137 157 5 1 100 0 - - -;
 #X obj 93 186 +~ 0;
 #X obj 137 186 expr (1 - $f1) / 2;
 #X text 184 157 sigma;
