@@ -38,8 +38,8 @@ static t_int *pimp_perform_magic(t_int *w){
         t_float input_phase = fmod(*scalar, 1);
         if(input_phase < 0)
             input_phase += 1;
-        if(input_phase == 0 && x->x_posfreq)
-            input_phase = 1;
+/*        if(input_phase == 0 && x->x_posfreq)
+            input_phase = 1;*/
         x->x_phase = input_phase;
         magic_setnan(x->x_signalscalar);
     }
@@ -58,14 +58,14 @@ static t_int *pimp_perform_magic(t_int *w){
             phase_dev = fmod(phase_dev, 1); // fmod(phase_dev)
         if(hz >= 0){
             phase = phase + phase_dev;
-            if(phase_dev != 0 && phase <= 0)
+            if(phase_dev != 0 && phase <= 0){
                 phase = phase + 1.; // wrap deviated phase
-            post("hz >= 0 | phase = %f", phase);
+            }
             *out2++ = phase >= 1.;
             if(phase >= 1.)
                 phase = phase - 1; // wrapped phase
         }
-        else{
+        else{ // hz < 0
             phase = phase + phase_dev;
             if(phase >= 1)
                 phase = phase - 1.; // wrap deviated phase
@@ -115,7 +115,7 @@ static t_int *pimp_perform(t_int *w){
             if(phase >= 1.)
                 phase = phase - 1; // wrapped phase
         }
-        else{
+        else{ // hz < 0
             if(trig > 0 && trig < 1)
                 phase = trig;
             else if(trig == 1)
@@ -135,7 +135,7 @@ static t_int *pimp_perform(t_int *w){
     }
     x->x_phase = phase;
     x->x_last_phase_offset = last_phase_offset;
-    return (w + 8);
+    return(w+8);
 }
 
 static void pimp_dsp(t_pimp *x, t_signal **sp){
@@ -166,11 +166,7 @@ static void *pimp_new(t_floatarg f1, t_floatarg f2){
     init_phase = init_phase < 0 ? 0 : init_phase >= 1 ? 0 : init_phase; // clipping phase input
     if(init_freq >= 0)
         x->x_posfreq = 1;
-/*    if(init_phase == 0 && x->x_posfreq)
-        x->x_phase = 1.;
-    else*/
-        x->x_phase = init_phase;
-    post("x->x_phase = %f", x->x_phase);
+    x->x_phase = init_phase;
     x->x_last_phase_offset = 0;
     x->x_freq = init_freq;
     x->x_sr = sys_getsr(); // sample rate
