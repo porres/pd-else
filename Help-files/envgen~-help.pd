@@ -157,9 +157,6 @@ family of objects in Pd Vanilla)., f 36;
 #X obj 738 289 else/envgen~;
 #X text 762 417 -1;
 #X msg 738 250 -1 200 1 200 0 200 0.5 100 1 400 -1, f 18;
-#X text 417 362 The [envgen~] object works also as an all purpose line
-generator such as [vline~]. This means you can have multiple line segments
-and in any range., f 45;
 #X msg 760 154 0 1000 1 500 0;
 #X text 506 21 You can pause the envelope at any point with the "pause"
 message \, after which the "resume" message restarts the envelope.
@@ -168,6 +165,11 @@ the same as using the right inlet.;
 #X text 666 155 set envelope =>;
 #X obj 296 195 else/envgen~ -init 0.5 0 1000 1 250 0.25 250 0.25 500
 1 250 1 250 0, f 22;
+#X text 399 347 The [envgen~] object works also as an all purpose line
+generator such as [vline~]. This means you can have multiple line segments
+and in any range. Note that the maximum number of segments is 64! Use
+multiple messages and use the right outlet bang to change them if you
+need more than that., f 45;
 #X connect 0 0 12 0;
 #X connect 1 0 12 0;
 #X connect 2 0 12 0;
@@ -181,15 +183,15 @@ the same as using the right inlet.;
 #X connect 15 0 16 0;
 #X connect 17 0 28 0;
 #X connect 20 0 21 0;
-#X connect 22 0 45 0;
+#X connect 22 0 44 0;
 #X connect 28 0 30 0;
 #X connect 29 0 30 0;
 #X connect 30 0 15 0;
 #X connect 36 0 35 0;
 #X connect 38 0 36 0;
 #X connect 40 0 38 0;
-#X connect 42 0 12 1;
-#X connect 45 0 20 0;
+#X connect 41 0 12 1;
+#X connect 44 0 20 0;
 #X restore 492 69 pd basic;
 #X obj 178 137 *~;
 #X obj 178 168 else/out~;
@@ -604,7 +606,7 @@ and offer a mirrored/reversed curve. Check below., f 70;
 #X obj 393 157 sel 0;
 #X obj 393 184 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 410 186 done;
+#X text 413 185 done;
 #X obj 393 132 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X text 204 635 -;
