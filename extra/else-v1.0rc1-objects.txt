@@ -118,6 +118,8 @@ eqdiv	x
 euclid	x
 expand~	x
 f2s~	x
+frac+	x
+frac*	x
 frac2cents	x
 frac2dec	x
 factor	x
@@ -243,9 +245,11 @@ nmess	x
 noisegate~	x
 norm~	x
 note	x
+note2dur	x
 note2pitch	x
 note.in	x
 note.out	x
+noteinfo	x
 nyquist~	x
 op	x
 op~	x
@@ -290,6 +294,8 @@ pluck~	x
 pmosc~	x
 pol2car	x
 pol2car~	x
+polymetro	x
+polymetro~	x
 power~	x
 presets	x
 properties	x
@@ -326,6 +332,7 @@ ratio2cents	x
 ratio2cents~	x
 rdelay~	x
 rec	x
+rec2	x
 rec.file~	x
 receiver	x
 rescale	x
@@ -377,6 +384,7 @@ slice	x
 slider2d	x
 sort	x
 spectrograph~	x
+speed	x
 spread~	x
 spread	x
 square~	x
