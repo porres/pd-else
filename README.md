@@ -4,9 +4,9 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-1 (release candidate #1) With Live Electronics Tutorial 
+### Version: 1.0-0 RC-1 (release candidate #1) With Live Electronics Tutorial. 
 
-###   Released april 18th 2022 
+###   Released: April 18th 2022. 
 
 
 
@@ -27,17 +27,15 @@
 
 ###   About ELSE
 
-
-
-This version of ELSE needs **Pd 0.52-1* or above.
+This version of ELSE needs **Pd 0.52-1** or above.
 
 ELSE is a big library of externals that extends the performance Pure Data (Pd) - Miller S. Puckette's realtime computer music environment (download Pd from: http://msp.ucsd.edu/software.html).
 
-ELSE provides a cohesive system for computer music, it also serves as a basis for an Live Electronics Tutorial by the same author, yours truly, Alexandre Torres Porres. This tutorial is also found as part of the download of the ELSE library. This library's repository resides at <https://github.com/porres/pd-else/>.
+ELSE provides a cohesive system for computer music, it also serves as a basis for an Live Electronics Tutorial by the same author, yours truly, Alexandre Torres Porres. This library's repository resides at <https://github.com/porres/pd-else/>. This tutorial is also found as part of the download of the ELSE library. Look for the 'Live-Electronics-Tutorial' folder inside it and also check its README on how to install it.
 
-​Note that the downloads of ELSE also contain a "Live Eletronics Tutorial" as part of the package (as mentioned above). Look for the 'Live-Electronics-Tutorial' folder inside it and also check its README on how to install it.
+​Note that you can also download Camomile with support for ELSE externals, see <https://github.com/emviveros/Camomile-ELSE/releases>.
 
-​Note that you can also download Camomile with support for ELSE externals, see https://github.com/emviveros/Camomile-ELSE/releases/
+​ELSE is also part of the <https://github.com/timothyschoen/PlugData> project, which loads Pd as a standalone or VST with a revamped GUI.
 
 ​This project is still in an experimental phase (currently at a 'release candidate' phase), where  changes may occur and backwards compatibility is not guaranteed until a final and more stable release is available. 
 
@@ -47,7 +45,7 @@ ELSE provides a cohesive system for computer music, it also serves as a basis fo
 
 ### Downloading ELSE:
 
-​	You can get ELSE from https://github.com/porres/pd-else/releases - where all releases are available, but ELSE is also found via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else').  In any case, you should download the folder to a place Pd automatically searches for, and the common place is the ~/documents/pd/externals folder. Instructions on how to build ELSE are provided below.
+​	You can get ELSE from https://github.com/porres/pd-else/releases - where all releases are available, but ELSE is also found via Pd's external manager (In Pd, just go for Help => Find Externals and search for 'else'). In any case, you should download the folder to a place Pd automatically searches for, and the common place is the **~/documents/pd/externals** folder. Instructions on how to install and build ELSE are provided below.
 
 
 
@@ -55,27 +53,9 @@ ELSE provides a cohesive system for computer music, it also serves as a basis fo
 
 ### Installing ELSE:
 
-​	ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path or use [declare -path else]. ELSE comes with a binary that you can use load via "Preferences => Startup" or with [declare -lib else], but all that this does is print information of what version of ELSE you have when you open Pd.  You can also just load the 'else' external for that same purpose, check its help file. 
+​	ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path or use **[declare -path else]**. ELSE comes with a binary that you can use load via "Preferences => Startup" or with [declare -lib else], but all that this does is print information of what version of ELSE you have when you open Pd. You can also just load the 'else' external for that same purpose, check its help file. 
 
 ​	It's important to stress this release needs Pd Vanilla 0.52-1 or above ("Pd Extended"/"Purr Data" aren't supported). 
-
-
-
---------------------------------------------------------------------------
-
-### More About ELSE
-
-**"EL Locus Solus"** is run by me, Alexandre Torres Porres, and it organizes cultural events/concerts and music technology courses (<http://alexandre-torres.wixsite.com/el-locus-solus> ) where a Live Electronics tutorial is provided with examples in Pure Data for its courses. These have been recently translated and completely rewritten to english with plans of being accompanied by a book. The latest releases are available at: <https://github.com/porres/Live-Electronic-Music-Tutorial>. This tutorial solely depends on the ELSE library and is a great didactic companion to this library. Both the library and the tutorial are provided as a single download, directly via Pure Data or GitHub.
-
-The examples from the first incarnation of this tutorial were first developed for the now abandoned Pd Extended, making extensive use of the existing objects available in Pd Extended's libraries. Even though Pd Extended had many externals, there was the need at some point for something "else" - thus, this library emerged with the goal of providing more objects to include missing functionalities in the Pd Ecossystem.
-
-But the library grew to encompass functionalities found in other Pd objects/libraries from old Pd Extended as well, with a different design and more functionalities. This was done in order to remove ALL the dependencies of the didactic material from these other libraries - with the goal to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving much attention. I'm also involved in maintaining Cyclone, a legacy library for Pd (see: <https://github.com/porres/pd-cyclone>). But ELSE also superseeds cyclone for the purposes of this didactic material. See below in this document a list of alternatives to Cyclone provided by ELSE.
-
-The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. So that's it, ELSE is becoming a quite big library and keeps growing and growing. 
-
-ELSE has been in active development for over 5 years but it will still take a little while for it to stabilize into a final version. For now, it's at a "Release Candidate" stage of development, where changes may occur and backwards compatibility is not guaranteed until a final release is available. 
-
-
 
 --------------------------------------------------------------------------
 
@@ -97,6 +77,19 @@ Cross compiling is also possible with something like this
 <pre>make CC=arm-linux-gnueabihf-gcc target.arch=arm7l install objectsdir=../</pre>
 
 
+--------------------------------------------------------------------------
+
+### More About ELSE
+
+**"EL Locus Solus"** is run by yours truly, Alexandre Torres Porres, and it organizes cultural events/concerts and music technology courses (<http://alexandre-torres.wixsite.com/el-locus-solus> ) where a Live Electronics tutorial is provided with examples in Pure Data for its courses. These have been recently translated and completely rewritten to english with plans of being accompanied by a book. The latest releases are available at: <https://github.com/porres/Live-Electronic-Music-Tutorial>. This tutorial solely depends on the ELSE library and is a great didactic companion to this library. Both the library and the tutorial are provided as a single download, directly via Pure Data or GitHub.
+
+The examples from the first incarnation of this tutorial were first developed for the now abandoned Pd Extended, making extensive use of the existing objects available in Pd Extended's libraries. Even though Pd Extended had many externals, there was the need at some point for something "else" - thus, this library emerged with the goal of providing more objects to include missing functionalities in the Pd Ecossystem.
+
+But the library grew to encompass functionalities found in other Pd objects/libraries from old Pd Extended as well, with a different design and more functionalities. This was done in order to remove ALL the dependencies of the didactic material from these other libraries - with the goal to rely on just a single library that's alive (in active development) instead of many projects that are now long gone abandoned or not receiving much attention. I'm also involved in maintaining Cyclone, a legacy library for Pd (see: <https://github.com/porres/pd-cyclone>). But ELSE also superseeds cyclone for the purposes of this didactic material. See below in this document a list of alternatives to Cyclone provided by ELSE.
+
+The goal of ELSE also outgrew the didactic material and includes now objects not necessarily depicted in the computer music examples. Moreover, even basic elements from Pd Vanilla are being redesigned into new objects. So that's it, ELSE is becoming a quite big library and keeps growing and growing. 
+
+ELSE has been in active development for over 5 years but it will still take a little while for it to stabilize into a final version. For now, it's at a "Release Candidate" stage of development, where changes may occur and backwards compatibility is not guaranteed until a final release is available. 
 
 --------------------------------------------------------------------------
 
@@ -104,10 +97,9 @@ Cross compiling is also possible with something like this
 
 ​	Special thanks to Flávio Luis Schiavoni, for helping me out in a few things when I first started coding and collaborating with the objects: [median~] and [keyboard]. 
 
-​	I'd also like to thank my cyclone buddies Derek Kwan and Matt Barber, cause I started learning how to code externals with them as part of the cyclone team. Other developers of cyclone need to be praised, like Czaja, the original author, as I did steal quite a bit from cyclone into ELSE. I'd like to give a special thanks for Matt Barber for developing the "magic" in cyclone that I'm using here and also collaborating to ELSE with the objects: [float2bits], [brown~],  [gray~], [perlin~] and [pinknoise~] .
+​	I'd also like to thank my Cyclone buddies Derek Kwan and Matt Barber, cause I started learning how to code externals with them as part of the cyclone team. Other developers of cyclone need to be praised, like Czaja, the original author, as I did steal quite a bit from cyclone into ELSE. I'd like to give a special thanks for Matt Barber for developing the "magic" in cyclone that I'm using here and also collaborating to ELSE with the objects: [float2bits], [brown~], [gray~], [perlin~] and [pinknoise~] .
 
-​	For last, I need to thank my buddy Esteban Viveros for helping with the compilation of ELSE for Camomile.
-
+​	For last, I need to thank my buddy Esteban Viveros for helping with the compilation of ELSE for other systemas as well as ELSE for Camomile.
 
 
 --------------------------------------------------------------------------
@@ -784,6 +776,7 @@ Alternatives:
 
 
 GUI:
+
 - comment => else/note
-- scope~ => else/oscilloscope~
+- scope~ => else/oscope~
 
