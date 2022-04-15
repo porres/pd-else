@@ -6,13 +6,17 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 
 ----------------------------------------------------------------------------
 
-1.0-0 Release Candidate 1
+----------------------------------------------------------------------------
+1.0-0 Release Candidate 1:
+----------------------------------------------------------------------------
 
 LIBRARY:
+---------
 
-- FLAGS now should come and this breaks the majority of the following objects: this was a major issue in ELSE, where it allows flags after arguments and this is not how flags work in Pd Vanilla, so this has finally been fixed. Affected objects: count, grain.live~, grain.sampler~, grain.synth~, gran.player~, pvoc.player~, bpbank~, oscbank~, oscbank2~, resonbank~, resonbank2~, function~, envgen~, sample~, rec.file~, play.file~, player~, adsr~, asr~, allpass.2nd~, autotune, bandpass~, bandstop~, bend.in/out, cents2frac, chance, clock, comb.filt~, dec2frac, deg2rad, del~, dir, drive~, drunkard/drunkard~, duck~, envelope~, eq~, fbdelay~, ffdelay~, flanger~, glide / glide2 /  glide~ / glide2~, group, highpass~, impulse, interpolate, iterate, lfo, lb, loop, lowpass~, merge, metronome, midi, mono, morph, mov.avg~, mov.rms~, noisegate~, norm~, note.in, note.out, openfile, out1~, pattern, phasor, peak~, pimp, pitch2note, pluck~, presets, pulse, quantizer/quantizer~, rad2deg, ramp~, rescale / rescale~, resonant~, retune, rms~, scales, sh~, shaper~, s2f~, slew / slew2, suspedal, tabplayer~, tabwriter~, touch.in, touch.out, unmerge, voices, xmod~, vocoder~
-- [oscbank~] has an extra freq 2nd argument
-- [function~]/[envgen~]: -exp flag/message is now different and a new expl message has the old behaviour.
+Breaking changes:
+- FLAGS now should come first!!! This was a major issue in ELSE, where it allows flags after arguments and this is not how flags work in Pd Vanilla, so this has finally been fixed but it breaks the majority of the following affected objects: count, grain.live~, grain.sampler~, grain.synth~, gran.player~, pvoc.player~, bpbank~, oscbank~, oscbank2~, resonbank~, resonbank2~, function~, envgen~, sample~, rec.file~, play.file~, player~, adsr~, asr~, allpass.2nd~, autotune, bandpass~, bandstop~, bend.in/out, cents2frac, chance, clock, comb.filt~, dec2frac, deg2rad, del~, dir, drive~, drunkard/drunkard~, duck~, envelope~, eq~, fbdelay~, ffdelay~, flanger~, glide / glide2 /  glide~ / glide2~, group, highpass~, impulse, interpolate, iterate, lfo, lb, loop, lowpass~, merge, metronome, midi, mono, morph, mov.avg~, mov.rms~, noisegate~, norm~, note.in, note.out, openfile, out1~, pattern, phasor, peak~, pimp, pitch2note, pluck~, presets, pulse, quantizer/quantizer~, rad2deg, ramp~, rescale / rescale~, resonant~, retune, rms~, scales, sh~, shaper~, s2f~, slew / slew2, suspedal, tabplayer~, tabwriter~, touch.in, touch.out, unmerge, voices, xmod~, vocoder~
+- [oscbank~] has an extra frequency 2nd argument
+- [function~]/[envgen~]: '-exp' flag/message is now different and a new 'expl' message has the old behaviour.
 - [tempo]/[tempo~]: 'div' parameter renamed to 'mul' (which does not affect immediately in [tempo~] anymore but waits the next bang as in [metro]). No more 'mode' settings in [tempo] and now the default mode is "immediate". These changes make the objects consistent to each other and to other objects in ELSE. 
 - [oscilloscope~]: renamed to [oscope~].
 - [trigger2]: object removed.
@@ -30,11 +34,11 @@ Enhancements/fixes:
 - [impseq~]: added 2nd outlet to send impulse when reaching end of sequence.
 - [sequencer~]: added 2nd outlet to send impulse when reaching end of sequence.
 - [pimpmul~]: fixed resolution issue.
-- [pimp]/[pimp~]: no bang/impulse at loadtime if freq = 0.
+- [pimp]/[pimp~]: no bang/impulse at load time if freq = 0.
 - [pvoc.player~]: fixed some playing control issues.
 - [gran.player~]: fixed transposition.
 - [lincong~]: fixed rescaled output.
-- [frac2dec]: allow 2nd fraction in parenthesis: 7/(3/4) or (8/3)/2.
+- [frac2dec]: allow 2nd fraction in parenthesis: "7/(3/4)" or "(8/3)/2".
 - [dec2frac]/[cents2frac]: fixed resolution bug.
 - [count]: fixed 'set'/'reset' message.
 - [clock]: fixed loading args.
@@ -45,6 +49,8 @@ Enhancements/fixes:
 - 12 new objects for a total of 446: [swap2], [metronome~], [speed], [note2dur], [frac+], [frac*], [polymetro], [polymetro~], [noteinfo], [rec2], [score] and [score2]. 
 
 TUTORIAL:
+---------
+
 - new section on metronomes and clocks in 14-Triggers-LFO-LFNoise
 - new objects contemplated in new examples as usual
 - revision and new examples for chapter 37-Data.Structures

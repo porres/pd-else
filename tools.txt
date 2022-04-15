@@ -1,2 +1,7 @@
+
+make install objectsdir=../
+
+./deken upload -v 1.0-0rc1-test_with_live_electronics_tutorial else --no-source-error
+
 LC_ALL=C find . -type f -name '*.pd' -exec sed -i '' s/else\\///g {} +;
 
