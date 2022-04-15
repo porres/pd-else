@@ -15,6 +15,7 @@ LIBRARY:
 
 Breaking changes:
 - FLAGS now should come first!!! This was a major issue in ELSE, where it allows flags after arguments and this is not how flags work in Pd Vanilla, so this has finally been fixed but it breaks the majority of the following affected objects: count, grain.live~, grain.sampler~, grain.synth~, gran.player~, pvoc.player~, bpbank~, oscbank~, oscbank2~, resonbank~, resonbank2~, function~, envgen~, sample~, rec.file~, play.file~, player~, adsr~, asr~, allpass.2nd~, autotune, bandpass~, bandstop~, bend.in/out, cents2frac, chance, clock, comb.filt~, dec2frac, deg2rad, del~, dir, drive~, drunkard/drunkard~, duck~, envelope~, eq~, fbdelay~, ffdelay~, flanger~, glide / glide2 /  glide~ / glide2~, group, highpass~, impulse, interpolate, iterate, lfo, lb, loop, lowpass~, merge, metronome, midi, mono, morph, mov.avg~, mov.rms~, noisegate~, norm~, note.in, note.out, openfile, out1~, pattern, phasor, peak~, pimp, pitch2note, pluck~, presets, pulse, quantizer/quantizer~, rad2deg, ramp~, rescale / rescale~, resonant~, retune, rms~, scales, sh~, shaper~, s2f~, slew / slew2, suspedal, tabplayer~, tabwriter~, touch.in, touch.out, unmerge, voices, xmod~, vocoder~
+- [tabplayer~]: signal input behaviour is completely different (see enhancements)!
 - [oscbank~] has an extra frequency 2nd argument
 - [function~]/[envgen~]: '-exp' flag/message is now different and a new 'expl' message has the old behaviour.
 - [tempo]/[tempo~]: 'div' parameter renamed to 'mul' (which does not affect immediately in [tempo~] anymore but waits the next bang as in [metro]). No more 'mode' settings in [tempo] and now the default mode is "immediate". These changes make the objects consistent to each other and to other objects in ELSE. 
@@ -27,6 +28,7 @@ Breaking changes:
 
 Enhancements/fixes:
 - Lots of Code cleaning, got rid of all compilation warnings, fixed many many many small bugs, specially in oscillators.
+- [tabplayer~]: now can trigger playing and stop at audio rate with signal input.
 - [mtx.ctl]: now has flags instead of args as the other GUIs.
 - [chance]: fixed loading -seed flag.
 - [function~]/[envgen~]: new 'expi' message sets exponential factor for a single element.
