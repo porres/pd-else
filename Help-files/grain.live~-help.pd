@@ -42,7 +42,7 @@
 #X obj 69 409 outlet;
 #X text 144 32 Here we have different messages with all the setable
 parameters. The pan range is from -1 (left) to 1 (right) and the position
-in the delay line is set proprtionally (0 is the beggining of the delay
+in the delay line is set proprtionally (0 is the beginning of the delay
 line and 1 is the end of the delay line). Note that the length end
 of the delay line can only be set at creation time with the '-length
 <float>' flag. By default \, the length is 5000 ms as in this example.

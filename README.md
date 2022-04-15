@@ -662,7 +662,7 @@ But, here are some considerations:
 - for [kink~] you can use [function~] (and function)
 - [spike~] => [else/status~] + [else/detect~] => [threshold~] + [timer]
 - [anal] is usually used with [prob] for markov chains, but you can use [else/markov] instead
-- [teeth~] is just a comb reverberator wich can be constructed with [else/ffdelay~] + [else/fbdelay~]
+- [teeth~] is just a comb reverberator which can be constructed with [else/ffdelay~] + [else/fbdelay~]
 - [forward] => just message boxes with ";"
 - [flush] => [poly] has a flush option, so does [else/voices]
 - for [coll], you can use [text] which miller considers is a better design, but it's simpler. 

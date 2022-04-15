@@ -88,7 +88,7 @@ a given scale \, see [else/autotune] for reference., f 32;
 #X obj 69 126 loadbang;
 #X text 165 35 Here we have different messages with all the setable
 parameters. The pan range is from -1 (left) to 1 (right) and the position
-in the sample is set proprtionally (0 is the beggining of the sample
+in the sample is set proprtionally (0 is the beginning of the sample
 and 1 is the end). The 'rev' message sets the probability in percentage
 that the grain will be played backwards \, so \, for 0 \, we have all
 grains played forward. For 50 \, we have a 50/50 chance \, and for

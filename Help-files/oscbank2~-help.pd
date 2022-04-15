@@ -92,7 +92,7 @@ f 70;
 #X text 100 348 rampall <float>;
 #X text 201 348 - sets ramp time for all oscillators;
 #X text 104 473 -rampall <float>: sets a ramp time for all oscillators
-(defaul all 10), f 70;
+(default all 10), f 70;
 #X text 61 86 [oscbank2~] is a bank made of [sine~] objects. You can
 set any number of oscillators and control their parameters. If you
 use flags \, the number of elements in the list (such as amplitude

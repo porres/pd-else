@@ -90,7 +90,7 @@ each oscillator in the bank., f 65;
 , f 73;
 #X text 148 611 3) float - ramp time in ms (default 10), f 53;
 #X text 73 547 -rampall <float>: sets a ramp time for all oscillators
-(defaul all 10), f 73;
+(default all 10), f 73;
 #X text 130 408 rampall <float>;
 #X text 238 408 - sets ramp time for all oscillators;
 #X obj 26 292 else/resonbank~;
