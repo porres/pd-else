@@ -39,6 +39,7 @@ Enhancements/fixes:
 - [pimp]/[pimp~]: no bang/impulse at load time if freq = 0.
 - [pvoc.player~]: fixed some playing control issues.
 - [gran.player~]: fixed transposition.
+- [note]: fixed a couple of errors (tcl error when closing a subpatch in edit mode / not deleting resizing handle when deleting object).
 - [lincong~]: fixed rescaled output.
 - [frac2dec]: allow 2nd fraction in parenthesis: "7/(3/4)" or "(8/3)/2".
 - [dec2frac]/[cents2frac]: fixed resolution bug.
