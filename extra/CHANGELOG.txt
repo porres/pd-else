@@ -29,6 +29,7 @@ Breaking changes:
 Enhancements/fixes:
 - Lots of Code cleaning, got rid of all compilation warnings, fixed many many many small bugs, specially in oscillators.
 - [tabplayer~]: now can trigger playing and stop at audio rate with signal input.
+- [gain~]/[gain2~]: fixed initialization.
 - [mtx.ctl]: now has flags instead of args as the other GUIs.
 - [chance]: fixed loading -seed flag.
 - [function~]/[envgen~]: new 'expi' message sets exponential factor for a single element.
