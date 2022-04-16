@@ -135,6 +135,9 @@ static void comment_draw_handle(t_comment *x, int state){
     t_handle *ch = (t_handle *)x->x_handle;
     int x1, y1, x2, y2;
     comment_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
+    // post("always destroy");
+    ch->h_selectedmode = 0;
+    sys_vgui("destroy %s\n", ch->h_pathname);
     if(state){
         if(ch->h_selectedmode == 0){
             sys_vgui("canvas %s -width %d -height %d -bg %s -bd 0 -cursor sb_h_double_arrow\n",
@@ -152,10 +155,6 @@ static void comment_draw_handle(t_comment *x, int state){
         sys_vgui("bind %s <Button> {pdsend [concat %s _click 1 \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
         sys_vgui("bind %s <ButtonRelease> {pdsend [concat %s _click 0 \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
         sys_vgui("bind %s <Motion> {pdsend [concat %s _motion %%x %%y \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
-    }
-    else{
-        ch->h_selectedmode = 0;
-        sys_vgui("destroy %s\n", ch->h_pathname);
     }
 }
 
@@ -378,8 +377,10 @@ static void comment_vis(t_gobj *z, t_glist *glist, int vis){
     x->x_cv = glist_getcanvas(x->x_glist = glist);
     if(!x->x_init)
         comment_initialize(x);
+    t_handle *ch = (t_handle *)x->x_handle;
+    if(x->x_edit)
+        sys_vgui("destroy %s\n", ch->h_pathname);
     if(vis){
-        t_handle *ch = (t_handle *)x->x_handle;
         sprintf(ch->h_pathname, ".x%lx.h%lx", (unsigned long)x->x_cv, (unsigned long)ch);
 //        sys_vgui(".x%lx.c bind all%lx <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", x->x_cv, x, x->x_bindsym->s_name);
         comment_draw(x);
