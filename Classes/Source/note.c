@@ -93,7 +93,6 @@ typedef struct _handle{
     t_symbol       *h_bindsym;
     char            h_pathname[64], h_outlinetag[64];
     int             h_dragon, h_dragx;
-    int             h_selectedmode;
 }t_handle;
 
 // helper functions
@@ -136,14 +135,10 @@ static void comment_draw_handle(t_comment *x, int state){
     int x1, y1, x2, y2;
     comment_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
     // post("always destroy");
-    ch->h_selectedmode = 0;
     sys_vgui("destroy %s\n", ch->h_pathname);
     if(state){
-        if(ch->h_selectedmode == 0){
-            sys_vgui("canvas %s -width %d -height %d -bg %s -bd 0 -cursor sb_h_double_arrow\n",
-                ch->h_pathname, HANDLE_WIDTH, y2-y1, "black");
-            ch->h_selectedmode = 1;
-        }
+        sys_vgui("canvas %s -width %d -height %d -bg %s -cursor sb_h_double_arrow\n",
+            ch->h_pathname, HANDLE_WIDTH, y2-y1, "black");
         sys_vgui(".x%lx.c create window %d %d -anchor nw -width %d -height %d -window %s -tags all%lx\n",
             x->x_cv,
             x2 + 2*x->x_zoom,
@@ -155,6 +150,7 @@ static void comment_draw_handle(t_comment *x, int state){
         sys_vgui("bind %s <Button> {pdsend [concat %s _click 1 \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
         sys_vgui("bind %s <ButtonRelease> {pdsend [concat %s _click 0 \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
         sys_vgui("bind %s <Motion> {pdsend [concat %s _motion %%x %%y \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
+        sys_vgui("focus %s\n", ch->h_pathname); // because of a damn weird bug where it drew all over the canvas
     }
 }
 
