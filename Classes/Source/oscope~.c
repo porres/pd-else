@@ -78,6 +78,9 @@ static void scope_getrect(t_gobj *z, t_glist *gl, int *xp1, int *yp1, int *xp2, 
 // ----------------- DRAW ----------------------------------------------------------------
 static void scope_draw_handle(t_scope *x, int state){
     t_handle *sh = (t_handle *)x->x_handle;
+// always destroy
+    sh->h_selectedmode = 0;
+    sys_vgui("destroy %s\n", sh->h_pathname);
     if(state){
         if(sh->h_selectedmode == 0){
             sys_vgui("canvas %s -width %d -height %d -bg %s -bd 0 -cursor bottom_right_corner\n",
@@ -97,10 +100,6 @@ static void scope_draw_handle(t_scope *x, int state){
         sys_vgui("bind %s <Button> {pdsend [concat %s _click 1 \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
         sys_vgui("bind %s <ButtonRelease> {pdsend [concat %s _click 0 \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
         sys_vgui("bind %s <Motion> {pdsend [concat %s _motion %%x %%y \\;]}\n", sh->h_pathname, sh->h_bindsym->s_name);
-    }
-    else{
-        sh->h_selectedmode = 0;
-        sys_vgui("destroy %s\n", sh->h_pathname);
     }
 }
 
@@ -358,8 +357,10 @@ static void scope_draw_all(t_scope* x){
 static void scope_vis(t_gobj *z, t_glist *glist, int vis){
     t_scope *x = (t_scope *)z;
     x->x_cv = glist_getcanvas(glist);
+    t_handle *sh = (t_handle *)x->x_handle;
+    if(x->x_edit)
+        sys_vgui("destroy %s\n", sh->h_pathname);
     if(vis){
-        t_handle *sh = (t_handle *)x->x_handle;
         sprintf(sh->h_pathname, ".x%lx.h%lx", (unsigned long)x->x_cv, (unsigned long)sh);
         sys_vgui(".x%lx.c bind all%lx <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", x->x_cv, x, x->x_bindsym->s_name);
         int bufsize = x->x_bufsize;
@@ -1223,7 +1224,7 @@ static void *scope_new(t_symbol *s, int ac, t_atom *av){
     x->x_clock = clock_new(x, (t_method)scope_tick);
     return(x);
 errstate:
-    pd_error(x, "[scope~]: improper creation arguments");
+    pd_error(x, "[oscope~]: improper creation arguments");
     return(NULL);
 }
 
