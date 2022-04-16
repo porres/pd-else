@@ -1525,7 +1525,7 @@ void note_setup(void){
     sys_vgui("    set $var_fgb $fgb\n");
     sys_vgui("\n");
     sys_vgui("    toplevel $id\n");
-    sys_vgui("    wm title $id {[comment] Properties}\n");
+    sys_vgui("    wm title $id {[note] Properties}\n");
     sys_vgui("    wm protocol $id WM_DELETE_WINDOW [concat comment_cancel $id]\n");
     sys_vgui("\n");
     sys_vgui("    frame $id.name_size\n");
