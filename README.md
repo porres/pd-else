@@ -652,7 +652,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-**ALTERNATUVES TO CYCLONE**
+**ALTERNATIVES TO CYCLONE**
 
 ELSE offers alternatives to objects from the Cyclone library (a library that clones objects from MAX/MSP). The objects that have no similar counterpart in ELSE (at least so far) are: anal / buddy / capture / capture~ / coll / cycle / decide / decode / frameaccum~ / framedelta~ / funbuff / funnel / flush / forward / histo / kink~ / linedrive / prob / match / maximum / minimum / mousefilter / next / offer / peak / prob / pv / spray / substitute / teeth~ / trough / universal / vectral~
 
@@ -666,8 +666,6 @@ But, here are some considerations:
 - [forward] => just message boxes with ";"
 - [flush] => [poly] has a flush option, so does [else/voices]
 - for [coll], you can use [text] which miller considers is a better design, but it's simpler. 
-
---------
 
 Alternatives:
 
