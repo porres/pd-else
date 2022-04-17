@@ -1,6 +1,10 @@
 
 make install objectsdir=../
 
+make install objectsdir=../ extension=d_fat
+
+make install objectsdir=../ arch="arm64 x86_64"  extension=d_fat
+
 ./deken upload -v 1.0-0rc1-test_with_live_electronics_tutorial else --no-source-error
 
 LC_ALL=C find . -type f -name '*.pd' -exec sed -i '' s/else\\///g {} +;
