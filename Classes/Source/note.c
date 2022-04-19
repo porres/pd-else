@@ -150,7 +150,7 @@ static void comment_draw_handle(t_comment *x, int state){
         sys_vgui("bind %s <Button> {pdsend [concat %s _click 1 \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
         sys_vgui("bind %s <ButtonRelease> {pdsend [concat %s _click 0 \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
         sys_vgui("bind %s <Motion> {pdsend [concat %s _motion %%x %%y \\;]}\n", ch->h_pathname, ch->h_bindsym->s_name);
-        sys_vgui("focus %s\n", ch->h_pathname); // because of a damn weird bug where it drew all over the canvas
+//        sys_vgui("focus %s\n", ch->h_pathname); // because of a damn weird bug where it drew all over the canvas
     }
 }
 
