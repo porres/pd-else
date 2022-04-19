@@ -188,6 +188,7 @@ static void *openfile_new(t_symbol *s, int ac, t_atom *av){
     xgen.x_isboxed = 1;
     xgen.x_vistext = 0;
     xgen.x_vissize = 0;
+    xgen.x_ulink = 0;
     int argn = 0;
     while(ac > 0){
         if(av->a_type == A_SYMBOL){
@@ -229,10 +230,7 @@ static void *openfile_new(t_symbol *s, int ac, t_atom *av){
     x->x_vissize = xgen.x_vissize;
     x->x_vislength = (x->x_vistext ? strlen(x->x_vistext) : 0);
     x->x_rtextactive = 0;
-    if(xgen.x_ulink)
-        x->x_ulink = xgen.x_ulink;
-    else
-        x->x_ulink = &s_;
+    x->x_ulink = xgen.x_ulink ? xgen.x_ulink : &s_;
     if(!x->x_vistext){
         x->x_vislength = strlen(x->x_ulink->s_name);
         x->x_vissize = x->x_vislength + 1;
