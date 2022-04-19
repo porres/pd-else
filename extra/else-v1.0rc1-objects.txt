@@ -118,8 +118,8 @@ eqdiv	x
 euclid	x
 expand~	x
 f2s~	x
-frac+	x
-frac*	x
+frac.add	x
+frac.mul	x
 frac2cents	x
 frac2dec	x
 factor	x

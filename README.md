@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-1 (release candidate #1) With Live Electronics Tutorial. 
 
-###   Released: April 18th 2022. 
+###   Released: April 19th 2022. 
 
 
 
@@ -245,8 +245,8 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [count]
 - [gcd]
 - [lcm]
-- [frac+]
-- [frac*]
+- [frac.add]
+- [frac.mul]
 - [ceil]
 - [ceil~]
 - [factor]

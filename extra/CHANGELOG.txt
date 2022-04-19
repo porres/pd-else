@@ -50,7 +50,7 @@ Enhancements/fixes:
 - [drive~]: fixed loading '-mode' flag.
 - [separate]: now takes anythings for input as well.
 - [metronome]: added output for actual beat length, actual bpm and bar duration. Added support for crazier time signatures with other integer and non integer denominator values (including fractions) and also alternating/aggregate signatures. Added beat length message/flag, sub message/flag and 'pause'/'continue' messages.
-- 12 new objects for a total of 446: [swap2], [metronome~], [speed], [note2dur], [frac+], [frac*], [polymetro], [polymetro~], [noteinfo], [rec2], [score] and [score2]. 
+- 12 new objects for a total of 446: [swap2], [metronome~], [speed], [note2dur], [frac.add], [frac.mul], [polymetro], [polymetro~], [noteinfo], [rec2], [score] and [score2]. 
 
 TUTORIAL:
 ---------

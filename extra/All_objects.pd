@@ -1,9 +1,9 @@
-#N struct 6389-cell float x float y float cellsize float color;
-#N struct 6390-point float x0 float y0 float xs float ys float fg float
+#N struct 6383-cell float x float y float cellsize float color;
+#N struct 6384-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 6409-point float x0 float y0 float size float fg float in
+#N struct 6403-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 6449-slot float x float y float slotsize float color float
+#N struct 6443-slot float x float y float slotsize float color float
 width float bordercolor;
 #N canvas 684 23 532 670 10;
 #X text 53 119 Assorted:;
@@ -634,10 +634,10 @@ width float bordercolor;
 #X text 19 11506 =============================================================================
 , f 77;
 #X text 53 11529 Control: Trigger: Clock;
-#X obj 51 3201 else/frac+;
-#X obj 51 3225 else/frac*;
 #X obj 55 11678 else/metronome~;
 #X text 26 1736 =============================================================================
 , f 77;
 #X obj 51 2897 else/noteinfo;
+#X obj 51 3201 else/frac.add;
+#X obj 51 3225 else/frac.mul;
 #X connect 443 0 442 0;
