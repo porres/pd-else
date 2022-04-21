@@ -3,7 +3,7 @@
 #include <m_pd.h>
 #include <g_canvas.h>
 
-#ifdef _WIN32
+#ifdef _MSC_VER
 #include <io.h>
 #else
 #include <unistd.h>
