@@ -13,8 +13,8 @@ static t_class *shaper_class;
 
 typedef struct _shaper{
     t_object    x_obj;
-    t_float    *x_cheby;
-    t_float    *x_coef;
+    float      *x_cheby;
+    float      *x_coef;
     t_int       x_count;
     t_int       x_norm;
     t_int       x_arrayset;
@@ -119,9 +119,9 @@ static t_int *shaper_perform(t_int *w){
             double i = ph * maxidx;
             output = lin_interp(buf, i);
         }
-        else{
+        else{ // no buffer
             int i = (int)(ph * (double)(FLEN - 1));
-            output = x->x_cheby[i];
+            output = x->x_cheby[i]; // float *chebytab = x->x_cheby; ???
         }
         xn = yn = (double)output;
         if(x->x_dc_filter){
