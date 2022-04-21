@@ -5,8 +5,8 @@
 #include <string.h>
 #include <math.h>
 
-#ifdef _WIN32
-#include <io.h>
+#ifdef _MSC_VER
+#include "dirent_msvc.h"
 #else
 #include <dirent.h>
 #endif
