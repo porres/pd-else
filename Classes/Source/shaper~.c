@@ -5,9 +5,9 @@
 #include <math.h>
 #include <stdlib.h>
 
-#define FLEN        65536
-#define MAX_COEF    256
-#define TWO_PI      (3.14159265358979323846 * 2)
+#define FLEN      65536
+#define MAX_COEF  256
+#define TWO_PI    (3.14159265358979323846 * 2)
 
 static t_class *shaper_class;
 
@@ -33,7 +33,7 @@ static double lin_interp(t_word *buf, double i){ // linear interpolation
     double ya = buf[i1].w_float;
     double yb = buf[i2].w_float;
     double interp = ya + ((yb - ya) * frac);
-    return interp;
+    return(interp);
 }
 
 static void shaper_set(t_shaper *x, t_symbol *s){
@@ -88,8 +88,7 @@ static void shaper_norm(t_shaper *x, t_float f){
 }
 
 static void shaper_list(t_shaper *x, t_symbol *s, short ac, t_atom *av){
-    t_symbol *temp;
-    temp = s; // get rid of warning
+    s = NULL; // get rid of warning
     x->x_count = 1;
     for(short i = 0; i < ac; i++)
         if(av[i].a_type == A_FLOAT)
@@ -156,6 +155,7 @@ static void shaper_free(t_shaper *x){
 static void *shaper_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_shaper *x = (t_shaper *)pd_new(shaper_class);
+    t_symbol *name = &s_;
     x->x_cheby = (float *)calloc(FLEN, sizeof(float));
     x->x_coef = (float *)calloc(MAX_COEF, sizeof(float));
     x->x_count = 2;
@@ -164,7 +164,7 @@ static void *shaper_new(t_symbol *s, int ac, t_atom *av){
     x->x_norm = 1;
     x->x_dc_filter = 1;
     x->x_arrayset = 0;
-    x->x_a = 1 - (5*TWO_PI/(double)x->x_sr);
+    x->x_a = 1 - (5*TWO_PI/(double)sys_getsr());
     int argn = 0;
     if(ac){
         x->x_count = 1;
