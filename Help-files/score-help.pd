@@ -1,4 +1,4 @@
-#N canvas 547 29 562 530 10;
+#N canvas 449 23 563 529 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
@@ -97,7 +97,6 @@ notation syntax as [pattern]., f 76;
 #N canvas 374 23 930 320 basic-1 0;
 #X obj 698 80 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000;
-#X obj 533 56 else/score score-1.txt, f 28;
 #X obj 533 82 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000;
 #X obj 518 219 else/out~;
@@ -115,19 +114,6 @@ as timestamps)., f 68;
 #X text 38 18 [score] has a 'tempo' syntax where 'tempo 60' internally
 sets the bpm to 60! The 'tempo' messages are output in the mid 'data'
 outlet., f 68;
-#X text 38 110 The 'timesig' message is necessary to specify the time
-signature and allow [score] to count the number of beats in a bar.
-It must be specified in the beginning of the score right after the
-bar symbol. Time signature changes are possible and need to be specified
-after any bar symbol. The 'timesig' message has the same format as
-in the [metronome] object., f 68;
-#X text 38 187 Note events are specified with list that start with
-a number where the number represents the tempo head within the bar.
-So "1" means the head of the first beat \, 1.5 is an eight note after
-the first bear and so on. Whatever follows the first number comes out
-in the 'event' left outlet and you can treat it in any way you want
-to. If nothing follows the number \, a bang comes out as in this example.
-, f 68;
 #X obj 745 200 else/metronome;
 #X obj 772 225 else/metronome~;
 #X text 38 263 Here we also use a [metronome] object so we can have
@@ -144,30 +130,44 @@ from the score via the 'data' outlet., f 68;
 #X obj 480 19 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
 #X obj 480 91 sel 0;
-#X connect 0 0 8 0;
-#X connect 0 0 20 0;
-#X connect 1 0 2 0;
-#X connect 1 1 4 0;
-#X connect 1 1 17 0;
-#X connect 1 2 0 0;
-#X connect 1 2 18 0;
-#X connect 2 0 10 0;
-#X connect 4 0 6 0;
-#X connect 4 1 7 0;
-#X connect 6 0 14 0;
-#X connect 6 1 14 0;
-#X connect 7 0 14 1;
-#X connect 8 0 14 0;
-#X connect 10 0 3 0;
-#X connect 10 1 3 1;
-#X connect 14 1 15 0;
-#X connect 15 0 5 0;
-#X connect 18 0 22 0;
-#X connect 19 0 18 1;
+#X obj 533 56 else/score score-1.txt, f 28;
+#X text 38 110 The 'timesig' message is necessary to specify the time
+signature and allow [score] to count the number of beats in a bar.
+It must be specified in the beginning of the score right after the
+bar symbol. Time signature changes are possible and need to be specified
+after any bar symbol. The 'timesig' message has the same format as
+in the [metronome] object and as other messages come out in the mid
+outlet., f 68;
+#X text 38 187 Note events are specified as lists that start with a
+number that represent the tempo head within the bar. So "1" means the
+head of the first beat \, 1.5 is an eight note after the first beat
+and so on. Whatever follows the first number comes out in the 'event'
+left outlet and you can treat it in any way you want to. If nothing
+follows the number \, a bang comes out as in this example., f 68;
+#X connect 0 0 7 0;
+#X connect 0 0 17 0;
+#X connect 1 0 9 0;
+#X connect 3 0 5 0;
+#X connect 3 1 6 0;
+#X connect 5 0 11 0;
+#X connect 5 1 11 0;
+#X connect 6 0 11 1;
+#X connect 7 0 11 0;
+#X connect 9 0 2 0;
+#X connect 9 1 2 1;
+#X connect 11 1 12 0;
+#X connect 12 0 4 0;
+#X connect 15 0 19 0;
+#X connect 16 0 15 1;
+#X connect 19 0 22 0;
+#X connect 20 0 21 0;
+#X connect 20 0 22 0;
+#X connect 21 0 7 0;
 #X connect 22 0 1 0;
-#X connect 23 0 24 0;
-#X connect 23 0 1 0;
-#X connect 24 0 8 0;
+#X connect 22 1 3 0;
+#X connect 22 1 14 0;
+#X connect 22 2 0 0;
+#X connect 22 2 15 0;
 #X restore 477 170 pd basic-1;
 #N canvas 491 37 667 622 basic-2 0;
 #X obj 281 177 tgl 18 0 empty empty empty 17 7 0 10 #dfdfdf #000000
@@ -219,6 +219,8 @@ tempo. We're actually playing 90% of the note duration because of [*
 #X obj 419 240 print data ==>;
 #X obj 281 213 else/score score-2.txt, f 42;
 #X obj 333 497 else/voices -list 4;
+#X text 38 139 for tempo changes \, see also:, f 18;
+#X obj 101 157 else/speed;
 #X connect 0 0 25 0;
 #X connect 0 0 32 0;
 #X connect 1 0 13 0;
@@ -254,7 +256,7 @@ tempo. We're actually playing 90% of the note duration because of [*
 #X connect 32 2 8 0;
 #X connect 33 0 15 0;
 #X restore 477 191 pd basic-2;
-#N canvas 760 94 518 528 polyphony 0;
+#N canvas 652 68 518 528 polyphony 0;
 #X obj 306 259 bng 17 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
 #X obj 127 452 else/out~;
@@ -321,13 +323,6 @@ tempo. We're actually playing 90% of the note duration because of [*
 #X connect 6 0 7 0;
 #X connect 7 0 0 1;
 #X restore 162 409 pd voice;
-#X text 26 92 Another way is to simply specify another event with the
-same timestamp and it will also be output right after the previous
-one. One little techicality is that when you're using commas they do
-come out together as the same event as a loop. One way to prove this
-is with the [combine] object that can combine these values with a combine
-time of "0". Otherwise you need to specify a very short time amount
-"0.001" ms here., f 76;
 #X text 223 324 In this patch we're combining the floats with [combine]
 and split the list with [unpack]. This is because we don't really need
 [makenote] \, [poly] or [else/voices] as the duration is set in the
@@ -340,9 +335,16 @@ One way is to split messages with commas. In this way \, you can also
 have a list for each event \, each with a different duration like the
 last example. But in this example we just have a single float that
 represents pitch values., f 76;
+#X text 26 92 Another way is to simply specify another event with the
+same timestamp and it will also be output right after the previous
+one. One little techicality is that when you're using commas they do
+come out together as the same event as a loop. One way to prove this
+is with the [combine] object that can combine these values with a combine
+time of "0". Otherwise you need to specify a very short time amount
+\, like "0.001" ms here. Test it below., f 76;
 #X connect 2 0 1 0;
-#X connect 3 0 13 0;
-#X connect 4 0 13 0;
+#X connect 3 0 12 0;
+#X connect 4 0 12 0;
 #X connect 5 0 2 0;
 #X connect 5 1 9 0;
 #X connect 5 2 10 0;
@@ -351,8 +353,8 @@ represents pitch values., f 76;
 #X connect 8 0 5 0;
 #X connect 9 0 1 0;
 #X connect 10 0 1 0;
-#X connect 13 0 8 0;
-#X connect 13 2 0 0;
+#X connect 12 0 8 0;
+#X connect 12 2 0 0;
 #X restore 466 213 pd polyphony;
 #X connect 33 0 53 0;
 #X connect 49 0 53 0;
