@@ -1,22 +1,21 @@
-#N canvas 601 212 586 422 12;
+#N canvas 568 92 513 467 12;
 #X declare -path else;
-#X obj 113 271 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 89 268 Hz;
-#X obj 215 204 bng 20 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X obj 275 248 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 334 246 decay time (ms);
-#X obj 335 275 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
--228856 -1 -1 0 256;
-#X text 397 274 filter cutoff (hz);
-#X obj 156 350 out~;
-#X obj 215 252 impseq~;
-#X obj 156 302 pluck~ 0 4000 10000, f 26;
-#X obj 113 238 rand.f 50 300;
-#X obj 340 17 declare -path else;
-#X text 59 59 The ELSE library has the [pluck~] object \, which implements
+#X obj 160 277 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X text 136 274 Hz;
+#X obj 101 195 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 220 275 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X text 279 273 decay time (ms);
+#X obj 280 302 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X text 342 301 filter cutoff (hz);
+#X obj 101 377 out~;
+#X obj 101 329 pluck~ 0 4000 10000, f 26;
+#X obj 160 235 rand.f 50 300;
+#X obj 311 13 declare -path else;
+#X text 30 55 The ELSE library has the [pluck~] object \, which implements
 a Karplus Strong Algorithm. By default \, it uses an internal white
 noise generator as an excitation signal and can be triggered by impulses.
 A frequency value determines the delay period and the excitation signal
@@ -24,11 +23,10 @@ gets automatically enveloped to that size. The feedback value is given
 as a decay time in ms (t60). Internally \, it has a 2nd order lowpass
 filter in the feedback loop (just like [lowpass~]). See its help file
 for more details., f 64;
-#X connect 0 0 9 0;
+#X connect 0 0 8 1;
+#X connect 2 0 9 0;
 #X connect 2 0 8 0;
-#X connect 2 0 10 0;
-#X connect 3 0 9 2;
-#X connect 5 0 9 3;
-#X connect 8 0 9 1;
-#X connect 9 0 7 0;
-#X connect 10 0 0 0;
+#X connect 3 0 8 2;
+#X connect 5 0 8 3;
+#X connect 8 0 7 0;
+#X connect 9 0 0 0;
