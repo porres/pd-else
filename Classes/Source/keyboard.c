@@ -681,7 +681,7 @@ void * keyboard_new(t_symbol *s, int ac, t_atom* av){
     float init_space = 17;
     float init_height = 80;
     float init_8ves = 4;
-    float init_low_c = 3;
+    float init_low_c = 2;
     t_symbol *snd = &s_;
     t_symbol *rcv = &s_;
     if(ac && av->a_type == A_FLOAT){ // 1st Width
