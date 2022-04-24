@@ -1,4 +1,4 @@
-// Porres 2017
+// Porres 2017-2022
 
 #include "m_pd.h"
 #include "random.h"
@@ -6,7 +6,7 @@
 #include <stdlib.h>
 
 #define PI 3.14159265358979323846
-#define PLUCK_STACK 48000 // stack buf size, 1 sec at 48k
+#define PLUCK_STACK 48000 // stack buf size
 #define PLUCK_MAXD 4294967294 // max delay = 2**32 - 2
 
 static t_class *pluck_class;
@@ -14,28 +14,41 @@ static t_class *pluck_class;
 typedef struct _pluck{
     t_object        x_obj;
     t_random_state  x_rstate;
-    t_inlet         *x_trig_let;
-    t_inlet         *x_alet;
-    t_inlet         *x_inlet_cutoff;
-    t_outlet        *x_outlet;
+    t_inlet        *x_freq_inlet;
+    t_inlet        *x_decay_inlet;
+    t_inlet        *x_cutoff_inlet;
+    t_outlet       *x_outlet;
     float           x_sr;
     float           x_freq;
+    float           x_float_trig;
+    int             x_control_trig;
     int             x_noise_input;
     // pointers to the delay buf
-    double          * x_ybuf;
+    double         *x_ybuf;
     double          x_fbstack[PLUCK_STACK];
     int             x_alloc;                    // if we are using allocated buf
     unsigned int    x_sz;                       // actual size of each delay buffer
     t_float         x_maxdel;                   // maximum delay in ms
     unsigned int    x_wh;                       // writehead
-    float     x_sum;
-    float     x_amp;
-    float     x_last_trig;
-    double  x_xnm1;
-    double  x_xnm2;
-    double  x_ynm1;
-    double  x_ynm2;
+    float           x_sum;
+    float           x_amp;
+    float           x_last_trig;
+    double          x_xnm1;
+    double          x_xnm2;
+    double          x_ynm1;
+    double          x_ynm2;
 }t_pluck;
+
+static void pluck_bang(t_pluck *x){
+    x->x_control_trig = 1;
+}
+
+static void pluck_float(t_pluck *x, t_float f){
+    if(f != 0){
+        x->x_float_trig = f;
+        pluck_bang(x);
+    }
+}
 
 static void pluck_clear(t_pluck *x){
     for(unsigned int i = 0; i < x->x_sz; i++)
@@ -105,8 +118,8 @@ static double pluck_read_delay(t_pluck *x, double arr[], t_float in_samps){
 static t_int *pluck_perform_noise_input(t_int *w){
     t_pluck *x = (t_pluck *)(w[1]);
     int n = (int)(w[2]);
-    t_float *hz_in = (t_float *)(w[3]);
-    t_float *t_in = (t_float *)(w[4]);
+    t_float *t_in = (t_float *)(w[3]);
+    t_float *hz_in = (t_float *)(w[4]);
     t_float *ain = (t_float *)(w[5]);
     t_float *cut_in = (t_float *)(w[6]);
     t_float *noise_in = (t_float *)(w[7]);
@@ -135,9 +148,10 @@ static t_int *pluck_perform_noise_input(t_int *w){
                 ain[i] = 0;
             else
                 ain[i] = copysign(exp(log(0.001) * delms/fabs(ain[i])), ain[i]);
-            if(trig != 0 && last_trig == 0){
+            if((trig != 0 && last_trig == 0) || x->x_control_trig){
+                amp = x->x_control_trig ? x->x_float_trig : trig;
                 sum = 0;
-                amp = trig;
+                x->x_control_trig = 0;
             }
 // Filter stuff
             double cuttoff = (double)cut_in[i];
@@ -211,8 +225,8 @@ static t_int *pluck_perform(t_int *w){
     t_pluck *x = (t_pluck *)(w[1]);
     int n = (int)(w[2]);
     t_random_state *rstate = (t_random_state *)(w[3]);
-    t_float *hz_in = (t_float *)(w[4]);
-    t_float *t_in = (t_float *)(w[5]);
+    t_float *t_in = (t_float *)(w[4]);
+    t_float *hz_in = (t_float *)(w[5]);
     t_float *ain = (t_float *)(w[6]);
     t_float *cut_in = (t_float *)(w[7]);
     t_float *out = (t_float *)(w[8]);
@@ -227,7 +241,7 @@ static t_int *pluck_perform(t_int *w){
     double xnm2 = x->x_xnm2;
     double ynm1 = x->x_ynm1;
     double ynm2 = x->x_ynm2;
-    for(t_int i = 0; i < n; i++){
+    for(int i = 0; i < n; i++){
         t_float hz = hz_in[i];
         t_float trig = t_in[i];
         if(hz < 1){
@@ -243,9 +257,10 @@ static t_int *pluck_perform(t_int *w){
                 ain[i] = 0;
             else
                 ain[i] = copysign(exp(log(0.001) * delms/fabs(ain[i])), ain[i]);
-            if(trig != 0 && last_trig == 0){
+            if((trig != 0 && last_trig == 0) || x->x_control_trig){
+                amp = x->x_control_trig ? x->x_float_trig : trig;
                 sum = 0;
-                amp = trig;
+                x->x_control_trig = 0;
             }
 // Filter stuff
             double cuttoff = (double)cut_in[i];
@@ -322,6 +337,8 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
     float freq = 0;
     float decay = 0;
     float cut_freq = 15000;
+    x->x_float_trig = 1;
+    x->x_control_trig = 0;
     x->x_noise_input = 0;
 /////
     int argnum = 0;
@@ -370,11 +387,12 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
 // ship off to the helper method to deal with allocation if necessary
     pluck_sz(x);
 // inlets / outlet
-    x->x_trig_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    x->x_alet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_alet, decay);
-    x->x_inlet_cutoff = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-        pd_float((t_pd *)x->x_inlet_cutoff, cut_freq);
+    x->x_freq_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_freq_inlet, freq);
+    x->x_decay_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal); // decay time
+        pd_float((t_pd *)x->x_decay_inlet, decay);
+    x->x_cutoff_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_cutoff_inlet, cut_freq);
     if(x->x_noise_input)
         inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     x->x_outlet = outlet_new((t_object *)x, &s_signal);
@@ -387,9 +405,9 @@ errstate:
 static void * pluck_free(t_pluck *x){
     if(x->x_alloc)
         free(x->x_ybuf);
-    inlet_free(x->x_trig_let);
-    inlet_free(x->x_alet);
-    inlet_free(x->x_inlet_cutoff);
+    inlet_free(x->x_freq_inlet);
+    inlet_free(x->x_decay_inlet);
+    inlet_free(x->x_cutoff_inlet);
     outlet_free(x->x_outlet);
     return(void *)x;
 }
@@ -398,7 +416,8 @@ void pluck_tilde_setup(void){
     pluck_class = class_new(gensym("pluck~"), (t_newmethod)pluck_new,
         (t_method)pluck_free, sizeof(t_pluck), 0, A_GIMME, 0);
     class_addmethod(pluck_class, nullfn, gensym("signal"), 0);
-    CLASS_MAINSIGNALIN(pluck_class, t_pluck, x_freq);
+    class_addfloat(pluck_class, pluck_float);
+    class_addbang(pluck_class, pluck_bang);
     class_addmethod(pluck_class, (t_method)pluck_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(pluck_class, (t_method)pluck_clear, gensym("clear"), 0);
 }
