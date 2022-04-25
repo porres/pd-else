@@ -1,20 +1,21 @@
+// porres
 
 #include "m_pd.h"
 #include "buffer.h"
 #include <math.h>
 #include <stdlib.h>
 
-#define MAX_COEF 256
-#define TWO_PI (3.14159265358979323846 * 2)
+#define FLEN      65536
+#define MAX_COEF  256
+#define TWO_PI    (3.14159265358979323846 * 2)
 
 static t_class *shaper_class;
 
 typedef struct _shaper{
     t_object    x_obj;
-    float      *x_cheby;
-    float      *x_coef;
+    t_float    *x_cheby;
+    t_float    *x_coef;
     t_int       x_count;
-    t_int       x_flen;
     t_int       x_norm;
     t_int       x_arrayset;
     t_int       x_dc_filter;
@@ -32,7 +33,7 @@ static double lin_interp(t_word *buf, double i){ // linear interpolation
     double ya = buf[i1].w_float;
     double yb = buf[i2].w_float;
     double interp = ya + ((yb - ya) * frac);
-    return interp;
+    return(interp);
 }
 
 static void shaper_set(t_shaper *x, t_symbol *s){
@@ -42,25 +43,25 @@ static void shaper_set(t_shaper *x, t_symbol *s){
 
 static void update_cheby_func(t_shaper *x){
     int i;
-    for(i = 0; i < x->x_flen; i++) // clear
+    for(i = 0; i < FLEN; i++) // clear
         x->x_cheby[i] = 0;
     for(i = 0 ; i < x->x_count; i++){
         if(x->x_coef[i] > 0.0){
-            for(int j = 0; j < x->x_flen; j++){
-                float p = -1.0 + 2.0 * ((float)j / (float)x->x_flen);
+            for(int j = 0; j < FLEN; j++){
+                float p = -1.0 + 2.0 * ((float)j / (float)FLEN);
                 x->x_cheby[j] += (x->x_coef[i] * cos((float)i * acos(p)));
             }
         }
     }
     if(x->x_norm){ // normalize
         float  min = 1, max = -1; // find min/max
-        for(i = 0; i < x->x_flen; i++){
+        for(i = 0; i < FLEN; i++){
             if(x->x_cheby[i] < min)
                 min = x->x_cheby[i];
             if(x->x_cheby[i] > max)
                 max = x->x_cheby[i];
         }
-        for(i = 0; i < x->x_flen; i++){
+        for(i = 0; i < FLEN; i++){
             if((max - min) == 0)
                 x->x_cheby[i] = x->x_coef[0] != 0;
             else
@@ -87,8 +88,7 @@ static void shaper_norm(t_shaper *x, t_float f){
 }
 
 static void shaper_list(t_shaper *x, t_symbol *s, short ac, t_atom *av){
-    t_symbol *temp;
-    temp = s; // get rid of warning
+    s = NULL; // get rid of warning
     x->x_count = 1;
     for(short i = 0; i < ac; i++)
         if(av[i].a_type == A_FLOAT)
@@ -104,7 +104,7 @@ static t_int *shaper_perform(t_int *w){
     double xnm1 = x->x_xnm1;
     double ynm1 = x->x_ynm1;
     double a = x->x_a;
-    t_int n = w[4];
+    int n = (int)(w[4]);
     t_word *buf = (t_word *)x->x_buffer->c_vectors[0];
     double maxidx = (double)(x->x_buffer->c_npts - 1);
     while(n--){
@@ -120,7 +120,7 @@ static t_int *shaper_perform(t_int *w){
             output = lin_interp(buf, i);
         }
         else{
-            int i = (int)(ph * (double)(x->x_flen - 1));
+            int i = (int)(ph * (double)(FLEN - 1));
             output = x->x_cheby[i];
         }
         xn = yn = (double)output;
@@ -134,7 +134,7 @@ static t_int *shaper_perform(t_int *w){
     }
     x->x_xnm1 = xnm1;
     x->x_ynm1 = ynm1;
-    return(w + 5);
+    return(w+5);
 }
 
 static void shaper_dsp(t_shaper *x, t_signal **sp){
@@ -153,11 +153,10 @@ static void shaper_free(t_shaper *x){
 }
 
 static void *shaper_new(t_symbol *s, int ac, t_atom *av){
+    s = NULL;
     t_shaper *x = (t_shaper *)pd_new(shaper_class);
-    t_symbol *name = s; // get rid of warning
-    name = NULL;
-    x->x_flen = 1 << 16 ;
-    x->x_cheby = (float *)calloc(x->x_flen, sizeof(float));
+    t_symbol *name = &s_;
+    x->x_cheby = (float *)calloc(FLEN, sizeof(float));
     x->x_coef = (float *)calloc(MAX_COEF, sizeof(float));
     x->x_count = 2;
     x->x_coef[0] = 0;
@@ -165,7 +164,7 @@ static void *shaper_new(t_symbol *s, int ac, t_atom *av){
     x->x_norm = 1;
     x->x_dc_filter = 1;
     x->x_arrayset = 0;
-    x->x_a = 1 - (5*TWO_PI/(double)x->x_sr);
+    x->x_a = 1 - (5*TWO_PI/(double)sys_getsr());
     int argn = 0;
     if(ac){
         x->x_count = 1;
@@ -215,14 +214,14 @@ static void *shaper_new(t_symbol *s, int ac, t_atom *av){
                 goto errstate;
         }
     };
-    x->x_buffer = buffer_init((t_class *) x, name, 1, 0);
+    x->x_buffer = buffer_init((t_class *)x, name, 1, 0);
     if(!x->x_arrayset)
         update_cheby_func(x);
     outlet_new(&x->x_obj, gensym("signal"));
     return(x);
     errstate:
         post("[shaper~]: improper args");
-        return NULL;
+        return(NULL);
 }
 
 void shaper_tilde_setup(void){
@@ -236,3 +235,16 @@ void shaper_tilde_setup(void){
     class_addmethod(shaper_class, (t_method)shaper_filter, gensym("filter"), A_DEFFLOAT, 0);
     class_addmethod(shaper_class, (t_method)shaper_set, gensym("set"), A_SYMBOL, 0);
 }
+© 2022 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+
