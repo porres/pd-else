@@ -235,16 +235,3 @@ void shaper_tilde_setup(void){
     class_addmethod(shaper_class, (t_method)shaper_filter, gensym("filter"), A_DEFFLOAT, 0);
     class_addmethod(shaper_class, (t_method)shaper_set, gensym("set"), A_SYMBOL, 0);
 }
-© 2022 GitHub, Inc.
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
-
