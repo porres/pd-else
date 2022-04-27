@@ -13,19 +13,19 @@ typedef struct _highshelf{
     t_inlet    *x_inlet_amp;
     t_outlet   *x_out;
     t_float     x_nyq;
-    int     x_bypass;
-    double  x_xnm1;
-    double  x_xnm2;
-    double  x_ynm1;
-    double  x_ynm2;
-    double  x_f;
-    double  x_slope;
-    double  x_db;
-    double  x_a0;
-    double  x_a1;
-    double  x_a2;
-    double  x_b1;
-    double  x_b2;
+    int         x_bypass;
+    double      x_xnm1;
+    double      x_xnm2;
+    double      x_ynm1;
+    double      x_ynm2;
+    double      x_f;
+    double      x_slope;
+    double      x_db;
+    double      x_a0;
+    double      x_a1;
+    double      x_a2;
+    double      x_b1;
+    double      x_b2;
 }t_highshelf;
 
 static t_class *highshelf_class;
@@ -90,7 +90,11 @@ static t_int *highshelf_perform(t_int *w){
 }
 
 static void highshelf_dsp(t_highshelf *x, t_signal **sp){
-    x->x_nyq = sp[0]->s_sr / 2;
+    t_float nyq = sp[0]->s_sr / 2;
+    if(nyq != x->x_nyq){
+        x->x_nyq = nyq;
+        update_coeffs(x, x->x_f, x->x_slope, x->x_db);
+    }
     dsp_add(highshelf_perform, 7, x, sp[0]->s_n, sp[0]->s_vec,
         sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
@@ -106,7 +110,7 @@ static void highshelf_bypass(t_highshelf *x, t_floatarg f){
 static void *highshelf_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     t_highshelf *x = (t_highshelf *)pd_new(highshelf_class);
-    float freq = 0, slope = 0, db = 0;
+    float freq = 0.1, slope = 0.000001, db = 0;
     int argnum = 0;
     while(argc > 0){
         if(argv -> a_type == A_FLOAT){
@@ -129,7 +133,8 @@ static void *highshelf_new(t_symbol *s, int argc, t_atom *argv){
         else if(argv -> a_type == A_SYMBOL)
             goto errstate;
     };
-    update_coeffs(x, freq, slope, db);
+    x->x_nyq = sys_getsr()/2;
+    update_coeffs(x, (double)freq, (double)slope, (double)db);
     x->x_inlet_freq = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_freq, freq);
     x->x_inlet_q = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);

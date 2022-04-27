@@ -92,7 +92,11 @@ static t_int *bandpass_perform(t_int *w){
 }
 
 static void bandpass_dsp(t_bandpass *x, t_signal **sp){
-    x->x_nyq = sp[0]->s_sr / 2;
+    t_float nyq = sp[0]->s_sr / 2;
+    if(nyq != x->x_nyq){
+        x->x_nyq = nyq;
+        update_coeffs(x, x->x_f, x->x_reson);
+    }
     dsp_add(bandpass_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
@@ -118,7 +122,7 @@ static void bandpass_q(t_bandpass *x){
 static void *bandpass_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     t_bandpass *x = (t_bandpass *)pd_new(bandpass_class);
-    float freq = 0;
+    float freq = 0.000001;
     float reson = 1;
     int bw = 0;
     int argnum = 0;
@@ -150,6 +154,7 @@ static void *bandpass_new(t_symbol *s, int argc, t_atom *argv){
             goto errstate;
     };
     x->x_bw = bw;
+    x->x_nyq = sys_getsr()/2;
     update_coeffs(x, (double)freq, (double)reson);
     x->x_inlet_freq = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_freq, freq);

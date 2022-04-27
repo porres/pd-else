@@ -93,7 +93,11 @@ static t_int *allpass_2nd_perform(t_int *w){
 }
 
 static void allpass_2nd_dsp(t_allpass_2nd *x, t_signal **sp){
-    x->x_nyq = sp[0]->s_sr / 2;
+    t_float nyq = sp[0]->s_sr / 2;
+    if(nyq != x->x_nyq){
+        x->x_nyq = nyq;
+        update_coeffs(x, x->x_f, x->x_reson);
+    }
     dsp_add(allpass_2nd_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
@@ -119,7 +123,7 @@ static void allpass_2nd_q(t_allpass_2nd *x){
 static void *allpass_2nd_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     t_allpass_2nd *x = (t_allpass_2nd *)pd_new(allpass_2nd_class);
-    float freq = 0;
+    float freq = 0.000001;
     float reson = 1;
     int bw = 0;
     int argnum = 0;
@@ -151,6 +155,7 @@ static void *allpass_2nd_new(t_symbol *s, int argc, t_atom *argv){
             goto errstate;
     };
     x->x_bw = bw;
+    x->x_nyq = sys_getsr()/2;
     update_coeffs(x, (double)freq, (double)reson);
     x->x_inlet_freq = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_freq, freq);

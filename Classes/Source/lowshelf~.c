@@ -90,7 +90,11 @@ static t_int *lowshelf_perform(t_int *w){
 }
 
 static void lowshelf_dsp(t_lowshelf *x, t_signal **sp){
-    x->x_nyq = sp[0]->s_sr / 2;
+    t_float nyq = sp[0]->s_sr / 2;
+    if(nyq != x->x_nyq){
+        x->x_nyq = nyq;
+        update_coeffs(x, x->x_f, x->x_slope, x->x_db);
+    }
     dsp_add(lowshelf_perform, 7, x, sp[0]->s_n, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
@@ -109,7 +113,7 @@ static void *lowshelf_new(t_symbol *s, int argc, t_atom *argv)
 {
     s = NULL;
     t_lowshelf *x = (t_lowshelf *)pd_new(lowshelf_class);
-    float freq = 0, slope = 0, db = 0;
+    float freq = 0.1, slope = 0.000001, db = 0;
     int argnum = 0;
     while(argc > 0){
         if(argv -> a_type == A_FLOAT){
@@ -132,6 +136,7 @@ static void *lowshelf_new(t_symbol *s, int argc, t_atom *argv)
         else if(argv -> a_type == A_SYMBOL)
             goto errstate;
     };
+    x->x_nyq = sys_getsr()/2;
     update_coeffs(x, freq, slope, db);
     x->x_inlet_freq = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_freq, freq);

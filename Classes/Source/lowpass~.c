@@ -95,7 +95,11 @@ static t_int *lowpass_perform(t_int *w){
 }
 
 static void lowpass_dsp(t_lowpass *x, t_signal **sp){
-    x->x_nyq = sp[0]->s_sr / 2;
+    t_float nyq = sp[0]->s_sr / 2;
+    if(nyq != x->x_nyq){
+        x->x_nyq = nyq;
+        update_coeffs(x, x->x_f, x->x_reson);
+    }
     dsp_add(lowpass_perform, 6, x, sp[0]->s_n, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
 }
@@ -121,10 +125,9 @@ static void lowpass_q(t_lowpass *x){
 static void *lowpass_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     t_lowpass *x = (t_lowpass *)pd_new(lowpass_class);
-    float freq = 0;
+    float freq = 0.000001;
     float reson = 1;
     float bw = 0;
-/////////////////////////////////////////////////////////////////////////////////////
     int argnum = 0;
     while(argc > 0){
         if(argv->a_type == A_FLOAT){ //if current argument is a float
@@ -153,8 +156,8 @@ static void *lowpass_new(t_symbol *s, int argc, t_atom *argv){
         else
             goto errstate;
     };
-/////////////////////////////////////////////////////////////////////////////////////
     x->x_bw = bw;
+    x->x_nyq = sys_getsr()/2;
     update_coeffs(x, (double)freq, (double)reson);
     x->x_inlet_freq = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_freq, freq);
@@ -163,7 +166,7 @@ static void *lowpass_new(t_symbol *s, int argc, t_atom *argv){
     x->x_out = outlet_new((t_object *)x, &s_signal);
     return (x);
 errstate:
-    pd_error(x, "lowpass~: improper args");
+    pd_error(x, "[lowpass~]: improper args");
     return(NULL);
 }
 

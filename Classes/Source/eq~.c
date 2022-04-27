@@ -98,7 +98,11 @@ static t_int *eq_perform(t_int *w){
 }
 
 static void eq_dsp(t_eq *x, t_signal **sp){
-    x->x_nyq = sp[0]->s_sr / 2;
+    t_float nyq = sp[0]->s_sr / 2;
+    if(nyq != x->x_nyq){
+        x->x_nyq = nyq;
+        update_coeffs(x, x->x_f, x->x_reson, x->x_db);
+    }
     dsp_add(eq_perform, 7, x, sp[0]->s_n, sp[0]->s_vec,
             sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
 }
@@ -124,7 +128,7 @@ static void eq_q(t_eq *x){
 static void *eq_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     t_eq *x = (t_eq *)pd_new(eq_class);
-    float freq = 0;
+    float freq = 0.1;
     float reson = 0;
     float db = 0;
     int bw = 0;
@@ -160,6 +164,7 @@ static void *eq_new(t_symbol *s, int argc, t_atom *argv){
             goto errstate;
     };
     x->x_bw = bw;
+    x->x_nyq = sys_getsr()/2;
     update_coeffs(x, (double)freq, (double)reson, (double)db);
     x->x_inlet_freq = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_freq, freq);
