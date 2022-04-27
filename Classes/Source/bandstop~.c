@@ -49,7 +49,7 @@ static void update_coeffs(t_bandstop *x, double f, double reson){
         double b0 = alphaQ + 1;
         x->x_a0 = 1 / b0;
         x->x_a1 = -2*cos(omega) / b0;
-        x->x_a2 = -x->x_a0;
+        x->x_a2 = x->x_a0;
         x->x_b1 = -x->x_a1;
         x->x_b2 = (alphaQ - 1) / b0;
     }
