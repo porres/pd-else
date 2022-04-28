@@ -170,6 +170,7 @@ lfnoise~.class.sources := Classes/Source/lfnoise~.c
 lincong~.class.sources := Classes/Source/lincong~.c
 logistic~.class.sources := Classes/Source/logistic~.c
 loop.class.sources := Classes/Source/loop.c
+lop2~.class.sources := Classes/Source/lop2~.c
 lowpass~.class.sources := Classes/Source/lowpass~.c
 lowshelf~.class.sources := Classes/Source/lowshelf~.c
 mov.rms~.class.sources := Classes/Source/mov.rms~.c

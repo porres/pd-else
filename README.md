@@ -4,9 +4,9 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-1 (release candidate #1) With Live Electronics Tutorial. 
+### Version: 1.0-0 RC-2 (release candidate #2) With Live Electronics Tutorial. 
 
-###   Released: April 19th 2022. 
+###   UnReleased 
 
 
 
@@ -106,7 +106,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-## Current Object list (446 objects):
+## Current Object list (447 objects):
 
 **ASSORTED: [01]**
 
@@ -362,7 +362,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [plate.rev~]
 - [fdn.rev~]
 
-**AUDIO PROCESSING: FILTERS [23]:**
+**AUDIO PROCESSING: FILTERS [24]:**
 
 - [allpass.2nd~]
 - [allpass.filt~]
@@ -379,6 +379,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [eq~]
 - [highpass~]
 - [highshelf~]
+- [lop2~]
 - [lowpass~]
 - [lowshelf~]
 - [mov.avg~]
