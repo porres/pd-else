@@ -47,8 +47,6 @@
 ;
 #X text 175 476 signal;
 #X text 127 555 2) float - decay time in ms (default 0);
-#X text 127 570 3) float - filter cutoff frequency (default 15000)
-;
 #X obj 108 400 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 108 421 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
@@ -94,7 +92,7 @@ values determines the amplitude., f 46;
 #X connect 11 0 4 0;
 #X connect 12 0 3 0;
 #X connect 14 0 1 0;
-#X restore 483 258 pd trigger;
+#X restore 483 272 pd trigger;
 #N canvas 722 196 419 314 negative 0;
 #X obj 180 152 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
@@ -180,7 +178,7 @@ an impulse instead of the white noise.;
 #X connect 1 0 4 0;
 #X connect 2 0 4 4;
 #X connect 4 0 0 0;
-#X restore 483 278 pd -in;
+#X restore 483 292 pd -in;
 #X text 127 540 1) float - frequency in hertz (default 0);
 #X text 221 476 - the karplus-strong output;
 #X text 52 227 * frequencies less than 1 mutes the output, f 13;
@@ -198,14 +196,35 @@ an impulse instead of the white noise.;
 #X text 187 361 bang;
 #X text 222 361 - triggers with last control amplitude (default 1)
 ;
-#X text 49 91 [pluck~] is a Karplus-Strong algorithm with a 2nd order
+#X text 49 91 [pluck~] is a Karplus-Strong algorithm with a 1st order
 lowpass filter in the feedback loop. It takes frequency in hertz \,
 a decay time in ms and a cutoff frequency for the filter. It is triggered
 by signals at zero to non zero transitions or by floats and bangs at
 control rate., f 77;
-#X connect 14 0 39 2;
-#X connect 19 0 39 3;
-#X connect 39 0 31 0;
-#X connect 50 0 39 1;
-#X connect 52 0 39 0;
-#X connect 53 0 39 0;
+#X text 127 570 3) float - filter cutoff frequency (default around
+7020);
+#N canvas 697 95 381 386 cutoff 0;
+#X obj 53 301 else/out~;
+#X obj 53 261 else/pluck~ 50 2500 10000;
+#X obj 200 153 else/tempo~ -on 120;
+#X obj 200 190 else/rand.f~ 2000 15000;
+#X text 25 18 The filter used in the loop is a [lop2~] \, a 1-pole
+/ 1-zero lowpass filter. By default \, the cuttoff frequency is about
+7020 hz \, which in a 44100 sample rate puts the pole at zero \, leaving
+only a zero at nyquist. This setting is the same as an average of two
+samples \, which was the original filter in the original Karplu-Strong
+Algorith. When reaching nyquist for the cutoff \, you have no fiter
+action. It's as if it's disabled., f 51;
+#X obj 200 224 else/display~;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 2 0 3 0;
+#X connect 3 0 5 0;
+#X connect 5 0 1 3;
+#X restore 483 252 pd cutoff;
+#X connect 14 0 38 2;
+#X connect 19 0 38 3;
+#X connect 38 0 30 0;
+#X connect 49 0 38 1;
+#X connect 51 0 38 0;
+#X connect 52 0 38 0;

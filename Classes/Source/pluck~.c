@@ -5,9 +5,10 @@
 #include <math.h>
 #include <stdlib.h>
 
-#define PI 3.14159265358979323846
+#define TWO_PI      (3.14159265358979323846 * 2)
+#define DEF_RADIANS (0.31830989569 * 0.5)
 #define PLUCK_STACK 48000 // stack buf size
-#define PLUCK_MAXD 4294967294 // max delay = 2**32 - 2
+#define PLUCK_MAXD  4294967294 // max delay = 2**32 - 2
 
 static t_class *pluck_class;
 
@@ -34,9 +35,15 @@ typedef struct _pluck{
     float           x_amp;
     float           x_last_trig;
     double          x_xnm1;
-    double          x_xnm2;
     double          x_ynm1;
-    double          x_ynm2;
+    double          x_f;
+    float           x_ain;
+    double          x_delms;
+    int             x_samps;
+    double          x_fb;
+    double          x_a0;
+    double          x_a1;
+    double          x_b1;
 }t_pluck;
 
 static void pluck_bang(t_pluck *x){
@@ -54,7 +61,7 @@ static void pluck_clear(t_pluck *x){
     for(unsigned int i = 0; i < x->x_sz; i++)
         x->x_ybuf[i] = 0.;
     x->x_wh = 0;
-    x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
+    x->x_xnm1 = x->x_ynm1 = 0.;
 }
 
 static void pluck_sz(t_pluck *x){
@@ -102,15 +109,42 @@ static double pluck_getlin(double tab[], unsigned int sz, double idx){
         double ya = tab[tabphase1];
         output = ya+((yb-ya)*frac);
     };
-    return output;
+    return(output);
 }
 
-static double pluck_read_delay(t_pluck *x, double arr[], t_float in_samps){
+static double pluck_read_delay(t_pluck *x, double arr[], int in_samps){
     double rh = in_samps < 1 ? 1 : (double)in_samps; // read head size in samples
     rh = (double)x->x_wh + ((double)x->x_sz-rh); // subtract from writehead to find buffer position
     while(rh >= x->x_sz) // wrap to delay buffer length
         rh -= (double)x->x_sz;
-    return pluck_getlin(arr, x->x_sz, rh); // read from buffer
+    return(pluck_getlin(arr, x->x_sz, rh)); // read from buffer
+}
+
+static void update_coeffs(t_pluck *x, double f){
+    x->x_f = f;
+    double omega = f * TWO_PI/x->x_sr;
+    if(omega < 0)
+        omega = 0;
+    if(omega > 2){
+        x->x_a0 = 1;
+        x->x_a1 = x->x_b1 = 0;
+    }
+    else{
+        x->x_a0 = x->x_a1 = omega * 0.5;
+        x->x_b1 = 1 - omega;
+    }
+}
+
+static void update_fb(t_pluck *x, double fb, double delms){
+    x->x_ain = (float)fb;
+    x->x_fb = fb == 0 ? 0 : copysign(exp(log(0.001) * delms/fabs(fb)), fb);
+}
+
+static void update_time(t_pluck *x, float hz){
+    x->x_freq = hz;
+    double period = 1./(double)hz;
+    x->x_delms = period * 1000;
+    x->x_samps = (int)roundf(period * x->x_sr);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -125,69 +159,60 @@ static t_int *pluck_perform_noise_input(t_int *w){
     t_float *noise_in = (t_float *)(w[7]);
     t_float *out = (t_float *)(w[8]);
     t_float sr = x->x_sr;
+    t_float nyq = sr * 0.5;
     t_float last_trig = x->x_last_trig;
     t_float sum = x->x_sum;
     t_float amp = x->x_amp;
     double xnm1 = x->x_xnm1;
-    double xnm2 = x->x_xnm2;
     double ynm1 = x->x_ynm1;
-    double ynm2 = x->x_ynm2;
-    for(t_int i = 0; i < n; i++){
+    for(int i = 0; i < n; i++){
         t_float hz = hz_in[i];
         t_float trig = t_in[i];
+        float a_in = ain[i];
         if(hz < 1){
             out[i] = sum = 0;
-            xnm1 = xnm2 = ynm1 = ynm2 = 0;
+            xnm1 = ynm1 = 0;
         }
         else{
-            float period = 1./hz;
-            float delms = period * 1000;
-            t_int samps = (int)roundf(period * sr);
-            double fb_del = pluck_read_delay(x, x->x_ybuf, samps); // get delayed vals
-            if(ain[i] == 0)
-                ain[i] = 0;
-            else
-                ain[i] = copysign(exp(log(0.001) * delms/fabs(ain[i])), ain[i]);
-            if((trig != 0 && last_trig == 0) || x->x_control_trig){
+            if(hz != x->x_freq){
+                update_time(x, hz);
+                goto update_fb;
+            }
+            if(x->x_ain != a_in){
+                update_fb:
+                update_fb(x, a_in, x->x_delms);
+            }
+            double fb_del = pluck_read_delay(x, x->x_ybuf, x->x_samps); // get delayed vals
+            if((trig != 0 && last_trig == 0) || x->x_control_trig){ // trigger
                 amp = x->x_control_trig ? x->x_float_trig : trig;
                 sum = 0;
                 x->x_control_trig = 0;
             }
 // Filter stuff
             double cuttoff = (double)cut_in[i];
-            double omega, alphaQ, cos_w, a0, a1, a2, b0, b1, b2, yn;
-            double nyq = (sr * 0.5);
-            double hz2rad = PI/nyq;
-            if (cuttoff < 0.000001)
+            if(cuttoff < 0.000001)
                 cuttoff = 0.000001;
-            if (cuttoff > nyq - 0.000001)
+            if(cuttoff > nyq - 0.000001)
                 cuttoff = nyq - 0.000001;
-            omega = cuttoff * hz2rad;
-            alphaQ = sin(omega); // q = 0.5
-            cos_w = cos(omega);
-            b0 = alphaQ + 1;
-            a0 = (1 - cos_w) / (2 * b0);
-            a1 = (1 - cos_w) / b0;
-            a2 = a0;
-            b1 = 2*cos_w / b0;
-            b2 = (alphaQ - 1) / b0;
+            if(x->x_f != cuttoff)
+                update_coeffs(x, cuttoff);
             // gate
-            t_float gate = (sum++ <= samps) * amp;
+            t_float gate = (sum++ <= x->x_samps) * amp;
             // noise
-            t_float noise = noise_in[i] * gate;
+            t_float noise = gate ? noise_in[i] * gate : 0;
             // output
-            double output = (double)noise + (double)ain[i] * fb_del;
+            double output = (double)noise + x->x_fb * fb_del;
             out[i] = output;
-            // filter
-            yn = a0 * output + a1 * xnm1 + a2 * xnm2 + b1 * ynm1 + b2 * ynm2;
+            
+            double yn = x->x_a0 * output + x->x_a1 * xnm1 + x->x_b1 * ynm1;
+
             // put into delay buffer
             int wh = x->x_wh;
             x->x_ybuf[wh] = yn;
             x->x_wh = (wh + 1) % x->x_sz; // increment writehead
+            
             last_trig = trig;
-            xnm2 = xnm1;
             xnm1 = output;
-            ynm2 = ynm1;
             ynm1 = yn;
         }
     };
@@ -195,10 +220,8 @@ static t_int *pluck_perform_noise_input(t_int *w){
     x->x_last_trig = amp;
     x->x_last_trig = last_trig;
     x->x_xnm1 = xnm1;
-    x->x_xnm2 = xnm2;
     x->x_ynm1 = ynm1;
-    x->x_ynm2 = ynm2;
-    return(w + 9);
+    return(w+9);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -233,74 +256,60 @@ static t_int *pluck_perform(t_int *w){
     uint32_t *s1 = &rstate->s1;
     uint32_t *s2 = &rstate->s2;
     uint32_t *s3 = &rstate->s3;
-    t_float sr = x->x_sr;
+    t_float nyq = x->x_sr * 0.5;
     t_float last_trig = x->x_last_trig;
     t_float sum = x->x_sum;
     t_float amp = x->x_amp;
     double xnm1 = x->x_xnm1;
-    double xnm2 = x->x_xnm2;
     double ynm1 = x->x_ynm1;
-    double ynm2 = x->x_ynm2;
     for(int i = 0; i < n; i++){
         t_float hz = hz_in[i];
         t_float trig = t_in[i];
+        float a_in = ain[i];
         if(hz < 1){
             out[i] = sum = 0;
-            xnm1 = xnm2 = ynm1 = ynm2 = 0;
+            xnm1 = ynm1 = 0;
         }
         else{
-            float period = 1./hz;
-            float delms = period * 1000;
-            t_int samps = (int)roundf(period * sr);
-            double fb_del = pluck_read_delay(x, x->x_ybuf, samps); // get delayed vals
-            if (ain[i] == 0)
-                ain[i] = 0;
-            else
-                ain[i] = copysign(exp(log(0.001) * delms/fabs(ain[i])), ain[i]);
-            if((trig != 0 && last_trig == 0) || x->x_control_trig){
+            if(hz != x->x_freq){
+                update_time(x, hz);
+                goto update_fb;
+            }
+            if(x->x_ain != a_in){
+                update_fb:
+                update_fb(x, a_in, x->x_delms);
+            }
+            double fb_del = pluck_read_delay(x, x->x_ybuf, x->x_samps); // get delayed vals
+            if((trig != 0 && last_trig == 0) || x->x_control_trig){ // trigger
                 amp = x->x_control_trig ? x->x_float_trig : trig;
                 sum = 0;
                 x->x_control_trig = 0;
             }
-// Filter stuff
+            // Filter stuff
             double cuttoff = (double)cut_in[i];
-            double omega, alphaQ, cos_w, a0, a1, a2, b0, b1, b2, yn;
-            double nyq = (sr * 0.5);
-            double hz2rad = PI/nyq;
-            if (cuttoff < 0.000001)
+            if(cuttoff < 0.000001)
                 cuttoff = 0.000001;
-            if (cuttoff > nyq - 0.000001)
+            if(cuttoff > nyq - 0.000001)
                 cuttoff = nyq - 0.000001;
-            omega = cuttoff * hz2rad;
-            alphaQ = sin(omega); // q = 0.5
-            cos_w = cos(omega);
-            b0 = alphaQ + 1;
-            a0 = (1 - cos_w) / (2 * b0);
-            a1 = (1 - cos_w) / b0;
-            a2 = a0;
-            b1 = 2*cos_w / b0;
-            b2 = (alphaQ - 1) / b0;
+            if(x->x_f != cuttoff)
+                update_coeffs(x, cuttoff);
             // gate
-            t_float gate = (sum++ <= samps) * amp;
+            t_float gate = (sum++ <= x->x_samps) * amp;
             // noise
-            t_float noise;
-            if(gate != 0)
-                noise = (t_float)(random_frand(s1, s2, s3)) * gate;
-            else
-                noise = 0;
+            t_float noise = (gate != 0) ? (t_float)(random_frand(s1, s2, s3)) * gate : 0;
             // output
-            double output = (double)noise + (double)ain[i] * fb_del;
+            double output = (double)noise + x->x_fb * fb_del;
             out[i] = output;
-            // filter
-            yn = a0 * output + a1 * xnm1 + a2 * xnm2 + b1 * ynm1 + b2 * ynm2;
+        
+            double yn = x->x_a0 * output + x->x_a1 * xnm1 + x->x_b1 * ynm1;
+            
             // put into delay buffer
             int wh = x->x_wh;
             x->x_ybuf[wh] = yn;
             x->x_wh = (wh + 1) % x->x_sz; // increment writehead
             last_trig = trig;
-            xnm2 = xnm1;
+            
             xnm1 = output;
-            ynm2 = ynm1;
             ynm1 = yn;
         }
     };
@@ -308,9 +317,7 @@ static t_int *pluck_perform(t_int *w){
     x->x_last_trig = amp;
     x->x_last_trig = last_trig;
     x->x_xnm1 = xnm1;
-    x->x_xnm2 = xnm2;
     x->x_ynm1 = ynm1;
-    x->x_ynm2 = ynm2;
     return(w+9);
 }
 
@@ -319,6 +326,7 @@ static void pluck_dsp(t_pluck *x, t_signal **sp){
     if(sr != x->x_sr){ // if new sample rate isn't old sample rate, need to realloc
         x->x_sr = sr;
         pluck_sz(x);
+        update_coeffs(x, x->x_f);
     };
     if(x->x_noise_input)
         dsp_add(pluck_perform_noise_input, 8, x, sp[0]->s_n, sp[0]->s_vec,
@@ -331,16 +339,15 @@ static void pluck_dsp(t_pluck *x, t_signal **sp){
 static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
     s = NULL;
     t_pluck *x = (t_pluck *)pd_new(pluck_class);
-/////////////////////////////////////////////////////////////////////////////////////
+    x->x_sr = sys_getsr();
     static int seed = 1;
     random_init(&x->x_rstate, seed++);
     float freq = 0;
     float decay = 0;
-    float cut_freq = 15000;
+    float cut_freq = DEF_RADIANS * x->x_sr;
     x->x_float_trig = 1;
     x->x_control_trig = 0;
     x->x_noise_input = 0;
-/////
     int argnum = 0;
     while(argc > 0){
         if(argv->a_type == A_FLOAT){ //if current argument is a float
@@ -353,7 +360,7 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
                     decay = argval;
                     break;
                 case 2:
-                    cut_freq = argval;
+                    cut_freq = argval < 0 ? 0 : argval;
                     break;
                 default:
                     break;
@@ -373,19 +380,26 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
         else
             goto errstate;
     };
-/////////////////////////////////////////////////////////////////////////////////////
-    x->x_sr = sys_getsr();
     x->x_alloc = x->x_last_trig = 0;
-    x->x_xnm1 = x->x_xnm2 = x->x_ynm1 = x->x_ynm2 = 0.;
-    x->x_sum =  PLUCK_MAXD;
+    x->x_xnm1 = x->x_ynm1 = 0.;
+    x->x_sum = PLUCK_MAXD;
     x->x_sz = PLUCK_STACK;
 // clear out stack buf, set pointer to stack
     x->x_ybuf = x->x_fbstack;
     pluck_clear(x);
-    x->x_freq = freq;
+    x->x_freq = (double)freq;
+    x->x_ain = decay;
+    x->x_f = (double)cut_freq;
     x->x_maxdel = 1000;
 // ship off to the helper method to deal with allocation if necessary
     pluck_sz(x);
+    
+    if(x->x_freq > 1){
+        update_time(x, x->x_freq);
+        update_fb(x, x->x_ain, x->x_delms);
+    }
+    if(x->x_f >= 0)
+        update_coeffs(x, x->x_f);
 // inlets / outlet
     x->x_freq_inlet = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
         pd_float((t_pd *)x->x_freq_inlet, freq);
