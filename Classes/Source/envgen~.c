@@ -264,7 +264,7 @@ static void envgen_init(t_envgen *x, int ac, t_atom *av){
 //        x->x_av = getbytes(x->x_ac * sizeof(*(x->x_av)));
         copy_atoms(temp_at, x->x_av, x->x_ac);
         envgen_attack(x, x->x_ac, x->x_av);
-        free(temp_at, sizeof(t_atom) * ac-nlines);
+        free(temp_at);
     }
 }
 
