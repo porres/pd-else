@@ -186,8 +186,10 @@ static int find_note(t_keyboard* x, float xpos, float ypos){
         }
     }
     x->x_velocity = x->x_norm > 0 ? x->x_norm : (int)((ypos / x->x_height) * 127);
-    if(x->x_velocity <= 0)
+    if(x->x_velocity < 1)
         x->x_velocity = 1;
+    if(x->x_velocity > 127)
+        x->x_velocity = 127;
     return(x->x_first_c+i);
 }
 
