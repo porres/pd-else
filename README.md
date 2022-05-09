@@ -106,7 +106,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-## Current Object list (447 objects):
+## Current Object list (448 objects):
 
 **ASSORTED: [01]**
 
@@ -413,6 +413,10 @@ ELSE has been in active development for over 5 years but it will still take a li
 **SYNTHESIS: PHYSICAL MODELLING: [01]**
 
 - [pluck~]
+
+**SYNTHESIS: SAMPLE SYNTHESIZER: [01]**
+
+- [sfont~]
 
 **SYNTHESIS: OSCILLATORS (DETERMINISTIC GENERATORS): [25]**
 

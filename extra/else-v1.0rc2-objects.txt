@@ -372,6 +372,7 @@ separate	x
 sequencer~	x
 sequencer	x
 setdsp~	x
+sfont~	x
 sh~	x
 shaper~	x
 sig2float~	x
