@@ -414,7 +414,7 @@ static void rec_doread(t_rec *x, t_rec_track *target, t_symbol *fname){
     else{
 	/* CHECKED no complaint, open dialog not presented... */
 	/* LATER rethink */
-        panel_open(target ? target->tr_elsefilehandle : x->x_elsefilehandle, 0);
+        panel_click_open(target ? target->tr_elsefilehandle : x->x_elsefilehandle);
     }
 }
 
@@ -523,7 +523,7 @@ static void rec_read(t_rec *x, t_symbol *s){
     if(s && s != &s_)
         rec_doread(x, 0, s);
     else  /* CHECKED no default */
-        panel_open(x->x_elsefilehandle, 0);
+        panel_click_open(x->x_elsefilehandle);
 }
 
 static void rec_write(t_rec *x, t_symbol *s){

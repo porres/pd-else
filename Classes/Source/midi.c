@@ -1,7 +1,12 @@
 // based on cyclone's [seq]
 
+#ifdef _MSC_VER
+#include <io.h>
+#else
+#include <unistd.h>
+#endif
+
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include "m_pd.h"
 #include "elsefile.h"
@@ -35,7 +40,7 @@ typedef struct _midi{
     t_object       x_ob;
     t_canvas      *x_canvas;
     t_symbol      *x_defname;
-    t_elsefile        *x_elsefilehandle;
+    t_elsefile    *x_elsefilehandle;
     int            x_loop;
     int            x_mode;
     int            x_playhead;
@@ -728,7 +733,7 @@ mfreadfailed:
 }
 
 static void midi_click(t_midi *x){
-    panel_open(x->x_elsefilehandle, 0);
+    panel_click_open(x->x_elsefilehandle);
 }
 
 static int midi_mfwrite(t_midi *x, char *path){
@@ -807,7 +812,7 @@ static void midi_textread(t_midi *x, char *path){
     t_binbuf *bb;
     bb = binbuf_new();
     if(binbuf_read(bb, path, "", 0)) // CHECKED no complaint, open dialog presented
-        panel_open(x->x_elsefilehandle, 0);  // LATER rethink
+        panel_click_open(x->x_elsefilehandle);  // LATER rethink
     else{
         int nlines = /* CHECKED absolute timestamps */
             midi_fromatoms(x, binbuf_getnatom(bb), binbuf_getvec(bb));
@@ -848,23 +853,28 @@ static void midi_textwrite(t_midi *x, char *path){
     binbuf_free(bb);
 }
 
-static void midi_doread(t_midi *x, t_symbol *fn){
-    char buf[MAXPDSTRING];
-    if(x->x_canvas) // FIXME use open_via_path()
-        canvas_makefilename(x->x_canvas, fn->s_name, buf, MAXPDSTRING);
-    else{
-        strncpy(buf, fn->s_name, MAXPDSTRING);
-        buf[MAXPDSTRING-1] = 0;
+static const char* midi_filepath(t_midi *x, const char *filename){
+    static char fname[MAXPDSTRING];
+    char *bufptr;
+    int fd = open_via_path(canvas_getdir(x->x_canvas)->s_name,
+        filename, "", fname, &bufptr, MAXPDSTRING, 1);
+    if(fd > 0){
+        fname[strlen(fname)]='/';
+        close(fd);
+        return(fname);
     }
-    FILE *fp = sys_fopen(buf, "r");
-    if(!(fp)){
-        post("[midi] elsefile '%s' not found", buf);
-        fclose(fp);
+    else
+        return(0);
+}
+
+static void midi_doread(t_midi *x, t_symbol *fn){
+    char *file_name_open = (char *)midi_filepath(x, fn->s_name); // path
+    if(!file_name_open){
+        post("[midi] file '%s' not found", fn);
         return;
     }
-    fclose(fp);
-    if(!midi_mfread(x, buf))
-        midi_textread(x, buf);
+    if(!midi_mfread(x, file_name_open))
+        midi_textread(x, file_name_open);
     x->x_playhead = 0;
 }
 
@@ -906,7 +916,7 @@ static void midi_read(t_midi *x, t_symbol *s){
     if(s && s != &s_)
         midi_doread(x, s);
     else
-        panel_open(x->x_elsefilehandle, 0);
+        panel_click_open(x->x_elsefilehandle);
 }
 
 static void midi_write(t_midi *x, t_symbol *s){
