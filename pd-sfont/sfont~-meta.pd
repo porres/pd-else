@@ -1,0 +1,8 @@
+#N canvas 15 49 200 200 10;
+#N canvas 145 57 420 300 META 1;
+#X text 10 25 AUTHOR many (see README);
+#X text 10 59 LICENSE GPLv2;
+#X text 9 76 DESCRIPTION soundfont player based on fluidsynth;
+#X text 10 42 NAME sfont~;
+#X text 10 10 VERSION 0.1-alpha;
+#X restore 10 10 pd META;
