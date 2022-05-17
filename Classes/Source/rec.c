@@ -592,8 +592,8 @@ void rec_setup(void){
     class_addmethod(rec_class, (t_method)rec_mute, gensym("mute"), A_GIMME, 0);
     class_addmethod(rec_class, (t_method)rec_unmute, gensym("unmute"), A_GIMME, 0);
     class_addmethod(rec_class, (t_method)rec_clear, gensym("clear"), A_GIMME, 0);
-    class_addmethod(rec_class, (t_method)rec_read, gensym("read"), A_DEFSYM, 0);
-    class_addmethod(rec_class, (t_method)rec_write, gensym("write"), A_DEFSYM, 0);
+    class_addmethod(rec_class, (t_method)rec_read, gensym("open"), A_DEFSYM, 0);
+    class_addmethod(rec_class, (t_method)rec_write, gensym("save"), A_DEFSYM, 0);
     class_addmethod(rec_class, (t_method)rec_speed, gensym("speed"), A_DEFFLOAT, 0);
     class_addmethod(rec_class, (t_method)rec_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     elsefile_setup();
