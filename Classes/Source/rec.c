@@ -350,8 +350,7 @@ static void rec_clear(t_rec *x, t_symbol *s, int ac, t_atom *av){
 static void rec_doread(t_rec *x, t_symbol *fname){
     char path[MAXPDSTRING];
     char *bufptr;
-    int fd = open_via_path(canvas_getdir(x->x_canvas)->s_name,
-        fname->s_name, "", path, &bufptr, MAXPDSTRING, 1);
+    int fd = canvas_open(x->x_canvas, fname->s_name, "", path, &bufptr, MAXPDSTRING, 1);
     if(fd > 0){
         path[strlen(path)]='/';
         close(fd);

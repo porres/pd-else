@@ -856,15 +856,14 @@ static void midi_textwrite(t_midi *x, char *path){
 static void midi_doread(t_midi *x, t_symbol *fn){
     static char fname[MAXPDSTRING];
     char *bufptr;
-    int fd = open_via_path(canvas_getdir(x->x_canvas)->s_name,
-        fn->s_name, "", fname, &bufptr, MAXPDSTRING, 1);
-    if(fd > 0){
-        fname[strlen(fname)]='/';
-        close(fd);
-    }
-    else{
+    int fd = canvas_open(x->x_canvas, fn->s_name, "", fname, &bufptr, MAXPDSTRING, 1);
+    if(fd < 0){
         post("[midi] file '%s' not found", fn->s_name);
         return;
+    }
+    else{
+        fname[strlen(fname)]='/';
+        close(fd);
     }
     if(!midi_mfread(x, fname))
         midi_textread(x, fname);

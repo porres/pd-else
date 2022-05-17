@@ -69,12 +69,12 @@ static void pic_draw_io_let(t_pic *x){
             cv, xpos, ypos+x->x_height, xpos+IOWIDTH*x->x_zoom, ypos+x->x_height-IHEIGHT*x->x_zoom, x);
 }
 
-// --------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------
 // helper functions
 static const char* pic_filepath(t_pic *x, const char *filename){
     static char fname[MAXPDSTRING];
     char *bufptr;
-    int fd = open_via_path(canvas_getdir(glist_getcanvas(x->x_glist))->s_name,
+    int fd = canvas_open(glist_getcanvas(x->x_glist)),
         filename, "", fname, &bufptr, MAXPDSTRING, 1);
     if(fd > 0){
         fname[strlen(fname)]='/';
