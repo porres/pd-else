@@ -853,28 +853,21 @@ static void midi_textwrite(t_midi *x, char *path){
     binbuf_free(bb);
 }
 
-static const char* midi_filepath(t_midi *x, const char *filename){
+static void midi_doread(t_midi *x, t_symbol *fn){
     static char fname[MAXPDSTRING];
     char *bufptr;
     int fd = open_via_path(canvas_getdir(x->x_canvas)->s_name,
-        filename, "", fname, &bufptr, MAXPDSTRING, 1);
+        fn->s_name, "", fname, &bufptr, MAXPDSTRING, 1);
     if(fd > 0){
         fname[strlen(fname)]='/';
         close(fd);
-        return(fname);
     }
-    else
-        return(0);
-}
-
-static void midi_doread(t_midi *x, t_symbol *fn){
-    char *file_name_open = (char *)midi_filepath(x, fn->s_name); // path
-    if(!file_name_open){
-        post("[midi] file '%s' not found", fn);
+    else{
+        post("[midi] file '%s' not found", fn->s_name);
         return;
     }
-    if(!midi_mfread(x, file_name_open))
-        midi_textread(x, file_name_open);
+    if(!midi_mfread(x, fname))
+        midi_textread(x, fname);
     x->x_playhead = 0;
 }
 

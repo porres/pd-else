@@ -1,5 +1,11 @@
 // based on cyclone/mtr
 
+#ifdef _MSC_VER
+#include <io.h>
+#else
+#include <unistd.h>
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -349,15 +355,19 @@ static void rec_clear(t_rec *x, t_symbol *s, int ac, t_atom *av){
 
 static void rec_doread(t_rec *x, t_rec_track *target, t_symbol *fname){
     char path[MAXPDSTRING];
-    FILE *fp;
-    /* FIXME use open_via_path() */
-    if(x->x_glist)
-        canvas_makefilename(x->x_glist, fname->s_name, path, MAXPDSTRING);
-    else{
-    	strncpy(path, fname->s_name, MAXPDSTRING);
-    	path[MAXPDSTRING-1] = 0;
+    
+    char *bufptr;
+    int fd = open_via_path(canvas_getdir(x->x_glist)->s_name,
+        fname->s_name, "", path, &bufptr, MAXPDSTRING, 1);
+    if(fd > 0){
+        path[strlen(path)]='/';
+        close(fd);
     }
-    /* CHECKED no global message */
+    else{
+        post("[rec] file '%s' not found", fname->s_name);
+        return;
+    }
+    FILE *fp;
     if((fp = sys_fopen(path, "r"))){
         t_rec_track *tp = 0;
         char linebuf[REC_FILEBUFSIZE];
@@ -411,11 +421,8 @@ static void rec_doread(t_rec *x, t_rec_track *target, t_symbol *fname){
         fclose(fp);
         binbuf_free(bb);
     }
-    else{
-	/* CHECKED no complaint, open dialog not presented... */
-	/* LATER rethink */
+    else
         panel_click_open(target ? target->tr_elsefilehandle : x->x_elsefilehandle);
-    }
 }
 
 static int rec_writetrack(t_rec *x, t_rec_track *tp, FILE *fp){
@@ -533,6 +540,10 @@ static void rec_write(t_rec *x, t_symbol *s){
         panel_save(x->x_elsefilehandle, canvas_getdir(x->x_glist), 0);
 }
 
+static void rec_click(t_rec *x){
+    panel_click_open(x->x_elsefilehandle);
+}
+
 static void rec_free(t_rec *x){
     if(x->x_tracks){
         int ntracks = x->x_ntracks;
@@ -625,5 +636,6 @@ void rec_setup(void){
     class_addmethod(rec_class, (t_method)rec_read, gensym("read"), A_DEFSYM, 0);
     class_addmethod(rec_class, (t_method)rec_write, gensym("write"), A_DEFSYM, 0);
     class_addmethod(rec_class, (t_method)rec_speed, gensym("speed"), A_DEFFLOAT, 0);
+    class_addmethod(rec_class, (t_method)rec_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     elsefile_setup();
 }
