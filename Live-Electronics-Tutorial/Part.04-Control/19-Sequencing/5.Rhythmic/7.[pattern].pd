@@ -18,8 +18,8 @@
 #X text 377 352 route information from the right outlet, f 22;
 #X obj 140 224 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
-#X obj 315 387 else/display 8;
-#X obj 274 421 else/display 4;
+#X obj 315 387 display 8;
+#X obj 274 421 display 4;
 #X msg 185 316 10/56 5/56 5/56 10/56 5/56 3/40 3/40 3/40 3/40 3/40
 ;
 #X obj 127 186 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc

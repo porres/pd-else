@@ -21,7 +21,7 @@
 #X obj 187 341 noise~;
 #X obj 99 340 decay~ 300;
 #X obj 434 334 b;
-#X obj 347 291 else/display;
+#X obj 347 291 display;
 #X obj 347 254 count 1 4;
 #X obj 347 222 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
@@ -40,8 +40,8 @@ only lets one at every 4 bangs to come out. The other bangs come out
 at a secondary outlet though and you can use this to create rhythymic
 patterns. One way to implement a bang divider is presented to the right
 with a counter and [select]., f 76;
-#X obj 572 367 else/out~;
-#X obj 581 299 else/display~;
+#X obj 572 367 out~;
+#X obj 581 299 display~;
 #X obj 728 200 imp~ 1;
 #X obj 728 260 pulsediv~ 4;
 #X obj 581 270 pulsecount~ 4;

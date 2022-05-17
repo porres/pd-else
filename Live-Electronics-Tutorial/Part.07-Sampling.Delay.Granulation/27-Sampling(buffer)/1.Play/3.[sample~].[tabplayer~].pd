@@ -31,7 +31,7 @@ its help file for more details., f 66;
 powerful alternative to [tabplay~] that offers different reading speeds
 and also has multi-channel support. Check its help file., f 26;
 #X obj 230 537 tabplayer~ \$0-sample;
-#X obj 152 288 else/display;
+#X obj 152 288 display;
 #X obj 152 258 sample~ \$0-sample bubul.wav;
 #X text 25 143 Below \, [sample~] loads a single channel file (the
 same as last example). Its outlet outputs the table size in samples

@@ -1,19 +1,19 @@
-#N canvas 550 136 808 401 12;
+#N canvas 442 64 808 401 12;
 #X declare -path else;
 #X obj 323 68 hsl 200 15 1 40 0 0 \$0-width \$0-width-set Sustain -2
--8 1 12 -191407 -1 -1 3572 1;
+-8 1 12 #b8b8b8 #000000 #000000 0 1;
 #X obj 323 103 hsl 200 15 0.92 0.999 1 0 \$0-feedback \$0-feedback-set
-Feedback -2 -8 1 12 -228856 -1 -1 18931 1;
-#X obj 323 138 hsl 200 15 100 8000 0 0 \$0-cutoff \$0-cutoff-set Cutoff
--2 -8 1 12 -220731 -1 -1 14106 1;
-#X obj 62 66 tgl 30 0 empty \$0-metro empty 17 7 0 10 -228856 -1 -1
-1 1;
-#X floatatom 120 85 5 0 0 0 - - -;
+Feedback -2 -8 1 12 #dcdcdc #000000 #000000 0 1;
+#X obj 323 138 hsl 200 15 100 15000 0 0 \$0-cutoff \$0-cutoff-set Cutoff
+-2 -8 1 12 #d4e0e8 #000000 #000000 0 1;
+#X obj 62 66 tgl 30 0 empty \$0-metro empty 17 7 0 10 #dcdcdc #000000
+#000000 0 1;
+#X floatatom 120 85 5 0 0 0 - - - 0;
 #X obj 123 64 hsl 128 15 500 3000 0 0 empty \$0-tempo Tempo -2 -8 0
-10 -228856 -1 -1 12700 1;
+10 #dcdcdc #000000 #000000 0 1;
 #X obj 62 296 out~;
 #X obj 611 52 declare -path else;
-#X floatatom 62 171 3 0 0 0 - - -;
+#X floatatom 62 171 3 0 0 0 - - - 0;
 #X text 89 171 <= chord number;
 #X msg 62 199 all \$1;
 #X text 239 230 <= click;
@@ -28,11 +28,12 @@ Feedback -2 -8 1 12 -228856 -1 -1 18931 1;
 #X obj 62 112 tempo 3000 25 -ms;
 #X obj 62 264 drive~;
 #X obj 62 230 clone 6 karplus-voice-2;
-#X text 347 262 This is the exact same thing as the previous one. The
-only change is that we're using the [dollsym] object \, from ELSE \,
-inside [clone] so we can get expand \$0 to the value of the parent
-patch. This means we don't need to pass the \$0 value as an argument.
-, f 53;
+#X text 347 262 This is about the exact same thing as the previous
+one. One change is that we now use [lowpass~] with a q of '0.5'. Another
+change is that we're using the [dollsym] object \, from ELSE \, inside
+[clone] so we can get expand \$0 to the value of the parent patch.
+This means we don't need to pass the \$0 value as an argument., f
+57;
 #X connect 3 0 16 0;
 #X connect 4 0 16 1;
 #X connect 5 0 4 0;

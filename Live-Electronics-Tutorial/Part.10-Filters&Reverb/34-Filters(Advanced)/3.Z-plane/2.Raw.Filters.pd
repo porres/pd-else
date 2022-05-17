@@ -29,9 +29,9 @@
 #X obj 174 562 fexpr~ $x1[-1] - $x1 * ar - $x2 * ai \; $x2[-1] - $x1
 * ai + $x2 *ar;
 #X text 150 574 =;
-#X text 77 29 Here are the raw filters distributed natively in Pd.
+#X text 42 28 Here are the raw filters distributed natively in Pd.
 They are basically Poles and Zeroes \, in the real and complex versions.
-Here are the [fexpr~] implementation of all of them:;
+Here are the [fexpr~] implementation of all of them:, f 61;
 #X text 174 319 real;
 #X text 381 319 imaginary;
 #X text 175 373 real;

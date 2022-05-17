@@ -26,7 +26,7 @@ width float bordercolor;
 #X floatatom 498 66 3 0 0 0 - - - 0;
 #X floatatom 527 95 3 0 0 0 - - - 0;
 #X floatatom 557 126 3 0 0 0 - - - 0;
-#X obj 459 303 else/drum.seq 2 16 20 0 0 0 0 0 0 0 0 0 0 0 0;
+#X obj 459 303 drum.seq 2 16 20 0 0 0 0 0 0 0 0 0 0 0 0;
 #X obj 455 95 f 16;
 #X obj 704 109 + 1;
 #X obj 704 63 vradio 18 1 0 2 empty empty empty 0 -8 0 10 #dcdcdc #000000

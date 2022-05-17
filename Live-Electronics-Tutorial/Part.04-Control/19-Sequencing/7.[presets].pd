@@ -1,7 +1,7 @@
 #N canvas 610 23 591 564 12;
 #X declare -path else;
 #X obj 332 37 declare -path else;
-#X obj 87 428 else/function 200 100 empty empty 0 1 220 220 220 50
+#X obj 87 428 function 200 100 empty empty 0 1 220 220 220 50
 50 50 0 0 0 0 0 1000 0;
 #X obj 87 394 r \$0-function;
 #X obj 71 275 hradio 15 1 0 4 empty empty empty 0 -8 0 10 -228856 -1
@@ -17,10 +17,10 @@
 #X coords 0 1 10 -1 202 102 1 0 0;
 #X restore 322 426 graph;
 #X obj 350 357 r \$0-array;
-#X obj 350 382 else/buffer \$0-buffer;
+#X obj 350 382 buffer \$0-buffer;
 #X obj 439 233 nbx 4 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
 -228856 -1 -1 0 256;
-#X obj 407 292 else/display;
+#X obj 407 292 display;
 #X obj 71 221 metro 1000;
 #X obj 71 194 tgl 17 0 empty empty empty 17 7 0 10 -228856 -1 -1 0
 1;

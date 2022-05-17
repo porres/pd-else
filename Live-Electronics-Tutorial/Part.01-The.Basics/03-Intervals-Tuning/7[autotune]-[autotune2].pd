@@ -1,4 +1,4 @@
-#N canvas 521 56 989 731 12;
+#N canvas 377 23 989 723 12;
 #X declare -path else;
 #X obj 295 25 declare -path else;
 #X text 28 62 Autotuning is when you correct a pitch to the nearest
@@ -7,15 +7,15 @@ MIDI and our equal temperament \, the autotuning simply needs to round
 to the nearest integer value.;
 #X obj 197 218 rint;
 #X obj 197 169 rand.f 40 80;
-#X floatatom 197 193 5 0 0 0 - - -;
-#X floatatom 197 245 5 0 0 0 - - -;
-#X obj 197 145 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X floatatom 197 193 5 0 0 0 - - - 0;
+#X floatatom 197 245 5 0 0 0 - - - 0;
+#X obj 197 145 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 130 439 rand.f 40 80;
-#X floatatom 130 463 5 0 0 0 - - -;
-#X obj 130 415 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X floatatom 130 516 5 0 0 0 - - -;
+#X floatatom 130 463 5 0 0 0 - - - 0;
+#X obj 130 415 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X floatatom 130 516 5 0 0 0 - - - 0;
 #N canvas 299 88 761 572 Bohlen-Pierce 0;
 #X obj 315 271 expr pow($f1 \, 1/$f2);
 #X obj 233 291 - 60;
@@ -26,10 +26,10 @@ to the nearest integer value.;
 #X obj 233 389 *;
 #X obj 233 502 outlet;
 #X obj 233 162 inlet;
-#X floatatom 315 298 0 0 0 0 - - -;
-#X floatatom 315 357 0 0 0 0 - - -;
+#X floatatom 315 298 0 0 0 0 - - - 0;
+#X floatatom 315 357 0 0 0 0 - - - 0;
 #X obj 315 327 ratio2cents;
-#X floatatom 315 419 0 0 0 0 - - -;
+#X floatatom 315 419 0 0 0 0 - - - 0;
 #X text 352 243 <= division of an octave by 13 equal steps;
 #X text 372 297 <= ratio of 1 step;
 #X text 376 356 <= 1 step in cents;
@@ -39,8 +39,8 @@ to the nearest integer value.;
 #X text 118 291 base value (60);
 #X text 116 421 base value (60);
 #X text 311 196 Get the scale step in MIDI cents;
-#X floatatom 233 223 0 0 0 0 - - -;
-#X floatatom 233 459 0 0 0 0 - - -;
+#X floatatom 233 223 0 0 0 0 - - - 0;
+#X floatatom 233 459 0 0 0 0 - - - 0;
 #X text 100 36 We need to round to a MIDI value according to the scale
 step in MIDI cents. We also need a reference value for the start of
 the scale \, which is "60" here (Middle C). So we get the difference
@@ -67,10 +67,10 @@ sum back the base value., f 75;
 #X connect 23 0 7 0;
 #X restore 130 489 pd Bohlen-Pierce;
 #X obj 306 438 rand.f 40 80;
-#X floatatom 306 462 5 0 0 0 - - -;
-#X obj 306 414 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
-#X floatatom 306 515 5 0 0 0 - - -;
+#X floatatom 306 462 5 0 0 0 - - - 0;
+#X obj 306 414 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X floatatom 306 515 5 0 0 0 - - - 0;
 #N canvas 584 86 761 558 quantizer 0;
 #X obj 335 257 expr pow($f1 \, 1/$f2);
 #X obj 233 277 - 60;
@@ -79,10 +79,10 @@ sum back the base value., f 75;
 #X obj 335 206 loadbang;
 #X obj 233 488 outlet;
 #X obj 233 148 inlet;
-#X floatatom 335 284 0 0 0 0 - - -;
-#X floatatom 335 343 0 0 0 0 - - -;
+#X floatatom 335 284 0 0 0 0 - - - 0;
+#X floatatom 335 343 0 0 0 0 - - - 0;
 #X obj 335 313 ratio2cents;
-#X floatatom 335 405 0 0 0 0 - - -;
+#X floatatom 335 405 0 0 0 0 - - - 0;
 #X text 372 229 <= division of an octave by 13 equal steps;
 #X text 392 283 <= ratio of 1 step;
 #X text 396 342 <= 1 step in cents;
@@ -91,8 +91,8 @@ sum back the base value., f 75;
 #X text 118 277 base value (60);
 #X text 116 407 base value (60);
 #X text 331 182 Get the scale step in MIDI cents;
-#X floatatom 233 209 0 0 0 0 - - -;
-#X floatatom 233 445 0 0 0 0 - - -;
+#X floatatom 233 209 0 0 0 0 - - - 0;
+#X floatatom 233 445 0 0 0 0 - - - 0;
 #X obj 233 345 quantizer;
 #X text 236 43 This is a minor simplification that uses the [quantizer]
 object., f 37;
@@ -121,10 +121,10 @@ object from ELSE., f 64;
 indeed more complicated. We need to store the scale's step values in
 a table and go trhough it and find the closest one., f 62;
 #X obj 625 192 keyboard 17 80 2 3 0 0 empty empty;
-#X floatatom 625 308 4 0 0 0 - - -;
+#X floatatom 625 308 4 0 0 0 - - - 0;
 #X obj 625 283 stripnote;
-#X obj 625 368 else/display 6;
-#X floatatom 542 259 5 0 0 0 - - -;
+#X obj 625 368 display 6;
+#X floatatom 542 259 5 0 0 0 - - - 0;
 #X msg 542 283 base \$1;
 #X obj 625 339 autotune;
 #X obj 625 400 mtof;
@@ -136,19 +136,19 @@ of cents values for the scale. In this example we have [eqdiv] feeding
 the object \, but note that for equal divisions \, this algorithm is
 a bit less efficient the the solution provided to the left., f 62
 ;
-#X obj 737 345 eqdiv 3 13;
-#X obj 737 322 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
--1 -1;
+#X obj 737 322 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
 #X obj 737 295 loadbang;
-#X floatatom 250 619 0 0 0 0 - - -;
+#X floatatom 250 619 0 0 0 0 - - - 0;
 #X obj 253 591 hsl 200 18 -2400 2400 0 0 empty empty empty -2 -8 0
-10 -228856 -1 -1 0 1;
+10 #dcdcdc #000000 #000000 0 1;
 #X obj 250 685 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 0 256;
-#X obj 250 651 else/autotune2 0 110 190 320 410 480 590 610 690 805
-895 990 1110 1200, f 70;
+#dcdcdc #000000 #000000 0 256;
+#X obj 250 651 autotune2 0 110 190 320 410 480 590 610 690 805 895
+990 1110 1200, f 70;
 #X text 501 591 The [autotune2] object is simpler and retunes cents
 values directly. Check its help file., f 46;
+#X obj 737 345 eqdiv 13 3;
 #X connect 2 0 5 0;
 #X connect 3 0 4 0;
 #X connect 4 0 2 0;
@@ -170,9 +170,9 @@ values directly. Check its help file., f 46;
 #X connect 25 0 22 0;
 #X connect 26 0 27 0;
 #X connect 27 0 28 0;
-#X connect 30 0 25 1;
+#X connect 30 0 37 0;
 #X connect 31 0 30 0;
-#X connect 32 0 31 0;
-#X connect 33 0 36 0;
-#X connect 34 0 33 0;
-#X connect 36 0 35 0;
+#X connect 32 0 35 0;
+#X connect 33 0 32 0;
+#X connect 35 0 34 0;
+#X connect 37 0 25 1;

@@ -12,12 +12,12 @@
 #X obj 64 437 highpass~ 500 1;
 #X obj 64 398 clone 4 voice2;
 #X obj 163 139 route tempo;
-#X obj 102 56 bng 17 250 50 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X obj 102 54 bng 20 250 50 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000;
 #X obj 102 83 score fantasia.txt;
 #X obj 117 184 *;
 #X obj 225 109 spigot;
-#X obj 264 84 tgl 17 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#X obj 264 84 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
 #X text 287 84 loop;
 #X msg 54 54 stop;

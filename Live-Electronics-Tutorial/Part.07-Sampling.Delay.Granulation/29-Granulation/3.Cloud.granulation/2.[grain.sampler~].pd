@@ -8,7 +8,7 @@
 #X obj 73 154 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X obj 319 373 grain.sampler~;
-#X obj 316 195 else/sample~ \$0-sample violin.wav, f 12;
+#X obj 316 195 sample~ \$0-sample violin.wav, f 12;
 #X text 261 299 This example is the basis of the [grain.sampler~] object
 from ELSE \, check its help file., f 26;
 #X text 120 78 Here we adapt the last example to play grains from a

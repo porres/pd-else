@@ -12,8 +12,8 @@ objects., f 50;
 #X obj 58 462 out~;
 #X text 187 417 [changed~] outputs an impulse when the signal above
 a given difference threshold (0 by default)., f 25;
-#X obj 51 270 else/status~;
-#X obj 48 311 else/out~;
+#X obj 51 270 status~;
+#X obj 48 311 out~;
 #X obj 51 233 randpulse~ 1;
 #X text 177 94 [zerocross~] outputs impulses when a signal crosses
 from negative to positive (left outlet) or positive to negative (mid
@@ -29,7 +29,7 @@ changes its direction., f 20;
 #X text 569 85 [above~] sends an impulse when a signal raises above
 a given threshold (left outlet) and an impulse when it falls back (right
 outlet)., f 29;
-#X obj 450 302 else/display~ 8;
+#X obj 450 302 display~ 8;
 #X obj 450 237 rampnoise~ 5;
 #X obj 450 271 schmitt~ -0.5 0.5;
 #X text 597 221 [schmitt~] is a Schmitt trigger. When the input is

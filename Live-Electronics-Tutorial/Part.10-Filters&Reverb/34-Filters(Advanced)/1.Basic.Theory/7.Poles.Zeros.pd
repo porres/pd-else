@@ -1,13 +1,13 @@
 #N canvas 345 34 940 526 12;
 #X declare -path else;
-#X obj 52 436 cnv 15 275 50 empty empty empty 5 12 0 14 -232693 -66577
+#X obj 52 436 cnv 15 275 50 empty empty empty 5 12 0 14 #e0ccd0 #404040
 0;
 #X text 59 451 H(z) = ------------------------------;
 #X text 112 440 a0 + a1 * z^-1 + a2 * z^-2;
 #X obj 581 282 rpole~;
 #X obj 581 219 noise~;
-#X obj 688 220 sig~ 0.1;
-#X obj 576 434 cnv 15 320 55 empty empty empty 5 12 0 14 -233017 -66577
+#X obj 688 219 sig~ 0.1;
+#X obj 576 434 cnv 15 320 55 empty empty empty 5 12 0 14 #e0e0e0 #404040
 0;
 #X text 710 446 _____________;
 #X text 743 439 1;
@@ -18,11 +18,11 @@
 #X text 695 452 =;
 #X text 714 463 1 - a * z^-1;
 #X text 118 461 1 - b1 * z^-1 - b2 * z^-2;
-#X obj 581 321 out~;
+#X obj 581 324 out~;
 #N canvas 259 23 692 706 get-H(z) 0;
-#X obj 165 56 cnv 15 330 40 empty empty empty 5 12 0 14 -233017 -66577
+#X obj 165 56 cnv 15 330 40 empty empty empty 5 12 0 14 #e0e0e0 #404040
 0;
-#X obj 188 609 cnv 15 290 50 empty empty empty 5 12 0 14 -232693 -66577
+#X obj 188 609 cnv 15 290 50 empty empty empty 5 12 0 14 #e0ccd0 #404040
 0;
 #X text 173 59 y(n) = a0 * x(n) + a1 * x(n-1) + a2 * x(n-2) + b1 *
 y(n-1) + b2 * y(n-2), f 44;
@@ -62,13 +62,13 @@ as a 2-Pole / 2-Zero filter \, you're also defining its order., f
 #X text 331 439 <== Zeros (a1/a2);
 #X text 331 464 <== Poles (b1/b2);
 #X obj 688 283 fexpr~ $x[0] + $x2 * $y[-1];
-#X obj 688 323 out~;
+#X obj 688 324 out~;
 #X text 816 461 <== Pole;
 #X text 511 68 A pole represents a resonance \, and a zero is an anti
 resonance \, this is where they get their names from. We'll see later
 how they act \, when the Z-Plane is presented.;
 #X obj 733 24 declare -path else;
-#X text 757 220 <= pole coefficient;
+#X text 757 218 <= pole coefficient;
 #X text 657 283 =;
 #X obj 78 117 pic 0 ../files/SOS.gif empty empty 0 0;
 #X text 39 323 Hence \, a1 & a2 are the Zeros and b1 & b2 are the Poles
@@ -77,9 +77,9 @@ transfer function \, the Zeroes are the numerators \, and poles the
 denominator. Open [pd get-H(z)] to see how to derive this transfer
 function from the difference equation., f 61;
 #X text 511 118 The [rpole~] object is a one pole filter object provided
-as a native object in Pd. It takes a pole coefficient in the right inlet.
-This is nothing but the IIR filter example we've already seen in the
-previous examples., f 57;
+as a native object in Pd. It takes a pole coefficient in the right
+inlet. This is nothing but the IIR filter example we've already seen
+in the previous examples., f 57;
 #X text 575 411 The Transfer Function:;
 #X connect 3 0 16 0;
 #X connect 4 0 3 0;

@@ -3,33 +3,33 @@
 #X obj 534 253 cpole~, f 12;
 #X obj 539 294 cpole~, f 33;
 #X obj 506 214 *~;
-#X obj 465 183 noise~;
-#X obj 278 173 nbx 5 14 0.1 100 1 0 \$0-Q \$0-q_set empty 0 -8 0 10
--228856 -1 -1 1 256;
-#X floatatom 142 225 8 0 0 0 - - -;
+#X obj 471 182 noise~;
+#X obj 278 170 nbx 5 14 0.1 100 1 0 \$0-Q \$0-q_set empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X floatatom 141 225 8 0 0 0 - - - 0;
 #X obj 284 256 v g;
 #X msg 524 155 \$3;
-#X obj 211 320 noise~;
-#X obj 142 253 v a1;
+#X obj 211 312 noise~;
+#X obj 141 253 v a1;
 #X obj 213 253 v a2;
-#X obj 52 303 noise~;
-#X obj 148 172 nbx 8 14 100 20000 1 0 \$0-freq-send \$0-freq empty
-0 -8 0 10 -228856 -1 -1 500 100;
-#X text 127 170 Hz;
-#X obj 102 355 nbx 5 14 1 100 1 0 empty \$0-Q empty 0 -8 0 10 -228856
--1 -1 1 256;
+#X obj 69 298 noise~;
+#X obj 148 170 nbx 8 14 100 20000 1 0 \$0-freq-send \$0-freq empty
+0 -8 0 10 #dcdcdc #000000 #000000 0 100;
+#X text 127 169 Hz;
+#X obj 102 355 nbx 5 14 1 100 1 0 empty \$0-Q empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X obj 78 331 nbx 5 14 -1e+37 1e+37 0 0 empty \$0-freq-send empty 0
--8 0 10 -228856 -1 -1 500 256;
+-8 0 10 #dcdcdc #000000 #000000 0 256;
 #X obj 69 355 bp~;
 #X obj 211 346 fexpr~ g * $x[0] + a1 * $y[-1] + a2 * $y[-2], f 30
 ;
-#X obj 55 114 cnv 15 330 20 empty empty empty 20 12 0 14 -233017 -66577
+#X obj 55 114 cnv 15 330 20 empty empty empty 20 12 0 14 #e0e0e0 #404040
 0;
 #X text 65 114 y[n] = g * x[n] + a1 * y[n-1] + a2 * y[n-2];
-#X floatatom 524 182 8 0 0 0 - - -;
+#X floatatom 524 182 8 0 0 0 - - - 0;
 #X obj 539 327 out~;
-#X obj 211 389 out~;
-#X obj 69 385 out~;
+#X obj 211 398 out~;
+#X obj 69 398 out~;
 #N canvas 761 216 488 480 coefficients 0;
 #X obj 99 48 inlet;
 #X obj 50 48 inlet;
@@ -141,16 +141,16 @@ and Q input \, the coefficients are loaded inside [fexpr~] for comparison:
 #X text 569 83 (a1 a2 b0);
 #X obj 525 234 trigger bang float float;
 #X obj 607 338 route 0 1;
-#X obj 607 285 tgl 15 0 empty empty empty 17 7 0 10 -262144 -1 -1 1
-1;
+#X obj 607 285 tgl 15 0 empty empty empty 17 7 0 10 #fcfcfc #000000
+#000000 0 1;
 #X obj 607 311 pack float float;
 #X obj 637 362 abs;
 #X obj 637 386 sqrt;
 #X obj 591 386 sqrt;
 #X obj 607 260 < 0;
-#X floatatom 637 408 5 0 0 0 - - -;
-#X floatatom 591 407 5 0 0 0 - - -;
-#X floatatom 525 546 7 0 0 0 - - -;
+#X floatatom 637 408 5 0 0 0 - - - 0;
+#X floatatom 591 407 5 0 0 0 - - - 0;
+#X floatatom 525 546 7 0 0 0 - - - 0;
 #X obj 711 587 outlet;
 #X obj 649 587 outlet;
 #X obj 637 429 v im;
@@ -195,9 +195,9 @@ is 0 \, but if negative \, it's the imaginary part and the real part
 is 0 - we then have both parts as:;
 #X text 549 611 pole 1;
 #X text 674 611 pole 2;
-#X floatatom 587 546 7 0 0 0 - - -;
-#X floatatom 711 546 7 0 0 0 - - -;
-#X floatatom 649 546 7 0 0 0 - - -;
+#X floatatom 587 546 7 0 0 0 - - - 0;
+#X floatatom 711 546 7 0 0 0 - - - 0;
+#X floatatom 649 546 7 0 0 0 - - - 0;
 #X connect 9 0 29 0;
 #X connect 10 0 25 0;
 #X connect 10 1 26 0;
@@ -227,15 +227,15 @@ is 0 - we then have both parts as:;
 #X connect 78 0 43 0;
 #X restore 587 155 pd Poles;
 #X f 29;
-#X text 263 171 Q;
+#X text 263 168 Q;
 #X obj 695 21 declare -path else;
 #X obj 587 122 r \$0-coefficients;
-#X floatatom 284 225 8 0 0 0 - - -;
-#X floatatom 213 225 8 0 0 0 - - -;
-#X floatatom 787 214 8 0 0 0 - - -;
-#X floatatom 720 214 8 0 0 0 - - -;
-#X floatatom 653 214 8 0 0 0 - - -;
-#X floatatom 588 214 8 0 0 0 - - -;
+#X floatatom 284 225 8 0 0 0 - - - 0;
+#X floatatom 213 225 8 0 0 0 - - - 0;
+#X floatatom 787 214 8 0 0 0 - - - 0;
+#X floatatom 720 214 8 0 0 0 - - - 0;
+#X floatatom 653 214 8 0 0 0 - - - 0;
+#X floatatom 588 214 8 0 0 0 - - - 0;
 #X text 18 196 open and check =>;
 #X text 55 473 Even though the coefficients' values are real inside
 [fexpr~] \, we're dealing with complex poles. More precisely a conjugate

@@ -25,7 +25,7 @@ object is used to get 'click' tracks \, check it out as well., f 64
 #X obj 152 302 bng 22 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X text 110 298 beat bang, f 4;
-#X obj 152 265 else/metronome, f 30;
+#X obj 152 265 metronome, f 30;
 #X floatatom 358 232 4 0 0 0 - - - 12;
 #X text 359 209 tempo;
 #X text 288 319 multiplier values;

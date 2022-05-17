@@ -1,8 +1,8 @@
-#N canvas 709 23 522 567 12;
+#N canvas 571 23 522 567 12;
 #X declare -path else;
 #X obj 316 17 declare -path else;
 #X obj 66 479 out~;
-#X obj 66 87 tgl 20 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
+#X obj 66 87 tgl 25 0 empty empty empty 17 7 0 10 #dcdcdc #000000 #000000
 0 1;
 #X floatatom 66 195 5 0 0 0 - - - 0;
 #X obj 66 346 osc~;

@@ -19,7 +19,7 @@
 #dcdcdc #000000 #000000 0 1;
 #X obj 328 29 declare -path else;
 #X obj 624 143 f2s~ 10 0.5;
-#X obj 577 177 else/display~ 8;
+#X obj 577 177 display~ 8;
 #X text 639 324 <= Deviation is the amplitude of the modulator oscillator.
 , f 30;
 #X obj 664 258 f2s~ 10;

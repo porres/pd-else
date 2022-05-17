@@ -45,7 +45,7 @@ minor seventh (7/4) and others. Note that if you invert the ratio \,
 you get the same interval but with a negative value in cents. For example
 \, 2/3 is a fifth below. Note also how in such cases the ratio is below
 1!;
-#X obj 76 542 else/display;
+#X obj 76 542 display;
 #X msg 76 482 1 9/8 5/4 11/8 3/2 13/8 14/8 15/8 2;
 #X obj 76 453 loadbang;
 #X text 458 491 The [frac2ratio] object from ELSE takes a list of elements

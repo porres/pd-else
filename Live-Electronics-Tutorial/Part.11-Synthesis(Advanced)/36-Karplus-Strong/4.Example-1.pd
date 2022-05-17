@@ -1,10 +1,10 @@
-#N canvas 522 118 844 400 12;
+#N canvas 374 76 844 400 12;
 #X declare -path else;
 #X obj 342 46 hsl 200 15 1 40 0 0 \$0-width \$0-width-set Sustain -2
 -8 1 12 #b8b8b8 #000000 #000000 0 1;
 #X obj 342 81 hsl 200 15 0.92 0.999 1 0 \$0-feedback \$0-feedback-set
 Feedback -2 -8 1 12 #dcdcdc #000000 #000000 0 1;
-#X obj 342 116 hsl 200 15 100 8000 0 0 \$0-cutoff \$0-cutoff-set Cutoff
+#X obj 342 116 hsl 200 15 100 14000 0 0 \$0-cutoff \$0-cutoff-set Cutoff
 -2 -8 1 12 #d4e0e8 #000000 #000000 0 1;
 #X obj 59 64 tgl 30 0 empty \$0-metro empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
@@ -30,21 +30,21 @@ Feedback -2 -8 1 12 #dcdcdc #000000 #000000 0 1;
 is passed inside clone as an argument so we can communicate with the
 abstraction copies., f 65;
 #X obj 59 262 drive~;
-#X text 338 240 Each voice is played by a different copy of an abstraction
-inside [clone]. They're also attacked at a different time with a random
-delay value. Click the [clone] object to check it. Not much else is
-new \, we have the same duration/sustain parameter from the last example.
-, f 65;
 #X obj 59 228 clone 6 karplus-voice-1 \$0;
 #X text 338 205 This example has eight 6-voice chords \, which are
 stored in the [text] object above and randomly picked on the left.
 , f 65;
+#X text 338 240 Each voice is played by a different copy of an abstraction
+inside [clone]. They're also attacked at a different time with a random
+delay value. Click the [clone] object to check it. Not much else is
+new \, we have the same duration/sustain parameter from the last example.
+Note we're using [lop2~] now in the feedback loop., f 65;
 #X connect 3 0 16 0;
 #X connect 4 0 16 1;
 #X connect 5 0 4 0;
 #X connect 8 0 10 0;
-#X connect 10 0 20 0;
+#X connect 10 0 19 0;
 #X connect 13 0 8 0;
 #X connect 16 0 13 0;
 #X connect 18 0 6 0;
-#X connect 20 0 18 0;
+#X connect 19 0 18 0;

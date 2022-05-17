@@ -6,7 +6,7 @@
 #X floatatom 171 212 5 0 0 0 - - - 0;
 #X obj 278 279 bng 18 250 50 0 empty empty empty 17 7 0 10 #dfdfdf
 #000000 #000000;
-#X obj 345 212 else/display 4;
+#X obj 345 212 display 4;
 #X msg 312 172 1/3;
 #X msg 280 171 4/3;
 #X msg 379 172 0.75;
@@ -21,7 +21,7 @@
 #X obj 621 185 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
 #X obj 621 222 polymetro 90 3/2;
-#X obj 675 184 else/display 4;
+#X obj 675 184 display 4;
 #X msg 641 137 1/3;
 #X msg 609 137 4/3;
 #X msg 744 137 0.75;

@@ -7,7 +7,7 @@ Aftertouch value. Let's check all of these in detail below., f 62
 ;
 #N canvas 619 54 626 579 Control-Change 0;
 #X text 259 462 MIDI channel;
-#X obj 236 459 else/display;
+#X obj 236 459 display;
 #X obj 188 489 display 3;
 #X obj 141 520 display 2;
 #X obj 141 431 ctl.in, f 14;
@@ -42,7 +42,7 @@ input., f 66;
 #X restore 616 289 pd Control-Change;
 #N canvas 652 84 574 525 Program-Change 0;
 #X text 216 447 MIDI channel;
-#X obj 193 444 else/display;
+#X obj 193 444 display;
 #X obj 98 475 display 2;
 #X text 127 478 Control Value;
 #X text 53 32 Program Change messages are composed of 2 bytes., f
@@ -75,7 +75,7 @@ the MIDI Channel (192 is channel 1 \, 193 is channel 2 and so on).
 #X restore 757 287 pd Program-Change;
 #N canvas 527 107 685 634 Pitch-Bend 0;
 #X text 201 534 MIDI channel;
-#X obj 178 531 else/display;
+#X obj 178 531 display;
 #X obj 97 503 bend.in -raw;
 #X text 143 571 Pitch bend;
 #X msg 97 342 224 \, 127 \, 127;
@@ -138,7 +138,7 @@ a Note Off and this how Pd usually deals with it., f 66;
 #X msg 70 348 144 \, 68 \, 120;
 #X text 139 471 MIDI channel;
 #X text 96 534 Pitch;
-#X obj 116 468 else/display;
+#X obj 116 468 display;
 #X text 126 501 Velocity;
 #X obj 70 440 note.in;
 #X msg 94 404 128 \, 68 \, 120;
@@ -153,9 +153,9 @@ a Note Off and this how Pd usually deals with it., f 66;
 ;
 #X text 769 96 Note On (raw MIDI data);
 #X text 784 142 Note Off (raw MIDI data);
-#X obj 670 202 else/display;
-#X obj 779 202 else/display;
-#X obj 742 231 else/display;
+#X obj 670 202 display;
+#X obj 779 202 display;
+#X obj 742 231 display;
 #X text 607 205 pitch =>;
 #X text 797 204 <== channel;
 #X obj 670 173 note.in -rel, f 16;
@@ -251,7 +251,7 @@ a Note Off message., f 66;
 #X restore 637 247 pd Note-On/Off;
 #N canvas 495 198 661 570 Polyphonic-Aftertouch 0;
 #X text 215 444 MIDI channel;
-#X obj 192 441 else/display;
+#X obj 192 441 display;
 #X obj 144 471 display 3;
 #X obj 97 502 display 2;
 #X text 46 17 Poliphonic Aftertouch messages are composed of 3 bytes.
@@ -293,7 +293,7 @@ the key aftertouch is more present in pad controllers., f 81;
 #X restore 757 247 pd Polyphonic-Aftertouch;
 #N canvas 507 233 670 423 Channel-Aftertouch 0;
 #X text 237 326 MIDI channel;
-#X obj 214 323 else/display;
+#X obj 214 323 display;
 #X text 46 15 Channel Aftertouch messages are composed of 2 bytes.
 , f 64;
 #X text 45 33 They start with a first number from 208 to 223 that codifies

@@ -18,8 +18,8 @@
 #X text 38 83 click on the messages:;
 #X text 314 176 bpm by default;
 #X msg 128 329 90 4;
-#X obj 128 411 else/display 5;
-#X obj 181 411 else/display;
+#X obj 128 411 display 5;
+#X obj 181 411 display;
 #X msg 139 355 60 5;
 #X text 133 434 bpm;
 #X text 169 329 go to 90 bpm in 4 beats;

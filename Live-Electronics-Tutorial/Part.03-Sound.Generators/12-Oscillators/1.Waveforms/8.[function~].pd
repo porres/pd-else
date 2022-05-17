@@ -46,7 +46,7 @@ on the fly.;
 #X text 541 38 The [function~] object also allows to draw exponential
 curves. Check its help file for more details. Below \, we set an exponential
 value to all segments. A parameter of "2" is exactly the same waveform
-as the [else/parabolic~] object., f 49;
+as the [parabolic~] object., f 49;
 #X obj 668 293 insert exp;
 #X connect 0 0 4 0;
 #X connect 1 0 22 0;
