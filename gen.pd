@@ -1,0 +1,12 @@
+#N canvas 674 174 829 573 10;
+#X msg 324 210 gen 1 17 500;
+#X text 306 239 make it 3rd optional channel;
+#X msg 353 168 gen 1 16 1000;
+#X msg 361 140 gen 1 15 1000;
+#X text 309 285 vibrato;
+#X text 421 305 freq;
+#X msg 457 168 gen 1 16 0;
+#X msg 465 140 gen 1 15 0;
+#X msg 312 306 gen 1 24 -10000;
+#X msg 313 333 gen 1 6 500;
+#X text 392 333 width;
