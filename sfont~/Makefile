@@ -1,6 +1,10 @@
-lib.name = sfont~
 
-class.sources = sfont~.c
+cflags = -Ishared -DHAVE_STRUCT_TIMESPEC
+
+lib.name = ELSE
+
+file := shared/elsefile.c 
+sfont~.class.sources := sfont~.c $(file)
 
 ldlibs = -lfluidsynth
 

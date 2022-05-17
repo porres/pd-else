@@ -19,6 +19,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 */
 
 #include "m_pd.h"
+#include "elsefile.h"
 #include <fluidsynth.h>
 #include <string.h>
 #include <unistd.h>
@@ -35,6 +36,7 @@ typedef struct _sfont{
     fluid_settings_t   *x_settings;
     fluid_sfont_t      *x_sfont;
     fluid_preset_t     *x_preset;
+    t_elsefile         *x_elsefilehandle;
     t_outlet           *x_out_left;
     t_outlet           *x_out_right;
     t_canvas           *x_canvas;
@@ -454,7 +456,7 @@ static void fluid_info(t_sfont *x){
     post("\n");
 }
 
-static void fluid_load(t_sfont *x, t_symbol *name){
+static void fluid_do_load(t_sfont *x, t_symbol *name){
     const char* filename = name->s_name;
     const char* ext = strrchr(filename, '.');
     char realdir[MAXPDSTRING], *realname = NULL;
@@ -500,6 +502,23 @@ static void fluid_load(t_sfont *x, t_symbol *name){
         post("[sfont~]: couldn't load %d", realname);
 }
 
+static void sfont_readhook(t_pd *z, t_symbol *fn, int ac, t_atom *av){
+    ac = 0;
+    av = NULL;
+    fluid_do_load((t_sfont *)z, fn);
+}
+
+static void sfont_click(t_sfont *x){
+    panel_click_open(x->x_elsefilehandle);
+}
+
+static void sfont_load(t_sfont *x, t_symbol *s){
+    if(s && s != &s_)
+        fluid_do_load(x, s);
+    else
+        panel_click_open(x->x_elsefilehandle);
+}
+
 t_int *sfont_perform(t_int *w){
     t_sfont *x = (t_sfont *)(w[1]);
     t_sample *left = (t_sample *)(w[2]);
@@ -518,11 +537,14 @@ static void sfont_free(t_sfont *x){
         delete_fluid_synth(x->x_synth);
     if(x->x_settings)
         delete_fluid_settings(x->x_settings);
+    if(x->x_elsefilehandle)
+        elsefile_free(x->x_elsefilehandle);
 }
 
 static void *sfont_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_sfont *x = (t_sfont *)pd_new(sfont_class);
+    x->x_elsefilehandle = elsefile_new((t_pd *)x, sfont_readhook, 0);
     x->x_synth = NULL;
     x->x_settings = NULL;
     x->x_sfname = NULL;
@@ -603,7 +625,7 @@ static void *sfont_new(t_symbol *s, int ac, t_atom *av){
         return(NULL);
     }
     if(filename)
-        fluid_load(x, filename);
+        fluid_do_load(x, filename);
     return(x);
 errstate:
     pd_error(x, "[sfont~]: wrong args");
@@ -615,7 +637,7 @@ void sfont_tilde_setup(void){
         (t_method)sfont_free, sizeof(t_sfont), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(sfont_class, (t_method)sfont_dsp, gensym("dsp"), A_CANT, 0);
     class_addfloat(sfont_class, (t_method)fluid_float); // raw midi input
-    class_addmethod(sfont_class, (t_method)fluid_load, gensym("load"), A_SYMBOL, 0);
+    class_addmethod(sfont_class, (t_method)sfont_load, gensym("load"), A_SYMBOL, 0);
 //    class_addmethod(sfont_class, (t_method)fluid_gen, gensym("gen"), A_GIMME, 0);
     class_addmethod(sfont_class, (t_method)fluid_bank, gensym("bank"), A_GIMME, 0);
     class_addmethod(sfont_class, (t_method)fluid_note, gensym("note"), A_GIMME, 0);
@@ -639,6 +661,8 @@ void sfont_tilde_setup(void){
     class_addmethod(sfont_class, (t_method)fluid_getversion, gensym("version"), 0);
     class_addmethod(sfont_class, (t_method)fluid_verbose, gensym("verbose"), A_FLOAT, 0);
     class_addmethod(sfont_class, (t_method)fluid_info, gensym("info"), 0);
+    class_addmethod(sfont_class, (t_method)sfont_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    elsefile_setup();
 }
 
 // https://www.fluidsynth.org/api/
