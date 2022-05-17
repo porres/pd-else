@@ -712,8 +712,7 @@ static int midi_mfread(t_midi *x, char *path){
         goto mfreadfailed;
     if(x->x_eventreadhead < x->x_nevents){
         pd_error(x, "bug [midi]: midi_mfread 1");
-        post("declared %d events, got %d",
-        x->x_nevents, x->x_eventreadhead);
+        post("declared %d events, got %d", x->x_nevents, x->x_eventreadhead);
         x->x_nevents = x->x_eventreadhead;
     }
     if(x->x_nevents)
