@@ -74,7 +74,7 @@ static void pic_draw_io_let(t_pic *x){
 static const char* pic_filepath(t_pic *x, const char *filename){
     static char fname[MAXPDSTRING];
     char *bufptr;
-    int fd = canvas_open(glist_getcanvas(x->x_glist)),
+    int fd = canvas_open(glist_getcanvas(x->x_glist),
         filename, "", fname, &bufptr, MAXPDSTRING, 1);
     if(fd > 0){
         fname[strlen(fname)]='/';
