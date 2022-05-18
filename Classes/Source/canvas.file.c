@@ -29,7 +29,7 @@ static void *canvas_file_new(t_floatarg f){
     t_canvas_file *x = (t_canvas_file *)pd_new(canvas_file_class);
     x->x_cv = canvas_getrootfor(canvas_getcurrent());
     int i = f < 0 ? 0 : (int)f;
-    while(i--)
+    while(i-- && x->x_cv->gl_owner)
         x->x_cv = canvas_getrootfor(x->x_cv->gl_owner);
     outlet_new(&x->x_obj, &s_);
     x->x_fail = outlet_new(&x->x_obj, &s_);
