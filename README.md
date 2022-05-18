@@ -106,7 +106,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-## Current Object list (448 objects):
+## Current Object list (449 objects):
 
 **ASSORTED: [01]**
 
@@ -136,7 +136,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [note2pitch]
 - [note2dur]
 
-**PATCH/SUBPATCH MANAGEMENT: [20]**
+**PATCH/SUBPATCH MANAGEMENT: [21]**
 
 - [args]
 - [meter]
@@ -153,6 +153,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [canvas.gop]
 - [canvas.pos]
 - [canvas.edit]
+- [canvas.file]
 - [canvas.vis]
 - [canvas.setname]
 - [canvas.name]
