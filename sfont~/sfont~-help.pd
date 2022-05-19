@@ -1,4 +1,4 @@
-#N canvas 390 32 563 477 10;
+#N canvas 461 58 563 477 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -100,7 +100,6 @@ is used. The minimum and default number of channels by is 16 but you
 can set up to 256 with the '-ch' flag., f 65;
 #X obj 355 465 display;
 #X text 117 470 preset name when loading a program -->;
-#X obj 232 360 sfont~ -v -ch 32 sf/waves.sf2, f 21;
 #X obj 628 121 openfile -h https://github.com/FluidSynth/fluidsynth/wiki/SoundFont
 fluidsynth's github;
 #X text 755 122 (and check the resources for converters and editors)
@@ -137,37 +136,38 @@ name when you load a program or if it fails. Verbosity is also set
 by the "verbose" message. The preset name is also output as a 'preset'
 message in the rightmost "info" outlet when loading a program., f
 65;
+#X obj 232 360 else/sfont~ -v -ch 32 sf/waves.sf2, f 21;
 #X connect 0 0 5 0;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 4 1;
 #X connect 4 0 6 0;
 #X connect 5 0 4 0;
-#X connect 6 0 39 0;
+#X connect 6 0 51 0;
 #X connect 7 0 13 0;
 #X connect 8 0 7 1;
 #X connect 9 0 8 0;
 #X connect 10 0 7 2;
 #X connect 11 0 12 0;
 #X connect 12 0 10 0;
-#X connect 13 0 39 0;
+#X connect 13 0 51 0;
 #X connect 18 0 24 1;
 #X connect 19 0 18 0;
 #X connect 20 0 24 2;
 #X connect 21 0 22 0;
 #X connect 22 0 20 0;
-#X connect 23 0 39 0;
+#X connect 23 0 51 0;
 #X connect 24 0 23 0;
-#X connect 30 0 39 0;
+#X connect 30 0 51 0;
 #X connect 31 0 32 0;
-#X connect 32 0 39 0;
-#X connect 34 0 39 0;
-#X connect 39 0 16 0;
-#X connect 39 1 16 1;
-#X connect 39 2 50 0;
-#X connect 42 0 39 0;
-#X connect 43 0 42 0;
-#X connect 50 0 37 0;
+#X connect 32 0 51 0;
+#X connect 34 0 51 0;
+#X connect 41 0 51 0;
+#X connect 42 0 41 0;
+#X connect 49 0 37 0;
+#X connect 51 0 16 0;
+#X connect 51 1 16 1;
+#X connect 51 2 49 0;
 #X restore 488 190 pd basic;
 #N canvas 623 71 417 561 MIDI-in 0;
 #N canvas 396 60 656 589 MIDI-input 0;
@@ -382,7 +382,7 @@ to use the 'pgm' message next., f 18;
 #X obj 141 337 midiin;
 #X obj 124 285 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X obj 111 490 out~;
+#X obj 115 490 out~;
 #X text 244 366 <-- open;
 #X text 227 399 More on:;
 #X obj 124 312 midi -loop midi-seq.mid;
@@ -392,7 +392,6 @@ Sysex messages is also possible via a 'sysex' message or raw MIDI input
 from a MIDI file or the [sysexin] object. You can also use vanilla's
 other MIDI objects like [pgmin] of course or the ones from ELSE \,
 such as [pgm.in] \, see [pd MIDI-input] below.;
-#X obj 124 456 sfont~ sf/Famicom;
 #X text 32 143 The bank message is not a proper MIDI message on its
 own but it is usualy given by the control message number 0 as in the
 last example - control change is also responsible for other usual parameters
@@ -403,13 +402,14 @@ and these two are MIDI messages. Other MIDI messages are:;
 #X text 92 68 - 'ctl' for 'control change \; - 'bend' for Pitch Bend
 \; - 'touchin' for channel aftertouch \; - 'polytouchin' for key aftertouch
 \; - 'sysex' for Sysex messages;
-#X connect 0 0 9 0;
-#X connect 1 0 9 0;
-#X connect 2 0 9 0;
+#X obj 124 456 else/sfont~ sf/Famicom;
+#X connect 0 0 12 0;
+#X connect 1 0 12 0;
+#X connect 2 0 12 0;
 #X connect 3 0 7 0;
-#X connect 7 0 9 0;
-#X connect 9 0 4 0;
-#X connect 9 1 4 1;
+#X connect 7 0 12 0;
+#X connect 12 0 4 0;
+#X connect 12 1 4 1;
 #X restore 476 212 pd MIDI-in;
 #X text 43 84 [sfont~] is a sampler synthesizer that plays SoundFont
 files. It is based on FluidSynth., f 74;

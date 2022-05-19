@@ -489,7 +489,7 @@ static void fluid_do_load(t_sfont *x, t_symbol *name){
             }
         }
     }
-    sys_close(fd); // ???
+    sys_close(fd);
     chdir(realdir);
     int id = fluid_synth_sfload(x->x_synth, realname, 0);
     if(id >= 0){
