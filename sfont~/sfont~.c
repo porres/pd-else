@@ -61,20 +61,20 @@ typedef struct _sfont{
     unsigned char       x_channel;
 }t_sfont;
 
-static void fluid_getversion(void){
+static void sfont_getversion(void){
     post("[sfont~] version 1.0-rc2 (using fluidsynth %s)", FLUIDSYNTH_VERSION);
 }
 
-static void fluid_verbose(t_sfont *x, t_floatarg f){
+static void sfont_verbose(t_sfont *x, t_floatarg f){
     x->x_verbosity = f != 0;
 }
 
-static void fluid_panic(t_sfont *x){
+static void sfont_panic(t_sfont *x){
     if(x->x_synth)
         fluid_synth_system_reset(x->x_synth);
 }
 
-static void fluid_transp(t_sfont *x, t_symbol *s, int ac, t_atom *av){
+static void sfont_transp(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac < 1 || ac > 2)
         return;
@@ -83,7 +83,7 @@ static void fluid_transp(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     fluid_synth_set_gen(x->x_synth, ch, GEN_FINETUNE, cents);
 }
 
-static void fluid_pan(t_sfont *x, t_symbol *s, int ac, t_atom *av){
+static void sfont_pan(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     float f1 = atom_getfloatarg(0, ac, av);
     int ch = atom_getintarg(1, ac, av);
@@ -91,7 +91,7 @@ static void fluid_pan(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     fluid_synth_set_gen(x->x_synth, ch, GEN_PAN, pan*500);
 }
 
-static void fluid_note(t_sfont *x, t_symbol *s, int ac, t_atom *av){
+static void sfont_note(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 2 || ac == 3){
         int key = atom_getintarg(0, ac, av);
@@ -107,7 +107,7 @@ static void fluid_note(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-static void fluid_program_change(t_sfont *x, t_symbol *s, int ac, t_atom *av){
+static void sfont_program_change(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 1 || ac == 2){
         int pgm = atom_getintarg(0, ac, av);
@@ -142,7 +142,7 @@ static void fluid_program_change(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-static void fluid_bank(t_sfont *x, t_symbol *s, int ac, t_atom *av){
+static void sfont_bank(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 1 || ac == 2){
         int bank = atom_getintarg(0, ac, av);
@@ -177,7 +177,7 @@ static void fluid_bank(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-static void fluid_control_change(t_sfont *x, t_symbol *s, int ac, t_atom *av){
+static void sfont_control_change(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 2 || ac == 3){
         int val = atom_getintarg(0, ac, av);
@@ -187,7 +187,7 @@ static void fluid_control_change(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-static void fluid_pitch_bend(t_sfont *x, t_symbol *s, int ac, t_atom *av){
+static void sfont_pitch_bend(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 1 || ac == 2){
         int val = atom_getintarg(0, ac, av);
@@ -211,7 +211,7 @@ static void fluid_pitch_bend(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     }
 }*/
 
-static void fluid_unsel_tuning(t_sfont *x,  t_symbol *s, int ac, t_atom *av){
+static void sfont_unsel_tuning(t_sfont *x,  t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac){
         int ch = atom_getfloatarg(0, ac, av);
@@ -221,12 +221,10 @@ static void fluid_unsel_tuning(t_sfont *x,  t_symbol *s, int ac, t_atom *av){
         fluid_synth_deactivate_tuning(x->x_synth, i, 1);
 }
 
-static void fluid_sel_tuning(t_sfont *x, t_float bank, t_float pgm, t_float ch){
+static void sfont_sel_tuning(t_sfont *x, t_float bank, t_float pgm, t_float ch){
     fluid_synth_activate_tuning(x->x_synth, ch-1, bank, pgm, 1);
     char scale_name[256];
-//    double pitches[128];
     fluid_synth_tuning_dump(x->x_synth, bank, pgm, scale_name, 256, NULL);
-//    post("%s", scale_name);
     t_atom at[1];
     SETSYMBOL(&at[0], gensym(scale_name));
     outlet_anything(x->x_info_out, gensym("scale"), 1, at);
@@ -242,7 +240,7 @@ static void set_key_tuning(t_sfont *x, double *pitches){
         fluid_synth_activate_tuning(x->x_synth, i, bank, pgm, 1);
 }
 
-static void fluid_set_tuning(t_sfont *x,  t_symbol *s, int ac, t_atom *av){
+static void sfont_set_tuning(t_sfont *x,  t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac < 3)
         return;
@@ -256,7 +254,7 @@ static void fluid_set_tuning(t_sfont *x,  t_symbol *s, int ac, t_atom *av){
         
 }
 
-static void fluid_remap(t_sfont *x, t_symbol *s, int ac, t_atom *av){
+static void sfont_remap(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 128){
         double pitches[128];
@@ -268,7 +266,7 @@ static void fluid_remap(t_sfont *x, t_symbol *s, int ac, t_atom *av){
         post("[sinfo~]: remap needs 128 key values");
 }
 
-static void fluid_scale(t_sfont *x, t_symbol *s, int ac, t_atom *av){
+static void sfont_scale(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(!ac){
         set_key_tuning(x, NULL);
@@ -296,7 +294,7 @@ static void fluid_scale(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     set_key_tuning(x, pitches);
 }
 
-static void fluid_base(t_sfont *x, t_float f){
+static void sfont_base(t_sfont *x, t_float f){
     x->x_base = f < 0 ? 0 : f > 127 ? 127 : f;
 }
 
@@ -318,7 +316,7 @@ static void fluid_base(t_sfont *x, t_float f){
         post("wrong size");
 }*/
 
-static void fluid_aftertouch(t_sfont *x, t_symbol *s, int ac, t_atom *av){
+static void sfont_aftertouch(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 1 || ac == 2){
         int val = atom_getintarg(0, ac, av);
@@ -327,7 +325,7 @@ static void fluid_aftertouch(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-static void fluid_polytouch(t_sfont *x, t_symbol *s, int ac, t_atom *av){
+static void sfont_polytouch(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 2 || ac == 3){
         int val = atom_getintarg(0, ac, av);
@@ -337,7 +335,7 @@ static void fluid_polytouch(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-static void fluid_sysex(t_sfont *x, t_symbol *s, int ac, t_atom *av){
+static void sfont_sysex(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac > 0){
         char buf[MAXSYSEXSIZE];
@@ -352,7 +350,7 @@ static void fluid_sysex(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     }
 }
 
-static void fluid_float(t_sfont *x, t_float f){ // raw midi input
+static void sfont_float(t_sfont *x, t_float f){ // raw midi input
     if(f >= 0 && f <= 255){
         unsigned char val = (unsigned char)f;
         if(val > 127){ // not a data type
@@ -361,7 +359,7 @@ static void fluid_float(t_sfont *x, t_float f){ // raw midi input
                 x->x_count = 0;
             }
             else if(val == 0xF7){ // end of sysex
-                fluid_sysex(x, &s_list, x->x_count, x->x_at);
+                sfont_sysex(x, &s_list, x->x_count, x->x_at);
                 x->x_sysex = x->x_count = 0;
             }
             else{
@@ -381,40 +379,40 @@ static void fluid_float(t_sfont *x, t_float f){ // raw midi input
                     SETFLOAT(&x->x_at[0], (t_float)x->x_data); // key
                     SETFLOAT(&x->x_at[1], 0); // make it note on with velocity 0
                     SETFLOAT(&x->x_at[2], (t_float)x->x_channel);
-                    fluid_note(x, &s_list, 3, x->x_at);
+                    sfont_note(x, &s_list, 3, x->x_at);
                     break;
                 case 0x90: // group 144-159 (NOTE ON)
                     SETFLOAT(&x->x_at[0], (t_float)x->x_data); // key
                     SETFLOAT(&x->x_at[1], val); // velocity
                     SETFLOAT(&x->x_at[2], (t_float)x->x_channel);
-                    fluid_note(x, &s_list, 3, x->x_at);
+                    sfont_note(x, &s_list, 3, x->x_at);
                     break;
                 case 0xA0: // group 160-175 (POLYPHONIC AFTERTOUCH)
                     SETFLOAT(&x->x_at[0], val); // aftertouch pressure value
                     SETFLOAT(&x->x_at[1], (t_float)x->x_data); // key
                     SETFLOAT(&x->x_at[2], (t_float)x->x_channel);
-                    fluid_polytouch(x, &s_list, 3, x->x_at);
+                    sfont_polytouch(x, &s_list, 3, x->x_at);
                     break;
                 case 0xB0: // group 176-191 (CONTROL CHANGE)
                     SETFLOAT(&x->x_at[0], val); // control value
                     SETFLOAT(&x->x_at[1], (t_float)x->x_data); // control number
                     SETFLOAT(&x->x_at[2], (t_float)x->x_channel);
-                    fluid_control_change(x, &s_list, 3, x->x_at);
+                    sfont_control_change(x, &s_list, 3, x->x_at);
                     break;
                 case 0xC0: // group 192-207 (PROGRAM CHANGE)
                     SETFLOAT(&x->x_at[0], val); // control value
                     SETFLOAT(&x->x_at[1], (t_float)x->x_channel);
-                    fluid_program_change(x, &s_list, 2, x->x_at);
+                    sfont_program_change(x, &s_list, 2, x->x_at);
                     break;
                 case 0xD0: // group 208-223 (AFTERTOUCH)
                     SETFLOAT(&x->x_at[0], val); // control value
                     SETFLOAT(&x->x_at[1], (t_float)x->x_channel);
-                    fluid_aftertouch(x, &s_list, 2, x->x_at);
+                    sfont_aftertouch(x, &s_list, 2, x->x_at);
                     break;
                 case 0xE0: // group 224-239 (PITCH BEND)
                     SETFLOAT(&x->x_at[0], (val << 7) + x->x_data);
                     SETFLOAT(&x->x_at[1], x->x_channel);
-                    fluid_pitch_bend(x, &s_list, 2, x->x_at);
+                    sfont_pitch_bend(x, &s_list, 2, x->x_at);
                     break;
                 default:
                     break;
@@ -431,7 +429,24 @@ static void fluid_float(t_sfont *x, t_float f){ // raw midi input
         x->x_type = x->x_ready = 0; // clear
 }
 
-static void fluid_info(t_sfont *x){
+/*static void tuning_dump(t_sfont *x){
+    char scale_name[256];
+    fluid_synth_tuning_dump(x->x_synth, bank, pgm, scale_name, 256, NULL);
+    t_atom at[1];
+    SETSYMBOL(&at[0], gensym(scale_name));
+}
+
+static void sfont_ch_info(t_sfont *x){
+    for(int i = 0; i < x->x_ch; i++){ // get bank and program loaded in channels
+        if((preset = fluid_synth_get_channel_preset(x->x_synth, i)) != NULL){
+            int bank = fluid_preset_get_banknum(preset), pgm = fluid_preset_get_num(preset);
+            const char* name = fluid_preset_get_name(preset);
+            post("channel %d: bank (%d) pgm (%d) name (%s)", i, bank, pgm, name);
+        }
+    }
+}*/
+
+static void sfont_info(t_sfont *x){
     if(x->x_sfname == NULL){
         post("[sfont~]: no soundfont loaded, nothing to print");
         return;
@@ -446,13 +461,6 @@ static void fluid_info(t_sfont *x){
         const char* name = fluid_preset_get_name(preset);
         post("%03d - bank (%d) pgm (%d) name (%s)", i++, bank, pgm, name);
     }
-/*    for(i = 0; i < x->x_ch; i++){ // get bank and program loaded in channels
-        if((preset = fluid_synth_get_channel_preset(x->x_synth, i)) != NULL){
-           int bank = fluid_preset_get_banknum(preset), pgm = fluid_preset_get_num(preset);
-           const char* name = fluid_preset_get_name(preset);
-           post("channel %d: bank (%d) pgm (%d) name (%s)", i, bank, pgm, name);
-        }
-    }*/
     post("\n");
 }
 
@@ -489,7 +497,7 @@ static void fluid_do_load(t_sfont *x, t_symbol *name){
         x->x_sfont = fluid_synth_get_sfont_by_id(x->x_synth, id);
         x->x_sfname = name;
         if(x->x_verbosity)
-            fluid_info(x);
+            sfont_info(x);
         fluid_preset_t* preset = fluid_sfont_get_preset(x->x_sfont, x->x_bank = 0, x->x_pgm = 0);
         if(preset){
             const char* pname = fluid_preset_get_name(preset);
@@ -512,7 +520,7 @@ static void sfont_click(t_sfont *x){
     panel_click_open(x->x_elsefilehandle);
 }
 
-static void sfont_load(t_sfont *x, t_symbol *s){
+static void sfont_open(t_sfont *x, t_symbol *s){
     if(s && s != &s_)
         fluid_do_load(x, s);
     else
@@ -573,7 +581,7 @@ static void *sfont_new(t_symbol *s, int ac, t_atom *av){
             if(sym == gensym("-v") && !arg){
                 x->x_verbosity = 1;
                 if(!printed){
-                    fluid_getversion();
+                    sfont_getversion();
                     printed = 1;
                 }
                 ac--, av++;
@@ -614,10 +622,10 @@ static void *sfont_new(t_symbol *s, int ac, t_atom *av){
     }
     fluid_settings_setint(x->x_settings, "synth.ladspa.active", 0);
     fluid_settings_setint(x->x_settings, "synth.midi-channels", x->x_ch);
-//  fluid_settings_setint(x->x_settings, "synth.polyphony", 256);
     fluid_settings_setnum(x->x_settings, "synth.gain", g);
     fluid_settings_setnum(x->x_settings, "synth.sample-rate", sys_getsr());
     fluid_settings_setnum(x->x_settings, "synth.sample-rate", sys_getsr());
+//  fluid_settings_setint(x->x_settings, "synth.polyphony", 256);
 //    fluid_settings_setstr(x->x_settings, "synth.midi-bank-select", "gs");
     x->x_synth = new_fluid_synth(x->x_settings); // Create fluidsynth instance:
     if(x->x_synth == NULL){
@@ -636,31 +644,31 @@ void sfont_tilde_setup(void){
     sfont_class = class_new(gensym("sfont~"), (t_newmethod)sfont_new,
         (t_method)sfont_free, sizeof(t_sfont), CLASS_DEFAULT, A_GIMME, 0);
     class_addmethod(sfont_class, (t_method)sfont_dsp, gensym("dsp"), A_CANT, 0);
-    class_addfloat(sfont_class, (t_method)fluid_float); // raw midi input
-    class_addmethod(sfont_class, (t_method)sfont_load, gensym("load"), A_SYMBOL, 0);
-//    class_addmethod(sfont_class, (t_method)fluid_gen, gensym("gen"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)fluid_bank, gensym("bank"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)fluid_note, gensym("note"), A_GIMME, 0);
-    class_addlist(sfont_class, (t_method)fluid_note); // list input is the same as "note"
-    class_addmethod(sfont_class, (t_method)fluid_control_change, gensym("ctl"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)fluid_program_change, gensym("pgm"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)fluid_aftertouch, gensym("touch"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)fluid_polytouch, gensym("polytouch"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)fluid_pitch_bend, gensym("bend"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)fluid_sysex, gensym("sysex"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)fluid_panic, gensym("panic"), 0);
-    class_addmethod(sfont_class, (t_method)fluid_transp, gensym("transp"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)fluid_pan, gensym("pan"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)fluid_scale, gensym("scale"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)fluid_set_tuning, gensym("set-tuning"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)fluid_sel_tuning, gensym("sel-tuning"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(sfont_class, (t_method)fluid_unsel_tuning, gensym("unsel-tuning"), A_GIMME, 0);
-    class_addmethod(sfont_class, (t_method)fluid_base, gensym("base"), A_FLOAT, 0);
-    class_addmethod(sfont_class, (t_method)fluid_remap, gensym("remap"), A_GIMME, 0);
-//    class_addmethod(sfont_class, (t_method)fluid_a4, gensym("a4"), A_FLOAT, 0);
-    class_addmethod(sfont_class, (t_method)fluid_getversion, gensym("version"), 0);
-    class_addmethod(sfont_class, (t_method)fluid_verbose, gensym("verbose"), A_FLOAT, 0);
-    class_addmethod(sfont_class, (t_method)fluid_info, gensym("info"), 0);
+    //    class_addmethod(sfont_class, (t_method)fluid_gen, gensym("gen"), A_GIMME, 0);
+    class_addfloat(sfont_class, (t_method)sfont_float); // raw midi input
+    class_addlist(sfont_class, (t_method)sfont_note); // list is the same as "note"
+    class_addmethod(sfont_class, (t_method)sfont_note, gensym("note"), A_GIMME, 0);
+    class_addmethod(sfont_class, (t_method)sfont_open, gensym("open"), A_SYMBOL, 0);
+    class_addmethod(sfont_class, (t_method)sfont_bank, gensym("bank"), A_GIMME, 0);
+    class_addmethod(sfont_class, (t_method)sfont_control_change, gensym("ctl"), A_GIMME, 0);
+    class_addmethod(sfont_class, (t_method)sfont_program_change, gensym("pgm"), A_GIMME, 0);
+    class_addmethod(sfont_class, (t_method)sfont_aftertouch, gensym("touch"), A_GIMME, 0);
+    class_addmethod(sfont_class, (t_method)sfont_polytouch, gensym("polytouch"), A_GIMME, 0);
+    class_addmethod(sfont_class, (t_method)sfont_pitch_bend, gensym("bend"), A_GIMME, 0);
+    class_addmethod(sfont_class, (t_method)sfont_sysex, gensym("sysex"), A_GIMME, 0);
+    class_addmethod(sfont_class, (t_method)sfont_panic, gensym("panic"), 0);
+    class_addmethod(sfont_class, (t_method)sfont_transp, gensym("transp"), A_GIMME, 0);
+    class_addmethod(sfont_class, (t_method)sfont_pan, gensym("pan"), A_GIMME, 0);
+    class_addmethod(sfont_class, (t_method)sfont_scale, gensym("scale"), A_GIMME, 0);
+    class_addmethod(sfont_class, (t_method)sfont_set_tuning, gensym("set-tuning"), A_GIMME, 0);
+    class_addmethod(sfont_class, (t_method)sfont_sel_tuning, gensym("sel-tuning"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(sfont_class, (t_method)sfont_unsel_tuning, gensym("unsel-tuning"), A_GIMME, 0);
+    class_addmethod(sfont_class, (t_method)sfont_base, gensym("base"), A_FLOAT, 0);
+    class_addmethod(sfont_class, (t_method)sfont_remap, gensym("remap"), A_GIMME, 0);
+//    class_addmethod(sfont_class, (t_method)sfont_a4, gensym("a4"), A_FLOAT, 0);
+    class_addmethod(sfont_class, (t_method)sfont_getversion, gensym("version"), 0);
+    class_addmethod(sfont_class, (t_method)sfont_verbose, gensym("verbose"), A_FLOAT, 0);
+    class_addmethod(sfont_class, (t_method)sfont_info, gensym("info"), 0);
     class_addmethod(sfont_class, (t_method)sfont_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     elsefile_setup();
 }

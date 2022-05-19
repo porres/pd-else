@@ -10,7 +10,7 @@
 
 Copyright: Alexandre Torres Porres and others
 
-Even though [sfont~] has its own repository and can be compiled here and used on its own, it is part of the ELSE library of externals by Alexandre Porres, see <https://github.com/porres/pd-else>.
+[sfont~] has its own repository (<https://github.com/porres/pd-sfont>) so it can be compiled separately, but it is part of the ELSE library of externals by Alexandre Porres, see <https://github.com/porres/pd-else>.
 
 --------------------------------------------------------------------------
 
