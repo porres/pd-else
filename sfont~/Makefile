@@ -3,7 +3,7 @@ cflags = -Ishared -DHAVE_STRUCT_TIMESPEC
 
 lib.name = ELSE
 
-file := shared/elsefile.c 
+file := ../shared/elsefile.c 
 sfont~.class.sources := sfont~.c $(file)
 
 ldlibs = -lfluidsynth
@@ -13,7 +13,7 @@ datadirs = sf
 
 # Makefile based on pd-lib-builder by Katja Vetter, see: https://github.com/pure-data/pd-lib-builder
 
-PDLIBBUILDER_DIR=pd-lib-builder/
+PDLIBBUILDER_DIR=../pd-lib-builder/
 include $(firstword $(wildcard $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder Makefile.pdlibbuilder))
 
 localdep_linux: install
