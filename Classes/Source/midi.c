@@ -18,9 +18,9 @@
 #define MIDI_EOM                    255     // end of message marker, LATER rethink
 #define MIDI_TICKSPERSEC            48
 #define MIDI_MINTICKDELAY           1.      // LATER rethink
-#define MIDI_TICKEPSILON  ((double) .0001)
-#define MIDI_STARTEPSILON           .0001   // if inside: play unmodified
-#define MIDI_TEMPOEPSILON           .0001   // if inside: pause
+#define MIDI_TICKEPSILON ((double) .0001)
+#define MIDI_STARTEPSILON          .0001   // if inside: play unmodified
+#define MIDI_TEMPOEPSILON          .0001   // if inside: pause
 #define MIDI_ISRUNNING(x) ((x)->x_prevtime > (double).0001)
 #define MIDI_ISPAUSED(x) ((x)->x_prevtime <= (double).0001)
 
@@ -862,7 +862,7 @@ static void midi_doread(t_midi *x, t_symbol *fn){
     }
     else{
         fname[strlen(fname)]='/';
-        close(fd);
+        sys_close(fd);
     }
     if(!midi_mfread(x, fname))
         midi_textread(x, fname);

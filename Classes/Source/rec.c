@@ -353,7 +353,7 @@ static void rec_doread(t_rec *x, t_symbol *fname){
     int fd = canvas_open(x->x_canvas, fname->s_name, "", path, &bufptr, MAXPDSTRING, 1);
     if(fd > 0){
         path[strlen(path)]='/';
-        close(fd);
+        sys_close(fd);
     }
     else{
         post("[rec] file '%s' not found", fname->s_name);
