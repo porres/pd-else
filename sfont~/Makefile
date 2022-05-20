@@ -8,7 +8,7 @@ sfont~.class.sources := sfont~.c $(file)
 
 ldlibs = -lfluidsynth
 
-datafiles = sfont~-help.pd sfont~-meta.pd LICENSE.txt README.md
+datafiles = sfont~-help.pd
 datadirs = sf
 
 # Makefile based on pd-lib-builder by Katja Vetter, see: https://github.com/pure-data/pd-lib-builder
