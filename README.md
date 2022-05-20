@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-2 (release candidate #2) With Live Electronics Tutorial. 
 
-###   UnReleased 
+###   Released May 21st 2022
 
 
 
@@ -60,6 +60,8 @@ ELSE provides a cohesive system for computer music, it also serves as a basis fo
 --------------------------------------------------------------------------
 
 #### Building ELSE for Pd Vanilla:
+
+First build [sfont~] -> check the "sfont~" folder and its README with instructions. 
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
 
