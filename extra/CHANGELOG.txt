@@ -7,6 +7,38 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 ----------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------
+1.0-0 Release Candidate 2:
+----------------------------------------------------------------------------
+
+LIBRARY:
+---------
+
+Breaking changes:
+- [pluck~] swapped first two inlets
+- [eqdiv] swapped the two inlets
+- standardized messages: [sample~], [rec], [score] and [score2] now have "open"/"save" (like other objects in ELSE) instead of read/write and "load". Show/hide is now used instead of open/close in [presets], [score]/[score2], [stack]/[store].
+
+Enhancements/fixes:
+- [eqdiv] fixed resolution issue.
+- fixed memory crash in [args].
+- fixed [shaper~] freezing pd on windows.
+- [pluck~] added float and bang method for control triggering. Changed internal filter to a 1 pole filter (this is like the new [lop2~] object and arguably another breaking change). General efficiency improved.
+- improved efficiency for friendly 2nd order filters (highpass~/lowpass~, etc).
+- fixed memory leaks for a few objects ([chance~], [fdn.rev~], [match~], [rotate~], [spread~], [xgate~] & [xselect~])    
+- [keyboard]: valocity values are now clipped to maximum when mouse goes over bounds; default low C is now '2' (3 seemed too high for me and I consider this an improvement).
+- [drum.seq]: fixed "import" message.
+- improved file opening mechanism to search paths and relative dir; affected objects: [pic], [midi], [rec], [sample~], [play.file~], [player~], [pvoc.player~], [gran.player~], [presets], [score] and [score2].
+- [score]/[score2]: fixed "write" message (actually, now it is "save" message).
+- [midi]: fixed crash when not opening files.
+- [rec]: clicking now opens file. Added rightmost outlet to bang when finishing playing recording. An extra symbol argument sets text filename to open. Better help file. 
+- 3 new objects for a total of 449: [canvas.file], [lop2~] and [sfont~]. 
+
+
+TUTORIAL:
+---------
+- new examples for the [lop2~] and [sfont~] objects, revision of Karplus-Strong section, total number of examples is now 468.
+
+----------------------------------------------------------------------------
 1.0-0 Release Candidate 1:
 ----------------------------------------------------------------------------
 
