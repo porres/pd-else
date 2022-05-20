@@ -65,7 +65,7 @@ First build [sfont~] -> check the "sfont~" folder and its README with instructio
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
 
-<pre>make pdincludepath=~/pd-0.52-0/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.52-0 /bin/)</pre>
+<pre>make pdincludepath=~/pd-0.52-1/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.52-0 /bin/)</pre>
 
 * Installing with pdlibbuilder
 
