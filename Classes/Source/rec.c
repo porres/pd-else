@@ -353,7 +353,7 @@ static void rec_doread(t_rec *x, t_symbol *fname){
     int fd = canvas_open(x->x_canvas, fname->s_name, "", path, &bufptr, MAXPDSTRING, 1);
     if(fd > 0){
         path[strlen(path)]='/';
-        sys_close(fd);
+        close(fd);
     }
     else{
         post("[rec] file '%s' not found", fname->s_name);
@@ -536,9 +536,23 @@ static void rec_free(t_rec *x){
     }
 }
 
-static void *rec_new(t_floatarg f, t_symbol *name){
+static void *rec_new(t_symbol * s, int ac, t_atom *av){
+    s = NULL;
     t_rec *x = (t_rec *)pd_new(rec_class);;
-    int ntracks = (int)f < 1 ? 1 : (int)f;
+    int ntracks = 1;
+    t_symbol *name = &s_;
+    if(ac == 1 || ac == 2){
+        if(av->a_type == A_FLOAT){
+            ntracks = (int)atom_getfloatarg(0, ac, av);
+            if(ntracks < 1)
+                ntracks = 1;
+            ac--, av++;
+            if(ac && av->a_type == A_SYMBOL){
+                name = atom_getsymbolarg(0, ac, av);
+                ac--, av++;
+            }
+        }
+    }
     t_rec_track **tracks = getbytes(ntracks * sizeof(*tracks));
     t_rec_track **tpp;
     int i;
@@ -584,7 +598,7 @@ void rec_setup(void){
     class_addlist(rec_track_class, rec_track_list);
     
     rec_class = class_new(gensym("rec"), (t_newmethod)rec_new,
-        (t_method)rec_free, sizeof(t_rec), 0, A_DEFFLOAT, A_DEFSYMBOL, 0);
+        (t_method)rec_free, sizeof(t_rec), 0, A_GIMME, 0);
     class_addmethod(rec_class, (t_method)rec_record, gensym("record"), A_GIMME, 0);
     class_addmethod(rec_class, (t_method)rec_play, gensym("play"), A_GIMME, 0);
     class_addmethod(rec_class, (t_method)rec_stop, gensym("stop"), A_GIMME, 0);
