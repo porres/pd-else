@@ -762,7 +762,7 @@ to the [text sequence] object. Check the example to the right., f
 #X obj 321 226 else/panic;
 #X obj 474 188 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X obj 96 183 else/midi midi-seq.mid;
+#X obj 96 183 else/midi midi-seq.txt;
 #X connect 0 0 21 0;
 #X connect 2 0 1 0;
 #X connect 2 1 1 1;
