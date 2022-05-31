@@ -1,7 +1,7 @@
 
 cflags = -Ishared -DHAVE_STRUCT_TIMESPEC
 
-lib.name = ELSE
+lib.name = sfont~
 
 file := ../shared/elsefile.c 
 sfont~.class.sources := sfont~.c $(file)
