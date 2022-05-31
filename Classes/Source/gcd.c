@@ -33,8 +33,11 @@ static void gcd_float(t_gcd *x, t_floatarg f){
 
 static void gcd_list(t_gcd *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    float a = 0, b = 0;
-    a = atom_getfloat(av);
+    float a = atom_getfloat(av), b = 0;
+    if(ac == 1){
+        gcd_float(x, a);
+        return;
+    }
     for(int i = 1; i < ac; i++){
         b = atom_getfloat(av+i);
         a = gcd_calculate(a, b);
