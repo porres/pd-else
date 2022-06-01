@@ -1,8 +1,1 @@
-make CPPFLAGS+=-I/opt/homebrew/include LDFLAGS+=-L/opt/homebrew/lib extension="d_arm64 d_amd64" PDDIR=/Users/porres/Desktop/git/pure-data/ PDLIBDIR=/Users/porres/Documents/Pd/externals/ localdep_macos 
-
-
-make CPPFLAGS+=-I/opt/homebrew/include LDFLAGS+=-L/opt/homebrew/lib extension=d_arm64 PDDIR=/Users/porres/Desktop/git/pure-data/ PDLIBDIR=/Users/porres/Documents/Pd/externals/ localdep_macos 
-
-
-make CPPFLAGS+=-I/opt/homebrew/include LDFLAGS+=-L/opt/homebrew/lib extension=d_amd64 PDDIR=/Users/porres/Desktop/git/pure-data/ PDLIBDIR=/Users/porres/Documents/Pd/externals/ localdep_macos 
-
+make CPPFLAGS+=-I/opt/homebrew/include LDFLAGS+=-L/opt/homebrew/lib arch="arm64 x86_64" extension=d_fat PDDIR=/Users/porres/Desktop/git/pure-data/ PDLIBDIR=/Users/porres/Desktop/git/ localdep_macos 
