@@ -1,4 +1,4 @@
-#N canvas 607 55 563 429 10;
+#N canvas 566 54 563 429 10;
 #X obj 4 270 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 4 331 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -94,7 +94,7 @@ action and the output is the same as the input., f 32;
 #X connect 3 0 9 1;
 #X connect 6 0 7 0;
 #X connect 9 0 2 0;
-#X restore 389 222 pd formula/response;
+#X restore 424 235 pd formula/response;
 #X connect 15 0 31 1;
 #X connect 18 0 31 0;
 #X connect 20 0 15 0;
