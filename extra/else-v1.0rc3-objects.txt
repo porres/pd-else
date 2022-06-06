@@ -27,6 +27,7 @@ bicoeff	x
 bin.shift~	x
 biplot	x
 biquads~	x
+bitnormal~	x
 bl.imp~	x
 bl.imp2~	x
 bl.saw~	x
@@ -96,6 +97,7 @@ decay~	x
 decay2~	x
 deg2rad	x
 del~	x
+delete	x
 detect~	x
 dir	x
 display	x
@@ -207,6 +209,7 @@ lop2~	x
 lop.bw~	x
 lowpass~	x
 lowshelf~	x
+makenote2	x
 match~	x
 maxpeak~	x
 mtx~	x
@@ -337,6 +340,7 @@ rec	x
 rec2	x
 rec.file~	x
 receiver	x
+replace	x
 rescale	x
 rescale~	x
 resonant~	x
@@ -352,6 +356,7 @@ rm~	x
 rms~	x
 rotate	x
 rotate~	x
+route2	x
 routeall	x
 router	x
 routetype	x
@@ -361,6 +366,7 @@ samps2ms~	x
 samps2ms	x
 saw~	x
 saw2~	x
+scala	x
 scale2cents	x
 scales	x
 score	x

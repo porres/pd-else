@@ -4,9 +4,9 @@
 
 ### for the Pure Data programming language
 
-### Version: 1.0-0 RC-2 (release candidate #2) With Live Electronics Tutorial. 
+### Version: 1.0-0 RC-3 (release candidate #3) With Live Electronics Tutorial. 
 
-###   Released May 21st 2022
+### Unreleased
 
 
 
@@ -35,7 +35,7 @@ ELSE provides a cohesive system for computer music, it also serves as a basis fo
 
 ​Note that you can also download Camomile with support for ELSE externals, see <https://github.com/emviveros/Camomile-ELSE/releases>.
 
-​ELSE is also part of the <https://github.com/timothyschoen/PlugData> project, which loads Pd as a standalone or VST with a revamped GUI.
+​ELSE is also part of the <https://github.com/timothyschoen/PlugData> project, which is a fork of Pd that loads as a standalone or VST with a revamped GUI.
 
 ​This project is still in an experimental phase (currently at a 'release candidate' phase), where  changes may occur and backwards compatibility is not guaranteed until a final and more stable release is available. 
 
@@ -55,7 +55,7 @@ ELSE provides a cohesive system for computer music, it also serves as a basis fo
 
 ​	ELSE comes as a set of separate binaries and abstractions, so it works if you just add its folder to the path or use **[declare -path else]**. ELSE comes with a binary that you can use load via "Preferences => Startup" or with [declare -lib else], but all that this does is print information of what version of ELSE you have when you open Pd. You can also just load the 'else' external for that same purpose, check its help file. 
 
-​	It's important to stress this release needs Pd Vanilla 0.52-1 or above ("Pd Extended"/"Purr Data" aren't supported). 
+​	It is important to stress this library runs in Pd Vanilla 0.52-1 or above and is not compatible to forks like the long dead "Pd Extended" and its new reincarnations "Pd-L2ork/Purr Data". Nevertheless, ELSE is included in the PlugData fork --> <https://github.com/timothyschoen/PlugData>.
 
 --------------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ First build [sfont~] -> check the "sfont~" folder and its README with instructio
 
 ELSE relies on the build system called "pd-lib-builder" by Katja Vetter (check the project in: <https://github.com/pure-data/pd-lib-builder>). PdLibBuilder tries to find the Pd source directory at several common locations, but when this fails, you have to specify the path yourself using the pdincludepath variable. Example:
 
-<pre>make pdincludepath=~/pd-0.52-1/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.52-0 /bin/)</pre>
+<pre>make pdincludepath=~/pd-0.52-2/src/  (for Windows/MinGW add 'pdbinpath=~/pd-0.52-0 /bin/)</pre>
 
 * Installing with pdlibbuilder
 
@@ -103,12 +103,12 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 ​	Kudos and thanks to my buddy Esteban Viveros for helping with the compilation of ELSE for other systemas as well as ELSE for Camomile. See: <https://github.com/porres/Camomile-ELSE>.
 ​	
-​	For Last, Timothy Schoen is doing a great job with PlugData, a project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues. See: <https://github.com/timothyschoen/PlugData>.
+​	For Last, Timothy Schoen is doing a great job with PlugData, a project based on camomile that includes ELSE. Timothy has also helped me fix many ELSE related issues. PlugData is also a fork of Pd with a revamped GUI. See: <https://github.com/timothyschoen/PlugData>.
 
 
 --------------------------------------------------------------------------
 
-## Current Object list (449 objects):
+## Current Object list (455 objects):
 
 **ASSORTED: [01]**
 
@@ -119,11 +119,13 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [hann~]
 - [bin.shift~]
 
-**TUNING/NOTES: [16]**
+**TUNING/NOTES: [18]**
 
 - [scales]
+- [scala]
 - [autotune]
 - [autotune2]
+- [makenote2]
 - [retune]
 - [eqdiv]
 - [cents2scale]
@@ -162,7 +164,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [canvas.zoom]
 - [loadbanger] / [lb]
 
-**GENERAL MESSAGE MANAGEMENT: [28]**
+**GENERAL MESSAGE MANAGEMENT: [29]**
 
 - [format]
 - [swap2]
@@ -182,6 +184,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [limit]
 - [spread]
 - [router]
+- [route2]
 - [routeall]
 - [routetype]
 - [selector]
@@ -193,11 +196,12 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [float2sig~] / [f2s~]
 - [pipe2]
 
-**LIST/MESSAGE MANAGEMENT: [17]**
+**LIST/MESSAGE MANAGEMENT: [19]**
 
 - [break] 
 - [order]
 - [combine]
+- [delete]
 - [group] 
 - [iterate]
 - [insert]
@@ -205,6 +209,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [sort]
 - [reverse]
 - [rotate]
+- [replace]
 - [sum]
 - [stream]
 - [slice] 
@@ -365,10 +370,11 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [plate.rev~]
 - [fdn.rev~]
 
-**AUDIO PROCESSING: FILTERS [24]:**
+**AUDIO PROCESSING: FILTERS [25]:**
 
 - [allpass.2nd~]
 - [allpass.filt~]
+- [bitnormal~]
 - [comb.filt~]
 - [lop.bw~]
 - [hip.bw~]
