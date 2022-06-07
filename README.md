@@ -108,7 +108,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-## Current Object list (455 objects):
+## Current Object list (456 objects):
 
 **ASSORTED: [01]**
 
@@ -427,7 +427,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 - [sfont~]
 
-**SYNTHESIS: OSCILLATORS (DETERMINISTIC GENERATORS): [25]**
+**SYNTHESIS: OSCILLATORS (DETERMINISTIC GENERATORS): [26]**
 
 - [cosine~]
 - [impulse~] / [imp~]
@@ -445,6 +445,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [vsaw~]
 - [pmosc~]
 - [wavetable~] / [wt~]
+- [gbuzz~]
 - [bl.imp~]
 - [bl.imp2~]
 - [bl.saw~]

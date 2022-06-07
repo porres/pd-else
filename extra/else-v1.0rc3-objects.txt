@@ -152,6 +152,7 @@ gate2imp~	x
 gatehold~	x
 gaussian~	x
 gbman~	x
+gbuzz~	x
 gcd	x
 giga.rev~	x
 glide	x
