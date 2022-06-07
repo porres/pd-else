@@ -15,7 +15,6 @@
   + removed some unneeded functions (escapes, printf etc), added others
 */
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
 #ifdef _WIN32

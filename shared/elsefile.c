@@ -7,12 +7,10 @@
 #include <dirent.h>
 #endif
 
-//#include <stdlib.h>
-//#include <stdio.h>
-#include <string.h>
 #include "m_pd.h"
 #include "g_canvas.h"
 #include "elsefile.h"
+#include <string.h>
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // OS

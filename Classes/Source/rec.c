@@ -6,11 +6,10 @@
 #include <unistd.h>
 #endif
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include "m_pd.h"
 #include "elsefile.h"
+#include <stdlib.h>
+#include <string.h>
 
 #ifdef FLT_MAX
 #define SHARED_FLT_MAX  FLT_MAX

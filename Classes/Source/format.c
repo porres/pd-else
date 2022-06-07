@@ -1,7 +1,7 @@
+// based on cyclone sprintf
 
-#include <stdio.h>
-#include <string.h>
 #include "m_pd.h"
+#include <string.h>
 
 // Pattern types
 #define format_LITERAL      1
