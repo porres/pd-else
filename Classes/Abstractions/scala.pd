@@ -1,4 +1,5 @@
 #N canvas 673 23 693 708 12;
+#X declare -path else;
 #X obj 388 282 text define \$0-scl;
 #X msg 244 196 read \$1;
 #X obj 244 92 openpanel;
@@ -45,6 +46,7 @@
 #X obj 15 128 route bang;
 #X obj 156 218 bng 15 250 50 0 empty empty empty 17 7 0 10 #fcfcfc
 #000000 #000000;
+#X obj 442 160 declare -path else;
 #X connect 1 0 13 0;
 #X connect 2 0 1 0;
 #X connect 2 0 26 0;
