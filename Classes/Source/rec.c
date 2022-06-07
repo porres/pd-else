@@ -352,7 +352,7 @@ static void rec_doread(t_rec *x, t_symbol *fname){
     int fd = canvas_open(x->x_canvas, fname->s_name, "", path, &bufptr, MAXPDSTRING, 1);
     if(fd > 0){
         path[strlen(path)]='/';
-        close(fd);
+        sys_close(fd);
     }
     else{
         post("[rec] file '%s' not found", fname->s_name);
@@ -462,7 +462,7 @@ static int rec_writetrack(t_rec *x, t_rec_track *tp, FILE *fp){
     return(0);
 }
 
-/* CHECKED empty sequence stored as an empty elsefile */
+// CHECKED empty sequence stored as an empty elsefile
 static void rec_dowrite(t_rec *x, t_symbol *fname){
     int failed = 0;
     char path[MAXPDSTRING];
@@ -473,7 +473,6 @@ static void rec_dowrite(t_rec *x, t_symbol *fname){
     	strncpy(path, fname->s_name, MAXPDSTRING);
     	path[MAXPDSTRING-1] = 0;
     }
-    /* CHECKED no global message */
     if((fp = sys_fopen(path, "w"))){
         int id;  // single-track writing does not seem to work (a bug?)
         t_rec_track **tpp;
@@ -482,9 +481,8 @@ static void rec_dowrite(t_rec *x, t_symbol *fname){
                 break;
         fclose(fp);
     }
-    else{
+    else
         failed = 1;
-    }
     if(failed)
         pd_error(x, "[rec]: writing text elsefile \"%s\" failed", path);
 }
