@@ -1,9 +1,9 @@
-#N struct 6381-cell float x float y float cellsize float color;
-#N struct 6382-point float x0 float y0 float xs float ys float fg float
+#N struct 1004-cell float x float y float cellsize float color;
+#N struct 1005-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 6401-point float x0 float y0 float size float fg float in
+#N struct 1024-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 6441-slot float x float y float slotsize float color float
+#N struct 1064-slot float x float y float slotsize float color float
 width float bordercolor;
 #N canvas 602 48 530 463 10;
 #N canvas 347 36 979 662 GUI 0;
@@ -112,7 +112,7 @@ width float bordercolor;
 #X connect 11 0 12 0;
 #X coords 0 -1 1 1 94 60 2 100 100;
 #X restore 356 48 pd;
-#X obj 166 82 cnv 15 120 28 empty \$0-version 1.0-0\ rc-3 8 14 0 14
+#X obj 166 82 cnv 15 120 28 empty \$0-version 1.0-0\ rc-2 8 14 0 14
 #e0e0e0 #404040 0;
 #X obj 90 82 cnv 15 80 28 empty empty Version: 8 14 0 14 #e0e0e0 #404040
 0;
@@ -317,7 +317,7 @@ width float bordercolor;
 #X obj 60 216 else/coeff2pz;
 #X restore 227 203 pd math(conversion);
 #N canvas 522 132 193 72 assoted 0;
-#X obj 68 22 else;
+#X obj 68 22 else/else;
 #X restore 40 152 pd assoted;
 #N canvas 1041 135 193 126 File_Management 0;
 #X obj 60 55 else/dir;
@@ -513,7 +513,7 @@ width float bordercolor;
 #X obj 91 159 else/sequencer~;
 #X obj 91 184 else/impseq~;
 #X obj 92 207 else/rec;
-#X obj 92 231 else/rec2;
+#X obj 92 231 else/rec2 \$0-name;
 #X restore 30 343 pd Control(Sequencers);
 #N canvas 653 78 261 244 Control(Envelopes) 0;
 #X obj 78 40 else/adsr~;
