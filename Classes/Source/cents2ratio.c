@@ -6,23 +6,19 @@
 static t_class *cents2ratio_class;
 
 typedef struct _cents2ratio{
-  t_object      x_obj;
-  t_outlet     *x_outlet;
-  t_float       x_f;
+    t_object      x_obj;
+    t_outlet     *x_outlet;
+    t_float       x_f;
 }t_cents2ratio;
 
 static t_float convert(t_float f){
     return(pow(2, (f/1200)));
 }
 
-static void cents2ratio_bang(t_cents2ratio *x){
-    outlet_float(x->x_outlet, convert(x->x_f));
-}
-
 static void cents2ratio_list(t_cents2ratio *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 0)
-        cents2ratio_bang(x);
+        outlet_float(x->x_outlet, convert(x->x_f));
     if(ac == 1)
         outlet_float(x->x_outlet, convert(x->x_f = atom_getfloat(av)));
     else if(ac > 1){

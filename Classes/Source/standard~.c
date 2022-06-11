@@ -162,6 +162,6 @@ void standard_tilde_setup(void)
         sizeof(t_standard), 0, A_GIMME, 0);
     CLASS_MAINSIGNALIN(standard_class, t_standard, x_freq);
     class_addlist(standard_class, standard_list);
-    class_addmethod(standard_class, (t_method)standard_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(standard_class, (t_method)standard_k, gensym("k"), A_DEFFLOAT, 0);
+    class_addmethod(standard_class, (t_method)standard_dsp, gensym("dsp"), A_CANT, 0);
 }
