@@ -162,13 +162,16 @@ static void hot_proxy_dolist(t_hot_proxy *x, int ac, t_atom *av, int doit){
 }
 
 static void hot_proxy_list(t_hot_proxy *x, t_symbol *s, int ac, t_atom *av){
-    if(!ac)
+    if(!ac){
         hot_proxy_bang(x);
+        return;
+    }
     else if(ac == 1){
         if(av->a_type == A_FLOAT)
             hot_proxy_float(x, atom_getfloat(av));
         else if(av->a_type == A_SYMBOL)
             hot_proxy_symbol(x, atom_getsymbol(av));
+        return;
     }
     s = NULL;
     hot_proxy_dolist(x, ac, av, 1);
@@ -234,13 +237,16 @@ static void hot_pointer(t_hot *x, t_gpointer *gp){
 }
 
 static void hot_list(t_hot *x, t_symbol *s, int ac, t_atom *av){
-    if(!ac)
+    if(!ac){
         hot_bang(x);
+        return;
+    }
     else if(ac == 1){
         if(av->a_type == A_FLOAT)
             hot_float(x, atom_getfloat(av));
         else if(av->a_type == A_SYMBOL)
             hot_symbol(x, atom_getsymbol(av));
+        return;
     }
     s = NULL;
     hot_proxy_dolist((t_hot_proxy *)x->x_proxies[0], ac, av, 1);
