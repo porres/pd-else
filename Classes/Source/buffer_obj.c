@@ -180,7 +180,7 @@ static void buffer_set(t_buffer *x, t_symbol *s, int ac, t_atom *av){
 
 static void buffer_setarray(t_buffer *x, t_symbol *s, int argc, t_atom *argv){
     s = NULL;
-    if(!ac)
+    if(!argc)
         return;
     buffer_resize(x, argc);
     char *itemp, *firstitem;

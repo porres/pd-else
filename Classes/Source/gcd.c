@@ -48,7 +48,5 @@ static void *gcd_new(t_floatarg f){
 
 void gcd_setup(void){
     gcd_class = class_new(gensym("gcd"), (t_newmethod)gcd_new, 0, sizeof(t_gcd), 0, A_DEFFLOAT, 0);
-    class_addbang(gcd_class, (t_method)gcd_bang);
-    class_addfloat(gcd_class, gcd_float);
     class_addlist(gcd_class, gcd_list);
 }
