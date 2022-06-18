@@ -67,6 +67,4 @@ void slice_setup(void){
     slice_class = class_new(gensym("slice"), (t_newmethod)slice_new,
         0, sizeof(t_slice), 0, A_DEFFLOAT, 0);
     class_addlist(slice_class, slice_list);
-    class_addfloat(slice_class, slice_float);
-    class_addsymbol(slice_class, slice_symbol);
 }
