@@ -74,6 +74,7 @@ static void rand_seq_bang(t_rand_seq *x){
 }
 
 static void rand_seq_list(t_rand_seq *x, t_symbol*s, int ac, t_atom *av){
+    s = NULL;
     if(!ac)
         rand_seq_bang(x);
     else{
