@@ -70,6 +70,7 @@ changed	x
 changed~	x
 changed2~	x
 chorus~	x
+chrono	x
 circle	x
 click	x
 clipnoise~	x

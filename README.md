@@ -108,11 +108,12 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-## Current Object list (456 objects):
+## Current Object list (457 objects):
 
-**ASSORTED: [01]**
+**ASSORTED: [02]**
 
 - [else]
+- [chrono]
 
 **FFT: [02]**
 

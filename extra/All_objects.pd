@@ -112,7 +112,7 @@ width float bordercolor;
 #X connect 11 0 12 0;
 #X coords 0 -1 1 1 94 60 2 100 100;
 #X restore 356 48 pd;
-#X obj 166 82 cnv 15 120 28 empty \$0-version 1.0-0\ rc-2 8 14 0 14
+#X obj 166 82 cnv 15 120 28 empty \$0-version 1.0-0\ rc-3 8 14 0 14
 #e0e0e0 #404040 0;
 #X obj 90 82 cnv 15 80 28 empty empty Version: 8 14 0 14 #e0e0e0 #404040
 0;
@@ -316,8 +316,9 @@ width float bordercolor;
 #X obj 60 195 else/pz2coeff;
 #X obj 60 216 else/coeff2pz;
 #X restore 227 203 pd math(conversion);
-#N canvas 522 132 193 72 assoted 0;
+#N canvas 522 132 193 100 assoted 0;
 #X obj 68 22 else/else;
+#X obj 68 50 else/chrono;
 #X restore 40 152 pd assoted;
 #N canvas 1041 135 193 126 File_Management 0;
 #X obj 60 55 else/dir;
