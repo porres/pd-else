@@ -1,3 +1,4 @@
+// porres
 
 #include "m_pd.h"
 #include <math.h>
@@ -11,7 +12,7 @@ typedef struct _bicoeff{
     t_float   x_q_s;
     t_float   x_gain;
     t_float   x_type;
-} t_bicoeff;
+}t_bicoeff;
 
 static t_class *bicoeff_class;
 
@@ -19,10 +20,10 @@ static void bicoeff_bang(t_bicoeff *x){
     t_atom at[5];
     double a0 = 0, a1 = 0, a2 = 0, b1 = 0, b2 = 0;
 // off
-    if (x->x_type == 0){
+    if(x->x_type == 0){
         a0 = 1.;
         a1 = a2 = b1 = b2 = 0.;
-        }
+    }
 // allpass
     else if (x->x_type == 1){
         double omega, alphaQ, cos_w, b0;
@@ -37,7 +38,6 @@ static void bicoeff_bang(t_bicoeff *x){
         if (q < 0.000001)
             q = 0.000001; // prevent blow-up
         omega = hz * PI/nyq;
-        
         alphaQ = sin(omega) / (2*q);
         cos_w = cos(omega);
         b0 = alphaQ + 1;
@@ -249,32 +249,6 @@ static void bicoeff_bang(t_bicoeff *x){
     SETFLOAT(at+3, a1);
     SETFLOAT(at+4, a2);
     outlet_list(x->x_obj.ob_outlet, &s_list, 5, at);
-}
-
-static void bicoeff_list(t_bicoeff *x, t_symbol *s, int ac, t_atom * av){
-    s = NULL;
-    int argnum = 0; //current argument
-    while(ac){
-        if(av -> a_type == A_FLOAT){
-            t_float curf = atom_getfloatarg(0, ac, av);
-            switch(argnum){
-                case 0:
-                    x->x_freq = curf;
-                    break;
-                case 1:
-                    x->x_q_s = curf;
-                    break;
-                case 2:
-                    x->x_gain = curf;
-                default:
-                    break;
-            };
-            argnum++;
-        };
-        ac--;
-        av++;
-    };
-    bicoeff_bang(x);
 }
 
 void bicoeff_allpass(t_bicoeff *x, t_symbol *s, int ac, t_atom *av){
@@ -527,6 +501,41 @@ static void bicoeff_freq(t_bicoeff *x, t_floatarg val){
     bicoeff_bang(x);
 }
 
+static void bicoeff_list(t_bicoeff *x, t_symbol *s, int ac, t_atom * av){
+    s = NULL;
+    if(!ac){
+        bicoeff_bang(x);
+        return;
+    }
+    if(ac == 1){
+        if(av->a_type == A_FLOAT)
+            bicoeff_freq(x, atom_getfloat(av));
+        return;
+    }
+    int argnum = 0; //current argument
+    while(ac){
+        if(av -> a_type == A_FLOAT){
+            t_float curf = atom_getfloatarg(0, ac, av);
+            switch(argnum){
+                case 0:
+                    x->x_freq = curf;
+                    break;
+                case 1:
+                    x->x_q_s = curf;
+                    break;
+                case 2:
+                    x->x_gain = curf;
+                default:
+                    break;
+            };
+            argnum++;
+        };
+        ac--;
+        av++;
+    };
+    bicoeff_bang(x);
+}
+
 static void bicoeff_Q_S(t_bicoeff *x, t_floatarg val){
     x->x_q_s = val;
     bicoeff_bang(x);
@@ -628,18 +637,15 @@ static void *bicoeff_new(t_symbol *s, int ac, t_atom *av){
     return (x);
     errstate:
         pd_error(x, "[bicoeff]: improper args");
-        return NULL;
+        return(NULL);
 }
 
 void bicoeff_setup(void){
     bicoeff_class = class_new(gensym("bicoeff"), (t_newmethod)bicoeff_new, 0,
-			    sizeof(t_bicoeff), 0, A_GIMME, 0);
-    class_addbang(bicoeff_class, bicoeff_bang);
-    class_addfloat(bicoeff_class, bicoeff_freq);
+        sizeof(t_bicoeff), 0, A_GIMME, 0);
+    class_addlist(bicoeff_class, (t_method)bicoeff_list);
     class_addmethod(bicoeff_class, (t_method)bicoeff_Q_S, gensym("qs"), A_FLOAT, 0);
     class_addmethod(bicoeff_class, (t_method)bicoeff_gain, gensym("gain"), A_FLOAT, 0);
-    class_addlist(bicoeff_class, (t_method)bicoeff_list);
-    
     class_addmethod(bicoeff_class, (t_method) bicoeff_lowpass, gensym("lowpass"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method) bicoeff_highpass, gensym("highpass"), A_GIMME, 0);
     class_addmethod(bicoeff_class, (t_method) bicoeff_bandpass, gensym("bandpass"), A_GIMME, 0);
