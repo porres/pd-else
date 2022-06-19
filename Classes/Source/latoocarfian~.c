@@ -26,10 +26,6 @@ typedef struct _latoocarfian
 static void latoocarfian_coeffs(t_latoocarfian *x, t_symbol *s, int argc, t_atom * argv)
 {
     s = NULL;
-    if(argc == 1){
-        obj_list(&x->x_obj, 0, argc, argv);
-        return;
-    }
     if (argc != 4)
         {
         pd_error(x, "latoocarfian~: 'coeffs' needs a list of 4 floats as arguments");
@@ -72,21 +68,19 @@ static void latoocarfian_coeffs(t_latoocarfian *x, t_symbol *s, int argc, t_atom
 static void latoocarfian_list(t_latoocarfian *x, t_symbol *s, int argc, t_atom * argv)
 {
     s = NULL;
-    if (argc > 2)
-        {
+    if(argc == 1){
+        obj_list(&x->x_obj, 0, argc, argv);
+        return;
+    }
+    if (argc != 2)
         pd_error(x, "latoocarfian~: list size needs to be = 2");
-        }
-    else
-        {
+    else{
         int argnum = 0; // current argument
         while(argc)
             {
             if(argv -> a_type != A_FLOAT)
-                {
                 pd_error(x, "latoocarfian~: list needs to only contain floats");
-                }
-            else
-                {
+            else{
                 t_float curf = atom_getfloatarg(0, argc, argv);
                 switch(argnum)
                     {
