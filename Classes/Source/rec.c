@@ -204,14 +204,14 @@ static void rec_track_symbol(t_rec_track *tp, t_symbol *s){
 
 static void rec_track_list(t_rec_track *tp, t_symbol *s, int ac, t_atom *av){
     if(!ac){
-        rec_track_bang(tp->tr_owner);
+        rec_track_bang(tp);
         return;
     }
     if(ac == 1){
         if(av->a_type == A_FLOAT)
-            rec_track_float(tp->tr_owner, atom_getfloat(av));
+            rec_track_float(tp, atom_getfloat(av));
         else if(av->a_type == A_SYMBOL)
-            rec_track_symbol(tp->tr_owner, atom_getsymbol(av));
+            rec_track_symbol(tp, atom_getsymbol(av));
         return;
     }
     if(tp->tr_mode == REC_RECMODE){
@@ -595,7 +595,8 @@ static void *rec_new(t_symbol * s, int ac, t_atom *av){
 }
 
 void rec_setup(void){
-    rec_track_class = class_new(gensym("_rec_track"), 0, 0, sizeof(t_rec_track), CLASS_PD | CLASS_NOINLET, 0);
+    rec_track_class = class_new(gensym("_rec_track"), 0, 0,
+        sizeof(t_rec_track), CLASS_PD | CLASS_NOINLET, 0);
     class_addlist(rec_track_class, rec_track_list);
     class_addanything(rec_track_class, rec_track_anything);
     rec_class = class_new(gensym("rec"), (t_newmethod)rec_new,
@@ -609,6 +610,6 @@ void rec_setup(void){
     class_addmethod(rec_class, (t_method)rec_read, gensym("open"), A_DEFSYM, 0);
     class_addmethod(rec_class, (t_method)rec_write, gensym("save"), A_DEFSYM, 0);
     class_addmethod(rec_class, (t_method)rec_speed, gensym("speed"), A_DEFFLOAT, 0);
-    class_addmethod(rec_class, (t_method)rec_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(rec_class, (t_method)rec_click, gensym("click"), 0);
     elsefile_setup();
 }
