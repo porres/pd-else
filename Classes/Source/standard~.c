@@ -32,6 +32,10 @@ static void standard_k(t_standard *x, t_float f)
 static void standard_list(t_standard *x, t_symbol *s, int argc, t_atom * argv)
 {
     s= NULL;
+    if(argc == 1){
+        obj_list(&x->x_obj, 0, argc, argv);
+        return;
+    }
     if (argc > 2)
         {
         pd_error(x, "standard~: list size needs to be = 2");

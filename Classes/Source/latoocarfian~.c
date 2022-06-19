@@ -26,6 +26,10 @@ typedef struct _latoocarfian
 static void latoocarfian_coeffs(t_latoocarfian *x, t_symbol *s, int argc, t_atom * argv)
 {
     s = NULL;
+    if(argc == 1){
+        obj_list(&x->x_obj, 0, argc, argv);
+        return;
+    }
     if (argc != 4)
         {
         pd_error(x, "latoocarfian~: 'coeffs' needs a list of 4 floats as arguments");
