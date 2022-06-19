@@ -405,20 +405,24 @@ static void scope_period(t_scope *x, t_floatarg f){
 
 static void scope_list(t_scope *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
+    if(!ac)
+        return;
+    int period = 0;
     int f1 = (int)atom_getfloatarg(0, ac, av);
-    int f2 = (int)atom_getfloatarg(1, ac, av);
-
-    int period = f1 < 2 ? 2 : f1 > 8192 ? 8192 : f1;
+    period = f1 < 2 ? 2 : f1 > 8192 ? 8192 : f1;
     if(x->x_period != period){
         x->x_period = period;
         x->x_phase = x->x_bufphase = x->x_precount = 0;
     }
-    
-    int size = f2 < SCOPE_MINBUFSIZE ? SCOPE_MINBUFSIZE : f2 > SCOPE_MAXBUFSIZE ? SCOPE_MAXBUFSIZE : f2;
-    if(x->x_bufsize != size){
-        x->x_bufsize = size;
-        pd_float((t_pd *)x->x_rightinlet, x->x_bufsize);
-        x->x_phase = x->x_bufphase = x->x_precount = 0;
+    if(ac > 1){
+        int f2 = (int)atom_getfloatarg(1, ac, av);
+        int size = f2 < SCOPE_MINBUFSIZE ? SCOPE_MINBUFSIZE :
+            f2 > SCOPE_MAXBUFSIZE ? SCOPE_MAXBUFSIZE : f2;
+        if(x->x_bufsize != size){
+            x->x_bufsize = size;
+            pd_float((t_pd *)x->x_rightinlet, x->x_bufsize);
+            x->x_phase = x->x_bufphase = x->x_precount = 0;
+        }
     }
 }
 
@@ -1234,7 +1238,7 @@ errstate:
 
 void oscope_tilde_setup(void){
     scope_class = class_new(gensym("oscope~"), (t_newmethod)scope_new,
-            (t_method)scope_free, sizeof(t_scope), 0, A_GIMME, 0);
+        (t_method)scope_free, sizeof(t_scope), 0, A_GIMME, 0);
     class_addmethod(scope_class, nullfn, gensym("signal"), 0);
     class_addmethod(scope_class, (t_method) scope_dsp, gensym("dsp"), A_CANT, 0);
     class_addfloat(scope_class, (t_method)scope_period);
@@ -1247,19 +1251,24 @@ void oscope_tilde_setup(void){
     class_addmethod(scope_class, (t_method)scope_drawstyle, gensym("drawstyle"), A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_trigger, gensym("trigger"), A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_triglevel, gensym("triglevel"), A_FLOAT, 0);
-    class_addmethod(scope_class, (t_method)scope_fgcolor, gensym("fgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(scope_class, (t_method)scope_bgcolor, gensym("bgcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
-    class_addmethod(scope_class, (t_method)scope_gridcolor, gensym("gridcolor"), A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(scope_class, (t_method)scope_fgcolor, gensym("fgcolor"),
+        A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(scope_class, (t_method)scope_bgcolor, gensym("bgcolor"),
+        A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(scope_class, (t_method)scope_gridcolor, gensym("gridcolor"),
+        A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_receive, gensym("receive"), A_SYMBOL, 0);
     class_addmethod(scope_class, (t_method)scope_ok, gensym("dialog"), A_GIMME, 0);
-    class_addmethod(scope_class, (t_method)scope_click, gensym("click"), A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
+    class_addmethod(scope_class, (t_method)scope_click, gensym("click"),
+        A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
     class_addmethod(scope_class, (t_method)scope_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(scope_class, (t_method)scope_mouserelease, gensym("_mouserelease"), 0);
     edit_proxy_class = class_new(0, 0, 0, sizeof(t_edit_proxy), CLASS_NOINLET | CLASS_PD, 0);
     class_addanything(edit_proxy_class, edit_proxy_any);
     handle_class = class_new(gensym("_handle"), 0, 0, sizeof(t_handle), CLASS_PD, 0);
     class_addmethod(handle_class, (t_method)handle__click_callback, gensym("_click"), A_FLOAT, 0);
-    class_addmethod(handle_class, (t_method)handle__motion_callback, gensym("_motion"), A_FLOAT, A_FLOAT, 0);
+    class_addmethod(handle_class, (t_method)handle__motion_callback, gensym("_motion"),
+        A_FLOAT, A_FLOAT, 0);
     class_setsavefn(scope_class, scope_save);
     class_setpropertiesfn(scope_class, scope_properties);
     class_setwidget(scope_class, &scope_widgetbehavior);
