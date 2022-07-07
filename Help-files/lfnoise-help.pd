@@ -71,7 +71,7 @@ range for the output., f 53;
 #X obj 160 335 else/bl.saw~;
 #X obj 160 312 sig~ 35;
 #X obj 127 227 else/rescale 200 700;
-#X obj 127 282 else/bicoeff lowpass 500 20;
+#X obj 127 282 else/bicoeff2 lowpass 500 20;
 #X obj 137 437 else/out~;
 #X connect 1 0 2 0;
 #X connect 2 0 10 0;
