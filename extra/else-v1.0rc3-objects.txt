@@ -24,6 +24,7 @@ batch.write~	x
 bend.in	x
 bend.out	x
 bicoeff	x
+bicoeff2	x
 bin.shift~	x
 biplot	x
 biquads~	x

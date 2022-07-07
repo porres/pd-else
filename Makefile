@@ -36,6 +36,7 @@ suspedal.class.sources := Classes/Source/suspedal.c
 voices.class.sources := Classes/Source/voices.c
 buffer.class.sources := Classes/Source/buffer_obj.c
 bicoeff.class.sources := Classes/Source/bicoeff.c
+bicoeff2.class.sources := Classes/Source/bicoeff2.c
 click.class.sources := Classes/Source/click.c
 canvas.active.class.sources := Classes/Source/canvas.active.c
 canvas.bounds.class.sources := Classes/Source/canvas.bounds.c
@@ -302,12 +303,7 @@ datafiles = \
 $(wildcard Classes/Abstractions/*.pd) \
 $(wildcard Classes/Abs_components/*.pd) \
 $(wildcard Help-files/*.pd) \
-$(wildcard extra/*.pd) \
-$(wildcard extra/*.aif) \
-$(wildcard extra/*.wav) \
-$(wildcard extra/*.gif) \
-$(wildcard extra/*.mid) \
-$(wildcard extra/*.txt) \
+$(wildcard extra/*.*) \
 $(wildcard *.txt) \
 README.pdf
 

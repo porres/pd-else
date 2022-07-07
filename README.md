@@ -108,7 +108,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-## Current Object list (457 objects):
+## Current Object list (458 objects):
 
 **ASSORTED: [02]**
 
@@ -384,7 +384,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [bandstop~]
 - [crossover~]
 - [bpbank~]
-- [bicoeff]
+- [bicoeff2]
 - [brickwall~]
 - [eq~]
 - [highpass~]
@@ -628,10 +628,11 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [vu~]
 - [zerocross~]
 
-**GUI: [36]**
+**GUI: [37]**
 
 - [drum.seq]
 - [gui]
+- [bicoeff]
 - [pad]
 - [messbox]
 - [mtx.ctl]
