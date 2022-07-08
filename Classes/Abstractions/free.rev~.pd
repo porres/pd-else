@@ -1,4 +1,4 @@
-#N canvas 542 166 671 320 12;
+#N canvas 371 146 671 320 12;
 #X declare -path else;
 #X obj 171 55 inlet~;
 #X obj 96 258 outlet~;
@@ -41,7 +41,7 @@
 #X obj 42 40 inlet;
 #X obj 42 142 s~ \$0-fb;
 #X obj 42 111 else/f2s~ 10;
-#X obj 43 72 else/rescale -clip 0 1 0.7 0.99;
+#X obj 42 74 else/rescale -clip 0 1 0 1 -2;
 #X connect 0 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 2 0;
