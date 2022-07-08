@@ -1,7 +1,7 @@
-#N canvas 282 104 853 361 10;
+#N canvas 214 129 853 361 10;
 #X declare -path else;
 #X obj 76 28 inlet;
-#N canvas 658 49 677 337 guts 0;
+#N canvas 279 293 677 363 guts 1;
 #X msg 262 181 stop;
 #X msg 208 264 bang;
 #X obj 101 165 route float;
@@ -11,7 +11,7 @@
 #X obj 243 117 != 0;
 #X obj 243 142 sel 1 0;
 #X obj 208 288 s \$0-to_symbol;
-#N canvas 581 23 651 398 open 0;
+#N canvas 648 348 651 398 open 0;
 #X obj 216 164 openpanel;
 #X obj 216 106 route bang, f 17;
 #X obj 227 135 else/click;
@@ -23,11 +23,8 @@
 #X obj 478 233 print [sample~];
 #X msg 478 207 \$1 file not found;
 #X obj 315 295 symbol;
-#X obj 74 232 symbol;
-#X obj 42 122 r \$0-to_symbolarg;
-#X obj 107 147 r \$0-file-found;
-#X msg 75 180 1;
-#X obj 42 204 spigot;
+#X obj 85 153 r \$0-to_symbolarg;
+#X obj 393 291 r \$0-file-found;
 #X obj 366 247 r \$0-to_symbol;
 #X connect 0 0 10 0;
 #X connect 1 0 0 0;
@@ -41,12 +38,8 @@
 #X connect 9 0 8 0;
 #X connect 10 0 3 0;
 #X connect 11 0 10 0;
-#X connect 12 0 15 0;
-#X connect 13 0 11 1;
-#X connect 13 0 14 0;
-#X connect 14 0 15 1;
-#X connect 15 0 11 0;
-#X connect 16 0 10 0;
+#X connect 12 0 10 1;
+#X connect 13 0 10 0;
 #X restore 43 144 pd open;
 #X obj 43 57 route open loop stop start bang float set;
 #N canvas 260 127 593 557 init 0;
@@ -291,7 +284,7 @@
 #X connect 10 5 6 0;
 #X connect 10 6 9 1;
 #X restore 76 59 pd guts;
-#N canvas 367 374 897 372 \$0-readsf 0;
+#N canvas 469 328 897 372 \$0-readsf 0;
 #X obj 20 21 r \$0-readsf~;
 #X obj 384 56 r \$0-spigot;
 #X obj 351 78 spigot;

@@ -1,4 +1,4 @@
-#N canvas 659 23 559 590 10;
+#N canvas 351 40 559 590 10;
 #X obj 3 280 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 3 418 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -175,7 +175,6 @@
 #X restore 2 3 graph;
 #X obj 68 40 cnv 4 4 4 empty empty reverb 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 189 145 else/play.file~ vacuous.wav 1 1;
 #X text 167 312 pre <float>;
 #X text 149 329 cutoff <float>;
 #X text 161 345 damp <float>;
@@ -201,6 +200,7 @@ f 54;
 #X text 129 528 4) float - room size (0-1) - default 0.75, f 54;
 #X text 129 543 5) float - wet ratio (0-1) - default 0.75, f 54;
 #X obj 189 179 else/plate.rev~;
-#X connect 26 0 46 0;
-#X connect 46 0 40 0;
-#X connect 46 1 40 1;
+#X obj 189 145 else/play.file~ vacuous.wav 1 1;
+#X connect 45 0 39 0;
+#X connect 45 1 39 1;
+#X connect 46 0 45 0;
