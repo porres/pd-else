@@ -1,9 +1,8 @@
-#N canvas 489 23 570 625 10;
+#N canvas 562 23 570 625 10;
 #X floatatom 176 238 5 0 0 0 - - - 0;
 #X floatatom 219 184 5 1 10 0 - - - 0;
 #X floatatom 305 257 5 1 10 0 - - - 0;
 #X text 136 240 hertz;
-#X text 255 182 number of harmonics present;
 #X obj 176 312 else/out~;
 #X floatatom 262 232 5 0 0 0 - - - 0;
 #X text 298 232 multiplier;
@@ -70,9 +69,6 @@ lowest harmonic is 2 \, then you have '200' and '300'., f 77;
 #X text 136 575 4) float;
 #X text 186 492 signal;
 #X text 231 492 - band limited oscillator output;
-#X text 232 411 - incoming signal routed to right;
-#X text 231 433 - incoming signal routed to right;
-#X text 231 455 - incoming signal routed to right;
 #X text 198 527 - fundamental frequency in hertz (default 0);
 #X text 198 543 - number of partials (default 1);
 #X text 198 559 - spectral multiplier (default 1);
@@ -89,13 +85,15 @@ lowest harmonic is 2 \, then you have '200' and '300'., f 77;
 #X obj 136 117 else/rescale -1 1;
 #X obj 136 94 else/lfo 0.033;
 #X floatatom 136 69 5 0 0 0 - - - 0;
-#X text 264 93 The left inlet takes signals. The third does not but
-it converts internally to audio with a ramp of 20ms. You can use this
-parameter to add brightness via a LFO., f 44;
 #X obj 139 43 hsl 128 15 0.033 1 1 0 empty empty empty -2 -8 0 10 #dfdfdf
 #000000 #000000 0 1;
 #X text 244 176 waveform;
 #X text 246 364 spectrograph;
+#X text 144 43 spectral multiplier;
+#X text 265 93 The left inlet takes signals. The secondary ones do
+not but in the third inlet floats are internally converted to audio
+with a ramp of 20ms (you can use this parameter to add/remove brightness
+via a LFO as in this example)., f 47;
 #X connect 1 0 3 0;
 #X connect 2 0 1 0;
 #X connect 3 0 0 0;
@@ -105,11 +103,15 @@ parameter to add brightness via a LFO., f 44;
 #X connect 7 0 6 0;
 #X connect 8 0 7 0;
 #X connect 9 0 8 0;
-#X connect 11 0 9 0;
+#X connect 10 0 9 0;
 #X restore 471 341 pd example;
-#X connect 0 0 49 0;
-#X connect 1 0 49 1;
-#X connect 2 0 49 3;
-#X connect 6 0 49 2;
-#X connect 8 0 6 0;
-#X connect 49 0 5 0;
+#X text 255 182 number of partials;
+#X text 232 411 - number of partials;
+#X text 231 433 - spectral multiplier;
+#X text 231 455 - lowest harmonic;
+#X connect 0 0 45 0;
+#X connect 1 0 45 1;
+#X connect 2 0 45 3;
+#X connect 5 0 45 2;
+#X connect 7 0 5 0;
+#X connect 45 0 4 0;
