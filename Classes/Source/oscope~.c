@@ -76,7 +76,7 @@ static void scope_getrect(t_gobj *z, t_glist *gl, int *xp1, int *yp1, int *xp2, 
 
 // ----------------- DRAW ----------------------------------------------------------------
 static void scope_draw_handle(t_scope *x, int state){
-    post("scope_draw_handle");
+//    post("scope_draw_handle");
     t_handle *sh = (t_handle *)x->x_handle;
 // always destroy
     sys_vgui("destroy %s\n", sh->h_pathname);
@@ -190,7 +190,7 @@ static void scope_draw_inlets(t_scope *x){
 }
 
 static void scope_draw(t_scope *x, t_canvas *cv){
-    post("scope_draw");
+//    post("scope_draw");
     int x1, y1, x2, y2;
     scope_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
     scope_draw_bg(x, cv, x1, y1, x2, y2);
@@ -362,7 +362,7 @@ static void scope_vis(t_gobj *z, t_glist *glist, int vis){
     // this was needed to avooid some tcl erros
         sys_vgui("destroy %s\n", sh->h_pathname);
     if(vis){
-        post("vis");
+//        post("vis");
         sprintf(sh->h_pathname, ".x%lx.h%lx", (unsigned long)x->x_cv, (unsigned long)sh);
         sys_vgui(".x%lx.c bind all%lx <ButtonRelease> {pdsend [concat %s _mouserelease \\;]}\n", x->x_cv, x, x->x_bindsym->s_name);
         int bufsize = x->x_bufsize;
@@ -372,7 +372,7 @@ static void scope_vis(t_gobj *z, t_glist *glist, int vis){
         scope_draw_handle(x, x->x_edit);
     }
     else{
-        post("not vis");
+//        post("not vis");
         sys_vgui(".x%lx.c delete all%lx\n", (unsigned long)x->x_cv, x);
     }
 }
