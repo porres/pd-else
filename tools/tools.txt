@@ -15,7 +15,7 @@ make install objectsdir=../ arch= x86_64 extension=d_amd64
 
 --------------------------------------------------------------------------------------
 
-LC_ALL=C find . -type f -name '*.pd' -exec sed -i '' s/else\\///g {} +;
+LC_ALL=C find . -type f -name '*.pd' -exec sed -i '' s/else\\///g {} +
 
 --------------------------------------------------------------------------------------
 
