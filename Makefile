@@ -299,6 +299,8 @@ smagic := shared/magic.c
 
 # extra files
 
+datadirs = Live-Electronics-Tutorial
+
 datafiles = \
 $(wildcard Classes/Abstractions/*.pd) \
 $(wildcard Classes/Abs_components/*.pd) \
