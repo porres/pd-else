@@ -1,52 +1,54 @@
-#N canvas 460 36 928 845 12;
+#N canvas 312 23 939 723 12;
 #X declare -path else;
-#X obj 439 94 vsl 22 157 0 1.1 0 0 \$0-gain-send \$0-gain empty 0 -9
-0 10 -66577 -258113 -1 3371 1;
-#X obj 446 142 cnv 5 5 5 empty empty G 0 0 0 14 -66577 -262144 0;
-#X obj 446 158 cnv 5 5 5 empty empty A 0 0 0 14 -66577 -262144 0;
-#X obj 446 174 cnv 5 5 5 empty empty I 0 0 0 14 -66577 -262144 0;
-#X obj 320 386 biquad~;
-#X obj 320 325 noise~;
-#X obj 320 418 out~;
-#X obj 446 194 cnv 5 5 5 empty empty N 0 0 0 14 -66577 -262144 0;
-#X obj 92 371 hsl 128 15 20 22050 1 0 empty empty empty -2 -8 0 10
--228856 -1 -1 10700 1;
-#X floatatom 89 403 0 0 0 0 - - -;
-#X obj 89 472 s \$0-coeffs;
-#X obj 240 418 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X text 118 369 frequency;
-#X text 162 393 Q/Slope;
-#X obj 89 441 bicoeff lowpass 500 10;
-#X obj 335 357 r \$0-coeffs;
-#X text 243 397 gain;
-#N canvas 552 206 708 403 menu 0;
-#X msg 32 64 lowpass;
-#X msg 44 88 highpass;
-#X msg 60 112 bandpass;
-#X msg 94 159 bandstop;
-#X msg 75 137 resonant;
-#X msg 151 262 allpass;
-#X msg 109 185 eq;
-#X msg 135 238 lowshelf;
-#X msg 118 213 highshelf;
-#X obj 62 336 outlet;
-#X text 32 7 choose filter type;
-#X obj 32 36 loadbang;
-#X obj 269 200 lowpass~;
-#X obj 334 200 highpass~;
-#X obj 478 200 highpass~;
-#X obj 406 200 resonant~;
-#X obj 552 200 bandstop~;
-#X obj 299 237 eq~, f 5;
-#X obj 344 237 highshelf~;
-#X obj 424 237 lowshelf~;
-#X obj 496 237 allpass.2nd~;
-#X text 258 92 Note that all of these filters are also implemented
+#X obj 439 76 vsl 22 157 0 1.1 0 0 \$0-gain-send \$0-gain empty 0 -9
+0 10 #404040 #fc0400 #000000 0 1;
+#X obj 446 124 cnv 5 5 5 empty empty G 0 0 0 14 #404040 #fcfcfc 0;
+#X obj 446 140 cnv 5 5 5 empty empty A 0 0 0 14 #404040 #fcfcfc 0;
+#X obj 446 156 cnv 5 5 5 empty empty I 0 0 0 14 #404040 #fcfcfc 0;
+#X obj 331 408 biquad~;
+#X obj 331 347 noise~;
+#X obj 331 440 out~;
+#X obj 446 176 cnv 5 5 5 empty empty N 0 0 0 14 #404040 #fcfcfc 0;
+#X obj 92 353 hsl 128 15 20 22050 1 0 empty empty empty -2 -8 0 10
+#dcdcdc #000000 #000000 0 1;
+#X floatatom 89 385 0 0 0 0 - - - 0;
+#X obj 89 454 s \$0-coeffs;
+#X obj 247 400 nbx 5 14 -24 24 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X text 118 351 frequency;
+#X text 166 375 Q/Slope;
+#X obj 89 423 bicoeff2 lowpass 500 10;
+#X obj 346 379 r \$0-coeffs;
+#X text 253 379 gain;
+#N canvas 552 206 746 448 menu 0;
+#X msg 32 101 lowpass;
+#X msg 44 125 highpass;
+#X msg 60 149 bandpass;
+#X msg 94 196 bandstop;
+#X msg 75 174 resonant;
+#X msg 151 299 allpass;
+#X msg 109 222 eq;
+#X msg 135 275 lowshelf;
+#X msg 118 250 highshelf;
+#X obj 62 373 outlet;
+#X text 32 44 choose filter type;
+#X obj 32 73 loadbang;
+#X obj 272 135 lowpass~;
+#X obj 337 135 highpass~;
+#X obj 481 135 highpass~;
+#X obj 409 135 resonant~;
+#X obj 555 135 bandstop~;
+#X obj 302 172 eq~, f 5;
+#X obj 347 172 highshelf~;
+#X obj 427 172 lowshelf~;
+#X obj 499 172 allpass.2nd~;
+#X text 261 27 Note that all of these filters are also implemented
 in single separate objects in the ELSE library \, and the main difference
 is that they take signal input to control the parameters. Another difference
 is that only [eq~] \, [lowshelf~] and [highshelf~] have a gain input.
 , f 54;
+#X text 273 228 see also: [bicoeff];
+#X obj 265 262 bicoeff;
 #X connect 0 0 9 0;
 #X connect 1 0 9 0;
 #X connect 2 0 9 0;
@@ -57,11 +59,11 @@ is that only [eq~] \, [lowshelf~] and [highshelf~] have a gain input.
 #X connect 7 0 9 0;
 #X connect 8 0 9 0;
 #X connect 11 0 0 0;
-#X restore 32 323 pd menu;
-#X obj 164 418 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 -228856
--1 -1 0 256;
-#X obj 777 27 declare -path else;
-#N canvas 537 23 1021 510 vanilla 0;
+#X restore 32 316 pd menu;
+#X obj 168 400 nbx 5 14 0 100 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X obj 777 32 declare -path else;
+#N canvas 345 23 1021 510 vanilla 0;
 #N canvas 114 184 549 267 lowpass 0;
 #X obj 39 165 pack f f f f f;
 #X obj 164 165 v b0;
@@ -338,18 +340,18 @@ b0 \; - a0 = (1 - alphaQ) / b0 \; - a1 = -2*cos(w) / b0 \; - a2 = 1
 #X obj 380 390 sr~;
 #X text 330 391 init:;
 #X obj 212 164 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
--228856 -1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 447 164 nbx 5 18 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 14
--228856 -1 -1 0 256;
-#X obj 326 164 nbx 5 18 0 100 0 0 empty empty empty 0 -8 0 14 -228856
--1 -1 0 256;
+#dcdcdc #000000 #000000 0 256;
+#X obj 326 164 nbx 5 18 0 100 0 0 empty empty empty 0 -8 0 14 #dcdcdc
+#000000 #000000 0 256;
 #X text 44 74 First \, the frequency value in Hz is converted to radians
 per sample. The gain input value in dB is also converted to linear
 amplitude.;
 #X obj 595 304 display;
 #X text 66 172 Filter type;
-#X obj 67 201 vradio 18 1 0 9 empty empty empty 0 -8 0 10 -228856 -1
--1 6;
+#X obj 67 201 vradio 18 1 0 9 empty empty empty 0 -8 0 10 #dcdcdc #000000
+#000000 0;
 #X obj 67 388 trigger bang float;
 #X obj 190 441 v type_\$0;
 #X obj 67 440 s \$0-get-coeff;
@@ -470,28 +472,28 @@ can calculate biquad coefficients., f 60;
 #X connect 57 0 55 0;
 #X connect 58 0 13 0;
 #X connect 59 0 37 0;
-#X restore 144 134 pd vanilla;
-#X obj 490 23 r \$0-coeffs;
-#X obj 490 57 insert coeff;
-#X msg 439 56 \$3;
-#X obj 461 92 zbiplot;
-#X obj 13 543 biplot;
-#X obj 13 515 r \$0-coeffs;
-#X text 29 25 The filter equations from Robert Bristow-Johnson's "Cookbook
-formulae for audio EQ biquad filter coefficients" is the basis of the
-[bicoeff] object., f 53;
-#X text 29 78 Check this subpatch with a vanilla implementation of
-all these biquad coefficient calculations., f 53;
-#X text 28 183 Open [pd menu] to select the filter type. Lowshelf and
+#X restore 144 157 pd vanilla;
+#X obj 461 16 r \$0-coeffs;
+#X obj 461 45 insert coeff;
+#X msg 421 45 \$3;
+#X obj 461 74 zbiplot;
+#X obj 13 525 biplot;
+#X obj 13 497 r \$0-coeffs;
+#X text 29 104 Check this subpatch with a vanilla implementation of
+all these biquad coefficient calculations., f 50;
+#X text 28 188 Open [pd menu] to select the filter type. Lowshelf and
 highshelf take a slope value (between 0 and 1) instead of "Q". They
 also need a gain parameter (in dB). The "Eq" filter also needs a gain
 parameter \, but for others this is optional and only affects overall
 gain. Check the filters' response below and the poles/zeros to the
 right., f 53;
-#X text 90 324 <= open;
-#X text 226 135 <= open;
-#X floatatom 398 298 6 0 0 0 - - -;
-#X connect 0 0 32 0;
+#X text 90 317 <= open;
+#X floatatom 398 280 6 0 0 0 - - - 0;
+#X text 29 41 The filter equations from Robert Bristow-Johnson's "Cookbook
+formulae for audio EQ biquad filter coefficients" is the basis of the
+[bicoeff] and [bicoeff2] objects., f 50;
+#X text 226 158 <-- open;
+#X connect 0 0 30 0;
 #X connect 4 0 6 0;
 #X connect 5 0 4 0;
 #X connect 8 0 9 0;

@@ -237,7 +237,7 @@
 #X obj 93 30 r \$0-Q;
 #X obj 27 29 r \$0-freq;
 #X obj 27 77 changed;
-#X obj 27 56 bicoeff highpass 500 5;
+#X obj 27 56 bicoeff2 highpass 500 5;
 #X connect 1 0 5 0;
 #X connect 2 0 1 0;
 #X connect 2 1 6 1;

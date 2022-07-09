@@ -234,7 +234,7 @@
 #X connect 6 0 7 0;
 #X restore 27 226 pd db-range;
 #X obj 34 256 tabwrite \$0-response;
-#X obj 27 56 bicoeff bandpass 500 10;
+#X obj 27 56 bicoeff2 bandpass 500 10;
 #X obj 94 30 r \$0-Q;
 #X obj 28 29 r \$0-freq;
 #X obj 27 77 changed;

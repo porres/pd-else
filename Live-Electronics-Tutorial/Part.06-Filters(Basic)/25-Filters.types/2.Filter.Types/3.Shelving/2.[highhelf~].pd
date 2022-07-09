@@ -258,7 +258,7 @@
 #X obj 27 29 r \$0-freq;
 #X obj 27 77 changed;
 #X obj 149 31 r \$0-gain;
-#X obj 27 56 bicoeff highshelf 500 1 12;
+#X obj 27 56 bicoeff2 highshelf 500 1 12;
 #X connect 1 0 5 0;
 #X connect 2 0 1 0;
 #X connect 2 1 6 1;

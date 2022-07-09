@@ -1,4 +1,4 @@
-#N canvas 620 81 945 613 12;
+#N canvas 218 50 945 613 12;
 #X obj 168 235 print;
 #X msg 168 156 Hello World;
 #X text 177 196 <== connection cord;
@@ -61,7 +61,7 @@ temial go to "Window" menu and then choose "Pd Window" or use the shortcut
 #X obj 557 452 print number;
 #X obj 66 466 print ex1;
 #X obj 297 466 print ex2;
-#X text 143 466 <= print as 'ex1', f 17;
+#X text 143 466 <= print as 'ex1';
 #X text 369 467 <= print as 'ex2', f 8;
 #X obj 664 452 print symbol;
 #X listbox 772 412 10 0 0 0 - - - 16;

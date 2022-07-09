@@ -240,7 +240,7 @@
 #X obj 173 87 r \$0-Q;
 #X obj 87 54 loadbang;
 #X obj 87 156 outlet;
-#X obj 87 127 bicoeff allpass 750 1;
+#X obj 87 127 bicoeff2 allpass 750 1;
 #X connect 0 0 4 0;
 #X connect 1 0 4 1;
 #X connect 2 0 4 0;

@@ -1,4 +1,4 @@
-#N canvas 377 23 989 723 12;
+#N canvas 282 23 989 723 12;
 #X declare -path else;
 #X obj 295 25 declare -path else;
 #X text 28 62 Autotuning is when you correct a pitch to the nearest
@@ -139,16 +139,19 @@ a bit less efficient the the solution provided to the left., f 62
 #X obj 737 322 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X obj 737 295 loadbang;
-#X floatatom 250 619 0 0 0 0 - - - 0;
-#X obj 253 591 hsl 200 18 -2400 2400 0 0 empty empty empty -2 -8 0
-10 #dcdcdc #000000 #000000 0 1;
-#X obj 250 685 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
+#X floatatom 55 618 10 0 0 0 - - - 0;
+#X obj 58 589 hsl 200 18 -2400 2400 0 0 empty empty empty -2 -8 0 10
+#dcdcdc #000000 #000000 0 1;
+#X obj 55 683 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 12
 #dcdcdc #000000 #000000 0 256;
-#X obj 250 651 autotune2 0 110 190 320 410 480 590 610 690 805 895
-990 1110 1200, f 70;
-#X text 501 591 The [autotune2] object is simpler and retunes cents
+#X obj 55 649 autotune2 0 110 190 320 410 480 590 610 690 805 895 990
+1110 1200, f 70;
+#X text 275 583 The [autotune2] object is simpler and retunes cents
 values directly. Check its help file., f 46;
 #X obj 737 345 eqdiv 13 3;
+#X obj 798 641 scala;
+#X text 693 587 See also the [scala] object that imports tunings from
+the scala format., f 32;
 #X connect 2 0 5 0;
 #X connect 3 0 4 0;
 #X connect 4 0 2 0;

@@ -8,8 +8,8 @@
 #X restore 180 314 pd biplot;
 #X text 253 313 <= click;
 #X obj 98 259 noise~;
-#X obj 86 209 bicoeff eq 500 10 24;
-#X obj 247 209 bicoeff eq 900 10 24;
+#X obj 86 209 bicoeff2 eq 500 10 24;
+#X obj 247 209 bicoeff2 eq 900 10 24;
 #X obj 86 178 nbx 5 14 -1e+37 1e+37 0 0 empty hz1 empty 0 -8 0 10 -228856
 -1 -1 500 256;
 #X obj 247 178 nbx 5 14 -1e+37 1e+37 0 0 empty hz2 empty 0 -8 0 10

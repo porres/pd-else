@@ -1,12 +1,12 @@
 #N canvas 565 31 500 447 12;
 #X declare -path else;
 #X obj 104 283 noise~;
-#X obj 100 239 bicoeff eq 500 10 24;
-#X obj 253 238 bicoeff eq 900 10 24;
-#X obj 100 209 nbx 5 14 -1e+37 1e+37 0 0 empty hz1 empty 0 -8 0 10
--228856 -1 -1 500 256;
+#X obj 92 239 bicoeff2 eq 500 10 24;
+#X obj 253 238 bicoeff2 eq 900 10 24;
+#X obj 92 209 nbx 5 14 -1e+37 1e+37 0 0 empty hz1 empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
 #X obj 253 213 nbx 5 14 -1e+37 1e+37 0 0 empty hz2 empty 0 -8 0 10
--228856 -1 -1 900 256;
+#dcdcdc #000000 #000000 0 256;
 #X obj 104 340 biquads~;
 #X obj 104 378 out~;
 #X obj 311 333 initmess \; hz1 500 \; hz2 900;
