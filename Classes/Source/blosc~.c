@@ -23,16 +23,9 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <complex.h>
 
-//#include "../modules/extlib_util.h"
-
-//#include "DSPIcomplex.h"
-//#include "DSPIfilters.h"
-
-
-
+// TODO: some of these aren't used
 #define LPHASOR      (8*sizeof(uint32_t)) // the phasor logsize
 #define VOICES       8 // the number of waveform voices
 #define LLENGTH      6 // the loglength of a fractional delayed basic waveform
@@ -446,8 +439,6 @@ static t_int *blosc_perform_hardsync_saw(t_int *w)
         sample += _phase_to_float(ctl->c_phase) - 0.5;
         
         /* highpass filter output to remove DC offset and low frequency aliasing */
-        //TODO: ctl->c_butter->BangSmooth(sample, sample, 0.05);
-        
         butter_bang_smooth(ctl->c_butter, sample, &sample, 0.05);
         
         /* send to output */
@@ -510,7 +501,6 @@ static t_int *blosc_perform_pulse(t_int *w)
         t_float sample = _get_bandlimited_discontinuity(ctl, bli);
         
         /* highpass filter output to remove DC offset and low frequency aliasing */
-        //TODO:
         butter_bang_smooth(ctl->c_butter, sample, &sample, 0.05);
         
         /* send to output */
@@ -711,7 +701,6 @@ static void *bl_pulse_new(t_float init_freq)
     blosc_init(x);
     x->x_ctl.c_waveshape = PULSE;
     
-    // Phase inlet, TODO: implementation!
     inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("phase"));
     
     return (void *)x;
