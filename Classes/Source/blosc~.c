@@ -1,932 +1,531 @@
-/*
- *   blosc.c  - bandlimited oscillators
- *   using minimum phase impulse, step & ramp
- *   Copyright (c) 2000-2003 by Tom Schouten
- *
- *   This program is free software; you can redistribute it and/or modify
- *   it under the terms of the GNU General Public License as published by
- *   the Free Software Foundation; either version 2 of the License, or
- *   (at your option) any later version.
- *
- *   This program is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU General Public License for more details.
- *
- *   You should have received a copy of the GNU General Public License
- *   along with this program; if not, write to the Free Software
- *   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
- */
+// License: BSD 2 Clause
+// Created by Timothy Schoen, based on LabSound polyBLEP oscillators
 
+// Adapted from "Phaseshaping Oscillator Algorithms for Musical Sound
+// Synthesis" by Jari Kleimola, Victor Lazzarini, Joseph Timoney, and Vesa
+// Valimaki. http://www.acoustics.hut.fi/publications/papers/smc2010-phaseshaping/
 
 #include "m_pd.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <complex.h>
 
-// TODO: some of these aren't used
-#define LPHASOR      (8*sizeof(uint32_t)) // the phasor logsize
-#define VOICES       8 // the number of waveform voices
-#define LLENGTH      6 // the loglength of a fractional delayed basic waveform
-#define LOVERSAMPLE  6 // the log of the oversampling factor (nb of fract delayed waveforms)
-#define LPAD         1 // the log of the time padding factor (to reduce time aliasing) 
-#define LTABLE       (LLENGTH+LOVERSAMPLE)
-#define N            (1<<LTABLE)
-#define M            (1<<(LTABLE+LPAD))
-#define S            (1<<LOVERSAMPLE)
-#define L            (1<<LLENGTH)
-#define LMASK        (L-1)
-
-#define WALPHA       0.1 // windowing alpha (0 = cos -> 1 = rect)
-#define CUTOFF       0.8 // fraction of nyquist for impulse cutoff
-#define NBPERIODS    ((t_float)(L) * CUTOFF / 2.0)
-
-/* sample buffers */
-static t_float bli[N]; // band limited impulse
-static t_float bls[N]; // band limited step
-static t_float blr[N]; // band limited ramp
-
-typedef struct _butter_state
-{
-    // state data
-    t_float d1A;
-    t_float d2A;
-    
-    t_float d1B;
-    t_float d2B;
-    
-    // pole data
-    t_float ai;
-    t_float s_ai;
-    t_float ar;
-    t_float s_ar;
-    
-    // zero data
-    t_float c0;
-    t_float s_c0;
-    t_float c1;
-    t_float s_c1;
-    t_float c2;
-    t_float s_c2;
-} butter_state;
-
-void butter_bang_smooth (butter_state states[3], t_float input, t_float* output, t_float smooth)
-{
-    for(int i = 0; i < 3; i++) {
-        butter_state* s = states + i;
-        
-        t_float d1t = s->s_ar * s->d1A + s->s_ai * s->d2A + input;
-        t_float d2t = s->s_ar * s->d2A - s->s_ai * s->d1A;
-        s->s_ar += smooth * (s->ar - s->s_ar);
-        s->s_ai += smooth * (s->ai - s->s_ai);
-        *output = s->s_c0 * input + s->s_c1 * s->d1A + s->s_c2 * s->d2A;
-        s->d1A = d1t;
-        s->d2A = d2t;
-        s->s_c0 += smooth * (s->c0 - s->s_c0);
-        s->s_c1 += smooth * (s->c1 - s->s_c1);
-        s->s_c2 += smooth * (s->c2 - s->s_c2);
-    }
-}
-
-void butter_init(butter_state states[3]) {
-    for(int i = 0; i < 3; i++) {
-        butter_state* s = states + i;
-        
-        s->d1A = s->d1B = s->d2A = s->d2B = 0.0;
-        s->ai = s->ar = s->c0 = s->c1 = s->c2 = 0.0;
-        s->s_ai = s->s_ar = s->s_c0 = s->s_c1 = s->s_c2 = 0.0;
-    }
-}
-
-complex double complex_with_angle(const t_float angle) { return cos(angle) + sin(angle) * I; }
-t_float complex_norm2(const complex double x) {return creal(x)*creal(x)+cimag(x)*cimag(x);}
-t_float complex_norm(const complex double x) {return sqrt(complex_norm2(x));}
-
-void set_butter_hp(butter_state states[3], t_float freq)
-{
-    /*  This member function computes the poles for a highpass butterworth filter.
-     *  The filter is transformed to the digital domain using a bilinear transform.
-     *  Every biquad section is normalized at NY.
-     */
-    
-    t_float epsilon = .0001; // stability guard
-    t_float min = 0.0 + epsilon;
-    t_float max = 0.5 - epsilon;
-    
-    int sections = 3;
-    
-    if (freq < min) freq = min;
-    if (freq > max) freq = max;
-    
-    // prewarp cutoff frequency
-    t_float omega = 2.0 * tan(M_PI * freq);
-    complex double pole = complex_with_angle( (2*sections + 1) * M_PI / (4*sections)); // first pole of lowpass filter with omega == 1
-    complex double pole_inc = complex_with_angle(M_PI / (2*sections)); // phasor to get to next pole, see Porat p. 331
-    
-    complex double b = -1;  //normalize at NY
-    complex double c = 1;  //all zeros will be at DC
-    
-    for (int i = 0; i < sections; i++)
-    {
-        butter_state* s = states + i;
-        // setup the biquad with the computed pole and zero and unit gain at NY
-        
-        pole *= pole_inc;            // comp next (lowpass) pole
-        complex double a = omega/pole;
-        
-        s->ar = creal(a);
-        s->ai = cimag(a);
-        
-        s->c0 = 1.0;
-        s->c1 = 2.0 * (creal(a) - creal(b));
-        s->c2 = (complex_norm2(a) - complex_norm2(b) - s->c1 * creal(a)) / cimag(a);
-        
-        complex double invComplexGain = ((c-a)*(c-conj(a)))/((c-b)*(c-conj(b)));
-        t_float invGain = complex_norm(invComplexGain);
-        s->c0 *= invGain;
-        s->c1 *= invGain;
-        s->c2 *= invGain;
-    }
-}
 
 typedef enum _waveshape
 {
-    SAW,
+    SAWTOOTH,
     SQUARE,
-    TRIANGLE,
-    PULSE
-} waveshape;
+    TRIANGLE
+} t_waveshape;
 
-typedef struct bloscctl
+typedef struct _polyblep
 {
-    t_int c_index[VOICES];      // array of indices in sample table
-    t_float c_frac[VOICES];     // array of fractional indices
-    t_float c_vscale[VOICES];   // array of scale factors
-    t_int c_next_voice;         // next voice to steal (round robin)
-    uint32_t c_phase;                // phase of main oscillator
-    uint32_t c_phase2;               // phase of secondairy oscillator
-    t_float c_state;            // state of the square wave
-    t_float c_prev_amp;         // previous input of comparator
-    t_float c_phase_inc_scale;
-    t_float c_scale;
-    t_float c_scale_update;
-    butter_state c_butter[3]; // the series filter
-    waveshape c_waveshape;
-    
-} t_bloscctl;
+    t_float amplitude;  // Frequency dependent gain [0.0..1.0]
+    t_float pulse_width;  // [0.0..1.0]
+    t_float t;  // The current phase [0.0..1.0) of the oscillator.
+    t_float freq_in_seconds_per_sample;
+    t_float last_phase_offset;
+    t_waveshape shape;
+} t_polyblep;
 
 typedef struct blosc
 {
     t_object x_obj;
     t_float x_f;
-    t_bloscctl x_ctl;
+    t_polyblep x_polyblep;
+    t_inlet* x_inlet_sync;
+    t_inlet* x_inlet_phase;
+    t_inlet* x_inlet_width;
 } t_blosc;
-
-
-/* phase converters */
-static inline t_float _phase_to_float(uint32_t p){return ((t_float)p) * (1.0 / 4294967296.0);}
-static inline uint32_t _float_to_phase(t_float f){return ((uint32_t)(f * 4294967296.0)) & ~(S-1);}
-
-
-/* flat table: better for linear interpolation */
-static inline t_float _play_voice_lint(t_float *table, t_int *index, t_float frac, t_float scale)
-{
-    int i = *index;
-    
-    /* perform linear interpolation */
-    t_float f = (((1.0 - frac) * table[i]) + (table[i+1] * frac)) * scale;
-    
-    /* increment phase index if next 2 elements will still be inside table
-     if not there's no increment and the voice will keep playing the same sample */
-    
-    i += (((i+S+1) >> LTABLE) ^ 1) << LOVERSAMPLE;
-    
-    *index = i;
-    return f;
-}
-
-/* get one sample from the bandlimited discontinuity wavetable playback syth */
-static inline t_float _get_bandlimited_discontinuity(t_bloscctl *ctl, t_float *table)
-{
-    t_float sum = 0.0;
-    int i;
-    /* sum  all voices */
-    for (i=0; i<VOICES; i++){
-        sum += _play_voice_lint(table, ctl->c_index+i, ctl->c_frac[i], ctl->c_vscale[i]);
-    }
-    
-    return sum;
-}
-
-
-/* update waveplayers on zero cross */
-static void _bang_comparator(t_bloscctl *ctl, t_float prev, t_float curr)
-{
-    
-    /* check for sign change */
-    if ((prev * curr) < 0.0){
-        
-        int voice;
-        
-        /* determine the location of the discontinuity (in oversampled coordiates
-         using linear interpolation */
-        
-        t_float f = (t_float)S * curr / (curr - prev);
-        
-        /* get the offset in the oversample table */
-        
-        uint32_t table_index = (uint32_t)f;
-        
-        /* determine the fractional part (in oversampled coordinates)
-         for linear interpolation */
-        
-        t_float table_frac_index = f - (t_float)table_index;
-        
-        /* set state (+ or -) */
-        
-        ctl->c_state =  (curr > 0.0) ? 0.5 : -0.5;
-        
-        /* steal the oldest voice */
-        
-        voice = ctl->c_next_voice++;
-        ctl->c_next_voice &= VOICES-1;
-        
-        /* initialize the new voice index and interpolation fraction */
-        
-        ctl->c_index[voice] = table_index;
-        ctl->c_frac[voice] = table_frac_index;
-        ctl->c_vscale[voice] = -ctl->c_scale * 2.0 * ctl->c_state;
-        
-    }
-    
-}
-
-
-/* advance phasor and update waveplayers on phase wrap */
-static void _bang_phasor(t_bloscctl *ctl, t_float freq)
-{
-    uint32_t phase = ctl->c_phase;
-    uint32_t phase_inc;
-    uint32_t oldphase;
-    int voice;
-    t_float scale = ctl->c_scale;
-    
-    /* get increment */
-    t_float inc = freq * ctl->c_phase_inc_scale;
-    
-    /* calculate new phase
-     the increment (and the phase) should be a multiple of S */
-    if (inc < 0.0) inc = -inc;
-    phase_inc = ((uint32_t)inc) & ~(S-1);
-    oldphase = phase;
-    phase += phase_inc;
-    
-    
-    /* check for phase wrap */
-    if (phase < oldphase){
-        uint32_t phase_inc_decimated = phase_inc >> LOVERSAMPLE;
-        uint32_t table_index;
-        uint32_t table_phase;
-        
-        /* steal the oldest voice if we have a phase wrap */
-        
-        voice = ctl->c_next_voice++;
-        ctl->c_next_voice &= VOICES-1;
-        
-        /* determine the location of the discontinuity (in oversampled coordinates)
-         which is S * (new phase) / (increment) */
-        
-        table_index = phase / phase_inc_decimated;
-        
-        /* determine the fractional part (in oversampled coordinates)
-         for linear interpolation */
-        
-        table_phase = phase - (table_index * phase_inc_decimated);
-        
-        /* use it to initialize the new voice index and interpolation fraction */
-        
-        ctl->c_index[voice] = table_index;
-        ctl->c_frac[voice] = (t_float)table_phase / (t_float)phase_inc_decimated;
-        ctl->c_vscale[voice] = scale;
-        scale = scale * ctl->c_scale_update;
-        
-    }
-    
-    /* save state */
-    ctl->c_phase = phase;
-    ctl->c_scale = scale;
-}
-
-
-/* the 2 oscillator version:
- the second osc can reset the first osc's phase (hence it determines the pitch)
- the first osc determines the waveform */
-
-static void _bang_hardsync_phasor(t_bloscctl *ctl, t_float freq, t_float freq2)
-{
-    uint32_t phase = ctl->c_phase;
-    uint32_t phase2 = ctl->c_phase2;
-    uint32_t phase_inc;
-    uint32_t phase_inc2;
-    uint32_t oldphase;
-    uint32_t oldphase2;
-    int voice;
-    t_float scale = ctl->c_scale;
-    
-    
-    /* get increment */
-    t_float inc = freq * ctl->c_phase_inc_scale;
-    t_float inc2 = freq2 * ctl->c_phase_inc_scale;
-    
-    /* calculate new phases
-     the increment (and the phase) should be a multiple of S */
-    
-    /* save previous phases */
-    oldphase = phase;
-    oldphase2 = phase2;
-    
-    /* update second osc */
-    if (inc2 < 0.0) inc2 = -inc2;
-    phase_inc2 = ((uint32_t)inc2) & ~(S-1);
-    phase2 += phase_inc2;
-    
-    /* update first osc (freq should be >= freq of sync osc */
-    if (inc < 0.0) inc = -inc;
-    phase_inc = ((uint32_t)inc) & ~(S-1);
-    if (phase_inc < phase_inc2) phase_inc = phase_inc2;
-    phase += phase_inc;
-    
-    /* check for sync discontinuity (osc 2) */
-    if (phase2 < oldphase2) {
-        
-        /* adjust phase depending on the location of the discontinuity in phase2:
-         phase/phase_inc == phase2/phase_inc2 */
-        
-        uint64_t pi = phase_inc >> LOVERSAMPLE;
-        uint64_t pi2 = phase_inc2 >> LOVERSAMPLE;
-        uint64_t lphase = ((uint64_t)phase2 * pi) / pi2;
-        phase = lphase & ~(S-1);
-    }
-    
-    
-    /* check for phase discontinuity (osc 1) */
-    if (phase < oldphase){
-        uint32_t phase_inc_decimated = phase_inc >> LOVERSAMPLE;
-        uint32_t table_index;
-        uint32_t table_phase;
-        t_float stepsize;
-        
-        /* steal the oldest voice if we have a phase wrap */
-        
-        voice = ctl->c_next_voice++;
-        ctl->c_next_voice &= VOICES-1;
-        
-        /* determine the location of the discontinuity (in oversampled coordinates)
-         which is S * (new phase) / (increment) */
-        
-        table_index = phase / phase_inc_decimated;
-        
-        /* determine the fractional part (in oversampled coordinates)
-         for linear interpolation */
-        
-        table_phase = phase - (table_index * phase_inc_decimated);
-        
-        /* determine the step size
-         as opposed to saw/impulse waveforms, the step is not always equal to one. it is:
-         oldphase - phase + phase_inc
-         but for the unit step this will overflow to zero, so we
-         reduce the bit depth to prevent overflow */
-        
-        stepsize = _phase_to_float(((oldphase-phase) >> LOVERSAMPLE)
-                                   + phase_inc_decimated) * (t_float)S;
-        
-        /* use it to initialize the new voice index and interpolation fraction */
-        
-        ctl->c_index[voice] = table_index;
-        ctl->c_frac[voice] = (t_float)table_phase / (t_float)phase_inc_decimated;
-        ctl->c_vscale[voice] = scale * stepsize;
-        scale = scale * ctl->c_scale_update;
-        
-    }
-    
-    /* save state */
-    ctl->c_phase = phase;
-    ctl->c_phase2 = phase2;
-    ctl->c_scale = scale;
-}
-
-
-static t_int *blosc_perform_hardsync_saw(t_int *w)
-{
-    t_float *freq     = (t_float *)(w[3]);
-    t_float *freq2     = (t_float *)(w[4]);
-    t_float *out      = (t_float *)(w[5]);
-    t_bloscctl *ctl  = (t_bloscctl *)(w[1]);
-    t_int n           = (t_int)(w[2]);
-    t_int i;
-    
-    set_butter_hp(ctl->c_butter, 0.85 * (*freq / sys_getsr()));
-    
-    while (n--) {
-        t_float frequency = *freq++;
-        t_float frequency2 = *freq2++;
-        
-        /* get the bandlimited discontinuity */
-        t_float sample = _get_bandlimited_discontinuity(ctl, bls);
-        
-        /* add aliased sawtooth wave */
-        sample += _phase_to_float(ctl->c_phase) - 0.5;
-        
-        /* highpass filter output to remove DC offset and low frequency aliasing */
-        butter_bang_smooth(ctl->c_butter, sample, &sample, 0.05);
-        
-        /* send to output */
-        *out++ = sample;
-        
-        /* advance phasor */
-        _bang_hardsync_phasor(ctl, frequency2, frequency);
-        
-    }
-    
-    return (w+6);
-}
-
-static t_int *blosc_perform_saw(t_int *w)
-{
-    t_float *freq     = (t_float *)(w[3]);
-    t_float *out      = (t_float *)(w[4]);
-    t_bloscctl *ctl  = (t_bloscctl *)(w[1]);
-    t_int n           = (t_int)(w[2]);
-    t_int i;
-    
-    while (n--) {
-        t_float frequency = *freq++;
-        
-        /* get the bandlimited discontinuity */
-        t_float sample = _get_bandlimited_discontinuity(ctl, bls);
-        
-        /* add aliased sawtooth wave */
-        sample += _phase_to_float(ctl->c_phase) - 0.5;
-        
-        /* send to output */
-        *out++ = sample;
-        
-        /* advance phasor */
-        _bang_phasor(ctl, frequency);
-        
-    }
-    
-    return (w+5);
-}
-
-
-
-static t_int *blosc_perform_pulse(t_int *w)
-{
-    t_float *freq     = (t_float *)(w[3]);
-    t_float *out      = (t_float *)(w[4]);
-    t_bloscctl *ctl  = (t_bloscctl *)(w[1]);
-    t_int n           = (t_int)(w[2]);
-    t_int i;
-    
-    
-    /* set postfilter cutoff */
-    set_butter_hp(ctl->c_butter, 0.85 * (*freq / sys_getsr()));
-    
-    while (n--) {
-        t_float frequency = *freq++;
-        
-        /* get the bandlimited discontinuity */
-        t_float sample = _get_bandlimited_discontinuity(ctl, bli);
-        
-        /* highpass filter output to remove DC offset and low frequency aliasing */
-        butter_bang_smooth(ctl->c_butter, sample, &sample, 0.05);
-        
-        /* send to output */
-        *out++ = sample;
-        
-        /* advance phasor */
-        _bang_phasor(ctl, frequency);
-        
-    }
-    
-    return (w+5);
-}
-
-static t_int *blosc_perform_comparator(t_int *w)
-{
-    t_float *amp      = (t_float *)(w[3]);
-    t_float *out      = (t_float *)(w[4]);
-    t_bloscctl *ctl  = (t_bloscctl *)(w[1]);
-    t_int n           = (t_int)(w[2]);
-    t_int i;
-    t_float prev_amp = ctl->c_prev_amp;
-    
-    while (n--) {
-        t_float curr_amp = *amp++;
-        
-        /* exact zero won't work for zero detection (sic) */
-        if (curr_amp == 0.0) curr_amp = 0.0000001;
-        
-        /* get the bandlimited discontinuity */
-        t_float sample = _get_bandlimited_discontinuity(ctl, bls);
-        
-        /* add the block wave state */
-        sample += ctl->c_state;
-        
-        /* send to output */
-        *out++ = sample;
-        
-        /* advance phasor */
-        _bang_comparator(ctl, prev_amp, curr_amp);
-        
-        prev_amp = curr_amp;
-        
-    }
-    
-    ctl->c_prev_amp = prev_amp;
-    
-    return (w+5);
-}
-
-static void blosc_phase(t_blosc *x, t_float f)
-{
-    x->x_ctl.c_phase = _float_to_phase(f);
-    x->x_ctl.c_phase2 = _float_to_phase(f);
-}
-
-static void blosc_phase1(t_blosc *x, t_float f)
-{
-    x->x_ctl.c_phase = _float_to_phase(f);
-}
-
-static void blosc_phase2(t_blosc *x, t_float f)
-{
-    x->x_ctl.c_phase2 = _float_to_phase(f);
-}
-
-static void blosc_dsp(t_blosc *x, t_signal **sp)
-{
-    int n = sp[0]->s_n;
-    
-    /* set sampling rate scaling for phasors */
-    x->x_ctl.c_phase_inc_scale = 4.0 * ((t_float)(1<<(LPHASOR-2))) / sys_getsr();
-    
-    
-    /* setup & register the correct process routine depending on the waveform */
-    
-    /* 2 osc */
-    if (x->x_ctl.c_waveshape == SAW){
-        x->x_ctl.c_scale = 1.0;
-        x->x_ctl.c_scale_update = 1.0;
-        dsp_add(blosc_perform_hardsync_saw, 5, &x->x_ctl, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
-    }
-    
-    /* 1 osc */
-    else if (x->x_ctl.c_waveshape == PULSE){
-        x->x_ctl.c_scale = 1.0;
-        x->x_ctl.c_scale_update = 1.0;
-        dsp_add(blosc_perform_pulse, 4, &x->x_ctl, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
-    }
-    /*
-     else if (x->x_ctl.c_waveform == gensym("pulse2")){
-     x->x_ctl.c_phase_inc_scale *= 2;
-     x->x_ctl.c_scale = 1.0;
-     x->x_ctl.c_scale_update = -1.0;
-     dsp_add(blosc_perform_pulse, 4, &x->x_ctl, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
-     } */
-    else if (x->x_ctl.c_waveshape == SQUARE){
-        x->x_ctl.c_scale = 1.0;
-        x->x_ctl.c_scale_update = 1.0;
-        dsp_add(blosc_perform_comparator, 4, &x->x_ctl, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
-    }
-    /*
-     else {
-     x->x_ctl.c_scale = 1.0;
-     x->x_ctl.c_scale_update = 1.0;
-     dsp_add(blosc_perform_saw, 4, &x->x_ctl, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec);
-     } */
-    
-    
-    
-}                                  
-static void blosc_free(t_blosc *x)
-{
-    //free(x->x_ctl.c_butter);
-}
 
 t_class *bl_saw_class;
 t_class *bl_square_class;
 t_class *bl_pulse_class;
 t_class *bl_triangle_class;
 
+#define PI     3.1415926535897931
+#define TWO_PI 6.2831853071795862
 
-static void blosc_init(t_blosc* x)
+
+static int64_t bitwise_or_zero(const t_float x) { return ((int64_t)x) | 0; }
+
+static t_float square(t_float x) { return x * x; }
+
+static t_float blep(t_float t, t_float dt)
 {
+    if (t < dt) return -square(t / dt - 1);
+    else if (t > 1 - dt)  return square((t - 1) / dt + 1);
+    else return 0.0;
+}
+
+static t_float blamp(t_float t, t_float dt)
+{
+    if (t < dt)
+    {
+        t = t / dt - 1.0;
+        return -1.0 / 3.0 * square(t) * t;
+    }
+    else if (t > 1.0 - dt)
+    {
+        t = (t - 1.0) / dt + 1.0;
+        return 1.0 / 3.0 * square(t) * t;
+    }
+    else return 0.0;
+}
+/*
+ 
+ Unused shapes:
+ 
+static t_float half(const t_polyblep* x)
+{
+    t_float t2 = x->t + 0.5;
+    t2 -= bitwise_or_zero(t2);
     
-    int i;
+    t_float y = (x->t < 0.5 ? 2 * sin(TWO_PI * x->t) - 2 / PI : -2 / PI);
+    y += TWO_PI * x->freq_in_seconds_per_sample * (blamp(x->t, x->freq_in_seconds_per_sample) + blamp(t2, x->freq_in_seconds_per_sample));
+    
+    return x->amplitude * y;
+}
+
+static t_float full(const t_polyblep* x)
+{
+    t_float _t = x->t + 0.25;
+    _t -= bitwise_or_zero(_t);
+    
+    t_float y = 2 * sin(PI * _t) - 4 / PI;
+    y += TWO_PI * x->freq_in_seconds_per_sample * blamp(_t, x->freq_in_seconds_per_sample);
+    
+    return x->amplitude * y;
+}
+ 
+ static t_float tri(const t_polyblep* x)
+ {
+     t_float t1 = x->t + 0.25;
+     t1 -= bitwise_or_zero(t1);
+     
+     t_float t2 = x->t + 0.75;
+     t2 -= bitwise_or_zero(t2);
+     
+     t_float y = x->t * 4;
+     
+     if (y >= 3)
+     {
+         y -= 4;
+     }
+     else if (y > 1)
+     {
+         y = 2 - y;
+     }
+     
+     y += 4 * x->freq_in_seconds_per_sample * (blamp(t1, x->freq_in_seconds_per_sample) - blamp(t2, x->freq_in_seconds_per_sample));
+     
+     return x->amplitude * y;
+ }
+ 
+ static t_float trip(const t_polyblep* x)
+ {
+     t_float t1 = x->t + 0.75 + 0.5 * x->pulse_width;
+     t1 -= bitwise_or_zero(t1);
+     
+     t_float y;
+     if (t1 >= x->pulse_width)
+     {
+         y = -x->pulse_width;
+     }
+     else
+     {
+         y = 4 * t1;
+         y = (y >= 2 * x->pulse_width ? 4 - y / x->pulse_width - x->pulse_width : y / x->pulse_width - x->pulse_width);
+     }
+     
+     if (x->pulse_width > 0)
+     {
+         t_float t2 = t1 + 1 - 0.5 * x->pulse_width;
+         t2 -= bitwise_or_zero(t2);
+         
+         t_float t3 = t1 + 1 - x->pulse_width;
+         t3 -= bitwise_or_zero(t3);
+         y += 2 * x->freq_in_seconds_per_sample / x->pulse_width * (blamp(t1, x->freq_in_seconds_per_sample) - 2 * blamp(t2, x->freq_in_seconds_per_sample) + blamp(t3, x->freq_in_seconds_per_sample));
+     }
+     return x->amplitude * y;
+ }
+
+ static t_float trap(const t_polyblep* x)
+ {
+     t_float y = 4 * x->t;
+     if (y >= 3)
+     {
+         y -= 4;
+     }
+     else if (y > 1)
+     {
+         y = 2 - y;
+     }
+     y = fmax(-1, fmin(1, 2 * y));
+     
+     t_float t1 = x->t + 0.125;
+     t1 -= bitwise_or_zero(t1);
+     
+     t_float t2 = t1 + 0.5;
+     t2 -= bitwise_or_zero(t2);
+     
+     // Triangle #1
+     y += 4 * x->freq_in_seconds_per_sample * (blamp(t1, x->freq_in_seconds_per_sample) - blamp(t2, x->freq_in_seconds_per_sample));
+     
+     t1 = x->t + 0.375;
+     t1 -= bitwise_or_zero(t1);
+     
+     t2 = t1 + 0.5;
+     t2 -= bitwise_or_zero(t2);
+     
+     // Triangle #2
+     y += 4 * x->freq_in_seconds_per_sample * (blamp(t1, x->freq_in_seconds_per_sample) - blamp(t2, x->freq_in_seconds_per_sample));
+     
+     return x->amplitude * y;
+ }
+
+ static t_float trap2(const t_polyblep* x)
+ {
+     t_float pulse_width = fmin(0.9999, x->pulse_width);
+     t_float scale = 1 / (1 - x->pulse_width);
+     
+     t_float y = 4 * x->t;
+     if (y >= 3)
+     {
+         y -= 4;
+     }
+     else if (y > 1)
+     {
+         y = 2 - y;
+     }
+     y = fmax(-1, fmin(1, scale * y));
+     
+     t_float t1 = x->t + 0.25 - 0.25 * pulse_width;
+     t1 -= bitwise_or_zero(t1);
+     
+     t_float t2 = t1 + 0.5;
+     t2 -= bitwise_or_zero(t2);
+     
+     // Triangle #1
+     y += scale * 2 * x->freq_in_seconds_per_sample * (blamp(t1, x->freq_in_seconds_per_sample) - blamp(t2, x->freq_in_seconds_per_sample));
+     
+     t1 = x->t + 0.25 + 0.25 * pulse_width;
+     t1 -= bitwise_or_zero(t1);
+     
+     t2 = t1 + 0.5;
+     t2 -= bitwise_or_zero(t2);
+     
+     // Triangle #2
+     y += scale * 2 * x->freq_in_seconds_per_sample * (blamp(t1, x->freq_in_seconds_per_sample) - blamp(t2, x->freq_in_seconds_per_sample));
+     
+     return x->amplitude * y;
+ }
+ static t_float sqr2(const t_polyblep* x)
+ {
+     t_float t1 = x->t + 0.875 + 0.25 * (x->pulse_width - 0.5);
+     t1 -= bitwise_or_zero(t1);
+     
+     t_float t2 = x->t + 0.375 + 0.25 * (x->pulse_width - 0.5);
+     t2 -= bitwise_or_zero(t2);
+     
+     // Square #1
+     t_float y = t1 < 0.5 ? 1 : -1;
+     
+     y += blep(t1, x->freq_in_seconds_per_sample) - blep(t2, x->freq_in_seconds_per_sample);
+     
+     t1 += 0.5 * (1 - x->pulse_width);
+     t1 -= bitwise_or_zero(t1);
+     
+     t2 += 0.5 * (1 - x->pulse_width);
+     t2 -= bitwise_or_zero(t2);
+     
+     // Square #2
+     y += t1 < 0.5 ? 1 : -1;
+     
+     y += blep(t1, x->freq_in_seconds_per_sample) - blep(t2, x->freq_in_seconds_per_sample);
+     
+     return x->amplitude * 0.5 * y;
+ }
+ 
+ 
+ static t_float rect(const t_polyblep* x)
+ {
+     t_float t2 = x->t + 1 - x->pulse_width;
+     t2 -= bitwise_or_zero(t2);
+     
+     t_float y = -2 * x->pulse_width;
+     if (x->t < x->pulse_width)
+     {
+         y += 2;
+     }
+     
+     y += blep(x->t, x->freq_in_seconds_per_sample) - blep(t2, x->freq_in_seconds_per_sample);
+     
+     return x->amplitude * y;
+ }
+ 
+ static t_float saw(const t_polyblep* x)
+ {
+     t_float _t = x->t + 0.5;
+     _t -= bitwise_or_zero(_t);
+     
+     t_float y = 2 * _t - 1;
+     y -= blep(_t, x->freq_in_seconds_per_sample);
+     
+     return x->amplitude * y;
+ }
+
+
+ */
+
+
+static t_float tri2(const t_polyblep* x)
+{
+    t_float pulse_width = fmax(0.0001, fmin(0.9999, x->pulse_width));
+    
+    t_float t1 = x->t + 0.5 * pulse_width;
+    t1 -= bitwise_or_zero(t1);
+    
+    t_float t2 = x->t + 1 - 0.5 * pulse_width;
+    t2 -= bitwise_or_zero(t2);
+    
+    t_float y = x->t * 2;
+    
+    if (y >= 2 - x->pulse_width)
+    {
+        y = (y - 2) / pulse_width;
+    }
+    else if (y >= x->pulse_width)
+    {
+        y = 1 - (y - pulse_width) / (1 - pulse_width);
+    }
+    else
+    {
+        y /= pulse_width;
+    }
+    
+    y += x->freq_in_seconds_per_sample / (x->pulse_width - x->pulse_width * x->pulse_width) * (blamp(t1, x->freq_in_seconds_per_sample) - blamp(t2, x->freq_in_seconds_per_sample));
+    
+    return x->amplitude * y;
+}
+
+static t_float sqr(const t_polyblep* x)
+{
+    t_float t2 = x->t + 0.5;
+    t2 -= bitwise_or_zero(t2);
+    
+    t_float y = x->t < 0.5 ? 1 : -1;
+    y += blep(x->t, x->freq_in_seconds_per_sample) - blep(t2, x->freq_in_seconds_per_sample);
+    
+    return x->amplitude * y;
+}
+
+static t_float ramp(const t_polyblep* x)
+{
+    t_float _t = x->t;
+    _t -= bitwise_or_zero(_t);
+    
+    t_float y = 1 - 2 * _t;
+    y += blep(_t, x->freq_in_seconds_per_sample);
+    
+    return x->amplitude * y;
+}
+
+static void blosc_init(t_blosc* x, int ac, t_atom *av) {
+    x->x_polyblep.amplitude = 1.0;
+    x->x_polyblep.pulse_width = 0.5;
+    x->x_polyblep.freq_in_seconds_per_sample = 0;
+    x->x_polyblep.t = 0.0;
+    
+    t_float f1 = 0, f2 = 0;
+    if (ac && av->a_type == A_FLOAT){
+        f1 = av->a_w.w_float;
+        ac--; av++;
+        if (ac && av->a_type == A_FLOAT){
+            f2 = av->a_w.w_float;
+            ac--; av++;
+            }
+    }
+    t_float init_freq = f1;
+    t_float init_phase = f2;
+    
+    
+    // Sync inlet
+    x->x_inlet_sync = inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("float"));
+    
+    // Phase inlet
+    x->x_inlet_phase = inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("float"));
+}
+
+static void* bl_saw_new(t_symbol *s, int ac, t_atom *av)
+{
+    t_blosc* x = (t_blosc *)pd_new(bl_saw_class);
+
+    x->x_polyblep.shape = SAWTOOTH;
     
     /* out 1 */
     outlet_new(&x->x_obj, gensym("signal"));
     
+    // No pulse width inlet
+    x->x_inlet_width = NULL;
+
+    blosc_init(x, ac, av);
     
-    /* initialize the postfilter */
-    butter_init(x->x_ctl.c_butter);
-    
-    /* init oscillators */
-    for (i=0; i<VOICES; i++) {
-        x->x_ctl.c_index[i] = N-2;
-        x->x_ctl.c_frac[i] = 0.0;
-    }
-    
-    /* init rest of state data */
-    blosc_phase(x, 0);
-    blosc_phase2(x, 0);
-    x->x_ctl.c_state = 0.0;
-    x->x_ctl.c_prev_amp = 0.0;
-    x->x_ctl.c_next_voice = 0;
-    x->x_ctl.c_scale = 1.0;
-    x->x_ctl.c_scale_update = 1.0;
+    return (void *)x;
 }
 
+static void* bl_square_new(t_symbol *s, int ac, t_atom *av)
+{
+    t_blosc* x = (t_blosc *)pd_new(bl_saw_class);
 
-static void* bl_saw_new(t_float init_freq)
+    x->x_polyblep.shape = SQUARE;
+    
+    /* out 1 */
+    outlet_new(&x->x_obj, gensym("signal"));
+    
+    // Pulse width inlet
+    x->x_inlet_width = inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("float"));
+    
+    blosc_init(x, ac, av);
+
+    return (void *)x;
+}
+
+static void* bl_triangle_new(t_symbol *s, int ac, t_atom *av)
 {
     t_blosc* x = (t_blosc *)pd_new(bl_saw_class);
     
-    blosc_init(x);
+    x->x_polyblep.shape = TRIANGLE;
     
-    // Sync inlet
-    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("signal"));
+    /* out 1 */
+    outlet_new(&x->x_obj, gensym("signal"));
     
-    // Phase inlet
-    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("phase"));
+    // Pulse width inlet
+    x->x_inlet_width = inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("float"));
     
-    x->x_ctl.c_waveshape = SAW;
-    
-    return (void *)x;
-}
-
-static void *bl_square_new(t_float init_freq)
-{
-    t_blosc* x = (t_blosc *)pd_new(bl_square_class);
-    
-    blosc_init(x);
-    x->x_ctl.c_waveshape = SQUARE;
-    
-    // Phase inlet, TODO: implementation!
-    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("phase"));
-    
-    return (void *)x;
-}
-
-// TODO: implement triangle
-static void *bl_triangle_new(t_float init_freq)
-{
-    t_blosc* x = (t_blosc *)pd_new(bl_triangle_class);
-    
-    blosc_init(x);
-    x->x_ctl.c_waveshape = TRIANGLE;
-    
-    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("phase"));
-    
-    return (void *)x;
-}
-
-static void *bl_pulse_new(t_float init_freq)
-{
-    t_blosc* x = (t_blosc *)pd_new(bl_triangle_class);
-    
-    blosc_init(x);
-    x->x_ctl.c_waveshape = PULSE;
-    
-    inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("float"), gensym("phase"));
+    blosc_init(x, ac, av);
     
     return (void *)x;
 }
 
 
-/* CLASS DATA INIT (tables) */
 
-
-/* some vector ops */
-
-/* clear a buffer */
-static inline void _clear(t_float *array, int size)
-{
-    memset(array, 0, sizeof(t_float)*size);
-}
-
-/* compute complex log */
-static inline void _clog(t_float *real, t_float *imag, int size)
-{
-    int k;
-    for (k=0; k<size; k++){
-        t_float r = real[k];
-        t_float i = imag[k];
-        t_float radius = sqrt(r*r+i*i);
-        real[k] = log(radius);
-        imag[k] = atan2(i,r);
-    }
-}
-
-/* compute complex exp */
-static inline void _cexp(t_float *real, t_float *imag, int size)
-{
-    int k;
-    for (k=0; k<size; k++){
-        t_float r = exp(real[k]);
-        t_float i = imag[k];
-        real[k] = r * cos(i);
-        imag[k] = r * sin(i);
-    }
-}
-
-
-/* compute fft */
-static inline void _fft(t_float *real, t_float *imag, int size)
-{
-    int i;
-    t_float scale = 1.0 / sqrt((t_float)size);
-    for (i=0; i<size; i++){
-        real[i] *= scale;
-        imag[i] *= scale;
-        // if (isnan(real[i])) post("fftpanic %d", i);
-    }
-    mayer_fft(size, real, imag);
-}
-/* compute ifft */
-static inline void _ifft(t_float *real, t_float *imag, int size)
-{
-    int i;
-    t_float scale = 1.0 / sqrt((t_float)size);
-    for (i=0; i<size; i++){
-        real[i] *= scale;
-        imag[i] *= scale;
-        // if (isnan(real[i])) post("ifftpanic %d", i);
-    }
-    mayer_ifft(size, real, imag);
-}
-
-/* convert an integer index to a phase: [0 -> pi, -pi -> 0] */
-static inline t_float _i2theta(int i, int size){
-    t_float p = 2.0 * M_PI * (t_float)i / (t_float)size;
-    if (p >= M_PI) p -= 2.0 * M_PI;
-    return p;
-}
-
-
-/* print matlab array */
-static void _printm(t_float *array, char *name, int size)
-{
-    int i;
-    fprintf(stderr, "%s = [", name);
-    for (i=0; i<size; i++){
-        fprintf(stderr, "%f;", array[i]);
-    }
-    fprintf(stderr, "];\n");
-}
-
-/* store oversampled waveform as decimated chunks */
-static void _store_decimated(t_float *dst, t_float *src, t_float scale, int size)
-{
-    int i;
-    for (i=0; i<size; i++){
-        int offset = (i % S) * L;
-        int index = i / S;
-        dst[offset+index] = scale * src[i];
-    }
+static t_int* blosc_perform(t_int *w) {
     
-}
+    t_polyblep* x  = (t_polyblep*)(w[1]);
+    t_int n        = (t_int)(w[2]);
+    int is_sawtooth = x->shape == SAWTOOTH;
+    
+    t_float* freq_vec  = (t_float *)(w[3]);
+    t_float* width_vec = (t_float *)(w[4]);
+    t_float* sync_vec  = (t_float *)(w[is_sawtooth ? 4 : 5]);
+    t_float* phase_vec  = (t_float *)(w[is_sawtooth ? 5 : 6]);
 
-/* store waveform as one chunk */
-static void _store(t_float *dst, t_float *src, t_float scale, int size)
-{
-    int i;
-    for (i=0; i<size; i++){
-        dst[i] = scale * src[i];
-    }
+    t_float* out      = (t_float *)(w[is_sawtooth ? 6 : 7]);
     
-}
-
-/* create a minimum phase bandlimited impulse */
-static void build_tables(void)
-{
-    
-    /* table size = M>=N (time padding to reduce time aliasing) */
-    
-    /* we work in the complex domain to eliminate the need to avoid
-     negative spectral components */
-    
-    t_float real[M];
-    t_float imag[M];
-    t_float sum,scale;
-    int i,j;
-    
-    
-    /* create windowed sinc */
-    _clear(imag, M);
-    real[0] = 1.0;
-    for (i=1; i<M; i++){
-        t_float tw = _i2theta(i,M);
-        t_float ts = tw * NBPERIODS * (t_float)(M) / (t_float)(N);
+    while (n--) {
+        t_float freq  = *freq_vec++;
+        t_float sync = *sync_vec++;
+        t_float phase_offset = *phase_vec++;
+        t_float pulse_width = *width_vec++;
         
-        /* sinc */
-        real[i] = sin(ts)/ts;
+        // Update frequency
+        x->freq_in_seconds_per_sample = fabs(freq) / sys_getsr();
         
-        /* blackman window */
-        real[i] *= 0.42 + 0.5 * (cos(tw)) + 0.08 * (cos(2.0*tw));
+        // Update pulse width, limit between 0 and 1
+        x->pulse_width = fmax(fmin(0.99, pulse_width), 0.01);
+
+        t_float y;
+        switch (x->shape)
+        {
+            case TRIANGLE:{
+                y = tri2(x);
+                break;
+            }
+            case SQUARE: {
+                y = sqr(x);
+                break;
+            }
+            case SAWTOOTH: {
+                y = ramp(x);
+                break;
+            }
+            default: y = 0.0;
+        }
         
-        //real[i] *= 0.5f * (1.0f + WALPHA) + 0.5f * (1.0f - WALPHA) * (cos(tw));
+        /* send to output */
+        *out++ = y;
+
+        // Phase sync
+        if (sync > 0 && sync <= 1) {
+            x->t = sync;
+            if (x->t >= 0.0) x->t -= bitwise_or_zero(x->t);
+            else x->t += 1.0 - bitwise_or_zero(x->t);
+        }
+        // Phase modulation
+        else {
+            double phase_dev = phase_offset - x->last_phase_offset;
+            if (phase_dev >= 1 || phase_dev <= -1)
+                phase_dev = fmod(phase_dev, 1);
+            
+            x->t = x->t + phase_dev;
+            if (x->t >= 0.0) x->t -= bitwise_or_zero(x->t);
+            else x->t += 1.0 - bitwise_or_zero(x->t);
+        }
         
-        /* check for nan */
-        //if (isnan(real[i])) post("sinc NaN panic %d", i);
-        //if (isinf(real[i])) post("sinc Inf panic %d", i);
+        x->t += x->freq_in_seconds_per_sample;
+        x->t -= bitwise_or_zero(x->t);
         
+        x->last_phase_offset = phase_offset;
     }
     
-    
-    /* compute cepstrum */
-    _fft(real, imag, M);
-    _clog(real, imag, M);
-    _ifft(real, imag, M);
-    
-    
-    /* kill anti-causal part (contribution of non minimum phase zeros) */
-    /* should we kill nyquist too ?? */
-    for (i=M/2+1; i<M; i++){
-        real[i] *= 0.0000;
-        imag[i] *= 0.0000;
+    return (w + (is_sawtooth ? 7 : 8));
+}
+
+static void blosc_dsp(t_blosc *x, t_signal **sp)
+{
+    if(x->x_polyblep.shape != SAWTOOTH) {
+        dsp_add(blosc_perform, 7, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
+    }
+    else {
+        dsp_add(blosc_perform, 6, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
     }
     
+}
+
+static void blosc_free(t_blosc *x)
+{
+    inlet_free(x->x_inlet_sync);
+    inlet_free(x->x_inlet_phase);
     
-    /* compute inverse cepstrum */
-    _fft(real, imag, M);
-    _cexp(real, imag, M);
-    _ifft(real, imag, M);
-    
-    
-    
-    /* from here on, discard the padded part [N->M-1]
-     and work with the first N samples */
-    
-    /* normalize impulse (integral = 1) */
-    sum = 0.0;
-    for (i=0; i<N; i++){sum += real[i];}
-    scale = 1.0 / sum;
-    for (i=0; i<N; i++){real[i] *= scale;}
-    
-    
-    /* store bli table */
-    _store(bli, real, (t_float)S, N);
-    //_printm(bli, "h", N);
-    
-    
-    /* integrate impulse and invert to produce a step function
-     from 1->0 */
-    sum = 0.0;
-    for (i=0; i<N; i++){
-        sum += real[i];
-        real[i] = (1.0 - sum);
+    if(x->x_inlet_width) {
+        inlet_free(x->x_inlet_width);
     }
-    
-    /* store decimated bls tables */
-    _store(bls, real, 1.0, N);
-    
-    
 }
 
 void blosc_tilde_setup(void)
 {
-    
-    build_tables();
-    
-    //blosc_class = class_new(gensym("blosc~"), (t_newmethod)blosc_new,
-    //                        (t_method)blosc_free, sizeof(t_blosc), 0, A_DEFSYMBOL, A_NULL);
-    t_class* osc_types[4];
-    
     bl_saw_class = class_new(gensym("bl.saw~"), (t_newmethod)bl_saw_new,
                              (t_method)blosc_free, sizeof(t_blosc), 0, A_GIMME, A_NULL);
     
     bl_square_class = class_new(gensym("bl.square~"), (t_newmethod)bl_square_new,
-                                (t_method)blosc_free, sizeof(t_blosc), 0, A_GIMME, A_NULL);
+    (t_method)blosc_free, sizeof(t_blosc), 0, A_GIMME, A_NULL);
     
     bl_triangle_class = class_new(gensym("bl.tri~"), (t_newmethod)bl_triangle_new,
-                                  (t_method)blosc_free, sizeof(t_blosc), 0, A_GIMME, A_NULL);
+    (t_method)blosc_free, sizeof(t_blosc), 0, A_GIMME, A_NULL);
     
-    bl_pulse_class = class_new(gensym("bl.pulse~"), (t_newmethod)bl_pulse_new,
-                               (t_method)blosc_free, sizeof(t_blosc), 0, A_GIMME, A_NULL);
-    
+    t_class* osc_types[4];
     osc_types[0] = bl_saw_class;
     osc_types[1] = bl_square_class;
     osc_types[2] = bl_triangle_class;
     osc_types[3] = bl_pulse_class;
     
     for(int i = 0; i < 4; i++) {
-        CLASS_MAINSIGNALIN(osc_types[i], t_blosc, x_f);
-        class_addmethod(osc_types[i], (t_method)blosc_dsp, gensym("dsp"), A_NULL);
-        class_addmethod(osc_types[i], (t_method)blosc_phase, gensym("phase"), A_FLOAT, A_NULL);
-        class_addmethod(osc_types[i], (t_method)blosc_phase2, gensym("phase2"), A_FLOAT, A_NULL);
+    CLASS_MAINSIGNALIN(osc_types[i], t_blosc, x_f);
+    class_addmethod(osc_types[i], (t_method)blosc_dsp, gensym("dsp"), A_NULL);
+    //class_addmethod(osc_types[i], (t_method)blosc_phase, gensym("phase"), A_FLOAT, A_NULL);
+    //class_addmethod(osc_types[i], (t_method)blosc_phase2, gensym("phase2"), A_FLOAT, A_NULL);
     }
 }
