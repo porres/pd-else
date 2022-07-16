@@ -66,7 +66,7 @@ static t_float blamp(t_float phase, t_float dt)
     else return 0.0;
 }
 
-static t_float tri2(const t_polyblep* x)
+static t_float tri(const t_polyblep* x)
 {
     t_float pulse_width = fmax(0.0001, fmin(0.9999, x->pulse_width));
     
@@ -107,7 +107,7 @@ static t_float sqr(const t_polyblep* x)
     return y;
 }
 
-static t_float ramp(const t_polyblep* x)
+static t_float saw(const t_polyblep* x)
 {
     t_float _t = x->phase;
     _t -= bitwise_or_zero(_t);
@@ -214,7 +214,7 @@ static t_int* blosc_perform(t_int *w) {
         switch (x->shape)
         {
             case TRIANGLE:{
-                y = tri2(x);
+                y = tri(x);
                 break;
             }
             case SQUARE: {
@@ -222,7 +222,7 @@ static t_int* blosc_perform(t_int *w) {
                 break;
             }
             case SAWTOOTH: {
-                y = ramp(x);
+                y = saw(x);
                 break;
             }
             default: y = 0.0;
