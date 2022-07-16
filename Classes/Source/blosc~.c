@@ -6,10 +6,8 @@
 // Valimaki. http://www.acoustics.hut.fi/publications/papers/smc2010-phaseshaping/
 
 #include "m_pd.h"
-
 #include <math.h>
 #include <stdint.h>
-
 
 typedef enum _waveshape
 {
@@ -18,11 +16,14 @@ typedef enum _waveshape
     TRIANGLE
 } t_waveshape;
 
+#define PI     3.1415926535897931
+#define TWO_PI 6.2831853071795862
+
 typedef struct _polyblep
 {
     t_float amplitude;  // Frequency dependent gain [0.0..1.0]
     t_float pulse_width;  // [0.0..1.0]
-    t_float t;  // The current phase [0.0..1.0) of the oscillator.
+    t_float phase;  // The current phase [0.0..1.0) of the oscillator.
     t_float freq_in_seconds_per_sample;
     t_float last_phase_offset;
     t_waveshape shape;
@@ -38,37 +39,30 @@ typedef struct blosc
     t_inlet* x_inlet_width;
 } t_blosc;
 
-t_class *bl_saw_class;
-t_class *bl_square_class;
-t_class *bl_pulse_class;
-t_class *bl_triangle_class;
-
-#define PI     3.1415926535897931
-#define TWO_PI 6.2831853071795862
-
+t_class *bl_oscillators[3];
 
 static int64_t bitwise_or_zero(const t_float x) { return ((int64_t)x) | 0; }
 
 static t_float square(t_float x) { return x * x; }
 
-static t_float blep(t_float t, t_float dt)
+static t_float blep(t_float phase, t_float dt)
 {
-    if (t < dt) return -square(t / dt - 1);
-    else if (t > 1 - dt)  return square((t - 1) / dt + 1);
+    if (phase < dt) return -square(phase / dt - 1);
+    else if (phase > 1 - dt)  return square((phase - 1) / dt + 1);
     else return 0.0;
 }
 
-static t_float blamp(t_float t, t_float dt)
+static t_float blamp(t_float phase, t_float dt)
 {
-    if (t < dt)
+    if (phase < dt)
     {
-        t = t / dt - 1.0;
-        return -1.0 / 3.0 * square(t) * t;
+        phase = phase / dt - 1.0;
+        return -1.0 / 3.0 * square(phase) * phase;
     }
-    else if (t > 1.0 - dt)
+    else if (phase > 1.0 - dt)
     {
-        t = (t - 1.0) / dt + 1.0;
-        return 1.0 / 3.0 * square(t) * t;
+        phase = (phase - 1.0) / dt + 1.0;
+        return 1.0 / 3.0 * square(phase) * phase;
     }
     else return 0.0;
 }
@@ -77,13 +71,13 @@ static t_float tri2(const t_polyblep* x)
 {
     t_float pulse_width = fmax(0.0001, fmin(0.9999, x->pulse_width));
     
-    t_float t1 = x->t + 0.5 * pulse_width;
+    t_float t1 = x->phase + 0.5 * pulse_width;
     t1 -= bitwise_or_zero(t1);
     
-    t_float t2 = x->t + 1 - 0.5 * pulse_width;
+    t_float t2 = x->phase + 1 - 0.5 * pulse_width;
     t2 -= bitwise_or_zero(t2);
     
-    t_float y = x->t * 2;
+    t_float y = x->phase * 2;
     
     if (y >= 2 - x->pulse_width)
     {
@@ -105,18 +99,18 @@ static t_float tri2(const t_polyblep* x)
 
 static t_float sqr(const t_polyblep* x)
 {
-    t_float t2 = x->t + 0.5;
+    t_float t2 = x->phase + 0.5;
     t2 -= bitwise_or_zero(t2);
     
-    t_float y = x->t < 0.5 ? 1 : -1;
-    y += blep(x->t, x->freq_in_seconds_per_sample) - blep(t2, x->freq_in_seconds_per_sample);
+    t_float y = x->phase < 0.5 ? 1 : -1;
+    y += blep(x->phase, x->freq_in_seconds_per_sample) - blep(t2, x->freq_in_seconds_per_sample);
     
     return x->amplitude * y;
 }
 
 static t_float ramp(const t_polyblep* x)
 {
-    t_float _t = x->t;
+    t_float _t = x->phase;
     _t -= bitwise_or_zero(_t);
     
     t_float y = 1 - 2 * _t;
@@ -129,40 +123,40 @@ static void blosc_init(t_blosc* x, int ac, t_atom *av) {
     x->x_polyblep.amplitude = 1.0;
     x->x_polyblep.pulse_width = 0.5;
     x->x_polyblep.freq_in_seconds_per_sample = 0;
-    x->x_polyblep.t = 0.0;
+    x->x_polyblep.phase = 0.0;
     
-    t_float f1 = 0, f2 = 0;
+    t_float init_freq = 0, init_phase = 0;
     if (ac && av->a_type == A_FLOAT){
-        f1 = av->a_w.w_float;
+        init_freq = av->a_w.w_float;
         ac--; av++;
         if (ac && av->a_type == A_FLOAT){
-            f2 = av->a_w.w_float;
+            init_phase = av->a_w.w_float;
             ac--; av++;
-            }
+        }
     }
-    t_float init_freq = f1;
-    t_float init_phase = f2;
+    x->x_f = init_freq;
     
+    // Outlet
+    outlet_new(&x->x_obj, &s_signal);
     
     // Sync inlet
-    x->x_inlet_sync = inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("float"));
+    x->x_inlet_sync = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
+    pd_float((t_pd *)x->x_inlet_sync, 0);
     
     // Phase inlet
-    x->x_inlet_phase = inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("float"));
+    x->x_inlet_phase = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
+    pd_float((t_pd *)x->x_inlet_phase, init_phase);
 }
 
 static void* bl_saw_new(t_symbol *s, int ac, t_atom *av)
 {
-    t_blosc* x = (t_blosc *)pd_new(bl_saw_class);
-
-    x->x_polyblep.shape = SAWTOOTH;
+    t_blosc* x = (t_blosc *)pd_new(bl_oscillators[SAWTOOTH]);
     
-    /* out 1 */
-    outlet_new(&x->x_obj, gensym("signal"));
+    x->x_polyblep.shape = SAWTOOTH;
     
     // No pulse width inlet
     x->x_inlet_width = NULL;
-
+    
     blosc_init(x, ac, av);
     
     return (void *)x;
@@ -170,39 +164,31 @@ static void* bl_saw_new(t_symbol *s, int ac, t_atom *av)
 
 static void* bl_square_new(t_symbol *s, int ac, t_atom *av)
 {
-    t_blosc* x = (t_blosc *)pd_new(bl_saw_class);
-
+    t_blosc* x = (t_blosc *)pd_new(bl_oscillators[SQUARE]);
+    
     x->x_polyblep.shape = SQUARE;
     
-    /* out 1 */
-    outlet_new(&x->x_obj, gensym("signal"));
-    
     // Pulse width inlet
-    x->x_inlet_width = inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("float"));
+    x->x_inlet_width = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     
     blosc_init(x, ac, av);
-
+    
     return (void *)x;
 }
 
 static void* bl_triangle_new(t_symbol *s, int ac, t_atom *av)
 {
-    t_blosc* x = (t_blosc *)pd_new(bl_saw_class);
+    t_blosc* x = (t_blosc *)pd_new(bl_oscillators[TRIANGLE]);
     
     x->x_polyblep.shape = TRIANGLE;
     
-    /* out 1 */
-    outlet_new(&x->x_obj, gensym("signal"));
-    
     // Pulse width inlet
-    x->x_inlet_width = inlet_new(&x->x_obj, &x->x_obj.ob_pd, gensym("signal"), gensym("float"));
+    x->x_inlet_width = inlet_new(&x->x_obj, &x->x_obj.ob_pd,  &s_signal, &s_signal);
     
     blosc_init(x, ac, av);
     
     return (void *)x;
 }
-
-
 
 static t_int* blosc_perform(t_int *w) {
     
@@ -214,7 +200,7 @@ static t_int* blosc_perform(t_int *w) {
     t_float* width_vec = (t_float *)(w[4]);
     t_float* sync_vec  = (t_float *)(w[is_sawtooth ? 4 : 5]);
     t_float* phase_vec  = (t_float *)(w[is_sawtooth ? 5 : 6]);
-
+    
     t_float* out      = (t_float *)(w[is_sawtooth ? 6 : 7]);
     
     while (n--) {
@@ -228,7 +214,7 @@ static t_int* blosc_perform(t_int *w) {
         
         // Update pulse width, limit between 0 and 1
         x->pulse_width = fmax(fmin(0.99, pulse_width), 0.01);
-
+        
         t_float y;
         switch (x->shape)
         {
@@ -247,14 +233,14 @@ static t_int* blosc_perform(t_int *w) {
             default: y = 0.0;
         }
         
-        /* send to output */
+        // Send to output
         *out++ = y;
-
+        
         // Phase sync
         if (sync > 0 && sync <= 1) {
-            x->t = sync;
-            if (x->t >= 0.0) x->t -= bitwise_or_zero(x->t);
-            else x->t += 1.0 - bitwise_or_zero(x->t);
+            x->phase = sync;
+            if (x->phase >= 0.0) x->phase -= bitwise_or_zero(x->phase);
+            else x->phase += 1.0 - bitwise_or_zero(x->phase);
         }
         // Phase modulation
         else {
@@ -262,13 +248,13 @@ static t_int* blosc_perform(t_int *w) {
             if (phase_dev >= 1 || phase_dev <= -1)
                 phase_dev = fmod(phase_dev, 1);
             
-            x->t = x->t + phase_dev;
-            if (x->t >= 0.0) x->t -= bitwise_or_zero(x->t);
-            else x->t += 1.0 - bitwise_or_zero(x->t);
+            x->phase = x->phase + phase_dev;
+            if (x->phase >= 0.0) x->phase -= bitwise_or_zero(x->phase);
+            else x->phase += 1.0 - bitwise_or_zero(x->phase);
         }
         
-        x->t += x->freq_in_seconds_per_sample;
-        x->t -= bitwise_or_zero(x->t);
+        x->phase += x->freq_in_seconds_per_sample;
+        x->phase -= bitwise_or_zero(x->phase);
         
         x->last_phase_offset = phase_offset;
     }
@@ -284,7 +270,6 @@ static void blosc_dsp(t_blosc *x, t_signal **sp)
     else {
         dsp_add(blosc_perform, 6, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
     }
-    
 }
 
 static void blosc_free(t_blosc *x)
@@ -299,25 +284,17 @@ static void blosc_free(t_blosc *x)
 
 void blosc_tilde_setup(void)
 {
-    bl_saw_class = class_new(gensym("bl.saw~"), (t_newmethod)bl_saw_new,
+    bl_oscillators[SAWTOOTH] = class_new(gensym("bl.saw~"), (t_newmethod)bl_saw_new,
                              (t_method)blosc_free, sizeof(t_blosc), 0, A_GIMME, A_NULL);
     
-    bl_square_class = class_new(gensym("bl.square~"), (t_newmethod)bl_square_new,
-    (t_method)blosc_free, sizeof(t_blosc), 0, A_GIMME, A_NULL);
+    bl_oscillators[SQUARE] = class_new(gensym("bl.square~"), (t_newmethod)bl_square_new,
+                                (t_method)blosc_free, sizeof(t_blosc), 0, A_GIMME, A_NULL);
     
-    bl_triangle_class = class_new(gensym("bl.tri~"), (t_newmethod)bl_triangle_new,
-    (t_method)blosc_free, sizeof(t_blosc), 0, A_GIMME, A_NULL);
+    bl_oscillators[TRIANGLE] = class_new(gensym("bl.tri~"), (t_newmethod)bl_triangle_new,
+                                  (t_method)blosc_free, sizeof(t_blosc), 0, A_GIMME, A_NULL);
     
-    t_class* osc_types[4];
-    osc_types[0] = bl_saw_class;
-    osc_types[1] = bl_square_class;
-    osc_types[2] = bl_triangle_class;
-    osc_types[3] = bl_pulse_class;
-    
-    for(int i = 0; i < 4; i++) {
-    CLASS_MAINSIGNALIN(osc_types[i], t_blosc, x_f);
-    class_addmethod(osc_types[i], (t_method)blosc_dsp, gensym("dsp"), A_NULL);
-    //class_addmethod(osc_types[i], (t_method)blosc_phase, gensym("phase"), A_FLOAT, A_NULL);
-    //class_addmethod(osc_types[i], (t_method)blosc_phase2, gensym("phase2"), A_FLOAT, A_NULL);
+    for(int i = 0; i < 3; i++) {
+        CLASS_MAINSIGNALIN(bl_oscillators[i], t_blosc, x_f);
+        class_addmethod(bl_oscillators[i], (t_method)blosc_dsp, gensym("dsp"), A_NULL);
     }
 }
