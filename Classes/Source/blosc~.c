@@ -21,9 +21,8 @@ typedef enum _waveshape
 
 typedef struct _polyblep
 {
-    t_float amplitude;  // Frequency dependent gain [0.0..1.0]
-    t_float pulse_width;  // [0.0..1.0]
-    t_float phase;  // The current phase [0.0..1.0) of the oscillator.
+    t_float pulse_width;  // Pulse width for square, morph-to-saw for triangle
+    t_float phase;  // The current phase of the oscillator.
     t_float freq_in_seconds_per_sample;
     t_float last_phase_offset;
     t_waveshape shape;
@@ -94,7 +93,7 @@ static t_float tri2(const t_polyblep* x)
     
     y += x->freq_in_seconds_per_sample / (x->pulse_width - x->pulse_width * x->pulse_width) * (blamp(t1, x->freq_in_seconds_per_sample) - blamp(t2, x->freq_in_seconds_per_sample));
     
-    return x->amplitude * y;
+    return y;
 }
 
 static t_float sqr(const t_polyblep* x)
@@ -105,7 +104,7 @@ static t_float sqr(const t_polyblep* x)
     t_float y = x->phase < 0.5 ? 1 : -1;
     y += blep(x->phase, x->freq_in_seconds_per_sample) - blep(t2, x->freq_in_seconds_per_sample);
     
-    return x->amplitude * y;
+    return y;
 }
 
 static t_float ramp(const t_polyblep* x)
@@ -116,11 +115,10 @@ static t_float ramp(const t_polyblep* x)
     t_float y = 1 - 2 * _t;
     y += blep(_t, x->freq_in_seconds_per_sample);
     
-    return x->amplitude * y;
+    return y;
 }
 
 static void blosc_init(t_blosc* x, int ac, t_atom *av) {
-    x->x_polyblep.amplitude = 1.0;
     x->x_polyblep.pulse_width = 0.5;
     x->x_polyblep.freq_in_seconds_per_sample = 0;
     x->x_polyblep.phase = 0.0;
@@ -139,6 +137,15 @@ static void blosc_init(t_blosc* x, int ac, t_atom *av) {
     // Outlet
     outlet_new(&x->x_obj, &s_signal);
     
+    if(x->x_polyblep.shape != SAWTOOTH) {
+        // Pulse width inlet
+        x->x_inlet_width = inlet_new(&x->x_obj, &x->x_obj.ob_pd,  &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_width, 0.5);
+    }
+    else {
+        x->x_inlet_width = NULL;
+    }
+    
     // Sync inlet
     x->x_inlet_sync = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_sync, 0);
@@ -151,11 +158,7 @@ static void blosc_init(t_blosc* x, int ac, t_atom *av) {
 static void* bl_saw_new(t_symbol *s, int ac, t_atom *av)
 {
     t_blosc* x = (t_blosc *)pd_new(bl_oscillators[SAWTOOTH]);
-    
     x->x_polyblep.shape = SAWTOOTH;
-    
-    // No pulse width inlet
-    x->x_inlet_width = NULL;
     
     blosc_init(x, ac, av);
     
@@ -165,11 +168,7 @@ static void* bl_saw_new(t_symbol *s, int ac, t_atom *av)
 static void* bl_square_new(t_symbol *s, int ac, t_atom *av)
 {
     t_blosc* x = (t_blosc *)pd_new(bl_oscillators[SQUARE]);
-    
     x->x_polyblep.shape = SQUARE;
-    
-    // Pulse width inlet
-    x->x_inlet_width = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     
     blosc_init(x, ac, av);
     
@@ -179,11 +178,7 @@ static void* bl_square_new(t_symbol *s, int ac, t_atom *av)
 static void* bl_triangle_new(t_symbol *s, int ac, t_atom *av)
 {
     t_blosc* x = (t_blosc *)pd_new(bl_oscillators[TRIANGLE]);
-    
     x->x_polyblep.shape = TRIANGLE;
-    
-    // Pulse width inlet
-    x->x_inlet_width = inlet_new(&x->x_obj, &x->x_obj.ob_pd,  &s_signal, &s_signal);
     
     blosc_init(x, ac, av);
     
