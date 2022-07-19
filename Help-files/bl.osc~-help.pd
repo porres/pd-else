@@ -1,0 +1,154 @@
+#N canvas 396 35 562 523 10;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 0 0;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 123 40 cnv 4 4 4 empty empty oscillator 0 28 2 18 #e0e0e0 #000000
+0;
+#X obj 3 267 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 3 364 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 3 400 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 123 373 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 123 275 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 3 495 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X text 165 276 float/signal -;
+#X text 269 276 frequency in hz;
+#X obj 123 296 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X text 165 341 float/signal -;
+#X obj 123 340 cnv 17 3 17 empty empty 3 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X text 206 373 signal -;
+#X text 270 341 phase offset (modulation input);
+#X obj 197 136 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X obj 3 3 cnv 15 301 42 empty empty bl.osc~ 20 20 2 37 #e0e0e0 #000000
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 3 graph;
+#X obj 197 199 else/out~;
+#X text 165 297 float/signal -;
+#X obj 22 40 cnv 4 4 4 empty empty Bandlimited 0 28 2 18 #e0e0e0 #000000
+0;
+#X text 174 439 - frequency in hertz (default 0);
+#X obj 197 164 else/bl.osc~ 400;
+#X text 257 135 <-- hz;
+#X text 270 319 phase sync (ressets internal phase);
+#X text 165 319 float/signal -;
+#X obj 123 318 cnv 17 3 17 empty empty 2 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X text 270 297 Pulse width (for square and vsaw only);
+#X text 267 373 sbandlimited oscillator signal;
+#X text 174 475 - initial phase offset (default 0);
+#X text 174 458 - pulse width (for square \, default 0.5 and vsaw \,
+default 0);
+#N canvas 580 113 541 501 waveforms 0;
+#X obj 54 108 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X obj 54 171 else/out~;
+#X obj 54 136 else/bl.osc~ saw 400;
+#X obj 200 108 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X obj 200 171 else/out~;
+#X obj 200 136 else/bl.osc~ saw2 400;
+#X obj 348 108 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X obj 348 171 else/out~;
+#X obj 348 136 else/bl.osc~ tri 400;
+#X obj 99 340 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X obj 99 403 else/out~;
+#X obj 304 338 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X obj 304 401 else/out~;
+#X text 68 26 There are 2 versions of sawtooth waveforms (see else/saw~
+and else/saw2~) and a triangular waveform (see else/tri~). These do
+not have a pulse width inlet/argument.;
+#X obj 99 368 else/bl.osc~ square 400;
+#X obj 304 366 else/bl.osc~ vsaw 400;
+#X text 70 256 The square (see else/square~) and vsaw (see else/vsaw~)
+waveforms have a pulse width second inlet/argument.;
+#X connect 0 0 2 0;
+#X connect 2 0 1 0;
+#X connect 3 0 5 0;
+#X connect 5 0 4 0;
+#X connect 6 0 8 0;
+#X connect 8 0 7 0;
+#X connect 9 0 14 0;
+#X connect 11 0 15 0;
+#X connect 14 0 10 0;
+#X connect 15 0 12 0;
+#X restore 435 194 pd waveforms;
+#N canvas 516 82 517 609 example 0;
+#X floatatom 191 128 9 0 0 0 - - - 0;
+#X obj 194 95 hsl 128 15 50 2000 1 0 empty empty empty -2 -8 0 10 #dfdfdf
+#000000 #000000 0 1;
+#X obj 191 161 sig~ 200;
+#X obj 254 202 /~ 2.01;
+#X obj 254 227 osc~;
+#X obj 65 253 *~ 1.52;
+#X obj 254 251 *~ 0.3;
+#X obj 263 143 osc~ 0.1;
+#X obj 62 531 else/out~;
+#X obj 65 281 else/bl.osc~ square, f 32;
+#X obj 191 253 else/imp~;
+#X obj 263 163 else/rescale~ 0.2 0.8, f 22;
+#X text 324 144 PWM;
+#X text 58 25 Here's an example with pulse width modulation (PWM) \,
+hard sync via impulses and phase modulation of a band limited square
+wave., f 65;
+#X text 307 252 Phase Modulation;
+#X text 81 95 master frequency;
+#X text 52 199 synced frequency, f 9;
+#X obj 88 337 else/oscope~ 371 133 8 3 128 -1.1 1.1 300 0 0 0 30 30
+30 190 190 190 160 160 160 0 empty;
+#X obj 62 503 else/plate.rev~;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 2 0 5 0;
+#X connect 2 0 10 0;
+#X connect 3 0 4 0;
+#X connect 4 0 6 0;
+#X connect 5 0 9 0;
+#X connect 6 0 9 3;
+#X connect 7 0 11 0;
+#X connect 9 0 17 0;
+#X connect 9 0 18 0;
+#X connect 10 0 9 2;
+#X connect 11 0 9 1;
+#X connect 18 0 8 0;
+#X connect 18 1 8 1;
+#X restore 435 218 pd example;
+#X text 60 87 [bl.osc~] is a bandlimited oscillator that implements
+the polyBLEP technique with some classic waveforms (sawtooth by default).
+, f 67;
+#X text 117 439 2) float;
+#X text 117 458 3) float;
+#X text 117 475 4) float;
+#X text 111 419 1) symbol;
+#X text 173 419 -, f 1;
+#X text 188 417 (optional) sets waveform: saw (default) \, saw2 \,
+tri \, square and vsaw), f 51;
+#X connect 22 0 29 0;
+#X connect 29 0 25 0;
