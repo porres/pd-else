@@ -135,12 +135,14 @@ static t_int* blosc_perform(t_int *w) {
     int no_pwm         = x->shape >= SAW;
     t_float* freq_vec  = (t_float *)(w[3]);
     t_float* width_vec = (t_float *)(w[4]);
-    t_float* sync_vec  = (t_float *)(w[no_pwm ? 4 : 5]);
-    t_float* phase_vec = (t_float *)(w[no_pwm ? 5 : 6]);
-    t_float* out       = (t_float *)(w[no_pwm ? 6 : 7]);
+    t_float* phase_vec = (t_float *)(w[no_pwm ? 4 : 5]);
+    t_float* out       = (t_float *)(w[no_pwm ? 5 : 6]);
+//    t_float* sync_vec  = (t_float *)(w[no_pwm ? 4 : 5]);
+//    t_float* phase_vec = (t_float *)(w[no_pwm ? 5 : 6]);
+//    t_float* out       = (t_float *)(w[no_pwm ? 6 : 7]);
     while(n--){
         t_float freq = *freq_vec++;
-        t_float sync = *sync_vec++;
+//        t_float sync = *sync_vec++;
         t_float phase_offset = *phase_vec++;
         t_float pulse_width = *width_vec++;
         // Update frequency
@@ -174,13 +176,15 @@ static t_int* blosc_perform(t_int *w) {
         // Send to output
         *out++ = y;
         // Phase sync
-        if(sync > 0 && sync <= 1){
+/*        if(sync > 0 && sync <= 1){
             x->phase = sync;
-            if (x->phase >= 0.0) x->phase -= bitwise_or_zero(x->phase);
-            else x->phase += 1.0 - bitwise_or_zero(x->phase);
-        }
+            if (x->phase >= 0.0)
+                x->phase -= bitwise_or_zero(x->phase);
+            else
+                x->phase += 1.0 - bitwise_or_zero(x->phase);
+        }*/
         // Phase modulation
-        else{
+//        else{
             double phase_dev = phase_offset - x->last_phase_offset;
             if(phase_dev >= 1 || phase_dev <= -1)
                 phase_dev = fmod(phase_dev, 1);
@@ -189,21 +193,30 @@ static t_int* blosc_perform(t_int *w) {
                 x->phase -= bitwise_or_zero(x->phase);
             else
                 x->phase += 1.0 - bitwise_or_zero(x->phase);
-        }
+//        }
         x->phase += x->freq_in_seconds_per_sample;
         x->phase -= bitwise_or_zero(x->phase);
         x->last_phase_offset = phase_offset;
     }
-    return(w + (no_pwm ? 7 : 8));
+//    return(w + (no_pwm ? 7 : 8));
+    return(w + (no_pwm ? 6 : 7));
 }
 
 static void blosc_dsp(t_blosc *x, t_signal **sp){
+    if(x->x_polyblep.shape <= SQUARE){
+        dsp_add(blosc_perform, 6, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+    }
+    else
+        dsp_add(blosc_perform, 5, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
+}
+
+/*static void blosc_dsp(t_blosc *x, t_signal **sp){
     if(x->x_polyblep.shape <= SQUARE){
         dsp_add(blosc_perform, 7, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
     }
     else
         dsp_add(blosc_perform, 6, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
-}
+}*/
 
 static void blosc_free(t_blosc *x){
     inlet_free(x->x_inlet_sync);
@@ -258,8 +271,9 @@ static void* blosc_new(t_symbol *s, int ac, t_atom *av){
     else
         x->x_inlet_width = NULL;
     // Sync inlet
-    x->x_inlet_sync = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-    pd_float((t_pd *)x->x_inlet_sync, 0);
+//    x->x_inlet_sync = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
+//    pd_float((t_pd *)x->x_inlet_sync, 0);
+    x->x_inlet_sync = floatinlet_new(&x->x_obj, &x->x_polyblep.phase);
     // Phase inlet
     x->x_inlet_phase = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_phase, init_phase);
