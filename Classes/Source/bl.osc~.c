@@ -10,10 +10,11 @@
 #include <stdint.h>
 
 typedef enum _waveshape{
-    SAWTOOTH,
+    VSAW,
     SQUARE,
-    TRIANGLE,
-    VSAW
+    SAW,
+    SAW2,
+    TRIANGLE
 }t_waveshape;
 
 #define PI     3.1415926535897931
@@ -112,6 +113,14 @@ static t_float sqr(const t_polyblep* x){
     return(y);
 }
 
+static t_float saw2(const t_polyblep* x){
+    t_float _t = x->phase + 0.5;
+    _t -= bitwise_or_zero(_t);
+    t_float y = 1 - 2 * _t;
+    y += blep(_t, x->freq_in_seconds_per_sample);
+    return(-y);
+}
+
 static t_float saw(const t_polyblep* x){
     t_float _t = x->phase;
     _t -= bitwise_or_zero(_t);
@@ -123,7 +132,7 @@ static t_float saw(const t_polyblep* x){
 static t_int* blosc_perform(t_int *w) {
     t_polyblep* x      = (t_polyblep*)(w[1]);
     t_int n            = (t_int)(w[2]);
-    int no_pwm         = (x->shape == SAWTOOTH) || (x->shape == TRIANGLE);
+    int no_pwm         = x->shape >= SAW;
     t_float* freq_vec  = (t_float *)(w[3]);
     t_float* width_vec = (t_float *)(w[4]);
     t_float* sync_vec  = (t_float *)(w[no_pwm ? 4 : 5]);
@@ -148,8 +157,12 @@ static t_int* blosc_perform(t_int *w) {
                 y = sqr(x);
                 break;
             }
-            case SAWTOOTH:{
+            case SAW:{
                 y = saw(x);
+                break;
+            }
+            case SAW2:{
+                y = saw2(x);
                 break;
             }
             case VSAW:{
@@ -161,7 +174,7 @@ static t_int* blosc_perform(t_int *w) {
         // Send to output
         *out++ = y;
         // Phase sync
-        if(sync > 0 && sync <= 1) {
+        if(sync > 0 && sync <= 1){
             x->phase = sync;
             if (x->phase >= 0.0) x->phase -= bitwise_or_zero(x->phase);
             else x->phase += 1.0 - bitwise_or_zero(x->phase);
@@ -169,10 +182,10 @@ static t_int* blosc_perform(t_int *w) {
         // Phase modulation
         else{
             double phase_dev = phase_offset - x->last_phase_offset;
-            if (phase_dev >= 1 || phase_dev <= -1)
+            if(phase_dev >= 1 || phase_dev <= -1)
                 phase_dev = fmod(phase_dev, 1);
             x->phase = x->phase + phase_dev;
-            if (x->phase >= 0.0)
+            if(x->phase >= 0.0)
                 x->phase -= bitwise_or_zero(x->phase);
             else
                 x->phase += 1.0 - bitwise_or_zero(x->phase);
@@ -185,7 +198,7 @@ static t_int* blosc_perform(t_int *w) {
 }
 
 static void blosc_dsp(t_blosc *x, t_signal **sp){
-    if(x->x_polyblep.shape == SQUARE || x->x_polyblep.shape == VSAW){
+    if(x->x_polyblep.shape <= SQUARE){
         dsp_add(blosc_perform, 7, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
     }
     else
@@ -201,7 +214,7 @@ static void blosc_free(t_blosc *x){
 
 static void* blosc_new(t_symbol *s, int ac, t_atom *av){
     t_blosc* x = (t_blosc *)pd_new(bl_oscillators);
-    x->x_polyblep.shape = SAWTOOTH;
+    x->x_polyblep.shape = SAW;
     x->x_polyblep.pulse_width = 0;
     x->x_polyblep.freq_in_seconds_per_sample = 0;
     x->x_polyblep.phase = 0.0;
@@ -209,7 +222,7 @@ static void* blosc_new(t_symbol *s, int ac, t_atom *av){
     if(ac && av->a_type == A_SYMBOL){
         s = atom_getsymbolarg(0, ac, av);
         if(s == gensym("saw"))
-           x->x_polyblep.shape = SAWTOOTH;
+           x->x_polyblep.shape = SAW;
         else if(s == gensym("square")){
             x->x_polyblep.shape = SQUARE;
             x->x_polyblep.pulse_width = 0.5;
@@ -218,12 +231,14 @@ static void* blosc_new(t_symbol *s, int ac, t_atom *av){
             x->x_polyblep.shape = TRIANGLE;
         else if(s == gensym("vsaw"))
             x->x_polyblep.shape = VSAW;
+        else if(s == gensym("saw2"))
+            x->x_polyblep.shape = SAW2;
         ac--, av++;
     }
     if(ac && av->a_type == A_FLOAT){
         init_freq = av->a_w.w_float;
         ac--; av++;
-        if(ac && av->a_type == A_FLOAT && x->x_polyblep.shape != SAWTOOTH){
+        if(ac && av->a_type == A_FLOAT && x->x_polyblep.shape <= SQUARE){
             x->x_polyblep.pulse_width = av->a_w.w_float;
             ac--; av++;
         }
@@ -235,7 +250,7 @@ static void* blosc_new(t_symbol *s, int ac, t_atom *av){
     x->x_f = init_freq;
     // Outlet
     outlet_new(&x->x_obj, &s_signal);
-    if(x->x_polyblep.shape == VSAW || x->x_polyblep.shape == SQUARE){
+    if(x->x_polyblep.shape <= SQUARE){
         // Pulse width inlet
         x->x_inlet_width = inlet_new(&x->x_obj, &x->x_obj.ob_pd,  &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_width, x->x_polyblep.pulse_width);
