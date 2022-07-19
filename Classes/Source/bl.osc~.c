@@ -6,6 +6,7 @@
 // Valimaki. http://www.acoustics.hut.fi/publications/papers/smc2010-phaseshaping/
 
 #include "m_pd.h"
+#include "magic.h"
 #include <math.h>
 #include <stdint.h>
 
@@ -26,7 +27,9 @@ typedef struct _polyblep{
     t_float freq_in_seconds_per_sample;
     t_float last_phase_offset;
     t_waveshape shape;
-} t_polyblep;
+    // MAGIC:
+    t_float *signalscalar; // right inlet's float field
+}t_polyblep;
 
 typedef struct blosc{
     t_object x_obj;
@@ -35,6 +38,8 @@ typedef struct blosc{
     t_inlet* x_inlet_sync;
     t_inlet* x_inlet_phase;
     t_inlet* x_inlet_width;
+    // MAGIC:
+    t_glist *x_glist; // object list
 }t_blosc;
 
 t_class *bl_oscillators;
@@ -129,20 +134,18 @@ static t_float saw(const t_polyblep* x){
     return(y);
 }
 
-static t_int* blosc_perform(t_int *w) {
+static t_int* blosc_perform_sig(t_int *w) {
     t_polyblep* x      = (t_polyblep*)(w[1]);
     t_int n            = (t_int)(w[2]);
     int no_pwm         = x->shape >= SAW;
     t_float* freq_vec  = (t_float *)(w[3]);
     t_float* width_vec = (t_float *)(w[4]);
-    t_float* phase_vec = (t_float *)(w[no_pwm ? 4 : 5]);
-    t_float* out       = (t_float *)(w[no_pwm ? 5 : 6]);
-//    t_float* sync_vec  = (t_float *)(w[no_pwm ? 4 : 5]);
-//    t_float* phase_vec = (t_float *)(w[no_pwm ? 5 : 6]);
-//    t_float* out       = (t_float *)(w[no_pwm ? 6 : 7]);
+    t_float* sync_vec  = (t_float *)(w[no_pwm ? 4 : 5]);
+    t_float* phase_vec = (t_float *)(w[no_pwm ? 5 : 6]);
+    t_float* out       = (t_float *)(w[no_pwm ? 6 : 7]);
     while(n--){
         t_float freq = *freq_vec++;
-//        t_float sync = *sync_vec++;
+        t_float sync = *sync_vec++;
         t_float phase_offset = *phase_vec++;
         t_float pulse_width = *width_vec++;
         // Update frequency
@@ -176,15 +179,15 @@ static t_int* blosc_perform(t_int *w) {
         // Send to output
         *out++ = y;
         // Phase sync
-/*        if(sync > 0 && sync <= 1){
+       if(sync > 0 && sync <= 1){
             x->phase = sync;
             if (x->phase >= 0.0)
                 x->phase -= bitwise_or_zero(x->phase);
             else
                 x->phase += 1.0 - bitwise_or_zero(x->phase);
-        }*/
+        }
         // Phase modulation
-//        else{
+       else{
             double phase_dev = phase_offset - x->last_phase_offset;
             if(phase_dev >= 1 || phase_dev <= -1)
                 phase_dev = fmod(phase_dev, 1);
@@ -193,30 +196,100 @@ static t_int* blosc_perform(t_int *w) {
                 x->phase -= bitwise_or_zero(x->phase);
             else
                 x->phase += 1.0 - bitwise_or_zero(x->phase);
-//        }
+        }
         x->phase += x->freq_in_seconds_per_sample;
         x->phase -= bitwise_or_zero(x->phase);
         x->last_phase_offset = phase_offset;
     }
-//    return(w + (no_pwm ? 7 : 8));
+    return(w + (no_pwm ? 7 : 8));
+}
+
+static t_int* blosc_perform(t_int *w) {
+    t_polyblep* x      = (t_polyblep*)(w[1]);
+    t_int n            = (t_int)(w[2]);
+    int no_pwm         = x->shape >= SAW;
+    t_float* freq_vec  = (t_float *)(w[3]);
+    t_float* width_vec = (t_float *)(w[4]);
+    t_float* phase_vec = (t_float *)(w[no_pwm ? 4 : 5]);
+    t_float* out       = (t_float *)(w[no_pwm ? 5 : 6]);
+    // Magic Start
+    t_float *scalar = x->signalscalar;
+    if(!magic_isnan(*x->signalscalar)){
+        t_float input_phase = fmod(*scalar, 1);
+        if(input_phase < 0)
+            input_phase += 1;
+        x->phase = input_phase;
+        magic_setnan(x->signalscalar);
+    }
+    // Magic End 
+    while(n--){
+        t_float freq = *freq_vec++;
+        t_float phase_offset = *phase_vec++;
+        t_float pulse_width = *width_vec++;
+        // Update frequency
+        x->freq_in_seconds_per_sample = fabs(freq) / sys_getsr();
+        // Update pulse width, limit between 0 and 1
+        x->pulse_width = fmax(fmin(0.99, pulse_width), 0.01);
+        t_float y;
+        switch(x->shape){
+            case TRIANGLE:{
+                y = tri(x);
+                break;
+            }
+            case SQUARE:{
+                y = sqr(x);
+                break;
+            }
+            case SAW:{
+                y = saw(x);
+                break;
+            }
+            case SAW2:{
+                y = saw2(x);
+                break;
+            }
+            case VSAW:{
+                y = vsaw(x);
+                break;
+            }
+            default: y = 0.0;
+        }
+        // Send to output
+        *out++ = y;
+        double phase_dev = phase_offset - x->last_phase_offset;
+        if(phase_dev >= 1 || phase_dev <= -1)
+            phase_dev = fmod(phase_dev, 1);
+        x->phase = x->phase + phase_dev;
+        if(x->phase >= 0.0)
+            x->phase -= bitwise_or_zero(x->phase);
+        else
+            x->phase += 1.0 - bitwise_or_zero(x->phase);
+        x->phase += x->freq_in_seconds_per_sample;
+        x->phase -= bitwise_or_zero(x->phase);
+        x->last_phase_offset = phase_offset;
+    }
     return(w + (no_pwm ? 6 : 7));
 }
 
 static void blosc_dsp(t_blosc *x, t_signal **sp){
-    if(x->x_polyblep.shape <= SQUARE){
-        dsp_add(blosc_perform, 6, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+    int pwm = x->x_polyblep.shape <= SQUARE;
+    if(magic_inlet_connection((t_object *)x, x->x_glist, pwm ? 2 : 1, &s_signal)){ // signal connected
+        if(pwm)
+            dsp_add(blosc_perform_sig, 7, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec,
+                sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
+        else
+            dsp_add(blosc_perform_sig, 6, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec,
+                sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
     }
-    else
-        dsp_add(blosc_perform, 5, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
-}
+    else{ // no signal connected
+        if(pwm)
+            dsp_add(blosc_perform, 6, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec,
+                sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
+        else
+            dsp_add(blosc_perform, 5, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec);
+    }
+ }
 
-/*static void blosc_dsp(t_blosc *x, t_signal **sp){
-    if(x->x_polyblep.shape <= SQUARE){
-        dsp_add(blosc_perform, 7, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec, sp[4]->s_vec);
-    }
-    else
-        dsp_add(blosc_perform, 6, &x->x_polyblep, sp[0]->s_n, sp[0]->s_vec, sp[1]->s_vec, sp[2]->s_vec, sp[3]->s_vec);
-}*/
 
 static void blosc_free(t_blosc *x){
     inlet_free(x->x_inlet_sync);
@@ -248,10 +321,11 @@ static void* blosc_new(t_symbol *s, int ac, t_atom *av){
             x->x_polyblep.shape = SAW2;
         ac--, av++;
     }
+    int has_pwn = x->x_polyblep.shape <= SQUARE;
     if(ac && av->a_type == A_FLOAT){
         init_freq = av->a_w.w_float;
         ac--; av++;
-        if(ac && av->a_type == A_FLOAT && x->x_polyblep.shape <= SQUARE){
+        if(ac && av->a_type == A_FLOAT && has_pwn){
             x->x_polyblep.pulse_width = av->a_w.w_float;
             ac--; av++;
         }
@@ -263,7 +337,7 @@ static void* blosc_new(t_symbol *s, int ac, t_atom *av){
     x->x_f = init_freq;
     // Outlet
     outlet_new(&x->x_obj, &s_signal);
-    if(x->x_polyblep.shape <= SQUARE){
+    if(has_pwn){
         // Pulse width inlet
         x->x_inlet_width = inlet_new(&x->x_obj, &x->x_obj.ob_pd,  &s_signal, &s_signal);
         pd_float((t_pd *)x->x_inlet_width, x->x_polyblep.pulse_width);
@@ -271,12 +345,14 @@ static void* blosc_new(t_symbol *s, int ac, t_atom *av){
     else
         x->x_inlet_width = NULL;
     // Sync inlet
-//    x->x_inlet_sync = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
-//    pd_float((t_pd *)x->x_inlet_sync, 0);
-    x->x_inlet_sync = floatinlet_new(&x->x_obj, &x->x_polyblep.phase);
+    x->x_inlet_sync = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
+        pd_float((t_pd *)x->x_inlet_sync, 0);
     // Phase inlet
     x->x_inlet_phase = inlet_new(&x->x_obj, &x->x_obj.ob_pd, &s_signal, &s_signal);
     pd_float((t_pd *)x->x_inlet_phase, init_phase);
+    // Magic
+    x->x_glist = canvas_getcurrent();
+    x->x_polyblep.signalscalar = obj_findsignalscalar((t_object *)x, has_pwn ? 2 : 1);
     return(void *)x;
 }
 
