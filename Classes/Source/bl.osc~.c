@@ -40,8 +40,14 @@ typedef struct blosc{
 
 t_class *bl_oscillators;
 
-static int64_t bitwise_or_zero(const t_float x){
-    return(((int64_t)x) | 0);
+static t_float phasewrap(t_float phase){
+    while (phase < 0.0)
+        phase += 1.0;
+    
+    while(phase >= 1.0)
+        phase -= 1.0;
+    
+    return phase;
 }
 
 static t_float square(t_float x){
@@ -72,9 +78,9 @@ static t_float blamp(t_float phase, t_float dt){
 
 static t_float tri(const t_polyblep* x){
     t_float t1 = x->phase + 0.25;
-    t1 -= bitwise_or_zero(t1);
+    t1 = phasewrap(t1);
     t_float t2 = x->phase + 1 - 0.25;
-    t2 -= bitwise_or_zero(t2);
+    t2 = phasewrap(t2);
     t_float y = x->phase * 2;
     if(y >= 1.5)
         y = (y - 2) * 2;
@@ -90,9 +96,9 @@ static t_float tri(const t_polyblep* x){
 static t_float vsaw(const t_polyblep* x){
     t_float pulse_width = fmax(0.0001, fmin(0.9999, x->pulse_width));
     t_float t1 = x->phase + 0.5 * pulse_width;
-    t1 -= bitwise_or_zero(t1);
+    t1 = phasewrap(t1);
     t_float t2 = x->phase + 1 - 0.5 * pulse_width;
-    t2 -= bitwise_or_zero(t2);
+    t2 = phasewrap(t2);
     t_float y = x->phase * 2;
     if(y >= 2 - pulse_width)
         y = (y - 2) / pulse_width;
@@ -108,7 +114,7 @@ static t_float vsaw(const t_polyblep* x){
 static t_float sqr(const t_polyblep* x){
     t_float pulse_width = fmax(0.0001, fmin(0.9999, x->pulse_width));
     t_float t2 = x->phase + 0.5;
-    t2 -= bitwise_or_zero(t2);
+    t2 = phasewrap(t2);
     t_float y = x->phase < pulse_width ? 1 : -1;
     y += blep(x->phase, x->freq_in_seconds_per_sample) - blep(t2, x->freq_in_seconds_per_sample);
     return(y);
@@ -116,7 +122,7 @@ static t_float sqr(const t_polyblep* x){
 
 static t_float saw2(const t_polyblep* x){
     t_float _t = x->phase + 0.5;
-    _t -= bitwise_or_zero(_t);
+    _t = phasewrap(_t);
     t_float y = 1 - 2 * _t;
     y += blep(_t, x->freq_in_seconds_per_sample);
     return(-y);
@@ -124,7 +130,7 @@ static t_float saw2(const t_polyblep* x){
 
 static t_float saw(const t_polyblep* x){
     t_float _t = x->phase;
-    _t -= bitwise_or_zero(_t);
+    _t = phasewrap(_t);
     t_float y = 1 - 2 * _t;
     y += blep(_t, x->freq_in_seconds_per_sample);
     return(y);
@@ -145,10 +151,22 @@ static t_int* blosc_perform(t_int *w) {
         t_float phase_offset = *phase_vec++;
         t_float pulse_width = *width_vec++;
         // Update frequency
-        x->freq_in_seconds_per_sample = fabs(freq) / x->sr; // <-- no negative frequency: BUG!!!
+        x->freq_in_seconds_per_sample = freq / x->sr;
         // Update pulse width, limit between 0 and 1
         x->pulse_width = fmax(fmin(0.99, pulse_width), 0.01);
         t_float y;
+        
+        if(sync > 0 && sync <= 1){ // Phase sync
+            x->phase = sync;
+            x->phase = phasewrap(x->phase);
+        }
+        else{ // Phase modulation
+            double phase_dev = phase_offset - x->last_phase_offset;
+            if(phase_dev >= 1 || phase_dev <= -1)
+                phase_dev = fmod(phase_dev, 1);
+            x->phase = phasewrap(x->phase);
+        }
+        
         switch(x->shape){
             case TRIANGLE:{
                 y = tri(x);
@@ -172,27 +190,12 @@ static t_int* blosc_perform(t_int *w) {
             }
             default: y = 0.0;
         }
-        *out++ = y;  // Send to output
-        if(sync > 0 && sync <= 1){ // Phase sync <-- BUG: ONE SAMPLE BEHIND!!!
-            x->phase = sync;
-            if (x->phase >= 0.0)
-                x->phase -= bitwise_or_zero(x->phase);
-            else
-                x->phase += 1.0 - bitwise_or_zero(x->phase);
-        }
-        else{ // Phase modulation
-            double phase_dev = phase_offset - x->last_phase_offset;
-            if(phase_dev >= 1 || phase_dev <= -1)
-                phase_dev = fmod(phase_dev, 1);
-            x->phase = x->phase + phase_dev;
-            if(x->phase >= 0.0)
-                x->phase -= bitwise_or_zero(x->phase);
-            else
-                x->phase += 1.0 - bitwise_or_zero(x->phase);
-        }
+        
         x->phase += x->freq_in_seconds_per_sample;
-        x->phase -= bitwise_or_zero(x->phase);
+        x->phase = phasewrap(x->phase);
         x->last_phase_offset = phase_offset;
+        
+        *out++ = y;  // Send to output
     }
     return(w + (no_pwm ? 7 : 8));
 }
