@@ -1,4 +1,4 @@
-#N canvas 562 23 570 625 10;
+#N canvas 677 23 570 625 10;
 #X floatatom 176 238 5 0 0 0 - - - 0;
 #X floatatom 219 184 5 1 10 0 - - - 0;
 #X floatatom 305 257 5 1 10 0 - - - 0;
@@ -33,13 +33,6 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 51 91 [gbuzz~] is a band-limited impulse oscillator similar
-to Csound's "gbuzz" opcode. It takes a frequency in hertz for the fundamental
-\, a number of harmonics \, a multiplier for the partials after the
-first one and the lowest harmonic number. If the fundamental is '100'
-\, the number of harmonics is 2 and the lowest harmonic is 1 \, then
-you have '100' and '200' as the partial's frequencies. Now \, if the
-lowest harmonic is 2 \, then you have '200' and '300'., f 77;
 #X obj 11 595 cnv 15 552 21 empty \$0-pddp.cnv.footer empty 20 12 0
 14 #dcdcdc #404040 0;
 #X obj 11 380 cnv 3 550 3 empty \$0-pddp.cnv.inlets inlets 8 12 0 13
@@ -74,7 +67,7 @@ lowest harmonic is 2 \, then you have '200' and '300'., f 77;
 #X text 198 559 - spectral multiplier (default 1);
 #X text 198 575 - lowest harmonic (default 1);
 #X obj 176 282 else/gbuzz~ 100 10 1 1;
-#N canvas 704 69 562 547 example 0;
+#N canvas 557 76 562 547 example 1;
 #X obj 74 254 else/out~;
 #X obj 42 112 else/rescale~ 190 210, f 13;
 #X obj 42 85 osc~ 0.23;
@@ -109,9 +102,17 @@ via a LFO as in this example)., f 47;
 #X text 232 411 - number of partials;
 #X text 231 433 - spectral multiplier;
 #X text 231 455 - lowest harmonic;
-#X connect 0 0 45 0;
-#X connect 1 0 45 1;
-#X connect 2 0 45 3;
-#X connect 5 0 45 2;
+#X text 39 87 [gbuzz~] is a band-limited impulse oscillator similar
+to Csound's "gbuzz" opcode that is based on DSF (Discrete-Summation
+Formulae). It takes a frequency in hertz for the fundamental \, a number
+of harmonics \, a multiplier for the partials after the first one and
+the lowest harmonic number. If the fundamental is '100' \, the number
+of harmonics is 2 and the lowest harmonic is 1 \, then you have '100'
+and '200' as the partial's frequencies. Now \, if the lowest harmonic
+is 2 \, then you have '200' and '300'., f 81;
+#X connect 0 0 44 0;
+#X connect 1 0 44 1;
+#X connect 2 0 44 3;
+#X connect 5 0 44 2;
 #X connect 7 0 5 0;
-#X connect 45 0 4 0;
+#X connect 44 0 4 0;

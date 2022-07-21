@@ -124,6 +124,7 @@ autofade2~.class.sources := Classes/Source/autofade2~.c
 balance~.class.sources := Classes/Source/balance~.c
 bandpass~.class.sources := Classes/Source/bandpass~.c
 bandstop~.class.sources := Classes/Source/bandstop~.c
+bl.osc~.class.sources := Classes/Source/bl.osc~.c
 blocksize~.class.sources := Classes/Source/blocksize~.c
 biquads~.class.sources := Classes/Source/biquads~.c
 ceil~.class.sources := Classes/Source/ceil~.c
