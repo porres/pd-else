@@ -1,4 +1,4 @@
-#N canvas 396 35 562 523 10;
+#N canvas 375 28 562 523 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #N canvas 382 141 749 319 (subpatch) 0;
@@ -46,12 +46,11 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
 #X restore 2 3 graph;
-#X obj 197 199 else/out~;
+#X obj 197 197 else/out~;
 #X text 165 297 float/signal -;
 #X obj 22 40 cnv 4 4 4 empty empty Bandlimited 0 28 2 18 #e0e0e0 #000000
 0;
 #X text 174 439 - frequency in hertz (default 0);
-#X obj 197 164 else/bl.osc~ 400;
 #X text 257 135 <-- hz;
 #X text 270 319 phase sync (ressets internal phase);
 #X text 165 319 float/signal -;
@@ -98,8 +97,8 @@ waveforms have a pulse width second inlet/argument.;
 #X connect 11 0 15 0;
 #X connect 14 0 10 0;
 #X connect 15 0 12 0;
-#X restore 435 194 pd waveforms;
-#N canvas 516 82 517 609 example 0;
+#X restore 441 201 pd waveforms;
+#N canvas 491 80 517 609 example 0;
 #X floatatom 191 128 9 0 0 0 - - - 0;
 #X obj 194 95 hsl 128 15 50 2000 1 0 empty empty empty -2 -8 0 10 #dfdfdf
 #000000 #000000 0 1;
@@ -139,7 +138,7 @@ wave., f 65;
 #X connect 11 0 9 1;
 #X connect 18 0 8 0;
 #X connect 18 1 8 1;
-#X restore 435 218 pd example;
+#X restore 441 225 pd example;
 #X text 60 87 [bl.osc~] is a bandlimited oscillator that implements
 the polyBLEP technique with some classic waveforms (sawtooth by default).
 , f 67;
@@ -147,8 +146,10 @@ the polyBLEP technique with some classic waveforms (sawtooth by default).
 #X text 117 458 3) float;
 #X text 117 475 4) float;
 #X text 111 419 1) symbol;
-#X text 173 419 -, f 1;
+#X text 173 419 -;
 #X text 188 417 (optional) sets waveform: saw (default) \, saw2 \,
 tri \, square and vsaw), f 51;
-#X connect 22 0 29 0;
-#X connect 29 0 25 0;
+#X text 303 163 (sawtooth by default);
+#X obj 197 164 else/bl.osc~ 400;
+#X connect 22 0 47 0;
+#X connect 47 0 25 0;
