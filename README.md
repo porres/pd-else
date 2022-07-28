@@ -6,7 +6,7 @@
 
 ### Version: 1.0-0 RC-3 (release candidate #3) With Live Electronics Tutorial. 
 
-### Released july 11th 2022
+### Released august 5th 2022
 
 
 
@@ -446,7 +446,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [vsaw~]
 - [pmosc~]
 - [wavetable~] / [wt~]
-- [gbuzz~]
+- [blip~]
 - [bl.osc~]
 - [bl.imp~]
 - [bl.imp2~]
