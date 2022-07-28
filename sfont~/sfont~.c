@@ -1,3 +1,4 @@
+
 // Soundfont player based on FluidSynth (https://www.fluidsynth.org/)
 // Copyright by Porres, see https://github.com/porres/pd-sfont
 
@@ -20,9 +21,17 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "m_pd.h"
 #include "../shared/elsefile.h"
+
+#include <stdlib.h>
 #include <fluidsynth.h>
 #include <string.h>
+
+
+#ifdef _MSC_VER
+#include <Windows.h>
+#else
 #include <unistd.h>
+#endif
 
 #define MAXSYSEXSIZE 1024 // Size of sysex data list (excluding the F0 [240] and F7 [247] bytes)
 
@@ -61,8 +70,6 @@ typedef struct _sfont{
     unsigned char       x_channel;
 }t_sfont;
 
-static void sfont_float(t_sfont *x, t_float f);
-
 static void sfont_getversion(void){
     post("[sfont~] version 1.0-rc2 (using fluidsynth %s)", FLUIDSYNTH_VERSION);
 }
@@ -95,9 +102,7 @@ static void sfont_pan(t_sfont *x, t_symbol *s, int ac, t_atom *av){
 
 static void sfont_note(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(ac == 1)
-        sfont_float(x, atom_getfloatarg(0, ac, av));
-    else if(ac == 2 || ac == 3){
+    if(ac == 2 || ac == 3){
         int key = atom_getintarg(0, ac, av);
         int vel = atom_getintarg(1, ac, av);
         int chan = ac > 2 ? atom_getintarg(2, ac, av) : 1; // channel starts at zero???
@@ -276,7 +281,7 @@ static void sfont_scale(t_sfont *x, t_symbol *s, int ac, t_atom *av){
         set_key_tuning(x, NULL);
         return;
     }
-    double scale[ac];
+    double* scale = calloc(sizeof(double), ac);
     int n_m1 = ac-1;
     int i;
     for(i = 0; i < ac; i++) // set array{
@@ -296,6 +301,7 @@ static void sfont_scale(t_sfont *x, t_symbol *s, int ac, t_atom *av){
         pitches[i] = (sum += (scale[count] - scale[count-1]));
     }
     set_key_tuning(x, pitches);
+    free(scale);
 }
 
 static void sfont_base(t_sfont *x, t_float f){
