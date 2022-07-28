@@ -1,6 +1,6 @@
 #N canvas 491 23 561 534 10;
 #X floatatom 184 171 5 0 0 0 - - - 0;
-#X text 144 173 hertz;
+#X text 144 171 hertz;
 #X obj 184 235 else/out~;
 #X floatatom 283 178 5 0 0 0 - - - 0;
 #X text 319 178 multiplier;
@@ -54,12 +54,11 @@
 #X text 225 404 - band limited oscillator output;
 #X text 192 439 - fundamental frequency in hertz (default 0);
 #X text 192 455 - number of partials (default 1);
-#X text 192 471 - spectral multiplier (default 1);
 #X text 192 487 - lowest harmonic (default 1);
 #X text 226 327 - number of partials;
 #X text 225 370 - spectral multiplier;
 #X text 226 343 - lowest harmonic;
-#N canvas 413 39 768 618 details 1;
+#N canvas 413 39 768 618 details 0;
 #X obj 166 308 else/out~;
 #X obj 166 111 else/rescale~ 190 210, f 23;
 #X obj 166 84 osc~ 0.23;
@@ -67,10 +66,6 @@
 #X obj 303 439 else/spectrograph~ 1024 0 1 300 140 100;
 #X text 314 234 waveform;
 #X text 319 418 spectrograph;
-#X text 368 95 The spectral multiplier 'm' is a factor that scales
-each successive harmonic by. If m = 0.5 and you start with 1st harmonic
-and ask for 4 harmonics \, you get 1 \, 0.5 \, 0.25 and 0.125 as the
-amplitude list. A factor of 1 creates an impulse like waveform.;
 #X floatatom 51 28 5 1 10 0 - - - 0;
 #X text 87 28 lowest harmonic;
 #X floatatom 109 53 5 1 10 0 - - - 0;
@@ -82,24 +77,29 @@ amplitude list. A factor of 1 creates an impulse like waveform.;
 #X text 265 193 multiplier;
 #X text 178 193 hertz;
 #X msg 51 52 low \$1;
-#X text 368 41 If the fundamental frequency input is '100' \, the number
+#X text 367 31 If the fundamental frequency input is '100' \, the number
 of harmonics is 2 and the lowest harmonic is 1 \, then you have '100'
 and '200' as the partial's frequencies. Now \, if the lowest harmonic
 is 2 \, then you have '200' and '300'.;
-#X text 369 164 This object is based on Csound's 'gbuzz' opcode.;
+#X text 368 162 This object is based on Csound's 'gbuzz' opcode.;
 #X obj 166 217 else/blip~ 0 20;
-#X connect 1 0 15 0;
+#X text 367 85 The spectral multiplier 'm' is a factor that scales
+each successive harmonic by. If m = 0.5 and you start with 1st harmonic
+and ask for 4 harmonics \, you get 1 \, 0.5 \, 0.25 and 0.125 as the
+amplitude list. A factor of 1 creates an impulse like waveform. Negative
+values and vaues outside the -1 and 1 range is possible.;
+#X connect 1 0 14 0;
 #X connect 2 0 1 0;
 #X connect 3 0 4 0;
-#X connect 8 0 18 0;
-#X connect 10 0 12 0;
-#X connect 12 0 21 0;
-#X connect 13 0 14 0;
-#X connect 14 0 21 1;
-#X connect 15 0 21 0;
-#X connect 18 0 21 0;
-#X connect 21 0 0 0;
-#X connect 21 0 3 0;
+#X connect 7 0 17 0;
+#X connect 9 0 11 0;
+#X connect 11 0 20 0;
+#X connect 12 0 13 0;
+#X connect 13 0 20 1;
+#X connect 14 0 20 0;
+#X connect 17 0 20 0;
+#X connect 20 0 0 0;
+#X connect 20 0 3 0;
 #X restore 458 260 pd details;
 #X text 145 370 float/signal;
 #X text 40 86 [blip~] uses DSF (Discrete-Summation Formulae) to generate
@@ -110,7 +110,8 @@ an impulse waveform)., f 82;
 #X text 163 327 n <float>;
 #X text 151 343 low <float>;
 #X obj 184 205 else/blip~ 100 10;
-#X connect 0 0 44 0;
-#X connect 3 0 44 1;
+#X text 192 471 - spectral multiplier (default 1 \, impulse like);
+#X connect 0 0 43 0;
+#X connect 3 0 43 1;
 #X connect 5 0 3 0;
-#X connect 44 0 2 0;
+#X connect 43 0 2 0;
