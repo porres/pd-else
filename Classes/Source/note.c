@@ -480,15 +480,12 @@ static void handle__motion_callback(t_handle *ch, t_floatarg f1, t_floatarg f2){
     if(ch->h_clicked){ // dragging handle
         t_note *x = ch->h_master;
         int dx = (int)f1;
-//        post("dx = %d", dx);
         f2 = 0; // avoid warning
         int x1, y1, x2, y2;
         note_getrect((t_gobj *)x, x->x_glist, &x1, &y1, &x2, &y2);
-//        post("x1 (%d) x2 (%d) y1 (%d) y2 (%d)", x1, x2, y1, y2);
         x->x_x1 = x1, x->x_x2 = x2;
         x->x_y1 = y1, x->x_y2 = y2;
-        int newx = x2 + dx; //* x->x_zoom;
-//        post("newx = x2 + dx --> %d", newx);
+        int newx = x2 + dx;
         if(newx > x1 + NOTE_MINSIZE){ // update outline
             sys_vgui(".x%lx.c coords %lx_outline %d %d %d %d\n", (unsigned long)x->x_cv,
                 (unsigned long)x, x->x_x1, x->x_y1, x->x_newx2 = newx, x->x_y2);
