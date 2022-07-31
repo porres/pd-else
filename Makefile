@@ -26,6 +26,7 @@ pad.class.sources := Classes/Source/pad.c
 openfile.class.sources := Classes/Source/openfile.c
 colors.class.sources := Classes/Source/colors.c
 gui.class.sources := Classes/Source/gui.c
+note.class.sources := Classes/Source/note.c
 
 # control:
 args.class.sources := Classes/Source/args.c
@@ -125,8 +126,8 @@ balance~.class.sources := Classes/Source/balance~.c
 bandpass~.class.sources := Classes/Source/bandpass~.c
 bandstop~.class.sources := Classes/Source/bandstop~.c
 bl.imp~.class.sources := Classes/Source/bl.imp~.c
-bl.saw2~.class.sources := Classes/Source/bl.saw~.c
-bl.saw~.class.sources := Classes/Source/bl.saw2~.c
+bl.saw~.class.sources := Classes/Source/bl.saw~.c
+bl.saw2~.class.sources := Classes/Source/bl.saw2~.c
 bl.square~.class.sources := Classes/Source/bl.square~.c
 bl.tri~.class.sources := Classes/Source/bl.tri~.c
 bl.vsaw~.class.sources := Classes/Source/bl.vsaw~.c
@@ -293,10 +294,6 @@ midi := \
     
 file := shared/elsefile.c
     rec.class.sources := Classes/Source/rec.c $(file)
-    
-# GUI:
-utf := shared/s_utf8.c
-	note.class.sources := Classes/Source/note.c $(utf)
 
 smagic := shared/magic.c
     oscope~.class.sources := Classes/Source/oscope~.c $(smagic)

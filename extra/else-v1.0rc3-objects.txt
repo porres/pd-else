@@ -37,6 +37,7 @@ bl.saw2~	x
 bl.sine~	x
 bl.square~	x
 bl.tri~	x
+blip~	x
 bl.vsaw~	x
 bl.wavetable~	x
 blocksize~	x
@@ -155,7 +156,6 @@ gate2imp~	x
 gatehold~	x
 gaussian~	x
 gbman~	x
-gbuzz~	x
 gcd	x
 giga.rev~	x
 glide	x

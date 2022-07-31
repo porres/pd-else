@@ -70,6 +70,8 @@ typedef struct _sfont{
     unsigned char       x_channel;
 }t_sfont;
 
+static void sfont_float(t_sfont *x, t_float f);
+
 static void sfont_getversion(void){
     post("[sfont~] version 1.0-rc2 (using fluidsynth %s)", FLUIDSYNTH_VERSION);
 }
@@ -102,7 +104,9 @@ static void sfont_pan(t_sfont *x, t_symbol *s, int ac, t_atom *av){
 
 static void sfont_note(t_sfont *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(ac == 2 || ac == 3){
+    if(ac == 1)
+        sfont_float(x, atom_getfloatarg(0, ac, av));
+    else if(ac == 2 || ac == 3){
         int key = atom_getintarg(0, ac, av);
         int vel = atom_getintarg(1, ac, av);
         int chan = ac > 2 ? atom_getintarg(2, ac, av) : 1; // channel starts at zero???
