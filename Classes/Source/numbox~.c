@@ -18,8 +18,8 @@ typedef struct _numbox{
     int       x_width;
     char      x_font[MAXPDSTRING]; // WE DON'T ACTUALLY SET FONT NAME - FIX ME
     int       x_fontsize; // GET SYSTEM font size
-    int       x_fgcolor;  // oh no, no int, no no no
-    int       x_bgcolor;
+    t_symbol *x_fgcolor;
+    t_symbol *x_bgcolor;
     t_glist  *x_glist;
     t_clock  *x_clock_reset;
     t_clock  *x_clock_wait;
@@ -47,7 +47,7 @@ static void numbox_dialog_init(void);
 t_widgetbehavior numbox_widgetbehavior;
 static t_class *numbox_class;
 
-// // // // // // // //  widget helper functions // // // // // // // // // // //
+// // // // // // // // helper functions // // // // // // // // // // //
 
 static void numbox_ftoa(t_numbox *x){
     double f = x->x_outmode ? x->x_set_val : x->x_in_val;
@@ -102,7 +102,7 @@ static void numbox_draw_update(t_gobj *client, t_glist *glist){
             x->x_buf[sl+1] = 0;
             if(sl >= x->x_numwidth)
                 cp += sl - x->x_numwidth + 1;
-            sys_vgui(".x%lx.c itemconfigure %lxTEXT -fill #%06x\n", cv, x, x->x_fgcolor);
+            sys_vgui(".x%lx.c itemconfigure %lxTEXT -fill %s\n", cv, x, x->x_fgcolor->s_name);
             sys_vgui(".x%lx.c itemconfigure %lxNUMBER -text {%s}\n", cv, x, cp);
             sys_vgui(".x%lx.c itemconfigure %lxBASE -width %d\n", cv, x, x->x_zoom*2);
             x->x_buf[sl] = 0;
@@ -115,7 +115,7 @@ static void numbox_draw_update(t_gobj *client, t_glist *glist){
                 sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue\n", cv, x);
             }
             else{
-                sys_vgui(".x%lx.c itemconfigure %lxTEXT -fill #%06x\n", cv, x, x->x_fgcolor);
+                sys_vgui(".x%lx.c itemconfigure %lxTEXT -fill %s\n", cv, x, x->x_fgcolor->s_name);
                 sys_vgui(".x%lx.c itemconfigure %lxBASE -outline black\n", cv, x);
             }
             sys_vgui(".x%lx.c itemconfigure %lxBASE -width %d\n", cv, x, x->x_zoom);
@@ -195,20 +195,20 @@ static void numbox_draw_new(t_numbox *x, t_glist *glist){
     int d = x->x_zoom + x->x_height/(34*x->x_zoom);
     int iow = IOWIDTH * x->x_zoom, ioh = 3 * x->x_zoom;
     t_canvas *cv = glist_getcanvas(glist);
-    sys_vgui(".x%lx.c create polygon %d %d %d %d %d %d %d %d %d %d -width %d -outline black -fill #%06x "
+    sys_vgui(".x%lx.c create polygon %d %d %d %d %d %d %d %d %d %d -width %d -outline black -fill %s "
         "-tags [list %lxBASE %lxALL]\n", cv, xpos, ypos, xpos+w, ypos, xpos+w, ypos+x->x_height,
-        xpos, ypos+x->x_height, xpos, ypos, x->x_zoom, x->x_bgcolor, x, x);
-    sys_vgui(".x%lx.c create text %d %d -text {~} -anchor w -font {{%s} -%d %s} -fill #%06x "
+        xpos, ypos+x->x_height, xpos, ypos, x->x_zoom, x->x_bgcolor->s_name, x, x);
+    sys_vgui(".x%lx.c create text %d %d -text {~} -anchor w -font {{%s} -%d %s} -fill %s "
         "-tags [list %lxTILDE %lxTEXT %lxALL]\n", cv, xpos + 2*x->x_zoom+1, ypos+half+d, x->x_font,
-        x->x_fontsize*x->x_zoom, sys_fontweight, x->x_fgcolor, x, x, x);
+        x->x_fontsize*x->x_zoom, sys_fontweight, x->x_fgcolor->s_name, x, x, x);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lxOUT %lxALL]\n",
         cv, xpos, ypos+x->x_height+x->x_zoom-ioh, xpos+iow, ypos+x->x_height, x, x);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lxIN %lxALL]\n",
         cv, xpos, ypos, xpos+iow, ypos-x->x_zoom+ioh, x, x);
     numbox_ftoa(x);
-    sys_vgui(".x%lx.c create text %d %d -text {%s} -anchor w -font {{%s} -%d %s} -fill #%06x "
+    sys_vgui(".x%lx.c create text %d %d -text {%s} -anchor w -font {{%s} -%d %s} -fill %s "
         "-tags [list %lxNUMBER %lxTEXT %lxALL]\n", cv, xpos+half+2*x->x_zoom+3, ypos+half+d,
-        x->x_buf, x->x_font, x->x_fontsize*x->x_zoom, sys_fontweight, x->x_fgcolor, x, x, x);
+        x->x_buf, x->x_font, x->x_fontsize*x->x_zoom, sys_fontweight, x->x_fgcolor->s_name, x, x, x);
 }
 
 static void numbox_delete(t_gobj *z, t_glist *glist){
@@ -223,7 +223,7 @@ static void numbox_select(t_gobj *z, t_glist *glist, int sel){
         sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue\n", cv, x);
     }
     else{
-        sys_vgui(".x%lx.c itemconfigure %lxTEXT -fill #%06x\n", cv, x, x->x_fgcolor);
+        sys_vgui(".x%lx.c itemconfigure %lxTEXT -fill %s\n", cv, x, x->x_fgcolor->s_name);
         sys_vgui(".x%lx.c itemconfigure %lxBASE -outline black\n", cv, x);
     }
 }
@@ -260,17 +260,8 @@ static void numbox_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *x
     *yp2 = *yp1 + x->x_height;
 }
 
-static t_symbol* color2symbol(int col){
-    char colname[MAXPDSTRING];
-    colname[0] = colname[MAXPDSTRING-1] = 0;
-    snprintf(colname, MAXPDSTRING-1, "#%06x", col);
-    return(gensym(colname));
-}
-
 static void numbox_save(t_gobj *z, t_binbuf *b){
     t_numbox *x = (t_numbox *)z;
-    t_symbol *bgcol = color2symbol(x->x_bgcolor);
-    t_symbol *fgcol = color2symbol(x->x_fgcolor);
     if(x->x_change){
         x->x_change = 0;
         clock_unset(x->x_clock_reset);
@@ -278,7 +269,7 @@ static void numbox_save(t_gobj *z, t_binbuf *b){
     }
     binbuf_addv(b, "ssiisiiissiff", gensym("#X"), gensym("obj"), (int)x->x_obj.te_xpix,
         (int)x->x_obj.te_ypix, gensym("numbox~"), x->x_numwidth, (x->x_height/x->x_zoom)-5,
-        x->x_interval_ms, bgcol, fgcol, x->x_ramp_time, x->x_minimum, x->x_maximum);
+        x->x_interval_ms, x->x_bgcolor, x->x_fgcolor, x->x_ramp_time, x->x_minimum, x->x_maximum);
     binbuf_addv(b, ";");
 }
 
@@ -295,9 +286,9 @@ static void numbox_properties(t_gobj *z, t_glist *owner){
     }
     sprintf(buf, "::dialog_numbox::pdtk_numbox_dialog %%s \
             -------dimensions(digits)(pix):------- \
-            %d %d %d %d %d %d #%06x #%06x %.1f %.1f\n",
+            %d %d %d %d %d %d %s %s %.1f %.1f\n",
             x->x_numwidth, MINDIGITS, (x->x_height /x->x_zoom) - 5, MINSIZE, x->x_ramp_time, x->x_interval_ms,
-            0xffffff & x->x_bgcolor, 0xffffff & x->x_fgcolor, x->x_minimum, x->x_maximum);
+            x->x_bgcolor->s_name, x->x_fgcolor->s_name, x->x_minimum, x->x_maximum);
     gfxstub_new(&x->x_obj.ob_pd, x, buf);
 }
 
@@ -305,17 +296,6 @@ static void numbox_doit(t_numbox *x){
     x->x_out_val = x->x_set_val;
     x->x_ramp = (x->x_out_val - x->x_ramp_val) / (x->x_ramp_time * x->x_sr_khz);
     numbox_clip(x);
-}
-
-static int getcolor_int(int index, int ac, t_atom*av){
-    if((av+index)->a_type == A_SYMBOL){
-        t_symbol *sym = atom_getsymbolarg(index, ac, av);
-        if('#' == sym->s_name[0]){
-            int col = (int)strtol(sym->s_name+1, 0, 16);
-            return(col & 0xFFFFFF);
-        }
-    }
-    return(0);
 }
 
 static void numbox_interval(t_numbox *x, t_floatarg f){
@@ -333,28 +313,30 @@ static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
     int h = (int)atom_getfloatarg(1, ac, av) + 5;
     t_float ramp_time = (int)atom_getfloatarg(2, ac, av);
     t_float interval = (int)atom_getfloatarg(3, ac, av);
-    int bcol = (int)getcolor_int(4, ac, av);
-    int fcol = (int)getcolor_int(5, ac, av);
+    t_symbol *bgcolor = atom_getsymbolarg(4, ac, av);
+    t_symbol *fgcolor = atom_getsymbolarg(5, ac, av);
     int min = atom_getfloatarg(6, ac, av);
-    int max = atom_getfloatarg(7, ac, av);    
+    int max = atom_getfloatarg(7, ac, av);
+    
     t_atom at[ac];
     SETFLOAT(at, x->x_numwidth);
     SETFLOAT(at+1, x->x_height);
     SETFLOAT(at+2, x->x_interval_ms);
-    SETCOLOR(at+3, x->x_bgcolor);
-    SETCOLOR(at+4, x->x_fgcolor);
+    SETSYMBOL(at+3, x->x_bgcolor);
+    SETSYMBOL(at+4, x->x_fgcolor);
     SETFLOAT(at+5, x->x_ramp_time);
     SETFLOAT(at+6, x->x_minimum);
     SETFLOAT(at+7, x->x_maximum);
     pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), ac, at, ac, av);
+    
     x->x_numwidth = w < MINDIGITS ? MINDIGITS : w;
     x->x_height = (h >= MINSIZE ? h : MINSIZE) * x->x_zoom;
     x->x_fontsize = x->x_height - 5;
     numbox_calc_fontwidth(x);
     numbox_interval(x, interval);
     numbox_check_minmax(x, min, max);
-    x->x_fgcolor = fcol & 0xffffff;
-    x->x_bgcolor = bcol & 0xffffff;
+    x->x_bgcolor = bgcolor;
+    x->x_fgcolor = fgcolor;
     numbox_ramp(x, ramp_time);
     numbox_draw_erase(x, x->x_glist);
     numbox_draw_new(x, x->x_glist);
@@ -478,20 +460,22 @@ static void numbox_size(t_numbox *x, t_floatarg f){
     numbox_draw_new(x, x->x_glist);
 }
 
-/*static void numbox_bgcolor(t_numbox *x, t_symbol *s, int ac, t_atom *av){
+static void numbox_fgcolor(t_numbox *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 1 && av->a_type == A_SYMBOL)
-        ;
-    else if(ac == 3 && av->a_type == A_SYMBOL)
-        ;
-}*/
+        x->x_fgcolor = atom_getsymbolarg(0, ac, av);
+    sys_vgui(".x%lx.c itemconfigure %lxTEXT -fill %s\n", glist_getcanvas(x->x_glist), x, x->x_fgcolor->s_name);
+//    else if(ac == 3 && av->a_type == A_SYMBOL)
+//        ;
+}
 
-static int colorfromarg(t_symbol *color_arg){
-    if('#' == color_arg->s_name[0]){
-        int col = (int)strtol(color_arg->s_name+1, 0, 16);
-        return(col & 0xFFFFFF);
-    }
-    return(0);
+static void numbox_bgcolor(t_numbox *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac == 1 && av->a_type == A_SYMBOL)
+        x->x_bgcolor = atom_getsymbolarg(0, ac, av);
+    sys_vgui(".x%lx.c itemconfigure %lxBASE -fill %s\n", glist_getcanvas(x->x_glist), x, x->x_bgcolor->s_name);
+//    else if(ac == 3 && av->a_type == A_SYMBOL)
+//        ;
 }
 
 static void *numbox_new(t_symbol *s, int ac, t_atom *av){
@@ -501,15 +485,15 @@ static void *numbox_new(t_symbol *s, int ac, t_atom *av){
     int interval = 100, ramp_time = 10;
     x->x_outmode = 1;
     t_float minimum = 0, maximum = 0;
-    x->x_bgcolor = 0xDFDFDF;
-    x->x_fgcolor = 0x00;
+    x->x_bgcolor = gensym("#dfdfdf");
+    x->x_fgcolor = gensym("#000000");
     x->x_zoom = ((t_glist*)canvas_getcurrent())->gl_zoom;
     if(ac == 8){
         w = atom_getintarg(0, ac, av);
         h = atom_getintarg(1, ac, av);
         interval = atom_getintarg(2, ac, av);
-        x->x_bgcolor = colorfromarg(atom_getsymbolarg(3, ac, av));
-        x->x_fgcolor = colorfromarg(atom_getsymbolarg(4, ac, av));
+        x->x_bgcolor = atom_getsymbolarg(3, ac, av);
+        x->x_fgcolor = atom_getsymbolarg(4, ac, av);
         ramp_time = atom_getintarg(5, ac, av);
         minimum = atom_getfloatarg(6, ac, av);
         maximum = atom_getfloatarg(7, ac, av);
@@ -1002,8 +986,8 @@ void numbox_tilde_setup(void){
     class_addmethod(numbox_class, (t_method)numbox_interval, gensym("rate"), A_FLOAT, 0);
     class_addmethod(numbox_class, (t_method)numbox_ramp, gensym("ramp"), A_FLOAT, 0);
     class_addmethod(numbox_class, (t_method)numbox_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
-//    class_addmethod(numbox_class, (t_method)numbox_bgcolor, gensym("bgcolor"), A_GIMME, 0);
-//    class_addmethod(numbox_class, (t_method)numbox_fgcolor, gensym("fgcolor"), A_GIMME, 0);
+    class_addmethod(numbox_class, (t_method)numbox_bgcolor, gensym("bgcolor"), A_GIMME, 0);
+    class_addmethod(numbox_class, (t_method)numbox_fgcolor, gensym("fgcolor"), A_GIMME, 0);
     class_addmethod(numbox_class, (t_method)numbox_zoom, gensym("zoom"), A_CANT, 0);
     class_addmethod(numbox_class, (t_method)numbox_click, gensym("click"),
         A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, A_FLOAT, 0);
