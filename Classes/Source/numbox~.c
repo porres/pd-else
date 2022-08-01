@@ -304,9 +304,9 @@ static void numbox_tilde_properties(t_gobj *z, t_glist *owner){
     }
     sprintf(buf, "::dialog_numbox::pdtk_numbox_tilde_dialog %%s \
             -------dimensions(digits)(pix):------- %d %d %d \
-            %d %d %d \
-            #%06x #%06x %.4f %.4f \n",
-            x->x_numwidth, MINDIGITS, (x->x_gui.x_h /x->x_zoom) - 5, MINSIZE, x->x_output_mode, x->x_interval_ms,
+            %d %.4f %.4f \
+            #%06x #%06x %.1f %.1f \n",
+            x->x_numwidth, MINDIGITS, (x->x_gui.x_h /x->x_zoom) - 5, MINSIZE, x->x_ramp_time, x->x_interval_ms,
             0xffffff & x->x_gui.x_bcol, 0xffffff & x->x_gui.x_fcol, x->x_minimum, x->x_maximum);
     gfxstub_new(&x->x_gui.x_obj.ob_pd, x, buf);
 }
@@ -332,11 +332,16 @@ static void numbox_tilde_interval(t_numbox_tilde *x, t_floatarg f){
     x->x_interval_ms = f < 15 ? 15 : (int)f;
 }
 
+static void numbox_tilde_ramp(t_numbox_tilde *x, t_floatarg f){
+    x->x_ramp_time = f < 0 ? 0 : (int)f;
+}
+
 static void numbox_tilde_dialog(t_numbox_tilde *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     #define SETCOLOR(a, col) do {char color[MAXPDSTRING]; snprintf(color, MAXPDSTRING-1, "#%06x", 0xffffff & col); color[MAXPDSTRING-1] = 0; SETSYMBOL(a, gensym(color));} while(0)
     int w = (int)atom_getfloatarg(0, ac, av);
     int h = (int)atom_getfloatarg(1, ac, av) + 5;
+    t_float ramp_time = (int)atom_getfloatarg(2, ac, av);
     t_float interval = (int)atom_getfloatarg(3, ac, av);
     int bcol = (int)getcolor_int(4, ac, av);
     int fcol = (int)getcolor_int(5, ac, av);
@@ -361,6 +366,7 @@ static void numbox_tilde_dialog(t_numbox_tilde *x, t_symbol *s, int ac, t_atom *
     numbox_tilde_check_minmax(x, min, max);
     x->x_gui.x_fcol = fcol & 0xffffff;
     x->x_gui.x_bcol = bcol & 0xffffff;
+    numbox_tilde_ramp(x, ramp_time);
     numbox_tilde_draw_erase(x, x->x_gui.x_glist);
     numbox_tilde_draw_new(x, x->x_gui.x_glist);
     canvas_fixlinesfor(x->x_gui.x_glist, (t_text*)x);
@@ -494,9 +500,6 @@ static void numbox_tilde_color(t_numbox_tilde *x, t_symbol *s, int ac, t_atom *a
 // write new one
 }
 
-static void numbox_tilde_ramp(t_numbox_tilde *x, t_floatarg f){
-    x->x_ramp_time = f < 0 ? 0 : (int)f;
-}
 
 static int colorfromarg(t_symbol *color_arg){
     if('#' == color_arg->s_name[0]){
@@ -608,13 +611,14 @@ static void numbox_tilde_dsp(t_numbox_tilde *x, t_signal **sp){
 }
 
 // Tcl/Tk code for the preferences, based on the default IEMGUIs dialog
+// Tcl/Tk code for the preferences, based on the default IEMGUI dialog
 static void numbox_tilde_dialog_init(void){
     sys_gui("\n"
             "package provide dialog_numbox 0.1\n"
             "namespace eval ::dialog_numbox:: {\n"
             "    variable define_min_fontsize 4\n"
             "\n"
-            "    namespace export pdtk_numbox_tilde_dialog\n"
+            "    namespace export pdtk_elsegui_dialog\n"
             "}\n"
             "\n"
             "\n"
@@ -639,10 +643,6 @@ static void numbox_tilde_dialog_init(void){
             "        $mytoplevel.dim.h_ent configure -textvariable $var_elsegui_hgt\n"
             "    }\n"
             "}\n"
-            "\n"
-            "\n"
-            "\n"
-            
             "proc ::dialog_numbox::set_col_example {mytoplevel} {\n"
             "    set vid [string trimleft $mytoplevel .]\n"
             "\n"
@@ -688,6 +688,8 @@ static void numbox_tilde_dialog_init(void){
             "proc ::dialog_numbox::choose_col_bkfrlb {mytoplevel} {\n"
             "    set vid [string trimleft $mytoplevel .]\n"
             "\n"
+            "    set var_elsegui_l2_f1_b0 [concat elsegui_l2_f1_b0_$vid]\n"
+            "    global $var_elsegui_l2_f1_b0\n"
             "    set var_elsegui_bcol [concat elsegui_bcol_$vid]\n"
             "    global $var_elsegui_bcol\n"
             "    set var_elsegui_fcol [concat elsegui_fcol_$vid]\n"
@@ -714,14 +716,14 @@ static void numbox_tilde_dialog_init(void){
             "proc ::dialog_numbox::mode {mytoplevel} {\n"
             "    set vid [string trimleft $mytoplevel .]\n"
             "\n"
-            "    set var_elsegui_mode [concat elsegui_mode_$vid]\n"
-            "    global $var_elsegui_mode\n"
+            "    set var_elsegui_ramp [concat var_elsegui_ramp_$vid]\n"
+            "    global $var_elsegui_ramp\n"
             "\n"
-            "    if {[eval concat $$var_elsegui_mode]} {\n"
-            "        set $var_elsegui_mode 0\n"
+            "    if {[eval concat $$var_elsegui_ramp]} {\n"
+            "        set $var_elsegui_ramp 0\n"
             "        $mytoplevel.para.mode configure -text [_ \"Input\"]\n"
             "    } else {\n"
-            "        set $var_elsegui_mode 1\n"
+            "        set $var_elsegui_ramp 1\n"
             "        $mytoplevel.para.mode configure -text [_ \"Output\"]\n"
             "    }\n"
             "}\n"
@@ -739,8 +741,8 @@ static void numbox_tilde_dialog_init(void){
             "    global $var_elsegui_min_hgt\n"
             "    set var_elsegui_interval [concat elsegui_interval_$vid]\n"
             "    global $var_elsegui_interval\n"
-            "    set var_elsegui_mode [concat elsegui_mode_$vid]\n"
-            "    global $var_elsegui_mode\n"
+            "    set var_elsegui_ramp [concat var_elsegui_ramp_$vid]\n"
+            "    global $var_elsegui_ramp\n"
             "    set var_elsegui_bcol [concat elsegui_bcol_$vid]\n"
             "    global $var_elsegui_bcol\n"
             "    set var_elsegui_fcol [concat elsegui_fcol_$vid]\n"
@@ -758,7 +760,7 @@ static void numbox_tilde_dialog_init(void){
             "    pdsend [concat $mytoplevel dialog \\\n"
             "            [eval concat $$var_elsegui_wdt] \\\n"
             "            [eval concat $$var_elsegui_hgt] \\\n"
-            "            [eval concat $$var_elsegui_mode] \\\n"
+            "            [eval concat $$var_elsegui_ramp] \\\n"
             "            [eval concat $$var_elsegui_interval] \\\n"
             "            [string tolower [eval concat $$var_elsegui_bcol]] \\\n"
             "            [string tolower [eval concat $$var_elsegui_fcol]] \\\n"
@@ -780,7 +782,7 @@ static void numbox_tilde_dialog_init(void){
             "proc ::dialog_numbox::pdtk_numbox_tilde_dialog {mytoplevel dim_header \\\n"
             "                                       wdt min_wdt \\\n"
             "                                       hgt min_hgt \\\n"
-            "                                       mode interval \\\n"
+            "                                       ramp interval \\\n"
             "                                       bcol fcol min_rng max_rng} {\n"
             "\n"
             "    set vid [string trimleft $mytoplevel .]\n"
@@ -795,8 +797,8 @@ static void numbox_tilde_dialog_init(void){
             "    global $var_elsegui_min_hgt\n"
             "    set var_elsegui_interval [concat elsegui_interval_$vid]\n"
             "    global $var_elsegui_interval\n"
-            "    set var_elsegui_mode [concat elsegui_mode_$vid]\n"
-            "    global $var_elsegui_mode\n"
+            "    set var_elsegui_ramp [concat var_elsegui_ramp_$vid]\n"
+            "    global $var_elsegui_ramp\n"
             "    set var_elsegui_bcol [concat elsegui_bcol_$vid]\n"
             "    global $var_elsegui_bcol\n"
             "    set var_elsegui_fcol [concat elsegui_fcol_$vid]\n"
@@ -813,7 +815,7 @@ static void numbox_tilde_dialog_init(void){
             "    set $var_elsegui_hgt $hgt\n"
             "    set $var_elsegui_min_hgt $min_hgt\n"
             "    set $var_elsegui_interval $interval\n"
-            "    set $var_elsegui_mode $mode\n"
+            "    set $var_elsegui_ramp $ramp\n"
             "    set $var_elsegui_bcol $bcol\n"
             "    set $var_elsegui_fcol $fcol\n"
             "    set $var_elsegui_min_rng $min_rng\n"
@@ -831,7 +833,7 @@ static void numbox_tilde_dialog_init(void){
             "    wm transient $mytoplevel $::focused_window\n"
             "    $mytoplevel configure -menu $::dialog_menubar\n"
             "    $mytoplevel configure -padx 0 -pady 0\n"
-            "    ::pd_bindings::dialog_bindings $mytoplevel \"elsegui\"\n"
+            "    ::pd_bindings::dialog_bindings $mytoplevel \"iemgui\"\n"
             "\n"
             "    # dimensions\n"
             "    frame $mytoplevel.dim -height 7\n"
@@ -870,14 +872,12 @@ static void numbox_tilde_dialog_init(void){
             "       label $mytoplevel.para.interval.lab -text [_ \"Interval (ms)\"]\n"
             "       entry $mytoplevel.para.interval.ent -textvariable $var_elsegui_interval -width 6\n"
             "       pack $mytoplevel.para.interval.ent $mytoplevel.para.interval.lab -side right -anchor e\n"
-            "    if {[eval concat $$var_elsegui_mode] == 0} {\n"
-            "        button $mytoplevel.para.mode -command \"::dialog_numbox::mode $mytoplevel\" \\\n"
-            "            -text [_ \"Input\"] }\n"
-            "    if {[eval concat $$var_elsegui_mode] == 1} {\n"
-            "        button $mytoplevel.para.mode -command \"::dialog_numbox::mode $mytoplevel\" \\\n"
-            "            -text [_ \"Output\"] }\n"
-            "        pack $mytoplevel.para.interval -side left -expand 1 -ipadx 10\n"
-            "        pack $mytoplevel.para.mode -side left -expand 1 -ipadx 10\n"
+            "   frame $mytoplevel.para.ramp\n"
+            "       label $mytoplevel.para.ramp.lab -text [_ \"Ramp (ms)\"]\n"
+            "       entry $mytoplevel.para.ramp.ent -textvariable $var_elsegui_ramp -width 6\n"
+            "       pack $mytoplevel.para.ramp.ent $mytoplevel.para.ramp.lab -side right -anchor e\n"
+            "       pack $mytoplevel.para.interval -side left -expand 1 -ipadx 10\n"
+            "       pack $mytoplevel.para.ramp -side left -expand 1 -ipadx 10\n"
             "    # get the current font name from the int given from C-space (gn_f)\n"
             "    set current_font $::font_family\n"
             "\n"
@@ -1002,7 +1002,6 @@ static void numbox_tilde_dialog_init(void){
             "    return 1\n"
             "}\n");
 }
-
 void numbox_tilde_setup(void){
     numbox_tilde_class = class_new(gensym("numbox~"), (t_newmethod)numbox_tilde_new,
         (t_method)numbox_tilde_free, sizeof(t_numbox_tilde), 0, A_GIMME, 0);
