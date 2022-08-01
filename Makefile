@@ -267,6 +267,7 @@ magic := shared/magic.c
     tri~.class.sources := Classes/Source/tri~.c $(magic)
     vsaw~.class.sources := Classes/Source/vsaw~.c $(magic)
     pimp~.class.sources := Classes/Source/pimp~.c $(magic)
+    numbox~.class.sources := Classes/Source/numbox~.c $(magic)
 
 buf := shared/buffer.c
     shaper~.class.sources = Classes/Source/shaper~.c $(buf)
