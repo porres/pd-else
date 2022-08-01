@@ -12,34 +12,34 @@
 
 typedef struct _numbox_tilde{
     t_object  x_obj;
-    unsigned int       x_change:1;
-    unsigned int       x_finemoved:1;
-    int                x_h;
-    int                x_w;
-    char               x_font[MAXPDSTRING]; // WE DON'T ACTUALLY SET FONT NAME - FIX ME
-    int                x_fontsize; // GET SYSTEM font size
-    int                x_fcol; // oh no, no int, no no no
-    int                x_bcol;
-    t_glist  *x_glist;
-    t_clock  *x_clock_reset;
-    t_clock  *x_clock_wait;
-    t_clock  *x_clock_repaint;
-    t_float   x_in_val;
-    t_float   x_out_val;
-    t_float   x_set_val;
-    t_float   x_ramp_val;
-    t_float   x_ramp;
-    t_float   x_last_out;
-    t_float   x_maximum;
-    t_float   x_minimum;
-    int       x_selected;
-    int       x_ramp_time;
-    int       x_interval_ms;
-    int       x_zoom;
-    int       x_numwidth;
-    int       x_outmode;
-    int       x_needs_update;
-    char      x_buf[MAX_NUMBOX_LEN];
+    unsigned int x_change:1;
+    unsigned int x_finemoved:1;
+    int          x_h;
+    int          x_w;
+    char         x_font[MAXPDSTRING]; // WE DON'T ACTUALLY SET FONT NAME - FIX ME
+    int          x_fontsize; // GET SYSTEM font size
+    int          x_fcol; // oh no, no int, no no no
+    int          x_bcol;
+    t_glist     *x_glist;
+    t_clock     *x_clock_reset;
+    t_clock     *x_clock_wait;
+    t_clock     *x_clock_repaint;
+    t_float      x_in_val;
+    t_float      x_out_val;
+    t_float      x_set_val;
+    t_float      x_ramp_val;
+    t_float      x_ramp;
+    t_float      x_last_out;
+    t_float      x_maximum;
+    t_float      x_minimum;
+    int          x_selected;
+    int          x_ramp_time;
+    int          x_interval_ms;
+    int          x_zoom;
+    int          x_numwidth;
+    int          x_outmode;
+    int          x_needs_update;
+    char         x_buf[MAX_NUMBOX_LEN];
 }t_numbox_tilde;
 
 static void numbox_tilde_dialog_init(void);
