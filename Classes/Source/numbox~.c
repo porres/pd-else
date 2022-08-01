@@ -171,21 +171,21 @@ static void numbox_tilde_draw_update(t_gobj *client, t_glist *glist){
             if(sl >= x->x_numwidth)
                 cp += sl - x->x_numwidth + 1;
             sys_vgui(".x%lx.c itemconfigure %lxnumbox -fill #%06x -text {%s} \n", cv, x, x->x_gui.x_fcol, cp);
-            sys_vgui(".x%lx.c itemconfigure %lxBASE1 -width %d\n", cv, x, x->x_zoom*2);
+            sys_vgui(".x%lx.c itemconfigure %lxBASE -width %d\n", cv, x, x->x_zoom*2);
             x->x_buf[sl] = 0;
         }
         else{
             numbox_tilde_ftoa(x);
             if(x->x_selected){
                 sys_vgui(".x%lx.c itemconfigure %lxnumbox -fill blue -text {%s}\n", cv, x, x->x_buf);
-                sys_vgui(".x%lx.c itemconfigure %lxBASE1 -outline blue\n", cv, x);
+                sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue\n", cv, x);
             }
             else{
                 sys_vgui(".x%lx.c itemconfigure %lxnumbox -fill #%06x -text {%s} \n", cv, x,
                     x->x_gui.x_fcol, x->x_buf);
-                sys_vgui(".x%lx.c itemconfigure %lxBASE1 -outline black\n", cv, x);
+                sys_vgui(".x%lx.c itemconfigure %lxBASE -outline black\n", cv, x);
             }
-            sys_vgui(".x%lx.c itemconfigure %lxBASE1 -width %d\n", cv, x, x->x_zoom);
+            sys_vgui(".x%lx.c itemconfigure %lxBASE -width %d\n", cv, x, x->x_zoom);
             x->x_buf[0] = 0;
         }
     }
@@ -199,7 +199,7 @@ static void numbox_tilde_draw_new(t_numbox_tilde *x, t_glist *glist){
     int iow = IOWIDTH * x->x_zoom, ioh = 3 * x->x_zoom;
     t_canvas *cv = glist_getcanvas(glist);
     sys_vgui(".x%lx.c create polygon %d %d %d %d %d %d %d %d %d %d -width %d -outline black "
-        "-fill #%06x -tags [list %lxBASE1 %lxALL]\n", cv, xpos, ypos, xpos+w, ypos, xpos+w, ypos+x->x_gui.x_h,
+        "-fill #%06x -tags [list %lxBASE %lxALL]\n", cv, xpos, ypos, xpos+w, ypos, xpos+w, ypos+x->x_gui.x_h,
         xpos, ypos+x->x_gui.x_h, xpos, ypos, x->x_zoom, x->x_gui.x_bcol, x, x);
     sys_vgui(".x%lx.c create text %d %d -text {~} -anchor w -font {{%s} -%d %s} -fill #%06x -tags [list %lxBASE2 %lxALL]\n", cv,
         xpos + 2*x->x_zoom+1, ypos+half+d, x->x_gui.x_font, x->x_gui.x_fontsize*x->x_zoom, sys_fontweight, x->x_gui.x_fcol, x, x);
@@ -221,11 +221,11 @@ static void numbox_tilde_select(t_gobj *z, t_glist *glist, int sel){
     t_canvas *cv = glist_getcanvas(glist);
     if((x->x_selected = sel)){
         sys_vgui(".x%lx.c itemconfigure %lxnumbox -fill blue\n", cv, x);
-        sys_vgui(".x%lx.c itemconfigure %lxBASE1 -outline blue\n", cv, x);
+        sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue\n", cv, x);
     }
     else{
         sys_vgui(".x%lx.c itemconfigure %lxnumbox -fill #%06x\n", cv, x, x->x_gui.x_fcol);
-        sys_vgui(".x%lx.c itemconfigure %lxBASE1 -outline black\n", cv, x);
+        sys_vgui(".x%lx.c itemconfigure %lxBASE -outline black\n", cv, x);
     }
 }
 
@@ -247,16 +247,16 @@ static void numbox_tilde_draw_config(t_numbox_tilde* x, t_glist* glist){
     if(x->x_selected){
         sys_vgui(".x%lx.c itemconfigure %lxnumbox -font {{%s} -%d %s} -fill blue\n",
             cv, x, x->x_gui.x_font, x->x_gui.x_fontsize*x->x_zoom, sys_fontweight);
-        sys_vgui(".x%lx.c itemconfigure %lxBASE1 -outline blue -font {{%s} -%d %s}\n", cv, x,
+        sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue -font {{%s} -%d %s}\n", cv, x,
             x->x_gui.x_font, x->x_gui.x_fontsize * x->x_zoom, sys_fontweight);
     }
     else{
         sys_vgui(".x%lx.c itemconfigure %lxnumbox -font {{%s} -%d %s} -fill #%06x\n",
             cv, x, x->x_gui.x_font, x->x_gui.x_fontsize * x->x_zoom, sys_fontweight, x->x_gui.x_fcol);
-        sys_vgui(".x%lx.c itemconfigure %lxBASE1 -outline black -font {{%s} -%d %s}\n", cv, x,
+        sys_vgui(".x%lx.c itemconfigure %lxBASE -outline black -font {{%s} -%d %s}\n", cv, x,
             x->x_gui.x_font, x->x_gui.x_fontsize * x->x_zoom, sys_fontweight);
     }
-    sys_vgui(".x%lx.c itemconfigure %lxBASE1 -fill #%06x\n", cv, x, x->x_gui.x_bcol);
+    sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%06x\n", cv, x, x->x_gui.x_bcol);
 }
 
 static void numbox_tilde_draw(t_numbox_tilde *x, t_glist *glist, int mode){
