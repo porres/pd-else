@@ -2,16 +2,33 @@
 
 #include "m_pd.h"
 #include "g_canvas.h"
-#include "g_all_guis.h"
 #include "magic.h"
 #include <stdlib.h>
 #include <string.h>
 
 #define MINDIGITS       1
 #define MAX_NUMBOX_LEN  32
+#define MINSIZE         8
+
+typedef struct _elsegui{
+    t_object           x_obj;
+    t_glist           *x_glist;
+    unsigned int       x_change:1;
+    unsigned int       x_finemoved:1;
+    int                x_h;
+    int                x_w;
+    int                x_ldx;
+    int                x_ldy;
+    char               x_font[MAXPDSTRING]; /* font names can be long! */
+    int                x_fontsize;
+    int                x_fcol;
+    int                x_bcol;
+    int                x_lcol;
+    int                x_binbufindex;       /* where in binbuf to find these */
+}t_elsegui;
 
 typedef struct _numbox_tilde{
-    t_iemgui  x_gui;
+    t_elsegui x_gui;
     t_object  x_obj;
     t_clock  *x_clock_reset;
     t_clock  *x_clock_wait;
@@ -86,7 +103,7 @@ static void numbox_tilde_draw_update(t_gobj *client, t_glist *glist){
     t_numbox_tilde *x = (t_numbox_tilde *)client;
     if(glist_isvisible(glist)){
         t_canvas *cv = glist_getcanvas(glist);
-        if(x->x_gui.x_fsf.x_change && x->x_buf[0] && x->x_output_mode){ // what is this???
+        if(x->x_gui.x_change && x->x_buf[0] && x->x_output_mode){ // what is this???
             char *cp = x->x_buf;
             int sl = (int)strlen(x->x_buf);
             x->x_buf[sl] = '>';
@@ -116,8 +133,8 @@ static void numbox_tilde_draw_update(t_gobj *client, t_glist *glist){
 }
 
 static void numbox_tilde_tick_reset(t_numbox_tilde *x){
-    if(x->x_gui.x_fsf.x_change && x->x_gui.x_glist){
-        x->x_gui.x_fsf.x_change = 0;
+    if(x->x_gui.x_change && x->x_gui.x_glist){
+        x->x_gui.x_change = 0;
         sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
     }
 }
@@ -174,10 +191,6 @@ static void numbox_tilde_range(t_numbox_tilde *x, t_floatarg f1, t_floatarg f2){
 
 static void numbox_tilde_calc_fontwidth(t_numbox_tilde *x){
     int w, f = 31;
-    if(x->x_gui.x_fsf.x_font_style == 1)
-        f = 27;
-    else if(x->x_gui.x_fsf.x_font_style == 2)
-        f = 25;
     w = x->x_gui.x_fontsize * f * x->x_numwidth;
     w /= 36;
     x->x_gui.x_w = (w + (x->x_gui.x_h/2)/x->x_zoom + 4) * x->x_zoom;
@@ -266,8 +279,8 @@ static void numbox_tilde_save(t_gobj *z, t_binbuf *b){
     t_numbox_tilde *x = (t_numbox_tilde *)z;
     t_symbol *bgcol = color2symbol(x->x_gui.x_bcol);
     t_symbol *fgcol = color2symbol(x->x_gui.x_fcol);
-    if(x->x_gui.x_fsf.x_change){
-        x->x_gui.x_fsf.x_change = 0;
+    if(x->x_gui.x_change){
+        x->x_gui.x_change = 0;
         clock_unset(x->x_clock_reset);
         sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
     }
@@ -284,8 +297,8 @@ static void numbox_tilde_properties(t_gobj *z, t_glist *owner){
     numbox_tilde_dialog_init();
     t_numbox_tilde *x = (t_numbox_tilde *)z;
     char buf[800];
-    if(x->x_gui.x_fsf.x_change){
-        x->x_gui.x_fsf.x_change = 0;
+    if(x->x_gui.x_change){
+        x->x_gui.x_change = 0;
         clock_unset(x->x_clock_reset);
         sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
     }
@@ -293,7 +306,7 @@ static void numbox_tilde_properties(t_gobj *z, t_glist *owner){
             -------dimensions(digits)(pix):------- %d %d %d \
             %d %d %d \
             #%06x #%06x %.4f %.4f \n",
-            x->x_numwidth, MINDIGITS, (x->x_gui.x_h /x->x_zoom) - 5, IEM_GUI_MINSIZE, x->x_output_mode, x->x_interval_ms,
+            x->x_numwidth, MINDIGITS, (x->x_gui.x_h /x->x_zoom) - 5, MINSIZE, x->x_output_mode, x->x_interval_ms,
             0xffffff & x->x_gui.x_bcol, 0xffffff & x->x_gui.x_fcol, x->x_minimum, x->x_maximum);
     gfxstub_new(&x->x_gui.x_obj.ob_pd, x, buf);
 }
@@ -305,10 +318,10 @@ static void numbox_tilde_doit(t_numbox_tilde *x){
 }
 
 static int getcolor_int(int index, int ac, t_atom*av){
-    if(IS_A_SYMBOL(av, index)){
-        t_symbol*s=atom_getsymbolarg(index, ac, av);
-        if('#' == s->s_name[0]){
-            int col = (int)strtol(s->s_name+1, 0, 16);
+    if((av+index)->a_type == A_SYMBOL){
+        t_symbol *sym = atom_getsymbolarg(index, ac, av);
+        if('#' == sym->s_name[0]){
+            int col = (int)strtol(sym->s_name+1, 0, 16);
             return(col & 0xFFFFFF);
         }
     }
@@ -341,7 +354,7 @@ static void numbox_tilde_dialog(t_numbox_tilde *x, t_symbol *s, int ac, t_atom *
     SETFLOAT(undo+8, x->x_maximum);
     pd_undo_set_objectstate(x->x_gui.x_glist, (t_pd*)x, gensym("dialog"), 9, undo, ac, av);
     x->x_numwidth = w < MINDIGITS ? MINDIGITS : w;
-    x->x_gui.x_h  = (h >= IEM_GUI_MINSIZE ? h : IEM_GUI_MINSIZE) * x->x_zoom;
+    x->x_gui.x_h  = (h >= MINSIZE ? h : MINSIZE) * x->x_zoom;
     x->x_gui.x_fontsize = x->x_gui.x_h - 5;
     numbox_tilde_calc_fontwidth(x);
     numbox_tilde_interval(x, interval);
@@ -369,7 +382,7 @@ static void numbox_tilde_motion(t_numbox_tilde *x, t_floatarg dx, t_floatarg dy,
     double k2 = 1.0;
     if(up != 0)
         return;
-    if(x->x_gui.x_fsf.x_finemoved)
+    if(x->x_gui.x_finemoved)
         k2 = 0.01;
     numbox_tilde_set(x, x->x_out_val - k2*dy);
     sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
@@ -384,7 +397,7 @@ static void numbox_tilde_key(void *z, t_symbol *keysym, t_floatarg fkey){
     char buf[3];
     buf[1] = 0;
     if(c == 0){
-        x->x_gui.x_fsf.x_change = 0;
+        x->x_gui.x_change = 0;
         clock_unset(x->x_clock_reset);
         sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
         return;
@@ -407,7 +420,7 @@ static void numbox_tilde_key(void *z, t_symbol *keysym, t_floatarg fkey){
     else if(((c == '\n') || (c == 13)) && x->x_buf[0] != 0){
         numbox_tilde_set(x, atof(x->x_buf));
         x->x_buf[0] = 0;
-        x->x_gui.x_fsf.x_change = 0;
+        x->x_gui.x_change = 0;
         clock_unset(x->x_clock_reset);
         numbox_tilde_doit(x);
         sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
@@ -432,17 +445,17 @@ static int numbox_tilde_newclick(t_gobj *z, struct _glist *glist,
         numbox_tilde_click( x, (t_floatarg)xpix, (t_floatarg)ypix,
             (t_floatarg)shift, 0, (t_floatarg)alt);
         if(shift)
-            x->x_gui.x_fsf.x_finemoved = 1;
+            x->x_gui.x_finemoved = 1;
         else
-            x->x_gui.x_fsf.x_finemoved = 0;
-        if(!x->x_gui.x_fsf.x_change && xpix - x->x_gui.x_obj.te_xpix > 10){
+            x->x_gui.x_finemoved = 0;
+        if(!x->x_gui.x_change && xpix - x->x_gui.x_obj.te_xpix > 10){
             clock_delay(x->x_clock_wait, 50);
-            x->x_gui.x_fsf.x_change = 1;
+            x->x_gui.x_change = 1;
             clock_delay(x->x_clock_reset, 3000);
             x->x_buf[0] = 0;
         }
         else{
-            x->x_gui.x_fsf.x_change = 0;
+            x->x_gui.x_change = 0;
             clock_unset(x->x_clock_reset);
             x->x_buf[0] = 0;
             sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
@@ -465,7 +478,7 @@ static void numbox_tilde_width(t_numbox_tilde *x, t_floatarg f){
 }
 
 static void numbox_tilde_size(t_numbox_tilde *x, t_floatarg f){
-    int h = (int)f < IEM_GUI_MINSIZE ? IEM_GUI_MINSIZE : (int)f;
+    int h = (int)f < MINSIZE ? MINSIZE : (int)f;
     x->x_gui.x_h = (h + 4) * x->x_zoom;
     x->x_gui.x_fontsize = x->x_gui.x_h - 5;
     numbox_tilde_calc_fontwidth(x);
@@ -474,7 +487,11 @@ static void numbox_tilde_size(t_numbox_tilde *x, t_floatarg f){
 }
 
 static void numbox_tilde_color(t_numbox_tilde *x, t_symbol *s, int ac, t_atom *av){
-    iemgui_color((void *)x, &x->x_gui, s, ac, av);
+    s = NULL;
+    x = NULL;
+    ac = 0;
+    av = NULL;
+// write new one
 }
 
 static void numbox_tilde_ramp(t_numbox_tilde *x, t_floatarg f){
@@ -514,8 +531,8 @@ static void *numbox_tilde_new(t_symbol *s, int ac, t_atom *av){
     x->x_set_val = 0.0;
     numbox_tilde_check_minmax(x, minimum, maximum);
     x->x_numwidth = w < MINDIGITS ? MINDIGITS : w;
-    if(h < IEM_GUI_MINSIZE)
-        h = IEM_GUI_MINSIZE;
+    if(h < MINSIZE)
+        h = MINSIZE;
     x->x_gui.x_h = h + 4;
     x->x_gui.x_fontsize = h;
     strcpy(x->x_gui.x_font, sys_font);
@@ -523,8 +540,7 @@ static void *numbox_tilde_new(t_symbol *s, int ac, t_atom *av){
     x->x_clock_reset = clock_new(x, (t_method)numbox_tilde_tick_reset);
     x->x_clock_wait = clock_new(x, (t_method)numbox_tilde_tick_wait);
     x->x_clock_repaint = clock_new(x, (t_method)numbox_tilde_periodic_update);
-    x->x_gui.x_fsf.x_change = 0;
-    iemgui_newzoom(&x->x_gui);
+    x->x_gui.x_change = 0;
     numbox_tilde_calc_fontwidth(x);
     x->x_interval_ms = interval < 15 ? 15 : (int)interval;
     x->x_ramp_time = ramp_time;
@@ -591,7 +607,7 @@ static void numbox_tilde_dsp(t_numbox_tilde *x, t_signal **sp){
         dsp_add(numbox_tilde_perform, 4, x, sp[0]->s_vec, sp[1]->s_vec, (t_int)sp[0]->s_n);
 }
 
-// Tcl/Tk code for the preferences, based on the default IEMGUI dialog
+// Tcl/Tk code for the preferences, based on the default IEMGUIs dialog
 static void numbox_tilde_dialog_init(void){
     sys_gui("\n"
             "package provide dialog_numbox 0.1\n"
@@ -605,22 +621,22 @@ static void numbox_tilde_dialog_init(void){
             "proc ::dialog_numbox::clip_dim {mytoplevel} {\n"
             "    set vid [string trimleft $mytoplevel .]\n"
             "\n"
-            "    set var_iemgui_wdt [concat iemgui_wdt_$vid]\n"
-            "    global $var_iemgui_wdt\n"
-            "    set var_iemgui_min_wdt [concat iemgui_min_wdt_$vid]\n"
-            "    global $var_iemgui_min_wdt\n"
-            "    set var_iemgui_hgt [concat iemgui_hgt_$vid]\n"
-            "    global $var_iemgui_hgt\n"
-            "    set var_iemgui_min_hgt [concat iemgui_min_hgt_$vid]\n"
-            "    global $var_iemgui_min_hgt\n"
+            "    set var_elsegui_wdt [concat elsegui_wdt_$vid]\n"
+            "    global $var_elsegui_wdt\n"
+            "    set var_elsegui_min_wdt [concat elsegui_min_wdt_$vid]\n"
+            "    global $var_elsegui_min_wdt\n"
+            "    set var_elsegui_hgt [concat elsegui_hgt_$vid]\n"
+            "    global $var_elsegui_hgt\n"
+            "    set var_elsegui_min_hgt [concat elsegui_min_hgt_$vid]\n"
+            "    global $var_elsegui_min_hgt\n"
             "\n"
-            "    if {[eval concat $$var_iemgui_wdt] < [eval concat $$var_iemgui_min_wdt]} {\n"
-            "        set $var_iemgui_wdt [eval concat $$var_iemgui_min_wdt]\n"
-            "        $mytoplevel.dim.w_ent configure -textvariable $var_iemgui_wdt\n"
+            "    if {[eval concat $$var_elsegui_wdt] < [eval concat $$var_elsegui_min_wdt]} {\n"
+            "        set $var_elsegui_wdt [eval concat $$var_elsegui_min_wdt]\n"
+            "        $mytoplevel.dim.w_ent configure -textvariable $var_elsegui_wdt\n"
             "    }\n"
-            "    if {[eval concat $$var_iemgui_hgt] < [eval concat $$var_iemgui_min_hgt]} {\n"
-            "        set $var_iemgui_hgt [eval concat $$var_iemgui_min_hgt]\n"
-            "        $mytoplevel.dim.h_ent configure -textvariable $var_iemgui_hgt\n"
+            "    if {[eval concat $$var_elsegui_hgt] < [eval concat $$var_elsegui_min_hgt]} {\n"
+            "        set $var_elsegui_hgt [eval concat $$var_elsegui_min_hgt]\n"
+            "        $mytoplevel.dim.h_ent configure -textvariable $var_elsegui_hgt\n"
             "    }\n"
             "}\n"
             "\n"
@@ -630,23 +646,23 @@ static void numbox_tilde_dialog_init(void){
             "proc ::dialog_numbox::set_col_example {mytoplevel} {\n"
             "    set vid [string trimleft $mytoplevel .]\n"
             "\n"
-            "    set var_iemgui_bcol [concat iemgui_bcol_$vid]\n"
-            "    global $var_iemgui_bcol\n"
-            "    set var_iemgui_fcol [concat iemgui_fcol_$vid]\n"
-            "    global $var_iemgui_fcol\n"
+            "    set var_elsegui_bcol [concat elsegui_bcol_$vid]\n"
+            "    global $var_elsegui_bcol\n"
+            "    set var_elsegui_fcol [concat elsegui_fcol_$vid]\n"
+            "    global $var_elsegui_fcol\n"
             "\n"
-            "    if { [eval concat $$var_iemgui_fcol] ne \"none\" } {\n"
+            "    if { [eval concat $$var_elsegui_fcol] ne \"none\" } {\n"
             "        $mytoplevel.colors.sections.exp.fr_bk configure \\\n"
-            "            -background [eval concat $$var_iemgui_bcol] \\\n"
-            "            -activebackground [eval concat $$var_iemgui_bcol] \\\n"
-            "            -foreground [eval concat $$var_iemgui_fcol] \\\n"
-            "            -activeforeground [eval concat $$var_iemgui_fcol]\n"
+            "            -background [eval concat $$var_elsegui_bcol] \\\n"
+            "            -activebackground [eval concat $$var_elsegui_bcol] \\\n"
+            "            -foreground [eval concat $$var_elsegui_fcol] \\\n"
+            "            -activeforeground [eval concat $$var_elsegui_fcol]\n"
             "    } else {\n"
             "        $mytoplevel.colors.sections.exp.fr_bk configure \\\n"
-            "            -background [eval concat $$var_iemgui_bcol] \\\n"
-            "            -activebackground [eval concat $$var_iemgui_bcol] \\\n"
-            "            -foreground [eval concat $$var_iemgui_bcol] \\\n"
-            "            -activeforeground [eval concat $$var_iemgui_bcol]}\n"
+            "            -background [eval concat $$var_elsegui_bcol] \\\n"
+            "            -activebackground [eval concat $$var_elsegui_bcol] \\\n"
+            "            -foreground [eval concat $$var_elsegui_bcol] \\\n"
+            "            -activeforeground [eval concat $$var_elsegui_bcol]}\n"
             "\n"
             "    # for OSX live updates\n"
             "    if {$::windowingsystem eq \"aqua\"} {\n"
@@ -656,38 +672,38 @@ static void numbox_tilde_dialog_init(void){
             "\n"
             "proc ::dialog_numbox::preset_col {mytoplevel presetcol} {\n"
             "    set vid [string trimleft $mytoplevel .]\n"
-            "    set var_iemgui_l2_f1_b0 [concat iemgui_l2_f1_b0_$vid]\n"
-            "    global $var_iemgui_l2_f1_b0\n"
+            "    set var_elsegui_l2_f1_b0 [concat elsegui_l2_f1_b0_$vid]\n"
+            "    global $var_elsegui_l2_f1_b0\n"
             "\n"
-            "    set var_iemgui_bcol [concat iemgui_bcol_$vid]\n"
-            "    global $var_iemgui_bcol\n"
-            "    set var_iemgui_fcol [concat iemgui_fcol_$vid]\n"
-            "    global $var_iemgui_fcol\n"
+            "    set var_elsegui_bcol [concat elsegui_bcol_$vid]\n"
+            "    global $var_elsegui_bcol\n"
+            "    set var_elsegui_fcol [concat elsegui_fcol_$vid]\n"
+            "    global $var_elsegui_fcol\n"
             "\n"
-            "    if { [eval concat $$var_iemgui_l2_f1_b0] == 0 } { set $var_iemgui_bcol $presetcol }\n"
-            "    if { [eval concat $$var_iemgui_l2_f1_b0] == 1 } { set $var_iemgui_fcol $presetcol }\n"
+            "    if { [eval concat $$var_elsegui_l2_f1_b0] == 0 } { set $var_elsegui_bcol $presetcol }\n"
+            "    if { [eval concat $$var_elsegui_l2_f1_b0] == 1 } { set $var_elsegui_fcol $presetcol }\n"
             "    ::dialog_numbox::set_col_example $mytoplevel\n"
             "}\n"
             "\n"
             "proc ::dialog_numbox::choose_col_bkfrlb {mytoplevel} {\n"
             "    set vid [string trimleft $mytoplevel .]\n"
             "\n"
-            "    set var_iemgui_bcol [concat iemgui_bcol_$vid]\n"
-            "    global $var_iemgui_bcol\n"
-            "    set var_iemgui_fcol [concat iemgui_fcol_$vid]\n"
-            "    global $var_iemgui_fcol\n"
+            "    set var_elsegui_bcol [concat elsegui_bcol_$vid]\n"
+            "    global $var_elsegui_bcol\n"
+            "    set var_elsegui_fcol [concat elsegui_fcol_$vid]\n"
+            "    global $var_elsegui_fcol\n"
             "\n"
-            "    if {[eval concat $$var_iemgui_l2_f1_b0] == 0} {\n"
-            "        set $var_iemgui_bcol [eval concat $$var_iemgui_bcol]\n"
-            "        set helpstring [tk_chooseColor -title [_ \"Background color\"] -initialcolor [eval concat $$var_iemgui_bcol]]\n"
+            "    if {[eval concat $$var_elsegui_l2_f1_b0] == 0} {\n"
+            "        set $var_elsegui_bcol [eval concat $$var_elsegui_bcol]\n"
+            "        set helpstring [tk_chooseColor -title [_ \"Background color\"] -initialcolor [eval concat $$var_elsegui_bcol]]\n"
             "        if { $helpstring ne \"\" } {\n"
-            "            set $var_iemgui_bcol $helpstring }\n"
+            "            set $var_elsegui_bcol $helpstring }\n"
             "    }\n"
-            "    if {[eval concat $$var_iemgui_l2_f1_b0] == 1} {\n"
-            "        set $var_iemgui_fcol [eval concat $$var_iemgui_fcol]\n"
-            "        set helpstring [tk_chooseColor -title [_ \"Foreground color\"] -initialcolor [eval concat $$var_iemgui_fcol]]\n"
+            "    if {[eval concat $$var_elsegui_l2_f1_b0] == 1} {\n"
+            "        set $var_elsegui_fcol [eval concat $$var_elsegui_fcol]\n"
+            "        set helpstring [tk_chooseColor -title [_ \"Foreground color\"] -initialcolor [eval concat $$var_elsegui_fcol]]\n"
             "        if { $helpstring ne \"\" } {\n"
-            "            set $var_iemgui_fcol $helpstring }\n"
+            "            set $var_elsegui_fcol $helpstring }\n"
             "    }\n"
             "    ::dialog_numbox::set_col_example $mytoplevel\n"
             "}\n"
@@ -698,14 +714,14 @@ static void numbox_tilde_dialog_init(void){
             "proc ::dialog_numbox::mode {mytoplevel} {\n"
             "    set vid [string trimleft $mytoplevel .]\n"
             "\n"
-            "    set var_iemgui_mode [concat iemgui_mode_$vid]\n"
-            "    global $var_iemgui_mode\n"
+            "    set var_elsegui_mode [concat elsegui_mode_$vid]\n"
+            "    global $var_elsegui_mode\n"
             "\n"
-            "    if {[eval concat $$var_iemgui_mode]} {\n"
-            "        set $var_iemgui_mode 0\n"
+            "    if {[eval concat $$var_elsegui_mode]} {\n"
+            "        set $var_elsegui_mode 0\n"
             "        $mytoplevel.para.mode configure -text [_ \"Input\"]\n"
             "    } else {\n"
-            "        set $var_iemgui_mode 1\n"
+            "        set $var_elsegui_mode 1\n"
             "        $mytoplevel.para.mode configure -text [_ \"Output\"]\n"
             "    }\n"
             "}\n"
@@ -713,26 +729,26 @@ static void numbox_tilde_dialog_init(void){
             "proc ::dialog_numbox::apply {mytoplevel} {\n"
             "    set vid [string trimleft $mytoplevel .]\n"
             "\n"
-            "    set var_iemgui_wdt [concat iemgui_wdt_$vid]\n"
-            "    global $var_iemgui_wdt\n"
-            "    set var_iemgui_min_wdt [concat iemgui_min_wdt_$vid]\n"
-            "    global $var_iemgui_min_wdt\n"
-            "    set var_iemgui_hgt [concat iemgui_hgt_$vid]\n"
-            "    global $var_iemgui_hgt\n"
-            "    set var_iemgui_min_hgt [concat iemgui_min_hgt_$vid]\n"
-            "    global $var_iemgui_min_hgt\n"
-            "    set var_iemgui_interval [concat iemgui_interval_$vid]\n"
-            "    global $var_iemgui_interval\n"
-            "    set var_iemgui_mode [concat iemgui_mode_$vid]\n"
-            "    global $var_iemgui_mode\n"
-            "    set var_iemgui_bcol [concat iemgui_bcol_$vid]\n"
-            "    global $var_iemgui_bcol\n"
-            "    set var_iemgui_fcol [concat iemgui_fcol_$vid]\n"
-            "    global $var_iemgui_fcol\n"
-            "    set var_iemgui_min_rng [concat iemgui_min_rng_$vid]\n"
-            "    global $var_iemgui_min_rng\n"
-            "    set var_iemgui_max_rng [concat iemgui_max_rng_$vid]\n"
-            "    global $var_iemgui_max_rng\n"
+            "    set var_elsegui_wdt [concat elsegui_wdt_$vid]\n"
+            "    global $var_elsegui_wdt\n"
+            "    set var_elsegui_min_wdt [concat elsegui_min_wdt_$vid]\n"
+            "    global $var_elsegui_min_wdt\n"
+            "    set var_elsegui_hgt [concat elsegui_hgt_$vid]\n"
+            "    global $var_elsegui_hgt\n"
+            "    set var_elsegui_min_hgt [concat elsegui_min_hgt_$vid]\n"
+            "    global $var_elsegui_min_hgt\n"
+            "    set var_elsegui_interval [concat elsegui_interval_$vid]\n"
+            "    global $var_elsegui_interval\n"
+            "    set var_elsegui_mode [concat elsegui_mode_$vid]\n"
+            "    global $var_elsegui_mode\n"
+            "    set var_elsegui_bcol [concat elsegui_bcol_$vid]\n"
+            "    global $var_elsegui_bcol\n"
+            "    set var_elsegui_fcol [concat elsegui_fcol_$vid]\n"
+            "    global $var_elsegui_fcol\n"
+            "    set var_elsegui_min_rng [concat elsegui_min_rng_$vid]\n"
+            "    global $var_elsegui_min_rng\n"
+            "    set var_elsegui_max_rng [concat elsegui_max_rng_$vid]\n"
+            "    global $var_elsegui_max_rng\n"
             "\n"
             "    ::dialog_numbox::clip_dim $mytoplevel\n"
             "\n"
@@ -740,14 +756,14 @@ static void numbox_tilde_dialog_init(void){
             "\n"
             "\n"
             "    pdsend [concat $mytoplevel dialog \\\n"
-            "            [eval concat $$var_iemgui_wdt] \\\n"
-            "            [eval concat $$var_iemgui_hgt] \\\n"
-            "            [eval concat $$var_iemgui_mode] \\\n"
-            "            [eval concat $$var_iemgui_interval] \\\n"
-            "            [string tolower [eval concat $$var_iemgui_bcol]] \\\n"
-            "            [string tolower [eval concat $$var_iemgui_fcol]] \\\n"
-            "            [eval concat $$var_iemgui_min_rng] \\\n"
-            "            [eval concat $$var_iemgui_max_rng]] \\\n"
+            "            [eval concat $$var_elsegui_wdt] \\\n"
+            "            [eval concat $$var_elsegui_hgt] \\\n"
+            "            [eval concat $$var_elsegui_mode] \\\n"
+            "            [eval concat $$var_elsegui_interval] \\\n"
+            "            [string tolower [eval concat $$var_elsegui_bcol]] \\\n"
+            "            [string tolower [eval concat $$var_elsegui_fcol]] \\\n"
+            "            [eval concat $$var_elsegui_min_rng] \\\n"
+            "            [eval concat $$var_elsegui_max_rng]] \\\n"
 
             "}\n"
             "\n"
@@ -769,62 +785,62 @@ static void numbox_tilde_dialog_init(void){
             "\n"
             "    set vid [string trimleft $mytoplevel .]\n"
             "\n"
-            "    set var_iemgui_wdt [concat iemgui_wdt_$vid]\n"
-            "    global $var_iemgui_wdt\n"
-            "    set var_iemgui_min_wdt [concat iemgui_min_wdt_$vid]\n"
-            "    global $var_iemgui_min_wdt\n"
-            "    set var_iemgui_hgt [concat iemgui_hgt_$vid]\n"
-            "    global $var_iemgui_hgt\n"
-            "    set var_iemgui_min_hgt [concat iemgui_min_hgt_$vid]\n"
-            "    global $var_iemgui_min_hgt\n"
-            "    set var_iemgui_interval [concat iemgui_interval_$vid]\n"
-            "    global $var_iemgui_interval\n"
-            "    set var_iemgui_mode [concat iemgui_mode_$vid]\n"
-            "    global $var_iemgui_mode\n"
-            "    set var_iemgui_bcol [concat iemgui_bcol_$vid]\n"
-            "    global $var_iemgui_bcol\n"
-            "    set var_iemgui_fcol [concat iemgui_fcol_$vid]\n"
-            "    global $var_iemgui_fcol\n"
-            "    set var_iemgui_l2_f1_b0 [concat iemgui_l2_f1_b0_$vid]\n"
-            "    global $var_iemgui_l2_f1_b0\n"
-            "    set var_iemgui_min_rng [concat iemgui_min_rng_$vid]\n"
-            "    global $var_iemgui_min_rng\n"
-            "    set var_iemgui_max_rng [concat iemgui_max_rng_$vid]\n"
-            "    global $var_iemgui_max_rng\n"
+            "    set var_elsegui_wdt [concat elsegui_wdt_$vid]\n"
+            "    global $var_elsegui_wdt\n"
+            "    set var_elsegui_min_wdt [concat elsegui_min_wdt_$vid]\n"
+            "    global $var_elsegui_min_wdt\n"
+            "    set var_elsegui_hgt [concat elsegui_hgt_$vid]\n"
+            "    global $var_elsegui_hgt\n"
+            "    set var_elsegui_min_hgt [concat elsegui_min_hgt_$vid]\n"
+            "    global $var_elsegui_min_hgt\n"
+            "    set var_elsegui_interval [concat elsegui_interval_$vid]\n"
+            "    global $var_elsegui_interval\n"
+            "    set var_elsegui_mode [concat elsegui_mode_$vid]\n"
+            "    global $var_elsegui_mode\n"
+            "    set var_elsegui_bcol [concat elsegui_bcol_$vid]\n"
+            "    global $var_elsegui_bcol\n"
+            "    set var_elsegui_fcol [concat elsegui_fcol_$vid]\n"
+            "    global $var_elsegui_fcol\n"
+            "    set var_elsegui_l2_f1_b0 [concat elsegui_l2_f1_b0_$vid]\n"
+            "    global $var_elsegui_l2_f1_b0\n"
+            "    set var_elsegui_min_rng [concat elsegui_min_rng_$vid]\n"
+            "    global $var_elsegui_min_rng\n"
+            "    set var_elsegui_max_rng [concat elsegui_max_rng_$vid]\n"
+            "    global $var_elsegui_max_rng\n"
             "\n"
-            "    set $var_iemgui_wdt $wdt\n"
-            "    set $var_iemgui_min_wdt $min_wdt\n"
-            "    set $var_iemgui_hgt $hgt\n"
-            "    set $var_iemgui_min_hgt $min_hgt\n"
-            "    set $var_iemgui_interval $interval\n"
-            "    set $var_iemgui_mode $mode\n"
-            "    set $var_iemgui_bcol $bcol\n"
-            "    set $var_iemgui_fcol $fcol\n"
-            "    set $var_iemgui_min_rng $min_rng\n"
-            "    set $var_iemgui_max_rng $max_rng\n"
+            "    set $var_elsegui_wdt $wdt\n"
+            "    set $var_elsegui_min_wdt $min_wdt\n"
+            "    set $var_elsegui_hgt $hgt\n"
+            "    set $var_elsegui_min_hgt $min_hgt\n"
+            "    set $var_elsegui_interval $interval\n"
+            "    set $var_elsegui_mode $mode\n"
+            "    set $var_elsegui_bcol $bcol\n"
+            "    set $var_elsegui_fcol $fcol\n"
+            "    set $var_elsegui_min_rng $min_rng\n"
+            "    set $var_elsegui_max_rng $max_rng\n"
             "\n"
-            "    set $var_iemgui_l2_f1_b0 0\n"
+            "    set $var_elsegui_l2_f1_b0 0\n"
             "\n"
-            "    set iemgui_type [_ \"numbox~\"]\n"
+            "    set elsegui_type [_ \"numbox~\"]\n"
             "    set wdt_label [_ \"Width (digits):\"]\n"
             "    set hgt_label [_ \"Font Size:\"]\n"
             "    toplevel $mytoplevel -class DialogWindow\n"
-            "    wm title $mytoplevel [format [_ \"%s Properties\"] $iemgui_type]\n"
+            "    wm title $mytoplevel [format [_ \"%s Properties\"] $elsegui_type]\n"
             "    wm group $mytoplevel .\n"
             "    wm resizable $mytoplevel 0 0\n"
             "    wm transient $mytoplevel $::focused_window\n"
             "    $mytoplevel configure -menu $::dialog_menubar\n"
             "    $mytoplevel configure -padx 0 -pady 0\n"
-            "    ::pd_bindings::dialog_bindings $mytoplevel \"iemgui\"\n"
+            "    ::pd_bindings::dialog_bindings $mytoplevel \"elsegui\"\n"
             "\n"
             "    # dimensions\n"
             "    frame $mytoplevel.dim -height 7\n"
             "    pack $mytoplevel.dim -side top\n"
             "    label $mytoplevel.dim.w_lab -text [_ $wdt_label]\n"
-            "    entry $mytoplevel.dim.w_ent -textvariable $var_iemgui_wdt -width 4\n"
+            "    entry $mytoplevel.dim.w_ent -textvariable $var_elsegui_wdt -width 4\n"
             "    label $mytoplevel.dim.dummy1 -text \"\" -width 1\n"
             "    label $mytoplevel.dim.h_lab -text [_ $hgt_label]\n"
-            "    entry $mytoplevel.dim.h_ent -textvariable $var_iemgui_hgt -width 4\n"
+            "    entry $mytoplevel.dim.h_ent -textvariable $var_elsegui_hgt -width 4\n"
             "    pack $mytoplevel.dim.w_lab $mytoplevel.dim.w_ent -side left\n"
             "    if { $hgt_label ne \"empty\" } {\n"
             "        pack $mytoplevel.dim.dummy1 $mytoplevel.dim.h_lab $mytoplevel.dim.h_ent -side left }\n"
@@ -834,10 +850,10 @@ static void numbox_tilde_dialog_init(void){
             "    pack $mytoplevel.rng -side top -fill x\n"
             "    frame $mytoplevel.rng.min\n"
             "    label $mytoplevel.rng.min.lab -text \"Minimum\"\n"
-            "    entry $mytoplevel.rng.min.ent -textvariable $var_iemgui_min_rng -width 7\n"
+            "    entry $mytoplevel.rng.min.ent -textvariable $var_elsegui_min_rng -width 7\n"
             "    label $mytoplevel.rng.dummy1 -text \"\" -width 1\n"
             "    label $mytoplevel.rng.max_lab -text \"Maximum\"\n"
-            "    entry $mytoplevel.rng.max_ent -textvariable $var_iemgui_max_rng -width 7\n"
+            "    entry $mytoplevel.rng.max_ent -textvariable $var_elsegui_max_rng -width 7\n"
             "    $mytoplevel.rng config -borderwidth 1 -pady 4 -text \"Output Range\"\n"
      
             "    pack $mytoplevel.rng.min\n"
@@ -852,12 +868,12 @@ static void numbox_tilde_dialog_init(void){
 
             "   frame $mytoplevel.para.interval\n"
             "       label $mytoplevel.para.interval.lab -text [_ \"Interval (ms)\"]\n"
-            "       entry $mytoplevel.para.interval.ent -textvariable $var_iemgui_interval -width 6\n"
+            "       entry $mytoplevel.para.interval.ent -textvariable $var_elsegui_interval -width 6\n"
             "       pack $mytoplevel.para.interval.ent $mytoplevel.para.interval.lab -side right -anchor e\n"
-            "    if {[eval concat $$var_iemgui_mode] == 0} {\n"
+            "    if {[eval concat $$var_elsegui_mode] == 0} {\n"
             "        button $mytoplevel.para.mode -command \"::dialog_numbox::mode $mytoplevel\" \\\n"
             "            -text [_ \"Input\"] }\n"
-            "    if {[eval concat $$var_iemgui_mode] == 1} {\n"
+            "    if {[eval concat $$var_elsegui_mode] == 1} {\n"
             "        button $mytoplevel.para.mode -command \"::dialog_numbox::mode $mytoplevel\" \\\n"
             "            -text [_ \"Output\"] }\n"
             "        pack $mytoplevel.para.interval -side left -expand 1 -ipadx 10\n"
@@ -872,12 +888,12 @@ static void numbox_tilde_dialog_init(void){
             "    frame $mytoplevel.colors.select\n"
             "    pack $mytoplevel.colors.select -side top\n"
             "    radiobutton $mytoplevel.colors.select.radio0 -value 0 -variable \\\n"
-            "        $var_iemgui_l2_f1_b0 -text [_ \"Background\"] -justify left\n"
+            "        $var_elsegui_l2_f1_b0 -text [_ \"Background\"] -justify left\n"
             "    radiobutton $mytoplevel.colors.select.radio1 -value 1 -variable \\\n"
-            "        $var_iemgui_l2_f1_b0 -text [_ \"Foreground\"] -justify left\n"
+            "        $var_elsegui_l2_f1_b0 -text [_ \"Foreground\"] -justify left\n"
             "    radiobutton $mytoplevel.colors.select.radio2 -value 2 -variable \\\n"
-            "        $var_iemgui_l2_f1_b0 -text [_ \"Text\"] -justify left\n"
-            "    if { [eval concat $$var_iemgui_fcol] ne \"none\" } {\n"
+            "        $var_elsegui_l2_f1_b0 -text [_ \"Text\"] -justify left\n"
+            "    if { [eval concat $$var_elsegui_fcol] ne \"none\" } {\n"
             "        pack $mytoplevel.colors.select.radio0 $mytoplevel.colors.select.radio1 \\\n"
             "            -side left\n"
             "    } else {\n"
@@ -892,19 +908,19 @@ static void numbox_tilde_dialog_init(void){
             "        -expand yes -fill x\n"
             "    frame $mytoplevel.colors.sections.exp\n"
             "    pack $mytoplevel.colors.sections.exp -side right -padx 5\n"
-            "    if { [eval concat $$var_iemgui_fcol] ne \"none\" } {\n"
+            "    if { [eval concat $$var_elsegui_fcol] ne \"none\" } {\n"
             "        label $mytoplevel.colors.sections.exp.fr_bk -text \"o=||=o\" -width 6 \\\n"
-            "            -background [eval concat $$var_iemgui_bcol] \\\n"
-            "            -activebackground [eval concat $$var_iemgui_bcol] \\\n"
-            "            -foreground [eval concat $$var_iemgui_fcol] \\\n"
-            "            -activeforeground [eval concat $$var_iemgui_fcol] \\\n"
+            "            -background [eval concat $$var_elsegui_bcol] \\\n"
+            "            -activebackground [eval concat $$var_elsegui_bcol] \\\n"
+            "            -foreground [eval concat $$var_elsegui_fcol] \\\n"
+            "            -activeforeground [eval concat $$var_elsegui_fcol] \\\n"
             "            -font [list $current_font 14 $::font_weight] -padx 2 -pady 2 -relief ridge\n"
             "    } else {\n"
             "        label $mytoplevel.colors.sections.exp.fr_bk -text \"o=||=o\" -width 6 \\\n"
-            "            -background [eval concat $$var_iemgui_bcol] \\\n"
-            "            -activebackground [eval concat $$var_iemgui_bcol] \\\n"
-            "            -foreground [eval concat $$var_iemgui_bcol] \\\n"
-            "            -activeforeground [eval concat $$var_iemgui_bcol] \\\n"
+            "            -background [eval concat $$var_elsegui_bcol] \\\n"
+            "            -activebackground [eval concat $$var_elsegui_bcol] \\\n"
+            "            -foreground [eval concat $$var_elsegui_bcol] \\\n"
+            "            -activeforeground [eval concat $$var_elsegui_bcol] \\\n"
             "            -font [list $current_font 14 $::font_weight] -padx 2 -pady 2 -relief ridge\n"
             "    }\n"
             "\n"
