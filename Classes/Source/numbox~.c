@@ -170,19 +170,20 @@ static void numbox_tilde_draw_update(t_gobj *client, t_glist *glist){
             x->x_buf[sl+1] = 0;
             if(sl >= x->x_numwidth)
                 cp += sl - x->x_numwidth + 1;
-            sys_vgui(".x%lx.c itemconfigure %lxnumbox -fill #%06x -text {%s} \n", cv, x, x->x_gui.x_fcol, cp);
+            sys_vgui(".x%lx.c itemconfigure %lxTEXT -fill #%06x\n", cv, x, x->x_gui.x_fcol);
+            sys_vgui(".x%lx.c itemconfigure %lxNUMBER -text {%s}\n", cv, x, cp);
             sys_vgui(".x%lx.c itemconfigure %lxBASE -width %d\n", cv, x, x->x_zoom*2);
             x->x_buf[sl] = 0;
         }
         else{
             numbox_tilde_ftoa(x);
+            sys_vgui(".x%lx.c itemconfigure %lxNUMBER -text {%s}\n", cv, x, x->x_buf);
             if(x->x_selected){
-                sys_vgui(".x%lx.c itemconfigure %lxnumbox -fill blue -text {%s}\n", cv, x, x->x_buf);
+                sys_vgui(".x%lx.c itemconfigure %lxTEXT -fill blue\n", cv, x);
                 sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue\n", cv, x);
             }
             else{
-                sys_vgui(".x%lx.c itemconfigure %lxnumbox -fill #%06x -text {%s} \n", cv, x,
-                    x->x_gui.x_fcol, x->x_buf);
+                sys_vgui(".x%lx.c itemconfigure %lxTEXT -fill #%06x\n", cv, x, x->x_gui.x_fcol);
                 sys_vgui(".x%lx.c itemconfigure %lxBASE -outline black\n", cv, x);
             }
             sys_vgui(".x%lx.c itemconfigure %lxBASE -width %d\n", cv, x, x->x_zoom);
@@ -201,15 +202,15 @@ static void numbox_tilde_draw_new(t_numbox_tilde *x, t_glist *glist){
     sys_vgui(".x%lx.c create polygon %d %d %d %d %d %d %d %d %d %d -width %d -outline black "
         "-fill #%06x -tags [list %lxBASE %lxALL]\n", cv, xpos, ypos, xpos+w, ypos, xpos+w, ypos+x->x_gui.x_h,
         xpos, ypos+x->x_gui.x_h, xpos, ypos, x->x_zoom, x->x_gui.x_bcol, x, x);
-    sys_vgui(".x%lx.c create text %d %d -text {~} -anchor w -font {{%s} -%d %s} -fill #%06x -tags [list %lxBASE2 %lxALL]\n", cv,
-        xpos + 2*x->x_zoom+1, ypos+half+d, x->x_gui.x_font, x->x_gui.x_fontsize*x->x_zoom, sys_fontweight, x->x_gui.x_fcol, x, x);
+    sys_vgui(".x%lx.c create text %d %d -text {~} -anchor w -font {{%s} -%d %s} -fill #%06x -tags [list %lxTILDE %lxTEXT %lxALL]\n", cv,
+        xpos + 2*x->x_zoom+1, ypos+half+d, x->x_gui.x_font, x->x_gui.x_fontsize*x->x_zoom, sys_fontweight, x->x_gui.x_fcol, x, x, x);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lxOUT %lxALL]\n",
         cv, xpos, ypos+x->x_gui.x_h+x->x_zoom-ioh, xpos+iow, ypos+x->x_gui.x_h, x, x);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lxIN %lxALL]\n",
         cv, xpos, ypos, xpos+iow, ypos-x->x_zoom+ioh, x, x);
     numbox_tilde_ftoa(x);
-    sys_vgui(".x%lx.c create text %d %d -text {%s} -anchor w -font {{%s} -%d %s} -fill #%06x -tags [list %lxnumbox %lxALL]\n", cv,
-        xpos+half+2*x->x_zoom+3, ypos+half+d, x->x_buf, x->x_gui.x_font, x->x_gui.x_fontsize*x->x_zoom, sys_fontweight, x->x_gui.x_fcol, x, x);
+    sys_vgui(".x%lx.c create text %d %d -text {%s} -anchor w -font {{%s} -%d %s} -fill #%06x -tags [list %lxNUMBER %lxTEXT %lxALL]\n", cv,
+        xpos+half+2*x->x_zoom+3, ypos+half+d, x->x_buf, x->x_gui.x_font, x->x_gui.x_fontsize*x->x_zoom, sys_fontweight, x->x_gui.x_fcol, x, x, x);
 }
 
 static void numbox_tilde_delete(t_gobj *z, t_glist *glist){
@@ -220,11 +221,11 @@ static void numbox_tilde_select(t_gobj *z, t_glist *glist, int sel){
     t_numbox_tilde *x = (t_numbox_tilde *)z;
     t_canvas *cv = glist_getcanvas(glist);
     if((x->x_selected = sel)){
-        sys_vgui(".x%lx.c itemconfigure %lxnumbox -fill blue\n", cv, x);
+        sys_vgui(".x%lx.c itemconfigure %lxTEXT -fill blue\n", cv, x);
         sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue\n", cv, x);
     }
     else{
-        sys_vgui(".x%lx.c itemconfigure %lxnumbox -fill #%06x\n", cv, x, x->x_gui.x_fcol);
+        sys_vgui(".x%lx.c itemconfigure %lxTEXT -fill #%06x\n", cv, x, x->x_gui.x_fcol);
         sys_vgui(".x%lx.c itemconfigure %lxBASE -outline black\n", cv, x);
     }
 }
@@ -245,13 +246,13 @@ static void numbox_tilde_draw_erase(t_numbox_tilde* x, t_glist* glist){
 static void numbox_tilde_draw_config(t_numbox_tilde* x, t_glist* glist){
     t_canvas *cv = glist_getcanvas(glist);
     if(x->x_selected){
-        sys_vgui(".x%lx.c itemconfigure %lxnumbox -font {{%s} -%d %s} -fill blue\n",
+        sys_vgui(".x%lx.c itemconfigure %lxTEXT -font {{%s} -%d %s} -fill blue\n",
             cv, x, x->x_gui.x_font, x->x_gui.x_fontsize*x->x_zoom, sys_fontweight);
         sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue -font {{%s} -%d %s}\n", cv, x,
             x->x_gui.x_font, x->x_gui.x_fontsize * x->x_zoom, sys_fontweight);
     }
     else{
-        sys_vgui(".x%lx.c itemconfigure %lxnumbox -font {{%s} -%d %s} -fill #%06x\n",
+        sys_vgui(".x%lx.c itemconfigure %lxTEXT -font {{%s} -%d %s} -fill #%06x\n",
             cv, x, x->x_gui.x_font, x->x_gui.x_fontsize * x->x_zoom, sys_fontweight, x->x_gui.x_fcol);
         sys_vgui(".x%lx.c itemconfigure %lxBASE -outline black -font {{%s} -%d %s}\n", cv, x,
             x->x_gui.x_font, x->x_gui.x_fontsize * x->x_zoom, sys_fontweight);
