@@ -12,34 +12,34 @@
 
 typedef struct _numbox_tilde{
     t_object  x_obj;
-    unsigned int x_change:1;
-    unsigned int x_finemoved:1;
-    int          x_h;
-    int          x_w;
-    char         x_font[MAXPDSTRING]; // WE DON'T ACTUALLY SET FONT NAME - FIX ME
-    int          x_fontsize; // GET SYSTEM font size
-    int          x_fcol; // oh no, no int, no no no
-    int          x_bcol;
-    t_glist     *x_glist;
-    t_clock     *x_clock_reset;
-    t_clock     *x_clock_wait;
-    t_clock     *x_clock_repaint;
-    t_float      x_in_val;
-    t_float      x_out_val;
-    t_float      x_set_val;
-    t_float      x_ramp_val;
-    t_float      x_ramp;
-    t_float      x_last_out;
-    t_float      x_maximum;
-    t_float      x_minimum;
-    int          x_selected;
-    int          x_ramp_time;
-    int          x_interval_ms;
-    int          x_zoom;
-    int          x_numwidth;
-    int          x_outmode;
-    int          x_needs_update;
-    char         x_buf[MAX_NUMBOX_LEN];
+    unsigned int       x_change:1;
+    unsigned int       x_finemoved:1;
+    int                x_h;
+    int                x_w;
+    char               x_font[MAXPDSTRING]; // WE DON'T ACTUALLY SET FONT NAME - FIX ME
+    int                x_fontsize; // GET SYSTEM font size
+    int                x_fcol; // oh no, no int, no no no
+    int                x_bcol;
+    t_glist  *x_glist;
+    t_clock  *x_clock_reset;
+    t_clock  *x_clock_wait;
+    t_clock  *x_clock_repaint;
+    t_float   x_in_val;
+    t_float   x_out_val;
+    t_float   x_set_val;
+    t_float   x_ramp_val;
+    t_float   x_ramp;
+    t_float   x_last_out;
+    t_float   x_maximum;
+    t_float   x_minimum;
+    int       x_selected;
+    int       x_ramp_time;
+    int       x_interval_ms;
+    int       x_zoom;
+    int       x_numwidth;
+    int       x_outmode;
+    int       x_needs_update;
+    char      x_buf[MAX_NUMBOX_LEN];
 }t_numbox_tilde;
 
 static void numbox_tilde_dialog_init(void);
@@ -341,11 +341,10 @@ static void numbox_tilde_dialog(t_numbox_tilde *x, t_symbol *s, int ac, t_atom *
     t_atom undo[9];
     SETFLOAT(undo, x->x_numwidth);
     SETFLOAT(undo+1, x->x_h);
-    SETFLOAT(undo+2, x->ramp_time);
+    SETFLOAT(undo+2, x->x_ramp_time);
     SETFLOAT(undo+3, x->x_interval_ms);
     SETCOLOR(undo+4, x->x_bcol);
     SETCOLOR(undo+5, x->x_fcol);
-    SETFLOAT(undo+6, x->x_ramp_time);
     SETFLOAT(undo+7, x->x_minimum);
     SETFLOAT(undo+8, x->x_maximum);
     pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 9, undo, ac, av);
@@ -636,8 +635,6 @@ static void numbox_tilde_dialog_init(void){
             "proc ::dialog_numbox::set_col_example {mytoplevel} {\n"
             "    set vid [string trimleft $mytoplevel .]\n"
             "\n"
-            "    set var_elsegui_l2_f1_b0 [concat elsegui_l2_f1_b0_$vid]\n"
-            "    global $var_elsegui_l2_f1_b0\n"
             "    set var_elsegui_bcol [concat elsegui_bcol_$vid]\n"
             "    global $var_elsegui_bcol\n"
             "    set var_elsegui_fcol [concat elsegui_fcol_$vid]\n"
@@ -680,6 +677,8 @@ static void numbox_tilde_dialog_init(void){
             "proc ::dialog_numbox::choose_col_bkfrlb {mytoplevel} {\n"
             "    set vid [string trimleft $mytoplevel .]\n"
             "\n"
+            "    set var_elsegui_l2_f1_b0 [concat elsegui_l2_f1_b0_$vid]\n"
+            "    global $var_elsegui_l2_f1_b0\n"
             "    set var_elsegui_bcol [concat elsegui_bcol_$vid]\n"
             "    global $var_elsegui_bcol\n"
             "    set var_elsegui_fcol [concat elsegui_fcol_$vid]\n"
@@ -703,18 +702,18 @@ static void numbox_tilde_dialog_init(void){
             "\n"
             "\n"
             "\n"
-            "proc ::dialog_numbox::ramp {mytoplevel} {\n"
+            "proc ::dialog_numbox::mode {mytoplevel} {\n"
             "    set vid [string trimleft $mytoplevel .]\n"
             "\n"
-            "    set var_elsegui_ramp [concat elsegui_ramp_$vid]\n"
+            "    set var_elsegui_ramp [concat var_elsegui_ramp_$vid]\n"
             "    global $var_elsegui_ramp\n"
             "\n"
             "    if {[eval concat $$var_elsegui_ramp]} {\n"
             "        set $var_elsegui_ramp 0\n"
-            "        $mytoplevel.para.ramp configure -text [_ \"Input\"]\n"
+            "        $mytoplevel.para.mode configure -text [_ \"Input\"]\n"
             "    } else {\n"
             "        set $var_elsegui_ramp 1\n"
-            "        $mytoplevel.para.ramp configure -text [_ \"Output\"]\n"
+            "        $mytoplevel.para.mode configure -text [_ \"Output\"]\n"
             "    }\n"
             "}\n"
             "\n"
@@ -731,7 +730,7 @@ static void numbox_tilde_dialog_init(void){
             "    global $var_elsegui_min_hgt\n"
             "    set var_elsegui_interval [concat elsegui_interval_$vid]\n"
             "    global $var_elsegui_interval\n"
-            "    set var_elsegui_ramp [concat elsegui_ramp_$vid]\n"
+            "    set var_elsegui_ramp [concat var_elsegui_ramp_$vid]\n"
             "    global $var_elsegui_ramp\n"
             "    set var_elsegui_bcol [concat elsegui_bcol_$vid]\n"
             "    global $var_elsegui_bcol\n"
@@ -787,7 +786,7 @@ static void numbox_tilde_dialog_init(void){
             "    global $var_elsegui_min_hgt\n"
             "    set var_elsegui_interval [concat elsegui_interval_$vid]\n"
             "    global $var_elsegui_interval\n"
-            "    set var_elsegui_ramp [concat elsegui_ramp_$vid]\n"
+            "    set var_elsegui_ramp [concat var_elsegui_ramp_$vid]\n"
             "    global $var_elsegui_ramp\n"
             "    set var_elsegui_bcol [concat elsegui_bcol_$vid]\n"
             "    global $var_elsegui_bcol\n"
@@ -823,7 +822,7 @@ static void numbox_tilde_dialog_init(void){
             "    wm transient $mytoplevel $::focused_window\n"
             "    $mytoplevel configure -menu $::dialog_menubar\n"
             "    $mytoplevel configure -padx 0 -pady 0\n"
-            "    ::pd_bindings::dialog_bindings $mytoplevel \"elsegui\"\n"
+            "    ::pd_bindings::dialog_bindings $mytoplevel \"iemgui\"\n"
             "\n"
             "    # dimensions\n"
             "    frame $mytoplevel.dim -height 7\n"
