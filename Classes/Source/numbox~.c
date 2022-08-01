@@ -34,88 +34,11 @@ typedef struct _numbox_tilde{
     char      x_buf[MAX_NUMBOX_LEN];
 }t_numbox_tilde;
 
-// ------------------ global functions -------------------------
-
-static void numbox_tilde_key(void *z, t_symbol *keysym, t_floatarg fkey);
-static void numbox_tilde_draw_update(t_gobj *client, t_glist *glist);
 static void numbox_tilde_dialog_init(void);
-static void numbox_tilde_interval(t_numbox_tilde *x, t_floatarg f);
-static void numbox_tilde_set(t_numbox_tilde *x, t_floatarg f);
-
-// --------------------- numbox tilde -------------------------------
-
 t_widgetbehavior numbox_tilde_widgetbehavior;
 static t_class *numbox_tilde_class;
 
-// widget helper functions
-
-static void numbox_tilde_tick_reset(t_numbox_tilde *x){
-    if(x->x_gui.x_fsf.x_change && x->x_gui.x_glist){
-        x->x_gui.x_fsf.x_change = 0;
-        sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
-    }
-}
-
-static void numbox_tilde_tick_wait(t_numbox_tilde *x){
-    sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
-}
-
-static void numbox_tilde_periodic_update(t_numbox_tilde *x){
-    if(x->x_needs_update){ // repaint when audio is coming in
-        numbox_tilde_draw_update(&x->x_gui.x_obj.te_g, x->x_gui.x_glist);
-        x->x_needs_update = 0;  // clear repaint flag
-    }
-    clock_delay(x->x_clock_repaint, x->x_interval_ms);
-}
-
-int numbox_tilde_check_minmax(t_numbox_tilde *x, t_float min, t_float max){
-    int ret = 0;
-    x->x_minimum = min;
-    x->x_maximum = max;
-    if(x->x_set_val < x->x_minimum){
-        x->x_set_val = x->x_minimum;
-        ret = 1;
-    }
-    if(x->x_set_val > x->x_maximum){
-        x->x_set_val = x->x_maximum;
-        ret = 1;
-    }
-    if(x->x_out_val < x->x_minimum)
-        x->x_out_val = x->x_minimum;
-    if(x->x_out_val > x->x_maximum)
-        x->x_out_val = x->x_maximum;
-    return(ret);
-}
-
-static void numbox_tilde_clip(t_numbox_tilde *x){
-    if(x->x_minimum == 0 && x->x_maximum == 0)
-        return;
-    if(x->x_out_val < x->x_minimum)
-        x->x_out_val = x->x_minimum;
-    if(x->x_out_val > x->x_maximum)
-        x->x_out_val = x->x_maximum;
-    if(x->x_set_val < x->x_minimum)
-        x->x_set_val = x->x_minimum;
-    if(x->x_set_val > x->x_maximum)
-        x->x_set_val = x->x_maximum;
-}
-
-static void numbox_tilde_range(t_numbox_tilde *x, t_floatarg f1, t_floatarg f2){
-    x->x_minimum = f1, x->x_maximum = f2;
-    if(numbox_tilde_check_minmax(x, x->x_minimum, x->x_maximum))
-        sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
-}
-
-static void numbox_tilde_calc_fontwidth(t_numbox_tilde *x){
-    int w, f = 31;
-    if(x->x_gui.x_fsf.x_font_style == 1)
-        f = 27;
-    else if(x->x_gui.x_fsf.x_font_style == 2)
-        f = 25;
-    w = x->x_gui.x_fontsize * f * x->x_numwidth;
-    w /= 36;
-    x->x_gui.x_w = (w + (x->x_gui.x_h/2)/x->x_zoom + 4) * x->x_zoom;
-}
+// // // // // // // //  widget helper functions // // // // // // // // // // // // //
 
 static void numbox_tilde_ftoa(t_numbox_tilde *x){
     double f = x->x_output_mode ? x->x_set_val : x->x_in_val;
@@ -192,6 +115,74 @@ static void numbox_tilde_draw_update(t_gobj *client, t_glist *glist){
     }
 }
 
+static void numbox_tilde_tick_reset(t_numbox_tilde *x){
+    if(x->x_gui.x_fsf.x_change && x->x_gui.x_glist){
+        x->x_gui.x_fsf.x_change = 0;
+        sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
+    }
+}
+
+static void numbox_tilde_tick_wait(t_numbox_tilde *x){
+    sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
+}
+
+static void numbox_tilde_periodic_update(t_numbox_tilde *x){
+    if(x->x_needs_update){ // repaint when audio is coming in
+        numbox_tilde_draw_update(&x->x_gui.x_obj.te_g, x->x_gui.x_glist);
+        x->x_needs_update = 0;  // clear repaint flag
+    }
+    clock_delay(x->x_clock_repaint, x->x_interval_ms);
+}
+
+int numbox_tilde_check_minmax(t_numbox_tilde *x, t_float min, t_float max){
+    int ret = 0;
+    x->x_minimum = min;
+    x->x_maximum = max;
+    if(x->x_set_val < x->x_minimum){
+        x->x_set_val = x->x_minimum;
+        ret = 1;
+    }
+    if(x->x_set_val > x->x_maximum){
+        x->x_set_val = x->x_maximum;
+        ret = 1;
+    }
+    if(x->x_out_val < x->x_minimum)
+        x->x_out_val = x->x_minimum;
+    if(x->x_out_val > x->x_maximum)
+        x->x_out_val = x->x_maximum;
+    return(ret);
+}
+
+static void numbox_tilde_clip(t_numbox_tilde *x){
+    if(x->x_minimum == 0 && x->x_maximum == 0)
+        return;
+    if(x->x_out_val < x->x_minimum)
+        x->x_out_val = x->x_minimum;
+    if(x->x_out_val > x->x_maximum)
+        x->x_out_val = x->x_maximum;
+    if(x->x_set_val < x->x_minimum)
+        x->x_set_val = x->x_minimum;
+    if(x->x_set_val > x->x_maximum)
+        x->x_set_val = x->x_maximum;
+}
+
+static void numbox_tilde_range(t_numbox_tilde *x, t_floatarg f1, t_floatarg f2){
+    x->x_minimum = f1, x->x_maximum = f2;
+    if(numbox_tilde_check_minmax(x, x->x_minimum, x->x_maximum))
+        sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
+}
+
+static void numbox_tilde_calc_fontwidth(t_numbox_tilde *x){
+    int w, f = 31;
+    if(x->x_gui.x_fsf.x_font_style == 1)
+        f = 27;
+    else if(x->x_gui.x_fsf.x_font_style == 2)
+        f = 25;
+    w = x->x_gui.x_fontsize * f * x->x_numwidth;
+    w /= 36;
+    x->x_gui.x_w = (w + (x->x_gui.x_h/2)/x->x_zoom + 4) * x->x_zoom;
+}
+
 static void numbox_tilde_draw_new(t_numbox_tilde *x, t_glist *glist){
     int xpos = text_xpix(&x->x_gui.x_obj, glist);
     int ypos = text_ypix(&x->x_gui.x_obj, glist);
@@ -199,18 +190,20 @@ static void numbox_tilde_draw_new(t_numbox_tilde *x, t_glist *glist){
     int d = x->x_zoom + x->x_gui.x_h/(34*x->x_zoom);
     int iow = IOWIDTH * x->x_zoom, ioh = 3 * x->x_zoom;
     t_canvas *cv = glist_getcanvas(glist);
-    sys_vgui(".x%lx.c create polygon %d %d %d %d %d %d %d %d %d %d -width %d -outline black "
-        "-fill #%06x -tags [list %lxBASE %lxALL]\n", cv, xpos, ypos, xpos+w, ypos, xpos+w, ypos+x->x_gui.x_h,
+    sys_vgui(".x%lx.c create polygon %d %d %d %d %d %d %d %d %d %d -width %d -outline black -fill #%06x "
+        "-tags [list %lxBASE %lxALL]\n", cv, xpos, ypos, xpos+w, ypos, xpos+w, ypos+x->x_gui.x_h,
         xpos, ypos+x->x_gui.x_h, xpos, ypos, x->x_zoom, x->x_gui.x_bcol, x, x);
-    sys_vgui(".x%lx.c create text %d %d -text {~} -anchor w -font {{%s} -%d %s} -fill #%06x -tags [list %lxTILDE %lxTEXT %lxALL]\n", cv,
-        xpos + 2*x->x_zoom+1, ypos+half+d, x->x_gui.x_font, x->x_gui.x_fontsize*x->x_zoom, sys_fontweight, x->x_gui.x_fcol, x, x, x);
+    sys_vgui(".x%lx.c create text %d %d -text {~} -anchor w -font {{%s} -%d %s} -fill #%06x "
+        "-tags [list %lxTILDE %lxTEXT %lxALL]\n", cv, xpos + 2*x->x_zoom+1, ypos+half+d, x->x_gui.x_font,
+        x->x_gui.x_fontsize*x->x_zoom, sys_fontweight, x->x_gui.x_fcol, x, x, x);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lxOUT %lxALL]\n",
         cv, xpos, ypos+x->x_gui.x_h+x->x_zoom-ioh, xpos+iow, ypos+x->x_gui.x_h, x, x);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lxIN %lxALL]\n",
         cv, xpos, ypos, xpos+iow, ypos-x->x_zoom+ioh, x, x);
     numbox_tilde_ftoa(x);
-    sys_vgui(".x%lx.c create text %d %d -text {%s} -anchor w -font {{%s} -%d %s} -fill #%06x -tags [list %lxNUMBER %lxTEXT %lxALL]\n", cv,
-        xpos+half+2*x->x_zoom+3, ypos+half+d, x->x_buf, x->x_gui.x_font, x->x_gui.x_fontsize*x->x_zoom, sys_fontweight, x->x_gui.x_fcol, x, x, x);
+    sys_vgui(".x%lx.c create text %d %d -text {%s} -anchor w -font {{%s} -%d %s} -fill #%06x "
+        "-tags [list %lxNUMBER %lxTEXT %lxALL]\n", cv, xpos+half+2*x->x_zoom+3, ypos+half+d,
+        x->x_buf, x->x_gui.x_font, x->x_gui.x_fontsize*x->x_zoom, sys_fontweight, x->x_gui.x_fcol, x, x, x);
 }
 
 static void numbox_tilde_delete(t_gobj *z, t_glist *glist){
@@ -241,34 +234,6 @@ static void numbox_tilde_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 
 static void numbox_tilde_draw_erase(t_numbox_tilde* x, t_glist* glist){
     sys_vgui(".x%lx.c delete %lxALL\n", glist_getcanvas(glist), x);
-}
-
-static void numbox_tilde_draw_config(t_numbox_tilde* x, t_glist* glist){
-    t_canvas *cv = glist_getcanvas(glist);
-    if(x->x_selected){
-        sys_vgui(".x%lx.c itemconfigure %lxTEXT -font {{%s} -%d %s} -fill blue\n",
-            cv, x, x->x_gui.x_font, x->x_gui.x_fontsize*x->x_zoom, sys_fontweight);
-        sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue -font {{%s} -%d %s}\n", cv, x,
-            x->x_gui.x_font, x->x_gui.x_fontsize * x->x_zoom, sys_fontweight);
-    }
-    else{
-        sys_vgui(".x%lx.c itemconfigure %lxTEXT -font {{%s} -%d %s} -fill #%06x\n",
-            cv, x, x->x_gui.x_font, x->x_gui.x_fontsize * x->x_zoom, sys_fontweight, x->x_gui.x_fcol);
-        sys_vgui(".x%lx.c itemconfigure %lxBASE -outline black -font {{%s} -%d %s}\n", cv, x,
-            x->x_gui.x_font, x->x_gui.x_fontsize * x->x_zoom, sys_fontweight);
-    }
-    sys_vgui(".x%lx.c itemconfigure %lxBASE -fill #%06x\n", cv, x, x->x_gui.x_bcol);
-}
-
-static void numbox_tilde_draw(t_numbox_tilde *x, t_glist *glist, int mode){
-    if(mode == IEM_GUI_DRAW_MODE_UPDATE)
-        sys_queuegui(x, glist, numbox_tilde_draw_update);
-    else if(mode == IEM_GUI_DRAW_MODE_NEW)
-        numbox_tilde_draw_new(x, glist);
-    else if(mode == IEM_GUI_DRAW_MODE_ERASE)
-        numbox_tilde_draw_erase(x, glist);
-    else if(mode == IEM_GUI_DRAW_MODE_CONFIG)
-        numbox_tilde_draw_config(x, glist);
 }
 
 void numbox_tilde_vis(t_gobj *z, t_glist *glist, int vis){
@@ -340,10 +305,6 @@ static void numbox_tilde_doit(t_numbox_tilde *x){
 }
 
 static int getcolor_int(int index, int ac, t_atom*av){
-/*    if(index < 0 || index >= ac)
-        return(0);
-    if(IS_A_FLOAT(av,index))
-        return(atom_getfloatarg(index, ac, av));*/
     if(IS_A_SYMBOL(av, index)){
         t_symbol*s=atom_getsymbolarg(index, ac, av);
         if('#' == s->s_name[0]){
@@ -352,6 +313,10 @@ static int getcolor_int(int index, int ac, t_atom*av){
         }
     }
     return(0);
+}
+
+static void numbox_tilde_interval(t_numbox_tilde *x, t_floatarg f){
+    x->x_interval_ms = f < 15 ? 15 : (int)f;
 }
 
 static void numbox_tilde_dialog(t_numbox_tilde *x, t_symbol *s, int ac, t_atom *av){
@@ -388,6 +353,17 @@ static void numbox_tilde_dialog(t_numbox_tilde *x, t_symbol *s, int ac, t_atom *
     canvas_fixlinesfor(x->x_gui.x_glist, (t_text*)x);
 }
 
+static void numbox_tilde_set(t_numbox_tilde *x, t_floatarg f){
+    t_float ftocompare = f;
+        // bitwise comparison, suggested by Dan Borstein - to make this work
+        // ftocompare must be t_float type like x_val.
+    if(memcmp(&ftocompare, &x->x_out_val, sizeof(ftocompare))){
+        x->x_set_val = ftocompare;
+        numbox_tilde_clip(x);
+        numbox_tilde_draw_update(&x->x_gui.x_obj.te_g, x->x_gui.x_glist);
+    }
+}
+
 static void numbox_tilde_motion(t_numbox_tilde *x, t_floatarg dx, t_floatarg dy, t_floatarg up){
     dx = 0; // avoid warning
     double k2 = 1.0;
@@ -399,6 +375,44 @@ static void numbox_tilde_motion(t_numbox_tilde *x, t_floatarg dx, t_floatarg dy,
     sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
     numbox_tilde_doit(x);
     clock_unset(x->x_clock_reset);
+}
+
+static void numbox_tilde_key(void *z, t_symbol *keysym, t_floatarg fkey){
+    keysym = NULL; // unused, avoid warning
+    t_numbox_tilde *x = z;
+    char c = fkey;
+    char buf[3];
+    buf[1] = 0;
+    if(c == 0){
+        x->x_gui.x_fsf.x_change = 0;
+        clock_unset(x->x_clock_reset);
+        sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
+        return;
+    }
+    if(((c >= '0') && (c <= '9')) || (c == '.') || (c == '-') ||
+    (c == 'e') || (c == '+') || (c == 'E')){
+        if(strlen(x->x_buf) < (MAX_NUMBOX_LEN-2)){
+            buf[0] = c;
+            strcat(x->x_buf, buf);
+            sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
+        }
+    }
+    else if((c == '\b') || (c == 127)){
+        int sl = (int)strlen(x->x_buf) - 1;
+        if(sl < 0)
+            sl = 0;
+        x->x_buf[sl] = 0;
+        sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
+    }
+    else if(((c == '\n') || (c == 13)) && x->x_buf[0] != 0){
+        numbox_tilde_set(x, atof(x->x_buf));
+        x->x_buf[0] = 0;
+        x->x_gui.x_fsf.x_change = 0;
+        clock_unset(x->x_clock_reset);
+        numbox_tilde_doit(x);
+        sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
+    }
+    clock_delay(x->x_clock_reset, 3000);
 }
 
 static void numbox_tilde_click(t_numbox_tilde *x, t_floatarg xpos, t_floatarg ypos,
@@ -437,17 +451,6 @@ static int numbox_tilde_newclick(t_gobj *z, struct _glist *glist,
     return(1);
 }
 
-static void numbox_tilde_set(t_numbox_tilde *x, t_floatarg f){
-    t_float ftocompare = f;
-        // bitwise comparison, suggested by Dan Borstein - to make this work
-        // ftocompare must be t_float type like x_val.
-    if(memcmp(&ftocompare, &x->x_out_val, sizeof(ftocompare))){
-        x->x_set_val = ftocompare;
-        numbox_tilde_clip(x);
-        numbox_tilde_draw_update(&x->x_gui.x_obj.te_g, x->x_gui.x_glist);
-    }
-}
-
 static void numbox_tilde_float(t_numbox_tilde *x, t_floatarg f){
     numbox_tilde_set(x, f);
     numbox_tilde_doit(x);
@@ -459,7 +462,6 @@ static void numbox_tilde_width(t_numbox_tilde *x, t_floatarg f){
     numbox_tilde_calc_fontwidth(x);
     numbox_tilde_draw_erase(x, x->x_gui.x_glist);
     numbox_tilde_draw_new(x, x->x_gui.x_glist);
-    iemgui_size((void *)x, &x->x_gui);
 }
 
 static void numbox_tilde_size(t_numbox_tilde *x, t_floatarg f){
@@ -469,58 +471,14 @@ static void numbox_tilde_size(t_numbox_tilde *x, t_floatarg f){
     numbox_tilde_calc_fontwidth(x);
     numbox_tilde_draw_erase(x, x->x_gui.x_glist);
     numbox_tilde_draw_new(x, x->x_gui.x_glist);
-    iemgui_size((void *)x, &x->x_gui);
 }
 
 static void numbox_tilde_color(t_numbox_tilde *x, t_symbol *s, int ac, t_atom *av){
     iemgui_color((void *)x, &x->x_gui, s, ac, av);
 }
 
-static void numbox_tilde_interval(t_numbox_tilde *x, t_floatarg f){
-    x->x_interval_ms = f < 15 ? 15 : (int)f;
-}
-
 static void numbox_tilde_ramp(t_numbox_tilde *x, t_floatarg f){
     x->x_ramp_time = f < 0 ? 0 : (int)f;
-}
-
-static void numbox_tilde_key(void *z, t_symbol *keysym, t_floatarg fkey){
-    keysym = NULL; // unused, avoid warning
-    t_numbox_tilde *x = z;
-    char c = fkey;
-    char buf[3];
-    buf[1] = 0;
-    if(c == 0){
-        x->x_gui.x_fsf.x_change = 0;
-        clock_unset(x->x_clock_reset);
-        sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
-        return;
-    }
-    if(((c >= '0') && (c <= '9')) || (c == '.') || (c == '-') ||
-        (c == 'e') || (c == '+') || (c == 'E'))
-    {
-        if(strlen(x->x_buf) < (MAX_NUMBOX_LEN-2)){
-            buf[0] = c;
-            strcat(x->x_buf, buf);
-            sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
-        }
-    }
-    else if((c == '\b') || (c == 127)){
-        int sl = (int)strlen(x->x_buf) - 1;
-        if(sl < 0)
-            sl = 0;
-        x->x_buf[sl] = 0;
-        sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
-    }
-    else if(((c == '\n') || (c == 13)) && x->x_buf[0] != 0){
-        numbox_tilde_set(x, atof(x->x_buf));
-        x->x_buf[0] = 0;
-        x->x_gui.x_fsf.x_change = 0;
-        clock_unset(x->x_clock_reset);
-        numbox_tilde_doit(x);
-        sys_queuegui(x, x->x_gui.x_glist, numbox_tilde_draw_update);
-    }
-    clock_delay(x->x_clock_reset, 3000);
 }
 
 static int colorfromarg(t_symbol *color_arg){
@@ -550,7 +508,6 @@ static void *numbox_tilde_new(t_symbol *s, int ac, t_atom *av){
         minimum = atom_getfloatarg(6, ac, av);
         maximum = atom_getfloatarg(7, ac, av);
     }
-    x->x_gui.x_draw = (t_iemfunptr)numbox_tilde_draw;
     x->x_gui.x_glist = (t_glist *)canvas_getcurrent();
     x->x_in_val = 0.0;
     x->x_out_val = 0.0;
