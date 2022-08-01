@@ -341,7 +341,7 @@ static void numbox_tilde_dialog(t_numbox_tilde *x, t_symbol *s, int ac, t_atom *
     t_atom undo[9];
     SETFLOAT(undo, x->x_numwidth);
     SETFLOAT(undo+1, x->x_h);
-    SETFLOAT(undo+2, x->ramp_time);
+    SETFLOAT(undo+2, x->x_ramp_time);
     SETFLOAT(undo+3, x->x_interval_ms);
     SETCOLOR(undo+4, x->x_bcol);
     SETCOLOR(undo+5, x->x_fcol);
