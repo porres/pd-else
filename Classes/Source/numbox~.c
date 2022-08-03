@@ -229,22 +229,19 @@ static void numbox_save(t_gobj *z, t_binbuf *b){
     binbuf_addv(b, ";");
 }
 
-static void numbox_properties(t_gobj *z, t_glist *owner){
+static void numbox_properties(t_gobj *z, t_glist *owner){ // called in right click for propeties
     owner = NULL; // not used for some reason, avoid warning
-    // For some reason the dialog doesn't work if we initialise it in the setup...
-    numbox_dialog_init();
     t_numbox *x = (t_numbox *)z;
-    char buf[800];
+    numbox_dialog_init();  // initialising dialog doesn't seem to work in setup...
     if(x->x_change){ // why??
         x->x_change = 0;
         sys_queuegui(x, x->x_glist, numbox_draw_update);
     }
-    sprintf(buf, "::dialog_numbox::pdtk_numbox_dialog %%s \
-            -------dimensions(digits)(pix):------- \
-            %d %d %d %d %d %d %s %s %.1f %.1f\n",
-            x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE, x->x_ramp_time, x->x_rate,
-            x->x_bg->s_name, x->x_fg->s_name, x->x_minimum, x->x_maximum);
-    gfxstub_new(&x->x_obj.ob_pd, x, buf);
+    char buf[800];
+    sprintf(buf, "::dialog_numbox::pdtk_numbox_dialog %%s -------dimensions(digits)(pix):------- \
+        %d %d %d %d %d %d %s %s %.1f %.1f\n", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
+        x->x_ramp_time, x->x_rate, x->x_bg->s_name, x->x_fg->s_name, x->x_minimum, x->x_maximum);
+    gfxstub_new(&x->x_obj.ob_pd, x, buf); // no idea what this does...
 }
 
 static void numbox_doit(t_numbox *x){
@@ -262,26 +259,26 @@ static void numbox_ramp(t_numbox *x, t_floatarg f){
 }
 
 static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    #define SETCOLOR(a, col) do {char color[MAXPDSTRING]; snprintf(color, MAXPDSTRING-1, "#%06x", 0xffffff & col); color[MAXPDSTRING-1] = 0; SETSYMBOL(a, gensym(color));} while(0)
-    int width = (int)atom_getfloatarg(0, ac, av);
-    int size = (int)atom_getfloatarg(1, ac, av);
-    t_float ramp_time = (int)atom_getfloatarg(2, ac, av);
-    t_float rate = (int)atom_getfloatarg(3, ac, av);
+    s = NULL; // we receive this when applying changes in properties
+    int width = atom_getintarg(0, ac, av);
+    int size = atom_getintarg(1, ac, av);
+    int ramp_time = atom_getintarg(2, ac, av);
+    int rate = atom_getintarg(3, ac, av);
     t_symbol *bgcolor = atom_getsymbolarg(4, ac, av);
     t_symbol *fgcolor = atom_getsymbolarg(5, ac, av);
-    int min = atom_getfloatarg(6, ac, av);
-    int max = atom_getfloatarg(7, ac, av);
-    t_atom at[ac]; // for undo bug ???
-    SETFLOAT(at, x->x_numwidth);
-    SETFLOAT(at+1, x->x_fontsize);
-    SETFLOAT(at+2, x->x_rate);
-    SETSYMBOL(at+3, x->x_bg);
-    SETSYMBOL(at+4, x->x_fg);
-    SETFLOAT(at+5, x->x_ramp_time);
-    SETFLOAT(at+6, x->x_minimum);
-    SETFLOAT(at+7, x->x_maximum);
-    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), ac, at, ac, av);
+    t_float min = atom_getfloatarg(6, ac, av);
+    t_float max = atom_getfloatarg(7, ac, av);
+    t_atom undo[9];
+    SETFLOAT(undo+0, x->x_numwidth);
+    SETFLOAT(undo+1, x->x_fontsize);
+    SETFLOAT(undo+2, 0); // why?????????????????
+    SETFLOAT(undo+3, x->x_rate);
+    SETSYMBOL(undo+4, x->x_bg);
+    SETSYMBOL(undo+5, x->x_fg);
+    SETFLOAT(undo+6, x->x_ramp_time);
+    SETFLOAT(undo+7, x->x_minimum);
+    SETFLOAT(undo+8, x->x_maximum);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 9, undo, ac, av);
     x->x_numwidth = width < MINDIGITS ? MINDIGITS : width;
     x->x_fontsize = size < MINSIZE ? MINSIZE : size;
     x->x_height = size + 4;
@@ -665,6 +662,7 @@ static void numbox_dialog_init(void){ // Tcl/Tk properties code based on IEMGUI'
             "\n"
             "\n"
             "\n"
+// send "dialog" message to pd
             "    pdsend [concat $mytoplevel dialog \\\n"
             "            [eval concat $$var_elsegui_wdt] \\\n"
             "            [eval concat $$var_elsegui_hgt] \\\n"
@@ -674,7 +672,6 @@ static void numbox_dialog_init(void){ // Tcl/Tk properties code based on IEMGUI'
             "            [string tolower [eval concat $$var_elsegui_fcol]] \\\n"
             "            [eval concat $$var_elsegui_min_rng] \\\n"
             "            [eval concat $$var_elsegui_max_rng]] \\\n"
-
             "}\n"
             "\n"
             "\n"
