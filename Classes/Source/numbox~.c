@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MINDIGITS       1
-#define MAX_NUMBOX_LEN  32
-#define MINSIZE         8
+#define MINDIGITS      1
+#define MAX_NUMBOX_LEN 32
+#define MINSIZE        8
 
 #if __APPLE__
 char def_font[100] = "Menlo";
@@ -54,44 +54,19 @@ static t_class *numbox_class;
 
 static void numbox_float2string(t_numbox *x){
     double f = x->x_outmode ? x->x_set_val : x->x_in_val;
-    int bufsize, idecimal;
     sprintf(x->x_buf, "~%g", f);
-    bufsize = (int)strlen(x->x_buf);
+    int bufsize = (int)strlen(x->x_buf), i, e;
     int real_numwidth = x->x_numwidth + 1;
-    if(bufsize > real_numwidth){ // if to reduce
-/*        int is_exp = 0; // is_exp = 0 ????
-        if(is_exp){
-            if(real_numwidth <= 5){
-                x->x_buf[0] = (f < 0.0 ? '-' : '+');
-                x->x_buf[1] = 0;
-            }
-            int i = bufsize - 4;
-            for(idecimal = 0; idecimal < i; idecimal++)
-                if(x->x_buf[idecimal] == '.')
-                    break;
-            if(idecimal > (real_numwidth - 4)){
-                x->x_buf[0] = (f < 0.0 ? '-' : '+');
-                x->x_buf[1] = 0;
-            }
-            else{
-                int new_exp_index = real_numwidth - 4;
-                int old_exp_index = bufsize - 4;
-                for(i = 0; i < 4; i++, new_exp_index++, old_exp_index++)
-                    x->x_buf[new_exp_index] = x->x_buf[old_exp_index];
-                x->x_buf[x->x_numwidth] = 0;
-            }
-        }
-        else{*/
-            for(idecimal = 0; idecimal < bufsize; idecimal++)
-                if(x->x_buf[idecimal] == '.')
-                    break;
-            if(idecimal > real_numwidth){
-                x->x_buf[0] = (f < 0.0 ? '-' : '+'); // stupid!!! truncate and use ">" for last char BUG ???
-                x->x_buf[1] = 0;
-            }
-            else
-                x->x_buf[real_numwidth] = 0;
-//        }
+    if(bufsize > real_numwidth){ // reduce
+        for(i = 0; i < bufsize; i++)
+            if(x->x_buf[i] == '.')
+                break;
+        for(e = 0; e < bufsize; e++)
+            if(x->x_buf[e] == 'e' || x->x_buf[e] == 'E')
+                break;
+        if(i >= real_numwidth || e < bufsize)
+            x->x_buf[real_numwidth-1] = '>';
+        x->x_buf[real_numwidth] = 0;
     }
 }
 
@@ -429,7 +404,7 @@ static void numbox_size(t_numbox *x, t_floatarg f){
     int dy = (x->x_height - oldheight);
     t_canvas *cv = glist_getcanvas(x->x_glist);
     sys_vgui(".x%lx.c itemconfigure %lxNUMBER -font {{%s} -%d}\n", cv, x, def_font, x->x_fontsize);
-    sys_vgui(".x%lx.c move %lxNUMBER 0 %d\n", cv, x, dy/2);
+    sys_vgui(".x%lx.c moveto %lxNUMBER %d %d\n", cv, x, x->x_obj.te_xpix, x->x_obj.te_ypix+2);
     sys_vgui(".x%lx.c move %lxOUT 0 %d\n", cv, x, dy);
     canvas_fixlinesfor(x->x_glist, (t_text*)x);
 }
