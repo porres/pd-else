@@ -30,20 +30,20 @@ typedef struct _numbox{
     t_float   x_in_val;
     t_float   x_out_val;
     t_float   x_set_val;
-    t_float   x_ramp_val;
-    t_float   x_ramp;
     t_float   x_last_out;
     t_float   x_maximum;
     t_float   x_minimum;
     t_float   x_sr_khz;
+    t_float   x_ramp_step;
+    t_float   x_ramp_val;
+    int       x_ramp_ms;
     int       x_selected;
-    int       x_ramp_time;
     int       x_rate;
     int       x_zoom;
     int       x_numwidth;
     int       x_outmode;
     int       x_needs_update;
-    char      x_buf[MAX_NUMBOX_LEN];
+    char      x_buf[MAX_NUMBOX_LEN]; // number buffer
 }t_numbox;
 
 static void numbox_dialog_init(void);
@@ -51,10 +51,8 @@ t_widgetbehavior numbox_widgetbehavior;
 static t_class *numbox_class;
 
 // // // // // // // // helper functions // // // // // // // // // // //
-
-static void numbox_float2string(t_numbox *x){
-    double f = x->x_outmode ? x->x_set_val : x->x_in_val;
-    sprintf(x->x_buf, "~%g", f);
+char *set_x_buf(t_numbox *x){
+    sprintf(x->x_buf, "~%g", x->x_outmode ? x->x_set_val : x->x_in_val);
     int bufsize = (int)strlen(x->x_buf), i, e;
     int real_numwidth = x->x_numwidth + 1;
     if(bufsize > real_numwidth){ // reduce
@@ -68,6 +66,7 @@ static void numbox_float2string(t_numbox *x){
             x->x_buf[real_numwidth-1] = '>';
         x->x_buf[real_numwidth] = 0;
     }
+    return(x->x_buf);
 }
 
 static void numbox_draw_update(t_gobj *client, t_glist *glist){ // update number value
@@ -81,18 +80,17 @@ static void numbox_draw_update(t_gobj *client, t_glist *glist){ // update number
             x->x_buf[sl+1] = 0;
             if(sl >= (x->x_numwidth + 1))
                 cp += sl - x->x_numwidth + 1;
-            sys_vgui(".x%lx.c itemconfigure %lxNUMBER -text {%s}\n", cv, x, cp);
+            sys_vgui(".x%lx.c itemconfigure %lxNUM -text {%s}\n", cv, x, cp);
             x->x_buf[sl] = 0;
         }
         else{ // plain update
-            numbox_float2string(x);
-            sys_vgui(".x%lx.c itemconfigure %lxNUMBER -text {%s}\n", cv, x, x->x_buf);
+            sys_vgui(".x%lx.c itemconfigure %lxNUM -text {%s}\n", cv, x, set_x_buf(x));
             if(x->x_selected){
-                sys_vgui(".x%lx.c itemconfigure %lxNUMBER -fill blue\n", cv, x);
+                sys_vgui(".x%lx.c itemconfigure %lxNUM -fill blue\n", cv, x);
                 sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue\n", cv, x);
             }
             else{
-                sys_vgui(".x%lx.c itemconfigure %lxNUMBER -fill %s\n", cv, x, x->x_fg->s_name);
+                sys_vgui(".x%lx.c itemconfigure %lxNUM -fill %s\n", cv, x, x->x_fg->s_name);
                 sys_vgui(".x%lx.c itemconfigure %lxBASE -outline black\n", cv, x);
             }
             x->x_buf[0] = 0;
@@ -110,8 +108,10 @@ static void numbox_periodic_update(t_numbox *x){
     clock_delay(x->x_clock_repaint, x->x_rate);
 }
 
-int numbox_check_minmax(t_numbox *x, t_float min, t_float max){
+int numbox_check_minmax(t_numbox *x, t_float min, t_float max){ // needed???
     int ret = 0;
+    if(x->x_minimum == 0 && x->x_maximum == 0)
+        return(ret);
     x->x_minimum = min;
     x->x_maximum = max;
     if(x->x_set_val < x->x_minimum){
@@ -148,26 +148,25 @@ static void numbox_range(t_numbox *x, t_floatarg f1, t_floatarg f2){
         sys_queuegui(x, x->x_glist, numbox_draw_update);
 }
 
-static void numbox_calc_width(t_numbox *x){
+static void numbox_width_calc(t_numbox *x){
     x->x_width = (x->x_fontsize - (x->x_fontsize/2)+2) * (x->x_numwidth+2) + 2;
 }
 
 static void numbox_draw_new(t_numbox *x, t_glist *glist){
-    numbox_float2string(x);
     int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
     int zoom = x->x_zoom, size = x->x_fontsize;
     int w = x->x_width, h = x->x_height;
     int half = h/2, d = zoom + h/(34*zoom); // ???
     int iow = IOWIDTH * zoom, ioh = 3*zoom; // why not ioheight??
     t_canvas *cv = glist_getcanvas(glist);
-    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline black -fill %s "
-        "-tags [list %lxBASE %lxALL]\n", cv, xpos, ypos, xpos+w, ypos+h, zoom, x->x_bg->s_name, x, x);
+    sys_vgui(".x%lx.c create rectangle %d %d %d %d -width %d -outline black -fill %s -tags [list %lxBASE %lxALL]\n",
+        cv, xpos, ypos, xpos+w, ypos+h, zoom, x->x_bg->s_name, x, x);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lxIN %lxALL]\n",
         cv, xpos, ypos, xpos+iow, ypos-zoom+ioh, x, x);
     sys_vgui(".x%lx.c create rectangle %d %d %d %d -fill black -tags [list %lxOUT %lxALL]\n",
         cv, xpos, ypos+h+zoom-ioh, xpos+iow, ypos+h, x, x);
-    sys_vgui(".x%lx.c create text %d %d -text {%s} -anchor w -font {{%s} -%d} -fill %s -tags [list %lxNUMBER %lxALL]\n",
-        cv, xpos+2*zoom, ypos+half+d, x->x_buf, def_font, size*zoom, x->x_fg->s_name, x, x, x);
+    sys_vgui(".x%lx.c create text %d %d -text {%s} -anchor w -font {{%s} -%d} -fill %s -tags [list %lxNUM %lxALL]\n",
+        cv, xpos+2*zoom, ypos+half+d, set_x_buf(x), def_font, size*zoom, x->x_fg->s_name, x, x, x);
 }
 
 static void numbox_delete(t_gobj *z, t_glist *glist){
@@ -178,11 +177,11 @@ static void numbox_select(t_gobj *z, t_glist *glist, int sel){
     t_numbox *x = (t_numbox *)z;
     t_canvas *cv = glist_getcanvas(glist);
     if((x->x_selected = sel)){
-        sys_vgui(".x%lx.c itemconfigure %lxNUMBER -fill blue\n", cv, x);
+        sys_vgui(".x%lx.c itemconfigure %lxNUM -fill blue\n", cv, x);
         sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue\n", cv, x);
     }
     else{
-        sys_vgui(".x%lx.c itemconfigure %lxNUMBER -fill %s\n", cv, x, x->x_fg->s_name);
+        sys_vgui(".x%lx.c itemconfigure %lxNUM -fill %s\n", cv, x, x->x_fg->s_name);
         sys_vgui(".x%lx.c itemconfigure %lxBASE -outline black\n", cv, x);
     }
 }
@@ -225,7 +224,7 @@ static void numbox_save(t_gobj *z, t_binbuf *b){
     }
     binbuf_addv(b, "ssiisiiissiff", gensym("#X"), gensym("obj"), (int)x->x_obj.te_xpix,
         (int)x->x_obj.te_ypix, gensym("numbox~"), x->x_numwidth, x->x_fontsize,
-        x->x_rate, x->x_bg, x->x_fg, x->x_ramp_time, x->x_minimum, x->x_maximum);
+        x->x_rate, x->x_bg, x->x_fg, x->x_ramp_ms, x->x_minimum, x->x_maximum);
     binbuf_addv(b, ";");
 }
 
@@ -240,13 +239,13 @@ static void numbox_properties(t_gobj *z, t_glist *owner){ // called in right cli
     char buf[800];
     sprintf(buf, "::dialog_numbox::pdtk_numbox_dialog %%s -------dimensions(digits)(pix):------- \
         %d %d %d %d %d %d %s %s %.1f %.1f\n", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
-        x->x_ramp_time, x->x_rate, x->x_bg->s_name, x->x_fg->s_name, x->x_minimum, x->x_maximum);
+        x->x_ramp_ms, x->x_rate, x->x_bg->s_name, x->x_fg->s_name, x->x_minimum, x->x_maximum);
     gfxstub_new(&x->x_obj.ob_pd, x, buf); // no idea what this does...
 }
 
-static void numbox_doit(t_numbox *x){
+static void numbox_doit(t_numbox *x){ // set x->x_out_val and x->x_ramp_step
     x->x_out_val = x->x_set_val;
-    x->x_ramp = (x->x_out_val - x->x_ramp_val) / (x->x_ramp_time * x->x_sr_khz);
+    x->x_ramp_step = (x->x_out_val - x->x_ramp_val) / (x->x_ramp_ms * x->x_sr_khz);
     numbox_clip(x);
 }
 
@@ -254,46 +253,11 @@ static void numbox_rate(t_numbox *x, t_floatarg f){
     x->x_rate = f < 15 ? 15 : (int)f;
 }
 
-static void numbox_ramp(t_numbox *x, t_floatarg f){
-    x->x_ramp_time = f < 0 ? 0 : (int)f;
+static void numbox_ramp_step(t_numbox *x, t_floatarg f){
+    x->x_ramp_ms = f < 0 ? 0 : (int)f;
 }
 
-static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL; // we receive this when applying changes in properties
-    int width = atom_getintarg(0, ac, av);
-    int size = atom_getintarg(1, ac, av);
-    int ramp_time = atom_getintarg(2, ac, av);
-    int rate = atom_getintarg(3, ac, av);
-    t_symbol *bgcolor = atom_getsymbolarg(4, ac, av);
-    t_symbol *fgcolor = atom_getsymbolarg(5, ac, av);
-    t_float min = atom_getfloatarg(6, ac, av);
-    t_float max = atom_getfloatarg(7, ac, av);
-    t_atom undo[9];
-    SETFLOAT(undo+0, x->x_numwidth);
-    SETFLOAT(undo+1, x->x_fontsize);
-    SETFLOAT(undo+2, 0); // why?????????????????
-    SETFLOAT(undo+3, x->x_rate);
-    SETSYMBOL(undo+4, x->x_bg);
-    SETSYMBOL(undo+5, x->x_fg);
-    SETFLOAT(undo+6, x->x_ramp_time);
-    SETFLOAT(undo+7, x->x_minimum);
-    SETFLOAT(undo+8, x->x_maximum);
-    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 9, undo, ac, av);
-    x->x_numwidth = width < MINDIGITS ? MINDIGITS : width;
-    x->x_fontsize = size < MINSIZE ? MINSIZE : size;
-    x->x_height = size + 4;
-    numbox_calc_width(x);
-    numbox_rate(x, rate);
-    numbox_check_minmax(x, min, max);
-    x->x_bg = bgcolor;
-    x->x_fg = fgcolor;
-    numbox_ramp(x, ramp_time);
-    numbox_draw_erase(x, x->x_glist);
-    numbox_draw_new(x, x->x_glist);
-    canvas_fixlinesfor(x->x_glist, (t_text*)x);
-}
-
-static void numbox_set(t_numbox *x, t_floatarg f){
+static void numbox_set(t_numbox *x, t_floatarg f){ // set float value and update GUI
     t_float ftocompare = f; // bitwise comparison by Dan Borstein (ftocompare must be t_float like x_val)
     if(memcmp(&ftocompare, &x->x_out_val, sizeof(ftocompare))){
         x->x_set_val = ftocompare;
@@ -304,14 +268,11 @@ static void numbox_set(t_numbox *x, t_floatarg f){
 
 static void numbox_motion(t_numbox *x, t_floatarg dx, t_floatarg dy, t_floatarg up){
     dx = 0; // avoid warning
-    double k2 = 1.0;
     if(up != 0) // ???
         return;
-    if(x->x_finemoved)
-        k2 = 0.01;
-    numbox_set(x, x->x_out_val - k2*dy);
-    sys_queuegui(x, x->x_glist, numbox_draw_update); // why queing?
+    numbox_set(x, x->x_out_val - dy*(x->x_finemoved ? 0.01 : 1));
     numbox_doit(x);
+    sys_queuegui(x, x->x_glist, numbox_draw_update); // why queing?? set already updates
 }
 
 static void numbox_key(void *z, t_symbol *keysym, t_floatarg fkey){
@@ -342,10 +303,10 @@ static void numbox_key(void *z, t_symbol *keysym, t_floatarg fkey){
         sys_queuegui(x, x->x_glist, numbox_draw_update);
     }
     else if(((c == '\n') || (c == 13)) && x->x_buf[0] != 0){ // enter
-        numbox_set(x, atof(x->x_buf)); // atof converts string to float
         x->x_buf[0] = 0;
+        numbox_set(x, atof(x->x_buf)); // atof converts string to float
         numbox_doit(x);
-        sys_queuegui(x, x->x_glist, numbox_draw_update);
+        sys_queuegui(x, x->x_glist, numbox_draw_update); // not needed?? set already updates
     }
 }
 
@@ -384,9 +345,8 @@ static void numbox_resize(t_numbox *x, t_glist *glist){
 }
 
 static void numbox_width(t_numbox *x, t_floatarg f){
-    int width = (int)f;
-    x->x_numwidth = width < MINDIGITS ? MINDIGITS : width;
-    numbox_calc_width(x);
+    x->x_numwidth = (int)f < MINDIGITS ? MINDIGITS : (int)f;
+    numbox_width_calc(x);
     numbox_resize(x, x->x_glist);
     sys_queuegui(x, x->x_glist, numbox_draw_update);
 }
@@ -396,12 +356,12 @@ static void numbox_size(t_numbox *x, t_floatarg f){
     x->x_fontsize = size;
     int oldheight = x->x_height;
     x->x_height = size + 4;
-    numbox_calc_width(x);
+    numbox_width_calc(x);
     numbox_resize(x, x->x_glist);
     int dy = (x->x_height - oldheight);
     t_canvas *cv = glist_getcanvas(x->x_glist);
-    sys_vgui(".x%lx.c itemconfigure %lxNUMBER -font {{%s} -%d}\n", cv, x, def_font, x->x_fontsize);
-    sys_vgui(".x%lx.c moveto %lxNUMBER %d %d\n", cv, x, x->x_obj.te_xpix, x->x_obj.te_ypix+2);
+    sys_vgui(".x%lx.c itemconfigure %lxNUM -font {{%s} -%d}\n", cv, x, def_font, x->x_fontsize);
+    sys_vgui(".x%lx.c moveto %lxNUM %d %d\n", cv, x, x->x_obj.te_xpix, x->x_obj.te_ypix+2);
     sys_vgui(".x%lx.c move %lxOUT 0 %d\n", cv, x, dy);
     canvas_fixlinesfor(x->x_glist, (t_text*)x);
 }
@@ -410,7 +370,7 @@ static void numbox_fg(t_numbox *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
     if(ac == 1 && av->a_type == A_SYMBOL)
         x->x_fg = atom_getsymbolarg(0, ac, av);
-    sys_vgui(".x%lx.c itemconfigure %lxNUMBER -fill %s\n", glist_getcanvas(x->x_glist), x, x->x_fg->s_name);
+    sys_vgui(".x%lx.c itemconfigure %lxNUM -fill %s\n", glist_getcanvas(x->x_glist), x, x->x_fg->s_name);
 //    else if(ac == 3 && av->a_type == A_SYMBOL)
 }
 
@@ -422,13 +382,50 @@ static void numbox_bg(t_numbox *x, t_symbol *s, int ac, t_atom *av){
 //    else if(ac == 3 && av->a_type == A_SYMBOL)
 }
 
+static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL; // we receive this when applying changes in properties
+    int width = atom_getintarg(0, ac, av);
+    int size = atom_getintarg(1, ac, av);
+    int ramp_ms = atom_getintarg(2, ac, av);
+    int rate = atom_getintarg(3, ac, av);
+    t_symbol *bgcolor = atom_getsymbolarg(4, ac, av);
+    t_symbol *fgcolor = atom_getsymbolarg(5, ac, av);
+    t_float min = atom_getfloatarg(6, ac, av);
+    t_float max = atom_getfloatarg(7, ac, av);
+    t_atom undo[9];
+    SETFLOAT(undo+0, x->x_numwidth);
+    SETFLOAT(undo+1, x->x_fontsize);
+    SETFLOAT(undo+2, 0); // why?????????????????
+    SETFLOAT(undo+3, x->x_rate);
+    SETSYMBOL(undo+4, x->x_bg);
+    SETSYMBOL(undo+5, x->x_fg);
+    SETFLOAT(undo+6, x->x_ramp_ms);
+    SETFLOAT(undo+7, x->x_minimum);
+    SETFLOAT(undo+8, x->x_maximum);
+    pd_undo_set_objectstate(x->x_glist, (t_pd*)x, gensym("dialog"), 9, undo, ac, av);
+    numbox_ramp_step(x, ramp_ms);
+    numbox_rate(x, rate);
+    numbox_range(x, min, max);
+    t_atom at[1];
+    SETSYMBOL(at, bgcolor);
+    numbox_bg(x, NULL, 1, at);
+    SETSYMBOL(at, fgcolor);
+    numbox_fg(x, NULL, 1, at);
+    numbox_width(x, width);
+    numbox_size(x, size);
+    canvas_fixlinesfor(x->x_glist, (t_text*)x);
+}
+
 static void *numbox_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_numbox *x = (t_numbox *)pd_new(numbox_class);;
     x->x_glist = (t_glist *)canvas_getcurrent();
     x->x_zoom = x->x_glist->gl_zoom;
+    x->x_in_val = x->x_out_val = x->x_set_val = 0.0;
+    x->x_buf[0] = 0; // ??
+    x->x_change = 0;
     int width = 4, size = glist_getfont(x->x_glist);
-    int rate = 100, ramp_time = 10;
+    int rate = 100, ramp_ms = 10;
     x->x_outmode = 1;
     t_float minimum = 0, maximum = 0;
     x->x_bg = gensym("#dfdfdf");
@@ -439,25 +436,20 @@ static void *numbox_new(t_symbol *s, int ac, t_atom *av){
         rate = atom_getintarg(2, ac, av);
         x->x_bg = atom_getsymbolarg(3, ac, av);
         x->x_fg = atom_getsymbolarg(4, ac, av);
-        ramp_time = atom_getintarg(5, ac, av);
+        ramp_ms = atom_getintarg(5, ac, av);
         minimum = atom_getfloatarg(6, ac, av);
         maximum = atom_getfloatarg(7, ac, av);
     }
-    x->x_in_val = x->x_out_val = x->x_set_val = 0.0;
-    numbox_check_minmax(x, minimum, maximum);
     x->x_numwidth = width < MINDIGITS ? MINDIGITS : width;
-    if(size < MINSIZE)
-        size = MINSIZE;
-    x->x_height = size + 4;
-    x->x_fontsize = size;
-    x->x_buf[0] = 0;
-    x->x_clock_repaint = clock_new(x, (t_method)numbox_periodic_update);
-    x->x_change = 0;
-    numbox_calc_width(x);
+    x->x_fontsize = size < MINSIZE ? MINSIZE : size;
+    numbox_width_calc(x);
+    x->x_height = x->x_fontsize + 4;
+    x->x_minimum = minimum, x->x_maximum = maximum;
     x->x_rate = rate < 15 ? 15 : (int)rate;
-    x->x_ramp_time = ramp_time;
-    outlet_new(&x->x_obj,  &s_signal);
+    x->x_ramp_ms = ramp_ms;
+    x->x_clock_repaint = clock_new(x, (t_method)numbox_periodic_update);
     clock_delay(x->x_clock_repaint, x->x_rate); // Start repaint clock
+    outlet_new(&x->x_obj,  &s_signal);
     return(x);
 }
 
@@ -477,14 +469,14 @@ static t_int *numbox_perform_output(t_int *w){
     t_sample *out     = (t_sample *)(w[3]);
     t_int n           = (t_int)(w[4]);
     x->x_needs_update = 0;
-    if(x->x_ramp_val != x->x_out_val && x->x_ramp != 0){  // apply a ramp
+    if(x->x_ramp_val != x->x_out_val && x->x_ramp_step != 0){  // apply a ramp
         for(int i = 0; i < n; i++){
-            // Check if we reached our destination
-            if((x->x_ramp < 0 && x->x_ramp_val <= x->x_out_val) || (x->x_ramp > 0 && x->x_ramp_val >= x->x_out_val)){
+            if((x->x_ramp_step < 0 && x->x_ramp_val <= x->x_out_val) ||
+            (x->x_ramp_step > 0 && x->x_ramp_val >= x->x_out_val)){ // Check if we reached our destination
                 x->x_ramp_val = x->x_out_val;
-                x->x_ramp = 0;
+                x->x_ramp_step = 0;
             }
-            x->x_ramp_val += x->x_ramp;
+            x->x_ramp_val += x->x_ramp_step;
             out[i] = x->x_ramp_val;
             x->x_last_out = x->x_ramp_val;
         }
@@ -917,7 +909,7 @@ void numbox_tilde_setup(void){
     class_addmethod(numbox_class, (t_method)numbox_width, gensym("width"), A_FLOAT, 0);
     class_addmethod(numbox_class, (t_method)numbox_size, gensym("size"), A_FLOAT, 0);
     class_addmethod(numbox_class, (t_method)numbox_rate, gensym("rate"), A_FLOAT, 0);
-    class_addmethod(numbox_class, (t_method)numbox_ramp, gensym("ramp"), A_FLOAT, 0);
+    class_addmethod(numbox_class, (t_method)numbox_ramp_step, gensym("ramp"), A_FLOAT, 0);
     class_addmethod(numbox_class, (t_method)numbox_range, gensym("range"), A_FLOAT, A_FLOAT, 0);
     class_addmethod(numbox_class, (t_method)numbox_bg, gensym("bgcolor"), A_GIMME, 0);
     class_addmethod(numbox_class, (t_method)numbox_fg, gensym("fgcolor"), A_GIMME, 0);
