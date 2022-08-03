@@ -388,16 +388,14 @@ static int numbox_newclick(t_gobj *z, struct _glist *glist,
     glist = NULL; // unused, avoid warning
     dbl = 0;
     t_numbox* x = (t_numbox *)z;
-    if(doit){
+    if(doit && x->x_outmode){
         sys_vgui(".x%lx.c itemconfigure %lxBASE -width %d\n", glist_getcanvas(x->x_glist), x, x->x_zoom*2);
         numbox_click(x, (t_floatarg)xpix, (t_floatarg)ypix, (t_floatarg)shift, 0, (t_floatarg)alt);
         x->x_finemoved = shift;
         if(!x->x_change){
             x->x_change = 1;
             x->x_buf[0] = 0;
-        }
-        else
-            post("[numbox~] bug: clicked when armed");
+        } else post("[numbox~] bug: clicked when armed");
     }
     return(1);
 }
@@ -418,6 +416,7 @@ static void numbox_width(t_numbox *x, t_floatarg f){
     x->x_numwidth = width < MINDIGITS ? MINDIGITS : width;
     numbox_calc_width(x);
     numbox_resize(x, x->x_glist);
+    sys_queuegui(x, x->x_glist, numbox_draw_update);
 }
 
 static void numbox_size(t_numbox *x, t_floatarg f){
