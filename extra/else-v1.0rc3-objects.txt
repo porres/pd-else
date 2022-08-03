@@ -259,6 +259,7 @@ note2pitch	x
 note.in	x
 note.out	x
 noteinfo	x
+numbox~	x
 nyquist~	x
 op	x
 op~	x

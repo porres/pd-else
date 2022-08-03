@@ -21,7 +21,8 @@ typedef struct _numbox{
     t_clock  *x_clock_repaint;
     t_symbol *x_fg;
     t_symbol *x_bg;
-    t_glist  *x_glist;
+    t_glist  *x_glist;;
+    t_float   x_display;
     t_float   x_in_val;
     t_float   x_out_val;
     t_float   x_set_val;
@@ -31,13 +32,12 @@ typedef struct _numbox{
     t_float   x_sr_khz;
     t_float   x_ramp_step;
     t_float   x_ramp_val;
-    t_float   x_display;
+    int       x_ramp_ms;
     int       x_change;
     int       x_finemoved;
     int       x_height;
     int       x_width;
     int       x_fontsize;
-    int       x_ramp_ms;
     int       x_selected;
     int       x_rate;
     int       x_zoom;
@@ -212,7 +212,8 @@ static void numbox_float(t_numbox *x, t_floatarg f){ // set float value and upda
         numbox_draw_update(&x->x_obj.te_g, x->x_glist);
         if(x->x_outmode){
             x->x_out_val = x->x_set_val;
-            x->x_ramp_step = (x->x_out_val - x->x_ramp_val) / (x->x_ramp_ms * x->x_sr_khz);
+            if(x->x_ramp_ms > 0)
+                x->x_ramp_step = (x->x_out_val - x->x_ramp_val) / (x->x_ramp_ms * x->x_sr_khz);
         }
     }
 }
@@ -222,9 +223,9 @@ static void numbox_bg(t_numbox *x, t_symbol *s, int ac, t_atom *av){
     t_symbol *bg = NULL;
     if(ac == 1 && av->a_type == A_SYMBOL)
         bg = atom_getsymbolarg(0, ac, av);
-    if(x->x_fg != bg && bg != NULL){
+    if(x->x_bg != bg && bg != NULL){
         x->x_bg = bg;
-        sys_vgui(".x%lx.c itemconfigure %lxNUM -fill %s\n", glist_getcanvas(x->x_glist), x, x->x_bg->s_name);
+        sys_vgui(".x%lx.c itemconfigure %lxBASE -fill %s\n", glist_getcanvas(x->x_glist), x, x->x_bg->s_name);
     }
 //    else if(ac == 3 && av->a_type == A_SYMBOL)
 }
@@ -441,7 +442,7 @@ static t_int *numbox_perform_output(t_int *w){
     t_numbox *x = (t_numbox *)(w[1]);
     t_sample *out     = (t_sample *)(w[3]);
     t_int n           = (t_int)(w[4]);
-    if(x->x_ramp_val != x->x_out_val && x->x_ramp_step != 0){  // apply a ramp
+    if(x->x_ramp_val != x->x_out_val && x->x_ramp_ms != 0){  // apply a ramp
         for(int i = 0; i < n; i++){
             if((x->x_ramp_step < 0 && x->x_ramp_val <= x->x_out_val) ||
             (x->x_ramp_step > 0 && x->x_ramp_val >= x->x_out_val)){ // Check if we reached our destination

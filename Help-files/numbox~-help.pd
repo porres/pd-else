@@ -1,0 +1,88 @@
+#N canvas 552 23 564 581 10;
+#X obj 2 4 cnv 15 301 42 empty empty numbox~ 20 20 2 37 #e0e0e0 #000000
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1;
+#X restore 2 4 graph;
+#X obj 23 41 cnv 4 4 4 empty empty Signal\ number\ box 0 28 2 18 #e0e0e0
+#000000 0;
+#X obj 305 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
+0;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 304 4 pd;
+#X obj 344 12 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
+0;
+#X obj 457 12 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 477 12 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 514 12 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 463 27 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 501 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 6 253 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 6 401 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 6 554 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 86 261 cnv 17 3 135 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 86 410 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X text 149 289 size <float>;
+#X text 101 319 range <float \, float>;
+#X obj 317 129 numbox~ 5 12 100 #dfdfdf #000000 100 0 0;
+#X obj 317 182 else/out~;
+#X obj 317 155 else/bl.saw~;
+#X obj 134 129 noise~;
+#X obj 134 155 numbox~ 5 12 100 #dfdfdf #000000 100 0 0;
+#X text 49 87 [numbox~] is a signal GUI number box. It can be used
+to display signal values or generate them with a ramp time., f 71
+;
+#X obj 134 182 else/out~;
+#X text 385 128 <-- click and drag;
+#X text 78 151 used to display, f 7;
+#X text 254 125 used to generate, f 8;
+#X text 232 289 - sets font size, f 52;
+#X text 232 319 - sets minimum and maximum dragging values, f 52;
+#X text 119 335 bgcolor <f \, f \, f>;
+#X text 119 349 fgcolor <f \, f \, f>;
+#X text 232 335 - sets background color in RGB, f 52;
+#X text 232 349 - sets foreground color in RGB, f 52;
+#X text 191 260 float;
+#X text 232 259 - sets generating value, f 52;
+#X text 185 274 signal;
+#X text 232 273 - value to display, f 52;
+#X text 149 364 ramp <float>;
+#X text 232 364 - sets ramp time in ms, f 52;
+#X text 417 145 right click for properties, f 14;
+#X text 143 304 width <float>;
+#X text 232 304 - sets digits width, f 52;
+#X text 149 379 rate <float>;
+#X text 232 379 - sets refresh rate in ms, f 52;
+#X text 185 410 signal;
+#X text 232 410 - displayed or generated values;
+#X text 80 505 -fgcolor <f \, f \, f>: sets frontground color in RGB
+(default 0 0 0), f 71;
+#X obj 6 437 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X text 80 443 -size <float>: font size (default: patch's \, minimum
+8), f 71;
+#X text 80 458 -width <float>: sets digit width (default: 4 \, minimum
+1), f 71;
+#X text 80 474 -range <float \, float>: dragging range (default: 0
+\, 0 - unlimited), f 71;
+#X text 80 489 -bgcolor <f \, f \, f>: sets background color in RGB
+(default 255 255 255), f 71;
+#X text 80 535 -rate <float>: sets refresh rate in ms (default 100
+\, minimum 15), f 71;
+#X text 80 520 -ramp <float>: sets ramp time in ms (default 10 \, minimum
+0), f 71;
+#X connect 18 0 20 0;
+#X connect 20 0 19 0;
+#X connect 21 0 22 0;
+#X connect 22 0 24 0;
