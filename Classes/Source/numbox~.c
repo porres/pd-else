@@ -21,7 +21,7 @@ typedef struct _numbox{
     t_clock  *x_clock_update;
     t_symbol *x_fg;
     t_symbol *x_bg;
-    t_glist  *x_glist;;
+    t_glist  *x_glist;
     t_float   x_display;
     t_float   x_in_val;
     t_float   x_out_val;
@@ -48,7 +48,7 @@ typedef struct _numbox{
 t_widgetbehavior numbox_widgetbehavior;
 static t_class *numbox_class;
 
-//////////////////////////////////////////////////////// Helper and Draeing functions ////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////// Helper and Drawing functions ////////////////////////////////////////////////////////////////
 char *set_x_buf(t_numbox *x){
     sprintf(x->x_buf, "~%g", x->x_display = x->x_outmode ? x->x_set_val : x->x_in_val);
     int bufsize = (int)strlen(x->x_buf), i, e;
@@ -167,6 +167,26 @@ static void numbox_float(t_numbox *x, t_floatarg f){ // set float value and upda
             if(x->x_ramp_ms > 0)
                 x->x_ramp_step = (x->x_out_val - x->x_ramp_val) / (x->x_ramp_ms * x->x_sr_khz);
         }
+    }
+}
+
+// Numbox list is called when there is a key event
+static void numbox_list(t_numbox *x, t_symbol *s, int ac, t_atom *av)
+{
+    // This is a key event if the first argument is float (key up/down)
+    // and the second argument is symbol (key description)
+    if(ac != 2 || av->a_type != A_FLOAT || (av + 1)->a_type != A_SYMBOL || atom_getfloat(av) == 0) return;
+    
+    // Don't receive key events in edit mode, or if we're not selected, or if we're in monitoring mode
+    if(x->x_glist->gl_edit || !x->x_clicked || !x->x_outmode) return;
+    
+    const char* symbol = atom_getsymbol(av + 1)->s_name;
+    
+    if(!strcmp(symbol, "Up")) {
+        numbox_float(x, x->x_set_val + 1);
+    }
+    if(!strcmp(symbol, "Down")) {
+        numbox_float(x, x->x_set_val - 1);
     }
 }
 
@@ -493,6 +513,10 @@ static void *numbox_new(t_symbol *sym, int ac, t_atom *av){
     x->x_ramp_ms = ramp_ms < 0 ? 0 : ramp_ms;
     x->x_clock_update = clock_new(x, (t_method)clock_update);
     clock_delay(x->x_clock_update, x->x_rate); // Start repaint clock
+    
+    pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // Listen for key events to intercept up and down key
+    
+    
     outlet_new(&x->x_obj,  &s_signal);
     return(x);
 errstate:
@@ -504,6 +528,7 @@ void numbox_tilde_setup(void){
     numbox_class = class_new(gensym("numbox~"), (t_newmethod)numbox_new,
         (t_method)numbox_free, sizeof(t_numbox), 0, A_GIMME, 0);
     class_addfloat(numbox_class, numbox_float);
+    class_addfloat(numbox_class, numbox_list); // only used for receiving keypresses
     class_addmethod(numbox_class, nullfn, gensym("signal"), 0);
     class_addmethod(numbox_class, (t_method)numbox_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(numbox_class, (t_method)numbox_zoom, gensym("zoom"), A_CANT, 0);
