@@ -157,7 +157,7 @@
 #X text 192 338 bang;
 #X obj 227 161 sig~ 0.01;
 #X obj 200 284 print~;
-#X obj 227 249 else/display~ 8;
+#X obj 227 249 else/numbox~ 8;
 #X obj 296 192 else/impseq~;
 #X text 144 321 float/signal;
 #X text 230 338 - ressets sum to starting point;

@@ -48,8 +48,8 @@
 #X text 236 345 - sets seed value;
 #N canvas 837 234 357 286 seed 0;
 #X text 60 23 Sync [dust2~] objects with a seed value;
-#X obj 43 221 else/display~;
-#X obj 193 221 else/display~;
+#X obj 43 221 else/numbox~;
+#X obj 193 221 else/numbox~;
 #X text 254 84 <= set seed;
 #X msg 193 85 seed 507;
 #X obj 193 63 loadbang;

@@ -102,7 +102,7 @@ can also set the maximum value with the -size flag or message., f
 #X obj 48 237 else/rms~;
 #X text 46 211 see also:;
 #X obj 487 64 else/setdsp~;
-#X obj 212 221 else/display~;
+#X obj 212 221 else/numbox~;
 #X text 61 88 [mov.rms~] gives you a running/moving RMS (Root Mean
 Square) over a time window of samples. At each sample \, the RMS of
 the last 'n' sample is given.;

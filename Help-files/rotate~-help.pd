@@ -51,16 +51,16 @@
 #X text 349 63 Continuous rotation with LFOs;
 #X obj 463 155 else/vsaw~ 0.25;
 #X obj 58 136 sig~ 1;
-#X obj 57 289 else/display~;
-#X obj 84 289 else/display~;
+#X obj 57 289 else/numbox~;
+#X obj 84 289 else/numbox~;
 #X obj 175 227 hsl 128 15 -1 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X obj 57 258 else/rotate~ 4;
 #X obj 77 161 sig~ 2;
 #X obj 97 190 sig~ 3;
 #X obj 117 215 sig~ 4;
-#X obj 111 289 else/display~;
-#X obj 138 289 else/display~;
+#X obj 111 289 else/numbox~;
+#X obj 138 289 else/numbox~;
 #X obj 172 193 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X msg 207 164 -1;

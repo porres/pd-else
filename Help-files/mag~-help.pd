@@ -51,7 +51,7 @@
 0;
 #X obj 56 42 cnv 4 4 4 empty empty spectrum 0 28 2 18 #e0e0e0 #000000
 0;
-#X obj 263 241 else/display~;
+#X obj 263 241 else/numbox~;
 #X text 124 292 float/signal;
 #X text 124 320 float/signal;
 #X obj 490 82 else/setdsp~;
@@ -65,7 +65,7 @@
 #dcdcdc #000000 #000000 0 256;
 #X obj 245 77 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X obj 158 128 else/display~;
+#X obj 158 128 else/numbox~;
 #X text 97 16 the "power" argument gets the power magnitude result
 \, that is the sum of the squares of the real and imaginary part.;
 #X text 54 132 Power Amplitude;

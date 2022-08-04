@@ -151,12 +151,12 @@
 #X restore 2 3 graph;
 #X text 218 331 - an impulse resets counter to zero;
 #X obj 171 183 else/impseq~;
-#X obj 78 246 else/display~;
+#X obj 78 246 else/numbox~;
 #X obj 78 214 else/pulsecount~;
 #X obj 429 156 bng 15 250 50 0 empty empty empty 17 7 0 10 -228856
 -1 -1;
 #X obj 429 184 else/impseq~;
-#X obj 324 247 else/display~;
+#X obj 324 247 else/numbox~;
 #X obj 324 184 else/imp~ 1;
 #X obj 324 215 else/pulsecount~ 4;
 #X text 64 86 [pulsecount~] counts pulse triggers. A trigger happens

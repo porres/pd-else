@@ -211,7 +211,7 @@ with equal power crossfade between two adjacent channels.;
 #X obj 166 182 noise~;
 #X obj 85 213 else/xgate2~ 4;
 #X obj 85 144 else/rand.i~ 0 3;
-#X obj 85 177 else/display~;
+#X obj 85 177 else/numbox~;
 #X text 58 33 An example on how to change the route output channel
 at signal rate., f 28;
 #X obj 85 112 else/tempo~ -on 60 100;

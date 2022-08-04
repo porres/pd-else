@@ -60,8 +60,8 @@ f 51;
 #X obj 166 42 cnv 4 4 4 empty empty conversion 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 215 171 else/car2pol~, f 16;
-#X obj 308 198 else/display~;
-#X obj 215 228 else/display~;
+#X obj 308 198 else/numbox~;
+#X obj 215 228 else/numbox~;
 #X text 124 279 float/signal;
 #X text 124 307 float/signal;
 #X text 80 90 [car2pol~] converts cartesian coordinates (real / imaginary)

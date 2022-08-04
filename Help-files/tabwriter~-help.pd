@@ -162,7 +162,7 @@ and can be triggered with sample accuracy., f 51;
 #X text 140 487 signal;
 #X text 186 487 - output index we're recording into, f 58;
 #X text 391 266 done;
-#X obj 286 263 else/display~;
+#X obj 286 263 else/numbox~;
 #N canvas 768 64 469 543 more 0;
 #X text 84 336 1;
 #X text 77 449 -1;
@@ -178,7 +178,7 @@ and can be triggered with sample accuracy., f 51;
 #X array \$0-test 88200 float 0;
 #X coords 0 1 88199 -1 270 120 1 0 0;
 #X restore 99 342 graph;
-#X obj 108 278 else/display~;
+#X obj 108 278 else/numbox~;
 #X text 93 490 |---------------- time in ms ----------------|;
 #X text 21 28 You can change the start and end points in ms with the
 'start'/'end' messages. The range message sets end/start points proportionally.

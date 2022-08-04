@@ -159,7 +159,7 @@ values from deciBel Full Scale (dBFS) to linear.;
 0;
 #X obj 139 40 cnv 4 4 4 empty empty to 0 28 2 18 -233017 -1 0;
 #X obj 91 40 cnv 4 4 4 empty empty dBFS 0 28 2 18 -233017 -1 0;
-#X obj 212 246 else/display~;
+#X obj 212 246 else/numbox~;
 #X connect 8 0 9 0;
 #X connect 9 0 26 0;
 #X connect 26 0 34 0;

@@ -51,7 +51,7 @@ two pi times its signal input.;
 #X obj 191 139 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X text 157 262 float/signal;
-#X obj 188 218 else/display~;
+#X obj 188 218 else/numbox~;
 #X obj 505 61 else/setdsp~;
 #X connect 18 0 28 0;
 #X connect 25 0 18 0;

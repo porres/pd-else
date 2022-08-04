@@ -97,7 +97,7 @@ can have :, f 63;
 #X obj 279 132 hsl 128 15 0 32 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X obj 54 141 else/ramp~ 1 0 64;
-#X obj 54 250 else/display~;
+#X obj 54 250 else/numbox~;
 #X text 125 254 <== This number reflects the delay amount;
 #X text 49 39 The [ffdelay~] object uses a cubic (4 point) interpolation
 \, but between 0 and 1 \, it uses a regular linear interpolation.,

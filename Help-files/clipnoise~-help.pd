@@ -33,8 +33,8 @@
 ;
 #X text 196 262 float - sets seed;
 #N canvas 559 236 694 278 seed 0;
-#X obj 368 188 else/display~;
-#X obj 518 188 else/display~;
+#X obj 368 188 else/numbox~;
+#X obj 518 188 else/numbox~;
 #X msg 518 52 507;
 #X text 549 51 <= set seed;
 #X obj 368 54 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
@@ -44,9 +44,9 @@
 #X obj 518 147 else/downsample~ 5;
 #X obj 368 144 else/downsample~ 5;
 #X obj 48 144 else/downsample~ 1;
-#X obj 48 187 else/display~;
+#X obj 48 187 else/numbox~;
 #X obj 198 143 else/downsample~ 1;
-#X obj 198 187 else/display~;
+#X obj 198 187 else/numbox~;
 #X obj 48 106 else/clipnoise~ 1039;
 #X obj 198 106 else/clipnoise~ 1039;
 #X text 46 51 Sync [clipnoise~] objects with a seed value;

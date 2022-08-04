@@ -185,7 +185,7 @@ second inlet.;
 #X text 164 268 float/signal - frequency in hz;
 #X text 164 331 float/signal - phase sync (ressets internal phase)
 ;
-#X obj 214 221 else/display~ 7;
+#X obj 214 221 else/numbox~ 7;
 #X obj 214 184 else/randpulse~ 1;
 #X obj 24 40 cnv 4 4 4 empty empty Random 0 28 2 18 #e0e0e0 #000000
 0;

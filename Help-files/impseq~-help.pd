@@ -56,7 +56,7 @@
 or a bang \, [impseq~] sends an impulse from a given sequence.;
 #X obj 63 214 else/trighold~;
 #X text 177 383 - impulse value from a sequence;
-#X obj 63 240 else/display~ 4;
+#X obj 63 240 else/numbox~ 4;
 #X obj 161 177 else/impseq~ 1 0.5 0.25 0;
 #X text 95 351 goto <float>;
 #X text 177 350 - goes to a position index in the sequence (from 1)

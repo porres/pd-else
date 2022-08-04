@@ -51,8 +51,8 @@
 values number of samples to ms., f 53;
 #X text 159 265 float/signal;
 #X obj 198 199 else/samps2ms~;
-#X obj 198 223 else/display~;
-#X obj 198 167 else/display~;
+#X obj 198 223 else/numbox~;
+#X obj 198 167 else/numbox~;
 #X obj 493 90 else/setdsp~;
 #X connect 5 0 32 0;
 #X connect 30 0 31 0;

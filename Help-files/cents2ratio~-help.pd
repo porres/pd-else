@@ -167,8 +167,8 @@
 10 -228856 -1 -1 13425 1;
 #X text 156 247 Ratio;
 #X text 155 183 Cents;
-#X obj 198 244 else/display~;
-#X obj 198 181 else/display~ 7;
+#X obj 198 244 else/numbox~;
+#X obj 198 181 else/numbox~ 7;
 #X obj 198 213 else/cents2ratio~;
 #X text 191 292 signal;
 #X text 19 192 see also:;

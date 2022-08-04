@@ -285,7 +285,7 @@ tempo and swing, f 35;
 #000000;
 #X obj 78 227 else/trig2bang~;
 #X obj 180 262 else/pulsecount~ 4;
-#X obj 180 288 else/display~;
+#X obj 180 288 else/numbox~;
 #X text 64 16 You can set a tempo (or 'frequency') multiplier with the
 -mul flag or the "mul" message". In practice \, this subdivides the
 tempo into fractions. So if you multiply by four your tempo is actually

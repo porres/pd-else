@@ -190,7 +190,7 @@ or "out", f 64;
 #X obj 102 362 -~;
 #X obj 103 167 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X obj 102 402 else/display~;
+#X obj 102 402 else/numbox~;
 #X obj 103 194 else/ramp~;
 #X text 136 407 matches delay in samples;
 #X obj 103 141 else/tempo 10000 -ms -on;
@@ -204,7 +204,7 @@ or "out", f 64;
 #X connect 2 0 4 0;
 #X connect 4 0 0 0;
 #X restore 142 321 pd out;
-#X obj 142 358 else/display~;
+#X obj 142 358 else/numbox~;
 #X floatatom 175 294 5 0 64 0 - - - 0;
 #X text 213 292 delay in samples;
 #X text 188 321 <= open;

@@ -43,7 +43,7 @@
 #X obj 502 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X obj 58 204 else/trighold~;
-#X obj 58 232 else/display~ 7;
+#X obj 58 232 else/numbox~ 7;
 #X text 232 376 (none);
 #X text 230 345 - held trigger;
 #X text 61 91 [trighold~] holds a trigger value. A trigger happens
@@ -260,12 +260,12 @@ when a transition from 0 to non-zero occurs.;
 #X obj 58 172 else/dust2~ 5;
 #X obj 379 140 noise~;
 #X obj 379 175 *~;
-#X obj 379 200 else/display~ 7;
-#X obj 379 266 else/display~ 7;
+#X obj 379 200 else/numbox~ 7;
+#X obj 379 266 else/numbox~ 7;
 #X obj 421 173 else/pulse~ 1;
 #X obj 379 236 else/trighold~;
-#X obj 207 196 else/display~ 7;
-#X obj 207 262 else/display~ 7;
+#X obj 207 196 else/numbox~ 7;
+#X obj 207 262 else/numbox~ 7;
 #X obj 207 232 else/trighold~;
 #X obj 207 163 else/randpulse~ 1;
 #X connect 22 0 23 0;

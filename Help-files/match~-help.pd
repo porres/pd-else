@@ -174,7 +174,7 @@
 #X obj 69 130 else/match~ 1 2 3, f 57;
 #X obj 69 56 *~ 4;
 #X obj 69 78 else/ceil~;
-#X obj 69 101 else/display~;
+#X obj 69 101 else/numbox~;
 #X obj 310 161 else/trig2bang~;
 #X obj 310 184 bng 15 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
@@ -214,7 +214,7 @@
 \, an impulse is sent to its corresponding outlet. Otherwise \, the
 rightmost outlet sends an impulse., f 58;
 #X obj 182 177 else/pulse~ 1;
-#X obj 182 201 else/display~;
+#X obj 182 201 else/numbox~;
 #X text 157 324 signal -;
 #X text 169 343 list;
 #X text 199 342 - one or more floats reset argument values;

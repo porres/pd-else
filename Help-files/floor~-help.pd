@@ -152,8 +152,8 @@
 #X text 180 265 signal;
 #X text 232 302 - output of floor function;
 #X text 88 92 [floor~] is a floor math function for signals.;
-#X obj 188 215 else/display~;
-#X obj 188 154 else/display~;
+#X obj 188 215 else/numbox~;
+#X obj 188 154 else/numbox~;
 #X connect 7 0 31 0;
 #X connect 25 0 30 0;
 #X connect 31 0 25 0;

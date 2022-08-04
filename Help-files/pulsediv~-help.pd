@@ -158,11 +158,11 @@
 ;
 #X obj 165 213 else/pulsecount~;
 #X text 79 239 divided count;
-#X obj 165 236 else/display~;
+#X obj 165 236 else/numbox~;
 #X obj 165 152 else/imp~ 1;
 #X obj 165 182 else/pulsediv~ 4;
 #X obj 275 214 else/pulsecount~;
-#X obj 275 237 else/display~;
+#X obj 275 237 else/numbox~;
 #X obj 116 396 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 173 396 signal;
@@ -185,8 +185,8 @@ impulses for the other trigger inputs., f 70;
 #X floatatom 88 129 5 0 0 0 - - - 0;
 #X obj 138 183 else/pulsediv~ 2;
 #X obj 252 121 else/impseq~;
-#X obj 295 209 else/display~;
-#X obj 159 237 else/display~;
+#X obj 295 209 else/numbox~;
+#X obj 159 237 else/numbox~;
 #X text 50 30 The first trigger in the count is output. A starting
 value lets you start in the middle of a count. If the start value is
 negative \, it adds that many counts to the first time the output is

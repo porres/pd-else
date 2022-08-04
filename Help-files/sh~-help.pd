@@ -215,8 +215,8 @@ value (0 by default) \, so it is output when loading the object and
 before it is triggered by the right inlet. The set message can set
 the held output. The [sh~] can also be triggered by a bang., f 55
 ;
-#X obj 498 231 else/display~;
-#X obj 187 235 else/display~;
+#X obj 498 231 else/numbox~;
+#X obj 187 235 else/numbox~;
 #X connect 0 0 11 0;
 #X connect 1 0 11 0;
 #X connect 2 0 10 0;
@@ -261,7 +261,7 @@ than the threshold and its last value was equal or below it., f 55
 #X text 72 417 You can change the mode with the messages like above
 \, or set it with the third argument. Alternatively \, you can set
 it to trigger mode with the "-tr" flag as in:, f 55;
-#X obj 243 353 else/display~;
+#X obj 243 353 else/numbox~;
 #X obj 347 472 else/sh~ -tr;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;

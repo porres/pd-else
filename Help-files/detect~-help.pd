@@ -146,14 +146,14 @@
 #X text 134 270 signal;
 #X obj 305 150 osc~ 1;
 #X text 179 269 - any signal to trigger the object;
-#X obj 305 216 else/display~;
-#X obj 46 216 else/display~;
+#X obj 305 216 else/numbox~;
+#X obj 46 216 else/numbox~;
 #X obj 46 184 else/detect~;
 #X obj 305 184 else/detect~ ms;
-#X obj 432 216 else/display~;
+#X obj 432 216 else/numbox~;
 #X obj 432 150 osc~ 441;
 #X obj 432 184 else/detect~ hz;
-#X obj 164 216 else/display~;
+#X obj 164 216 else/numbox~;
 #X obj 164 184 else/detect~ bpm;
 #X text 73 93 [detect~] detects the frequency/period between trigger
 events. A trigger happens on a transition from non positive to positive.

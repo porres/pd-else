@@ -49,8 +49,8 @@
 #X text 153 359 seed <float>;
 #X text 237 359 - sets seed value;
 #N canvas 559 236 357 286 seed 0;
-#X obj 43 221 else/display~;
-#X obj 193 221 else/display~;
+#X obj 43 221 else/numbox~;
+#X obj 193 221 else/numbox~;
 #X text 254 84 <= set seed;
 #X text 60 23 Sync [dust~] objects with a seed value;
 #X msg 193 85 seed 507;

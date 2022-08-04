@@ -155,13 +155,13 @@
 #X text 142 365 1) float - ramp time in ms (default 0);
 #X text 142 382 2) float - initial output value (default 0);
 #X obj 248 195 else/float2sig~ 1000 4;
-#X obj 248 225 else/display~;
+#X obj 248 225 else/numbox~;
 #X text 61 88 [float2sig~] (or [f2s~] for short) converts floats to
 signals. The conversion is smoothened by a ramp time in ms.;
 #X obj 111 189 else/f2s~ 100;
 #X obj 111 161 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 111 220 else/display~;
+#X obj 111 220 else/numbox~;
 #X obj 106 295 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
 #X text 145 295 float;

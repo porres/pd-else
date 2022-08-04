@@ -33,7 +33,7 @@
 #X obj 126 183 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X obj 126 207 else/rand.f~ 0 1;
-#X obj 126 231 else/display~ 5;
+#X obj 126 231 else/numbox~ 5;
 #X obj 196 337 hsl 128 15 0 1 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
 #X msg 203 255 set 0;
@@ -101,7 +101,7 @@ f 61;
 #X obj 326 392 else/out~;
 #X obj 326 199 else/stepnoise~ 1;
 #X obj 326 242 else/rescale~ 200 800;
-#X obj 326 318 else/display~ 5;
+#X obj 326 318 else/numbox~ 5;
 #X obj 326 283 else/slew2~ 800 4000;
 #X obj 59 204 else/slew2~ 10 5;
 #X obj 59 170 else/randpulse~ 2;

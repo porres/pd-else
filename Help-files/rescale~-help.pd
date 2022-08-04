@@ -149,7 +149,7 @@
 -1 to 1 into another range of values (0-1 by default). You can also
 set an exponential factor (1 by default - linear). All these parameters
 can be changed by arguments.;
-#X obj 242 206 else/display~;
+#X obj 242 206 else/numbox~;
 #X obj 242 148 osc~ 0.1;
 #X obj 113 311 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -187,8 +187,8 @@ can be changed by arguments.;
 #X text 375 157 max-in;
 #X obj 39 215 else/rescale~ -10 10;
 #X obj 270 203 else/rescale~ 0 1 -10 10, f 36;
-#X obj 270 233 else/display~;
-#X obj 39 250 else/display~;
+#X obj 270 233 else/numbox~;
+#X obj 39 250 else/numbox~;
 #X text 51 25 If you give [rescale~] up to 3 arguments \, it'll only
 have 3 inlets and you can set the minimum and maximum output via the
 rightmost inlets. But if you give 4 or more arguments \, [rescale~]
@@ -310,7 +310,7 @@ is initialized with more inlets so you can set all range parameters.
 #dcdcdc #000000 #000000 0 256;
 #X text 159 423 min-out;
 #X text 237 423 max-out;
-#X obj 85 504 else/display~;
+#X obj 85 504 else/numbox~;
 #X obj 85 443 sig~;
 #X msg 330 408 clip \$1;
 #X obj 330 383 tgl 17 0 empty empty empty 17 7 0 10 #dcdcdc #000000
@@ -320,7 +320,7 @@ is initialized with more inlets so you can set all range parameters.
 #X obj 398 393 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X obj 398 458 else/rescale~ 0 1 -10 10;
-#X obj 398 488 else/display~;
+#X obj 398 488 else/numbox~;
 #X obj 398 429 sig~;
 #X obj 668 356 cnv 15 198 138 empty empty empty 20 12 0 14 #e0e0e0
 #404040 0;
@@ -403,8 +403,8 @@ same conversion parameters., f 71;
 #X text 183 246 Inverted;
 #X obj 183 160 sig~;
 #X obj 62 188 else/rescale~ 0 1;
-#X obj 183 219 else/display~;
-#X obj 62 219 else/display~;
+#X obj 183 219 else/numbox~;
+#X obj 62 219 else/numbox~;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
 #fcfcfc 0 1;

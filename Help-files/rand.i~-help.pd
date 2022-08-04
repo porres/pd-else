@@ -27,11 +27,11 @@
 #X obj 122 354 else/out~;
 #X text 41 23 Generating random resonant frequencies on impulse;
 #X obj 183 280 mtof~;
-#X obj 183 250 else/display~;
+#X obj 183 250 else/numbox~;
 #X obj 122 311 else/resonant~ 0 3000;
 #X obj 122 98 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
-#X obj 122 157 else/display~;
+#X obj 122 157 else/numbox~;
 #X obj 122 188 else/impulse~;
 #X obj 122 66 loadbang;
 #X obj 122 132 else/rand.i~ 1 15;
@@ -159,7 +159,7 @@
 #X text 274 153 low;
 #X text 369 155 high;
 #X obj 175 164 else/imp~ 5;
-#X obj 175 237 else/display~;
+#X obj 175 237 else/numbox~;
 #X text 175 429 floats set random's range \, 2 floats sets minimum
 and maximum - no arguments loads default values (0 and 1). 1 float
 sets maximum value (and lowest value is set to 0).;

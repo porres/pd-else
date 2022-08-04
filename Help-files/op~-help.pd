@@ -42,7 +42,7 @@
 #X obj 278 160 sig~ 5;
 #X obj 278 133 nbx 3 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 -228856 -1 -1 0 256;
-#X obj 278 220 else/display~;
+#X obj 278 220 else/numbox~;
 #X obj 490 63 else/setdsp~;
 #X obj 278 192 else/op~ == 5;
 #N canvas 388 153 945 563 operators 0;
@@ -93,20 +93,20 @@
 #X text 840 213 bitwise shift right, f 11;
 #X text 190 14 COMPARATIVE OPERATORS;
 #X text 678 14 BITWISE OPERATORS;
-#X obj 49 171 else/display~;
-#X obj 151 171 else/display~;
-#X obj 244 171 else/display~;
-#X obj 346 171 else/display~;
-#X obj 518 164 else/display~;
-#X obj 626 163 else/display~;
-#X obj 49 337 else/display~;
-#X obj 140 337 else/display~;
-#X obj 239 337 else/display~;
-#X obj 340 337 else/display~;
-#X obj 518 336 else/display~;
-#X obj 630 335 else/display~;
-#X obj 740 337 else/display~;
-#X obj 852 336 else/display~;
+#X obj 49 171 else/numbox~;
+#X obj 151 171 else/numbox~;
+#X obj 244 171 else/numbox~;
+#X obj 346 171 else/numbox~;
+#X obj 518 164 else/numbox~;
+#X obj 626 163 else/numbox~;
+#X obj 49 337 else/numbox~;
+#X obj 140 337 else/numbox~;
+#X obj 239 337 else/numbox~;
+#X obj 340 337 else/numbox~;
+#X obj 518 336 else/numbox~;
+#X obj 630 335 else/numbox~;
+#X obj 740 337 else/numbox~;
+#X obj 852 336 else/numbox~;
 #X obj 49 138 else/op~ > 5;
 #X obj 151 138 else/op~ < 5;
 #X obj 244 138 else/op~ >= 5;
@@ -126,7 +126,7 @@
 operations (such as [+~] \, [log~] \, etc...)., f 33;
 #X floatatom 331 411 5 0 0 0 - - -;
 #X obj 331 437 sig~ 0;
-#X obj 331 500 else/display~;
+#X obj 331 500 else/numbox~;
 #X obj 331 466 else/op~ % 1.1;
 #X text 78 438 The '%' (modulo) operator calls the 'fmod' function
 also found in the expr family of objects. Note that it doesn't correspond

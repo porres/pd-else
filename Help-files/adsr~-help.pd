@@ -67,12 +67,12 @@
 #dcdcdc #000000 #000000 0 256;
 #X text 217 162 attack;
 #N canvas 486 183 815 477 example 0;
-#X obj 605 171 else/display~ 7;
-#X obj 459 174 else/display~ 7;
+#X obj 605 171 else/numbox~ 7;
+#X obj 459 174 else/numbox~ 7;
 #X text 665 174 <= gate value;
 #X obj 553 293 *~;
 #X obj 553 375 else/out~;
-#X obj 605 300 else/display~ 7;
+#X obj 605 300 else/numbox~ 7;
 #X obj 553 333 else/lowpass~ 0 20;
 #X obj 605 272 else/rescale~ 100 1500;
 #X text 667 303 <= cutoff;
@@ -220,7 +220,7 @@ object for managing polyphonic synths.;
 #X obj 166 137 else/timed.gate~ 500;
 #X text 28 17 You can use the [timed.gate~] object to create a timed
 gate so you can trigger the envelope with an impulse., f 54;
-#X obj 166 166 else/display~ 2;
+#X obj 166 166 else/numbox~ 2;
 #X text 104 118 impulse =>;
 #X connect 1 0 6 0;
 #X connect 2 0 0 0;

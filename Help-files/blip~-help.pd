@@ -81,8 +81,8 @@ and ask for 4 harmonics \, you get 1 \, 0.5 \, 0.25 and 0.125 as the
 amplitude list. A factor of 1 creates an impulse like waveform. Negative
 values and vaues outside the -1 and 1 range is possible., f 34;
 #X obj 52 313 else/out~;
-#X obj 251 202 else/display~ 5;
-#X obj 164 202 else/display~ 5;
+#X obj 251 202 else/numbox~ 5;
+#X obj 164 202 else/numbox~ 5;
 #X text 210 206 Hz;
 #X text 298 205 'm';
 #X connect 0 0 18 0;

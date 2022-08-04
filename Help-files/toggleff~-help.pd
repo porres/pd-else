@@ -151,6 +151,6 @@ to positive.;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 68 pd;
-#X obj 220 217 else/display~;
+#X obj 220 217 else/numbox~;
 #X connect 18 0 21 0;
 #X connect 21 0 27 0;

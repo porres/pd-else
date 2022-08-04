@@ -159,8 +159,8 @@ seed value.;
 #X text 43 16 [randpulse2~] objects that share the same seed will have
 the same random number generation. You can specify a seed value as
 the third argument or via the 'seed' message.;
-#X obj 214 204 else/display~;
-#X obj 96 204 else/display~;
+#X obj 214 204 else/numbox~;
+#X obj 96 204 else/numbox~;
 #X connect 1 0 4 0;
 #X connect 1 0 5 0;
 #X connect 2 0 1 0;
@@ -209,7 +209,7 @@ this.;
 #X text 60 86 [randpulse2~] is a random pulse train oscillator. It
 alternates at random intervals according to a "density" parameter \,
 which controls the average frequency.;
-#X obj 199 190 else/display~;
+#X obj 199 190 else/numbox~;
 #X text 45 165 see also:;
 #X obj 41 189 else/randpulse~;
 #X connect 16 0 32 0;

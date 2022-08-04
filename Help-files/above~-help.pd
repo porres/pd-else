@@ -109,7 +109,7 @@ to [zerocross~];
 -1 -1;
 #X obj 108 430 cnv 17 3 17 empty empty 1 5 9 0 16 -228856 -162280 0
 ;
-#X obj 210 195 else/display~;
+#X obj 210 195 else/numbox~;
 #X obj 210 168 else/randpulse~ 1;
 #X obj 210 230 else/above~ 0.1;
 #X text 57 95 [above~] sends an impulse on its left output when it

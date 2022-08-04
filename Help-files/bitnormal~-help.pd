@@ -41,10 +41,10 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X obj 242 275 else/display~;
-#X obj 86 275 else/display~;
-#X obj 86 202 else/display~;
-#X obj 242 202 else/display~;
+#X obj 242 275 else/numbox~;
+#X obj 86 275 else/numbox~;
+#X obj 86 202 else/numbox~;
+#X obj 242 202 else/numbox~;
 #X text 182 324 - input whose nan/inf/denormal values are replaced
 with 0;
 #X text 182 361 - the filtered signal;
@@ -54,7 +54,7 @@ lets 'normal' floats through. This is useful in conjunction with the
 bitwise operators in [else/op~] \, [expr~] or any other situation where
 these values are possible., f 65;
 #X obj 382 202 osc~ 0.1;
-#X obj 382 275 else/display~;
+#X obj 382 275 else/numbox~;
 #X text 444 195 normal values go through, f 13;
 #X obj 86 240 else/bitnormal~;
 #X obj 242 240 else/bitnormal~;

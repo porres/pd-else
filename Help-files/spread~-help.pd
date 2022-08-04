@@ -42,10 +42,10 @@
 0;
 #X obj 155 140 sig~ 1;
 #X obj 231 140 sig~ 2;
-#X obj 155 224 else/display~;
-#X obj 191 224 else/display~;
-#X obj 257 224 else/display~;
-#X obj 322 224 else/display~;
+#X obj 155 224 else/numbox~;
+#X obj 191 224 else/numbox~;
+#X obj 257 224 else/numbox~;
+#X obj 322 224 else/numbox~;
 #X obj 155 176 else/spread~ 3 4, f 26;
 #X obj 308 140 sig~ 3;
 #X obj 182 307 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
