@@ -29,6 +29,7 @@ typedef struct _numbox{
     t_float   x_max;
     t_float   x_min;
     t_float   x_sr_khz;
+    t_float   x_inc;
     t_float   x_ramp_step;
     t_float   x_ramp_val;
     int       x_ramp_ms;
@@ -36,7 +37,6 @@ typedef struct _numbox{
     int       x_numwidth;
     int       x_fontsize;
     int       x_clicked;
-    int       x_shift;
     int       x_height;
     int       x_width;
     int       x_selected;
@@ -121,6 +121,12 @@ static void numbox_width_calc(t_numbox *x){
     x->x_width = (x->x_fontsize - (x->x_fontsize/2)+2) * (x->x_numwidth+2) + 2;
 }
 
+static float numbox_clip(t_numbox *x, t_floatarg val){
+    if(x->x_min != 0 || x->x_max != 0)
+        return(val < x->x_min ? x->x_min : val > x->x_max ? x->x_max : val);
+    return(val);
+}
+
 // ------------------------ Methods-----------------------------
 static void numbox_width(t_numbox *x, t_floatarg f){
     int width = f < MINDIGITS ? MINDIGITS : (int)f;
@@ -170,24 +176,15 @@ static void numbox_float(t_numbox *x, t_floatarg f){ // set float value and upda
     }
 }
 
-// Numbox list is called when there is a key event
-static void numbox_list(t_numbox *x, t_symbol *s, int ac, t_atom *av)
-{
-    // This is a key event if the first argument is float (key up/down)
-    // and the second argument is symbol (key description)
-    if(ac != 2 || av->a_type != A_FLOAT || (av + 1)->a_type != A_SYMBOL || atom_getfloat(av) == 0) return;
-    
-    // Don't receive key events in edit mode, or if we're not selected, or if we're in monitoring mode
-    if(x->x_glist->gl_edit || !x->x_clicked || !x->x_outmode) return;
-    
-    const char* symbol = atom_getsymbol(av + 1)->s_name;
-    
-    if(!strcmp(symbol, "Up")) {
-        numbox_float(x, x->x_set_val + 1);
-    }
-    if(!strcmp(symbol, "Down")) {
-        numbox_float(x, x->x_set_val - 1);
-    }
+static void numbox_list(t_numbox *x, t_symbol *sym, int ac, t_atom *av){ // get key events
+    if(x->x_glist->gl_edit || !x->x_clicked || !x->x_outmode || ac != 2)
+        return;  // ignore if: edit mode / not clicked / monitor mode / wrong size list
+    int flag = (int)atom_getfloat(av); // 1 for press / 0 for release
+    sym = atom_getsymbol(av+1); // get key name
+    if(flag && sym == gensym("Up"))
+        numbox_float(x, numbox_clip(x, x->x_set_val + x->x_inc)); // not out_val??
+    if(flag && sym == gensym("Down"))
+        numbox_float(x, numbox_clip(x, x->x_set_val - x->x_inc));
 }
 
 static void numbox_bg(t_numbox *x, t_symbol *s, int ac, t_atom *av){
@@ -262,17 +259,14 @@ static void numbox_motion(t_numbox *x, t_floatarg dx, t_floatarg dy, t_floatarg 
     dx = 0; // avoid warning
     if(up != 0) // 0 ???
         return;
-    float val = x->x_out_val - dy*(x->x_shift ? 0.01 : 1);
-    if(x->x_min != 0 || x->x_max != 0) // clip
-        val = val < x->x_min ? x->x_min : val > x->x_max ? x->x_max : val;
-    numbox_float(x, val);
+    numbox_float(x, numbox_clip(x, x->x_out_val - dy*x->x_inc));
 }
 
 static int numbox_newclick(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
     dbl = alt = 0;
     t_numbox* x = (t_numbox *)z;
     if(doit && x->x_outmode){
-        x->x_shift = shift;
+        x->x_inc = shift ? 0.01 : 1;
         sys_vgui(".x%lx.c itemconfigure %lxBASE -width %d\n", glist_getcanvas(glist), x, x->x_zoom*2);
         glist_grab(glist, &x->x_obj.te_g, (t_glistmotionfn)numbox_motion, numbox_key,
             (t_floatarg)xpix, (t_floatarg)ypix);
@@ -511,13 +505,10 @@ static void *numbox_new(t_symbol *sym, int ac, t_atom *av){
     numbox_range(x, minimum, maximum);
     x->x_rate = rate < 15 ? 15 : (int)rate;
     x->x_ramp_ms = ramp_ms < 0 ? 0 : ramp_ms;
+    pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
     x->x_clock_update = clock_new(x, (t_method)clock_update);
     clock_delay(x->x_clock_update, x->x_rate); // Start repaint clock
-    
-    pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // Listen for key events to intercept up and down key
-    
-    
-    outlet_new(&x->x_obj,  &s_signal);
+    outlet_new(&x->x_obj, &s_signal);
     return(x);
 errstate:
     pd_error(x, "[numbox~]: improper args");
