@@ -409,7 +409,8 @@ static void *numbox_new(t_symbol *sym, int ac, t_atom *av){
     x->x_clicked = 0, x->x_outmode = 1;
     int width = 6, size = glist_getfont(x->x_glist), rate = 100, ramp_ms = 10;
     t_float minimum = 0, maximum = 0;
-    x->x_bg = gensym("#dfdfdf"), x->x_fg = gensym("#000000");
+//    x->x_bg = gensym("#dfdfdf"), x->x_fg = gensym("#000000");
+    x->x_bg = gensym("#C0C0C4"), x->x_fg = gensym("#440008");
     if(ac == 8 && av->a_type == A_FLOAT){
         width = atom_getintarg(0, ac, av);
         size = atom_getintarg(1, ac, av);
