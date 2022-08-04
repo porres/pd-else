@@ -407,7 +407,7 @@ static void *numbox_new(t_symbol *sym, int ac, t_atom *av){
     x->x_in_val = x->x_out_val = x->x_set_val = 0.0;
     x->x_buf[0] = 0; // ??
     x->x_clicked = 0, x->x_outmode = 1;
-    int width = 4, size = glist_getfont(x->x_glist), rate = 100, ramp_ms = 10;
+    int width = 6, size = glist_getfont(x->x_glist), rate = 100, ramp_ms = 10;
     t_float minimum = 0, maximum = 0;
     x->x_bg = gensym("#dfdfdf"), x->x_fg = gensym("#000000");
     if(ac == 8 && av->a_type == A_FLOAT){
