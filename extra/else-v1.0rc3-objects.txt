@@ -105,7 +105,6 @@ delete	x
 detect~	x
 dir	x
 display	x
-display~	x
 dollsym	x
 downsample~	x
 drive~	x

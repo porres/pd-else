@@ -108,7 +108,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-## Current Object list (460 objects):
+## Current Object list (459 objects):
 
 **ASSORTED: [02]**
 
@@ -629,7 +629,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [vu~]
 - [zerocross~]
 
-**GUI: [38]**
+**GUI: [37]**
 
 - [numbox~]
 - [drum.seq]
@@ -646,7 +646,6 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [circle]
 - [slider2d]
 - [display]
-- [display~]
 - [out1~]
 - [out~]
 - [out4~]
