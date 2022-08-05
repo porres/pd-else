@@ -38,7 +38,6 @@ typedef struct _numbox{
     int       x_fontsize;
     int       x_clicked;
     int       x_width, x_height;
-    int       x_selected;
     int       x_zoom;
     int       x_outmode;
     char      x_buf[MAX_NUMBOX_LEN]; // number buffer
@@ -122,16 +121,15 @@ static void numbox_width(t_numbox *x, t_floatarg f){
 static void numbox_size(t_numbox *x, t_floatarg f){
     int size = f < MINSIZE ? MINSIZE : (int)f;
     if(x->x_fontsize != size){
+        t_canvas *cv = glist_getcanvas(x->x_glist);
         x->x_fontsize = size;
         int oldheight = x->x_height;
         x->x_height = size + 4;
-        numbox_width_calc(x);
-        numbox_resize(x);
-        int dy = (x->x_height - oldheight);
-        t_canvas *cv = glist_getcanvas(x->x_glist);
+        sys_vgui(".x%lx.c move %lxOUT 0 %d\n", cv, x, x->x_height - oldheight);
         sys_vgui(".x%lx.c itemconfigure %lxNUM -font {{%s} -%d}\n", cv, x, def_font, x->x_fontsize);
         sys_vgui(".x%lx.c moveto %lxNUM %d %d\n", cv, x, x->x_obj.te_xpix, x->x_obj.te_ypix+2);
-        sys_vgui(".x%lx.c move %lxOUT 0 %d\n", cv, x, dy);
+        numbox_width_calc(x);
+        numbox_resize(x);
         canvas_fixlinesfor(x->x_glist, (t_text*)x);
     }
 }
@@ -165,7 +163,7 @@ static void numbox_set(t_numbox *x, t_symbol *s, int ac, t_atom *av){
         numbox_float(x, x->x_set_val = atom_getfloat(av));
 }
 
-// case for single list value... and bind only when active
+// bind keys only when active!!!
 static void numbox_list(t_numbox *x, t_symbol *sym, int ac, t_atom *av){ // get key events
     if(ac == 1 && av->a_type == A_FLOAT){
         numbox_float(x, atom_getfloat(av));
@@ -250,9 +248,8 @@ static void numbox_key(void *z, t_symbol *keysym, t_floatarg fkey){
 
 static void numbox_motion(t_numbox *x, t_floatarg dx, t_floatarg dy, t_floatarg up){
     dx = 0; // avoid warning
-    if(up != 0) // ??
-        return;
-    numbox_float(x, numbox_clip(x, x->x_out_val - dy*x->x_inc));
+    if(!up) // only when mouse is pressed down
+        numbox_float(x, numbox_clip(x, x->x_out_val - dy*x->x_inc));
 }
 
 static int numbox_newclick(t_gobj *z, struct _glist *glist, int xpix, int ypix, int shift, int alt, int dbl, int doit){
@@ -275,16 +272,14 @@ static void numbox_delete(t_gobj *z, t_glist *glist){
 
 static void numbox_getrect(t_gobj *z, t_glist *glist, int *xp1, int *yp1, int *xp2, int *yp2){
     t_numbox* x = (t_numbox*)z;
-    *xp1 = text_xpix(&x->x_obj, glist);
-    *yp1 = text_ypix(&x->x_obj, glist);
-    *xp2 = *xp1 + x->x_width;
-    *yp2 = *yp1 + x->x_height;
+    *xp1 = text_xpix(&x->x_obj, glist), *yp1 = text_ypix(&x->x_obj, glist);
+    *xp2 = *xp1 + x->x_width, *yp2 = *yp1 + x->x_height;
 }
 
 static void numbox_select(t_gobj *z, t_glist *glist, int sel){
     t_numbox *x = (t_numbox *)z;
     t_canvas *cv = glist_getcanvas(glist);
-    if((x->x_selected = sel)){
+    if(sel){
         sys_vgui(".x%lx.c itemconfigure %lxNUM -fill blue\n", cv, x);
         sys_vgui(".x%lx.c itemconfigure %lxBASE -outline blue\n", cv, x);
     }
@@ -303,7 +298,7 @@ static void numbox_displace(t_gobj *z, t_glist *glist, int dx, int dy){
 
 void numbox_vis(t_gobj *z, t_glist *glist, int vis){
     t_numbox* x = (t_numbox*)z;
-    if(vis){ // draw all
+    if(vis){ // draw it
         int xpos = text_xpix(&x->x_obj, glist), ypos = text_ypix(&x->x_obj, glist);
         int w = x->x_width, h = x->x_height, zoom = x->x_zoom, size = x->x_fontsize;
         int half = h/2, d = zoom + h/(34*zoom), iow = IOWIDTH * zoom, ioh = 3*zoom; // d?? / why not ioheight??
@@ -326,7 +321,7 @@ static void numbox_properties(t_gobj *z, t_glist *owner){ // called in right cli
     t_numbox *x = (t_numbox *)z;
     char buf[800];
     sprintf(buf, "::dialog_numbox::pdtk_numbox_dialog %%s -------dimensions(digits)(pix):------- \
-        %d %d %d %d %d %d %s %s %.1f %.1f\n", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
+        %d %d %d %d %d %d %s %s %.4f %.4f\n", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
         x->x_ramp_ms, x->x_rate, x->x_bg->s_name, x->x_fg->s_name, x->x_min, x->x_max);
     gfxstub_new(&x->x_obj.ob_pd, x, buf); // no idea what this does...
 }
@@ -380,7 +375,7 @@ static t_int *numbox_perform(t_int *w){
     t_sample *out = (t_sample *)(w[3]);
     t_int n       = (t_int)(w[4]);
     if(!x->x_outmode)
-        x->x_in_val   = in[0];
+        x->x_in_val = in[0];
     for(int i = 0; i < n; i++){
         if(x->x_ramp_val != x->x_out_val && x->x_ramp_ms != 0 && x->x_outmode){ // apply a ramp
                 if((x->x_ramp_step < 0 && x->x_ramp_val <= x->x_out_val) ||
