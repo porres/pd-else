@@ -41,10 +41,7 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X obj 242 275 else/numbox~;
-#X obj 86 275 else/numbox~;
-#X obj 86 202 else/numbox~;
-#X obj 242 202 else/numbox~;
+#X obj 86 202 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X text 182 324 - input whose nan/inf/denormal values are replaced
 with 0;
 #X text 182 361 - the filtered signal;
@@ -54,16 +51,19 @@ lets 'normal' floats through. This is useful in conjunction with the
 bitwise operators in [else/op~] \, [expr~] or any other situation where
 these values are possible., f 65;
 #X obj 382 202 osc~ 0.1;
-#X obj 382 275 else/numbox~;
 #X text 444 195 normal values go through, f 13;
 #X obj 86 240 else/bitnormal~;
 #X obj 242 240 else/bitnormal~;
 #X obj 382 240 else/bitnormal~;
-#X connect 10 0 25 0;
-#X connect 11 0 26 0;
-#X connect 25 0 33 0;
-#X connect 26 0 34 0;
-#X connect 30 0 35 0;
-#X connect 33 0 24 0;
-#X connect 34 0 23 0;
-#X connect 35 0 31 0;
+#X obj 242 275 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 86 275 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 382 275 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 242 202 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X connect 10 0 23 0;
+#X connect 11 0 35 0;
+#X connect 23 0 29 0;
+#X connect 27 0 31 0;
+#X connect 29 0 33 0;
+#X connect 30 0 32 0;
+#X connect 31 0 34 0;
+#X connect 35 0 30 0;

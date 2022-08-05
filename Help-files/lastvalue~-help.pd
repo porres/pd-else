@@ -42,7 +42,7 @@
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
@@ -112,7 +112,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -153,14 +153,14 @@
 #X text 211 302 - signal to detect the last value;
 #X obj 154 217 else/lastvalue~ 3;
 #X text 158 373 1) float - initial last value (default 0);
-#X text 319 213 <= current value;
-#X obj 154 250 else/numbox~;
-#X obj 290 211 else/numbox~;
-#X text 179 253 <= last value;
 #X obj 212 141 random 100;
 #X obj 154 195 sig~;
-#X connect 16 0 32 0;
-#X connect 26 0 29 0;
-#X connect 32 0 30 0;
-#X connect 32 0 33 0;
-#X connect 33 0 26 0;
+#X obj 154 250 else/numbox~ 3 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 290 211 else/numbox~ 3 12 100 #c0c0c4 #440008 10 0 0 0;
+#X text 201 252 <-- last value;
+#X text 338 211 <-- current value;
+#X connect 16 0 28 0;
+#X connect 26 0 30 0;
+#X connect 28 0 29 0;
+#X connect 28 0 31 0;
+#X connect 29 0 26 0;

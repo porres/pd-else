@@ -8,7 +8,7 @@
 #X obj 85 474 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
@@ -78,7 +78,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -285,25 +285,25 @@ tempo and swing, f 35;
 #000000;
 #X obj 78 227 else/trig2bang~;
 #X obj 180 262 else/pulsecount~ 4;
-#X obj 180 288 else/numbox~;
-#X text 64 16 You can set a tempo (or 'frequency') multiplier with the
--mul flag or the "mul" message". In practice \, this subdivides the
-tempo into fractions. So if you multiply by four your tempo is actually
-1/4 of the original. You can also use object like [count] and [bangdiv]
-to manage tempo subdivisions.;
+#X text 64 16 You can set a tempo (or 'frequency') multiplier with
+the -mul flag or the "mul" message". In practice \, this subdivides
+the tempo into fractions. So if you multiply by four your tempo is
+actually 1/4 of the original. You can also use object like [count]
+and [bangdiv] to manage tempo subdivisions.;
 #X text 317 308 back to the original;
 #X obj 180 159 else/tempo~ -on -mul 4 30;
-#X connect 0 0 13 0;
+#X obj 180 289 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X connect 0 0 12 0;
 #X connect 3 0 2 0;
 #X connect 3 1 2 1;
 #X connect 4 0 6 0;
 #X connect 6 0 5 0;
 #X connect 8 0 7 0;
-#X connect 9 0 10 0;
-#X connect 10 0 3 0;
-#X connect 13 0 8 0;
-#X connect 13 0 4 0;
-#X connect 13 0 9 0;
+#X connect 9 0 13 0;
+#X connect 12 0 8 0;
+#X connect 12 0 4 0;
+#X connect 12 0 9 0;
+#X connect 13 0 3 0;
 #X restore 456 196 pd multiplier;
 #X text 131 557 -mul <float>;
 #X text 221 555 - sets multiplier (default 1);

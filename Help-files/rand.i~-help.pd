@@ -27,28 +27,28 @@
 #X obj 122 354 else/out~;
 #X text 41 23 Generating random resonant frequencies on impulse;
 #X obj 183 280 mtof~;
-#X obj 183 250 else/numbox~;
 #X obj 122 311 else/resonant~ 0 3000;
 #X obj 122 98 bng 20 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
-#X obj 122 157 else/numbox~;
 #X obj 122 188 else/impulse~;
 #X obj 122 66 loadbang;
 #X obj 122 132 else/rand.i~ 1 15;
 #X obj 183 225 else/rand.i~ 60 84;
-#X connect 2 0 4 1;
-#X connect 3 0 2 0;
-#X connect 4 0 0 0;
-#X connect 5 0 9 0;
-#X connect 6 0 7 0;
-#X connect 7 0 4 0;
+#X obj 183 250 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 122 157 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X connect 2 0 3 1;
+#X connect 3 0 0 0;
+#X connect 4 0 7 0;
+#X connect 5 0 3 0;
+#X connect 5 0 8 0;
+#X connect 6 0 4 0;
 #X connect 7 0 10 0;
-#X connect 8 0 5 0;
-#X connect 9 0 6 0;
-#X connect 10 0 3 0;
+#X connect 8 0 9 0;
+#X connect 9 0 2 0;
+#X connect 10 0 5 0;
 #X restore 462 242 pd example;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
@@ -118,7 +118,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -159,7 +159,6 @@
 #X text 274 153 low;
 #X text 369 155 high;
 #X obj 175 164 else/imp~ 5;
-#X obj 175 237 else/numbox~;
 #X text 175 429 floats set random's range \, 2 floats sets minimum
 and maximum - no arguments loads default values (0 and 1). 1 float
 sets maximum value (and lowest value is set to 0).;
@@ -205,9 +204,10 @@ sets maximum value (and lowest value is set to 0).;
 range when triggered. A trigger happens at positive to negative or
 negative to positive transitions. Use the seed message if you want
 a reproducible output.;
-#X connect 10 0 32 0;
+#X obj 175 237 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X connect 10 0 31 0;
 #X connect 11 0 10 0;
-#X connect 16 0 32 1;
-#X connect 17 0 32 2;
-#X connect 20 0 32 0;
-#X connect 32 0 21 0;
+#X connect 16 0 31 1;
+#X connect 17 0 31 2;
+#X connect 20 0 31 0;
+#X connect 31 0 47 0;

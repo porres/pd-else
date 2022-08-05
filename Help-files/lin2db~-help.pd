@@ -57,11 +57,11 @@ the implementation inside the abstraction.;
 values from linear to a deciBel Full Scale (dBFS). Minimum output value
 is "-999".;
 #X obj 188 230 else/lin2db~;
-#X text 150 271 dBFS;
+#X text 150 265 dBFS;
 #X text 156 315 signal;
 #X text 157 348 signal;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
@@ -131,7 +131,7 @@ is "-999".;
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -164,7 +164,7 @@ is "-999".;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 71 pd;
-#X obj 188 265 else/numbox~;
+#X obj 188 265 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X connect 8 0 9 0;
 #X connect 9 0 29 0;
 #X connect 29 0 34 0;
