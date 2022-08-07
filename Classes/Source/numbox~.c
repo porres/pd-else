@@ -164,7 +164,6 @@ static void numbox_set(t_numbox *x, t_symbol *s, int ac, t_atom *av){
         numbox_float(x, x->x_set_val = atom_getfloat(av));
 }
 
-// bind keys only when active!!!
 static void numbox_list(t_numbox *x, t_symbol *sym, int ac, t_atom *av){ // get key events
     if(ac == 1 && av->a_type == A_FLOAT){
         numbox_float(x, atom_getfloat(av));
@@ -223,8 +222,9 @@ static void numbox_key(void *z, t_symbol *keysym, t_floatarg fkey){
     buf[1] = 0;
     if(c == 0){ // click out
         x->x_clicked = 0;
-        numbox_draw_number(x);
+        pd_unbind((t_pd *)x, gensym("#keyname"));
         sys_vgui(".x%lx.c itemconfigure %lxBASE -width %d\n", glist_getcanvas(x->x_glist), x, x->x_zoom);
+        numbox_draw_number(x);
     }
     else if(((c >= '0') && (c <= '9')) || (c == '.') || (c == '-') ||
     (c == 'e') || (c == '+') || (c == 'E')){ // number characters
@@ -258,11 +258,12 @@ static int numbox_newclick(t_gobj *z, struct _glist *glist, int xpix, int ypix, 
     t_numbox* x = (t_numbox *)z;
     if(doit && x->x_outmode){
         x->x_inc = shift ? 0.01 : 1;
+        x->x_clicked = 1;
+        pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
+        x->x_buf[0] = 0;
         sys_vgui(".x%lx.c itemconfigure %lxBASE -width %d\n", glist_getcanvas(glist), x, x->x_zoom*2);
         glist_grab(glist, &x->x_obj.te_g, (t_glistmotionfn)numbox_motion, numbox_key,
             (t_floatarg)xpix, (t_floatarg)ypix);
-        x->x_clicked = 1;
-        x->x_buf[0] = 0;
     }
     return(1);
 }
@@ -404,7 +405,8 @@ static void numbox_zoom(t_numbox *x, t_floatarg zoom){
 }
 
 static void numbox_free(t_numbox *x){
-    pd_unbind((t_pd *)x, gensym("#keyname"));
+    if(x->x_clicked)
+        pd_unbind((t_pd *)x, gensym("#keyname"));
     clock_free(x->x_clock_update);
     gfxstub_deleteforkey(x);
 }
@@ -509,7 +511,6 @@ static void *numbox_new(t_symbol *sym, int ac, t_atom *av){
     x->x_ramp_ms = ramp_ms < 0 ? 0 : ramp_ms;    
     x->x_out_val = x->x_ramp_val = x->x_set_val;
     x->x_sr_khz = sys_getsr() * 0.001;
-    pd_bind(&x->x_obj.ob_pd, gensym("#keyname")); // listen to key events
     x->x_clock_update = clock_new(x, (t_method)clock_update);
     clock_delay(x->x_clock_update, x->x_rate); // Start repaint clock
     outlet_new(&x->x_obj, &s_signal);
