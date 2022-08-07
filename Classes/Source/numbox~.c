@@ -92,7 +92,8 @@ static void numbox_resize(t_numbox *x){
 }
 
 static void clock_update(t_numbox *x){
-    if(x->x_display != (x->x_outmode ? x->x_out_val : x->x_in_val)) // Check if changed
+    t_float newdisplay = x->x_outmode ? x->x_out_val : x->x_in_val;
+    if(memcmp(&newdisplay, &x->x_display, sizeof(newdisplay))) // bitwise comparison
         numbox_draw_number(x);
     clock_delay(x->x_clock_update, x->x_rate);
 }
