@@ -11,29 +11,26 @@ typedef struct _brown{
     t_random_state x_rstate;
     t_float  x_lastout;
     t_outlet *x_outlet;
-} t_brown;
+}t_brown;
 
 static void brown_float(t_brown *x, t_floatarg f){
     random_init(&x->x_rstate, f);
 }
 
 static uint32_t random_trand(uint32_t* s1, uint32_t* s2, uint32_t* s3 ){
-    // This function is provided for speed in inner loops where the
-    // state variables are loaded into registers.
-    // Thus updating the instance variables can
-    // be postponed until the end of the loop.
+// Provided for speed in inner loops where the state variables are loaded into registers.
+// Thus updating the instance variables can be postponed until the end of the loop.
     *s1 = ((*s1 &  (uint32_t)- 2) << 12) ^ (((*s1 << 13) ^  *s1) >> 19);
     *s2 = ((*s2 &  (uint32_t)- 8) <<  4) ^ (((*s2 <<  2) ^  *s2) >> 25);
     *s3 = ((*s3 &  (uint32_t)-16) << 17) ^ (((*s3 <<  3) ^  *s3) >> 11);
-    return *s1 ^ *s2 ^ *s3;
+    return(*s1 ^ *s2 ^ *s3);
 }
 
-static float random_frand(uint32_t* s1, uint32_t* s2, uint32_t* s3)
-{
+static float random_frand(uint32_t* s1, uint32_t* s2, uint32_t* s3){
     // return a float from -1.0 to +0.999...
     union { uint32_t i; float f; } u;        // union for floating point conversion of result
     u.i = 0x40000000 | (random_trand(s1, s2, s3) >> 9);
-    return u.f - 3.f;
+    return(u.f - 3.f);
 }
 
 static t_int *brown_perform(t_int *w){
@@ -48,15 +45,15 @@ static t_int *brown_perform(t_int *w){
     while(nblock--){
         t_float input = random_frand(s1, s2, s3) * 0.125;
         t_float output = input + lastout;
-        if (output > 1)
+        if(output > 1)
             output = 2 - output;
-        if (output < -1)
+        if(output < -1)
             output = -2 - output;
         *out++ = output;
         lastout = output;
     }
     x->x_lastout = lastout;
-    return (w + 5);
+    return(w+5);
 }
 
 static void brown_dsp(t_brown *x, t_signal **sp){
@@ -68,7 +65,7 @@ static void *brown_new(t_symbol *s, int ac, t_atom *av){
     t_brown *x = (t_brown *)pd_new(brown_class);
     x->x_lastout = 0;
     static int seed = 1;
-    if((ac) && (av->a_type == A_FLOAT))
+    if(ac && (av->a_type == A_FLOAT))
         random_init(&x->x_rstate, atom_getfloatarg(0, ac, av));
     else
     	random_init(&x->x_rstate, seed++);
@@ -78,7 +75,7 @@ static void *brown_new(t_symbol *s, int ac, t_atom *av){
 
 void brown_tilde_setup(void){
     brown_class = class_new(gensym("brown~"), (t_newmethod)brown_new,
-                            0, sizeof(t_brown), 0, A_GIMME, 0);
+        0, sizeof(t_brown), 0, A_GIMME, 0);
     class_addmethod(brown_class, (t_method)brown_dsp, gensym("dsp"), A_CANT, 0);
     class_addfloat(brown_class, brown_float);
 }
