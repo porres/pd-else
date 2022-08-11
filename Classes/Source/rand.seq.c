@@ -3,7 +3,7 @@
 #include "m_pd.h"
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+#include <random.h>
 
 typedef struct _rand_seq{
     t_object     x_obj;
@@ -15,7 +15,6 @@ typedef struct _rand_seq{
 }t_rand_seq;
 
 static t_class *rand_seq_class;
-static int initflag = 0;
 
 static void rand_seq_n(t_rand_seq *x, t_float f){
     int n = (int)f;
@@ -42,13 +41,7 @@ static void rand_seq_n(t_rand_seq *x, t_float f){
 
 static void rand_seq_seed(t_rand_seq *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(!ac){
-        unsigned int seed = time(NULL) + (initflag * 151);
-        seed = seed * 435898247 + 938284287;
-        x->x_state = seed & 0x7fffffff;
-    }
-    else
-        x->x_state = (unsigned int)(atom_getfloat(av));
+    x->x_state = ac ? (unsigned int)(atom_getfloat(av)) : makeseed();
 }
 
 static void rand_seq_bang(t_rand_seq *x){
@@ -77,7 +70,7 @@ static void rand_seq_bang(t_rand_seq *x){
     int v = *(candidates+nval);
     outlet_float(x->x_obj.ob_outlet, v);
     *(x->x_ovalues+v) = *(x->x_ovalues+v) + 1;
-    if(nbcandidates == 1 ){ // end of the serial
+    if(nbcandidates == 1){ // end of the serial
         outlet_bang(x->x_bang_outlet);
         memset(x->x_ovalues, 0x0, x->x_nvalues*sizeof(int));
     }
@@ -176,14 +169,7 @@ static t_rand_seq *rand_seq_new(t_symbol *s, int ac, t_atom *av){
     inlet_new((t_object *)x, (t_pd *)x, &s_float, gensym("n"));
     outlet_new(&x->x_obj, &s_float);
     x->x_bang_outlet = outlet_new(&x->x_obj, &s_bang);
-    if(seed_flag)
-        x->x_state = initseed;
-    else{
-        unsigned int seed = initseed + (initflag * 151);
-        seed = seed * 435898247 + 938284287;
-        x->x_state = seed & 0x7fffffff;
-    }
-    initflag++;
+    x->x_state = seed_flag ? initseed : makeseed();
     return(x);
 errstate:
     post("[rand.seq] improper args");

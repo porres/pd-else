@@ -2,20 +2,31 @@
 // coded by matt barber
 
 #include <stdint.h>
+#include <time.h>
 
+typedef struct _random_state{
+    uint32_t s1;
+    uint32_t s2;
+    uint32_t s3;
+}t_random_state;
+
+void random_init(t_random_state* rstate, float f);
+int makeseed(void);
 int rand_int(unsigned int *statep, int range);
-void rand_seed(unsigned int *statep, unsigned int seed);
+float random_frand(uint32_t* s1, uint32_t* s2, uint32_t* s3);
+uint32_t random_trand(uint32_t* s1, uint32_t* s2, uint32_t* s3);
+int32_t random_hash(int32_t inKey);
 
-// these are for pinknoise
+////////////// these are for pinknoise~
 
 #if defined(__GNUC__)
 
 // use gcc's builtins
 static __inline__ int32_t CLZ(int32_t arg){
     if(arg)
-        return __builtin_clz(arg);
+        return(__builtin_clz(arg));
     else
-        return 32;
+        return(32);
 }
 
 #elif defined(_MSC_VER)
@@ -74,13 +85,3 @@ static __inline__ int32_t CLZ(int32_t arg){
 }
 
 #endif
-
-typedef struct _random_state{
-	uint32_t s1;
-	uint32_t s2;
-	uint32_t s3;
-}t_random_state;
-
-int32_t random_hash(int32_t inKey);
-
-void random_init(t_random_state* rstate, float f);

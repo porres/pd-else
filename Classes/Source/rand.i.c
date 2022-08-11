@@ -1,7 +1,7 @@
 // Porres 2017
  
 #include "m_pd.h"
-#include <time.h>
+#include <random.h>
 
 typedef struct _randi{
     t_object     x_obj;
@@ -11,7 +11,6 @@ typedef struct _randi{
 }t_randi;
 
 static t_class *randi_class;
-static int initflag = 0;
 
 static void randi_bang(t_randi *x){
     int min = (int)x->x_min; // Output LOW
@@ -35,13 +34,7 @@ static void randi_bang(t_randi *x){
 
 static void randi_seed(t_randi *x, t_symbol *s, int ac, t_atom *av){
     s = NULL;
-    if(!ac){
-        unsigned int seed = time(NULL) + (initflag * 151);
-        seed = seed * 435898247 + 938284287;
-        x->x_state = seed & 0x7fffffff;
-    }
-    else
-        x->x_state = (unsigned int)(atom_getfloat(av));
+    x->x_state = ac ? (unsigned int)(atom_getfloat(av)) : makeseed();
 }
 
 static void *randi_new(t_symbol *s, int argc, t_atom *argv){
@@ -92,14 +85,7 @@ static void *randi_new(t_symbol *s, int argc, t_atom *argv){
     else if(argc > 3)
         goto errstate;
 ////////////////////////////////////////////////////////////
-    if(seed_flag)
-        x->x_state = initseed;
-    else{
-        unsigned int seed = initseed + (initflag * 151);
-        seed = seed * 435898247 + 938284287;
-        x->x_state = seed & 0x7fffffff;
-    }
-    initflag++;
+    x->x_state = seed_flag ? initseed : makeseed();
     floatinlet_new((t_object *)x, &x->x_min);
     floatinlet_new((t_object *)x, &x->x_max);
     outlet_new((t_object *)x, &s_float);

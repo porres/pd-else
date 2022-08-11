@@ -1,5 +1,5 @@
-// matt barber and porres (2017-2018)
-// based on SuperCollider's BrownNoise UGen
+// Matt Barber and Porres (2017-2022)
+// Based on SuperCollider's BrownNoise UGen
 
 #include "m_pd.h"
 #include "random.h"
@@ -7,30 +7,23 @@
 static t_class *brown_class;
 
 typedef struct _brown{
-    t_object  x_obj;
+    t_object       x_obj;
     t_random_state x_rstate;
-    t_float  x_lastout;
-    t_outlet *x_outlet;
+    t_float        x_lastout;
+    t_outlet      *x_outlet;
 }t_brown;
 
-static void brown_float(t_brown *x, t_floatarg f){
-    random_init(&x->x_rstate, f);
-}
+static unsigned int instanc_n = 0;
 
-static uint32_t random_trand(uint32_t* s1, uint32_t* s2, uint32_t* s3 ){
-// Provided for speed in inner loops where the state variables are loaded into registers.
-// Thus updating the instance variables can be postponed until the end of the loop.
-    *s1 = ((*s1 &  (uint32_t)- 2) << 12) ^ (((*s1 << 13) ^  *s1) >> 19);
-    *s2 = ((*s2 &  (uint32_t)- 8) <<  4) ^ (((*s2 <<  2) ^  *s2) >> 25);
-    *s3 = ((*s3 &  (uint32_t)-16) << 17) ^ (((*s3 <<  3) ^  *s3) >> 11);
-    return(*s1 ^ *s2 ^ *s3);
-}
-
-static float random_frand(uint32_t* s1, uint32_t* s2, uint32_t* s3){
-    // return a float from -1.0 to +0.999...
-    union { uint32_t i; float f; } u;        // union for floating point conversion of result
-    u.i = 0x40000000 | (random_trand(s1, s2, s3) >> 9);
-    return(u.f - 3.f);
+static void brown_seed(t_brown *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    x->x_lastout = 0;
+    unsigned int timeval;
+    if(ac && av->a_type == A_FLOAT)
+        timeval = (unsigned int)(atom_getfloat(av));
+    else
+        timeval = (unsigned int)(time(NULL)*151*++instanc_n);
+    random_init(&x->x_rstate, timeval);
 }
 
 static t_int *brown_perform(t_int *w){
@@ -61,14 +54,8 @@ static void brown_dsp(t_brown *x, t_signal **sp){
 }
 
 static void *brown_new(t_symbol *s, int ac, t_atom *av){
-    s = NULL;
     t_brown *x = (t_brown *)pd_new(brown_class);
-    x->x_lastout = 0;
-    static int seed = 1;
-    if(ac && (av->a_type == A_FLOAT))
-        random_init(&x->x_rstate, atom_getfloatarg(0, ac, av));
-    else
-    	random_init(&x->x_rstate, seed++);
+    brown_seed(x, s, ac, av);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return(x);
 }
@@ -77,5 +64,5 @@ void brown_tilde_setup(void){
     brown_class = class_new(gensym("brown~"), (t_newmethod)brown_new,
         0, sizeof(t_brown), 0, A_GIMME, 0);
     class_addmethod(brown_class, (t_method)brown_dsp, gensym("dsp"), A_CANT, 0);
-    class_addfloat(brown_class, brown_float);
+    class_addmethod(brown_class, (t_method)brown_seed, gensym("seed"), A_GIMME, 0);
 }
