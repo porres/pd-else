@@ -20,7 +20,7 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 3 graph;
-#X obj 3 2 cnv 15 301 42 empty empty pinknoise~ 20 20 2 37 #e0e0e0
+#X obj 3 2 cnv 15 301 42 empty empty pink~ 20 20 2 37 #e0e0e0
 #000000 0;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1;
@@ -51,11 +51,11 @@
 #X obj 198 143 else/downsample~ 1;
 #X obj 368 54 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X obj 48 106 else/pinknoise~ 1039;
-#X obj 198 106 else/pinknoise~ 1039;
-#X obj 368 110 else/pinknoise~;
-#X obj 518 110 else/pinknoise~;
-#X text 46 51 Sync [pinknoise~] objects with a seed value;
+#X obj 48 106 else/pink~ 1039;
+#X obj 198 106 else/pink~ 1039;
+#X obj 368 110 else/pink~;
+#X obj 518 110 else/pink~;
+#X text 46 51 Sync [pink~] objects with a seed value;
 #X obj 368 188 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 518 188 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 48 187 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
@@ -73,16 +73,16 @@
 #X connect 9 0 0 0;
 #X connect 10 0 1 0;
 #X restore 494 192 pd seed;
-#X obj 228 150 else/pinknoise~;
-#X text 76 86 [pinknoise~] is a pink noise generator based on SuperCollider's
-"PinkNoise". Subjectively \, pink noise sounds less hissy than white
+#X obj 228 150 else/pink~;
+#X text 76 86 [pink~] is a pink noise generator based on SuperCollider's
+"pink". Subjectively \, pink noise sounds less hissy than white
 noise. While white noise has constant spectral power per hertz of bandwidth
 \, pink noise has constant power per octave., f 63;
 #X obj 157 279 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #N canvas 666 63 513 319 pinkness 0;
 #X obj 159 238 else/out~;
-#X obj 159 196 else/pinknoise~;
+#X obj 159 196 else/pink~;
 #X text 45 16 You can set the "pinkness" \, which is actually the number
 of extra octaves. A value of zero makes it only one frequency band
 of noise \, which is plain white noise. For each extra octave \, the
