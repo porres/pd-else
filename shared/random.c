@@ -12,6 +12,16 @@ int makeseed(void){
     return(seed & 0x7fffffff);
 }
 
+unsigned int get_seed(t_symbol *s, int ac, t_atom *av, int n){
+    s = NULL;
+    unsigned int timeval;
+    if(ac && av->a_type == A_FLOAT)
+        timeval = (unsigned int)(atom_getfloat(av));
+    else
+        timeval = (unsigned int)(time(NULL)*151*n);
+    return(timeval);
+}
+
 uint32_t random_trand(uint32_t *s1, uint32_t *s2, uint32_t *s3){
 // Provided for speed in inner loops where the state variables are loaded into registers.
 // Thus updating the instance variables can be postponed until the end of the loop.

@@ -279,7 +279,6 @@ rand := shared/random.c
     brown~.class.sources := Classes/Source/brown~.c $(rand)
     gray~.class.sources := Classes/Source/gray~.c $(rand)
     pink~.class.sources := Classes/Source/pink~.c $(rand)
-    clipnoise~.class.sources := Classes/Source/clipnoise~.c $(rand)
     pluck~.class.sources := Classes/Source/pluck~.c $(rand)
     white~.class.sources := Classes/Source/white~.c $(rand)
     rand.f.class.sources := Classes/Source/rand.f.c $(rand)
