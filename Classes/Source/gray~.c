@@ -7,15 +7,22 @@
 static t_class *gray_class;
 
 typedef struct _gray{
-    t_object        x_obj;
-    int             x_base;
-    t_random_state  x_rstate;
-    t_outlet       *x_outlet;
+    t_object       x_obj;
+    int            x_base;
+    t_random_state x_rstate;
+    t_outlet      *x_outlet;
+}t_gray;
 
-} t_gray;
+static unsigned int instanc_n = 0;
 
-static void gray_float(t_gray *x, t_floatarg f){
-    random_init(&x->x_rstate, f);
+static void gray_seed(t_gray *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    unsigned int timeval;
+    if(ac && av->a_type == A_FLOAT)
+        timeval = (unsigned int)(atom_getfloat(av));
+    else
+        timeval = (unsigned int)(time(NULL)*151*++instanc_n);
+    random_init(&x->x_rstate, timeval);
     x->x_base = x->x_rstate.s1 ^ x->x_rstate.s2 ^ x->x_rstate.s3;
 }
 
@@ -28,14 +35,6 @@ static t_int *gray_perform(t_int *w){
     uint32_t *s1 = &rstate->s1;
     uint32_t *s2 = &rstate->s2;
     uint32_t *s3 = &rstate->s3;
-    /*while(n--){
-        t_float noise = ((float)((val & 0x7fffffff) - 0x40000000)) * (float)(16.0 / 0x40000000);
-        val = val * 435898247 + 382842987;
-        int shift = (int)(noise + 16.0);
-        shift = (shift == 32 ? 31 : shift); // random numbers from 0 - 31
-        base ^= 1L << shift;
-        *out++ = base * 4.65661287308e-10f; // That's 1/(2^31), so normalizes the int to 1.0
-    }    */
     while(n--){
     	base ^= 1L << (random_trand(s1, s2, s3) & 31);
     	*out++ = base * 4.65661287308e-10f; // That's 1/(2^31), so normalizes the int to 1.0
@@ -49,14 +48,8 @@ static void gray_dsp(t_gray *x, t_signal **sp){
 }
 
 static void *gray_new(t_symbol *s, int ac, t_atom *av){
-    s = NULL;
     t_gray *x = (t_gray *)pd_new(gray_class);
-    static int seed = 1;
-    if(ac && (av->a_type == A_FLOAT))
-        random_init(&x->x_rstate, atom_getfloatarg(0, ac, av));
-    else
-    	random_init(&x->x_rstate, seed++);
-    x->x_base = x->x_rstate.s1 ^ x->x_rstate.s2 ^ x->x_rstate.s3;
+    gray_seed(x, s, ac, av);
     x->x_outlet = outlet_new(&x->x_obj, &s_signal);
     return(x);
 }
@@ -65,5 +58,5 @@ void gray_tilde_setup(void){
     gray_class = class_new(gensym("gray~"), (t_newmethod)gray_new,
         0, sizeof(t_gray), 0, A_GIMME, 0);
     class_addmethod(gray_class, (t_method)gray_dsp, gensym("dsp"), A_CANT, 0);
-    class_addfloat(gray_class, gray_float);
+    class_addmethod(gray_class, (t_method)gray_seed, gensym("seed"), A_GIMME, 0);
 }
