@@ -1,0 +1,75 @@
+#N canvas 511 81 568 368 10;
+#X obj 7 339 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+0;
+#X obj 7 240 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 7 274 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 7 309 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+0;
+#X obj 157 249 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 157 284 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X obj 235 167 else/out~;
+#X obj 23 40 cnv 4 4 4 empty empty White\ noise\ generator 0 28 2 18
+#e0e0e0 #000000 0;
+#X obj 3 3 cnv 15 301 42 empty empty white~ 20 20 2 37 #e0e0e0 #000000
+0;
+#X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
+0;
+#N canvas 0 22 450 278 (subpatch) 0;
+#X coords 0 1 100 -1 302 42 1 0 0;
+#X restore 2 3 graph;
+#N canvas 382 141 749 319 (subpatch) 0;
+#X coords 0 -1 1 1 252 42 2 100 100;
+#X restore 305 3 pd;
+#X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
+0;
+#X obj 458 11 cnv 10 10 10 empty empty EL 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 478 11 cnv 10 10 10 empty empty Locus 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 515 11 cnv 10 10 10 empty empty Solus' 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 464 26 cnv 10 10 10 empty empty ELSE 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
+0;
+#X text 198 249 float - sets seed;
+#N canvas 559 236 694 278 seed 0;
+#X obj 368 144 else/downsample~ 1;
+#X obj 368 110 else/brown~;
+#X obj 518 147 else/downsample~ 1;
+#X obj 518 110 else/brown~;
+#X msg 518 52 507;
+#X text 549 51 <= set seed;
+#X obj 48 144 else/downsample~ 1;
+#X obj 48 187 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 198 143 else/downsample~ 1;
+#X obj 48 106 else/brown~ 1039;
+#X obj 198 106 else/brown~ 1039;
+#X obj 368 54 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#dcdcdc #000000 #000000 0 256;
+#X obj 368 188 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 518 188 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 198 187 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X text 61 58 Sync [white~] objects with a seed value;
+#X connect 0 0 12 0;
+#X connect 1 0 0 0;
+#X connect 2 0 13 0;
+#X connect 3 0 2 0;
+#X connect 4 0 3 0;
+#X connect 4 0 1 0;
+#X connect 6 0 7 0;
+#X connect 8 0 14 0;
+#X connect 9 0 6 0;
+#X connect 10 0 8 0;
+#X connect 11 0 3 0;
+#X connect 11 0 1 0;
+#X restore 484 197 pd seed;
+#X text 180 317 1) float - sets seed;
+#X obj 235 131 else/white~;
+#X text 75 91 [white~] is a white noise generator.;
+#X text 192 284 signal - white noise;
+#X connect 21 0 6 0;

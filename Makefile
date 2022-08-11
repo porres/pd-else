@@ -87,9 +87,6 @@ bend.in.class.sources := Classes/Source/bend.in.c
 bend.out.class.sources := Classes/Source/bend.out.c
 pack2.class.sources := Classes/Source/pack2.c
 quantizer.class.sources := Classes/Source/quantizer.c
-rand.f.class.sources := Classes/Source/rand.f.c
-rand.i.class.sources := Classes/Source/rand.i.c
-rand.seq.class.sources := Classes/Source/rand.seq.c
 rad2hz.class.sources := Classes/Source/rad2hz.c
 ratio2cents.class.sources := Classes/Source/ratio2cents.c
 rescale.class.sources := Classes/Source/rescale.c
@@ -206,10 +203,6 @@ quantizer~.class.sources := Classes/Source/quantizer~.c
 ramp~.class.sources := Classes/Source/ramp~.c
 rampnoise~.class.sources := Classes/Source/rampnoise~.c
 range~.class.sources := Classes/Source/range~.c
-rand.f~.class.sources := Classes/Source/rand.f~.c
-rand.i~.class.sources := Classes/Source/rand.i~.c
-randpulse~.class.sources := Classes/Source/randpulse~.c
-randpulse2~.class.sources := Classes/Source/randpulse2~.c
 ratio2cents~.class.sources := Classes/Source/ratio2cents~.c
 rescale~.class.sources := Classes/Source/rescale~.c
 rint~.class.sources := Classes/Source/rint~.c
@@ -288,6 +281,16 @@ rand := shared/random.c
     pinknoise~.class.sources := Classes/Source/pinknoise~.c $(rand)
     clipnoise~.class.sources := Classes/Source/clipnoise~.c $(rand)
     pluck~.class.sources := Classes/Source/pluck~.c $(rand)
+    white~.class.sources := Classes/Source/white~.c $(rand)
+    rand.f.class.sources := Classes/Source/rand.f.c $(rand)
+    rand.i.class.sources := Classes/Source/rand.i.c $(rand)
+    rand.seq.class.sources := Classes/Source/rand.seq.c $(rand)
+    rand.f~.class.sources := Classes/Source/rand.f~.c $(rand)
+    rand.i~.class.sources := Classes/Source/rand.i~.c $(rand)
+    randpulse~.class.sources := Classes/Source/randpulse~.c $(rand)
+    randpulse2~.class.sources := Classes/Source/randpulse2~.c $(rand)
+
+
 
 midi := \
     shared/mifi.c \

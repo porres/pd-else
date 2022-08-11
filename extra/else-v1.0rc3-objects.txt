@@ -449,6 +449,7 @@ voices	x
 vsaw~	x
 vu~	x
 wavetable~	x
+white~	x
 wrap2	x
 wrap2~	x
 wt~	x
