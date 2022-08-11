@@ -9,19 +9,12 @@ static t_class *white_class;
 typedef struct _white{
     t_object       x_obj;
     t_random_state x_rstate;
-    t_outlet      *x_outlet;
 }t_white;
 
 static unsigned int instanc_n = 0;
 
 static void white_seed(t_white *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    unsigned int timeval;
-    if(ac && av->a_type == A_FLOAT)
-        timeval = (unsigned int)(atom_getfloat(av));
-    else
-        timeval = (unsigned int)(time(NULL)*151*++instanc_n);
-    random_init(&x->x_rstate, timeval);
+    random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
 }
 
 static t_int *white_perform(t_int *w){
@@ -42,14 +35,14 @@ static void white_dsp(t_white *x, t_signal **sp){
 
 static void *white_new(t_symbol *s, int ac, t_atom *av){
     t_white *x = (t_white *)pd_new(white_class);
-    x->x_outlet = outlet_new(&x->x_obj, &s_signal);
+    outlet_new(&x->x_obj, &s_signal);
     white_seed(x, s, ac, av);
     return(x);
 }
 
 void white_tilde_setup(void){
-    white_class = class_new(gensym("white~"), (t_newmethod)white_new,
-        0, sizeof(t_white), 0, A_GIMME, 0);
+    white_class = class_new(gensym("white~"), (t_newmethod)white_new, 0,
+        sizeof(t_white), 0, A_GIMME, 0);
     class_addmethod(white_class, (t_method)white_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(white_class, (t_method)white_seed, gensym("seed"), A_GIMME, 0);
 }

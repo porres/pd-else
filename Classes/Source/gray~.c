@@ -10,19 +10,12 @@ typedef struct _gray{
     t_object       x_obj;
     int            x_base;
     t_random_state x_rstate;
-    t_outlet      *x_outlet;
 }t_gray;
 
 static unsigned int instanc_n = 0;
 
 static void gray_seed(t_gray *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    unsigned int timeval;
-    if(ac && av->a_type == A_FLOAT)
-        timeval = (unsigned int)(atom_getfloat(av));
-    else
-        timeval = (unsigned int)(time(NULL)*151*++instanc_n);
-    random_init(&x->x_rstate, timeval);
+    random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
     x->x_base = x->x_rstate.s1 ^ x->x_rstate.s2 ^ x->x_rstate.s3;
 }
 
@@ -50,7 +43,7 @@ static void gray_dsp(t_gray *x, t_signal **sp){
 static void *gray_new(t_symbol *s, int ac, t_atom *av){
     t_gray *x = (t_gray *)pd_new(gray_class);
     gray_seed(x, s, ac, av);
-    x->x_outlet = outlet_new(&x->x_obj, &s_signal);
+    outlet_new(&x->x_obj, &s_signal);
     return(x);
 }
 

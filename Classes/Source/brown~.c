@@ -10,20 +10,12 @@ typedef struct _brown{
     t_object       x_obj;
     t_random_state x_rstate;
     t_float        x_lastout;
-    t_outlet      *x_outlet;
 }t_brown;
 
 static unsigned int instanc_n = 0;
 
 static void brown_seed(t_brown *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    x->x_lastout = 0;
-    unsigned int timeval;
-    if(ac && av->a_type == A_FLOAT)
-        timeval = (unsigned int)(atom_getfloat(av));
-    else
-        timeval = (unsigned int)(time(NULL)*151*++instanc_n);
-    random_init(&x->x_rstate, timeval);
+    random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
 }
 
 static t_int *brown_perform(t_int *w){
@@ -56,7 +48,7 @@ static void brown_dsp(t_brown *x, t_signal **sp){
 static void *brown_new(t_symbol *s, int ac, t_atom *av){
     t_brown *x = (t_brown *)pd_new(brown_class);
     brown_seed(x, s, ac, av);
-    x->x_outlet = outlet_new(&x->x_obj, &s_signal);
+    outlet_new(&x->x_obj, &s_signal);
     return(x);
 }
 

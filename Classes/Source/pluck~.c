@@ -18,7 +18,6 @@ typedef struct _pluck{
     t_inlet        *x_freq_inlet;
     t_inlet        *x_decay_inlet;
     t_inlet        *x_cutoff_inlet;
-    t_outlet       *x_outlet;
     float           x_sr;
     float           x_freq;
     float           x_float_trig;
@@ -391,7 +390,7 @@ static void *pluck_new(t_symbol *s, int argc, t_atom *argv){
         pd_float((t_pd *)x->x_cutoff_inlet, cut_freq);
     if(x->x_noise_input)
         inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
-    x->x_outlet = outlet_new((t_object *)x, &s_signal);
+    outlet_new((t_object *)x, &s_signal);
     return(x);
 errstate:
     pd_error(x, "[pluck~]: improper args");
@@ -404,7 +403,6 @@ static void * pluck_free(t_pluck *x){
     inlet_free(x->x_freq_inlet);
     inlet_free(x->x_decay_inlet);
     inlet_free(x->x_cutoff_inlet);
-    outlet_free(x->x_outlet);
     return(void *)x;
 }
 

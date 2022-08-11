@@ -7,9 +7,9 @@
 
 typedef struct _rand_seq{
     t_object     x_obj;
-    int          x_nvalues;      // number of values
-    int         *x_probs;        // probability of a value
-    int         *x_ovalues;      // number of outputs of each value
+    int          x_nvalues;  // number of values
+    int         *x_probs;    // probability of a value
+    int         *x_ovalues;  // number of outputs of each value
     unsigned int x_state;
     t_outlet    *x_bang_outlet;
 }t_rand_seq;

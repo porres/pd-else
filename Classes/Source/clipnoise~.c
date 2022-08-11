@@ -9,19 +9,12 @@ static t_class *clipnoise_class;
 typedef struct _clipnoise{
     t_object       x_obj;
     t_random_state x_rstate;
-    t_outlet      *x_outlet;
 }t_clipnoise;
 
 static unsigned int instanc_n = 0;
 
 static void clipnoise_seed(t_clipnoise *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    unsigned int timeval;
-    if(ac && av->a_type == A_FLOAT)
-        timeval = (unsigned int)(atom_getfloat(av));
-    else
-        timeval = (unsigned int)(time(NULL)*151*++instanc_n);
-    random_init(&x->x_rstate, timeval);
+    random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
 }
 
 static t_int *clipnoise_perform(t_int *w){
@@ -42,7 +35,7 @@ static void clipnoise_dsp(t_clipnoise *x, t_signal **sp){
 
 static void *clipnoise_new(t_symbol *s, int ac, t_atom *av){
     t_clipnoise *x = (t_clipnoise *)pd_new(clipnoise_class);
-    x->x_outlet = outlet_new(&x->x_obj, &s_signal);
+    outlet_new(&x->x_obj, &s_signal);
     clipnoise_seed(x, s, ac, av);
     return(x);
 }
