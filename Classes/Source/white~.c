@@ -8,34 +8,49 @@ static t_class *white_class;
 
 typedef struct _white{
     t_object       x_obj;
+    int            x_clip;
     t_random_state x_rstate;
 }t_white;
 
 static unsigned int instanc_n = 0;
+
+static void white_clip(t_white *x, t_floatarg f){
+    x->x_clip = f != 0;
+}
 
 static void white_seed(t_white *x, t_symbol *s, int ac, t_atom *av){
     random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
 }
 
 static t_int *white_perform(t_int *w){
-    int n = (t_int)(w[1]);
-    t_random_state *rstate = (t_random_state *)(w[2]);
-    t_sample *out = (t_sample *)(w[3]);
+    t_white *x = (t_white *)(w[1]);
+    int n = (t_int)(w[2]);
+    t_random_state *rstate = (t_random_state *)(w[3]);
+    t_sample *out = (t_sample *)(w[4]);
     uint32_t *s1 = &rstate->s1;
     uint32_t *s2 = &rstate->s2;
     uint32_t *s3 = &rstate->s3;
-    while(n--)
-    	*out++ = (t_float)(random_frand(s1, s2, s3));
+    while(n--){
+        t_float noise = (t_float)(random_frand(s1, s2, s3));
+        if(x->x_clip)
+            noise = noise > 0 ? 1 : -1;
+        *out++ = noise;
+    }
     return(w+5);
 }
 
 static void white_dsp(t_white *x, t_signal **sp){
-    dsp_add(white_perform, 4, sp[0]->s_n, &x->x_rstate, sp[0]->s_vec);
+    dsp_add(white_perform, 4, x, sp[0]->s_n, &x->x_rstate, sp[0]->s_vec);
 }
 
 static void *white_new(t_symbol *s, int ac, t_atom *av){
     t_white *x = (t_white *)pd_new(white_class);
     outlet_new(&x->x_obj, &s_signal);
+    x->x_clip = 0;
+    if(atom_getsymbol(av) == gensym("-clip")){
+        x->x_clip = 1;
+        ac--, av++;
+    }
     white_seed(x, s, ac, av);
     return(x);
 }
@@ -45,4 +60,5 @@ void white_tilde_setup(void){
         sizeof(t_white), 0, A_GIMME, 0);
     class_addmethod(white_class, (t_method)white_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(white_class, (t_method)white_seed, gensym("seed"), A_GIMME, 0);
+    class_addmethod(white_class, (t_method)white_clip, gensym("clip"), A_FLOAT, 0);
 }

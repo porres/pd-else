@@ -108,7 +108,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-## Current Object list (460 objects):
+## Current Object list (459 objects):
 
 **ASSORTED: [02]**
 
@@ -458,11 +458,10 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [bl.vsaw~]
 - [bl.wavetable~]
 
-**SYNTHESIS: CHAOTIC/NOISE GENERATORS: [26]**
+**SYNTHESIS: CHAOTIC/NOISE GENERATORS: [25]**
 
 - [white~] 
 - [brown~] 
-- [clipnoise~] 
 - [perlin~] 
 - [crackle~] 
 - [cusp~] 

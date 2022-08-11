@@ -76,7 +76,6 @@ chorus~	x
 chrono	x
 circle	x
 click	x
-clipnoise~	x
 clock	x
 cmul~	x
 coeff2pz	x
