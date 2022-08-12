@@ -1,23 +1,20 @@
-#N canvas 522 38 563 422 10;
-#X obj 4 289 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+#N canvas 385 27 565 431 10;
+#X obj 4 296 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 323 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 4 330 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 4 360 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 4 367 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 83 332 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 83 339 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 84 297 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 84 304 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 158 368 (none);
-#X obj 4 393 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 4 400 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X text 106 251 Linear Amplitude;
-#X obj 217 165 hsl 180 15 -100 0 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#X text 95 257 Linear Amplitude;
+#X obj 203 175 hsl 180 15 -100 0 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
-#X obj 214 189 nbx 5 14 -100 100 0 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
-#X text 179 190 dBFS;
+#X text 165 200 dBFS;
 #X obj 4 4 cnv 15 301 42 empty empty db2lin~ 20 20 2 37 #e0e0e0 #000000
 0;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
@@ -40,12 +37,8 @@
 0;
 #X obj 503 27 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X text 207 299 - dBFS amplitude value;
-#X text 203 332 - converted linear amplitude value;
-#X text 79 120 Conversion expression: amp = pow(10 \, dBFS / 20) \,
-see the implementation inside the abstraction.;
-#X text 79 86 [db2lin~] is a simple abstraction that converts amplitude
-values from deciBel Full Scale (dBFS) to linear.;
+#X text 207 306 - dBFS amplitude value;
+#X text 203 339 - converted linear amplitude value;
 #N canvas 207 34 366 264 (subpatch) 0;
 #X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
 #fcfcfc 0 1;
@@ -150,9 +143,9 @@ values from deciBel Full Scale (dBFS) to linear.;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 506 72 pd;
-#X obj 214 217 else/db2lin~;
-#X text 156 299 signal;
-#X text 158 332 signal;
+#X obj 200 227 else/db2lin~;
+#X text 156 306 signal;
+#X text 158 339 signal;
 #X obj 24 41 cnv 4 4 4 empty empty Convert 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 165 41 cnv 4 4 4 empty empty linear 0 28 2 18 #e0e0e0 #000000
@@ -163,7 +156,14 @@ values from deciBel Full Scale (dBFS) to linear.;
 ;
 #X obj 93 41 cnv 4 4 4 empty empty dBFS 0 28 2 18 #e0e0e0 #000000 0
 ;
-#X obj 214 249 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X connect 8 0 9 0;
-#X connect 9 0 26 0;
-#X connect 26 0 34 0;
+#X obj 200 257 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X text 79 94 [db2lin~] iconverts amplitude values from deciBel Full
+Scale (dBFS) to linear. By default \, a minimum value of -100 becomes
+zero - in theory \, this is minus infinity and an argument sets another
+minimum value to correspond to minus ininity. Conversion expression
+is amp = pow(10 \, dBFS / 20).;
+#X obj 200 199 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X text 158 375 1) float \, minimum value (default -100);
+#X connect 7 0 32 0;
+#X connect 22 0 30 0;
+#X connect 32 0 22 0;

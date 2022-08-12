@@ -1,4 +1,4 @@
-#N canvas 396 48 565 415 10;
+#N canvas 636 23 565 437 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
@@ -26,7 +26,7 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 3 graph;
 #X obj 209 194 else/out~;
-#X obj 6 385 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 6 405 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 209 164 else/pink~;
 #N canvas 666 63 513 319 pinkness 0;
@@ -49,8 +49,8 @@ at 20hz., f 68;
 #X connect 4 0 1 1;
 #X connect 5 0 6 0;
 #X connect 6 0 4 0;
-#X restore 471 229 pd pinkness;
-#X text 145 365 2) float - pinkness (number of extra octaves);
+#X restore 471 224 pd pinkness;
+#X text 145 385 2) float - pinkness (number of extra octaves);
 #X text 63 86 [pink~] is a pink noise generator \, which sounds less
 hissy than white noise (but not as less as brown~). While white noise
 has constant spectral power per hertz of bandwidth \, while pink noise
@@ -97,19 +97,22 @@ repeat the output., f 52;
 #X connect 16 0 11 0;
 #X connect 17 0 0 0;
 #X connect 18 0 1 0;
-#X restore 494 206 pd seed;
-#X obj 7 268 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+#X restore 494 201 pd seed;
+#X obj 7 263 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 7 302 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 7 322 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 7 337 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 7 357 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X text 145 347 1) float - sets seed (default: unique internal);
-#X obj 95 279 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 145 367 1) float - sets seed (default: unique internal);
+#X obj 95 274 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 95 314 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 95 334 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 126 279 seed <float> - a float sets seed \, no float sets a
+#X text 126 274 seed <float> - a float sets seed \, no float sets a
 unique internal, f 65;
-#X text 162 314 signal - gray noise;
+#X text 162 334 signal - pink noise;
+#X obj 96 297 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+;
+#X text 168 297 float - sets pinkness (number of extra octaves);
 #X connect 14 0 12 0;

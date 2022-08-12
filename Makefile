@@ -140,6 +140,7 @@ cmul~.class.sources := Classes/Source/cmul~.c
 crackle~.class.sources := Classes/Source/crackle~.c
 crossover~.class.sources := Classes/Source/crossover~.c
 cusp~.class.sources := Classes/Source/cusp~.c
+db2lin~.class.sources := Classes/Source/db2lin~.c
 decay~.class.sources := Classes/Source/decay~.c
 decay2~.class.sources := Classes/Source/decay2~.c
 del~.class.sources := Classes/Source/del~.c
