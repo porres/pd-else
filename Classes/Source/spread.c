@@ -1,21 +1,36 @@
 // porres 2020
 
-
 #include "m_pd.h"
 
 static t_class *spread_class;
 
 typedef struct _spread{
-    t_object    x_obj;
-    t_atom     *x_av;
-    int         x_ac;
-    int         x_bytes;
-    int         x_mode;
-    float       x_f;
-    t_outlet  **x_outs;
-    t_outlet   *x_out_unmatch;
+    t_object   x_obj;
+    t_atom    *x_av;
+    int        x_ac;
+    int        x_bytes;
+    int        x_mode;
+    float      x_f;
+    t_outlet **x_outs;
+    t_outlet  *x_out_unmatch;
 }t_spread;
 
+static void spread_args(t_spread *x, t_symbol *s, int ac, t_atom *av){
+    s = NULL;
+    if(ac > x->x_ac)
+        ac = x->x_ac;
+    int n = 0;
+    while(ac > 0){
+        if(av->a_type == A_FLOAT){
+            t_float aval = atom_getfloatarg(0, ac, av);
+            SETFLOAT(x->x_av+n, aval);
+        }
+        n++;
+        av++;
+        ac--;
+    }
+}
+    
 static void spread_mode(t_spread *x, t_floatarg f){
     x->x_mode = (int)(f != 0);
 }
@@ -75,7 +90,7 @@ static void *spread_new(t_symbol *s, int ac, t_atom *av){
         }
     }
     t_outlet **outs;
-    x->x_outs = (t_outlet **)getbytes(x->x_ac * sizeof(*outs));
+    x->x_outs = (t_outlet **)getbytes(x->x_ac*sizeof(*outs));
     for(int i = 0; i < x->x_ac; i++)
         x->x_outs[i] = outlet_new(&x->x_obj, &s_anything);
     x->x_out_unmatch = outlet_new(&x->x_obj, &s_anything);
@@ -90,4 +105,5 @@ void spread_setup(void){
         sizeof(t_spread), 0, A_GIMME, 0);
     class_addfloat(spread_class, spread_float);
     class_addmethod(spread_class, (t_method)spread_mode, gensym("mode"), A_FLOAT, 0);
+    class_addmethod(spread_class, (t_method)spread_args, gensym("args"), A_GIMME, 0);
 }
