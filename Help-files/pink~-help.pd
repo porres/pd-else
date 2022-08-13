@@ -1,4 +1,4 @@
-#N canvas 636 23 565 437 10;
+#N canvas 512 39 567 419 10;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
 0;
 #X obj 345 11 cnv 10 10 10 empty empty ELSE 0 15 2 30 #7c7c7c #e0e4dc
@@ -26,36 +26,9 @@
 #X coords 0 1 100 -1 302 42 1;
 #X restore 3 3 graph;
 #X obj 209 194 else/out~;
-#X obj 6 405 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#X obj 6 393 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 209 164 else/pink~;
-#N canvas 666 63 513 319 pinkness 0;
-#X obj 159 238 else/out~;
-#X obj 159 196 else/pink~;
-#X text 45 16 You can set the "pinkness" \, which is actually the number
-of extra octaves. A value of zero makes it only one frequency band
-of noise \, which is plain white noise. For each extra octave \, the
-bandwidth is split in half and the new octaves are 3dB lower than the
-next lower octave., f 68;
-#X text 45 77 The maximum number of extra octaves is 31 and the default
-depends on the sample rate \, and it is so that the lowest octave starts
-at 20hz., f 68;
-#X obj 216 173 nbx 5 14 0 31 0 0 empty empty empty 0 -8 0 10 #dcdcdc
-#000000 #000000 0 256;
-#X obj 219 128 hsl 128 15 0 31 0 0 empty empty empty -2 -8 0 10 #dcdcdc
-#000000 #000000 0 1;
-#X obj 216 149 int;
-#X connect 1 0 0 0;
-#X connect 4 0 1 1;
-#X connect 5 0 6 0;
-#X connect 6 0 4 0;
-#X restore 471 224 pd pinkness;
-#X text 145 385 2) float - pinkness (number of extra octaves);
-#X text 63 86 [pink~] is a pink noise generator \, which sounds less
-hissy than white noise (but not as less as brown~). While white noise
-has constant spectral power per hertz of bandwidth \, while pink noise
-has constant power per octave. Like other noise objects \, this is
-based on a pseudo random number generator algorithm., f 71;
 #N canvas 455 181 702 310 seed 0;
 #X obj 394 220 else/downsample~ 1;
 #X obj 544 220 else/downsample~ 1;
@@ -97,22 +70,51 @@ repeat the output., f 52;
 #X connect 16 0 11 0;
 #X connect 17 0 0 0;
 #X connect 18 0 1 0;
-#X restore 494 201 pd seed;
+#X restore 489 201 pd seed;
 #X obj 7 263 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 7 322 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 7 310 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 7 357 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 7 345 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X text 145 367 1) float - sets seed (default: unique internal);
-#X obj 95 274 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 145 355 1) float - sets seed (default: unique internal);
+#X obj 95 270 cnv 17 3 33 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 95 334 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 95 322 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 126 274 seed <float> - a float sets seed \, no float sets a
+#X text 126 288 seed <float> - a float sets seed \, no float sets a
 unique internal, f 65;
-#X text 162 334 signal - pink noise;
-#X obj 96 297 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
-;
-#X text 168 297 float - sets pinkness (number of extra octaves);
+#X text 162 322 signal - pink noise;
+#N canvas 722 98 495 359 number 0;
+#X obj 199 279 else/out~;
+#X obj 199 249 else/pink~;
+#X obj 199 223 nbx 5 14 0 40 0 0 empty empty empty 0 -8 0 10 #dcdcdc
+#000000 #000000 0 256;
+#X obj 202 170 hsl 128 15 1 40 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#000000 #000000 0 1;
+#X obj 199 196 int;
+#X text 45 16 You can set the number of frequency bands in octaves.
+A value of 1 makes it a single band which is plain white noise. For
+each extra octave \, the bandwidth is split in half and the new octaves
+are 3dB lower than the next lower octave., f 68;
+#X text 45 69 The maximum number of octaves is 40 and the default depends
+on the sample rate \, and it is so that the lowest octave starts close
+to 20hz. For a sample rate of 44100 this gives us 12 octaves. The more
+octaves you have \, the less bright the overall sound is., f 68;
+#X text 49 124 You can set the number of octaves with the 2nd argument
+or a float input.;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
+#X connect 4 0 2 0;
+#X restore 411 224 pd number of octaves;
+#X text 63 86 [pink~] is a pink noise generator \, which sounds less
+hissy than white noise (but not as less as brown~). White noise has
+constant spectral power \, but pink noise has constant power per octave
+and it decrease 3dB per octave. Like other noise objects \, this is
+based on a pseudo random number generator algorithm., f 71;
+#X text 145 373 2) float - number of octaves (default depends on sample
+rate), f 62;
+#X text 168 271 float - set number of octaves (minimum 1 \, max 31)
+, f 58;
 #X connect 14 0 12 0;

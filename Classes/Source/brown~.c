@@ -10,12 +10,17 @@ typedef struct _brown{
     t_object       x_obj;
     t_random_state x_rstate;
     t_float        x_lastout;
+    t_float        x_step;
 }t_brown;
 
 static unsigned int instanc_n = 0;
 
 static void brown_seed(t_brown *x, t_symbol *s, int ac, t_atom *av){
     random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
+}
+
+static void brown_step(t_brown *x, t_floatarg f){
+    x->x_step = f;
 }
 
 static t_int *brown_perform(t_int *w){
@@ -28,14 +33,13 @@ static t_int *brown_perform(t_int *w){
     uint32_t *s3 = &rstate->s3;
     t_float lastout = x->x_lastout;
     while(nblock--){
-        t_float input = random_frand(s1, s2, s3) * 0.125;
-        t_float output = input + lastout;
+        t_float noise = random_frand(s1, s2, s3);
+        t_float output = lastout + (noise * x->x_step);
         if(output > 1)
             output = 2 - output;
         if(output < -1)
             output = -2 - output;
-        *out++ = output;
-        lastout = output;
+        *out++ = lastout = output;
     }
     x->x_lastout = lastout;
     return(w+5);
@@ -47,6 +51,7 @@ static void brown_dsp(t_brown *x, t_signal **sp){
 
 static void *brown_new(t_symbol *s, int ac, t_atom *av){
     t_brown *x = (t_brown *)pd_new(brown_class);
+    x->x_step = 0.125;
     brown_seed(x, s, ac, av);
     outlet_new(&x->x_obj, &s_signal);
     return(x);
@@ -57,4 +62,5 @@ void brown_tilde_setup(void){
         0, sizeof(t_brown), 0, A_GIMME, 0);
     class_addmethod(brown_class, (t_method)brown_dsp, gensym("dsp"), A_CANT, 0);
     class_addmethod(brown_class, (t_method)brown_seed, gensym("seed"), A_GIMME, 0);
+    class_addmethod(brown_class, (t_method)brown_step, gensym("step"), A_GIMME, 0);
 }

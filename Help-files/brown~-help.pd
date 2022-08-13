@@ -1,18 +1,18 @@
-#N canvas 420 23 563 386 10;
-#X obj 7 355 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#N canvas 480 23 564 419 10;
+#X obj 7 389 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 7 252 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+#X obj 7 256 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 7 286 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 7 306 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 7 321 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 7 341 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 95 261 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 105 265 cnv 17 3 33 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 95 296 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 105 316 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 211 153 else/brown~;
-#X obj 211 185 else/out~;
+#X obj 211 159 else/brown~;
+#X obj 211 189 else/out~;
 #X obj 23 40 cnv 4 4 4 empty empty Brown 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 127 40 cnv 4 4 4 empty empty generator 0 28 2 18 #e0e0e0 #000000
@@ -41,7 +41,7 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X text 162 296 signal - brown noise;
+#X text 182 316 signal - brown noise;
 #N canvas 455 181 702 310 seed 0;
 #X obj 394 220 else/downsample~ 1;
 #X obj 394 181 else/brown~;
@@ -83,13 +83,35 @@ value., f 52;
 #X connect 13 0 1 0;
 #X connect 14 0 1 0;
 #X connect 14 0 3 0;
-#X restore 473 223 pd seed;
-#X text 145 331 1) float - sets seed (default: unique internal);
-#X text 126 261 seed <float> - a float sets seed \, no float sets a
+#X restore 474 192 pd seed;
+#X text 145 351 1) float - sets seed (default: unique internal);
+#X text 131 284 seed <float> - a float sets seed \, no float sets a
 unique internal, f 65;
-#X text 61 87 [brown~] is a brown noise generator (aka brownian noise
-or red noise). While white noise has constant spectral power per hertz
-of bandwidth \, brown noise drops 6dB per octave \, so it sounds less
-hissy. Like white noise \, this is based on a pseudo random number
-generator algorithm., f 70;
+#N canvas 629 115 517 454 step 0;
+#X obj 180 352 else/out~;
+#X obj 180 192 else/graph~;
+#X obj 183 112 hsl 128 15 0.01 1 0 0 empty empty empty -2 -8 0 10 #dfdfdf
+#000000 #000000 0 1;
+#X floatatom 180 134 11 0 0 0 - - - 0;
+#X obj 180 160 else/brown~;
+#X text 33 19 [brown~] is implemented as a bounded random walk whose
+default maximum step is 0.125 \, so if it tries to step outside the
+bounds -1 to 1 \, it just gets reflected back in (1.02 becomes 0.98
+\, for instance). You can set another maximum step value and values
+above 1 become unstable. The higher the step \, the more it sounds
+like white noise \, the lower \, the less bright the sound becomes.
+You can set the step with the 2nd argument or a float input., f 76
+;
+#X connect 1 0 0 0;
+#X connect 2 0 3 0;
+#X connect 3 0 4 0;
+#X connect 4 0 1 0;
+#X restore 474 215 pd step;
+#X text 57 92 [brown~] is a brown noise generator (aka brownian noise
+or red noise) \, whose spectral energy drops 6dB per octave (sounding
+less hissy than white noise). It is implemented as a bounded random
+walk (based on a pseudo random number generator algorithm). By default
+\, the maximum step is 0.125 \, but you can set that., f 76;
+#X text 173 266 float - sets maximum random step (from 0 to 1);
+#X text 145 368 2) float - maximum step (default: 0.125);
 #X connect 6 0 7 0;
