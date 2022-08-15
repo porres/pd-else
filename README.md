@@ -108,7 +108,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 
 --------------------------------------------------------------------------
 
-## Current Object list (459 objects):
+## Current Object list (460 objects):
 
 **ASSORTED: [02]**
 
@@ -546,7 +546,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [glide~]
 - [glide2~]
 
-**CONTROL: RANDOM: [14]**
+**CONTROL: RANDOM: [15]**
 
 - [rand.f]
 - [rand.f~]
@@ -557,6 +557,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [markov]
 - [drunkard~]
 - [drunkard]
+- [brown]
 - [randpulse]
 - [randpulse2]
 - [lfnoise]

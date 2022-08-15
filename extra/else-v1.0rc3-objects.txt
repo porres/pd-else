@@ -45,6 +45,7 @@ bpbank~	x
 bpm	x
 break	x
 brickwall~	x
+brown 	x
 brown~ 	x
 buffer	x
 button	x

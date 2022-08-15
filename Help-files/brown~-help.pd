@@ -92,19 +92,18 @@ unique internal, f 65;
 #X obj 183 112 hsl 128 15 0.01 1 0 0 empty empty empty -2 -8 0 10 #dfdfdf
 #000000 #000000 0 1;
 #X floatatom 180 134 11 0 0 0 - - - 0;
-#X obj 180 160 else/brown~;
 #X text 33 19 [brown~] is implemented as a bounded random walk whose
 default maximum step is 0.125 \, so if it tries to step outside the
 bounds -1 to 1 \, it just gets reflected back in (1.02 becomes 0.98
 \, for instance). You can set another maximum step value and values
 above 1 become unstable. The higher the step \, the more it sounds
 like white noise \, the lower \, the less bright the sound becomes.
-You can set the step with the 2nd argument or a float input., f 76
-;
+You can set the step with the argument or a float input., f 76;
+#X obj 180 160 else/brown~ 0.01;
 #X connect 1 0 0 0;
 #X connect 2 0 3 0;
-#X connect 3 0 4 0;
-#X connect 4 0 1 0;
+#X connect 3 0 5 0;
+#X connect 5 0 1 0;
 #X restore 488 210 pd step;
 #X text 167 274 signal - impulses get a new random step, f 59;
 #X text 173 289 float - sets maximum random step (from 0 to 1), f
