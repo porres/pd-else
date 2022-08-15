@@ -6,13 +6,15 @@
 #include <random.h>
 
 typedef struct _rand_seq{
-    t_object     x_obj;
-    int          x_nvalues;  // number of values
-    int         *x_probs;    // probability of a value
-    int         *x_ovalues;  // number of outputs of each value
-    unsigned int x_state;
-    t_outlet    *x_bang_outlet;
+    t_object        x_obj;
+    int             x_nvalues;  // number of values
+    int            *x_probs;    // probability of a value
+    int            *x_ovalues;  // number of outputs of each value
+    t_random_state  x_rstate;
+    t_outlet       *x_bang_outlet;
 }t_rand_seq;
+
+static unsigned int instanc_n = 0;
 
 static t_class *rand_seq_class;
 
@@ -40,8 +42,7 @@ static void rand_seq_n(t_rand_seq *x, t_float f){
 }
 
 static void rand_seq_seed(t_rand_seq *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    x->x_state = ac ? (unsigned int)(atom_getfloat(av)) : makeseed();
+    random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
 }
 
 static void rand_seq_bang(t_rand_seq *x){
@@ -63,8 +64,16 @@ static void rand_seq_bang(t_rand_seq *x){
             }
         }
     }
-    x->x_state = x->x_state * 472940017 + 832416023;
-    int nval = ((double)nbcandidates) * ((double)x->x_state) * (1./4294967296.);
+    
+//    x->x_state = x->x_state * 472940017 + 832416023;
+//    int nval = ((double)nbcandidates) * ((double)x->x_state) * (1./4294967296.);
+    
+    uint32_t *s1 = &x->x_rstate.s1;
+    uint32_t *s2 = &x->x_rstate.s2;
+    uint32_t *s3 = &x->x_rstate.s3;
+    t_float noise = (t_float)(random_frand(s1, s2, s3)) * 0.5 + 0.5;
+    int nval = (int)(noise * nbcandidates);
+    
     if(nval >= nbcandidates)
         nval = nbcandidates-1;
     int v = *(candidates+nval);
@@ -125,16 +134,17 @@ static t_rand_seq *rand_seq_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_rand_seq *x = (t_rand_seq *)pd_new(rand_seq_class);
     x->x_nvalues = 1;
-    unsigned int initseed = time(NULL);
-    int seed_flag = 0;
+    rand_seq_seed(x, s, 0, NULL);
     if(ac){
         if(av[0].a_type == A_SYMBOL){
             t_symbol * sym = av[0].a_w.w_symbol;
             if(sym == gensym("-seed")){
                 if(ac >= 2){
                     if(av[1].a_type == A_FLOAT){
-                        initseed = (unsigned int)av[1].a_w.w_float;
-                        seed_flag = 1;
+                        t_atom at[1];
+                        SETFLOAT(at, atom_getfloat(av+1));
+                        ac-=2, av+=2;
+                        rand_seq_seed(x, s, 1, at);
                     }
                     else
                         goto errstate;
@@ -144,7 +154,6 @@ static t_rand_seq *rand_seq_new(t_symbol *s, int ac, t_atom *av){
             }
             else
                 goto errstate;
-            ac-=2, av+=2;
         }
         x->x_nvalues = av[0].a_w.w_float;
         if(x->x_nvalues < 1)
@@ -169,7 +178,6 @@ static t_rand_seq *rand_seq_new(t_symbol *s, int ac, t_atom *av){
     inlet_new((t_object *)x, (t_pd *)x, &s_float, gensym("n"));
     outlet_new(&x->x_obj, &s_float);
     x->x_bang_outlet = outlet_new(&x->x_obj, &s_bang);
-    x->x_state = seed_flag ? initseed : makeseed();
     return(x);
 errstate:
     post("[rand.seq] improper args");

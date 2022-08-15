@@ -1,16 +1,22 @@
-// Porres 2017
- 
-#include "m_pd.h"
-#include <random.h>
+// porres
 
-typedef struct _randi{
-    t_object     x_obj;
-    unsigned int x_state;
-    t_float      x_min;
-    t_float      x_max;
-}t_randi;
+#include "m_pd.h"
+#include "random.h"
 
 static t_class *randi_class;
+
+typedef struct _randi{
+    t_object        x_obj;
+    t_random_state  x_rstate;
+    t_float         x_min;
+    t_float         x_max;
+}t_randi;
+
+static unsigned int instanc_n = 0;
+
+static void randi_seed(t_randi *x, t_symbol *s, int ac, t_atom *av){
+    random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
+}
 
 static void randi_bang(t_randi *x){
     int min = (int)x->x_min; // Output LOW
@@ -23,80 +29,62 @@ static void randi_bang(t_randi *x){
     int range = max - min; // range
     int random = min;
     if(range){
-        x->x_state = x->x_state * 472940017 + 832416023;
-        random = ((double)range) * ((double)x->x_state) * (1./4294967296.);
-        if(random >= range)
-            random = range-1;
-        random += min;
+        uint32_t *s1 = &x->x_rstate.s1;
+        uint32_t *s2 = &x->x_rstate.s2;
+        uint32_t *s3 = &x->x_rstate.s3;
+        t_float noise = (t_float)(random_frand(s1, s2, s3)) * 0.5 + 0.5;
+        random = (int)((noise * range) + min);
     }
     outlet_float(x->x_obj.ob_outlet, random);
 }
 
-static void randi_seed(t_randi *x, t_symbol *s, int ac, t_atom *av){
-    s = NULL;
-    x->x_state = ac ? (unsigned int)(atom_getfloat(av)) : makeseed();
-}
-
-static void *randi_new(t_symbol *s, int argc, t_atom *argv){
-    s = NULL;
-    t_randi *x = (t_randi *) pd_new(randi_class);
-    unsigned int initseed = time(NULL);
-    int seed_flag = 0;
-//////////////////////////////////////////////////////////
-    x->x_min = 0.;
-    x->x_max = 1.;
-    if(argc == 1){
-        if(argv -> a_type == A_FLOAT){
-            x->x_min = 0;
-            x->x_max = atom_getfloat(argv);
-        }
-    }
-    else if(argc > 1 && argc <= 3){
-        int numargs = 0;
-        while(argc > 0){
-            if(argv->a_type == A_FLOAT){
-                switch(numargs){
-                    case 0: x->x_min = atom_getfloatarg(0, argc, argv);
-                        numargs++;
-                        argc--;
-                        argv++;
-                        break;
-                    case 1: x->x_max = atom_getfloatarg(0, argc, argv);
-                        numargs++;
-                        argc--;
-                        argv++;
-                        break;
-                    case 2: initseed = atom_getfloatarg(0, argc, argv);
-                        seed_flag = 1;
-                        numargs++;
-                        argc--;
-                        argv++;
-                        break;
-                    default:
-                        argc--;
-                        argv++;
-                        break;
-                };
+static void *randi_new(t_symbol *s, int ac, t_atom *av){
+    t_randi *x = (t_randi *)pd_new(randi_class);
+    randi_seed(x, s, 0, NULL);
+    int flagset = 0, numargs = 0;
+    while(ac){
+        if(av->a_type == A_SYMBOL){
+            flagset = 1;
+            if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
+                t_atom at[1];
+                SETFLOAT(at, atom_getfloat(av+1));
+                ac-=2, av+=2;
+                randi_seed(x, s, 1, at);
             }
             else
                 goto errstate;
-        };
+        }
+        else{
+            switch(numargs){
+                case 0: x->x_min = atom_getintarg(0, ac, av);
+                    numargs++;
+                    ac--;
+                    av++;
+                    break;
+                case 1: x->x_max = atom_getintarg(0, ac, av);
+                    numargs++;
+                    ac--;
+                    av++;
+                    break;
+                default:
+                    ac--;
+                    av++;
+                    break;
+            };
+        }
     }
-    else if(argc > 3)
-        goto errstate;
-////////////////////////////////////////////////////////////
-    x->x_state = seed_flag ? initseed : makeseed();
     floatinlet_new((t_object *)x, &x->x_min);
     floatinlet_new((t_object *)x, &x->x_max);
-    outlet_new((t_object *)x, &s_float);
+    outlet_new(&x->x_obj, &s_float);
     return(x);
 errstate:
     pd_error(x, "[rand.i]: improper args");
-    return NULL;
+    return(NULL);
 }
 
 void setup_rand0x2ei(void){
-  randi_class = class_new(gensym("rand.i"), (t_newmethod)randi_new, 0, sizeof(t_randi), 0, A_GIMME, 0);
-  class_addmethod(randi_class, (t_method)randi_seed, gensym("seed"), A_GIMME, 0);
-  class_addbang(randi_class, (t_method)randi_bang);
+    randi_class = class_new(gensym("rand.i"), (t_newmethod)randi_new, 0,
+        sizeof(t_randi), 0, A_GIMME, 0);
+    class_addbang(randi_class, (t_method)randi_bang);
+    class_addmethod(randi_class, (t_method)randi_seed, gensym("seed"), A_GIMME, 0);
 }
