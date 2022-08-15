@@ -11,10 +11,10 @@
 ;
 #X obj 4 400 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X text 95 257 Linear Amplitude;
-#X obj 203 175 hsl 180 15 -100 0 0 0 empty empty empty -2 -8 0 10 #dcdcdc
+#X text 290 258 Linear Amplitude;
+#X obj 183 175 hsl 180 15 -100 0 0 0 empty empty empty -2 -8 0 10 #dcdcdc
 #000000 #000000 0 1;
-#X text 165 200 dBFS;
+#X text 254 199 dBFS;
 #X obj 4 4 cnv 15 301 42 empty empty db2lin~ 20 20 2 37 #e0e0e0 #000000
 0;
 #X obj 307 5 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
@@ -142,8 +142,8 @@
 #X connect 7 0 6 0;
 #X connect 9 0 0 0;
 #X coords 0 -1 1 1 44 72 2 50 100;
-#X restore 506 72 pd;
-#X obj 200 227 else/db2lin~;
+#X restore 497 72 pd;
+#X obj 180 227 else/db2lin~;
 #X text 156 306 signal;
 #X text 158 339 signal;
 #X obj 24 41 cnv 4 4 4 empty empty Convert 0 28 2 18 #e0e0e0 #000000
@@ -156,14 +156,17 @@
 ;
 #X obj 93 41 cnv 4 4 4 empty empty dBFS 0 28 2 18 #e0e0e0 #000000 0
 ;
-#X obj 200 257 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X obj 200 199 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 180 257 else/numbox~ 11 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 180 199 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 -100;
 #X text 158 375 1) float \, minimum value (default -100);
 #X text 52 94 [db2lin~] converts amplitude values from deciBel Full
 Scale (dBFS) to linear. By default \, a minimum value of -100 becomes
 zero - in theory \, sero is minus infinity and an argument sets another
 minimum dB value to correspond to minus ininity. Conversion expression
 is: amp = pow(10 \, dBFS / 20)., f 67;
+#X text 30 207 see also:;
+#X obj 31 252 else/db2lin;
+#X obj 31 228 else/lin2db~;
 #X connect 7 0 31 0;
 #X connect 22 0 30 0;
 #X connect 31 0 22 0;

@@ -1,4 +1,4 @@
-#N canvas 465 75 565 419 10;
+#N canvas 497 50 565 419 10;
 #X obj 3 284 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 3 319 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
@@ -62,6 +62,9 @@ Scale (dBFS) to linear. By default \, a minimum value of -100 becomes
 zero - in theory \, sero is minus infinity and an argument sets another
 minimum dB value to correspond to minus ininity. Conversion expression
 is: amp = pow(10 \, dBFS / 20)., f 67;
+#X text 30 207 see also:;
+#X obj 31 252 else/db2lin~;
+#X obj 31 228 else/lin2db;
 #X connect 6 0 7 0;
 #X connect 7 0 30 0;
 #X connect 30 0 21 0;
