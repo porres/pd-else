@@ -42,7 +42,14 @@ static void gray_dsp(t_gray *x, t_signal **sp){
 
 static void *gray_new(t_symbol *s, int ac, t_atom *av){
     t_gray *x = (t_gray *)pd_new(gray_class);
-    gray_seed(x, s, ac, av);
+    if(ac >= 2 && (atom_getsymbol(av) == gensym("-seed"))){
+        t_atom at[1];
+        SETFLOAT(at, atom_getfloat(av+1));
+        ac-=2, av+=2;
+        gray_seed(x, s, 1, at);
+    }
+    else
+        gray_seed(x, s, 0, NULL);
     outlet_new(&x->x_obj, &s_signal);
     return(x);
 }

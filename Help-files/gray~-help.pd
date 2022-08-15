@@ -1,11 +1,9 @@
-#N canvas 434 80 565 391 10;
+#N canvas 570 68 565 391 10;
 #X obj 7 362 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 7 262 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 7 296 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 7 331 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 225 198 else/out~;
 #X obj 23 40 cnv 4 4 4 empty empty Gray 0 28 2 18 #e0e0e0 #000000 0
@@ -39,7 +37,6 @@
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 302 42 1 0 0;
 #X restore 2 3 graph;
-#X text 145 341 1) float - sets seed (default: unique internal);
 #X obj 95 273 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 95 308 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
@@ -59,10 +56,6 @@ unique internal, f 65;
 generators. Instead \, an algorithm is used to provide a sequence of
 numbers that seems random. The same sequence can be reproduced if you
 set a "seed" value \, which can be any integer number., f 52;
-#X text 361 22 You can also set a seed with the argument. If you don't
-supply it \, each object gets its own seed internal seed. If you send
-a 'seed' message without float \, the object also gets a unique seed
-value., f 52;
 #X text 30 98 Seeds are kept locally \, which means that if two [gray~]
 objects are seeded the same they will have the same output. Conversely
 \, you can seed the same [gray~] object twice with the same seed to
@@ -74,20 +67,24 @@ repeat the output., f 52;
 #X obj 57 260 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 207 220 else/downsample~ 1;
 #X obj 207 260 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X obj 57 181 else/gray~ 1039;
-#X obj 207 181 else/gray~ 1039;
+#X text 365 24 You can set a seed with the '-seed' flag. If you don't
+supply it \, each object gets its own seed internal seed. If you send
+a 'seed' message without float \, the object also gets a unique seed
+value., f 52;
+#X obj 57 181 else/gray~ -seed 1039;
+#X obj 207 181 else/gray~ -seed 1039;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
+#X connect 4 0 10 0;
 #X connect 4 0 11 0;
-#X connect 4 0 12 0;
+#X connect 5 0 10 0;
 #X connect 5 0 11 0;
-#X connect 5 0 12 0;
-#X connect 11 0 0 0;
-#X connect 12 0 1 0;
-#X connect 13 0 14 0;
-#X connect 15 0 16 0;
-#X connect 17 0 13 0;
-#X connect 18 0 15 0;
+#X connect 10 0 0 0;
+#X connect 11 0 1 0;
+#X connect 12 0 13 0;
+#X connect 14 0 15 0;
+#X connect 17 0 12 0;
+#X connect 18 0 14 0;
 #X restore 484 224 pd seed;
 #X text 37 90 [gray~] generates noise based on "gray code" or reflected
 binary code (RBC) \, which results from flipping random bits (sot is
@@ -96,4 +93,8 @@ is named after Frank Gray \, the owner of the patent of gray codes.
 This type of noise has a high RMS level relative to its peak to peak
 level. The spectrum is emphasized towards lower frequencies., f 79
 ;
-#X connect 16 0 4 0;
+#X obj 7 330 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X text 144 341 -seed <float>: sets seed (default: unique internal)
+;
+#X connect 15 0 3 0;

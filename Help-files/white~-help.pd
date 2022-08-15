@@ -1,11 +1,9 @@
-#N canvas 476 61 568 428 10;
-#X obj 7 399 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#N canvas 570 63 567 406 10;
+#X obj 7 379 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
 #X obj 7 240 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 7 294 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
-0;
-#X obj 7 369 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
 #X obj 235 167 else/out~;
 #X obj 23 40 cnv 4 4 4 empty empty White\\\ noise\\\ generator 0 28
@@ -33,7 +31,6 @@
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
 #X obj 235 131 else/white~;
-#X text 145 376 1) float - sets seed (default: unique internal);
 #X obj 95 248 cnv 17 3 37 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 95 303 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
@@ -52,35 +49,35 @@ unique internal, f 65;
 generators. Instead \, an algorithm is used to provide a sequence of
 numbers that seems random. The same sequence can be reproduced if you
 set a "seed" value \, which can be any integer number., f 52;
-#X text 361 22 You can also set a seed with the argument. If you don't
-supply it \, each object gets its own seed internal seed. If you send
-a 'seed' message without float \, the object also gets a unique seed
-value., f 52;
 #X obj 394 181 else/white~;
 #X obj 544 181 else/white~;
 #X obj 57 220 else/downsample~ 1;
 #X obj 57 260 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 207 220 else/downsample~ 1;
 #X obj 207 260 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X obj 57 181 else/white~ 1039;
-#X obj 207 181 else/white~ 1039;
 #X text 30 98 Seeds are kept locally \, which means that if two [white~]
 objects are seeded the same they will have the same output. Conversely
 \, you can seed the same [white~] object twice with the same seed to
 repeat the output., f 52;
 #X text 400 99 Sync objects with a seed value;
+#X obj 57 181 else/white~ -seed 1039;
+#X obj 207 181 else/white~ -seed 1039;
+#X text 361 22 You can set a seed with the '-seed' flag. If you don't
+supply it \, each object gets its own seed internal seed. If you send
+a 'seed' message without float \, the object also gets a unique seed
+value., f 52;
 #X connect 0 0 2 0;
 #X connect 1 0 3 0;
+#X connect 4 0 8 0;
 #X connect 4 0 9 0;
-#X connect 4 0 10 0;
+#X connect 5 0 8 0;
 #X connect 5 0 9 0;
-#X connect 5 0 10 0;
-#X connect 9 0 0 0;
-#X connect 10 0 1 0;
-#X connect 11 0 12 0;
-#X connect 13 0 14 0;
-#X connect 15 0 11 0;
-#X connect 16 0 13 0;
+#X connect 8 0 0 0;
+#X connect 9 0 1 0;
+#X connect 10 0 11 0;
+#X connect 12 0 13 0;
+#X connect 16 0 10 0;
+#X connect 17 0 12 0;
 #X restore 480 171 pd seed;
 #X text 70 91 [white~] is a white noise generator from a pseudo random
 number generator algorithm., f 64;
@@ -112,7 +109,9 @@ or "clip" message., f 53;
 #X restore 480 194 pd clip;
 #X obj 7 330 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 151 340 '-clip': sets to clipped output mode;
+#X text 161 340 '-clip': sets to clipped output mode, f 45;
 #X text 126 268 clip <float> - non zero sets to clipped output mode
 , f 65;
-#X connect 16 0 4 0;
+#X text 125 357 -seed <float>: sets seed (default: unique internal)
+;
+#X connect 15 0 3 0;

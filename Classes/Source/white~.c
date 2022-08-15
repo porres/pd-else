@@ -47,12 +47,29 @@ static void *white_new(t_symbol *s, int ac, t_atom *av){
     t_white *x = (t_white *)pd_new(white_class);
     outlet_new(&x->x_obj, &s_signal);
     x->x_clip = 0;
-    if(atom_getsymbol(av) == gensym("-clip")){
-        x->x_clip = 1;
-        ac--, av++;
+    white_seed(x, s, 0, NULL);
+    while(ac){
+        if(av->a_type == A_SYMBOL){
+            if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
+                t_atom at[1];
+                SETFLOAT(at, atom_getfloat(av+1));
+                ac-=2, av+=2;
+                white_seed(x, s, 1, at);
+            }
+            else if(atom_getsymbol(av) == gensym("-clip")){
+                x->x_clip = 1;
+                ac--, av++;
+            }
+            else
+                goto errstate;
+        }
+        else
+            goto errstate;
     }
-    white_seed(x, s, ac, av);
     return(x);
+errstate:
+    pd_error(x, "[white~]: improper args");
+    return(NULL);
 }
 
 void white_tilde_setup(void){
