@@ -276,8 +276,13 @@ shared/buffer.c
     wt~.class.sources = Classes/Aliases/wt~.c $(bufmagic)
     tabplayer~.class.sources = Classes/Source/tabplayer~.c $(bufmagic)
 
+
+randmagic := \
+shared/magic.c \
+shared/random.c
+    brown~.class.sources := Classes/Source/brown~.c $(randmagic)
+
 rand := shared/random.c
-    brown~.class.sources := Classes/Source/brown~.c $(rand)
     gray~.class.sources := Classes/Source/gray~.c $(rand)
     pink~.class.sources := Classes/Source/pink~.c $(rand)
     pluck~.class.sources := Classes/Source/pluck~.c $(rand)

@@ -1,18 +1,18 @@
-#N canvas 480 23 564 419 10;
-#X obj 7 389 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
+#N canvas 480 23 564 459 10;
+#X obj 7 431 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
-#X obj 7 256 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
+#X obj 7 266 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 7 306 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
+#X obj 7 326 cnv 3 550 3 empty empty outlets 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 7 341 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
+#X obj 7 397 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 105 265 cnv 17 3 33 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 105 276 cnv 17 3 42 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 105 316 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 105 336 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 211 159 else/brown~;
-#X obj 211 189 else/out~;
+#X obj 211 169 else/brown~;
+#X obj 211 199 else/out~;
 #X obj 23 40 cnv 4 4 4 empty empty Brown 0 28 2 18 #e0e0e0 #000000
 0;
 #X obj 127 40 cnv 4 4 4 empty empty generator 0 28 2 18 #e0e0e0 #000000
@@ -41,24 +41,22 @@
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X text 182 316 signal - brown noise;
-#N canvas 455 181 702 310 seed 0;
-#X obj 394 220 else/downsample~ 1;
-#X obj 394 181 else/brown~;
-#X obj 544 220 else/downsample~ 1;
-#X obj 544 181 else/brown~;
+#X text 182 336 signal - brown noise;
+#N canvas 455 181 720 309 seed 0;
+#X obj 399 218 else/downsample~ 1;
+#X obj 399 179 else/brown~;
+#X obj 549 218 else/downsample~ 1;
+#X obj 549 179 else/brown~;
 #X obj 57 220 else/downsample~ 1;
 #X obj 57 260 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 207 220 else/downsample~ 1;
-#X text 387 99 Sync [brown~] objects with a seed value;
-#X obj 57 181 else/brown~ 1039;
-#X obj 207 181 else/brown~ 1039;
-#X obj 394 260 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X obj 544 260 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X text 392 97 Sync [brown~] objects with a seed value;
+#X obj 399 258 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 549 258 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 207 260 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
-#X msg 544 130 seed 507;
-#X msg 394 130 seed;
-#X text 604 129 <-- set seed;
+#X msg 549 128 seed 507;
+#X msg 399 128 seed;
+#X text 609 127 <-- set seed;
 #X text 30 19 Pseudo random number generators aren't true random number
 generators. Instead \, an algorithm is used to provide a sequence of
 numbers that seems random. The same sequence can be reproduced if you
@@ -67,27 +65,28 @@ set a "seed" value \, which can be any integer number., f 52;
 objects are seeded the same they will have the same output. Conversely
 \, you can seed the same [brown~] object twice with the same seed to
 repeat the output., f 52;
-#X text 361 22 You can also set a seed with the argument. If you don't
+#X obj 57 181 else/brown~ -seed 1039;
+#X obj 207 181 else/brown~ -seed 1039;
+#X text 367 27 You can set a seed with the '-seed' flag. If you don't
 supply it \, each object gets its own seed internal seed. If you send
 a 'seed' message without float \, the object also gets a unique seed
-value., f 52;
-#X connect 0 0 10 0;
+value., f 55;
+#X connect 0 0 8 0;
 #X connect 1 0 0 0;
-#X connect 2 0 11 0;
+#X connect 2 0 9 0;
 #X connect 3 0 2 0;
 #X connect 4 0 5 0;
-#X connect 6 0 12 0;
-#X connect 8 0 4 0;
-#X connect 9 0 6 0;
-#X connect 13 0 3 0;
-#X connect 13 0 1 0;
-#X connect 14 0 1 0;
-#X connect 14 0 3 0;
-#X restore 474 192 pd seed;
-#X text 145 351 1) float - sets seed (default: unique internal);
-#X text 131 284 seed <float> - a float sets seed \, no float sets a
+#X connect 6 0 10 0;
+#X connect 11 0 3 0;
+#X connect 11 0 1 0;
+#X connect 12 0 1 0;
+#X connect 12 0 3 0;
+#X connect 16 0 4 0;
+#X connect 17 0 6 0;
+#X restore 488 187 pd seed;
+#X text 131 304 seed <float> - a float sets seed \, no float sets a
 unique internal, f 65;
-#N canvas 629 115 517 454 step 0;
+#N canvas 629 115 523 432 step 0;
 #X obj 180 352 else/out~;
 #X obj 180 192 else/graph~;
 #X obj 183 112 hsl 128 15 0.01 1 0 0 empty empty empty -2 -8 0 10 #dfdfdf
@@ -106,12 +105,31 @@ You can set the step with the 2nd argument or a float input., f 76
 #X connect 2 0 3 0;
 #X connect 3 0 4 0;
 #X connect 4 0 1 0;
-#X restore 474 215 pd step;
+#X restore 488 210 pd step;
+#X text 167 274 signal - impulses get a new random step, f 59;
+#X text 173 289 float - sets maximum random step (from 0 to 1), f
+58;
 #X text 57 92 [brown~] is a brown noise generator (aka brownian noise
 or red noise) \, whose spectral energy drops 6dB per octave (sounding
 less hissy than white noise). It is implemented as a bounded random
 walk (based on a pseudo random number generator algorithm). By default
-\, the maximum step is 0.125 \, but you can set that., f 76;
-#X text 173 266 float - sets maximum random step (from 0 to 1);
-#X text 145 368 2) float - maximum step (default: 0.125);
+\, the maximum step is 0.125 \, but you can set that. If a signal is
+connected \, non zero values generate new random steps., f 76;
+#N canvas 819 109 351 398 signal 0;
+#X obj 71 304 else/out~;
+#X obj 71 144 else/graph~;
+#X obj 71 112 else/brown~;
+#X obj 71 78 else/impulse~ 500;
+#X text 22 16 When a signal is connected to [brown~] \, non zero values
+generate new random steps. This way you can use impulses to generate
+new steps., f 48;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 2 0;
+#X restore 476 233 pd signal;
+#X obj 7 363 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
+0;
+#X text 144 374 -seed <float>: sets seed (default: unique internal)
+;
+#X text 154 407 1) float - maximum step (default: 0.125);
 #X connect 6 0 7 0;
