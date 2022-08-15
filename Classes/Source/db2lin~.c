@@ -32,8 +32,12 @@ void * db2lin_tilde_new(t_symbol *s, int ac, t_atom *av){
     s = NULL;
     t_db2lin_tilde *x = (t_db2lin_tilde *) pd_new(db2lin_tilde_class);
     x->x_min = -100;
-    if(ac && av->a_type == A_FLOAT)
-        x->x_min = atom_getfloat(av);
+    if(ac){
+        if(av->a_type == A_FLOAT)
+            x->x_min = atom_getfloat(av);
+        else if(atom_getsymbol(av) == gensym("-inf"))
+            x->x_min = -INFINITY;
+    }
     outlet_new((t_object *)x, &s_signal);
     return(void *)x;
 }

@@ -158,7 +158,6 @@
 ;
 #X obj 180 257 else/numbox~ 11 12 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 180 199 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 -100;
-#X text 158 375 1) float \, minimum value (default -100);
 #X text 52 94 [db2lin~] converts amplitude values from deciBel Full
 Scale (dBFS) to linear. By default \, a minimum value of -100 becomes
 zero - in theory \, sero is minus infinity and an argument sets another
@@ -167,6 +166,8 @@ is: amp = pow(10 \, dBFS / 20)., f 67;
 #X text 30 207 see also:;
 #X obj 31 252 else/db2lin;
 #X obj 31 228 else/lin2db~;
+#X text 126 375 1) float \, minimum value (default -100 \, can be as
+low as "-inf"), f 63;
 #X connect 7 0 31 0;
 #X connect 22 0 30 0;
 #X connect 31 0 22 0;
