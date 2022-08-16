@@ -482,7 +482,7 @@ ELSE has been in active development for over 5 years but it will still take a li
 - [randpulse2~]
 - [standard~]
 - [stepnoise~]
-- [pinknoise~]
+- [pink~]
 - [xmod~]
 - [xmod2~]
 
