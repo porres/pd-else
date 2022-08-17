@@ -1,4 +1,4 @@
-#N canvas 676 23 560 541 10;
+#N canvas 528 23 560 541 10;
 #X obj 210 210 hsl 128 15 20 44100 1 0 empty empty empty -2 -8 0 10
 #dcdcdc #000000 #000000 0 1;
 #X obj 207 298 else/out~;
@@ -68,7 +68,7 @@ generator without interpolation \, therefore it holds at a random value
 \, resulting in random steps. Random values are between -1 and 1 at
 a rate in hertz (negative frequencies accepted). Use the seed message
 if you want a reproducible output., f 73;
-#N canvas 386 133 857 293 seed 1;
+#N canvas 386 133 857 293 seed 0;
 #X text 30 41 Pseudo random number generators aren't true random number
 generators. Instead \, an algorithm is used to provide a sequence of
 numbers that seems random. The same sequence can be reproduced if you
