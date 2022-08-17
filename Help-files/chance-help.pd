@@ -14,38 +14,37 @@
 0;
 #X obj 6 444 cnv 3 550 3 empty empty arguments 8 12 0 13 #dcdcdc #000000
 0;
-#X obj 124 350 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 115 350 cnv 17 3 17 empty empty n 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X obj 124 262 cnv 17 3 45 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X obj 115 262 cnv 17 3 45 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X obj 6 252 cnv 3 550 3 empty empty inlets 8 12 0 13 #dcdcdc #000000
 0;
-#X msg 216 165 seed \$1;
-#X obj 216 146 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X msg 226 165 seed \$1;
+#X obj 226 146 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X obj 180 149 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 190 149 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X obj 180 221 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 190 221 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 204 262 bang;
-#X text 248 261 - a bang to be passed or not;
-#X text 204 349 bang;
-#X text 248 349 - random bangs;
-#X obj 238 221 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X text 185 262 bang;
+#X text 229 261 - a bang to be passed or not;
+#X text 185 349 bang;
+#X text 229 349 - random bangs;
+#X obj 248 221 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
 #X obj 6 397 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
 0;
-#X text 156 277 seed <float>;
-#X text 248 276 - sets seed value;
-#X text 214 222 25%;
-#X obj 297 221 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X text 137 277 seed <float>;
+#X text 224 222 25%;
+#X obj 307 221 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 273 222 25%;
-#X text 154 222 50%;
-#X obj 180 191 else/chance 50 25 25;
-#X obj 124 372 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
+#X text 283 222 25%;
+#X text 164 222 50%;
+#X obj 190 191 else/chance 50 25 25;
+#X obj 115 372 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 198 372 float;
+#X text 179 372 float;
 #N canvas 566 79 410 549 default 0;
 #X obj 111 76 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000;
@@ -96,7 +95,7 @@ value that the output will be from the left outlet., f 47;
 #X connect 15 0 13 1;
 #X connect 16 0 15 0;
 #X connect 20 0 9 1;
-#X restore 470 180 pd default;
+#X restore 470 153 pd default;
 #X text 118 453 1) list -;
 #X text 183 453 list of probabilities (default 50 50). Check [pd default]
 for more info if only one float is given;
@@ -117,12 +116,11 @@ for more info if only one float is given;
 #N canvas 0 22 450 278 (subpatch) 0;
 #X coords 0 1 100 -1 252 42 1 0 0;
 #X restore 305 3 graph;
-#X text 134 406 -seed <float>: seed value (default: internal);
-#X text 176 423 -index: sets to index mode;
+#X text 177 423 -index: sets to index mode;
 #X text 70 87 When [chance] receives a bang \, it outputs to an outlet
 according to its chance (probability weight). The total number is the
 sum of all arguments. It also has an index mode where it outputs the
-outlet index number instead., f 66;
+outlet index number instead., f 70;
 #N canvas 780 200 433 259 index 0;
 #X obj 129 106 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
@@ -133,14 +131,14 @@ outlet index number instead., f 66;
 each "2" and "3"., f 49;
 #X connect 0 0 2 0;
 #X connect 2 0 1 0;
-#X restore 481 221 pd index;
-#X text 248 372 - index number if in index mode;
-#X obj 124 314 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
+#X restore 481 194 pd index;
+#X text 229 372 - index number if in index mode;
+#X obj 115 314 cnv 17 3 17 empty empty 1 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
-#X text 198 314 float;
-#X text 248 314 - sets chance number if only one argument;
-#X text 204 292 list;
-#X text 248 291 - updates arguments if more than 1 is given;
+#X text 179 314 float;
+#X text 229 314 - sets chance number if only one argument;
+#X text 185 292 list;
+#X text 229 291 - updates arguments if more than 1 is given;
 #N canvas 566 79 397 532 list 0;
 #X obj 103 369 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
@@ -177,10 +175,66 @@ outlet and "1 out of 8 on the right outlet., f 40;
 #X connect 9 0 7 0;
 #X connect 9 1 8 0;
 #X connect 10 0 9 0;
-#X restore 487 200 pd list;
-#X connect 10 0 26 0;
+#X restore 487 173 pd list;
+#N canvas 490 159 777 307 seed 0;
+#X text 43 61 Pseudo random number generators aren't true random number
+generators. Instead \, an algorithm is used to provide a sequence of
+numbers that seems random. The same sequence can be reproduced if you
+set a "seed" value \, which can be any integer number., f 52;
+#X text 43 217 You can set a seed with the '-seed' flag. If you don't
+supply it \, each object gets its own seed internal seed. If you send
+a 'seed' message without float \, the object also gets a unique seed
+value., f 52;
+#X obj 521 105 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 609 105 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X text 585 106 25%;
+#X obj 698 105 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X text 674 106 25%;
+#X text 495 106 50%;
+#X obj 521 75 else/chance -seed 123 50 25 25;
+#X msg 415 136 seed;
+#X msg 405 107 seed 123;
+#X obj 391 169 s \$0-chance;
+#X obj 521 48 r \$0-chance;
+#X obj 391 77 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#000000;
+#X obj 521 205 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X obj 609 205 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X text 585 206 25%;
+#X obj 698 205 bng 17 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#000000 #000000;
+#X text 674 206 25%;
+#X text 495 206 50%;
+#X obj 521 175 else/chance -seed 123 50 25 25;
+#X obj 521 148 r \$0-chance;
+#X text 43 140 Seeds are kept locally \, which means that if two [chance]
+objects are seeded the same they will have the same output. Conversely
+\, you can seed the same [chance] object twice with the same seed to
+repeat the output., f 52;
+#X connect 8 0 2 0;
+#X connect 8 1 3 0;
+#X connect 8 2 5 0;
+#X connect 9 0 11 0;
+#X connect 10 0 11 0;
+#X connect 12 0 8 0;
+#X connect 13 0 11 0;
+#X connect 20 0 14 0;
+#X connect 20 1 15 0;
+#X connect 20 2 17 0;
+#X connect 21 0 20 0;
+#X restore 487 217 pd seed;
+#X text 135 406 -seed <float>: seed value (default: unique internal)
+;
+#X text 229 276 - a float sets seed \, no float sets a unique internal
+;
+#X connect 10 0 25 0;
 #X connect 11 0 10 0;
-#X connect 12 0 26 0;
-#X connect 26 0 13 0;
-#X connect 26 1 18 0;
-#X connect 26 2 23 0;
+#X connect 12 0 25 0;
+#X connect 25 0 13 0;
+#X connect 25 1 18 0;
+#X connect 25 2 22 0;

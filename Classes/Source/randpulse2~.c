@@ -26,6 +26,7 @@ static void randpulse2_rand(t_randpulse2 *x, t_float f){
 }
 
 static void randpulse2_seed(t_randpulse2 *x, t_symbol *s, int ac, t_atom *av){
+    x->x_output = 0;
     x->x_phase = x->x_freq >= 0;
     random_init(&x->x_rstate, get_seed(s, ac, av, ++instanc_n));
     uint32_t *s1 = &x->x_rstate.s1;
@@ -40,12 +41,10 @@ static t_int *randpulse2_perform(t_int *w){
     int n = (t_int)(w[2]);
     t_float *in1 = (t_float *)(w[3]);
     t_float *out = (t_sample *)(w[4]);
-    double phase = x->x_phase;
     t_float ynp1 = x->x_ynp1;
     t_float yn = x->x_yn;
-    t_float lastout = x->x_lastout;
-    t_float output = x->x_output;
-    double sr = x->x_sr;
+    t_float lastout = x->x_lastout, output = x->x_output;
+    double phase = x->x_phase, sr = x->x_sr;
     while(n--){
         uint32_t *s1 = &x->x_rstate.s1;
         uint32_t *s2 = &x->x_rstate.s2;
@@ -113,18 +112,18 @@ static void *randpulse2_new(t_symbol *s, int ac, t_atom *av){
     x->x_lastout = x->x_output = 0.;
     t_float hz = 0;
 /////////////////////////////////////////////////////////////////////////////////////
-    if(ac <= 3){
+    if(av->a_type == A_SYMBOL){
+        if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
+            t_atom at[1];
+            SETFLOAT(at, atom_getfloat(av+1));
+            ac-=2, av+=2;
+            randpulse2_seed(x, s, 1, at);
+        }
+    }
+    if(ac <= 2){
         int numargs = 0;
         while(ac > 0){
-            if(av->a_type == A_SYMBOL){
-                if(ac >= 2 && atom_getsymbol(av) == gensym("-seed")){
-                    t_atom at[1];
-                    SETFLOAT(at, atom_getfloat(av+1));
-                    ac-=2, av+=2;
-                    randpulse2_seed(x, s, 1, at);
-                }
-            }
-            if(av -> a_type == A_FLOAT){
+            if(av->a_type == A_FLOAT){
                 switch(numargs){
                     case 0: hz = atom_getfloatarg(0, ac, av);
                         numargs++;

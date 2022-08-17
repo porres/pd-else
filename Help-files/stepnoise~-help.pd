@@ -82,22 +82,22 @@ value., f 52;
 #X obj 383 134 else/graph~ 441 0 -1.05 1.05 200 140;
 #X msg 539 21 seed 319;
 #X msg 496 22 seed;
-#X text 30 120 Seeds are kept locally \, which means that if two [lfnoise~]
-objects are seeded the same they will have the same output. Conversely
-\, you can seed the same [lfnoise~] object twice with the same seed
-to repeat the output., f 52;
 #X obj 383 98 else/numbox~ 6 14 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 600 98 else/numbox~ 6 14 100 #c0c0c4 #440008 10 0 0 0;
 #X obj 383 72 else/stepnoise~ -seed 319 1;
 #X obj 600 71 else/stepnoise~ -seed 319 1;
+#X text 30 120 Seeds are kept locally \, which means that if two [stepnoise~]
+objects are seeded the same they will have the same output. Conversely
+\, you can seed the same [stepnoise~] object twice with the same seed
+to repeat the output., f 52;
+#X connect 5 0 9 0;
 #X connect 5 0 10 0;
-#X connect 5 0 11 0;
+#X connect 6 0 9 0;
 #X connect 6 0 10 0;
-#X connect 6 0 11 0;
-#X connect 8 0 4 0;
-#X connect 9 0 3 0;
+#X connect 7 0 4 0;
+#X connect 8 0 3 0;
+#X connect 9 0 7 0;
 #X connect 10 0 8 0;
-#X connect 11 0 9 0;
 #X restore 484 299 pd seed;
 #X obj 2 513 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
 0;
