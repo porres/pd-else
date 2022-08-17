@@ -4,24 +4,6 @@
 #include <m_pd.h>
 #include "random.h"
 
-int makeseed(void){
-    static PERTHREAD unsigned int seed = 0;
-    if(!seed)
-        seed = time(NULL);
-    seed = seed * 435898247 + 938284287;
-    return(seed & 0x7fffffff);
-}
-
-unsigned int get_seed(t_symbol *s, int ac, t_atom *av, int n){
-    s = NULL;
-    unsigned int timeval;
-    if(ac && av->a_type == A_FLOAT)
-        timeval = (unsigned int)(atom_getfloat(av));
-    else
-        timeval = (unsigned int)(time(NULL)*151*n);
-    return(timeval);
-}
-
 uint32_t random_trand(uint32_t *s1, uint32_t *s2, uint32_t *s3){
 // Provided for speed in inner loops where the state variables are loaded into registers.
 // Thus updating the instance variables can be postponed until the end of the loop.
@@ -36,12 +18,6 @@ float random_frand(uint32_t *s1, uint32_t *s2, uint32_t *s3){
     union { uint32_t i; float f; } u; // union for floating point conversion of result
     u.i = 0x40000000 | (random_trand(s1, s2, s3) >> 9);
     return(u.f - 3.f);
-}
-
-int rand_int(unsigned int *statep, int range){ // from [random]
-    *statep = *statep * 472940017 + 832416023;
-    int result = ((double)range) * ((double)*statep) * (1./4294967296.);
-    return(result < range ? result : range - 1);
 }
 
 int32_t random_hash(int32_t inKey){
@@ -74,4 +50,14 @@ void random_init(t_random_state* rstate, float f){
 	*s3 = 1821928721U ^ seedval;
     if(*s3 < 16)
         *s3 = 1821928721U;
+}
+
+unsigned int get_seed(t_symbol *s, int ac, t_atom *av, int n){
+    s = NULL;
+    unsigned int timeval;
+    if(ac && av->a_type == A_FLOAT)
+        timeval = (unsigned int)(atom_getfloat(av));
+    else
+        timeval = (unsigned int)(time(NULL)*151*n);
+    return(timeval);
 }
