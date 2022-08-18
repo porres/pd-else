@@ -36,21 +36,20 @@ static t_int *randf_perform(t_int *w){
     t_float lastin = x->x_lastin;
     while(n--){
         float trig = *in1++;
-        float input2 = *in2++;
-        float input3 = *in3++;
-        float out_low = (int)input2; // Output LOW
-        float out_high = (int)input3; // Output HIGH
+        float out_low = *in2++;
+        float out_high = *in3++;
         if(out_low > out_high){
-            int temp = out_low;
+            float temp = out_low;
             out_low = out_high;
             out_high = temp;
         }
-        int range = out_high - out_low; // range
+        float range = out_high - out_low; // range
         if(range == 0)
             randf = out_low;
         else{
             t_int trigger = 0;
             if(x->x_trig_bang){
+                post("bang");
                 trigger = 1;
                 x->x_trig_bang = 0;
             }
@@ -105,7 +104,8 @@ static void *randf_new(t_symbol *s, int ac, t_atom *av){
             low = atom_getfloatarg(0, ac, av);
             high = atom_getfloatarg(1, ac, av);
         }
-        else goto errstate;
+        else
+            goto errstate;
     }
     x->x_lastin = 0;
     x->x_low_let = inlet_new((t_object *)x, (t_pd *)x, &s_signal, &s_signal);
@@ -114,9 +114,9 @@ static void *randf_new(t_symbol *s, int ac, t_atom *av){
         pd_float((t_pd *)x->x_high_let, high);
     outlet_new(&x->x_obj, &s_signal);
     return(x);
-    errstate:
+errstate:
         pd_error(x, "[rand.f~]: improper args");
-        return NULL;
+        return(NULL);
 }
 
 void setup_rand0x2ef_tilde(void){
