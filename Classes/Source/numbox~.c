@@ -323,8 +323,8 @@ static void numbox_properties(t_gobj *z, t_glist *owner){ // called in right cli
     t_numbox *x = (t_numbox *)z;
     char buf[800];
     sprintf(buf, "::dialog_numbox::pdtk_numbox_dialog %%s -------dimensions(digits)(pix):------- \
-        %d %d %d %d %d %d %s %s %.4f %.4f\n", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
-        x->x_ramp_ms, x->x_rate, x->x_bg->s_name, x->x_fg->s_name, x->x_min, x->x_max);
+        %d %d %d %d %d %d %f %s %s %.4f %.4f\n", x->x_numwidth, MINDIGITS, x->x_fontsize, MINSIZE,
+        x->x_ramp_ms, x->x_rate, x->x_set_val, x->x_bg->s_name, x->x_fg->s_name, x->x_min, x->x_max);
     gfxstub_new(&x->x_obj.ob_pd, x, buf); // no idea what this does...
 }
 
@@ -334,10 +334,11 @@ static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
     int size = atom_getintarg(1, ac, av);
     int ramp_ms = atom_getintarg(2, ac, av);
     int rate = atom_getintarg(3, ac, av);
-    t_symbol *bgcolor = atom_getsymbolarg(4, ac, av);
-    t_symbol *fgcolor = atom_getsymbolarg(5, ac, av);
-    t_float min = atom_getfloatarg(6, ac, av);
-    t_float max = atom_getfloatarg(7, ac, av);
+    t_float set_val = atom_getfloatarg(4, ac, av);
+    t_symbol *bgcolor = atom_getsymbolarg(5, ac, av);
+    t_symbol *fgcolor = atom_getsymbolarg(6, ac, av);
+    t_float min = atom_getfloatarg(7, ac, av);
+    t_float max = atom_getfloatarg(8, ac, av);
     t_atom undo[9];
     SETFLOAT(undo+0, x->x_numwidth);
     SETFLOAT(undo+1, x->x_fontsize);
@@ -359,6 +360,9 @@ static void numbox_dialog(t_numbox *x, t_symbol *s, int ac, t_atom *av){
     numbox_fg(x, NULL, 1, at);
     numbox_width(x, width);
     numbox_size(x, size);
+
+    x->x_set_val = set_val;
+    numbox_float(x, set_val);
     canvas_fixlinesfor(x->x_glist, (t_text*)x);
 }
 
