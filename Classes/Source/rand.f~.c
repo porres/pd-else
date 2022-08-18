@@ -49,7 +49,6 @@ static t_int *randf_perform(t_int *w){
         else{
             t_int trigger = 0;
             if(x->x_trig_bang){
-                post("bang");
                 trigger = 1;
                 x->x_trig_bang = 0;
             }
