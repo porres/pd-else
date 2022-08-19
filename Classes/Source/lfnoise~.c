@@ -122,12 +122,12 @@ static void *lfnoise_new(t_symbol *s, int ac, t_atom *av){
         }
         else{
             switch(numargs){
-                case 0: hz = atom_getintarg(0, ac, av);
+                case 0: hz = atom_getfloat(av);
                     numargs++;
                     ac--;
                     av++;
                     break;
-                case 1: interp = atom_getintarg(0, ac, av);
+                case 1: interp = atom_getfloat(av) != 0;
                     numargs++;
                     ac--;
                     av++;
