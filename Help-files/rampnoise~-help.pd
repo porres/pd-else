@@ -22,9 +22,9 @@
 #dcdcdc #000000 #000000 0 256;
 #X text 263 228 frequency in Hz;
 #X text 215 445 - bandlimited step noise;
-#X text 38 297 see also:;
-#X obj 39 324 else/lfnoise~;
-#X obj 39 348 else/stepnoise~;
+#X text 38 277 see also:;
+#X obj 39 304 else/lfnoise~;
+#X obj 39 328 else/stepnoise~;
 #X obj 247 284 else/rampnoise~ 400;
 #X text 83 163 The [rampnoise~] object produces frequencies limited
 to a band from 0 up to the frequency it is running. It can go up to
@@ -111,6 +111,7 @@ to repeat the output., f 52;
 0;
 #X text 128 477 -seed <float>: sets seed (default: unique internal)
 ;
+#X obj 39 352 else/rampnoise;
 #X connect 0 0 10 0;
 #X connect 10 0 16 0;
 #X connect 16 0 1 0;

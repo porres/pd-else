@@ -185,8 +185,6 @@ and [bangdiv] to manage tempo subdivisions.;
 #X text 221 533 - sets multiplier (default 1);
 #X obj 209 159 else/tempo~ -on 60;
 #X text 133 550 -seed <float>;
-#X text 221 550 - a float sets seed \, no float sets a unique internal
-;
 #N canvas 316 118 832 342 swing/seed 0;
 #X text 32 118 The minimum swing value is 0 (no deviation) and there
 is no maximum value., f 44;
@@ -241,6 +239,9 @@ repeat the output., f 79;
 #X text 128 355 seed <float> -;
 #X text 223 354 a float sets seed \, no float sets a unique internal
 ;
+#X text 221 550 - sets seed (default: unique internal);
+#X text 22 190 see also:;
+#X obj 23 212 else/tempo;
 #X connect 22 0 61 0;
 #X connect 28 0 61 0;
 #X connect 29 0 61 1;

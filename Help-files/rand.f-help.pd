@@ -109,6 +109,9 @@ repeat the output., f 52;
 #X restore 471 212 pd seed;
 #X text 219 287 - a float sets seed \, no float sets a unique internal
 ;
+#X text 14 173 see also:;
+#X obj 14 192 else/rand.f~;
+#X obj 14 217 else/rand.i;
 #X connect 27 0 40 1;
 #X connect 28 0 40 2;
 #X connect 32 0 40 0;

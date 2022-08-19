@@ -1,4 +1,4 @@
-#N canvas 510 94 563 540 10;
+#N canvas 423 25 563 540 10;
 #X obj 2 3 cnv 15 301 42 empty empty rand.i~ 20 20 2 37 #e0e0e0 #000000
 0;
 #N canvas 0 22 450 278 (subpatch) 0;
@@ -19,8 +19,8 @@
 #X obj 111 394 cnv 17 3 17 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
 #X text 181 395 signal;
-#X msg 99 179 seed \$1;
-#X obj 99 160 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X msg 111 179 seed \$1;
+#X obj 111 160 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
 #X text 237 395 - random values;
 #N canvas 764 106 378 447 example 0;
@@ -48,7 +48,7 @@
 #X connect 10 0 5 0;
 #X restore 462 242 pd example;
 #N canvas 207 34 366 264 (subpatch) 0;
-#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #4a4f51 #cde5c3
+#X obj 51 101 tgl 42 0 \$0-tgl-s \$0-tgl-r empty 1 8 1 9 #dcdcdc #7c7c7c
 #fcfcfc 0 1;
 #X obj 215 68 route dsp;
 #X obj 215 37 receive pd;
@@ -118,7 +118,7 @@
 #X restore 215 165 pd set_color;
 #X obj 135 122 r \$0-tgl-s;
 #N canvas 121 482 450 300 (subpatch) 0;
-#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #4a4f51 #cde5c3
+#X obj 101 101 cnv 25 40 25 empty \$0-cnv DSP 3 13 0 20 #dcdcdc #7c7c7c
 0;
 #X coords 0 -1 1 1 42 27 1 100 100;
 #X restore 51 144 pd;
@@ -152,13 +152,13 @@
 #X coords 0 -1 1 1 44 72 2 50 100;
 #X restore 505 61 pd;
 #X text 110 461 1) list -;
-#X obj 266 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 278 174 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X obj 358 175 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 370 175 nbx 5 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 274 153 low;
-#X text 369 155 high;
-#X obj 175 164 else/imp~ 5;
+#X text 286 153 low;
+#X text 381 155 high;
+#X obj 187 164 else/imp~ 5;
 #X text 175 460 floats set random's range \, 2 floats sets minimum
 and maximum - no arguments loads default values (0 and 1). 1 float
 sets maximum value (and lowest value is set to 0).;
@@ -181,7 +181,7 @@ sets maximum value (and lowest value is set to 0).;
 0;
 #X obj 502 26 cnv 10 10 10 empty empty library 0 6 2 13 #7c7c7c #e0e4dc
 0;
-#X obj 175 206 else/rand.i~ 0 1, f 31;
+#X obj 187 206 else/rand.i~ 0 1, f 31;
 #X text 165 283 signal;
 #X obj 97 283 cnv 17 3 47 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
 ;
@@ -203,7 +203,7 @@ sets maximum value (and lowest value is set to 0).;
 range when triggered. A trigger happens at positive to negative or
 negative to positive transitions. Use the seed message if you want
 a reproducible output.;
-#X obj 175 237 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
+#X obj 187 237 else/numbox~ 6 12 100 #c0c0c4 #440008 10 0 0 0;
 #N canvas 529 124 603 329 seed 0;
 #X text 26 21 Pseudo random number generators aren't true random number
 generators. Instead \, an algorithm is used to provide a sequence of
@@ -242,6 +242,9 @@ to repeat the output., f 52;
 ;
 #X text 221 314 - a float sets seed \, no float sets a unique internal
 ;
+#X text 14 193 see also:;
+#X obj 14 240 else/rand.i;
+#X obj 14 215 else/rand.f~;
 #X connect 10 0 31 0;
 #X connect 11 0 10 0;
 #X connect 16 0 31 1;

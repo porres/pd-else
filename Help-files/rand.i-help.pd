@@ -136,6 +136,9 @@ repeat the output., f 52;
 #X text 164 421 floats set random's range \, 2 floats sets minimum
 and maximum - no arguments loads default values (0 and 1). 1 float
 sets maximum value (and lowest value is set to 0).;
+#X text 15 168 see also:;
+#X obj 15 190 else/rand.i~;
+#X obj 15 215 else/rand.f;
 #X connect 11 0 39 0;
 #X connect 12 0 11 0;
 #X connect 20 0 39 1;

@@ -22,7 +22,7 @@
 0;
 #X text 218 258 - a bang to be passed or not;
 #X text 126 274 seed <float>;
-#X text 141 219 50%;
+#X text 157 219 50%;
 #N canvas 1296 154 416 393 default 0;
 #X text 54 18 If no argument is given \, the chances are 50/50!;
 #X text 58 185 If just one float is given \, it is considered as a
@@ -82,21 +82,21 @@ for more info if only one float is given;
 #X text 70 87 When [chance~] receives an impulse \, it outputs it to
 an outlet according to its chance (probability weight). The total number
 of chances is the sum of all arguments., f 62;
-#X obj 118 166 else/chance~ 50 25 25, f 34;
+#X obj 134 166 else/chance~ 50 25 25, f 34;
 #X obj 490 71 else/setdsp~;
-#X obj 118 190 else/trig2bang~;
-#X obj 118 217 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 134 190 else/trig2bang~;
+#X obj 134 217 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X obj 218 190 else/trig2bang~;
-#X obj 218 217 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X obj 234 190 else/trig2bang~;
+#X obj 234 217 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 241 219 25%;
-#X obj 319 190 else/trig2bang~;
-#X obj 319 217 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
+#X text 257 219 25%;
+#X obj 335 190 else/trig2bang~;
+#X obj 335 217 bng 18 250 50 0 empty empty empty 17 7 0 10 #dcdcdc
 #000000 #000000;
-#X text 342 219 25%;
+#X text 358 219 25%;
 #X text 163 259 signal;
-#X obj 118 143 else/imp~ 4;
+#X obj 134 143 else/imp~ 4;
 #X text 162 307 signal;
 #X text 218 307 - impulse according to a chance;
 #X obj 6 332 cnv 3 550 3 empty empty flags 8 12 0 13 #dcdcdc #000000
@@ -170,6 +170,8 @@ to repeat the output., f 52;
 #X connect 22 0 20 0;
 #X connect 23 0 21 0;
 #X restore 493 217 pd seed;
+#X text 13 190 see also:;
+#X obj 13 210 else/chance;
 #X connect 25 0 27 0;
 #X connect 25 1 29 0;
 #X connect 25 2 32 0;

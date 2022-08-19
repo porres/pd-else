@@ -232,6 +232,8 @@ repeat the output., f 52;
 ;
 #X text 229 276 - a float sets seed \, no float sets a unique internal
 ;
+#X text 26 187 see also:;
+#X obj 26 210 else/chance~;
 #X connect 10 0 25 0;
 #X connect 11 0 10 0;
 #X connect 12 0 25 0;

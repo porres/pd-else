@@ -1,4 +1,4 @@
-#N canvas 506 23 561 554 10;
+#N canvas 514 29 561 554 10;
 #X obj 23 41 cnv 4 4 4 empty empty Control\\\ Low\\\ Frequency\\\ Noise
 0 28 2 18 #e0e0e0 #000000 0;
 #X obj 3 529 cnv 15 552 21 empty empty empty 20 12 0 14 #e0e0e0 #202020
@@ -93,7 +93,6 @@ range for the output., f 53;
 #000000 0 1;
 #X text 155 394 bang;
 #X text 191 394 - reset to a new random value;
-#X text 191 425 - LFNoise's waveform in the range from 0 - 127;
 #X obj 37 282 else/lfo;
 #X obj 37 258 else/lfnoise~;
 #X text 37 230 see also:;
@@ -156,9 +155,11 @@ outputs random values. It doesn't need the DSP on to function. Give
 it a seed value if you want a reproducible output., f 70;
 #X text 309 174 <-- reset to a new random value, f 16;
 #X obj 206 199 else/lfnoise 2;
+#X text 191 425 - Low Frequency Noise output in the range from 0 -
+127;
 #X connect 17 0 18 0;
-#X connect 18 0 49 0;
-#X connect 29 0 49 1;
-#X connect 33 0 49 0;
+#X connect 18 0 48 0;
+#X connect 29 0 48 1;
+#X connect 33 0 48 0;
 #X connect 34 0 33 0;
-#X connect 49 0 22 0;
+#X connect 48 0 22 0;

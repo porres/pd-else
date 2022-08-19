@@ -1,7 +1,7 @@
 #N canvas 365 23 560 629 10;
-#X obj 216 235 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
+#X obj 226 235 hsl 128 15 1 44100 1 0 empty empty empty -2 -8 0 10
 #dcdcdc #000000 #000000 0 1;
-#X obj 213 323 else/out~;
+#X obj 223 323 else/out~;
 #X obj 2 3 cnv 15 301 42 empty empty lfnoise~ 20 20 2 37 #e0e0e0 #000000
 0;
 #X obj 306 4 cnv 15 250 40 empty empty empty 12 13 0 18 #7c7c7c #e0e4dc
@@ -36,10 +36,10 @@
 ;
 #X text 162 496 signal;
 #X text 151 561 1) float;
-#X obj 213 264 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
+#X obj 223 264 nbx 8 14 -1e+37 1e+37 0 0 empty empty empty 0 -8 0 10
 #dcdcdc #000000 #000000 0 256;
-#X text 229 234 frequency in Hz;
-#X obj 213 290 else/lfnoise~ 400;
+#X text 239 234 frequency in Hz;
+#X obj 223 290 else/lfnoise~ 400;
 #X text 213 561 - frequency in hertz (default 0);
 #X text 219 497 - bandlimited noise;
 #X obj 95 398 cnv 17 3 55 empty empty 0 5 9 0 16 #dcdcdc #9c9c9c 0
@@ -50,8 +50,8 @@
 0;
 #X text 213 579 - interpolation 0 (off \, default) or 1 (on);
 #X text 151 579 2) float;
-#X msg 128 260 interp \$1;
-#X obj 128 233 tgl 16 0 empty empty empty 17 7 0 10 #dcdcdc #000000
+#X msg 138 260 interp \$1;
+#X obj 138 233 tgl 16 0 empty empty empty 17 7 0 10 #dcdcdc #000000
 #000000 0 1;
 #X text 126 437 seed <float>;
 #X text 83 163 The [lfnoise~] object produces frequencies limited to
@@ -137,9 +137,9 @@ generate a new random value.;
 #X restore 492 356 pd sync;
 #X text 126 398 float/signal;
 #X text 212 397 - frequency input in hertz;
-#X text 43 301 see also:;
-#X obj 44 352 else/rampnoise~;
-#X obj 44 328 else/stepnoise~;
+#X text 44 281 see also:;
+#X obj 45 332 else/rampnoise~;
+#X obj 45 308 else/stepnoise~;
 #N canvas 806 202 450 300 control 0;
 #X obj 267 157 osc~;
 #X obj 267 194 else/out~;
@@ -201,6 +201,7 @@ to repeat the output., f 52;
 #X connect 10 0 4 0;
 #X connect 11 0 3 0;
 #X restore 492 333 pd seed;
+#X obj 45 356 else/lfnoise;
 #X connect 0 0 19 0;
 #X connect 19 0 21 0;
 #X connect 21 0 1 0;
