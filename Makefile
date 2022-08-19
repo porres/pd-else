@@ -123,6 +123,7 @@ balance~.class.sources := Classes/Source/balance~.c
 bandpass~.class.sources := Classes/Source/bandpass~.c
 bandstop~.class.sources := Classes/Source/bandstop~.c
 bl.imp~.class.sources := Classes/Source/bl.imp~.c
+bl.imp2~.class.sources := Classes/Source/bl.imp2~.c
 bl.saw~.class.sources := Classes/Source/bl.saw~.c
 bl.saw2~.class.sources := Classes/Source/bl.saw2~.c
 bl.square~.class.sources := Classes/Source/bl.square~.c
