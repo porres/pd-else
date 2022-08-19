@@ -31,10 +31,8 @@ biquads~	x
 bitnormal~	x
 bl.imp~	x
 bl.imp2~	x
-bl.osc~	x
 bl.saw~	x
 bl.saw2~	x
-bl.sine~	x
 bl.square~	x
 bl.tri~	x
 blip~	x

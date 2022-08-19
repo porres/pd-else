@@ -1,9 +1,9 @@
-#N struct 1004-cell float x float y float cellsize float color;
-#N struct 1005-point float x0 float y0 float xs float ys float fg float
+#N struct 1006-cell float x float y float cellsize float color;
+#N struct 1007-point float x0 float y0 float xs float ys float fg float
 in float gridx float gridy;
-#N struct 1024-point float x0 float y0 float size float fg float in
+#N struct 1026-point float x0 float y0 float size float fg float in
 float grid;
-#N struct 1064-slot float x float y float slotsize float color float
+#N struct 1067-slot float x float y float slotsize float color float
 width float bordercolor;
 #N canvas 561 36 530 463 10;
 #N canvas 347 36 974 668 GUI 0;
@@ -447,17 +447,15 @@ width float bordercolor;
 #X obj 75 403 else/pmosc~;
 #X obj 75 431 else/wavetable~;
 #X obj 189 431 else/wt~;
-#X obj 75 517 else/bl.imp~;
-#X obj 75 545 else/bl.imp2~;
-#X obj 75 573 else/bl.saw~;
-#X obj 75 601 else/bl.saw2~;
-#X obj 75 629 else/bl.sine~;
-#X obj 75 657 else/bl.square~;
-#X obj 75 686 else/bl.tri~;
-#X obj 75 713 else/bl.vsaw~;
-#X obj 75 741 else/bl.wavetable~;
+#X obj 75 487 else/bl.imp~;
+#X obj 75 515 else/bl.imp2~;
+#X obj 75 543 else/bl.saw~;
+#X obj 75 571 else/bl.saw2~;
+#X obj 75 604 else/bl.square~;
+#X obj 75 633 else/bl.tri~;
+#X obj 75 660 else/bl.vsaw~;
+#X obj 75 688 else/bl.wavetable~;
 #X obj 75 377 else/gaussian~;
-#X obj 76 486 else/bl.osc~;
 #X obj 76 458 else/blip~;
 #X restore 300 285 pd Oscillators;
 #N canvas 980 70 314 479 Noise 0;
