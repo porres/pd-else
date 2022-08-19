@@ -7,6 +7,57 @@ ELSE (EL Locus Solus's externals) with Live Electronics Tutorial
 ----------------------------------------------------------------------------
 
 ----------------------------------------------------------------------------
+1.0-0 Release Candidate 3 test-1:
+----------------------------------------------------------------------------
+
+**LIBRARY:**
+
+Breaking changes:
+- [bl.sine~] and [bl.osc~] removed.
+- [display~] removed, use [numbox~] now (new object).
+- [clipnoise~] removed, use [white~] now (new object) with the '-clip' flag.
+- [bicoeff] renamed to [bicoeff2] since [bicoeff] is now a new GUI object.
+- Replaced some band limited oscillators abstractions for compiled objects that are backwards compatible, more efficient, but hey, they sound different and produce different waveforms. They are: [bl.tri~], [bl.square~], [bl.saw~], [bl.saw2~] and [bl.vsaw~].
+- [sysrt.out] added new 2nd "tick" outlet.
+- rint/floor/ceil: removed 2nd inlet and bang/set methods
+- free.rev~: decay parameter is now mapped differently internally
+- Objects with random number generators now have a unique seed based on system time, this is more of an improvement than a breaking change. The pseudo random generator algorithm has also been unified. Now all objects have a 'seed' method and a seed flag. I lost track which objects break in this change. Some objects did not even have this and now have. These objects are: brown, brown~, chance, chance~, drunkard, drunkard~, dust~, dust2~, gray~, lfnoise, lfnoise~, markov, perlin, pink~, rampnoise, rampnoise~, rand.f, rand.f~, rand.i, rand.i~, rand.list, rand.seq, randpulse, randpulse~, randpulse2, randpulse~, stepnoise, stepnoise~, tempo, tempo~, white~
+- [pinknoise~] all random generators now have a '-seed' flag instead of an argument.
+- [pinknoise~] was actually renamed to [pink~], design has also changed.
+- [db2lin]: argument is now minimum value.
+- [lin2db]: argument and bang method is now removed, minimum value is now -inf.
+- [lin2db~]: minimum value is now -inf.
+
+Enhancements/fixes:
+- [note]: many improvements/fixes, specially in resizing and justification.
+- added "tick" to sysrt.in / sysrt.out.
+- fixed [swap2] for list input.
+- fixed behaviour for special list cases in all objects with list methods (like an empty list being a bang message).
+- added inlet for last value in [lastvalue~]
+- [brown~]: added step value parameter and signal trigger input.
+- [downsample~]: added bang input for sync.
+- [spread]: added new mode for "<=".
+- fixed anything input for [merge].
+- [free.rev~]: an infinite decay time is now possible.
+- [play.file~]: fixed arg loading.
+- [db2lin]/[db2lin~]: added new minimum value to correspond do 0 amplitude.
+- [biplot]: now has a prettier red and thicker plot line.
+- Added seed to [rand.seq], [perlin~] and improved seeding for all the other random generating objects.
+- [trighold~]: added clear message.
+- Objects with pseudo random number generators have been improved (see breaking changes above). The tempo, tempo~ and markov objects now also have a seed parameter.
+- 13 new objects for a total of 458: [brown], [white~], [numbox~], [bl.osc~], [blip~], [bitnormal~], [bicoeff], [makenote2], [route2], [delete], [replace], [chrono] and [scala]. 
+
+--------------------------------------
+
+**TUTORIAL:**
+- updates to include some of the new objects: [bicoeff], [brown], [numbox~], [white~], [blip~], [bl.osc~], [makenote2] and [scala]
+- Revision of bandlimited oscillators and noise chapters (12 & 13)
+- Fixed major theoretical flaw where an impulse is a sum of cosines, not of sines.
+- Revision of phase distortion example in waveshaping section
+- Total number of examples is now 477.
+
+
+----------------------------------------------------------------------------
 1.0-0 Release Candidate 2:
 ----------------------------------------------------------------------------
 
