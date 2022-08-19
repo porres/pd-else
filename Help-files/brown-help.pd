@@ -117,9 +117,9 @@ or a float input., f 54;
 #X obj 219 186 else/tempo -ms 100;
 #X obj 219 159 tgl 17 0 empty empty empty 17 7 0 10 #dfdfdf #000000
 #000000 0 1;
-#X text 38 186 see also:;
-#X obj 38 208 else/brown~;
-#X obj 38 234 else/drunkard;
+#X text 38 166 see also:;
+#X obj 38 188 else/brown~;
+#X obj 38 214 else/drunkard;
 #X text 173 298 float - sets maximum random step ratio (from 0 to 1)
 , f 58;
 #X text 179 282 bang - generate new random step, f 57;
@@ -129,12 +129,13 @@ or a float input., f 54;
 #X text 145 384 -seed <float>: sets seed (default: unique internal)
 ;
 #X text 175 420 1) float - maximum step (default: 0.125);
+#X obj 219 213 else/brown;
 #X text 57 89 [brown] is a control brownian motion generator. It is
 a bounded random walk (based on a pseudo random number generator algorithm).
 By default \, the maximum step is "0.125" \, which is a ratio of the
 whole range (and the output range is from 0 to 127). If it tries to
-step outside the bounds \, it just gets reflected back., f 79;
-#X obj 219 213 else/brown;
-#X connect 21 0 33 0;
+step outside the bounds \, it just gets folded back., f 79;
+#X obj 39 238 else/fold;
+#X connect 21 0 32 0;
 #X connect 22 0 21 0;
-#X connect 33 0 20 0;
+#X connect 32 0 20 0;
